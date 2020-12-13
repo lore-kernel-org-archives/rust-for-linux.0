@@ -2,116 +2,101 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=no
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D7A0C433FE
-	for <rust-for-linux@archiver.kernel.org>; Sat, 12 Dec 2020 23:49:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E53C2C433FE
+	for <rust-for-linux@archiver.kernel.org>; Sun, 13 Dec 2020 00:02:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 422BA21D46
-	for <rust-for-linux@archiver.kernel.org>; Sat, 12 Dec 2020 23:49:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A8EB3224DE
+	for <rust-for-linux@archiver.kernel.org>; Sun, 13 Dec 2020 00:02:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391079AbgLLXt1 (ORCPT
+        id S1727071AbgLMACL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 12 Dec 2020 18:49:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57704 "EHLO
+        Sat, 12 Dec 2020 19:02:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726267AbgLLXt0 (ORCPT
+        with ESMTP id S1726267AbgLMACL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 12 Dec 2020 18:49:26 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D5FFC0613CF
-        for <rust-for-linux@vger.kernel.org>; Sat, 12 Dec 2020 15:48:46 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id u18so20950516lfd.9
-        for <rust-for-linux@vger.kernel.org>; Sat, 12 Dec 2020 15:48:46 -0800 (PST)
+        Sat, 12 Dec 2020 19:02:11 -0500
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EB92C0613CF
+        for <rust-for-linux@vger.kernel.org>; Sat, 12 Dec 2020 16:01:30 -0800 (PST)
+Received: by mail-lf1-x12e.google.com with SMTP id a8so21000131lfb.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 12 Dec 2020 16:01:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=MdPubj2vdLL976wWh2WjMIljAYY3+4TCrlUzv1TRciw=;
-        b=J9rZJS/wNmXwS4AnLO98XHYlzA62lHpRvmsTfguNMdTs/mwacPuAo86M5ji0ccFsi3
-         6kFjGM0+0SWtZjqerNUEZjlUfFjOs+CPlWEQjaYBFYP1DIZhUHHrwT29Jxo/FHiakCi2
-         ooIvvKvWKf2BNetxtmCFyenMFh1NiludeDH8x1d4xZI2aema9iUHL2vIS9ztzmTaI9Mz
-         HdsQHB0kj5xqHKRLG6XvNsJzonm7gbTBX2iVc7QbaSJdvSFuO5On6dy1XAA/JBAfgw1+
-         +lR0h1m5T2J3waNdWcz4AWjzjWkOa4o8sqmfg2FJNc+eFZoeKY3FEsafJqxM/BXXH37B
-         kLmg==
+        bh=DjD0Sq6nedKenbFig9QsEhjgn016hWDjPZholk1F7eU=;
+        b=OCkx6Tw2FaFQpFDMDvBuHHsOu3JYeGuiB4HDrWtoM2Ou/xxh2pvqJxbBa2+2lePJi6
+         mE91QzgT9KcMAQX5+PSW36zclKU8hG4rnKCTCcHkDNxlYRboeh2lTQ7H4VOyfWXdHVVE
+         Ez9xwn4Zx1Jyor+IFM+Yh2n7DrHuPz7hp0s/Tro0WTySEvw9Ky+z2AUgQDi/Tbp4CUOn
+         nYvXLJ3yRhFa42+hcuXatJAs+0gVL0wXJ3kpgzSuH3cz7yNY68jGVzCDJfpR0rB9HejT
+         W53ic/ROTF7ZO1kS6+1MBcEzSgyqIjiUqkVFMCVMOg/cr+k9D536NSV7zmM34JsV3Itc
+         HTmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=MdPubj2vdLL976wWh2WjMIljAYY3+4TCrlUzv1TRciw=;
-        b=UoUXqUpLek6yCIy2rSaQy4xxSWDyniEocCQekKslNN9jLWztuO1mFcK442Wnle+e2P
-         sFz8We5meofFbP/PNBOc2Hyswn1+TgJa9KAE7lMpgRVF13bNh1WhYh/w2fWmBEMjBaMY
-         kXYJKV2Up8nFECoI727BBSB4LxbSvIeogNclrp9VqB6u5b+Z13Hb9LRE0IPLj+fHpfNf
-         0Uh0dlug37mD/gBm69yhzI0FvxRyYq7cFg3DlHo7k8uRGp6Kw/Rc3dLNB2PgzE8en+oe
-         Cy5G+YS0A6GX3acx3n0T9JZKvCkN5VimjW6YuHhqwdrbN7dzQJH/HHSibpmAD7CfNHTD
-         PynA==
-X-Gm-Message-State: AOAM533K1azAm7iPkzQWUp0gBco+IAybowMHhSkTh77XE2iFE6sBhl4H
-        Uk1BKXHY8PJXp/9vcPG4KnMb0aM3Z6fodL1jYgKV
-X-Google-Smtp-Source: ABdhPJzttx0Y3LpuZIWlinJqT0f9xTIOdqbKmWeH6+hrM/ZZ/WKBDJBZQGe3WiGSsbfCmrvZ32FFyqL3f9FgAoR+Rdo=
-X-Received: by 2002:a05:6512:3305:: with SMTP id k5mr6896092lfe.35.1607816924628;
- Sat, 12 Dec 2020 15:48:44 -0800 (PST)
+        bh=DjD0Sq6nedKenbFig9QsEhjgn016hWDjPZholk1F7eU=;
+        b=lTu2h7vMRfliOpxxSCkwCwLvaRvbufn/L7NUCAmpoERCSuocCZOVAQtmXjwtwbSzZR
+         xMaLOrb8ZS4HBs+i/eJEjZZw4kkt+9peBql38hwiVGgkMs2mip1hH/whlisp9FCFXdDz
+         XF2ZFKRSwFJ44fYWEqx+uJ6MGLvcwpfoW4AAFDMha/u2g6dAitDVMVjgav4nJI8YwEvy
+         yL1Ayl21H5UKmq6nyJHQKEx3dLaZipBdH4/KuWXXrVH+C8iAt8F/iMK1aIGzjJTvZjn1
+         sDKoS7fpKAE48TVoWlFfbICT+cq+ojUS8D2CqnYmxw6/XXUGREzY4Oj45V9djSUoWC9t
+         pV+Q==
+X-Gm-Message-State: AOAM533wmuBV18tTRV724p52eHT9xDB6Z6p/M0Oywsl0wVnET4SUZybx
+        bLAu3CRQFatOUTTy1fIHTMYrIiCQUN/QsCD34cmy
+X-Google-Smtp-Source: ABdhPJyCjPEA0xfjGjsjBtbPxrueBUw9OjoyBPts0o65AGJh1LaXdDctVCDmckF8tLJmhsMWRW8+P/VKvU7Fg8U4O6w=
+X-Received: by 2002:a2e:99cb:: with SMTP id l11mr7666149ljj.249.1607817687505;
+ Sat, 12 Dec 2020 16:01:27 -0800 (PST)
 MIME-Version: 1.0
-References: <aa2ff401-d552-fd46-b2c3-2058af8226c3@kloenk.de>
- <CANiq72kKthjwUvBpHHPbhFsE555DriFVTtm2ziFTjwnPH_aA=A@mail.gmail.com>
- <cc71bee3-32e7-f3a5-8afa-a373438e5b36@kloenk.de> <d417fec0-c5c6-edda-796e-a861f5518eed@kloenk.de>
- <CANiq72negqN+2eOjieYW1Zas1ays3t3W-+wZisXjF9q=kob3yw@mail.gmail.com>
- <6c621482-94c7-b34b-6d46-5036df3fc1ff@kloenk.de> <CANiq72mfzkVVV+zV-GRWo+kTh=b3VayPz-9Bk+Yn35YuusDEQA@mail.gmail.com>
-In-Reply-To: <CANiq72mfzkVVV+zV-GRWo+kTh=b3VayPz-9Bk+Yn35YuusDEQA@mail.gmail.com>
+References: <CAMKQLNLp+XfVcQf_+8OHJO=faTkwfdiFYR2s72LoAryHxFBJFA@mail.gmail.com>
+ <CANiq72maQNCGT=ff9BrsqY81mXjzeYpKxDy9rZL36cmgfCZt-w@mail.gmail.com>
+In-Reply-To: <CANiq72maQNCGT=ff9BrsqY81mXjzeYpKxDy9rZL36cmgfCZt-w@mail.gmail.com>
 From:   Wedson Almeida Filho <wedsonaf@google.com>
-Date:   Sat, 12 Dec 2020 23:48:33 +0000
-Message-ID: <CAMKQLNJKZ+z985+zB0WJ+fiQkLT-q_bNrYH_qvh_xPDcQuiDyw@mail.gmail.com>
-Subject: Re: module as seperate crate
+Date:   Sun, 13 Dec 2020 00:01:16 +0000
+Message-ID: <CAMKQLN++0y2fVHNJhthemZ4BhQCAqXyFygj-jACZQnqfFBmkbg@mail.gmail.com>
+Subject: Re: File operations
 To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Finn Behrens <me@kloenk.de>, rust-for-linux@vger.kernel.org
+Cc:     rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Thank you, Miguel!
+On Wed, 9 Dec 2020 at 23:18, Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> Not sure... On one hand the first snippet looks very cumbersome; on
+> the other hand, introducing a macro for just a line may not be over
+> the threshold of "is this sugar worth enough?".
 
-Finn,
+It will be several lines considering that we will have several of
+these functions, but as you yourself mention in the next paragraph, I
+don't think this is the main point of the macro, it's a reduction in
+the boilerplate and making functions exactly the same as any other.
 
-I posted on your PR before, but I think this is a better forum for
-this. IIUC, you are implementing the pr_* family of functions and you
-need a mutex for that. If this is the case, I think using a mutex is
-probably not the ideal solution because it precludes the functions
-from being used in contexts where blocking the task is not allowed.
+> The macro makes the fileops functions look more normal, so I think it
+> would be fine, but don't spend too much time on that if you feel it
+> gets too convoluted: we will likely know how much macro magic people
+> enjoy if we end up being successful in introducing Rust in the kernel
+> :-)
 
-I've just uploaded[1] a WIP commit that contains a SpinLock, which is
-probably a better choice. Also, if this is a one-time initialisation
-sort of thing, we can probably use a more efficient synchronisation
-primitive. If you could describe your needs in more detail we could
-probably work something out.
+The macro would get the names of all functions implemented in a given
+`impl` block and add another `impl` block with the same names as
+booleans set the true. Not too complicated, but it would be better f
+we could find a simpler solution.
 
-(As for the SpinLock implementation, it also has a condition variable
-that uses a generic `Guard`, so if you want to hook your mutex
-implementation to this, it will automatically work with the condition
-variable too.)
+> Nevertheless, however you do it, having actual non-trivial drivers
+> implemented is a *very* nice thing!
+
+Yes, that's what I am working towards. If the non-trivial driver is
+filled with function declarations like those though, wrapped in
+`Option`s and closures, I think it may be tougher sell.
 
 Cheers,
 -Wedson
-
-[1] Spin lock commit:
-https://github.com/Rust-for-Linux/linux/commit/3a9b3137f6fd179df3dacb72d717f5f4b4d0a266
-
-On Wed, 9 Dec 2020 at 23:20, Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Sun, Nov 29, 2020 at 7:30 PM Finn Behrens <me@kloenk.de> wrote:
-> >
-> > I create a static mut Mutex<&str> (or similar) to contain the pr_fmt
-> > string. I cannot init the mutex in a const fn, and so I cannot create an
-> > static mut value which already contains a mutex. So I have to call an
-> > init_printk functions which creates this mutex. That's all what I'm doing.
-> >
-> > Will try to get something working the following days, and then send a
-> > patch. Mayebe easier to decide then.
->
-> This email is just to give Wedson an email thread to reply to. :-)
->
-> Cheers,
-> Miguel
