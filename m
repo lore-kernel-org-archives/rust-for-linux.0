@@ -7,73 +7,89 @@ X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B635C433E0
-	for <rust-for-linux@archiver.kernel.org>; Thu,  7 Jan 2021 21:03:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BAEEC433E0
+	for <rust-for-linux@archiver.kernel.org>; Thu,  7 Jan 2021 21:15:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2370C233CF
-	for <rust-for-linux@archiver.kernel.org>; Thu,  7 Jan 2021 21:03:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EFE7F23441
+	for <rust-for-linux@archiver.kernel.org>; Thu,  7 Jan 2021 21:15:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726541AbhAGVD4 (ORCPT
+        id S1726410AbhAGVP0 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 7 Jan 2021 16:03:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33460 "EHLO
+        Thu, 7 Jan 2021 16:15:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725944AbhAGVD4 (ORCPT
+        with ESMTP id S1726386AbhAGVP0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 7 Jan 2021 16:03:56 -0500
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 612E2C0612F4
-        for <rust-for-linux@vger.kernel.org>; Thu,  7 Jan 2021 13:03:16 -0800 (PST)
-Received: by mail-yb1-xb35.google.com with SMTP id r63so7412085ybf.5
-        for <rust-for-linux@vger.kernel.org>; Thu, 07 Jan 2021 13:03:16 -0800 (PST)
+        Thu, 7 Jan 2021 16:15:26 -0500
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 390A9C0612F4
+        for <rust-for-linux@vger.kernel.org>; Thu,  7 Jan 2021 13:14:46 -0800 (PST)
+Received: by mail-pg1-x52f.google.com with SMTP id 30so5999848pgr.6
+        for <rust-for-linux@vger.kernel.org>; Thu, 07 Jan 2021 13:14:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=+hUPbOiN9jAlcuENLRtE0Cc015clM2lRdjjWlITKFpw=;
-        b=NgoiZB83VQmDR3ASHziLs7iPMvONF+ZYn4+iMHmHO6SFdWxCfJuQR1YDTlroJys6fd
-         rONk1fagmstGacJ4cMTgEjN5Ln6s2+eUFp0ZAhR2AbEpf1VahaO310DG3yqyJH1p94po
-         GWUbMA716OswlxYSWjpOr3mjtzfMHN5X/biYEJu1FO12FW7aaeDmVSDpyvUqKdgqrK3p
-         VspsSWybN6pov6G4xrNL3+702js4wVYo5XmNcjHISnNhOEb0ZvRkxh0OOHOMqN2ErGqE
-         iLb0SRPfIBvKTZK2dFZlv02tLjAyYwVv4ydWMxgxuN4Dw1ViS9kFhPExZl88DAQm2eyH
-         IgjA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xcastHJogR52mkMFZUyCWpm72JNTWtTrlPNFmTZRntE=;
+        b=bSnePIuWWNMgzUqZepTM9GldIWEQ2Ov/YY6MVT7+22YvtLSdPo5TZUbJoxbKg7RKy1
+         e+UKytQD8Psss9ATeucFwgFiMsjVwlFO18SITx46/dQBVmUPsURchft5jGQZTKDjI3uV
+         TE0/mhLS+W2S8WHDi5Euwe9oSC67+RrIdrV7thn7qSjpS92g9QworIQpI5a6Cq7T8JqF
+         71BkxuiPw7FtZjgapzWwHgLS1k/MDWAh+ogqPMJt8jj+7CQJuiKCYp2FQ4N6ljCXQ/6l
+         MeyxiKYKe/cPGsgs6sdEDy409Z1GhKzFK3ORhENKuK/d6QcxDkw1pN+IosFnhCvPGxyf
+         t+BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=+hUPbOiN9jAlcuENLRtE0Cc015clM2lRdjjWlITKFpw=;
-        b=jUybLwPOoQokde7H+EoYt49vN/s0BwV/lOQZD+VYYy8RkIO2C2b24N514RghjYWSEL
-         RDddKONd2sjf+6CPVmCu8i/nm0qJi5Tmcf32DeJ88vBKF982u5E0DZdAMhbtIOR7eLOO
-         BLK5CmtQDprdzXXkMu9faQRA4TOTfaM3J/n7JgSdI8i5gJaXzpjAZls0Mk+RgOcfe3mN
-         +r9/BML8dVRHNnZkcvvM9DL2Mdbdvqy7QA+ERSwEpyGA7Am5Tb14tSahXDcKdwEF5ERZ
-         mttGllc2asKiaV8Sto4Nt8HSpOH2ABphXK4gBx57wsYT3hsThGrifjsUVysKqB/S5Toh
-         VVgw==
-X-Gm-Message-State: AOAM531utWMIHcJKc1tdcLUMIu1mqMz7BWdDy6bi4HJFMtLctol+lVZC
-        A+2ctZe2crF3pPKX4KzaCjTMiD0K9IEuCDxsOZrbvDNU
-X-Google-Smtp-Source: ABdhPJyLtGv+0OrYPyCHqVN0UszW+GotNHe4xiSGo0w22HWDIkICNBeXhOECQmDpEYcX6Dml4CA3DXg0n7PuCuNWa2o=
-X-Received: by 2002:a25:50a:: with SMTP id 10mr1019768ybf.115.1610053395712;
- Thu, 07 Jan 2021 13:03:15 -0800 (PST)
+         :message-id:subject:to:cc;
+        bh=xcastHJogR52mkMFZUyCWpm72JNTWtTrlPNFmTZRntE=;
+        b=I9DsLPdX5QQFZ4fH1r5v3U9nzaLnjiRMH0ilW1JdzFhXhsPYuk/zf2gtVhG8cUNw/W
+         JfXB0vMoK46KD7GgXt+MH64av0E0zRZzZDtAB+gJLAi7236lGQJO7zlEjVqub8vcgPCS
+         0c/VIgH5TNszwokNNqqJ71b06RionWuHCDMytiLqVoiJQky99ROoH999nit+ivbO1Rdb
+         Xhyq26WQdJDUL8oTwkeiICUVe6ZEfQR2vwtwyXxRaFDePkDuo/I8//OEcRul3Dvp+kel
+         fvzY6k4grMfuj5qb1SyvvExLT/N7L1MIJenfkKD8zff3NoskZmmW3MgZJ1eE8pV2X7gc
+         4VZQ==
+X-Gm-Message-State: AOAM531uDYY/vszVbe5XdgBjraRRwqzQrDsCDX12mDxIuR22yOjnm5bJ
+        /eaZDJZNQeOQEpMSTDYydh5jKRMLUDAYI4GpFUQ=
+X-Google-Smtp-Source: ABdhPJzLIlt5Rk4OUWZigng8BG9vHsPGeaUXkCRxq80vo37+0zix/H5sjcOxoFLqiMOPjkBwlvJkCaGABBMx9s9vldc=
+X-Received: by 2002:a62:f948:0:b029:1ad:c27d:2b9e with SMTP id
+ g8-20020a62f9480000b02901adc27d2b9emr408617pfm.33.1610054085666; Thu, 07 Jan
+ 2021 13:14:45 -0800 (PST)
 MIME-Version: 1.0
 References: <CANiq72=-He3iQRpKrCwApPUCjbF+zAiM95mR5JJ0tvs1hA0fnQ@mail.gmail.com>
-In-Reply-To: <CANiq72=-He3iQRpKrCwApPUCjbF+zAiM95mR5JJ0tvs1hA0fnQ@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 7 Jan 2021 22:03:04 +0100
-Message-ID: <CANiq72mRp6goyxUCrCGZ=VHJ1Xi74v0ey1sFt=7fzLELsHkpQw@mail.gmail.com>
+ <CANiq72mRp6goyxUCrCGZ=VHJ1Xi74v0ey1sFt=7fzLELsHkpQw@mail.gmail.com>
+In-Reply-To: <CANiq72mRp6goyxUCrCGZ=VHJ1Xi74v0ey1sFt=7fzLELsHkpQw@mail.gmail.com>
+From:   Alex Gaynor <alex.gaynor@gmail.com>
+Date:   Thu, 7 Jan 2021 16:14:34 -0500
+Message-ID: <CAFRnB2XcsPD3jiYmajC-2n_6g02+MgzbLSSZwV42rCJidfTZdA@mail.gmail.com>
 Subject: Re: [Rust for Linux] Happy new year & Poll for call
-To:     rust-for-linux@vger.kernel.org
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, Jan 3, 2021 at 9:18 AM Miguel Ojeda
+Thanks for organizing this Miguel!
+
+Alex
+
+On Thu, Jan 7, 2021 at 4:05 PM Miguel Ojeda
 <miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> I propose next weekend Saturday 9th or Sunday 10th, at some point
-> between 16:00-21:00 UTC (EU evening / US afternoon).
+> On Sun, Jan 3, 2021 at 9:18 AM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> >
+> > I propose next weekend Saturday 9th or Sunday 10th, at some point
+> > between 16:00-21:00 UTC (EU evening / US afternoon).
+>
+> Thanks everyone for the replies! Let's do it Saturday 18:00 UTC then.
+> Hopefully that is not that early for those in PST, just after lunch
+> for EST and not too late for anywhere in Europe. :-)
+>
+> Cheers,
+> Miguel
 
-Thanks everyone for the replies! Let's do it Saturday 18:00 UTC then.
-Hopefully that is not that early for those in PST, just after lunch
-for EST and not too late for anywhere in Europe. :-)
 
-Cheers,
-Miguel
+
+-- 
+All that is necessary for evil to succeed is for good people to do nothing.
