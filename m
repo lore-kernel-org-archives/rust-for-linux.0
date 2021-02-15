@@ -2,87 +2,106 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AFD7C433DB
-	for <rust-for-linux@archiver.kernel.org>; Mon,  1 Feb 2021 20:32:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 60CA3C433DB
+	for <rust-for-linux@archiver.kernel.org>; Mon, 15 Feb 2021 05:36:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5FAF564EC8
-	for <rust-for-linux@archiver.kernel.org>; Mon,  1 Feb 2021 20:32:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0B38864DBA
+	for <rust-for-linux@archiver.kernel.org>; Mon, 15 Feb 2021 05:36:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229996AbhBAUbp (ORCPT
+        id S229448AbhBOFg3 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 1 Feb 2021 15:31:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50306 "EHLO
+        Mon, 15 Feb 2021 00:36:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbhBAUbo (ORCPT
+        with ESMTP id S229446AbhBOFg2 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 1 Feb 2021 15:31:44 -0500
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8D80C061573
-        for <rust-for-linux@vger.kernel.org>; Mon,  1 Feb 2021 12:31:04 -0800 (PST)
-Received: by mail-yb1-xb33.google.com with SMTP id q201so14612998ybg.8
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Feb 2021 12:31:04 -0800 (PST)
+        Mon, 15 Feb 2021 00:36:28 -0500
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09558C061574
+        for <rust-for-linux@vger.kernel.org>; Sun, 14 Feb 2021 21:35:48 -0800 (PST)
+Received: by mail-yb1-xb29.google.com with SMTP id p193so6045163yba.4
+        for <rust-for-linux@vger.kernel.org>; Sun, 14 Feb 2021 21:35:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=J1mQYNuWMgMXC8DcK6FLAJGsEbMrh/ZixKrwoHEnqdc=;
-        b=Nm3086fLqseyC1gaJFx/4uGp710mhL5lYqf07FC6UAHi83j0ABuN/Q61GmkvTrmBRA
-         0lR7R4p+jkMzMWlTB79/9EKsHBw3yEjWhJHBe3y/G2VLDRG/wwLkO2ZmzSImBfpDMSRK
-         YPLBq8L+vLLKkTtVDqJtCxH44q0bd0NoTQYrFZV/Z9kpa3wxuhkFdgQRoh7ftkEU8aL0
-         bPaIZJmUpAQtrZsK00Utn9TAm1blTO9njMrYgqeUYMPT9jYdkOEoznMMBjF618za1Eix
-         E5SZHlPE9V6zis1dNr/mwYp9PkTnVC4/ixAc+QCNHjefdmkAWx0wsmoTg60kgG2+7Nts
-         Y3wg==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=VY+QD6ELZZ0dxNWGpJaj3HRX3Gfp7U1dNbzZEOZyKMs=;
+        b=kLZ+6Xz8hmljmAOhtur6BJUGhY7hozUUIuBwieyFkB/3r//hBjvSPQ5Q8w/PcmS0Yv
+         fkbASAhJvAO3HRy97d6JO0an0cMJp0LqP1QHhmR8S/DiHpLNAQoU0A9ExucJyJMPZJB6
+         Z7IJh+J6md8DKltgtX6edHWUxSbXTCHfeyB9++SdrBocBFxq6ewV0pd/fbVboxLOxszi
+         lF4CBVNt008i3nfpJZ7GPe/ffA9wtZZgAvYebAewHRsUa0PwwqvGupfv0Ek9BbObI2M0
+         CjrIzNHdgxKQu48xhlhhykmCfEU10EwyktqdlmsXkMplk1TYaBPI65V0Z8r1zofoRFtV
+         G6pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=J1mQYNuWMgMXC8DcK6FLAJGsEbMrh/ZixKrwoHEnqdc=;
-        b=CrYJ7wjRf4ODdLGTBfhq3Sx55E8vRn54gJT0ZPfSUk6ziwQCq/efQaUGuRWxA0WoeB
-         tXX+/WUNgvyTLMmR9D/WMhAY2ADlN1pP86/z3foLhnDvmrb0jXbZU2iKoAeF+3TeU4Ge
-         YPIsQDxcinFgsVufiWorrfBP/gIIDWJRKkOtc/W4dgkQAz7VDjdyZWq1+j8Hr32NXPny
-         mQL9NAOUCJpyTJZ+E7W94dv+1lotnNGBwLbMevIh5ZWR/w/aS1+WjWZJ+MB8UTzWkbvb
-         SjI9BRHfgfdu3ZtJtXPyje/M0BU15NLlLM88JFqvoLfW50r7AA818aKrUU93vVCojz7a
-         OuPQ==
-X-Gm-Message-State: AOAM532ZAhEVuOdSJeUSPTxqT9cYP9B8H0aOrMts8VAbef8KGrh1wPZ9
-        vL9IN84Gx807nPV8GcuCjhkhRLAzLGfFwU6AKTc=
-X-Google-Smtp-Source: ABdhPJxhz3ER1+YH7acSX/WuL8IFjcl11EGi61DVr4ke+lHoliya8Fr3CMd/nmdcJBdtOaiAzDH/XWNOyT11gXt+lWg=
-X-Received: by 2002:a25:2d43:: with SMTP id s3mr11983364ybe.33.1612211464067;
- Mon, 01 Feb 2021 12:31:04 -0800 (PST)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=VY+QD6ELZZ0dxNWGpJaj3HRX3Gfp7U1dNbzZEOZyKMs=;
+        b=U8WwF9V7ONCLxBWdCQEPcBlXvIdB7JNthIczlu6X0U3zDuADz7TWekoZrqd8PQQos4
+         R9uSJfwaQAEnjF/acPu/f98MSwbgQaVdQBLBvH2+Vlvw+8TDo7hVz2j2xlCPW+uhK8AS
+         c0xLAnW6lNeDYE0qjwJJqvAxoBBxIdznW5cTNkTG83Rn05xBXez/6+t/h0Fzro0fpIWX
+         1TyWnJWfjpOhSR4bGnVfhC//Bi7jOeIwD35niC78VISAiOCwqlfVk4dcwcILs1tNHNRT
+         VRVSXNIhCsDen4fcZaWiaFe9ZrTBHwtuAHAPzpBKI6nIJbpT9qG0JEQUWYDnc6XInEE0
+         dLRg==
+X-Gm-Message-State: AOAM530EJ1re58+pqsW8nQuTddd8x42IoJMWoANLw/r50UFDf8+VXeq6
+        rycJlf+tdc446c/QnRyWSiIeyYN1dZn+M6WYdY7BEJYb1urc/A==
+X-Google-Smtp-Source: ABdhPJwcDm0fhjiPYNBs0EQaGQ5AmfZdOVUApwn/45s9+z9gBIjbFfwzOVJlDV3S4d0dVbxI6o0HcQ0CRH2QROlKI0Y=
+X-Received: by 2002:a25:31c2:: with SMTP id x185mr19987301ybx.93.1613367347159;
+ Sun, 14 Feb 2021 21:35:47 -0800 (PST)
 MIME-Version: 1.0
-References: <CAKwvOd=5CWsfW-UY-k0ocTwLV0nLq3sUVVmFvNPLmTcqFxTz9Q@mail.gmail.com>
-In-Reply-To: <CAKwvOd=5CWsfW-UY-k0ocTwLV0nLq3sUVVmFvNPLmTcqFxTz9Q@mail.gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 1 Feb 2021 21:30:53 +0100
-Message-ID: <CANiq72k+6vxpxNPKFJH+thWG7jwgLXnMZ03pU+TZfuHjOphSAg@mail.gmail.com>
-Subject: Re: "ClangBuiltLinux: What's Next?" - Nick Desaulniers (LCA 2021 Online)
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     clang-built-linux <clang-built-linux@googlegroups.com>,
-        rust-for-linux@vger.kernel.org
+Date:   Mon, 15 Feb 2021 06:35:36 +0100
+Message-ID: <CANiq72knSgMU30A2ALaJGY5FWumPKU18ThvfjR1t14_77kYLrQ@mail.gmail.com>
+Subject: Upstreaming plan
+To:     rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Nick,
+Hi all,
 
-On Mon, Feb 1, 2021 at 8:28 PM 'Nick Desaulniers' via Clang Built
-Linux <clang-built-linux@googlegroups.com> wrote:
->
-> https://youtu.be/GpiWVXKs9Z0
+I think we are in a reasonable position to start thinking about
+upstreaming. While things are still experimental and will be for a
+while; and while there are many bits to be solved (e.g. an example
+driver and everything it may entail), the setup is closer to how
+things will look like, which means maintainers can start giving
+feedback. Plus things look fairly usable for other developers too.
 
-Thanks for the Rust for Linux slide! (Cc'ing the ML).
+Today v5.11 was released, and this is the approximate kernel release schedule:
 
-By the way, since you mention it in the slides: I am on the WG14
-committee, so I can try to help anybody that wants to bring a paper
-related to the kernel. For instance, N2631 secure_clear is a paper I
-am working on to give C a way to guarantee a memory clear which is
-used in the kernel and other projects (and we had bugs with it in the
-past!).
+  2021-04-18 v5.12 released
+  2021-05-02 v5.13 end of merge window
+  2021-06-13 v5.13 released
+  2021-06-27 v5.14 end of merge window
+
+I propose we target v5.13's merge window for the upstreaming. If we
+don't make it (likely), that is fine, we can use it as a test drive to
+solve whatever is left and be ready for v5.14.
+
+To that end, the plan can be:
+
+  - Up to around 2021-03-28 (6 weeks): finish whatever features we may
+want to have in the initial PR; including cleanups and any example
+module/driver, etc.
+
+  - 2021-03-29 - 2021-04-04 (1 week): Then I will rebase and draft a
+series for upstreaming. Here it is where we should do a full review of
+the entire diff, just in case something got messed up in the different
+syncs, plus allows us to spot any final touches.
+
+  - 2021-04-05 - 2021-04-18 (2 weeks): Send the series as an RFC 2
+weeks or so before v5.13 merge window to the LKML. This way we get
+some general feedback and discussion, plus Linus et. al. can be aware
+we might send it. Depending how things go here, we can decide whether
+to go for v5.13 merge window or delay to v5.14 (then the same plan
+would apply, shifted by 2 months).
+
+Thoughts welcome! -- Specially if you have something baking that may
+need more time than those initial ~6 weeks (e.g. you are busy etc.).
 
 Cheers,
 Miguel
