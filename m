@@ -7,81 +7,100 @@ X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C6B9C433E6
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Mar 2021 15:56:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 73CA3C433E0
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Mar 2021 18:05:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CF46264F17
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Mar 2021 15:56:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 32B0764F38
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Mar 2021 18:05:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232478AbhCQP4L (ORCPT
+        id S231805AbhCQSEz (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 Mar 2021 11:56:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45478 "EHLO
+        Wed, 17 Mar 2021 14:04:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232307AbhCQPzo (ORCPT
+        with ESMTP id S232921AbhCQSEv (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 Mar 2021 11:55:44 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 053CEC06174A
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Mar 2021 08:55:44 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id p186so41045662ybg.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Mar 2021 08:55:43 -0700 (PDT)
+        Wed, 17 Mar 2021 14:04:51 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAEACC06174A
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Mar 2021 11:04:50 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id p8so4072339ejb.10
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Mar 2021 11:04:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=LKo1felwtLVleNMCBb3J0+X48Q53ozNL0yvadcLlVUc=;
-        b=n7FzX+xE98s7B6FzESU6aNWpM/YkjtyYooy17Yh60qGn8eIrOog33als9hqh+dq81i
-         ANZrDe+k8d8O93KswKvAdM+mLhsTdTfpdenK5U8iWoyo1+XCTeokVq35zwGQXnKULPgQ
-         oGSZkgD+iK0E86RNC/ob6E1KXrkjI0LaHLWOL+1EBFw8ekD044l79eeMX1WKdN5FKIlZ
-         lN0JIL/DBivNAFLAiRtzvpqKs3MqMjHxGEG6W8ChVvxpTcdfcanM6/qZJwO5yNwtnc9D
-         8kIk9dxxAE0oLEbBaYQjYod7Nkf2QPYfj6piNcN5TMjz1I+VAFJzUMZOAP1Emyh0o+yk
-         WGRA==
+        bh=+FflRMqMc/sOMdJs90tDgDKtpvJCFcnPl7JM2uGYlnY=;
+        b=KZubUiuk+sbJmBhug18kOn8s+2hTs8iPO1OVprsmb9Nf+L2tl8smEbVOPUgEQKfMdb
+         Eocrjrkiv5xnjaxWiuI7zNa72X04bd2c0rHHgXHs3Nne/iM3FMsby/WyavWO7nGmo/YP
+         FIKAYo7O3nMbxogSflVkdbEE4kcaPW8qLkAd/zf6z5n8BzJQwsrq37rSlu773vvqIFSS
+         OsQuSeZGR2Ocxq3J186VDYU8AMx7EdGp4ScaHO9l6sVsv+kURe0e9LwxwRjJ6S6B3oov
+         VOzL8VLgv/AZr6Cj/h7F68oEi4Xc80/kup8bI4AMYIV7hgOhLE3YL3DwvKnn0auvXa8C
+         dIeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=LKo1felwtLVleNMCBb3J0+X48Q53ozNL0yvadcLlVUc=;
-        b=oSGL8750CQUND0ekbbME/9Fh59FD+qSXXLH4X/rSCknL57IGjhHqG5hzi1+CUz35hr
-         +SoWho61a5Rl2Yn5fBP4zoOPvceEi2o0I9ARFjvheuXUbAeWzyUqymlt4lqQiGdZmeM1
-         G2neimEhwwI6X+1Er1JGP3dvwjnrIAVTQb1wX9w5QKKSVsQ97aY2rEyOPnYy+rJoBgaL
-         AQjuzZKvoVw/5jRPwrabZp849VjCxHawX4NYbuKA3oqsaEre6mAEVMg9OwVmN6NFG2pw
-         lydfkJGSQPR6E0RmKD2tbhnk5L+a1QI7nLZR6E3ikUDNAF4IJeB1MEqlXthQmUxWpfis
-         Vb3A==
-X-Gm-Message-State: AOAM533VqqI7OL+2ABPsmPznFXZJSp17Km1aDm9XA2SKOyh29mcpPyCw
-        D4wtsS9svnauJ8Yo2fB8X5LGFAE3VcWyDZZzExs=
-X-Google-Smtp-Source: ABdhPJzhBjEbHu3Ar4SJ4Nf4S3fodEWtTntEv1rZtgNwn9EFGhJa2dIg1f/jeN+oYBW1RzzGqrkn5xb3ZsnHusqThBo=
-X-Received: by 2002:a25:6e02:: with SMTP id j2mr4915030ybc.247.1615996543277;
- Wed, 17 Mar 2021 08:55:43 -0700 (PDT)
+        bh=+FflRMqMc/sOMdJs90tDgDKtpvJCFcnPl7JM2uGYlnY=;
+        b=aIJgXQul2sIl073+KI98eK0z4xYZM3IqXqp9PblJXo8j+z7NVwCFYoj5/sB5+lekxf
+         h4ZLllhiRCvrkR6Bl+VqfL6ho/OvUGImVFGAKITWPxzYRq+8Vo/FUdn6sTJ3ZvGAaLyN
+         EdhhTYBuD2pTT4cFPfQU18mwmtqcdZTrf9WRclk+aG557NndLS/ZLA45ggwmBnyP73dj
+         dIU/lq40weyOkjnVY0qVRGUQlprP+mdF+kAz5z8l2TuqBmWw1Ps7K3M663qMhndami8b
+         UJ5iWiuZ82kl0Be1Cw8DHdwg/HT8UEgSyoKLrSdetJe3afvd1etl0t02n35dLVCzfnwe
+         1a8w==
+X-Gm-Message-State: AOAM530mxnPcy/pjnErghLbg8/rIf2wL02qKU+j1HL78E62ZztIfKdJz
+        7ffSYoWSZ+/M6VfRApFYVSNkhYCEzAmIzsc3+hk=
+X-Google-Smtp-Source: ABdhPJwoRrNfyUZNPKTLd6f5GAsqrdEwBIjCzdMZ72hGiO3M5t+QIC9R4mhCabBqpMj8Db4QnXzwsgToHzClzvo+mzo=
+X-Received: by 2002:a17:907:76b3:: with SMTP id jw19mr36165571ejc.202.1616004289442;
+ Wed, 17 Mar 2021 11:04:49 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210315063044.ur3lvxv7emo2egu4@adolin> <CANiq72=ZUr5JcfnMYB_=Gnsi08q45PwOUo3-CPL84_d5G2EV1w@mail.gmail.com>
  <CACAkLuqMrRAE6d8dP_b9khtO3HY4mnEGP_Z+1HhzRYDMOaaN+Q@mail.gmail.com>
-In-Reply-To: <CACAkLuqMrRAE6d8dP_b9khtO3HY4mnEGP_Z+1HhzRYDMOaaN+Q@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 17 Mar 2021 16:55:32 +0100
-Message-ID: <CANiq72n0anrr7E_2D7nTt4PxQQPn0KxT86y5dS3AE47su0Ff7Q@mail.gmail.com>
+ <CANiq72=2FJQ7Ct_77MsaYe-3qThuRJ-gkLFvY-acq_GmhR9A4A@mail.gmail.com>
+ <CACAkLuopZwyXSMX0TNK_AV=nSjSp7++mXJ7PNeg2_j1bNxrekQ@mail.gmail.com> <CANiq72nNJgZJ2Be4NWk8MWpxhBbCA6Ry8o88KsgzkZwGCUxNvQ@mail.gmail.com>
+In-Reply-To: <CANiq72nNJgZJ2Be4NWk8MWpxhBbCA6Ry8o88KsgzkZwGCUxNvQ@mail.gmail.com>
+From:   Sumera Priyadarsini <sylphrenadin@gmail.com>
+Date:   Wed, 17 Mar 2021 23:34:38 +0530
+Message-ID: <CACAkLurXhRBUF8jFCPTwK8eXHHDtN-15Btw21FcUqOOJKifdBQ@mail.gmail.com>
 Subject: Re: Build system can't detect rustc
-To:     Sumera Priyadarsini <sylphrenadin@gmail.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Mar 16, 2021 at 3:10 PM Sumera Priyadarsini
-<sylphrenadin@gmail.com> wrote:
+On Wed, Mar 17, 2021 at 7:10 PM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> ```
-> error: unknown argument: '-mindirect-branch=thunk-extern', err: true
-> error: unknown argument: '-mindirect-branch-register', err: true
-> error: unsupported option '-mrecord-mcount' for target
-> 'x86_64-pc-linux-gnu', err: true
-> thread 'main' panicked at 'Unable to generate bindings: ()'
-> ```
+> On Wed, Mar 17, 2021 at 11:32 AM Sumera Priyadarsini
+> <sylphrenadin@gmail.com> wrote:
+> >
+> > Specifying  clang did work, thanks! I used "make nconfig" but I am
+> > guessing it would be the same as what 'defconfig' would have given.
+> > Here is a paste if you want to take a look:
+> > https://paste.ubuntu.com/p/dMb3bb34Qf/
+>
+> Please note that `menuconfig` (and similar commands) should be run
+> with `CC=clang` as well, so that configuration is done properly for
+> Clang.
+>
+> It would be great if you can confirm `make nconfig CC=clang` would
+> have worked for you (to start from scratch, including removing the
+> configuration, use `make mrproper`).
 
-Reproduced with defconfig, building with GCC. I'm sending the fix.
+Sorry, I missed out on this- yes, I did specify CC=clang with 'make
+nconfig' as well.
+Without that, 'make -j4 CC=clang' started asking for config options as
+expected XD
 
-Thanks for the report!
+Thanks for all the help :)
 
 Cheers,
-Miguel
+Sumera
+
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
