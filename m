@@ -2,90 +2,78 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55FF5C433E1
-	for <rust-for-linux@archiver.kernel.org>; Sat, 20 Mar 2021 11:25:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 07041C433DB
+	for <rust-for-linux@archiver.kernel.org>; Sat, 20 Mar 2021 17:26:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2B8E561972
-	for <rust-for-linux@archiver.kernel.org>; Sat, 20 Mar 2021 11:25:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CBC6E6192E
+	for <rust-for-linux@archiver.kernel.org>; Sat, 20 Mar 2021 17:26:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbhCTLYs (ORCPT
+        id S229821AbhCTRZW (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 20 Mar 2021 07:24:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42076 "EHLO
+        Sat, 20 Mar 2021 13:25:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbhCTLYd (ORCPT
+        with ESMTP id S229787AbhCTRY5 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 20 Mar 2021 07:24:33 -0400
-Received: from mail-vs1-xe29.google.com (mail-vs1-xe29.google.com [IPv6:2607:f8b0:4864:20::e29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56DD0C0613B3
-        for <rust-for-linux@vger.kernel.org>; Sat, 20 Mar 2021 03:45:18 -0700 (PDT)
-Received: by mail-vs1-xe29.google.com with SMTP id h25so4879515vso.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 20 Mar 2021 03:45:18 -0700 (PDT)
+        Sat, 20 Mar 2021 13:24:57 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B4EDC061574
+        for <rust-for-linux@vger.kernel.org>; Sat, 20 Mar 2021 10:24:57 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id h196so1771261ybg.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 20 Mar 2021 10:24:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fossix-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:subject:date:message-id:mime-version;
-        bh=g3t5eWGEN3Q+vPG7w2vtAVk9IGXuD8LxbnERE1pb1p0=;
-        b=KEBVSIz3XHGeYzxUZlyXbPt2dLcrQqqSenYLtIXan8yZTr2f+gsKIFBo/O9P0h5yf7
-         3A4I8XOxjju9riwng9z/B1WAoJDWr7KAtNyUpbe8rMVqYe0PEgeCsL44aoaPgnwzH60e
-         /wpY4SomnJdZV6wyb4uIaDm7pNFAzwT/S9NgH4tkOeVTsL3yDvhi3WQdR/lkk+p0i2B8
-         vCSXwN3DUfYTDUXyocXejrR5GBp50Uxmo1SSK+VI9DpgLs8RyRdUZ5lNC/ztsywOjQtC
-         5BYyzfRMlBZpyS8RuPTd9ZrP/42HQ50rleBFtzg9+R1j8HU2RI7hXVFL7StB71A4gV4c
-         Kmxg==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=EVf4G/0Yr7cH8u+77/gjiHCZPGZeLkHu1NZcsF58acY=;
+        b=Xe72tvzyMZqja9QkUACRepF6ea5XwB8ZeFeBsMDykW+OrkORCnV3OqlSrCPTqU9Qcw
+         LSsEotL3zsSG+fD5zLWf4zfMayKuXmtSEK9e7OvV1pPRf1cvdvRzSqBaP6eZNMy6/jzq
+         10t9nyv/APse7uX7fzEuXyWmjyLyUXmpjcpvIlbJy4BHwCfaHTuAeTrDv2/Ios07Bnmd
+         IG3gRfeniyPh99dZ2BtRMfYZhVIxCbn6egdZeM7KH5wUkRictKmL+YSaqmkubxALtv+K
+         qpl2muu6cB8zwNsHhh24fD7wdG4mLMFe3k+tN8d1H+pI71EIsAbbe+Ia3LWvjtEvK5s8
+         Prqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version;
-        bh=g3t5eWGEN3Q+vPG7w2vtAVk9IGXuD8LxbnERE1pb1p0=;
-        b=KftA+3PfKQMQQ+ehecnbtMShN3OLovsSI5mNVm+ENWy7NK10NqpNqgJd7M2fpFRTWX
-         b2MbRIg9EytgHprrfl7rTmsEBJKOhPdNF4LGhQL+sxOYfsNuk1DRzjufa+ohCmoyHucv
-         D1jJXnC5k/oo+LJ0CleLYbPWRDfFq2tHVriLY8wPKpjwjcvGdHurcnmzbzxGYUAmHg2I
-         tNd84HptpVhXSQUfNZEY7eNsaNEG3no0InNHn3WrP5OhhzgDNNe7c/KdcMaZuNgjIQEP
-         hukgGydZaflwIipoMYyD2f8Oq3MNBI5tTD4+Miy4C5HoiZLR5g1/EkP4vZ3E35dbQYZC
-         +O1g==
-X-Gm-Message-State: AOAM533rnJMxaDHZVa1OuaftksfHE/E61yQ3DR6TO3lIWx74JJZaeE7S
-        8uHVKUTAIhEiWDCr9hV5C02yoJ3GX4AV9w==
-X-Google-Smtp-Source: ABdhPJzxhB+aA9sHhc+F/nZ9jqHvV8lIFiB7zZttOHbFDV7tBdDHtePLjzR7Iaa9JnH6upmHCBZ4jg==
-X-Received: by 2002:aa7:9797:0:b029:1f8:1a14:b055 with SMTP id o23-20020aa797970000b02901f81a14b055mr13158013pfp.57.1616235609086;
-        Sat, 20 Mar 2021 03:20:09 -0700 (PDT)
-Received: from localhost ([103.21.79.4])
-        by smtp.gmail.com with ESMTPSA id t18sm8517260pfq.147.2021.03.20.03.20.08
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Mar 2021 03:20:08 -0700 (PDT)
-From:   Santosh Sivaraj <santosh@fossix.org>
-To:     rust-for-linux@vger.kernel.org
-Subject: Could not insert module: Exec format error
-Date:   Sat, 20 Mar 2021 15:50:04 +0530
-Message-ID: <87zgyy160b.fsf@santosiv.in.ibm.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EVf4G/0Yr7cH8u+77/gjiHCZPGZeLkHu1NZcsF58acY=;
+        b=bdZpz1jLvFngHqzqR3JV/AL8LjtRxsR/6iX6qLyeZl4shpOvUWfVfWzPT27H/cydzJ
+         1iwcwrPjQdGY6H/7QUQd8DGXZ9R2wEfYNrr0lvdcTx84ehzoPsjkeuyZKsxq5FPnEVAQ
+         mG0WBxZuhE/I/Ttp/vpj0SwCuonwYB/QZWcvPKNxblLOq5FaQZzqEbSfd4w/icBaKBkX
+         FnvtAIYPgfNHAMPn2NOmrCyvA0MWahogJegj3TzJ8Dpez503pyd5xGe9mJ20+a/Sn5Ud
+         w4DfnHQeT8e+V4260AiAfF7yKlwxnbtl4WpX5zC1ApKyXGB0jWPqUIha744aY8yIcbJk
+         bcHQ==
+X-Gm-Message-State: AOAM532HSGmyBDJZzyPUU7krO+zVRMV4q1ar56QfO/6FCL3gL3xbQOcX
+        jsJhduQZIWCNdeFfZTFq/LSsoJtyHonNvSKncTkhZHrbfzI=
+X-Google-Smtp-Source: ABdhPJxicpepYv2WPvaNayTLoDfypxwdPIY4o77TbCZog33dUTlPGcVZNTs6k10RCBYX45kOMMU5luN1keCV0hX92R0=
+X-Received: by 2002:a25:d6d5:: with SMTP id n204mr13613960ybg.22.1616261096498;
+ Sat, 20 Mar 2021 10:24:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <87zgyy160b.fsf@santosiv.in.ibm.com>
+In-Reply-To: <87zgyy160b.fsf@santosiv.in.ibm.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sat, 20 Mar 2021 18:24:45 +0100
+Message-ID: <CANiq72koz3X=fstSLcAu_MkCDsznK+i0xqSnZjxh8LpRC_OBMg@mail.gmail.com>
+Subject: Re: Could not insert module: Exec format error
+To:     Santosh Sivaraj <santosh@fossix.org>
+Cc:     rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+Hi Santosh,
 
-I am very much new to Rust for Linux. My first attempt to build the kernel with
-rust support, and insert the example rust module failed with the following
-error.
+On Sat, Mar 20, 2021 at 12:25 PM Santosh Sivaraj <santosh@fossix.org> wrote:
+>
+> I am building the kernel on a x86 host and running it on a x86 qemu VM.
 
-santosh@x86-vm ~ $ modprobe rust_example.ko 
-modprobe: FATAL: Module rust_example.ko not found in directory /lib/modules/5.12.0-rc3+
-santosh@x86-vm ~ $ modprobe rust_example
-modprobe: ERROR: could not insert 'rust_example': Operation not permitted
-santosh@x86-vm ~ $ sudo modprobe rust_example
-modprobe: ERROR: could not insert 'rust_example': Exec format error
-santosh@x86-vm ~ $ sudo modprobe rust_example_2 
-modprobe: ERROR: could not insert 'rust_example_2': Exec format error
-santosh@x86-vm ~ $ sudo modprobe rust_example_3
-modprobe: ERROR: could not insert 'rust_example_3': Exec format error
-santosh@x86-vm ~ $
+Is that by chance 32-bit x86?
 
-I followed the 'quick-start.rst' by the letter. What am I doing wrong?
-
-I am building the kernel on a x86 host and running it on a x86 qemu VM.
-
-Thanks,
-Santosh
+Cheers,
+Miguel
