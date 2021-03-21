@@ -2,108 +2,110 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CCAC6C433DB
-	for <rust-for-linux@archiver.kernel.org>; Sun, 21 Mar 2021 20:04:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23DADC433C1
+	for <rust-for-linux@archiver.kernel.org>; Sun, 21 Mar 2021 20:57:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8EEE761946
-	for <rust-for-linux@archiver.kernel.org>; Sun, 21 Mar 2021 20:04:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DCFAC6190A
+	for <rust-for-linux@archiver.kernel.org>; Sun, 21 Mar 2021 20:57:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230230AbhCUUDz (ORCPT
+        id S230171AbhCUU44 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 21 Mar 2021 16:03:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36770 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230439AbhCUUDa (ORCPT
+        Sun, 21 Mar 2021 16:56:56 -0400
+Received: from jabberwock.ucw.cz ([46.255.230.98]:53396 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230158AbhCUU4W (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 21 Mar 2021 16:03:30 -0400
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3551C061574;
-        Sun, 21 Mar 2021 13:03:29 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id o66so4347933ybg.10;
-        Sun, 21 Mar 2021 13:03:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=EQq7iHQgsKMRk89C6zvaky+IUSEdWuNAeKo0pyatNPg=;
-        b=MK6Xwj9t4EhvfV8FnhBGk+aoHf8OExNiJKPBT4oQ1j8YTthMSkopvoANU/HzVaW48W
-         6iLq3aIgBmGe5igFOGlpcsK/1kmmrb9ztM1bqn8H1X530i4BzpisCgmLS6U0/lf2ou0R
-         +FHPY8Vse4edcpOqxHvUK2mCNNPrE4m/7tKpCwN9sGHlexCSAh9TxsIv/FEn7muDmiVB
-         VBINET+WvnXJh+S64OPI6f1AQz44OckA3YUAZapFMbz0+S74xtj2420hLPNXf3aTqAU5
-         VoC3knOYfttIIzJdSBFwl01EQ2JtNr1iAmqU2JiYsigPWa2mYOZfiiHSHmovwY7ekE4U
-         FM7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EQq7iHQgsKMRk89C6zvaky+IUSEdWuNAeKo0pyatNPg=;
-        b=tr/hqe4w/0mlaZw6mV7CxbQQg7NHeqbSAtZYp+U7eqKsC1OmpSoQoJU7Lj1d7+vSWe
-         slxmJFgktzSf2EM991A2VUFmVd/4AGXdEhJYi6AfhQ6IzJsJXmILFbArpoSZuw58KHW1
-         zH0PAXAN2HLK2uGuCgo2XXPElDGwcpTB+6S+Cj3tV7ycU3XdnChf9uMlukih1AMrtjr9
-         FJAzkd6+yEDudWJLDJ7hp7ei9S/pY9dv1VUzQJd8gKEQii59Txfy8FHPQYJl4j2NH55O
-         4ra/CHx7xjvxU/F+MPb0jwbimpf9umyI3ThmCGIXKd95Bf3KeNiGtXJYArotUDc3453e
-         zqnA==
-X-Gm-Message-State: AOAM530Npq27hWHkPMX75qi03eXDTASoaDh4v+DgH2j8Av5RBcytMUP0
-        rsLwXrY1xDaP8C6wI9WudHEIIVCWSC92WqbqvTo=
-X-Google-Smtp-Source: ABdhPJwa5xPDaXaru7y3umIABZghbW8Vs32wUVmX0VJrpLsCqSFjrX0V9g9IZBh7Tp6f5+gR3PViiRKf0NyCe1wFPxg=
-X-Received: by 2002:a25:6e02:: with SMTP id j2mr19552359ybc.247.1616357009160;
- Sun, 21 Mar 2021 13:03:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210321193705.GA13699@duo.ucw.cz>
-In-Reply-To: <20210321193705.GA13699@duo.ucw.cz>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sun, 21 Mar 2021 21:03:18 +0100
-Message-ID: <CANiq72n=XNwH8JrPfpzTMrHujhCYVzk5BgVmifiVcTk3W_=L2A@mail.gmail.com>
-Subject: Re: Getting Rust to work
-To:     Pavel Machek <pavel@ucw.cz>
+        Sun, 21 Mar 2021 16:56:22 -0400
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id AD1ED1C0B78; Sun, 21 Mar 2021 21:56:19 +0100 (CET)
+Date:   Sun, 21 Mar 2021 21:56:19 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         rust-for-linux@vger.kernel.org,
         kernel list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: Getting Rust to work
+Message-ID: <20210321205619.GB28813@duo.ucw.cz>
+References: <20210321193705.GA13699@duo.ucw.cz>
+ <CANiq72n=XNwH8JrPfpzTMrHujhCYVzk5BgVmifiVcTk3W_=L2A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="TiqCXmo5T1hvSQQg"
+Content-Disposition: inline
+In-Reply-To: <CANiq72n=XNwH8JrPfpzTMrHujhCYVzk5BgVmifiVcTk3W_=L2A@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Pavel,
 
-On Sun, Mar 21, 2021 at 8:37 PM Pavel Machek <pavel@ucw.cz> wrote:
->
-> First try was on x86-32. It took me a whlie to figure out the problem,
-> hence the diff below.
+--TiqCXmo5T1hvSQQg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks a lot for trying it out and for the feedback! :-)
+Hi!
 
-The supported architectures are in
-Documentation/rust/arch-support.rst, so we should link to that.
+> > First try was on x86-32. It took me a whlie to figure out the problem,
+> > hence the diff below.
+>=20
+> Thanks a lot for trying it out and for the feedback! :-)
 
-x86 32-bit and other architectures should eventually work -- we need
-to put some time into them and setting up a few things. For the moment
-we focused on x86_64 and arm64.
+Thanks for your work :-).
 
-> Then I got failure because libclang (?) was not installed. I installed
-> it. But I guess that should be mentioned in docs as dependency.
+> The supported architectures are in
+> Documentation/rust/arch-support.rst, so we should link to that.
+>=20
+> x86 32-bit and other architectures should eventually work -- we need
+> to put some time into them and setting up a few things. For the moment
+> we focused on x86_64 and arm64.
 
-Yeah, this is mentioned on the bindgen section in quick-start.rst, I
-will try to improve make it more clear, perhaps I'll a section for
-libclang itself.
+Actually x86-32 would be useful for me. That's my test machine.
 
-> With CONFIG_RUST unset, kernel builds for me. With CONFIG_RUST=y +
-> RUST_EXAMPLE=y... I get errors:
+> > Then I got failure because libclang (?) was not installed. I installed
+> > it. But I guess that should be mentioned in docs as dependency.
+>=20
+> Yeah, this is mentioned on the bindgen section in quick-start.rst, I
+> will try to improve make it more clear, perhaps I'll a section for
+> libclang itself.
 
-Typically it is due to a kernel option that enables some GCC flag that
-libclang does not know about -- I have a hack in place to make it
-work, but requires manual maintenance. Can you please attach your
-kernel config?
+Aha, sorry, it is possible I was not careful enough reading the docs.
 
-Meanwhile, please try building with Clang or LLVM instead, the GCC
-builds are very, very experimental. I'll make it even more explicit in
-the quick-start.
+> > With CONFIG_RUST unset, kernel builds for me. With CONFIG_RUST=3Dy +
+> > RUST_EXAMPLE=3Dy... I get errors:
+>=20
+> Typically it is due to a kernel option that enables some GCC flag that
+> libclang does not know about -- I have a hack in place to make it
+> work, but requires manual maintenance. Can you please attach your
+> kernel config?
 
-Cheers,
-Miguel
+Done, in a private message.
+
+> Meanwhile, please try building with Clang or LLVM instead, the GCC
+> builds are very, very experimental. I'll make it even more explicit in
+> the quick-start.
+
+I tried, but newest in my distribution is clang-7, and kernel needs
+clang-10.
+
+Best regards,
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--TiqCXmo5T1hvSQQg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYFey8wAKCRAw5/Bqldv6
+8u0KAJ9DZ2RYwRhGehvc63R337HtCyN8IACfQKjb/AnYOBcg9gCu+u5gsSpxfEo=
+=OpBy
+-----END PGP SIGNATURE-----
+
+--TiqCXmo5T1hvSQQg--
