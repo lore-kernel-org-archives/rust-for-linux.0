@@ -2,110 +2,93 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23DADC433C1
-	for <rust-for-linux@archiver.kernel.org>; Sun, 21 Mar 2021 20:57:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BC12C433E0
+	for <rust-for-linux@archiver.kernel.org>; Sun, 21 Mar 2021 21:32:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DCFAC6190A
-	for <rust-for-linux@archiver.kernel.org>; Sun, 21 Mar 2021 20:57:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 47ACF61937
+	for <rust-for-linux@archiver.kernel.org>; Sun, 21 Mar 2021 21:32:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230171AbhCUU44 (ORCPT
+        id S230167AbhCUV1P (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 21 Mar 2021 16:56:56 -0400
-Received: from jabberwock.ucw.cz ([46.255.230.98]:53396 "EHLO
-        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230158AbhCUU4W (ORCPT
+        Sun, 21 Mar 2021 17:27:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54548 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230248AbhCUV1B (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 21 Mar 2021 16:56:22 -0400
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id AD1ED1C0B78; Sun, 21 Mar 2021 21:56:19 +0100 (CET)
-Date:   Sun, 21 Mar 2021 21:56:19 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+        Sun, 21 Mar 2021 17:27:01 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D893C061574;
+        Sun, 21 Mar 2021 14:27:01 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id a143so4477581ybg.7;
+        Sun, 21 Mar 2021 14:27:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=fVHfRHc0qZ5EWt8MwFu/oOOzKE8LHPZ992pLXlNYGD8=;
+        b=K3yvHA4hYI61OqRdmSowWw76/+lR1JkIYQfOKQ1jxV4z5CtatVQTjH7E0hdpo5R0Yi
+         bHuKNn1bAR7HGAXUF3oA8SEF8VjWxkHhX1AYN3cjxHizkK+QtEOV9UGD96N/fxB4KsuY
+         X/Nk+c22mJzQIS1uQFlZ5SeCHBzHcMfDg8ZDR2a0DPyC79J15n3LSfAiZZEzS2ez5uhA
+         apIDFrKHqeLugiCfgrI90vGe+ZJcEAbGKnVbr9Xm6SwRs2MQbc0LGRfy2gm2qDWx4zs2
+         VwMAZp7i2hIrkYWDvPBLHZRsxi4R0XLgVDXyvxs12gUzgzevCFCHR+B+tAQkfqKl20tG
+         D/XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fVHfRHc0qZ5EWt8MwFu/oOOzKE8LHPZ992pLXlNYGD8=;
+        b=e2FmLRIj51ibwStgC4hkXISKUQYYSCl2sxKwyrrgamJ/ReWaNpEQm+8GIU8LpAoMZ1
+         BljKxJswMP+F/uurzVa0uTc5ICq2ZSbEU36twM9hnMmc0Jxx6QoxGhJ2Nvcx+IgZ6UJX
+         YFxL3J97LsZaTFDndHiz2L6tFNxV5sLushboGHhkYXvX+rytgn+6PmQsWiFyQ3BEXVy0
+         9vn9Swl174405+WUS2S/UXM/gFGXTyCtxm5v/CuLyxCI7mB8zlF7mOhh2KAod2lU5dNL
+         hZRaOx2ze6EwvCjQYmI5gm+fGq8757ohxhMf4cHpZixBWJ7XKS3Xt+dKbjZEGDryIj9u
+         RrPQ==
+X-Gm-Message-State: AOAM530kthk8DSjXQR4MxrOx9bNJ1xsYMtP9F6fvGOcF8lDblOuuD8Q4
+        X7FjlUoylOx9dc+lQMu/krd4SE57YF8TYwLZ2p0=
+X-Google-Smtp-Source: ABdhPJxm8Sly1YJMYTPdm4/PtRMgcHAipcqGUHfeeKtcgZ9W91Kz5msJ7jkLff0L+pyoEx12jinhSQyTO4A/YEY/w4w=
+X-Received: by 2002:a5b:449:: with SMTP id s9mr20472849ybp.115.1616362020584;
+ Sun, 21 Mar 2021 14:27:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210321193705.GA13699@duo.ucw.cz> <CANiq72n=XNwH8JrPfpzTMrHujhCYVzk5BgVmifiVcTk3W_=L2A@mail.gmail.com>
+ <20210321205619.GB28813@duo.ucw.cz>
+In-Reply-To: <20210321205619.GB28813@duo.ucw.cz>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sun, 21 Mar 2021 22:26:49 +0100
+Message-ID: <CANiq72n0ggi388c++eei8nLBsTwF78DXDpeN7vht54kczaJkew@mail.gmail.com>
+Subject: Re: Getting Rust to work
+To:     Pavel Machek <pavel@ucw.cz>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         rust-for-linux@vger.kernel.org,
         kernel list <linux-kernel@vger.kernel.org>
-Subject: Re: Getting Rust to work
-Message-ID: <20210321205619.GB28813@duo.ucw.cz>
-References: <20210321193705.GA13699@duo.ucw.cz>
- <CANiq72n=XNwH8JrPfpzTMrHujhCYVzk5BgVmifiVcTk3W_=L2A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="TiqCXmo5T1hvSQQg"
-Content-Disposition: inline
-In-Reply-To: <CANiq72n=XNwH8JrPfpzTMrHujhCYVzk5BgVmifiVcTk3W_=L2A@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Sun, Mar 21, 2021 at 9:56 PM Pavel Machek <pavel@ucw.cz> wrote:
+>
+> Thanks for your work :-).
 
---TiqCXmo5T1hvSQQg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+You're welcome! We're trying our best :-)
 
-Hi!
+> Actually x86-32 would be useful for me. That's my test machine.
 
-> > First try was on x86-32. It took me a whlie to figure out the problem,
-> > hence the diff below.
->=20
-> Thanks a lot for trying it out and for the feedback! :-)
+Sorry... :-( x86 32-bits, ppc64el, s390x... are some of the ones we
+will look into soon, but possibly after the RFC.
 
-Thanks for your work :-).
+> I tried, but newest in my distribution is clang-7, and kernel needs
+> clang-10.
 
-> The supported architectures are in
-> Documentation/rust/arch-support.rst, so we should link to that.
->=20
-> x86 32-bit and other architectures should eventually work -- we need
-> to put some time into them and setting up a few things. For the moment
-> we focused on x86_64 and arm64.
+If you are under Debian-like distributions, these apt repos are easy
+to set up (we use them in the CI, in fact):
 
-Actually x86-32 would be useful for me. That's my test machine.
+    https://apt.llvm.org/
 
-> > Then I got failure because libclang (?) was not installed. I installed
-> > it. But I guess that should be mentioned in docs as dependency.
->=20
-> Yeah, this is mentioned on the bindgen section in quick-start.rst, I
-> will try to improve make it more clear, perhaps I'll a section for
-> libclang itself.
-
-Aha, sorry, it is possible I was not careful enough reading the docs.
-
-> > With CONFIG_RUST unset, kernel builds for me. With CONFIG_RUST=3Dy +
-> > RUST_EXAMPLE=3Dy... I get errors:
->=20
-> Typically it is due to a kernel option that enables some GCC flag that
-> libclang does not know about -- I have a hack in place to make it
-> work, but requires manual maintenance. Can you please attach your
-> kernel config?
-
-Done, in a private message.
-
-> Meanwhile, please try building with Clang or LLVM instead, the GCC
-> builds are very, very experimental. I'll make it even more explicit in
-> the quick-start.
-
-I tried, but newest in my distribution is clang-7, and kernel needs
-clang-10.
-
-Best regards,
-								Pavel
---=20
-http://www.livejournal.com/~pavelmachek
-
---TiqCXmo5T1hvSQQg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYFey8wAKCRAw5/Bqldv6
-8u0KAJ9DZ2RYwRhGehvc63R337HtCyN8IACfQKjb/AnYOBcg9gCu+u5gsSpxfEo=
-=OpBy
------END PGP SIGNATURE-----
-
---TiqCXmo5T1hvSQQg--
+Cheers,
+Miguel
