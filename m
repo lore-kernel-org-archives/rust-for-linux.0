@@ -2,80 +2,87 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7C96C433DB
-	for <rust-for-linux@archiver.kernel.org>; Mon, 22 Mar 2021 02:34:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AAD0C433C1
+	for <rust-for-linux@archiver.kernel.org>; Mon, 22 Mar 2021 02:34:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A05E761930
-	for <rust-for-linux@archiver.kernel.org>; Mon, 22 Mar 2021 02:34:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 177C96191F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 22 Mar 2021 02:34:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229893AbhCVCeU (ORCPT
+        id S229574AbhCVCeU (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
         Sun, 21 Mar 2021 22:34:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36408 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229574AbhCVCdu (ORCPT
+        with ESMTP id S229870AbhCVCeT (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 21 Mar 2021 22:33:50 -0400
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16AABC061574
-        for <rust-for-linux@vger.kernel.org>; Sun, 21 Mar 2021 19:33:50 -0700 (PDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id g38so4980867ybi.12
-        for <rust-for-linux@vger.kernel.org>; Sun, 21 Mar 2021 19:33:50 -0700 (PDT)
+        Sun, 21 Mar 2021 22:34:19 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 029BBC061574;
+        Sun, 21 Mar 2021 19:34:19 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id w8so4970125ybt.3;
+        Sun, 21 Mar 2021 19:34:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=inxM3UWEp3QouGvEDK2aOrGZ/TdBhPmZLd0Ahfs6BYI=;
-        b=lLib/OHweaxE8bA4/DnYpqw9zoIDe+/kvf9QE+9H4HEofmHZsRQT+ksN023ebZG57/
-         N3eVoXHWsd/0MvdTlM3VvOsBsd8DjiNIakHOEKJ9nQqnybZf82O1rwu5bRDPhFRGQr2C
-         vfQoS3KfK8OOZqnzkjbOxcPizXuku4pHbh1Nl8V/cL7WLZxhLQW+En5wc+faek7F3aI3
-         EhwIPzz6bXB7Ej3nmFUlQzPjyHpHqyl5wK/zmTdUeLs8oelPr/jGN/rnpqhN+MAxQRvE
-         UHTGA/20JdeUS+n1rB6EUzK5MIrhBlS1XC9NxJKNfbo2UK/qYhULBsQD4gAVDXHVpNz0
-         H2Og==
+        bh=+M2KCWe9PmYDmuYbFsQWm96C6UR5RZvQzIhU/uZ+6X8=;
+        b=fEFWbIGd6Nbc096iBv3yJL77XH92zohhwPHjyVAZrJbJWeYoWe7vtX+acDTn8dueAA
+         pcy2SzlX6CbzuGb45HJUXIHNgM0KRJsnaDiJiVC2sB+G92RaSt2GZCEuor3KRad2Fef4
+         Xl409vbUxS/MQ1G8z5cOwDDAAnyl3bucVEnIN/uxUWj4/teI3aDnWgqA3nvnUl5c3gHn
+         yAd9+byyIzZZ/kL+pk2xOZMjCec8tXk7YhvgAF6H+ZprGqdgF3t8oR5i1Q4Cw72Dzzr6
+         /ii13UL+PAc2dYSYczH10Hn7FL/8yz03LaEAswb67VHUoguzyvNK031r1ie3nIvQD66x
+         TBBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=inxM3UWEp3QouGvEDK2aOrGZ/TdBhPmZLd0Ahfs6BYI=;
-        b=OIHZrFivTQwuzhw2SWz4fvfpU1id6lZbh1vLWyJPciaujW1G6Fnf/x3LHOHd/memwt
-         mr34ggUcBWurx7wnEB+2kiq4Mq1ZSCYu9bniasxOoGCrWtvfnADF1E9DBjIH33B1iLy/
-         1YhmK5jtHpZpMFL26gDVbSjDXsjclVclDx31MtjWYOxl3VgPU2/dI5dYAaGVmHeHKwRx
-         PkIokVTePvE+lmNsyObGFk0Ggh/ri2562EEzk/gaY7yzVNHurebttJez9OoFgieADFLf
-         p5rT5cro+tkGYBJXXbS2rWrtXHm7abIfUY4E5wi7fhrYiBZQq9icu7Yp+0EFIsC9wtHz
-         z/eA==
-X-Gm-Message-State: AOAM5325j/Qw7V4AIFq0fCtnkFx35SRkWMH0rvNcnyvvNfVyBLl2hCaz
-        Ir4hSMqiqfzYTz9K8Z4uWisbNtZC2AUyZgokyTZWzzRUy74=
-X-Google-Smtp-Source: ABdhPJzAKebN2tC3wQ6jAzqTL9UqCDuszOlJktPKqCPCUyo0VrD5dTDSLcvfJsH2omFrUkyf8jeOL/FnXoSZsaE1f04=
-X-Received: by 2002:a25:6e02:: with SMTP id j2mr20915170ybc.247.1616380429474;
- Sun, 21 Mar 2021 19:33:49 -0700 (PDT)
+        bh=+M2KCWe9PmYDmuYbFsQWm96C6UR5RZvQzIhU/uZ+6X8=;
+        b=B1KPYnE3OJLk4HxndaR7q62vLI+QwMnrLH5TRqZryuO6v0bM9Aw5sxIYwyB7XCgtNF
+         gZng9J1jZBkFVvL7G6q6XJtHnNHpwprB2zn/1ogeJQpiYSqYhTdQq/qK89CMfch6qgKm
+         eLNhMhVgausbe4rmJc+tQSPY4/D2PkHovzsp5DcfnJJgGcpgv/D/mmSuMX8ILW8M+J0S
+         ZDtsF8Fl27E8MjsilazWEdsR5X8XvIRuiRj1XMJxDwNtEb79SmgFspQXVwdfTsbbM5VB
+         4IYwIB0CmjyYzzIuCd8EUMGMnojkcaNak3cpMlNgOYVVKwplHPJ3323m/SjTjxfLBY+Z
+         6BkA==
+X-Gm-Message-State: AOAM531Ni2UXaWYw6+yn8UMZ1aB+AaH5suHbMrXOsyLXoAJ042tDjVJw
+        uo2BbyoJEjd5UNqk2VUhMP2koqyjiRpkZC/F4Gb0ce+2ZIg=
+X-Google-Smtp-Source: ABdhPJyKW61bmvII4fSNzxnT5ExoVgd5lbSZ83I31xfimWEGYvdI0t24u61GvaE+xV8hOLAudea/B/uEAeY2hg1K/Gg=
+X-Received: by 2002:a25:d94b:: with SMTP id q72mr20418703ybg.135.1616380457934;
+ Sun, 21 Mar 2021 19:34:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <87zgyy160b.fsf@santosiv.in.ibm.com> <CANiq72koz3X=fstSLcAu_MkCDsznK+i0xqSnZjxh8LpRC_OBMg@mail.gmail.com>
- <87v99j2a38.fsf@santosiv.in.ibm.com>
-In-Reply-To: <87v99j2a38.fsf@santosiv.in.ibm.com>
+References: <20210321193705.GA13699@duo.ucw.cz> <CANiq72n=XNwH8JrPfpzTMrHujhCYVzk5BgVmifiVcTk3W_=L2A@mail.gmail.com>
+In-Reply-To: <CANiq72n=XNwH8JrPfpzTMrHujhCYVzk5BgVmifiVcTk3W_=L2A@mail.gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 22 Mar 2021 03:33:38 +0100
-Message-ID: <CANiq72=i=-DBmfRFO=yoTb6x--A6eVG+7vfF-wCfsvXOmjsuLQ@mail.gmail.com>
-Subject: Re: Could not insert module: Exec format error
-To:     Santosh Sivaraj <santosh@fossix.org>
-Cc:     rust-for-linux@vger.kernel.org
+Date:   Mon, 22 Mar 2021 03:34:07 +0100
+Message-ID: <CANiq72m_v37syDZC4qBQNw8ESFT_0WOLa6ek3ebM5Je09A84Ow@mail.gmail.com>
+Subject: Re: Getting Rust to work
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        rust-for-linux@vger.kernel.org,
+        kernel list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Mar 22, 2021 at 3:31 AM Santosh Sivaraj <santosh@fossix.org> wrote:
+On Sun, Mar 21, 2021 at 9:03 PM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> No, it is a 64-bit x86 guest. I also saw this in the dmesg:
+> The supported architectures are in
+> Documentation/rust/arch-support.rst, so we should link to that.
 >
-> [   43.409639] module: rust_example_3: Unknown rela relocation: 9
+> Yeah, this is mentioned on the bindgen section in quick-start.rst, I
+> will try to improve make it more clear, perhaps I'll a section for
+> libclang itself.
 
-Ah, we saw this with the latest nightlies -- I'll take a look soon.
-Please give a go to the 2021-02-20, that one should work.
+Done, see if you like
+https://github.com/Rust-for-Linux/linux/blob/rust/Documentation/rust/quick-start.rst
+:-)
 
 Cheers,
 Miguel
