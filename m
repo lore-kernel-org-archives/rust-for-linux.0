@@ -2,83 +2,70 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C57AFC433DB
-	for <rust-for-linux@archiver.kernel.org>; Mon, 22 Mar 2021 02:54:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 969FCC433C1
+	for <rust-for-linux@archiver.kernel.org>; Mon, 22 Mar 2021 06:53:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8B31261939
-	for <rust-for-linux@archiver.kernel.org>; Mon, 22 Mar 2021 02:54:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5CD546196F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 22 Mar 2021 06:53:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229613AbhCVCyA (ORCPT
+        id S229999AbhCVGxZ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 21 Mar 2021 22:54:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40652 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229912AbhCVCxl (ORCPT
-        <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 21 Mar 2021 22:53:41 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76661C061574;
-        Sun, 21 Mar 2021 19:53:41 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id w18so17548291edc.0;
-        Sun, 21 Mar 2021 19:53:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZC8K3XIqR0qeKqh/0Uh8gjLXCIPAa36nU6xewLZaFSQ=;
-        b=G1jqedd35PYvVEwlQId42fXLpbNAPyWhXkJFsAxf21pEqhKPaqavPeX+Zet1JRdOB/
-         rgY4HcMcY55jB3zRN8TdiWpTD31EQ1zvb5oC6RqceDLvRkd5KjZZC8bqLM78Me2CmR/1
-         o18m6KOLNoKJjjF/W+GffqcoqWkPZMSaK0lf8BhGmv09C813le7uSZ64bxu9FB8U+I1G
-         PRB+1XZCiZBF0s79fDGTpwC2Zr7cv6vmfwLQGQIAq7wZYwRHRcmP3DizaJ00xfrVyLyG
-         DCYg1klkceWOR6ytroKbOBEKwo0pGcnYqXsPIssrZIy39ZlgmhNn6ZsArPJx/si3CePo
-         jDeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZC8K3XIqR0qeKqh/0Uh8gjLXCIPAa36nU6xewLZaFSQ=;
-        b=MqSZAtcUR47+wvrvPk75LbiUMX6itRNLMnVlWhpE4QSv15XuY73eJyRiMeBBMNLCt4
-         xiGg8J/NwsPTIXHtt4PjAlZWlUk2TNbcaQDNA4cSto74nFBdHf8SU9MMY5FLanYhSbwv
-         B6dj9vERrGw34htxWVZcXRaxTepr/k2aQtAm3cVZy5EkVo+n3XwiKtMX+8LtlMSZcEtU
-         ZgourIiiPqQFxscMvCe+AS1QeE1QVdkNCHzido/6fnaWbJW18ulIgI5oi/HDT1fNULpv
-         rxQ1saq6V5ETIQEnxZbF6UaQ9KWq/lN/xDBl1Ciai74i34jXGFWgfqGMY8myvLxw48WR
-         GcXQ==
-X-Gm-Message-State: AOAM533Ogjf2ShHoot61CGe56VT0PZmwrMtWFWLlXR8hXe3QTGLbJyuj
-        c33ZioS6Wmmhjj6z7uQLsbGmmPI5aQlDr8d3ZPzAmzyepQx0Aw==
-X-Google-Smtp-Source: ABdhPJyw9pQg53ScmPhD+PV9bMRTqbsDgaZ8vQYgXApw6mwuEiiODlW5XEK0iyK3RserMgeI9D4xfvynzVQgFILnAGM=
-X-Received: by 2002:a05:6402:4407:: with SMTP id y7mr23438720eda.247.1616381618864;
- Sun, 21 Mar 2021 19:53:38 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAMmOe3SaBn9+XzjhZC8QxmZnHQkvB0R=nV4NaRRyMRF6EfcvvA@mail.gmail.com>
- <CANiq72m=kDd97+n1Zxwi5+7M8cwreoq1P_u5YZ25Dcyx40jNdA@mail.gmail.com>
-In-Reply-To: <CANiq72m=kDd97+n1Zxwi5+7M8cwreoq1P_u5YZ25Dcyx40jNdA@mail.gmail.com>
-From:   Joshua Abraham <j.abraham1776@gmail.com>
-Date:   Sun, 21 Mar 2021 21:53:27 -0500
-Message-ID: <CAMmOe3TNt2vgX=fp77yvOx7s3+CeDonkd=Unb-y2hau66M-fsg@mail.gmail.com>
-Subject: Re: drivers/char/rust_example fails to load
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Mon, 22 Mar 2021 02:53:25 -0400
+Received: from gpm.stappers.nl ([82.161.218.215]:52460 "EHLO gpm.stappers.nl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230071AbhCVGxE (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Mon, 22 Mar 2021 02:53:04 -0400
+Received: by gpm.stappers.nl (Postfix, from userid 1000)
+        id 06C7D304176; Mon, 22 Mar 2021 07:53:00 +0100 (CET)
+Date:   Mon, 22 Mar 2021 07:53:00 +0100
+From:   Geert Stappers <stappers@stappers.nl>
+To:     Joshua Abraham <j.abraham1776@gmail.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         rust-for-linux@vger.kernel.org,
         linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: drivers/char/rust_example fails to load 2021-03-20 builds
+Message-ID: <20210322065300.dgory3vfe5jjfvak@gpm.stappers.nl>
+References: <CAMmOe3SaBn9+XzjhZC8QxmZnHQkvB0R=nV4NaRRyMRF6EfcvvA@mail.gmail.com>
+ <CANiq72m=kDd97+n1Zxwi5+7M8cwreoq1P_u5YZ25Dcyx40jNdA@mail.gmail.com>
+ <CAMmOe3TNt2vgX=fp77yvOx7s3+CeDonkd=Unb-y2hau66M-fsg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMmOe3TNt2vgX=fp77yvOx7s3+CeDonkd=Unb-y2hau66M-fsg@mail.gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hey Miguel,
+On Sun, Mar 21, 2021 at 09:53:27PM -0500, Joshua Abraham wrote:
+> Hey Miguel,
+> 
+> > Please give a go to the nightly from a month ago, i.e. 2021-02-20.
+> 
+> Cheers, using rustc 1.52.0-nightly (9b471a3f5 2021-02-19) fixed the issue.
 
-> Please give a go to the nightly from a month ago, i.e. 2021-02-20.
+How to tell "use older parts in toolchain"?
+Yeah, probably a Rust newbie question, still a sincere question.
+Was a older version installed? How to tell `rustup` to keep old
+versions? Was done with a cargo.toml entry? Or with file
+`rust-toolchain`?  Please tell   (Please spoon feed me ;-)
 
-Cheers, using rustc 1.52.0-nightly (9b471a3f5 2021-02-19) fixed the
-issue. Interesting that the newer nightly compiler creates these new
-relocations for the code!
 
+> Interesting that the newer nightly compiler creates these new
+> relocations for the code!
+
+Not each change is an improvement.  Hopefully came the change with a
+flag to modify the new default behaviour.
+
+
+
+Groeten
+Geert Stappers
 -- 
-Respectfully,
-Josh Abraham
+Silence is hard to parse
