@@ -7,41 +7,41 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F6A4C433E1
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70FB0C433E0
 	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 03:27:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 48600619BA
+	by mail.kernel.org (Postfix) with ESMTP id 29C0761923
 	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 03:27:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229548AbhCWD0t (ORCPT
+        id S229944AbhCWD0u (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 22 Mar 2021 23:26:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47348 "EHLO
+        Mon, 22 Mar 2021 23:26:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229890AbhCWD0i (ORCPT
+        with ESMTP id S229931AbhCWD0i (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
         Mon, 22 Mar 2021 23:26:38 -0400
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B64B4C061574;
-        Mon, 22 Mar 2021 20:26:36 -0700 (PDT)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BA42C061765;
+        Mon, 22 Mar 2021 20:26:37 -0700 (PDT)
 Received: by ozlabs.org (Postfix, from userid 1034)
-        id 4F4GxQ2Fdxz9sVt; Tue, 23 Mar 2021 14:26:34 +1100 (AEDT)
+        id 4F4GxR6y4kz9sWC; Tue, 23 Mar 2021 14:26:35 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1616469994;
-        bh=pI3r2Prfzt94X/Go8BVnLJk6iersevs1fjV3F+dAlsU=;
+        s=201909; t=1616469995;
+        bh=oCVP83reXY5CqSeSdxhQL70bGsRVlM/e497ho1J4FF0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vbg7Kgy5nKoxbRoiK5LmncSHeETXcsRbXXaj5+ZaXVf5z2MAeaATJf2u6+0D+AEde
-         tc0RIiwAVBDT9qPA9miYAojJ/cnpDs5JTNxZUagM9uqYUYdbVMFPC754wsZr6t1mN+
-         IKTwL+WYim4u9aaBP4CV5jEpfHkFoopKXHLGzHXBSH0Ie9juWEzK+i8dR8RATcZ7NK
-         PTSduRN2WpSETdR9D/9fFYjc6MRQ1yLqty+V39RUq/MKoY9yikXa4djkrJSMtQX+BI
-         pa7mRhcgxkmOdI2HfB9ol1XtcszjHC5iIo7uLpLHOY/JMc7Zv1iIBDqlAcsGNGYrg5
-         sWtFiXxyssNxg==
+        b=evWkzPLotTXfeJJL/8pnTrk8j8+qXOmddh2ne8LPYkfGrMGwSlUXdULaaK/PVBVcx
+         CYrmvJ9fcvJ/hPoJcEU4qBaEznNIAPRwkLfVlfBujIXY4Pwck8bJ3mcK+r3TRFxRYY
+         8wndNrheP07HpfMNnudVOD+F91Q2DbrZUPS28byCGw/PjLRPThqzXCLELjn9rx4umD
+         rrPlmwqrJLSIfenfHGnqrxbXlz7Kg1CO9gXFa1dfX1f/TuqnBXYfn1iyEnfS4YCfTk
+         gkEN5Jqh9yk0outp6JXC/6gIV41Mmv04OXXlAfknXnnZVt3Wt/pKm77G/Hc6QohybM
+         /HeMcQz0LlD9Q==
 From:   Michael Ellerman <mpe@ellerman.id.au>
 To:     rust-for-linux@vger.kernel.org
 Cc:     linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/4] rust: Export symbols in initialized data section
-Date:   Tue, 23 Mar 2021 14:26:21 +1100
-Message-Id: <20210323032624.1039422-2-mpe@ellerman.id.au>
+Subject: [PATCH 4/4] rust: Enable for ppc64le
+Date:   Tue, 23 Mar 2021 14:26:24 +1100
+Message-Id: <20210323032624.1039422-5-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210323032624.1039422-1-mpe@ellerman.id.au>
 References: <20210323032624.1039422-1-mpe@ellerman.id.au>
@@ -51,33 +51,29 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On powerpc some symbols end up in the initialized data section, which
-means they aren't detected by the logic in cmd_export, leading to errors
-such as:
+All the pieces are in place now for us to enable building rust support
+on ppc64le.
 
-  ERROR: modpost: "_RNvNtCsbDqzXfLQacH_6kernel12module_param15PARAM_OPS_USIZE" [drivers/char/rust_example_4.ko] undefined!
-
-nm represents the "initialized data section" with "D", so also look for
-that when exporting symbols.
+Only works with clang for now.
 
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- rust/Makefile | 2 +-
+ init/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index eb8f12ce1644..4cddae9d4a25 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -73,7 +73,7 @@ $(objtree)/rust/bindings_generated.rs: $(srctree)/rust/kernel/bindings_helper.h
- quiet_cmd_exports = EXPORTS $@
-       cmd_exports = \
- 	$(NM) -p --defined-only $< \
--		| grep -E ' (T|R) ' | cut -d ' ' -f 3 | grep -E '^(__rust_|_R)' \
-+		| grep -E ' (T|R|D) ' | cut -d ' ' -f 3 | grep -E '^(__rust_|_R)' \
- 		| xargs -n1 -Isymbol \
- 		echo 'EXPORT_SYMBOL$(exports_target_type)(symbol);' > $@
+diff --git a/init/Kconfig b/init/Kconfig
+index d73ac9de186d..ddc2fda1a22c 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -58,7 +58,7 @@ config LLD_VERSION
+ 	default 0
  
+ config HAS_RUST
+-	depends on ARM64 || X86_64
++	depends on ARM64 || X86_64 || (PPC64 && CPU_LITTLE_ENDIAN && CC_IS_CLANG)
+ 	def_bool $(success,$(RUSTC) --version)
+ 
+ config RUSTC_VERSION
 -- 
 2.25.1
 
