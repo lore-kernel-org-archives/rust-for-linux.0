@@ -7,59 +7,59 @@ X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0FB8C433DB
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 09:29:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DC4CC433DB
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 10:03:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7AD21619BF
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 09:29:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 11736619AB
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 10:03:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229730AbhCWJ2d (ORCPT
+        id S230187AbhCWKCg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 23 Mar 2021 05:28:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39996 "EHLO
+        Tue, 23 Mar 2021 06:02:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbhCWJ2Q (ORCPT
+        with ESMTP id S230203AbhCWKCa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 23 Mar 2021 05:28:16 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C3D5C061574;
-        Tue, 23 Mar 2021 02:28:16 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id j2so9642491ybj.8;
-        Tue, 23 Mar 2021 02:28:16 -0700 (PDT)
+        Tue, 23 Mar 2021 06:02:30 -0400
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF2A1C061574;
+        Tue, 23 Mar 2021 03:02:30 -0700 (PDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id x189so2381228ybg.5;
+        Tue, 23 Mar 2021 03:02:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=f4H0kivupb5TYJXKdAmaaH+GD+IJXaN+JMsocYW2kUY=;
-        b=AxBxRUewNli2rtiqdcgNkpOd+pj8a2oITIWefNfkca6ZYPTtwwTmBmKVcOKFe13KqZ
-         ZuIDbVfVL4pJUDxV5QjNL6KvhMLtlBht2TePRIY7S5dS2Po9vnraHBlQZ2XaltGI99m7
-         urPrGOEBunDQ/Sr4kvNXX7sUN/UQw7ui0Exhjk1ognJGA+tiPLEW2HNovceUOduaWf35
-         k9P2pnTwv1LNt5RuLneWbJC9u31Vi4Pd6t8yQfn2K8glQe7/0J6i1WhZZyfOjzffF6sb
-         WCAPMml3GzOtm75j6hh2fhDKbN0OO9agtSbo4CKVliFnD6vKdfSRLbGbakdGJWDZ8mfZ
-         Lgpg==
+        bh=Qp/jj3l6ivGZ4OXCocertOe4BVJnz1tKssW/YzmGbTA=;
+        b=gJuXXYMuBphx+t5hfk93Y7sfNFPYwhbjIw3T8P7KTZv5AR9YQ4Y0OOiEXzTlu3oo57
+         crZ2GYH2sClMfNM12fQOVFB4DcyXeyCzGpZ9fit7gX4nYw1de8CsJ55YlLUb56WzSUwy
+         TIAfMPbTFDWkuuBaQTTfwEzsr8GkFTEzeQQEpHWJTrjgqAtAgAo5o/UjcIcMhv9s4lGV
+         MsdeVqUEza/b/LRrElL1NtVHI7ChbPkgtMXdtoJNDKSRQsFPCBgCOOz50hQhOVDd7R30
+         6rh77lFlSCkHHoCnzIj3FwHAXgBj1N3xpoOGwB25mXsFh+wq85GheT3NMuG9IpPVaNfx
+         UnlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=f4H0kivupb5TYJXKdAmaaH+GD+IJXaN+JMsocYW2kUY=;
-        b=HQvzzJIuAduFTeWUt+X6GsFeYhGBw/e87LnFcvxyJTH7j95BUoS1NBba6qTbmxtYC4
-         CSISViT1Wh8xXovTbXUbYyuK2wufX+QfkvCudIAjgHfasTxcBCISrLDlJ6itB8kWjWmU
-         sHAiDkNKxbeACkVE7A3rp+V4jLcdMnVBvyw/b7LTS6AjIDmhRO2bJrv/ML+HLZSLuIfC
-         ZCVT6BqVf3lN9ASIlZLYx4e050WeJhEJH4vhmpvrAc1Xjvgq+aT0U/AfbVnswjuvZhc5
-         k70unsc4Lui1yg8/ZiVwMs0lCI2GDVSfxNeksFHN9HbK2GEyE4MetlKiSRXYfaj50Xsq
-         dThA==
-X-Gm-Message-State: AOAM530DPLQFCw8fL5hK8leYLRMvnpLDyWq7DcNbCBF+092W0OGXSetE
-        1+uARZZDN5FKDAE0ZGCjFq+BnV1mvX9u2ZhOJJfot1yepbc=
-X-Google-Smtp-Source: ABdhPJyWHwFyJOKdqJHyKNGZydCjCeUAiyLOFA9kYL9VdL40ys7b34QihOEAVOnXFFnisHuJUZ7kMdTs33/WqrLFeYA=
-X-Received: by 2002:a25:e748:: with SMTP id e69mr3784250ybh.93.1616491695744;
- Tue, 23 Mar 2021 02:28:15 -0700 (PDT)
+        bh=Qp/jj3l6ivGZ4OXCocertOe4BVJnz1tKssW/YzmGbTA=;
+        b=e1A1Q2TBkbtDWQmE7X5Z7u3kkGLrxcmw3YxVas+rfPylkQDP0VuFoow1yBF1kp6yX4
+         cTBmax9nH5NDg2uewGFkWuXqxyB0XvJjOu/DhclANA/LzU1GWHwVLSA4c5dxGelNFs2F
+         KXZXDnLRsRh5BRtK0CyXDg4RsmnO0iWPnLx+J7dkRtipsfUfXZt3dvTLg8tUIaDq/zJi
+         QyQIKKDV/8KFTYnAwaixtCa2TuShht6XPTkfIFHGQ7ult0B8jIjHCJ5ogyl7/uYECMDF
+         xs3HsAkbNR2YsojWt0Tz5zWIj9Yr7T79ac5+tSfzHKBMA5V87yZonKh5QXSJzr5uDuHI
+         SH8g==
+X-Gm-Message-State: AOAM5335OhsOgkvU+ojRHEQqOlKVUjPHEjiVImOPcAuYLZ0VZtm2QBZx
+        y5DUyjfkECUK8kqhff6kT/o0zwPsZVtgOMCXPFI=
+X-Google-Smtp-Source: ABdhPJylVauAaSy0QdnuaN0wsPp5eKvLs3gWNjOyhWw54JITI4zXzthk13t3k6s1NdoyOmuw9hraEbpQt1uXgHEBJaQ=
+X-Received: by 2002:a25:6e02:: with SMTP id j2mr4055149ybc.247.1616493750049;
+ Tue, 23 Mar 2021 03:02:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210323032624.1039422-1-mpe@ellerman.id.au> <20210323032624.1039422-4-mpe@ellerman.id.au>
-In-Reply-To: <20210323032624.1039422-4-mpe@ellerman.id.au>
+References: <20210323032624.1039422-1-mpe@ellerman.id.au>
+In-Reply-To: <20210323032624.1039422-1-mpe@ellerman.id.au>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 23 Mar 2021 10:28:04 +0100
-Message-ID: <CANiq72=E3WrNzRG90R4c_uG-oMRpdmN+G=ddeQhhLofh2ajEkg@mail.gmail.com>
-Subject: Re: [PATCH 3/4] powerpc/rust: Add target.json for ppc64le
+Date:   Tue, 23 Mar 2021 11:02:19 +0100
+Message-ID: <CANiq72n-tMww2U+eQ=iHOh5u1JQgjM0b1E3XQ9jpWMfpdQ5+=g@mail.gmail.com>
+Subject: Re: [PATCH 0/4] Rust for Linux for ppc64le
 To:     Michael Ellerman <mpe@ellerman.id.au>
 Cc:     rust-for-linux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-kernel <linux-kernel@vger.kernel.org>
@@ -68,15 +68,54 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+Hi Michael,
+
 On Tue, Mar 23, 2021 at 4:27 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
 >
-> ppc64le only for now. We'll eventually need to come up with some way to
-> change the target.json that's used based on more than just $(ARCH).
+> Hi all,
+>
+> Here's a first attempt at getting the kernel Rust support building on powerpc.
 
-Indeed, it is one reason I didn't tackle e.g. x86 32-bit, because I
-wanted to figure out how to do the whole `target.json` cleanly (i.e.
-likely have a script generate them on the fly), so I thought it was
-better to wait post-RFC.
+Thanks a *lot*! It is great to have more architectures rolling.
+
+> It's powerpc64le only for now, as that's what I can easily test given the
+> distros I have installed. Though powerpc and powerpc64 are also Tier 2 platforms
+
+Even if it is just 64-bit, it is very good to have it!
+
+> so in theory should work. Supporting those would require something more
+> complicated than just pointing rustc at arch/$(ARCH)/rust/target.json.
+
+Yeah, the arch/$(ARCH)/rust/target.json dance is a placeholder -- I
+need to figure out how to do that more cleanly, likely generating them
+on the fly.
+
+> This is based on 832575d934a2 from the Rust-for-Linux tree. Anything newer gives
+> me errors about symbol name lengths. I figured I'd send this anyway, as it seems
+> like those errors are probably not powerpc specific.
+
+Sure, feel free to send things even if they don't work completely.
+
+I will take a look at the symbol name lengths -- I increased that
+limit to 512 and added support for 2-byte lengths in the tables, but
+perhaps something is missing. If I manage to make it work, I can add
+ppc64le to our CI! :-)
+
+> Michael Ellerman (4):
+>   rust: Export symbols in initialized data section
+>   rust: Add powerpc64 as a 64-bit target_arch in c_types.rs
+>   powerpc/rust: Add target.json for ppc64le
+>   rust: Enable for ppc64le
+
+Regarding the development process: at least until the RFC we are
+working with the usual GitHub PR workflow (for several reasons: having
+a quick CI setup, getting new Rust developers on-board, having a list
+of "issues", cross-reference with the Rust repo, etc.).
+
+I can take patches from the list, of course, but since we are pre-RFC,
+do you mind if they get rebased etc. through there?
+
+Thanks again!
 
 Cheers,
 Miguel
