@@ -2,86 +2,69 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=no
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1F7EC433DB
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 14:28:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B50EC433DB
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 17:32:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 993F6619B1
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 14:28:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3518B619C3
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 17:32:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231438AbhCWO11 (ORCPT
+        id S230296AbhCWRcI (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 23 Mar 2021 10:27:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48444 "EHLO
+        Tue, 23 Mar 2021 13:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231668AbhCWO1B (ORCPT
+        with ESMTP id S230209AbhCWRbe (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 23 Mar 2021 10:27:01 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0E60C061574;
-        Tue, 23 Mar 2021 07:27:00 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id z1so10536143ybf.6;
-        Tue, 23 Mar 2021 07:27:00 -0700 (PDT)
+        Tue, 23 Mar 2021 13:31:34 -0400
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C03FC061574
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Mar 2021 10:31:34 -0700 (PDT)
+Received: by mail-lj1-x22f.google.com with SMTP id z25so26668367lja.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Mar 2021 10:31:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=a1UKA4D9x9QmZ1+15HTh/Ges6E1m3MBK/glmFQ+WIEA=;
-        b=kuI5z7BTwTCzb12byWHvnez5Mri863aUQ3Lj3wB4GHCyfdrM6k/PvMxgsDLB4Q56Du
-         Oxsn7JJ1zTtYNbr+YMmHvo6+bSmAhFKqpRsRl/nUyYPyQYUnvqE2CkV6pZCpEPho8r7H
-         iqwsDC953u7rl0alzpfcXzROoV7ZCUkD+yPfl1BRJp5RXXPidKuNgSjSa1EDTy5rb5C9
-         udHkwgLnN9LTrHQcLroeHvLDQIAIelJWHyRQ4Ot9kLYJofbjoaEPhk4WmZAjuJhBcjxv
-         NMRUwLmWeC6RbgjskE7+IApMwa1xCSPkjAzLo89sQxdH6lmwytLDKK29WysJnQOKW+Me
-         b7LA==
+        d=google.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=BFix2GFyhYPQHkyVdecf6Yrx9yd4f4ToeY5Rzv7lN2s=;
+        b=Rk20NHGEUsQYbE7jSoHkz1yjUCodpN9BLI6Nzb5JfWoAGp3pYlG1mQjxC3BPUff3aB
+         ozHhVqLKExrw2UifjAeJGCtJ8bQxbVrweGSHKY6GluymkhEHSh8aZTY70wVR96fIUvP4
+         tUOUAOiR5guS29tctagOKVYsV5YWBxDZkO3+Ltg/txW/rUk/To9f4jr4XR4YiMZERhHr
+         CJDwRPln2jSAk7v0tLmjgJ/mkm2Fw6/1e+tSasQ+fSM8OgV9asApilWYYHKH3Sdab1c3
+         pDD2Lse4IkXjZfa+hlxPlZaiXdkAExPElmWgFi62kpijld0XyJoPPQPkzeEf7/EmpCXl
+         4u5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=a1UKA4D9x9QmZ1+15HTh/Ges6E1m3MBK/glmFQ+WIEA=;
-        b=GpwnM6S9TZkKaHIwaDFvHe6c0UI5FhSgDPzJ3nKAdbcCScOHd59FVAY7lO07G72KLC
-         TYpea4RzqDhGH866hePdV8Ia8V9D/k115MKuOQde73bZd+rylPWXYSxFJ2br0bVzrX3o
-         iNXThGo5UgBKFRij0HYMi/EcNNMOF80f2ajkKPFTIp9CBxqSCUgdUJZmrGe2oWcBjbh3
-         qChpdyUustHKBweAIt754zojSW1b4hEhUasOsVImn8x2dToEHlxbbr+HWGhrEUsLtuAk
-         74v83CeuJFaHMnnSb/5IyMWwGbzjwqXmkT5dyJYaG+SK07qVvOWuSiKIAkBwpszwZPDE
-         uutA==
-X-Gm-Message-State: AOAM532znPJB6A0O82ZokM+k0LXtiivtXFErzuPdpwH9+1NHWM1eY1cZ
-        G+Cr9gbA/N9hzXqggdKgqUwrKI7yjW8Dv4QRxfMYKz/9rTg=
-X-Google-Smtp-Source: ABdhPJybD3ce1ekRim1ZhIjnmLmlL/O7qPnH3M5AavmL+8L6MPDtRHWU2dnXIV05AjFpWSQvRk0Q2y0+VBJ4qWnrVSI=
-X-Received: by 2002:a5b:449:: with SMTP id s9mr5786215ybp.115.1616509620027;
- Tue, 23 Mar 2021 07:27:00 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=BFix2GFyhYPQHkyVdecf6Yrx9yd4f4ToeY5Rzv7lN2s=;
+        b=fWcuDbOD1jlTsXtntr604++q49ubg12fPjHNJXFfnDu1WlrqWxVxo0gM0GBGzDk6Al
+         O1Ekfhn7eXG/nK64z4kn1yI43Vy0EVvcVyuTvW9Nr1D4WQB5g6jD0ZeSfPjtnkDNSuoR
+         wrLTWNiloUiut2rLAKCJ1b5Iqf1p1yre6vGYR9qLAOimLf7mzfS3eDBJj2ueoOlbWxWl
+         ARzREb5XFZz0dkoVsL4lEnWfPF91B0RUWNQnhTobLrPMdjoY09BlLLfaj0bwO1pY4sEg
+         VgdfMpzKG839l2reG1/0ubVSFAPlG23cVMkemCKtzjn2UtT7RYzmDI/tTBXIAWJ+CZDk
+         q9Fg==
+X-Gm-Message-State: AOAM533I7CojqZ3U8JQefhvbdPbHeCcBshxsVZQ1dpWXA+NN9jOwvPKl
+        V7SVxPTD7fyE/PO+PVQlkTFlRbPxHkGAWQUXFl9oBaVpMLgGUB1c
+X-Google-Smtp-Source: ABdhPJwZT3TD7fSPKSiOlEaEJdesnIuuDtJ7ry06xdtqU0Otm/GbfeTs31UxUvpsEcJ8pBCRQaBlp7W5yGdMdywtTlU=
+X-Received: by 2002:a2e:868e:: with SMTP id l14mr3861256lji.479.1616520692450;
+ Tue, 23 Mar 2021 10:31:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210323032624.1039422-1-mpe@ellerman.id.au> <CANiq72n-tMww2U+eQ=iHOh5u1JQgjM0b1E3XQ9jpWMfpdQ5+=g@mail.gmail.com>
- <87mtuugj61.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87mtuugj61.fsf@mpe.ellerman.id.au>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 23 Mar 2021 15:26:49 +0100
-Message-ID: <CANiq72nx6Z=m-Fye7QYuQdjq9q0ZvH2+rkbrfQq-yQRMAadTYg@mail.gmail.com>
-Subject: Re: [PATCH 0/4] Rust for Linux for ppc64le
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     rust-for-linux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Tue, 23 Mar 2021 10:31:21 -0700
+Message-ID: <CAKwvOdkAN0c6+gDTiBEbV6zNSVdSjg1ANg5-_6=H_5b5rVpzqg@mail.gmail.com>
+Subject: ZDNET: Linus Torvalds on where Rust will fit into Linux
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Mar 23, 2021 at 1:16 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> It would be nice to be in the CI. I was building natively so I haven't
-> tried cross compiling yet (which we'll need for CI).
+https://www.zdnet.com/article/linus-torvalds-on-where-rust-will-fit-into-linux/
 
-Indeed -- in the CI we already cross-compile arm64 (and run under QEMU
-both arm64 as well as x86_64), so it is easy to add new ones to the
-matrix.
-
-> I can send a pull request if that's easiest.
-
-No worries, I will pick the patches. But, of course, feel free to join
-us in GitHub! :-)
-
-Cheers,
-Miguel
+-- 
+Thanks,
+~Nick Desaulniers
