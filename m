@@ -2,92 +2,75 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE43BC433DB
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 01:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33DCBC433DB
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 03:27:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6662E619A8
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 01:25:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BEFDC619D6
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 03:27:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231371AbhCWBZ2 (ORCPT
+        id S229943AbhCWD0r (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 22 Mar 2021 21:25:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49438 "EHLO
+        Mon, 22 Mar 2021 23:26:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230511AbhCWBZE (ORCPT
+        with ESMTP id S229897AbhCWD0i (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 22 Mar 2021 21:25:04 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 986C3C061574;
-        Mon, 22 Mar 2021 18:25:03 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id o66so8632423ybg.10;
-        Mon, 22 Mar 2021 18:25:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=f8S/OZMy1ZuTFVTtPrzYCVy9HkceuxE1m3tw3XNzM7I=;
-        b=uqC/+8H5yU86IXnUTpqQ2Ns41SxOwcIzfG1b+wDoZUekKFUf/Kmln1YzzfOi8I+9WM
-         Dw0GfNWt5H2pDLdCw8CBBpUU1j1j4AawgIOxF6i+akb7bKkP2ZiD2GoDBDmsVoe+Ihc7
-         +hC8DYBmaLAZ9jXwbM+/E61OhTFKYXfHQHOoa72Rc5xQy6h52+h9e68SCUvcQNm5YvMC
-         sAIwst985ndf/sW/zbaQCQm6FvD5LckF2iZCOLlA+WGODjcC8hU4P8AoRnslVU7gWTpo
-         JQHHJQLf3H/NinOyfi5rXZNgzB1BDbNHkc49CRmp5hxm+mWlpMJS7NH7leptB98XMn/a
-         8Lww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=f8S/OZMy1ZuTFVTtPrzYCVy9HkceuxE1m3tw3XNzM7I=;
-        b=RdEUwau+hTWYSEXWGTscWiaLXEzUP2nPmMumYT/XlLms2Y/qzNBc1bRepEemAp1Dc+
-         d14yqXXs0+pe0zRRkxrVJtikr6pfai0vtVAUzkPV69xFr6hSSGxRWrsYeOWWT7jvzYUY
-         aKgLT22R283jGFucusxz7O+L9c+FqS0NQ647TU1bMXWrF7fWO1pN5xSVy02AGFGBc9qb
-         eSh76gry8HUEKXp+13VMinF74lHM4o4/C3mW0mvGr1A8VwVpocFXNmnCcp5+H+p+S4GB
-         7AHiHA/ck71KntCmXCQc1pJKBP8XbDvgPj0bbLMg+gR3lpCYRURYssAx1mIyTD+UWZg1
-         knSg==
-X-Gm-Message-State: AOAM532TLqHMMJ6E+lfBAUTPXth7aUq0cGGHh4ddkwsscW02FAS0T8Ks
-        k7MGqaLWeDmaW3xpp0VGqqripXblvcB1J05ZW7k=
-X-Google-Smtp-Source: ABdhPJxgUMrVhPrx0ZaOc5eKlIX0FQntvzKZu2RgUqHRxRJ22QZs45MWqztOfwXogp9U0Txs9k1c6hsIs843Y4350Vs=
-X-Received: by 2002:a25:3b55:: with SMTP id i82mr2077985yba.422.1616462702937;
- Mon, 22 Mar 2021 18:25:02 -0700 (PDT)
+        Mon, 22 Mar 2021 23:26:38 -0400
+Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E843BC061763;
+        Mon, 22 Mar 2021 20:26:36 -0700 (PDT)
+Received: by ozlabs.org (Postfix, from userid 1034)
+        id 4F4GxQ630wz9sW1; Tue, 23 Mar 2021 14:26:34 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1616469994;
+        bh=EFE7LyzDCiEWIHFaedOFWCyrUEJoHI74qld4WEFKn3Y=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=M/X4a01pBGNQ0E7iGEGTXqBkaFXCLUS1utAGlpBvkKPgXS/3LFCJ/bhAKxQMO8AoT
+         etI6y3FipOVcwPKneIm4TwVez8UUfubKkfYjFPPJUPX6/b5kxS+m49bTDXJtYNl6hp
+         Jk9I4oWdEiX/AXTVi2xyzitxx1O7tGKf3pjVTPGC6NqDcfmTUQpJov8aJW6sMlamKN
+         IU+nrAG55IRfhLsoKvIfkcW3wd2KDoSXzdn7qXeIQn/GbinoB2DVGm5sU9VnHoFO0a
+         r83/JyYtnoYU2DoSwgw9i/LF9zxchioclkcsOanRDbmVibg2q4Sia3DgMgFkewaNrM
+         x/joZen5exSsg==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     rust-for-linux@vger.kernel.org
+Cc:     linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 2/4] rust: Add powerpc64 as a 64-bit target_arch in c_types.rs
+Date:   Tue, 23 Mar 2021 14:26:22 +1100
+Message-Id: <20210323032624.1039422-3-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20210323032624.1039422-1-mpe@ellerman.id.au>
+References: <20210323032624.1039422-1-mpe@ellerman.id.au>
 MIME-Version: 1.0
-References: <CAMmOe3SaBn9+XzjhZC8QxmZnHQkvB0R=nV4NaRRyMRF6EfcvvA@mail.gmail.com>
- <CANiq72m=kDd97+n1Zxwi5+7M8cwreoq1P_u5YZ25Dcyx40jNdA@mail.gmail.com>
- <CAMmOe3TNt2vgX=fp77yvOx7s3+CeDonkd=Unb-y2hau66M-fsg@mail.gmail.com> <CANiq72kMnWWucUC1zy2x1GNqYOV5wS1HeHvK0xfUbFM5eTxrgA@mail.gmail.com>
-In-Reply-To: <CANiq72kMnWWucUC1zy2x1GNqYOV5wS1HeHvK0xfUbFM5eTxrgA@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 23 Mar 2021 02:24:52 +0100
-Message-ID: <CANiq72k_gvPhgb-bJ4RpYXgOJALk3Hwc=oAbSLzg8WDq81vFjw@mail.gmail.com>
-Subject: Re: drivers/char/rust_example fails to load
-To:     Joshua Abraham <j.abraham1776@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        rust-for-linux@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Mar 22, 2021 at 1:20 PM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> I'll take a look at fixing those soon.
+powerpc kernel code uses int-ll64.h.
 
-For those that may read this or run into the same issue: this started
-with the LLVM 12 upgrade in rustc nightlies. Therefore, please avoid
-the very latest nightlies (>= nightly-2021-03-05) until [1] is
-resolved.
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ rust/kernel/c_types.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-To automatically setup a known-to-work nightly for Rust for Linux (the
-one we use the most in the CI), run:
+diff --git a/rust/kernel/c_types.rs b/rust/kernel/c_types.rs
+index 423ac1108ddb..988fd84b0d66 100644
+--- a/rust/kernel/c_types.rs
++++ b/rust/kernel/c_types.rs
+@@ -60,7 +60,7 @@ mod c {
+     pub type c_size_t = usize;
+ }
+ 
+-#[cfg(any(target_arch = "aarch64", target_arch = "x86_64"))]
++#[cfg(any(target_arch = "aarch64", target_arch = "x86_64", target_arch = "powerpc64"))]
+ mod c {
+     /// C `void` type.
+     pub type c_void = core::ffi::c_void;
+-- 
+2.25.1
 
-    rustup default nightly-2021-02-20
-
-[1] https://github.com/Rust-for-Linux/linux/issues/135
-
-Cheers,
-Miguel
