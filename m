@@ -2,118 +2,86 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B98C7C433DB
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 12:16:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1F7EC433DB
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 14:28:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 716F4619B3
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 12:16:36 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 993F6619B1
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 Mar 2021 14:28:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230366AbhCWMQC (ORCPT
+        id S231438AbhCWO11 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 23 Mar 2021 08:16:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47818 "EHLO
+        Tue, 23 Mar 2021 10:27:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230347AbhCWMQB (ORCPT
+        with ESMTP id S231668AbhCWO1B (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 23 Mar 2021 08:16:01 -0400
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8518C061574;
-        Tue, 23 Mar 2021 05:16:00 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4F4VhD10DCz9sVS;
-        Tue, 23 Mar 2021 23:15:56 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1616501756;
-        bh=spGbXf0QrYy7DPA4c2eshsAjxpRr4Dknm0qYwUaz3GI=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=VRHkWMU0BeFytVh4bKTcvTeHEIZGwpmDS+3ffGTTTZhOWTAPnKjFkPpNjKiEGcSdW
-         o4SNOYa6WVraNfEP31aSPeKx2mEN2rkJ+x61oKOhrUWMh8rMUrzTSFj2ZKeqmHY6x5
-         TKuy71GgAY3doBsusyaxxNwjNGqwS9YaVsK+NBDOF5jUJM3BpGKhhoFbuOmEb2rPDC
-         Vt9R1CjBD8cZqzuW2j9QOdxV6fDHSlsAx9FxprmlrQTG35o3NzGfFiST4CTVk2yYgB
-         ILfqfSoK01MiFZzMETF9CEAfmfty1c+RofqeoZKq+BcDpk+20m2iEUYvIWl72wcXXd
-         jbup58iwQoOqw==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+        Tue, 23 Mar 2021 10:27:01 -0400
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0E60C061574;
+        Tue, 23 Mar 2021 07:27:00 -0700 (PDT)
+Received: by mail-yb1-xb36.google.com with SMTP id z1so10536143ybf.6;
+        Tue, 23 Mar 2021 07:27:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=a1UKA4D9x9QmZ1+15HTh/Ges6E1m3MBK/glmFQ+WIEA=;
+        b=kuI5z7BTwTCzb12byWHvnez5Mri863aUQ3Lj3wB4GHCyfdrM6k/PvMxgsDLB4Q56Du
+         Oxsn7JJ1zTtYNbr+YMmHvo6+bSmAhFKqpRsRl/nUyYPyQYUnvqE2CkV6pZCpEPho8r7H
+         iqwsDC953u7rl0alzpfcXzROoV7ZCUkD+yPfl1BRJp5RXXPidKuNgSjSa1EDTy5rb5C9
+         udHkwgLnN9LTrHQcLroeHvLDQIAIelJWHyRQ4Ot9kLYJofbjoaEPhk4WmZAjuJhBcjxv
+         NMRUwLmWeC6RbgjskE7+IApMwa1xCSPkjAzLo89sQxdH6lmwytLDKK29WysJnQOKW+Me
+         b7LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=a1UKA4D9x9QmZ1+15HTh/Ges6E1m3MBK/glmFQ+WIEA=;
+        b=GpwnM6S9TZkKaHIwaDFvHe6c0UI5FhSgDPzJ3nKAdbcCScOHd59FVAY7lO07G72KLC
+         TYpea4RzqDhGH866hePdV8Ia8V9D/k115MKuOQde73bZd+rylPWXYSxFJ2br0bVzrX3o
+         iNXThGo5UgBKFRij0HYMi/EcNNMOF80f2ajkKPFTIp9CBxqSCUgdUJZmrGe2oWcBjbh3
+         qChpdyUustHKBweAIt754zojSW1b4hEhUasOsVImn8x2dToEHlxbbr+HWGhrEUsLtuAk
+         74v83CeuJFaHMnnSb/5IyMWwGbzjwqXmkT5dyJYaG+SK07qVvOWuSiKIAkBwpszwZPDE
+         uutA==
+X-Gm-Message-State: AOAM532znPJB6A0O82ZokM+k0LXtiivtXFErzuPdpwH9+1NHWM1eY1cZ
+        G+Cr9gbA/N9hzXqggdKgqUwrKI7yjW8Dv4QRxfMYKz/9rTg=
+X-Google-Smtp-Source: ABdhPJybD3ce1ekRim1ZhIjnmLmlL/O7qPnH3M5AavmL+8L6MPDtRHWU2dnXIV05AjFpWSQvRk0Q2y0+VBJ4qWnrVSI=
+X-Received: by 2002:a5b:449:: with SMTP id s9mr5786215ybp.115.1616509620027;
+ Tue, 23 Mar 2021 07:27:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210323032624.1039422-1-mpe@ellerman.id.au> <CANiq72n-tMww2U+eQ=iHOh5u1JQgjM0b1E3XQ9jpWMfpdQ5+=g@mail.gmail.com>
+ <87mtuugj61.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87mtuugj61.fsf@mpe.ellerman.id.au>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 23 Mar 2021 15:26:49 +0100
+Message-ID: <CANiq72nx6Z=m-Fye7QYuQdjq9q0ZvH2+rkbrfQq-yQRMAadTYg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] Rust for Linux for ppc64le
+To:     Michael Ellerman <mpe@ellerman.id.au>
 Cc:     rust-for-linux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/4] Rust for Linux for ppc64le
-In-Reply-To: <CANiq72n-tMww2U+eQ=iHOh5u1JQgjM0b1E3XQ9jpWMfpdQ5+=g@mail.gmail.com>
-References: <20210323032624.1039422-1-mpe@ellerman.id.au>
- <CANiq72n-tMww2U+eQ=iHOh5u1JQgjM0b1E3XQ9jpWMfpdQ5+=g@mail.gmail.com>
-Date:   Tue, 23 Mar 2021 23:15:50 +1100
-Message-ID: <87mtuugj61.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
-> Hi Michael,
+On Tue, Mar 23, 2021 at 1:16 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
 >
-> On Tue, Mar 23, 2021 at 4:27 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>
->> Hi all,
->>
->> Here's a first attempt at getting the kernel Rust support building on powerpc.
->
-> Thanks a *lot*! It is great to have more architectures rolling.
+> It would be nice to be in the CI. I was building natively so I haven't
+> tried cross compiling yet (which we'll need for CI).
 
-No worries.
+Indeed -- in the CI we already cross-compile arm64 (and run under QEMU
+both arm64 as well as x86_64), so it is easy to add new ones to the
+matrix.
 
->> It's powerpc64le only for now, as that's what I can easily test given the
->> distros I have installed. Though powerpc and powerpc64 are also Tier 2 platforms
->
-> Even if it is just 64-bit, it is very good to have it!
->
->> so in theory should work. Supporting those would require something more
->> complicated than just pointing rustc at arch/$(ARCH)/rust/target.json.
->
-> Yeah, the arch/$(ARCH)/rust/target.json dance is a placeholder -- I
-> need to figure out how to do that more cleanly, likely generating them
-> on the fly.
+> I can send a pull request if that's easiest.
 
-Yeah that's a good idea. That way they can be made to exactly match the
-kernel configuration.
+No worries, I will pick the patches. But, of course, feel free to join
+us in GitHub! :-)
 
->> This is based on 832575d934a2 from the Rust-for-Linux tree. Anything newer gives
->> me errors about symbol name lengths. I figured I'd send this anyway, as it seems
->> like those errors are probably not powerpc specific.
->
-> Sure, feel free to send things even if they don't work completely.
->
-> I will take a look at the symbol name lengths -- I increased that
-> limit to 512 and added support for 2-byte lengths in the tables, but
-> perhaps something is missing. If I manage to make it work, I can add
-> ppc64le to our CI! :-)
-
-It would be nice to be in the CI. I was building natively so I haven't
-tried cross compiling yet (which we'll need for CI).
-
->> Michael Ellerman (4):
->>   rust: Export symbols in initialized data section
->>   rust: Add powerpc64 as a 64-bit target_arch in c_types.rs
->>   powerpc/rust: Add target.json for ppc64le
->>   rust: Enable for ppc64le
->
-> Regarding the development process: at least until the RFC we are
-> working with the usual GitHub PR workflow (for several reasons: having
-> a quick CI setup, getting new Rust developers on-board, having a list
-> of "issues", cross-reference with the Rust repo, etc.).
->
-> I can take patches from the list, of course, but since we are pre-RFC,
-> do you mind if they get rebased etc. through there?
-
-No I don't mind at all. I just sent patches so other ppc folks could see
-what I had, and it's kind of the process I'm used to.
-
-I can send a pull request if that's easiest.
-
-cheers
+Cheers,
+Miguel
