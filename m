@@ -7,74 +7,92 @@ X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE367C433E1
-	for <rust-for-linux@archiver.kernel.org>; Thu, 25 Mar 2021 08:17:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC42FC433C1
+	for <rust-for-linux@archiver.kernel.org>; Thu, 25 Mar 2021 09:03:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8564D61A1D
-	for <rust-for-linux@archiver.kernel.org>; Thu, 25 Mar 2021 08:17:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 84DF161A0A
+	for <rust-for-linux@archiver.kernel.org>; Thu, 25 Mar 2021 09:03:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229854AbhCYIRP (ORCPT
+        id S229833AbhCYJCn (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 25 Mar 2021 04:17:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54726 "EHLO
+        Thu, 25 Mar 2021 05:02:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbhCYIQp (ORCPT
+        with ESMTP id S229944AbhCYJCX (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 25 Mar 2021 04:16:45 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12653C06174A
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Mar 2021 01:16:45 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id x189so1409537ybg.5
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Mar 2021 01:16:45 -0700 (PDT)
+        Thu, 25 Mar 2021 05:02:23 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2234C06174A
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Mar 2021 02:02:21 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id h13so1537289eds.5
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Mar 2021 02:02:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=J5jcgx+sh6s0shL6nRaD/voqe2jSRkf/xRUikFSaQm4=;
-        b=Ak6bXCXGfPSibQE9RAsYdnTBcA/iXbpVc9eNdov7A+eZOdFrUSdx1gyf9X+9/jMKLd
-         Yqdbgn1pc8ZpJtu2Q6MInaGBrRI5wNk8gK+9MpRMw5ZroEXYCfTjt/vJUu4udi0siR3K
-         P0zq2EGb3nN9Q4btivkxCz428Uy4NiBvStHpZougWreXi1muSb2fVMPXNlyGeXalJORg
-         6RSdwPm2RBs6v8ez6rLezLxFZGIw6ME8NQWQw/yCP4+QZjray7mTSv1TPDDhuA6w4/DM
-         ENjI0bW+QC5KfB0+dPmHulu01vD/zr4F4fjlC1ORZtoLQ7L+1Nig25HnBBaRqtssY6Mh
-         zQqA==
+        h=content-transfer-encoding:from:mime-version:subject:date:message-id
+         :references:cc:in-reply-to:to;
+        bh=u3jA3uC9Awbp0jq4EVSFIoJhGWZerCcMkQRTdRTdsfY=;
+        b=HhnYMtYGDhTNCjnCCeUmGuJOdEPEHHp22iC9qZYJYH7KxHrsJ6MOS+DHwZE+5phpD+
+         sHbbLWlv/ZZ1Jt/+C1F+IB/WPCpx3Qltb/8aPR4chU0IU+3RzNx6c+D9f7TaPG8nFjdi
+         ZmSbWy/qbea5y2p/4QoooCgP3rELmVyss8dmqeHHgDCez3fZ2T+bTizD/ic/qCkjChrf
+         FRRa1ZOvMU/8zXeAReeKA+IKTc7VmjMOJ7VauE5hM+q9ZpNMWXdMP2IoJ/OeMhdVB1+m
+         2P8Qy0wtKE/nlqPY25glcx8zCP6v33eoCsrjaadGA3MYkcMHVycP9WRFeIu66yb5Mimm
+         0TLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=J5jcgx+sh6s0shL6nRaD/voqe2jSRkf/xRUikFSaQm4=;
-        b=FdCttShhZcLsLSZ8G/hivFIXjXw8dUhZtzMI6hIQvJWJgFp3wxLkLKqrw4RlJt72cx
-         xjo5ALSSXTrLQRX0Xsh/x0AlSafHtWLakYN2HWwFj0vBZGaA0B1EY+sQkK+y6DgBzHxo
-         asyPTFSPHpimIBE8nk8vnIWV6WvWSxeTVeZKXcay9ZniQ8FEbeTV/cdtgC7Y7kZy8DgV
-         x3IRSVVO6xrnl7OBG3KQh0T1D7XjOszy07JIJWdrgBq/214GwDiag7WsA1CgbhYEoMne
-         tA3HDGciRnwSDm3zCxmOjhxOB2Jr6N9sBeiZJ1ZnpU8rR+hFlpelyNlkr2WCPBitKyAV
-         nQGg==
-X-Gm-Message-State: AOAM533A9AUoN6aa/R7Ciug4X6+W5HJLQxHG2mTsla4JEIBQGYf771O7
-        zHYgc799OwHTf401dBAA0GSmId6GH92PxDsNyECQWmgd1Es=
-X-Google-Smtp-Source: ABdhPJx25Z3Lwb9gnBRPj6VpIq+T3Hay6DPTQAN9Q2q+z0I12dYvgi9p/Isj4T8P7DDk96Es/0iWAtZetQZLbfwuwH8=
-X-Received: by 2002:a25:7909:: with SMTP id u9mr10488571ybc.22.1616660204417;
- Thu, 25 Mar 2021 01:16:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <CANiq72nCOKy_rUmxpqt=s4PX3veentT-jz38c7Yti0tr2X3FSg@mail.gmail.com>
- <CANiq72mJMCgZxKyRDyQnkKi5U=6ejZq5yFRx-UyLC3yy7mYR2Q@mail.gmail.com> <20210324211237.zsdycx3ikq2siweh@gpm.stappers.nl>
-In-Reply-To: <20210324211237.zsdycx3ikq2siweh@gpm.stappers.nl>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 25 Mar 2021 09:16:33 +0100
-Message-ID: <CANiq72nx1f9hPwFCLXekHDu-0=8X7srJuocryZoYEMsL9o4iPA@mail.gmail.com>
+        h=x-gm-message-state:content-transfer-encoding:from:mime-version
+         :subject:date:message-id:references:cc:in-reply-to:to;
+        bh=u3jA3uC9Awbp0jq4EVSFIoJhGWZerCcMkQRTdRTdsfY=;
+        b=tC9Xnzk5DjvZAVuSN48lcSLlOp+P3Tc+wlTZFFp738nLjp3fiHymyClHx4K+4Z98M/
+         Lmz7uesqquPCdEdMECyYoSblhbaLHb5F3ZjrsLpU5JQ2jXIMta9zZ2nlPldD9aOdgANw
+         qJ3WWOHPB/AclwQC6wKJLj9bFh8loiaQafrobhXfboDmb1nMMVFKhGnGKSFHb5i0cYan
+         /MNHtgkvbvSk0MaUO00tXraXy1xU1+Ye0lDQtNLK2zfA+o8toGD7IKrLpFwrJo/8BaUQ
+         raxGNswErw7oU6FCEXOc2ufEYsia7MO6vcR1gtaY9gUCTdhvR5hpO0Om4fWFGRWl7ghA
+         2RWQ==
+X-Gm-Message-State: AOAM531Bnwz4VeVwIbTOwv4mL3LnmcBlsRlkoq3gZKiam109XQGmPYjq
+        8CPRDo9UO4RIedBS/Gir2RNgTMqILOhXVA==
+X-Google-Smtp-Source: ABdhPJwN5iK3cjguJiyHwe/OKHSA8Z8d0k8VNNljIthc1w2vLZYtug09gF1hozb8C3YPPo99A7Ip4g==
+X-Received: by 2002:a05:6402:1691:: with SMTP id a17mr7926534edv.336.1616662940516;
+        Thu, 25 Mar 2021 02:02:20 -0700 (PDT)
+Received: from ?IPv6:2a02:a212:a204:cc80:b802:7fa:a64b:7a7f? ([2a02:a212:a204:cc80:b802:7fa:a64b:7a7f])
+        by smtp.gmail.com with ESMTPSA id c12sm2497548edx.54.2021.03.25.02.02.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Mar 2021 02:02:20 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From:   Kaviraj Kanagaraj <kavirajkanagaraj@gmail.com>
+Mime-Version: 1.0 (1.0)
 Subject: Re: [Rust for Linux] Call Sunday 2021-03-28 18:00 UTC
-To:     Geert Stappers <stappers@stappers.nl>
-Cc:     rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Date:   Thu, 25 Mar 2021 10:02:18 +0100
+Message-Id: <2EE61073-1BD9-46C7-984A-1C0861B33876@gmail.com>
+References: <CANiq72nx1f9hPwFCLXekHDu-0=8X7srJuocryZoYEMsL9o4iPA@mail.gmail.com>
+Cc:     Geert Stappers <stappers@stappers.nl>,
+        rust-for-linux@vger.kernel.org
+In-Reply-To: <CANiq72nx1f9hPwFCLXekHDu-0=8X7srJuocryZoYEMsL9o4iPA@mail.gmail.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: iPhone Mail (18D52)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Mar 24, 2021 at 10:12 PM Geert Stappers <stappers@stappers.nl> wrote:
->
-> Okay.
->
-> Where?
+Hi Miguel
 
-We use Google Meet -- I will share the link privately.
+Are people in this mailing list invited? Can you share the link here? I woul=
+d like to join as well :)
 
-Cheers,
-Miguel
+Thanks=20
+Kaviraj
+
+> On 25-Mar-2021, at 09:17, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> w=
+rote:
+>=20
+> =EF=BB=BFOn Wed, Mar 24, 2021 at 10:12 PM Geert Stappers <stappers@stapper=
+s.nl> wrote:
+>>=20
+>> Okay.
+>>=20
+>> Where?
+>=20
+> We use Google Meet -- I will share the link privately.
+>=20
+> Cheers,
+> Miguel
