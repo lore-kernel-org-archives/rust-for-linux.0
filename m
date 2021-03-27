@@ -2,83 +2,108 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03607C433C1
-	for <rust-for-linux@archiver.kernel.org>; Thu, 25 Mar 2021 09:26:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AAFE2C433C1
+	for <rust-for-linux@archiver.kernel.org>; Sat, 27 Mar 2021 11:49:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9BDA861A0E
-	for <rust-for-linux@archiver.kernel.org>; Thu, 25 Mar 2021 09:26:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5F8EB61991
+	for <rust-for-linux@archiver.kernel.org>; Sat, 27 Mar 2021 11:49:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229631AbhCYJZs (ORCPT
+        id S230388AbhC0LtQ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 25 Mar 2021 05:25:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41386 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbhCYJZY (ORCPT
-        <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 25 Mar 2021 05:25:24 -0400
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 257C7C06174A
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Mar 2021 02:25:23 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id i9so1587716ybp.4
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Mar 2021 02:25:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=goGtzj6FkBzaA3Jk1eFH8je07++nn63Ebkpy016PwFA=;
-        b=LzI8d/eNBHGRu/OaY+VfJ3dh7xi3AEW2lqiAHoPSAWqwroxVeOo7t9wq+Iu+giGjaS
-         zy5BrNj2QT3ipCaoagFIu+DWz3Gih1pWOfWhzbq4C5I33PhKic5Vds+Qr/RVyPNM5F+i
-         aitFq/Z9yPlWBjWIDhxIscrmsWgOR47Ae8SWRlny5HxSaZMRp5UWzCs4fnh7yx0FGdrj
-         8mFMvF3rRxH2fQtH8A6G6xgXTu20AEVUMP5ypTypD0msgucPeL85U0qfFADfIhk9sKV9
-         et40DPY8wyPTFacTkJRM9pf5q7pNUVzy3kIM47OnLUabzdIgw93h3XFNrooAczRL806x
-         FBDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=goGtzj6FkBzaA3Jk1eFH8je07++nn63Ebkpy016PwFA=;
-        b=RRf1PdR9Ol672rWIkAXvtggQXpd5MW5OzNCKCqLuLQDaFpYR7qcp45UTPbk4ewtyZ7
-         R+iPDMkS2u5t4EtaAHWuEzBlG+/FALXRgwpM6kRsCUXJisgjTpDh4NEXBv6oigI8XHmy
-         7VvclOozUw3B1d7E3QlfZozVGS9MK1ofEf6ODTdDiZQpC6C5ox6VpLztMRpm4IKvXHvn
-         /KVXqNhTuqhKqTv0wGjZa+AVk063sMVKtbVW9rV+OrIr2tsPWnvza1yGl7s8ESttxl8E
-         gM/HSRG+zBd9Oi1C0LSlZxiKqDC9EoKV5pNamvdw0p5rJ1zmLicF15k8GuwwYa8jTSbq
-         +MOg==
-X-Gm-Message-State: AOAM5324w7xw/rNTaDgQwFTWRNOfbjXLwj962tFO7lZpdaxJSA64ppxZ
-        /CS8RcJ6yVU0//+x3uQVC40YNlbeQGdsTGdP3mdoVf+Gpl0pEA==
-X-Google-Smtp-Source: ABdhPJyfD5pxq1cgj8cajENVdh0ZXoDOMvBVivKd/xmDs3yqFr81X357xAZtxK9qoeerHhOvHC2tCeDiUVpKYh5AJZI=
-X-Received: by 2002:a25:e748:: with SMTP id e69mr11072710ybh.93.1616664322335;
- Thu, 25 Mar 2021 02:25:22 -0700 (PDT)
-MIME-Version: 1.0
+        Sat, 27 Mar 2021 07:49:16 -0400
+Received: from gpm.stappers.nl ([82.161.218.215]:52521 "EHLO gpm.stappers.nl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230288AbhC0LtQ (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Sat, 27 Mar 2021 07:49:16 -0400
+Received: by gpm.stappers.nl (Postfix, from userid 1000)
+        id 07EF1304176; Sat, 27 Mar 2021 12:49:12 +0100 (CET)
+Date:   Sat, 27 Mar 2021 12:49:12 +0100
+From:   Geert Stappers <stappers@stappers.nl>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        rust-for-linux@vger.kernel.org
+Subject: Re: [Rust for Linux] Call Sunday 2021-03-28 18:00 UTC
+Message-ID: <20210327114912.cfeqqvxpjn7wgghs@gpm.stappers.nl>
 References: <CANiq72nx1f9hPwFCLXekHDu-0=8X7srJuocryZoYEMsL9o4iPA@mail.gmail.com>
  <2EE61073-1BD9-46C7-984A-1C0861B33876@gmail.com>
-In-Reply-To: <2EE61073-1BD9-46C7-984A-1C0861B33876@gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 25 Mar 2021 10:25:11 +0100
-Message-ID: <CANiq72=LqB5q0D_A_AQcOHD+4aVjQaqWuoPt8=tX-+jSckmFEg@mail.gmail.com>
-Subject: Re: [Rust for Linux] Call Sunday 2021-03-28 18:00 UTC
-To:     Kaviraj Kanagaraj <kavirajkanagaraj@gmail.com>
-Cc:     Geert Stappers <stappers@stappers.nl>,
-        rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+ <CANiq72=LqB5q0D_A_AQcOHD+4aVjQaqWuoPt8=tX-+jSckmFEg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="2utfpzotkq7dw5lh"
+Content-Disposition: inline
+In-Reply-To: <CANiq72=LqB5q0D_A_AQcOHD+4aVjQaqWuoPt8=tX-+jSckmFEg@mail.gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Kaviraj,
 
-On Thu, Mar 25, 2021 at 10:02 AM Kaviraj Kanagaraj
-<kavirajkanagaraj@gmail.com> wrote:
->
-> Are people in this mailing list invited? Can you share the link here? I would like to join as well :)
+--2utfpzotkq7dw5lh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yes, of course, everyone that wants to join is invited. The link is
-shared privately to avoid anonymous/unknown/bot joins, but that's
-about it.
+On Thu, Mar 25, 2021 at 10:25:11AM +0100, Miguel Ojeda wrote:
+> On Thu, Mar 25, 2021 at 10:02 AM Kaviraj Kanagaraj wrote:
+> > On Thu, Mar 25, 2021 at 09:16:33AM +0100, Miguel Ojeda wrote:
+> > > On Wed, Mar 24, 2021 at 10:12 PM Geert Stappers wrote:
+> > > > >=20
+> > > > > Rust for Linux Call Sunday 2021-03-28 18:00 UTC
+> > > > >=20
+> > > >
+> > > > Okay.
+> > > >
+> > > > Where?
+> > >=20
+> > > We use Google Meet -- I will share the link privately.
+> > >=20
+> >=20
+> > Are people in this mailing list invited?
+> > Can you share the link here? I would like to join as well :)
+> >=20
+>=20
+> Yes, of course, everyone that wants to join is invited.
+> The link is shared privately to avoid anonymous/unknown/bot joins,
+> but that's about it.
 
-Cheers,
-Miguel
+
+When to expect the invite? (When to start worrying "no invite for me???" ;-)
+
+
+Are people without a Google account also welcome?
+
+Will the invite like "Dear citizen of Troy, we made a beatifull horse
+for you. Come to our site to download it." as a Microsoft Team invite?
+
+
+
+Groeten
+Geert Stappers
+--=20
+Silence is hard to parse
+
+--2utfpzotkq7dw5lh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAABCAAGBQJgXxu3AAoJECE10SPYwZvsLW0QAJ+sEyyJi7yqtSe1B+O+RUU6
+zQNhXz1htL9AyQEoGgaOUgESE2JREFJ0OTJ5zy/7d7MHeNNTWQBySOyVZe3Chf/9
+cS+fXJnQlLOFQiApYNJDu7jHYjbErpZoUpUipD31ZIKthfBqMPFhg33kyun+GLNZ
+24NBizqXiIjtPyvue6wJMNUR5fZ0ydMYPvzbGD7PDUOHQUr3/EWqffMBMVI1cSIr
+OWGtzVIDg/XvFgvmvLMVHRDf58Y1TaEgSLrbVRbetaslQxBWB+aderdifI61ZrnC
+0poZ+hX/RogrnhLyi/XpZ8iE+61PELgOFCZfowaVehgd+rb0XHvypWHl/kokMe8T
+Gl1dk1GZF/f8ONG7hLtXea9szbz/ZJoL8mAC+AU6Ecasr4mVK75orva8QrSOB3yI
+hrQg4Bx4Q0iqyTOaW55dTN1T0tTYj6TRbyhInWQ364wNe9LRv7kmPJEjWR1+JWS7
+apubL8h+Of4aOWNuLcuvr7LLZ2M7A2b8/YYf3tWho58JAbMNvExrJpx97dxu5ohr
+waU2PujpmE/cXWxZPfps4qs53qxiy0GDiSukdguQmu59qboiJs3F8pTs+8/oqDfH
+hq6iGmnK+W8reqTNGf02ZIpk8RmsHDt8TQAONmY01a4yZuLDBEU937r5wPwg4lBR
+uFrQmXWSt9BwwNL3nLB2
+=R/9u
+-----END PGP SIGNATURE-----
+
+--2utfpzotkq7dw5lh--
