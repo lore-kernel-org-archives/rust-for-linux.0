@@ -2,91 +2,89 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DEEEC433ED
-	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Apr 2021 01:19:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 088D9C433B4
+	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Apr 2021 01:47:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 287B46105A
-	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Apr 2021 01:19:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C1A1C60FF3
+	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Apr 2021 01:47:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233974AbhDBBTl (ORCPT
+        id S233665AbhDBBrx (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 1 Apr 2021 21:19:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45332 "EHLO
+        Thu, 1 Apr 2021 21:47:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233901AbhDBBTl (ORCPT
+        with ESMTP id S231168AbhDBBrx (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 1 Apr 2021 21:19:41 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C9AEC0613E6
-        for <rust-for-linux@vger.kernel.org>; Thu,  1 Apr 2021 18:19:41 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id z1so3678055ybf.6
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Apr 2021 18:19:41 -0700 (PDT)
+        Thu, 1 Apr 2021 21:47:53 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF8FCC0613E6
+        for <rust-for-linux@vger.kernel.org>; Thu,  1 Apr 2021 18:47:52 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id v23so1871227ple.9
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Apr 2021 18:47:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8TWJ98eO2Hsa2tGHhlXcTxPPTUKCuQAGPhja1JkvPwA=;
-        b=HyaXr8O7NaZqVWdwtp6Fnw7MXfMGoDPMExYfsL3Q6MLkNQnG4hMifH5iuesEX7lvl4
-         339ssmMRduqkeo/f3uQGU0P+SEwrXCXRogj4cbyA0uAMWHEK0X3roFTXoBI7307TvUfN
-         h18vdttpBLdoFWf6ouj/oX5+++1qzuhycex1WR48ZZ92p9IZG0FbY9BtPMPPVkIyLEFX
-         gMscFq4U7s+LZxuCg8ESKHLeChFIrXL7QxVdK9BvaIfu5i5g7voDxn2SByg57aiTBuBl
-         LGAQN5ki9Cq9jxGPaAohkYZUqNWYBYMKzV2JhCN2MBwp301bM3T+j4Su2hyib856YgGe
-         0Dng==
+        d=iiitd.ac.in; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=fwFai6VpiLFuZqN7/8dKd6rWFF98S/P0WgvOzYrDYI8=;
+        b=WRDtODiQaf6WMMARA5BlzOa/4NAjTSPDM6cyNRnOiFxTgsqa1NV6QnvNcfo/71VTfW
+         G1ySvi1ZFfYKHl63BwbjlVWTwH9Qskw1NSwx3bXUxWqslt5Sf/r0pGuVwtzDGx9wiaKh
+         963CIp374gfb+6o3u/3dHkh1AGM83f/9r1Bjc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8TWJ98eO2Hsa2tGHhlXcTxPPTUKCuQAGPhja1JkvPwA=;
-        b=PKIoc1nxp9pOUE32Oh47rB2mcnGdqQ+wkmWU7J2+ALAnfhy0eIxYMkfV9vZNqDUbAf
-         eU9c/PbLeLZ4EO25ZZTqpqMP0/zT3hsLLVJLHEtMNj4+JOQp73EuRANfqh3VWlfYLp2A
-         0t4MGKhwCPz6UdPzc8P+7I4kxhbfkDOeeFe4wiBXK2bWqqHusrnQ1S3tV1BvCYILwrlQ
-         5kTyI//E/WN7kgqXmtGX3xICqjqSjBNSe8mfUEIpqNs6RP61PeuzuqdfiQCGxBfpOcbI
-         PMw4sRMPoHu/Tn4fCA5GuIdiLfSj3cTCbALU3vTqJKxKaX+ga2TAgm91SYbNB2og/MMP
-         a6Iw==
-X-Gm-Message-State: AOAM5311REwt9ebkSIGastDkUSWoEzZmrq7dbXQRqBK9dBqWDi90F+F9
-        SqiSaaklklOsCoebcpltqzysh9CQK0e3iJ1/MksUBv3iiMgGOQ==
-X-Google-Smtp-Source: ABdhPJxSK9zS8HSdn7beY9Hqj3cNGXa+/iqXvrkHnBsMSxNzzxrEmVnjzgxxjlNxDNSHvViKuFjrIx2rwJ1h/pqs+jQ=
-X-Received: by 2002:a25:ae4e:: with SMTP id g14mr17229978ybe.26.1617326380867;
- Thu, 01 Apr 2021 18:19:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210401061840.g2zzox7xy5qol7kq@nitro-5> <CANiq72kjwKuRCzeB54JPpCfBO7hfzZKAoAHBtbSBAzfvZY8d0A@mail.gmail.com>
- <20210402003503.exbxsfickscdvmci@nitro-5>
-In-Reply-To: <20210402003503.exbxsfickscdvmci@nitro-5>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 2 Apr 2021 03:19:30 +0200
-Message-ID: <CANiq72=heqQyTvPKopfmh+S9wFGdBECETAFNfmLjza-3rAdQFg@mail.gmail.com>
-Subject: Re: Missing RUST_EXAMPLE option in linux-next-20210331
-To:     Manas <manas18244@iiitd.ac.in>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=fwFai6VpiLFuZqN7/8dKd6rWFF98S/P0WgvOzYrDYI8=;
+        b=PC8iWNbzGlwHyw2acihmWYnGdQmoNAIInc2rzNHHLzMTessPdrfXz1EdRFOhypRzpL
+         pCZ0SJub+4tQNLdzYrSFyF9aikNraW32jn4vcWlVhbhdT2WS7UEbXE9uLoP4rJ0swX5+
+         EyXph5qNZU828OT+jpVEmcfIbpKKC/Xof4rkyxDu+tuB4bgEHTjLN7ONyG2IZyg32WZi
+         IFdEger6ICKRaK50ZWUv7Uc1RJ8DY3aqbU03QU59AB5arUDYq1FGjl9QkGl+JvPBiuK7
+         JbORPLjmkvjUf+qW+n1L8VJx/6LFIio4Bh1/HbxCAkZKNZBfIIYRmbGplHJsm8GiWCG6
+         N7cw==
+X-Gm-Message-State: AOAM531T2CpdC8IgbvzkBkeci+lK447EbJ+wwDn98UgvM6KEAmKBMpOq
+        jrCVkOyTzhvkjjt4nrwKrpS4xQ==
+X-Google-Smtp-Source: ABdhPJwVwJyh0UDxtLHVPx3lPmf0crLxQt/TgAEvBpV3GZjn9b6mjH+eTNLQdsrCBSpF5HMV2cOQmg==
+X-Received: by 2002:a17:90b:947:: with SMTP id dw7mr11715824pjb.178.1617328072549;
+        Thu, 01 Apr 2021 18:47:52 -0700 (PDT)
+Received: from nitro-5 ([103.44.55.83])
+        by smtp.gmail.com with ESMTPSA id w17sm6649405pgg.41.2021.04.01.18.47.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Apr 2021 18:47:52 -0700 (PDT)
+Date:   Fri, 2 Apr 2021 07:17:47 +0530
+From:   Manas <manas18244@iiitd.ac.in>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: Missing RUST_EXAMPLE option in linux-next-20210331
+Message-ID: <20210402014747.k2vpzqjsibffygxs@nitro-5>
+References: <20210401061840.g2zzox7xy5qol7kq@nitro-5>
+ <CANiq72kjwKuRCzeB54JPpCfBO7hfzZKAoAHBtbSBAzfvZY8d0A@mail.gmail.com>
+ <20210402003503.exbxsfickscdvmci@nitro-5>
+ <CANiq72=heqQyTvPKopfmh+S9wFGdBECETAFNfmLjza-3rAdQFg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72=heqQyTvPKopfmh+S9wFGdBECETAFNfmLjza-3rAdQFg@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Apr 2, 2021 at 2:35 AM Manas <manas18244@iiitd.ac.in> wrote:
->
-> It was also not present.
->
-> Nevertheless, I tweaked around a little bit and found that when I enabled
-> CONFIG_COMPILE_TEST, then it removed CONFIG_RUST and RUST_EXAMPLE,
-> (while HAS_RUST=y).
->
-> But CONFIG_COMPILE_TEST's documentation mentions to enable it to build
-> everything. This confused me at that moment.
+On Fri, Apr 02, 2021 at 03:19:30AM +0200, Miguel Ojeda wrote:
+> If "Rust support" (CONFIG_RUST) was not there either, it is because
+> `HAS_RUST` was off, or, as you found out, if `COMPILE_TEST` is
+> enabled.
+> 
+> The reason we depend on `!COMPILE_TEST` at the moment is to prevent
+> Rust support from being built in `allmodconfig` builds in linux-next
+> as a precaution until we are given the go ahead, but this will change
+> in the future.
+> 
+Understood.
 
-If "Rust support" (CONFIG_RUST) was not there either, it is because
-`HAS_RUST` was off, or, as you found out, if `COMPILE_TEST` is
-enabled.
-
-The reason we depend on `!COMPILE_TEST` at the moment is to prevent
-Rust support from being built in `allmodconfig` builds in linux-next
-as a precaution until we are given the go ahead, but this will change
-in the future.
-
-Cheers,
-Miguel
+Thanks a lot!
+-- 
+Manas
+CSAM Undergraduate | 2022
+IIIT-Delhi, India
