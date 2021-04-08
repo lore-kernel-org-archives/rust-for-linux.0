@@ -2,105 +2,99 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE6A6C433ED
-	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Apr 2021 02:38:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 847FBC433B4
+	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Apr 2021 06:35:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 83C7D61139
-	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Apr 2021 02:38:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 606B5610A5
+	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Apr 2021 06:35:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbhDHCiV (ORCPT
+        id S229691AbhDHGfl (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 7 Apr 2021 22:38:21 -0400
-Received: from wilbur.contactoffice.com ([212.3.242.68]:36128 "EHLO
-        wilbur.contactoffice.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbhDHCiV (ORCPT
+        Thu, 8 Apr 2021 02:35:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60800 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229512AbhDHGfl (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 7 Apr 2021 22:38:21 -0400
-Received: from ichabod.co-bxl (ichabod.co-bxl [10.2.0.36])
-        by wilbur.contactoffice.com (Postfix) with ESMTP id 89A4E827;
-        Thu,  8 Apr 2021 04:38:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1617849489;
-        s=20210208-e7xh; d=mailfence.com; i=seiro22@mailfence.com;
-        h=Date:From:Reply-To:To:Cc:Message-ID:In-Reply-To:References:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        l=1971; bh=mE9O6qI/7k69qESgu5JH+DRJwxW9CDMOJeG7Z8LzJgM=;
-        b=d5WbT6r/mSnyJ/5m9PuepNpN/Dm1kIV6O9hQamwAojkOrv4FoxSJnXEtuE/s7kl4
-        j1w+hGbLPk7qV6tYIBxnaqqysgzaZrWlnOFl+otBVquD817Pq5um0zYY8ptqNqyW+C7
-        Do6TaboyatNEA8y+fEO8hgU1Zqqpip5MLwfXBD5DKkzvpgASjjc4KHMbJDZTAA1McHG
-        fw+nSahG4q+HzDWyhHaf/YqmWG33PS6xxztbZ9gCCHFceltshg/ptK/QCKcIiZDMEaM
-        piBReGh5klAvX/m7Vf8wazzUeqfhwklWDB1Iu+sKDmM9QOFAnvvvpMEPjuXC55uKSvQ
-        HDxmV9j7Zw==
-Date:   Thu, 8 Apr 2021 04:38:06 +0200 (CEST)
-From:   se iro <seiro22@mailfence.com>
-Reply-To: se iro <seiro22@mailfence.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     rust-for-linux@vger.kernel.org
-Message-ID: <315832261.93199.1617849486791@ichabod.co-bxl>
-In-Reply-To: <CANiq72nWvusyKf_N2N8i+de5HA-UZYfFPUrp9taRFbXya5h18w@mail.gmail.com>
-References: <1802230489.25122.1617805363569@ichabod.co-bxl> <CANiq72nWvusyKf_N2N8i+de5HA-UZYfFPUrp9taRFbXya5h18w@mail.gmail.com>
-Subject: Re: leaky info and kernel modules
+        Thu, 8 Apr 2021 02:35:41 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A678C061760
+        for <rust-for-linux@vger.kernel.org>; Wed,  7 Apr 2021 23:35:30 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id g38so1419137ybi.12
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Apr 2021 23:35:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=q2nLbjlDAecUq6fwP/b+CxVWbohskvcECAgn5Is9U84=;
+        b=KqkU2/4z/+v69ST1EaWx1/siU/NFwRVOw3uT9U9JLNgoduBk///0QAvc2YqruzJVAI
+         BXmbkuHeaU/zI+RF5B3pAC6nd13RmrTpukXyV75zUD0yluLlPiln9SSj+QET68bqGHW2
+         2lZjjIx7c1UGAceFSv92rj+cJ9osQLx2Y1fGFoKoyaJD1xUQ+nPIXCdyn/W7RYhT8bYK
+         xOCkTcq9Y/TpXxw1WXxWS1t8hfvKM3i2eP8BZcdF9+IFIahydIwCe+eJUGPXUH8dQXC+
+         nrJrjsMKdJWYb0GjZR9nfepMAdk7ONpEhCytiY0I7mcgbsvu07noZMTXk2DYrRjnzpQx
+         26SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=q2nLbjlDAecUq6fwP/b+CxVWbohskvcECAgn5Is9U84=;
+        b=aIaXGANi/9PiEuyPyiW7WED5o8RF7A3Sf0b1HOs/xmPJwgLy/vVTMl8PuazYAk8/Lq
+         98+GP7NUEWuaWG03TD2QA1fr5Q8IwXllRanzph8vsBLIDAEjJWPb5G0/5SVFqEcLbzlk
+         9yHUEWg81r5FgZhHktcJfZutTl/NzXJKm+ZJ93TCrDqSdhGeqNwbT4tiI1fnTuJRlPrW
+         v1FepQ8/DWQW5FtX5rEwP1vDxWuBcAt04cCcDXXW3L/CGSXXfYCqCh/0E6yMjNJgHixQ
+         q80Mg113XioIuNSr9ZP6ARbnoa8tCg7ijX91ZQw1LdmOoCdjhp0QnlTB+I1fPwasl2LB
+         Hizw==
+X-Gm-Message-State: AOAM530MZUe4eHRnWROAYIoyLBsKngxaJbmVbP09zzyxpTH4fiX5s/e4
+        jKGEwwT5Wb40tjAeEWwaXwKu3VvcxleLovBoJr3yRZ0iTk/MJA==
+X-Google-Smtp-Source: ABdhPJwd8oqWnr4qFnfj32KMy2gXyQgQfpezglQCN2sv4sXwnCFG/T6q+qFD05QHmMLXSwnh2vdecFfNSAl9yAqMAkc=
+X-Received: by 2002:a25:d07:: with SMTP id 7mr9407697ybn.135.1617863729214;
+ Wed, 07 Apr 2021 23:35:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <1802230489.25122.1617805363569@ichabod.co-bxl>
+ <CANiq72nWvusyKf_N2N8i+de5HA-UZYfFPUrp9taRFbXya5h18w@mail.gmail.com> <315832261.93199.1617849486791@ichabod.co-bxl>
+In-Reply-To: <315832261.93199.1617849486791@ichabod.co-bxl>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 8 Apr 2021 08:35:18 +0200
+Message-ID: <CANiq72kE5U2k6rYWDxdvkguyR9n0CxrZXQThUZc98QRfeGg4NQ@mail.gmail.com>
+Subject: Re: leaky info and kernel modules
+To:     se iro <seiro22@mailfence.com>
+Cc:     rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Priority: 3
-X-Mailer: ContactOffice Mail
-X-ContactOffice-Account: com:283344282
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-you mention debug but this is building release mode not debug which is why =
-it odd.
-and yeah if these paths exists its not reproducible as they different for e=
-veryone else. steve k commented on reddit and said he thinks so long as bui=
-ld process is same its reproducible, not that hashing matching is require. =
-rust team may have differ opinion on what reproducible builds are too which=
- affect this like you say
+Hi Se Iro,
 
-> ----------------------------------------
-> From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-> Sent: Wed Apr 07 23:50:54 CEST 2021
-> To: se iro <seiro22@mailfence.com>
-> Cc: <rust-for-linux@vger.kernel.org>
-> Subject: Re: leaky info and kernel modules
->=20
->=20
-> Hi Se Iro,
->=20
-> On Wed, Apr 7, 2021 at 11:03 PM se iro <seiro22@mailfence.com> wrote:
-> >
-> > saw post on reddit and github issues where rust compiler adds username =
-and systems paths/info to **release** mode compile bins. also its pkg mgr c=
-argo does the same with registry paths. otherwise its extra strings bloatin=
-g output that not needed and strip command doesnt work. also not working is=
- compiler opts described
-> >
-> > does this impact chat of rust in linux since rust team seems to be igno=
-ring the issue?
->=20
-> Yeah, Rust is adding few strings with paths (at least ~4 KiB from a
-> quick test in my case); while a non-Rust kernel, in-tree build without
-> `DEBUG_KERNEL` does not seem to contain any absolute paths (although
-> please note that kernels typically contain your username/host anyway
-> unless you tweak `KBUILD_BUILD_*` etc.).
->=20
-> So while I don't think it is that critical at the moment, any bloat
-> that can be reduced (e.g. those paths could be relative) is always a
-> good idea. It is also good for improving reproducibility of builds
-> etc.
->=20
-> I will create a quick issue about this.
->=20
-> Thanks!
->=20
-> Cheers,
-> Miguel
+On Thu, Apr 8, 2021 at 4:38 AM se iro <seiro22@mailfence.com> wrote:
+>
+> you mention debug but this is building release mode not debug which is wh=
+y it odd.
 
+I was talking about release mode (please note I said "without"
+`DEBUG_KERNEL`, not "with"). Perhaps I misunderstood you?
 
---=C2=A0
-Sent with https://mailfence.com
-Secure and private email
+> and yeah if these paths exists its not reproducible as they different for=
+ everyone else. steve k commented on reddit and said he thinks so long as b=
+uild process is same its reproducible, not that hashing matching is require=
+. rust team may have differ opinion on what reproducible builds are too whi=
+ch affect this like you say
+
+Reproducible builds are, in the end, about achieving the same output
+every time. How to achieve that, however, can be easier or harder
+depending on how much state/environment a project relies upon.
+
+So, for instance, if we have absolute paths in the binary, then that
+is one more thing to worry when preparing the build. That is why
+removing the paths improves reproducibility, but it is not the only
+thing that is required to achieve it for the kernel (i.e. we are not
+breaking reproducibility just because we have those paths & one can
+still achieve it by taking care of the paths).
+
+Cheers,
+Miguel
