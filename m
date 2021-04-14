@@ -6,66 +6,66 @@ X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DACFEC43461
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Apr 2021 19:19:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0AD32C433ED
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Apr 2021 19:31:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B9A8961166
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Apr 2021 19:19:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C520D60FE8
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Apr 2021 19:31:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353286AbhDNTUE (ORCPT
+        id S1353396AbhDNTbx (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Apr 2021 15:20:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41564 "EHLO
+        Wed, 14 Apr 2021 15:31:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353266AbhDNTUC (ORCPT
+        with ESMTP id S1346010AbhDNTbv (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Apr 2021 15:20:02 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A2F7C06175F
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Apr 2021 12:19:40 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id u20so24442987lja.13
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Apr 2021 12:19:40 -0700 (PDT)
+        Wed, 14 Apr 2021 15:31:51 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A9F1C061756
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Apr 2021 12:31:29 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id l22so17154170ljc.9
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Apr 2021 12:31:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linux-foundation.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=2NCuqqnTNRZqz4gVa7VmF8X9q5BSGA2MnI49n6bMs7A=;
-        b=dCmT2JevlN2Um24EUlGKuB1noKIv7ps6g0KvoFc8NO7f9Egls/Mith+iaPjQtsQfnr
-         V3m5Niy5LYKZYm6IIrt5kn+7wbQBG2dzlRjqlgBgfDXYfOc9ZchG7DC8UHzaS3kiP/3M
-         I5Wq5Fh4vLEyyOX6IyyZ6+LRoWZP+OivJSbUI=
+        bh=8tmkl21nBTrgg+zi0wiLnvNOnvLGFNGElqoYB3gSO4k=;
+        b=fcsPK/9hZwnNtEOdCgJlxw05JK+JnScQC6KTDZz/6X9MVaflY6Jqqe4mj4BbDYGIn6
+         D5cRaqLVGf110aJOYDRuUskjfvklEd0pqbbD6FIOHNNLHu3Y3CC1Te8apRSktxKYlGWX
+         ozpACYQ9P5BsjDg3WbdRsGj5aS6Iw1MmwYSsk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=2NCuqqnTNRZqz4gVa7VmF8X9q5BSGA2MnI49n6bMs7A=;
-        b=ZAHehwJ8kwsw0PqfZebM1GNk29hA1NCXzSaeCH7GcUvtJtCxwFKToRP0pE7832DNE3
-         1UpNHyD5kYZMLIg43ngi52QerNT3dAw9xbrv6vqVaup4KeM+OmQWa+qmNWuNyB62gToY
-         NBT7TL9/nSz9RZf482632QJfAk8/6Qh96DaXWjsVsI7slQQCEMFAvUvSR8i4No+aN7u4
-         qSoND4xfCZJV3VacNVbUaLVEHOMj5lXabLGZlNSlRezudHE/zOTdemw2hlc9HzgpdMjd
-         nKqC2f8qyM4OsTCA5K0CTlSey/hiDmtAs8EIkfpdItWT74opvcjR1SMayeN2azJ2lXqd
-         gXlQ==
-X-Gm-Message-State: AOAM531D9ekebelJPeMTVZHJunIfe9UiSVsJjL/OzFlocOaT1ojeHM7v
-        k71F5uuGdJ9ANPtmFx3fLsLD8lGTiEr5Osx6
-X-Google-Smtp-Source: ABdhPJwK9bv+s9iR/+pZWTITjp3yjM2gx6n7bXdePuz3eSnjzaCugj/l8N6eLlP+Z8QwwrVQjYZ/Hg==
-X-Received: by 2002:a2e:a40c:: with SMTP id p12mr25365177ljn.358.1618427978338;
-        Wed, 14 Apr 2021 12:19:38 -0700 (PDT)
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com. [209.85.167.42])
-        by smtp.gmail.com with ESMTPSA id o21sm149453lfr.144.2021.04.14.12.19.36
+        bh=8tmkl21nBTrgg+zi0wiLnvNOnvLGFNGElqoYB3gSO4k=;
+        b=K9bNyDjo0lnNHBCs3Y3VC7Xl4C4eNxueNfMyI9sJHjJtHWNLPhYUc+dQSRXQqFYhnA
+         VabW1XyhQSYysr/1x4ASsfWmaqNZPktdTbJw7xBQxQM7ahy/GKolhKdlNp13Qno3n/As
+         vy3QDuHX3R3headgtaClwTTBFYTOP9QsWK4g4Vk/xfvMNAdXqYTa7H9blPu8B59G+/SG
+         Bnu7grkwC3W/u+E4VGCHM5nlywgju4xs3E6FDk7AXc/fPi/FjwlqcrN8VHszmdH31wjz
+         bhUnjkGlH6U8gDevpBp9qICYgZpRFbxM8CbpUqqACTVNn0eBQFhv2k6kFVhPuS4m6PJX
+         zXFw==
+X-Gm-Message-State: AOAM532+9dD7bq8xomQ6EAGXRSwMXw9d6/0RZM/V7ZAWs+oQq1XWgz3O
+        QVD0zrsrPcA08J1PXByr1UPnXn++h9EKt4Fc
+X-Google-Smtp-Source: ABdhPJxKENpmd5AnP+BoJYCR/JRd7B/2X7ZNEG3nKcr0esAbuttGJp+v05qdbX/I97qFYbIzRznJfw==
+X-Received: by 2002:a05:651c:307:: with SMTP id a7mr13962746ljp.166.1618428687088;
+        Wed, 14 Apr 2021 12:31:27 -0700 (PDT)
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com. [209.85.208.181])
+        by smtp.gmail.com with ESMTPSA id h28sm158312lfv.26.2021.04.14.12.31.26
         for <rust-for-linux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Apr 2021 12:19:37 -0700 (PDT)
-Received: by mail-lf1-f42.google.com with SMTP id f17so27999870lfu.7
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Apr 2021 12:19:36 -0700 (PDT)
-X-Received: by 2002:a05:6512:31c7:: with SMTP id j7mr18301122lfe.41.1618427976755;
- Wed, 14 Apr 2021 12:19:36 -0700 (PDT)
+        Wed, 14 Apr 2021 12:31:26 -0700 (PDT)
+Received: by mail-lj1-f181.google.com with SMTP id a36so13666347ljq.8
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Apr 2021 12:31:26 -0700 (PDT)
+X-Received: by 2002:a2e:8893:: with SMTP id k19mr9184503lji.465.1618428685906;
+ Wed, 14 Apr 2021 12:31:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210414184604.23473-1-ojeda@kernel.org> <20210414184604.23473-6-ojeda@kernel.org>
-In-Reply-To: <20210414184604.23473-6-ojeda@kernel.org>
+References: <20210414184604.23473-1-ojeda@kernel.org> <20210414184604.23473-8-ojeda@kernel.org>
+In-Reply-To: <20210414184604.23473-8-ojeda@kernel.org>
 From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 14 Apr 2021 12:19:21 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgJvJJtd2mpYpx5+zn_hPrSOqGqi-Pxb7e+h+anhsLnQg@mail.gmail.com>
-Message-ID: <CAHk-=wgJvJJtd2mpYpx5+zn_hPrSOqGqi-Pxb7e+h+anhsLnQg@mail.gmail.com>
-Subject: Re: [PATCH 05/13] Rust: Compiler builtins crate
+Date:   Wed, 14 Apr 2021 12:31:10 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiVY56LzwV_G075NEFwsdf-p7GOTy_cB7-UU9b=49rB1g@mail.gmail.com>
+Message-ID: <CAHk-=wiVY56LzwV_G075NEFwsdf-p7GOTy_cB7-UU9b=49rB1g@mail.gmail.com>
+Subject: Re: [PATCH 07/13] Rust: Kernel crate
 To:     ojeda@kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org,
@@ -76,27 +76,49 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Geoffrey Thomas <geofft@ldpreload.com>,
         Finn Behrens <me@kloenk.de>,
         Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Apr 14, 2021 at 11:46 AM <ojeda@kernel.org> wrote:
+On Wed, Apr 14, 2021 at 11:47 AM <ojeda@kernel.org> wrote:
 >
-> We also need a helpers C source file to contain some forwarders
-> to C macros and inlined functions. For the moment, we only need it
-> to call the `BUG()` macro, but we will be adding more later.
+> +#[alloc_error_handler]
+> +fn oom(_layout: Layout) -> ! {
+> +    panic!("Out of memory!");
+> +}
+> +
+> +#[no_mangle]
+> +pub fn __rust_alloc_error_handler(_size: usize, _align: usize) -> ! {
+> +    panic!("Out of memory!");
+> +}
 
-Not being a Rust person, I can only guess based on random pattern
-matching, but this _looks_ like these "panicking intrinsics" panic at
-run-time (by calling BUG()).
+Again, excuse my lack of internal Rust knowledge, but when do these
+end up being an issue?
 
-Is there some way these things could cause built-time link errors
-instead, so that if somebody uses 128-bit shifts, or floating point
-ops in the rust code, they show up as build failures, not as run-time
-ones?
+If the Rust compiler ends up doing hidden allocations, and they then
+cause panics, then one of the main *points* of Rustification is
+entirely broken. That's 100% the opposite of being memory-safe at
+build time.
 
-Hmm?
+An allocation failure in some random driver must never ever be
+something that the compiler just turns into a panic. It must be
+something that is caught and handled synchronously and results in an
+ENOMEM error return.
 
-          Linus
+So the fact that the core patches have these kinds of
+
+    panic!("Out of memory!");
+
+things in them as part of just the support infrastructure makes me go
+"Yeah, that's fundamentally wrong".
+
+And if this is some default that is called only when the Rust code
+doesn't have error handling, then once again - I think it needs to be
+a *build-time* failure, not a runtime one. Because having unsafe code
+that will cause a panic only under very special situations that are
+hard to trigger is about the worst possible case.
+
+             Linus
