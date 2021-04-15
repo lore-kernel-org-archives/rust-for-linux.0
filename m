@@ -2,102 +2,99 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D3A3C433B4
-	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Apr 2021 10:18:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A4CBC433B4
+	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Apr 2021 12:40:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 530A56124B
-	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Apr 2021 10:18:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 73A4E61184
+	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Apr 2021 12:40:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230474AbhDOKTB (ORCPT
+        id S232854AbhDOMkf (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 15 Apr 2021 06:19:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39644 "EHLO
+        Thu, 15 Apr 2021 08:40:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231531AbhDOKTA (ORCPT
+        with ESMTP id S230202AbhDOMke (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 15 Apr 2021 06:19:00 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D35CC061574;
-        Thu, 15 Apr 2021 03:18:35 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id v72so4820351ybe.11;
-        Thu, 15 Apr 2021 03:18:34 -0700 (PDT)
+        Thu, 15 Apr 2021 08:40:34 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DEAFC061574;
+        Thu, 15 Apr 2021 05:40:10 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id v3so23612003ybi.1;
+        Thu, 15 Apr 2021 05:40:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=PcaOmJM+RUTf70CDN4cJXMLtcTANk8Y9Xg/5XpH9Ox8=;
-        b=pG9s2mX6BuQVFDgO9/yYn5LO4TXJktxm3v+6r93VXWMPYllgdwmRQMlcc+MHJEvO0h
-         1mM5jOsvbxO0kB9vKK+X523HSAWI20NImJYNkPrLoY9VKymrWLLbZ1Lexj/s56DRXPuk
-         3nKBP129CzBdRUqwBnj3h93Y6bHeOiJPhSwHAGoHxO6Eq/bTfjRVCI5s8OFxTu8WXoVk
-         GobTETgvHtMb4p9zxwKPn85ikY4QK6RFykOU/py4BXj5EkpJDJfi8sAz2hz+d1OJ4mms
-         MPtLN54vYJbxA+2aHT9GqQfaLb9hKywEZ1leuB1pIXQO/4TnhlyNHhDLyc/mowjQQBl8
-         c7zw==
+        bh=HNWPrpdPoD+pXH9p1hvOGpr8+bIHmvjS+4XG2ldZ0Sc=;
+        b=PHuF3KrGqNBmqAhI7J+l69fge3/RxdwOfMm73BbiapXnaS25fJER94tzGL0volq6nJ
+         uVBdFT87qfAFF6Mk9bToFO5RRpRY90hP8G2jKu6QeUr2Kt50f58LPPu85yVORSpWVKYQ
+         hd5D4KclIVt0np3ZmNZEmb7ZR6eE10A3wTDxilcHC6fMWxbsbaw7jKcI3tcqLt7m/ckn
+         QCJhcjmQCzFCbiJw4xc7e+DIitZozXwIlcRRUisdbJZcbZMG2ORchleytjjRVcsDlsJG
+         RID3l6K3+u7ePY/dvZTSnJKqVAerSfoEiYE3lytwF4HiVmXSsLtV4suJai+7Q/Hp3CEL
+         ia6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=PcaOmJM+RUTf70CDN4cJXMLtcTANk8Y9Xg/5XpH9Ox8=;
-        b=fE9AWNkyLGncKNE7lLhvXwIBu6OadHzaaYXJpECS3wyoe58ciUCcThKXXz3+rcpWSe
-         O5l3U0Z1Uvlk+aspOXyu/3GVJKR6YsS94RrGX5rdBmBDAcGVG3obM35qwGJr3lit8JuV
-         bg9D216mwwLAZmaj2fN5ZZF0mjXw0HZdfqRf/3QrDZcDG8Ho+8KR+i4Rqgq5nixN6QBb
-         6CF2WIdIsmAMAG4dgJ9YBoFx60+GjTiiLcwbXTmc2+/pqvt+dTmYFIeK3k9ZIYIsoZei
-         s5B8erkzAWCbt8anwqUt189bAcpXu4p8hV4LkmS16AL+PSjpwYE/1hCZ2frfxzDp5ftc
-         OhXQ==
-X-Gm-Message-State: AOAM532vidIxcrCom1D/bRa0X05WzSkDlNblq/FycUAnEDpjYmXiNjs+
-        7VbAPcloVqKQK/S9Dr/loQceg5+0rbVeXtHvll6Tzg6sAOA=
-X-Google-Smtp-Source: ABdhPJzev0b00I8H04t+puKpS9oVCBptJMCnMWYb+B/5VWVKSlqdlGbQLNgzZFp4lzd16JFDSQttdzMZoCUJEDkrjec=
-X-Received: by 2002:a25:81ce:: with SMTP id n14mr3064323ybm.33.1618481914302;
- Thu, 15 Apr 2021 03:18:34 -0700 (PDT)
+        bh=HNWPrpdPoD+pXH9p1hvOGpr8+bIHmvjS+4XG2ldZ0Sc=;
+        b=FP4tmY1b/bHhUbmHF7dd4X43sr9hNfsRYQO1uy8Yq1AprYKopqsC987jJriFyLqfNG
+         MMkKQVYnihXyHWoGq+B85YXA6uFqSS6s7OaaS2msKFe2PUQuOs6trzHHj4K+tl2NvYlR
+         etI4sED1MUGhOaE5o28W4vFggPAjErh0y/rVjy0LBcKjPtZEo7TMzY61NnZ7yXb1eT/0
+         qJaj79/l8yi8NTGBZTjKuYXB5IaEKROy3BnF/nTq6yJ/UWVNHwPhDkNJ/tDoYSpNHqpb
+         W8umJxPNsHNpndXk7nKQoVdLn+q+wgNFpp1YwCyYnW8fH+Yzl5XsRIi0PL3ckPXVGdl9
+         Cm/w==
+X-Gm-Message-State: AOAM533uA6CJ/ssg3J/DvhRgh9cFZhpCGyh7DUk44GsGIlczf7cJZuvZ
+        29H+uf2gHd2dGWYERI+mwpCnyyL373RI9FzNrXugrek1iyc=
+X-Google-Smtp-Source: ABdhPJxxvwHaN8MXNkZ2cWP+VxR/Oi6OrV25u/8c4Sk71cAVeHSDikukkFzc+2IPtDy3JiqOzh/Ywn1UnHBoDwcKALw=
+X-Received: by 2002:a25:cfc2:: with SMTP id f185mr4317197ybg.26.1618490409882;
+ Thu, 15 Apr 2021 05:40:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210414184604.23473-1-ojeda@kernel.org> <20210414184604.23473-4-ojeda@kernel.org>
- <YHc7pHjwmDJrkXqZ@archlinux-ax161>
-In-Reply-To: <YHc7pHjwmDJrkXqZ@archlinux-ax161>
+References: <20210414184604.23473-1-ojeda@kernel.org> <CAHk-=wh_sNLoz84AUUzuqXEsYH35u=8HV3vK-jbRbJ_B-JjGrg@mail.gmail.com>
+ <CANiq72mSMtfdRFPGJKuoqCBFdsa_xHvx9ATjcB7QSunQdDHBuw@mail.gmail.com> <202104141820.7DDE15A30@keescook>
+In-Reply-To: <202104141820.7DDE15A30@keescook>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 15 Apr 2021 12:18:23 +0200
-Message-ID: <CANiq72=+PwvbsuTatQ3mJekmrcMaM2Nb2YPnyAEAO29sTjmxPw@mail.gmail.com>
-Subject: Re: [PATCH 03/13] Makefile: Generate CLANG_FLAGS even in GCC builds
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+Date:   Thu, 15 Apr 2021 14:39:58 +0200
+Message-ID: <CANiq72=miTm-WYN4Q4JRfm7ocaoNePW_f1khcUOE1EkO8UyQzw@mail.gmail.com>
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org,
         Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Michal Suchanek <msuchanek@suse.de>,
-        Masahiro Yamada <masahiroy@kernel.org>
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Nathan,
-
-Sorry, with all the other things I ended up not replying to you before
-going to sleep.
-
-On Wed, Apr 14, 2021 at 8:59 PM Nathan Chancellor <nathan@kernel.org> wrote:
+On Thu, Apr 15, 2021 at 3:38 AM Kees Cook <keescook@chromium.org> wrote:
 >
-> Shuffling this around will cause this issue (I never saw you CC'd on the
-> thread).
->
-> https://lore.kernel.org/r/f6218ac526a04fa4d4406f935bcc4eb4a7df65c4.1617917438.git.msuchanek@suse.de/
->
-> Perhaps that patch should be added to this series?
+> Before anything else: yay! I'm really glad to see this RFC officially
+> hit LKML. :)
 
-Ah, thanks for the pointer! Yeah, I was not aware of that thread. It
-is good to find these bits though, that's why we are in linux-next
-after all! :)
+Thanks! :)
+
+> When originally learning Rust I was disappointed to see that (by default)
+> Rust similarly ignores the overflow problem, but I'm glad to see the
+> very intentional choices in the Rust-in-Linux design to deal with it
+> directly. I think the default behavior should be saturate-with-WARN
+> (this will match the ultimate goals of the UBSAN overflow support[1][2]
+> in the C portions of the kernel). Rust code wanting wrapping/checking
+> can expressly use those. The list of exploitable overflows is loooong,
+> and this will remain a weakness in Rust unless we get it right from
+> the start. What's not clear to me is if it's better to say "math with
+> undeclared overflow expectation" will saturate" or to say "all math must
+> declare its overflow expectation".
+
++1 Agreed, we need to get this right (and ideally make both the C and
+Rust sides agree...).
 
 Cheers,
 Miguel
