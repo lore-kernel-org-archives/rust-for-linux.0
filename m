@@ -2,97 +2,156 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=no
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6EDECC43461
-	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Apr 2021 12:42:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96B8AC433B4
+	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Apr 2021 18:03:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4DC5D610E8
-	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Apr 2021 12:42:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6BE43611BF
+	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Apr 2021 18:03:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232959AbhDOMmy (ORCPT
+        id S233687AbhDOSEB (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 15 Apr 2021 08:42:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43280 "EHLO
+        Thu, 15 Apr 2021 14:04:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232935AbhDOMmx (ORCPT
+        with ESMTP id S234242AbhDOSEA (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 15 Apr 2021 08:42:53 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2BBCC061574;
-        Thu, 15 Apr 2021 05:42:29 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 82so25968029yby.7;
-        Thu, 15 Apr 2021 05:42:29 -0700 (PDT)
+        Thu, 15 Apr 2021 14:04:00 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B20F3C061574
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Apr 2021 11:03:35 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id r128so13583950lff.4
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Apr 2021 11:03:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Fg1M3JraqfPDjiabkJVNqyxhu8/Pp6Uz2D3T2HiqLvQ=;
-        b=kpmqvZ16cOjL1qmF50hdCBJJl/SH0b5eS3d35WnCRAcH3TNBYEYghwBNxfcF8SdyvP
-         YBuJeOq6e5TenRxL14f+MQcSmeAe1QCGJzsVLD/6e/dM7STmQdV4M2vCipvbi23SgjN5
-         zuPOj3BXYixygBdg/ZirIIOmoynp8f7URe4mAIkQ9GwcJxP8jQviEPTDstrAihADSGIz
-         V4alt5N2ZfwPCJWb+wB79+XEuO8IZ+ysRNtDliVZjBd/H4io5SV8YEm1RNVEBSe/BNEY
-         1+neJHgpQLDHzSgJCmc1XBTMqTfvqG1hFphLuubccVGFqXqtCLRtYXQv8QYlGC7nNRxy
-         e5og==
+         :cc:content-transfer-encoding;
+        bh=F59qFWjXIgpvV4ZN+CZ30hb3C7uuWkssKg5Jbmq7Ww8=;
+        b=G/NT4J14rCpD8NA8d8MBv0FXKoPW385KyYuoW969O2aWtfyO/hJZYF+odetZ4qBA6e
+         E0z4YmLm/kz2oIhJ/BszpZQKX4R9gcEbhdh6mqRAnU+ANIaPsfPe3x/4qbyVWqBVIaY4
+         hdNfhxkMIek13GWVpyLWEEh/nj+CipxPHh7d0/ZMEqamPRTHJ8OP9Dpy5Mq3TiulmxqO
+         XXsMSaNvN06qzDkqa5eIxaDM4kY8HgKk4nza/Y++YEZ9QmbYM10J1qaUTNEJmIKBrMzR
+         lKffAR9VeBNvYyU/+eyPVugQv5g7b5T7fqposkOYVpxU4YOE3sCROkgwggF44eli2Qxe
+         V3hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Fg1M3JraqfPDjiabkJVNqyxhu8/Pp6Uz2D3T2HiqLvQ=;
-        b=PhBfW1U1SLvjymmF+2gIZhCig6RQnKiAuDAOsjrptilTfaVjqjWpwQ3gxreqbX+rR8
-         JJZEk6Z3qBkGdW6OJaolOrDdx47xlXO7yAocfVkzq6WpmK0fD+h2A60FznMhqnyQ6s3a
-         sm9GxYoicRzn3e+8OTsTwG2Bove+br3aP5rNlXp9idhL2FqGkJA1WPfLyP++wJ58V+Ef
-         /s/bN2ERNfXEFpjHHx+YuqQndjdbpOcqQ1kAPP3aGuwBnB76TlDOYoSCq8xrtYvOLQqR
-         990L8CKMw/WksYob1rlCKam+jvFmziKYt7f4n8GBOALaJPAuFXoTt2/eKnzdLeMfAjHp
-         xngA==
-X-Gm-Message-State: AOAM531VCiI3QEeKy2+hoII+sHpOZqBbQJNSQYIuxXjug8l/gRQOA9cz
-        NQnqg2rV/YSci9EHzfLplwgf64hSRTWZWDR++Pnl36e3HS/feA==
-X-Google-Smtp-Source: ABdhPJxE7dhcBCOERrKV8ouMZMA94c5LX/odP9YslP9ixiCAWlsBt5oMnCvxCgG8e/ljQ1sYiDcdxDQuEaQVnG1Yn70=
-X-Received: by 2002:a25:cfc2:: with SMTP id f185mr4331260ybg.26.1618490549378;
- Thu, 15 Apr 2021 05:42:29 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=F59qFWjXIgpvV4ZN+CZ30hb3C7uuWkssKg5Jbmq7Ww8=;
+        b=nb/hPFSPdKWT840C+KCDxpJu/TgNlJqmzHpxXvsJ0n6z9E4oxp0X2dTYJVhXpr0dOh
+         ahDAN7QAH9s1LhejitcuRZfSLzpwFZSqxCdSeI/MDG1ReXFiaUIf1pc8GxxpL75ZkHNw
+         zSjC1bfyPGdsqG4927afTd/YThe2KCbvWONb3NRxnZbTk6WveHeMDyoqY3J9OO4kzBu1
+         OKjwE2+p/SlLmLh6/RPQWgpwCRKj3CM0vNaAaDQJMzsn5ung5Noh7zeCC9lT5EMAJYtU
+         neEUDVsDTaCiztrJ/db80mchVrO/MbPglarYU02lJbt3cbejspX2i1kIKrpoJaTq61wi
+         hvNA==
+X-Gm-Message-State: AOAM531U0SGNPYsAjat0rzSjX3S+WwKIQadVDnXTo72PIuP3oOpxGdLM
+        OSHKi5bgkRk1r64DmAJ7vcprD6wWKsf6xpEuJRUpBNyQTokKfjTS
+X-Google-Smtp-Source: ABdhPJySCFix/QLobkMr+mNd4p1eh6+V52WoYufupnbXAoEB0kYBV4dx1xGZvJwbl8wweHAwSTgTOP9NMCfUKyp9nvs=
+X-Received: by 2002:a05:6512:1046:: with SMTP id c6mr238636lfb.297.1618509813998;
+ Thu, 15 Apr 2021 11:03:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210414184604.23473-1-ojeda@kernel.org> <20210414184604.23473-10-ojeda@kernel.org>
- <CAHk-=wjdZ1KksHHHuekeAx9kKFXEyt+rg0P=yRD1Bia_01wucg@mail.gmail.com>
- <CAKwvOd=Vo3wwm-egc6fTa7gD4dsrc77OvBhUy8e+VM=LujRCfg@mail.gmail.com> <YHfm+tCYp+I1C5I/@kroah.com>
-In-Reply-To: <YHfm+tCYp+I1C5I/@kroah.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 15 Apr 2021 14:42:18 +0200
-Message-ID: <CANiq72mSdao=r5f-6nS8E_hgOy=+Rwedtbs-m4CmGbnoEtV+KA@mail.gmail.com>
-Subject: Re: [PATCH 09/13] Samples: Rust examples
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+References: <20210414184604.23473-1-ojeda@kernel.org> <20210414184604.23473-5-ojeda@kernel.org>
+ <CAKwvOdkjttdX83tL4pw+J5EnHM1MgEYDPp=YTpEagV4RrhdxwA@mail.gmail.com> <CANiq72ksLeuL_uqoqbf3fhLP7M0j-7TdEvRDDmxThdmrEqD2Lw@mail.gmail.com>
+In-Reply-To: <CANiq72ksLeuL_uqoqbf3fhLP7M0j-7TdEvRDDmxThdmrEqD2Lw@mail.gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Thu, 15 Apr 2021 11:03:22 -0700
+Message-ID: <CAKwvOdkyRkR0Jj5w5HWJ+o4YpOrLfTY1Vjho0bDn60fgRE-pkA@mail.gmail.com>
+Subject: Re: [PATCH 04/13] Kbuild: Rust support
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
         Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org,
         Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Geoffrey Thomas <geofft@ldpreload.com>,
         Finn Behrens <me@kloenk.de>,
         Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Apr 15, 2021 at 9:10 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Wed, Apr 14, 2021 at 5:43 PM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Let's see what happens here, this patchset is a great start that
-> provides the core "here's how to build rust in the kernel build system",
-> which was a non-trivial engineering effort.  Hats off to them that "all"
-> I had to do was successfully install the proper rust compiler on my
-> system (not these developers fault), and then building the kernel code
-> here did "just work".  That's a major achievement.
+> On Thu, Apr 15, 2021 at 1:19 AM Nick Desaulniers
+> <ndesaulniers@google.com> wrote:
+> >
+> > -Oz in clang typically generates larger kernel code than -Os; LLVM
+> > seems to aggressively emit libcalls even when the setup for a call
+> > would be larger than the inlined call itself.  Is z smaller than s for
+> > the existing rust examples?
+>
+> I will check if the `s`/`z` flags have the exact same semantics as
+> they do in Clang, but as a quick test (quite late here, sorry!), yes,
+> it seems `z` is smaller:
+>
+>       text data bss    dec   hex filename
+>
+>     126568    8 104 126680 1eed8 drivers/android/rust_binder.o [s]
+>     122923    8 104 123035 1e09b drivers/android/rust_binder.o [z]
+>
+>     212351    0   0 212351 33d7f rust/core.o [s]
+>     207653    0   0 207653 32b25 rust/core.o [z]
 
-Thanks a lot for the kind words and for trying it!
+cool, thanks for verifying. LGTM
 
-Let's see if we can make this happen.
+> > This is a mess; who thought it would be a good idea to support
+> > compiling the rust code at a different optimization level than the
+> > rest of the C code in the kernel?  Do we really need that flexibility
+> > for Rust kernel code, or can we drop this feature?
+>
+> I did :P
+>
+> The idea is that, since it seemed to work out of the box when I tried,
+> it could be nice to keep for debugging and for having another degree
+> of freedom when testing the compiler/nightlies etc.
+>
+> Also, it is not intended for users, which is why I put it in the
+> "hacking" menu -- users should still only modify the usual global
+> option.
+>
+> However, it is indeed strange for the kernel and I don't mind dropping
+> it if people want to see it out (one could still do it manually if
+> needed...).
+>
+> (Related: from what I have been told, the kernel does not support
+> lower levels in C just due to old problems with compilers; but those
+> may be gone now).
 
-Cheers,
-Miguel
+IIRC the kernel (or at least x86_64 defconfig) cannot be built at -O0,
+which is too bad if developers were myopically focused on build times.
+It would have been nice to have something like
+CONFIG_CC_OPTIMIZE_FOR_COMPILE_TIME to join
+CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE and CONFIG_CC_OPTIMIZE_FOR_SIZE,
+but maybe it's still possible to support one day.  (=C2=BFPor qu=C3=A9 no l=
+os
+tres? Perhaps a false-trichotomy? Sorry, but those 3 are somewhat at
+odds for compilation).
+
+Until then, I don't see why we need to permit developers to express
+such flexibility for just the Rust code, or have it differ from the
+intent of the C code. Does it make sense to set RUST_OPT_LEVEL_3 and
+CC_OPTIMIZE_FOR_SIZE? I doubt it. That doesn't seem like a development
+feature, but a mistake.  YAGNI.  Instead developers should clarify
+what they care about in terms of high level intent; if someone wants
+to micromanage optimization level flags in their forks they don't need
+a Kconfig to do it (they're either going to hack KBUILD_CFLAGS,
+CFLAGS_*.o, or KCFLAGS), and there's probably better mechanisms for
+fine-tooth precision of optimizing actually hot code or not via PGO
+and AutoFDO.
+https://lore.kernel.org/lkml/20210407211704.367039-1-morbo@google.com/
+--=20
+Thanks,
+~Nick Desaulniers
