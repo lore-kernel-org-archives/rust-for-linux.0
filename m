@@ -2,76 +2,172 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DA08C433ED
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:07:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 527C3C433B4
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:07:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 565086115B
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:07:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2904E61107
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:07:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235599AbhDPNIM (ORCPT
+        id S242566AbhDPNIV (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Apr 2021 09:08:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53282 "EHLO
+        Fri, 16 Apr 2021 09:08:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234291AbhDPNIK (ORCPT
+        with ESMTP id S234291AbhDPNIU (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Apr 2021 09:08:10 -0400
-Received: from gimli.kloenk.dev (gimli.kloenk.dev [IPv6:2a0f:4ac0:0:1::cb2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E90C061574
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Apr 2021 06:07:46 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kloenk.de; s=mail;
-        t=1618578456; bh=h1cWSNjrlK6348kxZri1A85VRnsf6ZIDX6hqHomIN5k=;
-        h=Subject:From:In-Reply-To:Date:Cc:References:To;
-        b=NSXZ8sCehHUODRTQ3etDUBXq6A8uLWBmJNg8yZOkT6mbIBRYfdQn519FrPv1F7rRa
-         FNEWPQvuRJKI7Ui6i2GwspTE1ArRdJcB0eqtUcUaSdPx+Q6st63IRQNeBUeQ4eMYI6
-         VUp5jigpL+bq73/SwXkHMxRGlMphLz6Adw+CJZPo=
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.80.0.2.43\))
-Subject: Re: Rust-for-Linux Hydra CI
-From:   Finn Behrens <me@kloenk.de>
-In-Reply-To: <CANiq72nvB7LYTc7wfuV+UM-s9wvOpObBhdJa4=odd8103x7BKA@mail.gmail.com>
-Date:   Fri, 16 Apr 2021 15:07:33 +0200
-Cc:     rust-for-linux@vger.kernel.org, linux@petabyte.dev,
-        Joerg Thalheim <joerg@thalheim.io>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BB89357B-DB5C-4D4D-A0F0-0B57F9F5CE11@kloenk.de>
-References: <04861911-1275-449E-BE54-C6871B53F4A3@kloenk.de>
- <CANiq72nvB7LYTc7wfuV+UM-s9wvOpObBhdJa4=odd8103x7BKA@mail.gmail.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        me@christine.website
+        Fri, 16 Apr 2021 09:08:20 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 099E9C061574
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Apr 2021 06:07:56 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id w4so22913360wrt.5
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Apr 2021 06:07:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=psVJK99+O+tg8o2EaxMtjg4ibnxyJog9/VVbDGGEZIs=;
+        b=HEsPoJ6YAVzWWqR1SCDlnvGiezGJnRRw8xMA4Xg7MXvS7rWpxv67ia56OEkyrAhzWc
+         wTiJjiUv3kVWpu6g5CfXcXANH1cemqZ/2RJQeaccz+uUkdedSkn140/84Z8/TClHPMWV
+         EC/yujIDYcLnK7nnQ4nrvbt14NHy2YSQN/Ev+Ohz24lvSsobDMnGKRPL12lXquxjBDGC
+         +UzCtGEJKS5JhhHfOqnLFzCOTMoFtkc/R2BanM1wcjEQSbsYtlsBE/UemULWIXB0cELw
+         GaYZNdqLwgJyJpiKiI+aqqoVgheSGnCYQDrIqlrTwcImg9A0Xv7xgX0QnLMt+IRjH603
+         YDZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=psVJK99+O+tg8o2EaxMtjg4ibnxyJog9/VVbDGGEZIs=;
+        b=nu4uKAZCq31bGrN0L0EqKSWD4CeGFnduoGLLq8dBwySk5dL4cJF3yPFU6f+3PUlKOb
+         glBT3P7/YmhAEjCtMmSJcabFzsr6Wa0VyndMdIRnYGOf2eyy0wtptIdjihp8vlb/o8ud
+         JbQoNbZauF8nNGv8CGAX50dghHuIdeoaviQ7ju/mxZW+EqMAQYQKvn//SSCZyrhHgap6
+         h07e90XsAjIOE7Hdnw/80bIqbLEpwybYk1bzPuamm58sGAXNc2E8ijkpnlsk95KSGtZK
+         QYWKJQZ4FWoJGp96npEnwGtMs8zuzebhu8sQ+devRhLBbT1SwdrLGrnqGMSaEE4zcT/V
+         5yEw==
+X-Gm-Message-State: AOAM531ovdazFOcN9FBhY5c5yR761P2Z2K05nG75iUZcco8RB8l4HCy1
+        rQlolqz45XmlJycmtPBxfWg1
+X-Google-Smtp-Source: ABdhPJwWEbDQ9iMx4fqtjWEcxrGjmorPoLUaIsn12ayIH5plt/5SnLPUQOSAZAXmEXgLQmWjoZSf8A==
+X-Received: by 2002:a5d:424a:: with SMTP id s10mr9468441wrr.70.1618578474684;
+        Fri, 16 Apr 2021 06:07:54 -0700 (PDT)
+Received: from google.com ([2a00:79e0:d:209:51db:fb7a:d252:e3c1])
+        by smtp.gmail.com with ESMTPSA id h81sm10295477wmf.41.2021.04.16.06.07.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Apr 2021 06:07:54 -0700 (PDT)
+Date:   Fri, 16 Apr 2021 14:07:49 +0100
+From:   Wedson Almeida Filho <wedsonaf@google.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     ojeda@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+Message-ID: <YHmMJWmzz2vZ3qQH@google.com>
+References: <20210414184604.23473-1-ojeda@kernel.org>
+ <YHlz54rd1YQHsOA/@hirez.programming.kicks-ass.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YHlz54rd1YQHsOA/@hirez.programming.kicks-ass.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi,
+On Fri, Apr 16, 2021 at 01:24:23PM +0200, Peter Zijlstra wrote:
+> On Wed, Apr 14, 2021 at 08:45:51PM +0200, ojeda@kernel.org wrote:
+> >   - Featureful language: sum types, pattern matching, generics,
+> >     RAII, lifetimes, shared & exclusive references, modules &
+> >     visibility, powerful hygienic and procedural macros...
+> 
+> IMO RAII is over-valued, but just in case you care, the below seems to
+> work just fine. No fancy new language needed, works today. Similarly you
+> can create refcount_t guards, or with a little more work full blown
+> smart_ptr crud.
 
-> On 16. Apr 2021, at 15:00, Miguel Ojeda =
-<miguel.ojeda.sandonis@gmail.com> wrote:
->=20
->> PS: I=E2=80=99m not sure If this will break if we rebase to a newer =
-linux version, as nix needs a version to find some files.
->=20
-> If we rebase, does it affect negatively Hydra or some of the other
-> tools? i.e. would we be blocking some other project in some way? If it
-> is just us seeing a "red" state in the CI, then I think it is fine :)
+Peter, we do care, thank you for posting this. It's a great example for us to
+discuss some of the minutiae of what we think Rust brings to the table in
+addition to what's already possible in C.
 
-I confirmed that rebasing breaks the build. But yes this is only a red =
-state as the build fails, but it does not block anything. Ofcourse if we =
-get around to build nixos-vm tests those tests are also blocked as there =
-is no kernel that builds and so can be tested. But still, this is only a =
-broken state, and does not affect any other projects.
-We can also monitor different branches of the rust-for-linux linux tree, =
-where a rebase in one branch would not affect another branch.
+> 
+> ---
+> diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+> index e19323521f9c..f03a72dd8cea 100644
+> --- a/include/linux/mutex.h
+> +++ b/include/linux/mutex.h
+> @@ -197,4 +197,22 @@ extern void mutex_unlock(struct mutex *lock);
+>  
+>  extern int atomic_dec_and_mutex_lock(atomic_t *cnt, struct mutex *lock);
+>  
+> +struct mutex_guard {
+> +	struct mutex *mutex;
+> +};
+> +
+> +static inline struct mutex_guard mutex_guard_lock(struct mutex *mutex)
+> +{
+> +	mutex_lock(mutex);
+> +	return (struct mutex_guard){ .mutex = mutex, };
+> +}
+> +
+> +static inline void mutex_guard_unlock(struct mutex_guard *guard)
+> +{
+> +	mutex_unlock(guard->mutex);
+> +}
+> +
+> +#define DEFINE_MUTEX_GUARD(name, lock)			\
+> +	struct mutex_guard __attribute__((__cleanup__(mutex_guard_unlock))) name = mutex_guard_lock(lock)
+> +
+>  #endif /* __LINUX_MUTEX_H */
+> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> index 8ee3249de2f0..603d197a83b8 100644
+> --- a/kernel/events/core.c
+> +++ b/kernel/events/core.c
+> @@ -5715,16 +5715,15 @@ static long perf_compat_ioctl(struct file *file, unsigned int cmd,
+>  
+>  int perf_event_task_enable(void)
+>  {
+> +	DEFINE_MUTEX_GUARD(event_mutex, &current->perf_event_mutex);
 
-Maybe Christine want=E2=80=99s to add tests, the nix derivations are at =
-https://github.com/rust-for-linux/nix and are automatically updated by =
-hydra, as I should write my finals and not linux tests :-).=20
+There is nothing in C forcing developers to actually use DEFINE_MUTEX_GUARD. So
+someone may simply forget (or not know that they need) to lock
+current->perf_event_mutex and directly access some field protected by it. This
+is unlikely to happen when one first writes the code, but over time as different
+people modify the code and invariants change, it is possible for this to happen.
 
-CU,
-Finn=
+In Rust, this isn't possible: the data protected by a lock is only accessible
+when the lock is locked. So developers cannot accidentally make mistakes of this
+kind. And since the enforcement happens at compile time, there is no runtime
+cost.
+
+This, we believe, is fundamental to the discussion: we agree that many of these
+idioms can be implemented in C (albeit in this case with a compiler extension),
+but their use is optional, people can (and do) still make mistakes that lead to
+vulnerabilities; Rust disallows classes of  mistakes by construction.
+
+Another scenario: suppose within perf_event_task_enable you need to call a
+function that requires the mutex to be locked and that will unlock it for you on
+error (or unconditionally, doesn't matter). How would you do that in C? In Rust,
+there is a clean idiomatic way of transferring ownership of a guard (or any
+other object) such that the previous owner cannot continue to use it after
+ownership is transferred. Again, this is enforced at compile time. I'm happy to
+provide a small example if that would help.
+
+Again, thanks for bringing this up. And please keep your concerns and feedback
+coming, we very much want to have these discussions and try to improve what we
+have based on feedback from the community.
+
+>  	struct perf_event_context *ctx;
+>  	struct perf_event *event;
+>  
+> -	mutex_lock(&current->perf_event_mutex);
+>  	list_for_each_entry(event, &current->perf_event_list, owner_entry) {
+>  		ctx = perf_event_ctx_lock(event);
+>  		perf_event_for_each_child(event, _perf_event_enable);
+>  		perf_event_ctx_unlock(event, ctx);
+>  	}
+> -	mutex_unlock(&current->perf_event_mutex);
+>  
+>  	return 0;
+>  }
