@@ -2,100 +2,98 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A403C433ED
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:00:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C55FC43461
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:07:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D7B42611AF
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:00:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C699061153
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:07:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234312AbhDPNAs (ORCPT
+        id S235599AbhDPNHt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Apr 2021 09:00:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51654 "EHLO
+        Fri, 16 Apr 2021 09:07:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233259AbhDPNAr (ORCPT
+        with ESMTP id S234291AbhDPNHt (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Apr 2021 09:00:47 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78BC5C061574
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Apr 2021 06:00:20 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id g38so29985600ybi.12
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Apr 2021 06:00:20 -0700 (PDT)
+        Fri, 16 Apr 2021 09:07:49 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D64B7C061574;
+        Fri, 16 Apr 2021 06:07:22 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id i21-20020a05600c3555b029012eae2af5d4so4555701wmq.4;
+        Fri, 16 Apr 2021 06:07:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=L+L0bHtjhBtNS4Jk6FZintvlDWSRhLmVfoGhwnYpCNA=;
-        b=i/ld2nmDvNT/vsK4Zd8KgrRtvdHN1vOa3cRjmWrzT6baxvz9r5rbNtQbsBtVYD68vx
-         Tj0IqzA5K97gWcrdCOa8QYUDYveYtPbxBOdchpH3DdH+Qpj62Ri4PG/4pwxGkUjkOAYq
-         io8JO9KtHkvLDcGGPmuipvlwttAQHoz5LWwyPfaACUeVrRkKJAgfbQfyolxzwmSojF1j
-         +Zly+3F6jL3ifMrjXKDH69Y3wZv13ZxXlveGBKF2GtZruAC0IuBjsu4+A6vDnmpPbUx/
-         vEMOOHzdbE6VJMA+EvMOQ+tF9Sc5yNIgbD1K8k1HEU5AEAYULIesN0UaWPJ1ZFdcMoHu
-         zSqw==
+         :cc;
+        bh=X1QM8B6jbrKekugtXWG7niO37dGaqz+Qr3M5o/z4z7k=;
+        b=cXPaqMIsEqgYTmxm1QSn08MWu+7Xa3by/TlAHTNj+RNF9eLNJAgDZUa5HegBkJQRvi
+         KctwG2xyTuZUuR7ogCeQvEZNwpw2+Kba022xCN2X9jn21Q2eSj46B3fd9OawP7U74sGD
+         m2Ka3v1N95rlEH/Ebj7mY2iRBuWPUwnQzTMS7AO7F20GsnqkQv7hoo04kJ2RT+Kkb3w5
+         yZnzu/9+m+MeqTJYDAfaGKhuOOAjbXYDjWzZ1EO9sUC1mxL8CpyR2F9JeSwEixnMz4jG
+         iIrMgwpejrRZj6T+5y9u3YOekb6VPSQ+yeuVksZ2hu7zFocrh7AP/P7tL0BZi6u7HH7u
+         EJYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=L+L0bHtjhBtNS4Jk6FZintvlDWSRhLmVfoGhwnYpCNA=;
-        b=qpdsdh4n0GtNEudTmbiMGCVbuG01LXSRYi7ZzCMONiZc2Fxz5NamPixPV44zxAwoS2
-         jKVX9WuU0vJmhUfbqo+cDXe0E7F0UM+jyx3wG1asixMAsU2V8ap5PuhadAjNWjBxGjcA
-         2LKy4D3E7mGnbYjR1qgwiJ7pMDcm4sHWuYQAh8/6SbXtYoViSP5txK2f+FxlYNcTyIiS
-         roAoRjUbm+zv6g7W0CIZNB1LNbM1V1hTXs2f+Kfc/ahadBZ94Q5+xom1zlaYrmPhFgU8
-         3rGT758CWw40jMhmwAhhE4++u0p8ymmkv3olANalqdIvwzMqlkEu7CrVvP04XBYALkIn
-         /BDg==
-X-Gm-Message-State: AOAM531y1ZaoPVFi5bO196GAxNEoTLX2KrmTiYB0QKN45ecDdscATnEd
-        j+ccFUgWmhifNNr4GTqUOz0LeQh1MqEd7KCOPYg=
-X-Google-Smtp-Source: ABdhPJz+RXbZhBm3xYKqELOmu0tPKXwz5UvnW4sxqTf9ymwRJm7XgCQKrcjZlLLr2eW3+ThAlwThghccJjM5Mbt4zX8=
-X-Received: by 2002:a25:7909:: with SMTP id u9mr11291389ybc.22.1618578019812;
- Fri, 16 Apr 2021 06:00:19 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=X1QM8B6jbrKekugtXWG7niO37dGaqz+Qr3M5o/z4z7k=;
+        b=X61/mi8VEiVr9d3WeneuQh3AnNVKCF25F30bkgnp+1Cb/TtOnPr9OtQZvjTQ/DNqVC
+         VHkl6/Vx+HZMp+p4t9i3dPR036unZ1u3Rxp09NQA/g2q0SbYpgYgjE99/2qWqlhk6ySP
+         MlvjEV2gb1PhxNCE44EugRJLswHQcQWqoJpdJdyU9slhIoidJScsCYQPLvytmxyoiaqM
+         dUFAsyOSe/mQI8BRRpjJ/RVx/ntWcAeaHO4hUKzgdqc2O4i+IuTGA0sF/fmktE6XF/Kq
+         iCCLvkGATEHeCHqtFqUgW+jcK0HTqcJEAtXAa1tvwdrxNeIvQxVq9XjzO33rNHf3q+Qw
+         pBSQ==
+X-Gm-Message-State: AOAM530tu7nWx7tCPmJST2LDVAYrNw2M12tFt6f0zdoxb/5iF+pdlaKR
+        4iaOn/Y646niRf9/8Tt89Sax2RXekyFR7KTVxzamcpqMMXyksOna
+X-Google-Smtp-Source: ABdhPJx5xdyB+CIx6x7Q9HsKZj2cV5fCDxyKuGcCDwhirLAjzqrruuyvkukN8/XZ1f+cs1hBl/HbbACArBimwvRLTUY=
+X-Received: by 2002:a7b:ce09:: with SMTP id m9mr8303247wmc.150.1618578441478;
+ Fri, 16 Apr 2021 06:07:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <04861911-1275-449E-BE54-C6871B53F4A3@kloenk.de>
-In-Reply-To: <04861911-1275-449E-BE54-C6871B53F4A3@kloenk.de>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 16 Apr 2021 15:00:09 +0200
-Message-ID: <CANiq72nvB7LYTc7wfuV+UM-s9wvOpObBhdJa4=odd8103x7BKA@mail.gmail.com>
-Subject: Re: Rust-for-Linux Hydra CI
-To:     Finn Behrens <me@kloenk.de>
-Cc:     rust-for-linux@vger.kernel.org, linux@petabyte.dev,
-        Joerg Thalheim <joerg@thalheim.io>
+References: <20210414184604.23473-1-ojeda@kernel.org> <20210414184604.23473-10-ojeda@kernel.org>
+ <CAHk-=wjdZ1KksHHHuekeAx9kKFXEyt+rg0P=yRD1Bia_01wucg@mail.gmail.com>
+ <CAKwvOd=Vo3wwm-egc6fTa7gD4dsrc77OvBhUy8e+VM=LujRCfg@mail.gmail.com> <YHfm+tCYp+I1C5I/@kroah.com>
+In-Reply-To: <YHfm+tCYp+I1C5I/@kroah.com>
+From:   Sven Van Asbroeck <thesven73@gmail.com>
+Date:   Fri, 16 Apr 2021 09:07:10 -0400
+Message-ID: <CAGngYiV3Q336QLwZ_PjDj9hd+Y4uMjhq209ppYYqc_QeegLvgw@mail.gmail.com>
+Subject: Re: [PATCH 09/13] Samples: Rust examples
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        rust-for-linux@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Finn,
-
-On Fri, Apr 16, 2021 at 10:44 AM Finn Behrens <me@kloenk.de> wrote:
+On Thu, Apr 15, 2021 at 3:11 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> The nix-community gave me access to the nix-community hydra. Hydra is the=
- CI tool written for nix builds, and so builds the rust-for-linux tree with=
- nix. The hydra is checking the GitHub rust-for-linux/linux repo for new co=
-mmits, and then builds these in a nix context (If we want to move to git.ke=
-rnel.org, hydra can also check there for new commits).
->
-> The latest builds can be seen here: https://hydra.nix-community.org/jobse=
-t/rust-for-linux/rust and is also uploaded to the nix cache at https://app.=
-cachix.org/cache/nix-community (local nix versions can use those caches to =
-substitute builds, e.g. rustc-nightly)
->
-> We could also add vm tests via nixos, and documentation is not generated =
-currently, but if we write nix derivations for that, hydra could also deliv=
-er those for download.
+> I've been talking with the developers here about doing a "real" driver
 
-This is great! Thanks a lot for moving this forward!
+Would it be beneficial if the device h/w targeted by the "real" Rust
+driver has QEMU emulation? Perhaps in addition to physical silicon.
 
-> PS: I=E2=80=99m not sure If this will break if we rebase to a newer linux=
- version, as nix needs a version to find some files.
+If developers don't need access to physical hardware, they might be
+more likely to get involved with Linux/Rust.
 
-If we rebase, does it affect negatively Hydra or some of the other
-tools? i.e. would we be blocking some other project in some way? If it
-is just us seeing a "red" state in the CI, then I think it is fine :)
+Also, I'm guessing QEMU allows us to embed the emulated device into a
+variety of board architectures: x86_64, arm64, powerpc, etc. which
+could be useful in smoking out architecture-specific Rust driver
+issues.
 
-Cheers,
-Miguel
+Sven
