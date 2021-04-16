@@ -2,110 +2,164 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96AEAC43460
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 05:39:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC247C433ED
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 06:04:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 67B42611BF
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 05:39:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B267B61153
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 06:04:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237979AbhDPFjn (ORCPT
+        id S230250AbhDPGFQ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Apr 2021 01:39:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38738 "EHLO
+        Fri, 16 Apr 2021 02:05:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230250AbhDPFjm (ORCPT
+        with ESMTP id S229706AbhDPGFP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Apr 2021 01:39:42 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6945C061574;
-        Thu, 15 Apr 2021 22:39:17 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id p67so12668138pfp.10;
-        Thu, 15 Apr 2021 22:39:17 -0700 (PDT)
+        Fri, 16 Apr 2021 02:05:15 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F38ADC061760
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Apr 2021 23:04:50 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id i10so7036315lfe.11
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Apr 2021 23:04:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=q2IpgbsafY75uYCQfmC+SoKG1Ef0J5sHuVVR2O+B5xY=;
-        b=YmCBiNPQAFcGQR7D1WL53T+mLDwMDIjAavFG1l2EfFqRpVwm38lulgOISjDoT89XLC
-         Joimq34+bUIjpx+Th0wRsXa3b92v791L0QButYviz+B1YCNEGuL380HbpFMik9UbyU74
-         qxa8B5ZHYqEMjzn1uaAR7DMJ+FkH5ta8MtJtuoTL5hTjgLB7mqaEBuiN+6NzN2r2yvx0
-         RswNRaoxVis/nABOcBOEewXQwxiD3Oi9RHpvFCMxvG7FKHuYfC3hC+n14SnCsBpmh2WU
-         BZpbfP04psCL7GUkaVsEHZEtiMVBPM1Dnn9ywFm0BhJRJmDALJeHbE0ovcR9dOsKXyPw
-         SZBA==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gbzaa2Ai7xXdaJk+SuOzDr1sDQqCY9sqWL6R/1Zrh+s=;
+        b=W5/QWZWFFaSWg9idKZ6DJEpPmhh/eOS3XCiS0GJpjJR7c/9hO/bPRnbhDx6fcqOh/0
+         sp9nz3xawBALOHCXGcN4jIih6Lo7LRUhWSYjVKt/IE7M5QZMCikdUSMKXXJqXnNorxIu
+         UcotZdbyz0htz+FRuAF9BYmaG3K/gWMFAT/A8/JmQBFrNNVdGLgxB72JzOcS3dWuBrUO
+         pLLR3MAXjECLXZHF0eu89BJvQwappXx3P0EcpPXDjPCJULvqxF+y1iSxNPQzfc3EiG4c
+         rSb/0coU8nEO5IvdaN3SjfYFjNy5PzO32XHT/eoBVhUpxXlkT2FrApLCrpZqzbcHuazj
+         0Naw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=q2IpgbsafY75uYCQfmC+SoKG1Ef0J5sHuVVR2O+B5xY=;
-        b=KAHV28puv16fDRy6fs7UYO+EioK2g+3mjGvh9gFpQj4LjK6qr6/mxr/7z17RFnFjNv
-         WyU0+08ViBRHNRpZXmBxkuxdaQCT2QyxUmx/vIbx8QK/OnJ7rD53CUOYZ5gH8t346IIM
-         zmtQObGQDleL1Ir+f5tB0EbmqEBiTPNpG6DOCp8JNzg/bK0p4GIOE7Di4H+d5ZUtKY31
-         XR46SarmVYXoIj6zWL4R7pAlih51QwT5GhqMqd3v96JXA0+gZYEe27amI4ihWnJ1Q7fN
-         L7NQ/s8b8jvuZ3QIlR9QcWcBi54zzmGzkviKxuuBbvIRKEUx9wY7mk3D+g7Q2RzaFGEK
-         MjAA==
-X-Gm-Message-State: AOAM533yA1MIu+qhu2qykYCj7ncbwR9tvAKjczUzl+LdaWufI/BtE8Yy
-        hsUb+bKbqdbOdWEwNYTONpo=
-X-Google-Smtp-Source: ABdhPJzaYmoHH683P7tkrffDdBUTKJYjfW0v9Ym8+OrOOi60wx0ciD+GVBXn730Q3OIYntDtxxOPQg==
-X-Received: by 2002:a63:5a1a:: with SMTP id o26mr6550012pgb.327.1618551557230;
-        Thu, 15 Apr 2021 22:39:17 -0700 (PDT)
-Received: from localhost.localdomain ([75.167.198.216])
-        by smtp.gmail.com with ESMTPSA id q13sm3643266pfc.86.2021.04.15.22.39.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Apr 2021 22:39:16 -0700 (PDT)
-From:   Paul Zimmerman <pauldzim@gmail.com>
-To:     wedsonaf@google.com
-Cc:     gregkh@linuxfoundation.org, linux-doc@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ojeda@kernel.org, peterz@infradead.org,
-        rust-for-linux@vger.kernel.org, torvalds@linux-foundation.org,
-        viro@zeniv.linux.org.uk
-Subject: Re: [PATCH 00/13] [RFC] Rust support
-Date:   Thu, 15 Apr 2021 22:39:10 -0700
-Message-Id: <20210416053910.7363-1-pauldzim@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <YHkaaTQ2KQML2iqt@google.com>
-References: <YHkaaTQ2KQML2iqt@google.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gbzaa2Ai7xXdaJk+SuOzDr1sDQqCY9sqWL6R/1Zrh+s=;
+        b=lGoWfTaSVLIdTle0VBjY+kfbFTzoel+XxwQKz8f/4SaNUOtyWrPmKReL7kjSye/WA0
+         CmUrW3UmYuOvoJm9P4qz3KfvtpCSJXAY91l6fPbKD7NLg3U1zntiEmZW1X5bzsMiGJSU
+         ndTLdGKoLd+rPGHc/H3gkj9Od6Sd/GtwiYvMN0kc1LRhdzQ+6Dzmk32F0LKVctRdvCmK
+         zj+92jTYxIzgWoJT9hs1v7qGZHBklbRQnA5qxeD6AtDHIFQVIbl4k1/cQMmF6MsCIOPQ
+         m0XNp/7o0TVROsv88smv27gYG5y8t/xiT3g8rw4R1bpCh2/GkYDoQXpwkuStw/TqAmnV
+         y2xA==
+X-Gm-Message-State: AOAM531dAi1b8jLgNkkeXAdGRPPnCBfkZ1Vl9dBqIfpHWW7fGa2dl1E0
+        yekR4MZsNi8h9p4FEw36HddIdLYcM1dfH5re/Cmh/Q==
+X-Google-Smtp-Source: ABdhPJzd3Uifx8wPh8+Ukv5wC6+mAKF4pnOLfbn/l4Zr9Mzj0XiDdg2h8UGLElnlq21TU6eWm2HsUZh+V10t5NGgiSg=
+X-Received: by 2002:a19:ac09:: with SMTP id g9mr1821239lfc.547.1618553088788;
+ Thu, 15 Apr 2021 23:04:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210414184604.23473-1-ojeda@kernel.org> <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
+ <YHkSO3TUktyPs4Nz@boqun-archlinux>
+In-Reply-To: <YHkSO3TUktyPs4Nz@boqun-archlinux>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Thu, 15 Apr 2021 23:04:37 -0700
+Message-ID: <CAKwvOdnRx+8LhOAnH24CeZz2a2-MwF03oB7Um_pKBq8WAoLNxw@mail.gmail.com>
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>, ojeda@kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Andrea Parri <parri.andrea@gmail.com>,
+        Will Deacon <will@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        David Howells <dhowells@redhat.com>,
+        Jade Alglave <j.alglave@ucl.ac.uk>,
+        Luc Maranget <luc.maranget@inria.fr>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Akira Yokosawa <akiyks@gmail.com>,
+        Daniel Lustig <dlustig@nvidia.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Wedson Almeida Filho <wedsonaf@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Apr 16, 2021 at 06:02:33 +0100, Wedson Almeida Filho wrote:
-> On Fri, Apr 16, 2021 at 04:25:34AM +0000, Al Viro wrote:
+On Thu, Apr 15, 2021 at 9:27 PM Boqun Feng <boqun.feng@gmail.com> wrote:
 >
->>> Are you stating [what you perceive as] a fact or just venting? If the former,
->>> would you mind enlightening us with some evidence?
->> 
->> How about "not everyone uses a browser as a part of their workflow"?
+> [Copy LKMM people, Josh, Nick and Wedson]
 >
-> The documentation is available in markdown alongside the code. You don't need a
-> browser to see it. I, for one, use neovim and a rust LSP, so I can see the
-> documentation by pressing shift+k.
+> On Thu, Apr 15, 2021 at 08:58:16PM +0200, Peter Zijlstra wrote:
+> > On Wed, Apr 14, 2021 at 08:45:51PM +0200, ojeda@kernel.org wrote:
+> >
+> > > Rust is a systems programming language that brings several key
+> > > advantages over C in the context of the Linux kernel:
+> > >
+> > >   - No undefined behavior in the safe subset (when unsafe code is
+> > >     sound), including memory safety and the absence of data races.
+> >
+> > And yet I see not a single mention of the Rust Memory Model and how it
+> > aligns (or not) with the LKMM. The C11 memory model for example is a
+> > really poor fit for LKMM.
+> >
 >
->> I realize that it might sound ridiculous for folks who spent a while
->> around Mozilla, but it's really true and kernel community actually
->> has quite a few of such freaks.
+> I think Rust currently uses C11 memory model as per:
 >
-> I haven't spent any time around Mozilla myself (not that there's anything wrong
-> with it), so I can't really comment on this.
+>         https://doc.rust-lang.org/nomicon/atomics.html
 >
->> And as one of those freaks I can tell
->> you where exactly I would like you to go and what I would like you to do
->> with implicit suggestions to start a browser when I need to read some
->> in-tree documentation.
+> , also I guess another reason that they pick C11 memory model is because
+> LLVM has the support by default.
 >
-> I could be mistaken but you seem angry. Perhaps it wouldn't be a bad idea to
-> read your own code of conduct, I don't think you need a browser for that either.
+> But I think the Rust Community still wants to have a good memory model,
+> and they are open to any kind of suggestion and input. I think we (LKMM
+> people) should really get involved, because the recent discussion on
+> RISC-V's atomics shows that if we didn't people might get a "broken"
+> design because they thought C11 memory model is good enough:
+>
+>         https://lore.kernel.org/lkml/YGyZPCxJYGOvqYZQ@boqun-archlinux/
+>
+> And the benefits are mutual: a) Linux Kernel Memory Model (LKMM) is
+> defined by combining the requirements of developers and the behavior of
+> hardwares, it's pratical and can be a very good input for memory model
+> designing in Rust; b) Once Rust has a better memory model, the compiler
+> technologies whatever Rust compilers use to suppor the memory model can
+> be adopted to C compilers and we can get that part for free.
 
-Haven't you folks ever head of lynx? Good old-fashioned command-line tool that
-opens html files in a terminal window, supports following links within the file,
-good stuff like that. I don't see how the dinosaurs^W traditional folks could
-object to that!
+Yes, I agree; I think that's a very good approach.  Avoiding the ISO
+WG14 is interesting; at least the merits could be debated in the
+public and not behind closed doors.
 
--- Paul
+>
+> At least I personally is very intereted to help Rust on a complete and
+> pratical memory model ;-)
+>
+> Josh, I think it's good if we can connect to the people working on Rust
+> memoryg model, I think the right person is Ralf Jung and the right place
+> is https://github.com/rust-lang/unsafe-code-guidelines, but you
+> cerntainly know better than me ;-) Or maybe we can use Rust-for-Linux or
+> linux-toolchains list to discuss.
+>
+> [...]
+> > >   - Boqun Feng is working hard on the different options for
+> > >     threading abstractions and has reviewed most of the `sync` PRs.
+> >
+> > Boqun, I know you're familiar with LKMM, can you please talk about how
+> > Rust does things and how it interacts?
+>
+> As Wedson said in the other email, currently there is no code requiring
+> synchronization between C side and Rust side, so we are currently fine.
+> But in the longer term, we need to teach Rust memory model about the
+> "design patterns" used in Linux kernel for parallel programming.
+>
+> What I have been doing so far is reviewing patches which have memory
+> orderings in Rust-for-Linux project, try to make sure we don't include
+> memory ordering bugs for the beginning.
+>
+> Regards,
+> Boqun
+
+
+
+-- 
+Thanks,
+~Nick Desaulniers
