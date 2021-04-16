@@ -2,138 +2,65 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EADBCC433ED
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 02:22:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84D84C433B4
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 04:25:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9B2D56113B
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 02:22:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 577B56121E
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 04:25:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235852AbhDPCWr (ORCPT
+        id S237288AbhDPE0H (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 15 Apr 2021 22:22:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52654 "EHLO
+        Fri, 16 Apr 2021 00:26:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235046AbhDPCWr (ORCPT
+        with ESMTP id S234757AbhDPE0G (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 15 Apr 2021 22:22:47 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEDD8C061756
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Apr 2021 19:22:22 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id i21-20020a05600c3555b029012eae2af5d4so3707109wmq.4
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Apr 2021 19:22:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=RDRWGt7xOekmwUKUE2JEVIaFGKRBsEO59DpsTnWgs/0=;
-        b=ZfOxa43AWeSHjHBGW3m2xxgRn0MKBaCittzuqp5UzO77kBOKY+usslGnGnAr/bGr9r
-         Y/FlasLuieWL3Lhp+NU27g3OBnXe07L7YygtbptzZRtIj+cm6dx2dOyRfgtMiScUNN3W
-         Qm0cSyWf8oYh8NRjHjanPlsTr3KlqE2xCblcaA7wbs5sauhyiW6t8wqTVxa8/bdxETOj
-         DJFHBnwCjdVHdB7lQFpVM/1+0fwY/FFQGmF6ec7cG08xt6EQkbgRa0ZDbgvWCY3AZa01
-         t/eax8nlE9M8mgTwNUtBaHqr4JuErCH+9oM60bW2CZrMcCT/7nlOiovQwH3V7tGcuk6w
-         A+Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RDRWGt7xOekmwUKUE2JEVIaFGKRBsEO59DpsTnWgs/0=;
-        b=JmPZIB76WzvZ0vbwMOCa6v8wrSZzG6k/IuSdEq1LrZa9aEoMhpXALhjH1GkoJr0la1
-         YfT86QvoGDb4fk2TzQg+pp+5ollz6PwlxdnaMkbxdgDo1QCKeUhxvTOJ7Myq3RyD5FiH
-         tdArMxr9GN7hyNY1dWMk+JtGBpfgBdE1wanmmxj+TF6Acx4PT+PZx7hfu79cqeZAFmPF
-         R4sm3AH6cUfNwGQ+A7Fr2ytaZ+WR94D0BKRiVJ0h1iKld49EZRFD9akpaGDwRGW9sGHA
-         ZbXkFmm0ntDl8RBVdv4ISK9mP+5YjqptgCUETCd67NyWyxI7sGFbLEZN69zzKZqlykrB
-         xagw==
-X-Gm-Message-State: AOAM533lxRBLXRyNdkLVrp1t/2VTJIK9wbU0f1ctyq14IKWxHlZHCjl8
-        H7LhrvrEd0r915oXfiFIPpnR
-X-Google-Smtp-Source: ABdhPJxQj64FHzBBkB1XlDKKfuP/omZD2DU9RupOiJ3vBjtuXY1JXoOhozJ3FC0KYuffL3O4FaGA8Q==
-X-Received: by 2002:a7b:c5c8:: with SMTP id n8mr5790600wmk.63.1618539741456;
-        Thu, 15 Apr 2021 19:22:21 -0700 (PDT)
-Received: from google.com ([2a00:79e0:d:209:9d22:ab98:31ab:7a9d])
-        by smtp.gmail.com with ESMTPSA id f7sm3679602wrp.48.2021.04.15.19.22.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Apr 2021 19:22:21 -0700 (PDT)
-Date:   Fri, 16 Apr 2021 03:22:16 +0100
-From:   Wedson Almeida Filho <wedsonaf@google.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     ojeda@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+        Fri, 16 Apr 2021 00:26:06 -0400
+Received: from zeniv-ca.linux.org.uk (zeniv-ca.linux.org.uk [IPv6:2607:5300:60:148a::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D508EC061574;
+        Thu, 15 Apr 2021 21:25:42 -0700 (PDT)
+Received: from viro by zeniv-ca.linux.org.uk with local (Exim 4.94 #2 (Red Hat Linux))
+        id 1lXG2w-005fpW-7A; Fri, 16 Apr 2021 04:25:34 +0000
+Date:   Fri, 16 Apr 2021 04:25:34 +0000
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Wedson Almeida Filho <wedsonaf@google.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>, ojeda@kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 00/13] [RFC] Rust support
-Message-ID: <YHj02M3jMSweoP4l@google.com>
+Message-ID: <YHkRvhIeO2794f7v@zeniv-ca.linux.org.uk>
 References: <20210414184604.23473-1-ojeda@kernel.org>
  <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
+ <YHj02M3jMSweoP4l@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
+In-Reply-To: <YHj02M3jMSweoP4l@google.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Apr 15, 2021 at 08:58:16PM +0200, Peter Zijlstra wrote:
-> On Wed, Apr 14, 2021 at 08:45:51PM +0200, ojeda@kernel.org wrote:
-> 
-> > Rust is a systems programming language that brings several key
-> > advantages over C in the context of the Linux kernel:
-> > 
-> >   - No undefined behavior in the safe subset (when unsafe code is
-> >     sound), including memory safety and the absence of data races.
-> 
-> And yet I see not a single mention of the Rust Memory Model and how it
-> aligns (or not) with the LKMM. The C11 memory model for example is a
-> really poor fit for LKMM.
+On Fri, Apr 16, 2021 at 03:22:16AM +0100, Wedson Almeida Filho wrote:
 
-We don't intend to directly expose C data structures to Rust code (outside the
-kernel crate). Instead, we intend to provide wrappers that expose safe
-interfaces even though the implementation may use unsafe blocks. So we expect
-the vast majority of Rust code to just care about the Rust memory model.
-
-We admittedly don't have a huge number of wrappers yet, but we do have enough to
-implement most of Binder and so far it's been ok. We do intend to eventually
-cover other classes of drivers that may unveil unforeseen difficulties, we'll
-see.
-
-If you have concerns that we might have overlooked, we'd be happy to hear about
-them from you (or anyone else).
-
-> HTML is not a valid documentation format. Heck, markdown itself is
-> barely readable.
-
-Are you stating [what you perceive as] a fact or just venting? If the former,
-would you mind enlightening us with some evidence?
-
-> It is really *really* hard to read. It has all sorts of weird things,
-> like operators at the beginning after a line break:
+> > HTML is not a valid documentation format. Heck, markdown itself is
+> > barely readable.
 > 
-> 	if (foo
-> 	    || bar)
-> 
-> which is just wrong. And it suffers from CamelCase, which is just about
-> the worst thing ever. Not even the C++ std libs have that (or had, back
-> when I still did knew C++).
-> 
-> I also see:
-> 
-> 	if (foo) {
-> 		...
-> 	}
-> 
-> and
-> 
-> 	if foo {
-> 	}
-> 
-> the latter, ofcourse, being complete rubbish.
+> Are you stating [what you perceive as] a fact or just venting? If the former,
+> would you mind enlightening us with some evidence?
 
-There are advantages to adopting the preferred style of a language (when one
-exists). We, of course, are not required to adopt it but I am of the opinion
-that we should have good reasons to diverge if that's our choice in the end.
+How about "not everyone uses a browser as a part of their workflow"?
+I realize that it might sound ridiculous for folks who spent a while
+around Mozilla, but it's really true and kernel community actually
+has quite a few of such freaks.  And as one of those freaks I can tell
+you where exactly I would like you to go and what I would like you to do
+with implicit suggestions to start a browser when I need to read some
+in-tree documentation.
 
-"Not having parentheses around the if-clause expression is complete rubbish"
-doesn't sound like a good reason to me.
+Linus might have different reasons, obviously.
