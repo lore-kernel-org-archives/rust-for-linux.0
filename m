@@ -2,96 +2,148 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E13FAC433B4
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 08:33:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9EADC433ED
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 09:30:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BD5056117A
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 08:33:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B426F6109F
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 09:30:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240382AbhDPIdk (ORCPT
+        id S241780AbhDPJas (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Apr 2021 04:33:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48700 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239986AbhDPIdj (ORCPT
-        <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Apr 2021 04:33:39 -0400
-X-Greylist: delayed 307 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 16 Apr 2021 01:33:15 PDT
-Received: from gimli.kloenk.dev (gimli.kloenk.dev [IPv6:2a0f:4ac0:0:1::cb2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B50DC061574
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Apr 2021 01:33:15 -0700 (PDT)
-From:   Finn Behrens <me@kloenk.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kloenk.de; s=mail;
-        t=1618561683; bh=YSO81F471/A6yr7yb64E+//PU+6h8+m2wua2aHHooMc=;
-        h=From:Subject:Date:Cc:To;
-        b=FqyW9ZPEv4dVSI4TovCH/lXJ1ljO7EgKnRrKoBOKE/0cQuYALo8z4YGtfYxhAnw5x
-         SqAiF7CW8y7Sut0q4ehhEp9op0PCs2sb1uUrlD2pvbKbITXSaL+9IGaBZ5OBx1nD2J
-         OZHTfh8rwNrZO2XQ//d0/qfUZajfP4hHKHgKgSY8=
-Content-Type: multipart/signed;
-        boundary="Apple-Mail=_E85CDACB-A7B5-4CC7-9E53-8B7F5E8C2B35";
-        protocol="application/pgp-signature";
-        micalg=pgp-sha256
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.80.0.2.43\))
-Subject: Rust-for-Linux Hydra CI
-Message-Id: <04861911-1275-449E-BE54-C6871B53F4A3@kloenk.de>
-Date:   Fri, 16 Apr 2021 10:27:56 +0200
-Cc:     linux@petabyte.dev, Joerg Thalheim <joerg@thalheim.io>
-To:     rust-for-linux@vger.kernel.org
+        Fri, 16 Apr 2021 05:30:48 -0400
+Received: from wtarreau.pck.nerim.net ([62.212.114.60]:51712 "EHLO 1wt.eu"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229706AbhDPJar (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Fri, 16 Apr 2021 05:30:47 -0400
+Received: (from willy@localhost)
+        by pcw.home.local (8.15.2/8.15.2/Submit) id 13G9TiNs009046;
+        Fri, 16 Apr 2021 11:29:44 +0200
+Date:   Fri, 16 Apr 2021 11:29:44 +0200
+From:   Willy Tarreau <w@1wt.eu>
+To:     Michal Kubecek <mkubecek@suse.cz>
+Cc:     linux-kernel@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>, ojeda@kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+Message-ID: <20210416092944.GB8790@1wt.eu>
+References: <20210414184604.23473-1-ojeda@kernel.org>
+ <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
+ <20210416081605.3m4apyornouf5p5s@lion.mk-sys.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210416081605.3m4apyornouf5p5s@lion.mk-sys.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Fri, Apr 16, 2021 at 10:16:05AM +0200, Michal Kubecek wrote:
+> And I don't see how the two languages might coexist peacefully without
+> rust toolchain being necessary for building any kernel useful in
+> practice and anyone seriously involved in kernel development having to
+> be proficient in both languages.
 
---Apple-Mail=_E85CDACB-A7B5-4CC7-9E53-8B7F5E8C2B35
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+Two languages ? No, one is specified and multiple-implemented, the other
+one is the defined as what its only compiler understands at the moment,
+so it's not a language, it's a compiler's reference manual at best. I'm
+waiting for the day you're force to write things which look wrong with a
+big comment around saying "it's not a bug it's a workaround for a bug in
+the unique compiler, waiting to be retrofitted into the spec to solve the
+problem for every user". Already seen for at least another "language"
+implemented by a single vendor 22 years ago.
 
-Howdy,
+> Neither of these looks appealing to me.
+> 
+> The dependency on rust toolchain was exactly what made me give up on
+> building Firefox from mercurial snapshots few years ago. To be able to
+> build them, one needed bleeding edge snapshots of rust toolchain which
+> my distribution couldn't possibly provide and building them myself
+> required way too much effort. This very discussion already revealed that
+> rust kernel code would provide similar experience. I also have my doubts
+> about the "optional" part; once there are some interesting drivers
+> written in rust, even if only in the form of out of tree modules, there
+> will be an enormous pressure on distributions, both community and
+> enterprise, to enable rust support.
 
-The nix-community gave me access to the nix-community hydra. Hydra is =
-the CI tool written for nix builds, and so builds the rust-for-linux =
-tree with nix. The hydra is checking the GitHub rust-for-linux/linux =
-repo for new commits, and then builds these in a nix context (If we want =
-to move to git.kernel.org, hydra can also check there for new commits).
+Yes this scarily looks like the usual "embrace and extend... and abandon
+the corpse once it doesn't move anymore".
 
-The latest builds can be seen here: =
-https://hydra.nix-community.org/jobset/rust-for-linux/rust and is also =
-uploaded to the nix cache at https://app.cachix.org/cache/nix-community =
-(local nix versions can use those caches to substitute builds, e.g. =
-rustc-nightly)
+I've already faced situations where I couldn't compile a recent 5.x kernel
+using my previous gcc-4.7 compiler and this really really really pissed me
+off because I'd had it in a build farm for many architectures and I had to
+give up. But I also know that updating to a newer version will take time,
+will be durable and will be worth it for the long term (except for the fact
+that gcc doubles the build time every two versions). But here having to use
+*the* compiler of the day and being prepared to keep a collection of them
+to work with different stable kernels, no!
 
-We could also add vm tests via nixos, and documentation is not generated =
-currently, but if we write nix derivations for that, hydra could also =
-deliver those for download.
+Also, I'm a bit worried about long-term survival of the new
+language-of-the-day-that-makes-you-look-cool-at-beer-events. I was once
+told perl would replace C everywhere. Does someone use it outside of
+checkpatch.pl anymore ? Then I was told that C was dead because PHP was
+appearing everywhere. I've even seen (slow) log processors written with
+it. Now PHP seems to only be a WAF-selling argument. Then Ruby was "safe"
+and would rule them all. Safe as its tab[-1] which crashed the interpreter.
+Anyone heard of it recently ? Then Python, whose 2.7 is still present on
+a lot of systems because the forced transition to 3 broke tons of code.
+Will there ever be a 4 after this sore experience ? Then JS, Rust, Go,
+Zig and I don't know what. What I'm noting is that such languages appear,
+serve a purpose well, have their moment of fame, last a decade and
+disappear except at a few enthousiasts. C has been there for 50 years
+and served as the basis of many newer languages so it's still well
+understood. I'm sure about one thing, the C bugs we have today will be
+fixable in 20 years. I'm not even sure the Rust code we'll merge today
+will still be compilable in 10 years nor will support the relevant
+architectures available by then, and probably this code will have to
+be rewritten in C to become maintained again.
 
+> The other problem is even worse. Once we have non-trivial amount of rust
+> code around the tree, even if it's "just some drivers", you cannot
+> completely ignore it. One example would be internal API changes. Today,
+> if I want to touch e.g. ethtool_ops, I need to adjust all in tree NIC
+> drivers providing the affected callback and adjust them. Usually most of
+> the patch is generated by spatch but manual tweaks are often needed here
+> and there. In the world of bilingual kernel with nontrivial number of
+> NIC drivers written in rust, I don't see how I could do that without
+> also being proficient in rust.
 
+You'll simply change the code you're able to change and those in charge
+of their driver will use your commit message as instruction to fix the
+build on theirs. How do you want it to be otherwise ?
 
-CU,
-Finn
+> Rust enthusiasts tell us they want to
+> open kernel development to more people but the result could as well be
+> exactly the opposite: it could restrict kernel development to people
+> proficient in _both_ languages.
 
-PS: I=E2=80=99m not sure If this will break if we rebase to a newer =
-linux version, as nix needs a version to find some files.
+This has been my understanding from the very beginning. Language prophets
+always want to conquier very visible targets as a gauge of their baby's
+popularity.
 
---Apple-Mail=_E85CDACB-A7B5-4CC7-9E53-8B7F5E8C2B35
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename=signature.asc
-Content-Type: application/pgp-signature;
-	name=signature.asc
-Content-Description: Message signed with OpenPGP
+> As Peter said, it's not an imminent problem but as it's obvious this is
+> just the first step, we should have a clear idea what the plan is and
+> what we can and should expect.
 
------BEGIN PGP SIGNATURE-----
+I think the experience could be... interesting. However, I do note that
+I've read quite a few claims about better security yada yada due to a
+stricter memory model. Except that I seem to have understood that a lot
+of code will have to run in unsafe mode (which partially voids some of
+the benefits), that we'll be at the mercy of the unique compiler's bugs,
+and that in addition code auditing will be very hard and reviews of the
+boundaries between the two languages almost inexistent. This is precisely
+what will become the new playground of attackers, and I predict a
+significant increase of vulnerabilities past this point. Time will tell,
+hoping it's never too late to rollback if it gets crazy. As long as the
+code remains readable, it could be rewritten in C to regain control...
 
-iHUEARYIAB0WIQS0St/f+Gmmaj/f3YuGCae1GeXjQgUCYHlKjQAKCRCGCae1GeXj
-Qv3/APkBq5rRalbo++vYvgbK6OmUx0HsJb0FHAq2dWP43KLAuQEA7Kr2wRLEQuM5
-+xKfZwKxyPJQWw8s3l762JPEBT9DlgM=
-=umGi
------END PGP SIGNATURE-----
+> Michal
 
---Apple-Mail=_E85CDACB-A7B5-4CC7-9E53-8B7F5E8C2B35--
+Willy
