@@ -2,65 +2,76 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FAA1C433B4
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:12:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98247C433B4
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:20:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 244D861107
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:12:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6A0FC611AC
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:20:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235600AbhDPNMd (ORCPT
+        id S239122AbhDPNVB (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Apr 2021 09:12:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54302 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235445AbhDPNMc (ORCPT
-        <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Apr 2021 09:12:32 -0400
-Received: from gimli.kloenk.dev (gimli.kloenk.dev [IPv6:2a0f:4ac0:0:1::cb2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1981BC061574
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Apr 2021 06:12:08 -0700 (PDT)
-Content-Type: text/plain;
-        charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kloenk.de; s=mail;
-        t=1618578725; bh=8GbFUE0vAX4U/QHRUGvWkJA45Rbaf7rGTBwNR2pI0A4=;
-        h=Subject:From:In-Reply-To:Date:Cc:References:To;
-        b=fg/+z8ZvSGYw5uNazzYMsJdnkGmsWLgF4cx0zIX0EWPnSk2dd29PQo3Cebejkxhbr
-         P1jwqdhdz5VTKNzQqZ5rf4BMCFv/7e0H/Rcp1yxDuNR8XX6YyCtl7Bm974gGS8O9EM
-         3yOhiV7ABi0g2i3+Ie6N3zxrans7bmUxUW5KsL1o=
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.80.0.2.43\))
-Subject: Re: Rust-for-Linux Hydra CI
-From:   Finn Behrens <me@kloenk.de>
-In-Reply-To: <CAE06CAE_g53DEB5cZr02eV-=okMPbnE0Do1vQgHR7UyZsS_edw@mail.gmail.com>
-Date:   Fri, 16 Apr 2021 15:12:04 +0200
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        rust-for-linux@vger.kernel.org, linux@petabyte.dev,
-        Joerg Thalheim <joerg@thalheim.io>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A7F04F36-FFD2-4A3B-A1DC-CC8C376BCBD4@kloenk.de>
-References: <04861911-1275-449E-BE54-C6871B53F4A3@kloenk.de>
- <CANiq72nvB7LYTc7wfuV+UM-s9wvOpObBhdJa4=odd8103x7BKA@mail.gmail.com>
- <BB89357B-DB5C-4D4D-A0F0-0B57F9F5CE11@kloenk.de>
- <CAE06CAE_g53DEB5cZr02eV-=okMPbnE0Do1vQgHR7UyZsS_edw@mail.gmail.com>
-To:     Christine Dodrill <me@christine.website>
+        Fri, 16 Apr 2021 09:21:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42260 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235361AbhDPNVB (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Fri, 16 Apr 2021 09:21:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7725261003;
+        Fri, 16 Apr 2021 13:20:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1618579236;
+        bh=Wi/nLQgcn/JH9WXBh2E48up7ZmjmYCgAyJbsb8cnjhU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=1LuNiiCLcb4ktgUkDnBBapxHecDoi5oh56ZAOAi4Iqa6pZvQh0UJfDDURu+hxtmsO
+         /Ave1zJZUXipPd5pThy8mcZoI4fdkhoZF8hRu7pichW1BMdreZh2kah60sarZmtBB4
+         q6uh0dRuf6QF1AKDWUiFs+spApSb4+1PfevFKiBY=
+Date:   Fri, 16 Apr 2021 15:20:33 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Sven Van Asbroeck <thesven73@gmail.com>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        rust-for-linux@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>
+Subject: Re: [PATCH 09/13] Samples: Rust examples
+Message-ID: <YHmPIY+SvHXbFZM3@kroah.com>
+References: <20210414184604.23473-1-ojeda@kernel.org>
+ <20210414184604.23473-10-ojeda@kernel.org>
+ <CAHk-=wjdZ1KksHHHuekeAx9kKFXEyt+rg0P=yRD1Bia_01wucg@mail.gmail.com>
+ <CAKwvOd=Vo3wwm-egc6fTa7gD4dsrc77OvBhUy8e+VM=LujRCfg@mail.gmail.com>
+ <YHfm+tCYp+I1C5I/@kroah.com>
+ <CAGngYiV3Q336QLwZ_PjDj9hd+Y4uMjhq209ppYYqc_QeegLvgw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGngYiV3Q336QLwZ_PjDj9hd+Y4uMjhq209ppYYqc_QeegLvgw@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Fri, Apr 16, 2021 at 09:07:10AM -0400, Sven Van Asbroeck wrote:
+> On Thu, Apr 15, 2021 at 3:11 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > I've been talking with the developers here about doing a "real" driver
+> 
+> Would it be beneficial if the device h/w targeted by the "real" Rust
+> driver has QEMU emulation? Perhaps in addition to physical silicon.
 
+Again, as was reported, a nvme driver falls into that category today, no
+need to look very far.
 
-> On 16. Apr 2021, at 15:09, Christine Dodrill <me@christine.website> =
-wrote:
->=20
-> I will see what I can get done after work today. I would just submit
-> the tests as a pull request, right?
->=20
-Yes, add it to the default.nix, so default.nix returns a package set, =
-hydra evaluates this default.nix (giving it the latest input) and builds =
-every package returned by that function.
+thanks,
 
-CU,
-Finn=
+greg k-h
