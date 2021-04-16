@@ -2,91 +2,119 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D080C433B4
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:22:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 518E3C433B4
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:38:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 31B13610CE
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:22:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 32AAB611AB
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 13:38:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239778AbhDPNWv (ORCPT
+        id S244138AbhDPNjT (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Apr 2021 09:22:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56640 "EHLO
+        Fri, 16 Apr 2021 09:39:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235361AbhDPNWv (ORCPT
+        with ESMTP id S244120AbhDPNjS (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Apr 2021 09:22:51 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2F6AC061574
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Apr 2021 06:22:25 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id o10so30055550ybb.10
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Apr 2021 06:22:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=8rTtVhJ6EMju428G2yKX4un2TNtCkhgU4Ff94+6qkPI=;
-        b=iTf23hrS0u+uC8PHKSZUnW9r2anVxM0r3rwAcVU55832yI7KC/dkSf5fmOJsioELPE
-         Ae1pK/svXWGe/kbZJ2cMC8iYBOI7GxkvCyM/efBQviJQa19enFxWvtGuy8uriOzRCADl
-         xBvB34MSIAojtX/BZZtcQSBPRYvrXDsjnW95O1REYwdOXvSCtAml+4bcknOhf+z2QWfW
-         WFIOL2+qk4qdQZ8P+KolN9GQl81Lpdsv5/B8mhvHpT9U0McqKCfXIelxcG3UUS1BVLMU
-         HX4m6y753lh0X4NadhDiH7i181PjlSQ7RMeRyY1bL8uf5UlTD7p3xAT75wo+JejzJA2U
-         bi5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=8rTtVhJ6EMju428G2yKX4un2TNtCkhgU4Ff94+6qkPI=;
-        b=Jh3DTj9nUYO820fg3DPXRewSzPHcw+LNgHncQGESxJsPYidpAqcWgyA/tQo2F/hkEP
-         6PkXhZE5UANBz8XTo0Ab8MZ0PlpTl3lFegntn/66tDw0Q/uDtnj4KFcsNucIlZ+MynjN
-         tEgHWE+yfPfJm3/6gMu/o31ecplWYYesG+qBDpDMebHzwfI9IIiNnXA1hS58Eq3gz/04
-         jEQ03nnGV5l1Es7T21vvHZc9Z2HMngHdGmUZ29k3YL6EOGX85XFeb9GLmCPgdEmrmHNj
-         ziMwLP31svuhKudPBjZ7X4RAtZZtwxyEI4FMGPa99fn2gOsf2bLVg3babVJfdPBxiuB6
-         /wpQ==
-X-Gm-Message-State: AOAM5312aJH7Essn51BvrCW5Wc9w+mM+kDAuQWEQBQgdOlLQHiQwkV4K
-        x9HDAPbi2X0668pG+3VxmbCbOGZ0D4nxz27KN28=
-X-Google-Smtp-Source: ABdhPJzH80VC7+tkydCONjz9l13fDdxviB51m9DRaZ/Yt2N6hgdhp/fZxGDN/SH65x3kHoy75/GEafUxcbeX7HOKxzg=
-X-Received: by 2002:a25:6803:: with SMTP id d3mr12186611ybc.422.1618579345195;
- Fri, 16 Apr 2021 06:22:25 -0700 (PDT)
+        Fri, 16 Apr 2021 09:39:18 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64C2EC061574;
+        Fri, 16 Apr 2021 06:38:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=Oj/fWAhs31bJWwFY86CV59sd9Zza6E359cV1eJHfuf8=; b=YvswR+OJUHyRCNkqXe+cj7OE/x
+        moZv4q23OFJExA8D9F7fO4a1wuLpujs1DV1tr/G+hp/+oaG4ibrZuel2zUse16Uetw94gutySbxNF
+        CygLbNlxkkYS2ro7ptyMy+hw94RkunBsMdN+NPKbsq7K1mBrK97ERS/OYPTOzG1wrtQ/CAJxYPXfG
+        V5vQtNXOSVZ2YaXWpDyAOQCvAHHJvZ3ki7TJBRBB5ndnhdHx6jmCM7inL2z2aBTcoYR7IrFVrA7dn
+        F1EH2QZNfCa2hqiMszrLp0ycBQ4uFGovqD8ZSShiNJHjU7hKCl0n1ZWpOWvK3xExHYO+urcJghj1R
+        gBjisRUA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lXOg5-002GOp-Ce; Fri, 16 Apr 2021 13:38:36 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 85CD5300222;
+        Fri, 16 Apr 2021 15:38:32 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 281262C067030; Fri, 16 Apr 2021 15:38:32 +0200 (CEST)
+Date:   Fri, 16 Apr 2021 15:38:32 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     ojeda@kernel.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 04/13] Kbuild: Rust support
+Message-ID: <YHmTWEAS/QjX++w4@hirez.programming.kicks-ass.net>
+References: <20210414184604.23473-1-ojeda@kernel.org>
+ <20210414184604.23473-5-ojeda@kernel.org>
 MIME-Version: 1.0
-References: <04861911-1275-449E-BE54-C6871B53F4A3@kloenk.de>
- <CANiq72nvB7LYTc7wfuV+UM-s9wvOpObBhdJa4=odd8103x7BKA@mail.gmail.com> <BB89357B-DB5C-4D4D-A0F0-0B57F9F5CE11@kloenk.de>
-In-Reply-To: <BB89357B-DB5C-4D4D-A0F0-0B57F9F5CE11@kloenk.de>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 16 Apr 2021 15:22:14 +0200
-Message-ID: <CANiq72n4Mu8dzE3GaNOrRvJDD+5G0WXuNxj-e9RCyY5XkuQ4Zg@mail.gmail.com>
-Subject: Re: Rust-for-Linux Hydra CI
-To:     Finn Behrens <me@kloenk.de>
-Cc:     me@christine.website, rust-for-linux@vger.kernel.org,
-        linux@petabyte.dev, Joerg Thalheim <joerg@thalheim.io>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210414184604.23473-5-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Apr 16, 2021 at 3:07 PM Finn Behrens <me@kloenk.de> wrote:
->
-> I confirmed that rebasing breaks the build. But yes this is only a red st=
-ate as the build fails, but it does not block anything. Ofcourse if we get =
-around to build nixos-vm tests those tests are also blocked as there is no =
-kernel that builds and so can be tested. But still, this is only a broken s=
-tate, and does not affect any other projects.
-> We can also monitor different branches of the rust-for-linux linux tree, =
-where a rebase in one branch would not affect another branch.
+On Wed, Apr 14, 2021 at 08:45:55PM +0200, ojeda@kernel.org wrote:
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 1b6094a13034..3665c49c4dcf 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -26,6 +26,7 @@ EXTRA_CPPFLAGS :=
+>  EXTRA_LDFLAGS  :=
+>  asflags-y  :=
+>  ccflags-y  :=
+> +rustcflags-y :=
+>  cppflags-y :=
+>  ldflags-y  :=
+>  
+> @@ -287,6 +288,24 @@ quiet_cmd_cc_lst_c = MKLST   $@
+>  $(obj)/%.lst: $(src)/%.c FORCE
+>  	$(call if_changed_dep,cc_lst_c)
+>  
+> +# Compile Rust sources (.rs)
+> +# ---------------------------------------------------------------------------
+> +
+> +rustc_cross_flags := --target=$(srctree)/arch/$(SRCARCH)/rust/target.json
+> +
+> +quiet_cmd_rustc_o_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
+> +      cmd_rustc_o_rs = \
+> +	RUST_MODFILE=$(modfile) \
+> +	$(RUSTC_OR_CLIPPY) $(rustc_flags) $(rustc_cross_flags) \
+> +		--extern alloc --extern kernel \
+> +		--crate-type rlib --out-dir $(obj) -L $(objtree)/rust/ \
+> +		--crate-name $(patsubst %.o,%,$(notdir $@)) $<; \
+> +	mv $(obj)/$(subst .o,,$(notdir $@)).d $(depfile); \
+> +	sed -i '/^\#/d' $(depfile)
+> +
+> +$(obj)/%.o: $(src)/%.rs FORCE
+> +	$(call if_changed_dep,rustc_o_rs)
+> +
+>  # Compile assembler sources (.S)
+>  # ---------------------------------------------------------------------------
+>  
 
-Sounds very good then.
+So if I read all this right, rust compiles to .o and, like any other .o
+file is then fed into objtool (for x86_64). Did you have any problems
+with objtool? Does it generate correct ORC unwind information?
 
-> Maybe Christine want=E2=80=99s to add tests, the nix derivations are at h=
-ttps://github.com/rust-for-linux/nix and are automatically updated by hydra=
-, as I should write my finals and not linux tests :-).
+AFAICT rust has try/throw/catch exception handling (like
+C++/Java/others) which is typically implemented with stack unwinding of
+its own.
 
-Good luck on your finals!
-
-Cheers,
-Miguel
+Does all that interact sanely?
