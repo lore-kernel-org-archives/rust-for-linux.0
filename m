@@ -2,147 +2,81 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2964DC433ED
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 15:34:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BD59C43461
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 15:43:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0A18661222
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 15:34:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 70F996109F
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 15:43:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343778AbhDPPeY (ORCPT
+        id S235799AbhDPPoG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Apr 2021 11:34:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58316 "EHLO
+        Fri, 16 Apr 2021 11:44:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343768AbhDPPeY (ORCPT
+        with ESMTP id S236017AbhDPPoE (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Apr 2021 11:34:24 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE17BC061574
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Apr 2021 08:33:57 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id w186so10014124wmg.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Apr 2021 08:33:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=ytm6x2vLN84smHgW7vb9p/KsJj33G3R6bvIaflLv16E=;
-        b=hJXWLfp4f8CDzTqfIgdSOObQIM1FLOSrZ2p0XRVjGVtTQi4L+zsddWxRrhd4kWa7n5
-         X3ydnDUq9ENQeqWuhpQ390B65NX0dxsqk6MoVuNK6IeWQF4VkNmJu5a8gd9aHQosmUs6
-         nWtcutBvfOyzxz9QkWvxlEJXnplGbhvOLECd7FYnvdJZX5h/Z+uHG/BaXbS7yCJPnodK
-         Dz1jB/kk7PsZZ3I0jmXb3sx5LkoXoLCIKAmb6JdAl+DBvXK0XW7zQ7+maLVlgz3K/H4e
-         aEYAoCCpW1z6qx9z0St9cTzk6VsvofHR9i5pU84J7acECE0VRI6BCXYPFAcCGgbrFNa4
-         oRIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=ytm6x2vLN84smHgW7vb9p/KsJj33G3R6bvIaflLv16E=;
-        b=dLZEqB+K8vGNtsFMJKdNSCSe4r/ARpza63LiunWUPBtnZlPRG0ML3HKQdy66byy1D0
-         +QYn1VKlkYU6jZ6sa0w1SISp1nqcfHvaiTD6gJU+nMaOnAiYZm37vef+iU+3NHdwm6dl
-         WborQHgvoh87HehLiXal/oymN0eNT2acr2HU910nYGLWDzQz9ttTgDvQKoQ0P1bEtGHK
-         GttDpqWxPYiWpiFYbT5ChFOUx5cSpwEJ4WI28vYifzekxfsEt4WAdZZaVfA5vKm+nYl0
-         VAF7zP7cEC6DNauIXfK1zTPapBgCFXJu+08lj5AoqJycxAMn74PuC+Mue0xuj3f4l/vn
-         7CAw==
-X-Gm-Message-State: AOAM531TWZlBvmhOQzrNEdoG6bgCiqfxKDY19lUsHuhbO7yYuISMUq9v
-        FhMe8fInN1B+oUvPFNk4pxwjDhNAJkjhD+I=
-X-Google-Smtp-Source: ABdhPJwdoLg+1ErpoqLIywM8fzr1a2vNVP9e9Ue/4v+FeKMWMF2/CbGEFdt4Cf7AmMquJc5zsiXF/w==
-X-Received: by 2002:a1c:6646:: with SMTP id a67mr8967894wmc.86.1618587236337;
-        Fri, 16 Apr 2021 08:33:56 -0700 (PDT)
-Received: from google.com ([2a00:79e0:d:209:51db:fb7a:d252:e3c1])
-        by smtp.gmail.com with ESMTPSA id h17sm11209854wru.67.2021.04.16.08.33.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Apr 2021 08:33:56 -0700 (PDT)
-Date:   Fri, 16 Apr 2021 16:33:51 +0100
-From:   Wedson Almeida Filho <wedsonaf@google.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     ojeda@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+        Fri, 16 Apr 2021 11:44:04 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C2AAC061574;
+        Fri, 16 Apr 2021 08:43:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=u0q6i4p0A1Xq+FzrPxCkcWRtaIl82014FLZ7LRyz5aU=; b=nsN75AlQzPpc5/Q88Ato4cGX3H
+        0iUpvFRvQGE9WYyEzwlscppyr/rX/7Lgxm2gmDC071GStZdLwW6Pe3ui4O0MLPaSHxvcFNwPHNAeI
+        Wn8i/h0W0JF0ONg0EUKLda8yZHfYrOeJhdg4erEMh/ZWkPxYJ+p9HACQ3a1MkdlvpVGYjmMGv09Vb
+        PZojhFJcVdHeMN+YCmY232mx8irJiLkg50JQP6WAYNjNvp479d3VozFZE7MOzMyDv4+atk/QfSGEl
+        xna+txU/4Lktk4edb3OzUHpQSc7j8TKUF2ki2e2+9HglB0X8RH8YWDPrcRFvPXBZPpcur6OzaO+e/
+        M86Q8NiQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lXQcz-002fFh-Ri; Fri, 16 Apr 2021 15:43:33 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 61689300212;
+        Fri, 16 Apr 2021 17:43:29 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 4BDF92122BE98; Fri, 16 Apr 2021 17:43:29 +0200 (CEST)
+Date:   Fri, 16 Apr 2021 17:43:29 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Wedson Almeida Filho <wedsonaf@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+        rust-for-linux@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH 00/13] [RFC] Rust support
-Message-ID: <YHmuX1NA5RF7C7XS@google.com>
+Message-ID: <YHmwoe8+mNPBFm1R@hirez.programming.kicks-ass.net>
 References: <20210414184604.23473-1-ojeda@kernel.org>
  <YHlz54rd1YQHsOA/@hirez.programming.kicks-ass.net>
  <YHmMJWmzz2vZ3qQH@google.com>
  <YHmc2+bKQJ/XAATF@hirez.programming.kicks-ass.net>
+ <CANiq72n9ocqaFQnOjUO95_7Xd3wpWShtzMKrBQE2gN8jOyrW5g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YHmc2+bKQJ/XAATF@hirez.programming.kicks-ass.net>
+In-Reply-To: <CANiq72n9ocqaFQnOjUO95_7Xd3wpWShtzMKrBQE2gN8jOyrW5g@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Apr 16, 2021 at 04:19:07PM +0200, Peter Zijlstra wrote:
-> Does this also not prohibit constructs where modification must be done
-> while holding two locks, but reading can be done while holding either
-> lock?
+On Fri, Apr 16, 2021 at 05:04:41PM +0200, Miguel Ojeda wrote:
+> Of course, we could propose something similar for C -- in fact, there
+> was a recent discussion around this in the C committee triggered by my
+> n2659 "Safety attributes for C" paper. 
 
-I don't believe it does. Remember that we have full control of the abstractions,
-so we can (and will when the need arises) build an abstraction that provides the
-functionality you describe. For the read path, we can have functions that return
-a read-only guard (which is the gateway to the data in Rust) when locking either
-of the locks, or when showing evidence that either lock is already locked (i.e.,
-by temporarily transferring ownership of another guard). Note that this is
-another area where Rust offers advantages: read-only guards (in C, if you take a
-read lock, nothing prevents you from making changes to fields you should only be
-allowed to read); and the ability to take temporary ownership, giving it back
-even within the same function.
+http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2659.htm
 
-Similarly, to access a mutable guard, you'd have to show evidence that both
-locks are held.
-
-> That's a semi common scheme in the kernel, but not something that's
-> expressible by, for example, the Java sync keyword.
-> 
-> It also very much doesn't work for RCU, where modification must be done
-> under a lock, but access is done essentially lockless.
-
-Why not? RCU is a lock -- it may have zero cost in most (all?) architectures on
-the read path, but it is a lock. We can model access to variables/fields
-protected by it just like any other lock, with the implementation of lock/unlock
-optimizing to no-ops on the read path where possible.
-
-In fact, this is also an advantage of Rust. It would *force* developers to
-lock/unlock the RCU lock before they can access the protected data.
-
-> I would much rather have a language extention where we can associate
-> custom assertions with variable access, sorta like a sanitizer:
-> 
-> static inline void assert_foo_bar(struct foo *f)
-> {
-> 	lockdep_assert_held(&f->lock);
-> }
-> 
-> struct foo {
-> 	spinlock_t lock;
-> 	int bar __assert__(assert_foo_bar);
-> };
-> 
-> Such things can be optional and only enabled for debug builds on new
-> compilers.
-
-These would be great, but would still fall short of the compile-time guaranteed
-safety that Rust offers in these cases.
-
-> C does indeed not have the concept of ownership, unlike modern C++ I
-> think. But I would much rather see a C language extention for that than
-> go Rust.
-> 
-> This would mean a far more agressive push for newer C compilers than
-> we've ever done before, but at least it would all still be a single
-> language. Convertion to the new stuff can be done gradually and where
-> it makes sense and new extentions can be evaluated on performance impact
-> etc.
-
-I encourage you to pursue this. We'd all benefit from better C. I'd be happy to
-review and provide feedback on proposed extensions that are deemed
-equivalent/better than what Rust offers.
-
-My background is also in C. I'm no Rust fanboy, I'm just taking what I think is
-a pragmatic view of the available options.
+That's just not making any damn sense what so ever. That seems to be
+about sprinkling abort() all over the place, which is just total
+rubbish.
