@@ -2,68 +2,31 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 66FB9C433ED
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 18:57:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25321C433B4
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 20:22:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 37F20613B0
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 18:57:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EE78461166
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 20:22:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236291AbhDPS5o (ORCPT
+        id S244549AbhDPUXM (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Apr 2021 14:57:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47066 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235957AbhDPS5o (ORCPT
-        <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Apr 2021 14:57:44 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16BA6C061574;
-        Fri, 16 Apr 2021 11:57:19 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id c195so31207566ybf.9;
-        Fri, 16 Apr 2021 11:57:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IuXR4s76KW2g16KgmTJ3s1NR8NxaS0rBglhD+4wC2bA=;
-        b=t6Eh6V9OMwi659Ak0KE8pRM5p87Dz7/7Ty3eBJkJHR3jxgYIRk0vixc1KxYDXStbk3
-         0xvaAqI02zC6EBd3wRdbUwS3/Z/BenDWtD6tLgUY2gwjWBt+8SHdws8AwkQZcTMCn7kl
-         Sp3dnKOM/qyPCfBCJ40L2kHBWxeAhGPHPN4AjRdjoXVllD5DZC/L4Wl2n0WmZDCEsFkM
-         J6Qc9+HPOeE5f+JvWQTM/3gHA99pYJs2U5IS1IiXXhX8jaOCQOY7X19eZOG14hIgMPWg
-         O1+7MnPo2thZERtolLuOH8vVpWQgb18ZVviCi3wdpOcMF7nxQ4o2D5qfJ4G5oRDOrgUh
-         2p3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=IuXR4s76KW2g16KgmTJ3s1NR8NxaS0rBglhD+4wC2bA=;
-        b=NYIjMm4lEkPwIcMaUDyDT5xaKKD2U+yilwnWNNlNTT0yL5dBBkzR58BLM+F2F0f0Vz
-         Hfwc/exKTRDJYkiGFLxg+82FDOcAwaiaCELMW8jWjk41YDH6sH65lOl0JtYbmz2dYgH9
-         ATzlSpZAxMB48F1b0yanH60GxDQxyETKwFg0k+f7yntuKSHVKp24aZnXQW15ArCgdOrf
-         aXjQYPPClvmE3QTzZpQOQohHrb5+V35NE1UMXkCQZte4Gpy1i8XN+WyKSfTgIN5dukRd
-         quksGae5h3qn8rw/ZRZXODe2a8VT+nh8jhdoEsN6DCYbCdEdqLPOSd6em8rgm0XulNz0
-         ac2w==
-X-Gm-Message-State: AOAM530n34tK4h6tsiWP/rwK4NU7jOQpH1dbWd0jTCXehiLmdTS6k46f
-        3Yy3t6/Rpk7MS3DTX4T++U795QSCYyqTaoFZcFA=
-X-Google-Smtp-Source: ABdhPJx/Sef28+ab/jqRThJjs0GBqd35mSjtjTNKxxnwr7wkjUsSlz3TUt4YQ3eQatBFCI53ILW6au7VDYWbxBsQHvQ=
-X-Received: by 2002:a25:7909:: with SMTP id u9mr796140ybc.22.1618599438460;
- Fri, 16 Apr 2021 11:57:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210414184604.23473-1-ojeda@kernel.org> <20210414184604.23473-5-ojeda@kernel.org>
- <YHmTWEAS/QjX++w4@hirez.programming.kicks-ass.net> <CAHk-=wh_zb=K1B-N8mgHmSZDqTLgOm711NRXbTX_OwFAzDYg0Q@mail.gmail.com>
- <CANiq72nx7ngazsH7sZgc=HeU0cNj45F9+-rwQb7AkdYsRCmRbQ@mail.gmail.com> <YHnS92ZKZ4tRWTiA@zeniv-ca.linux.org.uk>
-In-Reply-To: <YHnS92ZKZ4tRWTiA@zeniv-ca.linux.org.uk>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 16 Apr 2021 20:57:07 +0200
-Message-ID: <CANiq72=RLf0FiuLVL-ZeLFp9P2LxTymbzhXoyQGG=tvUY_J-Sg@mail.gmail.com>
-Subject: Re: [PATCH 04/13] Kbuild: Rust support
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Fri, 16 Apr 2021 16:23:12 -0400
+Received: from wtarreau.pck.nerim.net ([62.212.114.60]:51740 "EHLO 1wt.eu"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234654AbhDPUXM (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Fri, 16 Apr 2021 16:23:12 -0400
+Received: (from willy@localhost)
+        by pcw.home.local (8.15.2/8.15.2/Submit) id 13GKMFDa011534;
+        Fri, 16 Apr 2021 22:22:15 +0200
+Date:   Fri, 16 Apr 2021 22:22:15 +0200
+From:   Willy Tarreau <w@1wt.eu>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Miguel Ojeda <ojeda@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -77,66 +40,150 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Adam Bratschi-Kaye <ark.email@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
         Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 04/13] Kbuild: Rust support
+Message-ID: <20210416202215.GA11236@1wt.eu>
+References: <20210414184604.23473-1-ojeda@kernel.org>
+ <20210414184604.23473-5-ojeda@kernel.org>
+ <YHmTWEAS/QjX++w4@hirez.programming.kicks-ass.net>
+ <CAHk-=wh_zb=K1B-N8mgHmSZDqTLgOm711NRXbTX_OwFAzDYg0Q@mail.gmail.com>
+ <CANiq72nx7ngazsH7sZgc=HeU0cNj45F9+-rwQb7AkdYsRCmRbQ@mail.gmail.com>
+ <YHnS92ZKZ4tRWTiA@zeniv-ca.linux.org.uk>
+ <CANiq72=RLf0FiuLVL-ZeLFp9P2LxTymbzhXoyQGG=tvUY_J-Sg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72=RLf0FiuLVL-ZeLFp9P2LxTymbzhXoyQGG=tvUY_J-Sg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Apr 16, 2021 at 8:10 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
->
-> How well would ? operator fit that pattern?  _If_ it's just a syntax sugar
-> along the lines of "if argument matches Err(_), return Err(_)", the types
-> shouldn't be an issue, but that might need some fun with releasing resources,
-> etc.  If it's something more elaborate... details, please.
+On Fri, Apr 16, 2021 at 08:57:07PM +0200, Miguel Ojeda wrote:
+> On Fri, Apr 16, 2021 at 8:10 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
+> >
+> > How well would ? operator fit that pattern?  _If_ it's just a syntax sugar
+> > along the lines of "if argument matches Err(_), return Err(_)", the types
+> > shouldn't be an issue, but that might need some fun with releasing resources,
+> > etc.  If it's something more elaborate... details, please.
+> 
+> Yes, it is just syntax sugar -- it doesn't introduce any power to the language.
+> 
+> It was introduced because it is a very common pattern when using the
+> `Result` and `Option` enums. In fact, before it existed, it was just a
+> simple macro that you could also implement yourself.
+> 
+> For instance, given `Foo` and `Bar` types that need RAII cleanup of
+> some kind (let's say `kill_foo()` and `kill_bar()`):
+> 
+>     fn foo() -> KernelResult<Foo> {
+>         if black_box() {
+>             return Err(EINVAL);
+>         }
+> 
+>         // something that gets you a `Foo`
+>         let foo = ...;
+> 
+>         Ok(foo)
+>     }
+> 
+>     fn bar() -> KernelResult<Bar> {
+>         let p = foo()?;
+> 
+>         // something that gets you a `Bar`, possibly using the `p`
+>         let bar = ...;
+> 
+>         Ok(bar)
+>     }
+> 
+> This reduces to (full example at https://godbolt.org/z/hjTxd3oP1):
+> 
+>     bar:
+>             push    rbx
+>             mov     ebx, 1
+>             call    qword ptr [rip + black_box@GOTPCREL]
+>             test    al, al
+>             jne     .LBB2_2
+>             call    qword ptr [rip + kill_foo@GOTPCREL]
+>             xor     ebx, ebx
+>     .LBB2_2:
+>             mov     eax, ebx
+>             mov     edx, -1234
+>             pop     rbx
+>             ret
+> 
+> You can see `bar()` calls `black_box()`. If it failed, it returns the
+> EINVAL. Otherwise, it cleans up the `foo` automatically and returns
+> the successful `bar`.
 
-Yes, it is just syntax sugar -- it doesn't introduce any power to the language.
+So it simply does the equivalent of:
 
-It was introduced because it is a very common pattern when using the
-`Result` and `Option` enums. In fact, before it existed, it was just a
-simple macro that you could also implement yourself.
+  #define EINVAL -1234
 
-For instance, given `Foo` and `Bar` types that need RAII cleanup of
-some kind (let's say `kill_foo()` and `kill_bar()`):
+  struct result {
+     int status;
+     int error;
+  };
 
-    fn foo() -> KernelResult<Foo> {
-        if black_box() {
-            return Err(EINVAL);
-        }
+  extern bool black_box();
+  extern void kill_foo();
 
-        // something that gets you a `Foo`
-        let foo = ...;
+  struct result bar()
+  {
+     return (struct error){ !!black_box(), EINVAL };
+  }
 
-        Ok(foo)
-    }
+  struct result foo()
+  {
+     struct result res = bar();
 
-    fn bar() -> KernelResult<Bar> {
-        let p = foo()?;
+     if (res.status)
+        goto leave;
+     /* ... */
+     kill_foo();   // only for rust, C doesn't need it
+  leave:
+     return res;
+  }
 
-        // something that gets you a `Bar`, possibly using the `p`
-        let bar = ...;
+So it simply returns a pair of values instead of a single one, which
+is nothing special but not much conventional in the kernel either given
+that ultimately syscalls will usually return a single value anyway. At
+some point some code will have to remerge them to provide a composite
+result and even take care of ambigous special cases like { true, 0 }
+which may or may not indicate an error, and avoiding to consider the
+unused error code on success.
 
-        Ok(bar)
-    }
+For example some code called from mmap() might have to deal with this
+this way:
 
-This reduces to (full example at https://godbolt.org/z/hjTxd3oP1):
+   if (result.status == (void *)-1)
+       return -result.error;
+   else
+       return result.status;
 
-    bar:
-            push    rbx
-            mov     ebx, 1
-            call    qword ptr [rip + black_box@GOTPCREL]
-            test    al, al
-            jne     .LBB2_2
-            call    qword ptr [rip + kill_foo@GOTPCREL]
-            xor     ebx, ebx
-    .LBB2_2:
-            mov     eax, ebx
-            mov     edx, -1234
-            pop     rbx
-            ret
+But possibly a lot of code feeding this result struct would be tempted
+to do something like this to deal with NULL returns:
 
-You can see `bar()` calls `black_box()`. If it failed, it returns the
-EINVAL. Otherwise, it cleans up the `foo` automatically and returns
-the successful `bar`.
+   result.status = foo_alloc();
+   if (!result.status) {
+       result.error = -ENOMEM;
+       return result;
+   }
 
-Cheers,
-Miguel
+And suddenly the error is lost, as a NULL is returned to the upper layers
+which does not correspond to an failure status. Conversely, with a unique
+result you'd do something like this:
+
+   result = foo_alloc();
+   if (!result)
+       return -ENOMEM;
+
+So it might possibly be safer to stick to the usually expected return
+values instead of introducing composite ones.
+
+I tend to agree that composite results can be better from new projects
+started from scratch when all the API follows this principle, but here
+there's quite a massive code base that was not designed along these
+lines and I easily see how this can become a source of trouble over
+time.
+
+Willy
