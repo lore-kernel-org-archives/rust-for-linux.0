@@ -2,111 +2,96 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50933C43461
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 08:16:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E13FAC433B4
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 08:33:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 380FB611AE
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 08:16:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BD5056117A
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 08:33:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239639AbhDPIQb (ORCPT
+        id S240382AbhDPIdk (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Apr 2021 04:16:31 -0400
-Received: from mx2.suse.de ([195.135.220.15]:46538 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233959AbhDPIQb (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Apr 2021 04:16:31 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 39417AEC6;
-        Fri, 16 Apr 2021 08:16:05 +0000 (UTC)
-Received: by lion.mk-sys.cz (Postfix, from userid 1000)
-        id 09EE5607B3; Fri, 16 Apr 2021 10:16:05 +0200 (CEST)
-Date:   Fri, 16 Apr 2021 10:16:05 +0200
-From:   Michal Kubecek <mkubecek@suse.cz>
-To:     linux-kernel@vger.kernel.org
-Cc:     Peter Zijlstra <peterz@infradead.org>, ojeda@kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-doc@vger.kernel.org
-Subject: Re: [PATCH 00/13] [RFC] Rust support
-Message-ID: <20210416081605.3m4apyornouf5p5s@lion.mk-sys.cz>
-References: <20210414184604.23473-1-ojeda@kernel.org>
- <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
+        Fri, 16 Apr 2021 04:33:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48700 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239986AbhDPIdj (ORCPT
+        <rfc822;rust-for-linux@vger.kernel.org>);
+        Fri, 16 Apr 2021 04:33:39 -0400
+X-Greylist: delayed 307 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 16 Apr 2021 01:33:15 PDT
+Received: from gimli.kloenk.dev (gimli.kloenk.dev [IPv6:2a0f:4ac0:0:1::cb2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B50DC061574
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Apr 2021 01:33:15 -0700 (PDT)
+From:   Finn Behrens <me@kloenk.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kloenk.de; s=mail;
+        t=1618561683; bh=YSO81F471/A6yr7yb64E+//PU+6h8+m2wua2aHHooMc=;
+        h=From:Subject:Date:Cc:To;
+        b=FqyW9ZPEv4dVSI4TovCH/lXJ1ljO7EgKnRrKoBOKE/0cQuYALo8z4YGtfYxhAnw5x
+         SqAiF7CW8y7Sut0q4ehhEp9op0PCs2sb1uUrlD2pvbKbITXSaL+9IGaBZ5OBx1nD2J
+         OZHTfh8rwNrZO2XQ//d0/qfUZajfP4hHKHgKgSY8=
+Content-Type: multipart/signed;
+        boundary="Apple-Mail=_E85CDACB-A7B5-4CC7-9E53-8B7F5E8C2B35";
+        protocol="application/pgp-signature";
+        micalg=pgp-sha256
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.80.0.2.43\))
+Subject: Rust-for-Linux Hydra CI
+Message-Id: <04861911-1275-449E-BE54-C6871B53F4A3@kloenk.de>
+Date:   Fri, 16 Apr 2021 10:27:56 +0200
+Cc:     linux@petabyte.dev, Joerg Thalheim <joerg@thalheim.io>
+To:     rust-for-linux@vger.kernel.org
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Apr 15, 2021 at 08:58:16PM +0200, Peter Zijlstra wrote:
-> 
-> This; can we mercilessly break the .rs bits when refactoring? What
-> happens the moment we cannot boot x86_64 without Rust crap on?
-> 
-> We can ignore this as a future problem, but I think it's only fair to
-> discuss now. I really don't care for that future, and IMO adding this
-> Rust or any other second language is a fail.
 
-I believe this is the most important question and we really need
-a honest answer in advance: where exactly is this heading? At the moment
-and with this experimental RFC, rust stuff can be optional and isolated
-but it's obvious that the plan is very different: to have rust all
-around the standard kernel tree. (If not, why is the example driver in
-drivers/char/ ?)
+--Apple-Mail=_E85CDACB-A7B5-4CC7-9E53-8B7F5E8C2B35
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
 
-And I don't see how the two languages might coexist peacefully without
-rust toolchain being necessary for building any kernel useful in
-practice and anyone seriously involved in kernel development having to
-be proficient in both languages. Neither of these looks appealing to
-me.
+Howdy,
 
-The dependency on rust toolchain was exactly what made me give up on
-building Firefox from mercurial snapshots few years ago. To be able to
-build them, one needed bleeding edge snapshots of rust toolchain which
-my distribution couldn't possibly provide and building them myself
-required way too much effort. This very discussion already revealed that
-rust kernel code would provide similar experience. I also have my doubts
-about the "optional" part; once there are some interesting drivers
-written in rust, even if only in the form of out of tree modules, there
-will be an enormous pressure on distributions, both community and
-enterprise, to enable rust support. Once the major distributions do,
-most others will have to follow. And from what I have seen, you need
-rust toolchain for build even if you want to only load modules written
-in rust.
+The nix-community gave me access to the nix-community hydra. Hydra is =
+the CI tool written for nix builds, and so builds the rust-for-linux =
+tree with nix. The hydra is checking the GitHub rust-for-linux/linux =
+repo for new commits, and then builds these in a nix context (If we want =
+to move to git.kernel.org, hydra can also check there for new commits).
 
-The other problem is even worse. Once we have non-trivial amount of rust
-code around the tree, even if it's "just some drivers", you cannot
-completely ignore it. One example would be internal API changes. Today,
-if I want to touch e.g. ethtool_ops, I need to adjust all in tree NIC
-drivers providing the affected callback and adjust them. Usually most of
-the patch is generated by spatch but manual tweaks are often needed here
-and there. In the world of bilingual kernel with nontrivial number of
-NIC drivers written in rust, I don't see how I could do that without
-also being proficient in rust.
+The latest builds can be seen here: =
+https://hydra.nix-community.org/jobset/rust-for-linux/rust and is also =
+uploaded to the nix cache at https://app.cachix.org/cache/nix-community =
+(local nix versions can use those caches to substitute builds, e.g. =
+rustc-nightly)
 
-Also, how about maintainers and reviewers? What if someone comes with
-a new module under foo/ or foo/bar/ and relevant maintainer does not
-know rust or just not well enough to be able to review the submission
-properly? Can they simply say "Sorry, I don't speak rust so no rust in
-foo/bar/"? Leaf drivers are one thing, how about netfilter matches and
-targets, TCP congestion control algorighms, qdiscs, filesystems, ...?
-Having kernel tree divided into "rusty" and "rustfree" zones does not
-sound like a great idea. But if we don't want that, do we expect every
-subsystem maintainer and reviewer to learn rust to a level sufficient
-for reviewing rust (kernel) code? Rust enthusiasts tell us they want to
-open kernel development to more people but the result could as well be
-exactly the opposite: it could restrict kernel development to people
-proficient in _both_ languages.
+We could also add vm tests via nixos, and documentation is not generated =
+currently, but if we write nix derivations for that, hydra could also =
+deliver those for download.
 
-As Peter said, it's not an imminent problem but as it's obvious this is
-just the first step, we should have a clear idea what the plan is and
-what we can and should expect.
 
-Michal
+
+CU,
+Finn
+
+PS: I=E2=80=99m not sure If this will break if we rebase to a newer =
+linux version, as nix needs a version to find some files.
+
+--Apple-Mail=_E85CDACB-A7B5-4CC7-9E53-8B7F5E8C2B35
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename=signature.asc
+Content-Type: application/pgp-signature;
+	name=signature.asc
+Content-Description: Message signed with OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYIAB0WIQS0St/f+Gmmaj/f3YuGCae1GeXjQgUCYHlKjQAKCRCGCae1GeXj
+Qv3/APkBq5rRalbo++vYvgbK6OmUx0HsJb0FHAq2dWP43KLAuQEA7Kr2wRLEQuM5
++xKfZwKxyPJQWw8s3l762JPEBT9DlgM=
+=umGi
+-----END PGP SIGNATURE-----
+
+--Apple-Mail=_E85CDACB-A7B5-4CC7-9E53-8B7F5E8C2B35--
