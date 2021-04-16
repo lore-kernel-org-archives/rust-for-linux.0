@@ -2,164 +2,167 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC247C433ED
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 06:04:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6678DC43461
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 07:09:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B267B61153
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 06:04:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2EFAB61090
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Apr 2021 07:09:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230250AbhDPGFQ (ORCPT
+        id S234688AbhDPHJf (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Apr 2021 02:05:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44372 "EHLO
+        Fri, 16 Apr 2021 03:09:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229706AbhDPGFP (ORCPT
+        with ESMTP id S234010AbhDPHJe (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Apr 2021 02:05:15 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F38ADC061760
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Apr 2021 23:04:50 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id i10so7036315lfe.11
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Apr 2021 23:04:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gbzaa2Ai7xXdaJk+SuOzDr1sDQqCY9sqWL6R/1Zrh+s=;
-        b=W5/QWZWFFaSWg9idKZ6DJEpPmhh/eOS3XCiS0GJpjJR7c/9hO/bPRnbhDx6fcqOh/0
-         sp9nz3xawBALOHCXGcN4jIih6Lo7LRUhWSYjVKt/IE7M5QZMCikdUSMKXXJqXnNorxIu
-         UcotZdbyz0htz+FRuAF9BYmaG3K/gWMFAT/A8/JmQBFrNNVdGLgxB72JzOcS3dWuBrUO
-         pLLR3MAXjECLXZHF0eu89BJvQwappXx3P0EcpPXDjPCJULvqxF+y1iSxNPQzfc3EiG4c
-         rSb/0coU8nEO5IvdaN3SjfYFjNy5PzO32XHT/eoBVhUpxXlkT2FrApLCrpZqzbcHuazj
-         0Naw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gbzaa2Ai7xXdaJk+SuOzDr1sDQqCY9sqWL6R/1Zrh+s=;
-        b=lGoWfTaSVLIdTle0VBjY+kfbFTzoel+XxwQKz8f/4SaNUOtyWrPmKReL7kjSye/WA0
-         CmUrW3UmYuOvoJm9P4qz3KfvtpCSJXAY91l6fPbKD7NLg3U1zntiEmZW1X5bzsMiGJSU
-         ndTLdGKoLd+rPGHc/H3gkj9Od6Sd/GtwiYvMN0kc1LRhdzQ+6Dzmk32F0LKVctRdvCmK
-         zj+92jTYxIzgWoJT9hs1v7qGZHBklbRQnA5qxeD6AtDHIFQVIbl4k1/cQMmF6MsCIOPQ
-         m0XNp/7o0TVROsv88smv27gYG5y8t/xiT3g8rw4R1bpCh2/GkYDoQXpwkuStw/TqAmnV
-         y2xA==
-X-Gm-Message-State: AOAM531dAi1b8jLgNkkeXAdGRPPnCBfkZ1Vl9dBqIfpHWW7fGa2dl1E0
-        yekR4MZsNi8h9p4FEw36HddIdLYcM1dfH5re/Cmh/Q==
-X-Google-Smtp-Source: ABdhPJzd3Uifx8wPh8+Ukv5wC6+mAKF4pnOLfbn/l4Zr9Mzj0XiDdg2h8UGLElnlq21TU6eWm2HsUZh+V10t5NGgiSg=
-X-Received: by 2002:a19:ac09:: with SMTP id g9mr1821239lfc.547.1618553088788;
- Thu, 15 Apr 2021 23:04:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210414184604.23473-1-ojeda@kernel.org> <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
- <YHkSO3TUktyPs4Nz@boqun-archlinux>
-In-Reply-To: <YHkSO3TUktyPs4Nz@boqun-archlinux>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Thu, 15 Apr 2021 23:04:37 -0700
-Message-ID: <CAKwvOdnRx+8LhOAnH24CeZz2a2-MwF03oB7Um_pKBq8WAoLNxw@mail.gmail.com>
-Subject: Re: [PATCH 00/13] [RFC] Rust support
-To:     Boqun Feng <boqun.feng@gmail.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>, ojeda@kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        Fri, 16 Apr 2021 03:09:34 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B09CDC061574;
+        Fri, 16 Apr 2021 00:09:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=e1pqz5Awgt1GE6YgZQa4ltuZ9s1zkandzmHzgiCBi6c=; b=OqQfvuTlkemnHt1IBx3a7Ub2j3
+        p1CrRqAMQAvdr7/i+JN+Nb88qSLD2PYT/4hwPVy5gTiU1Q6Jdx/HEJxmePQzP0H8QtQqUpSvS4z2y
+        JFf1p8ls+CqqYNfX/hBE4qkZR3Y0DW4X8ifWd4VKStRFBKb0SV+5PUUgmiDyQbQwB44WDVdHEp5Lc
+        8TtcGmM6aNwtheVEm3v0AsbOMmIpmc9GB1dDfEzvB+DVF5SLO28RtXCtUHGCosfkFQ0bKONxsXczj
+        LFW7ubp35dJO3KT22qNhHOtE9yRzkf7JqOMSaoWn4Ov5an4vbPNDHqX1lY7CGA9kP5cyueF9Bke/T
+        D9OytkZw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lXIb9-0018wR-2d; Fri, 16 Apr 2021 07:09:05 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 0D45630015A;
+        Fri, 16 Apr 2021 09:09:02 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id E7B8A200C8D28; Fri, 16 Apr 2021 09:09:01 +0200 (CEST)
+Date:   Fri, 16 Apr 2021 09:09:01 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Wedson Almeida Filho <wedsonaf@google.com>
+Cc:     ojeda@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Andrea Parri <parri.andrea@gmail.com>,
-        Will Deacon <will@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        David Howells <dhowells@redhat.com>,
-        Jade Alglave <j.alglave@ucl.ac.uk>,
-        Luc Maranget <luc.maranget@inria.fr>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Akira Yokosawa <akiyks@gmail.com>,
-        Daniel Lustig <dlustig@nvidia.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Wedson Almeida Filho <wedsonaf@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+Message-ID: <YHk4DZE1ZWTiBB1f@hirez.programming.kicks-ass.net>
+References: <20210414184604.23473-1-ojeda@kernel.org>
+ <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
+ <YHj02M3jMSweoP4l@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YHj02M3jMSweoP4l@google.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Apr 15, 2021 at 9:27 PM Boqun Feng <boqun.feng@gmail.com> wrote:
->
-> [Copy LKMM people, Josh, Nick and Wedson]
->
+On Fri, Apr 16, 2021 at 03:22:16AM +0100, Wedson Almeida Filho wrote:
 > On Thu, Apr 15, 2021 at 08:58:16PM +0200, Peter Zijlstra wrote:
 > > On Wed, Apr 14, 2021 at 08:45:51PM +0200, ojeda@kernel.org wrote:
-> >
+> > 
 > > > Rust is a systems programming language that brings several key
 > > > advantages over C in the context of the Linux kernel:
-> > >
+> > > 
 > > >   - No undefined behavior in the safe subset (when unsafe code is
 > > >     sound), including memory safety and the absence of data races.
-> >
+> > 
 > > And yet I see not a single mention of the Rust Memory Model and how it
 > > aligns (or not) with the LKMM. The C11 memory model for example is a
 > > really poor fit for LKMM.
-> >
->
-> I think Rust currently uses C11 memory model as per:
->
->         https://doc.rust-lang.org/nomicon/atomics.html
->
-> , also I guess another reason that they pick C11 memory model is because
-> LLVM has the support by default.
->
-> But I think the Rust Community still wants to have a good memory model,
-> and they are open to any kind of suggestion and input. I think we (LKMM
-> people) should really get involved, because the recent discussion on
-> RISC-V's atomics shows that if we didn't people might get a "broken"
-> design because they thought C11 memory model is good enough:
->
->         https://lore.kernel.org/lkml/YGyZPCxJYGOvqYZQ@boqun-archlinux/
->
-> And the benefits are mutual: a) Linux Kernel Memory Model (LKMM) is
-> defined by combining the requirements of developers and the behavior of
-> hardwares, it's pratical and can be a very good input for memory model
-> designing in Rust; b) Once Rust has a better memory model, the compiler
-> technologies whatever Rust compilers use to suppor the memory model can
-> be adopted to C compilers and we can get that part for free.
+> 
+> We don't intend to directly expose C data structures to Rust code (outside the
+> kernel crate). Instead, we intend to provide wrappers that expose safe
+> interfaces even though the implementation may use unsafe blocks. So we expect
+> the vast majority of Rust code to just care about the Rust memory model.
+> 
+> We admittedly don't have a huge number of wrappers yet, but we do have enough to
+> implement most of Binder and so far it's been ok. We do intend to eventually
+> cover other classes of drivers that may unveil unforeseen difficulties, we'll
+> see.
+> 
+> If you have concerns that we might have overlooked, we'd be happy to hear about
+> them from you (or anyone else).
 
-Yes, I agree; I think that's a very good approach.  Avoiding the ISO
-WG14 is interesting; at least the merits could be debated in the
-public and not behind closed doors.
+Well, the obvious example would be seqlocks. C11 can't do them. The not
+sharing of data structures would avoid most of that, but will also cost
+you in performance.
 
->
-> At least I personally is very intereted to help Rust on a complete and
-> pratical memory model ;-)
->
-> Josh, I think it's good if we can connect to the people working on Rust
-> memoryg model, I think the right person is Ralf Jung and the right place
-> is https://github.com/rust-lang/unsafe-code-guidelines, but you
-> cerntainly know better than me ;-) Or maybe we can use Rust-for-Linux or
-> linux-toolchains list to discuss.
->
-> [...]
-> > >   - Boqun Feng is working hard on the different options for
-> > >     threading abstractions and has reviewed most of the `sync` PRs.
-> >
-> > Boqun, I know you're familiar with LKMM, can you please talk about how
-> > Rust does things and how it interacts?
->
-> As Wedson said in the other email, currently there is no code requiring
-> synchronization between C side and Rust side, so we are currently fine.
-> But in the longer term, we need to teach Rust memory model about the
-> "design patterns" used in Linux kernel for parallel programming.
->
-> What I have been doing so far is reviewing patches which have memory
-> orderings in Rust-for-Linux project, try to make sure we don't include
-> memory ordering bugs for the beginning.
->
-> Regards,
-> Boqun
+Simlar thing for RCU; C11 can't optimally do that; it needs to make
+rcu_dereference() a load-acquire [something ARM64 has already done in C
+because the compiler might be too clever by half when doing LTO :-(].
+But it's the compiler needing the acquire semantics, not the computer,
+which is just bloody wrong.
 
+And there's more sharp corners to be had. But yes, if you're not
+actually sharing anything; and taking the performance hit that comes
+with that, you might get away with it.
 
+> > HTML is not a valid documentation format. Heck, markdown itself is
+> > barely readable.
+> 
+> Are you stating [what you perceive as] a fact or just venting? If the former,
+> would you mind enlightening us with some evidence?
 
--- 
-Thanks,
-~Nick Desaulniers
+I've yet to see a program that renders HTML (including all the cruft
+often used in docs, which might include SVG graphics and whatnot) sanely
+in ASCII. Lynx does not qualify, it's output is atrocious crap.
+
+Yes, lynx lets you read HTML in ASCII, but at the cost of bleeding
+eyeballs and missing content.
+
+Nothing beats a sane ASCII document with possibly, where really needed
+some ASCII art.
+
+Sadly the whole kernel documentation project is moving away from that as
+well, which just means I'm back to working on an undocumented codebase.
+This rst crap they adopted is unreadable garbage.
+
+> > It is really *really* hard to read. It has all sorts of weird things,
+> > like operators at the beginning after a line break:
+> > 
+> > 	if (foo
+> > 	    || bar)
+> > 
+> > which is just wrong. And it suffers from CamelCase, which is just about
+> > the worst thing ever. Not even the C++ std libs have that (or had, back
+> > when I still did knew C++).
+> > 
+> > I also see:
+> > 
+> > 	if (foo) {
+> > 		...
+> > 	}
+> > 
+> > and
+> > 
+> > 	if foo {
+> > 	}
+> > 
+> > the latter, ofcourse, being complete rubbish.
+> 
+> There are advantages to adopting the preferred style of a language (when one
+> exists). We, of course, are not required to adopt it but I am of the opinion
+> that we should have good reasons to diverge if that's our choice in the end.
+> 
+> "Not having parentheses around the if-clause expression is complete rubbish"
+> doesn't sound like a good reason to me.
+
+Of course it does; my internal lexer keeps screaming syntax error at me;
+how am I going to understand code when I can't sanely read it?
+
+The more you make it look like (Kernel) C, the easier it is for us C
+people to actually read. My eyes have been reading C for almost 30 years
+by now, they have a lexer built in the optical nerve; reading something
+that looks vaguely like C but is definitely not C is an utterly painful
+experience.
+
+You're asking to join us, not the other way around. I'm fine in a world
+without Rust.
