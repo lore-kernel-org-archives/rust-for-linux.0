@@ -2,91 +2,113 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A061C43460
-	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Apr 2021 14:36:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DBF3C433ED
+	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Apr 2021 14:52:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 19337610CB
-	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Apr 2021 14:36:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 05814610CD
+	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Apr 2021 14:52:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236568AbhDQOg4 (ORCPT
+        id S236367AbhDQOwa (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 17 Apr 2021 10:36:56 -0400
-Received: from wtarreau.pck.nerim.net ([62.212.114.60]:51833 "EHLO 1wt.eu"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236517AbhDQOg4 (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 17 Apr 2021 10:36:56 -0400
-Received: (from willy@localhost)
-        by pcw.home.local (8.15.2/8.15.2/Submit) id 13HEaKSO015819;
-        Sat, 17 Apr 2021 16:36:20 +0200
-Date:   Sat, 17 Apr 2021 16:36:20 +0200
-From:   Willy Tarreau <w@1wt.eu>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Matthew Wilcox <willy@infradead.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
+        Sat, 17 Apr 2021 10:52:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:32171 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236299AbhDQOw3 (ORCPT
+        <rfc822;rust-for-linux@vger.kernel.org>);
+        Sat, 17 Apr 2021 10:52:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1618671123;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=yG7CbGT59OHfRevt3XXh2eiyrKABZpdeb+wHsJG++fM=;
+        b=U2+JSirFA5ZcK2Rwcio3R2IllxT6VLimg4WBnAQILNEWiZHTw2OxNAYMJ8wr2ZLVjtKSza
+        2DiqSf1GlusS9wAcbbT6+tkOZlmJR+Gmb4pmQBbif869BkYIeZsE6ld8+/SGd0ykDTdipp
+        HrHY2jvoZhTckIQx0nP6ZapjxASCKiM=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-314-7Y7esFGBPkGaltUlVD2Ytg-1; Sat, 17 Apr 2021 10:52:01 -0400
+X-MC-Unique: 7Y7esFGBPkGaltUlVD2Ytg-1
+Received: by mail-ed1-f69.google.com with SMTP id z3-20020a05640240c3b029037fb0c2bd3bso8791839edb.23
+        for <rust-for-linux@vger.kernel.org>; Sat, 17 Apr 2021 07:52:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=yG7CbGT59OHfRevt3XXh2eiyrKABZpdeb+wHsJG++fM=;
+        b=kls+N1Jdwg4K2fm7Ao13SAADWuvKMMLtNDn0UbMIoY1zaBquB/QJ3sIT30NItbhev5
+         AadVS0MqLWbm1i39cxulAJHchw1o4D4Q+jC/53fsc175x9gpuFTthQaRDPqwmwG/TAgZ
+         gZ4Tyjahz02EABlfsBMpnazOXMLd44l0KyKl7qEK9AejhZ0Fbmgb305Vw2MoIC2/EZ7E
+         Rg7uvVEO2WSDpueFH8mvBhlk/uTIGxrvxoYtUxD7puvRlq6cVFoO1QKPwHt2BfL0c4jw
+         VDno7IsWto5VzJTNTR+zmQbph8uTh4flipZkpvmXoT1iCmqokSwLyMLD9zK5r8MgD136
+         XzSg==
+X-Gm-Message-State: AOAM531kgoL20ZLob+/67VkpGzeF/Nu1jktNitrlynN8K3kl2wwIgxDS
+        uj7jO+akxS8e2/XZ1F+HShgBz9eTBta3kT+X04/Hj5Jn2rYXiSKyH0kmL9JOwgWU5C8w+UhsBCR
+        eOTZMmFkQRYI/tgcK2P6PbCNBhjE=
+X-Received: by 2002:a05:6402:290:: with SMTP id l16mr5438956edv.337.1618671120387;
+        Sat, 17 Apr 2021 07:52:00 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyHc4iGjW4sOLaFFmFfqQFNbzRCiVqgH6eNtR/zBIoDeFLhVfTfFdsedBGskI5MmVb9QV6caA==
+X-Received: by 2002:a05:6402:290:: with SMTP id l16mr5438944edv.337.1618671120248;
+        Sat, 17 Apr 2021 07:52:00 -0700 (PDT)
+Received: from ?IPv6:2001:b07:6468:f312:c8dd:75d4:99ab:290a? ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
+        by smtp.gmail.com with ESMTPSA id a24sm6468394ejr.58.2021.04.17.07.51.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 17 Apr 2021 07:51:59 -0700 (PDT)
 Subject: Re: [PATCH 00/13] [RFC] Rust support
-Message-ID: <20210417143620.GB15678@1wt.eu>
-References: <YHmMJWmzz2vZ3qQH@google.com>
- <YHmc2+bKQJ/XAATF@hirez.programming.kicks-ass.net>
- <YHmuX1NA5RF7C7XS@google.com>
- <20210416161444.GA10484@1wt.eu>
- <CANiq72nbkJFPmiJXX=L8PmkouKgKG1k-CxhZYpL1hcncYwa8JA@mail.gmail.com>
- <YHnG+GRwiMqgHGs5@hirez.programming.kicks-ass.net>
- <20210416180829.GO2531743@casper.infradead.org>
- <YHrDwdQwEk2mSQWa@hirez.programming.kicks-ass.net>
- <20210417114623.GA15120@1wt.eu>
- <YHrvq6/d4iw8SLAc@hirez.programming.kicks-ass.net>
+To:     Peter Zijlstra <peterz@infradead.org>,
+        Wedson Almeida Filho <wedsonaf@google.com>
+Cc:     ojeda@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210414184604.23473-1-ojeda@kernel.org>
+ <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
+ <YHj02M3jMSweoP4l@google.com>
+ <YHk4DZE1ZWTiBB1f@hirez.programming.kicks-ass.net>
+From:   Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <aa6e44ab-e223-73aa-279e-8103732460ac@redhat.com>
+Date:   Sat, 17 Apr 2021 16:51:58 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YHrvq6/d4iw8SLAc@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <YHk4DZE1ZWTiBB1f@hirez.programming.kicks-ass.net>
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=pbonzini@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Apr 17, 2021 at 04:24:43PM +0200, Peter Zijlstra wrote:
-> On Sat, Apr 17, 2021 at 01:46:23PM +0200, Willy Tarreau wrote:
-> > For me the old trick of casting one side as long long still works:
-> > 
-> >   unsigned long long mul3264(unsigned int a, unsigned int b)
-> >   {
-> >         return (unsigned long long)a * b;
-> >   }
-> > 
-> > i386:
-> >   00000000 <mul3264>:
-> >      0: 8b 44 24 08           mov    0x8(%esp),%eax
-> >      4: f7 64 24 04           mull   0x4(%esp)
-> >      8: c3                    ret    
-> > 
-> > x86_64:
-> >   0000000000000000 <mul3264>:
-> >      0: 89 f8                 mov    %edi,%eax
-> >      2: 89 f7                 mov    %esi,%edi
-> >      4: 48 0f af c7           imul   %rdi,%rax
-> >      8: c3                    retq   
-> > 
-> > Or maybe you had something else in mind ?
-> 
-> Last time I tried it, the thing refused :/ which is how we ended up with
-> mul_u32_u32() in asm.
+On 16/04/21 09:09, Peter Zijlstra wrote:
+> Well, the obvious example would be seqlocks. C11 can't do them
 
-Oh I trust you, I do remember having noticed it on one gcc version as
-well (maybe 4.5). But I've been successfully using this since 2.95, and
-could quickly recheck that 4.7, 4.8, 5.4, 6.5, 7.4, 9.3 and 11-trunk do
-produce the code above, which is reassuring, as we all prefer to limit
-the amount of asm statements.
+Sure it can.  C11 requires annotating with (the equivalent of) READ_ONCE 
+all reads of seqlock-protected fields, but the memory model supports 
+seqlocks just fine.
 
-Willy
+> Simlar thing for RCU; C11 can't optimally do that
+
+Technically if you know what you're doing (i.e. that you're not on 
+Alpha) you can do RCU using a relaxed load followed by an 
+atomic_signal_fence(memory_order_consume).  Which I agree is horrible 
+and not entirely within the standard, but it works in practice.  The 
+Linux implementation of memory barriers, atomic RMW primitives, 
+load-acquire/store-release etc. is also completely outside the standard, 
+so it's not much different and more portable.
+
+The only thing that I really, really miss when programming with C11 
+atomics is smp_mb__{before,after}_atomic().
+
+Paolo
+
