@@ -7,78 +7,78 @@ X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DBF3C433ED
-	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Apr 2021 14:52:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D480EC433B4
+	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Apr 2021 15:11:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 05814610CD
-	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Apr 2021 14:52:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9E70C610E8
+	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Apr 2021 15:11:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236367AbhDQOwa (ORCPT
+        id S236537AbhDQPMS (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 17 Apr 2021 10:52:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:32171 "EHLO
+        Sat, 17 Apr 2021 11:12:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:37336 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236299AbhDQOw3 (ORCPT
+        by vger.kernel.org with ESMTP id S236287AbhDQPMS (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 17 Apr 2021 10:52:29 -0400
+        Sat, 17 Apr 2021 11:12:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1618671123;
+        s=mimecast20190719; t=1618672311;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=yG7CbGT59OHfRevt3XXh2eiyrKABZpdeb+wHsJG++fM=;
-        b=U2+JSirFA5ZcK2Rwcio3R2IllxT6VLimg4WBnAQILNEWiZHTw2OxNAYMJ8wr2ZLVjtKSza
-        2DiqSf1GlusS9wAcbbT6+tkOZlmJR+Gmb4pmQBbif869BkYIeZsE6ld8+/SGd0ykDTdipp
-        HrHY2jvoZhTckIQx0nP6ZapjxASCKiM=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-314-7Y7esFGBPkGaltUlVD2Ytg-1; Sat, 17 Apr 2021 10:52:01 -0400
-X-MC-Unique: 7Y7esFGBPkGaltUlVD2Ytg-1
-Received: by mail-ed1-f69.google.com with SMTP id z3-20020a05640240c3b029037fb0c2bd3bso8791839edb.23
-        for <rust-for-linux@vger.kernel.org>; Sat, 17 Apr 2021 07:52:01 -0700 (PDT)
+        bh=wpOOK6WyEfT9G+36ImXYA6KEN0QYHqGNtXUv7YEpGBY=;
+        b=JdFkheznm0Crwdc8G1jV5agfbuwUAv9mAeUCPLPWtUmCSUNUsSZghBZ+VAizDofA1uJ1fG
+        7Ll0YqTeJg1x2SOLwAyD265Qco/xFG4Ii1CypIAoCweWht14GyN7sfWxD88iks2MmJcJOu
+        u8fZxACUyyYd2GvaJiSPk+lUY/lgEoc=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-335-JSIJ8MBiNbCB4PykdPD6kA-1; Sat, 17 Apr 2021 11:11:49 -0400
+X-MC-Unique: JSIJ8MBiNbCB4PykdPD6kA-1
+Received: by mail-ed1-f70.google.com with SMTP id bm19-20020a0564020b13b02903789d6e74b5so8702165edb.21
+        for <rust-for-linux@vger.kernel.org>; Sat, 17 Apr 2021 08:11:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=yG7CbGT59OHfRevt3XXh2eiyrKABZpdeb+wHsJG++fM=;
-        b=kls+N1Jdwg4K2fm7Ao13SAADWuvKMMLtNDn0UbMIoY1zaBquB/QJ3sIT30NItbhev5
-         AadVS0MqLWbm1i39cxulAJHchw1o4D4Q+jC/53fsc175x9gpuFTthQaRDPqwmwG/TAgZ
-         gZ4Tyjahz02EABlfsBMpnazOXMLd44l0KyKl7qEK9AejhZ0Fbmgb305Vw2MoIC2/EZ7E
-         Rg7uvVEO2WSDpueFH8mvBhlk/uTIGxrvxoYtUxD7puvRlq6cVFoO1QKPwHt2BfL0c4jw
-         VDno7IsWto5VzJTNTR+zmQbph8uTh4flipZkpvmXoT1iCmqokSwLyMLD9zK5r8MgD136
-         XzSg==
-X-Gm-Message-State: AOAM531kgoL20ZLob+/67VkpGzeF/Nu1jktNitrlynN8K3kl2wwIgxDS
-        uj7jO+akxS8e2/XZ1F+HShgBz9eTBta3kT+X04/Hj5Jn2rYXiSKyH0kmL9JOwgWU5C8w+UhsBCR
-        eOTZMmFkQRYI/tgcK2P6PbCNBhjE=
-X-Received: by 2002:a05:6402:290:: with SMTP id l16mr5438956edv.337.1618671120387;
-        Sat, 17 Apr 2021 07:52:00 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyHc4iGjW4sOLaFFmFfqQFNbzRCiVqgH6eNtR/zBIoDeFLhVfTfFdsedBGskI5MmVb9QV6caA==
-X-Received: by 2002:a05:6402:290:: with SMTP id l16mr5438944edv.337.1618671120248;
-        Sat, 17 Apr 2021 07:52:00 -0700 (PDT)
+        bh=wpOOK6WyEfT9G+36ImXYA6KEN0QYHqGNtXUv7YEpGBY=;
+        b=EKhY8tI0wSrO4FQThb1CsmkBPEKmcugD2Ld/ENVL1sz1Qv/KV++Es/Lcj6p6puo0az
+         3GBofDZDLWjU0nds+jP7tOYqOo7jG1exzANIrFF2CsJ8UCudbQsqvVOeZPFyhJ4stzDL
+         2frxAA9Yq3penrHPbDKdIHvrNtIEK3DfXWJ5SzyHW7Se6NfhJZ3E8ZKxjYhxCFCBzDcM
+         i3xhkvLkQ11I8ni1A+PlGjjIrC3J+c+/nKgjUUrfPD+Dfq0wjAzLHpPmKk4Ms6HkKGFu
+         Xn20m9DFjtIz/rTfj6gQBFIPLLu5Bsqb+G62cJb7bTdZxLd+50ZL7yj33abB2rky7Yif
+         75sA==
+X-Gm-Message-State: AOAM530LbOa4if45sU/nYNGAt4ZX8AtyvXUrtt1OdpgFImd7XKHXIa9f
+        80HsnpfhRVHJPBE2j91JNIFOIUFZn/2rlDU1zB6wmO7VTvfh/o/beYO5ujMVBaowsgoKpIjdfop
+        DXoTo+wwC/NQOddr0D3en4//Jv5w=
+X-Received: by 2002:aa7:cf03:: with SMTP id a3mr15838090edy.142.1618672308242;
+        Sat, 17 Apr 2021 08:11:48 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwzPa7FzJB3WobQR/VsWEjbH3PnqaAGBHOD70NNZR4oUpH2Lo59h4+ae3J4Oouybc0kmjxpZQ==
+X-Received: by 2002:aa7:cf03:: with SMTP id a3mr15838064edy.142.1618672308034;
+        Sat, 17 Apr 2021 08:11:48 -0700 (PDT)
 Received: from ?IPv6:2001:b07:6468:f312:c8dd:75d4:99ab:290a? ([2001:b07:6468:f312:c8dd:75d4:99ab:290a])
-        by smtp.gmail.com with ESMTPSA id a24sm6468394ejr.58.2021.04.17.07.51.58
+        by smtp.gmail.com with ESMTPSA id o6sm8417188edw.24.2021.04.17.08.11.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Apr 2021 07:51:59 -0700 (PDT)
+        Sat, 17 Apr 2021 08:11:47 -0700 (PDT)
 Subject: Re: [PATCH 00/13] [RFC] Rust support
-To:     Peter Zijlstra <peterz@infradead.org>,
+To:     Theodore Ts'o <tytso@mit.edu>,
         Wedson Almeida Filho <wedsonaf@google.com>
-Cc:     ojeda@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+Cc:     Peter Zijlstra <peterz@infradead.org>, ojeda@kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20210414184604.23473-1-ojeda@kernel.org>
- <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
- <YHj02M3jMSweoP4l@google.com>
- <YHk4DZE1ZWTiBB1f@hirez.programming.kicks-ass.net>
+ <YHlz54rd1YQHsOA/@hirez.programming.kicks-ass.net>
+ <YHmMJWmzz2vZ3qQH@google.com> <YHm0DYB08ZI2kuZm@mit.edu>
 From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <aa6e44ab-e223-73aa-279e-8103732460ac@redhat.com>
-Date:   Sat, 17 Apr 2021 16:51:58 +0200
+Message-ID: <7035e8a9-4bcd-bc87-4272-7efa6ed5ac53@redhat.com>
+Date:   Sat, 17 Apr 2021 17:11:46 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.0
 MIME-Version: 1.0
-In-Reply-To: <YHk4DZE1ZWTiBB1f@hirez.programming.kicks-ass.net>
+In-Reply-To: <YHm0DYB08ZI2kuZm@mit.edu>
 Authentication-Results: relay.mimecast.com;
         auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=pbonzini@redhat.com
 X-Mimecast-Spam-Score: 0
@@ -90,25 +90,60 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 16/04/21 09:09, Peter Zijlstra wrote:
-> Well, the obvious example would be seqlocks. C11 can't do them
+On 16/04/21 17:58, Theodore Ts'o wrote:
+> Another fairly common use case is a lockless, racy test of a
+> particular field, as an optimization before we take the lock before we
+> test it for realsies.  In this particular case, we can't allocate
+> memory while holding a spinlock, so we check to see without taking the
+> spinlock to see whether we should allocate memory (which is expensive,
+> and unnecessasry most of the time):
+> 
+> alloc_transaction:
+> 	/*
+> 	 * This check is racy but it is just an optimization of allocating new
+> 	 * transaction early if there are high chances we'll need it. If we
+> 	 * guess wrong, we'll retry or free the unused transaction.
+> 	 */
+> 	if (!data_race(journal->j_running_transaction)) {
+> 		/*
+> 		 * If __GFP_FS is not present, then we may be being called from
+> 		 * inside the fs writeback layer, so we MUST NOT fail.
+> 		 */
+> 		if ((gfp_mask & __GFP_FS) == 0)
+> 			gfp_mask |= __GFP_NOFAIL;
+> 		new_transaction = kmem_cache_zalloc(transaction_cache,
+> 						    gfp_mask);
+> 		if (!new_transaction)
+> 			return -ENOMEM;
+> 	}
 
-Sure it can.  C11 requires annotating with (the equivalent of) READ_ONCE 
-all reads of seqlock-protected fields, but the memory model supports 
-seqlocks just fine.
+ From my limited experience with Rust, things like these are a bit 
+annoying indeed, sooner or later Mutex<> just doesn't cut it and you 
+have to deal with its limitations.
 
-> Simlar thing for RCU; C11 can't optimally do that
+In this particular case you would use an AtomicBool field, place it 
+outside the Mutex-protected struct, and make sure that is only accessed 
+under the lock just like in C.
+One easy way out is to make the Mutex protect (officially) nothing, i.e. 
+Mutex<()>, and handle the mutable fields yourself using RefCell (which 
+gives you run-time checking but has some some space cost) or UnsafeCell 
+(which is unsafe as the name says).  Rust makes it pretty easy to write 
+smart pointers (Mutex<>'s lock guard itself is a smart pointer) so you 
+also have the possibility of writing a safe wrapper for the combination 
+of Mutex<()> and UnsafeCell.
 
-Technically if you know what you're doing (i.e. that you're not on 
-Alpha) you can do RCU using a relaxed load followed by an 
-atomic_signal_fence(memory_order_consume).  Which I agree is horrible 
-and not entirely within the standard, but it works in practice.  The 
-Linux implementation of memory barriers, atomic RMW primitives, 
-load-acquire/store-release etc. is also completely outside the standard, 
-so it's not much different and more portable.
+Another example is when yu have a list of XYZ objects and use the same 
+mutex for both the list of XYZ and a field in struct XYZ.  You could 
+place that field in an UnsafeCell and write a function that receives a 
+guard for the list lock and returns the field, or something like that. 
+It *is* quite ugly though.
 
-The only thing that I really, really miss when programming with C11 
-atomics is smp_mb__{before,after}_atomic().
+As an aside, from a teaching standpoint associating a Mutex with a 
+specific data structure is bad IMNSHO, because it encourages too 
+fine-grained locking.  Sometimes the easiest path to scalability is to 
+use a more coarse lock and ensure that contention is extremely rare. 
+But it does work for most simple use cases (and device drivers would 
+qualify as simple more often than not).
 
 Paolo
 
