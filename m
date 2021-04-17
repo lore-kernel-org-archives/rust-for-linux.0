@@ -2,130 +2,113 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Spam-Status: No, score=-13.2 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=no
-	autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F309DC43461
-	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Apr 2021 13:01:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F941C43461
+	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Apr 2021 13:29:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CF513611C2
-	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Apr 2021 13:01:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5A1B0611EF
+	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Apr 2021 13:29:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236395AbhDQNCX (ORCPT
+        id S236220AbhDQN3x (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 17 Apr 2021 09:02:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56810 "EHLO
+        Sat, 17 Apr 2021 09:29:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232844AbhDQNCW (ORCPT
+        with ESMTP id S236058AbhDQN3t (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 17 Apr 2021 09:02:22 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E615FC061574
-        for <rust-for-linux@vger.kernel.org>; Sat, 17 Apr 2021 06:01:55 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id w4so25536079wrt.5
-        for <rust-for-linux@vger.kernel.org>; Sat, 17 Apr 2021 06:01:55 -0700 (PDT)
+        Sat, 17 Apr 2021 09:29:49 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9BD9C061574
+        for <rust-for-linux@vger.kernel.org>; Sat, 17 Apr 2021 06:29:21 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id u20so11144467wmj.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 17 Apr 2021 06:29:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=+v8KSkqN0pv8xQKlIzIRV3KVCzjduD2sMPQGi6ecTqs=;
-        b=iSHsdL+1b5IJMiBkkyJ43fDzFp4eqt2VC/FIVFd35ffURyzH/YtSsNwcshHwZmgr4i
-         +wbr7XqE+qLBi8tgYX5V7UembUxWa693Y0AXLicpkEwM+1d+X2J16gVN73vXeyG7Opfi
-         yWT2TkeqOpuLE1PZkXrlTMug5YrcR/bCF0sHEuKlJc8r2Qc01UMk2MKs7HCrkryabifH
-         SrI8vuyKaBvMsSR91M9H+F77FUfzO1DfEq/r5SOATctwqbLXNcc9bCKMIq/JfBDlrsws
-         OmW1Ip6Bg5SHikFLsQ+gg8JavMR+rNzEZ7/TGTURN9Cbw9c7XNrni3h4BPd13QLrtDh/
-         Tsmg==
+        bh=ISBdoGIET+ZYznAio2FskDixMUDkKh8PC4/Pd4Loq2k=;
+        b=d/Pja+DmXSa+DmZhRpIEt3/37I45Rs75tBubp/JfNW0JByklVj/oO1Mnpl+LGw4Miw
+         s8mlIsXzOhdvN08Cwvzaknh9HE7sNEJwbpiFeunxRCkJ/1FRnctFHC8f+rWH2oM3eYFK
+         MTXxU5dZXVeXwZYbTn0xfbnSLi5NFB3UxiiRg0juj/B+SUlMgWl0ZwombT8SJriD+iQc
+         RDzmYTa2a0GkMdzoPk5pWWcCPGK7RMzCc1JYoUPe05/+cVNl+EpRizRV7UZfHMH+ylgW
+         TyOQHeJrz/vlVZ93tboITgeFuJCSXE/A40E0JF7U+x1cZJJW5kc0u6Y73ZruuCx1HBmO
+         OihQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=+v8KSkqN0pv8xQKlIzIRV3KVCzjduD2sMPQGi6ecTqs=;
-        b=cvXyOA+H+qSD1i/bVH6GMqdWuJRX2dmkeazggyqL3mwyCdQUsrD/aa5IqKAPWA4Mwy
-         fMwdccqRZB2TG/ka7xHRCDuboDn2QkL+JFw/F9Ufb9U5Thf12CLDLH/dzKGulcdfrGqF
-         xm2IvkdLyODFRhPq17IqKNRsUvKqNzQQ799wOZbskRiMyUyxEurBpOfHBnAPuVjXMwFQ
-         QrhqxewcyztdeyUyrSUPNh39cCkfrc+roxXMTa1Y0w/fp+1dpYZ8hS1B1x9K+XYaTElN
-         QJwq8HCctzrqu635US/K6vU+y6SZKKgEX2Ps5X5/IB1D6xDGxY+iywQgKv+ngXjw6feU
-         ir6w==
-X-Gm-Message-State: AOAM533wZOoib3I4X57fuF4C2KmrzlmHWiU8BUjdnJvXfmByfIscAGCC
-        4qMBhMv42G0eB6JFn3eEyZDMZPJh5uM65/4=
-X-Google-Smtp-Source: ABdhPJyDfR4fjAMTEqH2LV4RuPCRUIXQBxsqKNB76GScQRsrULmyLXoLGb7y/HQhJapPFyholtlnGA==
-X-Received: by 2002:a05:6000:1449:: with SMTP id v9mr4307725wrx.295.1618664513253;
-        Sat, 17 Apr 2021 06:01:53 -0700 (PDT)
+        bh=ISBdoGIET+ZYznAio2FskDixMUDkKh8PC4/Pd4Loq2k=;
+        b=t7/HYHmewP2/WmBR/XuLZQ4jfJ5vcnva7RpmXV2kn7L/PYS7MOpfufODsIDiYlfk7E
+         YzF7Mb2X3PsGv1Fc3zm4r9Gy5/mYlsiTIskzWp3IX/s1S/D0w6B34viXZgIBvm4Y8WFO
+         APBql1QGuOAh+AwEo6q4xdmITk4HbCCCb5gdI8GOxBtcXZYDo4XDhgbqbm8mhmLm/9X2
+         KTrtBA/2to2dk376J1yERZLzYvtJgsUe5c6ciuB2hFhwX1tXOJK9IbP2CBemdrQb2MDZ
+         pii+taZR+GoVUC3ZtBgK3NQAEUcjFuD/e1DO4Gp8l8MXcRMlyhUMvKRJJkQQ/Zc6uUwg
+         maAg==
+X-Gm-Message-State: AOAM532Un9pVxQ/a8+vZ2ltg9tEY6wHEyLtxGklv/wGxuzW3xe9ykABb
+        G8pmeyEun5N+b4wVJZgiAkSflZNmllQSWIg=
+X-Google-Smtp-Source: ABdhPJxHkMpcgFrhLR2HMnbWKLQatCZYeC3c/Fjg2tVXB+3E0vMDLf0rtIbABL9RYc1DU5ZHylo/cw==
+X-Received: by 2002:a05:600c:4fc8:: with SMTP id o8mr12727799wmq.87.1618666160177;
+        Sat, 17 Apr 2021 06:29:20 -0700 (PDT)
 Received: from google.com ([2a00:79e0:d:209:3c1c:8462:b77e:21a4])
-        by smtp.gmail.com with ESMTPSA id l9sm14433449wrz.7.2021.04.17.06.01.52
+        by smtp.gmail.com with ESMTPSA id l8sm12570438wme.18.2021.04.17.06.29.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Apr 2021 06:01:52 -0700 (PDT)
-Date:   Sat, 17 Apr 2021 14:01:48 +0100
+        Sat, 17 Apr 2021 06:29:19 -0700 (PDT)
+Date:   Sat, 17 Apr 2021 14:29:15 +0100
 From:   Wedson Almeida Filho <wedsonaf@google.com>
-To:     David Laight <David.Laight@aculab.com>
-Cc:     'Peter Zijlstra' <peterz@infradead.org>,
-        "ojeda@kernel.org" <ojeda@kernel.org>,
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>, ojeda@kernel.org,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-        "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 00/13] [RFC] Rust support
-Message-ID: <YHrcPOLJBq593z6P@google.com>
+Message-ID: <YHriqwf5XR0xWCi1@google.com>
 References: <20210414184604.23473-1-ojeda@kernel.org>
  <YHlz54rd1YQHsOA/@hirez.programming.kicks-ass.net>
  <YHmMJWmzz2vZ3qQH@google.com>
- <YHmc2+bKQJ/XAATF@hirez.programming.kicks-ass.net>
- <39b8cbb2cfba4a5ba913311cb2448f50@AcuMS.aculab.com>
+ <20210416150307.GJ2531743@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <39b8cbb2cfba4a5ba913311cb2448f50@AcuMS.aculab.com>
+In-Reply-To: <20210416150307.GJ2531743@casper.infradead.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Apr 17, 2021 at 12:41:23PM +0000, David Laight wrote:
-> Or the cases where the locks are released in the 'wrong' order.
-> Typically for:
-> 	lock(table)
-> 	item = lookup(table, key)
-> 	lock(item)
-> 	unlock(table)
-> 	...
-> 	unlock(item)
-
-This is expressible in Rust with something like:
-
-    table = table_mutex.lock()
-    item = table.lookup(key).lock()
-    drop(table)
-    ...
-    // item will be unlocked when it goes out of scope or on drop(item)
-
-The added bonus here from Rust is that table is not accessible after
-drop(table), so a developer cannot accidentally access fields after unlocking
-it.
-
+On Fri, Apr 16, 2021 at 04:03:07PM +0100, Matthew Wilcox wrote:
+> Well, we could do that in C too.
 > 
-> (In the kernel the table lock might be RCU.)
+> struct unlocked_inode {
+> 	spinlock_t i_lock;
+> };
 > 
-> Or, with similar data:
-> 	write_lock(table);
-> 	foreach(item, table)
-> 		lock(item)
-> 		unlock(item)
-> 	/* No items can be locked until we release the write_lock.
-> 	...
-> 	unlock(table)
+> struct locked_inode {
+> 	spinlock_t i_lock;
+> 	unsigned short i_bytes;
+> 	blkcnt_t i_blocks;
+> };
+> 
+> struct locked_inode *lock_inode(struct unlocked_inode *inode)
+> {
+> 	spin_lock(&inode->i_lock);
+> 	return (struct locked_inode *)inode;
+> }
 
-I think I'm missing something here. Would you help me understand what part is
-out of the ordinary in the code above? It would be expressible in Rust with
-something like:
+Indeed you can do this kind of thing in C, but as I said before (apologies if
+I'm too repetitive on this) Rust forces you to do it the right way, whereas the
+lack of enforcement in C leaves room for mistakes.
 
-    table = table_mutex.write();
-    for (item_mutex in table)
-        item = item_mutex.lock
-        // item is unlocked at the end of the loop iteration (out of scope)
-    // table gets unlocked when it goes out of scope
+If you do add extensions to C to add some of these restrictions (and I encourage
+you to pursue such extensions as we all benefit from better C), it is likely not
+sufficient to reach the level of compile-time guarantee that Rust offers because
+you need a whole slew of restrictions/enforcements.
 
-Cheers,
--Wedson
+I also note that academics have a formalisation of [a subset of] Rust that show
+the soundness of these guarantees and the requirements on unsafe to compose
+safely. So we're not talking about guesswork, there are formal machine-checked
+proofs published about this (see for example
+https://people.mpi-sws.org/~dreyer/papers/safe-sysprog-rust/paper.pdf).
