@@ -2,116 +2,110 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DCECAC433ED
-	for <rust-for-linux@archiver.kernel.org>; Sun, 18 Apr 2021 15:51:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7C03C433ED
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 07:33:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BAC10610CD
-	for <rust-for-linux@archiver.kernel.org>; Sun, 18 Apr 2021 15:51:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9A28760FE9
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 07:33:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231341AbhDRPwH (ORCPT
+        id S237869AbhDSHeU (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 18 Apr 2021 11:52:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34014 "EHLO
+        Mon, 19 Apr 2021 03:34:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231409AbhDRPwG (ORCPT
+        with ESMTP id S237936AbhDSHeA (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 18 Apr 2021 11:52:06 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772D3C06174A
-        for <rust-for-linux@vger.kernel.org>; Sun, 18 Apr 2021 08:51:36 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id w7-20020a1cdf070000b0290125f388fb34so16659052wmg.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 18 Apr 2021 08:51:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=OtKw10qEvbW4vVJ7LgDYq6Lw3KkFyEL4NmBJkuZOV+o=;
-        b=wI9ZYZdipjoG+WBfdtD11eqltuXuPkKeZePxTrK9r0jW3SdtouH8LNr/gS3aR6hZ/W
-         vJULJ27nh78HN6MqOBeYYf1R2m7CgNWF1PirBl7FpzcmFBpFjMDs4L55JeFMHITFXVn/
-         ztlV8Up0gMBG7mNZcGy/cms2aMgZD/tYaCpuQJuBFGK8PYc0TlanBX8FCjWUp959Vs5c
-         NNkRTyzNt9wsn6+DH6KQvzSyH+7NIB8KPBorzwQUpWVVALfJwi8fYl7K48ceFbLO63ut
-         /193s5Rkr2cYSWlDg48jjKb3zjodyB+zYGNu0B9YXUWRWnNd7dvI2eQbC8NycfF8y1WV
-         tg3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=OtKw10qEvbW4vVJ7LgDYq6Lw3KkFyEL4NmBJkuZOV+o=;
-        b=TBi4AADq2GAYWn7jOIT0tx6g10vkhfN5yHzPqYXrMLZPSCBGzYDYUgExwTNp3gRIU9
-         ZOrpzd4/SSGQtJMKXywrIt9AFHHV7OaBKFjk9pxd6zH1G+x9Qi95l1oALytd2Jue6CyC
-         aHoLg7PqidMgoZKW77Z4Kb856mpR2tuJaTrRBhMji1Fu/0lMCxRhDgB9O4rWJ2uyN2WO
-         VNoo/njMrFSyAskmK9C5IM/FdEMyeXuv76JiUZWFFHzrj2PuRp/+ZpPjw0G1K4aBSABb
-         LC0X7GxdgWKKZMoxQ8B5YSwCngiafk06KzeVyonSFhWWYhEde2Z1SEqbpRC8diNg0t51
-         fe2A==
-X-Gm-Message-State: AOAM532CNP9mAo+0fq66QmkGx3eyWGASEFvvZY79br0+o+ENMpe2vlDm
-        dMD+BruFs/GRw8yC8jzY93jXkbUYqYpETF0=
-X-Google-Smtp-Source: ABdhPJyrkMnxGIkLrosVJLsRh5oNdjvpEKR9/be+0/gpccSgpInNrF8k8+QX7jRgxsO2uET3pdoziw==
-X-Received: by 2002:a05:600c:3548:: with SMTP id i8mr14715981wmq.110.1618761089071;
-        Sun, 18 Apr 2021 08:51:29 -0700 (PDT)
-Received: from google.com ([2a00:79e0:d:209:b40b:f0d6:b292:d186])
-        by smtp.gmail.com with ESMTPSA id v4sm20768292wrf.36.2021.04.18.08.51.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Apr 2021 08:51:28 -0700 (PDT)
-Date:   Sun, 18 Apr 2021 16:51:24 +0100
-From:   Wedson Almeida Filho <wedsonaf@google.com>
-To:     Willy Tarreau <w@1wt.eu>
-Cc:     Peter Zijlstra <peterz@infradead.org>, ojeda@kernel.org,
+        Mon, 19 Apr 2021 03:34:00 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AF6CC06174A;
+        Mon, 19 Apr 2021 00:33:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=FYq2lre5IyLW1kO/gHNuOUrJnwI3hjqEUIqkBhrYSpY=; b=PXyigIIh6ycLkbQ0IpEJgLrpbB
+        8qyz5JVhMiLsYbE/bkS65iPMcwHz3CiY1yMJFD3wR3kCqDGv/HlgKhlkhQsZzkbCfyw9HRZCq3kYz
+        ACC9H4LQfYlay5YJqs0pEi6VGOSeAwyGfQz23H9WcOE0uuxst6D5C6iko/5rQjKPERVQQ4IJZ3o/w
+        RBvXMDc7Gkr1HCQSeGsSXgD5I9hbfmIHD0cJPlCO48I88VnlTcIJQSWawNKrWne0Il+jl1g1HG8gd
+        c9rhwYHlqjkl4QDNm4kpESZlSwkZR6/dE4KXP47HZ27FFAT9KwtBHUlj+rq59nXXbdZpxRGTTcQEX
+        DR7lIjhw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lYOOQ-00DOH9-IU; Mon, 19 Apr 2021 07:32:38 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 4503F30018E;
+        Mon, 19 Apr 2021 09:32:25 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 28490200D4310; Mon, 19 Apr 2021 09:32:25 +0200 (CEST)
+Date:   Mon, 19 Apr 2021 09:32:25 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Paolo Bonzini <pbonzini@redhat.com>
+Cc:     Wedson Almeida Filho <wedsonaf@google.com>, ojeda@kernel.org,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 00/13] [RFC] Rust support
-Message-ID: <YHxVfOS9vU7riv+Y@google.com>
+Message-ID: <YH0yCTgL0raKrmYg@hirez.programming.kicks-ass.net>
 References: <20210414184604.23473-1-ojeda@kernel.org>
- <YHlz54rd1YQHsOA/@hirez.programming.kicks-ass.net>
- <YHmMJWmzz2vZ3qQH@google.com>
- <YHmc2+bKQJ/XAATF@hirez.programming.kicks-ass.net>
- <YHmuX1NA5RF7C7XS@google.com>
- <20210416161444.GA10484@1wt.eu>
- <YHroRuI7lYDABWJR@google.com>
- <20210417142126.GA15678@1wt.eu>
+ <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
+ <YHj02M3jMSweoP4l@google.com>
+ <YHk4DZE1ZWTiBB1f@hirez.programming.kicks-ass.net>
+ <aa6e44ab-e223-73aa-279e-8103732460ac@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210417142126.GA15678@1wt.eu>
+In-Reply-To: <aa6e44ab-e223-73aa-279e-8103732460ac@redhat.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Apr 17, 2021 at 04:21:27PM +0200, Willy Tarreau wrote:
-> Well, I can't express how much I hate abstractions because I constantly
-> need to know what it's doing under the hood, and I spend my time reading
-> the output asm code because I always want to confirm my assumptions about
-> the compiler not cheating on me (and not hitting one of its bugs),
-> especially after C compilers have become so smart that they completely
-> replace your code with what they think is better for you, (including
-> nothing),
+On Sat, Apr 17, 2021 at 04:51:58PM +0200, Paolo Bonzini wrote:
+> On 16/04/21 09:09, Peter Zijlstra wrote:
+> > Well, the obvious example would be seqlocks. C11 can't do them
+> 
+> Sure it can.  C11 requires annotating with (the equivalent of) READ_ONCE all
+> reads of seqlock-protected fields, but the memory model supports seqlocks
+> just fine.
 
-I understand the feeling. One thing I can say about the abstractions we've been
-talking about is that they're zero-cost. So you'd still have the ability to
-inspect generated code and relate that to source, although it would still be
-subject to optimisations like C (or perhaps more optimisations as the compiler
-knows more about the code).
+How does that help?
 
-> so I guess all of this is really not for someone like me.
+IIRC there's two problems, one on each side the lock. On the write side
+we have:
 
-This may indeed be the case. But I'd invite you to try it out for yourself
-anyway before discounting it. I used to hate destructors in C++ because they
-were called implicitly: C was king because I had full control. Now I find myself
-publicly backing Rust. I feel the advantages outweigh the cost.
+	seq++;
+	smp_wmb();
+	X = r;
+	Y = r;
+	smp_wmb();
+	seq++;
 
-> However while I'm pretty sure that based on our respective experiences
-> we'd probably disagree forever on a wide number of approaches when it
-> comes to deciding whether the developer or the compiler should have the
-> last say, I sincerely appreciate that you take the time to calmly explain
-> your differing views and the rationale behind, so many thanks for this!
+Which C11 simply cannot do right because it does't have wmb. You end up
+having to use seq_cst for the first wmb or make both X and Y (on top of
+the last seq) a store-release, both options are sub-optimal.
 
-Thank you. I also appreciate your willingness to engage with us.
+On the read side you get:
 
-Cheers,
--Wedson
+	do {
+	  s = seq;
+	  smp_rmb();
+	  r1 = X;
+	  r2 = Y;
+	  smp_rmb();
+	} while ((s&1) || seq != s);
+
+And then you get into trouble the last barrier, so the first seq load
+can be load-acquire, after which the loads of X, Y come after, but you
+need then to happen before the second seq load, for which you then need
+seq_cst, or make X and Y load-acquire. Again, not optimal.
+
+I have also seen *many* broken variants of it on the web. Some work on
+x86 but are totally broken when you build them on LL/SC ARM64.
+
