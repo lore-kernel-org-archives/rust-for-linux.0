@@ -2,106 +2,109 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43D67C43460
-	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 21:03:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6C15C433B4
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 21:20:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 08FD2611C9
-	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 21:03:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 95CA7611EE
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 21:20:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240317AbhDSVEJ (ORCPT
+        id S229900AbhDSVU5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 19 Apr 2021 17:04:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48800 "EHLO
+        Mon, 19 Apr 2021 17:20:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238515AbhDSVEF (ORCPT
+        with ESMTP id S229734AbhDSVU5 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 19 Apr 2021 17:04:05 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AB1BC06174A;
-        Mon, 19 Apr 2021 14:03:35 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id n12so40416362ybf.8;
-        Mon, 19 Apr 2021 14:03:35 -0700 (PDT)
+        Mon, 19 Apr 2021 17:20:57 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9A5DC06174A
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Apr 2021 14:20:25 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id x19so27828249lfa.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Apr 2021 14:20:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=DZAiVp0HPCvt+Q56acSFAC0/xsTpWCSEtHLPhq6sng4=;
-        b=o3qng/pgSCa3Dc0G3aIezrIFgv7cqh67a4iPOYbRdaupA4JvOOk3fYkh0SBurKEOEf
-         wXMiChhj3YBk5t5xIaEJYyb+NLTCVMSVklY8FDIESon1UoDL6cOmEdfVXwC5ooQA+M2i
-         g/0o2wQxsOeIzX+AYGCyjX3pP78UodlqfzYkKPOvsqKRKg5lUF+aK0XdQn+6y0ANnYKA
-         +Xt7LcxFHKxwEtJuTtej6qSWhPRAntsvto2U1crY22pCcbiPzu5OFPH8tKzJTvXipQTY
-         C2aOxVrGtVQ6N2ZNLmMdIjOt1cpNcYsgR6X52kpvX0Napke6++67gL01OQrWJ22QlfrO
-         5OdQ==
+        bh=IWQAMmG2LrrHdqrgjtyB4Rz5aC7DrTd+8dtuGkxYgl0=;
+        b=jOdwizm9oBKH5CwBuo06Ba6clU6E4MPus2PrwjmTMC/cDWdwR6B2RjAha/BWseB1Xz
+         chKt/tUh/D+YLv6aSrfAOeE9g/JRE0uH78trJKj4t7RRsjtYed2usBrCpWajHxKy4Ndx
+         NSkqkWdafIk1NXqp3v87T28uicz/vm4xFqs83hC/V0kNMF7ToP5IbD/STm83sfv3/G/y
+         Hg3J54RXHp0VEgfiuR1El9IwIGtOzVTvyRikgpNakOgWfKaceDwlppaly3J/IJFQkit3
+         2qsDnuihmyi2vP5oT2yEDEqz3tlXtT7IBpYn1uYuefKOC5qe1J4MCu+oB+KY2wjBSHGZ
+         x5xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=DZAiVp0HPCvt+Q56acSFAC0/xsTpWCSEtHLPhq6sng4=;
-        b=c5PTm7tYez22eWnO/qML8C/u2DfqJ85S1Hf6loak+6BbIRJxxI0fu85XF+VdwiWFJ0
-         a3RGPKauWepAy4msqNWbUYC3oGN9y5tprF7rP0nQ0OlRWzE5Y9tw5iZlYe43x4QxKAmn
-         EOekmzdDmW3G9xD60dCyyUjpsTWt0a9oJWC2NwXj3vm39pivLisC2Yh86V03TcdCNQq/
-         jT+Gi35cMIZ/wSrhG38YBgq+JdKcjg56eaYA1hILpNszQZVJptHhkvXIX8ZuB5EGUns8
-         43EptjwWh3cdgILubp8wR3OsKCk7JP3EJrP8GNXyWN9y01Bdg9onl0zBpMbk+ATVW/9I
-         1Xdg==
-X-Gm-Message-State: AOAM530HFyZAyW1vNGfwAnXEpe9oLI3ps1JvFfFqdT+HKlaaD5MREUUA
-        MXzcKQNeRDqBzVsCac3SlYjQOWac5CtHHYl0Bfw=
-X-Google-Smtp-Source: ABdhPJzF9sMh9cOnjNPTMM1z36oacvvQp41KT6/gWqFIoMoPpF3w9DNvmYGArCtMKt+Zzc2qVEbQR2ds1LQ7DPk8pRU=
-X-Received: by 2002:a25:6803:: with SMTP id d3mr20848597ybc.422.1618866213945;
- Mon, 19 Apr 2021 14:03:33 -0700 (PDT)
+        bh=IWQAMmG2LrrHdqrgjtyB4Rz5aC7DrTd+8dtuGkxYgl0=;
+        b=G/UAGUYtBeUEOGIQir5I8UQIR5xo6Yi5SvfDSpGEaarwltwKV4ZPT/ykcpMOBgk3qr
+         KMmZDTunTsbo3qaXrPXdC9vyeLsmg7djSd7N+NyvY8U2USnocT4PYSXhb/y0NEv/Du71
+         6LU21zWCiyP31jTdAKR92Gr0vLdQ4luoI2m0DTwx6DPfs5Y1vm6gcyEFfOY+4zkaIdXU
+         LglirU+lbIgNvvub3QPO58ZH92x4Curot1za0Ym2UbuIBVMnGppoO20TPhPlsGcI6E70
+         uh0/h0mgbF45YYOTlJevd5/pYHT5KouIqOs1IoD2+EF+8a3QaTDfYpuYfUw9YxqTNXof
+         msFw==
+X-Gm-Message-State: AOAM532RhPmIFWfqdyQ1v0DdjHD5UqpMMPrdLw+YgsxzfA1oaXby+510
+        R8dxf3LqOoEprNj4TMqpoCg09Qyby3K83I2AmZaiBw==
+X-Google-Smtp-Source: ABdhPJzAIABUF1QOQ0nd3fNJYnebjfj1E1tsFER+ZR0dNuTjDmoTLhl7F0lzDuwlPS46ZcpYkSU0lhJUV1YaCByZPXc=
+X-Received: by 2002:ac2:46ed:: with SMTP id q13mr13459689lfo.543.1618867224109;
+ Mon, 19 Apr 2021 14:20:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210414184604.23473-1-ojeda@kernel.org> <20210414184604.23473-5-ojeda@kernel.org>
- <YHmTWEAS/QjX++w4@hirez.programming.kicks-ass.net> <CANiq72nv8CK8cyY4n3yqpL6GAmqmVP5+Ee-cgzT9Gi+ZRLE_Jw@mail.gmail.com>
- <20210419195850.GV7604@twin.jikos.cz> <20210419201721.GF2531743@casper.infradead.org>
-In-Reply-To: <20210419201721.GF2531743@casper.infradead.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 19 Apr 2021 23:03:23 +0200
-Message-ID: <CANiq72kEUEskKC=qA5q1ZiAJC9KKUcndVh6iZx_vJ1P=injF-g@mail.gmail.com>
-Subject: Re: [PATCH 04/13] Kbuild: Rust support
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     dsterba@suse.cz, Peter Zijlstra <peterz@infradead.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
+References: <CANiq72mDu=Tijr1mmpLNRoR7H4eqTH50FcaQmbKM9BAHDOahHA@mail.gmail.com>
+ <YH3rUsLYFF0VefDR@localhost>
+In-Reply-To: <YH3rUsLYFF0VefDR@localhost>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Mon, 19 Apr 2021 14:20:11 -0700
+Message-ID: <CAKwvOdmLkt8LUCikPGdh0PSSw3SHGRpSQ2tZS92HMcca6i4dqw@mail.gmail.com>
+Subject: Re: Poll for call
+To:     Josh Triplett <josh@joshtriplett.org>
+Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Apr 19, 2021 at 10:18 PM Matthew Wilcox <willy@infradead.org> wrote:
+On Mon, Apr 19, 2021 at 1:43 PM Josh Triplett <josh@joshtriplett.org> wrote:
 >
-> Yes, I agree, we need a better story for name mangling.
-> My proposal is that we store a pretty name which matches the source
-> (eg rust_binder::range_alloc) and a sha1 of the mangled symbol
-> (40 bytes of uninteresting hex).  Symbol resolution is performed against
-> the sha1.  Printing is of the pretty name.  It should be obvious from
-> the stack trace which variant of a function is being called, no?
+> Either day works for me, and I'd love to join.
+>
+> Linux Plumbers Conference and Kernel Summit are coming up. I'd like to
+> propose a "What Does the Kernel Need from Rust?" session, with my lang
+> and libs hats on.
+>
+> I'd also love to talk about the recent LKML thread, and the plans for a
+> custom alloc crate vs reusing the Rust alloc crate.
 
-If the pretty name is only `rust_binder::range_alloc`, that would not
-be enough, since (in this case) that is a module name (i.e. the
-namespace of the `DescriptorState` type). The function being called
-here is `fmt` (the one outside the `<>`), which is a method of the
-`Debug` trait.
+I have a microconf proposal for "Toolchains and Kernel MC" (similar to
+last year) that I'm waiting to hear back on.  It would be nice if you
+could hold that proposal for that MC, rather than the general
+"Refereed-track."
 
-We could perhaps reduce this down to:
 
-    rust_binder::range_alloc::DescriptorState::fmt
+>
+> On Mon, Apr 19, 2021 at 06:14:56PM +0200, Miguel Ojeda wrote:
+> > Hi all,
+> >
+> > Now that some days have passed since the RFC, let's have one of our calls.
+> >
+> > I propose next weekend Saturday 24th or Sunday 25th at 18:00 UTC like
+> > as usual (EU evening / US afternoon). Please let me know which day you
+> > prefer, if any.
+> >
+> > As usual, anybody is welcome to join. The meetings take place on
+> > Google Meet. The invitation link will be sent later on to those
+> > interested.
+> >
+> > Cheers,
+> > Miguel
 
-without much ambiguity (in most cases).
 
-Cheers,
-Miguel
+
+-- 
+Thanks,
+~Nick Desaulniers
