@@ -2,104 +2,121 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A1F3C43460
-	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 18:51:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0506C433B4
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 20:01:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 21F0861285
-	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 18:51:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A561C613AE
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 20:01:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241168AbhDSSvo (ORCPT
+        id S232633AbhDSUBl (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 19 Apr 2021 14:51:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47964 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241151AbhDSSvn (ORCPT
-        <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 19 Apr 2021 14:51:43 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 142C2C061761
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Apr 2021 11:51:12 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id u25so2278145ljg.7
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Apr 2021 11:51:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Mvwuk72OV8nQxYdIe9d627zTpbWzXnBqVHooi1BCdcI=;
-        b=ABIAZh0Yc6gK7Ft1wtnc4ohcPbNT4AIxM87QybtInWLGgYjHUnUzGJQO+0SQtmtF+P
-         SJNEk+teRDbaI1T6wAN0fGq5AdHUpbsxHIxuCmNNPS1nc9teY9xfGzk1uG6n4KgcF6pi
-         rwTMC5yQwaeCnKmG5juA/gDi6ahV1DltGgDNY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Mvwuk72OV8nQxYdIe9d627zTpbWzXnBqVHooi1BCdcI=;
-        b=rcu+LrfNwVQsb8dY+8gsXs8fXAxIC8mEiqvmUTihj7pjhKHw+SqnM5JsygkSfIJRBF
-         LUoZDMt/m9po30qljgwZFdNS+kGFIR9gJRga0v/VXc1cUrlqn6Jm7U2PCxNPaFkzWGIH
-         gN2CE4satAt/I2edK539Puc2vCg8A5k0S+FLRgX+9FXgv/Y7JBNuRWkwsb7+3yKF2eaz
-         WGvd4RrBlL+ZS3jzh/DbFO/sTC+/dZiVQA18orqBMF2si22EVFAeQVSdic4mfNvtVnwn
-         oaRNexMkCLYf1e2lQwXCON4K6VeQU5psydb60m/54twGkV6BDpji53QQrDYnYEJbmL4z
-         C12w==
-X-Gm-Message-State: AOAM532sTfqpU7Mr488XHZ8EtcqRm+SsDxw8JIpZtqwiy0ko8g+yfxft
-        jK2QPL0hJC8ZXdExTgDqKHZLd1PcOKtONCOT
-X-Google-Smtp-Source: ABdhPJwsjKpiBcXEQjk13DBsCG0PC9/G9aCY8a1if+Y3fbVQGcqwiRGSQk4A3UWBWe2YkPQ5ZTgrGg==
-X-Received: by 2002:a2e:9bd1:: with SMTP id w17mr11978439ljj.77.1618858270170;
-        Mon, 19 Apr 2021 11:51:10 -0700 (PDT)
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
-        by smtp.gmail.com with ESMTPSA id h28sm1892372lfv.26.2021.04.19.11.51.08
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Apr 2021 11:51:08 -0700 (PDT)
-Received: by mail-lj1-f179.google.com with SMTP id u25so2278036ljg.7
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Apr 2021 11:51:08 -0700 (PDT)
-X-Received: by 2002:a05:651c:1117:: with SMTP id d23mr12844637ljo.220.1618858268248;
- Mon, 19 Apr 2021 11:51:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210414184604.23473-1-ojeda@kernel.org> <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
- <YHj02M3jMSweoP4l@google.com> <YHk4DZE1ZWTiBB1f@hirez.programming.kicks-ass.net>
- <aa6e44ab-e223-73aa-279e-8103732460ac@redhat.com> <YH0yCTgL0raKrmYg@hirez.programming.kicks-ass.net>
- <7287eac3-f492-bab1-9ea8-b89ceceed560@redhat.com> <YH0+0VQ1XC8+rv20@hirez.programming.kicks-ass.net>
- <3a874b15-5c21-9ed9-e5c3-995f915cba79@redhat.com> <YH1PGfC1qSjKB6Ho@hirez.programming.kicks-ass.net>
- <CAHk-=wjSrOcA0567rpn1PbYkGEgnw_sOmZ13JX87isrMq1dL-Q@mail.gmail.com> <ae079b78-1c26-ddb9-fb8f-83d27ba0c5a9@redhat.com>
-In-Reply-To: <ae079b78-1c26-ddb9-fb8f-83d27ba0c5a9@redhat.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 19 Apr 2021 11:50:52 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiqX=uweoE+4hUTSLRsR87u2WAnYjmQtR1Zw0k0-cMocA@mail.gmail.com>
-Message-ID: <CAHk-=wiqX=uweoE+4hUTSLRsR87u2WAnYjmQtR1Zw0k0-cMocA@mail.gmail.com>
-Subject: Re: [PATCH 00/13] [RFC] Rust support
-To:     Paolo Bonzini <pbonzini@redhat.com>
+        Mon, 19 Apr 2021 16:01:41 -0400
+Received: from mx2.suse.de ([195.135.220.15]:56016 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230160AbhDSUBl (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Mon, 19 Apr 2021 16:01:41 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id BAA0DB020;
+        Mon, 19 Apr 2021 20:01:09 +0000 (UTC)
+Received: by ds.suse.cz (Postfix, from userid 10065)
+        id 2309EDA732; Mon, 19 Apr 2021 21:58:51 +0200 (CEST)
+Date:   Mon, 19 Apr 2021 21:58:51 +0200
+From:   David Sterba <dsterba@suse.cz>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Wedson Almeida Filho <wedsonaf@google.com>, ojeda@kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org,
         Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Will Deacon <will@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 04/13] Kbuild: Rust support
+Message-ID: <20210419195850.GV7604@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+Mail-Followup-To: dsterba@suse.cz,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>, Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+References: <20210414184604.23473-1-ojeda@kernel.org>
+ <20210414184604.23473-5-ojeda@kernel.org>
+ <YHmTWEAS/QjX++w4@hirez.programming.kicks-ass.net>
+ <CANiq72nv8CK8cyY4n3yqpL6GAmqmVP5+Ee-cgzT9Gi+ZRLE_Jw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72nv8CK8cyY4n3yqpL6GAmqmVP5+Ee-cgzT9Gi+ZRLE_Jw@mail.gmail.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Apr 19, 2021 at 11:38 AM Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> It changes it for the worse, in that access to fields that are shared
-> across threads *must* either use atomic types
+On Fri, Apr 16, 2021 at 07:34:51PM +0200, Miguel Ojeda wrote:
+> On Fri, Apr 16, 2021 at 3:38 PM Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > So if I read all this right, rust compiles to .o and, like any other .o
+> > file is then fed into objtool (for x86_64). Did you have any problems
+> > with objtool? Does it generate correct ORC unwind information?
+> 
+> I opened an issue a while ago to take a closer look at the ORC
+> unwinder etc., so it is in my radar (thanks for raising it up,
+> nevertheless!).
+> 
+> Currently, causing a panic in a nested non-inlined function (f -> g ->
+> h) in one of the samples with the ORC unwinder enabled gives me
+> something like:
+> 
+> [    0.903456]  rust_begin_unwind+0x9/0x10
+> [    0.903456]  ? _RNvNtCsbDqzXfLQacH_4core9panicking9panic_fmt+0x29/0x30
+> [    0.903456]  ? _RNvNtCsbDqzXfLQacH_4core9panicking5panic+0x44/0x50
+> [    0.903456]  ? _RNvCsbDqzXfLQacH_12rust_minimal1h+0x1c/0x20
+> [    0.903456]  ? _RNvCsbDqzXfLQacH_12rust_minimal1g+0x9/0x10
+> [    0.903456]  ? _RNvCsbDqzXfLQacH_12rust_minimal1f+0x9/0x10
+> [    0.903456]  ?
+> _RNvXCsbDqzXfLQacH_12rust_minimalNtB2_11RustMinimalNtCsbDqzXfLQacH_6kernel12KernelModule4init+0x73/0x80
+> [    0.903456]  ? _RNvXsa_NtCsbDqzXfLQacH_4core3fmtbNtB5_5Debug3fmt+0x30/0x30
+> [    0.903456]  ? __rust_minimal_init+0x11/0x20
 
-Well, we won't be using those broken types in the core kernel, so that
-would all be entirely on the Rust side.
+Are there plans to unmangle the symbols when printing stacks? c++filt
+says:
 
-And I don't expect the Rust side to do a lot of non-locked accesses,
-which presumably shouldn't need any of this anyway.
+  rust_begin_unwind+0x9/0x10
+  ? core[8787f43e282added]::panicking::panic_fmt+0x29/0x30
+  ? core[8787f43e282added]::panicking::panic+0x44/0x50
+  ? rust_minimal[8787f43e282added]::h+0x1c/0x20
+  ? rust_minimal[8787f43e282added]::g+0x9/0x10
+  ? rust_minimal[8787f43e282added]::f+0x9/0x10
+  ? <rust_minimal[8787f43e282added]::RustMinimal as kernel[8787f43e282added]::KernelModule>::init+0x73/0x80
+  ? <bool as core[8787f43e282added]::fmt::Debug>::fmt+0x30/0x30
+  ? __rust_minimal_init+0x11/0x20
 
-If Rust code ends up accessing actual real kernel data structures with
-memory ordering, then that will be to types that do *not* follow the
-useless C++ atomics, and that in turn presumably means that it will be
-done as "unsafe" helpers that do what the LKMM does (ie READ_ONCE()
-and all the rest of it).
+for simple functions it's barely parseable but the following is hardly
+readable
 
-                 Linus
+> _RNvXs5_NtCsbDqzXfLQacH_11rust_binder11range_allocNtB5_15DescriptorStateNtNtCsbDqzXfLQacH_4core3fmt5Debug3fmt+0x60/0x60
+
+translates to
+
+  <rust_binder[8787f43e282added]::range_alloc::DescriptorState as core[8787f43e282added]::fmt::Debug>::fmt
