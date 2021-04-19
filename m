@@ -2,79 +2,100 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EBFF1C433ED
-	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 20:55:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8200CC43460
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 20:55:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C3A206101C
-	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 20:55:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5656F613AC
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Apr 2021 20:55:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234559AbhDSU4S (ORCPT
+        id S242860AbhDSU4Y (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 19 Apr 2021 16:56:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46164 "EHLO
+        Mon, 19 Apr 2021 16:56:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242804AbhDSUzs (ORCPT
+        with ESMTP id S242467AbhDSU4T (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 19 Apr 2021 16:55:48 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67069C0611E8
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Apr 2021 13:52:37 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id bx20so41251830edb.12
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Apr 2021 13:52:37 -0700 (PDT)
+        Mon, 19 Apr 2021 16:56:19 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFF13C06138A;
+        Mon, 19 Apr 2021 13:54:48 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id v3so38066000ybi.1;
+        Mon, 19 Apr 2021 13:54:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Pp9GOUa2m9xFJoCD+XSE/qNzKS97bqOxZFzVB4Pylns=;
-        b=pk+XydzURuFlq6dM4/6X/VsD3yox+Ek69QYgUEpbXq7dqlskrrSDfwpNQbsKo89Iud
-         NLlP8xZCj/EOK2dHQXFqIIhD0k5KnSrstWkFN8b1kw8S0P30dFCjg4/aIH74LEf3Hztf
-         GFG7g3mDTrHFCRmsjwSYueDpYg3DQx5FvrPgH84ENq1I3dInJQW5coqmpRtG24JDfaXU
-         8272V0USb08BMzWBey/EGkqz2CRyWkOFuGpbrCOYynICJCa3nu2euv6b3eGzgtTkVcL/
-         4VmMMq66iJdMZgl9LUVAV/JqOOIlT0h8tDK3WR5g2TtsOo5xw7Iy0Zg0mWMv5wpeTDxq
-         zI6w==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=aCM5KvzcuaSH8PgmjA12v/xhf+h1AKtzkBArU6j5MCE=;
+        b=URaTNbaExtEjXJaD8vbbSmBPhI/bVCzNjLHzcekqpOpTrJTd+Wod3riJZLQKZMxtlM
+         8kEcJSMHGoYwZpQ+jv6yWVXKecEfIxKhMxX7gGxqHZHMFSXXyBefGJo+fe8RM4LyidiR
+         j70TBzzKd6V59V3OGVjXgRexckD0FnpqStNJfv+c1+EM8vdhofAAmg34c4U9ZR3uZ5CP
+         ryyv62cHUoSFpeTXz8ocgg6PHslmsAEt/d4aebw2LBMsa6wVy1Trcbh1oKt87ji0bFAg
+         X5QOkFWt+yaeekNVX5g1y57ZMoqhho4yJCij/90EDWzhxQaydFZhymEEwyjJ/0ilvC38
+         dg2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Pp9GOUa2m9xFJoCD+XSE/qNzKS97bqOxZFzVB4Pylns=;
-        b=X8rpzC0Nnqqcx/c8SeJ/TmfOxlm6gBPwkYVul8dAuxm8053lQm82RU0Yx5iz+3OVjc
-         ek7AP3krRmQazZjA9+zo62/BRMx5RIwyHssAOr4oP0EGsKf/IJIrwsCwG+EmXk+h6h2j
-         WOrBdq9PBveEVgM1WiU+sgpnzhK+psesanMXF010+pN0GTLv+2b0kCpezjwiDJzKJFrk
-         jt8Iv0Yo6AMlcQ98r/QXLrs+uaMQIDYiU6xsVIVQ2H9aSa6UJVbCu0tkL67fPKQilcTD
-         PqjFXmBxGnDEidKEKvE2l7Ua5DlMjdJwWKuvMeQT6i5c8kVIgtFbQGPUrPHCr7Xxxt4l
-         eplA==
-X-Gm-Message-State: AOAM533sTE7/9drzzQZDxyBLV1GKN6b7GTTuv9JG8GMyJUUVPtKiWwWd
-        wrGH2xHfcTa8qyOQTuhmyIn9Cx4zqBuNUD8YfJfAC35N
-X-Google-Smtp-Source: ABdhPJxceP2yQJmS87S7liAT+B7ngzeRzA4WbgHdfM8tQXhlFDL6Z1DXgZ16wSEsoKk7JyU3Te3867yJl0mrl9f2AjQ=
-X-Received: by 2002:aa7:d48a:: with SMTP id b10mr22260722edr.202.1618865556100;
- Mon, 19 Apr 2021 13:52:36 -0700 (PDT)
+         :message-id:subject:to;
+        bh=aCM5KvzcuaSH8PgmjA12v/xhf+h1AKtzkBArU6j5MCE=;
+        b=lBBSqrjek/M5/dxpw//kgFGRH7X11ZV6/JkkfFSGDIQ0+hh0wHcNLj7wthP1JCQlVa
+         DpFuo3+8dNImKfEHRgypa2tNit6fJLmhVfNyyeDLNci6/r3HRf8zxGgWbhsC5MqvFIxk
+         Jo28awEGtgeP6lzrVU/17/ZcqPFQzjfjCZoovDHnZJ9ZSf+ZcwP5tYFfgcUKXZjPNu8n
+         jp7aMMj7RrqR5Swa7Lj5+t59rNElHeZ+EpaorMXI1VAilecb0ksGoSw/ohBn+cXPLWN6
+         WCjTlT0u6+M8KK9fZ18K1HXKgy0v5ewT2tTUinps0iMOffC7Z6GRUks5Y8MNOyp3FQjc
+         PBpg==
+X-Gm-Message-State: AOAM530bz0jSY9KVLSUTdRvjxezdiV2hNQtr9KScU03+nnNtmmdnimjb
+        BLM1z6Z6bzkNVJX9S8J/U+guWbUxUDry0srdX00=
+X-Google-Smtp-Source: ABdhPJyaYIbfc4cW5qvFG9hENkVMCJYUuS82M0OwXiPIYErRHqo1pBo4NFKmv2I3CQp46FMoXxABmwEPNE+xsxALTTU=
+X-Received: by 2002:a5b:912:: with SMTP id a18mr19428673ybq.247.1618865688041;
+ Mon, 19 Apr 2021 13:54:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <CANiq72mDu=Tijr1mmpLNRoR7H4eqTH50FcaQmbKM9BAHDOahHA@mail.gmail.com>
-In-Reply-To: <CANiq72mDu=Tijr1mmpLNRoR7H4eqTH50FcaQmbKM9BAHDOahHA@mail.gmail.com>
-From:   Joshua Abraham <j.abraham1776@gmail.com>
-Date:   Mon, 19 Apr 2021 15:52:25 -0500
-Message-ID: <CAMmOe3R2kkf9UXdDg3seuZhS8C0kg2ZQcGGoAnwFQGkuGRQp5g@mail.gmail.com>
-Subject: Re: Poll for call
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
+References: <20210414184604.23473-1-ojeda@kernel.org> <20210414184604.23473-5-ojeda@kernel.org>
+ <YHmTWEAS/QjX++w4@hirez.programming.kicks-ass.net> <CANiq72nv8CK8cyY4n3yqpL6GAmqmVP5+Ee-cgzT9Gi+ZRLE_Jw@mail.gmail.com>
+ <20210419195850.GV7604@twin.jikos.cz>
+In-Reply-To: <20210419195850.GV7604@twin.jikos.cz>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 19 Apr 2021 22:54:36 +0200
+Message-ID: <CANiq72=a-xLF7rUDZ=gwYs2=G6AAa2Gsj1UoZQBdhQBuBgF+qQ@mail.gmail.com>
+Subject: Re: [PATCH 04/13] Kbuild: Rust support
+To:     dsterba@suse.cz, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Apr 19, 2021 at 11:31 AM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
-> I propose next weekend Saturday 24th or Sunday 25th at 18:00 UTC like
-> as usual (EU evening / US afternoon). Please let me know which day you
-> prefer, if any.
+Hi David,
 
-Either works for me, with a slight preference for Saturday.
+On Mon, Apr 19, 2021 at 10:01 PM David Sterba <dsterba@suse.cz> wrote:
+>
+> for simple functions it's barely parseable but the following is hardly
+> readable
+>
+> translates to
+>
+>   <rust_binder[8787f43e282added]::range_alloc::DescriptorState as core[8787f43e282added]::fmt::Debug>::fmt
 
--- 
-Respectfully,
-Josh Abraham
+Some details can be omitted without much problem, e.g. try the `-i`
+option of `c++filt`:
+
+    <rust_binder::range_alloc::DescriptorState as core::fmt::Debug>::fmt
+
+Cheers,
+Miguel
