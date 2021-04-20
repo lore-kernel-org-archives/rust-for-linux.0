@@ -2,105 +2,72 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DC74C433B4
-	for <rust-for-linux@archiver.kernel.org>; Tue, 20 Apr 2021 06:16:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E8283C433B4
+	for <rust-for-linux@archiver.kernel.org>; Tue, 20 Apr 2021 11:04:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3FA5C608FE
-	for <rust-for-linux@archiver.kernel.org>; Tue, 20 Apr 2021 06:16:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AF1B861026
+	for <rust-for-linux@archiver.kernel.org>; Tue, 20 Apr 2021 11:04:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229763AbhDTGRB (ORCPT
+        id S231840AbhDTLEp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 20 Apr 2021 02:17:01 -0400
-Received: from wtarreau.pck.nerim.net ([62.212.114.60]:51902 "EHLO 1wt.eu"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229577AbhDTGRA (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 20 Apr 2021 02:17:00 -0400
-Received: (from willy@localhost)
-        by pcw.home.local (8.15.2/8.15.2/Submit) id 13K6GDgI030948;
-        Tue, 20 Apr 2021 08:16:13 +0200
-Date:   Tue, 20 Apr 2021 08:16:13 +0200
-From:   Willy Tarreau <w@1wt.eu>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Subject: Re: [PATCH 00/13] [RFC] Rust support
-Message-ID: <20210420061613.GA30890@1wt.eu>
-References: <20210414184604.23473-1-ojeda@kernel.org>
- <YHlz54rd1YQHsOA/@hirez.programming.kicks-ass.net>
- <YHmMJWmzz2vZ3qQH@google.com>
- <YHmc2+bKQJ/XAATF@hirez.programming.kicks-ass.net>
- <YHmuX1NA5RF7C7XS@google.com>
- <20210416161444.GA10484@1wt.eu>
- <CANiq72nbkJFPmiJXX=L8PmkouKgKG1k-CxhZYpL1hcncYwa8JA@mail.gmail.com>
- <20210416173717.GA10846@1wt.eu>
- <CAKwvOd=RadTs7Skv6KUBo4qZQtdi0kugTzxvZM+5X_2gstjyaQ@mail.gmail.com>
- <YH5tAqLr965MNZyW@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YH5tAqLr965MNZyW@kroah.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Tue, 20 Apr 2021 07:04:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34114 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231388AbhDTLEm (ORCPT
+        <rfc822;rust-for-linux@vger.kernel.org>);
+        Tue, 20 Apr 2021 07:04:42 -0400
+Received: from gimli.kloenk.dev (gimli.kloenk.dev [IPv6:2a0f:4ac0:0:1::cb2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C57E8C06174A
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Apr 2021 04:04:10 -0700 (PDT)
+Content-Type: text/plain;
+        charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kloenk.de; s=mail;
+        t=1618916645; bh=xb5sQg4dsmze5xr+YP+v9zUoVmrvfCi0WZP1c4PbBPc=;
+        h=Subject:From:In-Reply-To:Date:Cc:References:To;
+        b=igtJt6lJCSoPDm+/hlWt7kONKCZcl88v3Bj+Gvn0QYY6xO4tMKDyyl6/iSVjMGsAI
+         EjtIdlSXsvVFEvYm24BU30aQjvyc/Y0gTxkWihNKBWERuDoky/5o+wOt5bN+yB0a7n
+         IsXVSbM0WmfogN0xEABi3Xx37PPUzwoaOttwnG7Q=
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.80.0.2.43\))
+Subject: Re: Poll for call
+From:   Finn Behrens <me@kloenk.de>
+In-Reply-To: <CANiq72mDu=Tijr1mmpLNRoR7H4eqTH50FcaQmbKM9BAHDOahHA@mail.gmail.com>
+Date:   Tue, 20 Apr 2021 13:03:53 +0200
+Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <45530278-D0FE-4868-B48A-3C01AC422A2C@kloenk.de>
+References: <CANiq72mDu=Tijr1mmpLNRoR7H4eqTH50FcaQmbKM9BAHDOahHA@mail.gmail.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Apr 20, 2021 at 07:56:18AM +0200, Greg Kroah-Hartman wrote:
-> I would LOVE it if some "executives" would see the above presentations,
-> because then they would maybe actually fund developers to fix bugs and
-> maintain the kernel code, instead of only allowing them to add new
-> features.
-> 
-> Seriously, that's the real problem, that Dmitry's work has exposed, the
-> lack of people allowed to do this type of bugfixing and maintenance on
-> company time, for something that the company relies on, is a huge issue.
-> "executives" feel that they are willing to fund the initial work and
-> then "throw it over the wall to the community" once it is merged, and
-> then they can forget about it as "the community" will maintain it for
-> them for free.  And that's a lie, as Dmitry's work shows.
+Howdy,
 
-That's sadly the eternal situation, and I'm suspecting that software
-development and maintenance is not identified as a requirement for a
-large number of hardware vendors, especially on the consumer side where
-margins are lower. A contractor is paid to develop a driver, *sometimes*
-to try to mainline it (and the later they engage with the community, the
-longer it takes in round trips), and once the code finally gets merged,
-all the initial budget is depleted and no more software work will be
-done.
+I would prefer Saturday, Sunday Could be really complicated for me.
 
-Worse, we could imagine kicking unmaintained drivers faster off the
-tree, but that would actually help these unscrupulous vendors by
-forcing their customers to switch to the new model :-/  And most of
-them wouldn't care either if their contributions were refused based
-on their track record of not maintaining their code, since they often
-see this as a convenience to please their customers and not something
-they need (after all, relying on a bogus and vulnerable BSP has never
-prevented from selling a device, quite the opposite).
+CU,
+Finn
 
-In short, there is a parallel universe where running highly bogus and
-vulnerable out-of-tree code seems like the norm and where there is no
-sort of care for what is mainlined as it's possibly just made to look
-"cool".
+> On 19. Apr 2021, at 18:14, Miguel Ojeda =
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>=20
+> Hi all,
+>=20
+> Now that some days have passed since the RFC, let's have one of our =
+calls.
+>=20
+> I propose next weekend Saturday 24th or Sunday 25th at 18:00 UTC like
+> as usual (EU evening / US afternoon). Please let me know which day you
+> prefer, if any.
+>=20
+> As usual, anybody is welcome to join. The meetings take place on
+> Google Meet. The invitation link will be sent later on to those
+> interested.
+>=20
+> Cheers,
+> Miguel
 
-We also need to recognize that it's expectable that some vendors are
-not willing to engage on supporting a driver for a decade if they
-expect their device to last 5 years only, and maybe we should make
-some rules clear about mainlining drivers and what to expect for
-users (in which case the end of support would be clear and nobody
-would be surprised if the driver is removed at the end of its
-maintenance, barring a switch to a community maintainer).
-
-Just my two cents,
-Willy
