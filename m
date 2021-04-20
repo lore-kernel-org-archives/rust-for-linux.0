@@ -7,86 +7,74 @@ X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD6C1C433ED
-	for <rust-for-linux@archiver.kernel.org>; Tue, 20 Apr 2021 17:25:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1AB6C433B4
+	for <rust-for-linux@archiver.kernel.org>; Tue, 20 Apr 2021 17:32:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9AA8A613B8
-	for <rust-for-linux@archiver.kernel.org>; Tue, 20 Apr 2021 17:25:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9F914613CD
+	for <rust-for-linux@archiver.kernel.org>; Tue, 20 Apr 2021 17:32:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233092AbhDTRZm (ORCPT
+        id S233344AbhDTRdY (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 20 Apr 2021 13:25:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34392 "EHLO
+        Tue, 20 Apr 2021 13:33:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233381AbhDTRZm (ORCPT
+        with ESMTP id S233288AbhDTRdX (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 20 Apr 2021 13:25:42 -0400
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83D82C06174A
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Apr 2021 10:25:10 -0700 (PDT)
-Received: by mail-qt1-x82c.google.com with SMTP id o2so15816714qtr.4
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Apr 2021 10:25:10 -0700 (PDT)
+        Tue, 20 Apr 2021 13:33:23 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC813C06174A
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Apr 2021 10:32:50 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id 130so138948ybd.10
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Apr 2021 10:32:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=content-transfer-encoding:from:mime-version:subject:date:message-id
-         :references:cc:in-reply-to:to;
-        bh=Wo8FkAYC+z3xbU3cxLqUOZQJPOjMpJFUGHG4MuWJtX4=;
-        b=OYblu8vjjrnOuKVewPlwJ1I98YlGB4VA59KL6fkrFBn9D+DHNW/0UFm+5J1IYb5+q4
-         /2duXq3fbybK1AtYbf0H3gnmJvztLQuo8vLuuWcdY3GRP1+xsbdt3rFQpP6a+ZSpQyfF
-         yYnLl6QSiHMzKZFB4Mi147HFnOOFqkids91tsOwOL5ljyFmobwsY/70RhW+5qJOnk4z2
-         Su5hN4YOMkaNOdteIxja5E5lfWrnzdKh7ZjlxWaly8SDwq7fVxLfoe4OTPUi40+DPOj3
-         bPEysS8U2C3YnzDF4xYHcozO+nlkjgcD2N51qS8VJpnfd8/bBLjXyO8KRizND9d2xENA
-         VwOw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9eH1/ARWpJZ5uMJGxI3mhVmh/oxtyBXqBMi6eZ7UHxc=;
+        b=dBXCGLgjwig3Cy19aVHVfCvxa5ST9IWxNSygGARHbLr3f8hvMaze8P57ZUq7N0AgY1
+         MvKq4pvIv3ki+vOvWE9Z1Z8CYgJM0LDLiKT0jZVAgcWBgZcmdK4XUuxP1X4Ea6MKgIQz
+         Ffc+kxI+QMYLXaLk6+g/hf0RI/gp98p+38P/8xY8/hZwlahLl4WXId7TDXMXcoaD2jQe
+         myf5eISNXocavB6r8MnofIY89e746+O9F4Ow+4vg1iYem8OUlEe9SUcwyG0WmYw3jbpN
+         Yzo3dPZBFBVJiMfIildJXfd9y8sGP2s5C/vAvUySfI2jgcHKOdTsPQPCFS9dv+bNon/5
+         9zSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:content-transfer-encoding:from:mime-version
-         :subject:date:message-id:references:cc:in-reply-to:to;
-        bh=Wo8FkAYC+z3xbU3cxLqUOZQJPOjMpJFUGHG4MuWJtX4=;
-        b=QVr8GOw8yceXKU8LOm3782AqV39ZRpgfEqo2Lh89lxDn51+i6SX4VjcLV8RpjYMLXG
-         GH2OoVt6mOgqOsMMreLUAQpla+89xLEBccYZu4X41Tol/L2uPUr0F7xysXsKWyTd3WHg
-         SXw72BufSKDxkLW3uH9i4LWPm+b66wT4s0+egXqSZvAC4wscvlWAyJON98uZkZ+K4vww
-         5fukSuhXX474XA92ymbArOEqyrqH7afg8Z2xSauaBKeiA5i0ju5FrO/9BSb4uu/5PabR
-         +m5tUCnc21IKXb7mmTHvL9CjUGsPLMS617dqxuzuZdCKpDkipPw0qvdKp7cv2z0dy1iT
-         3+RA==
-X-Gm-Message-State: AOAM5313k3UuU0PeXzzZ6S73EhwVGdP0xS2t8sX2tzwcZzOYWbpLgRGa
-        ATGunQEsufYxkO34FMLP/gk=
-X-Google-Smtp-Source: ABdhPJy/OQdvlrukpSEDYSIIqt0Wn8U61TNG4DXlMIwuU0DAtURKRoJcY/V24J9kIbeElJMQZiZHOQ==
-X-Received: by 2002:ac8:51d3:: with SMTP id d19mr17283092qtn.358.1618939509717;
-        Tue, 20 Apr 2021 10:25:09 -0700 (PDT)
-Received: from smtpclient.apple (pool-70-23-22-173.nycmny.fios.verizon.net. [70.23.22.173])
-        by smtp.gmail.com with ESMTPSA id p66sm12659997qka.108.2021.04.20.10.25.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Apr 2021 10:25:09 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From:   "comex ." <comexk@gmail.com>
-Mime-Version: 1.0 (1.0)
-Subject: Re: Video conferencing platform choice
-Date:   Tue, 20 Apr 2021 13:25:08 -0400
-Message-Id: <C3BF5681-DA8F-4DD6-9769-11A19C5FAE3F@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9eH1/ARWpJZ5uMJGxI3mhVmh/oxtyBXqBMi6eZ7UHxc=;
+        b=kqz7bmhTM5d19yaY8OkA21RyjFQnflCESfMZyjjXsu7wMF3a8+FYTM7nxwuPUvUHOc
+         Q4QMERIAE0UU62e3mxyY1WFniSLsQpvg7RBcYxtdCepQMXQ2pDC0EyCYjiMwPLW3qnEI
+         GepccjFKWQSSVPgAg3ac7T6OqRGgXlMIB5FS8PwJ3Ye0PgqbbCIc4EvUBlYFH8BtpMBY
+         wuXo5Zwh5hxtNwXakyPS9Bovc16jDK3plNo9dBMP00zSfuFTeMwQ1UhirDYyX0D9Tybs
+         5jmAVqia53EaWQU3eLl14dPV6SbbGGa4Xy2/k7aMx0KGopiXaO8AdVekrWq4zF6R4R2x
+         Uggw==
+X-Gm-Message-State: AOAM530ay8BMMslUOF2z2l7lUXRZGk+Jat0Gyxlwp7oRP7Oij1RRhBFk
+        OHgLzjzq9JpPaSpg+i1GmV9rF8ifpJtfLdsRWto=
+X-Google-Smtp-Source: ABdhPJwfScKIxPI7yYLXK6M2lM3h7EHrCzFL4SxZdtSDxveVbdiWYT9+uUMQIbhC6aBkBpSpqYecdaT5cuNiXJdC0Xs=
+X-Received: by 2002:a25:cfc2:: with SMTP id f185mr28041203ybg.26.1618939970351;
+ Tue, 20 Apr 2021 10:32:50 -0700 (PDT)
+MIME-Version: 1.0
 References: <CANiq72kRDzRQX2Lz0AMLe+iZsWV4PSRe8PL9JHGh07fCMB+0tw@mail.gmail.com>
+ <C3BF5681-DA8F-4DD6-9769-11A19C5FAE3F@gmail.com>
+In-Reply-To: <C3BF5681-DA8F-4DD6-9769-11A19C5FAE3F@gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 20 Apr 2021 19:32:39 +0200
+Message-ID: <CANiq72=a-C1A463pm8Q-MX2aXYEecJ0PJDyfSYejM-MP5h6=Gw@mail.gmail.com>
+Subject: Re: Video conferencing platform choice
+To:     "comex ." <comexk@gmail.com>
 Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>,
         Geert Stappers <stappers@stappers.nl>
-In-Reply-To: <CANiq72kRDzRQX2Lz0AMLe+iZsWV4PSRe8PL9JHGh07fCMB+0tw@mail.gmail.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-X-Mailer: iPhone Mail (18E198)
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Tue, Apr 20, 2021 at 7:25 PM comex . <comexk@gmail.com> wrote:
+>
+> What is v1d30?  Googling it does not bring up anything relevant-looking.
 
+Good question -- I have not used it. Geert, could you please give us
+some details? Thank you!
 
-> On Apr 20, 2021, at 1:22 PM, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com=
-> wrote:
->=20
-> =EF=BB=BFHi all,
->=20
-> Geert Stappers has suggested to use v1d30 instead of Google Meet for
-> the conferencing service (and he has kindly offered to foot the bill
-> too -- at least the initial one).
-
-Hi,
-
-What is v1d30?  Googling it does not bring up anything relevant-looking.
-
-Thanks.=
+Cheers,
+Miguel
