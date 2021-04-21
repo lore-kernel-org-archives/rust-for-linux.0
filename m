@@ -2,82 +2,81 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5DD8C433B4
-	for <rust-for-linux@archiver.kernel.org>; Wed, 21 Apr 2021 10:55:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D57AC433ED
+	for <rust-for-linux@archiver.kernel.org>; Wed, 21 Apr 2021 16:33:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9DF7F61447
-	for <rust-for-linux@archiver.kernel.org>; Wed, 21 Apr 2021 10:55:36 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2A52761439
+	for <rust-for-linux@archiver.kernel.org>; Wed, 21 Apr 2021 16:33:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230000AbhDUK4I (ORCPT
+        id S241136AbhDUQdy (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 21 Apr 2021 06:56:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38154 "EHLO
+        Wed, 21 Apr 2021 12:33:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbhDUK4I (ORCPT
+        with ESMTP id S239718AbhDUQdx (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 21 Apr 2021 06:56:08 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9252BC06174A
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Apr 2021 03:55:34 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id v3so44332617ybi.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Apr 2021 03:55:34 -0700 (PDT)
+        Wed, 21 Apr 2021 12:33:53 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FDD5C06174A
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Apr 2021 09:33:20 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id v3so45550399ybi.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Apr 2021 09:33:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=pUh8abm1bXwC/AmVv15q91XfWPtt23JuQDu96Q97bLo=;
-        b=AfssHHZ+BYleot0PSdZe6GdZpAsZ26ZiD+Kge9ebzX42djzYY0YcXkVLCJgAjusyrg
-         oaC0gSzlQuPbhaIeNkvoJB0lYUUswWNX+TQ9SrgAIVlbfF9hv6z1qzfM0pE/ZIXU/q8/
-         fPLYUdHF/YkldDYBZq0Y3WuoOBb15ImeoCe8LxOh2WYP4S3GItOBobAFAA+Gt1X/5jUp
-         jrLTP9vvwtZ/IU/abAy8qPPBYZ/he7CopbIo0bizQ1Px+W+aCdC+rHlecYe0qaHjaxfW
-         fcDnyJxjfXXajYjaB1oc53vTrLdvt8KXnTbZ+PBsMcVY6WNETwKbx2uaJWyVDYSRUUW1
-         oLbw==
+        bh=kvpfkdgYLamRWRr18f/s/H/y2dse+Qu1zR55l+2Htog=;
+        b=iK4rdL3KaMAojKhK165fvrfaYRFPMdsqxfqflqB+FgFX2431oeWSXgHAYTooL4lVWy
+         n6fh6/+jPI2yjzAyJjztVLGOTZPY/2ST97ZpzSKQDW1RnJ76kfvBKwYxkfa4N6eQAhqb
+         Ywjdbn30bGLt1YPj47/NdaUq58nd1WhLfWtvRdC/O64XWsbGg7vnVAqm0CHxmwAzULX6
+         m1UmTYdQEP+LsLUtRLmVy2BUCwQr/6qxAFOqMup7ylQo3hP6onpvyLupZSnPaeyn5QNE
+         ZhxMEczYcrV9rhl3lLsSuGQ9G+alClvv79Ph+IVhiVA15gd154oedNeTmuwAWN9M56A7
+         nSGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=pUh8abm1bXwC/AmVv15q91XfWPtt23JuQDu96Q97bLo=;
-        b=T2m3Pt9xFVsJE6RTqGPULM6XNeDFESWSn0wtNwqSRNOJZ4qTPmGlS2p0Ku/81HHd05
-         KinE3z7A9ShcUf6WlfrWXVk2wqD4pJAhozsHYtORdjofpYvx4U/WAsytaGb/tCxDGLo+
-         N7+Gq3oiEdHzD7CXBlvAi2wH9398um7lqsc74K8+uVqH9IQ2hb+tGSQfudjAAkFdPhQa
-         b4dvZdQUqij0c3mDlvI6Du5aYwpgUmhxXXeKGeb53Is1wNtP/qL8pJSVfTNPCNARI2eQ
-         MrTA8h/Pj8mpfPg05//O+jHTfd9F/d2yZS0VFDoRqIgBHhfEj6pM3LV0Gxt5PXcZjEBF
-         zLuA==
-X-Gm-Message-State: AOAM531x+7MjJ8ruy/2c3YldNaBN7xH25aIc4eiU8qErxvAJkRdvX8ee
-        JAgLUG7Kw7KxC6vWXR6VetAM4oxe+6On0YPLrko=
-X-Google-Smtp-Source: ABdhPJzNDV+hlq64u+qR9CXG7Xa1CCMBDGJMzKjilngBKGvhe6eZIIjKkFv5Lvm4FE1CsMs7ulvx++fiz+Ewz69S7qU=
-X-Received: by 2002:a25:818f:: with SMTP id p15mr27882856ybk.135.1619002533499;
- Wed, 21 Apr 2021 03:55:33 -0700 (PDT)
+        bh=kvpfkdgYLamRWRr18f/s/H/y2dse+Qu1zR55l+2Htog=;
+        b=EHyOe2qKZKYRLoGqUC9Fc0r8a8pt/i4cJ509KzEI57nnNCQaBW8iH85nGx6/KfdoeD
+         nyeyXdNSNf9EA/HxytA2W6PMKxC3yLnJdK764BTIH6yIY+RYeQFroaMhQ612unmrUUhH
+         T+DnXx8ZMW+BkJh+7XGC5M8GUVHyt0zQmStgv0TJzjrCVif5/oyzSJQEwRYKqrfmwZ86
+         /S0GhOkq+O8tx4Q1h7qEEHKwbgJ89ZPdRy7x5t4jPU4wPMKg3ZSRVcYmjtzD/1+6MT5M
+         zYTA+bvtQ7xjALjsL2zFw4KjrW0NQNoRBsNpFZeuAzfvQc+/t2lleZZVVrO6lsvqiRZl
+         2R/A==
+X-Gm-Message-State: AOAM530a4fb03bCdPgunCOjPNnlACd6iI2QisVjNjfkQoWzPtonBbkH7
+        7sCrhW/R4XCQmdG8oP+nL3MLoSGkp8WrAhH8qPs=
+X-Google-Smtp-Source: ABdhPJwDvz52bqi/6EKrgbypLrsOOrocLIGCZkseUOP1aG2ZRkKTK6DqbYBhnfc86xk/Atm/3fnhxqrhWSQLQ82sf/s=
+X-Received: by 2002:a25:7909:: with SMTP id u9mr31055979ybc.22.1619022799759;
+ Wed, 21 Apr 2021 09:33:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <BY5PR16MB311024F4BD76CAC678CE647F97479@BY5PR16MB3110.namprd16.prod.outlook.com>
-In-Reply-To: <BY5PR16MB311024F4BD76CAC678CE647F97479@BY5PR16MB3110.namprd16.prod.outlook.com>
+References: <20210414033551.GA28117@bobwxc.top>
+In-Reply-To: <20210414033551.GA28117@bobwxc.top>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 21 Apr 2021 12:55:22 +0200
-Message-ID: <CANiq72mduw5+3ZoPJ9S8vPs6y+H1+GzqH-C3tinZTyJSPkBdiw@mail.gmail.com>
-Subject: Re: hello
-To:     "Chen, Herbert" <Herbert.Chen@activenetwork.com>
-Cc:     "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Date:   Wed, 21 Apr 2021 18:33:09 +0200
+Message-ID: <CANiq72keQ6pEDrKvQcFCa=j=TWs0XNHGf4PtnRNvzLanUe=1Rw@mail.gmail.com>
+Subject: Re: [Rust-next PATCH] rust: doc: Replace a ref tag in doc-guide/kernel-doc.rst
+To:     Wu XiangCheng <bobwxc@email.cn>
+Cc:     Miguel Ojeda <ojeda@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Herbert,
-
-On Wed, Apr 21, 2021 at 3:26 AM Chen, Herbert
-<Herbert.Chen@activenetwork.com> wrote:
+On Wed, Apr 14, 2021 at 5:36 AM Wu XiangCheng <bobwxc@email.cn> wrote:
 >
-> subscribe rust-for-linux
+> replace a ref tag to normal path tag in doc-guide/kernel-doc.rst
+>
+> Link: https://lore.kernel.org/linux-doc/87lf9lrgp3.fsf@meer.lwn.net/
+> Signed-off-by: Wu XiangCheng <bobwxc@email.cn>
 
-If you were trying to subscribe to the list, please see:
-
-    http://vger.kernel.org/majordomo-info.html
-    http://vger.kernel.org/vger-lists.html
+Queuing it, thanks!
 
 Cheers,
 Miguel
