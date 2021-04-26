@@ -2,77 +2,94 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCD72C433B4
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 20:58:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 905BBC433ED
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 21:12:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 97D00613D9
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 20:58:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5929D61178
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 21:12:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234959AbhDZU7H (ORCPT
+        id S234275AbhDZVMs (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 26 Apr 2021 16:59:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49152 "EHLO
+        Mon, 26 Apr 2021 17:12:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235008AbhDZU6y (ORCPT
+        with ESMTP id S235493AbhDZVMs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 26 Apr 2021 16:58:54 -0400
-Received: from gpm.stappers.nl (gpm.stappers.nl [IPv6:2001:981:6c6a:1::49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 39A4CC061756
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 13:58:11 -0700 (PDT)
-Received: by gpm.stappers.nl (Postfix, from userid 1000)
-        id 77895304176; Mon, 26 Apr 2021 22:58:10 +0200 (CEST)
-Date:   Mon, 26 Apr 2021 22:58:10 +0200
-From:   Geert Stappers <stappers@stappers.nl>
-To:     Sven Van Asbroeck <thesven73@gmail.com>,
-        rust-for-linux@vger.kernel.org
-Subject: Re: [RFC] Short Circuit simplest Rust driver that touches real
- hardware?
-Message-ID: <20210426205810.sahdkjyeueg3miug@gpm.stappers.nl>
-References: <CAGngYiUHmkGTP7encnQOHv9CU6H4+RTN96oJb9B7DY4cuGPwAQ@mail.gmail.com>
+        Mon, 26 Apr 2021 17:12:48 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 383D3C061574
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 14:12:06 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id l2so4980559wrm.9
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 14:12:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DlLcSe8k/+eXew+2V7WDP2R4gAAPR6LgkwZCii+o01Y=;
+        b=LprwCWP6xO8w8fjLhriZL5ncY477FLxf8n1KfwdRXcfmQQ79520mTf/EgYuV8i07xF
+         tw/UGZSpy65Sp0fmaTZdga4+yODGp6casqXteToTMMvbH54lDfHyVx/a6PDfBYxcgX+d
+         vD1/W6gFUyQVGozBytt/Y+oSS8GPYmA3S1PLfjg2AiKUa9dDTKtPbCyuwWmobVo+zhy1
+         93/tJMjV3VzNUyWOBesDK3QzwoTM+Vk/sJOUZeTDqoXzdTecKWzFQ5VadUzp+Yzt80KB
+         cAhjbE3RvZgVvhSqsLOGMwvFgkyl8dUjKjwqx7njaKmakOcqg/QXrgNuIqG6JDIa4Z6+
+         7ZlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DlLcSe8k/+eXew+2V7WDP2R4gAAPR6LgkwZCii+o01Y=;
+        b=Kql29OW4mWx2r1r/uvx4G3JdgTIgkIpDF8N08DFW8GmLVICmpaSR5OMIM1DgJWBbBH
+         AKsmiJceImjnXMS5Z1HRCNg+kTuOQVj1lyZFxIZwnWPAWo6LTQEpOfh9YAvWbcLaxG3h
+         mhkFgmBPOokLUs7qOFhBEBnACbfjf6llMexHOOLn8iGXLNmmjgMxW13HwUiPj8c2uW16
+         RbRzyyF2g657Q4FwGCPu20v5WNqW5bkrLlZ99hfyYxrGhi1gbK1dmD2zkFY0Buf9e8CL
+         P8mZViu2+CdVpDw3wp+2UQz+nmJ8WbqRDvL9udcNZmC83HzKbR/5nA/qTMTjcwJn/Z+y
+         M77Q==
+X-Gm-Message-State: AOAM532cOX7bqComrajZgAYXN8D1fkqqFvmdzruNc95XxqphCBtCFovZ
+        D/BxDMF4gO7mtjOLKvwIAUUNSEPDrNk0468+K2Yon6twY4HxdLdW
+X-Google-Smtp-Source: ABdhPJzU7Jtt58P5RPn0DJh6EkDymVDHNLLWEotuVW47M+3mi7JYmrphDRORybIPOszsJTBa0XKDefkTNBemjVnebIs=
+X-Received: by 2002:a5d:550f:: with SMTP id b15mr25931406wrv.251.1619471524903;
+ Mon, 26 Apr 2021 14:12:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGngYiUHmkGTP7encnQOHv9CU6H4+RTN96oJb9B7DY4cuGPwAQ@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+References: <CAGngYiUHmkGTP7encnQOHv9CU6H4+RTN96oJb9B7DY4cuGPwAQ@mail.gmail.com>
+ <20210426205810.sahdkjyeueg3miug@gpm.stappers.nl>
+In-Reply-To: <20210426205810.sahdkjyeueg3miug@gpm.stappers.nl>
+From:   Sven Van Asbroeck <thesven73@gmail.com>
+Date:   Mon, 26 Apr 2021 17:11:54 -0400
+Message-ID: <CAGngYiU2xze8Fo47Hbmu5CDh5VL-K4ddL-ez7+jOUTBJHydChw@mail.gmail.com>
+Subject: Re: [RFC] Short Circuit simplest Rust driver that touches real hardware?
+To:     Geert Stappers <stappers@stappers.nl>
+Cc:     rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Apr 26, 2021 at 03:47:59PM -0400, Sven Van Asbroeck wrote:
->         ...
-> 2. implement the simplest `IoMemBlock` in Rust. Since we have a live
-> `struct device *`, the `IoMemBlock` constructor can simply call
-> `devm_platform_get_and_ioremap_resource(our struct device *)` in C,
-> which will automatically use the right method to retrieve the `void
-> __iomem *`: devicetree, platform data, etc, we don't have to care.
-> 3. use the `IoMemBlock` above to implement a trivial iomem-only driver
-> as a module. A few possible candidates:
-> * h/w random number generator in Raspberry Pi Zero: `brcm,bcm2835-rng`
-> * SoC thermal sensor in Raspberry Pi Zero: `brcm,bcm2835-thermal`
-> 4. we don't have `hwrng` or `thermal_hwmon` devices in Rust yet, but
-> we could perhaps expose this as a `misc_device`, which is something we
-> already have. A single temp or randnum readout might do the trick.
-> 
-> The Raspberry Pi Zero can be purchased for $10. There is [QEMU
-> support](https://qemu.readthedocs.io/en/latest/system/arm/raspi.html)
-> for the peripherals above.
-> 
-> Feedback and ideas welcome !
+Hi Geert,
 
-Hope that hardware manufactures see this opportunity.  Because I fear that
-this cool project might get botched due lack of knowledge on hardware.
+On Mon, Apr 26, 2021 at 4:58 PM Geert Stappers <stappers@stappers.nl> wrote:
+>
+> Hope that hardware manufactures see this opportunity.  Because I fear that
+> this cool project might get botched due lack of knowledge on hardware.
+>
 
+Thanks for your input. Would you be able to elaborate why we lack
+knowledge on these Raspberry Pi peripherals? Take the rng. When
+reading its driver here:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/char/hw_random/bcm2835-rng.c?h=v5.12#n62
 
-Implementing kernel module for 8250 UART in Rust is something that
-wouldn't get botched due lack of hardware knowledge.
+it appears to be the case that the h/w is setup by writing a value to
+two registers (RNG_STATUS, RNG_CTRL). Random data can then be read by
+monitoring RNG_STATUS followed by a read from RNG_DATA.
 
+Should be as simple as they come, no? What am I missing?
 
+>
+> Implementing kernel module for 8250 UART in Rust is something that
+> wouldn't get botched due lack of hardware knowledge.
 
-Regarding
-Geert Stappers
--- 
-Silence is hard to parse
+That's true, but also much more complex. Doesn't it depend on clocks
+and interrupts? That's infrastructure we don't yet have in Rust.
