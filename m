@@ -7,92 +7,88 @@ X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9827BC433ED
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 19:48:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F203C433B4
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 20:20:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 66A8261185
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 19:48:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0FA43613AE
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 20:20:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241562AbhDZTs4 (ORCPT
+        id S241101AbhDZUVg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 26 Apr 2021 15:48:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33796 "EHLO
+        Mon, 26 Apr 2021 16:21:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241549AbhDZTsz (ORCPT
+        with ESMTP id S238112AbhDZUVg (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 26 Apr 2021 15:48:55 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CCB9C061574
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 12:48:11 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id x5so6817457wrv.13
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 12:48:11 -0700 (PDT)
+        Mon, 26 Apr 2021 16:21:36 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F538C061574
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 13:20:53 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id q192so12844432ybg.4
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 13:20:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=+y9c+6nl2PvVY33TB3mI5eax6XP5Vq8+uvcR/aofNYc=;
-        b=hA4Pd6AgkGv+gfRQ0q8Pzf+pMo2FH4Cm7BVyITZnCOu23oRnbA2UQI4eqK87IFlxGS
-         K3QlARZ3gsALmYB69F9XzTOF3SPawDOGZslsMWBRsvTY8MbJ8eCLkRJRnI9oHxNi4MXd
-         3+JPR0lkVd2iNdqhhK8872rkG/07z9iXM021NXlpDa2QjcanN5XhaIP0Xf/m7nm9bHgM
-         4KP1+Ccz97/hm824oNq0D0JSAvnTl5NFAgmjXmVsZpicB6hEzuQxMSLMVOovV6Xj5Gbm
-         ZKco5eJ6dEv1VSi3+Wq7EufjyWnz2UOGc8rQUuwZk9gpUGASUjElgyXG6C8E253A25D+
-         D0Hw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=RhdWOxQfOQJ3SwPiJ5fmW7Kv9kPzf2xIObphLJlDPNk=;
+        b=VD5rehzbFcDLMBumNTnjj2D7OcKN41va10PWfHQwNMOKk9Ty2tzFtQXFxce95q+Gsy
+         G4hf8dGboPFPxTRePYa1Q8t84EnIGxogIiEHHcpdyg7NoU+VdNB4H6Wguq3fEQm/bIsu
+         wjrArbFYpaNgyKFcL6bLUelkRaj8DuEo8JDjd6qxgmBbFB5JMSCpzXU+qftVW4Ynna+c
+         VsnzyZ5VJe6BD+XPso+DySrIKQBg+qCHYhbuzMkd4XOAicyAtnSQozYksZR3Nh5BhxeI
+         PLwhBxn2PoqYbB6s+XeNTVoISTiBkl96L4VI3AGFizhXy28aEp3IOSSjKzr2Ioiam3LQ
+         KDPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=+y9c+6nl2PvVY33TB3mI5eax6XP5Vq8+uvcR/aofNYc=;
-        b=OcQkPXF9KvDbOX3aUUtSz3vq18XyjFGFS/+8SnFz/D5t9bVmiLanSMnOGCSRUtzMSV
-         cTSm55qoUUmYTrj1jWaNwdRxxlRS+0u18B4tMiepJidK14cLSQn8/sPoJvqks2wYDUuH
-         d4uE/xT7aUFR4fj+s1N7DzRunAbyE7LLdRvMWxHT2VPknt0cqPq7MU1xrdpW2iZQiXFT
-         hdYKZlCihyZlKYDHUsxJEX9ILozT8yi5c1al9CPCcerh9j9SA7ni8jn30IV4nVo6LKuU
-         wYo628CkAKwAEiQ9FQohk6Ul80saRFEDYghi7X6UuWTXLj/KsXud6ybS4kEONgWugdZ8
-         oDMg==
-X-Gm-Message-State: AOAM531uZH4QiASYpzOjf/EjqbXIjBIHpMQo6r2ndJ2aQQ+cX6b6FQKp
-        B6wyGhWLRsPw8vG3fY6/yfH6o5wDIUQNjO85l93mrr6ioQEttDpJ
-X-Google-Smtp-Source: ABdhPJx15HmoXDpyuZwiVtGWomCBJmpW7QpiQorqnAv7cN+0mHtxzn7mcPyHev0XyNk/YBBOp7USa/0xyiG5b46+9Fo=
-X-Received: by 2002:a05:6000:8b:: with SMTP id m11mr25031565wrx.224.1619466489978;
- Mon, 26 Apr 2021 12:48:09 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RhdWOxQfOQJ3SwPiJ5fmW7Kv9kPzf2xIObphLJlDPNk=;
+        b=T4Uk1l7rAgo1PzZFj/rJ1veaLHYScDTkdzqSrvDlrYfV7KE81cbEiwfOhbpLuBXwS1
+         +C8cGgznh9cUkEVYrsuSlC9QbwJk7MVKwDTTrzvpDzf6162yfZdgPBLD8G8Pf5c7dS7I
+         CVgsa7I9n49VFjoWKTrZKmBMo3cLOC2hxlXTu39bPuGG9MMZKO66CnQP3wzOLdIu6SIb
+         C/JLoy3Ec3TIzOInA6zcCdAGtNHcmfzK9HB/07js+iRrc9ZdTeTWxGuktd9UfxMoNAtw
+         q7Ibi+zy6dkbA2RQ4c03iUQtktxjzTvcUy4KR+e+UpWuM8BkGUWfscc2zWewDZKc1mtz
+         cn1Q==
+X-Gm-Message-State: AOAM532PBJLvZYix0RYKRF6MK4AINYIG3MrKgk3cOjter/ht+ZRxDwdm
+        iJFDPV3Dr8HNYNTjMMSOoTjP47F5+nDgEHzu91I=
+X-Google-Smtp-Source: ABdhPJxZrqF9QmAPJQlKNK3Fm0R9uInmwtBOSg+VgjE+JMAdZb73918qQr2JVJzQ8afXoLTqgt5lmS3ZpE5JMJ84YHQ=
+X-Received: by 2002:a25:23d7:: with SMTP id j206mr4294129ybj.247.1619468452741;
+ Mon, 26 Apr 2021 13:20:52 -0700 (PDT)
 MIME-Version: 1.0
-From:   Sven Van Asbroeck <thesven73@gmail.com>
-Date:   Mon, 26 Apr 2021 15:47:59 -0400
-Message-ID: <CAGngYiUHmkGTP7encnQOHv9CU6H4+RTN96oJb9B7DY4cuGPwAQ@mail.gmail.com>
-Subject: [RFC] Short Circuit simplest Rust driver that touches real hardware?
-To:     rust-for-linux@vger.kernel.org
+References: <CAKmvQ+U7LbwLRyY6FC70Y9-1Sdp8KdYRXryUvk9oTHvJSh29nQ@mail.gmail.com>
+ <CANiq72knPX3GHHPPrZ=ErgX=1DttMXjOShcA1ZF4TENzNRaWzg@mail.gmail.com> <CAKmvQ+UGiKVchv3DpR-QhyWqQ6-kx9HETNUcZqAv+An0ZgQwCg@mail.gmail.com>
+In-Reply-To: <CAKmvQ+UGiKVchv3DpR-QhyWqQ6-kx9HETNUcZqAv+An0ZgQwCg@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 26 Apr 2021 22:20:41 +0200
+Message-ID: <CANiq72=oSMO1yGKFdOfVSZbLcsTVeJCXmbD_RdpnOqqKw4p55A@mail.gmail.com>
+Subject: Re: [Question] import third-party crates in kernel modules
+To:     Hanqing Zhao <ouckarlzhao@gmail.com>
+Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-(Is this the correct forum for this discussion? Should it go on
-Rust-for-Linux's GitHub instead?)
+On Mon, Apr 26, 2021 at 9:10 PM Hanqing Zhao <ouckarlzhao@gmail.com> wrote:
+>
+> I am actually writing a new alloc crate for linux kernel.
 
-Senior Linux people have expressed interest in seeing a Rust driver
-that touches actual hardware. Nvme has been suggested as an excellent
-candidate. But, that's going to be quite complex, and possibly a long
-way off still.
+Please note that we are still evaluating how to approach this. The
+best way to get involved with high-level design is to join the
+meetings.
 
-Is there merit in "short circuiting" a Rust driver that touches actual
-hardware? I.e. only do the minimum that's reasonably required, to
-drive a trivial piece of hardware.
+> I think it would be better if we can import 3rd-party crates while
+> developing and testing our own kernel modules,
+> i.e., we do not need to guarantee that the kernel module having
+> 3rd-party dependencies can become an in-tree module,
+> but we can compile a .ko that has a 3rd-part dependency
+> during offline development and testing.
 
-Suggestion:
-1. implement `platform_device` in Rust, just enough to be `probe()`d
-by the kernel, and receive a live `struct device *` - we should wrap
-this pointer in a suitable Rust abstraction of course.
-2. implement the simplest `IoMemBlock` in Rust. Since we have a live
-`struct device *`, the `IoMemBlock` constructor can simply call
-`devm_platform_get_and_ioremap_resource(our struct device *)` in C,
-which will automatically use the right method to retrieve the `void
-__iomem *`: devicetree, platform data, etc, we don't have to care.
-3. use the `IoMemBlock` above to implement a trivial iomem-only driver
-as a module. A few possible candidates:
-* h/w random number generator in Raspberry Pi Zero: `brcm,bcm2835-rng`
-* SoC thermal sensor in Raspberry Pi Zero: `brcm,bcm2835-thermal`
-4. we don't have `hwrng` or `thermal_hwmon` devices in Rust yet, but
-we could perhaps expose this as a `misc_device`, which is something we
-already have. A single temp or randnum readout might do the trick.
+We need whatever infrastructure is required to be available for
+in-tree modules too (and we need to focus on those first). A lot of
+things are missing, indeed, but we will get there!
 
-The Raspberry Pi Zero can be purchased for $10. There is [QEMU
-support](https://qemu.readthedocs.io/en/latest/system/arm/raspi.html)
-for the peripherals above.
+Meanwhile, perhaps you can manually import them as a workaround -- I
+understand that missing functionality can be a bit painful.
 
-Feedback and ideas welcome !
+Cheers,
+Miguel
