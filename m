@@ -7,78 +7,89 @@ X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BF25C433B4
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 23:16:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E214C433B4
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 23:54:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6825161151
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 23:16:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 38D3361073
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 23:54:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233919AbhDZXRC (ORCPT
+        id S232235AbhDZXzP (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 26 Apr 2021 19:17:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51000 "EHLO
+        Mon, 26 Apr 2021 19:55:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232235AbhDZXRB (ORCPT
+        with ESMTP id S232022AbhDZXzP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 26 Apr 2021 19:17:01 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 848AEC061574
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 16:16:19 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id p126so13376492yba.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 16:16:19 -0700 (PDT)
+        Mon, 26 Apr 2021 19:55:15 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51F1EC061574
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 16:54:32 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id n2so4445026wrm.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 16:54:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Q9az9LMPd3t21tsc/NBpZhMnfyNNELo/AlVYQtox7aY=;
-        b=h68sUmC92T9Sxe9tRJwOTJCJcjNoMKgkcMdDrhBovARnjWgN6rTCPTcJop+Pho6lPO
-         puzqGDTOtvuxcVu71rtFzUMwoN7PqcMLJaIJEXNJ4Rqz7xoff8JwoainN4SCZsPB8JaW
-         WYBLv3g/Wwj+wl92FJziVgvrHz3vZ0xEsjavJ03fZekRpxJ/6TgjkXJfVlSmz2j99hCz
-         CIDYi3kbtvCQeuSerwXyjUsg6da1uHIHZdWVGN3KbXtyK/XsqB9mQK7B5ybKrbRMU4Xj
-         MqQmE8Pe69HRiMQg6D/c3alspMmD9i4hU9PEmqlwQVgmy4U4MfQTp5D1d4ZIMGznqQfZ
-         Ar6g==
+        h=references:user-agent:from:to:cc:subject:in-reply-to:message-id
+         :date:mime-version;
+        bh=ZTkydfT3YUEAeEeIZwpMGzNBcpvoKyU94bJQ5fpSfR4=;
+        b=UnW6Jm3PT88dfKlxb9BRxMBxWPQOxRgDnwxyJhVqph/BGV7XL/HRCUwAVKg6AyjK7y
+         jkJokpl7JUfSxATUX+m781pqvbTLLqxM3RezYP8VhfsxYygf3SJ5CZmkGNPmuvP3yP+6
+         KA5x4P8ccMFVokYs6pyn33N7S8dJWW3mU3nrY5vvTWgKiFtNKu3qMxu0iKkKXzU4jBDV
+         vKql+iaMC7Igyisla+3zUXkESe6XoYfrAe1+2xA7MyR7tSjoLorALDjZC45O7aTgLG3C
+         UjRxMTu5VgOTAJW5CVemTaiBb273z9RjSQn42EgDPbp9gVo10Y/81sAze6Gm1fW/84zw
+         o2+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Q9az9LMPd3t21tsc/NBpZhMnfyNNELo/AlVYQtox7aY=;
-        b=cFYsy4xYSXgjPEpHq3qO9UmPTY8sm+IIy7yDgEKdk+e4mhQU/z1gf3/xPC1VgSHK6d
-         SDKQX5iogSLFR7PlZvZdhh+newAMsbc0zhf9N+QW6R6gSIDHXigw0DlI8ywDiqc44+I1
-         JdxFB+66MKDMivD3u44/9Lgv7SAC2IjO/hl9bKUy9dh7jtsgc6EvxYrIjVmoYQOPeYda
-         F8rzKSE4IC/HuXGgBXqpZEzJKgZTRKZcwH4mD7i+3/II8JA7vf4dZs1Wuj8vUMb1yWkT
-         9KF2VKEwnnK/oMtdnqFRRaUexepNMzqkKiK/yMQ5gahf9jgyZdcTVfoAc24bj7G4A84o
-         zVIQ==
-X-Gm-Message-State: AOAM530C4SWAA9yJpHls4if5g88rjcCNpQ27+vQ17qbkXYeSYshwkQNA
-        Y1GYLaPXNQ8x+Hvug0h3bJvZL2ichS3/2skUK60xHPt6ucvyzg==
-X-Google-Smtp-Source: ABdhPJwSkj/xoFVl/6XxBE2gpaopXuckn2wakIsonXp6hRMmi/4n75JFHz9pLquYaGXydYNwswFB7fBRRiJQ8jm2l7M=
-X-Received: by 2002:a25:bc8b:: with SMTP id e11mr29042490ybk.115.1619478978671;
- Mon, 26 Apr 2021 16:16:18 -0700 (PDT)
-MIME-Version: 1.0
+        h=x-gm-message-state:references:user-agent:from:to:cc:subject
+         :in-reply-to:message-id:date:mime-version;
+        bh=ZTkydfT3YUEAeEeIZwpMGzNBcpvoKyU94bJQ5fpSfR4=;
+        b=iFetaD16WB420QsmIg2kNkCtPTLC9wckQ+t7QO3SqUDntmcUHVfycP+gM7c2scFyyR
+         JOZwvUiYAiY31v55GOMdHw+X1SGqzenBExdUP4d4fkp0E3BX+bRgDbybvTWCBVJgUiH2
+         TL++VQu6yZNBzJ+G40IJnO3jacsA8rA2pPEj0nZ/Z/q83QJMHQlD6CY4MqG3TE6BEKGE
+         mXHGnCgCyu13G4MFit5IaVnDIRamXmWESIbyLoTJ7Nj02B+hBlvqU3EJOTw6QPlOt1wT
+         j8R/aTMRzOH+eyfJ319gbn9uVxVz8XWX5nUGSZaaQJifvoaJgIks7oeMsQ6Uni4VOdeH
+         muXg==
+X-Gm-Message-State: AOAM530gf1bUIvfO7TGDjN98+xVILOhbjGqyx1YJyCRbS9nCJLpp7Zap
+        RQHwcH4WEufH8PIME1O4b+BDtlAZ7P8=
+X-Google-Smtp-Source: ABdhPJx6HxvcUtX1bak8XYVjbcNoJrQ88zX5be9zw8IKkgqvmzqjijnlZ8F1SbfSo0/f9Thvc6Ay3w==
+X-Received: by 2002:a5d:564b:: with SMTP id j11mr26565987wrw.307.1619481270691;
+        Mon, 26 Apr 2021 16:54:30 -0700 (PDT)
+Received: from EDI-InfinityBook ([2a01:4b00:ea36:6c00:56e9:4ef3:28ef:7ef6])
+        by smtp.gmail.com with ESMTPSA id a142sm820699wmd.7.2021.04.26.16.54.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Apr 2021 16:54:30 -0700 (PDT)
 References: <CAKmvQ+U7LbwLRyY6FC70Y9-1Sdp8KdYRXryUvk9oTHvJSh29nQ@mail.gmail.com>
  <CANiq72knPX3GHHPPrZ=ErgX=1DttMXjOShcA1ZF4TENzNRaWzg@mail.gmail.com>
  <CAKmvQ+UGiKVchv3DpR-QhyWqQ6-kx9HETNUcZqAv+An0ZgQwCg@mail.gmail.com>
- <CANiq72=oSMO1yGKFdOfVSZbLcsTVeJCXmbD_RdpnOqqKw4p55A@mail.gmail.com> <CAKmvQ+WH_PVy-XS+Rpa+_8Z9AjNDVwkTQFMZZtAZc7G9-7tJoA@mail.gmail.com>
-In-Reply-To: <CAKmvQ+WH_PVy-XS+Rpa+_8Z9AjNDVwkTQFMZZtAZc7G9-7tJoA@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 27 Apr 2021 01:16:07 +0200
-Message-ID: <CANiq72nSypSSbSwhyaSmfHuT7aLHeEP9UKwj0x7yjFZBwqxTgg@mail.gmail.com>
-Subject: Re: [Question] import third-party crates in kernel modules
-To:     Hanqing Zhao <ouckarlzhao@gmail.com>
+ <CANiq72=oSMO1yGKFdOfVSZbLcsTVeJCXmbD_RdpnOqqKw4p55A@mail.gmail.com>
+User-agent: mu4e 1.4.15; emacs 27.2
+From:   Kajetan Puchalski <mrkajetanp@gmail.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [Question] import third-party crates in kernel modules
+In-reply-to: <CANiq72=oSMO1yGKFdOfVSZbLcsTVeJCXmbD_RdpnOqqKw4p55A@mail.gmail.com>
+Message-ID: <87tunsr499.fsf@gmail.com>
+Date:   Tue, 27 Apr 2021 00:54:26 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; format=flowed
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Apr 26, 2021 at 10:41 PM Hanqing Zhao <ouckarlzhao@gmail.com> wrote:
->
-> After I finish the linux kernel integration, I'll show my
-> demonstration to the rust-linux community.
 
-I mentioned the meetings because we have been discussing this topic
-for a long while and is usually better to talk about particular
-approaches before putting a lot of work just in case we go for another
-strategy.
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
 
-Cheers,
-Miguel
+> Please note that we are still evaluating how to approach this. 
+> The
+> best way to get involved with high-level design is to join the
+> meetings.
+
+Hi,
+Is there any way someone interested in the project could watch or 
+listen to the meetings?
+I don't think I have enough knowledge/experience to contribute at 
+this point
+but I'd definitely like to watch the progress more closely.
+
+--
+Kind regards,
+Kajetan
