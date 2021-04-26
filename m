@@ -7,117 +7,78 @@ X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3677C43461
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 18:18:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD3E5C433B4
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 18:32:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 82C0661165
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 18:18:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 841C861075
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 18:32:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234444AbhDZSTN (ORCPT
+        id S234726AbhDZSdg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 26 Apr 2021 14:19:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42098 "EHLO
+        Mon, 26 Apr 2021 14:33:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234304AbhDZSTN (ORCPT
+        with ESMTP id S234599AbhDZSdg (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 26 Apr 2021 14:19:13 -0400
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EAD1C061574;
-        Mon, 26 Apr 2021 11:18:31 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id i4so28479264ybe.2;
-        Mon, 26 Apr 2021 11:18:31 -0700 (PDT)
+        Mon, 26 Apr 2021 14:33:36 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D725C061574
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 11:32:53 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id c195so66076863ybf.9
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 11:32:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=F7v36cla8caxpSLJhOMdKWfComHLfYG2gbSrAEkLrOw=;
-        b=A1AFfE+2fVystHL7B+p4dhFFNrnZRzFxxOsH2x/tAB1afo1nksfGMvGLn1CzpLOhw7
-         19f/dgMkIRmUHi3WS8dkILKMSRG+qdG31sqbBDqyBwZG1qaCKY5peThW0OKBOnXi7TJH
-         WH1X6CPUDOZ+Bxax1/I9FC8i61tBZ4AshhRhe6n6HLl5yoyo4VWOQiQZosSrzbQRcPTd
-         32G4FpKQ+WBP5lmdO8pZiF432W2/5wLwLNH7UwCt+dvOvQZi4WATaGbm736K8+7PRPuS
-         FBAPB0vtCUhsjHsm0BN4WeiPWwcqg56XUG0sd7/wG6A98/Gu3ZkKPjI+zQvbmw9B7ab9
-         qYMg==
+        bh=h4xn7tOLXOH4z5X4U7tifUBlM34e4cRoXMAr6VJ2CkQ=;
+        b=cEeywMrFcsfnhlC1hJyiZBckjfcuY/ba3tRN+lmNVXj/jI10xcu/YUvVY/TRBKSG93
+         1Jd9tBRIOFWLh9UOqvK4/VlTDiXdPrbXVg5yARCsVIkv3NSzkcxC9AUo0HNHUZSoVAca
+         E/gGwyXV2+QkSTXhnHMrtzMTO4iZw0z5l+KCH/SP1lW8uTDF3AgsEG2qj0GCnetksFRO
+         pNPrtrOsPkJcdfC24DrUggVImLUBd8MxeFOq8wTmeEBEXr9zqD14ReflL+QpWKDi5/B2
+         bhGJAch3y7v1jSkx824uGZK8KX5ONcZo8uz2m1v7I5gy7gH0T0g5fYfVRpD6988lrBVn
+         Q9xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=F7v36cla8caxpSLJhOMdKWfComHLfYG2gbSrAEkLrOw=;
-        b=VjGnC53kr4tORdxtYCKL6v1GeX09+s3J6wp9Gnftd64juvIDAYd4L4a2ab3X7nnFr0
-         2lujqePoKySS+5JTx8bZ9CgFZUlAz4qSEzVyG1Le2Bf49V/MvOa+YewXfBynLRv984E1
-         L07yLkEvBRh/ZcZR+ynbEoHHul8JRMLzP4py0HCWnRyS+vDHwZloWuGdz+1cfUAWVOpL
-         dZ5drcSygKn1KtqiEP7Pt1BAA3PPRJJW7/OYs5dJZPoYzTKay1MoNHqbl0+TlQmk/yhl
-         1mEmSaFP+Y4dflMT8QhZadLYrWTOeYfnT0v/XvMakoslba48McU+5OdTG34D+6Bugb7o
-         qEAg==
-X-Gm-Message-State: AOAM530qi3wAbwWekk/zbk60vbmaFayoVtqICPKRC33PsK5TkEBS3B+7
-        wlvRpt29+x2HkXBFW+oXX3TXcPyBA2emBmc0ZOE=
-X-Google-Smtp-Source: ABdhPJwA9XaKpU2FfRTf3EhmwLejH/FxBtccngRqJlzoiX2mOvpdI80qCUc5w+8GSCrLHIisaBXYdcoD7eqCChWN91I=
-X-Received: by 2002:a25:7909:: with SMTP id u9mr25819339ybc.22.1619461110782;
- Mon, 26 Apr 2021 11:18:30 -0700 (PDT)
+        bh=h4xn7tOLXOH4z5X4U7tifUBlM34e4cRoXMAr6VJ2CkQ=;
+        b=UnqpbunNU9kOyAcMvuNMd3IfiSjwNZitYMknyjD+c0jnDOYf9gRR6BdpyXlhOxEeQK
+         re3hXPKEw6bzFEYTSFwr3GXl+4ipyLdGee1VCCHK/4XnEI4vjhPHO9+S9KBQQEnBG0yC
+         xia827yt5RSvpfIR+Ir2meDFUo1I13+J8KR4tvhU3hYl6c5xh81KxyP5ehMnlihbc6WQ
+         q0sA2Mo1Zmjk+ZTf096TzfuaA+JBoU5919mdV2ctsLk3s6UtHc1PBfxVQq+ZXJ3Ob92U
+         3sT75iO8c4Xs9NigONlvx889hUYraQvIsa9XA9P43hosua4w9Eztjuhhlpf+qcRucM7E
+         0Zaw==
+X-Gm-Message-State: AOAM531SzE4EDPuw2huk7eVk98pDY9BEMWJm4Z/sf6awQcY5u9kn/Mjz
+        byEPLQCelh+ZXMoRT6z9IdXJ5skCzbq2Atoq7JM=
+X-Google-Smtp-Source: ABdhPJyrJMg3ngthg5bfBLhsLsuUhV77KW95dtDoRMc879scKMWfJzYVdlBvhkAabOoK98ovb2Ih3aKLy85y1fyxus0=
+X-Received: by 2002:a25:bc8b:: with SMTP id e11mr27508652ybk.115.1619461972876;
+ Mon, 26 Apr 2021 11:32:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210414184604.23473-1-ojeda@kernel.org> <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
- <YHj02M3jMSweoP4l@google.com> <CACRpkdat8bny=D2mAsUXcDQvFJ=9jSZSccMMZzH=10dHQ_bXrQ@mail.gmail.com>
- <CANiq72niCj9SfPhfQBMtxF+jth--cXdPQtUo5jhDDJgL6DTXZQ@mail.gmail.com> <CACRpkdarfkA1P0ERCXHSA=6VTBn6FXgOxB8haneQtN_4-tyQ0w@mail.gmail.com>
-In-Reply-To: <CACRpkdarfkA1P0ERCXHSA=6VTBn6FXgOxB8haneQtN_4-tyQ0w@mail.gmail.com>
+References: <CAKmvQ+U7LbwLRyY6FC70Y9-1Sdp8KdYRXryUvk9oTHvJSh29nQ@mail.gmail.com>
+In-Reply-To: <CAKmvQ+U7LbwLRyY6FC70Y9-1Sdp8KdYRXryUvk9oTHvJSh29nQ@mail.gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 26 Apr 2021 20:18:19 +0200
-Message-ID: <CANiq72=VA_cH9yw_LZr3P+n1AsQEEhtY4xdk76jHgimTufHRsQ@mail.gmail.com>
-Subject: Re: [PATCH 00/13] [RFC] Rust support
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Wedson Almeida Filho <wedsonaf@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
+Date:   Mon, 26 Apr 2021 20:32:42 +0200
+Message-ID: <CANiq72knPX3GHHPPrZ=ErgX=1DttMXjOShcA1ZF4TENzNRaWzg@mail.gmail.com>
+Subject: Re: [Question] import third-party crates in kernel modules
+To:     Hanqing Zhao <ouckarlzhao@gmail.com>
+Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Apr 26, 2021 at 2:31 AM Linus Walleij <linus.walleij@linaro.org> wrote:
+Hi Hanqing,
+
+On Mon, Apr 26, 2021 at 7:01 PM Hanqing Zhao <ouckarlzhao@gmail.com> wrote:
 >
-> I think the Rust proponents should be open to the fact that their
-> work will eventually depend on themselves or someone else
-> fixing a working compiler for the maintained architectures in
-> the Linux kernel one way or the other, so they will be able to
-> work with Rust project anywhere in the kernel.
+> Is it possible to import third-party crates in the kernel modules?
+> (e.g., crates on crates.io)
 >
-> For example m68k is not going away. Avoiding this question
-> of compiler support, just waiting and hoping that these old
-> architectures will disappear is the wrong idea. The right idea
-> is to recognize that LLVM and/or GCC Rust needs to
-> support all these architectures so they can all use Rust.
-> Someone needs to put in the effort.
+> Any suggestions to import crates while writing kernel modules?  TIA.
 
-The RFC does not avoid the question -- please note it explicitly
-mentions the architecture/platform support issue and the current
-dependency on LLVM, as well as the possible ways to solve it.
-
-We would love to not have that issue, of course, because that would
-enable Rust to be used in other parts of the kernel where it is likely
-to be quite useful too.
-
-But even if we did not have the issue today, it seems like starting
-with drivers and other "leaf" modules is a better approach. There are
-several reasons:
-
-  - If for reason reason we wanted to remove Rust from the kernel,
-then it would be easier to do so if only "leaf" bits had been written.
-
-  - We cannot compile the Rust support without nightly features yet,
-so it does not seem wise to make it a hard requirement right away.
-
-  - Kernel developers need time to learn a bit of Rust, thus writing
-subsystems or core pieces of the kernel in Rust would mean less people
-can understand them.
-
-Given that drivers are a big part of the new code introduced every
-release, that they are "leaf" modules and that in some cases they are
-only intended to be used with a given architecture, they seem like a
-good starting point.
+Which crates do you need? We may end up importing some things into the
+kernel (such as `alloc` and `syn`), but we do not plan to depend on
+crates.io (offline or otherwise).
 
 Cheers,
 Miguel
