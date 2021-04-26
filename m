@@ -2,91 +2,80 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E6B8C43461
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 16:03:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52252C433B4
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 17:01:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 41D076024A
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 16:03:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0F06961076
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 17:01:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234264AbhDZQE1 (ORCPT
+        id S234257AbhDZRB7 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 26 Apr 2021 12:04:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39662 "EHLO
+        Mon, 26 Apr 2021 13:01:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234253AbhDZQE1 (ORCPT
+        with ESMTP id S234657AbhDZRB6 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 26 Apr 2021 12:04:27 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E12DC061574;
-        Mon, 26 Apr 2021 09:03:45 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id s9so7157838ybe.5;
-        Mon, 26 Apr 2021 09:03:45 -0700 (PDT)
+        Mon, 26 Apr 2021 13:01:58 -0400
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA59C061574
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 10:01:16 -0700 (PDT)
+Received: by mail-qt1-x82b.google.com with SMTP id z5so3965196qts.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Apr 2021 10:01:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=gd4ZhEau0qWA2BMeNjBvJSwbDJZQ4gsJUf4VrIX6+54=;
-        b=mm3aD12HkBeYcRFSoCWjfkfjRqTOgeMAI0SXaX/PQzrSFKL/l2PZ/M+m4L3sszHP3s
-         XRVtgM4w7hJlcvexlT9t34U9TMl/7iyBp26PhAviJlvbSJ09uR8cb1KVUpMXT7jtHAY+
-         /KYiCnJuuGeRi2XpRytf+32ZIjyXrhY4s5XoUndagshRFVUA9Ws3LGQh1f8JHd2UAwFJ
-         mCr6IlObZYCak7xrXl/I8ylbSA/IX9oq6LXwBK33FS34+Un/gLC3HbhNX4xEfanZF+H/
-         aqDIncbwaAWx0QnxNzToQzoE6oVD4JJqHLJvphBfDcU9ngGK+zp7mGEZnaDFpIBP5mU5
-         rkgA==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=Pt7dnh63QHHoFFmb7OK6mjhhSZ/vQd7n1xkwgjL0ESc=;
+        b=eq2fEcQIbBRWGI7scOlzsr38NyGFYyFZXIB62ur5mmW1S1Q9QEka1GxYMt/Q5/+ben
+         /lZ6wrrT0GX4+zD8Yx3WR1agOzEFrGA6OwqM7Dp/tHfGZpte1+zJI44I139pkjlEajLP
+         xv2jSqY6xizP1vXIEuv1IYnZdOwN0Ygm6xCPvhjE4QPuT7vAieXy6ojjtgZ7sNd9GpVC
+         3PohW5AqvF+7gcsD/IepBJry/btPuNhSvd17g29pRbdiL0/5QI0eIijmSFCFN3PRtPPU
+         0rR10OrrlHl+/qdBPwj8APR+ZKAGkC8S0H2M/dCMeSYzy0Gwe6HcFKZHHuPSrDwQXSxv
+         lMZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gd4ZhEau0qWA2BMeNjBvJSwbDJZQ4gsJUf4VrIX6+54=;
-        b=NwstO1pcVGjLT1k8BqS88izcxxcs+Npv6EmaTFiVLf+EImTEisD4p4JNmYl8WRvDej
-         TsMThDf672IfS02ulqSApIGuehsKF00v2bbiNS52D2CpaxfSovdHd1hSHvWiimpjdIiM
-         q5wQa8QZQ6YSvCThRpV4IkUKWJrJomhIS3j/ogUiLAUCaRkcQ4beVEvP1s5xgmUQ8ccL
-         t856ToewLum71iGQTyLHS4USuqKiRnlBXM9Ub/sUdVA27xwQhn4Q4VMAGN0VhnGmqGj+
-         pOi7a3N5IVr9Q5FmKDynpBbWVcm7CXzwk9M7ZvlqgwvZRZPAkR9FkvmKW6klZ3aWsS2Y
-         O3fA==
-X-Gm-Message-State: AOAM530qm714ONCRqBUx+zLE8s0sBau2GGBfBvJMP8re7aQ5Pz+IZFrG
-        45g0xtaA5NnKzKfyVjN4Y0um03jUImBnJZmv6HM=
-X-Google-Smtp-Source: ABdhPJyZbmD3r5DnAQLJo+hcsM5MEAzeCoCaQm//N+Yyqb5Ur/oT8kBKWb4m4+w0X7R+Du5POs39jHYvBMfutm3ccsE=
-X-Received: by 2002:a25:9085:: with SMTP id t5mr27355436ybl.26.1619453024883;
- Mon, 26 Apr 2021 09:03:44 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=Pt7dnh63QHHoFFmb7OK6mjhhSZ/vQd7n1xkwgjL0ESc=;
+        b=N3Uj9HlJz5FXPjcqPyX1LFo9Vf1KdRSE9f+/peEBomBDNg9Icq26vczTpxO+8h3Fu9
+         gS8pw79M+1sJ10BL5UQGlZQ9MXu6MEZRaH1Iyq/juSHiZyiVN2C3rpbBVHIkCl9jv1P+
+         kGjtQ0HuGADkj99nVqrd96afy+64/5FiVTt7lbRy9caRuQpLEYkGKEdCpxMD1MqMx31S
+         1Zxa12Zj5HTt8DqUCtPELrrgA5oLMpA+egWFmTC5nmEQNZBcTm7pFpl78JVljna1Ta6/
+         6GKlxkPwao9k9DyH32U/e31KIPPFx0XSwZ5MFL83GMbbMc36Dnf/RjxJY1FEG3Rx3vHZ
+         HlVg==
+X-Gm-Message-State: AOAM533NSRxxXzprO1t8trrjI6KeIhlj04C3RCT9Rar35Q5G/e6X4VHD
+        WbmVFVE2HQILvWW1nfe837m+68p4RfsKsbeDvbIZUYsmHBkY1w==
+X-Google-Smtp-Source: ABdhPJzMrU54crJ7LrbnR1y67UvEDYD9/7fsGQKLmFJeXaVtqTUdkeCLnt2tx8fBtsGm3886PQyJ5L3qCsIghQ0UwOI=
+X-Received: by 2002:ac8:5bc4:: with SMTP id b4mr18135720qtb.322.1619456475596;
+ Mon, 26 Apr 2021 10:01:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210414184604.23473-1-ojeda@kernel.org> <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
- <YHj02M3jMSweoP4l@google.com> <CACRpkdat8bny=D2mAsUXcDQvFJ=9jSZSccMMZzH=10dHQ_bXrQ@mail.gmail.com>
- <YIGVFCymUn+4HBIj@google.com> <CACRpkdat-4BbKHMBerdxXBseMb9O3PiDRZmMLP_OWFE2ctSgEg@mail.gmail.com>
- <YIbQ3dHOpyD/yymW@google.com>
-In-Reply-To: <YIbQ3dHOpyD/yymW@google.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 26 Apr 2021 18:03:33 +0200
-Message-ID: <CANiq72ngdcxj44cybyRE57ziMQ16DNzOG2U=cOM=X=6eZ_YMwA@mail.gmail.com>
-Subject: Re: [PATCH 00/13] [RFC] Rust support
-To:     Wedson Almeida Filho <wedsonaf@google.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
+From:   Hanqing Zhao <ouckarlzhao@gmail.com>
+Date:   Mon, 26 Apr 2021 13:01:04 -0400
+Message-ID: <CAKmvQ+U7LbwLRyY6FC70Y9-1Sdp8KdYRXryUvk9oTHvJSh29nQ@mail.gmail.com>
+Subject: [Question] import third-party crates in kernel modules
+To:     rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Apr 26, 2021 at 4:40 PM Wedson Almeida Filho
-<wedsonaf@google.com> wrote:
->
-> I see now that Miguel has already responded to this thread so I'll stop here.
-> Happy to follow up on anything.
+Hi, Rust-for-Linux community,
 
-No, no, the message was directed to you, and you gave very nice examples! :)
+Is it possible to import third-party crates in the kernel modules?
+(e.g., crates on crates.io)
 
-I think having both replies is great, we gave different perspectives.
+Previously, in the linux-kernel-module-rust project,
+we can add dependencies in the cargo.toml.
+(https://github.com/fishinabarrel/linux-kernel-module-rust/blob/master/hello-world/Cargo.toml)
 
-Cheers,
-Miguel
+However, I noticed that all of the cargo's infrastructures have been
+removed in the new rust-linux project.
+
+Any suggestions to import crates while writing kernel modules?  TIA.
+
+Best,
+Hanqing Zhao
+Georgia Tech
