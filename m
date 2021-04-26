@@ -2,128 +2,84 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2F3CC433B4
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 00:31:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 072E4C433ED
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 06:36:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A932461176
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 00:31:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C5EB261176
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Apr 2021 06:36:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231422AbhDZAcU (ORCPT
+        id S231968AbhDZGhD (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 25 Apr 2021 20:32:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60062 "EHLO
+        Mon, 26 Apr 2021 02:37:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231247AbhDZAcT (ORCPT
+        with ESMTP id S231816AbhDZGhD (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 25 Apr 2021 20:32:19 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAD6DC061760
-        for <rust-for-linux@vger.kernel.org>; Sun, 25 Apr 2021 17:31:38 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id o16so62015221ljp.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 25 Apr 2021 17:31:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xiJzJOLdknIj0RBYTk/1dN6htHjhW+TONZdztDGFbBU=;
-        b=Jdq7oZq6fxDOqg46MRmtQhPd4SrRlEoVknjUuOCN8BcuzP0XNt6vzVqFCgtk1RQnDo
-         aoNcId528WptBW8I/GRW0hTa2aXzAWWFwChG0KT+nxIMCls5G27DWJ1JE6OnT+o+2yLV
-         aQqNBLsysaitWjvDbKKJq91G8PTL4sGca2FUlg4KbpmK5vpAvTqmOQ/bOFj6yLDG/9mg
-         xjcfvDF0r9YdV+2/oWeKiDvthYWFkTUor+1dsPncf5EHnm3RR1SVKQAGE8Nxv0eVODnN
-         kn5XxNw2deklLmJjDafIhLdW0X2KtTmQhB1X51MPIrl0AaDBNZ16CsRhDmLQ7Rh7W3o8
-         lesQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xiJzJOLdknIj0RBYTk/1dN6htHjhW+TONZdztDGFbBU=;
-        b=TU2AGBLe4o8jRPqUEhKlsrgNga98Fv3EKDTbOBTiJLlIE6ZPqxwijhoemSElIoS7rp
-         84aui33TyVaZtCbDYZxFCwIb3De7YfBkSrWAZhnmQMGQDO9iW96wD53iT161+8tpIFys
-         out/0r1lZ2bW4Y/f8Ol+QDqMtBvp9ipJTzQTq6JKBvpXUbBRkcFqQhVDjsZK1o9HuTTk
-         4frFGOdD46QvFQ7aIJoYJiuoA2k93VVupUZXoCSafrUmDeWmjZPzq52cgsukQjISL7JV
-         c8wKHImnKQ/jxaCDJtOsU4Bo1LMNRidn+N+ZBEtdbjX9sFgVTzcfjeDM/GYDeOQacdL5
-         L5MQ==
-X-Gm-Message-State: AOAM531ZhjHG1dMG05xC35qWrMpVveRxKWyxfqFFch0anHB92TqRYkSy
-        Dkyt4UsaR1J9+iODSkUuqbgS7zhJ6RXQUNlZdHUKTw==
-X-Google-Smtp-Source: ABdhPJzMJggL0ZBTNgft14ZUf0CVG/24WpdjGgjRupl3gpl/UhKK6SN9IOAxYxBKJAnZm1R2/rMVeGJ9kPNWkYsj1cE=
-X-Received: by 2002:a2e:a54c:: with SMTP id e12mr11354812ljn.326.1619397097310;
- Sun, 25 Apr 2021 17:31:37 -0700 (PDT)
+        Mon, 26 Apr 2021 02:37:03 -0400
+Received: from gpm.stappers.nl (gpm.stappers.nl [IPv6:2001:981:6c6a:1::49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 90874C061574
+        for <rust-for-linux@vger.kernel.org>; Sun, 25 Apr 2021 23:36:22 -0700 (PDT)
+Received: by gpm.stappers.nl (Postfix, from userid 1000)
+        id BD658304176; Mon, 26 Apr 2021 08:36:18 +0200 (CEST)
+Date:   Mon, 26 Apr 2021 08:36:18 +0200
+From:   Geert Stappers <stappers@stappers.nl>
+To:     rust-for-linux@vger.kernel.org
+Subject: Re: Notes from 2021-04-24 call, location / venue  next call
+Message-ID: <20210426063618.a7aujdqvr3rgu3vv@gpm.stappers.nl>
+References: <alpine.DEB.2.11.2104241558400.11174@titan.ldpreload.com>
 MIME-Version: 1.0
-References: <20210414184604.23473-1-ojeda@kernel.org> <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
- <YHj02M3jMSweoP4l@google.com> <CACRpkdat8bny=D2mAsUXcDQvFJ=9jSZSccMMZzH=10dHQ_bXrQ@mail.gmail.com>
- <CANiq72niCj9SfPhfQBMtxF+jth--cXdPQtUo5jhDDJgL6DTXZQ@mail.gmail.com>
-In-Reply-To: <CANiq72niCj9SfPhfQBMtxF+jth--cXdPQtUo5jhDDJgL6DTXZQ@mail.gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 26 Apr 2021 02:31:26 +0200
-Message-ID: <CACRpkdarfkA1P0ERCXHSA=6VTBn6FXgOxB8haneQtN_4-tyQ0w@mail.gmail.com>
-Subject: Re: [PATCH 00/13] [RFC] Rust support
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Wedson Almeida Filho <wedsonaf@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        linux-kbuild <linux-kbuild@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.11.2104241558400.11174@titan.ldpreload.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Apr 22, 2021 at 11:29 PM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Sat, Apr 24, 2021 at 05:08:04PM -0400, Geoffrey Thomas wrote:
+> Here's what I remember, please let me know if I misssed anything!
+ 
+> Meeting infrastructure
+> ===
+> 
+> We've been offered the use of LWN's BigBlueButton server if we want to
+> switch to that instead of Google Meet.
 
-> > But as subsystem maintainer I'd like a clear picture of this wrapper
-> > overhead, what does it usually entail? A typical kernel API has
-> > vtable and a few variables, not much more than that.
->
-> If you mean runtime-overhead, i.e. performance, it should be very
-> small or even zero. It should be possible to perform LTO across
-> languages too.
->
-> If you mean source code overhead, or cognitive overhead, then it is
-> quite a bit, yes. Please see below.
+Please make that switch.
 
-Yeah that is what I mean :)
 
-> I hear you! I do not think it will take decades for kernel developers
-> to get up to speed, but I agree that having some help/backup is a very
-> good idea in the beginning.
->
-> Our hope is that, if Rust advantages prove themselves, then it will
-> the subsystem maintainers the ones that will want to create and
-> maintain the wrappers so that drivers in their tree are easier to
-> maintain and less prone to mistakes ;-)
+> It seems like a good choice
+> but there weren't a lot of very strong opinions either way.
 
-I am not really convinced that (leaf) drivers is where Rust will
-help most.
+Here, this mailinglist, we can _all_ express opinion on it.
 
-As I mentioned in my mail to Wedson that I think things like network
-protocols that deal with abstract entities will have more "pure code"
-(not deal with machine registers, just RAM memory).
-File systems would be another example.
 
-I think the Rust proponents should be open to the fact that their
-work will eventually depend on themselves or someone else
-fixing a working compiler for the maintained architectures in
-the Linux kernel one way or the other, so they will be able to
-work with Rust project anywhere in the kernel.
+Google Meet did again insist on an account. The no login succes
+of last week during a test seemed to be a fluke.
+Inside (that single session) was my microphone not detected.
 
-For example m68k is not going away. Avoiding this question
-of compiler support, just waiting and hoping that these old
-architectures will disappear is the wrong idea. The right idea
-is to recognize that LLVM and/or GCC Rust needs to
-support all these architectures so they can all use Rust.
-Someone needs to put in the effort.
 
-After all fixing that compiler support is an insignificant amount
-of work compared to what Rust in the core kernel will be.
+My encounters with BigBlueButton are much better
+* Microphone being detected
+* No account hassle
 
-Yours,
-Linus Walleij
+ 
+> Also, there were a good number of attendees who were interested in this work
+> on behalf of their day job, so we might want to have a meeting on a weekday.
+> We might also want to find a time that works better for Asia time zones, or
+> alternate between the two times.
+> 
+> (The meeting also went two hours long - in my opinion we should just plan on
+> that for the future, there's plenty of stuff to discuss. :) )
+> 
+
+
+
+Groeten
+Geert Stappers
+-- 
+Silence is hard to parse
