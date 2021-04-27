@@ -2,81 +2,107 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0574CC433B4
-	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Apr 2021 07:56:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BE96C433ED
+	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Apr 2021 08:17:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D5A396100C
-	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Apr 2021 07:56:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1909D61289
+	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Apr 2021 08:17:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230325AbhD0H52 (ORCPT
+        id S230324AbhD0IST (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 27 Apr 2021 03:57:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52404 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230255AbhD0H52 (ORCPT
-        <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 27 Apr 2021 03:57:28 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8072EC061574
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Apr 2021 00:56:44 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id d15so15911034ljo.12
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Apr 2021 00:56:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=28dabtIIY5U5ILpUYOhzR7djkSx2N/PghQXfaxlDNf8=;
-        b=lvCP+ug/EvfZN593G58ZsTODObSR1lLz8b5WDEOYR8HacmAzCosBEZaaXth1GCnM2D
-         O5M9u7cb6hhp1Aw9W2Cxz1MpOlyN1dk0282lSzqJLpeOqTwlH1FfgU2kXnR9GH3QZk0/
-         U7iEr8vVAQ8HLMR2xK+937Rurmf5vvm+wtIhVo+BFApAf42+oy/PE3mPtV0dZgNpKS3t
-         ox7nKYjxmYjqSJxMauS3sMFDxCnGXQ1PHyHsR76w501qG7IDhZKA2tV7LxfNi+N3mu0s
-         Ss3rrOcUP64pebN8dJ6s9sMTphqQe6A5R839I8HRw8yec7MVsM3CcUEQaQSyPZ/53fvb
-         By/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=28dabtIIY5U5ILpUYOhzR7djkSx2N/PghQXfaxlDNf8=;
-        b=tCIf3/nmR91uxQMjHAvfBXvJrZFRJ8TdV0WjkSG+iJ5egCNVWlchlNM89ubep/nJGg
-         P+0NFzIbydechKr1K4FUxzPZeQofUMJ3k/tk17KzkxcMUmr24PA+RxHxpBUqW28bcEUJ
-         ienMhe0mR3a9DG4Tr6lq9MPfcuAU4U/a01Lnegop4FGw89rtcy8sEbILyVoC9TprcTRN
-         Fr3AQQMjM68uuw6EratletdANekzDBJFR0aE11+yOpw554DlmdqcZw0eploCYTLeVnuH
-         zysSsIUIDAS7AjVz9q3G2vRDPOLpu3PeD3HQ5T0mEuAmxLwuMipeIsp3a72FybFQ1Oew
-         1+hA==
-X-Gm-Message-State: AOAM530esovTIH9kRZY0388k6Jv5A6ydUK+MlGG1SOBkzvpDoPO2e9Zu
-        PNPSP4LwIthzOFiT6xqADLlEsXDVvtAAHsXLTpM=
-X-Google-Smtp-Source: ABdhPJyDaeT6g7dHYpW1KG1X5PHkclFbQf72Ibz21T23U7OY2cquHVbRmdBtVcNbA0rqw9DIXnlo+CHRkBhQTI6cgYc=
-X-Received: by 2002:a2e:a3d2:: with SMTP id w18mr15575212lje.457.1619510202997;
- Tue, 27 Apr 2021 00:56:42 -0700 (PDT)
+        Tue, 27 Apr 2021 04:18:19 -0400
+Received: from gpm.stappers.nl ([82.161.218.215]:52828 "EHLO gpm.stappers.nl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229487AbhD0ISS (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Tue, 27 Apr 2021 04:18:18 -0400
+Received: by gpm.stappers.nl (Postfix, from userid 1000)
+        id 487DF304176; Tue, 27 Apr 2021 10:17:34 +0200 (CEST)
+Date:   Tue, 27 Apr 2021 10:17:33 +0200
+From:   Geert Stappers <stappers@stappers.nl>
+To:     Sven Van Asbroeck <thesven73@gmail.com>,
+        rust-for-linux@vger.kernel.org
+Subject: Re: [RFC] Short Circuit simplest Rust driver that touches real
+ hardware?
+Message-ID: <20210427081733.on2dti3im2fhmj6i@gpm.stappers.nl>
+References: <CAGngYiUHmkGTP7encnQOHv9CU6H4+RTN96oJb9B7DY4cuGPwAQ@mail.gmail.com>
+ <20210426205810.sahdkjyeueg3miug@gpm.stappers.nl>
+ <CAGngYiU2xze8Fo47Hbmu5CDh5VL-K4ddL-ez7+jOUTBJHydChw@mail.gmail.com>
 MIME-Version: 1.0
-References: <CAJr+-6ZR2oH0J4D_Ou13JvX8HLUUK=MKQwD0Kn53cmvAuT99bg@mail.gmail.com>
-In-Reply-To: <CAJr+-6ZR2oH0J4D_Ou13JvX8HLUUK=MKQwD0Kn53cmvAuT99bg@mail.gmail.com>
-From:   Fox Chen <foxhlchen@gmail.com>
-Date:   Tue, 27 Apr 2021 15:56:31 +0800
-Message-ID: <CAC2o3DL3xt73PkbSFykod_5HpNPN4CzyrU5mDv6Sw=3M8fKqpQ@mail.gmail.com>
-Subject: Re:
-To:     Skylar Givens <skylargivens@gmail.com>
-Cc:     rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGngYiU2xze8Fo47Hbmu5CDh5VL-K4ddL-ez7+jOUTBJHydChw@mail.gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Skylar,
 
-On Tue, Apr 27, 2021 at 11:38 AM Skylar Givens <skylargivens@gmail.com> wrote:
->
-> subscribe rust-for-linux
+Hi Sven,
+Hi Rust for Linux people,
 
-For subscribing please see:
-http://vger.kernel.org/majordomo-info.html
-http://vger.kernel.org/vger-lists.html
+ 
+On Mon, Apr 26, 2021 at 05:11:54PM -0400, Sven Van Asbroeck wrote:
+> On Mon, Apr 26, 2021 at 4:58 PM Geert Stappers wrote:
+> > On Mon, Apr 26, 2021, Sven Van Asbroeck wrote:
+> > }
+> > }   ... one specific piece of hardware ...
+> > }
+> >
+> > Hope that hardware manufactures see this opportunity.  Because I fear that
+> > this cool project might get botched due lack of knowledge on hardware.
+> >
+> 
+> Thanks for your input. Would you be able to elaborate why we lack
+> knowledge on these Raspberry Pi peripherals?
+
+Hearsay "Broadcom doesn't provide hardware documentation".
 
 
-thanks,
-fox
+> Take the rng. When reading its driver here:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/char/hw_random/bcm2835-rng.c?h=v5.12#n62
+> 
+
+Header of the file
+
+  // SPDX-License-Identifier: GPL-2.0
+  /*
+   * Copyright (c) 2010-2012 Broadcom. All rights reserved.
+   * Copyright (c) 2013 Lubomir Rintel
+   */
+
+
+not the same as a datasheet or other hardware information.
+
+Lets call it "the best we have"    :-/
+
+
+> it appears to be the case that the h/w is setup by writing a value to
+> two registers (RNG_STATUS, RNG_CTRL). Random data can then be read by
+> monitoring RNG_STATUS followed by a read from RNG_DATA.
+> 
+> Should be as simple as they come, no? What am I missing?
+ 
+I can't tell how much those questions are rhetorical. So my guidance is
+
+    People who say it cannot be done
+    should not interrupt those who are doing it.
+
+
+> > Implementing kernel module for 8250 UART in Rust is something that
+> > wouldn't get botched due lack of hardware knowledge.
+> 
+> That's true, but also much more complex. Doesn't it depend on clocks
+> and interrupts? That's infrastructure we don't yet have in Rust.
+
+Which make this project such an interesting project.
+
+ 
+Groeten
+Geert Stappers
+-- 
+Silence is hard to parse
