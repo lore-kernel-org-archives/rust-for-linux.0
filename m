@@ -2,142 +2,201 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EE82C433B4
-	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Apr 2021 15:35:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 65239C43461
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Apr 2021 02:51:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 68ADB61078
-	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Apr 2021 15:35:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2809F60FF1
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Apr 2021 02:51:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237475AbhD0PgM (ORCPT
+        id S238227AbhD1Cwj (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 27 Apr 2021 11:36:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41380 "EHLO
+        Tue, 27 Apr 2021 22:52:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbhD0PgL (ORCPT
+        with ESMTP id S235839AbhD1Cwj (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 27 Apr 2021 11:36:11 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96FAFC061574
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Apr 2021 08:35:28 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id b21so2579629plz.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Apr 2021 08:35:28 -0700 (PDT)
+        Tue, 27 Apr 2021 22:52:39 -0400
+Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B184C061574;
+        Tue, 27 Apr 2021 19:51:55 -0700 (PDT)
+Received: by mail-vs1-xe32.google.com with SMTP id w24so7158988vsq.5;
+        Tue, 27 Apr 2021 19:51:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=PUNByRoK1goQxqk3yy33PD86M9MqfZGqEYZKfdxWF3A=;
-        b=f8rcnI0CS4ISGKF/KypANb9/HYPYYIR3PX98Rj5ZrSoS5Brmuxdp1qekosq0t5lEoR
-         tHK5+iOyjibjRaEc4IU4A/fj2J4tK3F6JeQWB/MD51d7u8t1c/PuPY8DiS8gG3vQi9mD
-         RYLyN0Q+PYbwABJgAIINtpLgQIxTqKnz0iAgR5xdEFFnp/Mx8uZe5RCHY5YrJWU8V7wT
-         Q4eHkA3A8hjxK8KFjJeqliZcIjUU7L/+jresyFzGZzfGvfahr7YjK5jxwYUWgJuASAxE
-         V9TxvhI+nIPrbOJs8OR/coyqxvqIAFJuhTFPsnXq6oE/N3z/jDjlqMBltf6T1FyGsIQ2
-         vokg==
+        bh=COKqeIfX+x/8KkgUZa6JpkF1XncnNdp8WaLgOOuA0IY=;
+        b=Trt07zXkQCd5/Gl6NZgnfd/L8C5o0jd2A4Kkux953c/3b26vUROyGKl2so7L2TRp6a
+         geqWh9KkxDQjE6shN9l8XILV8gUaasgMCUOHd2nmkhjPNg2sFz/WK2MrAcGFh4k+TvSW
+         KxDQ5JALCp+SZoIw7Mr+CVVo1bydvqGFxv38wO4pftFP/og83TFCg2Mnk1M4EM4iW02g
+         H4rzQUuUOTR9v+iR1rySoG9qgr3UmCuq5sFneAofLfMl+yfoedylwSWcrq5+OhJ7KzLv
+         uG6LwqqLGTNsOAZKV8W4LNPYZj5dwKbjhvPoWA2ysULq7XXT/mpB5USp+GXSnqfD7+c8
+         SXKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=PUNByRoK1goQxqk3yy33PD86M9MqfZGqEYZKfdxWF3A=;
-        b=pzNtUVknE9OkagshcmvD2doaqpxiXPF9tTPpX9kMVMEmoyIwdijKNtG+sV15aWn1fF
-         3W2eMtkWUEKiD98zKujhjfY1kworAzJkqaXNlBEWi9PM/8tgEb2TAw522bpU+5f3jpDo
-         xBAjlV0Cro5kmoRHruJW4pYu/A3/MxpZQAom73X7YicfY/AQqKG39S9Fjmq7kKO/d/eL
-         UwYMzLbansEVEus0tuUz2WXtdgAB4UPXq8huZ1XIUdSYPdlhwZRDS7lA3Gfg3WZBotl7
-         lvT2VpQTOH/L8UR9Aiw/92lFDeWVcjjkKlmjs1YowQLPNe0g5tHoyYplIG9emfivG1Zv
-         FZaQ==
-X-Gm-Message-State: AOAM532Ur6vIrhzE9zmTriFno5xeM70Li+OyHgS9eGRrEYHYqViTd5AP
-        jIXgVedBOt1BKkdaCP0KHMt+UHXFnju5ayY0bZuPULI8f5lm/g==
-X-Google-Smtp-Source: ABdhPJzBt2MPd4Np6tpczkG3tdvHpNZItj2Orahn+zZPrdC6vCiSpFtSq+IJdSLMbS46t/0tf+PZ8HWbFzU9kIBC6y0=
-X-Received: by 2002:a17:90a:448b:: with SMTP id t11mr27535910pjg.21.1619537728110;
- Tue, 27 Apr 2021 08:35:28 -0700 (PDT)
+        bh=COKqeIfX+x/8KkgUZa6JpkF1XncnNdp8WaLgOOuA0IY=;
+        b=AajeDCLF7fA6nwVJsWSH5TYIS8KZP/olrRTDTquoaaXxyR+4JF3/uE2FjpJFogc2fe
+         ZLJ/o2FXZr+kF6/Wy/mr5CNvCQIURVZo3rauJgrYQePGFSQh0POmjXcFp82BtRme8+k/
+         rMNI6o6ZzocYOMI86Lc40Zfn8az+3tU5K06WlkN2LCyLuujsfgDJ4t2qK6RK/rrG4EsE
+         0BxVKhQlDXv3tDVrOUePl15RYWF+4qUdmTjPXGkCHIJs/Illr1b2qZVhgibcuwG8Kmcb
+         E2g98pIVxTR+cGtBF12AJiQ9/OIsfjnGndE7j7hWry0FU0TVvwLYyQsPImjGW3D8gmvM
+         3KZg==
+X-Gm-Message-State: AOAM531C+lSesUxSl4aFRMRLlRsRnoKteCkzqffJiDxyqmrY1tdxyq+/
+        ccU13bF65lC0DEF5+0tygvvRAJC1DQ5qCjfFEDQ=
+X-Google-Smtp-Source: ABdhPJxauU8wt5+8cERpdIH/6veXJbzFIaPfTatMhNOQL+J7zF/haO7SorwqCf4U72UCFErfxoLDtxfZmsg4+JEknz8=
+X-Received: by 2002:a67:f503:: with SMTP id u3mr22446168vsn.3.1619578314269;
+ Tue, 27 Apr 2021 19:51:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210427152015.GA4653@agape.jhs> <CAFRnB2U6cXM3V2-cFXPMXBo-BxbzBMNb=PSX9GzW2qwvSs_Fjw@mail.gmail.com>
- <20210427153311.GB4653@agape.jhs>
-In-Reply-To: <20210427153311.GB4653@agape.jhs>
-From:   Alex Gaynor <alex.gaynor@gmail.com>
-Date:   Tue, 27 Apr 2021 11:35:17 -0400
-Message-ID: <CAFRnB2UPfD--T6o+MYLi=qUxeowHFCQJLuu4601kHQx_h+JwpA@mail.gmail.com>
-Subject: Re: Question on Box<T> smart pointer
-To:     Fabio Aiuto <fabioaiuto83@gmail.com>
-Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
+References: <20210414184604.23473-1-ojeda@kernel.org> <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
+ <YHj02M3jMSweoP4l@google.com> <CACRpkdat8bny=D2mAsUXcDQvFJ=9jSZSccMMZzH=10dHQ_bXrQ@mail.gmail.com>
+ <CANiq72niCj9SfPhfQBMtxF+jth--cXdPQtUo5jhDDJgL6DTXZQ@mail.gmail.com>
+ <CACRpkdarfkA1P0ERCXHSA=6VTBn6FXgOxB8haneQtN_4-tyQ0w@mail.gmail.com>
+ <CANiq72=VA_cH9yw_LZr3P+n1AsQEEhtY4xdk76jHgimTufHRsQ@mail.gmail.com> <CACRpkdYodGnURuaYMBwVAY=8bU0PQoPAvTp34uYksPFmxBsT2A@mail.gmail.com>
+In-Reply-To: <CACRpkdYodGnURuaYMBwVAY=8bU0PQoPAvTp34uYksPFmxBsT2A@mail.gmail.com>
+From:   Kyle Strand <batmanaod@gmail.com>
+Date:   Tue, 27 Apr 2021 20:51:43 -0600
+Message-ID: <CAKzwK0VH5424rwMPFV3SsmC841yVtmzn9R_uXJh0xjCJnpBvMg@mail.gmail.com>
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        linux-kbuild <linux-kbuild@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Yes, it overrides it for any APIs in the alloc crate that allocate
-memory (Arc, Rc, Vec, String, etc.).
+Hi Linus,
 
-Technically https://github.com/Rust-for-Linux/linux/blob/rust/rust/kernel/lib.rs#L203-L204
-is where the overriding really happens. The previous code I linked is
-where the implementation is.
+I wanted to shed some light on one specific point of your criticism of
+The Rust Programming Language:
 
-Alex
+>  What I find very disturbing is that the authors of the Rust language did NOT write it.
 
-On Tue, Apr 27, 2021 at 11:33 AM Fabio Aiuto <fabioaiuto83@gmail.com> wrote:
+Rust, unlike C when the K&R book was written, has already had a pretty
+large number of people contribute to its development. Steve Klabnik
+and Carol Nichols are 6th and 11th, respectively, on the list of
+contributors with the most commits in the Rust compiler & standard
+library (from the official "thanks" page, excluding the top committer
+"bors", which is part of Rust's CI automation:
+https://thanks.rust-lang.org/rust/all-time/).
+
+I hope this clears up some confusion.
+
+> What we need is a good resource to learn it, that skips the trivial aspects of the language and goes immediately for the interesting details.
+
+I realize that what is "trivial" and what is "interesting" is
+subjective, but if you find the explanation of traits in the Book
+difficult to understand, I would recommend revisiting the earlier
+sections in order to be certain you understand the foundations for the
+explanation of traits.
+
+For what it's worth, since you would specifically like a lower-level
+perspective, in addition to looking at the Reference (as previously
+suggested), I recommend trying O'Reilly's Programming Rust by Jim
+Blandy and Jason Orendorff.
+
+Kyle Strand
+
+
+On Tue, Apr 27, 2021 at 5:14 AM Linus Walleij <linus.walleij@linaro.org> wrote:
 >
-> On Tue, Apr 27, 2021 at 11:22:23AM -0400, Alex Gaynor wrote:
-> > Box<T> in the kernel allocates on the kernel heap, via kmalloc. This
-> > is done by providing a Rust GlobalAllocator:
-> > https://github.com/Rust-for-Linux/linux/blob/rust/rust/kernel/allocator.rs#L11
->
-> so this code:
->
-> pub struct KernelAllocator;
->
-> unsafe impl GlobalAlloc for KernelAllocator {
->     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
->         // `krealloc()` is used instead of `kmalloc()` because the latter is
->         // an inline function and cannot be bound to as a result.
->         bindings::krealloc(ptr::null(), layout.size(), bindings::GFP_KERNEL) as *mut u8
->     }
->
->     unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
->         bindings::kfree(ptr as *const c_types::c_void);
->     }
-> }
->
-> overrides the default behaviour of Box<T> defined
-> in core::alloc::GlobalAlloc, doesn't it?
->
-> So this code overrides the general heap allocation
-> facility, not just Box<T>, right?
->
-> thank you,
->
-> fabio
->
+> On Mon, Apr 26, 2021 at 8:18 PM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> > On Mon, Apr 26, 2021 at 2:31 AM Linus Walleij <linus.walleij@linaro.org> wrote:
+> > >
+> > > I think the Rust proponents should be open to the fact that their
+> > > work will eventually depend on themselves or someone else
+> > > fixing a working compiler for the maintained architectures in
+> > > the Linux kernel one way or the other, so they will be able to
+> > > work with Rust project anywhere in the kernel.
+> > >
+> > > For example m68k is not going away. Avoiding this question
+> > > of compiler support, just waiting and hoping that these old
+> > > architectures will disappear is the wrong idea. The right idea
+> > > is to recognize that LLVM and/or GCC Rust needs to
+> > > support all these architectures so they can all use Rust.
+> > > Someone needs to put in the effort.
 > >
-> > Alex
+> > The RFC does not avoid the question -- please note it explicitly
+> > mentions the architecture/platform support issue and the current
+> > dependency on LLVM, as well as the possible ways to solve it.
+>
+> OK true. Sorry for being sloppy.
+>
+> Actually my reply to Wedson brought up a new issue, which is the
+> quality of learning resources and the lack of an equivalent to
+> The C Programming Language book.
+>
+> > But even if we did not have the issue today, it seems like starting
+> > with drivers and other "leaf" modules is a better approach. There are
+> > several reasons:
 > >
-> > On Tue, Apr 27, 2021 at 11:20 AM Fabio Aiuto <fabioaiuto83@gmail.com> wrote:
-> > >
-> > > Hi all,
-> > >
-> > > I have a question. There's one thing I miss.
-> > >
-> > > If Box<T> smart pointer allows allocating space on the heap,
-> > > how is this behaviour overridden in linux kernel Rust?
-> > >
-> > > I mean, in c we have all API's to allocate heap space,
-> > > but using "pure" Box<T> in kernel space what kind of
-> > > allocation provides?
-> > >
-> > > If this question is stupid I apologize in advance,
-> > >
-> > > thank you,
-> > >
-> > > fabio
+> >   - If for reason reason we wanted to remove Rust from the kernel,
+> > then it would be easier to do so if only "leaf" bits had been written.
 > >
+> >   - We cannot compile the Rust support without nightly features yet,
+> > so it does not seem wise to make it a hard requirement right away.
 > >
+> >   - Kernel developers need time to learn a bit of Rust, thus writing
+> > subsystems or core pieces of the kernel in Rust would mean less people
+> > can understand them.
 > >
-> > --
-> > All that is necessary for evil to succeed is for good people to do nothing.
-
-
-
--- 
-All that is necessary for evil to succeed is for good people to do nothing.
+> > Given that drivers are a big part of the new code introduced every
+> > release, that they are "leaf" modules and that in some cases they are
+> > only intended to be used with a given architecture, they seem like a
+> > good starting point.
+>
+> I'm not sure I agree with this.
+>
+> I think a good starting point would be to either fix Rust support in
+> GCC or implement some more important ISAs in LLVM,
+> whichever is easiest. I don't mind having just *one* compiler but
+> I mind having *a* compiler for every arch we support.
+>
+> The situation for LLVM is very well described in the Wikipedia
+> entry for LLVM: "but most of this hardware is mostly obsolete,
+> and LLVM developers decided the support and maintenance
+> costs were no longer justified" - this is what I would call
+> deprecationism (deletionism). I think this is a detrimental force
+> for both compilers and kernels. It encourages developers of
+> compilers and kernels to do the wrong thing: instead of
+> rewriting their compiler and kernel infrastructure such that
+> maintenance of older ISAs and architectures becomes a bliss
+> they do what mathematicians do "let's assume a simpler
+> version of the problem". And this results in a less versatile
+> infrastructure and less adaptable code in the end. Which will
+> affect how agile and adaptive the software is. And when
+> something new comes along it hits you in the head.
+>
+> Portability to old systems and ISAs is a virtue in itself
+> because of the effect it has on code quality, not necessarily
+> for the support itself.
+>
+> Deprecationism is more the side effect of a certain business
+> strategy to toss new technology out every quarter without
+> having to care about aftermarket or postmarket too much.
+> This irritates people to the extent that there is now even
+> a project called "PostmarketOS" (Linux based). It is not
+> sustainable to use an emotional argument, but that is really
+> not my point, I care about code quality and diversity of
+> ISAs and target systems improves code quality in my book.
+>
+> I might be an extremist, but I do need to state this point.
+>
+> Yours,
+> Linus Walleij
