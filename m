@@ -2,85 +2,122 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A36CC433B4
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 15:56:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C012C433ED
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 15:58:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 025F96144B
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 15:56:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F21EC61446
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 15:58:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233770AbhD2P45 (ORCPT
+        id S240801AbhD2P7M (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 29 Apr 2021 11:56:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59928 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232004AbhD2P44 (ORCPT
+        Thu, 29 Apr 2021 11:59:12 -0400
+Received: from jptosegrel01.sonyericsson.com ([124.215.201.71]:2262 "EHLO
+        JPTOSEGREL01.sonyericsson.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233132AbhD2P7L (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 29 Apr 2021 11:56:56 -0400
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F1DEC06138B
-        for <rust-for-linux@vger.kernel.org>; Thu, 29 Apr 2021 08:56:10 -0700 (PDT)
-Received: by mail-oi1-x22b.google.com with SMTP id i26so11612695oii.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 29 Apr 2021 08:56:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=3gli3ivlNcMNPlOJGmedInM5hTejn8mAoz+25VJpIP4=;
-        b=UQ27z/cyo1P94UTjJ2kk7YgFNPOzpOcUxDHo03n3W6ITNILhhFMuv3NDQK+dThwsUg
-         7fXW4CWW1yq0Qo+mdb5/8t4bY1kaROWBESLoW6q/R0yJGrRzkBNvAQv9uy+ICkhUZaEU
-         MC8UbeHpsRKkZcY4d2L52F8hCHC6K+ngbZZ7h0DBWCIDWG1BjGP8zbJ+gj/HXsqS4Chg
-         AvuEx+pQ/Kw/qo/LwCaG2HJTOELW8ixdoHbKzPUkqxt/R93CTPswSM/vK2IIbVYq25l0
-         4xw6hHOFN6f5GArnZmJ+DKW/jo3JegycwtYLG5Rc4Zua/If9IFkyTo8INxn4QRt6EHLP
-         CRcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=3gli3ivlNcMNPlOJGmedInM5hTejn8mAoz+25VJpIP4=;
-        b=AaacWH+9v1GLqC6I25dIAK+/WjCilWAa9Ux4cfuLcQ6uoF09uUbhNK89m4TkUybe4K
-         kzH1nD9jB7LnWzreQFPL6mC7A/qsx68a4yeBkuqJPpiXnF71u1QiZ20uA9atpdqP2j20
-         qjYa4vTA+R04L3NE6T7XU6EIT9bWphevZ7WIgFkBTdJHssilPrKa6Aeh+JhjJmMfu5ZG
-         FwvjWsH9/ji8kQzd8jx0OrK9BG6gkuect+8NPNAMZALcgfqIIN+SzevajNkPxH+3XZY2
-         S9b3xtiFPPqTtU3AxhbElX5L0LGgzNCzZph3Mq2dF6xAlWWFQXvoRGTAUlnFv2+djHYb
-         pYAA==
-X-Gm-Message-State: AOAM5315skxg8X/WcWTBWduPz4rgZz+zf24YPah8AYJm3xzWJwBa+cJR
-        ano56QaftxqwPzoT39w7O7MR7SoOotxZtQ==
-X-Google-Smtp-Source: ABdhPJz/8NC5IoqQK8eweLlwwi25TaNVa8DgdWF0W+XafRF/rLQ1GrOWeaJ4lGg/MZpxe8wI8gKeLg==
-X-Received: by 2002:aca:4bc2:: with SMTP id y185mr6877283oia.64.1619711769517;
-        Thu, 29 Apr 2021 08:56:09 -0700 (PDT)
-Received: from localhost.localdomain ([2806:2f0:9001:d702:61ca:a6c9:43eb:e8b2])
-        by smtp.gmail.com with ESMTPSA id w23sm44274otl.60.2021.04.29.08.56.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Apr 2021 08:56:09 -0700 (PDT)
-From:   Carlos <carloscarral13@gmail.com>
-X-Google-Original-From: Carlos <carlos-II@localhost.localdomain>
-Date:   Thu, 29 Apr 2021 10:56:06 -0500
-To:     rust-for-linux@vger.kernel.org
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Sven Van Asbroeck <thesven73@gmail.com>
-Subject: Re: Loading an out-of-tree module
-Message-ID: <YIrXFt2KVovbM+Fs@localhost.localdomain>
-References: <YIrDgupEqcmsUfGX@localhost.localdomain>
- <YIrNuQlVnvpktDcl@kroah.com>
+        Thu, 29 Apr 2021 11:59:11 -0400
+X-Greylist: delayed 1205 seconds by postgrey-1.27 at vger.kernel.org; Thu, 29 Apr 2021 11:59:11 EDT
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+To:     Willy Tarreau <w@1wt.eu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Nick Desaulniers <ndesaulniers@google.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+References: <20210414184604.23473-1-ojeda@kernel.org>
+ <YHlz54rd1YQHsOA/@hirez.programming.kicks-ass.net>
+ <YHmMJWmzz2vZ3qQH@google.com>
+ <YHmc2+bKQJ/XAATF@hirez.programming.kicks-ass.net>
+ <YHmuX1NA5RF7C7XS@google.com> <20210416161444.GA10484@1wt.eu>
+ <CANiq72nbkJFPmiJXX=L8PmkouKgKG1k-CxhZYpL1hcncYwa8JA@mail.gmail.com>
+ <20210416173717.GA10846@1wt.eu>
+ <CAKwvOd=RadTs7Skv6KUBo4qZQtdi0kugTzxvZM+5X_2gstjyaQ@mail.gmail.com>
+ <YH5tAqLr965MNZyW@kroah.com> <20210420061613.GA30890@1wt.eu>
+From:   peter enderborg <peter.enderborg@sony.com>
+Message-ID: <e3c591db-a272-5048-7396-3e934b071aab@sony.com>
+Date:   Thu, 29 Apr 2021 17:38:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YIrNuQlVnvpktDcl@kroah.com>
+In-Reply-To: <20210420061613.GA30890@1wt.eu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Language: en-GB
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=DLnxHBFb c=1 sm=1 tr=0 a=9drRLWArJOlETflmpfiyCA==:117 a=IkcTkHD0fZMA:10 a=3YhXtTcJ-WEA:10 a=W69p7wgkjsnNkqErQOcA:9 a=QEXdDO2ut3YA:10
+X-SEG-SpamProfiler-Score: 0
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Thank you all for your responses,
+On 4/20/21 8:16 AM, Willy Tarreau wrote:
+> On Tue, Apr 20, 2021 at 07:56:18AM +0200, Greg Kroah-Hartman wrote:
+>> I would LOVE it if some "executives" would see the above presentations,
+>> because then they would maybe actually fund developers to fix bugs and
+>> maintain the kernel code, instead of only allowing them to add new
+>> features.
+>>
+>> Seriously, that's the real problem, that Dmitry's work has exposed, the
+>> lack of people allowed to do this type of bugfixing and maintenance on
+>> company time, for something that the company relies on, is a huge issue.
+>> "executives" feel that they are willing to fund the initial work and
+>> then "throw it over the wall to the community" once it is merged, and
+>> then they can forget about it as "the community" will maintain it for
+>> them for free.  And that's a lie, as Dmitry's work shows.
+> That's sadly the eternal situation, and I'm suspecting that software
+> development and maintenance is not identified as a requirement for a
+> large number of hardware vendors, especially on the consumer side where
+> margins are lower. A contractor is paid to develop a driver, *sometimes*
+> to try to mainline it (and the later they engage with the community, the
+> longer it takes in round trips), and once the code finally gets merged,
+> all the initial budget is depleted and no more software work will be
+> done.
+>
+> Worse, we could imagine kicking unmaintained drivers faster off the
+> tree, but that would actually help these unscrupulous vendors by
+> forcing their customers to switch to the new model :-/  And most of
+> them wouldn't care either if their contributions were refused based
+> on their track record of not maintaining their code, since they often
+> see this as a convenience to please their customers and not something
+> they need (after all, relying on a bogus and vulnerable BSP has never
+> prevented from selling a device, quite the opposite).
+>
+> In short, there is a parallel universe where running highly bogus and
+> vulnerable out-of-tree code seems like the norm and where there is no
+> sort of care for what is mainlined as it's possibly just made to look
+> "cool".
 
-I get why the OOT flag is there so I won't try to remove it. What
-concerns me, however, is that my printk messages don't work as expected
-(i.e. They are one off). Is this behaviour caused by the same flag?
 
-Respectfully, 
-Carlos.
--- 
+In the parallel universe where I spent most time everyone
+now need to learn how to make their things to work
+out-of-tree. And there is not much of business case trying
+to fix and improve core parts of linux. The turn around have
+increased a lot and there is no edge doing it.
+
+
+> We also need to recognize that it's expectable that some vendors are
+> not willing to engage on supporting a driver for a decade if they
+> expect their device to last 5 years only, and maybe we should make
+> some rules clear about mainlining drivers and what to expect for
+> users (in which case the end of support would be clear and nobody
+> would be surprised if the driver is removed at the end of its
+> maintenance, barring a switch to a community maintainer).
+
+Things have changed. Once upon a time the community was
+happy if it could get hardware specs.
+
+
+> Just my two cents,
+> Willy
+
+
