@@ -2,132 +2,145 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 244C5C433B4
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 11:27:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D5F9C433B4
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 14:06:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E91536142A
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 11:27:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 203C16141E
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 14:06:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231135AbhD2L1s (ORCPT
+        id S239049AbhD2OHB (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 29 Apr 2021 07:27:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56498 "EHLO
+        Thu, 29 Apr 2021 10:07:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230148AbhD2L1s (ORCPT
+        with ESMTP id S235277AbhD2OHA (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 29 Apr 2021 07:27:48 -0400
-Received: from gimli.kloenk.dev (gimli.kloenk.dev [IPv6:2a0f:4ac0:0:1::cb2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC455C06138B
-        for <rust-for-linux@vger.kernel.org>; Thu, 29 Apr 2021 04:27:01 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kloenk.de; s=mail;
-        t=1619695616; bh=b889TRzO6OzDBzPrOpA5ZVqDMouo54h15av3KLVawlY=;
-        h=Subject:From:In-Reply-To:Date:Cc:References:To;
-        b=WFUhp98nc08c3/ZcLRpB1gkFNSU3hMWTPvb8COxtnBgPTMb3UYz2P2y63CYyx2fsH
-         LjlZGQCdKG2sDLsT3GUVGccWTrtTi64Nkube5uMPqOx97qag6JoTk9GC9MINmmmD25
-         TQv5/F86w1eL450yIGE7LTQrUvd3LU0O54XjcGK0=
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.80.0.2.43\))
-Subject: Re: module parameters permission
-From:   Finn Behrens <me@kloenk.de>
-In-Reply-To: <20210429102543.GG1409@agape.jhs>
-Date:   Thu, 29 Apr 2021 13:26:56 +0200
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2A893F5B-9867-4F7F-B16F-6FAD4FE36E3D@kloenk.de>
-References: <20210429095819.GE1409@agape.jhs> <YIqE1B3qMK+5AwQj@kroah.com>
- <20210429102543.GG1409@agape.jhs>
-To:     Fabio Aiuto <fabioaiuto83@gmail.com>
+        Thu, 29 Apr 2021 10:07:00 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C99EAC06138B;
+        Thu, 29 Apr 2021 07:06:13 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id i4so41060986ybe.2;
+        Thu, 29 Apr 2021 07:06:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=cLdxcTNcrHMm88vNMbnQhEh8B6xhBdoL6bjYsKRPn+M=;
+        b=tN52Et9otdRUvDo0Zwauf9gP8dzOCsv3ZUqxHkiacxkNvLvekceUZgfCD6/OrHJ1Ay
+         WjohQWZebCmywOFs/KHaAMBQdKDTjZ4hjkSFAjUjjLCzMFBDn4xLHyzdcvCMDKWfzNqj
+         0RE5VdhckrF8zqM0vdTZaBH+0G6uQb70eNL0CCXKlUP7YJkLGsbR/+3AmYL7Fr/jQpP6
+         Si64xoFSJ49ZyHnRYE27V9UODvBy6atC7i1XELOzsh1dH7p9PEd8hXEFgp1FuOxNenMJ
+         /OEgcRk+4imzi7jLYq3lLRY5b3WZAxJlic0faDAx6tkWPwx++62WYG3n/cldifo12pSX
+         r+Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:in-reply-to
+         :references:from:date:message-id:subject:to:cc;
+        bh=cLdxcTNcrHMm88vNMbnQhEh8B6xhBdoL6bjYsKRPn+M=;
+        b=Kr+zvZlmyCxgkXzOO4Eveyisxt7gJYJXSPmpeWGJe/JpOIVxPrWTqHzvw8UTtPHufa
+         QQeRnGPgoONrD064L8UzHavI8BmFy6r1eHMYrKyb5RAs8v4C8SDDa/3S97GmkP95n2fI
+         8ZR3Cz2TIzVHDhcKtbMiMSrU/DR2y4DiNoOyNufBfqPOlZRtT9BKl9Bh2uhVfEDWa4sz
+         z/667qmWGIRZOJbUoR82eHHJkd5Mi/cBmlzXiq62XRAG1QiV71S2XBffh2b084Qe+F5U
+         OlHvPAVTuiLvH3tpmmmhwC7+neLNUmR4Hb0VMmyCbW0TSK4hBgXX9QBzwea8lpA9heAS
+         2ZVA==
+X-Gm-Message-State: AOAM531QTaM0rMIPrEb18jqGYbyU9SJByGGYiUtX7FuXy406LecGqjjx
+        2IlwVCcOF2F3zj++VRGwAkV1iSPFJ9uOE/fuSl4=
+X-Google-Smtp-Source: ABdhPJxFa4LBdrlOsuAeSyQXloBMTyzgiyg/tzQxHyJPc0on+gpe3jlJY2fRjRcbNTCV3rvtReYagIw5BjwjQ8/brFM=
+X-Received: by 2002:a5b:98d:: with SMTP id c13mr48453837ybq.463.1619705173088;
+ Thu, 29 Apr 2021 07:06:13 -0700 (PDT)
+MIME-Version: 1.0
+Reply-To: mceier+kernel@gmail.com
+Sender: mceier@gmail.com
+Received: by 2002:a05:7010:7651:b029:ab:612d:7d1d with HTTP; Thu, 29 Apr 2021
+ 07:06:12 -0700 (PDT)
+In-Reply-To: <878s51e3jc.fsf@gmail.com>
+References: <20210414184604.23473-1-ojeda@kernel.org> <CAJTyqKP4Ud7aWxdCihfzeZ3dQe_5yeTAVnXcKDonciez-g2zWA@mail.gmail.com>
+ <878s51e3jc.fsf@gmail.com>
+From:   Mariusz Ceier <mceier+kernel@gmail.com>
+Date:   Thu, 29 Apr 2021 14:06:12 +0000
+X-Google-Sender-Auth: H8N9c0KcN-UhlKT59E9MAkIGKcg
+Message-ID: <CAJTyqKOEG1tF0YGOvNeyidjF+2MaXoY5kCo9-cZ4Ri_Jb8XV8Q@mail.gmail.com>
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+To:     Kajetan Puchalski <mrkajetanp@gmail.com>
+Cc:     ojeda@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-The module macro is a proc_macro. This is written in a way to only =
-accept one single iteral at that position. So that is an expected =
-behaviour with the current implementation.
-If needed, this macro could be extended with functionality to deal with =
-that case, but if octal values are preferred, I don=E2=80=99t see a =
-reason to introduce that level of complexity.
+On 29/04/2021, Kajetan Puchalski <mrkajetanp@gmail.com> wrote:
+>
+> Mariusz Ceier <mceier+kernel@gmail.com> writes:
+>
+>> Rust compiler license doesn't require for people to give back to
+>> the
+>> community - corporation can create their own version of rust
+>> compiler
+>> adding some proprietary extensions, develop drivers with it and
+>> even
+>> if the drivers code will be GPL'd they won't be buildable by
+>> anyone
+>> but that corporation. The rust compiler license doesn't require
+>> sharing changes when you modify it. The similar problem has flex
+>> and
+>> openssl required to build the kernel, but so far no one thought
+>> about
+>> abusing them afaik.
+>
+> Could you explain exactly what the issue you see there is?
+> Surely if someone develops a proprietary compiler and then writes
+> kernel
+> drivers that use that compiler, nobody else will be able to build
+> them.
+> Because of that, none of the maintainers will be able to run or
+> test
+> the code and it'll never actually get merged into the kernel.
+> Surely they'd effectively be sabotaging themselves.
+>
 
-Finn
+Let's assume the hipothetical corporation wants to add some
+proprietary stuff to the kernel and avoid sharing the code (sharing
+the code is GPL requirement) - maybe they're producing proprietary
+hardware e.g. risc-v processor with proprietary ISA extension. So
+"none of the maintainers will be able to run or test the code and
+it'll never actually get merged into the kernel." is exactly what it
+wants.
 
-> On 29. Apr 2021, at 12:25, Fabio Aiuto <fabioaiuto83@gmail.com> wrote:
->=20
-> On Thu, Apr 29, 2021 at 12:05:08PM +0200, Greg KH wrote:
->> On Thu, Apr 29, 2021 at 11:58:20AM +0200, Fabio Aiuto wrote:
->>> Hi all,
->>>=20
->>> I'm trying to declare module parameters this way:
->>>=20
->>>=20
->>>   params: {
->>>        scull_major: i32 {
->>>            default: 0,
->>>            permissions: bindings::S_IRUGO as i32,
->>>            description: b"Major number",
->>>        },
->>>        scull_minor: i32 {
->>>            default: 0,
->>>            permissions: bindings::S_IRUGO as i32,
->>>            description: b"Minor number",
->>>        },
->>>=20
->>> i.e. using S_IRUGO macro exposed by bindgen. But I have the
->>> following compiler error:
->>>=20
->>> error: proc macro panicked
->>>  --> samples/rust/rust_scull.rs:12:1
->>>   |
->>> 12 | / module! {
->>> 13 | |     type: RustScull,
->>> 14 | |     name: b"rust_scull",
->>> 15 | |     author: b"Alessandro Rubini, Jonathan Corbet",
->>> ...  |
->>> 44 | |     },
->>> 45 | | }
->>>   | |_^
->>>   |
->>>   =3D help: message: Expected Literal
->>>=20
->>> the same if I remove as i32 casts.
->>>=20
->>> if I write permissions as in samples/rust/rust_module_parameters.rs
->>>=20
->>>    params: {
->>>        my_bool: bool {
->>>            default: true,
->>>            permissions: 0,
->>>            description: b"Example of bool",
->>>        },
->>>        my_i32: i32 {
->>>            default: 42,
->>>            permissions: 0o644, <-------
->>>            description: b"Example of i32",
->>>        },
->>>=20
->>> I get no error.
->>>=20
->>> What's the right way to use S_I*UGO macros?
->>=20
->> Not at all, use the octal values instead please.
->>=20
->> That's the way that we have declared a while ago, and I think
->> checkpatch.pl will even catch if you try to do this in any new code.
->> Please don't force us to deal with S_* defines in rust code as well.
->>=20
->> thanks,
->>=20
->> greg k-h
->=20
-> thank you I didn't know that. I will use octal than.
->=20
-> Anyway I'd like to know what was the matter with those bindings...
->=20
-> fabio
+To do this they could modify any non-GPL tool required to build the
+kernel e.g. flex, rust or openssl so that for files with .proprietary
+extension they would execute some code (like "patch this file") taken
+from database of shell codes based just on .proprietary file name (so
+that the contents of .proprietary files will be freely modifiable -
+citing GPL: "The source code for a work means the preferred form of
+the work for making modifications to it.").
 
+These .proprietary files can be GPL'd since they don't contain any
+useful information for outsiders - all of it could be in the shell
+codes. The source code of the modified tool wouldn't have to be
+shared, since their license doesn't require it.
+
+I think such modified kernel source code would still be
+GPL-compatible, but not benefit the kernel community. If the tool was
+GPL-licensed, corporation would have to share it's source code - and I
+assume also the database of shell codes, due to:
+
+> You must cause any work that you distribute or publish, that in whole or in part contains or is derived from the Program or any part thereof, *to be licensed as a whole* at no charge to all third parties under the terms of this License.
+
+
+The issue here is, non-GPL tools enable development and distribution
+of GPL-compatible yet proprietary versions of the kernel, unless I'm
+mistaken.
+
+> --
+> Kind regards,
+> Kajetan
+>
