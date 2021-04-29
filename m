@@ -2,85 +2,145 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9608FC433ED
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 08:18:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D4DFC433ED
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 09:58:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5D59E61440
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 08:18:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D3D8C61457
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 09:58:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239672AbhD2IS5 (ORCPT
+        id S231722AbhD2J7O (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 29 Apr 2021 04:18:57 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:29464 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231405AbhD2IS5 (ORCPT
+        Thu, 29 Apr 2021 05:59:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36906 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231543AbhD2J7N (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 29 Apr 2021 04:18:57 -0400
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mtapsc-6-vki8S8smMJidjW5qU1ql5A-1; Thu, 29 Apr 2021 09:18:08 +0100
-X-MC-Unique: vki8S8smMJidjW5qU1ql5A-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.2; Thu, 29 Apr 2021 09:18:07 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.015; Thu, 29 Apr 2021 09:18:07 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     "'mceier+kernel@gmail.com'" <mceier+kernel@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>
-CC:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 00/13] [RFC] Rust support
-Thread-Topic: [PATCH 00/13] [RFC] Rust support
-Thread-Index: AQHXPLdzOFPh/tHqwUWOAL+H8MAuYKrLJmrA
-Date:   Thu, 29 Apr 2021 08:18:07 +0000
-Message-ID: <a5e90fededc64ca2b8a29245a7d1d798@AcuMS.aculab.com>
-References: <CAJTyqKMLaav7VCAZS9p8wh0UamACYq9p6h=LsyrCeLqG_O2Jcw@mail.gmail.com>
-In-Reply-To: <CAJTyqKMLaav7VCAZS9p8wh0UamACYq9p6h=LsyrCeLqG_O2Jcw@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Thu, 29 Apr 2021 05:59:13 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24C53C06138B;
+        Thu, 29 Apr 2021 02:58:26 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id f24so406391ejc.6;
+        Thu, 29 Apr 2021 02:58:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=tklYk81FT4qSaxNV95BozP+5M6DhAHA9kR1UVw8mEcs=;
+        b=tzTByYoPRU+PdqHlaVQF1iGEUjxA9p0h9i8QJN5G4NdqlarF4UQ5hsXtT+Pc9Gy7Mk
+         eyVlLXxrDDqzW4G7FFwaacKbmcf8TwXpmsGrV7XwqCXBz6O45gm9whiduPoSIqORstLl
+         07UGhnYK5yZYDlwSQTZQmomeNgfbIG0+5lJby/6CXWiFbybKv2y6LqUZ+lqaZqMngDqJ
+         s4u9tFNQWrZMO4+V36NNVzgVnUs78NYorIY3qt36JE8FwZM7O8CgEWACZwKCVIDsDW8e
+         J63htF6+2hksKU18TkfZdtNDYd8laf5QrwoCzmF4bsCBapguURA2K1+jIqq9stulsY/v
+         HqwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=tklYk81FT4qSaxNV95BozP+5M6DhAHA9kR1UVw8mEcs=;
+        b=LGBmxEzVOExmzxHGGlpJWA3jHUitN+UcuVBMD400pWVNM48vJPzX6+bEtKPX8k0gYQ
+         74f35M09NzXUbp4YabE1MTwORp8GIodbSGPog5bvIoa9FS75CjQ0WXnu4txPYV/m3o9m
+         fPoxCP+z80570MZ2FF2/qshpRyb+5zfEUCDmpcWe5PDMVUefdh4/10MYvz/jTyWW8NhV
+         eYbLI0ragKwpqDnqBUZhNkkEs2vfhRyZfKPxDxSCcLUacnBuzEsUXObe0ReW7JTjchJb
+         iGlgPd7uS+s4o43hBV5aTmv/TiMbsTYz8LzhYjsaI6r93mNYxlr9Ui8KZ3dFV9EAXNpQ
+         cr0w==
+X-Gm-Message-State: AOAM531yUZ0HVnKO9ObtlBUAiJllHkipLIccXdlj6gupSlpSF9E0Sj0G
+        xNq0IEF0yvD3yB2ZLRckyvmsBh9JgruRQg==
+X-Google-Smtp-Source: ABdhPJwPDhqpBec0oGafy5OUJeyvbWX4XhjWPH7lJcb1hJqCnPlRUjLvd4bNtYc1Wm+FHRNF2jyCaQ==
+X-Received: by 2002:a17:906:851a:: with SMTP id i26mr11527283ejx.148.1619690304637;
+        Thu, 29 Apr 2021 02:58:24 -0700 (PDT)
+Received: from agape.jhs ([5.171.81.14])
+        by smtp.gmail.com with ESMTPSA id l17sm1530710ejk.22.2021.04.29.02.58.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Apr 2021 02:58:24 -0700 (PDT)
+Date:   Thu, 29 Apr 2021 11:58:20 +0200
+From:   Fabio Aiuto <fabioaiuto83@gmail.com>
+To:     rust-for-linux@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+Subject: module parameters permission
+Message-ID: <20210429095819.GE1409@agape.jhs>
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-RnJvbTogTWFyaXVzeiBDZWllcg0KPiBTZW50OiAyOSBBcHJpbCAyMDIxIDA2OjIxDQo+IA0KPiBP
-biAyOC8wNC8yMDIxLCBOaWNrIERlc2F1bG5pZXJzIDxuZGVzYXVsbmllcnNAZ29vZ2xlLmNvbT4g
-d3JvdGU6DQo+ID4gT24gV2VkLCBBcHIgMjgsIDIwMjEgYXQgMTE6MzQgQU0gTWFyaXVzeiBDZWll
-ciA8bWNlaWVyK2tlcm5lbEBnbWFpbC5jb20+DQo+ID4gd3JvdGU6DQo+ID4+DQo+ID4+IE1heWJl
-IGl0IHdvdWxkIGFsc28gYmUgd29ydGh3aGlsZSB0byBtYWtlIHRoZSByZXF1aXJlbWVudCB0aGF0
-IHRoZQ0KPiA+PiBrZXJuZWwgbXVzdCBiZSBidWlsZGFibGUgd2l0aCBmcmVlIHNvZnR3YXJlIChu
-b3QganVzdCBvcGVuIHNvdXJjZQ0KPiA+PiBzb2Z0d2FyZSkgZXhwbGljaXQgPw0KPiA+DQo+ID4g
-VGhlIGtlcm5lbCBpcyBhbHJlYWR5IGJ1aWxkYWJsZSBieSBMTFZNIChhbmQgY2xhbmcpOyBpbiBm
-YWN0IEFuZHJvaWQsDQo+ID4gQ3JPUywgYW5kIEdvb2dsZSdzIHByb2R1Y3Rpb24gc2VydmVycyBh
-bHJlYWR5IGRvIHNvLg0KPiA+IGh0dHBzOi8vY2xhbmdidWlsdGxpbnV4LmdpdGh1Yi5pby8NCj4g
-DQo+IExMVk0vY2xhbmcgaXMgbm90IGZyZWUgc29mdHdhcmUgKGl0J3MganVzdCBvcGVuIHNvdXJj
-ZSksIHNvIGl0IGRvZXNuJ3QNCj4gbWF0dGVyIGlmIGtlcm5lbCBidWlsZHMgb3Igbm90IHdpdGgg
-aXQuIFdoYXQgc2hvdWxkIG1hdHRlciBpcyB3aGV0aGVyDQo+IGl0IGlzIGJ1aWxkYWJsZSB3aXRo
-IGF0IGxlYXN0IG9uZSBHUEwgY29tcGlsZXIgbGlrZSBHQ0MuDQoNCkkgc3VzcGVjdCB0aGF0IHdo
-YXQgbWF0dGVycyBmb3IgbW9zdCBwZW9wbGUgaXMgd2hldGhlciB0aGUgcmVxdWlyZWQNCmNvbXBp
-bGVycyAoZXRjKSBhcmUgaW5zdGFsbGVkIGJ5IGEgZGVmYXVsdC1pc2ggaW5zdGFsbCBvZiB0aGVp
-cg0KZmF2b3VyaXRlIGRpc3RyaWJ1dGlvbi4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRk
-cmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBN
-SzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
+Hi all,
+
+I'm trying to declare module parameters this way:
+
+
+   params: {
+        scull_major: i32 {
+            default: 0,
+            permissions: bindings::S_IRUGO as i32,
+            description: b"Major number",
+        },
+        scull_minor: i32 {
+            default: 0,
+            permissions: bindings::S_IRUGO as i32,
+            description: b"Minor number",
+        },
+
+i.e. using S_IRUGO macro exposed by bindgen. But I have the
+following compiler error:
+
+error: proc macro panicked
+  --> samples/rust/rust_scull.rs:12:1
+   |
+12 | / module! {
+13 | |     type: RustScull,
+14 | |     name: b"rust_scull",
+15 | |     author: b"Alessandro Rubini, Jonathan Corbet",
+...  |
+44 | |     },
+45 | | }
+   | |_^
+   |
+   = help: message: Expected Literal
+
+the same if I remove as i32 casts.
+
+if I write permissions as in samples/rust/rust_module_parameters.rs
+
+    params: {
+        my_bool: bool {
+            default: true,
+            permissions: 0,
+            description: b"Example of bool",
+        },
+        my_i32: i32 {
+            default: 42,
+            permissions: 0o644, <-------
+            description: b"Example of i32",
+        },
+
+I get no error.
+
+What's the right way to use S_I*UGO macros?
+
+my includes are:
+
+// SPDX-License-Identifier: GPL-2.0
+
+//! Scull driver sample
+
+#![no_std]
+#![feature(allocator_api, global_asm)]
+
+use kernel::prelude::*;
+use kernel::{chrdev, cstr};
+use crate::bindings;
+
+thank you,
+
+fabio
+
 
