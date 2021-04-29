@@ -2,109 +2,80 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8D9EC43460
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 11:25:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 770A7C433B4
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 11:26:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 79EC061450
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 11:25:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2F87D6144E
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 11:26:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231925AbhD2L0B (ORCPT
+        id S231343AbhD2L13 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 29 Apr 2021 07:26:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56096 "EHLO
+        Thu, 29 Apr 2021 07:27:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230148AbhD2L0A (ORCPT
+        with ESMTP id S231135AbhD2L13 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 29 Apr 2021 07:26:00 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EDEEC06138B;
-        Thu, 29 Apr 2021 04:25:14 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id x5so16248528wrv.13;
-        Thu, 29 Apr 2021 04:25:14 -0700 (PDT)
+        Thu, 29 Apr 2021 07:27:29 -0400
+Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C6EFC06138B
+        for <rust-for-linux@vger.kernel.org>; Thu, 29 Apr 2021 04:26:41 -0700 (PDT)
+Received: by mail-vs1-xe30.google.com with SMTP id 66so33488697vsk.9
+        for <rust-for-linux@vger.kernel.org>; Thu, 29 Apr 2021 04:26:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=references:user-agent:from:to:cc:subject:in-reply-to:message-id
-         :date:mime-version;
-        bh=df00PonkuA4V7Kk/IBUK2Bd0mIxBD8f2wwKpTO3y3gk=;
-        b=Zk/vf2nj1LdGchhmqAMS8vStJBPjhcdzrzX7BasvJBOqWUbi+GSYHd971I8bTJ5Iqj
-         v8IcxzrNH/C/QPnjSP5WFgQf0/LFMoxRtA29pEBpVEwM+DNqSZLAzG3o4kxwnsa8WfMv
-         rRLDKzM8kh54f9cJ6kTJDS2sekVKMbZeXQCm3l4iAqyCxejO0aypeXR10KyrrLgJkFCm
-         FZzrlfbQfx7OrqKNwdi5qpLHaAC61gYblJBAcxIOp9TjooKG+5kgH/bMsqwGW2W6Lkbe
-         2rwgwHWlIOxdgLwNQWUC/fEbntJJpy/lth8BWRys/x4c9BZxAINIcn84Tzky9YuM+lSc
-         Vllg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=utGCcckuItFRA3OB1xQhs9eScDvOTF27fYcfqUgQ+QI=;
+        b=tr98cJbMcYdbo4RliWaFbxPThWKAc17Dxi+VVeKW9dbppfhRs4Cr6tX+naKv/9yhL3
+         m3bHNGpiVmUrNb0XN6wrrG2E0lpgQjPNQ9cGEj8127vicJRDX7J03nI9SCURn7yT9zFd
+         XF3Jv66hPD9yn7oKajvsIkUsGns9NQDfZzePXESjOAJC61jGQpAz+WxdXPTVxVMCHK1D
+         aQBBtT+ElaKpAWVAWjJ+qC0+jGfh1/5PmwoeHuYGbESlCbRJfM4dA6vPLq/Y2pymwJ9f
+         JCzaYfDakJAl+lh7FPKLJZTySqp59FLILB/L4OXytYbAHSoHfES//oOpEiXHmcDnaCXi
+         4sfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:references:user-agent:from:to:cc:subject
-         :in-reply-to:message-id:date:mime-version;
-        bh=df00PonkuA4V7Kk/IBUK2Bd0mIxBD8f2wwKpTO3y3gk=;
-        b=RokTAxTIoYIL5Kbu6zCZfVHoPygquW7Revv2Gi7cqnehhoB0SoqXtvzfYbstWr3m8l
-         K/kwopD5/BIxR4SPjf47qxq7VT6Msli6ON72Yrsr9y2S8Yq0gQyxaeQaKSXUqGXtJY4+
-         U/BuOsPv9APkc5N6HNWP2hgfjV9lingkgO2lHt0ujAKXthZZkY7Vv9YA3KaT54HJquQG
-         UJ+vM6sl2l0kCGnYR9+mLkJ8bFbQYJOMLAKVXOXJxLDztR1APqzWpd1CD50qjOc3L//T
-         5EqyqPN4SoAMQVNt7NVv8EI5WaT0+Zf60dbsFo/OVms4BOQWERt7suNGWVhbVSza03q3
-         eYEQ==
-X-Gm-Message-State: AOAM533l0syAs+JbICd4ahWKcQJL9iPb/LdQ+E1XFrV4dTTo+E8x5QEh
-        V/cWSCHqyDRxXO4LVRdUWe5vrfp+Ge8=
-X-Google-Smtp-Source: ABdhPJzZf1hlNoZj6Op58fEkghEcYJ9e8oTMm3bZ0mfFq6JzGv24lqarERvDig04Sx/KvDFBPP0Tdg==
-X-Received: by 2002:a5d:64c4:: with SMTP id f4mr3067811wri.178.1619695512776;
-        Thu, 29 Apr 2021 04:25:12 -0700 (PDT)
-Received: from EDI-InfinityBook ([2a01:4b00:ea36:6c00:56e9:4ef3:28ef:7ef6])
-        by smtp.gmail.com with ESMTPSA id x9sm4535392wrt.13.2021.04.29.04.25.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Apr 2021 04:25:12 -0700 (PDT)
-References: <20210414184604.23473-1-ojeda@kernel.org>
- <CAJTyqKP4Ud7aWxdCihfzeZ3dQe_5yeTAVnXcKDonciez-g2zWA@mail.gmail.com>
-User-agent: mu4e 1.4.15; emacs 28.0.50
-From:   Kajetan Puchalski <mrkajetanp@gmail.com>
-To:     mceier+kernel@gmail.com
-Cc:     ojeda@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-doc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 00/13] [RFC] Rust support
-In-reply-to: <CAJTyqKP4Ud7aWxdCihfzeZ3dQe_5yeTAVnXcKDonciez-g2zWA@mail.gmail.com>
-Message-ID: <878s51e3jc.fsf@gmail.com>
-Date:   Thu, 29 Apr 2021 12:25:11 +0100
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=utGCcckuItFRA3OB1xQhs9eScDvOTF27fYcfqUgQ+QI=;
+        b=oTLAhqLSXUwzGjUAeKVvGXBSvUWBqPRS1XNNVP8PSPN717dE56kj/7sS6T1TDTblam
+         IkdUzwBHg7/bJuYIy9SA0QcmQKh0qnzz3/aZg8KSTbGhKQknMxdzRvAxz1pSbHvq4LBG
+         kLJLiQ8o4Aj9YWcfeVoGJvw5/bYkTLXH9HcFpLt5vR+ioli9glEAh+uN4jKMwc4mW106
+         OULY9LNdojd1hZ2ZkoJ64U+A/MEdxZMhnX+kMb8KMb5mlTkfqEIWNe8MTRHS2VYt9fEO
+         PhIB25elidC5nljOeEpnAtkAPp0VLmZroAzOx8cE0pXx/eUdNM2WDgF5fAsntPzYsycy
+         STgQ==
+X-Gm-Message-State: AOAM5309AtQROsSAjNWOS7T/9c29qruyWrZ+sqKw9dltRCJATL/r34DZ
+        Za04Gx6QG3Aq5uebziY9lN/6iRY0WFLb83YOK/0=
+X-Google-Smtp-Source: ABdhPJw/gCL+SFl30IxyU2HBEK/qOh+eIE+rc022RZPp0sZrNmkX4nJs9K2V/q50sJXguI7+jS0nT8IzzXsaKC8pzHs=
+X-Received: by 2002:a67:e34b:: with SMTP id s11mr7230901vsm.44.1619695600530;
+ Thu, 29 Apr 2021 04:26:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed
+References: <20210429095819.GE1409@agape.jhs> <YIqE1B3qMK+5AwQj@kroah.com> <20210429102543.GG1409@agape.jhs>
+In-Reply-To: <20210429102543.GG1409@agape.jhs>
+From:   Adam Bratschi-Kaye <ark.email@gmail.com>
+Date:   Thu, 29 Apr 2021 13:26:29 +0200
+Message-ID: <CAHaybgktoXXCYX1P0n5VRtCzGWC=4oW34nAg2McUH0aaRXOYzg@mail.gmail.com>
+Subject: Re: module parameters permission
+To:     Fabio Aiuto <fabioaiuto83@gmail.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+> Anyway I'd like to know what was the matter with those bindings...
 
-Mariusz Ceier <mceier+kernel@gmail.com> writes:
-
-> Rust compiler license doesn't require for people to give back to 
-> the
-> community - corporation can create their own version of rust 
-> compiler
-> adding some proprietary extensions, develop drivers with it and 
-> even
-> if the drivers code will be GPL'd they won't be buildable by 
-> anyone
-> but that corporation. The rust compiler license doesn't require
-> sharing changes when you modify it. The similar problem has flex 
-> and
-> openssl required to build the kernel, but so far no one thought 
-> about
-> abusing them afaik.
-
-Could you explain exactly what the issue you see there is?
-Surely if someone develops a proprietary compiler and then writes 
-kernel
-drivers that use that compiler, nobody else will be able to build 
-them.
-Because of that, none of the maintainers will be able to run or 
-test
-the code and it'll never actually get merged into the kernel.
-Surely they'd effectively be sabotaging themselves.
-
---
-Kind regards,
-Kajetan
+There's nothing wrong with the bindings, the problem is that the
+`module!` procedural macro will only parse a literal for the
+permissions field. Given Greg's comment I don't think it's much of an
+issue, but there's the same problem for other fields which it would be
+nice to fix (e.g. your example works with the default parameter value
+`42`, but will hit the same parse error if you instead had `40 + 2`).
+We discussed it a bit here:
+https://github.com/Rust-for-Linux/linux/issues/11#issuecomment-778569067
+.
