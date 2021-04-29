@@ -2,147 +2,119 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C8B59C433B4
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 10:25:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A03AAC433B4
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 11:14:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7E49461457
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 10:25:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6A3D66141E
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 11:14:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233219AbhD2K0g (ORCPT
+        id S230148AbhD2LP2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 29 Apr 2021 06:26:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42944 "EHLO
+        Thu, 29 Apr 2021 07:15:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232629AbhD2K0f (ORCPT
+        with ESMTP id S229792AbhD2LP0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 29 Apr 2021 06:26:35 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E835BC06138B;
-        Thu, 29 Apr 2021 03:25:47 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id e7so77817978edu.10;
-        Thu, 29 Apr 2021 03:25:47 -0700 (PDT)
+        Thu, 29 Apr 2021 07:15:26 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D1CCC06138B;
+        Thu, 29 Apr 2021 04:14:40 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id e5so37830969wrg.7;
+        Thu, 29 Apr 2021 04:14:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=vWUqzDcIYyNtlaUQtK5aS5vhflRni0UZwh7Hr23COe0=;
-        b=mMlYgWU6vGBm3MdIgBW1T/cskesGE4awH1fU3eyfNCNvSAQhBj9c1TmtREUMJiD5Ci
-         mquByqy/x84469lW2uW37BthDunxdUMNzVa7iW+a9MnPfMpMCXLTfHsg1xz1iP+gfPDU
-         tIRuxjGd2dh48bY1S6irw1XFFTeS9uv4vYoCm77AM9tSpuHogSm9sp/JDITIpjK7VyQl
-         5+k8pcltsEeXZSGJ49r9DHCY7Y++OTsdvt8GdannpJTYK37q1iyy8XyWblB4mp/xAZeM
-         YhNWKk2Xyn/PUd2hAwoKz+0zb3kXxi+oJhBMiurcRR5JZF6mnGxpssqzMxt38DdPGCXu
-         9IRA==
+        h=references:user-agent:from:to:cc:subject:in-reply-to:message-id
+         :date:mime-version;
+        bh=5/8VNkQOcNtPRtDrHmo/JB8UiRS4tDp43Rh0Drba7XA=;
+        b=hKLM/5ShBvsG3gq3hjRH3gdwJMGrGMg3rv0LenlO0dHqNMXypdek0/BvF6QkqucTWp
+         Gnv4NduO2YYNpTsFCfoy8r5NxddLs46wPPqZDnagTb2u0/7EwGzcP6pnntqmPtCNqs3o
+         ZSF+i4y0yoEbzs4ejoCnKuYzcpU4UMmdIRxg7YwrM1fVpwsJTQ/eO1P/F5E8COUk2QZF
+         w1Y5L851T+E+0DCZfMSLCPzGjN8EF5/VvxRo13IUQx4s51wBg9HOpgofk2p6URwRxgzY
+         mNTswhKpHPT8mVorr3toSe7D8oolb0/yLALucqnitwOjcfPQOYorsRois6qusXDoV6Hy
+         7UeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=vWUqzDcIYyNtlaUQtK5aS5vhflRni0UZwh7Hr23COe0=;
-        b=OB6qPjiLB2no+OOa+HVnKyQEriA2GNwGOALVsSiivWtEx3gbW44kJ4gAZWFZWeDkBu
-         hlVnt874WkRUTDFnpwPK+s2oClf7WYKtn5JthM1WkoDPTeLQDseukuh+NNktb9rp/paE
-         mSWExJMYDvs8+AFCF6B4f6FU0yuBh6dkMnkXDpEwr8JLxww+0UL6Hmp+u+UARYpgRVK4
-         VMx4pGIdQkc6ZUqE3IAcNvT2J+kvjcObhle8BL1onE+LwAZXUhJpxjgS+353dL4y4Clg
-         Op4EDxdKvF4zuhPdwtX3BjgdCUliVdH2EiH2I3iH0E6LMjBO5Pe+zAPFdAR57ii1PMHS
-         XqtQ==
-X-Gm-Message-State: AOAM532XNIVR7KMNplZE4uv4SsIK6qSU0mI1Zen2X2C+2upOUhbYPNsh
-        CnN9HYjPs+BcbPqcxvnWzuQ=
-X-Google-Smtp-Source: ABdhPJzofCqquTNo1xEfJ8jQID96SYM0bCFV0mtDFwrvDGs0P28BYXtfg5FFOBQdzOxHhVbFMxZNpg==
-X-Received: by 2002:a05:6402:c98:: with SMTP id cm24mr9756782edb.18.1619691946678;
-        Thu, 29 Apr 2021 03:25:46 -0700 (PDT)
-Received: from agape.jhs ([5.171.81.14])
-        by smtp.gmail.com with ESMTPSA id h19sm1536071ejc.94.2021.04.29.03.25.45
+        h=x-gm-message-state:references:user-agent:from:to:cc:subject
+         :in-reply-to:message-id:date:mime-version;
+        bh=5/8VNkQOcNtPRtDrHmo/JB8UiRS4tDp43Rh0Drba7XA=;
+        b=NlupXyBnuC/TpCLu2ZZjJesF+hsuryczpUEIJkgmx74VryOlFipRk+Vx0pA5UQvzxV
+         5OmWE4pcqlZZ9sJTQIllSHgb87Srj67DsUHAkLcoIFbJ9oozkjX0UG9vXrOvKvsVC+j+
+         cibeP98jFHGQm280bwbHzdo+PwmwF4NOcYFspTwWhWjtvCYYRv2XKRzcUqHi7et8tOuY
+         x2e2487pX2hMjiTvpgFY/eo5pHHB9AAQTd27cNlSedEZ4FSt7ZQ6A36Ew6dcryNaWuBg
+         CgW6AmWsmbPN29g6NXVLD6UqBZEcrMsWZjpvVExe5nMF7afBRN0TQtKSW4pr42x0g8Bw
+         5N7w==
+X-Gm-Message-State: AOAM533Lkw9THqvEjB0t36Md9jBbXQQoUSjHrQRebJ+J3No/EtKyt2da
+        HqPRafYzhobQ1R2Vbbcogv2iSjZFdR0=
+X-Google-Smtp-Source: ABdhPJx+OnuJxzoAcODQiSKczbARoDqeij+9ia6FY9Qx9koqZbwr7/Rk2M2vPbAQyqYK7IyfOwabmw==
+X-Received: by 2002:adf:e2cc:: with SMTP id d12mr42542589wrj.90.1619694878793;
+        Thu, 29 Apr 2021 04:14:38 -0700 (PDT)
+Received: from EDI-InfinityBook ([2a01:4b00:ea36:6c00:56e9:4ef3:28ef:7ef6])
+        by smtp.gmail.com with ESMTPSA id p10sm4240810wrr.58.2021.04.29.04.14.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Apr 2021 03:25:46 -0700 (PDT)
-Date:   Thu, 29 Apr 2021 12:25:43 +0200
-From:   Fabio Aiuto <fabioaiuto83@gmail.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: module parameters permission
-Message-ID: <20210429102543.GG1409@agape.jhs>
-References: <20210429095819.GE1409@agape.jhs>
- <YIqE1B3qMK+5AwQj@kroah.com>
+        Thu, 29 Apr 2021 04:14:38 -0700 (PDT)
+References: <20210414184604.23473-1-ojeda@kernel.org>
+ <CAJTyqKP4Ud7aWxdCihfzeZ3dQe_5yeTAVnXcKDonciez-g2zWA@mail.gmail.com>
+ <acce51322e1249f888e7d2815228e7af@AcuMS.aculab.com>
+User-agent: mu4e 1.4.15; emacs 28.0.50
+From:   Kajetan Puchalski <mrkajetanp@gmail.com>
+To:     David Laight <David.Laight@ACULAB.COM>
+Cc:     "'mceier+kernel@gmail.com'" <mceier+kernel@gmail.com>,
+        "ojeda@kernel.org" <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+        "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+In-reply-to: <acce51322e1249f888e7d2815228e7af@AcuMS.aculab.com>
+Message-ID: <87czude41d.fsf@gmail.com>
+Date:   Thu, 29 Apr 2021 12:14:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YIqE1B3qMK+5AwQj@kroah.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; format=flowed
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Apr 29, 2021 at 12:05:08PM +0200, Greg KH wrote:
-> On Thu, Apr 29, 2021 at 11:58:20AM +0200, Fabio Aiuto wrote:
-> > Hi all,
-> > 
-> > I'm trying to declare module parameters this way:
-> > 
-> > 
-> >    params: {
-> >         scull_major: i32 {
-> >             default: 0,
-> >             permissions: bindings::S_IRUGO as i32,
-> >             description: b"Major number",
-> >         },
-> >         scull_minor: i32 {
-> >             default: 0,
-> >             permissions: bindings::S_IRUGO as i32,
-> >             description: b"Minor number",
-> >         },
-> > 
-> > i.e. using S_IRUGO macro exposed by bindgen. But I have the
-> > following compiler error:
-> > 
-> > error: proc macro panicked
-> >   --> samples/rust/rust_scull.rs:12:1
-> >    |
-> > 12 | / module! {
-> > 13 | |     type: RustScull,
-> > 14 | |     name: b"rust_scull",
-> > 15 | |     author: b"Alessandro Rubini, Jonathan Corbet",
-> > ...  |
-> > 44 | |     },
-> > 45 | | }
-> >    | |_^
-> >    |
-> >    = help: message: Expected Literal
-> > 
-> > the same if I remove as i32 casts.
-> > 
-> > if I write permissions as in samples/rust/rust_module_parameters.rs
-> > 
-> >     params: {
-> >         my_bool: bool {
-> >             default: true,
-> >             permissions: 0,
-> >             description: b"Example of bool",
-> >         },
-> >         my_i32: i32 {
-> >             default: 42,
-> >             permissions: 0o644, <-------
-> >             description: b"Example of i32",
-> >         },
-> > 
-> > I get no error.
-> > 
-> > What's the right way to use S_I*UGO macros?
-> 
-> Not at all, use the octal values instead please.
-> 
-> That's the way that we have declared a while ago, and I think
-> checkpatch.pl will even catch if you try to do this in any new code.
-> Please don't force us to deal with S_* defines in rust code as well.
-> 
-> thanks,
-> 
-> greg k-h
 
-thank you I didn't know that. I will use octal than.
+David Laight <David.Laight@ACULAB.COM> writes:
 
-Anyway I'd like to know what was the matter with those bindings...
+> From: Mariusz Ceier
+>> Sent: 28 April 2021 19:34
+> ....
+>>
+>> I suggest to wait until featureful GPL implementation of rust 
+>> language
+>> is made (assuming GNU Rust is on the way) before merging any 
+>> rust code
+>> in the kernel and when that implementation is done make a 
+>> requirement
+>> that all rust code must be buildable by at least GPL 
+>> implementation.
+>>
+>> Maybe it would also be worthwhile to make the requirement that 
+>> the
+>> kernel must be buildable with free software (not just open 
+>> source
+>> software) explicit ?
+>
+> Or put the version of the compiler that works in the source tree
+> with the kernel and then build it as part of the full build.
 
-fabio
+Building compilers takes several hours, I'm pretty sure usually 
+much more
+than the kernel itself. Building the compiler as part of the full 
+build
+would be a gigantic pain for everyone involved. Rustc is even 
+worse than
+most compilers on that front due to the complexity of its runtime 
+checks.
+
+--
+Kind regards,
+Kajetan
