@@ -2,75 +2,57 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48878C43460
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 15:06:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0433CC433ED
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 15:16:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 00F61613F8
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 15:06:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BCE6160725
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 15:16:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233486AbhD2PHY (ORCPT
+        id S233148AbhD2PRB (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 29 Apr 2021 11:07:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48876 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233290AbhD2PHW (ORCPT
-        <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 29 Apr 2021 11:07:22 -0400
-Received: from zeniv-ca.linux.org.uk (zeniv-ca.linux.org.uk [IPv6:2607:5300:60:148a::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0768AC06138B;
-        Thu, 29 Apr 2021 08:06:36 -0700 (PDT)
-Received: from viro by zeniv-ca.linux.org.uk with local (Exim 4.94 #2 (Red Hat Linux))
-        id 1lc8F5-009J9w-Rq; Thu, 29 Apr 2021 15:06:16 +0000
-Date:   Thu, 29 Apr 2021 15:06:15 +0000
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Mariusz Ceier <mceier+kernel@gmail.com>
-Cc:     Kajetan Puchalski <mrkajetanp@gmail.com>, ojeda@kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-doc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 00/13] [RFC] Rust support
-Message-ID: <YIrLZ8Siip0C0d9b@zeniv-ca.linux.org.uk>
-References: <20210414184604.23473-1-ojeda@kernel.org>
- <CAJTyqKP4Ud7aWxdCihfzeZ3dQe_5yeTAVnXcKDonciez-g2zWA@mail.gmail.com>
- <878s51e3jc.fsf@gmail.com>
- <CAJTyqKOEG1tF0YGOvNeyidjF+2MaXoY5kCo9-cZ4Ri_Jb8XV8Q@mail.gmail.com>
+        Thu, 29 Apr 2021 11:17:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35902 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237480AbhD2PRA (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Thu, 29 Apr 2021 11:17:00 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2912F60725;
+        Thu, 29 Apr 2021 15:16:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1619709373;
+        bh=YNmM3RnGZrUBvqG2JQHubXAhGAKMuEEgshq7W9rz6J4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=0LKtlTnebreKZS+KTy0mcVaO/nM/48/B0dnKb0JZg3XmhfgJSXi7cJ+Da8E5h7iAa
+         Nx0IhcA1lQdAQYkqxjnQsvnhuofKDV5Hv7CJVoQB8c7XhPykG4AwpAFuZCMML/Lr78
+         GCJrFtIB2G8zjy/j0dMEi+XADIQecmPkCLZjcYDU=
+Date:   Thu, 29 Apr 2021 17:16:09 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Carlos <carloscarral13@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org
+Subject: Re: Loading an out-of-tree module
+Message-ID: <YIrNuQlVnvpktDcl@kroah.com>
+References: <YIrDgupEqcmsUfGX@localhost.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJTyqKOEG1tF0YGOvNeyidjF+2MaXoY5kCo9-cZ4Ri_Jb8XV8Q@mail.gmail.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+In-Reply-To: <YIrDgupEqcmsUfGX@localhost.localdomain>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Apr 29, 2021 at 02:06:12PM +0000, Mariusz Ceier wrote:
-
-> > You must cause any work that you distribute or publish, that in whole or in part contains or is derived from the Program or any part thereof, *to be licensed as a whole* at no charge to all third parties under the terms of this License.
+On Thu, Apr 29, 2021 at 09:32:34AM -0500, Carlos wrote:
+> Good morning (or good afternoon) to all,
 > 
-> 
-> The issue here is, non-GPL tools enable development and distribution
-> of GPL-compatible yet proprietary versions of the kernel, unless I'm
-> mistaken.
+> I managed to build an out-of-tree HelloWorld module. However, when I 
+> tried loading it in the kernel (booted with eudyptula-boot)
+> and dmesg inside the shell, I get a 'loading out-of-tree module taints kernel':
 
-And?  For your argument to work, we'd need to have the kernel somehow
-locked into the use of tools that would have no non-GPL equivalents
-*and* would be (somehow) protected from getting such equivalents.
-How could that be done, anyway?  Undocumented and rapidly changing
-features of the tools?  We would get screwed by those changes ourselves.
-Copyrights on interfaces?  Software patents?  Some other foulness?
+That is to be expected, the kernel is working as designed :)
 
-I honestly wonder about the mental contortions needed to describe
-something of that sort as "free", but fortunately we are nowhere
-near such situation anyway.
+thanks,
 
-I don't like Rust as a language and I'm sceptical about its usefulness
-in the kernel, but let's not bring "gcc is better 'cuz GPL" crusades
-into that - they are irrelevant anyway, since we demonstrably *not*
-locked into gcc on all architectures your hypothetical company would
-care about, Rust or no Rust.
+greg k-h
