@@ -2,92 +2,85 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FFBFC43461
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 05:21:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9608FC433ED
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 08:18:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E87D861453
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 05:21:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5D59E61440
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 08:18:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235768AbhD2FWB (ORCPT
+        id S239672AbhD2IS5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 29 Apr 2021 01:22:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60148 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229792AbhD2FWB (ORCPT
+        Thu, 29 Apr 2021 04:18:57 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([207.82.80.151]:29464 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231405AbhD2IS5 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 29 Apr 2021 01:22:01 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCE4C06138B;
-        Wed, 28 Apr 2021 22:21:15 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id i4so39369698ybe.2;
-        Wed, 28 Apr 2021 22:21:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to:cc;
-        bh=bk5Ob7CCSkxgpUrCOFhPasSXGbwrQ7f0CMySgOzlGqY=;
-        b=eQqoItrc2wWfeqt0tZsaF1mnNI1b28o0F595TuAnJRAubWC3U+vs9T+D6wQNl05lUN
-         /EczTswTMaCwPEtx4lVqJBBHtZsTd5oAZqeP91PtY6Q0+5XciuzlL6so+qihW5gVERjR
-         ilxCqjcg44bJNYUiWc3EDyeQgandNWvXoSqZVsDvY5WjBAUu1bkwVp90NhY0gw8xt/oy
-         dhiX6d7nxUR1UVD5YOvrHPzI6gAJ8NGmjIV4zddYgGsCJc+Mud5KJ0kTVPAyw0nJk9x4
-         Q0FsaHAO7VTG+KlAuXdxEZoyYxRluNtYsDG9y0T68HNLNerbfNsp8IBpgClCJpE/1HO8
-         KM/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=bk5Ob7CCSkxgpUrCOFhPasSXGbwrQ7f0CMySgOzlGqY=;
-        b=Fq/B8utBnFBEj7rJXigKTPYVhdCKkhEPUz2HT19jipaQc8+ZDfnrK7yd44yERxmsAb
-         66d9wLeW4HRO+M9gdE260Um9uAI4n6JPSrBnYh3dPpH2Q8Hr5Oj2H36BG5RVOKqXQjMk
-         BObDAhchYCYOfSPXwvtYUSFq8I4bFcFFYRBKAAkRss6BVZ7eFuoX/+gqrSeIyliIaaYz
-         og2rIiiXKSmAq1lNMhrYykj1WPbIji1AU3I6/TlD5wRAcOUE006h1dN3M0k2p02OsaQr
-         XuhIH3eoeahK2dAgkHLaJoRpjcPxd+WFYHqIVQdk8R9w56SftezPmgIMWdckl7hi26fk
-         9l4Q==
-X-Gm-Message-State: AOAM531o5FoLMWI2G5NNWlu/yBpw2XUtCETFOjddrgo8kXfCgcwi8N74
-        DSYS70EweyTfzyj6HKxiRZMmixCq4IJZjA0e5Xc=
-X-Google-Smtp-Source: ABdhPJwFM334XR+nINOlxp/4VwcZmel8tWLP2MPOVPqARa6kJ3YiRgrskngSS8sFfLvJhqaovvMtFy574eQ+6JeN5oc=
-X-Received: by 2002:a25:c941:: with SMTP id z62mr43669776ybf.130.1619673674769;
- Wed, 28 Apr 2021 22:21:14 -0700 (PDT)
-MIME-Version: 1.0
-Reply-To: mceier+kernel@gmail.com
-From:   Mariusz Ceier <mceier+kernel@gmail.com>
-Date:   Thu, 29 Apr 2021 05:21:04 +0000
-Message-ID: <CAJTyqKMLaav7VCAZS9p8wh0UamACYq9p6h=LsyrCeLqG_O2Jcw@mail.gmail.com>
-Subject: Re: [PATCH 00/13] [RFC] Rust support
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Thu, 29 Apr 2021 04:18:57 -0400
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mtapsc-6-vki8S8smMJidjW5qU1ql5A-1; Thu, 29 Apr 2021 09:18:08 +0100
+X-MC-Unique: vki8S8smMJidjW5qU1ql5A-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.2; Thu, 29 Apr 2021 09:18:07 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.015; Thu, 29 Apr 2021 09:18:07 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     "'mceier+kernel@gmail.com'" <mceier+kernel@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>
+CC:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
         Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         Linux Doc Mailing List <linux-doc@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: RE: [PATCH 00/13] [RFC] Rust support
+Thread-Topic: [PATCH 00/13] [RFC] Rust support
+Thread-Index: AQHXPLdzOFPh/tHqwUWOAL+H8MAuYKrLJmrA
+Date:   Thu, 29 Apr 2021 08:18:07 +0000
+Message-ID: <a5e90fededc64ca2b8a29245a7d1d798@AcuMS.aculab.com>
+References: <CAJTyqKMLaav7VCAZS9p8wh0UamACYq9p6h=LsyrCeLqG_O2Jcw@mail.gmail.com>
+In-Reply-To: <CAJTyqKMLaav7VCAZS9p8wh0UamACYq9p6h=LsyrCeLqG_O2Jcw@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+Authentication-Results: relay.mimecast.com;
+        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 28/04/2021, Nick Desaulniers <ndesaulniers@google.com> wrote:
-> On Wed, Apr 28, 2021 at 11:34 AM Mariusz Ceier <mceier+kernel@gmail.com>
-> wrote:
->>
->> Maybe it would also be worthwhile to make the requirement that the
->> kernel must be buildable with free software (not just open source
->> software) explicit ?
->
-> The kernel is already buildable by LLVM (and clang); in fact Android,
-> CrOS, and Google's production servers already do so.
-> https://clangbuiltlinux.github.io/
+RnJvbTogTWFyaXVzeiBDZWllcg0KPiBTZW50OiAyOSBBcHJpbCAyMDIxIDA2OjIxDQo+IA0KPiBP
+biAyOC8wNC8yMDIxLCBOaWNrIERlc2F1bG5pZXJzIDxuZGVzYXVsbmllcnNAZ29vZ2xlLmNvbT4g
+d3JvdGU6DQo+ID4gT24gV2VkLCBBcHIgMjgsIDIwMjEgYXQgMTE6MzQgQU0gTWFyaXVzeiBDZWll
+ciA8bWNlaWVyK2tlcm5lbEBnbWFpbC5jb20+DQo+ID4gd3JvdGU6DQo+ID4+DQo+ID4+IE1heWJl
+IGl0IHdvdWxkIGFsc28gYmUgd29ydGh3aGlsZSB0byBtYWtlIHRoZSByZXF1aXJlbWVudCB0aGF0
+IHRoZQ0KPiA+PiBrZXJuZWwgbXVzdCBiZSBidWlsZGFibGUgd2l0aCBmcmVlIHNvZnR3YXJlIChu
+b3QganVzdCBvcGVuIHNvdXJjZQ0KPiA+PiBzb2Z0d2FyZSkgZXhwbGljaXQgPw0KPiA+DQo+ID4g
+VGhlIGtlcm5lbCBpcyBhbHJlYWR5IGJ1aWxkYWJsZSBieSBMTFZNIChhbmQgY2xhbmcpOyBpbiBm
+YWN0IEFuZHJvaWQsDQo+ID4gQ3JPUywgYW5kIEdvb2dsZSdzIHByb2R1Y3Rpb24gc2VydmVycyBh
+bHJlYWR5IGRvIHNvLg0KPiA+IGh0dHBzOi8vY2xhbmdidWlsdGxpbnV4LmdpdGh1Yi5pby8NCj4g
+DQo+IExMVk0vY2xhbmcgaXMgbm90IGZyZWUgc29mdHdhcmUgKGl0J3MganVzdCBvcGVuIHNvdXJj
+ZSksIHNvIGl0IGRvZXNuJ3QNCj4gbWF0dGVyIGlmIGtlcm5lbCBidWlsZHMgb3Igbm90IHdpdGgg
+aXQuIFdoYXQgc2hvdWxkIG1hdHRlciBpcyB3aGV0aGVyDQo+IGl0IGlzIGJ1aWxkYWJsZSB3aXRo
+IGF0IGxlYXN0IG9uZSBHUEwgY29tcGlsZXIgbGlrZSBHQ0MuDQoNCkkgc3VzcGVjdCB0aGF0IHdo
+YXQgbWF0dGVycyBmb3IgbW9zdCBwZW9wbGUgaXMgd2hldGhlciB0aGUgcmVxdWlyZWQNCmNvbXBp
+bGVycyAoZXRjKSBhcmUgaW5zdGFsbGVkIGJ5IGEgZGVmYXVsdC1pc2ggaW5zdGFsbCBvZiB0aGVp
+cg0KZmF2b3VyaXRlIGRpc3RyaWJ1dGlvbi4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRk
+cmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBN
+SzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
 
-LLVM/clang is not free software (it's just open source), so it doesn't
-matter if kernel builds or not with it. What should matter is whether
-it is buildable with at least one GPL compiler like GCC.
-
-> --
-> Thanks,
-> ~Nick Desaulniers
->
