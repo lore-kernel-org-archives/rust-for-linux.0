@@ -2,120 +2,190 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5612C43461
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 16:09:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32634C43460
+	for <rust-for-linux@archiver.kernel.org>; Fri, 30 Apr 2021 06:39:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7C5306147F
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Apr 2021 16:09:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EA30F613F0
+	for <rust-for-linux@archiver.kernel.org>; Fri, 30 Apr 2021 06:39:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233622AbhD2QJz (ORCPT
+        id S229818AbhD3Gkc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 29 Apr 2021 12:09:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34584 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232004AbhD2QJy (ORCPT
+        Fri, 30 Apr 2021 02:40:32 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.50]:19693 "EHLO
+        mo4-p01-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229482AbhD3Gkc (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 29 Apr 2021 12:09:54 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A9FC06138B;
-        Thu, 29 Apr 2021 09:09:07 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id t94so25952802ybi.3;
-        Thu, 29 Apr 2021 09:09:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:in-reply-to:references:from:date
-         :message-id:subject:to:cc;
-        bh=EorVpKZRsSllfeM/atRN+mOPQqPmnCQhK0yD5RMKMnA=;
-        b=exMuXEFq9Lpu/2kRoWHVpmM7ZORD3azlEFRlEW56srfpFL10owsUofdBPuebOH1rBx
-         88aIZBFdeiDK/TDk3SHfpJIh1VlyTUComYGSL72pwi3iLnVxN63ojBV0MvqFW9jfcvyp
-         g7mislbiqp9ZMwNnvGEzsvYc0m9Ox0MrZWS7cvsYzXsZJunqcBYIf5W13QaW3F7LwNHe
-         lbK2ROp7jIQtHbej1CNSqOYKd5X+vzCfZ4Ho0XFR6lHI9sRvlmdq+qZSYU0ulJN3qpjP
-         5hGxYFwzwB09OXw+PJgloc8MqYhGBpJgL6K3tkuTkhHV13D0hXqoi2B6enADQm6v4INr
-         5FSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:in-reply-to
-         :references:from:date:message-id:subject:to:cc;
-        bh=EorVpKZRsSllfeM/atRN+mOPQqPmnCQhK0yD5RMKMnA=;
-        b=TKz15QXqjrMpNGHJ/CZRnauVTUV6o+i8eQwHyMTRQ1pk2b4arsIvBlEjmW/8O54uKn
-         iC0s8kbdcN6av2TAOIdPtlL73jqbJYFbhV8wS4z5oy6K/+0h9QXLQPTJBxk6P+6WBWi+
-         MAfMHvqBfb1EFhSttRNEys/ymJZzdW8TChh8u6KTKH+Cjmgd1OYWqaJVIsPyrM2sEjD2
-         DwP4q2WdY51GL8yFgJNfFs8gmpXueoWKtET6Zd7EzfwZHnHQ5/nb4eLqXuWCNosQ32PF
-         5r7At0q7dPuRIljhRKGgQwEA85VG1UwVp4L7TioCYpNPi9IAeBdPO7g6yq1n6P8x10VF
-         oOgg==
-X-Gm-Message-State: AOAM532DLHYQvjQJ3SuCSeK+fCeFvNo54FuBwqAv+znCT/HMqgRRL+E9
-        /5yo9bW3npqkl0p4aCrJ1EskPOInta+X0xbFjUpnSxAprQI=
-X-Google-Smtp-Source: ABdhPJynyvLEYvj+6ufROnCezJtu6jzpTD3l/8sqOWhT9EvJTeDx42OofxLLatDsyHV5kYj3HJC/YzB9Q6yWGQZBRsM=
-X-Received: by 2002:a25:aa2e:: with SMTP id s43mr277929ybi.189.1619712546708;
- Thu, 29 Apr 2021 09:09:06 -0700 (PDT)
-MIME-Version: 1.0
-Reply-To: mceier+kernel@gmail.com
-Sender: mceier@gmail.com
-Received: by 2002:a05:7010:7651:b029:ab:612d:7d1d with HTTP; Thu, 29 Apr 2021
- 09:09:06 -0700 (PDT)
-In-Reply-To: <YIrLZ8Siip0C0d9b@zeniv-ca.linux.org.uk>
-References: <20210414184604.23473-1-ojeda@kernel.org> <CAJTyqKP4Ud7aWxdCihfzeZ3dQe_5yeTAVnXcKDonciez-g2zWA@mail.gmail.com>
- <878s51e3jc.fsf@gmail.com> <CAJTyqKOEG1tF0YGOvNeyidjF+2MaXoY5kCo9-cZ4Ri_Jb8XV8Q@mail.gmail.com>
- <YIrLZ8Siip0C0d9b@zeniv-ca.linux.org.uk>
-From:   Mariusz Ceier <mceier+kernel@gmail.com>
-Date:   Thu, 29 Apr 2021 16:09:06 +0000
-X-Google-Sender-Auth: TYi__oyZ27nAx95qHM9-WZ2MPLI
-Message-ID: <CAJTyqKOwxL8xGCtz82qdC563gjCduxag88MLo2M+OVhQMahzsQ@mail.gmail.com>
+        Fri, 30 Apr 2021 02:40:32 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1619764777; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=bVm8aeh/RhVR+0lCg2A9CegWl8+Z/njjNXJhRMkx4BsdaZKye/ULvbqoCHBkdpD9eI
+    SOEy8M9tWBFcRS6byzbMHiAOi8Z/oSiaB7+447y3tOuay5jU/RHrVPqflzSHtNYzKAFu
+    KfSFzdn3Noh/dBIlGtEUdQLulKTT3nOHvZ3MhFL1HxohXDrZtU5HDy/pXJIiN7NS/P11
+    MksOvgmAcPkMz/2cbajVCett/uVqqs2r9A0pr7NYrQzZ2CosrG+jF9sFDjnLDDP02Lie
+    stLkG8Tf2SH8EhRNJCHQC1cFYcyjlNlMgymvWJaNKXe8UspocFmTL69TLfLQ7fjY2+En
+    mttw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1619764777;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=6z6l9+rojPJlZtid+Fe8AU76hH1sc4rG7fZbTRHV48w=;
+    b=JilQsVn8WE+2yytr725uF6gw9hzqROzu0VokNeG8McFt8c6/JySHZ7cywDkD+RIKvH
+    oBjiS2yoGDNZ4fCDI6HIy1F3QhoynSLjC69x2A/7agw2LDsSH/DJf3l2oEZdFwPzR608
+    nEYqHzE1RDwpWX6yBgRsA+bpulOBOHFhY+GwotXdX/f3aEacThvGmoOkYXJ5ccpiSc1+
+    PO7wmYED1U9qcJf9nq++XjipU1cRkAVqMRVdev2wO9I0c+uj2YGo/VPy9cWkN15aSbvI
+    hqBcnyz4N737aaxGXzqFImpp4kF4N9KX5R1RcfYHPrxWmym0Q4c97IKvsZ/ydha1dIwl
+    hjPg==
+ARC-Authentication-Results: i=1; strato.com;
+    dkim=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1619764777;
+    s=strato-dkim-0002; d=schoebel-theuer.de;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=6z6l9+rojPJlZtid+Fe8AU76hH1sc4rG7fZbTRHV48w=;
+    b=BGRTb0gZLsxDJXWwHaMo38ytNFGAmOBE2h9QgLmzBykqTtQGWXN/TA8rgLOBTMWxrX
+    sYZku2a+bR8aOObXTpdlT3LD6QNEjJOCndEib5jT+2Jxehgn4rIwOzJzNdWDhy63rqJ6
+    Krv4Htb8aow6EtZSstRbtG0zXP4EAa3HHwVpZy6lAxPdb4guLtBzIN2Dv7A2NVKgMzfC
+    ajoFr7aoW/tzMdCKN69Q4L50F46yQRGqKfs6xwHbviYXnenG0+hqU4hXZU6uJoMF9yaD
+    9q/5Sow8Lo/aDRk1PJZgdduetc+1Ejsi1aJrKTPOxveB4AB/eOennUvXQa3Cz0qvXdsu
+    6Vpg==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":OH8QVVOrc/CP6za/qRmbF3BWedPGA1vjs2e0bDjfg8OiOrPJifeRMRhMYPeob5ctvy+gxYZSw1A="
+X-RZG-CLASS-ID: mo00
+Received: from [192.168.2.112]
+    by smtp.strato.de (RZmta 47.25.2 DYNA|AUTH)
+    with ESMTPSA id g052f6x3U6daAev
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Fri, 30 Apr 2021 08:39:36 +0200 (CEST)
 Subject: Re: [PATCH 00/13] [RFC] Rust support
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Kajetan Puchalski <mrkajetanp@gmail.com>, ojeda@kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+To:     Kajetan Puchalski <mrkajetanp@gmail.com>, mceier+kernel@gmail.com
+Cc:     ojeda@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
         linux-doc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Thomas Schoebel-Theuer <tst@schoebel-theuer.de>
+References: <20210414184604.23473-1-ojeda@kernel.org>
+ <CAJTyqKP4Ud7aWxdCihfzeZ3dQe_5yeTAVnXcKDonciez-g2zWA@mail.gmail.com>
+ <878s51e3jc.fsf@gmail.com>
+From:   Thomas Schoebel-Theuer <tst@schoebel-theuer.de>
+Message-ID: <7999ba57-9b95-265e-a189-d9ca01304b13@schoebel-theuer.de>
+Date:   Fri, 30 Apr 2021 08:39:36 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
+MIME-Version: 1.0
+In-Reply-To: <878s51e3jc.fsf@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 29/04/2021, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> On Thu, Apr 29, 2021 at 02:06:12PM +0000, Mariusz Ceier wrote:
+On 29/04/2021 13:25, Kajetan Puchalski wrote:
 >
->> > You must cause any work that you distribute or publish, that in whole or
->> > in part contains or is derived from the Program or any part thereof, *to
->> > be licensed as a whole* at no charge to all third parties under the
->> > terms of this License.
->>
->>
->> The issue here is, non-GPL tools enable development and distribution
->> of GPL-compatible yet proprietary versions of the kernel, unless I'm
->> mistaken.
+> Mariusz Ceier <mceier+kernel@gmail.com> writes:
 >
-> And?  For your argument to work, we'd need to have the kernel somehow
-> locked into the use of tools that would have no non-GPL equivalents
-> *and* would be (somehow) protected from getting such equivalents.
-> How could that be done, anyway?  Undocumented and rapidly changing
-> features of the tools?  We would get screwed by those changes ourselves.
-> Copyrights on interfaces?  Software patents?  Some other foulness?
+>> Rust compiler license doesn't require for people to give back to the
+>> community - corporation can create their own version of rust compiler
+>> adding some proprietary extensions, develop drivers with it and even
+>> if the drivers code will be GPL'd they won't be buildable by anyone
+>> but that corporation.
 >
-> I honestly wonder about the mental contortions needed to describe
-> something of that sort as "free", but fortunately we are nowhere
-> near such situation anyway.
->
+> Could you explain exactly what the issue you see there is?
 
-Equivalents are not a problem - they can exist as long as the
-distributed source would be buildable with GPL tools. I was thinking
-that adding a requirement that the distributed kernel source should be
-buildable by GPL tools would be enough to protect it from proprietary
-extensions. But maybe you're right that this is unrealistic.
 
-> I don't like Rust as a language and I'm sceptical about its usefulness
-> in the kernel, but let's not bring "gcc is better 'cuz GPL" crusades
-> into that - they are irrelevant anyway, since we demonstrably *not*
-> locked into gcc on all architectures your hypothetical company would
-> care about, Rust or no Rust.
->
+Kajetan and others, this is an interesting discussion for me. Let us 
+compare the kernel-specific scope with general OpenSource community and 
+industry scope.
 
-I don't mind the language. I'm more concerned about featureful rust
-compiler suddenly being developed behind closed doors.
+Industry (where I am working) often requires a "second source" to avoid 
+the so-called "vendor lock-in", which is the key point of this part of 
+the discussion.
+
+As soon as Copyleft is involved, the requirement of "second source" is 
+_permanently_ met: anyone may fork it at any time, creating another 
+source, (theoretically) avoiding a dead end eternally. Lock-in is 
+prevented at license level.
+
+IMO this is a _requirement_ for Linux, otherwise its "business model" 
+wouldn't work in the long term (decades as is always necessary for basic 
+infrastructure / system software).
+
+If the requirement "second source" (by either way) is not met by Rust at 
+the moment, this needs to be fixed first.
+
+Other limitations like "development resources" might lead to similar 
+effects than lock-in. I am seeing the latter nearly every workday. 
+Software becomes "unmanageable" due to factors like technical debts / 
+resource restrictions / etc. Typical main reasons are almost always at a 
+_social_ / _human_ level, while purely technical reasons are playing 
+only a secondary role.
+
+This is the link to what Greg said earlier in this discussion: 
+development resources and their _dedication_ (e.g. maintenance vs 
+creation of "new" things) is the absolute key.
+
+Would Rust improve this problem area _provably_ by at least 30% ?
+
+I am insisting on a _quantifiable_ 30% improvement because this is the 
+"magic theshold" in industry after which the motto "never change a 
+running system" can be overcome from an investment perspective, and also 
+from a risk perspective.
+
+After this, another dimension is kicking in: maturity.
+
+You always need to invest a high effort for achieving "sufficient 
+maturity". According to the Pareto principle, maintenance is typically 
+around 70% to 90% of total cost for key infrastructure.
+
+In my working area where end-to-end SLAs of >99.98% have to met, the 
+Pareto ratio may be even higher.
+
+Pareto's law, as well as Zipf's law, are more or less observational 
+"natural laws" holding for almost _any_ complex / dynamic system. Even 
+if you try to improve such universal laws, e.g. by investing a lot of 
+effort / resources / money into maintenance reduction techniques, you 
+typically end up at a similar _total_ effort for maintenance (including 
+the extra effort for reduction of "ordinary" maintenance) than before.
+
+Otherwise, you would have found a way for bypassing natural laws like 
+the observed Pareto law. Even billions of years of biological evolution 
+on this earth weren't able to change this universal law in statistical 
+average (in global scale). Otherwise we couldn't observe it anymore.
+
+Even if you could improve the Pareto ratio, my experience is that upper 
+management will kick in and raise the SLA level so  that Pareto holds 
+again ;)
+
+So I'm sceptical that new technologies like Rust will change fundamental 
+laws, e.g. with respect to relative maintenance efforts.
+
+However, what _could_ be theoretically possible: _productivity_ gains, 
+improving both development of "new" things as well as "maintenance" 
+efforts, in total by more than 30% (but not the Pareto ratio between them).
+
+So the question is: can Rust _provably_ lead to *quantifiable* total 
+productivity gains of at least 30% ?
+
+If this would be the case, any business case needs further alternatives. 
+So it needs to be compared at least with alternative B: what would be 
+the effort and the productivity gain when introducing similar technology 
+non-disruptively into the current development ecosystem?
+
+Even if this A-B comparison would lead to a conclusion that 30% cannot 
+be met by a new and partly disruptive technology like Rust, the 
+discussion can be fruitful. There is always a chance to introduce some 
+parts of a new technology into a well-proven and mature "old" technology 
+non-disruptively.
+
+Cheers,
+
+Thomas
+
