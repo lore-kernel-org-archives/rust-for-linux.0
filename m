@@ -2,88 +2,85 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB3DCC433ED
-	for <rust-for-linux@archiver.kernel.org>; Fri, 30 Apr 2021 08:30:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E00EAC43462
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 May 2021 14:39:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 77C6E6141C
-	for <rust-for-linux@archiver.kernel.org>; Fri, 30 Apr 2021 08:30:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A03D861283
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 May 2021 14:39:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231240AbhD3IbE (ORCPT
+        id S229890AbhECOke (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 30 Apr 2021 04:31:04 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.85.151]:42358 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229532AbhD3IbB (ORCPT
+        Mon, 3 May 2021 10:40:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51496 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229886AbhECOke (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 30 Apr 2021 04:31:01 -0400
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-40-Np76YJq-M2y5OMSF4pVFtw-1; Fri, 30 Apr 2021 09:30:08 +0100
-X-MC-Unique: Np76YJq-M2y5OMSF4pVFtw-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.2; Fri, 30 Apr 2021 09:30:08 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.015; Fri, 30 Apr 2021 09:30:08 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Thomas Schoebel-Theuer' <tst@schoebel-theuer.de>,
-        Kajetan Puchalski <mrkajetanp@gmail.com>,
-        "mceier+kernel@gmail.com" <mceier+kernel@gmail.com>
-CC:     "ojeda@kernel.org" <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-        "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 00/13] [RFC] Rust support
-Thread-Topic: [PATCH 00/13] [RFC] Rust support
-Thread-Index: AQHXPYuWOFPh/tHqwUWOAL+H8MAuYKrMuQKA
-Date:   Fri, 30 Apr 2021 08:30:08 +0000
-Message-ID: <ac41b3c803364f0cbc6c931449c2a51d@AcuMS.aculab.com>
-References: <20210414184604.23473-1-ojeda@kernel.org>
- <CAJTyqKP4Ud7aWxdCihfzeZ3dQe_5yeTAVnXcKDonciez-g2zWA@mail.gmail.com>
- <878s51e3jc.fsf@gmail.com>
- <7999ba57-9b95-265e-a189-d9ca01304b13@schoebel-theuer.de>
-In-Reply-To: <7999ba57-9b95-265e-a189-d9ca01304b13@schoebel-theuer.de>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Mon, 3 May 2021 10:40:34 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC5CCC06174A
+        for <rust-for-linux@vger.kernel.org>; Mon,  3 May 2021 07:39:40 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id b131so7812937ybg.5
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 May 2021 07:39:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dRa3QW+DeoEKLiKvmUDwItOO/ex4FM9ifQzMGkT+Kfw=;
+        b=uUD6/GtT3QD1slcCH3VHOdyDW0LJi4H5Nzv1gG6CuMP8aTS/Zb+XlMefZA0oGUysFO
+         UTlYfPqWqzprWIU/9lCZ4HZNksbidoj1C9AJmCq5D3Gs2vv9O0EFZhdb3AN7cnrwqOky
+         CxXHnSPJm/bwCeD0uLTYCSc4XN/VoDJK42y+ECTYlqT32icAhs6FLALDK54DnM02C9rZ
+         zY2Tk3hi/+/fEH26ydDx90PagoxtYIWlmQjpRv3ga850mdMbYC2mvCD/A4iCjgW+WsHq
+         Zyc7Qk7vw9UZLDv8IKWgYfqNYo9hyFQ/Z0qwvXOd/JQh+rPPiWfz0N+UhK0UkWyjXuQC
+         11LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dRa3QW+DeoEKLiKvmUDwItOO/ex4FM9ifQzMGkT+Kfw=;
+        b=Vq+z1fxjX1cTTh9chq8pRXWoZ1qJ9U+6evqy10GWAVVPPrQ+PCOS0GGiP+vlX9agPv
+         c4wG2sAWGeJ+q7N7VY7AD9e8oPaLHXhsMFo96H9XtyTofJGCv9a0cqwhZAadaqnHV5qR
+         J6OkWd1z9ylG9nNI161RfIegRy00CFafXsnKSNzW8H200UGI6a/GJLSomDiNphjw3u67
+         +CEqM0KEUa1IDjj9s1V2cdnyNTDt7hUjC9y5QhTz2ZETOhmq8wbLzz/pxVe1rkw3xynT
+         Qf+FgnZjMeK1YBxc0V2clJFXSRYTpZEAjef6fALwfjW54/sv07CNjTZX8qb+vMhNauWk
+         FyAA==
+X-Gm-Message-State: AOAM533DXm82qX+SiEKqCAhVsQ2X768Z9xjr8w1PQnELpTWhHybaODhM
+        rtIoQ+5M7m0l9P0Rd32lTC48J66tYuUvq+Td/Vw=
+X-Google-Smtp-Source: ABdhPJyHpi3biFtEf3gdCoUz1b/rSGXo+VFRWFyGJDIwF/KJjVc6GEDhj93niValxyOc1fKmvbFoJb/qprtIko5pHB4=
+X-Received: by 2002:a25:a448:: with SMTP id f66mr6526282ybi.135.1620052779922;
+ Mon, 03 May 2021 07:39:39 -0700 (PDT)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+References: <CACAkLupnnniu-EJ6YmSt9Uo6_L+xBKio0yCs01A4ub7D+pLbKg@mail.gmail.com>
+In-Reply-To: <CACAkLupnnniu-EJ6YmSt9Uo6_L+xBKio0yCs01A4ub7D+pLbKg@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 3 May 2021 16:39:29 +0200
+Message-ID: <CANiq72=XThSaQYoreBVfoLe7nN+tC3k5UnJ5pxrVW-Ym9OqMDA@mail.gmail.com>
+Subject: Re: Bindgen error while building the kernel with rust
+To:     Sumera Priyadarsini <sylphrenadin@gmail.com>
+Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-RnJvbTogVGhvbWFzIFNjaG9lYmVsLVRoZXVlcg0KPiBTZW50OiAzMCBBcHJpbCAyMDIxIDA3OjQw
-DQouLi4NCj4gSW5kdXN0cnkgKHdoZXJlIEkgYW0gd29ya2luZykgb2Z0ZW4gcmVxdWlyZXMgYSAi
-c2Vjb25kIHNvdXJjZSIgdG8gYXZvaWQNCj4gdGhlIHNvLWNhbGxlZCAidmVuZG9yIGxvY2staW4i
-LCB3aGljaCBpcyB0aGUga2V5IHBvaW50IG9mIHRoaXMgcGFydCBvZg0KPiB0aGUgZGlzY3Vzc2lv
-bi4NCg0KVGhlcmUgaXMgYWxzbyB0aGUgcmVsYXRlZCBwcm9ibGVtIHRoYXQgeW91IG5lZWQgdG8g
-YmUgYWJsZSB0byBjb21lDQpiYWNrIGluIDUgeWVhcnMgdGltZSBhbmQgcmUtYnVpbGQgdGhlIG9y
-aWdpbmFsIGltYWdlLg0KWW91IGNhbiB0aGVuIG1ha2UgbWlub3IgY2hhbmdlcywgcmVidWlsZCwg
-YW5kIGhhdmUgYSByZWFzb25hYmxlDQpjb25maWRlbmNlIHRoYXQgdGhlcmUgYXJlIG5vIHNpZGUg
-ZWZmZWN0cy4NCg0KVGhpcyBtZWFucyB0aGF0IHdlYi1iYXNlZCBhbmQgYXV0by11cGRhdGVkIHRv
-b2xzIGNhbm5vdCBiZSB1c2VkLg0KRXZlbiBhIFZNIGltYWdlIG1pZ2h0IHN1ZGRlbmx5IGZhbGwg
-Zm91bCBvZiBjaGFuZ2VzIHRvIGh5cGVydmlzb3JzLg0KU28geW91IG5lZWQgdG8ga2VlcCAoYXQg
-bGVhc3QpIDIgc3lzdGVtIHRoYW4gY29udGFpbiBhbGwgdGhlIGJ1aWxkDQp0b29scyBqdXN0IGlu
-IGNhc2UgeW91IG5lZWQgdG8gZG8gYSBtYWludGVuYW5jZSBidWlsZCBvZiBhbiBvbGQgcmVsZWFz
-ZS4NCg0KQnV0IGV2ZW4gdGhlbiB3ZSBjYW4gbm8gbG9uZ2VyIGJ1aWxkIGRyaXZlcnMgZm9yIHNv
-bWUgd2luZG93cw0Kc3lzdGVtcyBiZWNhdXNlIHdlIGNhbid0IHNpZ24gdGhlbSB3aXRoIHRoZSBv
-bGQga2V5cy4NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJh
-bWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0
-cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
+Hi Sumera,
 
+On Mon, May 3, 2021 at 8:16 AM Sumera Priyadarsini
+<sylphrenadin@gmail.com> wrote:
+>
+> The complete error logs are here.
+
+Can you please try with bindgen 0.56.0?
+
+    cargo install --locked --version 0.56.0
+
+Make sure to regenerate the bindings:
+
+    rm rust/bindings_generated.rs
+
+Cheers,
+Miguel
