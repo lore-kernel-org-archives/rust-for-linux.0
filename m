@@ -2,91 +2,226 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F36EC433ED
-	for <rust-for-linux@archiver.kernel.org>; Tue,  4 May 2021 17:34:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F613C43460
+	for <rust-for-linux@archiver.kernel.org>; Tue,  4 May 2021 21:21:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 15B39613D1
-	for <rust-for-linux@archiver.kernel.org>; Tue,  4 May 2021 17:34:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1DACE613DF
+	for <rust-for-linux@archiver.kernel.org>; Tue,  4 May 2021 21:21:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231163AbhEDRfr (ORCPT
+        id S232866AbhEDVWX (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 4 May 2021 13:35:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43510 "EHLO
+        Tue, 4 May 2021 17:22:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230482AbhEDRfp (ORCPT
+        with ESMTP id S232615AbhEDVWW (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 4 May 2021 13:35:45 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC8B6C061574
-        for <rust-for-linux@vger.kernel.org>; Tue,  4 May 2021 10:34:49 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id t11so12969383lfl.11
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 May 2021 10:34:49 -0700 (PDT)
+        Tue, 4 May 2021 17:22:22 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8147AC061763
+        for <rust-for-linux@vger.kernel.org>; Tue,  4 May 2021 14:21:26 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id p12so13016230ljg.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 May 2021 14:21:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=mx4C5PIJ9LCot1QAuUjobPG8jumBXrSTaYtJi4rsH8o=;
-        b=qyNKCOtQfpd8iimZt5mNJ2//T/vQRp+aIvVjoVxZp4aB/P32s33KBwbHMNGiXrQEhy
-         KcFnvG94p7hkEWVSjlaSfTZ/r+E1sYui0+jd4rjwXOJm8lpgsVsVqdmckm1EOif9Yrsc
-         euz4zaFgBD/TUZViibmrltwHjIaMt0AxHTwNJDrxEIWPMN7YpTQi1SL+DJMHfKbAsPmv
-         9Ry5A++U+4ifpJvijYuaBtlipkxqm+7LBN+k0HOmJACLGrkc07YUx4p2hGa3UQd+ycXC
-         uD/7seuDKY9uIoKjvSeG2ztjaq+6F5P3FsqtXHIamCCPz2ZO8FpkiurbwfvjZzo93Amh
-         F18g==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yAbfmdaJbfLqhtql/cXcH6P3ondGJk0dpOjbha9QFHk=;
+        b=WU+MXW5m+Lf1tw0Ehk8eRViK54G8DBa/iK9OB21udwYpwYVtasFRrsmRLxy/J/jzy4
+         9Ww0syYnl3iyhgIg+ZNkKewuBfLf9UvzyN8AJs2KiTgsAAtz2XIw7SIqDSgEMD5lulB3
+         3brQ+rSjbdhq9NGPiec3m8r8r+mX3JBitpdnIQ6n3j68wDQkoWI88m+CnzM5V4/Jr8of
+         IMAxvZU96u2eE8n66JMeSWLfdPywgXVSXE1SvJLUn2ctk25cNOQi1fc6C846d3UlbEO0
+         5ZhmqX5aux4rFFSuG3fvsESHX5vUmoSZYve5ljH1wI9rCQ3540JK4cBy/tjIKnWXKo4j
+         ss1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=mx4C5PIJ9LCot1QAuUjobPG8jumBXrSTaYtJi4rsH8o=;
-        b=TXf8vVGfUiub2mTQC/CEsiQNqk+ZjPVXXJFd936cOtHZQioyc9GSisIrNn4JKa0dap
-         d3UPXlZIjvqLAadbSD+3sKL6sZRaM2K7pOB/FRr8/8p0Vz8ebnAZ/MWfjONgSirma8R/
-         CZ44EMn6sefbbJwbymnLqj6JaUNbYBSr8hyUhEtUzyZqY48rNa8EWLltw5fE36XrGwAR
-         4au7dKRjGDMyNaCsE7P+VuFh0ZPNgcZ63Q9UmpHwyCANXv7chq7ILKsekCXGCAwSkKOM
-         AUaY06C+/XtkyeAJ46Lnb/cPzSyypmzGljRByvQnvuWmYIYAytD1EGMmktjyC5XizSmc
-         Ytag==
-X-Gm-Message-State: AOAM5318+fBByMTsW0EP407jgg4qeKjfSED7xS/X0jBk0dUDkMvMsKLs
-        dmT3gSWUzQJkQkSNXIQ3nOQBfxVWr/bi36+rWZ85Wv0GL6nD7Q==
-X-Google-Smtp-Source: ABdhPJz8x7CFhxX8dXpxLdNnWRzQck1pqYKk7WlqLTp29qMaKhT6+BNh+mR9FhFvPKyeKciZTfsU1Av/5Oretf/Wm7c=
-X-Received: by 2002:a05:6512:94d:: with SMTP id u13mr16662525lft.368.1620149687896;
- Tue, 04 May 2021 10:34:47 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yAbfmdaJbfLqhtql/cXcH6P3ondGJk0dpOjbha9QFHk=;
+        b=FHumqDDmkYC5O/iYKNUyiCkNIX8hzIGeWIsJmE0lWDW2OaQQsvjn22j2OAPMI+ZzdE
+         ffmgMIJZ6ehD3pFErWEOJZtQ4wV9yOW4zQ2oQ3NJJDOHj77HbCHdIyQpHKJvXX3HXkb6
+         40ivKAXRudH1Qxagh+L4QY5aN6SqBDp07PsPsDZglHHwLnLAUKdLD/0C4PB5K3itnlda
+         lvJr8nBquT5QoYlK62VGEfueQYOYZTXEkJJldaZHvz6Jv0BgkkIHCQHVbB80jiyobr4w
+         Fkc0tVhX6uGcqXf8GmJcx4HxjyGEjIkd43DTRfhvnaEITMmCpGautMc+jkn5V9aDOIF4
+         f/ig==
+X-Gm-Message-State: AOAM532yIEk5KKs0sa/AgIt1fm8nGzAhEqqrJPBfJBZwEfVBy+8Gzg7K
+        xW41gfQxfjHy9qFPucJhuuqp7BFyoFJ5MKEDVf9cAg==
+X-Google-Smtp-Source: ABdhPJwME0m5eStfnw6WbRfi9Mllq4rBz3Mvg1scl5RVwon1JTsVhstn5mv0RH++RCLkxc74/MJMukbxEbPMndiFPDk=
+X-Received: by 2002:a2e:889a:: with SMTP id k26mr10098498lji.438.1620163284760;
+ Tue, 04 May 2021 14:21:24 -0700 (PDT)
 MIME-Version: 1.0
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Tue, 4 May 2021 10:34:36 -0700
-Message-ID: <CAKwvOdkkXwRfqzBrrbgrgx0zTOWBaFz=tbPupOGkEFHw-4taqw@mail.gmail.com>
-Subject: Linux Plumbers Conf 2021
-To:     rust-for-linux <rust-for-linux@vger.kernel.org>
+References: <20210414184604.23473-1-ojeda@kernel.org> <YHiMyE4E1ViDcVPi@hirez.programming.kicks-ass.net>
+ <YHj02M3jMSweoP4l@google.com> <CACRpkdat8bny=D2mAsUXcDQvFJ=9jSZSccMMZzH=10dHQ_bXrQ@mail.gmail.com>
+ <CANiq72niCj9SfPhfQBMtxF+jth--cXdPQtUo5jhDDJgL6DTXZQ@mail.gmail.com>
+ <CACRpkdarfkA1P0ERCXHSA=6VTBn6FXgOxB8haneQtN_4-tyQ0w@mail.gmail.com>
+ <CANiq72=VA_cH9yw_LZr3P+n1AsQEEhtY4xdk76jHgimTufHRsQ@mail.gmail.com>
+ <CACRpkdYodGnURuaYMBwVAY=8bU0PQoPAvTp34uYksPFmxBsT2A@mail.gmail.com> <CANiq72m9V3dVG59jAoR-OM+7QtJauQgrix3DZkw=oCuaaf3H5w@mail.gmail.com>
+In-Reply-To: <CANiq72m9V3dVG59jAoR-OM+7QtJauQgrix3DZkw=oCuaaf3H5w@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 4 May 2021 23:21:13 +0200
+Message-ID: <CACRpkdYzqy69G1Fpj4rFQFS+mYmpbQAzTszwCUBuEhe4YW4cuQ@mail.gmail.com>
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Wedson Almeida Filho <wedsonaf@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        linux-kbuild <linux-kbuild@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This year the Linux Plumbers Conference (https://linuxplumbersconf.org) will
-be fully virtual, and will happen from September 20-24th 2021.
+On Wed, Apr 28, 2021 at 5:10 AM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+> On Tue, Apr 27, 2021 at 1:13 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+> >
+> > Actually my reply to Wedson brought up a new issue, which is the
+> > quality of learning resources and the lack of an equivalent to
+> > The C Programming Language book.
+>
+> I recall having a similar feeling when initially jumping into
+> individual chapters of The Rust Programming Language book. I think it
+> is intended to be read from cover to cover instead.
+>
+> There are other resources, see [1]. For instance, there is The
+> Embedded Rust Book [2]. Some of those are a WIP, but perhaps others
+> can recommend better finished/published books.
+>
+> In any case, Rust has more features than C, some of them quite unique,
+> and they are routinely used, so it does take some time to learn.
 
-As part of the event, we are organizing a `Toolchains and Kernel
-Micro-conference' devoted to discuss specific topics involving kernel and
-toolchain.  It will cover both the GNU Toolchain and LLVM.
+No joke, I do try. I thought it would be easier since I have written
+a fair share of Haskell in my years but Rust is this hybrid of
+imperative and functional that just make things a bit hard
+to pin down: is this part functional? is it imperative?
+is it object oriented? etc.
 
-As in previous years, the emphasis will be in discussing specific topics that
-require collaboration/interaction between the kernel and the toolchain chaps.
-Examples of topics are wrapping of syscalls, specific features in the
-compiler/linker/etc that are used by the kernel, desired optimizations,
-features to alleviate security concerns on the kernel side, and the like.
+But the reference that Robin pointed to is better to read. It
+is not as talkative and more to the point. So now I am working
+with that.
 
-In order to get the Micro-Conference accepted we need to provide a list of
-both topics and prospective attendants, so that's why I am reaching out to you
-asking for:
+> > I think a good starting point would be to either fix Rust support in
+> > GCC or implement some more important ISAs in LLVM,
+> > whichever is easiest. I don't mind having just *one* compiler but
+> > I mind having *a* compiler for every arch we support.
+> >
+> > [...]
+> >
+> > Portability to old systems and ISAs is a virtue in itself
+> > because of the effect it has on code quality, not necessarily
+> > for the support itself.
+>
+> I agree that there are benefits of keeping compiler technology
+> flexible, but one cannot force or expect any project (including the
+> Linux kernel) to maintain all code forever.
+>
+> In the end, we need to balance that adaptability against the benefits
+> of adding Rust. In particular because nowadays LLVM is able to cover
+> the majority of devices that want to run the very latest Linux
+> kernels. Thus those benefits apply to most users. If LLVM only
+> supported, say, x86_64, I would agree that it would not be enough.
+>
+> By contrast, compiler flexibility only matters indirectly to users,
+> and at some point there are diminishing returns to keeping all
+> architectures around.
 
-1) Topics your project may want to discuss with the kernel hackers, during the
-   event.
+My values in this regard are 180 degrees opposed to yours.
 
-2) Whether you are willing to contribute and/or participate in the
-   micro-conference.
+My attitude to the problem, was I to fix it, would be
+"let's go fix a frontend for Rust to GCC, how hard can it be"
+rather than trying to avoid that work with this kind of
+reasoning trying to one way or other prove that it is not
+worth the effort.
 
-Please let me know @ ndesaulniers@google.com.
+A GCC front-end will allow you to run Rust on all Linux
+target architectures which is a big win. LLVM can be
+expanded with backends for all archs as well but that
+seems like a much bigger job to me.
 
--- 
-Thanks,
-~Nick Desaulniers
+Another argument can be made that for Rust to be
+perceived as mature, two independent implementations
+should exist anyway.
+
+The IETF Standards Process (RFC 2026, updated by
+RFC 6410) requires at least two independent and
+interoperable implementations for advancing a protocol
+specification to Internet Standard.
+
+Why should the kernel programming languages have any
+lower standards than that?
+
+The C programming language has earned its place thanks
+to perseverance of implementing and reimplementing
+compilers for it again and again.
+
+Fixing proper compilers may take a few years, like
+5 or 10. But who cares? We are in it for the long run
+anyway. When I designed the character device interface
+for GPIO I said I expect it to be maintained for at least
+100 years. This is my honest perspective of things.
+
+Torvalds has this saying (from Edison) that kernel
+engineering is 1% inspiration and 99% perspiration.
+Well let's live by that and fix those compilers.
+
+When Linux was developed in 1992 C had existed since
+1973 so it was 19 years old.
+
+Now Linux is 28 years old and C is 47 years old.
+
+This discussion needs perspective. And we really
+cannot have development with a finger constantly
+pushing the fastforward button.
+
+> In any case, adding Rust (in particular for "leaf" modules) does not
+> imply that we will lose those architectures any time soon.
+
+But I am not convinced that writing device drivers is the right
+thing to use Rust for in the kernel.
+
+There are some stuff in device driver frameworks, such as USB
+hierarchies or (battery) charging state machines, that can be
+really good to rewrite in Rust. But these rewrites would affect
+anything with a USB port for example, including Nios II and
+Motorola 68k systems.  So then the compiler support for all
+archs is needed first.
+
+> That would
+> take at least several years, and would require quite a few things to
+> happen at the same time:
+>
+>   - That Rust got so widely used in the kernel (because the benefits
+> turned out to be important) that maintainers went as far as wanting to
+> drop C drivers from mainline for Rust equivalents.
+>
+>   - That GCC did not get any way to compile Rust (no Rust frontend for
+> GCC, no GCC backend for `rustc`, etc.) and, moreover, that the plans
+> for that had been dropped.
+>
+>   - That LLVM did not add support for the missing architectures.
+>
+> The first point is unlikely any time soon. The second point is
+> unlikely, too, given there is funding for that now (and I assume those
+> projects will receive more support if Rust lands in the kernel). The
+> third point is likely, though.
+
+What about patience?
+
+I am thrilled to hear that GCC is growing Rust support and has funding
+to fix a proper front-end. This is what Rust needs in general and
+what the kernel needs in particular.
+
+I think right now the right thing for Rust is to work out-of-tree until
+there is Rust support for all archs, while encouraging kernel
+developers to learn the language.
+
+Yours,
+Linus Walleij
