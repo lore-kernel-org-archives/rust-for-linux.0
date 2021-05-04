@@ -2,85 +2,91 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=no
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E00EAC43462
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 May 2021 14:39:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F36EC433ED
+	for <rust-for-linux@archiver.kernel.org>; Tue,  4 May 2021 17:34:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A03D861283
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 May 2021 14:39:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 15B39613D1
+	for <rust-for-linux@archiver.kernel.org>; Tue,  4 May 2021 17:34:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229890AbhECOke (ORCPT
+        id S231163AbhEDRfr (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 May 2021 10:40:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51496 "EHLO
+        Tue, 4 May 2021 13:35:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229886AbhECOke (ORCPT
+        with ESMTP id S230482AbhEDRfp (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 May 2021 10:40:34 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC5CCC06174A
-        for <rust-for-linux@vger.kernel.org>; Mon,  3 May 2021 07:39:40 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id b131so7812937ybg.5
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 May 2021 07:39:40 -0700 (PDT)
+        Tue, 4 May 2021 13:35:45 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC8B6C061574
+        for <rust-for-linux@vger.kernel.org>; Tue,  4 May 2021 10:34:49 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id t11so12969383lfl.11
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 May 2021 10:34:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dRa3QW+DeoEKLiKvmUDwItOO/ex4FM9ifQzMGkT+Kfw=;
-        b=uUD6/GtT3QD1slcCH3VHOdyDW0LJi4H5Nzv1gG6CuMP8aTS/Zb+XlMefZA0oGUysFO
-         UTlYfPqWqzprWIU/9lCZ4HZNksbidoj1C9AJmCq5D3Gs2vv9O0EFZhdb3AN7cnrwqOky
-         CxXHnSPJm/bwCeD0uLTYCSc4XN/VoDJK42y+ECTYlqT32icAhs6FLALDK54DnM02C9rZ
-         zY2Tk3hi/+/fEH26ydDx90PagoxtYIWlmQjpRv3ga850mdMbYC2mvCD/A4iCjgW+WsHq
-         Zyc7Qk7vw9UZLDv8IKWgYfqNYo9hyFQ/Z0qwvXOd/JQh+rPPiWfz0N+UhK0UkWyjXuQC
-         11LA==
+        d=google.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=mx4C5PIJ9LCot1QAuUjobPG8jumBXrSTaYtJi4rsH8o=;
+        b=qyNKCOtQfpd8iimZt5mNJ2//T/vQRp+aIvVjoVxZp4aB/P32s33KBwbHMNGiXrQEhy
+         KcFnvG94p7hkEWVSjlaSfTZ/r+E1sYui0+jd4rjwXOJm8lpgsVsVqdmckm1EOif9Yrsc
+         euz4zaFgBD/TUZViibmrltwHjIaMt0AxHTwNJDrxEIWPMN7YpTQi1SL+DJMHfKbAsPmv
+         9Ry5A++U+4ifpJvijYuaBtlipkxqm+7LBN+k0HOmJACLGrkc07YUx4p2hGa3UQd+ycXC
+         uD/7seuDKY9uIoKjvSeG2ztjaq+6F5P3FsqtXHIamCCPz2ZO8FpkiurbwfvjZzo93Amh
+         F18g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dRa3QW+DeoEKLiKvmUDwItOO/ex4FM9ifQzMGkT+Kfw=;
-        b=Vq+z1fxjX1cTTh9chq8pRXWoZ1qJ9U+6evqy10GWAVVPPrQ+PCOS0GGiP+vlX9agPv
-         c4wG2sAWGeJ+q7N7VY7AD9e8oPaLHXhsMFo96H9XtyTofJGCv9a0cqwhZAadaqnHV5qR
-         J6OkWd1z9ylG9nNI161RfIegRy00CFafXsnKSNzW8H200UGI6a/GJLSomDiNphjw3u67
-         +CEqM0KEUa1IDjj9s1V2cdnyNTDt7hUjC9y5QhTz2ZETOhmq8wbLzz/pxVe1rkw3xynT
-         Qf+FgnZjMeK1YBxc0V2clJFXSRYTpZEAjef6fALwfjW54/sv07CNjTZX8qb+vMhNauWk
-         FyAA==
-X-Gm-Message-State: AOAM533DXm82qX+SiEKqCAhVsQ2X768Z9xjr8w1PQnELpTWhHybaODhM
-        rtIoQ+5M7m0l9P0Rd32lTC48J66tYuUvq+Td/Vw=
-X-Google-Smtp-Source: ABdhPJyHpi3biFtEf3gdCoUz1b/rSGXo+VFRWFyGJDIwF/KJjVc6GEDhj93niValxyOc1fKmvbFoJb/qprtIko5pHB4=
-X-Received: by 2002:a25:a448:: with SMTP id f66mr6526282ybi.135.1620052779922;
- Mon, 03 May 2021 07:39:39 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=mx4C5PIJ9LCot1QAuUjobPG8jumBXrSTaYtJi4rsH8o=;
+        b=TXf8vVGfUiub2mTQC/CEsiQNqk+ZjPVXXJFd936cOtHZQioyc9GSisIrNn4JKa0dap
+         d3UPXlZIjvqLAadbSD+3sKL6sZRaM2K7pOB/FRr8/8p0Vz8ebnAZ/MWfjONgSirma8R/
+         CZ44EMn6sefbbJwbymnLqj6JaUNbYBSr8hyUhEtUzyZqY48rNa8EWLltw5fE36XrGwAR
+         4au7dKRjGDMyNaCsE7P+VuFh0ZPNgcZ63Q9UmpHwyCANXv7chq7ILKsekCXGCAwSkKOM
+         AUaY06C+/XtkyeAJ46Lnb/cPzSyypmzGljRByvQnvuWmYIYAytD1EGMmktjyC5XizSmc
+         Ytag==
+X-Gm-Message-State: AOAM5318+fBByMTsW0EP407jgg4qeKjfSED7xS/X0jBk0dUDkMvMsKLs
+        dmT3gSWUzQJkQkSNXIQ3nOQBfxVWr/bi36+rWZ85Wv0GL6nD7Q==
+X-Google-Smtp-Source: ABdhPJz8x7CFhxX8dXpxLdNnWRzQck1pqYKk7WlqLTp29qMaKhT6+BNh+mR9FhFvPKyeKciZTfsU1Av/5Oretf/Wm7c=
+X-Received: by 2002:a05:6512:94d:: with SMTP id u13mr16662525lft.368.1620149687896;
+ Tue, 04 May 2021 10:34:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <CACAkLupnnniu-EJ6YmSt9Uo6_L+xBKio0yCs01A4ub7D+pLbKg@mail.gmail.com>
-In-Reply-To: <CACAkLupnnniu-EJ6YmSt9Uo6_L+xBKio0yCs01A4ub7D+pLbKg@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 3 May 2021 16:39:29 +0200
-Message-ID: <CANiq72=XThSaQYoreBVfoLe7nN+tC3k5UnJ5pxrVW-Ym9OqMDA@mail.gmail.com>
-Subject: Re: Bindgen error while building the kernel with rust
-To:     Sumera Priyadarsini <sylphrenadin@gmail.com>
-Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Tue, 4 May 2021 10:34:36 -0700
+Message-ID: <CAKwvOdkkXwRfqzBrrbgrgx0zTOWBaFz=tbPupOGkEFHw-4taqw@mail.gmail.com>
+Subject: Linux Plumbers Conf 2021
+To:     rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Sumera,
+This year the Linux Plumbers Conference (https://linuxplumbersconf.org) will
+be fully virtual, and will happen from September 20-24th 2021.
 
-On Mon, May 3, 2021 at 8:16 AM Sumera Priyadarsini
-<sylphrenadin@gmail.com> wrote:
->
-> The complete error logs are here.
+As part of the event, we are organizing a `Toolchains and Kernel
+Micro-conference' devoted to discuss specific topics involving kernel and
+toolchain.  It will cover both the GNU Toolchain and LLVM.
 
-Can you please try with bindgen 0.56.0?
+As in previous years, the emphasis will be in discussing specific topics that
+require collaboration/interaction between the kernel and the toolchain chaps.
+Examples of topics are wrapping of syscalls, specific features in the
+compiler/linker/etc that are used by the kernel, desired optimizations,
+features to alleviate security concerns on the kernel side, and the like.
 
-    cargo install --locked --version 0.56.0
+In order to get the Micro-Conference accepted we need to provide a list of
+both topics and prospective attendants, so that's why I am reaching out to you
+asking for:
 
-Make sure to regenerate the bindings:
+1) Topics your project may want to discuss with the kernel hackers, during the
+   event.
 
-    rm rust/bindings_generated.rs
+2) Whether you are willing to contribute and/or participate in the
+   micro-conference.
 
-Cheers,
-Miguel
+Please let me know @ ndesaulniers@google.com.
+
+-- 
+Thanks,
+~Nick Desaulniers
