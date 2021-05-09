@@ -2,85 +2,96 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-3.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C8BB4C43460
-	for <rust-for-linux@archiver.kernel.org>; Sat,  8 May 2021 23:13:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75356C433ED
+	for <rust-for-linux@archiver.kernel.org>; Sun,  9 May 2021 07:33:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A2EB7613EE
-	for <rust-for-linux@archiver.kernel.org>; Sat,  8 May 2021 23:13:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 49755613EC
+	for <rust-for-linux@archiver.kernel.org>; Sun,  9 May 2021 07:33:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229616AbhEHXOu (ORCPT
+        id S229593AbhEIHer (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 8 May 2021 19:14:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60138 "EHLO
+        Sun, 9 May 2021 03:34:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbhEHXOu (ORCPT
+        with ESMTP id S229558AbhEIHeq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 8 May 2021 19:14:50 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C24B9C061573
-        for <rust-for-linux@vger.kernel.org>; Sat,  8 May 2021 16:13:45 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id i128so7116007wma.5
-        for <rust-for-linux@vger.kernel.org>; Sat, 08 May 2021 16:13:45 -0700 (PDT)
+        Sun, 9 May 2021 03:34:46 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6C4FC061573
+        for <rust-for-linux@vger.kernel.org>; Sun,  9 May 2021 00:33:43 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id x5so13336017wrv.13
+        for <rust-for-linux@vger.kernel.org>; Sun, 09 May 2021 00:33:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zY7tyECHjeNpa7BKWKeH1Nc5D7tx4ublfuEgj0PK1/E=;
-        b=aNNWbOglJkuulfivySEzXkQfRFEchyaaEX6+OZVafOwRGZrOHo4ws6kKRZPKxTuLKl
-         Q3inH7BSNbZLIqm4KkzqBse+0IFqszGH6/MQG7MnOrn8wShAYtNNlCDK9z0lZWgFv+8r
-         kk30ZuxTcE1l0/9iCuHaK8higKtTdRODxhGp8x6AMCRtg4nqeNbwVW8vdX4PkgGVqvQW
-         RaOeiLkxq62PzfPCFcK0Uf0xKfT1l8fEQdT8T3GcPYcBPlXrEmN9KvARP3dT1hsdKggl
-         Hcr8TOWrGlsB60WHnXfCV0xA7X5HGQCuFCUw20Yi7qJNjUvek91IeSQCjtCGFKlaAqVl
-         xDDg==
+        h=date:from:to:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=2R0QC9+5TGsD7BI+saLvIc/jXDAuP0hlceTA7gr4HlY=;
+        b=Ma/efQEDIAD0sGKMAdeWg/MMucEuHPj6IjizzuqiCs7KYqsmI+9KUgaN4MAMpCQprb
+         Xy9BwlfCuL/y44XXTeNfdlEDAVJuBokl9QAOr889fcYEv4x7wPsQD/NjNHANT0scv17h
+         s7lA7K+gHD0oEGKVIF/IKNykF55dxZ3gsUVsj1wCR5ZWCVugRkgS2Ik5oazd7si0W1eK
+         ysQjtiamheWq4J4X/XHBWmQSR5nXwFqe1+x3p2ZMPgwwp/oau7YGRxTzPmgcez/GZfUx
+         KErf183oW/iWgRthPPZ0A6khvoMoA4zrEvQBzBnCldV9PY4AR//NUNhwnI2paSDUshXR
+         3tEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zY7tyECHjeNpa7BKWKeH1Nc5D7tx4ublfuEgj0PK1/E=;
-        b=uNZ5JRppYzO5I9CkUosGBQFopR1vC+an+Cg77pYcUcWSpTtkhkdmnm6K6hqfubc8uN
-         Ya2R2s0qBTGbFOeQOlXjiNCEJIyzONylhABFVNMuIG4E6mvZOALqJG5yk6Un+X5VlfJT
-         gh0T2ghrEWTuh7cN7A1WxaKdkjKvZN0vaQQ9ROovJNeQXNcOqZb2NcQQbqkcfP8O0J2D
-         Gxvu7ZtAfafYZFtlij4xNKeJZXuGIX3H3zYtYUrygPGAQOHc4haXk7ynT86ZHbLZ1+35
-         DWixfJNOPzjyKIMpJGcx2Dssxv5LLPCwjsePVOtWrDLQ8Xqo6pinIAnkysoInJu/C8/A
-         QRBg==
-X-Gm-Message-State: AOAM533h9KnZvWDk0h8MKyAikkG95AhUb2NbYubtH0/dHKxTel1fEWI3
-        MLQ7jViQgohgGja5qoD7ym9REeVVq/RFmk4PEcE=
-X-Google-Smtp-Source: ABdhPJyuwTXlfqT95u5iKXZfVXG8z3Qi5TvgV4URX1fslHOf7pld56193EgSHh89xdEIpyWarYMOer3ykzJ26/Y0MuI=
-X-Received: by 2002:a05:600c:4982:: with SMTP id h2mr17751407wmp.108.1620515624433;
- Sat, 08 May 2021 16:13:44 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=2R0QC9+5TGsD7BI+saLvIc/jXDAuP0hlceTA7gr4HlY=;
+        b=Vg/ZCqxjHT7DMSCT1IyHvqzJmVBa1upf3xNWwWgKsOugsNsK9+N/I0es3AVjrc+bHC
+         ieu58iFwU25NvsTRjioiBuCHgtuMcK/WR4Ya4JPz9qYvicj2tzllxLwF2R3jNOuUqy0W
+         YlnLdHL+Ws7XhitKmupHFIOX10LPu6WzsOfkZEWdIy7KoO7c1E2VKPkn8Ja8yU7GWcw6
+         H29DZu/yOaX1apIdAB2NJk7fFuKlJVyexHc+hAhFd0eNU90OP/3CVkEjBY2RgkEttf3+
+         PP8SvUAwwNbftS7nSN3UA7xS9b44Gqldh1XRJjfIclh0+NWpzRhAfaV93x1JXxIxFuJu
+         IShw==
+X-Gm-Message-State: AOAM531IwTMjbGx0FwvNCS0sli0NWhvwVlkCmen+ASwmXr2lc/U9NIbG
+        IwJQ8xZmr877LBDQTLyiGrl0SFcNLOy2OA==
+X-Google-Smtp-Source: ABdhPJz4EhPFJMHY/FQfuA+1kw7DrdC4GkeujItKz0yRVS9/gDV8JlDNYCF6jdK7q1BgVFHTi+PwuQ==
+X-Received: by 2002:a5d:5989:: with SMTP id n9mr23324109wri.60.1620545621414;
+        Sun, 09 May 2021 00:33:41 -0700 (PDT)
+Received: from agape.jhs ([5.171.72.248])
+        by smtp.gmail.com with ESMTPSA id i12sm17281184wry.57.2021.05.09.00.33.40
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 May 2021 00:33:41 -0700 (PDT)
+Date:   Sun, 9 May 2021 09:33:38 +0200
+From:   Fabio Aiuto <fabioaiuto83@gmail.com>
+To:     rust-for-linux@vger.kernel.org
+Subject: workflow
+Message-ID: <20210509073338.GA1428@agape.jhs>
 MIME-Version: 1.0
-References: <20210508202258.m7uk6cfxzyghzu7f@FVFF77RQQ05N>
-In-Reply-To: <20210508202258.m7uk6cfxzyghzu7f@FVFF77RQQ05N>
-From:   Leandro Coutinho <lescoutinhovr@gmail.com>
-Date:   Sat, 8 May 2021 20:13:33 -0300
-Message-ID: <CAN6UTawc=nmv1=T91_Xe1k=AFkOTywzsFqoQYTeue3km6YZYNw@mail.gmail.com>
-Subject: Re: Meeting minutes (Sat 8 May 2021)
-To:     Robin Randhawa <robin.randhawa@arm.com>
-Cc:     rust-for-linux@vger.kernel.org, nd@arm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, May 8, 2021 at 5:24 PM Robin Randhawa <robin.randhawa@arm.com> wrote:
->
-> Hi folks.
->
-> Summarised meeting minutes (Saturday 8th May 2021)
-> --------------------------------------------------
->
-> News
-> ----
->
+Good morning all,
 
-Hi!
+I need some clarifications about the workflow.
 
-It would be nice if these meetings were recorded and then shared on YouTube.
+As a newcomer in kernel development and open source development
+in general I got a little used to with the forkflow in Greg's staging
+subsystem.
 
-The Rust Team does this, eg:
-https://www.youtube.com/watch?v=s3DbJGVWeoQ
+The tool I'm used to work with is, at the moment, command line git
+against Greg's tree.
+
+I tried to apply the same approach on rust-for-linux tree but I noticed
+some differences, first of all the use of GitHub.
+
+One misterious to me side effect is that the command `git show` on HEAD
+pointing to a PR doesn't show diffs.
+
+After these two enlightening informal meetings I realized that, for this
+particular project, I must (and I'm happy to do it) align with you all
+using GitHub. Is there a particular join procedure you recommend?
+
+thank you,
+
+fabio
