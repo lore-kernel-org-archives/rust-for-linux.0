@@ -2,100 +2,126 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-3.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 57246C433ED
-	for <rust-for-linux@archiver.kernel.org>; Sun,  9 May 2021 14:21:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EDD71C433ED
+	for <rust-for-linux@archiver.kernel.org>; Sun,  9 May 2021 17:37:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2902E61055
-	for <rust-for-linux@archiver.kernel.org>; Sun,  9 May 2021 14:21:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C2EB0610A2
+	for <rust-for-linux@archiver.kernel.org>; Sun,  9 May 2021 17:37:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229657AbhEIOWx (ORCPT
+        id S229650AbhEIRi3 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 9 May 2021 10:22:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57050 "EHLO
+        Sun, 9 May 2021 13:38:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229650AbhEIOWx (ORCPT
+        with ESMTP id S229666AbhEIRi3 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 9 May 2021 10:22:53 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D65EC061573
-        for <rust-for-linux@vger.kernel.org>; Sun,  9 May 2021 07:21:50 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id e190so18187210ybb.10
-        for <rust-for-linux@vger.kernel.org>; Sun, 09 May 2021 07:21:50 -0700 (PDT)
+        Sun, 9 May 2021 13:38:29 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE159C061573
+        for <rust-for-linux@vger.kernel.org>; Sun,  9 May 2021 10:37:25 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id a4so14206853wrr.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 09 May 2021 10:37:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kyaF2P7ThiMl/iYw1QgCbJL1KUqxm3TAreVgkZOupTo=;
-        b=QqZ4bMfJNgl/1U94aBe+nbm+LDWzhFcxuxm/YIeajvlvM2OcIEtjlFN3eFTbMu6qp/
-         /eSDBG5KLPoGD4naVOG2XdpxB/rrbxZCtWCto5rzWnP3M4tkzr12dTm+go/j6aOAHVGj
-         EAbebB/GQA/o1H08us20APzLTdQrSPbZwfZrVQ/o8nFLrPFPp28+DpAq0tyE1m7fm9V+
-         OObR6ypuvsyK8aGMYBS78MoLZqifpn8saqeYC3j23EQvQpx9q4xyOC0Aiy7zbBu4EvYN
-         ZDg5frKXxViUiYTcgmLH3xc2Gc2X+z99qTjmYpQVhDzdXmf2Mjy6m5KDwYquaxdZ8ikL
-         k5Cg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=WaHwuHWb3AxxLXYAX7yk5RgLdBEnioZvQi6tFDs1Sqo=;
+        b=M0zUA4DN1Sj0wZEwfDNjb9MtFaVkYI+S9i//n8P7OYC/+cPzo4oZM7Khzq/hgaikYZ
+         PIbfteUXseXvFYdmrk9xggWXNJAy2w4r2SezYoQf9E2GFlx0fFPcGn9rapIIyGE8dbBP
+         Fj81W0J0j/MOYtZi1Tuis6g3caG2BSOpB9uhD+SjioYYhhl9PHx7jPQ21+imQ8jyU/4e
+         ZalPI0B4eQyPqyMIgAw895pI0Z3HgZac7FEtk8y8xVR900bpni5FgIzo7Oz2a/KM6cE2
+         ioTdNXiXbojhhsRcxbSIjcm3woUvqznI/8rblfD/CaZUa9IXb/wMRVdiLpbF7jNSWvme
+         yvJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kyaF2P7ThiMl/iYw1QgCbJL1KUqxm3TAreVgkZOupTo=;
-        b=VWk+w7ZCtrgxoEG4zQKyNlzuYk84YJXBTdxBac66uf+qiJ7NyVGI0qvfnt0prvM2ds
-         885ModF9K2K7UQB7ucqNJifvexyF/gteFvY/PGvr50N1I0F4tQEdke1eiSi2L/6lZzwY
-         KGQafQD29ZVUIW7zgjTvl8UlOQOIfMy3yj7LLIEjaSsbkO9Th93sJ6gX3gKWK8JmznyQ
-         XVac64JWVaPi+pEFcinSkM9nZqp78COYOUc5nJqe1usQgr4AvLmJ21Zar6O8isVdivp/
-         X2b3iG0sfEKHQkNHQIjYSt5h6fcm/CTL+IPX8FFerVXd1TGW/gIn1L2o2JDe1UqJeqWs
-         iSBw==
-X-Gm-Message-State: AOAM530P15fxMbc0/A/pJNqsSy5paLHFW4+zEMkOObQns/9qxbFnyjCi
-        m8GUK0eHTKomXW8EaERGL0VottxTRHZ8TbeHWxE=
-X-Google-Smtp-Source: ABdhPJxE4n9ttFP8MNe3MbNJi941LVNHCy76rLpO+nhoxsJGwh59TIyRG6iIuU1um3CfstjyCUvlY/NJHhZjsB4eEUM=
-X-Received: by 2002:a25:880f:: with SMTP id c15mr25522745ybl.247.1620570109494;
- Sun, 09 May 2021 07:21:49 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=WaHwuHWb3AxxLXYAX7yk5RgLdBEnioZvQi6tFDs1Sqo=;
+        b=gCk+oN2M3PoEuu7vYE5R4nFgbJQ3vnMH70U2vrMRdSWrOBeAz7KvFjxVghv+zEuw+Y
+         E7owC+bJQnQtUcLW2zYpwFS+bajJUyRZpen+Snovt+Q2i0fqjkBRuY96WP98dw0vuoxp
+         2GqxIJtB4uUCbCx+1cSXrEYkdCvRwzYXf//w8TiE0QLD7GPOi+Xg79eei+MUjn/TxBz1
+         jFM7pWbq3P2CCWjUG4Vffjj2o4sS0GtA5Z/nE6unK/OwW6aPk7GqjHwS+Ee+U/P3PjGQ
+         5LrYkv1CxxPot94FJuWk0tK5Ew/g5W9GM8JJHk7lNd/OxbkkJek6jc016Hby3/JfQe1V
+         RDRQ==
+X-Gm-Message-State: AOAM5300wge5wicTk3r2274sV3KpWRnm1U/Wun+aezVtFNIsARMegcvB
+        nb+99957rzU8p0swMvvWF94=
+X-Google-Smtp-Source: ABdhPJz5qwhZXpZb/+RcwIhpufX/5joPk8US+9D1lZofCVSLU1JPfgW15aBlmR/x7M6FVfVkdR+qwA==
+X-Received: by 2002:a5d:58e1:: with SMTP id f1mr25158476wrd.375.1620581844401;
+        Sun, 09 May 2021 10:37:24 -0700 (PDT)
+Received: from agape.jhs ([5.171.80.94])
+        by smtp.gmail.com with ESMTPSA id c15sm18377628wrr.3.2021.05.09.10.37.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 May 2021 10:37:24 -0700 (PDT)
+Date:   Sun, 9 May 2021 19:37:21 +0200
+From:   Fabio Aiuto <fabioaiuto83@gmail.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
+Subject: Re: workflow
+Message-ID: <20210509173720.GA1422@agape.jhs>
+References: <20210509073338.GA1428@agape.jhs>
+ <CANiq72noFoTnKtnoW_UUpXHUTcpw5iJcc8ZeU77m4ef1L8KoYg@mail.gmail.com>
 MIME-Version: 1.0
-References: <97E4F6F4-2391-4053-89FC-BB00F9184340@kloenk.de>
-In-Reply-To: <97E4F6F4-2391-4053-89FC-BB00F9184340@kloenk.de>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sun, 9 May 2021 16:21:38 +0200
-Message-ID: <CANiq72=8M3ALxrmdYvHNfDVX9F4Se0=a-EbzrZPgVv1xsh932Q@mail.gmail.com>
-Subject: Re: PointerWrapper Trait vs croe::ops::Deref
-To:     Finn Behrens <me@kloenk.de>
-Cc:     Wedson Almeida Filho <wedsonaf@google.com>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72noFoTnKtnoW_UUpXHUTcpw5iJcc8ZeU77m4ef1L8KoYg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, May 9, 2021 at 12:25 PM Finn Behrens <me@kloenk.de> wrote:
->
-> Maybe we could also remove the result, as it would possible be an invariant, and never happen as the pointer should already be valid.
+On Sun, May 09, 2021 at 02:13:13PM +0200, Miguel Ojeda wrote:
+> Hi Fabio,
+> 
+> On Sun, May 9, 2021 at 9:34 AM Fabio Aiuto <fabioaiuto83@gmail.com> wrote:
+> >
+> > One misterious to me side effect is that the command `git show` on HEAD
+> > pointing to a PR doesn't show diffs.
+> 
+> That is because they are merge commits (i.e. a commit with more than
+> one parent). `git show` may show a "combined diff" in such a case. For
+> instance, it does right now with the current commit `rust` is pointing
+> to, i.e. commit 99bec9d3476d ("Merge pull request #227 from
+> Kloenk/ra").
+> 
+> See e.g. https://stackoverflow.com/questions/40986518/git-show-of-a-merge-commit
+> for a detailed explanation.
+> 
+> But you are 100% right! The tree does not look like other ones in the
+> kernel. If you take a look into the other branch (the one I manually
+> prepare, `rust-next`), it looks like you would expect (and does not
+> contain GitHub files etc.).
+> 
+> In order to fix this (plus a few other benefits), we will have a
+> better workflow soon (as soon as I get some time to prepare it, say a
+> few weeks).
+> 
+> > After these two enlightening informal meetings I realized that, for this
+> > particular project, I must (and I'm happy to do it) align with you all
+> 
+> It is not a hard requirement -- you can send patches to this mailing
+> list and I will gladly take them!
+> 
+> The technical benefits of using GitHub for us are the issue tracker
+> and the CI, mainly.
+> 
+> > using GitHub. Is there a particular join procedure you recommend?
+> 
+> Using GitHub if you already know Git and the kernel workflow is very easy:
+> 
+>   - `git push` your changes to your "forked repo" in GitHub.
+> 
+>   - Create a pull request in the web interface.
+> 
+> That should be pretty much it.
+> 
+> Cheers,
+> Miguel
 
-If it can fail, we cannot use `Deref` to begin with. So yeah, to make
-the examples equivalent, the first one should not return a `Result`.
+thank you so much Miguel, that's all I wanted to know :)
 
-Now, assuming it cannot fail, what I mentioned in the meeting is that
-with `Deref` all this compiles:
-
-    wrapper.deref().number
-    (*wrapper).number
-    wrapper.number
-
-The question boils down to: do we want this shortcut or not?
-
-Having said that, I am not sure I understand the traits shown here.
-Isn't `PointerWrapper` meant only to save a `Box<T>` and similar types
-(which already implement `Deref` themselves etc.) as a pointer in a C
-data structure? (which is why `into_pointer()` consumes the object).
-
-In the examples shown, the new `get_pointer()` does not consume
-`self`; and `main()` creates a `Wrapper` using `from_pointer()`. But
-the idea is that you already have an object (constructed via other
-means), transform it into a raw pointer, and then later on
-re-construct the original object back from that pointer.
-
-So `PointerWrapper` trait is like a `SavedAsPointer` trait, if you will.
-
-Cheers,
-Miguel
+fabio
