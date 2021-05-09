@@ -2,126 +2,114 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EDEC6C433ED
-	for <rust-for-linux@archiver.kernel.org>; Sun,  9 May 2021 10:42:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E039EC433ED
+	for <rust-for-linux@archiver.kernel.org>; Sun,  9 May 2021 12:13:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B775C60C40
-	for <rust-for-linux@archiver.kernel.org>; Sun,  9 May 2021 10:42:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A5AE8613E8
+	for <rust-for-linux@archiver.kernel.org>; Sun,  9 May 2021 12:13:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229603AbhEIKnV (ORCPT
+        id S229585AbhEIMO2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 9 May 2021 06:43:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37980 "EHLO
+        Sun, 9 May 2021 08:14:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbhEIKnV (ORCPT
+        with ESMTP id S229563AbhEIMO1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 9 May 2021 06:43:21 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E4AC061573
-        for <rust-for-linux@vger.kernel.org>; Sun,  9 May 2021 03:42:17 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id l14so13617095wrx.5
-        for <rust-for-linux@vger.kernel.org>; Sun, 09 May 2021 03:42:17 -0700 (PDT)
+        Sun, 9 May 2021 08:14:27 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3014C061573
+        for <rust-for-linux@vger.kernel.org>; Sun,  9 May 2021 05:13:24 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id y2so17947199ybq.13
+        for <rust-for-linux@vger.kernel.org>; Sun, 09 May 2021 05:13:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=ADXHLD9YWHOtEcyX0JGVzWymLrDzBKfZY4bfgcx28IY=;
-        b=D4Hp9rDUghS2as4XttRhI1ZYmnoayIdUtKSVEikA7p84WBuCAde5NiOFV6oqjqPF/S
-         CNytP3mnn6tq5qGiaStcarRC3fW0lOJ2cmKuLiKrv8PZhb6VC7BTDQ4ZXcSuJYevMt+N
-         37xRtbmKmPCvaPJhnZfAs4hy/D6V5biKkXqRGFKdD1KWR3E0dipfsC/bmoJHbiQM1paX
-         yxdzZaYw/xN0VspMFrf33GpLTn6M5GM5UeH0ffYNNMASLg+9UtHQ5UACzTtUdi6l84Th
-         VOk/lnyQDWsGjkZlDh7AhQRHmVV0Gvg6pugKpZcGgZiXBN5lbZw1/szXNkYVwdGwaSXC
-         ofRA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WjQkFEMRuWx3AiOEO99fZ/akWMM52P/ruCv99ieb/Zw=;
+        b=TAZ5BD1W2Ah+qfhYVsUDrO93XsgCa0uEJJqEe66zClLJqoc6PWPm8bfhXivf2jRxPP
+         MW7EXgudMbezHra4XO8uDx6v/BjOmS/PK1NjdrVFWEQ8HfkN+DdnH7HObdQbVcfZMM1o
+         drRDPyEJXL3ak65S81dIu9fPJhry+utUstyYI9qKUWzcEoP6TpfRyUyug8xIuasdjH1Z
+         KBItozXXo2HhCVBfJ6IZS7wupvchvDwTpkcPldf4/6bFn1NLyTaKVLikIom54JcT6vtV
+         d6QP7l+IxdvOxQSrw3LzzYJ6dBNcPc8dx/H6HuKcxWt++FKuz5234ZmHm8j3MZQYbG1t
+         xQXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=ADXHLD9YWHOtEcyX0JGVzWymLrDzBKfZY4bfgcx28IY=;
-        b=it6tV2n9R5FeDdrvOXc8/03z7w4VSAfd9amqZt44sDY62XnmtQ4bk7Dlx+ahu6Oju8
-         PS/4PXQSWZJudaAMqVkTAyGrmA+I9+59AzSAFTZiUi3tEvmyAbUKty8iekmkihjekD8h
-         rGAmPwtQK5YsY2xeyGx/LXZmjgnAlGW39og44D7i/EYqfKKFnXJThO1ETgRNqqfT/rL/
-         QdJsvXQbqQKUENfWHVkAc+CWYkEq3Ij2zWsAto6xAN2eWs2W+R0C74DgP01nIRi+QoLu
-         0EUYzf5f4VAOor3h1YVPtnmYt0DHQOhymg2S3V9piHhMhRp1EYeVrVeMy7mObHwOza4Y
-         yqVQ==
-X-Gm-Message-State: AOAM533CkObvbpSikr/4Ubo6LCNjiyMSMPdruV3mTtGISfTr99tO/GMI
-        PycnaQKZJ1lp3BFsDsLzKyrjL9+0bT3JfQ==
-X-Google-Smtp-Source: ABdhPJyG9yFydvVWgDXQfiVKpywO3xRWpFjdA00p476bDRZOI3QKXGJviKxpyWHR5OfqBz/CtAZOTQ==
-X-Received: by 2002:a5d:5989:: with SMTP id n9mr24201221wri.60.1620556936251;
-        Sun, 09 May 2021 03:42:16 -0700 (PDT)
-Received: from agape.jhs ([5.171.80.238])
-        by smtp.gmail.com with ESMTPSA id j13sm21400189wrd.81.2021.05.09.03.42.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 May 2021 03:42:16 -0700 (PDT)
-Date:   Sun, 9 May 2021 12:42:13 +0200
-From:   Fabio Aiuto <fabioaiuto83@gmail.com>
-To:     Geert Stappers <stappers@stappers.nl>
-Cc:     rust-for-linux@vger.kernel.org
-Subject: Re: workflow
-Message-ID: <20210509104212.GA1405@agape.jhs>
-References: <20210509073338.GA1428@agape.jhs>
- <20210509093150.jtaizeq5dyyot3qx@gpm.stappers.nl>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WjQkFEMRuWx3AiOEO99fZ/akWMM52P/ruCv99ieb/Zw=;
+        b=TsPqlq6OcuKlTI4a+U+4NmmHxnQ0buHfQ/biIIk/kSIc15RQtT4C+loLMrI2U00AUA
+         mriDnoYGQmUeSZ+QII3MVTk5LRnSeNrJro4TUECsj1jP8QSF15iWRbcM9nI4fyPtbrK4
+         Z25x1Wk53WvyBhKDxPyl5RMimVpTr8KWbg7E5hiaSzOgiIzxTed2tG34xdKmmCt67Ro1
+         cZHHxKyTtmhICHljoskgiczMlvLZqL7qG8pvYL+jy2s+JMRVzmG7ROmUccWxZToIMBHd
+         16/rVl6l3JggEbiCQz3IjQA0kpZ4Le8vOiYVBIuBhsOTVNF9dufB8kL7nZm4gpaDy0Xz
+         Xp9Q==
+X-Gm-Message-State: AOAM5307LqWRm1ekc9L2G0CtcpmjS4xWu6XpmqE2kkkFVjNj+Ax93MyG
+        rxwq/vrNB/6uRU685k9LLi0pHszeuiAZiYjdno1b27Z9AgK1LA==
+X-Google-Smtp-Source: ABdhPJzKBGXRtN1GJj/dfdf2avg28QkEnuoLfQ+CIpMdv8bTHksbNltFvNuc+P7U71MI575w79SdLVs4G0WOf41EOOc=
+X-Received: by 2002:a25:ca85:: with SMTP id a127mr25109273ybg.33.1620562404015;
+ Sun, 09 May 2021 05:13:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210509093150.jtaizeq5dyyot3qx@gpm.stappers.nl>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20210509073338.GA1428@agape.jhs>
+In-Reply-To: <20210509073338.GA1428@agape.jhs>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sun, 9 May 2021 14:13:13 +0200
+Message-ID: <CANiq72noFoTnKtnoW_UUpXHUTcpw5iJcc8ZeU77m4ef1L8KoYg@mail.gmail.com>
+Subject: Re: workflow
+To:     Fabio Aiuto <fabioaiuto83@gmail.com>
+Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, May 09, 2021 at 11:31:50AM +0200, Geert Stappers wrote:
-> On Sun, May 09, 2021 at 09:33:38AM +0200, Fabio Aiuto wrote:
-> > Good morning all,
-> 
-> Hail all time zones,
-> 
->  
-> > I need some clarifications about the workflow.
-> > 
-> > As a newcomer in kernel development and open source development
-> > in general I got a little used to with the forkflow in Greg's staging
-> > subsystem.
-> > 
-> > The tool I'm used to work with is, at the moment, command line git
-> > against Greg's tree.
-> > 
-> > I tried to apply the same approach on rust-for-linux tree but I noticed
-> > some differences, first of all the use of GitHub.
-> > 
-> > One misterious to me side effect is that the command `git show` on HEAD
-> > pointing to a PR doesn't show diffs.
-> > 
-> > After these two enlightening informal meetings I realized that, for this
-> > particular project, I must (and I'm happy to do it) align with you all
-> > using GitHub. Is there a particular join procedure you recommend?
-> 
-> I think original poster
-> is not aware of "Rust for Linux" already in the next branch.
+Hi Fabio,
 
-ok I will search on Google what does it means, for sure it's more
-friendly even if it requires an account
+On Sun, May 9, 2021 at 9:34 AM Fabio Aiuto <fabioaiuto83@gmail.com> wrote:
+>
+> One misterious to me side effect is that the command `git show` on HEAD
+> pointing to a PR doesn't show diffs.
 
-> 
-> 
->  
-> > thank you,
-> 
-> My appology for this way too short message.
-> 
->  
-> > fabio
-> 
-> 
-> Groeten
-> Geert Stappers
-> -- 
-> Silence is hard to parse
+That is because they are merge commits (i.e. a commit with more than
+one parent). `git show` may show a "combined diff" in such a case. For
+instance, it does right now with the current commit `rust` is pointing
+to, i.e. commit 99bec9d3476d ("Merge pull request #227 from
+Kloenk/ra").
 
-thank you,
+See e.g. https://stackoverflow.com/questions/40986518/git-show-of-a-merge-commit
+for a detailed explanation.
 
-fabio
+But you are 100% right! The tree does not look like other ones in the
+kernel. If you take a look into the other branch (the one I manually
+prepare, `rust-next`), it looks like you would expect (and does not
+contain GitHub files etc.).
+
+In order to fix this (plus a few other benefits), we will have a
+better workflow soon (as soon as I get some time to prepare it, say a
+few weeks).
+
+> After these two enlightening informal meetings I realized that, for this
+> particular project, I must (and I'm happy to do it) align with you all
+
+It is not a hard requirement -- you can send patches to this mailing
+list and I will gladly take them!
+
+The technical benefits of using GitHub for us are the issue tracker
+and the CI, mainly.
+
+> using GitHub. Is there a particular join procedure you recommend?
+
+Using GitHub if you already know Git and the kernel workflow is very easy:
+
+  - `git push` your changes to your "forked repo" in GitHub.
+
+  - Create a pull request in the web interface.
+
+That should be pretty much it.
+
+Cheers,
+Miguel
