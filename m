@@ -1,77 +1,103 @@
 Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-X-Spam-Level: **
-X-Spam-Status: No, score=2.9 required=3.0 tests=BAYES_50,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_ABUSE_SURBL,URIBL_BLACK autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Level: 
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D216AC433B4
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 May 2021 04:30:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E3D5C43611
+	for <rust-for-linux@archiver.kernel.org>; Mon, 10 May 2021 14:08:59 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AF7EB6142D
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 May 2021 04:30:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7384E610FA
+	for <rust-for-linux@archiver.kernel.org>; Mon, 10 May 2021 14:08:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbhEJEcD convert rfc822-to-8bit (ORCPT
+        id S230351AbhEJOKA (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 10 May 2021 00:32:03 -0400
-Received: from [183.90.58.236] ([183.90.58.236]:57686 "EHLO ns1.zackeruz.tk"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229533AbhEJEcC (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 10 May 2021 00:32:02 -0400
-Received: from johnlewis.co.uk (unknown [192.168.20.1])
-        by ns1.zackeruz.tk (Postfix) with ESMTPSA id 928BC844BA1
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 May 2021 12:29:21 +0800 (+08)
-Reply-To: robturner.procurement@johnlewis-trade.com,
-          pippawicks.sales@johnlewis-trade.com
-From:   John Lewis Partnersip <robert.turner01@johnlewis.co.uk>
-To:     rust-for-linux@vger.kernel.org
-Subject: Product Inquiry [JL]  10/05/21 
-Date:   10 May 2021 04:29:20 +0000
-Message-ID: <20210509181826.EC5C6876A616504A@johnlewis.co.uk>
-MIME-Version: 1.0
+        Mon, 10 May 2021 10:10:00 -0400
+Received: from gimli.kloenk.dev ([195.39.247.182]:58350 "EHLO gimli.kloenk.dev"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244999AbhEJOGO (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Mon, 10 May 2021 10:06:14 -0400
+X-Greylist: delayed 99589 seconds by postgrey-1.27 at vger.kernel.org; Mon, 10 May 2021 10:06:13 EDT
 Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+        charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kloenk.de; s=mail;
+        t=1620655496; bh=/B6Ksxz5qWzbsILI4BtO20lYysw50qwPgUvaP37pH6w=;
+        h=Subject:From:In-Reply-To:Date:Cc:References:To;
+        b=vTA8FrT3DyOu4Oi5Q/xkNpULWXTps3tnhkCnxzxdKoRPDK9M3vPCoK4c7Q6BLT3t0
+         trOUu6plKK+W/Tk2at1kbqZsb8WHNL9Nosxxkd/H28tjLSabVrILN2La1cwBUIr48/
+         8FlmamJgjEA9WXs+Xecpz4nv/WGoGV1BhcZoT2EY=
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.80.0.2.43\))
+Subject: Re: PointerWrapper Trait vs croe::ops::Deref
+From:   Finn Behrens <me@kloenk.de>
+In-Reply-To: <CANiq72=8M3ALxrmdYvHNfDVX9F4Se0=a-EbzrZPgVv1xsh932Q@mail.gmail.com>
+Date:   Mon, 10 May 2021 16:04:54 +0200
+Cc:     Wedson Almeida Filho <wedsonaf@google.com>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5F0569E2-F09D-4D58-99D9-B338DE6D1A15@kloenk.de>
+References: <97E4F6F4-2391-4053-89FC-BB00F9184340@kloenk.de>
+ <CANiq72=8M3ALxrmdYvHNfDVX9F4Se0=a-EbzrZPgVv1xsh932Q@mail.gmail.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dear rust-for-linux
+Howdy,
 
-The famous brand John Lewis Partnership, is UK's largest multi-
-channel retailer with over 126 shops and multiple expansion in 
-Africa furnished by European/Asian/American products. We are 
-sourcing
-new products to attract new customers and also retain our 
-existing ones, create new partnerships with companies dealing 
-with different kinds of goods globally.
+> On 9. May 2021, at 16:21, Miguel Ojeda =
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>=20
+> On Sun, May 9, 2021 at 12:25 PM Finn Behrens <me@kloenk.de> wrote:
+>>=20
+>> Maybe we could also remove the result, as it would possible be an =
+invariant, and never happen as the pointer should already be valid.
+>=20
+> If it can fail, we cannot use `Deref` to begin with. So yeah, to make
+> the examples equivalent, the first one should not return a `Result`.
+>=20
+> Now, assuming it cannot fail, what I mentioned in the meeting is that
+> with `Deref` all this compiles:
+>=20
+> wrapper.deref().number
+> (*wrapper).number
+> wrapper.number
+>=20
+> The question boils down to: do we want this shortcut or not?
 
-Your company's products are of interest to our market as we have 
-an amazing market for your products.
+I would not like to decide that on my own :-).
+After thinking about it I think we don=E2=80=99t want that shortcut, as =
+the other way give the same behaviour, but it is explicit.
 
-Provide us your current catalog through email to review more. We 
-hope to be able to order with you and start a long-term friendly,
-respectable and solid business partnership. Please we would 
-appreciate it if you could send us your stock availability via 
-email if any.
+> Having said that, I am not sure I understand the traits shown here.
+> Isn't `PointerWrapper` meant only to save a `Box<T>` and similar types
+> (which already implement `Deref` themselves etc.) as a pointer in a C
+> data structure? (which is why `into_pointer()` consumes the object).
+>=20
 
-Our payment terms are 15 days net in Europe, 30 days Net in UK 
-and 30 days net in Asia/USA as we operate with over 5297 
-suppliers around the globe for the past 50 years now. For 
-immediate response Send your reply to 
-robturner.procurement@johnlewis-trade.com for us to be able to 
-treat with care and urgency.
+All Pointers I=E2=80=99m wrapping are got from the C side. Either =
+because there is a special malloc flag and some initialisation to the C =
+struct, or as this is in a function call, and therefor the object is =
+constructed out of my reach.
+I usually do not consume the pointer, as I have to give the pointer to =
+multiple function on the C side.
 
-On behalf of our entire team, we wish you a fruitful 2021. 
+> In the examples shown, the new `get_pointer()` does not consume
+> `self`; and `main()` creates a `Wrapper` using `from_pointer()`. But
+> the idea is that you already have an object (constructed via other
+> means), transform it into a raw pointer, and then later on
+> re-construct the original object back from that pointer.
+>=20
+> So `PointerWrapper` trait is like a `SavedAsPointer` trait, if you =
+will.
 
-Best Regards
+Renaming to `SavedAsPointer` sounds great.
 
-Rob Turner
-Head Of Procurement Operations
-John Lewis Partnership.
-robturner.procurement@johnlewis-trade.com
-Tel: +44-7451-274090
-WhatsApp: +447497483925
-www.johnlewis.com
-REGISTERED OFFICE: 171 VICTORIA STREET, LONDON SW1E 5NN  
+>=20
+> Cheers,
+> Miguel
+
+CU,
+Finn
+
