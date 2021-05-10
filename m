@@ -6,98 +6,48 @@ X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E3D5C43611
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 May 2021 14:08:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 635F8C433ED
+	for <rust-for-linux@archiver.kernel.org>; Mon, 10 May 2021 14:10:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7384E610FA
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 May 2021 14:08:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1F6C161107
+	for <rust-for-linux@archiver.kernel.org>; Mon, 10 May 2021 14:10:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230351AbhEJOKA (ORCPT
+        id S233782AbhEJOLZ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 10 May 2021 10:10:00 -0400
-Received: from gimli.kloenk.dev ([195.39.247.182]:58350 "EHLO gimli.kloenk.dev"
+        Mon, 10 May 2021 10:11:25 -0400
+Received: from gimli.kloenk.dev ([195.39.247.182]:58430 "EHLO gimli.kloenk.dev"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S244999AbhEJOGO (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 10 May 2021 10:06:14 -0400
-X-Greylist: delayed 99589 seconds by postgrey-1.27 at vger.kernel.org; Mon, 10 May 2021 10:06:13 EDT
-Content-Type: text/plain;
-        charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kloenk.de; s=mail;
-        t=1620655496; bh=/B6Ksxz5qWzbsILI4BtO20lYysw50qwPgUvaP37pH6w=;
-        h=Subject:From:In-Reply-To:Date:Cc:References:To;
-        b=vTA8FrT3DyOu4Oi5Q/xkNpULWXTps3tnhkCnxzxdKoRPDK9M3vPCoK4c7Q6BLT3t0
-         trOUu6plKK+W/Tk2at1kbqZsb8WHNL9Nosxxkd/H28tjLSabVrILN2La1cwBUIr48/
-         8FlmamJgjEA9WXs+Xecpz4nv/WGoGV1BhcZoT2EY=
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.80.0.2.43\))
-Subject: Re: PointerWrapper Trait vs croe::ops::Deref
+        id S238352AbhEJOIz (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Mon, 10 May 2021 10:08:55 -0400
 From:   Finn Behrens <me@kloenk.de>
-In-Reply-To: <CANiq72=8M3ALxrmdYvHNfDVX9F4Se0=a-EbzrZPgVv1xsh932Q@mail.gmail.com>
-Date:   Mon, 10 May 2021 16:04:54 +0200
-Cc:     Wedson Almeida Filho <wedsonaf@google.com>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kloenk.de; s=mail;
+        t=1620655664; bh=g+MZQ337x8UymChB3/PTKfEgGJ7pKaLj7vsZl76Q2ok=;
+        h=From:Subject:Date:Cc:To;
+        b=L9wEzTCrX6ufQ6Ho3GyINCS5QzThb5agBg2WgADjESUYTdUk6330uTHSQz18DB+rB
+         U1Ml5Tk2w217MzEvVMUHM4I8Ea8ELkwgUZq4YcwmLf6Ohl1K6DiQVUvK8MpEWzDJ+W
+         1d+xHl0yopatQkSo1qoJgwjvcXfQ7WvlV8Bnow/4=
+Content-Type: text/plain;
+        charset=us-ascii
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <5F0569E2-F09D-4D58-99D9-B338DE6D1A15@kloenk.de>
-References: <97E4F6F4-2391-4053-89FC-BB00F9184340@kloenk.de>
- <CANiq72=8M3ALxrmdYvHNfDVX9F4Se0=a-EbzrZPgVv1xsh932Q@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.80.0.2.43\))
+Subject: German Podcast (https://akronymisier.bar/)
+Message-Id: <76F51432-B120-4C46-BADD-8DC7B0051CDA@kloenk.de>
+Date:   Mon, 10 May 2021 16:07:43 +0200
+Cc:     rust-for-linux@vger.kernel.org
 To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Howdy,
+Hi,
+I was asked if I want to tell something about rust-for-linux on a German =
+podcast (https://akronymisier.bar/).
 
-> On 9. May 2021, at 16:21, Miguel Ojeda =
-<miguel.ojeda.sandonis@gmail.com> wrote:
->=20
-> On Sun, May 9, 2021 at 12:25 PM Finn Behrens <me@kloenk.de> wrote:
->>=20
->> Maybe we could also remove the result, as it would possible be an =
-invariant, and never happen as the pointer should already be valid.
->=20
-> If it can fail, we cannot use `Deref` to begin with. So yeah, to make
-> the examples equivalent, the first one should not return a `Result`.
->=20
-> Now, assuming it cannot fail, what I mentioned in the meeting is that
-> with `Deref` all this compiles:
->=20
-> wrapper.deref().number
-> (*wrapper).number
-> wrapper.number
->=20
-> The question boils down to: do we want this shortcut or not?
+I would do it, is there anything I should mention about the project?=20
 
-I would not like to decide that on my own :-).
-After thinking about it I think we don=E2=80=99t want that shortcut, as =
-the other way give the same behaviour, but it is explicit.
-
-> Having said that, I am not sure I understand the traits shown here.
-> Isn't `PointerWrapper` meant only to save a `Box<T>` and similar types
-> (which already implement `Deref` themselves etc.) as a pointer in a C
-> data structure? (which is why `into_pointer()` consumes the object).
->=20
-
-All Pointers I=E2=80=99m wrapping are got from the C side. Either =
-because there is a special malloc flag and some initialisation to the C =
-struct, or as this is in a function call, and therefor the object is =
-constructed out of my reach.
-I usually do not consume the pointer, as I have to give the pointer to =
-multiple function on the C side.
-
-> In the examples shown, the new `get_pointer()` does not consume
-> `self`; and `main()` creates a `Wrapper` using `from_pointer()`. But
-> the idea is that you already have an object (constructed via other
-> means), transform it into a raw pointer, and then later on
-> re-construct the original object back from that pointer.
->=20
-> So `PointerWrapper` trait is like a `SavedAsPointer` trait, if you =
-will.
-
-Renaming to `SavedAsPointer` sounds great.
-
->=20
-> Cheers,
-> Miguel
+I got a bit lost in the current state of the project? If I see it =
+correctly rust-for-linux did not get merged for 5.13, are we targeting =
+5.14 again?
 
 CU,
-Finn
-
+Finn=
