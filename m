@@ -2,72 +2,77 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=BAYES_00,MAILING_LIST_MULTI,
+X-Spam-Status: No, score=0.8 required=3.0 tests=BAYES_05,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,PDS_TONAME_EQ_TOLOCAL_SHORT,
 	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4883FC433B4
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 May 2021 16:56:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E9CFC433B4
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 May 2021 21:12:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 21FAA611CE
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 May 2021 16:56:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CCF79610CA
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 May 2021 21:12:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231200AbhEJQ5g (ORCPT
+        id S240056AbhELVN1 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 10 May 2021 12:57:36 -0400
-Received: from mail-wm1-f48.google.com ([209.85.128.48]:36369 "EHLO
-        mail-wm1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230286AbhEJQ5f (ORCPT
+        Wed, 12 May 2021 17:13:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39974 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1378064AbhELTKO (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 10 May 2021 12:57:35 -0400
-Received: by mail-wm1-f48.google.com with SMTP id l24-20020a7bc4580000b029014ac3b80020so11572438wmi.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 May 2021 09:56:30 -0700 (PDT)
+        Wed, 12 May 2021 15:10:14 -0400
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AAC5C061574
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 May 2021 12:09:05 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id r8so32044016ybb.9
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 May 2021 12:09:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=DSsYcPmCgLMQc9bVMgUt2JDZbdvNeKKIaaQd/GmlrWY=;
+        b=u2RPWzIkC/C+jnGZX/Sn5+k+V3issJfFQV/iTToD6mK69aDdsxkAJk2oOUBEuBQqML
+         K5l8tVNNXVkY9Trjlrg/wBzUv2HLaBIZMjeFjmPLYXm9jy0PONa7MlM0gty00oKY53nH
+         zCxLHzKLGdmfBkDnOfdS598plpyxisksQYOkC1e/Qk26t1OC8wyLhy8y/1hmflaFOGQR
+         UHNsnT8KN9Lx7nPCaxaoXdyRAl/NHkjwz8144emm8nCBq/5DEnkZQKDm6jInqexhiYkp
+         L8vipgzg5oon2hlQQoT8NDmkspd5YwhLeNm6VOWn4eqGnINFsC5d9/lTnGgsjO3nFNhx
+         fuhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=6cPCeh6bscbuvK9GCppT92tjQucOEO2EZt+5lCS7Zgo=;
-        b=KIt8F3R5osXKzgAWRIJFwfzRRQdb0To5p2dJTaE/hfwEmgE4IERxlqGyXKXS05XRQj
-         o6ENO1I83CTj49dl9k/e24BIaMq4bTNMeN9JuN5SF7feHiFWpavro8coxoOb3lvks+lT
-         Galyg8pnGcrwjTmeMo/lN3mKOsRNONFHGOTWJfusLVv7PeFIL1hZkowQ/9pHeZIDW/Vc
-         RWZCvrtfEOKF6mVqYnfX3DkRXqJXrZT4bq2ZcZoBA6Y/KbhKQbRTWffMNAbsCWM02pP+
-         VYz091DIhujpOdzJBRdSjf+Yzj1EWGjGvuml0t61IROf5bRvJfTv9FrNwtb/43KSHM1E
-         rTtw==
-X-Gm-Message-State: AOAM533J2HJyTvM0V5VIrrBkSf0JlFMz4WrpC9zn8peC8l5Pg2STe1ko
-        q80fiKJOAbLmeAnZYuSWEsw=
-X-Google-Smtp-Source: ABdhPJx0B++isSZTaPjlTVfYRtnPZb6QkiQY0Gktbc7ywJm6lNkkSYvmhVgPXya0jdqvGbGUEK4/HQ==
-X-Received: by 2002:a1c:238d:: with SMTP id j135mr88487wmj.170.1620665790197;
-        Mon, 10 May 2021 09:56:30 -0700 (PDT)
-Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id m16sm23708323wru.68.2021.05.10.09.56.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 May 2021 09:56:29 -0700 (PDT)
-Date:   Mon, 10 May 2021 16:56:27 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Robin Randhawa <robin.randhawa@arm.com>
-Cc:     rust-for-linux@vger.kernel.org, nd@arm.com,
-        Wei Liu <wei.liu@kernel.org>
-Subject: Re: Meeting minutes (Sat 8 May 2021)
-Message-ID: <20210510165627.pnhqxyzmtdf2ni7o@liuwe-devbox-debian-v2>
-References: <20210508202258.m7uk6cfxzyghzu7f@FVFF77RQQ05N>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=DSsYcPmCgLMQc9bVMgUt2JDZbdvNeKKIaaQd/GmlrWY=;
+        b=OlE6zbg9EtO5ItyEZw4JE47Yek5Q7HBulk4x2xUIfhGv0/aIAzz/hvA69SoigdfXiq
+         AC9sYZ2XlYO7TWYA/jISoJHZnHTTfF/kXPt0Mn/UYkAT/pOCDI21RajAlj+ziLgisQRe
+         kD4AfLdeKyyykKsk1lIUlVT3K+27qpzaws2u2XrqyOhSXFszOiLkY0VeUNBLTTD4feUy
+         wj/MahqEnuCPCHFbqLlAMw1nd9pTEmjZNNCK+DaLA6UeyyqUIR7QhwJaBks65V48Bq+Z
+         cQqqCU2wdMC6bYTMcflHmaZH7SFKESIGGP0ebLi57v15HBUlBNDj53SDx2XATgbPEc4M
+         l4mA==
+X-Gm-Message-State: AOAM531KREWqAHHtdu9iSOoIYeIeSYb0Vee5aGBuTmn9HQ/Xj1Gfr9TV
+        uxtKi+IQqC5JmFfRiXnKcBNWfmSGLg78QFAD5TYnv61FUMnSdg==
+X-Google-Smtp-Source: ABdhPJykO4j+0tX9zGA8+eZa/wlB4Qx/xBYZsYnZLhBQrYq5IoTcBuALCYYaKylVBiCx4Rt6/5KatPV23tTpE8oF7hQ=
+X-Received: by 2002:a25:2642:: with SMTP id m63mr13246111ybm.93.1620846544783;
+ Wed, 12 May 2021 12:09:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210508202258.m7uk6cfxzyghzu7f@FVFF77RQQ05N>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 12 May 2021 21:08:54 +0200
+Message-ID: <CANiq72=xVaMQkgCA9rspjV8bhWDGqAn4x78B0_4U1WBJYj1PiA@mail.gmail.com>
+Subject: Zulip created
+To:     rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, May 08, 2021 at 09:22:58PM +0100, Robin Randhawa wrote:
-[...]
-> Q What about the previously discussed use of the Zulip chat platform ?
-> 
-> - Not done yet. Should happen shortly. ** Action: Miguel **
+Hi all,
 
-Look forward to having Zulip. Emails and calls are too heavy weight for
-quick questions and discussions.
+I have created the following Zulip as requested:
 
-Wei.
+    https://rust-for-linux.zulipchat.com
 
-> 
-> Cheers,
-> Robin
+Invitations will be approved manually.
+
+Feel free to use it for chatting with others, but please note that the
+mailing list is still the main communication channel and the only way
+of reaching everyone.
+
+Cheers,
+Miguel
