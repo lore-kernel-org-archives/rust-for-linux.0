@@ -7,69 +7,91 @@ X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71C9AC47080
-	for <rust-for-linux@archiver.kernel.org>; Tue,  1 Jun 2021 09:56:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94550C47080
+	for <rust-for-linux@archiver.kernel.org>; Tue,  1 Jun 2021 11:30:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4DC82613AB
-	for <rust-for-linux@archiver.kernel.org>; Tue,  1 Jun 2021 09:56:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7187B613BD
+	for <rust-for-linux@archiver.kernel.org>; Tue,  1 Jun 2021 11:30:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230505AbhFAJ6A (ORCPT
+        id S231201AbhFALca (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 1 Jun 2021 05:58:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48528 "EHLO
+        Tue, 1 Jun 2021 07:32:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230262AbhFAJ57 (ORCPT
+        with ESMTP id S230308AbhFALca (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 1 Jun 2021 05:57:59 -0400
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AB7CC061574
-        for <rust-for-linux@vger.kernel.org>; Tue,  1 Jun 2021 02:56:18 -0700 (PDT)
-Received: by mail-qv1-xf34.google.com with SMTP id a7so6788713qvf.11
-        for <rust-for-linux@vger.kernel.org>; Tue, 01 Jun 2021 02:56:18 -0700 (PDT)
+        Tue, 1 Jun 2021 07:32:30 -0400
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 132CEC061574
+        for <rust-for-linux@vger.kernel.org>; Tue,  1 Jun 2021 04:30:49 -0700 (PDT)
+Received: by mail-yb1-xb2b.google.com with SMTP id x6so214793ybl.9
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Jun 2021 04:30:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=5/vWp7+DFe6vp1xcSHfZRv/Aftv9qjAM0ybUbItVSF0=;
-        b=ajoRh+JBrhj6S+Kg1SaFWp0gDJjdp9GE3Rzo32LgGsGbURJL8fUPE833a/ezvgZp7d
-         v49Zr3a0Y+UFDu3DMumSoQRVGQPbll7A9qiMWKSqh/t2+48ZW9iMifjuv+iaFUHeSAuM
-         I+UFMBx99KDJYMtSd+wHcpeLwow80WpXFo0vLi2Ls+k7mGL3sK+4XN32V3Jw2Ym7xgrQ
-         zRzU0LRak6ng+4ZVnmoY/IsPk6ZxxHOMXc/r/Yj3wm+HAgzecW5LMW+uWb8XCV6k6I2p
-         S4i7ZmQuJrLLQUpCV85m0R75oUI/o8YJriCTBZI4j4WO6AePYOmHpqTXSwH13Ng5KkK6
-         e2pg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=g3FDrWpJm25NrYpRr4EVFmiotGAtkGOMB2DCz62FarE=;
+        b=oUTk5fZmxluDekewGrWjuGlx/kYviBcnQb/g2q9fe0O3sjTX0lO0k7pflBX5XVQ2Va
+         E4IIu1pUsrpj8AaYZv8BE/Ic2J7lgCaYhX7DNk5q2RluyArn2X9XqWw53qN5bL0bsSHR
+         DTthvQpV3ZPPpF0bnGwbXWx/tyRsIzrPTtls+E1oG7FzYOw5wYLrBP4pbMBw9dq2vkMn
+         p5Ou9klbnkxYnhZd7BbzBV4ZXOf+/bqvUGQYifvDvz49DVu3inMtWc2zXNKn2CxpQyLc
+         g0gkluPpjX0n1OntvdVgUkcoe50j93NWpDPXFFJMbAhpmqQ85V0BcuJQQLJj7gCQiLn3
+         yryg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=5/vWp7+DFe6vp1xcSHfZRv/Aftv9qjAM0ybUbItVSF0=;
-        b=f+dxCgbR2RNO8j9r1aCNsMrv7htXgnHPIVWD+6mUgl5mG5OkWGDubnQxcBuzJZqDSa
-         AqR3MpAlAkOCiQ96PrrBlrQ9Ye0BLyrGRe/OVPJydPpbUWTLFqRaeJGPvoDQPQXhuZnH
-         Jqe9AcJ9MzQdfLzadnnU5MB0PWrXSWvTcNO2ckdTYJ6NxNRP6ZPqwSljtMkCRxbem9ht
-         KxkRxcFBGisWW98xKiCaXSyWpWe+EvBSNJbR4OAZVOWrTHyIW/jKe543/cMwag4aoB9T
-         DfsIfjhqeEd4gxZK4OThKasty90DS05SvFi8IA4SSmBum0PJ3L+dLkqUciZiMTdjavNs
-         2UKQ==
-X-Gm-Message-State: AOAM533NwNLqT/LcW69Jyzbj80gmWvoCDNh4xGWYEI7sKwBBP8CzftkH
-        jr0/psoluEv0qv/hjjwPf6dsWr5SxrfvkIoSk04eakOdaPpqKQ==
-X-Google-Smtp-Source: ABdhPJxKGqHnf4h+5QuCj7jfvsI4/VJbNJ1dZqF2oxKEVeaGHfUBWOKFCLrqbc8jBteFWqv+oNrDoC7btpUGsYk6i7o=
-X-Received: by 2002:a05:6214:2125:: with SMTP id r5mr21774226qvc.28.1622541377471;
- Tue, 01 Jun 2021 02:56:17 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=g3FDrWpJm25NrYpRr4EVFmiotGAtkGOMB2DCz62FarE=;
+        b=U6CFPdUrPcXi90lgX4w0JPOFB5GW9JGI3jR0WVFXZz05KXtWddFYcWd9i/ILu7badZ
+         uiYXzz/mhSU4B2ESWsrex5yMVOPog09X30xrTwNl2muyJNF52WplO7rvJgVkRLxeygGF
+         A9zQ0oh0IRpD/TtmFQJZjWOhqa8OfXuQpAEfx/koaeUMfvTQQdCvHtHrudkwhx3LVhs7
+         de3ac9fH+X99dLyzNMPnlGCtDalYRYgq7q/Ya5LO6utdGM3r4gB1ZsbWDuUMO5xWCH38
+         jQF9VmlTWPhxYvsQzSWw7yKQv5wBXBU7SI/yheDFZ4wzexe6EynYVQkIzeNNuX+Web9w
+         Wh/Q==
+X-Gm-Message-State: AOAM5320/S4ImsxIpfsrVaXb8d6VulgVo8vR24YnlkinpI51mrR0ElHV
+        FBcExGeqF8WZxH8w1HE8/NTIfiGAwGtucm2psRQ=
+X-Google-Smtp-Source: ABdhPJyrxxRTscUlK/jWeH/IcfygcYCHhORJYOTSELobz211eeZRri07bOK+43mEWxQB1oCCC7ugEAH+gxz7zfMwoAY=
+X-Received: by 2002:a25:cc44:: with SMTP id l65mr9720394ybf.115.1622547048386;
+ Tue, 01 Jun 2021 04:30:48 -0700 (PDT)
 MIME-Version: 1.0
-From:   Douglas Su <d0u9.su@gmail.com>
-Date:   Tue, 1 Jun 2021 17:56:06 +0800
-Message-ID: <CABDqbH3s6Xr-5xhxAYyTt44w16A-Sq8sK7wgvxJuyDgg8+bWXg@mail.gmail.com>
-Subject: Contribute documentation
-To:     rust-for-linux@vger.kernel.org
+References: <CABDqbH3s6Xr-5xhxAYyTt44w16A-Sq8sK7wgvxJuyDgg8+bWXg@mail.gmail.com>
+In-Reply-To: <CABDqbH3s6Xr-5xhxAYyTt44w16A-Sq8sK7wgvxJuyDgg8+bWXg@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 1 Jun 2021 13:30:37 +0200
+Message-ID: <CANiq72kxfZt9A_ky_UMK+Un5HRVFng8-_yBgw3W4cwjLx+St5g@mail.gmail.com>
+Subject: Re: Contribute documentation
+To:     Douglas Su <d0u9.su@gmail.com>
+Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi, fellows. I am composing a series of documentation about Rust in
-the Kernel. Currently, they are published in my github repo:
-https://github.com/d0u9/Linux-Device-Driver-Rust/tree/master/Docs.
+Hi Douglas,
 
-I wonder if this documentation is valuable and if so, how could I
-contribute these to the Kernel's source?
+On Tue, Jun 1, 2021 at 11:56 AM Douglas Su <d0u9.su@gmail.com> wrote:
+>
+> Hi, fellows. I am composing a series of documentation about Rust in
+> the Kernel. Currently, they are published in my github repo:
+> https://github.com/d0u9/Linux-Device-Driver-Rust/tree/master/Docs.
 
-Currently, these documentations are drafts that mean typos and grammar
-errors (English is not my first language, sorry for that.) may exist.
+Nice!
 
-Thanks
+> I wonder if this documentation is valuable and if so, how could I
+> contribute these to the Kernel's source?
+
+From the perspective of putting it into the kernel:
+
+  - It seems a bit too detailed, i.e. it discusses implementation
+details which will likely change, and thus it may be hard to keep
+up-to-date. In particular now that we are still in the early days.
+
+  - Some bits are covered by other kernel docs (e.g. Kbuild), so it
+would perhaps be best to cross-reference as needed instead (possibly
+improving the existing docs where lacking etc.).
+
+  - I assume the `Doc/` maintainers would ask you to convert the
+sources into reST format.
+
+Cheers,
+Miguel
