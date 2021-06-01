@@ -2,94 +2,74 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D826BC4708C
-	for <rust-for-linux@archiver.kernel.org>; Fri, 28 May 2021 09:03:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71C9AC47080
+	for <rust-for-linux@archiver.kernel.org>; Tue,  1 Jun 2021 09:56:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B9905613AB
-	for <rust-for-linux@archiver.kernel.org>; Fri, 28 May 2021 09:03:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4DC82613AB
+	for <rust-for-linux@archiver.kernel.org>; Tue,  1 Jun 2021 09:56:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234967AbhE1JEq (ORCPT
+        id S230505AbhFAJ6A (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 28 May 2021 05:04:46 -0400
-Received: from out4-smtp.messagingengine.com ([66.111.4.28]:47525 "EHLO
-        out4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S234769AbhE1JEp (ORCPT
+        Tue, 1 Jun 2021 05:58:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48528 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230262AbhFAJ57 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 28 May 2021 05:04:45 -0400
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id E32895C00E0;
-        Fri, 28 May 2021 05:03:10 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Fri, 28 May 2021 05:03:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm3; bh=mh3fTq3LL6ePkQBIb8dgtOORA3c
-        LBd7cZgXGZpGlTjU=; b=eRJt57hJ2+NiPQdgh18nKKgj5UBLyDZUk/3+45jKSPd
-        SCbpc6zulK1edubthk1QWpFdIyWBfHMrF0sRxdBXub5vld/YyZXwdRylPtCXZXlu
-        ZEusdwBW3hJPtBGo6UwdqSAoMqsuOGUt2CgMiilfKC69Z5eLnInxQ/HQmn0WzNaJ
-        yCGCVkGljOQ2UHDUZ4on5IQ4LCk/WARx+C73Aj18cATwHMh29GWhmWz+iriBXNAH
-        WMJEaBzF/7qzkmRsU/9Pc5oRATRiLCtI+oT4na1lnwXteGbWVa5RTEJzIC+VYVFX
-        KeZgwgtqp+QrEPQ9lLFsPCrScrJZ73gfBaKrbfhlaxQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=mh3fTq
-        3LL6ePkQBIb8dgtOORA3cLBd7cZgXGZpGlTjU=; b=YT2Ql/sJh0kqvMqlwxAbQA
-        ONFsexWQKUY5nAohrqA57wguJbqbfCVxjrOsk0lcdn1dPxh3rbqczXQwUBTox3ky
-        Fpx55u6GXmJbG3aR9POBvfEF4QImSYhFgkgXhYeShulAUKnDLPwd+J1Nwv3ahh9v
-        RSx6CAuY2LEs1kcsSaVxP4q9V7/gsR/fAqUVdvOvYvCQ/PvkFa3BG14yC0IG+mYd
-        7ilBbgrGG8KCDZcClvc4euV4cx0c5lGz6uT/iC4+g4u/s0XJ3eE+skyKabWdxDcW
-        MGDVu2hF/sJoYQGeP2V3qVyGplUVV0IDRnBApacyMVuK2tWVevL/iclCzRJ3N3BQ
-        ==
-X-ME-Sender: <xms:zrGwYILaUWaEXdPBUQ0H6Kt6bAiKJB2nRfqlqQInasY8vmUS718npA>
-    <xme:zrGwYILx-I4X4XAKgMeqLgvbXfr7SP2hviKpfpqKhCelBWJDgdoyKGOnAl1v19R7F
-    sJkzf6zKKEoqw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdekjedgudduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvuffkfhggtggujgesthdtre
-    dttddtvdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheq
-    necuggftrfgrthhtvghrnhepveeuheejgfffgfeivddukedvkedtleelleeghfeljeeiue
-    eggeevueduudekvdetnecukfhppeekfedrkeeirdejgedrieegnecuvehluhhsthgvrhfu
-    ihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtoh
-    hm
-X-ME-Proxy: <xmx:zrGwYIv4MeCtcgn5S7BuO6KyM0PXIY9edCO1ENCOzfgc5Or6sjEdCg>
-    <xmx:zrGwYFYhm0l8u-NIxU49giOYT0F-lXYguVA41NW0Q4lmfDx-Eb1nZw>
-    <xmx:zrGwYPY5jEIRVU82Or9xxRS5bfNK3JAtChfWFsji4YNZlbbaetXAXw>
-    <xmx:zrGwYGzBeC30DX3fVghtqZczGcth11YyDtjt0wsaJ-bBr-qYOZwblQ>
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        by mail.messagingengine.com (Postfix) with ESMTPA;
-        Fri, 28 May 2021 05:03:09 -0400 (EDT)
-Date:   Fri, 28 May 2021 11:03:06 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Douglas Su <d0u9.su@gmail.com>
-Cc:     "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Subject: Re: How rust subsystem handles long symbols of rust function
-Message-ID: <YLCxyu3+ko18Futh@kroah.com>
-References: <CABDqbH2Zhhwh=XL7p4sxVKxFjnK4xxO_xT5oac9ZyoHe3xkU8A@mail.gmail.com>
+        Tue, 1 Jun 2021 05:57:59 -0400
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AB7CC061574
+        for <rust-for-linux@vger.kernel.org>; Tue,  1 Jun 2021 02:56:18 -0700 (PDT)
+Received: by mail-qv1-xf34.google.com with SMTP id a7so6788713qvf.11
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Jun 2021 02:56:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=5/vWp7+DFe6vp1xcSHfZRv/Aftv9qjAM0ybUbItVSF0=;
+        b=ajoRh+JBrhj6S+Kg1SaFWp0gDJjdp9GE3Rzo32LgGsGbURJL8fUPE833a/ezvgZp7d
+         v49Zr3a0Y+UFDu3DMumSoQRVGQPbll7A9qiMWKSqh/t2+48ZW9iMifjuv+iaFUHeSAuM
+         I+UFMBx99KDJYMtSd+wHcpeLwow80WpXFo0vLi2Ls+k7mGL3sK+4XN32V3Jw2Ym7xgrQ
+         zRzU0LRak6ng+4ZVnmoY/IsPk6ZxxHOMXc/r/Yj3wm+HAgzecW5LMW+uWb8XCV6k6I2p
+         S4i7ZmQuJrLLQUpCV85m0R75oUI/o8YJriCTBZI4j4WO6AePYOmHpqTXSwH13Ng5KkK6
+         e2pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=5/vWp7+DFe6vp1xcSHfZRv/Aftv9qjAM0ybUbItVSF0=;
+        b=f+dxCgbR2RNO8j9r1aCNsMrv7htXgnHPIVWD+6mUgl5mG5OkWGDubnQxcBuzJZqDSa
+         AqR3MpAlAkOCiQ96PrrBlrQ9Ye0BLyrGRe/OVPJydPpbUWTLFqRaeJGPvoDQPQXhuZnH
+         Jqe9AcJ9MzQdfLzadnnU5MB0PWrXSWvTcNO2ckdTYJ6NxNRP6ZPqwSljtMkCRxbem9ht
+         KxkRxcFBGisWW98xKiCaXSyWpWe+EvBSNJbR4OAZVOWrTHyIW/jKe543/cMwag4aoB9T
+         DfsIfjhqeEd4gxZK4OThKasty90DS05SvFi8IA4SSmBum0PJ3L+dLkqUciZiMTdjavNs
+         2UKQ==
+X-Gm-Message-State: AOAM533NwNLqT/LcW69Jyzbj80gmWvoCDNh4xGWYEI7sKwBBP8CzftkH
+        jr0/psoluEv0qv/hjjwPf6dsWr5SxrfvkIoSk04eakOdaPpqKQ==
+X-Google-Smtp-Source: ABdhPJxKGqHnf4h+5QuCj7jfvsI4/VJbNJ1dZqF2oxKEVeaGHfUBWOKFCLrqbc8jBteFWqv+oNrDoC7btpUGsYk6i7o=
+X-Received: by 2002:a05:6214:2125:: with SMTP id r5mr21774226qvc.28.1622541377471;
+ Tue, 01 Jun 2021 02:56:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABDqbH2Zhhwh=XL7p4sxVKxFjnK4xxO_xT5oac9ZyoHe3xkU8A@mail.gmail.com>
+From:   Douglas Su <d0u9.su@gmail.com>
+Date:   Tue, 1 Jun 2021 17:56:06 +0800
+Message-ID: <CABDqbH3s6Xr-5xhxAYyTt44w16A-Sq8sK7wgvxJuyDgg8+bWXg@mail.gmail.com>
+Subject: Contribute documentation
+To:     rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, May 28, 2021 at 01:48:00PM +0800, Douglas Su wrote:
-> I am recently playing around with the Rust subsystem in Kernel, and
-> notice that the symbols generated from Rust relevant functions are
-> longer than normal C counterparts.
-> 
-> If I am not wrong, Kernel imposes symbol length restriction on
-> functions and variables. So, what efforts have been made to make
-> Rust's symbols compatible with Kernel's rule?
+Hi, fellows. I am composing a series of documentation about Rust in
+the Kernel. Currently, they are published in my github repo:
+https://github.com/d0u9/Linux-Device-Driver-Rust/tree/master/Docs.
 
-If you look at the rust kernel patchset, it increases the length of the
-kernel symbol length "rules" for this very reason.
+I wonder if this documentation is valuable and if so, how could I
+contribute these to the Kernel's source?
 
-thanks,
+Currently, these documentations are drafts that mean typos and grammar
+errors (English is not my first language, sorry for that.) may exist.
 
-greg k-h
+Thanks
