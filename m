@@ -2,93 +2,105 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-22.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30410C07E9A
-	for <rust-for-linux@archiver.kernel.org>; Sun,  4 Jul 2021 20:30:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7807C07E9A
+	for <rust-for-linux@archiver.kernel.org>; Sun,  4 Jul 2021 20:52:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1B8D2613DD
-	for <rust-for-linux@archiver.kernel.org>; Sun,  4 Jul 2021 20:30:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B2F34613DD
+	for <rust-for-linux@archiver.kernel.org>; Sun,  4 Jul 2021 20:52:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbhGDUcl (ORCPT
+        id S229996AbhGDUzG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 4 Jul 2021 16:32:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37756 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230088AbhGDUcW (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 4 Jul 2021 16:32:22 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 52FEB611F2;
-        Sun,  4 Jul 2021 20:29:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625430587;
-        bh=DKa8oPhQvPF9g1pq2L8TrUitL6QrOQFoL1uiJ91d/i4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ie9Ei8HkRWaEArDA7NZ8TEUPtawa8jFEUUvivQcDDurHedqC8Y4mu4A90N39hwLB6
-         Z2BuFqpz83j/YpdDfW9BanJCmPPvxAAbbVQ4wX/k4wMdWjQSXQkPJNgrT+dnIgd4MZ
-         dRrTak61pInUkKbMixBKDDtx+vpUSszLw2P9HOe9q2S5DK9aT0UgR5d4zmdjmx2gQA
-         cQ0vA7CfasicHkFZbsTmJmeYijCxzIDkEbokU4oxatv4U6Rey3fuwKzy/lah8S2S+P
-         85evyIwTQAysplNyEU64jQzxo+YtGKiOz6hQcX3UsaucS8IIrx9cgj2D/Jv59okZvS
-         2Z+9VSzsx1xrQ==
-From:   ojeda@kernel.org
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>
-Subject: [PATCH 16/17] MAINTAINERS: Rust
-Date:   Sun,  4 Jul 2021 22:27:55 +0200
-Message-Id: <20210704202756.29107-17-ojeda@kernel.org>
-In-Reply-To: <20210704202756.29107-1-ojeda@kernel.org>
-References: <20210704202756.29107-1-ojeda@kernel.org>
+        Sun, 4 Jul 2021 16:55:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43844 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229993AbhGDUzC (ORCPT
+        <rfc822;rust-for-linux@vger.kernel.org>);
+        Sun, 4 Jul 2021 16:55:02 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94B77C061764
+        for <rust-for-linux@vger.kernel.org>; Sun,  4 Jul 2021 13:52:25 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id v14so3113414lfb.4
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 Jul 2021 13:52:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1kNbjhH0GpClGiRwzQUpR4hJv6EHO3XdnhQiyv1Zn4I=;
+        b=DDKedwHAnd/R9xdhNG2krhsT+Nw/0E+PNH+jTyBdnlj/cEeFjebi3V2C3060Nznwiw
+         vtlfihLS1N6oGS1nPJo971wzPG320Cr4ei5n8FjoPqsNRC/sBQhpBRy3FWWHn7ysHPW0
+         LY6Jmq2nQLEukQRziXJban++K/Kva/xuLIO6k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1kNbjhH0GpClGiRwzQUpR4hJv6EHO3XdnhQiyv1Zn4I=;
+        b=t5SFKl7TKp264WUKGYYwyKknTh2JbALFEzmWpS4wWiMVdzQ/Prs+YMMXcmT2rGHQ7I
+         od0KGoVV6591Yq/g/Q0WYO0LsXBCSDuY9/2ybsSEG7ROJzGT82e2TEj59We7zgxjHt6d
+         9/XnrlG0iZXBdELwQbnL6inLjU8oTWuMIqTqClDoREDwmV4HiFptGLVX1OfINpoBrMwl
+         Srx4P2OPrVgMXRmduABaxtKLaIgCeXoDOCN79PRBpSMPmKh2H8wFmnUKjiEs7Irl4IjV
+         7d509K6hiF0kKcrrTcBHwOFZEGORSwKrQiUv3G6wywB33LRDAEs1DrGxI9EweMxLH+wq
+         jrgA==
+X-Gm-Message-State: AOAM531U3BAsC+WRd1800EJwEVdS13FGky0tC4V2JFDN7guqeefFDifd
+        1zyllP+0Se9F85hOL8utFvbnyreurVgRs9CK
+X-Google-Smtp-Source: ABdhPJwmEP2jVCe1Zdc94XxgZYH8Van3UEkRwEJNxaOZHOLTn0OPDzjWK7Tx1oCiBbDn7lK5y6FOjw==
+X-Received: by 2002:a05:6512:150e:: with SMTP id bq14mr7914932lfb.20.1625431943645;
+        Sun, 04 Jul 2021 13:52:23 -0700 (PDT)
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
+        by smtp.gmail.com with ESMTPSA id v18sm885594lfd.189.2021.07.04.13.52.22
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 04 Jul 2021 13:52:22 -0700 (PDT)
+Received: by mail-lf1-f49.google.com with SMTP id p21so6933431lfj.13
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 Jul 2021 13:52:22 -0700 (PDT)
+X-Received: by 2002:ac2:42d6:: with SMTP id n22mr7866162lfl.41.1625431941847;
+ Sun, 04 Jul 2021 13:52:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210704202756.29107-1-ojeda@kernel.org> <20210704202756.29107-2-ojeda@kernel.org>
+In-Reply-To: <20210704202756.29107-2-ojeda@kernel.org>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun, 4 Jul 2021 13:52:06 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wisMFiBHT7dLFOtHqX=fEve3JafZjSvbd5cy=MpW4u7zQ@mail.gmail.com>
+Message-ID: <CAHk-=wisMFiBHT7dLFOtHqX=fEve3JafZjSvbd5cy=MpW4u7zQ@mail.gmail.com>
+Subject: Re: [PATCH 01/17] kallsyms: support big kernel symbols (2-byte lengths)
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Miguel Ojeda <ojeda@kernel.org>
+On Sun, Jul 4, 2021 at 1:28 PM <ojeda@kernel.org> wrote:
+>
+>
+> +       /* If zero, it is a "big" symbol, so a two byte length follows. */
+> +       if (len == 0) {
+> +               len = (data[0] << 8) | data[1];
+> +               data += 2;
+> +               off += len + 2;
+> +       }
 
-Miguel, Alex and Wedson will be maintaining the Rust support.
+Side note: it might be a good idea at this point to verify that "len" is >255.
 
-Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
-Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
-Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- MAINTAINERS | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Also, why is this in big-endian order?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0cce91cd562..a439204d9be 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15894,6 +15894,20 @@ L:	linux-rdma@vger.kernel.org
- S:	Maintained
- F:	drivers/infiniband/ulp/rtrs/
- 
-+RUST
-+M:	Miguel Ojeda <ojeda@kernel.org>
-+M:	Alex Gaynor <alex.gaynor@gmail.com>
-+M:	Wedson Almeida Filho <wedsonaf@google.com>
-+L:	rust-for-linux@vger.kernel.org
-+S:	Supported
-+W:	https://github.com/Rust-for-Linux/linux
-+B:	https://github.com/Rust-for-Linux/linux/issues
-+T:	git https://github.com/Rust-for-Linux/linux.git rust-next
-+F:	rust/
-+F:	samples/rust/
-+F:	Documentation/rust/
-+K:	\b(?i:rust)\b
-+
- RXRPC SOCKETS (AF_RXRPC)
- M:	David Howells <dhowells@redhat.com>
- M:	Marc Dionne <marc.dionne@auristor.com>
--- 
-2.32.0
+Let's just try to kill big-endian data, it's disgusting and should
+just die already.
 
+BE is practically dead anyway, we shouldn't add new cases. Networking
+has legacy reasons from the bad old days when byte order wars were
+still a thing, but those days are gone.
+
+           Linus
