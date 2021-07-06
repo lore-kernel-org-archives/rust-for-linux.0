@@ -2,80 +2,104 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8A8BC07E96
-	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jul 2021 17:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06F61C07E96
+	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jul 2021 17:23:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 91C8961C5F
-	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jul 2021 17:19:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D194361C5F
+	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jul 2021 17:23:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230334AbhGFRV6 (ORCPT
+        id S230372AbhGFRZz (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 6 Jul 2021 13:21:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41968 "EHLO
+        Tue, 6 Jul 2021 13:25:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230141AbhGFRV6 (ORCPT
+        with ESMTP id S230348AbhGFRZz (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 6 Jul 2021 13:21:58 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED32DC06175F
-        for <rust-for-linux@vger.kernel.org>; Tue,  6 Jul 2021 10:19:19 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id f20so12187402pfa.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jul 2021 10:19:19 -0700 (PDT)
+        Tue, 6 Jul 2021 13:25:55 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8069EC061574;
+        Tue,  6 Jul 2021 10:23:15 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id q10so3906383pfj.12;
+        Tue, 06 Jul 2021 10:23:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=student-cerritos-edu.20150623.gappssmtp.com; s=20150623;
-        h=to:from:subject:message-id:date:user-agent:mime-version
-         :content-transfer-encoding:content-language;
-        bh=xrzFBTAq0ZKpdWfndQXJn/n+uFOiH53JYTB36xwFHPI=;
-        b=ZncqXsqcvHdTLD4Kn9PKfU8uuQ+kXHFxqo4EFylSfEocm1dleZ/KJwgkydezr15fic
-         qdlfALe3BrYKGY2g646R0I8Ak0aOLLw+HOhRHfJ+CO2Berol0AfnZ/HpvpSzj6TXGGyw
-         Q1T+Nvi3pUt+2MqYcRw5f5fX7RYd0Qe7OF+A5yuyvS1cQrdfNJ3XTGt19iwnXwT4m2gY
-         bGjjPi5OSuIJpprH5WbTekvlgsCYtAr8Nh6x86BOEkPAKDN/g9A4P2OVROgrSqBOYBfG
-         nEtiGC/COpQtAI83zbGnGWOhidYpXHGW6V4yCy/ERYIhs5GVlj7Jt1HCuojgP2lJsBNX
-         tFUw==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=CEnGgs396px3IOlqYQv25XAQKPa7tvqxKzSEGryKztU=;
+        b=nptC2NzvR5nIM0zHk9uWFjfy8uBWjRviFRtpdP7Tn73xuyx8UGBhbZVwvk4L7GOihJ
+         aMXCyS1/7Bfn3DC1qBYwvuWgHTHwEhCYBcKgkL3xEM0RZWXw5TkXG6D9Wt5g/1YUsUV0
+         rwUdLx3xqGDZE4RRJg0jAspDS57kg9vTyoecARKOgO3GL2h90yPNcBZvwWg/3zIljVnv
+         iu3pRguo652YLcbBIDzDGPDhorGy7WIdBw/Jz5sYtxc8gvK8BemQpyAoMikHL3QOZHFI
+         icGhsHnYGjAPP898Oo1nedQdhit9u252Z7uKuGlIlebgu9f3s9P+0KaoVroTxzDTx2vv
+         K7NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
-         :mime-version:content-transfer-encoding:content-language;
-        bh=xrzFBTAq0ZKpdWfndQXJn/n+uFOiH53JYTB36xwFHPI=;
-        b=i9Vs8hYRdMMie4pNHylZDfXkYXW+0iC3+DPSrZSttjrtt6jmtlWkKQ8qWLyw5HPIvT
-         MY5N9vqkwR+Si+OMgIbkagjPq5sXS2XpVq0B+MVF2L6PNB3AJizsGp2fUZPhbb7cZaSK
-         BDjYAAOBQURHWjh3guoy6UgLesJHa96rrznAXPImsmKB2OHpxCGtd556LO866+uO44uY
-         K56QWy24wwXxgPSLqYmxmlGWtLh3IyapLrF89H8bPUIKDOaSz5uDnSroDcDJLpzrhMr1
-         hdXR14SRongBWMXRNBLuRRH6NWaF+RP2Mc7qRWVYb4ol+/iheqHzqBw85I2yY8wjlv2O
-         yiWg==
-X-Gm-Message-State: AOAM532enseSNG0MW/56x7dM3v9t9Dk/xfQuShdinxKIvommrDTONBkP
-        SF15drt3I9aF87JPdSNIPvcJHpOT6R6h1Q==
-X-Google-Smtp-Source: ABdhPJz7qF/coKcAy2FjCCnPpSDWnkVv8iiO65V0gwlE4zTua7GAfGd1avDGYwEsOQdlAJzEYmewhg==
-X-Received: by 2002:a63:471b:: with SMTP id u27mr22395332pga.301.1625591959111;
-        Tue, 06 Jul 2021 10:19:19 -0700 (PDT)
-Received: from [192.168.0.133] (066-215-081-126.biz.spectrum.com. [66.215.81.126])
-        by smtp.gmail.com with ESMTPSA id j15sm17232996pfh.194.2021.07.06.10.19.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jul 2021 10:19:18 -0700 (PDT)
-To:     linux-newbie@vger.kernel.org, rust-for-linux@vger.kernel.org
-From:   Amy Parker <apark0006@student.cerritos.edu>
-Subject: Assisting with kernel Rust development
-Message-ID: <f2f6fb7d-18cb-3256-b6c3-2d09905b02ca@student.cerritos.edu>
-Date:   Tue, 6 Jul 2021 10:19:17 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=CEnGgs396px3IOlqYQv25XAQKPa7tvqxKzSEGryKztU=;
+        b=I2CbCbRZHQrFKgOvq96O5g6zDutUkbquUpB8EKnSFJDlgz3S6nFenjjjFeLOmX0UII
+         qgjNBf6wlTaSa8sKjW3xW0B6Q/1qfkASJ+LCf4fIH/z+SGi+Tb3bYQ4JB90usqoZOFv2
+         /v0KHg9eS7JjHcck/LyhAcedY3ou9a2DlSO23wiVAL2Zk4gYa4A8735bMbGGDtEI/Fag
+         rOZbepGAwm1JOsQrORTT0Eey8beTj8SaJ4u5UlayFk/YhTAkzHmSJItJBjkTD5C+UyA+
+         n+wGSUbwbV7HAPSghZPGuCo2s3BgoqxmQD0/9Ii2FalbUyZ/pXsT6lYjTnBOEdCVpNqK
+         Pieg==
+X-Gm-Message-State: AOAM530X2iN6E32A0hISNVXbbm0Y2sh7TIOhKPGUmzRZ8EHcansgn9P4
+        Zjc44Vbnxa9mcB4ed9Hp8C8helPZ+lFniB6wGus=
+X-Google-Smtp-Source: ABdhPJwTsO60SLsD57xf1XuHpCAGgNLEw1nhexbc1baVcN3h/zOwwFSVWXg4r0gHpX8/YmXLcgWQVHfEFcNE/J4w6jI=
+X-Received: by 2002:a63:4242:: with SMTP id p63mr2561077pga.185.1625592195089;
+ Tue, 06 Jul 2021 10:23:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+References: <f2f6fb7d-18cb-3256-b6c3-2d09905b02ca@student.cerritos.edu>
+In-Reply-To: <f2f6fb7d-18cb-3256-b6c3-2d09905b02ca@student.cerritos.edu>
+From:   Alex Gaynor <alex.gaynor@gmail.com>
+Date:   Tue, 6 Jul 2021 13:23:03 -0400
+Message-ID: <CAFRnB2WMuOjP0S5vvCa9w1Wi67K+3XcBsZ+QxxQ2gvo4-2mOEw@mail.gmail.com>
+Subject: Re: Assisting with kernel Rust development
+To:     Amy Parker <apark0006@student.cerritos.edu>
+Cc:     linux-newbie@vger.kernel.org,
+        rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hello!
+Hi Amy,
 
-My name is Amy Parker. You may have seen me on the kernel forums before under my previous email address <enbyamy@gmail.com>.
+Glad to hear you're interested! We've got a whole bunch of open bugs
+on https://github.com/Rust-for-Linux/linux/issues, so that's always a
+starting point for looking for things to work on.
 
-It's been a while since I've attempted to contribute to the kernel, so I figured I'd post here. My previous attempt had been under Matthew Wilcox's direction to modify the DAX driver for NVDIMMs to use XA_ZERO_ENTRY to represent a zero page instead of DAX_ZERO_PAGE (allowing us to save a constant) - but this failed since the ascending values of other flags conflicted with the value presented by XA_ZERO_ENTRY.
+Cheers,
+Alex
 
-I saw the recent patch sequence adding Rust support to the kernel. As a Rust developer, I figured I could get back into kernel development because of this, and was wondering how I could help. Are there any active objectives that need work?
+On Tue, Jul 6, 2021 at 1:19 PM Amy Parker
+<apark0006@student.cerritos.edu> wrote:
+>
+> Hello!
+>
+> My name is Amy Parker. You may have seen me on the kernel forums before u=
+nder my previous email address <enbyamy@gmail.com>.
+>
+> It's been a while since I've attempted to contribute to the kernel, so I =
+figured I'd post here. My previous attempt had been under Matthew Wilcox's =
+direction to modify the DAX driver for NVDIMMs to use XA_ZERO_ENTRY to repr=
+esent a zero page instead of DAX_ZERO_PAGE (allowing us to save a constant)=
+ - but this failed since the ascending values of other flags conflicted wit=
+h the value presented by XA_ZERO_ENTRY.
+>
+> I saw the recent patch sequence adding Rust support to the kernel. As a R=
+ust developer, I figured I could get back into kernel development because o=
+f this, and was wondering how I could help. Are there any active objectives=
+ that need work?
+>
 
+
+--=20
+All that is necessary for evil to succeed is for good people to do nothing.
