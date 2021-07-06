@@ -2,112 +2,98 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56E52C07E96
-	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jul 2021 17:40:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96067C07E96
+	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jul 2021 22:14:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3164661C24
-	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jul 2021 17:40:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7076A61CA7
+	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jul 2021 22:14:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230237AbhGFRmt (ORCPT
+        id S229873AbhGFWRG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 6 Jul 2021 13:42:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46650 "EHLO
+        Tue, 6 Jul 2021 18:17:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230504AbhGFRmt (ORCPT
+        with ESMTP id S229753AbhGFWRG (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 6 Jul 2021 13:42:49 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F255FC06175F
-        for <rust-for-linux@vger.kernel.org>; Tue,  6 Jul 2021 10:40:09 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id f30so39716056lfj.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jul 2021 10:40:09 -0700 (PDT)
+        Tue, 6 Jul 2021 18:17:06 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0919CC061574;
+        Tue,  6 Jul 2021 15:14:26 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id h6so552939iok.6;
+        Tue, 06 Jul 2021 15:14:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=student-cerritos-edu.20150623.gappssmtp.com; s=20150623;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=VECzJml5k1hAS1TG8HVcjo85RdI8u0a+vF3JU1M+Re8=;
-        b=o4KJCtYhMqkrrzgdzNgeRRJS+pof3hn6ZCN20b5yf6WIIFEB8/LHAdeMbfa3mfb5Is
-         7KTGu6SCPjJ808xgHZjX2Vbt0cJrfnf/csinvkbdOaNyTIuS95ilCpFWKuWdEBTpBYrE
-         H3lElOc5svi/s6936DcMvdagVwz3Z8VIBsy+nCZSdJbxVgqvv33E76gaCrOwPeZx/Ljl
-         reW9w7Yn3ZvbFB2UP4Yvj/bIYxrQtQjeztI3hvegtZtAgRBQ3/BS8ZaUZTOtTu+H1MDz
-         Tpucl6qWxLqWSIwrkK6UY5Uo7e7x9kPKvARfXZ+9Yt4xhF+2L++AZtv2gf6YEQmt65dO
-         g1rg==
+         :cc;
+        bh=zZMeMLgvnFQxAN+r/nqeEif6VMjZ3hc66qsD3h/Fku8=;
+        b=jzN2EbBCq0JE8rlKq9vRSKpiPtfTi4wMf5ip4XlDiS6quuADQsEqOqAG+nIafZ6ika
+         ewGp+f+w7EbdXZ/4lDpzf7vdxUq5LTPGXOekUS/BLEBscyBXxcxB4RDNfLbY7VhlU7Sn
+         6BuLD81sdTECS6vS3IzT22wMjaAAltHGKg+WMMTMaOjPKovZUTT+e7i4Ktl8kJwTwWR8
+         MIvCAqPOEQcpfEvPWYdLpd0hnH5GFg6ewcZ9QVsQ9vBWvdjtpOsSPCwgI4wFU+yCSclr
+         LSBxIPfc2vtwZ1xK1EOJnXQ21VCI0sqGPGi/7OrNcLuwHZ4leZSmP+E6pIzxiN8vsfvg
+         l7IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=VECzJml5k1hAS1TG8HVcjo85RdI8u0a+vF3JU1M+Re8=;
-        b=HfjD1dgLBQP4JXoHtNsidi2OwlAvyC4oM0DiJJhTPZ5qLz22i3oQD5BFjeyeP+pshl
-         wUi9JMYRFkIaml5Np0laGn98NanTAcWyk/YU2Tztze62CtZKD5TJ8/8o3/D6LP/nyKTP
-         YO4jYnCfBX8Er8rnV2BuThP2wsX/JMKsCNBil7fK9fOTJMAIbNhZCM+PgKrSV7qC69Sq
-         7joMBMyPzpvLEv9EyqdqJvs+gVIEPispSpOKFFOKqHUP2T0JS8f/txnXARCqgrP1FWxE
-         2z+/wP2Lz8vXL++8jJEqnr1y+eg5d9LNdsZO3OGnBbP2PgPW/Fy4FdXjnA55qGH5IDJN
-         PbxA==
-X-Gm-Message-State: AOAM533ytmkbuUmCMgYGMCPWgGVU3sCxKv3JTYuNujBG0QVCiKa8dpHY
-        zxnVKZXX/VLN8zTlpx2dCMBLaHeU6kuU191eXU90cA==
-X-Google-Smtp-Source: ABdhPJw4wgPDcD4BQrHtsunVukrFtdauutHMqD8rIyt/Kq0mO7yQRWJs55kFueZlhPuvDOdsBIvwRs7jDOVDppAZ0oc=
-X-Received: by 2002:a19:614c:: with SMTP id m12mr11311942lfk.119.1625593208352;
- Tue, 06 Jul 2021 10:40:08 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=zZMeMLgvnFQxAN+r/nqeEif6VMjZ3hc66qsD3h/Fku8=;
+        b=rwbK4TzzfjpxmirDFihf43S5z6ldr5ShUFH28FWLdr5+sUCCO46yKmmeWHoV139+t9
+         u9Zr/q/eGHWXwcHhM6Lth53EDDIdEhny+PdoedZLjxjXuxy4pL8QbCNgZ9bwqWi8YGxM
+         UYal7nfG6oMnXEgVKRiGzs17AraMUpXcLumZZHgSQ4J49EV1O1lSKNv5K9fVd65CNtfU
+         iUswD+//GDeYnzFfzaQ7Z8n3rLFg3bNuJU6/uIKp86Rh/cPDndY1Jdp6Y/XmYlgQiMPF
+         wz7W3jMFa3q66/QksmaOdSUSCA+LEm4sOif0EahzYv3Ir/dhyz+JxfbBJtvTpE2Mj2SG
+         s89A==
+X-Gm-Message-State: AOAM531F5x49bMD6pru1QxiqYT9fha6q84ts5TToE0N6bpXbm/0A9Xnb
+        ukO/6PnQkG1pJnUXfv0bNNCT6diOseMk0+kEh5GCfovhegI=
+X-Google-Smtp-Source: ABdhPJyGODwa3HfoBD9iPuy6GWsnQTK3XwFeInq5yi393y5Nb26tFQ4WxUBe1pcxLgU6bRwPu9PrYoZc8V9QiKhmncg=
+X-Received: by 2002:a02:cc07:: with SMTP id n7mr2885107jap.41.1625609665356;
+ Tue, 06 Jul 2021 15:14:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <f2f6fb7d-18cb-3256-b6c3-2d09905b02ca@student.cerritos.edu> <CAFRnB2WMuOjP0S5vvCa9w1Wi67K+3XcBsZ+QxxQ2gvo4-2mOEw@mail.gmail.com>
-In-Reply-To: <CAFRnB2WMuOjP0S5vvCa9w1Wi67K+3XcBsZ+QxxQ2gvo4-2mOEw@mail.gmail.com>
-From:   Amy Parker <apark0006@student.cerritos.edu>
-Date:   Tue, 6 Jul 2021 10:39:56 -0700
-Message-ID: <CAPOgqxGUYzqxqO83fMY04uL=fUr_OGm3X+s-fBSCQtU1x_ur_Q@mail.gmail.com>
-Subject: Re: Assisting with kernel Rust development
-To:     Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     linux-newbie@vger.kernel.org,
-        rust-for-linux <rust-for-linux@vger.kernel.org>
+References: <20210704202756.29107-1-ojeda@kernel.org> <20210704202756.29107-17-ojeda@kernel.org>
+ <CAKY_9u1WN1nK3fdS0WDVgc4umYrCMVxODn3wG0rtctJzgNE5Ag@mail.gmail.com>
+In-Reply-To: <CAKY_9u1WN1nK3fdS0WDVgc4umYrCMVxODn3wG0rtctJzgNE5Ag@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 7 Jul 2021 00:14:14 +0200
+Message-ID: <CANiq72k5+0RLJU6_agbFK6c61ogRt6ASGuXfRWAKYJPwqtB8BA@mail.gmail.com>
+Subject: Re: [PATCH 16/17] MAINTAINERS: Rust
+To:     Pedro Tammela <pctammela@gmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Jul 6, 2021 at 10:23 AM Alex Gaynor <alex.gaynor@gmail.com> wrote:
+On Tue, Jul 6, 2021 at 2:26 AM Pedro Tammela <pctammela@gmail.com> wrote:
 >
-> Hi Amy,
->
-> Glad to hear you're interested! We've got a whole bunch of open bugs
-> on https://github.com/Rust-for-Linux/linux/issues, so that's always a
-> starting point for looking for things to work on.
->
-> Cheers,
-> Alex
->
-> On Tue, Jul 6, 2021 at 1:19 PM Amy Parker
-> <apark0006@student.cerritos.edu> wrote:
-> >
-> > Hello!
-> >
-> > My name is Amy Parker. You may have seen me on the kernel forums before=
- under my previous email address <enbyamy@gmail.com>.
-> >
-> > It's been a while since I've attempted to contribute to the kernel, so =
-I figured I'd post here. My previous attempt had been under Matthew Wilcox'=
-s direction to modify the DAX driver for NVDIMMs to use XA_ZERO_ENTRY to re=
-present a zero page instead of DAX_ZERO_PAGE (allowing us to save a constan=
-t) - but this failed since the ascending values of other flags conflicted w=
-ith the value presented by XA_ZERO_ENTRY.
-> >
-> > I saw the recent patch sequence adding Rust support to the kernel. As a=
- Rust developer, I figured I could get back into kernel development because=
- of this, and was wondering how I could help. Are there any active objectiv=
-es that need work?
-> >
->
->
-> --
-> All that is necessary for evil to succeed is for good people to do nothin=
-g.
+> Does this mean that development will be done exclusively on GitHub?
+> If affirmative, is there a bot that will replicate the messages in the
+> mailing list?
 
-Okay, I will!
+Development has happened mainly in GitHub so far, but we have accepted
+patches from the ML and we can do their reviews there too.
 
-Thank you.
+We do not have a bot to replicate reviews into the mailing list nor
+any fancy bidirectional sync, though.
 
-    -amyip
+If this is deemed unacceptable by Linus et. al., we can do development
+in the ML as usual -- we do not really mind one way or the other (and,
+in fact, we discussed moving things to a git.kernel.org tree too).
+
+The main point of GitHub/GitLab/etc. for us so far is having an issue
+tracker and some kind of CI.
+
+Cheers,
+Miguel
