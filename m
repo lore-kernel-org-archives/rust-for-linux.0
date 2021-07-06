@@ -2,111 +2,80 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B65C6C07E9C
-	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jul 2021 02:10:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8A8BC07E96
+	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jul 2021 17:19:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 98ADD6196A
-	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jul 2021 02:10:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 91C8961C5F
+	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jul 2021 17:19:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229774AbhGFCMv (ORCPT
+        id S230334AbhGFRV6 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 5 Jul 2021 22:12:51 -0400
-Received: from wtarreau.pck.nerim.net ([62.212.114.60]:57267 "EHLO 1wt.eu"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229753AbhGFCMv (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 5 Jul 2021 22:12:51 -0400
-Received: (from willy@localhost)
-        by pcw.home.local (8.15.2/8.15.2/Submit) id 16629og3032325;
-        Tue, 6 Jul 2021 04:09:50 +0200
-Date:   Tue, 6 Jul 2021 04:09:50 +0200
-From:   Willy Tarreau <w@1wt.eu>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Sumera Priyadarsini <sylphrenadin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Fox Chen <foxhlchen@gmail.com>,
-        Ayaan Zaidi <zaidi.ayaan@gmail.com>,
-        Douglas Su <d0u9.su@outlook.com>, Yuki Okushi <jtitor@2k36.org>
-Subject: Re: [PATCH 13/17] docs: add Rust documentation
-Message-ID: <20210706020950.GA32301@1wt.eu>
-References: <20210704202756.29107-1-ojeda@kernel.org>
- <20210704202756.29107-14-ojeda@kernel.org>
- <20210705050234.GB30964@1wt.eu>
- <CANiq72kvv1rYa-TY3EvM5tBc4d0bhuNH8u56b8PM4PQd1ngmTQ@mail.gmail.com>
+        Tue, 6 Jul 2021 13:21:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41968 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230141AbhGFRV6 (ORCPT
+        <rfc822;rust-for-linux@vger.kernel.org>);
+        Tue, 6 Jul 2021 13:21:58 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED32DC06175F
+        for <rust-for-linux@vger.kernel.org>; Tue,  6 Jul 2021 10:19:19 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id f20so12187402pfa.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jul 2021 10:19:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=student-cerritos-edu.20150623.gappssmtp.com; s=20150623;
+        h=to:from:subject:message-id:date:user-agent:mime-version
+         :content-transfer-encoding:content-language;
+        bh=xrzFBTAq0ZKpdWfndQXJn/n+uFOiH53JYTB36xwFHPI=;
+        b=ZncqXsqcvHdTLD4Kn9PKfU8uuQ+kXHFxqo4EFylSfEocm1dleZ/KJwgkydezr15fic
+         qdlfALe3BrYKGY2g646R0I8Ak0aOLLw+HOhRHfJ+CO2Berol0AfnZ/HpvpSzj6TXGGyw
+         Q1T+Nvi3pUt+2MqYcRw5f5fX7RYd0Qe7OF+A5yuyvS1cQrdfNJ3XTGt19iwnXwT4m2gY
+         bGjjPi5OSuIJpprH5WbTekvlgsCYtAr8Nh6x86BOEkPAKDN/g9A4P2OVROgrSqBOYBfG
+         nEtiGC/COpQtAI83zbGnGWOhidYpXHGW6V4yCy/ERYIhs5GVlj7Jt1HCuojgP2lJsBNX
+         tFUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-transfer-encoding:content-language;
+        bh=xrzFBTAq0ZKpdWfndQXJn/n+uFOiH53JYTB36xwFHPI=;
+        b=i9Vs8hYRdMMie4pNHylZDfXkYXW+0iC3+DPSrZSttjrtt6jmtlWkKQ8qWLyw5HPIvT
+         MY5N9vqkwR+Si+OMgIbkagjPq5sXS2XpVq0B+MVF2L6PNB3AJizsGp2fUZPhbb7cZaSK
+         BDjYAAOBQURHWjh3guoy6UgLesJHa96rrznAXPImsmKB2OHpxCGtd556LO866+uO44uY
+         K56QWy24wwXxgPSLqYmxmlGWtLh3IyapLrF89H8bPUIKDOaSz5uDnSroDcDJLpzrhMr1
+         hdXR14SRongBWMXRNBLuRRH6NWaF+RP2Mc7qRWVYb4ol+/iheqHzqBw85I2yY8wjlv2O
+         yiWg==
+X-Gm-Message-State: AOAM532enseSNG0MW/56x7dM3v9t9Dk/xfQuShdinxKIvommrDTONBkP
+        SF15drt3I9aF87JPdSNIPvcJHpOT6R6h1Q==
+X-Google-Smtp-Source: ABdhPJz7qF/coKcAy2FjCCnPpSDWnkVv8iiO65V0gwlE4zTua7GAfGd1avDGYwEsOQdlAJzEYmewhg==
+X-Received: by 2002:a63:471b:: with SMTP id u27mr22395332pga.301.1625591959111;
+        Tue, 06 Jul 2021 10:19:19 -0700 (PDT)
+Received: from [192.168.0.133] (066-215-081-126.biz.spectrum.com. [66.215.81.126])
+        by smtp.gmail.com with ESMTPSA id j15sm17232996pfh.194.2021.07.06.10.19.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Jul 2021 10:19:18 -0700 (PDT)
+To:     linux-newbie@vger.kernel.org, rust-for-linux@vger.kernel.org
+From:   Amy Parker <apark0006@student.cerritos.edu>
+Subject: Assisting with kernel Rust development
+Message-ID: <f2f6fb7d-18cb-3256-b6c3-2d09905b02ca@student.cerritos.edu>
+Date:   Tue, 6 Jul 2021 10:19:17 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72kvv1rYa-TY3EvM5tBc4d0bhuNH8u56b8PM4PQd1ngmTQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Jul 06, 2021 at 02:06:52AM +0200, Miguel Ojeda wrote:
-> > In general you should avoid "we" and "you" when writing documentation.
-> > Prefer passive forms instead, which do not place a barrier between those
-> > who teach and those who learn. It's generally considered more inclusive
-> > in that it makes the reader not feel outside of the team who wrote it.
-> 
-> When I was writing this, I wondered the same thing, because in Spanish
-> this does look quite bad (in the sense of being too informal), and we
-> use the passive forms a lot more for things like this. So I am fine
-> rewriting this. Also, mixing we/you is not ideal either.
+Hello!
 
-Indeed, I can imagine how informal it could sound in Spanish.
+My name is Amy Parker. You may have seen me on the kernel forums before under my previous email address <enbyamy@gmail.com>.
 
-> Having said that, I am not sure about English and whether people
-> prefer to read text with the passive form or not. In `Documentation/`
-> there seems to be a lot of "we"s and "you"s, but they could be wrong
-> too, of course.
+It's been a while since I've attempted to contribute to the kernel, so I figured I'd post here. My previous attempt had been under Matthew Wilcox's direction to modify the DAX driver for NVDIMMs to use XA_ZERO_ENTRY to represent a zero page instead of DAX_ZERO_PAGE (allowing us to save a constant) - but this failed since the ascending values of other flags conflicted with the value presented by XA_ZERO_ENTRY.
 
-It's possible. While I've seen it used a lot in training or step-by-step
-instructions which aim to guide the reader through a procedure, it's not
-commonly found in documentation. One principle to keep in mind is to only
-focus on the subject. If your documentation describes a component or
-process and does not involve a human, there's no reason for introducing
-this human there. If it explicitly aims at the human (e.g. instructions),
-of course it makes sense. But anything that can end up in a script does
-not require a human and should avoid we/you.
+I saw the recent patch sequence adding Rust support to the kernel. As a Rust developer, I figured I could get back into kernel development because of this, and was wondering how I could help. Are there any active objectives that need work?
 
-> > An additional note is that if the language imposes such unusual constraints
-> > on the editor, you should probably point to various known settins for most
-> > well-known editors.
-> 
-> Are you referring about style? If yes, it is possible to write the
-> code with a text editor with no extra features and then format it, so
-> that should not be a problem.
-
-Yes that's my point, it will likely be the first experience for most
-casual visitors who have no idea how to reconfigure their editor or
-who don't want to risk to break their existing config.
-
-> > You should also clearly indicate how to recheck (or adjust) individual
-> > files, not just say that the command supports it.
-> 
-> Sounds good -- I will do that.
-> 
-> Thanks a lot for reviewing the docs!
-
-You're welcome.
-
-Willy
