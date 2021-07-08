@@ -2,113 +2,75 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8519AC07E9B
-	for <rust-for-linux@archiver.kernel.org>; Wed,  7 Jul 2021 22:34:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AED26C07E9E
+	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Jul 2021 00:59:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6F02761C33
-	for <rust-for-linux@archiver.kernel.org>; Wed,  7 Jul 2021 22:34:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9852B619C8
+	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Jul 2021 00:59:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230481AbhGGWgs (ORCPT
+        id S230222AbhGHBCI (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 7 Jul 2021 18:36:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36136 "EHLO
+        Wed, 7 Jul 2021 21:02:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230264AbhGGWgr (ORCPT
+        with ESMTP id S230129AbhGHBCI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 7 Jul 2021 18:36:47 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 013F2C061574;
-        Wed,  7 Jul 2021 15:34:07 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id g22so5736015iom.1;
-        Wed, 07 Jul 2021 15:34:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sguAgUAI4i8x+o/Ej9MGzsI2Cy1Cs5Pf47dyU7REBVg=;
-        b=U3BBsS4M1AAJ5T1e+Ng9btoTdmckXSOUWW0WSSn5ILwQoBU3HiI9OBuH0aW28BChYE
-         TTdSZX3ukMJAHQx2ILnuB4Pz8XERrMUOCLhSih0efJ6wsnLQGrJUll3vqi8QnG6PJnjo
-         8YMr3jzaAoCodyAraIJ+unl1DpaaPSw3c2KdAfGdp6GG+eu2YYJqE7i4G4mpAdkeVie5
-         aohcWBJkA5JlkwBklpOo7HmmZQdTii2gDOmlIgG8U7RX9cW+ZCLzEmO/O5fvq4jLJKMq
-         0bAQIluIRirLU+3mp4HPKW5WmsweHbK+GDmvmhDM0qIWrtMkCkKhwmhrEHlSVkO0V/mJ
-         UvnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sguAgUAI4i8x+o/Ej9MGzsI2Cy1Cs5Pf47dyU7REBVg=;
-        b=Dt1Vjd5g045R97Urr786uV+3e2E2Is0606Do4MOenum5KeYx8HA6QrdKyZuNP987Kt
-         qbu1Xq8Vxdy8JlHJR/nStwkh5scU0bPGZQQp3/XUpY1thoCckLWKcONRDClXTQBJWY0K
-         9tZjediiqGAzElZiMHbByyK7fdMc8THPPF2HbOKxxmmjva3mn3RCDxfsi6Ylkhokm2wK
-         yIeaESBWi+Vk1gGwEaiKowRufYn3DFJEldhyuWFescZ4f5/1ip5+oIm6pHtJFjt1tRgn
-         3h+qMTX2CNJf/zZo4phmt3jhm1eOeuHRIsxek21yguN7DM/AjTaCVMSJgt5KBxFt8gFP
-         zKew==
-X-Gm-Message-State: AOAM531y/XofSKEwe87Kz+IHIPktWkj51Ag60YMBqYz5yYpK24vTyRGY
-        8rtJtSMlXXe7tVS1SZAr64BvJeuI5aHRs3ojMD8=
-X-Google-Smtp-Source: ABdhPJzAMcpVfmwUbQtBAKz2b/1EvEG3lNknXLAeGCG5/LOW2onoHQltm2OokBq1l0sVLbWJnKrPmXPjV1frxujIezc=
-X-Received: by 2002:a5e:d512:: with SMTP id e18mr21496064iom.149.1625697246499;
- Wed, 07 Jul 2021 15:34:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <20210704202756.29107-1-ojeda@kernel.org> <20210704202756.29107-5-ojeda@kernel.org>
- <CAKwvOdkWCgUb+G+iQ7pcvrVvrOfOaFYc6YvO1a9AKSd-oU_Kvg@mail.gmail.com>
-In-Reply-To: <CAKwvOdkWCgUb+G+iQ7pcvrVvrOfOaFYc6YvO1a9AKSd-oU_Kvg@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 8 Jul 2021 00:33:55 +0200
-Message-ID: <CANiq72kBO5LJ8_pHmy7p6UmVYPiY1=2HugpCTen2Q3GVb_xidA@mail.gmail.com>
-Subject: Re: [PATCH 04/17] vsprintf: add new `%pA` format specifier
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 7 Jul 2021 21:02:08 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B8B3C061574;
+        Wed,  7 Jul 2021 17:59:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=DQ/ZqedFwNuEbvbxnVdd4B/mfUuq92y0TGsMJ/w3Rb4=; b=jg8IqGl2h31ZNsVMimKoOBaTWJ
+        pZJWJyUMrT7KElP4BkLGh18OCcyt7p77lQyct5FNFLYlwDzIOV0i7bppOWOo0IXgIO7oSQQIJislh
+        bvleAfjaSE6juQimQJjXA5zU2USOfrJHt/BFkya7zRwfFGtcfxsZ0aTh9LaXXxew0IXJY6s72vtv0
+        z/suJRxIyxAKlUwEZA/YAbJKivGXjf1n5cC/ZupOIirSY2ilNI3GY6ntpqSPYa/KFiXVPTw1GilhO
+        yfBUWJsM9VJ5AmDiVJ3i0APuSx/EstDtr+nDLY5rwnQ0k8+llG3lCAms1+4+xyQHYJFzMHQdynj+m
+        cAtbdG4Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1m1IN6-00Cxix-4L; Thu, 08 Jul 2021 00:58:34 +0000
+Date:   Thu, 8 Jul 2021 01:58:32 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Finn Behrens <finn@kloenk.dev>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
         Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Sumera Priyadarsini <sylphrenadin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Fox Chen <foxhlchen@gmail.com>,
-        Ayaan Zaidi <zaidi.ayaan@gmail.com>,
-        Douglas Su <d0u9.su@outlook.com>, Yuki Okushi <jtitor@2k36.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 00/17] Rust support
+Message-ID: <YOZNuEtNbsLxRM0R@casper.infradead.org>
+References: <20210704202756.29107-1-ojeda@kernel.org>
+ <YOVNJuA0ojmeLvKa@infradead.org>
+ <CANiq72mKPFtB4CtHcc94a_y1V4bEOXXN2CwttQFvyzwXJv62kw@mail.gmail.com>
+ <YOWjLmg/Z7kr2+tx@kroah.com>
+ <YOW1Nj8+a2Yth2++@google.com>
+ <YOXB7FRqldZik2Xn@kroah.com>
+ <BFD5298D-00CD-4FEF-AE77-61E69AF78604@kloenk.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BFD5298D-00CD-4FEF-AE77-61E69AF78604@kloenk.dev>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Jul 7, 2021 at 10:31 PM Nick Desaulniers
-<ndesaulniers@google.com> wrote:
->
-> Which patch in the series adds the definition of rust_fmt_argument?
-> Sorry, I haven't looked through the entire series yet, but I don't
-> think it was an earlier patch in the series.  If it's later in the
-> series, you may want to rebase this to be after (or combine it with
-> the patch that provides the definition).  For instance, let's say the
-> first half of this series was accepted/merged, but not the latter
-> half. It would be weird to provide such definitions/calls to undefined
-> symbols.
+On Wed, Jul 07, 2021 at 10:56:57PM +0200, Finn Behrens wrote:
+> There is a more general use driver (network dummy) still in the making, It is fully operational, just the documentation of the rust bindings are not finished yet, so it is not merged into the rust tree yet, also I have to rebase it.
 
-It is in https://lore.kernel.org/lkml/20210704202756.29107-11-ojeda@kernel.org/#Z30rust:kernel:print.rs
+Why are you so resistant to writing a real driver that deals with actual
+hardware?  A simple NVMe driver is less than a thousand lines of C.
+I know the one in the kernel now is ridiculously complicated and has
+been thoroughly messed up with abstractions to support NVMeoF instead
+of having a separate driver, but it's really a simple interface at heart.
 
-Yeah, perhaps it would have been better to put it in the `kernel`
-crate commit alongside `include/linux/spinlock.h` and
-`kernel/printk/printk.c`.
-
-On the other hand, having C changes on other commits may be easier to
-read and explain (note that compilation still works, given things are
-only enabled near the end in the Kbuild commit).
-
-Cheers,
-Miguel
