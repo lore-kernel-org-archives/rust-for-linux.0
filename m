@@ -2,100 +2,151 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-19.0 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7632C07E96
-	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Jul 2021 08:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ABE65C07E9B
+	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jul 2021 10:31:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C3CB261C40
-	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Jul 2021 08:30:03 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 89D94613D3
+	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jul 2021 10:31:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231132AbhGHIco (ORCPT
+        id S232208AbhGIKei (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 8 Jul 2021 04:32:44 -0400
-Received: from gimli.kloenk.dev ([195.39.247.182]:48982 "EHLO gimli.kloenk.dev"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230414AbhGHIco (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 8 Jul 2021 04:32:44 -0400
-Content-Type: text/plain;
-        charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kloenk.dev; s=mail;
-        t=1625733001; bh=nsLyPY9TFvdVAsKf24sz2i6+zJKmFfVuOlHVjrT1Wcg=;
-        h=Subject:From:In-Reply-To:Date:Cc:References:To;
-        b=F+X8j0IW1g0OcymY5PnahQp/ZFBdq5PH7IpJ3H89kKZKTzp3vnvaD4+r5cVV3wp0X
-         d39Axsj4eCAk8ELeDN7np7WIOjZvd285pJokHrAOH+wkQWzlS4jrQrQNx+eEX7XL68
-         26WFK/9pDmZyrX48D7J0oz0I9ml7kcGwkTMWdDYI=
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.100.0.2.22\))
-Subject: Re: [PATCH 00/17] Rust support, NVMe
-From:   Finn Behrens <finn@kloenk.dev>
-In-Reply-To: <20210708063941.xkpf6pr4for7y6gj@gpm.stappers.nl>
-Date:   Thu, 8 Jul 2021 10:29:59 +0200
-Cc:     Matthew Wilcox <willy@infradead.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E19BB1F6-8749-4EFA-AC6F-F77C0C5BF07C@kloenk.dev>
-References: <20210704202756.29107-1-ojeda@kernel.org>
- <YOVNJuA0ojmeLvKa@infradead.org>
- <CANiq72mKPFtB4CtHcc94a_y1V4bEOXXN2CwttQFvyzwXJv62kw@mail.gmail.com>
- <YOWjLmg/Z7kr2+tx@kroah.com> <YOW1Nj8+a2Yth2++@google.com>
- <YOXB7FRqldZik2Xn@kroah.com>
- <BFD5298D-00CD-4FEF-AE77-61E69AF78604@kloenk.dev>
- <YOZNuEtNbsLxRM0R@casper.infradead.org>
- <20210708063941.xkpf6pr4for7y6gj@gpm.stappers.nl>
-To:     Geert Stappers <stappers@stappers.nl>
+        Fri, 9 Jul 2021 06:34:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34398 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232113AbhGIKei (ORCPT
+        <rfc822;rust-for-linux@vger.kernel.org>);
+        Fri, 9 Jul 2021 06:34:38 -0400
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E7FCC0613DD
+        for <rust-for-linux@vger.kernel.org>; Fri,  9 Jul 2021 03:31:54 -0700 (PDT)
+Received: by mail-ot1-x333.google.com with SMTP id i12-20020a05683033ecb02903346fa0f74dso8937367otu.10
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 Jul 2021 03:31:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+Ag9cLTRzEt3rLWB36U/GaTidnQngHz1mFDbPHdbYJM=;
+        b=sy+60CShYu2+iBbLulb6BXcdNl+YIgSb+jajYjDZa4zuiim9DZxtK88a9BSEKRhPbe
+         2149xKE135XoG+YMIvJKNw6ZCj+Hh+EyWUQfK08pHq86IYtTdGJTm+svEvs37g5Uc5aC
+         xngQeJK55dnd2ThJlBq5eYZYae9d0PV6/iYXED9E2qqxOYHyQkUpxQ8hj9KF/zDuFrT9
+         tgJPN39rPw0sSVwFi7t4ZBZBflf0sauWKsDv5fafUbt1gGs3lfO03jiHBYX5NnqsSVoi
+         /ujWD+DqEO4PATTm5/8r52LotGJ0RL6BBjZ8Ui/OZxRKJiFG0Xe11t+2cPco8FTtPijx
+         5Rtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+Ag9cLTRzEt3rLWB36U/GaTidnQngHz1mFDbPHdbYJM=;
+        b=El5K2rjQjf0ByrAw0dMOJUQaYVlxYaIDdEID5G/8KpKKQzm4AuUZocI1IaW9pghtaF
+         r7x85LYKP7F6S5AIIN8sa6+rDHTzzpo7gQKR6OtU8tScFV314+FKLUEF1TSHs+3I/4Rq
+         JLd8i6hW0EaooWzCg346HXYqiZiGkK7DkSb5Qo3ZE93VN1CcWkp/x21iyA3OvyJ0pnXu
+         7uzDT+pYttwMAg+0t2gnBWUob6kcdWYaXU7Eok3FzcifaSIiuQz+4KIknN+/jXjJlryX
+         VFksw3R+qDbvximuoC/zVK721PSJt4PK/CYnsZDq63dhXoYXtCphMd5/bqpjMGyAhUg5
+         o14Q==
+X-Gm-Message-State: AOAM533SqyhCQ+t2tSWGzh1LDUQUbXnt1DMbxlsLR4Qy+qKGRObaaB0p
+        Lsz8iebdC6CMDzg1Meej4Suf9pxnFqqHxJMRYSJ5og==
+X-Google-Smtp-Source: ABdhPJzZsHc3H6ZMG5NBT8zSvR+UmJMGAQPOW7Oty1uNxYZb5VbOU1cqW4degb+Ls5Psx+gb8Y7wOEkrsU6h6jHMP2U=
+X-Received: by 2002:a9d:d04:: with SMTP id 4mr29227829oti.251.1625826713387;
+ Fri, 09 Jul 2021 03:31:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210704202756.29107-1-ojeda@kernel.org> <20210704202756.29107-6-ojeda@kernel.org>
+ <YOV/oj0rjHhzluH2@elver.google.com>
+In-Reply-To: <YOV/oj0rjHhzluH2@elver.google.com>
+From:   Marco Elver <elver@google.com>
+Date:   Fri, 9 Jul 2021 12:31:41 +0200
+Message-ID: <CANpmjNMOou5DccZvGAcy4U7iqoLk6NRuTFkd-6JzTmoSFR+YYg@mail.gmail.com>
+Subject: Re: [PATCH 05/17] rust: add C helpers
+To:     ojeda@kernel.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        Fox Chen <foxhlchen@gmail.com>,
+        Ayaan Zaidi <zaidi.ayaan@gmail.com>,
+        Douglas Su <d0u9.su@outlook.com>,
+        Yuki Okushi <jtitor@2k36.org>,
+        clang-built-linux@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Wed, 7 Jul 2021 at 12:19, Marco Elver <elver@google.com> wrote:
+> On Sun, Jul 04, 2021 at 10:27PM +0200, ojeda@kernel.org wrote:
+> > From: Miguel Ojeda <ojeda@kernel.org>
+> >
+> > This source file contains forwarders to C macros and inlined
+> > functions.
+>
+> What is the story with Rust and LTO? Intuitively, I would expect Rust
+> code to only perform optimally if the kernel is built with LTO
+> (currently only supported via Clang).
 
+I'll answer my own question: it looks like Linux Rust code currently
+does _not_ generate LLVM-LTO compatible object files, but only native
+object files (which still link fine if LTO is enabled, but doesn't
+permit the optimizations below we'd want).
 
-> On 8. Jul 2021, at 08:39, Geert Stappers <stappers@stappers.nl> wrote:
->=20
-> On Thu, Jul 08, 2021 at 01:58:32AM +0100, Matthew Wilcox wrote:
->> On Wed, Jul 07, 2021 at 10:56:57PM +0200, Finn Behrens wrote:
->>> There is a more general use driver (network dummy) still in the
->>> making, It is fully operational, just the documentation of the rust
->>> bindings are not finished yet, so it is not merged into the rust
->>> tree yet, also I have to rebase it.
->>=20
->> Why are you so resistant to writing a real driver that deals with =
-actual hardware?
->=20
-> } Why are we so resistant to writing a real driver that deals with =
-actual hardware?
->=20
-> It is not dodging hardware, it is universal available.
->=20
->=20
->> A simple NVMe driver is less than a thousand lines of C.
->> I know the one in the kernel now is ridiculously complicated and has
->> been thoroughly messed up with abstractions to support NVMeoF instead
->> of having a separate driver, but it's really a simple interface at =
-heart.
->=20
-> Summary of https://qemu.readthedocs.io/en/latest/system/nvme.html
->=20
->  NVMe hardware is universal available.
->=20
+rustc already supports playing nicely with LLVM LTO via `-C
+linker-plugin-lto`:
+https://doc.rust-lang.org/rustc/linker-plugin-lto.html
 
-I actually don=E2=80=99t have a clue how nvme works, that is my reason =
-to not write a nvme driver. But, I=E2=80=99m currently writing a rust =
-version of e1000. This is also available in qemu and is real hardware. =
-This is sadly taking quite some time, as I don=E2=80=99t have a good =
-linux kernel development setup currently.
+So, hopefully it should only require kernel work to make it play
+nicely with CONFIG_LTO_CLANG.
 
->=20
->=20
->=20
-> Groeten
-> Geert Stappers
-> --=20
-> Silence is hard to parse
-
-CU,
-Finn
-
+> Because if calls to every one of these helpers are real calls, I would
+> expect performance to be pretty poor. There's probably a reason these
+> are macros or inlinable functions.
+>
+> I would almost go so far and suggest that CONFIG_RUST be modified as
+> follows:
+>
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -2028,6 +2028,7 @@ config RUST
+>         depends on HAS_RUST
+>         depends on !COMPILE_TEST
+>         depends on !MODVERSIONS
+> +       depends on LTO || EXPERT
+>         default n
+>         help
+>           Enables Rust support in the kernel.
+>
+> [ I'm sure there are configs that don't yet work with LTO, but could be
+>   useful to enable for debugging or testing purposes, and therefore would
+>   make it conditional on CONFIG_EXPERT as well. ]
+>
+> [...]
+> > +unsigned long rust_helper_copy_from_user(void *to, const void __user *from, unsigned long n)
+> > +{
+> > +     return copy_from_user(to, from, n);
+> > +}
+> > +
+> [...]
+>
+> From some local tests, it looks like simply attaching
+> __attribute__((always_inline)) will do what one would expect when
+> compiling with Clang LTO (I checked -flto=thin).
+>
+> If you confirm this also works across C and Rust TUs when enabling LTO,
+> I would then suggested adding __attribute__((always_inline)) to all
+> these helpers.
+>
+> Thanks,
+> -- Marco
