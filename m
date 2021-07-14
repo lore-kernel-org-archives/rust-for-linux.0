@@ -2,95 +2,107 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C37F4C47E4B
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jul 2021 20:09:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5BE5C47E4B
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jul 2021 20:19:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A0DD0613C0
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jul 2021 20:09:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CE60F611AD
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jul 2021 20:19:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239704AbhGNUMH (ORCPT
+        id S237089AbhGNUWs (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Jul 2021 16:12:07 -0400
-Received: from out03.mta.xmission.com ([166.70.13.233]:55832 "EHLO
-        out03.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238029AbhGNUMD (ORCPT
+        Wed, 14 Jul 2021 16:22:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57870 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230004AbhGNUWs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Jul 2021 16:12:03 -0400
-Received: from in02.mta.xmission.com ([166.70.13.52]:37656)
-        by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1m3lBu-00G2fD-3g; Wed, 14 Jul 2021 14:09:10 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95]:50644 helo=email.xmission.com)
-        by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1m3lBs-008XEt-12; Wed, 14 Jul 2021 14:09:09 -0600
-From:   ebiederm@xmission.com (Eric W. Biederman)
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 14 Jul 2021 16:22:48 -0400
+Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A91DC06175F;
+        Wed, 14 Jul 2021 13:19:55 -0700 (PDT)
+Received: by mail-il1-x130.google.com with SMTP id j5so2861149ilk.3;
+        Wed, 14 Jul 2021 13:19:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7L4kksj/vfOAUbxuHKgQDlq1eiLc/XNqtZfav2j7JVs=;
+        b=jR7ZAc1fIM4vo4zdVr/y4sbLOKemEpSL/oQO7vRGlxCE03qUBOdBJR2miQkPtkUSov
+         CtMwnWBR37jxHJAYZgODBG0PTFl8wCuIiH6K/l9ufF9iGtqkC1623m0YNeYpU9gsUzYA
+         SABvdDKjEJAniWbDygpQa6O/glAdqHUV8y4kwjmQI6zeUDo8oJC6QElBbuiEvj/gZ9n/
+         GmbTaXaxCF1xPA5bcZeBcwNDXcUZIcJ7gXvsNw/Fr2AHldhjMwQLLqAkqnsoKhH1B+DN
+         mHmsDheSZC+/vg50tL1RJiMjmhbueLF481b/UF1fGdIvPUcUgipfXRqsFv9B/SQ2avwS
+         R8yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7L4kksj/vfOAUbxuHKgQDlq1eiLc/XNqtZfav2j7JVs=;
+        b=P7e/+LIo/cfTuSyQFjce3tQZp6/cFtcicriiFgxqdAQTt1o58oCX0BMORJUA7u/E7t
+         2GQIFFYEc7BzSX/OPWmKniST6piXqCvDZs+wfXYvjK/IIdHD+Zjd7y2HwqAOzjwHzbpp
+         aW+lUnZ2YIb7yutcuHACM+dI3+mTyPFLmz1FiPoAysb46UkQc7hGnU9yp40N8th0wYDL
+         YbA0d7JcjayaE8o0Kg9vWcql8rFPdA1n8ThVd5PnC8yO96MeeCvBdcZOOeT0SFijuwHZ
+         Nm7HfhjZbTCj9A+yIe4HxWfIVrmEJ+pb4xEGGMk2OD5Z+QIxgkDsImXt5MjpKbVbxNF2
+         icYA==
+X-Gm-Message-State: AOAM532LnvH0gIjIi7Y0OPYQ8lrFmvKw5LyK+wMInNiFyJojW52lzILk
+        1UX+hJ+WqyQSNs5DkuFglA95DlP78PAF644XMUu5oHRMAevmHA==
+X-Google-Smtp-Source: ABdhPJzah4445d7rlsM/MOuKDZT+/KyPCUkqd8cC0SG0y0ixvYaQx9ZMzPCSjcA5UWfZ871Hmvxv4+guF4BBMJEixAY=
+X-Received: by 2002:a92:b74d:: with SMTP id c13mr7737985ilm.176.1626293994890;
+ Wed, 14 Jul 2021 13:19:54 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210704202756.29107-1-ojeda@kernel.org> <20210704202756.29107-3-ojeda@kernel.org>
+ <CAKwvOdmhRuF5eTZ2ztZBrL6BvDkA57B7OfVuvCaEMfV8nkLXCQ@mail.gmail.com>
+In-Reply-To: <CAKwvOdmhRuF5eTZ2ztZBrL6BvDkA57B7OfVuvCaEMfV8nkLXCQ@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 14 Jul 2021 22:19:43 +0200
+Message-ID: <CANiq72mronNX4MfKGvzQTe0R3Fd=2M32bX8acdaij9sGopmerg@mail.gmail.com>
+Subject: Re: [PATCH 02/17] kallsyms: increase maximum kernel symbol length to 512
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
         Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        "open list\:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Geoffrey Thomas <geofft@ldpreload.com>,
         Finn Behrens <me@kloenk.de>,
         Adam Bratschi-Kaye <ark.email@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>
-References: <20210704202756.29107-1-ojeda@kernel.org>
-        <20210704202756.29107-3-ojeda@kernel.org>
-        <CAKwvOdmhRuF5eTZ2ztZBrL6BvDkA57B7OfVuvCaEMfV8nkLXCQ@mail.gmail.com>
-        <CAHk-=whzXv=Fu7dQshSTyd9H1-JS5=gyKwW-GMNGccAKs4Mwpg@mail.gmail.com>
-Date:   Wed, 14 Jul 2021 15:09:01 -0500
-In-Reply-To: <CAHk-=whzXv=Fu7dQshSTyd9H1-JS5=gyKwW-GMNGccAKs4Mwpg@mail.gmail.com>
-        (Linus Torvalds's message of "Wed, 14 Jul 2021 12:04:08 -0700")
-Message-ID: <87mtqo1wv6.fsf@disp2133>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1m3lBs-008XEt-12;;;mid=<87mtqo1wv6.fsf@disp2133>;;;hst=in02.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
-X-XM-AID: U2FsdGVkX1+RhqiLRuXkUrC80vE88JVm8tG24B3OT+w=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-Subject: Re: [PATCH 02/17] kallsyms: increase maximum kernel symbol length to 512
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Linus Torvalds <torvalds@linux-foundation.org> writes:
+On Wed, Jul 14, 2021 at 8:20 PM Nick Desaulniers
+<ndesaulniers@google.com> wrote:
+>
+> For C++ demangling, we have c++filt.
+>
+> A quick search turned up: https://github.com/luser/rustfilt
+>
+> but if the v0 mangling scheme is upcoming, I doubt a repo that hasn't
+> been updated supports an upcoming scheme.  Is there a more official
+> equivalent?
 
-> On Wed, Jul 14, 2021 at 11:20 AM Nick Desaulniers
-> <ndesaulniers@google.com> wrote:
->>
->> Do we demangle rust symbols when printing a trace from a warn/panic?
->> That would be nice.
->
-> I think it would be pretty much required. Otherwise stack traces are
-> going to be very very painful.
->
-> In fact, I'm starting to think that Willy is right: we should use
-> hashes for the "real" symbol name, and have demangled names for
-> printing, and at no point would the kernel actually want or need to
-> have the nasty mangled names.
->
-> (This wouldn't be rust-specific - using hashes for module linking
-> sounds like a good diea for C code as well, even if the de-mangled
-> names for printing are then the regular ones)
->
-> Anybody interested in looking into that? It would make this "big
-> kernel symbols" patch immaterial.
+Demangling v0 is already supported by the latest releases of binutils
+(2.36) / gdb (10.2), e.g.:
 
-Are you thinking the hashed kernel symbols need to have their types
-included in the hash?  Or is this just a hash to make the names a
-managable size?
+    echo _RNvXNtCshGpAVYOtgW1_7example9my_moduleINtB2_13MyGenericTypeNtB2_6MyTypeENtB2_7MyTrait9my_method
+| c++filt -i
+    <example::my_module::MyGenericType<example::my_module::MyType> as
+example::my_module::MyTrait>::my_method
 
-Eric
+See the current status at https://github.com/rust-lang/rust/issues/60705.
+
+(which reminds me I have to update the "Hacking" section in the Quick
+Start guide, because now the releases I backported the support into
+are not needed anymore)
+
+Cheers,
+Miguel
