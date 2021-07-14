@@ -2,73 +2,81 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5BE5C47E4B
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jul 2021 20:19:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 136A0C47E48
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jul 2021 20:22:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CE60F611AD
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jul 2021 20:19:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E98FA613C9
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jul 2021 20:22:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237089AbhGNUWs (ORCPT
+        id S229900AbhGNUZJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Jul 2021 16:22:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57870 "EHLO
+        Wed, 14 Jul 2021 16:25:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230004AbhGNUWs (ORCPT
+        with ESMTP id S230234AbhGNUZI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Jul 2021 16:22:48 -0400
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A91DC06175F;
-        Wed, 14 Jul 2021 13:19:55 -0700 (PDT)
-Received: by mail-il1-x130.google.com with SMTP id j5so2861149ilk.3;
-        Wed, 14 Jul 2021 13:19:55 -0700 (PDT)
+        Wed, 14 Jul 2021 16:25:08 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 682BEC061760
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jul 2021 13:22:16 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id u13so5728288lfs.11
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jul 2021 13:22:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linux-foundation.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=7L4kksj/vfOAUbxuHKgQDlq1eiLc/XNqtZfav2j7JVs=;
-        b=jR7ZAc1fIM4vo4zdVr/y4sbLOKemEpSL/oQO7vRGlxCE03qUBOdBJR2miQkPtkUSov
-         CtMwnWBR37jxHJAYZgODBG0PTFl8wCuIiH6K/l9ufF9iGtqkC1623m0YNeYpU9gsUzYA
-         SABvdDKjEJAniWbDygpQa6O/glAdqHUV8y4kwjmQI6zeUDo8oJC6QElBbuiEvj/gZ9n/
-         GmbTaXaxCF1xPA5bcZeBcwNDXcUZIcJ7gXvsNw/Fr2AHldhjMwQLLqAkqnsoKhH1B+DN
-         mHmsDheSZC+/vg50tL1RJiMjmhbueLF481b/UF1fGdIvPUcUgipfXRqsFv9B/SQ2avwS
-         R8yA==
+        bh=AWy+35KmmWPF9vsv4/yauNLhBLPVkzMejTzAkHJGLBM=;
+        b=V37VAVm5NvLVGqND/F0vTJg46VZeConitLxxTHCs1N4UC3kwCcitLTAuULgE9P0yJ7
+         JxRC/pqtzVf+u3u/c8M13eOZYvvD8y4ch9aoNPL3PEyFGZfOI7/lAvcnPkfI3gFhUBhB
+         KHaX4h+Jp8OCMJ7rNg+VURB4Q4FkA9BEozZbQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=7L4kksj/vfOAUbxuHKgQDlq1eiLc/XNqtZfav2j7JVs=;
-        b=P7e/+LIo/cfTuSyQFjce3tQZp6/cFtcicriiFgxqdAQTt1o58oCX0BMORJUA7u/E7t
-         2GQIFFYEc7BzSX/OPWmKniST6piXqCvDZs+wfXYvjK/IIdHD+Zjd7y2HwqAOzjwHzbpp
-         aW+lUnZ2YIb7yutcuHACM+dI3+mTyPFLmz1FiPoAysb46UkQc7hGnU9yp40N8th0wYDL
-         YbA0d7JcjayaE8o0Kg9vWcql8rFPdA1n8ThVd5PnC8yO96MeeCvBdcZOOeT0SFijuwHZ
-         Nm7HfhjZbTCj9A+yIe4HxWfIVrmEJ+pb4xEGGMk2OD5Z+QIxgkDsImXt5MjpKbVbxNF2
-         icYA==
-X-Gm-Message-State: AOAM532LnvH0gIjIi7Y0OPYQ8lrFmvKw5LyK+wMInNiFyJojW52lzILk
-        1UX+hJ+WqyQSNs5DkuFglA95DlP78PAF644XMUu5oHRMAevmHA==
-X-Google-Smtp-Source: ABdhPJzah4445d7rlsM/MOuKDZT+/KyPCUkqd8cC0SG0y0ixvYaQx9ZMzPCSjcA5UWfZ871Hmvxv4+guF4BBMJEixAY=
-X-Received: by 2002:a92:b74d:: with SMTP id c13mr7737985ilm.176.1626293994890;
- Wed, 14 Jul 2021 13:19:54 -0700 (PDT)
+        bh=AWy+35KmmWPF9vsv4/yauNLhBLPVkzMejTzAkHJGLBM=;
+        b=AZffE9VoDdtnu1RGRbvcaFH5sEwaP0uo+D0I/t4q3dY87MDQWCdjBcG0/6d8CqO86n
+         Ldj7iivdqjD2HPXxayHo7kqTYCzZvFfQ1zktANpaB7ovINzARTCkS+46buN4ShRdOXzw
+         h48wF/H2xJjLCgl7nYK+2CFws2MzfZzA0YD7C1VYhfuWANWW56V4dR3TEtLj5HRTAi8+
+         TabsDCQOJebWZ1CCalPnl6XylAZVoxBx/zcZvDTjoa+usI8X1dh62y/5jmkltSYFuPAe
+         R1nXqPIRSpnw5OH8AjXLG6sfoIJynsvBTgrDDN3CPpaQmd7DXAQAki6oYZ07MlyAg5Ex
+         gTAw==
+X-Gm-Message-State: AOAM533Gm3IJ0JCy3l1Ile+pGiWVE4p+PAIhaIwvMO6vmEg844Z2R9pD
+        FIsFpYJ7VlyCJUJGjNKKgq3dZZqTOoL3D8gu
+X-Google-Smtp-Source: ABdhPJzRNMxDuLNg0Kes3F79w1EiI6hbBVVsF1kRWBJuvkxmD4PJXp6aMAmUwNRI1lKNTDjYTBTrqg==
+X-Received: by 2002:a19:8c0f:: with SMTP id o15mr33736lfd.509.1626294134672;
+        Wed, 14 Jul 2021 13:22:14 -0700 (PDT)
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com. [209.85.208.182])
+        by smtp.gmail.com with ESMTPSA id x19sm239389lfd.275.2021.07.14.13.22.13
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Jul 2021 13:22:13 -0700 (PDT)
+Received: by mail-lj1-f182.google.com with SMTP id a6so5312940ljq.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jul 2021 13:22:13 -0700 (PDT)
+X-Received: by 2002:a2e:81c4:: with SMTP id s4mr10564675ljg.251.1626294133222;
+ Wed, 14 Jul 2021 13:22:13 -0700 (PDT)
 MIME-Version: 1.0
 References: <20210704202756.29107-1-ojeda@kernel.org> <20210704202756.29107-3-ojeda@kernel.org>
  <CAKwvOdmhRuF5eTZ2ztZBrL6BvDkA57B7OfVuvCaEMfV8nkLXCQ@mail.gmail.com>
-In-Reply-To: <CAKwvOdmhRuF5eTZ2ztZBrL6BvDkA57B7OfVuvCaEMfV8nkLXCQ@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 14 Jul 2021 22:19:43 +0200
-Message-ID: <CANiq72mronNX4MfKGvzQTe0R3Fd=2M32bX8acdaij9sGopmerg@mail.gmail.com>
+ <CAHk-=whzXv=Fu7dQshSTyd9H1-JS5=gyKwW-GMNGccAKs4Mwpg@mail.gmail.com> <87mtqo1wv6.fsf@disp2133>
+In-Reply-To: <87mtqo1wv6.fsf@disp2133>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 14 Jul 2021 13:21:57 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whdi_biEOrzrYn7OC+wq+ckoaa5dFAATdM=n9P7Dp0YOA@mail.gmail.com>
+Message-ID: <CAHk-=whdi_biEOrzrYn7OC+wq+ckoaa5dFAATdM=n9P7Dp0YOA@mail.gmail.com>
 Subject: Re: [PATCH 02/17] kallsyms: increase maximum kernel symbol length to 512
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+Cc:     Nick Desaulniers <ndesaulniers@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
         Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Geoffrey Thomas <geofft@ldpreload.com>,
         Finn Behrens <me@kloenk.de>,
@@ -79,30 +87,31 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Jul 14, 2021 at 8:20 PM Nick Desaulniers
-<ndesaulniers@google.com> wrote:
+On Wed, Jul 14, 2021 at 1:09 PM Eric W. Biederman <ebiederm@xmission.com> wrote:
 >
-> For C++ demangling, we have c++filt.
->
-> A quick search turned up: https://github.com/luser/rustfilt
->
-> but if the v0 mangling scheme is upcoming, I doubt a repo that hasn't
-> been updated supports an upcoming scheme.  Is there a more official
-> equivalent?
+> Are you thinking the hashed kernel symbols need to have their types
+> included in the hash?
 
-Demangling v0 is already supported by the latest releases of binutils
-(2.36) / gdb (10.2), e.g.:
+I think the hash should be the whole mangled name. So yes, for Rust
+symbols they'd have the the type information.
 
-    echo _RNvXNtCshGpAVYOtgW1_7example9my_moduleINtB2_13MyGenericTypeNtB2_6MyTypeENtB2_7MyTrait9my_method
-| c++filt -i
-    <example::my_module::MyGenericType<example::my_module::MyType> as
-example::my_module::MyTrait>::my_method
+>  Or is this just a hash to make the names a managable size?
 
-See the current status at https://github.com/rust-lang/rust/issues/60705.
+No, if that was the only point of it, the "just use two bytes for
+length" would be simpler.
 
-(which reminds me I have to update the "Hacking" section in the Quick
-Start guide, because now the releases I backported the support into
-are not needed anymore)
+But I don't think we want to do run-time de-mangling of names in the
+kernel when doing stack traces, which implies that the kallsym
+information in the kernel should be the de-mangled names.
 
-Cheers,
-Miguel
+That makes the names nice and readable, and also makes this "maximum
+symbol length" thing a non-issue.
+
+BUT.
+
+It also means that you can't use those names for linking purposes, so
+you'd then need to have a "full version" for that. But as Willy
+pointed out elsewhere, you might as well just use a constant-sized
+hash for that, rather than have both a manged and a de-mangled name.
+
+                   Linus
