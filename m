@@ -2,125 +2,178 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-28.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 398B1C07E96
-	for <rust-for-linux@archiver.kernel.org>; Tue, 13 Jul 2021 18:02:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19C0FC07E9C
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jul 2021 18:14:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1D26861369
-	for <rust-for-linux@archiver.kernel.org>; Tue, 13 Jul 2021 18:02:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 052D5613C5
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jul 2021 18:14:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233038AbhGMSFH (ORCPT
+        id S239995AbhGNSRD (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 13 Jul 2021 14:05:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37240 "EHLO
+        Wed, 14 Jul 2021 14:17:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbhGMSFG (ORCPT
+        with ESMTP id S229738AbhGNSRD (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 13 Jul 2021 14:05:06 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B365C0613DD;
-        Tue, 13 Jul 2021 11:02:15 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id r125so14939516qkf.1;
-        Tue, 13 Jul 2021 11:02:15 -0700 (PDT)
+        Wed, 14 Jul 2021 14:17:03 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 137E2C061760
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jul 2021 11:14:11 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id y42so5177298lfa.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jul 2021 11:14:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=8TTYSZMJTfaJpr238K/4LxyKEosHZCJyy+F52YED+TY=;
-        b=o8JQakp2L+wWqKAhlxER0A1Sdy69isN9DelFCPMnxusbF07+0A6O0ooBS4zvVCXUMn
-         3o0xvXRgMhFtlgJFsdojsDOnjDGA23bQD6ypvXeS2KiJqYZAPqqiBgahCyiNvEQjYLCM
-         rZ1F54wWBYdlEHdsWnKL7p7FaPO0dtk5bx4FcHEkrcCyAkOo6s3YodIqZBQbOqsrLk2J
-         I9NIPje25WvpV+H5d1GQGP7SK5ihVH/E/vtXMI076zuG21/sdJWg9esi8iVTYF0fljTz
-         1AZmO7gh+Wt1U6ZouQMF2jvtAiyidjCX2ZlBaPUrLXZ1RkJ1erg2RXPub1hDyV3ey5kz
-         Y6dQ==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=O8TPU0hqO2c6lrmOpVCEHEZ3QntgeMzfXOeutKZUuGQ=;
+        b=GP0Dd2HejNzwHWckSqUuuJQz3ybU1NQTkuAQYQ0Iix+Gqdo0eWbTBj7XnDaLG0wE8k
+         08OctU1iaTR+/lL1dLgTUKi8wCk+YBwdSpn0GKuvAGGCSDTXUJI/aMos9QYPB3SKgEc/
+         PAkGIeIRMCIYXU5yjKfC0MyZtFjcbDMD3hIxnGNz6Na67oIJlknmivj1spY/A/5qz5Ba
+         h1I8KLXm+/aU4Kp8zxzQyuqrf52MKJN5gD5k96UWqJwy4ZIdiLeX0P0di+mSs4zycdR4
+         JYf35fE902Tc/W595ve57Iqs1LGBtYOmeKqw8jUZyPZKYI//Pi0OzfT+ooT83u22YhH/
+         v85Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=8TTYSZMJTfaJpr238K/4LxyKEosHZCJyy+F52YED+TY=;
-        b=g/JYCogEo9h7I13VWk/kIZ6/OBsctTyqy39EP2Z+98Yl8RFzjFA7wvYJa5VSzzQsdd
-         SO+l3i1FDUbZquue0jqCk758Wd19v0qfgendA18R60sxph9n5DuD+duabRFmdlU+wIW2
-         wya5GTc7D+DzMhzHt4Kcm1D1yjowzmouvRaPbhIs4Qc92YG+rQoEvHkre/bvKgsXMLLx
-         Sb2oOBiwH4pn7sG2RIs4+L691whdSP6yPIBgxS+oyQs+pYFYZksbfp+hGReNKkb3MKNt
-         szXtVLJGtMefTESPpR48zv6pW76jxNUdoQeV84WedkLxo+tKswEIvcpKAvrWLml4sV/N
-         28JA==
-X-Gm-Message-State: AOAM533RS+WUtNa3Y/oDHKCsE//TN26k6fVYekV+98ypi1A8OzeIL6JZ
-        OcKuXsnYi0vvToI8enLRfQ==
-X-Google-Smtp-Source: ABdhPJz0HI60ldyJ5cJ+YVmgPU3mxyQfCUjFVA6TQwhU9M3cus7hi8hB1CHbClmj1siUP422pqYJbg==
-X-Received: by 2002:a05:620a:1526:: with SMTP id n6mr5405097qkk.401.1626199334533;
-        Tue, 13 Jul 2021 11:02:14 -0700 (PDT)
-Received: from moria.home.lan (c-73-219-103-14.hsd1.vt.comcast.net. [73.219.103.14])
-        by smtp.gmail.com with ESMTPSA id p22sm3001052qtq.64.2021.07.13.11.02.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jul 2021 11:02:14 -0700 (PDT)
-Date:   Tue, 13 Jul 2021 14:02:10 -0400
-From:   Kent Overstreet <kent.overstreet@gmail.com>
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     Gary Guo <gary@garyguo.net>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=O8TPU0hqO2c6lrmOpVCEHEZ3QntgeMzfXOeutKZUuGQ=;
+        b=jLLpbXfu6sBr3eJH5Kv7f0e5egZkU5SMu/QYgLQs+cM2sgJGjVHCrKslgrklONHxKV
+         aJ/pd7QD8FxAqWALGLEjfNJELhAty9ENnO+3lZF/YeWfAjEpEJKmTYE/WtOBvhodm1H/
+         Rtk8HBwQSRP5C0Zd9nFiJtrg04Z0Li9hhGpUQvYj2VO5Sl7Q3cxLqHIhFXPjnWTbykU9
+         v9o/NU9GM8FzJA+YqDvniclNpPnYOqIEPnMTq4HepjBR0Mvzoye/dWKw7AXUdnOI2hmO
+         1g/sbPb/ihJp3aVHPRC8cRXyCfn5l9tXgjnUQNzDXTgouXlCGWixPihCv05l8wYqCGFA
+         L2bw==
+X-Gm-Message-State: AOAM531IgkHgNFzCUfkZQrYxeBcA4kfspXuOGU9lDuzLcb2nD4BpyiPj
+        1SAe6/TWpgWj3Vd48xL6LF2nt+xUdqoLSAQ8vHlAHmAyllgWJg==
+X-Google-Smtp-Source: ABdhPJzGQBRL19G8n4JdfX5XiIs4hch17ulA/Fmu33Rkcgp58p/SczPkAD+RTaPFPpf30NDPB1c736FtkruzNIUr9lM=
+X-Received: by 2002:a05:6512:3e0c:: with SMTP id i12mr8768338lfv.122.1626286449128;
+ Wed, 14 Jul 2021 11:14:09 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210704202756.29107-1-ojeda@kernel.org> <20210704202756.29107-4-ojeda@kernel.org>
+In-Reply-To: <20210704202756.29107-4-ojeda@kernel.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 14 Jul 2021 11:13:57 -0700
+Message-ID: <CAKwvOdnO1ZbM_FzY3qwokEkWDxsr37t_u57H_wEO6Pbu6CqFZw@mail.gmail.com>
+Subject: Re: [PATCH 03/17] Makefile: generate `CLANG_FLAGS` even in GCC builds
+To:     ojeda@kernel.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Geoffrey Thomas <geofft@ldpreload.com>,
         Finn Behrens <me@kloenk.de>,
         Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>
-Subject: Re: [PATCH 01/17] kallsyms: support big kernel symbols (2-byte
- lengths)
-Message-ID: <YO3VIjpaCSZnNapB@moria.home.lan>
-References: <20210704202756.29107-1-ojeda@kernel.org>
- <20210704202756.29107-2-ojeda@kernel.org>
- <YOIicc94zvSjrKfe@casper.infradead.org>
- <CANiq72=eHs870jbmZz8CUEUuN2NOCaKS9-F6-jAb0QXje2x1Eg@mail.gmail.com>
- <YOIpM3iFT5roz69i@casper.infradead.org>
- <20210704232007.0000357e@garyguo.net>
- <YOI5O6/RpaN1P6mM@casper.infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YOI5O6/RpaN1P6mM@casper.infradead.org>
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, Jul 04, 2021 at 11:42:03PM +0100, Matthew Wilcox wrote:
-> On Sun, Jul 04, 2021 at 11:20:07PM +0100, Gary Guo wrote:
-> > This is big endian.
-> 
-> Fundamentally, it doesn't matter whether it's encoded as top-7 +
-> bottom-8 or bottom-7 + top-8.  It could just as well be:
-> 
->         if (len >= 128) {
->                 len -= 128;
->                 len += *data * 256;
->                 data++;
->         }
-> 
-> It doesn't matter whether it's compatible with some other encoding.
-> This encoding has one producer and one consumer.  As long as they agree,
-> it's fine.  If you want to make an argument about extensibiity, then
-> I'm going to suggest that wanting a symbol name more than 32kB in size
-> is a sign you've done something else very, very wrong.
-> 
-> At that point, you should probably switch to comparing hashes of the
-> symbol instead of the symbol.  Indeed, I think we're already there at
-> 300 byte symbols; we should probably SipHash the full, unmangled symbol
-> [1].  At 33k symbols in the current kernel, the risk of a collision of
-> a 64-bit value is negligible, and almost every kernel symbol is longer
-> than 7 bytes (thankfully).
+On Sun, Jul 4, 2021 at 1:28 PM <ojeda@kernel.org> wrote:
+>
+> From: Miguel Ojeda <ojeda@kernel.org>
+>
+> To support Rust under GCC-built kernels, we need to save the flags that
+> would have been passed if the kernel was being compiled with Clang.
+>
+> The reason is that `bindgen` -- the tool we use to generate Rust
+> bindings to the C side of the kernel -- relies on `libclang` to
+> parse C. Ideally:
+>
+>   - `bindgen` would support a GCC backend (requested at [1]),
+>
+>   - or the Clang driver would be perfectly compatible with GCC,
+>     including plugins. Unlikely, of course, but perhaps a big
+>     subset of configs may be possible to guarantee to be kept
+>     compatible nevertheless.
+>
+> This is also the reason why GCC builds are very experimental and some
+> configurations may not work (e.g. `GCC_PLUGIN_RANDSTRUCT`). However,
+> we keep GCC builds working (for some example configs) in the CI
+> to avoid diverging/regressing further, so that we are better prepared
+> for the future when a solution might become available.
+>
+> [1] https://github.com/rust-lang/rust-bindgen/issues/1949
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/167
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Geoffrey Thomas <geofft@ldpreload.com>
+> Signed-off-by: Geoffrey Thomas <geofft@ldpreload.com>
+> Co-developed-by: Finn Behrens <me@kloenk.de>
+> Signed-off-by: Finn Behrens <me@kloenk.de>
+> Co-developed-by: Adam Bratschi-Kaye <ark.email@gmail.com>
+> Signed-off-by: Adam Bratschi-Kaye <ark.email@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-We really should have a better standard varint encoding - open coding varint
-encodings in 2021 is offensive, and LEB128 is retarded due to using the high bit
-of _every_ byte. Here's the encoding I did for bcachefs, which I nominate for a
-standard varint encoding, unless someone knows of a way to do better:
+Patch LGTM; please keep an eye on the series:
+https://lore.kernel.org/lkml/20210707224310.1403944-2-ndesaulniers@google.com/
 
-https://evilpiepirate.org/git/bcachefs.git/tree/fs/bcachefs/varint.c
+If that lands in kbuild before this, this patch will need to be
+rebased to avoid a conflict in linux-next.
+
+So (tentatively :-P):
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+
+If the patch needs to be rebased on the series linked above, please
+drop my reviewed by tag and I will re-review. Perhaps putting me
+explicitly on Cc: in the commit message will help notify me if there
+are successive versions?
+
+> ---
+>  Makefile | 17 +++++++++++------
+>  1 file changed, 11 insertions(+), 6 deletions(-)
+>
+> diff --git a/Makefile b/Makefile
+> index 0565caea036..6e823d8bd64 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -573,18 +573,23 @@ endif
+>  # and from include/config/auto.conf.cmd to detect the compiler upgrade.
+>  CC_VERSION_TEXT = $(subst $(pound),,$(shell $(CC) --version 2>/dev/null | head -n 1))
+>
+> -ifneq ($(findstring clang,$(CC_VERSION_TEXT)),)
+> +TENTATIVE_CLANG_FLAGS := -Werror=unknown-warning-option
+> +
+>  ifneq ($(CROSS_COMPILE),)
+> -CLANG_FLAGS    += --target=$(notdir $(CROSS_COMPILE:%-=%))
+> +TENTATIVE_CLANG_FLAGS  += --target=$(notdir $(CROSS_COMPILE:%-=%))
+>  endif
+>  ifeq ($(LLVM_IAS),1)
+> -CLANG_FLAGS    += -integrated-as
+> +TENTATIVE_CLANG_FLAGS  += -integrated-as
+>  else
+> -CLANG_FLAGS    += -no-integrated-as
+> +TENTATIVE_CLANG_FLAGS  += -no-integrated-as
+>  GCC_TOOLCHAIN_DIR := $(dir $(shell which $(CROSS_COMPILE)elfedit))
+> -CLANG_FLAGS    += --prefix=$(GCC_TOOLCHAIN_DIR)$(notdir $(CROSS_COMPILE))
+> +TENTATIVE_CLANG_FLAGS  += --prefix=$(GCC_TOOLCHAIN_DIR)$(notdir $(CROSS_COMPILE))
+>  endif
+> -CLANG_FLAGS    += -Werror=unknown-warning-option
+> +
+> +export TENTATIVE_CLANG_FLAGS
+> +
+> +ifneq ($(findstring clang,$(CC_VERSION_TEXT)),)
+> +CLANG_FLAGS    += $(TENTATIVE_CLANG_FLAGS)
+>  KBUILD_CFLAGS  += $(CLANG_FLAGS)
+>  KBUILD_AFLAGS  += $(CLANG_FLAGS)
+>  export CLANG_FLAGS
+> --
+> 2.32.0
+>
+
+
+-- 
+Thanks,
+~Nick Desaulniers
