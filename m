@@ -2,119 +2,110 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FSL_HELO_FAKE,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97C97C07E9B
-	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Jul 2021 14:25:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05A96C432BE
+	for <rust-for-linux@archiver.kernel.org>; Thu, 22 Jul 2021 22:56:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 80CF6610D0
-	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Jul 2021 14:25:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D523960EB4
+	for <rust-for-linux@archiver.kernel.org>; Thu, 22 Jul 2021 22:56:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241148AbhGSNo3 (ORCPT
+        id S232300AbhGVWPb (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 19 Jul 2021 09:44:29 -0400
-Received: from mail.teo-en-ming-corp.com ([194.233.66.226]:44276 "EHLO
-        mail.teo-en-ming-corp.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241087AbhGSNo2 (ORCPT
+        Thu, 22 Jul 2021 18:15:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49670 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232242AbhGVWPb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 19 Jul 2021 09:44:28 -0400
-X-Greylist: delayed 378 seconds by postgrey-1.27 at vger.kernel.org; Mon, 19 Jul 2021 09:44:28 EDT
-Received: from mail.teo-en-ming-corp.com (mail.teo-en-ming-corp.com [127.0.0.1])
-        by mail.teo-en-ming-corp.com (Postfix) with ESMTP id 4GT3qZ0BdfzkQ8w
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jul 2021 22:18:50 +0800 (+08)
-Authentication-Results: mail.teo-en-ming-corp.com (amavisd-new);
-        dkim=pass (2048-bit key) reason="pass (just generated, assumed good)"
-        header.d=teo-en-ming-corp.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        teo-en-ming-corp.com; h=content-transfer-encoding:content-type
-        :organization:message-id:user-agent:reply-to:subject:to:from
-        :date:mime-version; s=dkim; t=1626704329; x=1629296330; bh=hYHGw
-        vDIp91Lia793OutrdhqvMRQY9N/nwUKfFIX7ZM=; b=3jy4+L8VKMA2q/dvtK+BW
-        p1PmF6oe8tvxoykmYPlbcfS6VmQm874fBuFA3Ucn+iIHc4NpqkjK5dhNPlJDTAYR
-        TYXPI7hBRE3OCQLD7uPIpHJi901AoEAbBwJawhggb7+hEQ/A9B6ZTUV/0PhFb6wI
-        ZY7PMZ63oHkejEzCDEkto/WqOjLuRBz5pHPPMht7OY6siZ4jLvKqAP7bn9tOvTX1
-        kQ3gurX5dTQP8PY04yot+4bNKqyzpQKFrO5tgT/HMKFYGEGyzDw5+BlPbOeWVYqp
-        UH8lb3MuOr1ROchvpaG8s0ZQZ4FclhvgSBrAR98oimDWIv9jkcMsuXPaUeqrG6zo
-        g==
-X-Virus-Scanned: Debian amavisd-new at vmi576090.contaboserver.net
-Received: from mail.teo-en-ming-corp.com ([127.0.0.1])
-        by mail.teo-en-ming-corp.com (mail.teo-en-ming-corp.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id vaBfdvb1cfzp for <rust-for-linux@vger.kernel.org>;
-        Mon, 19 Jul 2021 22:18:49 +0800 (+08)
-Received: from localhost (mail.teo-en-ming-corp.com [127.0.0.1])
-        by mail.teo-en-ming-corp.com (Postfix) with ESMTPSA id 4GT3qY0cP4zkQ8m
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jul 2021 22:18:49 +0800 (+08)
+        Thu, 22 Jul 2021 18:15:31 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84A28C061760
+        for <rust-for-linux@vger.kernel.org>; Thu, 22 Jul 2021 15:56:04 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id m38-20020a05600c3b26b02902161fccabf1so2450168wms.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 22 Jul 2021 15:56:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=IA1VbfCE0XhvLNla6VhKBZi1IOWHetcg7Adztz386vQ=;
+        b=tDQZihy5zIWb38ficSC58M4Lv2GJc/Chu8kZMuPp+SIGEeS7WY4a3H9lDctfzdbv0I
+         DvnLxNxUhbBKQwJSQ+InAfvZtF5mWCQM1VuzOWAFevhdYqEEruucp/Jugpx23+HSfkdW
+         pN/AuljpBwVjsdDrI1+ufPl5bzLN82cVyTjbkK27gkxtVlpFP7Eh35o3C1DcMotWoEVV
+         /rZMVCsZxx3XbSkYOEdHlJqYjMl/iNKNHEBqgOWSqsPqdJ29B3eHuiAyk0fylyRAFOaa
+         J6x1hfnAtllmgKeR+9JKvZh3yLYN2E6JhBlsqqGEuQhWDXaBzykqjfDJ6DTn5w318m5u
+         MKeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=IA1VbfCE0XhvLNla6VhKBZi1IOWHetcg7Adztz386vQ=;
+        b=JI2zYCGYQBaoNBDI/upCGCpfjs+KkYGA0B5y5xH45nT9ejtDYQBDpJhP+RJ1F+V9LR
+         LpGBez9PpXuEHhAJ8RhEOBsQMZmC4e0M6oHpKr0bALqUt6XrGL0CF3CUL2Ppym7xBQcM
+         JJSsuOjbozPdocGgoYXmLy/E6eJTiLBrailfpzbrHBOvKb6adDDfS+tSqx3lQNFLL88T
+         XGrX/Fc0xdjyQLrCHx3TNH/5Ug9JgXyCAf/EfoxNUtqpXoMHMfl5F+cLzwMssO8EjIAi
+         5u8lwF9qYCWSaXmhrKP8LYsl3wCiJv+h9DUWvVXDsdodUWFDbEnIfONH3dBxy+PPC/to
+         zsdw==
+X-Gm-Message-State: AOAM531/offqFmBErVQeq2fbfGYD+28ji+SiNnyC38Csx15JXzQGyr46
+        EDzNv/sBcAjz8MeIRAHamvuU
+X-Google-Smtp-Source: ABdhPJy/btBS+ckSaWVgeDzTRKZZIrQZaP0axVhrjkHwwUrxODcWWr77Z9TCISNFbdreFF20YV+YzA==
+X-Received: by 2002:a1c:7f54:: with SMTP id a81mr6144382wmd.107.1626994562893;
+        Thu, 22 Jul 2021 15:56:02 -0700 (PDT)
+Received: from google.com ([2a00:79e0:d:209:7bb:435c:1528:220e])
+        by smtp.gmail.com with ESMTPSA id n18sm29939899wrt.89.2021.07.22.15.56.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jul 2021 15:56:02 -0700 (PDT)
+Date:   Thu, 22 Jul 2021 23:55:58 +0100
+From:   Wedson Almeida Filho <wedsonaf@google.com>
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Finn Behrens <finn@kloenk.dev>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 00/17] Rust support
+Message-ID: <YPn3fgDX8uNkF8Vp@google.com>
+References: <20210704202756.29107-1-ojeda@kernel.org>
+ <YOVNJuA0ojmeLvKa@infradead.org>
+ <CANiq72mKPFtB4CtHcc94a_y1V4bEOXXN2CwttQFvyzwXJv62kw@mail.gmail.com>
+ <YOWjLmg/Z7kr2+tx@kroah.com>
+ <YOW1Nj8+a2Yth2++@google.com>
+ <YOXB7FRqldZik2Xn@kroah.com>
+ <BFD5298D-00CD-4FEF-AE77-61E69AF78604@kloenk.dev>
+ <YOZNuEtNbsLxRM0R@casper.infradead.org>
 MIME-Version: 1.0
-Date:   Mon, 19 Jul 2021 22:18:48 +0800
-From:   Turritopsis Dohrnii Teo En Ming <ceo@teo-en-ming-corp.com>
-To:     rust-for-linux@vger.kernel.org
-Subject: Introduction: I am a Linux and open source software enthusiast
-Reply-To: ceo@teo-en-ming-corp.com
-User-Agent: Roundcube Webmail
-Message-ID: <cd21d03d7b8b8c2b8d3a33c005d639aa@teo-en-ming-corp.com>
-X-Sender: ceo@teo-en-ming-corp.com
-Organization: Teo En Ming Corporation
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YOZNuEtNbsLxRM0R@casper.infradead.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Subject: Introduction: I am a Linux and open source software enthusiast
+Hey Matthew,
 
-Greetings from Singapore,
+On Thu, Jul 08, 2021 at 01:58:32AM +0100, Matthew Wilcox wrote:
+> Why are you so resistant to writing a real driver that deals with actual
+> hardware?  
 
-My name is Mr. Turritopsis Dohrnii Teo En Ming. 43 years old as of 19 
-July 2021. I live in Singapore. I am an IT Consultant with a System 
-Integrator (SI)/computer firm in Singapore. I am a Linux and open source 
-software and information technology enthusiast.
+I don't think it was so much resistance but rather a prioritisation thing. Have
+you by any chance seen the gpio driver I posted a couple of days ago?
 
-You can read my "Autobiography of Singaporean Targeted Individual Mr. 
-Turritopsis Dohrnii Teo En Ming (Very First Draft, Lots More to Add in 
-Future)" on my redundant blogs. Links to my redundant blogs can be found 
-in my email signature below.
+> A simple NVMe driver is less than a thousand lines of C.
+> I know the one in the kernel now is ridiculously complicated and has
+> been thoroughly messed up with abstractions to support NVMeoF instead
+> of having a separate driver, but it's really a simple interface at heart.
 
-I have three other redundant blogs, namely:
+The latest NVMe spec is 452 pages long, which seems to contradict your claim
+that it's simple. In any case, translating less than 1K lines of C shouldn't be
+too hard (after I've built the abstractions, of course). Would you mind sharing
+the simple driver you mention above?
 
-https://teo-en-ming.tumblr.com/
-
-https://teo-en-ming.medium.com/
-
-https://teo-en-ming.livejournal.com/
-
-Future/subsequent drafts of my Autobiography will be published on my 
-redundant blogs.
-
-Thank you very much.
-
-
-
-
--- 
------BEGIN EMAIL SIGNATURE-----
-
-The Gospel for all Targeted Individuals (TIs):
-
-[The New York Times] Microwave Weapons Are Prime Suspect in Ills of
-U.S. Embassy Workers
-
-Link:
-https://www.nytimes.com/2018/09/01/science/sonic-attack-cuba-microwave.html
-
-********************************************************************************************
-
-Singaporean Targeted Individual Mr. Turritopsis Dohrnii Teo En Ming's
-Academic Qualifications as at 14 Feb 2019 and refugee seeking attempts
-at the United Nations Refugee Agency Bangkok (21 Mar 2017), in Taiwan
-(5 Aug 2019) and Australia (25 Dec 2019 to 9 Jan 2020):
-
-[1] https://tdtemcerts.wordpress.com/
-
-[2] https://tdtemcerts.blogspot.sg/
-
-[3] https://www.scribd.com/user/270125049/Teo-En-Ming
-
------END EMAIL SIGNATURE-----
+Thanks,
+-Wedson
