@@ -2,38 +2,51 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C7F31C432BE
-	for <rust-for-linux@archiver.kernel.org>; Fri, 23 Jul 2021 11:33:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F73EC4320E
+	for <rust-for-linux@archiver.kernel.org>; Fri, 23 Jul 2021 15:08:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B078060E8E
-	for <rust-for-linux@archiver.kernel.org>; Fri, 23 Jul 2021 11:33:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E0C7260E75
+	for <rust-for-linux@archiver.kernel.org>; Fri, 23 Jul 2021 15:08:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233315AbhGWKw7 (ORCPT
+        id S235457AbhGWO1f (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 23 Jul 2021 06:52:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51406 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234218AbhGWKw6 (ORCPT
-        <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 23 Jul 2021 06:52:58 -0400
-Received: from gpm.stappers.nl (gpm.stappers.nl [IPv6:2001:981:6c6a:1::49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 040CBC061575;
-        Fri, 23 Jul 2021 04:33:31 -0700 (PDT)
-Received: by gpm.stappers.nl (Postfix, from userid 1000)
-        id E62AB3041A7; Fri, 23 Jul 2021 13:33:27 +0200 (CEST)
-Date:   Fri, 23 Jul 2021 13:33:27 +0200
-From:   Geert Stappers <stappers@stappers.nl>
-To:     Matthew Wilcox <willy@infradead.org>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
+        Fri, 23 Jul 2021 10:27:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34272 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235351AbhGWO1f (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Fri, 23 Jul 2021 10:27:35 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E875260EBC;
+        Fri, 23 Jul 2021 15:08:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627052888;
+        bh=QgDjEfpuy0APKmZWIXq1ynq1Oo4VifnevoiZPA+uy8k=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RwE3xnBUH4mgZomNTeTmUIFAb9P0s4pApOLRObsCuXTi+kB88S6MNGykFqwhpjaqm
+         NEGfDAB2i9Cz9RPXI4Wd5uGVSkS3HCSxkKGj4itwAYz9Ayd57kGv+h1pbRy0RWBrR0
+         CeI8nWoE8OPm8pFKt/PhdveXblQifatUqUSszKSDEoPJCkMETXItZyCU4LgpGvrq92
+         YBUihj5oR9hg+tAVJOZy5AnKGjGAkSj4ROnL7ObIkc4++nkh3NN9VUc5+RcVQ29p5O
+         AoMZPKYjQqx169nTUvpidCqL5Yhn7XS6DV8pmbcQe98bYptRBbxdmX10GTWIpAiDwa
+         vmYoucGbHqbbg==
+Date:   Fri, 23 Jul 2021 08:08:06 -0700
+From:   Keith Busch <kbusch@kernel.org>
+To:     Wedson Almeida Filho <wedsonaf@google.com>
+Cc:     Matthew Wilcox <willy@infradead.org>,
+        Finn Behrens <finn@kloenk.dev>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         Linux Doc Mailing List <linux-doc@vger.kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 00/17] Rust support, GPIO driver
-Message-ID: <20210723113327.cnw4wdjqdeg6o6x4@gpm.stappers.nl>
+Subject: Re: [PATCH 00/17] Rust support
+Message-ID: <20210723150806.GA2021417@dhcp-10-100-145-180.wdc.com>
 References: <20210704202756.29107-1-ojeda@kernel.org>
  <YOVNJuA0ojmeLvKa@infradead.org>
  <CANiq72mKPFtB4CtHcc94a_y1V4bEOXXN2CwttQFvyzwXJv62kw@mail.gmail.com>
@@ -43,66 +56,30 @@ References: <20210704202756.29107-1-ojeda@kernel.org>
  <BFD5298D-00CD-4FEF-AE77-61E69AF78604@kloenk.dev>
  <YOZNuEtNbsLxRM0R@casper.infradead.org>
  <YPn3fgDX8uNkF8Vp@google.com>
- <YPoYxiq63QcfUXg+@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="67mj6aqryecr4rvw"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YPoYxiq63QcfUXg+@casper.infradead.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <YPn3fgDX8uNkF8Vp@google.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Thu, Jul 22, 2021 at 11:55:58PM +0100, Wedson Almeida Filho wrote:
+> On Thu, Jul 08, 2021 at 01:58:32AM +0100, Matthew Wilcox wrote:
+> > A simple NVMe driver is less than a thousand lines of C.
+> > I know the one in the kernel now is ridiculously complicated and has
+> > been thoroughly messed up with abstractions to support NVMeoF instead
+> > of having a separate driver, but it's really a simple interface at heart.
+> 
+> The latest NVMe spec is 452 pages long, which seems to contradict your claim
+> that it's simple. In any case, translating less than 1K lines of C shouldn't be
+> too hard (after I've built the abstractions, of course). Would you mind sharing
+> the simple driver you mention above?
 
---67mj6aqryecr4rvw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+You can use the 1.0 spec, which is much shorter. A 1.0 capable driver
+should be forward compatible with newer devices, too.
 
-On Fri, Jul 23, 2021 at 02:17:58AM +0100, Matthew Wilcox wrote:
-> On Thu, Jul 22, 2021 at 11:55:58PM +0100, Wedson Almeida Filho wrote:
-> > Hey Matthew,
-> >=20
-> > On Thu, Jul 08, 2021 at 01:58:32AM +0100, Matthew Wilcox wrote:
-> > > Why are you so resistant to writing a real driver that deals with act=
-ual
-> > > hardware? =20
-> >=20
-> > I don't think it was so much resistance but rather a prioritisation thi=
-ng. Have
-> > you by any chance seen the gpio driver I posted a couple of days ago?
->=20
-> I haven't seen it, no ...
-
-Most likely it is https://lwn.net/Articles/863459/
-
-=20
-
-=20
-Groeten
-Geert Stappers
---=20
-Silence is hard to parse
-
---67mj6aqryecr4rvw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEin8gjG2ecykWV0FNITXRI9jBm+wFAmD6qQAACgkQITXRI9jB
-m+zOyw//R/ups+zRvGYwR/AI5OtWjOFKYdDUACDl9PGEMYn4IK8VJ72hfrVV03cA
-irukF91cUBa7sB/vaa9gpnD9cWapPCIcwgOT7cIWGPgyi06JpIDOB1StTGzlvZJV
-kjojc/qazR/V5uhe987qhXrc0N5mOkhvCuIwVYTZR0H2VSgfhhO5qKLhadzcKGij
-EaEooeI0uM4TbKAxrS9OJKI1PwHPg5Ww0lZPeUgU6OLgzyLscAxwWL9XtRHOTcQ0
-1/rZR+DWm4RvjweGitNy8pfQLEOjnjb6Y7U9u9FteeikfQhY4ChBgnAmdinO/wWw
-/J1v9Q3ODOHagU2ihgKaoZYo7g2cD/Ks/MN8ooxYSOE7/x3L6IAOdDMkORXN84Mc
-/OA4ZIGhy4IdiSzEBnHfyV2ituBBY3SUEm43iDR6ydOtkKXI5DNiEAIcImBYFtrB
-LiWi1inyawL1XCp2yYqUvbAWzDEdXpuUKOovNR5vZklQb1jzJcOVo6zm5yPP1x3C
-ckXaVqFXbKRR+1F9GklM/d5OA8mvjFY7HccIVcOkPfv0N6Lt+Y1NNu2dNmXHmFlo
-6GdCm6mXzRFh61tSkX59OVQRspSAlURhlauiKCO4i2tA5HtcIZ3/KANmuJOArTt6
-kAlodz13QWkYeDc1LtJ0i4hL/0hO9lUTbKD/PjAb0PYrT4wK8/s=
-=jmor
------END PGP SIGNATURE-----
-
---67mj6aqryecr4rvw--
+The current nvme driver became less simple since blk-mq integration and
+has only gotten more complicated since then with other transports and
+more advanced features. For a simpler example, you can reference an in
+kernel version <= 3.16, and ignore the "nvme-scsi" parts.
