@@ -2,84 +2,61 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F73EC4320E
-	for <rust-for-linux@archiver.kernel.org>; Fri, 23 Jul 2021 15:08:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C22FC432BE
+	for <rust-for-linux@archiver.kernel.org>; Fri, 30 Jul 2021 23:29:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E0C7260E75
-	for <rust-for-linux@archiver.kernel.org>; Fri, 23 Jul 2021 15:08:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EF92760F3A
+	for <rust-for-linux@archiver.kernel.org>; Fri, 30 Jul 2021 23:29:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235457AbhGWO1f (ORCPT
+        id S233602AbhG3X3e (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 23 Jul 2021 10:27:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34272 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235351AbhGWO1f (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 23 Jul 2021 10:27:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E875260EBC;
-        Fri, 23 Jul 2021 15:08:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627052888;
-        bh=QgDjEfpuy0APKmZWIXq1ynq1Oo4VifnevoiZPA+uy8k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RwE3xnBUH4mgZomNTeTmUIFAb9P0s4pApOLRObsCuXTi+kB88S6MNGykFqwhpjaqm
-         NEGfDAB2i9Cz9RPXI4Wd5uGVSkS3HCSxkKGj4itwAYz9Ayd57kGv+h1pbRy0RWBrR0
-         CeI8nWoE8OPm8pFKt/PhdveXblQifatUqUSszKSDEoPJCkMETXItZyCU4LgpGvrq92
-         YBUihj5oR9hg+tAVJOZy5AnKGjGAkSj4ROnL7ObIkc4++nkh3NN9VUc5+RcVQ29p5O
-         AoMZPKYjQqx169nTUvpidCqL5Yhn7XS6DV8pmbcQe98bYptRBbxdmX10GTWIpAiDwa
-         vmYoucGbHqbbg==
-Date:   Fri, 23 Jul 2021 08:08:06 -0700
-From:   Keith Busch <kbusch@kernel.org>
-To:     Wedson Almeida Filho <wedsonaf@google.com>
-Cc:     Matthew Wilcox <willy@infradead.org>,
-        Finn Behrens <finn@kloenk.dev>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 00/17] Rust support
-Message-ID: <20210723150806.GA2021417@dhcp-10-100-145-180.wdc.com>
-References: <20210704202756.29107-1-ojeda@kernel.org>
- <YOVNJuA0ojmeLvKa@infradead.org>
- <CANiq72mKPFtB4CtHcc94a_y1V4bEOXXN2CwttQFvyzwXJv62kw@mail.gmail.com>
- <YOWjLmg/Z7kr2+tx@kroah.com>
- <YOW1Nj8+a2Yth2++@google.com>
- <YOXB7FRqldZik2Xn@kroah.com>
- <BFD5298D-00CD-4FEF-AE77-61E69AF78604@kloenk.dev>
- <YOZNuEtNbsLxRM0R@casper.infradead.org>
- <YPn3fgDX8uNkF8Vp@google.com>
-MIME-Version: 1.0
+        Fri, 30 Jul 2021 19:29:34 -0400
+Received: from pv50p00im-zteg10011501.me.com ([17.58.6.42]:59801 "EHLO
+        pv50p00im-zteg10011501.me.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233242AbhG3X3d (ORCPT
+        <rfc822;rust-for-linux@vger.kernel.org>);
+        Fri, 30 Jul 2021 19:29:33 -0400
+X-Greylist: delayed 371 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Jul 2021 19:29:33 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+        s=1a1hai; t=1627687396;
+        bh=4/aQNK88t2BegMqzsfndPfebMdjLWEajP+tB9Yr6Z2g=;
+        h=Content-Type:From:Mime-Version:Date:Subject:Message-Id:To;
+        b=XyR8IvcWh2Yfli0tViLdMK1yH+61H/FNyC8h5qwo1FXK6ogVFPIPZCHAKQKGFFddq
+         lYQhtIUey/B0nG1sdLePg1Licp9DcDhCuw1k6ZBoDOWWnpGD0zWwX6xuGZ90tSbUjg
+         NQ8nnP3PrLb5udE57J/qnf2wbzNKgOunCFXBDZ49DsS22VHagwJSLdvE/bC9WQ8eU6
+         V8lxpXaFxv4qqVO/L9HP2gdNZoyLsJWWSyeBlcZdoXw+EDD8lwcfanHqSeRbzMxOU+
+         io4QzuldoswUF8SYbn/tQZqeAGMviU1TtDJ5vfPo79n+TOuzzztKfqXgmgaGinJTCT
+         hn/3dDdbtvz2A==
+Received: from smtpclient.apple (075-142-087-102.res.spectrum.com [75.142.87.102])
+        by pv50p00im-zteg10011501.me.com (Postfix) with ESMTPSA id E24B1B003A7;
+        Fri, 30 Jul 2021 23:23:15 +0000 (UTC)
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YPn3fgDX8uNkF8Vp@google.com>
+Content-Transfer-Encoding: 7bit
+From:   Dillan Jackson <a1.jackson@icloud.com>
+Mime-Version: 1.0 (1.0)
+Date:   Fri, 30 Jul 2021 16:22:55 -0700
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+Message-Id: <3B1B0473-00F1-46A4-9C5A-06EAF7FA8340@icloud.com>
+Cc:     gregkh@linuxfoundation.org, linux-doc@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ojeda@kernel.org, peterz@infradead.org,
+        rust-for-linux@vger.kernel.org, torvalds@linux-foundation.org,
+        wedsonaf@google.com
+To:     linus.walleij@linaro.org
+X-Mailer: iPhone Mail (18G82)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-07-30_11:2021-07-30,2021-07-30 signatures=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 clxscore=1011 mlxscore=0
+ mlxlogscore=530 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-2009150000 definitions=main-2107300157
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Jul 22, 2021 at 11:55:58PM +0100, Wedson Almeida Filho wrote:
-> On Thu, Jul 08, 2021 at 01:58:32AM +0100, Matthew Wilcox wrote:
-> > A simple NVMe driver is less than a thousand lines of C.
-> > I know the one in the kernel now is ridiculously complicated and has
-> > been thoroughly messed up with abstractions to support NVMeoF instead
-> > of having a separate driver, but it's really a simple interface at heart.
-> 
-> The latest NVMe spec is 452 pages long, which seems to contradict your claim
-> that it's simple. In any case, translating less than 1K lines of C shouldn't be
-> too hard (after I've built the abstractions, of course). Would you mind sharing
-> the simple driver you mention above?
-
-You can use the 1.0 spec, which is much shorter. A 1.0 capable driver
-should be forward compatible with newer devices, too.
-
-The current nvme driver became less simple since blk-mq integration and
-has only gotten more complicated since then with other transports and
-more advanced features. For a simpler example, you can reference an in
-kernel version <= 3.16, and ignore the "nvme-scsi" parts.
+Monies?
