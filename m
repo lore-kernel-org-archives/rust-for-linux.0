@@ -2,82 +2,73 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=0.2 required=3.0 tests=BAYES_20,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B4ADC4338F
-	for <rust-for-linux@archiver.kernel.org>; Mon,  9 Aug 2021 11:10:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7895C4338F
+	for <rust-for-linux@archiver.kernel.org>; Tue, 10 Aug 2021 08:49:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EAE9C60EBB
-	for <rust-for-linux@archiver.kernel.org>; Mon,  9 Aug 2021 11:10:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BD78561019
+	for <rust-for-linux@archiver.kernel.org>; Tue, 10 Aug 2021 08:49:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233660AbhHILK0 (ORCPT
+        id S237795AbhHJItJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 9 Aug 2021 07:10:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55856 "EHLO
+        Tue, 10 Aug 2021 04:49:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233516AbhHILKZ (ORCPT
+        with ESMTP id S236991AbhHJItF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 9 Aug 2021 07:10:25 -0400
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ADFCC0613D3
-        for <rust-for-linux@vger.kernel.org>; Mon,  9 Aug 2021 04:10:05 -0700 (PDT)
-Received: by mail-il1-x12b.google.com with SMTP id j18so10940601ile.8
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Aug 2021 04:10:05 -0700 (PDT)
+        Tue, 10 Aug 2021 04:49:05 -0400
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C426CC06179C
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Aug 2021 01:48:39 -0700 (PDT)
+Received: by mail-qt1-x82e.google.com with SMTP id d2so14845119qto.6
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Aug 2021 01:48:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Ednzzfe5Fo2U4Lb5qlDMVay2E/MFJfaUUO8Cfult75c=;
-        b=RrcwxMG08MBi6dHyirACdo8fKRYijfTSD0q7Vns/HmXsNUQ9JLUYR/trLeqR2R1ef7
-         8rHJl2UXWO5pSQl2w8VRXA81nUpl7QmfaSppWK/6hhju/ewGLa2PMLnuFBf+eQ4r/zxO
-         UJeDDdXAix5sa7AYPp6WdAjwM5+BdjOHdfmA7u42fVgUpJyomXTN064SaIqvT69/zlXi
-         hMrwG5tYDMDdYVbiqioYr6Ql1iibpTUMpLUp4TvHHjubLNNU8QbJUQPogk3+yJUcFyz7
-         xwhYkKSNK908xLK3dpzI7OsYCZprUkB2e1S7p82JcFOb+FyeZWy+f0D2XqphvO49qUsz
-         h26A==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=Sypb3SR/zj7P7+O4YIVr37bWZJtuV8/MKJ8YfuoFfwQ=;
+        b=qnJ5kkVNjkVofx8+76JdqfUBy5ruDspTvjHH6RdyA3yFDAdlBFS8y0erKgsg44t8L0
+         +AYJ813FvLIjNZuv7yCNYzNH0nTHqUel3BYZWHFGuIn9zMq4NFzZ04pGyqDVFk6dOwUy
+         lhwOWGDo1E4xoR86xzNDet64UiEVjC5VMg9ebtRgmjn2kqu7EBDRyNCCGxbQlpBrmk1W
+         KzU5WpiMp9WZQ1AoIfqd78+Nv2/E5K49WUY0UKOR2nbNjz2lJb993N4JRsD96ZyX0rmA
+         aYdWCjHoZpUOSU8T/sCWHh5S0en4hebPFElxCwCR3qzT6JU9XA2a3maIZyNbEpjdjts7
+         65kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Ednzzfe5Fo2U4Lb5qlDMVay2E/MFJfaUUO8Cfult75c=;
-        b=XUsP4H36xkKaQ/Y2oDiCIhnL8Yc/GQXl8sY1HuzdUmGwTzbFo3QfcMObnARzQ1WEzL
-         azCX9O+MJTypZpwAOMxCaFCfJWiNJfAnAhG/edZuvC7JTstZpwQJm3I/KkpQA2PIw1hu
-         wYGNQjwndWG9nWrHXrKCgnzI9sBJY4Oxe5qtSqN0KVt7sebcTPvZs4QJMggV+2siP4Md
-         uy7wUwHEUokCPeDwAO62YoovE3EwxN/1RRE8xjIG/Ogtx76ZJFWt8a3PdU3Q8BdShVWb
-         cDOFJev6YMwOlbLTMHHhuSdx9XEgbpSS6fqL48o3AlSkRlkDoVj7ZuPnfVAFTJveKiPQ
-         Rn4g==
-X-Gm-Message-State: AOAM531CAmSs3MGiIGTm5fq3ElUS/pj4h2uThyBrjYtD2PbqU0psIDrf
-        oHGB/prYiph7/SAkEUVqwVU2/wQOUauNTky/RuOmg2Ew
-X-Google-Smtp-Source: ABdhPJyuIJ6RubmNuUz2liFXnCwj1TI29gxzYEBRVw1d3lfd9njeZjGIJ2VDhDTJdj4wjr8lKcGFSpZVF3MVMTJneaI=
-X-Received: by 2002:a92:d407:: with SMTP id q7mr357496ilm.203.1628507405026;
- Mon, 09 Aug 2021 04:10:05 -0700 (PDT)
+         :message-id:subject:to;
+        bh=Sypb3SR/zj7P7+O4YIVr37bWZJtuV8/MKJ8YfuoFfwQ=;
+        b=q3Z9vWjD883aXiriwKgsCWZ4YWDUBIHlYeR6KhHYlJQ+2jMPeZG5lxvZu1JqsLuBfl
+         VNvKMhFqj+GNl2+4a5V7Fj3rzVJ3piwCDbnC8jZ+DmBgXOv0+p4PmfvD3ljyInBSUsOA
+         aUGbjYiIwfCgEiGcAVwvX+3RrmKm09K4AVArQ+srpAoqnr8TxWtndPnEjAxSbGjneW8I
+         /LV/4NeByYxuveqUL8Iq6K03sY3Yvm+SdmAQ3S5wfEPj36N1M3NhKn9QJ9wsMLNOJrrs
+         83uGYvOAMoJXZbOACAYcbgd1zaNgqzblojWfud+ETCRhGVZYi0PV/k7swVmTIRUkZtwM
+         ZJ2g==
+X-Gm-Message-State: AOAM533vwJCwgWJfBxuGXdG/DswzBwegTFx+r+alXJYQVPQQg3H+H30Z
+        OUfU3PM+mCuwSDLTeddromF+lhfP6Hq6rmVFmAjHA6+FRbjUZA==
+X-Google-Smtp-Source: ABdhPJyG7cbTah4tZygxjVI1yDpkMqVhestjyHb6zeawqJYLZCDVCs3cZhRZuB+U3WfizMstvrTAXsuMeu/ZpAw2aW0=
+X-Received: by 2002:ac8:7515:: with SMTP id u21mr24139598qtq.80.1628585318636;
+ Tue, 10 Aug 2021 01:48:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <YQ2XZ9/kPkRTyEgi@linaro.org>
-In-Reply-To: <YQ2XZ9/kPkRTyEgi@linaro.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 9 Aug 2021 13:09:54 +0200
-Message-ID: <CANiq72kFbq4ySOMNyHbkrg6qdM_60ZKhBs-OTBuz_ZUmp9Pu-g@mail.gmail.com>
-Subject: Re: error: unknown argument: '-fno-ipa-sra', err: true
-To:     Antonio Terceiro <antonio.terceiro@linaro.org>
-Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
+References: CAK+vCJBQDt7w4TE5E-dPa8WHUDDvKL5jRXwi=pfuRLzwqKf2tQ@mail.gmail.com <20210810063241.7C774C061796@lindbergh.monkeyblade.net>
+In-Reply-To: <20210810063241.7C774C061796@lindbergh.monkeyblade.net>
+From:   Cesar Guzman <ing.cesarguzman@gmail.com>
+Date:   Tue, 10 Aug 2021 10:48:27 +0200
+Message-ID: <CAK+vCJBoEWS=aQF-O+b1srhV=YczoGG-3QctLP20DUiL1dx18g@mail.gmail.com>
+Subject: Add to the list of rust for linux
+To:     rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Antonio,
+Hi there!
 
-On Sat, Aug 7, 2021 at 2:10 AM Antonio Terceiro
-<antonio.terceiro@linaro.org> wrote:
->
-> There I'm using LLVM/libclang from Debian 11 (so LLVM 11). Is this
-> supposed to be fixed by a newer LLVM (assuming that flag got implemented
-> since then), or should I send a patch to rust/Makefile to filter that
-> specific flag out as well?
+Can you add me to the list?
 
-Please feel free to send the patch!
+Thanks!
 
-Cheers,
-Miguel
+Ces
