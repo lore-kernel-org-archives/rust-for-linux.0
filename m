@@ -2,90 +2,111 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FB95C4338F
-	for <rust-for-linux@archiver.kernel.org>; Mon, 23 Aug 2021 10:47:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8373DC432BE
+	for <rust-for-linux@archiver.kernel.org>; Wed,  1 Sep 2021 23:07:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 22B856136F
-	for <rust-for-linux@archiver.kernel.org>; Mon, 23 Aug 2021 10:47:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6236E61058
+	for <rust-for-linux@archiver.kernel.org>; Wed,  1 Sep 2021 23:07:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234373AbhHWKsM (ORCPT
+        id S242772AbhIAXIR (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 23 Aug 2021 06:48:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34864 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234353AbhHWKsM (ORCPT
+        Wed, 1 Sep 2021 19:08:17 -0400
+Received: from wnew1-smtp.messagingengine.com ([64.147.123.26]:37735 "EHLO
+        wnew1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230127AbhIAXIQ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 23 Aug 2021 06:48:12 -0400
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9DB1C061575
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Aug 2021 03:47:29 -0700 (PDT)
-Received: by mail-io1-xd2f.google.com with SMTP id y18so5555378ioc.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Aug 2021 03:47:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zNZOWPYc//xDIL5boF5CsMDtQUBqyymBvdzrVtQEdiI=;
-        b=eG2pJYa4yJOpgUDcSEIn14uurHbaqGQhXHG+Avbj+TbFLt1OdvmA9PlcBbgXQ7Xirx
-         9GwxJS4HjKyXi3D/T1f/wJ4m7HUUhw+jjR6MTIcd+HhquyOp8NzHb7zFnseqsUAYVK+H
-         dvI0RULkN8wKiM10ChsIicw70xQfPJsAQqtlaHawddIdBlYcW2a0P00sQgh0AAb3b2+w
-         P741A/skVLwIsV01GCRG/NQTi4Vxb66zIJgtYfEx+inP8//jGpA4Wnzl2JZE+2vwDHmy
-         QJITicvlfVTs9M4kpHC3aOXmeS514cTFtDcwN97Wnh1hGPeW/75hwAUE5eEJrc01c/UH
-         GM1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zNZOWPYc//xDIL5boF5CsMDtQUBqyymBvdzrVtQEdiI=;
-        b=A6Omc+l/sFoQzv6k8K/IaAKraXHA1kmz4Vj1R4lfxfNJyHpJIBv4iJfh9JgS3hYgno
-         F7iWDxcSDqLIpSUHK0hLlzyMZ4eikmwL2OFqtdwWyXaJSGJLipsKp/BTWiybvi3liA+G
-         N25tajCvnLkUoTMPXMQchDYrP26QPbJZi/1WDRhGHHD/BnENfjHdoBiDFNWHfdIG4HVC
-         csmpqPeJsvMl5uWF6BDD2eL3XlezxvKbZr5caKamgBWCyPaB7bb+6Jj7gP6ncVy9HkQn
-         RWBGLd1vw46mc8kaYiCUtSX0xMOPZHmFTK93kQMkYf/4d8KDTtcN7K85MLb8PRxJgf4A
-         FmIg==
-X-Gm-Message-State: AOAM533bd8K/RA4bdn/Nr+N1pS6DHXMSiIXu4Kv+xEQS9uv+x4YZLPZQ
-        4h+Nn/MrHc3khddQaeSvX3u/Ej61Hg7PWfHB0ug=
-X-Google-Smtp-Source: ABdhPJx/vMVO9OXEWRcr36Au/654MEzrKiuyg+TFoxKkXtC4qL5U+cFGtpXvftier5XJdvRTJD9jLHhZTAMylvyilWI=
-X-Received: by 2002:a02:5bc5:: with SMTP id g188mr29589917jab.136.1629715649330;
- Mon, 23 Aug 2021 03:47:29 -0700 (PDT)
+        Wed, 1 Sep 2021 19:08:16 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailnew.west.internal (Postfix) with ESMTP id 938FD2B00BCF
+        for <rust-for-linux@vger.kernel.org>; Wed,  1 Sep 2021 19:07:17 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Wed, 01 Sep 2021 19:07:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dxuuu.xyz; h=
+        date:from:to:subject:message-id:mime-version:content-type; s=
+        fm1; bh=QT8l3EgeQ2aGmUNCbuIfImIiehw0K1dexojpNVwzMQ4=; b=tiCBce4L
+        HYr4ConIW5pveqGdzhjVv9uDDGt+yr3kUa1sO4SboPBjEc953xyhoGk2UrlPuthW
+        LXPME1ar9s+IAuB3MAWa9wjtMGHi189z+7kalRTQLwZEDxcamHpjaGvlxsEwjYuz
+        I6LeHv9GfuFmjW6dvsRvVhWyaAkeQRWyBNjOcTH07bWuRqTjtmZh61iqp6yBSs+w
+        Q7EzKci3u2KOCx2Iarrj11DEIW9qPOGCmK5nm51vAkVsdV2BdquDlh8oigtgZMLq
+        TiEOH81lfQBSjHWIcPGV0jSxWAN4SodIWbKGL6q/aEeGbm33BSaDl1TFAFVwQDu3
+        bur872cXby8TuQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=content-type:date:from:message-id
+        :mime-version:subject:to:x-me-proxy:x-me-proxy:x-me-sender
+        :x-me-sender:x-sasl-enc; s=fm3; bh=QT8l3EgeQ2aGmUNCbuIfImIiehw0K
+        1dexojpNVwzMQ4=; b=ZIsX3F0tk8hgPynr23XDF3/Wzf/NL1w07NV1pzhBkCheU
+        bp22lN90QDIaYhv7ZnCm88SnAbAHk6kQIKHYpuo2DB/9HJufNjeovbcp61PWwp80
+        z4OR2lx7X+ndvAtuSXGG1CLFdSsqlJfqkMwjLCLnT679OdZZHnSbpdaYjR5AT1eG
+        Nx3mBzbsC/1fUxmYGhrSn6UhjXuTz2h6dz3tx0IMn8+PmIWeKynJ2vCO2Zn1hS9t
+        03AvMJczrlm53jH39x1EsFrAEHUR7aFj0e0uus0o55IX5x4yVtVM0S2yu1Lkufhv
+        ue8FBqYTNmvG5ZVMRqL58flJM4SrTcar8/OFYc0ng==
+X-ME-Sender: <xms:pQcwYYBMyANOm47lUfELDvdh34G1r-21nMsTSw9pKOE-wS1SCsFVPQ>
+    <xme:pQcwYaiu-V77O-bQoMTWeq7r5mwyDJiasRcJgJunSh0jpFiQdveqGto3eg7LKri0I
+    Jgiiew2IAj15F2ORA>
+X-ME-Received: <xmr:pQcwYbmlem3KrvDlU030cZXW6XKNbOE5hqqPjjAZCmR2Gu2HP8LqRrDSAQqw61cb6KyT_ecu3O3ilJ_7dNK9Cb96l7Bo2FuH6BWJQ7QzIAB3qw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddruddvgedgudejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdljedtmdenogfvvgigthfqnh
+    hlhidqqdgigeduledqvdekudculdeftddtmdenucfjughrpeffhffvuffkgggtugesthdt
+    redttddtvdenucfhrhhomhepffgrnhhivghlucgiuhcuoegugihusegugihuuhhurdighi
+    iiqeenucggtffrrghtthgvrhhnpeelgfdtjeelgfevgeeiffelhefgieehvdekudefieeu
+    uefgkedvgfejheefheehueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpegugihusegugihuuhhurdighiii
+X-ME-Proxy: <xmx:pQcwYewxjEdMXuvJjajbjW6plnVIwsitW12ura9O5CLIUkokdkFnTA>
+    <xmx:pQcwYdQNX1VQUXk3SCyWwQrU44OOQGq_yp2M2nZf6bQrt4YMQnT1IA>
+    <xmx:pQcwYZb3O9huXDpB2P2HxrZC1H0UrJfboTqT7WPEbYVo7WlkQ8Ms1Q>
+    <xmx:pQcwYYMOtleTInykvGSduhZOP8I0KK-BzJy2vroXgd9Y12cnNdoWdg2mC5Q>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA for
+ <rust-for-linux@vger.kernel.org>; Wed, 1 Sep 2021 19:07:16 -0400 (EDT)
+Date:   Wed, 1 Sep 2021 16:07:15 -0700
+From:   Daniel Xu <dxu@dxuuu.xyz>
+To:     rust-for-linux@vger.kernel.org
+Subject: How are rustc -Z flags enabled during build?
+Message-ID: <20210901230715.civmnrpmt3c2u72v@kashmir.localdomain>
 MIME-Version: 1.0
-References: <20210819204422.64595-1-gi-oh.kim@ionos.com>
-In-Reply-To: <20210819204422.64595-1-gi-oh.kim@ionos.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 23 Aug 2021 12:47:18 +0200
-Message-ID: <CANiq72=zVfJskCzhDNGjSVZiHU8QJrEJhQEdO8o=-YU=jrKneQ@mail.gmail.com>
-Subject: Re: [RFC] rust: kernel: ioctl returns ENOTTY if not implemented
-To:     Gioh Kim <gi-oh.kim@ionos.com>
-Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Gioh Kim <gurugio@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Gioh,
+Hi,
 
-On Thu, Aug 19, 2021 at 10:45 PM Gioh Kim <gi-oh.kim@ionos.com> wrote:
->
-> From: Gioh Kim <gurugio@gmail.com>
->
-> According to fs/ioctl.c, ioctl system call first test the cmd
-> value with do_vfs_ioctl. If the cmd is not supported command,
-> it calls vfs_ioctl. Then vfs_ioctl returns ENOTTY if ioctl is
-> not implemented.
->
-> Signed-off-by: Gioh Kim <gurugio@gmail.com>
+Context: While hacking on some rust modules, I ran into a bug where
+kbuild was trying to generate BTF (from DWARF) for rust kernel modules.
+I'm guessing one cannot generate valid BTF from rust debuginfo b/c at
+module load time the btf parser complains and errors out the module
+load. I know how to fix this and am planning on sending a fix.
 
-Thanks! Applying it.
+In trying to fix the BTF issue, I'm trying to get more familiar w/
+kbuild. Specifically, I've run `make V=1 LLVM=1 -j32` to try and figure
+out exactly where the .o's are being created. I see the following
+command:
 
-(By the way, always try to match the `From` -- I understand you are
-sending this as a personal contribution vs. your other commits in the
-kernel).
+    RUST_MODFILE=samples/rust/rust_minimal rustc
+    --emit=dep-info,obj,metadata --edition=2018 -Cpanic=abort
+    -Cembed-bitcode=n -Clto=n -Crpath=n -Cforce-unwind-tables=n
+    -Ccodegen-units=1 -Zbinary_dep_depinfo=y
+    -Zsymbol-mangling-version=v0 -Dunsafe_op_in_unsafe_fn
+    -Drust_2018_idioms -Wmissing_docs -Cdebug-assertions=y
+    -Coverflow-checks=y -Copt-level=2 -Cdebuginfo=2 --cfg MODULE
+    @./include/generated/rustc_cfg
+    --target=/home/dxu/dev/linux/arch/x86/rust/target.json
+    -Zallow-features=allocator_api,bench_black_box,concat_idents,global_asm,try_reserve
+    --extern alloc --extern kernel --crate-type rlib --out-dir /tmp/rust
+    -L ./rust/ --crate-name rust_minimal samples/rust/rust_minimal.rs
 
-Cheers,
-Miguel
+When I try to run it outside of kbuild, I get:
+
+    error: the option `Z` is only accepted on the nightly compiler
+
+How does kbuild use the -Z features on a stable rustc?
+
+
+Thanks,
+Daniel
