@@ -2,141 +2,152 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 335C4C433EF
-	for <rust-for-linux@archiver.kernel.org>; Fri,  8 Oct 2021 21:32:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52BA9C433F5
+	for <rust-for-linux@archiver.kernel.org>; Fri,  8 Oct 2021 23:57:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0628860FF2
-	for <rust-for-linux@archiver.kernel.org>; Fri,  8 Oct 2021 21:32:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 30BC960FC1
+	for <rust-for-linux@archiver.kernel.org>; Fri,  8 Oct 2021 23:57:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243435AbhJHVen (ORCPT
+        id S243836AbhJHX7l (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 8 Oct 2021 17:34:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60668 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230384AbhJHVem (ORCPT
-        <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 8 Oct 2021 17:34:42 -0400
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00663C061570
-        for <rust-for-linux@vger.kernel.org>; Fri,  8 Oct 2021 14:32:46 -0700 (PDT)
-Received: by mail-io1-xd34.google.com with SMTP id n7so3354446iod.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 Oct 2021 14:32:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LM9irX8xumxp4TIr9cZC8VWpmESQECbIIBoHRou9P3g=;
-        b=QGK2w5pfEYqW7GvsEl1srNBV+T4P6AJnS7mVhpBQDz/iMUh011pQ7Tvb/Olufwej2q
-         iho3oX7Wu6NZWEAk3oETbLTu1VvXePBijx40eqBwvLuwTUFwHvCUSBLZ0CosVYO7sk3j
-         kV2jI12W1EgWke7ClURNa4fGeHTf3TFigQNmOa8JEjo93L8WXfCN1kLdZlSSSreuPlVZ
-         oakM6c7wzu7uoPtI47h03P3R2yhZGSgurBgevLWnjdwNJyN1WGbPb8d8DZyknmX7vbev
-         h03WVag6VXjdPvtvbRMHAkvdxCDnozcF7X/JJEI+9cKaNlm2XA+aceNy+NBW94OH5qJI
-         r7Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LM9irX8xumxp4TIr9cZC8VWpmESQECbIIBoHRou9P3g=;
-        b=o8R0H9vHG5iEicFwxVJybfrX1Lb+di+p9GLgJFGaUZwOkv1r+KmnulSDShV+Ztl33r
-         06dVTi7/wJDeMkXroyg2cN0xYIbq6ArRpa4SVTOkxtZOV75LQmsPccAe48gKxqRvtsU0
-         XMZmnfZfT7l3EJiMjEFnnznLZprEFlFWfT5rXHfNsEzb77YC79t5lh3D8AmEjbIyHGjJ
-         V2L5WVmIo4/ef+/HttFY/g18pi6r1SdfRkrZNu9JLsBUVTFmryceqVYbauQblQmIN+7M
-         KqsVIkLnWyAvozm/faL6tPlcn5HTv1zVQ4CFZsh3Pqh9ZomWaMzIGqPqevdOcF+TGBog
-         4jbQ==
-X-Gm-Message-State: AOAM53144vX1JZ3RyqphVRvc4yfFueKMkYPm5/fa8qaJGR3uvIuAJpc4
-        214oABQtUgaK91EL4UuKkZLjORbEWcbYV+LZm3Y=
-X-Google-Smtp-Source: ABdhPJx/pc/aX53QEe5tzkspmSCrBx4LqFVwABijPAO2FX2tel5+fxeh2ceJvLtBXCBU9OG9e8cuNNtgDC6WRggG1rE=
-X-Received: by 2002:a05:6638:14d0:: with SMTP id l16mr9287388jak.142.1633728766086;
- Fri, 08 Oct 2021 14:32:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <CANpmjNMijbiMqd6w37_Lrh7bV=aRm45f9j5R=A0CcRnd5nU-Ww@mail.gmail.com>
- <YV8A5iQczHApZlD6@boqun-archlinux> <CANpmjNOA3NfGDLK2dribst+0899GrwWsinMp7YKYiGvAjnT-qA@mail.gmail.com>
- <CANiq72k2TwCY1Os2siGB=hBNRtrhzJtgRS5FQ3JDDYM-TXyq2Q@mail.gmail.com>
- <20211007185029.GK880162@paulmck-ThinkPad-P17-Gen-1> <20211007224247.000073c5@garyguo.net>
- <20211007223010.GN880162@paulmck-ThinkPad-P17-Gen-1> <20211008000601.00000ba1@garyguo.net>
- <20211007234247.GO880162@paulmck-ThinkPad-P17-Gen-1> <20211008005958.0000125d@garyguo.net>
- <20211008174048.GS880162@paulmck-ThinkPad-P17-Gen-1>
-In-Reply-To: <20211008174048.GS880162@paulmck-ThinkPad-P17-Gen-1>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 8 Oct 2021 23:32:34 +0200
-Message-ID: <CANiq72mOWV2SiF24E=NMB-zc2mK_UFH=CvDFxN+vdtyjy-Wm0A@mail.gmail.com>
-Subject: Re: Can the Kernel Concurrency Sanitizer Own Rust Code?
-To:     "Paul E. McKenney" <paulmck@kernel.org>
+        Fri, 8 Oct 2021 19:59:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48874 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243798AbhJHX7k (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Fri, 8 Oct 2021 19:59:40 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C7DBB60F9E;
+        Fri,  8 Oct 2021 23:57:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1633737464;
+        bh=lGldR/lYEhTf/xadlo+RSI+8V8Nmx0IX2SlGzCSxAHQ=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=pYnxhcbDKdpSn666AdUs69VS3uRcLPUBo7MUDOhUnIfwXJ2qQT4tL9dgzGmic1ttS
+         Oxa5yNWOFCSqi/qpfuTOdEI0pDOA43z9vAQG045CMaBipieON/nCv4er++MkJZgawx
+         1ZMzLmXhZskMt1zl+5Bq4kWcJtk4z0Ji6/1KZlc60Mb44Z2IKwSddDJqZtoVkLZpyh
+         AP9JAsGaqe9nP/dkO0SE8vjRjDIREPDJhUCZuuXVIifyzrDsVU2QT0a9we8FT+b+x9
+         MZGwKAvLLQ3408tOn0YarDd5qOfZNGfNAaxMtlfKXd3+XWjfd3gT5uDXjR9XEfzjX/
+         7yv2Q2aszFx8w==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+        id 9AEA35C1E85; Fri,  8 Oct 2021 16:57:44 -0700 (PDT)
+Date:   Fri, 8 Oct 2021 16:57:44 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Gary Guo <gary@garyguo.net>, Marco Elver <elver@google.com>,
         Boqun Feng <boqun.feng@gmail.com>,
         kasan-dev <kasan-dev@googlegroups.com>,
         rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: Can the Kernel Concurrency Sanitizer Own Rust Code?
+Message-ID: <20211008235744.GU880162@paulmck-ThinkPad-P17-Gen-1>
+Reply-To: paulmck@kernel.org
+References: <CANpmjNMijbiMqd6w37_Lrh7bV=aRm45f9j5R=A0CcRnd5nU-Ww@mail.gmail.com>
+ <YV8A5iQczHApZlD6@boqun-archlinux>
+ <CANpmjNOA3NfGDLK2dribst+0899GrwWsinMp7YKYiGvAjnT-qA@mail.gmail.com>
+ <CANiq72k2TwCY1Os2siGB=hBNRtrhzJtgRS5FQ3JDDYM-TXyq2Q@mail.gmail.com>
+ <20211007185029.GK880162@paulmck-ThinkPad-P17-Gen-1>
+ <20211007224247.000073c5@garyguo.net>
+ <20211007223010.GN880162@paulmck-ThinkPad-P17-Gen-1>
+ <20211008000601.00000ba1@garyguo.net>
+ <20211007234247.GO880162@paulmck-ThinkPad-P17-Gen-1>
+ <CANiq72nLXmN0SJOQ-aGD4P2dUTs_vXBXMDnr2eWP-+R7H2ecEw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72nLXmN0SJOQ-aGD4P2dUTs_vXBXMDnr2eWP-+R7H2ecEw@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Oct 8, 2021 at 7:40 PM Paul E. McKenney <paulmck@kernel.org> wrote:
->
-> Just in case there is lingering confusion, my purpose in providing an
-> example from the field of safety-critical systems was nothing more or
-> less than to derive an extreme lower bound for the expected bug rate in
+On Fri, Oct 08, 2021 at 09:53:34PM +0200, Miguel Ojeda wrote:
+> On Fri, Oct 8, 2021 at 1:42 AM Paul E. McKenney <paulmck@kernel.org> wrote:
+> >
+> > OK, I now have this:
+> >
+> >         Both the unsafe Rust code and the C code can interfere with Rust
+> >         non-unsafe code, and furthermore safe code can violate unsafe
+> >         code's assumptions as long as it is in the same module. However,
+> >         please note that a Rust module is a syntactic construct vaguely
+> >         resembling a C++ namespace, and has nothing to do with a kernel
+> >         module or a translation unit.
+> >
+> > Is that better?
+> 
+> For someone new to Rust, I think the paragraph may be hard to make
+> sense of, and there are several ways to read it.
+> 
+> For instance, safe code "can" violate unsafe code's assumptions in the
+> same module, but then it just means the module is buggy/unsound.
+> 
+> But if we are talking about buggy/unsound modules, then even safe code
+> outside the module may be able to violate the module's assumptions
+> too.
+> 
+> Instead, it is easier to talk about what Rust aims to guarantee: that
+> if libraries containing unsafe code are sound, then outside safe code
+> cannot subvert them to introduce UB.
+> 
+> Thus it is a conditional promise. But it is a powerful one. The point
+> is not that libraries may be subverted if there is a bug in them, but
+> that they cannot be subverted if they are correct.
 
-Yes, safety-critical systems usually have lower rate of bugs, but they
-can actually be very buggy as long as they comply with requirements...
-:P
+But some other library could have a wild-pointer bug in unsafe Rust code
+or in C code, correct?  And such a bug could subvert a rather wide range
+of code, including that of correct libraries, right?  If I am wrong,
+please tell me what Rust is doing to provide the additional protection.
 
-> production software.  Believe me, there is no way that I am advocating
-> use of Rust as it currently exists for use in safety-critical systems!
-> Not that this will necessarily prevent such use, mind you!  ;-)
+> As an example, take `std::vector` from C++. Correct usage of
+> `std::vector` will not trigger UB (as long as `std::vector` is
+> non-buggy). Rust aims to guarantee something extra: that even
+> *incorrect* safe code using `Vec` will not be able to trigger UB (as
+> long as `Vec` and other abstractions are non-buggy).
+> 
+> As you see, the condition "as long as X is non-buggy" remains. But
+> that is OK -- it does not mean encapsulation is useless: it still
+> allows to effectively contain UB.
 
-Well, people are already working on bringing Rust to safety-critical domains! :)
+I would like to believe that, but I have seen too many cases where
+UB propagates far and wide.  :-(
 
-In any case, for example, DO-178 describes the software development
-process, but does not require a particular language to be used even if
-a particular project following that standard may do so.
+> Put another way, C and C++ APIs are the trivial / reduced case for
+> what Rust aims to guarantee. For instance, we can think of C++
+> `std::vector` as a Rust type where every method is marked as `unsafe`.
+> As such, Rust would be able to provide its guarantee vacuously --
+> there are no safe APIs to call to begin with.
 
-> From what I have seen, people prevent unsafe Rust code from introducing
-> UB by adding things, for example assertions and proofs of correctness.
-> Each and every one of those added things have a non-zero probability
-> of themselves containing bugs or mistakes.  Therefore, a Rust program
-> containing a sufficiently large quantity of unsafe code will with high
-> probability invoke UB.
->
-> Hopefully, a much lower UB-invocation probability than a similar quantity
-> of C code, but nevertheless, a decidedly non-zero probability.
->
-> So what am I missing here?
+Believe me, I am not arguing that C code is safer than Rust code,
+not even than Rust unsafe code.
 
-Rust does not guarantee UB-freedom in an absolute way -- after all,
-there is unsafe code in the standard library, we have unsafe code in
-the kernel abstractions, the compiler may have bugs, the hardware may
-misbehave, there may be a single-event upset, etc.
+> To be clear, this "incorrect" usage includes maliciously-written safe
+> code. So it even has some merits as an "extra layer of protection"
+> against Minnesota-style or "Underhanded C Contest"-style code (at
+> least regarding vulnerabilities that exploit UB).
 
-However, the key is to understand Rust as a way to minimize unsafe
-code, and therefore minimize the chances of UB happening.
+Except that all too many compiler writers are actively looking for more
+UB to exploit.  So this would be a difficult moving target.
 
-Let's take an example: we need to dereference a pointer 10 times in a
-driver. And 10 more times in another driver. We may do it writing
-`unsafe` many times in every driver, and checking that every single
-usage does not trigger UB. This is fine, and we can write Rust code
-like that, but is not buying us much. And, as you say, if we keep
-accumulating those dereferences, the probability of a mistake grows
-and grows.
+Let me see if I can summarize with a bit of interpretation...
 
-Instead, we could write an abstraction that provides a safe way to do
-the same thing. Then we can focus our efforts in checking the
-abstraction, and reuse it everywhere, in all drivers.
+1.	Rust modules are a pointless distraction here.	Unless you object,
+	I will remove all mention of them from this blog series.
 
-That abstraction does not guarantee there is no UB -- after all, it
-may have a bug, or someone else may corrupt our memory, or the
-hardware may have a bug, etc. However, that abstraction is promising
-that, as long as there is no other UB subverting it, then it will not
-allow safe code to create UB.
+2.	Safe Rust code might have bugs, as might any other code.
 
-Therefore, as a driver writer, as long as I keep writing only safe
-code, I do not have to care about introducing UB. As a reviewer, if
-the driver does not contain unsafe code, I don't need to worry about
-any UB either. If UB is actually introduced, then the bug is in the
-abstractions, not the safe driver.
+	For example, even if Linux-kernel RCU were to somehow be rewritten
+	into Rust with no unsafe code whatsoever, there is not a verifier
+	alive today that is going to realize that changing the value of
+	RCU_JIFFIES_FQS_DIV from 256 to (say) 16 is a really bad idea.
+	Nevertheless, RCU's users would not likely suffer in silence
+	after seeing the greatly extended RCU grace periods, which in
+	some cases could result in OOMing the system.
 
-Thus we are reducing the amount of places where we risk using a
-potentially-UB operation.
+3.	Correctly written unsafe Rust code defends itself (and the safe
+	code invoking it) from misuse.  And presumably the same applies
+	for wrappers written for C code, given that there is probably
+	an "unsafe" lurking somewhere in such wrappers.
 
-Cheers,
-Miguel
+4.	Rust's safety properties are focused more on UB in particular
+	than on bugs in general.
+
+And one final thing to keep in mind...  If I turn this blog series into
+a rosy hymn to Rust, nobody is going to believe it.  ;-)
+
+							Thanx, Paul
