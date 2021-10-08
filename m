@@ -2,63 +2,64 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1A3AC433F5
-	for <rust-for-linux@archiver.kernel.org>; Fri,  8 Oct 2021 19:53:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 335C4C433EF
+	for <rust-for-linux@archiver.kernel.org>; Fri,  8 Oct 2021 21:32:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9937B61037
-	for <rust-for-linux@archiver.kernel.org>; Fri,  8 Oct 2021 19:53:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0628860FF2
+	for <rust-for-linux@archiver.kernel.org>; Fri,  8 Oct 2021 21:32:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241371AbhJHTzm (ORCPT
+        id S243435AbhJHVen (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 8 Oct 2021 15:55:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37688 "EHLO
+        Fri, 8 Oct 2021 17:34:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231408AbhJHTzl (ORCPT
+        with ESMTP id S230384AbhJHVem (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 8 Oct 2021 15:55:41 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2930DC061570
-        for <rust-for-linux@vger.kernel.org>; Fri,  8 Oct 2021 12:53:46 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id e144so11972040iof.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 Oct 2021 12:53:46 -0700 (PDT)
+        Fri, 8 Oct 2021 17:34:42 -0400
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00663C061570
+        for <rust-for-linux@vger.kernel.org>; Fri,  8 Oct 2021 14:32:46 -0700 (PDT)
+Received: by mail-io1-xd34.google.com with SMTP id n7so3354446iod.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 08 Oct 2021 14:32:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=OBX9dZSpmQcEMkNsFs72/snKGvpakQB3FBMD+xsLJgs=;
-        b=Q0cZY5sBzC4gb+eC/WMGD1gIhnJdSqGnWwsKL3qiVxIoY9G13rI44jr0vH6AxHxZmZ
-         C95FFtna4qskCAEaTPmbrttW1Ep97EZ1mlP7Vr37fmz9BWThAYJzBrKy/chmmW4QKIJG
-         amBI4m4WffYt8rJ4G2iXdwcMywSDWW9KY+vzpCbCUTHBl7iIcy3WkzpCapy7YXOvA5R0
-         Qs0xjUVgWS4Ae5K7PJWESLfeC/rJtF6LglIeOMAbjKNsC6IpkvneOF46UNzIUFennR+C
-         /UtXXxv9jAJ24KDbcTUSQI1ZwCa8DkEYEPINGcFjaJiXZXOFEI8rdefukUaHPL5500Dd
-         SW6A==
+        bh=LM9irX8xumxp4TIr9cZC8VWpmESQECbIIBoHRou9P3g=;
+        b=QGK2w5pfEYqW7GvsEl1srNBV+T4P6AJnS7mVhpBQDz/iMUh011pQ7Tvb/Olufwej2q
+         iho3oX7Wu6NZWEAk3oETbLTu1VvXePBijx40eqBwvLuwTUFwHvCUSBLZ0CosVYO7sk3j
+         kV2jI12W1EgWke7ClURNa4fGeHTf3TFigQNmOa8JEjo93L8WXfCN1kLdZlSSSreuPlVZ
+         oakM6c7wzu7uoPtI47h03P3R2yhZGSgurBgevLWnjdwNJyN1WGbPb8d8DZyknmX7vbev
+         h03WVag6VXjdPvtvbRMHAkvdxCDnozcF7X/JJEI+9cKaNlm2XA+aceNy+NBW94OH5qJI
+         r7Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=OBX9dZSpmQcEMkNsFs72/snKGvpakQB3FBMD+xsLJgs=;
-        b=1P13w3N7Ph3sz/Y951Aw6vArRwGHflwdn3bRJCqKLynofYku+5+ZBrTNDM3i93zYHc
-         OoaGuBXUbpp+6ovAQymuUEOZE5suz+VC8ZjwrhAFtUvjlLQSQ68dyKXYdm9Ut9XDoZZ2
-         ndYGQVwMIgfUTIogpTCsckrxTBkf/6yWYA7Ss3fvbbRTrkRMn5x92k8of07UgcapwwKM
-         FpI+1IcjsOVPFICxTfEQ4+u7NuAxDJMzugO3gkQv59AZrMBbaPUGBH0DTAQ7rUd9BxVR
-         AEZeq2AnNkZ7YaBgydNyBvt50ukPSM9Sn9idA9VmUsm/ZiVpjNdRh4UPCLvyNl+FgeRB
-         eITA==
-X-Gm-Message-State: AOAM533YzoumAlytJiwzwheM21vLG7OpqizKoIomGMjNDDsMBJqeNEJ1
-        02Zxu+iLKPVzcRUSvtnPas5hJbSkzlQjEe5X5Fc=
-X-Google-Smtp-Source: ABdhPJzUmRHPEH7LgQYkuBBvK87amvXRNmu8eoJy32kEBOf6vDtVRxCqtM2jb7aD+9B8puFel1hf+lybRO+WHKKxtMU=
-X-Received: by 2002:a05:6638:297:: with SMTP id c23mr9231975jaq.131.1633722825542;
- Fri, 08 Oct 2021 12:53:45 -0700 (PDT)
+        bh=LM9irX8xumxp4TIr9cZC8VWpmESQECbIIBoHRou9P3g=;
+        b=o8R0H9vHG5iEicFwxVJybfrX1Lb+di+p9GLgJFGaUZwOkv1r+KmnulSDShV+Ztl33r
+         06dVTi7/wJDeMkXroyg2cN0xYIbq6ArRpa4SVTOkxtZOV75LQmsPccAe48gKxqRvtsU0
+         XMZmnfZfT7l3EJiMjEFnnznLZprEFlFWfT5rXHfNsEzb77YC79t5lh3D8AmEjbIyHGjJ
+         V2L5WVmIo4/ef+/HttFY/g18pi6r1SdfRkrZNu9JLsBUVTFmryceqVYbauQblQmIN+7M
+         KqsVIkLnWyAvozm/faL6tPlcn5HTv1zVQ4CFZsh3Pqh9ZomWaMzIGqPqevdOcF+TGBog
+         4jbQ==
+X-Gm-Message-State: AOAM53144vX1JZ3RyqphVRvc4yfFueKMkYPm5/fa8qaJGR3uvIuAJpc4
+        214oABQtUgaK91EL4UuKkZLjORbEWcbYV+LZm3Y=
+X-Google-Smtp-Source: ABdhPJx/pc/aX53QEe5tzkspmSCrBx4LqFVwABijPAO2FX2tel5+fxeh2ceJvLtBXCBU9OG9e8cuNNtgDC6WRggG1rE=
+X-Received: by 2002:a05:6638:14d0:: with SMTP id l16mr9287388jak.142.1633728766086;
+ Fri, 08 Oct 2021 14:32:46 -0700 (PDT)
 MIME-Version: 1.0
 References: <CANpmjNMijbiMqd6w37_Lrh7bV=aRm45f9j5R=A0CcRnd5nU-Ww@mail.gmail.com>
  <YV8A5iQczHApZlD6@boqun-archlinux> <CANpmjNOA3NfGDLK2dribst+0899GrwWsinMp7YKYiGvAjnT-qA@mail.gmail.com>
  <CANiq72k2TwCY1Os2siGB=hBNRtrhzJtgRS5FQ3JDDYM-TXyq2Q@mail.gmail.com>
  <20211007185029.GK880162@paulmck-ThinkPad-P17-Gen-1> <20211007224247.000073c5@garyguo.net>
  <20211007223010.GN880162@paulmck-ThinkPad-P17-Gen-1> <20211008000601.00000ba1@garyguo.net>
- <20211007234247.GO880162@paulmck-ThinkPad-P17-Gen-1>
-In-Reply-To: <20211007234247.GO880162@paulmck-ThinkPad-P17-Gen-1>
+ <20211007234247.GO880162@paulmck-ThinkPad-P17-Gen-1> <20211008005958.0000125d@garyguo.net>
+ <20211008174048.GS880162@paulmck-ThinkPad-P17-Gen-1>
+In-Reply-To: <20211008174048.GS880162@paulmck-ThinkPad-P17-Gen-1>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 8 Oct 2021 21:53:34 +0200
-Message-ID: <CANiq72nLXmN0SJOQ-aGD4P2dUTs_vXBXMDnr2eWP-+R7H2ecEw@mail.gmail.com>
+Date:   Fri, 8 Oct 2021 23:32:34 +0200
+Message-ID: <CANiq72mOWV2SiF24E=NMB-zc2mK_UFH=CvDFxN+vdtyjy-Wm0A@mail.gmail.com>
 Subject: Re: Can the Kernel Concurrency Sanitizer Own Rust Code?
 To:     "Paul E. McKenney" <paulmck@kernel.org>
 Cc:     Gary Guo <gary@garyguo.net>, Marco Elver <elver@google.com>,
@@ -70,57 +71,72 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Oct 8, 2021 at 1:42 AM Paul E. McKenney <paulmck@kernel.org> wrote:
+On Fri, Oct 8, 2021 at 7:40 PM Paul E. McKenney <paulmck@kernel.org> wrote:
 >
-> OK, I now have this:
+> Just in case there is lingering confusion, my purpose in providing an
+> example from the field of safety-critical systems was nothing more or
+> less than to derive an extreme lower bound for the expected bug rate in
+
+Yes, safety-critical systems usually have lower rate of bugs, but they
+can actually be very buggy as long as they comply with requirements...
+:P
+
+> production software.  Believe me, there is no way that I am advocating
+> use of Rust as it currently exists for use in safety-critical systems!
+> Not that this will necessarily prevent such use, mind you!  ;-)
+
+Well, people are already working on bringing Rust to safety-critical domains! :)
+
+In any case, for example, DO-178 describes the software development
+process, but does not require a particular language to be used even if
+a particular project following that standard may do so.
+
+> From what I have seen, people prevent unsafe Rust code from introducing
+> UB by adding things, for example assertions and proofs of correctness.
+> Each and every one of those added things have a non-zero probability
+> of themselves containing bugs or mistakes.  Therefore, a Rust program
+> containing a sufficiently large quantity of unsafe code will with high
+> probability invoke UB.
 >
->         Both the unsafe Rust code and the C code can interfere with Rust
->         non-unsafe code, and furthermore safe code can violate unsafe
->         code's assumptions as long as it is in the same module. However,
->         please note that a Rust module is a syntactic construct vaguely
->         resembling a C++ namespace, and has nothing to do with a kernel
->         module or a translation unit.
+> Hopefully, a much lower UB-invocation probability than a similar quantity
+> of C code, but nevertheless, a decidedly non-zero probability.
 >
-> Is that better?
+> So what am I missing here?
 
-For someone new to Rust, I think the paragraph may be hard to make
-sense of, and there are several ways to read it.
+Rust does not guarantee UB-freedom in an absolute way -- after all,
+there is unsafe code in the standard library, we have unsafe code in
+the kernel abstractions, the compiler may have bugs, the hardware may
+misbehave, there may be a single-event upset, etc.
 
-For instance, safe code "can" violate unsafe code's assumptions in the
-same module, but then it just means the module is buggy/unsound.
+However, the key is to understand Rust as a way to minimize unsafe
+code, and therefore minimize the chances of UB happening.
 
-But if we are talking about buggy/unsound modules, then even safe code
-outside the module may be able to violate the module's assumptions
-too.
+Let's take an example: we need to dereference a pointer 10 times in a
+driver. And 10 more times in another driver. We may do it writing
+`unsafe` many times in every driver, and checking that every single
+usage does not trigger UB. This is fine, and we can write Rust code
+like that, but is not buying us much. And, as you say, if we keep
+accumulating those dereferences, the probability of a mistake grows
+and grows.
 
-Instead, it is easier to talk about what Rust aims to guarantee: that
-if libraries containing unsafe code are sound, then outside safe code
-cannot subvert them to introduce UB.
+Instead, we could write an abstraction that provides a safe way to do
+the same thing. Then we can focus our efforts in checking the
+abstraction, and reuse it everywhere, in all drivers.
 
-Thus it is a conditional promise. But it is a powerful one. The point
-is not that libraries may be subverted if there is a bug in them, but
-that they cannot be subverted if they are correct.
+That abstraction does not guarantee there is no UB -- after all, it
+may have a bug, or someone else may corrupt our memory, or the
+hardware may have a bug, etc. However, that abstraction is promising
+that, as long as there is no other UB subverting it, then it will not
+allow safe code to create UB.
 
-As an example, take `std::vector` from C++. Correct usage of
-`std::vector` will not trigger UB (as long as `std::vector` is
-non-buggy). Rust aims to guarantee something extra: that even
-*incorrect* safe code using `Vec` will not be able to trigger UB (as
-long as `Vec` and other abstractions are non-buggy).
+Therefore, as a driver writer, as long as I keep writing only safe
+code, I do not have to care about introducing UB. As a reviewer, if
+the driver does not contain unsafe code, I don't need to worry about
+any UB either. If UB is actually introduced, then the bug is in the
+abstractions, not the safe driver.
 
-As you see, the condition "as long as X is non-buggy" remains. But
-that is OK -- it does not mean encapsulation is useless: it still
-allows to effectively contain UB.
-
-Put another way, C and C++ APIs are the trivial / reduced case for
-what Rust aims to guarantee. For instance, we can think of C++
-`std::vector` as a Rust type where every method is marked as `unsafe`.
-As such, Rust would be able to provide its guarantee vacuously --
-there are no safe APIs to call to begin with.
-
-To be clear, this "incorrect" usage includes maliciously-written safe
-code. So it even has some merits as an "extra layer of protection"
-against Minnesota-style or "Underhanded C Contest"-style code (at
-least regarding vulnerabilities that exploit UB).
+Thus we are reducing the amount of places where we risk using a
+potentially-UB operation.
 
 Cheers,
 Miguel
