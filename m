@@ -2,162 +2,205 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B17BC433F5
-	for <rust-for-linux@archiver.kernel.org>; Sat,  9 Oct 2021 23:59:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78E90C433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon, 11 Oct 2021 00:59:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3130460F6B
-	for <rust-for-linux@archiver.kernel.org>; Sat,  9 Oct 2021 23:59:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5004C60EE7
+	for <rust-for-linux@archiver.kernel.org>; Mon, 11 Oct 2021 00:59:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230093AbhJJABE (ORCPT
+        id S233051AbhJKBBL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 9 Oct 2021 20:01:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35530 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229703AbhJJABE (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 9 Oct 2021 20:01:04 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DC55E60F57;
-        Sat,  9 Oct 2021 23:59:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1633823946;
-        bh=0JzN+7cmMA9FDa/hUzcaEGFr9/c//tTdPKQV4NbWyfs=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=strx8NBTuRV8OIRzGCcwjvOTUqvgODTs1TPiNwehCyNsRal1YL4qCigjgw6GDLQGo
-         VQuevnDDUt4xAia4ZbwuCZL1S3ZASQ3vPEhiuOcdMh29nYXyxvfLe3wq5OKsrQLSph
-         aHf6re8WGtIIer8cG/ei8Se68AF/wYH5fCwmRtQWkE0ry1smnBGe+FolhHxURZYdzW
-         unSEUqBgHksBlCMYHSYa7M7SqstXx2VapqUzN/nUs3f2Q7PaCQbdBfscniI83f6wel
-         ZvgQPZZvd95fpQqK8qNRymQfW++Jmb6XF8VrCMCJS+5htuWeaCC3AiEgc3XXccKO0a
-         C5G5Nxg25eQeg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id A7A785C0887; Sat,  9 Oct 2021 16:59:06 -0700 (PDT)
-Date:   Sat, 9 Oct 2021 16:59:06 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+        Sun, 10 Oct 2021 21:01:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58212 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232964AbhJKBBL (ORCPT
+        <rfc822;rust-for-linux@vger.kernel.org>);
+        Sun, 10 Oct 2021 21:01:11 -0400
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7FE8C061570
+        for <rust-for-linux@vger.kernel.org>; Sun, 10 Oct 2021 17:59:11 -0700 (PDT)
+Received: by mail-io1-xd32.google.com with SMTP id b10so2871858iof.12
+        for <rust-for-linux@vger.kernel.org>; Sun, 10 Oct 2021 17:59:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kg1lM2jGKX12em01lUkwgIGQjeOxXQjzNmMLAv0o5ho=;
+        b=WER49xjJbYc0EVr2Q4TwGU2I1sq77ZdVxXr2QLoYrNMvuFm+j1eiUZhA8oHm4PsXC/
+         ad5CEjJcx0WEmlqTH0RpX+Wzqf+lpTD1QOm950Kw/JFiuZBgjZ2iL42if3fSCy+1+J3H
+         PJ/XyGPf6TVrS4WyVIaXrULQoABeMpzkxfnkF5qBG1SJfjVR/m1914pwnzsHLSwX4GRM
+         HA5PD2rYB8EyX07fX94BDzmODkbQ4Z9GAqi4FXhn5POLkqPk3Do5LgLB79gK0hFKqZ6k
+         ltooclIGCbpDCH3o/QGNh5FpSCTualPdknVKlqCBICIM8AZSZjeV2h4T8Dk+0ltfCPEj
+         7d1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kg1lM2jGKX12em01lUkwgIGQjeOxXQjzNmMLAv0o5ho=;
+        b=r/wC8Wew3DFPm8BBv/UqFW/LFV8Xp3VT6I0gQXs+ew50SGa0JpsFJC7YbVDvO/BLjU
+         lEkWLtbdSzbFwphAmZgRPZwDxZrIL7F0dGC5kWWv5aaYbubkOuFunyCeC6OZqGlEycm7
+         o3T4Y1zIxDobdgeoiwRz5DHtj84ErYZSMhm9gwR6RWnO3qjPreDe1cDx/ueklVw4qX/D
+         7IauFW6IjijIp6N3RvFYcuZdELDkPbNy61ZlCrfBNRZi55seHjdZPzhBaFR7USQQPvSZ
+         4HeJCcjocLsu89GXiL0kwmEgc8zUGBs1qbayduhR9ojksBOvchavoPt4Rj5zEYx8re6T
+         CijA==
+X-Gm-Message-State: AOAM531VZmUlpmZrald/RatpMZzxFPEE9przZor99wZoqO5GlZzkIHKb
+        +yhdfALNU6QNy3lhawug8Vt9RCGUKY4SaVYUKDfD2tt0LtvrCf95
+X-Google-Smtp-Source: ABdhPJw887BgYVtEIEYVpyPgOe+oeyYX2S3H6XtC/mZzRYrnHHcc4YWpE6Y1pXeL51NKtihIzosTJYpWeyXGjO8dOyg=
+X-Received: by 2002:a05:6638:14d0:: with SMTP id l16mr16766540jak.142.1633913951248;
+ Sun, 10 Oct 2021 17:59:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <CANpmjNOA3NfGDLK2dribst+0899GrwWsinMp7YKYiGvAjnT-qA@mail.gmail.com>
+ <CANiq72k2TwCY1Os2siGB=hBNRtrhzJtgRS5FQ3JDDYM-TXyq2Q@mail.gmail.com>
+ <20211007185029.GK880162@paulmck-ThinkPad-P17-Gen-1> <20211007224247.000073c5@garyguo.net>
+ <20211007223010.GN880162@paulmck-ThinkPad-P17-Gen-1> <20211008000601.00000ba1@garyguo.net>
+ <20211007234247.GO880162@paulmck-ThinkPad-P17-Gen-1> <CANiq72nLXmN0SJOQ-aGD4P2dUTs_vXBXMDnr2eWP-+R7H2ecEw@mail.gmail.com>
+ <20211008235744.GU880162@paulmck-ThinkPad-P17-Gen-1> <CANiq72m76-nRDNAceEqUmC_k75FZj+OZr1_HSFUdksysWgCsCA@mail.gmail.com>
+ <20211009234834.GX880162@paulmck-ThinkPad-P17-Gen-1>
+In-Reply-To: <20211009234834.GX880162@paulmck-ThinkPad-P17-Gen-1>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 11 Oct 2021 02:59:00 +0200
+Message-ID: <CANiq72=uPFMbp+270O5zTS7vb8xJLNYvYXdyx2Xsz5+3-JATLw@mail.gmail.com>
+Subject: Re: Can the Kernel Concurrency Sanitizer Own Rust Code?
+To:     "Paul E. McKenney" <paulmck@kernel.org>
 Cc:     Gary Guo <gary@garyguo.net>, Marco Elver <elver@google.com>,
         Boqun Feng <boqun.feng@gmail.com>,
         kasan-dev <kasan-dev@googlegroups.com>,
         rust-for-linux <rust-for-linux@vger.kernel.org>
-Subject: Re: Can the Kernel Concurrency Sanitizer Own Rust Code?
-Message-ID: <20211009235906.GY880162@paulmck-ThinkPad-P17-Gen-1>
-Reply-To: paulmck@kernel.org
-References: <20211007185029.GK880162@paulmck-ThinkPad-P17-Gen-1>
- <20211007224247.000073c5@garyguo.net>
- <20211007223010.GN880162@paulmck-ThinkPad-P17-Gen-1>
- <20211008000601.00000ba1@garyguo.net>
- <20211007234247.GO880162@paulmck-ThinkPad-P17-Gen-1>
- <20211008005958.0000125d@garyguo.net>
- <20211008174048.GS880162@paulmck-ThinkPad-P17-Gen-1>
- <CANiq72mOWV2SiF24E=NMB-zc2mK_UFH=CvDFxN+vdtyjy-Wm0A@mail.gmail.com>
- <20211009000838.GV880162@paulmck-ThinkPad-P17-Gen-1>
- <CANiq72nGX6bgwDuVMX3nGUfs_UQB1ikOBHE-Q74nEaJ2Stx_2w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72nGX6bgwDuVMX3nGUfs_UQB1ikOBHE-Q74nEaJ2Stx_2w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Oct 09, 2021 at 06:31:06PM +0200, Miguel Ojeda wrote:
-> On Sat, Oct 9, 2021 at 2:08 AM Paul E. McKenney <paulmck@kernel.org> wrote:
-> >
-> > If it complies with requirements, is it really a bug?  And while we are
-> > at it, I need to make an insignificant change to those requirements.  ;-)
-> >
-> > Hey, they have been using C for quite some time!  In at least some cases,
-> > with the assistance of formal verification tooling that takes the C code
-> > as input (cbmc, for example).
-> 
-> Indeed, for assurance levels that require that kind of verification,
-> there is a need for that kind of tooling for Rust.
-> 
-> > And how many of those boxes are ticked by the usual open-source processes?
-> > Nicholas Mc Guire talks about this from time to time.
-> >
-> > One challenge for use of Rust in my previous work with similar standards
-> > would be repeatability.  It would be necessary to carefully identify and
-> > archive the Rust compiler.
-> 
-> This may be open for interpretation, but I am aware of safety-critical
-> projects having used open-source compilers (e.g. GCC) and passing
-> certification (in at least some assurance levels).
-> 
-> Of course, in any case, companies looking to certify a system will not
-> jump right away into Rust because there are many other things to
-> consider: previous experience certifying, existence of tools, etc. and
-> all their implications in cost.
+On Sun, Oct 10, 2021 at 1:48 AM Paul E. McKenney <paulmck@kernel.org> wrote:
+>
+> As long as a significant number of compiler writers evaluate themselves by
+> improved optimization, they will be working hard to create additional UB
+> opportunities.  From what you say above, their doing so has the potential
 
-The advantage that GCC and Clang/LLVM have is that you can simply say
-"CentOS vx.yy" and define the full distro in an organized manner, for
-a reasonably old and trusted distro version.  Perhaps Rust is already
-there, but some have led me to believe that the safety-critical project
-would need to take on some of the job of a Linux distribution.
+Compiler writers definitely try to take advantage of as much UB as
+possible to improve optimization, but I would not call that creating
+additional UB opportunities. The opportunities are already there,
+created by the standards/committees in the case of C and the
+RFCs/teams in the case of unsafe Rust.
 
-Which they most definitely can do, if they so choose and properly document
-with proper approvals.  Which should not be that much of a problem to
-make happen.
+Of course, compiler writers may be stretching too much the intention
+and/or ambiguities, and there is the whole discussion about whether UB
+was/is supposed to allow unbounded consequences which WG14 is
+discussing in the recently created UBSG.
 
-> > So Rust is an attempt to let the compiler writers have their UB while
-> > inflicting at least somewhat less inconvenience on those of us poor
-> > fools using the resulting compilers?  If so, I predict that the compiler
-> 
-> You can see Rust as a way to "tame" C and C++, yes ;D
+But I touch on this to emphasize that, even in unsafe Rust, compiler
+writers are not completely free to do whatever they want (even if they
+completely disregarded their users and existing code bases) and that
+C/unsafe Rust also share part of the responsibility (as languages) to
+define clearly what is allowed and what is not. So unsafe Rust is in a
+similar position to C here (though not equal).
 
-How about instead taming the people writing insane optimizations?  ;-)
+> to generate bugs in the Rust compiler.  Suppose this happens ten years
 
-> More seriously, users of Rust also take advantage of it, not just
-> compiler writers. For instance, unsafe code is used all the time to
-> implement all sorts of data structures in a performant way, while
-> still giving callers a safe interface.
-> 
-> There is also the angle about using `unsafe` even in "normal code" as
-> an escape hatch when you really need the performance (e.g. to avoid a
-> runtime check you can show it always holds).
-> 
-> The key idea is to encapsulate and minimize all that, and keep most of
-> the code (e.g. drivers) within the safe subset while still taking
-> advantage of the performance potentially-UB operations give us.
+I am not sure what you mean by bugs in the Rust compiler. If the
+compiler is following what unsafe Rust designers asked for, then it
+wouldn't be a bug. Whether those semantics are what we want as users,
+of course, is a different matter, but we should talk in that case with
+the language people (see the previous point).
 
-Nice spin.  ;-)
+> from now.  Do you propose to force rework not just the compiler, but
+> large quantities of Rust code that might have been written by that time?
 
-> > writers will work hard to exploit additional UB until such time as Rust
-> > is at least as unsound as the C language currently is.
-> 
-> Rust has defined both the language and the compiler frontend so far,
-> thus it is also its own compiler writer here (ignoring here
-> alternative compilers which are very welcome). So it is in a good
-> position to argue with itself about what should be UB ;)
-> 
-> Now, of course, the Rust compiler writers have to ensure to abide by
-> LLVM's UB semantics when they lower code (and similarly for
-> alternative backends). But this is a different layer of UB, one that
-> frontend writers are responsible for, not the Rust one, which is the
-> one we care about for writing unsafe code.
-> 
-> Nevertheless, in the layer we care about, it would be nice to see the
-> unsafe Rust semantics defined as precisely as possible -- and there is
-> work to do there (as well as an opportunity).
-> 
-> (In any case, to be clear, this all is about unsafe Rust -- for safe
-> Rust, it has to show no UB modulo bugs in optimizers, libraries,
-> hardware, etc. -- see my other email about this. Furthermore, even if
-> there comes a time Rust has an standard, the safe Rust subset should
-> still not allow any UB).
+No, but I am not sure where you are coming from.
 
-In the near term, you are constrained by the existing compiler backends,
-which contain a bunch of optimizations that are and will continue to limit
-what you can do.  Longer term, you could write your own backend, or rework
-the existing backends, but are all of you really interested in doing that?
+If your concern is that the unsafe Rust code we write today in the
+kernel may be broken in 10 years because the language changed the
+semantics, then this is a real concern if we are writing unsafe code
+that relies on yet-to-be-defined semantics. Of course, we should avoid
+doing that just yet. This is why I hope to see more work on the Rust
+reference etc. -- an independent implementation like the upcoming GCC
+Rust may prove very useful for this.
 
-The current ownership model is also an interesting constraint, witness
-the comments on the sequence locking post.  That said, I completely
-understand how the ownership model is a powerful tool that can do an
-extremely good job of keeping concurrency novices out of trouble.
+Now, even if we do use subtle semantics that may not be clear yet,
+upstream Rust should not be happy to break the kernel (just like ISO C
+and GCC/Clang should not be). At least, they seem quite careful about
+this. For instance, when they consider it a need, upstream Rust
+compiles and/or runs the tests of huge amounts of open source
+libraries out there [1] e.g. [2]. It would be ideal to have the kernel
+integrated into those "crater runs" even if we are not a normal crate.
 
-> > Sorry, but you did leave yourself wide open for that one!!!  ;-)
-> 
-> No worries :) I appreciate that you raise all these points, and I hope
-> it clarifies things for others with the same questions.
+[1] https://rustc-dev-guide.rust-lang.org/tests/intro.html#crater
+[2] https://crater-reports.s3.amazonaws.com/beta-1.56-1/index.html
 
-Here is hoping!
+> The thing is that you have still not convinced me that UB is all that
+> separate of a category from logic bugs, especially given that either
+> can generate the other.
 
-							Thanx, Paul
+Logic bugs in safe Rust cannot trigger UB as long as those conditions
+we discussed apply. Thus, in that sense, they are separate in Rust.
+
+But even in C, we can see it from the angle that triggering UB means
+the compiler output cannot be "trusted" anymore (assuming we use the
+definition of UB that compiler writers like to use but that not
+everybody in the committee agrees with). While with logic bugs, even
+with optimizations applied, the output still has to be consistent with
+the input (in terms of observable behavior). For instance, the
+compiler returning -38 here (https://godbolt.org/z/Pa8TWjY9a):
+
+    int f(void) {
+        const unsigned char s = 42;
+        _Bool d;
+        memcpy(&d, &s, 1);
+        return d ? 3 : 4;
+    }
+
+The distinction is also useful in order to discuss vulnerabilities:
+about ~70% of them come from UB-related issues [1][2][3][4].
+
+[1] https://msrc-blog.microsoft.com/2019/07/18/we-need-a-safer-systems-programming-language/
+[2] https://langui.sh/2019/07/23/apple-memory-safety/
+[3] https://www.chromium.org/Home/chromium-security/memory-safety
+[4] https://security.googleblog.com/2019/05/queue-hardening-enhancements.html
+
+> Hence the Rust-unsafe wrappering for C code, presumably.
+
+Yes, the wrapping uses unsafe code to call the C bindings, but the
+wrapper may expose a safe interface to the users.
+
+That wrapping is what we call "abstractions". In our approach, drivers
+should only ever call the abstractions, never interacting with the C
+bindings directly.
+
+Wrapping things also allows us to leverage Rust features to provide
+better APIs compared to using C APIs. For instance, using `Result`
+everywhere to represent success/failure.
+
+> This focus on UB surprises me.  Unless the goal is mainly comfort for
+> compiler writers looking for more UB to "optimize".  ;-)
+
+I could have been clearer: what I meant is that "safety" in Rust (as a
+concept) is related to UB. So safety in Rust "focuses" on UB.
+
+But Rust also focuses on "safety" in a more general sense about
+preventing all kinds of bugs, and is a significant improvement over C
+in this regard, removing some classes of errors.
+
+For instance, in the previous point, I mention `Result` -- using it
+statically avoids forgetting to handle errors, as well as mistakes due
+to confusion over error encoding.
+
+> It will be interesting to see how the experiment plays out.  And to
+> be sure, part of my skepticism is the fact that UB is rarely (if ever)
+> the cause of my Linux-kernel RCU bugs.  But the other option that the
+
+Safe/UB-related Rust guarantees may not useful everywhere, but Rust
+also helps lowering the chances of logic bugs in general (see the
+previous point).
+
+> kernel uses is gcc and clang/LLVM flags to cause the compiler to define
+> standard-C UB, one example being signed integer overflow.
+
+Definitely, compilers could offer to define many UBs in C. The
+standard could also decide to remove them, too.
+
+However, there are still cases that C cannot really prevent unless
+major changes take place, such as dereferencing pointers or preventing
+data races.
+
+Cheers,
+Miguel
