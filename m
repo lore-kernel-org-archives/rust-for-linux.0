@@ -2,288 +2,274 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EED0C433F5
-	for <rust-for-linux@archiver.kernel.org>; Wed, 13 Oct 2021 17:51:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B205C433F5
+	for <rust-for-linux@archiver.kernel.org>; Wed, 13 Oct 2021 23:29:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 767EE60FDA
-	for <rust-for-linux@archiver.kernel.org>; Wed, 13 Oct 2021 17:51:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E9073610E5
+	for <rust-for-linux@archiver.kernel.org>; Wed, 13 Oct 2021 23:29:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238198AbhJMRxd (ORCPT
+        id S229736AbhJMXbn (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 13 Oct 2021 13:53:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40046 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238565AbhJMRxI (ORCPT
-        <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 13 Oct 2021 13:53:08 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D427C061746
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Oct 2021 10:50:30 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id r7so11041111wrc.10
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Oct 2021 10:50:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=52v6GxGe7wvzewDWq67IcYS7Vxmb6Nbwq6eBE/FcbdE=;
-        b=qeaOU5WPjbAEGERo0xv5gpsZ3W9MBHRWUWB04j9l7hETUIrcKGy1sjOcVLfUFM6HHH
-         f4K6i9XOtKCFUjEfvbTyppigDAQQ5HMKhgFKm9xeshxMH7HQJG8SOb0fE7qeY96MamlU
-         /3pbKY1tqe+T4+qwkLhZzeEVdjSChYAZWZeVCvYfndPcc97F/yhcxFJ+tWMJaKI8i8le
-         E0vx1dHiPLIfRyMd6AdpybQmPjQnS89tXBSuhxz3vQkLM8uk2ekf1Xas0afEDZofwIzN
-         ntfMWflgLvLCaBpOp7pd9TqPU2Gzcfj3ivpC5wZ05fRCBPMYZL/jN4S7XK1lOlFCiLja
-         uXGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=52v6GxGe7wvzewDWq67IcYS7Vxmb6Nbwq6eBE/FcbdE=;
-        b=e3u63SlwOeILYwN2dAlwVd/Cyap9CAb/6mJOMyoziM8MrkFDfSIbPcXMaN96n9xUP5
-         MKwpgcRyyQrseEg7AtPqBC/1hyqIEzpW06I8vvz8bKTvd2msuKPgCQknmRngoOQSTXnc
-         0HZkO1BHhouKzm69K3cUDyCf/Y4wn83TypSUofOVH4Lyooe32qPsap4DN7NW288NyjoQ
-         923TRk5an2XHWRw88dPScwVAhhNaapcpT1/w34VFFlxxlQKix5sQtBImuRL47iclt4aD
-         y8CZMVZ6DalkmoLTMhv9REgBQtT9pQZqI/C14LeyKY2ask7JFU3Y8GmnEile5o+gH6K0
-         WaIw==
-X-Gm-Message-State: AOAM531E4vEfRoZXGfvQeNaODAyEZSLeC7qV7l8gkHUR21OXWZlN3JcX
-        iCI0SWTRGyOTlu6a5yCc9QX9
-X-Google-Smtp-Source: ABdhPJwrwKCFQ0hYsuhFWFMC3twPkM375Kr7gvd8vScYo42AIGZ538Ti4ithVjyInT1dn/HZRXt3Kw==
-X-Received: by 2002:a1c:14b:: with SMTP id 72mr14694962wmb.188.1634147428469;
-        Wed, 13 Oct 2021 10:50:28 -0700 (PDT)
-Received: from google.com ([2a00:79e0:d:209:c85c:bd9:50ac:bc30])
-        by smtp.gmail.com with ESMTPSA id z133sm6243363wmc.45.2021.10.13.10.50.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Oct 2021 10:50:28 -0700 (PDT)
-Date:   Wed, 13 Oct 2021 18:50:24 +0100
-From:   Wedson Almeida Filho <wedsonaf@google.com>
-To:     "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Gary Guo <gary@garyguo.net>, Marco Elver <elver@google.com>,
+        Wed, 13 Oct 2021 19:31:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36678 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229575AbhJMXbn (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Wed, 13 Oct 2021 19:31:43 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 94BB360E97;
+        Wed, 13 Oct 2021 23:29:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1634167779;
+        bh=xbMhy1voxBzvUn3hhVAEpSxxTLUVWdvummFPiLb1lYM=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=f0fCeTeW6qafx04wdS3z9a1WkljdTkkyUPMR2dtYw0fx/Ymbaa+dwrYSxIsuNhJy1
+         Gyt+NJuSOoyNwvOrLAo4xHnZHIDKjS8yQuT3+0QqReI6UEZv2K+eAkBopP2+l6KJHc
+         p61u7XrzbEKfMbJCbV8dMEwmeGBgUnJqMs8sEufpLI7RGsqPUIjYfZeOh4aeAoIBnZ
+         pkXA9kP0m1aFsdKmB/3hyCrQgZh+ECjPvM+O3AIxZWVHVKcWcEzlZS4m6cLR9qwCAQ
+         +ZJfmpdsE7roHOvTsdzvdvPJ9xefW8q0dT4eD/qputiuyXnXJ7sgpof24AZZUQDZUV
+         tiZ6jBckGvZvw==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+        id 66D675C14F7; Wed, 13 Oct 2021 16:29:39 -0700 (PDT)
+Date:   Wed, 13 Oct 2021 16:29:39 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Gary Guo <gary@garyguo.net>, Marco Elver <elver@google.com>,
         Boqun Feng <boqun.feng@gmail.com>,
         kasan-dev <kasan-dev@googlegroups.com>,
         rust-for-linux <rust-for-linux@vger.kernel.org>
 Subject: Re: Can the Kernel Concurrency Sanitizer Own Rust Code?
-Message-ID: <YWccYPLUOH7t9JtB@google.com>
-References: <20211008005958.0000125d@garyguo.net>
- <20211008174048.GS880162@paulmck-ThinkPad-P17-Gen-1>
- <CANiq72mOWV2SiF24E=NMB-zc2mK_UFH=CvDFxN+vdtyjy-Wm0A@mail.gmail.com>
- <20211009000838.GV880162@paulmck-ThinkPad-P17-Gen-1>
- <CANiq72nGX6bgwDuVMX3nGUfs_UQB1ikOBHE-Q74nEaJ2Stx_2w@mail.gmail.com>
- <20211009235906.GY880162@paulmck-ThinkPad-P17-Gen-1>
- <CANiq72mj9x7a4mfzJo+pY8HOXAshqfhyEJMjs7F+qS-rJaaCeA@mail.gmail.com>
- <20211011190104.GI880162@paulmck-ThinkPad-P17-Gen-1>
- <CANiq72ny0RCnO1+E_wBgx0C6NCaMfv82rvkLVuwmW8Y+7Kii0Q@mail.gmail.com>
- <20211013160707.GR880162@paulmck-ThinkPad-P17-Gen-1>
+Message-ID: <20211013232939.GW880162@paulmck-ThinkPad-P17-Gen-1>
+Reply-To: paulmck@kernel.org
+References: <20211007223010.GN880162@paulmck-ThinkPad-P17-Gen-1>
+ <20211008000601.00000ba1@garyguo.net>
+ <20211007234247.GO880162@paulmck-ThinkPad-P17-Gen-1>
+ <CANiq72nLXmN0SJOQ-aGD4P2dUTs_vXBXMDnr2eWP-+R7H2ecEw@mail.gmail.com>
+ <20211008235744.GU880162@paulmck-ThinkPad-P17-Gen-1>
+ <CANiq72m76-nRDNAceEqUmC_k75FZj+OZr1_HSFUdksysWgCsCA@mail.gmail.com>
+ <20211009234834.GX880162@paulmck-ThinkPad-P17-Gen-1>
+ <CANiq72=uPFMbp+270O5zTS7vb8xJLNYvYXdyx2Xsz5+3-JATLw@mail.gmail.com>
+ <20211011185234.GH880162@paulmck-ThinkPad-P17-Gen-1>
+ <CANiq72k+wa8bkxzcaRUSAee2btOy04uqLLnwY_AsBfd2RBhOxw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211013160707.GR880162@paulmck-ThinkPad-P17-Gen-1>
+In-Reply-To: <CANiq72k+wa8bkxzcaRUSAee2btOy04uqLLnwY_AsBfd2RBhOxw@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Oct 13, 2021 at 09:07:07AM -0700, Paul E. McKenney wrote:
-> On Wed, Oct 13, 2021 at 01:48:13PM +0200, Miguel Ojeda wrote:
-> > On Mon, Oct 11, 2021 at 9:01 PM Paul E. McKenney <paulmck@kernel.org> wrote:
-> > >
-> > > The main issue I was calling out was not justifying Rust, but rather
-> > > making sure that the exact same build could be reproduced a decade later.
-> > 
-> > Yes, but that is quite trivial compared to other issues I was
-> > mentioning like adapting and requalifying a testing tool. For
-> > instance, if you already had a team maintaining the configuration
-> > management (i.e. the versions etc.), adding one more tool is not a big
-> > deal.
+On Wed, Oct 13, 2021 at 01:47:34PM +0200, Miguel Ojeda wrote:
+> On Mon, Oct 11, 2021 at 8:52 PM Paul E. McKenney <paulmck@kernel.org> wrote:
+> >
+> > I am sorry, but I have personally witnessed way way too many compiler
+> > writers gleefully talk about breaking user programs.
 > 
-> OK, close enough to fair enough.  ;-)
+> Sure, and I just said that even if compiler writers disregarded their
+> users, they are not completely free to do whatever they want.
+
+Here is hoping!  Me, I have been pointing out to them the possible
+consequences of breaking certain programs.  ;-)
+
+I am responding to a very few points, but your point about memory safety
+in particular rather than undefined behavior in general simplifies things.
+Which makes most of the discussion, entertaining though it was, less
+relevant to the problem at hand.
+
+Not that my silence on the remaining points should be in any way
+interpreted as agreement, mind you!  ;-)
+
+> > And yes, I am working to try to provide the standards with safe ways to
+> > implement any number of long-standing concurrent algorithms.  And more
+> > than a few sequential algorithms.  It is slow going.  Compiler writers are
+> > quite protective of not just current UB, but any prospects for future UB.
 > 
-> > > There are things that concurrent software would like to do that are
-> > > made quite inconvenient due to large numbers of existing optimizations
-> > > in the various compiler backends.  Yes, we have workarounds.  But I
-> > > do not see how Rust is going to help with these inconveniences.
-> > 
-> > Sure, but C UB is unrelated to Rust UB. Thus, if you think it would be
-> > valuable to be able to express particular algorithms in unsafe Rust,
-> > then I would contact the Rust teams to let them know your needs --
-> > perhaps we end up with something way better than C for that use case!
+> I am aware of that -- I am in WG14 and the UBSG, and some folks there
+> want to change the definition of UB altogether to prevent exactly the
+> sort of issues you worry about.
 > 
-> Sequence locks and RCU do seem to be posing some challenges.  I suppose
-> this should not be too much of a surprise, given that there are people who
-> have been in the Rust community for a long time who do understand both.
-> If it were easy, they would have already come up with a solution.
-
-(Hey Paul, I tried posting on your blog series, but I'm having difficulty so I
-thought I'd reply here given that we mention seqlocks and RCU here.)
-
-I spent a bit of time thinking about sequence locks and I think I have something
-that is workable. (I remind you that we use the C implementation for the
-synchronisation primitives). Suppose we had some struct like so:
-
-struct X {
-    a: AtomicU32,
-    b: AtomicU32,
-}
-
-And suppose we have it protected by a sequence lock. If we wanted to return the
-sum of the two fields, the code would look like this:
-
-    let v = y.access(|x| {
-        let a = x.a.load(Ordering::Relaxed);
-	let b = x.b.load(Ordering::Relaxed);
-	a + b
-    });
-
-It would be expanded to the following machine code in aarch64 (when LTO is
-enabled):
-
-  403fd4:       14000002        b       403fdc
-  403fd8:       d503203f        yield
-  403fdc:       b9400808        ldr     w8, [x0, #8]
-  403fe0:       3707ffc8        tbnz    w8, #0, 403fd8
-  403fe4:       d50339bf        dmb     ishld
-  403fe8:       b9400c09        ldr     w9, [x0, #12]
-  403fec:       b940100a        ldr     w10, [x0, #16]
-  403ff0:       d50339bf        dmb     ishld
-  403ff4:       b940080b        ldr     w11, [x0, #8]
-  403ff8:       6b08017f        cmp     w11, w8
-  403ffc:       54ffff01        b.ne    403fdc
-  404000:       0b090148        add     w8, w10, w9
-
-It is as efficient as the C version, though not as ergonomic. The
-.load(Ordering::Relaxed) can of course be improved to something shorter like
-.load_relaxed() or even new atomic types  with .load() being relaxed and
-.load_ordered(Ordering) for other ordering.
-
-I also have guard- and iterator-based methods for the read path that would look
-like this (these can all co-exist if we so choose):
-
-    let v = loop {
-        let guard = y.read();
-        let a = guard.a.load(Ordering::Relaxed);
-        let b = guard.b.load(Ordering::Relaxed);
-        if !guard.need_retry() {
-            break a + b;
-        }
-    };
-
-and
-
-    let mut v = 0;
-    for x in y {
-        let a = x.a.load(Ordering::Relaxed);
-	let b = x.b.load(Ordering::Relaxed);
-	v = a + b;
-    }
-
-The former generates the exact same machine code as above though the latter
-generates slightly worse code (it has instructions sequences like "mov w10,
-#0x1; tbnz w10, #0, 403ffc" and , "mov w10, wzr; tbnz w10, #0, 403ffc", which
-could be optimised but for some reason isn't).
-
-Anyway, on to the write path. We need another primitive to ensure that only one
-writer at a time attempts to acquire the sequence lock in write mode. We do this
-by taking a guard for this other lock, for example, suppose we want to increment
-each of the fields:
-
-    let other_guard = other_lock.lock();
-    let guard = y.write(&other_guard);
-    guard.a.store(guard.a.load(Ordering::Relaxed) + 1, Ordering::Relaxed);
-    guard.b.store(guard.b.load(Ordering::Relaxed) + 1, Ordering::Relaxed);
-
-The part the relates to the sequence lock is compiled to the following:
-
-  404058:       f9400009        ldr     x9, [x0]
-  40405c:       eb08013f        cmp     x9, x8
-  404060:       54000281        b.ne    4040b0
-
-  404064:       b9400808        ldr     w8, [x0, #8]
-  404068:       11000508        add     w8, w8, #0x1
-  40406c:       b9000808        str     w8, [x0, #8]
-  404070:       d5033abf        dmb     ishst
-  404074:       b9400c08        ldr     w8, [x0, #12]
-  404078:       11000508        add     w8, w8, #0x1
-  40407c:       b9000c08        str     w8, [x0, #12]
-  404080:       b9401008        ldr     w8, [x0, #16]
-  404084:       11000508        add     w8, w8, #0x1
-  404088:       b9001008        str     w8, [x0, #16]
-  40408c:       d5033abf        dmb     ishst
-  404090:       b9400808        ldr     w8, [x0, #8]
-  404094:       11000508        add     w8, w8, #0x1
-  404098:       b9000808        str     w8, [x0, #8]
-
-If we ignore the first three instructions momentarily, the rest is as efficient
-as C. The reason we need the first three instructions is to ensure that guard
-that was passed into the `write` function is a guard to the correct lock. The
-lock type already eliminates the vast majority of issues, but a developer could
-accidentally lock the wrong lock and use it in the sequence lock, which would be
-problematic. So we need this check in Rust that we don't need in C (although the
-same mistake could happen in C).
-
-We can provide an 'unsafe' version that doesn't perform this check, then the
-onus is on the callers to convince themselves that they have acquired the
-correct lock (and they'd be required to use an unsafe block). Then the
-performance would be the same as the C version.
-
-Now that I've presented how my proposal looks like from the PoV of a user,
-here's its rationale: given that we only want one copy of the data and that
-mutable references are always unique in the safe fragment of Rust, we can't (and
-don't) return a mutable reference to what's protected by the sequence lock, we
-always only allow shared access, even when the sequence lock is acquired in
-write mode.
-
-Then how does one change the fields? Interior mutability. In the examples above,
-the fields are all atomic, so they can be changed with the `store` method. Any
-type that provides interior mutability is suitable here.
-
-If we need to use types with interior mutability, what's the point of the
-sequence lock? The point is to allow a consistent view of the fields. In our
-example, even though `a` and `b` are atomic, the sequence lock guarantees that
-readers will get a consistent view of the values even though writers modify one
-at a time.
-
-Lastly, the fact we use a generic `Guard` as proof that a lock is held (for the
-write path) means that we don't need to manually implement this for each
-different lock we care about; any that implements the `Lock` trait can be used.
-This is unlike the C code that uses fragile macros to generate code for
-different types of locks (though the scenario is slightly different in that the
-C code embeds a lock, which is also something we could do in Rust) -- the Rust
-version uses generics, so it is type-checked by the compiler.
-
-RCU pointers can be implemented with a similar technique in that read access is
-protected by a 'global' RCU reader lock (and evidence of it being locked is
-required to get read access), and writers require another lock to be held. The
-only piece that I haven't thought through yet is how to ensure that pointers
-that were exposed with RCU 'protection' cannot be freed before the grace period
-has elapsed. But this is a discussion for another time.
-
-I'll send out the patches for what I describe above in the next couple of days.
-
-Does any of the above help answer the questions you have about seqlocks in Rust?
-
-Thanks,
--Wedson
-
-> So the trick is to stage things so as to allow people time to work on
-> these sorts of issues.
+> But, again, this is a different matter, and it does not impact Rust.
 > 
-> > In any case, Rust does not necessarily need to help there. What is
-> > important is whether Rust helps writing the majority of the kernel
-> > code. If we need to call into C or use inline assembly for certain
-> > bits -- so be it.
-> > 
-> > > But to be fair, much again depends on exactly where Rust is to be applied
-> > > in the kernel.  If a given Linux-kernel feature is not used where Rust
-> > > needs to be applied, then there is no need to solve the corresponding
-> > > issues.
-> > 
-> > Exactly.
+> > Adducing new classes of UB from the standard means that there will be
+> > classes of UB that the Rust compiler doesn't handle.  Optimizations in
+> > the common compiler backends could then break existing Rust programs.
 > 
-> Thank you for bearing with me.
+> No, that is conflating different layers. The Rust compiler does not
+> "handle classes of UB" from the C or C++ standards. LLVM, the main
+> backend in rustc, defines some semantics and optimizes according to
+> those. Rust lowers to LLVM, not to C.
+
+So Rust could support zombie pointers without changes to LLVM?
+
+> Now, sure, somebody may break LLVM with any given change, including
+> changes that are intended to be used by a particular language. But
+> that is arguing about accidents and it can happen in every direction,
+> not just C to Rust (e.g. Rust made LLVM fix bugs in `noalias` -- those
+> changes could have broken the C and C++ compilers). If you follow that
+> logic, then compilers should never use a common backend. Including
+> between C and C++.
 > 
-> I will respond to your other email later,.  but the focus on memory
-> safety in particular instead of undefined behavior in general does help
-> me quite a bit.
+> Furthermore, the Rust compiler does not randomly pick a LLVM version
+> found in your system. Each release internally uses a given LLVM
+> instance. So you can see the Rust compiler as monolithic, not
+> "sharing" the backend. Therefore, even if LLVM has a particular bug
+> somewhere, the Rust frontend can either fix that in their copy (they
+> patch LLVM at times) or avoid generating the input that breaks LLVM
+> (they did it for `noalias`).
 > 
-> My next step is to create a "TL;DR: Memory-Model Recommendations" post
-> that is more specific, with both short-term ("do what is easy") and
-> long-term suggestions.
+> But, again, this applies to any change to LLVM, UB-related or not. I
+> don't see how or why this is related to Rust in particular.
 > 
-> 							Thanx, Paul
+> > Or you rely on semantics that appear to be clear to you right now, but
+> > that someone comes up with another interpretation for later.  And that
+> > other interpretation opens the door for unanticipated-by-Rust classes
+> > of UB.
+> 
+> When I say "subtle semantics that may not be clear yet", I mean that
+> they are not explicitly delimited by the language; not as in
+> "understood in a personal capacity".
+
+The standard is for the most part not a mathematical document.  So many
+parts of it can only be "understood in a personal capacity".
+
+> If we really want to use `unsafe` code with unclear semantics, we have
+> several options:
+> 
+>   - Ask upstream Rust about it, so that it can be clearly encoded /
+> clarified in the reference etc.
+> 
+>   - Do it, but ensure we create an issue in upstream Rust + ideally we
+> have a test for it in the kernel, so that a crater run would alert
+> upstream Rust if they ever attempt to change it in the future
+> (assuming we manage to get the kernel in the crater runs).
+> 
+>   - Call into C for the time being.
+
+I have been thinking more in terms of calling into C in the short term.
+I added a post looking at short-term and longer-term possibilities.
+The short-term possibilities are mostly "call into C", while the long-term
+possibilities are more utopian, perhaps insanely so in many cases.
+
+> > All fair points, but either way the program doesn't do what its users
+> > want it to do.
+> 
+> Sure, but even if you don't agree with the categorization, safe Rust
+> helps to avoid several classes of errors, and users do see the results
+> of that.
+
+To be proven in the context of the Linux kernel.  And I am happy to
+provide at least a little help with the experiment.
+
+> > OK, I will more strongly emphasize wrappering in my next pass through
+> > this series.  And there does seem to have been at least a few cases
+> > of confusion where "implementing" was interpreted by me as a proposed
+> > rewrite of some Linux-kernel subsystem, but where others instead meant
+> > "provide Rust wrappers for".
+> 
+> Yeah, we are not suggesting to rewrite anything. There are, in fact,
+> several fine approaches, and which to take depends on the code we are
+> talking about:
+> 
+>   - A given kernel maintainer can provide safe abstractions over the C
+> APIs, thus avoiding the risk of rewrites, and then start accepting new
+> "client" modules in mostly safe Rust.
+> 
+>   - Another may do the same, but may only accept new "client" modules
+> in Rust and not C.
+> 
+>   - Another may do the same, but start rewriting the existing "client"
+> modules too, perhaps with aims to gradually move to Rust.
+> 
+>   - Another may decide to rewrite the entire subsystem in Rust,
+> possibly keeping the C version alive for some releases or forever.
+> 
+>   - Another may do the same, but provide the existing C API as
+> exported Rust functions.
+> 
+> In any case, rewrites from scratch should be a conscious decision --
+> perhaps a major refactor was due anyway, perhaps the subsystem has had
+> a history of memory-safety issues, perhaps they want to take advantage
+> of Rust generics, macros or enums...
+
+My current belief is that wrappers would more likely be around
+higher-level C code using RCU than around the low-level RCU APIs
+themselves.  But who knows?
+
+> > I get that the Rust community makes this distinction.  I am a loss as
+> > to why they do so.
+> 
+> If you mean the distinction between different types of bugs, then the
+> distinction does not come from the Rust community.
+> 
+> For instance, in the links I gave you, you can see major C/C++
+> projects like Chromium and major companies like Microsoft talking
+> about memory-safety issues.
+
+And talking about memory-safety issues makes much more sense to me than
+does talking about undefined behavior in general.
+
+> > OK.  I am definitely not putting forward Linux-kernel RCU as a candidate
+> > for conversion.  But it might well be that there is code in the Linux
+> > kernel that would benefit from application of Rust, and answering this
+> > question is in fact the point of this experiment.
+> 
+> Converting (rather than wrapping) core kernel APIs requires keeping
+> two separate implementations, because Rust is not mandatory for the
+> moment.
+> 
+> So I would only do that if there is a good reason, or if somebody is
+> implementing something new, rather than rewriting it.
+
+That makes sense, especially if you are looking at bug rate as a measure
+of effectiveness.  Unnecessarily converting well-tested and heavily used
+code normally does not improve its bug rate.
+
+> > The former seems easier and faster than the latter, sad to say!  ;-)
+> 
+> Well, since you maintain that compiler writers will never drop UB from
+> their hands, I would expect you see the latter as the easier one. ;)
+> 
+> And, in fact, it would be the best way to do it -- fix the language,
+> not each individual tool.
+
+Working on it in the case of C/C++, though quite a bit more slowly
+than I would like.
+
+> > Plus there are long-standing algorithms that dereference pointers to
+> > objects that have been freed, but only if a type-compatible still-live
+> > object was subsequently allocated and initialized at that same address.
+> > And "long standing" as in known and used when I first wrote code, which
+> > was quite some time ago.
+> 
+> Yes, C and/or Rust may not be suitable for writing certain algorithms
+> without invoking UB, but that just means we need to write them in
+> another language, or in assembly, or we ask the compiler to do what we
+> need. It does not mean we need to drop C or Rust for the vast majority
+> of the code.
+
+As we agreed earlier, we instead need to provide ways for these languages
+to conveniently express these algorithms.
+
+However...
+
+Just to get you an idea of the timeframe, the C++ committee requested
+an RCU proposal from me in 2014.  It took about four years to exchange
+sufficient C++ and RCU knowledge to come to agreement on what a C++
+RCU API would even look like.  The subsequent three years of delay were
+due to bottlenecks in the standardization process.  Only this year were
+hazard pointers and RCU voted into a Technical Specification, which has
+since been drafted by Michael Wong, Maged Michael (who of course did the
+hazard pointers section), and myself.  The earliest possible International
+Standard release date is 2026, with 2029 perhaps being more likely.
+
+Let's be optimistic and assume 2026.  That would be 12 years elapsed time.
+
+Now, the USA Social Security actuarial tables [1] give me about a 77%
+chance of living another 12 years, never mind the small matter of
+remaining vigorous enough to participate in the standards process.
+Therefore, there is only so much more that I will doing in this space.
+
+Apologies for bringing up what might seem to be a rather morbid point,
+but there really are sharp limits here.  ;-)
+
+							Thanx, Paul
+
+[1] https://www.ssa.gov/oact/STATS/table4c6.html
