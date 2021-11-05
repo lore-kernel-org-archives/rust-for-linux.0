@@ -2,82 +2,71 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF57DC433F5
-	for <rust-for-linux@archiver.kernel.org>; Tue, 26 Oct 2021 02:47:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF2D8C433EF
+	for <rust-for-linux@archiver.kernel.org>; Fri,  5 Nov 2021 18:39:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A3CB460238
-	for <rust-for-linux@archiver.kernel.org>; Tue, 26 Oct 2021 02:47:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A639A611C0
+	for <rust-for-linux@archiver.kernel.org>; Fri,  5 Nov 2021 18:39:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233511AbhJZCt4 (ORCPT
+        id S232715AbhKESl5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 25 Oct 2021 22:49:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38834 "EHLO
+        Fri, 5 Nov 2021 14:41:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230111AbhJZCt4 (ORCPT
+        with ESMTP id S232907AbhKESlx (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 25 Oct 2021 22:49:56 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEEF5C061745
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Oct 2021 19:47:32 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id e2so590292ljg.13
-        for <rust-for-linux@vger.kernel.org>; Mon, 25 Oct 2021 19:47:32 -0700 (PDT)
+        Fri, 5 Nov 2021 14:41:53 -0400
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FE7EC061205
+        for <rust-for-linux@vger.kernel.org>; Fri,  5 Nov 2021 11:39:14 -0700 (PDT)
+Received: by mail-io1-xd31.google.com with SMTP id b203so8301559iof.10
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Nov 2021 11:39:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=student.cerritos.edu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=HDxue/MV4rWlBg6W2ITKAQBIO2ICshZwBWAWpkiywnE=;
-        b=ZjPgde7O7GIU4HZFt3udeqE8G82pmz+t1i2tzctDPSwJjx1n2B05e8NhR+ryHUU07v
-         ew5BEKqTOB0BVu6P7yg/AhNJ4zemuftBm+ccND0EmVYw3q7tJau4NtIp7ubkK85Mih/B
-         B9M0O6eKqKtKQMnJZT/AGB8ya/wqhJvIipDUg=
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=sAOMZh3Hj9zMG5BoGRnAUbkkTSArkSVDCSJpPZl6NYI=;
+        b=a7uf+EqUg+EJlbYH4HOUsw7sbSlP4cfwmMrslTlM2GLAV31NjzW343t8hCi4JMetSK
+         sGEq7TvL5JrkoqKiAYJbI1kKwjDHJgJcPlblz14OpipBvccfLG/hCycrSdo3tMQzwN8S
+         4GLi9tFXFArsH+RoUE2SAAKe38Wf7h4hz/Xh+/DnaLePqNAj3LYApbkB+Q6OnjDl+h2T
+         xtUMOZABVqR9BaEXz7+niDzkd66mBLCdULEXDob1bOjoKhziaJXNHHHLWG33RUq90rjx
+         7oyrPLmK5ZP7wz8i3z7xdx7tJ73U0okMLLXNSfgL5fEw6InSKJW0Avs/Na+G9aaeVZL1
+         HuLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=HDxue/MV4rWlBg6W2ITKAQBIO2ICshZwBWAWpkiywnE=;
-        b=TPUeIKA47/5yw7NYpYlWDSkFl/bjLvl8bv7HHkdAWmv/OFWR+uZPtHeMpiln4KUW64
-         nsMXc7rTwN04udFJFcb9dQRQgIlVIM7cHWCwF96kr4zahdybDR3I9wIY/IOrtANspC2s
-         kUb0cV/mUS+EpsSxkoLGrsPA5uyIssPUsKvvEDrfki1E1gdlpr8azWu1xEry892Y2nqS
-         mP2gFvn4YtBs+ad1Dn+g8jdOauFQmSs+p3AAtpklkymimwG6+D4pRXmrgBEfg4+xeKeB
-         sARXaLwBgD+Wge8aXhqoGJZWnJg2asso5FYnhMxPXhP4YktxGAlH6Sabooj1YnpHixmg
-         P1TA==
-X-Gm-Message-State: AOAM532V4kCkwgutXhEZtrzEYv6xxcMHgDFtWOI8+Y+ZvzhFifMrCy7Q
-        +h87saIJOJ1WShITuraduwVi0kH+odlbKGz70ER+swBghr4=
-X-Google-Smtp-Source: ABdhPJyoqlxbkSpBD9PViIwa0HiN4vmnRVrch9n1CVV579kyOlVw2UxjLrS1rlQ6EqNsQfY3xCAWiUCxlcFavCGLNbI=
-X-Received: by 2002:a05:651c:1108:: with SMTP id d8mr23108114ljo.220.1635216450662;
- Mon, 25 Oct 2021 19:47:30 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=sAOMZh3Hj9zMG5BoGRnAUbkkTSArkSVDCSJpPZl6NYI=;
+        b=yReGXnOcQKIgEykpoefBPN8eADoAVeH4PDpa85mFqYC7iFeHFa/Gjw+lVuPKFnnyrq
+         py8nTtFvzH1HuuCMvlMRT3ox90D/Rv7su3EJf7CBNKiPw0oJWs9uqp9W+8n6sVIdR9L0
+         vfglt5pInmv29sWW5DGaQjFnZEFvymaL6Ug1zZ21zi48ctjX+15DjV3UXcPam2zY3+JU
+         lyYFk2OEmYDBwX+d4kHmiayU1A1NYQ70LvZc5LVuC6B74E2b1w4M8DdQ3QccuJ+3Rhc/
+         VSfYf3/a+9QieIFCEFOy0jaY8fROo2NiJl2XxOnXfiWcCuI2aSfi74YTp4fI3CRaotyO
+         0PTA==
+X-Gm-Message-State: AOAM532pD8qE6K/tfl1BA7MGJlMI/FnKrltDNM5atxBksRCxS9R2WZvE
+        eMEUbS1Uc6LoWpNAdB8QSombJch0BwTQIdmC2woBdODg57nt2Q==
+X-Google-Smtp-Source: ABdhPJyXjWRQ63iHVLxlC3uKfN84bFonS3ni6FPAg4S7K8ia2i9Jy/vKoVivyMx9qvWttsARGWfK6Tta0AfrAv+1/rc=
+X-Received: by 2002:a5d:8903:: with SMTP id b3mr769116ion.44.1636137553575;
+ Fri, 05 Nov 2021 11:39:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAPOgqxF0KV=ULD9dx-6-Z+0-Z7kitkTGcGoqYNuP7uWHaNNZRA@mail.gmail.com>
- <CANiq72=pLwnECAYL+PpTL0NrCn8DLT7mGNOneVbEjO8V9BfGXw@mail.gmail.com>
-In-Reply-To: <CANiq72=pLwnECAYL+PpTL0NrCn8DLT7mGNOneVbEjO8V9BfGXw@mail.gmail.com>
-From:   Amy Parker <apark0006@student.cerritos.edu>
-Date:   Mon, 25 Oct 2021 19:47:19 -0700
-Message-ID: <CAPOgqxGTVffYyiZq8Gsh8rF=vwvwAZfLngvD0XJQ+CW6epf0rg@mail.gmail.com>
-Subject: Re: Current driver status
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Fri, 5 Nov 2021 19:39:02 +0100
+Message-ID: <CANiq72=U1=LEsdn1NJ7hKh=T+y88-Jfb7E2f5o=tPHxYMhMX8Q@mail.gmail.com>
+Subject: Reminder: informal call tomorrow 18:00 UTC
+To:     rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Oct 25, 2021 at 5:24 AM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> Hi Amy,
->
-> On Mon, Oct 25, 2021 at 1:49 AM Amy Parker
-> <apark0006@student.cerritos.edu> wrote:
-> >
-> > Are there any reference drivers or other running components written in
-> > Rust for the kernel in branch rust or rust-next? If not, is there an
-> > outlined process for building one?
->
-> You may want to take a look at `samples/rust/`. We are also carrying
-> `drivers/android/*.rs` in tree for the moment. There are also other
-> resources out of tree, e.g. in PRs, LWN, etc.
+Hi all,
 
-Alright, thanks!
+We will have our informal call tomorrow 18:00 UTC (first Saturday of
+each month).
 
-> Cheers,
-> Miguel
+As usual, everybody is welcome to join. The meetings take place on
+Google Meet. If you need an invitation, drop me an email!
+
+If you are in a timezone that cannot easily attend the meetings at
+18:00 UTC, please let us know.
+
+Cheers,
+Miguel
