@@ -1,62 +1,69 @@
 Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D514C433F5
-	for <rust-for-linux@archiver.kernel.org>; Fri, 12 Nov 2021 09:21:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 75B4261029
-	for <rust-for-linux@archiver.kernel.org>; Fri, 12 Nov 2021 09:21:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1488EC433EF
+	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Dec 2021 16:12:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234745AbhKLJX5 (ORCPT
+        id S1355170AbhLDQP6 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 12 Nov 2021 04:23:57 -0500
-Received: from mail.globalshopweb.pl ([195.231.79.67]:57808 "EHLO
-        mail.globalshopweb.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234614AbhKLJX5 (ORCPT
+        Sat, 4 Dec 2021 11:15:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56506 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1355163AbhLDQP4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 12 Nov 2021 04:23:57 -0500
-X-Greylist: delayed 317 seconds by postgrey-1.27 at vger.kernel.org; Fri, 12 Nov 2021 04:23:56 EST
-Received: by mail.globalshopweb.pl (Postfix, from userid 1001)
-        id 1ACA586206; Fri, 12 Nov 2021 09:15:44 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=globalshopweb.pl;
-        s=mail; t=1636708547;
-        bh=D+FUrvEbQB45QsyAsA2JCq6/auJrsj5ccGygEvybyRs=;
-        h=Date:From:To:Subject:From;
-        b=yhHo1FDwqVTz9kpzOD0fuw/egBzVlZI1hpxs0C4zHRtI5nem9UX47GVBdL0gUYN6j
-         pmD1AhduiHFb8Ypp19KdrGeNmqQNOzwa/i8xTiccGOi8FPA1hz94tFHELeHQeuCLyF
-         lsKL+nUBntX6lgFL4IApqs5G/TqdnqLuirTp8DiO8VLrRxjovSCDah1w46TKzwvLNi
-         nLlSgB/lwic0JRmi1L9HSLELWg/GB4SjowuQ/QpWHb/+FfOHxV2trPOQV4KfoO5pLh
-         i/HjwBeUo8pSCXEzzWz0QUNRh9BLxF+L3MOHaWblOtVnuGwh4zbF5iBhSrCp8feLVN
-         Q0zMu242UB7VA==
-Received: by mail.globalshopweb.pl for <rust-for-linux@vger.kernel.org>; Fri, 12 Nov 2021 09:15:42 GMT
-Message-ID: <20211112074500-0.1.54.caqz.0.4ln1g16moa@globalshopweb.pl>
-Date:   Fri, 12 Nov 2021 09:15:42 GMT
-From:   "Marek Turostowski" <marek.turostowski@globalshopweb.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.globalshopweb.pl
+        Sat, 4 Dec 2021 11:15:56 -0500
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C654C061751
+        for <rust-for-linux@vger.kernel.org>; Sat,  4 Dec 2021 08:12:31 -0800 (PST)
+Received: by mail-io1-xd2f.google.com with SMTP id x10so7679050ioj.9
+        for <rust-for-linux@vger.kernel.org>; Sat, 04 Dec 2021 08:12:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=9WwXnUpA9rc0rRncRr387FW7kpI5/0/VVUURmT3Icmo=;
+        b=AOwsDxfbO2KynSTc+tNrMW4y3mA9J8SP0TKR8KuAE7LhvCTz8hR/nYHA9/7WpPcxX7
+         Mt20xCTS3arRCHMddqvznciaM7qH+hQSZND5h0i251bseRI++jW3H4XOq/NRg4e2TaEP
+         al68TBGGjvo7llJqCIOJEEX1vdLPY6uN/RyoQJ0uGczm1z0cxKHbutQif835ynj/yLWW
+         1pTKe5wd5VzyXFIoPPlPKDUvQYplxW+0t5oFBYR3cU8YFKZ/Lth0pPCs01VVLD7+9yEs
+         IkXXjNJCVc2FaX4dixZuIII1E9RV6eenfxTgYD4eFSkBNMKzqsSlfNPcz+o123Z4pXHW
+         3i8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=9WwXnUpA9rc0rRncRr387FW7kpI5/0/VVUURmT3Icmo=;
+        b=rvRUXJY88tD4HIUR7XP0Q34SVa2jr4uckAncVC3O1dTrtFTrUJ4pVPNAbB9m2ocgNr
+         o8e4y6OpUoVWx0BQbhDVvWk87YnOAyMbfJ12jMNXYGImAkTXzM4iwtUsFGfnwVcIBX9C
+         FkMynbth+5mW/eWtEFSwlz9mCCmVZAZBw4W3T49Gx5/M/axE2Kr2XCUh9uAu9ST0LSc9
+         w/Ja0bF+MidNZnKGrp4oGFnaKwW/PD/U4wukNmP9zslnDoW7IrFGbmNev7Qx7GF3O9Nz
+         J/E+bpinYRrHoB2G7PStzaOcdVbP7NsLddbeR58JX7blj5foJ9A+gjn0aZMkIuLqWyo7
+         PjaA==
+X-Gm-Message-State: AOAM530ERBLTd5HZPpQFhoo2UBsMIjcni0xv44NlT4cwtrkT6v/BEEaX
+        rjQSrykoiuP3j6aDAxh+Sh+kkvrx+zZhlugiMD/acv0VtAhx0A==
+X-Google-Smtp-Source: ABdhPJyAUG4NkraneBO1hYF17jWUlYWANYM+lzarhtGx4Y1nXm7PGw1qbjsGsulpGvH0fh5qFPXHjpViWMnrT/jbR48=
+X-Received: by 2002:a02:cb8f:: with SMTP id u15mr33278050jap.131.1638634350695;
+ Sat, 04 Dec 2021 08:12:30 -0800 (PST)
 MIME-Version: 1.0
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sat, 4 Dec 2021 17:12:19 +0100
+Message-ID: <CANiq72krfhQ5BC-qxRRht6v7SsaFXjg4ofQhZwQUnt+XOSA+FQ@mail.gmail.com>
+Subject: Reminder: informal call in 2 hours
+To:     rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Hi all,
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+We will have our informal call in 2 hours (18:00 UTC first Saturday of
+each month).
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+As usual, everybody is welcome to join. The meetings take place on
+Google Meet. If you need an invitation, drop me an email!
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+If you are in a timezone that cannot easily attend the meetings at
+18:00 UTC, please let us know.
 
-
-Pozdrawiam
-Marek Turostowski
-Specjalista ds. SEO
+Cheers,
+Miguel
