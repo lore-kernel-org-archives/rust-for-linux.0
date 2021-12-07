@@ -2,67 +2,67 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC529C4332F
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Dec 2021 23:21:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DC40C433F5
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Dec 2021 23:25:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238285AbhLGXZP (ORCPT
+        id S242560AbhLGX3U (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Dec 2021 18:25:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59766 "EHLO
+        Tue, 7 Dec 2021 18:29:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229455AbhLGXZO (ORCPT
+        with ESMTP id S242556AbhLGX3U (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Dec 2021 18:25:14 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 921C6C061748
-        for <rust-for-linux@vger.kernel.org>; Tue,  7 Dec 2021 15:21:43 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id bi37so1883371lfb.5
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Dec 2021 15:21:43 -0800 (PST)
+        Tue, 7 Dec 2021 18:29:20 -0500
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36C8EC061746
+        for <rust-for-linux@vger.kernel.org>; Tue,  7 Dec 2021 15:25:49 -0800 (PST)
+Received: by mail-lf1-x12b.google.com with SMTP id bi37so1900461lfb.5
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Dec 2021 15:25:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=asJWBO7eY0QcfrBWswJqa0D8PLdaP618kcEvbJ50eIg=;
-        b=AfW0d1I+nq7/xxFpdy1SyfbN4hZQhpvUWKC/GFTTsGAkXcBRgPA3Uoi8dsklmKbnZs
-         BaHhEvIBWm5tYwA3UXnxtEtRrd4pSEvtTaywyA4iXU1bWgPUv1tK8UvDnxlPZQHTsqyk
-         bPw4p4cTEMmd76cOMbNIq9pGcYn9opr3bNzZnIOwlkqcs7avXNIRj1sJuvVgHL+Bez2q
-         anbMo3xtEQ3nttb1ctyuDdZzWVrD4P3w5jqNVPOF+nFveMKvJDJ9RCt7l17U5PsENZsj
-         bTPpPjS24TkJRZNtOIjeB76IOXqQdfSTcK7q8AHp9NSxsSAZQ2atebIn/FJNYJywWeJG
-         e1Gg==
+        bh=ksO4mg+S5nd7OsgjcUoTpMFoQ8vcHTeW8iC1snF/+Pg=;
+        b=ITW+AL0If2STlT+rWDw9Rz+6svEqbZDjkcRjZCJavg4JhKjkYJjYJ4TgzaKaO6hBPx
+         XN2/8ETl+zn4bHiGoQeSHzXfMfC8/3WB+EA8rHgTqUzsIG87uYIFgEPGpQxixCXeA5v1
+         vhbbrdRcd1Xb6SJH+Tq51qbqymoiOl5josa+E7y1LMlTsvq0tFRa6eFk/OVM8pS7zNpd
+         qP2h5sqaBor4sK87jIUVnNd7QYHH4F+R7WPIXGxUe6kacNm4W/NCsyxhUZhwGOnKham+
+         9O2bAPLbwrZGdubVScM8k+9deJV8Bz+wrfsZz4KH1i52GwH25BJ9yMQUTK0J+nPiR4ms
+         zlcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=asJWBO7eY0QcfrBWswJqa0D8PLdaP618kcEvbJ50eIg=;
-        b=7utsH/FVXwifORWoW2+D54jf7GdAAKEWQ5ZG1lnNSjWvAD2hQND6AYgf0Rn91bPnJT
-         +QT2SkHt0Y4EYV3K/YhAjmzuulnbEMmDTguL9gFkx9swhbBHOzRAAbepdpHF7nc7bE7z
-         MBUDHvwhTjrIV8LzIxsCly0RjDFqohJsq2ypOi/3ofA+FlYZXPCL6z4S+P9GrQQ/kf5u
-         YihQ06qIL2xfoLZG7MHGZbsWSkFAwuKkyKRxgbmO6oUYJsW82vPWgGXVCs6FZNlleYCZ
-         Ubj2cakwV72Yzds2iocZzEewKhy0dmEdmhRiMY9W6fNHPyNoLMdl+QZck3ahKtsi6jUY
-         YMtw==
-X-Gm-Message-State: AOAM533jjwVosgdUkU6MJgFGbN9BgrBl6uQ/bMPdR8LT6504FB7C0cYR
-        CwCp88ClTSDr7MRsU+VEDY1KLTqINSLjapblYKqO5w==
-X-Google-Smtp-Source: ABdhPJysjkyhUOJrmyHDdSyDIM7lBOtMYaXwrIgiy6u2C5zfwK9sd9NDowrss4BuvDXhYt26C+A6eoi0whwvH42sfZc=
-X-Received: by 2002:ac2:4d19:: with SMTP id r25mr42666731lfi.82.1638919301609;
- Tue, 07 Dec 2021 15:21:41 -0800 (PST)
+        bh=ksO4mg+S5nd7OsgjcUoTpMFoQ8vcHTeW8iC1snF/+Pg=;
+        b=y0njdSp2d0sc/F6Pn56w/T/noO4psAdsOWewXiGNwavcAM/mu+ZhffvwFaMluJoIHZ
+         NppG2nVXjY5tXiPJ9HlvHJX32pd0qejvJ7HUvltM0lJEzIKnj/5ueRzwhV+BTbaHhmvF
+         gcbZd+vahvXIlqZ/rYRNC/KdNFWm1oL8sqQWAbqCg3XHm3V2F5+FxdVYFzTeYtip5lkC
+         yI37MV17zqg662roqWM3VrDLLHWPlBpubAZl/jCQ4AkYQ9s9Hk3viDItVfdg7kN1ugOi
+         foTZ9z15hPcRzjBqVQquYPEi1BIUGN5vgx5s0+Vid46cie69qekc4JUKk181gePLevNz
+         N3AA==
+X-Gm-Message-State: AOAM530tqsAdIvM1Sgh43rwuyN1MuR0foX8XRXeHYswpA9TI9nZsGBAJ
+        jZPNH+lxVWzo6d/v9Y2tosQu20BK2gYxGbHTXOU+
+X-Google-Smtp-Source: ABdhPJzhR31dAJMhOqm9mRgPph2EUpsZZiP/J0+mFg/LTgJsz9Sg++yNDLy9FvTrMmTf99tJ0mmqbzh+TckRPhulQZg=
+X-Received: by 2002:a19:7019:: with SMTP id h25mr45875416lfc.464.1638919547275;
+ Tue, 07 Dec 2021 15:25:47 -0800 (PST)
 MIME-Version: 1.0
 References: <20211206140313.5653-1-ojeda@kernel.org> <20211206140313.5653-16-ojeda@kernel.org>
- <CAKwvOd=7QTUH69+ZbT7e8einvgcosTbDkyohmPaUBv6_y8RfrQ@mail.gmail.com>
-In-Reply-To: <CAKwvOd=7QTUH69+ZbT7e8einvgcosTbDkyohmPaUBv6_y8RfrQ@mail.gmail.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Tue, 7 Dec 2021 15:21:29 -0800
-Message-ID: <CAKwvOdk9VNenJJN5HnPpGgsHT+OsRsgPGSesQgqMP2aLPWy0NQ@mail.gmail.com>
+ <CAKwvOd=7QTUH69+ZbT7e8einvgcosTbDkyohmPaUBv6_y8RfrQ@mail.gmail.com> <CAKwvOdk9VNenJJN5HnPpGgsHT+OsRsgPGSesQgqMP2aLPWy0NQ@mail.gmail.com>
+In-Reply-To: <CAKwvOdk9VNenJJN5HnPpGgsHT+OsRsgPGSesQgqMP2aLPWy0NQ@mail.gmail.com>
+From:   Wedson Almeida Filho <wedsonaf@google.com>
+Date:   Tue, 7 Dec 2021 23:25:36 +0000
+Message-ID: <CAMKQLNJKumnucRHttHFN0cMK_g6kCJ7o0ev_3_RJsmPqbjo08g@mail.gmail.com>
 Subject: Re: [PATCH 15/19] Kbuild: add Rust support
-To:     Miguel Ojeda <ojeda@kernel.org>,
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Masahiro Yamada <masahiroy@kernel.org>,
-        linux-kbuild@vger.kernel.org
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kbuild@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-kernel@vger.kernel.org, Alex Gaynor <alex.gaynor@gmail.com>,
         Finn Behrens <me@kloenk.de>,
         Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Sven Van Asbroeck <thesven73@gmail.com>,
         Gary Guo <gary@garyguo.net>,
@@ -77,60 +77,68 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Dec 7, 2021 at 2:45 PM Nick Desaulniers <ndesaulniers@google.com> wrote:
+On Tue, 7 Dec 2021 at 23:21, Nick Desaulniers <ndesaulniers@google.com> wrote:
 >
-> On Mon, Dec 6, 2021 at 6:07 AM Miguel Ojeda <ojeda@kernel.org> wrote:
+> On Tue, Dec 7, 2021 at 2:45 PM Nick Desaulniers <ndesaulniers@google.com> wrote:
 > >
+> > On Mon, Dec 6, 2021 at 6:07 AM Miguel Ojeda <ojeda@kernel.org> wrote:
+> > >
+> >
+> > ... snip ...
+> >
+> > Miguel and team,
+> > I'm happy to see progress here! Just some quick notes after a first pass.
+> >
+> > Testing this series applied on mainline, I see:
+> > $ make LLVM=1 -j72 defconfig
+> > $ grep RUST .config
+> > CONFIG_HAS_RUST=y
+> > CONFIG_RUSTC_VERSION=14000
+> > # CONFIG_RUST is not set
+> > ...
+> > $ make LLVM=1 -j72 menuconfig
+> > # enable CONFIG_RUST
+> > $ make LLVM=1
+> > ...
+> >   CALL    scripts/checksyscalls.sh
+> > error: @path is unstable - use -Z unstable-options to enable its use
+> >
+> > error: @path is unstable - use -Z unstable-options to enable its use
+> > $ rustc --version
+> > rustc 1.40.0 (73528e339 2019-12-16)
+> >
+> > Can we update some Kconfig checks to fix that?
 >
-> ... snip ...
+> After now reading though the Documentation/ patch:
 >
-> Miguel and team,
-> I'm happy to see progress here! Just some quick notes after a first pass.
->
-> Testing this series applied on mainline, I see:
-> $ make LLVM=1 -j72 defconfig
-> $ grep RUST .config
-> CONFIG_HAS_RUST=y
-> CONFIG_RUSTC_VERSION=14000
-> # CONFIG_RUST is not set
-> ...
-> $ make LLVM=1 -j72 menuconfig
-> # enable CONFIG_RUST
-> $ make LLVM=1
-> ...
->   CALL    scripts/checksyscalls.sh
-> error: @path is unstable - use -Z unstable-options to enable its use
->
-> error: @path is unstable - use -Z unstable-options to enable its use
+> $ rustup update
 > $ rustc --version
-> rustc 1.40.0 (73528e339 2019-12-16)
+> rustc 1.57.0 (f1edd0429 2021-11-29)
+> $ make LLVM=1 -j72
+> ...
+> make[1]: *** No rule to make target
+> '/usr/local/google/home/ndesaulniers/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/lib.rs',
+> needed by 'rust/core.o'.  Stop.
+
+Can you run `rustup component add rust-src`?
+
+When we change the compiler version, we need to install the source
+code for `core` for the new version. (We'll update the documentation
+to reflect that.)
+
+> Maybe I'm holding it wrong, let me reread the Documentation/ again.
 >
-> Can we update some Kconfig checks to fix that?
-
-After now reading though the Documentation/ patch:
-
-$ rustup update
-$ rustc --version
-rustc 1.57.0 (f1edd0429 2021-11-29)
-$ make LLVM=1 -j72
-...
-make[1]: *** No rule to make target
-'/usr/local/google/home/ndesaulniers/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/lib.rs',
-needed by 'rust/core.o'.  Stop.
-
-Maybe I'm holding it wrong, let me reread the Documentation/ again.
-
-I still think CONFIG_RUST shouldn't be selectable unless
-CONFIG_RUSTC_VERSION is either a blessed version, or above some
-minimal value (like we do for CONFIG_GCC_VERSION, CONFIG_LD_VERSION,
-CONFIG_CLANG_VERSION, LLD_VERSION, etc).
-
-Also, it looks like I don't have bindgen installed. Anything we can do
-there to help the developer out, as in informing them that it's
-necessary perhaps via a Kconfig check? I don't think I should be able
-to select CONFIG_RUST if I don't have bindgen installed. (Same comment
-about version check probably applies, too).  Installing bindgen
-doesn't change the error I'm observing above though.
--- 
-Thanks,
-~Nick Desaulniers
+> I still think CONFIG_RUST shouldn't be selectable unless
+> CONFIG_RUSTC_VERSION is either a blessed version, or above some
+> minimal value (like we do for CONFIG_GCC_VERSION, CONFIG_LD_VERSION,
+> CONFIG_CLANG_VERSION, LLD_VERSION, etc).
+>
+> Also, it looks like I don't have bindgen installed. Anything we can do
+> there to help the developer out, as in informing them that it's
+> necessary perhaps via a Kconfig check? I don't think I should be able
+> to select CONFIG_RUST if I don't have bindgen installed. (Same comment
+> about version check probably applies, too).  Installing bindgen
+> doesn't change the error I'm observing above though.
+> --
+> Thanks,
+> ~Nick Desaulniers
