@@ -2,196 +2,108 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55BD6C433FE
-	for <rust-for-linux@archiver.kernel.org>; Wed,  8 Dec 2021 00:05:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29179C433FE
+	for <rust-for-linux@archiver.kernel.org>; Wed,  8 Dec 2021 01:30:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242726AbhLHAJS (ORCPT
+        id S239226AbhLHBdj (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Dec 2021 19:09:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41530 "EHLO
+        Tue, 7 Dec 2021 20:33:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242720AbhLHAJR (ORCPT
+        with ESMTP id S238575AbhLHBdj (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Dec 2021 19:09:17 -0500
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8846C061574
-        for <rust-for-linux@vger.kernel.org>; Tue,  7 Dec 2021 16:05:46 -0800 (PST)
-Received: by mail-lj1-x232.google.com with SMTP id bn20so1096469ljb.8
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Dec 2021 16:05:46 -0800 (PST)
+        Tue, 7 Dec 2021 20:33:39 -0500
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDCC3C061748
+        for <rust-for-linux@vger.kernel.org>; Tue,  7 Dec 2021 17:30:07 -0800 (PST)
+Received: by mail-lj1-x234.google.com with SMTP id k23so1394246lje.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Dec 2021 17:30:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=PkRp1/WhJVVA6i6xAX3mohuTTguHyeyteEeO36GWsMw=;
-        b=AV7GarWqfoyFb49GhbARcORLve3Kgr+ZEDWeWqVFHWQIDWPYTU+Y9UOyx5IPGrX7hq
-         qUq/z3hRSbC3SJUwOtSZa5/DsAEx6tPJCVyJgd0OWPXlEkxTi7fVVTTkKXYkUmm1YJSX
-         etLohbFzctKJkFb8ERUAHI/Jp2wDDuCx9/VEIDzyA8aEEpVdUdAS3gNZ+Wz19TPGYuJU
-         pZz0XYkZ0ryi92EfFgXHabFYi0eCQPIeMam1X8QOHCoq7cs6hqr6ZHCfatAFsTr1Oygn
-         BxwoHhcxB/qjlX/coqglFxEcLnhCepPglrdBia2YYBcijG5L92JLSgKeGloqW3q0ahLD
-         tHSw==
+        bh=oY1YzqKk4aWlmDE7Q71zlaeF3NQefpgJ3dA3BCsYPu4=;
+        b=TanE49c9j+vNtjsphwwu+auu7KpkPp9t6oDpqsR9KpWE2jkcvQhEk6OEOBCjxsocAo
+         IpFwWN9l/B5J2eGgk8Y/vEQssZ1DEE2Grjx3JXxUG5gFO0yQIcTfFqYYHIa2ppmo+sPs
+         VWZcZQW5df3SiZwqVx2vzkLqDxpHWIMAbJtmHYirApmq3Mzz5Vhuud99RWwRaquR5hMn
+         Rl/NLQg6IDpEvVQd29AbrfdbUwbZiQEjwTsBqxB786bbtei5ynb0q6Bd293w+peeoXJ/
+         xQPVxcvPmcIujIKv/yI/7zQUozAsGlfWK9iB9HCWkYAqVqbngMaLTia8w1gyyeVuZqxR
+         upfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=PkRp1/WhJVVA6i6xAX3mohuTTguHyeyteEeO36GWsMw=;
-        b=8Ndx7/FvSLE0f4/W3rxHrHG0v7WiMqIapEm750LQFOCOy+6KmjFhDDKn21cwQPoz/J
-         RQSPy5ripNe2IM4uRx2+iDvQPRk4f5gCpVo5eegUSvweEbcFL9bMYM0QhqvrS68lnw1Q
-         a2ou2c25HOe0uadv9AF5xXP/dk1+M9ULk8hJrPxKhQX+wQx6ub3oG7YU4QnVQ8/Emu8n
-         07YVKcgzw0mCnXz0ml8/FfOEt29sIqpOrj9FD7Rr9+AumCmbTZUPvdLmAjMcaRB1ViNn
-         KwuH87dcw5/uEV3LfECXfHmAzPQ1nbJ6/Wphc1sXoSlUymepwp4oLD8zp44ssaBaaEaw
-         pPGg==
-X-Gm-Message-State: AOAM532wzY6wPOKfJP/VhqBRqvWOt4DZ6VGsqMsCP0w+EFV2uXnQ8EKJ
-        SgPRdoedxp+bR8XvEhJwn2Q9WHoiBGpvAzp/DGuQDQ==
-X-Google-Smtp-Source: ABdhPJzPgJkU3kVjubRmB/GXIdL86/aIC8VR7QUJp2CfMcc/khiWum+fgoQxAe14XwQtmue20+CERJzWqrsrYrd72bw=
-X-Received: by 2002:a2e:90d0:: with SMTP id o16mr13593ljg.339.1638921944628;
- Tue, 07 Dec 2021 16:05:44 -0800 (PST)
+        bh=oY1YzqKk4aWlmDE7Q71zlaeF3NQefpgJ3dA3BCsYPu4=;
+        b=PmXv2YNINmols+cgQ3tzWtm0oZ8ov/MS6Y5nM9kMVd09HvaaPMuMq1FiXGiTCtwbTL
+         JB8iBovLc05xhlHvc0lME2HQLeYcP4yYS4tgB7RG7phmTYQpW+750mjyQhujjOmjYq3N
+         u0XsnAm7jQ/AWox+XD0KR82KrWkJ895vQWfMwDoVGi4bS/dS0nUX6hPzoG+9L3jChylm
+         EebDCXi+SI3x2vQ4LkVznmtCtGwl4N8jZyq1VEMwwh8livvEPoMD3GW1tcNwZvoHcGuM
+         96hL8IPJvvbamyRaIiBr4VRh7XZFl3+k1rUEZWJeFAhJ0gVfXD75tUlP/ZiSIc8BJEoz
+         Mybg==
+X-Gm-Message-State: AOAM530dkHQN5MeSJsRocUSnwu9sPBxwKku8sqfdDH4uUMiT3o3v2XNM
+        7h5V3/LG/4TctWCtqI367N0Bxjkm+SX77evdLmePoA==
+X-Google-Smtp-Source: ABdhPJxmd2LH6zwPwgpPDbCVOETpHSXAwZjmhvHQMjUkXqasuAqG1D74p/kFoM4q8OpYs6prJvtVqpiLKndVoC9He3Y=
+X-Received: by 2002:a05:651c:292:: with SMTP id b18mr47002761ljo.220.1638927005840;
+ Tue, 07 Dec 2021 17:30:05 -0800 (PST)
 MIME-Version: 1.0
-References: <20211206140313.5653-1-ojeda@kernel.org> <20211206140313.5653-16-ojeda@kernel.org>
- <CAKwvOd=7QTUH69+ZbT7e8einvgcosTbDkyohmPaUBv6_y8RfrQ@mail.gmail.com>
- <CAKwvOdk9VNenJJN5HnPpGgsHT+OsRsgPGSesQgqMP2aLPWy0NQ@mail.gmail.com> <CAMKQLNJKumnucRHttHFN0cMK_g6kCJ7o0ev_3_RJsmPqbjo08g@mail.gmail.com>
-In-Reply-To: <CAMKQLNJKumnucRHttHFN0cMK_g6kCJ7o0ev_3_RJsmPqbjo08g@mail.gmail.com>
+References: <20211206140313.5653-1-ojeda@kernel.org> <20211206140313.5653-15-ojeda@kernel.org>
+In-Reply-To: <20211206140313.5653-15-ojeda@kernel.org>
 From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Tue, 7 Dec 2021 16:05:33 -0800
-Message-ID: <CAKwvOdk2Z2-GQZ3rxHzdYQGVw2G-w0BmbiwDb_PCDzQaw6MdXw@mail.gmail.com>
-Subject: Re: [PATCH 15/19] Kbuild: add Rust support
-To:     Wedson Almeida Filho <wedsonaf@google.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        linux-kbuild@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+Date:   Tue, 7 Dec 2021 17:29:53 -0800
+Message-ID: <CAKwvOdnA+XU9u+dJ6NfmVFDTxdkCH4v04nMVaieuzauWZtBUpw@mail.gmail.com>
+Subject: Re: [PATCH 14/19] docs: add Rust documentation
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Alex Gaynor <alex.gaynor@gmail.com>,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alex Gaynor <alex.gaynor@gmail.com>,
         Finn Behrens <me@kloenk.de>,
         Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
+        Wu XiangCheng <bobwxc@email.cn>, Gary Guo <gary@garyguo.net>,
         Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Douglas Su <d0u9.su@outlook.com>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        Antonio Terceiro <antonio.terceiro@linaro.org>,
-        Daniel Xu <dxu@dxuuu.xyz>
+        Yuki Okushi <jtitor@2k36.org>, Wei Liu <wei.liu@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Dec 7, 2021 at 3:25 PM Wedson Almeida Filho <wedsonaf@google.com> wrote:
+On Mon, Dec 6, 2021 at 6:07 AM Miguel Ojeda <ojeda@kernel.org> wrote:
 >
-> On Tue, 7 Dec 2021 at 23:21, Nick Desaulniers <ndesaulniers@google.com> wrote:
-> >
-> > On Tue, Dec 7, 2021 at 2:45 PM Nick Desaulniers <ndesaulniers@google.com> wrote:
-> > >
-> > > On Mon, Dec 6, 2021 at 6:07 AM Miguel Ojeda <ojeda@kernel.org> wrote:
-> > > >
-> > >
-> > > ... snip ...
-> > >
-> > > Miguel and team,
-> > > I'm happy to see progress here! Just some quick notes after a first pass.
-> > >
-> > > Testing this series applied on mainline, I see:
-> > > $ make LLVM=1 -j72 defconfig
-> > > $ grep RUST .config
-> > > CONFIG_HAS_RUST=y
-> > > CONFIG_RUSTC_VERSION=14000
-> > > # CONFIG_RUST is not set
-> > > ...
-> > > $ make LLVM=1 -j72 menuconfig
-> > > # enable CONFIG_RUST
-> > > $ make LLVM=1
-> > > ...
-> > >   CALL    scripts/checksyscalls.sh
-> > > error: @path is unstable - use -Z unstable-options to enable its use
-> > >
-> > > error: @path is unstable - use -Z unstable-options to enable its use
-> > > $ rustc --version
-> > > rustc 1.40.0 (73528e339 2019-12-16)
-> > >
-> > > Can we update some Kconfig checks to fix that?
-> >
-> > After now reading though the Documentation/ patch:
-> >
-> > $ rustup update
-> > $ rustc --version
-> > rustc 1.57.0 (f1edd0429 2021-11-29)
-> > $ make LLVM=1 -j72
-> > ...
-> > make[1]: *** No rule to make target
-> > '/usr/local/google/home/ndesaulniers/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/lib.rs',
-> > needed by 'rust/core.o'.  Stop.
+> Most of the documentation for Rust is written within the source code
+> itself, as it is idiomatic for Rust projects. This applies to both
+> the shared infrastructure at `rust/` as well as any other Rust module
+> (e.g. drivers) written across the kernel.
+
+I'm sure Documentation/rust/ will grow over time; there's certainly
+more that can be added and core kernel devs will have more questions
+over time. I'm still running into a SNAFU actually building; see
+https://lore.kernel.org/lkml/CAKwvOdk9VNenJJN5HnPpGgsHT+OsRsgPGSesQgqMP2aLPWy0NQ@mail.gmail.com/.
+
+But I read through all that was added here and didn't find anything
+problematic IMO.  I didn't verify the png's are actually the logo...
+
+I don't think `make htmldocs` produced any new warnings, though it's
+not exactly warning free at the moment (pre-existing before this
+series).
+
+> However, these documents contain general information that does not
+> fit particularly well in the source code, like the Quick Start guide.
 >
-> Can you run `rustup component add rust-src`?
+> It also contains a few binary assets used for the `rustdoc` target
+> and a few other small changes elsewhere in the documentation folder.
+
+How is rust-logo.png being included in the docs? Is there something
+with RST that isn't grep'able for rust-logo.png?
+
+> --
+> 2.34.0
 >
-> When we change the compiler version, we need to install the source
-> code for `core` for the new version. (We'll update the documentation
-> to reflect that.)
 
-Cool, yeah please add that to the docs.  Kconfig checks should be
-added to make this idiot-proof; starting from everything uninstalled,
-I should be able to read the Kconfig dependencies in `make menuconfig`
-to understand what I'm missing. And if I'm missing anything, I
-shouldn't be able to select CONFIG_RUST.
 
-I get slightly further now.
-
-$ make LLVM=1 -j72
-...
-  BINDGEN rust/bindings_helpers_generated.rs
-thread 'main' panicked at 'called `Result::unwrap()` on an `Err`
-value: "could not run executable `/android0/llvm-project/clang`:
-Permission denied (os error 13)"',
-/usr/local/google/home/ndesaulniers/.cargo/registry/src/github.com-1ecc6299db9ec823/clang-sys-1.3.0/src/support.rs:196:58
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-thread 'main' panicked at 'called `Result::unwrap()` on an `Err`
-value: "could not run executable `/android0/llvm-project/clang`:
-Permission denied (os error 13)"',
-/usr/local/google/home/ndesaulniers/.cargo/registry/src/github.com-1ecc6299db9ec823/clang-sys-1.3.0/src/support.rs:196:58
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-make[1]: *** [rust/Makefile:261: rust/bindings_helpers_generated.rs] Error 1
-make[1]: *** Deleting file 'rust/bindings_helpers_generated.rs'
-make[1]: *** Waiting for unfinished jobs....
-make[1]: *** [rust/Makefile:248: rust/bindings_generated.rs] Error 1
-make[1]: *** Deleting file 'rust/bindings_generated.rs'
-make: *** [Makefile:1271: prepare0] Error 2
-
-It looks like bindgen found part of the path to llvm-project that I
-have checked out to disk for when I do development on LLVM for work.
-So this might only be an issue if folks have a copy of clang built
-from source in their $PATH?
-
-$ which clang
-/android0/llvm-project/llvm/build/bin/clang
-
-Looking at the output of `make LLVM=1 -j72 V=1`, I see two invocations
-of bindgen, and can repro if I just run the full command manually.
-
-I don't see my path to my source code checkout of llvm-project in the
-command line invocation of bindgen; this might be an issue itself with
-bindgen.
-
-Googling for "could not run executable" and bindgen, I find this
-thread with a similar failure string:
-https://bugzilla.mozilla.org/show_bug.cgi?id=1363655
-No hits in their issue tracker: https://github.com/rust-lang/rust-bindgen.
-
-$ bindgen --version
-bindgen 0.59.2
-$ cargo install --locked --version 0.56.0 bindgen
-$ bindgen --version
-bindgen 0.56.0
-$ make LLVM=1 -j72
-# produces the same error.
-
-I guess the error is coming not from bindgen, but a dependency of its;
-"clang-sys?"
-https://github.com/KyleMayes/clang-sys/blob/master/src/support.rs
-
-I've filed an issue in
-https://github.com/KyleMayes/clang-sys/issues/138; let's follow up
-there?
--- 
+--
 Thanks,
 ~Nick Desaulniers
