@@ -2,109 +2,97 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 944F6C433EF
-	for <rust-for-linux@archiver.kernel.org>; Wed,  8 Dec 2021 23:07:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E4BCEC433FE
+	for <rust-for-linux@archiver.kernel.org>; Thu,  9 Dec 2021 19:34:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229680AbhLHXLH (ORCPT
+        id S230304AbhLIThr (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 8 Dec 2021 18:11:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49082 "EHLO
+        Thu, 9 Dec 2021 14:37:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbhLHXLH (ORCPT
+        with ESMTP id S229710AbhLIThq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 8 Dec 2021 18:11:07 -0500
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C7CEC061746;
-        Wed,  8 Dec 2021 15:07:35 -0800 (PST)
-Received: by mail-io1-xd30.google.com with SMTP id m9so4715230iop.0;
-        Wed, 08 Dec 2021 15:07:35 -0800 (PST)
+        Thu, 9 Dec 2021 14:37:46 -0500
+Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 681BEC061746;
+        Thu,  9 Dec 2021 11:34:12 -0800 (PST)
+Received: by mail-il1-x12c.google.com with SMTP id h16so6388229ila.4;
+        Thu, 09 Dec 2021 11:34:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=GvxS1qroTD61QT/EFi3iPjXiqfPMtu/AfLzP0j5oWl8=;
-        b=A716lHua5S8Q0I6LxK8EbL72dqrwmaFOaGZWKh8i2V6ZCefvzwrlTpqmZbofBkji3o
-         eTcY11faHhDvzaWnlyJPjD7MAItParYA6jFITwEW1GmuBNmQpivoeP+lvJXzQFzoRt4o
-         KrRJYahvYIy5j7BOUkX/gYL9MMLme5cBDW81kzuBpbmOLzqNYjLQEj7lfLjINBTl62tu
-         6LKR4U7ia3Uft+usQCy2zYjuO84q0t57aRNsJGok6UcRGOFTAq8e022/6KwyGFU2QJ0w
-         XRDya9VZc8Wt9YttyS8IJyQLAL9LeHUiAnj73F7pRVE9OPVsxiUNFKczmtlJ85+QhuBd
-         +20g==
+        bh=rjbF/e4IPr6w41XoeHe90MU9VqeA6wWtIu93GK+U99I=;
+        b=VxpxA7pazg4J0Uw2yrJ468h9XVbHM3XC98y1oSNtayeUNncaxTuWP3jLdrD3yPYz+8
+         Cy4PYzhBRe0bh4+o4TschXKyCc8S69143NLLw9MzbpyvMoRnfrPHP+JSH0ykpU5/80oj
+         fK6gHhR7FpIG8HPoKD/LF8IgGl0RXhGMMkSJUcr0CkSGPhzgONrudJK9g8YVgLeh9OMn
+         9O6ylG6WRFFWwsnPafiv/kTzFa9jwbsPp1nMBjHF+R8s1lt0YatXp+31bjmds+WwZEm6
+         dlD7OQbNrYfwqYvrB4RkhIChnfiWB0Xi9ohc9ABKI/qvOzA3TvRdUimv+78J82ejERa2
+         JF9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=GvxS1qroTD61QT/EFi3iPjXiqfPMtu/AfLzP0j5oWl8=;
-        b=0r/oyFZmwd46PgC/k+pk3QFzxDVuUmqv6gfWtQc4FbQ/LrCEKSpgHOIG7bPo21LoEI
-         Z+WybU/tv6ZCw9A8SgHf5IeXvjVITAFV1iyoZYltsCE4pwNHWjxF6VqKfyPizQQK7LzR
-         syeiSCGijbFObQSght9SFNX3CAvUPR38vChkaTzNAmflEfL+77eJXQpoBvF8yxqfKJlF
-         LzPmLVJtH750Dm9DiUcQFtnBVO59YlV2BqRV/MO+fIA9AJjBMU1ugIDqY6JzCYEiuhmn
-         lxMEEXMGbxWeGvD1BGGMIgOe8zie/5uVU0bhVoHbfNLx4KiEcQ6TXu4kwmOhEMw/vVDE
-         8Flw==
-X-Gm-Message-State: AOAM530W2QdisLTdEge3nn2PAYxMyJCT9/sblgcX6TIJBnXEgB+I7VWC
-        97dRcgLGiKRw1DmMNE6IFwzfYz1Tf2x+UOr2VD4=
-X-Google-Smtp-Source: ABdhPJy5PjPkLmDXdBa8v9cvnb0J8BYP4vtPofj3T3hO/HPtklP9pPvbbe0+0XmfCKfw0H5ANish9+gJVfHa7ILR6mI=
-X-Received: by 2002:a02:c78e:: with SMTP id n14mr3798423jao.40.1639004854486;
- Wed, 08 Dec 2021 15:07:34 -0800 (PST)
+        bh=rjbF/e4IPr6w41XoeHe90MU9VqeA6wWtIu93GK+U99I=;
+        b=lSUOOxn29z58gasOOazz+Qm1U7mTsuQEeku8orxk/HiWt8fwbJtfJNgDF3vwSZHePX
+         UkD5zVwVszoiiUYUE7FoQC85wpCvwBb2HBrLdlA+dwp02SUhfvHKfaN+GefLJTWkKiIP
+         aO3IgY+K/4mCyk/jhwIaKD+DAkl9onf6yt27sZnw16ivXvvDp7nJUEhlZJiY3G17LHqT
+         FBYpUXhVtO2fK7bJCGLF/gfEmmcZZ7SuOo3ejBZzW1a4MpPzj5iA9hqHY7GLVA+XNQjU
+         /W9WMmpu0cXjFrU6ya+e2Sl1zOHD+VrompDPkmDFPpOYl0pTIZmmvOvA8RNVWOSlSoul
+         6Y9g==
+X-Gm-Message-State: AOAM531EiJx9Qg4puTIMEbu8YxZ5Gqb/5KdGLunuuo1c2SzZd/GaflBI
+        MOK8udxIWM/UQxqdRCsoQ68kEkVqHPOyQd58xlg=
+X-Google-Smtp-Source: ABdhPJwbf4BStyul78aoixIbYXeNPT+vDDvVw180IUPyJAQY1AyTHLV4ByxbrJlu+3wi4eYKD/VfG1dO2Wq/7usImKU=
+X-Received: by 2002:a05:6e02:1ca1:: with SMTP id x1mr17110581ill.72.1639078451722;
+ Thu, 09 Dec 2021 11:34:11 -0800 (PST)
 MIME-Version: 1.0
-References: <20211206140313.5653-1-ojeda@kernel.org> <20211206140313.5653-15-ojeda@kernel.org>
- <CAKwvOdnA+XU9u+dJ6NfmVFDTxdkCH4v04nMVaieuzauWZtBUpw@mail.gmail.com>
-In-Reply-To: <CAKwvOdnA+XU9u+dJ6NfmVFDTxdkCH4v04nMVaieuzauWZtBUpw@mail.gmail.com>
+References: <20211206140313.5653-1-ojeda@kernel.org> <20211206140313.5653-6-ojeda@kernel.org>
+ <CAKwvOdk+A2PBdjSFVUhj4xyCGCKujtej1uPgywQgrKPiK2ksPw@mail.gmail.com>
+In-Reply-To: <CAKwvOdk+A2PBdjSFVUhj4xyCGCKujtej1uPgywQgrKPiK2ksPw@mail.gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 9 Dec 2021 00:07:24 +0100
-Message-ID: <CANiq72n1DehytS+n2_RbJf0uAROTD2c48voDWVGEWPaPr_V4qQ@mail.gmail.com>
-Subject: Re: [PATCH 14/19] docs: add Rust documentation
+Date:   Thu, 9 Dec 2021 20:34:00 +0100
+Message-ID: <CANiq72kUBy64D_psB2YsBs4evfyGUJO6g2eb5-5xZYg2rVETsw@mail.gmail.com>
+Subject: Re: [PATCH 05/19] rust: add `compiler_builtins` crate
 To:     Nick Desaulniers <ndesaulniers@google.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
         Linux Doc Mailing List <linux-doc@vger.kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
         Sven Van Asbroeck <thesven73@gmail.com>,
-        Wu XiangCheng <bobwxc@email.cn>, Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Yuki Okushi <jtitor@2k36.org>, Wei Liu <wei.liu@kernel.org>
+        Gary Guo <gary@garyguo.net>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Dec 8, 2021 at 2:30 AM Nick Desaulniers <ndesaulniers@google.com> wrote:
+On Wed, Dec 8, 2021 at 12:02 AM Nick Desaulniers
+<ndesaulniers@google.com> wrote:
 >
-> I'm sure Documentation/rust/ will grow over time; there's certainly
-> more that can be added and core kernel devs will have more questions
+> Rather than panic at runtime, could we do some binary post processing
+> in Kbuild with $(NM) to error the build if any of the below symbols
+> are referenced from .o files produced by .rs sources?
 
-Indeed -- the comment is only trying to emphasize (or explain) that
-this might be a difference with respect to C, i.e. that we should try
-to put as much of the documentation as possible closer to the code,
-rather than create "far" files in `Documentation/rust`. I will try to
-clarify the comment.
+To error the build, we only need to not define them; i.e. the issue is
+passing the build. Eventually, we should be able to avoid defining
+them (this is what the comment is referring to).
 
-> But I read through all that was added here and didn't find anything
-> problematic IMO.  I didn't verify the png's are actually the logo...
+There are other ways around, like providing an in-tree `core`, but it
+is best to see if upstream Rust can do it.
 
-Thanks for reading through all of it!
+> If we provide definitions of these symbols, then I worry about C code
+> that previously would have failed to link at build time when
+> referencing these will now succeed at linking when CONFIG_RUST=y is
+> enabled, but may panic at runtime IF we happen to hit those code
+> paths.
 
-> I don't think `make htmldocs` produced any new warnings, though it's
-> not exactly warning free at the moment (pre-existing before this
-> series).
-
-Yeah, I also run `make htmldocs` before submitting the patch series
-rounds. And indeed, there are quite a few warnings (20+?), but none
-coming from `Documentation/rust` that I could see.
-
-> How is rust-logo.png being included in the docs? Is there something
-> with RST that isn't grep'able for rust-logo.png?
-
-At the moment, the assets are simply copied to the output folder, in
-the `rust/Makefile`. (I should provide an SVG too or remove the
-reference to it, by the way).
+It should be fine -- by the time we consider the Rust support
+non-experimental, we should not be defining them.
 
 Cheers,
 Miguel
