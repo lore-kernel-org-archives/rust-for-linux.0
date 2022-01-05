@@ -2,88 +2,68 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C93C6C433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Jan 2022 16:20:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C892C433F5
+	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Jan 2022 13:46:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234115AbiACQU1 (ORCPT
+        id S240428AbiAENqB (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Jan 2022 11:20:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37274 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233904AbiACQU0 (ORCPT
+        Wed, 5 Jan 2022 08:46:01 -0500
+Received: from mail-wm1-f53.google.com ([209.85.128.53]:44706 "EHLO
+        mail-wm1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229890AbiAENqB (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Jan 2022 11:20:26 -0500
-Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CFEFC061761
-        for <rust-for-linux@vger.kernel.org>; Mon,  3 Jan 2022 08:20:26 -0800 (PST)
-Received: by mail-il1-x12a.google.com with SMTP id j6so26266356ila.4
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Jan 2022 08:20:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=tuUKDHj5zW32lsZcpfruWvMvHYG+n4CI/8BW0EfoKbc=;
-        b=FDiG9FtCbdZYOEzMVd8trALtWwRmCGecD1kSNnD+KF52ub5W8NoGkJ0IUAHWaZ07Oh
-         3ajfY5zTH81A2z2+EOICFeJLIKi5Wq13/8X66MuwKJK2VZVUd+W5U4I1+TCWRXikAEH0
-         ZIoil8YDF92s2NkhoEX+DUot9M5p/v9PjO2BkKmBaj9ADWUKn9a7m0itbxjS6jPEjphe
-         Q999zjZe1C5QlJM0vEjfAN+7U69Jwx5OECe1Vg16svqDbsSkObLGuTUfqWM9zf0W9m4M
-         1HCdyWFvMQ51tsg93glatpPSnRJZUAQulFpNj2M5xDIzTmxTpmOKHbz2KNZbSI7tQhwP
-         4OlQ==
+        Wed, 5 Jan 2022 08:46:01 -0500
+Received: by mail-wm1-f53.google.com with SMTP id f134-20020a1c1f8c000000b00345c05bc12dso3353019wmf.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Jan 2022 05:46:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=tuUKDHj5zW32lsZcpfruWvMvHYG+n4CI/8BW0EfoKbc=;
-        b=67twG8bvWi8hDtkk2+DUIOTalrKFwSsP5wuyY97cQ2sCvpxNcdPqiooh075Ag601Zp
-         /vJ4thhOt54SSCqDAxUHwZhglQzb4LOf/24+DLaQQPY1bauaGoOe7Fj3/8XFRc64216V
-         6NEhIjwvEI/z1YEifVZmFlz1E8hYyeZYfsvPy8bh6ZjlvQEu4CRBianbakELOMDq4hoB
-         AGQBKgwHcsll88vbsUAaIWfTT7VZYs9HrpGmg9D9xNCtlAmEtdDB5mu3lu9ZVLP8eskt
-         xTEXxuE0bjjyuZCdzXkmD2ZuieyPYm1WiU6XVUkgoS4vvlkffXbutmEnFQBfpfYaShCJ
-         f+DA==
-X-Gm-Message-State: AOAM5306fVI3GcZWnLFDo4GlQ0zUTZz7h0vTkJ67m3eiWWkYmPXMV4Sr
-        fVx5QMprwHohROCslb8oDai6NW3IvL+Ildt3pzkUzjAUtfM=
-X-Google-Smtp-Source: ABdhPJwD6YWOH161dgsFhjhC7LUHeN1Q+jZIzx6Vkvrj+4M2Ggms7oZDzmG+k+NXAvL4bWM6mX/MxDQ5FuaJzOfGsg4=
-X-Received: by 2002:a05:6e02:164a:: with SMTP id v10mr18245272ilu.5.1641226825765;
- Mon, 03 Jan 2022 08:20:25 -0800 (PST)
-MIME-Version: 1.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=PhlHf0RZxU44kE10oe0JYD+/6HZN8SzebW/5U6uDiQ8=;
+        b=tsYAImmByFbEfXi4S/3gaHQo7WCmlNGko6PnlVdSn0EQgXaslMZOCoIWO6s/doK4mJ
+         JOI/csFnwdLlKLYVHQRwEPSLPPwCG11a18EpX0HfGWl0hODQUHEoFQsBu1So9CiNXW7j
+         TdENgrsRxLklMxBZDoo4GLcqRx7Kv2JP0FGeTz05fOV5JN+fDE66xIre1GRsmTHm8Wnr
+         qJ0R6AsDubWhRRnpW80se6C6okVcg5QMeH71asNLYDoMzYOPAKCaV+q/KRGznmadihwm
+         lRYDo6LDkgha1ONgOOnUJ6o6n3GEAUPQV4XR5svAdO4GIh4LdCLrU735z4OTCYj8eRTK
+         xg3A==
+X-Gm-Message-State: AOAM531vnM23oSVK7/5k4k8bg0jOPQSGaiOCvJYDT9pBEz4D/AtQ5hlV
+        I7xlxa42cWRqAuYlFDZctqMHxYCbfug=
+X-Google-Smtp-Source: ABdhPJyRY9atU/O09+6WMuiBWWYFY6VQDc935lv8Myw/xyWm8pf8tQS1uD8q5YfVIwabqxOkQfTecA==
+X-Received: by 2002:a1c:4406:: with SMTP id r6mr2933497wma.42.1641390360378;
+        Wed, 05 Jan 2022 05:46:00 -0800 (PST)
+Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id d4sm40681474wrx.102.2022.01.05.05.45.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jan 2022 05:45:59 -0800 (PST)
+Date:   Wed, 5 Jan 2022 13:45:58 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     Li Hongyu <lihongyu1999@bupt.edu.cn>
+Cc:     Wei Liu <wei.liu@kernel.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>
+Subject: Re: Which linux  kernel version should I choose?
+Message-ID: <20220105134558.nbll2j5tueoqg2cg@liuwe-devbox-debian-v2>
 References: <tencent_78F7527A2172D4676B48757B@qq.com>
-In-Reply-To: <tencent_78F7527A2172D4676B48757B@qq.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 3 Jan 2022 17:20:14 +0100
-Message-ID: <CANiq72nSzDFFv3QzFP2dY=WhDerdj4-BPx2Bn5kydLcPQ8S0iQ@mail.gmail.com>
-Subject: Re: Which linux kernel version should I choose?
-To:     =?UTF-8?B?5p2O5byY5a6H?= <lihongyu1999@bupt.edu.cn>
-Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <20220103112146.pt32tktmjdlb7p3o@liuwe-devbox-debian-v2>
+ <20220103112257.mvz25qghrnsapicw@liuwe-devbox-debian-v2>
+ <61d51c88.1c69fb81.3b0da.ae02SMTPIN_ADDED_BROKEN@mx.google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <61d51c88.1c69fb81.3b0da.ae02SMTPIN_ADDED_BROKEN@mx.google.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Jan 3, 2022 at 3:24 PM =E6=9D=8E=E5=BC=98=E5=AE=87 <lihongyu1999@bu=
-pt.edu.cn> wrote:
->
-> I want to apply the patchset v2 given in the mail list. I found that the =
-patchset v1 can be applied to Linux kernel v5.13. However, I do not find th=
-e correct Linux kernel version for the rust patchset v2. Where can I find t=
-his information?
+On Wed, Jan 05, 2022 at 12:19:56PM +0800, Li Hongyu wrote:
+> Hi Wei Liu,
+> 
+> Thanks for your help sincerely. I tried to reply to you the day before 
+> yesterday. But it seems something goes wrong. The reply email did not show 
+> in the kernel email list. I am not sure whether you receive my reply. So I 
+> resend this email. If this bothers you, please do let me know.
 
-It should apply cleanly to v5.16-rc3. However, for normal development,
-I suggest you simply fetch the GitHub repo instead. It gets updated
-with mainline changes regularly (e.g. when I notice a conflict).
+No worries. I did get your original reply.
 
-> Meanwhile, I wonder whether I can generate a patchset by myself so that I=
- can apply it to a specific kernel version I want. I tried to google this b=
-ut did not find anything related.
+I'm not bothered. There is no need to apologize.
 
-You can, of course, apply the patchset to any version you want, but
-then you will have to take care of solving any conflicts etc. on your
-own.
-
-> I want to join the Zulip group. My email address is lihongyu@bupt.edu.cn.
-
-Do you want it to this one, or the From address? As Wei noticed, they
-are different.
-
-Cheers,
-Miguel
+Wei.
