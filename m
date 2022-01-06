@@ -2,68 +2,86 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C892C433F5
-	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Jan 2022 13:46:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17039C433F5
+	for <rust-for-linux@archiver.kernel.org>; Thu,  6 Jan 2022 12:34:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240428AbiAENqB (ORCPT
+        id S238848AbiAFMeM (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 5 Jan 2022 08:46:01 -0500
-Received: from mail-wm1-f53.google.com ([209.85.128.53]:44706 "EHLO
-        mail-wm1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229890AbiAENqB (ORCPT
+        Thu, 6 Jan 2022 07:34:12 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:59330 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238831AbiAFMeL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 5 Jan 2022 08:46:01 -0500
-Received: by mail-wm1-f53.google.com with SMTP id f134-20020a1c1f8c000000b00345c05bc12dso3353019wmf.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Jan 2022 05:46:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=PhlHf0RZxU44kE10oe0JYD+/6HZN8SzebW/5U6uDiQ8=;
-        b=tsYAImmByFbEfXi4S/3gaHQo7WCmlNGko6PnlVdSn0EQgXaslMZOCoIWO6s/doK4mJ
-         JOI/csFnwdLlKLYVHQRwEPSLPPwCG11a18EpX0HfGWl0hODQUHEoFQsBu1So9CiNXW7j
-         TdENgrsRxLklMxBZDoo4GLcqRx7Kv2JP0FGeTz05fOV5JN+fDE66xIre1GRsmTHm8Wnr
-         qJ0R6AsDubWhRRnpW80se6C6okVcg5QMeH71asNLYDoMzYOPAKCaV+q/KRGznmadihwm
-         lRYDo6LDkgha1ONgOOnUJ6o6n3GEAUPQV4XR5svAdO4GIh4LdCLrU735z4OTCYj8eRTK
-         xg3A==
-X-Gm-Message-State: AOAM531vnM23oSVK7/5k4k8bg0jOPQSGaiOCvJYDT9pBEz4D/AtQ5hlV
-        I7xlxa42cWRqAuYlFDZctqMHxYCbfug=
-X-Google-Smtp-Source: ABdhPJyRY9atU/O09+6WMuiBWWYFY6VQDc935lv8Myw/xyWm8pf8tQS1uD8q5YfVIwabqxOkQfTecA==
-X-Received: by 2002:a1c:4406:: with SMTP id r6mr2933497wma.42.1641390360378;
-        Wed, 05 Jan 2022 05:46:00 -0800 (PST)
-Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id d4sm40681474wrx.102.2022.01.05.05.45.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jan 2022 05:45:59 -0800 (PST)
-Date:   Wed, 5 Jan 2022 13:45:58 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Li Hongyu <lihongyu1999@bupt.edu.cn>
-Cc:     Wei Liu <wei.liu@kernel.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>
-Subject: Re: Which linux  kernel version should I choose?
-Message-ID: <20220105134558.nbll2j5tueoqg2cg@liuwe-devbox-debian-v2>
-References: <tencent_78F7527A2172D4676B48757B@qq.com>
- <20220103112146.pt32tktmjdlb7p3o@liuwe-devbox-debian-v2>
- <20220103112257.mvz25qghrnsapicw@liuwe-devbox-debian-v2>
- <61d51c88.1c69fb81.3b0da.ae02SMTPIN_ADDED_BROKEN@mx.google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <61d51c88.1c69fb81.3b0da.ae02SMTPIN_ADDED_BROKEN@mx.google.com>
+        Thu, 6 Jan 2022 07:34:11 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 562A0B820FE;
+        Thu,  6 Jan 2022 12:34:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E0EC36AE3;
+        Thu,  6 Jan 2022 12:34:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641472449;
+        bh=H3/oyDBBgWPKLO8CaUCJpearAqZDBAp1Vt3uxT0jstA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=WpOhmVExFRd9TtS76TLmyEeCT3clh/SAM6IMNIjPcbxI8h2MqHrBQQNHvKcB5Vr3w
+         AoA+qaCOoDSeGN3YO0rc4kNEgmvP05OEmr1LHaxjMzc07oiTU4ysV8LZ33eALV/DF2
+         RnEOxOx4wm7fULhd+Jfj6SxrIjmtX+ZMEa1RIpUlEFjyjf0HdjoUdJH5rFMWrLDhWj
+         XeY5fH4HNhgw2M574lWisouMFBJHn1IANjunRTPI9Zzrq4AZesFNYRWp2lL9ZcDB0K
+         dYkoWAgLa2a45o6uViqHD83RlE7A5rz2/LGLMtMsVECxkHF3059CSP+3x298CZnX2c
+         PhkG+YH9TgwjQ==
+From:   SeongJae Park <sj@kernel.org>
+To:     ojeda@kernel.org
+Cc:     alex.gaynor@gmail.com, wedsonaf@google.com,
+        akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, SeongJae Park <sj@kernel.org>
+Subject: [PATCH] init/Kconfig: Specify the interpreter for rust-version.sh
+Date:   Thu,  6 Jan 2022 12:33:57 +0000
+Message-Id: <20220106123357.16220-1-sj@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Jan 05, 2022 at 12:19:56PM +0800, Li Hongyu wrote:
-> Hi Wei Liu,
-> 
-> Thanks for your help sincerely. I tried to reply to you the day before 
-> yesterday. But it seems something goes wrong. The reply email did not show 
-> in the kernel email list. I am not sure whether you receive my reply. So I 
-> resend this email. If this bothers you, please do let me know.
+Some common tools like 'diff' don't support permissions of the files.
+Due to that, 'rust-version.sh' in some trees including '-mm' result in
+having no execution permission, and therefore build fails like below:
 
-No worries. I did get your original reply.
+    $ make O=../linux.out/ olddefconfig
+    make[1]: Entering directory 'linux.out'
+      GEN     Makefile
+    sh: 1: linux/scripts/rust-version.sh: Permission denied
+    init/Kconfig:71: syntax error
+    init/Kconfig:70: invalid statement
+    linux/scripts/kconfig/Makefile:77: recipe for target 'olddefconfig' failed
+    make[2]: *** [olddefconfig] Error 1
+    linux/Makefile:666: recipe for target 'olddefconfig' failed
+    make[1]: *** [olddefconfig] Error 2
+    make[1]: Leaving directory 'linux.out'
+    Makefile:226: recipe for target '__sub-make' failed
+    make: *** [__sub-make] Error 2
 
-I'm not bothered. There is no need to apologize.
+It's not a big deal, but not so fun.  This commit fixes the issue by
+specifying the interpreter for 'rust-version.sh' in the Kconfig file.
 
-Wei.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ init/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index cd23faa163d1..97ab35692d46 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -67,7 +67,7 @@ config HAS_RUST
+ config RUSTC_VERSION
+ 	depends on HAS_RUST
+ 	int
+-	default $(shell,$(srctree)/scripts/rust-version.sh $(RUSTC))
++	default $(shell,/bin/sh $(srctree)/scripts/rust-version.sh $(RUSTC))
+ 
+ config CC_CAN_LINK
+ 	bool
+-- 
+2.17.1
+
