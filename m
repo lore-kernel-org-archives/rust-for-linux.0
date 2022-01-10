@@ -2,89 +2,92 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22D93C433EF
-	for <rust-for-linux@archiver.kernel.org>; Sun,  9 Jan 2022 20:38:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F8ABC433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Jan 2022 08:43:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236947AbiAIUix (ORCPT
+        id S241516AbiAJInH (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 9 Jan 2022 15:38:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47846 "EHLO
+        Mon, 10 Jan 2022 03:43:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229579AbiAIUix (ORCPT
+        with ESMTP id S241677AbiAJIlU (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 9 Jan 2022 15:38:53 -0500
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF23DC06173F;
-        Sun,  9 Jan 2022 12:38:52 -0800 (PST)
-Received: by mail-io1-xd2c.google.com with SMTP id w22so4439053iov.3;
-        Sun, 09 Jan 2022 12:38:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=aUgjMWnA1IN7R+ANpNtaHO4QvxMEdQHiPYa1/JTQhjM=;
-        b=IwV3q9ht1h2hBcaQmOAGKqpqBhTcCCXyIV9yGk7wcXIyMKiPUDzbFTsloct6a608iR
-         JwEhWGPWQyYIvz3dcbJO7AIE114EUL61a23I058gP2Tm5lO3NWTtHx6biP+puIUIStpi
-         6Zy5qMHlhbr3FipO4iGWS4diSOY71GJI5BzISFYPjulmk25JXaiaLRUyr0e6nR4Wp0Th
-         wzztMQpVLgn9Tcmpp4r5hjg09IxGH/z43e1h7+236Gb5T+n2a3bNftxge/SvUXeqe0ui
-         BcoeLCqdn1hGI4Xv1YFBW3R8GG5y/v/abRkRj2wCTAVz0aKW2bJFkbseWwEQPaRTkiYA
-         6X7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=aUgjMWnA1IN7R+ANpNtaHO4QvxMEdQHiPYa1/JTQhjM=;
-        b=uQXuz58OvV6r7tCm4E4FH4nNv7XFd38vhhLphQclP3ik8ndVdXxxG3lmCGxlJCb7Qh
-         MjvpGIe8ksqQV0LFiLjtP9pkmFaJlLbuug00rcLMrjpJD8jSGuElaiF2D4QFj/32uVXO
-         sVDaA2xIK8kc+Kho7UkFijSVktuLwEKY4p3B+3UhE1EPjBYSTYX4hMatKcIfEVEAPPba
-         fzeYKlvpWE9omzy7VpmAdLxxXLtlXjMWqgUo/ZG3OgVLXtZEO7XyW6JhzU3PC0EOhW2T
-         CaBW3Jp6HQR5PEft7hBgYtKeejrezHLgV/wQ5r7P5jfs4dG2VYJMC7Ow+eyZYC8K/+F5
-         m2QQ==
-X-Gm-Message-State: AOAM53085FFVEKUHdCP1uNnqnm2iHwH+ucQC5XhAABeC9xuJAQlWc3TW
-        o3jSu14cmUz2PrYgp6qXTQi8qgVYFoEw7bK2QuQ=
-X-Google-Smtp-Source: ABdhPJwXGNlIUiI8Ot7yHO5wT2K+zq/wsRQ/6JpZQUWK1OY7zqxDusKkMDHQL6lbCyw5EPAOXo18XwDRxpq+43oh7dc=
-X-Received: by 2002:a5d:9ec2:: with SMTP id a2mr35621393ioe.44.1641760732400;
- Sun, 09 Jan 2022 12:38:52 -0800 (PST)
-MIME-Version: 1.0
-References: <20220106123357.16220-1-sj@kernel.org>
-In-Reply-To: <20220106123357.16220-1-sj@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sun, 9 Jan 2022 21:38:40 +0100
-Message-ID: <CANiq72muzMPVUNJQU7Vcx0uCSEZc7Y_67LuX7PB=xNkCJ+NX7A@mail.gmail.com>
-Subject: Re: [PATCH] init/Kconfig: Specify the interpreter for rust-version.sh
-To:     SeongJae Park <sj@kernel.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Mon, 10 Jan 2022 03:41:20 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71866C034004;
+        Mon, 10 Jan 2022 00:41:20 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F95060E05;
+        Mon, 10 Jan 2022 08:41:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7FBC36AED;
+        Mon, 10 Jan 2022 08:41:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641804079;
+        bh=KNimAm6MuVbpyyW31wUY2PPlfx4RNo0nOMAvzobEKR8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:From;
+        b=AjFan6HrUNrgJ6cAd9JQ7884OID1R1qA4QTtR7K7MMghvS0dj9OH5Htr68xchYkCB
+         emmPc/5mU39acJFbsDLMSTShKov5GhTsRi7rvRBv2YdqNWSGiYcDaf/ekncxMwG+Ir
+         pVOJI1ZKlO36kfYqMzxwlXWcnZjJn8PVlyarfwvvuHquGQiNOSBBqnNOBk+LRWOulU
+         CAEVAieF2vworRw48+tssj5Gpr+X4fx8rEz9nT0sEQ7XtAsrFDneMSbtco51JRXcnB
+         J6DqQF0mEg/as0ok9q+oDS5vFS0wjXyzRXArhdkYdLP83+gcS2wAZtfPpTyMEwj4jG
+         RVdCcN5WBEKNA==
+From:   SeongJae Park <sj@kernel.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     SeongJae Park <sj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] init/Kconfig: Specify the interpreter for rust-version.sh
+Date:   Mon, 10 Jan 2022 08:41:16 +0000
+Message-Id: <20220110084116.4589-1-sj@kernel.org>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <CANiq72muzMPVUNJQU7Vcx0uCSEZc7Y_67LuX7PB=xNkCJ+NX7A@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Jan 6, 2022 at 1:34 PM SeongJae Park <sj@kernel.org> wrote:
->
-> Some common tools like 'diff' don't support permissions of the files.
-> Due to that, 'rust-version.sh' in some trees including '-mm' result in
-> having no execution permission, and therefore build fails like below:
+On Sun, 9 Jan 2022 21:38:40 +0100 Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-Do you mean the Quilt workflow? From a quick look:
+> On Thu, Jan 6, 2022 at 1:34 PM SeongJae Park <sj@kernel.org> wrote:
+> >
+> > Some common tools like 'diff' don't support permissions of the files.
+> > Due to that, 'rust-version.sh' in some trees including '-mm' result in
+> > having no execution permission, and therefore build fails like below:
+> 
+> Do you mean the Quilt workflow? From a quick look:
+> 
+> https://lists.nongnu.org/archive/html/quilt-dev/2008-01/msg00000.html
+> https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=749069
+> 
+> Is that the issue? I am surprised it loses that information...
 
-https://lists.nongnu.org/archive/html/quilt-dev/2008-01/msg00000.html
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=749069
+Right.  I once encountered similar issue with DAMON kselftest[1], and as a
+result we made kselftest deals with such case[2].
 
-Is that the issue? I am surprised it loses that information...
+[1] https://lore.kernel.org/mm-commits/YRJisBs9AunccCD4@kroah.com/
+[2] https://lore.kernel.org/linux-kselftest/20210810164534.25902-1-sj38.park@gmail.com/
 
-> It's not a big deal, but not so fun.  This commit fixes the issue by
-> specifying the interpreter for 'rust-version.sh' in the Kconfig file.
+> 
+> > It's not a big deal, but not so fun.  This commit fixes the issue by
+> > specifying the interpreter for 'rust-version.sh' in the Kconfig file.
+> 
+> Other script calls do not do that, so I would prefer to avoid it. But
+> I can take it temporarily to help you (until we are in mainline, if I
+> understand correctly the issue), but I would prefer to have a comment
+> nearby it justifying the workaround and explaining when we can remove
+> it.
 
-Other script calls do not do that, so I would prefer to avoid it. But
-I can take it temporarily to help you (until we are in mainline, if I
-understand correctly the issue), but I would prefer to have a comment
-nearby it justifying the workaround and explaining when we can remove
-it.
+Fully agreed.  I will send v2 with the comment.
 
-Cheers,
-Miguel
+
+Thanks,
+SJ
+
+> 
+> Cheers,
+> Miguel
+> 
