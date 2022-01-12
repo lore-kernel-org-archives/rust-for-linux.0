@@ -2,80 +2,74 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D135C433EF
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Jan 2022 00:32:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3131AC433F5
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Jan 2022 07:43:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236570AbiALAcc (ORCPT
+        id S236960AbiALHn5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Jan 2022 19:32:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56900 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236299AbiALAcc (ORCPT
+        Wed, 12 Jan 2022 02:43:57 -0500
+Received: from ams.source.kernel.org ([145.40.68.75]:49534 "EHLO
+        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231359AbiALHn4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Jan 2022 19:32:32 -0500
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E78C06173F;
-        Tue, 11 Jan 2022 16:32:31 -0800 (PST)
-Received: by mail-io1-xd29.google.com with SMTP id h23so1270125iol.11;
-        Tue, 11 Jan 2022 16:32:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xzRivGiDnFlH/NigKDtyx/5jSI6przCmRsoRUX9qzW4=;
-        b=ECF3Q/SSeCeIXhQRldXxQpXI/q5uTMDtKLXT1zBBl1JNCGWkD0adGys7P49TM1Ckoy
-         arXjylMaMFTeE4w9rjBUYs/+RSdbLOPqj/aKKwRQ0NzDXP+Bc9a7sekFkUAE0IOu4qRl
-         BTZLX0/4xRmkPtFQiD4RYFVlGpo+XYtNl0AGUxWA/SFqBIa8B/bDkcSVzoS65X+fOk2N
-         Z08qE2Cz+ZFhtkYpJb17NnPJoVyAZpWoULYS7OYk2GbRDf2WSJ0DmJvXZWQgJ1sHSX0x
-         bYle2rl5p1GCDiMBXmNejRCVR462bxS29IgQdt4uUJnH0lqeNLaP0feesnzkZ+PBZEr6
-         etBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xzRivGiDnFlH/NigKDtyx/5jSI6przCmRsoRUX9qzW4=;
-        b=5CiOHqOTkNBoxxEKrdNNJ50kqV928vlYNsxvbAqX3qTjmCW4aaImZyI0oGhLRicuk/
-         LfUDaCZniNKFqn23q/TUNNJJmxZYxCNpa8Zi+PmTXSFsiZt5qLlbWjgdSVTz2AAuWcvP
-         qicVLmIp7evt8p4uUPc3HCgU9lmQloA7/vBWazXYoEf+UxxVYPUHU7oO7OIFFYj/dTO4
-         AgqxyyKBZFcqbSjtyyFUMe6cGX8w2X8sBZWoAAlBkbi65MU7u2kCdFMpzoMys70roQae
-         MBURmi+TB/Fgs4STsdiBrLF9iLR+RVlNWo/vngK6d5i2RZofbtyIr7q6VJm3a5TPRfKQ
-         fj6g==
-X-Gm-Message-State: AOAM531Ocly62USnmCB0UVI473aThtRf6JVSEmcx3YH13fRKYaUf7npv
-        omv8v00xkNe1bnD2iYl7k/6zAeKYevWDJkJCjAk=
-X-Google-Smtp-Source: ABdhPJxKhwcG0hnl29QpdnKHcbrr3/gJYspv2gQI/bfG3WAECR8HiBX6lovOe32Dk6eBpnHyoZ2HcOKpjz+Tig6YHr8=
-X-Received: by 2002:a6b:e508:: with SMTP id y8mr3309614ioc.177.1641947551194;
- Tue, 11 Jan 2022 16:32:31 -0800 (PST)
-MIME-Version: 1.0
-References: <20220110085952.6137-1-sj@kernel.org> <CANiq72nysMx0tOHstkDFWV2wYnjiePDxvGeip=RU4bKkyAZbtw@mail.gmail.com>
-In-Reply-To: <CANiq72nysMx0tOHstkDFWV2wYnjiePDxvGeip=RU4bKkyAZbtw@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 12 Jan 2022 01:32:20 +0100
-Message-ID: <CANiq72=uZ58gQ5PmF5bXk7f47yGGzeL=WQnNbybeBPDZuQhijA@mail.gmail.com>
-Subject: Re: [PATCH v2 for-rust-for-linux] init/Kconfig: Specify the
- interpreter for rust-version.sh
-To:     SeongJae Park <sj@kernel.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 12 Jan 2022 02:43:56 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 88507B81E06;
+        Wed, 12 Jan 2022 07:43:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BEFC36AEA;
+        Wed, 12 Jan 2022 07:43:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1641973434;
+        bh=P4fphtGFF/hVfABFIytuAPP0L5tQIZq8gmY+Nbs2xK4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:From;
+        b=occkmkh4v3Dq9b8k6mUnoKo+F98hcecUsaIMFliimpfwiREZBWIuQtHNWMn9ePE+a
+         oxbWoq3uDNy3J6YQrN7i87NHXqDNWYA6Dz7dHwRBiBPXIxYMLKZb8xxTDRGIqEc51H
+         6krBDPRFTjJHBOatjtldRhPTeYj2anascRn53R2v9VsXFGkzlftDRuqs+z72KGHE4K
+         XLX2PTg91K7C1qsuC8Jm6RDkcF+xFUTCyxSvF7xqDmdt28ipOR40SN3Z76PnxMakuo
+         83j79CPpvEjFFjpaZs2ELxMfBmpqspRhjXPDAZn0mDzMh47keiOcgFyysUjyUP41bQ
+         nY3QqkgD0m1CA==
+From:   SeongJae Park <sj@kernel.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     SeongJae Park <sj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Wei Liu <wei.liu@kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v2 for-rust-for-linux] init/Kconfig: Specify the interpreter for rust-version.sh
+Date:   Wed, 12 Jan 2022 07:43:51 +0000
+Message-Id: <20220112074351.31353-1-sj@kernel.org>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <CANiq72=uZ58gQ5PmF5bXk7f47yGGzeL=WQnNbybeBPDZuQhijA@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Jan 10, 2022 at 11:13 AM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> Picking it up, thanks!
+On Wed, 12 Jan 2022 01:32:20 +0100 Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-This is now in linux-next (Jan 11) -- hopefully it is now better for you!
+> On Mon, Jan 10, 2022 at 11:13 AM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> >
+> > Picking it up, thanks!
+> 
+> This is now in linux-next (Jan 11) -- hopefully it is now better for you!
 
-I will carry the patch in our rust-next branch but I won't put it in
-the patch series, this way we won't need to revert it when merged into
-mainline.
+Confirmed that, thank you! :)
 
-Cheers,
-Miguel
+> 
+> I will carry the patch in our rust-next branch but I won't put it in
+> the patch series, this way we won't need to revert it when merged into
+> mainline.
+
+Sure.  Looking forward to the day!
+
+
+Thanks,
+SJ
+
+> 
+> Cheers,
+> Miguel
