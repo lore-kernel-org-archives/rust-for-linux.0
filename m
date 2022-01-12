@@ -2,55 +2,55 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8FB3C433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Jan 2022 10:13:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D135C433EF
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Jan 2022 00:32:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243705AbiAJKNq (ORCPT
+        id S236570AbiALAcc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 10 Jan 2022 05:13:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59644 "EHLO
+        Tue, 11 Jan 2022 19:32:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243694AbiAJKNl (ORCPT
+        with ESMTP id S236299AbiALAcc (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 10 Jan 2022 05:13:41 -0500
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC0D2C06173F;
-        Mon, 10 Jan 2022 02:13:40 -0800 (PST)
-Received: by mail-io1-xd2f.google.com with SMTP id y18so16829094iob.8;
-        Mon, 10 Jan 2022 02:13:40 -0800 (PST)
+        Tue, 11 Jan 2022 19:32:32 -0500
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E78C06173F;
+        Tue, 11 Jan 2022 16:32:31 -0800 (PST)
+Received: by mail-io1-xd29.google.com with SMTP id h23so1270125iol.11;
+        Tue, 11 Jan 2022 16:32:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Ntxl59Py3BYOtLg0Es8HVO2YY2Y0AJ4CbA8VW/mZUR0=;
-        b=e8O7yWXlkWY2MrckG/y5p7fh0j4afgR1rr46DubtGLo9nzvHgx77wDCITIt9+bPkCQ
-         q7+1OzYv+zY8LXG6hSaAfEiy2dYNCGTkjq8v6CNt3jWSHKKMskIc8WYALOvFLVvJ8zAo
-         +8tEjI3pL9kI/Pmf34HQR3qoRjDMLLtbXWH7LbRPFveMR/JI2qn2/3OXCnYflXcw9yr/
-         JX6e5ZFVfY2MMzDn9zOdRuArmsDCssdsBy0di5GIS99xlBuwLE7tQSnZvpQAw03Mbl+x
-         k38BicjHRqABRGP+GiFHuWGTaZRJMGpJ2A57ixYlsHiyWuU8T+LR+NAkq4votMLBkpX7
-         Lzyw==
+        bh=xzRivGiDnFlH/NigKDtyx/5jSI6przCmRsoRUX9qzW4=;
+        b=ECF3Q/SSeCeIXhQRldXxQpXI/q5uTMDtKLXT1zBBl1JNCGWkD0adGys7P49TM1Ckoy
+         arXjylMaMFTeE4w9rjBUYs/+RSdbLOPqj/aKKwRQ0NzDXP+Bc9a7sekFkUAE0IOu4qRl
+         BTZLX0/4xRmkPtFQiD4RYFVlGpo+XYtNl0AGUxWA/SFqBIa8B/bDkcSVzoS65X+fOk2N
+         Z08qE2Cz+ZFhtkYpJb17NnPJoVyAZpWoULYS7OYk2GbRDf2WSJ0DmJvXZWQgJ1sHSX0x
+         bYle2rl5p1GCDiMBXmNejRCVR462bxS29IgQdt4uUJnH0lqeNLaP0feesnzkZ+PBZEr6
+         etBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Ntxl59Py3BYOtLg0Es8HVO2YY2Y0AJ4CbA8VW/mZUR0=;
-        b=ubX8DIo02PohQAiZesaEi0TQLLlE1pNQ/xmlQS66jDhBb7Dxmde5rkVGisTwPPs7lW
-         I+L+fhgXHtD4eW+OPadEFAft3omG5zd8XX+i45hGibdBH65rfbSCwuZHHBcaamQj8ik7
-         oakRqfuGFRAMu5U/ehpzxP0xg/8mdcvPDaUc6BoyHoGERrxAzRd7eZD8QcgjU+FkzWee
-         5FPOFR/z2Fnoc4l3jdtL+jE8PaKbhm49xOwuNAI8EHNaO+umDktVZZ+mUznL0rQ2bZWB
-         dslV/zaCo2KH0JgxsVVsbUHdUbP2tF9kXJrf9PVmWfFTqaS6K3ZzreCD3W0opwONx+ir
-         33Jg==
-X-Gm-Message-State: AOAM533XMXpFN07TFeyIMmB48TOCrUAFOhjCNOffgM25mX3gkJ5UiRzG
-        uGqQ+MZYOQGgcot+4uEI/obsnhZ/hS4mAfFMH/w=
-X-Google-Smtp-Source: ABdhPJzcyH9paYFghBMoht0lt797uIqtx6TOGPz+A8vVo+JIqo3EADU6IHzgQyPTIonHth3SRVPpnMivtimWJQb9l50=
-X-Received: by 2002:a05:6638:22c7:: with SMTP id j7mr31706855jat.264.1641809620318;
- Mon, 10 Jan 2022 02:13:40 -0800 (PST)
+        bh=xzRivGiDnFlH/NigKDtyx/5jSI6przCmRsoRUX9qzW4=;
+        b=5CiOHqOTkNBoxxEKrdNNJ50kqV928vlYNsxvbAqX3qTjmCW4aaImZyI0oGhLRicuk/
+         LfUDaCZniNKFqn23q/TUNNJJmxZYxCNpa8Zi+PmTXSFsiZt5qLlbWjgdSVTz2AAuWcvP
+         qicVLmIp7evt8p4uUPc3HCgU9lmQloA7/vBWazXYoEf+UxxVYPUHU7oO7OIFFYj/dTO4
+         AgqxyyKBZFcqbSjtyyFUMe6cGX8w2X8sBZWoAAlBkbi65MU7u2kCdFMpzoMys70roQae
+         MBURmi+TB/Fgs4STsdiBrLF9iLR+RVlNWo/vngK6d5i2RZofbtyIr7q6VJm3a5TPRfKQ
+         fj6g==
+X-Gm-Message-State: AOAM531Ocly62USnmCB0UVI473aThtRf6JVSEmcx3YH13fRKYaUf7npv
+        omv8v00xkNe1bnD2iYl7k/6zAeKYevWDJkJCjAk=
+X-Google-Smtp-Source: ABdhPJxKhwcG0hnl29QpdnKHcbrr3/gJYspv2gQI/bfG3WAECR8HiBX6lovOe32Dk6eBpnHyoZ2HcOKpjz+Tig6YHr8=
+X-Received: by 2002:a6b:e508:: with SMTP id y8mr3309614ioc.177.1641947551194;
+ Tue, 11 Jan 2022 16:32:31 -0800 (PST)
 MIME-Version: 1.0
-References: <20220110085952.6137-1-sj@kernel.org>
-In-Reply-To: <20220110085952.6137-1-sj@kernel.org>
+References: <20220110085952.6137-1-sj@kernel.org> <CANiq72nysMx0tOHstkDFWV2wYnjiePDxvGeip=RU4bKkyAZbtw@mail.gmail.com>
+In-Reply-To: <CANiq72nysMx0tOHstkDFWV2wYnjiePDxvGeip=RU4bKkyAZbtw@mail.gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 10 Jan 2022 11:13:29 +0100
-Message-ID: <CANiq72nysMx0tOHstkDFWV2wYnjiePDxvGeip=RU4bKkyAZbtw@mail.gmail.com>
+Date:   Wed, 12 Jan 2022 01:32:20 +0100
+Message-ID: <CANiq72=uZ58gQ5PmF5bXk7f47yGGzeL=WQnNbybeBPDZuQhijA@mail.gmail.com>
 Subject: Re: [PATCH v2 for-rust-for-linux] init/Kconfig: Specify the
  interpreter for rust-version.sh
 To:     SeongJae Park <sj@kernel.org>
@@ -66,11 +66,16 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Jan 10, 2022 at 9:59 AM SeongJae Park <sj@kernel.org> wrote:
+On Mon, Jan 10, 2022 at 11:13 AM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Some common tools like 'diff' don't support permissions of the files.
+> Picking it up, thanks!
 
-Picking it up, thanks!
+This is now in linux-next (Jan 11) -- hopefully it is now better for you!
+
+I will carry the patch in our rust-next branch but I won't put it in
+the patch series, this way we won't need to revert it when merged into
+mainline.
 
 Cheers,
 Miguel
