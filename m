@@ -2,74 +2,68 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3131AC433F5
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Jan 2022 07:43:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81D4AC433EF
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jan 2022 19:32:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236960AbiALHn5 (ORCPT
+        id S239746AbiANTcF (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Jan 2022 02:43:57 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:49534 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231359AbiALHn4 (ORCPT
+        Fri, 14 Jan 2022 14:32:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35666 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232351AbiANTcF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Jan 2022 02:43:56 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 88507B81E06;
-        Wed, 12 Jan 2022 07:43:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BEFC36AEA;
-        Wed, 12 Jan 2022 07:43:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1641973434;
-        bh=P4fphtGFF/hVfABFIytuAPP0L5tQIZq8gmY+Nbs2xK4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:From;
-        b=occkmkh4v3Dq9b8k6mUnoKo+F98hcecUsaIMFliimpfwiREZBWIuQtHNWMn9ePE+a
-         oxbWoq3uDNy3J6YQrN7i87NHXqDNWYA6Dz7dHwRBiBPXIxYMLKZb8xxTDRGIqEc51H
-         6krBDPRFTjJHBOatjtldRhPTeYj2anascRn53R2v9VsXFGkzlftDRuqs+z72KGHE4K
-         XLX2PTg91K7C1qsuC8Jm6RDkcF+xFUTCyxSvF7xqDmdt28ipOR40SN3Z76PnxMakuo
-         83j79CPpvEjFFjpaZs2ELxMfBmpqspRhjXPDAZn0mDzMh47keiOcgFyysUjyUP41bQ
-         nY3QqkgD0m1CA==
-From:   SeongJae Park <sj@kernel.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     SeongJae Park <sj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Wei Liu <wei.liu@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 for-rust-for-linux] init/Kconfig: Specify the interpreter for rust-version.sh
-Date:   Wed, 12 Jan 2022 07:43:51 +0000
-Message-Id: <20220112074351.31353-1-sj@kernel.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <CANiq72=uZ58gQ5PmF5bXk7f47yGGzeL=WQnNbybeBPDZuQhijA@mail.gmail.com>
+        Fri, 14 Jan 2022 14:32:05 -0500
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16449C061574
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jan 2022 11:32:05 -0800 (PST)
+Received: by mail-io1-xd2b.google.com with SMTP id f24so7710016ioc.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jan 2022 11:32:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=X2g0oBi1ONv1MWss6MWs3SgsIMnqHxQ8xTj09ppwRQU=;
+        b=Ojyi5eNAmm2HamKXVmFex54Db9Ve/bLNTz7hvIwgcH0xifnlBBYYnPSGa0snarYHaS
+         KwLA6RTOVrAyRNFC6YD9rFSg+8h4yQYvbTAEfDqAmtUL5+tpedbZbg+RuX4RyEBviYn/
+         5r8YkdmSitdk2C/VVpYJHjhntGdpBVgRVbRY06Pa24eHOt6KpF+8HGMwg8cShlTVRxp6
+         S2/5BJwPFJ8hfW3dNcUvB7USfT8fJBC70za7wW3k/gjVCxoFDtTpk6YJdaiW98VyoGjt
+         U42CdqiPlYQHo6zYOslPzIPYSRDzPmDm747Unm2Q3pRvwxWf5N6JQUCLIV5rK5RH4RIv
+         b81g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=X2g0oBi1ONv1MWss6MWs3SgsIMnqHxQ8xTj09ppwRQU=;
+        b=Janl3Yjq3b7r83bFaYQlLGAFZ7YK64Q8WA40lzvXLT13PHgEKM5CJ+z/tOF7HSGR6Z
+         pNqwu1lT2TfyCF6Uzl4OD+5a3bqWh690Ontj05+GGpxghu3n2Tj0kV3gM8j2DY+I0hVD
+         9SsZtFJ6e0ALxVu90lCbXvwwHkPOSTzeo/OUWUtmz2B1oTUzVYmnA/tvErlla4vIhV/c
+         CAKHFeuyk5OCHVvg9duDQOS0Dnq9Rd5dyhU3Rcp1xCAI5pWyQJow0v0IXUd0Ww62Ni1H
+         JgwrOLeU6MXgMLIqRVaL4JugynMaHJ7f9GsN6r3d5OkWod4NGxalw/11Jc+99QgWFa/F
+         xfHA==
+X-Gm-Message-State: AOAM5326RbEXfxoYLb97JnOaoYLnQpgszg6chIZS44uHVZ3x69CGRNNV
+        cq4avIHYtl30Pc7RFOSOAo3JrWYwJDGNLpgISJ5Nqo2xnWc=
+X-Google-Smtp-Source: ABdhPJxCNyrlj8sp0441iBly/KHcdnXBTs3sv+mxBqGCrqyYkqun3XaALH2kawV4ew7jbZmpex/o0k191Hk/ELyUyLs=
+X-Received: by 2002:a02:7a1b:: with SMTP id a27mr5275860jac.186.1642188724451;
+ Fri, 14 Jan 2022 11:32:04 -0800 (PST)
+MIME-Version: 1.0
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Fri, 14 Jan 2022 20:31:53 +0100
+Message-ID: <CANiq72mr5KPXJFJXw1DmeA6szJab_8eDE=0Ya79sr4nemAb3og@mail.gmail.com>
+Subject: Reminder: informal call 10:00 UTC
+To:     rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, 12 Jan 2022 01:32:20 +0100 Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+Hi all,
 
-> On Mon, Jan 10, 2022 at 11:13 AM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > Picking it up, thanks!
-> 
-> This is now in linux-next (Jan 11) -- hopefully it is now better for you!
+We will have our informal call tomorrow/today (15th of January), 10:00
+UTC. In this instance, the date and the time is a bit unusual, see [1]
+(normally we do it the first Saturday of each month, 18:00 UTC).
 
-Confirmed that, thank you! :)
+As usual, everybody is welcome to join. The meetings take place on
+Google Meet. If you need an invitation, drop me an email!
 
-> 
-> I will carry the patch in our rust-next branch but I won't put it in
-> the patch series, this way we won't need to revert it when merged into
-> mainline.
+[1] https://lore.kernel.org/rust-for-linux/CANiq72=N-1tnsKnjX1Dwhr-VQ58bzjaR2nQ4f7E8K25dW6zh0w@mail.gmail.com/
 
-Sure.  Looking forward to the day!
-
-
-Thanks,
-SJ
-
-> 
-> Cheers,
-> Miguel
+Cheers,
+Miguel
