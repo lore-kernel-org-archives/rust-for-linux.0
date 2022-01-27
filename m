@@ -2,127 +2,148 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 282FCC433EF
-	for <rust-for-linux@archiver.kernel.org>; Thu, 27 Jan 2022 16:48:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9BFDC433FE
+	for <rust-for-linux@archiver.kernel.org>; Thu, 27 Jan 2022 20:07:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243928AbiA0Qs0 (ORCPT
+        id S1343872AbiA0UHe (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 27 Jan 2022 11:48:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54258 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238557AbiA0QsY (ORCPT
+        Thu, 27 Jan 2022 15:07:34 -0500
+Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:45708 "EHLO
+        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1343910AbiA0UHa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 27 Jan 2022 11:48:24 -0500
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0919BC06173B
-        for <rust-for-linux@vger.kernel.org>; Thu, 27 Jan 2022 08:48:24 -0800 (PST)
-Received: by mail-pf1-x435.google.com with SMTP id n32so3120236pfv.11
-        for <rust-for-linux@vger.kernel.org>; Thu, 27 Jan 2022 08:48:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=utexas-edu.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1nosRojaWRtA9jVc9HpA0DkuLU5dvZGKl9sdgo49WiE=;
-        b=262j/77YP8cXyaDVJlr1R79C2q8jGLht1a5id3s1QU8umVrJFqJnYWcSWnHW95M//S
-         5lPRHgk1ZOGmZbEmPgvol1qCrD7SVRMHq2BtnYSdEIbciU+Wmsjdfy1VvZleVoaxhhX6
-         aZICLlPN5BYmScJk+juu8wUDm4VGH1esbeNiuTaZElbte2u6gzD9byg3PYktv06WWfM3
-         O03ujofzU9lJhc5a94nJa1Rs2XLdUhvOWaR0ri9gUSsE5WAFW7CytV8CBz/oDeci1y9T
-         mDWezYWstKlYRAdUHvCCXWJj9mhClT1rXtWsQd14rSvqAZKcBWctf2NLar2iExD7uIf1
-         cqvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1nosRojaWRtA9jVc9HpA0DkuLU5dvZGKl9sdgo49WiE=;
-        b=CqSW7rNY4R7chTW0XBNWRYjkoinOW2Iz//4xcnwyh/YkYBz+MnR39l18Rl+GoBQU5R
-         4sMr+r3PYTGeoN8FAl7Q0OM+ZE582qrUuJmcWiRvExZKUuaC/o8ALFs0O23nmKsM8hBB
-         DYvUEOElzyaEn8VP6dyuNIcg2NTfpweVynUx7A790XimIuxYQhZf3qsWHz1eDiS55FPh
-         CZBvT3sTRZ8/Oow8h5jZQ++TjlMQgrMiJGF6O2EFsVgU24nEsnWN98SCb09t7tpuKBOT
-         diP1bbUtehcC5yheQaIKll86JWz5WGqL5FQ37/+EWtCwOYdOj95hNInRK2Y/jvy4TrlR
-         6HCA==
-X-Gm-Message-State: AOAM533WcN6c8BxxwOobMunpcHWz0pm+2zroGOl0tHXCZ8xETf8ee4nS
-        3aqrwvWu2JlSh4MgRA0L2Hle/+PVfQCA65z1SecjOQ==
-X-Google-Smtp-Source: ABdhPJzyEOCjXnl0I9MXgUxOn+eWb+whngsaXv6/0DZ4OLW8b9iARwtg/3WUdF5q5PO3YMYnTuyi5nDD6/jTCC83p3I=
-X-Received: by 2002:a63:e44b:: with SMTP id i11mr3318279pgk.207.1643302103139;
- Thu, 27 Jan 2022 08:48:23 -0800 (PST)
-MIME-Version: 1.0
-References: <CAFadYX5iw4pCJ2L4s5rtvJCs8mL+tqk=5+tLVjSLOWdDeo7+MQ@mail.gmail.com>
- <YfHMp+zhEjrMHizL@casper.infradead.org> <YfHU5/RrpJlRx5sO@casper.infradead.org>
- <CANiq72=fTTreGHn_-t1tBLKxMeCr4b0ENsHGAgWZL1OZ7sKhMA@mail.gmail.com>
-In-Reply-To: <CANiq72=fTTreGHn_-t1tBLKxMeCr4b0ENsHGAgWZL1OZ7sKhMA@mail.gmail.com>
-From:   Hayley Leblanc <hleblanc@utexas.edu>
-Date:   Thu, 27 Jan 2022 10:48:12 -0600
-Message-ID: <CAFadYX6oYC8Ncg7Ma3oO75mF3poKHB5adLBxKkDLLqt+xd64wQ@mail.gmail.com>
+        Thu, 27 Jan 2022 15:07:30 -0500
+Received: from callcc.thunk.org (static-74-43-95-34.fnd.frontiernet.net [74.43.95.34])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 20RK7At4026508
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 27 Jan 2022 15:07:12 -0500
+Received: by callcc.thunk.org (Postfix, from userid 15806)
+        id 4013F420385; Thu, 27 Jan 2022 15:07:10 -0500 (EST)
+Date:   Thu, 27 Jan 2022 15:07:10 -0500
+From:   "Theodore Y. Ts'o" <tytso@mit.edu>
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Hayley Leblanc <hleblanc@utexas.edu>,
+        linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        Vijay Chidambaram <vijayc@utexas.edu>
 Subject: Re: Persistent memory file system development in Rust
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Matthew Wilcox <willy@infradead.org>,
-        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Vijay Chidambaram <vijayc@utexas.edu>,
-        Samantha Miller <samantha.a.miller123@gmail.com>,
-        austin.chase.m@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <YfL7bmytVoKjbANV@mit.edu>
+References: <CAFadYX5iw4pCJ2L4s5rtvJCs8mL+tqk=5+tLVjSLOWdDeo7+MQ@mail.gmail.com>
+ <YfHMp+zhEjrMHizL@casper.infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YfHMp+zhEjrMHizL@casper.infradead.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Thanks Matthew and Miguel for your responses, and thank you Matthew
-for fixing my email address typo :)
-
-On Thu, Jan 27, 2022 at 3:59 AM Matthew Wilcox <willy@infradead.org> wrote:
+On Wed, Jan 26, 2022 at 10:35:19PM +0000, Matthew Wilcox wrote:
+> 
 > In particular, the demands of academia (generate novel insights, write
 > as many papers as possible, get your PhD) are at odds with the demands
 > of a production filesystem (move slowly, don't break anything, DON'T
 > LOSE USER DATA).  You wouldn't be the first person to try to do both,
 > but I think you might be the first person to be successful.
 
-This makes sense. Our goal is to make an effort throughout the project
-to align it with
-the community's interests and the trajectory of kernel development,
-such that there's a potential
-for some broader interest and longer-term support. Of course, that's
-easy to say about a
-file system that doesn't exist yet, and I'm sure we will neither be
-the first nor last academics to
-try to get the Linux community excited about our own project :)
+I need to really underline Matthew Wilcox's point.  As an example,
+consider Park and Shin's iJournaling paper which was published at the
+2017 Usenix ATC.  Their ideas didn't land in the Linux kernel until
+2021, and we're still shaking out some miscellaneous bugs in that
+implementation.  Hopefully it will be ready for prime time use by the
+end of this year.
 
-It sounds like this will require us to be very serious and very
-intentional about balancing the
-expectations of academic conferences with the requirements of
-production systems in
-the kernel. My personal research interests center mostly on crash
-consistency and
-one of our big goals with this project is to address data
-loss/consistency issues that we've
-encountered in existing PM file systems, so I hope that focus will
-help us target some of
-those production requirements.
+Furthermore, ext4 fast commit is a *simplified* version of the ideas
+in the iJournal paper, and deliberately omitted a needless
+complication that was added at the insistence a member of a program
+commiittee to which the paper was previously submitted.
 
-On Thu, Jan 27, 2022 at 8:10 AM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
-> For your reference: a RamFS port was posted last week. It uses the
-> Rust for Linux support plus `cbindgen` to take an incremental
-> approach, see:
->
->     https://lore.kernel.org/rust-for-linux/35d69719-2b02-62f2-7e2f-afa367ee684a@gmail.com/
+What makes for a successful academic publication is not necessarily
+the same as what is successful for a upstreamable file system feature.
+And I assert this as someone who has served on Usenix ATC and FAST
+program committees, having mentored a graduate student who
+successfully submitted a file system paper[1] to Usenix, and having
+supervised the engineer who implemented the ideas from the iJournaling
+paper from scratch.  So I've seen this issue from both sides.
 
-Excellent, thank you! I'll check it out.
+[1] https://www.usenix.org/system/files/conference/fast17/fast17-aghayev.pdf
 
-> > > Bento seems like a good approach (based on a 30 second scan of their
-> > > git repo).  It wasn't on my radar before, so thanks for bringing it up.
-> > > I think basing your work on Bento is a defensible choice; it might be
-> > > wrong, but the only way to find out is to try.
->
-> Side note: Bento is not using the Rust for Linux support (as far as I
-> know / yet).
+> > 1. What is the state of PM file system development in the kernel? I
+> > know that there was some effort to merge NOVA [2] and nvfs [3] in the
+> > last few years, but neither seems to have panned out.
+> 
+> Correct.  I'm not aware of anything else currently under development.
+> I'd file both those filesystems under "Things people tried and learned
+> things from", although maybe there'll be a renewed push to get one
+> or the other merged.
 
-I have very limited experience with Bento, but I believe it is not. In
-the interest of our goal of
-keeping the project in line with the kernel, it sounds like we should
-go with the existing Rust
-for Linux support for now.
+One of the things that might be interesting for someone who wants to
+upstream an academic file system is to run xfstests on it, and see
+what happens.  One of the original reasons why I spent so much time
+documenting gce-xfstests[2] and kvm-xfstests in the xfstests-bld
+repository[3].  Back when I was younger and more naive, I was hoping
+that academics could use this to easily take their academic file
+systems to become production quality, so I tried to make it be as
+turn-key as possible, and well documented for people who might not be
+kernel development experts.
 
-Thanks again for your help!
+[2] https://thunk.org/gce-xfstests
+[3] https://github.com/tytso/xfstests-bld
 
-Thank you,
-Hayley
+However, what I think you will find is even though a new file system
+is good enough to run benchmarks, and even be self-hosting, will see a
+massive number of test failures, not to mention generate kernel
+crashes.  And I very much doubt that funding agencies would pay for a
+graduate student to work out all of the kernel crashes and test
+failures --- and even if they did, it's not clear that it's fair to
+the graduate student, who might be wanting get their Ph.D. and then
+get that sweet, sweet, high-paying job at Amazon or Microsoft or Google.  :-)
+
+It does occur to me, though, that an interesting ATC experience paper
+might be to take gce-xfstests or kvm-xfstests, and running the
+xfstests' auto group on a number of academic file systems such as
+NOVA, nvfs, Bentofs, and BetrFS[4]..., maybe documenting how much
+effort it would take to address a representative number of failures,
+and then document the findings.  I suspect that people in both the
+academic and industry communities (at least those who don't work on
+production file systems) would find it to be quite.... eye-opening.
+(If someone is interested in doing this, let me know; I'd be happy to
+help in this effort.)
+
+[4] https://www.betrfs.org/   (*NOT* btrfs, in case any readers
+    			       aren't familiar with BetrFS)
+
+> > 3. We're interested in using a framework called Bento [4] as the basis
+> > for our file system development. Is this project on Linux devs' radar?
+> > What are the rough chances that this work (or something similar) could
+> > end up in the kernel at some point?
+
+One cautionary note about Bento; while it saves the kernel<->userspace
+"hop" involved with FUSE, it still uses the in-kernel FUSE interface.
+So among other things, that means a file system using Bento doesn't
+have direct access to (a) the VFS Dentry cache, which could impact
+metadata performance, and (b) the page cache, which will impact
+data-plane performance.
+
+Given that performance is often very important for persistent memory
+file systems (otherwise why pay $$$$ for persistent memory hardware?)
+you may want to take a close look at the overhead and serialization
+overheads of using Bento.
+
+The other thing to note about Bento is that it reused the jbd2 and
+buffer cache layer.  That might be appropriate for a block-based file
+system, but it's not going to be something you can use for a
+persistent-memory based file system.  So it's not as general a
+framework as it first appears (so good enough to make a point about an
+idea for an academic publication, but not necessarily good enough for
+"real world" file systems).  Also, if I had been on the program
+committeee that reviewed this paper, I would have ding'ed them on
+their choice of benchmarks (tar, untar, grep, "git clone", RLY?).
+
+As Willy stated, this is just my opinion, which is worth what you paid
+for it.  And best of luck as you pursue your research!
+
+Cheers,
+
+						- Ted
