@@ -2,128 +2,103 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06CCCC433FE
-	for <rust-for-linux@archiver.kernel.org>; Sat, 12 Feb 2022 18:57:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C81A3C433F5
+	for <rust-for-linux@archiver.kernel.org>; Sat, 12 Feb 2022 19:54:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230346AbiBLS5T (ORCPT
+        id S231300AbiBLTyo (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 12 Feb 2022 13:57:19 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60258 "EHLO
+        Sat, 12 Feb 2022 14:54:44 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230023AbiBLS5T (ORCPT
+        with ESMTP id S231243AbiBLTyn (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 12 Feb 2022 13:57:19 -0500
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F0F6007A;
-        Sat, 12 Feb 2022 10:57:15 -0800 (PST)
-Received: by mail-io1-xd30.google.com with SMTP id y84so15462593iof.0;
-        Sat, 12 Feb 2022 10:57:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=PW5bHK7lbz8mAfQVLbpabS9JQmvxuuP5i13vS9JUmWQ=;
-        b=n5D8bwCKZRUGpl68+OwDfJK+AQroTXijhLf+Ev2Dbodadyb6WRz6/fX9TzoLv5JY44
-         vKXzGhsqvNG0b1NNUEa1R2yJntFRgZVvW8w2wrpRBfSWda7h6ZxvPtJrBrf7yYHVOrwG
-         vAfadKq2gwnHNR05HepbxldrYBHyblxQyutjIhO/hkKuz8jVpizo184RCyuaFwUdEEMB
-         gDMdiJYy6LOQ+V5N1zvv/KQitEvAl4D/B6TT8xoaot76ok9JaRjP2+PcQoyjgjVx3f6a
-         lXTyQk2kypAbwHMmpvW3hdXfwbXpl8GXVhdG++7HxqqIr3Iu7+Tp6uJUOhRFTYsDQXUJ
-         gPwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=PW5bHK7lbz8mAfQVLbpabS9JQmvxuuP5i13vS9JUmWQ=;
-        b=ifwJDKTuDW61XfQ4Zj/fUYTgvSwgDFYp8LdRjp2HkMr3YKISmpmqUKnqnpTpMLuCez
-         tn/11jwSk/upfauLB53HtS3WH870IeH8KVRk5yu67uOhcS8zjUDKOQcfWGJhdzNH0MU2
-         cdT+x5HT4NGKxfS1s+TxhzYd44CLBKgouq7dzAfpRRUCwPo7JKtb7KcA5xB1yU7kd2nd
-         XUnrvSHQTkELu3eNtR6WOgcYL12l0lOH8QcIMqcG00kgIc/xiJoJI8ubavwcHAskPZnr
-         uIvyo2tPxl2OLASHokVSkunCpn5kYKBmGV3mEa9ZU4eonY5SoYS1S2Or4binrNCkmLQe
-         uz9g==
-X-Gm-Message-State: AOAM531monzUkjtiQqsqJkSuJyqkLrXAuPqQ10lUtj5riqQXkBiUBOEv
-        ro0b/Bntkhj+jrPh8G9xM0yDOkBYIB5p/jhsb0g=
-X-Google-Smtp-Source: ABdhPJzk7Y0eW6BAf4q+QY2CyD1I+LhA8kHRLDkHhRJc6kXcI3wPehj/4lCy3W2LRh5ctFx5JYUIvMk52bxjHJ2CH2Q=
-X-Received: by 2002:a5d:941a:: with SMTP id v26mr3564701ion.64.1644692234068;
- Sat, 12 Feb 2022 10:57:14 -0800 (PST)
+        Sat, 12 Feb 2022 14:54:43 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA08B606D5
+        for <rust-for-linux@vger.kernel.org>; Sat, 12 Feb 2022 11:54:39 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 37B0ECE0022
+        for <rust-for-linux@vger.kernel.org>; Sat, 12 Feb 2022 19:54:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6C0C340E7;
+        Sat, 12 Feb 2022 19:54:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644695676;
+        bh=/Vo6fc/uRQL1PLlL1zWke4rVepn22GpSm1QDaHKkrk0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=arLvw22b40mDW5P1WItw9Gs18lxFhcCMumBfjELjhsHZ0+Z3HR6x02Ms/vZWWh82l
+         2zOf0iIaed4OCs4zasn53YzK1cAk8YPhRiLYGfDc4m+PlpTaf7YKUIa+sqFDJMpYvd
+         ofF/ktvEnPP7BwMYgRjc0jR+bJ6deQ5ML8A4VQwZcxO/onr4mDmS+HwZ5yj2566BQb
+         cVXDQxzV84PLbDdx7ECokukvYZfpO69/kSogigjUUWRJhqforkrOezlNtOaCE5keA2
+         5Z2IaBJlJ7bECbJqgG0S9EtIjAfusrbM5mukyIOy2Rpgb/H5oXODJTRpxONQtzCHwc
+         Up2aYFy96KHow==
+Date:   Sat, 12 Feb 2022 12:54:32 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Wedson Almeida Filho <wedsonaf@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>
+Cc:     kbuild-all@lists.01.org, llvm@lists.linux.dev,
+        kernel test robot <lkp@intel.com>,
+        rust-for-linux@vger.kernel.org
+Subject: Re: [ojeda-linux:rust-next 18/20] ld.lld: error:
+ drivers/built-in.a(gpio/gpio_pl061_rust.o) is incompatible with aarch64elfb
+Message-ID: <YggQeC0PuAseqtpQ@archlinux-ax161>
+References: <202202121743.YbGELjcY-lkp@intel.com>
 MIME-Version: 1.0
-References: <20220212130410.6901-17-ojeda@kernel.org> <0396e38b-f681-a035-b6ea-21127fdf5615@physik.fu-berlin.de>
-In-Reply-To: <0396e38b-f681-a035-b6ea-21127fdf5615@physik.fu-berlin.de>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 12 Feb 2022 19:57:02 +0100
-Message-ID: <CANiq72=U3A-5LfbOThPoex9PfFg+UsHuMY33nbtLH=aK=odh0Q@mail.gmail.com>
-Subject: Re: [PATCH v4 16/20] Kbuild: add Rust support
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Antonio Terceiro <antonio.terceiro@linaro.org>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Douglas Su <d0u9.su@outlook.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        Daniel Xu <dxu@dxuuu.xyz>, Gary Guo <gary@garyguo.net>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Russell King - ARM Linux admin <linux@armlinux.org.uk>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        =?UTF-8?B?TWlndWVsIENhw7Fv?= <macanroj@gmail.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Finn Behrens <me@kloenk.de>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Paul Mackerras <paulus@samba.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Will Deacon <will@kernel.org>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202202121743.YbGELjcY-lkp@intel.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi John Paul,
++ Miguel, Wedson, rust-for-linux, since it looks like this did not get
+sent to you all.
 
-On Sat, Feb 12, 2022 at 7:27 PM John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> wrote:
->
-> Is there any particular reason why this list excludes MIPS*, i386, big-endian
-> PowerPC and SPARC targets which are already supported by the Rust programming
-> language?
-
-The variations we have so far were intended to showcase the Rust
-support in several major architectures, rather than cover everything.
-But as long as LLVM (& the kernel, i.e. ClangBuiltLinux) supports the
-target (and as long there are no compiler/toolchain issues), you
-should be able to try it.
-
-> Are the arch/$ARCH/rust/target.json files everything that's needed for supporting
-> the other targets?
-
-Mostly -- there is also `rust/kernel/c_types.rs` and you may need to
-tweak `rust/compiler_builtins.rs`, but not much more.
-
-Note that for the target spec files, the short-term plan is to
-generate dynamically the target spec file according to what the
-architecture requests, instead of using these static files. Longer
-term, we need a Rust-stable way to setup custom targets from upstream
-`rustc` (though it is not clear yet how it will look, e.g. it could be
-via command-line flags).
+Possibly some incompatibility with Rust + aarch64be?
 
 Cheers,
-Miguel
+Nathan
+
+On Sat, Feb 12, 2022 at 06:39:33PM +0800, kernel test robot wrote:
+> CC: linux-kernel@vger.kernel.org
+> TO: Wedson Almeida Filho <wedsonaf@google.com>
+> CC: Miguel Ojeda <ojeda@kernel.org>
+> 
+> Hi Wedson,
+> 
+> First bad commit (maybe != root cause):
+> 
+> tree:   https://github.com/ojeda/linux.git rust-next
+> head:   ced9f62ec4355bbb92226ac3f019da468a5c996b
+> commit: 5c1fec092f967b9b4722f6d91c9bcbe8222098fd [18/20] [RFC] drivers: gpio: PrimeCell PL061 in Rust
+> config: arm64-randconfig-r033-20220212 (https://download.01.org/0day-ci/archive/20220212/202202121743.YbGELjcY-lkp@intel.com/config)
+> compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project f6685f774697c85d6a352dcea013f46a99f9fe31)
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # install arm64 cross compiling tool for clang build
+>         # apt-get install binutils-aarch64-linux-gnu
+>         # https://github.com/ojeda/linux/commit/5c1fec092f967b9b4722f6d91c9bcbe8222098fd
+>         git remote add ojeda-linux https://github.com/ojeda/linux.git
+>         git fetch --no-tags ojeda-linux rust-next
+>         git checkout 5c1fec092f967b9b4722f6d91c9bcbe8222098fd
+>         # save the config file to linux build tree
+>         mkdir build_dir
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash
+> 
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    ld.lld: error: rust/built-in.a(core.o) is incompatible with aarch64elfb
+>    ld.lld: error: rust/built-in.a(compiler_builtins.o) is incompatible with aarch64elfb
+>    ld.lld: error: rust/built-in.a(alloc.o) is incompatible with aarch64elfb
+>    ld.lld: error: rust/built-in.a(kernel.o) is incompatible with aarch64elfb
+> >> ld.lld: error: drivers/built-in.a(gpio/gpio_pl061_rust.o) is incompatible with aarch64elfb
+> 
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> 
