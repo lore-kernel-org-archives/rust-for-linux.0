@@ -2,43 +2,59 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E883EC433F5
-	for <rust-for-linux@archiver.kernel.org>; Sat, 12 Feb 2022 16:19:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49009C433FE
+	for <rust-for-linux@archiver.kernel.org>; Sat, 12 Feb 2022 18:32:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232098AbiBLQTV (ORCPT
+        id S230118AbiBLSc1 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 12 Feb 2022 11:19:21 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39672 "EHLO
+        Sat, 12 Feb 2022 13:32:27 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231345AbiBLQTU (ORCPT
+        with ESMTP id S230199AbiBLSc0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 12 Feb 2022 11:19:20 -0500
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D0E4197;
-        Sat, 12 Feb 2022 08:19:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=5ps4Dpti6anPMML5DYvmxj3DVlK84HL9lrfnW5s1I7I=; b=diiOuL6v4zmcZFLQ7gZZaN9BB3
-        oDxx5cZ30Fmaus1PFKW31N94BRa5pvI/DafyMb9VxVulw7aS/gMckVjYHQ7s7OAlMPCE4bju0hX9h
-        +0QSM40rREXJOCDBrR7c09iOuvhD8ZQuCjYGZVhY8cH6Ura2HLhIE6F8e5vYXv7gflZ0F13Fpzxzb
-        XVLT87dmvRb0/gKrvbW0sWa4oAK4TQwDrClnIfQFTSAWOlw5TzdIEduy8X+sHLA8uJ5gcpcID/FpB
-        Ic0xkLP47aZfK0t7aYD9o2WLBAsMaBfxnD1ZljA3Xj9iHMxzFRDbqcc/oEEuW0b8IVnn61sBFAZwD
-        fN6oGatg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57218)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1nIv75-0008Hc-BQ; Sat, 12 Feb 2022 16:19:07 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1nIv6x-0004fN-8O; Sat, 12 Feb 2022 16:18:59 +0000
-Date:   Sat, 12 Feb 2022 16:18:59 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+        Sat, 12 Feb 2022 13:32:26 -0500
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A35D6007E;
+        Sat, 12 Feb 2022 10:32:22 -0800 (PST)
+Received: by mail-io1-xd36.google.com with SMTP id q204so15308898iod.8;
+        Sat, 12 Feb 2022 10:32:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1ZU/xBo4v5syghhPRoThoLn4tvhr/EqUMFObZCi2t6k=;
+        b=Kd9daEZTG01vUunj9KpOq4Tlqe0AR4jwzTryhBoDOCJdLk42Frgjx5QOJZwOdTvdN+
+         5w6brYZzwx55wGfNgrwE5v2ZviNe+FwzOcEXZPCCTgxQWcbXWgChRoh9HLPVEVDETjmk
+         d9NsqcqbTXHDOtZwjLE4n7UUOIUFvneVQT9KKksB5OsjSpk+CJtKwm0ffErWL3d2MpWN
+         On531QRK/Woo9hRSZ7uKcmAR96JfoYJd8xqRGQzqkPPWOgOCuepjsbD/2jefhJ/MmnQc
+         IukF4P2PM+zgNqEx4bpvhAl9Kl8kSD/iYMM6o+K44UEiQElLwa5b9FHlYd9VVslmOe1J
+         G1yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1ZU/xBo4v5syghhPRoThoLn4tvhr/EqUMFObZCi2t6k=;
+        b=5XNTylL2/JaBwvZWdNDikJycYOa8m3ncQRkr4B/+LESzc6bi59LRu8bY8pdQ/ioAqG
+         9ZLv/JPczqx0W7dnBEeKQAa7x2N1QtZajx+yOmu+bc+dyHNerN3uDqYllHDKC+9ozbFs
+         qWpE9Z+5cU8InhNicm4/H96+/Q9x2M5e6V80BLL64tiyqNnSct31Go3+0N+CpRamoiLj
+         eoTtfvv1q296tgbHOLYxLnKB3AA/6eEmWu+1vu1oTjUqq+Hla3pK9jFVvsNK5E4RWW1a
+         LOCZGfxJ9zduFoMe+0ilYQW1R3LMw+3k/ZIZqrWP2Tse/Srf89BS4k1c4Tec+0JtLSUv
+         8u/w==
+X-Gm-Message-State: AOAM53222kuZ/i6i89ntilOVGSXOtOGRl/3armkI7oQuN1q1Zcb4TIx4
+        5OhaQDWkKu2iKHqeHpujAHYoZVwpSXxG7LI+3eA=
+X-Google-Smtp-Source: ABdhPJxhKfrcH+lK8uelMajrMeOApGW6jMfAwT6cR0dIvA+JEuKlkp7IRqBjao43DlOrigol+LGAzUNojko+nvrOueg=
+X-Received: by 2002:a05:6638:4105:: with SMTP id ay5mr4155184jab.186.1644690741790;
+ Sat, 12 Feb 2022 10:32:21 -0800 (PST)
+MIME-Version: 1.0
+References: <20220212130410.6901-1-ojeda@kernel.org> <20220212130410.6901-17-ojeda@kernel.org>
+ <YgfBUhYdLXA46kOX@shell.armlinux.org.uk> <CANiq72nMhUH1s0HMeLb+hfp5=u3h20ryC4uqAgB1Znuq52e=Pw@mail.gmail.com>
+ <Ygfd82QN/wmSmlHa@shell.armlinux.org.uk>
+In-Reply-To: <Ygfd82QN/wmSmlHa@shell.armlinux.org.uk>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sat, 12 Feb 2022 19:32:10 +0100
+Message-ID: <CANiq72mdru-MyP_QoRSpKu1bhB8v5sZNs8mvGdWsJp7NfXE+bQ@mail.gmail.com>
+Subject: Re: [PATCH v4 16/20] Kbuild: add Rust support
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -76,95 +92,71 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
         linux-riscv <linux-riscv@lists.infradead.org>
-Subject: Re: [PATCH v4 16/20] Kbuild: add Rust support
-Message-ID: <Ygfd82QN/wmSmlHa@shell.armlinux.org.uk>
-References: <20220212130410.6901-1-ojeda@kernel.org>
- <20220212130410.6901-17-ojeda@kernel.org>
- <YgfBUhYdLXA46kOX@shell.armlinux.org.uk>
- <CANiq72nMhUH1s0HMeLb+hfp5=u3h20ryC4uqAgB1Znuq52e=Pw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72nMhUH1s0HMeLb+hfp5=u3h20ryC4uqAgB1Znuq52e=Pw@mail.gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Feb 12, 2022 at 04:47:33PM +0100, Miguel Ojeda wrote:
-> Hi Russell,
-> 
-> On Sat, Feb 12, 2022 at 3:17 PM Russell King (Oracle)
-> <linux@armlinux.org.uk> wrote:
-> >
-> > Please don't use CPU_32v6* here.
-> >
-> > It probably makes more sense to add a symbol "HAVE_RUST" and have the
-> > appropriate architecture Kconfig files select HAVE_RUST.
-> 
-> We can do it whatever way arch maintainers prefer, of course. Why
-> would you prefer one over the other?
+On Sat, Feb 12, 2022 at 5:19 PM Russell King (Oracle)
+<linux@armlinux.org.uk> wrote:
+>
+> Right, so why made it dependent on CPU_32v6 || CPU_32v6K if ARMv7 is
+> supported? What about CPU_32v7? What about CPU_32v7M?
+>
+> I think it would be saner to use the CPU_V6, CPU_V6K, CPU_V7 and maybe
+> CPU_V7M here - even bettern to select "HAVE_RUST" from these symbols,
+> since I'm sure you'd start to see the issue behind my "HAVE_RUST"
+> suggestion as it means having four symbols just for 32-bit ARM on your
+> dependency line.
 
-It would be cleaner, rather than the "depends" line getting longer
-and longer over time - and if different architecture maintainers
-change it, it will lead to conflicts.
+To support arch variations properly we also have to configure the
+compiler via filling a target spec on the fly, but so far we only have
+a few static variations as an example. This is one of the missing
+parts of the arch support. I will let you know when we have something
+ready.
 
-> > Does Rust support Thumb on ARMv6 and ARMv7 architectures?
-> 
-> Yes, the main backend is LLVM. Some built-in targets and their support
-> level are listed here, if you want to take a look:
+> Interestingly, it does not list arm-unknown-linux-gnueabihf, which
+> is the "tuple" commonly used to build 32-bit ARM kernels.
 
-Right, so why made it dependent on CPU_32v6 || CPU_32v6K if ARMv7 is
-supported? What about CPU_32v7? What about CPU_32v7M?
+I see it there (Tier 2).
 
-I think it would be saner to use the CPU_V6, CPU_V6K, CPU_V7 and maybe
-CPU_V7M here - even bettern to select "HAVE_RUST" from these symbols,
-since I'm sure you'd start to see the issue behind my "HAVE_RUST"
-suggestion as it means having four symbols just for 32-bit ARM on your
-dependency line.
+> Probably because people incorrectly think it's required or some other
+> minor reason. As I say:
 
->     https://doc.rust-lang.org/nightly/rustc/platform-support.html
+In that case, we should remove them and warn about those instances,
+assuming the preferred style is to not have it.
 
-Interestingly, it does not list arm-unknown-linux-gnueabihf, which
-is the "tuple" commonly used to build 32-bit ARM kernels. 
+> so using the argument
+> that there are "500+ instances" and therefore should be seen as
+> correct is completely misguided.
 
-> > Please remove every utterance of "default n" from your patch; n is the
-> > default default which default defaults to, so you don't need to specify
-> > default n to make the option default to n. It will default to n purely
-> > because n is the default when no default is specified.
-> 
-> Certainly. I am curious, though: is there a reason for most of the
-> other 500+ instances in the kernel tree?
+I did not use any such argument.
 
-Probably because people incorrectly think it's required or some other
-minor reason. As I say:
+> I mean, if we end up with, e.g. a filesystem coded in Rust, that
+> filesystem will not be available on architectures that the kernel
 
-config FOO
-	bool/tristate ...
+As long as that filesystem is an optional feature (or as long as there
+is a C version), it should be fine.
 
-always defaults to 'n' without needing "default n" to be specified.
+> supports until either (a) Rust gains support for that architecture
 
-Let's do some proper research on this. There are 19148 "config"
-statements in the kernel tree, 521 "default n" and 4818 that
-specify any kind of "default". That means there are about 14330
-config statements that do not specify any kind of default.
+For this, it would be ideal if entities behind some of the
+architectures could support LLVM & ClangBuiltLinux, or the GCC Rust
+frontend, or the GCC backend for `rustc`.
 
-So, there are about 27 times more config statements that specify no
-default than those that specify "default n", so using the argument
-that there are "500+ instances" and therefore should be seen as
-correct is completely misguided.
+For instance, Arm is supporting both LLVM and the Rust project.
 
-> > As Rust doesn't support all the architectures that the kernel supports,
-> > Rust must not be used for core infrastructure.
-> 
-> Yeah, although I am not sure I understand what you are getting at here.
+> or (b) someone re-codes the filesystem in C - at which point, what
+> is the point of having Rust in the kernel?
 
-I mean, if we end up with, e.g. a filesystem coded in Rust, that
-filesystem will not be available on architectures that the kernel
-supports until either (a) Rust gains support for that architecture
-or (b) someone re-codes the filesystem in C - at which point, what
-is the point of having Rust in the kernel?
+Having a C version of some system does not mean a Rust version would
+not offer advantages. In fact, we are adding Rust precisely because we
+believe it offers some advantages over C, for both end users and
+maintainers.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+(Please see the RFC [1], previous discussions, etc.)
+
+[1] https://lore.kernel.org/lkml/20210414184604.23473-1-ojeda@kernel.org/
+
+Cheers,
+Miguel
