@@ -2,103 +2,78 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C81A3C433F5
-	for <rust-for-linux@archiver.kernel.org>; Sat, 12 Feb 2022 19:54:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2934FC433EF
+	for <rust-for-linux@archiver.kernel.org>; Sat, 12 Feb 2022 22:37:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231300AbiBLTyo (ORCPT
+        id S229536AbiBLWhj (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 12 Feb 2022 14:54:44 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59358 "EHLO
+        Sat, 12 Feb 2022 17:37:39 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:48636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231243AbiBLTyn (ORCPT
+        with ESMTP id S229532AbiBLWhj (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 12 Feb 2022 14:54:43 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA08B606D5
-        for <rust-for-linux@vger.kernel.org>; Sat, 12 Feb 2022 11:54:39 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 37B0ECE0022
-        for <rust-for-linux@vger.kernel.org>; Sat, 12 Feb 2022 19:54:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6C0C340E7;
-        Sat, 12 Feb 2022 19:54:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644695676;
-        bh=/Vo6fc/uRQL1PLlL1zWke4rVepn22GpSm1QDaHKkrk0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=arLvw22b40mDW5P1WItw9Gs18lxFhcCMumBfjELjhsHZ0+Z3HR6x02Ms/vZWWh82l
-         2zOf0iIaed4OCs4zasn53YzK1cAk8YPhRiLYGfDc4m+PlpTaf7YKUIa+sqFDJMpYvd
-         ofF/ktvEnPP7BwMYgRjc0jR+bJ6deQ5ML8A4VQwZcxO/onr4mDmS+HwZ5yj2566BQb
-         cVXDQxzV84PLbDdx7ECokukvYZfpO69/kSogigjUUWRJhqforkrOezlNtOaCE5keA2
-         5Z2IaBJlJ7bECbJqgG0S9EtIjAfusrbM5mukyIOy2Rpgb/H5oXODJTRpxONQtzCHwc
-         Up2aYFy96KHow==
-Date:   Sat, 12 Feb 2022 12:54:32 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Wedson Almeida Filho <wedsonaf@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>
-Cc:     kbuild-all@lists.01.org, llvm@lists.linux.dev,
-        kernel test robot <lkp@intel.com>,
-        rust-for-linux@vger.kernel.org
-Subject: Re: [ojeda-linux:rust-next 18/20] ld.lld: error:
- drivers/built-in.a(gpio/gpio_pl061_rust.o) is incompatible with aarch64elfb
-Message-ID: <YggQeC0PuAseqtpQ@archlinux-ax161>
-References: <202202121743.YbGELjcY-lkp@intel.com>
+        Sat, 12 Feb 2022 17:37:39 -0500
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69AA25F9C
+        for <rust-for-linux@vger.kernel.org>; Sat, 12 Feb 2022 14:37:35 -0800 (PST)
+Received: by mail-io1-xd29.google.com with SMTP id m185so15744345iof.10
+        for <rust-for-linux@vger.kernel.org>; Sat, 12 Feb 2022 14:37:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3YdRY1vh187Ti2lNhE1cStNPG0E7OoEZRMCqSox6LPI=;
+        b=FgIb53GclKHW/Dem1kAPZUD7TGBuLnh3J/g6syXNtGRja8YZ83qRRwuQTnRzpieC8w
+         fKXQU1o0quQwgbV0tIYFvu41XjLzIYjMimbwkSRcjvdJqtrVNaAY2m8Bg75Ju8H8WOtA
+         BBpr+HmMPAMk1R+I/R8IXXsJ8sDGdrVj+/xl13IM6kpV2lhoCtjWEMpPNmpYAJLq/B44
+         BUyrEerWq6JN6OZGjyLLTexTeRAB4YxvzuF1w4Cm5PtEBBg9G71MTHBKdl1yRZlGBBjU
+         Jf/34jO3QhtPFGwajFqFUrtaAeqJoxt8uEZfG2fP2Hcp9ap2KdptTv4oflf1VQvvTwx8
+         jnpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3YdRY1vh187Ti2lNhE1cStNPG0E7OoEZRMCqSox6LPI=;
+        b=j5GK/mcqfZFCtoblf3tTSy2MQ3GYxsHZlPpNLdKGvLYA75XtNTUa38T5tzkmWPl47j
+         XW/d//x9tse3NedO2W/s6iY18Jw7tbgHntkpM+aXDXZARNRwmufNEuPDiSM+FpnEUjC3
+         G2I+yVOU2IuG/EEcgrAOY6Eph9mRqIpIOYoADSk4TByxBBNoEM+JrZNtjind5tYI0Qv4
+         WW2CJcJ2JFUY+nt1R667+Dda6sApZbzL+W+kX+q8MDz0qG7Na663Dd3vIX/LkG1PhpSU
+         5wH8zzclX51vKBoDbpn2v2aMxxE4jeYSotYVGiASjeFuRynE+v8agVcS9GnIXbe99ROx
+         KObg==
+X-Gm-Message-State: AOAM5307bdfCLkaLwtsuXB+1zGupu6n5atZUuO/wh8vbR1Uk2Tr+wtr8
+        eKVyNOry/gHr7GET0nGG7ohGdG7L9r4uqGfjYkg=
+X-Google-Smtp-Source: ABdhPJzdH6b9QIMhUbZGTWgEGzFFCI4yKLf5IBcqvttq0NrZTiLI0b1JMRDi2wzSo7hyKbEiBcmXMw7fLNbNNB+n4j4=
+X-Received: by 2002:a05:6638:380f:: with SMTP id i15mr4338869jav.308.1644705454806;
+ Sat, 12 Feb 2022 14:37:34 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202202121743.YbGELjcY-lkp@intel.com>
+References: <202202121743.YbGELjcY-lkp@intel.com> <YggQeC0PuAseqtpQ@archlinux-ax161>
+In-Reply-To: <YggQeC0PuAseqtpQ@archlinux-ax161>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sat, 12 Feb 2022 23:37:23 +0100
+Message-ID: <CANiq72kPP=o2NiE+r3Gt=Uhh79ESDwa6BRkj5HW3fn4VCY-evw@mail.gmail.com>
+Subject: Re: [ojeda-linux:rust-next 18/20] ld.lld: error: drivers/built-in.a(gpio/gpio_pl061_rust.o)
+ is incompatible with aarch64elfb
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     Wedson Almeida Filho <wedsonaf@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>, kbuild-all@lists.01.org,
+        llvm@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-+ Miguel, Wedson, rust-for-linux, since it looks like this did not get
-sent to you all.
+On Sat, Feb 12, 2022 at 8:54 PM Nathan Chancellor <nathan@kernel.org> wrote:
+>
+> + Miguel, Wedson, rust-for-linux, since it looks like this did not get
+> sent to you all.
 
-Possibly some incompatibility with Rust + aarch64be?
+Thanks -- strange, there is a `TO` and `CC` there in the top.
+
+> Possibly some incompatibility with Rust + aarch64be?
+
+It is getting built for the wrong endianness due to the single target
+spec file + the lax "depends on", will fix.
 
 Cheers,
-Nathan
-
-On Sat, Feb 12, 2022 at 06:39:33PM +0800, kernel test robot wrote:
-> CC: linux-kernel@vger.kernel.org
-> TO: Wedson Almeida Filho <wedsonaf@google.com>
-> CC: Miguel Ojeda <ojeda@kernel.org>
-> 
-> Hi Wedson,
-> 
-> First bad commit (maybe != root cause):
-> 
-> tree:   https://github.com/ojeda/linux.git rust-next
-> head:   ced9f62ec4355bbb92226ac3f019da468a5c996b
-> commit: 5c1fec092f967b9b4722f6d91c9bcbe8222098fd [18/20] [RFC] drivers: gpio: PrimeCell PL061 in Rust
-> config: arm64-randconfig-r033-20220212 (https://download.01.org/0day-ci/archive/20220212/202202121743.YbGELjcY-lkp@intel.com/config)
-> compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project f6685f774697c85d6a352dcea013f46a99f9fe31)
-> reproduce (this is a W=1 build):
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # install arm64 cross compiling tool for clang build
->         # apt-get install binutils-aarch64-linux-gnu
->         # https://github.com/ojeda/linux/commit/5c1fec092f967b9b4722f6d91c9bcbe8222098fd
->         git remote add ojeda-linux https://github.com/ojeda/linux.git
->         git fetch --no-tags ojeda-linux rust-next
->         git checkout 5c1fec092f967b9b4722f6d91c9bcbe8222098fd
->         # save the config file to linux build tree
->         mkdir build_dir
->         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash
-> 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
-> 
-> All errors (new ones prefixed by >>):
-> 
->    ld.lld: error: rust/built-in.a(core.o) is incompatible with aarch64elfb
->    ld.lld: error: rust/built-in.a(compiler_builtins.o) is incompatible with aarch64elfb
->    ld.lld: error: rust/built-in.a(alloc.o) is incompatible with aarch64elfb
->    ld.lld: error: rust/built-in.a(kernel.o) is incompatible with aarch64elfb
-> >> ld.lld: error: drivers/built-in.a(gpio/gpio_pl061_rust.o) is incompatible with aarch64elfb
-> 
-> ---
-> 0-DAY CI Kernel Test Service, Intel Corporation
-> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
-> 
+Miguel
