@@ -2,112 +2,117 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 223B3C433F5
-	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Feb 2022 13:37:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA06FC433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Feb 2022 13:55:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243275AbiBNNhQ (ORCPT
+        id S229879AbiBNNzO (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 14 Feb 2022 08:37:16 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50104 "EHLO
+        Mon, 14 Feb 2022 08:55:14 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239718AbiBNNhP (ORCPT
+        with ESMTP id S242299AbiBNNzO (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 14 Feb 2022 08:37:15 -0500
-Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD93949F92;
-        Mon, 14 Feb 2022 05:37:07 -0800 (PST)
-Received: by mail-il1-x136.google.com with SMTP id n5so12302982ilk.12;
-        Mon, 14 Feb 2022 05:37:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0S222rJiXMXdLbL4sr8eXv1/RjuJqY7+BlIpDb0kXQU=;
-        b=Y1grS4VlTpVrHPRcg3ogv2eoxW96xGbuQ0rNH+3v401Jh/WkzItBEU6E8rfh+flaDN
-         5gAMiLYQUE0lQEqhJ9TeDJNcTKUlat+WvO0QuhzGZfLG0+4Y2EQTNNhisaoNrUeshGve
-         /x0TTqGyLkY5CsZNkDvwejmmP9NX3qgHvTxWYaVXI+KWRfPR2uhIN8/ZiiT83TcNtcmY
-         v1/u9il5hn12+4yKYW+rONaHHhdGAmZxWBuoa9rsm8oC1YU76D89FFKtZbIrCRowcCzo
-         XrYaqiY/pjg0nkJp2xIAvKQ2BmvohlmqPifRnaz/jTW79L592OvQvLTELRaIarOO9+gG
-         En4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0S222rJiXMXdLbL4sr8eXv1/RjuJqY7+BlIpDb0kXQU=;
-        b=cFXV5Ne9tBw2OwSQbyrV+OSQ7TOHvpNVBAhFPNNUIB4rnPx4Y5StodHuc3DRTDNDq2
-         EkbUl9CYfxXbsE1CVtppnfhyGiiPXvaZ6w4hCm2Psys0MqOMdHmwJjzG873LbjLrgNq5
-         m0gKoGNu3vKmEiNaZaBn9bkkywVx0fqZ1qdMM4tPe2IBse6fqjTmMGag3dcjiIJ9EnvB
-         2d6LZ2MndBVbfpayAXa/o38ZlAqH35AZAGWZPYIuKCfP1wBbUHSOHG0KWmdV+ADTV6GO
-         tWFcsz28z8WVsxBhx4gK7PBapMWhlmBFI9QQYEPQHjkEj6ozNWsR5y5bKQ5Znj4x3r14
-         M5gw==
-X-Gm-Message-State: AOAM530Rg/kk+RjUz2FdRKFDp47rlaK1UWsfzsXijHKelCVGE9J405tX
-        X0mkbJfsMH68QeS7Xt9+htDF+MemvOEYXpmrnG4=
-X-Google-Smtp-Source: ABdhPJz8VaSVI48p0HfaAeJH24iGo5ubZOtP91p5DCwKGTBFJ/2NlAkHOJ6pNrXG85vdJz0h3BZQUlq6UU5id2h2hfA=
-X-Received: by 2002:a05:6e02:1ba2:: with SMTP id n2mr8403067ili.5.1644845827109;
- Mon, 14 Feb 2022 05:37:07 -0800 (PST)
-MIME-Version: 1.0
-References: <20220212130410.6901-1-ojeda@kernel.org> <20220212130410.6901-11-ojeda@kernel.org>
- <YgnoJ97y3I2hE8UJ@google.com>
-In-Reply-To: <YgnoJ97y3I2hE8UJ@google.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 14 Feb 2022 14:36:56 +0100
-Message-ID: <CANiq72mUBox2cbkHGP9=s=MZhRydY9Z2-vq8OVXjp6xHHifwyQ@mail.gmail.com>
-Subject: Re: [PATCH v4 10/20] rust: add `kernel` crate
-To:     Sergey Senozhatsky <senozhatsky@chromium.org>
+        Mon, 14 Feb 2022 08:55:14 -0500
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB4D065A2;
+        Mon, 14 Feb 2022 05:55:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1644846906; x=1676382906;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yguvRxMRnV5IB+hh/M/twMshNoTTuG75v2iSOANJTMY=;
+  b=Zqa4zMHVJSnp5exm5GP2FAV9TXs8EHVaGnzNEJYK+D14WfgWNaD39JHY
+   s6W8tnZwxdEfgxF8cqpJWNWgGC2C8pBjnrWKgsSV3nRJECpeaq4M4UpWA
+   TI+e6X0GOX2oLWWDt37zi5TlyDUDkHgpqJHFDYVLW8EXiZ1SrqJ8CgKVo
+   NhosWtR7D5R8tFKTKIzInFT8hkpy0X4rwFpS52Xsa5cKT4UQakpMb8D3F
+   Q4mrhc4cDHk5xUEGhjmM6mCQM23HIlLvmXNdL8x5jLPd7j77Qn29ynQiX
+   wKRgf0kf6ZxR7pHhyzRaEBojONtLptMYathi4vowR5Byz8WBTG371MWVn
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10257"; a="247686644"
+X-IronPort-AV: E=Sophos;i="5.88,368,1635231600"; 
+   d="scan'208";a="247686644"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2022 05:55:06 -0800
+X-IronPort-AV: E=Sophos;i="5.88,368,1635231600"; 
+   d="scan'208";a="587214685"
+Received: from unknown (HELO smile.fi.intel.com) ([10.237.72.59])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2022 05:55:03 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nJbnr-004YcY-FU;
+        Mon, 14 Feb 2022 15:54:07 +0200
+Date:   Mon, 14 Feb 2022 15:54:07 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sumera Priyadarsini <sylphrenadin@gmail.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
         Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Fox Chen <foxhlchen@gmail.com>,
-        Dan Robertson <daniel.robertson@starlab.io>,
-        Viktor Garske <viktor@v-gar.de>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        =?UTF-8?Q?L=C3=A9o_Lanteri_Thauvin?= <leseulartichaut@gmail.com>,
-        Niklas Mohrin <dev@niklasmohrin.de>,
-        Gioh Kim <gurugio@gmail.com>, Daniel Xu <dxu@dxuuu.xyz>,
-        Milan Landaverde <milan@mdaverde.com>,
-        Morgan Bartlett <mjmouse9999@gmail.com>,
-        Maciej Falkowski <m.falkowski@samsung.com>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
         Petr Mladek <pmladek@suse.com>,
         Steven Rostedt <rostedt@goodmis.org>,
-        John Ogness <john.ogness@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Subject: Re: [PATCH v4 12/20] vsprintf: add new `%pA` format specifier
+Message-ID: <Ygpe/zalrTRFpNwg@smile.fi.intel.com>
+References: <20220212130410.6901-1-ojeda@kernel.org>
+ <20220212130410.6901-13-ojeda@kernel.org>
+ <YgosclY9ebD3t020@smile.fi.intel.com>
+ <CANiq72mwkSo-W3QcyMnQ-o1COA5YJt1Ab9Xti7cdG6Krz3Sj7w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72mwkSo-W3QcyMnQ-o1COA5YJt1Ab9Xti7cdG6Krz3Sj7w@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Sergey,
+On Mon, Feb 14, 2022 at 01:27:48PM +0100, Miguel Ojeda wrote:
+> On Mon, Feb 14, 2022 at 11:19 AM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > Not sure I understand this...
+> >
+> > ...together with this in the current SoB chain.
+> 
+> From my reading of `Documentation/process/submitting-patches.rst`,
+> this is the case I have to use:
+> 
+> ```
+> Example of a patch submitted by a Co-developed-by: author::
+> 
+>     From: From Author <from@author.example.org>
+> 
+>     <changelog>
+> 
+>     Co-developed-by: Random Co-Author <random@coauthor.example.org>
+>     Signed-off-by: Random Co-Author <random@coauthor.example.org>
+>     Signed-off-by: From Author <from@author.example.org>
+>     Co-developed-by: Submitting Co-Author <sub@coauthor.example.org>
+>     Signed-off-by: Submitting Co-Author <sub@coauthor.example.org>
+> ```
+> 
+> Do you think another case applies?
 
-On Mon, Feb 14, 2022 at 6:27 AM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> Is this flexible enough? Why not let user pass bindings::GFP_* bitmask,
-> just like what the underlying kernel API does.
+I see, thanks for elaboration!
 
-For particular kernel abstractions, they may know what they need; but
-in general, yeah, we may need to allow for flexibility where needed
-(see the `TODO` comment in the quoted code).
+...
 
-For collections that need to allocate, it is an open question how Rust
-will handle it upstream, as there are several approaches (if you want
-to take a look, see the `allocator_api` feature and the working group
-at https://github.com/rust-lang/wg-allocators). But in order to be
-able to experiment and see what is best for the kernel, we have an
-in-tree fork of the `alloc` standard library crate (see
-`rust/alloc/README.md`).
+> > I'm wondering if you considered to use %pV.
+> 
+> Please see Rasmus' reply, i.e. we are using Rust's own formatting
+> machinery (the compiler validates the format string and creates an
+> object that represents the formatting to be done).
 
-Cheers,
-Miguel
+Yes, I read that.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
