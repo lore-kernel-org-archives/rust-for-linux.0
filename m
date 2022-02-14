@@ -2,72 +2,82 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D2F4C433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Feb 2022 14:49:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67560C433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Feb 2022 14:57:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355372AbiBNOtI (ORCPT
+        id S243114AbiBNO5M (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 14 Feb 2022 09:49:08 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:52136 "EHLO
+        Mon, 14 Feb 2022 09:57:12 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:58386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355357AbiBNOtH (ORCPT
+        with ESMTP id S233726AbiBNO5L (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 14 Feb 2022 09:49:07 -0500
-Received: from gpm.stappers.nl (gpm.stappers.nl [82.161.218.215])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B29E44C402
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Feb 2022 06:48:58 -0800 (PST)
-Received: by gpm.stappers.nl (Postfix, from userid 1000)
-        id 30A4930412F; Mon, 14 Feb 2022 15:48:57 +0100 (CET)
-Date:   Mon, 14 Feb 2022 15:48:57 +0100
-From:   Geert Stappers <stappers@stappers.nl>
-To:     rust-for-linux <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v4 00/20] Rust support, nn/nn
-Message-ID: <20220214144857.cr2pzqlnhzycu5zd@gpm.stappers.nl>
-References: <20220212130410.6901-1-ojeda@kernel.org>
- <20220213093135.7hvlvbsawcu2bjzg@gpm.stappers.nl>
- <YgjVmGiEygx1QNqF@kroah.com>
- <20220213105256.wvkwsccjtjleel7h@gpm.stappers.nl>
- <CANiq72=YFvXdSJ16ZiYwk8TZgsStJpJOUKR0EVq8Zsoq6BNf_Q@mail.gmail.com>
+        Mon, 14 Feb 2022 09:57:11 -0500
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45BBE3A7;
+        Mon, 14 Feb 2022 06:57:04 -0800 (PST)
+Received: by mail-io1-xd2b.google.com with SMTP id q204so20114184iod.8;
+        Mon, 14 Feb 2022 06:57:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+wjjfBJTHVR77cJojmNBJ1i5dhw4Qwn0QVEdcG6oxsc=;
+        b=hh4pBTf9ur8dzkv51kW/C+DeY33uYcyBGBgg0VR1XnIoc23JbQX3XKwApsVcVk7fm6
+         p6+5IfZT+Imfn2M1Cmqvz2nI7NyGHGAj7wdElysReCLzKzOUfD92u7eFTeyXM9gY/qq4
+         9x/ptYrJNoJ0vaypJp9aK8LRC1ZyyMFy52YjL6M8DbKVrIkXRcJjoYlqXpk6ALNJ/nI5
+         Sb24Jfbfy7wUCnX/2lzOO2Fg9hNSb98JRvJlZ87tOqGQ6bcH47vKVVNEzTwi9K8VpUiC
+         bTtU/76ut22G7XPCZgO2BQxhRpkVX2k0L2M9sDgB6m9LzLVYRWBUI7VS8sGvYSOUQ1kF
+         Vbkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+wjjfBJTHVR77cJojmNBJ1i5dhw4Qwn0QVEdcG6oxsc=;
+        b=2LxT4VqpttlZA7zVULNg+W/FIXyZuAT/qrWlnMNaFpzBuzsOci/F+tFY47IvkDPwGD
+         xSBzF6MegsSIE+ylYrETxv9yXtxibVR7nIIKN/Z3KqkLt9dVQiJmYIcbJsi5zkeFT2cE
+         lYeDiNypZEeHgNm9b01Yv0pIypOFfvh3JPntdbi8n6Q8bQsweQRYGTwKH+3Vka4YT4XT
+         EgpFn5McQHeYsuL2YCJt7Unlu6hXQCGQ5dVR5qRI6R1ypWQ+9PwY5MvZKufj0vPQ3ZH/
+         xbtIo3i3Hnho/gSDShiuG6SaRE1OBe8d2R9L7dKEuBeebZuviGdDOYnKsA5/emnLwkfR
+         GWkw==
+X-Gm-Message-State: AOAM533jaYvG9t0wpyGhIgMyhzITeeOugCrfB5ajdFSCoDVfJCSz4Wg5
+        cCrTPf3X8hfP4s78Y3EEelI3pSs6QgVEkSWjkIE=
+X-Google-Smtp-Source: ABdhPJxosHBxj7hqy29aVW0n1kT3sjEYloRtO4mxkIDCxuCvExFgJ3l36E9TCrzrRfRbsh9bHnRvN8PMuenDg6H3xSA=
+X-Received: by 2002:a02:aa09:: with SMTP id r9mr13122jam.199.1644850623735;
+ Mon, 14 Feb 2022 06:57:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72=YFvXdSJ16ZiYwk8TZgsStJpJOUKR0EVq8Zsoq6BNf_Q@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+References: <20220212130410.6901-1-ojeda@kernel.org> <20220212130410.6901-13-ojeda@kernel.org>
+ <YgosclY9ebD3t020@smile.fi.intel.com> <CANiq72mwkSo-W3QcyMnQ-o1COA5YJt1Ab9Xti7cdG6Krz3Sj7w@mail.gmail.com>
+ <Ygpe/zalrTRFpNwg@smile.fi.intel.com>
+In-Reply-To: <Ygpe/zalrTRFpNwg@smile.fi.intel.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 14 Feb 2022 15:56:52 +0100
+Message-ID: <CANiq72==eqLQ56=1+gpBRUipNw=Bv0BSqRapm=va4wWNsjVmMw@mail.gmail.com>
+Subject: Re: [PATCH v4 12/20] vsprintf: add new `%pA` format specifier
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Gary Guo <gary@garyguo.net>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Feb 14, 2022 at 03:16:34PM +0100, Miguel Ojeda wrote:
-> On Mon, Feb 14, 2022 at 2:57 PM Geert Stappers wrote:
-} } Greg KH told:
-} } } Geert Stappers asked:
-} } } } Where is patch 20/20
-} } } In the archive
-> > Ah, Subject: [PATCH v4 20/20] [RFC] drivers: android: Binder IPC in Rust
-> > Thanks.  So 20/20 does exist.  That it is
-> > NOT at https://lore.kernel.org/rust-for-linux/ remains odd.
-> 
-> Sorry about that, some patches bounced since they were too long
+On Mon, Feb 14, 2022 at 2:55 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> I see, thanks for elaboration!
 
-Ah, too long, that explains it.
+Anytime!
 
-
-> (number 6, 10, 15 and 20 in rust-for-linux and number 15 in linux-doc
-> and linux-kbuild).
-
-Oops, I didn't miss other patches.  I hope they (patch 6, 10, 15 and 20)
-get the review attention to get accepted.
-
-These are URLs of them: (patchnumber plus one due the cover letter)
-
-https://lore.kernel.org/r/20220212130410.6901-7-ojeda@kernel.org
-https://lore.kernel.org/r/20220212130410.6901-11-ojeda@kernel.org
-https://lore.kernel.org/r/20220212130410.6901-16-ojeda@kernel.org
-https://lore.kernel.org/r/20220212130410.6901-21-ojeda@kernel.org
-
-
-
-Groeten
-Geert Stappers
--- 
-Silence is hard to parse
+Cheers,
+Miguel
