@@ -2,90 +2,112 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12930C433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Feb 2022 12:44:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 223B3C433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Feb 2022 13:37:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229833AbiBNMo0 (ORCPT
+        id S243275AbiBNNhQ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 14 Feb 2022 07:44:26 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38296 "EHLO
+        Mon, 14 Feb 2022 08:37:16 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:50104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233510AbiBNMoZ (ORCPT
+        with ESMTP id S239718AbiBNNhP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 14 Feb 2022 07:44:25 -0500
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB9AD4AE25;
-        Mon, 14 Feb 2022 04:44:17 -0800 (PST)
-Received: by mail-il1-x130.google.com with SMTP id n5so12187805ilk.12;
-        Mon, 14 Feb 2022 04:44:17 -0800 (PST)
+        Mon, 14 Feb 2022 08:37:15 -0500
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD93949F92;
+        Mon, 14 Feb 2022 05:37:07 -0800 (PST)
+Received: by mail-il1-x136.google.com with SMTP id n5so12302982ilk.12;
+        Mon, 14 Feb 2022 05:37:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=AdSVOhXvPflvsh6Jc0LXMR2FThi2beB719bBXF7UQpg=;
-        b=IVbEf0st+pMoHzt5k6frRYpNKaZp+57tz/hbu0enuiNNoJw5mNi00EBoMHz9DVwT6Q
-         GxYouE7wzfyu4kh3nOz+NdXpyC7PRJjUpywCDnHtr22gA2FAznDP8hh4yLkoMOYCs9Cd
-         hJ/9PFmPm9Y5ck9kZTyuENHeqJMsJccrAM0YQ0Ry+HeigYvwH30ypp0CFqNpVVeO8bQg
-         RZLS67kiMFyicu0SxMGNCQSZJqL2OMOR7sj8fVcDndUJiatvZGTfzP9hxz3zef+q38OW
-         gLRY1+iTIZUA0e2luZg/JMR0aZcJg7Q+JJhHU3b8NCbBtJRs51luwQVTpuQeMeIYFEPy
-         Inmg==
+        bh=0S222rJiXMXdLbL4sr8eXv1/RjuJqY7+BlIpDb0kXQU=;
+        b=Y1grS4VlTpVrHPRcg3ogv2eoxW96xGbuQ0rNH+3v401Jh/WkzItBEU6E8rfh+flaDN
+         5gAMiLYQUE0lQEqhJ9TeDJNcTKUlat+WvO0QuhzGZfLG0+4Y2EQTNNhisaoNrUeshGve
+         /x0TTqGyLkY5CsZNkDvwejmmP9NX3qgHvTxWYaVXI+KWRfPR2uhIN8/ZiiT83TcNtcmY
+         v1/u9il5hn12+4yKYW+rONaHHhdGAmZxWBuoa9rsm8oC1YU76D89FFKtZbIrCRowcCzo
+         XrYaqiY/pjg0nkJp2xIAvKQ2BmvohlmqPifRnaz/jTW79L592OvQvLTELRaIarOO9+gG
+         En4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=AdSVOhXvPflvsh6Jc0LXMR2FThi2beB719bBXF7UQpg=;
-        b=c+Etdjecy5IjqKEDGNqvm/718dWTPw+v1v3uznjID1gb8CGOZj2d/2QgBIzoKgXUFZ
-         nD5rzZHXKT5ytHQhfh0cytgmtXakhF7NmQ/FQHQJs4pdUNRSKlc0JHpUPswRgyJsiJyp
-         YL5c2zhrodCj2oG6//JBQEljlBdXykCijaOPoV5rI/6Ce8QjFlrZbksjDRjFpxb8R2IB
-         9hmCaqiT5JYrxga3r8eC41DrKxDvMOSWbTh2g5E46QZ+R4lAZoDTFQuuqqTrkVO7q8bE
-         wJiybupKievkuYoI/jNSDc5cMSzdXwa2OfrdFtECH3mc8PNJW93BP+VBCFBfWy/ARN+0
-         jf2Q==
-X-Gm-Message-State: AOAM530zuZhPZ/lIuhewY+EiyADRhEE7TCtm3OOnEZ5wlmCq6Z+bHO4k
-        0NYkDnUMRaw4i3ppbCpFap80SRAoQ6J5GNMlQG4=
-X-Google-Smtp-Source: ABdhPJxnxCpvFqcAkK1eb4qN90HrjGF7tGDYDWp/VQDGl0lHHe3UOhC6H/tACygYgV3u7p/NbqVgxS7j4QHSwdz1aHI=
-X-Received: by 2002:a05:6e02:1ba2:: with SMTP id n2mr8253361ili.5.1644842657184;
- Mon, 14 Feb 2022 04:44:17 -0800 (PST)
+        bh=0S222rJiXMXdLbL4sr8eXv1/RjuJqY7+BlIpDb0kXQU=;
+        b=cFXV5Ne9tBw2OwSQbyrV+OSQ7TOHvpNVBAhFPNNUIB4rnPx4Y5StodHuc3DRTDNDq2
+         EkbUl9CYfxXbsE1CVtppnfhyGiiPXvaZ6w4hCm2Psys0MqOMdHmwJjzG873LbjLrgNq5
+         m0gKoGNu3vKmEiNaZaBn9bkkywVx0fqZ1qdMM4tPe2IBse6fqjTmMGag3dcjiIJ9EnvB
+         2d6LZ2MndBVbfpayAXa/o38ZlAqH35AZAGWZPYIuKCfP1wBbUHSOHG0KWmdV+ADTV6GO
+         tWFcsz28z8WVsxBhx4gK7PBapMWhlmBFI9QQYEPQHjkEj6ozNWsR5y5bKQ5Znj4x3r14
+         M5gw==
+X-Gm-Message-State: AOAM530Rg/kk+RjUz2FdRKFDp47rlaK1UWsfzsXijHKelCVGE9J405tX
+        X0mkbJfsMH68QeS7Xt9+htDF+MemvOEYXpmrnG4=
+X-Google-Smtp-Source: ABdhPJz8VaSVI48p0HfaAeJH24iGo5ubZOtP91p5DCwKGTBFJ/2NlAkHOJ6pNrXG85vdJz0h3BZQUlq6UU5id2h2hfA=
+X-Received: by 2002:a05:6e02:1ba2:: with SMTP id n2mr8403067ili.5.1644845827109;
+ Mon, 14 Feb 2022 05:37:07 -0800 (PST)
 MIME-Version: 1.0
-References: <20220212130410.6901-16-ojeda@kernel.org> <8baf7006-90ed-25b8-3005-69b5475215cf@gmail.com>
-In-Reply-To: <8baf7006-90ed-25b8-3005-69b5475215cf@gmail.com>
+References: <20220212130410.6901-1-ojeda@kernel.org> <20220212130410.6901-11-ojeda@kernel.org>
+ <YgnoJ97y3I2hE8UJ@google.com>
+In-Reply-To: <YgnoJ97y3I2hE8UJ@google.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 14 Feb 2022 13:44:06 +0100
-Message-ID: <CANiq72kYLEbw7s9_V8aUC0YDYtb979z2y-UgmOhFyCkgpz4cuA@mail.gmail.com>
-Subject: Re: [PATCH v4 15/20] docs: add Rust documentation
-To:     Akira Yokosawa <akiyks@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Wu XiangCheng <bobwxc@email.cn>, Daniel Xu <dxu@dxuuu.xyz>,
-        Gary Guo <gary@garyguo.net>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Yuki Okushi <jtitor@2k36.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Finn Behrens <me@kloenk.de>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
+Date:   Mon, 14 Feb 2022 14:36:56 +0100
+Message-ID: <CANiq72mUBox2cbkHGP9=s=MZhRydY9Z2-vq8OVXjp6xHHifwyQ@mail.gmail.com>
+Subject: Re: [PATCH v4 10/20] rust: add `kernel` crate
+To:     Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
         Wedson Almeida Filho <wedsonaf@google.com>,
-        Wei Liu <wei.liu@kernel.org>
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Fox Chen <foxhlchen@gmail.com>,
+        Dan Robertson <daniel.robertson@starlab.io>,
+        Viktor Garske <viktor@v-gar.de>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        =?UTF-8?Q?L=C3=A9o_Lanteri_Thauvin?= <leseulartichaut@gmail.com>,
+        Niklas Mohrin <dev@niklasmohrin.de>,
+        Gioh Kim <gurugio@gmail.com>, Daniel Xu <dxu@dxuuu.xyz>,
+        Milan Landaverde <milan@mdaverde.com>,
+        Morgan Bartlett <mjmouse9999@gmail.com>,
+        Maciej Falkowski <m.falkowski@samsung.com>,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        John Ogness <john.ogness@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Akira,
+Hi Sergey,
 
-On Mon, Feb 14, 2022 at 11:47 AM Akira Yokosawa <akiyks@gmail.com> wrote:
+On Mon, Feb 14, 2022 at 6:27 AM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
 >
-> Please find inline comments WRT ReST-in-kereneldoc.
+> Is this flexible enough? Why not let user pass bindings::GFP_* bitmask,
+> just like what the underlying kernel API does.
 
-Thanks a lot for the detailed review & references. I will apply the suggestions.
+For particular kernel abstractions, they may know what they need; but
+in general, yeah, we may need to allow for flexibility where needed
+(see the `TODO` comment in the quoted code).
+
+For collections that need to allocate, it is an open question how Rust
+will handle it upstream, as there are several approaches (if you want
+to take a look, see the `allocator_api` feature and the working group
+at https://github.com/rust-lang/wg-allocators). But in order to be
+able to experiment and see what is best for the kernel, we have an
+in-tree fork of the `alloc` standard library crate (see
+`rust/alloc/README.md`).
 
 Cheers,
 Miguel
