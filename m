@@ -2,117 +2,103 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FFC6C433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Feb 2022 05:27:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64E80C433EF
+	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Feb 2022 10:54:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233268AbiBNF1U (ORCPT
+        id S243365AbiBNKya (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 14 Feb 2022 00:27:20 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:34210 "EHLO
+        Mon, 14 Feb 2022 05:54:30 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:43810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229781AbiBNF1T (ORCPT
+        with ESMTP id S1349736AbiBNKyB (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 14 Feb 2022 00:27:19 -0500
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 882784E39F
-        for <rust-for-linux@vger.kernel.org>; Sun, 13 Feb 2022 21:27:12 -0800 (PST)
-Received: by mail-pl1-x632.google.com with SMTP id y18so9651221plb.11
-        for <rust-for-linux@vger.kernel.org>; Sun, 13 Feb 2022 21:27:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=dXSM5xdDFyWUNKhUzhGptRGBx5rWOK73GFZx/zWBRc8=;
-        b=W+cv+jWGDhLxepKIENZltiKGyObGtaLgzPhCm6O+2RO43+buTJzScUzaDJH3nVBSnm
-         CM1lBO75X+dlCU+rhpoWFNg/+/8j8QSwZz5QGKfp6Xp0nmwpwdYVjtfDgkTZyOVS+a26
-         AyXMyNUvhOyYYoRMXlAZ7u1U8YMmA31mCS0Y0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=dXSM5xdDFyWUNKhUzhGptRGBx5rWOK73GFZx/zWBRc8=;
-        b=d0weDLFCDlWvyd1NwxqajtO930REenroO2sSMmF2P40/TwJ/v/2jaXSxKmiCnXN7Ev
-         2u5XWy42HCfLR16yiJGau2SFIJMlWyMVGC/8y189x1NszWo/1oQEjOVysdmjbulgJPJl
-         dBxIzpfnR/XllBwQgaY+Mhtjp2ouT2GzWPnN678yn37a+YCDgxIrFvQV+zSWFEdQsu38
-         D9EB8GYYJbkfYM/VrRp8ozWLIe+/3d73asKO0fhUYeFa1D6h/TWtoaBPriwR0dmZINBm
-         Mwc67fAnDwvp7syzEjptuoa9PWJgQXKaXlzRZPb7b9FKrHv+YaX4R3mKc+sRMRBIHZz4
-         yvCg==
-X-Gm-Message-State: AOAM531s4WD6WDUbLJqFMYW7ruCpFysj/PUfZgqaZZ1P1mcUudltylN1
-        KfFIBSh6komnUoOyuSWaZHXv5A==
-X-Google-Smtp-Source: ABdhPJwp381D0OvQj8raFZ4XntFgIip6ImwPAXBmKuFbZmBoIjsED5BQD4MLOiPxHMzrOwJlO9bL3Q==
-X-Received: by 2002:a17:902:e74b:: with SMTP id p11mr12810354plf.115.1644816432102;
-        Sun, 13 Feb 2022 21:27:12 -0800 (PST)
-Received: from google.com ([2401:fa00:8f:203:b736:df7d:23c5:206e])
-        by smtp.gmail.com with ESMTPSA id w12sm18704725pgl.64.2022.02.13.21.27.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Feb 2022 21:27:11 -0800 (PST)
-Date:   Mon, 14 Feb 2022 14:27:03 +0900
-From:   Sergey Senozhatsky <senozhatsky@chromium.org>
+        Mon, 14 Feb 2022 05:54:01 -0500
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 113A289CE1;
+        Mon, 14 Feb 2022 02:19:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1644833967; x=1676369967;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Ip8ECjYU3CIeQjPLRao5dfe4kBXCOpu/TG5z8yOdjjM=;
+  b=K9wu0nFQPdXfl5eNnWftfBmk3WcxpDrRGAVPNd1c8JXkCFZjE6fO2hIJ
+   jWirZV7ZM5uc1Dh9zEkG90wjfUDbxXoal6RqjjRxDUBrPRPnanNa7WpPi
+   mzJM0ewKzVOXTP+ZS+m+ppONIgLyVgLM8ghwqhSQKhxPVuJW9Qu7LJkNs
+   8TUQLAUwWDMmzHN+ZWusmFL3rGC7LWfTt17d5+MG/RdhL8qg+H33vhZN7
+   s+AUUXHFYxaFmR7xPJFJrUZmauXI6L848wlyrqDg8kuhuhRdvUwOc54le
+   OFxpO67rQfdHLHVzOta/6XIkGt4rYgrsi36S0lTmtIP402X1/DvoLwQFE
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10257"; a="230697751"
+X-IronPort-AV: E=Sophos;i="5.88,367,1635231600"; 
+   d="scan'208";a="230697751"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2022 02:19:26 -0800
+X-IronPort-AV: E=Sophos;i="5.88,367,1635231600"; 
+   d="scan'208";a="501691178"
+Received: from smile.fi.intel.com ([10.237.72.61])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2022 02:19:23 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1nJYR8-004PH0-Vm;
+        Mon, 14 Feb 2022 12:18:26 +0200
+Date:   Mon, 14 Feb 2022 12:18:26 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Miguel Ojeda <ojeda@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sumera Priyadarsini <sylphrenadin@gmail.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
         Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Fox Chen <foxhlchen@gmail.com>,
-        Dan Robertson <daniel.robertson@starlab.io>,
-        Viktor Garske <viktor@v-gar.de>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        =?iso-8859-1?B?TOlv?= Lanteri Thauvin 
-        <leseulartichaut@gmail.com>, Niklas Mohrin <dev@niklasmohrin.de>,
-        Gioh Kim <gurugio@gmail.com>, Daniel Xu <dxu@dxuuu.xyz>,
-        Milan Landaverde <milan@mdaverde.com>,
-        Morgan Bartlett <mjmouse9999@gmail.com>,
-        Maciej Falkowski <m.falkowski@samsung.com>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
         Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
         Steven Rostedt <rostedt@goodmis.org>,
-        John Ogness <john.ogness@linutronix.de>
-Subject: Re: [PATCH v4 10/20] rust: add `kernel` crate
-Message-ID: <YgnoJ97y3I2hE8UJ@google.com>
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Subject: Re: [PATCH v4 12/20] vsprintf: add new `%pA` format specifier
+Message-ID: <YgosclY9ebD3t020@smile.fi.intel.com>
 References: <20220212130410.6901-1-ojeda@kernel.org>
- <20220212130410.6901-11-ojeda@kernel.org>
+ <20220212130410.6901-13-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220212130410.6901-11-ojeda@kernel.org>
+In-Reply-To: <20220212130410.6901-13-ojeda@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On (22/02/12 14:03), Miguel Ojeda wrote:
-[..]
-> +unsafe impl GlobalAlloc for KernelAllocator {
-> +    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-> +        // `krealloc()` is used instead of `kmalloc()` because the latter is
-> +        // an inline function and cannot be bound to as a result.
-> +        unsafe { bindings::krealloc(ptr::null(), layout.size(), bindings::GFP_KERNEL) as *mut u8 }
+On Sat, Feb 12, 2022 at 02:03:38PM +0100, Miguel Ojeda wrote:
 
-[..]
+> From: Gary Guo <gary@garyguo.net>
 
-> +impl<const ORDER: u32> Pages<ORDER> {
-> +    /// Allocates a new set of contiguous pages.
-> +    pub fn new() -> Result<Self> {
-> +        // TODO: Consider whether we want to allow callers to specify flags.
-> +        // SAFETY: This only allocates pages. We check that it succeeds in the next statement.
-> +        let pages = unsafe {
-> +            bindings::alloc_pages(
-> +                bindings::GFP_KERNEL | bindings::__GFP_ZERO | bindings::__GFP_HIGHMEM,
-> +                ORDER,
-> +            )
-> +        };
+Not sure I understand this...
 
-[..]
+> This patch adds a format specifier `%pA` to `vsprintf` which formats
+> a pointer as `core::fmt::Arguments`. Doing so allows us to directly
+> format to the internal buffer of `printf`, so we do not have to use
+> a temporary buffer on the stack to pre-assemble the message on
+> the Rust side.
+> 
+> This specifier is intended only to be used from Rust and not for C, so
+> `checkpatch.pl` is intentionally unchanged to catch any misuse.
+> 
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
 
-Is this flexible enough? Why not let user pass bindings::GFP_* bitmask,
-just like what the underlying kernel API does.
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+
+...together with this in the current SoB chain.
+
+> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+I'm wondering if you considered to use %pV.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
