@@ -2,60 +2,59 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8A3EC433F5
-	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Feb 2022 12:12:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7730C433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Feb 2022 12:28:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239260AbiBNMMo (ORCPT
+        id S1353015AbiBNM2I (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 14 Feb 2022 07:12:44 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:47352 "EHLO
+        Mon, 14 Feb 2022 07:28:08 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232654AbiBNMMn (ORCPT
+        with ESMTP id S233868AbiBNM2H (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 14 Feb 2022 07:12:43 -0500
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E490E48E7A;
-        Mon, 14 Feb 2022 04:12:35 -0800 (PST)
-Received: by mail-il1-x130.google.com with SMTP id z18so12145848iln.2;
-        Mon, 14 Feb 2022 04:12:35 -0800 (PST)
+        Mon, 14 Feb 2022 07:28:07 -0500
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 214FF13E25;
+        Mon, 14 Feb 2022 04:28:00 -0800 (PST)
+Received: by mail-io1-xd2e.google.com with SMTP id p63so19518112iod.11;
+        Mon, 14 Feb 2022 04:28:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=I63uXQLULxgIp+fxBBldhXZGMfrAe8iy9NyQfbBqJO0=;
-        b=JZBkvSicr6NtfK98ljz2alqvymXQ0GUvDMoAHYM8+T6uTTo6eGknpXg4G/hXbfa4J6
-         i9FjhKAXKmSxBx3kC/ZhkVWFWKA7jYsYruEVp5Dpei0Z/LMWn69PIt/6U9iBK4ryufb0
-         q/JP0zQ67doDCcrtc1OQxa6Tf+m4T03mKevIVCx6P2OvVIAEXvnhBzN5qnNMxc6NFAuN
-         DgKMWnQW7JgwTvayVkKG2k+Gia6oL+OwF6BcLHs8Q7MlwEEJcH0W0zMKnu4iEO/pZa6h
-         aiK3179PUSbIAY6rcmtq41FqJoXeTK9Q/QoUaz1MyM4T3QPUyVSTiSWqNO9TvqEOmvNi
-         mxqw==
+        bh=HvWQQ93GGa/cxhrbK4uZHPlLGYXs90RAcFEchHXtn+s=;
+        b=WelbK5oWneqgW3bTeoMBlpxWwUO1QgFcC8F9BXY10Fpd/GXLzy8bypglGZ61WkYivm
+         V4jzCCE/xtJy3cMwyowQqQ1B9iEQnwI/3f5Aa6gvV8oK+09vOMrWb7lsErW4DlQc07U5
+         LrijO3RyDDSV80qiRuKfinwQrEj8MrQaqTC6SuAMp0JjZMj4oEmVSzIW56Rf8T4/yJ6c
+         FgpxcH0SU3caPqLherBcyzZAyyTsusueoMz3OSYI2cWFCB2lvsLDxMwP/gUMNbHwAzCi
+         7FcQYKiMH4zCCDKylMWO/K+CKRNB0Gl12+/UsBylytuaxihkQS7UkTXxP5Z/hmsC6YHv
+         aZaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=I63uXQLULxgIp+fxBBldhXZGMfrAe8iy9NyQfbBqJO0=;
-        b=GZs24v5ZusgtHU4kpxXAplTb9NVaFXh8tALqDof/VQPSJI2v44KXFX0opd8Q3m4RCQ
-         +ahVWkFKuoG+MenPVbH0Yv7yFgtbWi4PvK1ZfhxPksn+smwK5CyyWdUziVmvHWj7MjU6
-         Dnhw3H5eTLCIMIIWoytQDTonW3Ky3tyy3YCaAIqpuTGrh3gy5XuslcDbN3NtqRGNIWqI
-         JZq7BKU1EclYnxTKmE6DJDNuemRFao1FabDHv7WHkzn3jmPsOR05SBPV+RnPUqwKAbYr
-         I5iwkIxFSmm6O/kO561QED7C5f4wGrPj4r9eaTHT5xI0bOxMWMPnfwwKk+pAsTb7Ml3J
-         HYEg==
-X-Gm-Message-State: AOAM5312nIzJdqKhuToGNVdduA3B7x2JpLX8+UL6xyu9x+3/iiYezCeG
-        kEBHu9R2JlKxA0+ckqtAdOeN7ik43qDfJq0cjJY=
-X-Google-Smtp-Source: ABdhPJxP0qVSdni91fTkhLPpuqdXa4tkmKCt6AvlGTNRlON0vuZGUCaWQMGTu6DhK93bwZFFtrS8Zo/9aCY1r6Dg5OU=
-X-Received: by 2002:a92:c248:: with SMTP id k8mr3453071ilo.321.1644840755343;
- Mon, 14 Feb 2022 04:12:35 -0800 (PST)
+        bh=HvWQQ93GGa/cxhrbK4uZHPlLGYXs90RAcFEchHXtn+s=;
+        b=3Jb3Ia33BGuGFUy1GKkB/lVPc1YAZHS67Rlvi4JQAweN/r+1EbHkgg8M12qePZUT4W
+         LEUyPrw39YXPnf3oYPa/CSsBwPmPtHNkaF2cLu9E+Lv0Ggns0FnYTMdRUFW1k0A3h0K/
+         /sygVbHxg746KrvPHt5VQFUZmYVC8aPclrWLe2kS/I2JUWPmhfQaUZ4O3DWwA7yoV9m/
+         BwIX5zOgL7mxPSjOIVw/Ogwh7IooFZvBRu2Q0Qxw7cWB+bbjn9RxvEfNFB5wco+XOHSw
+         dK4ZK6Ilb4xXgmRBJojl9XUilfb/BxGweTQYI1RKAssXoHQtzT1ZFlJpXSbm31CSTmVo
+         PRYw==
+X-Gm-Message-State: AOAM532MAeyBWE8FBZJBVTGumPnbKVreTxupmPEjag5MvlscolzrRYEF
+        zceioYi6+eYwjfVRu6W5y/5Z8oDwAHVGg/8InOgW8mpXTE0=
+X-Google-Smtp-Source: ABdhPJz+8EOyoQjWdVYWF+DJmxzChqKM9QGjxymG++sF8/eFcWcj9lLTDgfo2dBDoPwIw793n3ekmd/i5hII0SE70AY=
+X-Received: by 2002:a05:6638:382a:: with SMTP id i42mr8339322jav.256.1644841679469;
+ Mon, 14 Feb 2022 04:27:59 -0800 (PST)
 MIME-Version: 1.0
 References: <20220212130410.6901-1-ojeda@kernel.org> <20220212130410.6901-13-ojeda@kernel.org>
- <YgosclY9ebD3t020@smile.fi.intel.com> <dc9054f2-5e2b-0ae2-1022-23421668dd05@rasmusvillemoes.dk>
-In-Reply-To: <dc9054f2-5e2b-0ae2-1022-23421668dd05@rasmusvillemoes.dk>
+ <YgosclY9ebD3t020@smile.fi.intel.com>
+In-Reply-To: <YgosclY9ebD3t020@smile.fi.intel.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 14 Feb 2022 13:12:24 +0100
-Message-ID: <CANiq72=mNh415UG_nxDQc=9SCSVSPnqcAbgFZKzavnmsim_L0Q@mail.gmail.com>
+Date:   Mon, 14 Feb 2022 13:27:48 +0100
+Message-ID: <CANiq72mwkSo-W3QcyMnQ-o1COA5YJt1Ab9Xti7cdG6Krz3Sj7w@mail.gmail.com>
 Subject: Re: [PATCH v4 12/20] vsprintf: add new `%pA` format specifier
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
@@ -65,38 +64,48 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
         Petr Mladek <pmladek@suse.com>,
         Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Feb 14, 2022 at 11:52 AM Rasmus Villemoes
-<linux@rasmusvillemoes.dk> wrote:
->
-> I think the point is for vsnprintf() to call (back) into Rust code.
+Hi Andy,
 
-Indeed, this is the case.
+On Mon, Feb 14, 2022 at 11:19 AM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> Not sure I understand this...
+>
+> ...together with this in the current SoB chain.
 
-> That said, I don't like the !CONFIG_RUST version to return NULL, that
-> will surely crash moments later.
->
-> So I prefer something like
->
-> [rust.h]
-> // no CONFIG_RUST conditional
-> +char *rust_fmt_argument(char* buf, char* end, void *ptr);
->
-> [vsprintf.c]
-> +       case 'A':
-> +               if (IS_ENABLED(CONFIG_RUST))
-> +                   return rust_fmt_argument(buf, end, ptr);
-> +               else
-> +                   return string_nocheck(buf, end, "[%pA in non-Rust
-> code?!]", default_str_spec);
+From my reading of `Documentation/process/submitting-patches.rst`,
+this is the case I have to use:
 
-Sounds good. Or perhaps simply `break` and let it print the pointer
-(to be consistent with `g` case and non-error `e` case).
+```
+Example of a patch submitted by a Co-developed-by: author::
+
+    From: From Author <from@author.example.org>
+
+    <changelog>
+
+    Co-developed-by: Random Co-Author <random@coauthor.example.org>
+    Signed-off-by: Random Co-Author <random@coauthor.example.org>
+    Signed-off-by: From Author <from@author.example.org>
+    Co-developed-by: Submitting Co-Author <sub@coauthor.example.org>
+    Signed-off-by: Submitting Co-Author <sub@coauthor.example.org>
+```
+
+Do you think another case applies?
+
+> I'm wondering if you considered to use %pV.
+
+Please see Rasmus' reply, i.e. we are using Rust's own formatting
+machinery (the compiler validates the format string and creates an
+object that represents the formatting to be done).
+
+Thanks for taking a look!
 
 Cheers,
 Miguel
