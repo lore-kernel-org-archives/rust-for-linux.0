@@ -2,82 +2,61 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67560C433F5
-	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Feb 2022 14:57:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FB16C433EF
+	for <rust-for-linux@archiver.kernel.org>; Tue, 15 Feb 2022 09:00:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243114AbiBNO5M (ORCPT
+        id S232191AbiBOJA7 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 14 Feb 2022 09:57:12 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:58386 "EHLO
+        Tue, 15 Feb 2022 04:00:59 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233726AbiBNO5L (ORCPT
+        with ESMTP id S229836AbiBOJA7 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 14 Feb 2022 09:57:11 -0500
-Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45BBE3A7;
-        Mon, 14 Feb 2022 06:57:04 -0800 (PST)
-Received: by mail-io1-xd2b.google.com with SMTP id q204so20114184iod.8;
-        Mon, 14 Feb 2022 06:57:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+wjjfBJTHVR77cJojmNBJ1i5dhw4Qwn0QVEdcG6oxsc=;
-        b=hh4pBTf9ur8dzkv51kW/C+DeY33uYcyBGBgg0VR1XnIoc23JbQX3XKwApsVcVk7fm6
-         p6+5IfZT+Imfn2M1Cmqvz2nI7NyGHGAj7wdElysReCLzKzOUfD92u7eFTeyXM9gY/qq4
-         9x/ptYrJNoJ0vaypJp9aK8LRC1ZyyMFy52YjL6M8DbKVrIkXRcJjoYlqXpk6ALNJ/nI5
-         Sb24Jfbfy7wUCnX/2lzOO2Fg9hNSb98JRvJlZ87tOqGQ6bcH47vKVVNEzTwi9K8VpUiC
-         bTtU/76ut22G7XPCZgO2BQxhRpkVX2k0L2M9sDgB6m9LzLVYRWBUI7VS8sGvYSOUQ1kF
-         Vbkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+wjjfBJTHVR77cJojmNBJ1i5dhw4Qwn0QVEdcG6oxsc=;
-        b=2LxT4VqpttlZA7zVULNg+W/FIXyZuAT/qrWlnMNaFpzBuzsOci/F+tFY47IvkDPwGD
-         xSBzF6MegsSIE+ylYrETxv9yXtxibVR7nIIKN/Z3KqkLt9dVQiJmYIcbJsi5zkeFT2cE
-         lYeDiNypZEeHgNm9b01Yv0pIypOFfvh3JPntdbi8n6Q8bQsweQRYGTwKH+3Vka4YT4XT
-         EgpFn5McQHeYsuL2YCJt7Unlu6hXQCGQ5dVR5qRI6R1ypWQ+9PwY5MvZKufj0vPQ3ZH/
-         xbtIo3i3Hnho/gSDShiuG6SaRE1OBe8d2R9L7dKEuBeebZuviGdDOYnKsA5/emnLwkfR
-         GWkw==
-X-Gm-Message-State: AOAM533jaYvG9t0wpyGhIgMyhzITeeOugCrfB5ajdFSCoDVfJCSz4Wg5
-        cCrTPf3X8hfP4s78Y3EEelI3pSs6QgVEkSWjkIE=
-X-Google-Smtp-Source: ABdhPJxosHBxj7hqy29aVW0n1kT3sjEYloRtO4mxkIDCxuCvExFgJ3l36E9TCrzrRfRbsh9bHnRvN8PMuenDg6H3xSA=
-X-Received: by 2002:a02:aa09:: with SMTP id r9mr13122jam.199.1644850623735;
- Mon, 14 Feb 2022 06:57:03 -0800 (PST)
+        Tue, 15 Feb 2022 04:00:59 -0500
+X-Greylist: delayed 548 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 15 Feb 2022 01:00:48 PST
+Received: from mail.upyourenergy.pl (mail.upyourenergy.pl [45.86.209.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EEE1113AD7
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Feb 2022 01:00:48 -0800 (PST)
+Received: by mail.upyourenergy.pl (Postfix, from userid 1001)
+        id 585746D31B; Tue, 15 Feb 2022 03:50:22 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=upyourenergy.pl;
+        s=mail; t=1644915033;
+        bh=zkxajwxSKFbrXQW6Fdqpo5wHc4BluNWC66Lv2K2C3bg=;
+        h=Date:From:To:Subject:From;
+        b=PU4S4ibEDnyA2CI0cZCd0fJeGXEGY67NYeOJ6v88xK68fku1sHFfx9/yQwb19M2j8
+         xHV0grMgjI/xzmkGy5923rij7QdqFCHIGcbRhmN/Qa15gvJ8O8+p70Z0NG3K99VCdV
+         PI5V7UUC84w62/NWC0DvLwUd7klKVHQNTsWNLfPyD0iIyMzZwrIK+RpM0wZ3AZsuFd
+         S3RldLEVobFrhxPSw657zfFv22G+vpqO0T2z9v+1vMpK8arlL40qCTJvIRJYMrEZB3
+         TtVBrPiwnpypMm2JXy7oJxO/VKkZm1VjpLoIls9gJyDox9GxuUDGGCwVhSg8WcxN8N
+         O6h8dXOEeeeWw==
+Received: by mail.upyourenergy.pl for <rust-for-linux@vger.kernel.org>; Tue, 15 Feb 2022 08:50:17 GMT
+Message-ID: <20220215024500-0.1.9.1re3.0.oplcma5e99@upyourenergy.pl>
+Date:   Tue, 15 Feb 2022 08:50:17 GMT
+From:   =?UTF-8?Q? "Artur_Ma=C5=82osi=C5=84ski" ?= 
+        <artur.malosinski@upyourenergy.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.upyourenergy.pl
 MIME-Version: 1.0
-References: <20220212130410.6901-1-ojeda@kernel.org> <20220212130410.6901-13-ojeda@kernel.org>
- <YgosclY9ebD3t020@smile.fi.intel.com> <CANiq72mwkSo-W3QcyMnQ-o1COA5YJt1Ab9Xti7cdG6Krz3Sj7w@mail.gmail.com>
- <Ygpe/zalrTRFpNwg@smile.fi.intel.com>
-In-Reply-To: <Ygpe/zalrTRFpNwg@smile.fi.intel.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 14 Feb 2022 15:56:52 +0100
-Message-ID: <CANiq72==eqLQ56=1+gpBRUipNw=Bv0BSqRapm=va4wWNsjVmMw@mail.gmail.com>
-Subject: Re: [PATCH v4 12/20] vsprintf: add new `%pA` format specifier
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Gary Guo <gary@garyguo.net>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Feb 14, 2022 at 2:55 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> I see, thanks for elaboration!
+Dzie=C5=84 dobry,
 
-Anytime!
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-Cheers,
-Miguel
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+
+
+Pozdrawiam,
+Artur Ma=C5=82osi=C5=84ski
