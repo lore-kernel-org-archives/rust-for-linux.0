@@ -2,79 +2,91 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F410C433EF
-	for <rust-for-linux@archiver.kernel.org>; Wed, 16 Feb 2022 03:46:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0E37C433F5
+	for <rust-for-linux@archiver.kernel.org>; Wed, 16 Feb 2022 10:36:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245488AbiBPDqv (ORCPT
+        id S229832AbiBPKgT (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 15 Feb 2022 22:46:51 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:34722 "EHLO
+        Wed, 16 Feb 2022 05:36:19 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:34096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232796AbiBPDqv (ORCPT
+        with ESMTP id S229943AbiBPKgS (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 15 Feb 2022 22:46:51 -0500
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A8E9E04
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Feb 2022 19:46:39 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id z17so987999plb.9
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Feb 2022 19:46:39 -0800 (PST)
+        Wed, 16 Feb 2022 05:36:18 -0500
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DFEA2B9A3A;
+        Wed, 16 Feb 2022 02:36:05 -0800 (PST)
+Received: by mail-io1-xd32.google.com with SMTP id s1so1597257iob.9;
+        Wed, 16 Feb 2022 02:36:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=zJZZ+JEvBwB9q8zo9G87rqVvPao4wt79zrPDR0URZQs=;
-        b=HjdvhoRwHsPkQ16tNkW2IiyAHMTGDy1+3w54g0ZrhhyJbAjLMoax+rtJaX9WfcPm9K
-         MA8m/kKSp7FZwuEAm7LLWpaHORtbYgS4sf8TLNayrH1lloGfrjZEbHQ3YYi4omS0e9iY
-         U6N6zDEG3WMxdajDF3z449SYtHJ5mCkoAqMKE=
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=uKJipsq5oe0ZDTEuY+K/upzTvFd2Dsp+kTmSfYWHazI=;
+        b=oB2OvesgzInGIl9/ipqAc83wTh84bdMDXTbti2s/RMWD7Yiaav3MxOilkBjJyROqOq
+         m1OXPDMSixt3+1Jo6RQAUc/mH65M416o76Q4aXyVCFbv7To0jcn13xt3mJhlfJFZJRwI
+         lDyFz7n43fLsrfaTC34ZTkFyYvTzXMrn12U/+L/cLU/9dB3dnjA5r07osvpbBlzMhnxK
+         rY4OgFkI0SV2BvPvLg/o2jXh0k9Y5Tly6svLF5rqLvPTNab6Ob1uM3fDLgo7/+500nIS
+         kZskH1LCBfqsXH8TFSGzlx0+mKy5rnE3fjExDVJOJgT7om7RMOjBGeUNrdtvVWNpBbAj
+         kVEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=zJZZ+JEvBwB9q8zo9G87rqVvPao4wt79zrPDR0URZQs=;
-        b=GPFftBhDk/zP3hwmi42mT+GZ67mCkYYZENRtVEJr47mGtgV1Atob7MvcAv5Xayr0EB
-         +eGpWU8zyqzReAS1lFtiUt6PdwpxZCCsq7AmlBEhe2ltm2eA9/PG6015HbbP8DGF21ks
-         3mT7dl/jLJCzdggJxhWUe5/5pDPERMH5UlAnrUaOFCPIgUoh3xvSlCzFauhG1qOvwDr2
-         sQaSOe7sKbwW3loHcpvB85om/RldrNB6aBewHpfs01/rMBsJhMxZbonOCsc6/O8QElku
-         uxi0DOfUilfq+qWCXNPrOOFjewh9/tUQJ8qFmycll/v+H32mYLsdws5k0/QBb/pP9Vt9
-         8CxA==
-X-Gm-Message-State: AOAM5332zn6TeQsUZY5oSWCpiZEwKTQ3Ut6ajxQWZwaex3vv1lOe23pG
-        oHks6lJwmf+LDQW37o9EzSqyyA==
-X-Google-Smtp-Source: ABdhPJzRWGqn9Ucp2/c4wH++iZR883Ywc2CjfsVHYVzh8jA8DkVyGoPe1vHRXkmEUyQeuk8yzeH7gQ==
-X-Received: by 2002:a17:902:988c:b0:14f:2934:6838 with SMTP id s12-20020a170902988c00b0014f29346838mr955950plp.47.1644983199097;
-        Tue, 15 Feb 2022 19:46:39 -0800 (PST)
-Received: from google.com ([2401:fa00:8f:203:c926:4ee:add9:bf67])
-        by smtp.gmail.com with ESMTPSA id b21sm19923235pji.22.2022.02.15.19.46.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Feb 2022 19:46:38 -0800 (PST)
-Date:   Wed, 16 Feb 2022 12:46:33 +0900
-From:   Sergey Senozhatsky <senozhatsky@chromium.org>
-To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Cc:     pmladek@suse.com, senozhatsky@chromium.org, rostedt@goodmis.org,
-        john.ogness@linutronix.de, keescook@chromium.org, anton@enomsg.org,
-        ccross@android.com, tony.luck@intel.com, ojeda@kernel.org,
-        alex.gaynor@gmail.com, wedsonaf@google.com,
-        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: Re: [PATCH] printk: make suppress_panic_printk static
-Message-ID: <YgxzmSBZv5Q3pS9/@google.com>
-References: <20220216031957.9761-1-jiapeng.chong@linux.alibaba.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uKJipsq5oe0ZDTEuY+K/upzTvFd2Dsp+kTmSfYWHazI=;
+        b=oQUoKoOZpl1LVGKcT6zWEbdAazCL7nnOvpdNSheK4cNSaTRJkUzrsJKqadeACZHAia
+         kwLWqGqCIOxefjfRI7EEF1Q4q+ubnV5Fx/0uoVDxfAiKgBOaarrEq9i6mTtRoxHzjAdi
+         DE0LA9k7MDZCS75ZhVewBOjyh9EgDRuH0UrzGkwzYT95LnpvTq+2vjR1IXutFDj08g2p
+         5HZQMlOT9XtPuzcxdmfZS5QGtcxe0sM4QqS9DCGaqbV3mHsNnQOBSpJFb/bSvchb7ZFf
+         b/uGha0Aaws+kxnpe+/WbEu0eD4Tgoo4TqWynZXt5lcRtBT3hWZr3ZSxZOyUtDBwIkph
+         3EXw==
+X-Gm-Message-State: AOAM530qu1kvWlDZz4EGC9Ad2tagO323HXY+DA4LRKb6FFuZjOz7Jcxw
+        VaS7KAw4Ss1MCk+PZAxrMO04uMg5XvKO+99QlT8=
+X-Google-Smtp-Source: ABdhPJy+nlIuQg/qsfdwCrU+DfJGfoNKRMgf768wo5rWiOwJvwmOAigC+H4fhh7OneJ0TUqJSwNX93shHmq0ywG7gNI=
+X-Received: by 2002:a05:6638:1117:b0:30d:1e9f:26ca with SMTP id
+ n23-20020a056638111700b0030d1e9f26camr1300117jal.256.1645007764490; Wed, 16
+ Feb 2022 02:36:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20220216031957.9761-1-jiapeng.chong@linux.alibaba.com>
 In-Reply-To: <20220216031957.9761-1-jiapeng.chong@linux.alibaba.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 16 Feb 2022 11:35:53 +0100
+Message-ID: <CANiq72njcv_MYfTYycMqarEgN0ujKOSvT6OfQxW-kN6FDb5MRw@mail.gmail.com>
+Subject: Re: [PATCH] printk: make suppress_panic_printk static
+To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc:     Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        John Ogness <john.ogness@linutronix.de>,
+        Kees Cook <keescook@chromium.org>, anton@enomsg.org,
+        ccross@android.com, Tony Luck <tony.luck@intel.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        Abaci Robot <abaci@linux.alibaba.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On (22/02/16 11:19), Jiapeng Chong wrote:
+On Wed, Feb 16, 2022 at 4:20 AM Jiapeng Chong
+<jiapeng.chong@linux.alibaba.com> wrote:
+>
 > This symbol is not used outside of printk.c, so marks it static.
-> 
+>
 > Fix the following sparse warning:
-> 
+>
 > kernel/printk/printk.c:100:19: warning: symbol 'suppress_panic_printk'
 > was not declared. Should it be static?
-> 
+>
 > Reported-by: Abaci Robot <abaci@linux.alibaba.com>
 > Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+It could be good to mention this is based on -next.
+
+Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+
+Cheers,
+Miguel
