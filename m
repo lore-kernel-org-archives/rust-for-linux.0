@@ -2,69 +2,112 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06FE1C433F5
-	for <rust-for-linux@archiver.kernel.org>; Mon, 21 Feb 2022 16:03:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6EF30C433F5
+	for <rust-for-linux@archiver.kernel.org>; Tue, 22 Feb 2022 08:19:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379816AbiBUQEL (ORCPT
+        id S229735AbiBVITp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 21 Feb 2022 11:04:11 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46574 "EHLO
+        Tue, 22 Feb 2022 03:19:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232084AbiBUQEK (ORCPT
+        with ESMTP id S229730AbiBVITo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 21 Feb 2022 11:04:10 -0500
+        Tue, 22 Feb 2022 03:19:44 -0500
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81A8715A3E;
-        Mon, 21 Feb 2022 08:03:47 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BC18154706;
+        Tue, 22 Feb 2022 00:19:19 -0800 (PST)
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 15643210DC;
-        Mon, 21 Feb 2022 16:03:46 +0000 (UTC)
+        by smtp-out1.suse.de (Postfix) with ESMTP id 9BF2221112;
+        Tue, 22 Feb 2022 08:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1645459426; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1645517957; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=5FE3cwQ6zgpzMH3bNGS2ZplmWtxzZdsN1DYDBHL90ws=;
-        b=eUDJ16xHS2VLLokLW4m+xZ7+oDU250PUgP0Df28Q2yiAcRPSfyy/YNTD4FW4oQZD5+h/ih
-        30ZKHkI65hSCDPSMv/XqF9J+iSSB4x2qGgq8eIJU/O3nWafJct3H5xfUP7IZSovSqyWI5e
-        qv0oZijzC3OZDlh8yNjro3FLIPsUj+M=
+        bh=Djpi2wqg5KZNuxo5tXaJwLf7ivkdFtpr27BC3EwWuGg=;
+        b=UWKGI6yvKyZY26UvlDfM3wsvaAujuAK4TrF9o82hgRQEUaCpds/6xAs2YERbuyn9gK2gLl
+        XLf9Wp96tvXbWlRb/D3YJEx/Ty7WRlSl1aYE8SG8+9NbMhEDRk8cSDIqc1QVl+IyV2/M1x
+        trWI3sEP0GWo5DTyAk4usGMG58quqKA=
 Received: from suse.cz (unknown [10.100.224.162])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id C819BA3B81;
-        Mon, 21 Feb 2022 16:03:45 +0000 (UTC)
-Date:   Mon, 21 Feb 2022 17:03:45 +0100
+        by relay2.suse.de (Postfix) with ESMTPS id 65AEAA3B84;
+        Tue, 22 Feb 2022 08:19:17 +0000 (UTC)
+Date:   Tue, 22 Feb 2022 09:19:14 +0100
 From:   Petr Mladek <pmladek@suse.com>
-To:     Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Cc:     senozhatsky@chromium.org, rostedt@goodmis.org,
-        john.ogness@linutronix.de, keescook@chromium.org, anton@enomsg.org,
-        ccross@android.com, tony.luck@intel.com, ojeda@kernel.org,
-        alex.gaynor@gmail.com, wedsonaf@google.com,
-        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: Re: [PATCH] printk: make suppress_panic_printk static
-Message-ID: <YhO34dtK6kBq+U+e@alley>
-References: <20220216031957.9761-1-jiapeng.chong@linux.alibaba.com>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        live-patching@vger.kernel.org, linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH v4 02/20] kallsyms: increase maximum kernel symbol length
+ to 512
+Message-ID: <YhScgnV+n7w75WH7@alley>
+References: <20220212130410.6901-1-ojeda@kernel.org>
+ <20220212130410.6901-3-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220216031957.9761-1-jiapeng.chong@linux.alibaba.com>
+In-Reply-To: <20220212130410.6901-3-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed 2022-02-16 11:19:57, Jiapeng Chong wrote:
-> This symbol is not used outside of printk.c, so marks it static.
+On Sat 2022-02-12 14:03:28, Miguel Ojeda wrote:
+> Rust symbols can become quite long due to namespacing introduced
+> by modules, types, traits, generics, etc. For instance,
+> the following code:
 > 
-> Fix the following sparse warning:
+>     pub mod my_module {
+>         pub struct MyType;
+>         pub struct MyGenericType<T>(T);
 > 
-> kernel/printk/printk.c:100:19: warning: symbol 'suppress_panic_printk'
-> was not declared. Should it be static?
+>         pub trait MyTrait {
+>             fn my_method() -> u32;
+>         }
 > 
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+>         impl MyTrait for MyGenericType<MyType> {
+>             fn my_method() -> u32 {
+>                 42
+>             }
+>         }
+>     }
+> 
+> generates a symbol of length 96 when using the upcoming v0 mangling scheme:
+> 
+>     _RNvXNtCshGpAVYOtgW1_7example9my_moduleINtB2_13MyGenericTypeNtB2_6MyTypeENtB2_7MyTrait9my_method
+> 
+> At the moment, Rust symbols may reach up to 300 in length.
+> Setting 512 as the maximum seems like a reasonable choice to
+> keep some headroom.
+> 
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-The patch has been committed into printk/linux.git,
-branch for-5.18-panic-deadlocks.
+The livepatch selftest still pass. Feel free to add:
+
+Tested-by: Petr Mladek <pmladek@suse.com>	# livepatch
+Acked-by: Petr Mladek <pmladek@suse.com>	# livepatch
 
 Best Regards,
 Petr
