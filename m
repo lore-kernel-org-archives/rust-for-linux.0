@@ -2,123 +2,144 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89E69C433EF
-	for <rust-for-linux@archiver.kernel.org>; Thu, 24 Feb 2022 09:55:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46FF9C4332F
+	for <rust-for-linux@archiver.kernel.org>; Thu, 24 Feb 2022 12:39:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231461AbiBXJ4I (ORCPT
+        id S234459AbiBXMkE (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 24 Feb 2022 04:56:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48774 "EHLO
+        Thu, 24 Feb 2022 07:40:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233059AbiBXJ4F (ORCPT
+        with ESMTP id S234452AbiBXMkD (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 24 Feb 2022 04:56:05 -0500
+        Thu, 24 Feb 2022 07:40:03 -0500
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E87C285A81;
-        Thu, 24 Feb 2022 01:55:35 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 862F927FBAF;
+        Thu, 24 Feb 2022 04:39:33 -0800 (PST)
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id D208F1F39D;
-        Thu, 24 Feb 2022 09:55:33 +0000 (UTC)
+        by smtp-out2.suse.de (Postfix) with ESMTP id 3AC5B1F44A;
+        Thu, 24 Feb 2022 12:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1645696533; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1645706372; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=V64EY2xZ8VQBJVMum6ehFvzyW9PFd84v2yMNlyQX8xw=;
-        b=lOMKdP9vM+dUcGysGquWFo/cCNKdSUpiiRkrtifeupt+MPJOMb/sCRwXRW1ExpI6NzjvLF
-        DZCqhAkZ4xPnyW01xRlKrsRFxila/FIGWZFnazGpIk2POlKI4bp5uPXYHptdG6fizeqjmN
-        G24L9LhOOxz0L1ZpbdNR52arfbLgCJM=
+        bh=bmqTGqWk/V1AcHAty5MkYbIYWxEdphX+KA+WD4K5f6w=;
+        b=G/AL7r3T/R1HIU1WsIy1DBghOmtuAQiMFkb59bTNQoeOE1ljAPo1qIYX/itle3BVf1pz/K
+        TdpczjZQvKpiLLwM6MXrlG4pgd2ePfnBH6Sm8lmr7E6RuEVAuWHaMDORwPsE7eNlLcyopc
+        WGr6PJHOk8VlZYZJjw95H2UwXThR1Go=
 Received: from suse.cz (unknown [10.100.216.66])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 8BF72A3B8A;
-        Thu, 24 Feb 2022 09:55:33 +0000 (UTC)
-Date:   Thu, 24 Feb 2022 10:55:33 +0100
+        by relay2.suse.de (Postfix) with ESMTPS id D6275A3ED1;
+        Thu, 24 Feb 2022 12:39:29 +0000 (UTC)
+Date:   Thu, 24 Feb 2022 13:39:27 +0100
 From:   Petr Mladek <pmladek@suse.com>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
-        Gary Guo <gary@garyguo.net>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Fox Chen <foxhlchen@gmail.com>,
+        Dan Robertson <daniel.robertson@starlab.io>,
+        Viktor Garske <viktor@v-gar.de>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        =?iso-8859-1?B?TOlv?= Lanteri Thauvin 
+        <leseulartichaut@gmail.com>, Niklas Mohrin <dev@niklasmohrin.de>,
+        Gioh Kim <gurugio@gmail.com>, Daniel Xu <dxu@dxuuu.xyz>,
+        Milan Landaverde <milan@mdaverde.com>,
+        Morgan Bartlett <mjmouse9999@gmail.com>,
+        Maciej Falkowski <m.falkowski@samsung.com>,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
         Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: [PATCH v4 12/20] vsprintf: add new `%pA` format specifier
-Message-ID: <YhdWFRGHpeOn+e0F@alley>
+        John Ogness <john.ogness@linutronix.de>
+Subject: Re: [PATCH v4 10/20] rust: add `kernel` crate
+Message-ID: <Yhd8f93+Pw/7KdRV@alley>
 References: <20220212130410.6901-1-ojeda@kernel.org>
- <20220212130410.6901-13-ojeda@kernel.org>
- <YgosclY9ebD3t020@smile.fi.intel.com>
- <dc9054f2-5e2b-0ae2-1022-23421668dd05@rasmusvillemoes.dk>
- <CANiq72=mNh415UG_nxDQc=9SCSVSPnqcAbgFZKzavnmsim_L0Q@mail.gmail.com>
- <YhSs5ZTL9ixdCCU9@alley>
- <10bbffc2-f144-8555-d41b-fede69a13c16@rasmusvillemoes.dk>
+ <20220212130410.6901-11-ojeda@kernel.org>
+ <YhSnnHpIeDReK/eL@alley>
+ <CANiq72n0sg_fizEk_kK=p8ROmWTrwdzqu1LD4SQdKUNLbK9ENA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <10bbffc2-f144-8555-d41b-fede69a13c16@rasmusvillemoes.dk>
+In-Reply-To: <CANiq72n0sg_fizEk_kK=p8ROmWTrwdzqu1LD4SQdKUNLbK9ENA@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue 2022-02-22 11:35:39, Rasmus Villemoes wrote:
-> On 22/02/2022 10.29, Petr Mladek wrote:
-> > On Mon 2022-02-14 13:12:24, Miguel Ojeda wrote:
-> >> On Mon, Feb 14, 2022 at 11:52 AM Rasmus Villemoes
-> >> <linux@rasmusvillemoes.dk> wrote:
-> >>>
-> >>> I think the point is for vsnprintf() to call (back) into Rust code.
-> >>
-> >> Indeed, this is the case.
-> >>
-> >>> That said, I don't like the !CONFIG_RUST version to return NULL, that
-> >>> will surely crash moments later.
-> >>>
-> >>> So I prefer something like
-> >>>
-> >>> [rust.h]
-> >>> // no CONFIG_RUST conditional
-> >>> +char *rust_fmt_argument(char* buf, char* end, void *ptr);
-> >>>
-> >>> [vsprintf.c]
-> >>> +       case 'A':
-> >>> +               if (IS_ENABLED(CONFIG_RUST))
-> >>> +                   return rust_fmt_argument(buf, end, ptr);
-> >>> +               else
-> >>> +                   return string_nocheck(buf, end, "[%pA in non-Rust
-> >>> code?!]", default_str_spec);
-> > 
-> > Any long message might cause buffer overflow when the caller expects
-> > fixed short string.
+On Tue 2022-02-22 13:48:16, Miguel Ojeda wrote:
+> Hi Petr,
 > 
-> If the caller (1) uses a %p extension from C code which should only be
-> used from Rust and (2) uses sprintf() or another variant where he
-> doesn't provide the real buffer bounds, well, then he certainly gets to
-> keep the pieces.
+> On Tue, Feb 22, 2022 at 10:06 AM Petr Mladek <pmladek@suse.com> wrote:
+> >
+> > What exactly should we keep in sync, please?
+> >
+> > I see only handling of KERN_* prefix in print.rs. I do not see there
+> > any counter part of LOG_LINE_MAX, CONSOLE_LOG_MAX, or PREFIX_MAX.
 > 
-> It is a much worse problem that if CONFIG_RUST is enabled, we can't know
-> that we were actually called from Rust (but when !CONFIG_RUST, we
-> certainly know that we weren't), so we could call into rust_fmt_argument
-> with a pointer which certainly doesn't point to the/a data structure
-> which that Rust code expects. But we can't do anything about it, we will
-> just have to rely on static analysis to flag any use of %pA in C code.
+> Good catch! We had a buffer on the Rust side in the past, but that is
+> not the case anymore since commit 9e8bd679ecf2 ("Support Rust
+> `core::fmt::Argument` in vsprintf") on our side, so we will remove the
+> comment.
 
-Yeah. !CONFIG_RUST would trigger the warning and help to find the
-sinners but it is not reliable. Static analysic might be better...
+Great :-)
 
-> > The most safe solution would be to use WARN_ONCE(). 
+> > I am sorry but I am not familiar with rust. What are these limits
+> > 2 and 10 used for, please?
+> >
+> > I guess that 2 is the size of a single KERN_* identifier.
+> > But what is 10?
+> >
+> > Note that printk() format prefix is typically just a single KERN_*
+> > identifier. But there might be more. Well, in practice only the
+> > following combination makes sense: KERN_CONT + KERN_<LEVEL>.
 > 
-> Preferably no, we shouldn't call into the printk machinery from within
-> vsnprintf(). I know I've added a few myself (AFAIR for use of %n or
-> other unsupported specifiers, and for overflow of precision/field
-> width), and I've often thought about a way to get rid of them while
-> still making sure some message eventually gets logged (once).
+> What we are doing here is generating compile-time format strings that
+> are then used by the `pr_*!` macros (which call the C side `printk()`
+> with one of the strings).
 
-WARN_ONCE() in vsprintf() code is much more acceptable these days
-with the lockless ringbuffer.
+I see. We are on the safe side then.
+
+> In other words, this is not parsing arbitrary `printk()` format
+> strings (which I am guessing something like that is your concern --
+> please let me know if I got it wrong).
+
+Yes, this was my concern.
+
+> > Finally, is there any way to test whether any change in the printk
+> > code breaks the rust support?
+> 
+> One way is to compile the code, e.g. the `assert!`s in the `generate`
+> function run at compile-time, thus they provide a first layer of
+> defense.
+> 
+> Another way is to use `samples/rust/print.rs` which we run in the CI
+> as a black box test.
+> 
+> Is that what you had in mind? Or something like unit tests or self tests?
+
+I had in mind any tests that I might run [*] to be sure that changes in
+the native printk code does not break Rust support.
+
+The compile test and samples/rust/print.rs do some basic tests and
+might enough for now.
+
+[*] To make it clear. I am not going to run the tests at this stage.
+    But I might be useful once this patchset is accepted upstream.
+    But it also might be enough to wait for results from your CI.
+    I hope that we will not break it that often.
 
 Best Regards,
 Petr
