@@ -2,69 +2,64 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF9E5C433EF
-	for <rust-for-linux@archiver.kernel.org>; Sat,  5 Mar 2022 16:59:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A21ABC433EF
+	for <rust-for-linux@archiver.kernel.org>; Mon,  7 Mar 2022 09:04:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229808AbiCERAG (ORCPT
+        id S231402AbiCGJFK (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 5 Mar 2022 12:00:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46498 "EHLO
+        Mon, 7 Mar 2022 04:05:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229543AbiCERAG (ORCPT
+        with ESMTP id S230488AbiCGJFK (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 5 Mar 2022 12:00:06 -0500
-Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56B7841FA9
-        for <rust-for-linux@vger.kernel.org>; Sat,  5 Mar 2022 08:59:16 -0800 (PST)
-Received: by mail-il1-x129.google.com with SMTP id i14so8744294ilv.4
-        for <rust-for-linux@vger.kernel.org>; Sat, 05 Mar 2022 08:59:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=j4+r/P2ldHbYCk2cQdAtxwF0cCtTh1uBjxEKcfmypBA=;
-        b=LOg47MBWKkce2gh7QiEQ67yFVWe9K+92oz05WfU7LQzblj9uVErC6aZERgs66bgZ0P
-         0WpRMhEiUV6IlCvZHoKiyDwBtpLpuJo0DpS0RWATL3MXBXdVU6/wsKMq9SyudnP4wgIX
-         gLZXOc+exDHxGRhtZte0I4sGueLZ/LvGfvam3W3/Jr3h+Qd+LSlOEHpRhHAyQPDaqfsZ
-         GRTxBhItWSTMpaLqDmbbwhWlC0mP/HLajNAlP0lCC0bWq+HFZEozi1sAo4ZEp3ZNBE/n
-         CIUnQ8eb9MxcFqcdd21TH4Le9/oJtt/ig25cW/I6NMfLc2kg48RA2SpOfwOMAd/ze1Rj
-         BYSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=j4+r/P2ldHbYCk2cQdAtxwF0cCtTh1uBjxEKcfmypBA=;
-        b=a3s2iyCZUnx0MwhyWExP28ulZ7UCt5N40N3tioSRvI2kpW+tjgFakAfyE4qOTKW/az
-         9XTREnMx3eTcxEHQHYotNgCYOHtP+BWSItKpYGp3V+nHibHDrrOd8KnFG2cwB+g9RhaC
-         vDfK4TMWhpjm71qwKvtWS0/KdBbVsr/i8cL0DTLaR4YodO5Ek3LUq6w7I9THeGAhMZR7
-         D8Xow7/QJ2OwnAWJnszrB3XsvSuHSJU33BOU+sy5ipcgfNAphr2+SmBU0AgaD03XEL3J
-         u7O/R8jrAI+odwkPw3qPanj7Qp1ewGBBSY+kVPAPIA5xyuNr82qdgfBqaJjEZzGCT8Se
-         Ut3w==
-X-Gm-Message-State: AOAM533+Io8hZZeG+FY22Qxi3BQonbL4+Tg9+fSkzFEhRY8aXVKUbHH3
-        +JwgJwOVNIi3Ewk40KvE6UseAbb1NkPFflZJiqLydd57
-X-Google-Smtp-Source: ABdhPJw0uLP+jzizZIuX6QrUgPTEX4KoWPydlUtia3KeIUIA2YlpPOPRNSisflteT3dtZdl92kqc9gyWq1CrQLiumCc=
-X-Received: by 2002:a05:6e02:198b:b0:2c2:c454:ea7 with SMTP id
- g11-20020a056e02198b00b002c2c4540ea7mr3826409ilf.151.1646499555732; Sat, 05
- Mar 2022 08:59:15 -0800 (PST)
+        Mon, 7 Mar 2022 04:05:10 -0500
+X-Greylist: delayed 481 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Mar 2022 01:04:15 PST
+Received: from mail.coprosmart.pl (mail.coprosmart.pl [51.83.134.251])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87CAC443FB
+        for <rust-for-linux@vger.kernel.org>; Mon,  7 Mar 2022 01:04:14 -0800 (PST)
+Received: by mail.coprosmart.pl (Postfix, from userid 1002)
+        id 70B73A270A; Mon,  7 Mar 2022 08:56:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=coprosmart.pl;
+        s=mail; t=1646643371;
+        bh=znuHv7VTn5HdnI0CYg9p6bGeDJOx6O3xunjVj6ejgQM=;
+        h=Date:From:To:Subject:From;
+        b=gDt5S929BzLxT4Ds0Dzgz/MZ9YsxFsjq3yDayg2fIHlEgaB8udkJ1cKyy3KDkVgs2
+         Sfq7gojLjLwiPioSEty+mFE9nXUOk23TZGzN0rUqeqbIWTa60ciCk3mdbOMFb/SUmv
+         t2/IfPUvRIGs2TuzNGC/wynlva83qa0M1cuC+80KaSIfa3Fgny4f6gGjh5Ur9UjQsA
+         TLEIOvKCQ2Nw+JgWFKSW7t4/iZaFaAo7D6G/rwVTJbl8+NZa1haPcBFKziqAquikHL
+         r2C76gmKNmlLmAmrkBM1O8RmVtYhwPdFG9i/CmNMC84wVO6jhAHOgmrcXaTwZcr1+R
+         hUrCNlBHw6Mzw==
+Received: by mail.coprosmart.pl for <rust-for-linux@vger.kernel.org>; Mon,  7 Mar 2022 08:55:59 GMT
+Message-ID: <20220307074500-0.1.4x.gqlr.0.54259gv4og@coprosmart.pl>
+Date:   Mon,  7 Mar 2022 08:55:59 GMT
+From:   "Tomasz Lesiak" <tomasz.lesiak@coprosmart.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: =?UTF-8?Q?=C5=9Arodki_za_dostaw=C4=99_w_terminie?=
+X-Mailer: mail.coprosmart.pl
 MIME-Version: 1.0
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 5 Mar 2022 17:59:04 +0100
-Message-ID: <CANiq72k=q=G5Z3TEORcxHXEbzX_uxdwWcP2a=TOnrZXJwZyo4g@mail.gmail.com>
-Subject: Reminder: informal call in 1 hour
-To:     rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi all,
+Dzie=C5=84 dobry,
 
-We will have our informal call in 1 hour (18:00 UTC first Saturday of
-each month).
+chcieliby Pa=C5=84stwo skorzysta=C4=87 z finansowania faktur w ramach us=C5=
+=82ugi faktoringowej i zyska=C4=87 dodatkowe =C5=9Brodki do obrotu?
 
-As usual, everybody is welcome to join. The meetings take place on
-Google Meet. If you need an invitation, drop me an email!
+Pomagamy przedsi=C4=99biorcom, kt=C3=B3rzy nie chc=C4=85 si=C4=99 zad=C5=82=
+u=C5=BCa=C4=87, nie mog=C4=85 uzyska=C4=87 kredytu, posiadaj=C4=85 zaleg=C5=
+=82o=C5=9Bci w ZUS/US, nie maj=C4=85 d=C5=82ugiego sta=C5=BCu dzia=C5=82a=
+lno=C5=9Bci, nie maj=C4=85 historii kredytowej, nie generuj=C4=85 zysk=C3=
+=B3w, maj=C4=85 nieregularne przychody.
 
-If you are in a timezone that cannot easily attend the meetings at
-18:00 UTC, please let us know.
+Aby mogli Pa=C5=84stwo przemy=C5=9Ble=C4=87 mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=
+=B3=C5=82pracy, ch=C4=99tnie przedstawi=C4=99 kilka rozwi=C4=85za=C5=84.
 
-Cheers,
-Miguel
+M=C3=B3g=C5=82bym zatelefonowa=C4=87?
+
+
+Pozdrawiam
+Tomasz Lesiak
+Kierownik Zespo=C5=82u
