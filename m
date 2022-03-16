@@ -2,40 +2,39 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F38DAC433F5
-	for <rust-for-linux@archiver.kernel.org>; Thu, 10 Mar 2022 08:07:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8B6CC433F5
+	for <rust-for-linux@archiver.kernel.org>; Wed, 16 Mar 2022 08:51:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230087AbiCJIIg (ORCPT
+        id S1354667AbiCPIxK (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 10 Mar 2022 03:08:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50626 "EHLO
+        Wed, 16 Mar 2022 04:53:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238740AbiCJIIf (ORCPT
+        with ESMTP id S233129AbiCPIxK (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 10 Mar 2022 03:08:35 -0500
-Received: from mail.upyourenergy.pl (mail.upyourenergy.pl [45.86.209.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A15D11AA2C
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Mar 2022 00:07:34 -0800 (PST)
-Received: by mail.upyourenergy.pl (Postfix, from userid 1001)
-        id 568286F7AE; Thu, 10 Mar 2022 02:49:35 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=upyourenergy.pl;
-        s=mail; t=1646899324;
-        bh=zkxajwxSKFbrXQW6Fdqpo5wHc4BluNWC66Lv2K2C3bg=;
+        Wed, 16 Mar 2022 04:53:10 -0400
+X-Greylist: delayed 509 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 16 Mar 2022 01:51:55 PDT
+Received: from mail.coredeal.pl (mail.coredeal.pl [51.75.73.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED74765148
+        for <rust-for-linux@vger.kernel.org>; Wed, 16 Mar 2022 01:51:55 -0700 (PDT)
+Received: by mail.coredeal.pl (Postfix, from userid 1002)
+        id 4385EA3144; Wed, 16 Mar 2022 08:41:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=coredeal.pl; s=mail;
+        t=1647420098; bh=9KGuIG62LgzC9aYmjKxzocuYLRCVghXg6v9Q1q2LHec=;
         h=Date:From:To:Subject:From;
-        b=IsRuELIvb3uNnKIMIjnqfTHjF3Z7I9mhGrJgwlllFt1Z0OP3wzNP8Thh7M4oXzzpD
-         G3MTS5qJ/MqV0Icok/nD3Nm7g5Y4tPTGiDMoavEGCj5cX+s8zd9NVUCv8Rc5PIpJcf
-         gEV4pRMiOUefnuedS72y0n3/El4v1r5nKn8hr5uafau7kCWOdpR90MFqefaMUBVULV
-         tAZavZ7596F9McfVeqhIaZcjSj7xZO+1iwkjOGzjWpwpQssrT4lm4lJT2xg9Zz5dW2
-         Umj4nQvZf+1cIQuDZ2cXtWND+H1qnwcpNx4R7Ww3pJPX1YkZlXaUg2UTEBexhwb2my
-         764OGIP9l/Jjw==
-Received: by mail.upyourenergy.pl for <rust-for-linux@vger.kernel.org>; Thu, 10 Mar 2022 07:49:13 GMT
-Message-ID: <20220310024500-0.1.o.9z0g.0.29hq5c33l1@upyourenergy.pl>
-Date:   Thu, 10 Mar 2022 07:49:13 GMT
-From:   =?UTF-8?Q? "Artur_Ma=C5=82osi=C5=84ski" ?= 
-        <artur.malosinski@upyourenergy.pl>
+        b=AtBsDC+vZuDOnRZEFDdPcMtWJBn4+2ZILnkitj7dCIcXqbrpVcogybXw9gJ7YoGxP
+         0LDGrjIfbCrBbSfuHFoheFC4i1spBNXJhPIvXvdlIhcCryuyBF+Ef5gJn4hnw/SlTR
+         Sr2D6MeRhKqz78wQEzP/lQYCVBajde1GX6defrURBqmG837Ovu0wOQvL0oD4/gZDx2
+         8/rSfbGPtgYg9uG+y5mVfSfbDXBmocLsRI9G+at7KOD+XTfbqaMIgBD6m4oPeMHhZF
+         iHDekFEe2f/JlK3pTW+3MhuIazUBbVh5biou3NHZghI1Mv7ja/gf7QOj3NMVAbOxkp
+         anGzVXHGjEW0Q==
+Received: by mail.coredeal.pl for <rust-for-linux@vger.kernel.org>; Wed, 16 Mar 2022 08:41:26 GMT
+Message-ID: <20220316074500-0.1.1z.7jdq.0.dr9yufb537@coredeal.pl>
+Date:   Wed, 16 Mar 2022 08:41:26 GMT
+From:   "Krzysztof Maj" <krzysztof.maj@coredeal.pl>
 To:     <rust-for-linux@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.upyourenergy.pl
+Subject: Biznesowy angielski
+X-Mailer: mail.coredeal.pl
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -43,19 +42,29 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Dzie=C5=84 dobry,=20
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+czy rozwa=C5=BCali Pa=C5=84stwo rozw=C3=B3j kwalifikacji j=C4=99zykowych =
+swoich pracownik=C3=B3w?
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+Opracowali=C5=9Bmy kursy j=C4=99zykowe dla r=C3=B3=C5=BCnych bran=C5=BC, =
+w kt=C3=B3rych koncentrujemy si=C4=99 na podniesieniu poziomu s=C5=82owni=
+ctwa i jako=C5=9Bci komunikacji wykorzystuj=C4=85c autorsk=C4=85 metod=C4=
+=99, stworzon=C4=85 specjalnie dla wymagaj=C4=85cego biznesu.=20
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+Niestandardowy kurs on-line, dopasowany do profilu firmy i obszar=C3=B3w =
+=C5=9Bwiadczonych us=C5=82ug, w szybkim czasie przyniesie efekty, kt=C3=B3=
+re zwi=C4=99ksz=C4=85 komfort i jako=C5=9B=C4=87 pracy, rozwijaj=C4=85c m=
+o=C5=BCliwo=C5=9Bci biznesowe.=20
+
+Zdalne szkolenie j=C4=99zykowe to m.in. zaj=C4=99cia z native speakerami,=
+ kt=C3=B3re w szybkim czasie naucz=C4=85 pracownik=C3=B3w rozmawia=C4=87 =
+za pomoc=C4=85 jasnego i zwi=C4=99z=C5=82ego j=C4=99zyka Business English=
+=2E
+
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3=
+w i opowiedzie=C4=87 jak dzia=C5=82amy?=20
 
 
-Pozdrawiam,
-Artur Ma=C5=82osi=C5=84ski
+Pozdrawiam
+Krzysztof Maj
