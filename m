@@ -2,69 +2,99 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8B6CC433F5
-	for <rust-for-linux@archiver.kernel.org>; Wed, 16 Mar 2022 08:51:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 248EFC4332F
+	for <rust-for-linux@archiver.kernel.org>; Thu, 17 Mar 2022 08:19:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354667AbiCPIxK (ORCPT
+        id S231143AbiCQIVG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 16 Mar 2022 04:53:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51112 "EHLO
+        Thu, 17 Mar 2022 04:21:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233129AbiCPIxK (ORCPT
+        with ESMTP id S229977AbiCQIVF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 16 Mar 2022 04:53:10 -0400
-X-Greylist: delayed 509 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 16 Mar 2022 01:51:55 PDT
-Received: from mail.coredeal.pl (mail.coredeal.pl [51.75.73.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED74765148
-        for <rust-for-linux@vger.kernel.org>; Wed, 16 Mar 2022 01:51:55 -0700 (PDT)
-Received: by mail.coredeal.pl (Postfix, from userid 1002)
-        id 4385EA3144; Wed, 16 Mar 2022 08:41:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=coredeal.pl; s=mail;
-        t=1647420098; bh=9KGuIG62LgzC9aYmjKxzocuYLRCVghXg6v9Q1q2LHec=;
-        h=Date:From:To:Subject:From;
-        b=AtBsDC+vZuDOnRZEFDdPcMtWJBn4+2ZILnkitj7dCIcXqbrpVcogybXw9gJ7YoGxP
-         0LDGrjIfbCrBbSfuHFoheFC4i1spBNXJhPIvXvdlIhcCryuyBF+Ef5gJn4hnw/SlTR
-         Sr2D6MeRhKqz78wQEzP/lQYCVBajde1GX6defrURBqmG837Ovu0wOQvL0oD4/gZDx2
-         8/rSfbGPtgYg9uG+y5mVfSfbDXBmocLsRI9G+at7KOD+XTfbqaMIgBD6m4oPeMHhZF
-         iHDekFEe2f/JlK3pTW+3MhuIazUBbVh5biou3NHZghI1Mv7ja/gf7QOj3NMVAbOxkp
-         anGzVXHGjEW0Q==
-Received: by mail.coredeal.pl for <rust-for-linux@vger.kernel.org>; Wed, 16 Mar 2022 08:41:26 GMT
-Message-ID: <20220316074500-0.1.1z.7jdq.0.dr9yufb537@coredeal.pl>
-Date:   Wed, 16 Mar 2022 08:41:26 GMT
-From:   "Krzysztof Maj" <krzysztof.maj@coredeal.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: Biznesowy angielski
-X-Mailer: mail.coredeal.pl
+        Thu, 17 Mar 2022 04:21:05 -0400
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64782163E17;
+        Thu, 17 Mar 2022 01:19:49 -0700 (PDT)
+Received: by mail-il1-x129.google.com with SMTP id r11so3191880ila.1;
+        Thu, 17 Mar 2022 01:19:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xKpTPc+312tnm2IHxxH6ooZEHljJo10HfiNs2G6uyuM=;
+        b=IYovmUnZ+qdsRLQ1RlW0eltHncl82U5coFgPh6DVJO4fxi10qTxiipwvWHXJv95ytF
+         BxdyIrDkLxxrh0NtUQrAEymP5BNUJvIlD7S9DQuW83tYtrBNyis7iQLv+HZHi61ggTnZ
+         CWo25Tuhd3KSsPrtjjLElSyRdl3e7edyJfS3FqHdUG72ryDfjTmRwLpxh8jcxNnVtzs8
+         MsMCjCjD65WFkgOIR8pR8FsprONalIh8LaaFcyuZR199/eOvVb5qTnyYSFGTGKrB3dm7
+         BZ1r3zKxx7zHWKfN9DN6aMpGVj6+wg4KHoLDiHzIOwhItB9s3GerQEP5M3q8CL7HaHAi
+         nheA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xKpTPc+312tnm2IHxxH6ooZEHljJo10HfiNs2G6uyuM=;
+        b=Y8v95/FanijgXhSndBjd5iTydQ7uetNnFXtwddL3bcrB5s2CiZB6iemsG8Vof8kt3A
+         G8A/5NsObzC+x/QckQbPgmyhFzrZjEp3KUxBZzFgfsdNYDkMyEnSfuklTxKGQOUMTxOX
+         A6iBQvkU6ywK4Pmq566AJoSLDU/rvQdUuyOmj9jPM/IKWWQ5aB02en69IDhendkgpPFY
+         9MeaSXLKlAUplDhxGAq5hemFyW+bIUpRzB2/etAFMhmX67jS5OT+AeVY7RWe8MFYNSKx
+         Ac8zNAhtTphJEgZ7tXt+lkRtS+U8y77KJILbi2UwBbcYXyrj0VUp1QJPViSkl90R8BnF
+         lIIQ==
+X-Gm-Message-State: AOAM5339talGBACLQphWWmyLy788RXK41NDjqk2p3xvur5/sG5euOn4V
+        Q/IGD//L+n7swtv2oiPxod5KRr/SSXlYYe0zzxQ=
+X-Google-Smtp-Source: ABdhPJwfd1D3uICD728dSd5iiOOL1/UDS2rL5ofpdJpLCCO+BSm5L/BuS1eQfHG36q5hn1JlxT25xACxZHGY8nuqmZg=
+X-Received: by 2002:a92:c908:0:b0:2c1:a287:8868 with SMTP id
+ t8-20020a92c908000000b002c1a2878868mr1289760ilp.321.1647505188872; Thu, 17
+ Mar 2022 01:19:48 -0700 (PDT)
 MIME-Version: 1.0
+References: <20220212130410.6901-16-ojeda@kernel.org> <8baf7006-90ed-25b8-3005-69b5475215cf@gmail.com>
+In-Reply-To: <8baf7006-90ed-25b8-3005-69b5475215cf@gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 17 Mar 2022 09:19:37 +0100
+Message-ID: <CANiq72mQffofeW4C=AWF4CHu=WpgpwB4hAv_q9QiTX_+U38qGg@mail.gmail.com>
+Subject: Re: [PATCH v4 15/20] docs: add Rust documentation
+To:     Akira Yokosawa <akiyks@gmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        Wu XiangCheng <bobwxc@email.cn>, Daniel Xu <dxu@dxuuu.xyz>,
+        Gary Guo <gary@garyguo.net>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Yuki Okushi <jtitor@2k36.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Finn Behrens <me@kloenk.de>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Wei Liu <wei.liu@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,=20
+Hi Akira,
 
-czy rozwa=C5=BCali Pa=C5=84stwo rozw=C3=B3j kwalifikacji j=C4=99zykowych =
-swoich pracownik=C3=B3w?
+On Mon, Feb 14, 2022 at 11:47 AM Akira Yokosawa <akiyks@gmail.com> wrote:
+>
+> > diff --git a/Documentation/rust/logo.svg b/Documentation/rust/logo.svg
+> > new file mode 100644
+> > index 000000000000..65be792a5abe
+> > --- /dev/null
+>
+> How about adding a suitable license identifier in a comment?
 
-Opracowali=C5=9Bmy kursy j=C4=99zykowe dla r=C3=B3=C5=BCnych bran=C5=BC, =
-w kt=C3=B3rych koncentrujemy si=C4=99 na podniesieniu poziomu s=C5=82owni=
-ctwa i jako=C5=9Bci komunikacji wykorzystuj=C4=85c autorsk=C4=85 metod=C4=
-=99, stworzon=C4=85 specjalnie dla wymagaj=C4=85cego biznesu.=20
+For the next round, I did not apply this suggestion, because it is
+unclear which license identifier to use: it would be probably be the
+same as the `COPYING-logo` one (which would be used also for the Tux
+SVG, if it gets merged -- it was sent a while ago).
 
-Niestandardowy kurs on-line, dopasowany do profilu firmy i obszar=C3=B3w =
-=C5=9Bwiadczonych us=C5=82ug, w szybkim czasie przyniesie efekty, kt=C3=B3=
-re zwi=C4=99ksz=C4=85 komfort i jako=C5=9B=C4=87 pracy, rozwijaj=C4=85c m=
-o=C5=BCliwo=C5=9Bci biznesowe.=20
-
-Zdalne szkolenie j=C4=99zykowe to m.in. zaj=C4=99cia z native speakerami,=
- kt=C3=B3re w szybkim czasie naucz=C4=85 pracownik=C3=B3w rozmawia=C4=87 =
-za pomoc=C4=85 jasnego i zwi=C4=99z=C5=82ego j=C4=99zyka Business English=
-=2E
-
-Czy m=C3=B3g=C5=82bym przedstawi=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3=
-w i opowiedzie=C4=87 jak dzia=C5=82amy?=20
-
-
-Pozdrawiam
-Krzysztof Maj
+Cheers,
+Miguel
