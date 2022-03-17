@@ -2,58 +2,62 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 248EFC4332F
-	for <rust-for-linux@archiver.kernel.org>; Thu, 17 Mar 2022 08:19:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CBCBBC433F5
+	for <rust-for-linux@archiver.kernel.org>; Thu, 17 Mar 2022 14:50:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231143AbiCQIVG (ORCPT
+        id S235433AbiCQOwL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 17 Mar 2022 04:21:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44094 "EHLO
+        Thu, 17 Mar 2022 10:52:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229977AbiCQIVF (ORCPT
+        with ESMTP id S235430AbiCQOwK (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 17 Mar 2022 04:21:05 -0400
-Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64782163E17;
-        Thu, 17 Mar 2022 01:19:49 -0700 (PDT)
-Received: by mail-il1-x129.google.com with SMTP id r11so3191880ila.1;
-        Thu, 17 Mar 2022 01:19:49 -0700 (PDT)
+        Thu, 17 Mar 2022 10:52:10 -0400
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82C2420288E;
+        Thu, 17 Mar 2022 07:50:51 -0700 (PDT)
+Received: by mail-pj1-x1035.google.com with SMTP id kx13-20020a17090b228d00b001c6715c9847so3393505pjb.1;
+        Thu, 17 Mar 2022 07:50:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xKpTPc+312tnm2IHxxH6ooZEHljJo10HfiNs2G6uyuM=;
-        b=IYovmUnZ+qdsRLQ1RlW0eltHncl82U5coFgPh6DVJO4fxi10qTxiipwvWHXJv95ytF
-         BxdyIrDkLxxrh0NtUQrAEymP5BNUJvIlD7S9DQuW83tYtrBNyis7iQLv+HZHi61ggTnZ
-         CWo25Tuhd3KSsPrtjjLElSyRdl3e7edyJfS3FqHdUG72ryDfjTmRwLpxh8jcxNnVtzs8
-         MsMCjCjD65WFkgOIR8pR8FsprONalIh8LaaFcyuZR199/eOvVb5qTnyYSFGTGKrB3dm7
-         BZ1r3zKxx7zHWKfN9DN6aMpGVj6+wg4KHoLDiHzIOwhItB9s3GerQEP5M3q8CL7HaHAi
-         nheA==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=Ult9/ByMuaDuRWu9wegLfYo3cD7pdC8YBvUdPcfln2g=;
+        b=T517SpSpDL+enl1+v3+I5yfkt5E2hHJD3z2stzP5AjDTOC8WuLind6JgtHAHp3Ls3R
+         Lt/8f1MGkzeT5ibHptTfBMVtCk4utRyLvrxBSu+b+Q6tlV2alIsMSx0CeqCev2uy0KjC
+         rlVOljaoT02QJvvX2oOPaNOocwhCqhLFph8FEC7MVLQ8bQOZMs3LfBtIPLuxm1n0t+Po
+         UUy32UY+2ssqYQWEJ9GXwOrCvflP889u5QcG+npuSm9/o4Z6jt8LdhnqEkYCkHFDzIHa
+         kwouUOcXo4LOjjhg1cUKUewGnzffGol1GQgEtqx8+Z1xODWPt9AIS2axbo16hhyyUOMa
+         zDXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xKpTPc+312tnm2IHxxH6ooZEHljJo10HfiNs2G6uyuM=;
-        b=Y8v95/FanijgXhSndBjd5iTydQ7uetNnFXtwddL3bcrB5s2CiZB6iemsG8Vof8kt3A
-         G8A/5NsObzC+x/QckQbPgmyhFzrZjEp3KUxBZzFgfsdNYDkMyEnSfuklTxKGQOUMTxOX
-         A6iBQvkU6ywK4Pmq566AJoSLDU/rvQdUuyOmj9jPM/IKWWQ5aB02en69IDhendkgpPFY
-         9MeaSXLKlAUplDhxGAq5hemFyW+bIUpRzB2/etAFMhmX67jS5OT+AeVY7RWe8MFYNSKx
-         Ac8zNAhtTphJEgZ7tXt+lkRtS+U8y77KJILbi2UwBbcYXyrj0VUp1QJPViSkl90R8BnF
-         lIIQ==
-X-Gm-Message-State: AOAM5339talGBACLQphWWmyLy788RXK41NDjqk2p3xvur5/sG5euOn4V
-        Q/IGD//L+n7swtv2oiPxod5KRr/SSXlYYe0zzxQ=
-X-Google-Smtp-Source: ABdhPJwfd1D3uICD728dSd5iiOOL1/UDS2rL5ofpdJpLCCO+BSm5L/BuS1eQfHG36q5hn1JlxT25xACxZHGY8nuqmZg=
-X-Received: by 2002:a92:c908:0:b0:2c1:a287:8868 with SMTP id
- t8-20020a92c908000000b002c1a2878868mr1289760ilp.321.1647505188872; Thu, 17
- Mar 2022 01:19:48 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=Ult9/ByMuaDuRWu9wegLfYo3cD7pdC8YBvUdPcfln2g=;
+        b=oC77KhE2hcvigVqmwX6tKT08MprdCaSP10XIBqe7CAqZw63uriHuvOqD8YQ307VqPe
+         18609hQ8dZzAQJX7Pmd7lbfvvV9eChG6jgvaG0slHRmNAqTRAFJQbSqGzBPok4Czi4TI
+         EPHZvexN2lbCBn4xIC2gRUqSF0IXI/PJnuEqoU1XS5wmduKhGgxKYrDnfn3LdjHoJMmW
+         Cg8DkKFF/984v81R+/vMcXkpjrMzfzjsbIVJ4tpF9LrCCinYQkX5E1QIv7eYPr08jwEq
+         Mid9ZmKS0zG92VgqR2K19PpLckDb3ncNsBl6vVpa/s9VJump7t8kQP6kllMT8MxrJ+Zv
+         yKuw==
+X-Gm-Message-State: AOAM532kByZGOGXne1UlGHjMK7QM3hxzV5u3F5IY66x3PlwSZrARKKj/
+        NML34fDN1hw8+1fa2Xb/9Ck=
+X-Google-Smtp-Source: ABdhPJzFCIQ9U1a5Ff/NkoQwA2u5QpYwRvFkzLuMNq8vKBUpmH511ahdUg5ea8QEBhH0/mIsgY9mHg==
+X-Received: by 2002:a17:90b:4b4a:b0:1bf:83d:6805 with SMTP id mi10-20020a17090b4b4a00b001bf083d6805mr16755000pjb.174.1647528650948;
+        Thu, 17 Mar 2022 07:50:50 -0700 (PDT)
+Received: from [192.168.11.5] (KD106167171201.ppp-bb.dion.ne.jp. [106.167.171.201])
+        by smtp.gmail.com with ESMTPSA id l2-20020a056a0016c200b004f7e3181a41sm7579754pfc.98.2022.03.17.07.50.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Mar 2022 07:50:50 -0700 (PDT)
+Message-ID: <61547556-790f-f74f-ca2e-b2fde714a7fa@gmail.com>
+Date:   Thu, 17 Mar 2022 23:50:42 +0900
 MIME-Version: 1.0
-References: <20220212130410.6901-16-ojeda@kernel.org> <8baf7006-90ed-25b8-3005-69b5475215cf@gmail.com>
-In-Reply-To: <8baf7006-90ed-25b8-3005-69b5475215cf@gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 17 Mar 2022 09:19:37 +0100
-Message-ID: <CANiq72mQffofeW4C=AWF4CHu=WpgpwB4hAv_q9QiTX_+U38qGg@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
 Subject: Re: [PATCH v4 15/20] docs: add Rust documentation
-To:     Akira Yokosawa <akiyks@gmail.com>
+Content-Language: en-US
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Adam Bratschi-Kaye <ark.email@gmail.com>,
@@ -75,26 +79,54 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Wedson Almeida Filho <wedsonaf@google.com>,
         Wei Liu <wei.liu@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+References: <20220212130410.6901-16-ojeda@kernel.org>
+ <8baf7006-90ed-25b8-3005-69b5475215cf@gmail.com>
+ <CANiq72mQffofeW4C=AWF4CHu=WpgpwB4hAv_q9QiTX_+U38qGg@mail.gmail.com>
+From:   Akira Yokosawa <akiyks@gmail.com>
+In-Reply-To: <CANiq72mQffofeW4C=AWF4CHu=WpgpwB4hAv_q9QiTX_+U38qGg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Akira,
+Hi Miguel,
 
-On Mon, Feb 14, 2022 at 11:47 AM Akira Yokosawa <akiyks@gmail.com> wrote:
->
-> > diff --git a/Documentation/rust/logo.svg b/Documentation/rust/logo.svg
-> > new file mode 100644
-> > index 000000000000..65be792a5abe
-> > --- /dev/null
->
-> How about adding a suitable license identifier in a comment?
+On Thu, 17 Mar 2022 09:19:37 +0100,
+Miguel Ojeda wrote:
+> Hi Akira,
+> 
+> On Mon, Feb 14, 2022 at 11:47 AM Akira Yokosawa <akiyks@gmail.com> wrote:
+>>
+>>> diff --git a/Documentation/rust/logo.svg b/Documentation/rust/logo.svg
+>>> new file mode 100644
+>>> index 000000000000..65be792a5abe
+>>> --- /dev/null
+>>
+>> How about adding a suitable license identifier in a comment?
+> 
+> For the next round, I did not apply this suggestion, because it is
+> unclear which license identifier to use: it would be probably be the
+> same as the `COPYING-logo` one (which would be used also for the Tux
+> SVG, if it gets merged -- it was sent a while ago).
 
-For the next round, I did not apply this suggestion, because it is
-unclear which license identifier to use: it would be probably be the
-same as the `COPYING-logo` one (which would be used also for the Tux
-SVG, if it gets merged -- it was sent a while ago).
+I see.
 
-Cheers,
-Miguel
+As I see v2 15/20, the SVG figure is among other documentation updates.
+IIUC, this figure/logo was in PNG at first, but Jon suggested vector graphics.
+If this is the case, it deserves an individual patch with a changelog
+explaining why it is in SVG, where the Tux figure came from, what was the
+original PNG logo, who contributed the SVG conversion, etc.
+
+I understand you did all the SVG work, didn't you?
+I don't think those many Co-developed-by tags apply to this figure.
+
+I'm saying this because this figure/logo can be reused in other open-
+source projects on its own.  It would be worth clarifying its origin 
+in the Git history as well as in COPYING-logo.
+
+        Thanks, Akira
+
+> 
+> Cheers,
+> Miguel
