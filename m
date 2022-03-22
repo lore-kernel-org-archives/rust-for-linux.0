@@ -2,81 +2,99 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41085C433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon, 21 Mar 2022 23:21:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32918C433EF
+	for <rust-for-linux@archiver.kernel.org>; Tue, 22 Mar 2022 04:17:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232453AbiCUXWl (ORCPT
+        id S236372AbiCVES2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 21 Mar 2022 19:22:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50896 "EHLO
+        Tue, 22 Mar 2022 00:18:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232459AbiCUXWb (ORCPT
+        with ESMTP id S236363AbiCVES2 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 21 Mar 2022 19:22:31 -0400
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 000BF9FDC
-        for <rust-for-linux@vger.kernel.org>; Mon, 21 Mar 2022 16:15:09 -0700 (PDT)
-Received: by mail-io1-xd31.google.com with SMTP id w7so18504980ioj.5
-        for <rust-for-linux@vger.kernel.org>; Mon, 21 Mar 2022 16:15:09 -0700 (PDT)
+        Tue, 22 Mar 2022 00:18:28 -0400
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A94011C0D
+        for <rust-for-linux@vger.kernel.org>; Mon, 21 Mar 2022 21:17:01 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id o13so11763891pgc.12
+        for <rust-for-linux@vger.kernel.org>; Mon, 21 Mar 2022 21:17:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=i+IcaNCmQN3ppRhZiGk1fK5srwD7Uf9NTqmkx/PvkqU=;
-        b=XfRoC9PpTSR9DUnFH4rVj4ouDsKu+XuYhHNEQOciOgTeWJ5CW2TAnosgVuSGpzRyGe
-         33wg0STJd/vbddzi82liA60JzEyFQY3wgwU415xlvMLgIqEL1Pbual+dgA5G7AbK2OVF
-         NqVb3VCdVsaVtGPOAA3LTCwPaf45nuWmAW7TQgxbnrSXSEHhf69DDqbMxUVsrnzHUk4I
-         9p+siBbsByqLgX/4xP9NGmNVfJUEs6Ewm52NOB2QXGc/OlnYiy1cfxQOMx8HAIpoDHcu
-         PYMlGaiDRHGbPOAepY1LDVj3K6CuhZwaK95ot/+YhvJVB5o0mve3VdsfH1TfSnQX9VH3
-         d1qw==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=1SX7VG7pcFZQTL6ghZ/zYF6sS4uvEZ0uS9Ptdb4LiaQ=;
+        b=UYRR7DOJp+47629aFz0Vdy2LnsEHUTiyqbRnOeLHCm/tpXSA3Fl58WaYTxmuPMqD+M
+         9/TJ+vj1PSdG9oX0jFzKLOOJ+CPj1Nyx2iZ6KYzYleGNoAOegMo/WhQfwuNDeiwcsZ8g
+         2X8Fj+beFHqamZYWsKxa4waCD/QqE3MUFY36k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=i+IcaNCmQN3ppRhZiGk1fK5srwD7Uf9NTqmkx/PvkqU=;
-        b=2F5RQPBR/mz9Z132p6Jlq2NLC73bY2Uy/fB7g+QPMg0WRLc0T/B1zJtxkNXPoSRE3J
-         iDzBgU8s7BplqXF3gnNhzv6zFX6lNDMCZS7YY0Y/zwtnwc7EA3JtiYgH075Yr+x64ilQ
-         KJeWMASqpd21MH2324GTe8cQ/s/Gr6DPXTLk33uM2WZJAvX+vEWGOY+z66tfKYnKcnpQ
-         TJzRKMk3D/WG8ULSXjodoRkKhD8EvVNfC8U3myA3yHoQsY51YhhMBy6V4vTDsz+TtiN+
-         2wo/Qh48ZvjQndjFxZBAlRAH1kKKvnsaP4tKsM/MV9boADuALuUpG/rOzjAy2+95cvBi
-         +24g==
-X-Gm-Message-State: AOAM532Y3yjBBY+OBbds2juoj4GW6Og75O26JAA628rLBVt8oDRj39L4
-        dBYUKLLraIKAqwP6tv1Oco14eiMJiggIpiXFj64=
-X-Google-Smtp-Source: ABdhPJx3EYruWWEpef5QFdGnZx3AKDWy14ZZ3W94HHrKvcCFxLyuXtqxSkaI3tjW40745zTuhSRWZMT6BhFMAhJvjwo=
-X-Received: by 2002:a6b:b550:0:b0:649:a974:5e39 with SMTP id
- e77-20020a6bb550000000b00649a9745e39mr3126795iof.64.1647904509169; Mon, 21
- Mar 2022 16:15:09 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=1SX7VG7pcFZQTL6ghZ/zYF6sS4uvEZ0uS9Ptdb4LiaQ=;
+        b=zafEyl4kl4v0+Q8F2WBzZeeDBs95KrxZMIjotx/qA2bpltRZuboZcYdvIdY5GHrDFC
+         kdM05Qb0H/FObIMlNS3wYCUmC89KMiiDxEQSD7WIG4uqn+im4lJ1oenxk56EKWK1+IY2
+         2iteWpv9tzRkR2VxgNzIeAei4NWMxDf2FfamH9p1iuOKmKgHDynVJtw2MH4TfzvkwF7E
+         YxGWfG3+Pyn2n9VMqCteo3uNBJVpfiv4jswmX242hgDXC0nQwIknGa7dqjS9jd3DRuHm
+         8eC9n1k6wPZvB2aQ/DUc+3CYxJ+Maf5b4s913rnOY3SGehidkysfCQ+fx5sdZtuiuxdv
+         9Ttg==
+X-Gm-Message-State: AOAM530LhnFMn8324Mdas8Lx/za8yH+7TdMQCWcXwbQmxz+VpH1EtrC3
+        TNu+WE+XHp4EwCprhFjKJi0kQg==
+X-Google-Smtp-Source: ABdhPJxs0Y5O8LkJlXrrvhdEL8fgYGIzetMPjEFGIwlWa/F8vit8lWjvms4F/1c+Dv7cFyN0kigQGA==
+X-Received: by 2002:a63:5024:0:b0:380:83f7:1603 with SMTP id e36-20020a635024000000b0038083f71603mr20118067pgb.289.1647922621067;
+        Mon, 21 Mar 2022 21:17:01 -0700 (PDT)
+Received: from google.com ([2401:fa00:8f:203:51af:6dff:4acd:7fa5])
+        by smtp.gmail.com with ESMTPSA id j14-20020a056a00174e00b004f776098715sm22006057pfc.68.2022.03.21.21.16.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Mar 2022 21:17:00 -0700 (PDT)
+Date:   Tue, 22 Mar 2022 13:16:54 +0900
+From:   Sergey Senozhatsky <senozhatsky@chromium.org>
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Gary Guo <gary@garyguo.net>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Subject: Re: [PATCH v5 12/20] vsprintf: add new `%pA` format specifier
+Message-ID: <YjlNtkNP1FJ4XEyX@google.com>
+References: <20220317181032.15436-1-ojeda@kernel.org>
+ <20220317181032.15436-13-ojeda@kernel.org>
+ <YjSSI4cmGblm+6j7@smile.fi.intel.com>
+ <YjStnb7nNTC3kYw6@alley>
 MIME-Version: 1.0
-References: <CAHkG_ewRo5uPOue3ZMAAPAc+eP7MNNU5iVym-JVG1jN7HD+XMg@mail.gmail.com>
- <CAFRnB2W+8XqOj0aL5DP2cMNLO2uR0DpPk-qB-oC7r=zT5N5gGA@mail.gmail.com>
-In-Reply-To: <CAFRnB2W+8XqOj0aL5DP2cMNLO2uR0DpPk-qB-oC7r=zT5N5gGA@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 22 Mar 2022 00:14:58 +0100
-Message-ID: <CANiq72=q2FWAfyjPs+VC-H6o8RXCjrXwKbCFJ1kDKGbfYDYnGw@mail.gmail.com>
-Subject: Re: Using 3rd party crates in an out-of-tree module
-To:     Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     =?UTF-8?B?TsOhbmRvciBLcsOhY3Nlcg==?= <bonifaido@gmail.com>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YjStnb7nNTC3kYw6@alley>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Mar 21, 2022 at 10:17 PM Alex Gaynor <alex.gaynor@gmail.com> wrote:
->
-> I don't know if anyone has given any thought to supporting 3rd party
-> crates for out-of-tree modules.
+On (22/03/18 17:04), Petr Mladek wrote:
+> On Fri 2022-03-18 16:07:31, Andy Shevchenko wrote:
+> > On Thu, Mar 17, 2022 at 07:10:00PM +0100, Miguel Ojeda wrote:
+> > > From: Gary Guo <gary@garyguo.net>
+> > > +	case 'A':
+> > > +		if (!IS_ENABLED(CONFIG_RUST)) {
+> > > +			WARN_ONCE(1, "Please remove %%pA from non-Rust code\n");
+> > > +			return error_string(buf, end, "(%pA?)", spec);
+> > > +		}
+> > 
+> > I'm wondering if the Big Scary Banner as trace_printk() does would be better
+> > (in case we can tell that %pA is used in the code when RUST=n).
+> 
+> Good question!
+> 
+> The advantage of WARN_ONCE() is that it shows the stack so that it is
+> easier to locate the caller.
+> 
+> On the other hand, WARN_ONCE() is a bit misused here. It should be
+> used only in situations that might be potentially fatal. It might
+> even cause panic() with "panic_on_warn" kernel parameter.
 
-It is possible that we will have some form of dependency support
-within the kernel (e.g. to split the `kernel` crate), which could be
-used by out-of-tree modules too.
-
-Extending this to Cargo-based crates could be possible, but we would
-need a clear use case -- if an out-of-tree module requires a
-third-party crate, it is fairly likely others in-tree also need the
-same problem solved. It can also complicate submitting the out-of-tree
-module later on to mainline if one relied on third-party code which
-now has an alternative in-tree.
-
-Cheers,
-Miguel
+Stack trace is certainly helpful here. So maybe dump_stack() instead
+of WARN_ONCE()? I guess I don't mind WARN_ONCE().
