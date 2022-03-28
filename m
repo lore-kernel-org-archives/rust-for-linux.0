@@ -2,63 +2,72 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CECE9C433F5
-	for <rust-for-linux@archiver.kernel.org>; Fri, 25 Mar 2022 08:45:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DE0F0C433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon, 28 Mar 2022 00:42:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355453AbiCYIrV (ORCPT
+        id S237116AbiC1Ank (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 25 Mar 2022 04:47:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46950 "EHLO
+        Sun, 27 Mar 2022 20:43:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235974AbiCYIrU (ORCPT
+        with ESMTP id S237094AbiC1Ank (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 25 Mar 2022 04:47:20 -0400
-Received: from mail.coprosmart.pl (mail.coprosmart.pl [51.83.134.251])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F37F0CA0C4
-        for <rust-for-linux@vger.kernel.org>; Fri, 25 Mar 2022 01:45:45 -0700 (PDT)
-Received: by mail.coprosmart.pl (Postfix, from userid 1002)
-        id A66DAA20A5; Fri, 25 Mar 2022 08:45:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=coprosmart.pl;
-        s=mail; t=1648197943;
-        bh=znuHv7VTn5HdnI0CYg9p6bGeDJOx6O3xunjVj6ejgQM=;
-        h=Date:From:To:Subject:From;
-        b=EfWhKK4wzFxwGswoZRAfVFTYdy/QWsuSeBOjV6eiQt0Uaji3EV+lWabZef0zusXYf
-         +/1x+qVvko6JFkAt0fecPR+XcjeZEa73UQ1k53cf+kjhpO9myl8dIdguwAYEphVirG
-         mexBXHjF5EdslfuO9vNPbQLOhNVsjXSyVGrUBw4Zhc32NvPfSvHZrEoHOpnxUNyrJQ
-         +oEiUOF+5kWWDjd7bfU5dHef7NoiRLTH6UkKq3XZjdE/Ws/aeWZmNT9Tg5tp0nFiqy
-         IjMv9JRHE/p5ycibK72cAy+fhwbyn2R4rLW+ZDdJnyp03qg3J3rZFZlKE12OWVEhfj
-         mGLf+EMrrSxqg==
-Received: by mail.coprosmart.pl for <rust-for-linux@vger.kernel.org>; Fri, 25 Mar 2022 08:45:24 GMT
-Message-ID: <20220325074500-0.1.5b.hoq4.0.z8db6l35e7@coprosmart.pl>
-Date:   Fri, 25 Mar 2022 08:45:24 GMT
-From:   "Tomasz Lesiak" <tomasz.lesiak@coprosmart.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: =?UTF-8?Q?=C5=9Arodki_za_dostaw=C4=99_w_terminie?=
-X-Mailer: mail.coprosmart.pl
+        Sun, 27 Mar 2022 20:43:40 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD701E000
+        for <rust-for-linux@vger.kernel.org>; Sun, 27 Mar 2022 17:41:56 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id bi12so25499201ejb.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 27 Mar 2022 17:41:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sutes-me.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=PgKcRmQl79BDV6/v41mFEjNotR71PBkWJJKbt2dKYC8=;
+        b=b0rI1Rod1Qb1IIyVXUhaPBdLEFn0lPZRHThg4VO1EuOXDJWyEBRiZ2dcCOVtM6wHkc
+         EUqD0R5422tBwVP6DaTr7azP3qivIs1Ne3P+36KxMrvJteIPE/k5WTszVoK5kh52BwOx
+         u6Qx02rjPkU0+EIbpmlfXFBUL74lB7KCaOhtLsGoXbbvfwMBYZGvXSXiXzNtjasiJ5Ju
+         ipnzCmjlcNR7t2tRYtB+JqwobCE8ODwj7Ez29j+UJphR2rLfcKzv9sVVJBdT3IAKdPN/
+         s1lb+6pN1CAtjh6JMvBmKDgFftBGcfzPkFJCktoHOUT0gtbhOXl6U4VXFTBoPhd+jy6q
+         2cvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=PgKcRmQl79BDV6/v41mFEjNotR71PBkWJJKbt2dKYC8=;
+        b=zEmorbzz3FUugILgqjot6u4hXeK6k4i8dom/iqnMKPFm27cxsYHEYL2aiN4Vt9riL8
+         sFSxIymdBy0eGk+b5CJ8rpyz3j/nuDxuhHgSzEK3arVlxS5cKm97NntwEBxJWOVek/99
+         bXxNFEX23Fwy+AbhNhHJhtCJdgEZy/FgtFAf82sr/8sWRbM26y0CRPEmYP/m5IM0xiHh
+         V4cdx1bWa9piJDxiNDQk5Yy0GbsifbQA6DGIW50YrrFwZbViylc/rg6OVsTU0FDRdM+m
+         g/suLrZBJIeU7ZrUw88nIp8OGIKPoLLPy3r2Enb/XY3UiMlIYzM0xu5HWFli0fkqNlPd
+         Pusg==
+X-Gm-Message-State: AOAM531hQEA0F6O108y2CpZgI8W3c00S/bifOPoPyZttLa6bbx2UzAGH
+        yMqDgYcqbmiEokeBbeXn2glVB5x5bqZsTvIS0aXI8MK4mjI=
+X-Google-Smtp-Source: ABdhPJwaao88n8UtXE6DOZG2z1kZeG0yzLb98jbOupXZhCAo0rD7TrEy9TOBFdJkcdH5A8bL81d/L3oL9AdkvG8Zlpo=
+X-Received: by 2002:a17:906:6a02:b0:6d7:cda:2cf7 with SMTP id
+ qw2-20020a1709066a0200b006d70cda2cf7mr23876622ejc.53.1648428114989; Sun, 27
+ Mar 2022 17:41:54 -0700 (PDT)
 MIME-Version: 1.0
+References: <CAKfU0DKvQYjhgiKN83+DZW3CQOkSEdQcy9nXUfFLVn1Uju6GkQ@mail.gmail.com>
+In-Reply-To: <CAKfU0DKvQYjhgiKN83+DZW3CQOkSEdQcy9nXUfFLVn1Uju6GkQ@mail.gmail.com>
+From:   Chris Suter <chris@sutes.me>
+Date:   Mon, 28 Mar 2022 11:41:43 +1100
+Message-ID: <CAKfU0DLS5icaFn0Mve6+y9Tn1vL+eLKqfquvXbX4oCpYH+VapQ@mail.gmail.com>
+Subject: Fwd: Adding crates
+To:     rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Hey folks,
 
-chcieliby Pa=C5=84stwo skorzysta=C4=87 z finansowania faktur w ramach us=C5=
-=82ugi faktoringowej i zyska=C4=87 dodatkowe =C5=9Brodki do obrotu?
+I'm playing with a kernel module written in Rust, and for the thing
+I'm working on, I need to pull in a number of crates. The most
+significant of those might be some async ones: (e.g. futures,
+async_trait). What's the best way to pull those in and get them
+building with my module? In particular, I'm interested in how to
+structure the Makefile to make it work. Are there any examples I could
+follow?
 
-Pomagamy przedsi=C4=99biorcom, kt=C3=B3rzy nie chc=C4=85 si=C4=99 zad=C5=82=
-u=C5=BCa=C4=87, nie mog=C4=85 uzyska=C4=87 kredytu, posiadaj=C4=85 zaleg=C5=
-=82o=C5=9Bci w ZUS/US, nie maj=C4=85 d=C5=82ugiego sta=C5=BCu dzia=C5=82a=
-lno=C5=9Bci, nie maj=C4=85 historii kredytowej, nie generuj=C4=85 zysk=C3=
-=B3w, maj=C4=85 nieregularne przychody.
+Cheers,
 
-Aby mogli Pa=C5=84stwo przemy=C5=9Ble=C4=87 mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=
-=B3=C5=82pracy, ch=C4=99tnie przedstawi=C4=99 kilka rozwi=C4=85za=C5=84.
-
-M=C3=B3g=C5=82bym zatelefonowa=C4=87?
-
-
-Pozdrawiam
-Tomasz Lesiak
-Kierownik Zespo=C5=82u
+Chris
