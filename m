@@ -2,79 +2,68 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45615C433EF
-	for <rust-for-linux@archiver.kernel.org>; Thu, 31 Mar 2022 13:35:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FCE3C433EF
+	for <rust-for-linux@archiver.kernel.org>; Fri,  1 Apr 2022 08:20:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233018AbiCaNhA (ORCPT
+        id S229851AbiDAIWB (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 31 Mar 2022 09:37:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39180 "EHLO
+        Fri, 1 Apr 2022 04:22:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234284AbiCaNhA (ORCPT
+        with ESMTP id S229568AbiDAIWB (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 31 Mar 2022 09:37:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DCE7103D8F;
-        Thu, 31 Mar 2022 06:35:13 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DBFE61926;
-        Thu, 31 Mar 2022 13:35:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155CCC340EE;
-        Thu, 31 Mar 2022 13:35:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1648733712;
-        bh=aCkusMvkesrwDSvmS3BLFtnpnJ8E1fFKa/EVcuQFOM0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MdS05gEM0paDn3pjZwCJ9JM09dRKYhqJNi3J03JKqZP8No1NEfXyZZPNAaF89660e
-         NT76ADpnFMGIp+y8MimStntvwxZPM10eFEnLKgnll9dlAAfJu48ChBw81aamd+/Hmx
-         QTvd0a8gqDMpdsjExwJZVL4YwWgStgCgK4K2b6Ik=
-Date:   Thu, 31 Mar 2022 15:35:05 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Gary Guo <gary@garyguo.net>, Matthew Bakhtiari <dev@mtbk.me>
-Subject: Re: [PATCH v5 06/20] rust: add `alloc` crate
-Message-ID: <YkWuCenvnvRBkv8V@kroah.com>
-References: <20220317181032.15436-1-ojeda@kernel.org>
- <20220317181032.15436-7-ojeda@kernel.org>
- <YkWhs1GffuUmZ4SC@kroah.com>
- <CANiq72mxXY_4wXZPO5VCX76G168X0gynO=n=1xP2shVWBm+yeA@mail.gmail.com>
+        Fri, 1 Apr 2022 04:22:01 -0400
+Received: from mail.coredeal.pl (mail.coredeal.pl [51.75.73.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C777EDE8C
+        for <rust-for-linux@vger.kernel.org>; Fri,  1 Apr 2022 01:20:11 -0700 (PDT)
+Received: by mail.coredeal.pl (Postfix, from userid 1002)
+        id BDAB9A4831; Fri,  1 Apr 2022 08:16:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=coredeal.pl; s=mail;
+        t=1648801035; bh=9KGuIG62LgzC9aYmjKxzocuYLRCVghXg6v9Q1q2LHec=;
+        h=Date:From:To:Subject:From;
+        b=mh95t7gp7wk9Inqh4r3YNq4VyOOOcTHVP5+LDNd+HO0zxYzDHMPyC1vST/OOhPfTW
+         rCAolYPCbToj3vXA18RIkOUwNlfG3/CaiznH6uT30ua5KcCSqucDz/zq/btjSJLYAu
+         y3gQuaYENJoFZQYQh6dF4r1aNn5KGZ/L0FQ/RYVyuR8Cvl5YaAMiYH15rYutq1mpy1
+         uBTV6Fm5ScU9YVJjZImVpqJk0YWUYZ5MWiagYP9FD2dElfg+c6peB6u8qxWcSThP24
+         b5b0Caj02RHidTKcdxCB0Bw0lzM7hEbW1TzeUADtV83tSwe9gbijB/AQ9aWxFHuXDx
+         wsRaDf+GusTwA==
+Received: by mail.coredeal.pl for <rust-for-linux@vger.kernel.org>; Fri,  1 Apr 2022 08:16:18 GMT
+Message-ID: <20220401064500-0.1.2b.c3q4.0.6fu8az4utn@coredeal.pl>
+Date:   Fri,  1 Apr 2022 08:16:18 GMT
+From:   "Krzysztof Maj" <krzysztof.maj@coredeal.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: Biznesowy angielski
+X-Mailer: mail.coredeal.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72mxXY_4wXZPO5VCX76G168X0gynO=n=1xP2shVWBm+yeA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Mar 31, 2022 at 03:19:51PM +0200, Miguel Ojeda wrote:
-> Hi Greg,
-> 
-> On Thu, Mar 31, 2022 at 2:42 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is a huge patch.  Why not break it into 2, one that adds what is
-> > upstream, and then the second adds the "stuff on top" that you need for
-> > the kernel.  Otherwise it's hard to know what is, and is not, upstream
-> > for us to be able to review from a kernel point of view.
-> 
-> That is a good idea, will do.
-> 
-> There are some files from upstream that we do not need, so they are
-> already deleted here (e.g. collections), thus what I will do is send
-> the first patch without those already and then another patch with the
-> modifications/additions we did. If you prefer to see the deleted files
-> in an intermediate step, I can also do that.
+Dzie=C5=84 dobry,=20
 
-Nah, I don't care about deleted files :)
+czy rozwa=C5=BCali Pa=C5=84stwo rozw=C3=B3j kwalifikacji j=C4=99zykowych =
+swoich pracownik=C3=B3w?
 
-thanks,
+Opracowali=C5=9Bmy kursy j=C4=99zykowe dla r=C3=B3=C5=BCnych bran=C5=BC, =
+w kt=C3=B3rych koncentrujemy si=C4=99 na podniesieniu poziomu s=C5=82owni=
+ctwa i jako=C5=9Bci komunikacji wykorzystuj=C4=85c autorsk=C4=85 metod=C4=
+=99, stworzon=C4=85 specjalnie dla wymagaj=C4=85cego biznesu.=20
 
-greg k-h
+Niestandardowy kurs on-line, dopasowany do profilu firmy i obszar=C3=B3w =
+=C5=9Bwiadczonych us=C5=82ug, w szybkim czasie przyniesie efekty, kt=C3=B3=
+re zwi=C4=99ksz=C4=85 komfort i jako=C5=9B=C4=87 pracy, rozwijaj=C4=85c m=
+o=C5=BCliwo=C5=9Bci biznesowe.=20
+
+Zdalne szkolenie j=C4=99zykowe to m.in. zaj=C4=99cia z native speakerami,=
+ kt=C3=B3re w szybkim czasie naucz=C4=85 pracownik=C3=B3w rozmawia=C4=87 =
+za pomoc=C4=85 jasnego i zwi=C4=99z=C5=82ego j=C4=99zyka Business English=
+=2E
+
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3=
+w i opowiedzie=C4=87 jak dzia=C5=82amy?=20
+
+
+Pozdrawiam
+Krzysztof Maj
