@@ -2,68 +2,69 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FCE3C433EF
-	for <rust-for-linux@archiver.kernel.org>; Fri,  1 Apr 2022 08:20:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9118C433F5
+	for <rust-for-linux@archiver.kernel.org>; Sat,  2 Apr 2022 17:31:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229851AbiDAIWB (ORCPT
+        id S230426AbiDBRd3 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 1 Apr 2022 04:22:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53548 "EHLO
+        Sat, 2 Apr 2022 13:33:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229568AbiDAIWB (ORCPT
+        with ESMTP id S229813AbiDBRd2 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 1 Apr 2022 04:22:01 -0400
-Received: from mail.coredeal.pl (mail.coredeal.pl [51.75.73.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C777EDE8C
-        for <rust-for-linux@vger.kernel.org>; Fri,  1 Apr 2022 01:20:11 -0700 (PDT)
-Received: by mail.coredeal.pl (Postfix, from userid 1002)
-        id BDAB9A4831; Fri,  1 Apr 2022 08:16:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=coredeal.pl; s=mail;
-        t=1648801035; bh=9KGuIG62LgzC9aYmjKxzocuYLRCVghXg6v9Q1q2LHec=;
-        h=Date:From:To:Subject:From;
-        b=mh95t7gp7wk9Inqh4r3YNq4VyOOOcTHVP5+LDNd+HO0zxYzDHMPyC1vST/OOhPfTW
-         rCAolYPCbToj3vXA18RIkOUwNlfG3/CaiznH6uT30ua5KcCSqucDz/zq/btjSJLYAu
-         y3gQuaYENJoFZQYQh6dF4r1aNn5KGZ/L0FQ/RYVyuR8Cvl5YaAMiYH15rYutq1mpy1
-         uBTV6Fm5ScU9YVJjZImVpqJk0YWUYZ5MWiagYP9FD2dElfg+c6peB6u8qxWcSThP24
-         b5b0Caj02RHidTKcdxCB0Bw0lzM7hEbW1TzeUADtV83tSwe9gbijB/AQ9aWxFHuXDx
-         wsRaDf+GusTwA==
-Received: by mail.coredeal.pl for <rust-for-linux@vger.kernel.org>; Fri,  1 Apr 2022 08:16:18 GMT
-Message-ID: <20220401064500-0.1.2b.c3q4.0.6fu8az4utn@coredeal.pl>
-Date:   Fri,  1 Apr 2022 08:16:18 GMT
-From:   "Krzysztof Maj" <krzysztof.maj@coredeal.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: Biznesowy angielski
-X-Mailer: mail.coredeal.pl
+        Sat, 2 Apr 2022 13:33:28 -0400
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A37A4B91BB
+        for <rust-for-linux@vger.kernel.org>; Sat,  2 Apr 2022 10:31:36 -0700 (PDT)
+Received: by mail-il1-x12b.google.com with SMTP id 14so4023286ily.11
+        for <rust-for-linux@vger.kernel.org>; Sat, 02 Apr 2022 10:31:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=MeCJshg0jn/YLuklsUy0eFmdVn+Z8Bwtn//j2zifDm0=;
+        b=Ox1/gyQbdakG79hJwr5ch5SNT+llfDUMwNg7u3LBDomt6Rz318nKrv0WwgNO8t5HgN
+         QrJn/FLTcvo5z6jjodvWrvkX7EouVT2M8qc16kk2vWwYteDWylzoZevwkuGEvBN6YP9p
+         Vwl5ETGJNIBfwqluU4uyZLjw527AsJW5kNSBe5ROHVu+n2MjtCMWTooTZlkyPx2RluMk
+         WNjuVg0G+RjIEEoQfmOytJb+fro94lYQB4tr8LFpxmGpEUs8o5zbyFAm/Rl/nSC3/ijv
+         4NyzUSM1R4/4Zi/wUZVrMoBdKXoO6o7+6iTwzMlAFAxLy2p/h686lnGwlR9D3STRSE7E
+         r4WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=MeCJshg0jn/YLuklsUy0eFmdVn+Z8Bwtn//j2zifDm0=;
+        b=bWUj0Mj6n1c0NXnqjV61P/QN1BcNjxil3NXhTTJF0nQ1hH16dVhwSn/3FHbxdK1kAq
+         0gXwAd8FT9zDyTGy31OQP8l99K36crCdnnrwg+A/tqY2PvsoUW711IjroVj1b3qEjjm0
+         R4Ffqac4aOGoK4UXdaJGcyzYIdAUW2OQBFLrHhT1/d3xZ/vZjWsPGDSb6Ct7kTVmFPY5
+         gppYbnNTTGhZERYuFgIbQrd1m6E9e0pgAMfpd6FeyDC4x7Q4jaLfkJT+yzYx08JAIGOM
+         Fnvfcx0ylhPApo1AAaYQm6pQx+FgL6kbdivXPGIOtsP4mc6ehZojjGE6YDHNw4whuy7W
+         jGRA==
+X-Gm-Message-State: AOAM533GGoowKcQEsU7Zp1QKK1FUc5jwH49UTfXCrtZpJk3/SHY/RQs5
+        Ot96kMA2mkDIGGZe7wNd37IrGzV1XqlIIHaEtxDTInQuOFs=
+X-Google-Smtp-Source: ABdhPJya988wgz9pLfRekA7ipywY9FJm89zLi3SX7MNavYdQLP7lN3Pba+TAa3QImKK/f+uK23+oix4hJzn5ZIHbTkU=
+X-Received: by 2002:a92:c908:0:b0:2c1:a287:8868 with SMTP id
+ t8-20020a92c908000000b002c1a2878868mr2179182ilp.321.1648920696051; Sat, 02
+ Apr 2022 10:31:36 -0700 (PDT)
 MIME-Version: 1.0
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sat, 2 Apr 2022 19:31:25 +0200
+Message-ID: <CANiq72nBE5=fAsVqNoV=VvNdGuGCX23=CTFWHEJ=qCRs5_PAsg@mail.gmail.com>
+Subject: Reminder: informal call in half an hour
+To:     rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,=20
+Hi all,
 
-czy rozwa=C5=BCali Pa=C5=84stwo rozw=C3=B3j kwalifikacji j=C4=99zykowych =
-swoich pracownik=C3=B3w?
+We will have our informal call in half an hour (18:00 UTC first
+Saturday of each month).
 
-Opracowali=C5=9Bmy kursy j=C4=99zykowe dla r=C3=B3=C5=BCnych bran=C5=BC, =
-w kt=C3=B3rych koncentrujemy si=C4=99 na podniesieniu poziomu s=C5=82owni=
-ctwa i jako=C5=9Bci komunikacji wykorzystuj=C4=85c autorsk=C4=85 metod=C4=
-=99, stworzon=C4=85 specjalnie dla wymagaj=C4=85cego biznesu.=20
+As usual, everybody is welcome to join. The meetings take place on
+Google Meet. If you need an invitation, drop me an email!
 
-Niestandardowy kurs on-line, dopasowany do profilu firmy i obszar=C3=B3w =
-=C5=9Bwiadczonych us=C5=82ug, w szybkim czasie przyniesie efekty, kt=C3=B3=
-re zwi=C4=99ksz=C4=85 komfort i jako=C5=9B=C4=87 pracy, rozwijaj=C4=85c m=
-o=C5=BCliwo=C5=9Bci biznesowe.=20
+If you are in a timezone that cannot easily attend the meetings at
+18:00 UTC, please let us know.
 
-Zdalne szkolenie j=C4=99zykowe to m.in. zaj=C4=99cia z native speakerami,=
- kt=C3=B3re w szybkim czasie naucz=C4=85 pracownik=C3=B3w rozmawia=C4=87 =
-za pomoc=C4=85 jasnego i zwi=C4=99z=C5=82ego j=C4=99zyka Business English=
-=2E
-
-Czy m=C3=B3g=C5=82bym przedstawi=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3=
-w i opowiedzie=C4=87 jak dzia=C5=82amy?=20
-
-
-Pozdrawiam
-Krzysztof Maj
+Cheers,
+Miguel
