@@ -2,174 +2,72 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98612C433EF
-	for <rust-for-linux@archiver.kernel.org>; Sat, 16 Apr 2022 03:27:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA152C433EF
+	for <rust-for-linux@archiver.kernel.org>; Wed, 20 Apr 2022 16:35:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230110AbiDPDa0 (ORCPT
+        id S1380667AbiDTQhy (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 15 Apr 2022 23:30:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45678 "EHLO
+        Wed, 20 Apr 2022 12:37:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230000AbiDPDaY (ORCPT
+        with ESMTP id S1380708AbiDTQhw (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 15 Apr 2022 23:30:24 -0400
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45E0ABC9C;
-        Fri, 15 Apr 2022 20:27:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1650079672;
-        bh=NLJO5M6lb6UWIzx72qVRIXirnJIepm8PzhysHksuLFs=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=rDEQcfqYypvNI+3grDOBIg8ZGCKrgASUU0pEiJrUW11NBtYRO4xBSy62tbuKtxGL+
-         MWAeNuQ0HBGXYZWaZLUgu6kya2cAxHEoG0kit8KmKVAvv3WFDM/lrO7kCo7ly9wSq5
-         4EGZctuwhGdw20HQ5lqaIRAkAvEAvN2cerztT43Q=
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 8AFBE128A02B;
-        Fri, 15 Apr 2022 23:27:52 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id byxoCoALOO41; Fri, 15 Apr 2022 23:27:52 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1650079672;
-        bh=NLJO5M6lb6UWIzx72qVRIXirnJIepm8PzhysHksuLFs=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=rDEQcfqYypvNI+3grDOBIg8ZGCKrgASUU0pEiJrUW11NBtYRO4xBSy62tbuKtxGL+
-         MWAeNuQ0HBGXYZWaZLUgu6kya2cAxHEoG0kit8KmKVAvv3WFDM/lrO7kCo7ly9wSq5
-         4EGZctuwhGdw20HQ5lqaIRAkAvEAvN2cerztT43Q=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:c551::c14])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id AF934128A02A;
-        Fri, 15 Apr 2022 23:27:51 -0400 (EDT)
-Message-ID: <ea85b3bce5f172dc73e2be8eb4dbd21fae826fa1.camel@HansenPartnership.com>
-Subject: Re: Fwd: Adding crates
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Kent Overstreet <kent.overstreet@gmail.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>, Chris Suter <chris@sutes.me>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Geert Stappers <stappers@stappers.nl>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        linux-fsdevel@vger.kernel.org
-Date:   Fri, 15 Apr 2022 23:27:50 -0400
-In-Reply-To: <20220415203926.pvahugtzrg4dbhcc@moria.home.lan>
-References: <CAKfU0DLS5icaFn0Mve6+y9Tn1vL+eLKqfquvXbX4oCpYH+VapQ@mail.gmail.com>
-         <20220328054136.27mt2xdaltz4unby@gpm.stappers.nl>
-         <CAKfU0D+gaC6s6kBBQ9OV+E9PFcm997efY-cUwP3bFWmuDDugbA@mail.gmail.com>
-         <YkKXvnsvr0qz/pR2@kroah.com>
-         <CAKfU0DLv3K7benXuofXqJwsgxUHA10bu8XWmyBZ0Z_PpZFMACg@mail.gmail.com>
-         <CANiq72mrBpJm_6rjapicBoO_mkg4_hEpi9aRTAkj+gtiGkC3Aw@mail.gmail.com>
-         <CAKfU0DJ1AqR4cy4=706qRGESozHii9dPL5BYQV047cZkyn3RzA@mail.gmail.com>
-         <YkPdIMowqBsJORiK@kroah.com>
-         <20220330204353.57w3fxtaw4wwqvi3@moria.home.lan>
-         <df41ae9d0f02953cbfe9491f69247a8035f64562.camel@HansenPartnership.com>
-         <20220415203926.pvahugtzrg4dbhcc@moria.home.lan>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        Wed, 20 Apr 2022 12:37:52 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF25011174
+        for <rust-for-linux@vger.kernel.org>; Wed, 20 Apr 2022 09:35:01 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id e62-20020a17090a6fc400b001d2cd8e9b0aso2504861pjk.5
+        for <rust-for-linux@vger.kernel.org>; Wed, 20 Apr 2022 09:35:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:content-transfer-encoding:mime-version:subject:message-id:date
+         :to;
+        bh=XgbZFFRB50uMAb1NIv3zrsXcPeXXUqUV2277o8JPJHg=;
+        b=PAW8xR0rmKtHprkwUeHxvYXP4Z+KnsALuowMK8Wgtubldrfe0HhpxszJBFKPkk1xMh
+         LC65rUF649dvGbspb+WMDPCaBfSII09kos0fDOxriQNev/u91xk2MkSmwOh1mvLBOv5b
+         1pN/C3nO7DBsMRau6/sYvY/w3Th43RLk/BUXvMTcTHzwnQm/FcXgJMaajNfTCLfz80VW
+         7qW9nAGQLV/PHcLt4mQybSktsiKPTD/jzIXLdriPSPR1jkNAvtHfcubgWaPvOia+j8zl
+         eacqWEnp3GOSNEF+CSNgNaGnjCEsz1ROPOJetVRxyYJlQmxD6IrXdkA/595MsfRLrL9/
+         HSyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:content-transfer-encoding:mime-version
+         :subject:message-id:date:to;
+        bh=XgbZFFRB50uMAb1NIv3zrsXcPeXXUqUV2277o8JPJHg=;
+        b=mIc3Hk0xXf6mucGd9CeO2O5Lhqli5hiGEzLIRCjdLkGWl8BVuTQasn9NIFfX6f8KEL
+         2Nr1Or8jE6HJ8Y+yWiUKXoo7pawhKeG2IPxAHFv4fUOrYAM6h+1u4tiXEzDCpOSUulvl
+         y6elv2RAEpJhAFiBwx+0gSumm03FU+7ysEGgKfEmld8E7czIxooVAGO+NxWRh6qvgKCc
+         OJ52tM5fx0lTjTf5K7G2VrS3zWT4nMFeF59YoDCkqpyYTtSFsY1fjWNg2yVkc+AfnoRt
+         0ryzugjGLeJP/AN2ILQ9DCUtUrC1QziaBgTCR1odSowsSpBxLixfaP4ib+xe87QdVmcs
+         MSIw==
+X-Gm-Message-State: AOAM533dU1OpEbktGiZRCc8LYTxKi527oUxImarfL3+o7j7jhgg07CXJ
+        bgEgmzNtimS4SGKWVpzebNoFf8mEPbtTMw==
+X-Google-Smtp-Source: ABdhPJzB9SaIUc4jO5V74aYGC0NgpkvtgwwubDojAOKikv8uSu323XZr1SQHGauXT70chxbLOPFXAQ==
+X-Received: by 2002:a17:90b:1e4e:b0:1d2:8dba:67fb with SMTP id pi14-20020a17090b1e4e00b001d28dba67fbmr5440163pjb.55.1650472501102;
+        Wed, 20 Apr 2022 09:35:01 -0700 (PDT)
+Received: from smtpclient.apple (ao231150.f.west.v6connect.net. [122.145.231.150])
+        by smtp.gmail.com with ESMTPSA id i11-20020a654d0b000000b0039d82c3e68csm20519595pgt.55.2022.04.20.09.34.59
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 20 Apr 2022 09:35:00 -0700 (PDT)
+From:   =?utf-8?B?546L6ICF6Ie76JCD?= <peterwrighten@gmail.com>
+Content-Type: text/plain;
+        charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.80.82.1.1\))
+Subject: Request an invitation about rust_for_linux zulip
+Message-Id: <A1DB8EE6-757B-42F2-BEC2-48C71F0103BC@gmail.com>
+Date:   Thu, 21 Apr 2022 01:34:57 +0900
+To:     rust-for-linux@vger.kernel.org
+X-Mailer: Apple Mail (2.3696.80.82.1.1)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, 2022-04-15 at 16:39 -0400, Kent Overstreet wrote:
-> On Fri, Apr 15, 2022 at 09:31:24AM -0400, James Bottomley wrote:
-> > I think the solution to the problem is to try to maintain highly
-> > mobile reference implementations and also keep constantly
-> > considering what the requirements are for mobility (both on the
-> > part of the reference implementation and the kernel).  I also think
-> > that if we ever gave impementors the magic ability just to dump any
-> > old code in the kernel, they'd use it to take the lazy way out
-> > because it's a lot easier than trying to keep the reference
-> > implementation separate.
-> > 
-> > The fact that most "reference" implementations don't conform to the
-> > above isn't something we should be encouraging by supplying
-> > compatibility APIs that paper over the problem and encourage API
-> > bloat.
-> 
-> I think it might help if we had a
->  - standard set of review guidelines
->  - standard workflow
-> 
-> for pulling in (vendoring, however it gets done) code from external
-> repositories.
+Hi, Ojeda, I am Peter from GitHub(username: PeterWrighten).
 
-But that's precisely what we shouldn't have.  For most standard
-implementations it shouldn't be done.  zlib is a case in point: even if
-we could pull in 74k lines from an external repo to try to extract the
-300 we need that's not going to be via anything like a standard
-process.  Now there might be something we could assist with in
-standardising how reference implementations should be done to make them
-mobile to environments like embedded and the kernel, but if the project
-isn't structured like this, it's already pretty much too late.
+ I am pretty interested in Rust and System Programming, especially =
+building systems by Rust. So could you give me an opportunity to join =
+Zulip for asking some questions of Linux and Rust?
 
-> Generally what I see in the community is that people do want to
-> support the kernel better, but then people see things like Greg's
-> response of "don't do that" and it turns people off. Instead, we
-> could 
->  - recognize that it's already being done (e.g. with zstd)
-
-It hasn't been done with zstd.  What we have looks like a reference
-implementation based on RFC 8478, it's nothing like the facebook github
-for zstd and I'm sure more people than Greg (me included) would object
-greatly to trying to swap our 300 line implementation for the facebook
-74k line one.
-
->  - put some things in writing about how it _should_ be done
-
-This is where I think we could help.  As I said: libxfs (and librcu as
-you point out below) already exists as a blueprint.  For rust async,
-it's a bit more complex because it depends on whether the async support
-in the compiler can truly be made compatible with the kernel threading
-model rather than simply vendoring the async crates.
-
-> This could help a lot with e.g. the way Facebook maintains ZSTD - if
-> we say "look, we want this code factored out better so we only have
-> to review the stuff that's relevant" - the engineers generally won't
-> mind doing that work, and now they'll have something to take to their
-> managers as justification.
-
-Well, they do, they just don't expect to do it by us vendoring the
-reference implementation:
-
-https://github.com/facebook/zstd/issues/1638
-
-In the above, the facebook maintainer is willing to extract the
-reference core and add it to the linux kernel.  That seems to be a
-great result for us.
-
-> Another thing I'd like to see is more of what the RCU folks have done
-> - liburcu is _amazing_ in that, at least for me, it's been a drop in
-> replacement for the kernel RCU implementation - and I would imagine
-> it's as much as possible the same code. A good candidate would be the
-> kernel workqueue code: workqueues are _great_ and I don't know of
-> anything like them in userspace. That code should be
-> seeing wider use! And if it was made an external library that was
-> consumed by both the kernel and userspace, it could be - but it would
-> require buy in from kernel people.
-
-That might work for , but most other languages need something different
-(and often have their own implementation, like python:
-
-https://docs.python.org/3/library/queue.html
-
-or rabbitMQ or something).
-
-> But as you were saying about Facebook (and I discovered when I was at
-> Google many moons ago, as a young engineer) - large organizations
-> tend to be insular, they like te pretend the outside world doesn't
-> exist. The kernel is one such organization :) We could be a better
-> citizen by encouraging and enabling efforts such as this.
-
-Well, I think they are.  To be clear, I think the way zstd is supported
-in the kernel is great.  If it works for facebook (having the
-maintainer extract it to the kernel and send us pull requests), I don't
-see a problem with keeping it the way it is rather than trying to
-vendor the existing code.
-
-Regards,
-
-James
-
-
+Thank you so much.=
