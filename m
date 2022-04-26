@@ -2,75 +2,68 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1114AC433F5
-	for <rust-for-linux@archiver.kernel.org>; Fri, 22 Apr 2022 10:42:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 18726C433F5
+	for <rust-for-linux@archiver.kernel.org>; Tue, 26 Apr 2022 07:41:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1445126AbiDVKp2 (ORCPT
+        id S1343858AbiDZHo1 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 22 Apr 2022 06:45:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44362 "EHLO
+        Tue, 26 Apr 2022 03:44:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1446824AbiDVKpY (ORCPT
+        with ESMTP id S235562AbiDZHo0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 22 Apr 2022 06:45:24 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 839822619
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Apr 2022 03:42:31 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id i196so8180186ioa.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 22 Apr 2022 03:42:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=5njAUOX6njDPbuEetCZjZ0nOVzggYwZoNDXab2j0CHE=;
-        b=HfS2JA15prt93wUIq/LwwSeyIM+8tg8hgjdCaf2vLEHPpYkM1varx6ncsAQv6W2kne
-         CSIo5cYSvlPOtyFI6siTd0lmMvQ4jJqqD+BRNiJsseLbkuvnZtSLL4zaZhbMKFPIOG/C
-         1Q34H6fs6OmeICTaGzBihsTfnJJXe3xS1gIhpoRJ1kOZchUIr6HrsGtd59ZbypV6bWe/
-         KZsatmhV6meextM90zWZGxo1loajdyz6YYIaPAThj0wearVXuuFcCBr6XNmtTMso1h31
-         H5eoUycLUbkBSxavmEM8LVyB3D36f5ifvc9WCVqxXPmA1jS/+QG/uT1Dn5EZaYsjf9G7
-         AEhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=5njAUOX6njDPbuEetCZjZ0nOVzggYwZoNDXab2j0CHE=;
-        b=DqS9xGmwXp8hMUvL9V2fDACgOGunZxFRUBMJw+yPc4S6e5yElKXmRW3sj4FvbICbAw
-         x7KUhm7f9D4zENZ4d3jIdGtF7rhSKSBDKei3VbQn8odZ4ERZbutgeMT/FjYXnJLS6Fme
-         f7r85eD1YFbdehc5Lxb8pzVIkgFZxL+AvdV+nVR8IblcIk28S3mMQFMzgH3fOnKFsIoe
-         YR8l2urV864JltkRM91yRD/FZL+vTskOd+LbSrAqLRYlibr1TAjikgfyTyQ8TcM2Rwr9
-         uIVAakoouLruBv7mhQ7Y9aOaupu1/MJN0lb638157/VX9FuVZoF7mU0RoJ27NdIjz5WS
-         0lXQ==
-X-Gm-Message-State: AOAM530EpWTvW3Dhxy58o6+ZFgWJe+UtsbsyqymakhETcTBeVeqLJKwO
-        apu1cuMxse7HFzmvyLY++7T6JLKtrE+S+MdS268=
-X-Google-Smtp-Source: ABdhPJxDXPRl2IEf2kyBZMf69IJqtQltzKBZHWovWX6CmgZOSpJljN4YoYmVdQHMarBU0spEDDRObCxDQUHV+SEQu4A=
-X-Received: by 2002:a6b:4e07:0:b0:653:9e0e:d220 with SMTP id
- c7-20020a6b4e07000000b006539e0ed220mr1792974iob.44.1650624150889; Fri, 22 Apr
- 2022 03:42:30 -0700 (PDT)
+        Tue, 26 Apr 2022 03:44:26 -0400
+Received: from mail.coredeal.pl (mail.coredeal.pl [51.75.73.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D19EE18350
+        for <rust-for-linux@vger.kernel.org>; Tue, 26 Apr 2022 00:41:18 -0700 (PDT)
+Received: by mail.coredeal.pl (Postfix, from userid 1002)
+        id 261AFA4666; Tue, 26 Apr 2022 07:40:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=coredeal.pl; s=mail;
+        t=1650958877; bh=9KGuIG62LgzC9aYmjKxzocuYLRCVghXg6v9Q1q2LHec=;
+        h=Date:From:To:Subject:From;
+        b=LZMsW3FvdqFr6+Q4wo/bTEuf8zz1YmhzX4qiA1bbxLVRn1EKwYu2Ka0LF2O1dM27m
+         zzY1SEAOg3JP9M++VxXRILb0xNpTOAWrMygDGTxOOet2FTeDFtBdF5dBVt2w8HgeAK
+         ilxbx0vSaCK7ooerC9zMlAXwz+7W7cdUcda7Z1gI7Xp0Cl8u5I9lURmHaoSjYRwa2c
+         9LAKffZuzSSbNnBOP23BLsDZLjY8fai3y1aTOwAx8WbohlL1QeS9jbv6NAr9WIPfZq
+         krbairXz3oFpBldOvoj78RvGL/boqBpvum+Hf2K72e43gQXfIyc9NUoXFowhlBswAP
+         AcDab7LfeU8Xg==
+Received: by mail.coredeal.pl for <rust-for-linux@vger.kernel.org>; Tue, 26 Apr 2022 07:40:15 GMT
+Message-ID: <20220426064500-0.1.2r.io39.0.vpk5yb8v62@coredeal.pl>
+Date:   Tue, 26 Apr 2022 07:40:15 GMT
+From:   "Krzysztof Maj" <krzysztof.maj@coredeal.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: Biznesowy angielski
+X-Mailer: mail.coredeal.pl
 MIME-Version: 1.0
-References: <A1DB8EE6-757B-42F2-BEC2-48C71F0103BC@gmail.com>
-In-Reply-To: <A1DB8EE6-757B-42F2-BEC2-48C71F0103BC@gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 22 Apr 2022 12:42:19 +0200
-Message-ID: <CANiq72nvyUSEYh3D8XUgCFZFjhmKaPqg4SEO4qfKhZ3sqgYwjg@mail.gmail.com>
-Subject: Re: Request an invitation about rust_for_linux zulip
-To:     =?UTF-8?B?546L6ICF6Ie76JCD?= <peterwrighten@gmail.com>
-Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Peter,
+Dzie=C5=84 dobry,=20
 
-On Thu, Apr 21, 2022 at 11:16 PM =E7=8E=8B=E8=80=85=E8=87=BB=E8=90=83 <pete=
-rwrighten@gmail.com> wrote:
->
->  I am pretty interested in Rust and System Programming, especially buildi=
-ng systems by Rust. So could you give me an opportunity to join Zulip for a=
-sking some questions of Linux and Rust?
+czy rozwa=C5=BCali Pa=C5=84stwo rozw=C3=B3j kwalifikacji j=C4=99zykowych =
+swoich pracownik=C3=B3w?
 
-Of course, invitation sent -- welcome!
+Opracowali=C5=9Bmy kursy j=C4=99zykowe dla r=C3=B3=C5=BCnych bran=C5=BC, =
+w kt=C3=B3rych koncentrujemy si=C4=99 na podniesieniu poziomu s=C5=82owni=
+ctwa i jako=C5=9Bci komunikacji wykorzystuj=C4=85c autorsk=C4=85 metod=C4=
+=99, stworzon=C4=85 specjalnie dla wymagaj=C4=85cego biznesu.=20
 
-Cheers,
-Miguel
+Niestandardowy kurs on-line, dopasowany do profilu firmy i obszar=C3=B3w =
+=C5=9Bwiadczonych us=C5=82ug, w szybkim czasie przyniesie efekty, kt=C3=B3=
+re zwi=C4=99ksz=C4=85 komfort i jako=C5=9B=C4=87 pracy, rozwijaj=C4=85c m=
+o=C5=BCliwo=C5=9Bci biznesowe.=20
+
+Zdalne szkolenie j=C4=99zykowe to m.in. zaj=C4=99cia z native speakerami,=
+ kt=C3=B3re w szybkim czasie naucz=C4=85 pracownik=C3=B3w rozmawia=C4=87 =
+za pomoc=C4=85 jasnego i zwi=C4=99z=C5=82ego j=C4=99zyka Business English=
+=2E
+
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3=
+w i opowiedzie=C4=87 jak dzia=C5=82amy?=20
+
+
+Pozdrawiam
+Krzysztof Maj
