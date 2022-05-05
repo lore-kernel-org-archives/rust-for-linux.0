@@ -2,217 +2,139 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0102C433FE
-	for <rust-for-linux@archiver.kernel.org>; Thu,  5 May 2022 19:18:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E3D0C433F5
+	for <rust-for-linux@archiver.kernel.org>; Thu,  5 May 2022 23:46:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1384953AbiEETWX (ORCPT
+        id S1343507AbiEEXuR (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 5 May 2022 15:22:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37946 "EHLO
+        Thu, 5 May 2022 19:50:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1384991AbiEETWU (ORCPT
+        with ESMTP id S241016AbiEEXuQ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 5 May 2022 15:22:20 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2406527FF;
-        Thu,  5 May 2022 12:18:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 84DD7B82F20;
-        Thu,  5 May 2022 19:18:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D26AC385A4;
-        Thu,  5 May 2022 19:18:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651778315;
-        bh=b4na20hsT5ooewQtEeVBDpf7ktvKIX8Bkd9Cwxc5Fdo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ehq7P/Mk2srOHLiAvrZro1oPyRHE8jK83T71M14VMyYyEua18EAo5CBkIVdvCKTTV
-         Tvx4soTEMk6Zj607XuBMs+g/26TAU3zftYNXzmMnyVGD+u8b6B4pKk1/kmBZACEXGs
-         Jyho6kodSWIS5gm5pWTSa7Cl8jP2IYR3EIcu7y6Y9P4oo+Er7kVQKVkHjRhJOYaqxQ
-         HNG+JfcTdviT1iaoaeqewagu7vk8IUvnJQuLK9NLAFoR3IR+3kkKllYwOnMR3KiuGv
-         ir4gbXUrlnC0Mu5mdv7sv/pqd6+5OUlUekeBQfjKX0nQR9tyISUO0i7hVfQe1snrFe
-         4PVj0+W0aeTSg==
-From:   Miguel Ojeda <ojeda@kernel.org>
-To:     Josh Poimboeuf <jpoimboe@redhat.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Petr Mladek <pmladek@suse.com>,
-        Joe Lawrence <joe.lawrence@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Helge Deller <deller@gmx.de>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
+        Thu, 5 May 2022 19:50:16 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 622F76006C
+        for <rust-for-linux@vger.kernel.org>; Thu,  5 May 2022 16:46:35 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id c9so5128642plh.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 May 2022 16:46:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=yw+RudC9dXxTNyd08I4c9F1iC0vSj71b4807D2ENyg0=;
+        b=NZAdUq3eQkkEjioMnYxo2p6HTLdc/+/uV5EUpuUkngcU5zaHoGzgoDh3jXbhde867e
+         UMnDJVg7wIwGVpLgqEz2YzgYdN2MD594I7oMqa7ywLBIBUc1Pg2RtYUCI3YDpoBfilJN
+         XvEnDN9IHObMOrLPQRzUP4IxqJV1eNIZIMoco=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=yw+RudC9dXxTNyd08I4c9F1iC0vSj71b4807D2ENyg0=;
+        b=gJJPXicrXWmGlGwNmmo6lr42/Rpe3afXDJvDs9ws+h+45omPbhS6ukyEjvfTTYAkYf
+         C78LCT8SvS+fSnqRI12wcSeBnRFTIztlnc0azJeABZgeBzGIcoXhbrTA9Wp2tMcf1z67
+         CUyFoGpifjcfnwNjFT7aV4gyNZhnhCt9HJhHdS36wRW9o2WkubAivThbRIT7LKamvCGF
+         BWGV2IEpHNAXZnnFfZ8zNuMIV2ZqbgjnWqu1Mh0qBJylmCSP2PzKOIsSptmc/nnKMAZl
+         CuiYBnsh4hHnxWMUhI/4wMjE+Mr8PP8EQUzHannkqnrmhh/hMmbYCZB6LS5hlYo8xvGl
+         zqxw==
+X-Gm-Message-State: AOAM532QFNv+Bas4RG2PTauvqiSGDd4wOzhv6kyt99ogYxGpmjiW/lgd
+        XIpE43ugCIBQHwcmbtl9+t06eA==
+X-Google-Smtp-Source: ABdhPJxpqOVx1rXjHtnD+1wrrBg3FAaBVM+nT7erVFbHEee79ijJCWp3JJyLqiecAetvZyKuwaDdQA==
+X-Received: by 2002:a17:902:b596:b0:158:f23a:c789 with SMTP id a22-20020a170902b59600b00158f23ac789mr600387pls.57.1651794394897;
+        Thu, 05 May 2022 16:46:34 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id a18-20020a1709027d9200b0015edb22aba1sm171401plm.270.2022.05.05.16.46.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 May 2022 16:46:34 -0700 (PDT)
+Date:   Thu, 5 May 2022 16:46:33 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
         Changbin Du <changbin.du@intel.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
         Nathan Chancellor <nathan@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kees Cook <keescook@chromium.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        linux-kernel@vger.kernel.org, live-patching@vger.kernel.org,
-        linux-perf-users@vger.kernel.org
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH v1 3/3] kallsyms: increase maximum kernel symbol length to 512
-Date:   Thu,  5 May 2022 21:16:45 +0200
-Message-Id: <20220505191704.22812-4-ojeda@kernel.org>
-In-Reply-To: <20220505191704.22812-1-ojeda@kernel.org>
+        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH v1 1/3] kallsyms: avoid hardcoding the buffer size
+Message-ID: <202205051643.1A8E38C7F2@keescook>
 References: <20220505191704.22812-1-ojeda@kernel.org>
+ <20220505191704.22812-2-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220505191704.22812-2-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Rust symbols can become quite long due to namespacing introduced
-by modules, types, traits, generics, etc. For instance,
-the following code:
+On Thu, May 05, 2022 at 09:16:43PM +0200, Miguel Ojeda wrote:
+> From: Boqun Feng <boqun.feng@gmail.com>
+> 
+> This makes it easier to update the size later on.
+> 
+> Furthermore, a static assert is added to ensure both are updated
+> when that happens. The relationship used is one that keeps the new
+> size (512+1) close to the original buffer size (500).
+> 
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  scripts/kallsyms.c | 16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
+> 
+> diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
+> index 8caabddf817c..880c4404731b 100644
+> --- a/scripts/kallsyms.c
+> +++ b/scripts/kallsyms.c
+> @@ -27,8 +27,18 @@
+>  
+>  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+>  
+> +#define _stringify_1(x)	#x
+> +#define _stringify(x)	_stringify_1(x)
+> +
+>  #define KSYM_NAME_LEN		128
+>  
+> +/* A substantially bigger size than the current maximum. */
+> +#define KSYM_NAME_LEN_BUFFER	512
+> +_Static_assert(
+> +	KSYM_NAME_LEN_BUFFER == KSYM_NAME_LEN * 4,
+> +	"Please keep KSYM_NAME_LEN_BUFFER in sync with KSYM_NAME_LEN"
+> +);
+> +
+>  struct sym_entry {
+>  	unsigned long long addr;
+>  	unsigned int len;
+> @@ -197,15 +207,15 @@ static void check_symbol_range(const char *sym, unsigned long long addr,
+>  
+>  static struct sym_entry *read_symbol(FILE *in)
+>  {
+> -	char name[500], type;
+> +	char name[KSYM_NAME_LEN_BUFFER+1], type;
+>  	unsigned long long addr;
+>  	unsigned int len;
+>  	struct sym_entry *sym;
+>  	int rc;
+>  
+> -	rc = fscanf(in, "%llx %c %499s\n", &addr, &type, name);
+> +	rc = fscanf(in, "%llx %c %" _stringify(KSYM_NAME_LEN_BUFFER) "s\n", &addr, &type, name);
+>  	if (rc != 3) {
+> -		if (rc != EOF && fgets(name, 500, in) == NULL)
+> +		if (rc != EOF && fgets(name, KSYM_NAME_LEN_BUFFER + 1, in) == NULL)
 
-    pub mod my_module {
-        pub struct MyType;
-        pub struct MyGenericType<T>(T);
+No need to repeat the sizing:
 
-        pub trait MyTrait {
-            fn my_method() -> u32;
-        }
+	fgets(name, sizeof(name), in)
 
-        impl MyTrait for MyGenericType<MyType> {
-            fn my_method() -> u32 {
-                42
-            }
-        }
-    }
+>  			fprintf(stderr, "Read error or end of file.\n");
+>  		return NULL;
+>  	}
+> -- 
+> 2.35.3
+> 
 
-generates a symbol of length 96 when using the upcoming v0 mangling scheme:
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-    _RNvXNtCshGpAVYOtgW1_7example9my_moduleINtB2_13MyGenericTypeNtB2_6MyTypeENtB2_7MyTrait9my_method
-
-At the moment, Rust symbols may reach up to 300 in length.
-Setting 512 as the maximum seems like a reasonable choice to
-keep some headroom.
-
-Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
-Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
-Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-Co-developed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Gary Guo <gary@garyguo.net>
-Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- include/linux/kallsyms.h            | 2 +-
- kernel/livepatch/core.c             | 4 ++--
- scripts/kallsyms.c                  | 4 ++--
- tools/include/linux/kallsyms.h      | 2 +-
- tools/lib/perf/include/perf/event.h | 2 +-
- tools/lib/symbol/kallsyms.h         | 2 +-
- 6 files changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-index ce1bd2fbf23e..e5ad6e31697d 100644
---- a/include/linux/kallsyms.h
-+++ b/include/linux/kallsyms.h
-@@ -15,7 +15,7 @@
- 
- #include <asm/sections.h>
- 
--#define KSYM_NAME_LEN 128
-+#define KSYM_NAME_LEN 512
- #define KSYM_SYMBOL_LEN (sizeof("%s+%#lx/%#lx [%s %s]") + \
- 			(KSYM_NAME_LEN - 1) + \
- 			2*(BITS_PER_LONG*3/10) + (MODULE_NAME_LEN - 1) + \
-diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
-index bc475e62279d..ec06ce59d728 100644
---- a/kernel/livepatch/core.c
-+++ b/kernel/livepatch/core.c
-@@ -213,7 +213,7 @@ static int klp_resolve_symbols(Elf_Shdr *sechdrs, const char *strtab,
- 	 * we use the smallest/strictest upper bound possible (56, based on
- 	 * the current definition of MODULE_NAME_LEN) to prevent overflows.
- 	 */
--	BUILD_BUG_ON(MODULE_NAME_LEN < 56 || KSYM_NAME_LEN != 128);
-+	BUILD_BUG_ON(MODULE_NAME_LEN < 56 || KSYM_NAME_LEN != 512);
- 
- 	relas = (Elf_Rela *) relasec->sh_addr;
- 	/* For each rela in this klp relocation section */
-@@ -227,7 +227,7 @@ static int klp_resolve_symbols(Elf_Shdr *sechdrs, const char *strtab,
- 
- 		/* Format: .klp.sym.sym_objname.sym_name,sympos */
- 		cnt = sscanf(strtab + sym->st_name,
--			     ".klp.sym.%55[^.].%127[^,],%lu",
-+			     ".klp.sym.%55[^.].%511[^,],%lu",
- 			     sym_objname, sym_name, &sympos);
- 		if (cnt != 3) {
- 			pr_err("symbol %s has an incorrectly formatted name\n",
-diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
-index c4e85eec2b4b..f9d07f9eb709 100644
---- a/scripts/kallsyms.c
-+++ b/scripts/kallsyms.c
-@@ -30,10 +30,10 @@
- #define _stringify_1(x)	#x
- #define _stringify(x)	_stringify_1(x)
- 
--#define KSYM_NAME_LEN		128
-+#define KSYM_NAME_LEN		512
- 
- /* A substantially bigger size than the current maximum. */
--#define KSYM_NAME_LEN_BUFFER	512
-+#define KSYM_NAME_LEN_BUFFER	2048
- _Static_assert(
- 	KSYM_NAME_LEN_BUFFER == KSYM_NAME_LEN * 4,
- 	"Please keep KSYM_NAME_LEN_BUFFER in sync with KSYM_NAME_LEN"
-diff --git a/tools/include/linux/kallsyms.h b/tools/include/linux/kallsyms.h
-index efb6c3f5f2a9..5a37ccbec54f 100644
---- a/tools/include/linux/kallsyms.h
-+++ b/tools/include/linux/kallsyms.h
-@@ -6,7 +6,7 @@
- #include <stdio.h>
- #include <unistd.h>
- 
--#define KSYM_NAME_LEN 128
-+#define KSYM_NAME_LEN 512
- 
- struct module;
- 
-diff --git a/tools/lib/perf/include/perf/event.h b/tools/lib/perf/include/perf/event.h
-index e7758707cadd..116a80c31675 100644
---- a/tools/lib/perf/include/perf/event.h
-+++ b/tools/lib/perf/include/perf/event.h
-@@ -95,7 +95,7 @@ struct perf_record_throttle {
- };
- 
- #ifndef KSYM_NAME_LEN
--#define KSYM_NAME_LEN 256
-+#define KSYM_NAME_LEN 512
- #endif
- 
- struct perf_record_ksymbol {
-diff --git a/tools/lib/symbol/kallsyms.h b/tools/lib/symbol/kallsyms.h
-index 72ab9870454b..542f9b059c3b 100644
---- a/tools/lib/symbol/kallsyms.h
-+++ b/tools/lib/symbol/kallsyms.h
-@@ -7,7 +7,7 @@
- #include <linux/types.h>
- 
- #ifndef KSYM_NAME_LEN
--#define KSYM_NAME_LEN 256
-+#define KSYM_NAME_LEN 512
- #endif
- 
- static inline u8 kallsyms2elf_binding(char type)
 -- 
-2.35.3
-
+Kees Cook
