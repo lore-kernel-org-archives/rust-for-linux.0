@@ -2,74 +2,105 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D713C433EF
-	for <rust-for-linux@archiver.kernel.org>; Wed,  4 May 2022 07:15:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D0ADC433EF
+	for <rust-for-linux@archiver.kernel.org>; Thu,  5 May 2022 19:17:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343870AbiEDHSr (ORCPT
+        id S1351195AbiEETVb (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 4 May 2022 03:18:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41888 "EHLO
+        Thu, 5 May 2022 15:21:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230240AbiEDHSp (ORCPT
+        with ESMTP id S231905AbiEETVa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 4 May 2022 03:18:45 -0400
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2072622BF9
-        for <rust-for-linux@vger.kernel.org>; Wed,  4 May 2022 00:15:11 -0700 (PDT)
-Received: by mail-io1-xd2f.google.com with SMTP id g21so611420iom.13
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 May 2022 00:15:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=iuEfYVvgYecrXNz+AgWYQO2XqFiK7sw9c9BKRccMgxs=;
-        b=U8Z+BTpH0RkWlwcUetO9xF3DenxkuSRQt7tXHWRxLjPHHZiQHLbpi5ZHwilnNeEoK8
-         RysTSj59gpMSO/VoKhG0JCu4B4oyCokNHEWPBPysxIbyYoqxVQWMf7NLXBinw+PVCHMj
-         diI0wV31H0H1EAfe5MTjfCZ2KHA/cOFTYGF/8QQgc9Zo4xjDgXIIy5TtBYw0w7lbq7Mh
-         xqpGaKMG4swqZe6vyhTWMvd1IF1CBztMnUpYh4tzlemxmoWZWNh11rO6Qn/4avJGJ03J
-         AXE9gyptnFQxd1KgmCkrZzn3DtLzm3iGLclA04plPEfSzDoquF8XyjCp820D8nvjx6CI
-         mhaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=iuEfYVvgYecrXNz+AgWYQO2XqFiK7sw9c9BKRccMgxs=;
-        b=QCB9tvkTcIRBNfM9gA12pk8GrVdHQSIO26KvqkSPFNQ+x+itZrpOJUm+xes/JyP1bB
-         bAYWlwlHlGL355DmG3x8eG8CLEB1R3OueIalkP1NTYOU+1evE//21GFZCGSc7xM0k/c2
-         eYWibTURoh/lhmNCnG0+t0CffTWiWeDYx/W5uDLTJo/F2E/Gs4sTB01H5zbUEe81djCW
-         ucESUrfEWJaPyOsraUkms2U0tuiNxi0Yr1zng4+7wzBpY4D2FLpjxPSxnDMk4BMXSAhZ
-         SQl7yWOF4n+0G4pllyAHl5KV40kASIz8B9RGmQDDJr0GNmabotOXRTSdtuantyrXgFsy
-         qzcw==
-X-Gm-Message-State: AOAM5333fqbm4EnuJi/nFn1Syqf5bKSHfYqxBX/0cMMeEjxSIy3H9Cg/
-        fw0ydAqFfQQ+36aEeXFVVS81AEbBFPjNoOI555rCweVRy0g=
-X-Google-Smtp-Source: ABdhPJwylN4Fg39vZQ+QbbE7ziUqG8hhNr28nuh/9rcML+W6laB+sLY2egDzQvVircqWtYhO8DopRLtjxP5FE6YGjBo=
-X-Received: by 2002:a05:6638:16cf:b0:32b:6ee7:8d7d with SMTP id
- g15-20020a05663816cf00b0032b6ee78d7dmr4941017jat.256.1651648510490; Wed, 04
- May 2022 00:15:10 -0700 (PDT)
+        Thu, 5 May 2022 15:21:30 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98BE83585B;
+        Thu,  5 May 2022 12:17:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4F95AB82E60;
+        Thu,  5 May 2022 19:17:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58367C385A8;
+        Thu,  5 May 2022 19:17:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651778268;
+        bh=S2VlxsKlNheP/UaljF4jK7i69JWNXtFiU1ZWtep/VvM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=nl8guXmqkeqn8U0uP7nQcR6bT/b9QTUvlNCqHwCwe5Xh6gRXOCpq8g81dvZSYTfmL
+         tFQfiK7MKkf0nC38lNniKXVg7vMuDxmAzR4zNiaA10VUWd7t0+tMz4sCcN0xDV6enG
+         ZhD0D50LhOG9uAIuQ8VIBRlM5XYSgZlxMJPWQw8Qb3hm1F0Uay8X9gCsUBmyn2u5zh
+         Dp44orNE87kfByd8GqNu3fHsco9lG+hbLb+GrI8sHn1sYuYFEz97mGIy6Y5KlyHr+d
+         6FphjRfllmG7jCgrQ/XKdVRIVg319jWQW88Z3YDRzS2kSc2cLxBRo4CgLo1BMVVkaj
+         beVeazmC3ARRA==
+From:   Miguel Ojeda <ojeda@kernel.org>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Changbin Du <changbin.du@intel.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        David Vernet <void@manifault.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Kosina <jikos@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+        live-patching@vger.kernel.org,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH v1 0/3] kallsyms: Rust requirements
+Date:   Thu,  5 May 2022 21:16:42 +0200
+Message-Id: <20220505191704.22812-1-ojeda@kernel.org>
 MIME-Version: 1.0
-References: <5D3D873F-97B9-4E09-8E78-0112ECB7CDA3@ucsc.edu>
-In-Reply-To: <5D3D873F-97B9-4E09-8E78-0112ECB7CDA3@ucsc.edu>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 4 May 2022 09:14:59 +0200
-Message-ID: <CANiq72mqr5+WVBwAWXRYbEcnfz+j+d8_vUucMdWBYrJkVZ_Gow@mail.gmail.com>
-Subject: Re: Request for invitation to the rust for linux zulip
-To:     yyang363 yyang363 <yyang363@ucsc.edu>
-Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Yiwei,
+These are the kallsyms patches we carry on the Rust patch series as
+prerequisites. We were requested to submit them independently, so
+here they are!
 
-On Wed, May 4, 2022 at 9:02 AM yyang363 yyang363 <yyang363@ucsc.edu> wrote:
->
->         I=E2=80=99m enthusiastic about rust for Linux and doing some rese=
-arch of Linux CXL drivers. I=E2=80=99m looking forward to writing it in rus=
-t modules. Please let me in to the zulip. Thanks
+  - The first one is an improvement that may be applied even without
+    the big symbol support.
 
-Invitation sent -- welcome!
+  - The second adds support for "big" symbols without actually
+    increasing the limit.
 
-Cheers,
-Miguel
+  - The third performs the actual increase.
+
+Thanks!
+
+Boqun Feng (1):
+  kallsyms: avoid hardcoding the buffer size
+
+Miguel Ojeda (2):
+  kallsyms: support "big" kernel symbols
+  kallsyms: increase maximum kernel symbol length to 512
+
+ include/linux/kallsyms.h            |  2 +-
+ kernel/kallsyms.c                   | 26 +++++++++++++---
+ kernel/livepatch/core.c             |  4 +--
+ scripts/kallsyms.c                  | 47 ++++++++++++++++++++++++-----
+ tools/include/linux/kallsyms.h      |  2 +-
+ tools/lib/perf/include/perf/event.h |  2 +-
+ tools/lib/symbol/kallsyms.h         |  2 +-
+ 7 files changed, 68 insertions(+), 17 deletions(-)
+
+
+base-commit: 672c0c5173427e6b3e2a9bbb7be51ceeec78093a
+-- 
+2.35.3
+
