@@ -2,137 +2,104 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E3D0C433F5
-	for <rust-for-linux@archiver.kernel.org>; Thu,  5 May 2022 23:46:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FDCBC433F5
+	for <rust-for-linux@archiver.kernel.org>; Thu,  5 May 2022 23:47:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343507AbiEEXuR (ORCPT
+        id S1356839AbiEEXvS (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 5 May 2022 19:50:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54716 "EHLO
+        Thu, 5 May 2022 19:51:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241016AbiEEXuQ (ORCPT
+        with ESMTP id S231205AbiEEXvR (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 5 May 2022 19:50:16 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 622F76006C
-        for <rust-for-linux@vger.kernel.org>; Thu,  5 May 2022 16:46:35 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id c9so5128642plh.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 May 2022 16:46:35 -0700 (PDT)
+        Thu, 5 May 2022 19:51:17 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B3E6006F
+        for <rust-for-linux@vger.kernel.org>; Thu,  5 May 2022 16:47:37 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id bo5so4888575pfb.4
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 May 2022 16:47:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=yw+RudC9dXxTNyd08I4c9F1iC0vSj71b4807D2ENyg0=;
-        b=NZAdUq3eQkkEjioMnYxo2p6HTLdc/+/uV5EUpuUkngcU5zaHoGzgoDh3jXbhde867e
-         UMnDJVg7wIwGVpLgqEz2YzgYdN2MD594I7oMqa7ywLBIBUc1Pg2RtYUCI3YDpoBfilJN
-         XvEnDN9IHObMOrLPQRzUP4IxqJV1eNIZIMoco=
+        bh=WUeD15hPWbE9yoLCSewnQRLeJEfOMbMnHsMRj2V00MI=;
+        b=ON7D9twBBGASskVsH0epWyeWeUqtfI88ck8O2HvE/k9j7Qb7o5myuFABitL3ivhnIT
+         EoZN9A1DoynAHqRGxK5iGEa+7s677dgUgnLNRpZF5iUJNhtYWiCY4ny0yfTYb1r8v2RC
+         NCEPlv2z8Oa5dnRQTMIypfwSzHsTnXsjPOUY4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=yw+RudC9dXxTNyd08I4c9F1iC0vSj71b4807D2ENyg0=;
-        b=gJJPXicrXWmGlGwNmmo6lr42/Rpe3afXDJvDs9ws+h+45omPbhS6ukyEjvfTTYAkYf
-         C78LCT8SvS+fSnqRI12wcSeBnRFTIztlnc0azJeABZgeBzGIcoXhbrTA9Wp2tMcf1z67
-         CUyFoGpifjcfnwNjFT7aV4gyNZhnhCt9HJhHdS36wRW9o2WkubAivThbRIT7LKamvCGF
-         BWGV2IEpHNAXZnnFfZ8zNuMIV2ZqbgjnWqu1Mh0qBJylmCSP2PzKOIsSptmc/nnKMAZl
-         CuiYBnsh4hHnxWMUhI/4wMjE+Mr8PP8EQUzHannkqnrmhh/hMmbYCZB6LS5hlYo8xvGl
-         zqxw==
-X-Gm-Message-State: AOAM532QFNv+Bas4RG2PTauvqiSGDd4wOzhv6kyt99ogYxGpmjiW/lgd
-        XIpE43ugCIBQHwcmbtl9+t06eA==
-X-Google-Smtp-Source: ABdhPJxpqOVx1rXjHtnD+1wrrBg3FAaBVM+nT7erVFbHEee79ijJCWp3JJyLqiecAetvZyKuwaDdQA==
-X-Received: by 2002:a17:902:b596:b0:158:f23a:c789 with SMTP id a22-20020a170902b59600b00158f23ac789mr600387pls.57.1651794394897;
-        Thu, 05 May 2022 16:46:34 -0700 (PDT)
+        bh=WUeD15hPWbE9yoLCSewnQRLeJEfOMbMnHsMRj2V00MI=;
+        b=oAZwwev1eFMT3W0T1MEpPQxdi8/PisyuxerPDTHWj9onyQLjGUGBY6h4tBHOyUoYvd
+         i1EieJ4rt8+yFgFMOBV6C+gAiTKG1sIt0um07avPfH1N40nc4nKyeRbku+FX8+1qPmYn
+         WkaS2Y81zHr4gaKsAxY/QU/4Rpf0yArBlnZf47oPBY2XAU0YBSxHB21nxj7vp/eFv4SP
+         g4FxhJLvoLyRcQYkEI+0Y+AqzpzlSGE/BiMYMRAb4ikZJO/dNHUIAD2I+CeBfhdO+9oI
+         CN4EJ5YOsfJbM1k7UVDscmpJvrDu4VzZLf4mhdSnG+UiAA/3MuvE+nV1AbELjpS9jmfu
+         g6IA==
+X-Gm-Message-State: AOAM5305LnxHNuwj3zWmBcJt+XLbNVq0TsWd23ZbwA3s68dH1d0nyFZ1
+        +8ycs8Qdk5xXxTSbSsOs8wcfPtf5TLpVsQ==
+X-Google-Smtp-Source: ABdhPJxyJ0ZpbkWIDIluufCjLB0tfv4b+F5mOal0GQQ/EJ3ziZkOuCJ8ouhAePZE/2nYXlvy8g/kww==
+X-Received: by 2002:a05:6a00:1805:b0:50d:ee59:b579 with SMTP id y5-20020a056a00180500b0050dee59b579mr777129pfa.70.1651794456576;
+        Thu, 05 May 2022 16:47:36 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id a18-20020a1709027d9200b0015edb22aba1sm171401plm.270.2022.05.05.16.46.33
+        by smtp.gmail.com with ESMTPSA id i27-20020a63131b000000b003c1b2bea056sm1864488pgl.84.2022.05.05.16.47.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 May 2022 16:46:34 -0700 (PDT)
-Date:   Thu, 5 May 2022 16:46:33 -0700
+        Thu, 05 May 2022 16:47:36 -0700 (PDT)
+Date:   Thu, 5 May 2022 16:47:35 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        Changbin Du <changbin.du@intel.com>,
+Cc:     Randy Dunlap <rdunlap@infradead.org>, Song Liu <song@kernel.org>,
+        Bixuan Cui <cuibixuan@huawei.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
+        David Vernet <void@manifault.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Changbin Du <changbin.du@intel.com>,
         Nathan Chancellor <nathan@kernel.org>,
         linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [PATCH v1 1/3] kallsyms: avoid hardcoding the buffer size
-Message-ID: <202205051643.1A8E38C7F2@keescook>
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
+        Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v1 2/3] kallsyms: support "big" kernel symbols
+Message-ID: <202205051647.B5839507@keescook>
 References: <20220505191704.22812-1-ojeda@kernel.org>
- <20220505191704.22812-2-ojeda@kernel.org>
+ <20220505191704.22812-3-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220505191704.22812-2-ojeda@kernel.org>
+In-Reply-To: <20220505191704.22812-3-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, May 05, 2022 at 09:16:43PM +0200, Miguel Ojeda wrote:
-> From: Boqun Feng <boqun.feng@gmail.com>
+On Thu, May 05, 2022 at 09:16:44PM +0200, Miguel Ojeda wrote:
+> Rust symbols can become quite long due to namespacing introduced
+> by modules, types, traits, generics, etc.
 > 
-> This makes it easier to update the size later on.
+> Increasing to 255 is not enough in some cases, and therefore
+> we need to introduce longer lengths to the symbol table.
 > 
-> Furthermore, a static assert is added to ensure both are updated
-> when that happens. The relationship used is one that keeps the new
-> size (512+1) close to the original buffer size (500).
+> In order to avoid increasing all lengths to 2 bytes (since most
+> of them are small, including many Rust ones), we use ULEB128 to
+> keep smaller symbols in 1 byte, with the rest in 2 bytes.
 > 
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> Co-developed-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Matthew Wilcox <willy@infradead.org>
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  scripts/kallsyms.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
-> 
-> diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
-> index 8caabddf817c..880c4404731b 100644
-> --- a/scripts/kallsyms.c
-> +++ b/scripts/kallsyms.c
-> @@ -27,8 +27,18 @@
->  
->  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
->  
-> +#define _stringify_1(x)	#x
-> +#define _stringify(x)	_stringify_1(x)
-> +
->  #define KSYM_NAME_LEN		128
->  
-> +/* A substantially bigger size than the current maximum. */
-> +#define KSYM_NAME_LEN_BUFFER	512
-> +_Static_assert(
-> +	KSYM_NAME_LEN_BUFFER == KSYM_NAME_LEN * 4,
-> +	"Please keep KSYM_NAME_LEN_BUFFER in sync with KSYM_NAME_LEN"
-> +);
-> +
->  struct sym_entry {
->  	unsigned long long addr;
->  	unsigned int len;
-> @@ -197,15 +207,15 @@ static void check_symbol_range(const char *sym, unsigned long long addr,
->  
->  static struct sym_entry *read_symbol(FILE *in)
->  {
-> -	char name[500], type;
-> +	char name[KSYM_NAME_LEN_BUFFER+1], type;
->  	unsigned long long addr;
->  	unsigned int len;
->  	struct sym_entry *sym;
->  	int rc;
->  
-> -	rc = fscanf(in, "%llx %c %499s\n", &addr, &type, name);
-> +	rc = fscanf(in, "%llx %c %" _stringify(KSYM_NAME_LEN_BUFFER) "s\n", &addr, &type, name);
->  	if (rc != 3) {
-> -		if (rc != EOF && fgets(name, 500, in) == NULL)
-> +		if (rc != EOF && fgets(name, KSYM_NAME_LEN_BUFFER + 1, in) == NULL)
 
-No need to repeat the sizing:
-
-	fgets(name, sizeof(name), in)
-
->  			fprintf(stderr, "Read error or end of file.\n");
->  		return NULL;
->  	}
-> -- 
-> 2.35.3
-> 
+Looks good to me.
 
 Reviewed-by: Kees Cook <keescook@chromium.org>
 
