@@ -2,83 +2,127 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED1A7C433EF
-	for <rust-for-linux@archiver.kernel.org>; Fri,  6 May 2022 05:26:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BA0CC433EF
+	for <rust-for-linux@archiver.kernel.org>; Fri,  6 May 2022 08:35:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243662AbiEFFad (ORCPT
+        id S1390173AbiEFIiq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 6 May 2022 01:30:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36182 "EHLO
+        Fri, 6 May 2022 04:38:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1389208AbiEFFaW (ORCPT
+        with ESMTP id S1390172AbiEFIin (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 6 May 2022 01:30:22 -0400
-Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B4BB66ACB;
-        Thu,  5 May 2022 22:26:24 -0700 (PDT)
-Received: by mail-il1-x12a.google.com with SMTP id i22so4188923ila.1;
-        Thu, 05 May 2022 22:26:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=btRfdC3/ebasVHvh6uBMVKIVD47Na90nsM4/u+AC2ZM=;
-        b=csQ7RZUtRH6jQJGzwUTsP8YRSCyTNZYFEEs5nHcuj27V2/BbiCk22oZe28NzwdR5Y6
-         /+icHCwD+cPSuiC5HXHZdW2ufqsDeIvtMO9bgJ8mdYI45dusdxQimS3BV7wHCzUO1RL8
-         40aIWruIi6OuClhmuetnsCyV1nKDBV0Jt0r/7BzpOrZp1JR6zzGa4oMJ8eUy3HvTxIea
-         d2KEntj7H2lcf/5fCxonDp5ZlPphExdTd/vLOvA0WX5infw2wPeOYxn0t86Jzdj37b1y
-         Tdr9HQrrz4domCTJaqWB+k0JHbRJDhtfkEa+Ma+Qn5JtOtIPBVxv/whExZHUXAE60GAI
-         GLaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=btRfdC3/ebasVHvh6uBMVKIVD47Na90nsM4/u+AC2ZM=;
-        b=g8fRmnHwUBYmuOcyUGe7+AisMiea1Hmt1nIhu7TvZCCtfhtaaZBsxRP4A9rqzK+U1h
-         HnuX9vslN1W46bs0DHm1LVQ5NAXHYN6B8KTVx01vNBnarEZWY7jByzoB0P/enFLLc044
-         F2L39Jhj0kKEctYGqAC0DUIbp6S6l/5HoQIGdxlqvuifdxfRxBiYRC3RxfARTFzUHqRw
-         /1lHvek52+QfxE1IXan6PWEoKJZE0ws+FdSRfiFrueta0cOervaJKcQZaVE8AETXwt5S
-         UCiNJwz1h7H+MxiAvjVr4Bj9H94UzLBtZJ2bUYSYuRMsVqYRSYuJ0KuZjF9IQ9x9rAvy
-         0oHg==
-X-Gm-Message-State: AOAM5326TYhmLlsZAv5cZ7FGEXXUkhYl5rOa2YOTgdhNeaIaHFPgZHSa
-        ozypv8IVwZiohmPdd3Z6R8YGOneNYxA4AmymhpU=
-X-Google-Smtp-Source: ABdhPJyeIUrhz3EpREFg1AsHHMUf4LhxfAFGKKfYPJemYWqV0jWB1mOS4wrsMq7C8VUTYVLdfmaDY3VDmVi0y+nojG0=
-X-Received: by 2002:a05:6e02:152e:b0:2cf:548d:a400 with SMTP id
- i14-20020a056e02152e00b002cf548da400mr715860ilu.72.1651814783766; Thu, 05 May
- 2022 22:26:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220505191704.22812-1-ojeda@kernel.org> <20220505191704.22812-2-ojeda@kernel.org>
- <202205051643.1A8E38C7F2@keescook>
-In-Reply-To: <202205051643.1A8E38C7F2@keescook>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 6 May 2022 07:26:12 +0200
-Message-ID: <CANiq72n+g_=QQcSuE13+58j+PCuqLEyCusEUqMKFywR8UKHK6g@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] kallsyms: avoid hardcoding the buffer size
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Fri, 6 May 2022 04:38:43 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 598E862BF1;
+        Fri,  6 May 2022 01:35:01 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id AB3B021A63;
+        Fri,  6 May 2022 08:34:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1651826099; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=E8fz2Qj+5LloVB8vVJMGmoituacjkJeR6Cyj3S17Ync=;
+        b=kdq0pyczu0FGQoWPRbX1YpR0o5BSPmfjwNvpAxR1AlStsynwpp7SB/tNoYJxLftFy/aiUv
+        TZXJf8hGYPOFT/rqwaq/jR8vnukH8M+voTZMHiaqCo+4BZBydvA2Tph0SGDOBhQj3nX2Vs
+        RrOb1FgrjYdDKxGn/SJkjE9UrMN8MUY=
+Received: from suse.cz (unknown [10.100.201.202])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by relay2.suse.de (Postfix) with ESMTPS id C16E32C142;
+        Fri,  6 May 2022 08:34:58 +0000 (UTC)
+Date:   Fri, 6 May 2022 10:34:58 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Josh Poimboeuf <jpoimboe@redhat.com>,
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Helge Deller <deller@gmx.de>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
         Masahiro Yamada <masahiroy@kernel.org>,
-        Changbin Du <changbin.du@intel.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
+        Changbin Du <changbin.du@intel.com>,
         Nathan Chancellor <nathan@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Boqun Feng <boqun.feng@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kees Cook <keescook@chromium.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        linux-kernel@vger.kernel.org, live-patching@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH v1 3/3] kallsyms: increase maximum kernel symbol length
+ to 512
+Message-ID: <YnTdslR0jhUNo0lu@alley>
+References: <20220505191704.22812-1-ojeda@kernel.org>
+ <20220505191704.22812-4-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220505191704.22812-4-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, May 6, 2022 at 1:46 AM Kees Cook <keescook@chromium.org> wrote:
->
-> No need to repeat the sizing:
->
->         fgets(name, sizeof(name), in)
+On Thu 2022-05-05 21:16:45, Miguel Ojeda wrote:
+> Rust symbols can become quite long due to namespacing introduced
+> by modules, types, traits, generics, etc. For instance,
+> the following code:
+> 
+>     pub mod my_module {
+>         pub struct MyType;
+>         pub struct MyGenericType<T>(T);
+> 
+>         pub trait MyTrait {
+>             fn my_method() -> u32;
+>         }
+> 
+>         impl MyTrait for MyGenericType<MyType> {
+>             fn my_method() -> u32 {
+>                 42
+>             }
+>         }
+>     }
+> 
+> generates a symbol of length 96 when using the upcoming v0 mangling scheme:
+> 
+>     _RNvXNtCshGpAVYOtgW1_7example9my_moduleINtB2_13MyGenericTypeNtB2_6MyTypeENtB2_7MyTrait9my_method
+> 
+> At the moment, Rust symbols may reach up to 300 in length.
+> Setting 512 as the maximum seems like a reasonable choice to
+> keep some headroom.
+> 
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Definitely.
+I was primary interested into the livepatching code.
+But the entire patch looks good:
 
-> Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 
-Thanks for the three reviews!
+I just hope that it will not cause stack overflows
+somewhere.
 
-Cheers,
-Miguel
+Best Regards,
+Petr
