@@ -2,178 +2,118 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF033C433FE
-	for <rust-for-linux@archiver.kernel.org>; Fri,  6 May 2022 09:56:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5D66C433FE
+	for <rust-for-linux@archiver.kernel.org>; Fri,  6 May 2022 11:20:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351779AbiEFJ7n (ORCPT
+        id S243024AbiEFLYR (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 6 May 2022 05:59:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41220 "EHLO
+        Fri, 6 May 2022 07:24:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236473AbiEFJ7l (ORCPT
+        with ESMTP id S1391267AbiEFLXn (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 6 May 2022 05:59:41 -0400
-X-Greylist: delayed 433 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 May 2022 02:55:57 PDT
-Received: from rosa.stappers.it (rosa.stappers.it [77.72.145.78])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5E3B24754F;
-        Fri,  6 May 2022 02:55:56 -0700 (PDT)
-Received: by rosa.stappers.it (Postfix, from userid 1000)
-        id 5B06F2014; Fri,  6 May 2022 11:45:36 +0200 (CEST)
-Date:   Fri, 6 May 2022 11:45:36 +0200
-From:   Geert Stappers <stappers@stappers.nl>
+        Fri, 6 May 2022 07:23:43 -0400
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04C5C5DA36
+        for <rust-for-linux@vger.kernel.org>; Fri,  6 May 2022 04:20:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1651835994;
+        bh=58oURv2d1sC3UHpxw7+6haohpmNCYl41EdKlr3w1Gzs=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=rvRyz0Ty4ATkdIMBIHIdYONhNe2YlbhcwWSrfooDFsQJnvKfp2c0Cez0KAyMxmAPt
+         3B0P3qDYuTN4e2t5lelQBef5mvIqr+cBBZJsMKQF1317pJ4wc0La9yYVZbJYjsAhjA
+         wy8cfSVRmK3GBfw+O/Q3/owPxgHBeMoEOubUByV8=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 01D4D12868AC;
+        Fri,  6 May 2022 07:19:54 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id QzPQXx1m3v7s; Fri,  6 May 2022 07:19:53 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1651835993;
+        bh=58oURv2d1sC3UHpxw7+6haohpmNCYl41EdKlr3w1Gzs=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=cAIErAhXSrfSYxHPIDMU2Hy+rQ0GY1U1TOPJy96YHxQErIgBAR+1zcUr90dCnkQ+f
+         iIOTTzVLJ/lsCZLxlhyq4UbbXOzrPHO9g7F28fzugCtsQUhra9+kVRVEt3zD0d6w+Z
+         XIQ7CkKROdKS/AErgxI8vBAn6sI6c2vh9U0ek9uA=
+Received: from [172.20.4.189] (unknown [173.211.218.201])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 0687A1286866;
+        Fri,  6 May 2022 07:19:52 -0400 (EDT)
+Message-ID: <7e20c844dadacb3dac822220ca108f4d786ceb7d.camel@HansenPartnership.com>
+Subject: Re: [PATCH v1 1/3] kallsyms: avoid hardcoding the buffer size
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
 To:     Miguel Ojeda <ojeda@kernel.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Petr Mladek <pmladek@suse.com>,
-        Joe Lawrence <joe.lawrence@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Helge Deller <deller@gmx.de>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
         Masahiro Yamada <masahiroy@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
         Changbin Du <changbin.du@intel.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
         Nathan Chancellor <nathan@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kees Cook <keescook@chromium.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        linux-kernel@vger.kernel.org, live-patching@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [PATCH v1 3/3] kallsyms: increase maximum kernel symbol length
- to 512
-Message-ID: <20220506094536.GL1551@rosa.stappers.it>
+        linux-kernel@vger.kernel.org
+Cc:     rust-for-linux@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>
+Date:   Fri, 06 May 2022 07:19:51 -0400
+In-Reply-To: <20220505191704.22812-2-ojeda@kernel.org>
 References: <20220505191704.22812-1-ojeda@kernel.org>
- <20220505191704.22812-4-ojeda@kernel.org>
+         <20220505191704.22812-2-ojeda@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220505191704.22812-4-ojeda@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, May 05, 2022 at 09:16:45PM +0200, Miguel Ojeda wrote:
+On Thu, 2022-05-05 at 21:16 +0200, Miguel Ojeda wrote:
+> From: Boqun Feng <boqun.feng@gmail.com>
 > 
-> generates a symbol of length 96 when using the upcoming v0 mangling scheme:
+> This makes it easier to update the size later on.
 > 
->     _RNvXNtCshGpAVYOtgW1_7example9my_moduleINtB2_13MyGenericTypeNtB2_6MyTypeENtB2_7MyTrait9my_method
+> Furthermore, a static assert is added to ensure both are updated
+> when that happens. The relationship used is one that keeps the new
+> size (512+1) close to the original buffer size (500).
 > 
-> At the moment, Rust symbols may reach up to 300 in length.
-> Setting 512 as the maximum seems like a reasonable choice to
-> keep some headroom.
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  scripts/kallsyms.c | 16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
 > 
-> diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-> index ce1bd2fbf23e..e5ad6e31697d 100644
-> --- a/include/linux/kallsyms.h
-> +++ b/include/linux/kallsyms.h
-> @@ -15,7 +15,7 @@
->  
->  #include <asm/sections.h>
->  
-> -#define KSYM_NAME_LEN 128
-> +#define KSYM_NAME_LEN 512
-
-multiplication factor is four
-
-
-> --- a/kernel/livepatch/core.c
-> +++ b/kernel/livepatch/core.c
-> @@ -213,7 +213,7 @@ static int klp_resolve_symbols(Elf_Shdr *sechdrs, const char *strtab,
->  	 * we use the smallest/strictest upper bound possible (56, based on
->  	 * the current definition of MODULE_NAME_LEN) to prevent overflows.
->  	 */
-> -	BUILD_BUG_ON(MODULE_NAME_LEN < 56 || KSYM_NAME_LEN != 128);
-> +	BUILD_BUG_ON(MODULE_NAME_LEN < 56 || KSYM_NAME_LEN != 512);
-
-factor four
-
-
-> @@ -227,7 +227,7 @@ static int klp_resolve_symbols(Elf_Shdr *sechdrs, const char *strtab,
->  
->  		/* Format: .klp.sym.sym_objname.sym_name,sympos */
->  		cnt = sscanf(strtab + sym->st_name,
-> -			     ".klp.sym.%55[^.].%127[^,],%lu",
-> +			     ".klp.sym.%55[^.].%511[^,],%lu",
-
-4 * ( 127 + 1 )  =  511 + 1
-
-
+> diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
+> index 8caabddf817c..880c4404731b 100644
 > --- a/scripts/kallsyms.c
 > +++ b/scripts/kallsyms.c
-> @@ -30,10 +30,10 @@
->  #define _stringify_1(x)	#x
->  #define _stringify(x)	_stringify_1(x)
+> @@ -27,8 +27,18 @@
 >  
-> -#define KSYM_NAME_LEN		128
-> +#define KSYM_NAME_LEN		512
-
-factor four
-
-
-> --- a/tools/include/linux/kallsyms.h
-> +++ b/tools/include/linux/kallsyms.h
-> @@ -6,7 +6,7 @@
->  #include <stdio.h>
->  #include <unistd.h>
+>  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 >  
-> -#define KSYM_NAME_LEN 128
-> +#define KSYM_NAME_LEN 512
-
-factor four
-
-
-> --- a/tools/lib/perf/include/perf/event.h
-> +++ b/tools/lib/perf/include/perf/event.h
-> @@ -95,7 +95,7 @@ struct perf_record_throttle {
->  };
+> +#define _stringify_1(x)	#x
+> +#define _stringify(x)	_stringify_1(x)
+> +
+>  #define KSYM_NAME_LEN		128
 >  
->  #ifndef KSYM_NAME_LEN
-> -#define KSYM_NAME_LEN 256
-> +#define KSYM_NAME_LEN 512
-
-Here is the multiplication factor  two.
-
-
-> --- a/tools/lib/symbol/kallsyms.h
-> +++ b/tools/lib/symbol/kallsyms.h
-> @@ -7,7 +7,7 @@
->  #include <linux/types.h>
+> +/* A substantially bigger size than the current maximum. */
+> +#define KSYM_NAME_LEN_BUFFER	512
+> +_Static_assert(
+> +	KSYM_NAME_LEN_BUFFER == KSYM_NAME_LEN * 4,
+> +	"Please keep KSYM_NAME_LEN_BUFFER in sync with KSYM_NAME_LEN"
+> +);
+> +
+>  struct sym_entry {
+>  	unsigned long long addr;
+>  	unsigned int len;
+> @@ -197,15 +207,15 @@ static void check_symbol_range(const char *sym,
+> unsigned long long addr,
 >  
->  #ifndef KSYM_NAME_LEN
-> -#define KSYM_NAME_LEN 256
-> +#define KSYM_NAME_LEN 512
+>  static struct sym_entry *read_symbol(FILE *in)
+>  {
+> -	char name[500], type;
+> +	char name[KSYM_NAME_LEN_BUFFER+1], type;
 
-Another  "factor two"
+When you raise KSYM_NAME_LEN to 512, this on stack allocation becomes
+2049 bytes.  How did you manage not to trigger the frame size warning,
+which is 1024 on 32 bit and 2048 on 64 bit by default?
 
+James
 
-
-It feels good to unify all the KSYM_NAME_LEN to 512.
-
-Thing that feels less good is doubling 256 versus quadrupling 128.
-
-I felt the need to report that.
-
-
-Feel free to ignore this remark.
-
-
-
-Groeten
-Geert Stappers
--- 
-Silence is hard to parse
