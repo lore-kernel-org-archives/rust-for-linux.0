@@ -2,91 +2,105 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70C1DC433EF
-	for <rust-for-linux@archiver.kernel.org>; Fri,  6 May 2022 14:48:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 315B6C433FE
+	for <rust-for-linux@archiver.kernel.org>; Fri,  6 May 2022 20:35:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343617AbiEFOvv (ORCPT
+        id S1443108AbiEFUjP (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 6 May 2022 10:51:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48722 "EHLO
+        Fri, 6 May 2022 16:39:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237385AbiEFOvu (ORCPT
+        with ESMTP id S1443128AbiEFUjG (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 6 May 2022 10:51:50 -0400
-X-Greylist: delayed 12488 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 May 2022 07:48:07 PDT
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D866AA5C;
-        Fri,  6 May 2022 07:48:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1651848487;
-        bh=mYBYsb4+IcqpXrniKQp6OcZ7ENW1vFpyI82r9PoW1UM=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=e/Lc4cT6B8c1Tm4QY5U1muirjRqkwoPTuJpxSkWn+NQQX+Zs0JMVkQGKhHmgZP+WL
-         sfCmchYkopaUYYg5oHuh+nXDeHHhqwrdqPqUUjF2iA7mhSqcHby3gCAEqQrQCIJ1eT
-         nx63fKEamNyzn5K7zKaDf1h/08Wz0HrCFALN/CnU=
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 0B9B3128694D;
-        Fri,  6 May 2022 10:48:07 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Hfu_FKLUTw1k; Fri,  6 May 2022 10:48:07 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1651848486;
-        bh=mYBYsb4+IcqpXrniKQp6OcZ7ENW1vFpyI82r9PoW1UM=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=pOXX8GI578qtb2rtCb9mYA7vAb4F3V/Ra/z6yIkl6XjdXSjbSetj+XStYQLIlev1g
-         GMVHeakSGIcSEO+4y6dxOljb5rFamXyuxaQah/3IeElP+vLNnpoCKnNMc8vmSabs48
-         OMm/TFP9ZkesKIvsvTtR1RCGP8R0fnPyY01AeBhY=
-Received: from lingrow.rcx-us.ibmmobiledemo.com (unknown [129.41.87.19])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Fri, 6 May 2022 16:39:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C984B2AD;
+        Fri,  6 May 2022 13:35:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id F0DC912868FE;
-        Fri,  6 May 2022 10:48:05 -0400 (EDT)
-Message-ID: <80715dbbf1f34853697e3aa6b3c74bc381000cc4.camel@HansenPartnership.com>
-Subject: Re: [PATCH v1 1/3] kallsyms: avoid hardcoding the buffer size
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A8A8C60AF6;
+        Fri,  6 May 2022 20:35:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A25C385A9;
+        Fri,  6 May 2022 20:35:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651869320;
+        bh=S2VlxsKlNheP/UaljF4jK7i69JWNXtFiU1ZWtep/VvM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ixIpy0yI+Knnbo5XqC13m/OPL0fJ+UK5oFisnjQWarBYeyI4STVtAaSI/K6q9qY6r
+         RlZq6HL3qzTFcA5qBRU6/ebWZLXpOYDM8BjroQj0Q64/fu9dbQujWndT7ZKC1nSZqj
+         LdRQCFIVBm13N9oJNa/osmgaA2iDMvTaeKck/mZUU5pcD+GYiN0d//6aXmpNR4InxI
+         x/0a/2JTllqzfBng0Y5wIej51LvYUQr+TXNc3linvBH9dzyIAAfbeR/abUXfBOAnWM
+         6O9B8yEu7bj9+jGcQpRZfDr1c0Wc0y6/CFmbv3fdhHb/l7y8rNPu4NR6564FcXsoq6
+         1b2ATuR2JdTWA==
+From:   Miguel Ojeda <ojeda@kernel.org>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Bixuan Cui <cuibixuan@huawei.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
         Changbin Du <changbin.du@intel.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        David Vernet <void@manifault.com>, Gary Guo <gary@garyguo.net>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Kosina <jikos@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+        live-patching@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Boqun Feng <boqun.feng@gmail.com>
-Date:   Fri, 06 May 2022 10:48:04 -0400
-In-Reply-To: <CANiq72m0unKrwRrb-tnYZ5w5oodJQ+3wNHMaQazeUSCOfUBJiQ@mail.gmail.com>
-References: <20220505191704.22812-1-ojeda@kernel.org>
-         <20220505191704.22812-2-ojeda@kernel.org>
-         <7e20c844dadacb3dac822220ca108f4d786ceb7d.camel@HansenPartnership.com>
-         <CANiq72m0unKrwRrb-tnYZ5w5oodJQ+3wNHMaQazeUSCOfUBJiQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+        Peter Zijlstra <peterz@infradead.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Wedson Almeida Filho <wedsonaf@google.com>
+Cc:     rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 0/3] kallsyms: Rust requirements
+Date:   Fri,  6 May 2022 22:34:21 +0200
+Message-Id: <20220506203443.24721-1-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, 2022-05-06 at 14:58 +0200, Miguel Ojeda wrote:
-> Hi James,
-> 
-> On Fri, May 6, 2022 at 1:19 PM James Bottomley
-> <James.Bottomley@hansenpartnership.com> wrote:
-> > When you raise KSYM_NAME_LEN to 512, this on stack allocation
-> > becomes 2049 bytes.  How did you manage not to trigger the frame
-> > size warning, which is 1024 on 32 bit and 2048 on 64 bit by
-> > default?
-> 
-> Thanks for taking a look!
-> 
-> If you mean `CONFIG_FRAME_WARN`, that applies to kernel objects, not
-> scripts.
+These are the kallsyms patches we carry on the Rust patch series as
+prerequisites. We were requested to submit them independently, so
+here they are!
 
-Oh, right, I missed that it was a script.  Forget the comment then; we
-only have a restricted stack inside the kernel not in userspace.
+  - The first one is an improvement that may be applied even without
+    the big symbol support.
 
-James
+  - The second adds support for "big" symbols without actually
+    increasing the limit.
 
+  - The third performs the actual increase.
+
+Thanks!
+
+Boqun Feng (1):
+  kallsyms: avoid hardcoding the buffer size
+
+Miguel Ojeda (2):
+  kallsyms: support "big" kernel symbols
+  kallsyms: increase maximum kernel symbol length to 512
+
+ include/linux/kallsyms.h            |  2 +-
+ kernel/kallsyms.c                   | 26 +++++++++++++---
+ kernel/livepatch/core.c             |  4 +--
+ scripts/kallsyms.c                  | 47 ++++++++++++++++++++++++-----
+ tools/include/linux/kallsyms.h      |  2 +-
+ tools/lib/perf/include/perf/event.h |  2 +-
+ tools/lib/symbol/kallsyms.h         |  2 +-
+ 7 files changed, 68 insertions(+), 17 deletions(-)
+
+
+base-commit: 672c0c5173427e6b3e2a9bbb7be51ceeec78093a
+-- 
+2.35.3
 
