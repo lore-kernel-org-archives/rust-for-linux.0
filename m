@@ -2,59 +2,51 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E6EFC4332F
-	for <rust-for-linux@archiver.kernel.org>; Fri,  6 May 2022 12:58:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70C1DC433EF
+	for <rust-for-linux@archiver.kernel.org>; Fri,  6 May 2022 14:48:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1392204AbiEFNCW (ORCPT
+        id S1343617AbiEFOvv (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 6 May 2022 09:02:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57130 "EHLO
+        Fri, 6 May 2022 10:51:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346526AbiEFNCW (ORCPT
+        with ESMTP id S237385AbiEFOvu (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 6 May 2022 09:02:22 -0400
-Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6576868F86;
-        Fri,  6 May 2022 05:58:36 -0700 (PDT)
-Received: by mail-io1-xd2d.google.com with SMTP id i20so7963740ion.0;
-        Fri, 06 May 2022 05:58:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jfCqPDeeSaGFFEME8Ca8+0Y3WqdQwWkIOfIAg0xgMNQ=;
-        b=qmDgoJ0izFpWUD+ROEjPOAPmt+1ewR7azB70xyNRmjxviEKMBdlPRCjCXKGqVtR0lL
-         6j3U5GRoU8o0sufHiyyjcS0H4NPPYeNtJDq2aR1cVv09J+pTSYsUbLWu3Fo2xCdDErBq
-         2qTisgxylEvpmJKPAKpl/J/oYsbBuBSzQm46vE6wMvCbJELMptrdHqWZwb0HRAX3viGS
-         eJYTFCXE8KdyfbHiLDPshzWY0JPYnpFd+HVO5fJmGQGHV/64d2b/xtcEATZhDn+7T8d2
-         F51mBRiRqMqLGXWfRUAFCrV8bsgCl1IFNBIYxoD4HARXp2AboZTfWb785s1JfA7kMO71
-         j+5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jfCqPDeeSaGFFEME8Ca8+0Y3WqdQwWkIOfIAg0xgMNQ=;
-        b=IBKs/6fsGzWbqpR+b3pSLqOakXbhO03uc2wk5yl/OSol5GcyJeX+R32Ts2xxc9Zp6y
-         3617vLdGCmSgGZ43Zhc3XGc0M2V/GGRdILJx9xgtKInA4SLtKJGD/00s8+ZD++RYLuRN
-         PqO5g2idtFTx6j0auSIDH/rgLt9TIYNtglWaDE5CG9xINiCQCcNKCrFGUV6W2QYLW9bA
-         KZ84NbOT16TW2rqNN1WrBJTbagLse1qXwK3ih9dJWiGqT79DGdFedY9PG3CuziZP5M0r
-         ztoncebghLVUWpuLDkh1BsIuYVZBDUW/rpdtJ2qoJHJSnqn4tP8i9ESAbVxDiASyQl11
-         0HBA==
-X-Gm-Message-State: AOAM532jLvCRJy7SvxDlT2fMal2WtM5fMApVTym2U0cFcjP3TjBT/RrB
-        23kgPYoL5iblnJP0oTCTyydSxYX8hSBPZCNraT4=
-X-Google-Smtp-Source: ABdhPJzPsUYCoRDJ7wUMHnrhe1fj8X/rzmYRw8AE0RtEIY/Z7nBJAiDrwvHeHpPQsI+z7YxbgmWteaiQd7H57FacCr8=
-X-Received: by 2002:a02:8624:0:b0:32b:397d:eeb1 with SMTP id
- e33-20020a028624000000b0032b397deeb1mr1438879jai.264.1651841915781; Fri, 06
- May 2022 05:58:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220505191704.22812-1-ojeda@kernel.org> <20220505191704.22812-2-ojeda@kernel.org>
- <7e20c844dadacb3dac822220ca108f4d786ceb7d.camel@HansenPartnership.com>
-In-Reply-To: <7e20c844dadacb3dac822220ca108f4d786ceb7d.camel@HansenPartnership.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 6 May 2022 14:58:24 +0200
-Message-ID: <CANiq72m0unKrwRrb-tnYZ5w5oodJQ+3wNHMaQazeUSCOfUBJiQ@mail.gmail.com>
+        Fri, 6 May 2022 10:51:50 -0400
+X-Greylist: delayed 12488 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 May 2022 07:48:07 PDT
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D866AA5C;
+        Fri,  6 May 2022 07:48:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1651848487;
+        bh=mYBYsb4+IcqpXrniKQp6OcZ7ENW1vFpyI82r9PoW1UM=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=e/Lc4cT6B8c1Tm4QY5U1muirjRqkwoPTuJpxSkWn+NQQX+Zs0JMVkQGKhHmgZP+WL
+         sfCmchYkopaUYYg5oHuh+nXDeHHhqwrdqPqUUjF2iA7mhSqcHby3gCAEqQrQCIJ1eT
+         nx63fKEamNyzn5K7zKaDf1h/08Wz0HrCFALN/CnU=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 0B9B3128694D;
+        Fri,  6 May 2022 10:48:07 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id Hfu_FKLUTw1k; Fri,  6 May 2022 10:48:07 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1651848486;
+        bh=mYBYsb4+IcqpXrniKQp6OcZ7ENW1vFpyI82r9PoW1UM=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=pOXX8GI578qtb2rtCb9mYA7vAb4F3V/Ra/z6yIkl6XjdXSjbSetj+XStYQLIlev1g
+         GMVHeakSGIcSEO+4y6dxOljb5rFamXyuxaQah/3IeElP+vLNnpoCKnNMc8vmSabs48
+         OMm/TFP9ZkesKIvsvTtR1RCGP8R0fnPyY01AeBhY=
+Received: from lingrow.rcx-us.ibmmobiledemo.com (unknown [129.41.87.19])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id F0DC912868FE;
+        Fri,  6 May 2022 10:48:05 -0400 (EDT)
+Message-ID: <80715dbbf1f34853697e3aa6b3c74bc381000cc4.camel@HansenPartnership.com>
 Subject: Re: [PATCH v1 1/3] kallsyms: avoid hardcoding the buffer size
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Masahiro Yamada <masahiroy@kernel.org>,
         Changbin Du <changbin.du@intel.com>,
@@ -63,77 +55,38 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>
+Date:   Fri, 06 May 2022 10:48:04 -0400
+In-Reply-To: <CANiq72m0unKrwRrb-tnYZ5w5oodJQ+3wNHMaQazeUSCOfUBJiQ@mail.gmail.com>
+References: <20220505191704.22812-1-ojeda@kernel.org>
+         <20220505191704.22812-2-ojeda@kernel.org>
+         <7e20c844dadacb3dac822220ca108f4d786ceb7d.camel@HansenPartnership.com>
+         <CANiq72m0unKrwRrb-tnYZ5w5oodJQ+3wNHMaQazeUSCOfUBJiQ@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi James,
+On Fri, 2022-05-06 at 14:58 +0200, Miguel Ojeda wrote:
+> Hi James,
+> 
+> On Fri, May 6, 2022 at 1:19 PM James Bottomley
+> <James.Bottomley@hansenpartnership.com> wrote:
+> > When you raise KSYM_NAME_LEN to 512, this on stack allocation
+> > becomes 2049 bytes.  How did you manage not to trigger the frame
+> > size warning, which is 1024 on 32 bit and 2048 on 64 bit by
+> > default?
+> 
+> Thanks for taking a look!
+> 
+> If you mean `CONFIG_FRAME_WARN`, that applies to kernel objects, not
+> scripts.
 
-On Fri, May 6, 2022 at 1:19 PM James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
->
-> When you raise KSYM_NAME_LEN to 512, this on stack allocation becomes
-> 2049 bytes.  How did you manage not to trigger the frame size warning,
-> which is 1024 on 32 bit and 2048 on 64 bit by default?
+Oh, right, I missed that it was a script.  Forget the comment then; we
+only have a restricted stack inside the kernel not in userspace.
 
-Thanks for taking a look!
+James
 
-If you mean `CONFIG_FRAME_WARN`, that applies to kernel objects, not scripts.
 
-If I enable it for `HOSTCC` with a 2048 threshold, we do get the warning:
-
-    scripts/kallsyms.c: In function 'read_symbol':
-    scripts/kallsyms.c:257:1: warning: the frame size of 2080 bytes is
-larger than 2048 bytes [-Wframe-larger-than=]
-     257 | }
-          | ^
-
-as well as in a few other places (e.g. for my config [0]), but given
-it is userspace it should be fine unless they happen to end up
-recursing quite a few times.
-
-Cheers,
-Miguel
-
-[0]
-    scripts/mod/modpost.c: In function 'main':
-    scripts/mod/modpost.c:2636:1: warning: the frame size of 4208
-bytes is larger than 2048 bytes [-Wframe-larger-than=]
-     2636 | }
-          | ^
-    scripts/mod/sumversion.c: In function 'get_src_version':
-    scripts/mod/sumversion.c:419:1: warning: the frame size of 4272
-bytes is larger than 2048 bytes [-Wframe-larger-than=]
-      419 | }
-          | ^
-    usr/gen_init_cpio.c: In function 'cpio_mkgeneric_line':
-    usr/gen_init_cpio.c:223:1: warning: the frame size of 4384 bytes
-is larger than 2048 bytes [-Wframe-larger-than=]
-      223 | }
-          | ^
-    usr/gen_init_cpio.c: In function 'cpio_mknod_line':
-    usr/gen_init_cpio.c:293:1: warning: the frame size of 4400 bytes
-is larger than 2048 bytes [-Wframe-larger-than=]
-      293 | }
-          | ^
-    usr/gen_init_cpio.c: In function 'cpio_mkfile_line':
-    usr/gen_init_cpio.c:456:1: warning: the frame size of 12560 bytes
-is larger than 2048 bytes [-Wframe-larger-than=]
-      456 | }
-          | ^
-    usr/gen_init_cpio.c: In function 'cpio_mkslink_line':
-    usr/gen_init_cpio.c:150:1: warning: the frame size of 8496 bytes
-is larger than 2048 bytes [-Wframe-larger-than=]
-      150 | }
-          | ^
-    usr/gen_init_cpio.c: In function 'main':
-    usr/gen_init_cpio.c:640:1: warning: the frame size of 8528 bytes
-is larger than 2048 bytes [-Wframe-larger-than=]
-      640 | }
-          | ^
-    drivers/tty/vt/conmakehash.c: In function 'main':
-    drivers/tty/vt/conmakehash.c:290:1: warning: the frame size of
-65584 bytes is larger than 2048 bytes [-Wframe-larger-than=]
-      290 | }
-          | ^
