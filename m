@@ -2,58 +2,58 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0550C433EF
-	for <rust-for-linux@archiver.kernel.org>; Sat,  7 May 2022 09:35:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 493C8C433EF
+	for <rust-for-linux@archiver.kernel.org>; Sat,  7 May 2022 10:21:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1444006AbiEGJjZ (ORCPT
+        id S244001AbiEGKZO (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 7 May 2022 05:39:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43172 "EHLO
+        Sat, 7 May 2022 06:25:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1446211AbiEGJjY (ORCPT
+        with ESMTP id S243948AbiEGKZN (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 7 May 2022 05:39:24 -0400
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F89E0DF;
-        Sat,  7 May 2022 02:35:37 -0700 (PDT)
-Received: by mail-io1-xd29.google.com with SMTP id f2so10452960ioh.7;
-        Sat, 07 May 2022 02:35:37 -0700 (PDT)
+        Sat, 7 May 2022 06:25:13 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 011A4517E8;
+        Sat,  7 May 2022 03:21:26 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id r27so10537238iot.1;
+        Sat, 07 May 2022 03:21:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=WZNzsVrF/FcJvo9Hb6oxdeCucYsKZ0bPUQkM35LuhDM=;
-        b=aOR+dClEDq4ka5peKJkJ+SVeypHJt8v7QFv5GZsVU44P8xiRejD4l0feJywNW9Kyc0
-         24FLXPPWLdCA5JyOMLj2U+lqhHxGb8Qu8aPvAe7wuc/DO/x4PqexuvvN5RqiwNoI2Gvw
-         2NKMVNm2dDqbI3E5WbIRa2xQFYwzz2oE/gTVJPiVU1V4ZJg7FKvp6xgvx4A/QXx+WXKj
-         SrOc/2Bmhd0US8GCBt9sAvPP+8x+TrVT7SdExrKvdyDr/n9VVUi5Rj8tfMCBjJWMcesV
-         3jE8D54m3MSzg/EzMcf/Mxj5Q931FmssBtJf1cmqiINzQe6gxnAVqcSwbDmyJtNitJu+
-         AFfQ==
+        bh=6YX7GUuV2YaTJpmm0gXgrRmU3PbIncYub1aij6XpEtI=;
+        b=UwmUFZ62EERxI1wMFK+Loxq7gfPZoR7nuMd9u5W95wP44+6o3t6OIA8ZuekLwxo+M7
+         aVHf1SxkmRUxYzBP3UhqsMWdvpaDbjYNTcCEcAfO3i0QodRC5fPeitmYWxOTndI+dzJM
+         vZdcQVACWrq+mFkCLiy6SMQoQRfWS0A7wM+/gkFn9XJbn3sYN2kWRdy3+gcUsbh0Lm6j
+         hzLs9x6ttNCnEcYUkrZ6D5JlufPfC9mAAhy5bCgrLKFjQx0Hcg2y+zbAD3LwblWi5mx4
+         sACDzw52Fh/hxLt05XyNgzTE97UCS+4z2/KWW3WZIxT2mpk5ChyFdV5XycKqVnggHbVD
+         23JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=WZNzsVrF/FcJvo9Hb6oxdeCucYsKZ0bPUQkM35LuhDM=;
-        b=gBp9g3UnubqPR+oYr62xV4p+jKoBrljJq5KEQpFfq7/H7Ee9Q57ZT2lwIKcrWchpsY
-         Rzi7kbRmNUzMphwczmQJsbxLsHj7BcHb+AgHrQuIR3tEyTZiqv+w8v62cpim8/M4D2TY
-         q1IYBmhmVc5+pxUjPrdjKoo9U6dkzR6s5iZ8bC8UYTu1mH0hgvmoPkx81BB9QD0vkk1n
-         U96g8M2tJ4ygbeTUxn0usn7j3vXf2CVd8Oxbszk7LvOvrjcxSl89Vu6yUA8XOstvYSTR
-         rscG1XoGuayTsmI387pGnE8rlJvb5eR0Bv5sKbDI/zq4PVEmIeN70Twgjs4/dhymVgZ1
-         P4AQ==
-X-Gm-Message-State: AOAM5317Y2KcPSJ9AtAK5MJviHSb2/gxZ//yuRKi5s6okrimjLBfVfkK
-        fS5jQ9a6soUbIdkxuenb8PGstG+yOhRc155/ewswJHHtf5QN0VdM
-X-Google-Smtp-Source: ABdhPJwpN37rdDexq9vnm4/NAHDFzeiYs14RFO3E2/qnvch/osQIaJ0eg9tZllJB/YMonf/oKeNo67Lhhug4DmILUB8=
-X-Received: by 2002:a02:c6af:0:b0:32a:f5f6:34bc with SMTP id
- o15-20020a02c6af000000b0032af5f634bcmr3308433jan.186.1651916137444; Sat, 07
- May 2022 02:35:37 -0700 (PDT)
+        bh=6YX7GUuV2YaTJpmm0gXgrRmU3PbIncYub1aij6XpEtI=;
+        b=FYnafSa9g/xF6j9/8viAf+ij3or8GMIiLQKNaQzFgpofp1G0vcGw39ullPH9lIsEQL
+         lMXmaP6iSnr3y59/W18X2kTlWZ3oy5Ei/k6q9iffV9fPJHIYZoq2JE7Zick5shhoXlg4
+         XPqQ1xjKBoAx5htkRnbYZnP4BQ/VHrv9l1Z+kFI+liigtL/mCH3JVRxhjOloDvv06bVi
+         JRvwSLbiTkdxRY3cAO/FLv1XGCWyoRj+tFzUFNpsnqla9q56XTo10+dY4hN71N4+W06q
+         fVSobXPZq+WFSFbhRlJnz3dY8YHcovkMQVUmDDf43QpBXkIVvxEY5CxbMMJM7TI+55v5
+         RMkg==
+X-Gm-Message-State: AOAM533u6BaSO/m+Dd7c3W+UPQtAfwOt4tlaZjVt5ytcVV7VNrDRiJuI
+        hOdsbHl+9vTvcIIBFaquPg1ZnWm4wg73f5/PUss=
+X-Google-Smtp-Source: ABdhPJyLAG1ZbLUONpaLwcs0oR2ayADJCtOqBP+V4uNJIYDNItiej361fFkoQfXjbwPnT2guqOam/J+ZvhZYK1aErVk=
+X-Received: by 2002:a5e:c643:0:b0:657:b1b0:8e2d with SMTP id
+ s3-20020a5ec643000000b00657b1b08e2dmr3050233ioo.64.1651918886123; Sat, 07 May
+ 2022 03:21:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220507052451.12890-1-ojeda@kernel.org> <20220507052451.12890-15-ojeda@kernel.org>
- <202205070117.28F31079@keescook>
-In-Reply-To: <202205070117.28F31079@keescook>
+References: <20220507052451.12890-1-ojeda@kernel.org> <20220507052451.12890-18-ojeda@kernel.org>
+ <202205070122.B240F989@keescook>
+In-Reply-To: <202205070122.B240F989@keescook>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 7 May 2022 11:35:26 +0200
-Message-ID: <CANiq72n+2qrwo4X=SQQ9X3YcKYg=k_4GObEWBJcntqVq9EfQ-A@mail.gmail.com>
-Subject: Re: [PATCH v6 14/23] vsprintf: add new `%pA` format specifier
+Date:   Sat, 7 May 2022 12:21:14 +0200
+Message-ID: <CANiq72m6MaaH-o9McMuDwicosA2xgpU5ZEw0OduR0JT3w7p_fQ@mail.gmail.com>
+Subject: Re: [PATCH v6 17/23] scripts: decode_stacktrace: demangle Rust symbols
 To:     Kees Cook <keescook@chromium.org>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
@@ -61,26 +61,68 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Gary Guo <gary@garyguo.net>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>
+        Wedson Almeida Filho <wedsonaf@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, May 7, 2022 at 10:19 AM Kees Cook <keescook@chromium.org> wrote:
->
-> Maybe add a test to yell if pA is seen in a .c file (like the runtime
-> check in this patch).
+Hi Kees,
 
-+1, Rasmus and Petr suggested static analysis, but a quick check in
-`checkpatch.pl` cannot hurt either. Will do.
+Thanks a lot for taking the time to read all that :)
+
+On Sat, May 7, 2022 at 10:32 AM Kees Cook <keescook@chromium.org> wrote:
+>
+> I may need some examples here for what you're thinking will cause
+> problems. Why a new specifier? Won't demangling just give us text? Is
+> the concern about breaking backtrace parsers that only understand C
+> symbols?
+
+What I was thinking here is that if we replace how `%pB` works, for
+instance, and do demangling unconditionally, then we would break some
+of the use cases that are expecting real symbol names, e.g.
+`/proc/pid/stack`. So we would need to introduce a way to
+differentiate the cases where real symbols should be kept vs.
+demangled backtraces for humans, e.g. a new specifier or a modifier
+for the existing ones.
+
+Similarly, if we modify the backtrace printed in the kernel log, there
+is a high chance we break somebody's userspace backtrace parsers and
+other tools connected to those in different ways, e.g.:
+
+  - If we replace the mangled symbol, then some tools may not expect
+e.g. whitespace or other characters (which Rust demangled symbols
+have); or if they handle them, they may be expecting actual symbols
+(like in the case above) because they use them later on to correlate
+them to some other data.
+
+  - If we keep the mangled symbols (so that tools still have the real
+symbols) and introduce an extra line (or extra length in the same
+line) per Rust symbol (where we write the demangled version), that
+could still break some parsers just because of the new line (or extra
+data).
+
+So my concern is all about how to introduce the new information
+without breaking any existing use case.
+
+> It seems all of that would be in the build-time helper, not the kernel
+> image, though, so that seems better than run-time demangling.
+
+Hmm... I am not sure what you mean here.
+
+What I meant by this option is that we pre-generate a table (at
+compile-time) and put it into `vmlinux` (and similar for each loadable
+module) so that we can then just look it up within the kernel instead
+of running the demangle algorithm for each symbol (e.g. when printing
+a backtrace).
+
+If you mean giving userspace that table (e.g. that distros keep in a
+file in `/boot` for tools to use etc.), that could be a good idea to
+avoid userspace tools requiring a library for demangling, but it would
+be an improvement on top of option 1 ("# Leave demangling to
+userspace") rather than an independent option (since we need to choose
+what we do for backtraces), no? Or what do you mean?
 
 Cheers,
 Miguel
