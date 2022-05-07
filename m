@@ -2,104 +2,111 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C6F4C433EF
-	for <rust-for-linux@archiver.kernel.org>; Sat,  7 May 2022 08:45:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6B28C433F5
+	for <rust-for-linux@archiver.kernel.org>; Sat,  7 May 2022 09:23:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1446123AbiEGItj (ORCPT
+        id S1383979AbiEGJ06 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 7 May 2022 04:49:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34328 "EHLO
+        Sat, 7 May 2022 05:26:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358391AbiEGIti (ORCPT
+        with ESMTP id S1383982AbiEGJ0z (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 7 May 2022 04:49:38 -0400
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 751493CFD6;
-        Sat,  7 May 2022 01:45:53 -0700 (PDT)
-Received: by mail-io1-xd2f.google.com with SMTP id c125so10388780iof.9;
-        Sat, 07 May 2022 01:45:53 -0700 (PDT)
+        Sat, 7 May 2022 05:26:55 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F7EB4EF72
+        for <rust-for-linux@vger.kernel.org>; Sat,  7 May 2022 02:23:09 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id w5-20020a17090aaf8500b001d74c754128so12892893pjq.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 May 2022 02:23:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3afSRUyqURqd+oMSYddARQ8dgu6A28njYvK52vqSOHE=;
-        b=bsipmcypY4Nr9F6rxV0qF+/yrplNPZ0IzUaGSZBCHKoawh7Fip9CQSr7T9i2N0RRqw
-         iGKGF4cDgKmJ6eoHx6k0ezlu79rFPVUtTqpMoe3f6F7fT6iXT3VJHIN02m0SIWnLfzfF
-         QtRH3qHSNFE0OUI4opgLeKF/ieievW5RVFPYRS42dhcAXTy4TwANrFbcmxpOabTh4gO7
-         x63GRFN2/z+INwysjq9EKstBst8u2GfgG8WJHmpybw7iW3+LWrryu6tbRd1W47Pqa2lX
-         DtboSk8/TbzieN8V4f3XB+LTsdhXmDjt7XFb/2yZQ1u+nMvgFUH9kFQUwEvRpiaF1AE9
-         7Tsg==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=ocCDoyGiSy1GdWrHu5CjFRRUzgHkg0CZyH7/vS7PmVg=;
+        b=PlI3z0yq2ISTxCAfw67M32w7ZLLVYK6FDfA1HHYzyBFcnRmEtCexMsELLaKsqrARGJ
+         BbfNzbcN8Z3tAtL9lDmq7L21CmgLskN47R0GQEW2MlqoHKww78KcdOkwzrngw8d7YJPe
+         K6AzBN3lSusWlmnqoTCq/K/l9L93IGgTF2hJo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3afSRUyqURqd+oMSYddARQ8dgu6A28njYvK52vqSOHE=;
-        b=4rHATvJ+ED6VIipoyyX1mI4eOHqXgMrE9rCNfuj0h4oANzTE5oEXzJsnAZYzocWizj
-         z/0E0fL0SbxNW+TXDnyrbnMh8bFJmhBIs4oRNyBpmduBJvBHSMtoMfmoOilztqZRy8zi
-         KauJbHphOpPUkmJUAxaWFdKKh1M1wvXQZBJVQ2pBmmtxWytUt2ZiBAYCZ7JAEYTw9AMk
-         Drgz3CExxotMhv5DnO4QlQYwk2/J9c8gHjO3jHf7d2Ksubfg23UvEBrv/fq4KlmYnkPF
-         fwXjplEghvL+31Izq9pH7ti086m03R1TVpLfyKBEV8c/Pc+pPIh4Eej1OT2dpNd+Lchl
-         ai/w==
-X-Gm-Message-State: AOAM533Q/pLcqMyWpl0MRZYLJv/fYGaGH9Yfxnl2yWOVUTnuypDobuT0
-        2w6ez+lQeJSndjJDt/4KNskTDTD2DAie5w59vuU=
-X-Google-Smtp-Source: ABdhPJzVvfTAFB1H+iKYF8/l+675Y66bzPEAl6PZoc8GS14ISO+vI49zY9FgcEZBnSnvbXQTIlqAVC8fTwYdsIaDRow=
-X-Received: by 2002:a05:6638:16cf:b0:32b:6ee7:8d7d with SMTP id
- g15-20020a05663816cf00b0032b6ee78d7dmr3125574jat.256.1651913152910; Sat, 07
- May 2022 01:45:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220507052451.12890-1-ojeda@kernel.org> <20220507052451.12890-19-ojeda@kernel.org>
- <202205070114.88C59DF@keescook>
-In-Reply-To: <202205070114.88C59DF@keescook>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 7 May 2022 10:45:41 +0200
-Message-ID: <CANiq72mfUkZDpsAj6ZRWYhydzRq2F45PWOjw1V=k5zh=TX6a7A@mail.gmail.com>
-Subject: Re: [PATCH v6 18/23] docs: add Rust documentation
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=ocCDoyGiSy1GdWrHu5CjFRRUzgHkg0CZyH7/vS7PmVg=;
+        b=FX4aHjTH3ef8L3kDEJiqhUSEDq5cj82sXvc24LU8+EUUOpHqrePAhrrBiwyHjCZsVd
+         /IFC8FxxG3ZwlB1RrB2sj2UFwmEUU7DvkgoRCjKJw/wKQb+jwZBkhHBEhQppvS5IV5hD
+         +qoHL4pbqIglRE4y8y+mg0lzxxs4CeirxbbdmdDZXRuO5IlAerKtrKwG8+gbaG16C6dw
+         AN6qWtEy1g0Tb/CiQm8/+n36qgr7JrY1Y5m+GoE2LSlGvUusNEHY3zP0WcrSnV9XAhKw
+         eu19kpsoHhPNPW8+VK+2rtjQ5ZI+zZwZkdskkLPjgJDIOdPJwv3WHb+22HFPlhQDtNOW
+         WSIA==
+X-Gm-Message-State: AOAM531P7RCexqOi9z8bXXvheEzFQw5M2haUlgvL14qfJ282Di7gFla9
+        SCyqUKRJvBYBdm6aGntiZGZXpw==
+X-Google-Smtp-Source: ABdhPJyLHkvHes6TtzlOPrA5G3JwBYupi+1Lwa2I0beUXgtwuv2eqvmXIpSdBbj6R+57Q0uXuwlYNw==
+X-Received: by 2002:a17:902:b948:b0:153:9994:b587 with SMTP id h8-20020a170902b94800b001539994b587mr7807093pls.68.1651915388553;
+        Sat, 07 May 2022 02:23:08 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id y3-20020aa79423000000b0050dc76281c6sm4769532pfo.160.2022.05.07.02.23.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 May 2022 02:23:08 -0700 (PDT)
+Date:   Sat, 7 May 2022 02:23:07 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Wu XiangCheng <bobwxc@email.cn>, Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Yuki Okushi <jtitor@2k36.org>, Wei Liu <wei.liu@kernel.org>,
-        Daniel Xu <dxu@dxuuu.xyz>, Julian Merkle <me@jvmerkle.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Wedson Almeida Filho <wedsonaf@google.com>
+Subject: Re: [PATCH v6 07/23] rust: import upstream `alloc` crate
+Message-ID: <202205070214.AC7C566@keescook>
+References: <20220507052451.12890-1-ojeda@kernel.org>
+ <20220507052451.12890-8-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220507052451.12890-8-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, May 7, 2022 at 10:15 AM Kees Cook <keescook@chromium.org> wrote:
->
-> I like the docs! :) It'll be interesting to see how we can grow
-> cross-linking between rustdoc and kerndoc.
+On Sat, May 07, 2022 at 07:24:05AM +0200, Miguel Ojeda wrote:
+> This is a subset of the Rust standard library `alloc` crate,
+> version 1.60.0, from:
+> 
+>     https://github.com/rust-lang/rust/tree/1.60.0/library/alloc/src
+> 
+> The files are copied as-is, with no modifications whatsoever
+> (not even adding the SPDX identifiers).
 
-Thanks!
+$ cd ~/src/rust
+$ git checkout 1.60.0 -b krust
+$ git submodule update --init --recursive
 
-For cross-referencing, my plan is to start on the Rust side by
-allowing to link C files and items (either their generated docs or the
-source file), since we do that often in the Rust docs. The goal is
-that one can just write an "intra-doc link" in Rust docs just like any
-other one, e.g.:
+$ cd ~/src/linux
+$ b4 shazam -P _ 20220507052451.12890-8-ojeda@kernel.org
+$ cd rust/alloc
+$ find . -type f -name '*.rs' | xargs sha256sum | \
+	(cd ~/src/rust/library/alloc/src && \
+	 sha256sum -c -)
+./raw_vec.rs: OK
+./str.rs: OK
+./boxed.rs: OK
+./alloc.rs: OK
+./fmt.rs: OK
+./slice.rs: OK
+./borrow.rs: OK
+./vec/into_iter.rs: OK
+./vec/spec_extend.rs: OK
+./vec/drain_filter.rs: OK
+./vec/mod.rs: OK
+./vec/set_len_on_drop.rs: OK
+./vec/is_zero.rs: OK
+./vec/drain.rs: OK
+./vec/partial_eq.rs: OK
+./lib.rs: OK
+./macros.rs: OK
+./collections/mod.rs: OK
+./string.rs: OK
 
-    /// Wraps the kernel's [`struct sk_buff`].
-    #[repr(transparent)]
-    pub struct SkBuff(UnsafeCell<bindings::sk_buff>);
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-so that it is as easy as possible to add them.
-
-Cheers,
-Miguel
+-- 
+Kees Cook
