@@ -2,98 +2,93 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8538EC433F5
-	for <rust-for-linux@archiver.kernel.org>; Sat,  7 May 2022 07:55:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CD3BC43219
+	for <rust-for-linux@archiver.kernel.org>; Sat,  7 May 2022 08:06:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382920AbiEGH7H (ORCPT
+        id S1383614AbiEGIKL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 7 May 2022 03:59:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52848 "EHLO
+        Sat, 7 May 2022 04:10:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358709AbiEGH7F (ORCPT
+        with ESMTP id S236438AbiEGIKH (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 7 May 2022 03:59:05 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CA211EEF5
-        for <rust-for-linux@vger.kernel.org>; Sat,  7 May 2022 00:55:19 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id j6so8062679pfe.13
-        for <rust-for-linux@vger.kernel.org>; Sat, 07 May 2022 00:55:19 -0700 (PDT)
+        Sat, 7 May 2022 04:10:07 -0400
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FDEC1C11D
+        for <rust-for-linux@vger.kernel.org>; Sat,  7 May 2022 01:06:20 -0700 (PDT)
+Received: by mail-pg1-x533.google.com with SMTP id x12so7912760pgj.7
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 May 2022 01:06:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=XQZ0jflEj3ZwDdXxvsSFNpBxdR4iKUh7DFg36P3Lf1Y=;
-        b=k8XL1BxUa+Ec15LWWdxguxto1dBkS3U+zppqYT4iyKpNspFGDOF0HcTPPHLJiBCUf8
-         mc2RdLx4q0nCJo3pVAqXd1FOWoJAB6bxaNyJQ728vG67Uwa0An65tEsYUBt/gPrFE/IZ
-         kpjen0oZQ2DGUSJzCUW3jrRPoMQN+CdVKI+EI=
+        bh=aWQfnp8p3Sa/CZYziUv8sJFvgH/DhWMow1Ki0jzKInQ=;
+        b=d7sa/vJyLfF9BR72n72H6iTcORw0kbeaXS21B2+FXdbG66FYCW7FBC02LCRup2bO0T
+         VbztyRzKE447Dsr5bQyIcT/N6Q1+c4/IXMaJT3GrJsKz9ltWgOCmeIOcoalYl/8o+V6Q
+         JCxhKqmLoYC0fCUjLs/ACK38p33kuWfTfdyYo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=XQZ0jflEj3ZwDdXxvsSFNpBxdR4iKUh7DFg36P3Lf1Y=;
-        b=nvnLgDun9m7pnH0gjHR1mjnwM/he8Iy72tDK2bRmrS1zONkvKbCfHjnS9hgvnBERaf
-         zDm6TZ7gdjpLyQC4p1Jcb3IZhCh8mY1pqoqnOrM3aH9k+9F79mct25hrPLnB0nu4bcxB
-         IN/lPXFD44H5Q/4golwbi7shYi0SZMQL4rCCEBO8tYl2GBlA5xGqpd2sFgj+3cfkHLpF
-         SGQlSuzdnBlN4jayF3Vbvuo0H6fLRNPN/r9Wakntec7tZD1HNTBGJPTN4keDWjW5svSG
-         EkT0ROGbA7EwkbDP1XyKSALxgyqNZ+PJ4Ht7XKtCjPt6DD+S6Ox53mJLU6l+0fcxmfB0
-         hu0g==
-X-Gm-Message-State: AOAM533dZ97AwqrFrBqI7qP4vCiEs0Vhuw8QowoExmLwu9ZwUPmH3AZS
-        k8z0sEhC3LWKSxCq1P5nmD7N9Q==
-X-Google-Smtp-Source: ABdhPJw541yvtB0SwHhc57WgV9+sbvT2fz/QLC9JKaka5Qzd+gH8Uqv9Lfa4rtVSJySmpReUn6jBAQ==
-X-Received: by 2002:a05:6a00:1411:b0:4fd:e594:fac0 with SMTP id l17-20020a056a00141100b004fde594fac0mr7330862pfu.79.1651910119067;
-        Sat, 07 May 2022 00:55:19 -0700 (PDT)
+        bh=aWQfnp8p3Sa/CZYziUv8sJFvgH/DhWMow1Ki0jzKInQ=;
+        b=yiMgUOAzDuHgmXJWZDGWMxpTUBjrGpkQfxKeadnsW/Gy2So3vQP5PXEWwWojjYuFb+
+         tB7KiPTEsdroVxzy+Qa3qk7Ym0NcWQZ/qHOq0/A095msrndUax0pr3YrTC9voQZDt79h
+         TugjIUVF1pXo+75qM3TGaCaQw6ki4NhEV5/+C/iayi9duksygHBgDN0xytJiWqZ1n+w9
+         l6hOgbEB6UPREKY7Bz1y8LgdyOPKJOmqzUwpZO4BOtC4/Ce/JQo1uDlxXshk90rpf+EQ
+         NkfkW/R9+D2U9fuyujvVgobzl++zE9hPkRGSv1aaBFCuyRaV5Z+my1GEK26ZR62A1Dup
+         pjCw==
+X-Gm-Message-State: AOAM530u3fOoGpJ7ilh85/qe0y4Vj3Dqf9XNA/QGjMNuSP1B4pNfZ2RH
+        mbjpMXx6oWJ04slYJpKhm89jRg==
+X-Google-Smtp-Source: ABdhPJyPh1ezOw2sy0EQ6kjmLgD1rSsrITTXAJHnhVIq/PJRePuQKh9Kel3rSaI68O428UlbxAszUg==
+X-Received: by 2002:a63:6fc4:0:b0:393:9567:16dc with SMTP id k187-20020a636fc4000000b00393956716dcmr5757855pgc.593.1651910779774;
+        Sat, 07 May 2022 01:06:19 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id 14-20020a62140e000000b0050dc76281besm4643503pfu.152.2022.05.07.00.55.18
+        by smtp.gmail.com with ESMTPSA id j192-20020a638bc9000000b003c14af505fcsm4564376pge.20.2022.05.07.01.06.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 May 2022 00:55:18 -0700 (PDT)
-Date:   Sat, 7 May 2022 00:55:17 -0700
+        Sat, 07 May 2022 01:06:19 -0700 (PDT)
+Date:   Sat, 7 May 2022 01:06:18 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     Miguel Ojeda <ojeda@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Finn Behrens <me@kloenk.de>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        Wayne Campbell <wcampbell1995@gmail.com>,
-        Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-        Todd Kjos <tkjos@android.com>,
-        Martijn Coenen <maco@android.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Hridya Valsaraju <hridya@google.com>,
-        Suren Baghdasaryan <surenb@google.com>
-Subject: Re: [PATCH v6 23/23] [RFC] drivers: android: Binder IPC in Rust
-Message-ID: <202205070050.A870AEAC6@keescook>
+        kunit-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org,
+        linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, live-patching@vger.kernel.org
+Subject: Re: [PATCH v6 00/23] Rust support
+Message-ID: <202205070056.ACC3C3D@keescook>
 References: <20220507052451.12890-1-ojeda@kernel.org>
- <20220507052451.12890-24-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220507052451.12890-24-ojeda@kernel.org>
+In-Reply-To: <20220507052451.12890-1-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, May 07, 2022 at 07:24:21AM +0200, Miguel Ojeda wrote:
-> From: Wedson Almeida Filho <wedsonaf@google.com>
+On Sat, May 07, 2022 at 07:23:58AM +0200, Miguel Ojeda wrote:
+> ## Patch series status
 > 
-> A port to Rust of the Android Binder IPC mechanism.
-> 
-> This module is a work in progress and will be sent for review later
-> on, as well as separately from the Rust support.
+> The Rust support is still to be considered experimental. However,
+> support is good enough that kernel developers can start working on the
+> Rust abstractions for subsystems and write drivers and other modules.
 
-Is any functionality missing for this driver compared to the C driver?
+I'd really like to see this landed for a few reasons:
 
->  12 files changed, 3400 insertions(+), 13 deletions(-)
+- It's under active development, and I'd rather review the changes
+  "normally", incrementally, etc. Right now it can be hard to re-review
+  some of the "mostly the same each version" patches in the series.
 
-The C driver appears to be much larger, so if the Rust binder is
-feature-complete, that's quite a reduction in code size.
+- I'd like to break the catch-22 of "ask for a new driver to be
+  written in rust but the rust support isn't landed" vs "the rust
+  support isn't landed because there aren't enough drivers". It
+  really feels like "release early, release often" is needed here;
+  it's hard to develop against -next. :)
 
-Are there any other metrics can that be compared in a direct a/b test?
+Should we give it a try for this coming merge window?
 
 -- 
 Kees Cook
