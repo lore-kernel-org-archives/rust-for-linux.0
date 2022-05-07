@@ -2,219 +2,118 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BB1FC433EF
-	for <rust-for-linux@archiver.kernel.org>; Fri,  6 May 2022 20:36:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52322C433EF
+	for <rust-for-linux@archiver.kernel.org>; Sat,  7 May 2022 05:26:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1443176AbiEFUjq (ORCPT
+        id S1383234AbiEGF3p (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 6 May 2022 16:39:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38788 "EHLO
+        Sat, 7 May 2022 01:29:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1443262AbiEFUjn (ORCPT
+        with ESMTP id S1382889AbiEGF3o (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 6 May 2022 16:39:43 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE9AF13F26;
-        Fri,  6 May 2022 13:35:54 -0700 (PDT)
+        Sat, 7 May 2022 01:29:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9341144A02;
+        Fri,  6 May 2022 22:25:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 958B4B83993;
-        Fri,  6 May 2022 20:35:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B5BC385A9;
-        Fri,  6 May 2022 20:35:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89A4260765;
+        Sat,  7 May 2022 05:25:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43419C385AE;
+        Sat,  7 May 2022 05:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1651869352;
-        bh=3kPhcKaDX/Q+2C1Refp+7gz4Jh/EZkT9U6Y5DeG8zHM=;
+        s=k20201202; t=1651901156;
+        bh=6BK6vCkagIsVFppz/JVipf1RmADhTrfcI9FSaf5gg8g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EpY6GvAv2zKwPBid1bffm6mOZGnHWgr0qQdBgKHGiz7jrAC0hVk7t257LF8qRmj9k
-         s0UAWzMlltrC5KhBgUxvmyzDKJDyqyVrhTn5TO3fx3uwWtmVgUr8csoLXWIgEKzYj1
-         XYrkJAoxusE0ZWliYA6AADMnxt+1UK+SNA/Ha0a7ro51z/voI7jFmknRzHIgR//fcs
-         uWB+1+19v7OK7MKi056I5XaN1zqB5VWxAXk4jB1lEVA3vSmtn0R3DUCKrZKKPm6amv
-         2rNEMVrEaDR8vaRFW5/d2s1m3CekHNXG7cwMw4vSdTN42brodD6QfpPSc1rdxRDcOj
-         jh0cvEWB8FeZQ==
+        b=uQ8vQAtoXbOMdKZs/Hb+kb+e+YEdLkz/KofQ0W2Nd8OoTZB+8YeP7qsPTPtQrB5sD
+         /ONF6g0iQiKKER3hd+X99A/WY68QdiZ7mvmTTMQte+jQK8pnqya3qO2rE6gva/7J9+
+         voktOZD/xtROG33LLMoBPHHP5/CoG6aykhPwk39aM9qA5l/o1rCEBu82UzodbsOOWc
+         eQMUSOfKscygnFpIO/XdVdQ6wZ+AiyQ+SGXwD3d4jAWcHCZMUV4/SCcd46DmRu40K4
+         1vZGDChQjcn7DVBnxTMqaWbzkYoSZlr95VwUdcu8cZCXKzKVDuh4yLgdgj38cHjuMI
+         MIRVlBTfuIelQ==
 From:   Miguel Ojeda <ojeda@kernel.org>
-To:     Josh Poimboeuf <jpoimboe@redhat.com>,
-        Jiri Kosina <jikos@kernel.org>,
-        Miroslav Benes <mbenes@suse.cz>,
-        Petr Mladek <pmladek@suse.com>,
-        Joe Lawrence <joe.lawrence@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Kees Cook <keescook@chromium.org>,
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
         Miguel Ojeda <ojeda@kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
         Boqun Feng <boqun.feng@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        Changbin Du <changbin.du@intel.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-kernel@vger.kernel.org, live-patching@vger.kernel.org,
-        linux-perf-users@vger.kernel.org
-Cc:     rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 3/3] kallsyms: increase maximum kernel symbol length to 512
-Date:   Fri,  6 May 2022 22:34:24 +0200
-Message-Id: <20220506203443.24721-4-ojeda@kernel.org>
-In-Reply-To: <20220506203443.24721-1-ojeda@kernel.org>
-References: <20220506203443.24721-1-ojeda@kernel.org>
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH v6 01/23] kallsyms: avoid hardcoding the buffer size
+Date:   Sat,  7 May 2022 07:23:59 +0200
+Message-Id: <20220507052451.12890-2-ojeda@kernel.org>
+In-Reply-To: <20220507052451.12890-1-ojeda@kernel.org>
+References: <20220507052451.12890-1-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Rust symbols can become quite long due to namespacing introduced
-by modules, types, traits, generics, etc. For instance,
-the following code:
+From: Boqun Feng <boqun.feng@gmail.com>
 
-    pub mod my_module {
-        pub struct MyType;
-        pub struct MyGenericType<T>(T);
+This makes it easier to update the size later on.
 
-        pub trait MyTrait {
-            fn my_method() -> u32;
-        }
-
-        impl MyTrait for MyGenericType<MyType> {
-            fn my_method() -> u32 {
-                42
-            }
-        }
-    }
-
-generates a symbol of length 96 when using the upcoming v0 mangling scheme:
-
-    _RNvXNtCshGpAVYOtgW1_7example9my_moduleINtB2_13MyGenericTypeNtB2_6MyTypeENtB2_7MyTrait9my_method
-
-At the moment, Rust symbols may reach up to 300 in length.
-Setting 512 as the maximum seems like a reasonable choice to
-keep some headroom.
+Furthermore, a static assert is added to ensure both are updated
+when that happens. The relationship used is one that keeps the new
+size (512+1) close to the original buffer size (500).
 
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
-Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
-Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-Co-developed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Gary Guo <gary@garyguo.net>
-Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
-v2:
-  - Collected Reviewed-bys.
+This is a prerequisite patch, independently submitted at:
 
- include/linux/kallsyms.h            | 2 +-
- kernel/livepatch/core.c             | 4 ++--
- scripts/kallsyms.c                  | 4 ++--
- tools/include/linux/kallsyms.h      | 2 +-
- tools/lib/perf/include/perf/event.h | 2 +-
- tools/lib/symbol/kallsyms.h         | 2 +-
- 6 files changed, 8 insertions(+), 8 deletions(-)
+    https://lore.kernel.org/lkml/20220506203443.24721-2-ojeda@kernel.org/
 
-diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-index ce1bd2fbf23e..e5ad6e31697d 100644
---- a/include/linux/kallsyms.h
-+++ b/include/linux/kallsyms.h
-@@ -15,7 +15,7 @@
- 
- #include <asm/sections.h>
- 
--#define KSYM_NAME_LEN 128
-+#define KSYM_NAME_LEN 512
- #define KSYM_SYMBOL_LEN (sizeof("%s+%#lx/%#lx [%s %s]") + \
- 			(KSYM_NAME_LEN - 1) + \
- 			2*(BITS_PER_LONG*3/10) + (MODULE_NAME_LEN - 1) + \
-diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
-index bc475e62279d..ec06ce59d728 100644
---- a/kernel/livepatch/core.c
-+++ b/kernel/livepatch/core.c
-@@ -213,7 +213,7 @@ static int klp_resolve_symbols(Elf_Shdr *sechdrs, const char *strtab,
- 	 * we use the smallest/strictest upper bound possible (56, based on
- 	 * the current definition of MODULE_NAME_LEN) to prevent overflows.
- 	 */
--	BUILD_BUG_ON(MODULE_NAME_LEN < 56 || KSYM_NAME_LEN != 128);
-+	BUILD_BUG_ON(MODULE_NAME_LEN < 56 || KSYM_NAME_LEN != 512);
- 
- 	relas = (Elf_Rela *) relasec->sh_addr;
- 	/* For each rela in this klp relocation section */
-@@ -227,7 +227,7 @@ static int klp_resolve_symbols(Elf_Shdr *sechdrs, const char *strtab,
- 
- 		/* Format: .klp.sym.sym_objname.sym_name,sympos */
- 		cnt = sscanf(strtab + sym->st_name,
--			     ".klp.sym.%55[^.].%127[^,],%lu",
-+			     ".klp.sym.%55[^.].%511[^,],%lu",
- 			     sym_objname, sym_name, &sympos);
- 		if (cnt != 3) {
- 			pr_err("symbol %s has an incorrectly formatted name\n",
+ scripts/kallsyms.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
 diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
-index 7e99799aa7b9..275044b840dc 100644
+index 8caabddf817c..82d6508bdf29 100644
 --- a/scripts/kallsyms.c
 +++ b/scripts/kallsyms.c
-@@ -30,10 +30,10 @@
- #define _stringify_1(x)	#x
- #define _stringify(x)	_stringify_1(x)
+@@ -27,8 +27,18 @@
  
--#define KSYM_NAME_LEN		128
-+#define KSYM_NAME_LEN		512
+ #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
  
- /* A substantially bigger size than the current maximum. */
--#define KSYM_NAME_LEN_BUFFER	512
-+#define KSYM_NAME_LEN_BUFFER	2048
- _Static_assert(
- 	KSYM_NAME_LEN_BUFFER == KSYM_NAME_LEN * 4,
- 	"Please keep KSYM_NAME_LEN_BUFFER in sync with KSYM_NAME_LEN"
-diff --git a/tools/include/linux/kallsyms.h b/tools/include/linux/kallsyms.h
-index efb6c3f5f2a9..5a37ccbec54f 100644
---- a/tools/include/linux/kallsyms.h
-+++ b/tools/include/linux/kallsyms.h
-@@ -6,7 +6,7 @@
- #include <stdio.h>
- #include <unistd.h>
++#define _stringify_1(x)	#x
++#define _stringify(x)	_stringify_1(x)
++
+ #define KSYM_NAME_LEN		128
  
--#define KSYM_NAME_LEN 128
-+#define KSYM_NAME_LEN 512
++/* A substantially bigger size than the current maximum. */
++#define KSYM_NAME_LEN_BUFFER	512
++_Static_assert(
++	KSYM_NAME_LEN_BUFFER == KSYM_NAME_LEN * 4,
++	"Please keep KSYM_NAME_LEN_BUFFER in sync with KSYM_NAME_LEN"
++);
++
+ struct sym_entry {
+ 	unsigned long long addr;
+ 	unsigned int len;
+@@ -197,15 +207,15 @@ static void check_symbol_range(const char *sym, unsigned long long addr,
  
- struct module;
+ static struct sym_entry *read_symbol(FILE *in)
+ {
+-	char name[500], type;
++	char name[KSYM_NAME_LEN_BUFFER+1], type;
+ 	unsigned long long addr;
+ 	unsigned int len;
+ 	struct sym_entry *sym;
+ 	int rc;
  
-diff --git a/tools/lib/perf/include/perf/event.h b/tools/lib/perf/include/perf/event.h
-index e7758707cadd..116a80c31675 100644
---- a/tools/lib/perf/include/perf/event.h
-+++ b/tools/lib/perf/include/perf/event.h
-@@ -95,7 +95,7 @@ struct perf_record_throttle {
- };
- 
- #ifndef KSYM_NAME_LEN
--#define KSYM_NAME_LEN 256
-+#define KSYM_NAME_LEN 512
- #endif
- 
- struct perf_record_ksymbol {
-diff --git a/tools/lib/symbol/kallsyms.h b/tools/lib/symbol/kallsyms.h
-index 72ab9870454b..542f9b059c3b 100644
---- a/tools/lib/symbol/kallsyms.h
-+++ b/tools/lib/symbol/kallsyms.h
-@@ -7,7 +7,7 @@
- #include <linux/types.h>
- 
- #ifndef KSYM_NAME_LEN
--#define KSYM_NAME_LEN 256
-+#define KSYM_NAME_LEN 512
- #endif
- 
- static inline u8 kallsyms2elf_binding(char type)
+-	rc = fscanf(in, "%llx %c %499s\n", &addr, &type, name);
++	rc = fscanf(in, "%llx %c %" _stringify(KSYM_NAME_LEN_BUFFER) "s\n", &addr, &type, name);
+ 	if (rc != 3) {
+-		if (rc != EOF && fgets(name, 500, in) == NULL)
++		if (rc != EOF && fgets(name, sizeof(name), in) == NULL)
+ 			fprintf(stderr, "Read error or end of file.\n");
+ 		return NULL;
+ 	}
 -- 
 2.35.3
 
