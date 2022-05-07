@@ -2,93 +2,80 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CD3BC43219
-	for <rust-for-linux@archiver.kernel.org>; Sat,  7 May 2022 08:06:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B320C433F5
+	for <rust-for-linux@archiver.kernel.org>; Sat,  7 May 2022 08:07:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383614AbiEGIKL (ORCPT
+        id S239138AbiEGIKq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 7 May 2022 04:10:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36198 "EHLO
+        Sat, 7 May 2022 04:10:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236438AbiEGIKH (ORCPT
+        with ESMTP id S1359014AbiEGIKo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 7 May 2022 04:10:07 -0400
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FDEC1C11D
-        for <rust-for-linux@vger.kernel.org>; Sat,  7 May 2022 01:06:20 -0700 (PDT)
-Received: by mail-pg1-x533.google.com with SMTP id x12so7912760pgj.7
-        for <rust-for-linux@vger.kernel.org>; Sat, 07 May 2022 01:06:20 -0700 (PDT)
+        Sat, 7 May 2022 04:10:44 -0400
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CF8E2183C
+        for <rust-for-linux@vger.kernel.org>; Sat,  7 May 2022 01:06:57 -0700 (PDT)
+Received: by mail-pg1-x535.google.com with SMTP id g184so5423284pgc.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 May 2022 01:06:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=aWQfnp8p3Sa/CZYziUv8sJFvgH/DhWMow1Ki0jzKInQ=;
-        b=d7sa/vJyLfF9BR72n72H6iTcORw0kbeaXS21B2+FXdbG66FYCW7FBC02LCRup2bO0T
-         VbztyRzKE447Dsr5bQyIcT/N6Q1+c4/IXMaJT3GrJsKz9ltWgOCmeIOcoalYl/8o+V6Q
-         JCxhKqmLoYC0fCUjLs/ACK38p33kuWfTfdyYo=
+        bh=7mXcdOugvS2QGIiWec5ev758mbqvJnQpjgbeQ1iyVD8=;
+        b=Q/KdO6FwaVDvPfl/RlvQ1lDhko5sCJTfQrMGOz5AHfJNL13H/F3AgLYVlJwF5Qm8OB
+         5wwUyWHMkl7bUoP/9siCIrxQLf0dD4FU1CLM0kI0xcVjznEoAySXTbgTqR862tXg8B+z
+         NEJfPbuxUJx1q/T+K2EomZqDZi9k+e3S+1Xc4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=aWQfnp8p3Sa/CZYziUv8sJFvgH/DhWMow1Ki0jzKInQ=;
-        b=yiMgUOAzDuHgmXJWZDGWMxpTUBjrGpkQfxKeadnsW/Gy2So3vQP5PXEWwWojjYuFb+
-         tB7KiPTEsdroVxzy+Qa3qk7Ym0NcWQZ/qHOq0/A095msrndUax0pr3YrTC9voQZDt79h
-         TugjIUVF1pXo+75qM3TGaCaQw6ki4NhEV5/+C/iayi9duksygHBgDN0xytJiWqZ1n+w9
-         l6hOgbEB6UPREKY7Bz1y8LgdyOPKJOmqzUwpZO4BOtC4/Ce/JQo1uDlxXshk90rpf+EQ
-         NkfkW/R9+D2U9fuyujvVgobzl++zE9hPkRGSv1aaBFCuyRaV5Z+my1GEK26ZR62A1Dup
-         pjCw==
-X-Gm-Message-State: AOAM530u3fOoGpJ7ilh85/qe0y4Vj3Dqf9XNA/QGjMNuSP1B4pNfZ2RH
-        mbjpMXx6oWJ04slYJpKhm89jRg==
-X-Google-Smtp-Source: ABdhPJyPh1ezOw2sy0EQ6kjmLgD1rSsrITTXAJHnhVIq/PJRePuQKh9Kel3rSaI68O428UlbxAszUg==
-X-Received: by 2002:a63:6fc4:0:b0:393:9567:16dc with SMTP id k187-20020a636fc4000000b00393956716dcmr5757855pgc.593.1651910779774;
-        Sat, 07 May 2022 01:06:19 -0700 (PDT)
+        bh=7mXcdOugvS2QGIiWec5ev758mbqvJnQpjgbeQ1iyVD8=;
+        b=z/RXSVbI0kMHuIAJrQe2x/tuUuZv+WJgQ+3Iy/eLUqdgC6Dlwe5fml0i8H28GVBPN3
+         ylJ991XoI9LWSp+ezpUfp6gwyxx2r797IfWAgXASjcw3OI6iIgdZ0zu+QrT6sNSwiBxM
+         h0rz0S9rfI4rRM5wmAgH65Q9tE3TwMJy5dOQYUy2JQqr+UC01+Xa4kV4YXuSNUMXCNcb
+         oB7Zrcth9EUkXQjJLV+3T7nzQfJzQGw1OICpZhnrKarU9C4MpQeMuetznSgeshk/0IGs
+         0eLYemoEjZ4LA37FBQ/auMLpj1QiasS2swcKBdChEDJpuaGS4sTxTdkUv+3Xo6rgH+aW
+         aWzg==
+X-Gm-Message-State: AOAM532LC7paI8HXnkN8KjMXFi4icAO9Dv6nN2XnwHcZTBZFHCyxoid7
+        bbRhj1ZgiTpfM9cxf1P2wyKw7Q==
+X-Google-Smtp-Source: ABdhPJxSruKTMm4cbJOoCYHD6srxtd6JM5F1DbeM/heJwHm2znVHf0vCTHdWos7r8EEnwZXdTtoNhg==
+X-Received: by 2002:a05:6a00:1590:b0:50d:f473:c346 with SMTP id u16-20020a056a00159000b0050df473c346mr7436177pfk.27.1651910817067;
+        Sat, 07 May 2022 01:06:57 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id j192-20020a638bc9000000b003c14af505fcsm4564376pge.20.2022.05.07.01.06.19
+        by smtp.gmail.com with ESMTPSA id ng17-20020a17090b1a9100b001da160621d1sm4958072pjb.45.2022.05.07.01.06.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 May 2022 01:06:19 -0700 (PDT)
-Date:   Sat, 7 May 2022 01:06:18 -0700
+        Sat, 07 May 2022 01:06:56 -0700 (PDT)
+Date:   Sat, 7 May 2022 01:06:56 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     Miguel Ojeda <ojeda@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        kunit-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org,
-        linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, live-patching@vger.kernel.org
-Subject: Re: [PATCH v6 00/23] Rust support
-Message-ID: <202205070056.ACC3C3D@keescook>
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>
+Subject: Re: [PATCH v6 21/23] MAINTAINERS: Rust
+Message-ID: <202205070106.36AD025A7C@keescook>
 References: <20220507052451.12890-1-ojeda@kernel.org>
+ <20220507052451.12890-22-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220507052451.12890-1-ojeda@kernel.org>
+In-Reply-To: <20220507052451.12890-22-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, May 07, 2022 at 07:23:58AM +0200, Miguel Ojeda wrote:
-> ## Patch series status
+On Sat, May 07, 2022 at 07:24:19AM +0200, Miguel Ojeda wrote:
+> Miguel, Alex and Wedson will be maintaining the Rust support.
 > 
-> The Rust support is still to be considered experimental. However,
-> support is good enough that kernel developers can start working on the
-> Rust abstractions for subsystems and write drivers and other modules.
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
 
-I'd really like to see this landed for a few reasons:
+This is easy to review. :)
 
-- It's under active development, and I'd rather review the changes
-  "normally", incrementally, etc. Right now it can be hard to re-review
-  some of the "mostly the same each version" patches in the series.
-
-- I'd like to break the catch-22 of "ask for a new driver to be
-  written in rust but the rust support isn't landed" vs "the rust
-  support isn't landed because there aren't enough drivers". It
-  really feels like "release early, release often" is needed here;
-  it's hard to develop against -next. :)
-
-Should we give it a try for this coming merge window?
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
 -- 
 Kees Cook
