@@ -2,86 +2,80 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AE54C433F5
-	for <rust-for-linux@archiver.kernel.org>; Sat,  7 May 2022 19:34:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D4C0C43217
+	for <rust-for-linux@archiver.kernel.org>; Sun,  8 May 2022 19:17:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382518AbiEGTil (ORCPT
+        id S230122AbiEHTVY (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 7 May 2022 15:38:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47002 "EHLO
+        Sun, 8 May 2022 15:21:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231754AbiEGTik (ORCPT
+        with ESMTP id S237344AbiEHSKH (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 7 May 2022 15:38:40 -0400
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE1216461;
-        Sat,  7 May 2022 12:34:52 -0700 (PDT)
-Received: by mail-io1-xd2f.google.com with SMTP id z18so11414404iob.5;
-        Sat, 07 May 2022 12:34:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5EPV1tq5iQXlN5o6u1uQKnVmh0mUhbd20VSUHlRWzR4=;
-        b=XbTM0zfScOdFdmLSSMqukZ6pOzmwioBml4veUlxHOy266LjxBFfGSEPYC5D/IQfJf+
-         zaGPrj3WjWCmCSNC5McZkV7h5LieXldIxEH38S27pa/fFiudoY77V0/YQKMfeNj4J+6C
-         zEhLBbhp/RxFL8fa11IrD2M0xq/cni+w3FSOkNeUvyGIIWSxsr+tbkTp/YkP1QMKKIuT
-         tuSxl/x9LLEjrJ8+vKX8uqeTcrWdMZs3+w9BCjliUmpjsAAtlJig0NT8MYpa/WeoS7Co
-         +bO3HiqrFzsdhSfHh3iuPzGpyr988APcKIE9bHG0nfDtIwLV+Gccxvw/w1fNcR9pmvgD
-         MqxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5EPV1tq5iQXlN5o6u1uQKnVmh0mUhbd20VSUHlRWzR4=;
-        b=G9LawHmUBxqlLBWjw3uIg/Afz1PWj9GnZHPOuVWhnsjIlKnedK3ARrZLMtZit6NqiL
-         EBU0cjGfqAZ3VAJGy5IUsvZM0bSoL/VfjKW0yfdFHh9m/QCYi7s7gcNCxDC+290McuKp
-         +f5hqE5fvjAy9O+BArQeyxh28ZjXUzpJzIh3+mbFnHI7ZbDE+k/6fMIYbxGZfMj7X8Xz
-         sfpOhnKb4JCQ/sphw3ZtkVgf6sz8Ep/g7TyZWqVnGB7NY8ug+/lR/EjQMH4NhzFWx0SP
-         GR4hG/Rh6VDw0w9HqufZWU7XVKkV/KQCai4PLcs6PpP4MYBxMqrS5yEtWJuadt/KCsKK
-         lCyQ==
-X-Gm-Message-State: AOAM5326q2bkx3M3ZDOT/eMw2IP3xR7OhebYVbwFk2xv7JDo1Ft1/iuN
-        zrUg7nca3Z27Cyurivuv04kPbrxU0VmUQj7r6AhFWRwbv3+3yAwIwmTcXw==
-X-Google-Smtp-Source: ABdhPJyloaPRyyYq3HykEn0aOwDUfRTl2CP9U9E60ul60PYjWeGpZThuzpON/w1g41EQhu/47C+p5umydPohoNy7Syo=
-X-Received: by 2002:a05:6602:1341:b0:637:d4dc:6f85 with SMTP id
- i1-20020a056602134100b00637d4dc6f85mr3588894iov.155.1651952092210; Sat, 07
- May 2022 12:34:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220507052451.12890-1-ojeda@kernel.org> <20220507052451.12890-8-ojeda@kernel.org>
- <CAHk-=wh00UW9i+hGYjmLZW5MOAti9FFBarGBL909k5PfH4r2fg@mail.gmail.com>
-In-Reply-To: <CAHk-=wh00UW9i+hGYjmLZW5MOAti9FFBarGBL909k5PfH4r2fg@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 7 May 2022 21:34:42 +0200
-Message-ID: <CANiq72nhKFFVHA9ZAfWw7=RTTcp_TUsgh8ENGsF8Gn_Qi=D2CQ@mail.gmail.com>
-Subject: Re: [PATCH v6 07/23] rust: import upstream `alloc` crate
-To:     Linus Torvalds <torvalds@linux-foundation.org>
+        Sun, 8 May 2022 14:10:07 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1987663B4;
+        Sun,  8 May 2022 11:06:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=dXIZlnwHK15rrJZENweUDVLbVsO7X3h09BOXkfnZAVs=; b=BeB2FaaWyCXFJfYPOVlGrRxyyh
+        JkDouCOTyf7MkyluZIxxnUmR87Z/DW0C77jKJIqfoUoI4nPE1ilfTi9PvRLwTXhJhdLROFvWDHHMp
+        000VX4SrbogSTZvQ4ISTjHh4zNfXVtbK/k9ItAde5GaNKad/et01ucOFYnGCdxFOMk8ivYtMYUiOa
+        LxiuMlpYfAy3bAi35IgiKblbkjCiRIRjJVG9azAjXg28jNJSRdKKWlpLRQquoU1LzZCBVcNqNjl2k
+        T6r3MF4ww2+rXqRroJFYp5Aw18fci0MKTzKr92fIKjYfvoNR8En2Q9Oq1MQTSBonEX0blOhFfkm3u
+        xJL5hOLA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nnlIH-002hid-TS; Sun, 08 May 2022 18:06:09 +0000
+Date:   Sun, 8 May 2022 19:06:09 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Kees Cook <keescook@chromium.org>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        kunit-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org,
+        linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, live-patching@vger.kernel.org
+Subject: Re: [PATCH v6 00/23] Rust support
+Message-ID: <YngGkZTy+byxnD5n@casper.infradead.org>
+References: <20220507052451.12890-1-ojeda@kernel.org>
+ <202205070056.ACC3C3D@keescook>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202205070056.ACC3C3D@keescook>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, May 7, 2022 at 7:30 PM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> So I agree whole-heartedly with the "import the original, do the
-> required changes separately", but I would like to see that original
-> import really explicitly clarify the license status, and not require
-> people to dig for it through external links.
+On Sat, May 07, 2022 at 01:06:18AM -0700, Kees Cook wrote:
+> On Sat, May 07, 2022 at 07:23:58AM +0200, Miguel Ojeda wrote:
+> > ## Patch series status
+> > 
+> > The Rust support is still to be considered experimental. However,
+> > support is good enough that kernel developers can start working on the
+> > Rust abstractions for subsystems and write drivers and other modules.
+> 
+> I'd really like to see this landed for a few reasons:
+> 
+> - It's under active development, and I'd rather review the changes
+>   "normally", incrementally, etc. Right now it can be hard to re-review
+>   some of the "mostly the same each version" patches in the series.
+> 
+> - I'd like to break the catch-22 of "ask for a new driver to be
+>   written in rust but the rust support isn't landed" vs "the rust
+>   support isn't landed because there aren't enough drivers". It
+>   really feels like "release early, release often" is needed here;
+>   it's hard to develop against -next. :)
+> 
+> Should we give it a try for this coming merge window?
 
-Yeah, I should have noted the license in the message since now, with
-the split patch, we do not even have the SPDX identifiers.
+I'm broadly in favour of that.  It's just code, we can always drop it
+again or fix it.  There's sufficient development community around it
+that it's hardly going to become abandonware.
 
-I can also add an explicit mention to the `README.md` file in the next
-patch too.
-
-Thanks for taking a look!
-
-Cheers,
-Miguel
