@@ -2,111 +2,171 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79FF3C433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon,  9 May 2022 17:52:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F427C433EF
+	for <rust-for-linux@archiver.kernel.org>; Mon,  9 May 2022 22:33:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239799AbiEIR4m (ORCPT
+        id S232031AbiEIWhX (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 9 May 2022 13:56:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33458 "EHLO
+        Mon, 9 May 2022 18:37:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239785AbiEIR4l (ORCPT
+        with ESMTP id S231926AbiEIWhA (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 9 May 2022 13:56:41 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3998F2BFBF5
-        for <rust-for-linux@vger.kernel.org>; Mon,  9 May 2022 10:52:44 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id t25so17996321ljd.6
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 May 2022 10:52:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VAaeELHVcQouTEd0XSCIAgD8jqgghoqAvViW4eNJ0ec=;
-        b=b4o6yjanW6bwSXzeQddKdzJxs16LrwT2UIXAETG9ofvsVHdkcnTr0T5o6JTUSUSE2i
-         qgKhEe/Z5Xcja1V2L0Ue+Ehk04kB2pz9pB82cVQgO4nOKfeuxKNE7ZICwRtrlSHV16Hw
-         9+nUcwNaRkCd/xkufp5ozkCgdLhZhB1SK+7yBNQVXdtA2Vz1Hm7UikX9VjShaRZmrcjo
-         RfhzezkdcQuRk7C2Bwo/Ph8L1kFONuZVoW5r0wh7jyQY2m44LBYr2tsA+1VzbA94c3nX
-         IWMAZGr+UJW++q+lNKw7iUm90EVcYp8LIeNNadEwWcFLagXSZ2Xx2ESyUnGyoaBHSeZB
-         ou8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VAaeELHVcQouTEd0XSCIAgD8jqgghoqAvViW4eNJ0ec=;
-        b=UnYyqi/NZubpJ7q9Dt6i9qfpIJnrX74vWk31Y1AIsTeZ1MpbwsieWN6nnuo7bbu06L
-         F/cjp7YhfReG6KaB7R/tspIFNUdB7GssCxKWFdCN8h7dHlpr88Dt4IBLRZTadF/aA/Lj
-         ZGTCmdug+dE36xMqGi0xi/9wZvivFXYmq69LD295j3fpUTtVRaaminqkZf2CEffWkdkX
-         akR/x6rg5OEqpURudQee1E3EIesObluY7Rr++U/V/ut4tJJV4z84i+KzQ4XfLym3aNIY
-         bBd7HsaoPyiNcJKuPNpe3Dtiz8l27Y7xnLNVxZ9KRwqTiX8NLP2WgafHEnhDIWpnvr/7
-         S/RA==
-X-Gm-Message-State: AOAM533nPnoM4UBIGX6G5qIyFX9I3RI45wlqzd5h7tlcQMECsgwAAYav
-        w7pAoUWWJmeiD9ypsV9ayIEClea4qSWyIfgsaWSFqA==
-X-Google-Smtp-Source: ABdhPJxLDecK/fKBw2N/qZ9TbLTDtmzVJuxz6GHpR6z+gjd7Z7RShlYqQPsE9j+pLQmgJXqupOfPVeK3DlL9oESmh5A=
-X-Received: by 2002:a2e:9345:0:b0:24b:451:7ce1 with SMTP id
- m5-20020a2e9345000000b0024b04517ce1mr11278276ljh.258.1652118762240; Mon, 09
- May 2022 10:52:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220507052451.12890-1-ojeda@kernel.org> <20220507052451.12890-24-ojeda@kernel.org>
- <202205070050.A870AEAC6@keescook> <YnYqHSVakm1EAo5a@kroah.com>
-In-Reply-To: <YnYqHSVakm1EAo5a@kroah.com>
-From:   Todd Kjos <tkjos@google.com>
-Date:   Mon, 9 May 2022 10:52:30 -0700
-Message-ID: <CAHRSSExk=cnJDUdxChf3H283rumV1M_SL4T9seSLEBVDxcrhzw@mail.gmail.com>
-Subject: Re: [PATCH v6 23/23] [RFC] drivers: android: Binder IPC in Rust
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Kees Cook <keescook@chromium.org>, Miguel Ojeda <ojeda@kernel.org>,
+        Mon, 9 May 2022 18:37:00 -0400
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BED62BA9A1;
+        Mon,  9 May 2022 15:32:44 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:281:8300:3d::5f6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id 6B9FB732;
+        Mon,  9 May 2022 22:32:41 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 6B9FB732
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+        t=1652135561; bh=HTkL9Ze4IkU4006Q8Vcgjjy6od50oft28ldpKD38Bhs=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=O3uonuVfVJtCWD2RVlNSsfnyOcttu7utR7SmYzjdMc/k1sBtiqfE8PTepkpz2FSdz
+         MIYyj3y8l/9zLf45BoHzjyYSpP1F2olpiwXfjgjIslOyLoRik3ynw4E/FUpO1d1DJh
+         mw6i7t9/Y8qfCiGIm5Cx2B9NkunGgfZVURltzS0Q/g7rS817nX0qwkoXTTdrltmx1S
+         O8/Oy41w4/xLsFfg/edw6omQJHxRoQat3BeWuQ+Q+cXxo+as6aD5xcu6wxyEHLnQpy
+         xl0hOhszcjF3cucI2xUdf/mJ3S00Lebwz7/wpAq0bOhTkJOhH5gp0G7I62ywn9UNjr
+         CFYTtcMzduvCw==
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        Wayne Campbell <wcampbell1995@gmail.com>,
-        =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
-        Todd Kjos <tkjos@android.com>,
-        Martijn Coenen <maco@android.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Hridya Valsaraju <hridya@google.com>,
-        Suren Baghdasaryan <surenb@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        Wu XiangCheng <bobwxc@email.cn>, Gary Guo <gary@garyguo.net>,
+        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        Yuki Okushi <jtitor@2k36.org>, Wei Liu <wei.liu@kernel.org>,
+        Daniel Xu <dxu@dxuuu.xyz>, Julian Merkle <me@jvmerkle.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH v6 18/23] docs: add Rust documentation
+In-Reply-To: <20220507052451.12890-19-ojeda@kernel.org>
+References: <20220507052451.12890-1-ojeda@kernel.org>
+ <20220507052451.12890-19-ojeda@kernel.org>
+Date:   Mon, 09 May 2022 16:32:40 -0600
+Message-ID: <875ymecp6f.fsf@meer.lwn.net>
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, May 7, 2022 at 1:13 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Sat, May 07, 2022 at 12:55:17AM -0700, Kees Cook wrote:
-> > On Sat, May 07, 2022 at 07:24:21AM +0200, Miguel Ojeda wrote:
-> > > From: Wedson Almeida Filho <wedsonaf@google.com>
-> > >
-> > > A port to Rust of the Android Binder IPC mechanism.
-> > >
-> > > This module is a work in progress and will be sent for review later
-> > > on, as well as separately from the Rust support.
-> >
-> > Is any functionality missing for this driver compared to the C driver?
->
-> There is no binderfs support, which would be a major regression if it
-> were to be added.
->
-> And odds are the new binder additions in the past few months are
-> probably not included here either.
->
-> There is a binder regression test in Android that can be run to test all
-> of this to see what is missing.  That should be a good test of
-> compatibility.
+Miguel Ojeda <ojeda@kernel.org> writes:
 
-There are a set of tests in the Android tree at
-frameworks/libs/native/binder/tests, but just booting and having a
-usable device with this version replacing the C version is pretty
-impressive. Can you boot and run a real device with this?
+> Most of the documentation for Rust is written within the source code
+> itself, as it is idiomatic for Rust projects. This applies to both
+> the shared infrastructure at `rust/` as well as any other Rust module
+> (e.g. drivers) written across the kernel.
+>
+> However, these documents contain general information that does not
+> fit particularly well in the source code, like the Quick Start guide.
+>
+> It also contains an asset (SVG logo) used for the `rustdoc` target
+> and a few other small changes elsewhere in the documentation folder.
 
->
-> thanks,
->
-> greg k-h
+Trying to take a closer look this time...
+
+I foresee merge conflicts, but so it goes.  Trying to split this apart
+would not make a lot of sense.
+
+[...]
+
+> --- /dev/null
+> +++ b/Documentation/rust/arch-support.rst
+> @@ -0,0 +1,34 @@
+> +Arch Support
+> +============
+> +
+> +Currently, the Rust compiler (``rustc``) uses LLVM for code generation,
+> +which limits the supported architectures that can be targeted. In addition,
+> +support for building the kernel with LLVM/Clang varies (please see
+> +Documentation/kbuild/llvm.rst). This support is needed for ``bindgen``
+> +which uses ``libclang``.
+> +
+> +Below is a general summary of architectures that currently work. Level of
+> +support corresponds to ``S`` values in the ``MAINTAINERS`` file.
+> +
+> +.. list-table::
+> +   :widths: 10 10 10
+> +   :header-rows: 1
+
+Please use normal tables rather than list-table; this kind of thing is
+really unreadable in the source form.
+
+> +   * - Architecture
+> +     - Level of support
+> +     - Constraints
+> +   * - ``arm``
+> +     - Maintained
+> +     - ``armv6`` and compatible only, ``RUST_OPT_LEVEL >= 2``
+> +   * - ``arm64``
+> +     - Maintained
+> +     - None
+> +   * - ``powerpc``
+> +     - Maintained
+> +     - ``ppc64le`` only, ``RUST_OPT_LEVEL < 2`` requires ``CONFIG_THREAD_SHIFT=15``
+> +   * - ``riscv``
+> +     - Maintained
+> +     - ``riscv64`` only
+> +   * - ``x86``
+> +     - Maintained
+> +     - ``x86_64`` only
+> diff --git a/Documentation/rust/coding-guidelines.rst b/Documentation/rust/coding-guidelines.rst
+> new file mode 100644
+> index 000000000000..2a71fd68a06d
+> --- /dev/null
+> +++ b/Documentation/rust/coding-guidelines.rst
+> @@ -0,0 +1,214 @@
+> +Coding Guidelines
+> +=================
+> +
+> +This document describes how to write Rust code in the kernel.
+> +
+> +
+> +Style & formatting
+> +------------------
+> +
+> +The code should be formatted using ``rustfmt``. In this way, a person
+> +contributing from time to time to the kernel does not need to learn and
+> +remember one more style guide. More importantly, reviewers and maintainers
+> +do not need to spend time pointing out style issues anymore, and thus
+> +less patch roundtrips may be needed to land a change.
+
+I foresee disagreements over coding style conventions in the
+future... I don't plan to be part of that conversation :)
+
+> +.. note:: Conventions on comments and documentation are not checked by
+> +  ``rustfmt``. Thus those are still needed to be taken care of.
+> +
+> +The default settings of ``rustfmt`` are used. This means the idiomatic Rust
+> +style is followed. For instance, 4 spaces are used for indentation rather
+> +than tabs.
+> +
+> +It is convenient to instruct editors/IDEs to format while typing,
+> +when saving or at commit time. However, if for some reason reformatting
+> +the entire kernel Rust sources is needed at some point, the following can be
+> +run::
+> +
+> +	make LLVM=1 rustfmt
+
+I will ask whether we want this, though.  Why would anybody want to
+mass-reformat the entire body of kernel code?  This seems like something
+that would generate an endless stream of "helpful" patches and a lot of
+churn.
+
+Thanks,
+
+jon
