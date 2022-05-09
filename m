@@ -2,160 +2,111 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 210C3C433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon,  9 May 2022 14:57:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79FF3C433EF
+	for <rust-for-linux@archiver.kernel.org>; Mon,  9 May 2022 17:52:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237816AbiEIPB3 (ORCPT
+        id S239799AbiEIR4m (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 9 May 2022 11:01:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37688 "EHLO
+        Mon, 9 May 2022 13:56:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237949AbiEIPBI (ORCPT
+        with ESMTP id S239785AbiEIR4l (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 9 May 2022 11:01:08 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7693927A899;
-        Mon,  9 May 2022 07:57:09 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id x18so14082481plg.6;
-        Mon, 09 May 2022 07:57:09 -0700 (PDT)
+        Mon, 9 May 2022 13:56:41 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3998F2BFBF5
+        for <rust-for-linux@vger.kernel.org>; Mon,  9 May 2022 10:52:44 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id t25so17996321ljd.6
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 May 2022 10:52:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:from:subject:to:cc
-         :references:content-language:in-reply-to:content-transfer-encoding;
-        bh=Rv24537FAid4FkoG5vC//ersbcU5Q/QTrNuy2uhLE+c=;
-        b=YPkDSwQ5S0E7Oy1AUcGX1O14/o7qtUFAXUSXV/GU1bvmxUPafqgmsbqufLfn3pDvUz
-         KinPrlyrMM7g948dadsAtTQTbqkM0/oO4bsBTGY3Rt3uBP0jxW3EXKeWmgsguxTtOqLk
-         Ya0E4HH3YiQerNLit6T2CBwt6UPs8VV4vcP10SD/AhQpiJMwRQbR0guT8hMe9MaoMnTW
-         dzcvjEWgkvi4gdG4lVMVqzgWP7q4aghJFTwJ7qiGoR3ChpqZSSJpfu02kWGRrOw5+vwA
-         c5Esi9//CD67WHWnFWrSa8QFRdAAJ0OTP7+K8TfQ8ln4En7SfcAeJyHu4sGEOPQfmUnD
-         lN9w==
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VAaeELHVcQouTEd0XSCIAgD8jqgghoqAvViW4eNJ0ec=;
+        b=b4o6yjanW6bwSXzeQddKdzJxs16LrwT2UIXAETG9ofvsVHdkcnTr0T5o6JTUSUSE2i
+         qgKhEe/Z5Xcja1V2L0Ue+Ehk04kB2pz9pB82cVQgO4nOKfeuxKNE7ZICwRtrlSHV16Hw
+         9+nUcwNaRkCd/xkufp5ozkCgdLhZhB1SK+7yBNQVXdtA2Vz1Hm7UikX9VjShaRZmrcjo
+         RfhzezkdcQuRk7C2Bwo/Ph8L1kFONuZVoW5r0wh7jyQY2m44LBYr2tsA+1VzbA94c3nX
+         IWMAZGr+UJW++q+lNKw7iUm90EVcYp8LIeNNadEwWcFLagXSZ2Xx2ESyUnGyoaBHSeZB
+         ou8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:from
-         :subject:to:cc:references:content-language:in-reply-to
-         :content-transfer-encoding;
-        bh=Rv24537FAid4FkoG5vC//ersbcU5Q/QTrNuy2uhLE+c=;
-        b=N34x0eL3m+Cu9fks1aKN1puGOwwJ24UlZoEuI/onmBoW6/HmxZoDtb7Z7cgpmrupMu
-         tigkTWFEGHCdOKVk2Hly+vcZwkoKrmFLX9shm6YjFJvqCkjAWOpsbTdUsJcTR0oe4KIF
-         3bEpM7OrRvip7bVy3NfJV8xcErP2EYTRANwfZpZKPdrVPwGeGxH2oeaslzPKapc4g1qa
-         8q6+1DFmi8/Z6ifOwaFV1VEJGqck5wWNIaxfbFgiGAFNCInbu6ysGYCzdwOoQnkg574B
-         A1PUw6cU9xA6GD93lR4Xz4ns7ooAKWmjwyIx0sjA3KLm7ny6rz85b5bfdxnPwrBZ1ShR
-         yI4w==
-X-Gm-Message-State: AOAM531/l5ox8XQTrsWvu0oAa3U90fogP4UPgSo5kbtKvmsUHv43i2eo
-        vaJctF68HviASfHWVA6y+Zc=
-X-Google-Smtp-Source: ABdhPJwrkAzjNvukP+xrbe/mrqvr3+QVoCnL9nosgzjDlSCxY5RDZLM/k5624oZsIpeWrJEh6LhFcQ==
-X-Received: by 2002:a17:90b:4c10:b0:1dc:8289:7266 with SMTP id na16-20020a17090b4c1000b001dc82897266mr26873370pjb.190.1652108228929;
-        Mon, 09 May 2022 07:57:08 -0700 (PDT)
-Received: from [192.168.11.5] (KD106167171201.ppp-bb.dion.ne.jp. [106.167.171.201])
-        by smtp.gmail.com with ESMTPSA id hi1-20020a17090b30c100b001da3780bfd3sm133322pjb.0.2022.05.09.07.57.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 May 2022 07:57:08 -0700 (PDT)
-Message-ID: <92a7010c-5bb2-65df-edde-0ca88e035c2e@gmail.com>
-Date:   Mon, 9 May 2022 23:56:59 +0900
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VAaeELHVcQouTEd0XSCIAgD8jqgghoqAvViW4eNJ0ec=;
+        b=UnYyqi/NZubpJ7q9Dt6i9qfpIJnrX74vWk31Y1AIsTeZ1MpbwsieWN6nnuo7bbu06L
+         F/cjp7YhfReG6KaB7R/tspIFNUdB7GssCxKWFdCN8h7dHlpr88Dt4IBLRZTadF/aA/Lj
+         ZGTCmdug+dE36xMqGi0xi/9wZvivFXYmq69LD295j3fpUTtVRaaminqkZf2CEffWkdkX
+         akR/x6rg5OEqpURudQee1E3EIesObluY7Rr++U/V/ut4tJJV4z84i+KzQ4XfLym3aNIY
+         bBd7HsaoPyiNcJKuPNpe3Dtiz8l27Y7xnLNVxZ9KRwqTiX8NLP2WgafHEnhDIWpnvr/7
+         S/RA==
+X-Gm-Message-State: AOAM533nPnoM4UBIGX6G5qIyFX9I3RI45wlqzd5h7tlcQMECsgwAAYav
+        w7pAoUWWJmeiD9ypsV9ayIEClea4qSWyIfgsaWSFqA==
+X-Google-Smtp-Source: ABdhPJxLDecK/fKBw2N/qZ9TbLTDtmzVJuxz6GHpR6z+gjd7Z7RShlYqQPsE9j+pLQmgJXqupOfPVeK3DlL9oESmh5A=
+X-Received: by 2002:a2e:9345:0:b0:24b:451:7ce1 with SMTP id
+ m5-20020a2e9345000000b0024b04517ce1mr11278276ljh.258.1652118762240; Mon, 09
+ May 2022 10:52:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-From:   Akira Yokosawa <akiyks@gmail.com>
-Subject: Re: [PATCH v6 18/23] docs: add Rust documentation
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Wu XiangCheng <bobwxc@email.cn>, Daniel Xu <dxu@dxuuu.xyz>,
-        Gary Guo <gary@garyguo.net>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Yuki Okushi <jtitor@2k36.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Julian Merkle <me@jvmerkle.de>, Finn Behrens <me@kloenk.de>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
+References: <20220507052451.12890-1-ojeda@kernel.org> <20220507052451.12890-24-ojeda@kernel.org>
+ <202205070050.A870AEAC6@keescook> <YnYqHSVakm1EAo5a@kroah.com>
+In-Reply-To: <YnYqHSVakm1EAo5a@kroah.com>
+From:   Todd Kjos <tkjos@google.com>
+Date:   Mon, 9 May 2022 10:52:30 -0700
+Message-ID: <CAHRSSExk=cnJDUdxChf3H283rumV1M_SL4T9seSLEBVDxcrhzw@mail.gmail.com>
+Subject: Re: [PATCH v6 23/23] [RFC] drivers: android: Binder IPC in Rust
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Kees Cook <keescook@chromium.org>, Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
         Wedson Almeida Filho <wedsonaf@google.com>,
-        Wei Liu <wei.liu@kernel.org>
-References: <20220507052451.12890-19-ojeda@kernel.org>
- <7e9c2e77-8b70-6e15-3f3d-905ab42b0fcd@gmail.com>
- <CANiq72mBVo4+htxVjY0wB1Y3GO2PEUiZjZKRYT8ddwx84-hAtg@mail.gmail.com>
-Content-Language: en-US
-In-Reply-To: <CANiq72mBVo4+htxVjY0wB1Y3GO2PEUiZjZKRYT8ddwx84-hAtg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Finn Behrens <me@kloenk.de>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        Wayne Campbell <wcampbell1995@gmail.com>,
+        =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Hridya Valsaraju <hridya@google.com>,
+        Suren Baghdasaryan <surenb@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-[+To: Jon]
+On Sat, May 7, 2022 at 1:13 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Sat, May 07, 2022 at 12:55:17AM -0700, Kees Cook wrote:
+> > On Sat, May 07, 2022 at 07:24:21AM +0200, Miguel Ojeda wrote:
+> > > From: Wedson Almeida Filho <wedsonaf@google.com>
+> > >
+> > > A port to Rust of the Android Binder IPC mechanism.
+> > >
+> > > This module is a work in progress and will be sent for review later
+> > > on, as well as separately from the Rust support.
+> >
+> > Is any functionality missing for this driver compared to the C driver?
+>
+> There is no binderfs support, which would be a major regression if it
+> were to be added.
+>
+> And odds are the new binder additions in the past few months are
+> probably not included here either.
+>
+> There is a binder regression test in Android that can be run to test all
+> of this to see what is missing.  That should be a good test of
+> compatibility.
 
-On Mon, 9 May 2022 12:41:28 +0200,
-Miguel Ojeda wrote:
-> Hi Akira,
-> 
-> On Mon, May 9, 2022 at 6:02 AM Akira Yokosawa <akiyks@gmail.com> wrote:
->>
->> I think you agreed splitting SVG part into its own patch with
->> a proper copying info, etc.  Let me see...  So, here is the link:
-> 
-> Yes, sorry, will do (in fact, it should have been there in v5 too).
-> 
-> By the way, the Linux SVG logo (used to make the one here) is pending
-> in the linux-doc ML.
+There are a set of tests in the Android tree at
+frameworks/libs/native/binder/tests, but just booting and having a
+usable device with this version replacing the C version is pretty
+impressive. Can you boot and run a real device with this?
 
-So you mean the following post:
-
-    https://lore.kernel.org/lkml/20220207014418.GA28724@kernel.org/
-
-I'm not sure why Jon has not responded.
-
-Jon, was there any issue on this patch?
-
-> 
->> I might have missed v5 of this patch series.
->> That might be because v5's 15/20 was not accepted by linux-doc's
->> lore archive (maybe) due to its size despite it had Cc: linux-doc.
->> v6's 18/23 was also rejected.
-> 
-> Yes, a few patches get rejected in several lists. We were told this
-> was fine as long as LKML gets them (the cover letter has the lists in
-> Cc).
-> 
->> I have some alternative ideas for table formatting in ReST.
-> 
-> I was following the LLVM one, but it makes sense to use the other ones
-> where possible. I can send a patch for that one too.
-> 
->> So here are a couple of alternative ways to represent the table
->>
->> * ASCII-art format:
->> * Literal block format:
-> 
-> Thanks for taking the time to format the examples, it is useful :)
-Glad you like it.  ;-)
-
-        Thanks, Akira
-
-> 
->> As you see, those inline-literal markers of ``xxxx``, which are
->> distracting when the .rst file is read as plain-text, are not
->> necessary in the literal-block approach.  And you can directly
-> 
-> I agree, it can be better (it is one reason I find Markdown a bit more
-> readable since it uses a single backquote for that instead of two).
-> 
->> In my opinion, the literal-block approach should be the most
->> reasonable choice here. Of course its your call which one
->> to choose.
-> 
-> Yeah, that sounds reasonable. I will take a look.
-> 
-> Thanks for the review!
-> 
-> Cheers,
-> Miguel
+>
+> thanks,
+>
+> greg k-h
