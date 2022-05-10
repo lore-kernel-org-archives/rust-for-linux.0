@@ -2,42 +2,64 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DCE0C433F5
-	for <rust-for-linux@archiver.kernel.org>; Tue, 10 May 2022 08:38:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72053C433EF
+	for <rust-for-linux@archiver.kernel.org>; Tue, 10 May 2022 10:46:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237134AbiEJIme (ORCPT
+        id S231440AbiEJKt5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 10 May 2022 04:42:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42382 "EHLO
+        Tue, 10 May 2022 06:49:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236538AbiEJIme (ORCPT
+        with ESMTP id S239997AbiEJKt5 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 10 May 2022 04:42:34 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC391238861;
-        Tue, 10 May 2022 01:38:37 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 5309A21B9E;
-        Tue, 10 May 2022 08:38:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1652171916; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=VBHPkY7leVke4Ab1YZuG3Eh0I871w0YjHYv2ZTtbS6c=;
-        b=DsYTFv2022XRh8F2WnKcoEl+nKZY/3KpwlPjMI4FKvwyHh0rrcFNMQQmRsq0I711GwI0Ep
-        SAZ+vVa2BPCJhwhrtLBU/mVDb5Oqi01suAxUtLsAchCovotcblyR2nPoXWwTsaoxMyNr58
-        PJcrw4n3sS7HX+mJ6hcxDLzaFUSpjaA=
-Received: from suse.cz (unknown [10.100.208.146])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 9AC522C141;
-        Tue, 10 May 2022 08:38:35 +0000 (UTC)
-Date:   Tue, 10 May 2022 10:38:35 +0200
-From:   Petr Mladek <pmladek@suse.com>
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Tue, 10 May 2022 06:49:57 -0400
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DD8F193DB;
+        Tue, 10 May 2022 03:45:59 -0700 (PDT)
+Received: by mail-io1-xd29.google.com with SMTP id a10so603888ioe.9;
+        Tue, 10 May 2022 03:45:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=SNnTCe84Y4lgHjzt2eIaU/CTKrKXShYzumTezLzN1tg=;
+        b=Ibq5j1LSdg0E2VtB2ruDuS49NRWwyzozl1BfIlRVUYwhGTMjByOT1nxECjnF+dg7T/
+         cjFGB0VOwUV1sHAh6dOH3Ey9+vNz7j/R1KfqHmxM56MONbHkQWjUTGpVirh8mssRj+gq
+         JoOKbrGI1Fs1SHAN/Uky9p1wndDHZvvdKjHkoJgOVvDoLkxNUA6Ga3BYpiAKaOBNbTGl
+         xYYeB/ROeJ+OaA1udvQ6RPe/yKuDxFeqwxcxZkp7N92MOvVNrOVWLlshP8VLDZ+JxcRO
+         v7IREdx3R0hv83weoFmZZ0qWr5dSUdrxfq4QI5Mygj54VUx4V8Bn1jNTzRANEeLetQ3Z
+         lvJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SNnTCe84Y4lgHjzt2eIaU/CTKrKXShYzumTezLzN1tg=;
+        b=2htsP6kOiLN7Nb5JCtIiF0XBixOut4fmOt4U3sz3SKc0nzSryQ8yKpyGCeqcWDUcSy
+         OZufeqNpstkmXuGvV7lwMFFPvkPereAiXcru2/h6ulg6hgW9qXbJbHF48P1u5V7z8UNb
+         RsiKr/jpoG9WSJmFiTW7J3Kp+QlQDt9vRaclbC7f1hVgPhOZUAmIn7jv7oolUIrIzLw4
+         9781F8qJZeHyr/VYtFzAAUtMdcBfd1RYd9zGLxmmhNt9Zn3UVubVyYCDCpaTx9HKXHHz
+         y+2+AeIZ8cNezLs/c/r8Z50m1eFkMq+Q94FjbIRmXyipAEZmPpQqY6LM3trTC/qF+2sA
+         P0NQ==
+X-Gm-Message-State: AOAM530kgtTHD0r21jL+dtZgZW2/mux6W6G2R8gM6jR0ufAizDDERK4g
+        oFiDBBYUKFvgHbkbJ5g5h6NxM4oNeqdhkp47lY0=
+X-Google-Smtp-Source: ABdhPJwATdKHOC3sSPtMN6oh0hRLfFBf5pmvZa8pLqAPBNcGchVX1rD5hhxuA68HKS+9vlzRAx65gcUbRopRtQJaPFk=
+X-Received: by 2002:a05:6638:d56:b0:32b:62e4:39be with SMTP id
+ d22-20020a0566380d5600b0032b62e439bemr9566596jak.308.1652179558815; Tue, 10
+ May 2022 03:45:58 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220507052451.12890-1-ojeda@kernel.org> <20220507052451.12890-15-ojeda@kernel.org>
+ <Ynoki5rA2ivmFwkS@alley>
+In-Reply-To: <Ynoki5rA2ivmFwkS@alley>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 10 May 2022 12:45:47 +0200
+Message-ID: <CANiq72m-oMTtoXh+RDpQm3pO6F6=u+H8uNWGWGoE=pw79EOc=g@mail.gmail.com>
+Subject: Re: [PATCH v6 14/23] vsprintf: add new `%pA` format specifier
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Gary Guo <gary@garyguo.net>,
         Alex Gaynor <alex.gaynor@gmail.com>,
@@ -46,78 +68,31 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Sergey Senozhatsky <senozhatsky@chromium.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: Re: [PATCH v6 14/23] vsprintf: add new `%pA` format specifier
-Message-ID: <Ynoki5rA2ivmFwkS@alley>
-References: <20220507052451.12890-1-ojeda@kernel.org>
- <20220507052451.12890-15-ojeda@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220507052451.12890-15-ojeda@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat 2022-05-07 07:24:12, Miguel Ojeda wrote:
-> From: Gary Guo <gary@garyguo.net>
-> 
-> This patch adds a format specifier `%pA` to `vsprintf` which formats
-> a pointer as `core::fmt::Arguments`. Doing so allows us to directly
-> format to the internal buffer of `printf`, so we do not have to use
-> a temporary buffer on the stack to pre-assemble the message on
-> the Rust side.
-> 
-> This specifier is intended only to be used from Rust and not for C, so
-> `checkpatch.pl` is intentionally unchanged to catch any misuse.
-> 
-> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
-> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Hi Petr,
 
-Feel free to use:
+On Tue, May 10, 2022 at 10:38 AM Petr Mladek <pmladek@suse.com> wrote:
+>
+> Feel free to use:
+>
+> Acked-by: Petr Mladek <pmladek@suse.com>
 
-Acked-by: Petr Mladek <pmladek@suse.com>
+Thanks!
 
-See a comment below.
+> It would be great to document it also in
+> Documentation/core-api/printk-formats.rst
+> I am sorry that I did not mentioned it earlier.
 
-> ---
->  lib/vsprintf.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> index 40d26a07a133..00f71f91d991 100644
-> --- a/lib/vsprintf.c
-> +++ b/lib/vsprintf.c
-> @@ -2270,6 +2270,9 @@ int __init no_hash_pointers_enable(char *str)
->  }
->  early_param("no_hash_pointers", no_hash_pointers_enable);
->  
-> +/* Used for Rust formatting ('%pA'). */
-> +char *rust_fmt_argument(char *buf, char *end, void *ptr);
-> +
->  /*
->   * Show a '%p' thing.  A kernel extension is that the '%p' is followed
->   * by an extra set of alphanumeric characters that are extended format
-> @@ -2396,6 +2399,10 @@ early_param("no_hash_pointers", no_hash_pointers_enable);
->   *
->   * Note: The default behaviour (unadorned %p) is to hash the address,
->   * rendering it useful as a unique identifier.
-> + *
-> + * There is also a '%pA' format specifier, but it is only intended to be used
-> + * from Rust code to format core::fmt::Arguments. Do *not* use it from C.
-> + * See rust/kernel/print.rs for details.
->   */
+Ah, definitely, I will add it.
 
-It would be great to document it also in
-Documentation/core-api/printk-formats.rst
-I am sorry that I did not mentioned it earlier.
+> Also the check in checkpatch.pl, mentioned in another reply, sounds
+> like a good idea.
 
-Also the check in checkpatch.pl, mentioned in another reply, sounds
-like a good idea.
++1
 
-Best Regards,
-Petr
+Cheers,
+Miguel
