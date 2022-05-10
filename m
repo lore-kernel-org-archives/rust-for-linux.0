@@ -2,125 +2,122 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FE5DC433EF
-	for <rust-for-linux@archiver.kernel.org>; Tue, 10 May 2022 05:54:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DCE0C433F5
+	for <rust-for-linux@archiver.kernel.org>; Tue, 10 May 2022 08:38:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233119AbiEJF6S (ORCPT
+        id S237134AbiEJIme (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 10 May 2022 01:58:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35936 "EHLO
+        Tue, 10 May 2022 04:42:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233186AbiEJF5s (ORCPT
+        with ESMTP id S236538AbiEJIme (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 10 May 2022 01:57:48 -0400
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BBC5224A6D;
-        Mon,  9 May 2022 22:53:49 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id CBB235C006F;
-        Tue, 10 May 2022 01:53:45 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Tue, 10 May 2022 01:53:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        joshtriplett.org; h=cc:cc:content-transfer-encoding:content-type
-        :date:date:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to;
-         s=fm3; t=1652162025; x=1652248425; bh=UqqeRMS++PzTUoENYIQlHrxmX
-        YanHi9usrhTSkqWRBY=; b=Fu5cIkJEtzgBvV4/XqoZGzxI90Syy2eSStFQG1Bmq
-        Qzq44qis4oBKK2+44MGfoT6zBG6iuJojCb9ybGYa/X0Fd7wSElE4XRd10wKPRs7e
-        hgcvXNoNSmtzgJKAfbBtMElDOT90E7i8ZaxIBTB0BJ1p1OxaWTGpWnyoXfWfdoig
-        v5JwOom18HqfihBQaBs07kKWXJsqznNkms+5qGr7lnnjt0Rv4WKqZY1ALCPE3qI/
-        yGXKoUuwtYgsNnGnUAMtKLOleMEPe5UeKpffnO6dIWL591ktA3+OlrdTuJhZXp0m
-        k+3mPuIPvMCyuv1IQYUQVqTlz2httcefLpnfpFxWDGPcQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1652162025; x=1652248425; bh=UqqeRMS++PzTU
-        oENYIQlHrxmXYanHi9usrhTSkqWRBY=; b=UNhVoXCIlaYSssxxJzv6+gTP356lr
-        Csm5VdK7uurne8gjADzemSPIgvtaCwsX1FnCjOEp9wJJ01+pvQTyzw6swj9hBm5e
-        cy5Wag2OIi7CDRmQiZloVmbYMGYbyGI4ybtqBdLjiw7P52vN2ceC4IIoNfEox06K
-        AhtG2y/AP8xJ5eceuv8OMO5mXYknc5JH/reD5GY/jIbO6SXIChJNM4hnszow95Mu
-        A3es01Y1zA/qbaWa+fJ3s7YGEp8fsRi6u0PRpyQE13rLgKNQchtx8P51KqXV+mfc
-        n01FF91bK6IShsyjj6LUjWwc9svBLo7MoM7Vao+pwMnW47TmZyS9aZDNw==
-X-ME-Sender: <xms:6P15YkrgxmXL_bXGwWaviRm6XMrjlcrEGve3UktMb3qDyOWmAUlQQA>
-    <xme:6P15YqoXXjsH1mhaSUmAo7NmhlzgdAZdWW6iTxC68WM-y23AT6nuBQxIN87lVOYC0
-    o26TOUlt7PVw-D5QP8>
-X-ME-Received: <xmr:6P15YpMnawRru0JeWelMLekRPpbjZr4ov6wddhSKU6xp3Qq0HZi6f7hdVP4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrgedtgddutddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeflohhs
-    hhcuvfhrihhplhgvthhtuceojhhoshhhsehjohhshhhtrhhiphhlvghtthdrohhrgheqne
-    cuggftrfgrthhtvghrnhepgeeihfevvdeklefggfejjeeugfduudeggffhjeehkeegheel
-    tddujeffjeekheefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomhepjhhoshhhsehjohhshhhtrhhiphhlvghtthdrohhrgh
-X-ME-Proxy: <xmx:6P15Yr5XlWFiPj7CElVzyH11o3VZ_PStgxAdue3cQ9JFb6bMNDIQBg>
-    <xmx:6P15Yj7U1pxqEu9m3udW9TVyeeMicQbdOEYiPoTkPJHdB-P4BtAR-A>
-    <xmx:6P15YriuNrhSSJ4-FJxKRUHsGVzrMhlxgebD2OHXvogbusUlZ4rP8w>
-    <xmx:6f15YjpPFIJVuv2qe1NIoT3pZ-4kd4TVf1sNI3LTismj8jORQoLtJg>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 10 May 2022 01:53:42 -0400 (EDT)
-Date:   Mon, 9 May 2022 22:53:41 -0700
-From:   Josh Triplett <josh@joshtriplett.org>
-To:     Gaelan Steele <gbs@canishe.com>
-Cc:     Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        Tue, 10 May 2022 04:42:34 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC391238861;
+        Tue, 10 May 2022 01:38:37 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id 5309A21B9E;
+        Tue, 10 May 2022 08:38:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1652171916; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=VBHPkY7leVke4Ab1YZuG3Eh0I871w0YjHYv2ZTtbS6c=;
+        b=DsYTFv2022XRh8F2WnKcoEl+nKZY/3KpwlPjMI4FKvwyHh0rrcFNMQQmRsq0I711GwI0Ep
+        SAZ+vVa2BPCJhwhrtLBU/mVDb5Oqi01suAxUtLsAchCovotcblyR2nPoXWwTsaoxMyNr58
+        PJcrw4n3sS7HX+mJ6hcxDLzaFUSpjaA=
+Received: from suse.cz (unknown [10.100.208.146])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by relay2.suse.de (Postfix) with ESMTPS id 9AC522C141;
+        Tue, 10 May 2022 08:38:35 +0000 (UTC)
+Date:   Tue, 10 May 2022 10:38:35 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
+        Gary Guo <gary@garyguo.net>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Wu XiangCheng <bobwxc@email.cn>, Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Yuki Okushi <jtitor@2k36.org>, Wei Liu <wei.liu@kernel.org>,
-        Daniel Xu <dxu@dxuuu.xyz>, Julian Merkle <me@jvmerkle.de>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-doc@vger.kernel.org, linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH v6 18/23] docs: add Rust documentation
-Message-ID: <Ynn95Sv91TzD4HdT@localhost>
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Subject: Re: [PATCH v6 14/23] vsprintf: add new `%pA` format specifier
+Message-ID: <Ynoki5rA2ivmFwkS@alley>
 References: <20220507052451.12890-1-ojeda@kernel.org>
- <20220507052451.12890-19-ojeda@kernel.org>
- <875ymecp6f.fsf@meer.lwn.net>
- <0716311E-FD5A-489A-A17D-C427C1A0EE4E@canishe.com>
+ <20220507052451.12890-15-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0716311E-FD5A-489A-A17D-C427C1A0EE4E@canishe.com>
+In-Reply-To: <20220507052451.12890-15-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, May 09, 2022 at 08:14:54PM -0700, Gaelan Steele wrote:
+On Sat 2022-05-07 07:24:12, Miguel Ojeda wrote:
+> From: Gary Guo <gary@garyguo.net>
 > 
+> This patch adds a format specifier `%pA` to `vsprintf` which formats
+> a pointer as `core::fmt::Arguments`. Doing so allows us to directly
+> format to the internal buffer of `printf`, so we do not have to use
+> a temporary buffer on the stack to pre-assemble the message on
+> the Rust side.
 > 
-> > On May 9, 2022, at 3:32 PM, Jonathan Corbet <corbet@lwn.net> wrote:
-> > 
-> >> +It is convenient to instruct editors/IDEs to format while typing,
-> >> +when saving or at commit time. However, if for some reason reformatting
-> >> +the entire kernel Rust sources is needed at some point, the following can be
-> >> +run::
-> >> +
-> >> +	make LLVM=1 rustfmt
-> > 
-> > I will ask whether we want this, though. Why would anybody want to
-> > mass-reformat the entire body of kernel code? This seems like something
-> > that would generate an endless stream of "helpful" patches and a lot of
-> > churn.
+> This specifier is intended only to be used from Rust and not for C, so
+> `checkpatch.pl` is intentionally unchanged to catch any misuse.
 > 
-> That would only happen if the code diverged from rustfmt’s output in the
-> first place. Generally, in Rust projects, the source tree is always kept
-> formatted with rustfmt - so running `make LLVM=1 rustfmt` would only
-> ever touch code that you’d just changed. 
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Exactly. This is convenient for the same reason doing a project-wide
-`cargo fmt` is useful in Rust projects: you can do all your editing,
-then format your code before committing.
+Feel free to use:
+
+Acked-by: Petr Mladek <pmladek@suse.com>
+
+See a comment below.
+
+> ---
+>  lib/vsprintf.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+> index 40d26a07a133..00f71f91d991 100644
+> --- a/lib/vsprintf.c
+> +++ b/lib/vsprintf.c
+> @@ -2270,6 +2270,9 @@ int __init no_hash_pointers_enable(char *str)
+>  }
+>  early_param("no_hash_pointers", no_hash_pointers_enable);
+>  
+> +/* Used for Rust formatting ('%pA'). */
+> +char *rust_fmt_argument(char *buf, char *end, void *ptr);
+> +
+>  /*
+>   * Show a '%p' thing.  A kernel extension is that the '%p' is followed
+>   * by an extra set of alphanumeric characters that are extended format
+> @@ -2396,6 +2399,10 @@ early_param("no_hash_pointers", no_hash_pointers_enable);
+>   *
+>   * Note: The default behaviour (unadorned %p) is to hash the address,
+>   * rendering it useful as a unique identifier.
+> + *
+> + * There is also a '%pA' format specifier, but it is only intended to be used
+> + * from Rust code to format core::fmt::Arguments. Do *not* use it from C.
+> + * See rust/kernel/print.rs for details.
+>   */
+
+It would be great to document it also in
+Documentation/core-api/printk-formats.rst
+I am sorry that I did not mentioned it earlier.
+
+Also the check in checkpatch.pl, mentioned in another reply, sounds
+like a good idea.
+
+Best Regards,
+Petr
