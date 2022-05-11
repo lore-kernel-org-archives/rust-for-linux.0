@@ -2,111 +2,133 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96856C4332F
-	for <rust-for-linux@archiver.kernel.org>; Tue, 10 May 2022 11:58:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1F94C433F5
+	for <rust-for-linux@archiver.kernel.org>; Wed, 11 May 2022 13:50:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241481AbiEJMCf (ORCPT
+        id S244143AbiEKNuG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 10 May 2022 08:02:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
+        Wed, 11 May 2022 09:50:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241453AbiEJMBz (ORCPT
+        with ESMTP id S244138AbiEKNuF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 10 May 2022 08:01:55 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E0212265FF;
-        Tue, 10 May 2022 04:57:53 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id r27so18251486iot.1;
-        Tue, 10 May 2022 04:57:53 -0700 (PDT)
+        Wed, 11 May 2022 09:50:05 -0400
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A2B6239782;
+        Wed, 11 May 2022 06:50:03 -0700 (PDT)
+Received: by mail-io1-xd32.google.com with SMTP id s23so2072854iog.13;
+        Wed, 11 May 2022 06:50:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Nya3smcu6m6BJ3o7w8h7OZ/4ZZg2D1j+6By65hBtg4E=;
-        b=VM/se0UDyiCCdJ4l8cbmpToryRKbD6kiPcp2LmQMrA21sF0s4m3DdEm4RpCOUNwV8I
-         zDeKt5ByRnZNdMNAWT/RDqJPysImrh09HXKZB4Y1tF9UkPcBja4pfU59CsRatHaZAreb
-         F/Jq6/QeHqdzqsxdCwWutFkbsN0RGLfVRpli/1UUeIoe7hos0YR/QDTDjC1kvXAZNXn0
-         3wXQP7jpGBQqFLavn0RI8llPOpbrwgtCUdf6ttw+nQaZHkjte6L2zsJ9KZ+jX0QK0G25
-         6JugcVh4hJcIfD8G7Exyof6Y7VhNfcygJvujMTKIynlQ/6VLsIKKGi5fHpxp2u9jcYG4
-         K9fQ==
+        bh=PPfAjhXsI/sCAXElGiIAWLNhfWDNEi+ZtaHTtSxHBEQ=;
+        b=aGnZg3AT2GqkRlrytHTaN/NZj7se3UweBltQbTucUz8qfefhYRjX8D58C1r2q954R4
+         6DJFBBvHMc/JilfjHyQ5aqY01UN/ab0jVIyzAY5dvdvZIeqaRUit6kQHk967vXUAo93I
+         pB8FjpEP39N8d0YPKBUtmkAzGQERpADWAWEHzgZkXpmv8coKTSst29t7IYGwSgZONziv
+         oI4+fIjhM3bVr2+UA+VQvZRxk3miTrNxlZjLwaex+qmsOl01vetgxC5dI5YMOWpvQjc3
+         XxgpabVXskv3rcn9yXJv3653A48xMi9ZFSBhEqXtI3PP5+XcVG1qaW97tIAzZBRusZCS
+         SidQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Nya3smcu6m6BJ3o7w8h7OZ/4ZZg2D1j+6By65hBtg4E=;
-        b=yyVPLhIM8bpQCBLZkgZHNsqbPWmCG2Hd+7KrSXDCvP3iSdjh0yDVdto7RMzwHO9ndU
-         it5S3/Lp2oc+Q8798V4J6r6WV4C8ZnmaOSzt89XG7+BfigRf+aTBHs6hJV8WhSjr1z9F
-         rRpvg9dbRxMEHxGt3LNu6MKvdOtm1olIPp9V5lDvIxpJTrpqBfJT4SRc6hyaoHc9fvvt
-         TK2IeCiqMKKe0Fgus304oLZs0b4ASkjsHLynfCxtfmeB8NELzSTCgQc+nrmbex/WRWLV
-         oSsvWilPai/mYH3rNIxq9mxgJaHT6UmCkuPhd+eufPZG0zqJh9Gicm1I6OIU4pkGySVq
-         0Icw==
-X-Gm-Message-State: AOAM5336AkptnplJ4u4ufU0Jhkko5iAi91X0qPDti13Pohmp1iqxRBbz
-        T9XE1zbFMCzBo93aSTUhy/GqYTVeqQBu2lsDBG0=
-X-Google-Smtp-Source: ABdhPJw+YkPy7lik4xxTFzDwdo471gN3AwACu2d05g47DAHxJcBzjqEDWZ1Vcu1N5BSpjD7Gb7k5QKIg2zNd9ask5DE=
-X-Received: by 2002:a02:c6af:0:b0:32a:f5f6:34bc with SMTP id
- o15-20020a02c6af000000b0032af5f634bcmr9967949jan.186.1652183872250; Tue, 10
- May 2022 04:57:52 -0700 (PDT)
+        bh=PPfAjhXsI/sCAXElGiIAWLNhfWDNEi+ZtaHTtSxHBEQ=;
+        b=Nb95y87xAS8rQvsrczlKK9ref94YMGImjeT860oZAusxTWJZCeC/7LKrvIBdnRAgku
+         +OBgPVBg8X189lH5+5WI1cKzBXyE+TBQPAoUOhCDSXsQmNcCs9zf7tIJe/5mORktkyVy
+         9ZDSIEgk5bqc7XZVIrl7bK151Wvq5L0h+98iMgpZ9uBaltOKmZYvlHenrH048G0193TM
+         qK9r4QsWMcjLxLcHQjA/SCxvNuLzScZFO1IkEQ+NCCqzuHXt2J1w6K/Cy+mSoroajxWm
+         QqWsgVzmAulJ73LVaH8X2ow6QgVi0VxzJr3doOEfE+k7pX4Z+e3svLSAOhAAABcMmuaV
+         97DA==
+X-Gm-Message-State: AOAM5302gSaDbJjhrWq6yyXyegCrGL26Wa3fQxMRaJ6n/sWw05ltk8w3
+        1zL5kd3TsWfGU0aTrFBe1M3c5JdzwmSEicY6Fio=
+X-Google-Smtp-Source: ABdhPJzjJIGp9s2bo97C4Z9816iV19iujbsRA1+GTtjaKDQ3YsQlDo9tdjEGYQ/NX+clvDAPgUUNuHpBQl2DPlIGM9A=
+X-Received: by 2002:a02:8624:0:b0:32b:397d:eeb1 with SMTP id
+ e33-20020a028624000000b0032b397deeb1mr12780202jai.264.1652277001693; Wed, 11
+ May 2022 06:50:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220507052451.12890-19-ojeda@kernel.org> <7e9c2e77-8b70-6e15-3f3d-905ab42b0fcd@gmail.com>
- <CANiq72mBVo4+htxVjY0wB1Y3GO2PEUiZjZKRYT8ddwx84-hAtg@mail.gmail.com>
- <92a7010c-5bb2-65df-edde-0ca88e035c2e@gmail.com> <8735hicoy7.fsf@meer.lwn.net>
-In-Reply-To: <8735hicoy7.fsf@meer.lwn.net>
+References: <20220507052451.12890-1-ojeda@kernel.org> <20220507052451.12890-19-ojeda@kernel.org>
+ <875ymecp6f.fsf@meer.lwn.net>
+In-Reply-To: <875ymecp6f.fsf@meer.lwn.net>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 10 May 2022 13:57:40 +0200
-Message-ID: <CANiq72mna9MKSgJYs19k=ieYu4v4TuemLdp1wkyhr9hqJ-tuAQ@mail.gmail.com>
+Date:   Wed, 11 May 2022 15:49:50 +0200
+Message-ID: <CANiq72mpYjdhq6yZFBmy8zEo7Cjhh-WjOFc4TfKMZh+w4Fu5WA@mail.gmail.com>
 Subject: Re: [PATCH v6 18/23] docs: add Rust documentation
 To:     Jonathan Corbet <corbet@lwn.net>
-Cc:     Akira Yokosawa <akiyks@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Wu XiangCheng <bobwxc@email.cn>, Daniel Xu <dxu@dxuuu.xyz>,
-        Gary Guo <gary@garyguo.net>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Yuki Okushi <jtitor@2k36.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Julian Merkle <me@jvmerkle.de>, Finn Behrens <me@kloenk.de>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
-        Wei Liu <wei.liu@kernel.org>
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Wu XiangCheng <bobwxc@email.cn>, Gary Guo <gary@garyguo.net>,
+        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        Yuki Okushi <jtitor@2k36.org>, Wei Liu <wei.liu@kernel.org>,
+        Daniel Xu <dxu@dxuuu.xyz>, Julian Merkle <me@jvmerkle.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, May 10, 2022 at 12:37 AM Jonathan Corbet <corbet@lwn.net> wrote:
+On Tue, May 10, 2022 at 12:32 AM Jonathan Corbet <corbet@lwn.net> wrote:
 >
-> Yeah, but the issues are all with me :)  Please accept my apologies for
-> letting it slip through the cracks.
+> Trying to take a closer look this time...
+>
+> I foresee merge conflicts, but so it goes.  Trying to split this apart
+> would not make a lot of sense.
 
-No apologies needed! It is not an important patch -- I just thought it
-would be better to have the "base logo" merged before the "derived
-one".
+Is there a big change coming to docs? (there are not conflicts in
+linux-next within the docs). Or what do you mean?
 
-> Looking at it now, though, I hesitate to add the logo (and another
-> COPYING file) in the top-level Documentation directory - I'd really
-> rather people not have to pick through a bunch of unrelated stuff to
-> find the actual docs they want.  I'd recommend we make a
-> Documentation/images (or .../assets or whatever) and put things like
-> logos there.
+> Please use normal tables rather than list-table; this kind of thing is
+> really unreadable in the source form.
 
-Yeah, makes sense to avoid dumping things in the top-level directory.
+Will do!
 
-> Disagree?  If not, could I get a version of the patch that does that?  I
-> promise not to set on it for three months this time...
+> I foresee disagreements over coding style conventions in the
+> future... I don't plan to be part of that conversation :)
 
-+1, I will send it.
+Do you mean with the tool settings? I guess we may get some proposals
+about tweaking them, yeah, but one reason to stick to the defaults is
+to avoid that! :)
 
-Thanks Jon!
+If you mean enforcing `rustfmt`, please see below.
+
+> I will ask whether we want this, though.  Why would anybody want to
+> mass-reformat the entire body of kernel code?  This seems like something
+> that would generate an endless stream of "helpful" patches and a lot of
+> churn.
+
+So the idea is that, since everything is already formatted, the output
+of this is empty (in mainline), like Gaelan/Josh mentioned. Thus
+nobody should be sending any formatting patches since there is nothing
+to change.
+
+Now, for those developing and not running `rustfmt` automatically in
+some way (e.g. in their editors), it can be useful to run it before
+submitting the patches: the output should only show changes to
+whatever you changed since everything else should be already
+formatted.
+
+Of course, as soon as others start submitting patches independently,
+mistakes may slip through, but we are enforcing this in our CI (and it
+could be done more centrally), so we should notice quickly.
+
+There could be, of course, bugs in the tool; and there are a few
+situations where the tool may not guarantee formatting stability, but
+hopefully those are rare and small enough so that we can keep
+enforcing this. I think it is worth trying.
 
 Cheers,
 Miguel
