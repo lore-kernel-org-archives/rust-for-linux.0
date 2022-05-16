@@ -2,79 +2,114 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56F6AC433EF
-	for <rust-for-linux@archiver.kernel.org>; Thu, 12 May 2022 19:01:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0EDCC433EF
+	for <rust-for-linux@archiver.kernel.org>; Mon, 16 May 2022 10:06:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357844AbiELTBg (ORCPT
+        id S231756AbiEPKGq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 12 May 2022 15:01:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36576 "EHLO
+        Mon, 16 May 2022 06:06:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357840AbiELTBf (ORCPT
+        with ESMTP id S233451AbiEPKFa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 12 May 2022 15:01:35 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85BDF58E79
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 May 2022 12:01:34 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id bv19so12060312ejb.6
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 May 2022 12:01:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=pszSDfe0UbNgZW4RxKcUIgfomIDDQRx5VP5T7VUEGIM=;
-        b=VQA5v8vqLahAK/ejzfmgUBIfDmleeuUyWizNuLo7eork68u0Kdo0mLk2LagPzvdFwu
-         bPCS9pMREZcOLfpyQDK34HFBotdepKvHzCsAOrES5gBMNoFMkdTjhNWo3ROXCx8UIc6v
-         BCV6hXpLKsRMRyhsT3mtXAL6JctiOwVyu0Mtk+yNpYb9O3TLaydg6GrpNp6If5JZq/2u
-         rssY3r/WK4mSLTJQ7j7QHbvFf/6tkQnm06XpMa68d3wW/OykknmCFx3ve/RcoC7VmZQo
-         aMmeuLlc6VWJC+vLFjNH6JHeTvcDMOyWHEaZB5+wgl5AgyD4B4DGg2VFzVrGtKgI1+lS
-         OgMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pszSDfe0UbNgZW4RxKcUIgfomIDDQRx5VP5T7VUEGIM=;
-        b=cERkZBfth6Wsi4cfbqtDyStYyrXgTBZ2nSBW77mieJ76sTRvfIhmhQImhAsmch34yh
-         PILv/xLfJBU5hU5/3jJjB8l3NGUYRd0aPXEl1ISBM7maH6Nq7uGSJc2+wmtVpY2WxRQ2
-         pjh1S6oKV0OFQKYVq6ytKP3FOgJSXaZHP7XFN7YNPmB6Z/IhqAb+qEv+0P1QPrBp1rkS
-         LS237RtnkS0NRinYNOEOBIQqx4ZamzHFWS8YO09ABUK9Mdd+BKnC9Drcf2cLDWDApljl
-         N1HUxWCYoe5MF7sTbir0t7B2K1ZKdtbbrv+eEVT1XAt96DheOubEE0CMagbX4idpqxLx
-         bfqA==
-X-Gm-Message-State: AOAM530DzevVZrcSaUa9qxxjryAnIKfn234HAIpUCZ2SXnDLNbx7v99E
-        4uQ0nhQGLqaxHmAi7VeEe73x6iTCe11FXlwSUoVHmw==
-X-Google-Smtp-Source: ABdhPJwemMtr42pU2bJn8Gbt0kVxmOlvLYjum2OQe6Gv6T1/qdj76xgaaBMFoVVLZwHNnlZ+i3CiOANGsUxi8Hhu0qQ=
-X-Received: by 2002:a17:907:8a24:b0:6f4:82c9:9adc with SMTP id
- sc36-20020a1709078a2400b006f482c99adcmr1202252ejc.223.1652382092846; Thu, 12
- May 2022 12:01:32 -0700 (PDT)
+        Mon, 16 May 2022 06:05:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E6E011452;
+        Mon, 16 May 2022 03:04:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 842D46093C;
+        Mon, 16 May 2022 10:04:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACDCC385AA;
+        Mon, 16 May 2022 10:04:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652695478;
+        bh=qwMeOyDxZFuqD6KQw3J705rH3w/y6FDNYmqKPSYVm3A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=S4+qYbgBDMnf8CrM8i8T2yYLJPx1EV2O2H38OZ5tqHfCxdkSXqk8pyNa08HtDr67z
+         SEVEnjYWSiiWsRTm/hk44FievUyDqWPKuOJ/pq2TIHZMfk68koO+NrCbzasdePVmkI
+         v8EEXJtDc0QFP7KKYnUm+SqpPube4SIbgOXWh4rE0rllYmPE5XtRxPfs48bEYd3lfy
+         0yl/F4GqtV9PQUZmwqqkWq3XMWks5PzdVdXgH2EhdIgp2h0PPrR04+HI87c/1kOSOz
+         /MveAJXcC3QHS/v8YG1LdpZO7t2b1lCqg0YOK1T1Y1jfJ5TZhQ1l2B+fah2lsWRWo9
+         b2PZJ+RctXEeA==
+From:   Miguel Ojeda <ojeda@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     rust-for-linux@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Li Li <dualli@google.com>, linux-kernel@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@google.com>
+Subject: [PATCH v1] binder: convert `BINDER_*` ioctl `#define`s into an `enum`
+Date:   Mon, 16 May 2022 12:04:01 +0200
+Message-Id: <20220516100401.7639-1-ojeda@kernel.org>
 MIME-Version: 1.0
-References: <20220507052451.12890-1-ojeda@kernel.org> <20220507052451.12890-5-ojeda@kernel.org>
-In-Reply-To: <20220507052451.12890-5-ojeda@kernel.org>
-From:   Brendan Higgins <brendanhiggins@google.com>
-Date:   Thu, 12 May 2022 15:01:21 -0400
-Message-ID: <CAFd5g47skTReYjQDHdv=V52+E-1odLsTJMn6E3GV7N7mYia=bA@mail.gmail.com>
-Subject: Re: [PATCH v6 04/23] kunit: take `kunit_assert` as `const`
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Daniel Latypov <dlatypov@google.com>,
-        linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, May 7, 2022 at 1:26 AM Miguel Ojeda <ojeda@kernel.org> wrote:
->
-> The `kunit_do_failed_assertion` function passes its
-> `struct kunit_assert` argument to `kunit_fail`. This one,
-> in turn, calls its `format` field passing the assert again
-> as a `const` pointer.
->
-> Therefore, the whole chain may be made `const`.
->
-> Reviewed-by: Daniel Latypov <dlatypov@google.com>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+bindgen (a tool which generates the "raw" C bindings for Rust) only
+works (so far) with "simple" C `#define`s. In order to avoid having
+to manually maintain these constants in the (potential) Rust side,
+this patch converts them into an `enum`.
 
-Reviewed-by: Brendan Higgins <brendanhiggins@google.com>
+There may be support in the future for expanding macros that end up in
+a "numeric" one: https://github.com/rust-lang/rust-bindgen/issues/753.
+
+Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+Two notes:
+  - Let me know if you prefer that I base this on top of a binder branch.
+  - Wedson should OK the changes for his `Signed-off-by` tag (and probably
+    he should be the author of the patch).
+
+ include/uapi/linux/android/binder.h | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
+
+diff --git a/include/uapi/linux/android/binder.h b/include/uapi/linux/android/binder.h
+index 11157fae8a8e..ed4d11a0bb99 100644
+--- a/include/uapi/linux/android/binder.h
++++ b/include/uapi/linux/android/binder.h
+@@ -236,19 +236,21 @@ struct binder_frozen_status_info {
+ 	__u32            async_recv;
+ };
+ 
+-#define BINDER_WRITE_READ		_IOWR('b', 1, struct binder_write_read)
+-#define BINDER_SET_IDLE_TIMEOUT		_IOW('b', 3, __s64)
+-#define BINDER_SET_MAX_THREADS		_IOW('b', 5, __u32)
+-#define BINDER_SET_IDLE_PRIORITY	_IOW('b', 6, __s32)
+-#define BINDER_SET_CONTEXT_MGR		_IOW('b', 7, __s32)
+-#define BINDER_THREAD_EXIT		_IOW('b', 8, __s32)
+-#define BINDER_VERSION			_IOWR('b', 9, struct binder_version)
+-#define BINDER_GET_NODE_DEBUG_INFO	_IOWR('b', 11, struct binder_node_debug_info)
+-#define BINDER_GET_NODE_INFO_FOR_REF	_IOWR('b', 12, struct binder_node_info_for_ref)
+-#define BINDER_SET_CONTEXT_MGR_EXT	_IOW('b', 13, struct flat_binder_object)
+-#define BINDER_FREEZE			_IOW('b', 14, struct binder_freeze_info)
+-#define BINDER_GET_FROZEN_INFO		_IOWR('b', 15, struct binder_frozen_status_info)
+-#define BINDER_ENABLE_ONEWAY_SPAM_DETECTION	_IOW('b', 16, __u32)
++enum {
++	BINDER_WRITE_READ			= _IOWR('b', 1, struct binder_write_read),
++	BINDER_SET_IDLE_TIMEOUT			= _IOW('b', 3, __s64),
++	BINDER_SET_MAX_THREADS			= _IOW('b', 5, __u32),
++	BINDER_SET_IDLE_PRIORITY		= _IOW('b', 6, __s32),
++	BINDER_SET_CONTEXT_MGR			= _IOW('b', 7, __s32),
++	BINDER_THREAD_EXIT			= _IOW('b', 8, __s32),
++	BINDER_VERSION				= _IOWR('b', 9, struct binder_version),
++	BINDER_GET_NODE_DEBUG_INFO		= _IOWR('b', 11, struct binder_node_debug_info),
++	BINDER_GET_NODE_INFO_FOR_REF		= _IOWR('b', 12, struct binder_node_info_for_ref),
++	BINDER_SET_CONTEXT_MGR_EXT		= _IOW('b', 13, struct flat_binder_object),
++	BINDER_FREEZE				= _IOW('b', 14, struct binder_freeze_info),
++	BINDER_GET_FROZEN_INFO			= _IOWR('b', 15, struct binder_frozen_status_info),
++	BINDER_ENABLE_ONEWAY_SPAM_DETECTION	= _IOW('b', 16, __u32),
++};
+ 
+ /*
+  * NOTE: Two special error codes you should check for when calling
+
+base-commit: 42226c989789d8da4af1de0c31070c96726d990c
+-- 
+2.36.1
+
