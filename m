@@ -2,50 +2,76 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 660E8C433F5
-	for <rust-for-linux@archiver.kernel.org>; Mon, 16 May 2022 13:34:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BADAAC433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon, 16 May 2022 16:58:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241232AbiEPNe1 convert rfc822-to-8bit (ORCPT
+        id S1344151AbiEPQ61 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 16 May 2022 09:34:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54652 "EHLO
+        Mon, 16 May 2022 12:58:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238792AbiEPNe0 (ORCPT
+        with ESMTP id S1344132AbiEPQ6Q (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 16 May 2022 09:34:26 -0400
-X-Greylist: delayed 496 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 16 May 2022 06:34:24 PDT
-Received: from mailext.lri.fr (mailext.lri.fr [129.175.15.10])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 8364E2E08E
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 May 2022 06:34:24 -0700 (PDT)
-Received: from [129.175.15.10] (mailext.lri.fr [129.175.15.10])
+        Mon, 16 May 2022 12:58:16 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90D502A73E;
+        Mon, 16 May 2022 09:56:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mailext.lri.fr (Postfix) with ESMTPSA id 18735C029E
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 May 2022 15:26:08 +0200 (CEST)
-From:   Xavier Denis <xldenis@lri.fr>
-Content-Type: text/plain;
-        charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.60.0.1.1\))
-Subject: Taint Analysis for Kernel Rust
-Message-Id: <DFB00BA8-A9AE-4854-9CF7-082380402F20@lri.fr>
-Date:   Mon, 16 May 2022 15:26:07 +0200
-To:     rust-for-linux@vger.kernel.org
-X-Mailer: Apple Mail (2.3693.60.0.1.1)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4BAD1B81544;
+        Mon, 16 May 2022 16:56:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A043EC34113;
+        Mon, 16 May 2022 16:56:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1652720212;
+        bh=OX8Lhwf0tAzODnumDj4GdfrqfSfR+PGuBYa4nSOfujk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=2wNhp/RjUnWOHv62mY/PaMLBzWj2C91Iws2xBmyR/QnC/4Dnqo4IiH7pY5ICvXx27
+         jzYDW6HcN+aQvXp04to7Pau4DELeHeH/IC60a6ObWA6X/0oF6YNz1HBlubMoHV34Qr
+         o/Uwi0bTqbWlBxAbCU2XFieWFJRLcPM1uMFB8jBw=
+Date:   Mon, 16 May 2022 18:56:49 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     rust-for-linux@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Li Li <dualli@google.com>, linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <wedsonaf@google.com>
+Subject: Re: [PATCH v1] binder: convert `BINDER_*` ioctl `#define`s into an
+ `enum`
+Message-ID: <YoKCUfSw2SPJXS04@kroah.com>
+References: <20220516100401.7639-1-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220516100401.7639-1-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi all,
+On Mon, May 16, 2022 at 12:04:01PM +0200, Miguel Ojeda wrote:
+> bindgen (a tool which generates the "raw" C bindings for Rust) only
+> works (so far) with "simple" C `#define`s. In order to avoid having
+> to manually maintain these constants in the (potential) Rust side,
+> this patch converts them into an `enum`.
+> 
+> There may be support in the future for expanding macros that end up in
+> a "numeric" one: https://github.com/rust-lang/rust-bindgen/issues/753.
+> 
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> Two notes:
+>   - Let me know if you prefer that I base this on top of a binder branch.
 
-I saw a tweet (https://twitter.com/marcan42/status/1526107814477074432) from Marcan about the need for some sort of taint / capability analysis in Rust4Linux, and was offering my services. 
+Yes, this does not apply to my char-misc.git tree in the char-misc-next
+branch on git.kernel.org as I think we have added some new binder ioctls
+recently.
 
-If someone knows what kinds of analysis are needed and could let me know that would be great: is this intra-procedural? Inter-procedural? Are we dealing with simple binary taints? Or do we need arbitrary partial orders? How complete/precise do we need the procedure to be? 
+Or you can make it against linux-next with the rust stuff removed, that
+also would work as well.  But as-is, this patch does not work.
 
-Given an answer to these questions I think I can whip up a `cargo taint` command rather quickly, so let me know if this is useful or desired. 
+thanks,
 
-PS: I gleaned from other threads that there’s a Zulip as well, would it be possible to get an invite? 
-
-Best,
-
-Xavier 
+greg k-h
