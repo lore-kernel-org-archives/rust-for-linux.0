@@ -2,114 +2,50 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0EDCC433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon, 16 May 2022 10:06:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 660E8C433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon, 16 May 2022 13:34:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231756AbiEPKGq (ORCPT
+        id S241232AbiEPNe1 convert rfc822-to-8bit (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 16 May 2022 06:06:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53514 "EHLO
+        Mon, 16 May 2022 09:34:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233451AbiEPKFa (ORCPT
+        with ESMTP id S238792AbiEPNe0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 16 May 2022 06:05:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E6E011452;
-        Mon, 16 May 2022 03:04:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        Mon, 16 May 2022 09:34:26 -0400
+X-Greylist: delayed 496 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 16 May 2022 06:34:24 PDT
+Received: from mailext.lri.fr (mailext.lri.fr [129.175.15.10])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 8364E2E08E
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 May 2022 06:34:24 -0700 (PDT)
+Received: from [129.175.15.10] (mailext.lri.fr [129.175.15.10])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 842D46093C;
-        Mon, 16 May 2022 10:04:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACDCC385AA;
-        Mon, 16 May 2022 10:04:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1652695478;
-        bh=qwMeOyDxZFuqD6KQw3J705rH3w/y6FDNYmqKPSYVm3A=;
-        h=From:To:Cc:Subject:Date:From;
-        b=S4+qYbgBDMnf8CrM8i8T2yYLJPx1EV2O2H38OZ5tqHfCxdkSXqk8pyNa08HtDr67z
-         SEVEnjYWSiiWsRTm/hk44FievUyDqWPKuOJ/pq2TIHZMfk68koO+NrCbzasdePVmkI
-         v8EEXJtDc0QFP7KKYnUm+SqpPube4SIbgOXWh4rE0rllYmPE5XtRxPfs48bEYd3lfy
-         0yl/F4GqtV9PQUZmwqqkWq3XMWks5PzdVdXgH2EhdIgp2h0PPrR04+HI87c/1kOSOz
-         /MveAJXcC3QHS/v8YG1LdpZO7t2b1lCqg0YOK1T1Y1jfJ5TZhQ1l2B+fah2lsWRWo9
-         b2PZJ+RctXEeA==
-From:   Miguel Ojeda <ojeda@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     rust-for-linux@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Li Li <dualli@google.com>, linux-kernel@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@google.com>
-Subject: [PATCH v1] binder: convert `BINDER_*` ioctl `#define`s into an `enum`
-Date:   Mon, 16 May 2022 12:04:01 +0200
-Message-Id: <20220516100401.7639-1-ojeda@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        by mailext.lri.fr (Postfix) with ESMTPSA id 18735C029E
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 May 2022 15:26:08 +0200 (CEST)
+From:   Xavier Denis <xldenis@lri.fr>
+Content-Type: text/plain;
+        charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.60.0.1.1\))
+Subject: Taint Analysis for Kernel Rust
+Message-Id: <DFB00BA8-A9AE-4854-9CF7-082380402F20@lri.fr>
+Date:   Mon, 16 May 2022 15:26:07 +0200
+To:     rust-for-linux@vger.kernel.org
+X-Mailer: Apple Mail (2.3693.60.0.1.1)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-bindgen (a tool which generates the "raw" C bindings for Rust) only
-works (so far) with "simple" C `#define`s. In order to avoid having
-to manually maintain these constants in the (potential) Rust side,
-this patch converts them into an `enum`.
+Hi all,
 
-There may be support in the future for expanding macros that end up in
-a "numeric" one: https://github.com/rust-lang/rust-bindgen/issues/753.
+I saw a tweet (https://twitter.com/marcan42/status/1526107814477074432) from Marcan about the need for some sort of taint / capability analysis in Rust4Linux, and was offering my services. 
 
-Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
-Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-Two notes:
-  - Let me know if you prefer that I base this on top of a binder branch.
-  - Wedson should OK the changes for his `Signed-off-by` tag (and probably
-    he should be the author of the patch).
+If someone knows what kinds of analysis are needed and could let me know that would be great: is this intra-procedural? Inter-procedural? Are we dealing with simple binary taints? Or do we need arbitrary partial orders? How complete/precise do we need the procedure to be? 
 
- include/uapi/linux/android/binder.h | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+Given an answer to these questions I think I can whip up a `cargo taint` command rather quickly, so let me know if this is useful or desired. 
 
-diff --git a/include/uapi/linux/android/binder.h b/include/uapi/linux/android/binder.h
-index 11157fae8a8e..ed4d11a0bb99 100644
---- a/include/uapi/linux/android/binder.h
-+++ b/include/uapi/linux/android/binder.h
-@@ -236,19 +236,21 @@ struct binder_frozen_status_info {
- 	__u32            async_recv;
- };
- 
--#define BINDER_WRITE_READ		_IOWR('b', 1, struct binder_write_read)
--#define BINDER_SET_IDLE_TIMEOUT		_IOW('b', 3, __s64)
--#define BINDER_SET_MAX_THREADS		_IOW('b', 5, __u32)
--#define BINDER_SET_IDLE_PRIORITY	_IOW('b', 6, __s32)
--#define BINDER_SET_CONTEXT_MGR		_IOW('b', 7, __s32)
--#define BINDER_THREAD_EXIT		_IOW('b', 8, __s32)
--#define BINDER_VERSION			_IOWR('b', 9, struct binder_version)
--#define BINDER_GET_NODE_DEBUG_INFO	_IOWR('b', 11, struct binder_node_debug_info)
--#define BINDER_GET_NODE_INFO_FOR_REF	_IOWR('b', 12, struct binder_node_info_for_ref)
--#define BINDER_SET_CONTEXT_MGR_EXT	_IOW('b', 13, struct flat_binder_object)
--#define BINDER_FREEZE			_IOW('b', 14, struct binder_freeze_info)
--#define BINDER_GET_FROZEN_INFO		_IOWR('b', 15, struct binder_frozen_status_info)
--#define BINDER_ENABLE_ONEWAY_SPAM_DETECTION	_IOW('b', 16, __u32)
-+enum {
-+	BINDER_WRITE_READ			= _IOWR('b', 1, struct binder_write_read),
-+	BINDER_SET_IDLE_TIMEOUT			= _IOW('b', 3, __s64),
-+	BINDER_SET_MAX_THREADS			= _IOW('b', 5, __u32),
-+	BINDER_SET_IDLE_PRIORITY		= _IOW('b', 6, __s32),
-+	BINDER_SET_CONTEXT_MGR			= _IOW('b', 7, __s32),
-+	BINDER_THREAD_EXIT			= _IOW('b', 8, __s32),
-+	BINDER_VERSION				= _IOWR('b', 9, struct binder_version),
-+	BINDER_GET_NODE_DEBUG_INFO		= _IOWR('b', 11, struct binder_node_debug_info),
-+	BINDER_GET_NODE_INFO_FOR_REF		= _IOWR('b', 12, struct binder_node_info_for_ref),
-+	BINDER_SET_CONTEXT_MGR_EXT		= _IOW('b', 13, struct flat_binder_object),
-+	BINDER_FREEZE				= _IOW('b', 14, struct binder_freeze_info),
-+	BINDER_GET_FROZEN_INFO			= _IOWR('b', 15, struct binder_frozen_status_info),
-+	BINDER_ENABLE_ONEWAY_SPAM_DETECTION	= _IOW('b', 16, __u32),
-+};
- 
- /*
-  * NOTE: Two special error codes you should check for when calling
+PS: I gleaned from other threads that there’s a Zulip as well, would it be possible to get an invite? 
 
-base-commit: 42226c989789d8da4af1de0c31070c96726d990c
--- 
-2.36.1
+Best,
 
+Xavier 
