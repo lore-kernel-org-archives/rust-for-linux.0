@@ -2,93 +2,118 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E1C5FC433FE
-	for <rust-for-linux@archiver.kernel.org>; Mon, 16 May 2022 21:17:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BB085C433EF
+	for <rust-for-linux@archiver.kernel.org>; Tue, 17 May 2022 10:28:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349529AbiEPVRK (ORCPT
+        id S235409AbiEQK2p (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 16 May 2022 17:17:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50464 "EHLO
+        Tue, 17 May 2022 06:28:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349093AbiEPVRE (ORCPT
+        with ESMTP id S1344021AbiEQK2g (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 16 May 2022 17:17:04 -0400
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55FEB12AEE
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 May 2022 14:14:09 -0700 (PDT)
-Received: by mail-io1-xd2a.google.com with SMTP id s23so17333591iog.13
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 May 2022 14:14:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=R10fGbfAwjyvEaLgEb4ePb7PNL0SEdEh5NxxALCjUHU=;
-        b=L3OMuWQ0TNjB0cozuCOnc+Z7zy2Q8D7DrDyZ7lQPSWAY/4CMdOsm0q+sZK8DtgUvIf
-         dFf7ACOm/FXei75jmVtnkTX2Emf7m3o0Y6XT9rVip2Nrm+Dupjh0sjYVf8MkidHrHomY
-         wQqwxF8pZJn4z6A/IH2zGHbu4seg++LoCyqWdf66peQF8ZPQAFovBNWmp1S5iQVCAseL
-         Y4DFQbn83tj9PlqAVLjr1Gw2IbOez1iZIU/GqKU6aOCTeB/CSDbyErUv4KYVcoaLNLR8
-         ePZNiDKxTOKYGho9b2/t7uqFPVk6IeBJK49irMUEeAQTTtTOx7a4cseUcqfquGS6EeiH
-         KujQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=R10fGbfAwjyvEaLgEb4ePb7PNL0SEdEh5NxxALCjUHU=;
-        b=fjOGYlD1Syy2qhW15qQ1SBIvvG4nTjPnSrV7BGDYVao9/P8fsjeGqalLUB+Rg6fPQ0
-         mqnrsGVITuiBkPHrRh3osv1XUD4Qk+QjQOr+xXv1Fgh9ABV0FEKevhVjw7yngFd6Jh0V
-         kJsHIATc68/sQITn4P8G6WiZ++WNodlbx2cK+Pd3yH/kwnVgJqA91DAi1YRwFQQPZG0K
-         BaLidcbD9AI8yfha6V2+gmANZ7hL+nkyy2USevGVPvi3gi0MgcBgLJy82+0owz7UiPOR
-         QygSE0VtdIyVQsv36bJ1Be/7+aGO/Xzhpi8H0d763xgfs1xVmWKx3ojeY6ujwIPRl6Ow
-         4qyw==
-X-Gm-Message-State: AOAM533oOvLG+PZoLP4Ofd1//hflPAtssKlF29JtomdEGGW+8BdjcWQJ
-        uZzDMRZTkAsQBOkTXUCFRDZr4DJewjpHp3M/KBZ405Tqceg=
-X-Google-Smtp-Source: ABdhPJzjlaUtzzzGYr5rUGjNp+457o8cu3p0YnifaJ6euPx6zpV7VryJLNyJ20lGTQMebZJxZtTDYwsnODJSmh0zbAs=
-X-Received: by 2002:a5e:c643:0:b0:657:b1b0:8e2d with SMTP id
- s3-20020a5ec643000000b00657b1b08e2dmr8855090ioo.64.1652735648756; Mon, 16 May
- 2022 14:14:08 -0700 (PDT)
+        Tue, 17 May 2022 06:28:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A1B11CA;
+        Tue, 17 May 2022 03:28:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 668F86156A;
+        Tue, 17 May 2022 10:28:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051A2C385B8;
+        Tue, 17 May 2022 10:28:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1652783313;
+        bh=H2A/jFCSJ+xqg/vLvKvV+fIaM4AAIUyg7v6zsd4rM1w=;
+        h=From:To:Cc:Subject:Date:From;
+        b=MVec5s8SsX0DJYpVL/N/V8VBrlI5FY37E7huj+UgAVGxd0+S32Uua80uV1J/sy0k4
+         nMmyjfLihqiqdR68b1JgghbEyVamhtq5bGfZDnmfvKKmhciUD6OnZ0VyULnZKNE03o
+         zo/brvn3lTXUTtJ3LQimulPHSHbIAtWP9beMemKEKeJqQ4Qv6U7a1Nq4hdGS2lyJ+H
+         BWW3Pa0l+PZR6a4rFX8h0VC5dB3u+gIOg9eLXGq+qYizGBKJ2+DaPY53BcNdk5hXAq
+         dd01Qshgfe5JU2CH6XQ9ViU+AQjzMkoz9wv/8iYyNXodhoVbFR1XNuHMn32HqPdZP1
+         KZ+qjzVsmUIbA==
+From:   Miguel Ojeda <ojeda@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     rust-for-linux@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Li Li <dualli@google.com>, linux-kernel@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@google.com>
+Subject: [PATCH v2] binder: convert `BINDER_*` ioctl `#define`s into an `enum`
+Date:   Tue, 17 May 2022 12:28:13 +0200
+Message-Id: <20220517102813.10310-1-ojeda@kernel.org>
 MIME-Version: 1.0
-References: <DFB00BA8-A9AE-4854-9CF7-082380402F20@lri.fr>
-In-Reply-To: <DFB00BA8-A9AE-4854-9CF7-082380402F20@lri.fr>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 16 May 2022 23:13:57 +0200
-Message-ID: <CANiq72=P76KwNBOnZ+h8kAWrfMCsvMJt4we69atDeW1ugY7_jg@mail.gmail.com>
-Subject: Re: Taint Analysis for Kernel Rust
-To:     Xavier Denis <xldenis@lri.fr>
-Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Xavier,
+bindgen (a tool which generates the "raw" C bindings for Rust) only
+works (so far) with "simple" C `#define`s. In order to avoid having
+to manually maintain these constants in the (potential) Rust side,
+this patch converts them into an `enum`.
 
-On Mon, May 16, 2022 at 9:39 PM Xavier Denis <xldenis@lri.fr> wrote:
->
-> I saw a tweet (https://twitter.com/marcan42/status/1526107814477074432) f=
-rom Marcan about the need for some sort of taint / capability analysis in R=
-ust4Linux, and was offering my services.
->
-> If someone knows what kinds of analysis are needed and could let me know =
-that would be great: is this intra-procedural? Inter-procedural? Are we dea=
-ling with simple binary taints? Or do we need arbitrary partial orders? How=
- complete/precise do we need the procedure to be?
+There may be support in the future for expanding macros that end up in
+a "numeric" one: https://github.com/rust-lang/rust-bindgen/issues/753.
 
-There have been discussions in the past about annotating functions in
-similar ways ("function context restrictions", "colored unsafe",
-etc.), and we recently brought it up in November's Rust CTCFT too.
-However, how the feature could work is to be discussed and nobody has
-yet put time on it (as far as I am aware).
+Link: https://lore.kernel.org/lkml/YoIK2l6xbQMPGZHy@kroah.com/
+Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+v2:
+  - Rebased on top of Greg's char-misc-next.
+  - Added Link tag for future reference.
 
-> Given an answer to these questions I think I can whip up a `cargo taint` =
-command rather quickly, so let me know if this is useful or desired.
+v1: https://lore.kernel.org/lkml/20220516100401.7639-1-ojeda@kernel.org/
 
-Note that the kernel does not use Cargo at the moment.
+ include/uapi/linux/android/binder.h | 30 +++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-> PS: I gleaned from other threads that there=E2=80=99s a Zulip as well, wo=
-uld it be possible to get an invite?
+diff --git a/include/uapi/linux/android/binder.h b/include/uapi/linux/android/binder.h
+index e6ee8cae303b..a4c3e750168a 100644
+--- a/include/uapi/linux/android/binder.h
++++ b/include/uapi/linux/android/binder.h
+@@ -251,20 +251,22 @@ struct binder_extended_error {
+ 	__s32	param;
+ };
+ 
+-#define BINDER_WRITE_READ		_IOWR('b', 1, struct binder_write_read)
+-#define BINDER_SET_IDLE_TIMEOUT		_IOW('b', 3, __s64)
+-#define BINDER_SET_MAX_THREADS		_IOW('b', 5, __u32)
+-#define BINDER_SET_IDLE_PRIORITY	_IOW('b', 6, __s32)
+-#define BINDER_SET_CONTEXT_MGR		_IOW('b', 7, __s32)
+-#define BINDER_THREAD_EXIT		_IOW('b', 8, __s32)
+-#define BINDER_VERSION			_IOWR('b', 9, struct binder_version)
+-#define BINDER_GET_NODE_DEBUG_INFO	_IOWR('b', 11, struct binder_node_debug_info)
+-#define BINDER_GET_NODE_INFO_FOR_REF	_IOWR('b', 12, struct binder_node_info_for_ref)
+-#define BINDER_SET_CONTEXT_MGR_EXT	_IOW('b', 13, struct flat_binder_object)
+-#define BINDER_FREEZE			_IOW('b', 14, struct binder_freeze_info)
+-#define BINDER_GET_FROZEN_INFO		_IOWR('b', 15, struct binder_frozen_status_info)
+-#define BINDER_ENABLE_ONEWAY_SPAM_DETECTION	_IOW('b', 16, __u32)
+-#define BINDER_GET_EXTENDED_ERROR	_IOWR('b', 17, struct binder_extended_error)
++enum {
++	BINDER_WRITE_READ			= _IOWR('b', 1, struct binder_write_read),
++	BINDER_SET_IDLE_TIMEOUT			= _IOW('b', 3, __s64),
++	BINDER_SET_MAX_THREADS			= _IOW('b', 5, __u32),
++	BINDER_SET_IDLE_PRIORITY		= _IOW('b', 6, __s32),
++	BINDER_SET_CONTEXT_MGR			= _IOW('b', 7, __s32),
++	BINDER_THREAD_EXIT			= _IOW('b', 8, __s32),
++	BINDER_VERSION				= _IOWR('b', 9, struct binder_version),
++	BINDER_GET_NODE_DEBUG_INFO		= _IOWR('b', 11, struct binder_node_debug_info),
++	BINDER_GET_NODE_INFO_FOR_REF		= _IOWR('b', 12, struct binder_node_info_for_ref),
++	BINDER_SET_CONTEXT_MGR_EXT		= _IOW('b', 13, struct flat_binder_object),
++	BINDER_FREEZE				= _IOW('b', 14, struct binder_freeze_info),
++	BINDER_GET_FROZEN_INFO			= _IOWR('b', 15, struct binder_frozen_status_info),
++	BINDER_ENABLE_ONEWAY_SPAM_DETECTION	= _IOW('b', 16, __u32),
++	BINDER_GET_EXTENDED_ERROR		= _IOWR('b', 17, struct binder_extended_error),
++};
+ 
+ /*
+  * NOTE: Two special error codes you should check for when calling
 
-Of course, invitation sent -- welcome!
+base-commit: 33a1c6618677fe33f8e84cb7bedc45abbce89a50
+-- 
+2.36.1
 
-Cheers,
-Miguel
