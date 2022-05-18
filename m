@@ -2,87 +2,100 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 382C4C433EF
-	for <rust-for-linux@archiver.kernel.org>; Tue, 17 May 2022 11:04:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14A0CC433EF
+	for <rust-for-linux@archiver.kernel.org>; Wed, 18 May 2022 07:52:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242699AbiEQLEF (ORCPT
+        id S232553AbiERHww (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 17 May 2022 07:04:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39784 "EHLO
+        Wed, 18 May 2022 03:52:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344819AbiEQLEF (ORCPT
+        with ESMTP id S232683AbiERHwk (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 17 May 2022 07:04:05 -0400
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83942167F3
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 May 2022 04:04:02 -0700 (PDT)
-Received: by mail-il1-x130.google.com with SMTP id j7so2980029ila.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 May 2022 04:04:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Uz6tH+FiSVkBLi8yUXoPodMS4knNvPD8/OKq+xvwd18=;
-        b=FkCWI7k7rECC2ItzwPzkLWbkX5//m4TLxICaGniqnnqBG8vXkY8iolEGovzvMBfqnv
-         BAGmef6+uszbhwwRfcthjeWgtLEtDMjOObSCX4aVcf/sTzpyiWY9jIitwW/bKprJM0xK
-         TfckadIayJ46YafNgoOm3yPCHuHRrH2wZ4kIjnPpPco/7gGE6mF+G6i9Q6keJVzSMEjn
-         IArpYC3dicAjYofYH+TPA09vqCJ3pr+ClWTLngL2KPH0TLNQXuXsPmN6i1a8fZ7qeCtJ
-         eyg2xprzLHIwbRoFnzBT4CJMUuyoz/Ub4/k8DAmpvXGbcH5v2bQzVuymhW1FjjZXzAI1
-         CQgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Uz6tH+FiSVkBLi8yUXoPodMS4knNvPD8/OKq+xvwd18=;
-        b=n8P27IEz5RNU7uaBZfxvHohgVm2OkDYnZRe7/NkKrQYNp47WcCo6Dy5zkLp7h7FGgs
-         3xsoz5Y6G0gUv5FLsz1qS6x4yfLDdFbkSAzVoy89JoYodPNdYyjkHlJUFYa0mDoU0p/Y
-         iqjUGZsTkSTGzEZr2ItZAfQf8p5dO13s3pndZRp5CFYaQMchafD2OZtfxfySxSRgaplR
-         V8/9GQfkAFdOj1HEx9mUK3tC+apFcdLfnEbdQx+W+2gpTW+LwXyAC4ZVR9T7KD3Qfm3X
-         8SIoDS1NP1IyFoXiE3WztUr+bszcYOf0u9Yr0i2z/ojTosQ2b10MLALmX7SaXMObhjuz
-         VM9g==
-X-Gm-Message-State: AOAM530Zo3uDF0Bml55gmXHmncAgA/uNA6+ydEcCw8GWNyupSBg5iLcd
-        JGIoFJbX0QhixYbSuiGS+PJuX0496gth5rhU1bxAMUmknU0=
-X-Google-Smtp-Source: ABdhPJxi/FHXq8QglBmP0XJ2PZ2nABkeFZcj00wh5xQVpvj4kH9t7g+InV6ninNwvbUFi6iEQw203QPzphJIooF4TUQ=
-X-Received: by 2002:a05:6e02:170b:b0:2cf:970f:6050 with SMTP id
- u11-20020a056e02170b00b002cf970f6050mr11585050ill.5.1652785441872; Tue, 17
- May 2022 04:04:01 -0700 (PDT)
+        Wed, 18 May 2022 03:52:40 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E72C1D315;
+        Wed, 18 May 2022 00:52:39 -0700 (PDT)
+Received: from mail-yb1-f172.google.com ([209.85.219.172]) by
+ mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MacjC-1nKep525V4-00c9eU; Wed, 18 May 2022 09:52:37 +0200
+Received: by mail-yb1-f172.google.com with SMTP id i11so2284619ybq.9;
+        Wed, 18 May 2022 00:52:37 -0700 (PDT)
+X-Gm-Message-State: AOAM5310E/qHKgRwu6pCfA5aDN3GZjyYZYU1aadiAN0pr2M465Snsz+j
+        dpBIorVb7X+JhP/rDxC6UImIXR5/MniFOoLcS7A=
+X-Google-Smtp-Source: ABdhPJw/C4Wp2+lD/LeOurnHShFuhY2DtohuPYVV6u7+PgmQYQQI/BkFuP71sEIcZsVIId0pYZQ/YQF1du1xWbey4uo=
+X-Received: by 2002:a25:31c2:0:b0:641:660f:230f with SMTP id
+ x185-20020a2531c2000000b00641660f230fmr26122159ybx.472.1652860356229; Wed, 18
+ May 2022 00:52:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <CANiq72=P76KwNBOnZ+h8kAWrfMCsvMJt4we69atDeW1ugY7_jg@mail.gmail.com>
- <DA4D23F2-412B-4669-A079-A654735CE9B4@lri.fr>
-In-Reply-To: <DA4D23F2-412B-4669-A079-A654735CE9B4@lri.fr>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 17 May 2022 13:03:50 +0200
-Message-ID: <CANiq72=kFrvrRqa+WGu_-jeda5xOA-Jq4RU5MUWuNzKb-vwr_A@mail.gmail.com>
-Subject: Re: Taint Analysis for Kernel Rust
-To:     Xavier Denis <xldenis@lri.fr>
-Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
+References: <20220516100401.7639-1-ojeda@kernel.org>
+In-Reply-To: <20220516100401.7639-1-ojeda@kernel.org>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 18 May 2022 08:52:37 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3Z5qBQWUbPNEHhPDNX0XC8CQk+dUtC9K_=N3AXK2uHHA@mail.gmail.com>
+Message-ID: <CAK8P3a3Z5qBQWUbPNEHhPDNX0XC8CQk+dUtC9K_=N3AXK2uHHA@mail.gmail.com>
+Subject: Re: [PATCH v1] binder: convert `BINDER_*` ioctl `#define`s into an `enum`
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Li Li <dualli@google.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Wedson Almeida Filho <wedsonaf@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:RvNaoVhsKy/bl7e01yVRZPNCHTSzNVxkQOTa4CHsOxQi6cBmBV0
+ irMG0JmXc+HPgBJW2MXiBdOUioHMkAQOg7IVQgcqxWCyTInWE0ff4gTEWRubbxoesfnLyhO
+ 2wskqRDsZSY/66JT5cHW6lXYns2RNPvH0GLcHonUYMcer7qLlCVoC+q9TEOjQAxpIhkSB+Q
+ LEEtocEIBpC0KlG3GySJA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:vIIedTA3yxI=:oenWVqKVw4BcMnowOKp8gM
+ 2JwizoidJg2/5NaZgl1B4goOUE8OZJh8d5+Ib4/RfVLrRou1rR5Ua7N/6JKKK0+MtzMyZcXe9
+ fs/IAtB2GMkyF4OLRhxfhelg+tGgguPWy9Efn+51vr4IGjeR0pGskrlhvesxEYqtX5qq8fIbP
+ ecYVsCW2UjJY2CDDowaF0c3dfg/QjTrRRgvcQRz4LiJch4/8UsUbNowpgCP/gy1vii9rBKnGu
+ pmlXhav04vKpLHfdCMjSNkgMpgI//6zGh7QwepojufJ495e7C51vP5sOth3D2Vrl6ck2L2ruh
+ 8jwWTDsQ5+bxDuOfzZGHKVjEfwVIzoVOk7wmtP94QrqMe8VOutXrJWDypJlShCjfK6txhmjRS
+ Sm/kAPLPpX+rXzKclRsCmpcMtku3ZoTnxDFYXMGN6Fw/KLRXI9cDoFsXXtre++aI8V9F81tYo
+ +cX3WPpyKyVSdcUGu+D6/mER37LIneTa3nMCsr+iC6Am2rzDWzWPurrvhrdIrA8q4K+hVFsuH
+ utVuf827AjStLn4T6PDlNCtZ1Y8hlO4zRgSdomuUt5qPupxM+Fpu2JEp3jll9iyjOel236vVT
+ wD4JhWFJHo69+8s39Oj6PDBnt3YfAQ44dN0YV+cadlZB2u1NdVn7EaaH+dwXE6O1JEnsYtNLp
+ l7NX75H9UCiMjaqD3tLVGrHcYfHUvBBFg05NVx4LFlZINiIDiF9u9iC8cIuvXhyq/9peifwoO
+ WDw3jkN8eQnXZJwL5sHKI00w1UhWHOTAVa0twfkmsgPuBiVx3PWBRmozSClsE8MVSUNq/9yrd
+ s5aRhP3CIxiUXk3GqrZG4+6xk8D4XAYTfkgEhogYhj/c7m6RUnv2Jv8FMuxZAUZt+pECI9+Qk
+ kEXNzfVNYCqT4dyvXQKg==
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, May 17, 2022 at 12:39 PM Xavier Denis <xldenis@lri.fr> wrote:
+On Mon, May 16, 2022 at 11:04 AM Miguel Ojeda <ojeda@kernel.org> wrote:
 >
-> Is there any interest in a prototype? Doesn=E2=80=99t the kernel already =
-use a similar system for C?
+> -#define BINDER_WRITE_READ              _IOWR('b', 1, struct binder_write_read)
+> -#define BINDER_SET_IDLE_TIMEOUT                _IOW('b', 3, __s64)
+> -#define BINDER_SET_MAX_THREADS         _IOW('b', 5, __u32)
+> -#define BINDER_SET_IDLE_PRIORITY       _IOW('b', 6, __s32)
+> -#define BINDER_SET_CONTEXT_MGR         _IOW('b', 7, __s32)
+> -#define BINDER_THREAD_EXIT             _IOW('b', 8, __s32)
+> -#define BINDER_VERSION                 _IOWR('b', 9, struct binder_version)
+> -#define BINDER_GET_NODE_DEBUG_INFO     _IOWR('b', 11, struct binder_node_debug_info)
+> -#define BINDER_GET_NODE_INFO_FOR_REF   _IOWR('b', 12, struct binder_node_info_for_ref)
+> -#define BINDER_SET_CONTEXT_MGR_EXT     _IOW('b', 13, struct flat_binder_object)
+> -#define BINDER_FREEZE                  _IOW('b', 14, struct binder_freeze_info)
+> -#define BINDER_GET_FROZEN_INFO         _IOWR('b', 15, struct binder_frozen_status_info)
+> -#define BINDER_ENABLE_ONEWAY_SPAM_DETECTION    _IOW('b', 16, __u32)
+> +enum {
+> +       BINDER_WRITE_READ                       = _IOWR('b', 1, struct binder_write_read),
+> +       BINDER_SET_IDLE_TIMEOUT                 = _IOW('b', 3, __s64),
+> +       BINDER_SET_MAX_THREADS                  = _IOW('b', 5, __u32),
+> +       BINDER_SET_IDLE_PRIORITY                = _IOW('b', 6, __s32),
+> +       BINDER_SET_CONTEXT_MGR                  = _IOW('b', 7, __s32),
+> +       BINDER_THREAD_EXIT                      = _IOW('b', 8, __s32),
+> +       BINDER_VERSION                          = _IOWR('b', 9, struct binder_version),
 
-Definitely, any analysis that is able to statically prove some
-properties would be ideal, and any improvement over what the kernel
-has now (whether for C or for Rust) would be welcome.
+I wonder if that breaks any tools that extract ioctl command number definitions
+from kernel headers. I see one other header using enum, but everything else
+has the #define. The main user of ioctl command definitions that comes to
+mind is 'strace', but I don't know where they get the numbers from.
 
-For debugging sleeps in atomic contexts, there is `might_sleep()` and
-friends: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git=
-/tree/include/linux/kernel.h#n131
+It's probably not a big deal as long as it's limited to binder, but it
+may become
+more of a problem if we do this for more subsystems over time.
 
-Another area that could be interesting to look at for feasibility of
-new analyses is locking correctness, see lockdep:
-https://www.kernel.org/doc/html/latest/locking/lockdep-design.html
-
-> Right, I forgot about that, but if anything it slightly simplifies the wo=
-rk.
-
-Indeed.
-
-Cheers,
-Miguel
+         Arnd
