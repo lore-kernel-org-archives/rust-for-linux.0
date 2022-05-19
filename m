@@ -2,83 +2,75 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BA26C433F5
-	for <rust-for-linux@archiver.kernel.org>; Wed, 18 May 2022 13:39:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B55CC43217
+	for <rust-for-linux@archiver.kernel.org>; Thu, 19 May 2022 15:52:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238031AbiERNj5 (ORCPT
+        id S240874AbiESPwC (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 18 May 2022 09:39:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53412 "EHLO
+        Thu, 19 May 2022 11:52:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238017AbiERNjz (ORCPT
+        with ESMTP id S241852AbiESPvL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 18 May 2022 09:39:55 -0400
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E43241BE11E;
-        Wed, 18 May 2022 06:39:53 -0700 (PDT)
-Received: by mail-io1-xd35.google.com with SMTP id o190so2215743iof.10;
-        Wed, 18 May 2022 06:39:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=i3wCNJS1xVIXYkjKAZEqtCPgrHMfsRF2KDMYD/Qfh2o=;
-        b=G/2T0pKpcaTtQD2cozzEKNQfmpP+fLiCMtg08W6X+S/zAf9leWjqHhH25LLBWj0CA8
-         Ys+4s1yVLPpV0OZom7Bp/bOJmTyoGYib8wq/R1ZhdNK8KQ+JALZ/2Cbf6ks0YJ4/GRTT
-         NMwmXCN6p9iQz3DBmN7crU3x07urlOqlJ6B+ZSaSqMnCfkxWNlKs+cZeuIM85V3IZq5W
-         Wi4zA/VFcUIPTDIh2FUFKVhWtspDr0p56saRRNz5z6OZcA0fg79zzU92QjRS4z61YLdb
-         2IZbpttTJQL9BFdWRyaj7mC9f/FHR/NxJXanYVhDJ6jkGU6CDF3Gavj74uCItXvgNBhh
-         bDnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=i3wCNJS1xVIXYkjKAZEqtCPgrHMfsRF2KDMYD/Qfh2o=;
-        b=e2pyOqlxaM5FS7Q6Fu4EwV0YnDofD2vPJMADnSJKmKNl0ObzdbWbBAVdEgHmV1GXcR
-         8VwNK5Cps0crQFVyEEGaQWKxOYr35reRc8I0si+Cn6xTIM84UJGeynBNqf2Cs4v4MncP
-         PJZ2sBGPBWLI84DnjXbzz76TteAbOFnzIy2C5YGYiC+uJN3GZTcNROkdTmwYE/qKlCKq
-         hXCWPo90H7oDlkFJqijvcVjsPAQS8Wk5xMMm5ejeQZkGGrK2s3dvsN7lO6BPpNoewgkz
-         TUk5/k4lmpp6v7Gr5F5bcvGASaKpGlPmS1RZ61WnCXlyI1KgJ9a46VV4PfU42f/+8NY1
-         wIiQ==
-X-Gm-Message-State: AOAM533766Qkdxx0H4WxugZ3eCeRjqXpRceInfBfOCOG57WR88yniYC9
-        2jdKRsSEpjoNIHWEVHxxBKRqgo5DaOVeAnBOD7g=
-X-Google-Smtp-Source: ABdhPJz0N+uS74zL79CKwv8mnFznYe60VTPPYBux2feKAib04z3vsvVPYBHfax/sYpXqsz8QdLGlVp3TUgbcCQv9KG4=
-X-Received: by 2002:a05:6638:16d2:b0:32b:ebfe:8672 with SMTP id
- g18-20020a05663816d200b0032bebfe8672mr14890357jat.199.1652881193347; Wed, 18
- May 2022 06:39:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220517102813.10310-1-ojeda@kernel.org>
-In-Reply-To: <20220517102813.10310-1-ojeda@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 18 May 2022 15:39:42 +0200
-Message-ID: <CANiq72=4YKUoUjbs3484mdjsDCXX1V6qf8MrzhW0FN3ZbbDaAg@mail.gmail.com>
-Subject: Re: [PATCH v2] binder: convert `BINDER_*` ioctl `#define`s into an `enum`
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thu, 19 May 2022 11:51:11 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D1114CD43;
+        Thu, 19 May 2022 08:51:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 98D9EB82567;
+        Thu, 19 May 2022 15:51:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8E9C385AA;
+        Thu, 19 May 2022 15:51:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1652975461;
+        bh=r9Wo8B3nzcUu8zDEETKXZj2bCnuLNN3Xnn23m34TtgU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=0Zhf/Yo6O4nlyGEVC9StXVCXAphUO2SgZ1qOaBFzTg3MTBt0i4Hp50mVW/t56+bEt
+         nPB6GWjxIxIEvBwxwHJQmFpyutbl0GA8QP0w/PgBWhAdgYU/qk+BtUwfftv7DlLFKF
+         H1A1Rf+EumQdBp2fZ5cBKNp6dUPrORWly1/E1uNU=
+Date:   Thu, 19 May 2022 17:50:58 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Masahiro Yamada <masahiroy@kernel.org>,
         Li Li <dualli@google.com>,
         linux-kernel <linux-kernel@vger.kernel.org>,
         Wedson Almeida Filho <wedsonaf@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v2] binder: convert `BINDER_*` ioctl `#define`s into an
+ `enum`
+Message-ID: <YoZnYkRjC+TfdB1i@kroah.com>
+References: <20220517102813.10310-1-ojeda@kernel.org>
+ <CANiq72=4YKUoUjbs3484mdjsDCXX1V6qf8MrzhW0FN3ZbbDaAg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72=4YKUoUjbs3484mdjsDCXX1V6qf8MrzhW0FN3ZbbDaAg@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Greg,
+On Wed, May 18, 2022 at 03:39:42PM +0200, Miguel Ojeda wrote:
+> Hi Greg,
+> 
+> On Tue, May 17, 2022 at 12:28 PM Miguel Ojeda <ojeda@kernel.org> wrote:
+> >
+> > bindgen (a tool which generates the "raw" C bindings for Rust) only
+> > works (so far) with "simple" C `#define`s. In order to avoid having
+> > to manually maintain these constants in the (potential) Rust side,
+> > this patch converts them into an `enum`.
+> 
+> Given the discussion in v1's thread [0], I think we should hold on
+> applying the patch (just letting you know here in v2).
+> 
+> [0] https://lore.kernel.org/lkml/CANiq72=_UAF5DRHCmW4qNt-Wi3yV6vPEjdLhBTijG_ZGgfpaTA@mail.gmail.com/
+> 
+> Cheers,
+> Miguel
 
-On Tue, May 17, 2022 at 12:28 PM Miguel Ojeda <ojeda@kernel.org> wrote:
->
-> bindgen (a tool which generates the "raw" C bindings for Rust) only
-> works (so far) with "simple" C `#define`s. In order to avoid having
-> to manually maintain these constants in the (potential) Rust side,
-> this patch converts them into an `enum`.
+Yeah, I'll drop this from my queue, sorry.
 
-Given the discussion in v1's thread [0], I think we should hold on
-applying the patch (just letting you know here in v2).
-
-[0] https://lore.kernel.org/lkml/CANiq72=_UAF5DRHCmW4qNt-Wi3yV6vPEjdLhBTijG_ZGgfpaTA@mail.gmail.com/
-
-Cheers,
-Miguel
+greg k-h
