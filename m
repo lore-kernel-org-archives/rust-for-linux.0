@@ -2,75 +2,58 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B55CC43217
-	for <rust-for-linux@archiver.kernel.org>; Thu, 19 May 2022 15:52:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34018C433F5
+	for <rust-for-linux@archiver.kernel.org>; Fri, 20 May 2022 08:35:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240874AbiESPwC (ORCPT
+        id S229667AbiETIfC (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 19 May 2022 11:52:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40998 "EHLO
+        Fri, 20 May 2022 04:35:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241852AbiESPvL (ORCPT
+        with ESMTP id S1347146AbiETIer (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 19 May 2022 11:51:11 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D1114CD43;
-        Thu, 19 May 2022 08:51:03 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 98D9EB82567;
-        Thu, 19 May 2022 15:51:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8E9C385AA;
-        Thu, 19 May 2022 15:51:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1652975461;
-        bh=r9Wo8B3nzcUu8zDEETKXZj2bCnuLNN3Xnn23m34TtgU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=0Zhf/Yo6O4nlyGEVC9StXVCXAphUO2SgZ1qOaBFzTg3MTBt0i4Hp50mVW/t56+bEt
-         nPB6GWjxIxIEvBwxwHJQmFpyutbl0GA8QP0w/PgBWhAdgYU/qk+BtUwfftv7DlLFKF
-         H1A1Rf+EumQdBp2fZ5cBKNp6dUPrORWly1/E1uNU=
-Date:   Thu, 19 May 2022 17:50:58 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Li Li <dualli@google.com>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Wedson Almeida Filho <wedsonaf@google.com>
-Subject: Re: [PATCH v2] binder: convert `BINDER_*` ioctl `#define`s into an
- `enum`
-Message-ID: <YoZnYkRjC+TfdB1i@kroah.com>
-References: <20220517102813.10310-1-ojeda@kernel.org>
- <CANiq72=4YKUoUjbs3484mdjsDCXX1V6qf8MrzhW0FN3ZbbDaAg@mail.gmail.com>
+        Fri, 20 May 2022 04:34:47 -0400
+X-Greylist: delayed 635 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 20 May 2022 01:34:36 PDT
+Received: from mail.companydia.pl (mail.companydia.pl [162.19.155.128])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE1415A767
+        for <rust-for-linux@vger.kernel.org>; Fri, 20 May 2022 01:34:35 -0700 (PDT)
+Received: by mail.companydia.pl (Postfix, from userid 1002)
+        id 045E02AFF8; Fri, 20 May 2022 08:16:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=companydia.pl;
+        s=mail; t=1653034617;
+        bh=ChRcLNpIfKnVgp03/tSyWuRw1tWSTk/OEiEnuZMWs58=;
+        h=Date:From:To:Subject:From;
+        b=4Cg6VRA3eGaO80UfuUI2eauplJHU3Gj0tZmD2I2fBN+dms0pn6SqNUtXxVipc63uw
+         VJ+72Dk2ctJCDDBNr9cFZZqXdaJZFdk2SJrYT/JqtrNzlCZ4RHRJNIk9OB9JgzqKg/
+         nkCW2KZi1ki8u+nJa72UXq+U9HFZTcMYK7Z+9mfIRP9kzan066Eia606J+cihMNMHE
+         Vr91Xa2znSzDLgRPLOeLMByH8N9UBf0528gO7irVc0nN11i79rTIGC/NZXamm4Qr7b
+         RweJrzv5Tk7eJEc0VviayCqXQtuEyVEW2X2hafjO0GNovdFxuJE5XbJMrb1+b98RCA
+         WpVF6tGlJJy6Q==
+Received: by mail.companydia.pl for <rust-for-linux@vger.kernel.org>; Fri, 20 May 2022 08:15:58 GMT
+Message-ID: <20220520064500-0.1.v.f79h.0.orp68rtzsm@companydia.pl>
+Date:   Fri, 20 May 2022 08:15:58 GMT
+From:   "Norbert Karecki" <norbert.karecki@companydia.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.companydia.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72=4YKUoUjbs3484mdjsDCXX1V6qf8MrzhW0FN3ZbbDaAg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, May 18, 2022 at 03:39:42PM +0200, Miguel Ojeda wrote:
-> Hi Greg,
-> 
-> On Tue, May 17, 2022 at 12:28 PM Miguel Ojeda <ojeda@kernel.org> wrote:
-> >
-> > bindgen (a tool which generates the "raw" C bindings for Rust) only
-> > works (so far) with "simple" C `#define`s. In order to avoid having
-> > to manually maintain these constants in the (potential) Rust side,
-> > this patch converts them into an `enum`.
-> 
-> Given the discussion in v1's thread [0], I think we should hold on
-> applying the patch (just letting you know here in v2).
-> 
-> [0] https://lore.kernel.org/lkml/CANiq72=_UAF5DRHCmW4qNt-Wi3yV6vPEjdLhBTijG_ZGgfpaTA@mail.gmail.com/
-> 
-> Cheers,
-> Miguel
+Dzie=C5=84 dobry,
 
-Yeah, I'll drop this from my queue, sorry.
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
 
-greg k-h
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
+
+
+Pozdrawiam,
+Norbert Karecki
