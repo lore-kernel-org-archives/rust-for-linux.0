@@ -2,50 +2,48 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB506C433FE
-	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 02:03:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A751C433FE
+	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 02:04:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352173AbiEWCDp (ORCPT
+        id S1352459AbiEWCEF (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 22 May 2022 22:03:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40788 "EHLO
+        Sun, 22 May 2022 22:04:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352286AbiEWCDX (ORCPT
+        with ESMTP id S1352311AbiEWCDv (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 22 May 2022 22:03:23 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 592DD35DF6;
-        Sun, 22 May 2022 19:03:18 -0700 (PDT)
+        Sun, 22 May 2022 22:03:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3DE43982E;
+        Sun, 22 May 2022 19:03:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 02C71B80EA1;
-        Mon, 23 May 2022 02:03:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D35FC36AE3;
-        Mon, 23 May 2022 02:03:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A72E60FD7;
+        Mon, 23 May 2022 02:03:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E455C34113;
+        Mon, 23 May 2022 02:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653271395;
-        bh=07frGEXymAghPkvplZhERpWTKuHZcKtB5BOg3V+bwpo=;
+        s=k20201202; t=1653271410;
+        bh=vbNh5V+If7BMOjgvnKPpE36qR1+NfFcgaQxIO6y+Mq4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VInw0gGOixbGoi3wcU4nx+vG3u8rcyALDmHNHN2ZMpdklAfhYy8iYvRKfmW5fkfqp
-         EjQSdFeaCbiayLINTF7fhkHCJeZehMg+Ali/XrPkVTjeCfCv8onfFmCE+2lsv7K/Fz
-         6e+e9VmoBqqPiVRBlVGOP91wGnAlWXfnT4+i8ivq8X/yNJFznGJY3k3zE26C/xHYyG
-         eS8JHCa3DgZh2zgAFgfnbe32B502KkHzs/Nn6mGZA1eNC9sUUz1eqoq9RlaxACStou
-         fYq4UfvF14b6pqIxGOahjYY9nn5/crNb9JE67wat3vojz8PuZAjES4tswfdMK2zj1U
-         S++3AjppJ8JEw==
+        b=YWzPuA+9psavWwLq35M/pqJIXrSIU2Fgq/Gv4WznPVO2b+fZ07cdFAaBhN/0q4BB3
+         5TJKTq3eF9zw3bytBpdU1u4jGXXq3y1hjXq3/ppNykMkU1GKw5DmSYdD9zTUJflX5y
+         hhGIbIeVBzCA+CvVRI0bdAHiMX66PHpNZbanitGGKp/BKIqDwtFTy94LfCNTwOZ4vY
+         p5nXM7c85FzEJ6lLryTj5nXbicewYGquvuHGml1LN9+ojemV8jjXu99x4+3g5+45sE
+         yRAzNEULjwggRK/V3CdXLoFOFQp8KoWysT/ZSdplp6SqUJNKR3jY/iXXCn7OJXju5q
+         B7c/JA9qs294g==
 From:   Miguel Ojeda <ojeda@kernel.org>
 To:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>
-Subject: [PATCH v7 06/25] rust: add `compiler_builtins` crate
-Date:   Mon, 23 May 2022 04:01:19 +0200
-Message-Id: <20220523020209.11810-7-ojeda@kernel.org>
+        Wedson Almeida Filho <wedsonaf@google.com>
+Subject: [PATCH v7 09/25] rust: add `build_error` crate
+Date:   Mon, 23 May 2022 04:01:22 +0200
+Message-Id: <20220523020209.11810-10-ojeda@kernel.org>
 In-Reply-To: <20220523020209.11810-1-ojeda@kernel.org>
 References: <20220523020209.11810-1-ojeda@kernel.org>
 MIME-Version: 1.0
@@ -54,87 +52,63 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Rust provides `compiler_builtins` as a port of LLVM's `compiler-rt`.
-Since we do not need the vast majority of them, we avoid the
-dependency by providing our own crate.
+From: Gary Guo <gary@garyguo.net>
+
+The `build_error` crate provides the `build_error` function which
+is then used to provide the `build_error!` and the `build_assert!`
+macros.
+
+`build_assert!` is intended to be used when `static_assert!` cannot
+be used, e.g. when the condition refers to generic parameters or
+parameters of an inline function.
 
 Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
 Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
 Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
 Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-Co-developed-by: Sven Van Asbroeck <thesven73@gmail.com>
-Signed-off-by: Sven Van Asbroeck <thesven73@gmail.com>
-Co-developed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Gary Guo <gary@garyguo.net>
+Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/compiler_builtins.rs | 57 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
- create mode 100644 rust/compiler_builtins.rs
+ rust/build_error.rs | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+ create mode 100644 rust/build_error.rs
 
-diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
+diff --git a/rust/build_error.rs b/rust/build_error.rs
 new file mode 100644
-index 000000000000..80ca4c0dcd24
+index 000000000000..34e589149d3e
 --- /dev/null
-+++ b/rust/compiler_builtins.rs
-@@ -0,0 +1,57 @@
++++ b/rust/build_error.rs
+@@ -0,0 +1,29 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! Our own `compiler_builtins`.
++//! Build-time error.
 +//!
-+//! Rust provides [`compiler_builtins`] as a port of LLVM's [`compiler-rt`].
-+//! Since we do not need the vast majority of them, we avoid the dependency
-+//! by providing this file.
++//! This crate provides a function `build_error`, which will panic in
++//! compile-time if executed in const context, and will cause a build error
++//! if not executed at compile time and the optimizer does not optimise away the
++//! call.
 +//!
-+//! At the moment, some builtins are required that should not be. For instance,
-+//! [`core`] has 128-bit integers functionality which we should not be compiling
-+//! in. We will work with upstream [`core`] to provide feature flags to disable
-+//! the parts we do not need. For the moment, we define them to [`panic!`] at
-+//! runtime for simplicity to catch mistakes, instead of performing surgery
-+//! on `core.o`.
-+//!
-+//! In any case, all these symbols are weakened to ensure we do not override
-+//! those that may be provided by the rest of the kernel.
-+//!
-+//! [`compiler_builtins`]: https://github.com/rust-lang/compiler-builtins
-+//! [`compiler-rt`]: https://compiler-rt.llvm.org/
++//! It is used by `build_assert!` in the kernel crate, allowing checking of
++//! conditions that could be checked statically, but could not be enforced in
++//! Rust yet (e.g. perform some checks in const functions, but those
++//! functions could still be called in the runtime).
 +
-+#![feature(compiler_builtins)]
-+#![compiler_builtins]
-+#![no_builtins]
 +#![no_std]
 +
-+macro_rules! define_panicking_intrinsics(
-+    ($reason: tt, { $($ident: ident, )* }) => {
-+        $(
-+            #[doc(hidden)]
-+            #[no_mangle]
-+            pub extern "C" fn $ident() {
-+                panic!($reason);
-+            }
-+        )*
-+    }
-+);
++/// Panics if executed in const context, or triggers a build error if not.
++#[inline(never)]
++#[cold]
++#[no_mangle]
++#[track_caller]
++pub const fn build_error(msg: &'static str) -> ! {
++    panic!("{}", msg);
++}
 +
-+define_panicking_intrinsics!("`i128` should not be used", {
-+    __ashrti3,
-+    __muloti4,
-+    __multi3,
-+});
-+
-+define_panicking_intrinsics!("`u128` should not be used", {
-+    __ashlti3,
-+    __lshrti3,
-+    __udivmodti4,
-+    __udivti3,
-+    __umodti3,
-+});
-+
-+#[cfg(target_arch = "arm")]
-+define_panicking_intrinsics!("`u64` division/modulo should not be used", {
-+    __aeabi_uldivmod,
-+    __mulodi4,
-+});
++#[cfg(CONFIG_RUST_BUILD_ASSERT_WARN)]
++#[link_section = ".gnu.warning.build_error"]
++#[used]
++static BUILD_ERROR_WARNING: [u8; 45] = *b"call to build_error present after compilation";
 -- 
 2.36.1
 
