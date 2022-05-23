@@ -2,58 +2,118 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34018C433F5
-	for <rust-for-linux@archiver.kernel.org>; Fri, 20 May 2022 08:35:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A216AC433EF
+	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 02:02:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229667AbiETIfC (ORCPT
+        id S233814AbiEWCC5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 20 May 2022 04:35:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47396 "EHLO
+        Sun, 22 May 2022 22:02:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347146AbiETIer (ORCPT
+        with ESMTP id S233779AbiEWCC4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 20 May 2022 04:34:47 -0400
-X-Greylist: delayed 635 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 20 May 2022 01:34:36 PDT
-Received: from mail.companydia.pl (mail.companydia.pl [162.19.155.128])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE1415A767
-        for <rust-for-linux@vger.kernel.org>; Fri, 20 May 2022 01:34:35 -0700 (PDT)
-Received: by mail.companydia.pl (Postfix, from userid 1002)
-        id 045E02AFF8; Fri, 20 May 2022 08:16:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=companydia.pl;
-        s=mail; t=1653034617;
-        bh=ChRcLNpIfKnVgp03/tSyWuRw1tWSTk/OEiEnuZMWs58=;
-        h=Date:From:To:Subject:From;
-        b=4Cg6VRA3eGaO80UfuUI2eauplJHU3Gj0tZmD2I2fBN+dms0pn6SqNUtXxVipc63uw
-         VJ+72Dk2ctJCDDBNr9cFZZqXdaJZFdk2SJrYT/JqtrNzlCZ4RHRJNIk9OB9JgzqKg/
-         nkCW2KZi1ki8u+nJa72UXq+U9HFZTcMYK7Z+9mfIRP9kzan066Eia606J+cihMNMHE
-         Vr91Xa2znSzDLgRPLOeLMByH8N9UBf0528gO7irVc0nN11i79rTIGC/NZXamm4Qr7b
-         RweJrzv5Tk7eJEc0VviayCqXQtuEyVEW2X2hafjO0GNovdFxuJE5XbJMrb1+b98RCA
-         WpVF6tGlJJy6Q==
-Received: by mail.companydia.pl for <rust-for-linux@vger.kernel.org>; Fri, 20 May 2022 08:15:58 GMT
-Message-ID: <20220520064500-0.1.v.f79h.0.orp68rtzsm@companydia.pl>
-Date:   Fri, 20 May 2022 08:15:58 GMT
-From:   "Norbert Karecki" <norbert.karecki@companydia.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.companydia.pl
+        Sun, 22 May 2022 22:02:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC97B35DF0;
+        Sun, 22 May 2022 19:02:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4673660F90;
+        Mon, 23 May 2022 02:02:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8402C34115;
+        Mon, 23 May 2022 02:02:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653271374;
+        bh=ljo3CJ7UJGB1eNiSRVmZJhPgLEIaC6mIBDlmJk9w41Q=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Pw6Yyefe4wCgRMySMsogSybDbjy/piNY8jj2HYEc4/lQefEpB1yTdNLNi3ytrNMFp
+         4LqBa1sLh7GUNBYEfh3MO3vTHtdMVl6VVB9wbC/5Pl9whWNY75lNi4nMbOZbg559wx
+         zE5D0pqq+MZ2RNAbAFRGxCWoR+xuGcH9DhXibvdh5gBGdH6zOF4Xn9DNYONw+NedUj
+         ORoNb+t6re6AIyMjOHUHUiVSIBz3Kslgtf48X245KQ3b3X5211UhOGiqwHHRT+Shg1
+         7Fkq00pqF4dhuOqiogs3tDPi3edB5uOrE+ewClRxykRU+DwwEd4n4PuiDIpZI8D/ME
+         eJMPiutpaWkVw==
+From:   Miguel Ojeda <ojeda@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH v7 01/25] kallsyms: avoid hardcoding the buffer size
+Date:   Mon, 23 May 2022 04:01:14 +0200
+Message-Id: <20220523020209.11810-2-ojeda@kernel.org>
+In-Reply-To: <20220523020209.11810-1-ojeda@kernel.org>
+References: <20220523020209.11810-1-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+From: Boqun Feng <boqun.feng@gmail.com>
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+This makes it easier to update the size later on.
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+Furthermore, a static assert is added to ensure both are updated
+when that happens. The relationship used is one that keeps the new
+size (512+1) close to the original buffer size (500).
 
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+This is a prerequisite patch, independently submitted at:
 
+    https://lore.kernel.org/lkml/20220506203443.24721-2-ojeda@kernel.org/
 
-Pozdrawiam,
-Norbert Karecki
+ scripts/kallsyms.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
+index 8caabddf817c..82d6508bdf29 100644
+--- a/scripts/kallsyms.c
++++ b/scripts/kallsyms.c
+@@ -27,8 +27,18 @@
+ 
+ #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+ 
++#define _stringify_1(x)	#x
++#define _stringify(x)	_stringify_1(x)
++
+ #define KSYM_NAME_LEN		128
+ 
++/* A substantially bigger size than the current maximum. */
++#define KSYM_NAME_LEN_BUFFER	512
++_Static_assert(
++	KSYM_NAME_LEN_BUFFER == KSYM_NAME_LEN * 4,
++	"Please keep KSYM_NAME_LEN_BUFFER in sync with KSYM_NAME_LEN"
++);
++
+ struct sym_entry {
+ 	unsigned long long addr;
+ 	unsigned int len;
+@@ -197,15 +207,15 @@ static void check_symbol_range(const char *sym, unsigned long long addr,
+ 
+ static struct sym_entry *read_symbol(FILE *in)
+ {
+-	char name[500], type;
++	char name[KSYM_NAME_LEN_BUFFER+1], type;
+ 	unsigned long long addr;
+ 	unsigned int len;
+ 	struct sym_entry *sym;
+ 	int rc;
+ 
+-	rc = fscanf(in, "%llx %c %499s\n", &addr, &type, name);
++	rc = fscanf(in, "%llx %c %" _stringify(KSYM_NAME_LEN_BUFFER) "s\n", &addr, &type, name);
+ 	if (rc != 3) {
+-		if (rc != EOF && fgets(name, 500, in) == NULL)
++		if (rc != EOF && fgets(name, sizeof(name), in) == NULL)
+ 			fprintf(stderr, "Read error or end of file.\n");
+ 		return NULL;
+ 	}
+-- 
+2.36.1
+
