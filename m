@@ -2,92 +2,108 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B9EBC433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 17:18:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 525C9C433EF
+	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 18:37:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240140AbiEWRSU (ORCPT
+        id S236773AbiEWSg6 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 23 May 2022 13:18:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48560 "EHLO
+        Mon, 23 May 2022 14:36:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240149AbiEWRRa (ORCPT
+        with ESMTP id S241599AbiEWSf4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 23 May 2022 13:17:30 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871DC703E5
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 May 2022 10:17:18 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id f9so30298410ejc.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 May 2022 10:17:18 -0700 (PDT)
+        Mon, 23 May 2022 14:35:56 -0400
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC0E15D32A
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 May 2022 11:15:40 -0700 (PDT)
+Received: by mail-oi1-x22b.google.com with SMTP id s188so14962405oie.4
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 May 2022 11:15:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fedUXB9PCZprDJtOf0/YUNtATNS2b1cwPIEIQjz3C5U=;
-        b=qSGY95RPQbk/z3IZR2wbR9A+mIAY4Evz9P0y1QbCQZkw9mL3rtDPqjtqier7UAQbRt
-         cRXL97xjijcBb2skG6FctVkzFdhkgqSxrsm4wM7wgxjsQvOir4bI7uATxEvuRfIwc44a
-         EwpX/thbz01WEwPwaS+BR4fXjazKiGLx21UrszmsB4Jc2evogwNg6KTyok2wBTqDFVSd
-         BOqV/5UpARO8gm/18TeR3u86M2cuaIaZHIcg7QWRdC9V1i4j+HshVV1q0YQu1vaAiJb1
-         7VeYI4hYWMv/nIBKym0uuUsyDsGjmroQS67KhM474f3HzYsx2G4oK4iZtOuRfwJY/t7S
-         JGFg==
+        d=linuxfoundation.org; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=zzofvizuF8zNiK4IN4+SAjhbde0gMJTVr1Nmbjv6AbQ=;
+        b=XLOC+ypgI8cKaE9CDgVvdF8PKbjyzLSoTo3x9MsYzQL2PZAqHEzHlGHIxhtbdbp0mH
+         +huFu7/Vq3CUekJB3lNHifVzr+zBFnIkd/aQ3BCB9TjQlOeuB9BzvB4CREai2swuV9BV
+         Pizs3aRQMv+PwgitC0E2zF3arst/BqNQvGz8k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fedUXB9PCZprDJtOf0/YUNtATNS2b1cwPIEIQjz3C5U=;
-        b=OXfEMo/qwghLpxxsyh6Sdrhjwobnyjfg0uaV/vrBtQsYM+7+lE3GxoKYOePyOIKPwK
-         Hpvf+zLWELKq7ntSl6kH97hXex2SBs/8+BrLfAiJVYj9IXPNVge44lLmAlR0TmX9nav1
-         RjEx0B0YgpNcaJ3faskSA4A5+flVt3l5YkENZ4uy11ig1CLL1nYinHe9N7/KUdkptnJa
-         z+tSNGJyjH+U/EYcWBLtWla9ionWEP0BLb4sR2DV/rTQLgm5FcvEyvwtYLtv+Q5OltY+
-         Q788oPQ2QNssKGyVJVEnrucwHr8BjYtjKB2TJaQjOkt1dZPM2IVcrxKHyU1ix67w2HGE
-         0Mpg==
-X-Gm-Message-State: AOAM531ppOxyBGo2ZCfuYRudZuUnJEajNw1jz49OR/c73oQF9YiEmJn5
-        hLmcGMwGQGuRQhN1QchnL+hI0MU4QASoT80yo1k7MXGwdPVdRw==
-X-Google-Smtp-Source: ABdhPJxJp+UOrH5XwC1bW0gxjFCeL9tPbqF9Oys4KOYyLcxhtgzBSwhtxHRu1jsf4X3pcTQXwa5oIGirMCihhSJafo8=
-X-Received: by 2002:a17:907:3faa:b0:6fe:d013:b22a with SMTP id
- hr42-20020a1709073faa00b006fed013b22amr7070939ejc.425.1653326161514; Mon, 23
- May 2022 10:16:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220523020209.11810-1-ojeda@kernel.org> <20220523020209.11810-5-ojeda@kernel.org>
-In-Reply-To: <20220523020209.11810-5-ojeda@kernel.org>
-From:   Daniel Latypov <dlatypov@google.com>
-Date:   Mon, 23 May 2022 10:15:50 -0700
-Message-ID: <CAGS_qxrW+GpDpD7-jxyGaPtQUzBGTdR7N=_7FRR0KdoJCshAAA@mail.gmail.com>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=zzofvizuF8zNiK4IN4+SAjhbde0gMJTVr1Nmbjv6AbQ=;
+        b=i1TsjIXmQhFWFVcoGUlCHHONpQzLgSuX7W4coKBepHWEUstNW+OytZoNh0mgO4Qfdg
+         Ns04xN3sNEoNO1lJIRAVZA9G08QEdyrYu+eBkNsqXRKUKqlfBEyKc//tG/G7NA04Nmks
+         p1vt6RoGa6iJjoJpgGyjltxEgJZgS9O7uswWjAhD5VzbzqaML9f8HXQbBirBQcktEVCT
+         O2e1Pp4/saOWt3MK1E3Yb342OoF92MwUMQib9XZ+1Fn6P9W7LlQzO05wZ3GyZ0xpqAPQ
+         IGQOvOcTgOMJv0CqQKTCwx79+PZJ3FbLFmEOms4rvvPv3NdVjiiK8QcwYtLe5VdWleyA
+         AS0A==
+X-Gm-Message-State: AOAM530BzDjmeAVOHiLW/F16jzWxDJK9hpriz6PfMozHmLh7q+Yg0Ll6
+        /CA5jkgIC2GnUfD5KFA73UE9Ww==
+X-Google-Smtp-Source: ABdhPJxDOIhMiU07IFlHUIqUQmUxxDSxZUqXiGUN1FyXxfn5p8WiK+DycZ7bCA0CEw1YNOoiiJbylw==
+X-Received: by 2002:a05:6808:ec7:b0:322:2bcc:42c2 with SMTP id q7-20020a0568080ec700b003222bcc42c2mr176401oiv.168.1653329644614;
+        Mon, 23 May 2022 11:14:04 -0700 (PDT)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id g6-20020aca3906000000b00325cda1ffb5sm4294539oia.52.2022.05.23.11.14.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 May 2022 11:14:04 -0700 (PDT)
 Subject: Re: [PATCH v7 04/25] kunit: take `kunit_assert` as `const`
-To:     Miguel Ojeda <ojeda@kernel.org>
+To:     Daniel Latypov <dlatypov@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Brendan Higgins <brendanhiggins@google.com>,
-        linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+        linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <20220523020209.11810-1-ojeda@kernel.org>
+ <20220523020209.11810-5-ojeda@kernel.org>
+ <CAGS_qxrW+GpDpD7-jxyGaPtQUzBGTdR7N=_7FRR0KdoJCshAAA@mail.gmail.com>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <23e4e7b4-bd09-b186-093b-a436ee9cb649@linuxfoundation.org>
+Date:   Mon, 23 May 2022 12:14:02 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
+MIME-Version: 1.0
+In-Reply-To: <CAGS_qxrW+GpDpD7-jxyGaPtQUzBGTdR7N=_7FRR0KdoJCshAAA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, May 22, 2022 at 7:03 PM Miguel Ojeda <ojeda@kernel.org> wrote:
->
-> The `kunit_do_failed_assertion` function passes its
-> `struct kunit_assert` argument to `kunit_fail`. This one,
-> in turn, calls its `format` field passing the assert again
-> as a `const` pointer.
->
-> Therefore, the whole chain may be made `const`.
->
-> Reviewed-by: Daniel Latypov <dlatypov@google.com>
-> Reviewed-by: Brendan Higgins <brendanhiggins@google.com>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> This is a prerequisite patch, independently submitted at:
->
->     https://lore.kernel.org/lkml/20220502093625.GA23225@kernel.org/
+On 5/23/22 11:15 AM, Daniel Latypov wrote:
+> On Sun, May 22, 2022 at 7:03 PM Miguel Ojeda <ojeda@kernel.org> wrote:
+>>
+>> The `kunit_do_failed_assertion` function passes its
+>> `struct kunit_assert` argument to `kunit_fail`. This one,
+>> in turn, calls its `format` field passing the assert again
+>> as a `const` pointer.
+>>
+>> Therefore, the whole chain may be made `const`.
+>>
+>> Reviewed-by: Daniel Latypov <dlatypov@google.com>
+>> Reviewed-by: Brendan Higgins <brendanhiggins@google.com>
+>> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+>> ---
+>> This is a prerequisite patch, independently submitted at:
+>>
+>>      https://lore.kernel.org/lkml/20220502093625.GA23225@kernel.org/
+> 
+> FYI, we'd asked Shuah to pick this patch up in her "kunit" branch.
+> It's applied here:
+> https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git/commit/?h=kunit&id=7466886b400b1904ce30fa311904849e314a2cf4
+> 
+> It had previously seemed unclear if this series could make it for the
+> 5.19 merge window (but it now looks like there's interest in trying it
+> out early on).
+> 
+> Daniel
+> 
 
-FYI, we'd asked Shuah to pick this patch up in her "kunit" branch.
-It's applied here:
-https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git/commit/?h=kunit&id=7466886b400b1904ce30fa311904849e314a2cf4
+I am just about send pull request with this patch included.
 
-It had previously seemed unclear if this series could make it for the
-5.19 merge window (but it now looks like there's interest in trying it
-out early on).
-
-Daniel
+thanks,
+-- Shuah
