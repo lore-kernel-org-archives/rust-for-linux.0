@@ -2,108 +2,167 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 525C9C433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 18:37:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E5BDC433EF
+	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 18:53:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236773AbiEWSg6 (ORCPT
+        id S239586AbiEWSxG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 23 May 2022 14:36:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51180 "EHLO
+        Mon, 23 May 2022 14:53:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241599AbiEWSf4 (ORCPT
+        with ESMTP id S243318AbiEWSvq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 23 May 2022 14:35:56 -0400
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC0E15D32A
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 May 2022 11:15:40 -0700 (PDT)
-Received: by mail-oi1-x22b.google.com with SMTP id s188so14962405oie.4
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 May 2022 11:15:40 -0700 (PDT)
+        Mon, 23 May 2022 14:51:46 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 409017B9E0
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 May 2022 11:37:29 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id g16so18252756lja.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 May 2022 11:37:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=zzofvizuF8zNiK4IN4+SAjhbde0gMJTVr1Nmbjv6AbQ=;
-        b=XLOC+ypgI8cKaE9CDgVvdF8PKbjyzLSoTo3x9MsYzQL2PZAqHEzHlGHIxhtbdbp0mH
-         +huFu7/Vq3CUekJB3lNHifVzr+zBFnIkd/aQ3BCB9TjQlOeuB9BzvB4CREai2swuV9BV
-         Pizs3aRQMv+PwgitC0E2zF3arst/BqNQvGz8k=
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=EF+HyK8Q8jGuUKnfQuJxpTAac/v3/lWJSDPnpLDl6Oo=;
+        b=TCLbLPu4fY1PFTWqGZrYvI6Pr9Tf9y4nNjADncA9r7BdaknOYHzxkVKNaTHXlmeNGC
+         W6kp2ErMbL7AOgGIzhk0VMgEbX0d6PXEt2wQvaDfWNcT2zEi2fO5bRfqWkx3r2IQcqGp
+         g6XfeFgEKTbvx9b9F/8hvOvfmVxaJebt7qwUrSWrOl6LivjY/5+CEkfcegFxM2refumh
+         S/z/yJ9ihpNe2Dy9uXTlvUKhLXwgWykV+uttif6YpUco0RELnkLYACOuS7ZQOy+5nM28
+         Z6ErChTWtmlCRrvh6mFnCaY0rniF+9rEOxSZN9tddOcODiN47nTr1xmuvreCEbPD+XMr
+         oSxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=zzofvizuF8zNiK4IN4+SAjhbde0gMJTVr1Nmbjv6AbQ=;
-        b=i1TsjIXmQhFWFVcoGUlCHHONpQzLgSuX7W4coKBepHWEUstNW+OytZoNh0mgO4Qfdg
-         Ns04xN3sNEoNO1lJIRAVZA9G08QEdyrYu+eBkNsqXRKUKqlfBEyKc//tG/G7NA04Nmks
-         p1vt6RoGa6iJjoJpgGyjltxEgJZgS9O7uswWjAhD5VzbzqaML9f8HXQbBirBQcktEVCT
-         O2e1Pp4/saOWt3MK1E3Yb342OoF92MwUMQib9XZ+1Fn6P9W7LlQzO05wZ3GyZ0xpqAPQ
-         IGQOvOcTgOMJv0CqQKTCwx79+PZJ3FbLFmEOms4rvvPv3NdVjiiK8QcwYtLe5VdWleyA
-         AS0A==
-X-Gm-Message-State: AOAM530BzDjmeAVOHiLW/F16jzWxDJK9hpriz6PfMozHmLh7q+Yg0Ll6
-        /CA5jkgIC2GnUfD5KFA73UE9Ww==
-X-Google-Smtp-Source: ABdhPJxDOIhMiU07IFlHUIqUQmUxxDSxZUqXiGUN1FyXxfn5p8WiK+DycZ7bCA0CEw1YNOoiiJbylw==
-X-Received: by 2002:a05:6808:ec7:b0:322:2bcc:42c2 with SMTP id q7-20020a0568080ec700b003222bcc42c2mr176401oiv.168.1653329644614;
-        Mon, 23 May 2022 11:14:04 -0700 (PDT)
-Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id g6-20020aca3906000000b00325cda1ffb5sm4294539oia.52.2022.05.23.11.14.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 May 2022 11:14:04 -0700 (PDT)
-Subject: Re: [PATCH v7 04/25] kunit: take `kunit_assert` as `const`
-To:     Daniel Latypov <dlatypov@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EF+HyK8Q8jGuUKnfQuJxpTAac/v3/lWJSDPnpLDl6Oo=;
+        b=NpCc7qsWQqdnNwDhze7sU2SOvPENAB86PkpzX+969EAqZAjoH+QczHWqJcz8QAt5Bt
+         EqHla+j4wZrOjERMw2e5GR+U4BAfPlXW9so/2mxH3a/7BjSx+G5QWwFwfpykizTOWwMv
+         lTdw9Vx1wh8bah6lulvUn+6oIjKWOR+b5eYNawZl7ullWuXecA1qCmEJCEfcPtGWcOdC
+         LGsgG9Ko/BCDJD7xoZ27qYwIkcMAIgC8t+K02cobsUmQetpww53pHHKG+vGQXDVWNthj
+         fIg8evSxESLaalnfATWnS6YpiKAM5Oe5qxonmusNZFvY2DypaAcK/d/2A2iupNEIh6PK
+         9dqw==
+X-Gm-Message-State: AOAM5326ASQ8uB12EOGV8/sWJrYlAEtrBslvhR2XPsmT4U43pvxjaC11
+        NVQqEF/SkHmWT8anHpnK5RFA9/9sEQiAl8iTY4X1LQ==
+X-Google-Smtp-Source: ABdhPJxYVniwTfnUp7XmacTlpjyteWqqznZ4V6ahXVd90eLHa2Bxx/nJfBnlIm3HDOaYJ6eC16xsJ3VlTw6xiy6liNw=
+X-Received: by 2002:a2e:98d0:0:b0:253:e3a3:ec6c with SMTP id
+ s16-20020a2e98d0000000b00253e3a3ec6cmr6861584ljj.493.1653331047863; Mon, 23
+ May 2022 11:37:27 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220523020209.11810-1-ojeda@kernel.org> <20220523020209.11810-7-ojeda@kernel.org>
+In-Reply-To: <20220523020209.11810-7-ojeda@kernel.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Mon, 23 May 2022 11:37:16 -0700
+Message-ID: <CAKwvOd=mFhxjKRP_qt3Yu69dj_P6VUMSUSQm7fY6yS2bsO8Y2w@mail.gmail.com>
+Subject: Re: [PATCH v7 06/25] rust: add `compiler_builtins` crate
+To:     Miguel Ojeda <ojeda@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Brendan Higgins <brendanhiggins@google.com>,
-        linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <20220523020209.11810-1-ojeda@kernel.org>
- <20220523020209.11810-5-ojeda@kernel.org>
- <CAGS_qxrW+GpDpD7-jxyGaPtQUzBGTdR7N=_7FRR0KdoJCshAAA@mail.gmail.com>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <23e4e7b4-bd09-b186-093b-a436ee9cb649@linuxfoundation.org>
-Date:   Mon, 23 May 2022 12:14:02 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
-MIME-Version: 1.0
-In-Reply-To: <CAGS_qxrW+GpDpD7-jxyGaPtQUzBGTdR7N=_7FRR0KdoJCshAAA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Gary Guo <gary@garyguo.net>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 5/23/22 11:15 AM, Daniel Latypov wrote:
-> On Sun, May 22, 2022 at 7:03 PM Miguel Ojeda <ojeda@kernel.org> wrote:
->>
->> The `kunit_do_failed_assertion` function passes its
->> `struct kunit_assert` argument to `kunit_fail`. This one,
->> in turn, calls its `format` field passing the assert again
->> as a `const` pointer.
->>
->> Therefore, the whole chain may be made `const`.
->>
->> Reviewed-by: Daniel Latypov <dlatypov@google.com>
->> Reviewed-by: Brendan Higgins <brendanhiggins@google.com>
->> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
->> ---
->> This is a prerequisite patch, independently submitted at:
->>
->>      https://lore.kernel.org/lkml/20220502093625.GA23225@kernel.org/
-> 
-> FYI, we'd asked Shuah to pick this patch up in her "kunit" branch.
-> It's applied here:
-> https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git/commit/?h=kunit&id=7466886b400b1904ce30fa311904849e314a2cf4
-> 
-> It had previously seemed unclear if this series could make it for the
-> 5.19 merge window (but it now looks like there's interest in trying it
-> out early on).
-> 
-> Daniel
-> 
+On Sun, May 22, 2022 at 7:03 PM Miguel Ojeda <ojeda@kernel.org> wrote:
+>
+> Rust provides `compiler_builtins` as a port of LLVM's `compiler-rt`.
+> Since we do not need the vast majority of them, we avoid the
+> dependency by providing our own crate.
+>
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Co-developed-by: Sven Van Asbroeck <thesven73@gmail.com>
+> Signed-off-by: Sven Van Asbroeck <thesven73@gmail.com>
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  rust/compiler_builtins.rs | 57 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 57 insertions(+)
+>  create mode 100644 rust/compiler_builtins.rs
+>
+> diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
+> new file mode 100644
+> index 000000000000..80ca4c0dcd24
+> --- /dev/null
+> +++ b/rust/compiler_builtins.rs
+> @@ -0,0 +1,57 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Our own `compiler_builtins`.
+> +//!
+> +//! Rust provides [`compiler_builtins`] as a port of LLVM's [`compiler-rt`].
+> +//! Since we do not need the vast majority of them, we avoid the dependency
+> +//! by providing this file.
+> +//!
+> +//! At the moment, some builtins are required that should not be. For instance,
+> +//! [`core`] has 128-bit integers functionality which we should not be compiling
+> +//! in. We will work with upstream [`core`] to provide feature flags to disable
+> +//! the parts we do not need. For the moment, we define them to [`panic!`] at
 
-I am just about send pull request with this patch included.
+^ Any progress on this? Got any links to any feature requests or bug reports.
 
-thanks,
--- Shuah
+Also, I'm not sure my concern about explicit build failures for C code
+was ever addressed?  We have a constant problem with `long long`
+division on ARCH=arm32 and ARCH=i386 in C code.
+https://lore.kernel.org/lkml/CAKwvOdk+A2PBdjSFVUhj4xyCGCKujtej1uPgywQgrKPiK2ksPw@mail.gmail.com/
+
+> +//! runtime for simplicity to catch mistakes, instead of performing surgery
+> +//! on `core.o`.
+> +//!
+> +//! In any case, all these symbols are weakened to ensure we do not override
+> +//! those that may be provided by the rest of the kernel.
+> +//!
+> +//! [`compiler_builtins`]: https://github.com/rust-lang/compiler-builtins
+> +//! [`compiler-rt`]: https://compiler-rt.llvm.org/
+> +
+> +#![feature(compiler_builtins)]
+> +#![compiler_builtins]
+> +#![no_builtins]
+> +#![no_std]
+> +
+> +macro_rules! define_panicking_intrinsics(
+> +    ($reason: tt, { $($ident: ident, )* }) => {
+> +        $(
+> +            #[doc(hidden)]
+> +            #[no_mangle]
+> +            pub extern "C" fn $ident() {
+> +                panic!($reason);
+> +            }
+> +        )*
+> +    }
+> +);
+> +
+> +define_panicking_intrinsics!("`i128` should not be used", {
+> +    __ashrti3,
+> +    __muloti4,
+> +    __multi3,
+> +});
+> +
+> +define_panicking_intrinsics!("`u128` should not be used", {
+> +    __ashlti3,
+> +    __lshrti3,
+> +    __udivmodti4,
+> +    __udivti3,
+> +    __umodti3,
+> +});
+> +
+> +#[cfg(target_arch = "arm")]
+> +define_panicking_intrinsics!("`u64` division/modulo should not be used", {
+> +    __aeabi_uldivmod,
+> +    __mulodi4,
+> +});
+> --
+> 2.36.1
+>
+
+
+-- 
+Thanks,
+~Nick Desaulniers
