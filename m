@@ -2,111 +2,199 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30175C433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 20:28:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8D39C433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 20:32:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229887AbiEWU2f (ORCPT
+        id S233051AbiEWUcQ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 23 May 2022 16:28:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59698 "EHLO
+        Mon, 23 May 2022 16:32:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbiEWU2f (ORCPT
+        with ESMTP id S233079AbiEWUcH (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 23 May 2022 16:28:35 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2BA0F2F
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 May 2022 13:28:33 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id h8so18558534ljb.6
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 May 2022 13:28:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=/VEWPcqqEkSHc6PyYOafG+lrnyvP0Bb7ACOYHc+zmT8=;
-        b=nBjkH9GeglhciEIG2sRV8mcOxSqMRkn7OaoBj4aJKaPpe48QnJE4ftj1SHLQ2XLJO+
-         H3PkyywTQbLVNuDvb1Xnq+u35oLg6bpTuo+6X8fdr4E/VqqcWNcPUxK0o1xigtVvbwHj
-         H/mebXFvUUF3P4PPmkw/SNpplMRyV3wL7AuIcmrkyCuS/i41kdDjEDqo9buYKbHe6stK
-         bd3J06GkH6L8A/dFc++6H+BHN6hIaVy1y4xW33vTzYLsyx3DbwPyymvILmg+sZLLUz55
-         y1jY+kVAiuFCZXvzoFm5mlf4q2HeQv+GOH8I4eqJCTxwlY/yDdMVFQfuTL16UsLysP7x
-         xJUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=/VEWPcqqEkSHc6PyYOafG+lrnyvP0Bb7ACOYHc+zmT8=;
-        b=2+0W7UXAcmZcM+oZwjnmXz59l240kkbytR45szLH7nmJEjKXYQWTuR6rSWSm+BPWWe
-         HRT/Du3eLQOyfIO6/9wp7L16p8h4Xc2D+nyBDnNmdbic85xgNh2fwuEfyEsdeD7at0lj
-         IGCTipj4NcqlbQLmJ9JN2mSsayQSczs4ZHRAfgSreuRbfFZDlvx9HriS9rT0AbwIBbFd
-         2TBehMwACqAQi+HmFAJt5q2JSSQSfQI4bwEpJ7rDla04dZ3XixqOZDBALeWnqeEBfDoH
-         R9cMZlVX+bGnQ9g8j++Gj/7XFeCgvXpfOs4XAZ85/rMrCAJrP6+Ws8wgkCf+oaSjRY4f
-         8c2A==
-X-Gm-Message-State: AOAM532GbrZESqxHaTPAB1bBgTAihiJE7iZORD61W0C0WnzY2GH4MZ4/
-        iBzOsv7izOpecXAX129h0ZEGgjpU5fYhxQFZphM/8FuRQS4aaw==
-X-Google-Smtp-Source: ABdhPJzvoRBxTbJ7RvN8ZQonJUiyJ/IO8pv91HbcDsVQkJUdigq2IRdKHs6PxPyinjIKnmy6nUjxGaCgXrUbLS/6HF0=
-X-Received: by 2002:a2e:98c3:0:b0:253:e0e1:20 with SMTP id s3-20020a2e98c3000000b00253e0e10020mr8613275ljj.26.1653337711358;
- Mon, 23 May 2022 13:28:31 -0700 (PDT)
+        Mon, 23 May 2022 16:32:07 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C89771A11;
+        Mon, 23 May 2022 13:32:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5B0E5B815BA;
+        Mon, 23 May 2022 20:32:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E891C34115;
+        Mon, 23 May 2022 20:32:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653337921;
+        bh=POIdHLZCL8JWg7SSzx3poIK2a1cQmFod9S3oQWwvGKM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Kjv+/DsiS8pvW8eeG3mSkfBuQ98mB6Ks8R8DjGvJBHGGCx+IwONrywQV5H8QVt3B6
+         ZQa5klLnbzzAA19PKGzholfvuEaKhsztF7cCn9dO+9z51O4G7ZEOZiYt8foJeWqp+6
+         miQ7kZ71TB8PbJKDsqoNc8o0wY3/6bTi54dLRg4V+k3dhIGztk+qxl8Yp2wRE/2sk9
+         etOOriEZQJV9ohfKu/HNW1Y5KhoEvVsH8gd7p3jcON0A/sZB2s3cAO8gcst1F7RgE3
+         oK1rWJnc2YAff3nGxaQj8frnysgcCLeJPx25evjQlceTxch+UfVemVzX7KBwt34L+y
+         OWGwkQjhF8+vw==
+Date:   Mon, 23 May 2022 23:30:20 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
+        Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v7 02/25] kallsyms: support "big" kernel symbols
+Message-ID: <Yovu3As0kmk/l6bX@kernel.org>
+References: <20220523020209.11810-1-ojeda@kernel.org>
+ <20220523020209.11810-3-ojeda@kernel.org>
 MIME-Version: 1.0
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Mon, 23 May 2022 13:28:19 -0700
-Message-ID: <CAKwvOdm5JT4wbdQQYuW+RT07rCi6whGBM2iUAyg8A1CmLXG6Nw@mail.gmail.com>
-Subject: help installing the correct version of bindgen
-To:     rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220523020209.11810-3-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Re: https://github.com/KyleMayes/clang-sys/issues/138
+On Mon, May 23, 2022 at 04:01:15AM +0200, Miguel Ojeda wrote:
+> Rust symbols can become quite long due to namespacing introduced
+> by modules, types, traits, generics, etc.
+> 
+> Increasing to 255 is not enough in some cases, and therefore
+> we need to introduce longer lengths to the symbol table.
 
-via the documentation patch
-https://lore.kernel.org/lkml/20220523020209.11810-21-ojeda@kernel.org/
+s/we need to//
 
-So after a defconfig, I see in my .config:
-CONFIG_HAVE_RUST=y
-but not
-RUST_IS_AVAILABLE=y
+> 
+> In order to avoid increasing all lengths to 2 bytes (since most
+> of them are small, including many Rust ones), we use ULEB128 to
 
-$ make LLVM=1 -j72 rustavailable
-make: *** [Makefile:1802: rustavailable] Error 1
+s/we//
 
-$ cargo install --locked --version $(scripts/min-tool-version.sh
-bindgen) bindgen
-...
-     Ignored package `bindgen v0.56.0` is already installed, use
---force to override
+> keep smaller symbols in 1 byte, with the rest in 2 bytes.
+> 
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Co-developed-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> This is a prerequisite patch, independently submitted at:
+> 
+>     https://lore.kernel.org/lkml/20220506203443.24721-3-ojeda@kernel.org/
+> 
+>  kernel/kallsyms.c  | 26 ++++++++++++++++++++++----
+>  scripts/kallsyms.c | 29 ++++++++++++++++++++++++++---
+>  2 files changed, 48 insertions(+), 7 deletions(-)
+> 
+> diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
+> index 79f2eb617a62..e8d2262ef2d2 100644
+> --- a/kernel/kallsyms.c
+> +++ b/kernel/kallsyms.c
+> @@ -69,12 +69,20 @@ static unsigned int kallsyms_expand_symbol(unsigned int off,
+>  	data = &kallsyms_names[off];
+>  	len = *data;
+>  	data++;
+> +	off++;
+> +
+> +	/* If MSB is 1, it is a "big" symbol, so needs an additional byte. */
+> +	if ((len & 0x80) != 0) {
+> +		len = (len & 0x7F) | (*data << 7);
+> +		data++;
+> +		off++;
+> +	}
+>  
+>  	/*
+>  	 * Update the offset to return the offset for the next symbol on
+>  	 * the compressed stream.
+>  	 */
+> -	off += len + 1;
+> +	off += len;
+>  
+>  	/*
+>  	 * For every byte on the compressed symbol data, copy the table
+> @@ -127,7 +135,7 @@ static char kallsyms_get_symbol_type(unsigned int off)
+>  static unsigned int get_symbol_offset(unsigned long pos)
+>  {
+>  	const u8 *name;
+> -	int i;
+> +	int i, len;
+>  
+>  	/*
+>  	 * Use the closest marker we have. We have markers every 256 positions,
+> @@ -141,8 +149,18 @@ static unsigned int get_symbol_offset(unsigned long pos)
+>  	 * so we just need to add the len to the current pointer for every
+>  	 * symbol we wish to skip.
+>  	 */
+> -	for (i = 0; i < (pos & 0xFF); i++)
+> -		name = name + (*name) + 1;
+> +	for (i = 0; i < (pos & 0xFF); i++) {
+> +		len = *name;
+> +
+> +		/*
+> +		 * If MSB is 1, it is a "big" symbol, so we need to look into
+> +		 * the next byte (and skip it, too).
+> +		 */
+> +		if ((len & 0x80) != 0)
+> +			len = ((len & 0x7F) | (name[1] << 7)) + 1;
+> +
+> +		name = name + len + 1;
+> +	}
+>  
+>  	return name - kallsyms_names;
+>  }
+> diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
+> index 82d6508bdf29..7e99799aa7b9 100644
+> --- a/scripts/kallsyms.c
+> +++ b/scripts/kallsyms.c
+> @@ -480,12 +480,35 @@ static void write_src(void)
+>  		if ((i & 0xFF) == 0)
+>  			markers[i >> 8] = off;
+>  
+> -		printf("\t.byte 0x%02x", table[i]->len);
+> +		/* There cannot be any symbol of length zero. */
+> +		if (table[i]->len == 0) {
+> +			fprintf(stderr, "kallsyms failure: "
+> +				"unexpected zero symbol length\n");
+> +			exit(EXIT_FAILURE);
+> +		}
+> +
+> +		/* Only lengths that fit in up-to-two-byte ULEB128 are supported. */
+> +		if (table[i]->len > 0x3FFF) {
+> +			fprintf(stderr, "kallsyms failure: "
+> +				"unexpected huge symbol length\n");
+> +			exit(EXIT_FAILURE);
+> +		}
+> +
+> +		/* Encode length with ULEB128. */
+> +		if (table[i]->len <= 0x7F) {
+> +			/* Most symbols use a single byte for the length. */
+> +			printf("\t.byte 0x%02x", table[i]->len);
+> +			off += table[i]->len + 1;
+> +		} else {
+> +			/* "Big" symbols use two bytes. */
+> +			printf("\t.byte 0x%02x, 0x%02x",
+> +				(table[i]->len & 0x7F) | 0x80,
+> +				(table[i]->len >> 7) & 0x7F);
+> +			off += table[i]->len + 2;
+> +		}
+>  		for (k = 0; k < table[i]->len; k++)
+>  			printf(", 0x%02x", table[i]->sym[k]);
+>  		printf("\n");
+> -
+> -		off += table[i]->len + 1;
+>  	}
+>  	printf("\n");
+>  
+> -- 
+> 2.36.1
+> 
 
-$ RUST_BACKTRACE=1 bindgen scripts/rust-is-available-bindgen-libclang.h
-thread 'main' panicked at 'called `Result::unwrap()` on an `Err`
-value: "could not run executable `/android0/llvm-project/clang`:
-Permission denied (os error 13)"',
-/usr/local/google/home/ndesaulniers/.cargo/registry/src/github.com-1ecc6299db9ec823/clang-sys-1.0.3/src/support.rs:165:58
-stack backtrace:
-   0: rust_begin_unwind
-             at
-/rustc/7737e0b5c4103216d6fd8cf941b7ab9bdbaace7c/library/std/src/panicking.rs:584:5
-   1: core::panicking::panic_fmt
-             at
-/rustc/7737e0b5c4103216d6fd8cf941b7ab9bdbaace7c/library/core/src/panicking.rs:143:14
-   2: core::result::unwrap_failed
-             at
-/rustc/7737e0b5c4103216d6fd8cf941b7ab9bdbaace7c/library/core/src/result.rs:1749:5
-   3: clang_sys::support::run_clang
-   4: clang_sys::support::parse_version
-   5: clang_sys::support::Clang::find
-   6: bindgen::Builder::generate
-   7: bindgen::main
-note: Some details are omitted, run with `RUST_BACKTRACE=full` for a
-verbose backtrace.
-
-So it looks like bindgen is using clang-sys-1.0.3?
-And it's finding my source code checkout of clang from the llvm-project.
-
-Looking at https://github.com/rust-lang/rust-bindgen/tree/11ae35089e4748b7e2a6f50f6bef7709af72e724
-specifically
-https://github.com/rust-lang/rust-bindgen/blob/11ae35089e4748b7e2a6f50f6bef7709af72e724/Cargo.toml#L52
-it just says "use version 1". But the latest version of clang-sys is
-1.3.2 according to https://crates.io/crates/clang-sys.
-
-What gives?
--- 
-Thanks,
-~Nick Desaulniers
+BR, Jarkko
