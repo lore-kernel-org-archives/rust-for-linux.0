@@ -2,37 +2,37 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF5F2C433EF
-	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 02:04:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15739C433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 02:04:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243594AbiEWCEE (ORCPT
+        id S1352348AbiEWCEN (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 22 May 2022 22:04:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41034 "EHLO
+        Sun, 22 May 2022 22:04:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240639AbiEWCDz (ORCPT
+        with ESMTP id S242358AbiEWCD7 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 22 May 2022 22:03:55 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 708EB39175;
-        Sun, 22 May 2022 19:03:30 -0700 (PDT)
+        Sun, 22 May 2022 22:03:59 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2D183A195;
+        Sun, 22 May 2022 19:03:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F1FA6B80EA1;
-        Mon, 23 May 2022 02:03:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC0AC34115;
-        Mon, 23 May 2022 02:03:24 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2604FB80E91;
+        Mon, 23 May 2022 02:03:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8915C385B8;
+        Mon, 23 May 2022 02:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653271407;
-        bh=lfXDPxwNO4sKeZO+ltQtfmo3joH/LDo3OFp2HQWjsC4=;
+        s=k20201202; t=1653271414;
+        bh=zvG3kLZmJR0cO+NcAVWkG9lazhbnbmXVbKRizeMnjHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XqR/V82QR6TtHAZk6KqZJ9MePIImsvxzzdI9XXg3vYPt6WhQ1l0R8tslpPQRES1+H
-         0tH90rQlVwDc6ahI2jpOXe9mvOev3pO9nQR9J58tTgTmIOzCNErkvwnk4/jIavkCHP
-         97PXrxhgqxLTR8Kr5USV6TVU9O8DGKAgWlJtIBSFWXPh8zqByEBqC8Eg1IQTpb4qmH
-         pCtXLlRwql4nM7f8h0teYbtJsBhPNAGDdr5Iw6c6oZwb86/B2E1mFe6QRoO4gak7dm
-         lmVDNYARounyb6O8YVab4ZDBe5Z/aisenbomw9MhxbJOG5HyWHJf1puETDmsX0Ac7p
-         nZFAj/T+BgBsw==
+        b=f4OsG5vw6oz+jHzq+7hzZoywPARQO0iEuJ8SELynb58zS5cD2DcAhMGpWdwRS1RuT
+         Ak7Z7tmh1UljuQG+sxYTJMsisNRb2LSDwpdwNc7hPfNWj9eAnrSzF9GwvvSwUqnypb
+         6YIZCFr+NqI7VAVjXQR7//FeZcAw/qzeqQEZrvp1l+na0OdaM4Kksc6GsuLuxahtCS
+         lG/FiTE87eUQq5Zm6YdZFk0GsUZJWwgK1cpc08cNxSFvyAy+gpdsZkusGjP8SKDVS8
+         N8E2KBxir/YdsuHmiv+7+rKD0Hy67j3fT47rDX/TGb7aO9Vpl6DtQzADnppyrXWe5/
+         CbQoXem8kkBWA==
 From:   Miguel Ojeda <ojeda@kernel.org>
 To:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -40,1121 +40,884 @@ Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
         Gary Guo <gary@garyguo.net>, Matthew Bakhtiari <dev@mtbk.me>
-Subject: [PATCH v7 08/25] rust: adapt `alloc` crate to the kernel
-Date:   Mon, 23 May 2022 04:01:21 +0200
-Message-Id: <20220523020209.11810-9-ojeda@kernel.org>
+Subject: [PATCH v7 10/25] rust: add `macros` crate
+Date:   Mon, 23 May 2022 04:01:23 +0200
+Message-Id: <20220523020209.11810-11-ojeda@kernel.org>
 In-Reply-To: <20220523020209.11810-1-ojeda@kernel.org>
 References: <20220523020209.11810-1-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This customizes the subset of the Rust standard library `alloc` that
-was just imported as-is, mainly by:
+This crate contains all the procedural macros ("proc macros")
+shared by all the kernel.
 
-  - Adding SPDX license identifiers.
+Procedural macros allow to create syntax extensions. They run at
+compile-time and can consume as well as produce Rust syntax.
 
-  - Skipping `rc` and `sync` modules via new `cfg`s.
+For instance, the `module!` macro that is used by Rust modules
+is implemented here. It allows to easily declare the equivalent
+information to the `MODULE_*` macros in C modules, e.g.:
 
-  - Skipping the `vec!` macro.
-
-  - Addding fallible (`try_*`) versions of existing infallible methods
-    (i.e. returning a `Result` instead of panicking).
-
-    Since the standard library requires stable/unstable attributes,
-    these additions are annotated with:
-
-        #[stable(feature = "kernel", since = "1.0.0")]
-
-    Using "kernel" as the feature allows to have the additions
-    clearly marked. The "1.0.0" version is just a placeholder.
+    module! {
+        type: RustMinimal,
+        name: b"rust_minimal",
+        author: b"Rust for Linux Contributors",
+        description: b"Rust minimal sample",
+        license: b"GPL",
+    }
 
 Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
 Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+Co-developed-by: Finn Behrens <me@kloenk.de>
+Signed-off-by: Finn Behrens <me@kloenk.de>
+Co-developed-by: Adam Bratschi-Kaye <ark.email@gmail.com>
+Signed-off-by: Adam Bratschi-Kaye <ark.email@gmail.com>
 Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
 Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+Co-developed-by: Sumera Priyadarsini <sylphrenadin@gmail.com>
+Signed-off-by: Sumera Priyadarsini <sylphrenadin@gmail.com>
 Co-developed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Gary Guo <gary@garyguo.net>
 Co-developed-by: Matthew Bakhtiari <dev@mtbk.me>
 Signed-off-by: Matthew Bakhtiari <dev@mtbk.me>
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/alloc/README.md              |  33 ++++
- rust/alloc/alloc.rs               |   2 +
- rust/alloc/borrow.rs              |   2 +
- rust/alloc/boxed.rs               |   2 +
- rust/alloc/collections/mod.rs     |   2 +
- rust/alloc/fmt.rs                 |   2 +
- rust/alloc/lib.rs                 |   5 +-
- rust/alloc/macros.rs              |   4 +-
- rust/alloc/raw_vec.rs             |  50 ++++-
- rust/alloc/slice.rs               |  93 ++++++++-
- rust/alloc/str.rs                 |  19 ++
- rust/alloc/string.rs              |   6 +-
- rust/alloc/vec/drain.rs           |   2 +
- rust/alloc/vec/drain_filter.rs    |   2 +
- rust/alloc/vec/into_iter.rs       |   2 +
- rust/alloc/vec/is_zero.rs         |   2 +
- rust/alloc/vec/mod.rs             | 313 +++++++++++++++++++++++++++++-
- rust/alloc/vec/partial_eq.rs      |   2 +
- rust/alloc/vec/set_len_on_drop.rs |   2 +
- rust/alloc/vec/spec_extend.rs     |  87 +++++++++
- 20 files changed, 623 insertions(+), 9 deletions(-)
- create mode 100644 rust/alloc/README.md
+ rust/macros/helpers.rs |  79 ++++++
+ rust/macros/lib.rs     |  94 ++++++
+ rust/macros/module.rs  | 631 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 804 insertions(+)
+ create mode 100644 rust/macros/helpers.rs
+ create mode 100644 rust/macros/lib.rs
+ create mode 100644 rust/macros/module.rs
 
-diff --git a/rust/alloc/README.md b/rust/alloc/README.md
+diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
 new file mode 100644
-index 000000000000..9cf0d074c82a
+index 000000000000..ad210563e5a6
 --- /dev/null
-+++ b/rust/alloc/README.md
-@@ -0,0 +1,33 @@
-+# `alloc`
++++ b/rust/macros/helpers.rs
+@@ -0,0 +1,79 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+These source files come from the Rust standard library, hosted in
-+the https://github.com/rust-lang/rust repository, licensed under
-+"Apache-2.0 OR MIT" and adapted for kernel use. For copyright details,
-+see https://github.com/rust-lang/rust/blob/master/COPYRIGHT.
++use proc_macro::{token_stream, Group, TokenTree};
 +
-+Please note that these files should be kept as close as possible to
-+upstream. In general, only additions should be performed (e.g. new
-+methods). Eventually, changes should make it into upstream so that,
-+at some point, this fork can be dropped from the kernel tree.
-+
-+
-+## Rationale
-+
-+On one hand, kernel folks wanted to keep `alloc` in-tree to have more
-+freedom in both workflow and actual features if actually needed
-+(e.g. receiver types if we ended up using them), which is reasonable.
-+
-+On the other hand, Rust folks wanted to keep `alloc` as close as
-+upstream as possible and avoid as much divergence as possible, which
-+is also reasonable.
-+
-+We agreed on a middle-ground: we would keep a subset of `alloc`
-+in-tree that would be as small and as close as possible to upstream.
-+Then, upstream can start adding the functions that we add to `alloc`
-+etc., until we reach a point where the kernel already knows exactly
-+what it needs in `alloc` and all the new methods are merged into
-+upstream, so that we can drop `alloc` from the kernel tree and go back
-+to using the upstream one.
-+
-+By doing this, the kernel can go a bit faster now, and Rust can
-+slowly incorporate and discuss the changes as needed.
-diff --git a/rust/alloc/alloc.rs b/rust/alloc/alloc.rs
-index 9d4f9af91a5e..cea3b747673f 100644
---- a/rust/alloc/alloc.rs
-+++ b/rust/alloc/alloc.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- //! Memory allocation APIs
- 
- #![stable(feature = "alloc_module", since = "1.28.0")]
-diff --git a/rust/alloc/borrow.rs b/rust/alloc/borrow.rs
-index 63234ee91f09..8e1d8a764641 100644
---- a/rust/alloc/borrow.rs
-+++ b/rust/alloc/borrow.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- //! A module for working with borrowed data.
- 
- #![stable(feature = "rust1", since = "1.0.0")]
-diff --git a/rust/alloc/boxed.rs b/rust/alloc/boxed.rs
-index f753189c6830..921fcef75e4b 100644
---- a/rust/alloc/boxed.rs
-+++ b/rust/alloc/boxed.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- //! A pointer type for heap allocation.
- //!
- //! [`Box<T>`], casually referred to as a 'box', provides the simplest form of
-diff --git a/rust/alloc/collections/mod.rs b/rust/alloc/collections/mod.rs
-index 628a5b155673..1eec265b28f8 100644
---- a/rust/alloc/collections/mod.rs
-+++ b/rust/alloc/collections/mod.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- //! Collection types.
- 
- #![stable(feature = "rust1", since = "1.0.0")]
-diff --git a/rust/alloc/fmt.rs b/rust/alloc/fmt.rs
-index aeb7554f8e91..be75e6637442 100644
---- a/rust/alloc/fmt.rs
-+++ b/rust/alloc/fmt.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- //! Utilities for formatting and printing `String`s.
- //!
- //! This module contains the runtime support for the [`format!`] syntax extension.
-diff --git a/rust/alloc/lib.rs b/rust/alloc/lib.rs
-index 6da32df57efb..085dc005170a 100644
---- a/rust/alloc/lib.rs
-+++ b/rust/alloc/lib.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- //! # The Rust core allocation and collections library
- //!
- //! This library provides smart pointers and collections for managing
-@@ -204,11 +206,12 @@ mod boxed {
- pub mod borrow;
- pub mod collections;
- pub mod fmt;
-+#[cfg(not(no_rc))]
- pub mod rc;
- pub mod slice;
- pub mod str;
- pub mod string;
--#[cfg(target_has_atomic = "ptr")]
-+#[cfg(all(not(no_sync), target_has_atomic = "ptr"))]
- pub mod sync;
- #[cfg(all(not(no_global_oom_handling), target_has_atomic = "ptr"))]
- pub mod task;
-diff --git a/rust/alloc/macros.rs b/rust/alloc/macros.rs
-index d3e9e65c3fe5..47ebcd5277d1 100644
---- a/rust/alloc/macros.rs
-+++ b/rust/alloc/macros.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- /// Creates a [`Vec`] containing the arguments.
- ///
- /// `vec!` allows `Vec`s to be defined with the same syntax as array expressions.
-@@ -34,7 +36,7 @@
- /// be mindful of side effects.
- ///
- /// [`Vec`]: crate::vec::Vec
--#[cfg(not(test))]
-+#[cfg(all(not(no_global_oom_handling), not(test)))]
- #[macro_export]
- #[stable(feature = "rust1", since = "1.0.0")]
- #[rustc_diagnostic_item = "vec_macro"]
-diff --git a/rust/alloc/raw_vec.rs b/rust/alloc/raw_vec.rs
-index 8fa0242ca9a9..018c4657f580 100644
---- a/rust/alloc/raw_vec.rs
-+++ b/rust/alloc/raw_vec.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- #![unstable(feature = "raw_vec_internals", reason = "unstable const warnings", issue = "none")]
- 
- use core::alloc::LayoutError;
-@@ -18,10 +20,10 @@ use crate::collections::TryReserveErrorKind::*;
- #[cfg(test)]
- mod tests;
- 
--#[cfg(not(no_global_oom_handling))]
- enum AllocInit {
-     /// The contents of the new memory are uninitialized.
-     Uninitialized,
-+    #[allow(dead_code)]
-     /// The new memory is guaranteed to be zeroed.
-     Zeroed,
- }
-@@ -132,6 +134,13 @@ impl<T, A: Allocator> RawVec<T, A> {
-         Self::allocate_in(capacity, AllocInit::Uninitialized, alloc)
-     }
- 
-+    /// Like `try_with_capacity`, but parameterized over the choice of
-+    /// allocator for the returned `RawVec`.
-+    #[inline]
-+    pub fn try_with_capacity_in(capacity: usize, alloc: A) -> Result<Self, TryReserveError> {
-+        Self::try_allocate_in(capacity, AllocInit::Uninitialized, alloc)
++pub(crate) fn try_ident(it: &mut token_stream::IntoIter) -> Option<String> {
++    if let Some(TokenTree::Ident(ident)) = it.next() {
++        Some(ident.to_string())
++    } else {
++        None
 +    }
++}
 +
-     /// Like `with_capacity_zeroed`, but parameterized over the choice
-     /// of allocator for the returned `RawVec`.
-     #[cfg(not(no_global_oom_handling))]
-@@ -201,6 +210,29 @@ impl<T, A: Allocator> RawVec<T, A> {
-         }
-     }
- 
-+    fn try_allocate_in(capacity: usize, init: AllocInit, alloc: A) -> Result<Self, TryReserveError> {
-+        if mem::size_of::<T>() == 0 {
-+            return Ok(Self::new_in(alloc));
++pub(crate) fn try_literal(it: &mut token_stream::IntoIter) -> Option<String> {
++    if let Some(TokenTree::Literal(literal)) = it.next() {
++        Some(literal.to_string())
++    } else {
++        None
++    }
++}
++
++pub(crate) fn try_byte_string(it: &mut token_stream::IntoIter) -> Option<String> {
++    try_literal(it).and_then(|byte_string| {
++        if byte_string.starts_with("b\"") && byte_string.ends_with('\"') {
++            Some(byte_string[2..byte_string.len() - 1].to_string())
++        } else {
++            None
 +        }
++    })
++}
 +
-+        let layout = Layout::array::<T>(capacity).map_err(|_| CapacityOverflow)?;
-+        alloc_guard(layout.size())?;
-+        let result = match init {
-+            AllocInit::Uninitialized => alloc.allocate(layout),
-+            AllocInit::Zeroed => alloc.allocate_zeroed(layout),
++pub(crate) fn expect_ident(it: &mut token_stream::IntoIter) -> String {
++    try_ident(it).expect("Expected Ident")
++}
++
++pub(crate) fn expect_punct(it: &mut token_stream::IntoIter) -> char {
++    if let TokenTree::Punct(punct) = it.next().expect("Reached end of token stream for Punct") {
++        punct.as_char()
++    } else {
++        panic!("Expected Punct");
++    }
++}
++
++pub(crate) fn expect_literal(it: &mut token_stream::IntoIter) -> String {
++    try_literal(it).expect("Expected Literal")
++}
++
++pub(crate) fn expect_group(it: &mut token_stream::IntoIter) -> Group {
++    if let TokenTree::Group(group) = it.next().expect("Reached end of token stream for Group") {
++        group
++    } else {
++        panic!("Expected Group");
++    }
++}
++
++pub(crate) fn expect_byte_string(it: &mut token_stream::IntoIter) -> String {
++    try_byte_string(it).expect("Expected byte string")
++}
++
++pub(crate) fn expect_end(it: &mut token_stream::IntoIter) {
++    if it.next().is_some() {
++        panic!("Expected end");
++    }
++}
++
++pub(crate) fn get_literal(it: &mut token_stream::IntoIter, expected_name: &str) -> String {
++    assert_eq!(expect_ident(it), expected_name);
++    assert_eq!(expect_punct(it), ':');
++    let literal = expect_literal(it);
++    assert_eq!(expect_punct(it), ',');
++    literal
++}
++
++pub(crate) fn get_byte_string(it: &mut token_stream::IntoIter, expected_name: &str) -> String {
++    assert_eq!(expect_ident(it), expected_name);
++    assert_eq!(expect_punct(it), ':');
++    let byte_string = expect_byte_string(it);
++    assert_eq!(expect_punct(it), ',');
++    byte_string
++}
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+new file mode 100644
+index 000000000000..d4ac221387a1
+--- /dev/null
++++ b/rust/macros/lib.rs
+@@ -0,0 +1,94 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Crate for all kernel procedural macros.
++
++mod helpers;
++mod module;
++
++use proc_macro::TokenStream;
++
++/// Declares a kernel module.
++///
++/// The `type` argument should be a type which implements the [`Module`]
++/// trait. Also accepts various forms of kernel metadata.
++///
++/// C header: [`include/linux/moduleparam.h`](../../../include/linux/moduleparam.h)
++///
++/// [`Module`]: ../kernel/trait.Module.html
++///
++/// # Examples
++///
++/// ```ignore
++/// use kernel::prelude::*;
++///
++/// module!{
++///     type: MyModule,
++///     name: b"my_kernel_module",
++///     author: b"Rust for Linux Contributors",
++///     description: b"My very own kernel module!",
++///     license: b"GPL",
++///     params: {
++///        my_i32: i32 {
++///            default: 42,
++///            permissions: 0o000,
++///            description: b"Example of i32",
++///        },
++///        writeable_i32: i32 {
++///            default: 42,
++///            permissions: 0o644,
++///            description: b"Example of i32",
++///        },
++///    },
++/// }
++///
++/// struct MyModule;
++///
++/// impl kernel::Module for MyModule {
++///     fn init() -> Result<Self> {
++///         // If the parameter is writeable, then the kparam lock must be
++///         // taken to read the parameter:
++///         {
++///             let lock = THIS_MODULE.kernel_param_lock();
++///             pr_info!("i32 param is:  {}\n", writeable_i32.read(&lock));
++///         }
++///         // If the parameter is read only, it can be read without locking
++///         // the kernel parameters:
++///         pr_info!("i32 param is:  {}\n", my_i32.read());
++///         Ok(Self)
++///     }
++/// }
++/// ```
++///
++/// # Supported argument types
++///   - `type`: type which implements the [`Module`] trait (required).
++///   - `name`: byte array of the name of the kernel module (required).
++///   - `author`: byte array of the author of the kernel module.
++///   - `description`: byte array of the description of the kernel module.
++///   - `license`: byte array of the license of the kernel module (required).
++///   - `alias`: byte array of alias name of the kernel module.
++///   - `alias_rtnl_link`: byte array of the `rtnl_link_alias` of the kernel module (mutually exclusive with `alias`).
++///   - `params`: parameters for the kernel module, as described below.
++///
++/// # Supported parameter types
++///
++///   - `bool`: Corresponds to C `bool` param type.
++///   - `i8`: No equivalent C param type.
++///   - `u8`: Corresponds to C `char` param type.
++///   - `i16`: Corresponds to C `short` param type.
++///   - `u16`: Corresponds to C `ushort` param type.
++///   - `i32`: Corresponds to C `int` param type.
++///   - `u32`: Corresponds to C `uint` param type.
++///   - `i64`: No equivalent C param type.
++///   - `u64`: Corresponds to C `ullong` param type.
++///   - `isize`: No equivalent C param type.
++///   - `usize`: No equivalent C param type.
++///   - `str`: Corresponds to C `charp` param type. Reading returns a byte slice.
++///   - `ArrayParam<T,N>`: Corresponds to C parameters created using `module_param_array`. An array
++///     of `T`'s of length at **most** `N`.
++///
++/// `invbool` is unsupported: it was only ever used in a few modules.
++/// Consider using a `bool` and inverting the logic instead.
++#[proc_macro]
++pub fn module(ts: TokenStream) -> TokenStream {
++    module::module(ts)
++}
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+new file mode 100644
+index 000000000000..323934b24e7f
+--- /dev/null
++++ b/rust/macros/module.rs
+@@ -0,0 +1,631 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use proc_macro::{token_stream, Delimiter, Group, Literal, TokenStream, TokenTree};
++
++use crate::helpers::*;
++
++#[derive(Clone, PartialEq)]
++enum ParamType {
++    Ident(String),
++    Array { vals: String, max_length: usize },
++}
++
++fn expect_array_fields(it: &mut token_stream::IntoIter) -> ParamType {
++    assert_eq!(expect_punct(it), '<');
++    let vals = expect_ident(it);
++    assert_eq!(expect_punct(it), ',');
++    let max_length_str = expect_literal(it);
++    let max_length = max_length_str
++        .parse::<usize>()
++        .expect("Expected usize length");
++    assert_eq!(expect_punct(it), '>');
++    ParamType::Array { vals, max_length }
++}
++
++fn expect_type(it: &mut token_stream::IntoIter) -> ParamType {
++    if let TokenTree::Ident(ident) = it
++        .next()
++        .expect("Reached end of token stream for param type")
++    {
++        match ident.to_string().as_ref() {
++            "ArrayParam" => expect_array_fields(it),
++            _ => ParamType::Ident(ident.to_string()),
++        }
++    } else {
++        panic!("Expected Param Type")
++    }
++}
++
++struct ModInfoBuilder<'a> {
++    module: &'a str,
++    counter: usize,
++    buffer: String,
++}
++
++impl<'a> ModInfoBuilder<'a> {
++    fn new(module: &'a str) -> Self {
++        ModInfoBuilder {
++            module,
++            counter: 0,
++            buffer: String::new(),
++        }
++    }
++
++    fn emit_base(&mut self, field: &str, content: &str, builtin: bool) {
++        use std::fmt::Write;
++
++        let string = if builtin {
++            // Built-in modules prefix their modinfo strings by `module.`.
++            format!(
++                "{module}.{field}={content}\0",
++                module = self.module,
++                field = field,
++                content = content
++            )
++        } else {
++            // Loadable modules' modinfo strings go as-is.
++            format!("{field}={content}\0", field = field, content = content)
 +        };
-+        let ptr = result.map_err(|_| AllocError { layout, non_exhaustive: () })?;
 +
-+        // Allocators currently return a `NonNull<[u8]>` whose length
-+        // matches the size requested. If that ever changes, the capacity
-+        // here should change to `ptr.len() / mem::size_of::<T>()`.
-+        Ok(Self {
-+            ptr: unsafe { Unique::new_unchecked(ptr.cast().as_ptr()) },
-+            cap: capacity,
-+            alloc,
-+        })
++        write!(
++            &mut self.buffer,
++            "
++                {cfg}
++                #[doc(hidden)]
++                #[link_section = \".modinfo\"]
++                #[used]
++                pub static __{module}_{counter}: [u8; {length}] = *{string};
++            ",
++            cfg = if builtin {
++                "#[cfg(not(MODULE))]"
++            } else {
++                "#[cfg(MODULE)]"
++            },
++            module = self.module,
++            counter = self.counter,
++            length = string.len(),
++            string = Literal::byte_string(string.as_bytes()),
++        )
++        .unwrap();
++
++        self.counter += 1;
 +    }
 +
-     /// Reconstitutes a `RawVec` from a pointer, capacity, and allocator.
-     ///
-     /// # Safety
-@@ -309,6 +341,12 @@ impl<T, A: Allocator> RawVec<T, A> {
-         }
-     }
- 
-+    /// The same as `reserve_for_push`, but returns on errors instead of panicking or aborting.
-+    #[inline(never)]
-+    pub fn try_reserve_for_push(&mut self, len: usize) -> Result<(), TryReserveError> {
-+        self.grow_amortized(len, 1)
++    fn emit_only_builtin(&mut self, field: &str, content: &str) {
++        self.emit_base(field, content, true)
 +    }
 +
-     /// Ensures that the buffer contains at least enough space to hold `len +
-     /// additional` elements. If it doesn't already, will reallocate the
-     /// minimum possible amount of memory necessary. Generally this will be
-@@ -354,6 +392,16 @@ impl<T, A: Allocator> RawVec<T, A> {
-     pub fn shrink_to_fit(&mut self, cap: usize) {
-         handle_reserve(self.shrink(cap));
-     }
-+
-+    /// Tries to shrink the buffer down to the specified capacity. If the given amount
-+    /// is 0, actually completely deallocates.
-+    ///
-+    /// # Panics
-+    ///
-+    /// Panics if the given amount is *larger* than the current capacity.
-+    pub fn try_shrink_to_fit(&mut self, cap: usize) -> Result<(), TryReserveError> {
-+        self.shrink(cap)
-+    }
- }
- 
- impl<T, A: Allocator> RawVec<T, A> {
-diff --git a/rust/alloc/slice.rs b/rust/alloc/slice.rs
-index f0397d08f95a..8cb5170f639d 100644
---- a/rust/alloc/slice.rs
-+++ b/rust/alloc/slice.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- //! A dynamically-sized view into a contiguous sequence, `[T]`.
- //!
- //! *[See also the slice primitive type](slice).*
-@@ -93,11 +95,11 @@ use core::mem::size_of;
- use core::ptr;
- 
- use crate::alloc::Allocator;
--#[cfg(not(no_global_oom_handling))]
- use crate::alloc::Global;
- #[cfg(not(no_global_oom_handling))]
- use crate::borrow::ToOwned;
- use crate::boxed::Box;
-+use crate::collections::TryReserveError;
- use crate::vec::Vec;
- 
- #[unstable(feature = "slice_range", issue = "76393")]
-@@ -157,6 +159,7 @@ mod hack {
-     use core::alloc::Allocator;
- 
-     use crate::boxed::Box;
-+    use crate::collections::TryReserveError;
-     use crate::vec::Vec;
- 
-     // We shouldn't add inline attribute to this since this is used in
-@@ -176,6 +179,11 @@ mod hack {
-         T::to_vec(s, alloc)
-     }
- 
-+    #[inline]
-+    pub fn try_to_vec<T: TryConvertVec, A: Allocator>(s: &[T], alloc: A) -> Result<Vec<T, A>, TryReserveError> {
-+        T::try_to_vec(s, alloc)
++    fn emit_only_loadable(&mut self, field: &str, content: &str) {
++        self.emit_base(field, content, false)
 +    }
 +
-     #[cfg(not(no_global_oom_handling))]
-     pub trait ConvertVec {
-         fn to_vec<A: Allocator>(s: &[Self], alloc: A) -> Vec<Self, A>
-@@ -183,6 +191,12 @@ mod hack {
-             Self: Sized;
-     }
- 
-+    pub trait TryConvertVec {
-+        fn try_to_vec<A: Allocator>(s: &[Self], alloc: A) -> Result<Vec<Self, A>, TryReserveError>
-+        where
-+            Self: Sized;
++    fn emit(&mut self, field: &str, content: &str) {
++        self.emit_only_builtin(field, content);
++        self.emit_only_loadable(field, content);
 +    }
 +
-     #[cfg(not(no_global_oom_handling))]
-     impl<T: Clone> ConvertVec for T {
-         #[inline]
-@@ -235,6 +249,42 @@ mod hack {
-             v
-         }
-     }
++    fn emit_param(&mut self, field: &str, param: &str, content: &str) {
++        let content = format!("{param}:{content}", param = param, content = content);
++        self.emit(field, &content);
++    }
++}
 +
-+    impl<T: Clone> TryConvertVec for T {
-+        #[inline]
-+        default fn try_to_vec<A: Allocator>(s: &[Self], alloc: A) -> Result<Vec<Self, A>, TryReserveError> {
-+            struct DropGuard<'a, T, A: Allocator> {
-+                vec: &'a mut Vec<T, A>,
-+                num_init: usize,
-+            }
-+            impl<'a, T, A: Allocator> Drop for DropGuard<'a, T, A> {
-+                #[inline]
-+                fn drop(&mut self) {
-+                    // SAFETY:
-+                    // items were marked initialized in the loop below
-+                    unsafe {
-+                        self.vec.set_len(self.num_init);
-+                    }
++fn permissions_are_readonly(perms: &str) -> bool {
++    let (radix, digits) = if let Some(n) = perms.strip_prefix("0x") {
++        (16, n)
++    } else if let Some(n) = perms.strip_prefix("0o") {
++        (8, n)
++    } else if let Some(n) = perms.strip_prefix("0b") {
++        (2, n)
++    } else {
++        (10, perms)
++    };
++    match u32::from_str_radix(digits, radix) {
++        Ok(perms) => perms & 0o222 == 0,
++        Err(_) => false,
++    }
++}
++
++fn param_ops_path(param_type: &str) -> &'static str {
++    match param_type {
++        "bool" => "kernel::module_param::PARAM_OPS_BOOL",
++        "i8" => "kernel::module_param::PARAM_OPS_I8",
++        "u8" => "kernel::module_param::PARAM_OPS_U8",
++        "i16" => "kernel::module_param::PARAM_OPS_I16",
++        "u16" => "kernel::module_param::PARAM_OPS_U16",
++        "i32" => "kernel::module_param::PARAM_OPS_I32",
++        "u32" => "kernel::module_param::PARAM_OPS_U32",
++        "i64" => "kernel::module_param::PARAM_OPS_I64",
++        "u64" => "kernel::module_param::PARAM_OPS_U64",
++        "isize" => "kernel::module_param::PARAM_OPS_ISIZE",
++        "usize" => "kernel::module_param::PARAM_OPS_USIZE",
++        "str" => "kernel::module_param::PARAM_OPS_STR",
++        t => panic!("Unrecognized type {}", t),
++    }
++}
++
++fn try_simple_param_val(
++    param_type: &str,
++) -> Box<dyn Fn(&mut token_stream::IntoIter) -> Option<String>> {
++    match param_type {
++        "bool" => Box::new(try_ident),
++        "str" => Box::new(|param_it| {
++            try_byte_string(param_it)
++                .map(|s| format!("kernel::module_param::StringParam::Ref(b\"{}\")", s))
++        }),
++        _ => Box::new(try_literal),
++    }
++}
++
++fn get_default(param_type: &ParamType, param_it: &mut token_stream::IntoIter) -> String {
++    let try_param_val = match param_type {
++        ParamType::Ident(ref param_type)
++        | ParamType::Array {
++            vals: ref param_type,
++            max_length: _,
++        } => try_simple_param_val(param_type),
++    };
++    assert_eq!(expect_ident(param_it), "default");
++    assert_eq!(expect_punct(param_it), ':');
++    let default = match param_type {
++        ParamType::Ident(_) => try_param_val(param_it).expect("Expected default param value"),
++        ParamType::Array {
++            vals: _,
++            max_length: _,
++        } => {
++            let group = expect_group(param_it);
++            assert_eq!(group.delimiter(), Delimiter::Bracket);
++            let mut default_vals = Vec::new();
++            let mut it = group.stream().into_iter();
++
++            while let Some(default_val) = try_param_val(&mut it) {
++                default_vals.push(default_val);
++                match it.next() {
++                    Some(TokenTree::Punct(punct)) => assert_eq!(punct.as_char(), ','),
++                    None => break,
++                    _ => panic!("Expected ',' or end of array default values"),
 +                }
 +            }
-+            let mut vec = Vec::try_with_capacity_in(s.len(), alloc)?;
-+            let mut guard = DropGuard { vec: &mut vec, num_init: 0 };
-+            let slots = guard.vec.spare_capacity_mut();
-+            // .take(slots.len()) is necessary for LLVM to remove bounds checks
-+            // and has better codegen than zip.
-+            for (i, b) in s.iter().enumerate().take(slots.len()) {
-+                guard.num_init = i;
-+                slots[i].write(b.clone());
-+            }
-+            core::mem::forget(guard);
-+            // SAFETY:
-+            // the vec was allocated and initialized above to at least this length.
-+            unsafe {
-+                vec.set_len(s.len());
-+            }
-+            Ok(vec)
-+        }
-+    }
- }
- 
- #[lang = "slice_alloc"]
-@@ -477,6 +527,24 @@ impl<T> [T] {
-         self.to_vec_in(Global)
-     }
- 
-+    /// Tries to copy `self` into a new `Vec`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let s = [10, 40, 30];
-+    /// let x = s.try_to_vec().unwrap();
-+    /// // Here, `s` and `x` can be modified independently.
-+    /// ```
-+    #[inline]
-+    #[stable(feature = "kernel", since = "1.0.0")]
-+    pub fn try_to_vec(&self) -> Result<Vec<T>, TryReserveError>
-+    where
-+        T: Clone,
-+    {
-+        self.try_to_vec_in(Global)
-+    }
 +
-     /// Copies `self` into a new `Vec` with an allocator.
-     ///
-     /// # Examples
-@@ -501,6 +569,29 @@ impl<T> [T] {
-         hack::to_vec(self, alloc)
-     }
- 
-+    /// Tries to copy `self` into a new `Vec` with an allocator.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// #![feature(allocator_api)]
-+    ///
-+    /// use std::alloc::System;
-+    ///
-+    /// let s = [10, 40, 30];
-+    /// let x = s.try_to_vec_in(System).unwrap();
-+    /// // Here, `s` and `x` can be modified independently.
-+    /// ```
-+    #[inline]
-+    #[stable(feature = "kernel", since = "1.0.0")]
-+    pub fn try_to_vec_in<A: Allocator>(&self, alloc: A) -> Result<Vec<T, A>, TryReserveError>
-+    where
-+        T: Clone,
-+    {
-+        // N.B., see the `hack` module in this file for more details.
-+        hack::try_to_vec(self, alloc)
-+    }
-+
-     /// Converts `self` into a vector without clones or allocation.
-     ///
-     /// The resulting vector can be converted back into a box via
-diff --git a/rust/alloc/str.rs b/rust/alloc/str.rs
-index 69495f31c32c..a1370c2d674c 100644
---- a/rust/alloc/str.rs
-+++ b/rust/alloc/str.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- //! Unicode string slices.
- //!
- //! *[See also the `str` primitive type](str).*
-@@ -36,6 +38,7 @@ use core::unicode::conversions;
- 
- use crate::borrow::ToOwned;
- use crate::boxed::Box;
-+use crate::collections::TryReserveError;
- use crate::slice::{Concat, Join, SliceIndex};
- use crate::string::String;
- use crate::vec::Vec;
-@@ -590,6 +593,22 @@ impl str {
-         // make_ascii_lowercase() preserves the UTF-8 invariant.
-         unsafe { String::from_utf8_unchecked(bytes) }
-     }
-+
-+    /// Tries to create a `String`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// Basic usage:
-+    ///
-+    /// ```
-+    /// let s: &str = "a";
-+    /// let ss: String = s.try_to_owned().unwrap();
-+    /// ```
-+    #[inline]
-+    #[stable(feature = "kernel", since = "1.0.0")]
-+    pub fn try_to_owned(&self) -> Result<String, TryReserveError> {
-+        unsafe { Ok(String::from_utf8_unchecked(self.as_bytes().try_to_vec()?)) }
-+    }
- }
- 
- /// Converts a boxed slice of bytes to a boxed string slice without checking
-diff --git a/rust/alloc/string.rs b/rust/alloc/string.rs
-index 716bb4983a65..5b9780cfc11f 100644
---- a/rust/alloc/string.rs
-+++ b/rust/alloc/string.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- //! A UTF-8–encoded, growable string.
- //!
- //! This module contains the [`String`] type, the [`ToString`] trait for
-@@ -47,8 +49,8 @@ use core::char::{decode_utf16, REPLACEMENT_CHARACTER};
- use core::fmt;
- use core::hash;
- #[cfg(not(no_global_oom_handling))]
--use core::iter::FromIterator;
--use core::iter::{from_fn, FusedIterator};
-+use core::iter::{from_fn, FromIterator};
-+use core::iter::FusedIterator;
- #[cfg(not(no_global_oom_handling))]
- use core::ops::Add;
- #[cfg(not(no_global_oom_handling))]
-diff --git a/rust/alloc/vec/drain.rs b/rust/alloc/vec/drain.rs
-index 1bff19d05c10..8116ba6dfd9e 100644
---- a/rust/alloc/vec/drain.rs
-+++ b/rust/alloc/vec/drain.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- use crate::alloc::{Allocator, Global};
- use core::fmt;
- use core::iter::{FusedIterator, TrustedLen};
-diff --git a/rust/alloc/vec/drain_filter.rs b/rust/alloc/vec/drain_filter.rs
-index 3c37c92ae44b..b04fce041622 100644
---- a/rust/alloc/vec/drain_filter.rs
-+++ b/rust/alloc/vec/drain_filter.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- use crate::alloc::{Allocator, Global};
- use core::ptr::{self};
- use core::slice::{self};
-diff --git a/rust/alloc/vec/into_iter.rs b/rust/alloc/vec/into_iter.rs
-index f985fb78465b..11d01ac868ca 100644
---- a/rust/alloc/vec/into_iter.rs
-+++ b/rust/alloc/vec/into_iter.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- use crate::alloc::{Allocator, Global};
- use crate::raw_vec::RawVec;
- use core::fmt;
-diff --git a/rust/alloc/vec/is_zero.rs b/rust/alloc/vec/is_zero.rs
-index 0efc4893c3c4..40e1e667c9fb 100644
---- a/rust/alloc/vec/is_zero.rs
-+++ b/rust/alloc/vec/is_zero.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- use crate::boxed::Box;
- 
- #[rustc_specialization_trait]
-diff --git a/rust/alloc/vec/mod.rs b/rust/alloc/vec/mod.rs
-index c29aa0fec5b8..a2b1dfca3561 100644
---- a/rust/alloc/vec/mod.rs
-+++ b/rust/alloc/vec/mod.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- //! A contiguous growable array type with heap-allocated contents, written
- //! `Vec<T>`.
- //!
-@@ -118,10 +120,8 @@ use self::spec_from_elem::SpecFromElem;
- #[cfg(not(no_global_oom_handling))]
- mod spec_from_elem;
- 
--#[cfg(not(no_global_oom_handling))]
- use self::set_len_on_drop::SetLenOnDrop;
- 
--#[cfg(not(no_global_oom_handling))]
- mod set_len_on_drop;
- 
- #[cfg(not(no_global_oom_handling))]
-@@ -145,7 +145,8 @@ mod spec_from_iter;
- #[cfg(not(no_global_oom_handling))]
- use self::spec_extend::SpecExtend;
- 
--#[cfg(not(no_global_oom_handling))]
-+use self::spec_extend::TrySpecExtend;
-+
- mod spec_extend;
- 
- /// A contiguous growable array type, written as `Vec<T>`, short for 'vector'.
-@@ -470,6 +471,49 @@ impl<T> Vec<T> {
-         Self::with_capacity_in(capacity, Global)
-     }
- 
-+    /// Tries to construct a new, empty `Vec<T>` with the specified capacity.
-+    ///
-+    /// The vector will be able to hold exactly `capacity` elements without
-+    /// reallocating. If `capacity` is 0, the vector will not allocate.
-+    ///
-+    /// It is important to note that although the returned vector has the
-+    /// *capacity* specified, the vector will have a zero *length*. For an
-+    /// explanation of the difference between length and capacity, see
-+    /// *[Capacity and reallocation]*.
-+    ///
-+    /// [Capacity and reallocation]: #capacity-and-reallocation
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let mut vec = Vec::try_with_capacity(10).unwrap();
-+    ///
-+    /// // The vector contains no items, even though it has capacity for more
-+    /// assert_eq!(vec.len(), 0);
-+    /// assert_eq!(vec.capacity(), 10);
-+    ///
-+    /// // These are all done without reallocating...
-+    /// for i in 0..10 {
-+    ///     vec.push(i);
-+    /// }
-+    /// assert_eq!(vec.len(), 10);
-+    /// assert_eq!(vec.capacity(), 10);
-+    ///
-+    /// // ...but this may make the vector reallocate
-+    /// vec.push(11);
-+    /// assert_eq!(vec.len(), 11);
-+    /// assert!(vec.capacity() >= 11);
-+    ///
-+    /// let mut result = Vec::try_with_capacity(usize::MAX);
-+    /// assert!(result.is_err());
-+    /// ```
-+    #[inline]
-+    #[doc(alias = "malloc")]
-+    #[stable(feature = "kernel", since = "1.0.0")]
-+    pub fn try_with_capacity(capacity: usize) -> Result<Self, TryReserveError> {
-+        Self::try_with_capacity_in(capacity, Global)
-+    }
-+
-     /// Creates a `Vec<T>` directly from the raw components of another vector.
-     ///
-     /// # Safety
-@@ -609,6 +653,53 @@ impl<T, A: Allocator> Vec<T, A> {
-         Vec { buf: RawVec::with_capacity_in(capacity, alloc), len: 0 }
-     }
- 
-+    /// Tries to construct a new, empty `Vec<T, A>` with the specified capacity
-+    /// with the provided allocator.
-+    ///
-+    /// The vector will be able to hold exactly `capacity` elements without
-+    /// reallocating. If `capacity` is 0, the vector will not allocate.
-+    ///
-+    /// It is important to note that although the returned vector has the
-+    /// *capacity* specified, the vector will have a zero *length*. For an
-+    /// explanation of the difference between length and capacity, see
-+    /// *[Capacity and reallocation]*.
-+    ///
-+    /// [Capacity and reallocation]: #capacity-and-reallocation
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// #![feature(allocator_api)]
-+    ///
-+    /// use std::alloc::System;
-+    ///
-+    /// let mut vec = Vec::try_with_capacity_in(10, System).unwrap();
-+    ///
-+    /// // The vector contains no items, even though it has capacity for more
-+    /// assert_eq!(vec.len(), 0);
-+    /// assert_eq!(vec.capacity(), 10);
-+    ///
-+    /// // These are all done without reallocating...
-+    /// for i in 0..10 {
-+    ///     vec.push(i);
-+    /// }
-+    /// assert_eq!(vec.len(), 10);
-+    /// assert_eq!(vec.capacity(), 10);
-+    ///
-+    /// // ...but this may make the vector reallocate
-+    /// vec.push(11);
-+    /// assert_eq!(vec.len(), 11);
-+    /// assert!(vec.capacity() >= 11);
-+    ///
-+    /// let mut result = Vec::try_with_capacity_in(usize::MAX, System);
-+    /// assert!(result.is_err());
-+    /// ```
-+    #[inline]
-+    #[stable(feature = "kernel", since = "1.0.0")]
-+    pub fn try_with_capacity_in(capacity: usize, alloc: A) -> Result<Self, TryReserveError> {
-+        Ok(Vec { buf: RawVec::try_with_capacity_in(capacity, alloc)?, len: 0 })
-+    }
-+
-     /// Creates a `Vec<T, A>` directly from the raw components of another vector.
-     ///
-     /// # Safety
-@@ -940,6 +1031,33 @@ impl<T, A: Allocator> Vec<T, A> {
-         }
-     }
- 
-+    /// Tries to shrink the capacity of the vector as much as possible.
-+    ///
-+    /// It will drop down as close as possible to the length but the allocator
-+    /// may still inform the vector that there is space for a few more elements.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let mut vec = Vec::with_capacity(10);
-+    /// vec.extend([1, 2, 3]);
-+    /// assert_eq!(vec.capacity(), 10);
-+    /// vec.try_shrink_to_fit().unwrap();
-+    /// assert!(vec.capacity() >= 3);
-+    /// ```
-+    #[doc(alias = "realloc")]
-+    #[stable(feature = "kernel", since = "1.0.0")]
-+    pub fn try_shrink_to_fit(&mut self) -> Result<(), TryReserveError> {
-+        // The capacity is never less than the length, and there's nothing to do when
-+        // they are equal, so we can avoid the panic case in `RawVec::try_shrink_to_fit`
-+        // by only calling it with a greater capacity.
-+        if self.capacity() <= self.len {
-+            return Ok(());
-+        }
-+
-+        self.buf.try_shrink_to_fit(self.len)
-+    }
-+
-     /// Shrinks the capacity of the vector with a lower bound.
-     ///
-     /// The capacity will remain at least as large as both the length
-@@ -1002,6 +1120,41 @@ impl<T, A: Allocator> Vec<T, A> {
-         }
-     }
- 
-+    /// Tries to convert the vector into [`Box<[T]>`][owned slice].
-+    ///
-+    /// Note that this will drop any excess capacity.
-+    ///
-+    /// [owned slice]: Box
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let v = vec![1, 2, 3];
-+    ///
-+    /// let slice = v.try_into_boxed_slice().unwrap();
-+    /// ```
-+    ///
-+    /// Any excess capacity is removed:
-+    ///
-+    /// ```
-+    /// let mut vec = Vec::with_capacity(10);
-+    /// vec.extend([1, 2, 3]);
-+    ///
-+    /// assert_eq!(vec.capacity(), 10);
-+    /// let slice = vec.try_into_boxed_slice().unwrap();
-+    /// assert_eq!(slice.into_vec().capacity(), 3);
-+    /// ```
-+    #[stable(feature = "kernel", since = "1.0.0")]
-+    pub fn try_into_boxed_slice(mut self) -> Result<Box<[T], A>, TryReserveError> {
-+        unsafe {
-+            self.try_shrink_to_fit()?;
-+            let me = ManuallyDrop::new(self);
-+            let buf = ptr::read(&me.buf);
-+            let len = me.len();
-+            Ok(buf.into_box(len).assume_init())
-+        }
-+    }
-+
-     /// Shortens the vector, keeping the first `len` elements and dropping
-     /// the rest.
-     ///
-@@ -1735,6 +1888,29 @@ impl<T, A: Allocator> Vec<T, A> {
-         }
-     }
- 
-+    /// Tries to append an element to the back of a collection.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let mut vec = vec![1, 2];
-+    /// vec.try_push(3).unwrap();
-+    /// assert_eq!(vec, [1, 2, 3]);
-+    /// ```
-+    #[inline]
-+    #[stable(feature = "kernel", since = "1.0.0")]
-+    pub fn try_push(&mut self, value: T) -> Result<(), TryReserveError> {
-+        if self.len == self.buf.capacity() {
-+            self.buf.try_reserve_for_push(self.len)?;
-+        }
-+        unsafe {
-+            let end = self.as_mut_ptr().add(self.len);
-+            ptr::write(end, value);
-+            self.len += 1;
-+        }
-+        Ok(())
-+    }
-+
-     /// Removes the last element from a vector and returns it, or [`None`] if it
-     /// is empty.
-     ///
-@@ -1799,6 +1975,17 @@ impl<T, A: Allocator> Vec<T, A> {
-         self.len += count;
-     }
- 
-+    /// Tries to append elements to `Self` from other buffer.
-+    #[inline]
-+    unsafe fn try_append_elements(&mut self, other: *const [T]) -> Result<(), TryReserveError> {
-+        let count = unsafe { (*other).len() };
-+        self.try_reserve(count)?;
-+        let len = self.len();
-+        unsafe { ptr::copy_nonoverlapping(other as *const T, self.as_mut_ptr().add(len), count) };
-+        self.len += count;
-+        Ok(())
-+    }
-+
-     /// Removes the specified range from the vector in bulk, returning all
-     /// removed elements as an iterator. If the iterator is dropped before
-     /// being fully consumed, it drops the remaining removed elements.
-@@ -2209,6 +2396,44 @@ impl<T: Clone, A: Allocator> Vec<T, A> {
-         }
-     }
- 
-+    /// Tries to resize the `Vec` in-place so that `len` is equal to `new_len`.
-+    ///
-+    /// If `new_len` is greater than `len`, the `Vec` is extended by the
-+    /// difference, with each additional slot filled with `value`.
-+    /// If `new_len` is less than `len`, the `Vec` is simply truncated.
-+    ///
-+    /// This method requires `T` to implement [`Clone`],
-+    /// in order to be able to clone the passed value.
-+    /// If you need more flexibility (or want to rely on [`Default`] instead of
-+    /// [`Clone`]), use [`Vec::resize_with`].
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let mut vec = vec!["hello"];
-+    /// vec.try_resize(3, "world").unwrap();
-+    /// assert_eq!(vec, ["hello", "world", "world"]);
-+    ///
-+    /// let mut vec = vec![1, 2, 3, 4];
-+    /// vec.try_resize(2, 0).unwrap();
-+    /// assert_eq!(vec, [1, 2]);
-+    ///
-+    /// let mut vec = vec![42];
-+    /// let result = vec.try_resize(usize::MAX, 0);
-+    /// assert!(result.is_err());
-+    /// ```
-+    #[stable(feature = "kernel", since = "1.0.0")]
-+    pub fn try_resize(&mut self, new_len: usize, value: T) -> Result<(), TryReserveError> {
-+        let len = self.len();
-+
-+        if new_len > len {
-+            self.try_extend_with(new_len - len, ExtendElement(value))
-+        } else {
-+            self.truncate(new_len);
-+            Ok(())
-+        }
-+    }
-+
-     /// Clones and appends all elements in a slice to the `Vec`.
-     ///
-     /// Iterates over the slice `other`, clones each element, and then appends
-@@ -2234,6 +2459,30 @@ impl<T: Clone, A: Allocator> Vec<T, A> {
-         self.spec_extend(other.iter())
-     }
- 
-+    /// Tries to clone and append all elements in a slice to the `Vec`.
-+    ///
-+    /// Iterates over the slice `other`, clones each element, and then appends
-+    /// it to this `Vec`. The `other` slice is traversed in-order.
-+    ///
-+    /// Note that this function is same as [`extend`] except that it is
-+    /// specialized to work with slices instead. If and when Rust gets
-+    /// specialization this function will likely be deprecated (but still
-+    /// available).
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let mut vec = vec![1];
-+    /// vec.try_extend_from_slice(&[2, 3, 4]).unwrap();
-+    /// assert_eq!(vec, [1, 2, 3, 4]);
-+    /// ```
-+    ///
-+    /// [`extend`]: Vec::extend
-+    #[stable(feature = "kernel", since = "1.0.0")]
-+    pub fn try_extend_from_slice(&mut self, other: &[T]) -> Result<(), TryReserveError> {
-+        self.try_spec_extend(other.iter())
-+    }
-+
-     /// Copies elements from `src` range to the end of the vector.
-     ///
-     /// # Panics
-@@ -2328,6 +2577,36 @@ impl<T, A: Allocator> Vec<T, A> {
-             // len set by scope guard
-         }
-     }
-+
-+    /// Try to extend the vector by `n` values, using the given generator.
-+    fn try_extend_with<E: ExtendWith<T>>(&mut self, n: usize, mut value: E) -> Result<(), TryReserveError> {
-+        self.try_reserve(n)?;
-+
-+        unsafe {
-+            let mut ptr = self.as_mut_ptr().add(self.len());
-+            // Use SetLenOnDrop to work around bug where compiler
-+            // might not realize the store through `ptr` through self.set_len()
-+            // don't alias.
-+            let mut local_len = SetLenOnDrop::new(&mut self.len);
-+
-+            // Write all elements except the last one
-+            for _ in 1..n {
-+                ptr::write(ptr, value.next());
-+                ptr = ptr.offset(1);
-+                // Increment the length in every step in case next() panics
-+                local_len.increment_len(1);
-+            }
-+
-+            if n > 0 {
-+                // We can write the last element directly without cloning needlessly
-+                ptr::write(ptr, value.last());
-+                local_len.increment_len(1);
-+            }
-+
-+            // len set by scope guard
-+            Ok(())
-+        }
-+    }
- }
- 
- impl<T: PartialEq, A: Allocator> Vec<T, A> {
-@@ -2662,6 +2941,34 @@ impl<T, A: Allocator> Vec<T, A> {
-         }
-     }
- 
-+    // leaf method to which various SpecFrom/SpecExtend implementations delegate when
-+    // they have no further optimizations to apply
-+    fn try_extend_desugared<I: Iterator<Item = T>>(&mut self, mut iterator: I) -> Result<(), TryReserveError> {
-+        // This is the case for a general iterator.
-+        //
-+        // This function should be the moral equivalent of:
-+        //
-+        //      for item in iterator {
-+        //          self.push(item);
-+        //      }
-+        while let Some(element) = iterator.next() {
-+            let len = self.len();
-+            if len == self.capacity() {
-+                let (lower, _) = iterator.size_hint();
-+                self.try_reserve(lower.saturating_add(1))?;
-+            }
-+            unsafe {
-+                ptr::write(self.as_mut_ptr().add(len), element);
-+                // Since next() executes user code which can panic we have to bump the length
-+                // after each step.
-+                // NB can't overflow since we would have had to alloc the address space
-+                self.set_len(len + 1);
-+            }
-+        }
-+
-+        Ok(())
-+    }
-+
-     /// Creates a splicing iterator that replaces the specified range in the vector
-     /// with the given `replace_with` iterator and yields the removed items.
-     /// `replace_with` does not need to be the same length as `range`.
-diff --git a/rust/alloc/vec/partial_eq.rs b/rust/alloc/vec/partial_eq.rs
-index 50e140961050..273e99bed488 100644
---- a/rust/alloc/vec/partial_eq.rs
-+++ b/rust/alloc/vec/partial_eq.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- use crate::alloc::Allocator;
- #[cfg(not(no_global_oom_handling))]
- use crate::borrow::Cow;
-diff --git a/rust/alloc/vec/set_len_on_drop.rs b/rust/alloc/vec/set_len_on_drop.rs
-index 8b66bc812129..448bf5076a0b 100644
---- a/rust/alloc/vec/set_len_on_drop.rs
-+++ b/rust/alloc/vec/set_len_on_drop.rs
-@@ -1,3 +1,5 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- // Set the length of the vec when the `SetLenOnDrop` value goes out of scope.
- //
- // The idea is: The length field in SetLenOnDrop is a local variable
-diff --git a/rust/alloc/vec/spec_extend.rs b/rust/alloc/vec/spec_extend.rs
-index c3b4534096de..729f4bb1709f 100644
---- a/rust/alloc/vec/spec_extend.rs
-+++ b/rust/alloc/vec/spec_extend.rs
-@@ -1,4 +1,7 @@
-+// SPDX-License-Identifier: Apache-2.0 OR MIT
-+
- use crate::alloc::Allocator;
-+use crate::collections::{TryReserveError, TryReserveErrorKind};
- use core::iter::TrustedLen;
- use core::ptr::{self};
- use core::slice::{self};
-@@ -6,10 +9,17 @@ use core::slice::{self};
- use super::{IntoIter, SetLenOnDrop, Vec};
- 
- // Specialization trait used for Vec::extend
-+#[cfg(not(no_global_oom_handling))]
- pub(super) trait SpecExtend<T, I> {
-     fn spec_extend(&mut self, iter: I);
- }
- 
-+// Specialization trait used for Vec::try_extend
-+pub(super) trait TrySpecExtend<T, I> {
-+    fn try_spec_extend(&mut self, iter: I) -> Result<(), TryReserveError>;
-+}
-+
-+#[cfg(not(no_global_oom_handling))]
- impl<T, I, A: Allocator> SpecExtend<T, I> for Vec<T, A>
- where
-     I: Iterator<Item = T>,
-@@ -19,6 +29,16 @@ where
-     }
- }
- 
-+impl<T, I, A: Allocator> TrySpecExtend<T, I> for Vec<T, A>
-+where
-+    I: Iterator<Item = T>,
-+{
-+    default fn try_spec_extend(&mut self, iter: I) -> Result<(), TryReserveError> {
-+        self.try_extend_desugared(iter)
-+    }
-+}
-+
-+#[cfg(not(no_global_oom_handling))]
- impl<T, I, A: Allocator> SpecExtend<T, I> for Vec<T, A>
- where
-     I: TrustedLen<Item = T>,
-@@ -57,6 +77,41 @@ where
-     }
- }
- 
-+impl<T, I, A: Allocator> TrySpecExtend<T, I> for Vec<T, A>
-+where
-+    I: TrustedLen<Item = T>,
-+{
-+    default fn try_spec_extend(&mut self, iterator: I) -> Result<(), TryReserveError> {
-+        // This is the case for a TrustedLen iterator.
-+        let (low, high) = iterator.size_hint();
-+        if let Some(additional) = high {
-+            debug_assert_eq!(
-+                low,
-+                additional,
-+                "TrustedLen iterator's size hint is not exact: {:?}",
-+                (low, high)
++            let mut default_array = "kernel::module_param::ArrayParam::create(&[".to_string();
++            default_array.push_str(
++                &default_vals
++                    .iter()
++                    .map(|val| val.to_string())
++                    .collect::<Vec<String>>()
++                    .join(","),
 +            );
-+            self.try_reserve(additional)?;
-+            unsafe {
-+                let mut ptr = self.as_mut_ptr().add(self.len());
-+                let mut local_len = SetLenOnDrop::new(&mut self.len);
-+                iterator.for_each(move |element| {
-+                    ptr::write(ptr, element);
-+                    ptr = ptr.offset(1);
-+                    // Since the loop executes user code which can panic we have to bump the pointer
-+                    // after each step.
-+                    // NB can't overflow since we would have had to alloc the address space
-+                    local_len.increment_len(1);
-+                });
++            default_array.push_str("])");
++            default_array
++        }
++    };
++    assert_eq!(expect_punct(param_it), ',');
++    default
++}
++
++fn generated_array_ops_name(vals: &str, max_length: usize) -> String {
++    format!(
++        "__generated_array_ops_{vals}_{max_length}",
++        vals = vals,
++        max_length = max_length
++    )
++}
++
++#[derive(Debug, Default)]
++struct ModuleInfo {
++    type_: String,
++    license: String,
++    name: String,
++    author: Option<String>,
++    description: Option<String>,
++    alias: Option<String>,
++    params: Option<Group>,
++}
++
++impl ModuleInfo {
++    fn parse(it: &mut token_stream::IntoIter) -> Self {
++        let mut info = ModuleInfo::default();
++
++        const EXPECTED_KEYS: &[&str] = &[
++            "type",
++            "name",
++            "author",
++            "description",
++            "license",
++            "alias",
++            "alias_rtnl_link",
++            "params",
++        ];
++        const REQUIRED_KEYS: &[&str] = &["type", "name", "license"];
++        let mut seen_keys = Vec::new();
++
++        loop {
++            let key = match it.next() {
++                Some(TokenTree::Ident(ident)) => ident.to_string(),
++                Some(_) => panic!("Expected Ident or end"),
++                None => break,
++            };
++
++            if seen_keys.contains(&key) {
++                panic!(
++                    "Duplicated key \"{}\". Keys can only be specified once.",
++                    key
++                );
 +            }
-+            Ok(())
-+        } else {
-+            Err(TryReserveErrorKind::CapacityOverflow.into())
++
++            assert_eq!(expect_punct(it), ':');
++
++            match key.as_str() {
++                "type" => info.type_ = expect_ident(it),
++                "name" => info.name = expect_byte_string(it),
++                "author" => info.author = Some(expect_byte_string(it)),
++                "description" => info.description = Some(expect_byte_string(it)),
++                "license" => info.license = expect_byte_string(it),
++                "alias" => info.alias = Some(expect_byte_string(it)),
++                "alias_rtnl_link" => {
++                    info.alias = Some(format!("rtnl-link-{}", expect_byte_string(it)))
++                }
++                "params" => info.params = Some(expect_group(it)),
++                _ => panic!(
++                    "Unknown key \"{}\". Valid keys are: {:?}.",
++                    key, EXPECTED_KEYS
++                ),
++            }
++
++            assert_eq!(expect_punct(it), ',');
++
++            seen_keys.push(key);
++        }
++
++        expect_end(it);
++
++        for key in REQUIRED_KEYS {
++            if !seen_keys.iter().any(|e| e == key) {
++                panic!("Missing required key \"{}\".", key);
++            }
++        }
++
++        let mut ordered_keys: Vec<&str> = Vec::new();
++        for key in EXPECTED_KEYS {
++            if seen_keys.iter().any(|e| e == key) {
++                ordered_keys.push(key);
++            }
++        }
++
++        if seen_keys != ordered_keys {
++            panic!(
++                "Keys are not ordered as expected. Order them like: {:?}.",
++                ordered_keys
++            );
++        }
++
++        info
++    }
++}
++
++pub(crate) fn module(ts: TokenStream) -> TokenStream {
++    let mut it = ts.into_iter();
++
++    let info = ModuleInfo::parse(&mut it);
++
++    let mut modinfo = ModInfoBuilder::new(info.name.as_ref());
++    if let Some(author) = info.author {
++        modinfo.emit("author", &author);
++    }
++    if let Some(description) = info.description {
++        modinfo.emit("description", &description);
++    }
++    modinfo.emit("license", &info.license);
++    if let Some(alias) = info.alias {
++        modinfo.emit("alias", &alias);
++    }
++
++    // Built-in modules also export the `file` modinfo string.
++    let file =
++        std::env::var("RUST_MODFILE").expect("Unable to fetch RUST_MODFILE environmental variable");
++    modinfo.emit_only_builtin("file", &file);
++
++    let mut array_types_to_generate = Vec::new();
++    if let Some(params) = info.params {
++        assert_eq!(params.delimiter(), Delimiter::Brace);
++
++        let mut it = params.stream().into_iter();
++
++        loop {
++            let param_name = match it.next() {
++                Some(TokenTree::Ident(ident)) => ident.to_string(),
++                Some(_) => panic!("Expected Ident or end"),
++                None => break,
++            };
++
++            assert_eq!(expect_punct(&mut it), ':');
++            let param_type = expect_type(&mut it);
++            let group = expect_group(&mut it);
++            assert_eq!(expect_punct(&mut it), ',');
++
++            assert_eq!(group.delimiter(), Delimiter::Brace);
++
++            let mut param_it = group.stream().into_iter();
++            let param_default = get_default(&param_type, &mut param_it);
++            let param_permissions = get_literal(&mut param_it, "permissions");
++            let param_description = get_byte_string(&mut param_it, "description");
++            expect_end(&mut param_it);
++
++            // TODO: More primitive types.
++            // TODO: Other kinds: unsafes, etc.
++            let (param_kernel_type, ops): (String, _) = match param_type {
++                ParamType::Ident(ref param_type) => (
++                    param_type.to_string(),
++                    param_ops_path(param_type).to_string(),
++                ),
++                ParamType::Array {
++                    ref vals,
++                    max_length,
++                } => {
++                    array_types_to_generate.push((vals.clone(), max_length));
++                    (
++                        format!("__rust_array_param_{}_{}", vals, max_length),
++                        generated_array_ops_name(vals, max_length),
++                    )
++                }
++            };
++
++            modinfo.emit_param("parmtype", &param_name, &param_kernel_type);
++            modinfo.emit_param("parm", &param_name, &param_description);
++            let param_type_internal = match param_type {
++                ParamType::Ident(ref param_type) => match param_type.as_ref() {
++                    "str" => "kernel::module_param::StringParam".to_string(),
++                    other => other.to_string(),
++                },
++                ParamType::Array {
++                    ref vals,
++                    max_length,
++                } => format!(
++                    "kernel::module_param::ArrayParam<{vals}, {max_length}>",
++                    vals = vals,
++                    max_length = max_length
++                ),
++            };
++            let read_func = if permissions_are_readonly(&param_permissions) {
++                format!(
++                    "
++                        fn read(&self) -> &<{param_type_internal} as kernel::module_param::ModuleParam>::Value {{
++                            // SAFETY: Parameters do not need to be locked because they are read only or sysfs is not enabled.
++                            unsafe {{ <{param_type_internal} as kernel::module_param::ModuleParam>::value(&__{name}_{param_name}_value) }}
++                        }}
++                    ",
++                    name = info.name,
++                    param_name = param_name,
++                    param_type_internal = param_type_internal,
++                )
++            } else {
++                format!(
++                    "
++                        fn read<'lck>(&self, lock: &'lck kernel::KParamGuard) -> &'lck <{param_type_internal} as kernel::module_param::ModuleParam>::Value {{
++                            // SAFETY: Parameters are locked by `KParamGuard`.
++                            unsafe {{ <{param_type_internal} as kernel::module_param::ModuleParam>::value(&__{name}_{param_name}_value) }}
++                        }}
++                    ",
++                    name = info.name,
++                    param_name = param_name,
++                    param_type_internal = param_type_internal,
++                )
++            };
++            let kparam = format!(
++                "
++                    kernel::bindings::kernel_param__bindgen_ty_1 {{
++                        arg: unsafe {{ &__{name}_{param_name}_value }} as *const _ as *mut kernel::c_types::c_void,
++                    }},
++                ",
++                name = info.name,
++                param_name = param_name,
++            );
++            modinfo.buffer.push_str(
++                &format!(
++                    "
++                    static mut __{name}_{param_name}_value: {param_type_internal} = {param_default};
++
++                    struct __{name}_{param_name};
++
++                    impl __{name}_{param_name} {{ {read_func} }}
++
++                    const {param_name}: __{name}_{param_name} = __{name}_{param_name};
++
++                    // Note: the C macro that generates the static structs for the `__param` section
++                    // asks for them to be `aligned(sizeof(void *))`. However, that was put in place
++                    // in 2003 in commit 38d5b085d2 (\"[PATCH] Fix over-alignment problem on x86-64\")
++                    // to undo GCC over-alignment of static structs of >32 bytes. It seems that is
++                    // not the case anymore, so we simplify to a transparent representation here
++                    // in the expectation that it is not needed anymore.
++                    // TODO: Revisit this to confirm the above comment and remove it if it happened.
++                    #[repr(transparent)]
++                    struct __{name}_{param_name}_RacyKernelParam(kernel::bindings::kernel_param);
++
++                    unsafe impl Sync for __{name}_{param_name}_RacyKernelParam {{
++                    }}
++
++                    #[cfg(not(MODULE))]
++                    const __{name}_{param_name}_name: *const kernel::c_types::c_char = b\"{name}.{param_name}\\0\" as *const _ as *const kernel::c_types::c_char;
++
++                    #[cfg(MODULE)]
++                    const __{name}_{param_name}_name: *const kernel::c_types::c_char = b\"{param_name}\\0\" as *const _ as *const kernel::c_types::c_char;
++
++                    #[link_section = \"__param\"]
++                    #[used]
++                    static __{name}_{param_name}_struct: __{name}_{param_name}_RacyKernelParam = __{name}_{param_name}_RacyKernelParam(kernel::bindings::kernel_param {{
++                        name: __{name}_{param_name}_name,
++                        // SAFETY: `__this_module` is constructed by the kernel at load time and will not be freed until the module is unloaded.
++                        #[cfg(MODULE)]
++                        mod_: unsafe {{ &kernel::bindings::__this_module as *const _ as *mut _ }},
++                        #[cfg(not(MODULE))]
++                        mod_: core::ptr::null_mut(),
++                        ops: unsafe {{ &{ops} }} as *const kernel::bindings::kernel_param_ops,
++                        perm: {permissions},
++                        level: -1,
++                        flags: 0,
++                        __bindgen_anon_1: {kparam}
++                    }});
++                    ",
++                    name = info.name,
++                    param_type_internal = param_type_internal,
++                    read_func = read_func,
++                    param_default = param_default,
++                    param_name = param_name,
++                    ops = ops,
++                    permissions = param_permissions,
++                    kparam = kparam,
++                )
++            );
 +        }
 +    }
-+}
 +
-+#[cfg(not(no_global_oom_handling))]
- impl<T, A: Allocator> SpecExtend<T, IntoIter<T>> for Vec<T, A> {
-     fn spec_extend(&mut self, mut iterator: IntoIter<T>) {
-         unsafe {
-@@ -66,6 +121,17 @@ impl<T, A: Allocator> SpecExtend<T, IntoIter<T>> for Vec<T, A> {
-     }
- }
- 
-+impl<T, A: Allocator> TrySpecExtend<T, IntoIter<T>> for Vec<T, A> {
-+    fn try_spec_extend(&mut self, mut iterator: IntoIter<T>) -> Result<(), TryReserveError> {
-+        unsafe {
-+            self.try_append_elements(iterator.as_slice() as _)?;
-+        }
-+        iterator.ptr = iterator.end;
-+        Ok(())
++    let mut generated_array_types = String::new();
++
++    for (vals, max_length) in array_types_to_generate {
++        let ops_name = generated_array_ops_name(&vals, max_length);
++        generated_array_types.push_str(&format!(
++            "
++                kernel::make_param_ops!(
++                    {ops_name},
++                    kernel::module_param::ArrayParam<{vals}, {{ {max_length} }}>
++                );
++            ",
++            ops_name = ops_name,
++            vals = vals,
++            max_length = max_length,
++        ));
 +    }
++
++    format!(
++        "
++            /// The module name.
++            ///
++            /// Used by the printing macros, e.g. [`info!`].
++            const __LOG_PREFIX: &[u8] = b\"{name}\\0\";
++
++            /// The \"Rust loadable module\" mark, for `scripts/is_rust_module.sh`.
++            //
++            // This may be best done another way later on, e.g. as a new modinfo
++            // key or a new section. For the moment, keep it simple.
++            #[cfg(MODULE)]
++            #[doc(hidden)]
++            #[used]
++            static __IS_RUST_MODULE: () = ();
++
++            static mut __MOD: Option<{type_}> = None;
++
++            // SAFETY: `__this_module` is constructed by the kernel at load time and will not be freed until the module is unloaded.
++            #[cfg(MODULE)]
++            static THIS_MODULE: kernel::ThisModule = unsafe {{ kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _) }};
++            #[cfg(not(MODULE))]
++            static THIS_MODULE: kernel::ThisModule = unsafe {{ kernel::ThisModule::from_ptr(core::ptr::null_mut()) }};
++
++            // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
++            #[cfg(MODULE)]
++            #[doc(hidden)]
++            #[no_mangle]
++            pub extern \"C\" fn init_module() -> kernel::c_types::c_int {{
++                __init()
++            }}
++
++            #[cfg(MODULE)]
++            #[doc(hidden)]
++            #[no_mangle]
++            pub extern \"C\" fn cleanup_module() {{
++                __exit()
++            }}
++
++            // Built-in modules are initialized through an initcall pointer
++            // and the identifiers need to be unique.
++            #[cfg(not(MODULE))]
++            #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
++            #[doc(hidden)]
++            #[link_section = \"{initcall_section}\"]
++            #[used]
++            pub static __{name}_initcall: extern \"C\" fn() -> kernel::c_types::c_int = __{name}_init;
++
++            #[cfg(not(MODULE))]
++            #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
++            core::arch::global_asm!(
++                r#\".section \"{initcall_section}\", \"a\"
++                __{name}_initcall:
++                    .long   __{name}_init - .
++                    .previous
++                \"#
++            );
++
++            #[cfg(not(MODULE))]
++            #[doc(hidden)]
++            #[no_mangle]
++            pub extern \"C\" fn __{name}_init() -> kernel::c_types::c_int {{
++                __init()
++            }}
++
++            #[cfg(not(MODULE))]
++            #[doc(hidden)]
++            #[no_mangle]
++            pub extern \"C\" fn __{name}_exit() {{
++                __exit()
++            }}
++
++            fn __init() -> kernel::c_types::c_int {{
++                match <{type_} as kernel::Module>::init(kernel::c_str!(\"{name}\"), &THIS_MODULE) {{
++                    Ok(m) => {{
++                        unsafe {{
++                            __MOD = Some(m);
++                        }}
++                        return 0;
++                    }}
++                    Err(e) => {{
++                        return e.to_kernel_errno();
++                    }}
++                }}
++            }}
++
++            fn __exit() {{
++                unsafe {{
++                    // Invokes `drop()` on `__MOD`, which should be used for cleanup.
++                    __MOD = None;
++                }}
++            }}
++
++            {modinfo}
++
++            {generated_array_types}
++        ",
++        type_ = info.type_,
++        name = info.name,
++        modinfo = modinfo.buffer,
++        generated_array_types = generated_array_types,
++        initcall_section = ".initcall6.init"
++    ).parse().expect("Error parsing formatted string into token stream.")
 +}
 +
-+#[cfg(not(no_global_oom_handling))]
- impl<'a, T: 'a, I, A: Allocator + 'a> SpecExtend<&'a T, I> for Vec<T, A>
- where
-     I: Iterator<Item = &'a T>,
-@@ -76,6 +142,17 @@ where
-     }
- }
- 
-+impl<'a, T: 'a, I, A: Allocator + 'a> TrySpecExtend<&'a T, I> for Vec<T, A>
-+where
-+    I: Iterator<Item = &'a T>,
-+    T: Clone,
-+{
-+    default fn try_spec_extend(&mut self, iterator: I) -> Result<(), TryReserveError> {
-+        self.try_spec_extend(iterator.cloned())
-+    }
-+}
++#[cfg(test)]
++mod tests {
++    use super::*;
 +
-+#[cfg(not(no_global_oom_handling))]
- impl<'a, T: 'a, A: Allocator + 'a> SpecExtend<&'a T, slice::Iter<'a, T>> for Vec<T, A>
- where
-     T: Copy,
-@@ -85,3 +162,13 @@ where
-         unsafe { self.append_elements(slice) };
-     }
- }
++    #[test]
++    fn test_permissions_are_readonly() {
++        assert!(permissions_are_readonly("0b000000000"));
++        assert!(permissions_are_readonly("0o000"));
++        assert!(permissions_are_readonly("000"));
++        assert!(permissions_are_readonly("0x000"));
 +
-+impl<'a, T: 'a, A: Allocator + 'a> TrySpecExtend<&'a T, slice::Iter<'a, T>> for Vec<T, A>
-+where
-+    T: Copy,
-+{
-+    fn try_spec_extend(&mut self, iterator: slice::Iter<'a, T>) -> Result<(), TryReserveError> {
-+        let slice = iterator.as_slice();
-+        unsafe { self.try_append_elements(slice) }
++        assert!(!permissions_are_readonly("0b111111111"));
++        assert!(!permissions_are_readonly("0o777"));
++        assert!(!permissions_are_readonly("511"));
++        assert!(!permissions_are_readonly("0x1ff"));
++
++        assert!(permissions_are_readonly("0o014"));
++        assert!(permissions_are_readonly("0o015"));
++
++        assert!(!permissions_are_readonly("0o214"));
++        assert!(!permissions_are_readonly("0o024"));
++        assert!(!permissions_are_readonly("0o012"));
++
++        assert!(!permissions_are_readonly("0o315"));
++        assert!(!permissions_are_readonly("0o065"));
++        assert!(!permissions_are_readonly("0o017"));
 +    }
 +}
 -- 
