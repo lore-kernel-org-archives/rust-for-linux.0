@@ -2,38 +2,38 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 362BAC433F5
-	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 19:47:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E136C433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon, 23 May 2022 19:57:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231463AbiEWTrC (ORCPT
+        id S229458AbiEWT5S (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 23 May 2022 15:47:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52640 "EHLO
+        Mon, 23 May 2022 15:57:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231726AbiEWTrA (ORCPT
+        with ESMTP id S231907AbiEWT5O (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 23 May 2022 15:47:00 -0400
+        Mon, 23 May 2022 15:57:14 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 741461FCC0;
-        Mon, 23 May 2022 12:46:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 783CB7628C;
+        Mon, 23 May 2022 12:57:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B19E4B810A4;
-        Mon, 23 May 2022 19:46:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4478C385A9;
-        Mon, 23 May 2022 19:46:52 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2D179B8126A;
+        Mon, 23 May 2022 19:57:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790D7C385A9;
+        Mon, 23 May 2022 19:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1653335213;
-        bh=Sb3uA2wOx4pR9utz+2sZjgwB3OsaFhd/5X5eTgnRrSw=;
+        s=k20201202; t=1653335830;
+        bh=A4gS5DooQHW8mU6WB8eeAhPzch3QOAZAAKjJZpPtATU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oREPuPOoCN/qZU0L07QtpERLOeQtFjDXYx6bJlENkfcL3wdvM/LoZw5Sq4rpIgOCA
-         1dcm/K9FfyWyGg+8yN/JUR0nzZvUlNk+aNb8VjPuje2OfKjz14o8WRREJ5rG2rfKhA
-         xp5jqwYH24lJs6jztL49A/fMu2LokMjgTVihSFMebRBMBjPC20CtijJmvx2D+Bdh5Y
-         auOURnKCvG9IRHIfpKQ3lhepo9guflEX6A/ELHX8h53S4DY8nCSwcXD6JS9FqR0ZsE
-         qArro8RdazFzBwStDnSxTl98QNt1ZEcrfgcdtNSXEmOyHq8HwmwlwReBow2ibFwtpN
-         CP2KvMUadMOLw==
-Date:   Mon, 23 May 2022 22:45:11 +0300
+        b=uyphQ3jQalnYg8Po0U8N7AVhNUPmbVwvWw1NaBFB0lQFIPmRdPvOdj6/JWrdFrfvk
+         7uODr420H4u5a+NY1RteUWX4UmFSB1C5DdUp1aojDN/dmBUahD9N0YvnizKaWHOujY
+         PHaZsxhR+6Cv7UruuR2HB8rPu1ntDsGbdqslbzVQ6KzGCDqImYc9WMcIn+MlbTLs0Z
+         fcNV5VhvHoNMmvYUnEX/mXX6vBTu8kILf8R2lCCpNfy6SzfwjCyBBShnqILkjHw+Ut
+         YpVfgOo8+mbeaSuIzjyS7AHuPHlKpMSu1rW3DFiUZSdUQxYCEgT5Hyyk19nz0H08nr
+         P24gu3/aRAwVQ==
+Date:   Mon, 23 May 2022 22:55:28 +0300
 From:   Jarkko Sakkinen <jarkko@kernel.org>
 To:     Miguel Ojeda <ojeda@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
@@ -42,44 +42,53 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Boqun Feng <boqun.feng@gmail.com>,
         Kees Cook <keescook@chromium.org>
 Subject: Re: [PATCH v7 01/25] kallsyms: avoid hardcoding the buffer size
-Message-ID: <YovkR56ZYsPhDW4q@kernel.org>
+Message-ID: <YovmsLwb1c6uzdSx@kernel.org>
 References: <20220523020209.11810-1-ojeda@kernel.org>
  <20220523020209.11810-2-ojeda@kernel.org>
+ <YovkR56ZYsPhDW4q@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220523020209.11810-2-ojeda@kernel.org>
+In-Reply-To: <YovkR56ZYsPhDW4q@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, May 23, 2022 at 04:01:14AM +0200, Miguel Ojeda wrote:
-> From: Boqun Feng <boqun.feng@gmail.com>
+On Mon, May 23, 2022 at 10:45:11PM +0300, Jarkko Sakkinen wrote:
+> On Mon, May 23, 2022 at 04:01:14AM +0200, Miguel Ojeda wrote:
+> > From: Boqun Feng <boqun.feng@gmail.com>
+> > 
+> > This makes it easier to update the size later on.
+> > 
 > 
-> This makes it easier to update the size later on.
+> This does not really conform to [1].
 > 
+> E.g.
+> 
+> "Declare KSY_NAME_LEN, which describes the maximum length for a kernel
+> symbol read by kallsyms from the input.  In read_symbol(), define the 
+> buffer to be of length "KSY_NAME_LEN + 1", which includes the terminator
+> character."
+> 
+> would be better.
+> 
+> > Furthermore, a static assert is added to ensure both are updated
+> > when that happens. The relationship used is one that keeps the new
+> > size (512+1) close to the original buffer size (500).
+> 
+> You must split this then into two patches:
+> 
+> 1. A patch that re-defines the length with KSYM_NAME_LEN, i.e.
+>    #define KSYM_NAME_LEN 499
+> 2. A patch which increases the size and reasoning for that.
+> 
+> Right now bundles two separate changes, which does not conform to [2].
+> 
+> BR, Jarkko
 
-This does not really conform to [1].
+The URL's:
 
-E.g.
-
-"Declare KSY_NAME_LEN, which describes the maximum length for a kernel
-symbol read by kallsyms from the input.  In read_symbol(), define the 
-buffer to be of length "KSY_NAME_LEN + 1", which includes the terminator
-character."
-
-would be better.
-
-> Furthermore, a static assert is added to ensure both are updated
-> when that happens. The relationship used is one that keeps the new
-> size (512+1) close to the original buffer size (500).
-
-You must split this then into two patches:
-
-1. A patch that re-defines the length with KSYM_NAME_LEN, i.e.
-   #define KSYM_NAME_LEN 499
-2. A patch which increases the size and reasoning for that.
-
-Right now bundles two separate changes, which does not conform to [2].
+[1] https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-changes
+[2] https://www.kernel.org/doc/html/latest/process/submitting-patches.html#separate-your-changes
 
 BR, Jarkko
