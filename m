@@ -2,90 +2,136 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC800C433EF
-	for <rust-for-linux@archiver.kernel.org>; Tue, 24 May 2022 12:37:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27998C433EF
+	for <rust-for-linux@archiver.kernel.org>; Tue, 24 May 2022 15:12:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237390AbiEXMhe (ORCPT
+        id S238303AbiEXPMU (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 24 May 2022 08:37:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33826 "EHLO
+        Tue, 24 May 2022 11:12:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233590AbiEXMhd (ORCPT
+        with ESMTP id S238713AbiEXPMR (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 24 May 2022 08:37:33 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5C847CDE4;
-        Tue, 24 May 2022 05:37:30 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id b11so11731675ilr.4;
-        Tue, 24 May 2022 05:37:30 -0700 (PDT)
+        Tue, 24 May 2022 11:12:17 -0400
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D502A63BC2;
+        Tue, 24 May 2022 08:12:12 -0700 (PDT)
+Received: by mail-il1-x136.google.com with SMTP id t13so5151443ilm.9;
+        Tue, 24 May 2022 08:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=bps4cmkybJsHRmRlI++Mv8ODqq/5urK8odTvzVNolmA=;
-        b=e0fdNFlNobC9meMTY2tqK4IbmCtYFV1mCtQ1DcYDG4m7aZU4g7eEFGWyuJzxi2r8Or
-         4RLeO0Qw9wd3WrAFWglyNG2QPOJzybqaTGjOzvNwCS5KesqhcdrcImV2/XraMu/quyOu
-         QHtsDwXoS2XoWTzZedQfQW/lwuxFphsCU2co88GyO00wjYTFMI8FqVL8WRyIfoa22uJ5
-         tdoFNpYxuX2jClpfKZyL8tHDo6TLN5o2Y3Sa9kIjkySPtQsyNDqjGPzzS6IR8xD6v1W9
-         0JMkanhvuygpeNfDkE+TRqOVkDidnmfPk71OvI+2giHnMkM2JpqRut5NVOq3P+h4OBKP
-         CKzg==
+        bh=Gu6XrP09brfzVASce66siSDhg75Ij5bF3a/2sse9FTI=;
+        b=Gx5DLI2+S6FgASvjmxzOMLEBTLLzoAeOJHUNf3qse7ftzHJRZNKIGlYfA7vzGBgRTO
+         qTgrr/QrMpssZBVPExxUekM5wFpDSCMG20g+mdIisIrrqbSj8j8ach4aeT+H+1CPDjcY
+         ofuIYAFZ0a1ST0nZaCgMaH9g0s8MDKoG8WUVuGjlCh3vgQMUp8zwHIFKbe8dhL1HhQTe
+         sZWf5vyTao7FwxYkNnBY5UxCjXGw7WvpGDwAKwR0hZcAz9ljJn2ttXMG4oHl2DC/BtQd
+         krQkv/WkL/ceZkaPabiR+mwCrn4tbOibG9mbSGHQ9sK9s67DEn4CdB96hUXVE/XXsJbF
+         NRiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=bps4cmkybJsHRmRlI++Mv8ODqq/5urK8odTvzVNolmA=;
-        b=48yKLBF9YgBZ/x1RKkfbNfanZ+E+HXYeB2v6y/3nG1N380DSgn5zAXIk1ZPJqFC6iW
-         l9N4zh5i2RI5GJz1AAQ2WIPSDrp3seavux4Sua9wVUJRhwxrIUh/Qi7CCEOxjoqehI7/
-         C2PW/z8JSdxlLelKqWVisIQ1Ap3/lDfZlCpUxli42gESGtppfTnlDVcY6vJ+wD2EWiXC
-         MD/IW8eTR4aPqJjZSbi/puxU2KcoUshSLqqduOh1DzubDqBLgoOCvdl3v+oyi3SecplM
-         +1iMq9cL0/wIYkRubm+nXqEbE2aUGQp07nayt0zcU2dRnc54xErf4Z8flRRb4h7ikZvz
-         wH9A==
-X-Gm-Message-State: AOAM532tykuxMUVEtGKqbjZYl4WkPJHPjUsqN6+1i/oKVAXROi+qWehU
-        4Li7Vvh/hGRYbFOqxAr6qYdbWf59Dnm3T+wiXP8=
-X-Google-Smtp-Source: ABdhPJzPSsaN2n2ThbOTzd3bvk07uDC1td5gweg9633ahnWCW6j1+5Gx6f+IU02U2Z+3jxzuxSo1w5yIBAg+n0VoiXo=
-X-Received: by 2002:a05:6e02:18c8:b0:2d1:93c7:33c2 with SMTP id
- s8-20020a056e0218c800b002d193c733c2mr7315041ilu.151.1653395850193; Tue, 24
- May 2022 05:37:30 -0700 (PDT)
+        bh=Gu6XrP09brfzVASce66siSDhg75Ij5bF3a/2sse9FTI=;
+        b=437c6i0vOdcyGq0Uidsdb1DAZmgoVljbw7JpnkngKVCpx16FoqkIVmhVun+Hgudw0G
+         T0hkN4P0iBWDOSEUEWRmEseyEYosihqvyTiJvHNJmbrP4WRuDpyAkR20xtTcaBXUF/L7
+         jdqaFmv+iCpofuroh0gKTXoEDH+/veq0p3L5qKsjb91EKfDaMTPigjCZumSCMKPp4chS
+         E8HcqhTnZChw6GZP4yd963dNqBUdHeowEQocttVICM67T/uSTMPWeSVliZzE4izO/wiW
+         jmQGU27nKAyZMTjKTCAB9zvxP6jYV8HLLf+G+KUVpi4fm96wS4MWcD3a2I/iYF9+CgZZ
+         b4vw==
+X-Gm-Message-State: AOAM530Aq8eg1igwpWpM1xNfdAUmNjiDhbP++NXEQsBpsev3SFxnmT3b
+        2MVKlPKozSIAe9OLjdbXyh94uOvHhk6kRvzk7o+TVmHh1qPEnQ==
+X-Google-Smtp-Source: ABdhPJxToNDnooDvM+F5z9jrpwZB87LsQbRXfl7xzsJlSJuT69wEeUzQA9y0IHhR27j6+JEjpMOS30/zFL5koffPamM=
+X-Received: by 2002:a05:6e02:170b:b0:2cf:970f:6050 with SMTP id
+ u11-20020a056e02170b00b002cf970f6050mr14549964ill.5.1653405130972; Tue, 24
+ May 2022 08:12:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220523020209.11810-1-ojeda@kernel.org> <20220523020209.11810-5-ojeda@kernel.org>
- <CAGS_qxrW+GpDpD7-jxyGaPtQUzBGTdR7N=_7FRR0KdoJCshAAA@mail.gmail.com> <23e4e7b4-bd09-b186-093b-a436ee9cb649@linuxfoundation.org>
-In-Reply-To: <23e4e7b4-bd09-b186-093b-a436ee9cb649@linuxfoundation.org>
+References: <20220523020209.11810-1-ojeda@kernel.org> <20220523020209.11810-22-ojeda@kernel.org>
+ <CAKwvOdkTjxNEmCTnuH5f41WB50ef6ErBM2Kp2zJ-t9q_5U8rBA@mail.gmail.com>
+In-Reply-To: <CAKwvOdkTjxNEmCTnuH5f41WB50ef6ErBM2Kp2zJ-t9q_5U8rBA@mail.gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 24 May 2022 14:37:19 +0200
-Message-ID: <CANiq72mPPVaqpsFc8UK92Ur0utn-Fd80XWtCPq+AmW9ZTWh1oA@mail.gmail.com>
-Subject: Re: [PATCH v7 04/25] kunit: take `kunit_assert` as `const`
-To:     Shuah Khan <skhan@linuxfoundation.org>,
-        Daniel Latypov <dlatypov@google.com>
+Date:   Tue, 24 May 2022 17:12:00 +0200
+Message-ID: <CANiq72=QJsScPweqWO8w6t4wDKKd3ZWFkA6Dcto6qpJ8QcfgOg@mail.gmail.com>
+Subject: Re: [PATCH v7 21/25] Kbuild: add Rust support
+To:     Nick Desaulniers <ndesaulniers@google.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Brendan Higgins <brendanhiggins@google.com>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        KUnit Development <kunit-dev@googlegroups.com>
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Douglas Su <d0u9.su@outlook.com>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        Antonio Terceiro <antonio.terceiro@linaro.org>,
+        Daniel Xu <dxu@dxuuu.xyz>, Miguel Cano <macanroj@gmail.com>,
+        David Gow <davidgow@google.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-um@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, May 23, 2022 at 8:14 PM Shuah Khan <skhan@linuxfoundation.org> wrote:
+On Mon, May 23, 2022 at 8:45 PM Nick Desaulniers
+<ndesaulniers@google.com> wrote:
 >
-> On 5/23/22 11:15 AM, Daniel Latypov wrote:
-> >
-> > FYI, we'd asked Shuah to pick this patch up in her "kunit" branch.
-> > It's applied here:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git/commit/?h=kunit&id=7466886b400b1904ce30fa311904849e314a2cf4
-> >
-> > It had previously seemed unclear if this series could make it for the
-> > 5.19 merge window (but it now looks like there's interest in trying it
-> > out early on).
->
-> I am just about send pull request with this patch included.
+> I'm super not into having the rust optimization level differ from the
+> C optimization level.  This is just someone having too much fun
+> wrapping every compiler flag in a kbuild option.  Either folks wan't
 
-Thank you, Daniel and Shuah!
+I mean, `Makefile`s are not my favorite pastime... :)
+
+> smaller size or more optimizations. Allowing for RUST_OPT_LEVEL_S and
+> CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE or RUST_OPT_LEVEL_3 and
+> CONFIG_CC_OPTIMIZE_FOR_SIZE is just wacky nonsense that's going to
+> make randconfig bug reports more confusing to tease out.
+
+I think what is important is to decide whether extra levels, for C and
+Rust, should be kept compile-able/maintained or not (I also replied in
+the `-O1` for C thread [1]).
+
+Note that the Rust side can be compiled as `-O0` or `-O1` at the
+moment, which is something we do not have for the C side; thus having
+only the C == Rust option means we will not have a configuration with
+those anymore.
+
+For me it is less complex to not have them, and I have not heard more
+opinions on this, either for or against (apart from that thread
+suggesting `-O1` for the C side), so if nobody else chimes in, I will
+remove them.
+
+[1] https://lore.kernel.org/lkml/CANiq72kySVvOQ7eqwe0Jzz3V0JTtrcqODHR9Ty4-sfDMdzP6XQ@mail.gmail.com/
 
 Cheers,
 Miguel
