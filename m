@@ -2,93 +2,94 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54434C433F5
-	for <rust-for-linux@archiver.kernel.org>; Tue, 24 May 2022 16:36:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FE84C433FE
+	for <rust-for-linux@archiver.kernel.org>; Tue, 24 May 2022 18:08:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231355AbiEXQgN (ORCPT
+        id S240164AbiEXSIL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 24 May 2022 12:36:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35112 "EHLO
+        Tue, 24 May 2022 14:08:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233418AbiEXQgM (ORCPT
+        with ESMTP id S231981AbiEXSIK (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 24 May 2022 12:36:12 -0400
-Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 094D6642F;
-        Tue, 24 May 2022 09:36:10 -0700 (PDT)
-Received: by mail-il1-x12f.google.com with SMTP id a8so2993252ilh.3;
-        Tue, 24 May 2022 09:36:10 -0700 (PDT)
+        Tue, 24 May 2022 14:08:10 -0400
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CC856B02B;
+        Tue, 24 May 2022 11:08:09 -0700 (PDT)
+Received: by mail-io1-xd35.google.com with SMTP id p74so15507503iod.8;
+        Tue, 24 May 2022 11:08:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=nmFSjcbYRYlOqfImBD2OeIVBU5WwbZg80H+QTxIdQPU=;
-        b=mciQwgJaWq7HwzCb8KvTWDOP2zWsZae+0/adx/6lhqIctodu1qtPPyt9035Cze/Heq
-         q35dm9UuaPHLZLxslEs1mbzpfW0TzsemtzTvDrqYKDEX1J1zJ13XrgZQSrM+vfhTzy4C
-         Oc6SYF046ZDQbKLW8q/ei3gbmKf2rvK5wXHg/tSqupWjXPFraQtswRs1pUvA3IEedGzm
-         GkZi47JeJ57CgAwMFGZGs8QTBhrI20LU1R+O7cHBhNmu7eRby+yApmVKjdwWIQjK9SvR
-         4tdUt7NdsurhQt9cPFItmCZbejv69RNe0mXJggwt1K6z4bIo3UBLr19BpJcve0SPA2J8
-         Gang==
+        bh=CCoZCqf5DZYvmFYZUo768NlduYJytxgbzyAhxTX5D1U=;
+        b=q2dwl0J2dE5Opv7iwInHFK6zBnH929Y3nD3A6TYfLHOnbC9AvRSf7PDJj7QYG6I75l
+         Oe82wo/Q91vqQ0OLGuTqXlgbuF8R4iCcGz6gIvUenR20l91PHKo7quUeDLTt1QoivWqm
+         ZSL5LUEQgRpqJBYCo3Iti7C/2Gb2deSsPqdedmJKeywIP4FOwZjMwXwV0++1jrLR7M64
+         hDblFWjeRmC9ycbkg0SFEgxiGjQxYY2+rK0KeqxUuq3CzHBLko+5krfiMUscD5WErVsG
+         TSGcWGfR9cO5n3x0u2Qdu9i/m9XY7j+cFqU4PbOT9ir+2GBaiX3lmyGPhtAR7N5Ge8Sw
+         lh6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=nmFSjcbYRYlOqfImBD2OeIVBU5WwbZg80H+QTxIdQPU=;
-        b=zV3t5uE0teQqsagfoYOvD1GgiSa7TjkoZyGLUMUXanJf7vz+P49agNhi4YbJp290NR
-         21uettTLLWfCP3BPGxFUjevOw8JEvwLEoO0bAjxiVV4/q0L04FDAxagQzdJalZz5zZvu
-         X5bf9yYZ3T7L12bUf+qeS5apVENE/NIT89YtvmCmzVRO7uKxVxPDaXdA9toVe9PBxKxd
-         op2Pp5Ym23lKGhkfP0AFik9tL4YJMQ7sQ+ReFWWFXaXL9yQbc2qHrM5Cicm7IJnIf2zc
-         az2eUVq5/7oV1gFd4/yDFUf/1f29NZRb4yRdHGcPiQX59ZiuDV0AtxmadQ13bPbBtGTl
-         cf9g==
-X-Gm-Message-State: AOAM531FBKUQjMwy6ACJt/XDpjfRGdgZwC4bdMaMqhW5Rzjy08Aza/cK
-        X1pTXWceqzJr67s5Xyp4XPK8a6ZMvMGTchLJTa8=
-X-Google-Smtp-Source: ABdhPJywJhE/YIF+b6PILr84uXn8uYcGO+p8BLwgZ+ThM3pV+lrwRjWdVZdHbYceReu8+NDab6Yvf1ef2V1xhADA4Is=
-X-Received: by 2002:a05:6e02:1c88:b0:2d1:87ea:18c with SMTP id
- w8-20020a056e021c8800b002d187ea018cmr9279443ill.321.1653410169415; Tue, 24
- May 2022 09:36:09 -0700 (PDT)
+        bh=CCoZCqf5DZYvmFYZUo768NlduYJytxgbzyAhxTX5D1U=;
+        b=h6NRsVSQ5KTU9NeJWo8qYXMV1+BnlP76hfGm42KhiNgL34QL9RhB9FGsN7uJsWWFWM
+         i1vSovRBShKRP7VW10nip+xK83wHFBskpc7hNEWV4bMI2s9tz6tVWYUbKEi83jGEOwsp
+         QzfKTuAnP/CCr1NfvoO1qi/qr5K78K2RoM+Wh69o01anzldI/Y3j5RmtZCy4iDkeTNIJ
+         d1Q+tp1hsJcEln7fa8g1QB3/eKWb0hsuQZ4UzkquebhOfADTPBZ2o+BU3onwT3Sy+GWq
+         RoWVHqGOrEhd0YwkdACEOkYMMAB6OS+G4g9VM0x+xWGhp4zpmkc7UiThGBQLomNOfTrT
+         vEUA==
+X-Gm-Message-State: AOAM5317hINu+kvCLsM8Wk2UZEUu+NJMqAmphk1e2ZO+rZdzgkbLGCPi
+        /VwWy14VjmjP/KW+QYcXXTYg0a9iISZAiACtEf17p8dN+eA=
+X-Google-Smtp-Source: ABdhPJwvMP45iKh6ctuzwjBEHsLMCZ2t2DJi6jHsM/Qh2syL2Byl+RUOpcjkYiO4u9890rA2qvaWtrRoh3wi4zvrHZk=
+X-Received: by 2002:a05:6638:22c3:b0:32e:ac50:aeb3 with SMTP id
+ j3-20020a05663822c300b0032eac50aeb3mr9147129jat.186.1653415688617; Tue, 24
+ May 2022 11:08:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220523020209.11810-1-ojeda@kernel.org> <20220523020209.11810-16-ojeda@kernel.org>
- <9ff72e47bf89977efe00df6db6ebbdd7b22a9972.camel@perches.com>
-In-Reply-To: <9ff72e47bf89977efe00df6db6ebbdd7b22a9972.camel@perches.com>
+References: <20220523020209.11810-1-ojeda@kernel.org> <20220523020209.11810-4-ojeda@kernel.org>
+ <YovvIQeN3lmOYzJO@kernel.org>
+In-Reply-To: <YovvIQeN3lmOYzJO@kernel.org>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 24 May 2022 18:35:58 +0200
-Message-ID: <CANiq72ktk0_drMnCCJGMRhQ6SCDEgz1R1Lc0bDSWjsAHgvdbhA@mail.gmail.com>
-Subject: Re: [PATCH v7 15/25] scripts: checkpatch: diagnose uses of `%pA` in
- the C side
-To:     Joe Perches <joe@perches.com>
+Date:   Tue, 24 May 2022 20:07:57 +0200
+Message-ID: <CANiq72m6ttD9QpB3nW-5B+M1seknv0GZ4-DqtF85qTg6Lvxnhg@mail.gmail.com>
+Subject: Re: [PATCH v7 03/25] kallsyms: increase maximum kernel symbol length
+ to 512
+To:     Jarkko Sakkinen <jarkko@kernel.org>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux <rust-for-linux@vger.kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
         Kees Cook <keescook@chromium.org>,
+        Petr Mladek <pmladek@suse.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
-        Andy Whitcroft <apw@canonical.com>,
-        Dwaipayan Ray <dwaipayanray1@gmail.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        live-patching@vger.kernel.org, linux-perf-users@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, May 23, 2022 at 4:17 AM Joe Perches <joe@perches.com> wrote:
+On Mon, May 23, 2022 at 10:33 PM Jarkko Sakkinen <jarkko@kernel.org> wrote:
 >
-> How many developers are required for a trivial patch?
+> There's no description what the patch does.
 
-We are sending the core series as a team, so by default I acknowledge
-all the maintainers. But yeah, I could drop some of the
-Co-developed-by's.
-
-> and this should now use elsif
-
-Yeah, will change.
-
-By the way, I also thought about skipping the warning if the error is
-there, e.g. wrapping everything else in an `else`, if you prefer.
-
-Thanks for the very quick review!
+I am not sure what you mean. Both the subject and the last paragraph
+describe what the patch does, while the rest gives the rationale
+behind it.
 
 Cheers,
 Miguel
