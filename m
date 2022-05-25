@@ -2,157 +2,270 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B88E3C433F5
-	for <rust-for-linux@archiver.kernel.org>; Wed, 25 May 2022 21:30:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BDBB4C433EF
+	for <rust-for-linux@archiver.kernel.org>; Wed, 25 May 2022 22:25:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243035AbiEYVaJ (ORCPT
+        id S239940AbiEYWZp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 25 May 2022 17:30:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51432 "EHLO
+        Wed, 25 May 2022 18:25:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231940AbiEYVaJ (ORCPT
+        with ESMTP id S234993AbiEYWZo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 25 May 2022 17:30:09 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CC40793AD
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 May 2022 14:30:05 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id v8so36075361lfd.8
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 May 2022 14:30:05 -0700 (PDT)
+        Wed, 25 May 2022 18:25:44 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94721BA9A9
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 May 2022 15:25:42 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id q1so16332895ljb.5
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 May 2022 15:25:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=CN9iEc/6AbDEhSeIoyRVDRtZ+F/iKWAgeW+cCw6K3rg=;
-        b=HP0XCJMzu6+KjtahsVn49yXUZGLjsitCectX4zlL9zReAYpS+lfaTLYj9xRlPa5YKy
-         zdMq9WzVf5n3QNBmYUzG2QZ3u0aX5JH/Vv8EeQ9OEbBqaOr4IZ6u7fy9O6pDkTtuoRoG
-         HsEwWc0qQmgsR0v90SUj6bIVrRIihaeMhjqn1Q/44XwJHHuCsQxE8ZKrvelyrMyDosvf
-         jKCmfkSlzkKq+j2HMDSFuoNNt+K3TUVNOb5H4mdPn69XcLYjzDenNOTg1GRrc/p7YKFY
-         zdRsBHjlK5k8Bm3lhI/vv+UgXUeIFx2dXm3bNZlBIZ4kUnQ4mygqWENIZcpjfl5z+7Tx
-         /tLw==
+        bh=Y4JE5dVY5pJ4L5p/4sGg1xocj3NSEFAKSZJJs4bfl50=;
+        b=fAMfron/HjbN7nd+bsG3ASO/nK1WjlcoVqa4+QdtPam6ciW/bwdYCmk9ujS4Abe4VJ
+         w2sueG/5d5jh11UgLmuXnMAdarDjSChSdXdKrhg3y7F8Pjptb4ff8WlByIdiSkfEbGFm
+         PkRmC+09uBSPSsg344wCJdI8n7v1Yt+vr7kQ9DePitEy6ui34PJ0AU8C5jZKRsffEDfP
+         ug3LM0AmYwwUZHhVNWlMxQzBz79rShyO1d1dkhvX1r4lmvgXBfWQm+lShZOQXq9rxarC
+         SWsS9kfyfYspj/5U44fShRnUcSFmlbceeiOtALpaquQdvDHDNyVkshBPqlQYpF3P0oqm
+         UHfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=CN9iEc/6AbDEhSeIoyRVDRtZ+F/iKWAgeW+cCw6K3rg=;
-        b=UU/0g04pC8VCdeyqZh2tLJLgt9G52nZzAV2etsJH2NZUwo6BN/omnlVfjM8ADVjfMV
-         /vchPi4UyVpKeJm1DOGKiTpes3idYvEkwO4oGNPqPk+mG6m3LXutnkCwM+1pb/WCpFvU
-         ZhQepTP5lrGrO4FevdJx1+XshwPGDvfZH8r00JfN5A3k8QLYTZZLrZ50N6tCdXjugQCy
-         ruehSeNMcI0SImdwCrcDrV8vXAaGnCea8RW1ZaWxjSeyJF8ZPb8RCdkTZ8Jo5dg4qZz6
-         tdR2ewLUb0jcty6tTL435jiNiMtDgbFZ5oVAhd/MioBVEcgrQjiM6/wq8tNns1adJ3Zl
-         SoOg==
-X-Gm-Message-State: AOAM533tK3bMTGrHzbh3X4WKqXyn2pnx7dx7R7UfahihyEJSOmoz9A+E
-        +xsrFJuqW1IrsAjvram8LF1tqrvMTmZpjqWyt04PUA==
-X-Google-Smtp-Source: ABdhPJyhZ9jtmrfWycnNF67xLRtYk+3UH27SKHU8VpvEjLIF+D46JgX8gLSc8u2HSteNfcYhESzSTK2ZB7QswcV4emU=
-X-Received: by 2002:a05:6512:2614:b0:445:777d:3530 with SMTP id
- bt20-20020a056512261400b00445777d3530mr24708485lfb.647.1653514203249; Wed, 25
- May 2022 14:30:03 -0700 (PDT)
+        bh=Y4JE5dVY5pJ4L5p/4sGg1xocj3NSEFAKSZJJs4bfl50=;
+        b=rUCLGdxpuqdiJfD8dEnrD2e9qncJzhvTalcqalSBXz2P7RR/IsOsvV6/lQixHyPn3T
+         b1eQC+HRG2526iaQIdWdweqGKhSLP96Drff5geAbmen9GMhkTqgZfps+KxYUL1+yFu1M
+         gZLnYhSw5m7ymG3+Eu3kKWxmwXWCXppqAHg0hvshZioS460OTOnCKE+K342GKAomKRCw
+         ynLaa7rkuHtupknbdyNOumKb1VhGY8OXDe+72+tsWtp6oaYtyqmMIOv5C2ZMm3LS7NGx
+         pIg5m+TV4oI+1QipQGf3pZcFI/fy4y6rC0XCIYFnLdZViKXTeGk6poNhcltrm/+YMTgB
+         1+kQ==
+X-Gm-Message-State: AOAM533DhtcJUgoky62MopML9elop/stiF4HLSs4eNCt5VX/Zle53vRx
+        Ta2awb3Dla7q7PAv4kOK4cHdImzAaWg2uxJeURuYUQ==
+X-Google-Smtp-Source: ABdhPJyyMkDOBVLKOsbECK6J7ZWww0BuYU20TDN6fYXnxk8xptFKTQXny9GfJRyE8hkAsArQFcu6jZmKOkIJSKODNlQ=
+X-Received: by 2002:a2e:98c3:0:b0:253:e0e1:20 with SMTP id s3-20020a2e98c3000000b00253e0e10020mr14949440ljj.26.1653517540546;
+ Wed, 25 May 2022 15:25:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220523020209.11810-1-ojeda@kernel.org> <20220523020209.11810-7-ojeda@kernel.org>
- <CAKwvOd=mFhxjKRP_qt3Yu69dj_P6VUMSUSQm7fY6yS2bsO8Y2w@mail.gmail.com> <20220524004156.0000790e@garyguo.net>
-In-Reply-To: <20220524004156.0000790e@garyguo.net>
+References: <20220523020209.11810-1-ojeda@kernel.org> <20220523020209.11810-22-ojeda@kernel.org>
+In-Reply-To: <20220523020209.11810-22-ojeda@kernel.org>
 From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Wed, 25 May 2022 14:29:51 -0700
-Message-ID: <CAKwvOdmDgaG_DT+rr4F7xx=q=bVEaM9z7CBFqSq-0Eg=NwO02w@mail.gmail.com>
-Subject: Re: [PATCH v7 06/25] rust: add `compiler_builtins` crate
-To:     Gary Guo <gary@garyguo.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+Date:   Wed, 25 May 2022 15:25:28 -0700
+Message-ID: <CAKwvOdn+9qORm8UpDGnPXxiK7B7P_TW5CtXv1+8qkv7UvQr3hQ@mail.gmail.com>
+Subject: Re: [PATCH v7 21/25] Kbuild: add Rust support
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sven Van Asbroeck <thesven73@gmail.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Arnd Bergmann <arnd@kernel.org>
+        Gary Guo <gary@garyguo.net>,
+        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Douglas Su <d0u9.su@outlook.com>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        Antonio Terceiro <antonio.terceiro@linaro.org>,
+        Daniel Xu <dxu@dxuuu.xyz>, Miguel Cano <macanroj@gmail.com>,
+        David Gow <davidgow@google.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-kbuild@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-um@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
- On Mon, May 23, 2022 at 4:42 PM Gary Guo <gary@garyguo.net> wrote:
+On Sun, May 22, 2022 at 7:04 PM Miguel Ojeda <ojeda@kernel.org> wrote:
 >
-> On Mon, 23 May 2022 11:37:16 -0700
-> Nick Desaulniers <ndesaulniers@google.com> wrote:
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -120,6 +120,15 @@ endif
 >
-> > Also, I'm not sure my concern about explicit build failures for C code
-> > was ever addressed?  We have a constant problem with `long long`
-> > division on ARCH=arm32 and ARCH=i386 in C code.
-> > https://lore.kernel.org/lkml/CAKwvOdk+A2PBdjSFVUhj4xyCGCKujtej1uPgywQgrKPiK2ksPw@mail.gmail.com/
-> >
-> > > +#[cfg(target_arch = "arm")]
-> > > +define_panicking_intrinsics!("`u64` division/modulo should not be
-> > > used", {
-> > > +    __aeabi_uldivmod,
-> > > +    __mulodi4,
-> > > +});
+>  export KBUILD_CHECKSRC
 >
-> Starting in LLVM 14 (used in Rust 1.60+), __mulodi4 will no longer be
-> generated. So that can be removed.
+> +# Enable "clippy" (a linter) as part of the Rust compilation.
+> +#
+> +# Use 'make CLIPPY=1' to enable it.
+> +ifeq ("$(origin CLIPPY)", "command line")
+> +  KBUILD_CLIPPY := $(CLIPPY)
+> +endif
 
-I'm familiar, but good catch. ;)
-https://reviews.llvm.org/D108936
-https://reviews.llvm.org/D108842
-https://reviews.llvm.org/D108844
-https://reviews.llvm.org/D112750
-https://reviews.llvm.org/D108928
-https://reviews.llvm.org/D108939
-https://bugs.llvm.org/show_bug.cgi?id=28629
-https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103034
+Is there a reason to not just turn clippy on always? Might be nicer to
+start off with good practices by default. :^)
 
+> @@ -1494,7 +1588,8 @@ MRPROPER_FILES += include/config include/generated          \
+>                   certs/signing_key.pem \
+>                   certs/x509.genkey \
+>                   vmlinux-gdb.py \
+> -                 *.spec
+> +                 *.spec \
+> +                 rust/target.json rust/libmacros.so
 >
-> As for __aeabi_uldivmod, is there any reason that it can't just be
-> defined in arch/arm/lib? There are quite a few __aeabi functions already
-> defined there.
+>  # clean - Delete most, but leave enough to build external modules
+>  #
+> @@ -1519,6 +1614,9 @@ $(mrproper-dirs):
+>
+>  mrproper: clean $(mrproper-dirs)
+>         $(call cmd,rmfiles)
+> +       @find . $(RCS_FIND_IGNORE) \
+> +               \( -name '*.rmeta' \) \
+> +               -type f -print | xargs rm -f
 
-Indeed.
-arch/arm/kernel/armksyms.c and
-arch/arm/lib/lib1funcs.S
-
-This is the previous thread I recall w/ Linus:
-https://lore.kernel.org/llvm/CAHk-=wiydA=Oay+NB2m2ewCHpPEcoU51qPFrzsekFoPu7QPtuw@mail.gmail.com/
-
-If CONFIG_RUST provides those symbols, it will hide the linkage
-failures that we try to use to spot & avoid 64b division that's open
-coded using the / binary operator, rather than the kernel's do_div()
-and friends.
+Are there *.rmeta directories that we _don't_ want to remove via `make
+mrproper`? I'm curious why *.rmeta isn't just part of MRPROPER_FILES?
 
 >
-> The source of __aeabi_uldivmod in compiler-rt seems quite simple, just
-> delegating to __uldivmoddi4. I think just changing that to
-> div64_u64_rem should do the job?
+>  # distclean
+>  #
+> @@ -1606,6 +1704,23 @@ help:
+>         @echo  '  kselftest-merge   - Merge all the config dependencies of'
+>         @echo  '                      kselftest to existing .config.'
+>         @echo  ''
+> +       @echo  'Rust targets:'
+> +       @echo  '  rustavailable   - Checks whether the Rust toolchain is'
+> +       @echo  '                    available and, if not, explains why.'
+> +       @echo  '  rustfmt         - Reformat all the Rust code in the kernel'
+> +       @echo  '  rustfmtcheck    - Checks if all the Rust code in the kernel'
+> +       @echo  '                    is formatted, printing a diff otherwise.'
+> +       @echo  '  rustdoc         - Generate Rust documentation'
+> +       @echo  '                    (requires kernel .config)'
+> +       @echo  '  rusttest        - Runs the Rust tests'
+> +       @echo  '                    (requires kernel .config; downloads external repos)'
+> +       @echo  '  rust-analyzer   - Generate rust-project.json rust-analyzer support file'
+> +       @echo  '                    (requires kernel .config)'
+> +       @echo  '  dir/file.[os]   - Build specified target only'
+> +       @echo  '  dir/file.i      - Build macro expanded source, similar to C preprocessing'
+> +       @echo  '                    (run with RUSTFMT=n to skip reformatting if needed)'
+> +       @echo  '  dir/file.ll     - Build the LLVM assembly file'
 
-Maybe; send a patch and see what happens. There's probably other 32b
-architectures that will need other symbols that also handle 64b
-division though, so it's not as simple as providing __aeabi_uldivmod
-for ARM.
+I don't think we need to repeat dir/* here again for rust. The
+existing targets listed above (outside this hunk) make sense in both
+contexts.
 
-There's probably someone from linux-arm-kernel that can provide
-additional context.
-https://lore.kernel.org/linux-arm-kernel/alpine.LFD.2.00.1104271305580.24613@xanadu.home/
-is pretty old, but refers to policies that seem to pre-exist other
-references to __aeabi_uldivmod on that list.
+Does rustc really use .i as a conventional suffix for macro expanded
+sources? (The C compiler might use the -x flag to override the guess
+it would make based on the file extension; I'm curious if rustc can
+ingest .i files or will it warn?)
 
-arch/nios2/kernel/nios2_ksyms.c exports __udivmoddi4, but it also
-explicitly links against libgcc.  I'm guessing that's frowned upon,
-but not out of the question relative to having the kernel ported to
-the architecture at all.
+> diff --git a/init/Kconfig b/init/Kconfig
+> index ddcbefe535e9..3457cf596588 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> +config RUSTC_VERSION_TEXT
+> +       string
+> +       depends on RUST
+> +       default $(shell,command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version || echo n)
+> +
+> +config BINDGEN_VERSION_TEXT
+> +       string
+> +       depends on RUST
+> +       default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version || echo n)
 
+Are these two kconfigs used anywhere?
+
+> diff --git a/scripts/Kconfig.include b/scripts/Kconfig.include
+> index 0496efd6e117..83e850321eb6 100644
+> --- a/scripts/Kconfig.include
+> +++ b/scripts/Kconfig.include
+> @@ -36,12 +36,12 @@ ld-option = $(success,$(LD) -v $(1))
+>  as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler -o /dev/null -)
 >
-> https://android.googlesource.com/toolchain/compiler-rt/+/release_32/lib/arm/aeabi_uldivmod.S
+>  # check if $(CC) and $(LD) exist
+> -$(error-if,$(failure,command -v $(CC)),compiler '$(CC)' not found)
+> +$(error-if,$(failure,command -v $(CC)),C compiler '$(CC)' not found)
 
-Here's the latest source.
-https://github.com/llvm/llvm-project/blob/main/compiler-rt/lib/builtins/arm/aeabi_uldivmod.S
-and __uldivmoddi4:
-https://github.com/llvm/llvm-project/blob/main/compiler-rt/lib/builtins/udivmoddi4.c
+Not that it's important to do so, but a couple hunks s/compiler/C
+compiler/. Those _could_ probably get submitted ahead of this, but not
+important to do so.
 
-By chance, does any of the rust code in this series use open coded
-division w/ 64 bit operands (rather than using do_div) by accident?
+> diff --git a/scripts/Makefile.debug b/scripts/Makefile.debug
+> index 9f39b0130551..fe87389d52c0 100644
+> --- a/scripts/Makefile.debug
+> +++ b/scripts/Makefile.debug
+> @@ -1,4 +1,5 @@
+>  DEBUG_CFLAGS   :=
+> +DEBUG_RUSTFLAGS        :=
+>
+>  ifdef CONFIG_DEBUG_INFO_SPLIT
+>  DEBUG_CFLAGS   += -gsplit-dwarf
+> @@ -10,6 +11,12 @@ ifndef CONFIG_AS_IS_LLVM
+>  KBUILD_AFLAGS  += -Wa,-gdwarf-2
+>  endif
+>
+> +ifdef CONFIG_DEBUG_INFO_REDUCED
+> +DEBUG_RUSTFLAGS += -Cdebuginfo=1
+> +else
+> +DEBUG_RUSTFLAGS += -Cdebuginfo=2
+> +endif
+> +
 
-I'm also curious about the panic message for 128b operands. IIUC,
-those are functions that may have `long long` operands.  On 32b ARM,
-which is ILP32, I'd have expected `long long` to be 64b, not 128b.
-Message might be misleading.
+How does enabling or disabling debug info work for rustc? I may have
+missed it, but I was surprised to see no additional flags getting
+passed to rustc based on CONFIG_DEBUG info.
+
+> diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+> new file mode 100644
+> index 000000000000..c146a3407183
+> --- /dev/null
+> +++ b/scripts/generate_rust_target.rs
+
+Ah, that explains the host rust build infra.  Bravo! Hard coding the
+target files was my major concern last I looked at the series. I'm
+very happy to see it be generated properly from .config!
+
+I haven't actually reviewed this yet, but it makes me significantly
+more confident in the series to see this approach added. Good job
+whoever wrote this.
+
+> diff --git a/scripts/is_rust_module.sh b/scripts/is_rust_module.sh
+> new file mode 100755
+> index 000000000000..277a64d07f22
+> --- /dev/null
+> +++ b/scripts/is_rust_module.sh
+> @@ -0,0 +1,13 @@
+> +#!/bin/sh
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# is_rust_module.sh module.ko
+> +#
+> +# Returns `0` if `module.ko` is a Rust module, `1` otherwise.
+> +
+> +set -e
+> +
+> +# Using the `16_` prefix ensures other symbols with the same substring
+> +# are not picked up (even if it would be unlikely). The last part is
+> +# used just in case LLVM decides to use the `.` suffix.
+> +${NM} "$*" | grep -qE '^[0-9a-fA-F]+ r _R[^[:space:]]+16___IS_RUST_MODULE[^[:space:]]*$'
+
+Does `$(READELF) -p .comment foo.o` print anything about which
+compiler was used? That seems less brittle IMO.
+
+---
+
+Modulo the RUST_OPT_LEVEL_SIMILAR_AS_CHOSEN_FOR_C which I'm not a fan
+of, this is looking good to me. Masahiro, what are your thoughts on
+the build system support?
 -- 
 Thanks,
 ~Nick Desaulniers
