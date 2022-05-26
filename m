@@ -2,270 +2,99 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDBB4C433EF
-	for <rust-for-linux@archiver.kernel.org>; Wed, 25 May 2022 22:25:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C61D4C433EF
+	for <rust-for-linux@archiver.kernel.org>; Thu, 26 May 2022 04:55:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239940AbiEYWZp (ORCPT
+        id S239767AbiEZEzw (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 25 May 2022 18:25:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54820 "EHLO
+        Thu, 26 May 2022 00:55:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234993AbiEYWZo (ORCPT
+        with ESMTP id S232322AbiEZEzw (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 25 May 2022 18:25:44 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94721BA9A9
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 May 2022 15:25:42 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id q1so16332895ljb.5
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 May 2022 15:25:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Y4JE5dVY5pJ4L5p/4sGg1xocj3NSEFAKSZJJs4bfl50=;
-        b=fAMfron/HjbN7nd+bsG3ASO/nK1WjlcoVqa4+QdtPam6ciW/bwdYCmk9ujS4Abe4VJ
-         w2sueG/5d5jh11UgLmuXnMAdarDjSChSdXdKrhg3y7F8Pjptb4ff8WlByIdiSkfEbGFm
-         PkRmC+09uBSPSsg344wCJdI8n7v1Yt+vr7kQ9DePitEy6ui34PJ0AU8C5jZKRsffEDfP
-         ug3LM0AmYwwUZHhVNWlMxQzBz79rShyO1d1dkhvX1r4lmvgXBfWQm+lShZOQXq9rxarC
-         SWsS9kfyfYspj/5U44fShRnUcSFmlbceeiOtALpaquQdvDHDNyVkshBPqlQYpF3P0oqm
-         UHfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Y4JE5dVY5pJ4L5p/4sGg1xocj3NSEFAKSZJJs4bfl50=;
-        b=rUCLGdxpuqdiJfD8dEnrD2e9qncJzhvTalcqalSBXz2P7RR/IsOsvV6/lQixHyPn3T
-         b1eQC+HRG2526iaQIdWdweqGKhSLP96Drff5geAbmen9GMhkTqgZfps+KxYUL1+yFu1M
-         gZLnYhSw5m7ymG3+Eu3kKWxmwXWCXppqAHg0hvshZioS460OTOnCKE+K342GKAomKRCw
-         ynLaa7rkuHtupknbdyNOumKb1VhGY8OXDe+72+tsWtp6oaYtyqmMIOv5C2ZMm3LS7NGx
-         pIg5m+TV4oI+1QipQGf3pZcFI/fy4y6rC0XCIYFnLdZViKXTeGk6poNhcltrm/+YMTgB
-         1+kQ==
-X-Gm-Message-State: AOAM533DhtcJUgoky62MopML9elop/stiF4HLSs4eNCt5VX/Zle53vRx
-        Ta2awb3Dla7q7PAv4kOK4cHdImzAaWg2uxJeURuYUQ==
-X-Google-Smtp-Source: ABdhPJyyMkDOBVLKOsbECK6J7ZWww0BuYU20TDN6fYXnxk8xptFKTQXny9GfJRyE8hkAsArQFcu6jZmKOkIJSKODNlQ=
-X-Received: by 2002:a2e:98c3:0:b0:253:e0e1:20 with SMTP id s3-20020a2e98c3000000b00253e0e10020mr14949440ljj.26.1653517540546;
- Wed, 25 May 2022 15:25:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220523020209.11810-1-ojeda@kernel.org> <20220523020209.11810-22-ojeda@kernel.org>
-In-Reply-To: <20220523020209.11810-22-ojeda@kernel.org>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Wed, 25 May 2022 15:25:28 -0700
-Message-ID: <CAKwvOdn+9qORm8UpDGnPXxiK7B7P_TW5CtXv1+8qkv7UvQr3hQ@mail.gmail.com>
-Subject: Re: [PATCH v7 21/25] Kbuild: add Rust support
-To:     Miguel Ojeda <ojeda@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Thu, 26 May 2022 00:55:52 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDB49BA563;
+        Wed, 25 May 2022 21:55:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9AB33B81F52;
+        Thu, 26 May 2022 04:55:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD327C385A9;
+        Thu, 26 May 2022 04:55:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653540948;
+        bh=oZ+I6TDmQs9q1v5bWWln6OxdEcIwohbwhkD9F724NiY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=sOUrYenLVDJ+DgKGJwX+ZWcUw1VMOEBMCENn5Iu3Iezo1lPWMWk8muUU8XSwVMVIN
+         nAuAN/9VQUxIvOnlXiIxg0/jZ6s+r0K50XuRUAsskleRRLIPhxPdEkdUexV/KOAoKE
+         ww92/aJOYdeAjbulbl/3vXZPNq4zeONFnXn+9Pz/ZAtxR6lM9DAgyE9MgOe05CYnNu
+         hdlFaRYGAukK+s3GbxGv9XS8WpbYm7GE7/gsE5aDS1AfLNxAEYM26cupMsz8AW5WMO
+         wXkUIMs9nM+P5RihDOIqz+1a3C1w+hh8tuakZqSkKHEby1/bXyMs04AIMJZ8YoCnjF
+         qah+Gm+rvgnmw==
+Date:   Thu, 26 May 2022 07:54:03 +0300
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>,
-        Douglas Su <d0u9.su@outlook.com>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        Antonio Terceiro <antonio.terceiro@linaro.org>,
-        Daniel Xu <dxu@dxuuu.xyz>, Miguel Cano <macanroj@gmail.com>,
-        David Gow <davidgow@google.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-kbuild@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-um@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+        Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v7 01/25] kallsyms: avoid hardcoding the buffer size
+Message-ID: <Yo8H6/CgjmvtC3Qz@iki.fi>
+References: <20220523020209.11810-1-ojeda@kernel.org>
+ <20220523020209.11810-2-ojeda@kernel.org>
+ <YovkR56ZYsPhDW4q@kernel.org>
+ <CANiq72=K4eC5EX9M8YRzL5Uy9onoTzha9rki-XZ3enSPy0p+UQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72=K4eC5EX9M8YRzL5Uy9onoTzha9rki-XZ3enSPy0p+UQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, May 22, 2022 at 7:04 PM Miguel Ojeda <ojeda@kernel.org> wrote:
->
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -120,6 +120,15 @@ endif
->
->  export KBUILD_CHECKSRC
->
-> +# Enable "clippy" (a linter) as part of the Rust compilation.
-> +#
-> +# Use 'make CLIPPY=1' to enable it.
-> +ifeq ("$(origin CLIPPY)", "command line")
-> +  KBUILD_CLIPPY := $(CLIPPY)
-> +endif
+On Tue, May 24, 2022 at 06:21:14PM +0200, Miguel Ojeda wrote:
+> On Mon, May 23, 2022 at 9:46 PM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> > "Declare KSY_NAME_LEN, which describes the maximum length for a kernel
+> > symbol read by kallsyms from the input.  In read_symbol(), define the
+> > buffer to be of length "KSY_NAME_LEN + 1", which includes the terminator
+> > character."
+> >
+> > would be better.
+> 
+> Note that the patch is not declaring `KSYM_NAME_LEN`, but a new
+> constant for a fairly arbitrarily sized for an input buffer.
+> 
+> I am all for detailed commit messages, and I agree this can be
+> expanded. However, I think the first sentence of what you wrote should
+> be part of the docs of the constant, and the second one sounds like it
+> could be a comment on the code. Something like "Introduce
+> KSYM_NAME_LEN_BUFFER in place of the previously hardcoded size of the
+> input buffer (...)" would be better for a reviewer.
 
-Is there a reason to not just turn clippy on always? Might be nicer to
-start off with good practices by default. :^)
+Inline comment would be sufficient a remainder, and actually a better
+idea.
 
-> @@ -1494,7 +1588,8 @@ MRPROPER_FILES += include/config include/generated          \
->                   certs/signing_key.pem \
->                   certs/x509.genkey \
->                   vmlinux-gdb.py \
-> -                 *.spec
-> +                 *.spec \
-> +                 rust/target.json rust/libmacros.so
->
->  # clean - Delete most, but leave enough to build external modules
->  #
-> @@ -1519,6 +1614,9 @@ $(mrproper-dirs):
->
->  mrproper: clean $(mrproper-dirs)
->         $(call cmd,rmfiles)
-> +       @find . $(RCS_FIND_IGNORE) \
-> +               \( -name '*.rmeta' \) \
-> +               -type f -print | xargs rm -f
+> > You must split this then into two patches:
+> 
+> Note that the size is not really being increased in a meaningful way
+> -- the important bit is the introduction of the relationship between
+> constants. The changes are all meant as a replacement for the
+> previously hardcoded constant, so I don't think the split is a "must",
+> but we can do it.
+> 
+> We can even split this into 3 patches: clean up the unneeded `sizeof`,
+> replace (and, importantly, document) the hardcoded constant, and
+> finally introduce the relationship.
+> 
+> Thanks for taking a look!
+> 
+> Cheers,
+> Miguel
 
-Are there *.rmeta directories that we _don't_ want to remove via `make
-mrproper`? I'm curious why *.rmeta isn't just part of MRPROPER_FILES?
-
->
->  # distclean
->  #
-> @@ -1606,6 +1704,23 @@ help:
->         @echo  '  kselftest-merge   - Merge all the config dependencies of'
->         @echo  '                      kselftest to existing .config.'
->         @echo  ''
-> +       @echo  'Rust targets:'
-> +       @echo  '  rustavailable   - Checks whether the Rust toolchain is'
-> +       @echo  '                    available and, if not, explains why.'
-> +       @echo  '  rustfmt         - Reformat all the Rust code in the kernel'
-> +       @echo  '  rustfmtcheck    - Checks if all the Rust code in the kernel'
-> +       @echo  '                    is formatted, printing a diff otherwise.'
-> +       @echo  '  rustdoc         - Generate Rust documentation'
-> +       @echo  '                    (requires kernel .config)'
-> +       @echo  '  rusttest        - Runs the Rust tests'
-> +       @echo  '                    (requires kernel .config; downloads external repos)'
-> +       @echo  '  rust-analyzer   - Generate rust-project.json rust-analyzer support file'
-> +       @echo  '                    (requires kernel .config)'
-> +       @echo  '  dir/file.[os]   - Build specified target only'
-> +       @echo  '  dir/file.i      - Build macro expanded source, similar to C preprocessing'
-> +       @echo  '                    (run with RUSTFMT=n to skip reformatting if needed)'
-> +       @echo  '  dir/file.ll     - Build the LLVM assembly file'
-
-I don't think we need to repeat dir/* here again for rust. The
-existing targets listed above (outside this hunk) make sense in both
-contexts.
-
-Does rustc really use .i as a conventional suffix for macro expanded
-sources? (The C compiler might use the -x flag to override the guess
-it would make based on the file extension; I'm curious if rustc can
-ingest .i files or will it warn?)
-
-> diff --git a/init/Kconfig b/init/Kconfig
-> index ddcbefe535e9..3457cf596588 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> +config RUSTC_VERSION_TEXT
-> +       string
-> +       depends on RUST
-> +       default $(shell,command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version || echo n)
-> +
-> +config BINDGEN_VERSION_TEXT
-> +       string
-> +       depends on RUST
-> +       default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version || echo n)
-
-Are these two kconfigs used anywhere?
-
-> diff --git a/scripts/Kconfig.include b/scripts/Kconfig.include
-> index 0496efd6e117..83e850321eb6 100644
-> --- a/scripts/Kconfig.include
-> +++ b/scripts/Kconfig.include
-> @@ -36,12 +36,12 @@ ld-option = $(success,$(LD) -v $(1))
->  as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler -o /dev/null -)
->
->  # check if $(CC) and $(LD) exist
-> -$(error-if,$(failure,command -v $(CC)),compiler '$(CC)' not found)
-> +$(error-if,$(failure,command -v $(CC)),C compiler '$(CC)' not found)
-
-Not that it's important to do so, but a couple hunks s/compiler/C
-compiler/. Those _could_ probably get submitted ahead of this, but not
-important to do so.
-
-> diff --git a/scripts/Makefile.debug b/scripts/Makefile.debug
-> index 9f39b0130551..fe87389d52c0 100644
-> --- a/scripts/Makefile.debug
-> +++ b/scripts/Makefile.debug
-> @@ -1,4 +1,5 @@
->  DEBUG_CFLAGS   :=
-> +DEBUG_RUSTFLAGS        :=
->
->  ifdef CONFIG_DEBUG_INFO_SPLIT
->  DEBUG_CFLAGS   += -gsplit-dwarf
-> @@ -10,6 +11,12 @@ ifndef CONFIG_AS_IS_LLVM
->  KBUILD_AFLAGS  += -Wa,-gdwarf-2
->  endif
->
-> +ifdef CONFIG_DEBUG_INFO_REDUCED
-> +DEBUG_RUSTFLAGS += -Cdebuginfo=1
-> +else
-> +DEBUG_RUSTFLAGS += -Cdebuginfo=2
-> +endif
-> +
-
-How does enabling or disabling debug info work for rustc? I may have
-missed it, but I was surprised to see no additional flags getting
-passed to rustc based on CONFIG_DEBUG info.
-
-> diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-> new file mode 100644
-> index 000000000000..c146a3407183
-> --- /dev/null
-> +++ b/scripts/generate_rust_target.rs
-
-Ah, that explains the host rust build infra.  Bravo! Hard coding the
-target files was my major concern last I looked at the series. I'm
-very happy to see it be generated properly from .config!
-
-I haven't actually reviewed this yet, but it makes me significantly
-more confident in the series to see this approach added. Good job
-whoever wrote this.
-
-> diff --git a/scripts/is_rust_module.sh b/scripts/is_rust_module.sh
-> new file mode 100755
-> index 000000000000..277a64d07f22
-> --- /dev/null
-> +++ b/scripts/is_rust_module.sh
-> @@ -0,0 +1,13 @@
-> +#!/bin/sh
-> +# SPDX-License-Identifier: GPL-2.0
-> +#
-> +# is_rust_module.sh module.ko
-> +#
-> +# Returns `0` if `module.ko` is a Rust module, `1` otherwise.
-> +
-> +set -e
-> +
-> +# Using the `16_` prefix ensures other symbols with the same substring
-> +# are not picked up (even if it would be unlikely). The last part is
-> +# used just in case LLVM decides to use the `.` suffix.
-> +${NM} "$*" | grep -qE '^[0-9a-fA-F]+ r _R[^[:space:]]+16___IS_RUST_MODULE[^[:space:]]*$'
-
-Does `$(READELF) -p .comment foo.o` print anything about which
-compiler was used? That seems less brittle IMO.
-
----
-
-Modulo the RUST_OPT_LEVEL_SIMILAR_AS_CHOSEN_FOR_C which I'm not a fan
-of, this is looking good to me. Masahiro, what are your thoughts on
-the build system support?
--- 
-Thanks,
-~Nick Desaulniers
+BR, Jarkko
