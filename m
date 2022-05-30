@@ -2,57 +2,117 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03F86C433EF
-	for <rust-for-linux@archiver.kernel.org>; Sat, 28 May 2022 07:54:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1F09C4332F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 30 May 2022 13:02:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230124AbiE1Hyz (ORCPT
+        id S236293AbiE3NCD (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 28 May 2022 03:54:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39126 "EHLO
+        Mon, 30 May 2022 09:02:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229998AbiE1Hyz (ORCPT
+        with ESMTP id S236299AbiE3NCB (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 28 May 2022 03:54:55 -0400
-Received: from mail.companydia.pl (mail.companydia.pl [162.19.155.128])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C609B0D
-        for <rust-for-linux@vger.kernel.org>; Sat, 28 May 2022 00:54:54 -0700 (PDT)
-Received: by mail.companydia.pl (Postfix, from userid 1002)
-        id 65014269E3; Sat, 28 May 2022 07:51:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=companydia.pl;
-        s=mail; t=1653724353;
-        bh=ChRcLNpIfKnVgp03/tSyWuRw1tWSTk/OEiEnuZMWs58=;
-        h=Date:From:To:Subject:From;
-        b=9PUwtHl2NO6hN/9I1/kNQBnNpcCRnwIc3h0XNNK4rnGXcfjuk371MiSW3mzni56Xk
-         kKjdt/YgmDaEbUPbzJ53JsM5AtWDlfWrAGN1B+LxArpJdOKSuCQLMdC94V2nR1rpJy
-         AEM3Y3lB9Fi3PQifvb9Vqx1cGpQ0MSA/4XQ0OAapUxoLSeJAzhAl9hsKKg4A3Ue24d
-         5nZy5GzdX0UHG362W9TKLMRGRCPgLwnQvJkZK7wgFGMG395L4pWju/ORRrW3MQ+3yU
-         cO1mEWagmOUq/g9ILC0DkVFukMBxQOo7Jks+2JcrLNKKh5Px5eTteltGrZDy2SGV/U
-         xQMhLTwgavTaQ==
-Received: by mail.companydia.pl for <rust-for-linux@vger.kernel.org>; Sat, 28 May 2022 07:50:14 GMT
-Message-ID: <20220528063000-0.1.11.hh6g.0.9rnenny2kt@companydia.pl>
-Date:   Sat, 28 May 2022 07:50:14 GMT
-From:   "Norbert Karecki" <norbert.karecki@companydia.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.companydia.pl
+        Mon, 30 May 2022 09:02:01 -0400
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3061717E1C;
+        Mon, 30 May 2022 06:02:00 -0700 (PDT)
+Received: by mail-io1-xd2d.google.com with SMTP id q203so11299583iod.0;
+        Mon, 30 May 2022 06:02:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/nsX7tQgFVjCVndQ6RpFV7BObhww0aFphEST3Aew1pU=;
+        b=aDBnKozUQpAbtuN5D/ooDBBqSx3Y+oo5MQ+1QeE2crNOB4+uZi4F8AFaQo9IURBPMv
+         TVWtenQ8DPSkeu06Zak5ks2S0Dg84W67tc+vI5DtTswEgZk0k2+gKNpJrlE5EJbOodqG
+         Vdxm0mdvIGW6kx8eUFHGJWjG24kkF6b+xVMNWdVNSCFR2Bmjq0viGo30qySCSC8imz1j
+         5z4u2g9ZUnnau7guKEFPonzFCeCgumyuk0EIouAa59SVc8aqIe1q1Xtsd+OmaJdST0aP
+         8BEyiBJL9ImKKd5CZTG7axLZNZNcTTOKhiZMNC0fAeljoM4c/Avg9Rhmy9lgOHrQzCx2
+         JA0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/nsX7tQgFVjCVndQ6RpFV7BObhww0aFphEST3Aew1pU=;
+        b=79lmhcP105YbKJX1Hk/34Yo9ey9MeCwVB4u6uWwL/kMOLxkzFIwCWnvCH+0mN477vG
+         KCW6bQG7yugO8SvKiSgDrbZ8AZazFEEK7c6QKRITk6VW0Ogi4Sl63RFJGh7wvYyTpp7U
+         Ss6nEZ3O0vXpFPFu0zXYJ/gbXmtsiRB36qTLmwvHHQpZaW5exZZAHcdHIzueMIcyjIdZ
+         R09Ndkb2MIvTTVCpTOEyA01GaMBaEcLBeKg+bkWEnt+iYq/zmcKTTObyBg4zAYSNJlwX
+         /ho8Tk3UmI8ZeEUvmc69sy8wavfJ7FGwopOkhcHGgDIAJXppukDc7aAKB0KDgkJmShmG
+         iaKg==
+X-Gm-Message-State: AOAM53173F8XARlvS0wlmU8bg6jwagNgORAzswyymofaIUxlbb9LFhWg
+        D+TUcHj7ahVJMuvEBPc4kZwI08mmhqn1XjBGNr8=
+X-Google-Smtp-Source: ABdhPJz/KcdushmmWd5Wmx13C1o+XFxVQFOFTt9BakFoqOPc639maIlLVqG2CA9llEfhnfiqOLefeStVd6eXaJtnvLM=
+X-Received: by 2002:a05:6638:f89:b0:32e:89f4:e150 with SMTP id
+ h9-20020a0566380f8900b0032e89f4e150mr27709726jal.308.1653915717905; Mon, 30
+ May 2022 06:01:57 -0700 (PDT)
 MIME-Version: 1.0
+References: <20220523020209.11810-1-ojeda@kernel.org> <20220523020209.11810-4-ojeda@kernel.org>
+ <YovvIQeN3lmOYzJO@kernel.org> <CANiq72m6ttD9QpB3nW-5B+M1seknv0GZ4-DqtF85qTg6Lvxnhg@mail.gmail.com>
+ <459385ee7ccf4fcf3e22d4a11b4f438d648422bf.camel@kernel.org>
+In-Reply-To: <459385ee7ccf4fcf3e22d4a11b4f438d648422bf.camel@kernel.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 30 May 2022 15:01:47 +0200
+Message-ID: <CANiq72=TmWvVUR8yAAU-oT9=TdYPJC0sGxEBv4aVKBHKdEOjJg@mail.gmail.com>
+Subject: Re: [PATCH v7 03/25] kallsyms: increase maximum kernel symbol length
+ to 512
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     David Howells <dhowells@redhat.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        live-patching@vger.kernel.org, linux-perf-users@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Fri, May 27, 2022 at 6:27 PM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+>
+> The honest answer: I don't actually remember what I was thinking
+> (other stuff stole my focus) but my comment neither makes much
+> sense to me. Please just ignore it, and apologies for causing
+> confusion.
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+No apologies needed!
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+> There's something I'm looking into in my spare time right now.
+> I'm experimenting with interfacing keyring types to Rust. The
+> first step, I guess, is to provide a Rust abstraction for
+> assoc_array.
+>
+> I've skimmed through the patch set and have now *rough* idea of
+> patterns and techniques. My opens are more on the process side
+> of things since there's no yet mainline subtree.
 
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+Thanks a lot for taking a look and taking the initiative.
 
+> If I send a patch or patch sets, would this be a good workflow:
+>
+> 1. RFC tag.
+> 2. In the cover letter denote the patch set version, which was
+>    used the baseline.
 
-Pozdrawiam,
-Norbert Karecki
+Sounds good to me. Alternatively, you can use a `--base=` pointing to
+one of the commits in our `rust` branch.
+
+Cheers,
+Miguel
