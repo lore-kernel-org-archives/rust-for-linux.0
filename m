@@ -2,69 +2,57 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 05FD8C433EF
-	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Jun 2022 17:37:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D73D0C43334
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Jun 2022 07:39:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234886AbiFDRhu (ORCPT
+        id S237747AbiFGHjp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 4 Jun 2022 13:37:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34426 "EHLO
+        Tue, 7 Jun 2022 03:39:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234420AbiFDRht (ORCPT
+        with ESMTP id S237643AbiFGHjp (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 4 Jun 2022 13:37:49 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B1E9633E
-        for <rust-for-linux@vger.kernel.org>; Sat,  4 Jun 2022 10:37:48 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id p130so4183194iod.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 04 Jun 2022 10:37:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=RQM48X3RfgIFChHvqnRPT0widQSiJNoM2DdfxgvUUNY=;
-        b=XoVYMP6z4wDQuu0h/pMJogKzBklPwmiDhKl+JcAVGgNLX0kc5kOuh79w/6xKgXcIcD
-         bh7flJ3UJJj/wcro3vkdfkyV1LqOHAzuU9VY+lOXj/sW/cQkWYnIn0eAUVxB0dFYQrxr
-         lSGVZEynQ85Yf0PA70fcJ/OqnHPMdbPK0r7QsxUIK/48OOgKr5tl37hnrn5jHEDI33kD
-         6sO80BP3lA+LLmiOu3FyGYKLc1qgEWNiuJ/+R1Yo5E7QCnoPTJrMeqR0KmgNYFxG4RbQ
-         NT1lVTBRXb8N5Vw+oorsJUXFfkkr7zKBJWnDHacRESQ95MEhLtDxda3Fi36DQUubYGmp
-         Reng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=RQM48X3RfgIFChHvqnRPT0widQSiJNoM2DdfxgvUUNY=;
-        b=qe5hriOvxVmjtEqoZ4Cj7xviZhZzUvYIUCg+VCrv5mY1zNi0lb8+08UmrvoQopsMhk
-         8EDa/LmN5XiJIQIWN2gzrgueJjBY+0LspcSqtNs8QjSUvX5dm5Np5tt6dvdgbYtuheir
-         h9NUc0ru8zsZTM7m85a88ZSIT7Vxnxo7A+6EC4XwgcMfqSAO99y3dVSeh1WhzZ6UCsGI
-         BhiFkEFtAibTwpHrk9zBzpv3XxjGHLAnWWVYCBHfJXxhwRyinYQ0fAOBON3OtqaORZQP
-         sPOqwgfbUUSl9DMwBnOVz3/r07BMO0e5eZycu545XaIfxips51eucTaxVsNBv8OpWsXm
-         boYQ==
-X-Gm-Message-State: AOAM532n1o5NFwlFzS+3SBcpjwZobckFeMn+GiNiPDJhTEvuwaE7jm3z
-        4IoZi2ct8kkIPaekwZvKDN0S96H+j5xWLiECe/GCDzIErcs20w==
-X-Google-Smtp-Source: ABdhPJwvKLiDo6GMZ1ANdO6L8Mxb331woaqaO0TCTBCZiDWxwQKPBHf7XArFmQxglIEQ1GQqwbKZD6EXN+cpMQol0C8=
-X-Received: by 2002:a02:394c:0:b0:331:7d9a:70b with SMTP id
- w12-20020a02394c000000b003317d9a070bmr4233138jae.199.1654364267964; Sat, 04
- Jun 2022 10:37:47 -0700 (PDT)
+        Tue, 7 Jun 2022 03:39:45 -0400
+Received: from mail.companydia.pl (mail.companydia.pl [162.19.155.128])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D015C9A985
+        for <rust-for-linux@vger.kernel.org>; Tue,  7 Jun 2022 00:39:43 -0700 (PDT)
+Received: by mail.companydia.pl (Postfix, from userid 1002)
+        id 3111223894; Tue,  7 Jun 2022 07:36:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=companydia.pl;
+        s=mail; t=1654587440;
+        bh=ChRcLNpIfKnVgp03/tSyWuRw1tWSTk/OEiEnuZMWs58=;
+        h=Date:From:To:Subject:From;
+        b=2z3bvUUZoBqURvtO7AirtMBh1rzG0Iz44PYKlDoPt+ROZbAYFVYkPwZOL+q6lr8II
+         JB1uAM+z1v1xBc/hX/lpIUcEkW/32FrSiwVIAONE2zsiAoZ/wKjlPgMHbviU68fa3Y
+         gM2kLZlOyTPeFV2CUZiVS1jwn+7Eeu1v6Cxmkls6M1zI2IBmK3KVHgWC98sY2U0t+a
+         5AwOaXvjcvrvEtBFLdrMnjNraWuCilR3mKbeL0Ch6vlPFKy2XhaBaHrbM4NfgOx1Ny
+         vP2SBF6CI4D5hnv7SrGx/KBBN3h6zJ2S/wBEt45vJaxnNUX73yA8TJx+mnnoYPt7gP
+         4UsAjJhSfe/pw==
+Received: by mail.companydia.pl for <rust-for-linux@vger.kernel.org>; Tue,  7 Jun 2022 07:35:46 GMT
+Message-ID: <20220607064500-0.1.17.hh6g.0.zivbaedhfn@companydia.pl>
+Date:   Tue,  7 Jun 2022 07:35:46 GMT
+From:   "Norbert Karecki" <norbert.karecki@companydia.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.companydia.pl
 MIME-Version: 1.0
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 4 Jun 2022 19:37:37 +0200
-Message-ID: <CANiq72=RuTU3nH8TUBys059Mpr6S4oU+5jAPT3MFcVbhaMgVnw@mail.gmail.com>
-Subject: Reminder: informal call in 20 minutes
-To:     rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi all,
+Dzie=C5=84 dobry,
 
-We will have our informal call in 20 minutes (18:00 UTC first Saturday
-of each month).
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
 
-As usual, everybody is welcome to join. The meetings take place on
-Google Meet. If you need an invitation, drop me an email!
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
 
-If you are in a timezone that cannot easily attend the meetings at
-18:00 UTC, please let us know.
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
 
-Cheers,
-Miguel
+
+Pozdrawiam,
+Norbert Karecki
