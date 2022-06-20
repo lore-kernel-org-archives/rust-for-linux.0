@@ -2,58 +2,139 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 389BDC433EF
-	for <rust-for-linux@archiver.kernel.org>; Fri, 17 Jun 2022 12:17:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26790CCA479
+	for <rust-for-linux@archiver.kernel.org>; Mon, 20 Jun 2022 16:28:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380126AbiFQMRm convert rfc822-to-8bit (ORCPT
+        id S236110AbiFTQ2x (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 17 Jun 2022 08:17:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42014 "EHLO
+        Mon, 20 Jun 2022 12:28:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380246AbiFQMRl (ORCPT
+        with ESMTP id S243785AbiFTQ2n (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 17 Jun 2022 08:17:41 -0400
-X-Greylist: delayed 442 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Jun 2022 05:17:34 PDT
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BEEA5B89
-        for <rust-for-linux@vger.kernel.org>; Fri, 17 Jun 2022 05:17:33 -0700 (PDT)
-Received: from smtpclient.apple (unknown [114.245.34.193])
-        by APP-01 (Coremail) with SMTP id qwCowADHzw8eb6xiUpeOBA--.8794S2;
-        Fri, 17 Jun 2022 20:10:08 +0800 (CST)
-From:   Zelin Wang <wangzelin20s@ict.ac.cn>
-Content-Type: text/plain;
-        charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.100.31\))
-Subject: Request an invitation about rust-for-linux zulip
-Message-Id: <A12D5B46-6343-4D7B-A826-FB0492405F11@ict.ac.cn>
-Date:   Fri, 17 Jun 2022 20:10:06 +0800
-Cc:     rust-for-linux@vger.kernel.org
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-X-Mailer: Apple Mail (2.3696.100.31)
-X-CM-TRANSID: qwCowADHzw8eb6xiUpeOBA--.8794S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-        VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUU5C7k0a2IF6F4UM7kC6x804xWl14x267AK
-        xVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGw
-        A2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1I
-        6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Gc
-        CE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxI
-        r21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87
-        Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IY
-        c2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s
-        026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF
-        0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0x
-        vE42xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2
-        jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU86OJ5UUUUU==
-X-Originating-IP: [114.245.34.193]
-X-CM-SenderInfo: pzdqw6hhol0j0qv6xunwoduhdfq/
+        Mon, 20 Jun 2022 12:28:43 -0400
+X-Greylist: delayed 2401 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 20 Jun 2022 09:28:42 PDT
+Received: from 7of9.schinagl.nl (7of9.connected.by.freedominter.net [185.238.129.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47F47BE0C;
+        Mon, 20 Jun 2022 09:28:42 -0700 (PDT)
+Received: from [10.2.12.24] (unknown [10.2.12.24])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by 7of9.schinagl.nl (Postfix) with ESMTPSA id 549661842F6F;
+        Mon, 20 Jun 2022 17:11:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=schinagl.nl; s=7of9;
+        t=1655737904; bh=UqBZTWQhX1oGqwuuGk9ArGFlxBsKUZyh+tzOazjtW9s=;
+        h=Date:Reply-To:Subject:To:Cc:References:From:In-Reply-To;
+        b=bOAzh2IFJWlWBZypDTa0e5IixUmK4ODxJw2v/sUawktoEQv/WpwcVc3LTrMbtQHhF
+         elnL57V0cO+lBHvFupyfUQQnTg4lArzlyPePP/ZUZOKyBBGv1uTDYimPzaXnBf04HK
+         xyx9I2GtQpi6lx7toDHyNw8pQLpR57FT+sUwMkWU=
+Message-ID: <fae4873e-2ff9-df35-0ab9-34bf4417b717@schinagl.nl>
+Date:   Mon, 20 Jun 2022 17:11:43 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Reply-To: oliver+list@schinagl.nl
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+Content-Language: en-US
+To:     ojeda@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        oliver+list@schinagl.nl
+References: <20210414184604.23473-1-ojeda@kernel.org>
+From:   Olliver Schinagl <oliver@schinagl.nl>
+In-Reply-To: <20210414184604.23473-1-ojeda@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Ojeda,
+Hey Miguel and others,
 
-	I am interested in rust-for-linux and would like to implement an RDMA-related kernel module. So could I request an Zulip invitation? I have some questions to ask. I would appreciate it if you could provide an invitation!
+Having followed this for a while, I finally decided it best to at least 
+share some thoughts in the hopes to make life better for us with some 
+readability/accessibility issues, such as dyslexia for example.
 
-Best,
-Zelin
+I apologize for being late to the party and for potentially using the 
+wrong thread, but I recall somewhere in v5 that it was best to respond 
+to the RFC for general comments.
+
+On 14-04-2021 20:45, ojeda@kernel.org wrote:
+> From: Miguel Ojeda <ojeda@kernel.org>
+> 
+> Some of you have noticed the past few weeks and months that
+> a serious attempt to bring a second language to the kernel was
+> being forged. We are finally here, with an RFC that adds support
+> for Rust to the Linux kernel.
+> 
+> This cover letter is fairly long, since there are quite a few topics
+> to describe, but I hope it answers as many questions as possible
+> before the discussion starts.
+> 
+
+<snip>
+
+> 
+> Moreover, as explained above, we are taking the chance to enforce
+> some documentation guidelines. We are also enforcing automatic code
+> formatting, a set of Clippy lints, etc. We decided to go with Rust's
+> idiomatic style, i.e. keeping `rustfmt` defaults. For instance, this
+> means 4 spaces are used for indentation, rather than a tab. We are
+> happy to change that if needed -- we think what is important is
+> keeping the formatting automated
+
+Enforcing this is great, but how will you enforce this 'everywhere'? 
+Right now, you can easily 'bypass' any CI put in place, and while 'for 
+now' this is only about the Rust infra, where this can be strongly 
+enforced, once we see actual drivers pop-up; these won't go through the 
+Rust CI before merging CI forever? A maintainer can 'just merge' 
+something still, right?
+
+Anyway, what I wanted to criticize, is the so called "keeping with 
+`rustfmt` defaults". It has been known, that, well Rust's defaults are 
+pretty biased and opinionated. For the Rust project, that's fair of 
+course, their code, their rules.
+
+However, there's two arguments against that. For one, using the Rust 
+'style', now means there's 2 different code styles in the Kernel. 
+Cognitively alone, that can be quite frustrating and annoying. Having to 
+go back and forth between two styles can be mentally challenging which 
+only causes mistakes and frustration. So why change something that 
+already exists? Also, see my first point. Having to constantly 
+remember/switch to 'in this file/function the curly brace is on a 
+different line'. Lets try to stay consistent, the rules may not be 
+perfect (80 columns ;), but so far consistency is tried. OCD and Autism 
+etc doesn't help with this ;)
+
+Secondly, and this is really far more important, the Rust default style 
+is not very inclusive, as it makes readability harder. This has been 
+brought up by many others in plenty of places, including the `rustfmt` 
+issue tracker under bug #4067 [0]. While the discussion eventually only 
+led to the 'fmt-rfcs' [1], where it was basically said 'you could be on 
+to something, but this ship has sailed 3 years ago (when nobody was 
+looking caring), and while we hear you, we're not going to change our 
+defaults anymore.
+
+But I also agree and share these commenters pain. When the tab character 
+is used for indenting (and not alignment mind you), then visually 
+impaired (who can still be amazing coders) can more easily read code by 
+adjusting the width what works best to them.
+
+With even git renaming `master` to `main` to be more inclusive, can we 
+also be more inclusive to us that have a hard time distinguishing narrow 
+indentations?
+
+Thanks, and sorry for rubbing any ones nerves, but to "some of us" this 
+actually matters a great deal.
+
+Olliver
+
+P.S. would we expect inline C/Rust code mixed? What then?
+
+
+<snip>
+
+[0]: https://github.com/rust-lang/rustfmt/issues/4067#issuecomment-685961408
+[1]: 
+https://github.com/rust-dev-tools/fmt-rfcs/issues/1#issuecomment-911804826
