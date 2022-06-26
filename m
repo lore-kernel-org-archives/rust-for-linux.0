@@ -2,68 +2,90 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F83CC43334
-	for <rust-for-linux@archiver.kernel.org>; Wed, 22 Jun 2022 07:33:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDC10CCA487
+	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Jun 2022 09:11:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350601AbiFVHc7 (ORCPT
+        id S234165AbiFZJLQ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 22 Jun 2022 03:32:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36028 "EHLO
+        Sun, 26 Jun 2022 05:11:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232675AbiFVHc6 (ORCPT
+        with ESMTP id S229985AbiFZJLP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 22 Jun 2022 03:32:58 -0400
-Received: from mail.coredeal.pl (mail.coredeal.pl [51.75.73.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1503B2AED
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jun 2022 00:32:56 -0700 (PDT)
-Received: by mail.coredeal.pl (Postfix, from userid 1002)
-        id 782BBA49F7; Wed, 22 Jun 2022 07:31:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=coredeal.pl; s=mail;
-        t=1655883095; bh=9KGuIG62LgzC9aYmjKxzocuYLRCVghXg6v9Q1q2LHec=;
-        h=Date:From:To:Subject:From;
-        b=ZgUkO496K8NNNbQNtff+HaNAPE5+TS1pk59ALvgvHE6AVAPGHMWV4uwmjfCEILHtP
-         0gSbmo2jINXedv0LQzKKefIXbDVDrPO8FTY1sSPaAUZ0ucgHvwKzGf7Fx9iI1V6nIf
-         VgdW6xIWkpPqw6ZhnomOqG3svM+vVplGXNYWtqLd4XUMfCeYWB7iLwjoD+gP1DsZi3
-         Ltf60KF63EXG1/oL1OuLztTdyGFYbCfFTbwQo/QImj6IDyv/iSCt5wfKVy2pxZZZri
-         GSfyuQntOxcY2TxeUj96p4Crw3HYzRuRXiIoIQYEtX5PmQL14Wdyldbu5MRkzg3HN6
-         btKT2NIxo9mvg==
-Received: by mail.coredeal.pl for <rust-for-linux@vger.kernel.org>; Wed, 22 Jun 2022 07:30:40 GMT
-Message-ID: <20220622064501-0.1.3u.wm0r.0.10qu05rsx7@coredeal.pl>
-Date:   Wed, 22 Jun 2022 07:30:40 GMT
-From:   "Krzysztof Maj" <krzysztof.maj@coredeal.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: Biznesowy angielski
-X-Mailer: mail.coredeal.pl
+        Sun, 26 Jun 2022 05:11:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C57D712AB6;
+        Sun, 26 Jun 2022 02:11:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7070D61196;
+        Sun, 26 Jun 2022 09:11:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C459EC36AFD;
+        Sun, 26 Jun 2022 09:11:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656234671;
+        bh=GWFfIQwi0KBg8UNa6F/j3qBcQL0kmJb3b/zdkinvsXs=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=GmXlK/zn9fbFTPdxMlhuYrYyIFtHvn2M9qW/creKJdVTAolqoIRrqCDoD8y+Sl3QL
+         aWR/I6Es7vBmgkypuw7Lt8OSpMClXnXhAbv5G9wO2G9o9UBG7TyaQiPr1kVjlzU2lL
+         LQtRvAdaYELyDE66C3EJZxbikExblCCOtNdfVt0Gek9LuaGI2zDg10Mhr7Kf5NjbaW
+         raApJUjNGXQRerL+NAcn+nDXKnG0xPxGj1ZcaFS+9X/DEvi67xkDKY/0/VnDdY85jK
+         pn6/rE2pIujrQXSnF4ZrDo1Tc5fjconhvkifcSwa8e1QEvL6zvR/CvhTpk58A2hPEC
+         xbOkOfOH8saFQ==
+Received: from mchehab by mail.kernel.org with local (Exim 4.95)
+        (envelope-from <mchehab@kernel.org>)
+        id 1o5OIN-001coS-Uy;
+        Sun, 26 Jun 2022 10:11:07 +0100
+From:   Mauro Carvalho Chehab <mchehab@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        "Jonathan Corbet" <corbet@lwn.net>,
+        "Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Alex Shi <alexs@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Wu XiangCheng <bobwxc@email.cn>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 06/20] docs: zh_CN: fix a broken reference
+Date:   Sun, 26 Jun 2022 10:10:52 +0100
+Message-Id: <94fe771609d32583fee41f47fe29433cbce5b04e.1656234456.git.mchehab@kernel.org>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <cover.1656234456.git.mchehab@kernel.org>
+References: <cover.1656234456.git.mchehab@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,=20
+The location of the rust doc is wrong (probably a typo). Fix it.
 
-czy rozwa=C5=BCali Pa=C5=84stwo rozw=C3=B3j kwalifikacji j=C4=99zykowych =
-swoich pracownik=C3=B3w?
+Fixes: 3a5915156429 ("docs/zh_CN: Add translation zh_CN/doc-guide/kernel-doc.rst")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+---
 
-Opracowali=C5=9Bmy kursy j=C4=99zykowe dla r=C3=B3=C5=BCnych bran=C5=BC, =
-w kt=C3=B3rych koncentrujemy si=C4=99 na podniesieniu poziomu s=C5=82owni=
-ctwa i jako=C5=9Bci komunikacji wykorzystuj=C4=85c autorsk=C4=85 metod=C4=
-=99, stworzon=C4=85 specjalnie dla wymagaj=C4=85cego biznesu.=20
+To avoid mailbombing on a large number of people, only mailing lists were C/C on the cover.
+See [PATCH v2 00/20] at: https://lore.kernel.org/all/cover.1656234456.git.mchehab@kernel.org/
 
-Niestandardowy kurs on-line, dopasowany do profilu firmy i obszar=C3=B3w =
-=C5=9Bwiadczonych us=C5=82ug, w szybkim czasie przyniesie efekty, kt=C3=B3=
-re zwi=C4=99ksz=C4=85 komfort i jako=C5=9B=C4=87 pracy, rozwijaj=C4=85c m=
-o=C5=BCliwo=C5=9Bci biznesowe.=20
+ Documentation/translations/zh_CN/doc-guide/kernel-doc.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Zdalne szkolenie j=C4=99zykowe to m.in. zaj=C4=99cia z native speakerami,=
- kt=C3=B3re w szybkim czasie naucz=C4=85 pracownik=C3=B3w rozmawia=C4=87 =
-za pomoc=C4=85 jasnego i zwi=C4=99z=C5=82ego j=C4=99zyka Business English=
-=2E
+diff --git a/Documentation/translations/zh_CN/doc-guide/kernel-doc.rst b/Documentation/translations/zh_CN/doc-guide/kernel-doc.rst
+index 82ec84470c0b..ccfb9b8329c2 100644
+--- a/Documentation/translations/zh_CN/doc-guide/kernel-doc.rst
++++ b/Documentation/translations/zh_CN/doc-guide/kernel-doc.rst
+@@ -14,7 +14,7 @@ Linux内核源文件可以包含kernel-doc格式的结构化文档注释，用
+           实际有着明显的不同。内核源包含成千上万个kernel-doc注释。请坚持遵循
+           此处描述的风格。
+ 
+-.. note:: kernel-doc无法包含Rust代码：请参考 Documentation/rust/docs.rst 。
++.. note:: kernel-doc无法包含Rust代码：请参考 Documentation/rust/general-information.rst 。
+ 
+ 从注释中提取kernel-doc结构，并从中生成适当的 `Sphinx C 域`_ 函数和带有锚点的
+ 类型描述。这些注释将被过滤以生成特殊kernel-doc高亮和交叉引用。详见下文。
+-- 
+2.36.1
 
-Czy m=C3=B3g=C5=82bym przedstawi=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3=
-w i opowiedzie=C4=87 jak dzia=C5=82amy?=20
-
-
-Pozdrawiam
-Krzysztof Maj
