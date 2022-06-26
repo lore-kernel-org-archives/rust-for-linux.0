@@ -2,145 +2,80 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E863CCA47E
-	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Jun 2022 09:11:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5348ECCA47C
+	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Jun 2022 09:23:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234207AbiFZJLZ (ORCPT
+        id S234180AbiFZJXR (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 26 Jun 2022 05:11:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46246 "EHLO
+        Sun, 26 Jun 2022 05:23:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234076AbiFZJLO (ORCPT
+        with ESMTP id S234151AbiFZJXN (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 26 Jun 2022 05:11:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 180DA12AA3;
-        Sun, 26 Jun 2022 02:11:13 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2461B6118A;
-        Sun, 26 Jun 2022 09:11:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65F3C341D0;
-        Sun, 26 Jun 2022 09:11:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656234671;
-        bh=PhI7xlCBz8s4EqXsemcBzFaZLbSNGrNWFqcVvz20FLU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=HhAf8IklB9OEeSwUHmvWxlXncEZMnsUL3ruxIFgodyPNv9p+IrCpMlJ2Ee1QRPg4Y
-         hcLQjIGJsa57ccuYyM9Yyy/ROtPClfozh4WxentR1FyhgZLpBjfJOGg0x+KF4uJ/xK
-         kJvya0UqPXI61UML+5xdxeC865OaTGDrndLJQhHMXq2RYO88lEbM26jWxoanedVi+e
-         mtQoMumgkipZ4Bxf/XC3su3ouzdbhmQdJsOcFrbZpKeXoPTd+pXhJvNl4aEKmUZnEX
-         5AkPirLrYw/XgJk3fQoIdoqyPnzuUz7+aN/pwnstjak/isdyfdJp2rwGOaiGtxsqlk
-         h/pj4xfQ6G59g==
-Received: from mchehab by mail.kernel.org with local (Exim 4.95)
-        (envelope-from <mchehab@kernel.org>)
-        id 1o5OIN-001coA-Qi;
-        Sun, 26 Jun 2022 10:11:07 +0100
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        "H. Peter Anvin" <hpa@zytor.com>, Alex Shi <alexs@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dipen Patel <dipenp@nvidia.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Federico Vaga <federico.vaga@vaga.pv.it>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Yanteng Si <siyanteng@loongson.cn>, devicetree@vger.kernel.org,
-        keyrings@vger.kernel.org, kvm@vger.kernel.org,
-        linux-cachefs@redhat.com, linux-input@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-riscv@lists.infradead.org,
-        linux-tegra@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        x86@kernel.org
-Subject: [PATCH v2 00/20] Update Documentation/ cross-references
-Date:   Sun, 26 Jun 2022 10:10:46 +0100
-Message-Id: <cover.1656234456.git.mchehab@kernel.org>
-X-Mailer: git-send-email 2.36.1
+        Sun, 26 Jun 2022 05:23:13 -0400
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98E4910561;
+        Sun, 26 Jun 2022 02:23:11 -0700 (PDT)
+Received: by mail-io1-xd36.google.com with SMTP id y18so6873667iof.2;
+        Sun, 26 Jun 2022 02:23:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Y+LUHC0DYaulPNo54n0DeVDYRCFGg0Z9uPUo6eao7cY=;
+        b=gsetRLCAEWRpYTa+ktubHph4GACN1etqI0SW0ZaKl+tXJgFgfvNyI1sIMBOmdufqWn
+         5VGXphd8iVaSX1K2KdxgbA9Tu6tDn3QkShLII6lmA9jRvcRB9xuu5MTQKHfyZQ+SkgPr
+         yfUc+O5FVteVBQBBwq7PGOLwpXa7VUqpPrdVr+8ycLThEc+SuTBpJjnc9gV1XJEYrkkY
+         XUxSf+Qs6glluHVKhscIZCgYFlGtsRpDKgItYzC9UhZrdea4CVB3JsW37QtCtpq8bkyK
+         PCtX35olaRNIHekoPkIx9yqE55q5ylkOwVQ3OTaO4IiGbdunNDS/nQ3//R8J7Ws2Njgb
+         rLyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Y+LUHC0DYaulPNo54n0DeVDYRCFGg0Z9uPUo6eao7cY=;
+        b=ao84SzjZLBpgw097RmWx9ZWuZ2gO6xzeI2emxKoJoUn9FNc/dgExfSm5tjA7HdHspR
+         I7NS4IEpjtQUE6M9z8gvLhwVv+K/IJ4BCM0p2oYG78fHLRiImd3SnnvV5HSAvFypha3r
+         qEE3iFXFrHIbMv88oBtO0uRI0dF+BnEw1H4te4kLFOcW41qvG1sBLscSN8C+N5L+Iusb
+         L8Xhvwk2cdxygGiDARrZL4pnOcw/c3qrDlPuxdf1Dc74AGmCuVOEPBxfS5hBxGsS6ubE
+         avYHjFJN2ub6j/GbpWPmiBzjGHG92ZMg1DDlWTdQd+Sa8xuS47iXO+adIC9mAtFMsd+J
+         vFGQ==
+X-Gm-Message-State: AJIora/gLASsNMauMnj8fso/L/jI0IOD3xV+IDEx2VUglS32g3wILz9Y
+        f7SYchUZgWEcU3+esL6rglRKFbBUoSU1+6DxeOM=
+X-Google-Smtp-Source: AGRyM1sTPyrwAW7cGfkqYHJ4SWTFXqK2TW3q006TuQYS4E5Jki/zc4K+pbjxw2exH/ObCFtwMxxZS7iRr4Q8A6RfMLo=
+X-Received: by 2002:a05:6602:2d90:b0:63d:b41e:e4e4 with SMTP id
+ k16-20020a0566022d9000b0063db41ee4e4mr3954751iow.172.1656235390597; Sun, 26
+ Jun 2022 02:23:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1656234456.git.mchehab@kernel.org> <94fe771609d32583fee41f47fe29433cbce5b04e.1656234456.git.mchehab@kernel.org>
+In-Reply-To: <94fe771609d32583fee41f47fe29433cbce5b04e.1656234456.git.mchehab@kernel.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sun, 26 Jun 2022 11:22:59 +0200
+Message-ID: <CANiq72=0HHiixjrBqbdEWjiOL0tAtLz=zGe5N3TqRoeq6Rk71A@mail.gmail.com>
+Subject: Re: [PATCH v2 06/20] docs: zh_CN: fix a broken reference
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc:     Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Alex Shi <alexs@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Wu XiangCheng <bobwxc@email.cn>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Fix most broken documentation file cross references on next-20220624.
+On Sun, Jun 26, 2022 at 11:11 AM Mauro Carvalho Chehab
+<mchehab@kernel.org> wrote:
+>
+> The location of the rust doc is wrong (probably a typo). Fix it.
 
-After this series, only 3 references will be broken:
+Thanks Mauro -- it was the old location of the document. For some
+reason, the translated docs have bits from -next.
 
-Warning: Documentation/dev-tools/kunit/run_wrapper.rst references a file that doesn't exist: Documentation/dev-tools/kunit/non_uml.rst
-Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
-Warning: drivers/acpi/device_pm.c references a file that doesn't exist: Documentation/firmware-guide/acpi/low-power-probe.rst
-
-All of them seem to be due to the lack of a patch actually adding the
-documentation. Maybe the document file is still under review?
-
-Regards,
-Mauro
-
-Mauro Carvalho Chehab (20):
-  docs: netdev: update maintainer-netdev.rst reference
-  docs: filesystems: update netfs-api.rst reference
-  docs: zh_CN: page_frags.rst: fix a broken reference
-  docs: zh_CN/riscv/pmu.rst: remove old docuementation
-  docs: zh_CN/devicetree: fix typos
-  docs: zh_CN: fix a broken reference
-  docs: zh_CN/vm: fix a typo for page reporting ReST file
-  docs: zh_CN/vm/zsmalloc.rst: fix a typo
-  docs: zh_CN/vm/index.rst: fix a broken reference
-  Documentation: update watch_queue.rst references
-  Documentation: KVM: update s390-pv.rst reference
-  Documentation: KVM: update amd-memory-encryption.rst references
-  Documentation: KVM: update msr.rst reference
-  Documentation: KVM: update s390-diag.rst reference
-  objtool: update objtool.txt references
-  arch: m68k: q40: README: drop references to IDE driver
-  tegra194-hte.rst: fix reference to its binding
-  dt-bindings: mfd: update dlg,da9063.yaml reference
-  MAINTAINERS: update nvidia,tegra20-host1x.yaml reference
-  MAINTAINERS: fix cross references to mfd/dlg,da9063.yaml
-
- .../admin-guide/kernel-parameters.txt         |   2 +-
- .../bindings/input/da9062-onkey.txt           |   2 +-
- Documentation/driver-api/hte/tegra194-hte.rst |   2 +-
- Documentation/security/keys/core.rst          |   2 +-
- Documentation/security/secrets/coco.rst       |   2 +-
- .../it_IT/networking/netdev-FAQ.rst           |   2 +-
- .../translations/zh_CN/devicetree/index.rst   |   2 +-
- .../zh_CN/devicetree/of_unittest.rst          |   2 +-
- .../zh_CN/devicetree/usage-model.rst          |   2 +-
- .../zh_CN/doc-guide/kernel-doc.rst            |   2 +-
- .../translations/zh_CN/riscv/index.rst        |   1 -
- .../translations/zh_CN/riscv/pmu.rst          | 235 ------------------
- .../zh_CN/vm/free_page_reporting.rst          |   2 +-
- .../translations/zh_CN/vm/frontswap.rst       |   2 +-
- Documentation/translations/zh_CN/vm/index.rst |   2 +-
- .../translations/zh_CN/vm/page_frags.rst      |   2 +-
- .../translations/zh_CN/vm/zsmalloc.rst        |   2 +-
- Documentation/virt/kvm/api.rst                |   4 +-
- Documentation/virt/kvm/s390/s390-pv-boot.rst  |   2 +-
- Documentation/virt/kvm/x86/hypercalls.rst     |   2 +-
- Documentation/x86/orc-unwinder.rst            |   2 +-
- MAINTAINERS                                   |   6 +-
- arch/m68k/q40/README                          |   5 +-
- include/linux/fscache.h                       |   2 +-
- include/linux/objtool.h                       |   2 +-
- include/linux/watch_queue.h                   |   2 +-
- init/Kconfig                                  |   2 +-
- kernel/watch_queue.c                          |   2 +-
- lib/Kconfig.debug                             |   2 +-
- tools/include/linux/objtool.h                 |   2 +-
- tools/objtool/check.c                         |   2 +-
- 31 files changed, 33 insertions(+), 270 deletions(-)
- delete mode 100644 Documentation/translations/zh_CN/riscv/pmu.rst
-
--- 
-2.36.1
-
-
+Cheers,
+Miguel
