@@ -2,66 +2,62 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88719C43334
-	for <rust-for-linux@archiver.kernel.org>; Mon, 27 Jun 2022 17:59:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BA95C433EF
+	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Jun 2022 07:54:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236419AbiF0R7E (ORCPT
+        id S231682AbiF2HyW (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 27 Jun 2022 13:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59602 "EHLO
+        Wed, 29 Jun 2022 03:54:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233706AbiF0R7D (ORCPT
+        with ESMTP id S231194AbiF2HyW (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 27 Jun 2022 13:59:03 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E5CA644C
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Jun 2022 10:59:01 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id a13so17956121lfr.10
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Jun 2022 10:59:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=1BEAgiywFic+mysPDihaAlRhDyDikqpPpWBP1vy/eIg=;
-        b=e5/ycHoVV24dZBK0c024jtSDyMDbjH1o2mRCWJ3baiaVaSov40DTyi/s1BFt7uCxl3
-         KoRkfY8ieZr3s9JIpMF9Qpe4oXM5wKg3pQwP4RL5y60ThaNW59GLN0nkEu9KoNEUN254
-         K8L7hO21WzSqkZvqx0Ap6IAANjTfVjxwsipZ8y29hH1rCepwguviLVEYOx/dTKw25t08
-         UbzcczD/0cCEa3BnWzgUaVXeIGHKg3MHsFZ6meXBzSHKB5Lm1D1q1+zmIKVATMC7jCdU
-         XkrxRreeO6ELsjQOhU5W+DJ/gjZct4ax3h/5EOLCvxBBxKtqnoRrhKQzKRVTY3ouykcD
-         8Gnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=1BEAgiywFic+mysPDihaAlRhDyDikqpPpWBP1vy/eIg=;
-        b=uaz6tFraAI8W8+cmiwkYR6+zjOCgsVyXWd0wrLrHcM86UBzDsJKKndc+g/gIqcP6Dw
-         hQ8CwVqYLTjDNfcYDUCj/+lfwTAs6UT8dR4o8B/XxqXWJxwktlBnibopy6Vo9x4rpksw
-         xF8iFXZKqFxQL2qPmVTKg/JZ29LohjoB6JhJPUH+kQSH0qmjz01J6ofwbsfjxRYQbcbi
-         dq2DY1r/VMgY63RYieQRs9D8WueqpeDohoPxs1Ou+utjHif5O5VJ9uJJFh9NUN5yn2aQ
-         36ZVmWnIl/AG+cFQXlMb8BLcIuJw1JVdHtnoWsbY2Gkm3QfsOrZbaTouK2TJ8UfLjKf+
-         Iq8Q==
-X-Gm-Message-State: AJIora+p+NHVkJKzhcyczkvDgyKO3ytaxmRqwb2WsLLyI97plwk+Qv7N
-        Tk4aalBg/9PRi//o28TfEf5/H1oCxAJUeuZFiLcj2JSvyXN3pvc1BuQ=
-X-Google-Smtp-Source: AGRyM1sfGy1p84sCPVmtxP2oSOMOXqaYmHfMvjisAgvp2pAB/NXUG32pp63QFqmziz63IcfGoBEkryHqgdA+KN93jOs=
-X-Received: by 2002:a05:6512:3c81:b0:47f:ad61:7edc with SMTP id
- h1-20020a0565123c8100b0047fad617edcmr9234666lfv.133.1656352739575; Mon, 27
- Jun 2022 10:58:59 -0700 (PDT)
+        Wed, 29 Jun 2022 03:54:22 -0400
+X-Greylist: delayed 573 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 29 Jun 2022 00:54:21 PDT
+Received: from mail.joindesign.com.pl (mail.joindesign.com.pl [94.177.251.60])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83DD01EA
+        for <rust-for-linux@vger.kernel.org>; Wed, 29 Jun 2022 00:54:21 -0700 (PDT)
+Received: by mail.joindesign.com.pl (Postfix, from userid 1001)
+        id AC479A1F5D; Wed, 29 Jun 2022 08:45:31 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=joindesign.com.pl;
+        s=mail; t=1656488731;
+        bh=TUR+TUpWbFBLvN6YS9BQhbkv1+KYroy8ia0GqWH3fZc=;
+        h=Date:From:To:Subject:From;
+        b=i7r4q4XNUkyAHT1skeTTQZSJ7oOtUcVyagDBOUtSVA56k20cFWzUZgcElqcn9l6JX
+         O7owGUjWRFukXHJNqk1i96WSCp4ukXLADixjAnhKli/zKfI7VwpnxhFOOsfR0w5mkG
+         FwPPPQodq/mfDO1HZn5rpTm2KeTtaO4pLHTC4vwXzjpyPf3dI+MNPMWJvRhqIjgbJ3
+         hzLreuoUSC1RKZEVt4r0XoipX19j/Ljyv4X0X7jTaQm3tviaN7bBb+e2mEZNY2rOpb
+         fZOWywYJ7sLWT6LHB4823bF3qqyZw9wf3zFGd6lEemHmitvRft/+QEJXSZ/ho2OPWn
+         McY9e/2hwqHDw==
+Received: by mail.joindesign.com.pl for <rust-for-linux@vger.kernel.org>; Wed, 29 Jun 2022 07:45:30 GMT
+Message-ID: <20220629074500-0.1.1p.cy2x.0.mr0m0v7kkw@joindesign.com.pl>
+Date:   Wed, 29 Jun 2022 07:45:30 GMT
+From:   "Antoni Sabat" <antoni.sabat@joindesign.com.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: =?UTF-8?Q?Zabezpieczenie_p=C5=82ynno=C5=9Bci_finansowej?=
+X-Mailer: mail.joindesign.com.pl
 MIME-Version: 1.0
-From:   haris iqbal <haris.phnx@gmail.com>
-Date:   Mon, 27 Jun 2022 19:58:33 +0200
-Message-ID: <CAE_WKMwwq9ZDz9pERN6Tz-Ve1iwnXX+VuJUTsKmaAeXneRbKMA@mail.gmail.com>
-Subject: Requesting an invitation to rust-for-linux zulip
-To:     miguel.ojeda.sandonis@gmail.com
-Cc:     rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hello,
+Dzie=C5=84 dobry,
 
-I am a kernel developer, learning Rust out of interest. I would love
-to look into the changes, and possibly contribute once I have enough
-knowledge and experience. Hence, requesting an invitation to
-rust-for-linux zulip.
+od wielu lat zawodowo pracuj=C4=99 jako ekspert finansowy.=20
 
-Regards
--Haris
+Dla przedsi=C4=99biorc=C3=B3w, kt=C3=B3rzy korzystaj=C4=85 z mojej pomocy=
+, szanse na uzyskanie dodatkowych =C5=9Brodk=C3=B3w z banku (a tak=C5=BCe=
+ z UE) wzrastaj=C4=85 wielokrotnie.=20
+
+Gwarantuje Pa=C5=84stwu najdogodniejsze warunki, kt=C3=B3re cz=C4=99sto s=
+=C4=85 nierealne w przypadku indywidualnego sk=C5=82adania wniosku. Proce=
+sy i formalno=C5=9Bci, kt=C3=B3re ci=C4=85gn=C4=99=C5=82y si=C4=99 tygodn=
+iami, finalizowa=C5=82em w kilka dni.=20
+
+Czy chcieliby Pa=C5=84stwo pozyska=C4=87 dodatkowy kapita=C5=82 na rozw=C3=
+=B3j dzia=C5=82alno=C5=9Bci lub jej stabilne funkcjonowanie?=20
+
+Pozdrawiam
+Antoni Sabat
