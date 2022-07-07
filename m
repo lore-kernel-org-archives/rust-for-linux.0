@@ -2,69 +2,77 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E21F2C433EF
-	for <rust-for-linux@archiver.kernel.org>; Sat,  2 Jul 2022 13:57:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2459DCCA47F
+	for <rust-for-linux@archiver.kernel.org>; Thu,  7 Jul 2022 19:13:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229565AbiGBN5R (ORCPT
+        id S236781AbiGGTNG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 2 Jul 2022 09:57:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45342 "EHLO
+        Thu, 7 Jul 2022 15:13:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbiGBN5Q (ORCPT
+        with ESMTP id S236771AbiGGTNB (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 2 Jul 2022 09:57:16 -0400
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 069F910F6
-        for <rust-for-linux@vger.kernel.org>; Sat,  2 Jul 2022 06:57:15 -0700 (PDT)
-Received: by mail-io1-xd36.google.com with SMTP id s17so4728466iob.7
-        for <rust-for-linux@vger.kernel.org>; Sat, 02 Jul 2022 06:57:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=TZQBfyPX+Lm0+51FppVnhYpJxmpiQ/AzALf0TQA8OGQ=;
-        b=LsWNOLAElxNFsJTycB6zOXKWPJzzlJj5kE7OnfBNZnYIwjxTRRMWu/oUiXv6YqEzWT
-         tcqgOBrBIEzZGUYocnSBR7bSOSX7gFG1bbYNKzoQIMuMljQuiA5NOsZfiBxdasOtVVI1
-         xcRlxEHR0j1dT287hiNeS/2VxhaHnpXveTwRQspj22pISErPbNxOqRnADU1vrwAdqpoJ
-         B9OVniO49h/4oUx1zu5pQUn3WImK97oNAtXQ+7JqnrpW7z11ffTzvx5IN6TGky2Fl75Q
-         muKAq8421VbIgVVlnbDyRy/LbumzCTKtlL4VjaNiLbyV/g2l3yjzBFJoAUiivo2l4OC5
-         z1vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=TZQBfyPX+Lm0+51FppVnhYpJxmpiQ/AzALf0TQA8OGQ=;
-        b=oX0Ph9szXQgynojVnjiQanXfHqNztlaS3vqn6FgnnjyYdj1degoQAoJlTZHIBk//n/
-         Fhqya0Mpoqxm0pWyEvEpLQYKy+D/65FnagHj7ytQMurOMRCwlDqNfgRqZNv2YzITjfG2
-         qPE+Nh6tXVmApQxCOAL76al/7Ln5oipecOUhzoRGXGPCnXJkiJ7+NRoM1t/EKQX5q5fJ
-         B1Uz9MxtJiMFQQuZLqOvKcyllKQexrPsPHQo17aIoM9XTu53HKmyFCjMdx/mUPijpvNk
-         16inzhAWUACRZ0dijYq5Gpt+INhfaQgELlnuoXXVRkWaz3E8kM7zFGFKxMU/NrHaJiSl
-         DX6g==
-X-Gm-Message-State: AJIora/ipVFgHxCtM+4G12AOPq+Sg68I7g/S3RC9mqT4t3GhduumOBK0
-        NJiPJym3viCH6shSVKvgI2V7KrRF3Q6NQTtidifW6tpJulQnbA==
-X-Google-Smtp-Source: AGRyM1sljhc2XV2IdZJoFpWjmd3SLihKicZMr2WF9lRskBwgjr0tiANwT3slmtjPRMuwNR/fnTq0oEqQJ0LTTGaDpO0=
-X-Received: by 2002:a05:6638:1642:b0:33d:76a4:317f with SMTP id
- a2-20020a056638164200b0033d76a4317fmr8412668jat.186.1656770234478; Sat, 02
- Jul 2022 06:57:14 -0700 (PDT)
+        Thu, 7 Jul 2022 15:13:01 -0400
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9291B2E6B2;
+        Thu,  7 Jul 2022 12:13:00 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id B6250784;
+        Thu,  7 Jul 2022 19:12:57 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net B6250784
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+        t=1657221177; bh=qL7VYc78jVx9LMUHDXqpy7ynrmJbVJjFrUcf+/qpMfw=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=nrAEjPsYMAonbvJuC5YoW3yDogJZcXDdnd8l3mRPhFnO+1P55b8PQFEydP6TlfPKW
+         P9c62CfudiR5PQ0WARL0qnFasbGpO3qRfpNhDsuUEetRSA6MS4WRKizlsJXL8XRbp1
+         7nHGX5+wy9QA0A/SvcUg6HsfSRFg2Eft0xz28d0IhNlw5jZiXmvzaJ+szEmbATd2Bz
+         N1NTtsTqZSpbvdpDqZdXQypCLfOUUea3tD4qA877k0354N7yRxc0ncIrOtPTF5LITW
+         cE1r/DSQvMdfkvWdEEP7MkwATZQgPnRdhMhN4OpinbLGZEUQupaRX69j+jRbjjWr4U
+         NVSpHy4P0hJrg==
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Alex Shi <alexs@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dipen Patel <dipenp@nvidia.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Federico Vaga <federico.vaga@vaga.pv.it>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Yanteng Si <siyanteng@loongson.cn>, devicetree@vger.kernel.org,
+        keyrings@vger.kernel.org, kvm@vger.kernel.org,
+        linux-cachefs@redhat.com, linux-input@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-riscv@lists.infradead.org,
+        linux-tegra@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        x86@kernel.org
+Subject: Re: [PATCH v2 00/20] Update Documentation/ cross-references
+In-Reply-To: <cover.1656234456.git.mchehab@kernel.org>
+References: <cover.1656234456.git.mchehab@kernel.org>
+Date:   Thu, 07 Jul 2022 13:12:57 -0600
+Message-ID: <87a69kbuti.fsf@meer.lwn.net>
 MIME-Version: 1.0
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 2 Jul 2022 15:57:03 +0200
-Message-ID: <CANiq72n3L1ULyMkR48TqNvhOkz0fF2MT1_eCs86+k_joBgWUow@mail.gmail.com>
-Subject: Reminder: informal call in 4 hours
-To:     rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi all,
+Mauro Carvalho Chehab <mchehab@kernel.org> writes:
 
-We will have our informal call in 4 hours from now (18:00 UTC first
-Saturday of each month).
+> Fix most broken documentation file cross references on next-20220624.
+>
+> After this series, only 3 references will be broken:
 
-As usual, everybody is welcome to join. The meetings take place on
-Google Meet. If you need an invitation, drop me an email!
+OK, I've applied everything except parts 4, 9, and 20.
 
-If you are in a timezone that cannot easily attend the meetings at
-18:00 UTC, please let us know.
+Thanks,
 
-Cheers,
-Miguel
+jon
