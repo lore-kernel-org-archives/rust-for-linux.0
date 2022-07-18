@@ -2,96 +2,65 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BF21CCA486
-	for <rust-for-linux@archiver.kernel.org>; Sat, 16 Jul 2022 13:56:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B274C433EF
+	for <rust-for-linux@archiver.kernel.org>; Mon, 18 Jul 2022 04:56:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231327AbiGPN4O (ORCPT
+        id S233102AbiGRE4R (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 16 Jul 2022 09:56:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55368 "EHLO
+        Mon, 18 Jul 2022 00:56:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229732AbiGPN4M (ORCPT
+        with ESMTP id S230264AbiGRE4Q (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 16 Jul 2022 09:56:12 -0400
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97E751F2EE;
-        Sat, 16 Jul 2022 06:56:11 -0700 (PDT)
-Received: by mail-il1-x134.google.com with SMTP id a12so3809440ilp.13;
-        Sat, 16 Jul 2022 06:56:11 -0700 (PDT)
+        Mon, 18 Jul 2022 00:56:16 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB17F11C3E
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 Jul 2022 21:56:15 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id m16so13674779edb.11
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 Jul 2022 21:56:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=V4FhIyepvRr1gXawjyEQpzIVadAC7ZxwCjKEzgRh/bc=;
-        b=KdWH1PfnFwqpPxd7W0PxapNamksI04N1J1pzzmASbjhZAa3HLxSSk5HwzaEAseuXpW
-         nNsgKAEAxGvztay7gho66xNc2QCxWwEyGXbCv5lAz3EAhFpFJfuIeY7K76/0vq1k3vCQ
-         2A4ZeWEkN4IZQH1TYyqAVV2R0ANWdmP2osXk1QbS92RBijpvBQo0R3fnlJ87Bav+p7xf
-         FSAfrCYfgPPgpP/Eo2QbIXBrRk5zd4AvPDHrzOq47USph/a5huS67TiBDFyW8noTS6Uh
-         Rr0qFvkmBG2Rj2WAofY8yIfRhbQByw8ah0SxA+yZ2h9GNamE5b2FqVNxaZBPSBZiccV0
-         aKAg==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=QsYq0HKVRqVyS8bll6Q2clkFNw6AGW6gH0It89AKkpA=;
+        b=PxAFv6v29T/MeqTocKYz926fd6TSSe78/1m4H8C1NlZ6Uq22I0TxLH++WTh/MbQJ5M
+         594L1Q2DY2rhAGRagptNDIlpBNbHhIXyzLVkuUcCWD8NPbvywv39KE18Cu/c5qnPwGJs
+         k3hG3Q1z7dBdO7RXQnjCfj2Z2my2lgSCHFSWel9os4+gkwf+eQ6kllg8N2H0VLMXkLbk
+         JVTH5cy8B3DC/lVIb436ZYIWmr0bXTx+EVE8y8+0W6YyakLQwkrWoRj+mR+gF/8vKxuH
+         U8rr2bCT8mu589krEyf5FwToZjGmpESDNIrshaA3E/0sZHnthvAr17hQuDWWL8jXoX5x
+         NycA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=V4FhIyepvRr1gXawjyEQpzIVadAC7ZxwCjKEzgRh/bc=;
-        b=OmqNJv4F79HDKtzmwqhBTenlD/euEtgNobwW+wx4fV4suX3whDRHJavCu8Clg7/Bjv
-         oQ/vo6f2efo/WEd6qOyufXnEhlAY4eMlYk+tsDNXMilShiuj6wvtWTxKCbKUsC4yVo3f
-         U5eqQnsH3TRUSdlp7xdBL3/dHthS9ee0r7bnZV9VCUSLvzonZmyhll8BCPhiuBzeOiKs
-         XIhuKGHQRM6ZQEt+7+6IKuSbgBkIISgPgJoNDobLbtKJfpHfRhwOupyiiecx+dlOVfH3
-         MOMGdC9xK4TiFubxMiQshLT+/q/RiaGjnXY1H+6cQgcILTngiTbuQ/vYZuA4915IBlFF
-         rnOw==
-X-Gm-Message-State: AJIora/8kkXUzBujRAWsrzQjiNnPsNm5ORPpe31GQ2tqYIeY2DcdtGyc
-        oJTCaaVEWcwq0bRDwwXd5pslV8Pv+n9c04/pwXRwI0N6RaQ=
-X-Google-Smtp-Source: AGRyM1tr+wIQ9WPj4ffi06adPAclHl6+H10vOy21nRYCi1+gt6eZYnfIg0TqG8PTuM+GqMyjQgVFJxK/0/WWZ5rGrRw=
-X-Received: by 2002:a05:6e02:1c2a:b0:2dc:621e:df15 with SMTP id
- m10-20020a056e021c2a00b002dc621edf15mr9816280ilh.151.1657979771086; Sat, 16
- Jul 2022 06:56:11 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=QsYq0HKVRqVyS8bll6Q2clkFNw6AGW6gH0It89AKkpA=;
+        b=VMmErVzhgtxczb0zYppzzW/Q++Yfiyw4prufpkBziHSQmJxiXb3XSZo6se2X+pl1WL
+         8ffk8L0FPbLojTfs91z2E6+oV8ggTDasD5Y2l6KjWyCdGWboEGofO0C4DRyyMwTWqGxc
+         DKzoOrdLhuW5xpqbIZiTxw6V57eOnvvmemB4GPHBaktVuNHw0W1XJq9tsQ/ezRPAb52q
+         9jPkM+twIeMKt4bpKEHMGaQ+vgmYDgGzQNUK4JA4Z+tT4iI5aIoerKeprC2p6x/x6n8t
+         Xj6CeurwyF0KNkB7xtjeVdlEQdBZK8lP0stWX2CNpmxAI9F83DzoycOKEb8CD26+d3Uy
+         EN/A==
+X-Gm-Message-State: AJIora8L9u3L0xDLBpR9fDg5Pqm+BP/UrzMjJjHxAPq25xneJ+DY/QL2
+        fiPxB2Q+vlL7rudOjCF7FK03Yf1zMeSGfi01KKaSNs/J6ck=
+X-Google-Smtp-Source: AGRyM1smi5DCAmHcMbEHMtu0kJqFwTDR+qPrjGlIL5Ps/GxzBQFvnBGztuLs8myEhf+1ZSwCFjzh1RVp/BJkjEaXooM=
+X-Received: by 2002:a05:6402:c44:b0:431:52cc:f933 with SMTP id
+ cs4-20020a0564020c4400b0043152ccf933mr34754735edb.41.1658120174072; Sun, 17
+ Jul 2022 21:56:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220523020209.11810-1-ojeda@kernel.org> <20220716124214.329949-1-conor@kernel.org>
- <CANiq72nYRkHV6N2bGpTz3td=2Vto21apvZW0igTT-mV8TZtB2g@mail.gmail.com> <4a6240da-9003-cd74-cd47-f95ba2d9e7ae@microchip.com>
-In-Reply-To: <4a6240da-9003-cd74-cd47-f95ba2d9e7ae@microchip.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 16 Jul 2022 15:56:00 +0200
-Message-ID: <CANiq72nDcJLSB3pLhkdqGdLitfmqqCUVVfkY5EjP9AcwVv9B4A@mail.gmail.com>
-Subject: Re: [PATCH v7 00/25] Rust support
-To:     Conor.Dooley@microchip.com
-Cc:     Conor Dooley <conor@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        KUnit Development <kunit-dev@googlegroups.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        linux-perf-users@vger.kernel.org,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-um@lists.infradead.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        live-patching@vger.kernel.org,
-        rust-for-linux <rust-for-linux@vger.kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
+From:   Muhammad Falak Reyaz <falakreyaz@gmail.com>
+Date:   Mon, 18 Jul 2022 10:26:02 +0530
+Message-ID: <CAOmbKqnmmskRQW39Li4EV5_RpiJDn1W1pbQCTO73Cd20acJ-Og@mail.gmail.com>
+Subject: Request for invite to rust-for-linux zulip
+To:     rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jul 16, 2022 at 3:51 PM <Conor.Dooley@microchip.com> wrote:
->
-> Ah right, sorry for the noise so. I checked the ml but didn't see a
-> report there.
+Hello,
 
-No apologies needed -- thanks to you for the report, instead! :)
+I recently attended the LFX mentorship session on developing drivers
+for the linux kernel in rust.
+I request for an invite to the zulip chat.
 
-> Thanks Miguel, good to know! I'll just wait around for a new version.
-> Just been trying to get my CI etc in order for when rust support lands,
-> but it sounds like I should be okay as it's a known problem & not some
-> only-broken-on-riscv thing.
+Thanks in advance.
 
-Yeah, it is a simple `bindgen` issue. Thanks a lot for making the
-effort to prepare your CI in advance!
-
-Cheers,
-Miguel
+-mfrw
