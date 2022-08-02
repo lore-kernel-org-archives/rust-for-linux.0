@@ -2,59 +2,37 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D18CC00140
-	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 14:33:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C8A67C00140
+	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 14:36:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234788AbiHBOdb (ORCPT
+        id S237327AbiHBOgf (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 2 Aug 2022 10:33:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53686 "EHLO
+        Tue, 2 Aug 2022 10:36:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234569AbiHBOda (ORCPT
+        with ESMTP id S237309AbiHBOgd (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 2 Aug 2022 10:33:30 -0400
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52D70DF61;
-        Tue,  2 Aug 2022 07:33:29 -0700 (PDT)
-Received: by mail-io1-xd29.google.com with SMTP id p81so10772183iod.2;
-        Tue, 02 Aug 2022 07:33:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Vz9fus9lrSQDAS1U8Tb64LEn0dK4Donl11P+BY3Mdeo=;
-        b=TBP+yhxN5i+Hw7aLxNIPbdNlxMA2rk8yRqpyrbrX+skxsEtXzfb/XD+45TFgG8ntnD
-         omYYJqy0aYpzHgMSXcu4SIvsy2kEa4PK7HYRKHV1t19z0a+YQapWbgC/OW7CC4BqQTIJ
-         O7vlHe4++1YIiJSnQYX6fAHnJR9wctJptp5v+Kxb6pHfaU2T75CQPdH+KmyEw+Ep23Pi
-         yu8b20m5adZoZpr9eh04QDO0PJCFbzJULyj0RfUVQeKw9FuS98G4KIws23NEqAXepzbA
-         NWhp47LYiUxSWMFACU37mFMWxd9ExolA7MDi0JWv1JGbU3diIsYar37/PW/05EwMO9TM
-         Ukng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Vz9fus9lrSQDAS1U8Tb64LEn0dK4Donl11P+BY3Mdeo=;
-        b=V/fltXL3huRpJ7LF3GR/uTCVbOej/8GG896JLt/9quTObhl+GamSyz3YCNUPgz0p+a
-         f/MZ1hRtYAvyEHVw0XpuVTkr0ZNO0b+DMG7WEAoNhfTWNbJCrDbs+5sFN4/6WITHrja+
-         uZE+LwuhVo3SmNdmOJqTlx2SqXDhuyQB0lrz2BQayck1DO2CvyaMqPyiik5I4Rhe7xfK
-         IOBl8al7ie76H8oGJASVvFzig4bZshnfkkP/Y5ech1iqDjbghA4b308aGz5276C7ITrQ
-         ZfWbZpcm0IlbYirffD/q5Ma7/VZ4uhsyrQlkfmgL+YPG2DPuHJ1C4+2YCJG7U/7dlWW8
-         VkaQ==
-X-Gm-Message-State: AJIora/nC1TPw80PP3GNnq09N+q0CvT6F44DRwZBTgoETpAzUaL/pPYn
-        KI7gT7e2V8dTMU7TN6qDx1f9BaHRf8gT3EO1MJ/bwJR7hQE=
-X-Google-Smtp-Source: AGRyM1uroBJEQvRkh9HWrKQhL69AZkVs9jnA3iFvOOwFuS8sb814FNR/T8biWLH9jDLLbL9fjF3j1YzsGQiaI4sR7L0=
-X-Received: by 2002:a05:6638:25cb:b0:341:6546:1534 with SMTP id
- u11-20020a05663825cb00b0034165461534mr8220829jat.308.1659450808749; Tue, 02
- Aug 2022 07:33:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220802015052.10452-1-ojeda@kernel.org> <20220802015052.10452-18-ojeda@kernel.org>
- <Yukn3vNJ8iGuXgiz@kroah.com>
-In-Reply-To: <Yukn3vNJ8iGuXgiz@kroah.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 2 Aug 2022 16:33:17 +0200
-Message-ID: <CANiq72kzoVcMNeJgDc+rQ_0S+5u2RB9UkCx-SZUAxm=Km=gjrQ@mail.gmail.com>
-Subject: Re: [PATCH v8 17/31] rust: add `kernel` crate
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        Tue, 2 Aug 2022 10:36:33 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46D7215704;
+        Tue,  2 Aug 2022 07:36:31 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D66BEB81F38;
+        Tue,  2 Aug 2022 14:36:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F34C43470;
+        Tue,  2 Aug 2022 14:36:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1659450988;
+        bh=+PJ10EgQjsPT7oxrxxYmU/pdwHPBRJXP/f0aFyyVyCo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CYRkGnkk7ynHJXIZFQNM2lzIiYDPvGvdardxlgv3WKP3YjAqplJP37mAp0Er0wzyU
+         +wRwq7q3iMcx63hti66TQjI5tRc9OUyo/KMpUGYUcIBOJ7gBIzd7xm9eyI1H5g0mOj
+         DFr1Y1gO3rGXxJnsArwmoO64yJh/a+kBiJ1h108I=
+Date:   Tue, 2 Aug 2022 16:36:25 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -74,38 +52,56 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Dan Robertson <daniel.robertson@starlab.io>,
         Viktor Garske <viktor@v-gar.de>,
         Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        =?UTF-8?Q?L=C3=A9o_Lanteri_Thauvin?= <leseulartichaut@gmail.com>,
-        Niklas Mohrin <dev@niklasmohrin.de>,
+        =?iso-8859-1?B?TOlv?= Lanteri Thauvin 
+        <leseulartichaut@gmail.com>, Niklas Mohrin <dev@niklasmohrin.de>,
         Gioh Kim <gurugio@gmail.com>, Daniel Xu <dxu@dxuuu.xyz>,
         Milan Landaverde <milan@mdaverde.com>,
         Morgan Bartlett <mjmouse9999@gmail.com>,
         Maciej Falkowski <m.falkowski@samsung.com>,
         Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        =?UTF-8?B?TsOhbmRvciBJc3R2w6FuIEtyw6Fjc2Vy?= <bonifaido@gmail.com>,
+        =?iso-8859-1?Q?N=E1ndor_Istv=E1n_Kr=E1cser?= <bonifaido@gmail.com>,
         David Gow <davidgow@google.com>,
         John Baublitz <john.m.baublitz@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>
+Subject: Re: [PATCH v8 17/31] rust: add `kernel` crate
+Message-ID: <Yuk2aSxydi37eRXq@kroah.com>
+References: <20220802015052.10452-1-ojeda@kernel.org>
+ <20220802015052.10452-18-ojeda@kernel.org>
+ <Yukn3vNJ8iGuXgiz@kroah.com>
+ <CANiq72kzoVcMNeJgDc+rQ_0S+5u2RB9UkCx-SZUAxm=Km=gjrQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72kzoVcMNeJgDc+rQ_0S+5u2RB9UkCx-SZUAxm=Km=gjrQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Greg,
+On Tue, Aug 02, 2022 at 04:33:17PM +0200, Miguel Ojeda wrote:
+> Hi Greg,
+> 
+> On Tue, Aug 2, 2022 at 3:34 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is huge for a single commit, and pretty much impossible to review
+> > as-is.
+> >
+> > Any chance you can turn this into a series of commits, that starts with
+> > the basics and builds on top of that?  Right now you are mixing many
+> > many different subsystems all at once into one commit, guaranteeing that
+> > no one can review the whole thing properly :(
+> 
+> Yeah, of course, I am happy to do that -- I did it for the `sync`
+> module, but stopped splitting further since I understood you wanted it
+> this way from what you told me on February.
 
-On Tue, Aug 2, 2022 at 3:34 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is huge for a single commit, and pretty much impossible to review
-> as-is.
->
-> Any chance you can turn this into a series of commits, that starts with
-> the basics and builds on top of that?  Right now you are mixing many
-> many different subsystems all at once into one commit, guaranteeing that
-> no one can review the whole thing properly :(
+I did?  Maybe I didn't realize we would end up with 15k lines of code
+from different parts of the kernel like amba bus and filesystem apis all
+in a single commit.  If so, my fault, but as other parts of this
+discussion show, it is going to be required to get the subsystem
+maintainers to be able to review the interfaces to their code in order
+to get any further.
 
-Yeah, of course, I am happy to do that -- I did it for the `sync`
-module, but stopped splitting further since I understood you wanted it
-this way from what you told me on February.
+thanks,
 
-Cheers,
-Miguel
+greg k-h
