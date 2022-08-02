@@ -2,92 +2,125 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8983AC00144
-	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 03:41:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA328C00140
+	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 08:30:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231747AbiHBDls (ORCPT
+        id S234557AbiHBIaG convert rfc822-to-8bit (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 1 Aug 2022 23:41:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50996 "EHLO
+        Tue, 2 Aug 2022 04:30:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231432AbiHBDlr (ORCPT
+        with ESMTP id S233640AbiHBIaF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 1 Aug 2022 23:41:47 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92E40643B;
-        Mon,  1 Aug 2022 20:41:45 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id c185so9833510iof.7;
-        Mon, 01 Aug 2022 20:41:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=vf0uIFPv/spUcxtdGqe9aPlHeyG7G8WlKPKI+UXXp4I=;
-        b=EHJlzzQ8CTcijPGOE3L0ZpmDdufpuOWy8owNYHiE4h9bMyX2jQdCmag0A/+lQidE9F
-         TtBplVedljYPII7wS6YkphVz4rEj6DNw5La1htLeArdU953rcHodYK/8BvJsiew5ciJg
-         tQbj9XKwk+hLh1YXRJGnXWRf4bK9oANr6kNbS6OdOgxTr3PGumR4n0SaQOIAYlfKGpzZ
-         16/U7O2EgSAk8GaGcS0T9G1PtOMGCwb1vauJWtsJuz28/kFiNoAnvDtaWMRkixVfj4bl
-         e4iOEnbEY4eKMbMR2ZVCoUSy3Z/QYkcEUr1TdxbBLqo753tTfP2v+mIRKc9ph+rbHLGz
-         KBzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=vf0uIFPv/spUcxtdGqe9aPlHeyG7G8WlKPKI+UXXp4I=;
-        b=4qh3clBJrlXrL2AcQKqacKpBUU+HAKdYGwmRJoggrIEZqEZvtcktUZJvWEy/WxvGYU
-         rBnSJDB8Szx0Rt2d7sFIPqm540Qs0zzuUvcKbUCmrWi1FP9qjctx8qj5ywux55djxBJA
-         9r1MR6/vy+KK6nFdzI8ZjjE280KE2gtHt0aga4x2tAymwp+/0QigrjenuX+fhKTQSE+q
-         KPA1xvFMrm0mE18X+VINsTTHUsCz7au9Z1ssB5l6BDCsGVQn4vFVHOlrILBtFJV4n0O9
-         mNNEXZf2DiRdJ7i9xR1q6Ofi3JAB8WG/mDKgyG+t7XktbxoaD+30FxFqXSiQ7g0up/Xa
-         YAsA==
-X-Gm-Message-State: ACgBeo3Kfb0mD83zRfDctAW1YuwGS/KjlDFL3qAZYS7Wo0pvAz1h34ry
-        ygKs0qV08DJr7ATuyqbzj3kD2iCCQ9TSwovLVhg=
-X-Google-Smtp-Source: AA6agR5Mmb6Q6uqW2YjCvwFWE02cfDuOv4RKT6drufqQ8IS//DGpRZDyPUdh2D4eOY38KMDDsoER9ZgKF6jrzJDEpWM=
-X-Received: by 2002:a6b:e511:0:b0:67f:9ef6:5779 with SMTP id
- y17-20020a6be511000000b0067f9ef65779mr2767924ioc.177.1659411705038; Mon, 01
- Aug 2022 20:41:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220802015052.10452-1-ojeda@kernel.org> <20220802015052.10452-30-ojeda@kernel.org>
- <YuiLM6ca8Ih0WiS3@boqun-archlinux>
-In-Reply-To: <YuiLM6ca8Ih0WiS3@boqun-archlinux>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 2 Aug 2022 05:41:33 +0200
-Message-ID: <CANiq72nOXZ5smgzJBW=ZTZEYJkRA1n-mUeNTpofrDh6UUozORw@mail.gmail.com>
-Subject: Re: [PATCH v8 29/31] MAINTAINERS: Rust
-To:     Boqun Feng <boqun.feng@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Tue, 2 Aug 2022 04:30:05 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1B5C7275F6
+        for <rust-for-linux@vger.kernel.org>; Tue,  2 Aug 2022 01:30:03 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-48-LJ-MnU9LMyyehVzQxMP1Kg-1; Tue, 02 Aug 2022 09:29:59 +0100
+X-MC-Unique: LJ-MnU9LMyyehVzQxMP1Kg-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.36; Tue, 2 Aug 2022 09:29:58 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.036; Tue, 2 Aug 2022 09:29:58 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Miguel Ojeda' <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Jarkko Sakkinen" <jarkko@kernel.org>,
+        Boqun Feng <boqun.feng@gmail.com>
+Subject: RE: [PATCH v8 02/31] kallsyms: avoid hardcoding buffer size
+Thread-Topic: [PATCH v8 02/31] kallsyms: avoid hardcoding buffer size
+Thread-Index: AQHYphJye/tEVINqhkC+eCkeMuTkcq2bR13g
+Date:   Tue, 2 Aug 2022 08:29:58 +0000
+Message-ID: <c2bdc599a30e4cb887aa97e7c9d0355a@AcuMS.aculab.com>
+References: <20220802015052.10452-1-ojeda@kernel.org>
+ <20220802015052.10452-3-ojeda@kernel.org>
+In-Reply-To: <20220802015052.10452-3-ojeda@kernel.org>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Aug 2, 2022 at 4:27 AM Boqun Feng <boqun.feng@gmail.com> wrote:
->
-> May I join the party and become a reviewer?
->
-> R: Boqun Feng <boqun.feng@gmail.com>
+From: Miguel Ojeda
+> Sent: 02 August 2022 02:50
+> 
+> From: Boqun Feng <boqun.feng@gmail.com>
+> 
+> This introduces `KSYM_NAME_LEN_BUFFER` in place of the previously
+> hardcoded size of the input buffer.
+> 
+> It will also make it easier to update the size in a single place
+> in a later patch.
+> 
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  scripts/kallsyms.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
+> index 52f5488c61bc..f3c5a2623f71 100644
+> --- a/scripts/kallsyms.c
+> +++ b/scripts/kallsyms.c
+> @@ -27,8 +27,14 @@
+> 
+>  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+> 
+> +#define _stringify_1(x)	#x
+> +#define _stringify(x)	_stringify_1(x)
+> +
+>  #define KSYM_NAME_LEN		128
+> 
+> +/* A substantially bigger size than the current maximum. */
+> +#define KSYM_NAME_LEN_BUFFER	499
+> +
+>  struct sym_entry {
+>  	unsigned long long addr;
+>  	unsigned int len;
+> @@ -198,13 +204,13 @@ static void check_symbol_range(const char *sym, unsigned long long addr,
+> 
+>  static struct sym_entry *read_symbol(FILE *in)
+>  {
+> -	char name[500], type;
+> +	char name[KSYM_NAME_LEN_BUFFER+1], type;
+>  	unsigned long long addr;
+>  	unsigned int len;
+>  	struct sym_entry *sym;
+>  	int rc;
+> 
+> -	rc = fscanf(in, "%llx %c %499s\n", &addr, &type, name);
+> +	rc = fscanf(in, "%llx %c %" _stringify(KSYM_NAME_LEN_BUFFER) "s\n", &addr, &type, name);
 
-Of course! Thanks!
+Think I'd use "%*s" - simpler.
+Although I normally completely avoid scanf() - too easy to get wrong.
 
-> Also given their activities on GitHub, I'd like to encourge Bj=C3=B6rn Ro=
-y
-> Baron and Gary Guo to become reviewers as well. Of course, they need
-> to be aware of the possible upcoming email volume and sign up themselves
-> ;-)
->
-> More eyes (especially from Rust language experts) are helpful ;-)
+	David
 
-Indeed, they would be most welcome to join :)
+>  	if (rc != 3) {
+>  		if (rc != EOF && fgets(name, sizeof(name), in) == NULL)
+>  			fprintf(stderr, "Read error or end of file.\n");
+> --
+> 2.37.1
 
-Cheers,
-Miguel
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
+
