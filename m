@@ -2,84 +2,72 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82428C25B08
-	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 17:46:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C9F4C00140
+	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 20:04:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234922AbiHBRqa (ORCPT
+        id S231548AbiHBUEg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 2 Aug 2022 13:46:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40010 "EHLO
+        Tue, 2 Aug 2022 16:04:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232716AbiHBRq3 (ORCPT
+        with ESMTP id S232040AbiHBUEg (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 2 Aug 2022 13:46:29 -0400
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C33EABF44;
-        Tue,  2 Aug 2022 10:46:28 -0700 (PDT)
-Received: by mail-io1-xd30.google.com with SMTP id z132so11229406iof.0;
-        Tue, 02 Aug 2022 10:46:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KjAZA+RBJyFCRVs3/+3jiKse67/26F8E/TlaG4k7TyI=;
-        b=G1ZC9vkFJ4/eIUWgdyFRStYtBBwbb1Zif38+6Kd6XjFeJpq0EDYF5HEYZANxccxOAb
-         HmDVHGEm41eETriohYDDkKfsfhiS1kgVPFbEY4rtweJ1QJ1w8sFeRIN71ItWO6BPmvwR
-         8ySNPXjJA7WIgGsGRmXgKwdyXVub6MJulx221Nk9d5iPBQyqj6nT41qN3sjBcMtODkzh
-         YVggKsNuk881EIvL8fVF0dABkRzDdp+uzsz7L1RfHwhrgeGxg09GhCRL77vLtcefM4Z1
-         g8BDmDPc0IdBGSMtP/pcTI7F8/Li326UqJekszusX2sd2U1KdEOWLdx+003Nps6DRXrj
-         M3lw==
+        Tue, 2 Aug 2022 16:04:36 -0400
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1509B52FE1;
+        Tue,  2 Aug 2022 13:04:35 -0700 (PDT)
+Received: by mail-wr1-f41.google.com with SMTP id v3so18235192wrp.0;
+        Tue, 02 Aug 2022 13:04:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KjAZA+RBJyFCRVs3/+3jiKse67/26F8E/TlaG4k7TyI=;
-        b=60seINrQDXCdijBLG5HC52XF1E2xB/G9/Z6SBaEfaRC1Q4NsklXq+yxUtyOXXA9GC6
-         Fyod7MiNhgLD5TZiupDhglBhmi48p0+6spTHDVYvnqVSpNrms/wa0MaMdI9B2EBKNU6M
-         N8GmT79dk9084i2Xss+bDNzfzN+12PYq0vHBjUQ5tZ6DPTl5kuxAMrJohjE8uOMsc67q
-         W+JG8vyH1XQWhjd7zfGaXsLejMC/U3bV0RTAl+fhT8DW8G6KcwCwtJLwxq3QBveF8Xs3
-         lB/IYiO8Rh3CMfHBBQnI5COUeTAoSsZ7h6x2IqLe+zG5aqCTWa3iJ1gcBc8LOP/XN8CL
-         tO8Q==
-X-Gm-Message-State: AJIora8nPtNAL0sNkUSWJ/DNhbKBPUg2JcHuaVJLQ1JhFtm19vvrHcYB
-        sj+mHmWNcOWigORMDxd7UgMe4xNdmDfaJDaonko=
-X-Google-Smtp-Source: AGRyM1sTchBu9DJxxSaHL1GJ3B7rxsIGwFJokjusWYxkrpam9ZondCiC/NMBhmRLcxl3wlnfbZ37BaFnTFAFjGKVsvA=
-X-Received: by 2002:a05:6638:25cb:b0:341:6546:1534 with SMTP id
- u11-20020a05663825cb00b0034165461534mr8585003jat.308.1659462388257; Tue, 02
- Aug 2022 10:46:28 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=3GVUs+QSi7eRzqzPaiptheuyohg5wVNG8R4iP24zVoI=;
+        b=0sDQyBYCb1tTHQm/FGM8LQdIqnClQjjesHduzzDk4CftIJFNpKOOXPPKalPVJ6tNKX
+         smiZemcdP76OFAGpqv7P2ATtw6roOjaVFxszqWq85fCCYwE+tBCo5QHLW3z2H3XpDW5G
+         9PGu6kZvYaQBVMMy2zH6x17MEWPr8HeruisjtLi0B1vvHryj725m4/MFUfS78pww5UWG
+         9DXwhchg5mki4290LDNQfqCIBKA5WOFG9xCQVJmKXkttKbySh9/1jGH71Evp6xbx3H5H
+         toiIKtsNtHA5sfHix8oqZ89KbEpjtEx6lxViJyLzwzavbx8aq8f+GqqaCWKzprSeM+rL
+         /Y1Q==
+X-Gm-Message-State: ACgBeo2R3vAzes3N3deRXVaRj5+lGJBSYg+9NbzmR4JF4WUEzcrva+cR
+        uvAHhWkbfoMOFBgezPA/aUw=
+X-Google-Smtp-Source: AA6agR4LjVRosNcFgQ0KXv+SeDQ6ihaov87I87aolTGGyOFkq7dqTr/AfqxhAqXsXp38sd1qbi+ITQ==
+X-Received: by 2002:adf:fb03:0:b0:21d:70cb:d6b5 with SMTP id c3-20020adffb03000000b0021d70cbd6b5mr13459341wrr.548.1659470673490;
+        Tue, 02 Aug 2022 13:04:33 -0700 (PDT)
+Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id w10-20020adfd4ca000000b002205cbc1c74sm10281991wrk.101.2022.08.02.13.04.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Aug 2022 13:04:33 -0700 (PDT)
+Date:   Tue, 2 Aug 2022 20:04:30 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     Konstantin Shelekhin <k.shelekhin@yadro.com>
+Cc:     ojeda@kernel.org, linux-kernel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, Wei Liu <wei.liu@kernel.org>
+Subject: Re: [PATCH v8 28/31] samples: add Rust examples
+Message-ID: <20220802200430.qiyy2utts4lai3ac@liuwe-devbox-debian-v2>
+References: <20220802015052.10452-29-ojeda@kernel.org>
+ <YukvvPOOu8uZl7+n@yadro.com>
 MIME-Version: 1.0
-References: <20220802015052.10452-1-ojeda@kernel.org> <YukYByl76DKqa+iD@casper.infradead.org>
- <CANiq72k7JKqq5-8Nqf3Q2r2t_sAffC8g86A+v8yBc=W-1--_Tg@mail.gmail.com>
- <YukuUtuXm/xPUuoP@casper.infradead.org> <CANiq72kgwssTSE7F+4xkRrXBGVgHeWxCyjeZ-NHLUXWnFjMyTg@mail.gmail.com>
-In-Reply-To: <CANiq72kgwssTSE7F+4xkRrXBGVgHeWxCyjeZ-NHLUXWnFjMyTg@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 2 Aug 2022 19:46:17 +0200
-Message-ID: <CANiq72=551t+CeiuCZz-SSx+uDaz238xjDFMRmkTwRuSFNcqmw@mail.gmail.com>
-Subject: Re: [PATCH v8 00/31] Rust support
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
-        live-patching@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YukvvPOOu8uZl7+n@yadro.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Aug 2, 2022 at 5:09 PM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> Yeah, patch 17, exactly (patch 11 is the `alloc` import). I have asked
-> Konstantin privately about them.
+On Tue, Aug 02, 2022 at 05:07:56PM +0300, Konstantin Shelekhin wrote:
+> > +module! {
+> > +    type: RustSemaphore,
+> > +    name: b"rust_semaphore",
+> > +    author: b"Rust for Linux Contributors",
+> > +    description: b"Rust semaphore sample",
+> > +    license: b"GPL",
+> > +}
+> 
+> A minor neat, but ain't it possible to use &str here in order to drop
+> this ugly binary string prefix?
 
-The patches are showing up now in lore -- not sure if it was just a
-delay (which would be consistent with the lack of bounce) or somebody
-did something (thank you if so!).
+Their types are different. One is for u8. The other is for UTF-8.
 
-Cheers,
-Miguel
+Thanks,
+Wei.
