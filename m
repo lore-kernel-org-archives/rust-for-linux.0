@@ -2,111 +2,72 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86C4EC25B06
-	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 14:02:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CE14C00140
+	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 14:08:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237218AbiHBOCL (ORCPT
+        id S237189AbiHBOIG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 2 Aug 2022 10:02:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60856 "EHLO
+        Tue, 2 Aug 2022 10:08:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237172AbiHBOCF (ORCPT
+        with ESMTP id S237197AbiHBOIF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 2 Aug 2022 10:02:05 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55BB81EC4B;
-        Tue,  2 Aug 2022 07:02:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=V0bxhMuFGVpCNNCF4xZRTUKyf/IayXy8Ya6lnRp3eRM=; b=c+eAFf5yhUXd9GX0Xjgrlhci7w
-        u2nOpt7L7zHbqejW/W8vk/nWgJn+ectptRURVYjT9GuMuXoEVJIaCYb4G5Ck4ZpHR4CLsKuu3OqN/
-        UOuPSi+rY3emlnof227LYCgd9DmHLebeowaDY2JGOUaE4Fm34ooWGqBKlCBs/xEoS0YNkRIqLWa/v
-        I8vAY7O/oQOUU4gQL9rUsv8JBoGFsCmC+/8CJhQ7W26arJc4Cjd48pz0Kcqam8A8TcpciOihHNlee
-        PzeqvSu311ay0SXY7CEZwHekoJZFc2qRIlA9vp82SOEaYgiZxu950tHs7KZpBGWstkWLgZ8CyQzyu
-        S3Zudeiw==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oIsT4-008PBV-Tf; Tue, 02 Aug 2022 14:01:54 +0000
-Date:   Tue, 2 Aug 2022 15:01:54 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
-        live-patching@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v8 00/31] Rust support
-Message-ID: <YukuUtuXm/xPUuoP@casper.infradead.org>
-References: <20220802015052.10452-1-ojeda@kernel.org>
- <YukYByl76DKqa+iD@casper.infradead.org>
- <CANiq72k7JKqq5-8Nqf3Q2r2t_sAffC8g86A+v8yBc=W-1--_Tg@mail.gmail.com>
+        Tue, 2 Aug 2022 10:08:05 -0400
+Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B756D29820;
+        Tue,  2 Aug 2022 07:08:04 -0700 (PDT)
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id DBE8040888;
+        Tue,  2 Aug 2022 14:08:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        in-reply-to:content-disposition:content-type:content-type
+        :mime-version:message-id:subject:subject:from:from:date:date
+        :received:received:received:received; s=mta-01; t=1659449280; x=
+        1661263681; bh=8KhPfch9J7h2naik4dg4WS1DAhTDrtuGEqDEDTTZIds=; b=O
+        y+GdHXelDTvgQN6jYrmyahCacfCwh6k1GCvXWWfOAK0LaNPqVFD0ly9iGKcxZ7sy
+        hpcY5z5lgx5Nyp2bjvfaec2z0p0tTtFjrxSisF86losphuFBRJ7u2ZTf3VmFjfWM
+        xm0J1gjaJ8GNTjuFxwEjDzUPEvupPVw1xd6AUfQJ2A=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id ssrL5wjlEuGi; Tue,  2 Aug 2022 17:08:00 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 7E09D41240;
+        Tue,  2 Aug 2022 17:07:58 +0300 (MSK)
+Received: from T-EXCH-09.corp.yadro.com (172.17.11.59) by
+ T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Tue, 2 Aug 2022 17:07:58 +0300
+Received: from yadro.com (10.178.118.226) by T-EXCH-09.corp.yadro.com
+ (172.17.11.59) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.9; Tue, 2 Aug 2022
+ 17:07:57 +0300
+Date:   Tue, 2 Aug 2022 17:07:56 +0300
+From:   Konstantin Shelekhin <k.shelekhin@yadro.com>
+To:     <ojeda@kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v8 28/31] samples: add Rust examples
+Message-ID: <YukvvPOOu8uZl7+n@yadro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <CANiq72k7JKqq5-8Nqf3Q2r2t_sAffC8g86A+v8yBc=W-1--_Tg@mail.gmail.com>
+In-Reply-To: <20220802015052.10452-29-ojeda@kernel.org>
+X-Originating-IP: [10.178.118.226]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-09.corp.yadro.com (172.17.11.59)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Aug 02, 2022 at 03:45:50PM +0200, Miguel Ojeda wrote:
-> Hi Willy,
-> 
-> On Tue, Aug 2, 2022 at 2:26 PM Matthew Wilcox <willy@infradead.org> wrote:
-> >
-> > None of this (afaict) has been discussed on linux-fsdevel.  And I may
-> > have missed somethiing, but I don't see the fs module in this series
-> > of patches.  Could linux-fsdevel be cc'd on the development of Rust
-> > support for filesystems in the future?
-> 
-> In order to provide example drivers and kernel modules, we need to
-> have some safe abstractions for them, thus we are adding some as we
-> need them.
-> 
-> More importantly, the abstractions also serve as a showcase of how
-> they may be written in the future if Rust support is merged.
-> 
-> This does not mean these abstractions are a final design or that we
-> plan to develop them independently of subsystem maintainers. In fact,
-> we would prefer the opposite: in the future, when the support is
-> merged and more people start having more experience with Rust, we hope
-> that the respective kernel maintainers start developing and
-> maintaining the abstractions themselves.
-> 
-> But we have to start somewhere, and at least provide enough examples
-> to serve as guidance and to show that it is actually possible to write
-> abstractions that restrict the amount of unsafe code.
-> 
-> And, of course, if you are already interested in developing them, that
-> would be actually great and we would love your input and/or that you
-> join us.
+> +module! {
+> +    type: RustSemaphore,
+> +    name: b"rust_semaphore",
+> +    author: b"Rust for Linux Contributors",
+> +    description: b"Rust semaphore sample",
+> +    license: b"GPL",
+> +}
 
-No objections to any of this.  I love the idea of being able to write
-filesystems in Rust.  I just think it would go more smoothly if
-linux-fsdevel were involved more closely so people at least have the
-option of being able to follow design decisions, and hopefully influence
-them.  That goes both ways, of course; I hardly think our current
-operations structures are the optimum way to implement a filesystem,
-and having fresh eyes say things like "But that shouldn't be part of the
-address_space_operations" can impel better abstractions.
-
-> As for the `fs` module, I see in lore 2 patches didn't make it
-> through, but I didn't get a bounce (I do get bounces for the
-> rust-for-linux ML, but I was told that was fine as long as LKML got
-> them). Sorry about that... I will ask what to do.
-
-The obvious answer is to split out the 'fs module' into its own patch
-;-)  I presume it was part of the kernel crate which would have been
-either patch 17 or 11 in that series?
-
-> Meanwhile, you can see the patches in this branch:
-> 
->     https://github.com/Rust-for-Linux/linux.git rust-next
-> 
-> Cheers,
-> Miguel
+A minor neat, but ain't it possible to use &str here in order to drop
+this ugly binary string prefix?
