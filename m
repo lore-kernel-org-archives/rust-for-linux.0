@@ -2,72 +2,88 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CE14C00140
-	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 14:08:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63B0AC25B07
+	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 14:17:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237189AbiHBOIG (ORCPT
+        id S237245AbiHBORI (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 2 Aug 2022 10:08:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37530 "EHLO
+        Tue, 2 Aug 2022 10:17:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237197AbiHBOIF (ORCPT
+        with ESMTP id S231159AbiHBORH (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 2 Aug 2022 10:08:05 -0400
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B756D29820;
-        Tue,  2 Aug 2022 07:08:04 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id DBE8040888;
-        Tue,  2 Aug 2022 14:08:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        in-reply-to:content-disposition:content-type:content-type
-        :mime-version:message-id:subject:subject:from:from:date:date
-        :received:received:received:received; s=mta-01; t=1659449280; x=
-        1661263681; bh=8KhPfch9J7h2naik4dg4WS1DAhTDrtuGEqDEDTTZIds=; b=O
-        y+GdHXelDTvgQN6jYrmyahCacfCwh6k1GCvXWWfOAK0LaNPqVFD0ly9iGKcxZ7sy
-        hpcY5z5lgx5Nyp2bjvfaec2z0p0tTtFjrxSisF86losphuFBRJ7u2ZTf3VmFjfWM
-        xm0J1gjaJ8GNTjuFxwEjDzUPEvupPVw1xd6AUfQJ2A=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id ssrL5wjlEuGi; Tue,  2 Aug 2022 17:08:00 +0300 (MSK)
-Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 7E09D41240;
-        Tue,  2 Aug 2022 17:07:58 +0300 (MSK)
-Received: from T-EXCH-09.corp.yadro.com (172.17.11.59) by
- T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Tue, 2 Aug 2022 17:07:58 +0300
-Received: from yadro.com (10.178.118.226) by T-EXCH-09.corp.yadro.com
- (172.17.11.59) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.9; Tue, 2 Aug 2022
- 17:07:57 +0300
-Date:   Tue, 2 Aug 2022 17:07:56 +0300
-From:   Konstantin Shelekhin <k.shelekhin@yadro.com>
-To:     <ojeda@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v8 28/31] samples: add Rust examples
-Message-ID: <YukvvPOOu8uZl7+n@yadro.com>
+        Tue, 2 Aug 2022 10:17:07 -0400
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A67001D0E9;
+        Tue,  2 Aug 2022 07:17:05 -0700 (PDT)
+Received: by mail-io1-xd36.google.com with SMTP id c185so10723396iof.7;
+        Tue, 02 Aug 2022 07:17:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dzbPWwhcEKIUb5XmuwsXZk0WHu1HAmpGHak33W/hz4Y=;
+        b=SY+mGld3c8Zk5Jxf7IddnvW31p46/D08XTmBEhxsrkVs4fSRF9TXUtbmjH5o29Gxrt
+         bM66MbluvwjQq1o0MRDc/b6vnsKl1e+6ofpDuhtDNVKZb08z8wTfrEPdcJSCiW6ofXiB
+         qEuAm4F+ALOKrC2llY5tCHy3VoSjYivoxA06GuVSAfECweP/3IaLqi3p3FY6ucuhokla
+         K4mOlgf3XQjAXVMtSZachXXq7XaOA4DS7qtJwOaRv8mXGyQ+Z+gZE4oZIhwUV0zcSiun
+         FkleluOQc7MJ6OTzXCqMZT9Pusj5PuHsJNZDnH4IvH4LGi5U09DMZvSX2vIPTdKNG3zj
+         mTdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dzbPWwhcEKIUb5XmuwsXZk0WHu1HAmpGHak33W/hz4Y=;
+        b=4QHRhzQlUIMfz5uWEjgBSqrAksiIxpP3EGJq00/PdqKM8flBjQNXrDXLDLrH84enxr
+         d4I60Ahml3f0xw/wBDBpCpl3qKTsnuUVokq/d7CfUOEILszbtx0agfBvj5zCv/AXdaba
+         Pl9khhd+FdMI7Dm8Gx3Vms+ehgLwINcZh2Ai11ktMfWqx5PZ8DvkiWAB4Qj1D67a1hv+
+         c6FCjXXH0OEs1opGbIqfzCC0oqEA4NIVgh9JXRm9Jy8/UlmzK2hMrRIeNLz0+WYsJQp+
+         7kLQlFp5wZWLWyEycLKM+Hm5FZSMvmY41S4F6hgPWkMyITjl+KEBDGcakIPKTMn6P4Ra
+         Evlg==
+X-Gm-Message-State: AJIora/qreJcgYlD2Wp1FAjJp2p5E1qSZWEJrL4DmxTXa87AvMnQ4I9k
+        ss96/2IqXzVloH+seNKAFAPiTWNRVcMfFmD70kI=
+X-Google-Smtp-Source: AGRyM1uIEC0PcctxDbe0s059lTbpgzq5joEE1C4fgSlA6DPH4iRSwaj5/x2NpdBckrK5+ERUo19alicmxyTxfHdCTU8=
+X-Received: by 2002:a05:6638:25cb:b0:341:6546:1534 with SMTP id
+ u11-20020a05663825cb00b0034165461534mr8193243jat.308.1659449825119; Tue, 02
+ Aug 2022 07:17:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20220802015052.10452-29-ojeda@kernel.org>
-X-Originating-IP: [10.178.118.226]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-09.corp.yadro.com (172.17.11.59)
+References: <20220802015052.10452-1-ojeda@kernel.org> <YukYByl76DKqa+iD@casper.infradead.org>
+ <CANiq72k7JKqq5-8Nqf3Q2r2t_sAffC8g86A+v8yBc=W-1--_Tg@mail.gmail.com> <YukrFS9NIMSP/I/Q@infradead.org>
+In-Reply-To: <YukrFS9NIMSP/I/Q@infradead.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 2 Aug 2022 16:16:53 +0200
+Message-ID: <CANiq72=rRxQf+CLhDBpR7YFYkjSFKQoik082q5_bgh_AMCb3rQ@mail.gmail.com>
+Subject: Re: [PATCH v8 00/31] Rust support
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Matthew Wilcox <willy@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
+        live-patching@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> +module! {
-> +    type: RustSemaphore,
-> +    name: b"rust_semaphore",
-> +    author: b"Rust for Linux Contributors",
-> +    description: b"Rust semaphore sample",
-> +    license: b"GPL",
-> +}
+On Tue, Aug 2, 2022 at 3:48 PM Christoph Hellwig <hch@infradead.org> wrote:
+>
+> handwaiving and pointing to git trees is not how Linux development
+> works.  Please make sure all the patches go to the relevant lists
+> and maintainers first, and actually do have ACKs.
 
-A minor neat, but ain't it possible to use &str here in order to drop
-this ugly binary string prefix?
+Which hand-waving? In fact, we were requested to do it like this.
+
+As for the Cc's, if any ML wants to be Cc'd for an abstraction we
+create, even if no C code is modified on their side, I am more than
+happy to Cc them. I can even do that by default, but not everyone may
+want to hear about the Rust side just yet, so I have not been doing it
+so far.
+
+Cheers,
+Miguel
