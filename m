@@ -2,118 +2,108 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1989C00140
-	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 14:53:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71E19C25B06
+	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 15:09:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237289AbiHBOxc (ORCPT
+        id S236750AbiHBPJU (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 2 Aug 2022 10:53:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39410 "EHLO
+        Tue, 2 Aug 2022 11:09:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237340AbiHBOxb (ORCPT
+        with ESMTP id S236468AbiHBPJT (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 2 Aug 2022 10:53:31 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A52142BB26;
-        Tue,  2 Aug 2022 07:53:29 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id r6so7100415ilc.12;
-        Tue, 02 Aug 2022 07:53:29 -0700 (PDT)
+        Tue, 2 Aug 2022 11:09:19 -0400
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DF4A27FEE;
+        Tue,  2 Aug 2022 08:09:18 -0700 (PDT)
+Received: by mail-il1-x12a.google.com with SMTP id j20so5678186ila.6;
+        Tue, 02 Aug 2022 08:09:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Kr0erF82eMx5sQ3y+UPadm0ooU5+bmbNqPEA8Dxg0yc=;
-        b=TZIuCaEJzXkqwqg0DQ7bkysqr7kyCQ4kkZefX9YM2D6GwlkGtiuO5CzICKKa6p3Num
-         s6wUsPnpdBEnrt0+E/7jADM+SOtO5lY5ZETBcx0IrS43/FIfQsq/wUlJNOXmy/OZWLUK
-         Ghl3Tjcv6z5frVe7xAxYNGznlc75gy/QZ/WqRUOtdcwdJrnVWGOpympgvJolxgdrnF05
-         B0OqeM6iEBxP6M48LjfMGPrzgFxaL6YNGJux8rWvVNadOiXc8HxAFsbdLAp7YID0ZkDe
-         BQV2QXJCyhQ7uSgMec/FvGqPO1ZvwL4qRK4K0Bn7DAfKzmTXkhCqd8qV2SljwuQZmEiC
-         vqfw==
+        bh=TnTubc6T2moNEJDYoN4cgfDzPxoHQtes0c+6H3Y5Dww=;
+        b=pkkYVaCXoDjN3BxJA9fdnVundUXhEs1ZNjfqqqRGarF5AV++es8DHqocJO+FlDtBo2
+         K9VLQBHIKirR+kBAZXEW9X3tax+LPb3OLjnPtBLoJhQvOpYVhyum0CDwjRQmi8N3QLG9
+         qVZKGbs47r3RtFLMkEjxsxA5QRB0Pkop+q4m7mjlwSgMKR5zZqDQjBomHGV1Us1vun9a
+         vz+DnLQ27XHfdmEC6MvRGoByNQNFIbb1wMouC5XlTA9YXSvZ12GajCS96japFxJgfg9b
+         tHVgeXFpFd/wEAlJhB2ZChsOmOVxsmNul/LP5dMDpuISoJLCiJvTU58sqjiz4XsvWNCB
+         Ou/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Kr0erF82eMx5sQ3y+UPadm0ooU5+bmbNqPEA8Dxg0yc=;
-        b=HXhFGVPqFRDZVSujiZRUTuv6DHE5erlcNb7M13MBCr1boNsR/hRIBltmtRtGINTBiS
-         A4AVhKopOvsCnc1IJOlfvrNNuLzVvg2XAzShi8N9CEZGWnWNn2PwwzS0iN5hw6UOwCmd
-         jf4HiyUIR3y0ojAQtnVF7hTghfRFz6sv1OhYqSKE9AiCkFcny5JqIQyEWX+ksWjWrSj6
-         CGZmiDpa1AP3Hqx/ZKY/iN75JVbujCVOYIlUyrbZ4+hqicujJsqCtgDZQlrnIx418zgr
-         hI2vlz1e8bIFnUTffWHLR+EwdeORqYx34uMbYxdzSKDiu0RNPd3mAhlx220m8OMZfMTD
-         Kf5g==
-X-Gm-Message-State: AJIora+cozhDKZjLds+N1IPTVScsE29DMPoptDgIRJgpoMj81PfyzJB5
-        dtXIVl/i9CfaieXBcHQaqOwyYh9EeWEL/MjlQk4=
-X-Google-Smtp-Source: AGRyM1uqzVuaPLmArIrBnOe+mGUto05TKZb5HBLD9YcDxXhgnTgAmYdCQzvgXJGktPn9EW/ZmTZ9jciRQqeHWUJkKOo=
-X-Received: by 2002:a05:6e02:1c23:b0:2dc:e497:8b12 with SMTP id
- m3-20020a056e021c2300b002dce4978b12mr8473901ilh.151.1659452009118; Tue, 02
- Aug 2022 07:53:29 -0700 (PDT)
+        bh=TnTubc6T2moNEJDYoN4cgfDzPxoHQtes0c+6H3Y5Dww=;
+        b=ezLDAmC6BHmFs42TUEiMJrWk68fzsM8u6A+ZX1eNNXAZNZaksw1+J4auCXRX6ue0aZ
+         Gk0xJHAb081hhcUxIiD2QgfqY2XxDCY6NWevAtWSXh+IzUruc1+hJ7hW7xFV/TaiAK2k
+         Z7ktxvRTP+6edKyT/49XTEq3hz+8YN8PJ4IYUr3SUQ72wuAT2+3RX8yiS3RsZZFnS7DD
+         CyTfGBv1u5tbwmrHbncBMpQnReoysvoI32CSithMhAHYS4dh3wnhOYyOPQPilNDYYMqK
+         P/9P1QqNSIqeZcti+AeggwmvXK/nUnI7UlUJXW1s6fRdzn5vhpuYn19qQHeNa7WGHUYI
+         PkSQ==
+X-Gm-Message-State: AJIora/6NvwLb4B9ZdIwlPvsEYEk4XVuYwzs9uS636pBZmPxEuZpHwX8
+        NntW69t02RHSEUEX0rXe4KtG6IcV86IW8j5et0A=
+X-Google-Smtp-Source: AGRyM1s/X7XdR0/a8lkQRbVcBP+dwZOZipEH93h8R/VlEWYf/KISRMdds5FIhduFNaDE0FsZQymaRLP6g1Da/s6WJVw=
+X-Received: by 2002:a05:6e02:17c6:b0:2dd:d9dc:6387 with SMTP id
+ z6-20020a056e0217c600b002ddd9dc6387mr8296085ilu.321.1659452957891; Tue, 02
+ Aug 2022 08:09:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220802015052.10452-1-ojeda@kernel.org> <20220802015052.10452-18-ojeda@kernel.org>
- <Yukn3vNJ8iGuXgiz@kroah.com> <CANiq72kzoVcMNeJgDc+rQ_0S+5u2RB9UkCx-SZUAxm=Km=gjrQ@mail.gmail.com>
- <Yuk2aSxydi37eRXq@kroah.com>
-In-Reply-To: <Yuk2aSxydi37eRXq@kroah.com>
+References: <20220802015052.10452-1-ojeda@kernel.org> <YukYByl76DKqa+iD@casper.infradead.org>
+ <CANiq72k7JKqq5-8Nqf3Q2r2t_sAffC8g86A+v8yBc=W-1--_Tg@mail.gmail.com> <YukuUtuXm/xPUuoP@casper.infradead.org>
+In-Reply-To: <YukuUtuXm/xPUuoP@casper.infradead.org>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 2 Aug 2022 16:53:17 +0200
-Message-ID: <CANiq72=24xycLU0UU1oxn-7=Vk4hZBvZYh_RsnXFP1c5FyyxhQ@mail.gmail.com>
-Subject: Re: [PATCH v8 17/31] rust: add `kernel` crate
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+Date:   Tue, 2 Aug 2022 17:09:05 +0200
+Message-ID: <CANiq72kgwssTSE7F+4xkRrXBGVgHeWxCyjeZ-NHLUXWnFjMyTg@mail.gmail.com>
+Subject: Re: [PATCH v8 00/31] Rust support
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sumera Priyadarsini <sylphrenadin@gmail.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Fox Chen <foxhlchen@gmail.com>,
-        Dan Robertson <daniel.robertson@starlab.io>,
-        Viktor Garske <viktor@v-gar.de>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        =?UTF-8?Q?L=C3=A9o_Lanteri_Thauvin?= <leseulartichaut@gmail.com>,
-        Niklas Mohrin <dev@niklasmohrin.de>,
-        Gioh Kim <gurugio@gmail.com>, Daniel Xu <dxu@dxuuu.xyz>,
-        Milan Landaverde <milan@mdaverde.com>,
-        Morgan Bartlett <mjmouse9999@gmail.com>,
-        Maciej Falkowski <m.falkowski@samsung.com>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        =?UTF-8?B?TsOhbmRvciBJc3R2w6FuIEtyw6Fjc2Vy?= <bonifaido@gmail.com>,
-        David Gow <davidgow@google.com>,
-        John Baublitz <john.m.baublitz@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
+        live-patching@vger.kernel.org, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Aug 2, 2022 at 4:36 PM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Tue, Aug 2, 2022 at 4:01 PM Matthew Wilcox <willy@infradead.org> wrote:
 >
-> I did?  Maybe I didn't realize we would end up with 15k lines of code
-> from different parts of the kernel like amba bus and filesystem apis all
-> in a single commit.  If so, my fault, but as other parts of this
-> discussion show, it is going to be required to get the subsystem
-> maintainers to be able to review the interfaces to their code in order
-> to get any further.
+> No objections to any of this.  I love the idea of being able to write
+> filesystems in Rust.  I just think it would go more smoothly if
+> linux-fsdevel were involved more closely so people at least have the
+> option of being able to follow design decisions, and hopefully influence
+> them.  That goes both ways, of course; I hardly think our current
+> operations structures are the optimum way to implement a filesystem,
+> and having fresh eyes say things like "But that shouldn't be part of the
+> address_space_operations" can impel better abstractions.
 
-No worries at all! Probably a misunderstanding on my side too.
+I will send the patches to fsdevel then!
 
-I am more than happy to spit it into quite a few patches, and it will
-also help with the C-d-b's.
+As for following development closely and design decisions, we have
+been doing it in GitHub so far pre-merge, so the easiest until the
+merge (for us) would be to ping you there. We can also send you copies
+of the `fs` related patches too if you would like that. I would highly
+recommend joining the monthly informal calls too.
 
-As for reviewing -- since we keep adding abstractions and new features
-to show how things may work, we would be chasing new reviews all the
-time. Would it be better to drop some of those for the moment and get
-the "core" in first?
+(I appreciate the kind answer, by the way!)
 
-That way we can merge each subsystem part by part later, send it to
-the proper MLs as smaller patches, get maintainers on board, etc.
-etc., and it would be more manageable for everyone.
+> The obvious answer is to split out the 'fs module' into its own patch
+> ;-)  I presume it was part of the kernel crate which would have been
+> either patch 17 or 11 in that series?
+
+Yeah, patch 17, exactly (patch 11 is the `alloc` import). I have asked
+Konstantin privately about them.
+
+In any case, I will split the patches further for v9 which should help.
+
+Meanwhile, you can also see the `fs` module here, if you are curious:
+
+    https://github.com/Rust-for-Linux/linux/blob/rust-next/rust/kernel/fs.rs
+    https://github.com/Rust-for-Linux/linux/blob/rust-next/rust/kernel/fs/param.rs
 
 Cheers,
 Miguel
