@@ -2,114 +2,101 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C43E4C19F28
-	for <rust-for-linux@archiver.kernel.org>; Wed,  3 Aug 2022 07:30:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9CA4C19F28
+	for <rust-for-linux@archiver.kernel.org>; Wed,  3 Aug 2022 09:23:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235415AbiHCHav (ORCPT
+        id S237115AbiHCJXp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 3 Aug 2022 03:30:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54574 "EHLO
+        Wed, 3 Aug 2022 05:23:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234370AbiHCHal (ORCPT
+        with ESMTP id S229445AbiHCJXp (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 3 Aug 2022 03:30:41 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27F5E6453;
-        Wed,  3 Aug 2022 00:30:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Wed, 3 Aug 2022 05:23:45 -0400
+Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CB7919C09;
+        Wed,  3 Aug 2022 02:23:44 -0700 (PDT)
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id A9E2141242;
+        Wed,  3 Aug 2022 09:23:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        in-reply-to:content-disposition:content-type:content-type
+        :mime-version:message-id:subject:subject:from:from:date:date
+        :received:received:received:received; s=mta-01; t=1659518621; x=
+        1661333022; bh=dmK9vb916vEJit/OWSlYMYSc9OyvaPfGlvzUpn8CPy0=; b=H
+        +mZPSiOYVV8T9u0b8koKSuwRNCM1G0WnnH5fwmEM82Ht4Lx2v0utndBFK4N4bdJc
+        7gttPR5Xo30OtmpxNxw2oGAQTtZG1xCuSpitfvKONLsop0/0I77qkyvg2A6A/0kG
+        YSFDGtLguXzM7M9HKHJapXIP5+WE9ad+slDstYliAc=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id WeuR4BRE3RPB; Wed,  3 Aug 2022 12:23:41 +0300 (MSK)
+Received: from T-EXCH-01.corp.yadro.com (t-exch-01.corp.yadro.com [172.17.10.101])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D9D27B82160;
-        Wed,  3 Aug 2022 07:30:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C46C433D6;
-        Wed,  3 Aug 2022 07:30:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1659511836;
-        bh=ZOVE5U7SmeP3Je9gS9zhmhPnptosHiQ0OmhkTlqr8cA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HpHEdZXxPknXrXhlL/LGHuMNMPXxbWn2i+ZP7ycgBH1Fsp8iY/qJX6kYu7pcLvcu0
-         HHWfUUSpMZSqAXTEIHSG9TDmJ2dTnKLwIbjV9yoKDHtxSgm55bX1sz1QbDDyzO0SG3
-         dBAnb63N7pfE38X3dfLssl5W269hLyNE05tqKH+Q=
-Date:   Wed, 3 Aug 2022 09:30:33 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sumera Priyadarsini <sylphrenadin@gmail.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Fox Chen <foxhlchen@gmail.com>,
-        Dan Robertson <daniel.robertson@starlab.io>,
-        Viktor Garske <viktor@v-gar.de>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        =?iso-8859-1?B?TOlv?= Lanteri Thauvin 
-        <leseulartichaut@gmail.com>, Niklas Mohrin <dev@niklasmohrin.de>,
-        Gioh Kim <gurugio@gmail.com>, Daniel Xu <dxu@dxuuu.xyz>,
-        Milan Landaverde <milan@mdaverde.com>,
-        Morgan Bartlett <mjmouse9999@gmail.com>,
-        Maciej Falkowski <m.falkowski@samsung.com>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        =?iso-8859-1?Q?N=E1ndor_Istv=E1n_Kr=E1cser?= <bonifaido@gmail.com>,
-        David Gow <davidgow@google.com>,
-        John Baublitz <john.m.baublitz@gmail.com>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>
-Subject: Re: [PATCH v8 17/31] rust: add `kernel` crate
-Message-ID: <YuokGYe1Htj0+D37@kroah.com>
-References: <20220802015052.10452-1-ojeda@kernel.org>
- <20220802015052.10452-18-ojeda@kernel.org>
- <Yukn3vNJ8iGuXgiz@kroah.com>
- <CANiq72kzoVcMNeJgDc+rQ_0S+5u2RB9UkCx-SZUAxm=Km=gjrQ@mail.gmail.com>
- <Yuk2aSxydi37eRXq@kroah.com>
- <CANiq72=24xycLU0UU1oxn-7=Vk4hZBvZYh_RsnXFP1c5FyyxhQ@mail.gmail.com>
+        by mta-01.yadro.com (Postfix) with ESMTPS id 9A12E4014D;
+        Wed,  3 Aug 2022 12:23:39 +0300 (MSK)
+Received: from T-EXCH-09.corp.yadro.com (172.17.11.59) by
+ T-EXCH-01.corp.yadro.com (172.17.10.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Wed, 3 Aug 2022 12:23:39 +0300
+Received: from yadro.com (10.178.118.226) by T-EXCH-09.corp.yadro.com
+ (172.17.11.59) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.9; Wed, 3 Aug 2022
+ 12:23:38 +0300
+Date:   Wed, 3 Aug 2022 12:23:37 +0300
+From:   Konstantin Shelekhin <k.shelekhin@yadro.com>
+To:     <wei.liu@kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <ojeda@kernel.org>,
+        <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v8 28/31] samples: add Rust examples
+Message-ID: <Yuo+mWyF8hgOdfCs@yadro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <CANiq72=24xycLU0UU1oxn-7=Vk4hZBvZYh_RsnXFP1c5FyyxhQ@mail.gmail.com>
+In-Reply-To: <20220802200430.qiyy2utts4lai3ac@liuwe-devbox-debian-v2>
+X-Originating-IP: [10.178.118.226]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-09.corp.yadro.com (172.17.11.59)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Aug 02, 2022 at 04:53:17PM +0200, Miguel Ojeda wrote:
-> On Tue, Aug 2, 2022 at 4:36 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > I did?  Maybe I didn't realize we would end up with 15k lines of code
-> > from different parts of the kernel like amba bus and filesystem apis all
-> > in a single commit.  If so, my fault, but as other parts of this
-> > discussion show, it is going to be required to get the subsystem
-> > maintainers to be able to review the interfaces to their code in order
-> > to get any further.
-> 
-> No worries at all! Probably a misunderstanding on my side too.
-> 
-> I am more than happy to spit it into quite a few patches, and it will
-> also help with the C-d-b's.
-> 
-> As for reviewing -- since we keep adding abstractions and new features
-> to show how things may work, we would be chasing new reviews all the
-> time. Would it be better to drop some of those for the moment and get
-> the "core" in first?
+> Their types are different. One is for u8. The other is for UTF-8.
 
-Yes, it would be good to drop almost all of these for now, anything you
-do not have an in-tree user for, should not be present in anything you
-submit upstream.
+Yes, but:
 
-> That way we can merge each subsystem part by part later, send it to
-> the proper MLs as smaller patches, get maintainers on board, etc.
-> etc., and it would be more manageable for everyone.
+  +#[derive(Debug, Default)]
+  +struct ModuleInfo {
+  +    type_: String,
+  +    license: String,
+  +    name: String,
+  +    author: Option<String>,
+  +    description: Option<String>,
+  +    alias: Option<String>,
+  +    params: Option<Group>,
+  +}
 
-Yes, that would be the normal review process.
+  [...]
 
-thanks,
+  +impl ModuleInfo {
+  +    fn parse(it: &mut token_stream::IntoIter) -> Self {
+  +            match key.as_str() {
+  +                "type" => info.type_ = expect_ident(it),
+  +                "name" => info.name = expect_byte_string(it),
+  +                "author" => info.author = Some(expect_byte_string(it)),
+  +                "description" => info.description = Some(expect_byte_string(it)),
+  +                "license" => info.license = expect_byte_string(it),
+  +                "alias" => info.alias = Some(expect_byte_string(it)),
+  +                "alias_rtnl_link" => {
+  +                    info.alias = Some(format!("rtnl-link-{}", expect_byte_string(it)))
+  +                }
+  +                "params" => info.params = Some(expect_group(it)),
+  +                _ => panic!(
+  +                    "Unknown key \"{}\". Valid keys are: {:?}.",
+  +                    key, EXPECTED_KEYS
+  +                ),
+  +            }
 
-greg k-h
+In the the end all module parameters are String, so why not use &str in
+the API?
