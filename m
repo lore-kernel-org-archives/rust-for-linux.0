@@ -2,72 +2,114 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C9F4C00140
-	for <rust-for-linux@archiver.kernel.org>; Tue,  2 Aug 2022 20:04:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C43E4C19F28
+	for <rust-for-linux@archiver.kernel.org>; Wed,  3 Aug 2022 07:30:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231548AbiHBUEg (ORCPT
+        id S235415AbiHCHav (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 2 Aug 2022 16:04:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48204 "EHLO
+        Wed, 3 Aug 2022 03:30:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232040AbiHBUEg (ORCPT
+        with ESMTP id S234370AbiHCHal (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 2 Aug 2022 16:04:36 -0400
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1509B52FE1;
-        Tue,  2 Aug 2022 13:04:35 -0700 (PDT)
-Received: by mail-wr1-f41.google.com with SMTP id v3so18235192wrp.0;
-        Tue, 02 Aug 2022 13:04:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=3GVUs+QSi7eRzqzPaiptheuyohg5wVNG8R4iP24zVoI=;
-        b=0sDQyBYCb1tTHQm/FGM8LQdIqnClQjjesHduzzDk4CftIJFNpKOOXPPKalPVJ6tNKX
-         smiZemcdP76OFAGpqv7P2ATtw6roOjaVFxszqWq85fCCYwE+tBCo5QHLW3z2H3XpDW5G
-         9PGu6kZvYaQBVMMy2zH6x17MEWPr8HeruisjtLi0B1vvHryj725m4/MFUfS78pww5UWG
-         9DXwhchg5mki4290LDNQfqCIBKA5WOFG9xCQVJmKXkttKbySh9/1jGH71Evp6xbx3H5H
-         toiIKtsNtHA5sfHix8oqZ89KbEpjtEx6lxViJyLzwzavbx8aq8f+GqqaCWKzprSeM+rL
-         /Y1Q==
-X-Gm-Message-State: ACgBeo2R3vAzes3N3deRXVaRj5+lGJBSYg+9NbzmR4JF4WUEzcrva+cR
-        uvAHhWkbfoMOFBgezPA/aUw=
-X-Google-Smtp-Source: AA6agR4LjVRosNcFgQ0KXv+SeDQ6ihaov87I87aolTGGyOFkq7dqTr/AfqxhAqXsXp38sd1qbi+ITQ==
-X-Received: by 2002:adf:fb03:0:b0:21d:70cb:d6b5 with SMTP id c3-20020adffb03000000b0021d70cbd6b5mr13459341wrr.548.1659470673490;
-        Tue, 02 Aug 2022 13:04:33 -0700 (PDT)
-Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id w10-20020adfd4ca000000b002205cbc1c74sm10281991wrk.101.2022.08.02.13.04.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Aug 2022 13:04:33 -0700 (PDT)
-Date:   Tue, 2 Aug 2022 20:04:30 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Konstantin Shelekhin <k.shelekhin@yadro.com>
-Cc:     ojeda@kernel.org, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, Wei Liu <wei.liu@kernel.org>
-Subject: Re: [PATCH v8 28/31] samples: add Rust examples
-Message-ID: <20220802200430.qiyy2utts4lai3ac@liuwe-devbox-debian-v2>
-References: <20220802015052.10452-29-ojeda@kernel.org>
- <YukvvPOOu8uZl7+n@yadro.com>
+        Wed, 3 Aug 2022 03:30:41 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27F5E6453;
+        Wed,  3 Aug 2022 00:30:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D9D27B82160;
+        Wed,  3 Aug 2022 07:30:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C46C433D6;
+        Wed,  3 Aug 2022 07:30:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1659511836;
+        bh=ZOVE5U7SmeP3Je9gS9zhmhPnptosHiQ0OmhkTlqr8cA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HpHEdZXxPknXrXhlL/LGHuMNMPXxbWn2i+ZP7ycgBH1Fsp8iY/qJX6kYu7pcLvcu0
+         HHWfUUSpMZSqAXTEIHSG9TDmJ2dTnKLwIbjV9yoKDHtxSgm55bX1sz1QbDDyzO0SG3
+         dBAnb63N7pfE38X3dfLssl5W269hLyNE05tqKH+Q=
+Date:   Wed, 3 Aug 2022 09:30:33 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Fox Chen <foxhlchen@gmail.com>,
+        Dan Robertson <daniel.robertson@starlab.io>,
+        Viktor Garske <viktor@v-gar.de>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        =?iso-8859-1?B?TOlv?= Lanteri Thauvin 
+        <leseulartichaut@gmail.com>, Niklas Mohrin <dev@niklasmohrin.de>,
+        Gioh Kim <gurugio@gmail.com>, Daniel Xu <dxu@dxuuu.xyz>,
+        Milan Landaverde <milan@mdaverde.com>,
+        Morgan Bartlett <mjmouse9999@gmail.com>,
+        Maciej Falkowski <m.falkowski@samsung.com>,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        =?iso-8859-1?Q?N=E1ndor_Istv=E1n_Kr=E1cser?= <bonifaido@gmail.com>,
+        David Gow <davidgow@google.com>,
+        John Baublitz <john.m.baublitz@gmail.com>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>
+Subject: Re: [PATCH v8 17/31] rust: add `kernel` crate
+Message-ID: <YuokGYe1Htj0+D37@kroah.com>
+References: <20220802015052.10452-1-ojeda@kernel.org>
+ <20220802015052.10452-18-ojeda@kernel.org>
+ <Yukn3vNJ8iGuXgiz@kroah.com>
+ <CANiq72kzoVcMNeJgDc+rQ_0S+5u2RB9UkCx-SZUAxm=Km=gjrQ@mail.gmail.com>
+ <Yuk2aSxydi37eRXq@kroah.com>
+ <CANiq72=24xycLU0UU1oxn-7=Vk4hZBvZYh_RsnXFP1c5FyyxhQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YukvvPOOu8uZl7+n@yadro.com>
+In-Reply-To: <CANiq72=24xycLU0UU1oxn-7=Vk4hZBvZYh_RsnXFP1c5FyyxhQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Aug 02, 2022 at 05:07:56PM +0300, Konstantin Shelekhin wrote:
-> > +module! {
-> > +    type: RustSemaphore,
-> > +    name: b"rust_semaphore",
-> > +    author: b"Rust for Linux Contributors",
-> > +    description: b"Rust semaphore sample",
-> > +    license: b"GPL",
-> > +}
+On Tue, Aug 02, 2022 at 04:53:17PM +0200, Miguel Ojeda wrote:
+> On Tue, Aug 2, 2022 at 4:36 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > I did?  Maybe I didn't realize we would end up with 15k lines of code
+> > from different parts of the kernel like amba bus and filesystem apis all
+> > in a single commit.  If so, my fault, but as other parts of this
+> > discussion show, it is going to be required to get the subsystem
+> > maintainers to be able to review the interfaces to their code in order
+> > to get any further.
 > 
-> A minor neat, but ain't it possible to use &str here in order to drop
-> this ugly binary string prefix?
+> No worries at all! Probably a misunderstanding on my side too.
+> 
+> I am more than happy to spit it into quite a few patches, and it will
+> also help with the C-d-b's.
+> 
+> As for reviewing -- since we keep adding abstractions and new features
+> to show how things may work, we would be chasing new reviews all the
+> time. Would it be better to drop some of those for the moment and get
+> the "core" in first?
 
-Their types are different. One is for u8. The other is for UTF-8.
+Yes, it would be good to drop almost all of these for now, anything you
+do not have an in-tree user for, should not be present in anything you
+submit upstream.
 
-Thanks,
-Wei.
+> That way we can merge each subsystem part by part later, send it to
+> the proper MLs as smaller patches, get maintainers on board, etc.
+> etc., and it would be more manageable for everyone.
+
+Yes, that would be the normal review process.
+
+thanks,
+
+greg k-h
