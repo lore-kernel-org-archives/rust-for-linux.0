@@ -2,126 +2,73 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 587DFC19F2B
-	for <rust-for-linux@archiver.kernel.org>; Thu,  4 Aug 2022 10:15:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A17C5C25B06
+	for <rust-for-linux@archiver.kernel.org>; Thu,  4 Aug 2022 20:31:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237168AbiHDKPj (ORCPT
+        id S234713AbiHDUby (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 4 Aug 2022 06:15:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51008 "EHLO
+        Thu, 4 Aug 2022 16:31:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238266AbiHDKPa (ORCPT
+        with ESMTP id S229733AbiHDUby (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 4 Aug 2022 06:15:30 -0400
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 504722BD7;
-        Thu,  4 Aug 2022 03:15:29 -0700 (PDT)
-Date:   Thu, 04 Aug 2022 10:15:19 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1659608122; x=1659867322;
-        bh=OOAFqj5jOkefjruY4cVlXMt+tgX3mni0RziYWRLgIA4=;
-        h=Date:To:From:Cc:Reply-To:Subject:Message-ID:In-Reply-To:
-         References:Feedback-ID:From:To:Cc:Date:Subject:Reply-To:
-         Feedback-ID:Message-ID;
-        b=vgzmNSefYqbQAcl0K3I8J9pqBZUcN+PyC2c/vCe4wbDQqcFJcHhoAnlj8Z8Em5DQz
-         JWS7tlP/hvnHk6JaRbkdRHoHMBf++vfxuESbZ6EylAq7tnjsm2KANhRl/ytzG+lgt/
-         83DiNZYOaMWL83Hxnf3GB5v1YQjTT2uZbfUcmSiojqQmueOxaiufyS4ioFKw37sDdr
-         iQ4pGGrcCKdHygZhGxf2YNdaOH1H3lQKqoU1jIgoHD0qLuLPnMruOHePKP+szeSr3T
-         4LY3dyECkfc1hvGBXwhAIXPO/0qFE+RdR9L4jWk8aT2WuRuJCuKvnBkg3pEysjihnj
-         o2K4E2/as99hQ==
-To:     Boqun Feng <boqun.feng@gmail.com>
-From:   bjorn3 <bjorn3_gh@protonmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Gary Guo <gary@garyguo.net>
-Reply-To: bjorn3 <bjorn3_gh@protonmail.com>
-Subject: Re: [PATCH v8 29/31] MAINTAINERS: Rust
-Message-ID: <LADPltvgY9H_4iPGAi0MyFOayCnS7NQhMPq6tPhBV2GoPIOu2jzx1gmZXYsKQWCIfmywn1Q8z61ye6OkSX-RsX8bfloQyhEespyyWPonnfM=@protonmail.com>
-In-Reply-To: <YuiLM6ca8Ih0WiS3@boqun-archlinux>
-References: <20220802015052.10452-1-ojeda@kernel.org> <20220802015052.10452-30-ojeda@kernel.org> <YuiLM6ca8Ih0WiS3@boqun-archlinux>
-Feedback-ID: 27884398:user:proton
+        Thu, 4 Aug 2022 16:31:54 -0400
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 319B519293;
+        Thu,  4 Aug 2022 13:31:53 -0700 (PDT)
+Received: by mail-il1-x136.google.com with SMTP id g18so492405ilk.4;
+        Thu, 04 Aug 2022 13:31:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JXDBVb9DoiSymMWk0AFQK5uBRVXEjsO6eGZBfYrkcFM=;
+        b=lAjmdOHyeQphpF1OcxVV1rVgcOMHU5AEAguiHRypsUJj8qTMRYq5BuHEl82rIjANCm
+         EodS00O6wVT3Z2WWBn09fBLQqu15HuZRXXIttSvxvu6EvgwM1e1qDcCp7Y5eI9wEnyLs
+         QZLQa5+VtX0oqQELCLoJosyL/qKNxu5+rgfmtkITeNhqnOAV2eMu8LOkwdaTyZhkXpEv
+         GUCMebhrSl7TMcjAc6/ktQSNtVtzMuTXadjGBu2RLrfIGe3MWGPa6fn1n9pJWA8lSuwR
+         luQ8VkFAAfKL8DVfcH1NPieDD5vIPNkN3vucWcBqgTFrulXRZWW3xkTGjqjv8vJ5pQ7K
+         fYLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JXDBVb9DoiSymMWk0AFQK5uBRVXEjsO6eGZBfYrkcFM=;
+        b=GExOsnnrjHVCuAQ9oxvguBBiTkWD8b8x8H9GyWz+3wkC380HgmoGcpXGZqYdUTX/ur
+         gXF13jSvAEf7jyN+pbhtMR1OWrWYScPOPKhsUxYwN5P9TCJnC9misEQpgDNxQb/e/TrI
+         cyeTjB5L1kzHynaVjmxifWMIWBtkmWDGebOQvCgg98LEtGNGAM/lF578cod82f3p+KJ3
+         yTZYrnNvCGI75shzez/tue1tkMHGgWMwyKsHOZ+BZU5Rwf9ApIKtoegR42WtmCyZ/hZl
+         nM1lyXy/1nesoFsSOaNi2ODDK6fFU1WqNbnleaTTn4L8N2ig3CWjoQw809boSM3YNhcV
+         rqEA==
+X-Gm-Message-State: ACgBeo0Gkjm5SS2YsxkyDf5PwX00SNcRbktJnRt9N4DPh1wpY0g7LNOL
+        CDIFYA0BGL8aY9nkp8FPhFSDyMXgO+ADLzdLV+s=
+X-Google-Smtp-Source: AA6agR4aLQ8BZBvlRBzXmVfIOWIn7FTf5WNR/w8LfsI6rJN7mxVK6yhk63TEJ5e+jrc4Fp5zcGMRT4HhQfHrqtaIiVY=
+X-Received: by 2002:a05:6e02:1c23:b0:2dc:e497:8b12 with SMTP id
+ m3-20020a056e021c2300b002dce4978b12mr1565787ilh.151.1659645112585; Thu, 04
+ Aug 2022 13:31:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20220802015052.10452-29-ojeda@kernel.org> <YukvvPOOu8uZl7+n@yadro.com>
+In-Reply-To: <YukvvPOOu8uZl7+n@yadro.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 4 Aug 2022 22:31:41 +0200
+Message-ID: <CANiq72m30zTwgSgV3+CDiMqdt2LH7TvkcnkMSw3B2do_gLn=Ng@mail.gmail.com>
+Subject: Re: [PATCH v8 28/31] samples: add Rust examples
+To:     Konstantin Shelekhin <k.shelekhin@yadro.com>
+Cc:     ojeda@kernel.org, linux-kernel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tuesday, August 2nd, 2022 at 04:25, Boqun Feng <boqun.feng@gmail.com> wr=
-ote:
+On Tue, Aug 2, 2022 at 4:08 PM Konstantin Shelekhin
+<k.shelekhin@yadro.com> wrote:
+>
+> A minor neat, but ain't it possible to use &str here in order to drop
+> this ugly binary string prefix?
 
-
-> On Tue, Aug 02, 2022 at 03:50:16AM +0200, Miguel Ojeda wrote:
->
-> > Miguel, Alex and Wedson will be maintaining the Rust support.
-> >
-> > Reviewed-by: Kees Cook keescook@chromium.org
-> > Co-developed-by: Alex Gaynor alex.gaynor@gmail.com
-> > Signed-off-by: Alex Gaynor alex.gaynor@gmail.com
-> > Co-developed-by: Wedson Almeida Filho wedsonaf@google.com
-> > Signed-off-by: Wedson Almeida Filho wedsonaf@google.com
-> > Signed-off-by: Miguel Ojeda ojeda@kernel.org
-> > ---
-> > MAINTAINERS | 15 +++++++++++++++
-> > 1 file changed, 15 insertions(+)
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 64379c699903..a4f90593b59c 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -17477,6 +17477,21 @@ L: linux-rdma@vger.kernel.org
-> > S: Maintained
-> > F: drivers/infiniband/ulp/rtrs/
-> >
-> > +RUST
-> > +M: Miguel Ojeda ojeda@kernel.org
-> > +M: Alex Gaynor alex.gaynor@gmail.com
-> > +M: Wedson Almeida Filho wedsonaf@google.com
->
->
-> May I join the party and become a reviewer?
->
-> R: Boqun Feng boqun.feng@gmail.com
->
->
-> Also given their activities on GitHub, I'd like to encourge Bj=C3=B6rn Ro=
-y
-> Baron and Gary Guo to become reviewers as well. Of course, they need
-> to be aware of the possible upcoming email volume and sign up themselves
-> ;-)
->
-> More eyes (especially from Rust language experts) are helpful ;-)
->
-> Regards,
-> Boqun
->
-> > +L: rust-for-linux@vger.kernel.org
-> > +S: Supported
-> > +W: https://github.com/Rust-for-Linux/linux
-> > +B: https://github.com/Rust-for-Linux/linux/issues
-> > +T: git https://github.com/Rust-for-Linux/linux.git rust-next
-> > +F: Documentation/rust/
-> > +F: rust/
-> > +F: samples/rust/
-> > +F: scripts/rust
-> > +K: \b(?i:rust)\b
-> > +
-> > RXRPC SOCKETS (AF_RXRPC)
-> > M: David Howells dhowells@redhat.com
-> > M: Marc Dionne marc.dionne@auristor.com
-> > --
-> > 2.37.1
-
-I've already told this Miguel in private, but I did like to join as reviewe=
-r:
-
-R: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+Yeah, we would like to remove those at some point -- please see
+https://github.com/Rust-for-Linux/linux/issues/252.
 
 Cheers,
-Bjorn
+Miguel
