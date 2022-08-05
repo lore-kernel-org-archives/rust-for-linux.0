@@ -2,183 +2,148 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4B1EC00140
-	for <rust-for-linux@archiver.kernel.org>; Fri,  5 Aug 2022 15:46:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE3B1C00140
+	for <rust-for-linux@archiver.kernel.org>; Fri,  5 Aug 2022 15:46:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241041AbiHEPpf (ORCPT
+        id S241040AbiHEPqG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 5 Aug 2022 11:45:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47438 "EHLO
+        Fri, 5 Aug 2022 11:46:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241040AbiHEPoL (ORCPT
+        with ESMTP id S241244AbiHEPo3 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 5 Aug 2022 11:44:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BDC6E8B2;
-        Fri,  5 Aug 2022 08:43:43 -0700 (PDT)
+        Fri, 5 Aug 2022 11:44:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D81C651A1C;
+        Fri,  5 Aug 2022 08:44:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E83061640;
-        Fri,  5 Aug 2022 15:43:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B3DC433B5;
-        Fri,  5 Aug 2022 15:43:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 98555B82986;
+        Fri,  5 Aug 2022 15:43:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C69C43470;
+        Fri,  5 Aug 2022 15:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659714221;
-        bh=9EyQcRCS5vOFtGycY3XOZyV7xrsCvuOlRMzBM17HJ5A=;
+        s=k20201202; t=1659714238;
+        bh=LJMbIbsmGPh8jLekYZBgD3WYeoa1VFA5q4dxEXu4mdw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VtwG2kzL2MtE47J83PZwbTsFg8+dE7Se0IZjk2F3Gmc1WSWOvRmSyRTGJXOlY6QJW
-         zFrfwCOo4DoteyCpBe5mLlByWLx978chs/mQHC396PCWnPAEJbYeqEzlUxamcWb/BL
-         JAJN89VJmYK00+YNJdU+SiXjZAsPUI22cTWJmpIaOoSJnk9yYrNiM1aSMQ9L0D2YJu
-         3mH75Gdtsi6ShiVDr8Da9oNp63GuqskYs5ea8bAYC8N5Pk1DM9wVIDvwWAQshHZBBO
-         kHkDH0Ri/NDFPWyssTCLD1RwesLbnhObLNRd9p36QO7fSJ+FehN6xsQIFEkduOUBwv
-         cVQckK4EHrXBw==
+        b=PKp/4Vv0TnHtJlfe+/ahygOjq18Jn5dHvo9ossvP42owNhBfsYn0CTcEWgJTXOlJm
+         Vh3R1XXKxCeODfbBShRuyUGaH1hIZTgLUndM488qsYF0qz5/Th1uWck4dyCCo0jfey
+         dTZHmlmiiE0kdfHg0FwaSbpteeBAvQawqKiC0eR57OiE7R95wwoZQ+w9kwfTEbTQAT
+         8kDIDVEVzKMEEd5DWPEfBPPmDbrWBOEjQaEYVUr/cQaOZdQ6l7cWg4oPCQFBm0jvd3
+         UVlbxQbYshIE5QxG5wTgZJKN0IRwoJJY2lVZ+JvGI5mPmrKbFvNMTuX4SxihvteUBE
+         cRaMGDshcJB+w==
 From:   Miguel Ojeda <ojeda@kernel.org>
 To:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+        Kees Cook <keescook@chromium.org>,
+        Petr Mladek <pmladek@suse.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Finn Behrens <me@kloenk.de>,
         Wedson Almeida Filho <wedsonaf@google.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        Maciej Falkowski <m.falkowski@samsung.com>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH v9 11/27] rust: add `bindings` crate
-Date:   Fri,  5 Aug 2022 17:41:56 +0200
-Message-Id: <20220805154231.31257-12-ojeda@kernel.org>
+        Steven Rostedt <rostedt@goodmis.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+Subject: [PATCH v9 14/27] vsprintf: add new `%pA` format specifier
+Date:   Fri,  5 Aug 2022 17:41:59 +0200
+Message-Id: <20220805154231.31257-15-ojeda@kernel.org>
 In-Reply-To: <20220805154231.31257-1-ojeda@kernel.org>
 References: <20220805154231.31257-1-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This crate contains the bindings to the C side of the kernel.
+From: Gary Guo <gary@garyguo.net>
 
-Calling C (in general, FFI) is assumed to be unsafe in Rust
-and, in many cases, this is accurate. For instance, virtually
-all C functions that take a pointer are unsafe since, typically,
-it will be dereferenced at some point (and in most cases there
-is no way for the callee to check its validity beforehand).
+This patch adds a format specifier `%pA` to `vsprintf` which formats
+a pointer as `core::fmt::Arguments`. Doing so allows us to directly
+format to the internal buffer of `printf`, so we do not have to use
+a temporary buffer on the stack to pre-assemble the message on
+the Rust side.
 
-Since one of the goals of using Rust in the kernel is precisely
-to avoid unsafe code in "leaf" kernel modules (e.g. drivers),
-these bindings should not be used directly by them.
+This specifier is intended only to be used from Rust and not for C, so
+`checkpatch.pl` is intentionally unchanged to catch any misuse.
 
-Instead, these bindings need to be wrapped into safe abstractions.
-These abstractions provide a safe API that kernel modules can use.
-In this way, unsafe code in kernel modules is minimized.
-
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Petr Mladek <pmladek@suse.com>
 Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
 Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-Co-developed-by: Finn Behrens <me@kloenk.de>
-Signed-off-by: Finn Behrens <me@kloenk.de>
 Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
 Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-Co-developed-by: Sven Van Asbroeck <thesven73@gmail.com>
-Signed-off-by: Sven Van Asbroeck <thesven73@gmail.com>
-Co-developed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Gary Guo <gary@garyguo.net>
-Co-developed-by: Maciej Falkowski <m.falkowski@samsung.com>
-Signed-off-by: Maciej Falkowski <m.falkowski@samsung.com>
-Co-developed-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Co-developed-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
-Signed-off-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
+Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/bindings/bindings_helper.h | 13 ++++++++
- rust/bindings/lib.rs            | 53 +++++++++++++++++++++++++++++++++
- 2 files changed, 66 insertions(+)
- create mode 100644 rust/bindings/bindings_helper.h
- create mode 100644 rust/bindings/lib.rs
+ Documentation/core-api/printk-formats.rst | 10 ++++++++++
+ lib/vsprintf.c                            | 13 +++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-new file mode 100644
-index 000000000000..c48bc284214a
---- /dev/null
-+++ b/rust/bindings/bindings_helper.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Header that contains the code (mostly headers) for which Rust bindings
-+ * will be automatically generated by `bindgen`.
+diff --git a/Documentation/core-api/printk-formats.rst b/Documentation/core-api/printk-formats.rst
+index 5e89497ba314..dbe1aacc79d0 100644
+--- a/Documentation/core-api/printk-formats.rst
++++ b/Documentation/core-api/printk-formats.rst
+@@ -625,6 +625,16 @@ Examples::
+ 	%p4cc	Y10  little-endian (0x20303159)
+ 	%p4cc	NV12 big-endian (0xb231564e)
+ 
++Rust
++----
++
++::
++
++	%pA
++
++Only intended to be used from Rust code to format ``core::fmt::Arguments``.
++Do *not* use it from C.
++
+ Thanks
+ ======
+ 
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index 3c1853a9d1c0..c414a8d9f1ea 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -2246,6 +2246,9 @@ int __init no_hash_pointers_enable(char *str)
+ }
+ early_param("no_hash_pointers", no_hash_pointers_enable);
+ 
++/* Used for Rust formatting ('%pA'). */
++char *rust_fmt_argument(char *buf, char *end, void *ptr);
++
+ /*
+  * Show a '%p' thing.  A kernel extension is that the '%p' is followed
+  * by an extra set of alphanumeric characters that are extended format
+@@ -2372,6 +2375,10 @@ early_param("no_hash_pointers", no_hash_pointers_enable);
+  *
+  * Note: The default behaviour (unadorned %p) is to hash the address,
+  * rendering it useful as a unique identifier.
 + *
-+ * Sorted alphabetically.
-+ */
-+
-+#include <linux/slab.h>
-+
-+/* `bindgen` gets confused at certain things. */
-+const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
-+const gfp_t BINDINGS___GFP_ZERO = __GFP_ZERO;
-diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
-new file mode 100644
-index 000000000000..6c50ee62c56b
---- /dev/null
-+++ b/rust/bindings/lib.rs
-@@ -0,0 +1,53 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Bindings.
-+//!
-+//! Imports the generated bindings by `bindgen`.
-+//!
-+//! This crate may not be directly used. If you need a kernel C API that is
-+//! not ported or wrapped in the `kernel` crate, then do so first instead of
-+//! using this crate.
-+
-+#![no_std]
-+#![feature(core_ffi_c)]
-+// See <https://github.com/rust-lang/rust-bindgen/issues/1651>.
-+#![cfg_attr(test, allow(deref_nullptr))]
-+#![cfg_attr(test, allow(unaligned_references))]
-+#![cfg_attr(test, allow(unsafe_op_in_unsafe_fn))]
-+#![allow(
-+    clippy::all,
-+    missing_docs,
-+    non_camel_case_types,
-+    non_upper_case_globals,
-+    non_snake_case,
-+    improper_ctypes,
-+    unreachable_pub,
-+    unsafe_op_in_unsafe_fn
-+)]
-+
-+mod bindings_raw {
-+    // Use glob import here to expose all helpers.
-+    // Symbols defined within the module will take precedence to the glob import.
-+    pub use super::bindings_helper::*;
-+    include!(concat!(
-+        env!("OBJTREE"),
-+        "/rust/bindings/bindings_generated.rs"
-+    ));
-+}
-+
-+// When both a directly exposed symbol and a helper exists for the same function,
-+// the directly exposed symbol is preferred and the helper becomes dead code, so
-+// ignore the warning here.
-+#[allow(dead_code)]
-+mod bindings_helper {
-+    // Import the generated bindings for types.
-+    include!(concat!(
-+        env!("OBJTREE"),
-+        "/rust/bindings/bindings_helpers_generated.rs"
-+    ));
-+}
-+
-+pub use bindings_raw::*;
-+
-+pub const GFP_KERNEL: gfp_t = BINDINGS_GFP_KERNEL;
-+pub const __GFP_ZERO: gfp_t = BINDINGS___GFP_ZERO;
++ * There is also a '%pA' format specifier, but it is only intended to be used
++ * from Rust code to format core::fmt::Arguments. Do *not* use it from C.
++ * See rust/kernel/print.rs for details.
+  */
+ static noinline_for_stack
+ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
+@@ -2444,6 +2451,12 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
+ 		return device_node_string(buf, end, ptr, spec, fmt + 1);
+ 	case 'f':
+ 		return fwnode_string(buf, end, ptr, spec, fmt + 1);
++	case 'A':
++		if (!IS_ENABLED(CONFIG_RUST)) {
++			WARN_ONCE(1, "Please remove %%pA from non-Rust code\n");
++			return error_string(buf, end, "(%pA?)", spec);
++		}
++		return rust_fmt_argument(buf, end, ptr);
+ 	case 'x':
+ 		return pointer_string(buf, end, ptr, spec);
+ 	case 'e':
 -- 
 2.37.1
 
