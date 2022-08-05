@@ -2,73 +2,82 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A17C5C25B06
-	for <rust-for-linux@archiver.kernel.org>; Thu,  4 Aug 2022 20:31:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F18EFC00140
+	for <rust-for-linux@archiver.kernel.org>; Fri,  5 Aug 2022 11:40:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234713AbiHDUby (ORCPT
+        id S233740AbiHELkW (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 4 Aug 2022 16:31:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47456 "EHLO
+        Fri, 5 Aug 2022 07:40:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229733AbiHDUby (ORCPT
+        with ESMTP id S237948AbiHELkV (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 4 Aug 2022 16:31:54 -0400
-Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 319B519293;
-        Thu,  4 Aug 2022 13:31:53 -0700 (PDT)
-Received: by mail-il1-x136.google.com with SMTP id g18so492405ilk.4;
-        Thu, 04 Aug 2022 13:31:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JXDBVb9DoiSymMWk0AFQK5uBRVXEjsO6eGZBfYrkcFM=;
-        b=lAjmdOHyeQphpF1OcxVV1rVgcOMHU5AEAguiHRypsUJj8qTMRYq5BuHEl82rIjANCm
-         EodS00O6wVT3Z2WWBn09fBLQqu15HuZRXXIttSvxvu6EvgwM1e1qDcCp7Y5eI9wEnyLs
-         QZLQa5+VtX0oqQELCLoJosyL/qKNxu5+rgfmtkITeNhqnOAV2eMu8LOkwdaTyZhkXpEv
-         GUCMebhrSl7TMcjAc6/ktQSNtVtzMuTXadjGBu2RLrfIGe3MWGPa6fn1n9pJWA8lSuwR
-         luQ8VkFAAfKL8DVfcH1NPieDD5vIPNkN3vucWcBqgTFrulXRZWW3xkTGjqjv8vJ5pQ7K
-         fYLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JXDBVb9DoiSymMWk0AFQK5uBRVXEjsO6eGZBfYrkcFM=;
-        b=GExOsnnrjHVCuAQ9oxvguBBiTkWD8b8x8H9GyWz+3wkC380HgmoGcpXGZqYdUTX/ur
-         gXF13jSvAEf7jyN+pbhtMR1OWrWYScPOPKhsUxYwN5P9TCJnC9misEQpgDNxQb/e/TrI
-         cyeTjB5L1kzHynaVjmxifWMIWBtkmWDGebOQvCgg98LEtGNGAM/lF578cod82f3p+KJ3
-         yTZYrnNvCGI75shzez/tue1tkMHGgWMwyKsHOZ+BZU5Rwf9ApIKtoegR42WtmCyZ/hZl
-         nM1lyXy/1nesoFsSOaNi2ODDK6fFU1WqNbnleaTTn4L8N2ig3CWjoQw809boSM3YNhcV
-         rqEA==
-X-Gm-Message-State: ACgBeo0Gkjm5SS2YsxkyDf5PwX00SNcRbktJnRt9N4DPh1wpY0g7LNOL
-        CDIFYA0BGL8aY9nkp8FPhFSDyMXgO+ADLzdLV+s=
-X-Google-Smtp-Source: AA6agR4aLQ8BZBvlRBzXmVfIOWIn7FTf5WNR/w8LfsI6rJN7mxVK6yhk63TEJ5e+jrc4Fp5zcGMRT4HhQfHrqtaIiVY=
-X-Received: by 2002:a05:6e02:1c23:b0:2dc:e497:8b12 with SMTP id
- m3-20020a056e021c2300b002dce4978b12mr1565787ilh.151.1659645112585; Thu, 04
- Aug 2022 13:31:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220802015052.10452-29-ojeda@kernel.org> <YukvvPOOu8uZl7+n@yadro.com>
-In-Reply-To: <YukvvPOOu8uZl7+n@yadro.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 4 Aug 2022 22:31:41 +0200
-Message-ID: <CANiq72m30zTwgSgV3+CDiMqdt2LH7TvkcnkMSw3B2do_gLn=Ng@mail.gmail.com>
+        Fri, 5 Aug 2022 07:40:21 -0400
+Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 931E511A2F;
+        Fri,  5 Aug 2022 04:40:20 -0700 (PDT)
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 8A75941275;
+        Fri,  5 Aug 2022 11:40:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        in-reply-to:content-transfer-encoding:content-disposition
+        :content-type:content-type:mime-version:references:message-id
+        :subject:subject:from:from:date:date:received:received:received
+        :received; s=mta-01; t=1659699617; x=1661514018; bh=GlgJJaXXbP0T
+        ola3mcb0CZXyhSPLDsGJLM3k2v/rCtc=; b=Zjdv7Dl5l2ok+EMwzzYPxMZUxNgt
+        7s+/TpYzoTZlkb60VjPP4btJyJ+mqgm5wJ2/IX6aG9bn2kXPadEbEXlySA78HREf
+        pB0nLuEAM9+FjirzGSQlCB4huGfVOtmQtttfBLSXUYOhrlTcfBZ3vlJOldl1VQPX
+        L06f9uoezAnjNds=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 082tpL9jtHD3; Fri,  5 Aug 2022 14:40:17 +0300 (MSK)
+Received: from T-EXCH-01.corp.yadro.com (t-exch-01.corp.yadro.com [172.17.10.101])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 3B575412D8;
+        Fri,  5 Aug 2022 14:40:07 +0300 (MSK)
+Received: from T-EXCH-09.corp.yadro.com (172.17.11.59) by
+ T-EXCH-01.corp.yadro.com (172.17.10.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Fri, 5 Aug 2022 14:40:07 +0300
+Received: from yadro.com (10.178.118.226) by T-EXCH-09.corp.yadro.com
+ (172.17.11.59) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.9; Fri, 5 Aug 2022
+ 14:40:06 +0300
+Date:   Fri, 5 Aug 2022 14:40:05 +0300
+From:   Konstantin Shelekhin <k.shelekhin@yadro.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC:     <ojeda@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <rust-for-linux@vger.kernel.org>
 Subject: Re: [PATCH v8 28/31] samples: add Rust examples
-To:     Konstantin Shelekhin <k.shelekhin@yadro.com>
-Cc:     ojeda@kernel.org, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <Yu0BlTVYG2/OKw0f@yadro.com>
+References: <20220802015052.10452-29-ojeda@kernel.org>
+ <YukvvPOOu8uZl7+n@yadro.com>
+ <CANiq72m30zTwgSgV3+CDiMqdt2LH7TvkcnkMSw3B2do_gLn=Ng@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72m30zTwgSgV3+CDiMqdt2LH7TvkcnkMSw3B2do_gLn=Ng@mail.gmail.com>
+X-Originating-IP: [10.178.118.226]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-09.corp.yadro.com (172.17.11.59)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Aug 2, 2022 at 4:08 PM Konstantin Shelekhin
-<k.shelekhin@yadro.com> wrote:
->
-> A minor neat, but ain't it possible to use &str here in order to drop
-> this ugly binary string prefix?
+On Thu, Aug 04, 2022 at 10:31:41PM +0200, Miguel Ojeda wrote:
+> «Внимание! Данное письмо от внешнего адресата!»
+> 
+> On Tue, Aug 2, 2022 at 4:08 PM Konstantin Shelekhin
+> <k.shelekhin@yadro.com> wrote:
+> >
+> > A minor neat, but ain't it possible to use &str here in order to drop
+> > this ugly binary string prefix?
+> 
+> Yeah, we would like to remove those at some point -- please see
+> https://github.com/Rust-for-Linux/linux/issues/252.
 
-Yeah, we would like to remove those at some point -- please see
-https://github.com/Rust-for-Linux/linux/issues/252.
-
-Cheers,
-Miguel
+Cool, thanks. I suggest it for the next patchset iteration, since it's
+already has a GH issue.
