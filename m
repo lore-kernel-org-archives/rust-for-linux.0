@@ -2,118 +2,87 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5DB1C00140
-	for <rust-for-linux@archiver.kernel.org>; Fri,  5 Aug 2022 16:55:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7DD1C00140
+	for <rust-for-linux@archiver.kernel.org>; Fri,  5 Aug 2022 18:46:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236963AbiHEQz6 (ORCPT
+        id S236261AbiHESqg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 5 Aug 2022 12:55:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53126 "EHLO
+        Fri, 5 Aug 2022 14:46:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230244AbiHEQz5 (ORCPT
+        with ESMTP id S234104AbiHESqf (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 5 Aug 2022 12:55:57 -0400
-X-Greylist: delayed 437 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 05 Aug 2022 09:55:56 PDT
-Received: from hop.stappers.nl (hop.stappers.nl [IPv6:2a02:2308:0:14e::686f:7030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60ACB2871A;
-        Fri,  5 Aug 2022 09:55:56 -0700 (PDT)
-Received: from gpm.stappers.nl (gpm.stappers.nl [82.168.249.201])
-        by hop.stappers.nl (Postfix) with ESMTP id EFFC4200F4;
-        Fri,  5 Aug 2022 16:48:35 +0000 (UTC)
-Received: by gpm.stappers.nl (Postfix, from userid 1000)
-        id 96E2F304049; Fri,  5 Aug 2022 18:48:35 +0200 (CEST)
-Date:   Fri, 5 Aug 2022 18:48:35 +0200
-From:   Geert Stappers <stappers@stappers.nl>
-To:     Miguel Ojeda <ojeda@kernel.org>,
+        Fri, 5 Aug 2022 14:46:35 -0400
+Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2FC018B3B;
+        Fri,  5 Aug 2022 11:46:33 -0700 (PDT)
+Received: by mail-il1-x132.google.com with SMTP id o14so1778817ilt.2;
+        Fri, 05 Aug 2022 11:46:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7pB3CUQguyZpocpsTCxrp+VM0mZPpD9HY2PyAfQxq3M=;
+        b=mqiqdp7VfmwVU+HdUvUa2IwML+0sE9i/8IuuQgkbYZa2RejZDdLMQ4sTKXZM3SvqMj
+         KW0zqiicDNvIxcldubT0YJkivYkhh1KrJC04unspffI0ZJD1InS4aikxbd9YeJwMh/N5
+         O1D09cTluvjPnizIEVxZrGYtMtKsdtHxMEb8Thr4kfS7PHRO3oPz4JmxHJOlHlKVdK7I
+         WFQRD4jUI6yUFW2ZNBb4YvtjoetLuk4SrIg5XpBoInTz6r76hUGhnQB0Z/l6+YE1h3zE
+         NAqM0icbnGgaJiuAh1T0DclODtnldWro3bxqMWFkfpGEBzd9U5+iqhWr7xSNOyDiKNre
+         k6yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7pB3CUQguyZpocpsTCxrp+VM0mZPpD9HY2PyAfQxq3M=;
+        b=FuuQyd5t966CLLOlqI0jXwl6fHOoz5W7/br6wFpF7YVmXH1k+bY45Gss4SYohsiRyU
+         gKIlRoCcsI7oiQeU+8S1QiyIU7+9VDJmr3aHh4u9atISV5yYjbFeupwxVwV2IDnQz516
+         8znyHbs1dciAbVcJJJaeaFb8xvUt67wGn/dVPiJZToe6fXI72l4s3/R2bYVxkRI1iq/H
+         L7WoQa5P5hkPghqyIYGyWUb7MslWqKQ3yC0YUdgiL4LLE06IZKRD75SlIrD4d2cTUBNN
+         Adfjq8o6v7Tvmn1S7yjwBO0JC5b/+Ou3UuSyVqfUIWB9G+IundXclZo84w0XxKybpfa6
+         3FXg==
+X-Gm-Message-State: ACgBeo1DZz/ExuVkKwMKKR6EZkVuK75bgzgfTot5LNedbr/3e0lrtBRy
+        fc126d8uR7rReEX6NxayczEQBrcCMS+4Gt+MRn7wDuGgWooZuw==
+X-Google-Smtp-Source: AA6agR4YDYzXkvB7rHVbmM/Rp4RI4JkQJPt89N4l1KoM+JTZ+0Y9PTuGAO0CISMINEm7dCPE6TaMq7XLJwhWouw1hCU=
+X-Received: by 2002:a05:6e02:1c23:b0:2dc:e497:8b12 with SMTP id
+ m3-20020a056e021c2300b002dce4978b12mr3659739ilh.151.1659725193408; Fri, 05
+ Aug 2022 11:46:33 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220805154231.31257-1-ojeda@kernel.org> <20220805154231.31257-2-ojeda@kernel.org>
+ <20220805164834.4xq7hm6ee6ywjpjo@gpm.stappers.nl>
+In-Reply-To: <20220805164834.4xq7hm6ee6ywjpjo@gpm.stappers.nl>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Fri, 5 Aug 2022 20:46:22 +0200
+Message-ID: <CANiq72mXDne_WkUCo2oRe+sip7nQWESnouOJrcCYzyJMkG8F6A@mail.gmail.com>
+Subject: Re: [PATCH v9 01/27] kallsyms: use `sizeof` instead of hardcoded size
+To:     Geert Stappers <stappers@stappers.nl>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [PATCH v9 01/27] kallsyms: use `sizeof` instead of hardcoded size
-Message-ID: <20220805164834.4xq7hm6ee6ywjpjo@gpm.stappers.nl>
-References: <20220805154231.31257-1-ojeda@kernel.org>
- <20220805154231.31257-2-ojeda@kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ojgl5e33l337cax4"
-Content-Disposition: inline
-In-Reply-To: <20220805154231.31257-2-ojeda@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Fri, Aug 5, 2022 at 6:48 PM Geert Stappers <stappers@stappers.nl> wrote:
+>
+> Signed-off-by: Geert Stappers <stappers@stappers.nl>
 
---ojgl5e33l337cax4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for the message and the support, but please note that since you
+are not in the path of the patch, you cannot use this tag; instead
+look into Reviewed-by etc. See
+https://www.kernel.org/doc/html/v5.19/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
+and the following section for details.
 
-On Fri, Aug 05, 2022 at 05:41:46PM +0200, Miguel Ojeda wrote:
-> From: Boqun Feng <boqun.feng@gmail.com>
->=20
-> This removes one place where the `500` constant is hardcoded.
->=20
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  scripts/kallsyms.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
-> index f18e6dfc68c5..52f5488c61bc 100644
-> --- a/scripts/kallsyms.c
-> +++ b/scripts/kallsyms.c
-> @@ -206,7 +206,7 @@ static struct sym_entry *read_symbol(FILE *in)
-> =20
->  	rc =3D fscanf(in, "%llx %c %499s\n", &addr, &type, name);
->  	if (rc !=3D 3) {
-> -		if (rc !=3D EOF && fgets(name, 500, in) =3D=3D NULL)
-> +		if (rc !=3D EOF && fgets(name, sizeof(name), in) =3D=3D NULL)
->  			fprintf(stderr, "Read error or end of file.\n");
->  		return NULL;
->  	}
-> --=20
-> 2.37.1
->=20
+> And I think that this patch and all other "rust" kallsyms patches
+> allready should have been accepted in the v3 or v5 series.
 
+Yeah, it could be a good idea to get the prerequisites in first. Let's
+see if the patches get some Reviewed-bys (e.g. I had to remove Kees'
+one because I had to split the patch).
 
-Signed-off-by: Geert Stappers <stappers@stappers.nl>
-
-
-And I think that this patch and all other "rust" kallsyms patches
-allready should have been accepted in the v3 or v5 series.
-
-
-
-
-
-Regards
-Geert Stappers
---=20
-Silence is hard to parse
-
---ojgl5e33l337cax4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEin8gjG2ecykWV0FNITXRI9jBm+wFAmLtSdsACgkQITXRI9jB
-m+yFvRAAqobvCSSsxB7Z87XEpwzMkNsdtwn04eRPEsQctCU3u1bfvVVHqq9G8rvH
-RwUeyPpAOxbmEs+B5UCE3CbU5p/tSuw4au2+Gn3S23aAJLSNQd/ddtai3ca02y5a
-Sw6ype8LlZsFnhmocfB+RsHsch7PQyS0CMkcfsFaYx7Lj44YsaHMLtuHOYt2jmCI
-/B2kKn7dze85uCPF/tronsLR9aD1kpSEQ4x/ZUyZ88OtE3pQKQvPu1IWHLsGPBNC
-bjg6NzkgyO4qFb3bgmv21q+VOSK3jMwr3kY1t9FoxMsHtoPi4c5+87aj4iLze0zK
-enrSYseH670xScX19DqZvrY+C9uh5iVBsv2+Pz/0WaR3HT4sUxg3xkl1wdMlA1Ui
-xLoBK3ayljhdaxhkLx6Eif5YxyB4BBCXq3cjugkMECT0L86DSj91dPB9mWGAItFN
-dydrsOmAnh4Jl/LahJYoSmnkmCBtxAL4p2WkLmpEvHHcAfw/Hx8Bwu0LKXigMdDh
-I4/BtNKknlceQ9hzY0VkeVbj3WUnZ2bkMPd1Q87YpQPVZlj6ArS+QXEB1Uq1GeHE
-29gmr3CZOlOMiXEXnLM17uS8w9smjIkx4WpuE5CK3F4aVjYBdRWZF8NDsmYWglMT
-K3RJ/FYKfaXfeXBwLLcN/vkgqOulY1Dg3buhg6mX5kYcjNCHlt4=
-=6Oog
------END PGP SIGNATURE-----
-
---ojgl5e33l337cax4--
+Cheers,
+Miguel
