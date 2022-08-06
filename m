@@ -2,87 +2,69 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AAE37C19F2D
-	for <rust-for-linux@archiver.kernel.org>; Sat,  6 Aug 2022 14:58:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0AAC7C19F2D
+	for <rust-for-linux@archiver.kernel.org>; Sat,  6 Aug 2022 15:59:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232171AbiHFO6P (ORCPT
+        id S230525AbiHFP7g (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 6 Aug 2022 10:58:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60842 "EHLO
+        Sat, 6 Aug 2022 11:59:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230114AbiHFO6O (ORCPT
+        with ESMTP id S230128AbiHFP7g (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 6 Aug 2022 10:58:14 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 919C6DFA1;
-        Sat,  6 Aug 2022 07:58:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=+C2JGsO6va2bAMADh5JeyUWmHXKyyjTMWItjMMImrbg=; b=WdpKBQw/h4Z6oKiLfUMLRUHbhr
-        16GLQX8j2fEzsJqERsJugasQvW5MYH+A+/EQ5cdR5MOOvfVvegwK2YFUlWaAcnb8zjj01dqJ4kzqr
-        j7sgHCoSDRkPUZPl4ehuP1bq8l3p0Js/AemsYZprDGgKYMM5gQFmTRQNGKRn6A8Dch1F2YLVfr29Y
-        dvVWwaAS1dbeHb34kuGgjMZgfFVPhb0zs04jPIsuoYhJeEusJ/AijPnZxkwSShJYbpnpc4cqn17XE
-        q6J3eTiZ0nAZRfMw9iDS3f7FV4Hmi3uv9ndKcYE2dTExXND/TxdxO/Ea5wIQ8xPjHvxhBDZ9/Gxuw
-        9trYO3cA==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oKLF9-00CE0u-CC; Sat, 06 Aug 2022 14:57:35 +0000
-Date:   Sat, 6 Aug 2022 15:57:35 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Konstantin Shelekhin <k.shelekhin@yadro.com>, ojeda@kernel.org,
-        alex.gaynor@gmail.com, ark.email@gmail.com,
-        bjorn3_gh@protonmail.com, bobo1239@web.de, bonifaido@gmail.com,
-        boqun.feng@gmail.com, davidgow@google.com, dev@niklasmohrin.de,
-        dsosnowski@dsosnowski.pl, foxhlchen@gmail.com, gary@garyguo.net,
-        geofft@ldpreload.com, gregkh@linuxfoundation.org,
-        jarkko@kernel.org, john.m.baublitz@gmail.com,
-        leseulartichaut@gmail.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, m.falkowski@samsung.com,
-        me@kloenk.de, milan@mdaverde.com, mjmouse9999@gmail.com,
-        patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
-        thesven73@gmail.com, torvalds@linux-foundation.org,
-        viktor@v-gar.de, wedsonaf@google.com,
-        Andreas Hindborg <andreas.hindborg@wdc.com>
-Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
-Message-ID: <Yu6BXwtPZwYPIDT6@casper.infradead.org>
-References: <20220805154231.31257-13-ojeda@kernel.org>
- <Yu5Bex9zU6KJpcEm@yadro.com>
- <CANiq72=3j2NM2kS8iw14G6MnGirb0=O6XQyCsY9vVgsZ1DfLaQ@mail.gmail.com>
+        Sat, 6 Aug 2022 11:59:36 -0400
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F09FE0F5
+        for <rust-for-linux@vger.kernel.org>; Sat,  6 Aug 2022 08:59:35 -0700 (PDT)
+Received: by mail-io1-xd2b.google.com with SMTP id q124so3950628iod.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 06 Aug 2022 08:59:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=SyikxNvZFoR2to0jhPdn24kSjVywjl8yz+SYRTW8MJE=;
+        b=N/qqmeFfmcETKOZan/V8tviw4yhP4R7621BBwzeR9cvEapdqlaKjznsAJKMvxkvEpK
+         S87zlFfCHabYggWAP7zFHuTkPbdb1SV2q0dJrZVALnTPo5yuVl3q3rJf1tmmuPAzcTq6
+         bXFBdg+qHSJRHSa1Sa56YDCKYBfleR6XO13Bz0Wm8yBd2/xT9MA+XKZ80bxM7FiGx00b
+         lhQR2p5NSZHwpBC0K4dkODAYXJs3m/AR6wPq0nT2cREM4isBwbrtgNRT3Ll4TzsQonLU
+         vOqoJvTY+jwGoyjmg48RAhOEReGIhHmwOdbYoBU8CszAhBalkGdfKtl+uORFrLPkfWrq
+         esYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=SyikxNvZFoR2to0jhPdn24kSjVywjl8yz+SYRTW8MJE=;
+        b=06Akhd+RwOimSp87iD4azhBi4nlfmDPHuxYeVtWne0EoAE2zVMZz4DBtRKjKtXYy1X
+         h/V4awjehTgyPOUhijWVU7R5KM4Kl0MgUeK3bi81oUNR2pHiKtD2o/4vrfTbLVfVs+Pg
+         9/HLBIuBGFe3Bjvm5pDgrIN00mp7qfZHCf4knjBoHQ/c21bxS+UTvzlGrAos7dtEHxA+
+         lLKDbE2NetYgWUekbz6pjOiDMkkDWmJRWnAk2uUdgOuZIvASWa/170qCBzLQS6ulPabo
+         bS4iXu3yaTAQHFSylgRvFyTdWxU0ut+HwI/DTaWIj8cKz2jCIf6eJ42vme70Ph3Agq86
+         wabg==
+X-Gm-Message-State: ACgBeo1aT3YfIoaryYWvauobrEcWeXhl7dZIuUBKpfs4GKoMK77Z8E+t
+        CWcTlseLySqg/dNRXzhr6M9OdtTpJ6iEbj1Au5DBDZbuRt0=
+X-Google-Smtp-Source: AA6agR7inwYbm9ZUuA3N2I8NIgazyo924hXyGuF1QNAFvZbrJChve8Qnj+TSXZj23DCWwtSWEd6DXhD8tPMK976aHbM=
+X-Received: by 2002:a05:6638:410b:b0:342:8542:1f89 with SMTP id
+ ay11-20020a056638410b00b0034285421f89mr5488722jab.264.1659801575055; Sat, 06
+ Aug 2022 08:59:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72=3j2NM2kS8iw14G6MnGirb0=O6XQyCsY9vVgsZ1DfLaQ@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sat, 6 Aug 2022 17:59:24 +0200
+Message-ID: <CANiq72kHd_0i6x0O0e6KMVS-DkyH9qCwvPdnPuQAUxS3vx9vVg@mail.gmail.com>
+Subject: Reminder: informal call in 2 hours
+To:     rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Aug 06, 2022 at 01:22:52PM +0200, Miguel Ojeda wrote:
-> On Sat, Aug 6, 2022 at 12:25 PM Konstantin Shelekhin
-> <k.shelekhin@yadro.com> wrote:
-> >
-> > I sense possible problems here. It's common for a kernel code to pass
-> > flags during memory allocations.
-> 
-> Yes, of course. We will support this, but how exactly it will look
-> like, to what extent upstream Rust's `alloc` could support our use
-> cases, etc. has been on discussion for a long time.
-> 
-> For instance, see https://github.com/Rust-for-Linux/linux/pull/815 for
-> a potential extension trait approach with no allocator carried on the
-> type that Andreas wrote after a discussion in the last informal call:
-> 
->     let a = Box::try_new_atomic(101)?;
+Hi all,
 
-Something I've been wondering about for a while is ...
+We will have our informal call in 2 hours from now (18:00 UTC first
+Saturday of each month).
 
-struct task_struct {
-...
-+	gfp_t gfp_flags;
-...
-};
+As usual, everybody is welcome to join. The meetings take place on
+Google Meet. If you need an invitation, drop me an email!
 
-We've already done some work towards this with the scoped allocation
-API for NOIO and NOFS, but having spin_lock() turn current->gfp_flags
-into GFP_ATOMIC might not be the worst idea in the world.
+If you are in a timezone that cannot easily attend the meetings at
+18:00 UTC, please let us know.
+
+Cheers,
+Miguel
