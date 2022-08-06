@@ -2,85 +2,100 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F134C19F2D
-	for <rust-for-linux@archiver.kernel.org>; Sat,  6 Aug 2022 11:58:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D940C19F2D
+	for <rust-for-linux@archiver.kernel.org>; Sat,  6 Aug 2022 12:15:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229987AbiHFL6Q (ORCPT
+        id S230011AbiHFMPb (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 6 Aug 2022 07:58:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57476 "EHLO
+        Sat, 6 Aug 2022 08:15:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbiHFL6P (ORCPT
+        with ESMTP id S231694AbiHFMP0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 6 Aug 2022 07:58:15 -0400
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFFCA13FB0;
-        Sat,  6 Aug 2022 04:58:13 -0700 (PDT)
-Received: by mail-io1-xd34.google.com with SMTP id d139so3640829iof.4;
-        Sat, 06 Aug 2022 04:58:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tUfbb3VHymyxnMR94FjI2mkzesHqJLKSWp1RL/4sb4c=;
-        b=Y3qOPv56DTeB7tJ2XtMJpFGR93nZ+K/pi/poz2ZHSDlZeglmnHE6f/1x/JTbT2Ikp/
-         oU13pjqcwy/MQM/20pfyY7OuppLSV9phlD5rULnCMdChOKzCyWr+cHGEqOU/mveHfD3s
-         C3cXXUE3nMd2WIYiGWTokuUzSlT2uRTHE3AkloXdVAMt9jHp2HFpdDfQLxSvufJsXt0B
-         bR2Y4eRdh0z35mnviqT1SGtVFTCQia2rlxVE+oDEDGKZSn8Issi8tFBVvZHQZ3Uuz0xI
-         6RDRlEsWor1c7IAnVHPXvXge3HgFJdP7+gp247h8pRThr/D/J2HdWp+ZxNCgquQMl08G
-         A4Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tUfbb3VHymyxnMR94FjI2mkzesHqJLKSWp1RL/4sb4c=;
-        b=FI0lk3QZMMN/nc7+0BCh6XH9tRFH07WLElzDxYv64ezMc0TcAqVu9WqAjvWAE+fLMG
-         MgKyIPNl/ihx9zM3P0qn4wXvx8J+q7eczO9Co3L66BnkjdJUnnjsv1QCOtkEI7lQ7Tp4
-         4ptWtNdqlJ9db9AkTvjyaXm3wArKXL1mNgYYpIP7w78XVA+r7hyzwNMl2wMjDtsTXin0
-         8rbVAwAzxBIpPb+TMNiVHn4P+Yh01kLZ3F2syNfQtRJnkvfIfcqeAwGoSuRGMWiyewDr
-         Q2xVTHceB2jEdO+moHbNdPid9lwF3+vADL0SnfqMInBkDq3Mc22wRmPPapfwgtjq0Ku8
-         +VIA==
-X-Gm-Message-State: ACgBeo3jK6Z15lBQhnCvTEX5lU6Fwelgr7lMXoEl6mjlCs1IoR+rcFn4
-        2XyGNdyqd2fKsUrSS72VA7Ut+vMqTrF4g+7kMsU=
-X-Google-Smtp-Source: AA6agR5aI215Ei9SZ/4y1a3HZxN881CoGJtKo6kLP9/0RFkvORY0NNgMAes2xh5t/q/g6cHbT6ERaroTVUQuKHphxzI=
-X-Received: by 2002:a05:6638:25cb:b0:341:6546:1534 with SMTP id
- u11-20020a05663825cb00b0034165461534mr4729711jat.308.1659787093414; Sat, 06
- Aug 2022 04:58:13 -0700 (PDT)
+        Sat, 6 Aug 2022 08:15:26 -0400
+Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14B32B877;
+        Sat,  6 Aug 2022 05:15:21 -0700 (PDT)
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id 20C3141273;
+        Sat,  6 Aug 2022 12:15:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        in-reply-to:content-disposition:content-type:content-type
+        :mime-version:references:message-id:subject:subject:from:from
+        :date:date:received:received:received:received; s=mta-01; t=
+        1659788118; x=1661602519; bh=19EybQC+1gn5CR7Z0N2mdrVXzygyocg/h0i
+        6NwEVs8A=; b=CAdNJIFsxV9D3u+0W7WT+pmyZb1P3mUNea56rbZ+zN37JS14K1p
+        TUF6XFY7zY/aSp3hmQzRcHZU2Te1PbeEabbapFEORYNF5zF6f+csiUlsA3nd24fA
+        KpdPr0mJAFosVf5tVK47+RUigUOtOFlBu0S56kmtVToXaZ9IPvp/eHLs=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id cJHOOhsCYjML; Sat,  6 Aug 2022 15:15:18 +0300 (MSK)
+Received: from T-EXCH-01.corp.yadro.com (t-exch-01.corp.yadro.com [172.17.10.101])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id A558841252;
+        Sat,  6 Aug 2022 15:15:14 +0300 (MSK)
+Received: from T-EXCH-09.corp.yadro.com (172.17.11.59) by
+ T-EXCH-01.corp.yadro.com (172.17.10.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Sat, 6 Aug 2022 15:15:14 +0300
+Received: from yadro.com (10.178.119.167) by T-EXCH-09.corp.yadro.com
+ (172.17.11.59) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.9; Sat, 6 Aug 2022
+ 15:15:13 +0300
+Date:   Sat, 6 Aug 2022 15:15:12 +0300
+From:   Konstantin Shelekhin <k.shelekhin@yadro.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC:     <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <ark.email@gmail.com>,
+        <bjorn3_gh@protonmail.com>, <bobo1239@web.de>,
+        <bonifaido@gmail.com>, <boqun.feng@gmail.com>,
+        <davidgow@google.com>, <dev@niklasmohrin.de>,
+        <dsosnowski@dsosnowski.pl>, <foxhlchen@gmail.com>,
+        <gary@garyguo.net>, <geofft@ldpreload.com>,
+        <gregkh@linuxfoundation.org>, <jarkko@kernel.org>,
+        <john.m.baublitz@gmail.com>, <leseulartichaut@gmail.com>,
+        <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <m.falkowski@samsung.com>, <me@kloenk.de>, <milan@mdaverde.com>,
+        <mjmouse9999@gmail.com>, <patches@lists.linux.dev>,
+        <rust-for-linux@vger.kernel.org>, <thesven73@gmail.com>,
+        <torvalds@linux-foundation.org>, <viktor@v-gar.de>,
+        <wedsonaf@google.com>, Andreas Hindborg <andreas.hindborg@wdc.com>
+Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
+Message-ID: <Yu5bUK4/70SanMss@yadro.com>
+References: <20220805154231.31257-13-ojeda@kernel.org>
+ <Yu5Bex9zU6KJpcEm@yadro.com>
+ <CANiq72=3j2NM2kS8iw14G6MnGirb0=O6XQyCsY9vVgsZ1DfLaQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20220802015052.10452-29-ojeda@kernel.org> <YukvvPOOu8uZl7+n@yadro.com>
- <CANiq72m30zTwgSgV3+CDiMqdt2LH7TvkcnkMSw3B2do_gLn=Ng@mail.gmail.com> <Yu0BlTVYG2/OKw0f@yadro.com>
-In-Reply-To: <Yu0BlTVYG2/OKw0f@yadro.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 6 Aug 2022 13:58:02 +0200
-Message-ID: <CANiq72n9wbE-YU2WOT8V20eiie3w5EqzjP8WQXpYDQNfUzcN_A@mail.gmail.com>
-Subject: Re: [PATCH v8 28/31] samples: add Rust examples
-To:     Konstantin Shelekhin <k.shelekhin@yadro.com>
-Cc:     ojeda@kernel.org, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CANiq72=3j2NM2kS8iw14G6MnGirb0=O6XQyCsY9vVgsZ1DfLaQ@mail.gmail.com>
+X-Originating-IP: [10.178.119.167]
+X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
+ T-EXCH-09.corp.yadro.com (172.17.11.59)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Aug 5, 2022 at 1:40 PM Konstantin Shelekhin
-<k.shelekhin@yadro.com> wrote:
->
-> Cool, thanks. I suggest it for the next patchset iteration, since it's
-> already has a GH issue.
+On Sat, Aug 06, 2022 at 01:22:52PM +0200, Miguel Ojeda wrote:
+> > I sense possible problems here. It's common for a kernel code to pass
+> > flags during memory allocations.
+> 
+> Yes, of course. We will support this, but how exactly it will look
+> like, to what extent upstream Rust's `alloc` could support our use
+> cases, etc. has been on discussion for a long time.
+> 
+> For instance, see https://github.com/Rust-for-Linux/linux/pull/815 for
+> a potential extension trait approach with no allocator carried on the
+> type that Andreas wrote after a discussion in the last informal call:
+> 
+>     let a = Box::try_new_atomic(101)?;
 
-Gary implemented a subset of string literals to cover this without
-having to vendor extra external code in
-https://github.com/Rust-for-Linux/linux/pull/858:
+IMO it's just easier to always pass flags like this:
 
-    module! {
-        type: RustNetfilter,
-        name: "rust_netfilter",
-        author: "Rust for Linux Contributors",
-        description: "Rust netfilter sample",
-        license: "GPL",
-    }
+  let a = Box::try_new(GFP_KERNEL | GFP_DMA, 101)?;
 
-It will be there in v10.
+But if allocate_with_flags() will be somehow present in the API that's
+just what we need.
 
-Cheers,
-Miguel
+P.S. Thanks for a quick reply!
