@@ -2,91 +2,85 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EAC3BC19F2D
-	for <rust-for-linux@archiver.kernel.org>; Sat,  6 Aug 2022 11:23:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F134C19F2D
+	for <rust-for-linux@archiver.kernel.org>; Sat,  6 Aug 2022 11:58:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241787AbiHFLXG (ORCPT
+        id S229987AbiHFL6Q (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 6 Aug 2022 07:23:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41776 "EHLO
+        Sat, 6 Aug 2022 07:58:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241828AbiHFLXF (ORCPT
+        with ESMTP id S229853AbiHFL6P (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 6 Aug 2022 07:23:05 -0400
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D84CE6320;
-        Sat,  6 Aug 2022 04:23:04 -0700 (PDT)
-Received: by mail-il1-x12e.google.com with SMTP id b12so2477932ils.9;
-        Sat, 06 Aug 2022 04:23:04 -0700 (PDT)
+        Sat, 6 Aug 2022 07:58:15 -0400
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFFCA13FB0;
+        Sat,  6 Aug 2022 04:58:13 -0700 (PDT)
+Received: by mail-io1-xd34.google.com with SMTP id d139so3640829iof.4;
+        Sat, 06 Aug 2022 04:58:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Um1v1FrSCBFvVj7vNPvt2QZzZCYl4QtDmBW6UESDgwA=;
-        b=QUa+QsnYh9cvzUYscq18TKSV3NJAdEQI9JP5mrkTCnTyNNiLCNWs4wUNegk2+bavFF
-         sramTVQ/jBd9lIjNZ/K0LctPG+/50shDCsbEUDQFjVuxBI6zbiGxH0Bg5jQQjKOeGCHt
-         vQ7QB0ZAngzih8tY3Sv9JIIS3K+gSEdgwjnPtrWMuPZYpc3Qy0HGzrSP6gcRG5P6tlFk
-         Gbocjr9mZaYsVuSVrK77WgNt+jyrIb1k85dBHQMvu7A7ZUSIrvm0yorv0/2Hx8h9sHfl
-         MNGFsq9UtdOK7lByFvZidEJVdx3OscdAypKgKIwYO42ynokMUusVLPzhkV6BwyMoR/4f
-         AbGg==
+        bh=tUfbb3VHymyxnMR94FjI2mkzesHqJLKSWp1RL/4sb4c=;
+        b=Y3qOPv56DTeB7tJ2XtMJpFGR93nZ+K/pi/poz2ZHSDlZeglmnHE6f/1x/JTbT2Ikp/
+         oU13pjqcwy/MQM/20pfyY7OuppLSV9phlD5rULnCMdChOKzCyWr+cHGEqOU/mveHfD3s
+         C3cXXUE3nMd2WIYiGWTokuUzSlT2uRTHE3AkloXdVAMt9jHp2HFpdDfQLxSvufJsXt0B
+         bR2Y4eRdh0z35mnviqT1SGtVFTCQia2rlxVE+oDEDGKZSn8Issi8tFBVvZHQZ3Uuz0xI
+         6RDRlEsWor1c7IAnVHPXvXge3HgFJdP7+gp247h8pRThr/D/J2HdWp+ZxNCgquQMl08G
+         A4Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Um1v1FrSCBFvVj7vNPvt2QZzZCYl4QtDmBW6UESDgwA=;
-        b=gj6t53vKCrVOJw1UAY8rlz5GZsddgsOMzw+bKtNy8gCN4kBSVs18INHzSmeerkQFBU
-         Evki7XwXv3Ot3juoh+30+WPn9v1rga9mzufxr2PJkZzvVj8wQBDeuH1HQfL83+8zDlD5
-         XzVAhnDvm07C74zkfQ/+PXVK4jWo49ImoCkbyHWDZ2Q7IhEM4DVFWg80qxONNjdHsLA/
-         fhikdZmcwB/YPtLnPy9qWvDfwHlzweBLDwTWi2yxAkm24aEEjhh4PU9r+U+veLfBKtWb
-         +8G3MA13+hgDpgr/gG76pqrxfhOhaS+SFp5rNt7x2amRs1mMV3zchO6xYfCpCNAp/jr4
-         q/Xg==
-X-Gm-Message-State: ACgBeo32OUnpVNwmFzYhq0qE09/Wa+9SslcWVk32wma0nem82ryWR5Kf
-        8javjhAwWdE+j5A3IyE6rezEeXCXSgcCqVmFFyI=
-X-Google-Smtp-Source: AA6agR7qEC8iU/WaGU3JQe5au0X+zcl2gDqnJ72SDHmcqd6eC86RlGuRDU4TMA1Juf98d4Nn/szP9GBxXNRIAhTu/Yg=
-X-Received: by 2002:a05:6e02:1c23:b0:2dc:e497:8b12 with SMTP id
- m3-20020a056e021c2300b002dce4978b12mr4884021ilh.151.1659784984174; Sat, 06
- Aug 2022 04:23:04 -0700 (PDT)
+        bh=tUfbb3VHymyxnMR94FjI2mkzesHqJLKSWp1RL/4sb4c=;
+        b=FI0lk3QZMMN/nc7+0BCh6XH9tRFH07WLElzDxYv64ezMc0TcAqVu9WqAjvWAE+fLMG
+         MgKyIPNl/ihx9zM3P0qn4wXvx8J+q7eczO9Co3L66BnkjdJUnnjsv1QCOtkEI7lQ7Tp4
+         4ptWtNdqlJ9db9AkTvjyaXm3wArKXL1mNgYYpIP7w78XVA+r7hyzwNMl2wMjDtsTXin0
+         8rbVAwAzxBIpPb+TMNiVHn4P+Yh01kLZ3F2syNfQtRJnkvfIfcqeAwGoSuRGMWiyewDr
+         Q2xVTHceB2jEdO+moHbNdPid9lwF3+vADL0SnfqMInBkDq3Mc22wRmPPapfwgtjq0Ku8
+         +VIA==
+X-Gm-Message-State: ACgBeo3jK6Z15lBQhnCvTEX5lU6Fwelgr7lMXoEl6mjlCs1IoR+rcFn4
+        2XyGNdyqd2fKsUrSS72VA7Ut+vMqTrF4g+7kMsU=
+X-Google-Smtp-Source: AA6agR5aI215Ei9SZ/4y1a3HZxN881CoGJtKo6kLP9/0RFkvORY0NNgMAes2xh5t/q/g6cHbT6ERaroTVUQuKHphxzI=
+X-Received: by 2002:a05:6638:25cb:b0:341:6546:1534 with SMTP id
+ u11-20020a05663825cb00b0034165461534mr4729711jat.308.1659787093414; Sat, 06
+ Aug 2022 04:58:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220805154231.31257-13-ojeda@kernel.org> <Yu5Bex9zU6KJpcEm@yadro.com>
-In-Reply-To: <Yu5Bex9zU6KJpcEm@yadro.com>
+References: <20220802015052.10452-29-ojeda@kernel.org> <YukvvPOOu8uZl7+n@yadro.com>
+ <CANiq72m30zTwgSgV3+CDiMqdt2LH7TvkcnkMSw3B2do_gLn=Ng@mail.gmail.com> <Yu0BlTVYG2/OKw0f@yadro.com>
+In-Reply-To: <Yu0BlTVYG2/OKw0f@yadro.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 6 Aug 2022 13:22:52 +0200
-Message-ID: <CANiq72=3j2NM2kS8iw14G6MnGirb0=O6XQyCsY9vVgsZ1DfLaQ@mail.gmail.com>
-Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
+Date:   Sat, 6 Aug 2022 13:58:02 +0200
+Message-ID: <CANiq72n9wbE-YU2WOT8V20eiie3w5EqzjP8WQXpYDQNfUzcN_A@mail.gmail.com>
+Subject: Re: [PATCH v8 28/31] samples: add Rust examples
 To:     Konstantin Shelekhin <k.shelekhin@yadro.com>
-Cc:     ojeda@kernel.org, alex.gaynor@gmail.com, ark.email@gmail.com,
-        bjorn3_gh@protonmail.com, bobo1239@web.de, bonifaido@gmail.com,
-        boqun.feng@gmail.com, davidgow@google.com, dev@niklasmohrin.de,
-        dsosnowski@dsosnowski.pl, foxhlchen@gmail.com, gary@garyguo.net,
-        geofft@ldpreload.com, gregkh@linuxfoundation.org,
-        jarkko@kernel.org, john.m.baublitz@gmail.com,
-        leseulartichaut@gmail.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, m.falkowski@samsung.com,
-        me@kloenk.de, milan@mdaverde.com, mjmouse9999@gmail.com,
-        patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
-        thesven73@gmail.com, torvalds@linux-foundation.org,
-        viktor@v-gar.de, wedsonaf@google.com,
-        Andreas Hindborg <andreas.hindborg@wdc.com>
+Cc:     ojeda@kernel.org, linux-kernel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Aug 6, 2022 at 12:25 PM Konstantin Shelekhin
+On Fri, Aug 5, 2022 at 1:40 PM Konstantin Shelekhin
 <k.shelekhin@yadro.com> wrote:
 >
-> I sense possible problems here. It's common for a kernel code to pass
-> flags during memory allocations.
+> Cool, thanks. I suggest it for the next patchset iteration, since it's
+> already has a GH issue.
 
-Yes, of course. We will support this, but how exactly it will look
-like, to what extent upstream Rust's `alloc` could support our use
-cases, etc. has been on discussion for a long time.
+Gary implemented a subset of string literals to cover this without
+having to vendor extra external code in
+https://github.com/Rust-for-Linux/linux/pull/858:
 
-For instance, see https://github.com/Rust-for-Linux/linux/pull/815 for
-a potential extension trait approach with no allocator carried on the
-type that Andreas wrote after a discussion in the last informal call:
+    module! {
+        type: RustNetfilter,
+        name: "rust_netfilter",
+        author: "Rust for Linux Contributors",
+        description: "Rust netfilter sample",
+        license: "GPL",
+    }
 
-    let a = Box::try_new_atomic(101)?;
+It will be there in v10.
 
 Cheers,
 Miguel
