@@ -2,173 +2,105 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B8DDC25B0C
-	for <rust-for-linux@archiver.kernel.org>; Thu, 11 Aug 2022 15:29:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 873C7C19F2A
+	for <rust-for-linux@archiver.kernel.org>; Thu, 11 Aug 2022 18:45:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235701AbiHKP3A (ORCPT
+        id S235915AbiHKSps (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 11 Aug 2022 11:29:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46498 "EHLO
+        Thu, 11 Aug 2022 14:45:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234910AbiHKP26 (ORCPT
+        with ESMTP id S235890AbiHKSpr (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 11 Aug 2022 11:28:58 -0400
-Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03FC29413D
-        for <rust-for-linux@vger.kernel.org>; Thu, 11 Aug 2022 08:28:57 -0700 (PDT)
-Received: by mail-vs1-xe36.google.com with SMTP id q190so18605847vsb.7
-        for <rust-for-linux@vger.kernel.org>; Thu, 11 Aug 2022 08:28:57 -0700 (PDT)
+        Thu, 11 Aug 2022 14:45:47 -0400
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D256B956AE
+        for <rust-for-linux@vger.kernel.org>; Thu, 11 Aug 2022 11:45:46 -0700 (PDT)
+Received: by mail-io1-xd31.google.com with SMTP id q124so15349325iod.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 11 Aug 2022 11:45:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=pUlaIiVUDfwJDC7z524sDGM9mX/FvKWjaFUrBQpUp6k=;
-        b=OsbuKP1ziCgqSOp6SvlWEi2Jqqc9ZaXkgdgSFfuCJ7CFLc59W5t6g2kRwiSuIqPgCT
-         r469PpQU6ljDRqc5oA10RQmh5n7kTH9fN9u2iB/ocac8p/E0+/tCoIaV3fnj2T2HVkib
-         mF7Hzh9OgoEHvmMKYEnxEFiqAcoMbgG7/8b8Z30c0A7/IRTQX21TALDijaMzVb3K6GKM
-         2cztqGaS23PzG6tDifLC3vewWfHZLLOY8bv9CgMiVzoAkv1QO2M5rKf8r0RUuxZV20ek
-         MashsFYaYwyuCI41S/2+AtLzRDP6ifcc7XWjzvU7JdHunRwoM2kk7T+Ql5gk8CqRKBZx
-         b+Mw==
+        bh=78Py4ASSBPbPM7ve+O/dtWRa8hTm6rf42vsdu8fh8eY=;
+        b=cbUrZVSuRX1B/TIjMiZa+moRTjNbMJWoHB3RxC9zh8aOyMi34WC1LZ43tOxfs/HaKT
+         PilzFt/PApNMKOUXjF+8dVl96ADZ60GMQFrVIGhM7zr9GJI/5t8UJoOGEm+I9uVT+4gF
+         kyYoiPjUN7SX5AGmavmb4Zi2pu3uVXPdBIKc5j+i8dRmY+x1DSeN6b9WKnhmdlMjw0/Q
+         Ym9+D/x4OTYbuwAuGcPvc17UF2yvsukbxy33FWZu9l2BcEC2QMvwpzvyMz5g8XtcsIzM
+         xOZsctlex0y2a+ZmKNc+ucZIxEtearw55TiM09wanTdUyszXcdu1co7Ou7egS7SauChs
+         lS/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=pUlaIiVUDfwJDC7z524sDGM9mX/FvKWjaFUrBQpUp6k=;
-        b=X816eGUeY4UQQQNg7RD7Ai9EPtRYf8DPfzQmdtjqlKYyZGM5tgVee2fMytBbM4YUUC
-         Ulozd216mWVU5mX6bVila1t6gIHU1R+KHWbfr4eMjcY3ib5RPstI6sB2fkFhKcK2eDlw
-         5SHFQ6+m0gKWb09uCmTCQ2HLVXlqRajs6r17M3QjZjUu8V2PwCskUx5NEk5L/pFon9hr
-         mvX37nbRjnh24twZK8VzoX+d6ButqhsQu0PB4K56ruG28byyc65OzjYTRqLzFwYtrQ3b
-         R9dynSyd840Fb7zsHhyLcxO3m7y/9YDYMcmMO6JpCEKTsV/7wn7MR8IedtyYe3fVyRpZ
-         bq+w==
-X-Gm-Message-State: ACgBeo1Qn6ZD0ueQp1WMO5CWqJDA/HBzW0CT6F0shUmU4g3zUqpt+zVZ
-        hIe2Y8bLJXqUNBZ3UEmrkW7SjmOATNn94czNCtELA5iK
-X-Google-Smtp-Source: AA6agR4owmmIIf2bWCC6T5rGFnNYBRUxhJXlNdpLX9Msm0fOcnzJsf7B3/X+Mim81ORvjKtpWpLx4oPHcPNhYxMw4Cw=
-X-Received: by 2002:a67:c293:0:b0:388:6c32:bd90 with SMTP id
- k19-20020a67c293000000b003886c32bd90mr13824361vsj.27.1660231736753; Thu, 11
- Aug 2022 08:28:56 -0700 (PDT)
+        bh=78Py4ASSBPbPM7ve+O/dtWRa8hTm6rf42vsdu8fh8eY=;
+        b=501C9r3kqHJ6yjZGPfZIaWnLV/Ei6K7oocjwAz4j09LVuUiDVsNO0aG//wjo1nqu7c
+         YULG+VKimGC8dTw1DdwmosPECAc+NdFJ7xDMkY/el3zqFKFakQgv6JT+chkQeG42ITmn
+         bGiajOyFcCCyI+lDGwDNHmgzxKgB1VD+O/WcpuzLzrKosNK6VdnXeMSqJ61v4Ts41YmM
+         /JubQ3lImpPeXmqv/hq9L4EJkzCGUt6/rfekY8k5JQebcRAtvniSpd5lbdamYLoFYT2Q
+         +cSvs7sycLzVfTrxOrJt3tv7h+1qKLuw6DRzYWHBJedTzmC8Ee+Gn8Vzb8JWan034fQs
+         uUEw==
+X-Gm-Message-State: ACgBeo29pfcEwX9n7M+FmeDN45hfqJDZQApGnSl0lELLl0SJZpo1y/jt
+        ZLn/bnIwJvrDEVhC4K7zATK2Oh/H8IcyKTGCZUL/Umq/A0ZpAA==
+X-Google-Smtp-Source: AA6agR5MSYNTGxJ2v/s7m7DwzJNDElXr2EYDkqMV7dWPeaJeEeGTjMS51gbELQfdDgDyALKykjd+jKfapyJisG8sU8g=
+X-Received: by 2002:a05:6602:2a42:b0:678:84be:c9ec with SMTP id
+ k2-20020a0566022a4200b0067884bec9ecmr257148iov.64.1660243546270; Thu, 11 Aug
+ 2022 11:45:46 -0700 (PDT)
 MIME-Version: 1.0
 References: <70657af9-90bb-ee9e-4877-df4b14c134a5@asahilina.net>
 In-Reply-To: <70657af9-90bb-ee9e-4877-df4b14c134a5@asahilina.net>
-From:   Alex Gaynor <alex.gaynor@gmail.com>
-Date:   Thu, 11 Aug 2022 11:28:45 -0400
-Message-ID: <CAFRnB2V1S8kVKm7WV7Pbk89GA5Rs0A1BYMeUq-ZTSxisYgX4Fw@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 11 Aug 2022 20:45:34 +0200
+Message-ID: <CANiq72=71W-d7385YySknCWrToigDwrQ6nz2fh2zEWSQtrH2qg@mail.gmail.com>
 Subject: Re: Writing the Apple AGX GPU driver in Rust?
 To:     Asahi Lina <lina@asahilina.net>
-Cc:     rust-for-linux <rust-for-linux@vger.kernel.org>
+Cc:     rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Lina,
-
-This is very exciting! I think it'll be a big project: I don't know
-anything about GPU drivers in particular, but this would be the first
-one written in Rust, so in addition to the driver work there'd be the
-work of implementing the Rust API for interacting with the kernel.
-
-That said, if you're up for it, I think we'd be very excited to see
-how to support it!
-
-In terms of where we are, in addition to this malign list, there is
-the Zulip (I can't remember why it's invite only, but we're happy to
-invite anyone who is interested!) and the Github issue tracker.
-
-Alex
-
-On Thu, Aug 11, 2022 at 10:29 AM Asahi Lina <lina@asahilina.net> wrote:
->
-> Hi!
->
-> I'm starting work on a new kernel GPU driver for the Apple AGX (found in
-> M1 and M2 family chips). These GPUs run firmware and have fairly complex
-> shared memory data structures that need to be managed by the host, so
-> I've been leaning towards Rust for its safety, better metaprogramming,
-> and general expressiveness. I have a prototype driver written in Python
-> (running in userspace from a remote host, long story), and having a
-> higher-level language has been very helpful in reverse engineering the
-> GPU and prototyping different ideas for how the driver should work.
->
-> I realize it's the early days of Rust on Linux and this is an ambitious
-> challenge, but I'm willing to learn and the driver will take some time
-> to stabilize to the point of being upstreamable either way (in
-> particular the UAPI), so writing it in Rust feels like less of a gamble
-> at this point than it used to be, given that it sounds like Rust will be
-> merged in the next few kernel cycles at the latest.
+On Thu, Aug 11, 2022 at 4:29 PM Asahi Lina <lina@asahilina.net> wrote:
 >
 > I'd like to hear your thoughts about how crazy an idea this is. ^_^
->
-> I think the portion of the driver that would most benefit from Rust
-> would be the firmware interaction parts (managing shared memory data
-> structures and interacting with them), so I see several possibilities:
-> the whole driver could be Rust (which would involve writing bindings for
-> the render portion of the DRM subsystem), or just the bulk of the
-> firmware interaction logic could be done in Rust, and then the top-level
-> driver would be written in C and call into the Rust abstraction layer
-> for the firmware, or something in between.
->
-> (For those not familiar with DRM: the display/KMS API is very extensive
-> and would be quite an ordeal to bind to Rust I imagine, but I think the
-> render/3D part of the API is significantly simpler, especially the
-> subset likely to be used by modern drivers. This is a render-only
-> device, no display, that's a different driver.)
->
-> More specifically, there are some challenges that I think would really
-> benefit from Rust's features. One is that we have to support multiple
-> firmware versions in one driver, across multiple GPUs (unlike macOS,
-> which ships a separate driver build for each GPU and only supports a
-> single, matched firmware in any given macOS version). The firmware ABI
-> is not stable, so every new firmware needs many scattered changes to the
-> data structures. Doing this in C without copying and pasting large
-> amounts of code would require some horrible multiple-compilation #ifdef
-> hacks, and really isn't pretty.
->
-> I was wondering if it could be done better in Rust, so a couple days ago
-> I tried my hand at writing a proc macro to automatically generate
-> versioned variants of structures within a single compile, along with
-> versioned implementations with conditionally-compiled portions. I
-> prototyped it in userspace, and this is the result (along with some
-> example structure definitions, so far only with 2 firmware variants and
-> some dummy code):
->
-> https://github.com/asahilina/gpu-rust-playground
->
-> Do you think this kind of approach would be fit for the kernel? (Please
-> be gentle, I have very little Rust experience and this is my first time
-> writing a proc macro... I did avoid adding any external cargo deps,
-> since I know that's an issue in the kernel. The actual struct defs were
-> automatically generated from the existing Python ones, so I know some of
-> the naming conventions aren't very idiomatic).
->
-> The other problem I thought Rust might be able to help with is the
-> actual management of GPU objects in memory. These objects have two
-> addresses (a CPU address and a GPU address), and it would be nice if the
-> type system could help ensure correctness here too. Structures can be
-> firmware-owned, CPU-owned, or shared, and their state may change at
-> certain points in time. Perhaps the type system can be coaxed into
-> extending the usual correctness guarantees of object ownership to this
-> model, including things like making sure there are no dangling GPU
-> pointers in GPU structures pointing to dropped data, etc? (using
-> PhantomData perhaps?). This also ties into the actual memory mapping
-> (there are different mapping modes depending on whether data is shared
-> or not). I haven't started exploring this yet, so I'd love to hear any
-> thoughts about it!
->
-> Beyond the GPU driver, the firmware version ABI instability issue also
-> affects other drivers for these platforms (display/DCP for one, but
-> quite possibly others too), so that macro scaffolding might be a good
-> incentive for other drivers for these chips to also partially or fully
-> move to Rust.
->
-> Please let me know your thoughts on this crazy idea! I haven't seen a
-> lot of ML activity lately, so if there is any better place to discuss
-> this (Zulip? I saw it's invite-only...) please let me know.
->
-> Thanks!!
->
-> ~~ Lina
 
+It is less crazy than writing it in Python, for sure ;)
 
+But joking aside, using Rust for a particular subsystem is up to the
+maintainers of the subsystem. From what I understand (please correct
+me if I am wrong!), you are part of the Asahi team, so you are your
+own maintainers, thus it is up to you to decide!
 
--- 
-All that is necessary for evil to succeed is for good people to do nothing.
+Now, of course, reality is more complex than that, and you will
+probably want to discuss things with the DRM people to see if they
+would be willing to accept and/or maintain their part of the Rust
+bindings you may need etc.
+
+In any case, one quick note: so far, we have been doing the "Rust
+driver that talks to Rust safe abstractions that for the most part
+wrap existing C facilities" approach. While it is of course
+technically possible to mix C and Rust in other ways, and it may be
+the case that we need to do it as some point, it would be best to
+avoid having to expose C APIs from Rust code, to avoid losing the
+advantages of the type system. So writing the entire driver in Rust
+would be the way to go if I understood you correctly, and would make
+also things much easier for others later too, since some safe
+abstractions for DRM would be there already etc., which I am sure
+people will appreciate a lot in the future!
+
+As for the proc macros: so far we generally try to avoid them as much
+as possible, but a lot of details on how we will expand on that are
+still in the air (and we have not needed to generate a lot of
+hardware-description-based code anyway). Some of that will likely be
+discussed in Kangrejos and LPC in September. In any case, when talking
+about proc macros, it can be useful to consider whether "raw" code
+generation in an independent build step may be easier or not (i.e.
+like your previous Python approach, if I understood correctly; but
+maybe based on a Rust host program which we have support for) --
+especially if that code does not change often.
+
+(I sent you the Zulip invitation soon after seeing your message -- if
+you have not received it, let me know!)
+
+Cheers,
+Miguel
