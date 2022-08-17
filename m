@@ -2,53 +2,59 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D03BDC25B08
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 20:34:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 565D6C25B08
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 20:40:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241937AbiHQUea (ORCPT
+        id S242054AbiHQUkv (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 Aug 2022 16:34:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56320 "EHLO
+        Wed, 17 Aug 2022 16:40:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236908AbiHQUe1 (ORCPT
+        with ESMTP id S238164AbiHQUku (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 Aug 2022 16:34:27 -0400
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C00409FA87
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 13:34:22 -0700 (PDT)
-Received: by mail-pj1-x102c.google.com with SMTP id t11-20020a17090a510b00b001fac77e9d1fso186159pjh.5
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 13:34:22 -0700 (PDT)
+        Wed, 17 Aug 2022 16:40:50 -0400
+Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32D0A9BB71;
+        Wed, 17 Aug 2022 13:40:50 -0700 (PDT)
+Received: by mail-il1-x12f.google.com with SMTP id z8so7506169ile.0;
+        Wed, 17 Aug 2022 13:40:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=+BHAYzDqgDO1dphlleJav81q/W9nIBFp+VkYBEf8vLU=;
-        b=jz3fLzw+fJu0xPnGx+//k5qikpJiVrmGS9ks5o3noNGsc8Uf1MVHQS773VBi7HxOoP
-         MZ6Ip5ai3AKoAuZFpSBu4KsXfgeAKdCvm4aIDXUybYCujl6F8SW9xZaTic3jRc3H2wGA
-         2kdkepAqif71HE0vPPrNQ6MJhpDbQ0B+3unjI=
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=D7+PP+1VFVB5t/XZKXqn6MijouyQ2RbiiwpNQ7fWOz0=;
+        b=GxR10IqzvjdBL/BaxMHXfPFWlt/83Q820CnMlzfL/hSA6gIjg68H5JxBTAxm/lIQ9V
+         0i7QhTrDa78ijLCS/8IiS1qk+BXnh1u3ZfTWADKknLCpzJTkMTnshCMrM8bbU6lICwwb
+         RCQuKPTUOu0D8Cgy371UL8SU/k/ojDGxNm5xleYWISXyMRA0ftmiHl/vFGUl4fMwVUiE
+         z1H1UPyZeJQ9Tlv2v8NclqCye8Gg2GUrr30eChzEFN/qUfvS5j+sg9zCz0e1pgLG8XrE
+         +2vNeyK8ULLM29Av+5YMtJVAXSvHFvwfYwHRC1ylSLIReEpCYtUq4ABsIR3S2vaqOt6g
+         34cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=+BHAYzDqgDO1dphlleJav81q/W9nIBFp+VkYBEf8vLU=;
-        b=KlGBBn+965aa3Tan4nFHqi2NaY6Q6jQHbtkLEeWjycqR5AezWLmRnYX3ij6e35zK6L
-         kX0yM0PSmneOWolPrbVTnJvuXoR43myGHWB5r4vmPQp6SQHA1LZPc0Sat7SG0FVE2W8E
-         uSi/TqkalC03Ud32OSgU+IVCaL//cqb0hcEGpMjHBMLWF2vKs6QGZAO5ii4OuPw0wXFX
-         OcZkk4+dOCWmPPgv06JneBAkMKNZeNbmWvZjBoR5mofLOPT+s1BGB/kFsdLkuRR7rQVT
-         Wr9UY3x1AiuTYI+0CN9dkQR/r3w9tP+JCAMNJ/VGvHgsyC/oC6t5Yy+L/bOL5V6hmMK0
-         1s2Q==
-X-Gm-Message-State: ACgBeo0PFCIYmsLaRk7j5rxXlG0zyqlMmuGeI2zH/GVUe22UqpK7CAVn
-        yrK9YWp9Y/COjNPA3cxRHlNktA==
-X-Google-Smtp-Source: AA6agR5DUV06FMuvjpJ+csHMVx0eFv5uqzA4scevJawPGRalm+UHAttaTYitPkt7IE4XMPROHlrxwg==
-X-Received: by 2002:a17:902:ce11:b0:172:6f2c:a910 with SMTP id k17-20020a170902ce1100b001726f2ca910mr16336467plg.156.1660768462179;
-        Wed, 17 Aug 2022 13:34:22 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id l15-20020a17090aaa8f00b001ef9659d711sm1975601pjq.48.2022.08.17.13.34.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Aug 2022 13:34:21 -0700 (PDT)
-Date:   Wed, 17 Aug 2022 13:34:20 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=D7+PP+1VFVB5t/XZKXqn6MijouyQ2RbiiwpNQ7fWOz0=;
+        b=QNmyB2nZrX4fH0RaFdlgQCuP4te7dJmHbTG60Uf3nUMMfZ1OwVSGAw+jUTlk31qQSv
+         GgtooEoQVhxp72wKX0PdjJCbdoWkwpWbu8r5XitvyMKMyr+M7uaakNG2n9QYYIDmBCkK
+         ZTHq396cOAZBPFJTZGrBnWAAKVbrt3BnlozzhpEwn25dAiomJmL01qx0IRnRosO4WzgK
+         8QbUgCH9wmpXumkBNDCndIsY5ucle5My9KdwRlslYxiQgy6CiSeXgk9cVv6d1/2c3IAj
+         zNGEz5lA5xG0WHjmvBHGyO0PJUcy2RZuVSRUXjjsf98i68f1+dReLE5iD2EBJSWL7ooI
+         uluw==
+X-Gm-Message-State: ACgBeo0qlgrCm48oYlV/yBUD3Sqrg9ysYrlX/Ut6i0VKz9RiKD+TMhpJ
+        JG4o/CHWrZNvwIau8PELcpeCXk5oJkjrh/KVCaxBGffsB6KOscbp
+X-Google-Smtp-Source: AA6agR6Pkl8a8I0NGhaSmqIm0OjcWxsxxYn1fA+Kt0gIAQtc7Bo4Uukr+9wWczkLepZwrG+Tt2qdF9cNf7ysNCWyoII=
+X-Received: by 2002:a92:cd8f:0:b0:2df:ff82:2e5f with SMTP id
+ r15-20020a92cd8f000000b002dfff822e5fmr12835073ilb.72.1660768849569; Wed, 17
+ Aug 2022 13:40:49 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220805154231.31257-1-ojeda@kernel.org> <20220805154231.31257-21-ojeda@kernel.org>
+ <202208171317.F5D57135@keescook>
+In-Reply-To: <202208171317.F5D57135@keescook>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 17 Aug 2022 22:40:38 +0200
+Message-ID: <CANiq72nzOQSd2vsh2_=0YpGNpY=7agokbgi_vBc5_GF4-02rsA@mail.gmail.com>
+Subject: Re: [PATCH v9 20/27] scripts: add `rust_is_available.sh`
+To:     Kees Cook <keescook@chromium.org>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -56,51 +62,35 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
-        Maciej Falkowski <m.falkowski@samsung.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>
-Subject: Re: [PATCH v9 06/27] rust: add C helpers
-Message-ID: <202208171331.FAACB5AD8@keescook>
-References: <20220805154231.31257-1-ojeda@kernel.org>
- <20220805154231.31257-7-ojeda@kernel.org>
- <202208171240.8B10053B9D@keescook>
- <CANiq72nR2eAeKrY6v=hnjUjvwfecMsSC6eXTwaei6ecnHjia8g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72nR2eAeKrY6v=hnjUjvwfecMsSC6eXTwaei6ecnHjia8g@mail.gmail.com>
+        Finn Behrens <me@kloenk.de>, Miguel Cano <macanroj@gmail.com>,
+        Tiago Lam <tiagolam@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Aug 17, 2022 at 10:22:37PM +0200, Miguel Ojeda wrote:
-> On Wed, Aug 17, 2022 at 9:44 PM Kees Cook <keescook@chromium.org> wrote:
-> > Given the distaste for ever using BUG()[1], why does this helper exist?
-> 
-> We use it exclusively for the Rust panic handler, which does not
-> return (we use fallible operations as much as possible, of course, but
-> we need to provide a panic handler nevertheless).
+On Wed, Aug 17, 2022 at 10:18 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> I think the min-tool-version.sh changes from patch 23 should be moved
+> into this patch.
 
-Gotcha -- it's for the implicit situations (e.g. -C overflow-checks=on),
-nothing is expected to explicitly call the Rust panic handler?
+Yeah, it calls into that script with a "rustc" argument, which doesn't
+work if somebody happened to run it by hand, so this makes sense.
 
-> Killing the entire machine is definitely too aggressive for some
-> setups/situations, so at some point last year we discussed potential
-> alternatives (e.g. `make_task_dead()` or similar) with, if I recall
-> correctly, Greg. Maybe we want to make it configurable too. We are
-> open to suggestions!
+However, the intention was to move each "big" new file into their own
+patch to make a smaller Kbuild one (and only do that "new file"
+additions in each patch), and then finally do all the modifications
+and enable the Rust support in the Kbuild patch (which has the callers
+into this script). Also the script is not intended to be called
+directly anyway (since you need the Make environment, but you
+definitely can), there is a Make target to help with that.
 
-I suffer the same problems trying to fix C and the old "can never fail"
-interfaces. Mainly we've just been systematically replacing such APIs
-with APIs that return error codes, allowing the error to bubble back up.
-(Which I know is exactly what you've already done with the allocator,
-etc. Yay!)
+Hopefully that explains the logic behind the arrangement of the
+patches, which was to make the patches as simple as possible. I am
+happy to rearrange if you think it is more understandable that way.
 
--Kees
-
--- 
-Kees Cook
+Cheers,
+Miguel
