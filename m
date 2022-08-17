@@ -2,97 +2,137 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AC4FC25B08
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 20:22:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C3D8C3F6B0
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 20:26:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238747AbiHQUWu (ORCPT
+        id S241944AbiHQU0g (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 Aug 2022 16:22:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59574 "EHLO
+        Wed, 17 Aug 2022 16:26:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232294AbiHQUWt (ORCPT
+        with ESMTP id S241957AbiHQU0V (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 Aug 2022 16:22:49 -0400
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CF359858B;
-        Wed, 17 Aug 2022 13:22:49 -0700 (PDT)
-Received: by mail-il1-x12b.google.com with SMTP id z13so7454479ilq.9;
-        Wed, 17 Aug 2022 13:22:49 -0700 (PDT)
+        Wed, 17 Aug 2022 16:26:21 -0400
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FAF0A98FD
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 13:26:14 -0700 (PDT)
+Received: by mail-pj1-x1031.google.com with SMTP id bf22so12829pjb.4
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 13:26:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=95u8lNlnSqCf3nFt5kKj92QXYH3MSbflseNXxb5Fn00=;
-        b=OYcQUlqsxAJgqISQCgV3vtZHXpalxDTEAE8J09DLHSEXI4qtBF+wzVSvouAELH+k9w
-         L8Jjk3X4U8OPV+0FQDBGxAsiOH/g4GzoQtIO9LrExv8Z7oo0tjeZl0c8+670S9iv9xIG
-         3VHN/FP/kUrxQATYNnyMcnJzuQ9HRb/7JMaD8CnA6C3SC0izg6+nZ3Y8yF1T0wBzkG1S
-         yk6lDQ9XAsaMI4Ou2XPGIcz5AMTh3h+H4b7w6X0q5TEzfmVVPL5Thz4gggWBJPx0mTeY
-         ZrbXvnYp0VFg8erHdWD3GA8WgQLvK/uExgsosHBf9+lxmgnybC590tnbLz5kykLynGLJ
-         jkKw==
+        d=chromium.org; s=google;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc;
+        bh=voGEdX63KoW+ZibFVnZJzdsesBOjZP2It8KT+faXmbQ=;
+        b=Cl+T9KLC4EJmcz1MyKRqJ76dq4omiP8QcIYqcj9jXcpGW1Oj9XAbG0YqZGHvjN3feL
+         DEZk0TIvBJiJlgBQY/wa5KrN3ksWyFi6If4yOSjmSNPXnL+a2luAQmTKADLXOJC7Ssb2
+         owbs/RFNuCJUTsb6vTH7Fhkx4YGcwAZOVIpsw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=95u8lNlnSqCf3nFt5kKj92QXYH3MSbflseNXxb5Fn00=;
-        b=FiHSaQvn/JNPHB+uzDpbKkVrLm2y2Tj/svRp2dPa6D61rgRYuPivyIPf5M4//Vyav6
-         Kv97MYON8z/O9VvTnBRT5x870MCU64Zcgy3AF3v+fIkdtHgzo/GQw0BS5Nle5TlWW5np
-         2CT0EBGntlALQSq+qtqQfuh12TMSAz9jo80LasskT7Gu/C4PvGsaNiMFDJ0F8lAqL7GQ
-         hdBRftBUtss1HAJgmXnXpz4h8CALTrSrBVN1LToE/51UwRL7G8kTrvmqJtsbLabMhSRF
-         moG7gILZ9QLM1mliBnW4XNODGkNn8mw/mUzae+BtazqGfPsW9dFi0fgayASe+FNiBslO
-         c5dA==
-X-Gm-Message-State: ACgBeo3yD0Bkj38MFYWKK20jplXvF7/jLLWwbyPR5n6QJKnmq/2OhbmB
-        qTes+AlXc+CCv6/wvSRO5F0Tx8VAcdUvs6Ybonk=
-X-Google-Smtp-Source: AA6agR6srAwQfsZZ9SbamGt91jriBGl4JS80mCTykIHOHWKu4a1YmyuaMej5D630lBaYsdWmc87I+yEYpkFHIpL2+ug=
-X-Received: by 2002:a05:6e02:1522:b0:2e5:9e3c:a7c8 with SMTP id
- i2-20020a056e02152200b002e59e3ca7c8mr8623597ilu.237.1660767768527; Wed, 17
- Aug 2022 13:22:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220805154231.31257-1-ojeda@kernel.org> <20220805154231.31257-7-ojeda@kernel.org>
- <202208171240.8B10053B9D@keescook>
-In-Reply-To: <202208171240.8B10053B9D@keescook>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 17 Aug 2022 22:22:37 +0200
-Message-ID: <CANiq72nR2eAeKrY6v=hnjUjvwfecMsSC6eXTwaei6ecnHjia8g@mail.gmail.com>
-Subject: Re: [PATCH v9 06/27] rust: add C helpers
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc;
+        bh=voGEdX63KoW+ZibFVnZJzdsesBOjZP2It8KT+faXmbQ=;
+        b=D9BLO1fsfdU8UF7c/ya6ZK2HkS0akZNvmmdTxAPjqLMCyRrzDkcPbpbKi6+dXGpt5i
+         tta1Jfu5L17KJkbFQIRora3rtM91mST/JRg4sO0EOWVw+RIVZnxtnF4RT9+EqApfPuW1
+         Ld0yY8SXUrzyAj+GggyIA41FZ4RzlzuQVFcO3GlXEnD9MmoUHlW+1m6kZuKFGmT8wXM0
+         4iSMnDhFqY8WChWXlORVzrud1sCzjJutCdxwHkW+7TORHTIRMKNxtLTF+cCPv8J8/IxU
+         OeA/qrVIjxTH34WrypytcMwNRMPHRuSp8QsW5jDxkp9G7Hnt8ybF64ra2Km7URd2fDDE
+         VzEg==
+X-Gm-Message-State: ACgBeo2X3VNf2frjqXolo1WcQX+7Ef62L1kL182Yv8XVzOsbnB4LXGtw
+        /aLHA4pva3av5rvj0tTnghFleg==
+X-Google-Smtp-Source: AA6agR7DmWypmAe26bnZT4xLDkF12MzBgKNyqwHl8eKku2vWvA2CYPpAgoCIiRzzcwD8rH6xOts1Vg==
+X-Received: by 2002:a17:90b:4c4b:b0:1f7:11f:8e8e with SMTP id np11-20020a17090b4c4b00b001f7011f8e8emr5362650pjb.98.1660767973734;
+        Wed, 17 Aug 2022 13:26:13 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id h8-20020a17090a2ec800b001f2fa09786asm1956585pjs.19.2022.08.17.13.26.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Aug 2022 13:26:13 -0700 (PDT)
+Date:   Wed, 17 Aug 2022 13:26:12 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
-        Maciej Falkowski <m.falkowski@samsung.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Gary Guo <gary@garyguo.net>,
+        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Douglas Su <d0u9.su@outlook.com>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        Antonio Terceiro <antonio.terceiro@linaro.org>,
+        Daniel Xu <dxu@dxuuu.xyz>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH v9 23/27] Kbuild: add Rust support
+Message-ID: <202208171324.FB04837@keescook>
+References: <20220805154231.31257-1-ojeda@kernel.org>
+ <20220805154231.31257-24-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220805154231.31257-24-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Aug 17, 2022 at 9:44 PM Kees Cook <keescook@chromium.org> wrote:
->
-> "Introduce the source file that will contain forwarders to common C
-> macros as inlined Rust functions. Initially this only contains type
-> size asserts, but will gain more helpers in subsequent patches."
+On Fri, Aug 05, 2022 at 05:42:08PM +0200, Miguel Ojeda wrote:
+> Having most of the new files in place, we now enable Rust support
+> in the build system, including `Kconfig` entries related to Rust,
+> the Rust configuration printer and a few other bits.
+> 
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Finn Behrens <me@kloenk.de>
+> Signed-off-by: Finn Behrens <me@kloenk.de>
+> Co-developed-by: Adam Bratschi-Kaye <ark.email@gmail.com>
+> Signed-off-by: Adam Bratschi-Kaye <ark.email@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Co-developed-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Co-developed-by: Sven Van Asbroeck <thesven73@gmail.com>
+> Signed-off-by: Sven Van Asbroeck <thesven73@gmail.com>
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Co-developed-by: Boris-Chengbiao Zhou <bobo1239@web.de>
+> Signed-off-by: Boris-Chengbiao Zhou <bobo1239@web.de>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Co-developed-by: Douglas Su <d0u9.su@outlook.com>
+> Signed-off-by: Douglas Su <d0u9.su@outlook.com>
+> Co-developed-by: Dariusz Sosnowski <dsosnowski@dsosnowski.pl>
+> Signed-off-by: Dariusz Sosnowski <dsosnowski@dsosnowski.pl>
+> Co-developed-by: Antonio Terceiro <antonio.terceiro@linaro.org>
+> Signed-off-by: Antonio Terceiro <antonio.terceiro@linaro.org>
+> Co-developed-by: Daniel Xu <dxu@dxuuu.xyz>
+> Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
+> Co-developed-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
+> Signed-off-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
+> Co-developed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Yeah, I will reword it, it doesn't make as much sense now that it is trimmed.
+It'd be nice to split this up into maybe per-target patches, but given
+how long this has been getting developed, I'd prefer to avoid blocking
+on that, and just get this series landed so we can move to incremental
+fixes/additions.
 
-> Given the distaste for ever using BUG()[1], why does this helper exist?
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-We use it exclusively for the Rust panic handler, which does not
-return (we use fallible operations as much as possible, of course, but
-we need to provide a panic handler nevertheless).
+-Kees
 
-Killing the entire machine is definitely too aggressive for some
-setups/situations, so at some point last year we discussed potential
-alternatives (e.g. `make_task_dead()` or similar) with, if I recall
-correctly, Greg. Maybe we want to make it configurable too. We are
-open to suggestions!
-
-Cheers,
-Miguel
+-- 
+Kees Cook
