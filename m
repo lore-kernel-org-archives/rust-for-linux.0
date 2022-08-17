@@ -2,138 +2,114 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8556AC3F6B0
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 23:14:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C6BBC25B08
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 23:56:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238938AbiHQXN7 (ORCPT
+        id S238765AbiHQX4G (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 Aug 2022 19:13:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42834 "EHLO
+        Wed, 17 Aug 2022 19:56:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233622AbiHQXNz (ORCPT
+        with ESMTP id S233491AbiHQX4F (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 Aug 2022 19:13:55 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2779483BDD;
-        Wed, 17 Aug 2022 16:13:55 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id o184so16912925oif.13;
-        Wed, 17 Aug 2022 16:13:55 -0700 (PDT)
+        Wed, 17 Aug 2022 19:56:05 -0400
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC14F72FF5
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 16:56:04 -0700 (PDT)
+Received: by mail-pj1-x102f.google.com with SMTP id s4-20020a17090a5d0400b001fabc6bb0baso1580165pji.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 16:56:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=uAFZhRG94yqKesKWZYz5Nx3zn74jTlFRVSrtAcB7opM=;
-        b=k1YA1pS6Eajn7sFpOI3x8NusjBtYGTLlphQCfOr2iifQhQYUaZT4rFqmLD/dnKP9b0
-         utTJIDqQJUQkYqpDPJEQSpJJyYNfgsMs6oM0rq19CKnK4L95D5GfF+cXJl8IGJgwp3zi
-         l8/2VaIIRMi4bLQ4ldVdetEpn6sUd8H3RC0bDOEMLSdFLYf/pm6WA4p9f3FBAmB/9mNO
-         Ya+2NapCpC+1bkSFyYgo9K7XUiXikWQMDF89oUPh4N7c7kSVCLVYfHFf4RX2YmQD/BJ+
-         RHahVZppC8tmZH9/nDlRSCFUHQ2Jjbnzz15ck+oNRgTfBuH2OYcBdWAaAK8ktADD0UsG
-         Sepw==
+        d=chromium.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc;
+        bh=4OrW2+v/meyruGyW+F7E0QxnRsOWY9DMbrVML0RCO4M=;
+        b=SW70luAxBAxmWF0xbo0vvoN6D+BfN/5VNbgtgMfh2yWVHK27yb+gRXhrCitMsILst6
+         gd/i/FD7DU/GC9P22lC3CrE9jHgYvTSOlzKpjrsH/HNz8kK2s0HOT1TWY2m3B/AFQ5mQ
+         ZkPwYxipcmkEq6CmCLwOLx4fAHP1DCRj2y/aQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=uAFZhRG94yqKesKWZYz5Nx3zn74jTlFRVSrtAcB7opM=;
-        b=RiyLLm276x/7CZRCX8/2ftpny0ADxc0vq9W889vlBURYq1yJzPlH+zPtMGiI0oT1Vn
-         3e8C/BKlr8MO9YT8Sec/e+QOjnX0rU8Re/EFwMuRZBEp2UrsYSX6tQI/MURYYS6ieD/Y
-         wuoDRjHXFC1kGiW9XsdT6sX9+qxy4ilNLJHAHlHpEn2Lfyl712TxZL3T2GAd5OJXSVT+
-         DUKh+Y22iq+kx0ajfmoXVZjyq7cej9vIbbObBWlFQp20yqyMmH8ELUnB21GbnEl2oPzY
-         BKX7Wf7Y3KDOvLOVf2aVEzktdstPjB2/mS5kJV7OeNyW/No75WhUmCDCleU8/s7A9rVO
-         HxAg==
-X-Gm-Message-State: ACgBeo0KIftU54vWa5ZfjM7BIs4wzM/f/mAExkpFnNEEpSs3+LUwICcA
-        +zPiXpbCf7dylLxWsWdesq4QsZYoSoSDmg7ZIE8=
-X-Google-Smtp-Source: AA6agR5Gpv9Ub/ZSzw8wXnuwWJOg7P877U0UYF+ZIWdllhEPLwf7oW+lHlQM1was0sDQQVbiYoikM6dK3ZGBH+jke3Q=
-X-Received: by 2002:a05:6808:4d2:b0:343:dc3:fa31 with SMTP id
- a18-20020a05680804d200b003430dc3fa31mr176406oie.120.1660778034487; Wed, 17
- Aug 2022 16:13:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220802015052.10452-1-ojeda@kernel.org> <20220802015052.10452-28-ojeda@kernel.org>
- <CAK8P3a0jqhGY9E85VC9gNem5q6-dWeq0H6-7bhJopinMnLtOKQ@mail.gmail.com>
- <CANiq72nNucEhXAXkXSujnGkpQrkv3-Pcn7ua8N=2XB-suAjs9w@mail.gmail.com> <CAK8P3a2YuGsSJY2-=npqXMHXEr+zaF36iDrM+kP=9nS85FLpbA@mail.gmail.com>
-In-Reply-To: <CAK8P3a2YuGsSJY2-=npqXMHXEr+zaF36iDrM+kP=9nS85FLpbA@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 18 Aug 2022 01:13:42 +0200
-Message-ID: <CANiq72mW456PbD1WTkh0f=fhgO0FVdpjpXaT5cogXGT4BmKDjw@mail.gmail.com>
-Subject: Re: [PATCH v8 27/31] Kbuild: add Rust support
-To:     Arnd Bergmann <arnd@arndb.de>
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=4OrW2+v/meyruGyW+F7E0QxnRsOWY9DMbrVML0RCO4M=;
+        b=yQps0UPm/h0aBg+J8IN84Rc53YGltZGAs/sxWNGQWC+xE7UGfS0MtIBC76tFUeZvqZ
+         dfPCWAoIJ4Nzo9qf6+GxsrsXpm1OR8UqTfYwOYiZeABp3pIdIJSp081YF+ckP/y6iMjA
+         UzNOUJXONFw2I2p7Klsk8+AW1v1d2sKfBFlmzh53e6ig2GYS8ReteDCN5NnVUbwsCmVx
+         KNHjLEA8ctWJDmKn8EdPcPM147uybn5Ymqe6qwTlK0Pe6JuXBfGbZ3KR74c5N6ROdTDw
+         r1fllc0rnbrLtXqLgQslHApY6kvl8RvW/u2MbfsfBQe8TtTM2zJV5m3GbadR5pqBOAwi
+         hUTg==
+X-Gm-Message-State: ACgBeo1wfUe9ALGpm60Uuftd/msn6xjA1FSQWcupYN0IC+F5IAWp+QOI
+        3HHHktGqsZq8BETNO1UcSiKDHw==
+X-Google-Smtp-Source: AA6agR5mOI6zoxv/758RIIcFtuybDEtU4eRZmif+vY/WesxknhjDFh5Um9NhlfbeGGrs65ev9k85OA==
+X-Received: by 2002:a17:90a:1b6e:b0:1f5:1902:af92 with SMTP id q101-20020a17090a1b6e00b001f51902af92mr6148774pjq.238.1660780564166;
+        Wed, 17 Aug 2022 16:56:04 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id n1-20020a1709026a8100b0016d33b8a231sm459784plk.270.2022.08.17.16.56.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Aug 2022 16:56:03 -0700 (PDT)
+Date:   Wed, 17 Aug 2022 16:56:02 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Miguel Cano <macanroj@gmail.com>,
-        Paul Mackerras <paulus@samba.org>, Gary Guo <gary@garyguo.net>,
-        Douglas Su <d0u9.su@outlook.com>,
-        Borislav Petkov <bp@alien8.de>,
-        linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Ingo Molnar <mingo@redhat.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Antonio Terceiro <antonio.terceiro@linaro.org>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        Boqun Feng <boqun.feng@gmail.com>,
-        linux-um@lists.infradead.org,
-        =?UTF-8?Q?Bj=C3=83B_6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Daniel Xu <dxu@dxuuu.xyz>, David Gow <davidgow@google.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        linux-arm-kernel@lists.infradead.org,
-        Tiago Lam <tiagolam@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-kernel@vger.kernel.org,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Richard Weinberger <richard@nod.at>,
-        Finn Behrens <me@kloenk.de>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linuxppc-dev@lists.ozlabs.org,
-        Philip Herron <philip.herron@embecosm.com>,
-        Arthur Cohen <arthur.cohen@embecosm.com>
-Content-Type: text/plain; charset="UTF-8"
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
+        Maciej Falkowski <m.falkowski@samsung.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>
+Subject: Re: [PATCH v9 06/27] rust: add C helpers
+Message-ID: <202208171653.6BAB91F35@keescook>
+References: <20220805154231.31257-1-ojeda@kernel.org>
+ <20220805154231.31257-7-ojeda@kernel.org>
+ <202208171240.8B10053B9D@keescook>
+ <CANiq72nR2eAeKrY6v=hnjUjvwfecMsSC6eXTwaei6ecnHjia8g@mail.gmail.com>
+ <202208171331.FAACB5AD8@keescook>
+ <CANiq72=6nzbMR1e=7HUAotPk-L00h0YO3-oYrtKy2BLcHVDTEw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72=6nzbMR1e=7HUAotPk-L00h0YO3-oYrtKy2BLcHVDTEw@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Aug 17, 2022 at 5:51 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> Thanks for the explanation. My hope was that building the kernel
+On Wed, Aug 17, 2022 at 11:44:53PM +0200, Miguel Ojeda wrote:
+> On Wed, Aug 17, 2022 at 10:34 PM Kees Cook <keescook@chromium.org> wrote:
+> >
+> > Gotcha -- it's for the implicit situations (e.g. -C overflow-checks=on),
+> 
+> Yeah, exactly.
+> 
+> > nothing is expected to explicitly call the Rust panic handler?
+> 
+> If by explicitly you mean calling `panic!()`, then in the `kernel`
+> crate in the v9 patches there is none.
 
-Don't mention it!
+Perfect. It may be worth stating this explicitly with the helper. i.e.
+"This is for handling any panic!() calls in core Rust, but should not
+ever be used in the 'kernel' create; failures should be handled."
 
-> would actually be easier here than building the more complicated
-> rust user space.
+> Though we may want to call it in the future (we have 4 instances in
+> the full code not submitted here, e.g. for mismatching an independent
+> lock guard with its owner). They can be avoided depending on how we
+> want the design to be and, I guess, what the "Rust panic" policy will
+> finally be (i.e. `BUG()` or something softer).
+> 
+> Outside the `kernel` crate, there are also instances in proc macros
+> and Rust hostprogs/scripts (compilation-time in the host), in the
+> `alloc` crate (compiled-out) and in the `compiler_builtins` crate (for
+> e.g. `u128` support that eventually we would like to not see
+> compiled-in).
 
-Yeah, the kernel is complicated for them in different ways, so I
-assume they will decide which bits to tackle first... Hopefully I will
-succeed in my attempts to convince them to focus a bit on the kernel
-at least ;)
+Sounds good!
 
-> I tried one more step and just removed the unsupported command
-> line flags to see what would happen, but that did not get me any
-> further:
+-Kees
 
-Thanks!
-
-It looks like it failed when compiling the target spec generator,
-which is a Rust host program. If they were to attempt the GCC Rust
-support early on, we could make things easier for them by not
-compiling host programs with gccrs.
-
-By the way, feel free to remove all the `-D` flags ("denying") when
-playing with it since they are related to diagnostics (making lints
-errors that can still be bypassed if needed), in case the crash is
-about handling those.
-
-Cheers,
-Miguel
+-- 
+Kees Cook
