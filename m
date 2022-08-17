@@ -2,51 +2,51 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8512EC25B08
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 19:37:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 210E9C25B08
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 19:40:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240435AbiHQTho (ORCPT
+        id S237586AbiHQTkF (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 Aug 2022 15:37:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33858 "EHLO
+        Wed, 17 Aug 2022 15:40:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231651AbiHQThn (ORCPT
+        with ESMTP id S238528AbiHQTj6 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 Aug 2022 15:37:43 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70EFE101C1
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 12:37:42 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d20so12882671pfq.5
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 12:37:42 -0700 (PDT)
+        Wed, 17 Aug 2022 15:39:58 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFBEBA50E9
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 12:39:50 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id x23so12842256pll.7
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 12:39:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc;
-        bh=VkFb2gmnPJh2DD1NwRLdwKWVCBSGP9OxCe1ZkFaX8Fw=;
-        b=AUVwyR7T7c7LluQYD30dZSGSzo/Eycc90zAFFEuet1uMsbv5KnvP7VYTTe4PpcmjXu
-         N9VKziWiTK2yadkGsvq2WojWbC3dRJnmMUOJbIlpVOVCEYN/lF2xkwlzL/JBsjzFCzRK
-         /klZxgOKHQh/76lrnhKriLJ7ZfrxK28K1f0cg=
+        bh=r68vuNb5uh5ONaquxzxTqZ7ONll565ksnKh3ylI2Qso=;
+        b=fMHE08mTNGtgJz5Oy07EEtIpqqdqolGc17nEd8gVvKUw5CdSjv/rRzxqaLb78IHB67
+         dldRsPtd4wwFvOhdDwQV4bqau/Eu1sfiQ9hhO6/lGkKw/IpZWigxnU2oPUBD+pZqQKEO
+         7bul/7sfTougSEqU7vjXZAS4IeQZPRusWPFiU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=VkFb2gmnPJh2DD1NwRLdwKWVCBSGP9OxCe1ZkFaX8Fw=;
-        b=rpW8WzM/ZmW+rJQxr4eUmFmCaf3NNYGVWXTSgfsfI6ZLUMvM1S5RqwIlAgOzz/0IJq
-         PxqK069HLbY2WKRZK3kITXxFkLgIEwaVRp4lzR5ypidzSWU63pdd9pt2KVRjWLQffr40
-         DsnzasKO4TigltDo6enagXvteQcIm6nUVo78kr//SDpZfzjajgLvkve2GaREEc0n4fKr
-         SrHC2D9HkKQCndQCUHeJ9wOsyvrrtKKl+EWmDIcNB2W/7VNal/bJuuNG+J6olGLNi3Sy
-         dDUaqtgAqaSPmxbyrMIVZxm359rQ3aQHawu4Q3Nxw6zFtI7M5gnBVyVgeTCb/hnFKk9o
-         ZmIg==
-X-Gm-Message-State: ACgBeo0ztn1pdQ1ZVTfdlaFoH72EEyt6EplsgYo1a9CUx3a6AVLgGggg
-        /kc2PHltgmVTGVzhD/KZ7BDZPg==
-X-Google-Smtp-Source: AA6agR7V68uSa1wYB6yzkPNJOAf7DHUj6X4X5IvV1s+gIVOck89U0OwaFrfhP6SCIjgKS9MupRYLhg==
-X-Received: by 2002:a05:6a00:b82:b0:52f:518f:fe6c with SMTP id g2-20020a056a000b8200b0052f518ffe6cmr27121499pfj.80.1660765061670;
-        Wed, 17 Aug 2022 12:37:41 -0700 (PDT)
+        bh=r68vuNb5uh5ONaquxzxTqZ7ONll565ksnKh3ylI2Qso=;
+        b=m8hqesdqEL4+zBHWiMNakjWZ9iFU5oMS7HZJQBM7HK/0Y3eoX/PTrMk1ERisiQSipq
+         NdEBdTCZGg2jGmSiH8+5fWNI0QaoDoxKh7TIU0Dj3jR5qED/xwcYgCl4k2ufAFLjCC5K
+         sSFlJONWBovpsMAZicgn9VuYDfjtbXlDUVKAiY3AKQaldkvW3RkKVji+4l71QZ6zPXEq
+         G6wTcu0fg92+pUsZBDmAXfdzgHEpASDy79psudXl+YX7TTG89JBdphJYTQ6MmVOkWPZ8
+         0G07XDPk8gP5gXvMyUKXIvCEQcapXe5B5+AnPlpDMMZYLpejPHn3nYjS3KHuRPMteaOU
+         LBMQ==
+X-Gm-Message-State: ACgBeo3B8xnrv7TL5jguvnYoucueypA06j7lCGBAkPBcU6nDETdWFYh6
+        6wZ6p28WCVGo+/P43ZqFxeuq3g==
+X-Google-Smtp-Source: AA6agR4QLUE1Ptr9L6/5prtoBq9XWGwAqLKFX6+0rTRLhg6Qq0It1iuQEECu3eQaVfLVc7g9ixBe/A==
+X-Received: by 2002:a17:902:ccd1:b0:172:5c49:34be with SMTP id z17-20020a170902ccd100b001725c4934bemr21344292ple.23.1660765189710;
+        Wed, 17 Aug 2022 12:39:49 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id o11-20020a170902d4cb00b0016bd8fb1fafsm261758plg.307.2022.08.17.12.37.40
+        by smtp.gmail.com with ESMTPSA id q7-20020aa79607000000b0052d0a93f6d5sm10845922pfg.116.2022.08.17.12.39.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Aug 2022 12:37:40 -0700 (PDT)
-Date:   Wed, 17 Aug 2022 12:37:40 -0700
+        Wed, 17 Aug 2022 12:39:49 -0700 (PDT)
+Date:   Wed, 17 Aug 2022 12:39:48 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     Miguel Ojeda <ojeda@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
@@ -55,80 +55,55 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [PATCH v9 02/27] kallsyms: avoid hardcoding buffer size
-Message-ID: <202208171236.9CA3B9D579@keescook>
+Subject: Re: [PATCH v9 03/27] kallsyms: add static relationship between
+ `KSYM_NAME_LEN{,_BUFFER}`
+Message-ID: <202208171238.80053F8C@keescook>
 References: <20220805154231.31257-1-ojeda@kernel.org>
- <20220805154231.31257-3-ojeda@kernel.org>
+ <20220805154231.31257-4-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220805154231.31257-3-ojeda@kernel.org>
+In-Reply-To: <20220805154231.31257-4-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Aug 05, 2022 at 05:41:47PM +0200, Miguel Ojeda wrote:
-> From: Boqun Feng <boqun.feng@gmail.com>
+On Fri, Aug 05, 2022 at 05:41:48PM +0200, Miguel Ojeda wrote:
+> This adds a static assert to ensure `KSYM_NAME_LEN_BUFFER`
+> gets updated when `KSYM_NAME_LEN` changes.
 > 
-> This introduces `KSYM_NAME_LEN_BUFFER` in place of the previously
-> hardcoded size of the input buffer.
+> The relationship used is one that keeps the new size (512+1)
+> close to the original buffer size (500).
 > 
-> It will also make it easier to update the size in a single place
-> in a later patch.
-> 
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-
-Reviewed-by: Kees Cook <keescook@chromium.org>
-
-Does someone want to commit to taking these "prereq" patches? These
-clean-ups are nice even without adding Rust.
-
--Kees
-
 > ---
->  scripts/kallsyms.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+>  scripts/kallsyms.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
 > diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
-> index 52f5488c61bc..f3c5a2623f71 100644
+> index f3c5a2623f71..f543b1c4f99f 100644
 > --- a/scripts/kallsyms.c
 > +++ b/scripts/kallsyms.c
-> @@ -27,8 +27,14 @@
->  
->  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
->  
-> +#define _stringify_1(x)	#x
-> +#define _stringify(x)	_stringify_1(x)
-> +
+> @@ -33,7 +33,11 @@
 >  #define KSYM_NAME_LEN		128
 >  
-> +/* A substantially bigger size than the current maximum. */
-> +#define KSYM_NAME_LEN_BUFFER	499
-> +
->  struct sym_entry {
->  	unsigned long long addr;
->  	unsigned int len;
-> @@ -198,13 +204,13 @@ static void check_symbol_range(const char *sym, unsigned long long addr,
->  
->  static struct sym_entry *read_symbol(FILE *in)
->  {
-> -	char name[500], type;
-> +	char name[KSYM_NAME_LEN_BUFFER+1], type;
->  	unsigned long long addr;
->  	unsigned int len;
->  	struct sym_entry *sym;
->  	int rc;
->  
-> -	rc = fscanf(in, "%llx %c %499s\n", &addr, &type, name);
-> +	rc = fscanf(in, "%llx %c %" _stringify(KSYM_NAME_LEN_BUFFER) "s\n", &addr, &type, name);
->  	if (rc != 3) {
->  		if (rc != EOF && fgets(name, sizeof(name), in) == NULL)
->  			fprintf(stderr, "Read error or end of file.\n");
-> -- 
-> 2.37.1
-> 
+>  /* A substantially bigger size than the current maximum. */
+> -#define KSYM_NAME_LEN_BUFFER	499
+> +#define KSYM_NAME_LEN_BUFFER	512
+> +_Static_assert(
+> +	KSYM_NAME_LEN_BUFFER == KSYM_NAME_LEN * 4,
+> +	"Please keep KSYM_NAME_LEN_BUFFER in sync with KSYM_NAME_LEN"
+> +);
+
+Why not just make this define:
+
+#define KSYM_NAME_LEN_BUFFER (KSYM_NAME_LEN * 4)
+
+? If there's a good reason not it, please put it in the commit log.
+
+-Kees
 
 -- 
 Kees Cook
