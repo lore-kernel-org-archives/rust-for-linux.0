@@ -2,77 +2,115 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2605C32772
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 20:45:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6B97C32773
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 20:56:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241569AbiHQUps (ORCPT
+        id S241536AbiHQU4g (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 Aug 2022 16:45:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39938 "EHLO
+        Wed, 17 Aug 2022 16:56:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241797AbiHQUpo (ORCPT
+        with ESMTP id S241761AbiHQU4e (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 Aug 2022 16:45:44 -0400
-Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F60DAA4E0;
-        Wed, 17 Aug 2022 13:45:43 -0700 (PDT)
-Received: by mail-il1-x133.google.com with SMTP id j20so7492838ila.6;
-        Wed, 17 Aug 2022 13:45:43 -0700 (PDT)
+        Wed, 17 Aug 2022 16:56:34 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86DACA927F;
+        Wed, 17 Aug 2022 13:56:33 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id z72so2766129iof.12;
+        Wed, 17 Aug 2022 13:56:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=d1Vgpq9X5YO+PwL5y7QUHDAwAkqiaQQAgkfJbYzVVq0=;
-        b=LaPYTV2/D8VkQyeRMlMejudbf5K/nTvqXy0MUDHuYszw4tWxAx21CDJ6f27ZEuLcpU
-         KctBy0EHSB6NTBFzDJh0uoQ27QWNKdXoVKlW7BVQA3kvPSR81Oft6NDBecQxNLtOCnaF
-         af9Kg49qpyroatKZXd5KQjuporz6n+m2gLgJN3WTt7pU8Spumrbr/YyvrGRqqREcssJ0
-         UQDLJ3CDdbKj5RrFzl57SKBcnbhHjquSPFbeD95ebsNLbcfWWc62N0y/htc+YCFjAcqt
-         2ze4PiBVbkPUmLzduZcFcC9LCsFac8cHEKs8Za5PI5Q1ZIWnEq/TqsAegcyu8/PUfs4Y
-         fqmw==
+        bh=2F8UapFM6fvTc5fGCMprtfZuN5LHlZVrraMyXumfVqE=;
+        b=LbgMGsGKphl7X2/Jn0u5eMcUeY0mew1lHqKEqfLaBcD42X17Re8z5rpOQYmW5Vtdo9
+         tsbQAaIFqFo5BvaBx68dsfnuUwQq92cWSEI/zxlhcsjD+kx3hydeBmsw4hEX1VPxHNvw
+         tKWoDZfnYemoNlsbZC7T5Vg/Y7CgUmUyqnX6JuDfQU0jfZ/7c2KoYLaCTzWOhZsNLkVP
+         vqeWW/J4WU3sDEN/7KdViU1V3Y9L/UKbFfVhaY7IJ3DWdEMKtg8uJdqyaFYcyhIYcwBa
+         fVXnH6CAm8WsCTJgnXY6K1pGRxlZiwyjtMG1yPSDD/ZtE6bHaFuxIcURQjWPG9D+DslS
+         ipSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=d1Vgpq9X5YO+PwL5y7QUHDAwAkqiaQQAgkfJbYzVVq0=;
-        b=7xHMBWkffWebaFklpzJ5rGEapRwaG6oT2nzNJVbGLriND+HlUrT7VoV/WsyV4cZOPZ
-         oe6yXqIp5Zygzv/plUZHLVWubjpY4i1Y9IQoKsn4s/PTEdVzxKo5b0RZ3FKvQ+FXv5kX
-         LyIGJUKYeeYD2t5oKSfCSbq5CnViDrU+okfNrz3hs6eXkvsmdZ9jAe/3s2/jxv9EX+ly
-         +iInzHKCIT0QGrvtB7n1HM7RuCjfTgDLB31CCLrXKXKvZwDZayxnS6ymDGMHKcW0PIBz
-         VTd2JzvzzTFbV1Uvmtsj+l4DAkaOu/U+oSEnf3i5HPWDIZz2pTv6GlZFfls5EIKhNYv7
-         v6CA==
-X-Gm-Message-State: ACgBeo3t+XDMU5Dd1YUZYiI4fiU6QvyC5jscTbNA24+pRcPCO+dYQ0ZZ
-        rA4UcNyK5P2M9MOzhu3U7EcabJvIIUMYu06Pi1Y=
-X-Google-Smtp-Source: AA6agR6Nm7MWXy0TYAOYscqNUAIzeSuDdU7CjMymOwFGtEGx7D3WFG7qttZC1lk/1OE+k4Q06t3mvA6TpFhhxMku80o=
-X-Received: by 2002:a05:6e02:1c26:b0:2e0:d8eb:22d6 with SMTP id
- m6-20020a056e021c2600b002e0d8eb22d6mr12711912ilh.151.1660769142550; Wed, 17
- Aug 2022 13:45:42 -0700 (PDT)
+        bh=2F8UapFM6fvTc5fGCMprtfZuN5LHlZVrraMyXumfVqE=;
+        b=mX/m7Rk10kWwjaZUStBjmmTzu9xYgrTmgaYkbXjiXyMTiSB2DTDb2kS1hDSRWqrH4G
+         9JKcGtO/axXs21B7rBpxw6N7rXv7EF1jOYful0wl09lAh8DNqozhEwuMbl05d4V7es2+
+         3SsEJy7F5qJR4pkfptXWsV0tA7siOXjam/WshiZdeq+kjhDOmaXYi4Q/FC2GI6xMN2Ti
+         oHo5Fg0FpOsTHGneaK6Mc7IKMmo4nzSxfpAEzh3JHu03oQdbSCXqvS+WOplVxvlv8LMs
+         WCusQkNXbpT+5viiYV8j0RWAzPVLo7p3xkDt6dY9lx1BpfNJ98om5JcpNluerZDQOFJV
+         oS9g==
+X-Gm-Message-State: ACgBeo0R1EOoZuYZI2iTEz2/CngqZXnat7lGtVu0meSTWN7+aT2CV3g0
+        QZlmXpA4XOuArOXeHnm6VlSCjbrBlVrZQtyIgoU=
+X-Google-Smtp-Source: AA6agR7W0/vJMmLEu2GKK6hHojDe0NnOQN0sm9gqWwqOLGfYNe/j8D+Y8j9wEt1Kx9LD5aIinElIOM+NZfs9EfUUXfw=
+X-Received: by 2002:a5d:8618:0:b0:684:6469:596b with SMTP id
+ f24-20020a5d8618000000b006846469596bmr10939iol.177.1660769793009; Wed, 17 Aug
+ 2022 13:56:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220805154231.31257-1-ojeda@kernel.org> <20220805154231.31257-4-ojeda@kernel.org>
- <202208171238.80053F8C@keescook> <Yv1GmvZlpMopwZTi@boqun-archlinux> <202208171330.BB5B081D1@keescook>
-In-Reply-To: <202208171330.BB5B081D1@keescook>
+References: <20220805154231.31257-1-ojeda@kernel.org> <20220805154231.31257-24-ojeda@kernel.org>
+ <202208171324.FB04837@keescook>
+In-Reply-To: <202208171324.FB04837@keescook>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 17 Aug 2022 22:45:31 +0200
-Message-ID: <CANiq72=S4ACw1mJk4MynmUu46Hdh3bm3w-S7eGPGacw+CJda+g@mail.gmail.com>
-Subject: Re: [PATCH v9 03/27] kallsyms: add static relationship between `KSYM_NAME_LEN{,_BUFFER}`
+Date:   Wed, 17 Aug 2022 22:56:21 +0200
+Message-ID: <CANiq72=E9c0YNvww6r=Zj1SHNV9OjvNMUFPD_w8_yJNTX-7-eQ@mail.gmail.com>
+Subject: Re: [PATCH v9 23/27] Kbuild: add Rust support
 To:     Kees Cook <keescook@chromium.org>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-        Jarkko Sakkinen <jarkko@kernel.org>
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        Boris-Chengbiao Zhou <bobo1239@web.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Douglas Su <d0u9.su@outlook.com>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        Antonio Terceiro <antonio.terceiro@linaro.org>,
+        Daniel Xu <dxu@dxuuu.xyz>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-kbuild@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Aug 17, 2022 at 10:31 PM Kees Cook <keescook@chromium.org> wrote:
+On Wed, Aug 17, 2022 at 10:26 PM Kees Cook <keescook@chromium.org> wrote:
 >
-> Yeah, please add a source comment for that. :)
+> It'd be nice to split this up into maybe per-target patches, but given
+> how long this has been getting developed, I'd prefer to avoid blocking
+> on that, and just get this series landed so we can move to incremental
+> fixes/additions.
 
-I agree, I think this sort of explanation should be in the source vs.
-the commit message, since it explains something about the code, not
-the change itself.
+When I started the series, I considered several approaches, and in the
+end opted for "setup as much as possible before the flag-patch that
+enables the Kbuild support", which was simple, though indeed the
+Kbuild patch remained fairly big.
+
+Then some people commented on that patch over several versions, so I
+kept the simple strategy :)
+
+What I can look into is moving the optional targets out of this patch,
+putting them after the "flag-patch", since they may be considered
+"additional features" anyway. In fact, for the trimming down in v9, I
+thought about removing them entirely. It will not change things too
+much, since they are small, but it may help.
+
+For v9 I nevertheless attempted to simplify this patch by doing the
+"move all new, big files to their own patch" (see my reply at [1]), so
+it is fairly smaller than in previous versions.
+
+[1] https://lore.kernel.org/lkml/CANiq72nzOQSd2vsh2_=0YpGNpY=7agokbgi_vBc5_GF4-02rsA@mail.gmail.com/
 
 Cheers,
 Miguel
