@@ -2,53 +2,51 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C3D8C3F6B0
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 20:26:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F00E1C32772
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 20:27:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241944AbiHQU0g (ORCPT
+        id S229819AbiHQU1l (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 Aug 2022 16:26:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39742 "EHLO
+        Wed, 17 Aug 2022 16:27:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241957AbiHQU0V (ORCPT
+        with ESMTP id S241618AbiHQU1k (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 Aug 2022 16:26:21 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FAF0A98FD
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 13:26:14 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id bf22so12829pjb.4
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 13:26:14 -0700 (PDT)
+        Wed, 17 Aug 2022 16:27:40 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DD60A9272
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 13:27:39 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id m2so12946262pls.4
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 13:27:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc;
-        bh=voGEdX63KoW+ZibFVnZJzdsesBOjZP2It8KT+faXmbQ=;
-        b=Cl+T9KLC4EJmcz1MyKRqJ76dq4omiP8QcIYqcj9jXcpGW1Oj9XAbG0YqZGHvjN3feL
-         DEZk0TIvBJiJlgBQY/wa5KrN3ksWyFi6If4yOSjmSNPXnL+a2luAQmTKADLXOJC7Ssb2
-         owbs/RFNuCJUTsb6vTH7Fhkx4YGcwAZOVIpsw=
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc;
+        bh=e8AurnYaw5w6q42X379tvVxdUwxeEA/mYjtAY47a6po=;
+        b=aLY/bwswAmyWGmv+4JEwglL+yZmZSkY5uTI10+jNpMXObxnDHYBy1/NFE6oNgiy8gm
+         8M7QxAggsLjoXwN0tKrViIKk34FBRU2jjAG7OmyyvJlon3HbSz6RYHrCeWoKD7s7v+ey
+         WBXTu2wjGczVnm7NC9ChqKPe87n8jYbCFqs3I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc;
-        bh=voGEdX63KoW+ZibFVnZJzdsesBOjZP2It8KT+faXmbQ=;
-        b=D9BLO1fsfdU8UF7c/ya6ZK2HkS0akZNvmmdTxAPjqLMCyRrzDkcPbpbKi6+dXGpt5i
-         tta1Jfu5L17KJkbFQIRora3rtM91mST/JRg4sO0EOWVw+RIVZnxtnF4RT9+EqApfPuW1
-         Ld0yY8SXUrzyAj+GggyIA41FZ4RzlzuQVFcO3GlXEnD9MmoUHlW+1m6kZuKFGmT8wXM0
-         4iSMnDhFqY8WChWXlORVzrud1sCzjJutCdxwHkW+7TORHTIRMKNxtLTF+cCPv8J8/IxU
-         OeA/qrVIjxTH34WrypytcMwNRMPHRuSp8QsW5jDxkp9G7Hnt8ybF64ra2Km7URd2fDDE
-         VzEg==
-X-Gm-Message-State: ACgBeo2X3VNf2frjqXolo1WcQX+7Ef62L1kL182Yv8XVzOsbnB4LXGtw
-        /aLHA4pva3av5rvj0tTnghFleg==
-X-Google-Smtp-Source: AA6agR7DmWypmAe26bnZT4xLDkF12MzBgKNyqwHl8eKku2vWvA2CYPpAgoCIiRzzcwD8rH6xOts1Vg==
-X-Received: by 2002:a17:90b:4c4b:b0:1f7:11f:8e8e with SMTP id np11-20020a17090b4c4b00b001f7011f8e8emr5362650pjb.98.1660767973734;
-        Wed, 17 Aug 2022 13:26:13 -0700 (PDT)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=e8AurnYaw5w6q42X379tvVxdUwxeEA/mYjtAY47a6po=;
+        b=pwNU3CAFSD6ZjzYrs3EngzNlIJO6z39UK+EtumMKQ86/0YXHPvS6xAngva8+cy7AfK
+         rsb0E27ZOVAEMe3ZQDn1X+2xm9rH953sKbgAhXd3h//iFxS1PwMuN2DOP1Ti6xoa/u6c
+         VOpfmsiIfXxfWIPmh0KXVpkp6dHlOjCLS0D6/h5X3Rlj8nk99wnHncWrchZi+XuM4+Cg
+         J8GN61fXh5L4wYSrrHJec52M8bGXRpFexL/RzqjonP89/IUMkyVVqtQUvfVa1XK6UEPy
+         kLKFgccNUmvKpvR79W7KkQbqGC26z3VTMh/LC8UJDAxbX1pITCvw9tZl8JJ0esnbNJX2
+         VM2g==
+X-Gm-Message-State: ACgBeo1CDsU9d4g4ynvAe/HB0JMAsjsDBli4Zlwr4r7cTxlhlmO29uab
+        YG4SNkDICpgB4ZiLrk2Ogl2UMg==
+X-Google-Smtp-Source: AA6agR5S9YLS9hTLBjiPpJ4Ms8k04xxDQPAV7b2x3cjD+0b+HLPqSTmwLa6D1Y6x82x152TjEZlwVw==
+X-Received: by 2002:a17:902:cccb:b0:172:60b7:4590 with SMTP id z11-20020a170902cccb00b0017260b74590mr20507691ple.152.1660768058582;
+        Wed, 17 Aug 2022 13:27:38 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id h8-20020a17090a2ec800b001f2fa09786asm1956585pjs.19.2022.08.17.13.26.12
+        by smtp.gmail.com with ESMTPSA id a8-20020a1709027e4800b0016efa52d428sm320362pln.218.2022.08.17.13.27.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Aug 2022 13:26:13 -0700 (PDT)
-Date:   Wed, 17 Aug 2022 13:26:12 -0700
+        Wed, 17 Aug 2022 13:27:37 -0700 (PDT)
+Date:   Wed, 17 Aug 2022 13:27:36 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     Miguel Ojeda <ojeda@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
@@ -57,82 +55,36 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Douglas Su <d0u9.su@outlook.com>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        Antonio Terceiro <antonio.terceiro@linaro.org>,
-        Daniel Xu <dxu@dxuuu.xyz>,
+        David Gow <davidgow@google.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH v9 23/27] Kbuild: add Rust support
-Message-ID: <202208171324.FB04837@keescook>
+        Jonathan Corbet <corbet@lwn.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v9 25/27] x86: enable initial Rust support
+Message-ID: <202208171327.EFF61F0E@keescook>
 References: <20220805154231.31257-1-ojeda@kernel.org>
- <20220805154231.31257-24-ojeda@kernel.org>
+ <20220805154231.31257-26-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220805154231.31257-24-ojeda@kernel.org>
+In-Reply-To: <20220805154231.31257-26-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Aug 05, 2022 at 05:42:08PM +0200, Miguel Ojeda wrote:
-> Having most of the new files in place, we now enable Rust support
-> in the build system, including `Kconfig` entries related to Rust,
-> the Rust configuration printer and a few other bits.
+On Fri, Aug 05, 2022 at 05:42:10PM +0200, Miguel Ojeda wrote:
+> Note that only x86_64 is covered and not all features nor mitigations
+> are handled, but it is enough as a starting point and showcases
+> the basics needed to add Rust support for a new architecture.
 > 
 > Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
 > Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-> Co-developed-by: Finn Behrens <me@kloenk.de>
-> Signed-off-by: Finn Behrens <me@kloenk.de>
-> Co-developed-by: Adam Bratschi-Kaye <ark.email@gmail.com>
-> Signed-off-by: Adam Bratschi-Kaye <ark.email@gmail.com>
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Co-developed-by: Michael Ellerman <mpe@ellerman.id.au>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> Co-developed-by: Sven Van Asbroeck <thesven73@gmail.com>
-> Signed-off-by: Sven Van Asbroeck <thesven73@gmail.com>
-> Co-developed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> Co-developed-by: Boris-Chengbiao Zhou <bobo1239@web.de>
-> Signed-off-by: Boris-Chengbiao Zhou <bobo1239@web.de>
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Co-developed-by: Douglas Su <d0u9.su@outlook.com>
-> Signed-off-by: Douglas Su <d0u9.su@outlook.com>
-> Co-developed-by: Dariusz Sosnowski <dsosnowski@dsosnowski.pl>
-> Signed-off-by: Dariusz Sosnowski <dsosnowski@dsosnowski.pl>
-> Co-developed-by: Antonio Terceiro <antonio.terceiro@linaro.org>
-> Signed-off-by: Antonio Terceiro <antonio.terceiro@linaro.org>
-> Co-developed-by: Daniel Xu <dxu@dxuuu.xyz>
-> Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
-> Co-developed-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
-> Signed-off-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
-> Co-developed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-
-It'd be nice to split this up into maybe per-target patches, but given
-how long this has been getting developed, I'd prefer to avoid blocking
-on that, and just get this series landed so we can move to incremental
-fixes/additions.
 
 Reviewed-by: Kees Cook <keescook@chromium.org>
-
--Kees
 
 -- 
 Kees Cook
