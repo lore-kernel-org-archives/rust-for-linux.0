@@ -2,41 +2,61 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5B4FC3F6B0
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 14:41:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF5EFC32771
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 15:13:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237073AbiHQOlA (ORCPT
+        id S240827AbiHQPNl (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 Aug 2022 10:41:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36726 "EHLO
+        Wed, 17 Aug 2022 11:13:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240486AbiHQOkj (ORCPT
+        with ESMTP id S240822AbiHQPNi (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 Aug 2022 10:40:39 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D085FF68;
-        Wed, 17 Aug 2022 07:40:15 -0700 (PDT)
-Received: from mail-ej1-f47.google.com ([209.85.218.47]) by
- mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1N14xe-1nMpbb34jC-012VSC; Wed, 17 Aug 2022 16:40:13 +0200
-Received: by mail-ej1-f47.google.com with SMTP id j8so24887380ejx.9;
-        Wed, 17 Aug 2022 07:40:13 -0700 (PDT)
-X-Gm-Message-State: ACgBeo2gepU2aWElGKEdBcM0SZdXdmyYsWY+oqu1nmrwoclIrH8jdyL/
-        Uz8GkDdQaBuYHR87akMjfPLkwQmwsn2edCKzvAI=
-X-Google-Smtp-Source: AA6agR7iG7b/sKnfv3rtR0wMkiNVbuKu4gohq2MlJovs7t4zv9/h1/ech5e7m293ULb6jtgNsC4wsmH5KCjGWqjMolI=
-X-Received: by 2002:a17:907:6da8:b0:730:8ed5:2df8 with SMTP id
- sb40-20020a1709076da800b007308ed52df8mr16850681ejc.75.1660747213344; Wed, 17
- Aug 2022 07:40:13 -0700 (PDT)
+        Wed, 17 Aug 2022 11:13:38 -0400
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 711C111150;
+        Wed, 17 Aug 2022 08:13:37 -0700 (PDT)
+Received: by mail-il1-x135.google.com with SMTP id l5so3358080iln.8;
+        Wed, 17 Aug 2022 08:13:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=1Aw1dSa3JPytcA6jepz8LxW98jZGIVvGrbA5oXW6cF4=;
+        b=QylPRZ7po85CmoykNUCyneM7mjy0jfxW6cm0tMG76VU+SEJs1TOHYjvUgCyJ5X34Ah
+         29R7oZJhhLUIaE/wB+fpvInm0t+Qtil2d7DsxFJO50ROSKqBTc4hrnQGXwMIq6mca6hs
+         54+kXi+r5dpmDFccUSfnuFBS3sWyt6leP9lY9G9/jXs02kwOe+87RXKykgBUvBdu+VxK
+         zgC40tcbIxY+/ARk2CL5sgZZPmfoBBvLljwObz/HD90zb/2wCmgAigALmX3sUAZMaM6/
+         yYvXO5L6d8RGEEhjCx/i99yVgYsx0VSd+Ea2XG0jsxBYGj9nUTR57UcZ9Som18Y15zyH
+         eUjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=1Aw1dSa3JPytcA6jepz8LxW98jZGIVvGrbA5oXW6cF4=;
+        b=ufe1hEfqk05NHFKRKRlClYW9bZhuy/rHvu05/sxI9i0gxEnNjSKlFWo5Secw4+LyHX
+         WfRX2xT7xB0xx6vXSRwJlTFqNIj5YW4yVEKaDkEk7tOUYgfS/eCOYxWU0qxNWG76Gfe7
+         Tbn4d++qj9kme8FsrKTATPRFqNGjaAxVCYPWAYuji02dqEx64GqHx98rGoWY8kl4JLjX
+         7lzoI51iDWAT9y+79QI/MVX09cm6XqPDQavmUUyAOK366kKR9iheTgDa/mBBtwM5UTjF
+         dnzA9/VKeSGDcv5u2JscHE6aVb48ZiVjk2+I8va+aTGrcr3DgkuHIWu26o/brX33LuDJ
+         aINQ==
+X-Gm-Message-State: ACgBeo347fI7Io18tzujbJnuBHUxAV6hKepYQMfZa4Wanj3Vt2+8H6l9
+        zWByQrXt0F6AJyoXzM6uGR/29zvacGDNiL9txlU=
+X-Google-Smtp-Source: AA6agR76oTCoP2K9omiY3xisTcRhkl/VGb6FFCKu/kjjdtf4CwkBwADBK/ZOKLvdnvOPta40wh5R8EYE/TiRBIyFijg=
+X-Received: by 2002:a05:6e02:1522:b0:2e5:9e3c:a7c8 with SMTP id
+ i2-20020a056e02152200b002e59e3ca7c8mr8021588ilu.237.1660749216849; Wed, 17
+ Aug 2022 08:13:36 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220802015052.10452-1-ojeda@kernel.org> <20220802015052.10452-28-ojeda@kernel.org>
-In-Reply-To: <20220802015052.10452-28-ojeda@kernel.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 17 Aug 2022 16:39:57 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0jqhGY9E85VC9gNem5q6-dWeq0H6-7bhJopinMnLtOKQ@mail.gmail.com>
-Message-ID: <CAK8P3a0jqhGY9E85VC9gNem5q6-dWeq0H6-7bhJopinMnLtOKQ@mail.gmail.com>
+ <CAK8P3a0jqhGY9E85VC9gNem5q6-dWeq0H6-7bhJopinMnLtOKQ@mail.gmail.com>
+In-Reply-To: <CAK8P3a0jqhGY9E85VC9gNem5q6-dWeq0H6-7bhJopinMnLtOKQ@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 17 Aug 2022 17:13:25 +0200
+Message-ID: <CANiq72nNucEhXAXkXSujnGkpQrkv3-Pcn7ua8N=2XB-suAjs9w@mail.gmail.com>
 Subject: Re: [PATCH v8 27/31] Kbuild: add Rust support
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sven Van Asbroeck <thesven73@gmail.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
@@ -76,85 +96,65 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Richard Weinberger <richard@nod.at>,
         Finn Behrens <me@kloenk.de>,
         Johannes Berg <johannes@sipsolutions.net>,
-        linuxppc-dev@lists.ozlabs.org
+        linuxppc-dev@lists.ozlabs.org,
+        Philip Herron <philip.herron@embecosm.com>,
+        Arthur Cohen <arthur.cohen@embecosm.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:tVzw5+z9RodDD21jtXQCFgO607eyohyIMOrWmsXL/aDjp4s+CRv
- l24azQbCM+GbjsQ0bt0M1q2TGktvETxpOKTJX8zIhUKMgmX6VjnNNvSMA+hLMZyXu2BOan1
- rtuPt3KDtNuPQ2JniYUasS88+1me0zC+JupNCzFmC6SVN10BUJxX1LeK6U/dUR41BwA65XS
- P2zHHW5gySz9QBkAYfMRQ==
-X-UI-Out-Filterresults: notjunk:1;V03:K0:IU4fUE6Y81o=:oiCN1TqVZ2a8Z2BGXy9GRK
- R62ORgAfkEIyHLXprrynxmcYh4c/bjPc9rpdD6YQ7s0KPASQxJzNGt739utispl1oBjFqWUVw
- TkdgqMXx4vDhhffWghclQH8KqNVhhOc1EdiFm/Arr8k1QxtjFXelHA4IJQwlr9KqLiiSoK1ij
- 7qryClrQ+9snGR7m41V4pRrBOKl2jUeZHyPe2zs0joXSYZoRoxKla3oxeArBsGOeWGBohQORG
- IIiuJMDc2HOMrzzGDHJQXYfX9WXFKTG7ikA257j92gYJIH1ZuGJtLlbQNSF1Gqdf0Jo5mYiQp
- KOGecopeE+f/5BBy5FAa+N02g7P7OZWJuFJ7oNFa2ONhwPbV5oZIRGbsyeEUqerYToiClj+A1
- Y/mtJanJuhxL1anUSQ6bpULcGeFTK59+QEg6BxR1ap89SoOg/UrLU7mSOEOG+NUbRzAsh4zRo
- 7Qhi0LmIdv56N/Wi00RH+kmZYHyrdTNj/zYR0MsxlbgLNsoeB/t9SUX7tj4mjs/WrXegUvH5e
- DQpL0T8WOppt7pk0qoE9bmp4Hc8+aT2KR/hi0pdlHwSz0bn4b4yuwGCqwHCoIq6ta9IREMlp6
- EI8ceFq7u8GLk5ZHwUT48rwGzlMTer8kDI0vGMPgCnYuc2l2bxGOdELMOX3fbqsHs6dgfq41a
- YouZHxBSk/Sa5w57oLGHBZYaqsilJzrHNfN3Ku6BkyITl4SE1Rd4yQTSlUawU2G6lT8gwD/k5
- Rg/whtDaGEfix1wMHSt02+43d8VHQI0tpnDvKvcWJErmkhaJYSZ75rCEennjGLWUxl5VXInph
- 0fmFQVqt7Di1NQhWvwOOibofPnZk0GdHnk4EvjwzPLF7Zbu13GwV89QKvLTTHiAIFKfqe87il
- zL6uNyNmq5mXQC1F1TQA==
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Aug 2, 2022 at 3:50 AM Miguel Ojeda <ojeda@kernel.org> wrote:
+Hi Arnd,
+
+On Wed, Aug 17, 2022 at 4:40 PM Arnd Bergmann <arnd@arndb.de> wrote:
 >
-> +# These flags apply to all Rust code in the tree, including the kernel and
-> +# host programs.
-> +export rust_common_flags := --edition=2021 \
-> +                           -Zbinary_dep_depinfo=y \
-> +                           -Dunsafe_op_in_unsafe_fn -Drust_2018_idioms \
-> +                           -Dunreachable_pub -Dnon_ascii_idents \
-> +                           -Wmissing_docs \
-> +                           -Drustdoc::missing_crate_level_docs \
-> +                           -Dclippy::correctness -Dclippy::style \
-> +                           -Dclippy::suspicious -Dclippy::complexity \
-> +                           -Dclippy::perf \
-> +                           -Dclippy::let_unit_value -Dclippy::mut_mut \
-> +                           -Dclippy::needless_bitwise_bool \
-> +                           -Dclippy::needless_continue \
-> +                           -Wclippy::dbg_macro
+> Hi Miguel,
+>
+> I tried enabling rust support in the gcc builds I provide at
+> https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/arm64/12.1.0/
 
-Hi Miguel,
+Thanks for giving it a go!
 
-I tried enabling rust support in the gcc builds I provide at
-https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/arm64/12.1.0/
-to make this more accessible, but it appears that the command line
-options here are not portable:
+> to make this more accessible, but it appears that the command line
+> options here are not portable:
+>
+>  /home/arnd/cross/x86_64/gcc-12.1.0+rust-nolibc/x86_64-linux/bin/x86_64-linux-gccrs
 
- /home/arnd/cross/x86_64/gcc-12.1.0+rust-nolibc/x86_64-linux/bin/x86_64-linux-gccrs
---edition=2021 -Zbinary_dep_depinfo=y -Dunsafe_op_in_unsafe_fn
--Drust_2018_idioms -Dunreachable_pub -Dnon_ascii_idents -Wmissing_docs
--Drustdoc::missing_crate_level_docs -Dclippy::correctness
--Dclippy::style -Dclippy::suspicious -Dclippy::complexity
--Dclippy::perf -Dclippy::let_unit_value -Dclippy::mut_mut
--Dclippy::needless_bitwise_bool -Dclippy::needless_continue
--Wclippy::dbg_macro -O -Cstrip=debuginfo -Zallow-features=
---emit=dep-info,link --out-dir=scripts/
-/git/arm-soc/scripts/generate_rust_target.rs; mv
-scripts/generate_rust_target.d scripts/.generate_rust_target.d; sed -i
-'/^#/d' scripts/.generate_rust_target.d
-x86_64-linux-gccrs: error: unrecognized command-line option
-'--edition=2021'; did you mean '-frust-edition=2021'?
-x86_64-linux-gccrs: error: unrecognized command-line option
-'-Zbinary_dep_depinfo=y'
-x86_64-linux-gccrs: error: unrecognized command-line option
-'-Wmissing_docs'; did you mean '-Wmissing-braces'?
-x86_64-linux-gccrs: error: unrecognized command-line option
-'-Wclippy::dbg_macro'
-x86_64-linux-gccrs: error: unrecognized command-line option '-Cstrip=debuginfo'
-x86_64-linux-gccrs: error: unrecognized command-line option '-Zallow-features='
-x86_64-linux-gccrs: error: unrecognized command-line option
-'--emit=dep-info,link'
-x86_64-linux-gccrs: error: unrecognized command-line option '--out-dir=scripts/'
-make[3]: *** [/git/arm-soc/scripts/Makefile.host:157:
-scripts/generate_rust_target] Error 1
+So you mean with GCC Rust, right? (i.e. we have "GCC builds" working,
+via compiling the Rust side with LLVM and linking with the GCC C side,
+but it is not intended for production or to be supported, even if we
+cover it in our CI, test it boots and loads modules etc.).
 
-I guess nobody has tried this so far. Would you think that fixing this is only
-a matter for fixing the build system to pass the correct flags depending on the
-compiler, or is this broken in a more fundamental way?
+Indeed, `gccrs` does not support `rustc` flags yet. I am not sure if
+the GCC Rust team will eventually provide a driver for those like
+clang does for e.g. `cl` -- I would hope they do, since many projects
+would benefit from it, but maybe they plan to start simply by
+modifying Cargo to call them as they need instead.
 
-         Arnd
+If they don't support it, we will have to map the flags on our side --
+it should not be a big problem. However, see below...
+
+> I guess nobody has tried this so far. Would you think that fixing this is only
+> a matter for fixing the build system to pass the correct flags depending on the
+> compiler, or is this broken in a more fundamental way?
+
+If you meant GCC Rust, then it is a bit too early for the compiler. As
+far as I now, they are working on compiling the `core` crate and
+supporting more stable language features. They are also researching
+the integration of the borrow checker, though we wouldn't need that
+for "only" compiling the kernel.
+
+Now, if they decided to focus on supporting Rust for Linux early on
+(which would be great), they would still need to work on the delta
+between what what they target now and what we use (which includes both
+stable and some unstable features), plus I assume infrastructure bits
+like the platform (target spec) support, the flags / `rustc` driver
+(though I would be happy to do as much as possible on our side to
+help), etc.
+
+(We privately talked about possible timelines for all that if they
+were to focus on Rust for Linux etc., but I let them comment or not on
+that... Cc'ing them! :)
+
+Cheers,
+Miguel
