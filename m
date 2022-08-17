@@ -2,51 +2,51 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E46FC25B08
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 20:13:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24CE7C25B08
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 20:14:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241772AbiHQUNk (ORCPT
+        id S241810AbiHQUOt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 Aug 2022 16:13:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36294 "EHLO
+        Wed, 17 Aug 2022 16:14:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241766AbiHQUNj (ORCPT
+        with ESMTP id S241809AbiHQUOk (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 Aug 2022 16:13:39 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE3B4120A5
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 13:13:36 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id h28so12938814pfq.11
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 13:13:36 -0700 (PDT)
+        Wed, 17 Aug 2022 16:14:40 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BE7158DD4
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 13:14:35 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id f28so12988255pfk.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 13:14:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc;
-        bh=ecAK1b0BGR4BXz6e6ttRl4yIb91x7Nb5bR2E/kWSLHw=;
-        b=jXVV9RG6RKNfj/aJYfUw5290cjSO+bHeeC49GRUXd9iZsYbzUGSM73ZRlDDNkuJZKe
-         M4B8e3fSbz5QPTo91nEi4iTwXcctrjQRgcdvksNueL7yMayrNdbkM3QwZ8MnQz5Lw5w7
-         c0ORLsabFe3Gm+9qrBL3vWG3OG51cAMRGiFfY=
+        bh=FbyLuHm2xhCUGL19AXt8ffDVo0+YYpSKzX1/TVHy8eM=;
+        b=Lv35uPWK2dCxFc6yKVS0QrTwKJd+DyqJAJDYLYlMNmXnRdKNAscIzcoSbCxJgpBnQB
+         wQyvuIuUxU1fialRwVmxITfAZuI+GS568dLSXNWfMr5o3ox+DM5xajm7FgElyHdDnT46
+         zfV825m20a/8rKJz/wJGMOGiHSoVcZptheJsM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=ecAK1b0BGR4BXz6e6ttRl4yIb91x7Nb5bR2E/kWSLHw=;
-        b=IeLfFUri+L3HrQC4ERPKzHkKmIgTR4ctQwZiPYr9WobGiMXA9sbd56auUcnpYBE721
-         9rJh/SeFEsEJMpeIsg9h1A260Yz/VRa/7wHfTxtz1e6m06faUA9JwV4CUI6DYt0docHf
-         KSG7kUG0/Ot/Nv33s5wfIKs0/zu+JvaxNrg0uGZmfW9tA6VqtKuSzwe1GRDaIVJQXZji
-         3whpeqxp+CWEuBjuGDs+u52kgshrNCSYXzW34fwq8RCTdtcx4FDfXGpz7XGUqUkhcHoB
-         RmZSVv9wVuWemoMS2qsrQGh/0r8v8zmC9VkHOxHl1HqJ9j6ydUVGPYqKCGXnvdTmaL3V
-         Q80Q==
-X-Gm-Message-State: ACgBeo3HR4u2h7+tt3i+nSjOSB0XeRQlzI1f+HjO1i82TA6olnrmxcRS
-        I2FSHkqGuvhDKNA56uWUbhFpVrlSOKBkNg==
-X-Google-Smtp-Source: AA6agR5R6i7GTzzHrmLNyQaH3JQ2CAz656dADZPSQA9APProw72NMYDNMlfcDbQNYdKhk7GwcgQ/hg==
-X-Received: by 2002:a63:8442:0:b0:429:85db:b351 with SMTP id k63-20020a638442000000b0042985dbb351mr10410526pgd.430.1660767215661;
-        Wed, 17 Aug 2022 13:13:35 -0700 (PDT)
+        bh=FbyLuHm2xhCUGL19AXt8ffDVo0+YYpSKzX1/TVHy8eM=;
+        b=dCWguEmdkjfdvVI6/pheYptZMFzTPYteGBNLEnwkQmn3UFZCubswmL32P3fkRhe7nB
+         e5PAfdMPaLJnkuXsF6BXqgbx4lXcXqyunoImw6r40wyRswpPTXtxZEpeIVxEBEUNZ7GD
+         bEGG3ApEhIjT+8Ezjbx6wzw4XogOL/Gvnyd4ONGIG8TIGGgrj/cXzQrJF3fVFohXLzja
+         huMoyVpg8P+k2n43TZxKqlSQtZ4yPjfMnGoS9ymmLwIr8JoDXtn2FT4EqTWrzvMxf90h
+         QVaMWtTmQxvvEMzsXon9l4UZzY/4+2KoOPb+7g8hknqSolv5CnyFVnjW82HaZDyFUeXb
+         vzDQ==
+X-Gm-Message-State: ACgBeo3wYXnYOvvJJ2yh63cdjCrPa32lc/rvC1dzOxzN0I4WlPlgr1BZ
+        ta9tY+xBItCaijU9WsmFue6+Gw==
+X-Google-Smtp-Source: AA6agR5BHQ+uwX7K+UI84QLWNJT1fb4lGGawfZJ9CNwTPRxCSbqxFPJWBKPpaXPBRf6W1dCupD0O8g==
+X-Received: by 2002:a65:458c:0:b0:428:ee87:33a8 with SMTP id o12-20020a65458c000000b00428ee8733a8mr13953189pgq.272.1660767274298;
+        Wed, 17 Aug 2022 13:14:34 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id k29-20020aa79d1d000000b0052bf6789f02sm11235013pfp.178.2022.08.17.13.13.34
+        by smtp.gmail.com with ESMTPSA id e3-20020a056a0000c300b0052e7f103138sm10910092pfj.38.2022.08.17.13.14.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Aug 2022 13:13:34 -0700 (PDT)
-Date:   Wed, 17 Aug 2022 13:13:34 -0700
+        Wed, 17 Aug 2022 13:14:33 -0700 (PDT)
+Date:   Wed, 17 Aug 2022 13:14:32 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     Miguel Ojeda <ojeda@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
@@ -55,31 +55,30 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Finn Behrens <me@kloenk.de>,
         Wedson Almeida Filho <wedsonaf@google.com>,
-        Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [PATCH v9 18/27] scripts: add `generate_rust_analyzer.py`
-Message-ID: <202208171313.093606A6B8@keescook>
+        David Gow <davidgow@google.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>
+Subject: Re: [PATCH v9 19/27] scripts: add `generate_rust_target.rs`
+Message-ID: <202208171314.D38EF72778@keescook>
 References: <20220805154231.31257-1-ojeda@kernel.org>
- <20220805154231.31257-19-ojeda@kernel.org>
+ <20220805154231.31257-20-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220805154231.31257-19-ojeda@kernel.org>
+In-Reply-To: <20220805154231.31257-20-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Aug 05, 2022 at 05:42:03PM +0200, Miguel Ojeda wrote:
-> The `generate_rust_analyzer.py` script generates the configuration
-> file (`rust-project.json`) for rust-analyzer.
+On Fri, Aug 05, 2022 at 05:42:04PM +0200, Miguel Ojeda wrote:
+> This script takes care of generating the custom target specification
+> file for `rustc`, based on the kernel configuration.
 > 
-> rust-analyzer is a modular compiler frontend for the Rust language.
-> It provides an LSP server which can be used in editors such as
-> VS Code, Emacs or Vim.
+> It also serves as an example of a Rust host program.
+> 
+> A dummy architecture is kept in this patch so that a later patch
+> adds x86 support on top with as few changes as possible.
 > 
 > Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
 > Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
