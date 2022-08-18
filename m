@@ -2,114 +2,97 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C6BBC25B08
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 Aug 2022 23:56:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BAD7EC32772
+	for <rust-for-linux@archiver.kernel.org>; Thu, 18 Aug 2022 09:03:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238765AbiHQX4G (ORCPT
+        id S243601AbiHRJDp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 Aug 2022 19:56:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48732 "EHLO
+        Thu, 18 Aug 2022 05:03:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233491AbiHQX4F (ORCPT
+        with ESMTP id S231552AbiHRJDo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 Aug 2022 19:56:05 -0400
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC14F72FF5
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 16:56:04 -0700 (PDT)
-Received: by mail-pj1-x102f.google.com with SMTP id s4-20020a17090a5d0400b001fabc6bb0baso1580165pji.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Aug 2022 16:56:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=4OrW2+v/meyruGyW+F7E0QxnRsOWY9DMbrVML0RCO4M=;
-        b=SW70luAxBAxmWF0xbo0vvoN6D+BfN/5VNbgtgMfh2yWVHK27yb+gRXhrCitMsILst6
-         gd/i/FD7DU/GC9P22lC3CrE9jHgYvTSOlzKpjrsH/HNz8kK2s0HOT1TWY2m3B/AFQ5mQ
-         ZkPwYxipcmkEq6CmCLwOLx4fAHP1DCRj2y/aQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=4OrW2+v/meyruGyW+F7E0QxnRsOWY9DMbrVML0RCO4M=;
-        b=yQps0UPm/h0aBg+J8IN84Rc53YGltZGAs/sxWNGQWC+xE7UGfS0MtIBC76tFUeZvqZ
-         dfPCWAoIJ4Nzo9qf6+GxsrsXpm1OR8UqTfYwOYiZeABp3pIdIJSp081YF+ckP/y6iMjA
-         UzNOUJXONFw2I2p7Klsk8+AW1v1d2sKfBFlmzh53e6ig2GYS8ReteDCN5NnVUbwsCmVx
-         KNHjLEA8ctWJDmKn8EdPcPM147uybn5Ymqe6qwTlK0Pe6JuXBfGbZ3KR74c5N6ROdTDw
-         r1fllc0rnbrLtXqLgQslHApY6kvl8RvW/u2MbfsfBQe8TtTM2zJV5m3GbadR5pqBOAwi
-         hUTg==
-X-Gm-Message-State: ACgBeo1wfUe9ALGpm60Uuftd/msn6xjA1FSQWcupYN0IC+F5IAWp+QOI
-        3HHHktGqsZq8BETNO1UcSiKDHw==
-X-Google-Smtp-Source: AA6agR5mOI6zoxv/758RIIcFtuybDEtU4eRZmif+vY/WesxknhjDFh5Um9NhlfbeGGrs65ev9k85OA==
-X-Received: by 2002:a17:90a:1b6e:b0:1f5:1902:af92 with SMTP id q101-20020a17090a1b6e00b001f51902af92mr6148774pjq.238.1660780564166;
-        Wed, 17 Aug 2022 16:56:04 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id n1-20020a1709026a8100b0016d33b8a231sm459784plk.270.2022.08.17.16.56.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Aug 2022 16:56:03 -0700 (PDT)
-Date:   Wed, 17 Aug 2022 16:56:02 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
-        Maciej Falkowski <m.falkowski@samsung.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>
-Subject: Re: [PATCH v9 06/27] rust: add C helpers
-Message-ID: <202208171653.6BAB91F35@keescook>
-References: <20220805154231.31257-1-ojeda@kernel.org>
- <20220805154231.31257-7-ojeda@kernel.org>
- <202208171240.8B10053B9D@keescook>
- <CANiq72nR2eAeKrY6v=hnjUjvwfecMsSC6eXTwaei6ecnHjia8g@mail.gmail.com>
- <202208171331.FAACB5AD8@keescook>
- <CANiq72=6nzbMR1e=7HUAotPk-L00h0YO3-oYrtKy2BLcHVDTEw@mail.gmail.com>
+        Thu, 18 Aug 2022 05:03:44 -0400
+Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CB8D31EF5;
+        Thu, 18 Aug 2022 02:03:43 -0700 (PDT)
+Received: from localhost (unknown [127.0.0.1])
+        by mta-01.yadro.com (Postfix) with ESMTP id C6B044359E;
+        Thu, 18 Aug 2022 09:03:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
+        in-reply-to:content-disposition:content-type:content-type
+        :mime-version:references:message-id:subject:subject:from:from
+        :date:date:received:received:received:received; s=mta-01; t=
+        1660813419; x=1662627820; bh=EvJRcBqtaatj5e3YDV8BwcK+UfpGMNa+hDM
+        f9JFpMj8=; b=Gfki9RlVP2inj/ynvwWAxPAlqN8LiWO4xevQ06KrZ9TjQ5MAn3v
+        8foez+g1uiDb3c/jek0v/aLzo9pRPhCE+luVB6wtbbfKmoo8ri3Kr4awOYLFMoHe
+        fKeJtaNFl64+jzEv/Rbuk3BM1p6h4Et8O/owtoXcXig58J/BGwPrfp3I=
+X-Virus-Scanned: amavisd-new at yadro.com
+Received: from mta-01.yadro.com ([127.0.0.1])
+        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 6Ze4dWDVFlB7; Thu, 18 Aug 2022 12:03:39 +0300 (MSK)
+Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mta-01.yadro.com (Postfix) with ESMTPS id 551D843592;
+        Thu, 18 Aug 2022 12:03:39 +0300 (MSK)
+Received: from T-EXCH-09.corp.yadro.com (172.17.11.59) by
+ T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
+ 15.1.669.32; Thu, 18 Aug 2022 12:03:39 +0300
+Received: from yadro.com (10.178.119.167) by T-EXCH-09.corp.yadro.com
+ (172.17.11.59) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.9; Thu, 18 Aug
+ 2022 12:03:38 +0300
+Date:   Thu, 18 Aug 2022 12:03:37 +0300
+From:   Konstantin Shelekhin <k.shelekhin@yadro.com>
+To:     Kees Cook <keescook@chromium.org>
+CC:     <ojeda@kernel.org>, <boqun.feng@gmail.com>,
+        <gregkh@linuxfoundation.org>, <jarkko@kernel.org>,
+        <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <patches@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+        <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v9 01/27] kallsyms: use `sizeof` instead of hardcoded size
+Message-ID: <Yv4AaeUToxSJZK/v@yadro.com>
+References: <20220805154231.31257-2-ojeda@kernel.org>
+ <Yu2cYShT1h8gquW8@yadro.com>
+ <202208171235.52D14C2A@keescook>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <CANiq72=6nzbMR1e=7HUAotPk-L00h0YO3-oYrtKy2BLcHVDTEw@mail.gmail.com>
+In-Reply-To: <202208171235.52D14C2A@keescook>
+X-Originating-IP: [10.178.119.167]
+X-ClientProxiedBy: T-EXCH-02.corp.yadro.com (172.17.10.102) To
+ T-EXCH-09.corp.yadro.com (172.17.11.59)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Aug 17, 2022 at 11:44:53PM +0200, Miguel Ojeda wrote:
-> On Wed, Aug 17, 2022 at 10:34 PM Kees Cook <keescook@chromium.org> wrote:
+On Wed, Aug 17, 2022 at 12:36:33PM -0700, Kees Cook wrote:
+> On Sat, Aug 06, 2022 at 01:40:33AM +0300, Konstantin Shelekhin wrote:
+> > > diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
+> > > index f18e6dfc68c5..52f5488c61bc 100644
+> > > --- a/scripts/kallsyms.c
+> > > +++ b/scripts/kallsyms.c
+> > > @@ -206,7 +206,7 @@ static struct sym_entry *read_symbol(FILE *in)
+> > >
+> > >     rc = fscanf(in, "%llx %c %499s\n", &addr, &type, name);
+> > >     if (rc != 3) {
+> > > -           if (rc != EOF && fgets(name, 500, in) == NULL)
+> > > +           if (rc != EOF && fgets(name, sizeof(name), in) == NULL)
+> > >                     fprintf(stderr, "Read error or end of file.\n");
+> > >             return NULL;
+> > >     }
 > >
-> > Gotcha -- it's for the implicit situations (e.g. -C overflow-checks=on),
+> > Might be another nit, but IMO it's better to use ARRAY_SIZE() here.
 > 
-> Yeah, exactly.
-> 
-> > nothing is expected to explicitly call the Rust panic handler?
-> 
-> If by explicitly you mean calling `panic!()`, then in the `kernel`
-> crate in the v9 patches there is none.
+> I'm not sure I see a benefit for char arrays. It'll produce the same
+> result, and the tradition for string functions is to use sizeof().
+> *shrug*
 
-Perfect. It may be worth stating this explicitly with the helper. i.e.
-"This is for handling any panic!() calls in core Rust, but should not
-ever be used in the 'kernel' create; failures should be handled."
+ARRAY_SIZE() (though not this one) can catch this:
 
-> Though we may want to call it in the future (we have 4 instances in
-> the full code not submitted here, e.g. for mismatching an independent
-> lock guard with its owner). They can be avoided depending on how we
-> want the design to be and, I guess, what the "Rust panic" policy will
-> finally be (i.e. `BUG()` or something softer).
-> 
-> Outside the `kernel` crate, there are also instances in proc macros
-> and Rust hostprogs/scripts (compilation-time in the host), in the
-> `alloc` crate (compiled-out) and in the `compiler_builtins` crate (for
-> e.g. `u128` support that eventually we would like to not see
-> compiled-in).
+  - char array[16];
+  + char *array;
 
-Sounds good!
-
--Kees
-
--- 
-Kees Cook
+Saves me some.
