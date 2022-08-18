@@ -2,83 +2,106 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CB94C3F6B0
-	for <rust-for-linux@archiver.kernel.org>; Thu, 18 Aug 2022 09:04:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 100EBC00140
+	for <rust-for-linux@archiver.kernel.org>; Thu, 18 Aug 2022 16:03:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231552AbiHRJEp (ORCPT
+        id S240722AbiHRQDV (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 18 Aug 2022 05:04:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47682 "EHLO
+        Thu, 18 Aug 2022 12:03:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239794AbiHRJEo (ORCPT
+        with ESMTP id S1343597AbiHRQDS (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 18 Aug 2022 05:04:44 -0400
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E0452462;
-        Thu, 18 Aug 2022 02:04:42 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 7E57443592;
-        Thu, 18 Aug 2022 09:04:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        in-reply-to:content-disposition:content-type:content-type
-        :mime-version:references:message-id:subject:subject:from:from
-        :date:date:received:received:received:received; s=mta-01; t=
-        1660813480; x=1662627881; bh=lZ4MHUT1h0SuflNPwEUcHRIabFx1neVnwfo
-        FKAZ0Szk=; b=cdUCp5GIUr/L2oQg2eA1PKXmGBJiAZ7m96fJ3culr4twAWLXX7A
-        CMQH/It+URbV8p7oLIr6slzdmYButZi7QT6DBYlMTrfaKHwVV9ISyOE7xJ2Pnxl8
-        lQ64+WiwGQyDLwQKHVh+NB2IHeIOJU3SJrEyzNMmH6yoy5YJ7mBgH0J8=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 3DwWc1YOCtfa; Thu, 18 Aug 2022 12:04:40 +0300 (MSK)
-Received: from T-EXCH-02.corp.yadro.com (t-exch-02.corp.yadro.com [172.17.10.102])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 9EA1B435A1;
-        Thu, 18 Aug 2022 12:04:37 +0300 (MSK)
-Received: from T-EXCH-09.corp.yadro.com (172.17.11.59) by
- T-EXCH-02.corp.yadro.com (172.17.10.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Thu, 18 Aug 2022 12:04:37 +0300
-Received: from yadro.com (10.178.119.167) by T-EXCH-09.corp.yadro.com
- (172.17.11.59) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.9; Thu, 18 Aug
- 2022 12:04:36 +0300
-Date:   Thu, 18 Aug 2022 12:04:32 +0300
-From:   Konstantin Shelekhin <k.shelekhin@yadro.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-CC:     <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
-        <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>,
-        <gary@garyguo.net>, <gregkh@linuxfoundation.org>,
-        <jarkko@kernel.org>, <linux-fsdevel@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <me@kloenk.de>,
-        <milan@mdaverde.com>, <patches@lists.linux.dev>,
-        <rust-for-linux@vger.kernel.org>, <torvalds@linux-foundation.org>,
-        <wedsonaf@google.com>
-Subject: Re: [PATCH v9 26/27] samples: add first Rust examples
-Message-ID: <Yv4AoOupMrFJe5qZ@yadro.com>
-References: <20220805154231.31257-27-ojeda@kernel.org>
- <Yu5pUp5mfngAU7da@yadro.com>
- <CANiq72n029==Oc5wbG9pHGrRawRNzYxqZMBK6_S5gMjny5SoQg@mail.gmail.com>
+        Thu, 18 Aug 2022 12:03:18 -0400
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2687A5FF6;
+        Thu, 18 Aug 2022 09:03:16 -0700 (PDT)
+Received: by mail-io1-xd36.google.com with SMTP id r141so1417848iod.4;
+        Thu, 18 Aug 2022 09:03:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=THIPiI23EIP3ZHpv9IN+trkncwr+QUSgAlM+FVJ0cpw=;
+        b=gKHDaXjqmxkXczwFZ7vrwwvJ+cQGm7eRd41xNC5AbgGsDmadmgyXn73X5edHqacOsK
+         luOJpLGZMPnfD8r/6fDx2IsHtTqKCs0N9yyeYvBTKoOmDLkydQGCNkinOV/anw27TKC2
+         1tGLCaAF+tSTCIRg3ENHh8t88yUo3ZeGiEKfiViDXKsDYV1G8RDAtaykU3qbmit2uHNO
+         RQLJo2Io14eULOgECYjyoiICl5CQFHKGI9wueZS7rRaZzSygv/JZ0BKMqu3fFkmRl7fQ
+         bfZZr2EXBbr1g4Gy0xBtMLEuQMgWAnS50hpMJeA09Y/U0PP5w+Tu+q39SAsvN6Q+nAUh
+         HeTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=THIPiI23EIP3ZHpv9IN+trkncwr+QUSgAlM+FVJ0cpw=;
+        b=3R5pF12Ebk3fXyKtZuoF9RV3iL6dw+NHhCXb2mzei2OFkykYaR2EbHczViJVXHP7fM
+         novUiO1QMv81e125O4O9eVRz24q9Uju7BAEJK8VDSGH2BijKF9GkGG1WHnPAlX+2LMMs
+         9YKtqqkGaQWTAQHiFsVBXr5THBU2g+Vb2KOXw5q22uA7HKlPVbRCtyRScnxt71q2N4C+
+         r6HJY5kUTcWARz9Ai/qR95y/V3DuCm9K5NtL21j/w9zEpWbKIrWMOMyRVbxqkteWMO+j
+         NPEWdbOloHlUEBOJLOXfXHZqkSuBKf+eGbx/0hcMj4L3lGwX8VJ3LSIMiFf2SgO+i/ji
+         04FQ==
+X-Gm-Message-State: ACgBeo0qxPI37FQBgCFnIoxVtrcuLw3xoCSJnMO8n0gffhukBGvwCxHN
+        DZmzncgiRRFIE1ubkGhKwgpdhu0IgtDKU9z9KRc=
+X-Google-Smtp-Source: AA6agR7EkCIFXFfJRO5hvuXzeculnD2voC+Lmb5zyPoiU/L6jyMuwFqJMQ7GjK3Yz5CgI88bklSaQDCMnTc7VcagAZg=
+X-Received: by 2002:a05:6602:368a:b0:688:3aa5:19ab with SMTP id
+ bf10-20020a056602368a00b006883aa519abmr1662728iob.44.1660838595542; Thu, 18
+ Aug 2022 09:03:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CANiq72n029==Oc5wbG9pHGrRawRNzYxqZMBK6_S5gMjny5SoQg@mail.gmail.com>
-X-Originating-IP: [10.178.119.167]
-X-ClientProxiedBy: T-EXCH-02.corp.yadro.com (172.17.10.102) To
- T-EXCH-09.corp.yadro.com (172.17.11.59)
+References: <20220805154231.31257-1-ojeda@kernel.org> <20220805154231.31257-7-ojeda@kernel.org>
+ <202208171240.8B10053B9D@keescook> <CANiq72nR2eAeKrY6v=hnjUjvwfecMsSC6eXTwaei6ecnHjia8g@mail.gmail.com>
+ <202208171331.FAACB5AD8@keescook> <CANiq72=6nzbMR1e=7HUAotPk-L00h0YO3-oYrtKy2BLcHVDTEw@mail.gmail.com>
+ <202208171653.6BAB91F35@keescook>
+In-Reply-To: <202208171653.6BAB91F35@keescook>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 18 Aug 2022 18:03:04 +0200
+Message-ID: <CANiq72mqutW7cDjYQv4qOYOAV6uM8kUWenquQyiG-mEw4DURJA@mail.gmail.com>
+Subject: Re: [PATCH v9 06/27] rust: add C helpers
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
+        Maciej Falkowski <m.falkowski@samsung.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Aug 17, 2022 at 11:02:01PM +0200, Miguel Ojeda wrote:
-> On Sat, Aug 6, 2022 at 3:15 PM Konstantin Shelekhin
-> <k.shelekhin@yadro.com> wrote:
-> >
-> > I wonder if it would make more sense to implement exit() in
-> > kernel::Module, just for the sake of uniformity.
-> 
-> Do you mean uniformity with respect to the C side?
+On Thu, Aug 18, 2022 at 1:56 AM Kees Cook <keescook@chromium.org> wrote:
+>
+> Perfect. It may be worth stating this explicitly with the helper. i.e.
+> "This is for handling any panic!() calls in core Rust, but should not
+> ever be used in the 'kernel' create; failures should be handled."
 
-Yeah. It's weird that entry point is implemented in Module while exit
-point in Drop.
+I am not sure we should say "ever", because there are sometimes
+situations where we statically know a situation is impossible. Of
+course, "impossible" in practice is possible -- even if it is due to a
+single-event upset.
+
+For the "statically impossible" cases, we could simply trigger UB
+instead of panicking. However, while developing and debugging one
+would like to detect bugs as soon as possible. Moreover, in
+production, people may have use cases where killing the world is
+better as soon as anything "funny" is detected, no matter what.
+
+So we could make it configurable, so that "Rust statically impossible
+panics" can be defined as UB, `make_task_dead()` or a full `BUG()`.
+
+By the way, I should have mentioned the `unwrap()s` too, since they
+are pretty much explicit panics. We don't have any in v9 either, but
+we do have a couple dozens in the full code (in the 97% not submitted)
+in non-test or examples code. Many are of the "statically impossible"
+kind, but any that is not merits some discussion, which we can do as
+we upstream the different pieces.
+
+Cheers,
+Miguel
