@@ -2,99 +2,104 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85F55C3F6B0
-	for <rust-for-linux@archiver.kernel.org>; Thu, 18 Aug 2022 17:06:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95D5AC32774
+	for <rust-for-linux@archiver.kernel.org>; Mon, 22 Aug 2022 20:09:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343691AbiHRRGd (ORCPT
+        id S232430AbiHVUJU (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 18 Aug 2022 13:06:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35074 "EHLO
+        Mon, 22 Aug 2022 16:09:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345456AbiHRRD1 (ORCPT
+        with ESMTP id S232124AbiHVUJS (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 18 Aug 2022 13:03:27 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 873CCCB5F1;
-        Thu, 18 Aug 2022 10:01:37 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id c4so721873iof.3;
-        Thu, 18 Aug 2022 10:01:37 -0700 (PDT)
+        Mon, 22 Aug 2022 16:09:18 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA2DE52DFE
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Aug 2022 13:09:14 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id bn9so4106152ljb.6
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Aug 2022 13:09:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=google.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=T7igz+JHo+DrCDKUS4xWUJ3/Lp268Fiqe+ivN8o+tCA=;
-        b=mSmp9rHtVwSbvQYUCcl1B6+4w12c4NZupPfwhitjKwp64SgVF4OpQZTM5OjLoTUTq/
-         bvlbPn/LMeKbRiglU8JNMoyfa9evwumI8CLFupqetQdHEK6ASSyTUQKMARKS6+J8d41C
-         syh/FDLqz69ZOMnbwXYSw27NnA/SdwWXPsCZG/OkbTJ3TeRryGQaM9pefDmG20OB855W
-         Pg/ZEny4IK0cVtgltjxaukuxnPCqRSVwGGN3R+gsz1dnG13VOb8meRsL2IYZz+ic/ZYT
-         3+DVKOsefTIeUcl4hA+wuKfu9fKsVZ5i0F7XDoWk47lyfxro942KIc/TnSD31+zljHZs
-         2m+Q==
+        bh=rNzR9QGqS5j6oh3cxSooKBs5Da2aEIBjVibuQ7PJyY4=;
+        b=G/6rnW2WngFu3z8GJAnZAfCOkh68V/JUVcL67bXj8QU16wKXhMja1mBmCXbTmoik81
+         fdRO9yziSI1qyn3ZnU+Tk/b2sF7XsdQ1NnwKRVBovYFK8jKlmTE25Tnqpl1OShRVgFuO
+         55GLEFueyqTzyirsTbo9dhWM7XcEyTrXvQVeN7iSuin+N1GEYFmw/DH+NkSO6W3GV6HO
+         R/542Kyg5z5z+fF28YqBPucnTKR8rFd39QVkbJ7+94RLIRv3/IdPNOPUYxR2rtFLJJo/
+         akYDrVLMQ3gXaiXiwyvOoGY3I0ZKHhZmxqg1es9/wRFbkicvNSHP3X7Q6cUSaREYuQyd
+         HxqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=T7igz+JHo+DrCDKUS4xWUJ3/Lp268Fiqe+ivN8o+tCA=;
-        b=ZiOJYSEqIf3HoypENj/fCoR7hClsGJda4huvMVs1yEbErtAQ7OylVNpp8b5Vxf0wlX
-         kELR6LhttQ2icRsbEONYu+MV1LH6d8qq4vfPpJBx2SGNifDkgv+fbjiU3ypUvLBUya0c
-         Xa3BTU1gwSZfwrc9oASN8vSru7lwmFsHLRmVkN4sFddieNLL8LVP1HbPSZTIiNekYRGm
-         Dks9nU7aCnNSk0dGpTk1eXy2/HSIrvE/gOE1MRwWv3FhExSTyvJuqlERLN94yNMxBwBd
-         ORkNdzONFGyfJ9k85qCf/Q+FTVRGax0evzlEBLePRySWTaveYEoHVxFn7z9i7CwLlk1t
-         iqQw==
-X-Gm-Message-State: ACgBeo39bUsoEvVV0rrIo7F0QjrD8DYf2p/a44+JqamBJSNuf7TJ/7i7
-        wHa1+nNhGQAwJu6VnV0KRbzpbg8jkcnR5LC0g9Q=
-X-Google-Smtp-Source: AA6agR5ue0JYy9T5byXdp26N17IarelQjKYAQisDC3hxB9tZlGD0vKInrJQ3a9Wk2MjOxtbHTGvUCzfa3vGBxwGqww0=
-X-Received: by 2002:a05:6602:2a42:b0:678:84be:c9ec with SMTP id
- k2-20020a0566022a4200b0067884bec9ecmr1767428iov.64.1660842096984; Thu, 18 Aug
- 2022 10:01:36 -0700 (PDT)
+        bh=rNzR9QGqS5j6oh3cxSooKBs5Da2aEIBjVibuQ7PJyY4=;
+        b=yEy6yRZTJGCsyDNj/fLEHbZZ06MlUz/0g6d6aso7FCGlcHlYcIub2Ue7qBkFYo6js2
+         fa6JqG9L6AGfwS/lTVtgEhL0+/x+xLBnJzjgGu8zDtT+sQnX3pdnUHpT97zklzYflk1s
+         6lA1itW0aPS+JHaK05gf0mo0JiBk/G3dnmthQiVykgsvZTF3LnTTES2RPdN/v8SOiCYM
+         CHWaXuaGudyEOrzvvS6wDckPBKnY5AP3BbPEhmMJiPDfHuladqqFMxpkMMNtfqXhTW1z
+         MAe/jRr2yNv3GDdy60z8md7pBiCyjLGaNp09cS57Xl3D0N9ux3is3rAYY9dRQMeirFcX
+         Kjdw==
+X-Gm-Message-State: ACgBeo2ayM1e4mod9JSRCJpLkra9rdxO4ghBERSfkONF1Sl8sXhfm07k
+        dL3Nh6Imf3xSX7Tcq16KQEj0+RHa8ndT1kkHv/uBp5cJD3ywGA==
+X-Google-Smtp-Source: AA6agR59okDv54Jbyi23A1nS9MzE8+afV+r+Jcam4JHKwd+90O+ezON9z+HSSTGcj+W/yIAHzcTIOm3wlGcNWGs75oc=
+X-Received: by 2002:a05:651c:4d4:b0:261:cbe7:e62f with SMTP id
+ e20-20020a05651c04d400b00261cbe7e62fmr2347049lji.295.1661198952956; Mon, 22
+ Aug 2022 13:09:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220805154231.31257-1-ojeda@kernel.org> <20220805154231.31257-7-ojeda@kernel.org>
- <202208171240.8B10053B9D@keescook> <CANiq72nR2eAeKrY6v=hnjUjvwfecMsSC6eXTwaei6ecnHjia8g@mail.gmail.com>
- <202208171331.FAACB5AD8@keescook> <CANiq72=6nzbMR1e=7HUAotPk-L00h0YO3-oYrtKy2BLcHVDTEw@mail.gmail.com>
- <202208171653.6BAB91F35@keescook> <CANiq72mqutW7cDjYQv4qOYOAV6uM8kUWenquQyiG-mEw4DURJA@mail.gmail.com>
- <202208180905.A6D2C6C00@keescook>
-In-Reply-To: <202208180905.A6D2C6C00@keescook>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 18 Aug 2022 19:01:25 +0200
-Message-ID: <CANiq72=BbV-h6P1z7pSg7oMjXoMOuUjhaiB-sYGJu4uyE0BPKQ@mail.gmail.com>
-Subject: Re: [PATCH v9 06/27] rust: add C helpers
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+References: <20220805154231.31257-1-ojeda@kernel.org> <20220805154231.31257-21-ojeda@kernel.org>
+In-Reply-To: <20220805154231.31257-21-ojeda@kernel.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Mon, 22 Aug 2022 13:09:00 -0700
+Message-ID: <CAKwvOdndYxQ+KgVhC8F3vWnHDT8pD3px8cKjinu-khn25_FSYw@mail.gmail.com>
+Subject: Re: [PATCH v9 20/27] scripts: add `rust_is_available.sh`
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
-        Maciej Falkowski <m.falkowski@samsung.com>,
-        Wei Liu <wei.liu@kernel.org>,
+        Finn Behrens <me@kloenk.de>, Miguel Cano <macanroj@gmail.com>,
+        Tiago Lam <tiagolam@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Aug 18, 2022 at 6:08 PM Kees Cook <keescook@chromium.org> wrote:
+On Fri, Aug 5, 2022 at 8:46 AM Miguel Ojeda <ojeda@kernel.org> wrote:
 >
-> Please, no UB. I will take a panic over UB any day. It'd be best to
-> handle things with some error path, but those are the rare exception.
->
-> C is riddled with UB and it's just terrible. Let's make sure we don't
-> continue that mistake. :)
+> This script tests whether the Rust toolchain requirements are in place
+> to enable Rust support.
 
-I definitely agree on avoiding UB :)
+With this, I get:
 
-> The simple answer is that if an "impossible" situation can be recovered
-> from, it should error instead of panic. As long as that's the explicit
-> design goal, I think we're good. Yes there will be cases where it is
-> really and truly unrecoverable, but those will be rare and can be well
-> documented.
+$ make LLVM=1 rustavailable
+***
+*** libclang (used by the Rust bindings generator 'bindgen')
+*** version does not match Clang's. This may be a problem.
+***   libclang version: 15.0.0
+***   Clang version:    16.0.0
+***
+Rust is available!
 
-Yeah, that is the goal and we always take that into account, but there
-are always tricky cases which is best to consider case-by-case.
+because I'm using clang built from source from ToT.  Is this supposed
+to mean that I can't use clang-16, clang-14, clang-13, clang-12, or
+clang-11 (in the kernel we support clang-11+) in order to use rust?
+I'm guessing that's going to hinder adoption.  Is there a way to
+specify which libclang version bindgen should be using?
 
-Cheers,
-Miguel
+I have libclang built in my clang sources,
+llvm-project/llvm/build/lib/libclang.so.  I also tried:
+
+$ CLANG_PATH=/android0/llvm-project/llvm/build/lib/libclang.so.15 make
+LLVM=1 -j72 rustavailable
+$ CLANG_PATH=/android0/llvm-project/llvm/build/lib/libclang.so make
+LLVM=1 -j72 rustavailable
+
+-- 
+Thanks,
+~Nick Desaulniers
