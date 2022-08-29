@@ -2,60 +2,51 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80047C00140
-	for <rust-for-linux@archiver.kernel.org>; Wed, 24 Aug 2022 18:39:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08B9EECAAD2
+	for <rust-for-linux@archiver.kernel.org>; Mon, 29 Aug 2022 17:13:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238320AbiHXSjC (ORCPT
+        id S231479AbiH2RND (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 24 Aug 2022 14:39:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47446 "EHLO
+        Mon, 29 Aug 2022 13:13:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237008AbiHXSjB (ORCPT
+        with ESMTP id S231478AbiH2RMo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 24 Aug 2022 14:39:01 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1634B7A756
-        for <rust-for-linux@vger.kernel.org>; Wed, 24 Aug 2022 11:38:59 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id l8so7657257lfc.12
-        for <rust-for-linux@vger.kernel.org>; Wed, 24 Aug 2022 11:38:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=zusELnxGly7QVeMD559QgRc8Hcg/aGQ/B1+zKDEsXlI=;
-        b=tNDR+Cu5c4wrvJ5QCB0SfIfhBG5k9iGbtDPgrydSjCrp0G9wb6hMZO7H8PpKcWuVhH
-         52Kkwsdg0p/YRrTJBrBEAl3ddK/aTlmfIBFi8jkEd2H9UWW8G6wIZarXVxZ4vnePmAcK
-         CEK5FE2nGIGeBE8TphpjDz566KXPqIvmJ5YCwoF3WQXmxjP/jleG/Tv7zSpJ8rb+dVd0
-         Kl7fD2puye4BKjFvk0c/duiQNij67sa84J6Q9q43fDvOaYyN8aJZG1r49wbMDRJT/tvS
-         z9BbrZw2MlVv3h78hUF6UGBhrtKk0l13cV9NVFBMtCpMnL2wZ7zl70YMi4gjbmP2KRQk
-         5oZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=zusELnxGly7QVeMD559QgRc8Hcg/aGQ/B1+zKDEsXlI=;
-        b=bhwoB4bJUwzkZrHDBhEwZ6SZnc3EKaG7FmNYDtDhFy1AACnWPn+dhwlBWPkJclNkln
-         x+kPwc4I034s3RRzTGFPRQV0r84o7kEyin43fkZMjN23JYd67mo5Agd4Wlb98GQv1eB+
-         I/e2DUFdJlOKi9l/8BgyEzdwEy2uR2MfUIbulGJFGcfh6ptnLEV7LwCjPcTdUxASKv1O
-         /yXAYzuYh8i9ySt8l/jD5eBtr5K/3pVXYMSxfG73yuzFlvLjEZBYcAoWLyTB3e45KhYg
-         VcIsKFyxSIgP5oWIPePc6kRvfwmjH0ndnilyTCdkCZFX/fKbrozE5DSEfCK2/JgYbyt7
-         yiUQ==
-X-Gm-Message-State: ACgBeo3HAbQ7ljZ4mghpjfxwiO9+WEoXAMwRmMp8MGFvKEngw6pbWky9
-        UpfpHveRht6Kp+y5GFqUXgsu5uekqn5Xs0aOtPMnhA==
-X-Google-Smtp-Source: AA6agR52FBwj4MdAunRT29AhIp77KadWqPYBuZoG9ncNTipb2YZLWZheFdTurK56staOfmiAbVaJOT8a2tOjA0o7YGI=
-X-Received: by 2002:a05:6512:29c:b0:492:db8e:5e77 with SMTP id
- j28-20020a056512029c00b00492db8e5e77mr68514lfp.403.1661366337205; Wed, 24 Aug
- 2022 11:38:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220805154231.31257-1-ojeda@kernel.org> <20220805154231.31257-10-ojeda@kernel.org>
- <CAKwvOd=q0uErrBVadCbVVLyTzvXxmgJSdOyRHqahO5at8enN6w@mail.gmail.com>
-In-Reply-To: <CAKwvOd=q0uErrBVadCbVVLyTzvXxmgJSdOyRHqahO5at8enN6w@mail.gmail.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Wed, 24 Aug 2022 11:38:46 -0700
-Message-ID: <CAKwvOdkc0Qhwu=gfe1+H23TnAa6jnO6A3ZCO687dH6mSrATmDA@mail.gmail.com>
-Subject: Re: [PATCH v9 09/27] rust: add `compiler_builtins` crate
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Mon, 29 Aug 2022 13:12:44 -0400
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2126.outbound.protection.outlook.com [40.107.11.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD8208C032;
+        Mon, 29 Aug 2022 10:12:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XFYlbqMdb9P94ANAkI5Dg1qUt3jtQ3UbCp1O0sNphaE9FHUk3LvcW2K4PgjsqYTT96glOxefpUFRx8mVKtGaRgYuF3YRAj2zdLj6hFeiQ22clC+UocP+TE55/i65DaveJwY/vSpj1xSkylTHO3L2fGTmPfW/zc22VkD/NZWUf0HpjPE8aFkmCAuWJeQ/zRXB79Thqbepv732CtcDc54zZsmDOubouFvaBGOQ3M8Ic7vqftPUZYBmvEluss3IU1tIoeNxfpwH0clYHPz30VGQWyWrKb2aPIMpKoFQyCU19woHOXMu++QSYv6a9LTsbkPyn67GCkAlL0RvXGRb2wgosg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ANPd6S9qgRXWvh9rOD3Cfgz6gPRsnp4F+cXcUMjZd+Q=;
+ b=kGXPjVSOGs0LD4iYy5bsvXJgEne5k84tqAeeS6Qkfxl2Vvhavh0dcec0/KVy6XFoiaddcdaSDvS+xlZwapIPwElstgg9x1CrqO+vUYrnBJ6Y3YFd1cZmlMTB5ezGqD5Gg0ddcT3Lp2UmVmVT4GUQpyaw1GkJYg0JlI8i5oho5BRQ2F8BgsbCt+y8h7fOTeKqJyDRUeJkDOr/tmBScQ3ZjMcr2Rzt3qkTrEf8Ju0OJFS/dMHcny8XwkCOR21hb79gUDMJfQgEvfvG/aAnG0dnfwWuB+h/GUIcG/bxm70d1L5Q7eppS8mFLI7J8sHSt+6+5NJJL8RLxAgePVY2DGEDIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ANPd6S9qgRXWvh9rOD3Cfgz6gPRsnp4F+cXcUMjZd+Q=;
+ b=N+50HEG7ieihluNJ/z/DfEZ4P/IodwDZda5XzVeYoeSFMxRr97IxCX7ZiQw0FU2Fc5mAcShRk8ZfzZTDYUZlvViLHmpQAXbUstPRnCkAaSLDKXXBxg/6dvfOS5qpq/n1I86E/GEInTA+c+FIAK7IYJH+swJiTOJulPsjLZYNiYk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO4P265MB6683.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2f3::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.15; Mon, 29 Aug
+ 2022 17:11:36 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::d051:d2a2:4b47:f935]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::d051:d2a2:4b47:f935%5]) with mapi id 15.20.5566.021; Mon, 29 Aug 2022
+ 17:11:36 +0000
+Date:   Mon, 29 Aug 2022 18:11:33 +0100
+From:   Gary Guo <gary@garyguo.net>
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
@@ -63,232 +54,139 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@google.com>,
         Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         Masahiro Yamada <masahiroy@kernel.org>,
         Ard Biesheuvel <ardb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v9 09/27] rust: add `compiler_builtins` crate
+Message-ID: <20220829181133.00005f01@garyguo.net>
+In-Reply-To: <CAKwvOdkc0Qhwu=gfe1+H23TnAa6jnO6A3ZCO687dH6mSrATmDA@mail.gmail.com>
+References: <20220805154231.31257-1-ojeda@kernel.org>
+        <20220805154231.31257-10-ojeda@kernel.org>
+        <CAKwvOd=q0uErrBVadCbVVLyTzvXxmgJSdOyRHqahO5at8enN6w@mail.gmail.com>
+        <CAKwvOdkc0Qhwu=gfe1+H23TnAa6jnO6A3ZCO687dH6mSrATmDA@mail.gmail.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; i686-w64-mingw32)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P265CA0073.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:8::13) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: eb047e3e-d8bd-4b01-6f78-08da89e187d1
+X-MS-TrafficTypeDiagnostic: LO4P265MB6683:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: tKx8q6da5N3mJIOp0TGecjUIFRHg6IYmUGfFE5kxYw8XEAEzZe1ZAtQyCcVVxC3iQm8BBmeSDsCbEZ6IltlyzeSIPQwmg6pjTl4Dmce2h+i0hYPQEqVMIBnOftG6SPlQ2bJNGcfTLP2Ib+Wi1CzzULcoCQolDbsWuami08dk7q1s+v5yqAijzkwfHOVhz8vIzn9RIHpQIDid7KCNNKgW9ulkBlubVDzXyzL4jJqq8N8gO+0Y5/u/xX9yKjYHeXpzCuO9T//2b+Krae+DYK90IMIRHHKxsfZY073zmPtAafon+vGi5UeP/3w4bOekDEYeAAdygBjWEGm5RM8gCTod7EgflH7JIBoDka6yGlDiEMy8UqmsTSdz1uYMNNRExC6piKhZi3f9lPl423srtD5lG81FyEhOxIwDFzJMgiYCj8TzsFWfv/4l52Tltb/3XbofX1w9mpQJK5/totBpkjAO06XW25cQMmHxeBl6cru8VRH0oXgep7yq2d+B2p7gUmh7W4hyJrJTLWIG2bC8h6svxTeKLdNgwoLm2PJLRWnYEJBqqIodMoxLE+7N79SP20reb7xgdo1OwIVixo4UoxLFEnBgADchArx2dsRo9wpS3pwieoZf6tFl8rQa16V+VYV/AKa5NQJbEGuHPGeV/dpyzETRqdl2Or8CXfOIJd41cNQaBmUMb4Z3iZ+imdbiy4uzVd97Z1ywuT+2qqKfbmfOVy/xd0gKZHtE8oTrVtXt++wtDpiP5yZviPKXLB6G9sjsQlRxVj686jUGsJ91m46OYA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(376002)(346002)(396003)(136003)(39830400003)(366004)(6506007)(38100700002)(52116002)(2906002)(6666004)(2616005)(83380400001)(186003)(6512007)(6486002)(86362001)(4326008)(66946007)(66476007)(66556008)(8676002)(1076003)(54906003)(316002)(966005)(6916009)(36756003)(7416002)(41300700001)(8936002)(478600001)(5660300002)(81973001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?aDjCXSSNDL954r/xcJbyCHUcOAn3AwYq0l2vrJhH2YJf+AVNFrA0NedmVD2l?=
+ =?us-ascii?Q?DiImogIbMwaCdcGqqDrJBEjHQYpRhg4LPMy2FqbxDrf7oVtnMNJAtVuOxpyf?=
+ =?us-ascii?Q?ScJL5FxiqVJ8WYcPng6QMQIqnxiQpOAhLP0jAyXd+yWLZxXb5dpwBU/90ezq?=
+ =?us-ascii?Q?3LW7vaf2v2IOYAvSXz5YWhAMUqnM8MP6Ijmfl4VheLNia1oGvUbv4+/WP04j?=
+ =?us-ascii?Q?vKAjjLivO5EvtXs8p6evipvpX7abPo4zy1lAkO/PNCU1TPZaRIMgu3/03GC8?=
+ =?us-ascii?Q?OHkekQWpW3MohgPY7CtEgFzbRhS1kLYN0V5perSP+0Ki3sp25Ifgb9gns81i?=
+ =?us-ascii?Q?nBoGn6GCCVMp/Zm9RvzOjaJuXpXJjY0m1Pm/O6jZ5N/3fJFj1tB875/BYBWw?=
+ =?us-ascii?Q?k8mxLoBmS4h6W8991QFfdwKXyfHvWeqaA6fD3ly3JA+3nm/9lRl0lYrJXIM8?=
+ =?us-ascii?Q?Piz6NkrEH0DQ7cKoMccdOPr4mWdl4e/tXEepImBYgBn9KH7roxTW0k4Dx1HO?=
+ =?us-ascii?Q?Da4Hz4eNC6G0XGigpJewq5aZyXXZOFfI7QV3tsKWmsytaFcxtnut8iwJtUo8?=
+ =?us-ascii?Q?PWNVtxKluL1BNpkN3xVzEr1JkcSN4d4SB9SgLVrfu+41sAopWRxQx4DYc12K?=
+ =?us-ascii?Q?dD8+Xrp+Q/Ri2XsxOqMWF62MrvLjD0WFyQm9eAq3Bc1XlvHJPkiOqPMgdNrE?=
+ =?us-ascii?Q?9dipOwPkK88pbrseBJuALpqDAUWb6NwgwYXR1y4U+ieMVZlX+j8vVnQ+fA0y?=
+ =?us-ascii?Q?krqXiUz562gLyYH1WmbrMJJA6wrueUggBDeUQDwKC1dk/2+0At/QDXtxWzWU?=
+ =?us-ascii?Q?KIJ3Dhs68He5pc9An0HLCgCynMeBO1+hSfPsni4Z+6Hy/87aFEP+YbfnvSAd?=
+ =?us-ascii?Q?OBpbPj7nInu6i3ekaS3iv0tlpZbDLjteXyPuWIToS5NgGNkq7qGhV5MLshC3?=
+ =?us-ascii?Q?WbPzFgbY6LvaOZp+dHsSSaaetP5BdyoUnyYuHiYBXePQDF8cOLY2Z1EP195L?=
+ =?us-ascii?Q?1pXZNRJDE+/RXnjmc9zpmrAcJM6tHBIuUECj+gz020NnkvJq/xiQiQPlQdxa?=
+ =?us-ascii?Q?7ifGAyC8OHtXTb76yO3wUURPojSxcfOJyR/kRv/Oyrat3+3rKXzEP2PlI+Bk?=
+ =?us-ascii?Q?Qtsjzl/srgDGDpnSbbEnKHvy5eteTfOasBS/K0GH/7Jva75tYQK7uQOxdsS9?=
+ =?us-ascii?Q?gQQmpvJGSltROTvDbAvndn11prtPvkIdaYI92a1CpHnsEzaMyE0zLx1quhzn?=
+ =?us-ascii?Q?3KKe2LP8Pu/ipa6teWkXn/qSSgJuVIDoby+2aab6aUEb0xWPjw4Lkb6ntSRt?=
+ =?us-ascii?Q?EuDvEa/Q3X0mhXY4/+/tFHzkg2RUfw4nyfwHPfuU3Hi+8ytaShyP4h8DUINX?=
+ =?us-ascii?Q?z57g0A2Yyw1xDbBuW4MdUCE3VKeQMe+Y4owdRIuMs9tdlgftTGj8oxISEfX5?=
+ =?us-ascii?Q?VZHlXjCvODrzqkxMQl2MF1XK8WyOMi4fy7EG2OyaEAbMxu42O0XqlXughxtI?=
+ =?us-ascii?Q?XeXUuL4xfKDKZ9sDXA7HUCmL0WkSIeOeyj7yWi0dcQeLAEEOylcL5VT5qwo3?=
+ =?us-ascii?Q?LdSAyKJznTETTQE8gv0WQ7pcRAN4lpv1UUqfUhnmTw9Sn7FOqBqR54NYrBTU?=
+ =?us-ascii?Q?SEtBm4ANvrdKoowwBXwiwaceciTnKEEIojClPdQ2tQl/?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb047e3e-d8bd-4b01-6f78-08da89e187d1
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2022 17:11:36.6580
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 44UwLCZdVRShsHp8jfBgQn+0J0IDVP9911qxJRLTHmZaAeq2dsO3OJ3h/tYQszqesH0aFXX5/CJGxCHn2UqyUw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6683
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Aug 22, 2022 at 4:55 PM Nick Desaulniers
-<ndesaulniers@google.com> wrote:
->
-> On Fri, Aug 5, 2022 at 8:44 AM Miguel Ojeda <ojeda@kernel.org> wrote:
-> >
-> > Rust provides `compiler_builtins` as a port of LLVM's `compiler-rt`.
-> > Since we do not need the vast majority of them, we avoid the
-> > dependency by providing our own crate.
-> >
-> > Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
-> > Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-> > Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
-> > Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-> > Co-developed-by: Sven Van Asbroeck <thesven73@gmail.com>
-> > Signed-off-by: Sven Van Asbroeck <thesven73@gmail.com>
-> > Co-developed-by: Gary Guo <gary@garyguo.net>
-> > Signed-off-by: Gary Guo <gary@garyguo.net>
-> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
->
-> I still really really do not like this patch. Thoughts below.
->
-> > ---
-> >  rust/compiler_builtins.rs | 63 +++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 63 insertions(+)
-> >  create mode 100644 rust/compiler_builtins.rs
-> >
-> > diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
-> > new file mode 100644
-> > index 000000000000..f8f39a3e6855
-> > --- /dev/null
-> > +++ b/rust/compiler_builtins.rs
-> > @@ -0,0 +1,63 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Our own `compiler_builtins`.
-> > +//!
-> > +//! Rust provides [`compiler_builtins`] as a port of LLVM's [`compiler-rt`].
-> > +//! Since we do not need the vast majority of them, we avoid the dependency
-> > +//! by providing this file.
-> > +//!
-> > +//! At the moment, some builtins are required that should not be. For instance,
-> > +//! [`core`] has 128-bit integers functionality which we should not be compiling
->
-> It's not just 128b, these are for double word sizes, so for 32b
-> targets (I recall an earlier version of series supporting armv6) these
-> symbols are for 64b types.
->
-> > +//! in. We will work with upstream [`core`] to provide feature flags to disable
-> > +//! the parts we do not need. For the moment, we define them to [`panic!`] at
-> > +//! runtime for simplicity to catch mistakes, instead of performing surgery
-> > +//! on `core.o`.
->
-> Wait, so Kbuild performs surgery on alloc, but core is off limits? bah
->
-> > +//!
-> > +//! In any case, all these symbols are weakened to ensure we do not override
-> > +//! those that may be provided by the rest of the kernel.
-> > +//!
-> > +//! [`compiler_builtins`]: https://github.com/rust-lang/compiler-builtins
-> > +//! [`compiler-rt`]: https://compiler-rt.llvm.org/
-> > +
-> > +#![feature(compiler_builtins)]
-> > +#![compiler_builtins]
-> > +#![no_builtins]
-> > +#![no_std]
-> > +
-> > +macro_rules! define_panicking_intrinsics(
-> > +    ($reason: tt, { $($ident: ident, )* }) => {
-> > +        $(
-> > +            #[doc(hidden)]
-> > +            #[no_mangle]
-> > +            pub extern "C" fn $ident() {
-> > +                panic!($reason);
-> > +            }
-> > +        )*
-> > +    }
-> > +);
-> > +
-> > +define_panicking_intrinsics!("`f32` should not be used", {
-> > +    __eqsf2,
->
-> I don't see ^ this symbol in core.
->
-> $ llvm-nm rust/core.o | grep "U __" | sort | tr -s " "
->  U __gesf2
->  U __lesf2
->  U __udivti3
->  U __umodti3
->  U __unorddf2
->  U __unordsf2
->  U __x86_indirect_thunk_r11
->
-> so a few of these seem extraneous. Are you sure they're coming from
-> core? (or was it the different arch support that was removed from v8
-> to facilitate v9?)
->
-> __gesf2, __lesf2, and __unordsf2 all seem to be coming from
-> <<f32>::classify> and <<f32>::to_bits::ct_f32_to_u32>.  Surely we can
-> avoid more f32 support by relying on objcopy
-> -N/--strip-symbol=/--strip-symbols=filename to slice out/drop symbols
-> from core.o?
->
-> <core::fmt::num::exp_u128> uses __umodti3+__udivti3
->
-> __unorddf2 is referenced by <<f64>::classify> and
-> <<f64>::to_bits::ct_f64_to_u64>.
->
-> Can we slice those 5 symbols out from core, or are they further
-> referenced from within core?  If we can, we can drop this patch
-> outright, and avoid a false-negative when C code generates references
-> to these symbols from the compiler runtime, for architectures where
-> don't want to provide a full compiler runtime.  (--rtlib=none is a
-> pipe dream; first we need to get to the point where we're not
-> -ffreestanding for all targets...)
->
-> I suspect someone can iteratively whittle down core to avoid these symbols?
->
-> ```
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 7700d3853404..e64a82c21156 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -359,6 +359,7 @@ $(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs
-> $(obj)/target.json FORCE
->  $(obj)/compiler_builtins.o: private rustc_objcopy = -w -W '__*'
->  $(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/core.o FORCE
->         $(call if_changed_dep,rustc_library)
-> +       @$(OBJCOPY) --strip-symbols=$(obj)/strip-symbols.txt $(obj)/core.o
->
->  $(obj)/alloc.o: private skip_clippy = 1
->  $(obj)/alloc.o: private skip_flags = -Dunreachable_pub
-> ```
-> then define symbols in rust/strip-symbols.txt?
->
-> I'm getting the sense that no, there are many functions like
-> <usize as core::fmt::UpperExp>::fmt
-> <i64 as core::fmt::UpperExp>::fmt
-> <u64 as core::fmt::UpperExp>::fmt
+On Wed, 24 Aug 2022 11:38:46 -0700
+Nick Desaulniers <ndesaulniers@google.com> wrote:
 
-Another idea I had, and Ard mentioned to me this morning that efistub
-does something similar:
-
-I think objcopy can rename symbol references.  So instead of calling
-foo, I think you can use objcopy to call bar instead.
-
-To avoid the case of Rust core refering to symbols typically provided
-by the --rtlib={libgcc|compiler-rt}, what if we:
-1. build core.o (with reference to the unfavorable symbols)
-2. use objcopy to rename references in core.o to the symbols listed in
-this file; maybe prepend them with `rust_core_` or something.
-3. provide this crate with panic'ing definitions, but for the renamed symbols.
-
-That way, enabling CONFIG_RUST=y won't hide the case where C code is
-triggering such libcalls from the C compiler?
-
-To restate the concern, I don't want CONFIG_RUST=y to hide that fact
-that someone wrote `float x, y; if (x != y) ...` in C code, where the
-C compiler will likely lower that to a libcall to __nesf2 since with
-the current approach in this patch, linkage would proceed. The current
-behavior is to intentionally fail to link.  I think what I describe
-above may work to keep this intended behavior of the kernel's build
-system.
-
-Ah, looks like there's objcopy flags:
-       --redefine-sym old=new
-           Change the name of a symbol old, to new.  This can be
-useful when one is trying link
-           two things together for which you have no source, and there
-are name collisions.
-
-       --redefine-syms=filename
-           Apply --redefine-sym to each symbol pair "old new" listed
-in the file filename.
-           filename is simply a flat file, with one symbol pair per
-line.  Line comments may be
-           introduced by the hash character.  This option may be given
-more than once.
-
-So probably could start with my diff from above, but use
---redefine-syms=filename instead of --strip-symbols=.
-
-
->
-> > +    __gesf2,
-> > +    __lesf2,
-> > +    __nesf2,
-> > +    __unordsf2,
-> > +});
-> > +
-> > +define_panicking_intrinsics!("`f64` should not be used", {
-> > +    __unorddf2,
-> > +});
-> > +
-> > +define_panicking_intrinsics!("`i128` should not be used", {
-> > +    __ashrti3,
-> > +    __muloti4,
-> > +    __multi3,
-> > +});
-> > +
-> > +define_panicking_intrinsics!("`u128` should not be used", {
-> > +    __ashlti3,
-> > +    __lshrti3,
-> > +    __udivmodti4,
-> > +    __udivti3,
-> > +    __umodti3,
-> > +});
-> > --
-> > 2.37.1
-> >
->
->
+> Another idea I had, and Ard mentioned to me this morning that efistub
+> does something similar:
+> 
+> I think objcopy can rename symbol references.  So instead of calling
+> foo, I think you can use objcopy to call bar instead.
+> 
+> To avoid the case of Rust core refering to symbols typically provided
+> by the --rtlib={libgcc|compiler-rt}, what if we:
+> 1. build core.o (with reference to the unfavorable symbols)
+> 2. use objcopy to rename references in core.o to the symbols listed in
+> this file; maybe prepend them with `rust_core_` or something.
+> 3. provide this crate with panic'ing definitions, but for the renamed
+> symbols.
+> 
+> That way, enabling CONFIG_RUST=y won't hide the case where C code is
+> triggering such libcalls from the C compiler?
+> 
+> To restate the concern, I don't want CONFIG_RUST=y to hide that fact
+> that someone wrote `float x, y; if (x != y) ...` in C code, where the
+> C compiler will likely lower that to a libcall to __nesf2 since with
+> the current approach in this patch, linkage would proceed. The current
+> behavior is to intentionally fail to link.  I think what I describe
+> above may work to keep this intended behavior of the kernel's build
+> system.
+> 
+> Ah, looks like there's objcopy flags:
+>        --redefine-sym old=new
+>            Change the name of a symbol old, to new.  This can be
+> useful when one is trying link
+>            two things together for which you have no source, and there
+> are name collisions.
+> 
+>        --redefine-syms=filename
+>            Apply --redefine-sym to each symbol pair "old new" listed
+> in the file filename.
+>            filename is simply a flat file, with one symbol pair per
+> line.  Line comments may be
+>            introduced by the hash character.  This option may be given
+> more than once.
+> 
+> So probably could start with my diff from above, but use
+> --redefine-syms=filename instead of --strip-symbols=.
+> 
 > --
 > Thanks,
 > ~Nick Desaulniers
 
+This is the approach we are about to take, see
+https://github.com/Rust-for-Linux/linux/pull/779.
 
+It's easy for just one symbol that is known to be not defined, but it
+can be more complex as some of these symbols can be defined on a
+platform but not another, so we would have to generate a dynamic list
+of what symbols to "hijack" depending on the config. Currently we
+avoid this issue by having all symbols in compiler_builtins
+crate weak, but we couldn't weakly redefine a symbol.
 
---
-Thanks,
-~Nick Desaulniers
+It's certainly doable, though, but it require some effort. I am
+not quite available recently so hadn't further extend and polish my
+patch.
+
+Best,
+Gary
