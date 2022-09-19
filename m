@@ -2,56 +2,50 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 330A4C6FA8B
-	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Sep 2022 23:40:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2BF8C6FA82
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Sep 2022 23:50:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbiISXkc (ORCPT
+        id S229781AbiISXuq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 19 Sep 2022 19:40:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40832 "EHLO
+        Mon, 19 Sep 2022 19:50:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229733AbiISXkb (ORCPT
+        with ESMTP id S229681AbiISXun (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 19 Sep 2022 19:40:31 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE05446DB6
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Sep 2022 16:40:29 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id z97so1404355ede.8
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Sep 2022 16:40:29 -0700 (PDT)
+        Mon, 19 Sep 2022 19:50:43 -0400
+Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CEE83D5AA;
+        Mon, 19 Sep 2022 16:50:42 -0700 (PDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id 129so1274325vsi.10;
+        Mon, 19 Sep 2022 16:50:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
+        d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=NXzXxlM9sVEFzc66soX0I+Z/mq5m2rg9T8SoVpFvUT4=;
-        b=NsywTCeY9sd40b/41h2okvpTgyG2TSi3t/dg5pbH/L3beDvVkydnABPeMyhFxfDIgt
-         4OZkJs8sPvCO28LEtRRl+3W+3YNo6DLVmNhyIyLg+6fJ8XdVP3Pw424Mqr/64OBW8YJx
-         KH623RdzusneU5G9sBz+JF5PMau1u0ftV/Lbg=
+        bh=ObiI1LOvSQ4K2EeOpgqHdRP+Ejyw75lzaoql9+78EQw=;
+        b=o1e8CwLVOAi5voveJYTXKQBivySosunePQf6lLcfMAKrUL+kkkMM4llV+JLgrqI8hO
+         YY0qZJet1SROegPN+MIUIYRwOUff4zcGx/lHeZ14UW2GqvRonKt9OSIijW1m4slo95eV
+         HuWSZfk0L1Da9W3AqZZxuN2YIt3UvVuVz00QLn3DonOKsZQLZ2XCf0PGF0XMPOu/Hw1W
+         KBAcgmUjtdwcK7t8mGz1Wp4J0RTLZeSxRbLXBZpNYAJ0LQbiNemhNzGEwytSlf3oyI3q
+         Coa3v4pETrcKRg3cDg3PNZhmXdbf1uyq+TCw5GP70LOHTIvN1N3XWZzJPfp7ks25N2Mq
+         e+7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=NXzXxlM9sVEFzc66soX0I+Z/mq5m2rg9T8SoVpFvUT4=;
-        b=sjcoCmcoSZRc9J/9U0qtB8B/1gB0MJdOVzWrrSTKOsTvHfX19BTcjKTPfCJLNVdsWF
-         jYCBCPznJibYcMmkH7DlA2Z4ckjz9Z6VzjW9VQ9nZu0//4QccjDptMq9cvVv1OvCVeh7
-         42wHUj4OqcLF/CoAoc1txZRq/QgImsLm3JtwM+tPc2fB42h2Fhv343QVs0d7P8cn/W7Y
-         0yGsPHkhzdC0wcQ9WvZgISB2udKk9LJnTa3JjIc/M6HfycUAYszDVNXE04a5TkXjK2ik
-         0OtWsj41cQIDxA6u2s//Dlx/snmzXMcQYNama2p8y2cYV8PK1ln1yLxdo9BC9NFAGv1R
-         HmFw==
-X-Gm-Message-State: ACrzQf3r5S3oxhCAHYxd6AwgQZkXUXX655NrygWGakx5uCd0Dsld89tM
-        tCp5HYPAUwjc9tQ9dmYkHk0JBl5EUgV0rlUuZjg=
-X-Google-Smtp-Source: AMsMyM5XNNCloF4b0FD4BrBemaPuIp89ylqmSmoMZzcKK7HVfON468EGsLcjgZybZIJcmdYce1VfLQ==
-X-Received: by 2002:a05:6402:241d:b0:443:39c5:808b with SMTP id t29-20020a056402241d00b0044339c5808bmr17571838eda.39.1663630827343;
-        Mon, 19 Sep 2022 16:40:27 -0700 (PDT)
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com. [209.85.218.49])
-        by smtp.gmail.com with ESMTPSA id la10-20020a170907780a00b0077fc47605b4sm11739047ejc.217.2022.09.19.16.40.25
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Sep 2022 16:40:26 -0700 (PDT)
-Received: by mail-ej1-f49.google.com with SMTP id y17so2277432ejo.6
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Sep 2022 16:40:25 -0700 (PDT)
-X-Received: by 2002:a2e:9886:0:b0:26c:57d9:10c6 with SMTP id
- b6-20020a2e9886000000b0026c57d910c6mr778573ljj.309.1663630813877; Mon, 19 Sep
- 2022 16:40:13 -0700 (PDT)
+        bh=ObiI1LOvSQ4K2EeOpgqHdRP+Ejyw75lzaoql9+78EQw=;
+        b=hAE27Ep5Gc7XJ2URMK3NPUmx6TfRt5rZ1nS6RN0perTCqJmmjr66Lx5SzHZplTuKBz
+         aJ/M52ShDPggrhS2TT0x2I6aDJTqFzoFahcFH+qDWvGdFJKmKKHGWy/ez2X70IUWS9kE
+         OO7nRiuWEJ5C9PLVNuz9seY9480nfpCXPs+T5WO6bxGp/+geHWAsi8JoNcHRxcJ65nWm
+         lZSKY0mxpUs3ymqbmP+nU7zSR6B6xp3iKoxYwyfTMHo/SkPveLQ9jhpiidip3xgTTgl1
+         HV2zC58zXx2N9YQVFmWKu53W5beOB45BAe4D8vFwINdYVNHROWBryfJzatjlGj0IJyji
+         Hlzw==
+X-Gm-Message-State: ACrzQf2hSlWH/gC5pv+mY3SobkuX8eVL3rhNXRjuJ2r798HDzgrzniTX
+        U2j4iJTpFAMpo0sN9NzExdyld+BdmBip+5HXPmU=
+X-Google-Smtp-Source: AMsMyM5zBGpRWRRHjTEoNolL3My3hxRKT0jP2qArok4XQ9uH1DWogS6Ia6l6+6eb6Gzq6R+TDYGOhVjHliPybwGdbio=
+X-Received: by 2002:a67:ac45:0:b0:388:a1ff:7e89 with SMTP id
+ n5-20020a67ac45000000b00388a1ff7e89mr7771043vsh.42.1663631441184; Mon, 19 Sep
+ 2022 16:50:41 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220805154231.31257-13-ojeda@kernel.org> <Yu5Bex9zU6KJpcEm@yadro.com>
  <CANiq72=3j2NM2kS8iw14G6MnGirb0=O6XQyCsY9vVgsZ1DfLaQ@mail.gmail.com>
@@ -59,23 +53,22 @@ References: <20220805154231.31257-13-ojeda@kernel.org> <Yu5Bex9zU6KJpcEm@yadro.c
  <CAHk-=wgaBaVaK2K=N05fwWSSLM6YJx=yLmP4f7j6d6o=nCAtdw@mail.gmail.com>
  <CAHk-=whTDbFZKB4KJ6=74hoLcerTm3JuN3PV8G6ktcz+Xm1qew@mail.gmail.com>
  <YyivY6WIl/ahZQqy@wedsonaf-dev> <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
- <Yyjut3MHooCwzHRc@wedsonaf-dev>
-In-Reply-To: <Yyjut3MHooCwzHRc@wedsonaf-dev>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 19 Sep 2022 16:39:56 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
-Message-ID: <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
+ <Yyjut3MHooCwzHRc@wedsonaf-dev> <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
+In-Reply-To: <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
+From:   Alex Gaynor <alex.gaynor@gmail.com>
+Date:   Mon, 19 Sep 2022 19:50:29 -0400
+Message-ID: <CAFRnB2VPpLSMqQwFPEjZhde8+-c6LLms54QkMt+wZPjOTULESw@mail.gmail.com>
 Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc:     Matthew Wilcox <willy@infradead.org>,
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Matthew Wilcox <willy@infradead.org>,
         Kees Cook <keescook@chromium.org>,
         Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
         Konstantin Shelekhin <k.shelekhin@yadro.com>, ojeda@kernel.org,
-        alex.gaynor@gmail.com, ark.email@gmail.com,
-        bjorn3_gh@protonmail.com, bobo1239@web.de, bonifaido@gmail.com,
-        boqun.feng@gmail.com, davidgow@google.com, dev@niklasmohrin.de,
-        dsosnowski@dsosnowski.pl, foxhlchen@gmail.com, gary@garyguo.net,
-        geofft@ldpreload.com, gregkh@linuxfoundation.org,
+        ark.email@gmail.com, bjorn3_gh@protonmail.com, bobo1239@web.de,
+        bonifaido@gmail.com, boqun.feng@gmail.com, davidgow@google.com,
+        dev@niklasmohrin.de, dsosnowski@dsosnowski.pl, foxhlchen@gmail.com,
+        gary@garyguo.net, geofft@ldpreload.com, gregkh@linuxfoundation.org,
         jarkko@kernel.org, john.m.baublitz@gmail.com,
         leseulartichaut@gmail.com, linux-fsdevel@vger.kernel.org,
         linux-kernel@vger.kernel.org, m.falkowski@samsung.com,
@@ -88,81 +81,116 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Sep 19, 2022 at 3:35 PM Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+I think there is some amount of talking past each other here.
+
+Rust's rules are that a function that's safe must not exhibit UB, no
+matter what arguments they're called with. This can be done with
+static checking or dynamic checking, with obvious trade offs between
+the two.
+
+We've had pretty good success, thus far, modeling various kernel
+subsystems with APIs that follow this rule. But when there's not a
+good way, consistent with the kernel's idioms, to expose a kernel API
+in Rust that's safe, that doesn't mean it's impossible! In those cases
+we expose an `unsafe fn` in Rust. This means that the caller (e.g.,
+driver code) needs to ensure it meets the required pre-conditions for
+calling that function.
+
+This is how we square the circle of: How do we prioritize the kernel's
+goals, while also staying consistent with Rust's notion of safety?
+
+Wedson's point is that, when possible, finding ways to expose safe
+functions is better, since it puts less of a burden on driver authors.
+But, sadly, we all know we won't be able to find them in all
+circumstances -- we just want to have it as a goal to find them
+whenever possible.
+
+Regards,
+Alex
+
+On Mon, Sep 19, 2022 at 7:40 PM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
-> No one is talking about absolute safety guarantees. I am talking about
-> specific ones that Rust makes: these are well-documented and formally
-> defined.
+> On Mon, Sep 19, 2022 at 3:35 PM Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+> >
+> > No one is talking about absolute safety guarantees. I am talking about
+> > specific ones that Rust makes: these are well-documented and formally
+> > defined.
+>
+> If you cannot get over the fact that the kernel may have other
+> requirements that trump any language standards, we really can't work
+> together.
+>
+> Those Rust rules may make sense in other environments. But the kernel
+> really does have hard requirements that you continue to limp along
+> even if some fundamental rule has been violated. Exactly because
+> there's often no separate environment outside the kernel that can deal
+> with it.
+>
+> End result: a compiler - or language infrastructure - that says "my
+> rules are so ingrained that I cannot do that" is not one that is valid
+> for kernel work.
+>
+> This is not really any different from the whole notion of "allocation
+> failures cannot panic" that Rust people seemed to readily understand
+> is a major kernel requirement, and that the kernel needed a graceful
+> failure return instead of a hard panic.
+>
+> Also note that the kernel is perfectly willing to say "I will use
+> compiler flags that disable certain guarantees". We do it all the
+> time.
+>
+> For example, the C standard has a lot of "the compiler is allowed to
+> make this assumption". And then we disagree with those, and so "kernel
+> C" is different.
+>
+> For example, the standard says that dereferencing a NULL pointer is
+> undefined behavior, so a C compiler can see a dereference of a pointer
+> to be a guarantee that said pointer isn't NULL, and remove any
+> subsequent NULL pointer tests.
+>
+> That turns out to be one of those "obviously true in a perfect world,
+> but problematic in a real world with bugs", and we tell the compiler
+> to not do that by passing it the '-fno-delete-null-pointer-checks'
+> flag, because the compiler _depending_ on undefined behavior and
+> changing code generation in the build ends up being a really bad idea
+> from a security standpoint.
+>
+> Now, in C, most of these kinds of things come from the C standard
+> being very lax, and having much too many "this is undefined behavior"
+> rules. So in almost all cases we end up saying "we want the
+> well-defined implementation, not the 'strictly speaking, the language
+> specs allows the compiler to do Xyz".
+>
+> Rust comes from a different direction than C, and it may well be that
+> we very much need some of the rules to be relaxed.
+>
+> And hey, Rust people do know about "sometimes the rules have to be
+> relaxed". When it comes to integer overflows etc, there's a
+> "overflow-checks" flag, typically used for debug vs release builds.
+>
+> The kernel has similar issues where sometimes you might want the
+> strict checking (lockdep etc), and sometimes you may end up being less
+> strict and miss a few rules (eg "we don't maintain a preempt count for
+> this config, so we can't check RCU mode violations").
+>
+> > But I won't give up on Rust guarantees just yet, I'll try to find
+> > ergonomic ways to enforce them at compile time.
+>
+> I think that compile-time static checking is wonderful, and as much as
+> possible should be done 100% statically so that people cannot write
+> incorrect programs.
+>
+> But we all know that static checking is limited, and then the amount
+> of dynamic checking for violations is often something that will have
+> to depend on environment flags, because it may come with an exorbitant
+> price in the checking.
+>
+> Exactly like integer overflow checking.
+>
+>                  Linus
 
-If you cannot get over the fact that the kernel may have other
-requirements that trump any language standards, we really can't work
-together.
 
-Those Rust rules may make sense in other environments. But the kernel
-really does have hard requirements that you continue to limp along
-even if some fundamental rule has been violated. Exactly because
-there's often no separate environment outside the kernel that can deal
-with it.
 
-End result: a compiler - or language infrastructure - that says "my
-rules are so ingrained that I cannot do that" is not one that is valid
-for kernel work.
-
-This is not really any different from the whole notion of "allocation
-failures cannot panic" that Rust people seemed to readily understand
-is a major kernel requirement, and that the kernel needed a graceful
-failure return instead of a hard panic.
-
-Also note that the kernel is perfectly willing to say "I will use
-compiler flags that disable certain guarantees". We do it all the
-time.
-
-For example, the C standard has a lot of "the compiler is allowed to
-make this assumption". And then we disagree with those, and so "kernel
-C" is different.
-
-For example, the standard says that dereferencing a NULL pointer is
-undefined behavior, so a C compiler can see a dereference of a pointer
-to be a guarantee that said pointer isn't NULL, and remove any
-subsequent NULL pointer tests.
-
-That turns out to be one of those "obviously true in a perfect world,
-but problematic in a real world with bugs", and we tell the compiler
-to not do that by passing it the '-fno-delete-null-pointer-checks'
-flag, because the compiler _depending_ on undefined behavior and
-changing code generation in the build ends up being a really bad idea
-from a security standpoint.
-
-Now, in C, most of these kinds of things come from the C standard
-being very lax, and having much too many "this is undefined behavior"
-rules. So in almost all cases we end up saying "we want the
-well-defined implementation, not the 'strictly speaking, the language
-specs allows the compiler to do Xyz".
-
-Rust comes from a different direction than C, and it may well be that
-we very much need some of the rules to be relaxed.
-
-And hey, Rust people do know about "sometimes the rules have to be
-relaxed". When it comes to integer overflows etc, there's a
-"overflow-checks" flag, typically used for debug vs release builds.
-
-The kernel has similar issues where sometimes you might want the
-strict checking (lockdep etc), and sometimes you may end up being less
-strict and miss a few rules (eg "we don't maintain a preempt count for
-this config, so we can't check RCU mode violations").
-
-> But I won't give up on Rust guarantees just yet, I'll try to find
-> ergonomic ways to enforce them at compile time.
-
-I think that compile-time static checking is wonderful, and as much as
-possible should be done 100% statically so that people cannot write
-incorrect programs.
-
-But we all know that static checking is limited, and then the amount
-of dynamic checking for violations is often something that will have
-to depend on environment flags, because it may come with an exorbitant
-price in the checking.
-
-Exactly like integer overflow checking.
-
-                 Linus
+-- 
+All that is necessary for evil to succeed is for good people to do nothing.
