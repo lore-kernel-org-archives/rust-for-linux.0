@@ -2,124 +2,64 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E517C6FA86
-	for <rust-for-linux@archiver.kernel.org>; Tue, 13 Sep 2022 06:38:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E5BBC54EE9
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Sep 2022 01:53:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230394AbiIMGi1 (ORCPT
+        id S229447AbiISBxi (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 13 Sep 2022 02:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56968 "EHLO
+        Sun, 18 Sep 2022 21:53:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229997AbiIMGi0 (ORCPT
+        with ESMTP id S229623AbiISBxg (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 13 Sep 2022 02:38:26 -0400
-X-Greylist: delayed 52187 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 12 Sep 2022 23:38:24 PDT
-Received: from conssluserg-05.nifty.com (conssluserg-05.nifty.com [210.131.2.90])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B09A4F183;
-        Mon, 12 Sep 2022 23:38:24 -0700 (PDT)
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52]) (authenticated)
-        by conssluserg-05.nifty.com with ESMTP id 28D6c01e019386;
-        Tue, 13 Sep 2022 15:38:01 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 28D6c01e019386
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1663051081;
-        bh=tV9nEuhwkJ7n1kuPj+d/5yMKIVBWOfelLB6nLnhI3Mk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=nm7qyo/ZC8X5f+9Ia6Hy/XzQk6ncm8qP33zbXv9UtHpUJqgVPmyYTyw7o7AuLActU
-         5krhadDZtEg101BvUQFJNd1U/RdwtulP5zGgTYqYqDFNeHECFrtCWOuPiSLIDpPUFK
-         KFMXczU460o4Nvr+PVrQHFsRkhQVf5EH6lUjhczfQEfdYrc0pt/UAgEj9lYT1qVQTj
-         6OZ3+oMpCx+uxWqLzDQ/DDmyF1hh+O2+JGBZ38ANs4Leadxx4DkWXquNBPMqiI0SSS
-         7wMzK7FsiuYTTJLuK/vWGzpDX3xVQXPb+UM2YPGCPXpKYczsWn/nYkHbVWwAL/Gc6k
-         OLKmroaCMPRtg==
-X-Nifty-SrcIP: [209.85.210.52]
-Received: by mail-ot1-f52.google.com with SMTP id ck2-20020a056830648200b0065603aef276so1995683otb.12;
-        Mon, 12 Sep 2022 23:38:00 -0700 (PDT)
-X-Gm-Message-State: ACgBeo1sRIqBoChayjWSBZpZfaeb8cxVeiFDzbbA/aza6viJgoso2UFC
-        JBdO3BwumHd1PttITVtGwUudAlTwiBfKjLNGF1M=
-X-Google-Smtp-Source: AA6agR4ojz4kLyVwdg7KfNkE5DVjkROUMO6/BtwnXe2vVwLJN+exmsnfjgUzLo1y5NNjY/Xb+Bo/6iEHpf8JX1AtcYE=
-X-Received: by 2002:a05:6830:658b:b0:63b:3501:7167 with SMTP id
- cn11-20020a056830658b00b0063b35017167mr12198963otb.343.1663051079814; Mon, 12
- Sep 2022 23:37:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220805154231.31257-1-ojeda@kernel.org> <20220805154231.31257-24-ojeda@kernel.org>
- <CAK7LNAQ=JfmrnGAUNXm_4RTz0fOhzfYC=htZ-VuEx=HAJPNtmw@mail.gmail.com> <CANiq72kZEqAwr_m14mAFjHsFJTLjj7i4He0qyrprubpmBfOFdw@mail.gmail.com>
-In-Reply-To: <CANiq72kZEqAwr_m14mAFjHsFJTLjj7i4He0qyrprubpmBfOFdw@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Tue, 13 Sep 2022 15:37:23 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASzund0a=t6gz3Mfex3j6jMfjYW--nqv9x_wY=RzSR-=g@mail.gmail.com>
-Message-ID: <CAK7LNASzund0a=t6gz3Mfex3j6jMfjYW--nqv9x_wY=RzSR-=g@mail.gmail.com>
-Subject: Re: [PATCH v9 23/27] Kbuild: add Rust support
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
-        patches@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Finn Behrens <me@kloenk.de>,
-        Adam Bratschi-Kaye <ark.email@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        Boris-Chengbiao Zhou <bobo1239@web.de>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Douglas Su <d0u9.su@outlook.com>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        Antonio Terceiro <antonio.terceiro@linaro.org>,
-        Daniel Xu <dxu@dxuuu.xyz>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Sun, 18 Sep 2022 21:53:36 -0400
+X-Greylist: delayed 906 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 18 Sep 2022 18:53:33 PDT
+Received: from sender-op-o13.zoho.jp (sender-op-o13.zoho.jp [103.163.153.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D966C17E1F
+        for <rust-for-linux@vger.kernel.org>; Sun, 18 Sep 2022 18:53:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1663551503; cv=none; 
+        d=zohomail.jp; s=zohoarc; 
+        b=J2+fnOHbYN/wShwYIOgRC7OKEPEp9SGNACJLVnFgzZyvnPERlp4muTk3ePX1/+v25Au1/PwKSjYXqUHo2OiJw/kS8Lj8S+zDnROVqv0cNgJEksUKG0g98Jk35+s5umngNoLg6TSexy4rX9kI+F6M9VnZtXyEWQrVGLsWp8hnnDo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.jp; s=zohoarc; 
+        t=1663551503; h=Content-Type:Content-Transfer-Encoding:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=9bT8WeiM73a9pVQe/rXWRAo/AoKMHi442I9V9CX69x4=; 
+        b=FqEMT411mZxq12+z9z6It7pNcQ2UxX+ObUYZrjlOeHB/h/yWl1amkd16BpTtaPlvSs8P6QHf5j+lAh3nzHxLNpRso6uULuz0d2MW00AjIHy0iIGDlR4Ce9KEclD3wRfybqxsIHQ2pNw1fKsrK4M0dwtEDyOpci2hWFM3q+9JpEM=
+ARC-Authentication-Results: i=1; mx.zohomail.jp;
+        dkim=pass  header.i=exabit.dev;
+        spf=pass  smtp.mailfrom=tomo@exabit.dev;
+        dmarc=pass header.from=<tomo@exabit.dev>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1663551503;
+        s=zmail; d=exabit.dev; i=tomo@exabit.dev;
+        h=Date:Date:Message-Id:Message-Id:To:To:Subject:Subject:From:From:Mime-Version:Content-Type:Content-Transfer-Encoding:Reply-To:Cc;
+        bh=9bT8WeiM73a9pVQe/rXWRAo/AoKMHi442I9V9CX69x4=;
+        b=rfluVC8skp+SmuvnOS9IimCaEG7FK/Ebe8dG/IgtKgjxop71TuAYrXDFQ5NtSJwl
+        Q+pKaY9FXuNJIkqHaxpmdx2dfmi6QMPO7+RXoKnpREyTCXDXsNG3yGVfrzysEKlpLlw
+        oBMOKApTO9goggXrmyerwv1fD/iwfwpOgURUdhAw=
+Received: from localhost (p1292009-ipoe.ipoe.ocn.ne.jp [114.146.73.8]) by mx.zoho.jp
+        with SMTPS id 1663551501303187.90901923429112; Mon, 19 Sep 2022 10:38:21 +0900 (JST)
+Date:   Mon, 19 Sep 2022 10:38:20 +0900 (JST)
+Message-Id: <20220919.103820.680182888079022491.fujita@lima-default>
+To:     rust-for-linux@vger.kernel.org
+Subject: Rust e1000 driver (Intel Ethernet adapter)
+From:   FUJITA Tomonori <tomo@exabit.dev>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Sep 13, 2022 at 1:18 AM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> Hi Masahiro,
->
-> On Mon, Sep 12, 2022 at 5:08 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> >
-> > I have not figured out where this difference comes from.
->
-> It is the `RUSTC_BOOTSTRAP` environment variable: it allows to use
-> unstable featuers in the stable compiler.
+Hi,
 
+I've implemented Rust e1000 driver (Intel Ethernet adapter):
 
-Thanks, I learned a new thing.
+https://github.com/fujita/rust-e1000
 
+There are many places to use the C bindings directly for now. I try to
+clean up and push abstractions for NIC drivers (DMA, PCI, network,
+etc).
 
->
-> We currently set it in the global `Makefile`, but we could be more
-> explicit and do it on each command if you think that would be better.
+I can ping on QEMU. Needs a bit more work for real hardware.
 
-
-I checked "make compile_commands.json", but it collects build commands
-only for C.
-
-
-I did not see any bad scenario with the current approach.
-
-
-
-
-
-
-
-
->
-> If you want that we keep using the global export, then we can add a
-> comment explaining this to clarify.
->
-> Cheers,
-> Miguel
---
-Best Regards
-Masahiro Yamada
+Thanks,
