@@ -2,69 +2,56 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38168C6FA82
-	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Sep 2022 20:43:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E75C4ECAAA1
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Sep 2022 22:35:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbiISUnU (ORCPT
+        id S229948AbiISWfo (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 19 Sep 2022 16:43:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40636 "EHLO
+        Mon, 19 Sep 2022 18:35:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229647AbiISUnS (ORCPT
+        with ESMTP id S229604AbiISWfn (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 19 Sep 2022 16:43:18 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB7B048E84
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Sep 2022 13:43:17 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id y3so1513614ejc.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Sep 2022 13:43:17 -0700 (PDT)
+        Mon, 19 Sep 2022 18:35:43 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AB8C5005C;
+        Mon, 19 Sep 2022 15:35:41 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id n8so533534wmr.5;
+        Mon, 19 Sep 2022 15:35:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=axFkS9Utlog4o8yvW7z9cdhHkfxEIm+Wjlvn5hdmsPA=;
-        b=Bol7xpNVdUt4dkpqIrlKRbKtSZ69qX8bFD7bM+UNptU6uew8jXanmgFFa2RaCjw/0K
-         Viuw5KoW880GDkvlaepJfO1oNA6zu651EVs7nm6Ol+j+Qse3GrQl7IegVb+xVn3hyBjy
-         DGilG+n8/9qEUM0E90L3OPfddms9ynHNQP4ec=
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=jSHn4dypHtKElF3lnr9P4KEF/pRmmk/7yw3YSx+0bpY=;
+        b=RFjSdbmy21QGzdrDMTqenolUsRAcAjRsw69oTj2bD1gedcPkRWyLcpZjw6CT6UvAWh
+         WYIWrGjJrRaQ+c9RJka4vDgbp2eJ8PmMd/Md12OQPQ40iNcE+jHuW+yAyXSC4K+n+CaE
+         AKGrtBme1gdLE5gghf5k9HEYefNfSv1S8va1mUcqLmbnZYdb/4MW9kUK3yXhNJvshPrv
+         DeK+fraDMfAKDp60vo5y/XqiPnnGM/0jAl7lRleJ5EQof60FFbJMJy9qpTvr+ivLdrtl
+         IiawHoxLaxhRyClRxhWOOovYb8LdOGG4dGGuS7nCMJriNnBorEFxs2un2R3gMZ7UBbBr
+         38bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=axFkS9Utlog4o8yvW7z9cdhHkfxEIm+Wjlvn5hdmsPA=;
-        b=PM47qZDfF3DjxElqDVaqZUf1jVMu8wiJBW/UjS3srwh+I0hg2IdO/bpMBc5MdYONTT
-         1VI2TeHUm6USqR6Q1d58LBbQ6iDKmIlb4KT8cMaPGNNz9kB7STDiYmZPT+Es2lAA/pai
-         ScrYdCg6IlGzLg73UebU2wEajlf3ROHgFVi8MR4Zft8PDd7A7QAdKT3Bj0TJBY+v5RAW
-         NfRPEzZfQYZmQIIc7hIXpWZRAXIYtGcEB4Q4M0Z8gYdTvxl+eUU94ELDqmenB5T/qv/9
-         c1P1xqjcaq5R3G/kSkytCTuyzf4ZhKobK0qvCVxUbTZXrVSbKcbrcedlEDRGG24FvCij
-         tNsw==
-X-Gm-Message-State: ACrzQf0FTR1lItOxgk1mW5NkFQNgKvKdOZdQ8GhAmQMpLWbCGD3gULaH
-        5S0oEszvKHfoQ+u3FTZrw2S5Y+THce6Ck6DK1yY=
-X-Google-Smtp-Source: AMsMyM6R9iUpwKBU+47cXSkJjPD7i3tGoEE4Aa3lD00mhtNRrHXxSY58KZ3qIJ71v9PakBvDf5FLWg==
-X-Received: by 2002:a17:907:b12:b0:774:53bb:52a3 with SMTP id h18-20020a1709070b1200b0077453bb52a3mr13591026ejl.258.1663620195121;
-        Mon, 19 Sep 2022 13:43:15 -0700 (PDT)
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com. [209.85.218.51])
-        by smtp.gmail.com with ESMTPSA id h20-20020a50ed94000000b00447e5983478sm20914355edr.76.2022.09.19.13.43.12
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Sep 2022 13:43:14 -0700 (PDT)
-Received: by mail-ej1-f51.google.com with SMTP id lh5so1401442ejb.10
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Sep 2022 13:43:12 -0700 (PDT)
-X-Received: by 2002:a2e:b4ad:0:b0:26c:24f:b260 with SMTP id
- q13-20020a2eb4ad000000b0026c024fb260mr5573619ljm.173.1663620181394; Mon, 19
- Sep 2022 13:43:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220805154231.31257-13-ojeda@kernel.org> <Yu5Bex9zU6KJpcEm@yadro.com>
- <CANiq72=3j2NM2kS8iw14G6MnGirb0=O6XQyCsY9vVgsZ1DfLaQ@mail.gmail.com>
- <Yu6BXwtPZwYPIDT6@casper.infradead.org> <Yyh3kFUvt2aMh4nq@wedsonaf-dev>
- <CAHk-=wgaBaVaK2K=N05fwWSSLM6YJx=yLmP4f7j6d6o=nCAtdw@mail.gmail.com>
- <CAHk-=whTDbFZKB4KJ6=74hoLcerTm3JuN3PV8G6ktcz+Xm1qew@mail.gmail.com> <YyivY6WIl/ahZQqy@wedsonaf-dev>
-In-Reply-To: <YyivY6WIl/ahZQqy@wedsonaf-dev>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 19 Sep 2022 13:42:44 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
-Message-ID: <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
-Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=jSHn4dypHtKElF3lnr9P4KEF/pRmmk/7yw3YSx+0bpY=;
+        b=QhWGTw4CtPlQJVJhddvaTJ6iplRurMMe0i+hmFDkb5YsIQRf4dM+rTSfhMNhWcrE01
+         OgPCM8gFVJbZHNcr7CFc5zzFM/1Fkh2y+MsrJfCktPlplowQWBsOX8lLHtL8OvT6Dy3Y
+         KjJOjirQx3Rd0qjPeLIvT7T1MzRR5QwPQax417mXZCci1Kx9BROb43pHjSnSjcl7iphU
+         PltTIUIXRAz6CSQqQKcBIxDUIWK6hD79VKX64+KuV1MAIg2RU6GSKBIUWkn+ofra71Mw
+         NOzaoaul7oSylh7QiBITto4ZoO6Zgeelxki/pjR6q54L6D96zLlmF3KB8OGbypfS7slS
+         +x8w==
+X-Gm-Message-State: ACrzQf1MJiF36HaS1y5wLlIylq3D01mTUWeZAdRmsp+QbHMPtZdsXGQ+
+        BSPYoiCVrXI/7QnETsLF48Y=
+X-Google-Smtp-Source: AMsMyM7l+zi50m08SqGU2M58bPPALO4MgAlrDU6dma3vPsHf3f827jKIxq+BFUzENICBjQVKWkm6JA==
+X-Received: by 2002:a1c:38c1:0:b0:3b4:a8c8:2558 with SMTP id f184-20020a1c38c1000000b003b4a8c82558mr269059wma.82.1663626939515;
+        Mon, 19 Sep 2022 15:35:39 -0700 (PDT)
+Received: from wedsonaf-dev ([81.2.152.129])
+        by smtp.gmail.com with ESMTPSA id f8-20020a05600c154800b003b477532e66sm26150025wmg.2.2022.09.19.15.35.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Sep 2022 15:35:38 -0700 (PDT)
+Date:   Mon, 19 Sep 2022 23:35:35 +0100
+From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Matthew Wilcox <willy@infradead.org>,
         Kees Cook <keescook@chromium.org>,
         Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
@@ -81,91 +68,109 @@ Cc:     Matthew Wilcox <willy@infradead.org>,
         patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
         thesven73@gmail.com, viktor@v-gar.de,
         Andreas Hindborg <andreas.hindborg@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
+Message-ID: <Yyjut3MHooCwzHRc@wedsonaf-dev>
+References: <20220805154231.31257-13-ojeda@kernel.org>
+ <Yu5Bex9zU6KJpcEm@yadro.com>
+ <CANiq72=3j2NM2kS8iw14G6MnGirb0=O6XQyCsY9vVgsZ1DfLaQ@mail.gmail.com>
+ <Yu6BXwtPZwYPIDT6@casper.infradead.org>
+ <Yyh3kFUvt2aMh4nq@wedsonaf-dev>
+ <CAHk-=wgaBaVaK2K=N05fwWSSLM6YJx=yLmP4f7j6d6o=nCAtdw@mail.gmail.com>
+ <CAHk-=whTDbFZKB4KJ6=74hoLcerTm3JuN3PV8G6ktcz+Xm1qew@mail.gmail.com>
+ <YyivY6WIl/ahZQqy@wedsonaf-dev>
+ <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Sep 19, 2022 at 11:05 AM Wedson Almeida Filho
-<wedsonaf@gmail.com> wrote:
+On Mon, Sep 19, 2022 at 01:42:44PM -0700, Linus Torvalds wrote:
+> On Mon, Sep 19, 2022 at 11:05 AM Wedson Almeida Filho
+> <wedsonaf@gmail.com> wrote:
+> >
+> > As you know, we're trying to guarantee the absence of undefined
+> > behaviour for code written in Rust. And the context is _really_
+> > important, so important that leaving it up to comments isn't enough.
+> 
+> You need to realize that
+> 
+>  (a) reality trumps fantasy
+> 
+>  (b) kernel needs trump any Rust needs
+> 
+> And the *reality* is that there are no absolute guarantees.  Ever. The
+> "Rust is safe" is not some kind of absolute guarantee of code safety.
+> Never has been. Anybody who believes that should probably re-take
+> their kindergarten year, and stop believing in the Easter bunny and
+> Santa Claus.
+> 
+> Even "safe" rust code in user space will do things like panic when
+> things go wrong (overflows, allocation failures, etc). If you don't
+> realize that that is NOT some kind of true safely, I don't know what
+> to say.
+
+No one is talking about absolute safety guarantees. I am talking about
+specific ones that Rust makes: these are well-documented and formally
+defined.
+
+> Not completing the operation at all, is *not* really any better than
+> getting the wrong answer, it's only more debuggable.
 >
-> As you know, we're trying to guarantee the absence of undefined
-> behaviour for code written in Rust. And the context is _really_
-> important, so important that leaving it up to comments isn't enough.
+> In the kernel, "panic and stop" is not an option (it's actively worse
+> than even the wrong answer, since it's really not debugable), so the
+> kernel version of "panic" is "WARN_ON_ONCE()" and continue with the
+> wrong answer.
+> 
+> So this is something that I really *need* the Rust people to
+> understand. That whole reality of "safe" not being some absolute
+> thing, and the reality that the kernel side *requires* slightly
+> different rules than user space traditionally does.
+> 
+> > I don't care as much about allocation flags as I do about sleeping in an
+> > rcu read-side critical region. When CONFIG_PREEMPT=n, if some CPU makes
+> > the mistake of sleeping between rcu_read_lock()/rcu_read_unlock(), RCU
+> > will take that as a quiescent state, which may cause unsuspecting code
+> > waiting for a grace period to wake up too early and potentially free
+> > memory that is still in use, which is obviously undefined behaviour.
+> 
+> So?
+> 
+> You had a bug. Shit happens. We have a lot of debugging tools that
+> will give you a *HUGE* warning when said shit happens, including
+> sending automated reports to the distro maker. And then you fix the
+> bug.
+> 
+> Think of that "debugging tools give a huge warning" as being the
+> equivalent of std::panic in standard rust. Yes, the kernel will
+> continue (unless you have panic-on-warn set), because the kernel
+> *MUST* continue in order for that "report to upstream" to have a
+> chance of happening.
+> 
+> So it's technically a veryu different implementation from std:panic,
+> but you should basically see it as exactly that: a *technical*
+> difference, not a conceptual one. The rules for how the kernel deals
+> with bugs is just different, because we don't have core-files and
+> debuggers in the general case.
+> 
+> (And yes, you can have a kernel debugger, and you can just have the
+> WARN_ON_ONCE trigger the debugger, but think of all those billions of
+> devices that are in normal users hands).
+> 
+> And yes, in certain configurations, even those warnings will be turned
+> off because the state tracking isn't done. Again, that's just reality.
+> You don't need to use those configurations yourself if you don't like
+> them, but that does *NOT* mean that you get to say "nobody else gets
+> to use those configurations either".
+> 
+> Deal with it.
 
-You need to realize that
+While I disagree with some of what you write, the point is taken.
 
- (a) reality trumps fantasy
+But I won't give up on Rust guarantees just yet, I'll try to find
+ergonomic ways to enforce them at compile time.
 
- (b) kernel needs trump any Rust needs
-
-And the *reality* is that there are no absolute guarantees.  Ever. The
-"Rust is safe" is not some kind of absolute guarantee of code safety.
-Never has been. Anybody who believes that should probably re-take
-their kindergarten year, and stop believing in the Easter bunny and
-Santa Claus.
-
-Even "safe" rust code in user space will do things like panic when
-things go wrong (overflows, allocation failures, etc). If you don't
-realize that that is NOT some kind of true safely, I don't know what
-to say.
-
-Not completing the operation at all, is *not* really any better than
-getting the wrong answer, it's only more debuggable.
-
-In the kernel, "panic and stop" is not an option (it's actively worse
-than even the wrong answer, since it's really not debugable), so the
-kernel version of "panic" is "WARN_ON_ONCE()" and continue with the
-wrong answer.
-
-So this is something that I really *need* the Rust people to
-understand. That whole reality of "safe" not being some absolute
-thing, and the reality that the kernel side *requires* slightly
-different rules than user space traditionally does.
-
-> I don't care as much about allocation flags as I do about sleeping in an
-> rcu read-side critical region. When CONFIG_PREEMPT=n, if some CPU makes
-> the mistake of sleeping between rcu_read_lock()/rcu_read_unlock(), RCU
-> will take that as a quiescent state, which may cause unsuspecting code
-> waiting for a grace period to wake up too early and potentially free
-> memory that is still in use, which is obviously undefined behaviour.
-
-So?
-
-You had a bug. Shit happens. We have a lot of debugging tools that
-will give you a *HUGE* warning when said shit happens, including
-sending automated reports to the distro maker. And then you fix the
-bug.
-
-Think of that "debugging tools give a huge warning" as being the
-equivalent of std::panic in standard rust. Yes, the kernel will
-continue (unless you have panic-on-warn set), because the kernel
-*MUST* continue in order for that "report to upstream" to have a
-chance of happening.
-
-So it's technically a veryu different implementation from std:panic,
-but you should basically see it as exactly that: a *technical*
-difference, not a conceptual one. The rules for how the kernel deals
-with bugs is just different, because we don't have core-files and
-debuggers in the general case.
-
-(And yes, you can have a kernel debugger, and you can just have the
-WARN_ON_ONCE trigger the debugger, but think of all those billions of
-devices that are in normal users hands).
-
-And yes, in certain configurations, even those warnings will be turned
-off because the state tracking isn't done. Again, that's just reality.
-You don't need to use those configurations yourself if you don't like
-them, but that does *NOT* mean that you get to say "nobody else gets
-to use those configurations either".
-
-Deal with it.
-
-Or, you know, if you can't deal with the rules that the kernel
-requires, then just don't do kernel programming.
-
-Because in the end it really is that simple.  I really need you to
-understand that Rust in the kernel is dependent on *kernel* rules. Not
-some other random rules that exist elsewhere.
-
-                Linus
+Thanks,
+-Wedson
