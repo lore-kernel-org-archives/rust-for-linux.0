@@ -2,114 +2,183 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02D57C6FA82
-	for <rust-for-linux@archiver.kernel.org>; Tue, 20 Sep 2022 00:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DD817C6FA82
+	for <rust-for-linux@archiver.kernel.org>; Tue, 20 Sep 2022 00:41:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229747AbiITAPs (ORCPT
+        id S229548AbiITAlD (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 19 Sep 2022 20:15:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48566 "EHLO
+        Mon, 19 Sep 2022 20:41:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229557AbiITAPr (ORCPT
+        with ESMTP id S229456AbiITAlC (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 19 Sep 2022 20:15:47 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC02CE0EB
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Sep 2022 17:15:45 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id f20so1515606edf.6
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Sep 2022 17:15:45 -0700 (PDT)
+        Mon, 19 Sep 2022 20:41:02 -0400
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CF8A37FAC;
+        Mon, 19 Sep 2022 17:41:01 -0700 (PDT)
+Received: by mail-qt1-x829.google.com with SMTP id w2so730988qtv.9;
+        Mon, 19 Sep 2022 17:41:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=BgWrStjazBL3noD9/vk03t6GhWMu6WHkO8oDZrwsiw4=;
-        b=SJSO8IZCt0Y5kVGyIwQdueMBTnqTxxL958lu9VE+yxSsYNOU0eyCEEmnqg94jyfjNV
-         KNmUMvZPN7glZM0GJC6KmElL09bXeF6IzD009CSYWLhp9dSWYCICBezT84oZ8V12JkEM
-         /7eszFNQyjg/zQP3c6u5LG9DPaqw5laxsPfEw=
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date;
+        bh=A5JrRvFPvgTBxAfZAKAK1E/GXMmIkUYIowcl9smVVJA=;
+        b=RaNUMNTVXgx/6fVL2hyD3X1EB/Wd7IOHZ/0QNP01z3mZI6+UIfN8W/rCkqtEAf9Lnt
+         CXwcPDBlvdVwIpM2obbMk0biEbEI/5mb5uJSwHqKaDiw+GAeKge+Wdg42kShthTUavH7
+         tiwkZoqcna5m3cYrzJt8/wHMn3mYLPXjXTUsP/QIbnL9h+5OOwIsZftRF8w3DxlrYDF3
+         IlfuU+vyIDO78GOk7MM1CTKHFMfwCamPgQMQ48GUddpG1WMUJ012EtZfWcvFYUWNexs0
+         y3SRwYiVEHaJr+LnmAZ/qagtRaiG27x7NUOh2e/i996adwsIAo2ZZtsAqUZonVS9ntlI
+         jtPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=BgWrStjazBL3noD9/vk03t6GhWMu6WHkO8oDZrwsiw4=;
-        b=OV9ghNYZ2wKai1+bLOu+1yDk0wQGqwq2rKmR4Do/TJmSpAS5siXNMe03Q7/7joKsZa
-         y/VGLfDST6QAVqhxDebC9DD/mxPZ2oXHzdUKqHzKTO9yBywya3hgrfpDhGc4sa/PLKMD
-         nyHn8/VjW3BLUeD3KN9H0Incr6vyYwvL6DDIQ13cJaO/qmDSZkBcqvPTHWD2e5ul0yT/
-         tR8hiHrk2hc2hYQG8K8hL4NWTjJQvPlk1M+DNYVxEiTyCYIxFiv2ogbsEbEds5oPleCv
-         skjsqFCCvjQuF3Q/MnnUzZbYtlmWriGp1uEuBgKhgvxWKNRFjR5aa1xsNLAqJ0/NIoTI
-         p0tA==
-X-Gm-Message-State: ACrzQf1w/8Layr63lY2tE+LVsUPnuVAtPDPQiZkbEWdotD8z4lht24ob
-        6t2ky2Pb5oXc0PjNJkIfRF4SI/m7tjmZdrYGYVo=
-X-Google-Smtp-Source: AMsMyM681m/cRJgFVY1vCwnZSfzazUxIgDFSd4L/xr4gNn84kYHc3LeDqA7RkN9OZzqI1LKxegqHSQ==
-X-Received: by 2002:aa7:d98f:0:b0:454:44a0:f53e with SMTP id u15-20020aa7d98f000000b0045444a0f53emr3837118eds.425.1663632942587;
-        Mon, 19 Sep 2022 17:15:42 -0700 (PDT)
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com. [209.85.218.47])
-        by smtp.gmail.com with ESMTPSA id rl2-20020a170907216200b007415f8ffcbbsm16507519ejb.98.2022.09.19.17.15.41
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Sep 2022 17:15:41 -0700 (PDT)
-Received: by mail-ej1-f47.google.com with SMTP id l14so2392217eja.7
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Sep 2022 17:15:41 -0700 (PDT)
-X-Received: by 2002:a19:4f45:0:b0:49a:63c9:190d with SMTP id
- a5-20020a194f45000000b0049a63c9190dmr6637732lfk.61.1663632930544; Mon, 19 Sep
- 2022 17:15:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220805154231.31257-13-ojeda@kernel.org> <Yu5Bex9zU6KJpcEm@yadro.com>
- <CANiq72=3j2NM2kS8iw14G6MnGirb0=O6XQyCsY9vVgsZ1DfLaQ@mail.gmail.com>
- <Yu6BXwtPZwYPIDT6@casper.infradead.org> <Yyh3kFUvt2aMh4nq@wedsonaf-dev>
- <CAHk-=wgaBaVaK2K=N05fwWSSLM6YJx=yLmP4f7j6d6o=nCAtdw@mail.gmail.com>
- <CAHk-=whTDbFZKB4KJ6=74hoLcerTm3JuN3PV8G6ktcz+Xm1qew@mail.gmail.com>
- <YyivY6WIl/ahZQqy@wedsonaf-dev> <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
- <Yyjut3MHooCwzHRc@wedsonaf-dev> <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
- <CAFRnB2VPpLSMqQwFPEjZhde8+-c6LLms54QkMt+wZPjOTULESw@mail.gmail.com> <CAHk-=wiyD6KqZN8jFkMHPRPxrbyJEUDRP6+WaH9Q9hjDB5i1zg@mail.gmail.com>
-In-Reply-To: <CAHk-=wiyD6KqZN8jFkMHPRPxrbyJEUDRP6+WaH9Q9hjDB5i1zg@mail.gmail.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Mon, 19 Sep 2022 17:15:13 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wj6sDFk8ZXSEKUMj-J9zfrMSSO3jhBEaveVaJSUpr=O=w@mail.gmail.com>
-Message-ID: <CAHk-=wj6sDFk8ZXSEKUMj-J9zfrMSSO3jhBEaveVaJSUpr=O=w@mail.gmail.com>
-Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
-To:     Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=A5JrRvFPvgTBxAfZAKAK1E/GXMmIkUYIowcl9smVVJA=;
+        b=FNQBUfE5VokpTC7IMvR5K21jpUWsgLbvQMQMBs+ztJxwRWaJ6JEgCkyOFjICxlZfow
+         8d9ME20uNgSwCoBHSc6HXAw6nTK15h+z2fb1z5Gj8lKem/Eeke4S44OIkOp3P535n9wE
+         mJ+7ukwD+DLOc8D2d9Oj2tkV4vnsxX61xsEA5JHobIJLWtY3+SBgRUaqmCc1aIdEpmU0
+         2gSKqd2qzQiyV3dkm5XhH4rs18tZqt0Y9jClOF+jGRMi/pQEAbGr6TZ8j7X+Ws2FIYKn
+         hMLYR/J7L8oueictwSM8vNk8aDO099SHb4hdxvsIuT948OxyNMwM1mtNvm7pI72S2q2d
+         ulvA==
+X-Gm-Message-State: ACrzQf1jA4VXIc/qKeCf8tWYUawHH3pktu80OwzFv7hBm7tRCdgpp9zG
+        hjlyZJh8i08buKthJhqhXR8=
+X-Google-Smtp-Source: AMsMyM4pTk5E13cnJM1A2TVDqXD3X/MIa8ET3402ho4dQsYIrZ9xLMgSMJN6h2ea0GXIwziYqcVcGQ==
+X-Received: by 2002:ac8:5d8b:0:b0:35b:b035:9573 with SMTP id d11-20020ac85d8b000000b0035bb0359573mr16886528qtx.632.1663634460145;
+        Mon, 19 Sep 2022 17:41:00 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id ci5-20020a05622a260500b0033c36ef019esm11224361qtb.63.2022.09.19.17.40.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Sep 2022 17:40:59 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 92D0127C0054;
+        Mon, 19 Sep 2022 20:40:58 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Mon, 19 Sep 2022 20:40:58 -0400
+X-ME-Sender: <xms:GQwpYxs5WoT-9xt9OpFDvYrs_j6u2TXgW4Tt8Zn57hTR3AWVNi163g>
+    <xme:GQwpY6euksATrSemQrR3gjKHDp7KiveW75vQNHoU51FwpRKp-pyRjM672m4aF0YlJ
+    yfyYjUiVcaKwPMy4Q>
+X-ME-Received: <xmr:GQwpY0y_spK5A_ahtysOHDkV5dk8LriqJe1ouKzuNn3eZb1pOFCV-0pXeg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfedvkedgfeekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:GQwpY4Mn7ZQJEcsKfFhz7dIjZd9yMrBHyJqAxW8pWgDteTSfBTWeyQ>
+    <xmx:GQwpYx9Jgb1DHd7CcWK_NIaebxSsWy088tvYz7x8fGn3CgWhBC1k1w>
+    <xmx:GQwpY4WYOKO4NMKDKRPuy2aNTw61-N0pWhJSz0xS0KQD6wBfOhTttQ>
+    <xmx:GgwpYy1kMZKpelYYzNzlJjW4i-C_7MkVIXX5ANhA4zX0zE9JOcOLiQ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 19 Sep 2022 20:40:56 -0400 (EDT)
+Date:   Mon, 19 Sep 2022 17:40:38 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Matthew Wilcox <willy@infradead.org>,
         Kees Cook <keescook@chromium.org>,
         Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
         Konstantin Shelekhin <k.shelekhin@yadro.com>, ojeda@kernel.org,
         ark.email@gmail.com, bjorn3_gh@protonmail.com, bobo1239@web.de,
-        bonifaido@gmail.com, boqun.feng@gmail.com, davidgow@google.com,
-        dev@niklasmohrin.de, dsosnowski@dsosnowski.pl, foxhlchen@gmail.com,
-        gary@garyguo.net, geofft@ldpreload.com, gregkh@linuxfoundation.org,
+        bonifaido@gmail.com, davidgow@google.com, dev@niklasmohrin.de,
+        dsosnowski@dsosnowski.pl, foxhlchen@gmail.com, gary@garyguo.net,
+        geofft@ldpreload.com, gregkh@linuxfoundation.org,
         jarkko@kernel.org, john.m.baublitz@gmail.com,
         leseulartichaut@gmail.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, me@kloenk.de, milan@mdaverde.com,
-        mjmouse9999@gmail.com, patches@lists.linux.dev,
-        rust-for-linux@vger.kernel.org, thesven73@gmail.com,
-        viktor@v-gar.de, Andreas Hindborg <andreas.hindborg@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
+        linux-kernel@vger.kernel.org, m.falkowski@samsung.com,
+        me@kloenk.de, milan@mdaverde.com, mjmouse9999@gmail.com,
+        patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
+        thesven73@gmail.com, viktor@v-gar.de,
+        Andreas Hindborg <andreas.hindborg@wdc.com>
+Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
+Message-ID: <YykMBiE3L/ADVK0f@boqun-archlinux>
+References: <Yu6BXwtPZwYPIDT6@casper.infradead.org>
+ <Yyh3kFUvt2aMh4nq@wedsonaf-dev>
+ <CAHk-=wgaBaVaK2K=N05fwWSSLM6YJx=yLmP4f7j6d6o=nCAtdw@mail.gmail.com>
+ <CAHk-=whTDbFZKB4KJ6=74hoLcerTm3JuN3PV8G6ktcz+Xm1qew@mail.gmail.com>
+ <YyivY6WIl/ahZQqy@wedsonaf-dev>
+ <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
+ <Yyjut3MHooCwzHRc@wedsonaf-dev>
+ <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
+ <CAFRnB2VPpLSMqQwFPEjZhde8+-c6LLms54QkMt+wZPjOTULESw@mail.gmail.com>
+ <CAHk-=wiyD6KqZN8jFkMHPRPxrbyJEUDRP6+WaH9Q9hjDB5i1zg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wiyD6KqZN8jFkMHPRPxrbyJEUDRP6+WaH9Q9hjDB5i1zg@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Sep 19, 2022 at 4:58 PM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
+On Mon, Sep 19, 2022 at 04:58:06PM -0700, Linus Torvalds wrote:
+> On Mon, Sep 19, 2022 at 4:50 PM Alex Gaynor <alex.gaynor@gmail.com> wrote:
+> >
+> > Rust's rules are that a function that's safe must not exhibit UB, no
+> > matter what arguments they're called with. This can be done with
+> > static checking or dynamic checking, with obvious trade offs between
+> > the two.
+> 
+> I think you are missing just how many things are "unsafe" in certain
+> contexts and *cannot* be validated.
+> 
 > This is not some kind of "a few special things".
->
+> 
 > This is things like absolutely _anything_ that allocates memory, or
 > takes a lock, or does a number of other things.
+> 
+> Those things are simply not "safe" if you hold a spinlock, or if you
+> are in a RCU read-locked region.
+> 
+> And there is literally no way to check for it in certain configurations. None.
+> 
+> So are you going to mark every single function that takes a mutex as
+> being "unsafe"?
+> 
 
-Examples of "number of other things" ends up being things like
-"accessing user memory", which depending on what you are doing may be
-very common too.
+In this early experiment stage, if something is unsafe per Rust safety
+requirements, maybe we should mark it as "unsafe"? Not because Rust
+safety needs trump kernel needs, but because we need showcases to the
+Rust langauge people the things that are not working very well in Rust
+today.
 
-And btw, it's not only about the (multiple kinds of) atomic regions.
+I definitely agree that we CANNOT change kernel behaviors to solely
+fulfil Rust safety requirements, we (Rust-for-Linux people) should
+either find a way to check in compiler time or just mark it as "unsafe".
 
-We have other context rules in the kernel too, like "does floating
-point or vector unit calculations". Which you can actually do, but
-only in a kernel_fpu_begin/kernel_fpu_end region.
+Maybe I'm naive ;-) But keeping Rust safety requirements as they are
+helps communication with the people on the other side (Rust
+langauge/compiler): "Hey, I did everything per your safety requirements,
+and it ends like this, I'm not happy about it, could you figure out
+something helpful? After all, Rust is a *system programming" language,
+it should be able to handle things like these".
 
-Now, the floating point thing is rare enough that it's probably fine
-to just say "no floating point at all in Rust code".  It tends to be
-very special code, so you'd write it in C or inline assembly, because
-you're doing special things like using the vector unit for crypto
-hashes using special CPU instructions.
+Or we want to say "kernel is special, so please give me a option so that
+I don't need to worry about these UBs and deal with my real problems"?
+I don't have the first hand experience, but seems this is what we have
+been doing with C for many years. Do we want to try a new strategy? ;-)
+But perhaps it's not new, maybe it's done a few times already but didn't
+end well..
 
-                  Linus
+Anyway, if I really want to teach Rust language/compiler people "I know
+what I'm doing, the problem is that the language is not ready". What
+should I do?
+
+Regards,
+Boqun
+
+> Or are you just going to accept and understand that "hey, exactly like
+> with integer overflows, sometimes it will be checked, and sometimes it
+> just won't be".
+> 
+> Because that is literally the reality of the kernel. Sometimes you
+> WILL NOT have the checks, and you literally CANNOT have the checks.
+> 
+> This is just how reality is. You don't get to choose the universe you live in.
+> 
+>                   Linus
