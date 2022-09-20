@@ -2,192 +2,145 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EAA59C6FA82
-	for <rust-for-linux@archiver.kernel.org>; Tue, 20 Sep 2022 00:42:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2141EC54EE9
+	for <rust-for-linux@archiver.kernel.org>; Tue, 20 Sep 2022 15:55:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229763AbiITAmK (ORCPT
+        id S231226AbiITPzq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 19 Sep 2022 20:42:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44728 "EHLO
+        Tue, 20 Sep 2022 11:55:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbiITAmJ (ORCPT
+        with ESMTP id S229472AbiITPzp (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 19 Sep 2022 20:42:09 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0F6852823;
-        Mon, 19 Sep 2022 17:42:02 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id e16so1735865wrx.7;
-        Mon, 19 Sep 2022 17:42:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=w5NQ4eJ3AvEfMH3wO5wEmrLOkl9vV98yVIRJdzhJLL4=;
-        b=maTWnfMX3eLruQcCHwEUe7zRn4VJy5C/8UxKInbLs05VBNQHYWth5cIqaK4uh9WZRn
-         lufl9My/P5sxPjZ5ijNqVB9T5E4uVyAxaQDtp+KlJNnkyiCl8qp+NEnTZ20RC4fYFSKG
-         dG20Tw64ScdCJrYPOMubAu2EQIZy3CILsNGFomGFblAKlSKDZge9kXlWePsvJHvb1my9
-         hCo0pa2E31uH2ZHWP3GkpMqQPpE/cVVAP5m2xbreaALVi7zVS2h3PyTnHRoi6bca38e7
-         4oPK0Vf3OV1Y4wcS7B48C8gk2kyZqourLMuhbAb+PFwYg6f17UC4bFsMpClQ68tefvjp
-         CKig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=w5NQ4eJ3AvEfMH3wO5wEmrLOkl9vV98yVIRJdzhJLL4=;
-        b=Gm+ClFYdUlmfSCd92HCHVOS5Cp5Iw2WgCDILDgMcEIB7YDFGHl99m9O8HkZLsoWybl
-         0PRHwWRBnuuMWXgXQxPS47BNZZ4tDRJ6c5fr8pxv/m1QG6/kvprUxSSE0ga4p2nGrw+H
-         qQVQxg/60DXK+hEkz2H9i2acC1sPBPmm7PZq9NEm4zRreqN7Rnl4dg0nHu7x08R9CbaS
-         QabJVdw9hyUIkfk4i1WetNzC1HzkCWXqKMOi47YfGlKHBPCX4omN8H2H+VB9xmu1KrHO
-         y3SFu/vdyVHtgr27xRXfgzMyUTH34G2S48W0wQbGZ+ATrHX9SSmBMK2Yb/KEEeyCTpCX
-         IM4g==
-X-Gm-Message-State: ACrzQf15Wc3Mvz3y4Xyknote78dzH9ipYg5NIFNovxS9pdYz/lurPd8N
-        BqO0dtlN5bNbqoEKQvBT2QM=
-X-Google-Smtp-Source: AMsMyM65xueCHkVTZospAcdD0FJYQU96yl/tLa9PareYqdGoUoRSOBuOiZ1nMswxPPfIn22lpgwu0Q==
-X-Received: by 2002:a5d:500e:0:b0:22a:44ea:dee2 with SMTP id e14-20020a5d500e000000b0022a44eadee2mr12049069wrt.325.1663634521077;
-        Mon, 19 Sep 2022 17:42:01 -0700 (PDT)
-Received: from wedsonaf-dev ([81.2.152.129])
-        by smtp.gmail.com with ESMTPSA id bh16-20020a05600c3d1000b003b339438733sm170902wmb.19.2022.09.19.17.41.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Sep 2022 17:42:00 -0700 (PDT)
-Date:   Tue, 20 Sep 2022 01:41:58 +0100
-From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+        Tue, 20 Sep 2022 11:55:45 -0400
+Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F47543610;
+        Tue, 20 Sep 2022 08:55:41 -0700 (PDT)
+Received: from in01.mta.xmission.com ([166.70.13.51]:36382)
+        by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1oafay-00BoIG-CD; Tue, 20 Sep 2022 09:55:36 -0600
+Received: from ip68-110-29-46.om.om.cox.net ([68.110.29.46]:59828 helo=email.froward.int.ebiederm.org.xmission.com)
+        by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1oafaw-004fTi-Nm; Tue, 20 Sep 2022 09:55:36 -0600
+From:   "Eric W. Biederman" <ebiederm@xmission.com>
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Matthew Wilcox <willy@infradead.org>,
+Cc:     Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Matthew Wilcox <willy@infradead.org>,
         Kees Cook <keescook@chromium.org>,
         Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
         Konstantin Shelekhin <k.shelekhin@yadro.com>, ojeda@kernel.org,
-        alex.gaynor@gmail.com, ark.email@gmail.com,
-        bjorn3_gh@protonmail.com, bobo1239@web.de, bonifaido@gmail.com,
-        boqun.feng@gmail.com, davidgow@google.com, dev@niklasmohrin.de,
-        dsosnowski@dsosnowski.pl, foxhlchen@gmail.com, gary@garyguo.net,
-        geofft@ldpreload.com, gregkh@linuxfoundation.org,
+        ark.email@gmail.com, bjorn3_gh@protonmail.com, bobo1239@web.de,
+        bonifaido@gmail.com, boqun.feng@gmail.com, davidgow@google.com,
+        dev@niklasmohrin.de, dsosnowski@dsosnowski.pl, foxhlchen@gmail.com,
+        gary@garyguo.net, geofft@ldpreload.com, gregkh@linuxfoundation.org,
         jarkko@kernel.org, john.m.baublitz@gmail.com,
         leseulartichaut@gmail.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, m.falkowski@samsung.com,
-        me@kloenk.de, milan@mdaverde.com, mjmouse9999@gmail.com,
-        patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
-        thesven73@gmail.com, viktor@v-gar.de,
-        Andreas Hindborg <andreas.hindborg@wdc.com>
-Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
-Message-ID: <YykMVoeTKO99JJPj@wedsonaf-dev>
-References: <Yu5Bex9zU6KJpcEm@yadro.com>
- <CANiq72=3j2NM2kS8iw14G6MnGirb0=O6XQyCsY9vVgsZ1DfLaQ@mail.gmail.com>
- <Yu6BXwtPZwYPIDT6@casper.infradead.org>
- <Yyh3kFUvt2aMh4nq@wedsonaf-dev>
- <CAHk-=wgaBaVaK2K=N05fwWSSLM6YJx=yLmP4f7j6d6o=nCAtdw@mail.gmail.com>
- <CAHk-=whTDbFZKB4KJ6=74hoLcerTm3JuN3PV8G6ktcz+Xm1qew@mail.gmail.com>
- <YyivY6WIl/ahZQqy@wedsonaf-dev>
- <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
- <Yyjut3MHooCwzHRc@wedsonaf-dev>
- <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
+        linux-kernel@vger.kernel.org, me@kloenk.de, milan@mdaverde.com,
+        mjmouse9999@gmail.com, patches@lists.linux.dev,
+        rust-for-linux@vger.kernel.org, thesven73@gmail.com,
+        viktor@v-gar.de, Andreas Hindborg <andreas.hindborg@wdc.com>
+References: <20220805154231.31257-13-ojeda@kernel.org>
+        <Yu5Bex9zU6KJpcEm@yadro.com>
+        <CANiq72=3j2NM2kS8iw14G6MnGirb0=O6XQyCsY9vVgsZ1DfLaQ@mail.gmail.com>
+        <Yu6BXwtPZwYPIDT6@casper.infradead.org>
+        <Yyh3kFUvt2aMh4nq@wedsonaf-dev>
+        <CAHk-=wgaBaVaK2K=N05fwWSSLM6YJx=yLmP4f7j6d6o=nCAtdw@mail.gmail.com>
+        <CAHk-=whTDbFZKB4KJ6=74hoLcerTm3JuN3PV8G6ktcz+Xm1qew@mail.gmail.com>
+        <YyivY6WIl/ahZQqy@wedsonaf-dev>
+        <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
+        <Yyjut3MHooCwzHRc@wedsonaf-dev>
+        <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
+        <CAFRnB2VPpLSMqQwFPEjZhde8+-c6LLms54QkMt+wZPjOTULESw@mail.gmail.com>
+        <CAHk-=wiyD6KqZN8jFkMHPRPxrbyJEUDRP6+WaH9Q9hjDB5i1zg@mail.gmail.com>
+        <CAHk-=wj6sDFk8ZXSEKUMj-J9zfrMSSO3jhBEaveVaJSUpr=O=w@mail.gmail.com>
+Date:   Tue, 20 Sep 2022 10:55:27 -0500
+In-Reply-To: <CAHk-=wj6sDFk8ZXSEKUMj-J9zfrMSSO3jhBEaveVaJSUpr=O=w@mail.gmail.com>
+        (Linus Torvalds's message of "Mon, 19 Sep 2022 17:15:13 -0700")
+Message-ID: <87a66uxcpc.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
+Content-Type: text/plain
+X-XM-SPF: eid=1oafaw-004fTi-Nm;;;mid=<87a66uxcpc.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.110.29.46;;;frm=ebiederm@xmission.com;;;spf=softfail
+X-XM-AID: U2FsdGVkX1/feQ3pgxQ1gVLYi+MOVKIy82mZEHw2pBM=
+X-SA-Exim-Connect-IP: 68.110.29.46
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Sep 19, 2022 at 04:39:56PM -0700, Linus Torvalds wrote:
-> On Mon, Sep 19, 2022 at 3:35 PM Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
-> >
-> > No one is talking about absolute safety guarantees. I am talking about
-> > specific ones that Rust makes: these are well-documented and formally
-> > defined.
-> 
-> If you cannot get over the fact that the kernel may have other
-> requirements that trump any language standards, we really can't work
-> together.
-> 
-> Those Rust rules may make sense in other environments. But the kernel
-> really does have hard requirements that you continue to limp along
-> even if some fundamental rule has been violated. Exactly because
-> there's often no separate environment outside the kernel that can deal
-> with it.
-> 
-> End result: a compiler - or language infrastructure - that says "my
-> rules are so ingrained that I cannot do that" is not one that is valid
-> for kernel work.
-> 
-> This is not really any different from the whole notion of "allocation
-> failures cannot panic" that Rust people seemed to readily understand
-> is a major kernel requirement, and that the kernel needed a graceful
-> failure return instead of a hard panic.
+Linus Torvalds <torvalds@linux-foundation.org> writes:
 
-I am not a programming language/compiler person. My background is in
-kernel programming (Linux is not the only kernel in existence) so I have
-no difficulty whatsoever with kernel requirements; the graceful handling
-of allocation failures that you brought up is in fact something I added
-soon after I started started working on rust-for-linux and realised (in
-admittedly a bit of a shock) that userland Rust didn't have this at the
-time.
+> On Mon, Sep 19, 2022 at 4:58 PM Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
+>>
+>> This is not some kind of "a few special things".
+>>
+>> This is things like absolutely _anything_ that allocates memory, or
+>> takes a lock, or does a number of other things.
+>
+> Examples of "number of other things" ends up being things like
+> "accessing user memory", which depending on what you are doing may be
+> very common too.
+>
+> And btw, it's not only about the (multiple kinds of) atomic regions.
+>
+> We have other context rules in the kernel too, like "does floating
+> point or vector unit calculations". Which you can actually do, but
+> only in a kernel_fpu_begin/kernel_fpu_end region.
+>
+> Now, the floating point thing is rare enough that it's probably fine
+> to just say "no floating point at all in Rust code".  It tends to be
+> very special code, so you'd write it in C or inline assembly, because
+> you're doing special things like using the vector unit for crypto
+> hashes using special CPU instructions.
 
-> 
-> Also note that the kernel is perfectly willing to say "I will use
-> compiler flags that disable certain guarantees". We do it all the
-> time.
-> 
-> For example, the C standard has a lot of "the compiler is allowed to
-> make this assumption". And then we disagree with those, and so "kernel
-> C" is different.
-> 
-> For example, the standard says that dereferencing a NULL pointer is
-> undefined behavior, so a C compiler can see a dereference of a pointer
-> to be a guarantee that said pointer isn't NULL, and remove any
-> subsequent NULL pointer tests.
-> 
-> That turns out to be one of those "obviously true in a perfect world,
-> but problematic in a real world with bugs", and we tell the compiler
-> to not do that by passing it the '-fno-delete-null-pointer-checks'
-> flag, because the compiler _depending_ on undefined behavior and
-> changing code generation in the build ends up being a really bad idea
-> from a security standpoint.
-> 
-> Now, in C, most of these kinds of things come from the C standard
-> being very lax, and having much too many "this is undefined behavior"
-> rules. So in almost all cases we end up saying "we want the
-> well-defined implementation, not the 'strictly speaking, the language
-> specs allows the compiler to do Xyz".
-> 
-> Rust comes from a different direction than C, and it may well be that
-> we very much need some of the rules to be relaxed.
+I just want to point out that there are ways of representing things like
+the context you are running in during compile time.  I won't argue they
+are necessarily practical, but there are ways and by exploring those
+ways some practical solutions may result.
 
-Sure. In fact, we are likely to be able to influence the Rust language
-more and more quickly than C. So if things don't make sense, we may be
-able to change them.
+Instead of saying:
+spin_lock(&lock);
+do_something();
+spin_unlock(&lock);
 
-There are also opportunities here, for example, a compatible memory
-model and guaranteed honouring of dependency chains for more efficient
-synchronisation primitives. I'm not claiming this is surely going to
-happen or that it's easy, just that there's an opportunity to do better
-than C here.
+It is possible to say:
+with_spin_lock(&lock, do_something());
 
-> And hey, Rust people do know about "sometimes the rules have to be
-> relaxed". When it comes to integer overflows etc, there's a
-> "overflow-checks" flag, typically used for debug vs release builds.
-> 
-> The kernel has similar issues where sometimes you might want the
-> strict checking (lockdep etc), and sometimes you may end up being less
-> strict and miss a few rules (eg "we don't maintain a preempt count for
-> this config, so we can't check RCU mode violations").
-> 
-> > But I won't give up on Rust guarantees just yet, I'll try to find
-> > ergonomic ways to enforce them at compile time.
-> 
-> I think that compile-time static checking is wonderful, and as much as
-> possible should be done 100% statically so that people cannot write
-> incorrect programs.
-> 
-> But we all know that static checking is limited, and then the amount
-> of dynamic checking for violations is often something that will have
-> to depend on environment flags, because it may come with an exorbitant
-> price in the checking.
+This can be taken a step farther and with_spin_lock can pass a ``token''
+say a structure with no members that disappears at compile time that
+let's the code know it has the spinlock held.
 
-If we can't find an ergonomic way to enforce safety guarantees, we have
-fallbacks like unsafe functions or runtime enforcement. And as you
-point out, if the runtime cost is too high in certain scenarios, we
-do allow users to give up safety with a config as in the integer
-overflow case you mentioned. We do try to minimise those.
+In C I would do:
+struct have_spin_lock_x {
+	// nothing
+};
 
-Cheers,
--Wedson
+do_something(struct have_spin_lock_x context_guarantee)
+{
+	...;
+}
+
+I think most of the special contexts in the kernel can be represented in
+a similar manner.  A special parameter that can be passed and will
+compile out.
+
+I don't recall seeing anything like that tried in the kernel so I don't
+know if it makes sense or if it would get too wordy to live, but it is
+possible.  If passing a free context parameter is not too wordy it would
+catch silly errors, and would hopefully leave more mental space for
+developers to pay attention to the other details of the problems they
+are solving.
+
+*Shrug*  I don't know if rust allows for free parameters like that and
+if it does I don't know if it would be cheap enough to live.
+
+Eric
