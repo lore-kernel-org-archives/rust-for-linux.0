@@ -2,98 +2,141 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5B49ECAAD8
-	for <rust-for-linux@archiver.kernel.org>; Wed, 21 Sep 2022 11:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DD761ECAAD8
+	for <rust-for-linux@archiver.kernel.org>; Wed, 21 Sep 2022 14:19:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230154AbiIULre (ORCPT
+        id S229879AbiIUOTu (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 21 Sep 2022 07:47:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59886 "EHLO
+        Wed, 21 Sep 2022 10:19:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230161AbiIULrL (ORCPT
+        with ESMTP id S229797AbiIUOTs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 21 Sep 2022 07:47:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADF3695AFE;
-        Wed, 21 Sep 2022 04:46:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6703562A54;
-        Wed, 21 Sep 2022 11:46:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C663C433D6;
-        Wed, 21 Sep 2022 11:46:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1663760806;
-        bh=zzApFJtlF2vVGaeOdclIO2YCUDHgmUL8bWPaMWu56O8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=2K3Okgx70QTOprd6gQeOss5QT1quuEbtX7VidECZdD0VmJqvKxMor3DtgIK/1Rbz5
-         xVKcbZD0kv1BPss4TYCh189zpn0KD5n/XQ2HKU/DIEzHEsrtK0C1BqU3PLHJEEYLz7
-         Ydmu1yCwhkwGRoG/wukDUslGSMuHJyk34dFxVyvQ=
-Date:   Wed, 21 Sep 2022 13:46:44 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Konstantin Shelekhin <k.shelekhin@yadro.com>
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, ojeda@kernel.org,
-        alex.gaynor@gmail.com, ark.email@gmail.com,
-        bjorn3_gh@protonmail.com, bobo1239@web.de, bonifaido@gmail.com,
-        boqun.feng@gmail.com, davidgow@google.com, dev@niklasmohrin.de,
-        dsosnowski@dsosnowski.pl, foxhlchen@gmail.com, gary@garyguo.net,
-        geofft@ldpreload.com, jarkko@kernel.org, john.m.baublitz@gmail.com,
+        Wed, 21 Sep 2022 10:19:48 -0400
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05FC6101F3;
+        Wed, 21 Sep 2022 07:19:44 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id f26so4141784qto.11;
+        Wed, 21 Sep 2022 07:19:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date;
+        bh=T4MRIg2amNPk0okRjieG1Oas8X2+PWIKZP+dt1BOYDM=;
+        b=ax3vK7A0nQGNEl+2IzvUxm5YxtqY18wTTmzis0YY7UzXCQKkrdvAxEqSr3N2chScn6
+         3wckYD+lnepynBeAPfgkYvLMS15cq91myqV1sJSVU6d7j+/oTtg7PQalnWxMJKNMo9Ca
+         kYbUf/iHNdem9CcYQxXFscD43n9VVn029QhAkDNOO1Lj9yqwFrpAYI0OHJk+CunWAfy6
+         cHU9bQSH87w7YMisS4+Eoe4aQC4w6n5ZlWm50lAElbRGZQJZnOH2flDNtWlOG0C/l3Lo
+         vCuF2ELz7wuMaqT/DCzIgsN7ZQF/ADvC1CEePrjYrNX5IMN8+XRWO5IinL80syhcVC7d
+         wQrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date;
+        bh=T4MRIg2amNPk0okRjieG1Oas8X2+PWIKZP+dt1BOYDM=;
+        b=Y5XoP5w6kVrUtvgp8AkEx4PwZd5M6JCND3Nq6x8iJq73ktNvSQlNRNHqQvwcn42k0b
+         ++Zn1gk02mf/i7898lnW1THEwXZBXoISL64Tw56qFjzlFq5imf+mZC3zHelrQCfH6GUq
+         /d0iiiQzSdgm6SVElhtPoxhQmx1FBFuhkBMzB4kv6gXR+IhRLxwowFwupWN9IdtWCfUh
+         9ZNOCE82sc18JwvWvBlrMWCDLr2mDyrKUWUHhTeYis0K2uzJubcex3hPBCJOB3AT2OyR
+         heF7VliRuQoskqS0fX1uCLQSGiY3wr/7cSvR+cWkpfBhXgwlu5zVf9y0HGyYRP8t+7zM
+         7hZg==
+X-Gm-Message-State: ACrzQf0LTMpIV0uI8Rnca2xPbiagQubJlp7XvJgSQiFf7V6en4nGTH7H
+        yAVNeNFZwMbSMoFWltpdc8U=
+X-Google-Smtp-Source: AMsMyM5NlAkPbsiylhafIJTvP01gEn00rCmob8ynWjS6qTsX71vjvh2xisYRg7gT3DcXeAK0TjUTOA==
+X-Received: by 2002:a05:622a:60f:b0:35b:b737:bcbe with SMTP id z15-20020a05622a060f00b0035bb737bcbemr23985839qta.149.1663769983741;
+        Wed, 21 Sep 2022 07:19:43 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id u22-20020a05620a431600b006b929a56a2bsm1977010qko.3.2022.09.21.07.19.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Sep 2022 07:19:42 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailauth.nyi.internal (Postfix) with ESMTP id DC7F627C0054;
+        Wed, 21 Sep 2022 10:19:41 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Wed, 21 Sep 2022 10:19:41 -0400
+X-ME-Sender: <xms:ex0rY7rjAUpVaSmHrpz3VGEhQjwchQKcjVgDAxneomc_14OtlfkL5A>
+    <xme:ex0rY1ou1bgrwzPC9BcY9FXwObWcsHC3x4PrQf_Rqq_DvSIiWbqFzPy0Mo-yKzY5h
+    dyd97-7ZvJmTXRUow>
+X-ME-Received: <xmr:ex0rY4Pwwfj6kMYAoFxWfz9C7NJ8BDIK2FvgOimi_7sixjlEeLTmCQgB-g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeefuddgjeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhepvefghfeuveekudetgfevudeuudejfeeltdfhgfehgeekkeeigfdukefh
+    gfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:ex0rY-6FUMAIRWb0DDqh1bcU6MMxoc7XnvUoLgUkwONVlauXSIbG-g>
+    <xmx:ex0rY66eSFKi0qz-qpNnEEyRrVrdCRfALWfA1JUj9yimTKmmzRKQxw>
+    <xmx:ex0rY2iAyvTQZtrddFOhb2qJ0XDiUh0xi2BJYC8iCr9z-7rJPaBGoQ>
+    <xmx:fR0rYxJuRspc60dj9TBf7Deu37lxiSg49JcZgq7lRrOHPf-l15UG0w>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 21 Sep 2022 10:19:39 -0400 (EDT)
+Date:   Wed, 21 Sep 2022 07:19:16 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     comex <comexk@gmail.com>
+Cc:     Gary Guo <gary@garyguo.net>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Konstantin Shelekhin <k.shelekhin@yadro.com>, ojeda@kernel.org,
+        ark.email@gmail.com, bjorn3_gh@protonmail.com, bobo1239@web.de,
+        bonifaido@gmail.com, davidgow@google.com, dev@niklasmohrin.de,
+        dsosnowski@dsosnowski.pl, foxhlchen@gmail.com,
+        geofft@ldpreload.com, gregkh@linuxfoundation.org,
+        jarkko@kernel.org, john.m.baublitz@gmail.com,
         leseulartichaut@gmail.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, m.falkowski@samsung.com,
-        me@kloenk.de, milan@mdaverde.com, mjmouse9999@gmail.com,
-        patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
-        thesven73@gmail.com, torvalds@linux-foundation.org,
-        viktor@v-gar.de, wedsonaf@google.com,
-        Andreas Hindborg <andreas.hindborg@wdc.com>
+        linux-kernel@vger.kernel.org, me@kloenk.de, milan@mdaverde.com,
+        mjmouse9999@gmail.com, patches@lists.linux.dev,
+        rust-for-linux@vger.kernel.org, thesven73@gmail.com,
+        viktor@v-gar.de, Andreas Hindborg <andreas.hindborg@wdc.com>
 Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
-Message-ID: <Yyr5pKpjib/yqk5e@kroah.com>
-References: <20220805154231.31257-13-ojeda@kernel.org>
- <Yu5Bex9zU6KJpcEm@yadro.com>
- <CANiq72=3j2NM2kS8iw14G6MnGirb0=O6XQyCsY9vVgsZ1DfLaQ@mail.gmail.com>
- <Yyr0PmHaxvJ0r4hm@yadro.com>
+Message-ID: <YysdZIGp13ye0D4z@boqun-archlinux>
+References: <YyivY6WIl/ahZQqy@wedsonaf-dev>
+ <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
+ <Yyjut3MHooCwzHRc@wedsonaf-dev>
+ <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
+ <CAFRnB2VPpLSMqQwFPEjZhde8+-c6LLms54QkMt+wZPjOTULESw@mail.gmail.com>
+ <CAHk-=wiyD6KqZN8jFkMHPRPxrbyJEUDRP6+WaH9Q9hjDB5i1zg@mail.gmail.com>
+ <CAHk-=wj6sDFk8ZXSEKUMj-J9zfrMSSO3jhBEaveVaJSUpr=O=w@mail.gmail.com>
+ <87a66uxcpc.fsf@email.froward.int.ebiederm.org>
+ <20220920233947.0000345c@garyguo.net>
+ <C85081E7-99CB-421F-AA3D-60326A5181EB@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Yyr0PmHaxvJ0r4hm@yadro.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <C85081E7-99CB-421F-AA3D-60326A5181EB@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Sep 21, 2022 at 02:23:42PM +0300, Konstantin Shelekhin wrote:
-> On Sat, Aug 06, 2022 at 01:22:52PM +0200, Miguel Ojeda wrote:
-> > On Sat, Aug 6, 2022 at 12:25 PM Konstantin Shelekhin
-> > <k.shelekhin@yadro.com> wrote:
-> > >
-> > > I sense possible problems here. It's common for a kernel code to pass
-> > > flags during memory allocations.
-> > 
-> > Yes, of course. We will support this, but how exactly it will look
-> > like, to what extent upstream Rust's `alloc` could support our use
-> > cases, etc. has been on discussion for a long time.
-> > 
-> > For instance, see https://github.com/Rust-for-Linux/linux/pull/815 for
-> > a potential extension trait approach with no allocator carried on the
-> > type that Andreas wrote after a discussion in the last informal call:
-> > 
-> >     let a = Box::try_new_atomic(101)?;
+On Wed, Sep 21, 2022 at 02:42:18AM -0400, comex wrote:
 > 
-> In my opinion, the rest of the thread clearly shows that the
-> conservative approach is currently the only solid option. I suggest the
-> following explicit API:
 > 
->   let a = Box::try_new(size, flags)?;
->   Vec::try_push(item, flags)?;
+> > On Sep 20, 2022, at 6:39 PM, Gary Guo <gary@garyguo.net> wrote:
+> > 
+> > It should be noted however, atomic context is not something that a
+> > token can represent. You can only use tokens to restrict what you *can*
+> > do, but not what you *can't* do. There is no negative reasoning with
+> > tokens, you can't create a function that can only be called when you
+> > don't have token.
 > 
-> etc. Whadda you think?
+> On the other hand, it ought to be feasible to implement that kind of
+> ’negative reasoning' as a custom lint.  It might not work as well as
+> something built into the language, but it should work decently well,
+> and could serve as a prototype for a future built-in feature.
 
-Please, yes.  This fits the current kernel memory allocation pattern and
-allows for proper propagation of the allocation flags as needed through
-the system.  This is going to be required in any non-trivial kernel code
-anyway, might as well do it correct from the beginning.
+Interesting, do you have an example somewhere?
 
-It also allows for flags to change over time, which also happens.
-
-thanks,
-
-greg k-h
+Regards,
+Boqun
