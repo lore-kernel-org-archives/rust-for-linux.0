@@ -2,94 +2,134 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 68BCAC6FA8E
-	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Sep 2022 15:13:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AB9FC6FA92
+	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Sep 2022 15:19:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231811AbiI0PNp (ORCPT
+        id S230135AbiI0PTx (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 27 Sep 2022 11:13:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56308 "EHLO
+        Tue, 27 Sep 2022 11:19:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231240AbiI0PNo (ORCPT
+        with ESMTP id S231167AbiI0PTv (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 27 Sep 2022 11:13:44 -0400
-Received: from mta-01.yadro.com (mta-02.yadro.com [89.207.88.252])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C978115A67;
-        Tue, 27 Sep 2022 08:13:43 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-        by mta-01.yadro.com (Postfix) with ESMTP id 8F9B940355;
-        Tue, 27 Sep 2022 15:13:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=yadro.com; h=
-        in-reply-to:content-transfer-encoding:content-disposition
-        :content-type:content-type:mime-version:references:message-id
-        :subject:subject:from:from:date:date:received:received:received
-        :received; s=mta-01; t=1664291620; x=1666106021; bh=pxm0swS28gLH
-        pgdYF3S4Vmr6d+161ywTaiLccywugbM=; b=KlZud3yWQh72L/P3lz8vI9bBAsRU
-        iB9l5E/9TlmHyvSppykpCdUBIE7apkOGiL02mUp6+2UWcrvYRtOIz/6JBuS4YrQp
-        uDuSSiRADIsRBaPR3EsSgM/nVPaqX2rH4aUbI+u2fHQbNZVRpqS2k16RSc0Bynby
-        M7uuMGk8qg/vGa4=
-X-Virus-Scanned: amavisd-new at yadro.com
-Received: from mta-01.yadro.com ([127.0.0.1])
-        by localhost (mta-01.yadro.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id An4g0pvpQUWU; Tue, 27 Sep 2022 18:13:40 +0300 (MSK)
-Received: from T-EXCH-01.corp.yadro.com (T-EXCH-01.corp.yadro.com [172.17.10.101])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mta-01.yadro.com (Postfix) with ESMTPS id 8699A40311;
-        Tue, 27 Sep 2022 18:13:39 +0300 (MSK)
-Received: from T-EXCH-09.corp.yadro.com (172.17.11.59) by
- T-EXCH-01.corp.yadro.com (172.17.10.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384_P384) id
- 15.1.669.32; Tue, 27 Sep 2022 18:13:39 +0300
-Received: from yadro.com (10.199.23.254) by T-EXCH-09.corp.yadro.com
- (172.17.11.59) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.9; Tue, 27 Sep
- 2022 18:13:37 +0300
-Date:   Tue, 27 Sep 2022 18:13:35 +0300
-From:   Konstantin Shelekhin <k.shelekhin@yadro.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-CC:     Miguel Ojeda <ojeda@kernel.org>,
+        Tue, 27 Sep 2022 11:19:51 -0400
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 038FB3FA22
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Sep 2022 08:19:46 -0700 (PDT)
+Received: by mail-pg1-x533.google.com with SMTP id q9so9688185pgq.8
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Sep 2022 08:19:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date;
+        bh=ozwz/kr75NpC96tOUqziv2FbYDcS1Xg/Xc9JrcnYDIw=;
+        b=aD4rrECu2ausOVlLE4gUsa1xeFXbzCDqhUSEM6rCLHK5rgBwyb5IlVpaAwSzAj9rFc
+         8ss/JFQrnzUDOWJOgToiGQz3DbeSTLrRlmlivZobo7sNCVAPyZFjQXP4xDr73rtevCI5
+         12CxpLpirpMPby3pdyIUMhC7x3a/7EJIzGNLg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=ozwz/kr75NpC96tOUqziv2FbYDcS1Xg/Xc9JrcnYDIw=;
+        b=ybnqEB51+XnVITVcOtX0nQsMJ5qEVZN1CYanyOUaaM1CxCWCKytmbh39vYtx12fWHD
+         VyRpDKM7ihmTG3l6hCKZgBHR4GyeZPGBJl5PHDIR3tireiYaUCJJnTt7nTlL/Z0fh3q5
+         l1HPOcopoCMUhGW7D//FSBHtilGTwsQ649tjHXEFc2jADwOmeaghaHof59TxvqpgjhuB
+         7VekUKwvpxLvf5FVcuiMbJPDTWJfQaNJgrNf17qjB4pMBxnwox3CDdVPs5L0zK5cE9bu
+         QHkxWLhNb6sOc8bskGD1izzqCHtznXkjEYi/icUSMOGXE7TdfaOTNiNS6crZ8mmF0paJ
+         fBCQ==
+X-Gm-Message-State: ACrzQf06TOU/S32NXNsUYbqe/fW41G2r6eyC8KQTpajvDeN1A0Jo0Ruq
+        6bRb/Nzuj03qOdswvQ/QJxKYFg==
+X-Google-Smtp-Source: AMsMyM6u3m9PcqcUS16zstLBXfgnAsEawKfJRgbn2Z1VogzvRHBpOu67PA1zUb8r5rtEtpXZP+Nddw==
+X-Received: by 2002:a63:8942:0:b0:43b:e87e:3fc0 with SMTP id v63-20020a638942000000b0043be87e3fc0mr25309584pgd.531.1664291986021;
+        Tue, 27 Sep 2022 08:19:46 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id i14-20020a636d0e000000b0043954df3162sm1653393pgc.10.2022.09.27.08.19.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Sep 2022 08:19:45 -0700 (PDT)
+Date:   Tue, 27 Sep 2022 08:19:44 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Geert Stappers <stappers@stappers.nl>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-fsdevel@vger.kernel.org>, <patches@lists.linux.dev>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Gary Guo <gary@garyguo.net>, Matthew Bakhtiari <dev@mtbk.me>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>
-Subject: Re: [PATCH v10 08/27] rust: adapt `alloc` crate to the kernel
-Message-ID: <YzMTH1v9yZQcujLa@yadro.com>
+        Alex Gaynor <alex.gaynor@gmail.com>
+Subject: Re: [PATCH v10 27/27] MAINTAINERS: Rust
+Message-ID: <202209270818.5BA5AA62@keescook>
 References: <20220927131518.30000-1-ojeda@kernel.org>
- <20220927131518.30000-9-ojeda@kernel.org>
- <YzL/9mlOHemaey2n@yadro.com>
- <CANiq72kDPMKd0qLAMVrd2A3n9aAWhh2ps5DvKos58L=_V2-XwQ@mail.gmail.com>
+ <20220927131518.30000-28-ojeda@kernel.org>
+ <20220927141137.iovhhjufqdqcs6qn@gpm.stappers.nl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kDPMKd0qLAMVrd2A3n9aAWhh2ps5DvKos58L=_V2-XwQ@mail.gmail.com>
-X-Originating-IP: [10.199.23.254]
-X-ClientProxiedBy: T-EXCH-01.corp.yadro.com (172.17.10.101) To
- T-EXCH-09.corp.yadro.com (172.17.11.59)
+In-Reply-To: <20220927141137.iovhhjufqdqcs6qn@gpm.stappers.nl>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Sep 27, 2022 at 04:06:43PM +0200, Miguel Ojeda wrote:
-> «Внимание! Данное письмо от внешнего адресата!»
-> 
-> On Tue, Sep 27, 2022 at 3:52 PM Konstantin Shelekhin
-> <k.shelekhin@yadro.com> wrote:
+On Tue, Sep 27, 2022 at 04:11:38PM +0200, Geert Stappers wrote:
+> On Tue, Sep 27, 2022 at 03:14:58PM +0200, Miguel Ojeda wrote:
+> > Miguel, Alex and Wedson will be maintaining the Rust support.
 > >
-> > Not being able to pass GFP flags here kinda limits the scope of Rust in
-> > kernel. I think that it must be supported in the final version that gets
-> > in.
+> > Boqun, Gary and Bj�rn will be reviewers.
+> >
+> > Reviewed-by: Kees Cook <keescook@chromium.org>
+> > Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> > Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> > Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> > Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> > ---
+> >  MAINTAINERS | 18 ++++++++++++++++++
+> >  1 file changed, 18 insertions(+)
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index f5ca4aefd184..944dc265b64d 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -17758,6 +17758,24 @@ F:	include/rv/
+> >  F:	kernel/trace/rv/
+> >  F:	tools/verification/
+> >
+> > +RUST
+> > +M:	Miguel Ojeda <ojeda@kernel.org>
+> > +M:	Alex Gaynor <alex.gaynor@gmail.com>
+> > +M:	Wedson Almeida Filho <wedsonaf@google.com>
+> <screenshot from="response of a reply-to-all that I just did">
+>   ** Address not found **
 > 
-> Flags will be supported one way or the other in the future, but I was
-> requested to do v10 as a v9 with the last nits resolved.
+>   Your message wasn't delivered to wedsonaf@google.com because the
+>   address couldn't be found, or is unable to receive mail.
 > 
-> Please see the cover letter for details.
+>   Learn more here: https://support.google.com/mail/answer/6596
+> 
+>   The response was:
+> 
+>     The email account that you tried to reach does not exist. Please try
+>     double-checking the recipient's email address for typos or unnecessary
+>     spaces. Learn more at https://support.google.com/mail/answer/6596
+> </screenshot>
 
-Sorry, my bad.
+Wedson, can you send (or Ack) the following patch? :)
+
+diff --git a/.mailmap b/.mailmap
+index d175777af078..3a7fe4ee56fb 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -433,6 +433,7 @@ Vlad Dogaru <ddvlad@gmail.com> <vlad.dogaru@intel.com>
+ Vladimir Davydov <vdavydov.dev@gmail.com> <vdavydov@parallels.com>
+ Vladimir Davydov <vdavydov.dev@gmail.com> <vdavydov@virtuozzo.com>
+ WeiXiong Liao <gmpy.liaowx@gmail.com> <liaoweixiong@allwinnertech.com>
++Wedson Almeida Filho <wedsonaf@gmail.com> <wedsonaf@google.com>
+ Will Deacon <will@kernel.org> <will.deacon@arm.com>
+ Wolfram Sang <wsa@kernel.org> <w.sang@pengutronix.de>
+ Wolfram Sang <wsa@kernel.org> <wsa@the-dreams.de>
+
+-- 
+Kees Cook
