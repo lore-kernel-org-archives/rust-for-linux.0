@@ -2,37 +2,37 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EBBC4C6FA83
-	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Sep 2022 13:21:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01D99C6FA82
+	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Sep 2022 13:22:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232714AbiI0NVf (ORCPT
+        id S232529AbiI0NW0 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 27 Sep 2022 09:21:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36036 "EHLO
+        Tue, 27 Sep 2022 09:22:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232733AbiI0NTa (ORCPT
+        with ESMTP id S232787AbiI0NUZ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 27 Sep 2022 09:19:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC8418D0EC;
-        Tue, 27 Sep 2022 06:18:02 -0700 (PDT)
+        Tue, 27 Sep 2022 09:20:25 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F15232EDD;
+        Tue, 27 Sep 2022 06:18:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 748DB6198D;
-        Tue, 27 Sep 2022 13:17:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8578DC433D7;
-        Tue, 27 Sep 2022 13:17:16 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A9B30B81BD8;
+        Tue, 27 Sep 2022 13:18:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95A3C433D6;
+        Tue, 27 Sep 2022 13:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664284639;
-        bh=2B+PAusyrUY1+RTacruOrdpdxv1/q18B2Zb4T5odmiQ=;
+        s=k20201202; t=1664284682;
+        bh=9IVkNPq5zmrDv2ai6orRhQNRN0peedtsjrPEDhU8vGI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JbnGDAOb8ry6PWnq/H6GXibOCIUQMgu7ueZEUylfniJvnB5gsujj+n+ijOVLAKl/w
-         QgPV1EYYQKoRkGb3+n25pbpQ9CqK3aNYGJMabG03BvEPQ02XmSvR4CvBPOGFwV6KE2
-         geR2Rn1RMBbn0+VseZFid62NQ692QfjKoNWhj8VTEPImFBqh+97uE/od8cOrbcFZoQ
-         +F3xStYMYE3jSvHuaBiPpn7a4mLlQC1Fn6hwaChZs3OhnH4YzWIEtZneUP4bQXpth3
-         NU4MaBOW/DfElcnwsEEAe4lxVZNHisI8nCsbUqq6oODZBe3tgJ8OG2boupnmxfTD/5
-         8w50oEjaey89w==
+        b=m9wB32baNxr6T3sTcPBf62IyXCS8C/WVoFnRhwiHJlvDldFZWjBGWRG324LwyVXxe
+         QFlLEu61e1t469BSVtY+joALJferewSNztmUSdK1vHIcib5xCgmGf0TKocazNVlOk1
+         rm/xjE/Q4eeyIs+n3RFh/khs0f9sXv53BspP/vXI6wSpNFXMcTwnCHnc2J10j1uNzi
+         IO6VHUJO+TzBkQY9pRf1RMx7OS/tnXgGej/wpz+aDyDmKzgyJXpr0aOVQJFE5B94Tx
+         TvnC7KPwwSO3clf3a7EHULnv2dzVv0H6GYrYzRWDIEYbXiuCUdpGSUCpyQhhxSDmTV
+         yjAVK2Dj5PINw==
 From:   Miguel Ojeda <ojeda@kernel.org>
 To:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -42,13 +42,14 @@ Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Miguel Ojeda <ojeda@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Finn Behrens <me@kloenk.de>,
         Wedson Almeida Filho <wedsonaf@google.com>,
-        David Gow <davidgow@google.com>,
+        Milan Landaverde <milan@mdaverde.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
-Subject: [PATCH v10 19/27] scripts: add `generate_rust_target.rs`
-Date:   Tue, 27 Sep 2022 15:14:50 +0200
-Message-Id: <20220927131518.30000-20-ojeda@kernel.org>
+Subject: [PATCH v10 26/27] samples: add first Rust examples
+Date:   Tue, 27 Sep 2022 15:14:57 +0200
+Message-Id: <20220927131518.30000-27-ojeda@kernel.org>
 In-Reply-To: <20220927131518.30000-1-ojeda@kernel.org>
 References: <20220927131518.30000-1-ojeda@kernel.org>
 MIME-Version: 1.0
@@ -57,216 +58,219 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This script takes care of generating the custom target specification
-file for `rustc`, based on the kernel configuration.
+The beginning of a set of Rust modules that showcase how Rust
+modules look like and how to use the abstracted kernel features.
 
-It also serves as an example of a Rust host program.
+It also includes an example of a Rust host program with
+several modules.
 
-A dummy architecture is kept in this patch so that a later patch
-adds x86 support on top with as few changes as possible.
+These samples also double as tests in the CI.
 
 Reviewed-by: Kees Cook <keescook@chromium.org>
 Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
 Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+Co-developed-by: Finn Behrens <me@kloenk.de>
+Signed-off-by: Finn Behrens <me@kloenk.de>
 Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
 Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-Co-developed-by: David Gow <davidgow@google.com>
-Signed-off-by: David Gow <davidgow@google.com>
+Co-developed-by: Milan Landaverde <milan@mdaverde.com>
+Signed-off-by: Milan Landaverde <milan@mdaverde.com>
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- scripts/.gitignore              |   1 +
- scripts/generate_rust_target.rs | 171 ++++++++++++++++++++++++++++++++
- 2 files changed, 172 insertions(+)
- create mode 100644 scripts/generate_rust_target.rs
+ samples/Kconfig                   |  2 ++
+ samples/Makefile                  |  1 +
+ samples/rust/Kconfig              | 30 ++++++++++++++++++++++++
+ samples/rust/Makefile             |  5 ++++
+ samples/rust/hostprogs/.gitignore |  3 +++
+ samples/rust/hostprogs/Makefile   |  5 ++++
+ samples/rust/hostprogs/a.rs       |  7 ++++++
+ samples/rust/hostprogs/b.rs       |  5 ++++
+ samples/rust/hostprogs/single.rs  | 12 ++++++++++
+ samples/rust/rust_minimal.rs      | 38 +++++++++++++++++++++++++++++++
+ 10 files changed, 108 insertions(+)
+ create mode 100644 samples/rust/Kconfig
+ create mode 100644 samples/rust/Makefile
+ create mode 100644 samples/rust/hostprogs/.gitignore
+ create mode 100644 samples/rust/hostprogs/Makefile
+ create mode 100644 samples/rust/hostprogs/a.rs
+ create mode 100644 samples/rust/hostprogs/b.rs
+ create mode 100644 samples/rust/hostprogs/single.rs
+ create mode 100644 samples/rust/rust_minimal.rs
 
-diff --git a/scripts/.gitignore b/scripts/.gitignore
-index eed308bef604..b7aec8eb1bd4 100644
---- a/scripts/.gitignore
-+++ b/scripts/.gitignore
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- /asn1_compiler
- /bin2c
-+/generate_rust_target
- /insert-sys-cert
- /kallsyms
- /module.lds
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+diff --git a/samples/Kconfig b/samples/Kconfig
+index 470ee3baf2e1..0d81c00289ee 100644
+--- a/samples/Kconfig
++++ b/samples/Kconfig
+@@ -263,6 +263,8 @@ config SAMPLE_CORESIGHT_SYSCFG
+ 	  This demonstrates how a user may create their own CoreSight
+ 	  configurations and easily load them into the system at runtime.
+ 
++source "samples/rust/Kconfig"
++
+ endif # SAMPLES
+ 
+ config HAVE_SAMPLE_FTRACE_DIRECT
+diff --git a/samples/Makefile b/samples/Makefile
+index 701e912ab5af..9832ef3f8fcb 100644
+--- a/samples/Makefile
++++ b/samples/Makefile
+@@ -35,3 +35,4 @@ subdir-$(CONFIG_SAMPLE_WATCH_QUEUE)	+= watch_queue
+ obj-$(CONFIG_DEBUG_KMEMLEAK_TEST)	+= kmemleak/
+ obj-$(CONFIG_SAMPLE_CORESIGHT_SYSCFG)	+= coresight/
+ obj-$(CONFIG_SAMPLE_FPROBE)		+= fprobe/
++obj-$(CONFIG_SAMPLES_RUST)		+= rust/
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
 new file mode 100644
-index 000000000000..7256c9606cf0
+index 000000000000..841e0906e943
 --- /dev/null
-+++ b/scripts/generate_rust_target.rs
-@@ -0,0 +1,171 @@
++++ b/samples/rust/Kconfig
+@@ -0,0 +1,30 @@
++# SPDX-License-Identifier: GPL-2.0
++
++menuconfig SAMPLES_RUST
++	bool "Rust samples"
++	depends on RUST
++	help
++	  You can build sample Rust kernel code here.
++
++	  If unsure, say N.
++
++if SAMPLES_RUST
++
++config SAMPLE_RUST_MINIMAL
++	tristate "Minimal"
++	help
++	  This option builds the Rust minimal module sample.
++
++	  To compile this as a module, choose M here:
++	  the module will be called rust_minimal.
++
++	  If unsure, say N.
++
++config SAMPLE_RUST_HOSTPROGS
++	bool "Host programs"
++	help
++	  This option builds the Rust host program samples.
++
++	  If unsure, say N.
++
++endif # SAMPLES_RUST
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+new file mode 100644
+index 000000000000..1daba5f8658a
+--- /dev/null
++++ b/samples/rust/Makefile
+@@ -0,0 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0
++
++obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
++
++subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
+diff --git a/samples/rust/hostprogs/.gitignore b/samples/rust/hostprogs/.gitignore
+new file mode 100644
+index 000000000000..a6c173da5048
+--- /dev/null
++++ b/samples/rust/hostprogs/.gitignore
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0
++
++single
+diff --git a/samples/rust/hostprogs/Makefile b/samples/rust/hostprogs/Makefile
+new file mode 100644
+index 000000000000..8ddcbd7416db
+--- /dev/null
++++ b/samples/rust/hostprogs/Makefile
+@@ -0,0 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0
++
++hostprogs-always-y := single
++
++single-rust := y
+diff --git a/samples/rust/hostprogs/a.rs b/samples/rust/hostprogs/a.rs
+new file mode 100644
+index 000000000000..f7a4a3d0f4e0
+--- /dev/null
++++ b/samples/rust/hostprogs/a.rs
+@@ -0,0 +1,7 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! The custom target specification file generator for `rustc`.
-+//!
-+//! To configure a target from scratch, a JSON-encoded file has to be passed
-+//! to `rustc` (introduced in [RFC 131]). These options and the file itself are
-+//! unstable. Eventually, `rustc` should provide a way to do this in a stable
-+//! manner. For instance, via command-line arguments. Therefore, this file
-+//! should avoid using keys which can be set via `-C` or `-Z` options.
-+//!
-+//! [RFC 131]: https://rust-lang.github.io/rfcs/0131-target-specification.html
++//! Rust single host program sample: module `a`.
 +
-+use std::{
-+    collections::HashMap,
-+    fmt::{Display, Formatter, Result},
-+    io::BufRead,
-+};
-+
-+enum Value {
-+    Boolean(bool),
-+    Number(i32),
-+    String(String),
-+    Object(Object),
++pub(crate) fn f(x: i32) {
++    println!("The number is {}.", x);
 +}
+diff --git a/samples/rust/hostprogs/b.rs b/samples/rust/hostprogs/b.rs
+new file mode 100644
+index 000000000000..c1675890648f
+--- /dev/null
++++ b/samples/rust/hostprogs/b.rs
+@@ -0,0 +1,5 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+type Object = Vec<(String, Value)>;
++//! Rust single host program sample: module `b`.
 +
-+/// Minimal "almost JSON" generator (e.g. no `null`s, no arrays, no escaping),
-+/// enough for this purpose.
-+impl Display for Value {
-+    fn fmt(&self, formatter: &mut Formatter<'_>) -> Result {
-+        match self {
-+            Value::Boolean(boolean) => write!(formatter, "{}", boolean),
-+            Value::Number(number) => write!(formatter, "{}", number),
-+            Value::String(string) => write!(formatter, "\"{}\"", string),
-+            Value::Object(object) => {
-+                formatter.write_str("{")?;
-+                if let [ref rest @ .., ref last] = object[..] {
-+                    for (key, value) in rest {
-+                        write!(formatter, "\"{}\": {},", key, value)?;
-+                    }
-+                    write!(formatter, "\"{}\": {}", last.0, last.1)?;
-+                }
-+                formatter.write_str("}")
-+            }
-+        }
-+    }
-+}
++pub(crate) const CONSTANT: i32 = 42;
+diff --git a/samples/rust/hostprogs/single.rs b/samples/rust/hostprogs/single.rs
+new file mode 100644
+index 000000000000..8c48a119339a
+--- /dev/null
++++ b/samples/rust/hostprogs/single.rs
+@@ -0,0 +1,12 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+struct TargetSpec(Object);
++//! Rust single host program sample.
 +
-+impl TargetSpec {
-+    fn new() -> TargetSpec {
-+        TargetSpec(Vec::new())
-+    }
-+}
-+
-+trait Push<T> {
-+    fn push(&mut self, key: &str, value: T);
-+}
-+
-+impl Push<bool> for TargetSpec {
-+    fn push(&mut self, key: &str, value: bool) {
-+        self.0.push((key.to_string(), Value::Boolean(value)));
-+    }
-+}
-+
-+impl Push<i32> for TargetSpec {
-+    fn push(&mut self, key: &str, value: i32) {
-+        self.0.push((key.to_string(), Value::Number(value)));
-+    }
-+}
-+
-+impl Push<String> for TargetSpec {
-+    fn push(&mut self, key: &str, value: String) {
-+        self.0.push((key.to_string(), Value::String(value)));
-+    }
-+}
-+
-+impl Push<&str> for TargetSpec {
-+    fn push(&mut self, key: &str, value: &str) {
-+        self.push(key, value.to_string());
-+    }
-+}
-+
-+impl Push<Object> for TargetSpec {
-+    fn push(&mut self, key: &str, value: Object) {
-+        self.0.push((key.to_string(), Value::Object(value)));
-+    }
-+}
-+
-+impl Display for TargetSpec {
-+    fn fmt(&self, formatter: &mut Formatter<'_>) -> Result {
-+        // We add some newlines for clarity.
-+        formatter.write_str("{\n")?;
-+        if let [ref rest @ .., ref last] = self.0[..] {
-+            for (key, value) in rest {
-+                write!(formatter, "    \"{}\": {},\n", key, value)?;
-+            }
-+            write!(formatter, "    \"{}\": {}\n", last.0, last.1)?;
-+        }
-+        formatter.write_str("}")
-+    }
-+}
-+
-+struct KernelConfig(HashMap<String, String>);
-+
-+impl KernelConfig {
-+    /// Parses `include/config/auto.conf` from `stdin`.
-+    fn from_stdin() -> KernelConfig {
-+        let mut result = HashMap::new();
-+
-+        let stdin = std::io::stdin();
-+        let mut handle = stdin.lock();
-+        let mut line = String::new();
-+
-+        loop {
-+            line.clear();
-+
-+            if handle.read_line(&mut line).unwrap() == 0 {
-+                break;
-+            }
-+
-+            if line.starts_with('#') {
-+                continue;
-+            }
-+
-+            let (key, value) = line.split_once('=').expect("Missing `=` in line.");
-+            result.insert(key.to_string(), value.trim_end_matches('\n').to_string());
-+        }
-+
-+        KernelConfig(result)
-+    }
-+
-+    /// Does the option exist in the configuration (any value)?
-+    ///
-+    /// The argument must be passed without the `CONFIG_` prefix.
-+    /// This avoids repetition and it also avoids `fixdep` making us
-+    /// depend on it.
-+    fn has(&self, option: &str) -> bool {
-+        let option = "CONFIG_".to_owned() + option;
-+        self.0.contains_key(&option)
-+    }
-+}
++mod a;
++mod b;
 +
 +fn main() {
-+    let cfg = KernelConfig::from_stdin();
-+    let mut ts = TargetSpec::new();
++    println!("Hello world!");
 +
-+    // `llvm-target`s are taken from `scripts/Makefile.clang`.
-+    if cfg.has("DUMMY_ARCH") {
-+        ts.push("arch", "dummy_arch");
-+    } else {
-+        panic!("Unsupported architecture");
++    a::f(b::CONSTANT);
++}
+diff --git a/samples/rust/rust_minimal.rs b/samples/rust/rust_minimal.rs
+new file mode 100644
+index 000000000000..54ad17685742
+--- /dev/null
++++ b/samples/rust/rust_minimal.rs
+@@ -0,0 +1,38 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Rust minimal sample.
++
++use kernel::prelude::*;
++
++module! {
++    type: RustMinimal,
++    name: b"rust_minimal",
++    author: b"Rust for Linux Contributors",
++    description: b"Rust minimal sample",
++    license: b"GPL",
++}
++
++struct RustMinimal {
++    numbers: Vec<i32>,
++}
++
++impl kernel::Module for RustMinimal {
++    fn init(_module: &'static ThisModule) -> Result<Self> {
++        pr_info!("Rust minimal sample (init)\n");
++        pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
++
++        let mut numbers = Vec::new();
++        numbers.try_push(72)?;
++        numbers.try_push(108)?;
++        numbers.try_push(200)?;
++
++        Ok(RustMinimal { numbers })
 +    }
++}
 +
-+    ts.push("emit-debug-gdb-scripts", false);
-+    ts.push("frame-pointer", "may-omit");
-+    ts.push(
-+        "stack-probes",
-+        vec![("kind".to_string(), Value::String("none".to_string()))],
-+    );
-+
-+    // Everything else is LE, whether `CPU_LITTLE_ENDIAN` is declared or not
-+    // (e.g. x86). It is also `rustc`'s default.
-+    if cfg.has("CPU_BIG_ENDIAN") {
-+        ts.push("target-endian", "big");
++impl Drop for RustMinimal {
++    fn drop(&mut self) {
++        pr_info!("My numbers are {:?}\n", self.numbers);
++        pr_info!("Rust minimal sample (exit)\n");
 +    }
-+
-+    println!("{}", ts);
 +}
 -- 
 2.37.3
