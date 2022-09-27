@@ -2,35 +2,35 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 984ADC07E9D
-	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Sep 2022 15:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 56422C6FA82
+	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Sep 2022 15:03:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230317AbiI0PCf (ORCPT
+        id S231161AbiI0PDH (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 27 Sep 2022 11:02:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35954 "EHLO
+        Tue, 27 Sep 2022 11:03:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229760AbiI0PCc (ORCPT
+        with ESMTP id S229760AbiI0PDG (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 27 Sep 2022 11:02:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12DF1386B3;
-        Tue, 27 Sep 2022 08:02:32 -0700 (PDT)
+        Tue, 27 Sep 2022 11:03:06 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CC22D8E13;
+        Tue, 27 Sep 2022 08:03:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A461F619FF;
-        Tue, 27 Sep 2022 15:02:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC84C433D6;
-        Tue, 27 Sep 2022 15:02:30 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 47E98B81BFB;
+        Tue, 27 Sep 2022 15:03:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A38AC433C1;
+        Tue, 27 Sep 2022 15:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1664290951;
-        bh=zUFmvTnUhtwo4Fi1w19nPQ98b7sF43egGphu3D2caOQ=;
+        s=korg; t=1664290982;
+        bh=yZ1HtZd84+qNCSmptCOHlzte0cS64QkSd66+19rQPa8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=g1PGxztspiNyb9AIDQ6kl2vzsJW4pZhWmBBo157w2b+j4dVlOdjfU/VpVoxgrgfHo
-         g/BN4XTO2AveMEBZj9blH1TlZCbV46O1o15EJwdMQM39l843j7h644fXibl84hdBpG
-         huBgBlgPSL4ktV7P1bFhf1zyxCDmbMkw1jsBxfb0=
-Date:   Tue, 27 Sep 2022 17:02:28 +0200
+        b=ERRJxriFlLQi6zF/sM87TxHlUKGq0qkzDMagdYQ4WVgq9F1cp6YbEPgRtJfl71R0R
+         QPDic1KCK/Cmg4uo0KYcall7d+wMlqSxMRNe/wbsEKnObXDeoTzl1+xxMLAcl+YvDp
+         Le0z282zBGJZlegkynfE4nv7+eBAbtkq8tx5Y5uM=
+Date:   Tue, 27 Sep 2022 17:02:59 +0200
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Miguel Ojeda <ojeda@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
@@ -39,23 +39,32 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>
-Subject: Re: [PATCH v10 17/27] scripts: decode_stacktrace: demangle Rust
- symbols
-Message-ID: <YzMQhGRr7EfKJeQZ@kroah.com>
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Andy Whitcroft <apw@canonical.com>,
+        Joe Perches <joe@perches.com>,
+        Dwaipayan Ray <dwaipayanray1@gmail.com>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: Re: [PATCH v10 16/27] scripts: checkpatch: enable
+ language-independent checks for Rust
+Message-ID: <YzMQozmqYUr2b/wt@kroah.com>
 References: <20220927131518.30000-1-ojeda@kernel.org>
- <20220927131518.30000-18-ojeda@kernel.org>
+ <20220927131518.30000-17-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220927131518.30000-18-ojeda@kernel.org>
+In-Reply-To: <20220927131518.30000-17-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Sep 27, 2022 at 03:14:48PM +0200, Miguel Ojeda wrote:
-> Recent versions of both Binutils (`c++filt`) and LLVM (`llvm-cxxfilt`)
-> provide Rust v0 mangling support.
+On Tue, Sep 27, 2022 at 03:14:47PM +0200, Miguel Ojeda wrote:
+> Include Rust in the "source code files" category, so that
+> the language-independent tests are checked for Rust too,
+> and teach `checkpatch` about the comment style for Rust files.
+> 
+> This enables the malformed SPDX check, the misplaced SPDX license
+> tag check, the long line checks, the lines without a newline check
+> and the embedded filename check.
 > 
 > Reviewed-by: Kees Cook <keescook@chromium.org>
 > Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
@@ -64,7 +73,7 @@ On Tue, Sep 27, 2022 at 03:14:48PM +0200, Miguel Ojeda wrote:
 > Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 > ---
->  scripts/decode_stacktrace.sh | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
+>  scripts/checkpatch.pl | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
