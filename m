@@ -2,37 +2,37 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFC5CC6FA8E
-	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Sep 2022 13:22:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8193AC07E9D
+	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Sep 2022 13:23:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232635AbiI0NWs (ORCPT
+        id S232856AbiI0NXH (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 27 Sep 2022 09:22:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52592 "EHLO
+        Tue, 27 Sep 2022 09:23:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232721AbiI0NV3 (ORCPT
+        with ESMTP id S232535AbiI0NWV (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 27 Sep 2022 09:21:29 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8EBE1B14EF;
-        Tue, 27 Sep 2022 06:18:31 -0700 (PDT)
+        Tue, 27 Sep 2022 09:22:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E58D1B2607;
+        Tue, 27 Sep 2022 06:18:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0542EB81BEA;
-        Tue, 27 Sep 2022 13:17:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC298C433D6;
-        Tue, 27 Sep 2022 13:17:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 47EDA61962;
+        Tue, 27 Sep 2022 13:18:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F29DC433C1;
+        Tue, 27 Sep 2022 13:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664284676;
-        bh=5pDV+1IeylvfkCFNfGNAvhddDJ6vUthK0D0dKmZmb+c=;
+        s=k20201202; t=1664284685;
+        bh=zona/J620H/azH9R6pDemYihj4+MqISRjwIzOUwRNmw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RhazsGhH0AKSFvhKsq/twtVvwPXEbvpVumnhHseP8p8MkU+c/ChI4R4vcMMRa5IIE
-         5X0SU043Tk53MpcPsHfmyXRYYIi8CKfoH6uFSOB4E4g6Tr65muwWPn3x8gbmrvYCeW
-         CGNFqHN5wlgFIyFo1zNkarZcFsEIHeLgDHcssAdHjUjRnmAMcVCMeMjERyxbsb+pwC
-         jBLrQ5ATr7+0GiSctXch8pOWyJ1yAa9UW1e+zxvQcxLgGXwZ7TImFBTSkHp8bbcvjs
-         +F/ylRmIsC5N/h7UZaFDyfLBHf9c0uZE0AwMtWqxCMwiOZ3DL/dNgnVmdB64DpGWr3
-         0moYdgUKAo88Q==
+        b=mADTHuJmowLuLXiw4N5toincm397DhXCWCH0UhkZVifL845n7c8slJU3bkxA3ZmEu
+         oDZHP5i5ttEzagR3Qc67hCD6caGO1O3xtZbyzUPp3lF5FHuWwUqWmFoq3LMdozRVtd
+         N5V8cDXIVxRZnD/eK+zc+E1w4k+jLl6nDT3ZXBpKtBLTtM2qu87Hh49Libdeh3oh2K
+         VU6ByYFjcDKIwevZkO1UfVFpdWz4Bm59RLmaZc3zBQhPHAXlIOOssqMZfnhEQYM6V9
+         rS6dpzfOjmYJjBEWbU1fsqymM3OTZgSVAcJc3fypOR4t7S6/xqXjbLF0hQWMkPd5it
+         gho8EHjp2SuAg==
 From:   Miguel Ojeda <ojeda@kernel.org>
 To:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -42,123 +42,62 @@ Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Miguel Ojeda <ojeda@kernel.org>,
         Kees Cook <keescook@chromium.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        David Gow <davidgow@google.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
-Subject: [PATCH v10 25/27] x86: enable initial Rust support
-Date:   Tue, 27 Sep 2022 15:14:56 +0200
-Message-Id: <20220927131518.30000-26-ojeda@kernel.org>
+        Wedson Almeida Filho <wedsonaf@google.com>
+Subject: [PATCH v10 27/27] MAINTAINERS: Rust
+Date:   Tue, 27 Sep 2022 15:14:58 +0200
+Message-Id: <20220927131518.30000-28-ojeda@kernel.org>
 In-Reply-To: <20220927131518.30000-1-ojeda@kernel.org>
 References: <20220927131518.30000-1-ojeda@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Note that only x86_64 is covered and not all features nor mitigations
-are handled, but it is enough as a starting point and showcases
-the basics needed to add Rust support for a new architecture.
+Miguel, Alex and Wedson will be maintaining the Rust support.
+
+Boqun, Gary and Björn will be reviewers.
 
 Reviewed-by: Kees Cook <keescook@chromium.org>
 Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
 Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
 Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
 Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-Co-developed-by: David Gow <davidgow@google.com>
-Signed-off-by: David Gow <davidgow@google.com>
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- Documentation/rust/arch-support.rst |  1 +
- arch/x86/Kconfig                    |  1 +
- arch/x86/Makefile                   | 10 ++++++++++
- scripts/generate_rust_target.rs     | 15 +++++++++++++--
- 4 files changed, 25 insertions(+), 2 deletions(-)
+ MAINTAINERS | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-index 1152e0fbdad0..6982b63775da 100644
---- a/Documentation/rust/arch-support.rst
-+++ b/Documentation/rust/arch-support.rst
-@@ -15,4 +15,5 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
- ============  ================  ==============================================
- Architecture  Level of support  Constraints
- ============  ================  ==============================================
-+``x86``       Maintained        ``x86_64`` only.
- ============  ================  ==============================================
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index f9920f1341c8..3ca198742b10 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -257,6 +257,7 @@ config X86
- 	select HAVE_STATIC_CALL_INLINE		if HAVE_OBJTOOL
- 	select HAVE_PREEMPT_DYNAMIC_CALL
- 	select HAVE_RSEQ
-+	select HAVE_RUST			if X86_64
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select HAVE_UACCESS_VALIDATION		if HAVE_OBJTOOL
- 	select HAVE_UNSTABLE_SCHED_CLOCK
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index bafbd905e6e7..2d7e640674c6 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -68,6 +68,7 @@ export BITS
- #    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=53383
- #
- KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
-+KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f5ca4aefd184..944dc265b64d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17758,6 +17758,24 @@ F:	include/rv/
+ F:	kernel/trace/rv/
+ F:	tools/verification/
  
- ifeq ($(CONFIG_X86_KERNEL_IBT),y)
- #
-@@ -155,8 +156,17 @@ else
-         cflags-$(CONFIG_GENERIC_CPU)	+= -mtune=generic
-         KBUILD_CFLAGS += $(cflags-y)
- 
-+        rustflags-$(CONFIG_MK8)		+= -Ctarget-cpu=k8
-+        rustflags-$(CONFIG_MPSC)	+= -Ctarget-cpu=nocona
-+        rustflags-$(CONFIG_MCORE2)	+= -Ctarget-cpu=core2
-+        rustflags-$(CONFIG_MATOM)	+= -Ctarget-cpu=atom
-+        rustflags-$(CONFIG_GENERIC_CPU)	+= -Ztune-cpu=generic
-+        KBUILD_RUSTFLAGS += $(rustflags-y)
++RUST
++M:	Miguel Ojeda <ojeda@kernel.org>
++M:	Alex Gaynor <alex.gaynor@gmail.com>
++M:	Wedson Almeida Filho <wedsonaf@google.com>
++R:	Boqun Feng <boqun.feng@gmail.com>
++R:	Gary Guo <gary@garyguo.net>
++R:	Björn Roy Baron <bjorn3_gh@protonmail.com>
++L:	rust-for-linux@vger.kernel.org
++S:	Supported
++W:	https://github.com/Rust-for-Linux/linux
++B:	https://github.com/Rust-for-Linux/linux/issues
++T:	git https://github.com/Rust-for-Linux/linux.git rust-next
++F:	Documentation/rust/
++F:	rust/
++F:	samples/rust/
++F:	scripts/*rust*
++K:	\b(?i:rust)\b
 +
-         KBUILD_CFLAGS += -mno-red-zone
-         KBUILD_CFLAGS += -mcmodel=kernel
-+        KBUILD_RUSTFLAGS += -Cno-redzone=y
-+        KBUILD_RUSTFLAGS += -Ccode-model=kernel
- endif
- 
- #
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-index 7256c9606cf0..3c6cbe2b278d 100644
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -148,8 +148,19 @@ fn main() {
-     let mut ts = TargetSpec::new();
- 
-     // `llvm-target`s are taken from `scripts/Makefile.clang`.
--    if cfg.has("DUMMY_ARCH") {
--        ts.push("arch", "dummy_arch");
-+    if cfg.has("X86_64") {
-+        ts.push("arch", "x86_64");
-+        ts.push(
-+            "data-layout",
-+            "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
-+        );
-+        let mut features = "-3dnow,-3dnowa,-mmx,+soft-float".to_string();
-+        if cfg.has("RETPOLINE") {
-+            features += ",+retpoline-external-thunk";
-+        }
-+        ts.push("features", features);
-+        ts.push("llvm-target", "x86_64-linux-gnu");
-+        ts.push("target-pointer-width", "64");
-     } else {
-         panic!("Unsupported architecture");
-     }
+ RXRPC SOCKETS (AF_RXRPC)
+ M:	David Howells <dhowells@redhat.com>
+ M:	Marc Dionne <marc.dionne@auristor.com>
 -- 
 2.37.3
 
