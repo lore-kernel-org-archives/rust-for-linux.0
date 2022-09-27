@@ -2,141 +2,79 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD761ECAAD8
-	for <rust-for-linux@archiver.kernel.org>; Wed, 21 Sep 2022 14:19:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E4FCC6FA8E
+	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Sep 2022 12:48:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229879AbiIUOTu (ORCPT
+        id S231877AbiI0Mss (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 21 Sep 2022 10:19:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53092 "EHLO
+        Tue, 27 Sep 2022 08:48:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229797AbiIUOTs (ORCPT
+        with ESMTP id S231126AbiI0Msc (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 21 Sep 2022 10:19:48 -0400
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05FC6101F3;
-        Wed, 21 Sep 2022 07:19:44 -0700 (PDT)
-Received: by mail-qt1-x82d.google.com with SMTP id f26so4141784qto.11;
-        Wed, 21 Sep 2022 07:19:44 -0700 (PDT)
+        Tue, 27 Sep 2022 08:48:32 -0400
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3A51161CFC;
+        Tue, 27 Sep 2022 05:48:30 -0700 (PDT)
+Received: by mail-il1-x12d.google.com with SMTP id i16so5050520ilq.0;
+        Tue, 27 Sep 2022 05:48:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date;
-        bh=T4MRIg2amNPk0okRjieG1Oas8X2+PWIKZP+dt1BOYDM=;
-        b=ax3vK7A0nQGNEl+2IzvUxm5YxtqY18wTTmzis0YY7UzXCQKkrdvAxEqSr3N2chScn6
-         3wckYD+lnepynBeAPfgkYvLMS15cq91myqV1sJSVU6d7j+/oTtg7PQalnWxMJKNMo9Ca
-         kYbUf/iHNdem9CcYQxXFscD43n9VVn029QhAkDNOO1Lj9yqwFrpAYI0OHJk+CunWAfy6
-         cHU9bQSH87w7YMisS4+Eoe4aQC4w6n5ZlWm50lAElbRGZQJZnOH2flDNtWlOG0C/l3Lo
-         vCuF2ELz7wuMaqT/DCzIgsN7ZQF/ADvC1CEePrjYrNX5IMN8+XRWO5IinL80syhcVC7d
-         wQrg==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=9gDaL9YVBu3tbVyLgkWJ9ypm85wNRW4z2AjB7yERbF8=;
+        b=Hj/xPB/IR2JzM5v82MR6Pc2QdWG//UCG+5mtmTep8jIUc/w2cJMsuuPs0BxE8mWkdd
+         K0dKoPPcIKHeAsrM/4wjo82Zfji4FjDenmqXBslRRPQTHm8qzb40/eBEYrDnygOXaIdt
+         BUexLU0SRUeFRdesx9EldFKhqGKCLf0NMzgSjjrPg/PVqafTYWv/+sFxDtS9DSijdBSg
+         L+An79cFPMVZMBKIkeRZMfa+fsw4HgGl8CU5WReHpOhQ45/HtIwd2s3ue398TaxHc2n3
+         t/T2QTx/ElFyGHws6MIpIrtOT9Gegim+OeGH+kZX9N66PmT5aER8N1tJZH3EocH5Ahtc
+         ip8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date;
-        bh=T4MRIg2amNPk0okRjieG1Oas8X2+PWIKZP+dt1BOYDM=;
-        b=Y5XoP5w6kVrUtvgp8AkEx4PwZd5M6JCND3Nq6x8iJq73ktNvSQlNRNHqQvwcn42k0b
-         ++Zn1gk02mf/i7898lnW1THEwXZBXoISL64Tw56qFjzlFq5imf+mZC3zHelrQCfH6GUq
-         /d0iiiQzSdgm6SVElhtPoxhQmx1FBFuhkBMzB4kv6gXR+IhRLxwowFwupWN9IdtWCfUh
-         9ZNOCE82sc18JwvWvBlrMWCDLr2mDyrKUWUHhTeYis0K2uzJubcex3hPBCJOB3AT2OyR
-         heF7VliRuQoskqS0fX1uCLQSGiY3wr/7cSvR+cWkpfBhXgwlu5zVf9y0HGyYRP8t+7zM
-         7hZg==
-X-Gm-Message-State: ACrzQf0LTMpIV0uI8Rnca2xPbiagQubJlp7XvJgSQiFf7V6en4nGTH7H
-        yAVNeNFZwMbSMoFWltpdc8U=
-X-Google-Smtp-Source: AMsMyM5NlAkPbsiylhafIJTvP01gEn00rCmob8ynWjS6qTsX71vjvh2xisYRg7gT3DcXeAK0TjUTOA==
-X-Received: by 2002:a05:622a:60f:b0:35b:b737:bcbe with SMTP id z15-20020a05622a060f00b0035bb737bcbemr23985839qta.149.1663769983741;
-        Wed, 21 Sep 2022 07:19:43 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id u22-20020a05620a431600b006b929a56a2bsm1977010qko.3.2022.09.21.07.19.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Sep 2022 07:19:42 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailauth.nyi.internal (Postfix) with ESMTP id DC7F627C0054;
-        Wed, 21 Sep 2022 10:19:41 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Wed, 21 Sep 2022 10:19:41 -0400
-X-ME-Sender: <xms:ex0rY7rjAUpVaSmHrpz3VGEhQjwchQKcjVgDAxneomc_14OtlfkL5A>
-    <xme:ex0rY1ou1bgrwzPC9BcY9FXwObWcsHC3x4PrQf_Rqq_DvSIiWbqFzPy0Mo-yKzY5h
-    dyd97-7ZvJmTXRUow>
-X-ME-Received: <xmr:ex0rY4Pwwfj6kMYAoFxWfz9C7NJ8BDIK2FvgOimi_7sixjlEeLTmCQgB-g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeefuddgjeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepvefghfeuveekudetgfevudeuudejfeeltdfhgfehgeekkeeigfdukefh
-    gfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:ex0rY-6FUMAIRWb0DDqh1bcU6MMxoc7XnvUoLgUkwONVlauXSIbG-g>
-    <xmx:ex0rY66eSFKi0qz-qpNnEEyRrVrdCRfALWfA1JUj9yimTKmmzRKQxw>
-    <xmx:ex0rY2iAyvTQZtrddFOhb2qJ0XDiUh0xi2BJYC8iCr9z-7rJPaBGoQ>
-    <xmx:fR0rYxJuRspc60dj9TBf7Deu37lxiSg49JcZgq7lRrOHPf-l15UG0w>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 21 Sep 2022 10:19:39 -0400 (EDT)
-Date:   Wed, 21 Sep 2022 07:19:16 -0700
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     comex <comexk@gmail.com>
-Cc:     Gary Guo <gary@garyguo.net>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Konstantin Shelekhin <k.shelekhin@yadro.com>, ojeda@kernel.org,
-        ark.email@gmail.com, bjorn3_gh@protonmail.com, bobo1239@web.de,
-        bonifaido@gmail.com, davidgow@google.com, dev@niklasmohrin.de,
-        dsosnowski@dsosnowski.pl, foxhlchen@gmail.com,
-        geofft@ldpreload.com, gregkh@linuxfoundation.org,
-        jarkko@kernel.org, john.m.baublitz@gmail.com,
-        leseulartichaut@gmail.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, me@kloenk.de, milan@mdaverde.com,
-        mjmouse9999@gmail.com, patches@lists.linux.dev,
-        rust-for-linux@vger.kernel.org, thesven73@gmail.com,
-        viktor@v-gar.de, Andreas Hindborg <andreas.hindborg@wdc.com>
-Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
-Message-ID: <YysdZIGp13ye0D4z@boqun-archlinux>
-References: <YyivY6WIl/ahZQqy@wedsonaf-dev>
- <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
- <Yyjut3MHooCwzHRc@wedsonaf-dev>
- <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
- <CAFRnB2VPpLSMqQwFPEjZhde8+-c6LLms54QkMt+wZPjOTULESw@mail.gmail.com>
- <CAHk-=wiyD6KqZN8jFkMHPRPxrbyJEUDRP6+WaH9Q9hjDB5i1zg@mail.gmail.com>
- <CAHk-=wj6sDFk8ZXSEKUMj-J9zfrMSSO3jhBEaveVaJSUpr=O=w@mail.gmail.com>
- <87a66uxcpc.fsf@email.froward.int.ebiederm.org>
- <20220920233947.0000345c@garyguo.net>
- <C85081E7-99CB-421F-AA3D-60326A5181EB@gmail.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=9gDaL9YVBu3tbVyLgkWJ9ypm85wNRW4z2AjB7yERbF8=;
+        b=NFJU2GIho+bNuMh7JiFxzoOc72RDOWj1nRwGwGmza8dnG7QaTe+DfJMT60mTH8DK+E
+         fDoelcrRH/Kehd+ZfkmVS29NnxiqtcxvjM2I4Fr+hziqBaLnFnnjO0amPQPWlJ4GONas
+         5xDwhcJ9yCY3TVwoFEWzdoYltXMUy9HKgVyOf2vupqfv7FbTqhIl4FhqFqCMzgjRV4aK
+         M8Ch9xTKQhGoIq3Etd9/afwnsrpXC4DdcUG6t9FQ/ISknvZ66jTPCrass+Yr+eoJcrXh
+         ppCX+6VHGMaWMKcCBRaRy/b1UvDHhaQlyqTRoS5dGD29pu3h/HzM9xRI72+y+g2YnipC
+         6kIA==
+X-Gm-Message-State: ACrzQf38v549MVFfqZy8xYWp3fEyMFGWWAe/LfYE1eE7Plj5eNJ38GiQ
+        LBBBAy+extI1QDU7rmO7ck7q0spK8ThejsiK32Q=
+X-Google-Smtp-Source: AMsMyM4S1pt68/znq8Dld0WeOSq5D8rhwB9oDs25ZTH2YllCybfv3fb1w/tu1Q7HwsOj2NUxlk8ypJkkUJ7hqMNRK2A=
+X-Received: by 2002:a05:6e02:1aa5:b0:2f8:739:c48 with SMTP id
+ l5-20020a056e021aa500b002f807390c48mr8060152ilv.72.1664282910137; Tue, 27 Sep
+ 2022 05:48:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <C85081E7-99CB-421F-AA3D-60326A5181EB@gmail.com>
+References: <20220805154231.31257-2-ojeda@kernel.org> <Yu2cYShT1h8gquW8@yadro.com>
+ <202208171235.52D14C2A@keescook> <Yv4AaeUToxSJZK/v@yadro.com> <202208180902.48391E94@keescook>
+In-Reply-To: <202208180902.48391E94@keescook>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 27 Sep 2022 14:48:19 +0200
+Message-ID: <CANiq72nQJe4gHa2od3+MuRDbTQU7vvO1o9v1mHgmJcPST9VJZA@mail.gmail.com>
+Subject: Re: [PATCH v9 01/27] kallsyms: use `sizeof` instead of hardcoded size
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Konstantin Shelekhin <k.shelekhin@yadro.com>, ojeda@kernel.org,
+        boqun.feng@gmail.com, gregkh@linuxfoundation.org,
+        jarkko@kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        rust-for-linux@vger.kernel.org, torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Sep 21, 2022 at 02:42:18AM -0400, comex wrote:
-> 
-> 
-> > On Sep 20, 2022, at 6:39 PM, Gary Guo <gary@garyguo.net> wrote:
-> > 
-> > It should be noted however, atomic context is not something that a
-> > token can represent. You can only use tokens to restrict what you *can*
-> > do, but not what you *can't* do. There is no negative reasoning with
-> > tokens, you can't create a function that can only be called when you
-> > don't have token.
-> 
-> On the other hand, it ought to be feasible to implement that kind of
-> ’negative reasoning' as a custom lint.  It might not work as well as
-> something built into the language, but it should work decently well,
-> and could serve as a prototype for a future built-in feature.
+On Thu, Aug 18, 2022 at 6:03 PM Kees Cook <keescook@chromium.org> wrote:
+>
+> Oh, that's an excellent point; I forgot it'll actually compile-time
+> error if the var is a pointer. +1
 
-Interesting, do you have an example somewhere?
+In this case it doesn't, because `scripts/kallsyms.c` defines its own
+`ARRAY_SIZE` that doesn't have the `__must_be_array`.
 
-Regards,
-Boqun
+I have changed it for v10 anyway, since that way we may benefit in the
+future if the `ARRAY_SIZE` here gains the check.
+
+Cheers,
+Miguel
