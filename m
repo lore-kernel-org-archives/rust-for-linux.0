@@ -2,88 +2,87 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A00EDC04A95
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 14:23:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F865C32771
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 14:31:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234304AbiI1OXl (ORCPT
+        id S234178AbiI1Ob1 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Sep 2022 10:23:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41608 "EHLO
+        Wed, 28 Sep 2022 10:31:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234413AbiI1OXl (ORCPT
+        with ESMTP id S234042AbiI1ObZ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Sep 2022 10:23:41 -0400
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4019EA98DB;
-        Wed, 28 Sep 2022 07:23:38 -0700 (PDT)
-Received: by mail-wr1-f54.google.com with SMTP id z6so20112997wrq.1;
-        Wed, 28 Sep 2022 07:23:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=mFcQzaNt7lB5NgLGuk0y5Jq2O1gMF6tf08IwQo9puOM=;
-        b=T2af/lb28QQrBAAPDiBGB0qdywJ2uwmVMq/VHoQhEGeiLVBF46RNB/briKhQ3I/AR8
-         tQ8fYjS9ZsKZp65H2/umnGtlCuEprgad93m52KM5VAQ7mcWSJr8ARpvKBkG6kwp46uAs
-         GI8+N6zSn16s/nBAF1Rs9GcQY1m1gcJGcgKttRH5anl6EJafT0m4rIKlyGro7xFJeA3N
-         hwF9nYhG1kcW3du4HEZwx8ytWL00rIcCPcXnnGo2djaMZoNizxzDywfnHpYg+VOZoq3s
-         KgMSnhiCAuHxEJ4hwlVo7718rF76Q/6cBw5SM84MuGQPZLvnEzyvWOIAGs+fnf/ddjIZ
-         Q1YQ==
-X-Gm-Message-State: ACrzQf1MgU6Yk7J/C8edWfbK4rH0nY042POGrKN5/8t2jridjlzAJ2a+
-        3F9TZwGnKzx3HwL0LSZ4AUY=
-X-Google-Smtp-Source: AMsMyM4A35IvCHXOo7o0KiszcrKYBNlUbkmxsEcP8E5OgZYnXdM2PTBm8J0+c9svSjderpHlnmzrGA==
-X-Received: by 2002:a5d:6e92:0:b0:22c:c09c:8f23 with SMTP id k18-20020a5d6e92000000b0022cc09c8f23mr5707080wrz.389.1664375016787;
-        Wed, 28 Sep 2022 07:23:36 -0700 (PDT)
-Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id fc10-20020a05600c524a00b003b435c41103sm2900459wmb.0.2022.09.28.07.23.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Sep 2022 07:23:36 -0700 (PDT)
-Date:   Wed, 28 Sep 2022 14:23:34 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Finn Behrens <me@kloenk.de>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Milan Landaverde <milan@mdaverde.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Wei Liu <wei.liu@kernel.org>
-Subject: Re: [PATCH v10 26/27] samples: add first Rust examples
-Message-ID: <YzRY5ioq36gVFGCl@liuwe-devbox-debian-v2>
-References: <20220927131518.30000-1-ojeda@kernel.org>
- <20220927131518.30000-27-ojeda@kernel.org>
+        Wed, 28 Sep 2022 10:31:25 -0400
+Received: from hop.stappers.nl (hop.stappers.nl [IPv6:2a02:2308:0:14e::686f:7030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 038F06F25C
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Sep 2022 07:31:23 -0700 (PDT)
+Received: from gpm.stappers.nl (gpm.stappers.nl [IPv6:2a02:a46d:659e:1::696e:626f])
+        by hop.stappers.nl (Postfix) with ESMTP id B99B7200D5;
+        Wed, 28 Sep 2022 14:31:21 +0000 (UTC)
+Received: by gpm.stappers.nl (Postfix, from userid 1000)
+        id 6BCDC304049; Wed, 28 Sep 2022 16:31:21 +0200 (CEST)
+Date:   Wed, 28 Sep 2022 16:31:21 +0200
+From:   Geert Stappers <stappers@stappers.nl>
+To:     Alex Gaynor <alex.gaynor@gmail.com>,
+        FUJITA Tomonori <tomo@exabit.dev>,
+        rust-for-linux@vger.kernel.org
+Subject: Re: Rust e1000 driver (Intel Ethernet adapter)
+Message-ID: <20220928143120.iavijwru6r3qnhiy@gpm.stappers.nl>
+References: <20220919.103820.680182888079022491.fujita@lima-default>
+ <CAFRnB2U9EBdRLy0YCdQjCvgHra4T9bB+hrW==5iGWNhS-U7MUQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220927131518.30000-27-ojeda@kernel.org>
+In-Reply-To: <CAFRnB2U9EBdRLy0YCdQjCvgHra4T9bB+hrW==5iGWNhS-U7MUQ@mail.gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Sep 27, 2022 at 03:14:57PM +0200, Miguel Ojeda wrote:
-> The beginning of a set of Rust modules that showcase how Rust
-> modules look like and how to use the abstracted kernel features.
+On Sun, Sep 18, 2022 at 09:59:02PM -0400, Alex Gaynor wrote:
+> On Sun, Sep 18, 2022 at 9:57 PM FUJITA Tomonori <tomo@exabit.dev> wrote:
+> >
+> > Hi,
+> >
+> > I've implemented Rust e1000 driver (Intel Ethernet adapter):
+> >
+> > https://github.com/fujita/rust-e1000
+> >
+> > There are many places to use the C bindings directly for now. I try to
+> > clean up and push abstractions for NIC drivers (DMA, PCI, network,
+> > etc).
+> >
+> > I can ping on QEMU. Needs a bit more work for real hardware.
+> >
+> > Thanks,
 > 
-> It also includes an example of a Rust host program with
-> several modules.
+> That's great to see. Thanks for your work on this and looking forward
+> to seeing the pull requests!
 > 
-> These samples also double as tests in the CI.
-> 
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
-> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-> Co-developed-by: Finn Behrens <me@kloenk.de>
-> Signed-off-by: Finn Behrens <me@kloenk.de>
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-> Co-developed-by: Milan Landaverde <milan@mdaverde.com>
-> Signed-off-by: Milan Landaverde <milan@mdaverde.com>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Reviewed-by: Wei Liu <wei.liu@kernel.org>
+Where to look for such merge request?
+
+
+
+Long version of my question:
+
+I can't tell how many hurdles there will be
+nor how large (time consuming) the hurdles will be
+for:
+
+  * git clone a modified version of a modified version of Linux kernel
+  * git clone the  rust-e1000 at the right place
+  * build "rust for linux"
+  * start qemu with correct parameters
+  * find out that existing e1000 driver is NOT in the way
+  * see it working myself
+
+
+Myself and probably others nearby the swimming pool
+not knowning how nice the swimming water is.
+
+
+Groeten
+Geert Stappers
+-- 
+Silence is hard to parse
