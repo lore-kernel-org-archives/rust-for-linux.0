@@ -2,92 +2,101 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D32D2C04A95
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 16:35:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36C33C32771
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 16:36:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233179AbiI1QfV (ORCPT
+        id S232505AbiI1QgR (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Sep 2022 12:35:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56964 "EHLO
+        Wed, 28 Sep 2022 12:36:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232380AbiI1QfV (ORCPT
+        with ESMTP id S232380AbiI1QgQ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Sep 2022 12:35:21 -0400
-Received: from hop.stappers.nl (hop.stappers.nl [IPv6:2a02:2308:0:14e::686f:7030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 731AB5C37C
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Sep 2022 09:35:17 -0700 (PDT)
-Received: from gpm.stappers.nl (gpm.stappers.nl [82.168.249.201])
-        by hop.stappers.nl (Postfix) with ESMTP id 84C1B200D5;
-        Wed, 28 Sep 2022 16:35:15 +0000 (UTC)
-Received: by gpm.stappers.nl (Postfix, from userid 1000)
-        id 31627304049; Wed, 28 Sep 2022 18:35:15 +0200 (CEST)
-Date:   Wed, 28 Sep 2022 18:35:14 +0200
-From:   Geert Stappers <stappers@stappers.nl>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        FUJITA Tomonori <tomo@exabit.dev>,
-        rust-for-linux@vger.kernel.org
-Subject: Re: Rust e1000 driver (Intel Ethernet adapter)
-Message-ID: <20220928163514.442xdz4eziuoz2fl@gpm.stappers.nl>
-References: <20220919.103820.680182888079022491.fujita@lima-default>
- <CAFRnB2U9EBdRLy0YCdQjCvgHra4T9bB+hrW==5iGWNhS-U7MUQ@mail.gmail.com>
- <20220928143120.iavijwru6r3qnhiy@gpm.stappers.nl>
- <CANiq72nAUKmcBWYqJ0WRHzJbad9L2RrOMP9DY9EYqDD8qSx0RQ@mail.gmail.com>
+        Wed, 28 Sep 2022 12:36:16 -0400
+Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E22007A75C;
+        Wed, 28 Sep 2022 09:36:15 -0700 (PDT)
+Received: by mail-io1-xd2f.google.com with SMTP id e205so10614579iof.1;
+        Wed, 28 Sep 2022 09:36:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=TzxuSkFY1lkU+KFzHI4Ik/1IQbyTkGI/h/ZDb60baw0=;
+        b=ghh0QCywbcq9KUctQSaKs+ZzF6e5x1tsi7CRIHXbI+VxyVjv28yERT2n9Bd2auhS3C
+         L0JLhdZq3yI6hteiem5oShET5qpTbX6vU0KLg/xR96SkCedgU0H1pR0H5cUP4DoVX8FQ
+         GAy+AQpq+uGZnnBfJoUmIPi2AIy+X7Sw1dqDjzFFt0IBxCOYbuE9InEdf5/v3vAv66t+
+         R/DEdTwIrqzbhpEjtT4nC5VEo8uyC24+gKTDYIbI7ws2j/rdgvg7bd/NZG0FUzSv/yhf
+         xP4fiPZoTQtQXWJJXAJJ7GNC2JXKan8kug1kSWuQgT8x37t6IYa2G5ECC0a1u+0tnZmk
+         9KUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=TzxuSkFY1lkU+KFzHI4Ik/1IQbyTkGI/h/ZDb60baw0=;
+        b=dyzM62BXObbUZqxl0ufv0zk98r4KgQjxbwe0yJemCXMGpo/MEBAZzqXAB/91L46V2c
+         Fi37aAVJPXG9lzlhftYet1ptspEJujc9QQSX7T848lOvwbD8G3n05bHwcydRQluA3XRN
+         Bw68FyZtghM/lX/gYa+CKyuXkfmDobCHQdnGjmTDdxWyky/0nQL8H2YmhlO18vYt5NOv
+         xYr5MIbXLybip88JT9bw6dTE8wSKrOYG37kUXbnj/dioMBunnjme4/LILMrs9UCiwwso
+         vpY6RLZrQt1JK+9iBtxRlK2jwLdPilwxy6Z0vvD+db0CJOoG8EXwQkvvz4lfzZMW2COE
+         kDIA==
+X-Gm-Message-State: ACrzQf1vZ3Uf5iMXvm32LPOcF/uze4Z9QJnQO7Jc4qlp2ZAs7ehvDXVa
+        nAPYTRqH5pi1U2rLlwl0dP18Fac79cicLIXUc+0=
+X-Google-Smtp-Source: AMsMyM7s7gTrjG5ymH3U15IUsSK/Ewsk3Nv/sC9qIh/OUwZPjVtqqFjgvJyAbTuiV9RabeXQphO5cy2c2GW3Yq+W2es=
+X-Received: by 2002:a05:6638:25cb:b0:35b:b1cd:c411 with SMTP id
+ u11-20020a05663825cb00b0035bb1cdc411mr395294jat.308.1664382975350; Wed, 28
+ Sep 2022 09:36:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72nAUKmcBWYqJ0WRHzJbad9L2RrOMP9DY9EYqDD8qSx0RQ@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-11-ojeda@kernel.org>
+ <YzRoZwhxE4182cm2@liuwe-devbox-debian-v2>
+In-Reply-To: <YzRoZwhxE4182cm2@liuwe-devbox-debian-v2>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 28 Sep 2022 18:36:04 +0200
+Message-ID: <CANiq72kXHQSbGjavdOKgDK4FnGYCeC3B4ZfgZDU5KD_ZLKn7RQ@mail.gmail.com>
+Subject: Re: [PATCH v10 10/27] rust: add `macros` crate
+To:     Wei Liu <wei.liu@kernel.org>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Finn Behrens <me@kloenk.de>,
+        Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>,
+        Gary Guo <gary@garyguo.net>, Matthew Bakhtiari <dev@mtbk.me>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Sep 28, 2022 at 05:24:23PM +0200, Miguel Ojeda wrote:
-> On Wed, Sep 28, 2022 at 4:49 PM Geert Stappers wrote:
-> >
-> > Where to look for such merge request?
-> 
-> Tomonori has been sending nice PRs for a while -- you can look them up
-> using the author filter in GitHub, for instance.
+On Wed, Sep 28, 2022 at 5:29 PM Wei Liu <wei.liu@kernel.org> wrote:
+>
+> Just a general question: what is the house rule for adding new proc
+> macros? They are powerful tools. I can see their value in `module!`
+> because writing all that boilerplate by hand is just painful. Yet they
+> are not straightforward to understand. It is difficult, just by looking
+> at the macro, to fully grasp what the final code looks like (though the
+> rsi target will help). Is there a concern that proc macro gets abused?
 
-At https://github.com/Rust-for-Linux/linux/pulls/fujita
-are two open Merge Requests  (no closed MRs).
- 
+The rule is "use them as last resort". That is, they are not banned,
+but they need to be justified: if there is an alternative that is not
+too bad (e.g. in terms of ergonomics or implementation), then the
+alternative should be used instead.
 
-My original question has been answered, thanks.
+Nevertheless, sometimes they are very handy. Apart from `module!`
+here, we are currently using them in the full repo for vtables [1] and
+the Asahi M1 GPU driver is using them for versioning [2].
 
+It is also possible to make proc macros easier to handle, for instance
+if we end up deciding to allow utilities like the `syn` crate.
 
-Summary of text below:
-| } } Should I jump in the swimming pool?
-| } Yes, the water temperature is fine
-| It looks very cold to me
+[1] https://github.com/Rust-for-Linux/linux/blob/fcad53ca9071c7bf6a412640a82e679bad6d1cd4/rust/macros/lib.rs#L99-L148
+[2] https://github.com/AsahiLinux/linux/blob/3c8982e2c78c219bf96761445c8b73c2b3034fba/drivers/gpu/drm/asahi/fw/buffer.rs#L43-L56
 
-
-> >   * git clone a modified version of a modified version of Linux kernel
-> >   * git clone the  rust-e1000 at the right place
-> 
-> I would expect the branch to contain whatever is needed, thus you
-> should only need to clone/fetch/checkout a single branch, i.e. without
-> having to do merges.
- 
-README.md at https://github.com/fujita/rust-e1000 hints,
-hints me, "this part should be inserted in another source tree".
-
-
-> >   * build "rust for linux"
-> >   * start qemu with correct parameters
-> >   * find out that existing e1000 driver is NOT in the way
-> 
-> Those are pretty standard steps, though I guess you could prepare a
-> container or VM image with everything ready if you need it for demo
-> purposes.
-
-Time will tell which smart[*] questions will be asked.
-
- 
-Groeten
-Geert Stappers
-
-[*] http://www.catb.org/~esr/faqs/smart-questions.html
--- 
-Silence is hard to parse
+Cheers,
+Miguel
