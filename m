@@ -2,95 +2,88 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49A6EC04A95
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 15:11:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 18A99C04A95
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 15:25:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234452AbiI1PLI (ORCPT
+        id S234120AbiI1PZr (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Sep 2022 11:11:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40506 "EHLO
+        Wed, 28 Sep 2022 11:25:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234671AbiI1PKz (ORCPT
+        with ESMTP id S234037AbiI1PZU (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Sep 2022 11:10:55 -0400
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08C219C17;
-        Wed, 28 Sep 2022 08:10:54 -0700 (PDT)
-Received: by mail-wr1-f42.google.com with SMTP id v28so7451704wrd.3;
-        Wed, 28 Sep 2022 08:10:54 -0700 (PDT)
+        Wed, 28 Sep 2022 11:25:20 -0400
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32AC7617A
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Sep 2022 08:24:35 -0700 (PDT)
+Received: by mail-il1-x12d.google.com with SMTP id a4so6795126ilj.8
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Sep 2022 08:24:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=MMafc0XKw6NOaWKtKUXbsQqdoWCvB0DJXsiUjrpEzCI=;
+        b=Vk2/c/Qz12RvICkhjBceX/XqnoLrDwb+m3TQGUKCOtCNNf8qtt42mUrdJeyRZLUgOQ
+         MOuNjgFcS1oQFy4yh+ByFM1qu6DHcmnXERS/SBfLavedpav00pHMXyxvYBr73doOweLx
+         A0Jpb4i0gYpFpmQwwLdNLlw94uzNqRQYyS7Zt6+YUjZUnuGmPwUcZEXRjGmunZN+x1BW
+         696oAegTlgPcgrHaEVfm9lJRHafs1tJ8ZDqDAMpdHePwZkIPtHyE6XTxwY2uG0j+2/my
+         c5pfJaHJg1J590s4jG0qCoKbsmxeSdZDZU5kg1OKn/qcpRXeeq6cyZt8jLZoDEXXx0+o
+         6koQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=a7vLBMT/E4442MupPoT+pHag9Mp/Q4EXWsrU1jJIFGw=;
-        b=tAAMt2itvPRyxJJmUqv3YkESszzuv7uTdb2AuIijFAh3+XY5e94/6s90e8hqqGF54k
-         xFxW7UpWTymbyDnJtStLY14GABtyNKkZBwn1VpvNWb9IsHfz9yQWMaEfLqzv9avXCflG
-         L4N0ztZb4kHlpOnj26eXT/7Bp2IvSiITl97kgpLSG3D1ikaZFaxBmEq0iwdZFZQPjF9l
-         yZlZ8NwIq8z6GSeTHJLEHkAzgtyvcZQDriShTQvB+R3dvADWvLgJK0eVD8S6eT0WokXX
-         rQZ/gVtmjI3Rf+8FbqrFqqTbfYNKoDuuPH/sZQwCHyExsV3Wj8Cf/bwpRRijpUOsjGz8
-         pKYw==
-X-Gm-Message-State: ACrzQf0nwxYWCCk2GdCFKp8Q8tGR6ufdOR4blHRK4ux6ZhRPbbhMBdbe
-        IBA/VChqtFmnbOZwp+U41KU=
-X-Google-Smtp-Source: AMsMyM7LFfPMWiwrUKZs1m9whot2DEqwso07KVrBGjYZYygeqa1Kb9evcZNTDI1rLZa8b6y5zBrQ7g==
-X-Received: by 2002:adf:f58a:0:b0:22c:be20:24e8 with SMTP id f10-20020adff58a000000b0022cbe2024e8mr5903192wro.245.1664377853246;
-        Wed, 28 Sep 2022 08:10:53 -0700 (PDT)
-Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id y3-20020a5d4ac3000000b0022ac672654dsm4642497wrs.58.2022.09.28.08.10.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Sep 2022 08:10:52 -0700 (PDT)
-Date:   Wed, 28 Sep 2022 15:10:51 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Gary Guo <gary@garyguo.net>, Matthew Bakhtiari <dev@mtbk.me>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Wei Liu <wei.liu@kernel.org>
-Subject: Re: [PATCH v10 08/27] rust: adapt `alloc` crate to the kernel
-Message-ID: <YzRj+47LIz2G9omo@liuwe-devbox-debian-v2>
-References: <20220927131518.30000-1-ojeda@kernel.org>
- <20220927131518.30000-9-ojeda@kernel.org>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=MMafc0XKw6NOaWKtKUXbsQqdoWCvB0DJXsiUjrpEzCI=;
+        b=DNA/eKl/anro8wpDSi5SIOHfxhV+3QCe9YLp8GrcV7PjD0Hnn3G02CEjPjA3j/LlEU
+         Y+S8MRs2MXwm3h8I/j0A5/HHL1zNswlPpT7r20ny00W67Tzp8lsOtPAUrT/v18em8oY/
+         mwvg56KZGad68PbErf/wlTBtf02byV6VY6fX8xUY/c7pgYLErZvEplx9andvzQD9decC
+         c+KLm2LnI4GDkc2g1ZAkaljigpPs4cdm6tbom5oCOAuqJO35ssOEghpSdhF10X9VtpOy
+         EsmHcMURy9pyVdSZpmCGtPprmQH/xK08mYJc34wu5gUp9FpYY497KeNQqg23YFdPnGkt
+         pCaA==
+X-Gm-Message-State: ACrzQf3bDu3EoBmTqAeVlRnIjJEBP07sv/KL5MB20E/LtSgYLAtfSnnd
+        q3QHyNXKpLrPb7S5RxU9aQAgKg0zX45y79tmNXs=
+X-Google-Smtp-Source: AMsMyM5/m+9HLaa/UHczWhxXgqBERQjHDLegxgVDVVuD1YxN8P691We2P6PHhUCMHbtZ2iapXwg5L4f4eDu/MmACoKg=
+X-Received: by 2002:a05:6e02:188f:b0:2f8:993:e7ba with SMTP id
+ o15-20020a056e02188f00b002f80993e7bamr10542908ilu.321.1664378674581; Wed, 28
+ Sep 2022 08:24:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220927131518.30000-9-ojeda@kernel.org>
+References: <20220919.103820.680182888079022491.fujita@lima-default>
+ <CAFRnB2U9EBdRLy0YCdQjCvgHra4T9bB+hrW==5iGWNhS-U7MUQ@mail.gmail.com> <20220928143120.iavijwru6r3qnhiy@gpm.stappers.nl>
+In-Reply-To: <20220928143120.iavijwru6r3qnhiy@gpm.stappers.nl>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 28 Sep 2022 17:24:23 +0200
+Message-ID: <CANiq72nAUKmcBWYqJ0WRHzJbad9L2RrOMP9DY9EYqDD8qSx0RQ@mail.gmail.com>
+Subject: Re: Rust e1000 driver (Intel Ethernet adapter)
+To:     Geert Stappers <stappers@stappers.nl>
+Cc:     Alex Gaynor <alex.gaynor@gmail.com>,
+        FUJITA Tomonori <tomo@exabit.dev>,
+        rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Sep 27, 2022 at 03:14:39PM +0200, Miguel Ojeda wrote:
-> +    /// Tries to append an element to the back of a collection.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let mut vec = vec![1, 2];
-> +    /// vec.try_push(3).unwrap();
-> +    /// assert_eq!(vec, [1, 2, 3]);
-> +    /// ```
-> +    #[inline]
-> +    #[stable(feature = "kernel", since = "1.0.0")]
-> +    pub fn try_push(&mut self, value: T) -> Result<(), TryReserveError> {
-> +        if self.len == self.buf.capacity() {
-> +            self.buf.try_reserve_for_push(self.len)?;
-> +        }
-> +        unsafe {
-> +            let end = self.as_mut_ptr().add(self.len);
-> +            ptr::write(end, value);
-> +            self.len += 1;
-> +        }
+On Wed, Sep 28, 2022 at 4:49 PM Geert Stappers <stappers@stappers.nl> wrote:
+>
+> Where to look for such merge request?
 
-Missing safety comment here?
+Tomonori has been sending nice PRs for a while -- you can look them up
+using the author filter in GitHub, for instance.
 
-With a safety comment added:
+>   * git clone a modified version of a modified version of Linux kernel
+>   * git clone the  rust-e1000 at the right place
 
-Reviewed-by: Wei Liu <wei.liu@kernel.org>
+I would expect the branch to contain whatever is needed, thus you
+should only need to clone/fetch/checkout a single branch, i.e. without
+having to do merges.
 
-> +        Ok(())
-> +    }
+>   * build "rust for linux"
+>   * start qemu with correct parameters
+>   * find out that existing e1000 driver is NOT in the way
+
+Those are pretty standard steps, though I guess you could prepare a
+container or VM image with everything ready if you need it for demo
+purposes.
+
+Cheers,
+Miguel
