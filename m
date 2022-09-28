@@ -2,93 +2,83 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ABF52C32771
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 12:22:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A264DC32771
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 13:25:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232256AbiI1MWt (ORCPT
+        id S233327AbiI1NZI (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Sep 2022 08:22:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52780 "EHLO
+        Wed, 28 Sep 2022 09:25:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbiI1MWs (ORCPT
+        with ESMTP id S231419AbiI1NZH (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Sep 2022 08:22:48 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 148E485A83;
-        Wed, 28 Sep 2022 05:22:48 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id e205so10005275iof.1;
-        Wed, 28 Sep 2022 05:22:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=+CftlzZKPWUN2sMz/9pukEyU4VBPKHGAq6MB8SWaK/0=;
-        b=Ma+mmZRWMI3cY+2rtc2vD7UvUtG6FzcPx201Z6UpGUCyLi+RkY0iYsvORv0o8yfEeD
-         2DAgSicf1WQChtVtofrVir/bg6zGOmpx3ezwoq+B3XuWzrLF26gmFuZ3vmiT2jBu2L2w
-         wIEQdLkPCdJc+8xUGG+ITU4/dDC1Bpkkk6xIBpeMTmlPKu2+642XorDYvMn41eO68f/t
-         YdfaJ/L1XjIc7jtCj6QMKYRPoYcuNRZ3wTYr6cHSekAMBvuxLidvMnbDynYJJRgayd14
-         cVNHwVFYwQR5lgSJ3yog5eIjsMJ9wAl+YAH4Hr8tyDqovlr9Fxi5yKq5mF3Ln5KeWBJV
-         n32A==
+        Wed, 28 Sep 2022 09:25:07 -0400
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 715477B1F3;
+        Wed, 28 Sep 2022 06:25:06 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id o5so8536217wms.1;
+        Wed, 28 Sep 2022 06:25:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=+CftlzZKPWUN2sMz/9pukEyU4VBPKHGAq6MB8SWaK/0=;
-        b=yV6j05nqjmmuBnu7uCusGWuB7oKxw899wEi3z970xorREZ+b7WiavFOwc+JjMIpWBQ
-         IcV8HB+yK78LeKnx8ggNtpYPjXuhwN7ha++LjPVT4Q+Smy7MdhH3e42lRd8dJgoYJKc3
-         fdCi4vqS6Ci1YY1stU75WmV9n+uDQIVkFDhfDjQcR64GKT/ly4BrDKw7oxp+ljV+sah/
-         YkpnuUYvtaY+w16UW7f01mhBzRtKtnO6J5PTbEcEu5oqWcl4K3g+UnQhcwHAGK8JwSNn
-         8Qm5PHLKyrQT2jryxlP2EyvJRkTheCjaLYlCww3y09U96a1OTtgJ2xgT+bPLBpxvbw6S
-         O+lQ==
-X-Gm-Message-State: ACrzQf0NYhiNtlGFLPA6oaU00FsSVcsA+uAMBvuQrXo483kxrr67a7bA
-        bmbP5t2+MZj13mO73nQHfuaR8CvSrOhUPoal3d4=
-X-Google-Smtp-Source: AMsMyM53QVkbDVC1kqX3LZXbJyrpKPjUY231Eosv6bsOxvN6nIiJ9eZkEjhcIK3hKUatI4G6U3r0as4TEUXZrNcQSlw=
-X-Received: by 2002:a05:6602:1509:b0:69b:35ba:4720 with SMTP id
- g9-20020a056602150900b0069b35ba4720mr14240802iow.155.1664367767433; Wed, 28
- Sep 2022 05:22:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-28-ojeda@kernel.org>
- <20220927141137.iovhhjufqdqcs6qn@gpm.stappers.nl> <202209270818.5BA5AA62@keescook>
- <YzMX91Kq6FzOL9g/@kroah.com> <CANiq72kyW-8Gzeex4UCMqQPCrYyPQni=8ZrRO1dQsUwDmAPedw@mail.gmail.com>
- <202209271710.6DD4B44C@keescook> <CANeycqo3O3yh2ms6vpHkzBLtT7QuCYWeweLq_z9SVygsot43YA@mail.gmail.com>
-In-Reply-To: <CANeycqo3O3yh2ms6vpHkzBLtT7QuCYWeweLq_z9SVygsot43YA@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 28 Sep 2022 14:22:36 +0200
-Message-ID: <CANiq72nHZSsZD4_gxOJRio-i=WCoaLm5rGnQcdi36MLjxU7+WA@mail.gmail.com>
-Subject: Re: [PATCH v10 27/27] MAINTAINERS: Rust
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc:     Kees Cook <keescook@chromium.org>,
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=IJt6C3ywL4H7fQpqqRWXvtKK6PsYNMNNQ4fO0nq9AJ4=;
+        b=IIn2BEGScn/Qs6vCuUYilZ9C5bhgmkufQbB9RsbPWEYkMKKp0qBHo6eZnnE2xmIbJo
+         B0bpIrNbhjmI7/Qjg+GEnLPrncd4U09g16f+Uo0U5qEnPM8L8T7bDYTDmGA9SqgezNTA
+         zr9UI/UyzzxoI2HRa2GQ3w7rdppkmNvGfIMb2RL/NQJvli3npL21upiwuvI4qn2kpNC8
+         1aWIzR+DaRLdR2/sp8ncBhMMCcO+57k1/WXl4+pUgE/KblyvA04Z6x6Ikju5thmZRMvE
+         TiTXKfz8h/w4Ngt1zruVJuhof/bqqU9c4v13iw2Z0nos+zc7jqtk0sdwocyZI3GOFWX3
+         QHyQ==
+X-Gm-Message-State: ACrzQf3MHMO9p6K32WOm4GyzzAbmrXZVLrb93V9MRMtS8hTq0NJz5x7R
+        B/wwkaMqqbbDQWa3XwdxqnU=
+X-Google-Smtp-Source: AMsMyM6AumnF7V3dI88as74fkN1Yrz4/EoGIN9LEacdDnxSUEH1g/NPsz/23u0cUaO8JNLPh+Po1Hw==
+X-Received: by 2002:a05:600c:1d8f:b0:3b4:90c1:e23a with SMTP id p15-20020a05600c1d8f00b003b490c1e23amr6868640wms.122.1664371504885;
+        Wed, 28 Sep 2022 06:25:04 -0700 (PDT)
+Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id i6-20020adfefc6000000b0022ccbc7efb5sm423572wrp.73.2022.09.28.06.25.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Sep 2022 06:25:04 -0700 (PDT)
+Date:   Wed, 28 Sep 2022 13:25:02 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Geert Stappers <stappers@stappers.nl>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
         Jarkko Sakkinen <jarkko@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Maciej Falkowski <maciej.falkowski9@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Wei Liu <wei.liu@kernel.org>
+Subject: Re: [PATCH v10 09/27] rust: add `compiler_builtins` crate
+Message-ID: <YzRLLrmYdMFX4LrB@liuwe-devbox-debian-v2>
+References: <20220927131518.30000-1-ojeda@kernel.org>
+ <20220927131518.30000-10-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220927131518.30000-10-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Sep 28, 2022 at 1:57 PM Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
->
-> Our intent wasn't to have a known-invalid email in MAINTAINERS, it was
-> just my mistake: after leaving Google I updated my email in a lot of
-> places but missed this one. Apologies for that.
+On Tue, Sep 27, 2022 at 03:14:40PM +0200, Miguel Ojeda wrote:
+> Rust provides `compiler_builtins` as a port of LLVM's `compiler-rt`.
+> Since we do not need the vast majority of them, we avoid the
+> dependency by providing our own crate.
+> 
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Co-developed-by: Sven Van Asbroeck <thesven73@gmail.com>
+> Signed-off-by: Sven Van Asbroeck <thesven73@gmail.com>
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-It was also mine for not realizing it! :)
-
-> The patch below fixes this:
-
-Thanks Wedson!
-
-Kees and I discussed how to proceed earlier and so I updated a few
-hours ago the branch collecting the tags we got so far and fixing your
-email address in `MAINTAINERS`, so it is there in `rust-next` now:
-
-    https://github.com/Rust-for-Linux/linux/blob/fd9517a1603f083dfa88f3cf9dc67d26f6ba0ec0/MAINTAINERS#L17764
-
-Cheers,
-Miguel
+Reviewed-by: Wei Liu <wei.liu@kernel.org>
