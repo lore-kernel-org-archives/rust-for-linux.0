@@ -2,87 +2,129 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F865C32771
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 14:31:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81BC4C6FA8E
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 14:32:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234178AbiI1Ob1 (ORCPT
+        id S234042AbiI1OcH (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Sep 2022 10:31:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58090 "EHLO
+        Wed, 28 Sep 2022 10:32:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234042AbiI1ObZ (ORCPT
+        with ESMTP id S229940AbiI1OcG (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Sep 2022 10:31:25 -0400
-Received: from hop.stappers.nl (hop.stappers.nl [IPv6:2a02:2308:0:14e::686f:7030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 038F06F25C
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Sep 2022 07:31:23 -0700 (PDT)
-Received: from gpm.stappers.nl (gpm.stappers.nl [IPv6:2a02:a46d:659e:1::696e:626f])
-        by hop.stappers.nl (Postfix) with ESMTP id B99B7200D5;
-        Wed, 28 Sep 2022 14:31:21 +0000 (UTC)
-Received: by gpm.stappers.nl (Postfix, from userid 1000)
-        id 6BCDC304049; Wed, 28 Sep 2022 16:31:21 +0200 (CEST)
-Date:   Wed, 28 Sep 2022 16:31:21 +0200
-From:   Geert Stappers <stappers@stappers.nl>
-To:     Alex Gaynor <alex.gaynor@gmail.com>,
-        FUJITA Tomonori <tomo@exabit.dev>,
-        rust-for-linux@vger.kernel.org
-Subject: Re: Rust e1000 driver (Intel Ethernet adapter)
-Message-ID: <20220928143120.iavijwru6r3qnhiy@gpm.stappers.nl>
-References: <20220919.103820.680182888079022491.fujita@lima-default>
- <CAFRnB2U9EBdRLy0YCdQjCvgHra4T9bB+hrW==5iGWNhS-U7MUQ@mail.gmail.com>
+        Wed, 28 Sep 2022 10:32:06 -0400
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 988447757D;
+        Wed, 28 Sep 2022 07:32:05 -0700 (PDT)
+Received: by mail-wr1-f53.google.com with SMTP id r6so2810950wru.8;
+        Wed, 28 Sep 2022 07:32:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=E7cXoL+OAINuYKkrN/dHEiq/+/562x8zxzlLQXZ+zL4=;
+        b=wESsnUC6lFN0dvhuLb/XjKh4Rb+BQD92nfHvHhoEyhXkXeqY6CJAT8/QrVqrR80F6h
+         Z2LlvoszS5cI2Z6UUr26u98B/4uha41/RJYY2M+yorwnjojb5OdkSZMdP63IInNdqKy8
+         OU9UKKON3H/MAQzLZ1J8cce6ketaQxHfLutdgEGx26IhoF9WnjFBxC00cTtPkeZNBPUn
+         3WPZtFCw4Ix0GTIjjUrW+YgwxJk9zVseWZIS2P+Vn+SgMYTyJ3/TPO/Hupf0kC9ND6bh
+         MGVJpY1q2zb6ASN5GbEksLGz/wE5spBYL9A3S17baTFcvLrpkcPS7MkadiTg/yVrz3zy
+         mg8A==
+X-Gm-Message-State: ACrzQf3HE+cbPBhfHm+uJt2J79vV+7Nri9RLCz3Q1CtN1rSSQpSYVW53
+        fBJbSHk67+DH2t3SWifKcaQ=
+X-Google-Smtp-Source: AMsMyM7SDIXEylyKoG9yE7AyA0r4afRknvFCOI0I0KfbpxFoJSX4zbK2LEhmLIh8dYTYfqEFEtDlNQ==
+X-Received: by 2002:a05:6000:681:b0:22a:3007:df45 with SMTP id bo1-20020a056000068100b0022a3007df45mr20145418wrb.149.1664375524035;
+        Wed, 28 Sep 2022 07:32:04 -0700 (PDT)
+Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id r7-20020adfda47000000b0021e51c039c5sm4337350wrl.80.2022.09.28.07.32.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Sep 2022 07:32:03 -0700 (PDT)
+Date:   Wed, 28 Sep 2022 14:32:01 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        David Gow <davidgow@google.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org,
+        Wei Liu <wei.liu@kernel.org>
+Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
+Message-ID: <YzRa4U9iFMm0FAVf@liuwe-devbox-debian-v2>
+References: <20220927131518.30000-1-ojeda@kernel.org>
+ <20220927131518.30000-26-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAFRnB2U9EBdRLy0YCdQjCvgHra4T9bB+hrW==5iGWNhS-U7MUQ@mail.gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20220927131518.30000-26-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, Sep 18, 2022 at 09:59:02PM -0400, Alex Gaynor wrote:
-> On Sun, Sep 18, 2022 at 9:57 PM FUJITA Tomonori <tomo@exabit.dev> wrote:
-> >
-> > Hi,
-> >
-> > I've implemented Rust e1000 driver (Intel Ethernet adapter):
-> >
-> > https://github.com/fujita/rust-e1000
-> >
-> > There are many places to use the C bindings directly for now. I try to
-> > clean up and push abstractions for NIC drivers (DMA, PCI, network,
-> > etc).
-> >
-> > I can ping on QEMU. Needs a bit more work for real hardware.
-> >
-> > Thanks,
+On Tue, Sep 27, 2022 at 03:14:56PM +0200, Miguel Ojeda wrote:
+> Note that only x86_64 is covered and not all features nor mitigations
+> are handled, but it is enough as a starting point and showcases
+> the basics needed to add Rust support for a new architecture.
 > 
-> That's great to see. Thanks for your work on this and looking forward
-> to seeing the pull requests!
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Co-developed-by: David Gow <davidgow@google.com>
+> Signed-off-by: David Gow <davidgow@google.com>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  Documentation/rust/arch-support.rst |  1 +
+>  arch/x86/Kconfig                    |  1 +
+>  arch/x86/Makefile                   | 10 ++++++++++
+>  scripts/generate_rust_target.rs     | 15 +++++++++++++--
+>  4 files changed, 25 insertions(+), 2 deletions(-)
 > 
+> diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
+> index 1152e0fbdad0..6982b63775da 100644
+> --- a/Documentation/rust/arch-support.rst
+> +++ b/Documentation/rust/arch-support.rst
+> @@ -15,4 +15,5 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
+>  ============  ================  ==============================================
+>  Architecture  Level of support  Constraints
+>  ============  ================  ==============================================
+> +``x86``       Maintained        ``x86_64`` only.
+>  ============  ================  ==============================================
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index f9920f1341c8..3ca198742b10 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -257,6 +257,7 @@ config X86
+>  	select HAVE_STATIC_CALL_INLINE		if HAVE_OBJTOOL
+>  	select HAVE_PREEMPT_DYNAMIC_CALL
+>  	select HAVE_RSEQ
+> +	select HAVE_RUST			if X86_64
+>  	select HAVE_SYSCALL_TRACEPOINTS
+>  	select HAVE_UACCESS_VALIDATION		if HAVE_OBJTOOL
+>  	select HAVE_UNSTABLE_SCHED_CLOCK
+> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+> index bafbd905e6e7..2d7e640674c6 100644
+> --- a/arch/x86/Makefile
+> +++ b/arch/x86/Makefile
+> @@ -68,6 +68,7 @@ export BITS
+>  #    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=53383
+>  #
+>  KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
+> +KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
 
-Where to look for such merge request?
+I do wonder how many more things you will need to list here. As far as
+I can tell there is also other avx512* flags for the x86_64 target.
 
+That said, if this works today ...
 
-
-Long version of my question:
-
-I can't tell how many hurdles there will be
-nor how large (time consuming) the hurdles will be
-for:
-
-  * git clone a modified version of a modified version of Linux kernel
-  * git clone the  rust-e1000 at the right place
-  * build "rust for linux"
-  * start qemu with correct parameters
-  * find out that existing e1000 driver is NOT in the way
-  * see it working myself
-
-
-Myself and probably others nearby the swimming pool
-not knowning how nice the swimming water is.
-
-
-Groeten
-Geert Stappers
--- 
-Silence is hard to parse
+Reviewed-by: Wei Liu <wei.liu@kernel.org>
