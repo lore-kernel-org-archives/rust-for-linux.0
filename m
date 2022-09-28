@@ -2,63 +2,62 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73E31C32771
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 11:57:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ABF52C32771
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 12:22:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233625AbiI1L5f (ORCPT
+        id S232256AbiI1MWt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Sep 2022 07:57:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58936 "EHLO
+        Wed, 28 Sep 2022 08:22:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233604AbiI1L5e (ORCPT
+        with ESMTP id S229486AbiI1MWs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Sep 2022 07:57:34 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EB2F647D2;
-        Wed, 28 Sep 2022 04:57:33 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id a80so12326705pfa.4;
-        Wed, 28 Sep 2022 04:57:33 -0700 (PDT)
+        Wed, 28 Sep 2022 08:22:48 -0400
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 148E485A83;
+        Wed, 28 Sep 2022 05:22:48 -0700 (PDT)
+Received: by mail-io1-xd2c.google.com with SMTP id e205so10005275iof.1;
+        Wed, 28 Sep 2022 05:22:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=kTt78o8sw7DrI9PLxyN0n+3tUBa/gb1NqpPxWUB4KCg=;
-        b=KLxgcyg2qJUDAGD1546ocHb8zD2jWooEsH9eajCy1V5enFhJ0vDZDVHNomuFEj6HWh
-         IKIa43x1gFDU4UnbGndt1qlNHG5Om3aGTlAlbUtBWWMSukv2G3FCwzU+3uiX1S4Iv1Zi
-         cGyPGpGG7E/Uwvsua9q2jNYlymXI1NC7Rt66i+sODKVtVwiRBpYAIpALaUvGPClPvtqz
-         8bGNEV+YKROfTMty3Mpm4kZjr65dq4/Ufhu55wKYYBbM1y7sJKTEqAnYW8xkJcG/Kv4e
-         34O+WOA1GovKCD2U2VCu9l5eeH53JHhtp2xEnrvhD/S/5LQHOBgnpugNVMaCiZJ6uN0A
-         4DGw==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=+CftlzZKPWUN2sMz/9pukEyU4VBPKHGAq6MB8SWaK/0=;
+        b=Ma+mmZRWMI3cY+2rtc2vD7UvUtG6FzcPx201Z6UpGUCyLi+RkY0iYsvORv0o8yfEeD
+         2DAgSicf1WQChtVtofrVir/bg6zGOmpx3ezwoq+B3XuWzrLF26gmFuZ3vmiT2jBu2L2w
+         wIEQdLkPCdJc+8xUGG+ITU4/dDC1Bpkkk6xIBpeMTmlPKu2+642XorDYvMn41eO68f/t
+         YdfaJ/L1XjIc7jtCj6QMKYRPoYcuNRZ3wTYr6cHSekAMBvuxLidvMnbDynYJJRgayd14
+         cVNHwVFYwQR5lgSJ3yog5eIjsMJ9wAl+YAH4Hr8tyDqovlr9Fxi5yKq5mF3Ln5KeWBJV
+         n32A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=kTt78o8sw7DrI9PLxyN0n+3tUBa/gb1NqpPxWUB4KCg=;
-        b=I0jC40UTEJodKbWplwr+dgsphetAcb3v7SRR7aqZSdStE5xdQO32O5a9MC1k3/irle
-         15jWV9VsC7aUAMWq67fqwPJ6yo1d/uNyO8LROJ/jFgwLFhtnpDYZ/VT+wZvsi/W7oqcW
-         Of3ZrwIZlKE4fVt5uxihdVzL5xY22qRWxdffCtV9SqpF5yDs18hXfHGUTDU9I1NbsoiF
-         2jN56ZGITLyftgtNQta2Zy19VhtO5l+QjETm6rPtWwhxkSPTpBeJIgiWQuKmbzs8+06e
-         aqaaJ5U2XN29v6BbwDfiTw4rRcMO1/xXPjDaxFKA0xF50YACinBWU/bNpVTSm9Xr0gi6
-         oBnA==
-X-Gm-Message-State: ACrzQf1XTxWUGX5a1DnQ+hCEwNm8WoCppTm7w9PGJEthkqzKiFa7g1GU
-        8X6Y33xPQ5t9TWSjFdAxUaoKloC5jtIbvl/hHkU=
-X-Google-Smtp-Source: AMsMyM4vgLDLNPomf1ilGGAQV/z0snFyjMbp1+L4a1xwnRIAKJuyvJL77nq2QWriD0JZ3CnNSzaD7wRe+e8Jm5At4tc=
-X-Received: by 2002:a05:6a00:3492:b0:540:b30d:8396 with SMTP id
- cp18-20020a056a00349200b00540b30d8396mr34458408pfb.81.1664366252575; Wed, 28
- Sep 2022 04:57:32 -0700 (PDT)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=+CftlzZKPWUN2sMz/9pukEyU4VBPKHGAq6MB8SWaK/0=;
+        b=yV6j05nqjmmuBnu7uCusGWuB7oKxw899wEi3z970xorREZ+b7WiavFOwc+JjMIpWBQ
+         IcV8HB+yK78LeKnx8ggNtpYPjXuhwN7ha++LjPVT4Q+Smy7MdhH3e42lRd8dJgoYJKc3
+         fdCi4vqS6Ci1YY1stU75WmV9n+uDQIVkFDhfDjQcR64GKT/ly4BrDKw7oxp+ljV+sah/
+         YkpnuUYvtaY+w16UW7f01mhBzRtKtnO6J5PTbEcEu5oqWcl4K3g+UnQhcwHAGK8JwSNn
+         8Qm5PHLKyrQT2jryxlP2EyvJRkTheCjaLYlCww3y09U96a1OTtgJ2xgT+bPLBpxvbw6S
+         O+lQ==
+X-Gm-Message-State: ACrzQf0NYhiNtlGFLPA6oaU00FsSVcsA+uAMBvuQrXo483kxrr67a7bA
+        bmbP5t2+MZj13mO73nQHfuaR8CvSrOhUPoal3d4=
+X-Google-Smtp-Source: AMsMyM53QVkbDVC1kqX3LZXbJyrpKPjUY231Eosv6bsOxvN6nIiJ9eZkEjhcIK3hKUatI4G6U3r0as4TEUXZrNcQSlw=
+X-Received: by 2002:a05:6602:1509:b0:69b:35ba:4720 with SMTP id
+ g9-20020a056602150900b0069b35ba4720mr14240802iow.155.1664367767433; Wed, 28
+ Sep 2022 05:22:47 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-28-ojeda@kernel.org>
  <20220927141137.iovhhjufqdqcs6qn@gpm.stappers.nl> <202209270818.5BA5AA62@keescook>
  <YzMX91Kq6FzOL9g/@kroah.com> <CANiq72kyW-8Gzeex4UCMqQPCrYyPQni=8ZrRO1dQsUwDmAPedw@mail.gmail.com>
- <202209271710.6DD4B44C@keescook>
-In-Reply-To: <202209271710.6DD4B44C@keescook>
-From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-Date:   Wed, 28 Sep 2022 12:57:21 +0100
-Message-ID: <CANeycqo3O3yh2ms6vpHkzBLtT7QuCYWeweLq_z9SVygsot43YA@mail.gmail.com>
+ <202209271710.6DD4B44C@keescook> <CANeycqo3O3yh2ms6vpHkzBLtT7QuCYWeweLq_z9SVygsot43YA@mail.gmail.com>
+In-Reply-To: <CANeycqo3O3yh2ms6vpHkzBLtT7QuCYWeweLq_z9SVygsot43YA@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 28 Sep 2022 14:22:36 +0200
+Message-ID: <CANiq72nHZSsZD4_gxOJRio-i=WCoaLm5rGnQcdi36MLjxU7+WA@mail.gmail.com>
 Subject: Re: [PATCH v10 27/27] MAINTAINERS: Rust
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     Kees Cook <keescook@chromium.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Miguel Ojeda <ojeda@kernel.org>,
         Geert Stappers <stappers@stappers.nl>,
@@ -69,51 +68,27 @@ Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Maciej Falkowski <maciej.falkowski9@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, 28 Sept 2022 at 01:11, Kees Cook <keescook@chromium.org> wrote:
+On Wed, Sep 28, 2022 at 1:57 PM Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 >
-> On Tue, Sep 27, 2022 at 05:53:12PM +0200, Miguel Ojeda wrote:
-> > On Tue, Sep 27, 2022 at 5:34 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > How about just fixing up the emails in these patches, which will keep=
- us
-> > > from having bouncing ones for those of us who do not use the .mailmap
-> > > file.
-> >
-> > Sorry about that...
-> >
-> > One question: if somebody wants to keep the Signed-off-bys and/or Git
-> > authorship information using the old email for the patches (except the
-> > `MAINTAINERS` entry), is that OK? (e.g. maybe because they did most of
-> > the work in their previous company).
->
-> IMO, the S-o-b's should stand since they're historical, but fixing
-> MAINTAINERS to be up-to-date makes sense.
+> Our intent wasn't to have a known-invalid email in MAINTAINERS, it was
+> just my mistake: after leaving Google I updated my email in a lot of
+> places but missed this one. Apologies for that.
 
-Our intent wasn't to have a known-invalid email in MAINTAINERS, it was
-just my mistake: after leaving Google I updated my email in a lot of
-places but missed this one. Apologies for that.
+It was also mine for not realizing it! :)
 
-The patch below fixes this:
+> The patch below fixes this:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f4e31512bab8..e082270dd285 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17913,7 +17913,7 @@ F:      tools/verification/
- RUST
- M:     Miguel Ojeda <ojeda@kernel.org>
- M:     Alex Gaynor <alex.gaynor@gmail.com>
--M:     Wedson Almeida Filho <wedsonaf@google.com>
-+M:     Wedson Almeida Filho <wedsonaf@gmail.com>
- R:     Boqun Feng <boqun.feng@gmail.com>
- R:     Gary Guo <gary@garyguo.net>
- R:     Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+Thanks Wedson!
 
-Thanks,
--Wedson
+Kees and I discussed how to proceed earlier and so I updated a few
+hours ago the branch collecting the tags we got so far and fixing your
+email address in `MAINTAINERS`, so it is there in `rust-next` now:
+
+    https://github.com/Rust-for-Linux/linux/blob/fd9517a1603f083dfa88f3cf9dc67d26f6ba0ec0/MAINTAINERS#L17764
+
+Cheers,
+Miguel
