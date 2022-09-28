@@ -2,60 +2,46 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 227E6C54EE9
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 15:27:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68E62C6FA8E
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 15:28:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234180AbiI1P1A (ORCPT
+        id S233287AbiI1P2a (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Sep 2022 11:27:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55498 "EHLO
+        Wed, 28 Sep 2022 11:28:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234222AbiI1P0g (ORCPT
+        with ESMTP id S233820AbiI1P2J (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Sep 2022 11:26:36 -0400
-Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C735F7EC;
-        Wed, 28 Sep 2022 08:26:06 -0700 (PDT)
-Received: by mail-il1-x12a.google.com with SMTP id p10so398487iln.4;
-        Wed, 28 Sep 2022 08:26:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=K+jbjc09DvdLJcy4Thzzh2ay02sErQC/GfQnNm8hrTg=;
-        b=A6DnVDZE9AoTQrtk6g5BKxUQfRkdjGz/YL1tMBBRR8CgRRdjwxe14GLF+Hi3nx/hkR
-         xAMPgcQUGisNxmIkdq0rSZNza7G4JBpG4HZrY8FYAWHP79G5jz+Ne4SpkIRgaN8tvOms
-         L/sy8WzVAvfuB2mWWCkblqFYQdbo6DuK1W3dGP1Ib7KI5OPZYwXdTSHximEqs4p6Ki0O
-         PGl5FDmZQ2tMHVOvkAv5mera/NMB0HsFAfve9Cm96FDCbamMQZPg7IELcKWb6sEw2J+N
-         qRDTTKM3pDiJlUkZ0O3ifqC9vN+L1g9brWa4X/ftSTUnRnme2FDiUKu1hrJEPtpB0rLj
-         7L9Q==
+        Wed, 28 Sep 2022 11:28:09 -0400
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1B55C88B5;
+        Wed, 28 Sep 2022 08:27:52 -0700 (PDT)
+Received: by mail-wr1-f43.google.com with SMTP id bk15so12606035wrb.13;
+        Wed, 28 Sep 2022 08:27:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=K+jbjc09DvdLJcy4Thzzh2ay02sErQC/GfQnNm8hrTg=;
-        b=PaTwj533J7/QBE0cjvCbUM5zFyPhnTA4e8xJrQ2P5gsaSEr/rn9+n8vs92lexM2vvC
-         jD9W2fXqq+11qd8YrojOZSao59LS1zz3DM6YmrvOc/Hq3jTgtirpcIKX/IY614QkX1CS
-         Rag5RGCMtH66AOoA9J/25ikwXp0YybTI/xCfKmY/bvN9Di0E9RcPcJgG4yJSv1WvjMVX
-         pF6tLdBtSPXik24Y1axJHZzkPhvG23ACCRks6bRu7DqwKbcf6QY0llkre1vFsexc8iWQ
-         gIk+DyscS7Vkn2bgQkHEEcsG2Zrns9N0Kb0EGzfuMfClIY1AW3aL4cGXk2d4dDHLZKXC
-         rLPg==
-X-Gm-Message-State: ACrzQf2t2s7SpuTo/Gxwy++Q5AwBVjys1tIsvKrUGthDBUsAmLrs+Nkr
-        +G7pIB9UuhvgoUOKzIev/sgHzr24l1f7yuofCUFGiLDSpzg=
-X-Google-Smtp-Source: AMsMyM4KDnYXvWAcGD1P9KclEAvPnSfV92FAdlD2MtWDYqQPJyaYgLFUoDd8cLzEFMqXiU74a5Cx2fKsbXFIMLmzWrI=
-X-Received: by 2002:a92:c569:0:b0:2f5:927d:b61a with SMTP id
- b9-20020a92c569000000b002f5927db61amr15790847ilj.151.1664378765811; Wed, 28
- Sep 2022 08:26:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-9-ojeda@kernel.org>
- <YzRj+47LIz2G9omo@liuwe-devbox-debian-v2>
-In-Reply-To: <YzRj+47LIz2G9omo@liuwe-devbox-debian-v2>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 28 Sep 2022 17:25:55 +0200
-Message-ID: <CANiq72=qZPdcdPJzD0FMN13A34C9mXoMb18+uKaA7rdEGuZ0TA@mail.gmail.com>
-Subject: Re: [PATCH v10 08/27] rust: adapt `alloc` crate to the kernel
-To:     Wei Liu <wei.liu@kernel.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=Z5021MP1akYx7neUqLr5qMs7h+HvHIkKeCKcPGSgbhc=;
+        b=r0HzMbJP7JoTurQw8kPB+v/mi3d4sqAlXmwD2lZ/uZ2CWi8Novbk5wGu6c+EMSI0Iw
+         uHGwXUPe40qgloD5JOAEAKhMq7vlLYMWHU7/XcXjrLIcXuZOlwrBdtpgMrew05ZbDaUb
+         Z2Wp0eDfIJiorcRcy0t+H4OFa7DHk47m+ofW4holLRCQPNdBBfE3r09FoH/FGFlFgkYy
+         Kw8QEUvWRA993oqP5be8clsqd6UnLnytnNmcpUX7c4kAs2HKziU45qhScCCVMkbo9oQ9
+         ENWcB4xuFcX61a5RrBDoQwDsqoyDNj3GwRzbxWNR4BmSF2lIKEmAp2e5MxYoFIjXleMq
+         Y8QQ==
+X-Gm-Message-State: ACrzQf2Ictbli9SMJ92k++HF6yU1Ig2v9FiYtyLsqo4ziq7Yj+iC9jJ9
+        DZedG1xIoz190fyDQHAIJQqu31NOo48=
+X-Google-Smtp-Source: AMsMyM7AzWYKcmC4LtKzfTFeG5/T3mR7Bm6xtkkNpTyXzUEoOHjDeCH+Q5PIuxElD9rilPNBuhn+kg==
+X-Received: by 2002:a5d:4741:0:b0:22c:c1a2:812d with SMTP id o1-20020a5d4741000000b0022cc1a2812dmr5779270wrs.220.1664378871204;
+        Wed, 28 Sep 2022 08:27:51 -0700 (PDT)
+Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id m67-20020a1c2646000000b003a342933727sm2030782wmm.3.2022.09.28.08.27.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Sep 2022 08:27:50 -0700 (PDT)
+Date:   Wed, 28 Sep 2022 15:27:48 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Wei Liu <wei.liu@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -65,21 +51,29 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@google.com>,
         Gary Guo <gary@garyguo.net>, Matthew Bakhtiari <dev@mtbk.me>,
         Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>
+Subject: Re: [PATCH v10 08/27] rust: adapt `alloc` crate to the kernel
+Message-ID: <YzRn9J9S84nj7IFr@liuwe-devbox-debian-v2>
+References: <20220927131518.30000-1-ojeda@kernel.org>
+ <20220927131518.30000-9-ojeda@kernel.org>
+ <YzRj+47LIz2G9omo@liuwe-devbox-debian-v2>
+ <CANiq72=qZPdcdPJzD0FMN13A34C9mXoMb18+uKaA7rdEGuZ0TA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72=qZPdcdPJzD0FMN13A34C9mXoMb18+uKaA7rdEGuZ0TA@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Sep 28, 2022 at 5:10 PM Wei Liu <wei.liu@kernel.org> wrote:
->
-> Missing safety comment here?
+On Wed, Sep 28, 2022 at 05:25:55PM +0200, Miguel Ojeda wrote:
+> On Wed, Sep 28, 2022 at 5:10 PM Wei Liu <wei.liu@kernel.org> wrote:
+> >
+> > Missing safety comment here?
+> 
+> The standard library does not provide safety comments for all blocks,
+> and these are essentially copies of the infallible variations in the
+> library, which I kept as close as possible to the original.
+> 
 
-The standard library does not provide safety comments for all blocks,
-and these are essentially copies of the infallible variations in the
-library, which I kept as close as possible to the original.
-
-Thanks for taking a look!
-
-Cheers,
-Miguel
+Okay, that's fine then. Feel free to keep the RB tag.
