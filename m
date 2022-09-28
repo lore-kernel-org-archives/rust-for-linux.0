@@ -2,88 +2,84 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18A99C04A95
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 15:25:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 227E6C54EE9
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 15:27:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234120AbiI1PZr (ORCPT
+        id S234180AbiI1P1A (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Sep 2022 11:25:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38182 "EHLO
+        Wed, 28 Sep 2022 11:27:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234037AbiI1PZU (ORCPT
+        with ESMTP id S234222AbiI1P0g (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Sep 2022 11:25:20 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32AC7617A
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Sep 2022 08:24:35 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id a4so6795126ilj.8
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Sep 2022 08:24:35 -0700 (PDT)
+        Wed, 28 Sep 2022 11:26:36 -0400
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C735F7EC;
+        Wed, 28 Sep 2022 08:26:06 -0700 (PDT)
+Received: by mail-il1-x12a.google.com with SMTP id p10so398487iln.4;
+        Wed, 28 Sep 2022 08:26:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=MMafc0XKw6NOaWKtKUXbsQqdoWCvB0DJXsiUjrpEzCI=;
-        b=Vk2/c/Qz12RvICkhjBceX/XqnoLrDwb+m3TQGUKCOtCNNf8qtt42mUrdJeyRZLUgOQ
-         MOuNjgFcS1oQFy4yh+ByFM1qu6DHcmnXERS/SBfLavedpav00pHMXyxvYBr73doOweLx
-         A0Jpb4i0gYpFpmQwwLdNLlw94uzNqRQYyS7Zt6+YUjZUnuGmPwUcZEXRjGmunZN+x1BW
-         696oAegTlgPcgrHaEVfm9lJRHafs1tJ8ZDqDAMpdHePwZkIPtHyE6XTxwY2uG0j+2/my
-         c5pfJaHJg1J590s4jG0qCoKbsmxeSdZDZU5kg1OKn/qcpRXeeq6cyZt8jLZoDEXXx0+o
-         6koQ==
+        bh=K+jbjc09DvdLJcy4Thzzh2ay02sErQC/GfQnNm8hrTg=;
+        b=A6DnVDZE9AoTQrtk6g5BKxUQfRkdjGz/YL1tMBBRR8CgRRdjwxe14GLF+Hi3nx/hkR
+         xAMPgcQUGisNxmIkdq0rSZNza7G4JBpG4HZrY8FYAWHP79G5jz+Ne4SpkIRgaN8tvOms
+         L/sy8WzVAvfuB2mWWCkblqFYQdbo6DuK1W3dGP1Ib7KI5OPZYwXdTSHximEqs4p6Ki0O
+         PGl5FDmZQ2tMHVOvkAv5mera/NMB0HsFAfve9Cm96FDCbamMQZPg7IELcKWb6sEw2J+N
+         qRDTTKM3pDiJlUkZ0O3ifqC9vN+L1g9brWa4X/ftSTUnRnme2FDiUKu1hrJEPtpB0rLj
+         7L9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=MMafc0XKw6NOaWKtKUXbsQqdoWCvB0DJXsiUjrpEzCI=;
-        b=DNA/eKl/anro8wpDSi5SIOHfxhV+3QCe9YLp8GrcV7PjD0Hnn3G02CEjPjA3j/LlEU
-         Y+S8MRs2MXwm3h8I/j0A5/HHL1zNswlPpT7r20ny00W67Tzp8lsOtPAUrT/v18em8oY/
-         mwvg56KZGad68PbErf/wlTBtf02byV6VY6fX8xUY/c7pgYLErZvEplx9andvzQD9decC
-         c+KLm2LnI4GDkc2g1ZAkaljigpPs4cdm6tbom5oCOAuqJO35ssOEghpSdhF10X9VtpOy
-         EsmHcMURy9pyVdSZpmCGtPprmQH/xK08mYJc34wu5gUp9FpYY497KeNQqg23YFdPnGkt
-         pCaA==
-X-Gm-Message-State: ACrzQf3bDu3EoBmTqAeVlRnIjJEBP07sv/KL5MB20E/LtSgYLAtfSnnd
-        q3QHyNXKpLrPb7S5RxU9aQAgKg0zX45y79tmNXs=
-X-Google-Smtp-Source: AMsMyM5/m+9HLaa/UHczWhxXgqBERQjHDLegxgVDVVuD1YxN8P691We2P6PHhUCMHbtZ2iapXwg5L4f4eDu/MmACoKg=
-X-Received: by 2002:a05:6e02:188f:b0:2f8:993:e7ba with SMTP id
- o15-20020a056e02188f00b002f80993e7bamr10542908ilu.321.1664378674581; Wed, 28
- Sep 2022 08:24:34 -0700 (PDT)
+        bh=K+jbjc09DvdLJcy4Thzzh2ay02sErQC/GfQnNm8hrTg=;
+        b=PaTwj533J7/QBE0cjvCbUM5zFyPhnTA4e8xJrQ2P5gsaSEr/rn9+n8vs92lexM2vvC
+         jD9W2fXqq+11qd8YrojOZSao59LS1zz3DM6YmrvOc/Hq3jTgtirpcIKX/IY614QkX1CS
+         Rag5RGCMtH66AOoA9J/25ikwXp0YybTI/xCfKmY/bvN9Di0E9RcPcJgG4yJSv1WvjMVX
+         pF6tLdBtSPXik24Y1axJHZzkPhvG23ACCRks6bRu7DqwKbcf6QY0llkre1vFsexc8iWQ
+         gIk+DyscS7Vkn2bgQkHEEcsG2Zrns9N0Kb0EGzfuMfClIY1AW3aL4cGXk2d4dDHLZKXC
+         rLPg==
+X-Gm-Message-State: ACrzQf2t2s7SpuTo/Gxwy++Q5AwBVjys1tIsvKrUGthDBUsAmLrs+Nkr
+        +G7pIB9UuhvgoUOKzIev/sgHzr24l1f7yuofCUFGiLDSpzg=
+X-Google-Smtp-Source: AMsMyM4KDnYXvWAcGD1P9KclEAvPnSfV92FAdlD2MtWDYqQPJyaYgLFUoDd8cLzEFMqXiU74a5Cx2fKsbXFIMLmzWrI=
+X-Received: by 2002:a92:c569:0:b0:2f5:927d:b61a with SMTP id
+ b9-20020a92c569000000b002f5927db61amr15790847ilj.151.1664378765811; Wed, 28
+ Sep 2022 08:26:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220919.103820.680182888079022491.fujita@lima-default>
- <CAFRnB2U9EBdRLy0YCdQjCvgHra4T9bB+hrW==5iGWNhS-U7MUQ@mail.gmail.com> <20220928143120.iavijwru6r3qnhiy@gpm.stappers.nl>
-In-Reply-To: <20220928143120.iavijwru6r3qnhiy@gpm.stappers.nl>
+References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-9-ojeda@kernel.org>
+ <YzRj+47LIz2G9omo@liuwe-devbox-debian-v2>
+In-Reply-To: <YzRj+47LIz2G9omo@liuwe-devbox-debian-v2>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 28 Sep 2022 17:24:23 +0200
-Message-ID: <CANiq72nAUKmcBWYqJ0WRHzJbad9L2RrOMP9DY9EYqDD8qSx0RQ@mail.gmail.com>
-Subject: Re: Rust e1000 driver (Intel Ethernet adapter)
-To:     Geert Stappers <stappers@stappers.nl>
-Cc:     Alex Gaynor <alex.gaynor@gmail.com>,
-        FUJITA Tomonori <tomo@exabit.dev>,
-        rust-for-linux@vger.kernel.org
+Date:   Wed, 28 Sep 2022 17:25:55 +0200
+Message-ID: <CANiq72=qZPdcdPJzD0FMN13A34C9mXoMb18+uKaA7rdEGuZ0TA@mail.gmail.com>
+Subject: Re: [PATCH v10 08/27] rust: adapt `alloc` crate to the kernel
+To:     Wei Liu <wei.liu@kernel.org>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Gary Guo <gary@garyguo.net>, Matthew Bakhtiari <dev@mtbk.me>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Sep 28, 2022 at 4:49 PM Geert Stappers <stappers@stappers.nl> wrote:
+On Wed, Sep 28, 2022 at 5:10 PM Wei Liu <wei.liu@kernel.org> wrote:
 >
-> Where to look for such merge request?
+> Missing safety comment here?
 
-Tomonori has been sending nice PRs for a while -- you can look them up
-using the author filter in GitHub, for instance.
+The standard library does not provide safety comments for all blocks,
+and these are essentially copies of the infallible variations in the
+library, which I kept as close as possible to the original.
 
->   * git clone a modified version of a modified version of Linux kernel
->   * git clone the  rust-e1000 at the right place
-
-I would expect the branch to contain whatever is needed, thus you
-should only need to clone/fetch/checkout a single branch, i.e. without
-having to do merges.
-
->   * build "rust for linux"
->   * start qemu with correct parameters
->   * find out that existing e1000 driver is NOT in the way
-
-Those are pretty standard steps, though I guess you could prepare a
-container or VM image with everything ready if you need it for demo
-purposes.
+Thanks for taking a look!
 
 Cheers,
 Miguel
