@@ -2,75 +2,92 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22740C54EE9
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 15:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D32D2C04A95
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 16:35:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234029AbiI1PkM (ORCPT
+        id S233179AbiI1QfV (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Sep 2022 11:40:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35608 "EHLO
+        Wed, 28 Sep 2022 12:35:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233512AbiI1PkG (ORCPT
+        with ESMTP id S232380AbiI1QfV (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Sep 2022 11:40:06 -0400
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 902336CF65;
-        Wed, 28 Sep 2022 08:40:05 -0700 (PDT)
-Received: by mail-wm1-f41.google.com with SMTP id o20-20020a05600c4fd400b003b4a516c479so1231622wmq.1;
-        Wed, 28 Sep 2022 08:40:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=HSBLIy2wOhHMm573WWPq9D1e9V4c0tZPrxVrvT9NSSE=;
-        b=IvUBwufrzJozmf5CVsD4L74Hj5QVaHocrxSpCxtIPubwMT+iAFTq3i6/kSwFg5mXfO
-         ZRx09QukJYLUlUR2bu05p4SxeydhGlk+3E3AijV0ESAqaxjOb4rrywfP0F1yUFWFLXnu
-         LKP9sMx3hYNdbDMK/mCTaGoAWoqKysneM9EX4t4YDvI10fyBrAljNlx+6asNtJpYZMy3
-         b+MfNuYp5O1k4wjHr3IX5dqWGTrqwy0o+AbafhNvz+yO/+LOMZGmOn8YWDtcBoXCO8e5
-         5LpJEA16Zc7C73U4LXr685p0O4gy7SgJtCTO5Dr9kAX7QhyH+K61Ocqk1P6pHrHgMeY+
-         Jx1w==
-X-Gm-Message-State: ACrzQf0DOKFJwKMHEYxjqE/5CLbXRlrLJWWfsQA3AWTwgQCn5vu19oEx
-        7K2yNvlv1o/o1J1fbaUOaAuk0YJukGA=
-X-Google-Smtp-Source: AMsMyM6Nti507HecckDJdH/30Vu0j/BfTGxBT7cEv75He4SA260GFty47XQmD/b/IgslxSb9dS8tGw==
-X-Received: by 2002:a05:600c:5014:b0:3b5:889:58a5 with SMTP id n20-20020a05600c501400b003b5088958a5mr7340624wmr.140.1664379604198;
-        Wed, 28 Sep 2022 08:40:04 -0700 (PDT)
-Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id ay22-20020a05600c1e1600b003b339438733sm2210557wmb.19.2022.09.28.08.40.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Sep 2022 08:40:03 -0700 (PDT)
-Date:   Wed, 28 Sep 2022 15:40:01 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Wei Liu <wei.liu@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-        Jarkko Sakkinen <jarkko@kernel.org>, linux-doc@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        live-patching@vger.kernel.org
-Subject: Re: [PATCH v10 00/27] Rust support
-Message-ID: <YzRq0Xz6yW+iwPaO@liuwe-devbox-debian-v2>
-References: <20220927131518.30000-1-ojeda@kernel.org>
- <YzRjEc9zQbHeWPFL@liuwe-devbox-debian-v2>
- <CANiq72kq4RR4suFjGUZeg6ua8X=KU5aBPKPgjRH29hOVmDiNLQ@mail.gmail.com>
+        Wed, 28 Sep 2022 12:35:21 -0400
+Received: from hop.stappers.nl (hop.stappers.nl [IPv6:2a02:2308:0:14e::686f:7030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 731AB5C37C
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Sep 2022 09:35:17 -0700 (PDT)
+Received: from gpm.stappers.nl (gpm.stappers.nl [82.168.249.201])
+        by hop.stappers.nl (Postfix) with ESMTP id 84C1B200D5;
+        Wed, 28 Sep 2022 16:35:15 +0000 (UTC)
+Received: by gpm.stappers.nl (Postfix, from userid 1000)
+        id 31627304049; Wed, 28 Sep 2022 18:35:15 +0200 (CEST)
+Date:   Wed, 28 Sep 2022 18:35:14 +0200
+From:   Geert Stappers <stappers@stappers.nl>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        FUJITA Tomonori <tomo@exabit.dev>,
+        rust-for-linux@vger.kernel.org
+Subject: Re: Rust e1000 driver (Intel Ethernet adapter)
+Message-ID: <20220928163514.442xdz4eziuoz2fl@gpm.stappers.nl>
+References: <20220919.103820.680182888079022491.fujita@lima-default>
+ <CAFRnB2U9EBdRLy0YCdQjCvgHra4T9bB+hrW==5iGWNhS-U7MUQ@mail.gmail.com>
+ <20220928143120.iavijwru6r3qnhiy@gpm.stappers.nl>
+ <CANiq72nAUKmcBWYqJ0WRHzJbad9L2RrOMP9DY9EYqDD8qSx0RQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANiq72kq4RR4suFjGUZeg6ua8X=KU5aBPKPgjRH29hOVmDiNLQ@mail.gmail.com>
+In-Reply-To: <CANiq72nAUKmcBWYqJ0WRHzJbad9L2RrOMP9DY9EYqDD8qSx0RQ@mail.gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Sep 28, 2022 at 05:34:39PM +0200, Miguel Ojeda wrote:
-> On Wed, Sep 28, 2022 at 5:07 PM Wei Liu <wei.liu@kernel.org> wrote:
+On Wed, Sep 28, 2022 at 05:24:23PM +0200, Miguel Ojeda wrote:
+> On Wed, Sep 28, 2022 at 4:49 PM Geert Stappers wrote:
 > >
-> > I cannot find this patch in my inbox. That's probably filtered out by
-> > the mailing list since it is too big.
+> > Where to look for such merge request?
 > 
-> The patch reached lore in case you want to double-check:
-> 
->     https://lore.kernel.org/lkml/20220927131518.30000-8-ojeda@kernel.org/
-> 
+> Tomonori has been sending nice PRs for a while -- you can look them up
+> using the author filter in GitHub, for instance.
 
-I eyeballed it. Looks like it is the same one on GitHub.
+At https://github.com/Rust-for-Linux/linux/pulls/fujita
+are two open Merge Requests  (no closed MRs).
+ 
+
+My original question has been answered, thanks.
+
+
+Summary of text below:
+| } } Should I jump in the swimming pool?
+| } Yes, the water temperature is fine
+| It looks very cold to me
+
+
+> >   * git clone a modified version of a modified version of Linux kernel
+> >   * git clone the  rust-e1000 at the right place
+> 
+> I would expect the branch to contain whatever is needed, thus you
+> should only need to clone/fetch/checkout a single branch, i.e. without
+> having to do merges.
+ 
+README.md at https://github.com/fujita/rust-e1000 hints,
+hints me, "this part should be inserted in another source tree".
+
+
+> >   * build "rust for linux"
+> >   * start qemu with correct parameters
+> >   * find out that existing e1000 driver is NOT in the way
+> 
+> Those are pretty standard steps, though I guess you could prepare a
+> container or VM image with everything ready if you need it for demo
+> purposes.
+
+Time will tell which smart[*] questions will be asked.
+
+ 
+Groeten
+Geert Stappers
+
+[*] http://www.catb.org/~esr/faqs/smart-questions.html
+-- 
+Silence is hard to parse
