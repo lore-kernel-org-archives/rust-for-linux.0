@@ -2,87 +2,88 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8836EC04A95
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Sep 2022 16:47:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6285C04A95
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Sep 2022 03:23:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233448AbiI1QrM (ORCPT
+        id S234014AbiI2DW7 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Sep 2022 12:47:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34048 "EHLO
+        Wed, 28 Sep 2022 23:22:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232792AbiI1QrL (ORCPT
+        with ESMTP id S232166AbiI2DW6 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Sep 2022 12:47:11 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD29F3C8DA
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Sep 2022 09:47:10 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id 64so2044912iov.13
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Sep 2022 09:47:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=DltQ5eatOm+FChxaVvTL/MxWRzNdi3qpUIf6fB8Edb4=;
-        b=Vkvm2Ss5m7pNaP+7AA886OEwlo4fs59V2Fxh4f43DIyrvPPSgxs93u6rv9/i9e5vHE
-         wVifTshVWNDaJeyyG7UNjrdY6c+APamn0VbKwJgT36602N1HEbr7IvkwkGzniMpbVDL8
-         C0vhBa7yg5jH3Pj3EoSUgCDewdnvNnj7ltOI/hW5SJLNhxrBbqoqPi0R+baNIW36c50W
-         BFGx2PHOoPtRlQiMWFhe6pWBi74TR4NvXtyJN2LFCOxoeUB5pEq4FI8yKKMl9Q7TsNUg
-         p2bQrYmbSCh+t8RZWUs6zGnmqJSqVgVwclIy0nYI3BH1Lk40ZCWBOWWXblqsb54djwYy
-         Lzcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=DltQ5eatOm+FChxaVvTL/MxWRzNdi3qpUIf6fB8Edb4=;
-        b=ykI5YqlrVkOevfuCiVeDUOjuHJOULLT3wqP5mnAWg/KtIEhWQO2Kk+/JKQApu0UwI+
-         dsd6VL/8R7gMSfdt1w/S77RgX42R/shbTrfLxdE61mIizo/JmAoY5MnXBanGz1FksbJB
-         vMdOotObZmIBnLJP2PBJn8lCKjY3tcSdSjo1C0158J6iTq/n3umz0fwpvB+mPH3bee7u
-         WkHORxocNjS6gbZo76uLTIT2MS4NjippJMiTBYdVFQhFyMP9mAHYN+ElvQJWSPjfKcEE
-         sN0etCx7pWWQv5VgJtE6blzBIr3JSXRl0rVnsm6AtvKbrP2467UxqGyFP1h3fUhed445
-         P+tg==
-X-Gm-Message-State: ACrzQf1/uMtxD/egz/00RGKK4ELFquMLvp/55hv6BD+2vNsQecoVyAKP
-        ZE6TQzVFaGA+PwyEfY5xcAwFKUnsGwpAfu3vhPek816MxodnwQ==
-X-Google-Smtp-Source: AMsMyM7QUtIeoYxG4PDjeAa1QhKI9Z6+Mc13WW7cjSFvMzyHMcjFbhYKXFQy7ud/6MOHo9oWmmEysLrJYjWPFzu1kRY=
-X-Received: by 2002:a05:6602:2a45:b0:6a4:43dc:40ef with SMTP id
- k5-20020a0566022a4500b006a443dc40efmr10887228iov.64.1664383630298; Wed, 28
- Sep 2022 09:47:10 -0700 (PDT)
+        Wed, 28 Sep 2022 23:22:58 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F16127541;
+        Wed, 28 Sep 2022 20:22:56 -0700 (PDT)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.56])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MdJTV64vQzHtmG;
+        Thu, 29 Sep 2022 11:18:06 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Thu, 29 Sep 2022 11:22:44 +0800
+Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
+ (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 29 Sep
+ 2022 11:22:44 +0800
+From:   Yang Yingliang <yangyingliang@huawei.com>
+To:     <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+        <llvm@lists.linux.dev>, <linux-mm@kvack.org>
+CC:     <keescook@chromium.org>, <vbabka@suse.cz>
+Subject: [PATCH -next] compiler.h: fix compile error with gcc-8 or lower version
+Date:   Thu, 29 Sep 2022 11:38:45 +0800
+Message-ID: <20220929033845.485728-1-yangyingliang@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220919.103820.680182888079022491.fujita@lima-default>
- <CAFRnB2U9EBdRLy0YCdQjCvgHra4T9bB+hrW==5iGWNhS-U7MUQ@mail.gmail.com>
- <20220928143120.iavijwru6r3qnhiy@gpm.stappers.nl> <CANiq72nAUKmcBWYqJ0WRHzJbad9L2RrOMP9DY9EYqDD8qSx0RQ@mail.gmail.com>
- <20220928163514.442xdz4eziuoz2fl@gpm.stappers.nl>
-In-Reply-To: <20220928163514.442xdz4eziuoz2fl@gpm.stappers.nl>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 28 Sep 2022 18:46:59 +0200
-Message-ID: <CANiq72kShUNkypRF9sH-EPeE7qV+dKkstNE8YVvVn_U-fKM2_A@mail.gmail.com>
-Subject: Re: Rust e1000 driver (Intel Ethernet adapter)
-To:     Geert Stappers <stappers@stappers.nl>
-Cc:     Alex Gaynor <alex.gaynor@gmail.com>,
-        FUJITA Tomonori <tomo@exabit.dev>,
-        rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Sep 28, 2022 at 6:35 PM Geert Stappers <stappers@stappers.nl> wrote:
->
-> My original question has been answered, thanks.
+I got the follow compile error in latest linux-next kernel with gcc-8.4:
 
-My pleasure!
+  In file included from <command-line>:
+  ./include/linux/percpu.h: In function ‘__alloc_reserved_percpu’:
+  ././include/linux/compiler_types.h:279:30: error: expected declaration specifiers before ‘__alloc_size__’
+   #define __alloc_size(x, ...) __alloc_size__(x, ## __VA_ARGS__) __malloc
+                                ^~~~~~~~~~~~~~
+  ./include/linux/percpu.h:120:74: note: in expansion of macro ‘__alloc_size’
+   extern void __percpu *__alloc_reserved_percpu(size_t size, size_t align) __alloc_size(1);
 
-> README.md at https://github.com/fujita/rust-e1000 hints,
-> hints me, "this part should be inserted in another source tree".
+__alloc_size is not defined in gcc-8 or lower version, so add back the
+conditional test for __alloc_size__ to fix it.
 
-I don't see the quote you mention, but from a quick look it seems he
-decided to develop the driver side as an out-of-tree module, with the
-abstractions in the Linux one.
+Fixes: 63caa04ec605 ("slab: Remove __malloc attribute from realloc functions")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+---
+ include/linux/compiler_types.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-While that requires to clone both repos, you don't need to move files
-between them: compiling the out-of-tree module after the main repo
-should work.
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index aa81da7a28eb..aae8852ccbdc 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -276,8 +276,13 @@ struct ftrace_likely_data {
+  * be performing a _reallocation_, as that may alias the existing pointer.
+  * For these, use __realloc_size().
+  */
++#ifdef __alloc_size__
+ #define __alloc_size(x, ...)	__alloc_size__(x, ## __VA_ARGS__) __malloc
+-#define __realloc_size(x, ...)	__alloc_size__(x, ## __VA_ARGS__)
++#define __realloc_size(x, ...) __alloc_size__(x, ## __VA_ARGS__)
++#else
++#define __alloc_size(x, ...)	__malloc
++#define __realloc_size(x, ...) __malloc
++#endif
+ 
+ #ifndef asm_volatile_goto
+ #define asm_volatile_goto(x...) asm goto(x)
+-- 
+2.25.1
 
-Tomonori can probably clarify more...
-
-Cheers,
-Miguel
