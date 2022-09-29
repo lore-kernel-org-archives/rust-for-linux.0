@@ -2,117 +2,110 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8782CC04A95
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Sep 2022 09:17:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 278EEC433F5
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Sep 2022 13:04:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232431AbiI2JRV (ORCPT
+        id S235477AbiI2NEq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 29 Sep 2022 05:17:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52980 "EHLO
+        Thu, 29 Sep 2022 09:04:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234939AbiI2JRT (ORCPT
+        with ESMTP id S235578AbiI2NEn (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 29 Sep 2022 05:17:19 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A59214329E;
-        Thu, 29 Sep 2022 02:17:18 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id C9F771F855;
-        Thu, 29 Sep 2022 09:17:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1664443036; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=71EGSfS37//o0vnm3QcXzqADuyadLykD8DwNAjDozNM=;
-        b=HYhHxvF5R9MZgs/n2dBHAoOW31tPKSK54FyKQWJLhuJa0/dmQ69jamOecI2ZMjy7rYjUiD
-        DS68vIxawtbYsHHd/Z84bIhw4fZ+4zyuf21I0K4nCWJZ9G4zGJ4tma3Yi6xfKWT+79o7Lj
-        Na8yGMGIbSV5gRSVxtr1wjCjhUU8G6I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1664443036;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=71EGSfS37//o0vnm3QcXzqADuyadLykD8DwNAjDozNM=;
-        b=uO6c1+sBJ0l+zWjlAlXoMSN5FkCeXfBxD0k80z1CZiVltvoS5N3/1MunDKgBzmYis1KohA
-        vHKg222nS4mY/HCg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A06F61348E;
-        Thu, 29 Sep 2022 09:17:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 8X5yJpxiNWPhMQAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Thu, 29 Sep 2022 09:17:16 +0000
-Message-ID: <9db958ac-7e0c-5915-ffe1-7f809b7ed9ca@suse.cz>
-Date:   Thu, 29 Sep 2022 11:17:16 +0200
+        Thu, 29 Sep 2022 09:04:43 -0400
+Received: from hop.stappers.nl (hop.stappers.nl [IPv6:2a02:2308:0:14e::686f:7030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD4DD52
+        for <rust-for-linux@vger.kernel.org>; Thu, 29 Sep 2022 06:04:38 -0700 (PDT)
+Received: from gpm.stappers.nl (gpm.stappers.nl [IPv6:2a02:a46d:659e:1::696e:626f])
+        by hop.stappers.nl (Postfix) with ESMTP id 1F56D2000F
+        for <rust-for-linux@vger.kernel.org>; Thu, 29 Sep 2022 13:04:36 +0000 (UTC)
+Received: by gpm.stappers.nl (Postfix, from userid 1000)
+        id B8F2E304049; Thu, 29 Sep 2022 15:04:35 +0200 (CEST)
+Date:   Thu, 29 Sep 2022 15:04:35 +0200
+From:   Geert Stappers <stappers@stappers.nl>
+To:     rust-for-linux@vger.kernel.org
+Subject: scripts/Kconfig.include:40: linker 'ld.lld' not found
+Message-ID: <20220929130435.4bjnk27ksl63f2pq@gpm.stappers.nl>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH -next] compiler.h: fix compile error with gcc-8 or lower
- version
-Content-Language: en-US
-To:     Yang Yingliang <yangyingliang@huawei.com>,
-        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        llvm@lists.linux.dev, linux-mm@kvack.org
-Cc:     keescook@chromium.org
-References: <20220929033845.485728-1-yangyingliang@huawei.com>
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20220929033845.485728-1-yangyingliang@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20170113 (1.7.2)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 9/29/22 05:38, Yang Yingliang wrote:
-> I got the follow compile error in latest linux-next kernel with gcc-8.4:
-> 
->   In file included from <command-line>:
->   ./include/linux/percpu.h: In function ‘__alloc_reserved_percpu’:
->   ././include/linux/compiler_types.h:279:30: error: expected declaration specifiers before ‘__alloc_size__’
->    #define __alloc_size(x, ...) __alloc_size__(x, ## __VA_ARGS__) __malloc
->                                 ^~~~~~~~~~~~~~
->   ./include/linux/percpu.h:120:74: note: in expansion of macro ‘__alloc_size’
->    extern void __percpu *__alloc_reserved_percpu(size_t size, size_t align) __alloc_size(1);
-> 
-> __alloc_size is not defined in gcc-8 or lower version, so add back the
-> conditional test for __alloc_size__ to fix it.
-> 
-> Fixes: 63caa04ec605 ("slab: Remove __malloc attribute from realloc functions")
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-> ---
->  include/linux/compiler_types.h | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-> index aa81da7a28eb..aae8852ccbdc 100644
-> --- a/include/linux/compiler_types.h
-> +++ b/include/linux/compiler_types.h
-> @@ -276,8 +276,13 @@ struct ftrace_likely_data {
->   * be performing a _reallocation_, as that may alias the existing pointer.
->   * For these, use __realloc_size().
->   */
-> +#ifdef __alloc_size__
->  #define __alloc_size(x, ...)	__alloc_size__(x, ## __VA_ARGS__) __malloc
-> -#define __realloc_size(x, ...)	__alloc_size__(x, ## __VA_ARGS__)
-> +#define __realloc_size(x, ...) __alloc_size__(x, ## __VA_ARGS__)
-> +#else
-> +#define __alloc_size(x, ...)	__malloc
-> +#define __realloc_size(x, ...) __malloc
+Hello,
 
-This would be wrong as with 63caa04ec605 we don't want __malloc in
-__realloc_size(). Anyway Kees sent the correct version and it's now merged,
-thanks.
+How to deal
+with "scripts/Kconfig.include:40: linker 'ld.lld' not found"?
 
-> +#endif
->  
->  #ifndef asm_volatile_goto
->  #define asm_volatile_goto(x...) asm goto(x)
+I encountered that message while
+following https://github.com/Rust-for-Linux/linux/blob/rust/Documentation/rust/quick-start.rst
 
+Text belong is from a "rustup install" on a Debian system.
+
+stappers@hislaptop:/usr/src/linux/torvalds
+$ make LLVM=1 rustavailable
+Rust is available!
+stappers@hislaptop:/usr/src/linux/torvalds
+$ rustup override set $(scripts/min-tool-version.sh rustc)
+info: using existing install for '1.62.0-x86_64-unknown-linux-gnu'
+info: override toolchain for '/usr/src/linux/torvalds' set to '1.62.0-x86_64-unknown-linux-gnu'
+
+  1.62.0-x86_64-unknown-linux-gnu unchanged - rustc 1.62.0 (a8314ef7d 2022-06-27)
+
+stappers@hislaptop:/usr/src/linux/torvalds
+$ cargo install --locked --version $(scripts/min-tool-version.sh bindgen) bindgen
+     Ignored package `bindgen v0.56.0` is already installed, use --force to override
+stappers@hislaptop:/usr/src/linux/torvalds
+$ make menuconfig LLVM=1
+scripts/Kconfig.include:40: linker 'ld.lld' not found
+make[1]: *** [scripts/kconfig/Makefile:48: menuconfig] Error 1
+make: *** [Makefile:693: menuconfig] Error 2
+stappers@hislaptop:/usr/src/linux/torvalds
+$ make LLVM=1
+  SYNC    include/config/auto.conf.cmd
+  HOSTCC  scripts/kconfig/conf.o
+  HOSTLD  scripts/kconfig/conf
+scripts/Kconfig.include:40: linker 'ld.lld' not found
+make[2]: *** [scripts/kconfig/Makefile:77: syncconfig] Error 1
+make[1]: *** [Makefile:693: syncconfig] Error 2
+make: *** [Makefile:795: include/config/auto.conf.cmd] Error 2
+stappers@hislaptop:/usr/src/linux/torvalds
+$ LANG=C dpkg -l '*llvm*' | cut -b -100
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name                 Version       Architecture Description
++++-====================-=============-============-================================================
+ii  libllvm11:amd64      1:11.1.0-6+b2 amd64        Modular compiler and toolchain technologies, run
+ii  libllvm13:amd64      1:13.0.1-4    amd64        Modular compiler and toolchain technologies, run
+ii  libllvm14:amd64      1:14.0.6-2    amd64        Modular compiler and toolchain technologies, run
+ii  llvm                 1:13.0-54     amd64        Low-Level Virtual Machine (LLVM)
+ii  llvm-11              1:11.1.0-6+b2 amd64        Modular compiler and toolchain technologies
+ii  llvm-11-dev          1:11.1.0-6+b2 amd64        Modular compiler and toolchain technologies, lib
+un  llvm-11-doc          <none>        <none>       (no description available)
+ii  llvm-11-linker-tools 1:11.1.0-6+b2 amd64        Modular compiler and toolchain technologies
+ii  llvm-11-runtime      1:11.1.0-6+b2 amd64        Modular compiler and toolchain technologies, IR 
+ii  llvm-11-tools        1:11.1.0-6+b2 amd64        Modular compiler and toolchain technologies, too
+ii  llvm-13              1:13.0.1-4    amd64        Modular compiler and toolchain technologies
+ii  llvm-13-dev          1:13.0.1-4    amd64        Modular compiler and toolchain technologies, lib
+un  llvm-13-doc          <none>        <none>       (no description available)
+ii  llvm-13-linker-tools 1:13.0.1-4    amd64        Modular compiler and toolchain technologies - Pl
+ii  llvm-13-runtime      1:13.0.1-4    amd64        Modular compiler and toolchain technologies, IR 
+ii  llvm-13-tools        1:13.0.1-4    amd64        Modular compiler and toolchain technologies, too
+ii  llvm-14              1:14.0.6-2    amd64        Modular compiler and toolchain technologies
+ii  llvm-14-dev          1:14.0.6-2    amd64        Modular compiler and toolchain technologies, lib
+un  llvm-14-doc          <none>        <none>       (no description available)
+ii  llvm-14-linker-tools 1:14.0.6-2    amd64        Modular compiler and toolchain technologies - Pl
+ii  llvm-14-runtime      1:14.0.6-2    amd64        Modular compiler and toolchain technologies, IR 
+ii  llvm-14-tools        1:14.0.6-2    amd64        Modular compiler and toolchain technologies, too
+ii  llvm-runtime:amd64   1:13.0-54     amd64        Low-Level Virtual Machine (LLVM), bytecode inter
+stappers@hislaptop:/usr/src/linux/torvalds
+$ 
+
+
+Groeten
+Geert Stappers
+-- 
+Silence is hard to parse
