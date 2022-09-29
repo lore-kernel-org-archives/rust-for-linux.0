@@ -2,88 +2,79 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6285C04A95
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Sep 2022 03:23:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11CE9C07E9D
+	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Sep 2022 06:36:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234014AbiI2DW7 (ORCPT
+        id S234533AbiI2Ggk (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Sep 2022 23:22:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58160 "EHLO
+        Thu, 29 Sep 2022 02:36:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232166AbiI2DW6 (ORCPT
+        with ESMTP id S232494AbiI2Ggi (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Sep 2022 23:22:58 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F16127541;
-        Wed, 28 Sep 2022 20:22:56 -0700 (PDT)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MdJTV64vQzHtmG;
-        Thu, 29 Sep 2022 11:18:06 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 29 Sep 2022 11:22:44 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 29 Sep
- 2022 11:22:44 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
-        <llvm@lists.linux.dev>, <linux-mm@kvack.org>
-CC:     <keescook@chromium.org>, <vbabka@suse.cz>
-Subject: [PATCH -next] compiler.h: fix compile error with gcc-8 or lower version
-Date:   Thu, 29 Sep 2022 11:38:45 +0800
-Message-ID: <20220929033845.485728-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
+        Thu, 29 Sep 2022 02:36:38 -0400
+Received: from sender-op-o13.zoho.jp (sender-op-o13.zoho.jp [103.163.153.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CC0812164B
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Sep 2022 23:36:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1664433384; cv=none; 
+        d=zohomail.jp; s=zohoarc; 
+        b=PQAU8sHockEGDXGuFrqlDAqOSSqzED3NwJYJ6/hoaz2vLD+NYF8ZwVcPO5YOfh+NtFChC56CCVNmXlRMhqAp4ise09WwweQejWt4BqzFOs6le+J6s45WzUSunThP4DX8fsGQf60PE5HXg6yod1hYNHLjRWAaWjFrr4N7ex+gNm4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.jp; s=zohoarc; 
+        t=1664433384; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=9k/xzd0bo28KTkiLBN2s1IJDmJvbv177oM7tV9w84Lg=; 
+        b=sodM2QRjr4mXhTfg0wyehlLvlYV3brbD+YkmOQZ6JVBTrEw+I1FRA57Ybqu8WlJfVvol93dCL28Aa/qJy4zDng2zOl/8+a5+juTjUa7RmXTP20sB1p2iWcDEP7xasjiBParEQeEV84BPO1S0LwXMYWa80fkTd3k6+R38bDHGuXE=
+ARC-Authentication-Results: i=1; mx.zohomail.jp;
+        dkim=pass  header.i=exabit.dev;
+        spf=pass  smtp.mailfrom=tomo@exabit.dev;
+        dmarc=pass header.from=<tomo@exabit.dev>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1664433384;
+        s=zmail; d=exabit.dev; i=tomo@exabit.dev;
+        h=Date:Date:Message-Id:Message-Id:To:To:Cc:Cc:Subject:Subject:From:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding:Reply-To;
+        bh=9k/xzd0bo28KTkiLBN2s1IJDmJvbv177oM7tV9w84Lg=;
+        b=Za0mKlZtYEk6g7JM8NhAxQY+BuhmejCeiR069Uck3gfNSk7A+C44lVCQ5sctzX6A
+        SChFlqDSe2lrRq2myC8eSwWBQpv/oPzYjU2efa1qU9HOKfvSKzDiY0aQp9TteKrUYXQ
+        cyy2WZdOmgwfTblBeXJx/Ij1v1hT3vLLBUuctf3E=
+Received: from localhost (p1292009-ipoe.ipoe.ocn.ne.jp [114.146.73.8]) by mx.zoho.jp
+        with SMTPS id 1664433383806174.85677403274894; Thu, 29 Sep 2022 15:36:23 +0900 (JST)
+Date:   Thu, 29 Sep 2022 15:36:23 +0900 (JST)
+Message-Id: <20220929.153623.1440169232702561363.fujita@lima-default>
+To:     stappers@stappers.nl, miguel.ojeda.sandonis@gmail.com
+Cc:     alex.gaynor@gmail.com, tomo@exabit.dev,
+        rust-for-linux@vger.kernel.org
+Subject: Re: Rust e1000 driver (Intel Ethernet adapter)
+From:   FUJITA Tomonori <tomo@exabit.dev>
+In-Reply-To: <CANiq72kShUNkypRF9sH-EPeE7qV+dKkstNE8YVvVn_U-fKM2_A@mail.gmail.com>
+References: <CANiq72nAUKmcBWYqJ0WRHzJbad9L2RrOMP9DY9EYqDD8qSx0RQ@mail.gmail.com>
+        <20220928163514.442xdz4eziuoz2fl@gpm.stappers.nl>
+        <CANiq72kShUNkypRF9sH-EPeE7qV+dKkstNE8YVvVn_U-fKM2_A@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-I got the follow compile error in latest linux-next kernel with gcc-8.4:
+Hi,
 
-  In file included from <command-line>:
-  ./include/linux/percpu.h: In function ‘__alloc_reserved_percpu’:
-  ././include/linux/compiler_types.h:279:30: error: expected declaration specifiers before ‘__alloc_size__’
-   #define __alloc_size(x, ...) __alloc_size__(x, ## __VA_ARGS__) __malloc
-                                ^~~~~~~~~~~~~~
-  ./include/linux/percpu.h:120:74: note: in expansion of macro ‘__alloc_size’
-   extern void __percpu *__alloc_reserved_percpu(size_t size, size_t align) __alloc_size(1);
+On Wed, 28 Sep 2022 18:46:59 +0200
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-__alloc_size is not defined in gcc-8 or lower version, so add back the
-conditional test for __alloc_size__ to fix it.
+>> README.md at https://github.com/fujita/rust-e1000 hints,
+>> hints me, "this part should be inserted in another source tree".
+> 
+> I don't see the quote you mention, but from a quick look it seems he
+> decided to develop the driver side as an out-of-tree module, with the
+> abstractions in the Linux one.
+> 
+> While that requires to clone both repos, you don't need to move files
+> between them: compiling the out-of-tree module after the main repo
+> should work.
 
-Fixes: 63caa04ec605 ("slab: Remove __malloc attribute from realloc functions")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- include/linux/compiler_types.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Yeah, it's just an out-of-tree module. After compiling my
+Rust-for-Linux tree:
 
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index aa81da7a28eb..aae8852ccbdc 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -276,8 +276,13 @@ struct ftrace_likely_data {
-  * be performing a _reallocation_, as that may alias the existing pointer.
-  * For these, use __realloc_size().
-  */
-+#ifdef __alloc_size__
- #define __alloc_size(x, ...)	__alloc_size__(x, ## __VA_ARGS__) __malloc
--#define __realloc_size(x, ...)	__alloc_size__(x, ## __VA_ARGS__)
-+#define __realloc_size(x, ...) __alloc_size__(x, ## __VA_ARGS__)
-+#else
-+#define __alloc_size(x, ...)	__malloc
-+#define __realloc_size(x, ...) __malloc
-+#endif
- 
- #ifndef asm_volatile_goto
- #define asm_volatile_goto(x...) asm goto(x)
--- 
-2.25.1
+https://github.com/fujita/linux/tree/rust-e1000
 
+should be easy to compile rust-e1000 repo. No need to move the code to
+somewhere.
