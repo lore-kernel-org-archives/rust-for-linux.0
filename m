@@ -2,64 +2,65 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3FBAC433F5
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Oct 2022 02:04:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E07FDC433F5
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Oct 2022 04:17:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229488AbiJCCEk (ORCPT
+        id S229529AbiJCER1 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 2 Oct 2022 22:04:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49868 "EHLO
+        Mon, 3 Oct 2022 00:17:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbiJCCEj (ORCPT
+        with ESMTP id S229511AbiJCER0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 2 Oct 2022 22:04:39 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35ABEFF4;
-        Sun,  2 Oct 2022 19:04:37 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id y189so5312222iof.5;
-        Sun, 02 Oct 2022 19:04:37 -0700 (PDT)
+        Mon, 3 Oct 2022 00:17:26 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B514F2F036;
+        Sun,  2 Oct 2022 21:17:25 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id fj18so1113174ejc.10;
+        Sun, 02 Oct 2022 21:17:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date;
-        bh=lbUBLwLrU+qNu9qKx+IuhKwkfyVt1vaaIOK0cPSiuDg=;
-        b=HioAWnuOfe/FTNbLJL3xtog2XmNCRt3JV4vjJCHLn9bcukhXukL3J+iUzT4mRbvCYw
-         cpyDCaVDR0jip5ywnHSP7OQrhxaFTe3Sogqb2uBJxP2KAE0xh8FNKiP6qD1EGmbawJeu
-         psAmHfd4YryOosDz0caKncABwhAPRCHcHJh/cm1zPfp5/UxfTZNUCKuoFMsr/8Nyxopm
-         yUhp3qhnczAf1rcJxUJELG3PMsepwNBL2S9a4iqXK1d21YoLKWALOIn+6QIJgg2K0aT0
-         6E1TOEz118QCOMD2OXlt5GkMqsp2ggrv9wWqBvSvQd89wSbcXrFyWblKNdwv0J2bAY4u
-         686Q==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=9ksXVMaoyiezvzOT4T4fypchzJ4+YFvVGZ+lnFeb2aw=;
+        b=PmCcPLFjvenmI+fhAgzbecuICa+ogZ6PoCekZGUDFtxsTMtlUe1IQcEpjv+eJNUrTv
+         01Krqp8RPW56WQvJ0a+WN0uM0/ED6/U8cQuKFLtLHpe3DfWS00jq7q0l0oEbriwseYT9
+         5lh+K4TjZtGgZnJ1UDQMyUjzQHCoXlz1DGxNfLM4K9fyRbwdsrOOsamNeS3m0V5n3b2v
+         L3tBTF6XW5d/kJeONeDt2NGLtQ/nry1+LzizOR26iYSlPamJbMyFb4db7SnBTqkgp/lx
+         fDbKOLxyaJM1x5hMFzFuxyx0I9GSbYzj5h2kQERuiB5P4gjeVfCWtrtkciRnQ8uDQ3D/
+         lWfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=lbUBLwLrU+qNu9qKx+IuhKwkfyVt1vaaIOK0cPSiuDg=;
-        b=e3/mGiQFz0Z8uAlJKslHbsWwflAlrI+OMkdBY4aUZBLdSCV+RwArC/p6jFaLIg8F53
-         oXqFF4xhzQ4/1klz2L2/L1ppRwzTfktwCoOav3EgzE22YfRcmBEQDh3QopPaXetRGql5
-         sxpI1FGTAFmO0wRb89MUxo3DUCt7MbgXztuxB1iiWkvoXDRpE1D1u/lwl6vd8vfvFLnd
-         nEW7FKTqpywUJ5j2W9b5Hfv9k6je8Gnu+O2Pc2Co7TL+jCkKrVnS4OCVDQsUp4gWwf6p
-         yh4rJjBXnU/mgOU+2J8uy+R8e0Vuvi1flitpo1sBmNFKrIDryLeBbHsKY3zjaSBhrzk0
-         9j5A==
-X-Gm-Message-State: ACrzQf3aLrj9HNI3SMc9zPE9a3VvLqXVEcaCIjUw7Ir9Lk0Q1irbzOit
-        PNIWRqzsNl/UmOWoU1Gj4VM=
-X-Google-Smtp-Source: AMsMyM45RfWeewKTijr68Piu9khnc2TzINnr1EIijRFvUbrW+VICxCrtRBi8yB6EXpEJycSHe42Tlg==
-X-Received: by 2002:a02:a682:0:b0:34c:14fc:b490 with SMTP id j2-20020a02a682000000b0034c14fcb490mr9437006jam.196.1664762676359;
-        Sun, 02 Oct 2022 19:04:36 -0700 (PDT)
-Received: from smtpclient.apple ([75.104.65.53])
-        by smtp.gmail.com with ESMTPSA id o21-20020a02c6b5000000b0035ada363720sm3710373jan.23.2022.10.02.19.03.45
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 02 Oct 2022 19:04:35 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=9ksXVMaoyiezvzOT4T4fypchzJ4+YFvVGZ+lnFeb2aw=;
+        b=ESefkQrrTdpFspnXlJ8DGzUz5AXaLJT1UOPnC1H5UEYFa2wMlRe2L8mbi2fpU2s6+u
+         6YDBFnGx5yBw1ONeH/Htwr1KD5O1CTsxwYPnjcNephDi9AMflvTr8LpPTW4fTQVTaH61
+         G//nPSa65sTrWIMrIOq8MC+aJpmfkG1uPRnr2dJVQrIWn3oa66LueYmF7DTg7rsJxUUD
+         J4pl/ovV83ijHHN5WdWn3lsPrhQCr6mIjhRJT7UpsUta6zYHGIl/W/wLLDsrxgGbzmEc
+         TFbmGj8wItVNAGKMMATxFqLzzr1bn0UkZ8ImYLTPagw7gwoXrFKGblaOqmp1vdZAIyhJ
+         boIA==
+X-Gm-Message-State: ACrzQf3kEHp/CyZ4qNNQYPB0zaail5OxSSozoX7SqANUkwo33pJO/IuI
+        UX5GkspK+fVnoiSs9SOPS1Gn8N/MM0+9FbQbNRc=
+X-Google-Smtp-Source: AMsMyM4r/T90ofdnX8BPaBKuYhE2KKgPtQFGoX1z3qNwVvbeza0Ga7xXP5wsWUmUh7fwNtjnCcsexYHa0f/elrKdA8Q=
+X-Received: by 2002:a17:907:1c24:b0:78a:3d92:7701 with SMTP id
+ nc36-20020a1709071c2400b0078a3d927701mr4516406ejc.131.1664770644115; Sun, 02
+ Oct 2022 21:17:24 -0700 (PDT)
+MIME-Version: 1.0
+References: <Yu6BXwtPZwYPIDT6@casper.infradead.org> <Yyh3kFUvt2aMh4nq@wedsonaf-dev>
+ <CAHk-=wgaBaVaK2K=N05fwWSSLM6YJx=yLmP4f7j6d6o=nCAtdw@mail.gmail.com>
+ <CAHk-=whTDbFZKB4KJ6=74hoLcerTm3JuN3PV8G6ktcz+Xm1qew@mail.gmail.com>
+ <YyivY6WIl/ahZQqy@wedsonaf-dev> <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
+ <Yyjut3MHooCwzHRc@wedsonaf-dev> <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
+ <CAFRnB2VPpLSMqQwFPEjZhde8+-c6LLms54QkMt+wZPjOTULESw@mail.gmail.com>
+ <CAHk-=wiyD6KqZN8jFkMHPRPxrbyJEUDRP6+WaH9Q9hjDB5i1zg@mail.gmail.com> <YykMBiE3L/ADVK0f@boqun-archlinux>
+In-Reply-To: <YykMBiE3L/ADVK0f@boqun-archlinux>
+From:   Kyle Strand <batmanaod@gmail.com>
+Date:   Sun, 2 Oct 2022 22:17:10 -0600
+Message-ID: <CAKzwK0V_xDKJckK-E45nwX48PsAumqmiytVnSMdw51eBLwpY4w@mail.gmail.com>
 Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
-From:   comex <comexk@gmail.com>
-In-Reply-To: <YysdZIGp13ye0D4z@boqun-archlinux>
-Date:   Sun, 2 Oct 2022 22:03:22 -0400
-Cc:     Gary Guo <gary@garyguo.net>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Matthew Wilcox <willy@infradead.org>,
@@ -68,129 +69,117 @@ Cc:     Gary Guo <gary@garyguo.net>,
         Konstantin Shelekhin <k.shelekhin@yadro.com>, ojeda@kernel.org,
         ark.email@gmail.com, bjorn3_gh@protonmail.com, bobo1239@web.de,
         bonifaido@gmail.com, davidgow@google.com, dev@niklasmohrin.de,
-        dsosnowski@dsosnowski.pl, foxhlchen@gmail.com,
+        dsosnowski@dsosnowski.pl, foxhlchen@gmail.com, gary@garyguo.net,
         geofft@ldpreload.com, gregkh@linuxfoundation.org,
         jarkko@kernel.org, john.m.baublitz@gmail.com,
         leseulartichaut@gmail.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, me@kloenk.de, milan@mdaverde.com,
-        mjmouse9999@gmail.com, patches@lists.linux.dev,
-        rust-for-linux@vger.kernel.org, thesven73@gmail.com,
-        viktor@v-gar.de, Andreas Hindborg <andreas.hindborg@wdc.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FF630FE4-8DDB-43AE-A2B3-1708E260062A@gmail.com>
-References: <YyivY6WIl/ahZQqy@wedsonaf-dev>
- <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
- <Yyjut3MHooCwzHRc@wedsonaf-dev>
- <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
- <CAFRnB2VPpLSMqQwFPEjZhde8+-c6LLms54QkMt+wZPjOTULESw@mail.gmail.com>
- <CAHk-=wiyD6KqZN8jFkMHPRPxrbyJEUDRP6+WaH9Q9hjDB5i1zg@mail.gmail.com>
- <CAHk-=wj6sDFk8ZXSEKUMj-J9zfrMSSO3jhBEaveVaJSUpr=O=w@mail.gmail.com>
- <87a66uxcpc.fsf@email.froward.int.ebiederm.org>
- <20220920233947.0000345c@garyguo.net>
- <C85081E7-99CB-421F-AA3D-60326A5181EB@gmail.com>
- <YysdZIGp13ye0D4z@boqun-archlinux>
-To:     Boqun Feng <boqun.feng@gmail.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.1)
+        linux-kernel@vger.kernel.org, m.falkowski@samsung.com,
+        me@kloenk.de, milan@mdaverde.com, mjmouse9999@gmail.com,
+        patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
+        thesven73@gmail.com, viktor@v-gar.de,
+        Andreas Hindborg <andreas.hindborg@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+I don't know if there was ever a direct answer to this question; I was
+hoping someone with more involvement in the project would jump in.
 
->> On the other hand, it ought to be feasible to implement that kind of
->> =E2=80=99negative reasoning' as a custom lint.  It might not work as =
-well as
->> something built into the language, but it should work decently well,
->> and could serve as a prototype for a future built-in feature.
->=20
-> Interesting, do you have an example somewhere?
->=20
+> In this early experiment stage, if something is unsafe per Rust safety
+> requirements, maybe we should mark it as "unsafe"? Not because Rust
+> safety needs trump kernel needs, but because we need showcases to the
+> Rust langauge people the things that are not working very well in Rust
+> today.
+>
+> I definitely agree that we CANNOT change kernel behaviors to solely
+> fulfil Rust safety requirements, we (Rust-for-Linux people) should
+> either find a way to check in compiler time or just mark it as "unsafe".
+
+From the perspective of a Linux outsider, marking huge swaths of Rust
+code "unsafe" doesn't actually sound incorrect to me. If a function
+may exhibit undefined behavior, it's unsafe; thus, it should be marked
+as such. True, you lose some of Rust's guarantees within the code
+marked "unsafe", but this is what permits Rust to enforce those
+guarantees elsewhere. Having lots of uses of "unsafe" in kernel code
+is probably to be expected, and (in my opinion) not actually a sign
+that things "are not working very well in Rust." It's not even
+particularly verbose, if the callers of unsafe functions are generally
+also marked "unsafe"; in these cases, only the signatures are
+affected.
+
+The last sentence of Boqun's quote above captures the intent of
+"unsafe" perfectly: it simply indicates that code cannot be proven at
+compile time not to exhibit undefined behavior. It's important for
+systems languages to enable such code to be written, which is
+precisely why Rust has the "unsafe" keyword.
+
+
+On Mon, Sep 19, 2022 at 6:45 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+>
+> On Mon, Sep 19, 2022 at 04:58:06PM -0700, Linus Torvalds wrote:
+> > On Mon, Sep 19, 2022 at 4:50 PM Alex Gaynor <alex.gaynor@gmail.com> wrote:
+> > >
+> > > Rust's rules are that a function that's safe must not exhibit UB, no
+> > > matter what arguments they're called with. This can be done with
+> > > static checking or dynamic checking, with obvious trade offs between
+> > > the two.
+> >
+> > I think you are missing just how many things are "unsafe" in certain
+> > contexts and *cannot* be validated.
+> >
+> > This is not some kind of "a few special things".
+> >
+> > This is things like absolutely _anything_ that allocates memory, or
+> > takes a lock, or does a number of other things.
+> >
+> > Those things are simply not "safe" if you hold a spinlock, or if you
+> > are in a RCU read-locked region.
+> >
+> > And there is literally no way to check for it in certain configurations. None.
+> >
+> > So are you going to mark every single function that takes a mutex as
+> > being "unsafe"?
+> >
+>
+> In this early experiment stage, if something is unsafe per Rust safety
+> requirements, maybe we should mark it as "unsafe"? Not because Rust
+> safety needs trump kernel needs, but because we need showcases to the
+> Rust langauge people the things that are not working very well in Rust
+> today.
+>
+> I definitely agree that we CANNOT change kernel behaviors to solely
+> fulfil Rust safety requirements, we (Rust-for-Linux people) should
+> either find a way to check in compiler time or just mark it as "unsafe".
+>
+> Maybe I'm naive ;-) But keeping Rust safety requirements as they are
+> helps communication with the people on the other side (Rust
+> langauge/compiler): "Hey, I did everything per your safety requirements,
+> and it ends like this, I'm not happy about it, could you figure out
+> something helpful? After all, Rust is a *system programming" language,
+> it should be able to handle things like these".
+>
+> Or we want to say "kernel is special, so please give me a option so that
+> I don't need to worry about these UBs and deal with my real problems"?
+> I don't have the first hand experience, but seems this is what we have
+> been doing with C for many years. Do we want to try a new strategy? ;-)
+> But perhaps it's not new, maybe it's done a few times already but didn't
+> end well..
+>
+> Anyway, if I really want to teach Rust language/compiler people "I know
+> what I'm doing, the problem is that the language is not ready". What
+> should I do?
+>
 > Regards,
 > Boqun
-
-After some searching, I found this, which someone wrote several years =
-ago for a
-very similar purpose:
-
-https://github.com/thepowersgang/tag_safe/
-
-> This is a linter designed originally for use with a kernel, where =
-functions
-> need to be marked as "IRQ safe" (meaning they are safe to call within =
-an IRQ
-> handler, and handle the case where they may interrupt themselves).
-
-> If a function is annotated with #[req_safe(ident)] (where ident can be
-> anything, and defines the type of safety) this linter will check that =
-all
-> functions called by that function are either annotated with the same
-> annotation or #[is_safe(ident)], OR they do not call functions with =
-the
-> reverse #[is_unsafe(ident)] annotation.
-
-Note that the code won't work as-is with recent rustc.  rustc's API for =
-custom
-lints is not stable, and in fact rustc has deprecated linter plugins =
-entirely
-[1], though there are alternative approaches to using custom lints [2].  =
-Still,
-it's a good example of the approach.
-
-One fundamental caveat is that it doesn't seem to have the =
-sophistication
-needed to be sound with respect to indirect calls.
-
-For example, suppose you have a function that fetches a callback from =
-some
-structure and calls it.  Whether this function is IRQ-safe depends on =
-whether
-the callback is expected to be IRQ-safe, so in order to safety-check =
-this, you
-would need an annotation on either the callback field or the function =
-pointer
-type.  This is more complex than just putting annotations on function
-definitions.
-
-Or suppose you have the following code:
-
-    fn foo() {
-        bar(|| do_something_not_irq_safe());
-    }
-
-If `foo` is expected to be IRQ-safe, this may or may not be sound, =
-depending on
-whether `bar` calls the callback immediately or saves it for later.  If =
-`bar`
-saves it for later, then it could be marked unconditionally IRQ-safe.  =
-But if
-`bar` calls it immediately, then it's neither IRQ-safe nor IRQ-unsafe, =
-but
-effectively generic over IRQ safety.  You could pessimistically mark it
-IRQ-unsafe, but Rust has tons of basic helper methods that accept =
-callbacks and
-call them immediately; not being able to use any of them in an IRQ-safe =
-context
-would be quite limiting.
-
-In short, a fully sound approach requires not just checking which =
-functions
-call which, but having some kind of integration with the type system.  =
-This is
-the kind of issue that I was thinking of when I said a custom lint may =
-not work
-as well as something built into the language.
-
-However, I do think it's *possible* to handle it soundly from a lint,
-especially if it focuses on typical use cases and relies on manual =
-annotations
-for the rest.  Alternately, even an unsound lint would be a good first =
-step.
-It wouldn't really comport with Rust's ethos of making safety guarantees
-ironclad rather than heuristic, but it would serve as a good proof of =
-concept
-for a future language feature, while likely being helpful in practice in =
-the
-short term.
-
-[1] https://github.com/rust-lang/rust/pull/64675/files
-[2] =
-https://www.trailofbits.com/post/write-rust-lints-without-forking-clippy
+>
+> > Or are you just going to accept and understand that "hey, exactly like
+> > with integer overflows, sometimes it will be checked, and sometimes it
+> > just won't be".
+> >
+> > Because that is literally the reality of the kernel. Sometimes you
+> > WILL NOT have the checks, and you literally CANNOT have the checks.
+> >
+> > This is just how reality is. You don't get to choose the universe you live in.
+> >
+> >                   Linus
