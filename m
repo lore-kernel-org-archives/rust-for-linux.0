@@ -2,184 +2,115 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E07FDC433F5
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Oct 2022 04:17:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BBAB5C433F5
+	for <rust-for-linux@archiver.kernel.org>; Tue,  4 Oct 2022 18:47:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229529AbiJCER1 (ORCPT
+        id S229565AbiJDSrQ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Oct 2022 00:17:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52434 "EHLO
+        Tue, 4 Oct 2022 14:47:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229511AbiJCER0 (ORCPT
+        with ESMTP id S229681AbiJDSrP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Oct 2022 00:17:26 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B514F2F036;
-        Sun,  2 Oct 2022 21:17:25 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id fj18so1113174ejc.10;
-        Sun, 02 Oct 2022 21:17:25 -0700 (PDT)
+        Tue, 4 Oct 2022 14:47:15 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F9169F62
+        for <rust-for-linux@vger.kernel.org>; Tue,  4 Oct 2022 11:47:14 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id x32-20020a17090a38a300b00209dced49cfso11279276pjb.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Oct 2022 11:47:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=9ksXVMaoyiezvzOT4T4fypchzJ4+YFvVGZ+lnFeb2aw=;
-        b=PmCcPLFjvenmI+fhAgzbecuICa+ogZ6PoCekZGUDFtxsTMtlUe1IQcEpjv+eJNUrTv
-         01Krqp8RPW56WQvJ0a+WN0uM0/ED6/U8cQuKFLtLHpe3DfWS00jq7q0l0oEbriwseYT9
-         5lh+K4TjZtGgZnJ1UDQMyUjzQHCoXlz1DGxNfLM4K9fyRbwdsrOOsamNeS3m0V5n3b2v
-         L3tBTF6XW5d/kJeONeDt2NGLtQ/nry1+LzizOR26iYSlPamJbMyFb4db7SnBTqkgp/lx
-         fDbKOLxyaJM1x5hMFzFuxyx0I9GSbYzj5h2kQERuiB5P4gjeVfCWtrtkciRnQ8uDQ3D/
-         lWfw==
+        d=lixom-net.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=Ap8NhLNkwkZ+9pHFPmaGjqaY7m/PuDxtp7ygfQ7rZXw=;
+        b=5K8mItni9qvUB2aqre19DEnY9+XvPIkjIEYDtlukAgPD9dOPrre1rRQE0IOUgqMTkB
+         GyEgN5+WCj20HOiOXQBz0AnPdyfNeId1yaRDh6tDDIk3KweErmbC/0AeNGUCHICu4IJ2
+         UQy9e5I3NEyyRrMUk8n9NwEdj5ImXSLpywITtZlWxFb6MJPKY9CTxptVHKX/j+Yrbczl
+         xJgtA/hsDQpURWf3ucSwcda6imLALfm4o8/NcOvZLOtil8ueXLNbWpdKsWmApVwlGpWM
+         BScXrO8OI8LSaXa/VJ3YTI+TmrzfDaDosRMG/ok9ozzGUKtl3kpFkc4aV0dnYLE0Kygn
+         nL4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=9ksXVMaoyiezvzOT4T4fypchzJ4+YFvVGZ+lnFeb2aw=;
-        b=ESefkQrrTdpFspnXlJ8DGzUz5AXaLJT1UOPnC1H5UEYFa2wMlRe2L8mbi2fpU2s6+u
-         6YDBFnGx5yBw1ONeH/Htwr1KD5O1CTsxwYPnjcNephDi9AMflvTr8LpPTW4fTQVTaH61
-         G//nPSa65sTrWIMrIOq8MC+aJpmfkG1uPRnr2dJVQrIWn3oa66LueYmF7DTg7rsJxUUD
-         J4pl/ovV83ijHHN5WdWn3lsPrhQCr6mIjhRJT7UpsUta6zYHGIl/W/wLLDsrxgGbzmEc
-         TFbmGj8wItVNAGKMMATxFqLzzr1bn0UkZ8ImYLTPagw7gwoXrFKGblaOqmp1vdZAIyhJ
-         boIA==
-X-Gm-Message-State: ACrzQf3kEHp/CyZ4qNNQYPB0zaail5OxSSozoX7SqANUkwo33pJO/IuI
-        UX5GkspK+fVnoiSs9SOPS1Gn8N/MM0+9FbQbNRc=
-X-Google-Smtp-Source: AMsMyM4r/T90ofdnX8BPaBKuYhE2KKgPtQFGoX1z3qNwVvbeza0Ga7xXP5wsWUmUh7fwNtjnCcsexYHa0f/elrKdA8Q=
-X-Received: by 2002:a17:907:1c24:b0:78a:3d92:7701 with SMTP id
- nc36-20020a1709071c2400b0078a3d927701mr4516406ejc.131.1664770644115; Sun, 02
- Oct 2022 21:17:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <Yu6BXwtPZwYPIDT6@casper.infradead.org> <Yyh3kFUvt2aMh4nq@wedsonaf-dev>
- <CAHk-=wgaBaVaK2K=N05fwWSSLM6YJx=yLmP4f7j6d6o=nCAtdw@mail.gmail.com>
- <CAHk-=whTDbFZKB4KJ6=74hoLcerTm3JuN3PV8G6ktcz+Xm1qew@mail.gmail.com>
- <YyivY6WIl/ahZQqy@wedsonaf-dev> <CAHk-=whm5Ujw-yroDPZWRsHK76XxZWF1E9806jNOicVTcQC6jw@mail.gmail.com>
- <Yyjut3MHooCwzHRc@wedsonaf-dev> <CAHk-=wityPWw4YkHeMNU4iGanyiC3UwDRhbOHYCJrhB2paCGwA@mail.gmail.com>
- <CAFRnB2VPpLSMqQwFPEjZhde8+-c6LLms54QkMt+wZPjOTULESw@mail.gmail.com>
- <CAHk-=wiyD6KqZN8jFkMHPRPxrbyJEUDRP6+WaH9Q9hjDB5i1zg@mail.gmail.com> <YykMBiE3L/ADVK0f@boqun-archlinux>
-In-Reply-To: <YykMBiE3L/ADVK0f@boqun-archlinux>
-From:   Kyle Strand <batmanaod@gmail.com>
-Date:   Sun, 2 Oct 2022 22:17:10 -0600
-Message-ID: <CAKzwK0V_xDKJckK-E45nwX48PsAumqmiytVnSMdw51eBLwpY4w@mail.gmail.com>
-Subject: Re: [PATCH v9 12/27] rust: add `kernel` crate
-To:     Boqun Feng <boqun.feng@gmail.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=Ap8NhLNkwkZ+9pHFPmaGjqaY7m/PuDxtp7ygfQ7rZXw=;
+        b=bGcCjcid/uuxUFUT39QgcbBrVtBAaZ3V/xZE/Nj8yAZ1+1CTb97N3a5NvvmbRTibMM
+         kP1U1UjDhQ7o1LZEKenDyEZofjj7hXuF8651rB/FJPqGzbvzz53i4Y8GnQuXYzD46sou
+         kcAg4XOX06ZCuqFynmvwMMh96mr/6oAa0dZQFO08MohlseDE5dOVpyhiepZYtiU+PAO5
+         2VS2AV5bK+w7cfqrLHSU1q6zGgtBCgtf34Ok9QOdtAVF7obEuv/cgUCAP9AtASkFUgHy
+         KixWYufUMQ2NKC1QooDZl+lyTkPvwFvhMdr6JFC+ny8mSmIF1RJ3HyH+SpFy6svKuVuE
+         TK2A==
+X-Gm-Message-State: ACrzQf0llIhVU5v+JefIw1eXzbcYyA3eg4lZIuuVPxcK9ach6p/L+PO2
+        0jkN5MKpldkeLDg0qr0rxrVPkg==
+X-Google-Smtp-Source: AMsMyM7zZPOc0Gd/jTJWjrhpQHKa6A0rL6sTeCsOuq9mkt8dCKVI0Pf1J1Hqo0WpZ9F/ShyJJiuYnQ==
+X-Received: by 2002:a17:902:8643:b0:17a:3e74:d2a6 with SMTP id y3-20020a170902864300b0017a3e74d2a6mr28862328plt.120.1664909233682;
+        Tue, 04 Oct 2022 11:47:13 -0700 (PDT)
+Received: from chonkvm.olof-johansson.gmail.com.beta.tailscale.net. (99-152-116-91.lightspeed.sntcca.sbcglobal.net. [99.152.116.91])
+        by smtp.gmail.com with ESMTPSA id y10-20020aa79e0a000000b00561bc0aa529sm1997797pfq.131.2022.10.04.11.47.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Oct 2022 11:47:12 -0700 (PDT)
+From:   Olof Johansson <olof@lixom.net>
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Konstantin Shelekhin <k.shelekhin@yadro.com>, ojeda@kernel.org,
-        ark.email@gmail.com, bjorn3_gh@protonmail.com, bobo1239@web.de,
-        bonifaido@gmail.com, davidgow@google.com, dev@niklasmohrin.de,
-        dsosnowski@dsosnowski.pl, foxhlchen@gmail.com, gary@garyguo.net,
-        geofft@ldpreload.com, gregkh@linuxfoundation.org,
-        jarkko@kernel.org, john.m.baublitz@gmail.com,
-        leseulartichaut@gmail.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, m.falkowski@samsung.com,
-        me@kloenk.de, milan@mdaverde.com, mjmouse9999@gmail.com,
-        patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
-        thesven73@gmail.com, viktor@v-gar.de,
-        Andreas Hindborg <andreas.hindborg@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
+        Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Olof Johansson <olof@lixom.net>
+Subject: [PATCH] scripts: rust_is_available.sh: Provide hints on how to fix missing pieces
+Date:   Tue,  4 Oct 2022 11:46:25 -0700
+Message-Id: <20221004184625.10076-1-olof@lixom.net>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-I don't know if there was ever a direct answer to this question; I was
-hoping someone with more involvement in the project would jump in.
+This might be a bit bikesheddy, but it saves a few roundtrips to the
+documentation when getting the `make LLVM=1 rustavailable` run to pass.
 
-> In this early experiment stage, if something is unsafe per Rust safety
-> requirements, maybe we should mark it as "unsafe"? Not because Rust
-> safety needs trump kernel needs, but because we need showcases to the
-> Rust langauge people the things that are not working very well in Rust
-> today.
->
-> I definitely agree that we CANNOT change kernel behaviors to solely
-> fulfil Rust safety requirements, we (Rust-for-Linux people) should
-> either find a way to check in compiler time or just mark it as "unsafe".
+Stick to the rustup options to avoid too much verbosity.
 
-From the perspective of a Linux outsider, marking huge swaths of Rust
-code "unsafe" doesn't actually sound incorrect to me. If a function
-may exhibit undefined behavior, it's unsafe; thus, it should be marked
-as such. True, you lose some of Rust's guarantees within the code
-marked "unsafe", but this is what permits Rust to enforce those
-guarantees elsewhere. Having lots of uses of "unsafe" in kernel code
-is probably to be expected, and (in my opinion) not actually a sign
-that things "are not working very well in Rust." It's not even
-particularly verbose, if the callers of unsafe functions are generally
-also marked "unsafe"; in these cases, only the signatures are
-affected.
+Signed-off-by: Olof Johansson <olof@lixom.net>
+---
+ scripts/rust_is_available.sh | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-The last sentence of Boqun's quote above captures the intent of
-"unsafe" perfectly: it simply indicates that code cannot be proven at
-compile time not to exhibit undefined behavior. It's important for
-systems languages to enable such code to be written, which is
-precisely why Rust has the "unsafe" keyword.
+diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
+index aebbf1913970..94e6a1ce1df3 100755
+--- a/scripts/rust_is_available.sh
++++ b/scripts/rust_is_available.sh
+@@ -59,6 +59,9 @@ if [ "$rust_compiler_cversion" -lt "$rust_compiler_min_cversion" ]; then
+ 		echo >&2 "***   Your version:    $rust_compiler_version"
+ 		echo >&2 "***   Minimum version: $rust_compiler_min_version"
+ 		echo >&2 "***"
++		echo >&2 "*** To update to the expected version:"
++		echo >&2 "***   \$ rustup override set \$(scripts/min-tool-version.sh rustc)"
++		echo >&2 "***"
+ 	fi
+ 	exit 1
+ fi
+@@ -68,6 +71,9 @@ if [ "$1" = -v ] && [ "$rust_compiler_cversion" -gt "$rust_compiler_min_cversion
+ 	echo >&2 "***   Your version:     $rust_compiler_version"
+ 	echo >&2 "***   Expected version: $rust_compiler_min_version"
+ 	echo >&2 "***"
++	echo >&2 "*** To update to the expected version:"
++	echo >&2 "***   \$ rustup override set \$(scripts/min-tool-version.sh rustc)"
++	echo >&2 "***"
+ fi
+ 
+ # Check that the Rust bindings generator is suitable.
+@@ -155,6 +161,9 @@ if [ ! -e "$rustc_src_core" ]; then
+ 		echo >&2 "*** Source code for the 'core' standard library could not be found"
+ 		echo >&2 "*** at '$rustc_src_core'."
+ 		echo >&2 "***"
++		echo >&2 "*** To install sources:"
++		echo >&2 "***   \$ rustup component add rust-src"
++		echo >&2 "***"
+ 	fi
+ 	exit 1
+ fi
+-- 
+2.30.2
 
-
-On Mon, Sep 19, 2022 at 6:45 PM Boqun Feng <boqun.feng@gmail.com> wrote:
->
-> On Mon, Sep 19, 2022 at 04:58:06PM -0700, Linus Torvalds wrote:
-> > On Mon, Sep 19, 2022 at 4:50 PM Alex Gaynor <alex.gaynor@gmail.com> wrote:
-> > >
-> > > Rust's rules are that a function that's safe must not exhibit UB, no
-> > > matter what arguments they're called with. This can be done with
-> > > static checking or dynamic checking, with obvious trade offs between
-> > > the two.
-> >
-> > I think you are missing just how many things are "unsafe" in certain
-> > contexts and *cannot* be validated.
-> >
-> > This is not some kind of "a few special things".
-> >
-> > This is things like absolutely _anything_ that allocates memory, or
-> > takes a lock, or does a number of other things.
-> >
-> > Those things are simply not "safe" if you hold a spinlock, or if you
-> > are in a RCU read-locked region.
-> >
-> > And there is literally no way to check for it in certain configurations. None.
-> >
-> > So are you going to mark every single function that takes a mutex as
-> > being "unsafe"?
-> >
->
-> In this early experiment stage, if something is unsafe per Rust safety
-> requirements, maybe we should mark it as "unsafe"? Not because Rust
-> safety needs trump kernel needs, but because we need showcases to the
-> Rust langauge people the things that are not working very well in Rust
-> today.
->
-> I definitely agree that we CANNOT change kernel behaviors to solely
-> fulfil Rust safety requirements, we (Rust-for-Linux people) should
-> either find a way to check in compiler time or just mark it as "unsafe".
->
-> Maybe I'm naive ;-) But keeping Rust safety requirements as they are
-> helps communication with the people on the other side (Rust
-> langauge/compiler): "Hey, I did everything per your safety requirements,
-> and it ends like this, I'm not happy about it, could you figure out
-> something helpful? After all, Rust is a *system programming" language,
-> it should be able to handle things like these".
->
-> Or we want to say "kernel is special, so please give me a option so that
-> I don't need to worry about these UBs and deal with my real problems"?
-> I don't have the first hand experience, but seems this is what we have
-> been doing with C for many years. Do we want to try a new strategy? ;-)
-> But perhaps it's not new, maybe it's done a few times already but didn't
-> end well..
->
-> Anyway, if I really want to teach Rust language/compiler people "I know
-> what I'm doing, the problem is that the language is not ready". What
-> should I do?
->
-> Regards,
-> Boqun
->
-> > Or are you just going to accept and understand that "hey, exactly like
-> > with integer overflows, sometimes it will be checked, and sometimes it
-> > just won't be".
-> >
-> > Because that is literally the reality of the kernel. Sometimes you
-> > WILL NOT have the checks, and you literally CANNOT have the checks.
-> >
-> > This is just how reality is. You don't get to choose the universe you live in.
-> >
-> >                   Linus
