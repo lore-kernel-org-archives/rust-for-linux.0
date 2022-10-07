@@ -2,59 +2,82 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F067FC433FE
-	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Oct 2022 07:27:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2D5BC433F5
+	for <rust-for-linux@archiver.kernel.org>; Fri,  7 Oct 2022 17:18:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229843AbiJEH1t (ORCPT
+        id S229542AbiJGRSQ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 5 Oct 2022 03:27:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38050 "EHLO
+        Fri, 7 Oct 2022 13:18:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229806AbiJEH1s (ORCPT
+        with ESMTP id S229445AbiJGRSO (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 5 Oct 2022 03:27:48 -0400
-Received: from hop.stappers.nl (hop.stappers.nl [IPv6:2a02:2308:0:14e::686f:7030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C46B7434D;
-        Wed,  5 Oct 2022 00:27:47 -0700 (PDT)
-Received: from gpm.stappers.nl (gpm.stappers.nl [82.168.249.201])
-        by hop.stappers.nl (Postfix) with ESMTP id 0835120013;
-        Wed,  5 Oct 2022 07:27:45 +0000 (UTC)
-Received: by gpm.stappers.nl (Postfix, from userid 1000)
-        id 7FE39304049; Wed,  5 Oct 2022 09:27:44 +0200 (CEST)
-Date:   Wed, 5 Oct 2022 09:27:44 +0200
-From:   Geert Stappers <stappers@stappers.nl>
-To:     Olof Johansson <olof@lixom.net>, Miguel Ojeda <ojeda@kernel.org>,
+        Fri, 7 Oct 2022 13:18:14 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEE06D57D3;
+        Fri,  7 Oct 2022 10:18:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=Qu0RZlUOKHKbdJ93oyFutpaLoUL4bQrVrDVJWi930ac=; b=Q0GO23CTsRrxoMOQjBT07b+fbV
+        xuHE10+DAr4bRVKdI21rVUamN7uWea2x2WNRmw/k4O6MPz8tcxa0e8gdbRgtcikOsgRm6U9bVNtj9
+        NemvdrSzkjq+5qZFSIqDfYcP8/khTwRJLWO0ENyhwlnjl6OavwwZ8pJQTslvlxA2g5xz9ZiMn/EMg
+        /E+xc4H9GfCHrxZhwZiHBU/LTfFOo8WVgshOfZdrGzyNdpgp83WFv+VRxyL/XYtl5vEpxXugq7AaZ
+        2mOeZtggX+2Xr6/40reAzY+9g41G18YaYwerbGXemmx2SzKVpAHhNMH0SqaJq6UMRCnjJCBos635x
+        D2zSOXeQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1ogqyr-0022Yg-Rl; Fri, 07 Oct 2022 17:17:50 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 911D3300155;
+        Fri,  7 Oct 2022 19:17:43 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 753BC2BD94364; Fri,  7 Oct 2022 19:17:43 +0200 (CEST)
+Date:   Fri, 7 Oct 2022 19:17:43 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        David Gow <davidgow@google.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scripts: rust_is_available.sh: Provide hints on how to
- fix missing pieces
-Message-ID: <20221005072743.vfanu2mgj56wbdmh@gpm.stappers.nl>
-References: <20221004184625.10076-1-olof@lixom.net>
+        Jonathan Corbet <corbet@lwn.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
+Message-ID: <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net>
+References: <20220927131518.30000-1-ojeda@kernel.org>
+ <20220927131518.30000-26-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221004184625.10076-1-olof@lixom.net>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20220927131518.30000-26-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Oct 04, 2022 at 11:46:25AM -0700, Olof Johansson wrote:
-> This might be a bit bikesheddy, but it saves a few roundtrips to the
-> documentation when getting the `make LLVM=1 rustavailable` run to pass.
+On Tue, Sep 27, 2022 at 03:14:56PM +0200, Miguel Ojeda wrote:
+> Note that only x86_64 is covered and not all features nor mitigations
+> are handled, but it is enough as a starting point and showcases
+> the basics needed to add Rust support for a new architecture.
 
-Yeah, I have bin there    :-)
+Does it fail the build if required options are missing? Specifically are
+things like kCFI and IBT enabled? Silently not handling those will
+result in an unbootable image.
 
- 
-> Stick to the rustup options to avoid too much verbosity.
-> 
-> Signed-off-by: Olof Johansson <olof@lixom.net>
-> ---
->  scripts/rust_is_available.sh | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
+As to missing mitigations; does it at least visibly warn people?
 
-Reviewed-by: Geert Stappers <stappers@stappers.nl>
+I'm very *very* uncomfortable having to 'support' a half-arsed compiler
+like this.
