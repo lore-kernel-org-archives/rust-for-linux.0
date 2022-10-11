@@ -2,98 +2,80 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71CABC433F5
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Oct 2022 23:16:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80C8BC433FE
+	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Oct 2022 03:01:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229926AbiJJXQQ (ORCPT
+        id S229663AbiJKDBy (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 10 Oct 2022 19:16:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44810 "EHLO
+        Mon, 10 Oct 2022 23:01:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229922AbiJJXQO (ORCPT
+        with ESMTP id S229481AbiJKDB3 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 10 Oct 2022 19:16:14 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8267A74348
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Oct 2022 16:16:11 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id y14so10718592ejd.9
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Oct 2022 16:16:11 -0700 (PDT)
+        Mon, 10 Oct 2022 23:01:29 -0400
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 720023AB18
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Oct 2022 20:01:27 -0700 (PDT)
+Received: by mail-io1-xd33.google.com with SMTP id n73so5033024iod.13
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Oct 2022 20:01:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=IKLnyVJ0nNgakFSgUxLr7WhxEeqfhLp9XdGiHhrJ06w=;
-        b=Ryi518lVq+timi1Kqu+idgXmjtgi4HCtGXEwjzHDXXl5PQ9749Qk6algii3a0SO5OQ
-         W5+ghws/D6+LGX63grCrAsJAZ2X73rWnGpEuNTgF+0sG4sOILzGhkGX1Eatnq4XDuO+X
-         4WKk/7sX2kSc1WGM8iPo6ZmmMKzUwbF6T44FNfCuG0gwQwGTs5Cd0CnlMBZ05MB3LQLt
-         Z2/G8pNFwZcsBymYsai2ltCRH53PQ0EAi/LOGc4vOAYVbdKHShVKFSmog4D9gs7kJNwO
-         DViA4/Du1iDndpYP/18p9ZZjR1R6GgtV0QQVFLT8YhigXRqJo5/XQWzaAym5gYK8HDex
-         ABKQ==
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ooSL6x6epkP6OOB3mNxBTJdqRITrmmPttPBl0cW4JHw=;
+        b=h0SWU3NT6eadahOCOUiB61qWuKpg+/IB5l3FpWGEW35eXD2cKwIzGphgFcecIsBp9L
+         LskvqzeeT3wS7njy4lfj8tECA3QaISe/6FnY2idYMZdTbr5v2buuhibWUd2NXG+WPLNe
+         j/IiGhG3Ez5Rrhk0Ls++dfoOZHjLCRuHrjqli08uKsPHvk3bu4bOQ1S+1jHAom26wfD8
+         kgZ8fL23RHK+LM8Gv5Ajhae2+tNsdPeUQQnqCMEndsL9ESI9HlcBXLRFfYhhG8m+n9TG
+         crq6MWboECjqzaAehI43R07WajxrqPnXiaS7eF1IsShjlZBAhNNMLFbnnfFOyCXDWojf
+         +jiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IKLnyVJ0nNgakFSgUxLr7WhxEeqfhLp9XdGiHhrJ06w=;
-        b=A+z4VuY25Y6eq6z/y4LQ/3iMuzdPRl4r4Zlm6HaoWg80AUZ/Nm9XMVeFrwSfxPWDbO
-         qYWzhDN6KqaLRp6cOIBYf36m1LkR3rBD9JXhR8RTPmZK2nK0fMhUUC7uGtNGfw/zu5qC
-         orZZBF17sRjTA1JDKjvthQV35+CNfk9un8INihuSIuaCPcfMiRkHMEvnDhvCBnOV30LO
-         S8TcVRvrZhycnmZB7IPOnkwF2EH+b/5qsS2GEn+mUo4GFRKr4J3+0gniSF0HGdgC9YwI
-         yF5W6B0VKwtj/roZ5z4smuwXlYF0lmsJUcm0NyGV1jh1ukotIy+pajUYSK/wET3QK6Y2
-         5UDQ==
-X-Gm-Message-State: ACrzQf3PMIvRgMBWvlz6ZXG5aFd7Z25PvZiwSBUgfq21gEOFXq38LrOx
-        JG9/nuQULht0UPVtwRIV6dVqOGII6NSDVQLLAbqvmQ==
-X-Google-Smtp-Source: AMsMyM5nVE+afZe0F6TrLstl85/eEUpde8vabQOqkBtX4AtcSkFZgO385VJ9f4jwvHK+QMgqc/4r+Z68UcPthxNCAdQ=
-X-Received: by 2002:a17:906:5a44:b0:78d:4c17:9856 with SMTP id
- my4-20020a1709065a4400b0078d4c179856mr16889557ejc.477.1665443769407; Mon, 10
- Oct 2022 16:16:09 -0700 (PDT)
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ooSL6x6epkP6OOB3mNxBTJdqRITrmmPttPBl0cW4JHw=;
+        b=lYigiHkGsNFKVgAR4VjVKGe5f8VhURTIqXhY91IqsjtBoXhmJpltcVr040hxS0nuwl
+         EQwOjDmzihTI1zFTO6sinMPKqlfRE1OkQYSqfzAoYEy4Q1St/Kel+VeibNI78QbqJXnn
+         LVEk4PSoq7yPB77yVYdzHvoM9dSkxlwx1uXV2zTBWwY18lTC2L3N+RMDWNLTuObEmLLA
+         0ohgvsktcCM5R9w/C9R4BqpuHZFLaIgLHp/BpoUnmCHJ53WPKEwUanDEsQCq6llaKB+D
+         hqWVx/DSrCEz2xgX6AHOZP/A6N+oa56eEJv/10tDyyWWSh5TkO+u5pIIH40+UxzQjuce
+         oOCw==
+X-Gm-Message-State: ACrzQf1YwDZcvYbRHendSVVSYySz/+y9+YrnxSLUyeNhc6Y6husupjPD
+        eRVg/6+xYbbHcQ9f9TeJM9YXO+WrskIAigpia+7s1Ihmapo=
+X-Google-Smtp-Source: AMsMyM63j1PmutkvOLZIAXt9oKVXpiZwEciwH4CK/wZgrptp+1g56hWxbV8wf2+9GUxIFD0mxUlQ78/f7dAKLYT4i/Y=
+X-Received: by 2002:a05:6602:3427:b0:6a1:e91a:2e80 with SMTP id
+ n39-20020a056602342700b006a1e91a2e80mr9958326ioz.52.1665457286787; Mon, 10
+ Oct 2022 20:01:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-26-ojeda@kernel.org>
- <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net>
-In-Reply-To: <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net>
-From:   Sami Tolvanen <samitolvanen@google.com>
-Date:   Mon, 10 Oct 2022 16:15:33 -0700
-Message-ID: <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
-Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        David Gow <davidgow@google.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
+From:   Gioh Kim <gurugio@gmail.com>
+Date:   Tue, 11 Oct 2022 12:01:16 +0900
+Message-ID: <CANc8B5MUDNfR=zLrigH0DtR1YVDc1hwp3Usz-_vEczBppP+cqA@mail.gmail.com>
+Subject: wrapper for __register_blkdev and unregister_blkdev
+To:     rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Oct 7, 2022 at 10:18 AM Peter Zijlstra <peterz@infradead.org> wrote:
->
-> On Tue, Sep 27, 2022 at 03:14:56PM +0200, Miguel Ojeda wrote:
-> > Note that only x86_64 is covered and not all features nor mitigations
-> > are handled, but it is enough as a starting point and showcases
-> > the basics needed to add Rust support for a new architecture.
->
-> Does it fail the build if required options are missing? Specifically are
-> things like kCFI and IBT enabled? Silently not handling those will
-> result in an unbootable image.
+Hi,
 
-Rust supports IBT with -Z cf-protection=branch, but I don't see this
-option being enabled in the kernel yet. Cross-language CFI is going to
-require a lot more work though because the type systems are not quite
-compatible:
+I tried to make the ramdisk module for exercise but found that
+there is no wrapper for block layer APIs.
+I thought it would be great if somebody is working for the block layer.
+So I just implemented a wrapper of only __register_blkdev and
+unregister_blkdev for testing.
+https://github.com/Rust-for-Linux/linux/commit/65fd073d9f2ccbdabeae444ff34a72e23d717845
 
-https://github.com/rust-lang/rfcs/pull/3296
+I am wondering if there is somebody working for the block layer.
+There are wrapper APIs for the character device and sample code but no
+code for the block device.
+I found FUJITA Tomonori already implemented binding functions that do
+not have wrappers in RUST style.
+FUJITA, will you continue to implement more block layer APIs?
+I saw you were busy for the e1000 driver.
+If you will, please inform me of your repository, and let me review and test it.
 
-Sami
+-- 
+
+Best regards,
+Gioh Kim
