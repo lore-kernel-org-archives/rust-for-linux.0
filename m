@@ -2,91 +2,58 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F291C433FE
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Oct 2022 08:05:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43174C433FE
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Oct 2022 08:00:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229501AbiJKIFO (ORCPT
+        id S229628AbiJLIAJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Oct 2022 04:05:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50312 "EHLO
+        Wed, 12 Oct 2022 04:00:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229710AbiJKIFM (ORCPT
+        with ESMTP id S229567AbiJLIAI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Oct 2022 04:05:12 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F5904D276;
-        Tue, 11 Oct 2022 01:05:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=u50EcsTI9Wk9/nFFcEKJjzHJXjNQpjwE8MEPj/c61bk=; b=jRN7B6Bjxy2MH05q0VSH4fvQvY
-        +TydedfMaV9P6yrvHLi8GPvH4QZqoYXkd0Nu2oZ4lFt2wsdeLOhD6zhyxXHFDg0mjdlmn01cqTeeu
-        KcPMPeOeWFcSILoeKQ61er9iX3EIBXx1gDLuAcu/WeCW634UldSWDwlzIYeGUAiNC6BcGc/gYgHVO
-        ykcKWqOtKkIbA+aYGKQRqzXaINp2SoQO6GNlbGVAGQ2mHB7m8oFFsVdDMmqvYUYEwswJ7V6YeCYlu
-        SWG5BbfQxgPLGVdnp9qp+wQUeQhCYsgrELuKqMkXPb6VIKu9RZHUj+9EpXekIiUE5A6rhA53FIdZH
-        tRibQBQw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1oiAFo-002Wc3-Tn; Tue, 11 Oct 2022 08:04:45 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D982D3001CB;
-        Tue, 11 Oct 2022 10:04:43 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id BF85020D7E1AB; Tue, 11 Oct 2022 10:04:43 +0200 (CEST)
-Date:   Tue, 11 Oct 2022 10:04:43 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Sami Tolvanen <samitolvanen@google.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        David Gow <davidgow@google.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
-Message-ID: <Y0Ujm6a6bV3+FWM3@hirez.programming.kicks-ass.net>
-References: <20220927131518.30000-1-ojeda@kernel.org>
- <20220927131518.30000-26-ojeda@kernel.org>
- <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net>
- <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
+        Wed, 12 Oct 2022 04:00:08 -0400
+X-Greylist: delayed 547 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 12 Oct 2022 01:00:06 PDT
+Received: from mail.allintoponline.pl (mail.allintoponline.pl [151.236.28.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7729620350
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Oct 2022 01:00:06 -0700 (PDT)
+Received: by mail.allintoponline.pl (Postfix, from userid 1001)
+        id 6591A217F7; Wed, 12 Oct 2022 09:50:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=allintoponline.pl;
+        s=mail; t=1665561056;
+        bh=+fG4vYlqG+yATJtf9z9OyBKAvvR3Bi1gb9tETg1imwI=;
+        h=Date:From:To:Subject:From;
+        b=lypZXbsfoNC2m6Mv425hzRH46Fu8K1NypKin2J2F0rXH9Cbu/bNN79bwvOs0k4Wqp
+         zzSG0zVDQq6v6iqU1f6OncABqnBa+82ZwjtCt5DUJ4Nm8IsA+gCm3nbl8NXPX29goE
+         3b4CRD6euaNt9ZqGAnJenWwndbWviusmUYSjXh+Xw6MixdwX8itrlNfrYexfiUDlwT
+         pWIHFRY/CeIvwzTS7Zf3xo7AC8KCyclOdH58SfyJycVAGcBDmVwrGKAI72h2d0MM8i
+         TEq0VZonqvNswlb2PTCjZZGroVaDT0WenuOkqC/yT7b/e5nPboBPxuMiOR5SP4CWZ+
+         3kIwuKWRqofGw==
+Received: by mail.allintoponline.pl for <rust-for-linux@vger.kernel.org>; Wed, 12 Oct 2022 07:50:46 GMT
+Message-ID: <20221012084500-0.1.26.eyjy.0.k620yobn0g@allintoponline.pl>
+Date:   Wed, 12 Oct 2022 07:50:46 GMT
+From:   "Wiktor Nurek" <wiktor.nurek@allintoponline.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
+X-Mailer: mail.allintoponline.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Oct 10, 2022 at 04:15:33PM -0700, Sami Tolvanen wrote:
-> On Fri, Oct 7, 2022 at 10:18 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> >
-> > On Tue, Sep 27, 2022 at 03:14:56PM +0200, Miguel Ojeda wrote:
-> > > Note that only x86_64 is covered and not all features nor mitigations
-> > > are handled, but it is enough as a starting point and showcases
-> > > the basics needed to add Rust support for a new architecture.
-> >
-> > Does it fail the build if required options are missing? Specifically are
-> > things like kCFI and IBT enabled? Silently not handling those will
-> > result in an unbootable image.
-> 
-> Rust supports IBT with -Z cf-protection=branch, but I don't see this
-> option being enabled in the kernel yet. Cross-language CFI is going to
-> require a lot more work though because the type systems are not quite
-> compatible:
+Dzie=C5=84 dobry,
 
-Right; so where does that leave us? Are we going to force disable rust
-when kCFI is selected ?
+chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
+skania nowych zlece=C5=84 ze strony www.
+
+Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
+, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
+=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
+jonowania strony w Google.
+
+Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+
+Pozdrawiam
+Wiktor Nurek
