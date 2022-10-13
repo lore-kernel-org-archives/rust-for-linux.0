@@ -2,58 +2,82 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43174C433FE
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Oct 2022 08:00:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B6F7C433FE
+	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Oct 2022 09:35:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229628AbiJLIAJ (ORCPT
+        id S229475AbiJMJf2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Oct 2022 04:00:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47512 "EHLO
+        Thu, 13 Oct 2022 05:35:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbiJLIAI (ORCPT
+        with ESMTP id S229460AbiJMJf1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Oct 2022 04:00:08 -0400
-X-Greylist: delayed 547 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 12 Oct 2022 01:00:06 PDT
-Received: from mail.allintoponline.pl (mail.allintoponline.pl [151.236.28.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7729620350
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Oct 2022 01:00:06 -0700 (PDT)
-Received: by mail.allintoponline.pl (Postfix, from userid 1001)
-        id 6591A217F7; Wed, 12 Oct 2022 09:50:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=allintoponline.pl;
-        s=mail; t=1665561056;
-        bh=+fG4vYlqG+yATJtf9z9OyBKAvvR3Bi1gb9tETg1imwI=;
-        h=Date:From:To:Subject:From;
-        b=lypZXbsfoNC2m6Mv425hzRH46Fu8K1NypKin2J2F0rXH9Cbu/bNN79bwvOs0k4Wqp
-         zzSG0zVDQq6v6iqU1f6OncABqnBa+82ZwjtCt5DUJ4Nm8IsA+gCm3nbl8NXPX29goE
-         3b4CRD6euaNt9ZqGAnJenWwndbWviusmUYSjXh+Xw6MixdwX8itrlNfrYexfiUDlwT
-         pWIHFRY/CeIvwzTS7Zf3xo7AC8KCyclOdH58SfyJycVAGcBDmVwrGKAI72h2d0MM8i
-         TEq0VZonqvNswlb2PTCjZZGroVaDT0WenuOkqC/yT7b/e5nPboBPxuMiOR5SP4CWZ+
-         3kIwuKWRqofGw==
-Received: by mail.allintoponline.pl for <rust-for-linux@vger.kernel.org>; Wed, 12 Oct 2022 07:50:46 GMT
-Message-ID: <20221012084500-0.1.26.eyjy.0.k620yobn0g@allintoponline.pl>
-Date:   Wed, 12 Oct 2022 07:50:46 GMT
-From:   "Wiktor Nurek" <wiktor.nurek@allintoponline.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.allintoponline.pl
+        Thu, 13 Oct 2022 05:35:27 -0400
+Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DC0A258140;
+        Thu, 13 Oct 2022 02:35:25 -0700 (PDT)
+Received: from localhost.localdomain (unknown [223.106.24.89])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8AxFeLQ20djxewsAA--.31417S2;
+        Thu, 13 Oct 2022 17:35:14 +0800 (CST)
+From:   Yanteng Si <siyanteng@loongson.cn>
+To:     alexs@kernel.org, seakeel@gmail.com
+Cc:     Yanteng Si <siyanteng@loongson.cn>, corbet@lwn.net,
+        ojeda@kernel.org, boqun.feng@gmail.com, wedsonaf@gmail.com,
+        gary@garyguo.net, bjorn3_gh@protonmail.com,
+        rust-for-linux@vger.kernel.org, bobwxc@email.cn,
+        wu.xiangcheng@linux.dev, chenhuacai@kernel.org,
+        jiaxun.yang@flygoat.com, linux-doc@vger.kernel.org,
+        siyanteng01@gmail.com
+Subject: [PATCH v1 0/5] docs/zh_CN: Add rust Chinese translation
+Date:   Thu, 13 Oct 2022 17:33:41 +0800
+Message-Id: <cover.1665650266.git.siyanteng@loongson.cn>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8AxFeLQ20djxewsAA--.31417S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Jry7Zr1xuryDtw45AFy7ZFb_yoW8Jr18pF
+        1UKryfG3W7Ar12kw4fGF1UJF1rCF1fG3y5tr17XwnYqrs5tF4rtrWDtr9Ika4fZr48XF45
+        Xr4Fkr1Uuw4FyrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+        1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+        6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+        Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+        I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+        4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+        n2kIc2xKxwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
+        0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
+        17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
+        C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
+        6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
+        73UjIFyTuYvjfUeLvtDUUUU
+X-CM-SenderInfo: pvl1t0pwhqwqxorr0wxvrqhubq/
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Translate Documentation/rust/* into Chinese.
 
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
+Yanteng Si (5):
+  docs/zh_CN: Add rust/index Chinese translation
+  docs/zh_CN: Add rust/quick-start Chinese translation
+  docs/zh_CN: Add rust/general-information Chinese translation
+  docs/zh_CN: Add rust/coding-guidelines Chinese translation
+  docs/zh_CN: Add rust/arch-support Chinese translation
 
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
+ Documentation/translations/zh_CN/index.rst    |   1 +
+ .../translations/zh_CN/rust/arch-support.rst  |  23 ++
+ .../zh_CN/rust/coding-guidelines.rst          | 192 ++++++++++++++++
+ .../zh_CN/rust/general-information.rst        |  75 +++++++
+ .../translations/zh_CN/rust/index.rst         |  28 +++
+ .../translations/zh_CN/rust/quick-start.rst   | 211 ++++++++++++++++++
+ 6 files changed, 530 insertions(+)
+ create mode 100644 Documentation/translations/zh_CN/rust/arch-support.rst
+ create mode 100644 Documentation/translations/zh_CN/rust/coding-guidelines.rst
+ create mode 100644 Documentation/translations/zh_CN/rust/general-information.rst
+ create mode 100644 Documentation/translations/zh_CN/rust/index.rst
+ create mode 100644 Documentation/translations/zh_CN/rust/quick-start.rst
 
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+-- 
+2.31.1
 
-Pozdrawiam
-Wiktor Nurek
