@@ -2,100 +2,95 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28F26C433FE
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Oct 2022 18:44:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0778C43219
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Oct 2022 20:40:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230427AbiJNSop (ORCPT
+        id S231529AbiJNUkK (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Oct 2022 14:44:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49996 "EHLO
+        Fri, 14 Oct 2022 16:40:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229717AbiJNSoo (ORCPT
+        with ESMTP id S231578AbiJNUjq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Oct 2022 14:44:44 -0400
-Received: from mail-vk1-xa29.google.com (mail-vk1-xa29.google.com [IPv6:2607:f8b0:4864:20::a29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD85BCE17
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Oct 2022 11:44:41 -0700 (PDT)
-Received: by mail-vk1-xa29.google.com with SMTP id s185so2710664vkb.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Oct 2022 11:44:41 -0700 (PDT)
+        Fri, 14 Oct 2022 16:39:46 -0400
+Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA0ABBECEB;
+        Fri, 14 Oct 2022 13:39:14 -0700 (PDT)
+Received: by mail-il1-x12c.google.com with SMTP id q18so3100956ils.12;
+        Fri, 14 Oct 2022 13:39:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lixom-net.20210112.gappssmtp.com; s=20210112;
+        d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=qHPx3FIICBJ97+4m/tNrnrrE7c7V77it4zG5MOEekP8=;
-        b=uRB9bMp8g92Q1/kj2CCMj1RnY456AXrKWO1G6V1TtDob3IS9h+kGLhuo7DxuE/3/VR
-         mclpNViNnitDQKXEhe6xad8L+Xy6HfUWQJWP7LA4EuSYNHg5BpeBSpaVnAazHVW+EPtN
-         Zwg+tbgIbik1grCVluV1PqKZbftqR+FQYT7s2Xq4nNrs3erhO8uwK0OOm28CpBZZZOdP
-         JXkd78OGKeNktU8kmzFEt42ykgYDiVTF4w1qE6Amw6GtJRAf/GMnfbzaKJgmvFMTjGPe
-         miuf2ZnYjBf/vH+77VeBBV+2MnZ6rGtBmnXDjV1ivrCMFFv9BHIECzP2XQli5INU4V9R
-         3sSw==
+        bh=I2M60nT7NfeWvq3ak/v2N3tIFMmZCLJVdqTc5cp8Xpc=;
+        b=I6gJ7IskSZPiBU2Q1TJQ/Ma8kXejg9qi55V3Fj3QjHitxLeEFVvxRHJKmVHr0ybmsa
+         f/lZP+Hu09gLoanlzOEODO+n2BYlRnaH34wyfBfPdi5SK3GYcAEu4iA16NGLd9ldm1z7
+         EtC3SFQVRv6fTuSO2v0suM81LDqojTi3sGZijXCQyPAA7G5t6DqZhevJQzEojdIulVeX
+         cKfQ0q189mU7qF/E/AJvsfiCMGt1uNfpu/0jTQ+kCmVwuelcvwFo/pChdW3RIHkP4/vT
+         KQFpsa74fuk/qxuArQ+wdfWDF8QEKhv5ElHGOx7224IC8RlSBoCN/FwsXSMC+xUjgi9u
+         e4hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qHPx3FIICBJ97+4m/tNrnrrE7c7V77it4zG5MOEekP8=;
-        b=ggWKDXabWiXXdZwfQT+52cZBcSVDY+UoeDChsvsvu4kkLy+YI+sVBKM8Q/cW4VZpTl
-         JBpp5+gW//joIN/r5XqsL4WyLD4+g12gKWghfHDV9+JrjQJGeGQGm51zm/n23XALdlS7
-         jItEmxyTNlLjF88lBPtMb6NAXAR94qyXk4qJvaGcrshFnxBDRZ/ukojJH7gQSsnVJzEI
-         AqsmuElq2DQw4KLdEiVl2mzdVz+/yDpILR/2vW1HXfoQyEiG7bc/X61HV0slaHy714Gj
-         zag9v3FmZtKiSUAM5xJ/5i/Dp2YAbfReY3+jg+vrm51VDtYlfAtrQnQbJhVdwuT9FqrN
-         LXXA==
-X-Gm-Message-State: ACrzQf1wy9Bd8zZX/oCBhNKMLITlF+WG9ovHbjWkYC1GRPX/E6xJ1zjA
-        fllKgsqfOVBzimq0+6KBnNTX4tJXSQ5hZPD9zQnKwQ==
-X-Google-Smtp-Source: AMsMyM6QKRzoCjo0ApqBM+lkCZ5RSJXpZqKuxDYGeeX6qtxur8+D1dbHMhYRfQNGn6xUWsYDjysKB/tPD11BUvp0DyE=
-X-Received: by 2002:a1f:a0d8:0:b0:3a3:e1a1:3682 with SMTP id
- j207-20020a1fa0d8000000b003a3e1a13682mr3547342vke.20.1665773080912; Fri, 14
- Oct 2022 11:44:40 -0700 (PDT)
+        bh=I2M60nT7NfeWvq3ak/v2N3tIFMmZCLJVdqTc5cp8Xpc=;
+        b=rQY4RePmEX/HfF18eEWoSZYumFAjoSd3tI4mpdofuBXfSK2TS5niXyvQKQs10jcfj6
+         d0v8CdFeSxoqdvR433nFWO2V4EK1TGwuRZOaCvf9HiTBroL2VxZ7smm6rp5ICE2qgkFv
+         6ELqvGGoFWVgc8UVt2EC2iDcBvfCEQiZ9iJXZGaoIR+qpjc9NxNIIlgaNNqxqJLNdlBM
+         0/ArmXrLO+VU3S2Fw3fT9xTyiY/XpXPg+epmRZLvWfWyUNMGnCQnPcry0r5v3ah+bBUC
+         sx0netIZ4Ux6fp5f0xDetLu74n4cRiygVJ8cTwjNO7X8L7ySGt8nOM0J5avAndyc2lDz
+         l5YQ==
+X-Gm-Message-State: ACrzQf0Nav82Hnzof26TVdkBAlXp41z4rQIs3G2LUW1Ql54vYjZpNgDS
+        wFBe3nFPEjUbyzJDWWXjAYjkCIyrcW2EwvPONnN+t5t6p7A=
+X-Google-Smtp-Source: AMsMyM5Can0Irp9kFx+wv2SRI++DMRnZHKowIIiuGGnnpb0qry9EybjOc3WUqIfJNblWZVVzNAta514Kg7Ydywu2Kts=
+X-Received: by 2002:a05:6e02:1aab:b0:2fa:80c2:8375 with SMTP id
+ l11-20020a056e021aab00b002fa80c28375mr3419698ilv.72.1665779953595; Fri, 14
+ Oct 2022 13:39:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221004184625.10076-1-olof@lixom.net> <CANiq72mFGoDySLHNyakOnJMDpRVmvCRUAAuiKw1B2KrMhFteCA@mail.gmail.com>
-In-Reply-To: <CANiq72mFGoDySLHNyakOnJMDpRVmvCRUAAuiKw1B2KrMhFteCA@mail.gmail.com>
-From:   Olof Johansson <olof@lixom.net>
-Date:   Fri, 14 Oct 2022 11:44:30 -0700
-Message-ID: <CAOesGMhBnBrrJuT49V64nSN=UyvAdh1n9mXKYbxAexi1FC1_DA@mail.gmail.com>
-Subject: Re: [PATCH] scripts: rust_is_available.sh: Provide hints on how to
- fix missing pieces
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-26-ojeda@kernel.org>
+ <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net> <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
+ <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com> <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
+In-Reply-To: <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Fri, 14 Oct 2022 22:39:02 +0200
+Message-ID: <CANiq72khuwOrAGN=CrFUX85UmPdJiZ2yM7_9_su_Zp951BHMMA@mail.gmail.com>
+Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
+To:     Sami Tolvanen <samitolvanen@google.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>, rcvalle@google.com,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        David Gow <davidgow@google.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+        Jonathan Corbet <corbet@lwn.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Oct 14, 2022 at 9:21 AM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Fri, Oct 14, 2022 at 8:35 PM Sami Tolvanen <samitolvanen@google.com> wrote:
 >
-> On Tue, Oct 4, 2022 at 8:47 PM Olof Johansson <olof@lixom.net> wrote:
-> >
-> > This might be a bit bikesheddy, but it saves a few roundtrips to the
-> > documentation when getting the `make LLVM=1 rustavailable` run to pass.
->
-> It is faster for someone that already knows how things work, but it
-> may make newcomers skip the docs and it duplicates the information
-> there. In addition, for the non-error case, it makes it more verbose
-> which may not be appreciated. So maybe we should point to the docs
-> instead? What do you think?
+> Thanks, Miguel. I also talked to Ramon about KCFI earlier this week
+> and he expressed interest in helping with rustc support for it. In the
 
-I don't really have a preference. This patch would have helped me, so
-I figured I would post it. My interest isn't really high enough to
-spend more effort on it at this time -- I got my setup working by now.
+Ah, that is great to hear -- thanks a lot to you both! (Cc'ing Ramon)
 
-Refactoring the script to have a shared message on non-successful exit
-with a reference to the doc would achieve what you're suggesting
-though.
+> meanwhile, I think we can just add a depends on !CFI_CLANG to avoid
+> issues here.
 
+ACK, thanks -- if you want to send the patch, please feel free to do so.
 
-> Also, the patch doesn't add instructions for all the cases, so
-> somebody that may have hit one of the documented ones + not have read
-> the docs may wonder where to find them the solution or why they are
-> missing.
-
-Sure.
-
-
--Olof
+Cheers,
+Miguel
