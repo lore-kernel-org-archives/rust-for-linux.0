@@ -2,88 +2,91 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D66DEC4332F
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Oct 2022 16:21:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0ED45C433FE
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Oct 2022 17:23:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbiJNQVh (ORCPT
+        id S229633AbiJNRXb (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Oct 2022 12:21:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34916 "EHLO
+        Fri, 14 Oct 2022 13:23:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229688AbiJNQVg (ORCPT
+        with ESMTP id S229609AbiJNRXa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Oct 2022 12:21:36 -0400
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D016F1D299E;
-        Fri, 14 Oct 2022 09:21:35 -0700 (PDT)
-Received: by mail-io1-xd34.google.com with SMTP id 137so4266521iou.9;
-        Fri, 14 Oct 2022 09:21:35 -0700 (PDT)
+        Fri, 14 Oct 2022 13:23:30 -0400
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46B501ACABC;
+        Fri, 14 Oct 2022 10:23:30 -0700 (PDT)
+Received: by mail-io1-xd31.google.com with SMTP id o65so4416251iof.4;
+        Fri, 14 Oct 2022 10:23:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=45Qc6kmJfXhoQUyX3B+fNLOQoMuf3VclzIIGEEGFt1A=;
-        b=mUptDl/lHGm3yOKs3cqewPAT6HdcyKTxz5h3mSX37Dlf1Wu+XKyQF5QlBOd0YlDrEe
-         OMY1Drfzlr/2SE6Fgglns0csn8MGGwgvjJFLIv6jDenEPE6rsPsBUmlSSQXfHzPkDEdt
-         5ReiV7AhfWZuVxLoQmxS/+BZQeQ2a5j/RIaBviVTyiDMlADRljALv46B6qx2oJPsaYcd
-         mGkB6JIAgn+tkAdxFfINkZjG2p6qQJT4FdLlH39RtA4PZtUMwAaIYCxe04DNjvsUUvuD
-         4NI+zJklU6l2IHbGODhh8mbWbwN0/w4r2qKAZ5mLh8R26jrZu8XLL/L0nVD2PC5GfZXi
-         Pijg==
+        bh=eE5Ag7RBU3sseMTq/AOwS39S0M38TKiM5Cd+C4qDXCg=;
+        b=SelnujiWPnwoqfZh8L8STKGUSxYsQvfporOrGfiFWq7bcOzL0QfdMmL40UKrA+beU+
+         PC/2mJpZDykCD2AjqVjwdRgvdWQ7aogtAl+Hq/3RYfuMFqkmdwGX5x9i2EF1LURSEkWe
+         UgEVvUzkNVE22tJqIQkviWHhunuxpOVT8D4lwYeRlBXIXcNhM2OyyZ7v+zgA/fL/CmbA
+         9QEL0Tn6Z/ZtMi3pOJiB6isnrjoAKhSXEzcs6KLcsD7E9FEePJWKn1u9DAnNcvjIrx4G
+         h4G0Z5ct9Vfi0V5ixBdkIMpgsvwCZsWMXka3IgbZiFUUFnJ+QBQQH6oNk4hLFjFvPokK
+         5fwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=45Qc6kmJfXhoQUyX3B+fNLOQoMuf3VclzIIGEEGFt1A=;
-        b=htxcVO0sFHWFLe8maVd5vBe06fddyZwNylVbJhIXLhSbXuJ9nKr1BRRHEadPyMk9TL
-         TnClf4pPSXRO1NMu66b5pmLJmObL7ebpA5XRsD4ht8YGKhyPdrcg0hmZSKKYOAIYqNq7
-         +hoLduklWJnzXh5Gtdh9wQGVZNN5YfbiCqc1janoCFkzwEgsj7ramUQx5dtVPKBCGzx5
-         MxEReMUSuQy0w1AUD6Nb5i0xrVDVXW1df305TT1jkuQJqnNDskA/8sF3L3x+IKzGWBEv
-         9T9CfWrom03feBhJ5E9ZAu9vx8+F4lXj+u0TvqblDM6Pk3n0Tfrc9xXSXYFNEbvZEOZH
-         esYQ==
-X-Gm-Message-State: ACrzQf2k6VIBBtlUowffyBashuvm0IFY2TEQowO9fHvakeY98OEHu7u3
-        GwV/p6T+Rith8eQ1sOBkmsjXLZLdPCgtsCUX0cE=
-X-Google-Smtp-Source: AMsMyM4dnJTOcQS8q+8pDdCGeXUsJD1aKXpt0AU6KUaOu/cXO06Bsv6eEfaYrt8aZJT8BvRHc5tcDDHoabpZKxdPzk8=
-X-Received: by 2002:a02:cc6f:0:b0:363:98f2:347d with SMTP id
- j15-20020a02cc6f000000b0036398f2347dmr3320450jaq.199.1665764495244; Fri, 14
- Oct 2022 09:21:35 -0700 (PDT)
+        bh=eE5Ag7RBU3sseMTq/AOwS39S0M38TKiM5Cd+C4qDXCg=;
+        b=7pH2SlIfJMhlQ/PLeSkGfJoizVNR36mCL2P2ylvoNCgRc0Ulu00VB90MgTYL3++twE
+         6JF7qjvVYftHLp3yvrr/2AJS3S4h7C8dJucKcyN8FxntzPJdpfP1LGaaSpsKiRcvk0yG
+         WEgAtssxzbg7fpY/16ED7AA0/FftZC8/wSwADQ0MBDi+6hUrlYr6HiZBmLffzJqiFp+l
+         AVfaqA2Hh6UxteFkQDNkvfZvFG0LLTVgoZdIfnP7W8pNghc2osPgmvOp8/E2eqFs8G0k
+         RNNTj84BdwmE9wZ9VpZ+xObaJ6TJ1JTR0BQ2hrvQfcdyqtYGozBMtZmZWFw56TDVGCax
+         i7XQ==
+X-Gm-Message-State: ACrzQf268WsMxsxBDcmyHVZUe+oYiiiu8+w3eefavqO4nK1Jn1mFgwVr
+        rT8E5ZnipG5twuWVBRe0HRXyAopVSQo/BM3Ua4w=
+X-Google-Smtp-Source: AMsMyM6lT8RhqnU76Cr4PZZfqp6N8r8CcTFMjIHkYpaZhVOM7vxX6chpycRJ9uocxKR25P/3/Yeaz4H/VQ4EpfSIe7c=
+X-Received: by 2002:a05:6602:134f:b0:6a4:cd04:7842 with SMTP id
+ i15-20020a056602134f00b006a4cd047842mr2888358iov.172.1665768209701; Fri, 14
+ Oct 2022 10:23:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221004184625.10076-1-olof@lixom.net>
-In-Reply-To: <20221004184625.10076-1-olof@lixom.net>
+References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-26-ojeda@kernel.org>
+ <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net> <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
+ <Y0Ujm6a6bV3+FWM3@hirez.programming.kicks-ass.net>
+In-Reply-To: <Y0Ujm6a6bV3+FWM3@hirez.programming.kicks-ass.net>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 14 Oct 2022 18:21:23 +0200
-Message-ID: <CANiq72mFGoDySLHNyakOnJMDpRVmvCRUAAuiKw1B2KrMhFteCA@mail.gmail.com>
-Subject: Re: [PATCH] scripts: rust_is_available.sh: Provide hints on how to
- fix missing pieces
-To:     Olof Johansson <olof@lixom.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+Date:   Fri, 14 Oct 2022 19:23:18 +0200
+Message-ID: <CANiq72nggG_z28Pne7wD=CQfKX3bTUah9vMhvJoWB8Y=uA4j+w@mail.gmail.com>
+Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Sami Tolvanen <samitolvanen@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        David Gow <davidgow@google.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+        Jonathan Corbet <corbet@lwn.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Oct 4, 2022 at 8:47 PM Olof Johansson <olof@lixom.net> wrote:
+On Tue, Oct 11, 2022 at 10:04 AM Peter Zijlstra <peterz@infradead.org> wrote:
 >
-> This might be a bit bikesheddy, but it saves a few roundtrips to the
-> documentation when getting the `make LLVM=1 rustavailable` run to pass.
+> Right; so where does that leave us? Are we going to force disable rust
+> when kCFI is selected ?
 
-It is faster for someone that already knows how things work, but it
-may make newcomers skip the docs and it duplicates the information
-there. In addition, for the non-error case, it makes it more verbose
-which may not be appreciated. So maybe we should point to the docs
-instead? What do you think?
-
-Also, the patch doesn't add instructions for all the cases, so
-somebody that may have hit one of the documented ones + not have read
-the docs may wonder where to find them the solution or why they are
-missing.
-
-Thanks!
+Constraining it via `depends on !...` or similar as needed for the
+moment is fine, we have a few others too.
 
 Cheers,
 Miguel
