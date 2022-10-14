@@ -2,103 +2,100 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19A60C433FE
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Oct 2022 18:35:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 28F26C433FE
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Oct 2022 18:44:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230057AbiJNSfN (ORCPT
+        id S230427AbiJNSop (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Oct 2022 14:35:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53174 "EHLO
+        Fri, 14 Oct 2022 14:44:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230367AbiJNSfM (ORCPT
+        with ESMTP id S229717AbiJNSoo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Oct 2022 14:35:12 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F72D4E414
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Oct 2022 11:35:09 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id b2so12310385eja.6
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Oct 2022 11:35:09 -0700 (PDT)
+        Fri, 14 Oct 2022 14:44:44 -0400
+Received: from mail-vk1-xa29.google.com (mail-vk1-xa29.google.com [IPv6:2607:f8b0:4864:20::a29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD85BCE17
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Oct 2022 11:44:41 -0700 (PDT)
+Received: by mail-vk1-xa29.google.com with SMTP id s185so2710664vkb.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Oct 2022 11:44:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
+        d=lixom-net.20210112.gappssmtp.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=dlOttIcbfyJ9Meuwl/3DVPLPY7LTZL8V6KpgIWHa/o8=;
-        b=bo+sSeamjV3ogFeVE4woZcjggXzUoZaHSUx6jp0WPOZzpXDNmcc/cEcYdKtM48zH7e
-         Q8hrssyWU3nff+vqi1+2UwgCpwkQ9mNZwhoxtCYtoyOImHoU6sr2EgS5FSVJHeHv72Gx
-         ivMoH1EYL5oEpkIYp3Altv+OuFDnh25XvMft3oq6CAX7Lg1bHdcRUDF5uanM4EvvYYLH
-         ScOMwLnABxganJ5jJ69lPKPQm06FeCCSHiH114ov0w+bi1KMynXHAw6J/ybjpBOkwQ60
-         Njc0xgYtm7geqQcvVxY6MqZQHxUA67w1M6uCS77zWiYeNi3Td5G/+xAI/uKs52rqfCAx
-         VPXA==
+        bh=qHPx3FIICBJ97+4m/tNrnrrE7c7V77it4zG5MOEekP8=;
+        b=uRB9bMp8g92Q1/kj2CCMj1RnY456AXrKWO1G6V1TtDob3IS9h+kGLhuo7DxuE/3/VR
+         mclpNViNnitDQKXEhe6xad8L+Xy6HfUWQJWP7LA4EuSYNHg5BpeBSpaVnAazHVW+EPtN
+         Zwg+tbgIbik1grCVluV1PqKZbftqR+FQYT7s2Xq4nNrs3erhO8uwK0OOm28CpBZZZOdP
+         JXkd78OGKeNktU8kmzFEt42ykgYDiVTF4w1qE6Amw6GtJRAf/GMnfbzaKJgmvFMTjGPe
+         miuf2ZnYjBf/vH+77VeBBV+2MnZ6rGtBmnXDjV1ivrCMFFv9BHIECzP2XQli5INU4V9R
+         3sSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dlOttIcbfyJ9Meuwl/3DVPLPY7LTZL8V6KpgIWHa/o8=;
-        b=o95Ul1kHWhfMx1WOO2Sgrq34HxPY6Q8RCQDwK25HrkAhD3nFuKTbYLWYW7RQRKmOW+
-         feul8KWIKJwlg81A/tIqt86as6nqsBgp0J8qcuaTcJ2Nl/Yoh3GsMul5BW1rZCAbPZWJ
-         MgpW1yCbKXCK6oUBS82dYYYeKGITwBMzYtU8cwewRnfx1W7taZhIHM9NszZM0BuP+JPh
-         5ZemSwOFSjFkE51KGVJ0118BPoFNuvB05QZAWqpXhVuVlJbcmdynnMoZgx9O/013A9Ip
-         hGlObkM33QGC6QvKKgPwvweshAoTlFLymOe55bYhi+gMo2w36vAQWCR7v0MKmlcNbKyz
-         svjQ==
-X-Gm-Message-State: ACrzQf1SCXd7Rr9ddECe56KTMRKkW85bu05KehRVWRFng9TRQt3njaL+
-        LACu6U5N+WD3xy62st8YwvbVIsfxev3qhL5qLTlUyw==
-X-Google-Smtp-Source: AMsMyM5PxvI7q1eLhIz1kRuPl4pgKS5NxzGTkhgVaLLpKkixQpMznDKsv3NsRyMn7CuF+C/HYyOrjzaNom7zJdwX7EI=
-X-Received: by 2002:a17:907:e93:b0:78d:46ae:cf61 with SMTP id
- ho19-20020a1709070e9300b0078d46aecf61mr4483765ejc.579.1665772507710; Fri, 14
- Oct 2022 11:35:07 -0700 (PDT)
+        bh=qHPx3FIICBJ97+4m/tNrnrrE7c7V77it4zG5MOEekP8=;
+        b=ggWKDXabWiXXdZwfQT+52cZBcSVDY+UoeDChsvsvu4kkLy+YI+sVBKM8Q/cW4VZpTl
+         JBpp5+gW//joIN/r5XqsL4WyLD4+g12gKWghfHDV9+JrjQJGeGQGm51zm/n23XALdlS7
+         jItEmxyTNlLjF88lBPtMb6NAXAR94qyXk4qJvaGcrshFnxBDRZ/ukojJH7gQSsnVJzEI
+         AqsmuElq2DQw4KLdEiVl2mzdVz+/yDpILR/2vW1HXfoQyEiG7bc/X61HV0slaHy714Gj
+         zag9v3FmZtKiSUAM5xJ/5i/Dp2YAbfReY3+jg+vrm51VDtYlfAtrQnQbJhVdwuT9FqrN
+         LXXA==
+X-Gm-Message-State: ACrzQf1wy9Bd8zZX/oCBhNKMLITlF+WG9ovHbjWkYC1GRPX/E6xJ1zjA
+        fllKgsqfOVBzimq0+6KBnNTX4tJXSQ5hZPD9zQnKwQ==
+X-Google-Smtp-Source: AMsMyM6QKRzoCjo0ApqBM+lkCZ5RSJXpZqKuxDYGeeX6qtxur8+D1dbHMhYRfQNGn6xUWsYDjysKB/tPD11BUvp0DyE=
+X-Received: by 2002:a1f:a0d8:0:b0:3a3:e1a1:3682 with SMTP id
+ j207-20020a1fa0d8000000b003a3e1a13682mr3547342vke.20.1665773080912; Fri, 14
+ Oct 2022 11:44:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220927131518.30000-1-ojeda@kernel.org> <20220927131518.30000-26-ojeda@kernel.org>
- <Y0BfN1BdVCWssvEu@hirez.programming.kicks-ass.net> <CABCJKuenkHXtbWOLZ0_isGewxd19qkM7OcLeE2NzM6dSkXS4mQ@mail.gmail.com>
- <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
-In-Reply-To: <CANiq72k6s4=0E_AHv7FPsCQhkyxf7c-b+wUtzfjf+Spehe9Fmg@mail.gmail.com>
-From:   Sami Tolvanen <samitolvanen@google.com>
-Date:   Fri, 14 Oct 2022 11:34:30 -0700
-Message-ID: <CABCJKuca0fOAs=E6LeHJiT2LOXEoPvLVKztA=u+ARcw=tbT=tw@mail.gmail.com>
-Subject: Re: [PATCH v10 25/27] x86: enable initial Rust support
+References: <20221004184625.10076-1-olof@lixom.net> <CANiq72mFGoDySLHNyakOnJMDpRVmvCRUAAuiKw1B2KrMhFteCA@mail.gmail.com>
+In-Reply-To: <CANiq72mFGoDySLHNyakOnJMDpRVmvCRUAAuiKw1B2KrMhFteCA@mail.gmail.com>
+From:   Olof Johansson <olof@lixom.net>
+Date:   Fri, 14 Oct 2022 11:44:30 -0700
+Message-ID: <CAOesGMhBnBrrJuT49V64nSN=UyvAdh1n9mXKYbxAexi1FC1_DA@mail.gmail.com>
+Subject: Re: [PATCH] scripts: rust_is_available.sh: Provide hints on how to
+ fix missing pieces
 To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        David Gow <davidgow@google.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-doc@vger.kernel.org
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Oct 14, 2022 at 11:05 AM Miguel Ojeda
+On Fri, Oct 14, 2022 at 9:21 AM Miguel Ojeda
 <miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> On Tue, Oct 11, 2022 at 1:16 AM Sami Tolvanen <samitolvanen@google.com> wrote:
+> On Tue, Oct 4, 2022 at 8:47 PM Olof Johansson <olof@lixom.net> wrote:
 > >
-> > Rust supports IBT with -Z cf-protection=branch, but I don't see this
-> > option being enabled in the kernel yet. Cross-language CFI is going to
-> > require a lot more work though because the type systems are not quite
-> > compatible:
-> >
-> > https://github.com/rust-lang/rfcs/pull/3296
+> > This might be a bit bikesheddy, but it saves a few roundtrips to the
+> > documentation when getting the `make LLVM=1 rustavailable` run to pass.
 >
-> I have pinged Ramon de C Valle as he is the author of the RFC above
-> and implementation work too; since a month or so ago he also leads the
-> Exploit Mitigations Project Group in Rust.
+> It is faster for someone that already knows how things work, but it
+> may make newcomers skip the docs and it duplicates the information
+> there. In addition, for the non-error case, it makes it more verbose
+> which may not be appreciated. So maybe we should point to the docs
+> instead? What do you think?
 
-Thanks, Miguel. I also talked to Ramon about KCFI earlier this week
-and he expressed interest in helping with rustc support for it. In the
-meanwhile, I think we can just add a depends on !CFI_CLANG to avoid
-issues here.
+I don't really have a preference. This patch would have helped me, so
+I figured I would post it. My interest isn't really high enough to
+spend more effort on it at this time -- I got my setup working by now.
 
-Sami
+Refactoring the script to have a shared message on non-successful exit
+with a reference to the doc would achieve what you're suggesting
+though.
+
+
+> Also, the patch doesn't add instructions for all the cases, so
+> somebody that may have hit one of the documented ones + not have read
+> the docs may wonder where to find them the solution or why they are
+> missing.
+
+Sure.
+
+
+-Olof
