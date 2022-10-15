@@ -2,381 +2,305 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED10FC4332F
-	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Oct 2022 08:46:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FF0FC43217
+	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Oct 2022 14:35:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbiJOIqK (ORCPT
+        id S229572AbiJOOfn (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 15 Oct 2022 04:46:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38544 "EHLO
+        Sat, 15 Oct 2022 10:35:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbiJOIqK (ORCPT
+        with ESMTP id S229510AbiJOOfm (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 15 Oct 2022 04:46:10 -0400
-Received: from out0.migadu.com (out0.migadu.com [IPv6:2001:41d0:2:267::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A379110FDC;
-        Sat, 15 Oct 2022 01:46:07 -0700 (PDT)
-Date:   Sat, 15 Oct 2022 16:45:33 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1665823564;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=9ElwQjuoHlKGvdWovgURY2GQH5FcYFD+IE5n6D7NlG4=;
-        b=DMP/UkWGosSG3RBju15gBFZnyS3526vunyCfI6YYTilrp+0WpS9LNHg1vnWT7EUnlJsOt+
-        qP6RwMOkY5NJjQGC4Zwapb1cbnd1nvhka6yZOirfAYOcQGpXoAZcej3T0jd/O9dhJPH4T6
-        sMnOsnOBURaHA90bwrpCqGnXQv0+6yc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Wu XiangCheng <wu.xiangcheng@linux.dev>
-To:     Yanteng Si <siyanteng@loongson.cn>
-Cc:     alexs@kernel.org, seakeel@gmail.com, corbet@lwn.net,
-        ojeda@kernel.org, boqun.feng@gmail.com, wedsonaf@gmail.com,
-        gary@garyguo.net, bjorn3_gh@protonmail.com,
-        rust-for-linux@vger.kernel.org, chenhuacai@kernel.org,
-        jiaxun.yang@flygoat.com, linux-doc@vger.kernel.org,
-        siyanteng01@gmail.com
-Subject: Re: [PATCH v1 2/5] docs/zh_CN: Add rust/quick-start Chinese
- translation
-Message-ID: <Y0py30rOBh5glrpz@bobwxc.mipc>
-References: <cover.1665650266.git.siyanteng@loongson.cn>
- <58d7a63610d6eb19eed8f809d2eee46807464749.1665650266.git.siyanteng@loongson.cn>
+        Sat, 15 Oct 2022 10:35:42 -0400
+X-Greylist: delayed 599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 15 Oct 2022 07:35:39 PDT
+Received: from 7of9.schinagl.nl (7of9.connected.by.freedominter.net [185.238.129.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAB904D244;
+        Sat, 15 Oct 2022 07:35:39 -0700 (PDT)
+Received: from [10.2.11.223] (unknown [10.2.11.223])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by 7of9.schinagl.nl (Postfix) with ESMTPSA id B73B5187C1D4;
+        Sat, 15 Oct 2022 16:16:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=schinagl.nl; s=7of9;
+        t=1665843374; bh=v5byCCbzgoUsSwv2FnayNlVux3Dzc6HK0R9SVKx3mVY=;
+        h=Date:Subject:From:To:Cc:References:In-Reply-To;
+        b=XbL9kSyPd0uc24BqTzDjcXX/NkK5nXJsW1EdZIc5QVRWstmlVbkwQ/JbeMinDyuNc
+         nBGQFPJjzpB05I5s8zjNXHD/OwzDhIYMxlkP8DpkB3IV2w5tYKfGf8eqPywqucX+DB
+         +lzd3GT+hjW5xF8KjGYKfeknkq6NySKgxlAdyzH8=
+Content-Type: multipart/mixed; boundary="------------XhKck0qOnJW5WHXa9z0SMSgn"
+Message-ID: <00604162-9157-3862-b463-de90cb17c69a@schinagl.nl>
+Date:   Sat, 15 Oct 2022 16:16:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <58d7a63610d6eb19eed8f809d2eee46807464749.1665650266.git.siyanteng@loongson.cn>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [PATCH 00/13] [RFC] Rust support
+Content-Language: nl
+From:   Olliver Schinagl <oliver+list@schinagl.nl>
+To:     Gary Guo <gary@garyguo.net>
+Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux <rust-for-linux@vger.kernel.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+References: <20210414184604.23473-1-ojeda@kernel.org>
+ <fae4873e-2ff9-df35-0ab9-34bf4417b717@schinagl.nl>
+ <CANiq72mRxM-7griYF+0FWqYoSoNL8ad=L-i6a2-GsaCeb0C6qQ@mail.gmail.com>
+ <ba8cb315-9d73-2f45-8bf9-d9473d369dca@schinagl.nl>
+ <CANiq72kz+Txauo+103_-fN_J8PhhCdJUH5XepShUQmJzW6a4tA@mail.gmail.com>
+ <5c0bb1db-5589-32ca-ac22-4aafb3c15751@schinagl.nl>
+ <20220728112114.0000003a@garyguo.net>
+ <a4803f2e-2e46-1c7d-0e89-96f5cbb0ad11@schinagl.nl>
+In-Reply-To: <a4803f2e-2e46-1c7d-0e89-96f5cbb0ad11@schinagl.nl>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> Translate .../rust/quick-start.rst into Chinese.
+This is a multi-part message in MIME format.
+--------------XhKck0qOnJW5WHXa9z0SMSgn
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+As this thread kind of went silent and as the 'big merge' for this 
+feature is getting closer, here a final plee, inspired by this slashdot 
+post [0].
+
+The post in itself speaks of a new team forming on working on the Rust 
+styleguide, which in itself is still evolving. This makes sense, rust is 
+new, it's not very commonly in use and as with all good things, they evolve.
+
+One comment in that slashdot post [1] I want to bring forward and quote 
+a piece of:
+"i created a new repository, and thought i was being hip and modern, so
+i started to evangelize spaces for the 'consistency across environments'
+
+i get approached by not one, but TWO coworkers who unfortunately are 
+highly visually impaired and each has a different visual impairment
+
+at that moment, i instantaneously conceded — there's just no 
+counter-argument that even comes close to outweighing the accessibility 
+needs of valued coworkers"
+
+Visual impairness is a thing, it does not make someone smarter or 
+dumber. Helping those with visual impairments should be concidered, and 
+not shunted off by saying 'but the rust guys came up with the perfect 
+style, so we should use it'.
+
+Find attached, a diff to the .rustfmt.toml, that should keep things more 
+consistent with the current kernel style.
+
+I'll leave it now to Linus and Greg to concsider this, and will keep my 
+peace (though I hope they actually read it :p).
+
+
+Olliver
+
+
+[0]: 
+https://developers.slashdot.org/story/22/10/07/2351222/rust-programming-language-announces-new-team-to-evolve-official-coding-style
+[1]: https://developers.slashdot.org/comments.pl?sid=22182701&cid=62949323
+
+On 28-07-2022 22:43, Olliver Schinagl wrote:
+> Hey Gary,
 > 
-> Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
-> ---
->  .../translations/zh_CN/rust/index.rst         |   2 +-
->  .../translations/zh_CN/rust/quick-start.rst   | 211 ++++++++++++++++++
->  2 files changed, 212 insertions(+), 1 deletion(-)
->  create mode 100644 Documentation/translations/zh_CN/rust/quick-start.rst
+> On 28-07-2022 12:21, Gary Guo wrote:
+>> Hi Olliver,
+>>
+>> On Wed, 27 Jul 2022 10:05:31 +0200
+>> Olliver Schinagl <oliver+list@schinagl.nl> wrote:
+>>
+>>> Consitency is absolutly important! Zero argument there. My argument
+>>> is, the consistency should be within the kernel tree, not 'but the
+>>> rest of the world is using style X/Y/Z, lets be consistent with that.
+>>> In an utopia, maybe, but the real world doesn't work that way, sadly.
+>>> So in an attempt to standardize (rustfmt) they just "invented" a new
+>>> standard. Which btw is common, we see this happening every so often,
+>>> right?
+>>
+>> Difference languages have different characteristics and I don't think
+>> it's necessarily good (and often isn't) to blindly apply coding style
+>> of one language onto another. So I don't see rustfmt as "inventing yet
+>> another standard" really, because there aren't many conflicting coding
+>> style standards in Rust world; almost everyone just settled on using
+>> rustfmt, mostly using the default, maybe with a few small
+>> project-specific configuration tweaks.
+> I was mostly arguing about a) lets look at this and b) having said
+> configuration tweaks, rather then blindly (pun not really intended)
+> going with rust's defaults :)
 > 
-> diff --git a/Documentation/translations/zh_CN/rust/index.rst b/Documentation/translations/zh_CN/rust/index.rst
-> index fc6a074841bc..fe884d1da353 100644
-> --- a/Documentation/translations/zh_CN/rust/index.rst
-> +++ b/Documentation/translations/zh_CN/rust/index.rst
-> @@ -15,10 +15,10 @@ Rust
->  .. toctree::
->      :maxdepth: 1
->  
-> +    quick-start
->  
->  TODOList:
->  
-> -*    quick-start
->  *    general-information
->  *    coding-guidelines
->  *    arch-support
-> diff --git a/Documentation/translations/zh_CN/rust/quick-start.rst b/Documentation/translations/zh_CN/rust/quick-start.rst
-> new file mode 100644
-> index 000000000000..21ebc25b0d01
-> --- /dev/null
-> +++ b/Documentation/translations/zh_CN/rust/quick-start.rst
-> @@ -0,0 +1,211 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +.. include:: ../disclaimer-zh_CN.rst
-> +
-> +:Original: Documentation/rust/quick-start.rst
-> +
-> +:翻译:
-> +
-> + 司延腾 Yanteng Si <siyanteng@loongson.cn>
-> +
-> +
-> +快速入门
-> +========
-> +
-> +本文介绍了如何开始使用Rust进行内核开发。
-> +
-> +
-> +构建程序的必要条件
-> +------------------
-
-构建依赖
-
-> +
-> +本节描述了如何获取构建所需的工具。
-> +
-> +其中一些必要的软件包可能会从Linux发行版中获得，名称是 ``rustc`` , ``rust-src`` ,
-
-其中一些依赖也许可以从Linux发行版中获得，包名可能是 ``rustc`` , ``rust-src`` ,
-
-> +``rust-bindgen`` 等。然而，在写这篇文章的时候，它们很可能还不够新，除非发行版跟踪最
-> +新的版本。
-> +
-> +为了方便检查是否满足要求，可以使用以下指标::
-
-指标 -> 目标 ？
-
-> +
-> +	make LLVM=1 rustavailable
-> +
-> +这触发了与Kconfig用来确定是否应该启用 ``RUST_IS_AVAILABLE`` 相同的逻辑；但它也解
-
-这会触发
-
-> +释了如果是这样的话为什么不启用。
-
-不过它也会列出未满足的条件。
-
-> +
-> +
-> +rustc
-> +*****
-> +
-> +需要一个特定版本的Rust编译器。较新的版本可能会也可能不会工作，因为就目前而言，内核依赖
-> +于一些不稳定的Rust特性。
-> +
-> +如果使用的是 ``rustup`` ，请进入检查出来的源代码目录并运行::
-
-检查出来的 -> 检出的
-
-> +
-> +	rustup override set $(scripts/min-tool-version.sh rustc)
-> +
-> +否则，获取一个独立的安装程序或从 ``rustup`` 安装:
-
-或者从以下网址获取一个独立的安装程序或安装 ``rustup`` ：
-
-> +
-> +	https://www.rust-lang.org
-> +
-> +
-> +Rust标准库源代码
-> +****************
-> +
-> +Rust标准库的源代码是必需的，因为构建系统会交叉编译 ``core`` 和 ``alloc`` 。
-> +
-> +如果正在使用 ``rustup`` ，请运行::
-> +
-> +	rustup component add rust-src
-> +
-> +这些组件是按工具链安装的，因此以后升级Rust编译器版本需要重新添加组件。
-> +
-> +否则，如果使用独立的安装程序，可以将Rust仓库克隆到工具链的安装文件夹中::
-> +
-> +	git clone --recurse-submodules \
-> +		--branch $(scripts/min-tool-version.sh rustc) \
-> +		https://github.com/rust-lang/rust \
-> +		$(rustc --print sysroot)/lib/rustlib/src/rust
-> +
-> +在这种情况下，以后升级Rust编译器版本需要手动更新这个克隆的仓库。
-> +
-> +
-> +libclang
-> +********
-> +
-> +``libclang`` （LLVM的一部分）被 ``bindgen`` 用来理解内核中的C代码，这意味着需要安
-
-换成主动句可能稍微好一点，看你意思
-``bindgen`` 使用 ``libclang`` （LLVM的一部分）来理解内核中的C代码
-
-> +装LLVM；比如当内核被编译为 ``CC=clang`` 或 ``LLVM=1`` 时。
-
-同在开启 ``CC=clang`` 或 ``LLVM=1`` 时编译内核一样。
-
-> +
-> +Linux发行版可能会有一个合适的，所以最好先检查一下。
-
-Linux发行版中可能会有合适的包
-
-> +
-> +也有一些适用于一些系统和架构的二进制文件上载于：
-
-适用于部分系统和架构的二进制文件也可到以下网址下载：
-
-> +
-> +	https://releases.llvm.org/download.html
-> +
-> +否则，构建LLVM需要相当长的时间，但这并不是一个复杂的过程：
-
-或者自行构建LLVM，这需要相当长的时间，但并不是一个复杂的过程：
-
-> +
-> +	https://llvm.org/docs/GettingStarted.html#getting-the-source-code-and-building-llvm
-> +
-> +请参阅使用Documentation/kbuild/llvm.rst，以了解更多信息以及获取预构建版本和发行包
-> +的进一步方法。
-
-
-请参阅 Documentation/kbuild/llvm.rst 了解更多信息，以及获取预构建版本和发行包
-
-Please check all inline rst file names, must surrounding with prefix and suffix
-spaces.
-
-> +
-> +
-> +bindgen
-> +*******
-> +
-> +内核的C端绑定是在构建时使用 ``bindgen`` 工具生成的。一个特定的版本是必需的。
-
-需要特定版本。
-
-> +
-> +通过以下方式安装它（注意，这将从源码下载并构建该工具）::
-> +
-> +	cargo install --locked --version $(scripts/min-tool-version.sh bindgen) bindgen
-> +
-> +
-> +开发的必要条件
-
-开发依赖
-
-> +--------------
-> +
-> +本节解释了如何获取开发所需的工具。也就是说，在构建内核时不需要这些工具。
-> +
-> +
-> +rustfmt
-> +*******
-> +
-> +``rustfmt`` 工具被用来自动格式化所有的Rust内核代码，包括生成的C绑定（详情请见
-> +coding-guidelines.rst）。
-> +
-> +如果使用的是 ``rustup`` ，它的 ``默认`` 配置文件已经安装了这个工具，因此不需要做什么。
-> +如果使用的是其他配置文件，可以手动安装该组件::
-> +
-> +	rustup component add rustfmt
-> +
-> +独立的安装程序也带有 ``rustfmt`` 。
-> +
-> +
-> +clippy
-> +******
-> +
-> +``clippy`` 是一个Rust linter。运行它可以为Rust代码提供额外的警告。它可以通过向 ``make``
-> +传递 ``CLIPPY=1`` 来运行（关于细节，请看general-information.rst）。
-
-关于细节，请看 -> 详见
-
-> +
-> +如果正在使用 ``rustup`` ，它的 ``默认`` 配置文件已经安装了这个工具，因此不需要做什么。
-> +如果使用的是另一个配置文件，该组件可以被手动安装::
-> +
-> +	rustup component add clippy
-> +
-> +独立的安装程序也带有 ``clippy`` 。
-> +
-> +
-> +cargo
-> +*****
-> +
-> +``cargo`` 是Rust的本地构建系统。目前需要它来运行测试，因为它被用来构建一个自定义的标准
-> +库，其中包含了内核中自定义 ``alloc`` 所提供的设施。测试可以使用 ``rusttest`` Make target
-
-target -> 目标
-
-> +来运行。
-> +
-> +如果使用的是 ``rustup`` ，所有的配置文件都已经安装了该工具，因此不需要再做什么。
-> +
-> +独立的安装程序也带有 ``cargo`` 。
-> +
-> +
-> +rustdoc
-> +*******
-> +
-> +``rustdoc`` 是Rust的文档工具。它为Rust代码生成漂亮的HTML文档（详情请见general-information.rst）。
-> +
-> +``rustdoc`` 也被用来测试文档化的Rust代码中提供的例子（称为doctests或文档测试）。
-> +``rusttest`` Make target使用这个功能。
-
-本功能的Make目标是 ``rusttest`` 。
-
-> +
-> +如果使用的是 ``rustup`` ，所有的配置文件都已经安装了这个工具，因此不需要做什么。
-> +
-> +独立的安装程序也带有 ``rustdoc`` 。
-> +
-> +
-> +rust-analyzer
-> +*************
-> +
-> +`rust-analyzer <https://rust-analyzer.github.io/>`_ 语言服务器可以和许多编辑器
-> +一起使用，以实现语法高亮、补全、转到定义和其他功能。
-> +
-> +``rust-analyzer`` 需要一个配置文件， ``rust-project.json``, 它可以由 ``rust-analyzer``
-> +Make target生成。
-
-target -> 目标
-
-> +
-> +
-> +配置
-> +----
-> +
-> +Rust支持（CONFIG_RUST）需要在 ``General setup`` 菜单中启用。在其他要求得到满足的情
-
-``CONFIG_RUST``
-
-> +况下，该选项只有在找到合适的Rust工具链时才会显示（见上文）。反而言之，这将使依赖Rust的其
-
-反而言之 -> 相应的
-
-> +他选项可见。
-> +
-> +之后，进入::
-> +
-> +	Kernel hacking
-> +	    -> Sample kernel code
-> +	        -> Rust samples
-> +
-> +并启用一些内置或可加载的样本模块。
-
-样本 -> 样例
-
-> +
-> +
-> +构建
-> +----
-> +
-> +用完整的LLVM工具链构建内核是目前支持的最佳设置。这就是::
-
-这就是 -> 即
-
-> +
-> +	make LLVM=1
-> +
-> +对于不支持完整LLVM工具链的架构，使用::
-> +
-> +	make CC=clang
-> +
-> +使用GCC对某些配置也是可行的，但目前它是非常试验性的。
-> +
-> +
-> +折腾
-> +----
-> +
-> +要想深入了解，请看 ``samples/rust/`` 下的样本源代码、 ``rust/`` 下的Rust支持代码和
-
-样本 -> 样例
-
-> +``Kernel hacking`` 下的 ``Rust hacking`` 菜单。
-> +
-> +如果使用的是GDB/Binutils，而Rust符号没有被拆分，原因是工具链还不支持Rust的新v0拆分方案。
-> +有几个办法可以解决：
-> +
-> +  - 安装一个较新的版本（GDB >= 10.2, Binutils >= 2.36）。
-> +
-> +  - 一些版本的GDB（例如vanilla GDB 10.1）能够使用嵌入在调试信息(``CONFIG_DEBUG_INFO``)
-> +    中的预先纠错的名字。
-
-预先纠错 pre-demangled?
-
-> -- 
-> 2.31.1
+>>
+>> A small example for C and Rust differences:
+>>
+>> Rust requires braces around branches of if expression, and C doesn't.
+>> So in kernel coding style you often have:
+>>
+>> 	if (condition) do_something();
+>>
+>> Or
+>>
+>> 	if (condition)
+>> 		do_something();
+>>
+>> But in Rust it will be:
+>>
+>> 	if condition {
+>> 	    do_something();
+>> 	}
+> So kernel style kind of says 'no braces around single statements'; but
+> if your rust compiler doesn't allow this; well then there's nothing to
+> do. You could even argue to update the kernel C style on this to make it
+> consistent again. BUT, this inconsistency makes it cognative 'hard'. If
+> this if a C or a rust function? for example during a review. During
+> authoring, when writing both C and rust code (due to nececity, not
+> constant context switching) you cognitivly constantly have to go
+> back/foward. While I'm sure there's people here that can do this all day
+> without problem, some of of find this harder then needs to be. Hence the
+> request to _try_ to keep consistency within the kernel tree.
+> 
+>>
+>> That's just an example of one control flow constructions. There are
+>> differences between Rust match and C switch, etc. Rust's official
+>> coding style takes properties of Rust into consideration, so in many
+>> regards it's a more suitable coding style for Rust code in kernel, then
+>> applying kernel's C coding standard directly on kernel's Rust code.
+>>
+>> Your earlier email in the thread also mentions about indentation, and I
+>> have a few things to point out as well.
+>>
+>> First, Rust code typically requires more levels of indentation than C
+>> code. For example, many functions might be methods and they are inside
+>> an impl block, which creates one extra level of indentation.
+>> Statements inside match arms' block are two levels more indented than
+>> the match statement itself, as opposed to C's switch (as kernel coding
+>> style doesn't indent the case labels). As a result, 8 spaces for 1 level
+>> can be a bit excessive for Rust code, and thus the 4 space indentation
+>> used in rustfmt default.
+>>
+>> Secondly, I don't think the argument about tabs being customisable
+>> holds; in kernel coding style tabs are strictly 8 characters. For line
+> Sure, this rule implies that for alignment, tabs should be set to 8 so
+> things align nicely. However, nobody forces people to set their editor
+> to 8 character width. Not doing so, doesn't break anything. At worst,
+> you may commit something that is poorly aligned (but we _should_ be
+> using tabs to indent, spaces to align anyway :p, tab == indent has meaning).
+> 
+> With non-tab indentation, this is no longer really possible, or at
+> least, editors haven't solved that problem yet, as it tends to still
+> break (due to the mixing of indentation and alignment using a single
+> character). Maybe once we have AI and ML in our editors though :p
+> 
+>> continuation it's not uncommon to use a series of tabs followed by a
+>> few spaces, e.g.
+>>
+>> 	int function_name(int first_argument,
+>> 	< tab  >< tab  >..int second_argument)
+>>
+>> changing tab into 4 spaces will break the layout. (and I'll not go into
+>> well-known reasons about non-4-space-tab messing up code in terminal
+>> etc).
+>>
+>>> Copy/pasting is known to cause bugs. There's actually research from
+>>> NASA on that. Code-reuse (libraries/functions) are not bad. But
+>>> (worst kind of example) copy paste from stack-overflow, or
+>>> copy/pasting stuff without actually looking at the content and
+>>> forgetting to rename something, causes bugs. Why is this relevant?
+>>> The whole 'lets be consistent with the rust codebase of the wrold'
+>>> argument. E.g. if everybody uses the same style (which is idealistic
+>>> and great) then copy/pasting becomes consistent. Where I say, try to
+>>> be careful when copy/pasting code.
+>>
+>> When we vendor in code as a whole (e.g. like we currently do for
+>> alloc crate), it is proper code reuse. With different coding style the
+>> vendored code either diverges from upstream (which makes upstreaming
+>> much more difficult) or diverge from rest of kernel's Rust code base.
+> Very fair point of course. Though really, we should fix the upstream
+> rust preferred format, but there it was already stated, that 'too bad,
+> sorry' which from a developer point of view is fine, your project, your
+> choice. From a disabilities point of view, sucks of course.
+> 
+>>
+>>> But if that is the case, why not try to follow the kernels existing
+>>> code-style as close as possible with the rust-fmt configuration? I
+>>> know code-style has been discussed a few times over the decades; but
+>>> not many changes have been done, surely, if there's some codestyle
+>>> changes that are best for the kernel, they would have been 'advised'?
+>>> '4 space indents are better then 8-size tabs, on new code, try to use
+>>> them' for example :p
+>>
+>> You do realize that you are creating a new coding style by doing this,
+>> right? It feels like creating problems rather than solving problems.
+>>
+>> My personal feeling is that it's easier for me to adapt to different
+>> coding style when switching between languages, but it's rather awkward
+>> for me when trying to use different coding styles with the same
+>> language. I find myself no problem switching between 2 spaces when
+>> coding JavaScript to 4 spaces when coding Rust to 8 spaces(tab) when
+>> coding C, but it's rather painful to switch between C projects with
+>> different coding styles. I certainly don't want to switch between Rust
+>> projects with vastly different coding styles.
+> And I'm happy for you that you can easily take in 2 and 4 spaces. For
+> me, it is extremly hard to read. So it's not a 'personal preference'
+> thing. But I suggest to read the earlier posted links, where others at
+> length explain it as well, how it is like to feel excluded becaues its
+> just hard to read.
+> 
+>>
+>>> But why? Why should we not be consistent with the kernels' code-base
+>>> (while yes, that is not rust, but C, but we can follow the same
+>>> style?)
+>>
+>> Difference languages have different characteristics, and one size
+>> doesn't fit them all :)
+> I'm not even arguing this at all :)
+> 
+> I think the biggest issues i'm speaking of really are the braces and the
+> spaces really, where the braces can be argued for/against, it's
+> cognitive harder, but can be dealth with (and we can expect
+> inconsitencies; but the sapces vs tabs thing, personal configuration vs
+> forced with is the point I was trying to raise.
+> 
+> As said before, 'every building is different, some offer wheelchair
+> ramps, others do' kind of point, not like 'this building is red, and
+> that one is blue, and not every color fits all :p
+> 
+>>
+>>> Sadly, I've seen so much vendor code (yeah, I know) which doesn't
+>>> even have consistency in their own files ...
+>>
+>> That's very true. So when all other Rust code currently follow
+>> (roughly) the same coding style and this situation doesn't currently
+>> exist, let's not make it worse...
+>>
+>> Best,
+>> Gary
 > 
 
-Thanks,
-        Wu
+--------------XhKck0qOnJW5WHXa9z0SMSgn
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-rustfmt-Match-style-with-kernel-codestyle.patch"
+Content-Disposition: attachment;
+ filename="0001-rustfmt-Match-style-with-kernel-codestyle.patch"
+Content-Transfer-Encoding: base64
 
+RnJvbSAwYWMxZTU2NDM1ZTI3YWRkZGVmOTgwNmRiZjExMzRmOTA5ZTk5ZGQ0IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBPbGxpdmVyIFNjaGluYWdsIDxvbGl2ZXJAc2NoaW5h
+Z2wubmw+CkRhdGU6IFNhdCwgMTUgT2N0IDIwMjIgMTY6MDk6MDYgKzAyMDAKU3ViamVjdDog
+W1BBVENIXSBydXN0Zm10OiBNYXRjaCBzdHlsZSB3aXRoIGtlcm5lbCBjb2Rlc3R5bGUKClNp
+Z25lZC1vZmYtYnk6IE9sbGl2ZXIgU2NoaW5hZ2wgPG9saXZlckBzY2hpbmFnbC5ubD4KLS0t
+CiAucnVzdGZtdC50b21sIHwgOCArKysrKysrKwogMSBmaWxlIGNoYW5nZWQsIDggaW5zZXJ0
+aW9ucygrKQoKZGlmZiAtLWdpdCBhLy5ydXN0Zm10LnRvbWwgYi8ucnVzdGZtdC50b21sCmlu
+ZGV4IDNkZTVjYzQ5NzQ2NS4uMjkwYjg4YzAwMjY1IDEwMDY0NAotLS0gYS8ucnVzdGZtdC50
+b21sCisrKyBiLy5ydXN0Zm10LnRvbWwKQEAgLTEsNSArMSwxMyBAQAorYmlub3Bfc2VwYXJh
+dG9yID0gIkJhY2siCiticmFjZV9zdHlsZSA9ICJBbHdheXNOZXh0TGluZSIKK2NvbnRyb2xf
+YnJhY2Vfc3R5bGUgPSAiQWx3YXlzU2FtZUxpbmUiCiBlZGl0aW9uID0gIjIwMjEiCitoYXJk
+X3RhYnMgPSAidHJ1ZSIKK2luZGVudF9zdHlsZSA9ICJWaXN1YWwiCittYXRjaF9ibG9ja190
+cmFpbGluZ19jb21tYSA9ICJ0cnVlIgogbmV3bGluZV9zdHlsZSA9ICJVbml4Igorc3RydWN0
+X2xpdF9zaW5nbGVfbGluZSA9ICJmYWxzZSIKK3RhYl9zcGFjZXMgPSAiOCIKIAogIyBVbnN0
+YWJsZSBvcHRpb25zIHRoYXQgaGVscCBjYXRjaGluZyBzb21lIG1pc3Rha2VzIGluIGZvcm1h
+dHRpbmcgYW5kIHRoYXQgd2UgbWF5IHdhbnQgdG8gZW5hYmxlCiAjIHdoZW4gdGhleSBiZWNv
+bWUgc3RhYmxlLgotLSAKMi4zOC4wCgo=
+
+--------------XhKck0qOnJW5WHXa9z0SMSgn--
