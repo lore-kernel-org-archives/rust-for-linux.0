@@ -2,122 +2,222 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DDBCDC4167B
-	for <rust-for-linux@archiver.kernel.org>; Wed, 19 Oct 2022 01:06:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48A9BC4332F
+	for <rust-for-linux@archiver.kernel.org>; Wed, 19 Oct 2022 03:29:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229904AbiJSBGW (ORCPT
+        id S229765AbiJSD3i (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 18 Oct 2022 21:06:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49766 "EHLO
+        Tue, 18 Oct 2022 23:29:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229879AbiJSBGT (ORCPT
+        with ESMTP id S229926AbiJSD3d (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 18 Oct 2022 21:06:19 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A7DA1DFB64;
-        Tue, 18 Oct 2022 18:06:14 -0700 (PDT)
-Received: from loongson.cn (unknown [112.20.109.239])
-        by gateway (Coremail) with SMTP id _____8DxPdlnpU5jLG4AAA--.2523S3;
-        Tue, 18 Oct 2022 21:08:55 +0800 (CST)
-Received: from localhost.localdomain (unknown [112.20.109.239])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8AxPuBmpU5jnrQAAA--.2945S2;
-        Tue, 18 Oct 2022 21:08:55 +0800 (CST)
-From:   Yanteng Si <siyanteng@loongson.cn>
-To:     alexs@kernel.org, seakeel@gmail.com
-Cc:     Yanteng Si <siyanteng@loongson.cn>, corbet@lwn.net,
-        ojeda@kernel.org, boqun.feng@gmail.com, wedsonaf@gmail.com,
-        gary@garyguo.net, bjorn3_gh@protonmail.com,
-        rust-for-linux@vger.kernel.org, bobwxc@email.cn,
-        wu.xiangcheng@linux.dev, chenhuacai@kernel.org,
+        Tue, 18 Oct 2022 23:29:33 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9946212618;
+        Tue, 18 Oct 2022 20:29:29 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id i21so17585898ljh.12;
+        Tue, 18 Oct 2022 20:29:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Dvzc90YqgpdFnYUM4wOAbJGrJxP9XPQFzprzhmScQh4=;
+        b=HEIDgFYPDAr1w7qvR5d+epzMdX3ZJBeIDdhl/3ZRBrUMXVHNjTrlEAauV/BmU7dQqu
+         aSPEjwpgs7yJDO8j+91M6Sq4HSOyQRg9SEmupr+Itz8mnuUtixCDULvvkXL3nljXi0yZ
+         SEDBLq4Lqa+BZgFdqmNDSQD5ZGWa4buTEyDi71sRF7RgaDvzsMArwOCbn7dMTMSPkoyA
+         bRPstliMerzc1nJpYeJ0FjtXnVlnSmJipBGjiy8CHMgrTBnhzy1YjTXf+aC8PzIODhmn
+         YFzwRyI3psr+QWEOJUmLfW86TVdY4/25RbwRtWXfe6CQSiGHkUzACK0XVrWeMe+Ew/S5
+         OlFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Dvzc90YqgpdFnYUM4wOAbJGrJxP9XPQFzprzhmScQh4=;
+        b=bn/+wscWzbkbSCxpNSOrsQQYXFkopX/KUy+r8+Hvm48RWOy8k1RGINO9wnVOruk0pH
+         iOIUXUyq9fDoFtYkD9z4k5ygftfibEEFVApS5f47CfFN0eGvA+ON/XncqflwyPeXS7DN
+         Tb+9bBfMCnXbyPy2iqNwtjTlpUqqavOD71Ep9sVAsuOKAyyRgVSEq0c11k39OrHx587m
+         bdZLDjNdcnyMmGxJP3xxhIzl81q9RCzYx0BzWY6swf+WW3B5a32TiC0DV7JYN59nC/dk
+         7sEnDYd0hyitXeMoAPz8/ZBkL6tZGW1QSA9sLKyCYHVrJMPtvSL10ZymhQBLkhAU21uq
+         YQpQ==
+X-Gm-Message-State: ACrzQf0XE9tPhCB6INwALElJ+V6igbkMwyVYEt1K2c00F3bPc0jZvKRJ
+        bpntQ0jM8P1l5c7WxhvO5JhfJ4/nSY8pOy8r046mvD4CEXkHUQ==
+X-Google-Smtp-Source: AMsMyM5b5QvnOhgrGLXyeqFYYigpwIdsTJDnH81meiwVxG9VKGWPmxh1eHDPdekViv2ZS8xQJvtm+2l46ybYMJVmBzw=
+X-Received: by 2002:a2e:92d5:0:b0:26f:a674:94ac with SMTP id
+ k21-20020a2e92d5000000b0026fa67494acmr2120324ljh.470.1666150167790; Tue, 18
+ Oct 2022 20:29:27 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1666097959.git.siyanteng@loongson.cn> <82a36881a46eb8afcc754f81f196982ac3f6c735.1666097959.git.siyanteng@loongson.cn>
+In-Reply-To: <82a36881a46eb8afcc754f81f196982ac3f6c735.1666097959.git.siyanteng@loongson.cn>
+From:   Alex Shi <seakeel@gmail.com>
+Date:   Wed, 19 Oct 2022 11:28:51 +0800
+Message-ID: <CAJy-Am=g_En1dkkpzoh6wkwh0c3oJpxTd1Dxo+s4Y22SnxKq9A@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] docs/zh_CN: Add rust/quick-start Chinese translation
+To:     Yanteng Si <siyanteng@loongson.cn>
+Cc:     alexs@kernel.org, corbet@lwn.net, ojeda@kernel.org,
+        boqun.feng@gmail.com, wedsonaf@gmail.com, gary@garyguo.net,
+        bjorn3_gh@protonmail.com, rust-for-linux@vger.kernel.org,
+        bobwxc@email.cn, wu.xiangcheng@linux.dev, chenhuacai@kernel.org,
         jiaxun.yang@flygoat.com, linux-doc@vger.kernel.org,
         siyanteng01@gmail.com
-Subject: [PATCH v2 5/5] docs/zh_CN: Add rust/arch-support Chinese translation
-Date:   Tue, 18 Oct 2022 21:07:19 +0800
-Message-Id: <69462d6bf842950080c56d1e51adc318e79c9a19.1666097959.git.siyanteng@loongson.cn>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1666097959.git.siyanteng@loongson.cn>
-References: <cover.1666097959.git.siyanteng@loongson.cn>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxPuBmpU5jnrQAAA--.2945S2
-X-CM-SenderInfo: pvl1t0pwhqwqxorr0wxvrqhubq/
-X-Coremail-Antispam: 1Uk129KBjvJXoW7KFy7Zr1DKF1DWr4fXr45GFg_yoW8tF48p3
-        WqkryfG3W5Jryjkr4xGF1UGF1UGF18Gw1UJr1xGwn5Xr4kJF1UJr4UtF98tw17Cr48AFW5
-        Xr40kryUCw1UAr7anT9S1TB71UUUUjJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-        qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
-        bhkYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
-        1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
-        wVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM2
-        8EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr1j6rxd
-        M2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zV
-        CFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWrXVW3AwAv7VC2
-        z280aVAFwI0_Cr0_Gr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x
-        0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCF
-        I7km07C267AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r
-        106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AK
-        xVW7JVWDJwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcI
-        k0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267AKxVW8
-        Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07j2XdUUUUUU=
-X-Gw-Check: afb512509c46355c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Translate .../rust/arch-support.rst into Chinese.
-
-Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
----
- .../translations/zh_CN/rust/arch-support.rst  | 23 +++++++++++++++++++
- .../translations/zh_CN/rust/index.rst         |  5 +---
- 2 files changed, 24 insertions(+), 4 deletions(-)
- create mode 100644 Documentation/translations/zh_CN/rust/arch-support.rst
-
-diff --git a/Documentation/translations/zh_CN/rust/arch-support.rst b/Documentation/translations/zh_CN/rust/arch-support.rst
-new file mode 100644
-index 000000000000..afbd02afec45
---- /dev/null
-+++ b/Documentation/translations/zh_CN/rust/arch-support.rst
-@@ -0,0 +1,23 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+.. include:: ../disclaimer-zh_CN.rst
-+
-+:Original: Documentation/rust/arch-support.rst
-+
-+:翻译:
-+
-+ 司延腾 Yanteng Si <siyanteng@loongson.cn>
-+
-+架构支持
-+========
-+
-+目前，Rust编译器（``rustc``）使用LLVM进行代码生成，这限制了可以支持的目标架构。此外，对
-+使用LLVM/Clang构建内核的支持也有所不同（请参见 Documentation/kbuild/llvm.rst ）。这
-+种支持对于使用 ``libclang`` 的 ``bindgen`` 来说是必需的。
-+
-+下面是目前可以工作的架构的一般总结。支持程度与 ``MAINTAINERS`` 文件中的``S`` 值相对应:
-+
-+============  ================  ==============================================
-+架构          支持水平          限制因素
-+============  ================  ==============================================
-+``x86``       Maintained        只有 ``x86_64``
-+============  ================  ==============================================
-diff --git a/Documentation/translations/zh_CN/rust/index.rst b/Documentation/translations/zh_CN/rust/index.rst
-index c5507ad488a1..b01f887e7167 100644
---- a/Documentation/translations/zh_CN/rust/index.rst
-+++ b/Documentation/translations/zh_CN/rust/index.rst
-@@ -18,10 +18,7 @@ Rust
-     quick-start
-     general-information
-     coding-guidelines
--
--TODOList:
--
--*    arch-support
-+    arch-support
- 
- .. only::  subproject and html
- 
--- 
-2.31.1
-
+TEdUTQ0KUmV2aWV3ZWQtYnk6IEFsZXggU2hpIDxhbGV4c0BrZXJuZWwub3JnPg0KDQpPbiBUdWUs
+IE9jdCAxOCwgMjAyMiBhdCA5OjA2IFBNIFlhbnRlbmcgU2kgPHNpeWFudGVuZ0Bsb29uZ3Nvbi5j
+bj4gd3JvdGU6DQo+DQo+IFRyYW5zbGF0ZSAuLi4vcnVzdC9xdWljay1zdGFydC5yc3QgaW50byBD
+aGluZXNlLg0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBZYW50ZW5nIFNpIDxzaXlhbnRlbmdAbG9vbmdz
+b24uY24+DQo+IC0tLQ0KPiAgLi4uL3RyYW5zbGF0aW9ucy96aF9DTi9ydXN0L2luZGV4LnJzdCAg
+ICAgICAgIHwgICAyICstDQo+ICAuLi4vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvcXVpY2stc3Rh
+cnQucnN0ICAgfCAyMTEgKysrKysrKysrKysrKysrKysrDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDIx
+MiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgRG9j
+dW1lbnRhdGlvbi90cmFuc2xhdGlvbnMvemhfQ04vcnVzdC9xdWljay1zdGFydC5yc3QNCj4NCj4g
+ZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvaW5kZXgu
+cnN0IGIvRG9jdW1lbnRhdGlvbi90cmFuc2xhdGlvbnMvemhfQ04vcnVzdC9pbmRleC5yc3QNCj4g
+aW5kZXggZmM2YTA3NDg0MWJjLi5mZTg4NGQxZGEzNTMgMTAwNjQ0DQo+IC0tLSBhL0RvY3VtZW50
+YXRpb24vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvaW5kZXgucnN0DQo+ICsrKyBiL0RvY3VtZW50
+YXRpb24vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvaW5kZXgucnN0DQo+IEBAIC0xNSwxMCArMTUs
+MTAgQEAgUnVzdA0KPiAgLi4gdG9jdHJlZTo6DQo+ICAgICAgOm1heGRlcHRoOiAxDQo+DQo+ICsg
+ICAgcXVpY2stc3RhcnQNCj4NCj4gIFRPRE9MaXN0Og0KPg0KPiAtKiAgICBxdWljay1zdGFydA0K
+PiAgKiAgICBnZW5lcmFsLWluZm9ybWF0aW9uDQo+ICAqICAgIGNvZGluZy1ndWlkZWxpbmVzDQo+
+ICAqICAgIGFyY2gtc3VwcG9ydA0KPiBkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi90cmFuc2xh
+dGlvbnMvemhfQ04vcnVzdC9xdWljay1zdGFydC5yc3QgYi9Eb2N1bWVudGF0aW9uL3RyYW5zbGF0
+aW9ucy96aF9DTi9ydXN0L3F1aWNrLXN0YXJ0LnJzdA0KPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0K
+PiBpbmRleCAwMDAwMDAwMDAwMDAuLjc0Nzg3M2IxZGE2YQ0KPiAtLS0gL2Rldi9udWxsDQo+ICsr
+KyBiL0RvY3VtZW50YXRpb24vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvcXVpY2stc3RhcnQucnN0
+DQo+IEBAIC0wLDAgKzEsMjExIEBADQo+ICsuLiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BM
+LTIuMA0KPiArLi4gaW5jbHVkZTo6IC4uL2Rpc2NsYWltZXItemhfQ04ucnN0DQo+ICsNCj4gKzpP
+cmlnaW5hbDogRG9jdW1lbnRhdGlvbi9ydXN0L3F1aWNrLXN0YXJ0LnJzdA0KPiArDQo+ICs657+7
+6K+ROg0KPiArDQo+ICsg5Y+45bu26IW+IFlhbnRlbmcgU2kgPHNpeWFudGVuZ0Bsb29uZ3Nvbi5j
+bj4NCj4gKw0KPiArDQo+ICvlv6vpgJ/lhaXpl6gNCj4gKz09PT09PT09DQo+ICsNCj4gK+acrOaW
+h+S7i+e7jeS6huWmguS9leW8gOWni+S9v+eUqFJ1c3Tov5vooYzlhoXmoLjlvIDlj5HjgIINCj4g
+Kw0KPiArDQo+ICvmnoTlu7rkvp3otZYNCj4gKy0tLS0tLS0tDQo+ICsNCj4gK+acrOiKguaPj+i/
+sOS6huWmguS9leiOt+WPluaehOW7uuaJgOmcgOeahOW3peWFt+OAgg0KPiArDQo+ICvlhbbkuK3k
+uIDkupvkvp3otZbkuZ/orrjlj6/ku6Xku45MaW51eOWPkeihjOeJiOS4reiOt+W+l++8jOWMheWQ
+jeWPr+iDveaYryBgYHJ1c3RjYGAgLCBgYHJ1c3Qtc3JjYGAgLA0KPiArYGBydXN0LWJpbmRnZW5g
+YCDnrYnjgILnhLbogIzvvIzlnKjlhpnov5nnr4fmlofnq6DnmoTml7blgJnvvIzlroPku6zlvojl
+j6/og73ov5jkuI3lpJ/mlrDvvIzpmaTpnZ7lj5HooYzniYjot5/ouKrmnIANCj4gK+aWsOeahOeJ
+iOacrOOAgg0KPiArDQo+ICvkuLrkuobmlrnkvr/mo4Dmn6XmmK/lkKbmu6HotrPopoHmsYLvvIzl
+j6/ku6Xkvb/nlKjku6XkuIvnm67moIc6Og0KPiArDQo+ICsgICAgICAgbWFrZSBMTFZNPTEgcnVz
+dGF2YWlsYWJsZQ0KPiArDQo+ICvov5nkvJrop6blj5HkuI5LY29uZmln55So5p2l56Gu5a6a5piv
+5ZCm5bqU6K+l5ZCv55SoIGBgUlVTVF9JU19BVkFJTEFCTEVgYCDnm7jlkIznmoTpgLvovpHvvJvk
+uI3ov4flroPkuZ8NCj4gK+S8muWIl+WHuuacqua7oei2s+eahOadoeS7tuOAgg0KPiArDQo+ICsN
+Cj4gK3J1c3RjDQo+ICsqKioqKg0KPiArDQo+ICvpnIDopoHkuIDkuKrnibnlrprniYjmnKznmoRS
+dXN057yW6K+R5Zmo44CC6L6D5paw55qE54mI5pys5Y+v6IO95Lya5Lmf5Y+v6IO95LiN5Lya5bel
+5L2c77yM5Zug5Li65bCx55uu5YmN6ICM6KiA77yM5YaF5qC45L6d6LWWDQo+ICvkuo7kuIDkupvk
+uI3nqLPlrprnmoRSdXN054m55oCn44CCDQo+ICsNCj4gK+WmguaenOS9v+eUqOeahOaYryBgYHJ1
+c3R1cGBgIO+8jOivt+i/m+WFpeajgOWHuueahOa6kOS7o+eggeebruW9leW5tui/kOihjDo6DQo+
+ICsNCj4gKyAgICAgICBydXN0dXAgb3ZlcnJpZGUgc2V0ICQoc2NyaXB0cy9taW4tdG9vbC12ZXJz
+aW9uLnNoIHJ1c3RjKQ0KPiArDQo+ICvmiJbogIXku47ku6XkuIvnvZHlnYDojrflj5bkuIDkuKrn
+i6znq4vnmoTlronoo4XnqIvluo/miJblronoo4UgYGBydXN0dXBgYCDvvJoNCj4gKw0KPiArICAg
+ICAgIGh0dHBzOi8vd3d3LnJ1c3QtbGFuZy5vcmcNCj4gKw0KPiArDQo+ICtSdXN05qCH5YeG5bqT
+5rqQ5Luj56CBDQo+ICsqKioqKioqKioqKioqKioqDQo+ICsNCj4gK1J1c3TmoIflh4blupPnmoTm
+upDku6PnoIHmmK/lv4XpnIDnmoTvvIzlm6DkuLrmnoTlu7rns7vnu5/kvJrkuqTlj4nnvJbor5Eg
+YGBjb3JlYGAg5ZKMIGBgYWxsb2NgYCDjgIINCj4gKw0KPiAr5aaC5p6c5q2j5Zyo5L2/55SoIGBg
+cnVzdHVwYGAg77yM6K+36L+Q6KGMOjoNCj4gKw0KPiArICAgICAgIHJ1c3R1cCBjb21wb25lbnQg
+YWRkIHJ1c3Qtc3JjDQo+ICsNCj4gK+i/meS6m+e7hOS7tuaYr+aMieW3peWFt+mTvuWuieijheea
+hO+8jOWboOatpOS7peWQjuWNh+e6p1J1c3TnvJbor5HlmajniYjmnKzpnIDopoHph43mlrDmt7vl
+iqDnu4Tku7bjgIINCj4gKw0KPiAr5ZCm5YiZ77yM5aaC5p6c5L2/55So54us56uL55qE5a6J6KOF
+56iL5bqP77yM5Y+v5Lul5bCGUnVzdOS7k+W6k+WFi+mahuWIsOW3peWFt+mTvueahOWuieijheaW
+h+S7tuWkueS4rTo6DQo+ICsNCj4gKyAgICAgICBnaXQgY2xvbmUgLS1yZWN1cnNlLXN1Ym1vZHVs
+ZXMgXA0KPiArICAgICAgICAgICAgICAgLS1icmFuY2ggJChzY3JpcHRzL21pbi10b29sLXZlcnNp
+b24uc2ggcnVzdGMpIFwNCj4gKyAgICAgICAgICAgICAgIGh0dHBzOi8vZ2l0aHViLmNvbS9ydXN0
+LWxhbmcvcnVzdCBcDQo+ICsgICAgICAgICAgICAgICAkKHJ1c3RjIC0tcHJpbnQgc3lzcm9vdCkv
+bGliL3J1c3RsaWIvc3JjL3J1c3QNCj4gKw0KPiAr5Zyo6L+Z56eN5oOF5Ya15LiL77yM5Lul5ZCO
+5Y2H57qnUnVzdOe8luivkeWZqOeJiOacrOmcgOimgeaJi+WKqOabtOaWsOi/meS4quWFi+mahuea
+hOS7k+W6k+OAgg0KPiArDQo+ICsNCj4gK2xpYmNsYW5nDQo+ICsqKioqKioqKg0KPiArDQo+ICtg
+YGJpbmRnZW5gYCDkvb/nlKggYGBsaWJjbGFuZ2BgIO+8iExMVk3nmoTkuIDpg6jliIbvvInmnaXn
+kIbop6PlhoXmoLjkuK3nmoRD5Luj56CB77yM6L+Z5oSP5ZGz552A6ZyA6KaB5a6JDQo+ICvoo4VM
+TFZN77yb5ZCM5Zyo5byA5ZCvIGBgQ0M9Y2xhbmdgYCDmiJYgYGBMTFZNPTFgYCDml7bnvJbor5Hl
+hoXmoLjkuIDmoLfjgIINCj4gKw0KPiArTGludXjlj5HooYzniYjkuK3lj6/og73kvJrmnInlkIjp
+gILnmoTljIXvvIzmiYDku6XmnIDlpb3lhYjmo4Dmn6XkuIDkuIvjgIINCj4gKw0KPiAr6YCC55So
+5LqO6YOo5YiG57O757uf5ZKM5p625p6E55qE5LqM6L+b5Yi25paH5Lu25Lmf5Y+v5Yiw5Lul5LiL
+572R5Z2A5LiL6L2977yaDQo+ICsNCj4gKyAgICAgICBodHRwczovL3JlbGVhc2VzLmxsdm0ub3Jn
+L2Rvd25sb2FkLmh0bWwNCj4gKw0KPiAr5oiW6ICF6Ieq6KGM5p6E5bu6TExWTe+8jOi/memcgOim
+geebuOW9k+mVv+eahOaXtumXtO+8jOS9huW5tuS4jeaYr+S4gOS4quWkjeadgueahOi/h+eoi++8
+mg0KPiArDQo+ICsgICAgICAgaHR0cHM6Ly9sbHZtLm9yZy9kb2NzL0dldHRpbmdTdGFydGVkLmh0
+bWwjZ2V0dGluZy10aGUtc291cmNlLWNvZGUtYW5kLWJ1aWxkaW5nLWxsdm0NCj4gKw0KPiAr6K+3
+5Y+C6ZiFIERvY3VtZW50YXRpb24va2J1aWxkL2xsdm0ucnN0IOS6huino+abtOWkmuS/oeaBr++8
+jOS7peWPiuiOt+WPlumihOaehOW7uueJiOacrOWSjOWPkeihjOWMhQ0KPiAr55qE6L+b5LiA5q2l
+5pa55rOV44CCDQo+ICsNCj4gKw0KPiArYmluZGdlbg0KPiArKioqKioqKg0KPiArDQo+ICvlhoXm
+oLjnmoRD56uv57uR5a6a5piv5Zyo5p6E5bu65pe25L2/55SoIGBgYmluZGdlbmBgIOW3peWFt+eU
+n+aIkOeahOOAgui/memcgOimgeeJueWumueahOeJiOacrOOAgg0KPiArDQo+ICvpgJrov4fku6Xk
+uIvmlrnlvI/lronoo4XlroPvvIjms6jmhI/vvIzov5nlsIbku47mupDnoIHkuIvovb3lubbmnoTl
+u7ror6Xlt6XlhbfvvIk6Og0KPiArDQo+ICsgICAgICAgY2FyZ28gaW5zdGFsbCAtLWxvY2tlZCAt
+LXZlcnNpb24gJChzY3JpcHRzL21pbi10b29sLXZlcnNpb24uc2ggYmluZGdlbikgYmluZGdlbg0K
+PiArDQo+ICsNCj4gK+W8gOWPkeS+nei1lg0KPiArLS0tLS0tLS0NCj4gKw0KPiAr5pys6IqC6Kej
+6YeK5LqG5aaC5L2V6I635Y+W5byA5Y+R5omA6ZyA55qE5bel5YW344CC5Lmf5bCx5piv6K+077yM
+5Zyo5p6E5bu65YaF5qC45pe25LiN6ZyA6KaB6L+Z5Lqb5bel5YW344CCDQo+ICsNCj4gKw0KPiAr
+cnVzdGZtdA0KPiArKioqKioqKg0KPiArDQo+ICtgYHJ1c3RmbXRgYCDlt6XlhbfooqvnlKjmnaXo
+h6rliqjmoLzlvI/ljJbmiYDmnInnmoRSdXN05YaF5qC45Luj56CB77yM5YyF5ous55Sf5oiQ55qE
+Q+e7keWumu+8iOivpuaDheivt+ingQ0KPiArY29kaW5nLWd1aWRlbGluZXMucnN0IO+8ieOAgg0K
+PiArDQo+ICvlpoLmnpzkvb/nlKjnmoTmmK8gYGBydXN0dXBgYCDvvIzlroPnmoQgYGDpu5jorqRg
+YCDphY3nva7mlofku7blt7Lnu4/lronoo4Xkuobov5nkuKrlt6XlhbfvvIzlm6DmraTkuI3pnIDo
+poHlgZrku4DkuYjjgIINCj4gK+WmguaenOS9v+eUqOeahOaYr+WFtuS7lumFjee9ruaWh+S7tu+8
+jOWPr+S7peaJi+WKqOWuieijheivpee7hOS7tjo6DQo+ICsNCj4gKyAgICAgICBydXN0dXAgY29t
+cG9uZW50IGFkZCBydXN0Zm10DQo+ICsNCj4gK+eLrOeri+eahOWuieijheeoi+W6j+S5n+W4puac
+iSBgYHJ1c3RmbXRgYCDjgIINCj4gKw0KPiArDQo+ICtjbGlwcHkNCj4gKyoqKioqKg0KPiArDQo+
+ICtgYGNsaXBweWBgIOaYr+S4gOS4qlJ1c3QgbGludGVy44CC6L+Q6KGM5a6D5Y+v5Lul5Li6UnVz
+dOS7o+eggeaPkOS+m+mineWklueahOitpuWRiuOAguWug+WPr+S7pemAmui/h+WQkSBgYG1ha2Vg
+YA0KPiAr5Lyg6YCSIGBgQ0xJUFBZPTFgYCDmnaXov5DooYzvvIjlhbPkuo7nu4boioLvvIzor6bo
+p4EgZ2VuZXJhbC1pbmZvcm1hdGlvbi5yc3Qg77yJ44CCDQo+ICsNCj4gK+WmguaenOato+WcqOS9
+v+eUqCBgYHJ1c3R1cGBgIO+8jOWug+eahCBgYOm7mOiupGBgIOmFjee9ruaWh+S7tuW3sue7j+Wu
+ieijheS6hui/meS4quW3peWFt++8jOWboOatpOS4jemcgOimgeWBmuS7gOS5iOOAgg0KPiAr5aaC
+5p6c5L2/55So55qE5piv5Y+m5LiA5Liq6YWN572u5paH5Lu277yM6K+l57uE5Lu25Y+v5Lul6KKr
+5omL5Yqo5a6J6KOFOjoNCj4gKw0KPiArICAgICAgIHJ1c3R1cCBjb21wb25lbnQgYWRkIGNsaXBw
+eQ0KPiArDQo+ICvni6znq4vnmoTlronoo4XnqIvluo/kuZ/luKbmnIkgYGBjbGlwcHlgYCDjgIIN
+Cj4gKw0KPiArDQo+ICtjYXJnbw0KPiArKioqKioNCj4gKw0KPiArYGBjYXJnb2BgIOaYr1J1c3Tn
+moTmnKzlnLDmnoTlu7rns7vnu5/jgILnm67liY3pnIDopoHlroPmnaXov5DooYzmtYvor5XvvIzl
+m6DkuLrlroPooqvnlKjmnaXmnoTlu7rkuIDkuKroh6rlrprkuYnnmoTmoIflh4YNCj4gK+W6k++8
+jOWFtuS4reWMheWQq+S6huWGheaguOS4reiHquWumuS5iSBgYGFsbG9jYGAg5omA5o+Q5L6b55qE
+6K6+5pa944CC5rWL6K+V5Y+v5Lul5L2/55SoIGBgcnVzdHRlc3RgYCBNYWtlIOebruaghw0KPiAr
+5p2l6L+Q6KGM44CCDQo+ICsNCj4gK+WmguaenOS9v+eUqOeahOaYryBgYHJ1c3R1cGBgIO+8jOaJ
+gOacieeahOmFjee9ruaWh+S7tumDveW3sue7j+WuieijheS6huivpeW3peWFt++8jOWboOatpOS4
+jemcgOimgeWGjeWBmuS7gOS5iOOAgg0KPiArDQo+ICvni6znq4vnmoTlronoo4XnqIvluo/kuZ/l
+uKbmnIkgYGBjYXJnb2BgIOOAgg0KPiArDQo+ICsNCj4gK3J1c3Rkb2MNCj4gKyoqKioqKioNCj4g
+Kw0KPiArYGBydXN0ZG9jYGAg5pivUnVzdOeahOaWh+aho+W3peWFt+OAguWug+S4ulJ1c3Tku6Pn
+oIHnlJ/miJDmvILkuq7nmoRIVE1M5paH5qGj77yI6K+m5oOF6K+36KeBIGdlbmVyYWwtaW5mb3Jt
+YXRpb24ucnN0IO+8ieOAgg0KPiArDQo+ICtgYHJ1c3Rkb2NgYCDkuZ/ooqvnlKjmnaXmtYvor5Xm
+lofmoaPljJbnmoRSdXN05Luj56CB5Lit5o+Q5L6b55qE5L6L5a2Q77yI56ew5Li6ZG9jdGVzdHPm
+iJbmlofmoaPmtYvor5XvvInjgIINCj4gK2BgcnVzdHRlc3RgYCDmmK/mnKzlip/og73nmoRNYWtl
+55uu5qCH44CCDQo+ICsNCj4gK+WmguaenOS9v+eUqOeahOaYryBgYHJ1c3R1cGBgIO+8jOaJgOac
+ieeahOmFjee9ruaWh+S7tumDveW3sue7j+WuieijheS6hui/meS4quW3peWFt++8jOWboOatpOS4
+jemcgOimgeWBmuS7gOS5iOOAgg0KPiArDQo+ICvni6znq4vnmoTlronoo4XnqIvluo/kuZ/luKbm
+nIkgYGBydXN0ZG9jYGAg44CCDQo+ICsNCj4gKw0KPiArcnVzdC1hbmFseXplcg0KPiArKioqKioq
+KioqKioqKg0KPiArDQo+ICtgcnVzdC1hbmFseXplciA8aHR0cHM6Ly9ydXN0LWFuYWx5emVyLmdp
+dGh1Yi5pby8+YF8g6K+t6KiA5pyN5Yqh5Zmo5Y+v5Lul5ZKM6K645aSa57yW6L6R5ZmoDQo+ICvk
+uIDotbfkvb/nlKjvvIzku6Xlrp7njrDor63ms5Xpq5jkuq7jgIHooaXlhajjgIHovazliLDlrprk
+uYnlkozlhbbku5blip/og73jgIINCj4gKw0KPiArYGBydXN0LWFuYWx5emVyYGAg6ZyA6KaB5LiA
+5Liq6YWN572u5paH5Lu277yMIGBgcnVzdC1wcm9qZWN0Lmpzb25gYCwg5a6D5Y+v5Lul55SxIGBg
+cnVzdC1hbmFseXplcmBgDQo+ICtNYWtlIOebruagh+eUn+aIkOOAgg0KPiArDQo+ICsNCj4gK+mF
+jee9rg0KPiArLS0tLQ0KPiArDQo+ICtSdXN05pSv5oyB77yIQ09ORklHX1JVU1TvvInpnIDopoHl
+nKggYGBHZW5lcmFsIHNldHVwYGAg6I+c5Y2V5Lit5ZCv55So44CC5Zyo5YW25LuW6KaB5rGC5b6X
+5Yiw5ruh6Laz55qE5oOFDQo+ICvlhrXkuIvvvIzor6XpgInpobnlj6rmnInlnKjmib7liLDlkIjp
+gILnmoRSdXN05bel5YW36ZO+5pe25omN5Lya5pi+56S677yI6KeB5LiK5paH77yJ44CC55u45bqU
+55qE77yM6L+Z5bCG5L2/5L6d6LWWUnVzdOeahOWFtg0KPiAr5LuW6YCJ6aG55Y+v6KeB44CCDQo+
+ICsNCj4gK+S5i+WQju+8jOi/m+WFpTo6DQo+ICsNCj4gKyAgICAgICBLZXJuZWwgaGFja2luZw0K
+PiArICAgICAgICAgICAtPiBTYW1wbGUga2VybmVsIGNvZGUNCj4gKyAgICAgICAgICAgICAgIC0+
+IFJ1c3Qgc2FtcGxlcw0KPiArDQo+ICvlubblkK/nlKjkuIDkupvlhoXnva7miJblj6/liqDovb3n
+moTmoLfkvovmqKHlnZfjgIINCj4gKw0KPiArDQo+ICvmnoTlu7oNCj4gKy0tLS0NCj4gKw0KPiAr
+55So5a6M5pW055qETExWTeW3peWFt+mTvuaehOW7uuWGheaguOaYr+ebruWJjeaUr+aMgeeahOac
+gOS9s+iuvue9ruOAguWNszo6DQo+ICsNCj4gKyAgICAgICBtYWtlIExMVk09MQ0KPiArDQo+ICvl
+r7nkuo7kuI3mlK/mjIHlrozmlbRMTFZN5bel5YW36ZO+55qE5p625p6E77yM5L2/55SoOjoNCj4g
+Kw0KPiArICAgICAgIG1ha2UgQ0M9Y2xhbmcNCj4gKw0KPiAr5L2/55SoR0ND5a+55p+Q5Lqb6YWN
+572u5Lmf5piv5Y+v6KGM55qE77yM5L2G55uu5YmN5a6D5piv6Z2e5bi46K+V6aqM5oCn55qE44CC
+DQo+ICsNCj4gKw0KPiAr5oqY6IW+DQo+ICstLS0tDQo+ICsNCj4gK+imgeaDs+a3seWFpeS6huin
+o++8jOivt+eciyBgYHNhbXBsZXMvcnVzdC9gYCDkuIvnmoTmoLfkvovmupDku6PnoIHjgIEgYGBy
+dXN0L2BgIOS4i+eahFJ1c3TmlK/mjIHku6PnoIHlkowNCj4gK2BgS2VybmVsIGhhY2tpbmdgYCDk
+uIvnmoQgYGBSdXN0IGhhY2tpbmdgYCDoj5zljZXjgIINCj4gKw0KPiAr5aaC5p6c5L2/55So55qE
+5pivR0RCL0JpbnV0aWxz77yM6ICMUnVzdOespuWPt+ayoeacieiiq+aLhuWIhu+8jOWOn+WboOaY
+r+W3peWFt+mTvui/mOS4jeaUr+aMgVJ1c3TnmoTmlrB2MOaLhuWIhuaWueahiOOAgg0KPiAr5pyJ
+5Yeg5Liq5Yqe5rOV5Y+v5Lul6Kej5Yaz77yaDQo+ICsNCj4gKyAgLSDlronoo4XkuIDkuKrovoPm
+lrDnmoTniYjmnKzvvIhHREIgPj0gMTAuMiwgQmludXRpbHMgPj0gMi4zNu+8ieOAgg0KPiArDQo+
+ICsgIC0g5LiA5Lqb54mI5pys55qER0RC77yI5L6L5aaCdmFuaWxsYSBHREIgMTAuMe+8ieiDveWk
+n+S9v+eUqOW1jOWFpeWcqOiwg+ivleS/oeaBryhgYENPTkZJR19ERUJVR19JTkZPYGApDQo+ICsg
+ICAg5Lit55qE6aKE5YWI6L+Y5Y6f5Ye95pWw55qE5ZCN5a2X44CCDQo+IC0tDQo+IDIuMzEuMQ0K
+Pg0K
