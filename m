@@ -2,47 +2,47 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE39EFA373D
-	for <rust-for-linux@archiver.kernel.org>; Tue, 25 Oct 2022 00:51:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BEFE1FA373D
+	for <rust-for-linux@archiver.kernel.org>; Tue, 25 Oct 2022 00:52:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230268AbiJYAvj (ORCPT
+        id S230499AbiJYAwV (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 24 Oct 2022 20:51:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40500 "EHLO
+        Mon, 24 Oct 2022 20:52:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231228AbiJYAv2 (ORCPT
+        with ESMTP id S230255AbiJYAwJ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 24 Oct 2022 20:51:28 -0400
-Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2117.outbound.protection.outlook.com [40.107.11.117])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7991C19DE;
-        Mon, 24 Oct 2022 16:31:26 -0700 (PDT)
+        Mon, 24 Oct 2022 20:52:09 -0400
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2106.outbound.protection.outlook.com [40.107.11.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 905CAF6C02;
+        Mon, 24 Oct 2022 16:33:00 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MSTMwFzquBCt7Ux/0s0pv0u/0GvKq3MDS/ivHes6K0cyAnpGB/AjDrKSHtd2TJpZNRhu99nCsO83gnTggp3/kH49nlZ/rGGOAsYVxf9GoZWQ3mKxgEWHX/oUbW5aCV8h2ILzCkrQwc1230d09awGVavQVcSbrq4OjMWh8C7dLOj5GgCWQU5vaaCgvh/nR9v5a3il4TpAY09qJHKQ7S2HYCS447aO/nPbRlWBl6BZRvxKwxTwnby9P7dxhQ6CWtketqhRRYzPVrZrKb7s7+lWj886J1+Nw5CrJpDSaVMteSV7wC08QJ+v13a9t55OhIpRnkvvF0BbMrFx3vwQ+Kk7mg==
+ b=XpBw3TkD/hTvlVfnIpH6IcbIQPq76MMID/cnUlgzuxXhYtDH2bl4RyIGwnNGaIfsVk/N1oMtkd/jQCNcBwtu8uy/vhf4He6Tgnj6td8ZDDz3t+wW0PhsMKSWLuSmadyUlZECEEugtpMYUU4BwDL7nnqMi0q0qwC5CLrMNkyAP778VNzn4RBDzSZ+60IN4xPl6cFUbqQNd4BRAN7i1KVF2lK0w/qMpkCZ2ctAf7TDSRUkndh/0+V2JdK4Ya6DmWaOAlKQgr64h5axOl2SzRqfZVap0m0VSle7lx5V9coE4YdmShDsc+zvkMu38prWYrEUfE29xud7pu6xUaxAT+h1NQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w8vWng6n1DStMz7i3hXdK4jmQQWwd6o5hsP3FsLq7o8=;
- b=FIn4SM6oJPckTGGCQ3r6T5hEja4856HVxFqjwZ4aek9RqP/7f7xN9QgzyfqEfpBoolkmsjJxhG2v+u03vgjj7qGa26WfPdLVGr7Ja9TQZyYz7H9ZBVPqGRZPwmNJAHglYFm/b1tQgOmuJdfl2kGA4xlZmBOMcLsAMbCCO34vdu9v+XyxfGpy6cT9gwDzpWm9/Iegsx0ijGaoZd7dR3WTLPIRCU3efovuwHuMnZkN3gprgsqPfuMCXJVVFgz2kBlLnksRSPalhVscJrftV0bmOffx3Q0IAfAnlNWHUfwM91yIaI8yBLq3HBSiHmcnfAFj00q/zBucdshh5D73VjtKMw==
+ bh=vUpoHYhPPiTmgSq/CS6ac14zVe/c1teh2vJ/0vNJDqE=;
+ b=IxCmEQyEZjED25WZcjaspprBiMAeMXiXMlDRT/T5QAhc7o4ajO0gLMGsIyONOqd4KDNvV7RuAEctawP1W0x1pZ5FGqosyJ4jPQAeGwHnh/k29Yj9SzSo+8eP7jBfw3fI4LzymCxOyWFffwZWqxTCCvF2cR/oZKZl4zkFlxcNitCOZfuCLQCWPtv9qNlC4d12Psy4v+10lbPw0G11NG/N0n9YvHNVUPOYYa66PRXCmb3YLfe7r3SfAjUOpiVBZ1vAOCxWDqk+E1LgZHGeRT4qAx5AqiUnRx4laG+6gpW1zHxIIjL7E7Bwga3cvk+herk1celwbaz43C1lD6HoV4YaJQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w8vWng6n1DStMz7i3hXdK4jmQQWwd6o5hsP3FsLq7o8=;
- b=EGBp9JLHuTwXiImwZ4yrjMVv/3NaMuxbHSbbfOtktYnAki9JWkO0BsB9KmDcSBg0bDdQX5jC3p2m1Z1dYJXB4HyuKKABZt0xhx9dTBIvamZan727Zn7QuyA7dBUMbox2kXBm5bYtfxFuHjp/w0QD6wRu3seDSs95Q4ObxK8uJvw=
+ bh=vUpoHYhPPiTmgSq/CS6ac14zVe/c1teh2vJ/0vNJDqE=;
+ b=Cry8AlD02SQSFQ8lVGdYUeTCaDYBoabKcfLmGFk+zJX2PLX5+3+c8G3pnaubn+xwZG+JVV0JPZ+TMA6NAMqAYHmI6aTU8vn1DZrSS2GZwU28PwC/ApStk0hqDTZ8U8F1CIxDpzJ8yNXnUroxoHXIF8rui7U+TrTWBDZEya+34XM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
  by LNXP265MB2539.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:126::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5746.21; Mon, 24 Oct
- 2022 23:31:24 +0000
+ 2022 23:32:58 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::cf2b:281:50ee:3304]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::cf2b:281:50ee:3304%6]) with mapi id 15.20.5746.026; Mon, 24 Oct 2022
- 23:31:24 +0000
-Date:   Tue, 25 Oct 2022 00:31:21 +0100
+ 23:32:58 +0000
+Date:   Tue, 25 Oct 2022 00:32:55 +0100
 From:   Gary Guo <gary@garyguo.net>
 To:     Yanteng Si <siyanteng@loongson.cn>
 Cc:     alexs@kernel.org, seakeel@gmail.com, corbet@lwn.net,
@@ -51,81 +51,81 @@ Cc:     alexs@kernel.org, seakeel@gmail.com, corbet@lwn.net,
         bobwxc@email.cn, wu.xiangcheng@linux.dev, chenhuacai@kernel.org,
         jiaxun.yang@flygoat.com, linux-doc@vger.kernel.org,
         siyanteng01@gmail.com
-Subject: Re: [PATCH v2 4/5] docs/zh_CN: Add rust/coding-guidelines Chinese
+Subject: Re: [PATCH v2 5/5] docs/zh_CN: Add rust/arch-support Chinese
  translation
-Message-ID: <20221025003121.527b872c@GaryWorkstation>
-In-Reply-To: <c2795f10c65b4ff11c028a1f1f3cc9e2a55e520e.1666097959.git.siyanteng@loongson.cn>
+Message-ID: <20221025003255.162d126a@GaryWorkstation>
+In-Reply-To: <69462d6bf842950080c56d1e51adc318e79c9a19.1666097959.git.siyanteng@loongson.cn>
 References: <cover.1666097959.git.siyanteng@loongson.cn>
-        <c2795f10c65b4ff11c028a1f1f3cc9e2a55e520e.1666097959.git.siyanteng@loongson.cn>
+        <69462d6bf842950080c56d1e51adc318e79c9a19.1666097959.git.siyanteng@loongson.cn>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO6P265CA0030.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ff::20) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P123CA0617.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:314::18) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LNXP265MB2539:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5ee7341b-4e0f-418b-1b7e-08dab617dd50
+X-MS-Office365-Filtering-Correlation-Id: f51a9f67-ce2d-41ac-6b7f-08dab6181582
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wuZe2iYvcI4OTYlsbteIl4KIYmQUxTOe7fZVyPbLADvL1exzYjzClOmesPbXImqaDwiJuXmQKbmMbXHdW2fPNuf/6LeuKM0AvJ84bw6rlSKkc+sMPsaAwZ9ASpZ3PUD1gcv5W6OCmNgDY+Y8NzU31v9LAxoBE2hKn2UyIe8Hyq9uZqLEVFcujmJrhJ4jmlU8+XX1+tePpZGfnSMai0kbf9xawdM15jrTWMuA2dYeXnn7FwGQeVBbCAFVjqTkVHuAWUg7/My8/n/l2Dj4d7SsJ1wXOihyGQ+OqScnq+LbIJaIkDJALN1urFth/jN/p2PL1s8LO1agO5TesDNnrBCF6RhWWmB3ykmHNqw9O6U0mvjw0f8iX2/A2GRdn1cpdMkO5oK+lxAGeaJtE36qyDPpnx8uCxPodzoxGuZNRm5lWNXCrhuu34I/XoDs3GlrhNNbE2nv9X+877qG66UpRU0FcO9afwwTQrDabUKsWGcCenCleD6MRnip8otGwZZ/ucYcVn28Kyh5ugYjXmpb3R2TCbkFk8CkbOke6MLmf4XcWDGrSZDIt77WCqlkNmvszQgKczsEJQ2l1SET9iExnvlseX6NPQcJouMEALjXNS24JvhA4jL60l9jhql5FT6znBW0zG448DNyUsSF2XyQdjyGtQ7/PpzgbY3ZaWS8ELFCEIsuMl5ppTnatHj7LOiXLxH2
+X-Microsoft-Antispam-Message-Info: 3HLmPspkxZ6K4jVjZlsykg43NuHvPF26FFkqm5ALVosYOwCR+DYeW/PsmL6C0Cn25bz8f6WL/8rlS8QuUjQ0nzu8SjLYbC6PhY1OoY8v0faZdkcZ5r4zw8e8oYm6ZptL7vouMuPLmLtoQ0nEWCKGt7txAh7zD+s7dWFVCbtbXjtF4aTO1WYv8P3AUAHTBtZMmoYSW3tVkfN7kf3Zgq4oieS2fKbqrvzjIKM9TB+DC859HG15ODhnieA6JTbLzHcrz9IPc+qS35Uzz1JrzmMw8cDVqXS5xruvc0Ub2SAu8D58YQGUqvoZ4nIVYOU8H2lo4W2j4PgcoL+Amjg85TyveADfgPncBNEbYZ7zYJOcobI+yu3godSGeRCPboSrnKM1gJp2E9xLl4fAKH9Z6LN6ffodPax0mi/mKG3b4UlvXSaFw2yrkSKvcFVeRqyXuXk+/ZPafhfGsZQwkVcXdtQiAu++XdNNUTkpzt/iZIG+G+QNe2BGLW83FMKXXs3fpYqh4b7Qp0Fuj6V3gjuBFp8FNKKtmJAXuvvv38V15iGKocA1hHP81FMfu9p923px2L1455OQJoGVCV+dUTjI4nQHb92FnDUkXZAuNtZh6OKT+2YIJgIc8fxZVc6lXAizLbhYrLmjW/BkWtyY0shS0GSBv4BMulzrD6BCLUMJ6yIWXaUTe175FtUp9349Qv3nd5TqNUcGRIlwKmuZMU9HM5mdOA==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(7916004)(346002)(39830400003)(136003)(376002)(396003)(366004)(451199015)(4326008)(6506007)(66556008)(6666004)(8676002)(66476007)(66946007)(316002)(6916009)(86362001)(7416002)(4744005)(2906002)(41300700001)(1076003)(5660300002)(9686003)(186003)(83380400001)(6512007)(8936002)(6486002)(478600001)(33716001)(38100700002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TOiGUT7W4XZtibvpKSZqKFniohTZblYOzXL0DAID5bcLNokq+p9GobLwGjxs?=
- =?us-ascii?Q?NdHoQz2kturSOCcqLOxQOAvwMusOMMU6mkTUFHdFLveEdzerlW6gMCTrBsZk?=
- =?us-ascii?Q?18kLIm5pkM+kkUC73ocUP1S+dyB8spIjd/EL4VlPGl1FqRVLCWukUG7ZsOLI?=
- =?us-ascii?Q?tWdifDIY2AmcjuDHyBQmRBERKXiYlVhOBY6Hx13QNaXiGjRkZ35R3SDIp926?=
- =?us-ascii?Q?K6SJHR1YaZ0SZZXcVxIY3Sfd+V6YRBOmyJyrJM4OW/19s+Wp6rtRo5DDIKCt?=
- =?us-ascii?Q?IQqeogldOg63g4caU54UJUJxQHObXLzA//pUb3+RuN0PdRYBb7vqmL1oG1xq?=
- =?us-ascii?Q?BxJV07S6fQYBBldHH2jc9tQqohzGShs7AS/wwE0ppUynfPbZ9Puhoc2RP7zK?=
- =?us-ascii?Q?i+hheo27Q3xcuq72CymeyzMBfGY5AyRlc44Quvlusz/ywWEydrAj3sH3BrK9?=
- =?us-ascii?Q?edN5/OQlwdSoMaj7U6Z39iyTTFdngzFG86qKZl9CGeY8QRw4DuNMabTtWNiv?=
- =?us-ascii?Q?Mno6X2fC84WHZQHbp4O99tYVFIknUmOFixXWGe3cz3o29vu2eIylkecrpKHH?=
- =?us-ascii?Q?lGj7d2ZOr4jZxUlvrLYMxBDw9Cv6efn3PRncIQurLD6EGTZsTwojiWwTjoeG?=
- =?us-ascii?Q?wSbhVUCU/JYSyl5XbVmdnGiJAcve6vnNzxNhwCyFENnIwHhAUGfMaXmThYAX?=
- =?us-ascii?Q?G7isetaoSA6INd4+8t/zeHjZGtBhcWIktifHoUpHY4gtpj4hWdo3hG/9L80a?=
- =?us-ascii?Q?hRtx9VlTRaOZp5P4FRE6YCbqbBJt5MbwWS0q7j/tF241JBAMUthEDcreKRKF?=
- =?us-ascii?Q?DEQV09SNN0h3wkm5+sJhVddCctnDmpP/7wgCcVBN6dPk4G7wRXnNR4H7GTTJ?=
- =?us-ascii?Q?4SzOO8O86zIe0W01Xrrim5BOcS9+PHUTRgyBv4CsuDjfH2GsC15X/JRgkOSn?=
- =?us-ascii?Q?7UBavpAq7F2XDh8ILxX4VUbHU2kfbuVoJMXo82tWqADkTPkdbQvPSiAtUgxO?=
- =?us-ascii?Q?6yHVOenCkP0ml6Mw317jrcY7Uuqd52T+bwMRL7BxDib5sipouRkvjIA4YDnR?=
- =?us-ascii?Q?1YPMUp40yFweGO8SDxxyIcDhq7g12e+MlbigkqILn18FP9IDEXczkW56qJoH?=
- =?us-ascii?Q?MqIxQA3a6tm+eTxKXtsZ8riWVKSf42Gfe2mwnI17Te83A0mSwbzQujRpTP96?=
- =?us-ascii?Q?/mrws6oncSFvAni9oem2NIMIHFGZmlt4m1DbagQ+FNJx0zjZ3u2q7kZfPfLn?=
- =?us-ascii?Q?FsRRY4WT9wZ9HqTBOwsCtKdDnGvDaAfJ9THbv21cWCI5T+yfuz3fTkequ4R/?=
- =?us-ascii?Q?XFhgA9+oqUrNQDkPUycMDJLtcgMAf3cdpQd11URKmccZq0FcfDhJKHWoGRdN?=
- =?us-ascii?Q?BcPaQKatIYeSscvuPt9GvASGwC4JznktfFWmZ2D+HeI8+CL+oDu02ZVLcU39?=
- =?us-ascii?Q?bRNgGKjRLvrfuwFtM2BGqfh/iBFltPNkj15zF00quC3q1W5ZHCQHtcA2vb6M?=
- =?us-ascii?Q?XMHatX2K1Rb/f15u4BDEqooUDiAMG2T6Rl3ZaAqXU2n1bg23+iT8/6E8zKR4?=
- =?us-ascii?Q?U8yQlugZ+cUZGxKIURUCUGLZKxffe+ox+FFas8AEF1sO/Z6nGq2/Cb5idMmd?=
- =?us-ascii?Q?QlRmXKnddl8Q4xO4y9MjHXmMbb7Nk4163FYm9nLlQKxA?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?A+/7ahE89courpHab65zU3Sb+Zxd0OVWZvAJlw01i7xB/wc8ct0jXnS0urq3?=
+ =?us-ascii?Q?ZbrnXQr4JXPjdNMyMKCrFNqVmq3MuLYPBKbHMFEWAVEDY2G12Y18QD42Gowa?=
+ =?us-ascii?Q?KHK+COSMTyREEy64sYBmEaMkOQCVI+4coP3Jo+jGBaT6+B4lBZdUvKGlnddc?=
+ =?us-ascii?Q?AWA+oQY0/6eBpqGLdv99Kw25MLEsQ3mWl0/1GYkB20uAa2/CgYUuKFbMhZDZ?=
+ =?us-ascii?Q?uUdkbqTw5drbio4ug/wmq9DVd9P/K92AgBy7BfLKrwEoNJaUaZobfVTVNBhO?=
+ =?us-ascii?Q?feJIuyoJYX2cRqNqgRe83iKL2ukOvcQxeYVrv9nOlmFbBjp2yqLeSt9ehq52?=
+ =?us-ascii?Q?j85v6gELBW4QQmhD9H/xv+WvP5atLvJY37iSOAQEeOhToo7BntNYfB68CQMm?=
+ =?us-ascii?Q?V3uCXCvj1gBRULIm/Xcxq0tKa56+5fYw5QRJeReJr7jLNiQF1Twa8GqGx+mA?=
+ =?us-ascii?Q?eZWQbpthWRHN2SePLaUz+TNMx5OUIfmM8diGpq0XQ3Kxy5joRsMm0gX+tFTT?=
+ =?us-ascii?Q?fGOHjmekJn5ocrnWcX62pPnm4NRwpKIXh/uJy46YsKM3OV/R3/LhbfBKH1UP?=
+ =?us-ascii?Q?634e7j4+M3KnJOUzv+Zh6PE9UKLiL7HeDswMrPommftLV4j3M4svZVEqfp7/?=
+ =?us-ascii?Q?tvPJ8jKz253sV3dcNwMyc1W/26MVqaBjcYAiJ+tW0ZPa6zftVukbsXbw4XBo?=
+ =?us-ascii?Q?JOKZA+Cbqb1ip/Xmrwsq6eIjLKVbcNiEpXhjM4Awg1cZY5Tp6ySTL7LXGu/X?=
+ =?us-ascii?Q?kLISBipOiPa80Kyj8P0b32asSoozzOIkfZrAo/2sFKyL03fcEAgp27Elr5sH?=
+ =?us-ascii?Q?UPArdHP0/55PVk0lbHj8JXc5peVBtolnm3sHeh9Z040zh6zBrb5E6g0q4E1w?=
+ =?us-ascii?Q?l1bs5rX4VqFAb/YQedI3tNVvPNMmt2B85Z4IS+jcr0Pbf9ufMWycQQJytgAd?=
+ =?us-ascii?Q?5+jNhumt9Fh8UFoKCD7hfmF9LGlVFioTjcDLYX/Mane32ytiXL8C3jF7blFg?=
+ =?us-ascii?Q?Lc4xqZ478vrL/cZ+eE0UbpLOultLRTMOKYW5l/WKg5H3f071QpWCsPs/QRNj?=
+ =?us-ascii?Q?LFGQchBsE4M/fMkZyuOhhpDl/ObMVh2p0cqzf8cw2oZ9w1ePfQxH2uEEitml?=
+ =?us-ascii?Q?Q8RRRhqhsc4H5hQhU7CZyOKDNfwRuRMuKXUt8ppYVHOkb9lFLxL+OBDfAb7P?=
+ =?us-ascii?Q?uLHjK7aOyfaGR14MF0oWetuKkbqQsTdu52jzFBi9dsduUmyVGOYKEl1SWeca?=
+ =?us-ascii?Q?W814/iJBVG4Gww9RfnO6m+DG9rtQyvJBx2RB0In9aEIp+QbPFpOE96VAZnYw?=
+ =?us-ascii?Q?C2vYqVIT7/YZ57aKyzKGU0u0a7iNrgFI5wqE/gxLKV7ugD+lXM5nYH6Nz18F?=
+ =?us-ascii?Q?e1yaO8lHqTR7cq2mylG5SILsBN/j3EUaLifKv78+Ka9fxu9Ppg5R9e3hsgdV?=
+ =?us-ascii?Q?aC9q4AyP+yLmUo7HGiGraUf5jKyHADxNomhtsPjDmZ4uu24tIz+rCyb3Gein?=
+ =?us-ascii?Q?EqDArpj76FZFljkKituxgGBdCWC5A9C3Jjr3jVcKsu9hoR8zHVgCXBUP1ZaT?=
+ =?us-ascii?Q?wAauz/CqmsBwXGxo2ijV1aZuLyRj5AiwaIb+bTZUueHtK/N82nkB69FahpDB?=
+ =?us-ascii?Q?8hieH/cV61TTEVb7U9cHB4Ix5TqZibS9as3++vLhoNXg?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ee7341b-4e0f-418b-1b7e-08dab617dd50
+X-MS-Exchange-CrossTenant-Network-Message-Id: f51a9f67-ce2d-41ac-6b7f-08dab6181582
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2022 23:31:24.0801
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2022 23:32:58.3466
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HjgPa1PKFEr3ZrguDmdVgGvLs4fB6zomJnlUOsxXG4mn4/Xx59mOKr6da+pxyrLDGAKiM427KieDQEczZowzhw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: c55CiW72qNGfurLlxiEmNJrgwCf5R//b3pHsHAzkg44bT5a6cmvfiKJ4PXrVLhIcxkqCbpte3cl+shlQjysGJQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LNXP265MB2539
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, 18 Oct 2022 21:07:00 +0800
+On Tue, 18 Oct 2022 21:07:19 +0800
 Yanteng Si <siyanteng@loongson.cn> wrote:
 
-> Translate .../rust/coding-guidelines.rst into Chinese.
+> Translate .../rust/arch-support.rst into Chinese.
 > 
 > Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
 
 Reviewed-by: Gary Guo <gary@garyguo.net>
 
 > ---
->  .../zh_CN/rust/coding-guidelines.rst          | 192 ++++++++++++++++++
->  .../translations/zh_CN/rust/index.rst         |   2 +-
->  2 files changed, 193 insertions(+), 1 deletion(-)
+>  .../translations/zh_CN/rust/arch-support.rst  | 23 +++++++++++++++++++
+>  .../translations/zh_CN/rust/index.rst         |  5 +---
+>  2 files changed, 24 insertions(+), 4 deletions(-)
