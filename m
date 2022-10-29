@@ -2,124 +2,139 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 94744FA3740
-	for <rust-for-linux@archiver.kernel.org>; Fri, 28 Oct 2022 12:26:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CB8DC433FE
+	for <rust-for-linux@archiver.kernel.org>; Sat, 29 Oct 2022 17:41:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229535AbiJ1M0h (ORCPT
+        id S229520AbiJ2Rlv (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 28 Oct 2022 08:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41948 "EHLO
+        Sat, 29 Oct 2022 13:41:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229647AbiJ1M0g (ORCPT
+        with ESMTP id S229457AbiJ2Rlv (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 28 Oct 2022 08:26:36 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7D542543E3;
-        Fri, 28 Oct 2022 05:26:35 -0700 (PDT)
-Received: from loongson.cn (unknown [112.20.109.239])
-        by gateway (Coremail) with SMTP id _____8AxSth6yltjBRoDAA--.9996S3;
-        Fri, 28 Oct 2022 20:26:34 +0800 (CST)
-Received: from localhost.localdomain (unknown [112.20.109.239])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8BxFld4yltjxmEGAA--.4128S2;
-        Fri, 28 Oct 2022 20:26:34 +0800 (CST)
-From:   Yanteng Si <siyanteng@loongson.cn>
-To:     alexs@kernel.org, seakeel@gmail.com
-Cc:     Yanteng Si <siyanteng@loongson.cn>, corbet@lwn.net,
-        ojeda@kernel.org, boqun.feng@gmail.com, wedsonaf@gmail.com,
-        gary@garyguo.net, bjorn3_gh@protonmail.com,
-        rust-for-linux@vger.kernel.org, bobwxc@email.cn,
-        wu.xiangcheng@linux.dev, chenhuacai@kernel.org,
-        jiaxun.yang@flygoat.com, linux-doc@vger.kernel.org,
-        siyanteng01@gmail.com
-Subject: [PATCH v3 5/5] docs/zh_CN: Add rust arch-support Chinese translation
-Date:   Fri, 28 Oct 2022 20:24:43 +0800
-Message-Id: <1f5b1d1e4f84bf105ab5bed146652937a74e9b69.1666959529.git.siyanteng@loongson.cn>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1666959529.git.siyanteng@loongson.cn>
-References: <cover.1666959529.git.siyanteng@loongson.cn>
+        Sat, 29 Oct 2022 13:41:51 -0400
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A1E4B0FA;
+        Sat, 29 Oct 2022 10:41:49 -0700 (PDT)
+Received: by mail-oi1-x22f.google.com with SMTP id r83so9255502oih.2;
+        Sat, 29 Oct 2022 10:41:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uZvdF31LC8VEmM14x7xGiLTuqVkM63sQOLgHXVoVBzI=;
+        b=NkQnTJI0iUr2kPR1GnapnO9oLyFU4/X22orc6ZFoZwhiooiQy97fVEwcPTZvkJ0nDn
+         9D2wUbfBCYVD0laJJQI3RzFkVLtKtPecjYW89/bnkxzyq8SzLK/ZG7EZ0pIPtnD/RAaK
+         o08xgPfYGl6foqO8+gciIoXfr+f8zOmBOJpgdtkl+tUY4ctEzJMJJFfG7K34pfa/vBP+
+         FgdqIvK0IqJI0sxnOUDgYSi4QiYS6mdTQpERege0T7BxWrIlI22Z/d5pq6WNxQFebGNs
+         M4iEREA7J2IIX3F8Y4ztrTDqbAuaijwABpfE+bms15Ixur6x8MAenL2Lfto9PWvPs8V1
+         y3rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uZvdF31LC8VEmM14x7xGiLTuqVkM63sQOLgHXVoVBzI=;
+        b=2N9bKT5y1BA1aS60WTY05TekvMT0P3w5kRj1ZUZYLuVkI//lo8JDDJ0Vn+G8mFycOf
+         tF1IyHzrMWu5EmYNzgdLrUMPqtGksHo9WEMsBsxwjfhGNyqRGmBTawbXmZzjs1EyfMYD
+         vRlo+7lXPmEcrGf3wcgfWrhvtwhdgoNIKawn/YJHervPIguwH7+c16EZn/m5QHDAf+KU
+         URKshxG1U39gNqIGDcJGltW9CVXQ1H4iNCQPloVjhig2s5eWf9Uxmqu7kTz9g2oxuCiv
+         N8g9sXYEdN91fG0NyK5dX7Kug9Ig+VU0amT8TrY5FKIRI32hh7fHFOXf/JjL9zVrq8tc
+         QeFQ==
+X-Gm-Message-State: ACrzQf00rzSd/Jk74382aXz7g7AlDgetSqDp4rsRcvWhkMLPANaUL5jy
+        kYfgD811yXJHZXVviqJ3fI4=
+X-Google-Smtp-Source: AMsMyM5mMkBG1Gwv+jozQGrHxWn3biXJTmbq8UVa5xheGmmWykn+TfoIdLw7B+xZW56318OfuMhLfQ==
+X-Received: by 2002:a05:6808:1886:b0:354:b8ea:4ddb with SMTP id bi6-20020a056808188600b00354b8ea4ddbmr2681448oib.222.1667065309129;
+        Sat, 29 Oct 2022 10:41:49 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id w7-20020a0568080d4700b003546fada8f6sm704370oik.12.2022.10.29.10.41.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Oct 2022 10:41:48 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Sat, 29 Oct 2022 10:41:47 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
+        Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v10 04/27] kallsyms: support "big" kernel symbols
+Message-ID: <20221029174147.GA3322058@roeck-us.net>
+References: <20220927131518.30000-1-ojeda@kernel.org>
+ <20220927131518.30000-5-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxFld4yltjxmEGAA--.4128S2
-X-CM-SenderInfo: pvl1t0pwhqwqxorr0wxvrqhubq/
-X-Coremail-Antispam: 1Uk129KBjvJXoW7KFy7Zr17Kw1DAr1rCw18AFb_yoW8KFy3pa
-        4qkryfG3WrJryjkrWxGF1UJF4UGF18Gw1UJr1xGwn5Xr4DJF1UJr4Utr98twnrCr48AFW5
-        Xr40kryUCw1UAr7anT9S1TB71UUUUjJqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
-        qI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUIcSsGvfJTRUUU
-        bSkYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s
-        1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
-        wVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84
-        ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2kK
-        e7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI
-        0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWrXVW3AwAv7VC2z280
-        aVAFwI0_Cr0_Gr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262
-        kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km
-        07C267AKxVWUAVWUtwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r
-        1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW7
-        JVWDJwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rV
-        WUJVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8
-        JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0eOJUUUUUU==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220927131518.30000-5-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Translate .../rust/arch-support.rst into Chinese.
+On Tue, Sep 27, 2022 at 03:14:35PM +0200, Miguel Ojeda wrote:
+> Rust symbols can become quite long due to namespacing introduced
+> by modules, types, traits, generics, etc.
+> 
+> Increasing to 255 is not enough in some cases, therefore
+> introduce longer lengths to the symbol table.
+> 
+> In order to avoid increasing all lengths to 2 bytes (since most
+> of them are small, including many Rust ones), use ULEB128 to
+> keep smaller symbols in 1 byte, with the rest in 2 bytes.
+> 
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Co-developed-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  kernel/kallsyms.c  | 26 ++++++++++++++++++++++----
+>  scripts/kallsyms.c | 29 ++++++++++++++++++++++++++---
+>  2 files changed, 48 insertions(+), 7 deletions(-)
+> 
 
-Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Alex Shi <alexs@kernel.org>
-Reviewed-by: Wu XiangCheng <bobwxc@email.cn>
+This patch results in the following spurious build error.
+
+Building powerpc:allnoconfig ... failed
+--------------
+Error log:
+Inconsistent kallsyms data
+Try make KALLSYMS_EXTRA_PASS=1 as a workaround
+
+Symbol file differences:
+10c10
+< 00009720 g       .rodata	00000000 kallsyms_relative_base
 ---
- .../translations/zh_CN/rust/arch-support.rst  | 23 +++++++++++++++++++
- .../translations/zh_CN/rust/index.rst         |  5 +---
- 2 files changed, 24 insertions(+), 4 deletions(-)
- create mode 100644 Documentation/translations/zh_CN/rust/arch-support.rst
+> 0000971c g       .rodata	00000000 kallsyms_relative_base
+12,16c12,16
+< 00009724 g       .rodata	00000000 kallsyms_num_syms
+< 00009728 g       .rodata	00000000 kallsyms_names
+< 00022628 g       .rodata	00000000 kallsyms_markers
+< 000226c0 g       .rodata	00000000 kallsyms_token_table
+< 00022a2c g       .rodata	00000000 kallsyms_token_index
+---
+> 00009720 g       .rodata	00000000 kallsyms_num_syms
+> 00009724 g       .rodata	00000000 kallsyms_names
+> 00022618 g       .rodata	00000000 kallsyms_markers
+> 000226b0 g       .rodata	00000000 kallsyms_token_table
+> 00022a1c g       .rodata	00000000 kallsyms_token_index
 
-diff --git a/Documentation/translations/zh_CN/rust/arch-support.rst b/Documentation/translations/zh_CN/rust/arch-support.rst
-new file mode 100644
-index 000000000000..afbd02afec45
---- /dev/null
-+++ b/Documentation/translations/zh_CN/rust/arch-support.rst
-@@ -0,0 +1,23 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+.. include:: ../disclaimer-zh_CN.rst
-+
-+:Original: Documentation/rust/arch-support.rst
-+
-+:翻译:
-+
-+ 司延腾 Yanteng Si <siyanteng@loongson.cn>
-+
-+架构支持
-+========
-+
-+目前，Rust编译器（``rustc``）使用LLVM进行代码生成，这限制了可以支持的目标架构。此外，对
-+使用LLVM/Clang构建内核的支持也有所不同（请参见 Documentation/kbuild/llvm.rst ）。这
-+种支持对于使用 ``libclang`` 的 ``bindgen`` 来说是必需的。
-+
-+下面是目前可以工作的架构的一般总结。支持程度与 ``MAINTAINERS`` 文件中的``S`` 值相对应:
-+
-+============  ================  ==============================================
-+架构          支持水平          限制因素
-+============  ================  ==============================================
-+``x86``       Maintained        只有 ``x86_64``
-+============  ================  ==============================================
-diff --git a/Documentation/translations/zh_CN/rust/index.rst b/Documentation/translations/zh_CN/rust/index.rst
-index c5507ad488a1..b01f887e7167 100644
---- a/Documentation/translations/zh_CN/rust/index.rst
-+++ b/Documentation/translations/zh_CN/rust/index.rst
-@@ -18,10 +18,7 @@ Rust
-     quick-start
-     general-information
-     coding-guidelines
--
--TODOList:
--
--*    arch-support
-+    arch-support
- 
- .. only::  subproject and html
- 
--- 
-2.31.1
+This is the only difference. There are no additional symbols.
 
+Reverting this patch fixes the problem.
+
+Guenter
