@@ -2,146 +2,86 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 95A97FA3743
-	for <rust-for-linux@archiver.kernel.org>; Sat, 29 Oct 2022 18:23:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3E6CC4332F
+	for <rust-for-linux@archiver.kernel.org>; Tue,  1 Nov 2022 21:27:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229565AbiJ2SXf (ORCPT
+        id S230258AbiKAV12 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 29 Oct 2022 14:23:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46616 "EHLO
+        Tue, 1 Nov 2022 17:27:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbiJ2SXe (ORCPT
+        with ESMTP id S229648AbiKAV11 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 29 Oct 2022 14:23:34 -0400
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E42D52A954;
-        Sat, 29 Oct 2022 11:23:33 -0700 (PDT)
-Received: by mail-oi1-x22c.google.com with SMTP id r187so9289438oia.8;
-        Sat, 29 Oct 2022 11:23:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gxoLAPS+9Ecu1s/8uDx34AXuA9lpWU9Z2smUFzhiANI=;
-        b=FK30Xs8FfjGtUVZ701Q/u/E0K1xxm8c9h+UkHm2O3zOMPKAqIQn1h9Fmk1DzlhrNJY
-         D7nWbR/fOZYEbLnPP7FF9oqz45BfN6sv37CKqyeFH55U2nsdbY0CjDWVTPjRpMyEmKIh
-         Us53b1zCHyMg2DKt150e1V7XHIkZ3EumCqwi4vLSOlTGCXsIc1BPCim2stkACt/yxYPm
-         YUHk86gUYe83QNj8MsHauRHwUBuMyApRY3sDucRtN5TxSY+LkX+yHn9IEe9wWkGe+7FG
-         f5iO2owRwcStzOsTjw22iwgAfHfngVPKZdB/wf2LS16SruDIaHSC76qIoD3Y3cXkIMiE
-         DmBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gxoLAPS+9Ecu1s/8uDx34AXuA9lpWU9Z2smUFzhiANI=;
-        b=7KppWvzAf2WKhTjR5btObqvg51X3vqxhPf61kWKJAH4hEstorrp0SJOsqFAsaBqsUz
-         z8wRZgm30TWs6xNB8j7ibrJoa7K2GAH0zG2ryyjxXgIOJI3N0X9tKRVmsnrYcrQGBcQ9
-         eIXgRdJ0BnbSlpe6kkILRVc5NGNeTH38ofAMEoYXaYUVZzGcm7SsiD7J+Zkph+8VOwIN
-         BkMDMSGkcy4Iu11i4GUIBQEjJbUs8ZGNQWniICDBz4ilRX3Wbekqu3eACYwLJA+Wi0ar
-         ODkXfNGt0YpTsNcM/JCVu9prjrn3R8TwZwciNb4mbgF6otOcg+HCorZt3LT4ijY4bqG4
-         oxpw==
-X-Gm-Message-State: ACrzQf1Z69UtycEJ6vnuys+3Di4/NvocWaIrAOEzk2g4eZaQuFXU/VBk
-        GT+YfgyECXnQSo86ij5QW9k=
-X-Google-Smtp-Source: AMsMyM64g3+ESxXBhNt55ABceWhd+VO4/vMH3BZ88BwJouOpyU7NkhgGB2mYjf8nfDYsgaKxWigPdA==
-X-Received: by 2002:aca:3d55:0:b0:355:1ced:909f with SMTP id k82-20020aca3d55000000b003551ced909fmr10680391oia.60.1667067813195;
-        Sat, 29 Oct 2022 11:23:33 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id o4-20020acabe04000000b0035494c1202csm712709oif.42.2022.10.29.11.23.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Oct 2022 11:23:32 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Sat, 29 Oct 2022 11:23:31 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, patches@lists.linux.dev,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
-        Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
-        Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v10 04/27] kallsyms: support "big" kernel symbols
-Message-ID: <20221029182331.GA3324354@roeck-us.net>
-References: <20220927131518.30000-1-ojeda@kernel.org>
- <20220927131518.30000-5-ojeda@kernel.org>
- <20221029174147.GA3322058@roeck-us.net>
+        Tue, 1 Nov 2022 17:27:27 -0400
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A5B51054D;
+        Tue,  1 Nov 2022 14:27:26 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:281:8300:73:8b7:7001:c8aa:b65f])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id 52041378;
+        Tue,  1 Nov 2022 21:27:25 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 52041378
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+        t=1667338045; bh=Jchlhsjev47LqjgLhwBIy48aaeAwna49eQyRotaAxQg=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=FWTs4tXd2Q1IsQnOLiWhijuBsnjiFqPhZ/4RSRDH3o+ZDt6yY7SXL5dnCIo+ha9OQ
+         BLH9ugBo+brmXiqnER0nO88bS6jwug7mbmf6eCtoTQMLmAX5pPth4YWRAAVJpq9b6s
+         yAzKRNn6U+oQPSr51nRAZ91NTzobaEPQE26l/c+Yj5Xva/B4aBZ6LRHTE71XT29+SI
+         IZc0+dDDv532oD4JJCfoBhqzY0qOBjDIaaDR/P1/OAwoZE+dGiZF5qVmndgJfHACkv
+         BDUN3+TuYjXWZJu1QtZMuoy0nUUAYo7rudcEHXKbRbmBI1dKlEMBlXHj9O1V5a4CiW
+         U0zyZaul099HQ==
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Yanteng Si <siyanteng@loongson.cn>, alexs@kernel.org,
+        seakeel@gmail.com
+Cc:     Yanteng Si <siyanteng@loongson.cn>, ojeda@kernel.org,
+        boqun.feng@gmail.com, wedsonaf@gmail.com, gary@garyguo.net,
+        bjorn3_gh@protonmail.com, rust-for-linux@vger.kernel.org,
+        bobwxc@email.cn, wu.xiangcheng@linux.dev, chenhuacai@kernel.org,
+        jiaxun.yang@flygoat.com, linux-doc@vger.kernel.org,
+        siyanteng01@gmail.com
+Subject: Re: [PATCH v3 0/5] docs/zh_CN: Add rust Chinese translation
+In-Reply-To: <cover.1666959529.git.siyanteng@loongson.cn>
+References: <cover.1666959529.git.siyanteng@loongson.cn>
+Date:   Tue, 01 Nov 2022 15:27:24 -0600
+Message-ID: <871qqmz7pf.fsf@meer.lwn.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221029174147.GA3322058@roeck-us.net>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Oct 29, 2022 at 10:41:49AM -0700, Guenter Roeck wrote:
-> On Tue, Sep 27, 2022 at 03:14:35PM +0200, Miguel Ojeda wrote:
-> > Rust symbols can become quite long due to namespacing introduced
-> > by modules, types, traits, generics, etc.
-> > 
-> > Increasing to 255 is not enough in some cases, therefore
-> > introduce longer lengths to the symbol table.
-> > 
-> > In order to avoid increasing all lengths to 2 bytes (since most
-> > of them are small, including many Rust ones), use ULEB128 to
-> > keep smaller symbols in 1 byte, with the rest in 2 bytes.
-> > 
-> > Reviewed-by: Kees Cook <keescook@chromium.org>
-> > Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
-> > Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-> > Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
-> > Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-> > Co-developed-by: Gary Guo <gary@garyguo.net>
-> > Signed-off-by: Gary Guo <gary@garyguo.net>
-> > Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > Co-developed-by: Matthew Wilcox <willy@infradead.org>
-> > Signed-off-by: Matthew Wilcox <willy@infradead.org>
-> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > ---
-> >  kernel/kallsyms.c  | 26 ++++++++++++++++++++++----
-> >  scripts/kallsyms.c | 29 ++++++++++++++++++++++++++---
-> >  2 files changed, 48 insertions(+), 7 deletions(-)
-> > 
-> 
-> This patch results in the following spurious build error.
-> 
-> Building powerpc:allnoconfig ... failed
-> --------------
-> Error log:
-> Inconsistent kallsyms data
-> Try make KALLSYMS_EXTRA_PASS=1 as a workaround
+Yanteng Si <siyanteng@loongson.cn> writes:
 
-I should have added: KALLSYMS_EXTRA_PASS=1 does not help.
+> v3:
+> * Modify some words under Gary's advice.
+>
+> v2:
+> * Modify some words under Xiangcheng's advice.
+>
+> v1:
+> * Translate Documentation/rust/* into Chinese.
+>
+> Yanteng Si (5):
+>   docs/zh_CN: Add rust/index Chinese translation
+>   docs/zh_CN: Add rust/quick-start Chinese translation
+>   docs/zh_CN: Add rust/general-information Chinese translation
+>   docs/zh_CN: Add rust/coding-guidelines Chinese translation
+>   docs/zh_CN: Add rust/arch-support Chinese translation
+>
+>  Documentation/translations/zh_CN/index.rst    |   1 +
+>  .../translations/zh_CN/rust/arch-support.rst  |  23 ++
+>  .../zh_CN/rust/coding-guidelines.rst          | 192 ++++++++++++++++
+>  .../zh_CN/rust/general-information.rst        |  75 +++++++
+>  .../translations/zh_CN/rust/index.rst         |  28 +++
+>  .../translations/zh_CN/rust/quick-start.rst   | 211 ++++++++++++++++++
+>  6 files changed, 530 insertions(+)
+>  create mode 100644 Documentation/translations/zh_CN/rust/arch-support.rst
+>  create mode 100644 Documentation/translations/zh_CN/rust/coding-guidelines.rst
+>  create mode 100644 Documentation/translations/zh_CN/rust/general-information.rst
+>  create mode 100644 Documentation/translations/zh_CN/rust/index.rst
+>  create mode 100644 Documentation/translations/zh_CN/rust/quick-start.rst
 
-Guenter
+Series applied, thanks.
 
-> 
-> Symbol file differences:
-> 10c10
-> < 00009720 g       .rodata	00000000 kallsyms_relative_base
-> ---
-> > 0000971c g       .rodata	00000000 kallsyms_relative_base
-> 12,16c12,16
-> < 00009724 g       .rodata	00000000 kallsyms_num_syms
-> < 00009728 g       .rodata	00000000 kallsyms_names
-> < 00022628 g       .rodata	00000000 kallsyms_markers
-> < 000226c0 g       .rodata	00000000 kallsyms_token_table
-> < 00022a2c g       .rodata	00000000 kallsyms_token_index
-> ---
-> > 00009720 g       .rodata	00000000 kallsyms_num_syms
-> > 00009724 g       .rodata	00000000 kallsyms_names
-> > 00022618 g       .rodata	00000000 kallsyms_markers
-> > 000226b0 g       .rodata	00000000 kallsyms_token_table
-> > 00022a1c g       .rodata	00000000 kallsyms_token_index
-> 
-> This is the only difference. There are no additional symbols.
-> 
-> Reverting this patch fixes the problem.
-> 
-> Guenter
+jon
