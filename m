@@ -2,79 +2,111 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5975C4332F
-	for <rust-for-linux@archiver.kernel.org>; Tue,  8 Nov 2022 17:46:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A23CC4332F
+	for <rust-for-linux@archiver.kernel.org>; Tue,  8 Nov 2022 19:58:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234320AbiKHRqZ (ORCPT
+        id S229496AbiKHT6w (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 8 Nov 2022 12:46:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43746 "EHLO
+        Tue, 8 Nov 2022 14:58:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233945AbiKHRqZ (ORCPT
+        with ESMTP id S229463AbiKHT6v (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 8 Nov 2022 12:46:25 -0500
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7969654B10;
-        Tue,  8 Nov 2022 09:46:24 -0800 (PST)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-3321c2a8d4cso140624977b3.5;
-        Tue, 08 Nov 2022 09:46:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TUA2K1AbBMJFfTfwqGJd1jVzR2AWp2wFedzCIWEf2r4=;
-        b=KfUTWWlUAS1C7xQKtaKPinRXCWB7Lx4OyL4BfuyEtWJkAMZEuV8xBkrS9p/RgWT2aI
-         oZks3vsFpcXy/gVlSeXheM2AK5bEI89ZtTlknKSM9lv9jv3ppPSvzeE4XMk9rtkwa90w
-         P8WSpgbYJ99W9Dc/SmHJRP37jy1zXjHQNoz5OTXF4z1nTQ6xj+MoBvconPy0H14rM9O9
-         nXI5aXW3yeLvoMgVqG8TEYwx/rfPo1LbE5TMlRClvSwgFoh1C2j6KHNWn69ovpjFLQN2
-         me02e/HwC4nnmdGCBXo3lo9hBYf/u6+pLhpHA/3b4m19eXi4BjSVAB/aKJDjfUixHMrD
-         ApYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TUA2K1AbBMJFfTfwqGJd1jVzR2AWp2wFedzCIWEf2r4=;
-        b=gGbWQNXHX0JwBJZGXzGylSQU6zyd3L5pdqGlpPeAAdOedTA3otQsBzJDnAkq3SEKRI
-         gQbuXrIL60O6bzjx1vyYC1HZu/O7UZ5axqMtllxuGH5ZuP5aGV6zzvi3z1LvdSYKzsKQ
-         KkYeFJWn2CBrGVs4pFOu0FSUrsE7nOrFYk6keUZDQoTH63YbvPGSbVtQh3ZdbRo2A6HV
-         W4EtFc0cwl2nSJBKlCBQTNRb4PuyU7XKUzLX43sZiZTVRDZCSo5F6/3BU61H4Htzte3p
-         Og12lG0fmW6pGP3s/RWnLgOVgxFpp2c2IHmUau2G9WrZhrflw0QiNGUvpOFPF921SmvL
-         Alvw==
-X-Gm-Message-State: ACrzQf3cR2xEzGzrfplnFA+x6n7y7LAQVO7cvF+o168LrJynHuv3c2n2
-        HKjWvqhgmSBqRhmPzlXOjyZt7u0Lq8U3CfO61xiKa99u
-X-Google-Smtp-Source: AMsMyM71x9wlwB4HBDK5F5mFBniRn7kkvz/BSMPnLtedcJYQg9SsmVrwMhHMuLHf66AuBA8hVTJI5F7ND0mlSoCX8bE=
-X-Received: by 2002:a81:8302:0:b0:36a:a51f:a22b with SMTP id
- t2-20020a818302000000b0036aa51fa22bmr53646393ywf.129.1667929583738; Tue, 08
- Nov 2022 09:46:23 -0800 (PST)
-MIME-Version: 1.0
+        Tue, 8 Nov 2022 14:58:51 -0500
+Received: from esa6.hgst.iphmx.com (esa6.hgst.iphmx.com [216.71.154.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 181EF61778;
+        Tue,  8 Nov 2022 11:58:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1667937529; x=1699473529;
+  h=references:from:to:cc:subject:date:in-reply-to:
+   message-id:mime-version;
+  bh=QgCdfssJui03L08ul3DqCU8jgqdjYTj3Cy31BtbCjs4=;
+  b=SueWZaHfnBSKUC9tLDPmWyzs0oBVCGlOx/01/OGrPPKMs6ZljW/EQ1Ip
+   exoI8VZgGk95WAUgKi2bzobOIkfQqvmYWKWgWW3b0sNyfKJwtfGgWkSXO
+   nEolJ2GDVpZ64iMvT14SCHkUsCzGaOHXKdAfKP4+v7W42rdpcYlNjT7+e
+   hZfWDbx6beEFndm2YDysSI922HrEoWXqJJHzWI9CTRdo7eL1Rprfizxj9
+   AvNXXqRIZzZxNnHwBksQ+Mvlg0PqGxXdmWvE+qXHnfqIT/tljMzn1oxkx
+   7MhZf+vm3tcPYYsstW/OJcN18B4It+EReyOlC1KlvkfaCHphz0Olx/sOF
+   A==;
+X-IronPort-AV: E=Sophos;i="5.96,148,1665417600"; 
+   d="scan'208";a="216129083"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 09 Nov 2022 03:58:49 +0800
+IronPort-SDR: N7S6kNy54eOf8KT1RlpQVYzBSv0piBa0mjnRf/zjHZZf7jl7vSEV0UU9ro16phsa5ksLhOuoGJ
+ te2KsAlPCrLxACeSVZbq+SiQBnWxNHx5/ubxvalkG49HvnWUctf9PbszChcDgvFgA9rFSU6Z6N
+ zjFxqB9NN0oJsf+DAyOMVmZ+7JS9MJL7yhyfMUOiUROaAvekD6Ub7OLOXsCCaxC0G8hEIFGIVe
+ BjnF8+5tEDhDDNIHdyio+UEtCvf79fAzrRyxS+xgqqe9rvYiC2mmZ9xryQOTuhBU5f9Gce7Nqz
+ t3I=
+Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 08 Nov 2022 11:17:54 -0800
+IronPort-SDR: BH3/7vYoconA2sJzfIBqJjrFc0PRJ1Q49x8vm+7i5Q2grIZAZhB66v9QBkg9YBdwAtU7IVrt6X
+ g/lVs6UBD+R4c67dbz8y3vJCpnmvQrpDqSKR2VLinNVSNnrjHWeavUQJSSCEclsuWzvFSxxyvp
+ jhDXcrRfBK30MAuuCU3tZjEnrl32mdItWCWjWjm8WOP+v8AKIU6upnb9gueiOMZQP45gMDoA2q
+ UBFc+8iAHlBZa4SKquvplhu9xkiJFYnXzuruerJZ1x66iBSrBoOXn8dmS/4pXwFP5+fHBIvUbP
+ Pww=
+WDCIronportException: Internal
+Received: from dellx5.wdc.com (HELO localhost) ([10.200.210.81])
+  by uls-op-cesaip01.wdc.com with ESMTP; 08 Nov 2022 11:58:48 -0800
 References: <CACMswuMd18=nhvLK2Tw3H84GnDPnhuS_YRNFEDZ5T4B5DJQtBQ@mail.gmail.com>
-In-Reply-To: <CACMswuMd18=nhvLK2Tw3H84GnDPnhuS_YRNFEDZ5T4B5DJQtBQ@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 8 Nov 2022 18:46:12 +0100
-Message-ID: <CANiq72=jipHXHEh9o6GLiper2qi_mcrA-fE_rk32Ji_CkORZKw@mail.gmail.com>
-Subject: Re: nvme driver: possible missing `unregister_irq`
+User-agent: mu4e 1.8.11; emacs 28.2.50
+From:   Andreas Hindborg <andreas.hindborg@wdc.com>
 To:     Dennis Dai <dzy.0424thu@gmail.com>
-Cc:     Andreas Hindborg <andreas@metaspace.dk>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         "baijiaju1990@gmail.com" <baijiaju1990@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: nvme driver: possible missing `unregister_irq`
+Date:   Tue, 08 Nov 2022 20:30:52 +0100
+In-reply-to: <CACMswuMd18=nhvLK2Tw3H84GnDPnhuS_YRNFEDZ5T4B5DJQtBQ@mail.gmail.com>
+Message-ID: <87wn858bgp.fsf@wdc.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Nov 8, 2022 at 6:18 PM Dennis Dai <dzy.0424thu@gmail.com> wrote:
->
+
+Dennis Dai <dzy.0424thu@gmail.com> writes:
+
 > I was inspecting the rust nvme driver [1] and would like know if the following
 > code contains a missing unregister or I missed anything
+>
+> // nvme.rs:180, in NvmeDevice::setup_io_queues
+>         admin_queue.register_irq(pci_dev)?;
+> // nvme.rs:186, in NvmeDevice::setup_io_queues
+>         let q_depth = core::cmp::min(...).try_into()?;
+> // nvme.rs:190, in NvmeDevice::setup_io_queues
+>         let tagset = mq::TagSet::try_new(...)?; //TODO: 1 or 3 on
+> demand, depending on polling enabled
+>
+> Line 186 and 190 could abort the execution of
+> NvmeDevice::setup_io_queues without calling `unregister_irq`.
+> In the end this could result in an `request_threaded_irq` without a
+> pairing `free_irq` on failure.
+> Or is the job done by Rust by auto dropping?
 
-(Cc'ing Andreas and fixing Wedson's email -- please do so in the
-future, thanks!)
+In line with my reply to the other potential sleep bug you reported,
+teardown is not properly implemented yet, and I did not review the
+teardown code that is already in place.
 
-Cheers,
-Miguel
+But, if you look at the `register_irq()` and `unregister_irq()`
+functions of `NvmeQueue` you can see that the registrations are stored
+in an `Option` within the `NvmeQueue` structure. So when the `NvmeQueue`
+struct is dropped, the registration will be dropped. Also, if we call
+`register_irq()` twice and forget to unregister the first one, it will
+be unregistered when we register the second one (because we call
+Option::replace()).
+
+So as long as the `NvmeQueue` structs are dropped, we will not leak
+IRQs. In case of one of the lines you point to return an `Err`, the ref
+count of the `kernel::device::Data` allocated in `probe()` would go to
+zero and it would be dropped and thus the IRQs would be unregistered.
+
+So yes, it is handled by destructors that run on drop.
+
+Best regards,
+Andreas
