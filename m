@@ -2,86 +2,79 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9715CC4332F
-	for <rust-for-linux@archiver.kernel.org>; Tue,  8 Nov 2022 17:18:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5975C4332F
+	for <rust-for-linux@archiver.kernel.org>; Tue,  8 Nov 2022 17:46:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233789AbiKHRS0 (ORCPT
+        id S234320AbiKHRqZ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 8 Nov 2022 12:18:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52644 "EHLO
+        Tue, 8 Nov 2022 12:46:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234154AbiKHRSY (ORCPT
+        with ESMTP id S233945AbiKHRqZ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 8 Nov 2022 12:18:24 -0500
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20A1358020;
-        Tue,  8 Nov 2022 09:18:17 -0800 (PST)
-Received: by mail-yb1-xb30.google.com with SMTP id y186so13487904yby.10;
-        Tue, 08 Nov 2022 09:18:17 -0800 (PST)
+        Tue, 8 Nov 2022 12:46:25 -0500
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7969654B10;
+        Tue,  8 Nov 2022 09:46:24 -0800 (PST)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-3321c2a8d4cso140624977b3.5;
+        Tue, 08 Nov 2022 09:46:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nN5NpQCUpCrNFjmHjL5ONWMsPKFEDUAp7grcotZhonw=;
-        b=J4yoSQKrdz2XPEPQBXUpt95WeNr6DcCo8dk6C0heLTAmfSlIMQgbywc+w5e+WRSFRT
-         8kDEiSSmCQ0iga9tszf3YAHC7HTpyBHlNO+LSKucBKQ9BQICJy9VN9y6z1slZRqWGV+M
-         7L6uQGF0dlg8mJLrV4Jb4xr/9BiqANIYSOQ29ZeFSLsYs7MgUAMguwNv6dgcM4EseOpf
-         13V4223l73iNPHedPeVPmtGYccIcf2Cc9ulM+ch6FHR/0CTmg+l8ycIK3pz1ZTvaK/KP
-         Ww/oVEIKpX/Brp3S+I51F1UgnLAzCWX6vGVumOl4yF/iAMORj+aT1qeL98tmJTD4STHZ
-         KAxA==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=TUA2K1AbBMJFfTfwqGJd1jVzR2AWp2wFedzCIWEf2r4=;
+        b=KfUTWWlUAS1C7xQKtaKPinRXCWB7Lx4OyL4BfuyEtWJkAMZEuV8xBkrS9p/RgWT2aI
+         oZks3vsFpcXy/gVlSeXheM2AK5bEI89ZtTlknKSM9lv9jv3ppPSvzeE4XMk9rtkwa90w
+         P8WSpgbYJ99W9Dc/SmHJRP37jy1zXjHQNoz5OTXF4z1nTQ6xj+MoBvconPy0H14rM9O9
+         nXI5aXW3yeLvoMgVqG8TEYwx/rfPo1LbE5TMlRClvSwgFoh1C2j6KHNWn69ovpjFLQN2
+         me02e/HwC4nnmdGCBXo3lo9hBYf/u6+pLhpHA/3b4m19eXi4BjSVAB/aKJDjfUixHMrD
+         ApYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nN5NpQCUpCrNFjmHjL5ONWMsPKFEDUAp7grcotZhonw=;
-        b=wHQgcmLzV+qDZfQY8RBiT618bvUbyq5N3MmoRkg6AhydJ67xu4byUK4ZorN/aY6YVJ
-         ngNJ9rYX1V3bHnuEBN8JiC73u1qNs+W21vdeB14Y8vGTkh5U/1giA9djmr3eT82S/sXh
-         JkwF0dPas99jn18kNe/7/hDJGWBhbMh+/zYSHjpBmwN5ZRldmsGuLYu6YLzK8sPI7Tim
-         APgXvUIQOcs1N05hpKA28QOdNRFOGh5Lg8zsbCc4w2gfWRzc/Vnvv4I/iGvn69C5oj5v
-         U9LkSJrWe4XqRSJP2Qg0cDRejnIdz2YnTEHKvX7JieswkJjUTPvOC4p60AGw6nFQlEQs
-         Lyng==
-X-Gm-Message-State: ACrzQf1xuzksVRzw3vFLUk1FOE73ouZ9FXNY9OMqBGd6FZ7tEDxV+DI6
-        YugBaKLAeGxI4xuPui7jBZNZ6uHmPRZ8eLgYliOyDvt0eExC8dTwGyc=
-X-Google-Smtp-Source: AMsMyM5FZ4kTRtsawAU+tP4boYiUWOGe6vBLGALChoywQx/ctlIO0pYyAxOglAglSTAoLoVYoZOY5KOAD6gd9tLQYc0=
-X-Received: by 2002:a25:b215:0:b0:6cb:f84f:b1c5 with SMTP id
- i21-20020a25b215000000b006cbf84fb1c5mr57293918ybj.579.1667927896213; Tue, 08
- Nov 2022 09:18:16 -0800 (PST)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TUA2K1AbBMJFfTfwqGJd1jVzR2AWp2wFedzCIWEf2r4=;
+        b=gGbWQNXHX0JwBJZGXzGylSQU6zyd3L5pdqGlpPeAAdOedTA3otQsBzJDnAkq3SEKRI
+         gQbuXrIL60O6bzjx1vyYC1HZu/O7UZ5axqMtllxuGH5ZuP5aGV6zzvi3z1LvdSYKzsKQ
+         KkYeFJWn2CBrGVs4pFOu0FSUrsE7nOrFYk6keUZDQoTH63YbvPGSbVtQh3ZdbRo2A6HV
+         W4EtFc0cwl2nSJBKlCBQTNRb4PuyU7XKUzLX43sZiZTVRDZCSo5F6/3BU61H4Htzte3p
+         Og12lG0fmW6pGP3s/RWnLgOVgxFpp2c2IHmUau2G9WrZhrflw0QiNGUvpOFPF921SmvL
+         Alvw==
+X-Gm-Message-State: ACrzQf3cR2xEzGzrfplnFA+x6n7y7LAQVO7cvF+o168LrJynHuv3c2n2
+        HKjWvqhgmSBqRhmPzlXOjyZt7u0Lq8U3CfO61xiKa99u
+X-Google-Smtp-Source: AMsMyM71x9wlwB4HBDK5F5mFBniRn7kkvz/BSMPnLtedcJYQg9SsmVrwMhHMuLHf66AuBA8hVTJI5F7ND0mlSoCX8bE=
+X-Received: by 2002:a81:8302:0:b0:36a:a51f:a22b with SMTP id
+ t2-20020a818302000000b0036aa51fa22bmr53646393ywf.129.1667929583738; Tue, 08
+ Nov 2022 09:46:23 -0800 (PST)
 MIME-Version: 1.0
-From:   Dennis Dai <dzy.0424thu@gmail.com>
-Date:   Wed, 9 Nov 2022 01:18:05 +0800
-Message-ID: <CACMswuMd18=nhvLK2Tw3H84GnDPnhuS_YRNFEDZ5T4B5DJQtBQ@mail.gmail.com>
-Subject: nvme driver: possible missing `unregister_irq`
-To:     Miguel Ojeda <ojeda@kernel.org>,
+References: <CACMswuMd18=nhvLK2Tw3H84GnDPnhuS_YRNFEDZ5T4B5DJQtBQ@mail.gmail.com>
+In-Reply-To: <CACMswuMd18=nhvLK2Tw3H84GnDPnhuS_YRNFEDZ5T4B5DJQtBQ@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 8 Nov 2022 18:46:12 +0100
+Message-ID: <CANiq72=jipHXHEh9o6GLiper2qi_mcrA-fE_rk32Ji_CkORZKw@mail.gmail.com>
+Subject: Re: nvme driver: possible missing `unregister_irq`
+To:     Dennis Dai <dzy.0424thu@gmail.com>
+Cc:     Andreas Hindborg <andreas@metaspace.dk>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@google.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     "baijiaju1990@gmail.com" <baijiaju1990@gmail.com>
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "baijiaju1990@gmail.com" <baijiaju1990@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi all,
+On Tue, Nov 8, 2022 at 6:18 PM Dennis Dai <dzy.0424thu@gmail.com> wrote:
+>
+> I was inspecting the rust nvme driver [1] and would like know if the following
+> code contains a missing unregister or I missed anything
 
-I was inspecting the rust nvme driver [1] and would like know if the following
-code contains a missing unregister or I missed anything
+(Cc'ing Andreas and fixing Wedson's email -- please do so in the
+future, thanks!)
 
-// nvme.rs:180, in NvmeDevice::setup_io_queues
-        admin_queue.register_irq(pci_dev)?;
-// nvme.rs:186, in NvmeDevice::setup_io_queues
-        let q_depth = core::cmp::min(...).try_into()?;
-// nvme.rs:190, in NvmeDevice::setup_io_queues
-        let tagset = mq::TagSet::try_new(...)?; //TODO: 1 or 3 on
-demand, depending on polling enabled
-
-Line 186 and 190 could abort the execution of
-NvmeDevice::setup_io_queues without calling `unregister_irq`.
-In the end this could result in an `request_threaded_irq` without a
-pairing `free_irq` on failure.
-Or is the job done by Rust by auto dropping?
-
-Thank you very much!
-
-[1] https://github.com/metaspace/rust-linux/commit/d88c3744d6cbdf11767e08bad56cbfb67c4c96d0
+Cheers,
+Miguel
