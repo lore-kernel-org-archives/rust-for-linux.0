@@ -2,111 +2,121 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A23CC4332F
-	for <rust-for-linux@archiver.kernel.org>; Tue,  8 Nov 2022 19:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27B62C433FE
+	for <rust-for-linux@archiver.kernel.org>; Wed,  9 Nov 2022 08:34:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229496AbiKHT6w (ORCPT
+        id S229533AbiKIIek (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 8 Nov 2022 14:58:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53348 "EHLO
+        Wed, 9 Nov 2022 03:34:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbiKHT6v (ORCPT
+        with ESMTP id S229602AbiKIIej (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 8 Nov 2022 14:58:51 -0500
-Received: from esa6.hgst.iphmx.com (esa6.hgst.iphmx.com [216.71.154.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 181EF61778;
-        Tue,  8 Nov 2022 11:58:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1667937529; x=1699473529;
-  h=references:from:to:cc:subject:date:in-reply-to:
-   message-id:mime-version;
-  bh=QgCdfssJui03L08ul3DqCU8jgqdjYTj3Cy31BtbCjs4=;
-  b=SueWZaHfnBSKUC9tLDPmWyzs0oBVCGlOx/01/OGrPPKMs6ZljW/EQ1Ip
-   exoI8VZgGk95WAUgKi2bzobOIkfQqvmYWKWgWW3b0sNyfKJwtfGgWkSXO
-   nEolJ2GDVpZ64iMvT14SCHkUsCzGaOHXKdAfKP4+v7W42rdpcYlNjT7+e
-   hZfWDbx6beEFndm2YDysSI922HrEoWXqJJHzWI9CTRdo7eL1Rprfizxj9
-   AvNXXqRIZzZxNnHwBksQ+Mvlg0PqGxXdmWvE+qXHnfqIT/tljMzn1oxkx
-   7MhZf+vm3tcPYYsstW/OJcN18B4It+EReyOlC1KlvkfaCHphz0Olx/sOF
-   A==;
-X-IronPort-AV: E=Sophos;i="5.96,148,1665417600"; 
-   d="scan'208";a="216129083"
-Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 09 Nov 2022 03:58:49 +0800
-IronPort-SDR: N7S6kNy54eOf8KT1RlpQVYzBSv0piBa0mjnRf/zjHZZf7jl7vSEV0UU9ro16phsa5ksLhOuoGJ
- te2KsAlPCrLxACeSVZbq+SiQBnWxNHx5/ubxvalkG49HvnWUctf9PbszChcDgvFgA9rFSU6Z6N
- zjFxqB9NN0oJsf+DAyOMVmZ+7JS9MJL7yhyfMUOiUROaAvekD6Ub7OLOXsCCaxC0G8hEIFGIVe
- BjnF8+5tEDhDDNIHdyio+UEtCvf79fAzrRyxS+xgqqe9rvYiC2mmZ9xryQOTuhBU5f9Gce7Nqz
- t3I=
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 08 Nov 2022 11:17:54 -0800
-IronPort-SDR: BH3/7vYoconA2sJzfIBqJjrFc0PRJ1Q49x8vm+7i5Q2grIZAZhB66v9QBkg9YBdwAtU7IVrt6X
- g/lVs6UBD+R4c67dbz8y3vJCpnmvQrpDqSKR2VLinNVSNnrjHWeavUQJSSCEclsuWzvFSxxyvp
- jhDXcrRfBK30MAuuCU3tZjEnrl32mdItWCWjWjm8WOP+v8AKIU6upnb9gueiOMZQP45gMDoA2q
- UBFc+8iAHlBZa4SKquvplhu9xkiJFYnXzuruerJZ1x66iBSrBoOXn8dmS/4pXwFP5+fHBIvUbP
- Pww=
-WDCIronportException: Internal
-Received: from dellx5.wdc.com (HELO localhost) ([10.200.210.81])
-  by uls-op-cesaip01.wdc.com with ESMTP; 08 Nov 2022 11:58:48 -0800
+        Wed, 9 Nov 2022 03:34:39 -0500
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3465313D0D;
+        Wed,  9 Nov 2022 00:34:38 -0800 (PST)
+Received: by mail-yb1-xb33.google.com with SMTP id z192so20258684yba.0;
+        Wed, 09 Nov 2022 00:34:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=G64WdZsGUMFmhvKtUXCONGN5yZ/sRIqlIyHpLHBy668=;
+        b=cD/mHQekl5FpFm7VgGBcT0KcL9P1+BDF6rIQ0hI0+iZiLkUDMrluWZInedlyhbCGiK
+         +sZU2CNPiyN0P+3XDihhe/0eKC5QnPcLVKhQOMasYdxQ2hLmskElOulE7x4EgvoezLZs
+         /ZeV1MV9p3XerHT9BBQr/YyPg7aOzub3Bwzg6ji1KRnBQTQC5vEUFH5CspB0xx+cLzwj
+         BtJpLljoB9N55b+fmUu/zrlHlOsYp7PHsjbUGbrH0G+xJjU/1vZweH4MJUvh+MvB4oda
+         y4Nkc3N8p21Sm+qP2YG3OBGbE9rU1jTmpDj2JdnzrVTtdPONTMfM+2hdeIl08KYDcO7x
+         lGHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G64WdZsGUMFmhvKtUXCONGN5yZ/sRIqlIyHpLHBy668=;
+        b=fCymDqBa0/HGyu2G2C+gHXgLGrklnPJyl5Jztw/PnWAd+Q4VRPEumbuQrqshfZNic1
+         A+obDJKLm7Hi9s/F56e+AF5kRFHa9yuvbkyDZW5awBwAyNJ5nRcdH3FaAIxjcvifk3q+
+         a9unbnqt1c2MA+Ehde5fNSYSA2hJzVZpM70KKaPSxY6qdoAq/t8fobcFSgK1NwkKK288
+         MjH8qA3RAn6V8mcQocfBwnwrUsAW9d0UP8gzJVGwa/0dTl9LcZthbA6xemUtv8L4cE0K
+         Q57wm1gzZ/be8cdfImeXNWXl5STByrO97tL8+UzrsE5xeA0Ay90WN/fAGeeFmXsw8w8F
+         DkHQ==
+X-Gm-Message-State: ACrzQf12hyrvuQNBi1xD+FNs0n+sfC6kPN/2oui93XbL2/2AYpk9BKWa
+        T18NFtesHBcoZbggV0mdvkqWtMgE5xXNmZeSW6g=
+X-Google-Smtp-Source: AMsMyM6Gcl+es/qsSNp7iHsVZsAdM++KIa1nE3IfPww8znseA00qC+XdhJVWeyqVAuhcUQJsSMew0u2u1aYzP9JQ1QQ=
+X-Received: by 2002:a25:e303:0:b0:66e:36bc:54c5 with SMTP id
+ z3-20020a25e303000000b0066e36bc54c5mr57124095ybd.483.1667982877427; Wed, 09
+ Nov 2022 00:34:37 -0800 (PST)
+MIME-Version: 1.0
 References: <CACMswuMd18=nhvLK2Tw3H84GnDPnhuS_YRNFEDZ5T4B5DJQtBQ@mail.gmail.com>
-User-agent: mu4e 1.8.11; emacs 28.2.50
-From:   Andreas Hindborg <andreas.hindborg@wdc.com>
-To:     Dennis Dai <dzy.0424thu@gmail.com>
+ <87wn858bgp.fsf@wdc.com>
+In-Reply-To: <87wn858bgp.fsf@wdc.com>
+From:   Dennis Dai <dzy.0424thu@gmail.com>
+Date:   Wed, 9 Nov 2022 16:34:26 +0800
+Message-ID: <CACMswuNanu1k4WREBDMvweiQsSfdtT9OiafV271USTaExDgnkg@mail.gmail.com>
+Subject: Re: nvme driver: possible missing `unregister_irq`
+To:     Andreas Hindborg <andreas.hindborg@wdc.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         "baijiaju1990@gmail.com" <baijiaju1990@gmail.com>
-Subject: Re: nvme driver: possible missing `unregister_irq`
-Date:   Tue, 08 Nov 2022 20:30:52 +0100
-In-reply-to: <CACMswuMd18=nhvLK2Tw3H84GnDPnhuS_YRNFEDZ5T4B5DJQtBQ@mail.gmail.com>
-Message-ID: <87wn858bgp.fsf@wdc.com>
-MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+Sorry I missed that point.
+Now I do got it!
 
-Dennis Dai <dzy.0424thu@gmail.com> writes:
-
-> I was inspecting the rust nvme driver [1] and would like know if the following
-> code contains a missing unregister or I missed anything
->
-> // nvme.rs:180, in NvmeDevice::setup_io_queues
->         admin_queue.register_irq(pci_dev)?;
-> // nvme.rs:186, in NvmeDevice::setup_io_queues
->         let q_depth = core::cmp::min(...).try_into()?;
-> // nvme.rs:190, in NvmeDevice::setup_io_queues
->         let tagset = mq::TagSet::try_new(...)?; //TODO: 1 or 3 on
-> demand, depending on polling enabled
->
-> Line 186 and 190 could abort the execution of
-> NvmeDevice::setup_io_queues without calling `unregister_irq`.
-> In the end this could result in an `request_threaded_irq` without a
-> pairing `free_irq` on failure.
-> Or is the job done by Rust by auto dropping?
-
-In line with my reply to the other potential sleep bug you reported,
-teardown is not properly implemented yet, and I did not review the
-teardown code that is already in place.
-
-But, if you look at the `register_irq()` and `unregister_irq()`
-functions of `NvmeQueue` you can see that the registrations are stored
-in an `Option` within the `NvmeQueue` structure. So when the `NvmeQueue`
-struct is dropped, the registration will be dropped. Also, if we call
-`register_irq()` twice and forget to unregister the first one, it will
-be unregistered when we register the second one (because we call
-Option::replace()).
-
-So as long as the `NvmeQueue` structs are dropped, we will not leak
-IRQs. In case of one of the lines you point to return an `Err`, the ref
-count of the `kernel::device::Data` allocated in `probe()` would go to
-zero and it would be dropped and thus the IRQs would be unregistered.
-
-So yes, it is handled by destructors that run on drop.
+Thank you very much for the detailed explanation!
 
 Best regards,
-Andreas
+Dennis Dai
+
+On Wed, Nov 9, 2022 at 3:58 AM Andreas Hindborg
+<andreas.hindborg@wdc.com> wrote:
+>
+>
+> Dennis Dai <dzy.0424thu@gmail.com> writes:
+>
+> > I was inspecting the rust nvme driver [1] and would like know if the following
+> > code contains a missing unregister or I missed anything
+> >
+> > // nvme.rs:180, in NvmeDevice::setup_io_queues
+> >         admin_queue.register_irq(pci_dev)?;
+> > // nvme.rs:186, in NvmeDevice::setup_io_queues
+> >         let q_depth = core::cmp::min(...).try_into()?;
+> > // nvme.rs:190, in NvmeDevice::setup_io_queues
+> >         let tagset = mq::TagSet::try_new(...)?; //TODO: 1 or 3 on
+> > demand, depending on polling enabled
+> >
+> > Line 186 and 190 could abort the execution of
+> > NvmeDevice::setup_io_queues without calling `unregister_irq`.
+> > In the end this could result in an `request_threaded_irq` without a
+> > pairing `free_irq` on failure.
+> > Or is the job done by Rust by auto dropping?
+>
+> In line with my reply to the other potential sleep bug you reported,
+> teardown is not properly implemented yet, and I did not review the
+> teardown code that is already in place.
+>
+> But, if you look at the `register_irq()` and `unregister_irq()`
+> functions of `NvmeQueue` you can see that the registrations are stored
+> in an `Option` within the `NvmeQueue` structure. So when the `NvmeQueue`
+> struct is dropped, the registration will be dropped. Also, if we call
+> `register_irq()` twice and forget to unregister the first one, it will
+> be unregistered when we register the second one (because we call
+> Option::replace()).
+>
+> So as long as the `NvmeQueue` structs are dropped, we will not leak
+> IRQs. In case of one of the lines you point to return an `Err`, the ref
+> count of the `kernel::device::Data` allocated in `probe()` would go to
+> zero and it would be dropped and thus the IRQs would be unregistered.
+>
+> So yes, it is handled by destructors that run on drop.
+>
+> Best regards,
+> Andreas
