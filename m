@@ -2,37 +2,37 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BF14C4332F
-	for <rust-for-linux@archiver.kernel.org>; Thu, 10 Nov 2022 16:43:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C737C4332F
+	for <rust-for-linux@archiver.kernel.org>; Thu, 10 Nov 2022 16:43:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232097AbiKJQm7 (ORCPT
+        id S232094AbiKJQnJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 10 Nov 2022 11:42:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40058 "EHLO
+        Thu, 10 Nov 2022 11:43:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232099AbiKJQmj (ORCPT
+        with ESMTP id S232145AbiKJQm6 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 10 Nov 2022 11:42:39 -0500
+        Thu, 10 Nov 2022 11:42:58 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 526B543AF2;
-        Thu, 10 Nov 2022 08:42:37 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97387450A0;
+        Thu, 10 Nov 2022 08:42:43 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E2A1761BCB;
-        Thu, 10 Nov 2022 16:42:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439A1C4347C;
-        Thu, 10 Nov 2022 16:42:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FE5161BCD;
+        Thu, 10 Nov 2022 16:42:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC79C433D7;
+        Thu, 10 Nov 2022 16:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668098556;
-        bh=j8Vv0JsY401mmuX1GnDq9A3c9gx2HGMWyl7yi4WgHN4=;
+        s=k20201202; t=1668098562;
+        bh=6C+J3CqClsIGimlHszB691qkxwmrQJQgf22GuHYX/4g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j0ZcbNCStzx5mABTaSVrD/sXylGjxiWKUyEOG+4ul+Y0x7EzTVYg88N4cypw4uFVu
-         JL8qfoUkpdr812dgFNyPWBSgst072b39TTPrbXhL4zbPjyWeJ2wVUQvWX81dyLlE2I
-         w71o14k2k/Amh1+5mdp5WkJXSinvwhU45ZIvNBA3gopq5UrzRVmQrR8EADO/x/4Ysn
-         rzEQoSqNGGGecSnrI7GKvoRzFRFeoC3Q3Js45UD5w4R1uedOZAERSW1FO1yOTJaytF
-         RrV/Z6jD0vX6+9hUcw/gjm8vEd/GZrrrecTPwd9bioiowa9dlfRLiHtdrVY2XWiB4C
-         1zQjN1L8zlHXg==
+        b=G1+TkYS81fI6KSg3uG+BjrvTTqwlFukFJRj2LwmIc/PY+4bu15wKIHNVRoMKmd2w3
+         fOILmAK9tfxfkhrj1mZCLHN67XlwCgHTuFOTQtgog4E1l1DZijE51REMWOHUKX+AgU
+         Cf6Cl+PmHmrNUfwGYynRW6v35tV6JQ8m47tEE1noO0kLk3P4GpQDeLriy/uMxv8jCZ
+         8EH6wHcR5p2rdvqVYomwjKh4SreNFMlss2KEl0EdqsrU1t90p8SuY3Kuet8yilSJ6s
+         /Amoxx4CaUbgEQ5q6nVtIIkC6vyTWt/zaw3fEq7ZGmCqORj1UXaSXE+1FYnYfbnWw5
+         lXJ435A+AMdog==
 From:   Miguel Ojeda <ojeda@kernel.org>
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -40,10 +40,10 @@ To:     Miguel Ojeda <ojeda@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
 Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: [PATCH v1 06/28] rust: macros: add `#[vtable]` proc macro
-Date:   Thu, 10 Nov 2022 17:41:18 +0100
-Message-Id: <20221110164152.26136-7-ojeda@kernel.org>
+        patches@lists.linux.dev, Finn Behrens <me@kloenk.dev>
+Subject: [PATCH v1 08/28] rust: error: declare errors using macro
+Date:   Thu, 10 Nov 2022 17:41:20 +0100
+Message-Id: <20221110164152.26136-9-ojeda@kernel.org>
 In-Reply-To: <20221110164152.26136-1-ojeda@kernel.org>
 References: <20221110164152.26136-1-ojeda@kernel.org>
 MIME-Version: 1.0
@@ -52,234 +52,42 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Gary Guo <gary@garyguo.net>
+From: Finn Behrens <me@kloenk.dev>
 
-This procedural macro attribute provides a simple way to declare
-a trait with a set of operations that later users can partially
-implement, providing compile-time `HAS_*` boolean associated
-constants that indicate whether a particular operation was overridden.
+Add a macro to declare errors, which simplifies the work needed to
+add each one, avoids repetition of the code and makes it easier to
+change the way they are declared.
 
-This is useful as the Rust counterpart to structs like
-`file_operations` where some pointers may be `NULL`, indicating
-an operation is not provided.
-
-For instance:
-
-    #[vtable]
-    trait Operations {
-        fn read(...) -> Result<usize> {
-            Err(EINVAL)
-        }
-
-        fn write(...) -> Result<usize> {
-            Err(EINVAL)
-        }
-    }
-
-    #[vtable]
-    impl Operations for S {
-        fn read(...) -> Result<usize> {
-            ...
-        }
-    }
-
-    assert_eq!(<S as Operations>::HAS_READ, true);
-    assert_eq!(<S as Operations>::HAS_WRITE, false);
-
-Signed-off-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Finn Behrens <me@kloenk.dev>
 [Reworded, adapted for upstream and applied latest changes]
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/kernel/prelude.rs |  2 +-
- rust/macros/lib.rs     | 52 +++++++++++++++++++++++
- rust/macros/vtable.rs  | 95 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 148 insertions(+), 1 deletion(-)
- create mode 100644 rust/macros/vtable.rs
+ rust/kernel/error.rs | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index 6a1c6b38327f..7c4c35bf3c66 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -15,7 +15,7 @@ pub use core::pin::Pin;
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 466b2a8fe569..b843f3445483 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -8,8 +8,16 @@ use alloc::collections::TryReserveError;
  
- pub use alloc::{boxed::Box, vec::Vec};
- 
--pub use macros::module;
-+pub use macros::{module, vtable};
- 
- pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
- 
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 15555e7ff487..e40caaf0a656 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -5,6 +5,7 @@
- mod concat_idents;
- mod helpers;
- mod module;
-+mod vtable;
- 
- use proc_macro::TokenStream;
- 
-@@ -72,6 +73,57 @@ pub fn module(ts: TokenStream) -> TokenStream {
-     module::module(ts)
+ /// Contains the C-compatible error codes.
+ pub mod code {
+-    /// Out of memory.
+-    pub const ENOMEM: super::Error = super::Error(-(crate::bindings::ENOMEM as i32));
++    macro_rules! declare_err {
++        ($err:tt $(,)? $($doc:expr),+) => {
++            $(
++            #[doc = $doc]
++            )*
++            pub const $err: super::Error = super::Error(-(crate::bindings::$err as i32));
++        };
++    }
++
++    declare_err!(ENOMEM, "Out of memory.");
  }
  
-+/// Declares or implements a vtable trait.
-+///
-+/// Linux's use of pure vtables is very close to Rust traits, but they differ
-+/// in how unimplemented functions are represented. In Rust, traits can provide
-+/// default implementation for all non-required methods (and the default
-+/// implementation could just return `Error::EINVAL`); Linux typically use C
-+/// `NULL` pointers to represent these functions.
-+///
-+/// This attribute is intended to close the gap. Traits can be declared and
-+/// implemented with the `#[vtable]` attribute, and a `HAS_*` associated constant
-+/// will be generated for each method in the trait, indicating if the implementor
-+/// has overridden a method.
-+///
-+/// This attribute is not needed if all methods are required.
-+///
-+/// # Examples
-+///
-+/// ```ignore
-+/// use kernel::prelude::*;
-+///
-+/// // Declares a `#[vtable]` trait
-+/// #[vtable]
-+/// pub trait Operations: Send + Sync + Sized {
-+///     fn foo(&self) -> Result<()> {
-+///         Err(EINVAL)
-+///     }
-+///
-+///     fn bar(&self) -> Result<()> {
-+///         Err(EINVAL)
-+///     }
-+/// }
-+///
-+/// struct Foo;
-+///
-+/// // Implements the `#[vtable]` trait
-+/// #[vtable]
-+/// impl Operations for Foo {
-+///     fn foo(&self) -> Result<()> {
-+/// #        Err(EINVAL)
-+///         // ...
-+///     }
-+/// }
-+///
-+/// assert_eq!(<Foo as Operations>::HAS_FOO, true);
-+/// assert_eq!(<Foo as Operations>::HAS_BAR, false);
-+/// ```
-+#[proc_macro_attribute]
-+pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
-+    vtable::vtable(attr, ts)
-+}
-+
- /// Concatenate two identifiers.
- ///
- /// This is useful in macros that need to declare or reference items with names
-diff --git a/rust/macros/vtable.rs b/rust/macros/vtable.rs
-new file mode 100644
-index 000000000000..34d5e7fb5768
---- /dev/null
-+++ b/rust/macros/vtable.rs
-@@ -0,0 +1,95 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use proc_macro::{Delimiter, Group, TokenStream, TokenTree};
-+use std::collections::HashSet;
-+use std::fmt::Write;
-+
-+pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStream {
-+    let mut tokens: Vec<_> = ts.into_iter().collect();
-+
-+    // Scan for the `trait` or `impl` keyword.
-+    let is_trait = tokens
-+        .iter()
-+        .find_map(|token| match token {
-+            TokenTree::Ident(ident) => match ident.to_string().as_str() {
-+                "trait" => Some(true),
-+                "impl" => Some(false),
-+                _ => None,
-+            },
-+            _ => None,
-+        })
-+        .expect("#[vtable] attribute should only be applied to trait or impl block");
-+
-+    // Retrieve the main body. The main body should be the last token tree.
-+    let body = match tokens.pop() {
-+        Some(TokenTree::Group(group)) if group.delimiter() == Delimiter::Brace => group,
-+        _ => panic!("cannot locate main body of trait or impl block"),
-+    };
-+
-+    let mut body_it = body.stream().into_iter();
-+    let mut functions = Vec::new();
-+    let mut consts = HashSet::new();
-+    while let Some(token) = body_it.next() {
-+        match token {
-+            TokenTree::Ident(ident) if ident.to_string() == "fn" => {
-+                let fn_name = match body_it.next() {
-+                    Some(TokenTree::Ident(ident)) => ident.to_string(),
-+                    // Possibly we've encountered a fn pointer type instead.
-+                    _ => continue,
-+                };
-+                functions.push(fn_name);
-+            }
-+            TokenTree::Ident(ident) if ident.to_string() == "const" => {
-+                let const_name = match body_it.next() {
-+                    Some(TokenTree::Ident(ident)) => ident.to_string(),
-+                    // Possibly we've encountered an inline const block instead.
-+                    _ => continue,
-+                };
-+                consts.insert(const_name);
-+            }
-+            _ => (),
-+        }
-+    }
-+
-+    let mut const_items;
-+    if is_trait {
-+        const_items = "
-+                /// A marker to prevent implementors from forgetting to use [`#[vtable]`](vtable)
-+                /// attribute when implementing this trait.
-+                const USE_VTABLE_ATTR: ();
-+        "
-+        .to_owned();
-+
-+        for f in functions {
-+            let gen_const_name = format!("HAS_{}", f.to_uppercase());
-+            // Skip if it's declared already -- this allows user override.
-+            if consts.contains(&gen_const_name) {
-+                continue;
-+            }
-+            // We don't know on the implementation-site whether a method is required or provided
-+            // so we have to generate a const for all methods.
-+            write!(
-+                const_items,
-+                "/// Indicates if the `{f}` method is overridden by the implementor.
-+                const {gen_const_name}: bool = false;",
-+            )
-+            .unwrap();
-+        }
-+    } else {
-+        const_items = "const USE_VTABLE_ATTR: () = ();".to_owned();
-+
-+        for f in functions {
-+            let gen_const_name = format!("HAS_{}", f.to_uppercase());
-+            if consts.contains(&gen_const_name) {
-+                continue;
-+            }
-+            write!(const_items, "const {gen_const_name}: bool = true;").unwrap();
-+        }
-+    }
-+
-+    let new_body = vec![const_items.parse().unwrap(), body.stream()]
-+        .into_iter()
-+        .collect();
-+    tokens.push(TokenTree::Group(Group::new(Delimiter::Brace, new_body)));
-+    tokens.into_iter().collect()
-+}
+ /// Generic integer kernel error.
 -- 
 2.38.1
 
