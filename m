@@ -2,37 +2,37 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7045BC43219
-	for <rust-for-linux@archiver.kernel.org>; Thu, 10 Nov 2022 16:44:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 829C4C433FE
+	for <rust-for-linux@archiver.kernel.org>; Thu, 10 Nov 2022 16:44:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232056AbiKJQoC (ORCPT
+        id S232372AbiKJQoP (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 10 Nov 2022 11:44:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40052 "EHLO
+        Thu, 10 Nov 2022 11:44:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232209AbiKJQn3 (ORCPT
+        with ESMTP id S232229AbiKJQnb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 10 Nov 2022 11:43:29 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C184A45EE3;
-        Thu, 10 Nov 2022 08:43:05 -0800 (PST)
+        Thu, 10 Nov 2022 11:43:31 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518064384D;
+        Thu, 10 Nov 2022 08:43:10 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6DB33B82251;
-        Thu, 10 Nov 2022 16:43:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2AAC433B5;
-        Thu, 10 Nov 2022 16:43:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2D8560C3C;
+        Thu, 10 Nov 2022 16:43:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A19C433C1;
+        Thu, 10 Nov 2022 16:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668098583;
-        bh=Pqv7nrnSw/i2nkLoHhZe36xor+0aWZ+RAfK3x5lb5qk=;
+        s=k20201202; t=1668098589;
+        bh=lSrHt+F2Ze+/0shcXyGqT2iYHkhHUzJS18BpgwZFKfQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KQn3g9qgwmBkJ3Wnm9vxu2L3S8bIXyFNlEQYHy0tMIwN5QBj06PvJhG4rpm0GpuEB
-         GLZQFqXmFCsWDvzpYXSnEZxwbmW+nz0dbZgfnHLjqmA+H2VYUxCELTkC/mq1yAEVIk
-         sY/IcDdQAIBb/RKTHzX5Ii2HbHpIjSBRIARMOPRaC2bm0XUncJ7go5zYE+xD8YA/w8
-         K5haTcYQCzGir4ppjj/ehtE3OySb7CFv5p5m8QS+W8wpnIs78z1cQnh1grp3YiQqRG
-         eKeTVeJx6ov9zDF/6cRSau+xC4Sbxxl5cO4ULDLG2dzc2WxQVmJCToVNpobyP4ds3v
-         fpLwbnifHBhbA==
+        b=WXfn05iCKkaThQThCXeKWEliWM8sYgdfDebypjfYb7zVgGuFoYbQC0a9EXewcfKeM
+         u1FwVCtDj7pABLT8E+A9RmwU1fg1dCOtsxDfD/9PVLaCScNel7NS0s/0/wfJeHXF/1
+         KMaM7KmBO4fwh0PCgDYgJCLG+qPhmpBACcfnPEQc4ndGdA29MBi4FYx6t3rDHhV9ba
+         utPqEiLMNvDmlJvS2KIyAZwP8FJzQJofuk1yjJYo7u9NL44ikmQQnLSV7ipciu9EwX
+         GrF7h4ljSCT/DwahFTNF1UfB+o4pblBGXx5RLhD27EzfsAnLsiFrmfkX/NkN2bGCgS
+         3usHAuTFJ3/wg==
 From:   Miguel Ojeda <ojeda@kernel.org>
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -40,13 +40,14 @@ To:     Miguel Ojeda <ojeda@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
 Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: [PATCH v1 15/28] rust: str: add `b_str!` macro
-Date:   Thu, 10 Nov 2022 17:41:27 +0100
-Message-Id: <20221110164152.26136-16-ojeda@kernel.org>
+        patches@lists.linux.dev, Morgan Bartlett <mjmouse9999@gmail.com>
+Subject: [PATCH v1 17/28] rust: str: implement several traits for `CStr`
+Date:   Thu, 10 Nov 2022 17:41:29 +0100
+Message-Id: <20221110164152.26136-18-ojeda@kernel.org>
 In-Reply-To: <20221110164152.26136-1-ojeda@kernel.org>
 References: <20221110164152.26136-1-ojeda@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
@@ -54,47 +55,159 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 From: Gary Guo <gary@garyguo.net>
 
-Add the `b_str!` macro, which creates a new `BStr` from
-a string literal.
+Implement `Debug`, `Display`, `Deref` (into `BStr`), `AsRef<BStr>`
+and a set of `Index<...>` traits.
 
-It is usable in const contexts, for instance:
+This makes it `CStr` more convenient to use (and closer to `str`).
 
-    const X: &BStr = b_str!("Example");
-
+Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+Co-developed-by: Morgan Bartlett <mjmouse9999@gmail.com>
+Signed-off-by: Morgan Bartlett <mjmouse9999@gmail.com>
 Signed-off-by: Gary Guo <gary@garyguo.net>
 [Reworded, adapted for upstream and applied latest changes]
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/kernel/str.rs | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ rust/kernel/str.rs | 124 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 123 insertions(+), 1 deletion(-)
 
 diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 3aa1a0cb9bf8..95eb757c619d 100644
+index d66565f92f71..11d297c1a61c 100644
 --- a/rust/kernel/str.rs
 +++ b/rust/kernel/str.rs
-@@ -9,6 +9,27 @@ use core::fmt;
- /// `BStr` is simply an alias to `[u8]`, but has a more evident semantical meaning.
- pub type BStr = [u8];
+@@ -2,7 +2,8 @@
  
-+/// Creates a new [`BStr`] from a string literal.
-+///
-+/// `b_str!` converts the supplied string literal to byte string, so non-ASCII
-+/// characters can be included.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use kernel::b_str;
-+/// # use kernel::str::BStr;
-+/// const MY_BSTR: &BStr = b_str!("My awesome BStr!");
-+/// ```
-+#[macro_export]
-+macro_rules! b_str {
-+    ($str:literal) => {{
-+        const S: &'static str = $str;
-+        const C: &'static $crate::str::BStr = S.as_bytes();
-+        C
-+    }};
+ //! String representations.
+ 
+-use core::fmt;
++use core::fmt::{self, Write};
++use core::ops::{self, Deref, Index};
+ 
+ use crate::{
+     bindings,
+@@ -199,6 +200,127 @@ impl CStr {
+     }
+ }
+ 
++impl fmt::Display for CStr {
++    /// Formats printable ASCII characters, escaping the rest.
++    ///
++    /// ```
++    /// # use kernel::c_str;
++    /// # use kernel::str::CStr;
++    /// # use kernel::str::CString;
++    /// let penguin = c_str!("🐧");
++    /// let s = CString::try_from_fmt(fmt!("{}", penguin)).unwrap();
++    /// assert_eq!(s.as_bytes_with_nul(), "\\xf0\\x9f\\x90\\xa7\0".as_bytes());
++    ///
++    /// let ascii = c_str!("so \"cool\"");
++    /// let s = CString::try_from_fmt(fmt!("{}", ascii)).unwrap();
++    /// assert_eq!(s.as_bytes_with_nul(), "so \"cool\"\0".as_bytes());
++    /// ```
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        for &c in self.as_bytes() {
++            if (0x20..0x7f).contains(&c) {
++                // Printable character.
++                f.write_char(c as char)?;
++            } else {
++                write!(f, "\\x{:02x}", c)?;
++            }
++        }
++        Ok(())
++    }
++}
++
++impl fmt::Debug for CStr {
++    /// Formats printable ASCII characters with a double quote on either end, escaping the rest.
++    ///
++    /// ```
++    /// # use kernel::c_str;
++    /// # use kernel::str::CStr;
++    /// # use kernel::str::CString;
++    /// let penguin = c_str!("🐧");
++    /// let s = CString::try_from_fmt(fmt!("{:?}", penguin)).unwrap();
++    /// assert_eq!(s.as_bytes_with_nul(), "\"\\xf0\\x9f\\x90\\xa7\"\0".as_bytes());
++    ///
++    /// // Embedded double quotes are escaped.
++    /// let ascii = c_str!("so \"cool\"");
++    /// let s = CString::try_from_fmt(fmt!("{:?}", ascii)).unwrap();
++    /// assert_eq!(s.as_bytes_with_nul(), "\"so \\\"cool\\\"\"\0".as_bytes());
++    /// ```
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        f.write_str("\"")?;
++        for &c in self.as_bytes() {
++            match c {
++                // Printable characters.
++                b'\"' => f.write_str("\\\"")?,
++                0x20..=0x7e => f.write_char(c as char)?,
++                _ => write!(f, "\\x{:02x}", c)?,
++            }
++        }
++        f.write_str("\"")
++    }
++}
++
++impl AsRef<BStr> for CStr {
++    #[inline]
++    fn as_ref(&self) -> &BStr {
++        self.as_bytes()
++    }
++}
++
++impl Deref for CStr {
++    type Target = BStr;
++
++    #[inline]
++    fn deref(&self) -> &Self::Target {
++        self.as_bytes()
++    }
++}
++
++impl Index<ops::RangeFrom<usize>> for CStr {
++    type Output = CStr;
++
++    #[inline]
++    fn index(&self, index: ops::RangeFrom<usize>) -> &Self::Output {
++        // Delegate bounds checking to slice.
++        // Assign to _ to mute clippy's unnecessary operation warning.
++        let _ = &self.as_bytes()[index.start..];
++        // SAFETY: We just checked the bounds.
++        unsafe { Self::from_bytes_with_nul_unchecked(&self.0[index.start..]) }
++    }
++}
++
++impl Index<ops::RangeFull> for CStr {
++    type Output = CStr;
++
++    #[inline]
++    fn index(&self, _index: ops::RangeFull) -> &Self::Output {
++        self
++    }
++}
++
++mod private {
++    use core::ops;
++
++    // Marker trait for index types that can be forward to `BStr`.
++    pub trait CStrIndex {}
++
++    impl CStrIndex for usize {}
++    impl CStrIndex for ops::Range<usize> {}
++    impl CStrIndex for ops::RangeInclusive<usize> {}
++    impl CStrIndex for ops::RangeToInclusive<usize> {}
++}
++
++impl<Idx> Index<Idx> for CStr
++where
++    Idx: private::CStrIndex,
++    BStr: Index<Idx>,
++{
++    type Output = <BStr as Index<Idx>>::Output;
++
++    #[inline]
++    fn index(&self, index: Idx) -> &Self::Output {
++        &self.as_bytes()[index]
++    }
 +}
 +
  /// Allows formatting of [`fmt::Arguments`] into a raw buffer.
