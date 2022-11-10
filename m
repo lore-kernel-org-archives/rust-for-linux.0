@@ -2,95 +2,138 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BD9E3C433FE
-	for <rust-for-linux@archiver.kernel.org>; Thu, 10 Nov 2022 19:14:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68BCBC4332F
+	for <rust-for-linux@archiver.kernel.org>; Thu, 10 Nov 2022 19:16:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230032AbiKJTOa (ORCPT
+        id S229777AbiKJTQQ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 10 Nov 2022 14:14:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56900 "EHLO
+        Thu, 10 Nov 2022 14:16:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbiKJTO3 (ORCPT
+        with ESMTP id S229463AbiKJTQP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 10 Nov 2022 14:14:29 -0500
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 303BF2CE10;
-        Thu, 10 Nov 2022 11:14:29 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id i131so3290420ybc.9;
-        Thu, 10 Nov 2022 11:14:29 -0800 (PST)
+        Thu, 10 Nov 2022 14:16:15 -0500
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 327812CE10;
+        Thu, 10 Nov 2022 11:16:14 -0800 (PST)
+Received: by mail-qk1-x736.google.com with SMTP id z1so1738631qkl.9;
+        Thu, 10 Nov 2022 11:16:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=t5QX7uHtfmZJBGSD9wRN2efgSKLRw72121V+CgaBiz8=;
-        b=Dn0rsxA4mZcz58cbzTH9lg6bXc5PfKPEKP71oiU39d38QwbWdljJRKX/K+4riEKErV
-         aQ/TPalbvCgPeJqEeQDmIJJ3NU8aW3wNOYL54ICglMFYm3ylqZ6ePMfdcxsFtBiolKJO
-         NHKRXyYTWXs5s7zHxB2EEgcDsamgHmPCfODhd/54lI+MZ8HjunHOmud3cu+16QEouZBQ
-         UX1S4L4FhcLWsUTRWSZr3xmH5vqUkzFElLj4pUGZBzlF4a9TaCkCLHshwHAOHY0jleC7
-         rl/COzXtS5c7w9UOM2fhDB3SRAQMSf6Pan160yAi9uNXuvQ+CqKQ6oPrf5ZlxzvBRZMN
-         dAhw==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qnf+7Iz/AC6v/1QCMpsQVXmtrt+7PcPrgj9ldvBanC4=;
+        b=CwQfgbI4DuFardVNcz0uqADSJZuog7DfOLMB0DlZyNtKNN+/AAvh2LRxwZmgilOF+X
+         I3JtdfoWwEbKsnfFl1ndsT7C54El7cEafRsjlAtAXO38NZfW3+qb142sIyialkF1EuJX
+         UD9EcBweatojlCkpb5Xr8x1O8QBTlj04tsUOUolfhW4n1y8HfrWjaYPTIuvl3/009lpJ
+         8VD2xtqbopwqA/5hMaE58taNq6ZXzAjlMiPwf3GB8QeNFLLnX62bkRAPOXaqF+xn+i1a
+         ef2xc9uWHo3hD/OChu60GI34be8uAb879KS9rVYmyuW06KnyaqoyjtPix72a54DCvkkP
+         PDDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=t5QX7uHtfmZJBGSD9wRN2efgSKLRw72121V+CgaBiz8=;
-        b=15IrcJBiKGIxYj2xA7ZGeNNuprYS4q3nOaJxFwurdd2zWyhlYdCecSxnS1tSwHW9XO
-         R1vZjJ4L2B06kw9bd38NNY5xYypw0in7ALXDyTMzYfG27UFrSeT+xcP3bJXtmwVH/Ei6
-         QoqmobloTCHVKBXycEFiwd0NxbCyPKIUvljq7ID+Kf8FlagKYFrIAYYH9SjXGpSNtSQQ
-         WdGJkZWrterQFpv8mV62ZoHrf08zjXJS3wJpUUq4e5OFjC2P7phhomrzXNm8GIHuql9g
-         oQK99VQJ975TzO7Bt1lSD2VxLEr3d1zNN2Rsgg6I1YZIn1QW5IVJXPIIFmyY4y+pZVbg
-         cx3w==
-X-Gm-Message-State: ACrzQf3h2PoMZcKQxMPaKgHpIT4juJBs0gxbwjD/IQ2wXjujRfQjxHhB
-        3mYhH8uxJSWcv5xnBird30/OW5OSseqOf9Ams4LQV+WKeSQ=
-X-Google-Smtp-Source: AMsMyM6vpNwmXQB6URQ88jmewQp6LACCUdpXdONZgdbve2oZHi8cBcOo2qirgHGVTFWGHi7XeXb80pgjl/OTZPykb04=
-X-Received: by 2002:a25:76cb:0:b0:6d1:698e:31e5 with SMTP id
- r194-20020a2576cb000000b006d1698e31e5mr37654398ybc.328.1668107668358; Thu, 10
- Nov 2022 11:14:28 -0800 (PST)
-MIME-Version: 1.0
-References: <20221110164152.26136-1-ojeda@kernel.org> <20221110164152.26136-24-ojeda@kernel.org>
- <Y208lVCN3VweD5iI@Boquns-Mac-mini.local>
-In-Reply-To: <Y208lVCN3VweD5iI@Boquns-Mac-mini.local>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 10 Nov 2022 20:14:17 +0100
-Message-ID: <CANiq72kR3YZv65NYPx+H57XO7T85kioMWMZajRnk7f+ru-3x+w@mail.gmail.com>
-Subject: Re: [PATCH v1 23/28] rust: std_vendor: add `dbg!` macro based on
- `std`'s one
-To:     Boqun Feng <boqun.feng@gmail.com>
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Qnf+7Iz/AC6v/1QCMpsQVXmtrt+7PcPrgj9ldvBanC4=;
+        b=oxvEp1pIXOyqHwlZjwPqOap7yZ5UEUw1zLsskIQ38QpN2dX7fmfZTUUmVx2kUTGTr8
+         eG22tZvF61G7opymYCyBcqVtC8Ql73PiRqjzba4VtBmiOwpiPREMIDuCSQU7xNqLYl47
+         C84uybc23mYSaiLpLQEz5Q6jTVNNq/KJEo6JHmd96LkHZJMSw6nPYL/ocNnMcSvOcdIn
+         Ydp4G0ixvM5hgmn3K2Ddr3F2EJbVi6H9gd9xUYd4Jsyoo+wc7jkFf5SJQpSta5c9+YOy
+         ZNRpuBc1m3zMYCkdy+ZQAfJQcC+ueR8BfJqEn7nnaPfzLg33O7Q25Yv3TbFVo8FT8BSm
+         bjnA==
+X-Gm-Message-State: ANoB5plIqbK16/XHvrSJL+SiBEc+VwzOrxkBeMtxhaqdznvTM02xKHd7
+        Ke6aqU5ULwpmEGRrnYabplo=
+X-Google-Smtp-Source: AA0mqf7OmccX74WLnA2RzCh82dTb3yr7TSHjjf0XJGJIW0Rg2zenvqckfbOPuy5mu6rqRnqBVu3XGA==
+X-Received: by 2002:a05:620a:1184:b0:6fb:176e:1dbe with SMTP id b4-20020a05620a118400b006fb176e1dbemr5159880qkk.249.1668107773309;
+        Thu, 10 Nov 2022 11:16:13 -0800 (PST)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id c8-20020a05620a268800b006eecc4a0de9sm76608qkp.62.2022.11.10.11.16.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Nov 2022 11:16:11 -0800 (PST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 0D82A27C0054;
+        Thu, 10 Nov 2022 14:16:10 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Thu, 10 Nov 2022 14:16:11 -0500
+X-ME-Sender: <xms:-k1tY1fkq_lUw8WWo0FO3vORGR060uvU_plUv0Q2gAIa_hHqkWbrAQ>
+    <xme:-k1tYzN_gPfyVlhC0FPrzsFfKamUsIYQGqcWDiRFMeSuKt_rtS560FOp1WahpLrzB
+    vI9vBwZEJTiw48neg>
+X-ME-Received: <xmr:-k1tY-hSYkjdj3_09XZqbuNlAQ1XOi0gS0nBWbkibMlZ_ZXP15fEosPJ6GYL>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvgedrfeeggdduvdefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:-k1tY-8oHQtArzBVlmDg3PSp1VhU3-Tq9tE36EFd2u7sezkLFKd_pQ>
+    <xmx:-k1tYxvsyCjMkE-Ux7x1_Az9Nd5wkymXhkGQPzQuFc168Tj8sJII5A>
+    <xmx:-k1tY9Fld3VaVygwcT5qo2PTXo56DJMYZuFri-RuMo861WRbCeZXVQ>
+    <xmx:-k1tY3JjGlZ5BYdUkcDQgrSXsY5uDhGSYCZ5LIHiFkooMle3k_qsIQ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 10 Nov 2022 14:16:09 -0500 (EST)
+Date:   Thu, 10 Nov 2022 11:16:08 -0800
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev, Niklas Mohrin <dev@niklasmohrin.de>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v1 23/28] rust: std_vendor: add `dbg!` macro based on
+ `std`'s one
+Message-ID: <Y21N+GtGsqzaPSFp@Boquns-Mac-mini.local>
+References: <20221110164152.26136-1-ojeda@kernel.org>
+ <20221110164152.26136-24-ojeda@kernel.org>
+ <Y208lVCN3VweD5iI@Boquns-Mac-mini.local>
+ <CANiq72kR3YZv65NYPx+H57XO7T85kioMWMZajRnk7f+ru-3x+w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72kR3YZv65NYPx+H57XO7T85kioMWMZajRnk7f+ru-3x+w@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Nov 10, 2022 at 7:02 PM Boqun Feng <boqun.feng@gmail.com> wrote:
->
-> and I'm almost convinced ;-) Better add the gist of discussion into
-> comment/document/commit log? Users need to know when to use `dbg!` and
-> when to use `pr_debug!`, right?
+On Thu, Nov 10, 2022 at 08:14:17PM +0100, Miguel Ojeda wrote:
+> On Thu, Nov 10, 2022 at 7:02 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > and I'm almost convinced ;-) Better add the gist of discussion into
+> > comment/document/commit log? Users need to know when to use `dbg!` and
+> > when to use `pr_debug!`, right?
+> 
+> The docs talk about it a bit:
+> 
+>     +/// Note that the macro is intended as a debugging tool and therefore you
+>     +/// should avoid having uses of it in version control for long periods
+>     +/// (other than in tests and similar).
+> 
+> That is the original wording from the standard library, but we can
+> definitely make the rules more concrete on our end with something
 
-The docs talk about it a bit:
+Yeah, having some kernel contexts is better ;-)
 
-    +/// Note that the macro is intended as a debugging tool and therefore you
-    +/// should avoid having uses of it in version control for long periods
-    +/// (other than in tests and similar).
+> like:
+> 
+>     `dbg!` is intended as a temporary debugging tool to be used during
+>     development. Therefore, avoid committing `dbg!` macro invocations
+>     into the kernel tree.
+> 
+>     For debug output that is intended to be kept, use `pr_debug!` and
+>     similar facilities instead.
+> 
 
-That is the original wording from the standard library, but we can
-definitely make the rules more concrete on our end with something
-like:
+Look good to me, thank you!
 
-    `dbg!` is intended as a temporary debugging tool to be used during
-    development. Therefore, avoid committing `dbg!` macro invocations
-    into the kernel tree.
+Regards,
+Boqun
 
-    For debug output that is intended to be kept, use `pr_debug!` and
-    similar facilities instead.
-
-Cheers,
-Miguel
+> Cheers,
+> Miguel
