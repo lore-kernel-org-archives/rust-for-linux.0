@@ -2,37 +2,37 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31464C4332F
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FBFFC43217
 	for <rust-for-linux@archiver.kernel.org>; Thu, 10 Nov 2022 16:42:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231958AbiKJQm0 (ORCPT
+        id S231981AbiKJQm1 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 10 Nov 2022 11:42:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39712 "EHLO
+        Thu, 10 Nov 2022 11:42:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231911AbiKJQm0 (ORCPT
+        with ESMTP id S231955AbiKJQm0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
         Thu, 10 Nov 2022 11:42:26 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7550C4198A;
-        Thu, 10 Nov 2022 08:42:21 -0800 (PST)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DF6C13DDD;
+        Thu, 10 Nov 2022 08:42:20 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 13A6861BCD;
-        Thu, 10 Nov 2022 16:42:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9240CC433D7;
-        Thu, 10 Nov 2022 16:42:18 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1F1D4B82248;
+        Thu, 10 Nov 2022 16:42:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F75C433C1;
+        Thu, 10 Nov 2022 16:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668098540;
-        bh=TpYB3dU1gfW4+Y/Ug35QXprZPPfBIkjSDAYCOHoY5AU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=du9DSV2ffNd/eTmXOXKDHseXWj0fdF5SabVHYv4yY9lYA8lKRuij1VOdGWFShHAtc
-         bTqhBNIk0vwv6JuixnIUus4RHxpN17Um5v670GoXdzJUMBbt4AEdAeyp1ce1rL/Ym0
-         ocKKNzwuvsDkQF7Jf9ItZpObvEkQieohQpc6p5OTDauzvNQAfDtvXQY4lCNRTlutou
-         Udgxan5RLaUO9JzkdMw5qsGb71ODMcQ1iazpFdW+c3vGIE5l7xFvYbPWVMEZm1FRlh
-         yWBHn/c1S2XbCnuiib9TIxBZT5oG9diR0dH2BPSkQWKwCIdyL61bwYaWasi8EfMcRO
-         7Z8o0uDMfNoVQ==
+        s=k20201202; t=1668098537;
+        bh=e4hlEGbMvLPpDidaYvlKiHNZ2EtLaQnPxMUUsMUj+Lk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dK1EerY5otwPdRKe3gqKcZ432vrddg9S2SvsfGtDdMwfYA1rAyayYxRVO4Z3xHzK2
+         ctj1nX/Ilr2RQSgs/cP8cIFiFpDbYqKcHcDGx0mEZ6S9Q90Z2+xpH/77vWFkMxB2cM
+         2g/z6K7J3wYBW5jDNLdocut9Hf/AJ6DTA93yh4jxr0sPYr/W2cDGnw6XoGZzKi5PaV
+         0wqaxOVX9+jbIW4w/cocJejzSEnT+R0aAtyapmbU7pw/w3keg0UjRICG7bQBEfcmqV
+         r41xz3W6ubVz049VW8rXQxqK0mKsKbiKppFnwL7K0bfTxeWmTo6hn5c0jDFSRhj6ic
+         Tu5M/GeEgxbpA==
 From:   Miguel Ojeda <ojeda@kernel.org>
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -41,54 +41,122 @@ To:     Miguel Ojeda <ojeda@kernel.org>,
         =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
 Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-Subject: [PATCH v1 01/28] rust: prelude: split re-exports into groups
-Date:   Thu, 10 Nov 2022 17:41:13 +0100
-Message-Id: <20221110164152.26136-2-ojeda@kernel.org>
-In-Reply-To: <20221110164152.26136-1-ojeda@kernel.org>
-References: <20221110164152.26136-1-ojeda@kernel.org>
+Subject: [PATCH v1 00/28] Rust core additions
+Date:   Thu, 10 Nov 2022 17:41:12 +0100
+Message-Id: <20221110164152.26136-1-ojeda@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Split the prelude re-exports into groups: first the ones coming
-from the `core` crate, then `alloc`, then our own crates and
-finally the ones from modules from `kernel` itself (i.e. `super`).
+This patch series is the first batch of changes to upstream the rest
+of the Rust support.
 
-We are doing this manually for the moment, but ideally, long-term,
-this could be automated via `rustfmt` with options such as
-`group_imports` and `imports_granularity` (both currently unstable).
+In this instance, all the facilities introduced are part of the "Rust
+core". They do not interact with the C side in new major ways (no new
+C types used; only `strlen`, `memchr`, additional error codes and some
+more `printk` format strings).
 
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- rust/kernel/prelude.rs | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+After this series, `str.rs` and `print.rs` are in sync with downstream
+and all remaining proc macros have been added. `error.rs` is fairly
+complete too, though a few more `pub(crate)` features will come later
+(to avoid leaving dead code in-between series).
 
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index 495e22250726..f8219285d8c0 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -11,10 +11,14 @@
- //! use kernel::prelude::*;
- //! ```
- 
--pub use super::{
--    error::{Error, Result},
--    pr_emerg, pr_info, ThisModule,
--};
--pub use alloc::{boxed::Box, vec::Vec};
- pub use core::pin::Pin;
-+
-+pub use alloc::{boxed::Box, vec::Vec};
-+
- pub use macros::module;
-+
-+pub use super::{pr_emerg, pr_info};
-+
-+pub use super::error::{Error, Result};
-+
-+pub use super::ThisModule;
+Note that a few temporary `#[allow(dead_code)]` attributes are used in
+order to have a bit more freedom organizing the patches while keeping
+all of them buildable without warnings/errors, but at the end of the
+series there is none remaining (of the temporary ones).
+
+Virtually all the code has been in linux-next for months and was part
+of the Rust patch series before the trimming down (i.e. up to v8).
+
+Each patch has been built-tested on a Rust-enabled `defconfig` with
+`CLIPPY=1` on the `all`, `rustfmtcheck`, `rustdoc` and `rusttest`
+targets.
+
+Björn Roy Baron (1):
+  rust: macros: add `concat_idents!` proc macro
+
+Finn Behrens (1):
+  rust: error: declare errors using macro
+
+Gary Guo (9):
+  rust: macros: add `#[vtable]` proc macro
+  rust: macros: take string literals in `module!`
+  rust: str: add `BStr` type
+  rust: str: add `b_str!` macro
+  rust: str: add `CStr` type
+  rust: str: implement several traits for `CStr`
+  rust: str: add `c_str!` macro
+  rust: add `build_error` crate
+  rust: build_assert: add `build_{error,assert}!` macros
+
+Miguel Ojeda (7):
+  rust: prelude: split re-exports into groups
+  rust: print: add more `pr_*!` levels
+  rust: print: add `pr_cont!` macro
+  rust: samples: add `rust_print` example
+  rust: alloc: add `RawVec::try_with_capacity_in()` constructor
+  rust: alloc: add `Vec::try_with_capacity{,_in}()` constructors
+  rust: static_assert: add `static_assert!` macro
+
+Milan Landaverde (1):
+  rust: str: add `CStr` unit tests
+
+Niklas Mohrin (1):
+  rust: std_vendor: add `dbg!` macro based on `std`'s one
+
+Viktor Garske (1):
+  rust: error: add codes from `errno-base.h`
+
+Wedson Almeida Filho (7):
+  rust: error: add `From` implementations for `Error`
+  rust: prelude: add `error::code::*` constant items
+  rust: str: add `Formatter` type
+  rust: str: add `CString` type
+  rust: str: add `fmt!` macro
+  rust: types: add `Either` type
+  rust: types: add `Opaque` type
+
+ lib/Kconfig.debug                 |  16 +
+ rust/Makefile                     |  22 +-
+ rust/alloc/raw_vec.rs             |  33 +-
+ rust/alloc/vec/mod.rs             |  89 +++++
+ rust/build_error.rs               |  24 ++
+ rust/exports.c                    |   5 +
+ rust/kernel/build_assert.rs       |  82 +++++
+ rust/kernel/error.rs              |  90 ++++-
+ rust/kernel/lib.rs                |   9 +
+ rust/kernel/prelude.rs            |  20 +-
+ rust/kernel/print.rs              | 214 +++++++++++-
+ rust/kernel/static_assert.rs      |  34 ++
+ rust/kernel/std_vendor.rs         | 160 +++++++++
+ rust/kernel/str.rs                | 532 +++++++++++++++++++++++++++++-
+ rust/kernel/types.rs              |  37 +++
+ rust/macros/concat_idents.rs      |  23 ++
+ rust/macros/helpers.rs            |  24 +-
+ rust/macros/lib.rs                | 108 +++++-
+ rust/macros/module.rs             |  10 +-
+ rust/macros/vtable.rs             |  95 ++++++
+ samples/rust/Kconfig              |  10 +
+ samples/rust/Makefile             |   1 +
+ samples/rust/rust_minimal.rs      |   8 +-
+ samples/rust/rust_print.rs        |  54 +++
+ scripts/generate_rust_analyzer.py |   8 +-
+ 25 files changed, 1666 insertions(+), 42 deletions(-)
+ create mode 100644 rust/build_error.rs
+ create mode 100644 rust/kernel/build_assert.rs
+ create mode 100644 rust/kernel/static_assert.rs
+ create mode 100644 rust/kernel/std_vendor.rs
+ create mode 100644 rust/kernel/types.rs
+ create mode 100644 rust/macros/concat_idents.rs
+ create mode 100644 rust/macros/vtable.rs
+ create mode 100644 samples/rust/rust_print.rs
+
+
+base-commit: f0c4d9fc9cc9462659728d168387191387e903cc
 -- 
 2.38.1
 
