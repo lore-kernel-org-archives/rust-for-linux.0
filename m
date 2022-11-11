@@ -2,177 +2,80 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA99DC4332F
-	for <rust-for-linux@archiver.kernel.org>; Fri, 11 Nov 2022 09:50:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E3B08C4332F
+	for <rust-for-linux@archiver.kernel.org>; Fri, 11 Nov 2022 17:31:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233429AbiKKJu6 (ORCPT
+        id S232943AbiKKRbe (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 11 Nov 2022 04:50:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36434 "EHLO
+        Fri, 11 Nov 2022 12:31:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232182AbiKKJu5 (ORCPT
+        with ESMTP id S232372AbiKKRbd (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 11 Nov 2022 04:50:57 -0500
-X-Greylist: delayed 1502 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 11 Nov 2022 01:50:54 PST
-Received: from gimli.kloenk.dev (gimli.kloenk.dev [195.39.247.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFA57B78;
-        Fri, 11 Nov 2022 01:50:54 -0800 (PST)
-From:   Finn Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-        t=1668160252; bh=k/lbX2lCWCPhAd8PfCnpbmF965t2ayUlczN62ucvq74=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=E93lyMGGH+YBdWFgAEPVyeQz5gFoksKISCRhPIAqTcZlcE6vIrpThQFNU8bkWVQzo
-         lMklOWgoyPrf50+FShaUhBbUj+l9K2K4fusfc7Ae7G+LS/T0z3A27GE1znZvbyHFEQ
-         3r4y26RIJIec02R5f0BOGs8klEsCURiiqHwokgS8=
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Fri, 11 Nov 2022 12:31:33 -0500
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C049D1A82A;
+        Fri, 11 Nov 2022 09:31:32 -0800 (PST)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-367b8adf788so50106437b3.2;
+        Fri, 11 Nov 2022 09:31:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=prpDIZ3BYZ/cNF9JhJEHd9uz60rT0/OfMxiYhClGJnQ=;
+        b=Wzmzth18FIxXSWPYBPIUIIkwKhGTOTObxE85JRHaooraLOoUdTB3Lv4DVZrZC/6Tmm
+         E4yj68jnmJSqdA6uDC4woQONc4W8sqmM0Vv71nFr2DN84w7hOUNJqw2R0LK14fko8Ui7
+         UlhkULZqxMSsumrcu1IF29cNq8I42ZX4KFR9p1C2j750pr4rcnXIU/MonhlAH2avgY1p
+         RgYMe4pdqxa36UndBydIGE55t3nRAaPNBt+WVrz81XI0L45VFAr5YtCmS8RCGQwcSWtV
+         9DxrTEIAQLIPUk50dZTIgJWoPg0XK/k91bwxGNGQ4jUgSiNdNb80JkdbOHM8XAWTTsaP
+         tUSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=prpDIZ3BYZ/cNF9JhJEHd9uz60rT0/OfMxiYhClGJnQ=;
+        b=oW+CiLgAXmm3Oy0Xw5SFapoBpAwQc87Gwj+4pROKyqsFDEvkduA2JkvbkqfUywu0oR
+         tQoLae+6YXOcF7tvv8IOmAZloEPLMgltIf7iErwZJyurZiX9qeYoLj3thAKP88FbzSOL
+         oVUmz1JhoEHTDUXpkv/ddWp4JvAeCPym+KtgwzTgE/g37l0JFItMSbQgWI8zz9aFi7Or
+         UjJS3jgbl1RWMXdmMJ1PdiUHwU1KaeP11J3efJKJ2FzDn553+m8qQGpLRtf7szEdvLC3
+         LoG2XxG4Xk+1EdpL9GTHWtgj66yadOayP/MBYWuo8aq3hDHSmc9UycftPatbtnwCyZme
+         lIKQ==
+X-Gm-Message-State: ANoB5pmhJuno+2H7rI6UB+TpbVJCiSQmGfnmXPrbmQXdfo5AoNrYNLPR
+        9gtgyje9ZA+JGkSt7POiBNEGspEbW6NRnAd7th4=
+X-Google-Smtp-Source: AA0mqf4SJPcsFe//JwHzczhAEgtzUngvwNQkjyHOuLKRqKSMivaREWk3rlCM+zC0jC8KQdeC9n6CsjLYsGz43FHF/SE=
+X-Received: by 2002:a81:7912:0:b0:342:4d19:c7b with SMTP id
+ u18-20020a817912000000b003424d190c7bmr2894140ywc.67.1668187891982; Fri, 11
+ Nov 2022 09:31:31 -0800 (PST)
+MIME-Version: 1.0
+References: <20221110164152.26136-1-ojeda@kernel.org> <20221110164152.26136-5-ojeda@kernel.org>
+ <6C48433C-2B12-4D35-A93E-72CC1B41A8C4@kloenk.dev>
+In-Reply-To: <6C48433C-2B12-4D35-A93E-72CC1B41A8C4@kloenk.dev>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Fri, 11 Nov 2022 18:31:21 +0100
+Message-ID: <CANiq72kaqNroTms5fBW9uhPdRVrYkVfMUa+_dqPFVVVBUBeUew@mail.gmail.com>
+Subject: Re: [PATCH v1 04/28] rust: samples: add `rust_print` example
+To:     Finn Behrens <me@kloenk.dev>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Adam Bratschi-Kaye <ark.email@gmail.com>,
-        =?utf-8?b?TsOhbmRvciBJc3R2w6FuIEtyw6Fjc2Vy?= <bonifaido@gmail.com>
-Subject: Re: [PATCH v1 10/28] rust: error: add `From` implementations for
- `Error`
-Date:   Fri, 11 Nov 2022 10:50:51 +0100
-Message-ID: <0FFA9049-1F58-4C8C-9EAD-8ABD4B0489A2@kloenk.dev>
-In-Reply-To: <20221110164152.26136-11-ojeda@kernel.org>
-References: <20221110164152.26136-1-ojeda@kernel.org>
- <20221110164152.26136-11-ojeda@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+        patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 10 Nov 2022, at 17:41, Miguel Ojeda wrote:
+On Fri, Nov 11, 2022 at 10:40 AM Finn Behrens <me@kloenk.dev> wrote:
+>
+> Could be nice, to also have an int or similar as arg, but as internal the same macro is used as above, not really of interest.
 
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
->
-> Add a set of `From` implementations for the `Error` kernel type.
->
-> These implementations allow to easily convert from standard Rust
-> error types to the usual kernel errors based on one of the `E*`
-> integer codes.
->
-> On top of that, the question mark Rust operator (`?`) implicitly
-> performs a conversion on the error value using the `From` trait
-> when propagating. Thus it is extra convenient to use.
->
-> For instance, a kernel function that needs to convert a `i64` into
-> a `i32` and to bubble up the error as a kernel error may write:
->
->     fn f(x: i64) -> Result<...> {
->         ...
->         let y =3D i32::try_from(x)?;
->         ...
->     }
->
-> which will transform the `TryFromIntError` into an `Err(EINVAL)`.
->
-> Co-developed-by: Adam Bratschi-Kaye <ark.email@gmail.com>
-> Signed-off-by: Adam Bratschi-Kaye <ark.email@gmail.com>
-> Co-developed-by: N=C3=A1ndor Istv=C3=A1n Kr=C3=A1cser <bonifaido@gmail.=
-com>
-> Signed-off-by: N=C3=A1ndor Istv=C3=A1n Kr=C3=A1cser <bonifaido@gmail.co=
-m>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> [Reworded, adapted for upstream and applied latest changes]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Finn Behrens <me@kloenk.dev>
+Yeah, there are some integers above, but we can add more examples
+later on, e.g. with custom kernel types too.
 
-Regards,
-Finn
-> ---
->  rust/kernel/error.rs | 45 +++++++++++++++++++++++++++++++++++++++++++-=
+Thanks for the reviews in several patches, by the way!
 
->  rust/kernel/lib.rs   |  1 +
->  2 files changed, 45 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 861746f2422d..5b9751d7ff1d 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -4,7 +4,14 @@
->  //!
->  //! C header: [`include/uapi/asm-generic/errno-base.h`](../../../inclu=
-de/uapi/asm-generic/errno-base.h)
->
-> -use alloc::collections::TryReserveError;
-> +use alloc::{
-> +    alloc::{AllocError, LayoutError},
-> +    collections::TryReserveError,
-> +};
-> +
-> +use core::convert::From;
-> +use core::num::TryFromIntError;
-> +use core::str::Utf8Error;
->
->  /// Contains the C-compatible error codes.
->  pub mod code {
-> @@ -71,12 +78,48 @@ impl Error {
->      }
->  }
->
-> +impl From<AllocError> for Error {
-> +    fn from(_: AllocError) -> Error {
-> +        code::ENOMEM
-> +    }
-> +}
-> +
-> +impl From<TryFromIntError> for Error {
-> +    fn from(_: TryFromIntError) -> Error {
-> +        code::EINVAL
-> +    }
-> +}
-> +
-> +impl From<Utf8Error> for Error {
-> +    fn from(_: Utf8Error) -> Error {
-> +        code::EINVAL
-> +    }
-> +}
-> +
->  impl From<TryReserveError> for Error {
->      fn from(_: TryReserveError) -> Error {
->          code::ENOMEM
->      }
->  }
->
-> +impl From<LayoutError> for Error {
-> +    fn from(_: LayoutError) -> Error {
-> +        code::ENOMEM
-> +    }
-> +}
-> +
-> +impl From<core::fmt::Error> for Error {
-> +    fn from(_: core::fmt::Error) -> Error {
-> +        code::EINVAL
-> +    }
-> +}
-> +
-> +impl From<core::convert::Infallible> for Error {
-> +    fn from(e: core::convert::Infallible) -> Error {
-> +        match e {}
-> +    }
-> +}
-> +
->  /// A [`Result`] with an [`Error`] error type.
->  ///
->  /// To be used as the return type for functions that may fail.
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index abd46261d385..ffc6626a6d29 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -12,6 +12,7 @@
->  //! do so first instead of bypassing this crate.
->
->  #![no_std]
-> +#![feature(allocator_api)]
->  #![feature(core_ffi_c)]
->
->  // Ensure conditional compilation based on the kernel configuration wo=
-rks;
-> -- =
-
-> 2.38.1
+Cheers,
+Miguel
