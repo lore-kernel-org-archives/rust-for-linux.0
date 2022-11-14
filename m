@@ -2,64 +2,64 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96C3DC433FE
-	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Nov 2022 18:22:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 842E3C433FE
+	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Nov 2022 18:29:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236593AbiKNSWR (ORCPT
+        id S236681AbiKNS3A (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 14 Nov 2022 13:22:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52578 "EHLO
+        Mon, 14 Nov 2022 13:29:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237226AbiKNSWO (ORCPT
+        with ESMTP id S236514AbiKNS3A (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 14 Nov 2022 13:22:14 -0500
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22D1C1E0;
-        Mon, 14 Nov 2022 10:22:14 -0800 (PST)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-3691e040abaso114499137b3.9;
-        Mon, 14 Nov 2022 10:22:14 -0800 (PST)
+        Mon, 14 Nov 2022 13:29:00 -0500
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8781FCF6;
+        Mon, 14 Nov 2022 10:28:59 -0800 (PST)
+Received: by mail-yb1-xb31.google.com with SMTP id z192so14546521yba.0;
+        Mon, 14 Nov 2022 10:28:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=dJhdvZIL4dk79Y3gG/NcL+fwogDMvYUZLhwwyEHygOE=;
-        b=Ghk/bDvtvykckld0AKbfuQzvD+2Rlsr0agjZxZ6786dart7MCb+IoxAaz28aIKu0r5
-         jU97rIgPPMsw6Xh0uI5w5qZ92ZLTVqjNaIi7cJWzQl/I2e+gAGjwPHzJ7RsGpj0DvxM8
-         XJHgreVIm1xQeI9KLSWdPnka/7A+NFJOVBhXLVlNFCAy5VLSr3pg/2l+fxeF+hZc8FAH
-         NIGBtwWBwrc6ZKE4gkCKz3o5zebil7r6zm4f7mR24MurTdNhOmDEAvLJce4GU5aQI3WO
-         hEn8oEo5kfR+AMZ8hE1FYEFlm63aAsld6rL57UYGH6zL0eAbmZRgM6aDGbHcXIGJjx4j
-         pDnQ==
+        bh=J7Cbl6yOGS5glTesfz4JpnFGgPjdFsy/hI/Fu3TtNcA=;
+        b=drX29G1u9fMT9l6Hp7fcV2qNgmfPxuB59iVHntbMgsAzh0smdUEpBxZICkvBwf1FFf
+         UNqfH5/yeOia6fW3ZDVfWdjj5T9hDST/nbTIZiSD2IRZzeYr0arXTPy+uXvzG8ZbLBVW
+         92wEpC//TcGJ6N+awQyc4zXJfMAeukg14QxIeluoluAbRVHQToCXLpVshkgTVv+G/ShF
+         bpOGkvBpTzkExgO3abE2mr4NGZ9CNzospH7d52qv2z3YJ4PLWdV4i1dwsOTyLTA8EuQH
+         K6aqECR+8Dw14+5Lm7NGwepqtapNT5qEuoVajz6zr8d2WFuh6KMK/nQDrH7OALhdCKGH
+         OFAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dJhdvZIL4dk79Y3gG/NcL+fwogDMvYUZLhwwyEHygOE=;
-        b=E4qGdkHh9n+65eYsKYbzmDVpPbV1gO9hHe0d8WzHtPuudCV66InLzt7FsFo9ZW6Zzi
-         SnhfcIEt1t6i8CZKLkqzyQUzJwT9JODcZ++4PmsVpoDu5za6mnwk/dBUqe/FV8VPmyoA
-         dnp7fpCj84YRJowgVvQDa5RlOHh/B/AJCU/rrK2+9vPvBz8MGoK2lKH3n1FvyetjFK/I
-         /Xq5EF3zGXfLCQNuvmWn3yzQCz562ati8++oK/x9/Ewgd/OylqmYMM2p4SVHz+jIsP6b
-         4tYaYWazQmQ4zRrg6aZWSB1R2lhA4zX4JqXBMpQB8QRM729d+uiV6CRBrMjNt7sXZ6zl
-         AoVg==
-X-Gm-Message-State: ANoB5pnbq5mkjvGdzeqtr+7K7MU/XnIH6EwBSEyzEAlUDgZsO4xv7LUM
-        twaDRfqq4Dfx7PYjIDgufumlwa/KOoM3ucFKb5I=
-X-Google-Smtp-Source: AA0mqf5pgXx9393AjH3cG63sp/dEA3pT6uJPHn4NX8ei4qCoMqb/LVkaMds9N2NrFEeR1h/+POHFoFhG8AHgfc9Gv6o=
-X-Received: by 2002:a81:7912:0:b0:342:4d19:c7b with SMTP id
- u18-20020a817912000000b003424d190c7bmr13767068ywc.67.1668450133388; Mon, 14
- Nov 2022 10:22:13 -0800 (PST)
+        bh=J7Cbl6yOGS5glTesfz4JpnFGgPjdFsy/hI/Fu3TtNcA=;
+        b=c+yhOpsxRCAlynX1UzsfdDdGLQ4h6/A2oh8gTVdUuAns+RUnqaP4fJhNBB8n34Wvd2
+         v6FAEE6cxSzr1UTTL1PbZMdk7HJl9bDe0dSGaPxo4gMRTM0W+/crMBGkEqU27IyQdINL
+         WWTt9K4eOfJKT1Gkc2GYoebIYQdj7FuZaS5H6PNTv6xO2zcnIZrHOGFcFl7jlF3d2OUE
+         Wpfc1Rt1E2Ct26jCxzJOZa0UHOqWprB9LO7FKjgr8MFowbmvTOhU9AiFzpg/TpkkXqha
+         FY6cmjd5cB49nMNxHrSg9RtRLE2EavmRAUVkvJILn1mK+BMBT7SjvP0xkZOfC6IgyCnj
+         39rA==
+X-Gm-Message-State: ANoB5pmRr+sqpU+orrzLPJ56+x9/WF6QU3S+hMY+qje5tTVKcuTrZaKe
+        PITTMuHHKmwF3egzEe4f9x/yYfZkMPS05t7tFTz2ZpxjN3w=
+X-Google-Smtp-Source: AA0mqf5aQ0w73PMOl6ZBZBmojg1Wqgc36djy6RijD/3PnIFpiT6VewzgiT0qKGSOqwdNYTYxj7W5Ew+U+YKkEO9guNM=
+X-Received: by 2002:a25:41d7:0:b0:6cb:8949:fdbb with SMTP id
+ o206-20020a2541d7000000b006cb8949fdbbmr13428033yba.328.1668450538671; Mon, 14
+ Nov 2022 10:28:58 -0800 (PST)
 MIME-Version: 1.0
-References: <20221110164152.26136-1-ojeda@kernel.org> <20221110164152.26136-26-ojeda@kernel.org>
- <Y3JQ8qsaV/DN3OJ7@liuwe-devbox-debian-v2>
-In-Reply-To: <Y3JQ8qsaV/DN3OJ7@liuwe-devbox-debian-v2>
+References: <20221110164152.26136-1-ojeda@kernel.org> <20221110164152.26136-20-ojeda@kernel.org>
+ <20221114143928.4dde6589@GaryWorkstation>
+In-Reply-To: <20221114143928.4dde6589@GaryWorkstation>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 14 Nov 2022 19:22:02 +0100
-Message-ID: <CANiq72ktW2=JCi3YzyrAd=_RioaWGZSyDusMU2f92_aL3tgvUA@mail.gmail.com>
-Subject: Re: [PATCH v1 25/28] rust: add `build_error` crate
-To:     Wei Liu <wei.liu@kernel.org>
+Date:   Mon, 14 Nov 2022 19:28:47 +0100
+Message-ID: <CANiq72=1q8KDtjYqb286Chs7KFi3BXVAyCyHO=bpj+yY25EfBg@mail.gmail.com>
+Subject: Re: [PATCH v1 19/28] rust: str: add `c_str!` macro
+To:     Gary Guo <gary@garyguo.net>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
@@ -68,32 +68,13 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Nov 14, 2022 at 3:30 PM Wei Liu <wei.liu@kernel.org> wrote:
+On Mon, Nov 14, 2022 at 3:39 PM Gary Guo <gary@garyguo.net> wrote:
 >
-> a const function `build_error`
->
-> Without this I read it as a "normal non-const function".
+> I wrote this code when `const_panic` was not yet stable. Now we have
+> stable const panic this function could be removed.
 
-Sounds good to me, especially given the sentence that goes after that.
-
-(I think "function" does not imply one or the other in principle. To
-me, `const` ones are normal too, in the sense that they can be used as
-any other function.)
-
-> I can work out what the code does, but I also happen to know what Rust's
-> const means and its behaviour in non-const context. Other kernel
-> developers may not. Even so the description is a bit difficult for me to
-> parse.
->
-> Maybe a few sentences about const and its behaviours can help?
-
-Not sure if we should explain language details in the documentation of
-particular functions. But I agree this case is a bit special.
-
-What about linking the Rust reference/book/... (so that those terms
-are clickable when rendered)?
-
-Thanks a lot for the reviews, Wei!
+Indeed, we also took advantage of it in `static_assert!` when it got
+stabilized but not here. I will update it.
 
 Cheers,
 Miguel
