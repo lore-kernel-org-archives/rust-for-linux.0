@@ -2,94 +2,98 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A680FC4332F
-	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Nov 2022 17:26:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96C3DC433FE
+	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Nov 2022 18:22:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236024AbiKNRZm (ORCPT
+        id S236593AbiKNSWR (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 14 Nov 2022 12:25:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60450 "EHLO
+        Mon, 14 Nov 2022 13:22:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237571AbiKNRZa (ORCPT
+        with ESMTP id S237226AbiKNSWO (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 14 Nov 2022 12:25:30 -0500
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BB33FEC;
-        Mon, 14 Nov 2022 09:25:29 -0800 (PST)
-Received: by mail-wm1-f41.google.com with SMTP id m7-20020a05600c090700b003cf8a105d9eso8382523wmp.5;
-        Mon, 14 Nov 2022 09:25:29 -0800 (PST)
+        Mon, 14 Nov 2022 13:22:14 -0500
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22D1C1E0;
+        Mon, 14 Nov 2022 10:22:14 -0800 (PST)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-3691e040abaso114499137b3.9;
+        Mon, 14 Nov 2022 10:22:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dJhdvZIL4dk79Y3gG/NcL+fwogDMvYUZLhwwyEHygOE=;
+        b=Ghk/bDvtvykckld0AKbfuQzvD+2Rlsr0agjZxZ6786dart7MCb+IoxAaz28aIKu0r5
+         jU97rIgPPMsw6Xh0uI5w5qZ92ZLTVqjNaIi7cJWzQl/I2e+gAGjwPHzJ7RsGpj0DvxM8
+         XJHgreVIm1xQeI9KLSWdPnka/7A+NFJOVBhXLVlNFCAy5VLSr3pg/2l+fxeF+hZc8FAH
+         NIGBtwWBwrc6ZKE4gkCKz3o5zebil7r6zm4f7mR24MurTdNhOmDEAvLJce4GU5aQI3WO
+         hEn8oEo5kfR+AMZ8hE1FYEFlm63aAsld6rL57UYGH6zL0eAbmZRgM6aDGbHcXIGJjx4j
+         pDnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rk/31HBoHkJxXf6djtc/uU3Q17y+7Ai7L4MxYQ2v+II=;
-        b=g8mZnZPo6BMZp/rO2sSmm7nno6qdY04agupGdzm1RfJnCQR1mOfnVEIzqTzlCCvGcc
-         yDVZZHbTgr0gN0PygihzscJS53GmE/rcHshrFn49iCBIzZ5ahRLZzTKQu0VnTKBTRmJ4
-         NT6i75a0Nv8uZkzOVUPu/sVGEuRcO6fvSRPMarnMbyAcjVPYprGcfjV9fKjQBLXdN0J7
-         CGV/d39/uXFq9y/8TidkN9JKzGTNUJapBojGNMub8/vV0L1qwFfQPnbSzqRyUMmKRvl7
-         5j+l9A2ifT8FSEteJCLIqC20SdhAuV5sqbTxAqHi/YyYzE6d2BSmJ2vX4OxhdSg1G2xd
-         0xaw==
-X-Gm-Message-State: ANoB5pmjFWRWof+sndrR0PRAB1d9xXA1orupo17xTu+AKoXZdxg3AFqn
-        C5cMwWS+em7vyULZlPkCb28=
-X-Google-Smtp-Source: AA0mqf5HMC/eh9L0x7KAEkhUl/NoLQhWWWi547gKmrlakHepkposHqlYkLyXePIcH39s31ZOffkfaA==
-X-Received: by 2002:a05:600c:818:b0:3cf:54f4:eea with SMTP id k24-20020a05600c081800b003cf54f40eeamr8933017wmp.105.1668446728117;
-        Mon, 14 Nov 2022 09:25:28 -0800 (PST)
-Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id by7-20020a056000098700b002368a6deaf8sm10265378wrb.57.2022.11.14.09.25.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Nov 2022 09:25:27 -0800 (PST)
-Date:   Mon, 14 Nov 2022 17:25:25 +0000
-From:   Wei Liu <wei.liu@kernel.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Wei Liu <wei.liu@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dJhdvZIL4dk79Y3gG/NcL+fwogDMvYUZLhwwyEHygOE=;
+        b=E4qGdkHh9n+65eYsKYbzmDVpPbV1gO9hHe0d8WzHtPuudCV66InLzt7FsFo9ZW6Zzi
+         SnhfcIEt1t6i8CZKLkqzyQUzJwT9JODcZ++4PmsVpoDu5za6mnwk/dBUqe/FV8VPmyoA
+         dnp7fpCj84YRJowgVvQDa5RlOHh/B/AJCU/rrK2+9vPvBz8MGoK2lKH3n1FvyetjFK/I
+         /Xq5EF3zGXfLCQNuvmWn3yzQCz562ati8++oK/x9/Ewgd/OylqmYMM2p4SVHz+jIsP6b
+         4tYaYWazQmQ4zRrg6aZWSB1R2lhA4zX4JqXBMpQB8QRM729d+uiV6CRBrMjNt7sXZ6zl
+         AoVg==
+X-Gm-Message-State: ANoB5pnbq5mkjvGdzeqtr+7K7MU/XnIH6EwBSEyzEAlUDgZsO4xv7LUM
+        twaDRfqq4Dfx7PYjIDgufumlwa/KOoM3ucFKb5I=
+X-Google-Smtp-Source: AA0mqf5pgXx9393AjH3cG63sp/dEA3pT6uJPHn4NX8ei4qCoMqb/LVkaMds9N2NrFEeR1h/+POHFoFhG8AHgfc9Gv6o=
+X-Received: by 2002:a81:7912:0:b0:342:4d19:c7b with SMTP id
+ u18-20020a817912000000b003424d190c7bmr13767068ywc.67.1668450133388; Mon, 14
+ Nov 2022 10:22:13 -0800 (PST)
+MIME-Version: 1.0
+References: <20221110164152.26136-1-ojeda@kernel.org> <20221110164152.26136-26-ojeda@kernel.org>
+ <Y3JQ8qsaV/DN3OJ7@liuwe-devbox-debian-v2>
+In-Reply-To: <Y3JQ8qsaV/DN3OJ7@liuwe-devbox-debian-v2>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 14 Nov 2022 19:22:02 +0100
+Message-ID: <CANiq72ktW2=JCi3YzyrAd=_RioaWGZSyDusMU2f92_aL3tgvUA@mail.gmail.com>
+Subject: Re: [PATCH v1 25/28] rust: add `build_error` crate
+To:     Wei Liu <wei.liu@kernel.org>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-Subject: Re: [PATCH v1 07/28] rust: macros: take string literals in `module!`
-Message-ID: <Y3J6BetkCdIw7LbZ@liuwe-devbox-debian-v2>
-References: <20221110164152.26136-1-ojeda@kernel.org>
- <20221110164152.26136-8-ojeda@kernel.org>
- <Y3JU5xAGv3bNG7q2@liuwe-devbox-debian-v2>
- <CANiq72mE5=R4fv4Qee+hEkuXSHPjO3RzmOU45mqE3ztJ8XfS4A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mE5=R4fv4Qee+hEkuXSHPjO3RzmOU45mqE3ztJ8XfS4A@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Nov 14, 2022 at 05:46:05PM +0100, Miguel Ojeda wrote:
-> On Mon, Nov 14, 2022 at 3:47 PM Wei Liu <wei.liu@kernel.org> wrote:
-> >
-> > What's the rationale behind allowing UTF-8? Why not stick with ASCII
-> > only?
-> 
-> The reason is that there are already some cases on the C side.
-> 
-> For authors, there are about 158 non-ASCII in the kernel tree (if I
-> grepped correctly), e.g.:
-> 
->     MODULE_AUTHOR("漆鹏振 (Qi Pengzhen) <aric.pzqi@ingenic.com>");
->     MODULE_AUTHOR("Martin Povišer <povik+lin@cutebit.org>");
->     MODULE_AUTHOR("Jérôme Pouiller <jerome.pouiller@silabs.com>");
->     MODULE_AUTHOR("Uwe Kleine-König <u.kleine-koenig@pengutronix.de>");
-> 
-> There are also a few descriptions too, e.g.:
-> 
->     MODULE_DESCRIPTION("NAND flash driver for OLPC CAFÉ chip");
->     MODULE_DESCRIPTION("NHPoly1305 ε-almost-∆-universal hash function");
+On Mon, Nov 14, 2022 at 3:30 PM Wei Liu <wei.liu@kernel.org> wrote:
+>
+> a const function `build_error`
+>
+> Without this I read it as a "normal non-const function".
 
-Okay. That's fair enough.
+Sounds good to me, especially given the sentence that goes after that.
 
-Thanks,
-Wei.
+(I think "function" does not imply one or the other in principle. To
+me, `const` ones are normal too, in the sense that they can be used as
+any other function.)
 
-> 
-> Cheers,
-> Miguel
+> I can work out what the code does, but I also happen to know what Rust's
+> const means and its behaviour in non-const context. Other kernel
+> developers may not. Even so the description is a bit difficult for me to
+> parse.
+>
+> Maybe a few sentences about const and its behaviours can help?
+
+Not sure if we should explain language details in the documentation of
+particular functions. But I agree this case is a bit special.
+
+What about linking the Rust reference/book/... (so that those terms
+are clickable when rendered)?
+
+Thanks a lot for the reviews, Wei!
+
+Cheers,
+Miguel
