@@ -2,80 +2,94 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0CEAC433FE
-	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Nov 2022 17:23:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A680FC4332F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Nov 2022 17:26:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237302AbiKNRXC (ORCPT
+        id S236024AbiKNRZm (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 14 Nov 2022 12:23:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58352 "EHLO
+        Mon, 14 Nov 2022 12:25:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237557AbiKNRWs (ORCPT
+        with ESMTP id S237571AbiKNRZa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 14 Nov 2022 12:22:48 -0500
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 413FF22B2C;
-        Mon, 14 Nov 2022 09:22:46 -0800 (PST)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-370547b8ca0so113505917b3.0;
-        Mon, 14 Nov 2022 09:22:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GVt/oFN+blh8k3TM/7jbMZ0qqobahGcF8Xv/SNk9ry8=;
-        b=JxRsi2r8POhUZC2Jpt9hW8/vEhZqbOlsDBFVPHtJ+MqwwYJQynqIeZgMLiIS/3Qsj8
-         fLza3JPx4tA3Lu5EvbWMONrZp0sdBBb408cH40SYnGzMBsFzTrsXi61airCZCdHP6SSe
-         sr68V/3uEX+Zh0By77vVlPycMCu74NCMfxO3Bvf2+XxNnza5aoOlqI+RddGfC2RhMXN9
-         lyQ9tyqtH0W8D0k2TX21qv7+J5lVZzz/Pav4K+eOHt83vtdura8Tukg7KwpfqVcqhtij
-         czchqbxLt30dcm3CZe7E8PEB+6fGP+uVD5Ma2G09+/HnMlVQk5tCcY7aLk0bnomdyf6W
-         4XNQ==
+        Mon, 14 Nov 2022 12:25:30 -0500
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BB33FEC;
+        Mon, 14 Nov 2022 09:25:29 -0800 (PST)
+Received: by mail-wm1-f41.google.com with SMTP id m7-20020a05600c090700b003cf8a105d9eso8382523wmp.5;
+        Mon, 14 Nov 2022 09:25:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GVt/oFN+blh8k3TM/7jbMZ0qqobahGcF8Xv/SNk9ry8=;
-        b=8DONwyoqVPrNBKEwLlZLmz+JPZpR53113CRTZd4ECdAS+BqdftkGrOEmkuJvvE/SR4
-         AHnTtEcsmbAbWKv6bSq2gFpDtpmOUZ4Qiytr/97kBIkW8lsv3x0ESvFNAGZ9meuOpb0L
-         5+UMSMC6EepbmVYx4S/fxMJC/+6lsfkf3abeJALn6jbkM4vQotoXDjQpfABYBy4AzS0J
-         7ygriTNDDxJOcCTEDGUFSNc2jGqPb8HRt42tshGsEqtZ39Dj2Nk/GMbJRqUlH+sllMRX
-         gMqwHyHqsXQRK67t0BQkfL3wsIb51jC8HbbwDfovDgoycdDh8UGCAbaFktjQDDUylvAo
-         M0mQ==
-X-Gm-Message-State: ANoB5pknHlBO8zsNJq565XAD9haKZUyYFmMasDzitiOyGvx7ivSPanlG
-        neC5of8OtmmI2raQx0+cOkiVmCaqK52FI6Zw3v8=
-X-Google-Smtp-Source: AA0mqf4c2cLC/QN9jBTixqIHgPnVn5eykA6zqD6gyzAo3/QKG3yVYltgm8C0uuAUZmYmQNdqG8amU6+xiEgsnFdyeHU=
-X-Received: by 2002:a81:9c12:0:b0:352:4422:d530 with SMTP id
- m18-20020a819c12000000b003524422d530mr14111616ywa.256.1668446565529; Mon, 14
- Nov 2022 09:22:45 -0800 (PST)
-MIME-Version: 1.0
-References: <20221110164152.26136-1-ojeda@kernel.org> <20221110164152.26136-6-ojeda@kernel.org>
- <20221114142611.2a21d4e9@GaryWorkstation>
-In-Reply-To: <20221114142611.2a21d4e9@GaryWorkstation>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 14 Nov 2022 18:22:34 +0100
-Message-ID: <CANiq72naZ_dpgCo2VukXmoGNefXTzR-WUN_HywRrgJ+bUbeEPQ@mail.gmail.com>
-Subject: Re: [PATCH v1 05/28] rust: macros: add `concat_idents!` proc macro
-To:     Gary Guo <gary@garyguo.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rk/31HBoHkJxXf6djtc/uU3Q17y+7Ai7L4MxYQ2v+II=;
+        b=g8mZnZPo6BMZp/rO2sSmm7nno6qdY04agupGdzm1RfJnCQR1mOfnVEIzqTzlCCvGcc
+         yDVZZHbTgr0gN0PygihzscJS53GmE/rcHshrFn49iCBIzZ5ahRLZzTKQu0VnTKBTRmJ4
+         NT6i75a0Nv8uZkzOVUPu/sVGEuRcO6fvSRPMarnMbyAcjVPYprGcfjV9fKjQBLXdN0J7
+         CGV/d39/uXFq9y/8TidkN9JKzGTNUJapBojGNMub8/vV0L1qwFfQPnbSzqRyUMmKRvl7
+         5j+l9A2ifT8FSEteJCLIqC20SdhAuV5sqbTxAqHi/YyYzE6d2BSmJ2vX4OxhdSg1G2xd
+         0xaw==
+X-Gm-Message-State: ANoB5pmjFWRWof+sndrR0PRAB1d9xXA1orupo17xTu+AKoXZdxg3AFqn
+        C5cMwWS+em7vyULZlPkCb28=
+X-Google-Smtp-Source: AA0mqf5HMC/eh9L0x7KAEkhUl/NoLQhWWWi547gKmrlakHepkposHqlYkLyXePIcH39s31ZOffkfaA==
+X-Received: by 2002:a05:600c:818:b0:3cf:54f4:eea with SMTP id k24-20020a05600c081800b003cf54f40eeamr8933017wmp.105.1668446728117;
+        Mon, 14 Nov 2022 09:25:28 -0800 (PST)
+Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id by7-20020a056000098700b002368a6deaf8sm10265378wrb.57.2022.11.14.09.25.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Nov 2022 09:25:27 -0800 (PST)
+Date:   Mon, 14 Nov 2022 17:25:25 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Wei Liu <wei.liu@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1 07/28] rust: macros: take string literals in `module!`
+Message-ID: <Y3J6BetkCdIw7LbZ@liuwe-devbox-debian-v2>
+References: <20221110164152.26136-1-ojeda@kernel.org>
+ <20221110164152.26136-8-ojeda@kernel.org>
+ <Y3JU5xAGv3bNG7q2@liuwe-devbox-debian-v2>
+ <CANiq72mE5=R4fv4Qee+hEkuXSHPjO3RzmOU45mqE3ztJ8XfS4A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mE5=R4fv4Qee+hEkuXSHPjO3RzmOU45mqE3ztJ8XfS4A@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Nov 14, 2022 at 3:26 PM Gary Guo <gary@garyguo.net> wrote:
->
-> Probably clearer to write `Ident::new(&format!("{a}{b}"), b.span())`
-> here?
+On Mon, Nov 14, 2022 at 05:46:05PM +0100, Miguel Ojeda wrote:
+> On Mon, Nov 14, 2022 at 3:47 PM Wei Liu <wei.liu@kernel.org> wrote:
+> >
+> > What's the rationale behind allowing UTF-8? Why not stick with ASCII
+> > only?
+> 
+> The reason is that there are already some cases on the C side.
+> 
+> For authors, there are about 158 non-ASCII in the kernel tree (if I
+> grepped correctly), e.g.:
+> 
+>     MODULE_AUTHOR("漆鹏振 (Qi Pengzhen) <aric.pzqi@ingenic.com>");
+>     MODULE_AUTHOR("Martin Povišer <povik+lin@cutebit.org>");
+>     MODULE_AUTHOR("Jérôme Pouiller <jerome.pouiller@silabs.com>");
+>     MODULE_AUTHOR("Uwe Kleine-König <u.kleine-koenig@pengutronix.de>");
+> 
+> There are also a few descriptions too, e.g.:
+> 
+>     MODULE_DESCRIPTION("NAND flash driver for OLPC CAFÉ chip");
+>     MODULE_DESCRIPTION("NHPoly1305 ε-almost-∆-universal hash function");
 
-Same as Bj=C3=B6rn, it also looks better to me. I will update it.
+Okay. That's fair enough.
 
-Cheers,
-Miguel
+Thanks,
+Wei.
+
+> 
+> Cheers,
+> Miguel
