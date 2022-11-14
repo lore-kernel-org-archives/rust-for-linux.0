@@ -2,79 +2,89 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 842E3C433FE
-	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Nov 2022 18:29:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E2F16C4332F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Nov 2022 20:09:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236681AbiKNS3A (ORCPT
+        id S236559AbiKNUJO (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 14 Nov 2022 13:29:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56546 "EHLO
+        Mon, 14 Nov 2022 15:09:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236514AbiKNS3A (ORCPT
+        with ESMTP id S237449AbiKNUJM (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 14 Nov 2022 13:29:00 -0500
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8781FCF6;
-        Mon, 14 Nov 2022 10:28:59 -0800 (PST)
-Received: by mail-yb1-xb31.google.com with SMTP id z192so14546521yba.0;
-        Mon, 14 Nov 2022 10:28:59 -0800 (PST)
+        Mon, 14 Nov 2022 15:09:12 -0500
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C751A38D;
+        Mon, 14 Nov 2022 12:09:11 -0800 (PST)
+Received: by mail-ej1-x62c.google.com with SMTP id ud5so31090463ejc.4;
+        Mon, 14 Nov 2022 12:09:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=J7Cbl6yOGS5glTesfz4JpnFGgPjdFsy/hI/Fu3TtNcA=;
-        b=drX29G1u9fMT9l6Hp7fcV2qNgmfPxuB59iVHntbMgsAzh0smdUEpBxZICkvBwf1FFf
-         UNqfH5/yeOia6fW3ZDVfWdjj5T9hDST/nbTIZiSD2IRZzeYr0arXTPy+uXvzG8ZbLBVW
-         92wEpC//TcGJ6N+awQyc4zXJfMAeukg14QxIeluoluAbRVHQToCXLpVshkgTVv+G/ShF
-         bpOGkvBpTzkExgO3abE2mr4NGZ9CNzospH7d52qv2z3YJ4PLWdV4i1dwsOTyLTA8EuQH
-         K6aqECR+8Dw14+5Lm7NGwepqtapNT5qEuoVajz6zr8d2WFuh6KMK/nQDrH7OALhdCKGH
-         OFAg==
+        bh=MdJG0hGFUyyCI91ddj8JC9nYTc4V0N35yzoPYsarpcg=;
+        b=if1cvVB7kZ3p6IsI1icI+itclbcxzY0WdmaPbBN6tPazOVZ0CokbOi0SnbOn+6ucyX
+         H6Pl5xHiYQC+3gPfhOpXVpfLkA6nT5EDTnGLGfk/KBaN1UDYP1rrfSYg9QPKptNWXVFv
+         rGD05TfqEBYD9YEP6d+PtNxbQQmn0kfcF6yLzRRKl53NDrXSiACfYUbvh/KpfFODdcDN
+         NWnOTeo9J971LsIQ/6pRldSAfhN/UWaQD9nqk0mTxmf0BpJR7eUCQbY/bU1g1u5pZfYu
+         +ZEoBhPqHeLiHny5rnMRQedlXDVrTnt/u7kPaSy+ArQQfw8PxPpzS5vjVDdZD6lcR76k
+         IHfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=J7Cbl6yOGS5glTesfz4JpnFGgPjdFsy/hI/Fu3TtNcA=;
-        b=c+yhOpsxRCAlynX1UzsfdDdGLQ4h6/A2oh8gTVdUuAns+RUnqaP4fJhNBB8n34Wvd2
-         v6FAEE6cxSzr1UTTL1PbZMdk7HJl9bDe0dSGaPxo4gMRTM0W+/crMBGkEqU27IyQdINL
-         WWTt9K4eOfJKT1Gkc2GYoebIYQdj7FuZaS5H6PNTv6xO2zcnIZrHOGFcFl7jlF3d2OUE
-         Wpfc1Rt1E2Ct26jCxzJOZa0UHOqWprB9LO7FKjgr8MFowbmvTOhU9AiFzpg/TpkkXqha
-         FY6cmjd5cB49nMNxHrSg9RtRLE2EavmRAUVkvJILn1mK+BMBT7SjvP0xkZOfC6IgyCnj
-         39rA==
-X-Gm-Message-State: ANoB5pmRr+sqpU+orrzLPJ56+x9/WF6QU3S+hMY+qje5tTVKcuTrZaKe
-        PITTMuHHKmwF3egzEe4f9x/yYfZkMPS05t7tFTz2ZpxjN3w=
-X-Google-Smtp-Source: AA0mqf5aQ0w73PMOl6ZBZBmojg1Wqgc36djy6RijD/3PnIFpiT6VewzgiT0qKGSOqwdNYTYxj7W5Ew+U+YKkEO9guNM=
-X-Received: by 2002:a25:41d7:0:b0:6cb:8949:fdbb with SMTP id
- o206-20020a2541d7000000b006cb8949fdbbmr13428033yba.328.1668450538671; Mon, 14
- Nov 2022 10:28:58 -0800 (PST)
+        bh=MdJG0hGFUyyCI91ddj8JC9nYTc4V0N35yzoPYsarpcg=;
+        b=I9xpd0nrvuyld97tBN3BdM8OE8y1uEr8eMkeF+sLGsc3QmRHkwvpRL4+ufQv1oS6g1
+         fkYuyP4Hne6uONpWo7VG2s8+NvlvZgVxQCariortUxNCMJu236VYJPGPHWGxbh5/Txt4
+         6s+k+tNnNgJdAV3vTYu/1o7WggxzNFCrcQuZ2CWYrnt9iw+Py0QjaPPQ2SarSU8/iQe8
+         qtI72GyQtSnrSC1seU8v4Q+XF3DXJM8fryFqz4SghmXauNuZncu3bmzf/P+Y5FiNslRC
+         DcrjNGZWNqTIfQuPYOd17BD3Pw9FOSeUDp0TPbszs/sv/wFNV5N+IxQHiM1m2SD3G5Ex
+         3CqQ==
+X-Gm-Message-State: ANoB5pmS17qCQU6qvlJhDF4MsrmTavXG9QE0f6lFIJTfnVu0JQ+zFE+8
+        m+ThDuVmUPa6nePFn8dszb0poKqRAAiJlVa6P7o=
+X-Google-Smtp-Source: AA0mqf74TSAkf0yvcI1luyzDEnm65fgkWY2yGou5WVEL5BlFJ1qVXKE6gBq540y26pPNkjIbC5NztZ+6bYP+FGRr3j8=
+X-Received: by 2002:a17:906:3ac3:b0:7af:da0:aebe with SMTP id
+ z3-20020a1709063ac300b007af0da0aebemr2727739ejd.723.1668456549600; Mon, 14
+ Nov 2022 12:09:09 -0800 (PST)
 MIME-Version: 1.0
-References: <20221110164152.26136-1-ojeda@kernel.org> <20221110164152.26136-20-ojeda@kernel.org>
- <20221114143928.4dde6589@GaryWorkstation>
-In-Reply-To: <20221114143928.4dde6589@GaryWorkstation>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 14 Nov 2022 19:28:47 +0100
-Message-ID: <CANiq72=1q8KDtjYqb286Chs7KFi3BXVAyCyHO=bpj+yY25EfBg@mail.gmail.com>
-Subject: Re: [PATCH v1 19/28] rust: str: add `c_str!` macro
-To:     Gary Guo <gary@garyguo.net>
+References: <20221110164152.26136-1-ojeda@kernel.org> <20221110164152.26136-3-ojeda@kernel.org>
+ <Y3JTZ5sle+/A/CdD@liuwe-devbox-debian-v2>
+In-Reply-To: <Y3JTZ5sle+/A/CdD@liuwe-devbox-debian-v2>
+From:   =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Date:   Mon, 14 Nov 2022 10:01:20 -0500
+Message-ID: <CAA76j92+X=GvnPq_MaX3qDiQ1vthoEKa9EZLb0gaRSNHVhWiUQ@mail.gmail.com>
+Subject: Re: [PATCH v1 02/28] rust: print: add more `pr_*!` levels
+To:     Wei Liu <wei.liu@kernel.org>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
+        patches@lists.linux.dev, Adam Bratschi-Kaye <ark.email@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Nov 14, 2022 at 3:39 PM Gary Guo <gary@garyguo.net> wrote:
+On Mon, 14 Nov 2022 at 09:43, Wei Liu <wei.liu@kernel.org> wrote:
 >
-> I wrote this code when `const_panic` was not yet stable. Now we have
-> stable const panic this function could be removed.
+> On Thu, Nov 10, 2022 at 05:41:14PM +0100, Miguel Ojeda wrote:
+> > Currently, only `pr_info!` (for the minimal sample) and
+> > `pr_emerg!` (for the panic handler) are there.
+> >
+> > Add the other levels as new macros, i.e. `pr_alert!`, `pr_crit!`,
+> > `pr_err!`, `pr_warn!`, `pr_notice!` and `pr_debug!`.
+> >
+> > Co-developed-by: Adam Bratschi-Kaye <ark.email@gmail.com>
+> > Signed-off-by: Adam Bratschi-Kaye <ark.email@gmail.com>
+> > Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > Co-developed-by: Gary Guo <gary@garyguo.net>
+> > Signed-off-by: Gary Guo <gary@garyguo.net>
+> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+>
+> Reviewed-by: Wei Liu <wei.liu@kernel.org>
 
-Indeed, we also took advantage of it in `static_assert!` when it got
-stabilized but not here. I will update it.
-
-Cheers,
-Miguel
+Reviewed-by: Sergio Gonzalez Collado <sergio.collado@gmail.com>
