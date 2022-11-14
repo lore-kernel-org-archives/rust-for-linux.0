@@ -2,76 +2,73 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 884C0C43219
-	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Nov 2022 14:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2815BC4332F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 14 Nov 2022 14:40:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236791AbiKNOkN (ORCPT
+        id S237062AbiKNOk5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 14 Nov 2022 09:40:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46594 "EHLO
+        Mon, 14 Nov 2022 09:40:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237069AbiKNOjt (ORCPT
+        with ESMTP id S237085AbiKNOka (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 14 Nov 2022 09:39:49 -0500
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CC412251C
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Nov 2022 06:39:37 -0800 (PST)
-Date:   Mon, 14 Nov 2022 14:39:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1668436773; x=1668695973;
-        bh=3kJuGS5uVSVzPLoxWGsOQFBiLJ7HrhLDmqmpBDrS0NA=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=fJTfY+Pn+ZqZee+nMnAaJCbwPHTnfoPKAv/qf7IIWScErzoVWFnp2pfEWWeIFYhHd
-         ///1e33rt6sdUzzuUe9+FtQ2p9DcwSKdhrUMH0FM9GMCj2FyjgJAp1RBwMIMM5lLLd
-         9Z2mTknOdkKuJ48KpYoZXOUu1/xeqRMTXofjDXyQr3NKCJdWslgHUqF6o0wemlOuCC
-         4r/B5htHpS8e3qV84LYyr1rgRYnE9kDI+LwfV/rEm6nbpLBVPCVrAfduasdn6Aw3h3
-         +eDyPYWqDP53CMbqT2lf/u9usEzh3NIpuemJWp1X5En+NX3QApYb/0WIhvnpjDoQv6
-         tZwLblJRB2kDA==
-To:     Gary Guo <gary@garyguo.net>
-From:   =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Mon, 14 Nov 2022 09:40:30 -0500
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284CD2C66C;
+        Mon, 14 Nov 2022 06:40:29 -0800 (PST)
+Received: by mail-wr1-f53.google.com with SMTP id cl5so18638913wrb.9;
+        Mon, 14 Nov 2022 06:40:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PjVZf+mxWBKV9Vk3O4dkAv2lEuk8DHfwjrkqwLaDClY=;
+        b=i6R6Axha3UyoAPy8lq+mc1P2kGiqku5nX6EDpPsOdNOGNbTLAS9LaUshfAi/TUzMYv
+         NAbeZIBNIZuFzrzN8YEulOVRbXgmNZNwvYRaSnbommxDYr1JsKf+oEFxiAT6aqqH2D7v
+         at0djkB4cJaAye2fhgbQciFLDBR+wyJG5FkHUr+VPbn2MroNvheFX4sdClnXXkwCCE9L
+         VFS3fgQKtZJEmxMgt3B+3Z1qtkVV9WuqVsNfb8v+2AY0l/Y+bQoNqL4wczqCAMGDu6zv
+         MgfuS3P360g3tejCHvOqPVg9mKkeZ+Bx1pcu+N9CwCUmNIW1LH/vjl3bg6dFSwJhtp+z
+         kizg==
+X-Gm-Message-State: ANoB5pkND2Kg0sRA0Tll05lhipmU7gHXQxZi9QjOSZK6qDkz3kQ/xv1M
+        XkZW7cMtyMXS5SBq0ARmE/0=
+X-Google-Smtp-Source: AA0mqf4DmpPoVZ+6HRIr/baXFhrgBeJ+cJztZuX+npz6FixFFaPWN2PaoUw6Sx6YigXPZt8cJlTMRA==
+X-Received: by 2002:adf:e80e:0:b0:22e:3e28:f8de with SMTP id o14-20020adfe80e000000b0022e3e28f8demr7995940wrm.157.1668436827721;
+        Mon, 14 Nov 2022 06:40:27 -0800 (PST)
+Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id n1-20020a5d6b81000000b0022ac672654dsm9618991wrx.58.2022.11.14.06.40.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Nov 2022 06:40:27 -0800 (PST)
+Date:   Mon, 14 Nov 2022 14:40:25 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: Re: [PATCH v1 05/28] rust: macros: add `concat_idents!` proc macro
-Message-ID: <_CF9aCGri4-OVipaa-ZySoRbBu17nlThYL3fGiHugcWQNAjgtE-ZBcekhmg_pM6uNGWsSuqoke-pGPgB7ZlGCI1Iyo_bl4RhtzfbdI0Z18g=@protonmail.com>
-In-Reply-To: <20221114142611.2a21d4e9@GaryWorkstation>
-References: <20221110164152.26136-1-ojeda@kernel.org> <20221110164152.26136-6-ojeda@kernel.org> <20221114142611.2a21d4e9@GaryWorkstation>
-Feedback-ID: 27884398:user:proton
+        patches@lists.linux.dev, Wei Liu <wei.liu@kernel.org>
+Subject: Re: [PATCH v1 01/28] rust: prelude: split re-exports into groups
+Message-ID: <Y3JTWdYNijRZmwUi@liuwe-devbox-debian-v2>
+References: <20221110164152.26136-1-ojeda@kernel.org>
+ <20221110164152.26136-2-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221110164152.26136-2-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Monday, November 14th, 2022 at 15:26, Gary Guo <gary@garyguo.net> wrote:
+On Thu, Nov 10, 2022 at 05:41:13PM +0100, Miguel Ojeda wrote:
+> Split the prelude re-exports into groups: first the ones coming
+> from the `core` crate, then `alloc`, then our own crates and
+> finally the ones from modules from `kernel` itself (i.e. `super`).
+> 
+> We are doing this manually for the moment, but ideally, long-term,
+> this could be automated via `rustfmt` with options such as
+> `group_imports` and `imports_granularity` (both currently unstable).
+> 
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-
-> On Thu, 10 Nov 2022 17:41:17 +0100
-> Miguel Ojeda ojeda@kernel.org wrote:
->=20
-> > +pub(crate) fn concat_idents(ts: TokenStream) -> TokenStream {
-> > + let mut it =3D ts.into_iter();
-> > + let a =3D expect_ident(&mut it);
-> > + assert_eq!(expect_punct(&mut it), ',');
-> > + let b =3D expect_ident(&mut it);
-> > + assert!(it.next().is_none(), "only two idents can be concatenated");
-> > + let res =3D Ident::new(&(a.to_string() + &b.to_string()), b.span());
->=20
->=20
-> Probably clearer to write `Ident::new(&format!("{a}{b}"), b.span())`
-> here?
->=20
-> Best,
-> Gary
-
-I agree that is clearer. I hadn't considered that Ident implements Display =
-when I wrote it.
-
-Cheers,
-Bj=C3=B6rn
+Reviewed-by: Wei Liu <wei.liu@kernel.org>
