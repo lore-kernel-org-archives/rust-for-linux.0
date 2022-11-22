@@ -2,62 +2,58 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2301C43217
-	for <rust-for-linux@archiver.kernel.org>; Tue, 22 Nov 2022 13:01:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB98BC46467
+	for <rust-for-linux@archiver.kernel.org>; Tue, 22 Nov 2022 13:54:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232981AbiKVNA7 (ORCPT
+        id S233929AbiKVNyn (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 22 Nov 2022 08:00:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33464 "EHLO
+        Tue, 22 Nov 2022 08:54:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232723AbiKVNA4 (ORCPT
+        with ESMTP id S233522AbiKVNyk (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 22 Nov 2022 08:00:56 -0500
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E1461BB6;
-        Tue, 22 Nov 2022 05:00:54 -0800 (PST)
-Received: by mail-yb1-xb2e.google.com with SMTP id c15so17198210ybf.1;
-        Tue, 22 Nov 2022 05:00:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bzFWaMTOU84LonhG6RqUM6eS/ww8ShETQwxQFHcZhzQ=;
-        b=hWFG/bBbLnshBsRtcZgg0ZK2MTCNImlyP7W0RP11CSS81Klbd0GiGl5SdbT2tMJBwa
-         Wi+XD+Ia7y6J0EAhtcDIN6HTKJBGRmfxZuERDMOCGbfaaMW3Xv4j1uyr51fnG9LNMX/+
-         l0Witm1A84qPPOgT5T4FrqTzILrSOSjVsa28MIO+WFtb2gfKHHtdZtroOiUpFbry6kAE
-         WkYNbjP3wn0ONrU569BWszTzlds+3zpLpdvKGvocHXFW6miZmbGTv2yri/Et4F7OfcBS
-         r7171vCkGRoWg6HKR+8dAhvNABplUNADTml6epTufg03NJ06R57EWUxn+W+bUADqsxTy
-         RcZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bzFWaMTOU84LonhG6RqUM6eS/ww8ShETQwxQFHcZhzQ=;
-        b=yrjS8fcqmotLHwp9qkUX/4fwYEl3hovhZfHtd/c8/rRcwK7VKdqr252oEwV0/jy7DN
-         a8K2bkneZ9T9eM1EJVkSslonynNovA6PBuXLXAnjX9r73FnGLEv6ploPBS821bSP+6sz
-         vGrEbSw/7A6z1uLutNwI3nR+GJrknyVydCtnImFgUwsV25LIt8YWkvgt3lpicvsyFN6s
-         pZS+yPMlFCWn/iZis775f/FhpHxslENl7B2cmkpifqMQKBYiTXFjZF836PKVarghp6cc
-         g6dK8hrMk3sb0sQYpchqP4Qxc0ZRCVsZfWfo/5tVZboQnbrtou1M0ZChIt9HTCTkNakK
-         bm1g==
-X-Gm-Message-State: ANoB5pntZ3Wm4w/F8N/pkka0bRGq7fIoA667HmFJdIuYxr26+393Holo
-        +nCLY3FmQ2hcaAGvMMks+a7cywEchWXwswDfwODR3ucuQ1LOTQ==
-X-Google-Smtp-Source: AA0mqf69nBW8D0HRJNqZOBk25rF8Gtu3woMz3lZYawkR/Dl8xdcolr0QdPhoZNJA2AGtPB3SHLnXWSWpIORSmqGwacA=
-X-Received: by 2002:a25:7655:0:b0:6d3:7617:b8ea with SMTP id
- r82-20020a257655000000b006d37617b8eamr3507384ybc.75.1669122054123; Tue, 22
- Nov 2022 05:00:54 -0800 (PST)
+        Tue, 22 Nov 2022 08:54:40 -0500
+X-Greylist: delayed 174 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Nov 2022 05:54:39 PST
+Received: from condef-09.nifty.com (condef-09.nifty.com [202.248.20.74])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072DA6584E;
+        Tue, 22 Nov 2022 05:54:38 -0800 (PST)
+Received: from conssluserg-04.nifty.com ([10.126.8.83])by condef-09.nifty.com with ESMTP id 2AMDn4PY011036;
+        Tue, 22 Nov 2022 22:49:04 +0900
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53]) (authenticated)
+        by conssluserg-04.nifty.com with ESMTP id 2AMDmlN1010447;
+        Tue, 22 Nov 2022 22:48:48 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 2AMDmlN1010447
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1669124928;
+        bh=mB9MB0wmXgKDnvTvLQGXp+po5aE+iQw2dlQ5Zq7YtEY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=w0lm5hj2w8XZ9k5PgjO7zeRmAvGp1woKAD7jJ5+Qo6A0EKcPDU9trrKIZbN+ZvljH
+         yrkx62M6BkGHbYg+wG01UIYyuCjk+QhAbpOLSk4j3hcgEypeo/2U3fUntPz1DI8JGO
+         aOzx1XMC89/shhkOvzZZYD9rOqSaFZE+Kxe6pNUXjRZXeALReihL2YBOu/0xhyX73T
+         D28qwAhcExOi/QzfBiquUmq4Kr/dQ5/OTPM5idiWB2RO8Sswjbz5I/PC54hScMtx3/
+         Jp12FCIRfMB05xDv/4hLI78EmU8qvlVVFu7RR1sInKXPC4Lk4ICDbIdiJvk5KvOESZ
+         YPABeugITWp2w==
+X-Nifty-SrcIP: [209.85.210.53]
+Received: by mail-ot1-f53.google.com with SMTP id db10-20020a0568306b0a00b0066d43e80118so9335953otb.1;
+        Tue, 22 Nov 2022 05:48:48 -0800 (PST)
+X-Gm-Message-State: ANoB5pmOnAOxLOZSmMnL/WNA0SXxOHvpHOTaIg0HqIzILP49z/0v/Kso
+        uRQrRSrIqNMP3B0qSKBsy50f+S65hzZAcDfM2FU=
+X-Google-Smtp-Source: AA0mqf5pHVS629/y7ez0rQm3aPO/Mua/2z0tq2Bz9Irr2iEKShjJJ1xvJ3afZy4dqWEvHSz3nM4DwFlgaJT0X2KB/Fg=
+X-Received: by 2002:a9d:282:0:b0:66c:794e:f8c6 with SMTP id
+ 2-20020a9d0282000000b0066c794ef8c6mr12425329otl.343.1669124927056; Tue, 22
+ Nov 2022 05:48:47 -0800 (PST)
 MIME-Version: 1.0
-References: <20221121162016.GA2422@DESKTOP-NK4TH6S.localdomain>
-In-Reply-To: <20221121162016.GA2422@DESKTOP-NK4TH6S.localdomain>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 22 Nov 2022 14:00:43 +0100
-Message-ID: <CANiq72nGhJqrZOXhNio0Uu-OfUC5BOTzMLgAMO4r0WZdt1uzCw@mail.gmail.com>
+References: <20221121162016.GA2422@DESKTOP-NK4TH6S.localdomain> <CANiq72nGhJqrZOXhNio0Uu-OfUC5BOTzMLgAMO4r0WZdt1uzCw@mail.gmail.com>
+In-Reply-To: <CANiq72nGhJqrZOXhNio0Uu-OfUC5BOTzMLgAMO4r0WZdt1uzCw@mail.gmail.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Tue, 22 Nov 2022 22:48:10 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARf8gQTqz=xksoxL_DYB8qW6ii5s2gKqY_+1LuUF7H7_g@mail.gmail.com>
+Message-ID: <CAK7LNARf8gQTqz=xksoxL_DYB8qW6ii5s2gKqY_+1LuUF7H7_g@mail.gmail.com>
 Subject: Re: [PATCH] scripts: add rust in scripts/Makefile.package
-To:     Paran Lee <p4ranlee@gmail.com>
-Cc:     ojeda@kernel.org, austindh.kim@gmail.com, pmnxis@gmail.com,
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Paran Lee <p4ranlee@gmail.com>, ojeda@kernel.org,
+        austindh.kim@gmail.com, pmnxis@gmail.com,
         rust-for-linux@vger.kernel.org,
-        Masahiro Yamada <masahiroy@kernel.org>,
         Michal Marek <michal.lkml@markovi.net>,
         Nick Desaulniers <ndesaulniers@google.com>,
         Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
@@ -66,19 +62,41 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Paran,
-
-On Mon, Nov 21, 2022 at 5:26 PM Paran Lee <p4ranlee@gmail.com> wrote:
+On Tue, Nov 22, 2022 at 10:00 PM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> -               security sound tools usr virt \
-> +               security sound tools usr virt rust \
+> Hi Paran,
+>
+> On Mon, Nov 21, 2022 at 5:26 PM Paran Lee <p4ranlee@gmail.com> wrote:
+> >
+> > -               security sound tools usr virt \
+> > +               security sound tools usr virt rust \
+>
+> Looks like this list is intended to be sorted, right?
 
-Looks like this list is intended to be sorted, right?
 
-Thanks for the patch!
+Yes, it is better to keep it sorted.
 
-(Also, please use `scripts/get_maintainers.pl` to find the most
-relevant maintainers and lists -- I have Cc'd them here)
 
-Cheers,
-Miguel
+>
+> Thanks for the patch!
+>
+> (Also, please use `scripts/get_maintainers.pl` to find the most
+> relevant maintainers and lists -- I have Cc'd them here)
+
+
+Yeah, presumably it should go to kbuild.
+
+Please send v2 to
+linux-kbuild@vger.kernel.org
+
+Thanks.
+
+> Cheers,
+> Miguel
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
