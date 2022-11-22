@@ -2,179 +2,83 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14DB5C4332F
-	for <rust-for-linux@archiver.kernel.org>; Mon, 21 Nov 2022 22:52:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2301C43217
+	for <rust-for-linux@archiver.kernel.org>; Tue, 22 Nov 2022 13:01:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229639AbiKUWwJ (ORCPT
+        id S232981AbiKVNA7 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 21 Nov 2022 17:52:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50018 "EHLO
+        Tue, 22 Nov 2022 08:00:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbiKUWwJ (ORCPT
+        with ESMTP id S232723AbiKVNA4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 21 Nov 2022 17:52:09 -0500
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9684C786E8;
-        Mon, 21 Nov 2022 14:52:07 -0800 (PST)
-Received: by mail-ej1-x635.google.com with SMTP id bj12so31769978ejb.13;
-        Mon, 21 Nov 2022 14:52:07 -0800 (PST)
+        Tue, 22 Nov 2022 08:00:56 -0500
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E1461BB6;
+        Tue, 22 Nov 2022 05:00:54 -0800 (PST)
+Received: by mail-yb1-xb2e.google.com with SMTP id c15so17198210ybf.1;
+        Tue, 22 Nov 2022 05:00:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NGPJoGgEf7UilkDf7rSI+x9NQwnpZsCCeFTrbXEasDc=;
-        b=OwNcrxDRAmcQHMo9wTgynMmwAIRBuCsrD3KspfMDRMphTsKqByctGClHVT+KoyeXGA
-         y78uoy9R3NCzMwSDIgQIP6He3AFAaGEH76DCk1EuGIMmyth5vV7QglQl/LCRm0jqas5P
-         w3a/xkkRcbQqsEhyI3fTvKMx0p65zHOJfC72Nc2a1X7Lz+5rpWlwzCLqiHOhV933mB/h
-         kAyGYEeK2IfJnQqOtOrs+EX95fQ5o7+OZQby75E17scPZ68/Owxeei5k64EE5IcT7o5S
-         sulDKG4Eh5/SNFJs4BgyQZn37fc/knirDuMEa0BhfNsfHUJDx8djGTvk9qRRhkvkeNc+
-         WY+g==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bzFWaMTOU84LonhG6RqUM6eS/ww8ShETQwxQFHcZhzQ=;
+        b=hWFG/bBbLnshBsRtcZgg0ZK2MTCNImlyP7W0RP11CSS81Klbd0GiGl5SdbT2tMJBwa
+         Wi+XD+Ia7y6J0EAhtcDIN6HTKJBGRmfxZuERDMOCGbfaaMW3Xv4j1uyr51fnG9LNMX/+
+         l0Witm1A84qPPOgT5T4FrqTzILrSOSjVsa28MIO+WFtb2gfKHHtdZtroOiUpFbry6kAE
+         WkYNbjP3wn0ONrU569BWszTzlds+3zpLpdvKGvocHXFW6miZmbGTv2yri/Et4F7OfcBS
+         r7171vCkGRoWg6HKR+8dAhvNABplUNADTml6epTufg03NJ06R57EWUxn+W+bUADqsxTy
+         RcZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NGPJoGgEf7UilkDf7rSI+x9NQwnpZsCCeFTrbXEasDc=;
-        b=nvkrrowz0apfCz2K4N7jXCtWSJ6DmBAY9c1diBFyy1VrHhM5okjn35z7a0dmvzAr56
-         +dvbETKHZrwXL5TKyqxfObuMncaBwTKTco2tyU3aFXYBUrotRta3TxNRILgIEp7c3WWh
-         j3eXcJOf/ae2GpjXT/+sK92EcwNyM5Ep1nGjSnG/74wYCgITmBqbZ6qdxxFilHSZPl4X
-         G0vGpFbLogEWOMm/MMN55UUTbE1z0VBWLLRe0uD/KI+/nWgnCvAuFrEVIes5wxK+wVKE
-         HoVgJ2qyoixn/7IM/qXY8s+u7mOH+le8Ne5qH0eLIKl3A1zXsYuNwhZ0KyHTv68971Gu
-         HIDA==
-X-Gm-Message-State: ANoB5pl0yM4JBg9K8vBmIKTtrrtbfOt0tFkyfdc0Cbttw83EOBqb25dX
-        YZCSUng1zjRY/G6L9KB8D8ZPG3e74/NOf7uuf3oggakwYXAdsg==
-X-Google-Smtp-Source: AA0mqf6n9ijZrSMSuLDDEU2b+4Sc2H56X4iXT7tpuHy2HAO64Z8INcpLQs6KxHhnRFvg9RE0e2nOlbkOHWhmfRGD+Y4=
-X-Received: by 2002:a17:907:208d:b0:7ad:d662:f568 with SMTP id
- pv13-20020a170907208d00b007add662f568mr16734609ejb.616.1669071126105; Mon, 21
- Nov 2022 14:52:06 -0800 (PST)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bzFWaMTOU84LonhG6RqUM6eS/ww8ShETQwxQFHcZhzQ=;
+        b=yrjS8fcqmotLHwp9qkUX/4fwYEl3hovhZfHtd/c8/rRcwK7VKdqr252oEwV0/jy7DN
+         a8K2bkneZ9T9eM1EJVkSslonynNovA6PBuXLXAnjX9r73FnGLEv6ploPBS821bSP+6sz
+         vGrEbSw/7A6z1uLutNwI3nR+GJrknyVydCtnImFgUwsV25LIt8YWkvgt3lpicvsyFN6s
+         pZS+yPMlFCWn/iZis775f/FhpHxslENl7B2cmkpifqMQKBYiTXFjZF836PKVarghp6cc
+         g6dK8hrMk3sb0sQYpchqP4Qxc0ZRCVsZfWfo/5tVZboQnbrtou1M0ZChIt9HTCTkNakK
+         bm1g==
+X-Gm-Message-State: ANoB5pntZ3Wm4w/F8N/pkka0bRGq7fIoA667HmFJdIuYxr26+393Holo
+        +nCLY3FmQ2hcaAGvMMks+a7cywEchWXwswDfwODR3ucuQ1LOTQ==
+X-Google-Smtp-Source: AA0mqf69nBW8D0HRJNqZOBk25rF8Gtu3woMz3lZYawkR/Dl8xdcolr0QdPhoZNJA2AGtPB3SHLnXWSWpIORSmqGwacA=
+X-Received: by 2002:a25:7655:0:b0:6d3:7617:b8ea with SMTP id
+ r82-20020a257655000000b006d37617b8eamr3507384ybc.75.1669122054123; Tue, 22
+ Nov 2022 05:00:54 -0800 (PST)
 MIME-Version: 1.0
-References: <20221110164152.26136-1-ojeda@kernel.org> <20221110164152.26136-5-ojeda@kernel.org>
-In-Reply-To: <20221110164152.26136-5-ojeda@kernel.org>
-From:   =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
-Date:   Mon, 21 Nov 2022 23:51:29 +0100
-Message-ID: <CAA76j93O=a32EOT0vkxf6SGb9qypNpOjDC-dUMOuUPuujPkzOQ@mail.gmail.com>
-Subject: Re: [PATCH v1 04/28] rust: samples: add `rust_print` example
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
+References: <20221121162016.GA2422@DESKTOP-NK4TH6S.localdomain>
+In-Reply-To: <20221121162016.GA2422@DESKTOP-NK4TH6S.localdomain>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 22 Nov 2022 14:00:43 +0100
+Message-ID: <CANiq72nGhJqrZOXhNio0Uu-OfUC5BOTzMLgAMO4r0WZdt1uzCw@mail.gmail.com>
+Subject: Re: [PATCH] scripts: add rust in scripts/Makefile.package
+To:     Paran Lee <p4ranlee@gmail.com>
+Cc:     ojeda@kernel.org, austindh.kim@gmail.com, pmnxis@gmail.com,
+        rust-for-linux@vger.kernel.org,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, 10 Nov 2022 at 17:43, Miguel Ojeda <ojeda@kernel.org> wrote:
->
-> Add example to exercise the printing macros (`pr_*!`) introduced
-> in the previous patches.
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  samples/rust/Kconfig       | 10 +++++++
->  samples/rust/Makefile      |  1 +
->  samples/rust/rust_print.rs | 54 ++++++++++++++++++++++++++++++++++++++
->  3 files changed, 65 insertions(+)
->  create mode 100644 samples/rust/rust_print.rs
->
-> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-> index 841e0906e943..b0f74a81c8f9 100644
-> --- a/samples/rust/Kconfig
-> +++ b/samples/rust/Kconfig
-> @@ -20,6 +20,16 @@ config SAMPLE_RUST_MINIMAL
->
->           If unsure, say N.
->
-> +config SAMPLE_RUST_PRINT
-> +       tristate "Printing macros"
-> +       help
-> +         This option builds the Rust printing macros sample.
-> +
-> +         To compile this as a module, choose M here:
-> +         the module will be called rust_print.
-> +
-> +         If unsure, say N.
-> +
->  config SAMPLE_RUST_HOSTPROGS
->         bool "Host programs"
->         help
-> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-> index 1daba5f8658a..03086dabbea4 100644
-> --- a/samples/rust/Makefile
-> +++ b/samples/rust/Makefile
-> @@ -1,5 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0
->
->  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)              +=3D rust_minimal.o
-> +obj-$(CONFIG_SAMPLE_RUST_PRINT)                        +=3D rust_print.o
->
->  subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)         +=3D hostprogs
-> diff --git a/samples/rust/rust_print.rs b/samples/rust/rust_print.rs
-> new file mode 100644
-> index 000000000000..09f737790f3f
-> --- /dev/null
-> +++ b/samples/rust/rust_print.rs
-> @@ -0,0 +1,54 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Rust printing macros sample.
-> +
-> +use kernel::pr_cont;
-> +use kernel::prelude::*;
-> +
-> +module! {
-> +    type: RustPrint,
-> +    name: b"rust_print",
-> +    author: b"Rust for Linux Contributors",
-> +    description: b"Rust printing macros sample",
-> +    license: b"GPL",
-> +}
-> +
-> +struct RustPrint;
-> +
-> +impl kernel::Module for RustPrint {
-> +    fn init(_module: &'static ThisModule) -> Result<Self> {
-> +        pr_info!("Rust printing macros sample (init)\n");
-> +
-> +        pr_emerg!("Emergency message (level 0) without args\n");
-> +        pr_alert!("Alert message (level 1) without args\n");
-> +        pr_crit!("Critical message (level 2) without args\n");
-> +        pr_err!("Error message (level 3) without args\n");
-> +        pr_warn!("Warning message (level 4) without args\n");
-> +        pr_notice!("Notice message (level 5) without args\n");
-> +        pr_info!("Info message (level 6) without args\n");
-> +
-> +        pr_info!("A line that");
-> +        pr_cont!(" is continued");
-> +        pr_cont!(" without args\n");
-> +
-> +        pr_emerg!("{} message (level {}) with args\n", "Emergency", 0);
-> +        pr_alert!("{} message (level {}) with args\n", "Alert", 1);
-> +        pr_crit!("{} message (level {}) with args\n", "Critical", 2);
-> +        pr_err!("{} message (level {}) with args\n", "Error", 3);
-> +        pr_warn!("{} message (level {}) with args\n", "Warning", 4);
-> +        pr_notice!("{} message (level {}) with args\n", "Notice", 5);
-> +        pr_info!("{} message (level {}) with args\n", "Info", 6);
-> +
-> +        pr_info!("A {} that", "line");
-> +        pr_cont!(" is {}", "continued");
-> +        pr_cont!(" with {}\n", "args");
-> +
-> +        Ok(RustPrint)
-> +    }
-> +}
-> +
-> +impl Drop for RustPrint {
-> +    fn drop(&mut self) {
-> +        pr_info!("Rust printing macros sample (exit)\n");
-> +    }
-> +}
-> --
-> 2.38.1
->
+Hi Paran,
 
-Tested-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com>
+On Mon, Nov 21, 2022 at 5:26 PM Paran Lee <p4ranlee@gmail.com> wrote:
+>
+> -               security sound tools usr virt \
+> +               security sound tools usr virt rust \
+
+Looks like this list is intended to be sorted, right?
+
+Thanks for the patch!
+
+(Also, please use `scripts/get_maintainers.pl` to find the most
+relevant maintainers and lists -- I have Cc'd them here)
+
+Cheers,
+Miguel
