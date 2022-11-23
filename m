@@ -2,101 +2,99 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB98BC46467
-	for <rust-for-linux@archiver.kernel.org>; Tue, 22 Nov 2022 13:54:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7799CC4332F
+	for <rust-for-linux@archiver.kernel.org>; Wed, 23 Nov 2022 22:01:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233929AbiKVNyn (ORCPT
+        id S232316AbiKWWAw (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 22 Nov 2022 08:54:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50836 "EHLO
+        Wed, 23 Nov 2022 17:00:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233522AbiKVNyk (ORCPT
+        with ESMTP id S230284AbiKWWAs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 22 Nov 2022 08:54:40 -0500
-X-Greylist: delayed 174 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Nov 2022 05:54:39 PST
-Received: from condef-09.nifty.com (condef-09.nifty.com [202.248.20.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072DA6584E;
-        Tue, 22 Nov 2022 05:54:38 -0800 (PST)
-Received: from conssluserg-04.nifty.com ([10.126.8.83])by condef-09.nifty.com with ESMTP id 2AMDn4PY011036;
-        Tue, 22 Nov 2022 22:49:04 +0900
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id 2AMDmlN1010447;
-        Tue, 22 Nov 2022 22:48:48 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 2AMDmlN1010447
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1669124928;
-        bh=mB9MB0wmXgKDnvTvLQGXp+po5aE+iQw2dlQ5Zq7YtEY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=w0lm5hj2w8XZ9k5PgjO7zeRmAvGp1woKAD7jJ5+Qo6A0EKcPDU9trrKIZbN+ZvljH
-         yrkx62M6BkGHbYg+wG01UIYyuCjk+QhAbpOLSk4j3hcgEypeo/2U3fUntPz1DI8JGO
-         aOzx1XMC89/shhkOvzZZYD9rOqSaFZE+Kxe6pNUXjRZXeALReihL2YBOu/0xhyX73T
-         D28qwAhcExOi/QzfBiquUmq4Kr/dQ5/OTPM5idiWB2RO8Sswjbz5I/PC54hScMtx3/
-         Jp12FCIRfMB05xDv/4hLI78EmU8qvlVVFu7RR1sInKXPC4Lk4ICDbIdiJvk5KvOESZ
-         YPABeugITWp2w==
-X-Nifty-SrcIP: [209.85.210.53]
-Received: by mail-ot1-f53.google.com with SMTP id db10-20020a0568306b0a00b0066d43e80118so9335953otb.1;
-        Tue, 22 Nov 2022 05:48:48 -0800 (PST)
-X-Gm-Message-State: ANoB5pmOnAOxLOZSmMnL/WNA0SXxOHvpHOTaIg0HqIzILP49z/0v/Kso
-        uRQrRSrIqNMP3B0qSKBsy50f+S65hzZAcDfM2FU=
-X-Google-Smtp-Source: AA0mqf5pHVS629/y7ez0rQm3aPO/Mua/2z0tq2Bz9Irr2iEKShjJJ1xvJ3afZy4dqWEvHSz3nM4DwFlgaJT0X2KB/Fg=
-X-Received: by 2002:a9d:282:0:b0:66c:794e:f8c6 with SMTP id
- 2-20020a9d0282000000b0066c794ef8c6mr12425329otl.343.1669124927056; Tue, 22
- Nov 2022 05:48:47 -0800 (PST)
-MIME-Version: 1.0
-References: <20221121162016.GA2422@DESKTOP-NK4TH6S.localdomain> <CANiq72nGhJqrZOXhNio0Uu-OfUC5BOTzMLgAMO4r0WZdt1uzCw@mail.gmail.com>
-In-Reply-To: <CANiq72nGhJqrZOXhNio0Uu-OfUC5BOTzMLgAMO4r0WZdt1uzCw@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Tue, 22 Nov 2022 22:48:10 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARf8gQTqz=xksoxL_DYB8qW6ii5s2gKqY_+1LuUF7H7_g@mail.gmail.com>
-Message-ID: <CAK7LNARf8gQTqz=xksoxL_DYB8qW6ii5s2gKqY_+1LuUF7H7_g@mail.gmail.com>
-Subject: Re: [PATCH] scripts: add rust in scripts/Makefile.package
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Paran Lee <p4ranlee@gmail.com>, ojeda@kernel.org,
-        austindh.kim@gmail.com, pmnxis@gmail.com,
-        rust-for-linux@vger.kernel.org,
+        Wed, 23 Nov 2022 17:00:48 -0500
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F01B8D22B3;
+        Wed, 23 Nov 2022 14:00:47 -0800 (PST)
+Received: by mail-pl1-x635.google.com with SMTP id io19so17834364plb.8;
+        Wed, 23 Nov 2022 14:00:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CXbYCWAazP8Rlo+89yrukrtECb7VrmIBkt89IozX0fU=;
+        b=eN4qa0dgakMb89FiOJcmppQA9R27nJ2M8GONgsAIJeeABkpe3vtI+yMe0QfegXQfEW
+         vq3EkanMwsmovPwuB18kM9JdrsLtd33wH1AUsyFEWhqo9Fgo4rgTVtHNKsaM/4thorpJ
+         sacvOtctU2rDg7ijk8gir/bOwTow6vMSatQoK2azZpsgPE4Cjv44MAQgx2Sa5wSmof0J
+         zo7FL52Lz27TyUiS7iicQsG7NEuqR5+P/WKW05SluI+2Z/o8DT2TFHiqp4UXNLHT6iQK
+         CT9zEELznMNB76sOJB7UpQhchO0uIuxerYmc+WkaQQcKcvyx57lGcdjrPxhi5b747cUX
+         m/Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CXbYCWAazP8Rlo+89yrukrtECb7VrmIBkt89IozX0fU=;
+        b=4zdXLCxsiQAhn+LxDQjZ7DqQanckVBnuTDopXBtaix11wC5PAnFmeHrSUYUChnZ2hL
+         TDIDERR3VdFg9m0Zbj0i6s3MDwGEhoXcEmmJCvmQuEpq3TtB9TZZSbZ1mmEjx95ZhNoJ
+         QfKd/kSIcQ3K+XtSNDVSXBpTN3aR3g8+3JtLl9orJ7Q43bBQTiSTooarjfhekHFrNjf3
+         qz7F0XEwQ/y67HVNgsQ2cKORc7hGkJEyVtlslgXHwYbHRoqoRW/G5R1hcxXAYlRi2cIF
+         Rg4Gg70tKPttnbiGoX7cPYWTR5vEg8o5qAi+dsJd6IKBfAKQbvUm4omgCxpvA9HH/z1i
+         Iumg==
+X-Gm-Message-State: ANoB5pnj0kMcpM+WMPpQUydo/YQhff3DtV/kIxOCIRE0fz/E0MvNucjt
+        B2Ebs4u+owAmZslah45hrMGvQcWHQqW46Q==
+X-Google-Smtp-Source: AA0mqf7nENTn2xQopQDGO+H2umIDOUgSROuCxMWem9r3XyQWsBAQ6SEGHZXQYjS3p00Zu7/8qgzTXQ==
+X-Received: by 2002:a17:902:bd42:b0:188:ca57:8945 with SMTP id b2-20020a170902bd4200b00188ca578945mr10792005plx.116.1669240847279;
+        Wed, 23 Nov 2022 14:00:47 -0800 (PST)
+Received: from localhost ([220.116.249.144])
+        by smtp.gmail.com with ESMTPSA id e12-20020a170902d38c00b0017f8094a52asm14696662pld.29.2022.11.23.14.00.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Nov 2022 14:00:46 -0800 (PST)
+Date:   Thu, 24 Nov 2022 07:00:44 +0900
+From:   Paran Lee <p4ranlee@gmail.com>
+To:     Masahiro Yamada <masahiroy@kernel.org>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
         Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, austindh.kim@gmail.com,
+        pmnxis@gmail.com
+Subject: [PATCH v2] scripts: add rust in scripts/Makefile.package
+Message-ID: <20221123220044.GA6513@DESKTOP-NK4TH6S.localdomain>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Nov 22, 2022 at 10:00 PM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> Hi Paran,
->
-> On Mon, Nov 21, 2022 at 5:26 PM Paran Lee <p4ranlee@gmail.com> wrote:
-> >
-> > -               security sound tools usr virt \
-> > +               security sound tools usr virt rust \
->
-> Looks like this list is intended to be sorted, right?
+Add rust argument at TAR_CONTENT in
+scripts/Makefile.package script with alphabetical order.
 
+Signed-off-by: Paran Lee <p4ranlee@gmail.com>
+---
+ scripts/Makefile.package | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Yes, it is better to keep it sorted.
-
-
->
-> Thanks for the patch!
->
-> (Also, please use `scripts/get_maintainers.pl` to find the most
-> relevant maintainers and lists -- I have Cc'd them here)
-
-
-Yeah, presumably it should go to kbuild.
-
-Please send v2 to
-linux-kbuild@vger.kernel.org
-
-Thanks.
-
-> Cheers,
-> Miguel
-
-
-
+diff --git a/scripts/Makefile.package b/scripts/Makefile.package
+index 8bbcced67c22..2a90139ecbe1 100644
+--- a/scripts/Makefile.package
++++ b/scripts/Makefile.package
+@@ -30,8 +30,8 @@ KBUILD_PKG_ROOTCMD ?="fakeroot -u"
+ export KDEB_SOURCENAME
+ # Include only those top-level files that are needed by make, plus the GPL copy
+ TAR_CONTENT := Documentation LICENSES arch block certs crypto drivers fs \
+-               include init io_uring ipc kernel lib mm net samples scripts \
+-               security sound tools usr virt \
++               include init io_uring ipc kernel lib mm net rust \
++               samples scripts security sound tools usr virt \
+                .config .scmversion Makefile \
+                Kbuild Kconfig COPYING $(wildcard localversion*)
+ MKSPEC     := $(srctree)/scripts/package/mkspec
 -- 
-Best Regards
-Masahiro Yamada
+2.25.1
+
