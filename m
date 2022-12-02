@@ -2,45 +2,69 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6561C4332F
-	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Dec 2022 18:32:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 638E5C4332F
+	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Dec 2022 23:42:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234047AbiLBSc4 (ORCPT
+        id S234746AbiLBXmJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 2 Dec 2022 13:32:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39466 "EHLO
+        Fri, 2 Dec 2022 18:42:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234297AbiLBScx (ORCPT
+        with ESMTP id S234685AbiLBXmI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 2 Dec 2022 13:32:53 -0500
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF6A37F8E;
-        Fri,  2 Dec 2022 10:32:50 -0800 (PST)
-Received: by mail-wr1-f47.google.com with SMTP id w15so9069102wrl.9;
-        Fri, 02 Dec 2022 10:32:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dPMI3+zK71UDugRLfvvjNZoXPuW3L0kj2lPu6Tc7ooM=;
-        b=PZ2SBb35YHOXylVqc7daqMUbAJ0UbVHRnpYdm1IFb0CEFehrWf1LCIvNfZTPE0Wv88
-         6ker0qcXTdsUgoJwGBapF6au4CY1G5/htzo2T1vFJZfkjYH6QOQ5Ocf3NIaRjywmq3fK
-         zMzXcqMomEeoLCFJTYh74l/8LnISBKmTiCg/mehoXmxC0+2ReDOEO/6v7ocXDwgbidOT
-         w2nfudOx8vrqIUs96gAKJn++DHs4wj78iDXTgy1r0Dbq5glHfGixbhpaaVmxZmxYADHQ
-         twnMYPbFminhMFINCGMuJIxH8518WOyjy8RAuRbtUhX80/N9GMrHSXs5OCTK9mfQzb8G
-         2R/A==
-X-Gm-Message-State: ANoB5pmVsWfQhFMXf2b+pAOgxQjQshWKVRpJ59bOKFyzUf/cnfwAGIiV
-        ADYs+CbxxC71dEv/5b879sU=
-X-Google-Smtp-Source: AA0mqf6YqRlHZN2hozxkeZwQrDln42/fBDSISeGrupnXTaC7vfUgHTO/zDo75j9GUPu8GYUhgRPeZg==
-X-Received: by 2002:a05:6000:18cd:b0:242:26ed:2d69 with SMTP id w13-20020a05600018cd00b0024226ed2d69mr10428691wrq.3.1670005969130;
-        Fri, 02 Dec 2022 10:32:49 -0800 (PST)
-Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id n12-20020a1c720c000000b003c64c186206sm8950653wmc.16.2022.12.02.10.32.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Dec 2022 10:32:48 -0800 (PST)
-Date:   Fri, 2 Dec 2022 18:32:47 +0000
-From:   Wei Liu <wei.liu@kernel.org>
+        Fri, 2 Dec 2022 18:42:08 -0500
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25477ECA21;
+        Fri,  2 Dec 2022 15:42:06 -0800 (PST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.west.internal (Postfix) with ESMTP id 37A6232007D7;
+        Fri,  2 Dec 2022 18:42:02 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Fri, 02 Dec 2022 18:42:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        joshtriplett.org; h=cc:cc:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm3; t=1670024521; x=
+        1670110921; bh=yxT7HiP0z6PnQ571PxQPFu/NQAI3ieVo9QcKWIVPNaY=; b=y
+        BQsZRxe+jKL9ygzmShsmMjLR1wogByCB42nEcbzwc3ogTNmLjcb14HIW6/IpCuuz
+        /zarw10mAOt/Hz1WYVNViEfpD9PU19KCXZJPS7v5In486WdgCPt2hd5d+1qWLF34
+        72fOmIOa1l1STZfu1XWBQd6R/AvWDHdHk01DzWEERajAxn9j7lhJN4gSXpyWhocw
+        SIQI5y4QS3FSxC32Cb1hGkDnZoIUgtvfv6l/J5NW7XM/b1f3cgsfpKl8Tt/ErY4N
+        ldcxTa65hQjwdTLumFaQ5I1rTInppkxCFdW1Z99WFp13r47vtPKw0H7uyNqJLn/0
+        BGaNvGJ3AjFJQEeQVIUsQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm1; t=1670024521; x=1670110921; bh=yxT7HiP0z6PnQ571PxQPFu/NQAI3
+        ieVo9QcKWIVPNaY=; b=KiA9VVRLK3HOjYjDlUzTuRq57Duc2zEq9XTkNOTfQaXJ
+        K0VJJ0icSrbMM0BJ6o2+ZZIEeZrNc1NyCAD+iQKnIxyQLzcM2FhE8SpMydo6EB57
+        Z71vCWaMcCmnSahY7RC1+HUq2ZAIOfHtTIgUyG0UL/+WTTlZEQql5qwm7hKd2zFc
+        qH3fhds7DrVNDSd3W6aCh4RCRdw66CzDiDOs2Co3ah7bk83PWVZ/rMb8e52IEOOW
+        PuuDb4FNmLOq3ykSFpGX3VbO6ePWSHEy5yXkT8PHaSatCcuysoi6oOX5mcopUHp+
+        ndOXZXO3BAC++XloqgtQU12Ds9HHgkHroFT7IMPvzA==
+X-ME-Sender: <xms:SY2KY4pqXDtFrjBzrV_d6DSuGqLHNx-pn1N5u7VYUpn-7pyY24rDzQ>
+    <xme:SY2KY-p0P3lsb2-BR0TDveJGLPvctvLbtUaCrhW1ZuLqPFlMqSPKmgwDv3oQYSlHy
+    AozvFWvBgMRx2FfmXM>
+X-ME-Received: <xmr:SY2KY9NbJ05JoJNBfUEvBHhpzz0drKS0jLFvE_mZuVCiXR6gOZWTjd1dLCY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrtdelgddufecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeflohhshhcu
+    vfhrihhplhgvthhtuceojhhoshhhsehjohhshhhtrhhiphhlvghtthdrohhrgheqnecugg
+    ftrfgrthhtvghrnhepudeigeehieejuedvtedufeevtdejfeegueefgffhkefgleefteet
+    ledvtdfftefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepjhhoshhhsehjohhshhhtrhhiphhlvghtthdrohhrgh
+X-ME-Proxy: <xmx:SY2KY_4WqYiCD1w-e1GVqNbGO5ZQSviQlTOIg1RvHwqf0AX4FRNKjg>
+    <xmx:SY2KY37CEs2o58XgsOAmBmtM2MsGlhT9rfhW2ruINiuDHxBoZwUf5g>
+    <xmx:SY2KY_ifyDx6lG-UslUL3zM770lY_71GjwlbADYE1sNHiEL9oZOzIA>
+    <xmx:SY2KYxvfABpQOiUcLsA2UQfw8ZVSFhzHpPknfBhURXYaiagcULxSYw>
+Feedback-ID: i83e94755:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 2 Dec 2022 18:42:00 -0500 (EST)
+Date:   Fri, 2 Dec 2022 15:41:59 -0800
+From:   Josh Triplett <josh@joshtriplett.org>
 To:     ojeda@kernel.org
 Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
@@ -48,48 +72,32 @@ Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
         =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev, Wei Liu <wei.liu@kernel.org>
-Subject: Re: [PATCH v2 26/28] rust: build_assert: add `build_{error,assert}!`
- macros
-Message-ID: <Y4pEzzSs9vO7cvjT@liuwe-devbox-debian-v2>
+Subject: Re: [PATCH v2 27/28] rust: types: add `Either` type
+Message-ID: <Y4qNR+Nn9utDftHq@localhost>
 References: <20221202161502.385525-1-ojeda@kernel.org>
- <20221202161502.385525-27-ojeda@kernel.org>
+ <20221202161502.385525-28-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221202161502.385525-27-ojeda@kernel.org>
+In-Reply-To: <20221202161502.385525-28-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Dec 02, 2022 at 05:14:57PM +0100, ojeda@kernel.org wrote:
-> From: Gary Guo <gary@garyguo.net>
+On Fri, Dec 02, 2022 at 05:14:58PM +0100, ojeda@kernel.org wrote:
+> From: Wedson Almeida Filho <wedsonaf@gmail.com>
 > 
-> Add the `build_error!` and `build_assert!` macros which leverage
-> the previously introduced `build_error` crate. Do so in a new
-> module, called `build_assert`.
+> Introduce the new `types` module of the `kernel` crate with
+> `Either` as its first type.
 > 
-> The former fails the build if the code path calling it can possibly
-> be executed. The latter asserts that a boolean expression is `true`
-> at compile time.
+> `Either<L, R>` is a sum type that always holds either a value
+> of type `L` (`Left` variant) or `R` (`Right` variant).
 > 
-> In particular, `build_assert!` can be used in some contexts where
-> `static_assert!` cannot:
+> For instance:
 > 
->     fn f1<const N: usize>() {
->         static_assert!(N > 1);` // Error.
->         build_assert!(N > 1);   // Build-time check.
->         assert!(N > 1);         // Run-time check.
+>     struct Executor {
+>         queue: Either<BoxedQueue, &'static Queue>,
 >     }
-> 
->     #[inline]
->     fn f2(n: usize) {
->         static_assert!(n > 1);  // Error.
->         build_assert!(n > 1);   // Build-time check.
->         assert!(n > 1);         // Run-time check.
->     }
-> 
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> [Reworded, adapted for upstream and applied latest changes]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Reviewed-by: Wei Liu <wei.liu@kernel.org>
+This specific example seems like it would be better served by the
+existing `Cow` type.
