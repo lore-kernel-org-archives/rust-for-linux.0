@@ -2,37 +2,37 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ADA26C4321E
-	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Dec 2022 16:15:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 61106C47088
+	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Dec 2022 16:15:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233151AbiLBQPe (ORCPT
+        id S233186AbiLBQPh (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 2 Dec 2022 11:15:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52660 "EHLO
+        Fri, 2 Dec 2022 11:15:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232678AbiLBQPb (ORCPT
+        with ESMTP id S233583AbiLBQPg (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 2 Dec 2022 11:15:31 -0500
+        Fri, 2 Dec 2022 11:15:36 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00FC4AD304;
-        Fri,  2 Dec 2022 08:15:28 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D09AD304;
+        Fri,  2 Dec 2022 08:15:35 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7FE8862322;
-        Fri,  2 Dec 2022 16:15:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B85ACC433D6;
-        Fri,  2 Dec 2022 16:15:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B5FB8622E3;
+        Fri,  2 Dec 2022 16:15:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2A7C433D6;
+        Fri,  2 Dec 2022 16:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669997727;
-        bh=Tg9Vetnf1ynCTh+XAWpkiqMszhnKMj/lQo1pCgoc+TI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=pc5UoQ8h5+GkKU0VnSUhVfrOssinSaJFyeYS/SmvmNT8wVNtJV6XeMXzwBdb1aiF8
-         O3JpHSfZ947Rkpm9Mb1XBbGKIzVTawsW54Pa8hb54ialUbxabdOuPhAGjAHpKssHGh
-         H3Ipk03gjPm2mbpmCteR57ryni5yjuH+5ClyamOwlR+qA/jPKgWkfa8XRyIpbZD110
-         ZLa8Cr+s3w6klh6ojTTt1FP/0kx3y0s7ZAOz+WQNQLK/5SV/KQozFlUOsLjjgM+ku0
-         zY/0gPQWnOq03OaDSZce7hLQqKcq4Ojvd2HGnbYkn924ZRfGNEtE8WVjg72sXO946Y
-         4Jg3FmueHPrfQ==
+        s=k20201202; t=1669997734;
+        bh=7z0Z9/aBWDg8zSLO+3RcUCw+p+zedYDCyRSDGcvfevk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=dE1pDe6w8AxHp1/+K2aWGBuvWfYhIil3ojm6M3ha2cTGjROUHYhV5MZv5ZQ62D8aa
+         2k3udFmoViSaLrQ9t0zCAtQrLMc9maUZmei9Ek1ii4txa8cJjXziDFObCk6WGKItpK
+         8tyiTKgbDMyFdavl2aXHURArQb2jpnYnT8DlEGzcEQN981dGDO9QInXsAkgDhjgmQ/
+         iz7DJ8/gFMoQ/e19ii1gxoYR38d081jfG/nXpiJO5x83AIefLAsy0Qulh0ftPLWzdd
+         OYZJPvj/hpwTCjiZV2rdqQSUMYuWEwHtJ+hYg6BD0uQRl7ehBBF9Ma6D99+rDkePl9
+         P8tWFwmLCkMsw==
 From:   ojeda@kernel.org
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -40,12 +40,15 @@ To:     Miguel Ojeda <ojeda@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
 Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: [PATCH v2 00/28] Rust core additions
-Date:   Fri,  2 Dec 2022 17:14:31 +0100
-Message-Id: <20221202161502.385525-1-ojeda@kernel.org>
+        patches@lists.linux.dev, Adam Bratschi-Kaye <ark.email@gmail.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        Sergio Gonzalez Collado <sergio.collado@gmail.com>
+Subject: [PATCH v2 02/28] rust: print: add more `pr_*!` levels
+Date:   Fri,  2 Dec 2022 17:14:33 +0100
+Message-Id: <20221202161502.385525-3-ojeda@kernel.org>
+In-Reply-To: <20221202161502.385525-1-ojeda@kernel.org>
+References: <20221202161502.385525-1-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
@@ -53,203 +56,217 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 From: Miguel Ojeda <ojeda@kernel.org>
 
-This is v2 of the first batch of changes to upstream the rest of
-the Rust support. v1 is at:
+Currently, only `pr_info!` (for the minimal sample) and
+`pr_emerg!` (for the panic handler) are there.
 
-    https://lore.kernel.org/rust-for-linux/20221110164152.26136-1-ojeda@kernel.org/
+Add the other levels as new macros, i.e. `pr_alert!`, `pr_crit!`,
+`pr_err!`, `pr_warn!`, `pr_notice!` and `pr_debug!`.
 
-I collected the tags and applied the agreed changes. The full diff
-follows (with respect to v1), since they are minor enough.
+Co-developed-by: Adam Bratschi-Kaye <ark.email@gmail.com>
+Signed-off-by: Adam Bratschi-Kaye <ark.email@gmail.com>
+Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+Co-developed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Wei Liu <wei.liu@kernel.org>
+Reviewed-by: Sergio Gonzalez Collado <sergio.collado@gmail.com>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/kernel/prelude.rs |   2 +-
+ rust/kernel/print.rs   | 154 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 155 insertions(+), 1 deletion(-)
 
-I will be applying the patches tomorrow, since v1 has had more than
-three weeks of review time.
-
-diff --git a/rust/build_error.rs b/rust/build_error.rs
-index 0ff6b33059aa..fa24eeef9929 100644
---- a/rust/build_error.rs
-+++ b/rust/build_error.rs
-@@ -2,19 +2,26 @@
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index f8219285d8c0..6a1c6b38327f 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -17,7 +17,7 @@ pub use alloc::{boxed::Box, vec::Vec};
  
- //! Build-time error.
- //!
--//! This crate provides a function `build_error`, which will panic in
--//! compile-time if executed in const context, and will cause a build error
--//! if not executed at compile time and the optimizer does not optimise away the
--//! call.
-+//! This crate provides a [const function][const-functions] `build_error`, which will panic in
-+//! compile-time if executed in [const context][const-context], and will cause a build error
-+//! if not executed at compile time and the optimizer does not optimise away the call.
- //!
- //! It is used by `build_assert!` in the kernel crate, allowing checking of
- //! conditions that could be checked statically, but could not be enforced in
--//! Rust yet (e.g. perform some checks in const functions, but those
-+//! Rust yet (e.g. perform some checks in [const functions][const-functions], but those
- //! functions could still be called in the runtime).
-+//!
-+//! For details on constant evaluation in Rust, please see the [Reference][const-eval].
-+//!
-+//! [const-eval]: https://doc.rust-lang.org/reference/const_eval.html
-+//! [const-functions]: https://doc.rust-lang.org/reference/const_eval.html#const-functions
-+//! [const-context]: https://doc.rust-lang.org/reference/const_eval.html#const-context
+ pub use macros::module;
  
- #![no_std]
+-pub use super::{pr_emerg, pr_info};
++pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
  
--/// Panics if executed in const context, or triggers a build error if not.
-+/// Panics if executed in [const context][const-context], or triggers a build error if not.
-+///
-+/// [const-context]: https://doc.rust-lang.org/reference/const_eval.html#const-context
- #[inline(never)]
- #[cold]
- #[export_name = "rust_build_error"]
-diff --git a/rust/kernel/std_vendor.rs b/rust/kernel/std_vendor.rs
-index da57b4e521f4..b3e68b24a8c6 100644
---- a/rust/kernel/std_vendor.rs
-+++ b/rust/kernel/std_vendor.rs
-@@ -35,9 +35,12 @@
- /// This is useful when debugging issues that only occur in release
- /// builds or when debugging in release mode is significantly faster.
- ///
--/// Note that the macro is intended as a debugging tool and therefore you
--/// should avoid having uses of it in version control for long periods
--/// (other than in tests and similar).
-+/// Note that the macro is intended as a temporary debugging tool to be
-+/// used during development. Therefore, avoid committing `dbg!` macro
-+/// invocations into the kernel tree.
-+///
-+/// For debug output that is intended to be kept in the kernel tree,
-+/// use [`pr_debug`] and similar facilities instead.
- ///
- /// # Stability
- ///
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index ffac633423db..b771310fa4a4 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -129,18 +129,6 @@ impl CStr {
-         Ok(unsafe { Self::from_bytes_with_nul_unchecked(bytes) })
-     }
+ pub use super::error::{Error, Result};
  
--    /// Creates a [`CStr`] from a `[u8]`, panic if input is not valid.
--    ///
--    /// This function is only meant to be used by `c_str!` macro, so
--    /// crates using `c_str!` macro don't have to enable `const_panic` feature.
--    #[doc(hidden)]
--    pub const fn from_bytes_with_nul_unwrap(bytes: &[u8]) -> &Self {
--        match Self::from_bytes_with_nul(bytes) {
--            Ok(v) => v,
--            Err(_) => panic!("string contains interior NUL"),
--        }
--    }
--
-     /// Creates a [`CStr`] from a `[u8]` without performing any additional
-     /// checks.
-     ///
-@@ -349,7 +337,10 @@ where
- macro_rules! c_str {
-     ($str:expr) => {{
-         const S: &str = concat!($str, "\0");
--        const C: &$crate::str::CStr = $crate::str::CStr::from_bytes_with_nul_unwrap(S.as_bytes());
-+        const C: &$crate::str::CStr = match $crate::str::CStr::from_bytes_with_nul(S.as_bytes()) {
-+            Ok(v) => v,
-+            Err(_) => panic!("string contains interior NUL"),
-+        };
-         C
-     }};
+diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+index 55db5a1ba752..694f51c6da5c 100644
+--- a/rust/kernel/print.rs
++++ b/rust/kernel/print.rs
+@@ -74,7 +74,13 @@ pub mod format_strings {
+     // Furthermore, `static` instead of `const` is used to share the strings
+     // for all the kernel.
+     pub static EMERG: [u8; LENGTH] = generate(false, bindings::KERN_EMERG);
++    pub static ALERT: [u8; LENGTH] = generate(false, bindings::KERN_ALERT);
++    pub static CRIT: [u8; LENGTH] = generate(false, bindings::KERN_CRIT);
++    pub static ERR: [u8; LENGTH] = generate(false, bindings::KERN_ERR);
++    pub static WARNING: [u8; LENGTH] = generate(false, bindings::KERN_WARNING);
++    pub static NOTICE: [u8; LENGTH] = generate(false, bindings::KERN_NOTICE);
+     pub static INFO: [u8; LENGTH] = generate(false, bindings::KERN_INFO);
++    pub static DEBUG: [u8; LENGTH] = generate(false, bindings::KERN_DEBUG);
  }
-diff --git a/rust/macros/concat_idents.rs b/rust/macros/concat_idents.rs
-index 3b5a9dd70e8a..7e4b450f3a50 100644
---- a/rust/macros/concat_idents.rs
-+++ b/rust/macros/concat_idents.rs
-@@ -18,6 +18,6 @@ pub(crate) fn concat_idents(ts: TokenStream) -> TokenStream {
-     assert_eq!(expect_punct(&mut it), ',');
-     let b = expect_ident(&mut it);
-     assert!(it.next().is_none(), "only two idents can be concatenated");
--    let res = Ident::new(&(a.to_string() + &b.to_string()), b.span());
-+    let res = Ident::new(&format!("{a}{b}"), b.span());
-     TokenStream::from_iter([TokenTree::Ident(res)])
- }
-
-Björn Roy Baron (1):
-  rust: macros: add `concat_idents!` proc macro
-
-Finn Behrens (1):
-  rust: error: declare errors using macro
-
-Gary Guo (9):
-  rust: macros: add `#[vtable]` proc macro
-  rust: macros: take string literals in `module!`
-  rust: str: add `BStr` type
-  rust: str: add `b_str!` macro
-  rust: str: add `CStr` type
-  rust: str: implement several traits for `CStr`
-  rust: str: add `c_str!` macro
-  rust: add `build_error` crate
-  rust: build_assert: add `build_{error,assert}!` macros
-
-Miguel Ojeda (7):
-  rust: prelude: split re-exports into groups
-  rust: print: add more `pr_*!` levels
-  rust: print: add `pr_cont!` macro
-  rust: samples: add `rust_print` example
-  rust: alloc: add `RawVec::try_with_capacity_in()` constructor
-  rust: alloc: add `Vec::try_with_capacity{,_in}()` constructors
-  rust: static_assert: add `static_assert!` macro
-
-Milan Landaverde (1):
-  rust: str: add `CStr` unit tests
-
-Niklas Mohrin (1):
-  rust: std_vendor: add `dbg!` macro based on `std`'s one
-
-Viktor Garske (1):
-  rust: error: add codes from `errno-base.h`
-
-Wedson Almeida Filho (7):
-  rust: error: add `From` implementations for `Error`
-  rust: prelude: add `error::code::*` constant items
-  rust: str: add `Formatter` type
-  rust: str: add `CString` type
-  rust: str: add `fmt!` macro
-  rust: types: add `Either` type
-  rust: types: add `Opaque` type
-
- lib/Kconfig.debug                 |  16 +
- rust/Makefile                     |  22 +-
- rust/alloc/raw_vec.rs             |  33 +-
- rust/alloc/vec/mod.rs             |  89 +++++
- rust/build_error.rs               |  31 ++
- rust/exports.c                    |   5 +
- rust/kernel/build_assert.rs       |  82 +++++
- rust/kernel/error.rs              |  90 ++++-
- rust/kernel/lib.rs                |   9 +
- rust/kernel/prelude.rs            |  20 +-
- rust/kernel/print.rs              | 214 +++++++++++-
- rust/kernel/static_assert.rs      |  34 ++
- rust/kernel/std_vendor.rs         | 163 ++++++++++
- rust/kernel/str.rs                | 523 +++++++++++++++++++++++++++++-
- rust/kernel/types.rs              |  37 +++
- rust/macros/concat_idents.rs      |  23 ++
- rust/macros/helpers.rs            |  24 +-
- rust/macros/lib.rs                | 108 +++++-
- rust/macros/module.rs             |  10 +-
- rust/macros/vtable.rs             |  95 ++++++
- samples/rust/Kconfig              |  10 +
- samples/rust/Makefile             |   1 +
- samples/rust/rust_minimal.rs      |   8 +-
- samples/rust/rust_print.rs        |  54 +++
- scripts/generate_rust_analyzer.py |   8 +-
- 25 files changed, 1667 insertions(+), 42 deletions(-)
- create mode 100644 rust/build_error.rs
- create mode 100644 rust/kernel/build_assert.rs
- create mode 100644 rust/kernel/static_assert.rs
- create mode 100644 rust/kernel/std_vendor.rs
- create mode 100644 rust/kernel/types.rs
- create mode 100644 rust/macros/concat_idents.rs
- create mode 100644 rust/macros/vtable.rs
- create mode 100644 samples/rust/rust_print.rs
-
-
-base-commit: f0c4d9fc9cc9462659728d168387191387e903cc
+ 
+ /// Prints a message via the kernel's [`_printk`].
+@@ -172,6 +178,126 @@ macro_rules! pr_emerg (
+     )
+ );
+ 
++/// Prints an alert-level message (level 1).
++///
++/// Use this level if action must be taken immediately.
++///
++/// Equivalent to the kernel's [`pr_alert`] macro.
++///
++/// Mimics the interface of [`std::print!`]. See [`core::fmt`] and
++/// `alloc::format!` for information about the formatting syntax.
++///
++/// [`pr_alert`]: https://www.kernel.org/doc/html/latest/core-api/printk-basics.html#c.pr_alert
++/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
++///
++/// # Examples
++///
++/// ```
++/// pr_alert!("hello {}\n", "there");
++/// ```
++#[macro_export]
++macro_rules! pr_alert (
++    ($($arg:tt)*) => (
++        $crate::print_macro!($crate::print::format_strings::ALERT, $($arg)*)
++    )
++);
++
++/// Prints a critical-level message (level 2).
++///
++/// Use this level for critical conditions.
++///
++/// Equivalent to the kernel's [`pr_crit`] macro.
++///
++/// Mimics the interface of [`std::print!`]. See [`core::fmt`] and
++/// `alloc::format!` for information about the formatting syntax.
++///
++/// [`pr_crit`]: https://www.kernel.org/doc/html/latest/core-api/printk-basics.html#c.pr_crit
++/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
++///
++/// # Examples
++///
++/// ```
++/// pr_crit!("hello {}\n", "there");
++/// ```
++#[macro_export]
++macro_rules! pr_crit (
++    ($($arg:tt)*) => (
++        $crate::print_macro!($crate::print::format_strings::CRIT, $($arg)*)
++    )
++);
++
++/// Prints an error-level message (level 3).
++///
++/// Use this level for error conditions.
++///
++/// Equivalent to the kernel's [`pr_err`] macro.
++///
++/// Mimics the interface of [`std::print!`]. See [`core::fmt`] and
++/// `alloc::format!` for information about the formatting syntax.
++///
++/// [`pr_err`]: https://www.kernel.org/doc/html/latest/core-api/printk-basics.html#c.pr_err
++/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
++///
++/// # Examples
++///
++/// ```
++/// pr_err!("hello {}\n", "there");
++/// ```
++#[macro_export]
++macro_rules! pr_err (
++    ($($arg:tt)*) => (
++        $crate::print_macro!($crate::print::format_strings::ERR, $($arg)*)
++    )
++);
++
++/// Prints a warning-level message (level 4).
++///
++/// Use this level for warning conditions.
++///
++/// Equivalent to the kernel's [`pr_warn`] macro.
++///
++/// Mimics the interface of [`std::print!`]. See [`core::fmt`] and
++/// `alloc::format!` for information about the formatting syntax.
++///
++/// [`pr_warn`]: https://www.kernel.org/doc/html/latest/core-api/printk-basics.html#c.pr_warn
++/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
++///
++/// # Examples
++///
++/// ```
++/// pr_warn!("hello {}\n", "there");
++/// ```
++#[macro_export]
++macro_rules! pr_warn (
++    ($($arg:tt)*) => (
++        $crate::print_macro!($crate::print::format_strings::WARNING, $($arg)*)
++    )
++);
++
++/// Prints a notice-level message (level 5).
++///
++/// Use this level for normal but significant conditions.
++///
++/// Equivalent to the kernel's [`pr_notice`] macro.
++///
++/// Mimics the interface of [`std::print!`]. See [`core::fmt`] and
++/// `alloc::format!` for information about the formatting syntax.
++///
++/// [`pr_notice`]: https://www.kernel.org/doc/html/latest/core-api/printk-basics.html#c.pr_notice
++/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
++///
++/// # Examples
++///
++/// ```
++/// pr_notice!("hello {}\n", "there");
++/// ```
++#[macro_export]
++macro_rules! pr_notice (
++    ($($arg:tt)*) => (
++        $crate::print_macro!($crate::print::format_strings::NOTICE, $($arg)*)
++    )
++);
++
+ /// Prints an info-level message (level 6).
+ ///
+ /// Use this level for informational messages.
+@@ -196,3 +322,31 @@ macro_rules! pr_info (
+         $crate::print_macro!($crate::print::format_strings::INFO, $($arg)*)
+     )
+ );
++
++/// Prints a debug-level message (level 7).
++///
++/// Use this level for debug messages.
++///
++/// Equivalent to the kernel's [`pr_debug`] macro, except that it doesn't support dynamic debug
++/// yet.
++///
++/// Mimics the interface of [`std::print!`]. See [`core::fmt`] and
++/// `alloc::format!` for information about the formatting syntax.
++///
++/// [`pr_debug`]: https://www.kernel.org/doc/html/latest/core-api/printk-basics.html#c.pr_debug
++/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
++///
++/// # Examples
++///
++/// ```
++/// pr_debug!("hello {}\n", "there");
++/// ```
++#[macro_export]
++#[doc(alias = "print")]
++macro_rules! pr_debug (
++    ($($arg:tt)*) => (
++        if cfg!(debug_assertions) {
++            $crate::print_macro!($crate::print::format_strings::DEBUG, $($arg)*)
++        }
++    )
++);
 -- 
 2.38.1
 
