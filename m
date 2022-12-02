@@ -2,37 +2,37 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB351C4321E
-	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Dec 2022 16:18:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33085C4321E
+	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Dec 2022 16:19:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234018AbiLBQSp (ORCPT
+        id S233568AbiLBQS6 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 2 Dec 2022 11:18:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53114 "EHLO
+        Fri, 2 Dec 2022 11:18:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234070AbiLBQSL (ORCPT
+        with ESMTP id S233911AbiLBQQb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 2 Dec 2022 11:18:11 -0500
+        Fri, 2 Dec 2022 11:16:31 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEB81DFB59;
-        Fri,  2 Dec 2022 08:16:47 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 717BAE0753;
+        Fri,  2 Dec 2022 08:16:12 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B1A362322;
-        Fri,  2 Dec 2022 16:16:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F3EC43470;
-        Fri,  2 Dec 2022 16:16:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A54062333;
+        Fri,  2 Dec 2022 16:16:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73AAAC43470;
+        Fri,  2 Dec 2022 16:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669997806;
-        bh=YyjXthwblgrT88DPLFu+XIPGLqjTiZLg+Xpj0PN4MaE=;
+        s=k20201202; t=1669997771;
+        bh=Pqv7nrnSw/i2nkLoHhZe36xor+0aWZ+RAfK3x5lb5qk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iUVfcvaGJdF/n2QAZNTbyYm5gbDZ+FvzXb1+V8Q7HwFKlarV3seVo1NnOevDs7f9A
-         uxcx1Ce9O/9sI14ZMd98O5sFBiUUgCcucTb4+KI/zXlega/CNBZpzsuRiXAlpPUEux
-         oPtm3kxnmuw1fAt/iUFshg9JMuKQZavSA/KJpFUAd8Rl2yUN8Hbu+6kOtRGKw3hyBp
-         I3ZSh6nvGSQ6ddBxn2yHDHPvwNJKZDL8JoiLX3U6mkmv8zs1eWyZhXSzHNioAell2D
-         8+znw2S00T/44bGNXLEEUmiMlyC/YIDBT6y9MFZowF6EDXr+RVIhfRd0/qFm5ZqEUb
-         wCkPYCWBYfpTA==
+        b=fky4ZsDJiU3etZhLmzF50RMo1Y6FOs5obZoZgvhHWPXb8facOP7VEFr4Vbq/zrBQR
+         FE2/+nVF2wE3qw+KzUdijKQbNSLTznHojE3xp7hR++wAAwz9vAr4yosMQQKblualkO
+         0MpAJMnouHyArC23yrUXCRkJoCzS6rUaD8nFEFSUe8gP86xCz/mzyIuKZ2oag3jX0N
+         KlTyl1gSJ4ID2Nh/WND4JAuXxS+P3i6vfLBYEyHz1zU4NTLlHcB0RupT7yExgcgWQq
+         P5SnUwok4tIbVVl/N+RiT853BgCTYF4NNyDUbxYC1hXpyy7VLaxj7/52MaQsuJfWui
+         EICKYz3IfPfew==
 From:   ojeda@kernel.org
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -41,9 +41,9 @@ To:     Miguel Ojeda <ojeda@kernel.org>,
         =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
 Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-Subject: [PATCH v2 28/28] rust: types: add `Opaque` type
-Date:   Fri,  2 Dec 2022 17:14:59 +0100
-Message-Id: <20221202161502.385525-29-ojeda@kernel.org>
+Subject: [PATCH v2 15/28] rust: str: add `b_str!` macro
+Date:   Fri,  2 Dec 2022 17:14:46 +0100
+Message-Id: <20221202161502.385525-16-ojeda@kernel.org>
 In-Reply-To: <20221202161502.385525-1-ojeda@kernel.org>
 References: <20221202161502.385525-1-ojeda@kernel.org>
 MIME-Version: 1.0
@@ -52,63 +52,54 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
+From: Gary Guo <gary@garyguo.net>
 
-Add the `Opaque` type, which is meant to be used with FFI objects
-that are never interpreted by Rust code, e.g.:
+Add the `b_str!` macro, which creates a new `BStr` from
+a string literal.
 
-    struct Waiter {
-        completion: Opaque<bindings::completion>,
-        next: *mut Waiter,
-    }
+It is usable in const contexts, for instance:
 
-It has the advantage that the objects don't have to be
-zero-initialised before calling their init functions, making
-the code performance closer to C.
+    const X: &BStr = b_str!("Example");
 
-Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+Signed-off-by: Gary Guo <gary@garyguo.net>
 [Reworded, adapted for upstream and applied latest changes]
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/kernel/types.rs | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ rust/kernel/str.rs | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 3b0c44769708..e84e51ec9716 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -2,6 +2,31 @@
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index 3aa1a0cb9bf8..95eb757c619d 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -9,6 +9,27 @@ use core::fmt;
+ /// `BStr` is simply an alias to `[u8]`, but has a more evident semantical meaning.
+ pub type BStr = [u8];
  
- //! Kernel types.
- 
-+use core::{cell::UnsafeCell, mem::MaybeUninit};
-+
-+/// Stores an opaque value.
++/// Creates a new [`BStr`] from a string literal.
 +///
-+/// This is meant to be used with FFI objects that are never interpreted by Rust code.
-+#[repr(transparent)]
-+pub struct Opaque<T>(MaybeUninit<UnsafeCell<T>>);
-+
-+impl<T> Opaque<T> {
-+    /// Creates a new opaque value.
-+    pub const fn new(value: T) -> Self {
-+        Self(MaybeUninit::new(UnsafeCell::new(value)))
-+    }
-+
-+    /// Creates an uninitialised value.
-+    pub const fn uninit() -> Self {
-+        Self(MaybeUninit::uninit())
-+    }
-+
-+    /// Returns a raw pointer to the opaque data.
-+    pub fn get(&self) -> *mut T {
-+        UnsafeCell::raw_get(self.0.as_ptr())
-+    }
++/// `b_str!` converts the supplied string literal to byte string, so non-ASCII
++/// characters can be included.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::b_str;
++/// # use kernel::str::BStr;
++/// const MY_BSTR: &BStr = b_str!("My awesome BStr!");
++/// ```
++#[macro_export]
++macro_rules! b_str {
++    ($str:literal) => {{
++        const S: &'static str = $str;
++        const C: &'static $crate::str::BStr = S.as_bytes();
++        C
++    }};
 +}
 +
- /// A sum type that always holds either a value of type `L` or `R`.
- pub enum Either<L, R> {
-     /// Constructs an instance of [`Either`] containing a value of type `L`.
+ /// Allows formatting of [`fmt::Arguments`] into a raw buffer.
+ ///
+ /// It does not fail if callers write past the end of the buffer so that they can calculate the
 -- 
 2.38.1
 
