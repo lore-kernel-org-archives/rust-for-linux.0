@@ -2,37 +2,37 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27758C4321E
-	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Dec 2022 16:17:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49963C4321E
+	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Dec 2022 16:17:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233989AbiLBQQ4 (ORCPT
+        id S233483AbiLBQRG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 2 Dec 2022 11:16:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53820 "EHLO
+        Fri, 2 Dec 2022 11:17:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233625AbiLBQQ3 (ORCPT
+        with ESMTP id S233975AbiLBQQa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 2 Dec 2022 11:16:29 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 680E0CC65A;
-        Fri,  2 Dec 2022 08:16:03 -0800 (PST)
+        Fri, 2 Dec 2022 11:16:30 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075DAD208B;
+        Fri,  2 Dec 2022 08:16:07 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1E516B821F0;
-        Fri,  2 Dec 2022 16:16:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C939EC43152;
-        Fri,  2 Dec 2022 16:15:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D90E562331;
+        Fri,  2 Dec 2022 16:16:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23525C43470;
+        Fri,  2 Dec 2022 16:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669997760;
-        bh=Fu0cQySj6UrPLD5hDPAQuIBqC91+Uyo9Z9HV2mYAaok=;
+        s=k20201202; t=1669997766;
+        bh=2kl4siMs2CiGNBXEZpLt5Bkk+dmVvKDxrC3ndkxJ8nE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RV0FORfM/sgu1IT0HI/gc8w6bR0fwFSxo5jG4QS2W+B3fltkS0gl5tZUSXr4MmGGE
-         IDOVl0VTFvK3xbvQuIuhsBU7sWjwn5PW4QKicCEwbD5w9hHZu0p0tqbvlIHhCQulpr
-         ynzBlpngUBX0n6FP2A7TNmAOLKiPRtDTYOhmTtsOoKQJkvOd+VzMhFYKSp8y3YQwwB
-         1fGmbGvvU0q0vWAmTK4EphZ9H+pKZuqBP+GJPAR6K8JU8ANdyzYHNXidCgJmg1fWwz
-         pTzX65kWdJFhveTMW2GZk6zZobgt2z8MblGS2EmWx4eBVbDXKYa0/hjv93ZXxryUZw
-         WXVDAmk7+p4WQ==
+        b=eZzKRlTsLe+l4byy89diKfAYGW9gr1GxcrGfLMdowMTdFbapJswUpLyrVVyMFWbo8
+         nhk0YPlJgcqDriXywi2C7Zw8JuJ0jh9n7KlBk6lAjjY9uWjuYyugHjwLAYWpfCIy2p
+         tb8LNf6EKbYFWQ4GBZheYuFM8j945A3k55dDEBHfKG2vylvqpfjaMlfnaUxPIHLiI/
+         r8xdzY2y2mmB0jH2VK+lP7AaSoB3Emt3gw5hdKF0ljfbx1QY+S7hYHofcUgW20htQo
+         Dkx3NcXamstan9FGeYI+3ZA1htUUU0U3DA9f54Bgu+5XX29VRgOHHQBkbLctLQGDJC
+         ugz2s0P5LHqXg==
 From:   ojeda@kernel.org
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -41,9 +41,9 @@ To:     Miguel Ojeda <ojeda@kernel.org>,
         =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
 Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-Subject: [PATCH v2 11/28] rust: prelude: add `error::code::*` constant items
-Date:   Fri,  2 Dec 2022 17:14:42 +0100
-Message-Id: <20221202161502.385525-12-ojeda@kernel.org>
+Subject: [PATCH v2 13/28] rust: alloc: add `Vec::try_with_capacity{,_in}()` constructors
+Date:   Fri,  2 Dec 2022 17:14:44 +0100
+Message-Id: <20221202161502.385525-14-ojeda@kernel.org>
 In-Reply-To: <20221202161502.385525-1-ojeda@kernel.org>
 References: <20221202161502.385525-1-ojeda@kernel.org>
 MIME-Version: 1.0
@@ -52,42 +52,144 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-It is convenient to have all the `Error` constant items (such as
-`EINVAL`) available as-is everywhere (i.e. for code using the kernel
-prelude such as kernel modules).
+Add `Vec::try_with_capacity()` and `Vec::try_with_capacity_in()` as
+the fallible versions of `Vec::with_capacity()` and
+`Vec::with_capacity_in()`, respectively.
 
-Therefore, add all of them to the prelude.
+The implementations follow the originals and use the previously
+added `RawVec::try_with_capacity_in()`.
 
-For instance, this allows to write `Err(EINVAL)` to create
-a kernel `Result`:
+In turn, `Vec::try_with_capacity()` will be used to implement
+the `CString` type (which wraps a `Vec<u8>`) in a later patch.
 
-    fn f() -> Result<...> {
-        ...
-        Err(EINVAL)
-    }
-
-Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 Reviewed-by: Gary Guo <gary@garyguo.net>
-[Reworded, adapted for upstream and applied latest changes]
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/kernel/prelude.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/alloc/raw_vec.rs |  1 -
+ rust/alloc/vec/mod.rs | 89 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 89 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index 7c4c35bf3c66..1e08b08e9420 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -19,6 +19,6 @@ pub use macros::{module, vtable};
+diff --git a/rust/alloc/raw_vec.rs b/rust/alloc/raw_vec.rs
+index c342f3843972..eb77db5def55 100644
+--- a/rust/alloc/raw_vec.rs
++++ b/rust/alloc/raw_vec.rs
+@@ -135,7 +135,6 @@ impl<T, A: Allocator> RawVec<T, A> {
  
- pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
+     /// Like `try_with_capacity`, but parameterized over the choice of
+     /// allocator for the returned `RawVec`.
+-    #[allow(dead_code)]
+     #[inline]
+     pub fn try_with_capacity_in(capacity: usize, alloc: A) -> Result<Self, TryReserveError> {
+         Self::try_allocate_in(capacity, AllocInit::Uninitialized, alloc)
+diff --git a/rust/alloc/vec/mod.rs b/rust/alloc/vec/mod.rs
+index 540787804cc2..8ac6c1e3b2a8 100644
+--- a/rust/alloc/vec/mod.rs
++++ b/rust/alloc/vec/mod.rs
+@@ -472,6 +472,48 @@ impl<T> Vec<T> {
+         Self::with_capacity_in(capacity, Global)
+     }
  
--pub use super::error::{Error, Result};
-+pub use super::error::{code::*, Error, Result};
++    /// Tries to construct a new, empty `Vec<T>` with the specified capacity.
++    ///
++    /// The vector will be able to hold exactly `capacity` elements without
++    /// reallocating. If `capacity` is 0, the vector will not allocate.
++    ///
++    /// It is important to note that although the returned vector has the
++    /// *capacity* specified, the vector will have a zero *length*. For an
++    /// explanation of the difference between length and capacity, see
++    /// *[Capacity and reallocation]*.
++    ///
++    /// [Capacity and reallocation]: #capacity-and-reallocation
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// let mut vec = Vec::try_with_capacity(10).unwrap();
++    ///
++    /// // The vector contains no items, even though it has capacity for more
++    /// assert_eq!(vec.len(), 0);
++    /// assert_eq!(vec.capacity(), 10);
++    ///
++    /// // These are all done without reallocating...
++    /// for i in 0..10 {
++    ///     vec.push(i);
++    /// }
++    /// assert_eq!(vec.len(), 10);
++    /// assert_eq!(vec.capacity(), 10);
++    ///
++    /// // ...but this may make the vector reallocate
++    /// vec.push(11);
++    /// assert_eq!(vec.len(), 11);
++    /// assert!(vec.capacity() >= 11);
++    ///
++    /// let mut result = Vec::try_with_capacity(usize::MAX);
++    /// assert!(result.is_err());
++    /// ```
++    #[inline]
++    #[stable(feature = "kernel", since = "1.0.0")]
++    pub fn try_with_capacity(capacity: usize) -> Result<Self, TryReserveError> {
++        Self::try_with_capacity_in(capacity, Global)
++    }
++
+     /// Creates a `Vec<T>` directly from the raw components of another vector.
+     ///
+     /// # Safety
+@@ -617,6 +659,53 @@ impl<T, A: Allocator> Vec<T, A> {
+         Vec { buf: RawVec::with_capacity_in(capacity, alloc), len: 0 }
+     }
  
- pub use super::ThisModule;
++    /// Tries to construct a new, empty `Vec<T, A>` with the specified capacity
++    /// with the provided allocator.
++    ///
++    /// The vector will be able to hold exactly `capacity` elements without
++    /// reallocating. If `capacity` is 0, the vector will not allocate.
++    ///
++    /// It is important to note that although the returned vector has the
++    /// *capacity* specified, the vector will have a zero *length*. For an
++    /// explanation of the difference between length and capacity, see
++    /// *[Capacity and reallocation]*.
++    ///
++    /// [Capacity and reallocation]: #capacity-and-reallocation
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// #![feature(allocator_api)]
++    ///
++    /// use std::alloc::System;
++    ///
++    /// let mut vec = Vec::try_with_capacity_in(10, System).unwrap();
++    ///
++    /// // The vector contains no items, even though it has capacity for more
++    /// assert_eq!(vec.len(), 0);
++    /// assert_eq!(vec.capacity(), 10);
++    ///
++    /// // These are all done without reallocating...
++    /// for i in 0..10 {
++    ///     vec.push(i);
++    /// }
++    /// assert_eq!(vec.len(), 10);
++    /// assert_eq!(vec.capacity(), 10);
++    ///
++    /// // ...but this may make the vector reallocate
++    /// vec.push(11);
++    /// assert_eq!(vec.len(), 11);
++    /// assert!(vec.capacity() >= 11);
++    ///
++    /// let mut result = Vec::try_with_capacity_in(usize::MAX, System);
++    /// assert!(result.is_err());
++    /// ```
++    #[inline]
++    #[stable(feature = "kernel", since = "1.0.0")]
++    pub fn try_with_capacity_in(capacity: usize, alloc: A) -> Result<Self, TryReserveError> {
++        Ok(Vec { buf: RawVec::try_with_capacity_in(capacity, alloc)?, len: 0 })
++    }
++
+     /// Creates a `Vec<T, A>` directly from the raw components of another vector.
+     ///
+     /// # Safety
 -- 
 2.38.1
 
