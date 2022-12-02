@@ -2,44 +2,44 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C6ABC4332F
-	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Dec 2022 18:31:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6561C4332F
+	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Dec 2022 18:32:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234458AbiLBSbh (ORCPT
+        id S234047AbiLBSc4 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 2 Dec 2022 13:31:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36716 "EHLO
+        Fri, 2 Dec 2022 13:32:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234122AbiLBSbc (ORCPT
+        with ESMTP id S234297AbiLBScx (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 2 Dec 2022 13:31:32 -0500
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94517E988D;
-        Fri,  2 Dec 2022 10:31:31 -0800 (PST)
-Received: by mail-wm1-f43.google.com with SMTP id m19so4136133wms.5;
-        Fri, 02 Dec 2022 10:31:31 -0800 (PST)
+        Fri, 2 Dec 2022 13:32:53 -0500
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF6A37F8E;
+        Fri,  2 Dec 2022 10:32:50 -0800 (PST)
+Received: by mail-wr1-f47.google.com with SMTP id w15so9069102wrl.9;
+        Fri, 02 Dec 2022 10:32:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CeBhZUYHhg3CPbWZDIA1bo33xmoBi75eG+8d6a4d4JY=;
-        b=Y/oq5S7OnRLJDxbRbTYzisUArF80/DfLBpchOwLA6Mv560zDfYg++CZpyQpW0N8f+y
-         KDiHkI6OwZJCS+wwlZpUE18WdmOuBLMuXq8S0hDvtgu+LyVCdXfA5WeL5Hm6uH9WnMoy
-         sos2rOZ7w1XtpyZKa0uaK70iJFbom1x2lgS1X29RCore6e/tNos3ZFEtDuLQnBjZxAvq
-         nKllZsn0ykwlmBZLZB7Z9/9hUzAzHdqBJktNNQz3g8+hlrZpdSiXjJ5Gxq4lIXDkFFZ7
-         nu8U6OEeGEl8gxLI7Oca7P0PuA5zTdfr15eYsYkMBvel3/A8NDSsJUuZHs3HoLACu3Qv
-         PKHg==
-X-Gm-Message-State: ANoB5pkZU8Z/C9St++MrNEnqiqqkw4z0XajERrcjpWpHz1uhslbFf1hC
-        GePFLSUpafR2FoFyZjB/T8o=
-X-Google-Smtp-Source: AA0mqf7YWKGvbFv+NOe0n2Yc1e6eeWilHkTtWIurM/uPaNtOOJy7RvYMSBoV4Ge/JPFs2Cz6gtSnAg==
-X-Received: by 2002:a05:600c:1e89:b0:3d0:7d89:225a with SMTP id be9-20020a05600c1e8900b003d07d89225amr6390068wmb.167.1670005890235;
-        Fri, 02 Dec 2022 10:31:30 -0800 (PST)
+        bh=dPMI3+zK71UDugRLfvvjNZoXPuW3L0kj2lPu6Tc7ooM=;
+        b=PZ2SBb35YHOXylVqc7daqMUbAJ0UbVHRnpYdm1IFb0CEFehrWf1LCIvNfZTPE0Wv88
+         6ker0qcXTdsUgoJwGBapF6au4CY1G5/htzo2T1vFJZfkjYH6QOQ5Ocf3NIaRjywmq3fK
+         zMzXcqMomEeoLCFJTYh74l/8LnISBKmTiCg/mehoXmxC0+2ReDOEO/6v7ocXDwgbidOT
+         w2nfudOx8vrqIUs96gAKJn++DHs4wj78iDXTgy1r0Dbq5glHfGixbhpaaVmxZmxYADHQ
+         twnMYPbFminhMFINCGMuJIxH8518WOyjy8RAuRbtUhX80/N9GMrHSXs5OCTK9mfQzb8G
+         2R/A==
+X-Gm-Message-State: ANoB5pmVsWfQhFMXf2b+pAOgxQjQshWKVRpJ59bOKFyzUf/cnfwAGIiV
+        ADYs+CbxxC71dEv/5b879sU=
+X-Google-Smtp-Source: AA0mqf6YqRlHZN2hozxkeZwQrDln42/fBDSISeGrupnXTaC7vfUgHTO/zDo75j9GUPu8GYUhgRPeZg==
+X-Received: by 2002:a05:6000:18cd:b0:242:26ed:2d69 with SMTP id w13-20020a05600018cd00b0024226ed2d69mr10428691wrq.3.1670005969130;
+        Fri, 02 Dec 2022 10:32:49 -0800 (PST)
 Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id i1-20020adfaac1000000b002238ea5750csm9459625wrc.72.2022.12.02.10.31.29
+        by smtp.gmail.com with ESMTPSA id n12-20020a1c720c000000b003c64c186206sm8950653wmc.16.2022.12.02.10.32.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Dec 2022 10:31:29 -0800 (PST)
-Date:   Fri, 2 Dec 2022 18:31:27 +0000
+        Fri, 02 Dec 2022 10:32:48 -0800 (PST)
+Date:   Fri, 2 Dec 2022 18:32:47 +0000
 From:   Wei Liu <wei.liu@kernel.org>
 To:     ojeda@kernel.org
 Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -48,33 +48,45 @@ Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
         =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev, Wei Liu <wei.liu@kernel.org>
-Subject: Re: [PATCH v2 25/28] rust: add `build_error` crate
-Message-ID: <Y4pEf731ylXUkzhF@liuwe-devbox-debian-v2>
+Subject: Re: [PATCH v2 26/28] rust: build_assert: add `build_{error,assert}!`
+ macros
+Message-ID: <Y4pEzzSs9vO7cvjT@liuwe-devbox-debian-v2>
 References: <20221202161502.385525-1-ojeda@kernel.org>
- <20221202161502.385525-26-ojeda@kernel.org>
+ <20221202161502.385525-27-ojeda@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221202161502.385525-26-ojeda@kernel.org>
+In-Reply-To: <20221202161502.385525-27-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Dec 02, 2022 at 05:14:56PM +0100, ojeda@kernel.org wrote:
+On Fri, Dec 02, 2022 at 05:14:57PM +0100, ojeda@kernel.org wrote:
 > From: Gary Guo <gary@garyguo.net>
 > 
-> The `build_error` crate provides a function `build_error` which
-> will panic at compile-time if executed in const context and,
-> by default, will cause a build error if not executed at compile
-> time and the optimizer does not optimise away the call.
+> Add the `build_error!` and `build_assert!` macros which leverage
+> the previously introduced `build_error` crate. Do so in a new
+> module, called `build_assert`.
 > 
-> The `CONFIG_RUST_BUILD_ASSERT_ALLOW` kernel option allows to
-> relax the default build failure and convert it to a runtime
-> check. If the runtime check fails, `panic!` will be called.
+> The former fails the build if the code path calling it can possibly
+> be executed. The latter asserts that a boolean expression is `true`
+> at compile time.
 > 
-> Its functionality will be exposed to users as a couple macros in
-> the `kernel` crate in the following patch, thus some documentation
-> here refers to them for simplicity.
+> In particular, `build_assert!` can be used in some contexts where
+> `static_assert!` cannot:
+> 
+>     fn f1<const N: usize>() {
+>         static_assert!(N > 1);` // Error.
+>         build_assert!(N > 1);   // Build-time check.
+>         assert!(N > 1);         // Run-time check.
+>     }
+> 
+>     #[inline]
+>     fn f2(n: usize) {
+>         static_assert!(n > 1);  // Error.
+>         build_assert!(n > 1);   // Build-time check.
+>         assert!(n > 1);         // Run-time check.
+>     }
 > 
 > Signed-off-by: Gary Guo <gary@garyguo.net>
 > [Reworded, adapted for upstream and applied latest changes]
