@@ -2,102 +2,71 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 638E5C4332F
-	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Dec 2022 23:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B680C47088
+	for <rust-for-linux@archiver.kernel.org>; Sat,  3 Dec 2022 17:53:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234746AbiLBXmJ (ORCPT
+        id S229469AbiLCRxE (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 2 Dec 2022 18:42:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43402 "EHLO
+        Sat, 3 Dec 2022 12:53:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234685AbiLBXmI (ORCPT
+        with ESMTP id S229503AbiLCRxD (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 2 Dec 2022 18:42:08 -0500
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25477ECA21;
-        Fri,  2 Dec 2022 15:42:06 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.west.internal (Postfix) with ESMTP id 37A6232007D7;
-        Fri,  2 Dec 2022 18:42:02 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Fri, 02 Dec 2022 18:42:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        joshtriplett.org; h=cc:cc:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm3; t=1670024521; x=
-        1670110921; bh=yxT7HiP0z6PnQ571PxQPFu/NQAI3ieVo9QcKWIVPNaY=; b=y
-        BQsZRxe+jKL9ygzmShsmMjLR1wogByCB42nEcbzwc3ogTNmLjcb14HIW6/IpCuuz
-        /zarw10mAOt/Hz1WYVNViEfpD9PU19KCXZJPS7v5In486WdgCPt2hd5d+1qWLF34
-        72fOmIOa1l1STZfu1XWBQd6R/AvWDHdHk01DzWEERajAxn9j7lhJN4gSXpyWhocw
-        SIQI5y4QS3FSxC32Cb1hGkDnZoIUgtvfv6l/J5NW7XM/b1f3cgsfpKl8Tt/ErY4N
-        ldcxTa65hQjwdTLumFaQ5I1rTInppkxCFdW1Z99WFp13r47vtPKw0H7uyNqJLn/0
-        BGaNvGJ3AjFJQEeQVIUsQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm1; t=1670024521; x=1670110921; bh=yxT7HiP0z6PnQ571PxQPFu/NQAI3
-        ieVo9QcKWIVPNaY=; b=KiA9VVRLK3HOjYjDlUzTuRq57Duc2zEq9XTkNOTfQaXJ
-        K0VJJ0icSrbMM0BJ6o2+ZZIEeZrNc1NyCAD+iQKnIxyQLzcM2FhE8SpMydo6EB57
-        Z71vCWaMcCmnSahY7RC1+HUq2ZAIOfHtTIgUyG0UL/+WTTlZEQql5qwm7hKd2zFc
-        qH3fhds7DrVNDSd3W6aCh4RCRdw66CzDiDOs2Co3ah7bk83PWVZ/rMb8e52IEOOW
-        PuuDb4FNmLOq3ykSFpGX3VbO6ePWSHEy5yXkT8PHaSatCcuysoi6oOX5mcopUHp+
-        ndOXZXO3BAC++XloqgtQU12Ds9HHgkHroFT7IMPvzA==
-X-ME-Sender: <xms:SY2KY4pqXDtFrjBzrV_d6DSuGqLHNx-pn1N5u7VYUpn-7pyY24rDzQ>
-    <xme:SY2KY-p0P3lsb2-BR0TDveJGLPvctvLbtUaCrhW1ZuLqPFlMqSPKmgwDv3oQYSlHy
-    AozvFWvBgMRx2FfmXM>
-X-ME-Received: <xmr:SY2KY9NbJ05JoJNBfUEvBHhpzz0drKS0jLFvE_mZuVCiXR6gOZWTjd1dLCY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrtdelgddufecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeflohhshhcu
-    vfhrihhplhgvthhtuceojhhoshhhsehjohhshhhtrhhiphhlvghtthdrohhrgheqnecugg
-    ftrfgrthhtvghrnhepudeigeehieejuedvtedufeevtdejfeegueefgffhkefgleefteet
-    ledvtdfftefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepjhhoshhhsehjohhshhhtrhhiphhlvghtthdrohhrgh
-X-ME-Proxy: <xmx:SY2KY_4WqYiCD1w-e1GVqNbGO5ZQSviQlTOIg1RvHwqf0AX4FRNKjg>
-    <xmx:SY2KY37CEs2o58XgsOAmBmtM2MsGlhT9rfhW2ruINiuDHxBoZwUf5g>
-    <xmx:SY2KY_ifyDx6lG-UslUL3zM770lY_71GjwlbADYE1sNHiEL9oZOzIA>
-    <xmx:SY2KYxvfABpQOiUcLsA2UQfw8ZVSFhzHpPknfBhURXYaiagcULxSYw>
-Feedback-ID: i83e94755:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 2 Dec 2022 18:42:00 -0500 (EST)
-Date:   Fri, 2 Dec 2022 15:41:59 -0800
-From:   Josh Triplett <josh@joshtriplett.org>
-To:     ojeda@kernel.org
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Wei Liu <wei.liu@kernel.org>
-Subject: Re: [PATCH v2 27/28] rust: types: add `Either` type
-Message-ID: <Y4qNR+Nn9utDftHq@localhost>
-References: <20221202161502.385525-1-ojeda@kernel.org>
- <20221202161502.385525-28-ojeda@kernel.org>
+        Sat, 3 Dec 2022 12:53:03 -0500
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66538175AC
+        for <rust-for-linux@vger.kernel.org>; Sat,  3 Dec 2022 09:53:02 -0800 (PST)
+Received: by mail-yb1-xb2f.google.com with SMTP id n184so9457628yba.6
+        for <rust-for-linux@vger.kernel.org>; Sat, 03 Dec 2022 09:53:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jsWyxw8Bb8vyQNfNCsnLvRib7t9OzsQ+ISI82lpJft4=;
+        b=JPSWBB/d+ALsSrhDTjk/S6t9huUeuxxzTeK309FO9ujL+aNCFSwN9G8EqpTS6Q/nL7
+         Dmr5KoJOkVHU8uZc7+vaQsJrhDy2ut33KXYFclK2K2jtsxz7sEE9WHIvtLme/McMCOOT
+         n/OfCjQWsUbTsYWmW6kbQhqhBYBbMU5MwIkXxGFk63L+XLbXpJDNbnVIhZqzsoKf+ADu
+         jSTWBDvFNRUQXtidlBpCJ8/cWdDyj+W/tDXDxyuPMF2rDk24U6pXIPb6TBdRnRy1dZPC
+         DXwC91B+QEKgdSuRMDuYJEAl5Tix99KnxXrevn8lUwq0XNVg6gAp5XMmlUHAP22PjJZo
+         mRnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jsWyxw8Bb8vyQNfNCsnLvRib7t9OzsQ+ISI82lpJft4=;
+        b=0NMDE4NyZ0qvVBV1nn3KcH8k4bz9jKtuuUStofsvh/osPy0mdGoOAQTk0GtDyfqoeH
+         dgm9rexLg6ni/8idiEDtymwz0FaBhmxu5AbXhZ023TWgK8d399GzChYYNitRk/at1b3H
+         9/BMAF0LjajhPdOO028m9IX4mV0nnAqrNk6B1bIMzaYZ6S0exnyH1iLrKg1u/3cuXITb
+         8w/+DMtkVDzI47Ntv5qdQ+CgsA1IvVh1GurwsMmNgWjl0vaJnncANsC5UAnZ+6kTj7+h
+         n/Fl+6nadofNTEzkQMFkR9No2n4F88dQBILMk2eE9gEt1WHyQr8fjLazP7lAINW/ZG2A
+         9gUQ==
+X-Gm-Message-State: ANoB5pkNjHS4UHXgTmbjzddOKxHPT4EpGwhhedDWRO6LCinYtZ1Deg3A
+        Wp7EbwThR0z4h9ldQbcx1f2ykSmHHjTG5k3NF+L/DF+nVReNJg==
+X-Google-Smtp-Source: AA0mqf7pWzRfHLdeMWmbqlgME+OpSQOqws+N3INjB7f6uW0U18y72cwRQ7kox5pBbkToXxpWv6+IkNYoFESq/hr+tfs=
+X-Received: by 2002:a25:44c5:0:b0:6cb:16d0:1ae1 with SMTP id
+ r188-20020a2544c5000000b006cb16d01ae1mr52436453yba.581.1670089981556; Sat, 03
+ Dec 2022 09:53:01 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221202161502.385525-28-ojeda@kernel.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sat, 3 Dec 2022 18:52:50 +0100
+Message-ID: <CANiq72kTYk6=PduJyoAT0ViYSwPt07hqNMAs=irviQ1QeW48hQ@mail.gmail.com>
+Subject: Reminder: informal call in 10 minutes
+To:     rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Dec 02, 2022 at 05:14:58PM +0100, ojeda@kernel.org wrote:
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
-> 
-> Introduce the new `types` module of the `kernel` crate with
-> `Either` as its first type.
-> 
-> `Either<L, R>` is a sum type that always holds either a value
-> of type `L` (`Left` variant) or `R` (`Right` variant).
-> 
-> For instance:
-> 
->     struct Executor {
->         queue: Either<BoxedQueue, &'static Queue>,
->     }
+Hi all,
 
-This specific example seems like it would be better served by the
-existing `Cow` type.
+We will have our informal call in 10 minutes from now (18:00 UTC first
+Saturday of each month).
+
+As usual, everybody is welcome to join. The meetings take place on
+Google Meet. If you need an invitation, drop me an email!
+
+If you are in a timezone that cannot easily attend the meetings at
+18:00 UTC, please let us know.
+
+Cheers,
+Miguel
