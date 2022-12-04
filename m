@@ -2,200 +2,161 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72393C4321E
-	for <rust-for-linux@archiver.kernel.org>; Sun,  4 Dec 2022 18:05:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9C99C4332F
+	for <rust-for-linux@archiver.kernel.org>; Sun,  4 Dec 2022 22:50:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230177AbiLDSFb (ORCPT
+        id S230388AbiLDWuS (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 4 Dec 2022 13:05:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51806 "EHLO
+        Sun, 4 Dec 2022 17:50:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230042AbiLDSFa (ORCPT
+        with ESMTP id S230255AbiLDWuR (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 4 Dec 2022 13:05:30 -0500
-Received: from mx.treblig.org (mx.treblig.org [46.43.15.161])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63733DECF;
-        Sun,  4 Dec 2022 10:05:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-        ; s=bytemarkmx; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID
-        :Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
-        :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-        Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
-        :List-Post:List-Owner:List-Archive;
-        bh=y7n0hCnLGy1zh+SrdpqxlWp8vDHcKpVOgMWTyUVHEaQ=; b=A0wRDCpBFBt2mvSCaPYoSuQcDN
-        f4aaXk7mu1f+GHWPClZ9jdgaDwmwCuXkI1ApIeFXaEbPbPK/GZZLJ/Y5BOqixCD5OtV3pk4wM1WbN
-        MjLtH98IEOFFlw43yueO0Df4gFwGrQ1PmS2tBNobhLGAiwNViNJqKptN1OWXiwoFI+sk97L681aP9
-        lUEaQ9RyUF1mulgo3Mcmip8YPYu4jC7Irq/q/QTbIn9i7rb6hFueWUZpUv4aDn5GMxaKV55QWgS5X
-        WhvGUoE9ktjMC5IENU0wefbFz5v9pM1jXBjUWukP+gzsHtKY5wkJ3PAtzg9K2WYjNmK42mgwGBn47
-        KPOxGklg==;
-Received: from dg by mx.treblig.org with local (Exim 4.94.2)
-        (envelope-from <dg@treblig.org>)
-        id 1p1tMf-00534x-B2; Sun, 04 Dec 2022 18:05:21 +0000
-Date:   Sun, 4 Dec 2022 18:05:21 +0000
-From:   "Dr. David Alan Gilbert" <dave@treblig.org>
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc:     ojeda@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Adam Bratschi-Kaye <ark.email@gmail.com>
-Subject: Re: [PATCH v2 20/28] rust: str: add `Formatter` type
-Message-ID: <Y4zhYWNIaGtOH5u6@gallifrey>
-References: <20221202161502.385525-1-ojeda@kernel.org>
- <20221202161502.385525-21-ojeda@kernel.org>
- <Y4y/ovfF3len/22J@gallifrey>
- <CANeycqrT69HJWEBZwbuhTehSy1qFF7A4q38cb5TqU1yf=nMLOQ@mail.gmail.com>
+        Sun, 4 Dec 2022 17:50:17 -0500
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 971FCFAC4;
+        Sun,  4 Dec 2022 14:50:13 -0800 (PST)
+Received: by mail-lf1-x12f.google.com with SMTP id s8so15932867lfc.8;
+        Sun, 04 Dec 2022 14:50:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=60KRWbfLpgb9ykw8m3+leQoSYUWkACl+x4S1nlYbkmM=;
+        b=p8DvGEoipdmOFLlZibH0ymdIRuNVTVsGM4sZoybpffizTogdsFzbMA7LQmilBP961P
+         heValp+vHjVs6/lu47qD9koaPd3KK2Ku0BVlzzf8N7tr7Yg6rRGHasWpR+M6ot8EKOn+
+         uLq+kCxFUNcQFWz19NiTBR5zmM4SWIwEQ7uRMsvZfr18FAPXC6BNdvWdvz9wH2dY5zmf
+         WHlNg+OzzyLs82c2m2x7LZlJt3555Z0tCVTnbLkqKiOQFwIqUDVIEVoVdW0RmdG6msVh
+         mGieZ4rCfn9aMClRi0mufTKAVBJLblauvAdDo+PgjT2+iwTJh0eexty62gN/JmxdaXaG
+         r+zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=60KRWbfLpgb9ykw8m3+leQoSYUWkACl+x4S1nlYbkmM=;
+        b=yRtRuGOgCs/b7C9NiHmFR/wMAkI8oKYLxRpLLhjj12LbuPgu0Zms4zPCSXMEtcYOkD
+         Ij0d6WpGglZ9qTTk9URo3zacCn1WufZq6ivBckkw6ghF6LOc+TKANylq0cmPxxrsRp5f
+         yW8P3sPq7W2L6ECjSvm5BnuOMHfY8o9wtR01s6DJrcuaBuu+EdG/f57DcYj4Nmb/kpw4
+         SYQpveoonaDbYIdFTIdKB+wLOVvlF68GW+PxVmDUtxPX2uD9qdtrLLDJL78BflTcVPgr
+         PS6KcWzrNfYFEPaKTuKMyQaO87LPyVGRWY4Lf3wxcYeFJAefVlga/o5Qa6nFXvSNve68
+         oIxw==
+X-Gm-Message-State: ANoB5pnYM9PqhZ8+ioCZ94hsWFSJ2k1wJHo8rOHSoB8cTqhwQcHv6kw2
+        zUTUepofyhvNcJ6/Xd6yhTiZHPJRNm6nmrkv/OR9UDV+49TZ2w==
+X-Google-Smtp-Source: AA0mqf572VcBiZfDwMAXsXUb+FnpjqJPk5nHRZPRqkD1kBIHbvd5Mt3lwCc/xbWp/s4EwtD5Obucp/iEhiV4bfNOoWQ=
+X-Received: by 2002:a05:6512:4014:b0:4a2:3cf6:985e with SMTP id
+ br20-20020a056512401400b004a23cf6985emr19782556lfb.29.1670194211285; Sun, 04
+ Dec 2022 14:50:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <CANeycqrT69HJWEBZwbuhTehSy1qFF7A4q38cb5TqU1yf=nMLOQ@mail.gmail.com>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/5.10.0-12-amd64 (x86_64)
-X-Uptime: 17:58:55 up 268 days,  4:24,  1 user,  load average: 0.18, 0.09,
- 0.03
-User-Agent: Mutt/2.0.5 (2021-01-21)
+References: <20221204-compiler-builtin-v1-0-0730c7e573d5@garyguo.net>
+In-Reply-To: <20221204-compiler-builtin-v1-0-0730c7e573d5@garyguo.net>
+From:   Alex Gaynor <alex.gaynor@gmail.com>
+Date:   Sun, 4 Dec 2022 17:49:59 -0500
+Message-ID: <CAFRnB2UO+H3kbkn9L61Mu-g2Z4K=rLJ3STwEKPNUG1R0VWzTmQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: make compiler-builtin stubs non-global
+To:     Gary Guo <gary@garyguo.net>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-* Wedson Almeida Filho (wedsonaf@gmail.com) wrote:
-> On Sun, 4 Dec 2022 at 15:41, Dr. David Alan Gilbert <dave@treblig.org> wrote:
-> >
-> > * ojeda@kernel.org (ojeda@kernel.org) wrote:
-> > > From: Wedson Almeida Filho <wedsonaf@gmail.com>
-> > >
-> > > Add the `Formatter` type, which leverages `RawFormatter`,
-> > > but fails if callers attempt to write more than will fit
-> > > in the buffer.
-> > >
-> > > In order to so, implement the `RawFormatter::from_buffer()`
-> > > constructor as well.
-> > >
-> > > Co-developed-by: Adam Bratschi-Kaye <ark.email@gmail.com>
-> > > Signed-off-by: Adam Bratschi-Kaye <ark.email@gmail.com>
-> > > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> > > Reviewed-by: Gary Guo <gary@garyguo.net>
-> > > [Reworded, adapted for upstream and applied latest changes]
-> > > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> > > ---
-> > >  rust/kernel/str.rs | 57 ++++++++++++++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 57 insertions(+)
-> > >
-> > > diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> > > index a995db36486f..ce207d1b3d2a 100644
-> > > --- a/rust/kernel/str.rs
-> > > +++ b/rust/kernel/str.rs
-> > > @@ -406,6 +406,23 @@ impl RawFormatter {
-> > >          }
-> > >      }
-> > >
-> > > +    /// Creates a new instance of [`RawFormatter`] with the given buffer.
-> > > +    ///
-> > > +    /// # Safety
-> > > +    ///
-> > > +    /// The memory region starting at `buf` and extending for `len` bytes must be valid for writes
-> > > +    /// for the lifetime of the returned [`RawFormatter`].
-> > > +    pub(crate) unsafe fn from_buffer(buf: *mut u8, len: usize) -> Self {
-> > > +        let pos = buf as usize;
-> > > +        // INVARIANT: We ensure that `end` is never less then `buf`, and the safety requirements
-> > > +        // guarantees that the memory region is valid for writes.
-> > > +        Self {
-> > > +            pos,
-> > > +            beg: pos,
-> > > +            end: pos.saturating_add(len),
-> > > +        }
-> > > +    }
-> > > +
-> > >      /// Returns the current insert position.
-> > >      ///
-> > >      /// N.B. It may point to invalid memory.
-> > > @@ -439,3 +456,43 @@ impl fmt::Write for RawFormatter {
-> > >          Ok(())
-> > >      }
-> > >  }
-> > > +
-> > > +/// Allows formatting of [`fmt::Arguments`] into a raw buffer.
-> > > +///
-> > > +/// Fails if callers attempt to write more than will fit in the buffer.
-> > > +pub(crate) struct Formatter(RawFormatter);
-> 
-> Here we mention that `Formatter` fails if callers attempt to write
-> more than will fit in the buffer.
-> 
-> This is in contrast with `RawFormatter`, which doesn't fail in such
-> cases. There's also a comment there explaining it (not visible in this
-> patch because it's already there), but I reproduce below:
-> 
-> /// Allows formatting of [`fmt::Arguments`] into a raw buffer.
-> ///
-> /// It does not fail if callers write past the end of the buffer so
-> that they can calculate the
-> /// size required to fit everything.
-> ///
-> /// # Invariants
-> ///
-> /// The memory region between `pos` (inclusive) and `end` (exclusive)
-> is valid for writes if `pos`
-> /// is less than `end`.
-> pub(crate) struct RawFormatter {
-> 
-> `RawFormatter` is used to implement the "%pA" printf specifier, which
-> requires this behaviour.
-> 
-> > > +
-> > > +impl Formatter {
-> > > +    /// Creates a new instance of [`Formatter`] with the given buffer.
-> > > +    ///
-> > > +    /// # Safety
-> > > +    ///
-> > > +    /// The memory region starting at `buf` and extending for `len` bytes must be valid for writes
-> > > +    /// for the lifetime of the returned [`Formatter`].
-> > > +    #[allow(dead_code)]
-> > > +    pub(crate) unsafe fn from_buffer(buf: *mut u8, len: usize) -> Self {
-> > > +        // SAFETY: The safety requirements of this function satisfy those of the callee.
-> > > +        Self(unsafe { RawFormatter::from_buffer(buf, len) })
-> > > +    }
-> > > +}
-> > > +
-> > > +impl Deref for Formatter {
-> > > +    type Target = RawFormatter;
-> > > +
-> > > +    fn deref(&self) -> &Self::Target {
-> > > +        &self.0
-> > > +    }
-> > > +}
-> > > +
-> > > +impl fmt::Write for Formatter {
-> > > +    fn write_str(&mut self, s: &str) -> fmt::Result {
-> > > +        self.0.write_str(s)?;
-> > > +
-> > > +        // Fail the request if we go past the end of the buffer.
-> >
-> > Reading this for the first time, I'm surprised by this, perhaps a
-> > bit more comment is needed?  I was expecting that nothing would
-> > let pos pass end.
-> 
-> Given the comments I highlight above, do you think we still need more?
-> 
-> (My impression is that you're reading this without the context I tried
-> to explain above, and this context may perhaps be sufficient.)
+Can you add a comment to compiler_builtins.rs reminding people that if
+they add an additional intrinsic, they may also need to add it to
+redirect-intrinsics in the Makefile?
 
-Thanks for the pointer; I guess I find it trickier when I can't see the
-type in self.0 to immediately see it's RawFormatter, and 'Raw' is
-abstract enough to need to go hunt to see it's behaviour.
+Alex
 
-With that context, I wouldn't object to what's there, but how about
-something like:
+On Sun, Dec 4, 2022 at 5:44 PM Gary Guo <gary@garyguo.net> wrote:
+>
+> Currently we define a number of stubs for compiler-builtin intrinsics
+> that compiled libcore generates. The defined stubs are weak so they will
+> not conflict with genuine implementation of these intrinsics, but their
+> effect is global and will cause non-libcore code that accidently
+> generate these intrinsics calls compile and bug on runtime.
+>
+> Instead of defining a stub that can affect all code, this patch uses
+> objcopy's `--redefine-sym` flag to redirect these calls (from libcore
+> only) to a prefixed version (e.g. redirect `__multi3` to `__rust_multi3`)=
+,
+> so we can define panciking stubs that are only visible to libcore.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> ---
+> This patch was previous discussed on GitHub.
+>
+> Link: https://github.com/Rust-for-Linux/linux/pull/779
+>
+> To: Miguel Ojeda <ojeda@kernel.org>
+> To: Alex Gaynor <alex.gaynor@gmail.com>
+> To: Wedson Almeida Filho <wedsonaf@gmail.com>
+> To: Boqun Feng <boqun.feng@gmail.com>
+> To: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+> Cc: rust-for-linux@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  rust/Makefile             | 14 ++++++++++++++
+>  rust/compiler_builtins.rs |  2 +-
+>  2 files changed, 15 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/Makefile b/rust/Makefile
+> index ff70c4c916f8..aed6f7eca36f 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -359,8 +359,22 @@ rust-analyzer:
+>         $(Q)$(srctree)/scripts/generate_rust_analyzer.py $(srctree) $(obj=
+tree) \
+>                 $(RUST_LIB_SRC) > $(objtree)/rust-project.json
+>
+> +redirect-intrinsics =3D \
+> +       __eqsf2 __gesf2 __lesf2 __nesf2 __unordsf2 \
+> +       __unorddf2 \
+> +       __muloti4 __multi3 \
+> +       __udivmodti4 __udivti3 __umodti3
+> +
+> +ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
+> +       # These intrinsics are defined for ARM64 and RISCV64
+> +       redirect-intrinsics +=3D \
+> +               __ashrti3 \
+> +               __ashlti3 __lshrti3
+> +endif
+> +
+>  $(obj)/core.o: private skip_clippy =3D 1
+>  $(obj)/core.o: private skip_flags =3D -Dunreachable_pub
+> +$(obj)/core.o: private rustc_objcopy =3D $(foreach sym,$(redirect-intrin=
+sics),--redefine-sym $(sym)=3D__rust$(sym))
+>  $(obj)/core.o: private rustc_target_flags =3D $(core-cfgs)
+>  $(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs $(obj)/target.json FORCE
+>         $(call if_changed_dep,rustc_library)
+> diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
+> index f8f39a3e6855..1f05f93f2187 100644
+> --- a/rust/compiler_builtins.rs
+> +++ b/rust/compiler_builtins.rs
+> @@ -28,7 +28,7 @@ macro_rules! define_panicking_intrinsics(
+>      ($reason: tt, { $($ident: ident, )* }) =3D> {
+>          $(
+>              #[doc(hidden)]
+> -            #[no_mangle]
+> +            #[export_name =3D concat!("__rust", stringify!($ident))]
+>              pub extern "C" fn $ident() {
+>                  panic!($reason);
+>              }
+>
+> ---
+> base-commit: b9ecf9b9ac5969d7b7ea786ce5c76e24246df2c5
+> change-id: 20221204-compiler-builtin-bb03aa6c4400
+>
+> Best regards,
+> --
+> Gary Guo <gary@garyguo.net>
 
-      // RawFormatter (self.0) still updates pos if the buffer
-      // is too small, but doesn't fail - we want to fail the request.
 
-Dave
 
-> Thanks,
-> -Wedson
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+--=20
+All that is necessary for evil to succeed is for good people to do nothing.
