@@ -2,190 +2,104 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 615D7C4321E
-	for <rust-for-linux@archiver.kernel.org>; Sun,  4 Dec 2022 17:27:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9992C4708D
+	for <rust-for-linux@archiver.kernel.org>; Sun,  4 Dec 2022 17:36:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230042AbiLDR1I (ORCPT
+        id S230258AbiLDRgX (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 4 Dec 2022 12:27:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54406 "EHLO
+        Sun, 4 Dec 2022 12:36:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229985AbiLDR1H (ORCPT
+        with ESMTP id S229938AbiLDRgV (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 4 Dec 2022 12:27:07 -0500
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4603A10FE4;
-        Sun,  4 Dec 2022 09:27:06 -0800 (PST)
-Received: by mail-oi1-x22f.google.com with SMTP id n186so10602262oih.7;
-        Sun, 04 Dec 2022 09:27:06 -0800 (PST)
+        Sun, 4 Dec 2022 12:36:21 -0500
+Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F43E14096;
+        Sun,  4 Dec 2022 09:36:20 -0800 (PST)
+Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-14455716674so4867806fac.7;
+        Sun, 04 Dec 2022 09:36:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CkwAPeoCUs3lm02qIrL4crb0Gr5/YPZRr/bbYFtEjJM=;
-        b=BToVcvWVqt9/dfNi5D4HDFG8I8T1lfwFvGoyJmi++n51KK7MBib3/9z31yn7jRS4uJ
-         79lNNS3qbDNxkZ4Ph2vPwmDS/DEfVp3RXu7sZ52MH40JjkjPLOUUyYn08wv6AKJBnYLY
-         LERgDaCM4FeyvqtmUMhubj2De1IzVMXsM+ZxlU+tedPEY7r8hsQXhOeKafNDAbtIlq7G
-         30F3Rv5YzL5idkpFXBR1zEByZowe3iROUkILvgxC+KChDIn2gMtR2NLNzF6kLSxmazt2
-         x/9UnoWzn5I//QHkG//pYu1ujugrCDWBjM2hWmzKWIQvj21NtQYdjKv2STDUe7I718y/
-         eQww==
+        bh=TXEZvr3bKu2vBIW+lpuSVItbWZwpWlZ50nx9XuTinWU=;
+        b=K5E0+LOnggn/gYMPFlw4zI4PSzD+JHSdGy4UU6wttfDL2DlzF3ueIgIOWR7oRXgHct
+         xh9/3Brq5EmMilnZRjlVNdphsZo4PWHbyyb/k6XiLdDRWtE6JynFvaohTeAc9fSEii3/
+         O/cJm1NIlZq/KdCpD/QjSgbxheAoTFj8fsV9nL/J0zC0HAwKKezkr0ZseQAaU0n9/BBJ
+         xMdieALMDasrbQlarT2uBdq5jLLcve65SIkefFLHCVyhwxyGzH4ePF+6ikpWycWuWATh
+         XP5BoyplLSdQ/zWMjnzqnSv5Vl3OeM3M9Lsn+L0yP14j8Ftd9RDrKoOmoHz0LwrkqcoQ
+         AIDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CkwAPeoCUs3lm02qIrL4crb0Gr5/YPZRr/bbYFtEjJM=;
-        b=yH8e9BI/O+Ya/0la5VtuR4iDrQEigyXeSuAAi0Zo8Rn/7vvctXzMCLFb/63SNn0rbX
-         DSaz+C3hNWJQGUowWMxhK9b1lL+CIY0x9DBen2MDrY1OJRb8Zgs3bEznsJ+mQtp1uKiT
-         PhCWPNYL9kaOuSeq/geRF1ml7zOxhqBgt5RxDz8auLWdM9dxFS3gENeEqrJXqCfF7RQb
-         2w2VUahnPlGvPYA6Ag2y4FFOgRwln36vlhc5kVJY5ZiTJ2nCeOG9kpCHgl9/0Rgkz6ak
-         La7Cpt27hmFTh1c/5cLzAvTzCTAgIxA2anJ4vdKKEdodVYLWD+NFpCCQ6PJZCnuZJtPz
-         G7sA==
-X-Gm-Message-State: ANoB5pl2Txukjh8YnqrhN1sOTC/kHL4POhW+SiIThiA90No9XrVjUIgg
-        iQ5LimyEqH2PHAlQmKb30DdT++j+spHWOa+e+7CCtQm+/i8=
-X-Google-Smtp-Source: AA0mqf4h+bzPRaf0PWI9aa0KezTRo2S2If1j3UH0ur7AeUbJWwysICYOSoL1ykwETMU6PNiPG+d7IwV9JoGpjdYFSvQ=
-X-Received: by 2002:a05:6808:1705:b0:359:c652:ff7e with SMTP id
- bc5-20020a056808170500b00359c652ff7emr29267495oib.254.1670174825561; Sun, 04
- Dec 2022 09:27:05 -0800 (PST)
+        bh=TXEZvr3bKu2vBIW+lpuSVItbWZwpWlZ50nx9XuTinWU=;
+        b=Ibq8XhiRu4yKwKUoleDS78llmAwgua7rD4Nl1ozubPkoPjo9soYavhRgH17R+xQlkt
+         16NCGui+TCZAplJ9d8z77bPe+3vZZ02ivcwm0sDUqOsrQvUAAy/xGFtlr+kdRgOnpOoj
+         5DMTz70rH6QrTQ1Wq9reXE8miYzo6klMWCb5K0LaNc7ffeHtcZfsZ0PKyqDAhV52IRuj
+         dOeCmOStUW9dCf4jNJ+IJjM2wBXTOUPIi/C/LRDPr6jGInTsyJyKcorKonhWyrAD9V0u
+         EwTgtPP+7sYvm7U1zU5j2C8ukyfPTefVB03axP9Z69In1jBf3OrTE/4pdTT72qU4oN5M
+         K8Aw==
+X-Gm-Message-State: ANoB5pk7R6IKjsq+JgJMU/F3wZtFTv7VE0hpRrHElvt62x3JnMpDAvBp
+        sdnjBGwokH2UsnEgPpQluUH+C1f/7Tv78YcG/NI=
+X-Google-Smtp-Source: AA0mqf5xGkkp4TyK3rNiEGg6B2v4wlLttK5ZifOyxNPE9HKBFN7/u15rFv7uwOIrxKmrz2YDbDeQ4YFqtbIlts4XwsA=
+X-Received: by 2002:a05:6870:6c02:b0:143:80af:e36a with SMTP id
+ na2-20020a0568706c0200b0014380afe36amr22895324oab.254.1670175379350; Sun, 04
+ Dec 2022 09:36:19 -0800 (PST)
 MIME-Version: 1.0
-References: <20221202161502.385525-1-ojeda@kernel.org> <20221202161502.385525-21-ojeda@kernel.org>
- <Y4y/ovfF3len/22J@gallifrey>
-In-Reply-To: <Y4y/ovfF3len/22J@gallifrey>
+References: <20221202161502.385525-1-ojeda@kernel.org> <20221202161502.385525-28-ojeda@kernel.org>
+ <Y4qNR+Nn9utDftHq@localhost> <20221204103153.117675b1@GaryWorkstation>
+In-Reply-To: <20221204103153.117675b1@GaryWorkstation>
 From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-Date:   Sun, 4 Dec 2022 17:26:54 +0000
-Message-ID: <CANeycqrT69HJWEBZwbuhTehSy1qFF7A4q38cb5TqU1yf=nMLOQ@mail.gmail.com>
-Subject: Re: [PATCH v2 20/28] rust: str: add `Formatter` type
-To:     "Dr. David Alan Gilbert" <dave@treblig.org>
-Cc:     ojeda@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+Date:   Sun, 4 Dec 2022 17:36:08 +0000
+Message-ID: <CANeycqpNW0E5fQqD1Qzqr0p-3cgs5k5KgLusragaSWbrmcx2Nw@mail.gmail.com>
+Subject: Re: [PATCH v2 27/28] rust: types: add `Either` type
+To:     Gary Guo <gary@garyguo.net>
+Cc:     Josh Triplett <josh@joshtriplett.org>, ojeda@kernel.org,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Adam Bratschi-Kaye <ark.email@gmail.com>
+        patches@lists.linux.dev, Wei Liu <wei.liu@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, 4 Dec 2022 at 15:41, Dr. David Alan Gilbert <dave@treblig.org> wrote:
+On Sun, 4 Dec 2022 at 10:31, Gary Guo <gary@garyguo.net> wrote:
 >
-> * ojeda@kernel.org (ojeda@kernel.org) wrote:
-> > From: Wedson Almeida Filho <wedsonaf@gmail.com>
-> >
-> > Add the `Formatter` type, which leverages `RawFormatter`,
-> > but fails if callers attempt to write more than will fit
-> > in the buffer.
-> >
-> > In order to so, implement the `RawFormatter::from_buffer()`
-> > constructor as well.
-> >
-> > Co-developed-by: Adam Bratschi-Kaye <ark.email@gmail.com>
-> > Signed-off-by: Adam Bratschi-Kaye <ark.email@gmail.com>
-> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> > Reviewed-by: Gary Guo <gary@garyguo.net>
-> > [Reworded, adapted for upstream and applied latest changes]
-> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> > ---
-> >  rust/kernel/str.rs | 57 ++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 57 insertions(+)
-> >
-> > diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> > index a995db36486f..ce207d1b3d2a 100644
-> > --- a/rust/kernel/str.rs
-> > +++ b/rust/kernel/str.rs
-> > @@ -406,6 +406,23 @@ impl RawFormatter {
-> >          }
-> >      }
-> >
-> > +    /// Creates a new instance of [`RawFormatter`] with the given buffer.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// The memory region starting at `buf` and extending for `len` bytes must be valid for writes
-> > +    /// for the lifetime of the returned [`RawFormatter`].
-> > +    pub(crate) unsafe fn from_buffer(buf: *mut u8, len: usize) -> Self {
-> > +        let pos = buf as usize;
-> > +        // INVARIANT: We ensure that `end` is never less then `buf`, and the safety requirements
-> > +        // guarantees that the memory region is valid for writes.
-> > +        Self {
-> > +            pos,
-> > +            beg: pos,
-> > +            end: pos.saturating_add(len),
-> > +        }
-> > +    }
-> > +
-> >      /// Returns the current insert position.
-> >      ///
-> >      /// N.B. It may point to invalid memory.
-> > @@ -439,3 +456,43 @@ impl fmt::Write for RawFormatter {
-> >          Ok(())
-> >      }
-> >  }
-> > +
-> > +/// Allows formatting of [`fmt::Arguments`] into a raw buffer.
-> > +///
-> > +/// Fails if callers attempt to write more than will fit in the buffer.
-> > +pub(crate) struct Formatter(RawFormatter);
-
-Here we mention that `Formatter` fails if callers attempt to write
-more than will fit in the buffer.
-
-This is in contrast with `RawFormatter`, which doesn't fail in such
-cases. There's also a comment there explaining it (not visible in this
-patch because it's already there), but I reproduce below:
-
-/// Allows formatting of [`fmt::Arguments`] into a raw buffer.
-///
-/// It does not fail if callers write past the end of the buffer so
-that they can calculate the
-/// size required to fit everything.
-///
-/// # Invariants
-///
-/// The memory region between `pos` (inclusive) and `end` (exclusive)
-is valid for writes if `pos`
-/// is less than `end`.
-pub(crate) struct RawFormatter {
-
-`RawFormatter` is used to implement the "%pA" printf specifier, which
-requires this behaviour.
-
-> > +
-> > +impl Formatter {
-> > +    /// Creates a new instance of [`Formatter`] with the given buffer.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// The memory region starting at `buf` and extending for `len` bytes must be valid for writes
-> > +    /// for the lifetime of the returned [`Formatter`].
-> > +    #[allow(dead_code)]
-> > +    pub(crate) unsafe fn from_buffer(buf: *mut u8, len: usize) -> Self {
-> > +        // SAFETY: The safety requirements of this function satisfy those of the callee.
-> > +        Self(unsafe { RawFormatter::from_buffer(buf, len) })
-> > +    }
-> > +}
-> > +
-> > +impl Deref for Formatter {
-> > +    type Target = RawFormatter;
-> > +
-> > +    fn deref(&self) -> &Self::Target {
-> > +        &self.0
-> > +    }
-> > +}
-> > +
-> > +impl fmt::Write for Formatter {
-> > +    fn write_str(&mut self, s: &str) -> fmt::Result {
-> > +        self.0.write_str(s)?;
-> > +
-> > +        // Fail the request if we go past the end of the buffer.
+> On Fri, 2 Dec 2022 15:41:59 -0800
+> Josh Triplett <josh@joshtriplett.org> wrote:
 >
-> Reading this for the first time, I'm surprised by this, perhaps a
-> bit more comment is needed?  I was expecting that nothing would
-> let pos pass end.
+> > On Fri, Dec 02, 2022 at 05:14:58PM +0100, ojeda@kernel.org wrote:
+> > > From: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > >
+> > > Introduce the new `types` module of the `kernel` crate with
+> > > `Either` as its first type.
+> > >
+> > > `Either<L, R>` is a sum type that always holds either a value
+> > > of type `L` (`Left` variant) or `R` (`Right` variant).
+> > >
+> > > For instance:
+> > >
+> > >     struct Executor {
+> > >         queue: Either<BoxedQueue, &'static Queue>,
+> > >     }
+> >
+> > This specific example seems like it would be better served by the
+> > existing `Cow` type.
+>
+> We use `no_global_oom_handling`, which gates most `ToOwned`
+> implementations (e.g. `str` cannot implement `to_owned()` because it
+> cannot guarantee allocation success).
+>
+> So the Rust `Cow` is pretty much useless in the kernel.
 
-Given the comments I highlight above, do you think we still need more?
+It's also implemented in `std`, which the kernel doesn't include.
+(Which is actually good for us, since we can't really use it.)
 
-(My impression is that you're reading this without the context I tried
-to explain above, and this context may perhaps be sufficient.)
-
-Thanks,
--Wedson
+Josh, how do you feel about adding a `TryToOwned` trait to
+`core::borrow`? This would be similar to the precedent of `TryFrom` in
+addition to `From` for the fallible case, and would be usable by the
+kernel.
