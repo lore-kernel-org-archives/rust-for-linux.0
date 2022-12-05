@@ -2,163 +2,181 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D8ABC4708C
-	for <rust-for-linux@archiver.kernel.org>; Mon,  5 Dec 2022 21:41:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EFCEC4321E
+	for <rust-for-linux@archiver.kernel.org>; Mon,  5 Dec 2022 21:49:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231160AbiLEVlB (ORCPT
+        id S233494AbiLEVtT (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 5 Dec 2022 16:41:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40314 "EHLO
+        Mon, 5 Dec 2022 16:49:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233144AbiLEVlA (ORCPT
+        with ESMTP id S234087AbiLEVsu (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 5 Dec 2022 16:41:00 -0500
-Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2110.outbound.protection.outlook.com [40.107.11.110])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA18427CF0;
-        Mon,  5 Dec 2022 13:40:58 -0800 (PST)
+        Mon, 5 Dec 2022 16:48:50 -0500
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2105.outbound.protection.outlook.com [40.107.10.105])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBC29B7DA;
+        Mon,  5 Dec 2022 13:45:15 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=e+U4Wd6rqmOxcVaN/7/7MmedKL3+mD6gq2mKdLyGTJUYaLQ4dtjTeceA6ika5hKthF7yaku2nlbjeRXZzuxssGs5nxlmUSeYYdpqJvBUqjkk0VSw1xrQOYgoHM8KDM/yWfwd9ZF6SMmCTeIq/v8MnFzR/HGB0QhH1BzYFuJbiHh5qXZKr5w1AAh+H8zLGdeEV8c4H5fluliJaUEcGSxiXeWGodWRktEhl9Mw2hJ9NE77auc2/TI5guiwkWZtSNVMhX11X1qBquEp7fZDBqv0BdQOOJQ9SF6crg4kB9CFybbwhZJTWpL6f/LklNcf7soRC18fOK9U3zvd075BzobZMQ==
+ b=IJ/3P95dJVUSyZoLJttAdGBTruLcvX1wbSnPH8MBhUr9ymDNfLq7Zpno3JVGrctoVu81E2meEqKnVnlPxd9bM60A3ZEDZSnhsCzDUW2I2HjPJMNRR8N0ao1OG79/z2dZF2tTenWzoxDYWIGdoyXUl/4h9g5WVOmH6owhUMRKQT3vi42HjY8n9B3037qllA2PmRJ1cfOJxVxlo/2AOiMM76zsj73SArCjwLVCpma1UvB/itKibgNZF+CLg4zHRKW6GnciEfO9XCJuEYp8na33yFROyuEwmvzJ6yjBDDqEIftqxyQ0ja4nHtq0AEW1hp0bbYwFNplpm8lb2W3OK/JosA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2CjGArSU0e+WBDgbLCunC+OVVGPygmVQcBeYPUHZnwI=;
- b=J5p5rwM9bnhk2IYzCypTrkIaJ5/iB0QmfAk1WONh/izmYXgg8jXs+FuiEm9omtMXZYUdgnfUpsiDVYcYrpYq1+cqYYax99/3a0PzJSW1sesuppKUnGmnrp4RDiPDWsvSbyohyuvLB/j6GF6waaQkcunL7ZWYSyi88KCUqT+vxwmzdeyame4JQe0Pi8fom7w2gR0vIDnkpJn6h+nO4WHWb7yXodCANjkBB9HTEwoLsn1KAGbshi6z4COONuVNaW/BHAlCf9E3juUsCaDqenKW1rPKidbh/vmfqK1hWnFWpSbJAJzJzlBrFjsPsKMR3Ww3nO8+vrfXFG6JzuIZykTWWw==
+ bh=US1Ylm3U7PkQhFJKbC6A/ypJsfqawY4iQ2uFk/l+qMo=;
+ b=Xv1MmU643QkPVlBjUDFwnvl1N0RPdkKaumR2bY7b+EbVg3Zr5wEwWyPXJGml3Al/igg9+rEz2OmC2h6UMdqVCcITadvJTuZyhxCOx7rCI8id18aqgsmdwSrII4Xuu+1/UPjXb08qrZIayX0sJ+kk9kAr3hAmvM+y4/gH8d4TULlZufSx9wwBhxch6gOWJFyxoTsS91xD4r+zYG54laDd0D0wCLb1HZ/eUzaBMlrnCtijDhQ8aQtfSPCbKIpQALh3Itf+chRE0RZzxY29jJnFUIGTt9ltZ/6lUCPNSsDaC6YT2yKss6zfRDQYjRox5Rgt+tjLo7sd+YiEboDzERfRdQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2CjGArSU0e+WBDgbLCunC+OVVGPygmVQcBeYPUHZnwI=;
- b=UvDnD73RrMYYhdAulpiLldaQIBeZ5wmU25ktzoD1I1WFUNonXTUnha/iaDDrjl5SN9JVIOJBZGvMEEMmdhbku11IyU0+cqr12SvwuDMLN+QTEGynCAHCXQ6a7ZhoS4plpKt4JmosNvUxl6mU7TR846Tfp7W9kQcFfnNWRadzXwI=
+ bh=US1Ylm3U7PkQhFJKbC6A/ypJsfqawY4iQ2uFk/l+qMo=;
+ b=q3vyjKVrefvB5ZOGKpm+Eavw+2r4LtEvbK91LrupeCPVdGj6rDhCIbahJyWNkHy+tHzr+AMOEti38pnCSY9HTTPydFbbqzaUOWhMBLLXwX1zh6AexOLaM/JbnZUdqLZyTDlEBMp4VwcvSxyoT64fesrU5e/m7VOjm5SLFJ9/dlQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWXP265MB5179.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:194::8) with
+ by LO6P265MB6238.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2b4::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.14; Mon, 5 Dec
- 2022 21:40:56 +0000
+ 2022 21:45:13 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::6c07:e2da:3210:3fd7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::6c07:e2da:3210:3fd7%6]) with mapi id 15.20.5880.014; Mon, 5 Dec 2022
- 21:40:56 +0000
-Date:   Mon, 5 Dec 2022 21:40:54 +0000
+ 21:45:13 +0000
 From:   Gary Guo <gary@garyguo.net>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: make compiler-builtin stubs non-global
-Message-ID: <20221205214054.6b9e6a7e@GaryWorkstation>
-In-Reply-To: <CANiq72mXQed42DARuOjEipUffNxx97LRL+byZ0G2kjuRup6ZYQ@mail.gmail.com>
-References: <20221204231650.2604587-1-gary@garyguo.net>
-        <CANiq72mXQed42DARuOjEipUffNxx97LRL+byZ0G2kjuRup6ZYQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0050.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:60::14) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+Subject: [PATCH v3] rust: compiler_builtins: make stubs non-global
+Date:   Mon,  5 Dec 2022 21:44:54 +0000
+Message-Id: <20221205214454.2542888-1-gary@garyguo.net>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO4P123CA0343.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18d::6) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWXP265MB5179:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9a1074e-fc91-42c1-0ddc-08dad7096447
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO6P265MB6238:EE_
+X-MS-Office365-Filtering-Correlation-Id: aca7cffe-d9f0-4d4d-3cf8-08dad709fd93
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: UZKbGOo6tuX7bA7tNXoDdxLyh1y5Ay9k2MP6nacMrQVM9TuE9/EuABOFosh5WbIgWKKHQ+PAvTfI9J/R3zWxjuLg1WlxIEK6ciHlBT+YOxIH+DWijTsnt/RCPblSLhN0Tpx/1HWTW4a5hBsMErLeIQqC1gdL71Gc5ELMZB3tmRVIqqKC3q4jYlXndbFmduI2xvSJbGraaxwav69AMHy4N5v1YDWcFQtBv2HV2XGT2v6y6HrbLTvxgLgKrUbBXjhJ83g1kWr1lOAj0Zf+10fQavN3+sD20hZLCw0Y9xWcYA38jIx6dgf83A4Ue5rj0Y8jaPdGbXo2upsyCaTBIzGgl5XOp9VbBgb2yUmV9YiAxQqwyvHpNmnFiK3qBCnfpeLmPy8tRyJrLKaOOrnSwrPYGaBYsFSSyFGczhzw9wb+zOrzSgFkbd3uyQjwDFWRpgMX4GMUebT13hWf3ZQkohk3not8l0xauZN8lBAeub4neGc0yeHQHw0VlnlL/0Wkl3EkVmNvQ1IYLi0Ay+bTgJXTmmqH/6wFiUHQryV3/uXpWGMPBLKtCIVUP52Igizq74MM0CpTTjmlEigYSKMF9Nbgda9hn+AoS/cX8CaRSUZBOCKIOd8PxkMQIzsv0eEcYoA/cwdukmH8hPd+hoayARo4w2bcZ9gab5OZLKkr12dnYEjb/87V2XeICWxZqIv+8tIhb6iwpBevhknUBbg8SFJ36A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(7916004)(396003)(376002)(346002)(366004)(39830400003)(136003)(451199015)(86362001)(4326008)(2906002)(66476007)(66946007)(8936002)(8676002)(41300700001)(66556008)(38100700002)(83380400001)(478600001)(54906003)(1076003)(316002)(6916009)(966005)(6486002)(5660300002)(33716001)(186003)(53546011)(6512007)(9686003)(6506007)(21314003);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: 9un8E5ySsFeTROi/ZfkrO5WMiB8/9e4l+qCPcU/UvL/96yevub4Ry6NRoGco9txSY3CQYZVmQXtFqrIZWXJJCr8WqeGPPDO8Izv0727afaU3Wz8kXO9B5QDxkO7wwPAaZ7Z1MV+go6PofRFPwQDvXb7qzKncQXlkVgX71uqdbOwp6wNuIYL/zofAeg1l3B6KiwpgOgWqOf5jESz3Ho5zuH+z0M9f+NodxOXrop5ovqNkx8y5DNV10QpE0akvBBIH2yeWSAfg0Gwd8ir9MrfwAPo9jdTVhE1RymF3uyiGVOqXQ2q7jBIawH+lAcVKoBUCePj/SYCEdXfqulMEyH68pYwx52kyhoYvc6VGkQAD1nVQ3NXMelrEYaiMV1EUk/bE5gfcd3X78+uRERFiKCCb6zul+rXTokeI5WH1k1hcorO8CTlWWRLkrMXYyXEusxpG4pocp9iRaAjhV7ZiYmp2InGg5ZdYPGz78EkH4us8Esv+LkpXtDortrReeHmFbMygwubgN1H1iUBHCON+cNanZjGTCbX//37RYLfn8zR/zuOjTRZgoKfhaMFvPKEdCMxPshMC+3y9L8G2BdbYbtkwZwyh78c9NmiYdPUh+rPyoj1EoG0M/cHxxvgsKGlbtlvED1CbNKcVqePbAWkA1+FAy/d4/uPl25v8Utaxx1TVn50=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(376002)(366004)(346002)(136003)(396003)(39830400003)(451199015)(36756003)(38100700002)(86362001)(8936002)(2906002)(41300700001)(5660300002)(83380400001)(478600001)(966005)(66476007)(66556008)(6486002)(316002)(2616005)(66946007)(110136005)(8676002)(1076003)(6666004)(186003)(55236004)(26005)(6512007)(6506007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?t2t0SHLTvsACUsJ+NcK58FeqrGOu2fTCeRHZepN9VGSfX0JkdpNotyPo3N3x?=
- =?us-ascii?Q?SnyJBLUE/aI3Q+rLhI0bR91pOV8kdtsTCWNV5LqNzsZKm/q1iL8qIp2AW+sc?=
- =?us-ascii?Q?aLVTclQgy4GEscr6TJ/jF0zhak9NSPgx2XTWvi+53C+5UrRTf59BwqqtY0fj?=
- =?us-ascii?Q?H8TI5MRRAt3FyyxfMB0RC6BoVrcsgbLQzEFRNTX7o8Y/dRqToISAsUXuraLP?=
- =?us-ascii?Q?kod4ZXd1/J3a5lpq+VbhigmxlwiVhD/lfwoud/iUZBm1ilzWCIQhfQyUSohX?=
- =?us-ascii?Q?JCw47RMNKgYw+uDaBx0XAwDLqyhI/PR0t83Pfjj+1a1FYzxFcYN/KBO0qq2L?=
- =?us-ascii?Q?UZwAqMlKtaddpTKjhRMIoIQ9QHRSvzAjU1H+mvlWEAAYymbx3cJKIlRAmlzw?=
- =?us-ascii?Q?htnUDrnk8g+Va9GqMBAQM8RyNu0i48eB27nOL2cB212waEBugTlRPtepf2WS?=
- =?us-ascii?Q?71xeiG5v14EpOrtgenA2KBFZkS7BXIXRiEg05rCGeyEsVhHB1xm9pPsYWojw?=
- =?us-ascii?Q?PqnB+L0YtF8XdnXsaXc1n9/KXQdB/A02dyy+Oz+7dCvwA6cFJwxNxb67nkEb?=
- =?us-ascii?Q?ZULRKzxBNVjhB3+UnaEZu0t1tpR7soQf7k/4i4MVz9TJNzvKIBJb2TFvHYu7?=
- =?us-ascii?Q?R5OD6kG17CtukzMWsLmAL7PTJR0HrXDBzRenxDY6ZdOkVrwdSfmoU50qyB2k?=
- =?us-ascii?Q?FtkpjP+qNi+xSwSU/u4vFJx6E/2jAhAndOBDIEUUWC9QAQVdZaYlpk6e6q8o?=
- =?us-ascii?Q?ekU80pbs05RNWCzTiv3udQWlDv+4os7X+DTlSlqqnq1xCQzaMDxZQZ9QVOMv?=
- =?us-ascii?Q?dfKg3o2QldxkSC6mYMTXVaLjN95P9a6GwJNbuc0c5uneQHhHvblG/tOL5xxV?=
- =?us-ascii?Q?j8M7hmACBhqe2/tTdAsyFqqKjK3ZdOaLfSVbqnmSYOqKgI8d4jtl5VK/3NkI?=
- =?us-ascii?Q?lHaWnYojdrCIm+NL+E63DrugmqqjcPSSiV/IhIEdDQ09Fnxn5rc5UGBxi8MA?=
- =?us-ascii?Q?vd3cccpvpe5xLtRpj1HW9m6fMfBu3k5IhResFoxxQsh/B0+Z1EHR6LO1ebpw?=
- =?us-ascii?Q?DfRqDzwFDEA4QVW+aNXDbyRijyS9GtzyZRV4waCWzdFNmNvy1kUhgYx83ZzH?=
- =?us-ascii?Q?cQ6JFlH33ozOiZNFpZR1/F36D4bzfE+NpIDk2nw9eGLuLvWxhMXMe1c1j+Ce?=
- =?us-ascii?Q?ftZj/JvQM2dwt1mJ91vff4uxYR6+lykpVELAkxgFwbHjeQmOCHe7/nrWZcHH?=
- =?us-ascii?Q?RHGDZQ5YrmS8MqpXBAWEd+OUKUaWsLnE4CgwIeR65eHuD+7S/TXheF+4X36l?=
- =?us-ascii?Q?ksT6RPPd7UufAos+Xqw3OFBWPTDIusb8UP7sTFP/AJV6PqWJO1lex5gT+h2f?=
- =?us-ascii?Q?aam/wyIcnYEpCV3ikEZxlZeqcsecuca09DPy+uG87UDFbPWVFxbVpKzSVnjd?=
- =?us-ascii?Q?yY/blDwuKfUOK3a76SsCMWjrZ+nsNZd1KCSFxRGfmdg3C9CHunWV8NVcY8HQ?=
- =?us-ascii?Q?x5RM6U/4r1c7sK3Fgtjlv1tNz7+SZBy401xWCpVL4rSyFFAFkF5Ks/Z9wh4x?=
- =?us-ascii?Q?m8Z3xy4zLeBEcOE3NkL8RgFsD+m4lJFTw30p4iMmCLE6sy729z+ZiC6/+FKb?=
- =?us-ascii?Q?sR0n4ncS9SnDC5geYJ5oVweJIMHzeQtzCMk7G7B7odB6?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?alfLTapgbApl0uy3ah/Y7f39Znh6EFLB1xML/xc9AddgPAPXgUHkNih+zdEw?=
+ =?us-ascii?Q?fDxKAJx0pFsk6WdKGBtY56iRWibMa4wOWh4YAqQSHFx0z17qMaypB6L47ikF?=
+ =?us-ascii?Q?+RfjFxHLyf6PtnC3PkTQo1C06Tp6KTphyE4FoBLFL2NjqOmT6bL+FEpYI4iM?=
+ =?us-ascii?Q?SJ1B5Op9TH7MGYC4VGU6Tl0MeqlfwyUaCqWtd5ggqCdh4hR5IFhC2KyHT3dU?=
+ =?us-ascii?Q?iSW8CujF/eIOAlX9tL3m3jQBpb59/kQg0Ce7yd3+p+3YY7t0/eYZX4mmkBut?=
+ =?us-ascii?Q?BUqzvt0noCro77UongOAeCswW4TLN9OJymBmwo3NGLDNLDY4oqOhQcS9GPE7?=
+ =?us-ascii?Q?Zqe3Ih3TgOUjpK17rVKeDgwc0XH281I3q4H0EPMyYrSM45kYW3VDzbUdRsx/?=
+ =?us-ascii?Q?18XzWlbhmtJR2SgeA3evbodJWDjDCXuxb1qJLTEJFscUq+pXNXbEvb8AqVfH?=
+ =?us-ascii?Q?N6UoKx4lpVWNPbkvcbA/pDG7bWyjVUKxr2/csl0ODni3BKs67gCUiCItncB6?=
+ =?us-ascii?Q?2oW3UQSR9XSqvfefuiw24OAAHiYa0pjgpoj17CkvoClOTsX+/c6idg7Q8C0R?=
+ =?us-ascii?Q?uxRuxAGLdiZ0nJ7b46+hg5dX0eTADD7tYm9xF/DH8KCMYNePiGg87r9YpCfx?=
+ =?us-ascii?Q?+NgaI/3lejpvKdCyN2w96OwY9rfnUvECOyzSEuRTVxFo39/56ymvUEsI/o2t?=
+ =?us-ascii?Q?hwvMSyOY3YhHhf1bOglnhnVEYO2jb4I6mfCTb2fJB8ai3EFmklDJossDWbOL?=
+ =?us-ascii?Q?tJsVp2IFIKjDVl+QaKd8P5kwvBFFa4fA/ojbwYMhNvSGjK4iPT5Pf/GvFlR5?=
+ =?us-ascii?Q?+gP8fHN8sqWvAqqGBvyuUWCOX8y6B8SySJImhiSQikMIm6Kklj4/ydhZe2++?=
+ =?us-ascii?Q?E+p4/Kdc0MDXvnwILSGgZpNI8KfgSUBuwX/F61uTR2CAbftNRdlNoCbaSTjo?=
+ =?us-ascii?Q?HJAYWBN/lGE5t8GodQyasFBoZfe8brcIw/4geeWc7fIgjPMT0ChQYXDwA4V6?=
+ =?us-ascii?Q?d+hmpWWmlliZQtvwqUYEt+qoznI+4CRBQTheBir+/vDmy+vVqLl+ojJrML99?=
+ =?us-ascii?Q?lvD8uf8wxiR5SyyXa5pse6oO+LhKIJiEJTrHDEdI9CDeXLUonRVRLX9kL9LG?=
+ =?us-ascii?Q?Bhw4SA7HoUaVuplh8wPAFQArVvOP7OUtbb84NQMAirZjPsnmQY5AXC8hVLtf?=
+ =?us-ascii?Q?xlh+L+9+LDG99gKCz0Z/S/LtqZHyBeaWAjkks0gNWR6hQ8dQ/m0BH+Zs7rQf?=
+ =?us-ascii?Q?xrPTBNMhwOZ79miiH2u5ZSPvfZiZsS6GH6LmEi3HUSie2NeUW8L2Tn+3frGH?=
+ =?us-ascii?Q?hsvsVHzdbCrwT2AbnpwM/uefnn4hMXzdqYUXF+uBsV8WMSNVsEtJvCSuti6m?=
+ =?us-ascii?Q?5S3uWquVDCksqgce+reDfGSSI/uy5mrGLVE5c+U+7wC2730c9Lx3y5767SQ1?=
+ =?us-ascii?Q?PG8BWJiU5IQtOv1mCUfHepwHajbXoqTa2Z1rRDlTjMI9uAaC3oT30Vl7d7bp?=
+ =?us-ascii?Q?vMI+e0ZJN9hWuGg4bUahA8bDa0ssZ8vm6bhOSAYdbAV46L4fLTHTvFGcRoYz?=
+ =?us-ascii?Q?aKAvRmO/jiWFdrE4HK4=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9a1074e-fc91-42c1-0ddc-08dad7096447
+X-MS-Exchange-CrossTenant-Network-Message-Id: aca7cffe-d9f0-4d4d-3cf8-08dad709fd93
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2022 21:40:56.4808
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2022 21:45:13.6570
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sXPQnrKset6SMBGpEWs6Ff7F2sP3l4i7v3oDnS1OoKBvjKvEaOCoFMtELYQW8EvJ0Rr+QKTHg+655s5yrrsNFg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB5179
+X-MS-Exchange-CrossTenant-UserPrincipalName: YPt0UXNnTo3iq10W0fT2cVZI1+Zrik/0apmt1/ORmLfAMouP0j5mKvoBFgTZasGEMeOAcD+jQ1EnmjeBNqQkkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6238
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, 5 Dec 2022 21:26:27 +0100
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+Currently we define a number of stubs for compiler-builtin intrinsics
+that compiled libcore generates. The defined stubs are weak so they will
+not conflict with genuine implementation of these intrinsics, but their
+effect is global and will cause non-libcore code that accidently
+generate these intrinsics calls compile and bug on runtime.
 
-> On Mon, Dec 5, 2022 at 12:17 AM Gary Guo <gary@garyguo.net> wrote:
-> >
-> > This patch was previous discussed on GitHub.  
-> 
-> previous -> previously
-> 
-> > Link: https://github.com/Rust-for-Linux/linux/pull/779
-> >
-> > Signed-off-by: Gary Guo <gary@garyguo.net>  
-> 
-> Hmm... Something happened to the patch (compared to v1): the triple
-> dashes, the diffstat, the base-commit etc. are not there. It can still
-> be applied, so no worries, but it feels a bit strange.
+Instead of defining a stub that can affect all code, this patch uses
+objcopy's `--redefine-sym` flag to redirect these calls (from libcore
+only) to a prefixed version (e.g. redirect `__multi3` to `__rust_multi3`),
+so we can define panciking stubs that are only visible to libcore.
 
-Checked my bash history, and realised that there is a mistakenly added
-`p` in my argument to `git format-patch` :)
+This patch was previously discussed on GitHub [1].
 
-> 
-> The newline between the tags should not be there. Instead, please put
-> it on top of `Link:` to keep tags separated (if you wanted to keep it
-> close to the sentence to refer to it, you can use "[1]" instead and
-> then "Link: https... [1]" in the tag).
-> 
-> > +// NOTE: if you are adding a new intrinsic is added here, you should also add it to
-> > +// `redirect-intrinsics` in `rust/Makefile`.  
-> 
-> "is added" -> "". Also, what about putting the message at the top
-> instead (below the docs or perhaps after the macro but before the
-> calls to it)?
+Link: https://github.com/Rust-for-Linux/linux/pull/779 [1]
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ rust/Makefile             | 14 ++++++++++++++
+ rust/compiler_builtins.rs |  5 ++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
-People usually add new things to the bottom, and that's my rationale
-for adding the note there.
-
-> 
-> For the title of the patch, in the end I went with "rust: xxx: ..."
-> (where xxx is typically the name of the crate or the `kernel` crate
-> module), so perhaps "rust: compiler_builtins: make stubs non-global"
-> or similar?
-
-Will address, along with other suggestions, in v3.
-
-Best,
-Gary
+diff --git a/rust/Makefile b/rust/Makefile
+index ff70c4c916f8..aed6f7eca36f 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -359,8 +359,22 @@ rust-analyzer:
+ 	$(Q)$(srctree)/scripts/generate_rust_analyzer.py $(srctree) $(objtree) \
+ 		$(RUST_LIB_SRC) > $(objtree)/rust-project.json
+ 
++redirect-intrinsics = \
++	__eqsf2 __gesf2 __lesf2 __nesf2 __unordsf2 \
++	__unorddf2 \
++	__muloti4 __multi3 \
++	__udivmodti4 __udivti3 __umodti3
++
++ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
++	# These intrinsics are defined for ARM64 and RISCV64
++	redirect-intrinsics += \
++		__ashrti3 \
++		__ashlti3 __lshrti3
++endif
++
+ $(obj)/core.o: private skip_clippy = 1
+ $(obj)/core.o: private skip_flags = -Dunreachable_pub
++$(obj)/core.o: private rustc_objcopy = $(foreach sym,$(redirect-intrinsics),--redefine-sym $(sym)=__rust$(sym))
+ $(obj)/core.o: private rustc_target_flags = $(core-cfgs)
+ $(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs $(obj)/target.json FORCE
+ 	$(call if_changed_dep,rustc_library)
+diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
+index f8f39a3e6855..43378357ece9 100644
+--- a/rust/compiler_builtins.rs
++++ b/rust/compiler_builtins.rs
+@@ -28,7 +28,7 @@ macro_rules! define_panicking_intrinsics(
+     ($reason: tt, { $($ident: ident, )* }) => {
+         $(
+             #[doc(hidden)]
+-            #[no_mangle]
++            #[export_name = concat!("__rust", stringify!($ident))]
+             pub extern "C" fn $ident() {
+                 panic!($reason);
+             }
+@@ -61,3 +61,6 @@ define_panicking_intrinsics!("`u128` should not be used", {
+     __udivti3,
+     __umodti3,
+ });
++
++// NOTE: if you are adding a new intrinsic here, you should also add it to
++// `redirect-intrinsics` in `rust/Makefile`.
+-- 
+2.34.1
 
