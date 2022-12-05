@@ -2,83 +2,102 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A20DEC47089
-	for <rust-for-linux@archiver.kernel.org>; Mon,  5 Dec 2022 13:54:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ABC7AC4332F
+	for <rust-for-linux@archiver.kernel.org>; Mon,  5 Dec 2022 20:26:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230148AbiLENyG (ORCPT
+        id S232317AbiLEU0k (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 5 Dec 2022 08:54:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46284 "EHLO
+        Mon, 5 Dec 2022 15:26:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231205AbiLENyF (ORCPT
+        with ESMTP id S231855AbiLEU0k (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 5 Dec 2022 08:54:05 -0500
+        Mon, 5 Dec 2022 15:26:40 -0500
 Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36127257;
-        Mon,  5 Dec 2022 05:54:05 -0800 (PST)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-3cbdd6c00adso118244167b3.11;
-        Mon, 05 Dec 2022 05:54:05 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B8F623EB5;
+        Mon,  5 Dec 2022 12:26:39 -0800 (PST)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-3cbdd6c00adso130376867b3.11;
+        Mon, 05 Dec 2022 12:26:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bc4/MjN/YjTPQ9EZGEra+4fgjSY8zygUtk0AgsersU0=;
-        b=XuY48gARX1ENE547OqGANQPwOeRc2gRM3s9AirKaB5f7QPn2LgH6QY+/p5iN7FiaDR
-         3CGX4FGzaQtIrLyvdndr7xdF/D9mtI9guwQWgJ7AS9Z0fnEYwZi4oCG9mtxDGGH40+vT
-         R8ez7KsxFQtLHrKvTvhJZpskWdlNPMQFy0T5umLohosgOqmBqcHW7gkoRQBnv48EFiks
-         OjzPsJWCMH/PoOktEwc9W5U4Ez6iElLwZTDVmFv8FV7MwlnXHv+h/Dze/3utINPe4Hoo
-         6F7BeH/uSy/1K7myyxp7xfBcKLLyBOWpPBrMr7Gv3VgPkHR+Kg9eJImc6UHoB6fjru2U
-         xCLA==
+        bh=m/V+XRoAAVDbwLDUpAasAbDvgW2Q/zSZS6Pet2wCkVA=;
+        b=IY/SmLYZWSJ+91/upBIDr1pKJMf7Z4P+sR1Tpul99Hp+qDpRRvgF8EXzNHpNtk/Hmg
+         elvfnJPZKU2ddPZHscRQ9IJgXH8DTny6oA9He/t6BbdkC7HhfegnwrDJAO5FiC1yRth3
+         IsDU4Wh456tiaBSFYyjj0piVFg5GYGKDhi/D2cfMrD9zlmjKbpC0yGN9QuzIHUhTkNO8
+         0US0SXzblprJovU4cnXMmdiCIaQ/3PkX8valAswoURyrIBPQ0kWGLZHRLRuX69PJERVM
+         VWkcbuc1A9HyM832YTPLtZo8kfgUuz2tTWTLrHVt8gmNJkIu5WYv8vH3lPW8kngtVkY0
+         6RjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bc4/MjN/YjTPQ9EZGEra+4fgjSY8zygUtk0AgsersU0=;
-        b=usuFAR3bafzc05B7OGEGFU/PNjWIyPfFBHO/y4/gvMPudJwBh0wsEobIMu7Es4uDOK
-         z7fLbxcj3z0hK8xbzTQFdpDjiOsvqGKgMwdS1GCEJZHmD0uEnHK0Q4mlDJuBqL7FHQE+
-         rg9oo4XvTbUW8PZcay3cvZhBo6sm2eTaRiM27CNNlQBzxQruVCUAvMGPRVDc0wWbcovJ
-         HRXD/79LtaHHslaEmWrKKYPnV2fFzf+vbPVJ/lA7lJULA97d9fl5IJlWVm3nJ0NBUzO7
-         LzUuFdtTbLNnvH7015qBr33WiDJ82fkVjKolEt5MpFe8QiOcVrKRrND2q4YyVWOldEoI
-         OSWw==
-X-Gm-Message-State: ANoB5pkBvX6yOkdWXFUHE3NVANUl3B0YG3VEeNXwI77cfyB9mJ6nXs6l
-        eQhB8mtfm1ueAhswJl4Na8h9op/HsfTHRg2cg2yTOOhnlqk=
-X-Google-Smtp-Source: AA0mqf57yGmLoBnvvhGrWpWKkOSHlBQkM4Cadv4sz/Tocdkosl6Gp2yYDACuYMlP/LhWj7GpigOHueOZififfQBdTYE=
-X-Received: by 2002:a05:690c:c9a:b0:3ed:90d2:2ab8 with SMTP id
- cm26-20020a05690c0c9a00b003ed90d22ab8mr3864513ywb.67.1670248444418; Mon, 05
- Dec 2022 05:54:04 -0800 (PST)
+        bh=m/V+XRoAAVDbwLDUpAasAbDvgW2Q/zSZS6Pet2wCkVA=;
+        b=beCb+akyAGLiPiARzprUF8PY/5hEC2dy7Zv5XvtHqp3KtfRccvi4lwwJiurnb7PRlz
+         Q91ho+sw80LCgZj1x+A+7KG/sVE7yk4dPtF+uB/1rK1V8pzYoehQjjLF3fhvqTpZuBJD
+         VL4aJi0EHq84zALve1IVje9QaPbOzKH3uFtT/+4A1WsAKmP1k5ltTWkMRPN1mKO/UQU7
+         TcGHN9XkUgGTGtgusC7jNOo8ixTjA9jikrbhpejKjtlFQQRav560+aDsEkB2NTlFPmeO
+         wLcRUyqHhCToDTOI/g4SjmIbhdSvtnt+AcuPBiax9+E0R89sqLWspyR8DDXJow4QcjG7
+         2H/Q==
+X-Gm-Message-State: ANoB5pldriWd6y2NRLWqSu992PBEkAVPsBSBV/NU786JdY83tX2/e7Me
+        08eGoOwAMwP0PJzClmWwpLKbeG2md/XQP3OGM1M=
+X-Google-Smtp-Source: AA0mqf5WRZs/wGjjFhP0t/QeTG2bii0+REtPtfrLlh5CN8BBJC4ZqCohyX7X1yYj2ADlXkoN0RE5QZ8hhedVGAzCFVw=
+X-Received: by 2002:a05:690c:b03:b0:3f4:6e40:89c3 with SMTP id
+ cj3-20020a05690c0b0300b003f46e4089c3mr590407ywb.266.1670271998631; Mon, 05
+ Dec 2022 12:26:38 -0800 (PST)
 MIME-Version: 1.0
-References: <20221202161502.385525-1-ojeda@kernel.org> <20221202161502.385525-28-ojeda@kernel.org>
- <Y4qNR+Nn9utDftHq@localhost> <20221204103153.117675b1@GaryWorkstation> <CANeycqpNW0E5fQqD1Qzqr0p-3cgs5k5KgLusragaSWbrmcx2Nw@mail.gmail.com>
-In-Reply-To: <CANeycqpNW0E5fQqD1Qzqr0p-3cgs5k5KgLusragaSWbrmcx2Nw@mail.gmail.com>
+References: <20221204231650.2604587-1-gary@garyguo.net>
+In-Reply-To: <20221204231650.2604587-1-gary@garyguo.net>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 5 Dec 2022 14:53:53 +0100
-Message-ID: <CANiq72ns7U3mWxt=gZVPTHB49as5gaY7=kR5TmxGAoMQx3qgbA@mail.gmail.com>
-Subject: Re: [PATCH v2 27/28] rust: types: add `Either` type
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc:     Gary Guo <gary@garyguo.net>, Josh Triplett <josh@joshtriplett.org>,
-        ojeda@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>,
+Date:   Mon, 5 Dec 2022 21:26:27 +0100
+Message-ID: <CANiq72mXQed42DARuOjEipUffNxx97LRL+byZ0G2kjuRup6ZYQ@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: make compiler-builtin stubs non-global
+To:     Gary Guo <gary@garyguo.net>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Wei Liu <wei.liu@kernel.org>
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, Dec 4, 2022 at 6:36 PM Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+On Mon, Dec 5, 2022 at 12:17 AM Gary Guo <gary@garyguo.net> wrote:
 >
-> It's also implemented in `std`, which the kernel doesn't include.
-> (Which is actually good for us, since we can't really use it.)
+> This patch was previous discussed on GitHub.
 
-We have it around in the kernel (the `std` one is a re-export), so one
-"could" replace the `Either` with `Cow` in the case of the commit
-message via ignoring the to-owned side of it (but I assume Josh didn't
-mean to suggest that).
+previous -> previously
 
-Anyway, it can be easily configured out from our `alloc`, so I will
-send the patch.
+> Link: https://github.com/Rust-for-Linux/linux/pull/779
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+
+Hmm... Something happened to the patch (compared to v1): the triple
+dashes, the diffstat, the base-commit etc. are not there. It can still
+be applied, so no worries, but it feels a bit strange.
+
+The newline between the tags should not be there. Instead, please put
+it on top of `Link:` to keep tags separated (if you wanted to keep it
+close to the sentence to refer to it, you can use "[1]" instead and
+then "Link: https... [1]" in the tag).
+
+> +// NOTE: if you are adding a new intrinsic is added here, you should also add it to
+> +// `redirect-intrinsics` in `rust/Makefile`.
+
+"is added" -> "". Also, what about putting the message at the top
+instead (below the docs or perhaps after the macro but before the
+calls to it)?
+
+For the title of the patch, in the end I went with "rust: xxx: ..."
+(where xxx is typically the name of the crate or the `kernel` crate
+module), so perhaps "rust: compiler_builtins: make stubs non-global"
+or similar?
+
+Thanks a lot!
 
 Cheers,
 Miguel
