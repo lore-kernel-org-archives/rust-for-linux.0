@@ -2,39 +2,38 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A52BAC352A1
-	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Dec 2022 12:56:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1262BC4708C
+	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Dec 2022 12:59:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234611AbiLFM4b (ORCPT
+        id S235109AbiLFM7g (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 6 Dec 2022 07:56:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60262 "EHLO
+        Tue, 6 Dec 2022 07:59:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234763AbiLFM4P (ORCPT
+        with ESMTP id S235095AbiLFM7E (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 6 Dec 2022 07:56:15 -0500
-X-Greylist: delayed 228 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 06 Dec 2022 04:56:11 PST
-Received: from mout-b-203.mailbox.org (mout-b-203.mailbox.org [IPv6:2001:67c:2050:102:465::203])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCEBD2BF5;
-        Tue,  6 Dec 2022 04:56:10 -0800 (PST)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+        Tue, 6 Dec 2022 07:59:04 -0500
+Received: from mout-b-105.mailbox.org (mout-b-105.mailbox.org [IPv6:2001:67c:2050:102:465::105])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB1AE7674;
+        Tue,  6 Dec 2022 04:58:52 -0800 (PST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-b-203.mailbox.org (Postfix) with ESMTPS id 4NRL4y2jrpz9tK5;
-        Tue,  6 Dec 2022 13:56:02 +0100 (CET)
+        by mout-b-105.mailbox.org (Postfix) with ESMTPS id 4NRKxl3xwzz9sjV;
+        Tue,  6 Dec 2022 13:49:47 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyantec.com; s=default;
-        t=1670331362;
+        t=1670330987;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=B36lQzGmc6BirP+Aeg4Xr0DaY4W4N99CzPG3/BD5qhQ=;
-        b=J1qhPzQIXfZuykmFyrDwkLOaP/fmRoxe6VH2lc7U1Xp00zV4CgZ1Oz1Eovof+apvXVR5+/
-        /4G31hK5ivNOG6P5fO3P2cNXB2glL6rgcrd+y3GIbqKtT7iVrOak9XebSdXylkR/pGIWPq
-        PPuPEq0OtSUZO1VLZ3Y1YzkMDGEg2kgbs2tM1AnK/CjAAd1mY+HyCVTDoYUrm12b16g7Lr
-        b7hKYhpBtN3/qjmmDg6w05xOHCAfQ+M+LU9kqP1f5il51eUqgLNHKDwfxUZe8YOiIMYu70
-        CqGtfR7lxElyNdV3FD0jZcNwyjA06b0dIXJjwbNeoqNv9Qz3YQN0HXDz3G9O+A==
+        bh=b/IyN1k4sSXgRCF+1+PEIqkIeiletM0hoWg5Wus4Inc=;
+        b=C1I5Mkgg0aIUt6yc1nwq14VaB7duUSkdcsAE7ghJWi7wCbqy/E33FDUtmGliIlQ2D2tspP
+        owmb0+uQ2X3y1z0dQFAUiJj8/WtyaIvEll6eJl61Q8MctAzcSqGRQBgZdS/+C/mre8JNf7
+        p/JmrDun/KHtRjQHtIV9DpSwvReMWvhYXAHTcHJDreIVlgg2q6yHW07zuYHTwHI2F3XJ42
+        /O9w476WQnVgy3D0eCbnVkBBu1dcIiJMI2uYf33sOopSXjTcaiv9EFV7kZh0vO+9ezNQwR
+        KkKsq/1RoK+dR+R6UqACBTWZjqXVtLtdrbaNV7r9vtaTB/IjdDcpI+fCIg4SSQ==
 From:   Finn Behrens <fin@nyantec.com>
 To:     ojeda@kernel.org
 Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -42,16 +41,16 @@ Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: Re: [PATCH v2 13/28] rust: alloc: add
- `Vec::try_with_capacity{,_in}()` constructors
-Date:   Tue, 06 Dec 2022 13:55:56 +0100
-Message-ID: <F461629C-97D4-4A49-885E-BEE4AEB5C4FB@nyantec.com>
-In-Reply-To: <20221202161502.385525-14-ojeda@kernel.org>
+        patches@lists.linux.dev,
+        =?utf-8?q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Subject: Re: [PATCH v2 06/28] rust: macros: add `#[vtable]` proc macro
+Date:   Tue, 06 Dec 2022 13:49:40 +0100
+Message-ID: <982F921F-08BF-43E3-95F3-20329AB59A69@nyantec.com>
+In-Reply-To: <20221202161502.385525-7-ojeda@kernel.org>
 References: <20221202161502.385525-1-ojeda@kernel.org>
- <20221202161502.385525-14-ojeda@kernel.org>
+ <20221202161502.385525-7-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
@@ -61,19 +60,43 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On 2 Dec 2022, at 17:14, ojeda@kernel.org wrote:
 
-> From: Miguel Ojeda <ojeda@kernel.org>
+> From: Gary Guo <gary@garyguo.net>
 >
-> Add `Vec::try_with_capacity()` and `Vec::try_with_capacity_in()` as
-> the fallible versions of `Vec::with_capacity()` and
-> `Vec::with_capacity_in()`, respectively.
+> This procedural macro attribute provides a simple way to declare
+> a trait with a set of operations that later users can partially
+> implement, providing compile-time `HAS_*` boolean associated
+> constants that indicate whether a particular operation was overridden.
 >
-> The implementations follow the originals and use the previously
-> added `RawVec::try_with_capacity_in()`.
+> This is useful as the Rust counterpart to structs like
+> `file_operations` where some pointers may be `NULL`, indicating
+> an operation is not provided.
 >
-> In turn, `Vec::try_with_capacity()` will be used to implement
-> the `CString` type (which wraps a `Vec<u8>`) in a later patch.
+> For instance:
 >
-> Reviewed-by: Gary Guo <gary@garyguo.net>
+>     #[vtable]
+>     trait Operations {
+>         fn read(...) -> Result<usize> {
+>             Err(EINVAL)
+>         }
+>
+>         fn write(...) -> Result<usize> {
+>             Err(EINVAL)
+>         }
+>     }
+>
+>     #[vtable]
+>     impl Operations for S {
+>         fn read(...) -> Result<usize> {
+>             ...
+>         }
+>     }
+>
+>     assert_eq!(<S as Operations>::HAS_READ, true);
+>     assert_eq!(<S as Operations>::HAS_WRITE, false);
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com>
+> [Reworded, adapted for upstream and applied latest changes]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Reviewed-by: Finn Behrens <fin@nyantec.com>
 
@@ -81,155 +104,228 @@ Regards,
 Finn
 
 > ---
->  rust/alloc/raw_vec.rs |  1 -
->  rust/alloc/vec/mod.rs | 89 +++++++++++++++++++++++++++++++++++++++++++=
+>  rust/kernel/prelude.rs |  2 +-
+>  rust/macros/lib.rs     | 52 +++++++++++++++++++++++
+>  rust/macros/vtable.rs  | 95 ++++++++++++++++++++++++++++++++++++++++++=
 
->  2 files changed, 89 insertions(+), 1 deletion(-)
+>  3 files changed, 148 insertions(+), 1 deletion(-)
+>  create mode 100644 rust/macros/vtable.rs
 >
-> diff --git a/rust/alloc/raw_vec.rs b/rust/alloc/raw_vec.rs
-> index c342f3843972..eb77db5def55 100644
-> --- a/rust/alloc/raw_vec.rs
-> +++ b/rust/alloc/raw_vec.rs
-> @@ -135,7 +135,6 @@ impl<T, A: Allocator> RawVec<T, A> {
+> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> index 6a1c6b38327f..7c4c35bf3c66 100644
+> --- a/rust/kernel/prelude.rs
+> +++ b/rust/kernel/prelude.rs
+> @@ -15,7 +15,7 @@ pub use core::pin::Pin;
 >
->      /// Like `try_with_capacity`, but parameterized over the choice of=
-
->      /// allocator for the returned `RawVec`.
-> -    #[allow(dead_code)]
->      #[inline]
->      pub fn try_with_capacity_in(capacity: usize, alloc: A) -> Result<S=
-elf, TryReserveError> {
->          Self::try_allocate_in(capacity, AllocInit::Uninitialized, allo=
-c)
-> diff --git a/rust/alloc/vec/mod.rs b/rust/alloc/vec/mod.rs
-> index 540787804cc2..8ac6c1e3b2a8 100644
-> --- a/rust/alloc/vec/mod.rs
-> +++ b/rust/alloc/vec/mod.rs
-> @@ -472,6 +472,48 @@ impl<T> Vec<T> {
->          Self::with_capacity_in(capacity, Global)
->      }
+>  pub use alloc::{boxed::Box, vec::Vec};
 >
-> +    /// Tries to construct a new, empty `Vec<T>` with the specified ca=
-pacity.
-> +    ///
-> +    /// The vector will be able to hold exactly `capacity` elements wi=
-thout
-> +    /// reallocating. If `capacity` is 0, the vector will not allocate=
-=2E
-> +    ///
-> +    /// It is important to note that although the returned vector has =
-the
-> +    /// *capacity* specified, the vector will have a zero *length*. Fo=
-r an
-> +    /// explanation of the difference between length and capacity, see=
-
-> +    /// *[Capacity and reallocation]*.
-> +    ///
-> +    /// [Capacity and reallocation]: #capacity-and-reallocation
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let mut vec =3D Vec::try_with_capacity(10).unwrap();
-> +    ///
-> +    /// // The vector contains no items, even though it has capacity f=
-or more
-> +    /// assert_eq!(vec.len(), 0);
-> +    /// assert_eq!(vec.capacity(), 10);
-> +    ///
-> +    /// // These are all done without reallocating...
-> +    /// for i in 0..10 {
-> +    ///     vec.push(i);
-> +    /// }
-> +    /// assert_eq!(vec.len(), 10);
-> +    /// assert_eq!(vec.capacity(), 10);
-> +    ///
-> +    /// // ...but this may make the vector reallocate
-> +    /// vec.push(11);
-> +    /// assert_eq!(vec.len(), 11);
-> +    /// assert!(vec.capacity() >=3D 11);
-> +    ///
-> +    /// let mut result =3D Vec::try_with_capacity(usize::MAX);
-> +    /// assert!(result.is_err());
-> +    /// ```
-> +    #[inline]
-> +    #[stable(feature =3D "kernel", since =3D "1.0.0")]
-> +    pub fn try_with_capacity(capacity: usize) -> Result<Self, TryReser=
-veError> {
-> +        Self::try_with_capacity_in(capacity, Global)
+> -pub use macros::module;
+> +pub use macros::{module, vtable};
+>
+>  pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info=
+, pr_notice, pr_warn};
+>
+> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+> index 15555e7ff487..e40caaf0a656 100644
+> --- a/rust/macros/lib.rs
+> +++ b/rust/macros/lib.rs
+> @@ -5,6 +5,7 @@
+>  mod concat_idents;
+>  mod helpers;
+>  mod module;
+> +mod vtable;
+>
+>  use proc_macro::TokenStream;
+>
+> @@ -72,6 +73,57 @@ pub fn module(ts: TokenStream) -> TokenStream {
+>      module::module(ts)
+>  }
+>
+> +/// Declares or implements a vtable trait.
+> +///
+> +/// Linux's use of pure vtables is very close to Rust traits, but they=
+ differ
+> +/// in how unimplemented functions are represented. In Rust, traits ca=
+n provide
+> +/// default implementation for all non-required methods (and the defau=
+lt
+> +/// implementation could just return `Error::EINVAL`); Linux typically=
+ use C
+> +/// `NULL` pointers to represent these functions.
+> +///
+> +/// This attribute is intended to close the gap. Traits can be declare=
+d and
+> +/// implemented with the `#[vtable]` attribute, and a `HAS_*` associat=
+ed constant
+> +/// will be generated for each method in the trait, indicating if the =
+implementor
+> +/// has overridden a method.
+> +///
+> +/// This attribute is not needed if all methods are required.
+> +///
+> +/// # Examples
+> +///
+> +/// ```ignore
+> +/// use kernel::prelude::*;
+> +///
+> +/// // Declares a `#[vtable]` trait
+> +/// #[vtable]
+> +/// pub trait Operations: Send + Sync + Sized {
+> +///     fn foo(&self) -> Result<()> {
+> +///         Err(EINVAL)
+> +///     }
+> +///
+> +///     fn bar(&self) -> Result<()> {
+> +///         Err(EINVAL)
+> +///     }
+> +/// }
+> +///
+> +/// struct Foo;
+> +///
+> +/// // Implements the `#[vtable]` trait
+> +/// #[vtable]
+> +/// impl Operations for Foo {
+> +///     fn foo(&self) -> Result<()> {
+> +/// #        Err(EINVAL)
+> +///         // ...
+> +///     }
+> +/// }
+> +///
+> +/// assert_eq!(<Foo as Operations>::HAS_FOO, true);
+> +/// assert_eq!(<Foo as Operations>::HAS_BAR, false);
+> +/// ```
+> +#[proc_macro_attribute]
+> +pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
+> +    vtable::vtable(attr, ts)
+> +}
+> +
+>  /// Concatenate two identifiers.
+>  ///
+>  /// This is useful in macros that need to declare or reference items w=
+ith names
+> diff --git a/rust/macros/vtable.rs b/rust/macros/vtable.rs
+> new file mode 100644
+> index 000000000000..34d5e7fb5768
+> --- /dev/null
+> +++ b/rust/macros/vtable.rs
+> @@ -0,0 +1,95 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +use proc_macro::{Delimiter, Group, TokenStream, TokenTree};
+> +use std::collections::HashSet;
+> +use std::fmt::Write;
+> +
+> +pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStre=
+am {
+> +    let mut tokens: Vec<_> =3D ts.into_iter().collect();
+> +
+> +    // Scan for the `trait` or `impl` keyword.
+> +    let is_trait =3D tokens
+> +        .iter()
+> +        .find_map(|token| match token {
+> +            TokenTree::Ident(ident) =3D> match ident.to_string().as_st=
+r() {
+> +                "trait" =3D> Some(true),
+> +                "impl" =3D> Some(false),
+> +                _ =3D> None,
+> +            },
+> +            _ =3D> None,
+> +        })
+> +        .expect("#[vtable] attribute should only be applied to trait o=
+r impl block");
+> +
+> +    // Retrieve the main body. The main body should be the last token =
+tree.
+> +    let body =3D match tokens.pop() {
+> +        Some(TokenTree::Group(group)) if group.delimiter() =3D=3D Deli=
+miter::Brace =3D> group,
+> +        _ =3D> panic!("cannot locate main body of trait or impl block"=
+),
+> +    };
+> +
+> +    let mut body_it =3D body.stream().into_iter();
+> +    let mut functions =3D Vec::new();
+> +    let mut consts =3D HashSet::new();
+> +    while let Some(token) =3D body_it.next() {
+> +        match token {
+> +            TokenTree::Ident(ident) if ident.to_string() =3D=3D "fn" =3D=
+> {
+> +                let fn_name =3D match body_it.next() {
+> +                    Some(TokenTree::Ident(ident)) =3D> ident.to_string=
+(),
+> +                    // Possibly we've encountered a fn pointer type in=
+stead.
+> +                    _ =3D> continue,
+> +                };
+> +                functions.push(fn_name);
+> +            }
+> +            TokenTree::Ident(ident) if ident.to_string() =3D=3D "const=
+" =3D> {
+> +                let const_name =3D match body_it.next() {
+> +                    Some(TokenTree::Ident(ident)) =3D> ident.to_string=
+(),
+> +                    // Possibly we've encountered an inline const bloc=
+k instead.
+> +                    _ =3D> continue,
+> +                };
+> +                consts.insert(const_name);
+> +            }
+> +            _ =3D> (),
+> +        }
 > +    }
 > +
->      /// Creates a `Vec<T>` directly from the raw components of another=
- vector.
->      ///
->      /// # Safety
-> @@ -617,6 +659,53 @@ impl<T, A: Allocator> Vec<T, A> {
->          Vec { buf: RawVec::with_capacity_in(capacity, alloc), len: 0 }=
-
->      }
->
-> +    /// Tries to construct a new, empty `Vec<T, A>` with the specified=
- capacity
-> +    /// with the provided allocator.
-> +    ///
-> +    /// The vector will be able to hold exactly `capacity` elements wi=
-thout
-> +    /// reallocating. If `capacity` is 0, the vector will not allocate=
-=2E
-> +    ///
-> +    /// It is important to note that although the returned vector has =
-the
-> +    /// *capacity* specified, the vector will have a zero *length*. Fo=
-r an
-> +    /// explanation of the difference between length and capacity, see=
-
-> +    /// *[Capacity and reallocation]*.
-> +    ///
-> +    /// [Capacity and reallocation]: #capacity-and-reallocation
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// #![feature(allocator_api)]
-> +    ///
-> +    /// use std::alloc::System;
-> +    ///
-> +    /// let mut vec =3D Vec::try_with_capacity_in(10, System).unwrap()=
+> +    let mut const_items;
+> +    if is_trait {
+> +        const_items =3D "
+> +                /// A marker to prevent implementors from forgetting t=
+o use [`#[vtable]`](vtable)
+> +                /// attribute when implementing this trait.
+> +                const USE_VTABLE_ATTR: ();
+> +        "
+> +        .to_owned();
+> +
+> +        for f in functions {
+> +            let gen_const_name =3D format!("HAS_{}", f.to_uppercase())=
 ;
-> +    ///
-> +    /// // The vector contains no items, even though it has capacity f=
-or more
-> +    /// assert_eq!(vec.len(), 0);
-> +    /// assert_eq!(vec.capacity(), 10);
-> +    ///
-> +    /// // These are all done without reallocating...
-> +    /// for i in 0..10 {
-> +    ///     vec.push(i);
-> +    /// }
-> +    /// assert_eq!(vec.len(), 10);
-> +    /// assert_eq!(vec.capacity(), 10);
-> +    ///
-> +    /// // ...but this may make the vector reallocate
-> +    /// vec.push(11);
-> +    /// assert_eq!(vec.len(), 11);
-> +    /// assert!(vec.capacity() >=3D 11);
-> +    ///
-> +    /// let mut result =3D Vec::try_with_capacity_in(usize::MAX, Syste=
-m);
-> +    /// assert!(result.is_err());
-> +    /// ```
-> +    #[inline]
-> +    #[stable(feature =3D "kernel", since =3D "1.0.0")]
-> +    pub fn try_with_capacity_in(capacity: usize, alloc: A) -> Result<S=
-elf, TryReserveError> {
-> +        Ok(Vec { buf: RawVec::try_with_capacity_in(capacity, alloc)?, =
-len: 0 })
+> +            // Skip if it's declared already -- this allows user overr=
+ide.
+> +            if consts.contains(&gen_const_name) {
+> +                continue;
+> +            }
+> +            // We don't know on the implementation-site whether a meth=
+od is required or provided
+> +            // so we have to generate a const for all methods.
+> +            write!(
+> +                const_items,
+> +                "/// Indicates if the `{f}` method is overridden by th=
+e implementor.
+> +                const {gen_const_name}: bool =3D false;",
+> +            )
+> +            .unwrap();
+> +        }
+> +    } else {
+> +        const_items =3D "const USE_VTABLE_ATTR: () =3D ();".to_owned()=
+;
+> +
+> +        for f in functions {
+> +            let gen_const_name =3D format!("HAS_{}", f.to_uppercase())=
+;
+> +            if consts.contains(&gen_const_name) {
+> +                continue;
+> +            }
+> +            write!(const_items, "const {gen_const_name}: bool =3D true=
+;").unwrap();
+> +        }
 > +    }
 > +
->      /// Creates a `Vec<T, A>` directly from the raw components of anot=
-her vector.
->      ///
->      /// # Safety
+> +    let new_body =3D vec![const_items.parse().unwrap(), body.stream()]=
+
+> +        .into_iter()
+> +        .collect();
+> +    tokens.push(TokenTree::Group(Group::new(Delimiter::Brace, new_body=
+)));
+> +    tokens.into_iter().collect()
+> +}
 > -- =
 
 > 2.38.1
