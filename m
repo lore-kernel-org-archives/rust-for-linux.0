@@ -2,79 +2,84 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E222C4708E
-	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Dec 2022 15:45:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2841AC352A1
+	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Dec 2022 17:22:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234435AbiLFPpG (ORCPT
+        id S231530AbiLFRWw (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 6 Dec 2022 10:45:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35768 "EHLO
+        Tue, 6 Dec 2022 12:22:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235301AbiLFPpF (ORCPT
+        with ESMTP id S234194AbiLFRWv (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 6 Dec 2022 10:45:05 -0500
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A5523BE8;
-        Tue,  6 Dec 2022 07:45:05 -0800 (PST)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-3bfd998fa53so156136177b3.5;
-        Tue, 06 Dec 2022 07:45:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xyn/5OOpj6fuvvU8fDY8RxPX62J9zsQGOj41hMQD++E=;
-        b=k8z+ItRXCJIZn49dArRvY9i2iLkbpKITT2yKWV7GhS15NtPNWTLX4W9gPJiA+n5QUF
-         NcxMp5umXW3D3lkSQYDFn7B92I7NQD79r09dTxc83Lmc5+iZ3mZf0H9JklZhxWkedCCx
-         RpF9jzuAYx3dFugt2ZfmjVuwhv5hqi8kn+Bk1Rxc5NQ3z4D7cd+oL1Lwu/EiiXu2VG+Q
-         C5bKbdEhWEhJd9hsfJdsXVrnwteuyekAYTIGcYnp6jX96HE1/jDe93IFNfCY7116GX7k
-         yFIipMpUPbzTNYVwr6pmiOnumxQXAfCg1qlTYyF8vX5PXphOLeKRirj5QQ7lXXVb12Ww
-         A9Xw==
+        Tue, 6 Dec 2022 12:22:51 -0500
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48507303F5;
+        Tue,  6 Dec 2022 09:22:50 -0800 (PST)
+Received: by mail-wr1-f49.google.com with SMTP id u12so23523565wrr.11;
+        Tue, 06 Dec 2022 09:22:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xyn/5OOpj6fuvvU8fDY8RxPX62J9zsQGOj41hMQD++E=;
-        b=Gro79z+l4MHTeIRWJOU991upIigj7a4eR/b0wJkmaHZM+RRA3uvX4A/Tbo9vk7jXjj
-         8UCTFjZ/XuqdTfeC4bqPKdGpprdMN/+1VKSkKm+wXdkaOuXWL4gw7F+qiZtAEHfxIMQl
-         kHobAoQcdXAW9FgdV8hX81TvenFFjXi6KzEcOogY6k/LLZw5nAmmgiO8E2S+KfIzB44h
-         sm6v45e3DS6+Y8LruEXlbQkmoG5vmdd0hx7trpPCh0uXu66EeQ8TfSM15p/3FtQJMnh6
-         C7h7pUsIEiUm3uGhteTk0jLImWDTOwpciQVNwtEFOZuoU87VImopcPnx2rZng/XxDmg7
-         rHEA==
-X-Gm-Message-State: ANoB5pn7rbhQvIb5j5zCs3K1fMo7UyVmgh0AevTquyqytK4HZ9KhO/im
-        rOtF4znivSKeFVcJ2wPlmF/eX+fY7jZH9hQKi8Y=
-X-Google-Smtp-Source: AA0mqf7yhwfAtr/XG/SmzqtvjyIx0HdmN3mODQ5NsTqnY7yPgIynig5Nt7kqbdksBf+abg/7ApTsX1Zkryio5SQeUns=
-X-Received: by 2002:a05:690c:b03:b0:3f4:6e40:89c3 with SMTP id
- cj3-20020a05690c0b0300b003f46e4089c3mr4057837ywb.266.1670341504250; Tue, 06
- Dec 2022 07:45:04 -0800 (PST)
-MIME-Version: 1.0
-References: <20221202161502.385525-1-ojeda@kernel.org> <20221202161502.385525-7-ojeda@kernel.org>
- <982F921F-08BF-43E3-95F3-20329AB59A69@nyantec.com>
-In-Reply-To: <982F921F-08BF-43E3-95F3-20329AB59A69@nyantec.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 6 Dec 2022 16:44:53 +0100
-Message-ID: <CANiq72ncU_LcNgFBgLorHgiaP1ybGrtvi=xrNittX47n2WE5JQ@mail.gmail.com>
-Subject: Re: [PATCH v2 06/28] rust: macros: add `#[vtable]` proc macro
-To:     Finn Behrens <fin@nyantec.com>
-Cc:     ojeda@kernel.org, Wedson Almeida Filho <wedsonaf@gmail.com>,
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h458RF1zVZ1EV5DsW5Ozll8gVo7xVTHiPN8UW60GA68=;
+        b=MAdwXevRAeZXm9ebxFKC37IdNfLB8qCjRWWBrM8437ruIZ5E7cRHqxnnWwNUKLKS/A
+         ZV1JwKU7L2n1LIN9PDqIdnd2hb0fm32HJeadSu13D/nXBkYPFU9j8j95fe6e7bOgLeyv
+         gBo6MF2OouZon21KzCukqIHCSz2+P0ewnj0Zyt5dMqjWf2XhfXORaKFz5DV4nyAaXCFc
+         WKpSMHgNwImlsv/6Buk9EguUXxjkC89xTmc41GG5c5yQG2IXw3BtwNRtDE5wvskIzYMf
+         LYHeskFTK23tvoT1TOxMw4fWFC9txj6FcAt0WeYc1g9jtFa/cK6zm7M8KK/L1fryGOAd
+         RiNA==
+X-Gm-Message-State: ANoB5pkkInLqtKF/L+jiAZXL2K0FBI0o6qBTF0y4tMAB36TgzyqxfDe4
+        fwPF4fVRx+J3G/XeupmA4EQIQiP32sk=
+X-Google-Smtp-Source: AA0mqf69t2edOthKa9N0tlXb6In5lgsG6vbYRgykNTLjMAQGRTNDzlhy0o7aKePbqfG0Z7vVISKD6Q==
+X-Received: by 2002:adf:f94f:0:b0:241:f467:f885 with SMTP id q15-20020adff94f000000b00241f467f885mr37985303wrr.482.1670347368751;
+        Tue, 06 Dec 2022 09:22:48 -0800 (PST)
+Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id e14-20020adff34e000000b0024228b0b932sm21286544wrp.27.2022.12.06.09.22.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Dec 2022 09:22:48 -0800 (PST)
+Date:   Tue, 6 Dec 2022 17:22:46 +0000
+From:   Wei Liu <wei.liu@kernel.org>
+To:     ojeda@kernel.org
+Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev,
-        =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        patches@lists.linux.dev, Josh Triplett <josh@joshtriplett.org>,
+        Wei Liu <wei.liu@kernel.org>
+Subject: Re: [PATCH v1] rust: alloc: remove the `borrow` module (`ToOwned`,
+ `Cow`)
+Message-ID: <Y496ZhJF2ND+ND3L@liuwe-devbox-debian-v2>
+References: <20221206010519.39075-1-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221206010519.39075-1-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Dec 6, 2022 at 1:50 PM Finn Behrens <fin@nyantec.com> wrote:
->
-> Reviewed-by: Finn Behrens <fin@nyantec.com>
+On Tue, Dec 06, 2022 at 02:05:19AM +0100, ojeda@kernel.org wrote:
+> From: Miguel Ojeda <ojeda@kernel.org>
+> 
+> The `Cow` type [1] requires that its generic parameter type implements
+> the `ToOwned` trait [2], which provides a method to create owned data
+> from borrowed data, usually by cloning.
+> 
+> However, it is infallible, and thus in most cases it is not useful for
+> the kernel. [3]
+> 
+> Therefore, introduce `cfg(no_borrow)` to remove the `borrow` module
+> (which contains `ToOwned` and `Cow`) from `alloc`.
+> 
+> Link: https://doc.rust-lang.org/alloc/borrow/enum.Cow.html [1]
+> Link: https://doc.rust-lang.org/alloc/borrow/trait.ToOwned.html [2]
+> Link: https://lore.kernel.org/rust-for-linux/20221204103153.117675b1@GaryWorkstation/ [3]
+> Cc: Gary Guo <gary@garyguo.net>
+> Cc: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Cc: Josh Triplett <josh@joshtriplett.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Thanks a lot for these, Finn -- I already queued the patches on the
-weekend, but if for some reason the series needs to be dropped and
-reapplied, I will pick your new tags.
-
-Cheers,
-Miguel
+Reviewed-by: Wei Liu <wei.liu@kernel.org>
