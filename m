@@ -2,130 +2,79 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87A8DC352A1
-	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Dec 2022 13:00:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E222C4708E
+	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Dec 2022 15:45:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234665AbiLFNAM (ORCPT
+        id S234435AbiLFPpG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 6 Dec 2022 08:00:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34250 "EHLO
+        Tue, 6 Dec 2022 10:45:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234848AbiLFM7x (ORCPT
+        with ESMTP id S235301AbiLFPpF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 6 Dec 2022 07:59:53 -0500
-Received: from mout-b-110.mailbox.org (mout-b-110.mailbox.org [IPv6:2001:67c:2050:102:465::110])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B585FCF4;
-        Tue,  6 Dec 2022 04:59:15 -0800 (PST)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-b-110.mailbox.org (Postfix) with ESMTPS id 4NRL0Z5J26z9tBp;
-        Tue,  6 Dec 2022 13:52:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyantec.com; s=default;
-        t=1670331134;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=IRHVWafY0jHFpHspwEKtI6JUKd/uH2AFkVef11b8k6E=;
-        b=N1xBqdYrP8dXmghzKaLbcLdLpkNG0cHbYgPfiCrvtwz9ibdMcruKlyZtBPyty5mVKHwcqy
-        pfJsynIP4ubyQGY4nqSPTJkyzhkAhscw1SRYmyIdc7oRGIk5fjr44FjSrWCgY1dgYHb1xH
-        gcumJmjWkTPCn46i3XoJNrELOf+f/152w49VMwTXUfHL/ZJXB3F1mQFCOHeTze87OOXo/v
-        QwEPSGjXzPKSIeV/sN1Dx++F2UTspoUue1RM278N7FKKDjqEkg/INJhewJ0XQI96v93o9Q
-        j7wuTFiOP7ESEf2xjBhgJxuCrqJJKh7Gh4jxiTyORgH/M+D0MV4pBnoCEvQ0ug==
-From:   Finn Behrens <fin@nyantec.com>
-To:     ojeda@kernel.org
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Tue, 6 Dec 2022 10:45:05 -0500
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03A5523BE8;
+        Tue,  6 Dec 2022 07:45:05 -0800 (PST)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-3bfd998fa53so156136177b3.5;
+        Tue, 06 Dec 2022 07:45:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=xyn/5OOpj6fuvvU8fDY8RxPX62J9zsQGOj41hMQD++E=;
+        b=k8z+ItRXCJIZn49dArRvY9i2iLkbpKITT2yKWV7GhS15NtPNWTLX4W9gPJiA+n5QUF
+         NcxMp5umXW3D3lkSQYDFn7B92I7NQD79r09dTxc83Lmc5+iZ3mZf0H9JklZhxWkedCCx
+         RpF9jzuAYx3dFugt2ZfmjVuwhv5hqi8kn+Bk1Rxc5NQ3z4D7cd+oL1Lwu/EiiXu2VG+Q
+         C5bKbdEhWEhJd9hsfJdsXVrnwteuyekAYTIGcYnp6jX96HE1/jDe93IFNfCY7116GX7k
+         yFIipMpUPbzTNYVwr6pmiOnumxQXAfCg1qlTYyF8vX5PXphOLeKRirj5QQ7lXXVb12Ww
+         A9Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xyn/5OOpj6fuvvU8fDY8RxPX62J9zsQGOj41hMQD++E=;
+        b=Gro79z+l4MHTeIRWJOU991upIigj7a4eR/b0wJkmaHZM+RRA3uvX4A/Tbo9vk7jXjj
+         8UCTFjZ/XuqdTfeC4bqPKdGpprdMN/+1VKSkKm+wXdkaOuXWL4gw7F+qiZtAEHfxIMQl
+         kHobAoQcdXAW9FgdV8hX81TvenFFjXi6KzEcOogY6k/LLZw5nAmmgiO8E2S+KfIzB44h
+         sm6v45e3DS6+Y8LruEXlbQkmoG5vmdd0hx7trpPCh0uXu66EeQ8TfSM15p/3FtQJMnh6
+         C7h7pUsIEiUm3uGhteTk0jLImWDTOwpciQVNwtEFOZuoU87VImopcPnx2rZng/XxDmg7
+         rHEA==
+X-Gm-Message-State: ANoB5pn7rbhQvIb5j5zCs3K1fMo7UyVmgh0AevTquyqytK4HZ9KhO/im
+        rOtF4znivSKeFVcJ2wPlmF/eX+fY7jZH9hQKi8Y=
+X-Google-Smtp-Source: AA0mqf7yhwfAtr/XG/SmzqtvjyIx0HdmN3mODQ5NsTqnY7yPgIynig5Nt7kqbdksBf+abg/7ApTsX1Zkryio5SQeUns=
+X-Received: by 2002:a05:690c:b03:b0:3f4:6e40:89c3 with SMTP id
+ cj3-20020a05690c0b0300b003f46e4089c3mr4057837ywb.266.1670341504250; Tue, 06
+ Dec 2022 07:45:04 -0800 (PST)
+MIME-Version: 1.0
+References: <20221202161502.385525-1-ojeda@kernel.org> <20221202161502.385525-7-ojeda@kernel.org>
+ <982F921F-08BF-43E3-95F3-20329AB59A69@nyantec.com>
+In-Reply-To: <982F921F-08BF-43E3-95F3-20329AB59A69@nyantec.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 6 Dec 2022 16:44:53 +0100
+Message-ID: <CANiq72ncU_LcNgFBgLorHgiaP1ybGrtvi=xrNittX47n2WE5JQ@mail.gmail.com>
+Subject: Re: [PATCH v2 06/28] rust: macros: add `#[vtable]` proc macro
+To:     Finn Behrens <fin@nyantec.com>
+Cc:     ojeda@kernel.org, Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Viktor Garske <viktor@v-gar.de>
-Subject: Re: [PATCH v2 09/28] rust: error: add codes from `errno-base.h`
-Date:   Tue, 06 Dec 2022 13:52:07 +0100
-Message-ID: <8D86E171-0030-4A3F-BE87-9B9FB9E79213@nyantec.com>
-In-Reply-To: <20221202161502.385525-10-ojeda@kernel.org>
-References: <20221202161502.385525-1-ojeda@kernel.org>
- <20221202161502.385525-10-ojeda@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 4NRL0Z5J26z9tBp
+        patches@lists.linux.dev,
+        =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-
-
-On 2 Dec 2022, at 17:14, ojeda@kernel.org wrote:
-
-> From: Viktor Garske <viktor@v-gar.de>
+On Tue, Dec 6, 2022 at 1:50 PM Finn Behrens <fin@nyantec.com> wrote:
 >
-> Only a few codes were added so far. With the `declare_err!`
-> macro in place, add the remaining ones (which is most of them)
-> from `include/uapi/asm-generic/errno-base.h`.
->
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Viktor Garske <viktor@v-gar.de>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> [Reworded, adapted for upstream and applied latest changes]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Finn Behrens <fin@nyantec.com>
+> Reviewed-by: Finn Behrens <fin@nyantec.com>
 
-Regards,
-Finn
+Thanks a lot for these, Finn -- I already queued the patches on the
+weekend, but if for some reason the series needs to be dropped and
+reapplied, I will pick your new tags.
 
-> ---
->  rust/kernel/error.rs | 33 +++++++++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
->
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index b843f3445483..861746f2422d 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -17,7 +17,40 @@ pub mod code {
->          };
->      }
->
-> +    declare_err!(EPERM, "Operation not permitted.");
-> +    declare_err!(ENOENT, "No such file or directory.");
-> +    declare_err!(ESRCH, "No such process.");
-> +    declare_err!(EINTR, "Interrupted system call.");
-> +    declare_err!(EIO, "I/O error.");
-> +    declare_err!(ENXIO, "No such device or address.");
-> +    declare_err!(E2BIG, "Argument list too long.");
-> +    declare_err!(ENOEXEC, "Exec format error.");
-> +    declare_err!(EBADF, "Bad file number.");
-> +    declare_err!(ECHILD, "Exec format error.");
-> +    declare_err!(EAGAIN, "Try again.");
->      declare_err!(ENOMEM, "Out of memory.");
-> +    declare_err!(EACCES, "Permission denied.");
-> +    declare_err!(EFAULT, "Bad address.");
-> +    declare_err!(ENOTBLK, "Block device required.");
-> +    declare_err!(EBUSY, "Device or resource busy.");
-> +    declare_err!(EEXIST, "File exists.");
-> +    declare_err!(EXDEV, "Cross-device link.");
-> +    declare_err!(ENODEV, "No such device.");
-> +    declare_err!(ENOTDIR, "Not a directory.");
-> +    declare_err!(EISDIR, "Is a directory.");
-> +    declare_err!(EINVAL, "Invalid argument.");
-> +    declare_err!(ENFILE, "File table overflow.");
-> +    declare_err!(EMFILE, "Too many open files.");
-> +    declare_err!(ENOTTY, "Not a typewriter.");
-> +    declare_err!(ETXTBSY, "Text file busy.");
-> +    declare_err!(EFBIG, "File too large.");
-> +    declare_err!(ENOSPC, "No space left on device.");
-> +    declare_err!(ESPIPE, "Illegal seek.");
-> +    declare_err!(EROFS, "Read-only file system.");
-> +    declare_err!(EMLINK, "Too many links.");
-> +    declare_err!(EPIPE, "Broken pipe.");
-> +    declare_err!(EDOM, "Math argument out of domain of func.");
-> +    declare_err!(ERANGE, "Math result not representable.");
->  }
->
->  /// Generic integer kernel error.
-> -- =
-
-> 2.38.1
+Cheers,
+Miguel
