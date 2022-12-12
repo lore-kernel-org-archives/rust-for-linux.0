@@ -2,187 +2,58 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38B94C4332F
-	for <rust-for-linux@archiver.kernel.org>; Sun, 11 Dec 2022 01:00:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EC10C4167B
+	for <rust-for-linux@archiver.kernel.org>; Mon, 12 Dec 2022 09:17:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbiLKA43 (ORCPT
+        id S231805AbiLLJRV (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 10 Dec 2022 19:56:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46760 "EHLO
+        Mon, 12 Dec 2022 04:17:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbiLKA42 (ORCPT
+        with ESMTP id S231853AbiLLJQe (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 10 Dec 2022 19:56:28 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BEFE11A3F;
-        Sat, 10 Dec 2022 16:56:25 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2D903B8094D;
-        Sun, 11 Dec 2022 00:56:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E1CC433EF;
-        Sun, 11 Dec 2022 00:56:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670720182;
-        bh=z2Ic5dL5U/Pe4mtp6YXb6Fk2TXczw29Ly0amvAbkuQs=;
-        h=From:To:Cc:Subject:Date:From;
-        b=tjMqpHoTwROGvGwJxv6x/KPBkw/mlW9XvavSOnbQv5SKBf+eHKroRkWTrqs/NRF4g
-         xADO7SGM63zI3I74LPe90Uh0yI2JSbgcIczH1PRjOsYYSMl/zsw294j7GnSGN1tzuz
-         vS3T3z5/SdWB9kEkeg48aKj7Qlru+x9Ju9eX/bWh0WILq4a2ytbJoSSqYyciY6TuKy
-         9+0d5yuz3zCokiUUV4heW7HrKNHwQx50QX2aq4DezDhy03kPedbY22M22nOtD4fBwj
-         6akz67A3X7UiuYHdIKoxQzuuHNzU2BnUgOpWzOdXQ6YXIGsQlbv66WTrEB3I7uL9d6
-         MMmAKwR0cQdMQ==
-From:   ojeda@kernel.org
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust for 6.2
-Date:   Sun, 11 Dec 2022 01:56:09 +0100
-Message-Id: <20221211005609.270457-1-ojeda@kernel.org>
+        Mon, 12 Dec 2022 04:16:34 -0500
+X-Greylist: delayed 318 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 12 Dec 2022 01:16:32 PST
+Received: from mail.lucidfour.pl (mail.lucidfour.pl [217.61.97.194])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E0CFBC7
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Dec 2022 01:16:31 -0800 (PST)
+Received: by mail.lucidfour.pl (Postfix, from userid 1001)
+        id 8305284088; Mon, 12 Dec 2022 09:11:29 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucidfour.pl; s=mail;
+        t=1670836289; bh=CSKXLMgcdpWkXuTgJn5+jsCVobtU9JEF4vCnS5z6McM=;
+        h=Date:From:To:Subject:From;
+        b=nGFDMaHfmTYG81kxsADIgCqbVK99f2mhBG9CnMoTI/Nl2Ck0kEYY+aEyTBo0Klme5
+         qxVAprD8g9+tTNJMYuLGjaX8AV8QrCOvM3ZXn54pMxFM1a+BFl+QiW0/Sz1qUxaoHZ
+         S+jinruvXr5K5nTP2QLCIaBcsGQv+E7jIYO0P3UWDhTYQrCZ8vo1O7IDacMu7NZ8Vn
+         wEo3OsELg58foUihga8+T2jBCJfiSXoJCA8K9BNmVxaAXfL/DClq5LtNx3T0Of4le9
+         Z8ZwW9azXInIHx91+seTdDLwEjC/T3bug5NRuXVasqSb1trgr12SVhA5uAwgert8QG
+         fIY2p1sFrkV5g==
+Received: by mail.lucidfour.pl for <rust-for-linux@vger.kernel.org>; Mon, 12 Dec 2022 09:10:22 GMT
+Message-ID: <20221212074503-0.1.n.3lj8.0.c9tya99nah@lucidfour.pl>
+Date:   Mon, 12 Dec 2022 09:10:22 GMT
+From:   "Wiktor Nurek" <wiktor.nurek@lucidfour.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
+X-Mailer: mail.lucidfour.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Miguel Ojeda <ojeda@kernel.org>
+Dzie=C5=84 dobry,
 
-Hi Linus,
+chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
+skania nowych zlece=C5=84 ze strony www.
 
-This is the first Rust PR after the merge.
+Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
+, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
+=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
+jonowania strony w Google.
 
-It contains a set of new functionality to start the upstreaming of
-the rest of the pieces we had. There are no changes to the C side.
+Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
 
-The commits have been in linux-next for a week, though most of the
-code has been there for months. No conflicts expected.
 
-Please pull for v6.2 -- thanks!
-
-Cheers,
-Miguel
-
-The following changes since commit f0c4d9fc9cc9462659728d168387191387e903cc:
-
-  Linux 6.1-rc4 (2022-11-06 15:07:11 -0800)
-
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux tags/rust-6.2
-
-for you to fetch changes up to b9ecf9b9ac5969d7b7ea786ce5c76e24246df2c5:
-
-  rust: types: add `Opaque` type (2022-12-04 01:59:16 +0100)
-
-----------------------------------------------------------------
-Rust changes for v6.2
-
-The first set of changes after the merge, the major ones being:
-
-- String and formatting: new types `CString`, `CStr`, `BStr` and
-  `Formatter`; new macros `c_str!`, `b_str!` and `fmt!`.
-
-- Errors: the rest of the error codes from `errno-base.h`, as well as
-  some `From` trait implementations for the `Error` type.
-
-- Printing: the rest of the `pr_*!` levels and the continuation one
-  `pr_cont!`, as well as a new sample.
-
-- `alloc` crate: new constructors `try_with_capacity()` and
-  `try_with_capacity_in()` for `RawVec` and `Vec`.
-
-- Procedural macros: new macros `#[vtable]` and `concat_idents!`, as
-  well as better ergonomics for `module!` users.
-
-- Asserting: new macros `static_assert!`, `build_error!` and
-  `build_assert!`, as well as a new crate `build_error` to support them.
-
-- Vocabulary types: new types `Opaque` and `Either`.
-
-- Debugging: new macro `dbg!`.
-
-----------------------------------------------------------------
-Björn Roy Baron (1):
-      rust: macros: add `concat_idents!` proc macro
-
-Finn Behrens (1):
-      rust: error: declare errors using macro
-
-Gary Guo (9):
-      rust: macros: add `#[vtable]` proc macro
-      rust: macros: take string literals in `module!`
-      rust: str: add `BStr` type
-      rust: str: add `b_str!` macro
-      rust: str: add `CStr` type
-      rust: str: implement several traits for `CStr`
-      rust: str: add `c_str!` macro
-      rust: add `build_error` crate
-      rust: build_assert: add `build_{error,assert}!` macros
-
-Miguel Ojeda (7):
-      rust: prelude: split re-exports into groups
-      rust: print: add more `pr_*!` levels
-      rust: print: add `pr_cont!` macro
-      rust: samples: add `rust_print` example
-      rust: alloc: add `RawVec::try_with_capacity_in()` constructor
-      rust: alloc: add `Vec::try_with_capacity{,_in}()` constructors
-      rust: static_assert: add `static_assert!` macro
-
-Milan Landaverde (1):
-      rust: str: add `CStr` unit tests
-
-Niklas Mohrin (1):
-      rust: std_vendor: add `dbg!` macro based on `std`'s one
-
-Viktor Garske (1):
-      rust: error: add codes from `errno-base.h`
-
-Wedson Almeida Filho (7):
-      rust: error: add `From` implementations for `Error`
-      rust: prelude: add `error::code::*` constant items
-      rust: str: add `Formatter` type
-      rust: str: add `CString` type
-      rust: str: add `fmt!` macro
-      rust: types: add `Either` type
-      rust: types: add `Opaque` type
-
- lib/Kconfig.debug                 |  16 ++
- rust/Makefile                     |  22 +-
- rust/alloc/raw_vec.rs             |  33 ++-
- rust/alloc/vec/mod.rs             |  89 +++++++
- rust/build_error.rs               |  31 +++
- rust/exports.c                    |   5 +
- rust/kernel/build_assert.rs       |  82 ++++++
- rust/kernel/error.rs              |  90 ++++++-
- rust/kernel/lib.rs                |   9 +
- rust/kernel/prelude.rs            |  20 +-
- rust/kernel/print.rs              | 214 +++++++++++++++-
- rust/kernel/static_assert.rs      |  34 +++
- rust/kernel/std_vendor.rs         | 163 ++++++++++++
- rust/kernel/str.rs                | 523 +++++++++++++++++++++++++++++++++++++-
- rust/kernel/types.rs              |  37 +++
- rust/macros/concat_idents.rs      |  23 ++
- rust/macros/helpers.rs            |  24 +-
- rust/macros/lib.rs                | 108 +++++++-
- rust/macros/module.rs             |  10 +-
- rust/macros/vtable.rs             |  95 +++++++
- samples/rust/Kconfig              |  10 +
- samples/rust/Makefile             |   1 +
- samples/rust/rust_minimal.rs      |   8 +-
- samples/rust/rust_print.rs        |  54 ++++
- scripts/generate_rust_analyzer.py |   8 +-
- 25 files changed, 1667 insertions(+), 42 deletions(-)
- create mode 100644 rust/build_error.rs
- create mode 100644 rust/kernel/build_assert.rs
- create mode 100644 rust/kernel/static_assert.rs
- create mode 100644 rust/kernel/std_vendor.rs
- create mode 100644 rust/kernel/types.rs
- create mode 100644 rust/macros/concat_idents.rs
- create mode 100644 rust/macros/vtable.rs
- create mode 100644 samples/rust/rust_print.rs
+Pozdrawiam serdecznie,
+Wiktor Nurek
