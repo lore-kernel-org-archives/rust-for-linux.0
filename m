@@ -2,97 +2,90 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECFD4C04FDE
-	for <rust-for-linux@archiver.kernel.org>; Tue, 13 Dec 2022 11:27:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76343C4332F
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Dec 2022 09:35:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234844AbiLML06 (ORCPT
+        id S237852AbiLNJfL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 13 Dec 2022 06:26:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60242 "EHLO
+        Wed, 14 Dec 2022 04:35:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230093AbiLML0S (ORCPT
+        with ESMTP id S237896AbiLNJfI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 13 Dec 2022 06:26:18 -0500
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8E4313EBF;
-        Tue, 13 Dec 2022 03:26:07 -0800 (PST)
-Received: by mail-yb1-xb2d.google.com with SMTP id y135so17184703yby.12;
-        Tue, 13 Dec 2022 03:26:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=yDllMwX9pI964ZhrIw5Xz3fMo331pXeD5e64SDatJdI=;
-        b=FC4lPWt9bAiS2U/+gJFOIpDu+nsOuB2f3YHN70FyDyaQvoCcelDReCYvTbrIwk7myw
-         RbjrhPVxMi3f+irI2GWnZJbOdMKuGePez7leZfesjYQDE79izSVaIdIC+oeDI+caEh5h
-         noQEGZ/LtBv11ATqBohwg2pK96SGU+RHed1b55ik0S4UIsyoPJ8MCRlz7k2M8OcU6el6
-         OkwEadrhI1d8QVRDSBDjj/1KlMf3mIOFcOYfe1HY/iO0yjg7oWR5UgBcFMvQ2S3I1L6A
-         E6qcjkd7o99M5d+1IwtnfeSUDn+5Yd6kvSwv3cUAtaHc4xNYnn9KKT7fBJKrC63OKKeD
-         eu3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yDllMwX9pI964ZhrIw5Xz3fMo331pXeD5e64SDatJdI=;
-        b=7yz/Ihb1gGK89fiZe+7aW3nfkqSFtRa+SdZN+Iur/FeC5bfYOtfTRQQ2JPw60eT/uS
-         1v9bdezgBy2YdQUAgheOBgB6jLX89EpaDtk1T9BeJAmKb4AdMVvNXGP2GBDwexb0nxlb
-         4t+ZR1cS7CcSQHyofAA8FVUMek3CRDbTKEESeHG2fSVG1ne7Dllwp+SEkXnaOgQ+te9I
-         EFO3ZGkvz4Llr85Glx78W/2WIOMnPVas221J2yZEZk4L83HcJwRLy+thFB7OjtxSuwmA
-         X2WPQ9rGj9IOolbs1NoLfd5lmgf1onWMlnalkTKEfz5jTIIt7sENbjo8o1LPT9REb8ju
-         nLRg==
-X-Gm-Message-State: ANoB5pn8N5B2tUKDjKCsZCaaj1q/3uMsQvoGsrsf0Ky0gkU8hHEZAe8H
-        tjMZAvciPvxarxO/xQNf+uBRYs3fiGuhv1GOqcw=
-X-Google-Smtp-Source: AA0mqf4tQvBLPr8VtV+bOY6Wza7DWHoMNXF8h8+JV/2vysmRny7gFpEVCBb3VsB0sjM8KbCsPGrLDJQOVQlG7FTeiM0=
-X-Received: by 2002:a25:ada8:0:b0:6f5:6a39:978d with SMTP id
- z40-20020a25ada8000000b006f56a39978dmr52082891ybi.323.1670930766910; Tue, 13
- Dec 2022 03:26:06 -0800 (PST)
-MIME-Version: 1.0
-References: <20221211005609.270457-1-ojeda@kernel.org> <CAHk-=wiW=ioE_6N988=fseYLTzaCXaULNzippLMTRTcT=oPa0A@mail.gmail.com>
-In-Reply-To: <CAHk-=wiW=ioE_6N988=fseYLTzaCXaULNzippLMTRTcT=oPa0A@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 13 Dec 2022 12:25:55 +0100
-Message-ID: <CANiq72m8xAHGwEmTULqvfRzXe+dD7bx3_ALVOsU82_H3GDZdiQ@mail.gmail.com>
-Subject: Re: [GIT PULL] Rust for 6.2
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     ojeda@kernel.org, Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Wed, 14 Dec 2022 04:35:08 -0500
+Received: from mout-b-206.mailbox.org (mout-b-206.mailbox.org [IPv6:2001:67c:2050:102:465::206])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF5F13E15;
+        Wed, 14 Dec 2022 01:35:04 -0800 (PST)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-b-206.mailbox.org (Postfix) with ESMTPS id 4NX9FF23mNz9tNM;
+        Wed, 14 Dec 2022 10:34:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyantec.com; s=default;
+        t=1671010497;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+        bh=JECLRqzznZVJcQFxEyTyGBYjuCU4Zk5HVm/KjeUQy0I=;
+        b=HwA7McrarJVH/sxyrgRgGr+zC/lc6vUMGrXbB/tPfqGIat/vDLQUeeEN7HVYKH+SAe69/X
+        qkUjLPb4vIccxfoKgCP70xba6gUN+Nf10pRWqM19ElXmkU8Nm4n1bNvBqbvve3Y695x0BD
+        pz/Ine/xCXK3TGkx9zS/MZiJnyH9mWgQQlgvEzNo7jtoEt1Le0Xy8fWBMLfd5O9TyzUvWw
+        gr5JaRxFjsDLYr401Y5/pOY3bS41iBK0M0gjzWxMnsR57EH9ZtMW7d1m6FVowjMTRtdtWb
+        /3LUycOpUR7lQDiXr7CT/8biL9mw+PGZswEr2KRhJklglw+SwcwiS3tuTXjekw==
+Date:   Wed, 14 Dec 2022 10:34:51 +0100
+From:   Finn Behrens <fin@nyantec.com>
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev
+Subject: [PATCH] rust: prelude: prevent doc inline of external imports
+Message-ID: <20221214093451.zdyhmdyxwz73n6pe@imap.mailbox.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Dec 13, 2022 at 2:18 AM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> Heh. You have an unusual habit of using the back-tick instead of the
-> regular single quote character. It's not wrong, just surprising. I
-> ended up just replacing it with the regular single quote.
+This shows exactly where the items are from, previously the items from
+macros, alloc and core where shown as a decleration from the kernel crate,
+this shows the correct path.
 
-As Nick pointed out, it is indeed Markdown. Rust code uses it e.g. for
-function docs, so we use it for commit messages too and so on, which
-makes it nice to copy-paste content from one part to the other etc.
+Signed-off-by: Finn Behrens <fin@nyantec.com>
+---
+ rust/kernel/prelude.rs | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-When I wrote the tag message, I wondered whether to use the single
-quotes, since I knew you keep consistent merge messages, but didn't
-know if that included editing quotes. Thus I decided to just give it a
-go and see what you edited or not for the next time.
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index 7a90249ee9b9..917721e791b6 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -11,15 +11,21 @@
+ //! use kernel::prelude::*;
+ //! ```
+ 
++#[doc(no_inline)]
+ pub use core::pin::Pin;
+ 
++#[doc(no_inline)]
+ pub use alloc::{boxed::Box, vec::Vec};
+ 
++#[doc(no_inline)]
+ pub use macros::{module, vtable};
+ 
+ pub use super::build_assert;
+ 
+-pub use super::{dbg, pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
++// super::std_vendor is hidden, which makes the macro inline for some reason
++#[doc(no_inline)]
++pub use super::dbg;
++pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
+ 
+ pub use super::static_assert;
+ 
+-- 
+2.31.1
 
-> Maybe I'm biased against it, because I grew up with it being a dead
-> key, and while my current keyboard has it very easily accessible, in
-> many situations it's actually very inconvenient (ie it ends up being a
-> dead key to generate acute grave on many European keyboard layouts).
-
-Yeah, I share that pain in the usual Spanish layout... Until Markdown
-started to become popular, I never used that key.
-
-Since it is essentially a "normalized" plain text format (i.e. close
-to what one would write anyway), I started using it for my notes at
-some point given the growing support in text editors and websites, and
-eventually in my emails too.
-
-Cheers,
-Miguel
