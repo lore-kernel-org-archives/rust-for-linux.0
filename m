@@ -2,44 +2,44 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12D86C4332F
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Dec 2022 23:09:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A31ACC3DA6E
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Dec 2022 23:15:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230089AbiLPXI7 (ORCPT
+        id S229905AbiLPXPV (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Dec 2022 18:08:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38036 "EHLO
+        Fri, 16 Dec 2022 18:15:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230091AbiLPXIn (ORCPT
+        with ESMTP id S229948AbiLPXPR (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Dec 2022 18:08:43 -0500
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F9F873B00;
-        Fri, 16 Dec 2022 15:08:20 -0800 (PST)
-Received: by mail-wm1-f41.google.com with SMTP id b24-20020a05600c4a9800b003d21efdd61dso2792302wmp.3;
-        Fri, 16 Dec 2022 15:08:19 -0800 (PST)
+        Fri, 16 Dec 2022 18:15:17 -0500
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4451563A1;
+        Fri, 16 Dec 2022 15:15:15 -0800 (PST)
+Received: by mail-wm1-f42.google.com with SMTP id o5-20020a05600c510500b003d21f02fbaaso5104181wms.4;
+        Fri, 16 Dec 2022 15:15:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8JVjqU+NFsqoOx1nzHqvzhNnXugzS2QyOypn5WZoD0A=;
-        b=nCTmxAgxMQvB8XeqdKkj2z0IVx9wr1wfiCxvySdtKPZzjfhp0fc3DnASLL7IY9I1+2
-         ax8zifHJ6WuubbRmO/fU2jfXQugqju81grhYL19LsuuBK98CHVR3swZpGcVD+jaYGuwk
-         5nAIrMaRXZud0QG3oUlp1hT3JNR4w8DSC46a0vnOl52YPlA6/HuhcKDuX0473AVawafB
-         nd+EbJxJW6/N240y1UPYGjbeEDbak1Nfwukialcb1BE5e3y/z0Qy910cSIC3PC/4ageo
-         nSNFFzudsylDIp7JDbt2hDI7qgMgFrLYUB6Xyc0bAbTwoWX3PwGVM15VgxBM4dAGm1S6
-         0Oqg==
-X-Gm-Message-State: ANoB5plV/7txV06Zrq9SUPMum5WhLG7AxXly7E/HhOXSkvWvTb5gbosD
-        vANSIntbHNukf7NAzXn45aMc/nWvSgw=
-X-Google-Smtp-Source: AA0mqf7pXX5nf4ZMcFLoWjSxv5fNIvhqkY0jg8OrnBf5pQAEHpHppz99V+lAVjsfu4pYA4/DUSsLjw==
-X-Received: by 2002:a7b:c84f:0:b0:3d2:389a:50aa with SMTP id c15-20020a7bc84f000000b003d2389a50aamr10230189wml.36.1671232098546;
-        Fri, 16 Dec 2022 15:08:18 -0800 (PST)
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pBsUm8iDTB+c2THpWnNDO3v6zfDYGcvFBEzQEwB5p+Q=;
+        b=2TDXOIWSJhk3wAeCu4qMaFNwMz6v+33DlY4AlnalYCk3TUHKjcvD1w2te8BZOyg1X0
+         xMwXLHHwpJjpBf01A+wY3kZO8S1TUZbHhFLxW1pyAwmHOZTrga2erJyTzpforX2RLkqS
+         zOgKCZOECUPtpPotXVJr9Qgkg97RmOz9yoKZpbxRrM05C1ZLOpBtY7KHZAd0pQotKsEr
+         fHJddQnDQa6/yTvLqmqmc08Crun0M8At8GKj3PFw2ZGc6S0wTpd/8bwV/x/mcuAzp4J8
+         ZKW7fBrv3hppw0vWObrATQo2pX4SPKcYNtNGGsVym5NYNVcx3jCyhq59IurgK+/0oJD0
+         ZazA==
+X-Gm-Message-State: ANoB5pmh5Wn7xypf4e7brTxCqHZSTlbrUXiAHNYUkls65E2UUPzELYRH
+        GkzGKDxVgQ4m3nSjz/3zarAW24zrHHY=
+X-Google-Smtp-Source: AA0mqf69VdlADAtAcOu7aIwHaTjSRlqjYaHbBCGX0RiV1+qcxsWc0R71WoRsYxrexyS40+lyu23dKA==
+X-Received: by 2002:a05:600c:21c1:b0:3cf:8833:1841 with SMTP id x1-20020a05600c21c100b003cf88331841mr26926497wmj.39.1671232513890;
+        Fri, 16 Dec 2022 15:15:13 -0800 (PST)
 Received: from liuwe-devbox-debian-v2 ([51.145.34.42])
-        by smtp.gmail.com with ESMTPSA id p13-20020a05600c1d8d00b003d01b84e9b2sm4023385wms.27.2022.12.16.15.08.17
+        by smtp.gmail.com with ESMTPSA id x33-20020a05600c18a100b003d1cc0464a2sm3681803wmp.8.2022.12.16.15.15.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Dec 2022 15:08:17 -0800 (PST)
-Date:   Fri, 16 Dec 2022 23:08:16 +0000
+        Fri, 16 Dec 2022 15:15:13 -0800 (PST)
+Date:   Fri, 16 Dec 2022 23:15:11 +0000
 From:   Wei Liu <wei.liu@kernel.org>
 To:     Wedson Almeida Filho <wedsonaf@gmail.com>
 Cc:     Wei Liu <wei.liu@kernel.org>, rust-for-linux@vger.kernel.org,
@@ -49,12 +49,13 @@ Cc:     Wei Liu <wei.liu@kernel.org>, rust-for-linux@vger.kernel.org,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>
 Subject: Re: [PATCH] rust: kernel: drop repetition in offset_of macro
-Message-ID: <Y5z6YKNojBqoN5OD@liuwe-devbox-debian-v2>
+Message-ID: <Y5z7/9OVzZd1ols1@liuwe-devbox-debian-v2>
 References: <20221216174927.1008629-1-wei.liu@kernel.org>
  <CANeycqo2qKUnyh6XVkBHyAcVjvN9NKJ9sb9bTzkHq7jC1C-B0w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <CANeycqo2qKUnyh6XVkBHyAcVjvN9NKJ9sb9bTzkHq7jC1C-B0w@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
@@ -80,9 +81,34 @@ On Fri, Dec 16, 2022 at 06:26:57PM +0000, Wedson Almeida Filho wrote:
 > ```
 > 
 > Which is something very plausible.
+> 
+> > No functional change.
+> >
+> > Signed-off-by: Wei Liu <wei.liu@kernel.org>
+> > ---
+> > Cc: Miguel Ojeda <ojeda@kernel.org>
+> > Cc: Alex Gaynor <alex.gaynor@gmail.com>
+> > Cc: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > Cc: Boqun Feng <boqun.feng@gmail.com>
+> > Cc: Gary Guo <gary@garyguo.net>
+> > Cc: Björn Roy Baron <bjorn3_gh@protonmail.com>
+> > ---
+> >  rust/kernel/lib.rs | 10 ++++++----
+> >  1 file changed, 6 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index 6a322effa60c..2f3601e4e27e 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -208,7 +208,7 @@ impl<'a> Drop for KParamGuard<'a> {
+> >  /// ```
+> >  #[macro_export]
+> >  macro_rules! offset_of {
+> > -    ($type:ty, $($f:tt)*) => {{
 
-You're right. I didn't consider that use case. This patch can be
-ignored.
+Shouldn't this be + instead of *?
+
+offset_of!(X,) is valid according to this pattern.
 
 Thanks,
 Wei.
