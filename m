@@ -2,90 +2,110 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76343C4332F
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Dec 2022 09:35:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1B62C4167B
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Dec 2022 17:49:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237852AbiLNJfL (ORCPT
+        id S230237AbiLPRtv (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Dec 2022 04:35:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46530 "EHLO
+        Fri, 16 Dec 2022 12:49:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237896AbiLNJfI (ORCPT
+        with ESMTP id S231655AbiLPRtl (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Dec 2022 04:35:08 -0500
-Received: from mout-b-206.mailbox.org (mout-b-206.mailbox.org [IPv6:2001:67c:2050:102:465::206])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF5F13E15;
-        Wed, 14 Dec 2022 01:35:04 -0800 (PST)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-b-206.mailbox.org (Postfix) with ESMTPS id 4NX9FF23mNz9tNM;
-        Wed, 14 Dec 2022 10:34:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyantec.com; s=default;
-        t=1671010497;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-        bh=JECLRqzznZVJcQFxEyTyGBYjuCU4Zk5HVm/KjeUQy0I=;
-        b=HwA7McrarJVH/sxyrgRgGr+zC/lc6vUMGrXbB/tPfqGIat/vDLQUeeEN7HVYKH+SAe69/X
-        qkUjLPb4vIccxfoKgCP70xba6gUN+Nf10pRWqM19ElXmkU8Nm4n1bNvBqbvve3Y695x0BD
-        pz/Ine/xCXK3TGkx9zS/MZiJnyH9mWgQQlgvEzNo7jtoEt1Le0Xy8fWBMLfd5O9TyzUvWw
-        gr5JaRxFjsDLYr401Y5/pOY3bS41iBK0M0gjzWxMnsR57EH9ZtMW7d1m6FVowjMTRtdtWb
-        /3LUycOpUR7lQDiXr7CT/8biL9mw+PGZswEr2KRhJklglw+SwcwiS3tuTXjekw==
-Date:   Wed, 14 Dec 2022 10:34:51 +0100
-From:   Finn Behrens <fin@nyantec.com>
-To:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Fri, 16 Dec 2022 12:49:41 -0500
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E2370B9D;
+        Fri, 16 Dec 2022 09:49:40 -0800 (PST)
+Received: by mail-wr1-f44.google.com with SMTP id i7so3240206wrv.8;
+        Fri, 16 Dec 2022 09:49:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7yIyfrfOdv5xmkNvR1/BpAbRSIDwZLQJEypBYov0ihk=;
+        b=mmC6HbKQ6BYA6GmOpVI3q/ntPkn73T7A4CpKCKOkKCi42iXNHGzwTu/gPNALyFXJ6R
+         6rekyI0X2eoRPIKC9o0uU2VN4IaIxZ/71O05rLbbAcAI0/IVSdaDOT6ND3nSCLy5cHxz
+         AQAZqNAX16woTG4Ppb8vYlTRPIlh8x/io3JVvA0au3EP6iLxjB0lajktJ+yU1xyopWA3
+         io0Vyh6Of7vhLO+1xycqmF/WpTtN0FZO7psbuRbtRWmtCyTg5mPsPZRPfIKhMMcAM5ay
+         AR+EPGc1v6SfdbvFNoZ28aIvKnH5D2SccjUb24pthYm/9pDmVIMfhmH1Q6KGGZmLDTR/
+         XPAw==
+X-Gm-Message-State: ANoB5pk1mkjhUfVmfuy1PTXSM8Ybgz7LNii0Lpv8RGTbLpND9MTeYWlS
+        akxGKaOyDD0ZRd3H0cVzCZuBlWyfRqg=
+X-Google-Smtp-Source: AA0mqf5cH/FN4aDPJsYWBBDQyEca7uIiApJIE5g7qvsecnaR7LSuohXr8cvjjPr1+O2u7i0/jkTYJQ==
+X-Received: by 2002:a5d:6741:0:b0:242:567e:25a7 with SMTP id l1-20020a5d6741000000b00242567e25a7mr22013961wrw.42.1671212978691;
+        Fri, 16 Dec 2022 09:49:38 -0800 (PST)
+Received: from liuwe-devbox-debian-v2.j3c5onc20sse1dnehy4noqpfcg.zx.internal.cloudapp.net ([51.145.34.42])
+        by smtp.gmail.com with ESMTPSA id w1-20020adfec41000000b002422b462975sm2809384wrn.34.2022.12.16.09.49.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Dec 2022 09:49:38 -0800 (PST)
+From:   Wei Liu <wei.liu@kernel.org>
+To:     rust-for-linux@vger.kernel.org,
+        Linux Kernel List <linux-kernel@vger.kernel.org>
+Cc:     Wei Liu <wei.liu@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: [PATCH] rust: prelude: prevent doc inline of external imports
-Message-ID: <20221214093451.zdyhmdyxwz73n6pe@imap.mailbox.org>
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
+Subject: [PATCH] rust: kernel: drop repetition in offset_of macro
+Date:   Fri, 16 Dec 2022 17:49:27 +0000
+Message-Id: <20221216174927.1008629-1-wei.liu@kernel.org>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This shows exactly where the items are from, previously the items from
-macros, alloc and core where shown as a decleration from the kernel crate,
-this shows the correct path.
+It doesn't make sense to allow multiple fields to be specified in
+offset_of.
 
-Signed-off-by: Finn Behrens <fin@nyantec.com>
+No functional change.
+
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 ---
- rust/kernel/prelude.rs | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>
+Cc: Björn Roy Baron <bjorn3_gh@protonmail.com>
+---
+ rust/kernel/lib.rs | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index 7a90249ee9b9..917721e791b6 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -11,15 +11,21 @@
- //! use kernel::prelude::*;
- //! ```
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 6a322effa60c..2f3601e4e27e 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -208,7 +208,7 @@ impl<'a> Drop for KParamGuard<'a> {
+ /// ```
+ #[macro_export]
+ macro_rules! offset_of {
+-    ($type:ty, $($f:tt)*) => {{
++    ($type:ty, $f:tt) => {{
+         let tmp = core::mem::MaybeUninit::<$type>::uninit();
+         let outer = tmp.as_ptr();
+         // To avoid warnings when nesting `unsafe` blocks.
+@@ -216,12 +216,14 @@ macro_rules! offset_of {
+         // SAFETY: The pointer is valid and aligned, just not initialised; `addr_of` ensures that
+         // we don't actually read from `outer` (which would be UB) nor create an intermediate
+         // reference.
+-        let inner = unsafe { core::ptr::addr_of!((*outer).$($f)*) } as *const u8;
++        let inner = unsafe { core::ptr::addr_of!((*outer).$f) } as *const u8;
+         // To avoid warnings when nesting `unsafe` blocks.
+         #[allow(unused_unsafe)]
+         // SAFETY: The two pointers are within the same allocation block.
+-        unsafe { inner.offset_from(outer as *const u8) }
+-    }}
++        unsafe {
++            inner.offset_from(outer as *const u8)
++        }
++    }};
+ }
  
-+#[doc(no_inline)]
- pub use core::pin::Pin;
- 
-+#[doc(no_inline)]
- pub use alloc::{boxed::Box, vec::Vec};
- 
-+#[doc(no_inline)]
- pub use macros::{module, vtable};
- 
- pub use super::build_assert;
- 
--pub use super::{dbg, pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
-+// super::std_vendor is hidden, which makes the macro inline for some reason
-+#[doc(no_inline)]
-+pub use super::dbg;
-+pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
- 
- pub use super::static_assert;
- 
+ /// Produces a pointer to an object from a pointer to one of its fields.
 -- 
-2.31.1
+2.35.1
 
