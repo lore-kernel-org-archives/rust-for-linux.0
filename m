@@ -2,85 +2,126 @@ Return-Path: <rust-for-linux-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFEE0C4332F
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Dec 2022 23:57:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C53CC4167B
+	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Dec 2022 04:44:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229548AbiLPX5f (ORCPT
+        id S230034AbiLQEor (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Dec 2022 18:57:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38888 "EHLO
+        Fri, 16 Dec 2022 23:44:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229848AbiLPX5e (ORCPT
+        with ESMTP id S229925AbiLQEop (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Dec 2022 18:57:34 -0500
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7999555A9A;
-        Fri, 16 Dec 2022 15:57:33 -0800 (PST)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-3cbdd6c00adso54072007b3.11;
-        Fri, 16 Dec 2022 15:57:33 -0800 (PST)
+        Fri, 16 Dec 2022 23:44:45 -0500
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C6D30562
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Dec 2022 20:44:44 -0800 (PST)
+Received: by mail-pj1-x1049.google.com with SMTP id il11-20020a17090b164b00b00219a4366109so5231704pjb.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Dec 2022 20:44:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=z0jxoLmhjzdQFU4Rcca6h1zELOoOj2Hhrq5sWSEt7V8=;
-        b=HKVw5J3noI9XmTp4k5G5m6+ylCn+yW93A8XQkAdG6J0nZjK32B+jT+rwcdWmz1pT5V
-         UJwEz+vfCU+EunGlHsDGZekb7UkXj6gVB0LX6AB+lfgWsLwCwmhEA1MqUOGTpZxs87ix
-         N9w//MYY/k3CER6eOJaRf1C+TR+HSZfOm4UwvXN12W2ka5cex6o29Tuk6neAyxkBuNeA
-         VpZA+HQvEXyUZzNMRYxz0ERRm0ThKupJphUHgMhZMWW2mq5ob/6tmc+aErEt9z1VrI7G
-         OuM4mZrax5w+/tRQWaFFjaYToTDXhvXv0It8FToCuaYw0Ot3FhLjA/mpLiwC/rQm/Tfp
-         PgXA==
+        d=google.com; s=20210112;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lq5qLaqjn47UolL4tsokkeSChCFRg4lpAueP7xiyK5c=;
+        b=hI3GPjV+otMa4Ye095FQjaGiWFlvwbSCtpy0DBUgqx9lFQzUf2P0+VMQ+0p2TVTqA5
+         RWgmwjx++Vat5TAo6ZfBcEzl2ZRlK0ZvijwVXFFrEBj2H0CDfCxn7T4YMffcWbCjNa1k
+         OJ1EPcqIFGczYb7jLwFDNuh3dCqMPAyPDyafE9GbwooLR5G9wHsJJe+T94Zh3w3gAyx+
+         mdEDkdd8xr1Tfwaqf9PpBiVqe0nyLrdo8K7KCclSR7jY4bh0MjIjPp0ejIeHUmkRkjI1
+         wnNzvdOhssab9K/qDUX2tlWPiLFv8SGiFbH+aFMdn+xsjdYLaNd8mNcT9S/wPq2j5kby
+         0GjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=z0jxoLmhjzdQFU4Rcca6h1zELOoOj2Hhrq5sWSEt7V8=;
-        b=0iES4Db0XONHT+IFPNBHgWst67tWDu4ZrNfnNAoNYYoFj/p0sz53SDpITlM86X2+TM
-         vE3RvgxzFPHddOR9xsJVgpmcnD3YDhMLFWglBRoWFNtyrDfZOJfiQWloo4QPo+Tyzyr9
-         CfCvUpUZfniv45SmCGbtmS5nPRLnD6dYpvYg0qpZMIHgF9P3k13nffXvxNKd3N18JrTM
-         jMzR9IlwYWMlkvEacm0x8cKEiHOKY50rMP6g/ZLvILnWK5gN6oOESMZzhnKCjy9Z77T0
-         Z1jsg5S+Sn848IDvyDprufVPz5cE/CWPthIds2MpDw6oWd81Sc826EBCzZ25j6yRKIHG
-         xB3Q==
-X-Gm-Message-State: ANoB5pntWuFNh1nCpd0jaqLk2ejDDKuDUQsIdsTQmeCb0bZxcvAyc8cW
-        hHr5nDChKK6cWzqTVi27wAu2WtavpjJe+xTUxMczLYEffflbpw==
-X-Google-Smtp-Source: AA0mqf6MPZLiYnqnGy6wTGkTNxkB7D4Tgsi4gjQvQRggN39XsKevSR1CQmjsI822xDdkBkoiPfoeSOHvvuBZq25FqYI=
-X-Received: by 2002:a0d:eb15:0:b0:3b8:7fc6:c06b with SMTP id
- u21-20020a0deb15000000b003b87fc6c06bmr3567855ywe.129.1671235052681; Fri, 16
- Dec 2022 15:57:32 -0800 (PST)
-MIME-Version: 1.0
-References: <20221216174927.1008629-1-wei.liu@kernel.org> <CANeycqo2qKUnyh6XVkBHyAcVjvN9NKJ9sb9bTzkHq7jC1C-B0w@mail.gmail.com>
- <Y5zt9PSUD6d1MTyZ@boqun-archlinux> <Y5z/msA6FWH0Bgmq@liuwe-devbox-debian-v2>
-In-Reply-To: <Y5z/msA6FWH0Bgmq@liuwe-devbox-debian-v2>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 17 Dec 2022 00:57:21 +0100
-Message-ID: <CANiq72krvm2bT3suU9ecxpECZYNZ99+ed5y65tUDpNiqGvWKOw@mail.gmail.com>
-Subject: Re: [PATCH] rust: kernel: drop repetition in offset_of macro
-To:     Wei Liu <wei.liu@kernel.org>
-Cc:     Boqun Feng <boqun.feng@gmail.com>,
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lq5qLaqjn47UolL4tsokkeSChCFRg4lpAueP7xiyK5c=;
+        b=nIPQftTaqafgYiFBU4CqSoMUCesrsGhUgZDlbChRPCnGES59Yl7Bxv33mle6SuzCDT
+         3W0cSlJOKAKQ3OLz2ulcRBsCN1bYPS1B9nCKOtxlspRZTkqiTOqPvovtO0qNlRvLI3UU
+         B5oDDGnGm2nciux4kjps45b6BQdbmd8QmKlJG8XiMEHHVLWoSj+MPf4y6edPm/zYU6Ii
+         efLtpq3tqxjVtHBrETjnTlhqR/y10fZZ+tTn0xTmD6gXdw6oUDMNpH3X74hDKKs1Ukvr
+         TngH9NxMHvEt5p7B3PS0f1wfm8Rdp5bSlUFcb4/AmstULbj84dL/X7dFDUv3OxJj9WS/
+         AtUA==
+X-Gm-Message-State: AFqh2kqT0bTet9SvcuAGGap6vDNq5o1PXyf8y51iBBUQHcmcrjmADcjD
+        +ZkYJkOPCnX8dJRpNUgoAHK4wc/sB16qMg==
+X-Google-Smtp-Source: AMrXdXvH1QaOoHmXxQnjA4mtzl2imb7fSbG7jRPeov73t2X0+amIt1J7VPlYImsSKZuDLTlFJocq/RGIXZxZFA==
+X-Received: from slicestar.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:20a1])
+ (user=davidgow job=sendgmr) by 2002:a17:90a:d318:b0:220:1f03:129b with SMTP
+ id p24-20020a17090ad31800b002201f03129bmr138587pju.0.1671252283386; Fri, 16
+ Dec 2022 20:44:43 -0800 (PST)
+Date:   Sat, 17 Dec 2022 12:44:33 +0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.39.0.314.g84b9a713c41-goog
+Message-ID: <20221217044436.4138642-1-davidgow@google.com>
+Subject: [PATCH 0/3] rust: arch/um: Rust support for UML
+From:   David Gow <davidgow@google.com>
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        "=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>
+Cc:     David Gow <davidgow@google.com>, rust-for-linux@vger.kernel.org,
+        linux-um@lists.infradead.org, llvm@lists.linux.dev,
+        linux-doc@vger.kernel.org, kunit-dev@googlegroups.com,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org,
-        Linux Kernel List <linux-kernel@vger.kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
         Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+        Brendan Higgins <brendan.higgins@linux.dev>,
+        Daniel Latypov <dlatypov@google.com>,
+        Jonathan Corbet <corbet@lwn.net>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Dec 17, 2022 at 12:30 AM Wei Liu <wei.liu@kernel.org> wrote:
->
-> What will be  even better is someone please contribute such a macro to
-> libcore so that I don't have to replicate the code snippet everywhere.
-> :-)
+This series adds support for building and running code in the Rust
+programming language under x86_64 UML kernels.
 
-It is happening! :-) See https://github.com/rust-lang/rfcs/pull/3308,
-currently at the end of the FCP ("final comment period"), i.e. the RFC
-is likely getting accepted soon.
+It is based on two Pull Requests from the Rust-for-Linux GitHub page:
+- https://github.com/Rust-for-Linux/linux/pull/766
+- https://github.com/Rust-for-Linux/linux/pull/881
 
-We track it at https://github.com/Rust-for-Linux/linux/issues/514 (one
-of the sub-lists in issue #2).
+The series consists of three patches: the first two set up various
+compiler options to match both the UML and the X86 CFLAGS.
+
+Rust support can be enabled by setting CONFIG_RUST=y, when the suitable
+Rust compiler and bindgen versions are available (run make rustavaiable
+to check). LLVM=1 is also required at present with all Rust builds.
+
+The whole thing can be built and tested with kunit.py:
+./tools/testing/kunit/kunit.py run --kconfig_add CONFIG_RUST=y --make_options LLVM=1
+
+(Note that there are no Rust-based KUnit tests upstream yet. The "rust"
+branch of the Rust-for-Linux GitHub repository does use KUnit for its
+"doctests", and all of those tests pass under UML with these patches.)
+
+This series is currently based on the uml/next branch: I'm happy to
+rebase it next year once we're past the 6.2 merge window (though it
+applies cleanly to torvalds/master at the moment). Equally, it
+should be possible to take these changes in via the rust tree instead,
+but since it's mostly UML Makefile changes, it probably makes more sense
+for it to go in via the uml tree.
+
+Also note that this series marks UML as a "maintained" architecture for
+Rust support. It's definitely my intention to keep this working, but if
+anyone has serious concerns, we can downgrade that.
 
 Cheers,
-Miguel
+-- David
+
+David Gow (3):
+  rust: arch/um: Use 'pie' relocation mode under UML
+  rust: arch/um: Disable FP/SIMD instruction to match x86
+  rust: arch/um: Add support for CONFIG_RUST under x86_64 UML
+
+ Documentation/rust/arch-support.rst | 2 ++
+ arch/um/Kconfig                     | 1 +
+ arch/um/Makefile                    | 2 ++
+ arch/x86/Makefile.um                | 6 ++++++
+ 4 files changed, 11 insertions(+)
+
+-- 
+2.39.0.314.g84b9a713c41-goog
+
