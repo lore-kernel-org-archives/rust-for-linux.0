@@ -2,55 +2,55 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3ECB6C3DA7A
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 806A3C5479D
 	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Dec 2022 06:04:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229764AbiL1GEr (ORCPT
+        id S229806AbiL1GEt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Dec 2022 01:04:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59048 "EHLO
+        Wed, 28 Dec 2022 01:04:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbiL1GEl (ORCPT
+        with ESMTP id S229666AbiL1GEn (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Dec 2022 01:04:41 -0500
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E31BDEFD;
-        Tue, 27 Dec 2022 22:04:40 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id y16so14086160wrm.2;
-        Tue, 27 Dec 2022 22:04:39 -0800 (PST)
+        Wed, 28 Dec 2022 01:04:43 -0500
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 054C7DF5E;
+        Tue, 27 Dec 2022 22:04:42 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id t15so5238847wro.9;
+        Tue, 27 Dec 2022 22:04:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XeNZhBrSDUYQju7RRVfm5I6e0SpSr4tjimgdJCI7t2s=;
-        b=hBpEZlcwkbj1rwV3hPjKwJmJHcE/5WKwhuxtTDMKYQKe2CImcnt3QdOTvLb7G7vEY4
-         cqAMRxB0qP5ptsaD8CH/fdev6J9lAFCvaVf+rkbnKb7QQSMFbGhBoXvof6zYHSe8i9j4
-         Ej6C+CnpjBTVmgO+yLnO1BwCIJEA/QrKu68BwcgCie7xHBAEqJBwibjX8YKWNOXLHgQq
-         BxLIxnbEoBGpzK3vookEkJwtNUMwU5XAXlF131X5LqUOo2qEQR4lZP6Pk4GkvuYwdSMg
-         vkAuHPsze27Lso5+WNQEWsAtgOn9PrShtaONkq/3X8N+O1r4VT03bbewoxFg7FTAnH0d
-         ZNOA==
+        bh=Nyqdaq2S7tC0O5h+EPr9voswYlNOiiQ62YOgK8u+XEY=;
+        b=PkjOU0OwjgOja8a24OYSeB2xiCXsUcXR2DuCf4HwLICZZ6x5sUmJcWD+n6ZDvBAkTG
+         Q+yDtygd9skAsH7t4D3HxYgI4yhnyQ4mSJt1uW+qYKr5q7Jka2QoKZll1mkxK5Ug149F
+         fO1lUz8ciMe3jG1z4R/He3IGT7X3d09qLVq8L5fdAc+sQv1qBijTYeekmQUnBnE0KJ6y
+         ZxPStzKKAtcEnK1FxUL6vlmqE8oH/vjbQ/iiV0qSrloeoFwlXy3KIVD5QWoGxMAmG4OW
+         y+g3SztzbfqSiPuTK8NIqTg6b99rR+6POIH9XoXMkEZ0Bwj5wbv5fnr8W/bbql43LwpJ
+         +Rug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XeNZhBrSDUYQju7RRVfm5I6e0SpSr4tjimgdJCI7t2s=;
-        b=1ZevucE/i31PSMP2Z1j6C1qkrW3aXXg/zefLhH9fst0F2y42vPTbKWJMfappZ6aVrs
-         oGYRp6NtOrC1+7bcIn93huTS8QKIdiYJqAdsW7faS8A6V3/GbhacuRirnrnexWMZg+l0
-         zoYDOmrTv/9Ei5+awxblfaLOU/H9N4wPcl9nQv0GYweI2q87fHaOcw0roDWQVF5HPb+5
-         +9ZVSQHYfX958JifpwIDUW8wobKKdvsWlGvqSC4CmJV9XNy/+/y5oIKBI2j4vrXvSWA3
-         HkPd/DIi3BS5d+odnItntycyNzNTP+rPuvOFnC0GgzW2IL+FpcEartq8kllTBpFqa3Zi
-         Kqqg==
-X-Gm-Message-State: AFqh2ko9xXpHDVv8FqWJfD41v3d0DfKp0m75/vc0OdOXpWCa5M7UnQZJ
-        OiqEP9NO6pxeK4xyue11Sfcw6rdujSaq7Q==
-X-Google-Smtp-Source: AMrXdXsm8VgrnwKioOBCZlcAYaP3Cj8yXcd2dB/CUDd+urZQyGIOfh9/dReyyn9eTk8xRek7szTKbA==
-X-Received: by 2002:adf:f206:0:b0:280:8ebd:263a with SMTP id p6-20020adff206000000b002808ebd263amr4491556wro.62.1672207478627;
-        Tue, 27 Dec 2022 22:04:38 -0800 (PST)
+        bh=Nyqdaq2S7tC0O5h+EPr9voswYlNOiiQ62YOgK8u+XEY=;
+        b=onRpjMBBF4HRqEBlmSaNibzSz7COsuAPjn+8KM/7duv2V2aavRDQECpwzr6uPAzMNQ
+         m3OZyoq7nycNz/UiFdYeowxLhvfSb1Wd8qqdhCXPKmKqjFzf685KfVbFIqgyPDRM6utX
+         R4pHfEZn0GPaB8grdVV5/uPklAjPU10qmJj9XCW22Y4liAdHprwfqCuWwmwoSgdURuCB
+         FlII50Eo2L3nOHTDdygMz8S7rkIq2yAd5+cV2tc7zmpOq3cb9IdzSy4j3HdqJgq65OAA
+         oz7heN+OuIBa4utdlA5mkR83P3ezlnJkM0f5tfqOGjUUbdYtyRYae/oHglQfZID29nXu
+         4L9Q==
+X-Gm-Message-State: AFqh2kqRX257t2wXcArj2++vzM0+giWLTY7WdBn7Yvbfd+iJdT/eBr7a
+        ItkRxr2I9glTjWUeo2iDBku8dZ86FpwEHA==
+X-Google-Smtp-Source: AMrXdXtABS84gYIHH8ZbQgM2Qkg/NFqNPcb7MvyGsw2gQ7IA78r1Q7d4bmXrzMTCPQ5cGDlq2oHQZA==
+X-Received: by 2002:a5d:494d:0:b0:268:5557:98c9 with SMTP id r13-20020a5d494d000000b00268555798c9mr14607418wrs.58.1672207480519;
+        Tue, 27 Dec 2022 22:04:40 -0800 (PST)
 Received: from wedsonaf-dev.. ([81.2.152.129])
-        by smtp.googlemail.com with ESMTPSA id x16-20020a5d6510000000b002755e301eeasm12128867wru.100.2022.12.27.22.04.37
+        by smtp.googlemail.com with ESMTPSA id x16-20020a5d6510000000b002755e301eeasm12128867wru.100.2022.12.27.22.04.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Dec 2022 22:04:38 -0800 (PST)
+        Tue, 27 Dec 2022 22:04:40 -0800 (PST)
 From:   Wedson Almeida Filho <wedsonaf@gmail.com>
 To:     rust-for-linux@vger.kernel.org
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
@@ -59,9 +59,9 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <wedsonaf@gmail.com>
-Subject: [PATCH 5/7] rust: sync: allow type of `self` to be `ArcBorrow<T>`
-Date:   Wed, 28 Dec 2022 06:03:44 +0000
-Message-Id: <20221228060346.352362-5-wedsonaf@gmail.com>
+Subject: [PATCH 7/7] rust: sync: add support for dispatching on Arc and ArcBorrow.
+Date:   Wed, 28 Dec 2022 06:03:46 +0000
+Message-Id: <20221228060346.352362-7-wedsonaf@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20221228060346.352362-1-wedsonaf@gmail.com>
 References: <20221228060346.352362-1-wedsonaf@gmail.com>
@@ -71,50 +71,71 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This allows associated functions whose `self` argument has
-`ArcBorrow<T>` as their type. This, in turn, allows callers to use the
-dot syntax to make calls.
+Trait objects (`dyn T`) require trait `T` to be "object safe". One of
+the requirements for "object safety" is that the receiver have one of
+the allowed types. This commit adds `Arc<T>` and `ArcBorrow<'_, T>` to
+the list of allowed types.
 
 Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 ---
- rust/kernel/sync/arc.rs | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ rust/kernel/lib.rs      |  1 +
+ rust/kernel/sync/arc.rs | 20 ++++++++++++++++++--
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 4bde65e7b06b..e0b0e953907d 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -15,6 +15,7 @@
+ #![feature(allocator_api)]
+ #![feature(coerce_unsized)]
+ #![feature(core_ffi_c)]
++#![feature(dispatch_from_dyn)]
+ #![feature(receiver_trait)]
+ #![feature(unsize)]
+ 
 diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index f68bfc02c81a..84f31c85a513 100644
+index 832bafc74a90..ff73f9240ca1 100644
 --- a/rust/kernel/sync/arc.rs
 +++ b/rust/kernel/sync/arc.rs
-@@ -255,11 +255,34 @@ impl<T: ?Sized> Drop for Arc<T> {
- /// // Assert that both `obj` and `cloned` point to the same underlying object.
- /// assert!(core::ptr::eq(&*obj, &*cloned));
+@@ -92,9 +92,15 @@ use core::{
+ /// Coercion from `Arc<Example>` to `Arc<dyn MyTrait>`:
+ ///
  /// ```
+-/// use kernel::sync::Arc;
++/// use kernel::sync::{Arc, ArcBorrow};
 +///
-+/// Using `ArcBorrow<T>` as the type of `self`:
-+///
-+/// ```
-+/// use crate::sync::{Arc, ArcBorrow};
-+///
-+/// struct Example {
-+///     a: u32,
-+///     b: u32,
++/// trait MyTrait {
++///     // Trait has a function whose `self` type is `Arc<Self>`.
++///     fn example1(self: Arc<Self>) {}
+ ///
+-/// trait MyTrait {}
++///     // Trait has a function whose `self` type is `ArcBorrow<'_, Self>`.
++///     fn example2(self: ArcBorrow<'_, Self>) {}
 +/// }
-+///
-+/// impl Example {
-+///     fn use_reference(self: ArcBorrow<'_, Self>) {
-+///         // ...
-+///     }
-+/// }
-+///
-+/// let obj = Arc::try_new(Example { a: 10, b: 20 })?;
-+/// obj.as_arc_borrow().use_reference();
-+/// ```
- pub struct ArcBorrow<'a, T: ?Sized + 'a> {
-     inner: NonNull<ArcInner<T>>,
-     _p: PhantomData<&'a ()>,
- }
+ ///
+ /// struct Example;
+ /// impl MyTrait for Example {}
+@@ -123,6 +129,9 @@ impl<T: ?Sized> core::ops::Receiver for Arc<T> {}
+ // dynamically-sized type (DST) `U`.
+ impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::CoerceUnsized<Arc<U>> for Arc<T> {}
  
-+// This is to allow [`ArcBorrow`] (and variants) to be used as the type of `self`.
-+impl<T: ?Sized> core::ops::Receiver for ArcBorrow<'_, T> {}
++// This is to allow `Arc<U>` to be dispatched on when `Arc<T>` can be coerced into `Arc<U>`.
++impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<Arc<U>> for Arc<T> {}
++
+ // SAFETY: It is safe to send `Arc<T>` to another thread when the underlying `T` is `Sync` because
+ // it effectively means sharing `&T` (which is safe because `T` is `Sync`); additionally, it needs
+ // `T` to be `Send` because any thread that has an `Arc<T>` may ultimately access `T` directly, for
+@@ -297,6 +306,13 @@ pub struct ArcBorrow<'a, T: ?Sized + 'a> {
+ // This is to allow [`ArcBorrow`] (and variants) to be used as the type of `self`.
+ impl<T: ?Sized> core::ops::Receiver for ArcBorrow<'_, T> {}
+ 
++// This is to allow `ArcBorrow<U>` to be dispatched on when `ArcBorrow<T>` can be coerced into
++// `ArcBorrow<U>`.
++impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<ArcBorrow<'_, U>>
++    for ArcBorrow<'_, T>
++{
++}
 +
  impl<T: ?Sized> Clone for ArcBorrow<'_, T> {
      fn clone(&self) -> Self {
