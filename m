@@ -2,88 +2,81 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8216C53210
-	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Dec 2022 21:15:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85027C10F1B
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Dec 2022 01:34:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbiL0VOu (ORCPT
+        id S229951AbiL1BeM (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 27 Dec 2022 16:14:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48014 "EHLO
+        Tue, 27 Dec 2022 20:34:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230299AbiL0VOc (ORCPT
+        with ESMTP id S229475AbiL1BeL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 27 Dec 2022 16:14:32 -0500
-Received: from mail.skyhub.de (mail.skyhub.de [IPv6:2a01:4f8:190:11c2::b:1457])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 119C6E3;
-        Tue, 27 Dec 2022 13:14:31 -0800 (PST)
-Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4D7A91EC0513;
-        Tue, 27 Dec 2022 22:14:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1672175669;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=PKizlkbenA5JgN5QTgafvGE7l5kd436bqvEmQmYM1p4=;
-        b=SRe70gX4tpSK0sk2zHwRnqiu4/ROwwU3/GEkPv160wW1tjH5dBjmai7+DuNKw5i8c9vpMG
-        xAIpdsMRHPo3DYtyYdIqi8Uaf+yp1QkIvCylX3LrUyn503sV+oE1ibcYf8K9fl8UEIZqR9
-        1Tf9qNC4YvtnUcZoLU9bh8cEU9MKtPU=
-Date:   Tue, 27 Dec 2022 22:14:24 +0100
-From:   Borislav Petkov <bp@alien8.de>
-To:     Alexander Altman <alexanderaltman@me.com>
-Cc:     kernel test robot <lkp@intel.com>, llvm@lists.linux.dev,
-        oe-kbuild-all@lists.linux.dev, rust-for-linux@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>
-Subject: Re: [bp:tip-x86-alternatives 1/1] error[E0588]: packed type cannot
- transitively contain a `#[repr(align)]` type
-Message-ID: <Y6tgMM/qOnePXBQF@zn.tnic>
-References: <202212272003.rgQDX8DQ-lkp@intel.com>
- <Y6r4mXz5NS0+HVXo@zn.tnic>
- <Y6r+UbfkXruwHU2v@zn.tnic>
- <76353487-736A-4470-AD31-77F47F8C08F6@me.com>
+        Tue, 27 Dec 2022 20:34:11 -0500
+Received: from mail-vk1-xa2a.google.com (mail-vk1-xa2a.google.com [IPv6:2607:f8b0:4864:20::a2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3F33DF81
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Dec 2022 17:34:09 -0800 (PST)
+Received: by mail-vk1-xa2a.google.com with SMTP id h4so1995384vkn.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Dec 2022 17:34:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=P73TkP1+5VQL6Z91gZwUfoi+6HNnkrmfQTfJfJd83JE=;
+        b=IFjOogw+FPKIZ+gpJRehfz6J9I+F90wtPueFwW0Qry+bYatcXVm3PdTPUcGa+y2SMa
+         psfWctL4FJHtdtfoxWAblAJeCDc8UMOeoFR9fjyH+GAxgyO0SlqHRq0w7DtNpN0vOlOh
+         luL5OAZ+3ty+5zTzEt2hSG0tZuT2utM+XuphNxNh3ct1YGr4whvVi4MOQJP2WZWZL0Yk
+         7CX0PCO7Avfzefv/UihfbtXnSpikNd+54LgZUQgK4LLqVJs8QZ7TIPnEzpOlWT/toPwi
+         xfihRIFX+OxXv9tQSk0Wdr/eM/gbOGMao3hyjzTDwbckZioottBENUB6nH38+MC2BS8G
+         fgJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P73TkP1+5VQL6Z91gZwUfoi+6HNnkrmfQTfJfJd83JE=;
+        b=anJdGvzBXDK3Mnei3hJrPJ2YMN6Z9knj5daUc9MRmLuuNjDGizvEqH9l+KWI/RwiuA
+         TbLqDCbQIu+p1M9tYYKYC6xcbfZcbq3uyKAuV707j3lK6z6CVvBKLlY1tdcMkuBTMIgA
+         vpMAiGvGT+NDqM050LLlRY2kvNbbfi6wVKFNyBYMejdSaVCxViuuofIUiogjssr6WpYP
+         XXMa7hTQx020hNUhwN7AUwKQOFFQ4xAp0L47LdcVfcHUy9thtOYwJw4yw4olTEffGmIV
+         B11C3ghWb7L99Soan33PXJCfo7/lNOqsUUCvOkO1L8ulbnivc2QbcKFtU8J3KFjp5Tiw
+         N+hw==
+X-Gm-Message-State: AFqh2krT9ZBO+19IybnRha6waWZv++U4qlIo50572W3x7ttzHxqtZGsD
+        pG6QnC/hGn0g0S8eS05VEvlzAwvaAFfvr28A9YMC4hizuI998w==
+X-Google-Smtp-Source: AMrXdXudb+Xj50kmJhgvHUF20YDGIggcNm7O1iDR4B3Lordra226mBIFEEjowA7y8K3+OPEhHx1Q8Fz3osg9j9r9RzM=
+X-Received: by 2002:ac5:c970:0:b0:3d2:b9c2:4e89 with SMTP id
+ t16-20020ac5c970000000b003d2b9c24e89mr2631502vkm.32.1672191248645; Tue, 27
+ Dec 2022 17:34:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <76353487-736A-4470-AD31-77F47F8C08F6@me.com>
+From:   FUJITA Tomonori <fujita.tomonori@gmail.com>
+Date:   Wed, 28 Dec 2022 10:33:52 +0900
+Message-ID: <CAJ+Zx=3OwXeJNsz8DLp_94ciWpQKoiV75v=XH3FoUQKW==_S8w@mail.gmail.com>
+Subject: Rust in-kernel TLS handshake
+To:     rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Dec 27, 2022 at 12:31:17PM -0800, Alexander Altman wrote:
-> That caused Rust’s bindgen (bindings generator) to generate a type for the
-> altered field that indirectly included a representation of the
-> bitfields...which have a greater-than-natural alignment because of their
-> encoding (they’re represented as an array of 4 8-bit unsigned integers, but
-> aligned as if they’re a single 16-bit unsigned integer).  This interacts
-> badly with the top-level command to make the alt_instr struct packed, which
-> bindgen faithfully translates from C __packed to Rust #[repr(packed)].
+Hi,
 
-This sounds like a rust problem to me. Because, AFAICT, this is
-perfectly valid C and both compilers haven't complained even with all
-the possible warnings turned on.
+I've started in-kernel TLS handshake implementation in Rust.
+https://github.com/fujita/rust-tls
 
-> One way to resolve this temporarily would be to add the following line above
-> the offending struct:
-> /// <div rustbindgen hide></div>
+There is some debate over in-kernel TLS handshake mainly because of
+the complexity. I'd like to see if Rust could help with auditing such
+complicated security-relevant code in the kernel.
 
-Nah, I don't think I'll accept a fix for the shortcomings of yet another tool.
+I worked on QUIC as a consumer of TLS. This can establish a QUIC connection
+with Quinn's example client, Rust QUIC implementation. Only minimum
+server side functionality and connection establishment are supported.
 
-> This will cause bindgen to ignore the struct entirely and not translate it.  If it’s
-> actually needed for Rust code, now or later, then we can’t do that and need
-> to actually replace it with something translatable, or else leave it hidden and
-> manually create its translation on the Rust side.  For the latter, just using a
-> u32 for the entire bitfield-containing union would be sufficient.
+From the perspective of Rust-for-Linux, the main work is implementing
+APIs for crypto subsystem. Also libraries such as working with buffers
+(like Tokio's bytes) would be helpful, I think (should be useful for
+other projects). I'll work for mainline. Meanwhile you can compile
+this kernel module
+with my fork.
 
-Yap, that sounds like the right thing to do.
+Opinions?
 
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Resend due to a delivery issue. Sorry if you got this twice.
