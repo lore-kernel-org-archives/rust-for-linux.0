@@ -2,161 +2,359 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A14EEC4332F
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Dec 2022 10:03:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB086C4332F
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Dec 2022 10:14:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232767AbiL1KDh (ORCPT
+        id S230122AbiL1KOc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Dec 2022 05:03:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53546 "EHLO
+        Wed, 28 Dec 2022 05:14:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232841AbiL1KCz (ORCPT
+        with ESMTP id S229997AbiL1KOb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Dec 2022 05:02:55 -0500
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAC9C101C9;
-        Wed, 28 Dec 2022 02:02:44 -0800 (PST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id 663035C0158;
-        Wed, 28 Dec 2022 05:02:44 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Wed, 28 Dec 2022 05:02:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-        :content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm2; t=1672221764; x=
-        1672308164; bh=jSRpP9rGMkucfN9dX9X+hnk+p0MUJjCnp64vYbdh9pM=; b=j
-        4URDuUcfyV36w4pJhpNNycBW7URLHYSR/N1vPJmA3S4bLmASQ41fE06HNq8R1y08
-        cIFJni7lEQobVyvJ6Qq/V4LM0Ztkfc3fbXgwi30cmVpDpd8FGBd79166ZKy189HI
-        pNkv90C9xEGnigfCdtKgP2axCmLBG8widI+JNkzNxkNgfMVVpK8qflM9b0xzCNys
-        Czk/iyh526nSAFf77NFjiGg+CKX0+oJ5sSocSSb7LszHado6P58kBFqDEteL3IAw
-        +SIhqeiTFS1/bveynDNPfDytf059JRQf5XF/sil1s7GkBEhl5sfUCTwRPAD/nc2G
-        DZC4v1PCbzQOM4zpCQCUA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1672221764; x=
-        1672308164; bh=jSRpP9rGMkucfN9dX9X+hnk+p0MUJjCnp64vYbdh9pM=; b=w
-        M+UQyoLyGP5wIoRgbk11LOf8y6U7SK0duhKBT1LGaIQ5oXaUeC+GG0Af2q064uOG
-        Iod5iLfdbsoQVqQfL4f9XPBTykY0nELtjzmozTenJn2yACn2sUyfQFd98gmqA0G5
-        Y3jS0uG9Fpft6iHLutef5OASTQkkFYE6M64UbnVF8mcIQJh6k9sPAdbrhr+xnnnX
-        1QfJ3VGvHYcVzxofcmumZLuI18SbCM2QYDIEqQ2ci9i9HgrnFFKS6c8bm4T/KZf5
-        qDE3PC5lx55p2wzda+7yimC9XB+OtZiEx1L5ipfbSLFhLeP4qqBg19ftLftyrg81
-        DFBtHmYXNsG82ZuO7y4cQ==
-X-ME-Sender: <xms:RBSsY5e-8rpVRLTDEbIdsDAnvEdfiT6QizW45jI5sVFG9PI7aVfKxA>
-    <xme:RBSsY3PswJ0bJ__IT5MlMj4aIwmuSV-klwECb_ileCkJ1q6Pd3slmNltqhXGygm6F
-    94c0RjlU2var0nF2Q>
-X-ME-Received: <xmr:RBSsYyhX-CqeZKZWXcniijuAP6MykSSwGR8JXibEKZJ4OJnAPa2KtmuBZMFLnDkn2wlQKO3al841HTxa7vCVxfODpw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedriedvgdduudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefkffggfgfhuffvvehfjggtgfesthejredttdefjeenucfhrhhomheptehlihgt
-    vgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnhephf
-    ehueeileevjeefkeetvdffveffudeuhffgtedvuefgiefgiedvjeegvdejleejnecuvehl
-    uhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvgesrh
-    ihhhhlrdhioh
-X-ME-Proxy: <xmx:RBSsYy94zrdbdr4pUt1V9cUtzhzMzHXM5XDyitB4z7fCwL4AZUTaXQ>
-    <xmx:RBSsY1sqe4xCvYYVtuBlj7gtQAJ-A2jQMQUXVgzC0BfCquPePrTk7Q>
-    <xmx:RBSsYxFnSe874ccEfB_tcL_-65SU8L_R6xYiUAI8zTqVBAYUtkJ_GA>
-    <xmx:RBSsY5j3-AQrPo7XEEP-78dX8wv0odFUifmJAGnbEUVMG7HoFS3UBg>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Dec 2022 05:02:42 -0500 (EST)
-Message-ID: <85d430e2-1740-3392-451d-566976bfb5da@ryhl.io>
-Date:   Wed, 28 Dec 2022 11:04:18 +0100
+        Wed, 28 Dec 2022 05:14:31 -0500
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ED28120;
+        Wed, 28 Dec 2022 02:14:27 -0800 (PST)
+Received: by mail-ot1-x32f.google.com with SMTP id y18-20020a0568301d9200b0067082cd4679so9625352oti.4;
+        Wed, 28 Dec 2022 02:14:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y1EGnQCJSvGzOIf9doGboZdyw/pbxRUE+qj16FdxLig=;
+        b=Fdaf4QqTqCoGMdtmihlKjs1XMN/DqOSXAH/kYSbONbkDWz6N0QJ5L/zu6+4mtgUKEh
+         Ivps80gjQOFVRN0UGc2dQlUMkpL36PBNTZE6XLVa/MxCYCkKJ6SaVh6fRLMzQTC16cB0
+         K4v9iekTwetGBTNF7Yv516lK+X9Ivdn7H+whO24Jl/8qtjs5y9fM9kliUxvdVoeiRG7S
+         0PcjvZhUpNGyGMrZRtDJrk30R4XXAOH5lA0yYzdAq3e57yg0vYay2kw4CTQwKnvPLBta
+         2A518uZUutANzUMX07XAoe/qDAMkgLUfxbcnCjbBzqgSbh5vI1cpSuxMiL6/Wf0fmps5
+         Yvzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y1EGnQCJSvGzOIf9doGboZdyw/pbxRUE+qj16FdxLig=;
+        b=Y3bh5K5eZsemWuPQpAalX4p2BvsUlW6IhoyUC8VCt/XdyUJ4MfJgEAVILUZiEcYlYR
+         YuB9IJVUzvU+BBuZXig8XNy6Lyl9fF/Lme7+JWL5sPk1VMECBC0BQ4kmrl+CMYOdEEVO
+         QiQvjTFhDbhch7abNWz5VI+JGdGX4Q2fQWtZ0xivyxhp7WP/PiDymkZoCZjLXD//3B1Q
+         HxCpAcYvC6b9Pxo6dqYh5cKIj8A4Ci28bt41fo5fIKDpKwEEb9Hb48On9R/0MZhGnyH3
+         3axi4KvfbO5Eq7vY3vKH0PDN/4PiO9w5DGynNxdjR6ab3HizV1suWFwBuVKsPupJ66a6
+         Am+g==
+X-Gm-Message-State: AFqh2krazUaSaT+BmtBEqQfCRI5HprN4b7rinZ9xzE8nB34dr9ucV4uh
+        /ibr+tgRrnJNHj1/aeHCxqUFWH9Fd/ODANnlxZc=
+X-Google-Smtp-Source: AMrXdXudE8CX2NvA3lelCQbmuCFEuX+rYa3qypDBQSzEhKojK1bZ/sPjRK8ELP5/r6eT/PlMiU+LmKfzDnt2WdbygJE=
+X-Received: by 2002:a05:6830:94:b0:671:cacb:681a with SMTP id
+ a20-20020a056830009400b00671cacb681amr1392312oto.311.1672222466455; Wed, 28
+ Dec 2022 02:14:26 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-From:   Alice Ryhl <alice@ryhl.io>
-Subject: Re: [PATCH 7/7] rust: sync: add support for dispatching on Arc and
- ArcBorrow.
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+References: <20221228060346.352362-1-wedsonaf@gmail.com> <a23d715d-19c1-dff4-f7e6-504ebb0e2c6c@ryhl.io>
+In-Reply-To: <a23d715d-19c1-dff4-f7e6-504ebb0e2c6c@ryhl.io>
+From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+Date:   Wed, 28 Dec 2022 10:14:15 +0000
+Message-ID: <CANeycqqRzOJSiHrSsrJi+VFKjssBtbpaEAWP-z4VVZyiSUnT-w@mail.gmail.com>
+Subject: Re: [PATCH 1/7] rust: sync: add `Arc` for ref-counted allocations
+To:     Alice Ryhl <alice@ryhl.io>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org
-References: <20221228060346.352362-1-wedsonaf@gmail.com>
- <20221228060346.352362-7-wedsonaf@gmail.com>
-Content-Language: en-US
-In-Reply-To: <20221228060346.352362-7-wedsonaf@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+On Wed, 28 Dec 2022 at 10:02, Alice Ryhl <alice@ryhl.io> wrote:
+>
+> On 12/28/22 07:03, Wedson Almeida Filho wrote:
+> > This is a basic implementation of `Arc` backed by C's `refcount_t`. It
+> > allows Rust code to idiomatically allocate memory that is ref-counted.
+> >
+> > Cc: Will Deacon <will@kernel.org>
+> > Cc: Peter Zijlstra <peterz@infradead.org>
+> > Cc: Boqun Feng <boqun.feng@gmail.com>
+> > Cc: Mark Rutland <mark.rutland@arm.com>
+> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-On 12/28/22 07:03, Wedson Almeida Filho wrote:
-> Trait objects (`dyn T`) require trait `T` to be "object safe". One of
-> the requirements for "object safety" is that the receiver have one of
-> the allowed types. This commit adds `Arc<T>` and `ArcBorrow<'_, T>` to
-> the list of allowed types.
-> 
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> ---
->   rust/kernel/lib.rs      |  1 +
->   rust/kernel/sync/arc.rs | 20 ++++++++++++++++++--
->   2 files changed, 19 insertions(+), 2 deletions(-)
-> 
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 4bde65e7b06b..e0b0e953907d 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -15,6 +15,7 @@
->   #![feature(allocator_api)]
->   #![feature(coerce_unsized)]
->   #![feature(core_ffi_c)]
-> +#![feature(dispatch_from_dyn)]
->   #![feature(receiver_trait)]
->   #![feature(unsize)]
->   
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 832bafc74a90..ff73f9240ca1 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -92,9 +92,15 @@ use core::{
->   /// Coercion from `Arc<Example>` to `Arc<dyn MyTrait>`:
->   ///
->   /// ```
-> -/// use kernel::sync::Arc;
-> +/// use kernel::sync::{Arc, ArcBorrow};
-> +///
-> +/// trait MyTrait {
-> +///     // Trait has a function whose `self` type is `Arc<Self>`.
-> +///     fn example1(self: Arc<Self>) {}
->   ///
-> -/// trait MyTrait {}
-> +///     // Trait has a function whose `self` type is `ArcBorrow<'_, Self>`.
-> +///     fn example2(self: ArcBorrow<'_, Self>) {}
-> +/// }
->   ///
->   /// struct Example;
->   /// impl MyTrait for Example {}
-> @@ -123,6 +129,9 @@ impl<T: ?Sized> core::ops::Receiver for Arc<T> {}
->   // dynamically-sized type (DST) `U`.
->   impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::CoerceUnsized<Arc<U>> for Arc<T> {}
->   
-> +// This is to allow `Arc<U>` to be dispatched on when `Arc<T>` can be coerced into `Arc<U>`.
-> +impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<Arc<U>> for Arc<T> {}
-> +
->   // SAFETY: It is safe to send `Arc<T>` to another thread when the underlying `T` is `Sync` because
->   // it effectively means sharing `&T` (which is safe because `T` is `Sync`); additionally, it needs
->   // `T` to be `Send` because any thread that has an `Arc<T>` may ultimately access `T` directly, for
-> @@ -297,6 +306,13 @@ pub struct ArcBorrow<'a, T: ?Sized + 'a> {
->   // This is to allow [`ArcBorrow`] (and variants) to be used as the type of `self`.
->   impl<T: ?Sized> core::ops::Receiver for ArcBorrow<'_, T> {}
->   
-> +// This is to allow `ArcBorrow<U>` to be dispatched on when `ArcBorrow<T>` can be coerced into
-> +// `ArcBorrow<U>`.
-> +impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<ArcBorrow<'_, U>>
-> +    for ArcBorrow<'_, T>
-> +{
-> +}
-> +
->   impl<T: ?Sized> Clone for ArcBorrow<'_, T> {
->       fn clone(&self) -> Self {
->           *self
+Thanks for reviewing!
+
+> Instead of Box::leak, it would be more idiomatic to use Box::into_raw,
+> but both approaches will work.
+
+`Box::into_raw` returns a `*mut T`, whose conversion to `NonNull<T>`
+is fallible (because it could be null). `Box::leak`, OTOH, returns an
+`&mut T`, which cannot be null so it can be converted to `NonNull<T>`
+infallibly.
+
+
+> Regards,
+> Alice Ryhl
+>
+> > ---
+> >   rust/bindings/bindings_helper.h |   1 +
+> >   rust/bindings/lib.rs            |   1 +
+> >   rust/helpers.c                  |  19 ++++
+> >   rust/kernel/lib.rs              |   1 +
+> >   rust/kernel/sync.rs             |  10 ++
+> >   rust/kernel/sync/arc.rs         | 157 ++++++++++++++++++++++++++++++++
+> >   6 files changed, 189 insertions(+)
+> >   create mode 100644 rust/kernel/sync.rs
+> >   create mode 100644 rust/kernel/sync/arc.rs
+> >
+> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> > index c48bc284214a..75d85bd6c592 100644
+> > --- a/rust/bindings/bindings_helper.h
+> > +++ b/rust/bindings/bindings_helper.h
+> > @@ -7,6 +7,7 @@
+> >    */
+> >
+> >   #include <linux/slab.h>
+> > +#include <linux/refcount.h>
+> >
+> >   /* `bindgen` gets confused at certain things. */
+> >   const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
+> > diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
+> > index 6c50ee62c56b..7b246454e009 100644
+> > --- a/rust/bindings/lib.rs
+> > +++ b/rust/bindings/lib.rs
+> > @@ -41,6 +41,7 @@ mod bindings_raw {
+> >   #[allow(dead_code)]
+> >   mod bindings_helper {
+> >       // Import the generated bindings for types.
+> > +    use super::bindings_raw::*;
+> >       include!(concat!(
+> >           env!("OBJTREE"),
+> >           "/rust/bindings/bindings_helpers_generated.rs"
+> > diff --git a/rust/helpers.c b/rust/helpers.c
+> > index b4f15eee2ffd..09a4d93f9d62 100644
+> > --- a/rust/helpers.c
+> > +++ b/rust/helpers.c
+> > @@ -20,6 +20,7 @@
+> >
+> >   #include <linux/bug.h>
+> >   #include <linux/build_bug.h>
+> > +#include <linux/refcount.h>
+> >
+> >   __noreturn void rust_helper_BUG(void)
+> >   {
+> > @@ -27,6 +28,24 @@ __noreturn void rust_helper_BUG(void)
+> >   }
+> >   EXPORT_SYMBOL_GPL(rust_helper_BUG);
+> >
+> > +refcount_t rust_helper_REFCOUNT_INIT(int n)
+> > +{
+> > +     return (refcount_t)REFCOUNT_INIT(n);
+> > +}
+> > +EXPORT_SYMBOL_GPL(rust_helper_REFCOUNT_INIT);
+> > +
+> > +void rust_helper_refcount_inc(refcount_t *r)
+> > +{
+> > +     refcount_inc(r);
+> > +}
+> > +EXPORT_SYMBOL_GPL(rust_helper_refcount_inc);
+> > +
+> > +bool rust_helper_refcount_dec_and_test(refcount_t *r)
+> > +{
+> > +     return refcount_dec_and_test(r);
+> > +}
+> > +EXPORT_SYMBOL_GPL(rust_helper_refcount_dec_and_test);
+> > +
+> >   /*
+> >    * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
+> >    * as the Rust `usize` type, so we can use it in contexts where Rust
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index 53040fa9e897..ace064a3702a 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -31,6 +31,7 @@ mod static_assert;
+> >   #[doc(hidden)]
+> >   pub mod std_vendor;
+> >   pub mod str;
+> > +pub mod sync;
+> >   pub mod types;
+> >
+> >   #[doc(hidden)]
+> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> > new file mode 100644
+> > index 000000000000..39b379dd548f
+> > --- /dev/null
+> > +++ b/rust/kernel/sync.rs
+> > @@ -0,0 +1,10 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Synchronisation primitives.
+> > +//!
+> > +//! This module contains the kernel APIs related to synchronisation that have been ported or
+> > +//! wrapped for usage by Rust code in the kernel.
+> > +
+> > +mod arc;
+> > +
+> > +pub use arc::Arc;
+> > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> > new file mode 100644
+> > index 000000000000..22290eb5ab9b
+> > --- /dev/null
+> > +++ b/rust/kernel/sync/arc.rs
+> > @@ -0,0 +1,157 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! A reference-counted pointer.
+> > +//!
+> > +//! This module implements a way for users to create reference-counted objects and pointers to
+> > +//! them. Such a pointer automatically increments and decrements the count, and drops the
+> > +//! underlying object when it reaches zero. It is also safe to use concurrently from multiple
+> > +//! threads.
+> > +//!
+> > +//! It is different from the standard library's [`Arc`] in a few ways:
+> > +//! 1. It is backed by the kernel's `refcount_t` type.
+> > +//! 2. It does not support weak references, which allows it to be half the size.
+> > +//! 3. It saturates the reference count instead of aborting when it goes over a threshold.
+> > +//! 4. It does not provide a `get_mut` method, so the ref counted object is pinned.
+> > +//!
+> > +//! [`Arc`]: https://doc.rust-lang.org/std/sync/struct.Arc.html
+> > +
+> > +use crate::{bindings, error::Result, types::Opaque};
+> > +use alloc::boxed::Box;
+> > +use core::{marker::PhantomData, ops::Deref, ptr::NonNull};
+> > +
+> > +/// A reference-counted pointer to an instance of `T`.
+> > +///
+> > +/// The reference count is incremented when new instances of [`Arc`] are created, and decremented
+> > +/// when they are dropped. When the count reaches zero, the underlying `T` is also dropped.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The reference count on an instance of [`Arc`] is always non-zero.
+> > +/// The object pointed to by [`Arc`] is always pinned.
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// ```
+> > +/// use kernel::sync::Arc;
+> > +///
+> > +/// struct Example {
+> > +///     a: u32,
+> > +///     b: u32,
+> > +/// }
+> > +///
+> > +/// // Create a ref-counted instance of `Example`.
+> > +/// let obj = Arc::try_new(Example { a: 10, b: 20 })?;
+> > +///
+> > +/// // Get a new pointer to `obj` and increment the refcount.
+> > +/// let cloned = obj.clone();
+> > +///
+> > +/// // Assert that both `obj` and `cloned` point to the same underlying object.
+> > +/// assert!(core::ptr::eq(&*obj, &*cloned));
+> > +///
+> > +/// // Destroy `obj` and decrement its refcount.
+> > +/// drop(obj);
+> > +///
+> > +/// // Check that the values are still accessible through `cloned`.
+> > +/// assert_eq!(cloned.a, 10);
+> > +/// assert_eq!(cloned.b, 20);
+> > +///
+> > +/// // The refcount drops to zero when `cloned` goes out of scope, and the memory is freed.
+> > +/// ```
+> > +pub struct Arc<T: ?Sized> {
+> > +    ptr: NonNull<ArcInner<T>>,
+> > +    _p: PhantomData<ArcInner<T>>,
+> > +}
+> > +
+> > +#[repr(C)]
+> > +struct ArcInner<T: ?Sized> {
+> > +    refcount: Opaque<bindings::refcount_t>,
+> > +    data: T,
+> > +}
+> > +
+> > +// SAFETY: It is safe to send `Arc<T>` to another thread when the underlying `T` is `Sync` because
+> > +// it effectively means sharing `&T` (which is safe because `T` is `Sync`); additionally, it needs
+> > +// `T` to be `Send` because any thread that has an `Arc<T>` may ultimately access `T` directly, for
+> > +// example, when the reference count reaches zero and `T` is dropped.
+> > +unsafe impl<T: ?Sized + Sync + Send> Send for Arc<T> {}
+> > +
+> > +// SAFETY: It is safe to send `&Arc<T>` to another thread when the underlying `T` is `Sync` for the
+> > +// same reason as above. `T` needs to be `Send` as well because a thread can clone an `&Arc<T>`
+> > +// into an `Arc<T>`, which may lead to `T` being accessed by the same reasoning as above.
+> > +unsafe impl<T: ?Sized + Sync + Send> Sync for Arc<T> {}
+> > +
+> > +impl<T> Arc<T> {
+> > +    /// Constructs a new reference counted instance of `T`.
+> > +    pub fn try_new(contents: T) -> Result<Self> {
+> > +        // INVARIANT: The refcount is initialised to a non-zero value.
+> > +        let value = ArcInner {
+> > +            // SAFETY: There are no safety requirements for this FFI call.
+> > +            refcount: Opaque::new(unsafe { bindings::REFCOUNT_INIT(1) }),
+> > +            data: contents,
+> > +        };
+> > +
+> > +        let inner = Box::try_new(value)?;
+> > +
+> > +        // SAFETY: We just created `inner` with a reference count of 1, which is owned by the new
+> > +        // `Arc` object.
+> > +        Ok(unsafe { Self::from_inner(Box::leak(inner).into()) })
+> > +    }
+> > +}
+> > +
+> > +impl<T: ?Sized> Arc<T> {
+> > +    /// Constructs a new [`Arc`] from an existing [`ArcInner`].
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The caller must ensure that `inner` points to a valid location and has a non-zero reference
+> > +    /// count, one of which will be owned by the new [`Arc`] instance.
+> > +    unsafe fn from_inner(inner: NonNull<ArcInner<T>>) -> Self {
+> > +        // INVARIANT: By the safety requirements, the invariants hold.
+> > +        Arc {
+> > +            ptr: inner,
+> > +            _p: PhantomData,
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +impl<T: ?Sized> Deref for Arc<T> {
+> > +    type Target = T;
+> > +
+> > +    fn deref(&self) -> &Self::Target {
+> > +        // SAFETY: By the type invariant, there is necessarily a reference to the object, so it is
+> > +        // safe to dereference it.
+> > +        unsafe { &self.ptr.as_ref().data }
+> > +    }
+> > +}
+> > +
+> > +impl<T: ?Sized> Clone for Arc<T> {
+> > +    fn clone(&self) -> Self {
+> > +        // INVARIANT: C `refcount_inc` saturates the refcount, so it cannot overflow to zero.
+> > +        // SAFETY: By the type invariant, there is necessarily a reference to the object, so it is
+> > +        // safe to increment the refcount.
+> > +        unsafe { bindings::refcount_inc(self.ptr.as_ref().refcount.get()) };
+> > +
+> > +        // SAFETY: We just incremented the refcount. This increment is now owned by the new `Arc`.
+> > +        unsafe { Self::from_inner(self.ptr) }
+> > +    }
+> > +}
+> > +
+> > +impl<T: ?Sized> Drop for Arc<T> {
+> > +    fn drop(&mut self) {
+> > +        // SAFETY: By the type invariant, there is necessarily a reference to the object. We cannot
+> > +        // touch `refcount` after it's decremented to a non-zero value because another thread/CPU
+> > +        // may concurrently decrement it to zero and free it. It is ok to have a raw pointer to
+> > +        // freed/invalid memory as long as it is never dereferenced.
+> > +        let refcount = unsafe { self.ptr.as_ref() }.refcount.get();
+> > +
+> > +        // INVARIANT: If the refcount reaches zero, there are no other instances of `Arc`, and
+> > +        // this instance is being dropped, so the broken invariant is not observable.
+> > +        // SAFETY: Also by the type invariant, we are allowed to decrement the refcount.
+> > +        let is_zero = unsafe { bindings::refcount_dec_and_test(refcount) };
+> > +        if is_zero {
+> > +            // The count reached zero, we must free the memory.
+> > +            //
+> > +            // SAFETY: The pointer was initialised from the result of `Box::leak`.
+> > +            unsafe { Box::from_raw(self.ptr.as_ptr()) };
+> > +        }
+> > +    }
+> > +}
