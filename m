@@ -2,227 +2,297 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 277CDC4332F
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Dec 2022 07:15:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 559BCC4332F
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Dec 2022 07:20:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230018AbiL1HP5 (ORCPT
+        id S230384AbiL1HUJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Dec 2022 02:15:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53392 "EHLO
+        Wed, 28 Dec 2022 02:20:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229874AbiL1HPz (ORCPT
+        with ESMTP id S229526AbiL1HUG (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Dec 2022 02:15:55 -0500
-Received: from mr85p00im-ztdg06021201.me.com (mr85p00im-ztdg06021201.me.com [17.58.23.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3033F03F
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Dec 2022 23:15:53 -0800 (PST)
+        Wed, 28 Dec 2022 02:20:06 -0500
+Received: from mr85p00im-ztdg06011801.me.com (mr85p00im-ztdg06011801.me.com [17.58.23.199])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1859AF01A
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Dec 2022 23:20:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=me.com; s=1a1hai;
-        t=1672211753; bh=8YW4spCKwQ7dhxTiCP+x19c0TJOKw29VidZ2+hBMIC0=;
+        t=1672212004; bh=h6QXMJKjXRhLN3M3TBsEF+a1iGTF5nwOodBXfKcg/rw=;
         h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
-        b=etF/bD2yHwq0axtvhlhyt4dxZsD6nW89N/xzPNIS5/DyIx9WNX0i9HfIK4wG/tshM
-         53PAydnQoDbXpz9qAzMzY1wODx787fdwktqmO8YA1x66+LCVNwdQvkEPBG+bFpQOp5
-         3ri14/49xywLSeYjkOiT+5J32ibg9iq07DTfXdD9EsjmzAWbai+dhfT+Uy38k5xDlr
-         TE46x2ytgkHzjDpga2VUY6ds51aYgsFaWLsvBM5fHIUiVcFAxQdni8Es2VNPz1ZuBl
-         WJ+vOtw+Xde8QCKrmjqEgJvXesj7AGHAHMntUGVkb88PbNyqg4qusXZv8lI5TAsbNC
-         P/vRj0uUvEppg==
+        b=YrOY5R0FnmGXU+X8MGGIqdqQMt4FEQTzvV6G/qJ4b6N1QP+2xlMWp5mZh0fTGaFm4
+         zxtOLSGrq2+5pEgr3qHbgdoiMYIKmDGLAokeMePHYCmlsHFzCNRpS/mWpJT3yCMxva
+         ZaGYBysml2A8e0MQUCA/ykBruMxnnrM4Cwo9JByQi4uUEJAo0R//47c/WUydrcsNcn
+         KBr9086S4SVLrtV6wkzNfHuSJ2TFi84+dhSVJN/c9TCKfULN8kDXOsvJwcnzVzyBUy
+         oNDPPLAn7Ed9+dc6dnrea4p6hEDwrILL/pV6lLzdCOJWwptU+AYvKeqtgYj8MqlkWF
+         w8ybMFzjlbpqQ==
 Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-        by mr85p00im-ztdg06021201.me.com (Postfix) with ESMTPSA id E0062321231;
-        Wed, 28 Dec 2022 07:15:52 +0000 (UTC)
+        by mr85p00im-ztdg06011801.me.com (Postfix) with ESMTPSA id B89129C1CB7;
+        Wed, 28 Dec 2022 07:20:03 +0000 (UTC)
 Content-Type: text/plain;
         charset=utf-8
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.400.23\))
-Subject: Re: [PATCH 4/7] rust: sync: introduce `ArcBorrow`
+Subject: Re: [PATCH 6/7] rust: sync: introduce `UniqueArc`
 From:   Laine Taffin Altman <alexanderaltman@me.com>
-In-Reply-To: <20221228060346.352362-4-wedsonaf@gmail.com>
-Date:   Tue, 27 Dec 2022 23:15:41 -0800
+In-Reply-To: <20221228060346.352362-6-wedsonaf@gmail.com>
+Date:   Tue, 27 Dec 2022 23:19:52 -0800
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <2ED9BF63-43FC-4669-BA19-47E8D209E8A6@me.com>
+Message-Id: <792D12DA-73F0-4218-B0E1-7A0D8C235C21@me.com>
 References: <20221228060346.352362-1-wedsonaf@gmail.com>
- <20221228060346.352362-4-wedsonaf@gmail.com>
+ <20221228060346.352362-6-wedsonaf@gmail.com>
 To:     Wedson Almeida Filho <wedsonaf@gmail.com>
 X-Mailer: Apple Mail (2.3731.400.23)
-X-Proofpoint-GUID: oziFp2iBiyJaaZe6P7YiyFg063_KZ96S
-X-Proofpoint-ORIG-GUID: oziFp2iBiyJaaZe6P7YiyFg063_KZ96S
+X-Proofpoint-GUID: DBm9ilUyzi5etzvJXVSIrCyBbuFE_PWX
+X-Proofpoint-ORIG-GUID: DBm9ilUyzi5etzvJXVSIrCyBbuFE_PWX
 X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.138,18.0.816,17.11.62.513.0000000_definitions?=
- =?UTF-8?Q?=3D2022-01-18=5F01:2020-02-14=5F02,2022-01-18=5F01,2021-12-02?=
+ =?UTF-8?Q?2903e8d5c8f:6.0.425,18.0.572,17.11.62.513.0000000_definitions?=
+ =?UTF-8?Q?=3D2022-01-14=5F01:2022-01-14=5F01,2020-02-14=5F11,2021-12-02?=
  =?UTF-8?Q?=5F01_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 clxscore=1015
- bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=777 adultscore=0
- phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0
+ suspectscore=0 mlxscore=0 clxscore=1015 mlxlogscore=999 bulkscore=0
+ adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2209130000 definitions=main-2212280058
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Dec 27, 2022, at 10:03 PM, Wedson Almeida Filho <wedsonaf@gmail.com> =
-wrote:
-> This allows us to create references to a ref-counted allocation =
-without
-> double-indirection and that still allow us to increment the refcount =
-to
-> a new `Arc<T>`.
+
+
+> On Dec 27, 2022, at 10:03 PM, Wedson Almeida Filho =
+<wedsonaf@gmail.com> wrote:
 >=20
+> Since `Arc<T>` does not allow mutating `T` directly (i.e., without =
+inner
+> mutability), it is currently not possible to do some initialisation of
+> `T` post construction but before being shared.
+>=20
+> `UniqueArc<T>` addresses this problem essentially being an `Arc<T>` =
+that
+> has a refcount of 1 and is therefore writable. Once initialisation is
+> completed, it can be transitioned (without failure paths) into an
+> `Arc<T>`.
+>=20
+> Suggested-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 > ---
-> rust/kernel/sync.rs     |  2 +-
-> rust/kernel/sync/arc.rs | 97 +++++++++++++++++++++++++++++++++++++++++
-> 2 files changed, 98 insertions(+), 1 deletion(-)
+> rust/kernel/sync.rs     |   2 +-
+> rust/kernel/sync/arc.rs | 152 +++++++++++++++++++++++++++++++++++++++-
+> 2 files changed, 151 insertions(+), 3 deletions(-)
 >=20
 > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 39b379dd548f..5de03ea83ea1 100644
+> index 5de03ea83ea1..33da23e3076d 100644
 > --- a/rust/kernel/sync.rs
 > +++ b/rust/kernel/sync.rs
 > @@ -7,4 +7,4 @@
 >=20
 > mod arc;
 >=20
-> -pub use arc::Arc;
-> +pub use arc::{Arc, ArcBorrow};
+> -pub use arc::{Arc, ArcBorrow};
+> +pub use arc::{Arc, ArcBorrow, UniqueArc};
 > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index dbc7596cc3ce..f68bfc02c81a 100644
+> index 84f31c85a513..832bafc74a90 100644
 > --- a/rust/kernel/sync/arc.rs
 > +++ b/rust/kernel/sync/arc.rs
-> @@ -19,6 +19,7 @@ use crate::{bindings, error::Result, types::Opaque};
+> @@ -19,8 +19,9 @@ use crate::{bindings, error::Result, types::Opaque};
 > use alloc::boxed::Box;
 > use core::{
 >     marker::{PhantomData, Unsize},
-> +    mem::ManuallyDrop,
->     ops::Deref,
+> -    mem::ManuallyDrop,
+> -    ops::Deref,
+> +    mem::{ManuallyDrop, MaybeUninit},
+> +    ops::{Deref, DerefMut},
+> +    pin::Pin,
 >     ptr::NonNull,
 > };
-> @@ -164,6 +165,18 @@ impl<T: ?Sized> Arc<T> {
->             _p: PhantomData,
->         }
+>=20
+> @@ -222,6 +223,19 @@ impl<T: ?Sized> Drop for Arc<T> {
 >     }
-> +
-> +    /// Returns an [`ArcBorrow`] from the given [`Arc`].
-> +    ///
-> +    /// This is useful when the argument of a function call is an =
-[`ArcBorrow`] (e.g., in a method
-> +    /// receiver), but we have an [`Arc`] instead. Getting an =
-[`ArcBorrow`] is free when optimised.
-> +    #[inline]
-> +    pub fn as_arc_borrow(&self) -> ArcBorrow<'_, T> {
-> +        // SAFETY: The constraint that the lifetime of the shared =
-reference must outlive that of
-> +        // the returned `ArcBorrow` ensures that the object remains =
-alive and that no mutable
-> +        // reference can be created.
-> +        unsafe { ArcBorrow::new(self.ptr) }
-> +    }
 > }
 >=20
-> impl<T: ?Sized> Deref for Arc<T> {
-> @@ -208,3 +221,87 @@ impl<T: ?Sized> Drop for Arc<T> {
->         }
+> +impl<T: ?Sized> From<UniqueArc<T>> for Arc<T> {
+> +    fn from(item: UniqueArc<T>) -> Self {
+> +        item.inner
+> +    }
+> +}
+> +
+> +impl<T: ?Sized> From<Pin<UniqueArc<T>>> for Arc<T> {
+> +    fn from(item: Pin<UniqueArc<T>>) -> Self {
+> +        // SAFETY: The type invariants of `Arc` guarantee that the =
+data is pinned.
+> +        unsafe { Pin::into_inner_unchecked(item).inner }
+> +    }
+> +}
+> +
+> /// A borrowed reference to an [`Arc`] instance.
+> ///
+> /// For cases when one doesn't ever need to increment the refcount on =
+the allocation, it is simpler
+> @@ -328,3 +342,137 @@ impl<T: ?Sized> Deref for ArcBorrow<'_, T> {
+>         unsafe { &self.inner.as_ref().data }
 >     }
 > }
 > +
-> +/// A borrowed reference to an [`Arc`] instance.
+> +/// A refcounted object that is known to have a refcount of 1.
 > +///
-> +/// For cases when one doesn't ever need to increment the refcount on =
-the allocation, it is simpler
-> +/// to use just `&T`, which we can trivially get from an `Arc<T>` =
-instance.
-> +///
-> +/// However, when one may need to increment the refcount, it is =
-preferable to use an `ArcBorrow<T>`
-> +/// over `&Arc<T>` because the latter results in a =
-double-indirection: a pointer (shared reference)
-> +/// to a pointer (`Arc<T>`) to the object (`T`). An [`ArcBorrow`] =
-eliminates this double
-> +/// indirection while still allowing one to increment the refcount =
-and getting an `Arc<T>` when/if
-> +/// needed.
+> +/// It is mutable and can be converted to an [`Arc`] so that it can =
+be shared.
 > +///
 > +/// # Invariants
 > +///
-> +/// There are no mutable references to the underlying [`Arc`], and it =
-remains valid for the
-> +/// lifetime of the [`ArcBorrow`] instance.
+> +/// `inner` always has a reference count of 1.
 > +///
-> +/// # Example
+> +/// # Examples
+> +///
+> +/// In the following example, we make changes to the inner object =
+before turning it into an
+> +/// `Arc<Test>` object (after which point, it cannot be mutated =
+directly). Note that `x.into()`
+> +/// cannot fail.
 > +///
 > +/// ```
-> +/// use crate::sync::{Arc, ArcBorrow};
+> +/// use kernel::sync::{Arc, UniqueArc};
 > +///
-> +/// struct Example;
-> +///
-> +/// fn do_something(e: ArcBorrow<'_, Example>) -> Arc<Example> {
-> +///     e.into()
+> +/// struct Example {
+> +///     a: u32,
+> +///     b: u32,
 > +/// }
 > +///
-> +/// let obj =3D Arc::try_new(Example)?;
-> +/// let cloned =3D do_something(obj.as_arc_borrow());
+> +/// fn test() -> Result<Arc<Example>> {
+> +///     let mut x =3D UniqueArc::try_new(Example { a: 10, b: 20 })?;
+> +///     x.a +=3D 1;
+> +///     x.b +=3D 1;
+> +///     Ok(x.into())
+> +/// }
 > +///
-> +/// // Assert that both `obj` and `cloned` point to the same =
-underlying object.
-> +/// assert!(core::ptr::eq(&*obj, &*cloned));
+> +/// # test().unwrap();
 > +/// ```
-> +pub struct ArcBorrow<'a, T: ?Sized + 'a> {
-> +    inner: NonNull<ArcInner<T>>,
-> +    _p: PhantomData<&'a ()>,
+> +///
+> +/// In the following example we first allocate memory for a =
+ref-counted `Example` but we don't
+> +/// initialise it on allocation. We do initialise it later with a =
+call to [`UniqueArc::write`],
+> +/// followed by a conversion to `Arc<Example>`. This is particularly =
+useful when allocation happens
+> +/// in one context (e.g., sleepable) and initialisation in another =
+(e.g., atomic):
+> +///
+> +/// ```
+> +/// use kernel::sync::{Arc, UniqueArc};
+> +///
+> +/// struct Example {
+> +///     a: u32,
+> +///     b: u32,
+> +/// }
+> +///
+> +/// fn test() -> Result<Arc<Example>> {
+> +///     let x =3D UniqueArc::try_new_uninit()?;
+> +///     Ok(x.write(Example { a: 10, b: 20 }).into())
+> +/// }
+> +///
+> +/// # test().unwrap();
+> +/// ```
+> +///
+> +/// In the last example below, the caller gets a pinned instance of =
+`Example` while converting to
+> +/// `Arc<Example>`; this is useful in scenarios where one needs a =
+pinned reference during
+> +/// initialisation, for example, when initialising fields that are =
+wrapped in locks.
+> +///
+> +/// ```
+> +/// use kernel::sync::{Arc, UniqueArc};
+> +///
+> +/// struct Example {
+> +///     a: u32,
+> +///     b: u32,
+> +/// }
+> +///
+> +/// fn test() -> Result<Arc<Example>> {
+> +///     let mut pinned =3D Pin::from(UniqueArc::try_new(Example { a: =
+10, b: 20 })?);
+> +///     // We can modify `pinned` because it is `Unpin`.
+> +///     pinned.as_mut().a +=3D 1;
+> +///     Ok(pinned.into())
+> +/// }
+> +///
+> +/// # test().unwrap();
+> +/// ```
+> +pub struct UniqueArc<T: ?Sized> {
+> +    inner: Arc<T>,
 > +}
 > +
-> +impl<T: ?Sized> Clone for ArcBorrow<'_, T> {
-> +    fn clone(&self) -> Self {
-> +        *self
+> +impl<T> UniqueArc<T> {
+> +    /// Tries to allocate a new [`UniqueArc`] instance.
+> +    pub fn try_new(value: T) -> Result<Self> {
+> +        Ok(Self {
+> +            // INVARIANT: The newly-created object has a ref-count of =
+1.
+> +            inner: Arc::try_new(value)?,
+> +        })
+> +    }
+> +
+> +    /// Tries to allocate a new [`UniqueArc`] instance whose contents =
+are not initialised yet.
+> +    pub fn try_new_uninit() -> Result<UniqueArc<MaybeUninit<T>>> {
+> +        Ok(UniqueArc::<MaybeUninit<T>> {
+> +            // INVARIANT: The newly-created object has a ref-count of =
+1.
+> +            inner: Arc::try_new(MaybeUninit::uninit())?,
+> +        })
 > +    }
 > +}
 > +
-> +impl<T: ?Sized> Copy for ArcBorrow<'_, T> {}
-> +
-> +impl<T: ?Sized> ArcBorrow<'_, T> {
-> +    /// Creates a new [`ArcBorrow`] instance.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure the following for the lifetime of the =
-returned [`ArcBorrow`] instance:
-> +    /// 1. That `inner` remains valid;
-> +    /// 2. That no mutable references to `inner` are created.
-> +    unsafe fn new(inner: NonNull<ArcInner<T>>) -> Self {
-> +        // INVARIANT: The safety requirements guarantee the =
-invariants.
-> +        Self {
-> +            inner,
-> +            _p: PhantomData,
+> +impl<T> UniqueArc<MaybeUninit<T>> {
+> +    /// Converts a `UniqueArc<MaybeUninit<T>>` into a `UniqueArc<T>` =
+by writing a value into it.
+> +    pub fn write(mut self, value: T) -> UniqueArc<T> {
+> +        self.deref_mut().write(value);
+> +        let inner =3D ManuallyDrop::new(self).inner.ptr;
+> +        UniqueArc {
+> +            // SAFETY: The new `Arc` is taking over `ptr` from =
+`self.inner` (which won't be
+> +            // dropped). The types are compatible because =
+`MaybeUninit<T>` is compatible with `T`.
+> +            inner: unsafe { Arc::from_inner(inner.cast()) },
 > +        }
 > +    }
 > +}
 > +
-> +impl<T: ?Sized> From<ArcBorrow<'_, T>> for Arc<T> {
-> +    fn from(b: ArcBorrow<'_, T>) -> Self {
-> +        // SAFETY: The existence of `b` guarantees that the refcount =
-is non-zero. `ManuallyDrop`
-> +        // guarantees that `drop` isn't called, so it's ok that the =
-temporary `Arc` doesn't own the
-> +        // increment.
-> +        ManuallyDrop::new(unsafe { Arc::from_inner(b.inner) })
-> +            .deref()
-> +            .clone()
+> +impl<T: ?Sized> From<UniqueArc<T>> for Pin<UniqueArc<T>> {
+> +    fn from(obj: UniqueArc<T>) -> Self {
+> +        // SAFETY: It is not possible to move/replace `T` inside a =
+`Pin<UniqueArc<T>>` (unless `T`
 
-The same worries about safety apply here too.  You need to make this =
-fallible=E2=80=94try_from is nice enough for that.
+Minor nit:  `Pin<UniqueArc<T>>` in this comment should just be =
+`UniqueArc<T>`.
 
+> +        // is `Unpin`), so it is ok to convert it to =
+`Pin<UniqueArc<T>>`.
+> +        unsafe { Pin::new_unchecked(obj) }
 > +    }
 > +}
 > +
-> +impl<T: ?Sized> Deref for ArcBorrow<'_, T> {
+> +impl<T: ?Sized> Deref for UniqueArc<T> {
 > +    type Target =3D T;
 > +
 > +    fn deref(&self) -> &Self::Target {
-> +        // SAFETY: By the type invariant, the underlying object is =
-still alive with no mutable
-> +        // references to it, so it is safe to create a shared =
+> +        self.inner.deref()
+> +    }
+> +}
+> +
+> +impl<T: ?Sized> DerefMut for UniqueArc<T> {
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        // SAFETY: By the `Arc` type invariant, there is necessarily =
+a reference to the object, so
+> +        // it is safe to dereference it. Additionally, we know there =
+is only one reference when
+> +        // it's inside a `UniqueArc`, so it is safe to get a mutable =
 reference.
-> +        unsafe { &self.inner.as_ref().data }
+> +        unsafe { &mut self.inner.ptr.as_mut().data }
 > +    }
 > +}
 > --=20
