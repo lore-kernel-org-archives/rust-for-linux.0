@@ -2,131 +2,242 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3695DC4167B
-	for <rust-for-linux@archiver.kernel.org>; Sat, 31 Dec 2022 06:42:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5D80C3DA7A
+	for <rust-for-linux@archiver.kernel.org>; Sat, 31 Dec 2022 08:27:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231437AbiLaGmd (ORCPT
+        id S229819AbiLaI1v (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 31 Dec 2022 01:42:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32886 "EHLO
+        Sat, 31 Dec 2022 03:27:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231508AbiLaGmb (ORCPT
+        with ESMTP id S229523AbiLaI1u (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 31 Dec 2022 01:42:31 -0500
+        Sat, 31 Dec 2022 03:27:50 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88FE0DF1E;
-        Fri, 30 Dec 2022 22:42:30 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B5E565EF;
+        Sat, 31 Dec 2022 00:27:48 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 18E8060907;
-        Sat, 31 Dec 2022 06:42:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A2DC43398;
-        Sat, 31 Dec 2022 06:42:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C522960187;
+        Sat, 31 Dec 2022 08:27:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5162C433EF;
+        Sat, 31 Dec 2022 08:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672468949;
-        bh=pPtNFbrwZDEe7R9hGihgBI1Cy7TXHMHG4P1tYoFNjZ0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CjVgtKIEuSKQV5RCpmNW/O1yoF8JI3xd4McrQbIA1czpfqaWgRrk6xd17BGHx0PCm
-         DFolHEM19x+a1P2/nb6IRjgHxdQ8jIa4JXX7AlN3oWWhy7oYUZ6IDqVWRWnxdn3lT+
-         asNw5BnhqGchSuGcSLoup/1h6PO6BKWS0EVdJye5wpTpFPNymP3pn5cjdKHPre+bd9
-         i35/ppuKtMFTmAhI3VmsvfST7UgTpDXRHbURyPRtzHGmFoOYYzhDhHX3By9gt+HH3z
-         YhVjAzGUxc7HxAFwbKQKjw8jiN3dmx4LDphYdntmnQp1Q9PG2Z4nQZg5z9mLoJDfwK
-         8aJdtTZBiB4Jw==
+        s=k20201202; t=1672475267;
+        bh=iBc1fAUXSFsIQMuhYma5C4ygbhkz87Qy8UNKiWljms4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qmwyJtYd4iMHwutdnAzXAsUJB5k52lpIU6QVX3ZUFbLJO+BPzI9guqkTi0tgHbARO
+         uUNlkptiQd65qB/hZlImV3GG4pMb18FLb7frnWMX1yxsE3hl4F5D1dKOEE5AYub9yY
+         JAVnnrjHVp+C2MA9jOg00BsSbjaCOQ3iqt4wF2zs1FjJrj0Ft/REN69BFJ5vBh1cJ4
+         bWdGxdPUdeiBqAwldT1LFiaS/Kp/KgEQUgQPjL7iqcjevY+SlujhNs8OvaQf4ITZW0
+         TQYikGYCMn607q9aM7vxdGQUpLyHxmNo5KYvUJMVAhYMBniE4fkSGVNIvu+EI5qMfH
+         hDZbo74sT3U+g==
 From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     linux-kbuild@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+To:     linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        rust-for-linux@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org
-Subject: [PATCH 5/6] fixdep: avoid parsing the same file over again
-Date:   Sat, 31 Dec 2022 15:42:02 +0900
-Message-Id: <20221231064203.1623793-6-masahiroy@kernel.org>
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
+        llvm@lists.linux.dev
+Subject: [PATCH] kbuild: rust: remove -v option of scripts/rust_is_available.sh
+Date:   Sat, 31 Dec 2022 17:27:39 +0900
+Message-Id: <20221231082739.1629735-1-masahiroy@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221231064203.1623793-1-masahiroy@kernel.org>
-References: <20221231064203.1623793-1-masahiroy@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-The dep files (*.d files) emitted by C compilers usually contain the
-deduplicated list of included files.
+The -v option is passed when this scripts is invoked from Makefile,
+but not when invoked from Kconfig.
 
-There is an exceptional case; if a header is included by the -include
-command line option, and also by #include directive, it appears twice
-in the *.d file.
-
-For example, the top Makefile specifies the command line option,
--include $(srctree)/include/linux/kconfig.h. You do not need to
-add #include <linux/kconfig.h> in every source file.
-
-In fact, include/linux/kconfig.h is listed twice in many .*.cmd files
-due to include/linux/xarray.h including <linux/kconfig.h>.
-I did not fix that since it is a small redundancy.
-
-However, this is more annoying for rustc. rustc emits the dependency
-for each emission type.
-
-For example, cmd_rustc_library emits dep-info, obj, and metadata.
-So, the emitted *.d file contains the dependency for those 3 targets,
-which makes fixdep parse the same file 3 times.
-
-  $ grep rust/alloc/raw_vec.rs rust/.alloc.o.cmd
-    rust/alloc/raw_vec.rs \
-    rust/alloc/raw_vec.rs \
-    rust/alloc/raw_vec.rs \
-
-To skip the second parsing, this commit adds a hash table for parsed
-files, just like we did for CONFIG options.
+As you can see in scripts/Kconfig.include, the 'success' macro suppresses
+stdout and stderr anyway, so this script does not need to be quiet.
 
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
 
- scripts/basic/fixdep.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ Makefile                     |  4 +-
+ scripts/rust_is_available.sh | 94 +++++++++++++++---------------------
+ 2 files changed, 42 insertions(+), 56 deletions(-)
 
-diff --git a/scripts/basic/fixdep.c b/scripts/basic/fixdep.c
-index b20777b888d7..cc8f6d34c2ca 100644
---- a/scripts/basic/fixdep.c
-+++ b/scripts/basic/fixdep.c
-@@ -113,7 +113,7 @@ struct item {
- };
+diff --git a/Makefile b/Makefile
+index 8daf1be6a2e4..6b2a65f1aeaf 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1280,7 +1280,7 @@ prepare0: archprepare
+ # All the preparing..
+ prepare: prepare0
+ ifdef CONFIG_RUST
+-	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh -v
++	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh
+ 	$(Q)$(MAKE) $(build)=rust
+ endif
  
- #define HASHSZ 256
--static struct item *config_hashtab[HASHSZ];
-+static struct item *config_hashtab[HASHSZ], *file_hashtab[HASHSZ];
+@@ -1806,7 +1806,7 @@ $(DOC_TARGETS):
+ # "Is Rust available?" target
+ PHONY += rustavailable
+ rustavailable:
+-	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh -v && echo "Rust is available!"
++	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh && echo "Rust is available!"
  
- static unsigned int strhash(const char *str, unsigned int sz)
- {
-@@ -361,6 +361,10 @@ static void parse_dep_file(char *p, const char *target)
- 			 * name, which will be the original one, and ignore any
- 			 * other source names, which will be intermediate
- 			 * temporary files.
-+			 *
-+			 * rustc emits the same dependency list for each
-+			 * emission type. It is enough to list the source name
-+			 * just once.
- 			 */
- 			if (!saw_any_target) {
- 				saw_any_target = true;
-@@ -368,7 +372,8 @@ static void parse_dep_file(char *p, const char *target)
- 				printf("deps_%s := \\\n", target);
- 				need_parse = true;
- 			}
--		} else if (!is_ignored_file(p, q - p)) {
-+		} else if (!is_ignored_file(p, q - p) &&
-+			   !in_hashtable(p, q - p, file_hashtab)) {
- 			printf("  %s \\\n", p);
- 			need_parse = true;
- 		}
+ # Documentation target
+ #
+diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
+index aebbf1913970..eaeafebf8572 100755
+--- a/scripts/rust_is_available.sh
++++ b/scripts/rust_is_available.sh
+@@ -23,21 +23,17 @@ get_canonical_version()
+ 
+ # Check that the Rust compiler exists.
+ if ! command -v "$RUSTC" >/dev/null; then
+-	if [ "$1" = -v ]; then
+-		echo >&2 "***"
+-		echo >&2 "*** Rust compiler '$RUSTC' could not be found."
+-		echo >&2 "***"
+-	fi
++	echo >&2 "***"
++	echo >&2 "*** Rust compiler '$RUSTC' could not be found."
++	echo >&2 "***"
+ 	exit 1
+ fi
+ 
+ # Check that the Rust bindings generator exists.
+ if ! command -v "$BINDGEN" >/dev/null; then
+-	if [ "$1" = -v ]; then
+-		echo >&2 "***"
+-		echo >&2 "*** Rust bindings generator '$BINDGEN' could not be found."
+-		echo >&2 "***"
+-	fi
++	echo >&2 "***"
++	echo >&2 "*** Rust bindings generator '$BINDGEN' could not be found."
++	echo >&2 "***"
+ 	exit 1
+ fi
+ 
+@@ -53,16 +49,14 @@ rust_compiler_min_version=$($min_tool_version rustc)
+ rust_compiler_cversion=$(get_canonical_version $rust_compiler_version)
+ rust_compiler_min_cversion=$(get_canonical_version $rust_compiler_min_version)
+ if [ "$rust_compiler_cversion" -lt "$rust_compiler_min_cversion" ]; then
+-	if [ "$1" = -v ]; then
+-		echo >&2 "***"
+-		echo >&2 "*** Rust compiler '$RUSTC' is too old."
+-		echo >&2 "***   Your version:    $rust_compiler_version"
+-		echo >&2 "***   Minimum version: $rust_compiler_min_version"
+-		echo >&2 "***"
+-	fi
++	echo >&2 "***"
++	echo >&2 "*** Rust compiler '$RUSTC' is too old."
++	echo >&2 "***   Your version:    $rust_compiler_version"
++	echo >&2 "***   Minimum version: $rust_compiler_min_version"
++	echo >&2 "***"
+ 	exit 1
+ fi
+-if [ "$1" = -v ] && [ "$rust_compiler_cversion" -gt "$rust_compiler_min_cversion" ]; then
++if [ "$rust_compiler_cversion" -gt "$rust_compiler_min_cversion" ]; then
+ 	echo >&2 "***"
+ 	echo >&2 "*** Rust compiler '$RUSTC' is too new. This may or may not work."
+ 	echo >&2 "***   Your version:     $rust_compiler_version"
+@@ -82,16 +76,14 @@ rust_bindings_generator_min_version=$($min_tool_version bindgen)
+ rust_bindings_generator_cversion=$(get_canonical_version $rust_bindings_generator_version)
+ rust_bindings_generator_min_cversion=$(get_canonical_version $rust_bindings_generator_min_version)
+ if [ "$rust_bindings_generator_cversion" -lt "$rust_bindings_generator_min_cversion" ]; then
+-	if [ "$1" = -v ]; then
+-		echo >&2 "***"
+-		echo >&2 "*** Rust bindings generator '$BINDGEN' is too old."
+-		echo >&2 "***   Your version:    $rust_bindings_generator_version"
+-		echo >&2 "***   Minimum version: $rust_bindings_generator_min_version"
+-		echo >&2 "***"
+-	fi
++	echo >&2 "***"
++	echo >&2 "*** Rust bindings generator '$BINDGEN' is too old."
++	echo >&2 "***   Your version:    $rust_bindings_generator_version"
++	echo >&2 "***   Minimum version: $rust_bindings_generator_min_version"
++	echo >&2 "***"
+ 	exit 1
+ fi
+-if [ "$1" = -v ] && [ "$rust_bindings_generator_cversion" -gt "$rust_bindings_generator_min_cversion" ]; then
++if [ "$rust_bindings_generator_cversion" -gt "$rust_bindings_generator_min_cversion" ]; then
+ 	echo >&2 "***"
+ 	echo >&2 "*** Rust bindings generator '$BINDGEN' is too new. This may or may not work."
+ 	echo >&2 "***   Your version:     $rust_bindings_generator_version"
+@@ -110,13 +102,11 @@ bindgen_libclang_min_version=$($min_tool_version llvm)
+ bindgen_libclang_cversion=$(get_canonical_version $bindgen_libclang_version)
+ bindgen_libclang_min_cversion=$(get_canonical_version $bindgen_libclang_min_version)
+ if [ "$bindgen_libclang_cversion" -lt "$bindgen_libclang_min_cversion" ]; then
+-	if [ "$1" = -v ]; then
+-		echo >&2 "***"
+-		echo >&2 "*** libclang (used by the Rust bindings generator '$BINDGEN') is too old."
+-		echo >&2 "***   Your version:    $bindgen_libclang_version"
+-		echo >&2 "***   Minimum version: $bindgen_libclang_min_version"
+-		echo >&2 "***"
+-	fi
++	echo >&2 "***"
++	echo >&2 "*** libclang (used by the Rust bindings generator '$BINDGEN') is too old."
++	echo >&2 "***   Your version:    $bindgen_libclang_version"
++	echo >&2 "***   Minimum version: $bindgen_libclang_min_version"
++	echo >&2 "***"
+ 	exit 1
+ fi
+ 
+@@ -125,21 +115,19 @@ fi
+ #
+ # In the future, we might be able to perform a full version check, see
+ # https://github.com/rust-lang/rust-bindgen/issues/2138.
+-if [ "$1" = -v ]; then
+-	cc_name=$($(dirname $0)/cc-version.sh "$CC" | cut -f1 -d' ')
+-	if [ "$cc_name" = Clang ]; then
+-		clang_version=$( \
+-			LC_ALL=C "$CC" --version 2>/dev/null \
+-				| sed -nE '1s:.*version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
+-		)
+-		if [ "$clang_version" != "$bindgen_libclang_version" ]; then
+-			echo >&2 "***"
+-			echo >&2 "*** libclang (used by the Rust bindings generator '$BINDGEN')"
+-			echo >&2 "*** version does not match Clang's. This may be a problem."
+-			echo >&2 "***   libclang version: $bindgen_libclang_version"
+-			echo >&2 "***   Clang version:    $clang_version"
+-			echo >&2 "***"
+-		fi
++cc_name=$($(dirname $0)/cc-version.sh "$CC" | cut -f1 -d' ')
++if [ "$cc_name" = Clang ]; then
++	clang_version=$( \
++		LC_ALL=C "$CC" --version 2>/dev/null \
++			| sed -nE '1s:.*version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
++	)
++	if [ "$clang_version" != "$bindgen_libclang_version" ]; then
++		echo >&2 "***"
++		echo >&2 "*** libclang (used by the Rust bindings generator '$BINDGEN')"
++		echo >&2 "*** version does not match Clang's. This may be a problem."
++		echo >&2 "***   libclang version: $bindgen_libclang_version"
++		echo >&2 "***   Clang version:    $clang_version"
++		echo >&2 "***"
+ 	fi
+ fi
+ 
+@@ -150,11 +138,9 @@ rustc_sysroot=$("$RUSTC" $KRUSTFLAGS --print sysroot)
+ rustc_src=${RUST_LIB_SRC:-"$rustc_sysroot/lib/rustlib/src/rust/library"}
+ rustc_src_core="$rustc_src/core/src/lib.rs"
+ if [ ! -e "$rustc_src_core" ]; then
+-	if [ "$1" = -v ]; then
+-		echo >&2 "***"
+-		echo >&2 "*** Source code for the 'core' standard library could not be found"
+-		echo >&2 "*** at '$rustc_src_core'."
+-		echo >&2 "***"
+-	fi
++	echo >&2 "***"
++	echo >&2 "*** Source code for the 'core' standard library could not be found"
++	echo >&2 "*** at '$rustc_src_core'."
++	echo >&2 "***"
+ 	exit 1
+ fi
 -- 
 2.34.1
 
