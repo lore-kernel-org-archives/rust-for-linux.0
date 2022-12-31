@@ -2,101 +2,77 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 299BDC3DA79
-	for <rust-for-linux@archiver.kernel.org>; Thu, 29 Dec 2022 23:34:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D330C3DA7A
+	for <rust-for-linux@archiver.kernel.org>; Sat, 31 Dec 2022 06:42:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234141AbiL2XeZ (ORCPT
+        id S229563AbiLaGmU (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 29 Dec 2022 18:34:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44028 "EHLO
+        Sat, 31 Dec 2022 01:42:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229650AbiL2XeX (ORCPT
+        with ESMTP id S229551AbiLaGmT (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 29 Dec 2022 18:34:23 -0500
-Received: from mail-vk1-xa31.google.com (mail-vk1-xa31.google.com [IPv6:2607:f8b0:4864:20::a31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98EF61658A
-        for <rust-for-linux@vger.kernel.org>; Thu, 29 Dec 2022 15:34:22 -0800 (PST)
-Received: by mail-vk1-xa31.google.com with SMTP id j5so9437810vkp.10
-        for <rust-for-linux@vger.kernel.org>; Thu, 29 Dec 2022 15:34:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=B6vjM9HDqFcQM2Fq1TFyVxl0DwEN8yHOhhNLLy0+rA0=;
-        b=Gq58iELz1GhvWt9rwaJL/vmVHXtjAeLbpi1g8e8UvwnbNjAcuN18F3kHQaWSSZxdVP
-         c4gy6yuOmL38NXN2lnQowzfhO4WnuXxVBIamrK1ilP7BrOrCQ6NYJ8bm1SEaSZxpnAWM
-         vpkDTc6WoHw5Xvk5JUSGvoIJi7ZxcPFJo8UIBqwRrqArV7g3Zi2wfD72AkIfR0f9cOkW
-         eN0u8XMW/LKayfVbyaXPYyPXiLMejLcwSqujUB/UExLoSCqaueysN9/DC/VAZUQ4ymN6
-         c0HVm876MvVVDf9J9yP3mffaHUMm8CJTpm07GJr91lNS0H1C6fis/lJptAvktZQBWuAW
-         8Aow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=B6vjM9HDqFcQM2Fq1TFyVxl0DwEN8yHOhhNLLy0+rA0=;
-        b=DMIbK24unfwF2KOA5MAjEJxBzyb8HpRrmD8HVQWstuOPlmxYdCya0ZuML17zzxZRB6
-         /meue9HzZ3lYnR5u+SxfAjH66eZaHpE3ZBcf7PNZDM7btXlXTxKtBhX+UeKp0ptfPHsL
-         EwTIJxBCyler+UHyWr6LfnTxayjVpJLQiwoIkimE4XMjlzwOW15zSvEBoDCS+OwBg7dF
-         +Aue5UY/K9WjZ3rtfqaTgCke9vYxyGV2EXSd93V7Ez3fbfbePjSbJzBs/oQ93jzls4Dr
-         zzUExN5u+Cz/5vLBYpcAtJZQ8Pw5LlCHdVQ/c/IbAI9M1v1imw+qBXwsfjLTmSCFkiXQ
-         Sz0w==
-X-Gm-Message-State: AFqh2kr9pBZXDT50WVeXIwUUGJsHiDYwWbeVybb5xJPu3+3/SylY3GUS
-        jdg0SHFcccOsRfMIrmmnLDM0tzIyiwK5z590qakp31g6cQiUqw==
-X-Google-Smtp-Source: AMrXdXv4D1Cx74cT1OSwd2dzOLkwdVhwklWI29mPwtkJiYf9vKsdvDe7BioZTKpejZNnynnAJbxAOlhHWggEZe3L3K0=
-X-Received: by 2002:ac5:c970:0:b0:3d2:b9c2:4e89 with SMTP id
- t16-20020ac5c970000000b003d2b9c24e89mr3425432vkm.32.1672356861613; Thu, 29
- Dec 2022 15:34:21 -0800 (PST)
+        Sat, 31 Dec 2022 01:42:19 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 857DC3B2;
+        Fri, 30 Dec 2022 22:42:18 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 329A3B80066;
+        Sat, 31 Dec 2022 06:42:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4023C433F0;
+        Sat, 31 Dec 2022 06:42:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672468935;
+        bh=Q3TDSDFr/sJtluomc4BwL5YkxG8/1KW66Kq678sK91A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=cwnNg+U+pDVojTYGdaksC2JJpE970eqINaEP6uu2OjZdwClKhTKgR+uS5juHUVPs/
+         CKg1Iayv+Ayf1J/38YA5SgVU3N9T9z2ryPxULwND7HC/ilt/UUMAex5G8YvpnhINZo
+         rwZAIsOuMlDxnX0XEaZQYDC896vFrmBR0FQLjpUanIte3SRUtfR1xXLGVS8OzEXSMB
+         osfwm+Xv7LQoa2rO7zSPZmoz9yeZqiNk6b2qPuEg+ZV0BFOFZ7oHpBBkMF9FgeIo40
+         zH6USqEV1GDrVpDti1HJsCaT/QERa70Mm2dBnumVOdjl6Cwx+2cJXqeGdG4xadw80P
+         Kvajjkw3WKYGA==
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        llvm@lists.linux.dev, rust-for-linux@vger.kernel.org
+Subject: [PATCH 0/6] kbuild: fix dep-file processing for rust
+Date:   Sat, 31 Dec 2022 15:41:57 +0900
+Message-Id: <20221231064203.1623793-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <CAJ+Zx=3OwXeJNsz8DLp_94ciWpQKoiV75v=XH3FoUQKW==_S8w@mail.gmail.com>
- <CAFRnB2Wp18E_PNpcN3fjVDh0FjSGgC2ACfA+-cDwTBv4p1eZqQ@mail.gmail.com>
-In-Reply-To: <CAFRnB2Wp18E_PNpcN3fjVDh0FjSGgC2ACfA+-cDwTBv4p1eZqQ@mail.gmail.com>
-From:   FUJITA Tomonori <fujita.tomonori@gmail.com>
-Date:   Fri, 30 Dec 2022 08:34:11 +0900
-Message-ID: <CAJ+Zx=3pD2PJaFRHiNPUHdGYJMTnjqDz5xToi-7mwinC-hmnFw@mail.gmail.com>
-Subject: Re: Rust in-kernel TLS handshake
-To:     Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi,
-Thanks for the comments!
 
-On Wed, Dec 28, 2022 at 10:50 PM Alex Gaynor <alex.gaynor@gmail.com> wrote:
 
-> There's many reasons to be leery of complexity in the kernel, but
-> security vulnerabilities due to memory unsafety is definitely a big
-> one, so I think you're completely correct that Rust can significantly
-> change the equation on that risk.
 
-Surely, I'll work on it to see how things work.
+Masahiro Yamada (6):
+  kbuild: specify output names separately for each emission type from
+    rustc
+  fixdep: parse Makefile more correctly to handle comments etc.
+  kbuild: remove sed commands after rustc rules
+  fixdep: refactor hash table lookup
+  fixdep: avoid parsing the same file over again
+  fixdep: do not parse *.so, *.rmeta, *.rlib
 
-> > I worked on QUIC as a consumer of TLS. This can establish a QUIC connection
-> > with Quinn's example client, Rust QUIC implementation. Only minimum
-> > server side functionality and connection establishment are supported.
-> >
-> > From the perspective of Rust-for-Linux, the main work is implementing
-> > APIs for crypto subsystem. Also libraries such as working with buffers
-> > (like Tokio's bytes) would be helpful, I think (should be useful for
-> > other projects). I'll work for mainline. Meanwhile you can compile
-> > this kernel module
-> > with my fork.
-> >
->
-> I think a Rust API for the crypto subsystem would be great, I'd be
-> happy to help review patches for that.
+ rust/Makefile          |  16 ++-
+ scripts/Makefile.build |  26 ++---
+ scripts/Makefile.host  |  10 +-
+ scripts/basic/fixdep.c | 234 +++++++++++++++++++++++++++--------------
+ 4 files changed, 173 insertions(+), 113 deletions(-)
 
-Thanks, I'll try.
+-- 
+2.34.1
 
-> When you say Tokio's bytes, what parts of it are you interested -- the
-> lifetime management (e.g. refcounting), or the APIs that are useful
-> for handling network protocols (e.g. put_u16)?
-
-Probably, both.
-For now I use something simple like the latter for playing with TLS
-and QUIC messages.
-I guess that a Rust API for the crypto might need the former; passing
-buffers to the crypto subsystem via scatterlist.
