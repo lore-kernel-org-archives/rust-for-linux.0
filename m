@@ -2,59 +2,58 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3A8AC3DA7D
-	for <rust-for-linux@archiver.kernel.org>; Tue,  3 Jan 2023 20:45:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8827DC4708E
+	for <rust-for-linux@archiver.kernel.org>; Tue,  3 Jan 2023 20:45:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238731AbjACUpG (ORCPT
+        id S238837AbjACUpm (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 3 Jan 2023 15:45:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34360 "EHLO
+        Tue, 3 Jan 2023 15:45:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238091AbjACUpC (ORCPT
+        with ESMTP id S238808AbjACUpl (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 3 Jan 2023 15:45:02 -0500
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCC8EF0D;
-        Tue,  3 Jan 2023 12:45:01 -0800 (PST)
-Received: by mail-yb1-xb30.google.com with SMTP id c124so34397653ybb.13;
-        Tue, 03 Jan 2023 12:45:01 -0800 (PST)
+        Tue, 3 Jan 2023 15:45:41 -0500
+Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4857C1409E;
+        Tue,  3 Jan 2023 12:45:40 -0800 (PST)
+Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-4b718cab0e4so1509437b3.9;
+        Tue, 03 Jan 2023 12:45:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SeLnyRcrosxbe7zf1NVtqwd15UENUyCvBtMhWBv4YcQ=;
-        b=RgsXiF/LZxqKxVwy3PS7+xLpQTNa5yod6qXTeC6WE/1PoBqYtaLZEw+O1KnICdjsuF
-         FVbislKOQciha5Os2si2N3f2G8cuUuMVJn+fk8OKGMSQYwcLMdpOn0/0Htijta8tVhGN
-         2vU2rE6dyi1QmX2Sto+c47Vxcj7VlwgRPQCJQS1UeUd6qObj8wW0n+IxU1oirVG6KO+r
-         fX5iytG4iLcfqzIa6kpPNDTQX3YYxYG4NY6Pa/xIRyZpX76K5KY5c4Yf9Pm0m9tY9rqc
-         ts7HHaLxV2QINzyCIFqvIjaEqYDlWd9nWDY+UjW+//cGgGGPYyn5UjxyzvDpAozK0lVN
-         yPdQ==
+        bh=WtaX5rgNEE8X9vVIt7pdi7IDfT2jiUlHpVuKAzMWDm4=;
+        b=EY3Ag657qNIy+G0o5zyQtPYRszic6Wkmv6x14IgiIJDvmg8wRjB+kAFsomNXdugRbq
+         TQ0jTahxXO9QIn7v8Um8VQtD4OT2UiBaftY3pjzGagueWKVhIhVsphbXFJiakNHdGXRg
+         F6Xk7igQzsop37sbuX73smVrGaLaT+E8Gg27NR+uxyV4HPdlqhw5v3zX8g4k56DQCvrp
+         G3p3PEVuyvdqeY1gRrF8UmctvwY95npBIBxdyCrGwxLu5FEAwQMqTQWV5zdTP8Z1gu6N
+         7SMmbkIVt9tyG/ZhFu04d555CLtaEMBjaBF1+DQs3Y3UUttzchpCGIHF1F0g++mslJ40
+         qyCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SeLnyRcrosxbe7zf1NVtqwd15UENUyCvBtMhWBv4YcQ=;
-        b=hSfTiIY/xg/84cq+DrPnKz1PEJhidGnK1MgTG4PICKF0s5/u3/rYRW6rhMW5wY797P
-         r/+Eu21JhUvveIkMq8dU5yC77RLsohfrZzvQ56HsBJ1xNiY+RHLN7jl3Wm+KKbbxaXU/
-         Iijfb8CwPFpHE/0/ZfO/YtR/5v4HcD3gs+O7i9P8pl8uvukGlGn2z809bAoSeXmaHKD5
-         81/Qtqt6rJNCA0/24uZP/BWRrcCCIy9WK5KgJTjJ+1MCySlCg74yvyVGLU7oFwnzSx7T
-         0DyDkEOPKr5q6X99w5XS2J8NNCy2sV4azwRyO1oDTGMZzkRXZzDlTnuPb9uHX/sReMuj
-         cf/w==
-X-Gm-Message-State: AFqh2kqIk9kKtRO9aEvFS8ommTTmiQhf3YTl8Os8MWmwf9VMbashwtpD
-        hbRQvXacAFW4MzcPuXq6P6RjpBC1iS47fZ1Xocs=
-X-Google-Smtp-Source: AMrXdXu0aI6zgR44lJkZQk5J/ah2nhc8d7y8bZuvOHZmmoOGaXFvRF8UKRfA/3TxipvjPYEdZM+Vjy2tLh5Ul5tIvb4=
-X-Received: by 2002:a25:ca4d:0:b0:771:56e1:e4e9 with SMTP id
- a74-20020a25ca4d000000b0077156e1e4e9mr4244307ybg.75.1672778701030; Tue, 03
- Jan 2023 12:45:01 -0800 (PST)
+        bh=WtaX5rgNEE8X9vVIt7pdi7IDfT2jiUlHpVuKAzMWDm4=;
+        b=ixdtHLKf5CmJhkmohMwA/uH5MWCj3oLctimabvhnkbR0liKhsnaFECGfIEy9G7OHdV
+         udtJ22Z2gp8aNi5XLyaCf2hfRuTz3dko/Kl9Q933AodSy7oWt5YEw2oCQ3MPYEp1/K99
+         4Wd8ydQ5m7F65ba9nl71z2OLH35Ziiq59IOxcrdlP5udw1pe83vIiiYCjIfV912wBavz
+         PKdV4nm1BJJVx4pM95QMXocqK1qfl1x8iMG7mIetUgcrT9f0XveB0KxPf8F8K0pbGIdB
+         C8lkTs5L7nnP5dmk66WAX4agv4xmR+EQMrqFfkWbM6sta9aKsc1fF0nn4eNZpQspHgup
+         qwyw==
+X-Gm-Message-State: AFqh2kpjZ36tntmF9IwkFXLSdM4gqW2musRfwHTQLBdICcexOQxT/W6D
+        nfC317fxqhpjwaVXfPMFzdvduI2IEsEhnJrm0e4=
+X-Google-Smtp-Source: AMrXdXv3RMIAOz3FWgR7hVgZiRP9TllQFm+is2m0R0QTQ0YQjTdZ1l3ZydZbc1Z4hrvLWpIABtr4Z5K9tt9tYEJTxIs=
+X-Received: by 2002:a0d:fc83:0:b0:3ed:90d2:2ab8 with SMTP id
+ m125-20020a0dfc83000000b003ed90d22ab8mr4070126ywf.67.1672778739470; Tue, 03
+ Jan 2023 12:45:39 -0800 (PST)
 MIME-Version: 1.0
-References: <20221231064203.1623793-1-masahiroy@kernel.org> <20221231064203.1623793-2-masahiroy@kernel.org>
-In-Reply-To: <20221231064203.1623793-2-masahiroy@kernel.org>
+References: <20221231064203.1623793-1-masahiroy@kernel.org> <20221231064203.1623793-4-masahiroy@kernel.org>
+In-Reply-To: <20221231064203.1623793-4-masahiroy@kernel.org>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 3 Jan 2023 21:44:49 +0100
-Message-ID: <CANiq72k8LSqsnWNd_aa-M1=rMNLWD7KJWrK6Pv0Waq15Exv59g@mail.gmail.com>
-Subject: Re: [PATCH 1/6] kbuild: specify output names separately for each
- emission type from rustc
+Date:   Tue, 3 Jan 2023 21:45:28 +0100
+Message-ID: <CANiq72mSEZtBNCocOuNAyy9P3v-7nF9UAhZeQKD4f99Trd7LSA@mail.gmail.com>
+Subject: Re: [PATCH 3/6] kbuild: remove sed commands after rustc rules
 To:     Masahiro Yamada <masahiroy@kernel.org>
 Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
         Miguel Ojeda <ojeda@kernel.org>,
@@ -73,22 +72,12 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On Sat, Dec 31, 2022 at 7:42 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
 >
->   $ make -j$(nproc) samples/rust/rust_minimal.o samples/rust/rust_minimal.rsi \
->                     samples/rust/rust_minimal.s samples/rust/rust_minimal.ll
+> rustc may put comments in dep-info, so sed is used to drop them before
+> passing it to fixdep.
+>
+> Now that fixdep can remove comments, Makefiles do not need to run sed.
 
-Yeah, we were testing the single targets, but not multiple at once, thanks!
-
-> +               --emit=dep-info=$(depfile) --emit=obj=$@ --emit=metadata=$(dir $@)$(patsubst %.o,lib%.rmeta,$(notdir $@)) \
-
-Perhaps a newline here to avoid the lengthy line?
-
->  hostc_flags    = -Wp,-MMD,$(depfile) $(_hostc_flags)
->  hostcxx_flags  = -Wp,-MMD,$(depfile) $(_hostcxx_flags)
-> -hostrust_flags = $(_hostrust_flags)
-
-This was originally meant to be consistent with C and C++ indeed, but
-if you prefer less variables, I guess it is fine, in which case,
-should we update the C/C++ side too (in another series)?
+Finally!
 
 Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
 Tested-by: Miguel Ojeda <ojeda@kernel.org>
