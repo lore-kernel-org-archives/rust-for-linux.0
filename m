@@ -2,58 +2,59 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29CAFC5479D
-	for <rust-for-linux@archiver.kernel.org>; Tue,  3 Jan 2023 20:46:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74E2FC3DA7D
+	for <rust-for-linux@archiver.kernel.org>; Tue,  3 Jan 2023 20:48:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238871AbjACUqa (ORCPT
+        id S232606AbjACUsT (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 3 Jan 2023 15:46:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36042 "EHLO
+        Tue, 3 Jan 2023 15:48:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238953AbjACUqV (ORCPT
+        with ESMTP id S230372AbjACUsS (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 3 Jan 2023 15:46:21 -0500
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F388415709;
-        Tue,  3 Jan 2023 12:46:14 -0800 (PST)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-4b6255ce5baso6956377b3.11;
-        Tue, 03 Jan 2023 12:46:14 -0800 (PST)
+        Tue, 3 Jan 2023 15:48:18 -0500
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82AA311;
+        Tue,  3 Jan 2023 12:48:17 -0800 (PST)
+Received: by mail-yb1-xb32.google.com with SMTP id 186so34441223ybe.8;
+        Tue, 03 Jan 2023 12:48:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=b/kZ9pKOcebPkZheGmRobplHFLxApQR/iEoi6WL4EnY=;
-        b=bOAUwEAaR6oTed+NyLFb9ISm/aOJqfKrx8bX8DdXMlrLR5MbfmEfnxz/wZ8BAIjMSe
-         BUgVvcZ3qm9O6u4S9sNfLlv+HR0UPjT0S5MA2JPg7cdbj3hNMIlp8g04ivxDvijZY37h
-         Wujd2/yosmbCG0uhIEVYRCStqTfXUEbGaKn+20e4zjBC4cgJcNnFYOl7H6/WTpYqveg7
-         gJMS+S8L/W2M5V4kuIQltGwo4bj6C45A+p5SqB6HZwe3OHSr0hG503Jp/Rf2wwRUKu0I
-         E6cGEAhYZEZyb2MNGRs3eyhOjf/UFq2c6GhyBb5SxoD334/lHU9anety0/R/REW5UEC3
-         0MvQ==
+        bh=duAdSZgkhcA7cc0zesMwNi8WiFxSphG7fXlOLJEeLBw=;
+        b=BoHDK28hBRmwxKsS48EJAqumEn9XPz2jIk2d4T2n2f1GgS+6Gxs7VpTj6RzGGmvGCv
+         V6ea4JDTaw2RMkP5koQDKrsBSmmR8O2QPnhm/H0twBrymEYyIvN3jQJKoULwztX4uPqb
+         DZtP4lknvC2KAol9ytugiaLKOPUpus1Sa+X63KiCZEsN2ZyjIRKAkDHS2LkWNJRFWInf
+         FN8JEPF0U+3T39cUjP562n61zU60UllhbxJuYA/WzBFX03JAhGJedjz6a6eKHqKe9oU5
+         Zzbb1hzOhM61y494APqgqVlnGnSMqbawt0rJu1YvLEE+d9206aFlnGQhf5KP31+GwGfz
+         62lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=b/kZ9pKOcebPkZheGmRobplHFLxApQR/iEoi6WL4EnY=;
-        b=JVrQhcG0Zvun68p7zZPHfpC66cIK18zJ9KGJ1aynSqB1c32yAoDMkcaFzuqeyFPl9n
-         vinMh49YNsQ7GgeJDwXLxlbEc1jJJNcJb8mguudMDipND9ZHzKG9qOM1IOYEn7QyvEkL
-         g8/0WQ0FChvk3soiZ1lVI27s0xHbmynciJvlpl3cNt2oopObFWrwoguMOy/HgXtFXiS1
-         niJsh7cLU45p53lR0Oac4tchwGHNZzOTDTZSVAXADBTD+vvC1W8qGVt+EUKXgowmvQ4a
-         XCsHuvgCR8LjSC9OprfeXL+0qvI1p+R1QQHrWQJVySrWpjVeli6VzPBW3XPkpcjIFMIX
-         ynBw==
-X-Gm-Message-State: AFqh2koCa8Dc/EzQarYcRBeLlgtN+MeOqgIzFQZ56HqyKZEREr37weHm
-        6BWOSN4w9aOBoCBfbe+PoW04X8i4gocef+jQ+E4Q9wRfwtpCJxnW
-X-Google-Smtp-Source: AMrXdXtiuDFT+wB0O9CyLqumM1jk+fR++NGp9bP7NyNp0nT+eQ1hp6w1SPQmD7O2fd2U3ox6grgo8H1rkpQlMRSVrZ4=
-X-Received: by 2002:a81:9191:0:b0:3b6:bbd4:2769 with SMTP id
- i139-20020a819191000000b003b6bbd42769mr5384451ywg.5.1672778774230; Tue, 03
- Jan 2023 12:46:14 -0800 (PST)
+        bh=duAdSZgkhcA7cc0zesMwNi8WiFxSphG7fXlOLJEeLBw=;
+        b=y+GVFRxagxUbRDhnWKY0JeV/3dLRgnLMdQd4cvZd/tDo+GUVpv45L3CTHAt1LCSdsJ
+         VT84tZHogT843AxLrvARMtoaO9PIeRyRJRCqa4xxmiX8f2K/zscE7i/+mx6YEW9EC/x1
+         LnPjmQSVawdKonSO1D+VvBl+a07CHNnfpijJK3kfmWelT+fRRFUb3mhvyuVr9hE9Cs6R
+         FLTs51sZDzoejlvOrOZfsMQMGiaVxQzgJw8SjT0b8RPRUEaB+6rHB/pzaRLCIqpPFVhY
+         8x3udw/idxf6xfII+UAN1w14r5SPKZ1hTQPXRQ31wK9jd18YuTjMHKDY063lgkGsE8Iq
+         alZw==
+X-Gm-Message-State: AFqh2kocBR/dOzah8nJuWFxRE0HeVrTROeMMc5BiO1SJKJhnuqO20KxM
+        dGyQ9P13PszQu3PoaiLV8of52jZbz76RWKjWV0A=
+X-Google-Smtp-Source: AMrXdXu7h3AK56tJ03BL4g1ut2vqiv8Nz5cNJiDAoHXKlID+o57/TAlbvZxogAXPir6kGBgsFXCH7DKPp+y6fH77Ieo=
+X-Received: by 2002:a25:b95:0:b0:744:76b3:8aa3 with SMTP id
+ 143-20020a250b95000000b0074476b38aa3mr4416884ybl.581.1672778896953; Tue, 03
+ Jan 2023 12:48:16 -0800 (PST)
 MIME-Version: 1.0
-References: <20221231064203.1623793-1-masahiroy@kernel.org> <20221231064203.1623793-6-masahiroy@kernel.org>
-In-Reply-To: <20221231064203.1623793-6-masahiroy@kernel.org>
+References: <20221231064203.1623793-1-masahiroy@kernel.org>
+ <CANiq72m5E1MehfqdrkmJt43fAzUMc9kEKu7x4WaALdgDGJ30-g@mail.gmail.com> <CAK7LNAQOaLHizg24CrMUz7veX0fa0QYwgJzAi5tOT+-CDCmUzw@mail.gmail.com>
+In-Reply-To: <CAK7LNAQOaLHizg24CrMUz7veX0fa0QYwgJzAi5tOT+-CDCmUzw@mail.gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 3 Jan 2023 21:46:03 +0100
-Message-ID: <CANiq72kXVyy1=ezU-dwj1tT_986RPvfRgBSfUGkz9SwHgAneZQ@mail.gmail.com>
-Subject: Re: [PATCH 5/6] fixdep: avoid parsing the same file over again
+Date:   Tue, 3 Jan 2023 21:48:05 +0100
+Message-ID: <CANiq72nDTJyeS2Re9zayaUsE67W9cuTrOgpKjxqKmJ67u26Qaw@mail.gmail.com>
+Subject: Re: [PATCH 0/6] kbuild: fix dep-file processing for rust
 To:     Masahiro Yamada <masahiroy@kernel.org>
 Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
         Miguel Ojeda <ojeda@kernel.org>,
@@ -62,21 +63,19 @@ Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org
+        llvm@lists.linux.dev, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Dec 31, 2022 at 7:42 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+On Sat, Dec 31, 2022 at 4:06 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
 >
-> To skip the second parsing, this commit adds a hash table for parsed
-> files, just like we did for CONFIG options.
+> Yes, my plan is to get it in the kbuild tree with your ack.
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
+Done, also compile- and boot-tested each (on top of -rc1).
 
 Cheers,
 Miguel
