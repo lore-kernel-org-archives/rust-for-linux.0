@@ -2,80 +2,100 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74E2FC3DA7D
-	for <rust-for-linux@archiver.kernel.org>; Tue,  3 Jan 2023 20:48:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63147C3DA7D
+	for <rust-for-linux@archiver.kernel.org>; Tue,  3 Jan 2023 21:03:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232606AbjACUsT (ORCPT
+        id S233779AbjACVDy (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 3 Jan 2023 15:48:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37732 "EHLO
+        Tue, 3 Jan 2023 16:03:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230372AbjACUsS (ORCPT
+        with ESMTP id S233962AbjACVDu (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 3 Jan 2023 15:48:18 -0500
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82AA311;
-        Tue,  3 Jan 2023 12:48:17 -0800 (PST)
-Received: by mail-yb1-xb32.google.com with SMTP id 186so34441223ybe.8;
-        Tue, 03 Jan 2023 12:48:17 -0800 (PST)
+        Tue, 3 Jan 2023 16:03:50 -0500
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B65131570A
+        for <rust-for-linux@vger.kernel.org>; Tue,  3 Jan 2023 13:03:48 -0800 (PST)
+Received: by mail-lf1-x12e.google.com with SMTP id m6so37038712lfj.11
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Jan 2023 13:03:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=duAdSZgkhcA7cc0zesMwNi8WiFxSphG7fXlOLJEeLBw=;
-        b=BoHDK28hBRmwxKsS48EJAqumEn9XPz2jIk2d4T2n2f1GgS+6Gxs7VpTj6RzGGmvGCv
-         V6ea4JDTaw2RMkP5koQDKrsBSmmR8O2QPnhm/H0twBrymEYyIvN3jQJKoULwztX4uPqb
-         DZtP4lknvC2KAol9ytugiaLKOPUpus1Sa+X63KiCZEsN2ZyjIRKAkDHS2LkWNJRFWInf
-         FN8JEPF0U+3T39cUjP562n61zU60UllhbxJuYA/WzBFX03JAhGJedjz6a6eKHqKe9oU5
-         Zzbb1hzOhM61y494APqgqVlnGnSMqbawt0rJu1YvLEE+d9206aFlnGQhf5KP31+GwGfz
-         62lA==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uLm3t/jCqRftzsa84IaoMU3qGif9izgFkANoIkgXLPc=;
+        b=OcuCYgQUww5GfX0e0IZL5QWpsTB0x00GASHPJ3+pj3WTY/eCH6xO6CLaANMpqWlwAk
+         /12qA6oLKv8yCcxMIL+cT7XD4p9zsadvm0cUxibN6YZY/sw3IQQj/zA7ZlUTk8f2xjLg
+         qwrv9qHZWN+UvbYwtxVYzXrCecPkyiTgKYHXblhbbkfNp9TBQzZolpR7cXmpgceMOJvs
+         2aI/JCMVS0vvk0ToOOa3Ck+8nIwrUv9jcZbYZaD9Ys1/RkBA49zDZWBV/fOeFMubXPFF
+         WsZI3BHJz5afblT8rXrQFN0fDjHHu3uFvIuOQ9RLVJ3+E4bxlm0x+yrvAZD297fX1gS8
+         vMJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=duAdSZgkhcA7cc0zesMwNi8WiFxSphG7fXlOLJEeLBw=;
-        b=y+GVFRxagxUbRDhnWKY0JeV/3dLRgnLMdQd4cvZd/tDo+GUVpv45L3CTHAt1LCSdsJ
-         VT84tZHogT843AxLrvARMtoaO9PIeRyRJRCqa4xxmiX8f2K/zscE7i/+mx6YEW9EC/x1
-         LnPjmQSVawdKonSO1D+VvBl+a07CHNnfpijJK3kfmWelT+fRRFUb3mhvyuVr9hE9Cs6R
-         FLTs51sZDzoejlvOrOZfsMQMGiaVxQzgJw8SjT0b8RPRUEaB+6rHB/pzaRLCIqpPFVhY
-         8x3udw/idxf6xfII+UAN1w14r5SPKZ1hTQPXRQ31wK9jd18YuTjMHKDY063lgkGsE8Iq
-         alZw==
-X-Gm-Message-State: AFqh2kocBR/dOzah8nJuWFxRE0HeVrTROeMMc5BiO1SJKJhnuqO20KxM
-        dGyQ9P13PszQu3PoaiLV8of52jZbz76RWKjWV0A=
-X-Google-Smtp-Source: AMrXdXu7h3AK56tJ03BL4g1ut2vqiv8Nz5cNJiDAoHXKlID+o57/TAlbvZxogAXPir6kGBgsFXCH7DKPp+y6fH77Ieo=
-X-Received: by 2002:a25:b95:0:b0:744:76b3:8aa3 with SMTP id
- 143-20020a250b95000000b0074476b38aa3mr4416884ybl.581.1672778896953; Tue, 03
- Jan 2023 12:48:16 -0800 (PST)
+        bh=uLm3t/jCqRftzsa84IaoMU3qGif9izgFkANoIkgXLPc=;
+        b=3X1EAFVV+VLDn4fTKG27vaozjpsj64Kek7w1TMF2YG0+vYWwZWYYu14KVMuuIy75w2
+         rWlqOu+TEQDHsRAXFoncO4XyOYA62DjpIQQfU7THbs3xDwyBzv8M7NpnuC02lbbMAxLA
+         niP6/MMOmNRdi6X5pidrOr1u8YDWxR46stugj2FRA8HqGedYbJgDlYuz9EvXU1PYS8c8
+         LHVHVuMY1IX8WMwpf+/JjAPWMdT+Z0iliAsNh5Mg7RCmAUkqoMmrWugTVRkNj3klw0lA
+         LLQy0dzotxX1n48mGSuUQv2kw+1aIs9ACbFSrarX3cuZa3xrHS24yr5iZiPHURoQw+Ly
+         gjhw==
+X-Gm-Message-State: AFqh2koiUeIdTZpdIicxGYaSU9iV3IQHT9CXUx52E6g4dVavYk/D0j30
+        hjH4orgm/esERsgyAtdi46M=
+X-Google-Smtp-Source: AMrXdXsJCRKXND1KPN9exNrwAugySlYadsaNeGtvKH53FskpiaYhR7c/i1BGkQNsU6fcVeyF9Srujw==
+X-Received: by 2002:a05:6512:2356:b0:4b5:6417:43bb with SMTP id p22-20020a056512235600b004b5641743bbmr16409474lfu.51.1672779827038;
+        Tue, 03 Jan 2023 13:03:47 -0800 (PST)
+Received: from localhost.localdomain ([46.147.136.10])
+        by smtp.gmail.com with ESMTPSA id d18-20020ac241d2000000b004b4cbc942a3sm4936735lfi.127.2023.01.03.13.03.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Jan 2023 13:03:46 -0800 (PST)
+From:   alexpantyukhin <apantykhin@gmail.com>
+To:     ojeda@kernel.org, rust-for-linux@vger.kernel.org,
+        akpm@linux-foundation.org
+Cc:     alexpantyukhin <apantykhin@gmail.com>
+Subject: [PATCH] scripts: store Makefiles in dictionary
+Date:   Wed,  4 Jan 2023 02:02:19 +0500
+Message-Id: <20230103210219.5690-1-apantykhin@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20221231064203.1623793-1-masahiroy@kernel.org>
- <CANiq72m5E1MehfqdrkmJt43fAzUMc9kEKu7x4WaALdgDGJ30-g@mail.gmail.com> <CAK7LNAQOaLHizg24CrMUz7veX0fa0QYwgJzAi5tOT+-CDCmUzw@mail.gmail.com>
-In-Reply-To: <CAK7LNAQOaLHizg24CrMUz7veX0fa0QYwgJzAi5tOT+-CDCmUzw@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 3 Jan 2023 21:48:05 +0100
-Message-ID: <CANiq72nDTJyeS2Re9zayaUsE67W9cuTrOgpKjxqKmJ67u26Qaw@mail.gmail.com>
-Subject: Re: [PATCH 0/6] kbuild: fix dep-file processing for rust
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        llvm@lists.linux.dev, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Dec 31, 2022 at 4:06 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> Yes, my plan is to get it in the kbuild tree with your ack.
+Signed-off-by: alexpantyukhin <apantykhin@gmail.com>
+---
+ Store Makefiles by paths in dictionary and use these if required again
 
-Done, also compile- and boot-tested each (on top of -rc1).
+ scripts/generate_rust_analyzer.py | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-Cheers,
-Miguel
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index ecc7ea9a4dcf..9fafa0397e8b 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -98,13 +98,19 @@ def generate_crates(srctree, objtree, sysroot_src):
+     # Then, the rest outside of `rust/`.
+     #
+     # We explicitly mention the top-level folders we want to cover.
++    makefiles_path_content = {}
+     for folder in ("samples", "drivers"):
+         for path in (srctree / folder).rglob("*.rs"):
+             logging.info("Checking %s", path)
+             name = path.name.replace(".rs", "")
+ 
+             # Skip those that are not crate roots.
+-            if f"{name}.o" not in open(path.parent / "Makefile").read():
++            makefile_path = path.parent / "Makefile"
++            if makefile_path not in makefiles_path_content:
++                with open(makefile_path) as makefile:
++                    makefiles_path_content[makefile_path] = makefile.read()
++
++            if f"{name}.o" not in makefiles_path_content[makefile_path]:
+                 continue
+ 
+             logging.info("Adding %s", name)
+-- 
+2.25.1
+
