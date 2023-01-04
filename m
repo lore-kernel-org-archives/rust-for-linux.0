@@ -2,60 +2,61 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C515C53210
-	for <rust-for-linux@archiver.kernel.org>; Wed,  4 Jan 2023 16:22:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCDC1C4708D
+	for <rust-for-linux@archiver.kernel.org>; Wed,  4 Jan 2023 16:27:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230242AbjADQWN (ORCPT
+        id S239796AbjADQ07 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 4 Jan 2023 11:22:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45508 "EHLO
+        Wed, 4 Jan 2023 11:26:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239785AbjADQVr (ORCPT
+        with ESMTP id S239805AbjADQ0t (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 4 Jan 2023 11:21:47 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE80C756;
-        Wed,  4 Jan 2023 08:21:46 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id x22so83788011ejs.11;
-        Wed, 04 Jan 2023 08:21:46 -0800 (PST)
+        Wed, 4 Jan 2023 11:26:49 -0500
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D63D21B1EE;
+        Wed,  4 Jan 2023 08:26:48 -0800 (PST)
+Received: by mail-ej1-x633.google.com with SMTP id kw15so83759234ejc.10;
+        Wed, 04 Jan 2023 08:26:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Pd7uI+y3iZOOxlDVGlCuUm5GdVePmb0oHf0kQszZU3s=;
-        b=p4/Hw0GebhTz+KiZ7cZEuzvI4dKCPRVkt4PgwhnLixzdUx0KmhMzqM7X7eihfNgUyI
-         ctrjVdoIJ43l6UUQyYt/1nS2lJjmBTd2NvOMEZyKyd5zP/LZw9bkARyonJHqds5bWOGG
-         qFfCsUqHy0YjqkgqXDhf4KGDXy1QVhspVJpMw2vm0Y/RBsj+Ktw649LGAcCP6dgVRqYQ
-         q7rtRrvxWgD+n0B4kYptKWS9ALWWtESJlXrmHRPGsdYO+CiZrsjlhMZGcFWSqOqWI33N
-         Gse+xAkIIPUR5iRe41RowNtCFXEAbDcHgNVXfGKMKrndNFjGOQ4mOcZRxPuZ9/1zeRbj
-         I4gA==
+        bh=dlNSZ1zKeio5IM+qciAQdm1jmpnza6LnH9wQe17H30s=;
+        b=X2pw5+FFh90/EXimxoLnyKytSb4yzru+hZwCCCd60c5Al23P9O0EPouNqRdmZTVoHw
+         hMdkNZEsUdkzUc6U4X6fDNtaf+e3n0ze06t2lidZUcAGnuYs11WNPVIJ9I0+4py702nh
+         G+lPvwXVaXsxf3VHCDKa7us9TAzGHh8L6Jiis56AVr2Qf47ViIGg6qv3Mt3rSkkXi4Y9
+         yiU++J/VFmKPXd9WZfulHreIhCtYJ4V7YRNJL7QRmnhsBziYZRMia3vRcIddP3GIQvHa
+         y9MWP6iAsPUbIj5z4RXVmaXMhTpZlUleMPP3QdxS1rxMy4wO+n/d5FDyo7Lb1NUYJeHe
+         O8Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Pd7uI+y3iZOOxlDVGlCuUm5GdVePmb0oHf0kQszZU3s=;
-        b=bVk/qU1AeXjTwrbz2Cmpjl5T9xpVpfmNxjJOUuj9rK6qZrTSlr/HqKhX4wdW7ZpoJD
-         WmBeIxqyCUXYPoV5Itgxleokb8RycWIfWK+UxTB++kzuvu7z0CL/t67I3k/WNE9vpMa0
-         yIUjQtyf1yhX1x0+vUTFxmCSSHx0M9RwnzzmUu7sSMB3MdRmF+pfw3cKP6MDOQGvRAOL
-         ilCHzB+4bZ39yBjAQOhehImnaxav7b6wAeqyzv+YEKIbNdo0sq6Wa/mBeYEUlHKHtjRo
-         hriWMdpop9rYQ0VMSOPSJ25qkdBr/26lckIrgW3FnRMXb+bEBQnFFkdD8y/+KORVJulX
-         5oqw==
-X-Gm-Message-State: AFqh2kpv2qfUL9eB22YhAlDKGNof0FDzlt5hRgA/vchTB5HsYBHQj8gT
-        atpWte6pQeUP40NFHfPZfMg=
-X-Google-Smtp-Source: AMrXdXt+zF5a6PsJ8NVZJnOmRkvoWlyc0lS25rNARGSItkV3QzXErxrRPHxoRH+31QLO+rPdtLp4IQ==
-X-Received: by 2002:a17:906:eca6:b0:7c1:524d:2bec with SMTP id qh6-20020a170906eca600b007c1524d2becmr41770352ejb.39.1672849305027;
-        Wed, 04 Jan 2023 08:21:45 -0800 (PST)
+        bh=dlNSZ1zKeio5IM+qciAQdm1jmpnza6LnH9wQe17H30s=;
+        b=fSI+eMYQFR7+pEFzWR+dwiPwpR1Bqp+1B+Y6HZyHY1ya6EwjN9vrE6CKNm1AGZkABa
+         XbBSZkPM9pG7UwqOXTyuqxzIVaENiLxg8LffyFEmir+vZLvs660xF12mxfWDvh/bhMtb
+         DW9LbHosG7wK3j+04Px40yEdNj1Uvh1YJ/0Jn42koUSgs39Ns3YrGIMZGJIINdCBItvH
+         kcCUVOpENyChi/XRVJndQjuQVk1q59uF1rKfig848gTZHszGGnc9IW9/E8kLSeRXFMQq
+         6jOQjzBTW+I6vpD+JmlSSM+7lghl9PFcTXnnki/cIfQu7X/b3qUXkYd+uISeVVHqllgT
+         qbPQ==
+X-Gm-Message-State: AFqh2kpH/7zWlmaFl79786mli06mERJCodNh5a21Hw7bunlMoQu30LHz
+        8HyGzIEBIo8EAUkcXEQSCHw=
+X-Google-Smtp-Source: AMrXdXuK03+8hwXp7VeEhUZfc57gi6LrVEKudKlHct5gTkoUEV5OH9r7xDFowrsBeN6kcF52Sq7cBQ==
+X-Received: by 2002:a17:906:185b:b0:841:e5b3:c95d with SMTP id w27-20020a170906185b00b00841e5b3c95dmr44848358eje.30.1672849607455;
+        Wed, 04 Jan 2023 08:26:47 -0800 (PST)
 Received: from localhost (host-82-60-200-213.retail.telecomitalia.it. [82.60.200.213])
-        by smtp.gmail.com with ESMTPSA id 23-20020a170906309700b00809e33ba33dsm15709158ejv.19.2023.01.04.08.21.43
+        by smtp.gmail.com with ESMTPSA id e11-20020a170906314b00b007ae10525550sm15402209eje.47.2023.01.04.08.26.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Jan 2023 08:21:44 -0800 (PST)
+        Wed, 04 Jan 2023 08:26:46 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 04 Jan 2023 17:21:42 +0100
-Message-Id: <CPJJL4KNB0PB.16IQTD9KFLTQS@vincent>
+Date:   Wed, 04 Jan 2023 17:26:45 +0100
+Message-Id: <CPJJOZKU99U7.2II24G3LHGAXF@vincent>
+From:   "Vincenzo" <vincenzopalazzodev@gmail.com>
 To:     "Wedson Almeida Filho" <wedsonaf@gmail.com>,
         <rust-for-linux@vger.kernel.org>
 Cc:     "Miguel Ojeda" <ojeda@kernel.org>,
@@ -63,242 +64,98 @@ Cc:     "Miguel Ojeda" <ojeda@kernel.org>,
         "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
         =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 6/7] rust: sync: introduce `UniqueArc`
-From:   "Vincenzo" <vincenzopalazzodev@gmail.com>
+Subject: Re: [PATCH 7/7] rust: sync: add support for dispatching on Arc and
+ ArcBorrow.
 X-Mailer: aerc 0.8.2
 References: <20221228060346.352362-1-wedsonaf@gmail.com>
- <20221228060346.352362-6-wedsonaf@gmail.com>
-In-Reply-To: <20221228060346.352362-6-wedsonaf@gmail.com>
+ <20221228060346.352362-7-wedsonaf@gmail.com>
+In-Reply-To: <20221228060346.352362-7-wedsonaf@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Wed Dec 28, 2022 at 7:03 AM CET, Wedson Almeida Filho wrote:
+> Trait objects (`dyn T`) require trait `T` to be "object safe". One of
+> the requirements for "object safety" is that the receiver have one of
+> the allowed types. This commit adds `Arc<T>` and `ArcBorrow<'_, T>` to
+> the list of allowed types.
+>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 
 Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-
-On Wed Dec 28, 2022 at 7:03 AM CET, Wedson Almeida Filho wrote:
-> Since `Arc<T>` does not allow mutating `T` directly (i.e., without inner
-> mutability), it is currently not possible to do some initialisation of
-> `T` post construction but before being shared.
->
-> `UniqueArc<T>` addresses this problem essentially being an `Arc<T>` that
-> has a refcount of 1 and is therefore writable. Once initialisation is
-> completed, it can be transitioned (without failure paths) into an
-> `Arc<T>`.
->
-> Suggested-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 > ---
->  rust/kernel/sync.rs     |   2 +-
->  rust/kernel/sync/arc.rs | 152 +++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 151 insertions(+), 3 deletions(-)
+>  rust/kernel/lib.rs      |  1 +
+>  rust/kernel/sync/arc.rs | 20 ++++++++++++++++++--
+>  2 files changed, 19 insertions(+), 2 deletions(-)
 >
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 5de03ea83ea1..33da23e3076d 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -7,4 +7,4 @@
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 4bde65e7b06b..e0b0e953907d 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -15,6 +15,7 @@
+>  #![feature(allocator_api)]
+>  #![feature(coerce_unsized)]
+>  #![feature(core_ffi_c)]
+> +#![feature(dispatch_from_dyn)]
+>  #![feature(receiver_trait)]
+>  #![feature(unsize)]
 > =20
->  mod arc;
-> =20
-> -pub use arc::{Arc, ArcBorrow};
-> +pub use arc::{Arc, ArcBorrow, UniqueArc};
 > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 84f31c85a513..832bafc74a90 100644
+> index 832bafc74a90..ff73f9240ca1 100644
 > --- a/rust/kernel/sync/arc.rs
 > +++ b/rust/kernel/sync/arc.rs
-> @@ -19,8 +19,9 @@ use crate::{bindings, error::Result, types::Opaque};
->  use alloc::boxed::Box;
->  use core::{
->      marker::{PhantomData, Unsize},
-> -    mem::ManuallyDrop,
-> -    ops::Deref,
-> +    mem::{ManuallyDrop, MaybeUninit},
-> +    ops::{Deref, DerefMut},
-> +    pin::Pin,
->      ptr::NonNull,
->  };
-> =20
-> @@ -222,6 +223,19 @@ impl<T: ?Sized> Drop for Arc<T> {
->      }
->  }
-> =20
-> +impl<T: ?Sized> From<UniqueArc<T>> for Arc<T> {
-> +    fn from(item: UniqueArc<T>) -> Self {
-> +        item.inner
-> +    }
-> +}
-> +
-> +impl<T: ?Sized> From<Pin<UniqueArc<T>>> for Arc<T> {
-> +    fn from(item: Pin<UniqueArc<T>>) -> Self {
-> +        // SAFETY: The type invariants of `Arc` guarantee that the data =
-is pinned.
-> +        unsafe { Pin::into_inner_unchecked(item).inner }
-> +    }
-> +}
-> +
->  /// A borrowed reference to an [`Arc`] instance.
+> @@ -92,9 +92,15 @@ use core::{
+>  /// Coercion from `Arc<Example>` to `Arc<dyn MyTrait>`:
 >  ///
->  /// For cases when one doesn't ever need to increment the refcount on th=
-e allocation, it is simpler
-> @@ -328,3 +342,137 @@ impl<T: ?Sized> Deref for ArcBorrow<'_, T> {
->          unsafe { &self.inner.as_ref().data }
->      }
->  }
+>  /// ```
+> -/// use kernel::sync::Arc;
+> +/// use kernel::sync::{Arc, ArcBorrow};
+> +///
+> +/// trait MyTrait {
+> +///     // Trait has a function whose `self` type is `Arc<Self>`.
+> +///     fn example1(self: Arc<Self>) {}
+>  ///
+> -/// trait MyTrait {}
+> +///     // Trait has a function whose `self` type is `ArcBorrow<'_, Self=
+>`.
+> +///     fn example2(self: ArcBorrow<'_, Self>) {}
+> +/// }
+>  ///
+>  /// struct Example;
+>  /// impl MyTrait for Example {}
+> @@ -123,6 +129,9 @@ impl<T: ?Sized> core::ops::Receiver for Arc<T> {}
+>  // dynamically-sized type (DST) `U`.
+>  impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::CoerceUnsized<Arc<U>> =
+for Arc<T> {}
+> =20
+> +// This is to allow `Arc<U>` to be dispatched on when `Arc<T>` can be co=
+erced into `Arc<U>`.
+> +impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<Arc<U>=
+> for Arc<T> {}
 > +
-> +/// A refcounted object that is known to have a refcount of 1.
-> +///
-> +/// It is mutable and can be converted to an [`Arc`] so that it can be s=
-hared.
-> +///
-> +/// # Invariants
-> +///
-> +/// `inner` always has a reference count of 1.
-> +///
-> +/// # Examples
-> +///
-> +/// In the following example, we make changes to the inner object before=
- turning it into an
-> +/// `Arc<Test>` object (after which point, it cannot be mutated directly=
-). Note that `x.into()`
-> +/// cannot fail.
-> +///
-> +/// ```
-> +/// use kernel::sync::{Arc, UniqueArc};
-> +///
-> +/// struct Example {
-> +///     a: u32,
-> +///     b: u32,
-> +/// }
-> +///
-> +/// fn test() -> Result<Arc<Example>> {
-> +///     let mut x =3D UniqueArc::try_new(Example { a: 10, b: 20 })?;
-> +///     x.a +=3D 1;
-> +///     x.b +=3D 1;
-> +///     Ok(x.into())
-> +/// }
-> +///
-> +/// # test().unwrap();
-> +/// ```
-> +///
-> +/// In the following example we first allocate memory for a ref-counted =
-`Example` but we don't
-> +/// initialise it on allocation. We do initialise it later with a call t=
-o [`UniqueArc::write`],
-> +/// followed by a conversion to `Arc<Example>`. This is particularly use=
-ful when allocation happens
-> +/// in one context (e.g., sleepable) and initialisation in another (e.g.=
-, atomic):
-> +///
-> +/// ```
-> +/// use kernel::sync::{Arc, UniqueArc};
-> +///
-> +/// struct Example {
-> +///     a: u32,
-> +///     b: u32,
-> +/// }
-> +///
-> +/// fn test() -> Result<Arc<Example>> {
-> +///     let x =3D UniqueArc::try_new_uninit()?;
-> +///     Ok(x.write(Example { a: 10, b: 20 }).into())
-> +/// }
-> +///
-> +/// # test().unwrap();
-> +/// ```
-> +///
-> +/// In the last example below, the caller gets a pinned instance of `Exa=
-mple` while converting to
-> +/// `Arc<Example>`; this is useful in scenarios where one needs a pinned=
- reference during
-> +/// initialisation, for example, when initialising fields that are wrapp=
-ed in locks.
-> +///
-> +/// ```
-> +/// use kernel::sync::{Arc, UniqueArc};
-> +///
-> +/// struct Example {
-> +///     a: u32,
-> +///     b: u32,
-> +/// }
-> +///
-> +/// fn test() -> Result<Arc<Example>> {
-> +///     let mut pinned =3D Pin::from(UniqueArc::try_new(Example { a: 10,=
- b: 20 })?);
-> +///     // We can modify `pinned` because it is `Unpin`.
-> +///     pinned.as_mut().a +=3D 1;
-> +///     Ok(pinned.into())
-> +/// }
-> +///
-> +/// # test().unwrap();
-> +/// ```
-> +pub struct UniqueArc<T: ?Sized> {
-> +    inner: Arc<T>,
+>  // SAFETY: It is safe to send `Arc<T>` to another thread when the underl=
+ying `T` is `Sync` because
+>  // it effectively means sharing `&T` (which is safe because `T` is `Sync=
+`); additionally, it needs
+>  // `T` to be `Send` because any thread that has an `Arc<T>` may ultimate=
+ly access `T` directly, for
+> @@ -297,6 +306,13 @@ pub struct ArcBorrow<'a, T: ?Sized + 'a> {
+>  // This is to allow [`ArcBorrow`] (and variants) to be used as the type =
+of `self`.
+>  impl<T: ?Sized> core::ops::Receiver for ArcBorrow<'_, T> {}
+> =20
+> +// This is to allow `ArcBorrow<U>` to be dispatched on when `ArcBorrow<T=
+>` can be coerced into
+> +// `ArcBorrow<U>`.
+> +impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<ArcBor=
+row<'_, U>>
+> +    for ArcBorrow<'_, T>
+> +{
 > +}
 > +
-> +impl<T> UniqueArc<T> {
-> +    /// Tries to allocate a new [`UniqueArc`] instance.
-> +    pub fn try_new(value: T) -> Result<Self> {
-> +        Ok(Self {
-> +            // INVARIANT: The newly-created object has a ref-count of 1.
-> +            inner: Arc::try_new(value)?,
-> +        })
-> +    }
-> +
-> +    /// Tries to allocate a new [`UniqueArc`] instance whose contents ar=
-e not initialised yet.
-> +    pub fn try_new_uninit() -> Result<UniqueArc<MaybeUninit<T>>> {
-> +        Ok(UniqueArc::<MaybeUninit<T>> {
-> +            // INVARIANT: The newly-created object has a ref-count of 1.
-> +            inner: Arc::try_new(MaybeUninit::uninit())?,
-> +        })
-> +    }
-> +}
-> +
-> +impl<T> UniqueArc<MaybeUninit<T>> {
-> +    /// Converts a `UniqueArc<MaybeUninit<T>>` into a `UniqueArc<T>` by =
-writing a value into it.
-> +    pub fn write(mut self, value: T) -> UniqueArc<T> {
-> +        self.deref_mut().write(value);
-> +        let inner =3D ManuallyDrop::new(self).inner.ptr;
-> +        UniqueArc {
-> +            // SAFETY: The new `Arc` is taking over `ptr` from `self.inn=
-er` (which won't be
-> +            // dropped). The types are compatible because `MaybeUninit<T=
->` is compatible with `T`.
-> +            inner: unsafe { Arc::from_inner(inner.cast()) },
-> +        }
-> +    }
-> +}
-> +
-> +impl<T: ?Sized> From<UniqueArc<T>> for Pin<UniqueArc<T>> {
-> +    fn from(obj: UniqueArc<T>) -> Self {
-> +        // SAFETY: It is not possible to move/replace `T` inside a `Pin<=
-UniqueArc<T>>` (unless `T`
-> +        // is `Unpin`), so it is ok to convert it to `Pin<UniqueArc<T>>`=
-.
-> +        unsafe { Pin::new_unchecked(obj) }
-> +    }
-> +}
-> +
-> +impl<T: ?Sized> Deref for UniqueArc<T> {
-> +    type Target =3D T;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        self.inner.deref()
-> +    }
-> +}
-> +
-> +impl<T: ?Sized> DerefMut for UniqueArc<T> {
-> +    fn deref_mut(&mut self) -> &mut Self::Target {
-> +        // SAFETY: By the `Arc` type invariant, there is necessarily a r=
-eference to the object, so
-> +        // it is safe to dereference it. Additionally, we know there is =
-only one reference when
-> +        // it's inside a `UniqueArc`, so it is safe to get a mutable ref=
-erence.
-> +        unsafe { &mut self.inner.ptr.as_mut().data }
-> +    }
-> +}
+>  impl<T: ?Sized> Clone for ArcBorrow<'_, T> {
+>      fn clone(&self) -> Self {
+>          *self
 > --=20
 > 2.34.1
 
