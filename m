@@ -2,112 +2,218 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C4E2C4332F
-	for <rust-for-linux@archiver.kernel.org>; Wed,  4 Jan 2023 16:04:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF784C4708D
+	for <rust-for-linux@archiver.kernel.org>; Wed,  4 Jan 2023 16:07:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233197AbjADQE0 (ORCPT
+        id S239534AbjADQHT (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 4 Jan 2023 11:04:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56954 "EHLO
+        Wed, 4 Jan 2023 11:07:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235098AbjADQEZ (ORCPT
+        with ESMTP id S239757AbjADQGz (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 4 Jan 2023 11:04:25 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A12653B8
-        for <rust-for-linux@vger.kernel.org>; Wed,  4 Jan 2023 08:04:24 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id cf42so51011813lfb.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Jan 2023 08:04:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MmC+ZbDya8QoO/TlDYYV14GeX1CKoMQHOrRplDb0a1g=;
-        b=H+TbBy7udMxm1ctQiB2zg9UskWUpYcDaC8Tf2LHbzULaeBQ1Nw+bOR2beOM/ji6sQF
-         kN8oMMa4/aYOeBR/Q1KixC7Jm04aeFqqDmqSCuBabzRuxx4i2QnPP3ljBgejci4YpjbN
-         5sIzYT3Ri08ALMHkFHxynQ9wIY2m2A/U9dd/EkeRLnsaXLqZMbssQujcMd9Re3UrK6gy
-         COlbx7yeZHTJ+vzuSouC97Yi+PKg/dSI1UNBcAHG1xXePOWvqeGn+Pjnst+AaFc65fuV
-         nxbnHpzxvSqEMFp08OaiA2PApmoDRZurTIPccdIx+GeLv6JNx/faxZYYDLY8h1Z4uIL+
-         kkjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MmC+ZbDya8QoO/TlDYYV14GeX1CKoMQHOrRplDb0a1g=;
-        b=Xhd7W//GoAAT4Di8qA1Bhf+6wLYwxKpisw1SxoMEAq3tDOuVAfTJLqH82B/F2jqEGO
-         m4JLMGWqvHFV5o6Uke2t3VnUWpxvwvXUPwaXCuLqmNBLO1dsdUbBKqX1oP4NymgsQcbB
-         07wn1IpNtvT9GshghXClWqn0jkqWMspneCjylumqWj5aPG6VfM+XWzRPPQw/ZRVJYMbc
-         BXOh8BNotPPkd3tIoamtLPHDf0disb3H3bMHucww8EmjDWR077eC/qhGlJRz9t77tE3a
-         W/v1HrzT4hC0chC+psH55rO6T+UHzbeBScvNpxX7U5kJ0a+p2GgjNOmjphj865zyR/Kd
-         cW3Q==
-X-Gm-Message-State: AFqh2kpuZwRKPMB44lARuJs6xzvKAx5U3XSuu3ksmTdBf2fdz8/Tb/9z
-        V4XVd9e5KQ6kvA0KUfAKaa3i9CWASyl0Ex0o
-X-Google-Smtp-Source: AMrXdXvbYoVYPaOcpxoTXO1aETCGKcXdv+kCBqI0rvLlkwPftkik59ED+qVG4Y20SEWfmDIJ17uf3g==
-X-Received: by 2002:a05:6512:20d0:b0:4b5:88e4:2ba4 with SMTP id u16-20020a05651220d000b004b588e42ba4mr11849390lfr.15.1672848262952;
-        Wed, 04 Jan 2023 08:04:22 -0800 (PST)
-Received: from localhost.localdomain ([46.147.136.10])
-        by smtp.gmail.com with ESMTPSA id t28-20020a2e8e7c000000b0027feb966523sm841335ljk.140.2023.01.04.08.04.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Jan 2023 08:04:22 -0800 (PST)
-From:   Alexander Pantyukhin <apantykhin@gmail.com>
-To:     ojeda@kernel.org, rust-for-linux@vger.kernel.org,
-        akpm@linux-foundation.org
-Cc:     alexpantyukhin <apantykhin@gmail.com>
-Subject: [PATCH] scripts: avoid redundant re-reading makefiles. 
-Date:   Wed,  4 Jan 2023 21:04:05 +0500
-Message-Id: <20230104160405.5530-1-apantykhin@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        Wed, 4 Jan 2023 11:06:55 -0500
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C15B91573E;
+        Wed,  4 Jan 2023 08:06:53 -0800 (PST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id 2DACE5C012E;
+        Wed,  4 Jan 2023 11:06:53 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Wed, 04 Jan 2023 11:06:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crisal.io; h=cc
+        :cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1672848413; x=
+        1672934813; bh=HgshSoO5gw8yYEeQSi81/W1v7g4XA2r8QMVrsjONx5I=; b=z
+        I7x+LH720P0gZVa8KHWvcshG7XaXO9NS2yuLvwOuNA6i3jT7Pl5MrWLx+frLTlly
+        66m+WsYaVzm82TdZ++2AzIKbrtW01p6CjxemIIoyJPubrcfw+vL84DDJrtdJKjCy
+        xT+7qaY6suCw0SFETHT9XRdOxBbE6JK3iWpTs1eeq6/zaSgZTvFq9C5OC3W0zAxq
+        tW/Q45yveERsaqdbBvDZ6pzH+cNzMT+gDpLt9AZPGGaaHf+M0PkTRkajjZgYOXDR
+        4CKur/3YukbmH2iYmIrZp3xWhJwGE9YzqbptjSnInHp9w80TRRhn3ll7xzT6nYoD
+        Wdo/mIB0W96RrElX7Kxxg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1672848413; x=
+        1672934813; bh=HgshSoO5gw8yYEeQSi81/W1v7g4XA2r8QMVrsjONx5I=; b=Q
+        vAdZRdUhTX5t2vVNYWgqUCPXg+3e9v1+FCgBYbZ1y3aHIL1HJsfZlgK5vMp1L232
+        yq2eRlwJ/jDWmtamXTfcU+nuDC9UH9fJ4oFaICz/uqwmzPEJksZLoVsaCwe2fnm1
+        lpOAFqrJBTQaMdWAbLyVHF1VT0ntKxdIgNGiavxH+Bu9OhQPP37nV0Abqc/hB8El
+        lN8OCS5wumqemM+BkjD4r5QZ5eDIskht3gtatBcNKlOMJuYpnV7nMVGlUFZmYPr+
+        QwI0sFl1lehDGtvM0Q3aRnovPaEP4gaOZedxi1ucwnZd65y92iK0tmv2G1JCM/Q4
+        uijqHrNk6Zr+n28IwXhrg==
+X-ME-Sender: <xms:HKS1Y5ILR1fimQUTVL8r2BhrQ-9YTXvo4aZW26Vu9rs8u1I8QJgWMQ>
+    <xme:HKS1Y1I1M4ybfGvg3wF0hU1VibLdQi7GJ1Ln7hHoeLqz7fVWMx2Hius6ItpUWH1cg
+    Bpeb-wYcsfmEJG0PEQ>
+X-ME-Received: <xmr:HKS1Yxu4re7fTD_htRg5CfatlJhCD1FDx5Il_qtSMbqh65xofy7WSjPZu0rRNM-JNtFN>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrjeeigdekgecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefkffggfgfuvfevfhfhjggtgfesthejredttdefjeenucfhrhhomhepgfhmihhl
+    ihhoucevohgsohhsucmllhhvrghrvgiiuceovghmihhlihhosegtrhhishgrlhdrihhoqe
+    enucggtffrrghtthgvrhhnpeejfeehgfduudeuvddujedujeeliefgheethefhtedvfeel
+    keeiuedvudeugeefkeenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsth
+    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepvghmihhlihhosegtrhhi
+    shgrlhdrihho
+X-ME-Proxy: <xmx:HKS1Y6YRJxu_BMnTO-F-W7dmol3WzGB0GNpHTRnjwyAIDsBrDyU5Mw>
+    <xmx:HKS1YwZsyR5BVqeBbAv1agCAY3Nk4pC_Wrx1LnteGE8q5_8fo2EHDA>
+    <xmx:HKS1Y-D-Pl1rJjyrZr6bz5uRgQ-dqIIEiOuamvwlhCAbJIwRLK_flQ>
+    <xmx:HaS1Y1N5tmAGt_7eT_tflbS4oEEQy4U9voy6-dO5sTnUhQe7RcpJWQ>
+Feedback-ID: i2e3c46c1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Jan 2023 11:06:51 -0500 (EST)
+Message-ID: <df2f6c0b-fb4c-97e5-b607-7df626ea5933@crisal.io>
+Date:   Wed, 4 Jan 2023 17:06:50 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101
+ Firefox/110.0 Thunderbird/110.0a1
+Subject: Re: [PATCH 4/7] rust: sync: introduce `ArcBorrow`
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org
+References: <20221228060346.352362-1-wedsonaf@gmail.com>
+ <20221228060346.352362-4-wedsonaf@gmail.com>
+ <20221231194352.55cf0a26.gary@garyguo.net>
+ <CANeycqrVsbNJ+A+A26LXkBezBNUHvnZU2Q3_whexCwwG5ZcgPQ@mail.gmail.com>
+Content-Language: en-US
+From:   =?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>
+In-Reply-To: <CANeycqrVsbNJ+A+A26LXkBezBNUHvnZU2Q3_whexCwwG5ZcgPQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: alexpantyukhin <apantykhin@gmail.com>
+Sorry for the drive-by comment, but maybe it saves some work.
 
-The main goal of the patch is avoid redundant re-reading makefiles 
-if these were read before. This is performance improvement.
+On 1/4/23 16:29, Wedson Almeida Filho wrote:
+> On Sat, 31 Dec 2022 at 19:43, Gary Guo <gary@garyguo.net> wrote:
+>>
+>> On Wed, 28 Dec 2022 06:03:43 +0000
+>> Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+>>
+>>> This allows us to create references to a ref-counted allocation without
+>>> double-indirection and that still allow us to increment the refcount to
+>>> a new `Arc<T>`.
+>>>
+>>> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+>>> ---
+>>>   rust/kernel/sync.rs     |  2 +-
+>>>   rust/kernel/sync/arc.rs | 97 +++++++++++++++++++++++++++++++++++++++++
+>>>   2 files changed, 98 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+>>> index 39b379dd548f..5de03ea83ea1 100644
+>>> --- a/rust/kernel/sync.rs
+>>> +++ b/rust/kernel/sync.rs
+>>> @@ -7,4 +7,4 @@
+>>>
+>>>   mod arc;
+>>>
+>>> -pub use arc::Arc;
+>>> +pub use arc::{Arc, ArcBorrow};
+>>> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+>>> index dbc7596cc3ce..f68bfc02c81a 100644
+>>> --- a/rust/kernel/sync/arc.rs
+>>> +++ b/rust/kernel/sync/arc.rs
+>>> @@ -19,6 +19,7 @@ use crate::{bindings, error::Result, types::Opaque};
+>>>   use alloc::boxed::Box;
+>>>   use core::{
+>>>       marker::{PhantomData, Unsize},
+>>> +    mem::ManuallyDrop,
+>>>       ops::Deref,
+>>>       ptr::NonNull,
+>>>   };
+>>> @@ -164,6 +165,18 @@ impl<T: ?Sized> Arc<T> {
+>>>               _p: PhantomData,
+>>>           }
+>>>       }
+>>> +
+>>> +    /// Returns an [`ArcBorrow`] from the given [`Arc`].
+>>> +    ///
+>>> +    /// This is useful when the argument of a function call is an [`ArcBorrow`] (e.g., in a method
+>>> +    /// receiver), but we have an [`Arc`] instead. Getting an [`ArcBorrow`] is free when optimised.
+>>> +    #[inline]
+>>> +    pub fn as_arc_borrow(&self) -> ArcBorrow<'_, T> {
+>>> +        // SAFETY: The constraint that the lifetime of the shared reference must outlive that of
+>>> +        // the returned `ArcBorrow` ensures that the object remains alive and that no mutable
+>>> +        // reference can be created.
+>>> +        unsafe { ArcBorrow::new(self.ptr) }
+>>> +    }
+>>>   }
+>>>
+>>>   impl<T: ?Sized> Deref for Arc<T> {
+>>> @@ -208,3 +221,87 @@ impl<T: ?Sized> Drop for Arc<T> {
+>>>           }
+>>>       }
+>>>   }
+>>> +
+>>> +/// A borrowed reference to an [`Arc`] instance.
+>>> +///
+>>> +/// For cases when one doesn't ever need to increment the refcount on the allocation, it is simpler
+>>> +/// to use just `&T`, which we can trivially get from an `Arc<T>` instance.
+>>> +///
+>>> +/// However, when one may need to increment the refcount, it is preferable to use an `ArcBorrow<T>`
+>>> +/// over `&Arc<T>` because the latter results in a double-indirection: a pointer (shared reference)
+>>> +/// to a pointer (`Arc<T>`) to the object (`T`). An [`ArcBorrow`] eliminates this double
+>>> +/// indirection while still allowing one to increment the refcount and getting an `Arc<T>` when/if
+>>> +/// needed.
+>>> +///
+>>> +/// # Invariants
+>>> +///
+>>> +/// There are no mutable references to the underlying [`Arc`], and it remains valid for the
+>>> +/// lifetime of the [`ArcBorrow`] instance.
+>>> +///
+>>> +/// # Example
+>>> +///
+>>> +/// ```
+>>> +/// use crate::sync::{Arc, ArcBorrow};
+>>> +///
+>>> +/// struct Example;
+>>> +///
+>>> +/// fn do_something(e: ArcBorrow<'_, Example>) -> Arc<Example> {
+>>> +///     e.into()
+>>> +/// }
+>>> +///
+>>> +/// let obj = Arc::try_new(Example)?;
+>>> +/// let cloned = do_something(obj.as_arc_borrow());
+>>> +///
+>>> +/// // Assert that both `obj` and `cloned` point to the same underlying object.
+>>> +/// assert!(core::ptr::eq(&*obj, &*cloned));
+>>> +/// ```
+>>> +pub struct ArcBorrow<'a, T: ?Sized + 'a> {
+>>> +    inner: NonNull<ArcInner<T>>,
+>>> +    _p: PhantomData<&'a ()>,
+>>> +}
+>>> +
+>>> +impl<T: ?Sized> Clone for ArcBorrow<'_, T> {
+>>> +    fn clone(&self) -> Self {
+>>> +        *self
+>>> +    }
+>>> +}
+>>> +
+>>> +impl<T: ?Sized> Copy for ArcBorrow<'_, T> {}
+>>
+>> Couldn't this just be derived `Clone` and `Copy`?
+> 
+> Indeed. I'll send a v2 with this.
 
-Additional code improvements are using 'with' when read file and check
-if file exists.
+I'm not sure this is true. Deriving will add the T: Copy and T: Clone 
+bound, which I think is not what you want here.
 
-Signed-off-by: Alexander Pantyukhin <apantykhin@gmail.com>
----
- scripts/generate_rust_analyzer.py | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+i.e., I assume you want an ArcBorrow to be Copy even if the underlying T 
+is not.
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index ecc7ea9a4dcf..e949f32b8123 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -98,13 +98,25 @@ def generate_crates(srctree, objtree, sysroot_src):
-     # Then, the rest outside of `rust/`.
-     #
-     # We explicitly mention the top-level folders we want to cover.
-+    makefile_path_content = {}
-     for folder in ("samples", "drivers"):
-         for path in (srctree / folder).rglob("*.rs"):
-             logging.info("Checking %s", path)
-             name = path.name.replace(".rs", "")
- 
-             # Skip those that are not crate roots.
--            if f"{name}.o" not in open(path.parent / "Makefile").read():
-+            makefile_path = path.parent / "Makefile"
-+
-+            if makefile_path not in makefile_path_content:
-+                if makefile_path.is_file():
-+                    with open(makefile_path) as makefile:
-+                        makefile_path_content[makefile_path] = makefile.read()
-+
-+                else:
-+                    # If file is missing we consider it as empty-content file.
-+                    makefile_path_content[makefile_path] = ""
-+
-+            if f"{name}.o" not in makefile_path_content[makefile_path]:
-                 continue
- 
-             logging.info("Adding %s", name)
--- 
-2.25.1
+See <https://github.com/rust-lang/rust/issues/26925> for the relevant 
+(really long-standing) Rust issue.
 
+Cheers,
+
+  -- Emilio
