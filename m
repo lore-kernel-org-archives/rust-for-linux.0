@@ -2,100 +2,83 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BB5DC5479D
-	for <rust-for-linux@archiver.kernel.org>; Fri,  6 Jan 2023 23:26:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B243C5479D
+	for <rust-for-linux@archiver.kernel.org>; Fri,  6 Jan 2023 23:58:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230231AbjAFX0v (ORCPT
+        id S236439AbjAFX6I (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 6 Jan 2023 18:26:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44850 "EHLO
+        Fri, 6 Jan 2023 18:58:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230228AbjAFX0v (ORCPT
+        with ESMTP id S236232AbjAFX6H (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 6 Jan 2023 18:26:51 -0500
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C04E714B8;
-        Fri,  6 Jan 2023 15:26:50 -0800 (PST)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-4bf16baa865so41205037b3.13;
-        Fri, 06 Jan 2023 15:26:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PzMwwdZY3oMiVjSJDQ9I4Kl9NTgscPHXL13NH+00AiY=;
-        b=BudRq+yLdzWdBk7w1nfo7PylN5GTI3Zfl0fUXhAujRwr2KAocfV77UMVbP/+4hmPWX
-         Wf8hbTI5KS1OT6z5JQQ2IMoITWVziOSwqPqgzGwo8NhbILROPxiShRf8h2rC8+RrbZEF
-         hyCmUtTIRuw77C0EMsQ+LucO/bNBdTK2f0JyKL+zahTXtAJ6SVGKbe2vS5+ZLTGCrYD+
-         0MiOYFdAR6vFdyAvlJpfzKYIu48QHgVi8uzBX3klEKmxn8l8VJLx1X/HHN91ydI7doYi
-         Dnhw+/nDRYEpoqL7cJ7G9+YWBN997DTZBYO8kjLYiorRdmTHD1HMkqFuDEZQFfqN4oVL
-         8bGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PzMwwdZY3oMiVjSJDQ9I4Kl9NTgscPHXL13NH+00AiY=;
-        b=rhn6TOz9j6reRgkpIlDMWI9IT6oHU6CC6vRMxYQIiNcGPQskyiZ7kcoEgcOY/houVR
-         cepmxMT8JFhVY7s9ty694Ej3poTW15hK5DNd3HE5T581vhpZWbBe3kLo+EDdqGCT9b9Q
-         4IVK3V24rp70lmbUmOG1QpkIgZ1Tj65+eNwbs0LQrFYqi5enL1TGdlVo5FcX++lWOBiS
-         PXKlyl9IhnkEDLgqNksMzjStCeG/12vi14u8AeUKZ8UYrPqYb6jTe5cCNjkkXxNDxsMl
-         P8GP0ryg/SxuY7pRBh5wthBhBGJyxw+gQG4Uhfyk5foxSbiHEyRJUeK+v33fxEqdjIPI
-         uawQ==
-X-Gm-Message-State: AFqh2kp2bFZ0V1SNQtiYCHJGH6KslKWsZWxazUT6gC6PkjGi9n292FHC
-        vlRIY83vQ5Dkuf+R8v35cN4xsXMGcAczDNzrQhVQnWP/iTSU2Yr1
-X-Google-Smtp-Source: AMrXdXsjllksGM0DMnueHbPOmq+XMnr9w3tkvoLDythchnZrcP8JhfJVo/VMX2ztMrvycS+l+7qinbFNNC8qpghsPvc=
-X-Received: by 2002:a0d:f601:0:b0:3d8:8c0e:6d48 with SMTP id
- g1-20020a0df601000000b003d88c0e6d48mr440064ywf.462.1673047609522; Fri, 06 Jan
- 2023 15:26:49 -0800 (PST)
-MIME-Version: 1.0
-References: <202212272003.rgQDX8DQ-lkp@intel.com> <Y6r4mXz5NS0+HVXo@zn.tnic>
- <Y6r+UbfkXruwHU2v@zn.tnic> <76353487-736A-4470-AD31-77F47F8C08F6@me.com>
-In-Reply-To: <76353487-736A-4470-AD31-77F47F8C08F6@me.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 7 Jan 2023 00:26:38 +0100
-Message-ID: <CANiq72mZ3d-W53o4iFryouRKkHkdyR=_qBWkMGm1aNd8Y9ZSnQ@mail.gmail.com>
+        Fri, 6 Jan 2023 18:58:07 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 223387D9D1;
+        Fri,  6 Jan 2023 15:58:06 -0800 (PST)
+Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9C1991EC04E2;
+        Sat,  7 Jan 2023 00:58:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1673049484;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=N1uU3JL/AsQjSJUQMe3X4Bn6CDUQwr8KVnWN9T4MLD0=;
+        b=HFiFHjDg7gC2nadwkUOj7Ky7+z+n9LzRZpJpQk4BYBjnFwZRNC+klNuXT8mHTwqJuGgbrm
+        WgxOZWqO3nMtEb1DmBqiGxsc0lLRKnfV6CCF34W6BVHXcjUU5QNR7+7vSQu+DX4kFQ+u3+
+        ZLOBHUoEUYxQARClJf9LPWuymxkJd14=
+Date:   Sat, 7 Jan 2023 00:57:59 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     kernel test robot <lkp@intel.com>, llvm@lists.linux.dev,
+        oe-kbuild-all@lists.linux.dev, rust-for-linux@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>
 Subject: Re: [bp:tip-x86-alternatives 1/1] error[E0588]: packed type cannot
  transitively contain a `#[repr(align)]` type
-To:     Alexander Altman <alexanderaltman@me.com>
-Cc:     Borislav Petkov <bp@alien8.de>, kernel test robot <lkp@intel.com>,
-        llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        rust-for-linux@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <Y7i1h3lCMKfxB532@zn.tnic>
+References: <202212272003.rgQDX8DQ-lkp@intel.com>
+ <Y6r4mXz5NS0+HVXo@zn.tnic>
+ <CANiq72kc60aPcx5LwFhOGL4AXOhZsZj32iOg75K5ZxLaaRaYkg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CANiq72kc60aPcx5LwFhOGL4AXOhZsZj32iOg75K5ZxLaaRaYkg@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Dec 27, 2022 at 9:31 PM Alexander Altman <alexanderaltman@me.com> w=
-rote:
->
-> One way to resolve this temporarily would be to add the following line ab=
-ove
-> the offending struct:
-> /// <div rustbindgen hide></div>
-> This will cause bindgen to ignore the struct entirely and not translate i=
-t.  If it=E2=80=99s
-> actually needed for Rust code, now or later, then we can=E2=80=99t do tha=
-t and need
-> to actually replace it with something translatable, or else leave it hidd=
-en and
-> manually create its translation on the Rust side.  For the latter, just u=
-sing a
-> u32 for the entire bitfield-containing union would be sufficient.
+On Sat, Jan 07, 2023 at 12:25:17AM +0100, Miguel Ojeda wrote:
+> Yeah, note the x86_64-rhel-8.3-rust config name. It is a config the
+> kernel test robot added for testing with Rust enabled (which explains
+> the version text you saw for `rustc`).
 
-Thanks a lot Alexander for taking a look!
+I figured as much.
 
-This is https://github.com/rust-lang/rust-bindgen/issues/2179.
+As I said:
 
-What we do for constructs that `bindgen` cannot map is to add the
-appropriate parameter/line in `rust/bindgen_parameters`. We hit a
-similar case for `x86_msi_data` that you can see in that file. So
-please feel free to add it there.
+"These reproduction instructions look insufficient to me."
 
-If we end up needing to access it from the Rust side, another
-alternative is to write a C function that performs the required
-operation on it that then the Rust side calls.
+> The script is meant to be called as a Make target, e.g. `make LLVM=1
+> rustavailable`. Perhaps we can put a message if the script was called
+> directly.
 
-Cheers,
-Miguel
+No need - I ran it by hand just to show that I don't have a rust compiler
+installed.
+
+Bottom line is: if I get a build report involving a rust compiler, there better
+be in the reproduction instructions a hint how to install one so that I can
+reproduce. Alternatively, I can always simply ignore it.
+
+And while we're reporting bugs: the error message from the compiler itself could
+use some "humanization" - I have zero clue what it is trying to tell me.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
