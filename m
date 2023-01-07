@@ -2,84 +2,71 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E31DC54EBD
-	for <rust-for-linux@archiver.kernel.org>; Sat,  7 Jan 2023 15:48:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22405C46467
+	for <rust-for-linux@archiver.kernel.org>; Sat,  7 Jan 2023 17:16:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232633AbjAGPr6 (ORCPT
+        id S232225AbjAGRQ5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 7 Jan 2023 10:47:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46646 "EHLO
+        Sat, 7 Jan 2023 12:16:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232521AbjAGPr4 (ORCPT
+        with ESMTP id S232156AbjAGRQ4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 7 Jan 2023 10:47:56 -0500
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEBAD4566F;
-        Sat,  7 Jan 2023 07:47:55 -0800 (PST)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-4b718cab0e4so59602577b3.9;
-        Sat, 07 Jan 2023 07:47:55 -0800 (PST)
+        Sat, 7 Jan 2023 12:16:56 -0500
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FA4645675
+        for <rust-for-linux@vger.kernel.org>; Sat,  7 Jan 2023 09:16:55 -0800 (PST)
+Received: by mail-yb1-xb2b.google.com with SMTP id c124so4903649ybb.13
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 Jan 2023 09:16:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=DeL07sk6Ni/kjyb9/YN9ylMOaOu9Hftn27xq249q7DY=;
-        b=GUwTK5LN2GHW6KoakJ7sKpfHe3RaYflWnMq2XPUJpwpYf+62s5GMT+8d4n8z+WpRSD
-         Vz4Sy4OipDJTbY74VOzvbujCzLgek9lC/fVSfRxR6ip5Mp4b2gQhSCQMfGAqJbXQNknR
-         rUDzDTIZQbkQmDH5T866VelDyraOmYfLrXvJqCHfnEFNUCnZZharNT4Pe/WcOSyx4GTx
-         ZIjeyIYw27obW62ZV/8UcY9UA8R/DjSSrma/ZD0f4ipOanwfWzJd2huLOyhDEsUg7l1z
-         CeU4Y6btDU3vyEkepEJHLRl7uBYp0xz0RD9n6rf/0uhVJAvQZK1Qh+LAJ+ij2/TNOZO9
-         YBZg==
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=azjZkOHl4crr6vLJW69UHxDdBxBskpGZmrjdIUzYTpM=;
+        b=oogy1BgklsRXPVno5+rg3bqnYD0TqVYjZ3/D8mQGkIxAzJnoMmwYK9GG2WpWJiITnE
+         E/w7FsWJNi1Qk6++AoQdVthNuX3ivIu4QFXjzNyc52i+L7U58zusyMa2w+Xcv+XObYN1
+         fEGHowYo5XKuRnN/xEBIiTmiq7pi1CFh8p8lIHo0osjho5lGBj+EVCPhSdEYcyjIJPnv
+         a708sXvc7ss7xVrE5TVuDahI4QehU4gRsf+kkZqtuzkXmWxZ+CoX7/Bp2kLWSISV/wzS
+         vi4WrCgjr6X0XpEXSYSlPtyXyrvApNvWGH0OyfQjzXg4bpKjOTJ3dmLyBKZnBMiSx4xS
+         4v9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DeL07sk6Ni/kjyb9/YN9ylMOaOu9Hftn27xq249q7DY=;
-        b=r43zqCKE2/fguRvd5fSQlKXVxYsETjFqUj0+5lu8oD8UuTmrr9Drv8yuQ2laJOFhuJ
-         Ll0TgiANNS/zOFNUpRCFBXLGl1TSQl5fsZ0j8jPMHJs/vkU8nMcV7cTrLhpORMgMjvew
-         cFyfR+fijEuKpqmhXVete73t5iCRItfrt8YsPmwemW/aKPgZ5s7zUWYNX/DMMBtLBAeW
-         Cw60dhjRhVUUerZMHLcn2MZEhPdU1CNOhWgwbnEb26FCeN3D51XOMWt+d7gu+N9o4mnB
-         18vQVD5zl/hvnMvwnimyT5uHACxTjAhXorPhte3qKcrLkgVI2fzuWTnBkpH7+GV4L6Y3
-         sqLg==
-X-Gm-Message-State: AFqh2ko9zsLzG3Z5lHv3g/UZ8k7BWtLAHmzSuFCnRVQDZGmJnBdOvbMj
-        hUsk6th+f0jDc3oyfL27qxQnZHlfUmyVlsd15YE=
-X-Google-Smtp-Source: AMrXdXt+eQRO+yIDr5h+PzRPiS0SeQ92AL0zYuc1njsZ7XB+O7uxuvAslFzh4ZDrOfsJBVboJrd1wvwadLmQTPRGICk=
-X-Received: by 2002:a0d:f601:0:b0:3d8:8c0e:6d48 with SMTP id
- g1-20020a0df601000000b003d88c0e6d48mr570125ywf.462.1673106474960; Sat, 07 Jan
- 2023 07:47:54 -0800 (PST)
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=azjZkOHl4crr6vLJW69UHxDdBxBskpGZmrjdIUzYTpM=;
+        b=kA98BfHiIRKHTKl9083UqFekdKw4j00IkYXBJ6Xmb2p1IyMQDaLE3gpXCDWLh1THYr
+         EHBAMdV9X6I4/pkZ6feJXCwwYVVndw7PuNSf3cR/6rJU7At9JGyCZQXkTSUIojzaayKk
+         jrBy+r/h1A2mVU2SR3RLOxzZKX/YTMsMTXUEIdhGi0NZNwzCXq2zdIAea5R9hiPKwqhR
+         5mVfTRFw+KYmsqmYo46sD7XRNWqM/FxGnw22dXMb3mtyTFl++IGmPDltMNEA/dv8+NdU
+         8ldLzCmIqElXFjKZtTrVg5S2/591xYutPdkMLQXfJ7nYRaKo+YrYiRW2+8c0KAVVhBoK
+         vgtQ==
+X-Gm-Message-State: AFqh2koipm0Q048UqoOshZ2jqWQleSdgQUajcYT4+w6yUJrR+tI15k34
+        /4RMXe7ht/M+tBRFRx+nCLEgVZQyG663EyZamw6T4jpVCcgiiqC84pc=
+X-Google-Smtp-Source: AMrXdXsOUo9z4ugasIMehcPjMQDU0m7pRmLXu0l/gnKViFXa5T6LgAbSvnhWZJnl3LPxLU5w9o+58I0Drtl4AXmfaBk=
+X-Received: by 2002:a25:1004:0:b0:712:faac:e6b2 with SMTP id
+ 4-20020a251004000000b00712faace6b2mr6305809ybq.632.1673111814465; Sat, 07 Jan
+ 2023 09:16:54 -0800 (PST)
 MIME-Version: 1.0
-References: <20230107094545.3384745-1-masahiroy@kernel.org>
-In-Reply-To: <20230107094545.3384745-1-masahiroy@kernel.org>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 7 Jan 2023 16:47:43 +0100
-Message-ID: <CANiq72=q9pk2ZB2K9Zjn-COY1KD3MFAGthx7VJ_2YmtH61tdng@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: rust: move rust/target.json to scripts/
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>
+Date:   Sat, 7 Jan 2023 18:16:43 +0100
+Message-ID: <CANiq72nCXuZH9ykio_=qRV83iCc46ftuVgiBk6jc+W-6CzV5_Q@mail.gmail.com>
+Subject: Reminder: informal call in 45 minutes
+To:     rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jan 7, 2023 at 10:46 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> +hostprogs += generate_rust_target
+Hi all,
 
-I see that with the cleanup now we can also rely on Kbuild triggering
-it from the `target.json` prerequisite. Nice!
+We will have our informal call in 45 minutes from now (18:00 UTC first
+Saturday of each month).
 
-Do you want to take it through kbuild or rust?
+As usual, everybody is welcome to join. The meetings take place on
+Google Meet. If you need an invitation, drop me an email!
 
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
+If you are in a timezone that cannot easily attend the meetings at
+18:00 UTC, please let us know.
 
 Cheers,
 Miguel
