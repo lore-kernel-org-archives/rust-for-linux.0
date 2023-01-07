@@ -2,81 +2,111 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03E32C54EBD
-	for <rust-for-linux@archiver.kernel.org>; Sat,  7 Jan 2023 00:42:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DF77EC6379F
+	for <rust-for-linux@archiver.kernel.org>; Sat,  7 Jan 2023 09:10:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229686AbjAGAmi (ORCPT
+        id S229608AbjAGJK3 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 6 Jan 2023 19:42:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49360 "EHLO
+        Sat, 7 Jan 2023 04:10:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236382AbjAGAmh (ORCPT
+        with ESMTP id S229475AbjAGJK2 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 6 Jan 2023 19:42:37 -0500
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 543446AD8A;
-        Fri,  6 Jan 2023 16:42:35 -0800 (PST)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-4bf16baa865so42771587b3.13;
-        Fri, 06 Jan 2023 16:42:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=tkm822KFA7O70xjFUbGjoKrxdnp/lV7pa30aR+G6h6I=;
-        b=o9W/gaM3fn47LOd7POMDZ8i9vl9f/OHcWzd7hBhPC0kLKq/s43yB/eN6TAGru9C4d1
-         rUIU+Z+yCDI3L5ZXqRwJz0F6t98I+CEigg33clqSsu5vjSYCaG2516RqOPDslVN7Mr1k
-         FQ+eTK9WRZBmYeCJmKKud2JOLA6BTNcG6aehDGF7EzUmy+HVW2bdwliVsDm0zMQQB5qz
-         erqWjACw11azY4gNrN9djQfA+SJ5ZHU7r9LtT1TtG7NWfXjYS4tDsrPCAlW3DU/Eq+D+
-         C36+Aw0wV4RH+icLmdNqRg2Im2alMtBwRvOVOIM7aY/L7Isf9WJ4f/HtYgFozSlQ+mje
-         lcyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tkm822KFA7O70xjFUbGjoKrxdnp/lV7pa30aR+G6h6I=;
-        b=TXX0O2/1lUCfKSVgQus6ScCn5GcZAHvf5haubQZOM0udE+qDR5q4q/9kZYLUOvZRhQ
-         Ej8t3uhlL9iFmIIp6LfHwr6VPb4hPVi359CaF1WhiLugpRcmevhrNj4wKEGC1yh//Yfk
-         lzDanmsP3iewu5DEXvGTIoRc/j+a4SHVMqU9FqzK2bgCdDPDdU2A2olpOQxN6vLe9bQU
-         St/AM2+rfeqJ7qXLfgYfG4el7iYHFdsQLRnWSMxUxkl61KxHcqZwBIC4H9T+X7hopn6s
-         o0tmzRIRLdTZytbCTkyrmb1A6IMy0AiE+ok7H1lzxrBopAZvKbNlRCMlpkMJviB1AuP7
-         dm0g==
-X-Gm-Message-State: AFqh2kpZ0j3aCHDJPCjDotwb5P35xIWAfTFpbfwHyIdE2yqQIT8nHrBB
-        6RjKdwHqz/QZM90U8mm6Mrc6fenR3KltaL/cm4w=
-X-Google-Smtp-Source: AMrXdXuRmVixv/9TM2vRgBkRFrqbpcZA4QypjP56433k+YSkWJljZtLiG6XZHpJg90uoSrb8bxQ20YmcdXFVROE8/n4=
-X-Received: by 2002:a81:94d:0:b0:3bc:7270:cb70 with SMTP id
- 74-20020a81094d000000b003bc7270cb70mr6962053ywj.83.1673052154532; Fri, 06 Jan
- 2023 16:42:34 -0800 (PST)
+        Sat, 7 Jan 2023 04:10:28 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAB19271A7;
+        Sat,  7 Jan 2023 01:10:27 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AE34609FB;
+        Sat,  7 Jan 2023 09:10:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D6BC433F0;
+        Sat,  7 Jan 2023 09:10:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673082626;
+        bh=IBB4vS9uXFcRA5vbIOpEIyUnvisvZwkqPn9Sb1Psd/E=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ppMRysQWQN03Z7wpwi3vlzb66/WBwSqtJiTO7+Uoaa4xEfOJfhWqTqKevE+06AMs/
+         TyQwRzcX5X3FQ2S+h/s0U8CDyNBpVsPi1BPzA7VJbaufr+Q1gfuZKMts2blyiEE0Ug
+         WwnZ32r1b8IRcfZqPR5S83nMC6jxtD6ToBfj0netvBYB8/Pv+piXsVYHm9YKMBLBqZ
+         lJnZl9GUvleKl9TlA4thg5PrX22UnwpSkQGsZ7CP8J2oQUENp8Stxi3mx5JGTY3+Pg
+         PBPEp8+ZfwDdMRFbjW/Vh1ihT97RYQ3KRi9Y9Al2jUjsGNCpBS0L2bWbhOFYngL5Pf
+         6L4b4iaxQVHXw==
+Received: by mail-ot1-f46.google.com with SMTP id r2-20020a9d7cc2000000b006718a7f7fbaso2264088otn.2;
+        Sat, 07 Jan 2023 01:10:26 -0800 (PST)
+X-Gm-Message-State: AFqh2kozTnXskRRHi96JnMTIvFvZDG2GUwK7uXu+oF+eff/0BfGC7dtK
+        hqR7X464q6F7eTUQE9uUrIxvOTesPftUc8ZoDHA=
+X-Google-Smtp-Source: AMrXdXuWtj+rWB/s6w4ffQZ35ddawNN5ZxJS3aZYJbk/c2fIqmUiiMaTwh5RfwH7fXDlq+d4890py22AWrj/Cm7q+20=
+X-Received: by 2002:a9d:128c:0:b0:66c:794e:f8c6 with SMTP id
+ g12-20020a9d128c000000b0066c794ef8c6mr3619042otg.343.1673082625996; Sat, 07
+ Jan 2023 01:10:25 -0800 (PST)
 MIME-Version: 1.0
-References: <202212272003.rgQDX8DQ-lkp@intel.com> <Y6r4mXz5NS0+HVXo@zn.tnic> <Y6r+UbfkXruwHU2v@zn.tnic>
-In-Reply-To: <Y6r+UbfkXruwHU2v@zn.tnic>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 7 Jan 2023 01:42:23 +0100
-Message-ID: <CANiq72kqfva8ZcLSLbq7=yGdVUHra=eh3etUo5vh1rGbM+eZug@mail.gmail.com>
-Subject: Re: [bp:tip-x86-alternatives 1/1] error[E0588]: packed type cannot
- transitively contain a `#[repr(align)]` type
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     kernel test robot <lkp@intel.com>, llvm@lists.linux.dev,
-        oe-kbuild-all@lists.linux.dev, rust-for-linux@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>
+References: <20221231064203.1623793-1-masahiroy@kernel.org>
+ <20221231064203.1623793-2-masahiroy@kernel.org> <CANiq72k8LSqsnWNd_aa-M1=rMNLWD7KJWrK6Pv0Waq15Exv59g@mail.gmail.com>
+In-Reply-To: <CANiq72k8LSqsnWNd_aa-M1=rMNLWD7KJWrK6Pv0Waq15Exv59g@mail.gmail.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Sat, 7 Jan 2023 18:09:49 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAT7of2JqjYpaM0=fZTB5PG9Sike9-mcKxHS12JwfEAbQA@mail.gmail.com>
+Message-ID: <CAK7LNAT7of2JqjYpaM0=fZTB5PG9Sike9-mcKxHS12JwfEAbQA@mail.gmail.com>
+Subject: Re: [PATCH 1/6] kbuild: specify output names separately for each
+ emission type from rustc
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        llvm@lists.linux.dev, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Dec 27, 2022 at 3:16 PM Borislav Petkov <bp@alien8.de> wrote:
+On Wed, Jan 4, 2023 at 5:45 AM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Resending because rust ML doesn't like big messages:
+> On Sat, Dec 31, 2022 at 7:42 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+> >
+> >   $ make -j$(nproc) samples/rust/rust_minimal.o samples/rust/rust_minimal.rsi \
+> >                     samples/rust/rust_minimal.s samples/rust/rust_minimal.ll
 >
-> Rust folks, you can check out the whole thing here:
+> Yeah, we were testing the single targets, but not multiple at once, thanks!
 >
-> https://lore.kernel.org/all/202212272003.rgQDX8DQ-lkp@intel.com/
+> > +               --emit=dep-info=$(depfile) --emit=obj=$@ --emit=metadata=$(dir $@)$(patsubst %.o,lib%.rmeta,$(notdir $@)) \
 >
-> (and maybe raise the limit on that ML of yours :))
+> Perhaps a newline here to avoid the lengthy line?
 
-Thanks for the resend, by the way! Yeah, we had trouble with the limit
-for the big initial patches too... I can ask the vger admins if they
-are willing to raise it given we get these reports now.
 
-Cheers,
-Miguel
+OK, I will wrap it in v2.
+
+
+>
+> >  hostc_flags    = -Wp,-MMD,$(depfile) $(_hostc_flags)
+> >  hostcxx_flags  = -Wp,-MMD,$(depfile) $(_hostcxx_flags)
+> > -hostrust_flags = $(_hostrust_flags)
+>
+> This was originally meant to be consistent with C and C++ indeed, but
+> if you prefer less variables, I guess it is fine, in which case,
+> should we update the C/C++ side too (in another series)?
+
+
+Yup, we could do this with less variables.
+I will send a clean up.
+
+
+> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+> Tested-by: Miguel Ojeda <ojeda@kernel.org>
+>
+> Cheers,
+> Miguel
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
