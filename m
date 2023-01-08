@@ -2,61 +2,60 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9932AC54EBE
-	for <rust-for-linux@archiver.kernel.org>; Sun,  8 Jan 2023 13:06:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55653C54EBE
+	for <rust-for-linux@archiver.kernel.org>; Sun,  8 Jan 2023 13:49:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231295AbjAHNGr (ORCPT
+        id S230390AbjAHNtH (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 8 Jan 2023 08:06:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37712 "EHLO
+        Sun, 8 Jan 2023 08:49:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230363AbjAHNGq (ORCPT
+        with ESMTP id S229482AbjAHNtG (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 8 Jan 2023 08:06:46 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23F85E0B3;
-        Sun,  8 Jan 2023 05:06:46 -0800 (PST)
+        Sun, 8 Jan 2023 08:49:06 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 291DABF70;
+        Sun,  8 Jan 2023 05:49:05 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B2E49B80990;
-        Sun,  8 Jan 2023 13:06:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F24C433F1;
-        Sun,  8 Jan 2023 13:06:43 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 95FEEB80B28;
+        Sun,  8 Jan 2023 13:49:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37720C43396;
+        Sun,  8 Jan 2023 13:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673183203;
-        bh=25sUiVh4DX8OMquO6qi9c91N6UurO7I+2sKVuFyi8Ss=;
+        s=k20201202; t=1673185742;
+        bh=zLtCdXZBHP6OIgitz/DPRftk5BFq77Rv/Yrlcpe0Kis=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=j9x0q7EQaif6gdcoQr04EGOVR3cnk+lnN8ynnP5di2yjuHfS4p2ae7GLr6XGqDLI0
-         6tByzYQoDXcCIUYVfggZcmNWVBExRFitz9q14B4qP/ZrDrBpHt+P77oAM3C6B4Ffws
-         bMxMAIb+p/WJtuuvqLIKQ0g2sbhv8EVmhJodzOrwd5hVIPWAUgysylcDdypiFuIBer
-         R/LqeYjyPlESexkxYN8jmOU/+uHQvc7eFJ+M9Vu1nGdXGroRuON9M9tY8uBzLXSDc9
-         yM/cdeEtWBuMAGWg1THV8XZqj2YN0LifIvhD2t9HdjAbnm4GmLc+dKf1rx2dtsYXRz
-         6Orp+NEiZFjhw==
-Received: by mail-oi1-f174.google.com with SMTP id v70so4998830oie.3;
-        Sun, 08 Jan 2023 05:06:43 -0800 (PST)
-X-Gm-Message-State: AFqh2kpSpXIY6k5nhuQo3fCRuoHhpPILtLUOgjUpzlBQ3g0IlvImBUjJ
-        d14Pf08djHuL55aHnRabYUXDMbmwqAafRNsstdg=
-X-Google-Smtp-Source: AMrXdXttsIb+osoRYUtlo6mHs9sMSFOyY8orlp8b1KRq+emvjg97MdfSUhB2KcNMVIpkQs+3U+ueqWYXTTizTj0H7Is=
-X-Received: by 2002:aca:3755:0:b0:35e:7c55:b015 with SMTP id
- e82-20020aca3755000000b0035e7c55b015mr3679754oia.287.1673183202567; Sun, 08
- Jan 2023 05:06:42 -0800 (PST)
+        b=IZ81gpJJcQDca6FaHFn1kPsPgWqdJqEJEkrldo94oQxqDNfd6A1q6LoTtPw4XDe0y
+         g3oIgfW3p5AM0Al+IkGyZgbQwuw9LNmvOFM1w9wlzRFrYDKikbcATv9f2tLifPbskz
+         RLoM91WpWcEzmeN0t//bIp+d+awG15WopmAb+/3FzsFSccPNaX+LRC78GgxQdAp4tN
+         BPKaKHrUNNsQ3mc/1CKEFNFsJsC7e287dtKnJCy5NiItBkdZCV54rKletDHxEvtv7k
+         feZbv5IGQQuYEeWEyDwzTCFjdowwyyGIHEjawOkWvVQJOD7yux3CtALeU0stU2m5Z1
+         qUnVJqjmO5M4g==
+Received: by mail-oi1-f181.google.com with SMTP id n8so5083199oih.0;
+        Sun, 08 Jan 2023 05:49:02 -0800 (PST)
+X-Gm-Message-State: AFqh2kquqnYD5ldPXBhBUzu44Aq9yDxABSmXkqdrz3xCoXhoSEYg6F3D
+        wwSOBvG8tQiAWctpcCIitLhZonxYAu6eu96QO5Q=
+X-Google-Smtp-Source: AMrXdXuMjSTirPjIemMT8QqWuO6pnofc1VmaqzghamwSJBSctAOgphRLKHGKsx34+OxeTQXQUAaG7uR8713+O4uWyEM=
+X-Received: by 2002:aca:2b17:0:b0:361:24b6:466c with SMTP id
+ i23-20020aca2b17000000b0036124b6466cmr2537054oik.194.1673185737978; Sun, 08
+ Jan 2023 05:48:57 -0800 (PST)
 MIME-Version: 1.0
-References: <20230107091820.3382134-1-masahiroy@kernel.org> <CANiq72nY9X1cyu=3MwfRKTcxMUNHRTUGPFC7VR=OtL8V-NPQog@mail.gmail.com>
-In-Reply-To: <CANiq72nY9X1cyu=3MwfRKTcxMUNHRTUGPFC7VR=OtL8V-NPQog@mail.gmail.com>
+References: <20230107094545.3384745-1-masahiroy@kernel.org> <CANiq72=q9pk2ZB2K9Zjn-COY1KD3MFAGthx7VJ_2YmtH61tdng@mail.gmail.com>
+In-Reply-To: <CANiq72=q9pk2ZB2K9Zjn-COY1KD3MFAGthx7VJ_2YmtH61tdng@mail.gmail.com>
 From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Sun, 8 Jan 2023 22:06:06 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAR_VTo1A7rfQq8zMzLYfRRCUzruPQL=akALTg-GYKaQzw@mail.gmail.com>
-Message-ID: <CAK7LNAR_VTo1A7rfQq8zMzLYfRRCUzruPQL=akALTg-GYKaQzw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] kbuild: refactor host*_flags
+Date:   Sun, 8 Jan 2023 22:48:21 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQHqMHyX75MAwG6vh0V6Op_EGRXzprnBiNPeDmUuhHD_g@mail.gmail.com>
+Message-ID: <CAK7LNAQHqMHyX75MAwG6vh0V6Op_EGRXzprnBiNPeDmUuhHD_g@mail.gmail.com>
+Subject: Re: [PATCH v2] kbuild: rust: move rust/target.json to scripts/
 To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
+Cc:     linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
         Nicolas Schier <nicolas@fjasle.eu>
@@ -65,37 +64,30 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, Jan 8, 2023 at 12:12 AM Miguel Ojeda
+On Sun, Jan 8, 2023 at 12:47 AM Miguel Ojeda
 <miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> On Sat, Jan 7, 2023 at 10:18 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+> On Sat, Jan 7, 2023 at 10:46 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
 > >
-> > Remove _host*_flags.
-> >
-> > This will change the -Wp,-MMD,$(depfile) order in the command line
-> > but no functional change is intended.
+> > +hostprogs += generate_rust_target
 >
-> Looks fine to me. I gave it a quick test with just this patch on top
-> of v6.2-rc2 and checked that the order indeed changed (was there a
-> reason to not keep it the same?).
-
-
-No, there is no reason. Just my whimsy.
-
-I will do something like the following just in case.
-
-hostc_flags  =  -Wp,-MMD,$(depfile)  \
-                $(KBUILD_HOSTCFLAGS) $(HOST_EXTRACFLAGS) \
-                $(HOSTCFLAGS_$(target-stem).o)
-
+> I see that with the cleanup now we can also rely on Kbuild triggering
+> it from the `target.json` prerequisite. Nice!
+>
+> Do you want to take it through kbuild or rust?
 >
 > Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
 > Tested-by: Miguel Ojeda <ojeda@kernel.org>
 >
-> Thanks!
->
 > Cheers,
 > Miguel
+
+
+Please let me pick this up to my kbuild tree.
+
+If I have more spare time in this development cycle,
+perhaps, I may refactor the code a little more.
+
 
 
 
