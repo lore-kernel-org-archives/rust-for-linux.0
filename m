@@ -2,207 +2,112 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6B49C54EBE
-	for <rust-for-linux@archiver.kernel.org>; Sun,  8 Jan 2023 19:20:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25A7BC54EBC
+	for <rust-for-linux@archiver.kernel.org>; Sun,  8 Jan 2023 21:56:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233117AbjAHTUp (ORCPT
+        id S236191AbjAHV4n (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 8 Jan 2023 14:20:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44512 "EHLO
+        Sun, 8 Jan 2023 16:56:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231229AbjAHTUo (ORCPT
+        with ESMTP id S234075AbjAHV4m (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 8 Jan 2023 14:20:44 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C14472DF9
-        for <rust-for-linux@vger.kernel.org>; Sun,  8 Jan 2023 11:19:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1673205594;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=UGWOldglTZNuYLIRTUhiHDe8Itvv2F7MA7RR2Udh84E=;
-        b=Aij9AIiPStxzZmnweDzjZdz6VX4f6z/A5Pmlla3HkLh6Z3YqXU7fU1mG8lLZerzDYfr57n
-        /GcuSCF+o1gx+AhBCX2WO8UAjd+QIFlB2OAfZiTCBrYfsKiL9BMuaqaLrxWJBz7fwCCHlk
-        SLdg6ElRBulQjwOaQi+L7oPhcOGVvj8=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-26-4MzLkTI1MOy33gcXsUbZkA-1; Sun, 08 Jan 2023 14:19:53 -0500
-X-MC-Unique: 4MzLkTI1MOy33gcXsUbZkA-1
-Received: by mail-vs1-f70.google.com with SMTP id a62-20020a671a41000000b003c08f2a8d7bso1232182vsa.14
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Jan 2023 11:19:53 -0800 (PST)
+        Sun, 8 Jan 2023 16:56:42 -0500
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9D52766C;
+        Sun,  8 Jan 2023 13:56:41 -0800 (PST)
+Received: by mail-yb1-xb34.google.com with SMTP id g4so6991837ybg.7;
+        Sun, 08 Jan 2023 13:56:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=weoSnaHHRzPUIS2PJ2baxYU/e708niinbN3stK9FOPs=;
+        b=Kb+3aDB6Z3rzJfQCcq6QIY1F6jECCpWu+KDijxn7jMZbuFvEzy7OOgb8Ai0cQ48mKJ
+         CZS0tOJk7ysCn9lj6/EbmfQ2H06bwahvhI36KnKwEI6iUYChksMXGCVNaP4iXJ9rvLE7
+         g4bDjlykbdaMhBMI9GR9zuZzixThD62+3W/oREGuqRWuOS0tzvq1y38ySdWX3BbLPMDC
+         dl5o5YQC85QyPnmTcFUHlF35tFAyD5F3oZ0rx9xjEJR7Ya49zagNKkybyVDpy3Yq5SB+
+         22NKuDaJU9Quza9m3xbyPDR5c5rtQJnFRclK/O9Fd6OrilgAVQhGuv/T06o4oiixNSYT
+         aNpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=UGWOldglTZNuYLIRTUhiHDe8Itvv2F7MA7RR2Udh84E=;
-        b=tc+s0Zm3kHwttfc0Ei9CL2bzllMj2kkV9/DuV9tRgZbJAUGZEV296eY9c3bTL+OEjs
-         Gn5lEzdyXpL2rTDNx2O/aOXTEsKPkgH453r2m+XJB1CxG9eJQnct2bwQUmk2wsc9gnDB
-         mfKR0SM8Uvwsg1I5R1Du3IZEjbSfq0VhmG4sSX/zyf2au4HJssWCSmY6j+gTUhob8VMX
-         x+yO7WOakX0yHXMnicFf1pfouZ51+QRMG4tELXmiX75VqCYDih7cyI+CNEl/5wNXWKcq
-         A4NIL5UollncAGKY4Mb8J6HQ3i6HcMMf/je3tDXForbsdxQ3BSTDWjJoGfpvv7dEQcRs
-         uBhA==
-X-Gm-Message-State: AFqh2komY15PQkjVcztgPBufAKDw2iaPLuBHrCInIpPW6T+hAbuynBNj
-        Zl7VUrc1VMEtD1gQdzklQNiOJO096xmbSfqAk7jPMKsZBl52K49AJ5G2udSm7HHfILWXPfyTFCJ
-        nP+lzrcrguaGZvPmorlxS++m+INkDVs6kuj/abhFeYzA=
-X-Received: by 2002:a1f:add4:0:b0:3d5:42a2:5e01 with SMTP id w203-20020a1fadd4000000b003d542a25e01mr5820272vke.17.1673205592823;
-        Sun, 08 Jan 2023 11:19:52 -0800 (PST)
-X-Google-Smtp-Source: AMrXdXvrE0KA+L2UWzyCz8oDv1qyJUvHwkro33C4K3lgEK9XL1Gh3ge6pVg1XYnyBegKhG1mGQ4M7rJKXAAiqBb/Mqo=
-X-Received: by 2002:a1f:add4:0:b0:3d5:42a2:5e01 with SMTP id
- w203-20020a1fadd4000000b003d542a25e01mr5820264vke.17.1673205592530; Sun, 08
- Jan 2023 11:19:52 -0800 (PST)
+        bh=weoSnaHHRzPUIS2PJ2baxYU/e708niinbN3stK9FOPs=;
+        b=hcQh9ZH50ACB/pTh/DSSUXqHaf4TDB0aqOr+iuA6lnOLXxXWVXQ370a5z5xdmde1LW
+         lkumn6+/fCeyZfmFgxBkSckiM3tvgIDrK2mY53C5r45HDKOG3rrM9ByRcL2PSrwrVaRn
+         KGe1ASZmZo4Se15u8u3WduRAoTcT7dQGcxLz06y2bCwgbry3BnSF/lPZH+Cz2Mp2cO/F
+         O7bqNWODYm0u4fH9d5x6ZBAY27kOcmmZldeCu8QHGuOxnbPrIvQuCEqC4CnNwoCudUu2
+         Xzp9cuW10kvqR3Ovjk7ExR65ObifiGhDNiQXPTTnwpiBcyeWZgEUKv2djtdzGTrBzgkn
+         G84Q==
+X-Gm-Message-State: AFqh2kpxvKICrrayiTrTo7hLBMIH4TtiiWKKfrc8gl7GdEUzg7EybVG3
+        IwkeApxAZxV9Vtw6mWLpcUm01uIHzSIfLjdpZbhbeZYP/rgpHfJzJIo=
+X-Google-Smtp-Source: AMrXdXu3vT5SqiH7IDKisW1KgKS5L0uteSVQ09IqaZl8P7p1dT5WE0lri8gQekPgJPIu9rKWXkBWV+vte/tpx5gAEZ8=
+X-Received: by 2002:a25:7653:0:b0:6f9:13cc:de91 with SMTP id
+ r80-20020a257653000000b006f913ccde91mr7377146ybc.328.1673215001045; Sun, 08
+ Jan 2023 13:56:41 -0800 (PST)
 MIME-Version: 1.0
-References: <20230108021450.120791-1-yakoyoku@gmail.com> <CAOgh=Fzc3_bCLCKE+6KVzyMbBUOcQ_s9ef6Rw33amD5+yu-_WA@mail.gmail.com>
-In-Reply-To: <CAOgh=Fzc3_bCLCKE+6KVzyMbBUOcQ_s9ef6Rw33amD5+yu-_WA@mail.gmail.com>
-From:   Eric Curtin <ecurtin@redhat.com>
-Date:   Sun, 8 Jan 2023 19:19:36 +0000
-Message-ID: <CAOgh=FxxXQ0UV_3PEGS-_575WNfR2SpKp+i78HtSVX4XO4eC0A@mail.gmail.com>
-Subject: Re: [PATCH v2] scripts: Exclude Rust CUs with pahole
-To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Neal Gompa <neal@gompa.dev>, bpf@vger.kernel.org,
-        rust-for-linux@vger.kernel.org,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>, Yonghong Song <yhs@fb.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+References: <20221231082739.1629735-1-masahiroy@kernel.org>
+In-Reply-To: <20221231082739.1629735-1-masahiroy@kernel.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sun, 8 Jan 2023 22:56:30 +0100
+Message-ID: <CANiq72nyckkPgbc9y1DS00i1+WvNGcDF7MmWaom89ZCb_ufZxw@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: rust: remove -v option of scripts/rust_is_available.sh
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
+        llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, 8 Jan 2023 at 15:18, Eric Curtin <ecurtin@redhat.com> wrote:
+On Sat, Dec 31, 2022 at 9:27 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
 >
-> On Sun, 8 Jan 2023 at 02:15, Martin Rodriguez Reboredo
-> <yakoyoku@gmail.com> wrote:
-> >
-> > Version 1.24 of pahole has the capability to exclude compilation units
-> > (CUs) of specific languages. Rust, as of writing, is not currently
-> > supported by pahole and if it's used with a build that has BTF debugging
-> > enabled it results in malformed kernel and module binaries (see
-> > Rust-for-Linux/linux#735). So it's better for pahole to exclude Rust
-> > CUs until support for it arrives.
-> >
-> > Reviewed-by: Eric Curtin <ecurtin@redhat.com>
-> > Tested-by: Eric Curtin <ecurtin@redhat.com>
-> > Reviewed-by: Neal Gompa <neal@gompa.dev>
-> > Tested-by: Neal Gompa <neal@gompa.dev>
-> > Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> > ---
-> > V1 -> V2: Removed dependency on auto.conf
-> >
-> >  init/Kconfig              | 2 +-
-> >  lib/Kconfig.debug         | 9 +++++++++
-> >  scripts/Makefile.modfinal | 4 ++++
-> >  scripts/link-vmlinux.sh   | 4 ++++
-> >  4 files changed, 18 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/init/Kconfig b/init/Kconfig
-> > index 694f7c160c9c..360aef8d7292 100644
-> > --- a/init/Kconfig
-> > +++ b/init/Kconfig
-> > @@ -1913,7 +1913,7 @@ config RUST
-> >         depends on !MODVERSIONS
-> >         depends on !GCC_PLUGINS
-> >         depends on !RANDSTRUCT
-> > -       depends on !DEBUG_INFO_BTF
-> > +       depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
-> >         select CONSTRUCTORS
-> >         help
-> >           Enables Rust support in the kernel.
-> > diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> > index ea4c903c9868..d473d491e709 100644
-> > --- a/lib/Kconfig.debug
-> > +++ b/lib/Kconfig.debug
-> > @@ -364,6 +364,15 @@ config PAHOLE_HAS_BTF_TAG
-> >           btf_decl_tag) or not. Currently only clang compiler implements
-> >           these attributes, so make the config depend on CC_IS_CLANG.
-> >
-> > +config PAHOLE_HAS_LANG_EXCLUDE
-> > +       def_bool PAHOLE_VERSION >= 124
-> > +       help
-> > +         Support for the --lang_exclude flag which makes pahole exclude
-> > +         compilation units from the supplied language. Used in Kbuild to
-> > +         omit Rust CUs which are not supported in version 1.24 of pahole,
-> > +         otherwise it would emit malformed kernel and module binaries when
-> > +         using DEBUG_INFO_BTF_MODULES.
-> > +
-> >  config DEBUG_INFO_BTF_MODULES
-> >         def_bool y
-> >         depends on DEBUG_INFO_BTF && MODULES && PAHOLE_HAS_SPLIT_BTF
-> > diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
-> > index 25bedd83644b..a880f2d6918f 100644
-> > --- a/scripts/Makefile.modfinal
-> > +++ b/scripts/Makefile.modfinal
-> > @@ -30,6 +30,10 @@ quiet_cmd_cc_o_c = CC [M]  $@
-> >
-> >  ARCH_POSTLINK := $(wildcard $(srctree)/arch/$(SRCARCH)/Makefile.postlink)
-> >
-> > +ifdef CONFIG_RUST
-> > +PAHOLE_FLAGS += --lang_exclude=rust
-> > +endif
-> > +
-> >  quiet_cmd_ld_ko_o = LD [M]  $@
-> >        cmd_ld_ko_o +=                                                   \
-> >         $(LD) -r $(KBUILD_LDFLAGS)                                      \
-> > diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-> > index 918470d768e9..69eb0bea89bf 100755
-> > --- a/scripts/link-vmlinux.sh
-> > +++ b/scripts/link-vmlinux.sh
-> > @@ -122,6 +122,10 @@ gen_btf()
-> >                 return 1
-> >         fi
-> >
-> > +       if is_enabled CONFIG_RUST; then
-> > +               PAHOLE_FLAGS="${PAHOLE_FLAGS} --lang_exclude=rust"
-> > +       fi
->
-> If it was me, I would do things more like v1 of the patch (instead
-> just checking pahole version), because this is the only flag set in
-> scripts/Makefile.modfinal, which is a little confusing and
-> inconsistent. It's ok to set --lang_exclude=rust in all cases, as long
-> as pahole_ver is recent enough.
->
-> +if [ "${pahole_ver}" -ge "124" ]; then
-> +       # see PAHOLE_HAS_LANG_EXCLUDE
-> +       extra_paholeopt="${extra_paholeopt} --lang_exclude=rust"
-> +fi
->
-> But I'm not too opinionated either on this so...
->
-> Reviewed-by: Eric Curtin <ecurtin@redhat.com>
->
-> can be reapplied. I'm gonna test this again to see if it works in a
-> Fedora Asahi rpm build.
+> The -v option is passed when this scripts is invoked from Makefile,
 
-After testing I probably have to retract my Reviewed-by tag,
-apologies, bpf and all that did not work with this patch when I built
-in the fedora way, but, the good news is when I alter v1 of the patch
-to just check pahole version like so (instead of the is_enabled
-check):
+scripts -> script
 
-+if [ "${pahole_ver}" -ge "124" ]; then
-+        # see PAHOLE_HAS_LANG_EXCLUDE
-+        extra_paholeopt="${extra_paholeopt} --lang_exclude=rust"
-+fi
-
-it worked just fine, and that should satisfy the testbot and all the
-other ways we build too. Could we change to that @Martin Rodriguez
-Reboredo ?
-
+> but not when invoked from Kconfig.
 >
->
-> > +
-> >         vmlinux_link ${1}
-> >
-> >         info "BTF" ${2}
-> > --
-> > 2.39.0
-> >
+> As you can see in scripts/Kconfig.include, the 'success' macro suppresses
+> stdout and stderr anyway, so this script does not need to be quiet.
 
+Yeah, let's get rid of the complexity. The script originally was
+intended to be usable independently of the `Makefile`, but in the end
+we don't really use it like that.
+
+In fact, now we should probably add a warning/error if somebody calls
+it directly (and/or set defaults for the variables). I can send a
+patch for that on top of this one.
+
+There is a small functional change, in that we will be making an
+unneeded call to `cc-version.sh` and another to `$CC` for the Kconfig
+case (i.e. the previously non-verbose case), but that seems like a
+fine price for the simplicity.
+
+> --- a/scripts/rust_is_available.sh
+> +++ b/scripts/rust_is_available.sh
+
+Could you please remove the comment at the top? i.e.:
+
+    #
+    # Pass `-v` for human output and more checks (as warnings).
+
+With that:
+
+Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
+
+If you want me to take it, please let me know.
+
+Cheers,
+Miguel
