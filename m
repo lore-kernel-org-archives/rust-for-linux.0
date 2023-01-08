@@ -2,138 +2,103 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B43D6C54EBC
-	for <rust-for-linux@archiver.kernel.org>; Sun,  8 Jan 2023 02:23:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9932AC54EBE
+	for <rust-for-linux@archiver.kernel.org>; Sun,  8 Jan 2023 13:06:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231701AbjAHCXT (ORCPT
+        id S231295AbjAHNGr (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 7 Jan 2023 21:23:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56222 "EHLO
+        Sun, 8 Jan 2023 08:06:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231416AbjAHCXR (ORCPT
+        with ESMTP id S230363AbjAHNGq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 7 Jan 2023 21:23:17 -0500
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FB6818B24;
-        Sat,  7 Jan 2023 18:23:16 -0800 (PST)
-Received: by mail-ot1-x332.google.com with SMTP id p17-20020a9d6951000000b00678306ceb94so3309084oto.5;
-        Sat, 07 Jan 2023 18:23:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:cc:to:references
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=g+Ix8GNOC6OPLYkyh//YuERX6kRqmc6hFntEObi2OjY=;
-        b=BqlHUwWDxzDrP20R9F+yxq8U4qk4Am5DSZO8pglFDUQd0fdiTEW64xyzUqzsBW9dFu
-         yp7UmcBINYHx0m+3qTaZiitoanceWyKySRLSEd47aHb3l4CNL+ItVy3hmXzYgyXTH1nD
-         dnAci7l9ee3BgECt69yVCckbxsSKY+IJvMswIrSaadLl3GEf7XGE917UlrdD0lHe0X1e
-         Ej1ukYKnL+Ol3NU3vi4jZNp0z13M/M9Jli49GpBNCn4YzYPgokrmCKX0VFsurJGX5zGf
-         BiqlTrxfHzRPJxsz3LFaNwmPFVnuv0MOl3TVVPV9hyKzkI4Ba+BK8offEhnZ4bptz8EC
-         GX8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:cc:to:references
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g+Ix8GNOC6OPLYkyh//YuERX6kRqmc6hFntEObi2OjY=;
-        b=WjPPR4N+2Tu3qJZ5qg/bs2AgR3W9ggssTKle7mWykbf+6tt+78uVPCNP/oSfNur4XO
-         yvdCtr2/61PipEHuCp4zJdZcEtfqF9iTFaCXsXwz9AzbuEqkfufFUoHXlpxY9WC/xwn2
-         EvDpToBu3N7h8IrX+UoM7cX+cMrnCzz6QmO5mxJ13GqdRM0W2TZ6HsqRoqB7TvPfo9lq
-         nhpmUsIwNxG7TXaGDxHHYNzsENDtnj9NcB+H1qSh8zKsFYsqjEmOk7//dbnvIlOziYgp
-         MfqHfeDm/Nkc+Rnx2xP+QFd9AwxpCLtupbG/20bTcBZpyE051UafEeHaRaqU6POIg+pl
-         rYhA==
-X-Gm-Message-State: AFqh2kpRPOL2y3D8vrTK6z0B9mlkXoiHHKqKOT86uS1Pt27bgV5KB+Uh
-        GicjddE39ISNiAMXgLEd91X/Ru9HZ6hz5g==
-X-Google-Smtp-Source: AMrXdXvqehkZnaN5O9q7fUUERou/mCSyIfVd+xW65YGAQNmnBqkGEsZdeKEn3M0D7JUGBoQZ2oTYAA==
-X-Received: by 2002:a9d:6550:0:b0:670:6f6c:5fc7 with SMTP id q16-20020a9d6550000000b006706f6c5fc7mr27565862otl.9.1673144595233;
-        Sat, 07 Jan 2023 18:23:15 -0800 (PST)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id y4-20020a0568301d8400b006708d2cd8bcsm2483913oti.65.2023.01.07.18.23.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Jan 2023 18:23:14 -0800 (PST)
-Message-ID: <0ca4ad02-af27-0d1f-8750-1ff6b34e8d2a@gmail.com>
-Date:   Sat, 7 Jan 2023 23:23:11 -0300
+        Sun, 8 Jan 2023 08:06:46 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23F85E0B3;
+        Sun,  8 Jan 2023 05:06:46 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B2E49B80990;
+        Sun,  8 Jan 2023 13:06:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F24C433F1;
+        Sun,  8 Jan 2023 13:06:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673183203;
+        bh=25sUiVh4DX8OMquO6qi9c91N6UurO7I+2sKVuFyi8Ss=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=j9x0q7EQaif6gdcoQr04EGOVR3cnk+lnN8ynnP5di2yjuHfS4p2ae7GLr6XGqDLI0
+         6tByzYQoDXcCIUYVfggZcmNWVBExRFitz9q14B4qP/ZrDrBpHt+P77oAM3C6B4Ffws
+         bMxMAIb+p/WJtuuvqLIKQ0g2sbhv8EVmhJodzOrwd5hVIPWAUgysylcDdypiFuIBer
+         R/LqeYjyPlESexkxYN8jmOU/+uHQvc7eFJ+M9Vu1nGdXGroRuON9M9tY8uBzLXSDc9
+         yM/cdeEtWBuMAGWg1THV8XZqj2YN0LifIvhD2t9HdjAbnm4GmLc+dKf1rx2dtsYXRz
+         6Orp+NEiZFjhw==
+Received: by mail-oi1-f174.google.com with SMTP id v70so4998830oie.3;
+        Sun, 08 Jan 2023 05:06:43 -0800 (PST)
+X-Gm-Message-State: AFqh2kpSpXIY6k5nhuQo3fCRuoHhpPILtLUOgjUpzlBQ3g0IlvImBUjJ
+        d14Pf08djHuL55aHnRabYUXDMbmwqAafRNsstdg=
+X-Google-Smtp-Source: AMrXdXttsIb+osoRYUtlo6mHs9sMSFOyY8orlp8b1KRq+emvjg97MdfSUhB2KcNMVIpkQs+3U+ueqWYXTTizTj0H7Is=
+X-Received: by 2002:aca:3755:0:b0:35e:7c55:b015 with SMTP id
+ e82-20020aca3755000000b0035e7c55b015mr3679754oia.287.1673183202567; Sun, 08
+ Jan 2023 05:06:42 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Fwd: [PATCH bpf] scripts: Exclude Rust CUs with pahole
-Content-Language: en-US
-References: <828d438e-afe3-1fc0-bc12-ac98632c0908@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     bpf@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>, Yonghong Song <yhs@fb.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Neal Gompa <neal@gompa.dev>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <828d438e-afe3-1fc0-bc12-ac98632c0908@gmail.com>
-X-Forwarded-Message-Id: <828d438e-afe3-1fc0-bc12-ac98632c0908@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20230107091820.3382134-1-masahiroy@kernel.org> <CANiq72nY9X1cyu=3MwfRKTcxMUNHRTUGPFC7VR=OtL8V-NPQog@mail.gmail.com>
+In-Reply-To: <CANiq72nY9X1cyu=3MwfRKTcxMUNHRTUGPFC7VR=OtL8V-NPQog@mail.gmail.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Sun, 8 Jan 2023 22:06:06 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAR_VTo1A7rfQq8zMzLYfRRCUzruPQL=akALTg-GYKaQzw@mail.gmail.com>
+Message-ID: <CAK7LNAR_VTo1A7rfQq8zMzLYfRRCUzruPQL=akALTg-GYKaQzw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/7] kbuild: refactor host*_flags
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        rust-for-linux@vger.kernel.org,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 1/5/23 13:40, Eric Curtin wrote:
-> Hiya Martin,
-> 
-> Just in case you hadn't noticed, the test bot complained about this...
-> 
->>> grep: include/config/auto.conf: No such file or directory
-> --
->>> grep: include/config/auto.conf: No such file or directory
->>> grep: include/config/auto.conf: No such file or directory
->>> grep: include/config/auto.conf: No such file or directory
-> 
-> Is mise le meas/Regards,
-> 
-> Eric Curtin
-> 
-> On Sun, 1 Jan 2023 at 08:57, kernel test robot <lkp@intel.com> wrote:
->>
->> Hi Martin,
->>
->> Thank you for the patch! Yet something to improve:
->>
->> [auto build test ERROR on bpf/master]
->>
->> url:    https://github.com/intel-lab-lkp/linux/commits/Martin-Rodriguez-Reboredo/scripts-Exclude-Rust-CUs-with-pahole/20221221-112806
->> base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf.git master
->> patch link:    https://lore.kernel.org/r/20221220203901.1333304-1-yakoyoku%40gmail.com
->> patch subject: [PATCH bpf] scripts: Exclude Rust CUs with pahole
->> config: sh-se7724_defconfig
->> compiler: sh4-linux-gcc (GCC) 12.1.0
->> reproduce (this is a W=1 build):
->>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->>         chmod +x ~/bin/make.cross
->>         # https://github.com/intel-lab-lkp/linux/commit/24aac5fd4ea59e02e9c203d3a59be6f13c5e702f
->>         git remote add linux-review https://github.com/intel-lab-lkp/linux
->>         git fetch --no-tags linux-review Martin-Rodriguez-Reboredo/scripts-Exclude-Rust-CUs-with-pahole/20221221-112806
->>         git checkout 24aac5fd4ea59e02e9c203d3a59be6f13c5e702f
->>         # save the config file
->>         mkdir build_dir && cp config build_dir/.config
->>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh olddefconfig
->>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh distclean
->>
->> If you fix the issue, kindly add following tag where applicable
->> | Reported-by: kernel test robot <lkp@intel.com>
->>
->> All errors (new ones prefixed by >>):
->>
->>>> grep: include/config/auto.conf: No such file or directory
->> --
->>>> grep: include/config/auto.conf: No such file or directory
->>>> grep: include/config/auto.conf: No such file or directory
->>>> grep: include/config/auto.conf: No such file or directory
->>
->> --
->> 0-DAY CI Kernel Test Service
->> https://01.org/lkp
-> 
+On Sun, Jan 8, 2023 at 12:12 AM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Sat, Jan 7, 2023 at 10:18 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+> >
+> > Remove _host*_flags.
+> >
+> > This will change the -Wp,-MMD,$(depfile) order in the command line
+> > but no functional change is intended.
+>
+> Looks fine to me. I gave it a quick test with just this patch on top
+> of v6.2-rc2 and checked that the order indeed changed (was there a
+> reason to not keep it the same?).
 
-I see, I was making a dependency on `auto.conf` in `pahole-flags.sh` but
-the former gets generated after the latter is called, so that's the
-reason behind the `grep` errors. Sent a new version of the patch.
+
+No, there is no reason. Just my whimsy.
+
+I will do something like the following just in case.
+
+hostc_flags  =  -Wp,-MMD,$(depfile)  \
+                $(KBUILD_HOSTCFLAGS) $(HOST_EXTRACFLAGS) \
+                $(HOSTCFLAGS_$(target-stem).o)
+
+>
+> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+> Tested-by: Miguel Ojeda <ojeda@kernel.org>
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
