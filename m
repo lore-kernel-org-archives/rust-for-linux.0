@@ -2,87 +2,109 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 477AFC54EBE
-	for <rust-for-linux@archiver.kernel.org>; Sun,  8 Jan 2023 14:05:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7ED8AC54EBE
+	for <rust-for-linux@archiver.kernel.org>; Sun,  8 Jan 2023 14:52:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234475AbjAHOFp (ORCPT
+        id S233333AbjAHOwR (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 8 Jan 2023 09:05:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55500 "EHLO
+        Sun, 8 Jan 2023 09:52:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232624AbjAHOFl (ORCPT
+        with ESMTP id S233340AbjAHOwM (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 8 Jan 2023 09:05:41 -0500
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4C87CEE;
-        Sun,  8 Jan 2023 06:05:40 -0800 (PST)
-Received: by mail-yb1-xb36.google.com with SMTP id l139so6332064ybl.12;
-        Sun, 08 Jan 2023 06:05:40 -0800 (PST)
+        Sun, 8 Jan 2023 09:52:12 -0500
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 773CCB1E8;
+        Sun,  8 Jan 2023 06:52:02 -0800 (PST)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-4c186ff0506so82943757b3.6;
+        Sun, 08 Jan 2023 06:52:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mLyGyJv5EKdrM6YbNUV9Yd2+NBwyRo3dIWNfBJujseM=;
-        b=ozIbY+Hmfd/o7aVcWJ7aawXa8GZUuvRThitQx4sDYlRDKAKcS7BEJuYTRaym6rW2Fh
-         q/P9r+ioLW2KdE9zV+aDQF/UIDnQ8Ywy9uv2Ecqa7U1I6+LRKW5bxBeS+J4sQYs/vX5r
-         CVnx1WHvGfMu9imK6mkrINqKPPyZOAK5b5knFWRoFtYRSPnTK4WT4bzgZspcNOSuK4pJ
-         4HpBpQT5bmcOpBtxLuoZqehMGcDF91EDvggFxSNHTWQsrePlbrFVcWr82A6dAR6dX33Z
-         PhXrjz4/Zt97zWNr8CbWc/NXlEt/zFiIzqrLPF86hPcri2EWfbgwyCuGiV51M7QOfsR8
-         vIsQ==
+        bh=jzwAFW7zinORJzeaGrXO5tj6nkM04VHWKq1dvM6y2Ck=;
+        b=mEByeNFhewTstoNVG4o1nkBJFJweaMmghaVfDHDNWFgUhV2A2+WJX9LXeNR7XTAgkw
+         eHcpLCPN9Ct3aZBVL+ewht7tXCNbdjMrur7cud+9/fTa+Y0+kxvnil4umvyGC76mPBZN
+         c5uUXWxK+hr6F4WXV7yKS0Ta8y44QOzBo9N0mTwLBBnRCJ3nudSvAJvkNPj3AtzWjTMI
+         PGTABma5nHqOmjvTJrvBlJfNgcIW6t54VqUz0V3LKs9n5a1pMLEtMrC/K1RXi+OYDbHZ
+         /CJwL/chiDO97VWJ2+8nlg5BzAe2NW9H5/uHGW9/ekosNtw8UjIcJ8cMhCLaJHSp/0Kp
+         EOFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mLyGyJv5EKdrM6YbNUV9Yd2+NBwyRo3dIWNfBJujseM=;
-        b=1MvTBoh4HfxIK9GkX3cUTLPgGLllqXZ1Rq3yeVRwV23dbZVi54qaiGn3t7D0JwiRcQ
-         n44o4lakg7nZjcFXbPgMeroWtCSgTWzLoST2jZj2GpI/TcgFuPf2S9MmKQ9LXtJo4zJZ
-         CRIBbj4b+MvLC51+WJSx3d8xzTMbNQloADyEdXvD327dd0DuTu/FxQ7DpXL6ygxhwN4d
-         XJHGgwP6ouatUfFGjt06MYnp3kDiRBGIORaKQ9VR7GNuCN666BF2+vFSuGGn1EYXvzLx
-         +aMT9jR0EGu9iOxZ8xLS29ZbOsozr6yOjVuQX3D1vbV43kqw6tEfvaD/mio2ivEgGN6d
-         AAjg==
-X-Gm-Message-State: AFqh2koXoUKlL+yAjo0jqbRtqU/pKNX3UyxzdfxX1bAgmgoRnuMasEsO
-        2SLJ9xV6/KW4p57jdD3WVvINHouE6LQ1l4yaYm4=
-X-Google-Smtp-Source: AMrXdXt74t7Fv3+NoS1rvMFq+6Mt8PVP5s4X2WJZuU/cPs55Yoqqw+hZRtBar4VLBZGeM7SsZHufE0ai9VyXtJ1GOBc=
-X-Received: by 2002:a25:bc43:0:b0:7b2:343d:6b11 with SMTP id
- d3-20020a25bc43000000b007b2343d6b11mr1999696ybk.75.1673186740151; Sun, 08 Jan
- 2023 06:05:40 -0800 (PST)
+        bh=jzwAFW7zinORJzeaGrXO5tj6nkM04VHWKq1dvM6y2Ck=;
+        b=gwvllWryppG1IV76s4twI1WYq+e5yo4jSdJKP8T603pSM/jwyIVVbRdS2mi7AfuJtw
+         sgfqLUfZZgtaiERwDDTWPgZ+8C71QfFO/pHcxW8BzRQ72nSWy143mEJZTJfcEsBl5pQW
+         K+ty1ouLemYmu5xdY/OXL0P1pPh1HSunFRRtue87PPnKkVkP3MLwNKhoaWH9qyopsZMR
+         gTLKPsgXl9zHqD54XsODzHSUlmj+IReRX8qlIbYFsn+hlR4mrGJmmtH787ZaKPX2dkLo
+         6O/z8EHX/7N9Y2c0F8kPFbKduBtKoU1x4rUU6a9HvA5SSRopD9tB2oqgLB8s7ygp7S1I
+         a11A==
+X-Gm-Message-State: AFqh2kppnJTkQNDliUDI4Gqpq+YTIRMM7zQKiC251yWDXpB/2BKy/UJZ
+        lfLbdsEzWprgPEhAdVfuGFyOYT2V3nhzdUHFySL8QVY3GjcRmS/JygyO9A==
+X-Google-Smtp-Source: AMrXdXstbU5Vui6U0z8u53S6DTcoIvasZztwpkkfMXpWNLgjYjzJD7fuBuulyZRifq61QZOO609kyUfPLHDrVA9nk9s=
+X-Received: by 2002:a0d:ea54:0:b0:483:813:c70f with SMTP id
+ t81-20020a0dea54000000b004830813c70fmr5710975ywe.266.1673189521770; Sun, 08
+ Jan 2023 06:52:01 -0800 (PST)
 MIME-Version: 1.0
-References: <20230107091820.3382134-1-masahiroy@kernel.org>
- <CANiq72nY9X1cyu=3MwfRKTcxMUNHRTUGPFC7VR=OtL8V-NPQog@mail.gmail.com> <CAK7LNAR_VTo1A7rfQq8zMzLYfRRCUzruPQL=akALTg-GYKaQzw@mail.gmail.com>
-In-Reply-To: <CAK7LNAR_VTo1A7rfQq8zMzLYfRRCUzruPQL=akALTg-GYKaQzw@mail.gmail.com>
+References: <20230108021450.120791-1-yakoyoku@gmail.com>
+In-Reply-To: <20230108021450.120791-1-yakoyoku@gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sun, 8 Jan 2023 15:05:29 +0100
-Message-ID: <CANiq72mTUd5ogH_GNXLdNXYwQQpx=-qk3cPpTMDw_-mmbBLJrw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] kbuild: refactor host*_flags
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>
+Date:   Sun, 8 Jan 2023 15:51:50 +0100
+Message-ID: <CANiq72m_pKc9WKEg8XJtqdqJP746YGkZcrWm=nytBOLcXwfiNg@mail.gmail.com>
+Subject: Re: [PATCH v2] scripts: Exclude Rust CUs with pahole
+To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Eric Curtin <ecurtin@redhat.com>, Neal Gompa <neal@gompa.dev>,
+        bpf@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>, Yonghong Song <yhs@fb.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, Jan 8, 2023 at 2:06 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+On Sun, Jan 8, 2023 at 3:14 AM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
 >
-> No, there is no reason. Just my whimsy.
->
-> I will do something like the following just in case.
->
-> hostc_flags  =  -Wp,-MMD,$(depfile)  \
->                 $(KBUILD_HOSTCFLAGS) $(HOST_EXTRACFLAGS) \
->                 $(HOSTCFLAGS_$(target-stem).o)
+> Version 1.24 of pahole has the capability to exclude compilation units
 
-Yeah, it sounds simpler to keep it the same, we could always do the
-order change in an independent patch if needed.
+It would be nice to have a reference ("...of pahole [1][2]") to the
+commits that introduced it in `pahole` -- especially the second one
+below has a nice commit message about the use case for this patch:
+
+    Link: https://git.kernel.org/pub/scm/devel/pahole/pahole.git/commit/?id=49358dfe2aaae4e90b072332c3e324019826783f
+[1]
+    Link: https://git.kernel.org/pub/scm/devel/pahole/pahole.git/commit/?id=8ee363790b7437283c53090a85a9fec2f0b0fbc4
+[2]
+
+> (CUs) of specific languages. Rust, as of writing, is not currently
+> supported by pahole and if it's used with a build that has BTF debugging
+> enabled it results in malformed kernel and module binaries (see
+> Rust-for-Linux/linux#735). So it's better for pahole to exclude Rust
+
+I think this came from a rendered link from GitHub, so please
+transform it into a link since otherwise people may be confused where
+to find it:
+
+    Link: https://github.com/Rust-for-Linux/linux/issues/735 [3]
+
+> Reviewed-by: Eric Curtin <ecurtin@redhat.com>
+> Tested-by: Eric Curtin <ecurtin@redhat.com>
+> Reviewed-by: Neal Gompa <neal@gompa.dev>
+> Tested-by: Neal Gompa <neal@gompa.dev>
+
+Given the patch has had non-trivial changes (in fact, in this case, it
+fundamentally changed the implementation), these tags should be
+removed and requested again.
+
+Thanks for this!
+
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
 Cheers,
 Miguel
