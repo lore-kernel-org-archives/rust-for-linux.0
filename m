@@ -2,60 +2,61 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F3691C5479D
-	for <rust-for-linux@archiver.kernel.org>; Mon,  9 Jan 2023 20:56:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 220BCC54EBD
+	for <rust-for-linux@archiver.kernel.org>; Mon,  9 Jan 2023 21:12:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237657AbjAIU4g (ORCPT
+        id S237290AbjAIVLx (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 9 Jan 2023 15:56:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34716 "EHLO
+        Mon, 9 Jan 2023 16:11:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237740AbjAIUz5 (ORCPT
+        with ESMTP id S237819AbjAIVLg (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 9 Jan 2023 15:55:57 -0500
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 021BF8B526
-        for <rust-for-linux@vger.kernel.org>; Mon,  9 Jan 2023 12:54:36 -0800 (PST)
-Received: by mail-pg1-x52a.google.com with SMTP id 36so6742282pgp.10
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Jan 2023 12:54:36 -0800 (PST)
+        Mon, 9 Jan 2023 16:11:36 -0500
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60CD741A76;
+        Mon,  9 Jan 2023 13:05:47 -0800 (PST)
+Received: by mail-yb1-xb2e.google.com with SMTP id l139so9767852ybl.12;
+        Mon, 09 Jan 2023 13:05:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
+        d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=bCpbMmW0eLev9FdtuyFUocFIcOdmXfyBWebTqFK5CIA=;
-        b=h4agD+4jNY3gjy2SULguao1y1SDRTBALR9O8Bjx0eLoYRsDA2ETD9q9AMY5zysnq+q
-         6GujFw61YQklfxifLoM25/Qx27WxO+muJS7gQ2/y584ocSmZlbkb+YerHNikmmopMt8Q
-         8rlV/PMlrHVvPBQwSUX45mQgkl/lnEsPItg7VmFwxpKVkQ0wxzMolPIiKpSrMm9vWf91
-         BdnidegVeoi+AAnpJEtgYYuR8Hj6cvvQ4gLOYJJiMwV7jAU647pgrMmjixSWC4tlr/XH
-         6G2iG/BNRvOLrlnG/a3jkymflXl2P3YV8Dio+cecoWhApoEiT0ZHCb/LmhkfF6l0Q1eF
-         Zn0w==
+        bh=myEKGg+oMEzcSTRA/yCcbDAjuI7KfOMxWzLnkBmkC7Y=;
+        b=KKh3FuuvOpr51yI0LDH/oIme2+Hs5Gwn0hqqM1Ytor7PzuInJ0En8ggSSspfJ30SaI
+         kWVKD0FVS+Grls7waVZhg5695Mvi96LjJjrbcZai4x49BmdWU4H9kUraiAuvBCe/B6lC
+         fQhAL2CxHFyXCrbxQVdG8bfiJR//TYsTQTIth+GWMygLeUigzr1CoUa+n1pN0r/j9rEi
+         0W8czT3zajB6mmnbkM065wnrFZRbKZ1niJVlj9l3omMbz+FMbPftQR5xOcTssawRuVrn
+         n7E+2d0zrcx3Gh4MS5tv62NBiv9hHdxxys1C+qekXlRWgOgdaC7n9CdU6eqLFigLJX8q
+         VRRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bCpbMmW0eLev9FdtuyFUocFIcOdmXfyBWebTqFK5CIA=;
-        b=4I+vOKq2kBgfl6T0cSSDkJWlx528GPpCsv1jQb64GrFbKGJIAuj+Gu9IPG7DKcofBx
-         4ld21psou4XAYZDajhHhkuCTmZhIMlfCDCCfVIC06Bt9MOBR9XrIsX3I20HTvos+SLA7
-         d4YhO/zQuDjLPopHOoG9Kk4dlNvXkghEJPsjQFW4ITI1ssfVjWpUMHvpmXNeEXj4gbwd
-         8rGQyLPZoJqwLoFtmi1VSbunhJX1G5KCv4F1ydWvoxIzMRQD8+COdluznQVTQVfL8djD
-         g2O+WaRkTVdtKf6b2ygTVR8/8X3BdTWSP3Xq5AUU8caMcK4sOIMZ7Gh7cCz0GpfGvCuu
-         KuuA==
-X-Gm-Message-State: AFqh2koIFWSXnI3Gpd/mlCQFxKUKpbkoOmBNNEpX5HHrrvfI6n+LsH3T
-        Fj/oK99GDjHIlFKVtFMxHnpbXZoS4lD55nEOI8vDgA==
-X-Google-Smtp-Source: AMrXdXtJwhfbhqPtlK+wteYA6wJbhqZXNYUZFPHzEbZJNaISXYOe+1yfLa+PUkvrtxjs8n0M+KBV1ndODf+qq8fq670=
-X-Received: by 2002:aa7:914e:0:b0:578:202d:a33a with SMTP id
- 14-20020aa7914e000000b00578202da33amr3345635pfi.23.1673297676007; Mon, 09 Jan
- 2023 12:54:36 -0800 (PST)
+        bh=myEKGg+oMEzcSTRA/yCcbDAjuI7KfOMxWzLnkBmkC7Y=;
+        b=l8cDMzaLyN32ruhHOysoulpFW60FeXqJ2M5s6rqoKYT6ogOazOGFILT+YBbXpSlfy+
+         qUw7SuSRGNcmefXtEJ03/H0yy5x21rX++AKgeE0slS2uWHJ/tXApgPFSYdzHGKbsawzJ
+         gPfkdmyisNrR6xsBjptmPsZRQ6MSrNrJL4Ot+ozRT4d9tygPM8ythmsD9fSlkzQGi4Dp
+         Gznca2FiHaPGEGcFTYDz3V+cQcehaSHEwKd/Dt9JbNY6Jd7p5yFCurkfvQyHxB0uNZxr
+         dpoUT35HeePQUyAfaF+uUhmEAMfD0SxJ8InUSmFhWazskjnIgaTZa/I7xwXs6wBkxF7m
+         dLrw==
+X-Gm-Message-State: AFqh2kpDh3LNU6jxPwn8eyoUMJsNOWvsPNLPsr06QKozqB43BfzQm3rw
+        HYzil+GmMS7gOeLHNhmA9/EuFxtl6UZOUgj5TvU=
+X-Google-Smtp-Source: AMrXdXtxeAq1fcrp0b42A4VMYRMUWp0hLyrkry0m7xghpdIY2iK2OeCAvX/A8wipnJx6npW9eQA3IsQmGU8rhapiN+I=
+X-Received: by 2002:a25:1004:0:b0:712:faac:e6b2 with SMTP id
+ 4-20020a251004000000b00712faace6b2mr6955908ybq.632.1673298346610; Mon, 09 Jan
+ 2023 13:05:46 -0800 (PST)
 MIME-Version: 1.0
-References: <20230109204520.539080-1-ojeda@kernel.org>
-In-Reply-To: <20230109204520.539080-1-ojeda@kernel.org>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Mon, 9 Jan 2023 12:54:24 -0800
-Message-ID: <CAKwvOdkr6mAdNOkZqGdkosAN6JABHRU3bHg=K8ujjbw2GxEsKQ@mail.gmail.com>
+References: <20230109204520.539080-1-ojeda@kernel.org> <CAKwvOdkr6mAdNOkZqGdkosAN6JABHRU3bHg=K8ujjbw2GxEsKQ@mail.gmail.com>
+In-Reply-To: <CAKwvOdkr6mAdNOkZqGdkosAN6JABHRU3bHg=K8ujjbw2GxEsKQ@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 9 Jan 2023 22:05:35 +0100
+Message-ID: <CANiq72=RJ9NffqJOJLuN6B-DCQgjx1Yp7-sP58q2HchBNpYE=w@mail.gmail.com>
 Subject: Re: [PATCH 1/6] docs: rust: add paragraph about finding a suitable `libclang`
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         linux-kbuild@vger.kernel.org,
         Nathan Chancellor <nathan@kernel.org>,
         Nicolas Schier <nicolas@fjasle.eu>,
@@ -70,59 +71,17 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Jan 9, 2023 at 12:45 PM Miguel Ojeda <ojeda@kernel.org> wrote:
+On Mon, Jan 9, 2023 at 9:54 PM Nick Desaulniers <ndesaulniers@google.com> wrote:
 >
-> Sometimes users need to tweak the finding process of `libclang`
-> for `bindgen` via the `clang-sys`-provided environment variables.
->
-> Thus add a paragraph to the setting up guide, including a reference
-> to `clang-sys`'s relevant documentation.
->
-> Link: https://lore.kernel.org/rust-for-linux/CAKwvOdm5JT4wbdQQYuW+RT07rCi6whGBM2iUAyg8A1CmLXG6Nw@mail.gmail.com/
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> This is super helpful for me, since I build clang from source and
+> would like to use my libclang.so! Thanks for this documentation
+> Miguel!
+> Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
-This is super helpful for me, since I build clang from source and
-would like to use my libclang.so! Thanks for this documentation
-Miguel!
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Thanks for the quick review Nick!
 
-> ---
->  Documentation/rust/quick-start.rst | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->
-> diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
-> index 13b7744b1e27..cae21ea7de41 100644
-> --- a/Documentation/rust/quick-start.rst
-> +++ b/Documentation/rust/quick-start.rst
-> @@ -100,6 +100,23 @@ Install it via (note that this will download and build the tool from source)::
->
->         cargo install --locked --version $(scripts/min-tool-version.sh bindgen) bindgen
->
-> +``bindgen`` needs to find a suitable ``libclang`` in order to work. If it is
-> +not found (or a different ``libclang`` than the one found should be used),
-> +the process can be tweaked using the environment variables understood by
-> +``clang-sys`` (the Rust bindings crate that ``bindgen`` uses to access
-> +``libclang``):
-> +
-> +* ``LLVM_CONFIG_PATH`` can be pointed to an ``llvm-config`` executable.
-> +
-> +* Or ``LIBCLANG_PATH`` can be pointed to a ``libclang`` shared library
-> +  or to the directoy containing it.
-> +
-> +* Or ``CLANG_PATH`` can be pointed to a ``clang`` executable.
-> +
-> +For details, please see ``clang-sys``'s documentation at:
-> +
-> +       https://github.com/KyleMayes/clang-sys#environment-variables
-> +
->
->  Requirements: Developing
->  ------------------------
-> --
-> 2.39.0
->
+By the way, I didn't add your Reported-by here because apparently it
+is only intended for bug fixes and not features.
 
-
--- 
-Thanks,
-~Nick Desaulniers
+Cheers,
+Miguel
