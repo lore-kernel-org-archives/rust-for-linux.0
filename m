@@ -2,258 +2,126 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80E4EC61DB3
-	for <rust-for-linux@archiver.kernel.org>; Mon,  9 Jan 2023 06:14:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA465C677F1
+	for <rust-for-linux@archiver.kernel.org>; Mon,  9 Jan 2023 15:41:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231225AbjAIGOw (ORCPT
+        id S237297AbjAIPlp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 9 Jan 2023 01:14:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40486 "EHLO
+        Mon, 9 Jan 2023 10:41:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230458AbjAIGOv (ORCPT
+        with ESMTP id S237268AbjAIPkr (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 9 Jan 2023 01:14:51 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CFB210FCE;
-        Sun,  8 Jan 2023 22:14:50 -0800 (PST)
+        Mon, 9 Jan 2023 10:40:47 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EBC41EC69;
+        Mon,  9 Jan 2023 07:39:25 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 72D90CE0B65;
-        Mon,  9 Jan 2023 06:14:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D20C433D2;
-        Mon,  9 Jan 2023 06:14:43 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C65E0B80D66;
+        Mon,  9 Jan 2023 15:39:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 337BBC433D2;
+        Mon,  9 Jan 2023 15:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673244886;
-        bh=7nHdG7tBKvymlwJ/oQJ88KCANE4outKDYx5LGQcv3bU=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Tp16WlcPkwuxR20sEg9VspajpL7aDjyHuBtjsr8UuQ2FbIdOUo7/Y0hx4+g1xBzzG
-         +qaP7L6BgkPjPzd14wBgl8v1asbWAsk8BWUSEB0S0DyjjSKGVHPphh++wJxiczBYvE
-         xLqpsLNuWdhuqtOObOFIEqKNeB1Xj4dp0pxPuY50Ybz0Lmp7ie88BoAZ5hsY6p32x6
-         l7WIf1xWTiP35pUVsOzD5hyCHviqYMFTon6TJLHVDzD7+zc+dbSKbx77IlHn7E0q6I
-         PnIwOeDmqYiCdG4yCOldKCusQ5jhg8hYZ6oW8C1ZWrHEkJT6nApL1tONWNXCUgzZyF
-         MLqWvIYzRtMmA==
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     linux-kbuild@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        llvm@lists.linux.dev, rust-for-linux@vger.kernel.org
-Subject: [PATCH v2] kbuild: rust: remove -v option of scripts/rust_is_available.sh
-Date:   Mon,  9 Jan 2023 15:14:36 +0900
-Message-Id: <20230109061436.3146442-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.34.1
+        s=k20201202; t=1673278762;
+        bh=rnfIk1jOfskD63wG/yF93j4JUbwfc5OF2eyMAQ8DGy8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KwOaYdQo8+qWEjnqNi5bAx3ZIkY6guZ9lgPlmHpsyw6yBMjlY6TOpBl5O3sPgi9vx
+         nq/FOOSowwODoSjSp+u1St/JX3OJ7U2c/AGH5GAkpNj6V0rBW86L6YpoUEW6UEXVor
+         h/p9qtxgDdx4utH+tvqBFzOmiy7n7DQMxxsYaM2VvWRI5vM+HhthfELR6ysyKrT2ej
+         7DCJSU6yQbAc/y5vtDdKbm1iV9dOxf1WjcANHejLik+PDoc1dMz/h460iM30CKMbRI
+         iV27ofdLiiGzJIYw0zpuhS9F5upOlrMfZ09DSEnlWEKj0Z8xhTrBBgOX1Y7SBO2iON
+         nl3speuTMF1oA==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+        id D28B940468; Mon,  9 Jan 2023 12:39:19 -0300 (-03)
+Date:   Mon, 9 Jan 2023 12:39:19 -0300
+From:   Arnaldo Carvalho de Melo <acme@kernel.org>
+To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        rust-for-linux@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>, Yonghong Song <yhs@fb.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Neal Gompa <neal@gompa.dev>
+Subject: Re: Fwd: [PATCH bpf] scripts: Exclude Rust CUs with pahole
+Message-ID: <Y7w1J489NWFtCD+7@kernel.org>
+References: <828d438e-afe3-1fc0-bc12-ac98632c0908@gmail.com>
+ <0ca4ad02-af27-0d1f-8750-1ff6b34e8d2a@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ca4ad02-af27-0d1f-8750-1ff6b34e8d2a@gmail.com>
+X-Url:  http://acmel.wordpress.com
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-The -v option is passed when this script is invoked from Makefile,
-but not when invoked from Kconfig.
+Em Sat, Jan 07, 2023 at 11:23:11PM -0300, Martin Rodriguez Reboredo escreveu:
+> On 1/5/23 13:40, Eric Curtin wrote:
+> > Hiya Martin,
+> > 
+> > Just in case you hadn't noticed, the test bot complained about this...
+> > 
+> >>> grep: include/config/auto.conf: No such file or directory
+> > --
+> >>> grep: include/config/auto.conf: No such file or directory
+> >>> grep: include/config/auto.conf: No such file or directory
+> >>> grep: include/config/auto.conf: No such file or directory
+> > 
+> > Is mise le meas/Regards,
+> > 
+> > Eric Curtin
+> > 
+> > On Sun, 1 Jan 2023 at 08:57, kernel test robot <lkp@intel.com> wrote:
+> >>
+> >> Hi Martin,
+> >>
+> >> Thank you for the patch! Yet something to improve:
+> >>
+> >> [auto build test ERROR on bpf/master]
+> >>
+> >> url:    https://github.com/intel-lab-lkp/linux/commits/Martin-Rodriguez-Reboredo/scripts-Exclude-Rust-CUs-with-pahole/20221221-112806
+> >> base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf.git master
+> >> patch link:    https://lore.kernel.org/r/20221220203901.1333304-1-yakoyoku%40gmail.com
+> >> patch subject: [PATCH bpf] scripts: Exclude Rust CUs with pahole
+> >> config: sh-se7724_defconfig
+> >> compiler: sh4-linux-gcc (GCC) 12.1.0
+> >> reproduce (this is a W=1 build):
+> >>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+> >>         chmod +x ~/bin/make.cross
+> >>         # https://github.com/intel-lab-lkp/linux/commit/24aac5fd4ea59e02e9c203d3a59be6f13c5e702f
+> >>         git remote add linux-review https://github.com/intel-lab-lkp/linux
+> >>         git fetch --no-tags linux-review Martin-Rodriguez-Reboredo/scripts-Exclude-Rust-CUs-with-pahole/20221221-112806
+> >>         git checkout 24aac5fd4ea59e02e9c203d3a59be6f13c5e702f
+> >>         # save the config file
+> >>         mkdir build_dir && cp config build_dir/.config
+> >>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh olddefconfig
+> >>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=sh distclean
+> >>
+> >> If you fix the issue, kindly add following tag where applicable
+> >> | Reported-by: kernel test robot <lkp@intel.com>
+> >>
+> >> All errors (new ones prefixed by >>):
+> >>
+> >>>> grep: include/config/auto.conf: No such file or directory
+> >> --
+> >>>> grep: include/config/auto.conf: No such file or directory
+> >>>> grep: include/config/auto.conf: No such file or directory
+> >>>> grep: include/config/auto.conf: No such file or directory
+> >>
+> >> --
+> >> 0-DAY CI Kernel Test Service
+> >> https://01.org/lkp
+> > 
+> 
+> I see, I was making a dependency on `auto.conf` in `pahole-flags.sh` but
+> the former gets generated after the latter is called, so that's the
+> reason behind the `grep` errors. Sent a new version of the patch.
 
-As you can see in scripts/Kconfig.include, the 'success' macro suppresses
-stdout and stderr anyway, so this script does not need to be quiet.
+I'll wait a bit then try to finally get into the rust bandwagon by
+actually testing all this to ack this.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
----
-
-Changes in v2:
-  - Fix description (scripts -> script)
-  - Remove stale comment
-
- Makefile                     |  4 +-
- scripts/rust_is_available.sh | 96 +++++++++++++++---------------------
- 2 files changed, 42 insertions(+), 58 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index c1f59f54ae90..59d827b85888 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1288,7 +1288,7 @@ prepare0: archprepare
- # All the preparing..
- prepare: prepare0
- ifdef CONFIG_RUST
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh -v
-+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh
- 	$(Q)$(MAKE) $(build)=rust
- endif
- 
-@@ -1813,7 +1813,7 @@ $(DOC_TARGETS):
- # "Is Rust available?" target
- PHONY += rustavailable
- rustavailable:
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh -v && echo "Rust is available!"
-+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh && echo "Rust is available!"
- 
- # Documentation target
- #
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index aebbf1913970..f43a010eaf30 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -2,8 +2,6 @@
- # SPDX-License-Identifier: GPL-2.0
- #
- # Tests whether a suitable Rust toolchain is available.
--#
--# Pass `-v` for human output and more checks (as warnings).
- 
- set -e
- 
-@@ -23,21 +21,17 @@ get_canonical_version()
- 
- # Check that the Rust compiler exists.
- if ! command -v "$RUSTC" >/dev/null; then
--	if [ "$1" = -v ]; then
--		echo >&2 "***"
--		echo >&2 "*** Rust compiler '$RUSTC' could not be found."
--		echo >&2 "***"
--	fi
-+	echo >&2 "***"
-+	echo >&2 "*** Rust compiler '$RUSTC' could not be found."
-+	echo >&2 "***"
- 	exit 1
- fi
- 
- # Check that the Rust bindings generator exists.
- if ! command -v "$BINDGEN" >/dev/null; then
--	if [ "$1" = -v ]; then
--		echo >&2 "***"
--		echo >&2 "*** Rust bindings generator '$BINDGEN' could not be found."
--		echo >&2 "***"
--	fi
-+	echo >&2 "***"
-+	echo >&2 "*** Rust bindings generator '$BINDGEN' could not be found."
-+	echo >&2 "***"
- 	exit 1
- fi
- 
-@@ -53,16 +47,14 @@ rust_compiler_min_version=$($min_tool_version rustc)
- rust_compiler_cversion=$(get_canonical_version $rust_compiler_version)
- rust_compiler_min_cversion=$(get_canonical_version $rust_compiler_min_version)
- if [ "$rust_compiler_cversion" -lt "$rust_compiler_min_cversion" ]; then
--	if [ "$1" = -v ]; then
--		echo >&2 "***"
--		echo >&2 "*** Rust compiler '$RUSTC' is too old."
--		echo >&2 "***   Your version:    $rust_compiler_version"
--		echo >&2 "***   Minimum version: $rust_compiler_min_version"
--		echo >&2 "***"
--	fi
-+	echo >&2 "***"
-+	echo >&2 "*** Rust compiler '$RUSTC' is too old."
-+	echo >&2 "***   Your version:    $rust_compiler_version"
-+	echo >&2 "***   Minimum version: $rust_compiler_min_version"
-+	echo >&2 "***"
- 	exit 1
- fi
--if [ "$1" = -v ] && [ "$rust_compiler_cversion" -gt "$rust_compiler_min_cversion" ]; then
-+if [ "$rust_compiler_cversion" -gt "$rust_compiler_min_cversion" ]; then
- 	echo >&2 "***"
- 	echo >&2 "*** Rust compiler '$RUSTC' is too new. This may or may not work."
- 	echo >&2 "***   Your version:     $rust_compiler_version"
-@@ -82,16 +74,14 @@ rust_bindings_generator_min_version=$($min_tool_version bindgen)
- rust_bindings_generator_cversion=$(get_canonical_version $rust_bindings_generator_version)
- rust_bindings_generator_min_cversion=$(get_canonical_version $rust_bindings_generator_min_version)
- if [ "$rust_bindings_generator_cversion" -lt "$rust_bindings_generator_min_cversion" ]; then
--	if [ "$1" = -v ]; then
--		echo >&2 "***"
--		echo >&2 "*** Rust bindings generator '$BINDGEN' is too old."
--		echo >&2 "***   Your version:    $rust_bindings_generator_version"
--		echo >&2 "***   Minimum version: $rust_bindings_generator_min_version"
--		echo >&2 "***"
--	fi
-+	echo >&2 "***"
-+	echo >&2 "*** Rust bindings generator '$BINDGEN' is too old."
-+	echo >&2 "***   Your version:    $rust_bindings_generator_version"
-+	echo >&2 "***   Minimum version: $rust_bindings_generator_min_version"
-+	echo >&2 "***"
- 	exit 1
- fi
--if [ "$1" = -v ] && [ "$rust_bindings_generator_cversion" -gt "$rust_bindings_generator_min_cversion" ]; then
-+if [ "$rust_bindings_generator_cversion" -gt "$rust_bindings_generator_min_cversion" ]; then
- 	echo >&2 "***"
- 	echo >&2 "*** Rust bindings generator '$BINDGEN' is too new. This may or may not work."
- 	echo >&2 "***   Your version:     $rust_bindings_generator_version"
-@@ -110,13 +100,11 @@ bindgen_libclang_min_version=$($min_tool_version llvm)
- bindgen_libclang_cversion=$(get_canonical_version $bindgen_libclang_version)
- bindgen_libclang_min_cversion=$(get_canonical_version $bindgen_libclang_min_version)
- if [ "$bindgen_libclang_cversion" -lt "$bindgen_libclang_min_cversion" ]; then
--	if [ "$1" = -v ]; then
--		echo >&2 "***"
--		echo >&2 "*** libclang (used by the Rust bindings generator '$BINDGEN') is too old."
--		echo >&2 "***   Your version:    $bindgen_libclang_version"
--		echo >&2 "***   Minimum version: $bindgen_libclang_min_version"
--		echo >&2 "***"
--	fi
-+	echo >&2 "***"
-+	echo >&2 "*** libclang (used by the Rust bindings generator '$BINDGEN') is too old."
-+	echo >&2 "***   Your version:    $bindgen_libclang_version"
-+	echo >&2 "***   Minimum version: $bindgen_libclang_min_version"
-+	echo >&2 "***"
- 	exit 1
- fi
- 
-@@ -125,21 +113,19 @@ fi
- #
- # In the future, we might be able to perform a full version check, see
- # https://github.com/rust-lang/rust-bindgen/issues/2138.
--if [ "$1" = -v ]; then
--	cc_name=$($(dirname $0)/cc-version.sh "$CC" | cut -f1 -d' ')
--	if [ "$cc_name" = Clang ]; then
--		clang_version=$( \
--			LC_ALL=C "$CC" --version 2>/dev/null \
--				| sed -nE '1s:.*version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
--		)
--		if [ "$clang_version" != "$bindgen_libclang_version" ]; then
--			echo >&2 "***"
--			echo >&2 "*** libclang (used by the Rust bindings generator '$BINDGEN')"
--			echo >&2 "*** version does not match Clang's. This may be a problem."
--			echo >&2 "***   libclang version: $bindgen_libclang_version"
--			echo >&2 "***   Clang version:    $clang_version"
--			echo >&2 "***"
--		fi
-+cc_name=$($(dirname $0)/cc-version.sh "$CC" | cut -f1 -d' ')
-+if [ "$cc_name" = Clang ]; then
-+	clang_version=$( \
-+		LC_ALL=C "$CC" --version 2>/dev/null \
-+			| sed -nE '1s:.*version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
-+	)
-+	if [ "$clang_version" != "$bindgen_libclang_version" ]; then
-+		echo >&2 "***"
-+		echo >&2 "*** libclang (used by the Rust bindings generator '$BINDGEN')"
-+		echo >&2 "*** version does not match Clang's. This may be a problem."
-+		echo >&2 "***   libclang version: $bindgen_libclang_version"
-+		echo >&2 "***   Clang version:    $clang_version"
-+		echo >&2 "***"
- 	fi
- fi
- 
-@@ -150,11 +136,9 @@ rustc_sysroot=$("$RUSTC" $KRUSTFLAGS --print sysroot)
- rustc_src=${RUST_LIB_SRC:-"$rustc_sysroot/lib/rustlib/src/rust/library"}
- rustc_src_core="$rustc_src/core/src/lib.rs"
- if [ ! -e "$rustc_src_core" ]; then
--	if [ "$1" = -v ]; then
--		echo >&2 "***"
--		echo >&2 "*** Source code for the 'core' standard library could not be found"
--		echo >&2 "*** at '$rustc_src_core'."
--		echo >&2 "***"
--	fi
-+	echo >&2 "***"
-+	echo >&2 "*** Source code for the 'core' standard library could not be found"
-+	echo >&2 "*** at '$rustc_src_core'."
-+	echo >&2 "***"
- 	exit 1
- fi
--- 
-2.34.1
-
+- Arnaldo
