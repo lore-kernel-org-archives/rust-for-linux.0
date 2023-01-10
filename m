@@ -2,42 +2,62 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BC44C54EBE
-	for <rust-for-linux@archiver.kernel.org>; Tue, 10 Jan 2023 10:17:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99718C54EBE
+	for <rust-for-linux@archiver.kernel.org>; Tue, 10 Jan 2023 12:29:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237981AbjAJKRY (ORCPT
+        id S238307AbjAJM2s (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 10 Jan 2023 05:17:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43490 "EHLO
+        Tue, 10 Jan 2023 07:28:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232084AbjAJKQy (ORCPT
+        with ESMTP id S238402AbjAJM2i (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 10 Jan 2023 05:16:54 -0500
-X-Greylist: delayed 171 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 10 Jan 2023 02:16:39 PST
-Received: from mout-b-110.mailbox.org (mout-b-110.mailbox.org [195.10.208.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC9E141D76;
-        Tue, 10 Jan 2023 02:16:39 -0800 (PST)
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-b-110.mailbox.org (Postfix) with ESMTPS id 4Nrmtq4LVhz9t7Z;
-        Tue, 10 Jan 2023 11:16:35 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyantec.com; s=default;
-        t=1673345795;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=6IUg8Et5IkHA9DdwmBM0zPxl4bj+zRYsG0exsYo0MV0=;
-        b=poeGSm+lgAhdQHYBpqCTYPAZ8w3Pb1lDmlitQO9C27MYchgg2SQJ3E9SDkQ40CbNWEs/X0
-        6W3/S+e0MyKAb90i1y9+sWmuQQ74/RjmHjFv41hneE7Zmg9GgQUznfyt9lopyESrZxJhxl
-        3R2RPETiIW87xD05Qn8+PWMvMT2CZ3kdP3f321XrHPEkD74PKH3t7v8zW7YUwuK9szOqtb
-        VoBXflXAqp1h8eunk9/zUEYOnj3I3V3OuushZ4cI/d7HjUHeWPFaOtqZQ/2ol3P/kv5d5p
-        24CHzCuW4jBdcHnWpK1xo1cOHq9Khe8m49T+tAMijQnYAsqct393gaItk/jDVA==
-From:   Finn Behrens <fin@nyantec.com>
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        Tue, 10 Jan 2023 07:28:38 -0500
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B1C45F98;
+        Tue, 10 Jan 2023 04:28:37 -0800 (PST)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-4bf16baa865so151042657b3.13;
+        Tue, 10 Jan 2023 04:28:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2vRpvlz/nTbkuUWpiT0ilG/Sg8qqMAAl8bfBXBzFCxg=;
+        b=iZLPUyiqSibhLkBnGrBg3hGw/AMODHqYyvgvfr2R0O/W7SxuuDn6gFWytT2k++2EAy
+         HczFFtSB/qhgr2f28uXRl0+zWfU/7MyOBwKXvKOfQ2+5YLVIGPKOYHchXMbzGL8eGxYO
+         99ff0hquQQ0oC98c+Dt/gHwxYsviqX5NbsfKsNa0QySsneUCNurnCeEqGczdy0lnkKRY
+         hIuExqvBgRRtwS6luRBMKaVVm3E7ta64yQY+oxG/EzVm0RmPurL+LXtxBx/Cx9URVulo
+         i6EaKBELkj+AHHg1ejZyDFOvdWAK9HsIT6fLlgt8ytGSty0HtfM25Wq5SQb+7svTpzLQ
+         MaEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2vRpvlz/nTbkuUWpiT0ilG/Sg8qqMAAl8bfBXBzFCxg=;
+        b=u0tgp45ziOg0XdgjquieWhinUKdb+0Eyw/uE6k0xzzMQcOoCoMbN6jlRWp6AUkqUQl
+         cwZ8kpqQsnWTL6pt1j1Dq+bWIgNUEnsh/+eOmr6O9BpzDp2dmQJ1MOmyHAXQmCuoyvc5
+         6eyCniwjbEz+lzYTZZJCy6Bn19WCxla59jYEpWNIpCblhpa4/rIV9hOp3/jDffWvnwsl
+         +emiCxsYTh3QaiTl1kGCwA6tCiBcX1/EZii5lnrulEbfYufJnlFyW/SFueVkubo3GPII
+         xbbGTnkKc1r5/MI/xyaJmj/j59MamkvpDnSajluIBaQRdDD7Ys5dlVqqSkNes4tz56c8
+         3pow==
+X-Gm-Message-State: AFqh2kpWI1nUjA0mis8OZpezSXS0GnU2J2awnvw6lBVQZzheZfZmW9QH
+        Z74zDL/v1b5keSceEpLXa4YuG5HjqiclqgybLIU=
+X-Google-Smtp-Source: AMrXdXvBz8/Dl4bwHgsKcFKZ43+bE2HeLAUWlYQrqbBvPXwRkdFlRzK/6PXnpStRCc6iPNFNVUp06TSwBjekEL1JMWE=
+X-Received: by 2002:a81:b60b:0:b0:45c:d900:f30c with SMTP id
+ u11-20020a81b60b000000b0045cd900f30cmr1581382ywh.256.1673353716487; Tue, 10
+ Jan 2023 04:28:36 -0800 (PST)
+MIME-Version: 1.0
+References: <20230109204520.539080-1-ojeda@kernel.org> <20230109204520.539080-2-ojeda@kernel.org>
+ <1E542F5E-220F-4061-BC71-F37C76616F34@nyantec.com>
+In-Reply-To: <1E542F5E-220F-4061-BC71-F37C76616F34@nyantec.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 10 Jan 2023 13:28:25 +0100
+Message-ID: <CANiq72mYHzHVk9s6Tf+vbG5ToChzCTBh0vX67s87P5sxbD-PVQ@mail.gmail.com>
+Subject: Re: [PATCH 2/6] kbuild: rust_is_available: print docs reference
+To:     Finn Behrens <fin@nyantec.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         linux-kbuild@vger.kernel.org,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
@@ -46,119 +66,32 @@ Cc:     Masahiro Yamada <masahiroy@kernel.org>,
         patches@lists.linux.dev, Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Subject: Re: [PATCH 2/6] kbuild: rust_is_available: print docs reference
-Date:   Tue, 10 Jan 2023 11:16:33 +0100
-Message-ID: <1E542F5E-220F-4061-BC71-F37C76616F34@nyantec.com>
-In-Reply-To: <20230109204520.539080-2-ojeda@kernel.org>
-References: <20230109204520.539080-1-ojeda@kernel.org>
- <20230109204520.539080-2-ojeda@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 4Nrmtq4LVhz9t7Z
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Tue, Jan 10, 2023 at 11:16 AM Finn Behrens <fin@nyantec.com> wrote:
+>
+> As I always use my systems rustc/bindgen, I always get the warning, which already clutters the build output a bit. But I see why it is helpful, so not a fan, but this patch is reasonable.
 
+Indeed, if one uses a different version, it may end up becoming too
+annoying when running it during build -- it is something I worried
+about when adding it back then in commit 11c0cf1e8c06 ("rust: run
+rust-is-available on build") in our repository.
 
-On 9 Jan 2023, at 21:45, Miguel Ojeda wrote:
+I think, for a while, until more people is accustomed to dealing with
+Rust, it may be worth the pain for some of us in order to help to
+catch bad setups, since otherwise users may not attempt to check with
+the `rustavailable` target themselves.
 
-> People trying out the Rust support in the kernel may get
-> warnings and errors from `scripts/rust_is_available.sh`
-> from the `rustavailable` target or the build step.
->
-> Some of those users may be following the Quick Start guide,
-> but others may not (likely those getting warnings from
-> the build step instead of the target).
->
-> While the messages are fairly clear on what the problem is,
-> it may not be clear how to solve the particular issue,
-> especially for those not aware of the documentation.
->
-> We could add all sorts of details on the script for each one,
-> but it is better to point users to the documentation instead,
-> where it is easily readable in different formats. It also
-> avoids duplication.
->
-> Thus add a reference to the documentation whenever the script
-> fails or there is at least a warning.
-As I always use my systems rustc/bindgen, I always get the warning, which=
- already clutters the build output a bit. But I see why it is helpful, so=
- not a fan, but this patch is reasonable.
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Finn Behrens <fin@nyantec.com>
+In any case, of course, the "too new" warnings will go away when we
+reach a stable version situation since they will not be needed anymore
+(but we can also do it sooner than that, for the build step
+especially).
 
-Regards,
-Finn
-> ---
-> Note that is based on top of patch "kbuild: rust: remove -v
-> option of scripts/rust_is_available.sh" applied on v6.2-rc3:
-> https://lore.kernel.org/rust-for-linux/20230109061436.3146442-1-masahir=
-oy@kernel.org/
->
->  scripts/rust_is_available.sh | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->
-> diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.s=
-h
-> index eaeafebf8572..c907cf881c2c 100755
-> --- a/scripts/rust_is_available.sh
-> +++ b/scripts/rust_is_available.sh
-> @@ -21,6 +21,20 @@ get_canonical_version()
->  	echo $((100000 * $1 + 100 * $2 + $3))
->  }
->
-> +# Print a reference to the setup guide in the documentation.
-> +print_docs_reference()
-> +{
-> +	echo >&2 "***"
-> +	echo >&2 "*** Please see Documentation/rust/quick-start.rst for detai=
-ls"
-> +	echo >&2 "*** on how to setup Rust support."
-> +	echo >&2 "***"
-> +}
-> +
-> +# If the script fails for any reason, or if there was any warning, the=
-n
-> +# print a reference to the documentation on exit.
-> +warning=3D0
-> +trap 'if [ $? -ne 0 ] || [ $warning -ne 0 ]; then print_docs_reference=
-; fi' EXIT
-> +
->  # Check that the Rust compiler exists.
->  if ! command -v "$RUSTC" >/dev/null; then
->  	echo >&2 "***"
-> @@ -62,6 +76,7 @@ if [ "$rust_compiler_cversion" -gt "$rust_compiler_mi=
-n_cversion" ]; then
->  	echo >&2 "***   Your version:     $rust_compiler_version"
->  	echo >&2 "***   Expected version: $rust_compiler_min_version"
->  	echo >&2 "***"
-> +	warning=3D1
->  fi
->
->  # Check that the Rust bindings generator is suitable.
-> @@ -89,6 +104,7 @@ if [ "$rust_bindings_generator_cversion" -gt "$rust_=
-bindings_generator_min_cvers
->  	echo >&2 "***   Your version:     $rust_bindings_generator_version"
->  	echo >&2 "***   Expected version: $rust_bindings_generator_min_versio=
-n"
->  	echo >&2 "***"
-> +	warning=3D1
->  fi
->
->  # Check that the `libclang` used by the Rust bindings generator is sui=
-table.
-> @@ -128,6 +144,7 @@ if [ "$cc_name" =3D Clang ]; then
->  		echo >&2 "***   libclang version: $bindgen_libclang_version"
->  		echo >&2 "***   Clang version:    $clang_version"
->  		echo >&2 "***"
-> +		warning=3D1
->  	fi
->  fi
->
-> -- =
+Thanks for the review!
 
-> 2.39.0
+Cheers,
+Miguel
