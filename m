@@ -2,92 +2,131 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5C4BC54EBE
-	for <rust-for-linux@archiver.kernel.org>; Tue, 10 Jan 2023 21:54:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B38AC46467
+	for <rust-for-linux@archiver.kernel.org>; Wed, 11 Jan 2023 10:43:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231939AbjAJVys (ORCPT
+        id S232691AbjAKKnT (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 10 Jan 2023 16:54:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54352 "EHLO
+        Wed, 11 Jan 2023 05:43:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231682AbjAJVyr (ORCPT
+        with ESMTP id S234048AbjAKKnS (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 10 Jan 2023 16:54:47 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39F95DF89;
-        Tue, 10 Jan 2023 13:54:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=6plIPH8q9vzdITA82ASBFJ0eHrxSExO14Sl0/pAdaRI=; b=fJAmMhamBtekMM+h1QJMrul21z
-        Fd0AFvwCPpOSvOj4drRVTxskDcFDX2QajWrUpxMifpvVcz0/AUBmxFf67SApSYoEPBtAUm7wFgf8J
-        9ybNKgTNiC3BTEm93s+Vd6C0MKiPz7jgYOXGT1eN0v/71pISf+gzAh8WkC5OBnwGIqq2ETuy5z8ew
-        6SXFgBC03CcfQQAgHgULO8xfu1JNS6PAgYxxBwleWBuoZganYhYVdtrNKpBrlqJJcM2OR8pwnc/T7
-        OD3v7q+/UIrRkM3TDU3SWL65ouRTP4OjPY6p+QOWLOIxyeHKaykpkbJ8TyKj8kLhida9QqKnmobdT
-        PYz2zOCw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1pFMa1-003Yvd-5r; Tue, 10 Jan 2023 21:54:49 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id AEE76300327;
-        Tue, 10 Jan 2023 22:54:35 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 68F8A2B58D074; Tue, 10 Jan 2023 22:54:35 +0100 (CET)
-Date:   Tue, 10 Jan 2023 22:54:35 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Boqun Feng <boqun.feng@gmail.com>
+        Wed, 11 Jan 2023 05:43:18 -0500
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E2826DC;
+        Wed, 11 Jan 2023 02:43:16 -0800 (PST)
+Date:   Wed, 11 Jan 2023 10:43:05 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1673433792; x=1673692992;
+        bh=o+PuleZmpSn/N3Ya5Al4hVV23Ksr3vGfrc/S9YnGjqM=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=rdLIvJkY+rMENix8x8WopjFmdXzTQ5vCVHoH3dDUBLFK96mD7Ty4jdRufyx0q0/He
+         cCvxoWiL0m5FdLjlR8yCbOKEmpbAMGf4ysZ46Ipj9QRV3uCVckY7qqt56Rl+F/8z89
+         1hjAbeYBtW6fUQN3sc84pEYWZjfoLseK5XGQJWLPOkCQG8msOnoONcyRN7wHU6l/dh
+         VTsM8eKpBVeTgksuBu8tYR5joEiRevu+7bv/77P1vcwCKo6mBmxRxpm43CMwXsZNqt
+         ImU+RWrm2ssilOfSlSy0LISsoj1/B1TLlmjZlBqMztP6zMwdNSVMNrowYdMQj63CBN
+         fneoTVYIh4NJw==
+To:     Miguel Ojeda <ojeda@kernel.org>
+From:   =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
 Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 1/7] rust: sync: add `Arc` for ref-counted allocations
-Message-ID: <Y73em8F0zNzUbUfg@hirez.programming.kicks-ass.net>
-References: <20221228060346.352362-1-wedsonaf@gmail.com>
- <Y73JF1rvF/No/JRi@boqun-archlinux>
- <Y73WsvEEIS0jHlVb@hirez.programming.kicks-ass.net>
- <Y73aWaJ8gVHsG/Uq@boqun-archlinux>
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev,
+        Domen Puncer Kugler <domen.puncerkugler@nccgroup.com>
+Subject: Re: [PATCH] rust: print: avoid evaluating arguments in `pr_*` macros in `unsafe` blocks
+Message-ID: <F8m0QCk5z20aveREvWRtVenzcjNhG_bjk3TBRaQIFTEF2eLz9Y-d-H0QxOMQAaBCeZmjACtRHGrnRjUv8pRRqr24FkOZh1y4oMYRXYlxdAQ=@protonmail.com>
+In-Reply-To: <20230109204912.539790-1-ojeda@kernel.org>
+References: <20230109204912.539790-1-ojeda@kernel.org>
+Feedback-ID: 27884398:user:proton
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y73aWaJ8gVHsG/Uq@boqun-archlinux>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Jan 10, 2023 at 01:36:25PM -0800, Boqun Feng wrote:
-> On Tue, Jan 10, 2023 at 10:20:50PM +0100, Peter Zijlstra wrote:
-> > On Tue, Jan 10, 2023 at 12:22:47PM -0800, Boqun Feng wrote:
-> > 
-> > > First, I'd really appreciate it that Will, Peter or Mark can take a look
-> > > at the series and see if they are happy or not ;-)
-> > 
-> > I only have 1 patch, and since I don't speak rust I have very limited
-> > feedback. Having to use out-of-line functions seems sub-optimal, but
-> > I suppose that's a limitation of the Rust-C bindings.
-> > 
-> > Afaict this is like C++ shared_ptr<> and using refcount_t seems okay for
-> > that, not sure what else you're asking.
-> > 
-> 
-> Thanks! I failed to find that you were only Cc for the first patch.. I
-> cannot speak for Wedson, but the rest of the patchset are all based on
-> the first patch and purely in Rust, maybe he was avoiding to "spam" your
-> inbox ;-)
-> 
-> While we are at it, for a general case, say we provide Rust's interface
-> of task/kthread managament, do you prefer to seeing the whole patchset
-> (including how Rust side provides the APIs) or seeing only the patch
-> that interacts with C?
-> 
-> Again, trying to find the sweet spot for collaboration ;-)
+On Monday, January 9th, 2023 at 21:49, Miguel Ojeda <ojeda@kernel.org> wrot=
+e:
 
-Always all patches. The more effort I need to do to find sometihng the
-smaller the chance I will. Also, I get so much email, I've long since
-given up on reading it all.
+> At the moment it is possible to perform unsafe operations in
+> the arguments of `pr_*` macros since they are evaluated inside
+> an `unsafe` block:
+>
+>     let x =3D &10u32 as *const u32;
+>     pr_info!("{}", *x);
+>
+> In other words, this is a soundness issue.
+>
+> Fix it so that it requires an explicit `unsafe` block.
+>
+> Reported-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Reported-by: Domen Puncer Kugler <domen.puncerkugler@nccgroup.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/479
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+
+> ---
+>  rust/kernel/print.rs | 29 ++++++++++++++++++-----------
+>  1 file changed, 18 insertions(+), 11 deletions(-)
+>
+> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+> index 29bf9c2e8aee..30103325696d 100644
+> --- a/rust/kernel/print.rs
+> +++ b/rust/kernel/print.rs
+> @@ -142,17 +142,24 @@ pub fn call_printk_cont(args: fmt::Arguments<'_>) {
+>  macro_rules! print_macro (
+>      // The non-continuation cases (most of them, e.g. `INFO`).
+>      ($format_string:path, false, $($arg:tt)+) =3D> (
+> -        // SAFETY: This hidden macro should only be called by the docume=
+nted
+> -        // printing macros which ensure the format string is one of the =
+fixed
+> -        // ones. All `__LOG_PREFIX`s are null-terminated as they are gen=
+erated
+> -        // by the `module!` proc macro or fixed values defined in a kern=
+el
+> -        // crate.
+> -        unsafe {
+> -            $crate::print::call_printk(
+> -                &$format_string,
+> -                crate::__LOG_PREFIX,
+> -                format_args!($($arg)+),
+> -            );
+> +        // To remain sound, `arg`s must be expanded outside the `unsafe`=
+ block.
+> +        // Typically one would use a `let` binding for that; however, `f=
+ormat_args!`
+> +        // takes borrows on the arguments, but does not extend the scope=
+ of temporaries.
+> +        // Therefore, a `match` expression is used to keep them around, =
+since
+> +        // the scrutinee is kept until the end of the `match`.
+> +        match format_args!($($arg)+) {
+> +            // SAFETY: This hidden macro should only be called by the do=
+cumented
+> +            // printing macros which ensure the format string is one of =
+the fixed
+> +            // ones. All `__LOG_PREFIX`s are null-terminated as they are=
+ generated
+> +            // by the `module!` proc macro or fixed values defined in a =
+kernel
+> +            // crate.
+> +            args =3D> unsafe {
+> +                $crate::print::call_printk(
+> +                    &$format_string,
+> +                    crate::__LOG_PREFIX,
+> +                    args,
+> +                );
+> +            }
+>          }
+>      );
+>
+>
+> base-commit: b7bfaa761d760e72a969d116517eaa12e404c262
+> --
+> 2.39.0
