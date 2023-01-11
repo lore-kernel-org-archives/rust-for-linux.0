@@ -2,131 +2,137 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B38AC46467
-	for <rust-for-linux@archiver.kernel.org>; Wed, 11 Jan 2023 10:43:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 206DCC5479D
+	for <rust-for-linux@archiver.kernel.org>; Wed, 11 Jan 2023 15:03:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232691AbjAKKnT (ORCPT
+        id S232810AbjAKPCv (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 11 Jan 2023 05:43:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58480 "EHLO
+        Wed, 11 Jan 2023 10:02:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234048AbjAKKnS (ORCPT
+        with ESMTP id S232339AbjAKPCT (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 11 Jan 2023 05:43:18 -0500
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E2826DC;
-        Wed, 11 Jan 2023 02:43:16 -0800 (PST)
-Date:   Wed, 11 Jan 2023 10:43:05 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1673433792; x=1673692992;
-        bh=o+PuleZmpSn/N3Ya5Al4hVV23Ksr3vGfrc/S9YnGjqM=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=rdLIvJkY+rMENix8x8WopjFmdXzTQ5vCVHoH3dDUBLFK96mD7Ty4jdRufyx0q0/He
-         cCvxoWiL0m5FdLjlR8yCbOKEmpbAMGf4ysZ46Ipj9QRV3uCVckY7qqt56Rl+F/8z89
-         1hjAbeYBtW6fUQN3sc84pEYWZjfoLseK5XGQJWLPOkCQG8msOnoONcyRN7wHU6l/dh
-         VTsM8eKpBVeTgksuBu8tYR5joEiRevu+7bv/77P1vcwCKo6mBmxRxpm43CMwXsZNqt
-         ImU+RWrm2ssilOfSlSy0LISsoj1/B1TLlmjZlBqMztP6zMwdNSVMNrowYdMQj63CBN
-         fneoTVYIh4NJw==
-To:     Miguel Ojeda <ojeda@kernel.org>
-From:   =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev,
-        Domen Puncer Kugler <domen.puncerkugler@nccgroup.com>
-Subject: Re: [PATCH] rust: print: avoid evaluating arguments in `pr_*` macros in `unsafe` blocks
-Message-ID: <F8m0QCk5z20aveREvWRtVenzcjNhG_bjk3TBRaQIFTEF2eLz9Y-d-H0QxOMQAaBCeZmjACtRHGrnRjUv8pRRqr24FkOZh1y4oMYRXYlxdAQ=@protonmail.com>
-In-Reply-To: <20230109204912.539790-1-ojeda@kernel.org>
-References: <20230109204912.539790-1-ojeda@kernel.org>
-Feedback-ID: 27884398:user:proton
+        Wed, 11 Jan 2023 10:02:19 -0500
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0974E1C432;
+        Wed, 11 Jan 2023 07:02:17 -0800 (PST)
+Received: by mail-oi1-x229.google.com with SMTP id c133so12934458oif.1;
+        Wed, 11 Jan 2023 07:02:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0egSRlD5ysAF1/1Mcrzc43lEP8kki52Q/tp1KL0aFq0=;
+        b=JTRokcX3zaOOa5DZ0ocv+qAiNLHN7v+XuqXLh2ziEGBWUateS/D4TGVet0Zwm2i2A3
+         EqWWhy5jwA3vxH3xmmrWHlmpHypTsUMkT/AuH/bR+YPy3NlEQNnMRTmsMrRy5oa1scgv
+         nj22zJKb0qW5fzEasQIf2ykHCDGPKEdXGBtlgPkRGxy4bTY6+EoRZukOh1kdpVLToTWs
+         dNSlde+evDr3RAcQJYdoCS9NzqCXpTw8dYKYRt6DHZK6AZCOOyb7fx6XY55rlJsukgGs
+         N8yvTICMHBnPlrxUvtT0GzGPthYxWLBPzDGl+/caPJYUlHahaBcecxGf+WEamOPFbc6C
+         FVOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0egSRlD5ysAF1/1Mcrzc43lEP8kki52Q/tp1KL0aFq0=;
+        b=ewRNeZKkfTKrR5fI5vcBLuXvv2KsMtp9H5MACMyhdjTvdRLqQZcr3kPNTXXPHmmGgj
+         6vW2WcsFmEFdjnWnt88C6nDjj5l4HmwgNI6cC5/PIcyAr4rmrKE23blhddA1tjoOlz6l
+         LfmKqeNuh4wxOtjDFUAjjuoINyPn1aotRwpNvYoCHAmvHWhegyq3Eje0RR5x6Wnmkjgl
+         cYobAdXcCac9+E49qAIgbywJJ7cA/9/Ox1ZJqlw/xdJUNB8RHKQW5x7UUxWZWwVgczrP
+         ZtFD8OMhZ6qFqJkv/9uhoyEe5UQJOPjEfFEFRHplkG0ifk6qUAWYD/qtJY5ZgrwnBXya
+         8Qng==
+X-Gm-Message-State: AFqh2kqtXRs293VaoWjVtqicAino4oZqAuZbYUzjyFKRLPGFPxcL5j8V
+        HZ+DW3eOvtJMBTZ5rT6lTJI=
+X-Google-Smtp-Source: AMrXdXsJ68tmNlldOty2WkVziBaah7VubXfqbSPrUVre3rpkZtb+MXnE0CNjRpQ5vpLhanXefNOLww==
+X-Received: by 2002:a05:6808:28e:b0:35e:e530:a07b with SMTP id z14-20020a056808028e00b0035ee530a07bmr31314497oic.57.1673449337028;
+        Wed, 11 Jan 2023 07:02:17 -0800 (PST)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id bi38-20020a05680818a600b00353fe4fb4casm6690322oib.48.2023.01.11.07.02.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Jan 2023 07:02:16 -0800 (PST)
+Message-ID: <68c81196-5421-8731-52be-b9b620837eb5@gmail.com>
+Date:   Wed, 11 Jan 2023 12:02:12 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH v2] scripts: Exclude Rust CUs with pahole
+To:     Eric Curtin <ecurtin@redhat.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Neal Gompa <neal@gompa.dev>, bpf@vger.kernel.org,
+        rust-for-linux@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>, Yonghong Song <yhs@fb.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+References: <20230108021450.120791-1-yakoyoku@gmail.com>
+ <CAOgh=Fzc3_bCLCKE+6KVzyMbBUOcQ_s9ef6Rw33amD5+yu-_WA@mail.gmail.com>
+ <CAOgh=FxxXQ0UV_3PEGS-_575WNfR2SpKp+i78HtSVX4XO4eC0A@mail.gmail.com>
+Content-Language: en-US
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <CAOgh=FxxXQ0UV_3PEGS-_575WNfR2SpKp+i78HtSVX4XO4eC0A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Monday, January 9th, 2023 at 21:49, Miguel Ojeda <ojeda@kernel.org> wrot=
-e:
+On 1/8/23 16:19, Eric Curtin wrote:
+> On Sun, 8 Jan 2023 at 15:18, Eric Curtin <ecurtin@redhat.com> wrote:
+>>
+>> On Sun, 8 Jan 2023 at 02:15, Martin Rodriguez Reboredo
+>> <yakoyoku@gmail.com> wrote:
+>>>
+>>> [ ... ]
+>>
+>> If it was me, I would do things more like v1 of the patch (instead
+>> just checking pahole version), because this is the only flag set in
+>> scripts/Makefile.modfinal, which is a little confusing and
+>> inconsistent. It's ok to set --lang_exclude=rust in all cases, as long
+>> as pahole_ver is recent enough.
+>>
+>> +if [ "${pahole_ver}" -ge "124" ]; then
+>> +       # see PAHOLE_HAS_LANG_EXCLUDE
+>> +       extra_paholeopt="${extra_paholeopt} --lang_exclude=rust"
+>> +fi
+>>
+>> But I'm not too opinionated either on this so...
+>>
+>> Reviewed-by: Eric Curtin <ecurtin@redhat.com>
+>>
+>> can be reapplied. I'm gonna test this again to see if it works in a
+>> Fedora Asahi rpm build.
+> 
+> After testing I probably have to retract my Reviewed-by tag,
+> apologies, bpf and all that did not work with this patch when I built
+> in the fedora way, but, the good news is when I alter v1 of the patch
+> to just check pahole version like so (instead of the is_enabled
+> check):
+> 
+> +if [ "${pahole_ver}" -ge "124" ]; then
+> +        # see PAHOLE_HAS_LANG_EXCLUDE
+> +        extra_paholeopt="${extra_paholeopt} --lang_exclude=rust"
+> +fi
+> 
+> it worked just fine, and that should satisfy the testbot and all the
+> other ways we build too. Could we change to that @Martin Rodriguez
+> Reboredo ?
+> 
 
-> At the moment it is possible to perform unsafe operations in
-> the arguments of `pr_*` macros since they are evaluated inside
-> an `unsafe` block:
->
->     let x =3D &10u32 as *const u32;
->     pr_info!("{}", *x);
->
-> In other words, this is a soundness issue.
->
-> Fix it so that it requires an explicit `unsafe` block.
->
-> Reported-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Reported-by: Domen Puncer Kugler <domen.puncerkugler@nccgroup.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/479
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+From my POV I don't like this way due to it being set regardless whether
+or not you are building the kernel with Rust. Though, because it doesn't
+affect non `CONFIG_RUST` builds, I _think_ it won't hurt if we use that
+way for now. Gonna send v3.
 
-Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
-
-> ---
->  rust/kernel/print.rs | 29 ++++++++++++++++++-----------
->  1 file changed, 18 insertions(+), 11 deletions(-)
->
-> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-> index 29bf9c2e8aee..30103325696d 100644
-> --- a/rust/kernel/print.rs
-> +++ b/rust/kernel/print.rs
-> @@ -142,17 +142,24 @@ pub fn call_printk_cont(args: fmt::Arguments<'_>) {
->  macro_rules! print_macro (
->      // The non-continuation cases (most of them, e.g. `INFO`).
->      ($format_string:path, false, $($arg:tt)+) =3D> (
-> -        // SAFETY: This hidden macro should only be called by the docume=
-nted
-> -        // printing macros which ensure the format string is one of the =
-fixed
-> -        // ones. All `__LOG_PREFIX`s are null-terminated as they are gen=
-erated
-> -        // by the `module!` proc macro or fixed values defined in a kern=
-el
-> -        // crate.
-> -        unsafe {
-> -            $crate::print::call_printk(
-> -                &$format_string,
-> -                crate::__LOG_PREFIX,
-> -                format_args!($($arg)+),
-> -            );
-> +        // To remain sound, `arg`s must be expanded outside the `unsafe`=
- block.
-> +        // Typically one would use a `let` binding for that; however, `f=
-ormat_args!`
-> +        // takes borrows on the arguments, but does not extend the scope=
- of temporaries.
-> +        // Therefore, a `match` expression is used to keep them around, =
-since
-> +        // the scrutinee is kept until the end of the `match`.
-> +        match format_args!($($arg)+) {
-> +            // SAFETY: This hidden macro should only be called by the do=
-cumented
-> +            // printing macros which ensure the format string is one of =
-the fixed
-> +            // ones. All `__LOG_PREFIX`s are null-terminated as they are=
- generated
-> +            // by the `module!` proc macro or fixed values defined in a =
-kernel
-> +            // crate.
-> +            args =3D> unsafe {
-> +                $crate::print::call_printk(
-> +                    &$format_string,
-> +                    crate::__LOG_PREFIX,
-> +                    args,
-> +                );
-> +            }
->          }
->      );
->
->
-> base-commit: b7bfaa761d760e72a969d116517eaa12e404c262
-> --
-> 2.39.0
+>>
+>>
+>>> +
+>>>         vmlinux_link ${1}
+>>>
+>>>         info "BTF" ${2}
+>>> --
+>>> 2.39.0
+>>>
+> 
