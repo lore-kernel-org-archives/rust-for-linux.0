@@ -2,170 +2,154 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6FCBC54EBC
-	for <rust-for-linux@archiver.kernel.org>; Thu, 12 Jan 2023 06:23:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50667C677F1
+	for <rust-for-linux@archiver.kernel.org>; Thu, 12 Jan 2023 14:34:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234552AbjALGXX (ORCPT
+        id S237251AbjALOez (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 12 Jan 2023 01:23:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37076 "EHLO
+        Thu, 12 Jan 2023 09:34:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234409AbjALGXW (ORCPT
+        with ESMTP id S238021AbjALOdx (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 12 Jan 2023 01:23:22 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E28B841000;
-        Wed, 11 Jan 2023 22:23:20 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 885E9B81DB5;
-        Thu, 12 Jan 2023 06:23:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32714C43396;
-        Thu, 12 Jan 2023 06:23:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673504598;
-        bh=/RCNuQr6WRHa66Xb4//C83baWNn3VPnq6QBFQQ6fxZk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=rbhBN2LmRRXLpW9/3NNvuB7iUq3uIEl/pQK6SM+20c0XxexSes7iXM2/3VEkHsPYm
-         PI1qofLpTImTKchrbnBDZ3efPpaF8pNuKqcxDXtx0lvj5U/0rY/2eBISl6dXVbWO8E
-         Ys7zZ6N+U3ywD8eLk3lqlHnV9lUSjCkLDpsoHzXr8aPp0+lBoWQ+PZZhi+l0lEH1lx
-         osAWkbS2ZhwKnK+3G9xVZxaNtFBohwzJwk/wdJ6zEQh2nifLZX6BPaWWU9GkaFO/xy
-         zUoxPG2QKWFVMUeVKXxf+eaLsYpNPO/dhxv4E/Q77tNLN29CfhuK8v+LgVAfHxgOeb
-         QZnJrY7w1NurQ==
-Received: by mail-oi1-f173.google.com with SMTP id n8so14620574oih.0;
-        Wed, 11 Jan 2023 22:23:18 -0800 (PST)
-X-Gm-Message-State: AFqh2kr42c5FkiQZv5bdOMMgjSwwAvFekiShpbfK4MIN/cXirFle8cnc
-        ExZ6eLwCNQ7MWArZOVY31Jq1i3jhupCknj7Xrm0=
-X-Google-Smtp-Source: AMrXdXvuxQPCrcD75or7FJw8XqNZU8LWRTvOMxvIDMZy99+x9b13wEK7RuDEXMYDZzzHOghqdcAe9VGxtcfaZVeAYV8=
-X-Received: by 2002:aca:3755:0:b0:35e:7c55:b015 with SMTP id
- e82-20020aca3755000000b0035e7c55b015mr4869285oia.287.1673504597380; Wed, 11
- Jan 2023 22:23:17 -0800 (PST)
-MIME-Version: 1.0
-References: <20230109204520.539080-1-ojeda@kernel.org> <20230109204520.539080-6-ojeda@kernel.org>
-In-Reply-To: <20230109204520.539080-6-ojeda@kernel.org>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Thu, 12 Jan 2023 15:22:41 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQYk6s11MASRHW6oxtkqF00EJVqhHOP=5rynWt-QDUsXw@mail.gmail.com>
-Message-ID: <CAK7LNAQYk6s11MASRHW6oxtkqF00EJVqhHOP=5rynWt-QDUsXw@mail.gmail.com>
-Subject: Re: [PATCH 6/6] kbuild: rust_is_available: normalize version matching
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     linux-kbuild@vger.kernel.org,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Thu, 12 Jan 2023 09:33:53 -0500
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D7E25585E;
+        Thu, 12 Jan 2023 06:25:42 -0800 (PST)
+Received: by mail-ej1-x631.google.com with SMTP id fy8so45046462ejc.13;
+        Thu, 12 Jan 2023 06:25:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KYpqbjdLUiH8F5H1EJG0ptUSVdez6XT9MKBwFyuoI2o=;
+        b=WdTaqzvFjo3/K9YUHrDGwic5e44c1ojtJE2M9bn/xjrQUOCGPy5uMKteHS5CesqTOx
+         A8XSjVIvtzUUR1pymfl4C3JLi3ERHX3mq52bHs4UliQa2bjDgpykQcc+5PBwjHuDHatZ
+         XkcnjKg/gSmihb+ZRknkc13ouU0z4s1Tcqqlq0JwJWtQMHlr2jVlmzYw0mx59/jTUyuN
+         sgIjAoh9pUzgbxigArv2QhA14Y3wFc+xe3tJEekRLTtKzcB6tfx2hjVZjr9VXG87nCgi
+         LMMGCEr7JhgPtzwbYc17UNYQybrhrb8ECSQKtZfMg15NRnP3g2sA1EUfovxxPJ0GSqJj
+         /qTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=KYpqbjdLUiH8F5H1EJG0ptUSVdez6XT9MKBwFyuoI2o=;
+        b=unt5UGkA3iBwqubiKcsTlsVibi3ctzSLtbVV2wSuhh2e9NndAlgREei3ktHIEcU9U1
+         18vANlfUVrqetxQVRyl4VBCRu0ivA8gvo5pHsPHCljBM1Q/Gx0G968GJ4V2CPggFzjsx
+         FSqaAl1jLRN83M04l41BncTlg65fL/IBJvGguPBi1KkpaaY6kU/9dHFa2nMI/uV3yjlX
+         y0ASbPjlCjaY9kN/lo8IvMVbTEDoNSprxW4gQnNqftw5ONMBjOh0GIhqNZgRvDK0+Ni5
+         7RZAhD//RnafuiPU565KmKsgUMrDmPkrn0EVEv11M06OuMeSqus1ZFDs6lasdCSqrOSq
+         mcwg==
+X-Gm-Message-State: AFqh2kqZ1FgwXM2J6Xmnm49QK1ijjYo/Pmqw6Yk2tDAhVrHLbgaF53og
+        FkUtmmqGt9VsIjNKnq1g8GQ=
+X-Google-Smtp-Source: AMrXdXtfDk1CKgSiYb0Pxnr+Jv456eavOCuqTkBLuld1MUlN3/b/LR7FCyoooB1eYE6Ta1ukM1kFYA==
+X-Received: by 2002:a17:907:6e05:b0:7c1:235d:2a2b with SMTP id sd5-20020a1709076e0500b007c1235d2a2bmr85006546ejc.24.1673533540433;
+        Thu, 12 Jan 2023 06:25:40 -0800 (PST)
+Received: from localhost ([2001:b07:5d37:537d:3285:c486:87d3:b4eb])
+        by smtp.gmail.com with ESMTPSA id sb25-20020a1709076d9900b007a4e02e32ffsm7532398ejc.60.2023.01.12.06.25.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Jan 2023 06:25:39 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Thu, 12 Jan 2023 15:25:38 +0100
+Message-Id: <CPQA4LWQZOX1.31XJYNUR2O449@vincent>
+To:     "Miguel Ojeda" <ojeda@kernel.org>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        "Alex Gaynor" <alex.gaynor@gmail.com>,
+        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Cc:     <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <patches@lists.linux.dev>,
+        "Domen Puncer Kugler" <domen.puncerkugler@nccgroup.com>
+Subject: Re: [PATCH] rust: print: avoid evaluating arguments in `pr_*`
+ macros in `unsafe` blocks
+From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
+X-Mailer: aerc 0.8.2
+References: <20230109204912.539790-1-ojeda@kernel.org>
+In-Reply-To: <20230109204912.539790-1-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Jan 10, 2023 at 5:46 AM Miguel Ojeda <ojeda@kernel.org> wrote:
+On Mon Jan 9, 2023 at 9:49 PM CET, Miguel Ojeda wrote:
+> At the moment it is possible to perform unsafe operations in
+> the arguments of `pr_*` macros since they are evaluated inside
+> an `unsafe` block:
 >
-> In order to match the version string, `sed` is used in a couple
-> cases, and `grep` and `head` in a couple others.
+>     let x =3D &10u32 as *const u32;
+>     pr_info!("{}", *x);
 >
-> Make the script more consistent and easier to understand by
-> using the same method, `sed`, for all of them.
+> In other words, this is a soundness issue.
 >
-> This makes the version matching also a bit more strict for
-> the changed cases, since the strings `rustc ` and `bindgen `
-> will now be required, which should be fine since `rustc`
-> complains if one attempts to call it with another program
-> name, and `bindgen` uses a hardcoded string.
+> Fix it so that it requires an explicit `unsafe` block.
 >
-> In addition, clarify why one of the existing `sed` commands
-> does not provide an address like the others.
->
+> Reported-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Reported-by: Domen Puncer Kugler <domen.puncerkugler@nccgroup.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/479
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-
-Maybe, your purpose is to use sed consistently, but
-perhaps you can avoid forking sed if you know the
-format of the first line.
-
-
-BTW, what is missing here is, you do not check if
-${RUSTC} is really rustc.
-
-
-I can fool this script to print
-"arithmetic expression: expecting primary: "100000 *  + 100 *  + "
-
-
-
-$ make RUSTC=true rustavailable
-./scripts/rust_is_available.sh: 19: arithmetic expression: expecting
-primary: "100000 *  + 100 *  + "
-***
-*** Please see Documentation/rust/quick-start.rst for details
-*** on how to setup Rust support.
-***
-make: *** [Makefile:1809: rustavailable] Error 2
-
-
-
-
-
-
-scripts/{as,ld}-version.sh tried their best to
-parse the line with shell syntax only, and
-print "unknown assembler invoked" if the given
-tool does not seem to be a supported assembler.
-
-
-
-
-
-
-
+Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 > ---
->  scripts/rust_is_available.sh | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
+>  rust/kernel/print.rs | 29 ++++++++++++++++++-----------
+>  1 file changed, 18 insertions(+), 11 deletions(-)
 >
-> diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-> index a86659410e48..99811842b61f 100755
-> --- a/scripts/rust_is_available.sh
-> +++ b/scripts/rust_is_available.sh
-> @@ -66,8 +66,7 @@ fi
->  # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
->  rust_compiler_version=$( \
->         LC_ALL=C "$RUSTC" --version 2>/dev/null \
-> -               | head -n 1 \
-> -               | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
-> +               | sed -nE '1s:.*rustc ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
->  )
->  rust_compiler_min_version=$($min_tool_version rustc)
->  rust_compiler_cversion=$(get_canonical_version $rust_compiler_version)
-> @@ -94,8 +93,7 @@ fi
->  # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
->  rust_bindings_generator_version=$( \
->         LC_ALL=C "$BINDGEN" --version 2>/dev/null \
-> -               | head -n 1 \
-> -               | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
-> +               | sed -nE '1s:.*bindgen ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
->  )
->  rust_bindings_generator_min_version=$($min_tool_version bindgen)
->  rust_bindings_generator_cversion=$(get_canonical_version $rust_bindings_generator_version)
-> @@ -139,6 +137,9 @@ fi
+> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+> index 29bf9c2e8aee..30103325696d 100644
+> --- a/rust/kernel/print.rs
+> +++ b/rust/kernel/print.rs
+> @@ -142,17 +142,24 @@ pub fn call_printk_cont(args: fmt::Arguments<'_>) {
+>  macro_rules! print_macro (
+>      // The non-continuation cases (most of them, e.g. `INFO`).
+>      ($format_string:path, false, $($arg:tt)+) =3D> (
+> -        // SAFETY: This hidden macro should only be called by the docume=
+nted
+> -        // printing macros which ensure the format string is one of the =
+fixed
+> -        // ones. All `__LOG_PREFIX`s are null-terminated as they are gen=
+erated
+> -        // by the `module!` proc macro or fixed values defined in a kern=
+el
+> -        // crate.
+> -        unsafe {
+> -            $crate::print::call_printk(
+> -                &$format_string,
+> -                crate::__LOG_PREFIX,
+> -                format_args!($($arg)+),
+> -            );
+> +        // To remain sound, `arg`s must be expanded outside the `unsafe`=
+ block.
+> +        // Typically one would use a `let` binding for that; however, `f=
+ormat_args!`
+> +        // takes borrows on the arguments, but does not extend the scope=
+ of temporaries.
+> +        // Therefore, a `match` expression is used to keep them around, =
+since
+> +        // the scrutinee is kept until the end of the `match`.
+> +        match format_args!($($arg)+) {
+> +            // SAFETY: This hidden macro should only be called by the do=
+cumented
+> +            // printing macros which ensure the format string is one of =
+the fixed
+> +            // ones. All `__LOG_PREFIX`s are null-terminated as they are=
+ generated
+> +            // by the `module!` proc macro or fixed values defined in a =
+kernel
+> +            // crate.
+> +            args =3D> unsafe {
+> +                $crate::print::call_printk(
+> +                    &$format_string,
+> +                    crate::__LOG_PREFIX,
+> +                    args,
+> +                );
+> +            }
+>          }
+>      );
+> =20
 >
->  # `bindgen` returned successfully, thus use the output to check that the version
->  # of the `libclang` found by the Rust bindings generator is suitable.
-> +#
-> +# Unlike other version checks, note that this one does not necessarily appear
-> +# in the first line of the output, thus no `sed` address is provided.
->  bindgen_libclang_version=$( \
->         echo "$bindgen_libclang_output" \
->                 | sed -nE 's:.*clang version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
-> --
+> base-commit: b7bfaa761d760e72a969d116517eaa12e404c262
+> --=20
 > 2.39.0
->
 
-
--- 
-Best Regards
-Masahiro Yamada
