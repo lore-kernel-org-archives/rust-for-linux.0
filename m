@@ -2,154 +2,136 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50667C677F1
-	for <rust-for-linux@archiver.kernel.org>; Thu, 12 Jan 2023 14:34:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29402C54EBC
+	for <rust-for-linux@archiver.kernel.org>; Thu, 12 Jan 2023 16:19:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237251AbjALOez (ORCPT
+        id S229524AbjALQT2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 12 Jan 2023 09:34:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55102 "EHLO
+        Thu, 12 Jan 2023 11:19:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238021AbjALOdx (ORCPT
+        with ESMTP id S230263AbjALQSA (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 12 Jan 2023 09:33:53 -0500
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D7E25585E;
-        Thu, 12 Jan 2023 06:25:42 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id fy8so45046462ejc.13;
-        Thu, 12 Jan 2023 06:25:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KYpqbjdLUiH8F5H1EJG0ptUSVdez6XT9MKBwFyuoI2o=;
-        b=WdTaqzvFjo3/K9YUHrDGwic5e44c1ojtJE2M9bn/xjrQUOCGPy5uMKteHS5CesqTOx
-         A8XSjVIvtzUUR1pymfl4C3JLi3ERHX3mq52bHs4UliQa2bjDgpykQcc+5PBwjHuDHatZ
-         XkcnjKg/gSmihb+ZRknkc13ouU0z4s1Tcqqlq0JwJWtQMHlr2jVlmzYw0mx59/jTUyuN
-         sgIjAoh9pUzgbxigArv2QhA14Y3wFc+xe3tJEekRLTtKzcB6tfx2hjVZjr9VXG87nCgi
-         LMMGCEr7JhgPtzwbYc17UNYQybrhrb8ECSQKtZfMg15NRnP3g2sA1EUfovxxPJ0GSqJj
-         /qTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KYpqbjdLUiH8F5H1EJG0ptUSVdez6XT9MKBwFyuoI2o=;
-        b=unt5UGkA3iBwqubiKcsTlsVibi3ctzSLtbVV2wSuhh2e9NndAlgREei3ktHIEcU9U1
-         18vANlfUVrqetxQVRyl4VBCRu0ivA8gvo5pHsPHCljBM1Q/Gx0G968GJ4V2CPggFzjsx
-         FSqaAl1jLRN83M04l41BncTlg65fL/IBJvGguPBi1KkpaaY6kU/9dHFa2nMI/uV3yjlX
-         y0ASbPjlCjaY9kN/lo8IvMVbTEDoNSprxW4gQnNqftw5ONMBjOh0GIhqNZgRvDK0+Ni5
-         7RZAhD//RnafuiPU565KmKsgUMrDmPkrn0EVEv11M06OuMeSqus1ZFDs6lasdCSqrOSq
-         mcwg==
-X-Gm-Message-State: AFqh2kqZ1FgwXM2J6Xmnm49QK1ijjYo/Pmqw6Yk2tDAhVrHLbgaF53og
-        FkUtmmqGt9VsIjNKnq1g8GQ=
-X-Google-Smtp-Source: AMrXdXtfDk1CKgSiYb0Pxnr+Jv456eavOCuqTkBLuld1MUlN3/b/LR7FCyoooB1eYE6Ta1ukM1kFYA==
-X-Received: by 2002:a17:907:6e05:b0:7c1:235d:2a2b with SMTP id sd5-20020a1709076e0500b007c1235d2a2bmr85006546ejc.24.1673533540433;
-        Thu, 12 Jan 2023 06:25:40 -0800 (PST)
-Received: from localhost ([2001:b07:5d37:537d:3285:c486:87d3:b4eb])
-        by smtp.gmail.com with ESMTPSA id sb25-20020a1709076d9900b007a4e02e32ffsm7532398ejc.60.2023.01.12.06.25.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Jan 2023 06:25:39 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Thu, 12 Jan 2023 15:25:38 +0100
-Message-Id: <CPQA4LWQZOX1.31XJYNUR2O449@vincent>
-To:     "Miguel Ojeda" <ojeda@kernel.org>,
-        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        "Alex Gaynor" <alex.gaynor@gmail.com>,
-        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <patches@lists.linux.dev>,
-        "Domen Puncer Kugler" <domen.puncerkugler@nccgroup.com>
-Subject: Re: [PATCH] rust: print: avoid evaluating arguments in `pr_*`
- macros in `unsafe` blocks
-From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-X-Mailer: aerc 0.8.2
-References: <20230109204912.539790-1-ojeda@kernel.org>
-In-Reply-To: <20230109204912.539790-1-ojeda@kernel.org>
+        Thu, 12 Jan 2023 11:18:00 -0500
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AD9DD4E;
+        Thu, 12 Jan 2023 08:14:58 -0800 (PST)
+Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1AE8F1EC04F0;
+        Thu, 12 Jan 2023 17:14:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1673540097;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=kXgGOS0t1Dmzod2SUlVqdk8NheeeK7L+8V9FBwGiZ2c=;
+        b=m3JMpkzRjC8s+Ax3AVMnGYV4D08mDT/nAPRGVvPn9MS6OIJBqz47llq3S/Zr//hgi7Lujd
+        RfYRnQupWB15RFD0Ey1QDe50Yidqw1+88F0QbkzxSoFaZpIW7gSVU8GDD+LIHhxRpbC2uN
+        +Peu+rXB3xj9M6aLYIr4P12WzeD3V5I=
+Date:   Thu, 12 Jan 2023 17:14:52 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     kernel test robot <lkp@intel.com>, llvm@lists.linux.dev,
+        oe-kbuild-all@lists.linux.dev, rust-for-linux@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>,
+        Yujie Liu <yujie.liu@intel.com>
+Subject: Re: [bp:tip-x86-alternatives 1/1] error[E0588]: packed type cannot
+ transitively contain a `#[repr(align)]` type
+Message-ID: <Y8Ax/I5qOcVDZljG@zn.tnic>
+References: <202212272003.rgQDX8DQ-lkp@intel.com>
+ <Y6r4mXz5NS0+HVXo@zn.tnic>
+ <CANiq72kc60aPcx5LwFhOGL4AXOhZsZj32iOg75K5ZxLaaRaYkg@mail.gmail.com>
+ <Y7i1h3lCMKfxB532@zn.tnic>
+ <CANiq72khMLU6tF8vGD9fs7mLNAAQu8wJ2n1SLM3th2QMMfGPPA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CANiq72khMLU6tF8vGD9fs7mLNAAQu8wJ2n1SLM3th2QMMfGPPA@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon Jan 9, 2023 at 9:49 PM CET, Miguel Ojeda wrote:
-> At the moment it is possible to perform unsafe operations in
-> the arguments of `pr_*` macros since they are evaluated inside
-> an `unsafe` block:
->
->     let x =3D &10u32 as *const u32;
->     pr_info!("{}", *x);
->
-> In other words, this is a soundness issue.
->
-> Fix it so that it requires an explicit `unsafe` block.
->
-> Reported-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Reported-by: Domen Puncer Kugler <domen.puncerkugler@nccgroup.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/479
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Sat, Jan 07, 2023 at 01:38:42AM +0100, Miguel Ojeda wrote:
+> You are of course right that the instructions are not complete, I just
+> meant to add a bit of context, i.e. that Rust got enabled due to the
+> config, but as far as I understand, it shouldn't be getting enabled in
+> the other ones for the moment.
 
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-> ---
->  rust/kernel/print.rs | 29 ++++++++++++++++++-----------
->  1 file changed, 18 insertions(+), 11 deletions(-)
->
-> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-> index 29bf9c2e8aee..30103325696d 100644
-> --- a/rust/kernel/print.rs
-> +++ b/rust/kernel/print.rs
-> @@ -142,17 +142,24 @@ pub fn call_printk_cont(args: fmt::Arguments<'_>) {
->  macro_rules! print_macro (
->      // The non-continuation cases (most of them, e.g. `INFO`).
->      ($format_string:path, false, $($arg:tt)+) =3D> (
-> -        // SAFETY: This hidden macro should only be called by the docume=
-nted
-> -        // printing macros which ensure the format string is one of the =
-fixed
-> -        // ones. All `__LOG_PREFIX`s are null-terminated as they are gen=
-erated
-> -        // by the `module!` proc macro or fixed values defined in a kern=
-el
-> -        // crate.
-> -        unsafe {
-> -            $crate::print::call_printk(
-> -                &$format_string,
-> -                crate::__LOG_PREFIX,
-> -                format_args!($($arg)+),
-> -            );
-> +        // To remain sound, `arg`s must be expanded outside the `unsafe`=
- block.
-> +        // Typically one would use a `let` binding for that; however, `f=
-ormat_args!`
-> +        // takes borrows on the arguments, but does not extend the scope=
- of temporaries.
-> +        // Therefore, a `match` expression is used to keep them around, =
-since
-> +        // the scrutinee is kept until the end of the `match`.
-> +        match format_args!($($arg)+) {
-> +            // SAFETY: This hidden macro should only be called by the do=
-cumented
-> +            // printing macros which ensure the format string is one of =
-the fixed
-> +            // ones. All `__LOG_PREFIX`s are null-terminated as they are=
- generated
-> +            // by the `module!` proc macro or fixed values defined in a =
-kernel
-> +            // crate.
-> +            args =3D> unsafe {
-> +                $crate::print::call_printk(
-> +                    &$format_string,
-> +                    crate::__LOG_PREFIX,
-> +                    args,
-> +                );
-> +            }
->          }
->      );
-> =20
->
-> base-commit: b7bfaa761d760e72a969d116517eaa12e404c262
-> --=20
-> 2.39.0
+Right, or at least the repro instructions should state it clear.
 
+Btw, this is part of a long-running feedback process we're giving to the 0day
+bot in order to make their reports as user friendly as possible.
+
+> My point was that the script expects some variables set by `Makefile`,
+> similar to `$CC` etc., so that output does not imply you have (or not)
+> a suitable Rust toolchain installed (i.e. it will currently also fail
+> if you have it installed).
+
+Aha.
+
+> Meanwhile (of course it is not the same as proper reproduction
+> instructions since the LKP team may do something different), the
+> documentation on how to set it up for a normal developer is at:
+> https://www.kernel.org/doc/html/latest/rust/quick-start.html, in case
+> it helps (if you are up for it... :)
+
+Probably that link should be part of those reproduction instructions.
+
+> > And while we're reporting bugs: the error message from the compiler itself could
+> > use some "humanization" - I have zero clue what it is trying to tell me.
+> 
+> What would you want to see? We can ask the relevant Rust team to see
+> if they can improve it.
+> 
+> In general, note that you can ask `rustc` to further explain an error
+> giving it the code with `--explain`. The compiler suggests this
+> itself, but sadly the robot cut it out :(
+
+Well, I find having an --explain option too much. But there are perhaps reasons
+for it.
+
+One improvement could be, IMHO, they could turn on --explain automatically when
+it results in a build error. So that you don't have to do it yourself.
+
+What would be better, tho, is if there were no --explain option at all and the
+warnings are as human readable as possible.
+
+>     For more information about this error, try `rustc --explain E0588`
+> 
+> In this case, it gives:
+> 
+>     A type with `packed` representation hint has a field with `align`
+>     representation hint.
+> ...
+
+so the struct is:
+
+struct alt_instr {
+        s32 instr_offset;       /* original instruction */
+        s32 repl_offset;        /* offset to replacement instruction */
+
+        union {
+                struct {
+                        u32 cpuid: 16;  /* CPUID bit set for replacement */
+                        u32 flags: 16;  /* patching control flags */
+                };
+                u32 ft_flags;
+        };
+
+        u8  instrlen;           /* length of original instruction */
+        u8  replacementlen;     /* length of new instruction */
+} __packed;
+
+and everything is naturally aligned.
+
+So I'm guessing this is a rust bindings glue shortcoming or so...
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
