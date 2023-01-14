@@ -2,111 +2,95 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C2A1BC46467
-	for <rust-for-linux@archiver.kernel.org>; Sat, 14 Jan 2023 12:34:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BDFBC46467
+	for <rust-for-linux@archiver.kernel.org>; Sat, 14 Jan 2023 15:36:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229960AbjANMe3 (ORCPT
+        id S229612AbjANPgH (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 14 Jan 2023 07:34:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36474 "EHLO
+        Sat, 14 Jan 2023 10:36:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229973AbjANMe1 (ORCPT
+        with ESMTP id S229534AbjANPgG (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 14 Jan 2023 07:34:27 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F6B869E;
-        Sat, 14 Jan 2023 04:34:26 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5829CB807E8;
-        Sat, 14 Jan 2023 12:34:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEC1C43392;
-        Sat, 14 Jan 2023 12:34:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673699663;
-        bh=4hogCgx26O6O66FhdhmvB8UE2W3v4MDEQPIa4tPZ7wg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=S23PGG2Hrb07B5ZjmoVblAHiG7+WSQvjOSRlZBPyRME5RxG8uB54fQbPX1Z4ObGfr
-         xoyg4MZNsmIXIDr/Dcs1JxvOTPsG7msX2q9aLI55eyzW57U1EjZsBm+5OTpWcxNpLY
-         NAoXxYcFdKrrybubfWk8SxmqugfIKih1D7+gNh5jwVjc72ZKoVi9oklyn4F0xzE26h
-         gE0K8bLzrZub0mCYECqOz/PFkkhSlowDsB02qAtgiPMMciQrU5xu6CmR8FICzL14kH
-         z1k8YdhnIZSCrN4+R8YhX1m/nso9qc2r2u3CH/tfqwjX75LGPPTkPzlGYFOLzOEjlT
-         bc+6Diy1C83Tw==
-Received: by mail-oi1-f170.google.com with SMTP id s124so2872730oif.1;
-        Sat, 14 Jan 2023 04:34:23 -0800 (PST)
-X-Gm-Message-State: AFqh2kqzzEjZjs77TiywL42K1WAhSEQWfvd/WoIyaHnQftUZsvTmHtes
-        zZLfFrGUKv1yBmpBqay7j8uPOwFCrW5eiKiv6II=
-X-Google-Smtp-Source: AMrXdXuObkR9oQqxl9vnf+el/NKIwPtqYJCa8ifp41xFh4Xjg1eIDi8pMipHHu+sN/pnkq8+yvVJCnxFcm1jqZOAvBE=
-X-Received: by 2002:a05:6808:1510:b0:364:5d10:7202 with SMTP id
- u16-20020a056808151000b003645d107202mr799454oiw.194.1673699662783; Sat, 14
- Jan 2023 04:34:22 -0800 (PST)
+        Sat, 14 Jan 2023 10:36:06 -0500
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 584765276
+        for <rust-for-linux@vger.kernel.org>; Sat, 14 Jan 2023 07:36:00 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-70-8-cgC713N-WSCbvTwzlehQ-1; Sat, 14 Jan 2023 15:35:56 +0000
+X-MC-Unique: 8-cgC713N-WSCbvTwzlehQ-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Sat, 14 Jan
+ 2023 15:35:55 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.044; Sat, 14 Jan 2023 15:35:55 +0000
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Borislav Petkov' <bp@alien8.de>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC:     kernel test robot <lkp@intel.com>,
+        "llvm@lists.linux.dev" <llvm@lists.linux.dev>,
+        "oe-kbuild-all@lists.linux.dev" <oe-kbuild-all@lists.linux.dev>,
+        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        "Yujie Liu" <yujie.liu@intel.com>
+Subject: RE: [bp:tip-x86-alternatives 1/1] error[E0588]: packed type cannot
+ transitively contain a `#[repr(align)]` type
+Thread-Topic: [bp:tip-x86-alternatives 1/1] error[E0588]: packed type cannot
+ transitively contain a `#[repr(align)]` type
+Thread-Index: AQHZJqG7RbFqgn/bok2CRgJfJGfeWa6eC/hg
+Date:   Sat, 14 Jan 2023 15:35:55 +0000
+Message-ID: <54dabf8bd3374543b2c72631db4f9c11@AcuMS.aculab.com>
+References: <202212272003.rgQDX8DQ-lkp@intel.com> <Y6r4mXz5NS0+HVXo@zn.tnic>
+ <CANiq72kc60aPcx5LwFhOGL4AXOhZsZj32iOg75K5ZxLaaRaYkg@mail.gmail.com>
+ <Y7i1h3lCMKfxB532@zn.tnic>
+ <CANiq72khMLU6tF8vGD9fs7mLNAAQu8wJ2n1SLM3th2QMMfGPPA@mail.gmail.com>
+ <Y8Ax/I5qOcVDZljG@zn.tnic>
+In-Reply-To: <Y8Ax/I5qOcVDZljG@zn.tnic>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-References: <20230109204520.539080-1-ojeda@kernel.org> <20230109204520.539080-4-ojeda@kernel.org>
- <CAK7LNARuGz=oFukWH4g=7zg1EbWP9rxpVXPgPrJBKHzLQW4N1Q@mail.gmail.com> <CANiq72=Evg9pQLCdtr+kTsr4fEewjKCkBw2dBYTB7WbPVy2wtg@mail.gmail.com>
-In-Reply-To: <CANiq72=Evg9pQLCdtr+kTsr4fEewjKCkBw2dBYTB7WbPVy2wtg@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Sat, 14 Jan 2023 21:33:46 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARnNEJVuBKaFnE2TL60ku_6F03C749BVjzr8E6-khPTJg@mail.gmail.com>
-Message-ID: <CAK7LNARnNEJVuBKaFnE2TL60ku_6F03C749BVjzr8E6-khPTJg@mail.gmail.com>
-Subject: Re: [PATCH 4/6] kbuild: rust_is_available: check if the script was
- invoked from Kbuild
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Content-Type: text/plain; charset="UTF-8"
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jan 14, 2023 at 8:12 AM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Thu, Jan 12, 2023 at 6:29 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> >
-> > I do not like this.
-> > We do not need to cater to every oddity.
-> >
-> > Checking MAKEFLAGS is too much.
->
-> I agree we should not attempt to catch every possible mistake in the
-> script, but there have been several people hitting precisely this case
-> (the latest is in the linked thread in the commit message), i.e. some
-> people read the `Makefile` and notice the script invocation, and go
-> execute it, but they are unlikely to be aware of the target in that
-> case.
->
-> > You can check RUSTC/BINDGEN/CC if you persist in this.
->
-> This is fine, and actually we should do it regardless of `MAKEFLAGS`.
-> I can add it to v2.
->
-> However, that does not cover the same thing as `MAKEFLAGS` is trying
-> to here. The reason is that even if they see e.g. "RUSTC is not set",
-> they will not know about how to call the script properly, i.e. through
-> the `Makefile` target.
->
-> For `RUSTC` and `BINDGEN`, it does not really matter (and we could
-> give a default to the variable, since the name rarely would be
-> different). However, for `CC`, the logic that Kbuild uses is more
-> complex, so it seems best to me to let Kbuild tell us what the actual
-> compiler is.
->
-> Cheers,
-> Miguel
+RnJvbTogQm9yaXNsYXYgUGV0a292DQo+IFNlbnQ6IDEyIEphbnVhcnkgMjAyMyAxNjoxNQ0KLi4u
+DQo+ID4gSW4gdGhpcyBjYXNlLCBpdCBnaXZlczoNCj4gPg0KPiA+ICAgICBBIHR5cGUgd2l0aCBg
+cGFja2VkYCByZXByZXNlbnRhdGlvbiBoaW50IGhhcyBhIGZpZWxkIHdpdGggYGFsaWduYA0KPiA+
+ICAgICByZXByZXNlbnRhdGlvbiBoaW50Lg0KPiA+IC4uLg0KPiANCj4gc28gdGhlIHN0cnVjdCBp
+czoNCj4gDQo+IHN0cnVjdCBhbHRfaW5zdHIgew0KPiAgICAgICAgIHMzMiBpbnN0cl9vZmZzZXQ7
+ICAgICAgIC8qIG9yaWdpbmFsIGluc3RydWN0aW9uICovDQo+ICAgICAgICAgczMyIHJlcGxfb2Zm
+c2V0OyAgICAgICAgLyogb2Zmc2V0IHRvIHJlcGxhY2VtZW50IGluc3RydWN0aW9uICovDQo+IA0K
+PiAgICAgICAgIHVuaW9uIHsNCj4gICAgICAgICAgICAgICAgIHN0cnVjdCB7DQo+ICAgICAgICAg
+ICAgICAgICAgICAgICAgIHUzMiBjcHVpZDogMTY7ICAvKiBDUFVJRCBiaXQgc2V0IGZvciByZXBs
+YWNlbWVudCAqLw0KPiAgICAgICAgICAgICAgICAgICAgICAgICB1MzIgZmxhZ3M6IDE2OyAgLyog
+cGF0Y2hpbmcgY29udHJvbCBmbGFncyAqLw0KPiAgICAgICAgICAgICAgICAgfTsNCj4gICAgICAg
+ICAgICAgICAgIHUzMiBmdF9mbGFnczsNCj4gICAgICAgICB9Ow0KPiANCj4gICAgICAgICB1OCAg
+aW5zdHJsZW47ICAgICAgICAgICAvKiBsZW5ndGggb2Ygb3JpZ2luYWwgaW5zdHJ1Y3Rpb24gKi8N
+Cj4gICAgICAgICB1OCAgcmVwbGFjZW1lbnRsZW47ICAgICAvKiBsZW5ndGggb2YgbmV3IGluc3Ry
+dWN0aW9uICovDQo+IH0gX19wYWNrZWQ7DQo+IA0KPiBhbmQgZXZlcnl0aGluZyBpcyBuYXR1cmFs
+bHkgYWxpZ25lZC4NCg0KV2hpbGUgdGhlcmUgd291bGQgYmUgbm8gcGFkZGluZyBiZXR3ZWVuIGFu
+eSBvZiB0aGUgc3RyaWN0dXJlIG1lbWJlcnMNCnRoYXQgaXMgbGFyZ2VseSBpcnJlbGV2YW50Lg0K
+VGhlIF9fcGFja2VkIHJlbW92ZXMgdGhlIHR3byBwYWQgYnl0ZXMgZnJvbSB0aGUgZW5kIG9mIHRo
+ZSBzdHJ1Y3R1cmUNCmFuZCBhbHNvIHRlbGxzIHRoZSBjb21waWxlciB0aGF0IHRoZSBzdHJ1Y3R1
+cmUgaXRzZWxmIG1heSBub3QgYmUNCmFsaWduZWQgaW4gbWVtb3J5Lg0KDQpTbyB0aGUgYml0Zmll
+bGRzIGNhbiBiZSBtaXNhbGlnbmVkIGluIG1lbW9yeS4NClF1aXRlIHdoeSB0aGV5IGFyZSBiaXRm
+aWVsZHMgaXMgYW55Ym9kaWVzIGd1ZXNzLCB1MTYgd291bGQgc3VmZmljZS4NClVzaW5nIHUxNiB3
+b3VsZCBhbHNvIGdlbmVyYXRlIGEga25vd24gbWVtb3J5IGxheW91dCAoYml0ZmllbGRzIGFyZQ0K
+YmVzdCBwYXJ0IG9mIGNvbXBpbGVyIGRlZmluZWQgLSBjZXJ0YWlubHkgbm90IGVuZGlhbm5lc3Mg
+ZGVmaW5lZC4pDQoNCklmIHRoZSBpbnRlbnQgb2YgdGhlIF9fcGFja2VkIGlzIHRvIHNhdmUgMiBi
+eXRlcyBvbiBldmVyeSBjb3B5DQpvZiB0aGUgc3RydWN0dXJlIHRoZW4gX19wYWNrZWQgX19hbGln
+bmVkKDIpIHdpbGwgaGF2ZSB0aGUgc2FtZQ0KZWZmZWN0IHdoaWxlIGFsbG93aW5nIHRoZSBjb21w
+aWxlciB0byB1c2UgMTYtYml0IGFjY2Vzc2VzLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBB
+ZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMs
+IE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
 
-
-OK, you maintain this script, so it is up to you.
-
-
-
--- 
-Best Regards
-Masahiro Yamada
