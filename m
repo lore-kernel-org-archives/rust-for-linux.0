@@ -2,128 +2,144 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD3CAC46467
-	for <rust-for-linux@archiver.kernel.org>; Sat, 14 Jan 2023 09:45:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F775C46467
+	for <rust-for-linux@archiver.kernel.org>; Sat, 14 Jan 2023 11:54:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230105AbjANJpc (ORCPT
+        id S229457AbjANLyd (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 14 Jan 2023 04:45:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36150 "EHLO
+        Sat, 14 Jan 2023 06:54:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230150AbjANJpD (ORCPT
+        with ESMTP id S229723AbjANLyb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 14 Jan 2023 04:45:03 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50FB976BB;
-        Sat, 14 Jan 2023 01:45:00 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 07A36B8085C;
-        Sat, 14 Jan 2023 09:44:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842F0C433D2;
-        Sat, 14 Jan 2023 09:44:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673689497;
-        bh=knaQCVQIx4MAoNmZaFQqow8ZxXL28A+vauPiTP3jWnA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=OQP3bwfmSkFF4ODMiewcy49cIutoKPypMTTN2t8SrySg9l2E0cfA3nEwGoUaRO6Fe
-         YFkVg/1++UuDcLE3qY1gk9ZXGYgwQusCmpNdM7uH7rVfIxL06Cq7yhGvWxNyJp5rrr
-         z7UFImQtXQ7/SiJVZkf0+jXO9eFXDxOiZaMK8EGmM7Wx7bgw16dPQoWnFHfQqcxNZd
-         G6SOWIOAsXmNM7cBpFmgzmV5gKn+URUCRZWVD/w2ozhaMegGWw7in2CZA7NHIMo5DT
-         HVXbz+QZANZKi1dmrl5UzbxlW+F1ThHMdP6LQWmd88rif+HdpIgWnRxJR7Wl0/84Oo
-         BBnBa1JHrJjKA==
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-15027746720so24732298fac.13;
-        Sat, 14 Jan 2023 01:44:57 -0800 (PST)
-X-Gm-Message-State: AFqh2kqmJRsBnS02hNUPTxVYDx7hSw2XPSQoWH5EQDL/GjWVKOAXKB8Z
-        rDPSbRI3M40AB386xaNy5Hlu+camdZMF4LwJc60=
-X-Google-Smtp-Source: AMrXdXsVBAG6cRyjaVXq5OApNwcRn/+arTkdQYuTrAw+J2x024Ebyl2b21DGaJA/rBwC1SNCsp0Gi3IuW26QtwceSSo=
-X-Received: by 2002:a05:6870:514c:b0:150:7e4a:2f00 with SMTP id
- z12-20020a056870514c00b001507e4a2f00mr3166709oak.194.1673689496760; Sat, 14
- Jan 2023 01:44:56 -0800 (PST)
+        Sat, 14 Jan 2023 06:54:31 -0500
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B781B769F;
+        Sat, 14 Jan 2023 03:54:30 -0800 (PST)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-4c15c4fc8ccso319531087b3.4;
+        Sat, 14 Jan 2023 03:54:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DvI+CeRWVTNSV0B6ZD8unPvEj5NWZi+Y8Deb7v55YoY=;
+        b=obs3qgE0+zvSCRapk7kQUptHOZhGx5/1ml6Sv6M8tfTLW78/OpEGuIF6ivNT2DznoN
+         qc0h6Jk/gUOb99J8LHLS8RlW//6Qxukx+XIY9WxxdPu5jvP8Xwlv+eUl92CQOJqlXGms
+         VsfQ0HmgeAdCLUFypUlITrFEjD+UYkUGs8WP8NpgGabqrp/SG45OHx4lzpgFxRUIPebA
+         /1oVaBvgIRzzJGYJxyMjRt12mUQJ2a3G7A7EBfbr1QIV8Z0yud82o/vpacYRKYDukKq7
+         lK8PxPjKHp77iQGZ+niHI2AyKhh5V0f5CNWLN0LiyOqF69HmEvCab0jjE1Zi0TOmwCpD
+         h0Qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DvI+CeRWVTNSV0B6ZD8unPvEj5NWZi+Y8Deb7v55YoY=;
+        b=Z0nES67nGhfbOFoFyd77BMhLNk9gz7xKqiikQUDenDkG7Jt5WQHCQGuqf56IhA3RVY
+         o3X6/2rw5/fNM/0Et6J9YwxvasmZafJy9mQjiyuKr9RnP5ffyuQcXhqVS+7y3MApdirG
+         /gu83RDX+WDwsTSqSes5Tb2vrciFbp/IKLYufXUhs+Z88L1/+wvE3DQv3M4QqLM/3xH/
+         YQXsXHDDReXaOR4jpp1Lm9QZczYhc60+vGNl3r28FyeWgY8iQQYpFsG3GR06QPBjAz6L
+         uQxgZBVZmBPUZ0ibR4+fYHSm6pwR/+TAaBqLu8Unf6+hcxcVobKhdxLmCUzokOwq8M2L
+         QLFQ==
+X-Gm-Message-State: AFqh2kqSklKOKbxlphn1OaYPSHxruskUpkW8cxsLvh1P7d0ZjZSrn9Y0
+        Z/uJqAjHruoxfsC9vS37ptkRKxzhewwUoIP2njdlYaQIuSYqf6+8rTw=
+X-Google-Smtp-Source: AMrXdXsHvE5WGQ376cJ83wcrMjHUP7gkRhA+MFh3+5ocRmga++VS9xB2WtHu9iAZtBiT5ohucaA0SFrAXQvxtbrJr14=
+X-Received: by 2002:a0d:fb07:0:b0:3bc:7270:cb70 with SMTP id
+ l7-20020a0dfb07000000b003bc7270cb70mr2902582ywf.83.1673697269958; Sat, 14 Jan
+ 2023 03:54:29 -0800 (PST)
 MIME-Version: 1.0
-References: <20230109204520.539080-1-ojeda@kernel.org> <20230109204520.539080-3-ojeda@kernel.org>
- <CAK7LNATVJ5e=DnbJ++03iEMk0bN3-UvODBLkEKcYdSnJZa_tmA@mail.gmail.com>
- <CAK7LNASDu+i4G88TYYa6feg-bha-_cLv1si_ujuSMbWuyUve0Q@mail.gmail.com> <CANiq72k6jCf_LP5vmBHKEpZ5njmH+u1HpJUjs_GyFi1a4B94ew@mail.gmail.com>
-In-Reply-To: <CANiq72k6jCf_LP5vmBHKEpZ5njmH+u1HpJUjs_GyFi1a4B94ew@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Sat, 14 Jan 2023 18:44:20 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAS-5UaBX4CYrt_VFZrfHxLy=M=CpT8Hb-LpH4EAntRRSw@mail.gmail.com>
-Message-ID: <CAK7LNAS-5UaBX4CYrt_VFZrfHxLy=M=CpT8Hb-LpH4EAntRRSw@mail.gmail.com>
-Subject: Re: [PATCH 3/6] kbuild: rust_is_available: add check for `bindgen` invocation
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Alexandru Radovici <msg4alex@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+References: <202212272003.rgQDX8DQ-lkp@intel.com> <Y6r4mXz5NS0+HVXo@zn.tnic>
+ <CANiq72kc60aPcx5LwFhOGL4AXOhZsZj32iOg75K5ZxLaaRaYkg@mail.gmail.com>
+ <Y7i1h3lCMKfxB532@zn.tnic> <CANiq72khMLU6tF8vGD9fs7mLNAAQu8wJ2n1SLM3th2QMMfGPPA@mail.gmail.com>
+ <Y8Ax/I5qOcVDZljG@zn.tnic>
+In-Reply-To: <Y8Ax/I5qOcVDZljG@zn.tnic>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sat, 14 Jan 2023 12:54:18 +0100
+Message-ID: <CANiq72kXpDwRO3R+tjqYgOcbFT7rwnpH=KhVyry-+CUsJa7mRQ@mail.gmail.com>
+Subject: Re: [bp:tip-x86-alternatives 1/1] error[E0588]: packed type cannot
+ transitively contain a `#[repr(align)]` type
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     kernel test robot <lkp@intel.com>, llvm@lists.linux.dev,
+        oe-kbuild-all@lists.linux.dev, rust-for-linux@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>,
+        Yujie Liu <yujie.liu@intel.com>,
+        =?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jan 14, 2023 at 8:10 AM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Thu, Jan 12, 2023 at 5:14 PM Borislav Petkov <bp@alien8.de> wrote:
 >
-> On Thu, Jan 12, 2023 at 5:35 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> >
-> > I meant this:
-> >
-> > if ! bindgen_libclang_output=$(LC_ALL=C "$BINDGEN" $(dirname
-> > $0)/rust_is_available_bindgen_libclang.h 2>&1 >/dev/null); then
-> >        [snip]
-> > fi
-> >
-> > (">/dev/null" was lost in the previous email)
+> Right, or at least the repro instructions should state it clear.
 >
-> I used the error code in the message below. I am happy either way.
+> Btw, this is part of a long-running feedback process we're giving to the 0day
+> bot in order to make their reports as user friendly as possible.
+
+Sounds very useful, thanks for the effort!
+
+> Well, I find having an --explain option too much. But there are perhaps reasons
+> for it.
 >
-> Cheers,
-> Miguel
+> One improvement could be, IMHO, they could turn on --explain automatically when
+> it results in a build error. So that you don't have to do it yourself.
+>
+> What would be better, tho, is if there were no --explain option at all and the
+> warnings are as human readable as possible.
 
+Sometimes one can get quite a few errors/warnings, so printing all the
+docs for all those would be probably too much.
 
-Ah, I see.
+I think `--explain` is intended to provide a way to have longer
+documentation about a particular diagnostic message without filling
+the terminal too much those that already know what the error/warning
+is about (in this particular case, the error first line looks fine to
+me -- but of course the machine-translated bindings from `bindgen` are
+harder to read due to the generated identifiers).
 
+> so the struct is:
+>
+> struct alt_instr {
+>         s32 instr_offset;       /* original instruction */
+>         s32 repl_offset;        /* offset to replacement instruction */
+>
+>         union {
+>                 struct {
+>                         u32 cpuid: 16;  /* CPUID bit set for replacement */
+>                         u32 flags: 16;  /* patching control flags */
+>                 };
+>                 u32 ft_flags;
+>         };
+>
+>         u8  instrlen;           /* length of original instruction */
+>         u8  replacementlen;     /* length of new instruction */
+> } __packed;
+>
+> and everything is naturally aligned.
+>
+> So I'm guessing this is a rust bindings glue shortcoming or so...
 
+Yeah, this is https://github.com/rust-lang/rust-bindgen/issues/2179 (I
+mentioned it in my reply to Alexander above, in case you didn't see
+it, as well as the usual workarounds we use).
 
-How about this?
+There are also other related issues related to GCC's `packed` and
+`aligned` attributes: aligned fields in general are not supported
+(including just adding the attribute), neither are structs declared
+both packed and aligned. So only a subset of possibilities are handled
+properly. I collected some links to related issues at
+https://github.com/Rust-for-Linux/linux/issues/353.
 
+From what I could tell reading some old discussions the other day, the
+`bindgen` maintainer (Cc'ing Emilio) is aware of the issues but nobody
+has put the time to solve it within the bindings generator.
 
+Ideally, I think, Rust could support providing alignment for
+individual members in `repr(C)` structs in order to tweak its
+described layout algorithm, in order for users to mimic GCC/MSVC/...
+extensions as needed. That way it can be useful also for everyone
+(even those not using `bindgen`), and `bindgen`'s implementation would
+be easier, I imagine.
 
-
-bindgen_libclang_output=$(LC_ALL=C "$BINDGEN" $(dirname
-$0)/rust_is_available_bindgen_libclang.h 2>&1 >/dev/null) \
-         || bindgen_libclang_code=$?
-
-if [ -n "$bindgen_libclang_code" ]; then
-       echo >&2 "***"
-       echo >&2 "*** Running '$BINDGEN' to check the libclang version
-(used by the Rust"
-       echo >&2 "*** bindings generator) failed with code
-$bindgen_libclang_code. This may be caused by"
-       echo >&2 "*** a failure to locate libclang. See output and docs
-below for details:"
-       echo >&2 "***"
-       echo >&2 "$bindgen_libclang_output"
-       echo >&2 "***"
-       exit 1
-fi
-
-
-
-
-
-You can get the error code of bindgen without toggling -e.
-
-
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+Cheers,
+Miguel
