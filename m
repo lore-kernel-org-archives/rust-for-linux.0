@@ -2,95 +2,127 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BDFBC46467
-	for <rust-for-linux@archiver.kernel.org>; Sat, 14 Jan 2023 15:36:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 235A8C677F1
+	for <rust-for-linux@archiver.kernel.org>; Sun, 15 Jan 2023 02:40:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229612AbjANPgH (ORCPT
+        id S230353AbjAOCkE (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 14 Jan 2023 10:36:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43222 "EHLO
+        Sat, 14 Jan 2023 21:40:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbjANPgG (ORCPT
+        with ESMTP id S229971AbjAOCkC (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 14 Jan 2023 10:36:06 -0500
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 584765276
-        for <rust-for-linux@vger.kernel.org>; Sat, 14 Jan 2023 07:36:00 -0800 (PST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-70-8-cgC713N-WSCbvTwzlehQ-1; Sat, 14 Jan 2023 15:35:56 +0000
-X-MC-Unique: 8-cgC713N-WSCbvTwzlehQ-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Sat, 14 Jan
- 2023 15:35:55 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.044; Sat, 14 Jan 2023 15:35:55 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Borislav Petkov' <bp@alien8.de>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-CC:     kernel test robot <lkp@intel.com>,
-        "llvm@lists.linux.dev" <llvm@lists.linux.dev>,
-        "oe-kbuild-all@lists.linux.dev" <oe-kbuild-all@lists.linux.dev>,
-        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        "Yujie Liu" <yujie.liu@intel.com>
-Subject: RE: [bp:tip-x86-alternatives 1/1] error[E0588]: packed type cannot
- transitively contain a `#[repr(align)]` type
-Thread-Topic: [bp:tip-x86-alternatives 1/1] error[E0588]: packed type cannot
- transitively contain a `#[repr(align)]` type
-Thread-Index: AQHZJqG7RbFqgn/bok2CRgJfJGfeWa6eC/hg
-Date:   Sat, 14 Jan 2023 15:35:55 +0000
-Message-ID: <54dabf8bd3374543b2c72631db4f9c11@AcuMS.aculab.com>
-References: <202212272003.rgQDX8DQ-lkp@intel.com> <Y6r4mXz5NS0+HVXo@zn.tnic>
- <CANiq72kc60aPcx5LwFhOGL4AXOhZsZj32iOg75K5ZxLaaRaYkg@mail.gmail.com>
- <Y7i1h3lCMKfxB532@zn.tnic>
- <CANiq72khMLU6tF8vGD9fs7mLNAAQu8wJ2n1SLM3th2QMMfGPPA@mail.gmail.com>
- <Y8Ax/I5qOcVDZljG@zn.tnic>
-In-Reply-To: <Y8Ax/I5qOcVDZljG@zn.tnic>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Sat, 14 Jan 2023 21:40:02 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55CA2A248;
+        Sat, 14 Jan 2023 18:40:01 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE79660BDC;
+        Sun, 15 Jan 2023 02:40:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC6AC433F1;
+        Sun, 15 Jan 2023 02:40:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673750400;
+        bh=0TIlpXUyLjXgCWJoz/frRR9jRP9rDDMVSVFqtR3tMeA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=u3QZQEsTqOENmtWwRPaMnAqKojLu2ZcEpTbuaJn5T7141w0ECFE67bSBG/MhHITmQ
+         su607huar2CJEEYnnvyDc4t+pmLIrTajd+ugnd3td9218542nDk2t7AjbaKeH5f4y+
+         aK4OcTvgltK3zRD0uKBns0lF68tb0+BDk+MezEjM1Q+ROIzrnv/rAquczd04gnhJTl
+         QCkAV4ThOvNGdpDsCLVyZQtX5BBTUA11CbrGjEWrVDVLXerAQhYulwzDVTdTHgsD4S
+         1W3t/qnoSj674g9xGSa/tdji22kBu26q/CHuNbgqE9LyDfjYaaSpE4mSScGRot43OZ
+         qDYiQ5XJYLhjw==
+Received: by mail-ot1-f42.google.com with SMTP id p17-20020a9d6951000000b00678306ceb94so14364540oto.5;
+        Sat, 14 Jan 2023 18:39:59 -0800 (PST)
+X-Gm-Message-State: AFqh2ko8yOICMu+lY0Io/c6hxwwI300uYaaJFaf/+yjvtEvy4MHoWEvd
+        c2VwaJMNOuwGsGs8kjlk07B+YraQ61myETMT5Gg=
+X-Google-Smtp-Source: AMrXdXtoyZNoBhCTlW2oVmTW6Au80Bu7uDXtz+FY9yhcsQaPhStbX/RPkg215wnou5HpVqBqN5lA8VUlPXTllDvcaFI=
+X-Received: by 2002:a05:6830:14c7:b0:684:a3ad:87e8 with SMTP id
+ t7-20020a05683014c700b00684a3ad87e8mr1046643otq.225.1673750399222; Sat, 14
+ Jan 2023 18:39:59 -0800 (PST)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+References: <20230109204520.539080-1-ojeda@kernel.org> <20230109204520.539080-5-ojeda@kernel.org>
+ <CAK7LNAQj_WykFWcrj=L3wJYxDhOCGs+JHPB4E2vzWcx8y_at0w@mail.gmail.com> <CANiq72=MsV8EXV9cib+GJd0AXbpF8YSGdDd723m7=ON4jhjXxQ@mail.gmail.com>
+In-Reply-To: <CANiq72=MsV8EXV9cib+GJd0AXbpF8YSGdDd723m7=ON4jhjXxQ@mail.gmail.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Sun, 15 Jan 2023 11:39:22 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQo=w3F=VXNGYyo6-A4c8Sees6yVHrsaFXLknCrO0ET3Q@mail.gmail.com>
+Message-ID: <CAK7LNAQo=w3F=VXNGYyo6-A4c8Sees6yVHrsaFXLknCrO0ET3Q@mail.gmail.com>
+Subject: Re: [PATCH 5/6] kbuild: rust_is_available: fix confusion when a
+ version appears in the path
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-RnJvbTogQm9yaXNsYXYgUGV0a292DQo+IFNlbnQ6IDEyIEphbnVhcnkgMjAyMyAxNjoxNQ0KLi4u
-DQo+ID4gSW4gdGhpcyBjYXNlLCBpdCBnaXZlczoNCj4gPg0KPiA+ICAgICBBIHR5cGUgd2l0aCBg
-cGFja2VkYCByZXByZXNlbnRhdGlvbiBoaW50IGhhcyBhIGZpZWxkIHdpdGggYGFsaWduYA0KPiA+
-ICAgICByZXByZXNlbnRhdGlvbiBoaW50Lg0KPiA+IC4uLg0KPiANCj4gc28gdGhlIHN0cnVjdCBp
-czoNCj4gDQo+IHN0cnVjdCBhbHRfaW5zdHIgew0KPiAgICAgICAgIHMzMiBpbnN0cl9vZmZzZXQ7
-ICAgICAgIC8qIG9yaWdpbmFsIGluc3RydWN0aW9uICovDQo+ICAgICAgICAgczMyIHJlcGxfb2Zm
-c2V0OyAgICAgICAgLyogb2Zmc2V0IHRvIHJlcGxhY2VtZW50IGluc3RydWN0aW9uICovDQo+IA0K
-PiAgICAgICAgIHVuaW9uIHsNCj4gICAgICAgICAgICAgICAgIHN0cnVjdCB7DQo+ICAgICAgICAg
-ICAgICAgICAgICAgICAgIHUzMiBjcHVpZDogMTY7ICAvKiBDUFVJRCBiaXQgc2V0IGZvciByZXBs
-YWNlbWVudCAqLw0KPiAgICAgICAgICAgICAgICAgICAgICAgICB1MzIgZmxhZ3M6IDE2OyAgLyog
-cGF0Y2hpbmcgY29udHJvbCBmbGFncyAqLw0KPiAgICAgICAgICAgICAgICAgfTsNCj4gICAgICAg
-ICAgICAgICAgIHUzMiBmdF9mbGFnczsNCj4gICAgICAgICB9Ow0KPiANCj4gICAgICAgICB1OCAg
-aW5zdHJsZW47ICAgICAgICAgICAvKiBsZW5ndGggb2Ygb3JpZ2luYWwgaW5zdHJ1Y3Rpb24gKi8N
-Cj4gICAgICAgICB1OCAgcmVwbGFjZW1lbnRsZW47ICAgICAvKiBsZW5ndGggb2YgbmV3IGluc3Ry
-dWN0aW9uICovDQo+IH0gX19wYWNrZWQ7DQo+IA0KPiBhbmQgZXZlcnl0aGluZyBpcyBuYXR1cmFs
-bHkgYWxpZ25lZC4NCg0KV2hpbGUgdGhlcmUgd291bGQgYmUgbm8gcGFkZGluZyBiZXR3ZWVuIGFu
-eSBvZiB0aGUgc3RyaWN0dXJlIG1lbWJlcnMNCnRoYXQgaXMgbGFyZ2VseSBpcnJlbGV2YW50Lg0K
-VGhlIF9fcGFja2VkIHJlbW92ZXMgdGhlIHR3byBwYWQgYnl0ZXMgZnJvbSB0aGUgZW5kIG9mIHRo
-ZSBzdHJ1Y3R1cmUNCmFuZCBhbHNvIHRlbGxzIHRoZSBjb21waWxlciB0aGF0IHRoZSBzdHJ1Y3R1
-cmUgaXRzZWxmIG1heSBub3QgYmUNCmFsaWduZWQgaW4gbWVtb3J5Lg0KDQpTbyB0aGUgYml0Zmll
-bGRzIGNhbiBiZSBtaXNhbGlnbmVkIGluIG1lbW9yeS4NClF1aXRlIHdoeSB0aGV5IGFyZSBiaXRm
-aWVsZHMgaXMgYW55Ym9kaWVzIGd1ZXNzLCB1MTYgd291bGQgc3VmZmljZS4NClVzaW5nIHUxNiB3
-b3VsZCBhbHNvIGdlbmVyYXRlIGEga25vd24gbWVtb3J5IGxheW91dCAoYml0ZmllbGRzIGFyZQ0K
-YmVzdCBwYXJ0IG9mIGNvbXBpbGVyIGRlZmluZWQgLSBjZXJ0YWlubHkgbm90IGVuZGlhbm5lc3Mg
-ZGVmaW5lZC4pDQoNCklmIHRoZSBpbnRlbnQgb2YgdGhlIF9fcGFja2VkIGlzIHRvIHNhdmUgMiBi
-eXRlcyBvbiBldmVyeSBjb3B5DQpvZiB0aGUgc3RydWN0dXJlIHRoZW4gX19wYWNrZWQgX19hbGln
-bmVkKDIpIHdpbGwgaGF2ZSB0aGUgc2FtZQ0KZWZmZWN0IHdoaWxlIGFsbG93aW5nIHRoZSBjb21w
-aWxlciB0byB1c2UgMTYtYml0IGFjY2Vzc2VzLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBB
-ZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMs
-IE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
+On Sat, Jan 14, 2023 at 8:13 AM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Thu, Jan 12, 2023 at 6:32 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+> >
+> > +set -- ${bindgen_libclang_output#**clang version}
+> > +bindgen_libclang_cversion=$(get_canonical_version $1)
+> >  bindgen_libclang_min_version=$($min_tool_version llvm)
+> > -bindgen_libclang_cversion=$(get_canonical_version $bindgen_libclang_version)
+>
+> Nice trick :) To be honest, I am not really fond of `set`, and in this
+> case it means the command is not symmetric (we remove the prefix using
+> parameter expansion, and the suffix via positional argument
+> selection), but if you prefer it that way, I think it would be fine.
 
+
+I just tend to write efficient code.
+(scripts/{cc,ld,as}-version.sh do not use sed or grep at all.)
+
+Especially, I avoid unneeded process forks
+in the process forks.
+
+
+
+
+
+
+> However, why the double asterisk? One already matches any string,
+> including spaces, no?
+
+
+Sorry, it is my mistake.
+
+I meant double pound.
+
+
+  set -- ${bindgen_libclang_output##*clang version}
+
+
+
+The double pound strips "the longest matching pattern",
+just in case "clang version" is contained in the file path.
+(but if a space is contained in the directory path,
+it would have failed earlier.
+
+
+
+
+
+
+>
+> Cheers,
+> Miguel
+
+
+
+
+--
+Best Regards
+Masahiro Yamada
