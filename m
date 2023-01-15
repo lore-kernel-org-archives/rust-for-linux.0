@@ -2,120 +2,96 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C612EC46467
-	for <rust-for-linux@archiver.kernel.org>; Sun, 15 Jan 2023 10:49:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A0FFC46467
+	for <rust-for-linux@archiver.kernel.org>; Sun, 15 Jan 2023 10:54:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230050AbjAOKtl (ORCPT
+        id S230017AbjAOKyt convert rfc822-to-8bit (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 15 Jan 2023 05:49:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55382 "EHLO
+        Sun, 15 Jan 2023 05:54:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230003AbjAOKtk (ORCPT
+        with ESMTP id S230001AbjAOKyt (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 15 Jan 2023 05:49:40 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CBE5CDEC;
-        Sun, 15 Jan 2023 02:49:38 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1769DB80B06;
-        Sun, 15 Jan 2023 10:49:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D63C433EF;
-        Sun, 15 Jan 2023 10:49:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673779775;
-        bh=OgDN7XhvhGQQg/Z/xx44nHHo48uhQDWG853IVpEr0qg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=jRu03WoQyLf3Q1MTtBJGdW33TWSMSPOrmQhLdT+xnDfJ7YIdIDNScdarn7+g6qq6q
-         2s7sM4PNPiTXtFeOvgspA5z0XK2i4S8hhvHqvvFmLNZr/0vsSNhba9P+6NlObUvwzU
-         NzbFpwasTLYnHKK/8rPRVmatK3EaNtVIP8hSTV3dX57bNHclJvCFjmY6L5Q93sKmYl
-         586BiHqcSpna9tagaXItYJVJ5rnwfr9DqXy5ldCRKiSs2sYTlrHpke7uuv8H/A1w2Q
-         MnbE6WrXP9GF8is2nuOPD0eH53xqebBa5kd2xQ2upym1nEpftCsZ1ipyOu7TYW24jP
-         DptK4Q+7G2lhA==
-Received: by mail-oi1-f169.google.com with SMTP id d127so21057645oif.12;
-        Sun, 15 Jan 2023 02:49:35 -0800 (PST)
-X-Gm-Message-State: AFqh2kpnWHo0wsF1jqkr0MW7tLgG2cB5A7twk0JcMdMVkJA5CxyoLUGw
-        zivvQwzr8R28N5wETFZ+oqEO/HIAEpVAoUPmJfo=
-X-Google-Smtp-Source: AMrXdXsiOdEBrkARrRYgYGuTHYvZmu28Gequ+ROkp35laCJSEQSVS9ZQ8Wg1wGKkiSSWBJGblYa+uOBVMR71pEJznq0=
-X-Received: by 2002:aca:3755:0:b0:35e:7c55:b015 with SMTP id
- e82-20020aca3755000000b0035e7c55b015mr5483293oia.287.1673779774935; Sun, 15
- Jan 2023 02:49:34 -0800 (PST)
-MIME-Version: 1.0
-References: <20230109204520.539080-1-ojeda@kernel.org> <20230109204520.539080-6-ojeda@kernel.org>
- <CAK7LNAQYk6s11MASRHW6oxtkqF00EJVqhHOP=5rynWt-QDUsXw@mail.gmail.com>
- <CANiq72kyUr9PGYqHTsNzYn0_cyuYA0vAxHLC08ivxKo5XvOESg@mail.gmail.com> <CAK7LNASawny3wSTvjB8-CZJ2Mw8UnB0C4k5-X8yC8TyrmsM8RQ@mail.gmail.com>
-In-Reply-To: <CAK7LNASawny3wSTvjB8-CZJ2Mw8UnB0C4k5-X8yC8TyrmsM8RQ@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Sun, 15 Jan 2023 19:48:58 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAT0p0N=DtNpUsCuw=rhLNRY5VeozYr-XL4WxJ+0bfszyg@mail.gmail.com>
-Message-ID: <CAK7LNAT0p0N=DtNpUsCuw=rhLNRY5VeozYr-XL4WxJ+0bfszyg@mail.gmail.com>
-Subject: Re: [PATCH 6/6] kbuild: rust_is_available: normalize version matching
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
+        Sun, 15 Jan 2023 05:54:49 -0500
+X-Greylist: delayed 1458 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 15 Jan 2023 02:54:47 PST
+Received: from www17.your-server.de (www17.your-server.de [213.133.104.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B86E3BE;
+        Sun, 15 Jan 2023 02:54:46 -0800 (PST)
+Received: from sslproxy05.your-server.de ([78.46.172.2])
+        by www17.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <thomas@m3y3r.de>)
+        id 1pH0HM-0006mM-Hc; Sun, 15 Jan 2023 11:30:20 +0100
+Received: from [77.185.92.28] (helo=[127.0.0.1])
+        by sslproxy05.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <thomas@m3y3r.de>)
+        id 1pH0HL-000JFs-5T; Sun, 15 Jan 2023 11:30:19 +0100
+Date:   Sun, 15 Jan 2023 11:30:17 +0100
+From:   Thomas Meyer <thomas@m3y3r.de>
+To:     linux-um@lists.infradead.org, David Gow <davidgow@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        =?ISO-8859-1?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
         Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Alex Gaynor <alex.gaynor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>
+CC:     rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
+        linux-doc@vger.kernel.org, kunit-dev@googlegroups.com,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Gary Guo <gary@garyguo.net>,
+        Brendan Higgins <brendan.higgins@linux.dev>,
+        Daniel Latypov <dlatypov@google.com>,
+        Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH 1/3] rust: arch/um: Use 'pie' relocation mode under UML
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20221217044436.4138642-2-davidgow@google.com>
+References: <20221217044436.4138642-1-davidgow@google.com> <20221217044436.4138642-2-davidgow@google.com>
+Message-ID: <387962BE-A8FA-4D35-9905-30D3685E38AC@m3y3r.de>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Authenticated-Sender: thomas@m3y3r.de
+X-Virus-Scanned: Clear (ClamAV 0.103.7/26782/Sun Jan 15 09:20:34 2023)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, Jan 15, 2023 at 11:48 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+Hi,
+
+
+Am 17. Dezember 2022 05:44:34 MEZ schrieb David Gow <davidgow@google.com>:
+>UML expects a position independent executable for some reason, 
+
+I think I did add this to make UML build on Debian...
+
+> so tell
+>rustc to generate pie objects. Otherwise we get a bunch of relocations
+>we can't deal with in libcore.
 >
-> On Sat, Jan 14, 2023 at 8:15 AM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > On Thu, Jan 12, 2023 at 7:23 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> > >
-> > > Maybe, your purpose is to use sed consistently, but
-> > > perhaps you can avoid forking sed if you know the
-> > > format of the first line.
-> >
-> > The most unknown format would be the one of the libclang check, where
-> > there may be other lines before the one we are interested in. However,
-> > the pattern expansion would still match newlines, right?
-> >
-> > > BTW, what is missing here is, you do not check if
-> > > ${RUSTC} is really rustc.
-> > >
-> > > I can fool this script to print
-> > > "arithmetic expression: expecting primary: "100000 *  + 100 *  + "
-> >
-> > We can test if nothing was printed by `sed` for that (or do it with
-> > shell builtins).
-> >
-> > Having said that, I would say fooling the script on purpose is an more
-> > of an oddity compared to the case `MAKEFLAGS` attempts to cover
-> > (please see my reply on the other patch). So if we cover this, then I
-> > would say we should really cover the other one.
+>Signed-off-by: David Gow <davidgow@google.com>
+>---
+> arch/um/Makefile | 2 ++
+> 1 file changed, 2 insertions(+)
 >
->
->
-> get_canonical_version() in scripts/as-version.sh has
-> a little more trick to avoid
-> "arithmetic expression: expecting primary: "100000 *  + 100 *  + "
-> but it is up to you.
-
-
-
-My code accepts anything that is separated by dots
-(and non-numerical strings are silently turned into zero).
-
-Your code takes exactly the "([0-9]+\.[0-9]+\.[0-9]+)" pattern,
-so it works very safely.
-
-I think using sed is fine.
-
-
-
-
+>diff --git a/arch/um/Makefile b/arch/um/Makefile
+>index f1d4d67157be..ae321282dc6f 100644
+>--- a/arch/um/Makefile
+>+++ b/arch/um/Makefile
+>@@ -68,6 +68,8 @@ KBUILD_CFLAGS += $(CFLAGS) $(CFLAGS-y) -D__arch_um__ \
+> 	-Din6addr_loopback=kernel_in6addr_loopback \
+> 	-Din6addr_any=kernel_in6addr_any -Dstrrchr=kernel_strrchr
+> 
+>+KBUILD_RUSTFLAGS += -Crelocation-model=pie
+>+
+> KBUILD_AFLAGS += $(ARCH_INCLUDE)
+> 
+> USER_CFLAGS = $(patsubst $(KERNEL_DEFINES),,$(patsubst -I%,,$(KBUILD_CFLAGS))) \
 
 -- 
-Best Regards
-Masahiro Yamada
+Diese Nachricht wurde von meinem Android-Gerät mit K-9 Mail gesendet.
