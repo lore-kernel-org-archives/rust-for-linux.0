@@ -2,105 +2,124 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A14FC6379F
-	for <rust-for-linux@archiver.kernel.org>; Sun, 15 Jan 2023 03:00:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 97BB2C63797
+	for <rust-for-linux@archiver.kernel.org>; Sun, 15 Jan 2023 09:48:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230404AbjAODAS (ORCPT
+        id S230258AbjAOJsT (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 14 Jan 2023 22:00:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60428 "EHLO
+        Sun, 15 Jan 2023 04:48:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230391AbjAODAR (ORCPT
+        with ESMTP id S229804AbjAOJsS (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 14 Jan 2023 22:00:17 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DACEC5241;
-        Sat, 14 Jan 2023 19:00:15 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 97BFDB80A1F;
-        Sun, 15 Jan 2023 03:00:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43769C4339E;
-        Sun, 15 Jan 2023 03:00:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673751613;
-        bh=bFt4YyLZX3/rsuJcCaW/XUF1jJTkYU+iSnk+mOJWZAc=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=cnokAca9jqyPnzNzziv8PiziNAlvm5bdxgipQ6Tfs3kBMybKuZTs4new4FZODbned
-         8sFO3zww5fD3KhHKwIOWFfvgDfd7XxU1VCbGNu8QiGeH0q5chjb+R+KkoonkYPdCfJ
-         MAmrx+ti4sugCc0Qn1NKDZb2/HouW3iT3Fl+qeYAzo4FND0+TDcNfbIDAqFgxoODLr
-         hCjVXNHyzVJsBODPuLTp4Yj3kLzyYZ69aNC8vt8k5zlv2Tpa6YC0Z1RiF/EYXIOREK
-         pvlS1Tx5gkOBNIG4NfBZtwX1gU+4io6KUZ3Fukv9dbMXNjXd5tKKrr9JAoX+tYNY53
-         iAa64CdeGoGYg==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-15ebfdf69adso8755635fac.0;
-        Sat, 14 Jan 2023 19:00:13 -0800 (PST)
-X-Gm-Message-State: AFqh2ko2sH/7yySKQy7ZnLUcsODMfFOaK9hF2TkYimUsE78uUw5DJSps
-        Pxs5uIjKBuMiU8LBTpMNvIUjQ5i+SxPNk3HXMp8=
-X-Google-Smtp-Source: AMrXdXtag8LojjjmvIbOa2XBgTbaRTmcJdZZtQWLHPjWioe6kI27FrmC2/fiB8BfkJo1AtDhkgE8aR/uCRps3wqhkPc=
-X-Received: by 2002:a05:6870:80ce:b0:15f:1e44:71fd with SMTP id
- r14-20020a05687080ce00b0015f1e4471fdmr78632oab.194.1673751612406; Sat, 14 Jan
- 2023 19:00:12 -0800 (PST)
+        Sun, 15 Jan 2023 04:48:18 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF6EFB46D;
+        Sun, 15 Jan 2023 01:48:17 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id kt14so2840813ejc.3;
+        Sun, 15 Jan 2023 01:48:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U91tZ1pcL+C5oCwSnm2ekb7b6jfm6xqHe6fUGsu0ktM=;
+        b=nnDDnTlzHuKvIuOwtJ8+Uq5p94FYTsvGa/hjrDCWnj4igFQ/+5OMt9b+0VuOvJTSsF
+         i7+CnSb7s3qDZ5PosseVVS+xilrMjkv66/dEb67/IwDMbVkd7NyGVdjB24XPEYyqnQ7G
+         poVHSWf4P6kv4bpOGH+YVXZjL11kNMKRdc7WZptXhqg+Hqbc4efIfYqaywEeLmjDywSG
+         dO0O1tWss+0Xi1jD3BdkpFUgRn/dHyE6iZY+36C0mjvBQPFYXt+LmoC08/DDGLnFNO5T
+         uG1aFnm6Ik/Ma6VQ0kYR0VA6lJ3U2SM0Q/bUtuAyB73YzxZQDViaE1Ew7hh8tTSW93J2
+         si4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=U91tZ1pcL+C5oCwSnm2ekb7b6jfm6xqHe6fUGsu0ktM=;
+        b=l6ZFY79aRg/zP+A+RWuiBPSTJQJiLnFh+oNMMRKGpmjq8RGCQbs0YLMEORHsJHRaUX
+         Xh9mrpvVLY2lr401BLcgTI16Ij7ukWSZfBINcqWQwoEql+xpmN5a3LzQhizxpZAjocON
+         aNWErxB3UHdEfKOT/fpZXrNusJDP7nB9PKt1n61jnnD3tyAWW9pugYUICqUwl7dGlciN
+         h/LAwhkcXgE9dIuI4vOwHqYzS/caEQ0PvtfaLSMdIBmOwrrL/TiadmELWvkjugtGYFq0
+         dkpIXnxIFyf0vYTwhvmaEXmn8RjSZv3Tr+2C/wGQ9ngORFuAcEXmTy00IlrPRVGfCSMn
+         oIXg==
+X-Gm-Message-State: AFqh2koS/P+yiJKF5ynS8uwkZ/QiZlrl/VHVN+XcCrMLLEGLYrFJFlGx
+        o3VP4lPbvt7Xyb8uD0aLJ+BAUxopwLegDoNcrws=
+X-Google-Smtp-Source: AMrXdXut/jQfPnLAZ0P8wTjeVheBJGzDy1oXd+fLbIjFFvMb2cO1l1wWanUjf0idLIAT+L4AoNQ/GeLj+GyV7h2w9sI=
+X-Received: by 2002:a17:906:d217:b0:7c1:8a0b:f915 with SMTP id
+ w23-20020a170906d21700b007c18a0bf915mr6150975ejz.42.1673776096219; Sun, 15
+ Jan 2023 01:48:16 -0800 (PST)
 MIME-Version: 1.0
-References: <20230109204520.539080-1-ojeda@kernel.org> <CANiq72m_+xJYUxrwFc7vNLkuOb6zC-W-wDzXjbPb8Ursqzwiaw@mail.gmail.com>
- <CAK7LNATmRkSU2n6AaeJenE-18gbUd4ZShFNfKysEjyCo4Q-eAA@mail.gmail.com> <CANiq72=G0P-XZ6Kn2XYFwbSdqG7Yh4f5zgAr-fn+85QJCMRZUA@mail.gmail.com>
-In-Reply-To: <CANiq72=G0P-XZ6Kn2XYFwbSdqG7Yh4f5zgAr-fn+85QJCMRZUA@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Sun, 15 Jan 2023 11:59:36 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASB2EToZMUyt5PRoDyBcmF3a1QgVXsRvb9EjQ3yifRLKQ@mail.gmail.com>
-Message-ID: <CAK7LNASB2EToZMUyt5PRoDyBcmF3a1QgVXsRvb9EjQ3yifRLKQ@mail.gmail.com>
-Subject: Re: [PATCH 1/6] docs: rust: add paragraph about finding a suitable `libclang`
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
+References: <20221217044436.4138642-1-davidgow@google.com> <20221217044436.4138642-3-davidgow@google.com>
+In-Reply-To: <20221217044436.4138642-3-davidgow@google.com>
+From:   =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Date:   Sun, 15 Jan 2023 10:47:39 +0100
+Message-ID: <CAA76j91Kn62Rqs9843njNSmuvb2XEyNLnC996Bmmz1obTbCX9w@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust: arch/um: Disable FP/SIMD instruction to match x86
+To:     David Gow <davidgow@google.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Alex Gaynor <alex.gaynor@gmail.com>,
+        rust-for-linux@vger.kernel.org, linux-um@lists.infradead.org,
+        llvm@lists.linux.dev, linux-doc@vger.kernel.org,
+        kunit-dev@googlegroups.com, x86@kernel.org,
+        linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+        Gary Guo <gary@garyguo.net>,
+        Brendan Higgins <brendan.higgins@linux.dev>,
+        Daniel Latypov <dlatypov@google.com>,
+        Jonathan Corbet <corbet@lwn.net>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jan 14, 2023 at 8:13 AM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Sat, 17 Dec 2022 at 05:49, David Gow <davidgow@google.com> wrote:
 >
-> On Thu, Jan 12, 2023 at 7:05 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> >
-> > Yes, I can take this, but the doc change
-> > is independent of the rest, and will not conflict with
-> > any Kbuild changes.
-> >
-> > So, you can apply this one to your tree.
+> The kernel disables all SSE and similar FP/SIMD instructions on
+> x86-based architectures (partly because we shouldn't be using floats in
+> the kernel, and partly to avoid the need for stack alignment, see:
+> https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D53383 )
 >
-> The doc change is not fully independent: this patch is first because
-> the next commit uses the fact that the documentation is written (to
-> point the user to it), and the commit message mentions this.
+> UML does not do the same thing, which isn't in itself a problem, but
+> does add to the list of differences between UML and "normal" x86 builds.
 >
-> Not a big deal, but it would look better if all are in at once.
+> In addition, there was a crash bug with LLVM < 15 / rustc < 1.65 when
+> building with SSE, so disabling it fixes rust builds with earlier
+> compiler versions, see:
+> https://github.com/Rust-for-Linux/linux/pull/881
 >
-> Cheers,
-> Miguel
+> Signed-off-by: David Gow <davidgow@google.com>
+> ---
+>  arch/x86/Makefile.um | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
+> index b3c1ae084180..d2e95d1d4db7 100644
+> --- a/arch/x86/Makefile.um
+> +++ b/arch/x86/Makefile.um
+> @@ -1,6 +1,12 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  core-y +=3D arch/x86/crypto/
+>
+> +#
+> +# Disable SSE and other FP/SIMD instructions to match normal x86
+> +#
+> +KBUILD_CFLAGS +=3D -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
+> +KBUILD_RUSTFLAGS +=3D -Ctarget-feature=3D-sse,-sse2,-sse3,-ssse3,-sse4.1=
+,-sse4.2,-avx,-avx2
+> +
+>  ifeq ($(CONFIG_X86_32),y)
+>  START :=3D 0x8048000
+>
+> --
+> 2.39.0.314.g84b9a713c41-goog
+>
 
-
-Now I think it is better to ask you to pick up my patch [1]
-and apply all of this patch set in your tree
-since you are adding bigger changes.
-
-
-
-
-[1]: https://patchwork.kernel.org/project/linux-kbuild/patch/20230109061436.3146442-1-masahiroy@kernel.org/
-
-
-
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+Reviewed-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com>
