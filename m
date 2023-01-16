@@ -2,91 +2,131 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A936CC3DA78
-	for <rust-for-linux@archiver.kernel.org>; Mon, 16 Jan 2023 00:03:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04A50C46467
+	for <rust-for-linux@archiver.kernel.org>; Mon, 16 Jan 2023 16:52:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231768AbjAPADT (ORCPT
+        id S234019AbjAPQwN (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 15 Jan 2023 19:03:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38336 "EHLO
+        Mon, 16 Jan 2023 11:52:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231759AbjAPADS (ORCPT
+        with ESMTP id S234017AbjAPQvq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 15 Jan 2023 19:03:18 -0500
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9CAD3C04;
-        Sun, 15 Jan 2023 16:03:16 -0800 (PST)
-Received: by mail-yb1-xb32.google.com with SMTP id t15so28550879ybq.4;
-        Sun, 15 Jan 2023 16:03:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=utF0T11NIO5fzdSYdTniamVGFsvJmq4s7ZlcItgmdGo=;
-        b=pTclYOItmik5tHCwf8CHR9HEI+jxxHl9DpN6G3hseWDVWz0WKC+e5ZjXrboN34vRfX
-         33Bav9oBN2rl4ifdPBg9mopNU8+OME5/3vb0EGLRy4hpEnZou3TawUjewrn7VrpwfV2J
-         8zmskMMVx/wGqDW8xuV8ZN2/DlU3nNlkcoEtd028kFWatiSJr2nUoPcnzr3dUmbAy7Im
-         LsduvSOzVQJoC0UW413NdmK5a5Y6OVmA6G3B8hX79z0EYEtXIJyhHvuZD2ucjwAPqYH2
-         4mpDd4N8mFQpWipR19rLRubB60j6njQiMVSDDZ4z7WG5TWm1hOYFmKNloonwJK7x8IUY
-         8dIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=utF0T11NIO5fzdSYdTniamVGFsvJmq4s7ZlcItgmdGo=;
-        b=1ul/SUxbE8GBTR8qXjyKuCwvD1i1V+3gvaF9M4WWhD6jkr70NNk13Bw/k7VvSX0g8f
-         ELW7Z8JhDGcHGy24rq8/slwfZaL4+mmUe9E08qKQfy+3xt8q7gShMbeTD8TlB1pHKbXM
-         u43J7XD2ztDXTP8YdwdxhmHYAktDqEdld4OoamEHpahezBNSg2ADzAE3ejFRFHaRwO0g
-         GHJ02S6Dni72rFkQfeGs2o+GfD7T1m5Q/NzAa7OaJc1meitu1mVavVnJMWhE5rJmH9tc
-         uGXHM4VUgsM4ThvAQTIYda4MiTg19QCfI+Vn+aqrYv+cP/YPe7jZQ6ObhvT+16qIFpvc
-         FwIA==
-X-Gm-Message-State: AFqh2krkQWLW/zNSP9BFaNPfKqo6E71IWrNHxCbKrQ6xuPBeePlWeCQK
-        mZ9HS84HLsizn0ARcZeG22aXwOIBG2Y5fxsKRbI=
-X-Google-Smtp-Source: AMrXdXsGXvJ6fgLaVz+5qZXQBdJFCTv3K8NVETV+4FyUgyVMQCuNqGCqmRkc0+hweH28ipKE+hbdONR7DsrMxDekZ6E=
-X-Received: by 2002:a25:7702:0:b0:7b4:bdd7:e631 with SMTP id
- s2-20020a257702000000b007b4bdd7e631mr4296168ybc.507.1673827395991; Sun, 15
- Jan 2023 16:03:15 -0800 (PST)
+        Mon, 16 Jan 2023 11:51:46 -0500
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B03222B285;
+        Mon, 16 Jan 2023 08:37:12 -0800 (PST)
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1pHSTt-000MVK-MS; Mon, 16 Jan 2023 17:37:09 +0100
+Received: from [85.1.206.226] (helo=linux.home)
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1pHSTt-000Hk1-8R; Mon, 16 Jan 2023 17:37:09 +0100
+Subject: Re: [PATCH v3] scripts: Exclude Rust CUs with pahole
+To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        linux-kernel@vger.kernel.org
+Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Neal Gompa <neal@gompa.dev>, Eric Curtin <ecurtin@redhat.com>,
+        bpf@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>, Yonghong Song <yhs@fb.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+References: <20230111152050.559334-1-yakoyoku@gmail.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <aaf97a61-73c9-ff90-422d-9f3a79b0acd6@iogearbox.net>
+Date:   Mon, 16 Jan 2023 17:37:08 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-References: <20230109204912.539790-1-ojeda@kernel.org>
-In-Reply-To: <20230109204912.539790-1-ojeda@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 16 Jan 2023 01:03:05 +0100
-Message-ID: <CANiq72k9OP2TTPty2OcC5Od-R3wHsfhnc0BFR_XYjBtC5zf3gA@mail.gmail.com>
-Subject: Re: [PATCH] rust: print: avoid evaluating arguments in `pr_*` macros
- in `unsafe` blocks
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev,
-        Domen Puncer Kugler <domen.puncerkugler@nccgroup.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20230111152050.559334-1-yakoyoku@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.7/26783/Mon Jan 16 09:28:30 2023)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Jan 9, 2023 at 9:49 PM Miguel Ojeda <ojeda@kernel.org> wrote:
->
-> At the moment it is possible to perform unsafe operations in
-> the arguments of `pr_*` macros since they are evaluated inside
-> an `unsafe` block:
->
->     let x = &10u32 as *const u32;
->     pr_info!("{}", *x);
->
-> In other words, this is a soundness issue.
->
-> Fix it so that it requires an explicit `unsafe` block.
->
-> Reported-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Reported-by: Domen Puncer Kugler <domen.puncerkugler@nccgroup.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/479
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On 1/11/23 4:20 PM, Martin Rodriguez Reboredo wrote:
+> Version 1.24 of pahole has the capability to exclude compilation units
+> (CUs) of specific languages [1] [2]. Rust, as of writing, is not
+> currently supported by pahole and if it's used with a build that has
+> BTF debugging enabled it results in malformed kernel and module
+> binaries [3]. So it's better for pahole to exclude Rust CUs until
+> support for it arrives.
+> 
+> Link: https://git.kernel.org/pub/scm/devel/pahole/pahole.git/commit/?id=49358dfe2aaae4e90b072332c3e324019826783f [1]
+> Link: https://git.kernel.org/pub/scm/devel/pahole/pahole.git/commit/?id=8ee363790b7437283c53090a85a9fec2f0b0fbc4 [2]
+> Link: https://github.com/Rust-for-Linux/linux/issues/735 [3]
+> 
+> Co-developed-by: Eric Curtin <ecurtin@redhat.com>
+> Signed-off-by: Eric Curtin <ecurtin@redhat.com>
+> Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> ---
+> V2 -> V3: Enable pahole option upon comparing with version 1.24
+> V1 -> V2: Removed dependency on auto.conf
+> 
+>   init/Kconfig            | 2 +-
+>   lib/Kconfig.debug       | 9 +++++++++
+>   scripts/pahole-flags.sh | 4 ++++
+>   3 files changed, 14 insertions(+), 1 deletion(-)
+> 
+> diff --git a/init/Kconfig b/init/Kconfig
+> index 694f7c160c9c..360aef8d7292 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -1913,7 +1913,7 @@ config RUST
+>   	depends on !MODVERSIONS
+>   	depends on !GCC_PLUGINS
+>   	depends on !RANDSTRUCT
+> -	depends on !DEBUG_INFO_BTF
+> +	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+>   	select CONSTRUCTORS
+>   	help
+>   	  Enables Rust support in the kernel.
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index ea4c903c9868..d473d491e709 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -364,6 +364,15 @@ config PAHOLE_HAS_BTF_TAG
+>   	  btf_decl_tag) or not. Currently only clang compiler implements
+>   	  these attributes, so make the config depend on CC_IS_CLANG.
+>   
+> +config PAHOLE_HAS_LANG_EXCLUDE
+> +	def_bool PAHOLE_VERSION >= 124
+> +	help
+> +	  Support for the --lang_exclude flag which makes pahole exclude
+> +	  compilation units from the supplied language. Used in Kbuild to
+> +	  omit Rust CUs which are not supported in version 1.24 of pahole,
+> +	  otherwise it would emit malformed kernel and module binaries when
+> +	  using DEBUG_INFO_BTF_MODULES.
+> +
+>   config DEBUG_INFO_BTF_MODULES
+>   	def_bool y
+>   	depends on DEBUG_INFO_BTF && MODULES && PAHOLE_HAS_SPLIT_BTF
+> diff --git a/scripts/pahole-flags.sh b/scripts/pahole-flags.sh
+> index 0d99ef17e4a5..1f1f1d397c39 100755
+> --- a/scripts/pahole-flags.sh
+> +++ b/scripts/pahole-flags.sh
+> @@ -19,5 +19,9 @@ fi
+>   if [ "${pahole_ver}" -ge "122" ]; then
+>   	extra_paholeopt="${extra_paholeopt} -j"
+>   fi
+> +if [ "${pahole_ver}" -ge "124" ]; then
+> +	# see PAHOLE_HAS_LANG_EXCLUDE
+> +	extra_paholeopt="${extra_paholeopt} --lang_exclude=rust"
+> +fi
+>   
+>   echo ${extra_paholeopt}
 
-Applied to rust-fixes, thanks all!
+I presume Miguel will pick this up via rust tree? (Either way, would be nice to
+also get an Ack from Arnaldo.)
 
-Cheers,
-Miguel
+Thanks,
+Daniel
