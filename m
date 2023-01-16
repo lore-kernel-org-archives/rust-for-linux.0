@@ -2,215 +2,93 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F089C54EBE
-	for <rust-for-linux@archiver.kernel.org>; Mon, 16 Jan 2023 22:42:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD74CC67871
+	for <rust-for-linux@archiver.kernel.org>; Mon, 16 Jan 2023 23:35:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232798AbjAPWmv (ORCPT
+        id S235510AbjAPXfL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 16 Jan 2023 17:42:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60434 "EHLO
+        Mon, 16 Jan 2023 18:35:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232546AbjAPWmu (ORCPT
+        with ESMTP id S235520AbjAPXew (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 16 Jan 2023 17:42:50 -0500
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24CAC2387A;
-        Mon, 16 Jan 2023 14:42:48 -0800 (PST)
-Received: by mail-pg1-x531.google.com with SMTP id s67so20629245pgs.3;
-        Mon, 16 Jan 2023 14:42:48 -0800 (PST)
+        Mon, 16 Jan 2023 18:34:52 -0500
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 963E14EF3;
+        Mon, 16 Jan 2023 15:32:12 -0800 (PST)
+Received: by mail-yb1-xb2f.google.com with SMTP id a9so15320807ybb.3;
+        Mon, 16 Jan 2023 15:32:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rjZVJeqqULFSXmD53yNXzMDaOIl+IC+pV+97/4sSu6I=;
-        b=A50ejkIHtFgA5d0wShNxSrxkuzQ0lPf5tP4owGGARkoP3Z6vrmV94Jy3s1fQPzuMr9
-         4K8HqAKlukvJ+QQGXZ0uX8YPG9WzST0vVaiHa2xcYzuv7etiDMGxGjCCLotBGgUuopWK
-         MOBrZHqMSO14DZeEuDOOMBvQRMhBRXO9RfHoYvhp0+1R5g3GsRs5B6YyBrvzxke8gbm1
-         FSrwesrnoFJBeSKm9pjYYjXtPJ+h6OPenqmqnbGzR/AvY9f5UqK6NcZmi+VO8qzzLuqx
-         O/83nNUGMv89GFOM2I/PFQRz2DKTaTSPI6IW5HGGq9wEX8COP3NiDLT5URz3CWKdh2Tm
-         /uJg==
+        bh=2eGx37EmHA0N0W9tODp3iY+Jtr51iEGe4dAXEDxPGHg=;
+        b=XRlIs7dhg5iCvVEvX8TYR7BIQKWSK4S519EMsig4S5hCPso4dy7drqtAvz6p3eSBk9
+         TL9nFCr1BHLTa/c154LoKHJxh3bg+zI74O6EVrr1xoP5MHfNiypcPqxsnhkkbpIrQQuu
+         GuWKMCHBBY+Op8eDdAMcV3jZ9tpnlV19zXWNLzGzC2eag5zGIn5UzTLIzWQjAHb/tdvM
+         7wxakp2+ndRz65RdQfgyxVWNNJmSobFZOgUKAOcopDU5EfuHSHDddPDacsMHVDQ+zjtT
+         uRXhjiCzOw6fHAgZVPkK1SYmMuYnLCvGN2G2NxAQLlTxyju4nGP5M6+7QwQeF08oh2SS
+         2Grg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rjZVJeqqULFSXmD53yNXzMDaOIl+IC+pV+97/4sSu6I=;
-        b=JT6F+MMcd64hKPeEUZVD7J/Ml9sEc1k7LJZdNRRebvl+gqQiikJ8ETN4gpTA3yycJL
-         xoDvlS3njEqTuCqH+PgP4pODv28nCBaQ/ZW3JBmZ33Qy3sp2vc9eYZyuUu8JPN9uXPJ7
-         RnGXZS6FGRNQjSfGZ5oFkJOfnFqqpTiUEGD3DNl88VLTY/r+Iy+WU0s/UDzx4V1Adq1x
-         8Zp9Y1hvcsyl/+lPCMhPrv1BqamuDVcmpbbSQRAw9YzWxsR4g8300+0maOm+lp1Se7fy
-         UwDrhasBAEIEFsOzKm8Lh/Qhh0P8BrPjsgkPowTR0qPB18WzSHfSHjx2rAY+JJc3kZAB
-         e/ig==
-X-Gm-Message-State: AFqh2kpsMEY22xdU7j0mnFthUxrJwynSv9iMLwZ7LL7zpRfVWq3c8TPv
-        he1LbqHdSnfguB0r+e3zyxVWngi4eiD5Dz3Pb2g6VL3d4Xpbqg4i
-X-Google-Smtp-Source: AMrXdXto1J/YBTaLNgeEEtaDdFn46S3lxehr5Yxpiwp4zZRgDV8rwd14JdTbDD4ZU99+713loO1bAXKRi65A7Ao9hgo=
-X-Received: by 2002:a63:ea0c:0:b0:476:aad3:9121 with SMTP id
- c12-20020a63ea0c000000b00476aad39121mr35934pgi.385.1673908967516; Mon, 16 Jan
- 2023 14:42:47 -0800 (PST)
+        bh=2eGx37EmHA0N0W9tODp3iY+Jtr51iEGe4dAXEDxPGHg=;
+        b=lzxOOobC0PcGkH3//gyBHvUWgbVEoN1yogqG1l1lgA8tu+9dfCwZ2kikry20T+BBMt
+         RAlJ7HjnGd4vUGuTNmJ7B6c26UTQNIxAMgg2FOtataFQysNxBfoVxz//CORrp0NxzGnt
+         kvxTb+Oig8xjH4EgzDWvWfp+r5IEVtWeHrPEAmK2htrbkYPrmb8aINeF703QQyolE0t8
+         khEhPL2Mzt/Mdjdo0fDlV9dbPtrHGxPvxgSLkAS4Tv7ihQCzPn2cMeio8oGFlWIZ/ogq
+         NBhq35zE8qpHXnIn8NP8Qis5nrbpeAdWXp8AFBqyT6TZbbRyUK1lnSOCz/vXS/H9gvfr
+         VR1Q==
+X-Gm-Message-State: AFqh2koKhuVuFtPKpp1BwzHWApwwe+bZwrs24ySNUU3hvYmhyKVb6XY3
+        v5x8dGDjsBYlzuJiRyFlhpp69ZewAW4PB4uriZOTsc0PSFkIU6qi
+X-Google-Smtp-Source: AMrXdXuE1UAGgnxyZDwm/YOVUXX3/p67x7O3O4eboTy7D5CVHVN0IgALnQIj866+lQInoK43ZnNG9XsjVJ+vYXBy6yU=
+X-Received: by 2002:a25:ca51:0:b0:7bf:b130:9e24 with SMTP id
+ a78-20020a25ca51000000b007bfb1309e24mr195541ybg.328.1673911931888; Mon, 16
+ Jan 2023 15:32:11 -0800 (PST)
 MIME-Version: 1.0
-References: <20221228060346.352362-1-wedsonaf@gmail.com> <20221228060346.352362-4-wedsonaf@gmail.com>
-In-Reply-To: <20221228060346.352362-4-wedsonaf@gmail.com>
-From:   Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Date:   Mon, 16 Jan 2023 23:42:35 +0100
-Message-ID: <CAKy8djRYF52bxUf7ooTOWvmDhjcymVuu+O7h-aNd53uH_ubeDw@mail.gmail.com>
-Subject: Re: [PATCH 4/7] rust: sync: introduce `ArcBorrow`
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+References: <20221206010519.39075-1-ojeda@kernel.org>
+In-Reply-To: <20221206010519.39075-1-ojeda@kernel.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 17 Jan 2023 00:32:00 +0100
+Message-ID: <CANiq72kTrfYzmgdLjOecsVTQzHdy_ZDaCO2KgbODtHpL0pS7Qw@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: alloc: remove the `borrow` module (`ToOwned`, `Cow`)
+To:     ojeda@kernel.org
+Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, Josh Triplett <josh@joshtriplett.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Ops! I fall asleep while waiting for the Copy to derive Copy debate!
+On Tue, Dec 6, 2022 at 2:05 AM <ojeda@kernel.org> wrote:
+>
+> From: Miguel Ojeda <ojeda@kernel.org>
+>
+> The `Cow` type [1] requires that its generic parameter type implements
+> the `ToOwned` trait [2], which provides a method to create owned data
+> from borrowed data, usually by cloning.
+>
+> However, it is infallible, and thus in most cases it is not useful for
+> the kernel. [3]
+>
+> Therefore, introduce `cfg(no_borrow)` to remove the `borrow` module
+> (which contains `ToOwned` and `Cow`) from `alloc`.
+>
+> Link: https://doc.rust-lang.org/alloc/borrow/enum.Cow.html [1]
+> Link: https://doc.rust-lang.org/alloc/borrow/trait.ToOwned.html [2]
+> Link: https://lore.kernel.org/rust-for-linux/20221204103153.117675b1@GaryWorkstation/ [3]
+> Cc: Gary Guo <gary@garyguo.net>
+> Cc: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Cc: Josh Triplett <josh@joshtriplett.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Applied to rust-next, thanks all!
 
-
-On Wed, Dec 28, 2022 at 7:05 AM Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
->
-> This allows us to create references to a ref-counted allocation without
-> double-indirection and that still allow us to increment the refcount to
-> a new `Arc<T>`.
->
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> ---
->  rust/kernel/sync.rs     |  2 +-
->  rust/kernel/sync/arc.rs | 97 +++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 98 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 39b379dd548f..5de03ea83ea1 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -7,4 +7,4 @@
->
->  mod arc;
->
-> -pub use arc::Arc;
-> +pub use arc::{Arc, ArcBorrow};
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index dbc7596cc3ce..f68bfc02c81a 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -19,6 +19,7 @@ use crate::{bindings, error::Result, types::Opaque};
->  use alloc::boxed::Box;
->  use core::{
->      marker::{PhantomData, Unsize},
-> +    mem::ManuallyDrop,
->      ops::Deref,
->      ptr::NonNull,
->  };
-> @@ -164,6 +165,18 @@ impl<T: ?Sized> Arc<T> {
->              _p: PhantomData,
->          }
->      }
-> +
-> +    /// Returns an [`ArcBorrow`] from the given [`Arc`].
-> +    ///
-> +    /// This is useful when the argument of a function call is an [`ArcBorrow`] (e.g., in a method
-> +    /// receiver), but we have an [`Arc`] instead. Getting an [`ArcBorrow`] is free when optimised.
-> +    #[inline]
-> +    pub fn as_arc_borrow(&self) -> ArcBorrow<'_, T> {
-> +        // SAFETY: The constraint that the lifetime of the shared reference must outlive that of
-> +        // the returned `ArcBorrow` ensures that the object remains alive and that no mutable
-> +        // reference can be created.
-> +        unsafe { ArcBorrow::new(self.ptr) }
-> +    }
->  }
->
->  impl<T: ?Sized> Deref for Arc<T> {
-> @@ -208,3 +221,87 @@ impl<T: ?Sized> Drop for Arc<T> {
->          }
->      }
->  }
-> +
-> +/// A borrowed reference to an [`Arc`] instance.
-> +///
-> +/// For cases when one doesn't ever need to increment the refcount on the allocation, it is simpler
-> +/// to use just `&T`, which we can trivially get from an `Arc<T>` instance.
-> +///
-> +/// However, when one may need to increment the refcount, it is preferable to use an `ArcBorrow<T>`
-> +/// over `&Arc<T>` because the latter results in a double-indirection: a pointer (shared reference)
-> +/// to a pointer (`Arc<T>`) to the object (`T`). An [`ArcBorrow`] eliminates this double
-> +/// indirection while still allowing one to increment the refcount and getting an `Arc<T>` when/if
-> +/// needed.
-> +///
-> +/// # Invariants
-> +///
-> +/// There are no mutable references to the underlying [`Arc`], and it remains valid for the
-> +/// lifetime of the [`ArcBorrow`] instance.
-> +///
-> +/// # Example
-> +///
-> +/// ```
-> +/// use crate::sync::{Arc, ArcBorrow};
-> +///
-> +/// struct Example;
-> +///
-> +/// fn do_something(e: ArcBorrow<'_, Example>) -> Arc<Example> {
-> +///     e.into()
-> +/// }
-> +///
-> +/// let obj = Arc::try_new(Example)?;
-> +/// let cloned = do_something(obj.as_arc_borrow());
-> +///
-> +/// // Assert that both `obj` and `cloned` point to the same underlying object.
-> +/// assert!(core::ptr::eq(&*obj, &*cloned));
-> +/// ```
-> +pub struct ArcBorrow<'a, T: ?Sized + 'a> {
-> +    inner: NonNull<ArcInner<T>>,
-> +    _p: PhantomData<&'a ()>,
-> +}
-> +
-> +impl<T: ?Sized> Clone for ArcBorrow<'_, T> {
-> +    fn clone(&self) -> Self {
-> +        *self
-> +    }
-> +}
-> +
-> +impl<T: ?Sized> Copy for ArcBorrow<'_, T> {}
-> +
-> +impl<T: ?Sized> ArcBorrow<'_, T> {
-> +    /// Creates a new [`ArcBorrow`] instance.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure the following for the lifetime of the returned [`ArcBorrow`] instance:
-> +    /// 1. That `inner` remains valid;
-> +    /// 2. That no mutable references to `inner` are created.
-> +    unsafe fn new(inner: NonNull<ArcInner<T>>) -> Self {
-> +        // INVARIANT: The safety requirements guarantee the invariants.
-> +        Self {
-> +            inner,
-> +            _p: PhantomData,
-> +        }
-> +    }
-> +}
-> +
-> +impl<T: ?Sized> From<ArcBorrow<'_, T>> for Arc<T> {
-> +    fn from(b: ArcBorrow<'_, T>) -> Self {
-> +        // SAFETY: The existence of `b` guarantees that the refcount is non-zero. `ManuallyDrop`
-> +        // guarantees that `drop` isn't called, so it's ok that the temporary `Arc` doesn't own the
-> +        // increment.
-> +        ManuallyDrop::new(unsafe { Arc::from_inner(b.inner) })
-> +            .deref()
-> +            .clone()
-> +    }
-> +}
-> +
-> +impl<T: ?Sized> Deref for ArcBorrow<'_, T> {
-> +    type Target = T;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        // SAFETY: By the type invariant, the underlying object is still alive with no mutable
-> +        // references to it, so it is safe to create a shared reference.
-> +        unsafe { &self.inner.as_ref().data }
-> +    }
-> +}
-> --
-> 2.34.1
->
+Cheers,
+Miguel
