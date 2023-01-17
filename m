@@ -2,79 +2,81 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33231C54EBE
-	for <rust-for-linux@archiver.kernel.org>; Mon, 16 Jan 2023 23:36:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DE77C3DA78
+	for <rust-for-linux@archiver.kernel.org>; Tue, 17 Jan 2023 16:40:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232546AbjAPXgi (ORCPT
+        id S232903AbjAQQkg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 16 Jan 2023 18:36:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41394 "EHLO
+        Tue, 17 Jan 2023 11:40:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235441AbjAPXgN (ORCPT
+        with ESMTP id S230453AbjAQQkU (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 16 Jan 2023 18:36:13 -0500
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14C4322A15;
-        Mon, 16 Jan 2023 15:35:50 -0800 (PST)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-4c131bede4bso400245437b3.5;
-        Mon, 16 Jan 2023 15:35:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VYNmtX4azwAKTTUMwpvjnaBuUMcH5MIveEe0DLHOIPE=;
-        b=pCgDnb4O2N7vuYuZO0mjE15/XR1bujf9K/A8e9YAZJDyYoQiAu07W60TgurF1eOP3A
-         GOSQoG58mX7qUn8YuoliGj+XfsuZ6IcUa9TX635w2hvBczwJ7PxHnxLrK7cBC3owljKD
-         l5xW1YDssHJu3n1KMvnYur8HT7XchSU9ZI+TDPCYFdPbJtsDNIp35ITS9jz6bfDAV8wg
-         t2HU/wa0ZcgSq2a+sBMZZe+NIGWTpZU1krA3LLuQszR2OMEuye7WYyRTsSBd0vTo8ujM
-         BD82tkQEh2y0EEBCpqmFNZznvUIRYEi06Wb4E9ahF4JEARccyMx877Sh8k0SHqY2tEb5
-         +7/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VYNmtX4azwAKTTUMwpvjnaBuUMcH5MIveEe0DLHOIPE=;
-        b=W+ihKXUi9a2ffm+1d5QqI4HnD8PZaO0/Tc6LiUbzU3EBxHD1eGD9Bp1gHg0gcBXXox
-         0eUX+kzik2OrhnvsdXrHvKULvQRDpO9eh992XHCXrQN4dryJCdy0lwfmkh6Kv2C7T6RH
-         455DsDAOABE5Zt4Glr8uIYTUj3pBTKjfFUfa+KlhA19no04Q8IFY7w8JfQO+Ku8NGrrG
-         9pkbxgpn5y8guL4letRYgewUHwtvFMG56vkYNnvPpYNldVJo9sxEGMRmxndqCOh8ETBV
-         2aBik3eAFDEZd27T2pFbRbbUF9kU9MKh5O0iRPf6sIQH/S+qxgBNZ3uBxctj9TRfr373
-         1WDg==
-X-Gm-Message-State: AFqh2krJqM3+P4e6RC12qUScvfKyt3csmtqY4Mw/oOhEvr/jl1kBfjRj
-        GhhYn32Vsw0O69h/4peCbkTd9AP7W7Qkl2M7lww=
-X-Google-Smtp-Source: AMrXdXs00Nhyckfn9ZEhPQkqTyttOZOCcHV6qurBaGtB/aKPrcgDuwtgjRgbWgA51ajcI3FqM8eEmOwAhJWynA9RM20=
-X-Received: by 2002:a0d:fc86:0:b0:4db:3ac0:78a3 with SMTP id
- m128-20020a0dfc86000000b004db3ac078a3mr129399ywf.266.1673912149301; Mon, 16
- Jan 2023 15:35:49 -0800 (PST)
+        Tue, 17 Jan 2023 11:40:20 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59CD793;
+        Tue, 17 Jan 2023 08:40:19 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 14DDDB81909;
+        Tue, 17 Jan 2023 16:40:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id ADCFBC433F1;
+        Tue, 17 Jan 2023 16:40:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673973616;
+        bh=Vbn4P8wdciA7LCo7ARdqkmCi6s1Bf6rlENph14XWrDc=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=G/EPjiYgZaDPXwpA07TjDK3j1XuK6TRsUcUn4/gwMs8IQMOqkoX/5m+f6CRiQghJ6
+         sD7XqQmP2Z/UxpOLgG4Frs39qhOQaqm8h8fuc5PfVfPOzXVNCgL7SWDdD60uJ3FoTZ
+         VBgEy9bFmQZ94AlBVS8vwt1yK2VFMPPYw3yFZEvpyy5juVfPjt7OlfXkgLTi6b1AfY
+         AocuW/6yH/bnsWB9IO3kDUvz6xPh0M1ZwgxQw7PgxTrUUNtTEeJL6abF1K8wbkLRWD
+         o6/mvUwmumPNnR/+K6Yug5Coh3S53y5eV+JHcZXfToyj22qZ8eiRGi5FSnh6SJlrK9
+         4dCrkw9FlycXg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 8D3A1C43159;
+        Tue, 17 Jan 2023 16:40:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20221214093451.zdyhmdyxwz73n6pe@imap.mailbox.org>
-In-Reply-To: <20221214093451.zdyhmdyxwz73n6pe@imap.mailbox.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 17 Jan 2023 00:35:38 +0100
-Message-ID: <CANiq72kB6=hYUhgEv03zORAN9-aAi6UNwD5jcbh5vM6nUknL2A@mail.gmail.com>
-Subject: Re: [PATCH] rust: prelude: prevent doc inline of external imports
-To:     Finn Behrens <fin@nyantec.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3] scripts: Exclude Rust CUs with pahole
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <167397361656.26150.7048566316074687510.git-patchwork-notify@kernel.org>
+Date:   Tue, 17 Jan 2023 16:40:16 +0000
+References: <20230111152050.559334-1-yakoyoku@gmail.com>
+In-Reply-To: <20230111152050.559334-1-yakoyoku@gmail.com>
+To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, acme@kernel.org, neal@gompa.dev,
+        ecurtin@redhat.com, bpf@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, ast@kernel.org,
+        daniel@iogearbox.net, andrii@kernel.org, jolsa@kernel.org,
+        yhs@fb.com, miguel.ojeda.sandonis@gmail.com
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Dec 14, 2022 at 10:35 AM Finn Behrens <fin@nyantec.com> wrote:
->
-> This shows exactly where the items are from, previously the items from
-> macros, alloc and core where shown as a decleration from the kernel crate,
-> this shows the correct path.
+Hello:
 
-Applied to rust-next, thanks all! (as discussed, I added the Link on
-my side, plus fixed a couple typos and the comment style).
+This patch was applied to bpf/bpf-next.git (master)
+by Daniel Borkmann <daniel@iogearbox.net>:
 
-Cheers,
-Miguel
+On Wed, 11 Jan 2023 12:20:50 -0300 you wrote:
+> Version 1.24 of pahole has the capability to exclude compilation units
+> (CUs) of specific languages [1] [2]. Rust, as of writing, is not
+> currently supported by pahole and if it's used with a build that has
+> BTF debugging enabled it results in malformed kernel and module
+> binaries [3]. So it's better for pahole to exclude Rust CUs until
+> support for it arrives.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v3] scripts: Exclude Rust CUs with pahole
+    https://git.kernel.org/bpf/bpf-next/c/c1177979af9c
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
