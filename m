@@ -2,54 +2,55 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00354C46467
-	for <rust-for-linux@archiver.kernel.org>; Thu, 19 Jan 2023 17:41:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48C3CC678D6
+	for <rust-for-linux@archiver.kernel.org>; Thu, 19 Jan 2023 17:41:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229534AbjASRlW (ORCPT
+        id S230262AbjASRlX (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 19 Jan 2023 12:41:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48256 "EHLO
+        Thu, 19 Jan 2023 12:41:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbjASRlU (ORCPT
+        with ESMTP id S229593AbjASRlV (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 19 Jan 2023 12:41:20 -0500
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82FDF5421C;
-        Thu, 19 Jan 2023 09:40:59 -0800 (PST)
-Received: by mail-oi1-x232.google.com with SMTP id p133so2282941oig.8;
-        Thu, 19 Jan 2023 09:40:59 -0800 (PST)
+        Thu, 19 Jan 2023 12:41:21 -0500
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DACEC8BABC;
+        Thu, 19 Jan 2023 09:41:05 -0800 (PST)
+Received: by mail-oi1-x235.google.com with SMTP id i5so2273429oih.11;
+        Thu, 19 Jan 2023 09:41:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+sej2ZxxI8+9iAYbhNxmaN6Ujy8XCLYxGf1h6Atn53o=;
-        b=oXH2HzaBjYUWyrxXrR0aA6Trc8tK3yh35yGvu1GnMLz2SAhX4u5RQpxt5ma5Wl75oh
-         VTRKvtXos1Z2WX7lK5t0u9Zs5bqPHiH2MSPs8EAp5WP9KkdYCxXJUXtVL3V6OJSknG0w
-         AcaKL0SIUL8BC9N9CfCzOrgk2fcNODHN6ZwWYyCqSJjSsg9rmz3gT6AcoQAKeth5xk6P
-         C5EQJNyRyVGERAEpsi2iaR5f3oRWpRBDw2hSJd8TFCLQx2YFuis42RB7K8YWmwD7H1Zn
-         QsxwFXiPR7LJqRmX5cCW0N+LEOvZqpcIVbuisVzO4d1iXH9WH4Wmmk5rw4QaX4raT1Q+
-         APPA==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wGMIqOBRVBwOZ5uyAthUJactG+QhEC2sAl1iIa6Sq0Y=;
+        b=Ri4BGOfnQOaAKbc9bsyJzNBXcozXCwdE3vwshewu1Uw/45388Y1AnLUr0W6yjWzeQy
+         r8Ja2PwxVoRtn3538cqmTsUfue1Q3PLgQbIQe1z9tNRbdie48JAf5V5rbeqUhk405IRz
+         K00/7flOo9EVO9c1Q38l+6BWXt1klpjeFTyBZqHVifxYHG4mpBa0Xipy41z++9UnGY7f
+         5JZ5gcVizyM5QJgeobaZpxlODIpA09ohumDP0eihN1QChtKrieux5kwhx3RSBRfrFxJh
+         iA/0Goj5GdtyhqBi+ctA03dkPXFvMDUsWbkn2rfV78L6QJQK6PAhoxp7SA9YvpSLkgrQ
+         dVDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+sej2ZxxI8+9iAYbhNxmaN6Ujy8XCLYxGf1h6Atn53o=;
-        b=SP56YPl+17g4mzKIo74s6s7MqysUD+9GU8NTwNsRdaVDJUj2tT03GspGHNpgBzUWwx
-         ebmOLJ+H5jcIIsAa+w1IHiiSw3qWOn53sAQKr51abwlr9BowZ+R9uGHfr/MewPjfQedm
-         Xw3JP0nb39sjVUJcsVWCKVpSpwre5vDjktmrJZ6yASJhI13MDY0eCnEhGjGleS8gdoiH
-         cmp3lv2Do/Q1k3s5YQyFs8zKjTewKCkIduFL4R/Xz4n1Shs7Wv+HMo2w1Dj/FYpiVhCo
-         9f1K2xExF9/MmjmFRYU5kKBuQ/RgTPLuU9EKU1mzGKo32G/2xVWYC26/tc76htEoT5bo
-         oVOQ==
-X-Gm-Message-State: AFqh2krUfyytv0iVmTzKs4Yyvma7i85HYezhk64n/HBcP2xBcHNc6r8B
-        Q3pqgIIqi7oR5AU67IbKKmEu2pKj8gFuN905
-X-Google-Smtp-Source: AMrXdXua1TdChQflT3oJQMco3ayOtezrsL4DFbYeJt2NUqYkwEqjENwbK6xppHotS6D/Fl+UPk+9CQ==
-X-Received: by 2002:aca:3c88:0:b0:35e:bc08:35f6 with SMTP id j130-20020aca3c88000000b0035ebc0835f6mr4959874oia.8.1674150058819;
-        Thu, 19 Jan 2023 09:40:58 -0800 (PST)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wGMIqOBRVBwOZ5uyAthUJactG+QhEC2sAl1iIa6Sq0Y=;
+        b=DkSVoaOaD/n2pM0dOirrQ/io8BT/peCjUioR9fq58pAcW/K+aMrmRFjnJbVkdKUjU0
+         gUclPGd19ZU08Jn8baH0ghN0caAWQkv+1yf36jwnwu8PK78en4/V/BimywRYiRj2i2ON
+         aanuLxC3Jv8aJe8IxJuZCAtTqHflroDm84NgZWyTDuIS2CPqjd29Y2i9UCzEjqdnaf5O
+         SyFnr2qOy4TKwMs8TxRkImRtg6sJsgxXSTljpBOeljkAlVUzXo+1XRsna84UfxaywfXv
+         PJOyDkhHmgJ8rcY0w/fsawPEtVtQSWA5o2GrmBZIi6TaEZscEEV9Ct3XM5mvkJga/7bR
+         mnsQ==
+X-Gm-Message-State: AFqh2kqK0lTY/NfmMXPO2AJFXyLc5YmNufkcWCsz7X1zIFYk5/QBmcyt
+        nSFXfa9tG2KCoU4q1ZoxFE4obdheNiaPVwfQ
+X-Google-Smtp-Source: AMrXdXtBy7x19i00rqANu3EnwrPCvgO2sfa1l0lEkr/eN55j/MkW7CxJ2Nw5/0uFJoeG8Jc/cFhq/g==
+X-Received: by 2002:aca:1c09:0:b0:367:18f4:dbef with SMTP id c9-20020aca1c09000000b0036718f4dbefmr5472968oic.0.1674150065168;
+        Thu, 19 Jan 2023 09:41:05 -0800 (PST)
 Received: from wedsonaf-dev.home.lan ([189.124.190.154])
-        by smtp.googlemail.com with ESMTPSA id i7-20020a056808054700b003631fe1810dsm10226906oig.47.2023.01.19.09.40.55
+        by smtp.googlemail.com with ESMTPSA id i7-20020a056808054700b003631fe1810dsm10226906oig.47.2023.01.19.09.41.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jan 2023 09:40:58 -0800 (PST)
+        Thu, 19 Jan 2023 09:41:04 -0800 (PST)
 From:   Wedson Almeida Filho <wedsonaf@gmail.com>
 To:     rust-for-linux@vger.kernel.org
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
@@ -58,163 +59,59 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <wedsonaf@gmail.com>
-Subject: [PATCH 1/5] rust: types: introduce `ScopeGuard`
-Date:   Thu, 19 Jan 2023 14:40:32 -0300
-Message-Id: <20230119174036.64046-1-wedsonaf@gmail.com>
+Subject: [PATCH 3/5] rust: types: implement `ForeignOwnable` for `Box<T>`
+Date:   Thu, 19 Jan 2023 14:40:34 -0300
+Message-Id: <20230119174036.64046-3-wedsonaf@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230119174036.64046-1-wedsonaf@gmail.com>
+References: <20230119174036.64046-1-wedsonaf@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This allows us to run some code when the guard is dropped (e.g.,
-implicitly when it goes out of scope). We can also prevent the
-guard from running by calling its `dismiss()` method.
+This allows us to hand ownership of Rust dynamically allocated
+objects to the C side of the kernel.
 
 Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 ---
- rust/kernel/types.rs | 127 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 126 insertions(+), 1 deletion(-)
+ rust/kernel/types.rs | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index e84e51ec9716..f0ad4472292d 100644
+index 5475f6163002..e037c262f23e 100644
 --- a/rust/kernel/types.rs
 +++ b/rust/kernel/types.rs
-@@ -2,7 +2,132 @@
+@@ -63,6 +63,28 @@ pub trait ForeignOwnable {
+     unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self;
+ }
  
- //! Kernel types.
- 
--use core::{cell::UnsafeCell, mem::MaybeUninit};
-+use alloc::boxed::Box;
-+use core::{
-+    cell::UnsafeCell,
-+    mem::MaybeUninit,
-+    ops::{Deref, DerefMut},
-+};
++impl<T: 'static> ForeignOwnable for Box<T> {
++    type Borrowed<'a> = &'a T;
 +
-+/// Runs a cleanup function/closure when dropped.
-+///
-+/// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
-+///
-+/// # Examples
-+///
-+/// In the example below, we have multiple exit paths and we want to log regardless of which one is
-+/// taken:
-+/// ```
-+/// # use kernel::ScopeGuard;
-+/// fn example1(arg: bool) {
-+///     let _log = ScopeGuard::new(|| pr_info!("example1 completed\n"));
-+///
-+///     if arg {
-+///         return;
-+///     }
-+///
-+///     pr_info!("Do something...\n");
-+/// }
-+///
-+/// # example1(false);
-+/// # example1(true);
-+/// ```
-+///
-+/// In the example below, we want to log the same message on all early exits but a different one on
-+/// the main exit path:
-+/// ```
-+/// # use kernel::ScopeGuard;
-+/// fn example2(arg: bool) {
-+///     let log = ScopeGuard::new(|| pr_info!("example2 returned early\n"));
-+///
-+///     if arg {
-+///         return;
-+///     }
-+///
-+///     // (Other early returns...)
-+///
-+///     log.dismiss();
-+///     pr_info!("example2 no early return\n");
-+/// }
-+///
-+/// # example2(false);
-+/// # example2(true);
-+/// ```
-+///
-+/// In the example below, we need a mutable object (the vector) to be accessible within the log
-+/// function, so we wrap it in the [`ScopeGuard`]:
-+/// ```
-+/// # use kernel::ScopeGuard;
-+/// fn example3(arg: bool) -> Result {
-+///     let mut vec =
-+///         ScopeGuard::new_with_data(Vec::new(), |v| pr_info!("vec had {} elements\n", v.len()));
-+///
-+///     vec.try_push(10u8)?;
-+///     if arg {
-+///         return Ok(());
-+///     }
-+///     vec.try_push(20u8)?;
-+///     Ok(())
-+/// }
-+///
-+/// # assert_eq!(example3(false), Ok(()));
-+/// # assert_eq!(example3(true), Ok(()));
-+/// ```
-+///
-+/// # Invariants
-+///
-+/// The value stored in the struct is nearly always `Some(_)`, except between
-+/// [`ScopeGuard::dismiss`] and [`ScopeGuard::drop`]: in this case, it will be `None` as the value
-+/// will have been returned to the caller. Since  [`ScopeGuard::dismiss`] consumes the guard,
-+/// callers won't be able to use it anymore.
-+pub struct ScopeGuard<T, F: FnOnce(T)>(Option<(T, F)>);
-+
-+impl<T, F: FnOnce(T)> ScopeGuard<T, F> {
-+    /// Creates a new guarded object wrapping the given data and with the given cleanup function.
-+    pub fn new_with_data(data: T, cleanup_func: F) -> Self {
-+        // INVARIANT: The struct is being initialised with `Some(_)`.
-+        Self(Some((data, cleanup_func)))
++    fn into_foreign(self) -> *const core::ffi::c_void {
++        Box::into_raw(self) as _
 +    }
 +
-+    /// Prevents the cleanup function from running and returns the guarded data.
-+    pub fn dismiss(mut self) -> T {
-+        // INVARIANT: This is the exception case in the invariant; it is not visible to callers
-+        // because this function consumes `self`.
-+        self.0.take().unwrap().0
++    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> &'a T {
++        // SAFETY: The safety requirements for this function ensure that the object is still alive,
++        // so it is safe to dereference the raw pointer.
++        // The safety requirements of `from_foreign` also ensure that the object remains alive for
++        // the lifetime of the returned value.
++        unsafe { &*ptr.cast() }
++    }
++
++    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
++        // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
++        // call to `Self::into_foreign`.
++        unsafe { Box::from_raw(ptr as _) }
 +    }
 +}
 +
-+impl ScopeGuard<(), Box<dyn FnOnce(())>> {
-+    /// Creates a new guarded object with the given cleanup function.
-+    pub fn new(cleanup: impl FnOnce()) -> ScopeGuard<(), impl FnOnce(())> {
-+        ScopeGuard::new_with_data((), move |_| cleanup())
-+    }
-+}
-+
-+impl<T, F: FnOnce(T)> Deref for ScopeGuard<T, F> {
-+    type Target = T;
-+
-+    fn deref(&self) -> &T {
-+        // The type invariants guarantee that `unwrap` will succeed.
-+        &self.0.as_ref().unwrap().0
-+    }
-+}
-+
-+impl<T, F: FnOnce(T)> DerefMut for ScopeGuard<T, F> {
-+    fn deref_mut(&mut self) -> &mut T {
-+        // The type invariants guarantee that `unwrap` will succeed.
-+        &mut self.0.as_mut().unwrap().0
-+    }
-+}
-+
-+impl<T, F: FnOnce(T)> Drop for ScopeGuard<T, F> {
-+    fn drop(&mut self) {
-+        // Run the cleanup function if one is still present.
-+        if let Some((data, cleanup)) = self.0.take() {
-+            cleanup(data)
-+        }
-+    }
-+}
- 
- /// Stores an opaque value.
+ /// Runs a cleanup function/closure when dropped.
  ///
+ /// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
 -- 
 2.34.1
 
