@@ -2,201 +2,213 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D347AC27C7C
-	for <rust-for-linux@archiver.kernel.org>; Fri, 20 Jan 2023 16:46:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1335C05027
+	for <rust-for-linux@archiver.kernel.org>; Fri, 20 Jan 2023 20:00:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230418AbjATQqd (ORCPT
+        id S229491AbjATUAC (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 20 Jan 2023 11:46:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57720 "EHLO
+        Fri, 20 Jan 2023 15:00:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230444AbjATQqc (ORCPT
+        with ESMTP id S229477AbjATUAB (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 20 Jan 2023 11:46:32 -0500
-X-Greylist: delayed 2934 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 20 Jan 2023 08:46:29 PST
-Received: from mail.alicef.me (mail.alicef.me [219.94.233.166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68DE0C63A8;
-        Fri, 20 Jan 2023 08:46:25 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 80D2E20AB2;
-        Sat, 21 Jan 2023 00:21:49 +0900 (JST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alicef.me; s=dkim;
-        t=1674228117; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-         in-reply-to:references; bh=SBKdiE9KzQY7Zgu/1krTkGqIJujFYeJk7E5BbagF4Lg=;
-        b=bfHAmH48aDIy4Z27cbKaQCinBf8xieHA1SfcTlcovKQkwjqCNw6G6cXxSRx0AhsbGHHnOL
-        O5/UStjifiu2qCLFpYSdadY2lvUMdqqP3q3DjBBDDkLysYBzdrgTK/qUZrPCfo5ePWofwF
-        OPLurR1lFxITIasTXuIOrHghzDcenjkTaOkslELCTeGVPyWS99uomjSOd9WcTeyVppQC34
-        crFG/zPueciRdrapuDVNPi3CalLXR/ktYIuQNh1cV2zGXumnnLk8Rep3soCCR4wqJLbk4U
-        YxXPbGe98B6S5DRMmjNu9j72Qx9bZTOppYwENeiJZuF6YF4cRQP9+W+0Vxk4jw==
-Date:   Sat, 21 Jan 2023 00:21:42 +0900
-From:   Alice Ferrazzi <alicef@alicef.me>
-To:     Vinay Varma <varmavinaym@gmail.com>
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        Fri, 20 Jan 2023 15:00:01 -0500
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D85449011;
+        Fri, 20 Jan 2023 12:00:00 -0800 (PST)
+Received: by mail-qv1-xf35.google.com with SMTP id j9so4558741qvt.0;
+        Fri, 20 Jan 2023 12:00:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a6X2PZO3BXz50N4+OfonCuuRwxC2bd4Zsuq3HhVpT0A=;
+        b=NV9ik0ZnFWwxUVMVEHnCt9jJKCqKIgVvgoY7iwrzIjskVGmx9ZfKLm4JmBgjGYTDcn
+         eexiz0aDCIePrAObe19riFUTg6KyNt2umKsyUE7JiJZhAB8hjRNrep1fmEPgNfmGU1R/
+         /ySZ//3wQcaCFWvIa6Vc2zxKppqMN4a7B2qxqnhofIDEkfLduvZ3QKqap0j9WK3/EtQI
+         gj6Vr96oDTAkYjPwpgXY0NFCntyM1jJIPmqEn0gR4rU+8pIqs5riewfL7RtGm4QUsgEa
+         uPZiwLcrEraFVHL9xZMd+FwKM1xfnWQEmyKC+cVkSCIWuSjDT8rqYWl3y2HpB1169pf5
+         jZng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a6X2PZO3BXz50N4+OfonCuuRwxC2bd4Zsuq3HhVpT0A=;
+        b=kM8U3TA2RobXecrP/MS6uI358z3ApVB4fYwW/2npM514RY55RR81ocqAQw5TXulZHb
+         2gqESD7Xmt3iSYTLLA4Qe3cd7nwyWDzsMurKLtj2Grot/v3AFmO3B8FXnpVcDmJdRTaC
+         5o4f60BIJnPvr2BhviG3NtF15eZ3bEQmRd+60X7181kUWR3LDtIOjiornpulTbCDOhwx
+         2cQ78FKEgfmU4AoxUxqmrmI3locLimmrumVFYBjBXow5vzdh4n0s1Eed2lHcHL4O4CyA
+         IsXWnm+KzBz6REkeMXyp+dXIrnv5YTr4TIGYhhNWSIKI6b0/Pc3EN3YE+lfUCWoV/ysG
+         YDTw==
+X-Gm-Message-State: AFqh2kq+nBW2wNdFpwUg2yTEx+MoONuBIVUt7j75+f4bXAwlk0mfylwl
+        UxHFDTbJPHsqhLaHlci7Nzg=
+X-Google-Smtp-Source: AMrXdXsU9J/nLi6df0tnyxZo3wJQ9fcZts+aoyRgmedaJ24/6eRHdv1HNRQTAdOAlGfi5QRgQiId4A==
+X-Received: by 2002:a05:6214:4381:b0:535:26a9:782 with SMTP id oh1-20020a056214438100b0053526a90782mr22660905qvb.37.1674244799365;
+        Fri, 20 Jan 2023 11:59:59 -0800 (PST)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id bn39-20020a05620a2ae700b00706bc44fda8sm5236836qkb.79.2023.01.20.11.59.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Jan 2023 11:59:58 -0800 (PST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 454DD27C005B;
+        Fri, 20 Jan 2023 14:59:57 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Fri, 20 Jan 2023 14:59:58 -0500
+X-ME-Sender: <xms:vfLKY3cKS1oAq-m7Ey3EblQAZd1xFFbYle5EnE1PJ4X0lRItmkbjyw>
+    <xme:vfLKY9N6BP2mUwH4muGvN_JuvIluMrCgPTh3lc5Lxqr4IEZkJDh6EA2ObkRMKF9Sp
+    oLCtyCgLXeqLwhe_Q>
+X-ME-Received: <xmr:vfLKYwg2Ju01ew1CJc8NwEnvVsNvxnp7NbywUvd6tPSAswQQlY9mAa6bO7k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudduvddgudefgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:vfLKY4-dE1L6z9y853Xew7cJ31maAX-thLNMFXLD2IbbojNRPq4snw>
+    <xmx:vfLKYztUABBiMV9BQhzSxU7W2GGTt9mfTV9rAZvsCzB3lcxofFktwA>
+    <xmx:vfLKY3F7G21Ev1iUX95RJvXrOEjMGfD6vZ_wtYVxAwfxv2a9LXhQGQ>
+    <xmx:vfLKY3j7e4xd-vzZCRRUtxhM9UWLqovBYkDmeGv_TwRMSQKD3Td23w>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 20 Jan 2023 14:59:56 -0500 (EST)
+Date:   Fri, 20 Jan 2023 11:59:29 -0800
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] scripts: `make rust-analyzer` for out-of-tree modules
-Message-ID: <20230120152142.fywetc6a46sykkbs@alicef-pc>
-References: <20230118160220.776302-1-varmavinaym@gmail.com>
+        Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/5] rust: types: introduce `ForeignOwnable`
+Message-ID: <Y8ryoTYIKpYtuqow@boqun-archlinux>
+References: <20230119174036.64046-1-wedsonaf@gmail.com>
+ <20230119174036.64046-2-wedsonaf@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230118160220.776302-1-varmavinaym@gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <20230119174036.64046-2-wedsonaf@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Jan 19, 2023 at 12:02:20AM +0800, Vinay Varma wrote:
-> Adds support for out-of-tree rust modules to use the `rust-analyzer`
-> make target to generate the rust-project.json file.
+On Thu, Jan 19, 2023 at 02:40:33PM -0300, Wedson Almeida Filho wrote:
+> It was originally called `PointerWrapper`. It is used to convert
+> a Rust object to a pointer representation (void *) that can be
+> stored on the C side, used, and eventually returned to Rust.
 > 
-> The change involves adding an optional parameter `external_src` to the
-> `generate_rust_analyzer.py` which expects the path to the out-of-tree
-> module's source directory. When this parameter is passed, I have chosen
-> not to add the non-core modules (samples and drivers) into the result
-> since these are not expected to be used in third party modules. Related
-> changes are also made to the Makefile and rust/Makefile allowing the
-> `rust-analyzer` target to be used for out-of-tree modules as well.
-> 
-> Signed-off-by: Vinay Varma <varmavinaym@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 > ---
->  Makefile                          | 12 +++++++-----
->  rust/Makefile                     |  6 ++++--
->  scripts/generate_rust_analyzer.py | 14 +++++++++-----
->  3 files changed, 20 insertions(+), 12 deletions(-)
+>  rust/kernel/lib.rs   |  1 +
+>  rust/kernel/types.rs | 54 ++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 55 insertions(+)
 > 
-> diff --git a/Makefile b/Makefile
-> index f41ec8c8426b..a055a316d2a4 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1831,11 +1831,6 @@ rustfmt:
->  rustfmtcheck: rustfmt_flags = --check
->  rustfmtcheck: rustfmt
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index e0b0e953907d..223564f9f0cc 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -16,6 +16,7 @@
+>  #![feature(coerce_unsized)]
+>  #![feature(core_ffi_c)]
+>  #![feature(dispatch_from_dyn)]
+> +#![feature(generic_associated_types)]
+>  #![feature(receiver_trait)]
+>  #![feature(unsize)]
 >  
-> -# IDE support targets
-> -PHONY += rust-analyzer
-> -rust-analyzer:
-> -	$(Q)$(MAKE) $(build)=rust $@
-> -
->  # Misc
->  # ---------------------------------------------------------------------------
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index f0ad4472292d..5475f6163002 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -9,6 +9,60 @@ use core::{
+>      ops::{Deref, DerefMut},
+>  };
 >  
-> @@ -1888,6 +1883,7 @@ help:
->  	@echo  '  modules         - default target, build the module(s)'
->  	@echo  '  modules_install - install the module'
->  	@echo  '  clean           - remove generated files in module directory only'
-> +	@echo  '  rust-analyzer	  - generate rust-project.json rust-analyzer support file'
->  	@echo  ''
->  
->  endif # KBUILD_EXTMOD
-> @@ -2022,6 +2018,12 @@ quiet_cmd_tags = GEN     $@
->  tags TAGS cscope gtags: FORCE
->  	$(call cmd,tags)
->  
-> +# IDE support targets
-> +PHONY += rust-analyzer
-> +rust-analyzer:
-> +	$(Q)$(MAKE) $(build)=rust $@
+> +/// Used to transfer ownership to and from foreign (non-Rust) languages.
+> +///
+> +/// Ownership is transferred from Rust to a foreign language by calling [`Self::into_foreign`] and
+> +/// later may be transferred back to Rust by calling [`Self::from_foreign`].
+> +///
+> +/// This trait is meant to be used in cases when Rust objects are stored in C objects and
+> +/// eventually "freed" back to Rust.
+> +pub trait ForeignOwnable {
+> +    /// Type of values borrowed between calls to [`ForeignOwnable::into_foreign`] and
+> +    /// [`ForeignOwnable::from_foreign`].
+> +    type Borrowed<'a>;
 > +
+> +    /// Converts a Rust-owned object to a foreign-owned one.
+> +    ///
+> +    /// The foreign representation is a pointer to void.
+> +    fn into_foreign(self) -> *const core::ffi::c_void;
 > +
->  # Script to generate missing namespace dependencies
->  # ---------------------------------------------------------------------------
->  
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 8f598a904f38..41c1435cd8d4 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -389,8 +389,10 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
->  	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@)
->  
->  rust-analyzer:
-> -	$(Q)$(srctree)/scripts/generate_rust_analyzer.py $(srctree) $(objtree) \
-> -		$(RUST_LIB_SRC) > $(objtree)/rust-project.json
-> +	$(Q)$(srctree)/scripts/generate_rust_analyzer.py \
-> +		$(abs_srctree) $(abs_objtree) \
-> +		$(RUST_LIB_SRC) $(KBUILD_EXTMOD) > \
-> +		$(if $(KBUILD_EXTMOD),$(extmod_prefix),$(objtree))/rust-project.json
->  
->  $(obj)/core.o: private skip_clippy = 1
->  $(obj)/core.o: private skip_flags = -Dunreachable_pub
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-> index ecc7ea9a4dcf..1546b80db554 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -8,8 +8,9 @@ import json
->  import logging
->  import pathlib
->  import sys
-> +import os
->  
-> -def generate_crates(srctree, objtree, sysroot_src):
-> +def generate_crates(srctree, objtree, sysroot_src, external_src):
->      # Generate the configuration list.
->      cfg = []
->      with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
-> @@ -65,7 +66,7 @@ def generate_crates(srctree, objtree, sysroot_src):
->          [],
->          is_proc_macro=True,
->      )
-> -    crates[-1]["proc_macro_dylib_path"] = "rust/libmacros.so"
-> +    crates[-1]["proc_macro_dylib_path"] = f"{objtree}/rust/libmacros.so"
->  
->      append_crate(
->          "build_error",
-> @@ -98,13 +99,15 @@ def generate_crates(srctree, objtree, sysroot_src):
->      # Then, the rest outside of `rust/`.
->      #
->      # We explicitly mention the top-level folders we want to cover.
-> -    for folder in ("samples", "drivers"):
-> +    extra_src_dirs = ["samples", "drivers"] if external_src is None else [external_src]
+> +    /// Borrows a foreign-owned object.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
+> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
+> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow_mut`]
+> +    /// for this object must have been dropped.
+> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> Self::Borrowed<'a>;
 > +
-> +    for folder in extra_src_dirs:
->          for path in (srctree / folder).rglob("*.rs"):
->              logging.info("Checking %s", path)
->              name = path.name.replace(".rs", "")
->  
->              # Skip those that are not crate roots.
-> -            if f"{name}.o" not in open(path.parent / "Makefile").read():
-> +            if os.path.exists(path.parent / "Makefile") and f"{name}.o" not in open(path.parent / "Makefile").read():
->                  continue
->  
->              logging.info("Adding %s", name)
-> @@ -123,6 +126,7 @@ def main():
->      parser.add_argument("srctree", type=pathlib.Path)
->      parser.add_argument("objtree", type=pathlib.Path)
->      parser.add_argument("sysroot_src", type=pathlib.Path)
-> +    parser.add_argument("exttree", type=pathlib.Path, nargs='?')
+> +    /// Mutably borrows a foreign-owned object.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
+> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
+> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
+> +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
+> +    unsafe fn borrow_mut<T: ForeignOwnable>(ptr: *const core::ffi::c_void) -> ScopeGuard<T, fn(T)> {
+> +        // SAFETY: The safety requirements ensure that `ptr` came from a previous call to
+> +        // `into_foreign`.
+> +        ScopeGuard::new_with_data(unsafe { T::from_foreign(ptr) }, |d| {
+> +            d.into_foreign();
+> +        })
 
-I would prefer to don't mix '' and "" unless necessary
+I kinda want to suggest borrow_mut() to be implemented as:
 
->      args = parser.parse_args()
->  
->      logging.basicConfig(
-> @@ -131,7 +135,7 @@ def main():
->      )
->  
->      rust_project = {
-> -        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src),
-> +        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree),
->          "sysroot_src": str(args.sysroot_src),
->      }
->  
+    pub trait ForeignOwnable {
+        ...
+        unsafe fn borrow_mut(ptr: *const core::ffi::c_void) -> ScopeGuard<Self, fn(Self)> {
+            // SAFETY: The safety requirements ensure that `ptr` came from a previous call to
+            // `into_foreign`.
+            ScopeGuard::new_with_data(unsafe { Self::from_foreign(ptr) }, |d| {
+                d.into_foreign();
+            })
+    }
+
+to avoid funny code as follow:
+
+	let a = Box::new(0).into_foreign();
+	// Using an irrelevant `impl ForeignOwnable` to `borrow_mut`
+	let borrowed_a: ScopeGuard<Box<i32>, ...> = unsafe { Arc::<u64>::borrow_mut(a) };
+
+but that requires `Self: Sized`. Is it too restrictive?
+
+Regards,
+Boqun
+
+> +    }
+> +
+> +    /// Converts a foreign-owned object back to a Rust-owned one.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
+> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
+> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
+> +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
+> +    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self;
+> +}
+> +
+>  /// Runs a cleanup function/closure when dropped.
+>  ///
+>  /// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
 > -- 
-> 2.39.0
-
-I could test it on my enviroment with rust-out-of-tree-module and rustc
-1.66
-it correctly generated a json file rust-project.json with correct path
-
-As following from github conversation:
-Reviewed-by: Alice Ferrazzi <alice.ferrazzi@miraclelinux.com>
-Tested-by: Alice Ferrazzi <alice.ferrazzi@miraclelinux.com>
-
-Thanks,
-Alicef
+> 2.34.1
+> 
