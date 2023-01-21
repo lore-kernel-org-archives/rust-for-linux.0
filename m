@@ -2,213 +2,243 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1335C05027
-	for <rust-for-linux@archiver.kernel.org>; Fri, 20 Jan 2023 20:00:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14588C05027
+	for <rust-for-linux@archiver.kernel.org>; Sat, 21 Jan 2023 00:45:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229491AbjATUAC (ORCPT
+        id S229648AbjAUApO (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 20 Jan 2023 15:00:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48082 "EHLO
+        Fri, 20 Jan 2023 19:45:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjATUAB (ORCPT
+        with ESMTP id S229493AbjAUApO (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 20 Jan 2023 15:00:01 -0500
-Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D85449011;
-        Fri, 20 Jan 2023 12:00:00 -0800 (PST)
-Received: by mail-qv1-xf35.google.com with SMTP id j9so4558741qvt.0;
-        Fri, 20 Jan 2023 12:00:00 -0800 (PST)
+        Fri, 20 Jan 2023 19:45:14 -0500
+Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 126E66C131;
+        Fri, 20 Jan 2023 16:45:13 -0800 (PST)
+Received: by mail-qt1-x836.google.com with SMTP id z9so5558490qtv.5;
+        Fri, 20 Jan 2023 16:45:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a6X2PZO3BXz50N4+OfonCuuRwxC2bd4Zsuq3HhVpT0A=;
-        b=NV9ik0ZnFWwxUVMVEHnCt9jJKCqKIgVvgoY7iwrzIjskVGmx9ZfKLm4JmBgjGYTDcn
-         eexiz0aDCIePrAObe19riFUTg6KyNt2umKsyUE7JiJZhAB8hjRNrep1fmEPgNfmGU1R/
-         /ySZ//3wQcaCFWvIa6Vc2zxKppqMN4a7B2qxqnhofIDEkfLduvZ3QKqap0j9WK3/EtQI
-         gj6Vr96oDTAkYjPwpgXY0NFCntyM1jJIPmqEn0gR4rU+8pIqs5riewfL7RtGm4QUsgEa
-         uPZiwLcrEraFVHL9xZMd+FwKM1xfnWQEmyKC+cVkSCIWuSjDT8rqYWl3y2HpB1169pf5
-         jZng==
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=EONii7uRlv+5lE1JkGxwkUV1QX6ggI0MPQy4AWM0VIM=;
+        b=lMZhYWrxUJ+LW/2AuGUyLXKMOmthoajG4rUQAwu1qMH66uiggZRN3aqBZaj6C0Ka0q
+         hC3NGiKqCNz+M7KeNDnpTzO6qRC8E1pD9N3CWGs0YPW5U2xOC8cMuyr6KLSSkJj+oQYY
+         DOrVfCgJR5dFV59wKi0JhCxbuyhFzmDaB92P0GDUrRLYr9cHq6tIQs6SyQGwIxjvvWiQ
+         qYZNt4dosWoaukjxJ+nP5spya+wcvp/EfFgUPo2xU4QySpD36NhUZVIR1TzLMJGyJ3SX
+         tbuc5Xr16xSBzUrpXBHBHmAadn5eQyo9vHUYsB1K2ob3HkJRPfDquyPFIoQXRMFbty/q
+         oJtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a6X2PZO3BXz50N4+OfonCuuRwxC2bd4Zsuq3HhVpT0A=;
-        b=kM8U3TA2RobXecrP/MS6uI358z3ApVB4fYwW/2npM514RY55RR81ocqAQw5TXulZHb
-         2gqESD7Xmt3iSYTLLA4Qe3cd7nwyWDzsMurKLtj2Grot/v3AFmO3B8FXnpVcDmJdRTaC
-         5o4f60BIJnPvr2BhviG3NtF15eZ3bEQmRd+60X7181kUWR3LDtIOjiornpulTbCDOhwx
-         2cQ78FKEgfmU4AoxUxqmrmI3locLimmrumVFYBjBXow5vzdh4n0s1Eed2lHcHL4O4CyA
-         IsXWnm+KzBz6REkeMXyp+dXIrnv5YTr4TIGYhhNWSIKI6b0/Pc3EN3YE+lfUCWoV/ysG
-         YDTw==
-X-Gm-Message-State: AFqh2kq+nBW2wNdFpwUg2yTEx+MoONuBIVUt7j75+f4bXAwlk0mfylwl
-        UxHFDTbJPHsqhLaHlci7Nzg=
-X-Google-Smtp-Source: AMrXdXsU9J/nLi6df0tnyxZo3wJQ9fcZts+aoyRgmedaJ24/6eRHdv1HNRQTAdOAlGfi5QRgQiId4A==
-X-Received: by 2002:a05:6214:4381:b0:535:26a9:782 with SMTP id oh1-20020a056214438100b0053526a90782mr22660905qvb.37.1674244799365;
-        Fri, 20 Jan 2023 11:59:59 -0800 (PST)
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EONii7uRlv+5lE1JkGxwkUV1QX6ggI0MPQy4AWM0VIM=;
+        b=anO7JWQ5O4WQUy6h8T/FpODRWnGPvroFIgkzqs9Yy9kD3+DzX+iERpFsYiMoW+Lsi9
+         HCIjkkKSyP/0I0ciLNxGAQ9fAcD+4O9w0tUcgayXXSgsd+R3z4gJHOAEa+Dlvfdu9n6V
+         12U3JEQnboAXHxOuXFmP+M7E1N6O9h635GGi40NMczpZmPssORz4qk9tokYc/no/iyAU
+         dOCgZ0PPFAV1I+o4jl6YZjsuG8COWdYQ1ldxOy8DrohIHKIqeRatUODStf9iokrdb1iN
+         uS7lSvrpjgHep+QSux5egY5Q0c1G0zo3XS3fHP1F/rSi8ky4R7k+9QIAnAg+7RjbIitm
+         XT/A==
+X-Gm-Message-State: AFqh2kqUyyxAOGGubTpCb2WlBXMV9SofIGDsegj0w3W+vIktJKAwDLig
+        5W4P4d71jrvjrpfLYlTruqU=
+X-Google-Smtp-Source: AMrXdXvTE+TWOytPv3Ukg7x0FRsdK/qAIJVCs2wEDEuGaMrTqg3HBUFaZLcyEQ7qQuhVGObacutc3w==
+X-Received: by 2002:ac8:5444:0:b0:3ab:af8e:64e6 with SMTP id d4-20020ac85444000000b003abaf8e64e6mr19360961qtq.67.1674261912183;
+        Fri, 20 Jan 2023 16:45:12 -0800 (PST)
 Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id bn39-20020a05620a2ae700b00706bc44fda8sm5236836qkb.79.2023.01.20.11.59.58
+        by smtp.gmail.com with ESMTPSA id b5-20020ac85405000000b003b6894f7002sm4232120qtq.9.2023.01.20.16.45.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jan 2023 11:59:58 -0800 (PST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 454DD27C005B;
-        Fri, 20 Jan 2023 14:59:57 -0500 (EST)
+        Fri, 20 Jan 2023 16:45:11 -0800 (PST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 2EA9C27C0054;
+        Fri, 20 Jan 2023 19:45:10 -0500 (EST)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Fri, 20 Jan 2023 14:59:58 -0500
-X-ME-Sender: <xms:vfLKY3cKS1oAq-m7Ey3EblQAZd1xFFbYle5EnE1PJ4X0lRItmkbjyw>
-    <xme:vfLKY9N6BP2mUwH4muGvN_JuvIluMrCgPTh3lc5Lxqr4IEZkJDh6EA2ObkRMKF9Sp
-    oLCtyCgLXeqLwhe_Q>
-X-ME-Received: <xmr:vfLKYwg2Ju01ew1CJc8NwEnvVsNvxnp7NbywUvd6tPSAswQQlY9mAa6bO7k>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudduvddgudefgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+  by compute1.internal (MEProxy); Fri, 20 Jan 2023 19:45:11 -0500
+X-ME-Sender: <xms:ljXLY4MIw4H1kxUM98F-RShHNFhsW_YJppSummrjbgTV8w8esc_wVQ>
+    <xme:ljXLY-9tajRc83yMSPi97sPNWHPqnCpeXlDM9YgplRIcNTNC7VoitQ7GyAcY2y7T1
+    YXVI38SPwxf0DMeaw>
+X-ME-Received: <xmr:ljXLY_TgyYGLoF-DXzxuQp67aGwAl93yts1_0AJ2KrtPwFg8wu-85c9f1mU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedruddufedgvdehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpeeuohhq
     uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
-    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:vfLKY4-dE1L6z9y853Xew7cJ31maAX-thLNMFXLD2IbbojNRPq4snw>
-    <xmx:vfLKYztUABBiMV9BQhzSxU7W2GGTt9mfTV9rAZvsCzB3lcxofFktwA>
-    <xmx:vfLKY3F7G21Ev1iUX95RJvXrOEjMGfD6vZ_wtYVxAwfxv2a9LXhQGQ>
-    <xmx:vfLKY3j7e4xd-vzZCRRUtxhM9UWLqovBYkDmeGv_TwRMSQKD3Td23w>
+    grthhtvghrnhepueegtdefieejveevvdelheefffdtffehveejtddvkefgkefhveekieet
+    leffveetnecuffhomhgrihhnpehpthhrrdgrshdpihhnnhgvrhdrrghsnecuvehluhhsth
+    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhm
+    thhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvd
+    dqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:ljXLYwts4-Avn8g28tCOa1piyoOV9vqcT2aFUMSWBo7HJPpa0qoXJQ>
+    <xmx:ljXLYwenTnQkBWIlvNfcyYxQs3Z7wQOlka1b4dYaaIyyQIB9C3RihA>
+    <xmx:ljXLY00E6LyD3fokHgfn_nSoIJYGX3mjdPW8nrL7PpDWIe8alpkaXg>
+    <xmx:ljXLY-tRl4ZsefkisuEPQPy9XiQi6vTfKfSn3H1QoNKDjp8G9naO_Q>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 20 Jan 2023 14:59:56 -0500 (EST)
-Date:   Fri, 20 Jan 2023 11:59:29 -0800
+ 20 Jan 2023 19:45:09 -0500 (EST)
+Date:   Fri, 20 Jan 2023 16:44:42 -0800
 From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+To:     Gary Guo <gary@garyguo.net>
+Cc:     Emilio Cobos =?iso-8859-1?Q?=C1lvarez?= <emilio@crisal.io>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
         =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/5] rust: types: introduce `ForeignOwnable`
-Message-ID: <Y8ryoTYIKpYtuqow@boqun-archlinux>
-References: <20230119174036.64046-1-wedsonaf@gmail.com>
- <20230119174036.64046-2-wedsonaf@gmail.com>
+Subject: Re: [PATCH 4/7] rust: sync: introduce `ArcBorrow`
+Message-ID: <Y8s1evi1wY1XlVgG@boqun-archlinux>
+References: <20221228060346.352362-1-wedsonaf@gmail.com>
+ <20221228060346.352362-4-wedsonaf@gmail.com>
+ <20221231194352.55cf0a26.gary@garyguo.net>
+ <CANeycqrVsbNJ+A+A26LXkBezBNUHvnZU2Q3_whexCwwG5ZcgPQ@mail.gmail.com>
+ <df2f6c0b-fb4c-97e5-b607-7df626ea5933@crisal.io>
+ <20230116220736.6d5c8ea3.gary@garyguo.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20230119174036.64046-2-wedsonaf@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230116220736.6d5c8ea3.gary@garyguo.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Jan 19, 2023 at 02:40:33PM -0300, Wedson Almeida Filho wrote:
-> It was originally called `PointerWrapper`. It is used to convert
-> a Rust object to a pointer representation (void *) that can be
-> stored on the C side, used, and eventually returned to Rust.
+Hi,
+
+On Mon, Jan 16, 2023 at 10:07:36PM +0000, Gary Guo wrote:
+> On Wed, 4 Jan 2023 17:06:50 +0100
+> Emilio Cobos Álvarez <emilio@crisal.io> wrote:
 > 
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> ---
->  rust/kernel/lib.rs   |  1 +
->  rust/kernel/types.rs | 54 ++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 55 insertions(+)
+> > Sorry for the drive-by comment, but maybe it saves some work.
+> > 
+> > On 1/4/23 16:29, Wedson Almeida Filho wrote:
+> > > On Sat, 31 Dec 2022 at 19:43, Gary Guo <gary@garyguo.net> wrote:  
+> > >>
+> > >> On Wed, 28 Dec 2022 06:03:43 +0000
+> > >> Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+> > >>> +pub struct ArcBorrow<'a, T: ?Sized + 'a> {
+> > >>> +    inner: NonNull<ArcInner<T>>,
+> > >>> +    _p: PhantomData<&'a ()>,
+> > >>> +}
+> > >>> +
+> > >>> +impl<T: ?Sized> Clone for ArcBorrow<'_, T> {
+> > >>> +    fn clone(&self) -> Self {
+> > >>> +        *self
+> > >>> +    }
+> > >>> +}
+> > >>> +
+> > >>> +impl<T: ?Sized> Copy for ArcBorrow<'_, T> {}  
+> > >>
+> > >> Couldn't this just be derived `Clone` and `Copy`?  
+> > > 
+> > > Indeed. I'll send a v2 with this.  
+> > 
+> > I'm not sure this is true. Deriving will add the T: Copy and T: Clone 
+> > bound, which I think is not what you want here.
+> > 
+> > i.e., I assume you want an ArcBorrow to be Copy even if the underlying T 
+> > is not.
 > 
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index e0b0e953907d..223564f9f0cc 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -16,6 +16,7 @@
->  #![feature(coerce_unsized)]
->  #![feature(core_ffi_c)]
->  #![feature(dispatch_from_dyn)]
-> +#![feature(generic_associated_types)]
->  #![feature(receiver_trait)]
->  #![feature(unsize)]
->  
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index f0ad4472292d..5475f6163002 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -9,6 +9,60 @@ use core::{
->      ops::{Deref, DerefMut},
->  };
->  
-> +/// Used to transfer ownership to and from foreign (non-Rust) languages.
-> +///
-> +/// Ownership is transferred from Rust to a foreign language by calling [`Self::into_foreign`] and
-> +/// later may be transferred back to Rust by calling [`Self::from_foreign`].
-> +///
-> +/// This trait is meant to be used in cases when Rust objects are stored in C objects and
-> +/// eventually "freed" back to Rust.
-> +pub trait ForeignOwnable {
-> +    /// Type of values borrowed between calls to [`ForeignOwnable::into_foreign`] and
-> +    /// [`ForeignOwnable::from_foreign`].
-> +    type Borrowed<'a>;
-> +
-> +    /// Converts a Rust-owned object to a foreign-owned one.
-> +    ///
-> +    /// The foreign representation is a pointer to void.
-> +    fn into_foreign(self) -> *const core::ffi::c_void;
-> +
-> +    /// Borrows a foreign-owned object.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
-> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow_mut`]
-> +    /// for this object must have been dropped.
-> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> Self::Borrowed<'a>;
-> +
-> +    /// Mutably borrows a foreign-owned object.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
-> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
-> +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
-> +    unsafe fn borrow_mut<T: ForeignOwnable>(ptr: *const core::ffi::c_void) -> ScopeGuard<T, fn(T)> {
-> +        // SAFETY: The safety requirements ensure that `ptr` came from a previous call to
-> +        // `into_foreign`.
-> +        ScopeGuard::new_with_data(unsafe { T::from_foreign(ptr) }, |d| {
-> +            d.into_foreign();
-> +        })
+> Thanks for pointing out, I neglected that.
+> 
 
-I kinda want to suggest borrow_mut() to be implemented as:
+Somehow I run into this code again, and after a few thoughts, I'm
+wondering: isn't ArcBorrow just &ArcInner<T>?
 
-    pub trait ForeignOwnable {
-        ...
-        unsafe fn borrow_mut(ptr: *const core::ffi::c_void) -> ScopeGuard<Self, fn(Self)> {
-            // SAFETY: The safety requirements ensure that `ptr` came from a previous call to
-            // `into_foreign`.
-            ScopeGuard::new_with_data(unsafe { Self::from_foreign(ptr) }, |d| {
-                d.into_foreign();
-            })
-    }
+I've tried the following diff, and it seems working. The better parts
+are 1) #[derive(Clone, Copy)] works and 2) I'm able to remove a few code
+including one "unsafe" in ArcBorrow::deref().
 
-to avoid funny code as follow:
-
-	let a = Box::new(0).into_foreign();
-	// Using an irrelevant `impl ForeignOwnable` to `borrow_mut`
-	let borrowed_a: ScopeGuard<Box<i32>, ...> = unsafe { Arc::<u64>::borrow_mut(a) };
-
-but that requires `Self: Sized`. Is it too restrictive?
+But sure, more close look is needed. Thoughts?
 
 Regards,
 Boqun
 
-> +    }
-> +
-> +    /// Converts a foreign-owned object back to a Rust-owned one.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
-> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
-> +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
-> +    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self;
-> +}
-> +
->  /// Runs a cleanup function/closure when dropped.
->  ///
->  /// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
-> -- 
-> 2.34.1
+> In this case:
 > 
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+
+--------------------------------->8
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index ff73f9240ca1..48f919878f44 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -185,7 +185,7 @@ impl<T: ?Sized> Arc<T> {
+         // SAFETY: The constraint that the lifetime of the shared reference must outlive that of
+         // the returned `ArcBorrow` ensures that the object remains alive and that no mutable
+         // reference can be created.
+-        unsafe { ArcBorrow::new(self.ptr) }
++        ArcBorrow(unsafe { self.ptr.as_ref() })
+     }
+ }
+ 
+@@ -298,52 +298,25 @@ impl<T: ?Sized> From<Pin<UniqueArc<T>>> for Arc<T> {
+ /// let obj = Arc::try_new(Example { a: 10, b: 20 })?;
+ /// obj.as_arc_borrow().use_reference();
+ /// ```
+-pub struct ArcBorrow<'a, T: ?Sized + 'a> {
+-    inner: NonNull<ArcInner<T>>,
+-    _p: PhantomData<&'a ()>,
+-}
++#[derive(Clone, Copy)]
++pub struct ArcBorrow<'a, T: ?Sized>(&'a ArcInner<T>);
+ 
+ // This is to allow [`ArcBorrow`] (and variants) to be used as the type of `self`.
+ impl<T: ?Sized> core::ops::Receiver for ArcBorrow<'_, T> {}
+ 
+ // This is to allow `ArcBorrow<U>` to be dispatched on when `ArcBorrow<T>` can be coerced into
+ // `ArcBorrow<U>`.
+-impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<ArcBorrow<'_, U>>
+-    for ArcBorrow<'_, T>
++impl<'a, T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<ArcBorrow<'a, U>>
++    for ArcBorrow<'a, T>
+ {
+ }
+ 
+-impl<T: ?Sized> Clone for ArcBorrow<'_, T> {
+-    fn clone(&self) -> Self {
+-        *self
+-    }
+-}
+-
+-impl<T: ?Sized> Copy for ArcBorrow<'_, T> {}
+-
+-impl<T: ?Sized> ArcBorrow<'_, T> {
+-    /// Creates a new [`ArcBorrow`] instance.
+-    ///
+-    /// # Safety
+-    ///
+-    /// Callers must ensure the following for the lifetime of the returned [`ArcBorrow`] instance:
+-    /// 1. That `inner` remains valid;
+-    /// 2. That no mutable references to `inner` are created.
+-    unsafe fn new(inner: NonNull<ArcInner<T>>) -> Self {
+-        // INVARIANT: The safety requirements guarantee the invariants.
+-        Self {
+-            inner,
+-            _p: PhantomData,
+-        }
+-    }
+-}
+-
+ impl<T: ?Sized> From<ArcBorrow<'_, T>> for Arc<T> {
+     fn from(b: ArcBorrow<'_, T>) -> Self {
+         // SAFETY: The existence of `b` guarantees that the refcount is non-zero. `ManuallyDrop`
+         // guarantees that `drop` isn't called, so it's ok that the temporary `Arc` doesn't own the
+         // increment.
+-        ManuallyDrop::new(unsafe { Arc::from_inner(b.inner) })
++        ManuallyDrop::new(unsafe { Arc::from_inner(b.0.into()) })
+             .deref()
+             .clone()
+     }
+@@ -353,9 +326,7 @@ impl<T: ?Sized> Deref for ArcBorrow<'_, T> {
+     type Target = T;
+ 
+     fn deref(&self) -> &Self::Target {
+-        // SAFETY: By the type invariant, the underlying object is still alive with no mutable
+-        // references to it, so it is safe to create a shared reference.
+-        unsafe { &self.inner.as_ref().data }
++        &self.0.data
+     }
+ }
+ 
