@@ -2,242 +2,230 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE56DC004D4
-	for <rust-for-linux@archiver.kernel.org>; Sat, 21 Jan 2023 16:40:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CED2C25B4E
+	for <rust-for-linux@archiver.kernel.org>; Sun, 22 Jan 2023 06:31:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229897AbjAUQk1 (ORCPT
+        id S229493AbjAVGb0 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 21 Jan 2023 11:40:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35868 "EHLO
+        Sun, 22 Jan 2023 01:31:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229637AbjAUQk0 (ORCPT
+        with ESMTP id S229480AbjAVGbZ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 21 Jan 2023 11:40:26 -0500
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 328C7274A3;
-        Sat, 21 Jan 2023 08:40:25 -0800 (PST)
-Date:   Sat, 21 Jan 2023 16:40:00 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1674319220; x=1674578420;
-        bh=UZ4zBLoMlkARBQygJ/NawONLaYtQNjobxOUov/XyRNo=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=L7jZ/k3oOvWdCCI2tygKTXiVJjiCAD5LHXFcy3q6yzFe2heqxMfg+oX0/JhaDGMoq
-         qYI7kj7JcKCEEFF0AYflG1g/3wEXFDC11KSDTXlytU8W9TvGGBFKWcK5Pukr1hF2z2
-         8ZfBTlYdmLuj7WDtPwWxpdsqqOv0YrnsTA9CqIhKg8dNniuUVlc3j/5+6ZtCPZJUDs
-         omVLtxa2B3r5FhMDzdRQF9ouXNXyCAb8Up5Cdr6cnsn0a3tp5XzfD3TuAKCSdnlgoW
-         Xm4cbOARfSoEXNRldLCD/rS8MVoX2tPMnpFVQIzgXhPEwi2PvMZtvGesvj3Y0eVBtN
-         4B1SA/JG0/BVw==
-To:     Vinay Varma <varmavinaym@gmail.com>
-From:   =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     alicef@alicef.me, Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] scripts: `make rust-analyzer` for out-of-tree modules
-Message-ID: <j3z2AysKmwKLAGCfVhAiuuLAc5rJN43zklg6FUghrTENwPjJTj_xl8qD4ASI9WEVWafK7S34yMwOTsrpBVzmP8A6SCFvMsEe8XRlqtWD-cc=@protonmail.com>
-In-Reply-To: <20230121052507.885734-1-varmavinaym@gmail.com>
-References: <CANiq72k4cOEOykgUhgqaXPC7xhX2EoC8c4sr1oFEhKMfEdi=wA@mail.gmail.com> <20230121052507.885734-1-varmavinaym@gmail.com>
-Feedback-ID: 27884398:user:proton
+        Sun, 22 Jan 2023 01:31:25 -0500
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25A2B1E5E3;
+        Sat, 21 Jan 2023 22:31:24 -0800 (PST)
+Received: by mail-oi1-x22c.google.com with SMTP id o66so7858112oia.6;
+        Sat, 21 Jan 2023 22:31:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=KBSy9hFuKMUpYaDx9yOTnZrIzQnaQnfxfZMOiVFBsms=;
+        b=V/B7ucgrcYDKYz3RfAr72+1S3BN5L8fJL512/Z8CteHhazoUZMI4Wbvo1wpzi94iR4
+         FxZVTRxrzYQh5ZcJc6EiYN4vtl8WVFBx89YfrZ8LI/+oSRh6BGFH4X2riAxHh+wmQLbr
+         bLZVjGg4tYaSGoHLccn+dG6OcKyHbJJ2QOZCC5ouZLderTzDzGqpWO9wFQasB3KcvOSm
+         azpjj8wcvLcLlNDPN7ihTSzxw7s/uSjg1F2pNCSW7Tu8u9eUcTzu1mnRXv3C2/4qJEUi
+         y3ZDSBGsrbRcQKST8p5i++HTVY6y60xJXzXlUxm5M/UUnhyhgTyIhyRHHDCBte3hDXmH
+         d8Qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KBSy9hFuKMUpYaDx9yOTnZrIzQnaQnfxfZMOiVFBsms=;
+        b=65ipLXrSJTXSRnCZagirbr/fInYaJBlcQXDYPCs1y36x6Bkp+m4a/GdETeVyfwZgre
+         MjUKEkCLtypAjYkAxCGAy/GmkD1eBNG4+gqudJmczG3bLyuwtZUbfv6/ex66cIiBbmHn
+         odu4Pa4xQ4Ar91REpT336mkECXJYWXRysCf46TENHhpce/dV9HhL8U0csoblf5gYwyNn
+         gD0Q+zaJs19m9TBgaC3Tv0Qdck7pYsOmXUP93BL+qrqUvSNay0H+0oZQUQEASlRaLNJv
+         EQdGTpQJ5TwtSZDOgrlbvoXCnfV3o5tsp2A7WWT6WyK4YM7sL0uqToaqXIkiZw5WkAUO
+         44kQ==
+X-Gm-Message-State: AFqh2kqpLpwoGtdwM081bwigzd6i8OOTTNo4Z+OH8AG8lP+bxbl6jzgv
+        ZzFopui8XZSrZ/+/AxGiUNHvT+scE4uGqWUcT30=
+X-Google-Smtp-Source: AMrXdXv4l2FkJN5p19054A3oXv1zcs9PicyECPzRymyx8T3kNlHNMoevDmWgT6Ptc+cMAJ9n6JpZ+Ry5UkMUIyl/kTs=
+X-Received: by 2002:a05:6808:4346:b0:369:e573:3e54 with SMTP id
+ dx6-20020a056808434600b00369e5733e54mr904178oib.215.1674369083421; Sat, 21
+ Jan 2023 22:31:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20230119174036.64046-1-wedsonaf@gmail.com> <Y8ozfNAYhuOPgL/7@Boquns-Mac-mini.local>
+In-Reply-To: <Y8ozfNAYhuOPgL/7@Boquns-Mac-mini.local>
+From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+Date:   Sun, 22 Jan 2023 03:31:12 -0300
+Message-ID: <CANeycqo3b2+3_156vy+vFUEU=ysxSqpubShQpEL3iOHrAA+ZsA@mail.gmail.com>
+Subject: Re: [PATCH 1/5] rust: types: introduce `ScopeGuard`
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-------- Original Message -------
-On Saturday, January 21st, 2023 at 06:25, Vinay Varma <varmavinaym@gmail.co=
-m> wrote:
+On Fri, 20 Jan 2023 at 03:24, Boqun Feng <boqun.feng@gmail.com> wrote:
+>
+> On Thu, Jan 19, 2023 at 02:40:32PM -0300, Wedson Almeida Filho wrote:
+> > This allows us to run some code when the guard is dropped (e.g.,
+> > implicitly when it goes out of scope). We can also prevent the
+> > guard from running by calling its `dismiss()` method.
+> >
+> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > ---
+> >  rust/kernel/types.rs | 127 ++++++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 126 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> > index e84e51ec9716..f0ad4472292d 100644
+> > --- a/rust/kernel/types.rs
+> > +++ b/rust/kernel/types.rs
+> > @@ -2,7 +2,132 @@
+> >
+> >  //! Kernel types.
+> >
+> > -use core::{cell::UnsafeCell, mem::MaybeUninit};
+> > +use alloc::boxed::Box;
+> > +use core::{
+> > +    cell::UnsafeCell,
+> > +    mem::MaybeUninit,
+> > +    ops::{Deref, DerefMut},
+> > +};
+> > +
+> > +/// Runs a cleanup function/closure when dropped.
+> > +///
+> > +/// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// In the example below, we have multiple exit paths and we want to log regardless of which one is
+> > +/// taken:
+> > +/// ```
+> > +/// # use kernel::ScopeGuard;
+> > +/// fn example1(arg: bool) {
+> > +///     let _log = ScopeGuard::new(|| pr_info!("example1 completed\n"));
+> > +///
+> > +///     if arg {
+> > +///         return;
+> > +///     }
+> > +///
+> > +///     pr_info!("Do something...\n");
+> > +/// }
+> > +///
+> > +/// # example1(false);
+> > +/// # example1(true);
+> > +/// ```
+> > +///
+> > +/// In the example below, we want to log the same message on all early exits but a different one on
+> > +/// the main exit path:
+> > +/// ```
+> > +/// # use kernel::ScopeGuard;
+> > +/// fn example2(arg: bool) {
+> > +///     let log = ScopeGuard::new(|| pr_info!("example2 returned early\n"));
+> > +///
+> > +///     if arg {
+> > +///         return;
+> > +///     }
+> > +///
+> > +///     // (Other early returns...)
+> > +///
+> > +///     log.dismiss();
+> > +///     pr_info!("example2 no early return\n");
+> > +/// }
+> > +///
+> > +/// # example2(false);
+> > +/// # example2(true);
+> > +/// ```
+> > +///
+> > +/// In the example below, we need a mutable object (the vector) to be accessible within the log
+> > +/// function, so we wrap it in the [`ScopeGuard`]:
+> > +/// ```
+> > +/// # use kernel::ScopeGuard;
+> > +/// fn example3(arg: bool) -> Result {
+> > +///     let mut vec =
+> > +///         ScopeGuard::new_with_data(Vec::new(), |v| pr_info!("vec had {} elements\n", v.len()));
+> > +///
+> > +///     vec.try_push(10u8)?;
+> > +///     if arg {
+> > +///         return Ok(());
+> > +///     }
+> > +///     vec.try_push(20u8)?;
+> > +///     Ok(())
+> > +/// }
+> > +///
+> > +/// # assert_eq!(example3(false), Ok(()));
+> > +/// # assert_eq!(example3(true), Ok(()));
+> > +/// ```
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The value stored in the struct is nearly always `Some(_)`, except between
+> > +/// [`ScopeGuard::dismiss`] and [`ScopeGuard::drop`]: in this case, it will be `None` as the value
+> > +/// will have been returned to the caller. Since  [`ScopeGuard::dismiss`] consumes the guard,
+> > +/// callers won't be able to use it anymore.
+> > +pub struct ScopeGuard<T, F: FnOnce(T)>(Option<(T, F)>);
+> > +
+> > +impl<T, F: FnOnce(T)> ScopeGuard<T, F> {
+> > +    /// Creates a new guarded object wrapping the given data and with the given cleanup function.
+> > +    pub fn new_with_data(data: T, cleanup_func: F) -> Self {
+> > +        // INVARIANT: The struct is being initialised with `Some(_)`.
+> > +        Self(Some((data, cleanup_func)))
+> > +    }
+> > +
+> > +    /// Prevents the cleanup function from running and returns the guarded data.
+> > +    pub fn dismiss(mut self) -> T {
+> > +        // INVARIANT: This is the exception case in the invariant; it is not visible to callers
+> > +        // because this function consumes `self`.
+> > +        self.0.take().unwrap().0
+> > +    }
+> > +}
+> > +
+> > +impl ScopeGuard<(), Box<dyn FnOnce(())>> {
+>
+> How about `fn(())` here as a placeholder? I.e
+>
+>         impl ScopeGuard<(), fn(())>
+>
 
+That's simpler, I like it. I'll change this for v2. Thanks!
 
-> Adds support for out-of-tree rust modules to use the `rust-analyzer`
-> make target to generate the rust-project.json file.
+> Regards,
+> Boqun
 >
-> The change involves adding an optional parameter `external_src` to the
-> `generate_rust_analyzer.py` which expects the path to the out-of-tree
-> module's source directory. When this parameter is passed, I have chosen
-> not to add the non-core modules (samples and drivers) into the result
-> since these are not expected to be used in third party modules. Related
-> changes are also made to the Makefile and rust/Makefile allowing the
-> `rust-analyzer` target to be used for out-of-tree modules as well.
->
-> Link: https://github.com/Rust-for-Linux/linux/pull/914
-> Link: https://github.com/Rust-for-Linux/rust-out-of-tree-module/pull/2
->
-> Signed-off-by: Vinay Varma varmavinaym@gmail.com
-
-"make -C ../rust-for-linux M=3D$(pwd) rust-analyzer" produces a rust-projec=
-t.json file in the source dir of the out of tree kernel module with a crate=
- definition for the kernel module. In addition rust-analyzer is able to res=
-olve definitions from the kernel crate as expected.
-
-Tested-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
-
->
-> ---
-> Makefile | 12 +++++++-----
-> rust/Makefile | 6 ++++--
-> scripts/generate_rust_analyzer.py | 31 ++++++++++++++++++-------------
-> 3 files changed, 29 insertions(+), 20 deletions(-)
->
-> diff --git a/Makefile b/Makefile
-> index f41ec8c8426b..a055a316d2a4 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1831,11 +1831,6 @@ rustfmt:
-> rustfmtcheck: rustfmt_flags =3D --check
-> rustfmtcheck: rustfmt
->
-> -# IDE support targets
-> -PHONY +=3D rust-analyzer
-> -rust-analyzer:
-> - $(Q)$(MAKE) $(build)=3Drust $@
-> -
-> # Misc
-> # -----------------------------------------------------------------------=
-----
->
-> @@ -1888,6 +1883,7 @@ help:
-> @echo ' modules - default target, build the module(s)'
-> @echo ' modules_install - install the module'
-> @echo ' clean - remove generated files in module directory only'
-> + @echo ' rust-analyzer - generate rust-project.json rust-analyzer suppor=
-t file'
-> @echo ''
->
-> endif # KBUILD_EXTMOD
-> @@ -2022,6 +2018,12 @@ quiet_cmd_tags =3D GEN $@
-> tags TAGS cscope gtags: FORCE
-> $(call cmd,tags)
->
-> +# IDE support targets
-> +PHONY +=3D rust-analyzer
-> +rust-analyzer:
-> + $(Q)$(MAKE) $(build)=3Drust $@
-> +
-> +
-> # Script to generate missing namespace dependencies
-> # -----------------------------------------------------------------------=
-----
->
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 8f598a904f38..41c1435cd8d4 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -389,8 +389,10 @@ quiet_cmd_rustc_library =3D $(if $(skip_clippy),RUST=
-C,$(RUSTC_OR_CLIPPY_QUIET)) L
-> $(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@)
->
-> rust-analyzer:
-> - $(Q)$(srctree)/scripts/generate_rust_analyzer.py $(srctree) $(objtree) =
-\
-> - $(RUST_LIB_SRC) > $(objtree)/rust-project.json
->
-> + $(Q)$(srctree)/scripts/generate_rust_analyzer.py \
-> + $(abs_srctree) $(abs_objtree) \
-> + $(RUST_LIB_SRC) $(KBUILD_EXTMOD) > \
->
-> + $(if $(KBUILD_EXTMOD),$(extmod_prefix),$(objtree))/rust-project.json
->
-> $(obj)/core.o: private skip_clippy =3D 1
-> $(obj)/core.o: private skip_flags =3D -Dunreachable_pub
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
-alyzer.py
-> index ecc7ea9a4dcf..1792f379ee4e 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -6,10 +6,11 @@
-> import argparse
-> import json
-> import logging
-> +import os
-> import pathlib
-> import sys
->
-> -def generate_crates(srctree, objtree, sysroot_src):
-> +def generate_crates(srctree, objtree, sysroot_src, external_src):
-> # Generate the configuration list.
-> cfg =3D []
-> with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
-> @@ -65,7 +66,7 @@ def generate_crates(srctree, objtree, sysroot_src):
-> [],
-> is_proc_macro=3DTrue,
-> )
-> - crates[-1]["proc_macro_dylib_path"] =3D "rust/libmacros.so"
-> + crates[-1]["proc_macro_dylib_path"] =3D f"{objtree}/rust/libmacros.so"
->
-> append_crate(
-> "build_error",
-> @@ -95,25 +96,28 @@ def generate_crates(srctree, objtree, sysroot_src):
-> "exclude_dirs": [],
-> }
->
-> + def is_root_crate(build_file, target):
-> + return os.path.exists(build_file) and target in open(build_file).read()
-> +
-> # Then, the rest outside of `rust/`.
-> #
-> # We explicitly mention the top-level folders we want to cover.
-> - for folder in ("samples", "drivers"):
-> + for folder in ("samples", "drivers") if external_src is None else [exte=
-rnal_src]:
-> for path in (srctree / folder).rglob("*.rs"):
-> logging.info("Checking %s", path)
-> name =3D path.name.replace(".rs", "")
->
-> # Skip those that are not crate roots.
-> - if f"{name}.o" not in open(path.parent / "Makefile").read():
-> - continue
-> + if is_root_crate(path.parent / "Makefile", f"{name}.o") or \
-> + is_root_crate(path.parent / "Kbuild", f"{name}.o"):
->
-> - logging.info("Adding %s", name)
-> - append_crate(
-> - name,
-> - path,
-> - ["core", "alloc", "kernel"],
-> - cfg=3Dcfg,
-> - )
-> + logging.info("Adding %s", name)
-> + append_crate(
-> + name,
-> + path,
-> + ["core", "alloc", "kernel"],
-> + cfg=3Dcfg,
-> + )
->
-> return crates
->
-> @@ -123,6 +127,7 @@ def main():
-> parser.add_argument("srctree", type=3Dpathlib.Path)
-> parser.add_argument("objtree", type=3Dpathlib.Path)
-> parser.add_argument("sysroot_src", type=3Dpathlib.Path)
-> + parser.add_argument("exttree", type=3Dpathlib.Path, nargs=3D'?')
-> args =3D parser.parse_args()
->
-> logging.basicConfig(
-> @@ -131,7 +136,7 @@ def main():
-> )
->
-> rust_project =3D {
-> - "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src)=
-,
-> + "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src,=
- args.exttree),
-> "sysroot_src": str(args.sysroot_src),
-> }
->
-> --
-> 2.39.0
-
-Cheers,
-Bj=C3=B6rn
-
-(resend as I forgot to do reply to all)
+> > +    /// Creates a new guarded object with the given cleanup function.
+> > +    pub fn new(cleanup: impl FnOnce()) -> ScopeGuard<(), impl FnOnce(())> {
+> > +        ScopeGuard::new_with_data((), move |_| cleanup())
+> > +    }
+> > +}
+> > +
+> > +impl<T, F: FnOnce(T)> Deref for ScopeGuard<T, F> {
+> > +    type Target = T;
+> > +
+> > +    fn deref(&self) -> &T {
+> > +        // The type invariants guarantee that `unwrap` will succeed.
+> > +        &self.0.as_ref().unwrap().0
+> > +    }
+> > +}
+> > +
+> > +impl<T, F: FnOnce(T)> DerefMut for ScopeGuard<T, F> {
+> > +    fn deref_mut(&mut self) -> &mut T {
+> > +        // The type invariants guarantee that `unwrap` will succeed.
+> > +        &mut self.0.as_mut().unwrap().0
+> > +    }
+> > +}
+> > +
+> > +impl<T, F: FnOnce(T)> Drop for ScopeGuard<T, F> {
+> > +    fn drop(&mut self) {
+> > +        // Run the cleanup function if one is still present.
+> > +        if let Some((data, cleanup)) = self.0.take() {
+> > +            cleanup(data)
+> > +        }
+> > +    }
+> > +}
+> >
+> >  /// Stores an opaque value.
+> >  ///
+> > --
+> > 2.34.1
+> >
