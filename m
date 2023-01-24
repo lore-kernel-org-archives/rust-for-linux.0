@@ -2,121 +2,113 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B23FC25B4E
-	for <rust-for-linux@archiver.kernel.org>; Tue, 24 Jan 2023 11:05:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C73DC25B4E
+	for <rust-for-linux@archiver.kernel.org>; Tue, 24 Jan 2023 19:36:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233674AbjAXLF4 (ORCPT
+        id S234841AbjAXTgp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 24 Jan 2023 06:05:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37368 "EHLO
+        Tue, 24 Jan 2023 14:36:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233831AbjAXLFl (ORCPT
+        with ESMTP id S234845AbjAXTgD (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 24 Jan 2023 06:05:41 -0500
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F40FD3C21;
-        Tue, 24 Jan 2023 03:05:31 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 268D05C092A;
-        Tue, 24 Jan 2023 06:05:31 -0500 (EST)
-Received: from imap50 ([10.202.2.100])
-  by compute6.internal (MEProxy); Tue, 24 Jan 2023 06:05:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=readahead.eu; h=
-        cc:cc:content-type:date:date:from:from:in-reply-to:message-id
-        :mime-version:reply-to:sender:subject:subject:to:to; s=fm3; t=
-        1674558331; x=1674644731; bh=tEYZlf43dWAmtICS4wUuBE8sXSOA8yFH1Yj
-        m+gpaNlY=; b=txsl7iatIcaamMHLXf8zCa7fxGJWLBs3beJ3qWIPLnrmhAR8mkd
-        TGncrksVfnrw2IH2M/tyfIJCgC+nJ2Pm1iy1A7gaWiuANkGwaRJGigsX3QCBJzrH
-        yncwMBb1uwnu3RelAwAk7o1OiRQwSKH/b6AsSG4yhPesLEHrRnjXhqMF7gNY86op
-        N6yc5JlcERAXkKveXq53ET0NlokxxY1gT9JNjUPO0lIFHv1Cg7SlYLIWuV/CB7t8
-        +ZM45RFqA5vKnoSaS54REFYYok94sAUyknyn/YMmVpxde5F7u4Fipc1Zi3ycIffi
-        8L9FNnObaQIRZQkhqdnvDxmtPeN25ret+fQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:message-id:mime-version
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1674558331; x=
-        1674644731; bh=tEYZlf43dWAmtICS4wUuBE8sXSOA8yFH1Yjm+gpaNlY=; b=I
-        IRMCaC8HW9R8RhfwAjJzkzQR9L9J+v6Z5833TBT9/nk+2IOv0HkaL3Q+ql4QpciA
-        casH/tqUAhLB6b30QuZQPKIt6BTZdrMibpe/ORcLFWVDzVhXkqIRpt7uWNI5Nb+x
-        cDhl8Bt9qxMIr379A0pHnPisMvXawP4qouNJjTgfrn4FCVzeaXUsal+IOx8TQmUu
-        OZDtoHQvYfINJ0evvvztAviS6UCEE+hcOeNl9cd0dUpCX8gXpEjl66Uvssgc/310
-        sX8GzGGbP2ytFh10P4KFzkvbcazKNFt7iF0EzJpywSGFYqSS8wfN8efiVqFwS+HK
-        DeJ/rp6N4q22vmjwbObqg==
-X-ME-Sender: <xms:ervPY9PqKQxmW8F_Hw3upBubqdBeT7sloadYjPmus650w5xpiYKblA>
-    <xme:ervPY_-pTJMPlmQfbKMimrxA9M2sG8AzB9jnCyoB9mHrYATqiQhUo4tg8dqIXONVQ
-    U31iLcSV3ntgAy5Ylk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedruddvtddgvddtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkfffhvfevufgtsehttdertderredtnecuhfhrohhmpedfffgrvhhi
-    ugcutfhhvghinhhssggvrhhgfdcuoegurghvihgusehrvggruggrhhgvrggurdgvuheqne
-    cuggftrfgrthhtvghrnhepveeiffetveejgfdtteevleetleejtddvvdeftdffkeejveef
-    veeguedtkefgjeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomhepuggrvhhiugesrhgvrggurghhvggrugdrvghu
-X-ME-Proxy: <xmx:ervPY8TT02hhkl4kBCUKqOeUqXT8jvKw5oHsWzVLmLBdrJnJgaCEOw>
-    <xmx:ervPY5uuBmiSPv7WRiVrRl2IArYAgG4ntwASmneewz3WYYmvNsAstA>
-    <xmx:ervPY1de3-hxqTtyw4tXQMsV7nuuGH1PEaYzm2IslwBANQDQFxZgwg>
-    <xmx:e7vPY-HMpGr6ZGh_JkcEWmhnFvNZs93AeYGQ9dk1gP7-ltkOvBBGlg>
-Feedback-ID: id2994666:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 3334A1700089; Tue, 24 Jan 2023 06:05:30 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-85-gd6d859e0cf-fm-20230116.001-gd6d859e0
-Mime-Version: 1.0
-Message-Id: <320c4dba-9919-404b-8a26-a8af16be1845@app.fastmail.com>
-Date:   Tue, 24 Jan 2023 12:04:59 +0100
-From:   "David Rheinsberg" <david@readahead.eu>
-To:     linux-kernel@vger.kernel.org
-Cc:     rust-for-linux@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        x86@kernel.org, "Dave Hansen" <dave.hansen@linux.intel.com>,
-        "Borislav Petkov" <bp@alien8.de>, "Ingo Molnar" <mingo@redhat.com>,
-        "Thomas Gleixner" <tglx@linutronix.de>
-Subject: [PATCH] x86/insn_decoder_test: allow longer symbol-names
-Content-Type: text/plain
+        Tue, 24 Jan 2023 14:36:03 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 354D74DBDC;
+        Tue, 24 Jan 2023 11:35:33 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9839F61341;
+        Tue, 24 Jan 2023 19:35:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF14CC433D2;
+        Tue, 24 Jan 2023 19:35:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674588932;
+        bh=FI8sdn87DZyWe6V23ObZn8cI1npB0wR7omjIIDwMD38=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Z2vqfhD3xRM1+DCVoa4RlqijS7h9YJzh7ZNUWR2nlUYqi3++CmPx05TYxykSB972q
+         THBRk7Wz99xQQ0QX2lTG2BCvAzu703o9PeLBQpWpB2S+MOdKyRU2nvXVg0E5P8oqmL
+         nVRKOsv6I2qKpGQvI9VhmqODN10rT367jpFgHScJOoT7JAgzoBdBABiFRp0K4bUHfG
+         HyVT9unXunApEwJKn64Ve69jzhDLLCS8Q4VZPMMfonL7D5PsyFvnalcXSAPzlHfKBv
+         18UX8yiVVGXRDxLwGTtiSdWosEeBvSW7+vqvDMkYKxLorvJ8vDB8oq/RznjQ6+pn9O
+         J72nwl7xAYB3Q==
+From:   Miguel Ojeda <ojeda@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.2
+Date:   Tue, 24 Jan 2023 20:33:34 +0100
+Message-Id: <20230124193334.161057-1-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Increase the allowed line-length of the insn-decoder-test to 4k to allow
-for symbol-names longer than 256 characters.
+Hi Linus,
 
-The insn-decoder-test takes objdump output as input, which may contain
-symbol-names as instruction arguments. With rust-code entering the
-kernel, those symbol-names will include mangled-symbols which might
-exceed the current line-length-limit of the tool.
+This is the first "fixes" PR for Rust.
 
-By bumping the line-length-limit of the tool to 4k, we get a reasonable
-buffer for all objdump outputs I have seen so far. Unfortunately, ELF
-symbol-names are not restricted in length, so technically this might
-still end up failing if we encounter longer names in the future.
+While it may be a bit early to have a "fixes" branch, I guessed it
+would not hurt to start practicing how to do things for the future when
+we may get actual users. And since the opportunity presented itself,
+I wanted to also use this PR to bring up a "policy" topic and ideally
+get kernel maintainers to think about it.
 
-My compile-failure looks like this:
+The PR contains a fix for a soundness issue, i.e. it closes a hole that
+would allow somebody to write safe Rust code that is able to trigger
+undefined behavior.
 
-    arch/x86/tools/insn_decoder_test: error: malformed line 1152000:
-    tBb_+0xf2>
+There are no actual cases of callers triggering this, so it is possible
+to argue this is not a fix, which is fair. In other words, virtually
+all C code suffers from these soundness holes, but obviously they are
+not considered bugs. It is precisely this extra "layer" of protection
+that Rust gives to source code that we think is valuable to the kernel.
 
-..which overflowed by 10 characters reading this line:
+On the other hand, others may argue they want soundness fixes to land,
+and possibly even backported to stable, because they may run patched
+kernels, out-of-tree modules, etc. and they may want to know if they
+have a problem, even if that breaks their build.
 
-    ffffffff81458193:   74 3d                   je     ffffffff814581d2 <_RNvXse_NtNtNtCshGpAVYOtgW1_4core4iter8adapters7flattenINtB5_13FlattenCompatINtNtB7_3map3MapNtNtNtBb_3str4iter5CharsNtB1v_17CharEscapeDefaultENtNtBb_4char13EscapeDefaultENtNtBb_3fmt5Debug3fmtBb_+0xf2>
+Personally, for what is worth, I would support treating them as fixes.
+But I do not want to create extra work for others until we have at
+least some real users. So perhaps it should not go to stable?
 
-Signed-off-by: David Rheinsberg <david@readahead.eu>
----
- arch/x86/tools/insn_decoder_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The commit has been in linux-next for a week in a new branch called
+rust-fixes. No conflicts expected. No changes to the C side.
 
-diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_decoder_test.c
-index 472540aeabc2..366e07546344 100644
---- a/arch/x86/tools/insn_decoder_test.c
-+++ b/arch/x86/tools/insn_decoder_test.c
-@@ -106,7 +106,7 @@ static void parse_args(int argc, char **argv)
- 	}
- }
- 
--#define BUFSIZE 256
-+#define BUFSIZE 4096
- 
- int main(int argc, char **argv)
- {
--- 
-2.39.1
+Please pull -- thanks!
+
+Cheers,
+Miguel
+
+The following changes since commit 5dc4c995db9eb45f6373a956eb1f69460e69e6d4:
+
+  Linux 6.2-rc4 (2023-01-15 09:22:43 -0600)
+
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux tags/rust-fixes-6.2
+
+for you to fetch changes up to 6618d69aa129a8fc613e64775d5019524c6f231b:
+
+  rust: print: avoid evaluating arguments in `pr_*` macros in `unsafe` blocks (2023-01-16 00:54:35 +0100)
+
+----------------------------------------------------------------
+Rust fixes for v6.2
+
+A soundness fix:
+
+ - Avoid evaluating arguments in 'pr_*' macros in 'unsafe' blocks.
+
+----------------------------------------------------------------
+Miguel Ojeda (1):
+      rust: print: avoid evaluating arguments in `pr_*` macros in `unsafe` blocks
+
+ rust/kernel/print.rs | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
