@@ -2,113 +2,74 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C73DC25B4E
-	for <rust-for-linux@archiver.kernel.org>; Tue, 24 Jan 2023 19:36:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DF6CC38142
+	for <rust-for-linux@archiver.kernel.org>; Wed, 25 Jan 2023 02:23:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234841AbjAXTgp (ORCPT
+        id S232748AbjAYCXG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 24 Jan 2023 14:36:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40992 "EHLO
+        Tue, 24 Jan 2023 21:23:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234845AbjAXTgD (ORCPT
+        with ESMTP id S232680AbjAYCXF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 24 Jan 2023 14:36:03 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 354D74DBDC;
-        Tue, 24 Jan 2023 11:35:33 -0800 (PST)
+        Tue, 24 Jan 2023 21:23:05 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42F0C460A1;
+        Tue, 24 Jan 2023 18:23:04 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9839F61341;
-        Tue, 24 Jan 2023 19:35:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF14CC433D2;
-        Tue, 24 Jan 2023 19:35:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 244DB61425;
+        Wed, 25 Jan 2023 02:23:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 83D95C433D2;
+        Wed, 25 Jan 2023 02:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674588932;
-        bh=FI8sdn87DZyWe6V23ObZn8cI1npB0wR7omjIIDwMD38=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Z2vqfhD3xRM1+DCVoa4RlqijS7h9YJzh7ZNUWR2nlUYqi3++CmPx05TYxykSB972q
-         THBRk7Wz99xQQ0QX2lTG2BCvAzu703o9PeLBQpWpB2S+MOdKyRU2nvXVg0E5P8oqmL
-         nVRKOsv6I2qKpGQvI9VhmqODN10rT367jpFgHScJOoT7JAgzoBdBABiFRp0K4bUHfG
-         HyVT9unXunApEwJKn64Ve69jzhDLLCS8Q4VZPMMfonL7D5PsyFvnalcXSAPzlHfKBv
-         18UX8yiVVGXRDxLwGTtiSdWosEeBvSW7+vqvDMkYKxLorvJ8vDB8oq/RznjQ6+pn9O
-         J72nwl7xAYB3Q==
-From:   Miguel Ojeda <ojeda@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        s=k20201202; t=1674613383;
+        bh=RmBWaMyaa0laTJX7aWLHIfTg4wj/shTg5ZFg8+FJ9RM=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=NXrcGXdS+881kce/xUMs2Fn3Mhlr43Vv7ffoeC4bp6zxpmqt6edjo5aAvuDa2x5Fe
+         +DhqPG7rDXK300AWLmy8PcnUcvAWT9wk4bc+BZvdIny2q92StWNedGRL+8AYnPIBlF
+         0AuBwa2Xr/zna94ioGuJp1weDAcJH6gaK2Qr+EiZGj47DKMeRhMyxHe3zETwXrE9Hq
+         8vjbIyZG15J15AVwuYtu/knjl7bONRzi5Y9CKxhh/o3+Vzwct/25EdHK1KOZccwwUY
+         3UOUARGglk8D9vA6Q5jiQINjgL0MK7nXq4G9tw3WL33ZZKF7KJVXbdwred/hItFIu0
+         IuLDVj0kgQbOA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 69E80E21EE1;
+        Wed, 25 Jan 2023 02:23:03 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust fixes for 6.2
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20230124193334.161057-1-ojeda@kernel.org>
+References: <20230124193334.161057-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20230124193334.161057-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux tags/rust-fixes-6.2
+X-PR-Tracked-Commit-Id: 6618d69aa129a8fc613e64775d5019524c6f231b
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 246dc53fb2461dbcd66d4d1d914246a581edad29
+Message-Id: <167461338342.26446.17308850166282928589.pr-tracker-bot@kernel.org>
+Date:   Wed, 25 Jan 2023 02:23:03 +0000
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 6.2
-Date:   Tue, 24 Jan 2023 20:33:34 +0100
-Message-Id: <20230124193334.161057-1-ojeda@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Tue, 24 Jan 2023 20:33:34 +0100:
 
-This is the first "fixes" PR for Rust.
+> https://github.com/Rust-for-Linux/linux tags/rust-fixes-6.2
 
-While it may be a bit early to have a "fixes" branch, I guessed it
-would not hurt to start practicing how to do things for the future when
-we may get actual users. And since the opportunity presented itself,
-I wanted to also use this PR to bring up a "policy" topic and ideally
-get kernel maintainers to think about it.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/246dc53fb2461dbcd66d4d1d914246a581edad29
 
-The PR contains a fix for a soundness issue, i.e. it closes a hole that
-would allow somebody to write safe Rust code that is able to trigger
-undefined behavior.
+Thank you!
 
-There are no actual cases of callers triggering this, so it is possible
-to argue this is not a fix, which is fair. In other words, virtually
-all C code suffers from these soundness holes, but obviously they are
-not considered bugs. It is precisely this extra "layer" of protection
-that Rust gives to source code that we think is valuable to the kernel.
-
-On the other hand, others may argue they want soundness fixes to land,
-and possibly even backported to stable, because they may run patched
-kernels, out-of-tree modules, etc. and they may want to know if they
-have a problem, even if that breaks their build.
-
-Personally, for what is worth, I would support treating them as fixes.
-But I do not want to create extra work for others until we have at
-least some real users. So perhaps it should not go to stable?
-
-The commit has been in linux-next for a week in a new branch called
-rust-fixes. No conflicts expected. No changes to the C side.
-
-Please pull -- thanks!
-
-Cheers,
-Miguel
-
-The following changes since commit 5dc4c995db9eb45f6373a956eb1f69460e69e6d4:
-
-  Linux 6.2-rc4 (2023-01-15 09:22:43 -0600)
-
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux tags/rust-fixes-6.2
-
-for you to fetch changes up to 6618d69aa129a8fc613e64775d5019524c6f231b:
-
-  rust: print: avoid evaluating arguments in `pr_*` macros in `unsafe` blocks (2023-01-16 00:54:35 +0100)
-
-----------------------------------------------------------------
-Rust fixes for v6.2
-
-A soundness fix:
-
- - Avoid evaluating arguments in 'pr_*' macros in 'unsafe' blocks.
-
-----------------------------------------------------------------
-Miguel Ojeda (1):
-      rust: print: avoid evaluating arguments in `pr_*` macros in `unsafe` blocks
-
- rust/kernel/print.rs | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
