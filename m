@@ -2,74 +2,120 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DF6CC38142
-	for <rust-for-linux@archiver.kernel.org>; Wed, 25 Jan 2023 02:23:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1A0FC54EED
+	for <rust-for-linux@archiver.kernel.org>; Wed, 25 Jan 2023 11:32:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232748AbjAYCXG (ORCPT
+        id S234565AbjAYLbe (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 24 Jan 2023 21:23:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51454 "EHLO
+        Wed, 25 Jan 2023 06:31:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232680AbjAYCXF (ORCPT
+        with ESMTP id S235349AbjAYLas (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 24 Jan 2023 21:23:05 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42F0C460A1;
-        Tue, 24 Jan 2023 18:23:04 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 244DB61425;
-        Wed, 25 Jan 2023 02:23:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 83D95C433D2;
-        Wed, 25 Jan 2023 02:23:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674613383;
-        bh=RmBWaMyaa0laTJX7aWLHIfTg4wj/shTg5ZFg8+FJ9RM=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=NXrcGXdS+881kce/xUMs2Fn3Mhlr43Vv7ffoeC4bp6zxpmqt6edjo5aAvuDa2x5Fe
-         +DhqPG7rDXK300AWLmy8PcnUcvAWT9wk4bc+BZvdIny2q92StWNedGRL+8AYnPIBlF
-         0AuBwa2Xr/zna94ioGuJp1weDAcJH6gaK2Qr+EiZGj47DKMeRhMyxHe3zETwXrE9Hq
-         8vjbIyZG15J15AVwuYtu/knjl7bONRzi5Y9CKxhh/o3+Vzwct/25EdHK1KOZccwwUY
-         3UOUARGglk8D9vA6Q5jiQINjgL0MK7nXq4G9tw3WL33ZZKF7KJVXbdwred/hItFIu0
-         IuLDVj0kgQbOA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 69E80E21EE1;
-        Wed, 25 Jan 2023 02:23:03 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust fixes for 6.2
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20230124193334.161057-1-ojeda@kernel.org>
-References: <20230124193334.161057-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20230124193334.161057-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux tags/rust-fixes-6.2
-X-PR-Tracked-Commit-Id: 6618d69aa129a8fc613e64775d5019524c6f231b
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 246dc53fb2461dbcd66d4d1d914246a581edad29
-Message-Id: <167461338342.26446.17308850166282928589.pr-tracker-bot@kernel.org>
-Date:   Wed, 25 Jan 2023 02:23:03 +0000
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+        Wed, 25 Jan 2023 06:30:48 -0500
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65C0124491;
+        Wed, 25 Jan 2023 03:30:47 -0800 (PST)
+Received: by mail-ej1-x629.google.com with SMTP id mg12so46790748ejc.5;
+        Wed, 25 Jan 2023 03:30:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4hiHRKTQOjlSRNS41pYDk4fNzVigtW+jgqLOn/vwxkM=;
+        b=RhOvSaJi22/l2KQ8AmdYmC4rtIHRXb58eI9lhypQdtf73cB6yxJ3U55b1GtrvteDpd
+         ghxp85Yxt5RDxG880roFCAQRLTlXies263yqzj7cz40sAvFJiQEAHKeqcYHYUm9VV0NQ
+         IBcEIAic2+oxzadrnlBphfq9qjpx5opaFYWFE3EyRVlUrsgl2DblwCP1fQCHJGaaeqi9
+         n5Ms0+1dI2es7CRH9dAs//Xk4ZFMucJr1T/5qeve6OuzNlVH/jKaw7+3gqd3aKbmPEU9
+         U/wGmyncIHYBRLhh/xF59DxG8tf4KhO+p6KPbIJqqFDjnHuxYfA0d2Z49ifnjgUnbC8c
+         hNLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4hiHRKTQOjlSRNS41pYDk4fNzVigtW+jgqLOn/vwxkM=;
+        b=0/3ZbXhaAoGvymFIgmWanjA4Nb4hxXRmdQKqEYCEul37yL5zjsEBpfzCHYcWMzEvVZ
+         OoUhopcaHoNc+bHDWdhvqPieTHJy++a9AqdXOpNqP4rvhX9V6TVxztkbz3RDUxgSrqfR
+         SkYTpLqdeSRQHq1O0e2lKWblhCsS1UqVBq6+5OuCh+Ywg71pjwacUO7nGb52n+EB/7gM
+         A65MSsPR4mmnz0YsDQRsyjj2BYB2LMmyMgjgcyNhTG00JBmqEALSu3rBOqGmIiX8HlEf
+         Io5e25WskOg4zKhEyK+ik3z5K/VeczjeMT/+zajjKI32UWjVpkWysY/TxPOmNdocOdtE
+         V05w==
+X-Gm-Message-State: AFqh2kpKIQIdFCZyLNO5qvAsk2+hrI8O5iG/k8SAl+U0ufYV9TAkB7J/
+        AJ/6wqDGRR+IQwY587LN+b0=
+X-Google-Smtp-Source: AMrXdXsmgzfharAGB09qQB4e6d7wlaN5kct1WqwUvO982R+qQvIeOC8QLjR5SYi4grKmqdayRiMAdw==
+X-Received: by 2002:a17:907:20e9:b0:7c0:dcc2:e7b1 with SMTP id rh9-20020a17090720e900b007c0dcc2e7b1mr33203713ejb.43.1674646245974;
+        Wed, 25 Jan 2023 03:30:45 -0800 (PST)
+Received: from gmail.com (1F2EF55F.nat.pool.telekom.hu. [31.46.245.95])
+        by smtp.gmail.com with ESMTPSA id f5-20020a170906c08500b00871390a3b74sm2277902ejz.177.2023.01.25.03.30.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Jan 2023 03:30:45 -0800 (PST)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date:   Wed, 25 Jan 2023 12:30:41 +0100
+From:   Ingo Molnar <mingo@kernel.org>
+To:     David Rheinsberg <david@readahead.eu>
+Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH] x86/insn_decoder_test: allow longer symbol-names
+Message-ID: <Y9ES4UKl/+DtvAVS@gmail.com>
+References: <320c4dba-9919-404b-8a26-a8af16be1845@app.fastmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <320c4dba-9919-404b-8a26-a8af16be1845@app.fastmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-The pull request you sent on Tue, 24 Jan 2023 20:33:34 +0100:
 
-> https://github.com/Rust-for-Linux/linux tags/rust-fixes-6.2
+* David Rheinsberg <david@readahead.eu> wrote:
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/246dc53fb2461dbcd66d4d1d914246a581edad29
+> Increase the allowed line-length of the insn-decoder-test to 4k to allow
+> for symbol-names longer than 256 characters.
+> 
+> The insn-decoder-test takes objdump output as input, which may contain
+> symbol-names as instruction arguments. With rust-code entering the
+> kernel, those symbol-names will include mangled-symbols which might
+> exceed the current line-length-limit of the tool.
+> 
+> By bumping the line-length-limit of the tool to 4k, we get a reasonable
+> buffer for all objdump outputs I have seen so far. Unfortunately, ELF
+> symbol-names are not restricted in length, so technically this might
+> still end up failing if we encounter longer names in the future.
+> 
+> My compile-failure looks like this:
+> 
+>     arch/x86/tools/insn_decoder_test: error: malformed line 1152000:
+>     tBb_+0xf2>
+> 
+> ..which overflowed by 10 characters reading this line:
+> 
+>     ffffffff81458193:   74 3d                   je     ffffffff814581d2 <_RNvXse_NtNtNtCshGpAVYOtgW1_4core4iter8adapters7flattenINtB5_13FlattenCompatINtNtB7_3map3MapNtNtNtBb_3str4iter5CharsNtB1v_17CharEscapeDefaultENtNtBb_4char13EscapeDefaultENtNtBb_3fmt5Debug3fmtBb_+0xf2>
+> 
+> Signed-off-by: David Rheinsberg <david@readahead.eu>
+> ---
+>  arch/x86/tools/insn_decoder_test.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_decoder_test.c
+> index 472540aeabc2..366e07546344 100644
+> --- a/arch/x86/tools/insn_decoder_test.c
+> +++ b/arch/x86/tools/insn_decoder_test.c
+> @@ -106,7 +106,7 @@ static void parse_args(int argc, char **argv)
+>  	}
+>  }
+>  
+> -#define BUFSIZE 256
+> +#define BUFSIZE 4096
 
-Thank you!
+That hard-coded constant is a bit lame and will cause trouble the minute 
+*that* size is exceeded - don't we have some more natural figure, such as 
+KSYM_SYMBOL_LEN?
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Thanks,
+
+	Ingo
