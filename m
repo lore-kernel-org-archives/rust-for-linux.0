@@ -2,120 +2,71 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1A0FC54EED
-	for <rust-for-linux@archiver.kernel.org>; Wed, 25 Jan 2023 11:32:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 860A8C27C76
+	for <rust-for-linux@archiver.kernel.org>; Wed, 25 Jan 2023 16:38:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234565AbjAYLbe (ORCPT
+        id S235248AbjAYQh6 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 25 Jan 2023 06:31:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50492 "EHLO
+        Wed, 25 Jan 2023 11:37:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235349AbjAYLas (ORCPT
+        with ESMTP id S234845AbjAYQh5 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 25 Jan 2023 06:30:48 -0500
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65C0124491;
-        Wed, 25 Jan 2023 03:30:47 -0800 (PST)
-Received: by mail-ej1-x629.google.com with SMTP id mg12so46790748ejc.5;
-        Wed, 25 Jan 2023 03:30:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4hiHRKTQOjlSRNS41pYDk4fNzVigtW+jgqLOn/vwxkM=;
-        b=RhOvSaJi22/l2KQ8AmdYmC4rtIHRXb58eI9lhypQdtf73cB6yxJ3U55b1GtrvteDpd
-         ghxp85Yxt5RDxG880roFCAQRLTlXies263yqzj7cz40sAvFJiQEAHKeqcYHYUm9VV0NQ
-         IBcEIAic2+oxzadrnlBphfq9qjpx5opaFYWFE3EyRVlUrsgl2DblwCP1fQCHJGaaeqi9
-         n5Ms0+1dI2es7CRH9dAs//Xk4ZFMucJr1T/5qeve6OuzNlVH/jKaw7+3gqd3aKbmPEU9
-         U/wGmyncIHYBRLhh/xF59DxG8tf4KhO+p6KPbIJqqFDjnHuxYfA0d2Z49ifnjgUnbC8c
-         hNLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4hiHRKTQOjlSRNS41pYDk4fNzVigtW+jgqLOn/vwxkM=;
-        b=0/3ZbXhaAoGvymFIgmWanjA4Nb4hxXRmdQKqEYCEul37yL5zjsEBpfzCHYcWMzEvVZ
-         OoUhopcaHoNc+bHDWdhvqPieTHJy++a9AqdXOpNqP4rvhX9V6TVxztkbz3RDUxgSrqfR
-         SkYTpLqdeSRQHq1O0e2lKWblhCsS1UqVBq6+5OuCh+Ywg71pjwacUO7nGb52n+EB/7gM
-         A65MSsPR4mmnz0YsDQRsyjj2BYB2LMmyMgjgcyNhTG00JBmqEALSu3rBOqGmIiX8HlEf
-         Io5e25WskOg4zKhEyK+ik3z5K/VeczjeMT/+zajjKI32UWjVpkWysY/TxPOmNdocOdtE
-         V05w==
-X-Gm-Message-State: AFqh2kpKIQIdFCZyLNO5qvAsk2+hrI8O5iG/k8SAl+U0ufYV9TAkB7J/
-        AJ/6wqDGRR+IQwY587LN+b0=
-X-Google-Smtp-Source: AMrXdXsmgzfharAGB09qQB4e6d7wlaN5kct1WqwUvO982R+qQvIeOC8QLjR5SYi4grKmqdayRiMAdw==
-X-Received: by 2002:a17:907:20e9:b0:7c0:dcc2:e7b1 with SMTP id rh9-20020a17090720e900b007c0dcc2e7b1mr33203713ejb.43.1674646245974;
-        Wed, 25 Jan 2023 03:30:45 -0800 (PST)
-Received: from gmail.com (1F2EF55F.nat.pool.telekom.hu. [31.46.245.95])
-        by smtp.gmail.com with ESMTPSA id f5-20020a170906c08500b00871390a3b74sm2277902ejz.177.2023.01.25.03.30.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jan 2023 03:30:45 -0800 (PST)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Wed, 25 Jan 2023 12:30:41 +0100
-From:   Ingo Molnar <mingo@kernel.org>
-To:     David Rheinsberg <david@readahead.eu>
-Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH] x86/insn_decoder_test: allow longer symbol-names
-Message-ID: <Y9ES4UKl/+DtvAVS@gmail.com>
-References: <320c4dba-9919-404b-8a26-a8af16be1845@app.fastmail.com>
+        Wed, 25 Jan 2023 11:37:57 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7EA3B1025B
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Jan 2023 08:37:56 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1CAE54B3;
+        Wed, 25 Jan 2023 08:38:38 -0800 (PST)
+Received: from capper-ampere.manchester.arm.com (capper-ampere.manchester.arm.com [10.32.100.23])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5EC7A3F5A1;
+        Wed, 25 Jan 2023 08:37:55 -0800 (PST)
+From:   Jamie Cunliffe <Jamie.Cunliffe@arm.com>
+To:     linux-arm-kernel@lists.infradead.org,
+        rust-for-linux@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, steve.capper@arm.com
+Subject: [PATCH 0/3] Rust enablement for AArch64
+Date:   Wed, 25 Jan 2023 16:37:36 +0000
+Message-Id: <20230125163739.3798252-1-Jamie.Cunliffe@arm.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <320c4dba-9919-404b-8a26-a8af16be1845@app.fastmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+The first patch is from Miguel's tree to enable Rust support for
+AArch64. This has been tested with the Rust samples, and the generated
+code has also been manually inspected.
 
-* David Rheinsberg <david@readahead.eu> wrote:
+The second patch enables the PAC ret and BTI options in the Rust build
+flags to match the options that are used when building C.
 
-> Increase the allowed line-length of the insn-decoder-test to 4k to allow
-> for symbol-names longer than 256 characters.
-> 
-> The insn-decoder-test takes objdump output as input, which may contain
-> symbol-names as instruction arguments. With rust-code entering the
-> kernel, those symbol-names will include mangled-symbols which might
-> exceed the current line-length-limit of the tool.
-> 
-> By bumping the line-length-limit of the tool to 4k, we get a reasonable
-> buffer for all objdump outputs I have seen so far. Unfortunately, ELF
-> symbol-names are not restricted in length, so technically this might
-> still end up failing if we encounter longer names in the future.
-> 
-> My compile-failure looks like this:
-> 
->     arch/x86/tools/insn_decoder_test: error: malformed line 1152000:
->     tBb_+0xf2>
-> 
-> ..which overflowed by 10 characters reading this line:
-> 
->     ffffffff81458193:   74 3d                   je     ffffffff814581d2 <_RNvXse_NtNtNtCshGpAVYOtgW1_4core4iter8adapters7flattenINtB5_13FlattenCompatINtNtB7_3map3MapNtNtNtBb_3str4iter5CharsNtB1v_17CharEscapeDefaultENtNtBb_4char13EscapeDefaultENtNtBb_3fmt5Debug3fmtBb_+0xf2>
-> 
-> Signed-off-by: David Rheinsberg <david@readahead.eu>
-> ---
->  arch/x86/tools/insn_decoder_test.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_decoder_test.c
-> index 472540aeabc2..366e07546344 100644
-> --- a/arch/x86/tools/insn_decoder_test.c
-> +++ b/arch/x86/tools/insn_decoder_test.c
-> @@ -106,7 +106,7 @@ static void parse_args(int argc, char **argv)
->  	}
->  }
->  
-> -#define BUFSIZE 256
-> +#define BUFSIZE 4096
+The third patch disables the neon and fp target features to avoid fp &
+simd registers. The use of fp-armv8 will cause a warning from rustc
+about an unknown feature that is specified. The target feature is
+still passed through to LLVM, this behaviour is documented as part of
+the warning. This will be fixed in a future version of the rustc
+toolchain. This pull request should address it,
+https://github.com/rust-lang/rust/pull/107294
 
-That hard-coded constant is a bit lame and will cause trouble the minute 
-*that* size is exceeded - don't we have some more natural figure, such as 
-KSYM_SYMBOL_LEN?
 
-Thanks,
+Jamie Cunliffe (2):
+  arm64: rust: Enable PAC support for Rust.
+  arm64: rust: Disable neon and fp target features.
 
-	Ingo
+Miguel Ojeda (1):
+  arm64: rust: Enable Rust support for AArch64
+
+ Documentation/rust/arch-support.rst |  1 +
+ arch/arm64/Kconfig                  |  1 +
+ arch/arm64/Makefile                 |  4 ++++
+ scripts/generate_rust_target.rs     | 13 ++++++++++++-
+ 4 files changed, 18 insertions(+), 1 deletion(-)
+
+-- 
+2.30.2
+
