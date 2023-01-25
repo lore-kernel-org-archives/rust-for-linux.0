@@ -2,104 +2,158 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A001AC27C76
-	for <rust-for-linux@archiver.kernel.org>; Wed, 25 Jan 2023 19:56:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E4FF3C54E94
+	for <rust-for-linux@archiver.kernel.org>; Wed, 25 Jan 2023 19:57:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235528AbjAYT4z (ORCPT
+        id S234999AbjAYT5U (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 25 Jan 2023 14:56:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56628 "EHLO
+        Wed, 25 Jan 2023 14:57:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234999AbjAYT4y (ORCPT
+        with ESMTP id S234493AbjAYT5T (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 25 Jan 2023 14:56:54 -0500
+        Wed, 25 Jan 2023 14:57:19 -0500
 Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF06F7D89
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Jan 2023 11:56:24 -0800 (PST)
-Received: by mail-ej1-x634.google.com with SMTP id vw16so50612178ejc.12
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Jan 2023 11:56:24 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 878595CE5A
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Jan 2023 11:56:58 -0800 (PST)
+Received: by mail-ej1-x634.google.com with SMTP id vw16so50619888ejc.12
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Jan 2023 11:56:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UOl9PjUfPHf2zE8mHzj4/btM+NtpuXAGnr0FmOz57aM=;
-        b=qtR7LXkirl6wKBCPEVNammusJ1qhrw6PE/SMr7n2DjetQbgFH4ZD5X/YB8tWUjJY6W
-         gSkY9UVlDNkoqLVXenvwxW+5FWvqXy6oJh9b4jY8vNf6rYNyr1pcSGMBPe3gz8ggq9mn
-         GLnkXwp189tN3i3gCCIxPMVo+8Mgll+wxuRLb6M9nABoRJADWKIFDnIWFt4Wh6OdMP7E
-         nZZVZAReNWb5shGFdWNqJ2N+vlaxvaWx8gsy/eiC2OYZdCeS1VKi6yUmFu6J1sBp0wJa
-         ZOZZSlFJj2YT5F7X3O1FeIGuAiq/ubu8XOXc+65M4RYNhgiy8ASu67QwSjQFsz+IVQPb
-         lx/g==
+        bh=R/n7FMw2izoFAF0zF8gcPKkWqw/ikmCn+hkqZ0Ews2g=;
+        b=cFg56iOHRqis/dwdI6BH8bz5bPYmpDKNdDzacZZ5PuB77sm7QXW0+JHkv3jzqbNwS2
+         iXKrExGT5QCEAtDpLaI76L8j13kOA+pkT8HHZo/DPqnDwZGjrUK8XBvC/puOw4osrBjt
+         UMvJuvVzXSngPybZm/MokPsp/usH3DatLQ6TiIQsUufSP0WC72RFzQwcF67CWLoKl7ZK
+         LXZMuCJWRNyJgyBYmLXm0R453RoE/zgDHq+SvCOuqMVFe4ofw8RaLAnBok0cn75HQEsw
+         PvaBr5FPQOsY37o7J121I7GvPtQ1Lze85XjYeYBH5BJPV+xC4SsgM4XBUJXkkjTiFdBF
+         FEoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=UOl9PjUfPHf2zE8mHzj4/btM+NtpuXAGnr0FmOz57aM=;
-        b=QsMZ5GXAZGCBDmQn9pMI5pJF//3TlshZo56h4clixMPOJJSD1mn7QvuG5ar7Hs3h94
-         4s5SW01E1dhYgCOnYI88vonzmaaOc1QIuTOIR0oTA/CkXMkF4EMeaMMAzUiLGVVnCZqb
-         0KpxSj5cZaMVf1Z53tLw8QIPWSiSu+XdgfnO9E2xAruWEFug5R5vHrX3H+Z5ZHfxh5Zn
-         05ESB3LHdBW0puYWYFuvDxc2HBCNcwo/0BUyZW7a8I3ibeyAm0BVRCcUkqHbcuGTtXVm
-         C2a+XSqyus7IgzcwKusOQeC5cNsmTcxW/wxcGE4le0IynGhtA0QCuz/DF0Q2zSnsCDzT
-         nqVw==
-X-Gm-Message-State: AFqh2krgPYSiXnR8t2+pa3SdH8KbG9OEHbpmQXxWHaD3/xboc+ZIj2sp
-        oUKAdW5PQk3wJRFKvWm0ZO2QNho82sy51KrY
-X-Google-Smtp-Source: AMrXdXuQTsi8pGKM8DrgwVFAaBNyjOfQn8TQSclyvogC3V7lDj0iyGtKFn8QSaFX4fpE7h1Go20EGQ==
-X-Received: by 2002:a17:906:d8a8:b0:84b:b481:6188 with SMTP id qc8-20020a170906d8a800b0084bb4816188mr31605315ejb.64.1674676544429;
-        Wed, 25 Jan 2023 11:55:44 -0800 (PST)
+        bh=R/n7FMw2izoFAF0zF8gcPKkWqw/ikmCn+hkqZ0Ews2g=;
+        b=t0y+fuJabMnY4RfHbQvLZqqbXSoZzEmPkO2EEtpLYB57CC1ZOxDl/A0sMUUZLm8/Si
+         aQ/0bYA38VDu6ePM81O8EITmj6Ptz97EGKy/0qsP800FWM1DMemhXgF0VDKcYhtbleeM
+         VaYoLyJUH4quiZuItLct1596MV8swoD/xVL70gpCt+dXqeZf85Ryi0uaYiEIMHavdE31
+         hJ5VnpDKmjljuU393SC/mqx1PlhLX/5Id3HojDNIn21iFiq+zgRZNDB+NYvrWRR6gls7
+         a/L4Np0aLTJl6FR9G1l59sERkovK6WPlLGtUygnOjlm32Ov11ly44oS6p9ldxnftloWN
+         FLzQ==
+X-Gm-Message-State: AFqh2kpseHkrHRCYT4C/YY1S9v4RyrWJFUGCSN5lw8fPMTnF+oeAqDUY
+        OnrhX2L8bm+lUoajlIfJWwNdDR9R7SsGIU/c
+X-Google-Smtp-Source: AMrXdXvq5RRP7rjWclvuNBkqegNVTBtmzcGUGgLTUU8M1j9FDHfr3xpd87/u8Wq3+ObGUAbZMAc+KQ==
+X-Received: by 2002:a17:907:a506:b0:873:901:4f23 with SMTP id vr6-20020a170907a50600b0087309014f23mr39013543ejc.24.1674676618170;
+        Wed, 25 Jan 2023 11:56:58 -0800 (PST)
 Received: from localhost ([2001:b07:5d37:537d:484e:dc99:ec59:4292])
-        by smtp.gmail.com with ESMTPSA id h12-20020a17090634cc00b008717a377125sm2769533ejb.85.2023.01.25.11.55.43
+        by smtp.gmail.com with ESMTPSA id ka11-20020a170907990b00b007aea1dc1840sm2759233ejc.111.2023.01.25.11.56.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Jan 2023 11:55:43 -0800 (PST)
+        Wed, 25 Jan 2023 11:56:57 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 25 Jan 2023 20:55:42 +0100
-Message-Id: <CQ1JAF0JNEKI.1LAPS4TXTVODQ@vincent>
-Cc:     "Miguel Ojeda" <ojeda@kernel.org>,
-        "Catalin Marinas" <catalin.marinas@arm.com>,
-        "Will Deacon" <will@kernel.org>, <steve.capper@arm.com>
-Subject: Re: [PATCH 3/3] arm64: rust: Disable neon and fp target features.
+Date:   Wed, 25 Jan 2023 20:56:56 +0100
+Message-Id: <CQ1JBCUR6UDV.QSH5349UBR1G@vincent>
+Subject: Re: [PATCH 1/3] arm64: rust: Enable Rust support for AArch64
 From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
 To:     "Jamie Cunliffe" <Jamie.Cunliffe@arm.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <rust-for-linux@vger.kernel.org>
+Cc:     "Miguel Ojeda" <ojeda@kernel.org>,
+        "Catalin Marinas" <catalin.marinas@arm.com>,
+        "Will Deacon" <will@kernel.org>, <steve.capper@arm.com>
 X-Mailer: aerc 0.8.2
 References: <20230125163739.3798252-1-Jamie.Cunliffe@arm.com>
- <20230125163739.3798252-4-Jamie.Cunliffe@arm.com>
-In-Reply-To: <20230125163739.3798252-4-Jamie.Cunliffe@arm.com>
+ <20230125163739.3798252-2-Jamie.Cunliffe@arm.com>
+In-Reply-To: <20230125163739.3798252-2-Jamie.Cunliffe@arm.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On Wed Jan 25, 2023 at 5:37 PM CET, Jamie Cunliffe wrote:
-> Disable the neon and fp target features to avoid fp & simd
-> registers. The use of fp-armv8 will cause a warning from rustc about
-> an unknown feature that is specified. The target feature is still
-> passed through to LLVM, this behaviour is documented as part of the
-> warning. This will be fixed in a future version of the rustc
-> toolchain.
+> From: Miguel Ojeda <ojeda@kernel.org>
 >
+> This commit provides the build flags for Rust for AArch64. The core Rust
+> support already in the kernel does the rest.
+>
+> The Rust samples have been tested with this commit.
+>
+> [jcunliffe: Arm specific parts taken from Miguel's upstream tree]
+>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Co-developed-by: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
 > Signed-off-by: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
 
 Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+
+P.S: wrong answer template in the prev mail :)
 > ---
->  arch/arm64/Makefile | 2 ++
->  1 file changed, 2 insertions(+)
+>  Documentation/rust/arch-support.rst |  1 +
+>  arch/arm64/Kconfig                  |  1 +
+>  scripts/generate_rust_target.rs     | 13 ++++++++++++-
+>  3 files changed, 14 insertions(+), 1 deletion(-)
 >
-> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-> index b53ab6aa2dfe..33ae20fc3f56 100644
-> --- a/arch/arm64/Makefile
-> +++ b/arch/arm64/Makefile
-> @@ -41,6 +41,8 @@ KBUILD_CFLAGS	+=3D -mgeneral-regs-only	\
->  KBUILD_CFLAGS	+=3D $(call cc-disable-warning, psabi)
->  KBUILD_AFLAGS	+=3D $(compat_vdso)
+> diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arc=
+h-support.rst
+> index 6982b63775da..3776059a385a 100644
+> --- a/Documentation/rust/arch-support.rst
+> +++ b/Documentation/rust/arch-support.rst
+> @@ -15,5 +15,6 @@ support corresponds to ``S`` values in the ``MAINTAINER=
+S`` file.
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+>  Architecture  Level of support  Constraints
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+> +``arm64``     Maintained        None.
+>  ``x86``       Maintained        ``x86_64`` only.
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 03934808b2ed..fc3800e82802 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -209,6 +209,7 @@ config ARM64
+>  	select HAVE_FUNCTION_ARG_ACCESS_API
+>  	select MMU_GATHER_RCU_TABLE_FREE
+>  	select HAVE_RSEQ
+> +	select HAVE_RUST
+>  	select HAVE_STACKPROTECTOR
+>  	select HAVE_SYSCALL_TRACEPOINTS
+>  	select HAVE_KPROBES
+> diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_targ=
+et.rs
+> index 3c6cbe2b278d..fe0e4ba54492 100644
+> --- a/scripts/generate_rust_target.rs
+> +++ b/scripts/generate_rust_target.rs
+> @@ -148,7 +148,18 @@ fn main() {
+>      let mut ts =3D TargetSpec::new();
 > =20
-> +KBUILD_RUSTFLAGS +=3D -C target-feature=3D"-neon,-fp-armv8"
-> +
->  KBUILD_CFLAGS	+=3D $(call cc-option,-mabi=3Dlp64)
->  KBUILD_AFLAGS	+=3D $(call cc-option,-mabi=3Dlp64)
-> =20
+>      // `llvm-target`s are taken from `scripts/Makefile.clang`.
+> -    if cfg.has("X86_64") {
+> +    if cfg.has("ARM64") {
+> +        ts.push("arch", "aarch64");
+> +        ts.push(
+> +            "data-layout",
+> +            "e-m:e-i8:8:32-i16:16:32-i64:64-i128:128-n32:64-S128",
+> +        );
+> +        ts.push("disable-redzone", true);
+> +        ts.push("features", "+strict-align,+neon,+fp-armv8");
+> +        ts.push("llvm-target", "aarch64-linux-gnu");
+> +        ts.push("max-atomic-width", 128);
+> +        ts.push("target-pointer-width", "64");
+> +    } else if cfg.has("X86_64") {
+>          ts.push("arch", "x86_64");
+>          ts.push(
+>              "data-layout",
 > --=20
 > 2.30.2
 
