@@ -2,80 +2,87 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 044C2C05027
-	for <rust-for-linux@archiver.kernel.org>; Thu, 26 Jan 2023 16:38:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1B55C05027
+	for <rust-for-linux@archiver.kernel.org>; Thu, 26 Jan 2023 17:56:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231302AbjAZQiH (ORCPT
+        id S229923AbjAZR4O (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 26 Jan 2023 11:38:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48442 "EHLO
+        Thu, 26 Jan 2023 12:56:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231873AbjAZQiC (ORCPT
+        with ESMTP id S229459AbjAZR4O (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 26 Jan 2023 11:38:02 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C9CB4483
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Jan 2023 08:38:01 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F22EAB81EB4
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Jan 2023 16:37:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECF3C4339C;
-        Thu, 26 Jan 2023 16:37:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674751078;
-        bh=YqJQPd6i+gA5E2jZwlvWvEvyUYqWpVbVfimCUEJBLMA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qOoCtEScxidUmhC1+tzaExoii3UN3nWJNV3aPzHGU/YaZyfIVd3o6XGFZi1InXRvX
-         ZK6L960rHyONjKWliHj0QfYlIKy4KlOZZrj0G84O1FOhf875jeI2kEMQ5TXxa937YD
-         DVtNrjQouRjYaX9XvuOssbWQ3ogaDeCIrrCrI8W0BWhDafLXT8xsomwfy48BqokVgR
-         hDpbAFDrxtwQmjZjtgJAtBjA/+MAgJCAgKrKf7DsF3vFO/Mq4QYJmb6e1tbSUQ7LZu
-         mJ0wAq4rY2alqAgJCcLIfn9ukYa89IHEhjtcnk6CBgzb7fMdrWwSCSpPVQloZ/roId
-         zBZgTheNaPMbQ==
-Date:   Thu, 26 Jan 2023 16:37:54 +0000
-From:   Will Deacon <will@kernel.org>
-To:     Jamie Cunliffe <Jamie.Cunliffe@arm.com>
-Cc:     linux-arm-kernel@lists.infradead.org,
+        Thu, 26 Jan 2023 12:56:14 -0500
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92871EC72
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Jan 2023 09:56:13 -0800 (PST)
+Received: by mail-qt1-x830.google.com with SMTP id jr19so1928342qtb.7
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Jan 2023 09:56:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=KJuwfpFYW+eXH7R21U6yFwqAqLt8Na8907/l2Ae61F8=;
+        b=GbPlPE/wwMzPsrGnYe1d9K235c8Ke6xZyycw/gbg6Ele4DOGxCJvtb9UnRS3surBXM
+         /2ydrEaCGscPHHj3NBeldzCvzKRpDXQbBBtzgQ6qEjUMg+MYBfiuKLnqT65O2jGZDXoz
+         J0xOMVeWUFTAQ3QLS4E9VK82YYNfCc5oX8uO5p1znocIPtTQNz8Jr+GZ0+ZRmR1DKPSd
+         M6NNTag3mIooi8Nuw9dEkl55IgYF/h8cJLkRP+Qp3MqcK9+tOO6KnP+RwtU89GhG4xzO
+         n/AFzYtYO2GtcJrffUOMdB7wEmsGOpeRfSea+OSidq9HExxdtyxiOihCcurjgTWGyrUm
+         Uw2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KJuwfpFYW+eXH7R21U6yFwqAqLt8Na8907/l2Ae61F8=;
+        b=hTtxT882yb1ItdVC1XsbXpvhn74mAvPFUeSdLWLvolCA/wz6hmV1/zsBn6O5ZXBZRe
+         o3y6m+3i9+6hc2ZQtAE3Mv/RqeTA6/DnhJWI88c+wRzVYB5P6srpeS/T27UYc5Szro/A
+         6chWOjDKpfNwEb7sEBd8hBS1a9IT8+Jg0GWLDnWfSbofA9h5EOtIk80EMDQhsvO6CfLo
+         LQV7onTtpBK2vFr9Rd0SNjsLv1ZLsxzDL4QmnkTP8EJu+i7qf2B5yZwSWavj2zH5zYXj
+         0vir6VMPhAKQpWV3aBG12tvaI1h/dv/DQ+CE2qIttnF1SsID0yaXzfXfEBtUVqZRTskK
+         TCcQ==
+X-Gm-Message-State: AFqh2koqpq0pHzWo7KYSLVClM5cQBnJBB/b40wIPlU1Cf8FuhZ5VoBau
+        6++QsEagDve1yaRZfwStTR6I5NWpq6VJC/5B8EI=
+X-Google-Smtp-Source: AMrXdXtg2D0gCSXDTeij2nS3+Be8kkpxLFJ9/SBuj2PCFvGn4stOFSEMoYnP08k9tkCs0ywk49OrZvRX8cpUMWiYUQQ=
+X-Received: by 2002:ac8:72ce:0:b0:3a9:7ff2:3b85 with SMTP id
+ o14-20020ac872ce000000b003a97ff23b85mr1497994qtp.102.1674755772690; Thu, 26
+ Jan 2023 09:56:12 -0800 (PST)
+MIME-Version: 1.0
+References: <20230125163739.3798252-1-Jamie.Cunliffe@arm.com>
+ <20230125163739.3798252-2-Jamie.Cunliffe@arm.com> <20230126163552.GD29438@willie-the-truck>
+In-Reply-To: <20230126163552.GD29438@willie-the-truck>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 26 Jan 2023 18:56:01 +0100
+Message-ID: <CANiq72mpzRjT1ZHCHcGrOJ_71eQPR_-WgP=5YfDWDBNR6JNP4w@mail.gmail.com>
+Subject: Re: [PATCH 1/3] arm64: rust: Enable Rust support for AArch64
+To:     Will Deacon <will@kernel.org>
+Cc:     Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
         rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Catalin Marinas <catalin.marinas@arm.com>, steve.capper@arm.com
-Subject: Re: [PATCH 3/3] arm64: rust: Disable neon and fp target features.
-Message-ID: <20230126163752.GE29438@willie-the-truck>
-References: <20230125163739.3798252-1-Jamie.Cunliffe@arm.com>
- <20230125163739.3798252-4-Jamie.Cunliffe@arm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230125163739.3798252-4-Jamie.Cunliffe@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Jan 25, 2023 at 04:37:39PM +0000, Jamie Cunliffe wrote:
-> Disable the neon and fp target features to avoid fp & simd
-> registers. The use of fp-armv8 will cause a warning from rustc about
-> an unknown feature that is specified. The target feature is still
-> passed through to LLVM, this behaviour is documented as part of the
-> warning. This will be fixed in a future version of the rustc
-> toolchain.
-> 
-> Signed-off-by: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
-> ---
->  arch/arm64/Makefile | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-> index b53ab6aa2dfe..33ae20fc3f56 100644
-> --- a/arch/arm64/Makefile
-> +++ b/arch/arm64/Makefile
-> @@ -41,6 +41,8 @@ KBUILD_CFLAGS	+= -mgeneral-regs-only	\
->  KBUILD_CFLAGS	+= $(call cc-disable-warning, psabi)
->  KBUILD_AFLAGS	+= $(compat_vdso)
->  
-> +KBUILD_RUSTFLAGS += -C target-feature="-neon,-fp-armv8"
+On Thu, Jan 26, 2023 at 5:35 PM Will Deacon <will@kernel.org> wrote:
+>
+> Why do we need to specify this stuff here? LLVM already knows about AArch64
+> and can compute the data-layout string in computeDataLayout(). Can we have
+> the tools figure this out for us instead, please?
 
-Why do we advertise these features as present in
-scripts/generate_rust_target.rs?
+I agree -- the reason we have this for the moment is to provide full
+control of the target spec, in particular for cases where `rustc` may
+not provide enough flags to customize exiting builtin target specs
+and/or may emit warnings for unknown target features etc.
 
-Will
+If it is already enough for arm64 to use e.g. the
+`aarch64-unknown-none` target spec plus flags on top, then we should
+go for that, because that is the end goal: these target spec files are
+unstable in the Rust compiler (and not intended to become stable).
+
+For context, upstream Rust so far has been willing to merge support
+for flags and target features that we needed, which is great.
+
+Cheers,
+Miguel
