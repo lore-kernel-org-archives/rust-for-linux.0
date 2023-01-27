@@ -2,47 +2,47 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D3836C54EAA
-	for <rust-for-linux@archiver.kernel.org>; Fri, 27 Jan 2023 14:05:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AED8C38142
+	for <rust-for-linux@archiver.kernel.org>; Fri, 27 Jan 2023 14:05:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232060AbjA0OF3 (ORCPT
+        id S233980AbjA0OFc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 27 Jan 2023 09:05:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47390 "EHLO
+        Fri, 27 Jan 2023 09:05:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234716AbjA0OEv (ORCPT
+        with ESMTP id S235137AbjA0OFT (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 27 Jan 2023 09:04:51 -0500
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2108.outbound.protection.outlook.com [40.107.8.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DB2F4EED;
-        Fri, 27 Jan 2023 06:04:03 -0800 (PST)
+        Fri, 27 Jan 2023 09:05:19 -0500
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2092.outbound.protection.outlook.com [40.107.8.92])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6491140ED;
+        Fri, 27 Jan 2023 06:04:33 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aPtFyMEjcRy2bT5Bvsqi7InIWfRuFBVcxyIcyw6HYIj4N3as+C8WtdNJVdTrUWOIHcsojOAxeZcpfk68HXUWAoBuljZpwGbQNJ5UdCI1ViAvBbF2BKwNZNhDWOzdepwCs5t1jxKiVjvAHx0lDbBGG36ypoahqPr1hda8Od6kmdPgz0j7VWfL0qaoFYLaBUWWqXtTgFcdS+d10c/HExOOcdjIkLgPFQ9CDv05F+ZzniiN31bst8rLlSdXlqxND/4SVPPvTCUgFwxqp5EF2oOl+tJJDWogPuj2G2aXk/VzrvTotnUmnVSb2dLeDvuyf16Xb8r3CgosFiUxcOhgdD3RKA==
+ b=ed1sW2pA+FdujaC13dng+/aGvDEe47PtQ2lEdOHraqd4Aqq7htOLZ8v77CmQy5CTrXZLRsg+SMnJ/kf4hmz02S1grB98bksTcJuS/2oy+n56WNHIyxqgQI49OsxqCS/N2a1wEPXL8J2szJXpL+4rVPhUR7Jae3m+n56kzxm1qKUnPwHLnknHAqgFrkvb4Xqhpd8WVcvJrKmsyz0b5aVKe2dtSPrEwL6tT3iCUAalpBYvWAhYKm91zR2boTqMcLXWpO6c7uUgflmfntXjGdgwCrlcukrpnRE1Gw85HRVpAc9RPKL0ElKMTQgGvji+BHAlrowXTh03j1DaWCSUDU+12A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/ENtR8ZaedJh3l4YcMOVn3AQHgW5ppkF6yrr7c7fF9M=;
- b=deAHW9Rtm9QrQ2SIILZcjnTD/Q+oy+/bEG11L9EH1lms8wjpcW9LmI9DqEXQemcCbFvVHe79kxNpri8iqzupl6BV+f++O9tgFh1XcSElOqpYAykDM/NKZ7jthGdmXk67b+gNwdqBM8sdISshQS789Vp1wNAr1vynZ3VYrH1Gzk0TWppmzy0ta/OvEprkBIQ575jzWpHyUbjU31g41q/g7FBSu4wjeBOYp5aod+Ji6s4Wz02FXwmWhZ1K0tV1tlLy/i1+6u5i6otaTTyzGjEub8oBf1p3eYxgwixYTM2bL89gbGH0eAOyf9Y8QtnxZzAQ9lLk0KBYe8FTAh/YYADPrA==
+ bh=7MTGvKyNY5dt6bK2QjGiEIzO5SFNzH8deTCu7XeE8Ek=;
+ b=eiSBCr48/TElRfKuFerF8+9Ig5iMWovJGv78w4/p6UzD5ZqbYiYcgapNSy5pjVqTKhgMtyoQSnvnw+eNil7ekeGIlUgu1YMVGd5DVh++DN/gOeuQGWdwyFk3yWoHEBfqaV2mzUa+5MIpZBWXe+PuR9VBsJ4V501cRFIdbOp96dtXkTGwL5mK3N0B3KuDDVr+gAgsATTo+/vFmPHACEZqXipI3s65GAqY0vbf2AnuTcFemWLQZR/dEYeGMBGM+2Y8eYaF7LLRPi/Ptp4+imsOKzthUF/0lzzLT+LoYc5IHQvkIIriWLuQnESgyym6p00CF3YkP5HXdM4WnSBtdPjW6A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/ENtR8ZaedJh3l4YcMOVn3AQHgW5ppkF6yrr7c7fF9M=;
- b=fxmuuHNe1Kh1fPhyp/JIDHhaJx1CE618Dn4sWn7pEJ17WOWASLQp83ja3jcMP4Xzm9HptOURfD8Iq0KvJMFCDqguuQUmuzBOJbRI5UHw5NHbgu1nwX9B+Y12ZINGsMPoKtd6jV6C0nof2CzJUSjbcwvVXSxruktEJJqDhOHWipQ=
+ bh=7MTGvKyNY5dt6bK2QjGiEIzO5SFNzH8deTCu7XeE8Ek=;
+ b=DHIbvoTYUmeqJKk5QDiiw4T96xI5ABAWELc+7wgGjivqKxh3//WB3AwjUnxF87pTF9tVObYNVCxUdPjc47PbocZDvHt+vzwhJLhnYlQoinJIHCjmpfuchCi3Hzn9NCADlQABN2u/hqLD8X85UjdATWCvdCIr7EPPc7jgZoTVVfg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
  by CWLP265MB6754.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1e8::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6043.22; Fri, 27 Jan
- 2023 14:03:21 +0000
+ 2023 14:04:18 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::b96e:93ad:4043:6145]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::b96e:93ad:4043:6145%9]) with mapi id 15.20.6043.023; Fri, 27 Jan 2023
- 14:03:21 +0000
-Date:   Fri, 27 Jan 2023 14:03:19 +0000
+ 14:04:18 +0000
+Date:   Fri, 27 Jan 2023 14:04:16 +0000
 From:   Gary Guo <gary@garyguo.net>
 To:     Wedson Almeida Filho <wedsonaf@gmail.com>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
@@ -50,114 +50,132 @@ Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/5] rust: types: implement `ForeignOwnable` for the
- unit type
-Message-ID: <20230127140319.22af6060.gary@garyguo.net>
-In-Reply-To: <20230119174036.64046-4-wedsonaf@gmail.com>
+Subject: Re: [PATCH 5/5] rust: types: implement `ForeignOwnable` for
+ `Arc<T>`
+Message-ID: <20230127140416.2542ce0a.gary@garyguo.net>
+In-Reply-To: <20230119174036.64046-5-wedsonaf@gmail.com>
 References: <20230119174036.64046-1-wedsonaf@gmail.com>
-        <20230119174036.64046-4-wedsonaf@gmail.com>
+        <20230119174036.64046-5-wedsonaf@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0555.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:33b::8) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P123CA0395.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18f::22) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB6754:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e947415-bcd5-4971-3a3d-08db006f3fd5
+X-MS-Office365-Filtering-Correlation-Id: e363702d-f751-42a7-d59b-08db006f6188
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7U/nLU1AJRFVwDJMH0hDmmpEGw1To6lVT/R7tlZb+xKkYDG26HG8LAtCM5OoQ7vXu+cfgeRwM6AYu54CQmEU826livAcDF/VKxcdkaDDTC4BjRona0vmScezGpc72g4OD+GG43A5t2hbHg2rnG9nE5Aq+codimRusjHF8kBlSMsCEUNVoEXUPvkF9ZO/NQF5E2bRwZCZp6J9MQyNx2ukeHXwomLxhcVH5JZ2rMBuCCX6CcjWuAkVoukPwTqQENQueTXoc7bIHUTDUlGYduFz54P8Fh7RdkOIy/uFYTn51ZWVszTaCekdAKkre8XRX3t2CZ7sLAvtIVUKW/HTHpRkdpI6MlytK+OsUc1FrPb5C6EVtdK+EYhTznEi0YKDdIOi61cGH4j97MJ+SpPYNcODsvMiXuC3RL1SHhhdc7FfbFah8NYhsGfr/Jjo+6p83zm6TFd8rbuP6FM7m5UgvGJxrnrxVdlLGxjlExNNX3g+qIl7HX2Enegl0Z4Xh8Gx52FjO/kB1MxFyf++e/tRwRQYc3iCT7xiJE4G4XE9w+E4G/UusfGqHbTFG53sL28022+mLXNaHRr7fOTHVwC/3lszvmgZ3qgxDh7XGX157jSKmP9GuP8GnNs3NC4KRRzGO1Aj97MwYWEC+TSSvKbNOz3MZGbwTxHczl7MttcLFIPzvxg8N53oBc/IXns0bK99yGpp
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(39830400003)(376002)(346002)(396003)(136003)(366004)(451199018)(1076003)(316002)(54906003)(38100700002)(41300700001)(8676002)(66476007)(36756003)(6916009)(8936002)(5660300002)(66946007)(66556008)(86362001)(4326008)(2906002)(6506007)(26005)(478600001)(6512007)(186003)(6486002)(83380400001)(2616005)(81973001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: ygZ31K1U0nLjIBJz9pC1vo9SAHznduoMzC4ikUokwO83C9Od2ABeUIyrcIaFaMOFvwuQ6d9jtEZM0HcmORn5dQa8p7oHlBX4eCw9MbcgRLViIIFz0JehKFJ/skEjT5I+Cl7W7F6shJbAz1mnrDNr9CRM8Ex3uu+KUzUwp4racYQgqKq6CyGy/26MSJeCj2WjomzkRUJNPLMmpTxdRumydm4Gg/ucSYGhEvdjbHVNuBVc+3klJWY+alJN32v/KRwEq5XVl/sHO9rJRX8EPwL8hdZQXIBhIL/p0+EGGBIA+hU7f6FRPS6R/oDO/VEdzNUtDzx2n+frBA7xEp8KtB+p53ta5GP/gpFGPxWeGL3uwtg8+jxDbTI3DYkiGwZBcv87/+mtNaepo93gq3Et6hcMTkY5QmWhrnMibkxRyu5qIZvm28Ah9/8VXLQ8DTXEud85dzjpXXZUszdAfTcC2OoYNAEdA14HgO50pDYLS4kEMWK5NftrsIW1LYoLzP8xgB6TTlWx+WiBVcfWcxq+ShrCSBx98AqbucJYISiVeLJBfxwOfYcWTfCwQHo8pb1pJGLsd4VNy685Rng7Agb42QJxRCiUiabyXFV5Ldb8UQr+j2leN2H8Yqcmj3d2/2WSK+umHfMnhgw5aO+MAfsTfduUO2w9muMJyq1OHCJQzYswvoRUxVN0e9EDlwkb7aueyVAiEH1VVBtHtPRQ55a+8Jv8rWg705lr4z5EGNk38/0Vm6U=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(39830400003)(376002)(346002)(396003)(136003)(366004)(451199018)(1076003)(316002)(54906003)(38100700002)(41300700001)(8676002)(66476007)(36756003)(6916009)(8936002)(5660300002)(66946007)(66556008)(86362001)(4326008)(2906002)(6506007)(26005)(478600001)(6512007)(186003)(966005)(6486002)(83380400001)(2616005)(81973001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TEM1jL9zMgx7WRFzCG30Jmy69oXKHgXHRcsDKj4DMty2Wo/KJD0s3edCTlMi?=
- =?us-ascii?Q?xXEGn/dPuYyYm/PP4gddp6bhdP0c6yuE+GJRCEJgmyzCz49GtD9pA7gcNSL+?=
- =?us-ascii?Q?3g8cGnyhGF0nPNnaRmXDBPsUx4E7PHu13P1NOGUU+iB3wQHCwkmIYgc1v/tk?=
- =?us-ascii?Q?IZ0wPqDmRXpZmKjDid45F6qSudIhmjRw528Hyarg6PnJWTK7/1m7ujn/r9S8?=
- =?us-ascii?Q?VSwz70LL0sMrOui3oiRDNlQYElttNrpgTdij72qcmwI7zFPhiqZkA9bi3+5M?=
- =?us-ascii?Q?Ti5pxeuXnM9TtCsm0h5f0ITZF+Q+QZ8BZ3XxcxPUMyIZzdE7fBUWt9uBhbm3?=
- =?us-ascii?Q?dUKzyP4CmvucjCooeudKOc6tbZZs2c+1r3utEaR0Xo8Vwu0BXfgdplCTd+mE?=
- =?us-ascii?Q?sI81vXCwLZbtnytXhS1g+VOUoe+nDDrAewQFQb0zJqc+XBMUtiu9KFO2Iktr?=
- =?us-ascii?Q?jQX/pl/b39qwJIAWZiBEtsT6j+q7oe5JRmS5hQwtf7bhpVnz1YcKQ8RA+P2q?=
- =?us-ascii?Q?o6Je9TSlioEeF+09uKixT7IBWN800FPdfooy3H09kxuGdkAhCWSItjxO7OVk?=
- =?us-ascii?Q?JO3awYuA4umWVJQTfCepchs8oOJ7e+Z/HNLVSX9nnEs7ubfP3P1/B5p06OZG?=
- =?us-ascii?Q?wF1pqcCqoLeMe7YPLWzwbMs+bPOOUzOvawhT4uA0iCcJH03CxSthX1spdWAx?=
- =?us-ascii?Q?bPNmX6Far5ZMKa2icA3f6jYuOOM75+HSroqF7/knflTerB2XHKJflKbeKTk+?=
- =?us-ascii?Q?jiOOtgRgSSfKLrmaNUjsAIs0J5Te8p5+vFtTXHKLVAEATRDYXTBzpIIyvyMn?=
- =?us-ascii?Q?UnWk1dKj+8yyCjySnCRY2U3p6sCzZxWkypQi8JCjslV6lVHZd0wDwWCZUI7w?=
- =?us-ascii?Q?hfB8pG6z8EuRNrL1ywFwjwUmQV8VeNLMII7CSKEVTcIiZ2dZXvBkOxsHV1hu?=
- =?us-ascii?Q?YV1ke/Y+7Ry8eqiXLGKPKIJAswuD9AM4pF+dDAvH0IJL1hHAU/odMFsbteAY?=
- =?us-ascii?Q?kAPO3RvYe0DDSF1J+6SNymcrKGPh4pwIhgGbv8trBIdfZSdRDBJgQC8LX2Z9?=
- =?us-ascii?Q?fPwPHTB5O+houZOTcNS/FOHgUiw23Z7a8fx/4D4oRs5t1OvcBYY0VmLMwN0r?=
- =?us-ascii?Q?bsCI1tacDkWXcNTUt7nPLlBwdL/iyz7COfJ69XpUUrudOfDqMXGFyNAuCrBi?=
- =?us-ascii?Q?l2lat7zkUmNi3Z4UuBSBDU1WG8scqywMnyIkaBmAI2abUpoMGc06CSaStucr?=
- =?us-ascii?Q?Lx6JmsAeSEvbQdHxvjV+5rrnVL25CObO0LrovauBYChA2GzyQ9MSvIT8A2M8?=
- =?us-ascii?Q?2JFiFCQrrJulqfo65sTxIdoW7Cy0L4HpNEKnd96LZ5keMbWIjuKfA2bWrvvA?=
- =?us-ascii?Q?NKnfJtHVO+GbV2U/rTOUArYdQfC7Y/6T7TOmIxIa9M/nPt0VIKIsSoRfz2Hq?=
- =?us-ascii?Q?FepKVsBTNzl3huWYb1f4FbDy6hokyu1HdzixS44cHmVuUUTbDaTxflawRzWS?=
- =?us-ascii?Q?egQ29ZoYhn1R2Sm+IizJhK4rk8PVHj3ExYKc9Gh1B0eE/W1APvzOomgKUked?=
- =?us-ascii?Q?6XaUcCy86e/1GB2ei8CXWqIFZMRQW8Fr6/urklix?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1S2aujHL6KjOq2ZWV91RuHg42TIlnElnhvzLAMf3xu0Q6fCJf5UgTff5DtQn?=
+ =?us-ascii?Q?z5DvZDp73O6ayMZ2GrJv1XyVYhqnq1cKUMk/CwYtZM2s43j8OIUoz4Gy6YXQ?=
+ =?us-ascii?Q?fwEIGEknYTPnBw9g7r/rTLko8o+3/iHWsTpAHM2h8m1vaUqx5+m83CKZJAzU?=
+ =?us-ascii?Q?PwIQ/SnvZd0anyvg7U2DV4NB9t2ukuLd+S9/owF4S5eQ/2uAVqDDI6eySYTM?=
+ =?us-ascii?Q?dNxC1Bafely6CG3nxDHlHWhfgUuukmtTR/SCcc6QcE0bXljuSXRxR1FakDDk?=
+ =?us-ascii?Q?hH2brCCgC1Ht7Xg0jkee8XVywKlgmpz/sbHeaKFliRcglcUgu2s3JT5C+ILU?=
+ =?us-ascii?Q?MfUXGIaQlk53/EJa3jjZLGLwKl63COSDsRT+GKm6YHBw6zz9vW9xpD6GSYBk?=
+ =?us-ascii?Q?8wAyEunnD30HUozOqb99YnB7z8xCDTzkjW+yOin2gwn6e0JJXwX232VpLRpz?=
+ =?us-ascii?Q?1bdsc6W6ZUPZiXIpGFsSX7QP7tCXfgbyKGNDNeqYAhHyiq/q3Ojito8bbT7t?=
+ =?us-ascii?Q?6++hBuAMjKSE2AxboqLPUKnGX01zkb8+lXs/EGYFwirAGMj6vcKJN6u9a8gs?=
+ =?us-ascii?Q?GOQVfR0Oouv3MLV/9WT3d5vOkKm27/YLreeU/kcg6kp2/5cwlHBmxJSM072P?=
+ =?us-ascii?Q?OvRpLpwDLNTrLZ+g4/k4KKIUk0iyc7R9FD8jL0JJiQe9N4D5JCSl4bScFosy?=
+ =?us-ascii?Q?YUkpfmVqHQ2C4ZjEeu3Veglefb8a2cwqiAMJNNtHn4ZEcj0fzRWHz/1fm9DD?=
+ =?us-ascii?Q?W++nYQ5cD7FwQB3mKkGXjzvY44PkIUZ8I7AdyfYkf/LvsAoxZ2j3fINuhnhv?=
+ =?us-ascii?Q?QYdO2taFo02hckLZkIzqvPuWiZG4WBWj4FFwK5h2kIy02YPcMT7mZ0a8/Gaj?=
+ =?us-ascii?Q?ztheT3W0lLdF9czFFD2Rzi6thC/AFO8n8CrxGWkYSvJWh3Qe5iPAcA0ZwuxF?=
+ =?us-ascii?Q?yITCYTd0TuBzOtgWnyWSV8N5q3E4G1V//yTPFGhrMGFOM5IzyBWfmIaEqV/o?=
+ =?us-ascii?Q?IFZl59t4wcXGtUXHTZSuvbK+x6eIawwYYXKc7pcoYmK7PKEhPZh6JNAP0ZTU?=
+ =?us-ascii?Q?FPwx9EITeqJ9xP/IAoW198eTXxiWHunMzst2iYX9CBoXfxGyvDi8rcGukMKv?=
+ =?us-ascii?Q?T4UTGvdqR3PbSU2u/AYaQVCP1I2n6eL67eHoXiWRb7q6dNw/5Q8FP4sgcxNx?=
+ =?us-ascii?Q?7yfppckEnLK6I4N+JeWe5274nnRapsulG4iWY9Er5jfRDOORBPvzwwryTkzS?=
+ =?us-ascii?Q?uQVw856Njn9HbtUA10xY+knaOk4lGakp8CR+I5AzSoN8O4d90RRKaozVAEZ+?=
+ =?us-ascii?Q?R4YkaGJlJzA/HeyQk6rr2Uw3TjNbOBRC/Wg3erGJkCThrz4MV16I2Ji3vBE7?=
+ =?us-ascii?Q?Ape4anrcuojNypBjKNzRXUIn5mFUVtROt0kP7zg3HAG4dLCX+8DWIrwl32GS?=
+ =?us-ascii?Q?xza1oNLMMedqq9lfS+fxKv+h+jGd22ePXmscZBtG7NqKx/nwxzIwkX5KXcsx?=
+ =?us-ascii?Q?7gBHBW8BaEebX9NCf95pwSJ+bMzQJF74jN/BscpfeD4tGoi+ztbAv13GXD6q?=
+ =?us-ascii?Q?n9SyL9fIt+wo05bKuInwZfZ8HG3HaDpZzFQQG45S?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e947415-bcd5-4971-3a3d-08db006f3fd5
+X-MS-Exchange-CrossTenant-Network-Message-Id: e363702d-f751-42a7-d59b-08db006f6188
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2023 14:03:21.6459
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2023 14:04:18.1890
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z7yw4TjD7Gx1kavNTSoWRlJJOg5v8SXdT4zZ+kAdox/Sbjlioramk0zi/3H7sVrz3Nye0F3CpgV1c9WcRFGhWw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: KpDrssPu0AjcTuvPWGvRwpGWYhEbq69nli6FnjlX6MG2bk/BbJMaBdecDrgkgHhIw/ardg3Gw1VUwLP3MZhH1Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6754
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, 19 Jan 2023 14:40:35 -0300
+On Thu, 19 Jan 2023 14:40:36 -0300
 Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 
-> This allows us to use the unit type `()` when we have no object whose
-> ownership must be managed but one implementing the `ForeignOwnable`
-> trait is needed.
+> This allows us to hand ownership of Rust ref-counted objects to
+> the C side of the kernel.
 > 
 > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
 > ---
->  rust/kernel/types.rs | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  rust/kernel/sync/arc.rs | 32 +++++++++++++++++++++++++++++++-
+>  1 file changed, 31 insertions(+), 1 deletion(-)
 > 
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index e037c262f23e..8f80cffbff59 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -85,6 +85,19 @@ impl<T: 'static> ForeignOwnable for Box<T> {
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index ff73f9240ca1..519a6ec43644 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -15,7 +15,11 @@
+>  //!
+>  //! [`Arc`]: https://doc.rust-lang.org/std/sync/struct.Arc.html
+>  
+> -use crate::{bindings, error::Result, types::Opaque};
+> +use crate::{
+> +    bindings,
+> +    error::Result,
+> +    types::{ForeignOwnable, Opaque},
+> +};
+>  use alloc::boxed::Box;
+>  use core::{
+>      marker::{PhantomData, Unsize},
+> @@ -189,6 +193,32 @@ impl<T: ?Sized> Arc<T> {
 >      }
 >  }
 >  
-> +impl ForeignOwnable for () {
-> +    type Borrowed<'a> = ();
+> +impl<T: 'static> ForeignOwnable for Arc<T> {
+> +    type Borrowed<'a> = ArcBorrow<'a, T>;
 > +
 > +    fn into_foreign(self) -> *const core::ffi::c_void {
-> +        // We use 1 to be different from a null pointer.
-> +        1usize as _
-
-this should really be `core::ptr::invalid(1)`. That's currently
-unstable, but can be equivalently written as
-`NonNull::<()>::dangling().as_ptr()`.
-
-This has a different semantic meaning from `as` since it explicitly
-suggests an invalid provenance and thus will not alias with other
-pointers. (Although I don't think compiler currently can take advantage
-of this fact yet)
-
+> +        ManuallyDrop::new(self).ptr.as_ptr() as _
 > +    }
 > +
-> +    unsafe fn borrow<'a>(_: *const core::ffi::c_void) -> Self::Borrowed<'a> {}
+> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'a, T> {
+> +        // SAFETY: By the safety requirement of this function, we know that `ptr` came from
+> +        // a previous call to `Arc::into_foreign`.
+> +        let inner = NonNull::new(ptr as *mut ArcInner<T>).unwrap();
 > +
-> +    unsafe fn from_foreign(_: *const core::ffi::c_void) -> Self {}
+> +        // SAFETY: The safety requirements of `from_foreign` ensure that the object remains alive
+> +        // for the lifetime of the returned value. Additionally, the safety requirements of
+> +        // `ForeignOwnable::borrow_mut` ensure that no new mutable references are created.
+> +        unsafe { ArcBorrow::new(inner) }
+> +    }
+> +
+> +    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
+> +        // SAFETY: By the safety requirement of this function, we know that `ptr` came from
+> +        // a previous call to `Arc::into_foreign`, which owned guarantees that `ptr` is valid and
+> +        // owns a reference.
+> +        unsafe { Self::from_inner(NonNull::new(ptr as _).unwrap()) }
+> +    }
 > +}
 > +
->  /// Runs a cleanup function/closure when dropped.
->  ///
->  /// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
+>  impl<T: ?Sized> Deref for Arc<T> {
+>      type Target = T;
+>  
 
