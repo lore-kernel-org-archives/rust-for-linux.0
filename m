@@ -2,91 +2,117 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC4EFC38142
-	for <rust-for-linux@archiver.kernel.org>; Fri, 27 Jan 2023 14:12:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD4D2C54EAA
+	for <rust-for-linux@archiver.kernel.org>; Fri, 27 Jan 2023 19:10:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229511AbjA0OME (ORCPT
+        id S231274AbjA0TKK (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 27 Jan 2023 09:12:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55852 "EHLO
+        Fri, 27 Jan 2023 14:10:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231805AbjA0OLp (ORCPT
+        with ESMTP id S231179AbjA0TKJ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 27 Jan 2023 09:11:45 -0500
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A432B113C0;
-        Fri, 27 Jan 2023 06:11:44 -0800 (PST)
-Received: by mail-yb1-xb36.google.com with SMTP id p141so6074386ybg.12;
-        Fri, 27 Jan 2023 06:11:44 -0800 (PST)
+        Fri, 27 Jan 2023 14:10:09 -0500
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D21687BE4E;
+        Fri, 27 Jan 2023 11:10:07 -0800 (PST)
+Received: by mail-qv1-xf2d.google.com with SMTP id q10so4526548qvt.10;
+        Fri, 27 Jan 2023 11:10:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aJdCvvu6jSVfMd09Z0nqsZgbe8izrnWySR6PkXWkYEQ=;
-        b=LbptWjg9OYEMP8jaMM/xpeH4hxenBsBxCKenBxPUAgbI5YO059GQRgvy/x7OD3JMVa
-         +r9h0fUoiwbbj9SL6iXgTrZq4ZmiA8K35QZNOHiUQdQ/m2/p2HHu+bHM9afmTEgp3fQo
-         5z11rSFpF5/2jkxsvDYsxBzmR8SMfLFQZcrDsCYmy9Hshi8r8k3cUe9ncLYlDCxiB7mY
-         ScnHAtLGJ42tou/1+4K4C7WR2oXsKhC5gPcQn08ktYX9Cxu/k6/PIEa+mkTfp049bT/q
-         ELzs+9Vo60hOA4MWqiun3Gz8tRykFEcp2gNoykKWC80x4RjqbuGj4fV+5klzhhB6FRaG
-         HMXw==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=GSPIv+YqWdBZ4Ekp+ls2qyg5+evBT3aLSAigsT+W2bo=;
+        b=q2e55E8gLMbbkccPn6JzZN4GEJyjdCHjScWW4jlkhEzZFF2WaghJGaHQeo7D+b1zvb
+         28HB1B/zHGh0VsYRGx8jdo5moKtdAIBSHxTKLGooGdV3xcR1tUmzSlpUP0ey1gUqjN3A
+         MbM4IfgDsJgbzFUvsvCxfFrJqyMajMTaAta3oFTky0Y/zdMSjpmZJz7LZmixS6Vn5zTz
+         b3JdzD3UE7YjB99So/GfTckevQ6WbDPLh05ssc5QNRHS2lRNv9sww6TN+EU+ePJ7t6Zo
+         hiwT3hSsY1cMy7oWxgF0/yp76J/jhIoWuF7FbQ2dworHxWMUg/iPaRAzIvp8BA/u60zD
+         g9zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aJdCvvu6jSVfMd09Z0nqsZgbe8izrnWySR6PkXWkYEQ=;
-        b=55tF4NNLKx9eu+J0sTNJ3pFwj7yQDq6NWccE8+HXzHpIFF3gi4vgdx+dRdzuqumUyW
-         Wn0Z1w6z9T7rwSbnQiG3h6i4sHHt3AwRNPb9m7YJ4YDR8kQ6ZmqZVkApwiMm79h4TfCR
-         qzvgSKzQovR/KIwFWKAG949aFDVn5MVXKhnqHlV+I6b4JGKTQSDRctZBU9WmEQl7Ame5
-         YmQajNxCKppZ3UaZwnPCLmXVUXGdJsmAZNcXwZ5aoyBp41jcXx9zvYfQzwrjGVZD0ebE
-         C819f/Q0MtOcgmw3UMJ8VLB/+TVBAnzyaPq/9XZT8lezaGsZJMCqga5v66Aeg7lH5Lm4
-         NSAw==
-X-Gm-Message-State: AFqh2kovEKX/Pc57HFPFLv6B2DM89AXcXfz7k97Lpa42yKEYex5HFaDC
-        YcsDBeZHZ7Dxqo9Qn9HHCtlq8DHumV/PlVYL5PU=
-X-Google-Smtp-Source: AMrXdXvSTuzTYQpzBLSE2fCjqsUFmt6y0WaWNmhRwLNYTDqtm397siZf/jEllKjMIL1Y9jyuHYUfByoZeHWaqeppoYs=
-X-Received: by 2002:a25:c88:0:b0:7fe:eff0:87ac with SMTP id
- 130-20020a250c88000000b007feeff087acmr2905524ybm.581.1674828703791; Fri, 27
- Jan 2023 06:11:43 -0800 (PST)
-MIME-Version: 1.0
-References: <20230119174036.64046-1-wedsonaf@gmail.com> <20230119174036.64046-4-wedsonaf@gmail.com>
- <20230127140319.22af6060.gary@garyguo.net>
-In-Reply-To: <20230127140319.22af6060.gary@garyguo.net>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 27 Jan 2023 15:11:32 +0100
-Message-ID: <CANiq72kXNvQ-GY-uw24s_1NmQ5G12Cu+JfYKFQ0rC-4Fnm8o8Q@mail.gmail.com>
-Subject: Re: [PATCH 4/5] rust: types: implement `ForeignOwnable` for the unit type
-To:     Gary Guo <gary@garyguo.net>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GSPIv+YqWdBZ4Ekp+ls2qyg5+evBT3aLSAigsT+W2bo=;
+        b=K2LjNJbudqDpqPwX5DjL3hTIfvKq+GYATLqr7LOJUtfMVCogP+HhYyzSJ73IGCg5wL
+         4Kx7s1kfkxjbrn/Qetkj0WDiBlq6XHKgqBDihuvPDH3VMyH3PtQsCAtS5qSnDPyn2cZN
+         LMrL9UZXkFQ1krWkWBTuo4DRkDrzuZ3vQHdrrsAXhX6ddqQ9lYi7HRLZQoTKFi1/ZIwL
+         lAXGjhALZHmMG7dmzzf/vU8dNPMwa/J2y9W5UyGjpcsOyJBPyGn9glu9TTMWUINmhBKw
+         u/4FsnYaIe++UavWHoWnY6gXmm1HZLndsf3Zu1HADHkXhxEIZKNiZF8w8evMXtQBKw1g
+         V2yA==
+X-Gm-Message-State: AO0yUKUT1GhS0ocMie2KT8oX5s1YNoaKC8z0r95FKNg94NZuXADwydCS
+        ujLwzcvXxQVEqJl4AgrVCzc=
+X-Google-Smtp-Source: AK7set8nPB+Gn1du31KZgmxgwcBAH6FrxEuFT79qYMyqShGE2pPhvigqvUHCzA6bHwyJvUvIYzgs1w==
+X-Received: by 2002:ad4:5b87:0:b0:537:64fc:eb43 with SMTP id 7-20020ad45b87000000b0053764fceb43mr28166288qvp.7.1674846606828;
+        Fri, 27 Jan 2023 11:10:06 -0800 (PST)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id b23-20020a05620a127700b00704c6263924sm3362881qkl.13.2023.01.27.11.10.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Jan 2023 11:10:06 -0800 (PST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailauth.nyi.internal (Postfix) with ESMTP id EB62227C0054;
+        Fri, 27 Jan 2023 14:10:05 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Fri, 27 Jan 2023 14:10:05 -0500
+X-ME-Sender: <xms:jSHUY0E3i0J3OUbieJRT_exCwA7DmmPNTZEY9b8dZonb52KtcXxTOw>
+    <xme:jSHUY9UIzf74y4vbKvtZW7fCYdqSXrjvjssBwuX7mnlIVJ73ixPBz8EUTMX9sZA9l
+    llnjoLxQ3zNfbN3UA>
+X-ME-Received: <xmr:jSHUY-J4-ITIAYCRbHESGMkDgEeeaGVnCN2pn27wi81wh4qblm2wzXgddh4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedruddviedguddvtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefhvfevufffkffogggtgfesthekredtredtjeenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeelfeegvddutdetudeivdetfeegtdegffdvlefhueelhfehveetjeefteeu
+    gfefgeenucffohhmrghinhepiihulhhiphgthhgrthdrtghomhdpghhithhhuhgsrdgtoh
+    hmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsgho
+    qhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqd
+    dujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihm
+    vgdrnhgrmhgv
+X-ME-Proxy: <xmx:jSHUY2HwoYuB28qZfcUesrhh9HqexonIKxrOzEDup58jSWyhhqqTmA>
+    <xmx:jSHUY6VDmuUQoQHA0vCvSnZ1TxWuFpozXaDAMFY9tjtEPkizXUEeyA>
+    <xmx:jSHUY5Ond06l5ItzknTyWvpBGGDesUJv2cwsurLNYgCCYIC7DjJCwQ>
+    <xmx:jSHUY8LuqBAKMZZ7zdoHsDKvvmFVTbvDzhVspklQwFg1tZ3GaMrcvA>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 27 Jan 2023 14:10:05 -0500 (EST)
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     rust-for-linux@vger.kernel.org
+Cc:     Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: [PATCH] rust: MAINTAINERS: Add the zulip link
+Date:   Fri, 27 Jan 2023 11:09:13 -0800
+Message-Id: <20230127190917.3369037-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Jan 27, 2023 at 3:03 PM Gary Guo <gary@garyguo.net> wrote:
->
-> this should really be `core::ptr::invalid(1)`. That's currently
-> unstable, but can be equivalently written as
-> `NonNull::<()>::dangling().as_ptr()`.
->
-> This has a different semantic meaning from `as` since it explicitly
-> suggests an invalid provenance and thus will not alias with other
-> pointers. (Although I don't think compiler currently can take advantage
-> of this fact yet)
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-We talked about starting to use `strict_provenance` when it came out
--- what is the latest status? i.e. do you know if it is expected that
-it will pass FCP etc.? (my understanding originally was that it was an
-experiment).
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 42fc47c6edfd..30161207f365 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18219,6 +18219,7 @@ R:	Boqun Feng <boqun.feng@gmail.com>
+ R:	Gary Guo <gary@garyguo.net>
+ R:	Björn Roy Baron <bjorn3_gh@protonmail.com>
+ L:	rust-for-linux@vger.kernel.org
++C:	zulip://rust-for-linux.zulipchat.com
+ S:	Supported
+ W:	https://github.com/Rust-for-Linux/linux
+ B:	https://github.com/Rust-for-Linux/linux/issues
+-- 
+2.38.1
 
-If it is likely to become stable, then I agree it could be nice to
-start using it before a lot of kernel code gets written without it.
-
-Thanks Gary!
-
-Cheers,
-Miguel
