@@ -2,182 +2,180 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35155C61DB3
-	for <rust-for-linux@archiver.kernel.org>; Sat, 28 Jan 2023 17:39:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BBF32C38142
+	for <rust-for-linux@archiver.kernel.org>; Sat, 28 Jan 2023 20:46:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234632AbjA1RjB (ORCPT
+        id S230087AbjA1Uq5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 28 Jan 2023 12:39:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34766 "EHLO
+        Sat, 28 Jan 2023 15:46:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234556AbjA1RjA (ORCPT
+        with ESMTP id S229637AbjA1Uq4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 28 Jan 2023 12:39:00 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90F492A16E;
-        Sat, 28 Jan 2023 09:38:58 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 37C92B80B57;
-        Sat, 28 Jan 2023 17:38:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F58FC433A0;
-        Sat, 28 Jan 2023 17:38:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674927535;
-        bh=P19kYlGfD3VxBVIeWwkF+xYQQvFrLROr+eyRMXl63m8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KloQZ1aiZfD75B8qAlJ1PJVdb0nqw3EncU3v/lftBFLC1C98PXfsqx9Nmctkf9KBP
-         PiOywUKd9jApp1kZuKHz1LxCz2Ntr1AwA5C56xxoQcS9wf9hSsT722Xqse+MyQNOL8
-         V80VheaSJB4H7j1H4s3oPABql/qv6mxrHy4rgTCmTQr4d4+N9KUAyljgCekRpp/dz8
-         t1L078mlDpZ3JlnFTW3NKB6qvSoYojKidJU4oPZXl4QAO4bkH1jN+vA8f/o3VRcwrv
-         2gTfUee9U3iLzpASeu2XXrvna8ci3cZGJPUA6n8S//XZW5MVzIYyajDfM2UpgcwzfE
-         tH8xYDGjBTfwQ==
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     linux-kbuild@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org
-Subject: [PATCH 4/4] kbuild: srcrpm-pkg: create source package without cleaning
-Date:   Sun, 29 Jan 2023 02:38:43 +0900
-Message-Id: <20230128173843.765212-4-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230128173843.765212-1-masahiroy@kernel.org>
-References: <20230128173843.765212-1-masahiroy@kernel.org>
+        Sat, 28 Jan 2023 15:46:56 -0500
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB4D02684;
+        Sat, 28 Jan 2023 12:46:54 -0800 (PST)
+Received: by mail-ot1-x332.google.com with SMTP id e21-20020a9d5615000000b006884e5dce99so3413317oti.5;
+        Sat, 28 Jan 2023 12:46:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pnL4mJpthSV+odijMNG98AG6idR1nElPULqPEfy3zP4=;
+        b=XFvmTOR7lBfQ9+zo9cdCWBXITbJHH4ckG8SgqOMrf7Ef1BiweJ5A0Swr0Z3RiGMouz
+         JQIkIvzWtWfdPzSE9i17o6xyTyV+C7pJh7VT1R/3h3Pen2G5vLNMI0w21JpHmvAv6LeS
+         OiQIXVScdvLkERjTUa5Apta5ztypxmN9XyHkGX5+BafHZZA3dInald/60vrtXX4hPO1a
+         8uFNOUwm0FfhGtF3CvIiQR9Cq1/XhZdJ6l7T1gBMb6umAX2lFiQtzOB0LuPLKyP+5vk3
+         uZrJGHrSx140dg1fr9Gw2+OSldw3kh1dwo03zqCc1taTguXdBJVUyFfNPlM7yV97iwHZ
+         GuBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pnL4mJpthSV+odijMNG98AG6idR1nElPULqPEfy3zP4=;
+        b=XRk+f3hqgi7cuNWtVxFhkq+N7GRHvsjxuDQvkYl3HvVdU2rV62H/+WBHZLgSHQQ2W0
+         XjcYy6DFkbHF2+zLBvgQ3dWTDZKrTXAwPG04pnIfY7KwKn2nFiAJuf0YBFoa3VkvYigF
+         VogrtzAci489ssvDYq6hn6KIdW4TsR8WU840z08/fn+w/b+9udOb75SSpghiz2ltM1CL
+         NcTAhonpUyxx3iwEZN8aSRDdBIuuAf8s91+fw9jSSUEUJ3kkXksIT1JZIChSiTZJtKSd
+         zP832BEM9BIY6bgnF0iMDwnRh022RDTRj3iGVrEBP6jXmTUx1uloCV6LNQxcLWTvHZpb
+         vu1w==
+X-Gm-Message-State: AFqh2kqPzJQ3mqq+5EHol1bupel3+yu0T9OcgAoDw1Bmtz5ph78nggOq
+        tI3zGQGnMrRRgJ9Qb7a4nqNkIGm16Ok=
+X-Google-Smtp-Source: AMrXdXtC/D2i7Z08b41Zj5kfLpMAScywOMCfCqjWDUWnND9I6Ya6+ufp91J23gOtS3qf20JN9jw9KA==
+X-Received: by 2002:a9d:7849:0:b0:670:85a7:564d with SMTP id c9-20020a9d7849000000b0067085a7564dmr22019495otm.2.1674938814123;
+        Sat, 28 Jan 2023 12:46:54 -0800 (PST)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id db10-20020a0568306b0a00b006863c59f685sm3395307otb.28.2023.01.28.12.46.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 28 Jan 2023 12:46:53 -0800 (PST)
+Message-ID: <3dcd0379-b375-32d2-4956-c42afd451693@gmail.com>
+Date:   Sat, 28 Jan 2023 17:46:50 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH 2/5] rust: types: introduce `ForeignOwnable`
+Content-Language: en-US
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     wedsonaf@gmail.com, alex.gaynor@gmail.com,
+        bjorn3_gh@protonmail.com, gary@garyguo.net,
+        linux-kernel@vger.kernel.org, ojeda@kernel.org,
+        rust-for-linux@vger.kernel.org
+References: <20230119174036.64046-2-wedsonaf@gmail.com>
+ <20230128145345.1770912-1-yakoyoku@gmail.com>
+ <Y9VV4+KCkShRex9m@boqun-archlinux>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <Y9VV4+KCkShRex9m@boqun-archlinux>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-If you run 'make (src)rpm-pkg', all objects are lost due to 'make clean',
-which makes the incremental builds impossible.
+On 1/28/23 14:05, Boqun Feng wrote:
+> On Sat, Jan 28, 2023 at 11:53:45AM -0300, Martin Rodriguez Reboredo wrote:
+> [...]
+>>> +    /// Borrows a foreign-owned object.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
+>>> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
+>>> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow_mut`]
+>>> +    /// for this object must have been dropped.
+>>> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> Self::Borrowed<'a>;
+>>> +
+>>> +    /// Mutably borrows a foreign-owned object.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
+>>> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
+>>> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
+>>> +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
+>>> +    unsafe fn borrow_mut<T: ForeignOwnable>(ptr: *const core::ffi::c_void) -> ScopeGuard<T, fn(T)> {
+>>> +        // SAFETY: The safety requirements ensure that `ptr` came from a previous call to
+>>> +        // `into_foreign`.
+>>> +        ScopeGuard::new_with_data(unsafe { T::from_foreign(ptr) }, |d| {
+>>> +            d.into_foreign();
+>>> +        })
+>>> +    }
+>>
+>> Could these three methods have a borrowing equivalent? When I was
+>> working on some features for the USB module I've stumbled upon the case
+>> of having to encode a pointer (with a pivot) and I cannot do it without
+>> taking ownership of the pointer.
+>>
+> 
+> *const T is Copy, so you can still use it after pass it to a function or
+> a new binding, e.g.
+> 
+> 	pub fn use_ptr(ptr: *const i32) { .. }
+> 
+> 	let p: *const i32 = some_func();
+> 
+> 	let q = p;
+> 
+> 	// q is just a copy of p
+> 	use_ptr(p);
+> 	// passing to a function parameter is just copying
+> 	use_ptr(p);
+> 
+> maybe I'm missing something subtle, but if you have an example I can
+> help take a look.
+> 
+> Regards,
+> Boqun
+> 
 
-Instead of cleaning, pass the exclude list to tar's --exclude-from
-option.
+I'll use a much more simple example. If I want to take the byte offset
+between two `ForeignWrapper`s I'd have to take ownership of them, but I
+don't see it desirable in some cases.
 
-Previously, the .config was contained in the source tarball.
+    fn byte_offset<P: PointerWrapper>(ptr: P, pivot: P) -> isize {
+        unsafe {
+            ptr.into_pointer().cast::<u8>()
+                .byte_offset(pivot.into_pointer().cast())
+        }
+    }
 
-With this commit, the source rpm consists of separate linux.tar.gz
-and .config.
+But if there was an `as_pointer(&self) -> *const c_void` method then the
+above function will be able to borrow both `ForeignWrapper`s.
 
-Remove stale comments. Now, 'make (src)rpm-pkg' works with O= option.
+    fn byte_offset<P: PointerWrapper>(ptr: &P, pivot: &P) -> isize {
+        unsafe {
+            ptr.as_pointer().cast::<u8>()
+                .byte_offset(pivot.as_pointer().cast())
+        }
+    }
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+Obviously those methods that borrow will announce invariancies in their
+doc comments. If these can exist then great and if not then another
+solution could be explored.
 
- scripts/Makefile.package | 50 +++-------------------------------------
- scripts/package/mkspec   |  8 +++----
- 2 files changed, 7 insertions(+), 51 deletions(-)
-
-diff --git a/scripts/Makefile.package b/scripts/Makefile.package
-index 8fa6f05967aa..b899fe747bc9 100644
---- a/scripts/Makefile.package
-+++ b/scripts/Makefile.package
-@@ -3,53 +3,11 @@
- 
- include $(srctree)/scripts/Kbuild.include
- 
--# RPM target
--# ---------------------------------------------------------------------------
--# The rpm target generates two rpm files:
--# /usr/src/packages/SRPMS/kernel-2.6.7rc2-1.src.rpm
--# /usr/src/packages/RPMS/i386/kernel-2.6.7rc2-1.<arch>.rpm
--# The src.rpm files includes all source for the kernel being built
--# The <arch>.rpm includes kernel configuration, modules etc.
--#
--# Process to create the rpm files
--# a) clean the kernel
--# b) Generate .spec file
--# c) Build a tar ball, using symlink to make kernel version
--#    first entry in the path
--# d) and pack the result to a tar.gz file
--# e) generate the rpm files, based on kernel.spec
--# - Use /. to avoid tar packing just the symlink
--
--# Note that the rpm-pkg target cannot be used with KBUILD_OUTPUT,
--# but the binrpm-pkg target can; for some reason O= gets ignored.
--
--# Remove hyphens since they have special meaning in RPM filenames
--KERNELPATH := kernel-$(subst -,_,$(KERNELRELEASE))
- KDEB_SOURCENAME ?= linux-upstream
- KBUILD_PKG_ROOTCMD ?="fakeroot -u"
- export KDEB_SOURCENAME
--# Include only those top-level files that are needed by make, plus the GPL copy
--TAR_CONTENT := Documentation LICENSES arch block certs crypto drivers fs \
--               include init io_uring ipc kernel lib mm net rust \
--               samples scripts security sound tools usr virt \
--               .config Makefile \
--               Kbuild Kconfig COPYING $(wildcard localversion*)
- MKSPEC     := $(srctree)/scripts/package/mkspec
- 
--quiet_cmd_src_tar = TAR     $(2).tar.gz
--      cmd_src_tar = \
--if test "$(objtree)" != "$(srctree)"; then \
--	echo >&2; \
--	echo >&2 "  ERROR:"; \
--	echo >&2 "  Building source tarball is not possible outside the"; \
--	echo >&2 "  kernel source tree. Don't set KBUILD_OUTPUT, or use the"; \
--	echo >&2 "  binrpm-pkg or bindeb-pkg target instead."; \
--	echo >&2; \
--	false; \
--fi ; \
--tar -I $(KGZIP) -c $(RCS_TAR_IGNORE) -f $(2).tar.gz \
--	--transform 's:^:$(2)/:S' $(TAR_CONTENT) $(3)
--
- # Source Tarball
- # ---------------------------------------------------------------------------
- 
-@@ -76,12 +34,10 @@ rpm-pkg: srcrpm-pkg
- # srcrpm-pkg
- # ---------------------------------------------------------------------------
- PHONY += srcrpm-pkg
--srcrpm-pkg:
--	$(MAKE) clean
-+srcrpm-pkg: linux.tar.gz
- 	$(CONFIG_SHELL) $(MKSPEC) >$(objtree)/kernel.spec
--	$(call cmd,src_tar,$(KERNELPATH),kernel.spec)
--	+rpmbuild $(RPMOPTS) --target $(UTS_MACHINE)-linux -ts $(KERNELPATH).tar.gz \
--	--define='_smp_mflags %{nil}' --define='_srcrpmdir $(srctree)'
-+	+rpmbuild $(RPMOPTS) --target $(UTS_MACHINE)-linux -bs kernel.spec \
-+	--define='_smp_mflags %{nil}' --define='_sourcedir .' --define='_srcrpmdir .'
- 
- # binrpm-pkg
- # ---------------------------------------------------------------------------
-diff --git a/scripts/package/mkspec b/scripts/package/mkspec
-index 108c0cb95436..83a64d9d7372 100755
---- a/scripts/package/mkspec
-+++ b/scripts/package/mkspec
-@@ -47,7 +47,8 @@ sed -e '/^DEL/d' -e 's/^\t*//' <<EOF
- 	Group: System Environment/Kernel
- 	Vendor: The Linux Community
- 	URL: https://www.kernel.org
--$S	Source: kernel-$__KERNELRELEASE.tar.gz
-+$S	Source0: linux.tar.gz
-+$S	Source1: .config
- 	Provides: $PROVIDES
- $S	BuildRequires: bc binutils bison dwarves
- $S	BuildRequires: (elfutils-libelf-devel or libelf-devel) flex
-@@ -83,9 +84,8 @@ $S$M	This package provides kernel headers and makefiles sufficient to build modu
- $S$M	against the $__KERNELRELEASE kernel package.
- $S$M
- $S	%prep
--$S	%setup -q
--$S	rm -f scripts/basic/fixdep scripts/kconfig/conf
--$S	rm -f tools/objtool/{fixdep,objtool}
-+$S	%setup -q -n linux
-+$S	cp %{SOURCE1} .
- $S
- $S	%build
- $S	$MAKE %{?_smp_mflags} KERNELRELEASE=$KERNELRELEASE KBUILD_BUILD_VERSION=%{release}
--- 
-2.34.1
-
+>>> +
+>>> +    /// Converts a foreign-owned object back to a Rust-owned one.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
+>>> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
+>>> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
+>>> +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
+>>> +    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self;
+>>> +}
+>>> +
+>>>  /// Runs a cleanup function/closure when dropped.
+>>>  ///
+>>>  /// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
+>>> -- 
+>>> 2.34.1
+>>
+>> Aside from these comments I observe that there's a possibility to make
+>> ForeignOwnable a const trait and have non const implementors. Otherwise
+>> if these things are out of scope, no problem whatsoever and this has my
+>> OK.
+>>
+>> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
