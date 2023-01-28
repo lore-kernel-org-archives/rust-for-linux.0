@@ -2,174 +2,182 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8759EC27C76
-	for <rust-for-linux@archiver.kernel.org>; Sat, 28 Jan 2023 17:06:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35155C61DB3
+	for <rust-for-linux@archiver.kernel.org>; Sat, 28 Jan 2023 17:39:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230473AbjA1RGd (ORCPT
+        id S234632AbjA1RjB (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 28 Jan 2023 12:06:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53688 "EHLO
+        Sat, 28 Jan 2023 12:39:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229963AbjA1RGc (ORCPT
+        with ESMTP id S234556AbjA1RjA (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 28 Jan 2023 12:06:32 -0500
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C76B3EFA4;
-        Sat, 28 Jan 2023 09:06:31 -0800 (PST)
-Received: by mail-qt1-x82a.google.com with SMTP id w11so960574qtc.3;
-        Sat, 28 Jan 2023 09:06:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6LkjGYc1DQBixcrRx3f5l/Lm3c/gvRvkhxMH5vPTMoQ=;
-        b=Ynd+q6s5C8ZoTVXBeMX+2eJg9EHqbUKkwUzy8i1K+9WX5fQW5wKKxv7EvNrtoFnM6E
-         Mm912V/a5Xj05LOcBw6/+Q0hExtjZy1YFMaOxqsvWNU7Hsjnd+TTHlUEEyPPEKV1XbEp
-         hh1iVFfK1W5h27/bICIXSV5eV8zOzQmDQXBJhH5r3UvMfexgbwm6TmuBHFbeaYx9SOWi
-         UJ1T81ygypDa4VKFtOn3L3Bj5h6A7JV/JgE3P9u0rBYio2MWXgxeriX1ZyqsfUaacp7L
-         mUCNqlYLltuJL8YzEA58CRCE5dfZw1zPuQMToY16LAEaVltL2T1m/3af37XlNwHe2nCD
-         gm8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6LkjGYc1DQBixcrRx3f5l/Lm3c/gvRvkhxMH5vPTMoQ=;
-        b=sJL1Y+VCZRgkqf1Uf8tHcpZAm/geDoRzXoSXgZSR3I+hpVTXhtaLRLVRxnM7SbXBHu
-         LYO/9uF8L9iR7g60MmZiFHzD3j5TdzH4a0/EaBzedh7sk1bx7JNETcg1pigMGlQ0jtQX
-         x9PURILOX4cBVo4OPURPBuM6ij5/P4EX4OZmte2+8ZzzpI6zsYtt8TqoxVc0ViQuQ/0x
-         Jqd/1V8UHhLU2qpPY1dQWgXAn6USW2GAYXyYavNxcgec2ubmR3FBIk0gm12rgF8bIjGy
-         cmtnrRGfNULKTmdpb6R4zp9RqMPJLGZXsmKfdbY1r1HJG3LwhJwm7U1D7/LkNr9gKV0+
-         UWIQ==
-X-Gm-Message-State: AFqh2krcr5VxdI68IYrOqZMZMdb2Y4qP9BqKY+HdnX8+eKuaSu284gI8
-        CTbo/bSIgsnil+5yhX1/oPU=
-X-Google-Smtp-Source: AMrXdXtGA6gGcQ9ASmGp1QprWmmPiPydXpMJnuJYMeBL5xcz3tgX0HjxMVUshxo9UT88MuPhgA2TEw==
-X-Received: by 2002:ac8:6e83:0:b0:3b6:3406:81cb with SMTP id c3-20020ac86e83000000b003b6340681cbmr66219576qtv.14.1674925590957;
-        Sat, 28 Jan 2023 09:06:30 -0800 (PST)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id f8-20020ac840c8000000b003b84b92052asm755797qtm.57.2023.01.28.09.06.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Jan 2023 09:06:30 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 0B71927C0054;
-        Sat, 28 Jan 2023 12:06:29 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Sat, 28 Jan 2023 12:06:30 -0500
-X-ME-Sender: <xms:FVbVY9oLvpMu7xecBGhaA8qhLZqgV9sQoJWNQyg0QM4mVruWNRcGqg>
-    <xme:FVbVY_oDf-dun-mq5bzqjrAxvs5NDmKU_FI3X7G77BM4eq5QkXqiy40d6zhB6T8CW
-    MJrAODSCnKavbrCKQ>
-X-ME-Received: <xmr:FVbVY6Olfxxj_PBRvSENRL5AUJoAR1LB5FcZwD1sToBpHCp3ymf6_uFt5k8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedruddvkedgleeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttd
-    ertddttddvnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghes
-    ghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuve
-    elvdfhleelieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptden
-    ucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrh
-    hsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgv
-    nhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:FVbVY45kUSK75QVkYr9lGN6KOIzGEBt-G3gl7Jk_qWbAaycyxTQr1A>
-    <xmx:FVbVY84oK9AeTeWVfmJAYsZ42SqPyljc3lwy5TUTLg2-ItnPt9oqEQ>
-    <xmx:FVbVYwgQ2CvAL5oz5Zjur01grUo9ZO6LPvTT_FjpZXVZkspl3CxZHA>
-    <xmx:FVbVY7aA-UR5lv7YeyouY7p-JiuagWk42utTO6FpRvFDTEbmJFboEA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 28 Jan 2023 12:06:29 -0500 (EST)
-Date:   Sat, 28 Jan 2023 09:05:39 -0800
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc:     wedsonaf@gmail.com, alex.gaynor@gmail.com,
-        bjorn3_gh@protonmail.com, gary@garyguo.net,
-        linux-kernel@vger.kernel.org, ojeda@kernel.org,
+        Sat, 28 Jan 2023 12:39:00 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90F492A16E;
+        Sat, 28 Jan 2023 09:38:58 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 37C92B80B57;
+        Sat, 28 Jan 2023 17:38:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F58FC433A0;
+        Sat, 28 Jan 2023 17:38:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674927535;
+        bh=P19kYlGfD3VxBVIeWwkF+xYQQvFrLROr+eyRMXl63m8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=KloQZ1aiZfD75B8qAlJ1PJVdb0nqw3EncU3v/lftBFLC1C98PXfsqx9Nmctkf9KBP
+         PiOywUKd9jApp1kZuKHz1LxCz2Ntr1AwA5C56xxoQcS9wf9hSsT722Xqse+MyQNOL8
+         V80VheaSJB4H7j1H4s3oPABql/qv6mxrHy4rgTCmTQr4d4+N9KUAyljgCekRpp/dz8
+         t1L078mlDpZ3JlnFTW3NKB6qvSoYojKidJU4oPZXl4QAO4bkH1jN+vA8f/o3VRcwrv
+         2gTfUee9U3iLzpASeu2XXrvna8ci3cZGJPUA6n8S//XZW5MVzIYyajDfM2UpgcwzfE
+         tH8xYDGjBTfwQ==
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/5] rust: types: introduce `ForeignOwnable`
-Message-ID: <Y9VV4+KCkShRex9m@boqun-archlinux>
-References: <20230119174036.64046-2-wedsonaf@gmail.com>
- <20230128145345.1770912-1-yakoyoku@gmail.com>
+Subject: [PATCH 4/4] kbuild: srcrpm-pkg: create source package without cleaning
+Date:   Sun, 29 Jan 2023 02:38:43 +0900
+Message-Id: <20230128173843.765212-4-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230128173843.765212-1-masahiroy@kernel.org>
+References: <20230128173843.765212-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230128145345.1770912-1-yakoyoku@gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jan 28, 2023 at 11:53:45AM -0300, Martin Rodriguez Reboredo wrote:
-[...]
-> > +    /// Borrows a foreign-owned object.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
-> > +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-> > +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow_mut`]
-> > +    /// for this object must have been dropped.
-> > +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> Self::Borrowed<'a>;
-> > +
-> > +    /// Mutably borrows a foreign-owned object.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
-> > +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-> > +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
-> > +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
-> > +    unsafe fn borrow_mut<T: ForeignOwnable>(ptr: *const core::ffi::c_void) -> ScopeGuard<T, fn(T)> {
-> > +        // SAFETY: The safety requirements ensure that `ptr` came from a previous call to
-> > +        // `into_foreign`.
-> > +        ScopeGuard::new_with_data(unsafe { T::from_foreign(ptr) }, |d| {
-> > +            d.into_foreign();
-> > +        })
-> > +    }
-> 
-> Could these three methods have a borrowing equivalent? When I was
-> working on some features for the USB module I've stumbled upon the case
-> of having to encode a pointer (with a pivot) and I cannot do it without
-> taking ownership of the pointer.
-> 
+If you run 'make (src)rpm-pkg', all objects are lost due to 'make clean',
+which makes the incremental builds impossible.
 
-*const T is Copy, so you can still use it after pass it to a function or
-a new binding, e.g.
+Instead of cleaning, pass the exclude list to tar's --exclude-from
+option.
 
-	pub fn use_ptr(ptr: *const i32) { .. }
+Previously, the .config was contained in the source tarball.
 
-	let p: *const i32 = some_func();
+With this commit, the source rpm consists of separate linux.tar.gz
+and .config.
 
-	let q = p;
+Remove stale comments. Now, 'make (src)rpm-pkg' works with O= option.
 
-	// q is just a copy of p
-	use_ptr(p);
-	// passing to a function parameter is just copying
-	use_ptr(p);
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-maybe I'm missing something subtle, but if you have an example I can
-help take a look.
+ scripts/Makefile.package | 50 +++-------------------------------------
+ scripts/package/mkspec   |  8 +++----
+ 2 files changed, 7 insertions(+), 51 deletions(-)
 
-Regards,
-Boqun
+diff --git a/scripts/Makefile.package b/scripts/Makefile.package
+index 8fa6f05967aa..b899fe747bc9 100644
+--- a/scripts/Makefile.package
++++ b/scripts/Makefile.package
+@@ -3,53 +3,11 @@
+ 
+ include $(srctree)/scripts/Kbuild.include
+ 
+-# RPM target
+-# ---------------------------------------------------------------------------
+-# The rpm target generates two rpm files:
+-# /usr/src/packages/SRPMS/kernel-2.6.7rc2-1.src.rpm
+-# /usr/src/packages/RPMS/i386/kernel-2.6.7rc2-1.<arch>.rpm
+-# The src.rpm files includes all source for the kernel being built
+-# The <arch>.rpm includes kernel configuration, modules etc.
+-#
+-# Process to create the rpm files
+-# a) clean the kernel
+-# b) Generate .spec file
+-# c) Build a tar ball, using symlink to make kernel version
+-#    first entry in the path
+-# d) and pack the result to a tar.gz file
+-# e) generate the rpm files, based on kernel.spec
+-# - Use /. to avoid tar packing just the symlink
+-
+-# Note that the rpm-pkg target cannot be used with KBUILD_OUTPUT,
+-# but the binrpm-pkg target can; for some reason O= gets ignored.
+-
+-# Remove hyphens since they have special meaning in RPM filenames
+-KERNELPATH := kernel-$(subst -,_,$(KERNELRELEASE))
+ KDEB_SOURCENAME ?= linux-upstream
+ KBUILD_PKG_ROOTCMD ?="fakeroot -u"
+ export KDEB_SOURCENAME
+-# Include only those top-level files that are needed by make, plus the GPL copy
+-TAR_CONTENT := Documentation LICENSES arch block certs crypto drivers fs \
+-               include init io_uring ipc kernel lib mm net rust \
+-               samples scripts security sound tools usr virt \
+-               .config Makefile \
+-               Kbuild Kconfig COPYING $(wildcard localversion*)
+ MKSPEC     := $(srctree)/scripts/package/mkspec
+ 
+-quiet_cmd_src_tar = TAR     $(2).tar.gz
+-      cmd_src_tar = \
+-if test "$(objtree)" != "$(srctree)"; then \
+-	echo >&2; \
+-	echo >&2 "  ERROR:"; \
+-	echo >&2 "  Building source tarball is not possible outside the"; \
+-	echo >&2 "  kernel source tree. Don't set KBUILD_OUTPUT, or use the"; \
+-	echo >&2 "  binrpm-pkg or bindeb-pkg target instead."; \
+-	echo >&2; \
+-	false; \
+-fi ; \
+-tar -I $(KGZIP) -c $(RCS_TAR_IGNORE) -f $(2).tar.gz \
+-	--transform 's:^:$(2)/:S' $(TAR_CONTENT) $(3)
+-
+ # Source Tarball
+ # ---------------------------------------------------------------------------
+ 
+@@ -76,12 +34,10 @@ rpm-pkg: srcrpm-pkg
+ # srcrpm-pkg
+ # ---------------------------------------------------------------------------
+ PHONY += srcrpm-pkg
+-srcrpm-pkg:
+-	$(MAKE) clean
++srcrpm-pkg: linux.tar.gz
+ 	$(CONFIG_SHELL) $(MKSPEC) >$(objtree)/kernel.spec
+-	$(call cmd,src_tar,$(KERNELPATH),kernel.spec)
+-	+rpmbuild $(RPMOPTS) --target $(UTS_MACHINE)-linux -ts $(KERNELPATH).tar.gz \
+-	--define='_smp_mflags %{nil}' --define='_srcrpmdir $(srctree)'
++	+rpmbuild $(RPMOPTS) --target $(UTS_MACHINE)-linux -bs kernel.spec \
++	--define='_smp_mflags %{nil}' --define='_sourcedir .' --define='_srcrpmdir .'
+ 
+ # binrpm-pkg
+ # ---------------------------------------------------------------------------
+diff --git a/scripts/package/mkspec b/scripts/package/mkspec
+index 108c0cb95436..83a64d9d7372 100755
+--- a/scripts/package/mkspec
++++ b/scripts/package/mkspec
+@@ -47,7 +47,8 @@ sed -e '/^DEL/d' -e 's/^\t*//' <<EOF
+ 	Group: System Environment/Kernel
+ 	Vendor: The Linux Community
+ 	URL: https://www.kernel.org
+-$S	Source: kernel-$__KERNELRELEASE.tar.gz
++$S	Source0: linux.tar.gz
++$S	Source1: .config
+ 	Provides: $PROVIDES
+ $S	BuildRequires: bc binutils bison dwarves
+ $S	BuildRequires: (elfutils-libelf-devel or libelf-devel) flex
+@@ -83,9 +84,8 @@ $S$M	This package provides kernel headers and makefiles sufficient to build modu
+ $S$M	against the $__KERNELRELEASE kernel package.
+ $S$M
+ $S	%prep
+-$S	%setup -q
+-$S	rm -f scripts/basic/fixdep scripts/kconfig/conf
+-$S	rm -f tools/objtool/{fixdep,objtool}
++$S	%setup -q -n linux
++$S	cp %{SOURCE1} .
+ $S
+ $S	%build
+ $S	$MAKE %{?_smp_mflags} KERNELRELEASE=$KERNELRELEASE KBUILD_BUILD_VERSION=%{release}
+-- 
+2.34.1
 
-> > +
-> > +    /// Converts a foreign-owned object back to a Rust-owned one.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
-> > +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-> > +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
-> > +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
-> > +    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self;
-> > +}
-> > +
-> >  /// Runs a cleanup function/closure when dropped.
-> >  ///
-> >  /// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
-> > -- 
-> > 2.34.1
-> 
-> Aside from these comments I observe that there's a possibility to make
-> ForeignOwnable a const trait and have non const implementors. Otherwise
-> if these things are out of scope, no problem whatsoever and this has my
-> OK.
-> 
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
