@@ -2,110 +2,240 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 181DEC27C76
-	for <rust-for-linux@archiver.kernel.org>; Sat, 28 Jan 2023 10:29:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A215C27C76
+	for <rust-for-linux@archiver.kernel.org>; Sat, 28 Jan 2023 10:38:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234012AbjA1K3K (ORCPT
+        id S231185AbjA1Kim (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 28 Jan 2023 05:29:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41652 "EHLO
+        Sat, 28 Jan 2023 05:38:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232926AbjA1K3J (ORCPT
+        with ESMTP id S229811AbjA1Kil (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 28 Jan 2023 05:29:09 -0500
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D184138B43;
-        Sat, 28 Jan 2023 02:29:08 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id kt14so19841787ejc.3;
-        Sat, 28 Jan 2023 02:29:08 -0800 (PST)
+        Sat, 28 Jan 2023 05:38:41 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2BE311671;
+        Sat, 28 Jan 2023 02:38:39 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id s3so6840871edd.4;
+        Sat, 28 Jan 2023 02:38:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=68XM5SY6Nwl6N7UzCO83VpbKiluHmqgtg2rk9s+ih1g=;
-        b=KRS7AYwNKqscG5OmDKnnwwusx77OIJ8umk6R0C6lgfibo1fGhdgXp9nJMfOJNL7CB2
-         Rgk5XIfMWqMGhxj7F0J/uHEPIiXg2qGl3gA9oQ1vEBMc1Fdm/7n2x9yOE4axLAJbmhQu
-         u3MiGA4SDpdg0+5i1DGakmv5m+EmxXIniNs007Q9osDaX4yLakBrmqaRHnnXsIg/19Oz
-         uBzcFpV82q8DuQyM125iuTlUfLrmHC2tvPhTNxlUHswA/XXC7FOqU7wflzxThlYxGK4D
-         FCjXfYIbhLmiuGYo9E3XWxc2MbiGyeal+sMazLSE74yEe38EgvYjhnjU82sVRXsyuS96
-         03Cg==
+        bh=C7T3kTWhyhW5Qw+zVPgMHUZkXCCLAl+xDP5/+Vyr24Q=;
+        b=ih92+b6mJO4vrIMzcyhIVjB7bENSyXVOXx5IGrR4DrdMHGVdCcd3aG/wylRf34umr/
+         QnBFral6cPDbPcB5AlIk2TfcY2boAfa/r+cXyA96J95KGcXkJUcTY/cCV1URVfQoikaP
+         XQWJKJDvVf2om/TGBW4fJSomgCSKs/Fc4qjdx3AjjQ8ulO+P/1RYmB4o9vanzH/0qbXn
+         yTfE6+a7Lm9Vd0zdP0CFKqHda6R/f1tVth8vI7QJkW0EDddR1CWFLPqxwXzFxIwY0TO6
+         OEgGmyJRhrY4PgduAFjzsMiN1PRVcVsB0AdgitaSPuEPv/jWlep2JGg1RCnSQfMCK6en
+         Edkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=68XM5SY6Nwl6N7UzCO83VpbKiluHmqgtg2rk9s+ih1g=;
-        b=Q+Rxdy6jtZVTo3WyXfxmHBt6dnjMRKQ6NoZfvUtdDN7+3CTR5CJ0GsSnzcsl1UG6at
-         lxgYsCiJS7M2nzk5kFvsxxWYHHs/b0Q0ln5uIAlDkjanAkq8qCaKQOGtrIn9GhnebLWb
-         yA7Xhe7Mh1e9jeImekVCgsuuUGe5EveO3P+2OVan9Ki51U25OdzpbniRxxhRWXlzhdyV
-         uf3HfeCEvjg6Caj5pErV94zbdSKhYiH7+h4j0Lyn4dCnZLpfqSXU6LYObsXUhFaOjrD3
-         t3JXpBtbo+fY7+nep/+V00QzZvwGMFd1flSGSATQDjYWNDrGLp112hh6FpcvYGD6P1gC
-         cFEQ==
-X-Gm-Message-State: AFqh2kqlNOHgusSrZ8b2CadRROX1dl0iptC7xdW09VPE9cHgO5INphtL
-        Gh3jvVfXvop66bR7r4oepyk=
-X-Google-Smtp-Source: AMrXdXvqhBx49ozlQWXTucpdOhfx8lxHknUW2fYC3sPnDAE2usYHRB3hsvL1eJCqReODLm/tt7BJzw==
-X-Received: by 2002:a17:907:cb24:b0:872:45d3:dcfa with SMTP id um36-20020a170907cb2400b0087245d3dcfamr41533607ejc.42.1674901747327;
-        Sat, 28 Jan 2023 02:29:07 -0800 (PST)
+        bh=C7T3kTWhyhW5Qw+zVPgMHUZkXCCLAl+xDP5/+Vyr24Q=;
+        b=TDFVM0CFhsy4ZHj8NfZw9KRPvb8ezf2EQwgT6ge8QeYz9vA+FHeABO1Qk/Y3ccNzh5
+         u6Bg0QO5pI1XJxKyBPsL71JQL+FDQBIomv7X59DcZa89ZA+McWPESjLabYGGRSQLgrGz
+         prHDbojR3pMuleJvYGA1KYJ/0rhcl+weNGLIJ9o4yVP1ROaBYeU6b4J52dmSouDRrvUA
+         JcPArJSiTCGLrL76l5E2lm9E2n4bqS7E6msl5oJSnq+ZPrNEXwMU0takAIX7+KQ5LD5J
+         HU2xQlMQ+/AMJvJ9RIbfAJkEU308DgEGdPWR5SQs2ZMat5jdXFX+0QDwr9bzQfAxD1Ld
+         FOLg==
+X-Gm-Message-State: AO0yUKUa4HNZttT3p9CfS+5ilaMAKTVVAQ/Qe7rebgYabsgMxrgMT48k
+        FdByMXEMdlyvATM5Wb60dki4tDIQDAlzbnNL
+X-Google-Smtp-Source: AK7set8EJORsnSF3U/OvSvkAKlqdqZiNDT/OFKJv+qFpy10DJKR830FEE539Wkiwp3ndtRV8jtelCA==
+X-Received: by 2002:a05:6402:35d6:b0:4a2:2e8a:14d8 with SMTP id z22-20020a05640235d600b004a22e8a14d8mr646227edc.30.1674902318402;
+        Sat, 28 Jan 2023 02:38:38 -0800 (PST)
 Received: from localhost ([2001:b07:5d37:537d:645c:8576:916a:8c99])
-        by smtp.gmail.com with ESMTPSA id y19-20020aa7ccd3000000b004a20fa37286sm1997324edt.85.2023.01.28.02.29.06
+        by smtp.gmail.com with ESMTPSA id r15-20020a1709067fcf00b0087fa83790d8sm1372727ejs.13.2023.01.28.02.38.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Jan 2023 02:29:06 -0800 (PST)
+        Sat, 28 Jan 2023 02:38:37 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Sat, 28 Jan 2023 11:29:05 +0100
-Message-Id: <CQ3R47Q8UMTZ.2RQFPSEBX7EVI@vincent>
-Cc:     "Greg KH" <gregkh@linuxfoundation.org>,
-        "Miguel Ojeda" <ojeda@kernel.org>,
+Date:   Sat, 28 Jan 2023 11:38:36 +0100
+Message-Id: <CQ3RBI3EBELP.206VKZ8X6P301@vincent>
+To:     "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        <rust-for-linux@vger.kernel.org>
+Cc:     "Miguel Ojeda" <ojeda@kernel.org>,
         "Alex Gaynor" <alex.gaynor@gmail.com>,
-        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        "Gary Guo" <gary@garyguo.net>,
+        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
         =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] rust: MAINTAINERS: Add the zulip link
+Subject: Re: [PATCH 1/5] rust: types: introduce `ScopeGuard`
 From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-To:     "Boqun Feng" <boqun.feng@gmail.com>,
-        <rust-for-linux@vger.kernel.org>
 X-Mailer: aerc 0.8.2
-References: <20230128072258.3384037-1-boqun.feng@gmail.com>
-In-Reply-To: <20230128072258.3384037-1-boqun.feng@gmail.com>
+References: <20230119174036.64046-1-wedsonaf@gmail.com>
+In-Reply-To: <20230119174036.64046-1-wedsonaf@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Thu Jan 19, 2023 at 6:40 PM CET, Wedson Almeida Filho wrote:
+> This allows us to run some code when the guard is dropped (e.g.,
+> implicitly when it goes out of scope). We can also prevent the
+> guard from running by calling its `dismiss()` method.
+>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> ---
 Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 
-On Sat Jan 28, 2023 at 8:22 AM CET, Boqun Feng wrote:
-> Zulip organization "rust-for-linux" has been created since about 2 years
-> ago[1], and proven to be a great place for Rust related discussion,
-> therefore add the information in MAINTAINERS file so that newcomers have
-> more options to find guide and help.
+>  rust/kernel/types.rs | 127 ++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 126 insertions(+), 1 deletion(-)
 >
-> [1]: https://lore.kernel.org/rust-for-linux/CANiq72=3DxVaMQkgCA9rspjV8bhW=
-DGqAn4x78B0_4U1WBJYj1PiA@mail.gmail.com/
->
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
-> v1 -> v2:
->
-> 	* 	As suggested by Greg KH, add commit message.
->
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 42fc47c6edfd..30161207f365 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -18219,6 +18219,7 @@ R:	Boqun Feng <boqun.feng@gmail.com>
->  R:	Gary Guo <gary@garyguo.net>
->  R:	Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
->  L:	rust-for-linux@vger.kernel.org
-> +C:	zulip://rust-for-linux.zulipchat.com
->  S:	Supported
->  W:	https://github.com/Rust-for-Linux/linux
->  B:	https://github.com/Rust-for-Linux/linux/issues
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index e84e51ec9716..f0ad4472292d 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -2,7 +2,132 @@
+> =20
+>  //! Kernel types.
+> =20
+> -use core::{cell::UnsafeCell, mem::MaybeUninit};
+> +use alloc::boxed::Box;
+> +use core::{
+> +    cell::UnsafeCell,
+> +    mem::MaybeUninit,
+> +    ops::{Deref, DerefMut},
+> +};
+> +
+> +/// Runs a cleanup function/closure when dropped.
+> +///
+> +/// The [`ScopeGuard::dismiss`] function prevents the cleanup function f=
+rom running.
+> +///
+> +/// # Examples
+> +///
+> +/// In the example below, we have multiple exit paths and we want to log=
+ regardless of which one is
+> +/// taken:
+> +/// ```
+> +/// # use kernel::ScopeGuard;
+> +/// fn example1(arg: bool) {
+> +///     let _log =3D ScopeGuard::new(|| pr_info!("example1 completed\n")=
+);
+> +///
+> +///     if arg {
+> +///         return;
+> +///     }
+> +///
+> +///     pr_info!("Do something...\n");
+> +/// }
+> +///
+> +/// # example1(false);
+> +/// # example1(true);
+> +/// ```
+> +///
+> +/// In the example below, we want to log the same message on all early e=
+xits but a different one on
+> +/// the main exit path:
+> +/// ```
+> +/// # use kernel::ScopeGuard;
+> +/// fn example2(arg: bool) {
+> +///     let log =3D ScopeGuard::new(|| pr_info!("example2 returned early=
+\n"));
+> +///
+> +///     if arg {
+> +///         return;
+> +///     }
+> +///
+> +///     // (Other early returns...)
+> +///
+> +///     log.dismiss();
+> +///     pr_info!("example2 no early return\n");
+> +/// }
+> +///
+> +/// # example2(false);
+> +/// # example2(true);
+> +/// ```
+> +///
+> +/// In the example below, we need a mutable object (the vector) to be ac=
+cessible within the log
+> +/// function, so we wrap it in the [`ScopeGuard`]:
+> +/// ```
+> +/// # use kernel::ScopeGuard;
+> +/// fn example3(arg: bool) -> Result {
+> +///     let mut vec =3D
+> +///         ScopeGuard::new_with_data(Vec::new(), |v| pr_info!("vec had =
+{} elements\n", v.len()));
+> +///
+> +///     vec.try_push(10u8)?;
+> +///     if arg {
+> +///         return Ok(());
+> +///     }
+> +///     vec.try_push(20u8)?;
+> +///     Ok(())
+> +/// }
+> +///
+> +/// # assert_eq!(example3(false), Ok(()));
+> +/// # assert_eq!(example3(true), Ok(()));
+> +/// ```
+> +///
+> +/// # Invariants
+> +///
+> +/// The value stored in the struct is nearly always `Some(_)`, except be=
+tween
+> +/// [`ScopeGuard::dismiss`] and [`ScopeGuard::drop`]: in this case, it w=
+ill be `None` as the value
+> +/// will have been returned to the caller. Since  [`ScopeGuard::dismiss`=
+] consumes the guard,
+> +/// callers won't be able to use it anymore.
+> +pub struct ScopeGuard<T, F: FnOnce(T)>(Option<(T, F)>);
+> +
+> +impl<T, F: FnOnce(T)> ScopeGuard<T, F> {
+> +    /// Creates a new guarded object wrapping the given data and with th=
+e given cleanup function.
+> +    pub fn new_with_data(data: T, cleanup_func: F) -> Self {
+> +        // INVARIANT: The struct is being initialised with `Some(_)`.
+> +        Self(Some((data, cleanup_func)))
+> +    }
+> +
+> +    /// Prevents the cleanup function from running and returns the guard=
+ed data.
+> +    pub fn dismiss(mut self) -> T {
+> +        // INVARIANT: This is the exception case in the invariant; it is=
+ not visible to callers
+> +        // because this function consumes `self`.
+> +        self.0.take().unwrap().0
+> +    }
+> +}
+> +
+> +impl ScopeGuard<(), Box<dyn FnOnce(())>> {
+> +    /// Creates a new guarded object with the given cleanup function.
+> +    pub fn new(cleanup: impl FnOnce()) -> ScopeGuard<(), impl FnOnce(())=
+> {
+> +        ScopeGuard::new_with_data((), move |_| cleanup())
+> +    }
+> +}
+> +
+> +impl<T, F: FnOnce(T)> Deref for ScopeGuard<T, F> {
+> +    type Target =3D T;
+> +
+> +    fn deref(&self) -> &T {
+> +        // The type invariants guarantee that `unwrap` will succeed.
+> +        &self.0.as_ref().unwrap().0
+> +    }
+> +}
+> +
+> +impl<T, F: FnOnce(T)> DerefMut for ScopeGuard<T, F> {
+> +    fn deref_mut(&mut self) -> &mut T {
+> +        // The type invariants guarantee that `unwrap` will succeed.
+> +        &mut self.0.as_mut().unwrap().0
+> +    }
+> +}
+> +
+> +impl<T, F: FnOnce(T)> Drop for ScopeGuard<T, F> {
+> +    fn drop(&mut self) {
+> +        // Run the cleanup function if one is still present.
+> +        if let Some((data, cleanup)) =3D self.0.take() {
+> +            cleanup(data)
+> +        }
+> +    }
+> +}
+> =20
+>  /// Stores an opaque value.
+>  ///
 > --=20
-> 2.39.1
+> 2.34.1
 
