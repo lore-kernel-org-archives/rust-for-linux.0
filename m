@@ -2,125 +2,108 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91EA4C38142
-	for <rust-for-linux@archiver.kernel.org>; Sat, 28 Jan 2023 10:50:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50AFBC27C76
+	for <rust-for-linux@archiver.kernel.org>; Sat, 28 Jan 2023 11:13:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229933AbjA1KuX (ORCPT
+        id S233631AbjA1LNg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 28 Jan 2023 05:50:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52390 "EHLO
+        Sat, 28 Jan 2023 06:13:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233962AbjA1KuO (ORCPT
+        with ESMTP id S234050AbjA1LNa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 28 Jan 2023 05:50:14 -0500
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8485222F7;
-        Sat, 28 Jan 2023 02:50:06 -0800 (PST)
-Received: by mail-ej1-x62a.google.com with SMTP id vw16so19765632ejc.12;
-        Sat, 28 Jan 2023 02:50:06 -0800 (PST)
+        Sat, 28 Jan 2023 06:13:30 -0500
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8347786AA;
+        Sat, 28 Jan 2023 03:13:14 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id y11so6863470edd.6;
+        Sat, 28 Jan 2023 03:13:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mRQuV4TaE8EzLcMmhyuz6iKDDEwNSHJvDz0W5JvrYzI=;
-        b=Be65aRmazjbuYKgVYAZG3m7fCGL4LDUCjyHNXwDGfFDsJwBtRT0Vj68lFrrCxlelyo
-         gmnAqJS36wTOuRfXqLTOpWYkPMWQbsnidOQ5LBt07XPXNCNyNjxtx0Vf63lDrjVFIVRZ
-         2jowYeRvAwnjsbGy2IsaVisgjgEC5/V0hAGgiWnUPaFUEZMIZuA5MMZ+2fhXdhqGLiy7
-         IVzbUPxgw4GonVkOTRkJNjjeqSA6RcpR3sTVgG2AMSZ6MAZIZW90U1H2bnQQAR6QihZZ
-         YUFYi+G/ltOv8Ec7y5q4gf9xt+knH/aAsY/Zz1W/9XTjyxUmJcD8PmZhc0dUwfkBfvJ/
-         ZsBg==
+        bh=BALqKCNimh6YexUKOLQ9itGrp3FI+4x53rzz3lKq88M=;
+        b=LliQ4YnnUPyg/7negszK/VFXlZACFbwla8P4Y3veCmnA+zB7N+6yCV9tquKe4Do33O
+         09Kv+zFjKOLLb8NhXCFInK3pJAAG7P8x7P27OsyYH78hdq3oNReNm/eGbW8mxTVvy6ca
+         U5KuKGnpIotOV2MSRPD/X+X82oEYtYwQRh2zEAkwdR9pspR1gH/WrKdKrYylRfH7DCa9
+         V3YQm/y9PxgIkgOFXwHfYe1hINleD05ZM8xcYvKOz9SqVh6e+Rw0RsEr4fabBTQPfJen
+         GmiDFMIRVKDC/iDwUuJvpPMwlRXeThO0p/qZ87mOz9HLN0GAvxauqTRRH0Dqz+HgGv5W
+         VSUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=mRQuV4TaE8EzLcMmhyuz6iKDDEwNSHJvDz0W5JvrYzI=;
-        b=tpkZjZJLjt1K5tqz8P2pPwCGVZOhpbv7VVRbAMc6zAOSfn2AWYOuYxFKtGEE5dRYf0
-         717iiHm20RwiqVctd2j90hHkk8w2EMcAUw2iXp8K8VBWLzXJaNOIH9fZPUfskCXxT26y
-         4g7Cbrz6qyEb2bdWJXBcU2ypSdx8Flyc8uYru0FYsuocIAu9c6esgeaJw227/Gd3oDtg
-         QrujdCjFZL7Eex9gWndXscITVaaoIdk00IDfovwYAI3cCr0VB423TWAAHYt028HMm5Nk
-         zuHw6FRmRSmeONpb0x5lnZ8I0cQozy/j15BEmSht0qc/B/0H/u9XNm8vo1RJwH4UQie0
-         fyaw==
-X-Gm-Message-State: AO0yUKVTvltpFbjq9Efy/ERU9xpB0jt556gksXJNHgZ+k2kKbrO+dCuN
-        /Q4s+jfxjd8XStCadXCchdbL20Bg0xI3ul+k
-X-Google-Smtp-Source: AK7set+TB+OqpeANyl+bG/Pwg2v2bZWCFHYtfcjCmHK3JN0htFI9mUJNdGfZu287D4+fISAwvlpXRg==
-X-Received: by 2002:a17:907:a42a:b0:84d:4be4:aa2b with SMTP id sg42-20020a170907a42a00b0084d4be4aa2bmr2625016ejc.68.1674903005366;
-        Sat, 28 Jan 2023 02:50:05 -0800 (PST)
-Received: from localhost ([2001:b07:5d37:537d:645c:8576:916a:8c99])
-        by smtp.gmail.com with ESMTPSA id fy15-20020a1709069f0f00b0084c62b7b7d8sm3659732ejc.187.2023.01.28.02.50.04
+        bh=BALqKCNimh6YexUKOLQ9itGrp3FI+4x53rzz3lKq88M=;
+        b=33BSPj1Aww+UFiT7cZFYH4wH3F6oEmyllm4dCD/NeAZQD6PJyLt+1CES8Gc11W10CF
+         nLiO0pQxdGuUDeD5Pdunp79PtxVlSm3rIicwc9ZWouJXt8Bx4jLeeLf/qMjHiscfA3SS
+         QSF2tEewB6W2KNoBFwTQIKkbWGfsARFk9KobUUyX/El7p7LPUZL7EGfxREv8nMIaSE8H
+         ZbKpyl9cxE+5PGR8t/pYqu/UprtYk2xqvZVXf/q+YBp7KGyyjRAhqFArhJmA7NSt24xV
+         PgB3ltHLbPVa9sLdDL1PNrzyOdUICpl8chzc3vUH3leQIItSeoAyQ4Hb5r4Do2f+2XzD
+         ob3Q==
+X-Gm-Message-State: AFqh2ko7ZXLsahLm4OwbLrJQJUDpt6XUAeutvS5/jJ/JObZvFljrhkOA
+        BZvOvrWxm8t3u5aNOt2p58Y=
+X-Google-Smtp-Source: AMrXdXucALAEHgAxBNt30XmS9jYljPYEQr0Vfl5gnrZRtGZGBafUAVNWq/wKyGbpsLQV6g0S9vLHTw==
+X-Received: by 2002:aa7:cac2:0:b0:497:948b:e8 with SMTP id l2-20020aa7cac2000000b00497948b00e8mr40411353edt.6.1674904393085;
+        Sat, 28 Jan 2023 03:13:13 -0800 (PST)
+Received: from localhost (93-55-83-125.ip262.fastwebnet.it. [93.55.83.125])
+        by smtp.gmail.com with ESMTPSA id w11-20020a50fa8b000000b0049e09105705sm3719103edr.62.2023.01.28.03.13.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Jan 2023 02:50:04 -0800 (PST)
+        Sat, 28 Jan 2023 03:13:12 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Sat, 28 Jan 2023 11:50:03 +0100
-Message-Id: <CQ3RK9MZV5SE.BYRDR31FD0NW@vincent>
-Subject: Re: [PATCH 3/5] rust: types: implement `ForeignOwnable` for
- `Box<T>`
+Date:   Sat, 28 Jan 2023 12:13:10 +0100
+Message-Id: <CQ3S1YW1TFJ0.KGRDY0XZGSL4@vincent>
+Subject: Re: [PATCH 4/5] rust: types: implement `ForeignOwnable` for the
+ unit type
 From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-To:     "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        <rust-for-linux@vger.kernel.org>
-Cc:     "Miguel Ojeda" <ojeda@kernel.org>,
+To:     "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
+        "Gary Guo" <gary@garyguo.net>
+Cc:     "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        <rust-for-linux@vger.kernel.org>,
+        "Miguel Ojeda" <ojeda@kernel.org>,
         "Alex Gaynor" <alex.gaynor@gmail.com>,
-        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+        "Boqun Feng" <boqun.feng@gmail.com>,
         =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.8.2
 References: <20230119174036.64046-1-wedsonaf@gmail.com>
- <20230119174036.64046-3-wedsonaf@gmail.com>
-In-Reply-To: <20230119174036.64046-3-wedsonaf@gmail.com>
+ <20230119174036.64046-4-wedsonaf@gmail.com>
+ <20230127140319.22af6060.gary@garyguo.net>
+ <CANiq72kXNvQ-GY-uw24s_1NmQ5G12Cu+JfYKFQ0rC-4Fnm8o8Q@mail.gmail.com>
+In-Reply-To: <CANiq72kXNvQ-GY-uw24s_1NmQ5G12Cu+JfYKFQ0rC-4Fnm8o8Q@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu Jan 19, 2023 at 6:40 PM CET, Wedson Almeida Filho wrote:
-> This allows us to hand ownership of Rust dynamically allocated
-> objects to the C side of the kernel.
+On Fri Jan 27, 2023 at 3:11 PM CET, Miguel Ojeda wrote:
+> On Fri, Jan 27, 2023 at 3:03 PM Gary Guo <gary@garyguo.net> wrote:
+> >
+> > this should really be `core::ptr::invalid(1)`. That's currently
+> > unstable, but can be equivalently written as
+> > `NonNull::<()>::dangling().as_ptr()`.
+> >
+> > This has a different semantic meaning from `as` since it explicitly
+> > suggests an invalid provenance and thus will not alias with other
+> > pointers. (Although I don't think compiler currently can take advantage
+> > of this fact yet)
 >
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> ---
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+> We talked about starting to use `strict_provenance` when it came out
+> -- what is the latest status? i.e. do you know if it is expected that
+> it will pass FCP etc.? (my understanding originally was that it was an
+> experiment).
+From what I remember the feeling was positing into hace `strict_provenance`
 
->  1 file changed, 22 insertions(+)
->
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 5475f6163002..e037c262f23e 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -63,6 +63,28 @@ pub trait ForeignOwnable {
->      unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self;
->  }
-> =20
-> +impl<T: 'static> ForeignOwnable for Box<T> {
-> +    type Borrowed<'a> =3D &'a T;
-> +
-> +    fn into_foreign(self) -> *const core::ffi::c_void {
-> +        Box::into_raw(self) as _
-> +    }
-> +
-> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> &'a T {
-> +        // SAFETY: The safety requirements for this function ensure that=
- the object is still alive,
-> +        // so it is safe to dereference the raw pointer.
-> +        // The safety requirements of `from_foreign` also ensure that th=
-e object remains alive for
-> +        // the lifetime of the returned value.
-> +        unsafe { &*ptr.cast() }
-> +    }
-> +
-> +    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
-> +        // SAFETY: The safety requirements of this function ensure that =
-`ptr` comes from a previous
-> +        // call to `Self::into_foreign`.
-> +        unsafe { Box::from_raw(ptr as _) }
-> +    }
-> +}
-> +
->  /// Runs a cleanup function/closure when dropped.
->  ///
->  /// The [`ScopeGuard::dismiss`] function prevents the cleanup function f=
-rom running.
-> --=20
-> 2.34.1
+Here is the last meeting  that was back in August =20
+https://rust-lang.zulipchat.com/#narrow/stream/213817-t-lang/topic/Stabiliz=
+ing.20strict.20provenance.20APIs.3F
 
+I guess, we could just put a fix me around the actual code, I feel that the=
+ Gary change deserve a=20
+own patch with the own description.
+
+Cheers!
+
+Vincent.
