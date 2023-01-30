@@ -2,62 +2,63 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B696EC54EAA
-	for <rust-for-linux@archiver.kernel.org>; Mon, 30 Jan 2023 05:36:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B475C54EED
+	for <rust-for-linux@archiver.kernel.org>; Mon, 30 Jan 2023 05:55:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235413AbjA3FgD (ORCPT
+        id S235675AbjA3Fzs (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 30 Jan 2023 00:36:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60908 "EHLO
+        Mon, 30 Jan 2023 00:55:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234818AbjA3FgC (ORCPT
+        with ESMTP id S235687AbjA3Fzo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 30 Jan 2023 00:36:02 -0500
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3ABA1C338
-        for <rust-for-linux@vger.kernel.org>; Sun, 29 Jan 2023 21:36:01 -0800 (PST)
-Received: by mail-lj1-x22c.google.com with SMTP id e16so11530636ljn.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 29 Jan 2023 21:36:01 -0800 (PST)
+        Mon, 30 Jan 2023 00:55:44 -0500
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93BCD18B2A;
+        Sun, 29 Jan 2023 21:55:43 -0800 (PST)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-16332831ed0so13752529fac.10;
+        Sun, 29 Jan 2023 21:55:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=miraclelinux-com.20210112.gappssmtp.com; s=20210112;
+        d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YNmp6hBxSYlTkhsmzXLxGAqaVCQ3e6vjSozcYohM8Tc=;
-        b=wKatVutRHoLHfIT0j8NZZ/thluctINlIrmddQaBJJfmYd2NWwiW26ojfWX0+Ol15RB
-         h3VNPlY8Zzia3VkqsBDp0JhwXwQ9mXirWb4c6GlMMF3kyMmXiHaYr0UByMvor9LaXrGC
-         Xw0KYnChNH0ujdWEJ89QGS6iHdmGG+jh0866FOk6vVODcjEWRVl07Rt85ZTGdxuED9Yx
-         hIXKKysNRmWn9KwuygLvKR/wiEaHFgUmU9MBjSjI82knLpZgXZZnc5J8s1P7E72v5NRk
-         NNj8sA+s3a37/Qndux5Sy4EhGXRzQFmPEwYiL6tRG/X4DOAreq8HAA9L43CIqtSkNxOH
-         ETVQ==
+        bh=Pb1DZ5HyR6ozcWWMySi1L96mmW2RSwsZOaJZCjMwx1A=;
+        b=Lj1/HuR/STv0Mz/5/u+/Yft1AEkDjEab97tPf/LJi9Hc5WLK0VyUeCsmKpebtgcMnY
+         6cTjglZjUFhxappvT9cZLyaifLpY1QmrsFTBnYX5HjV1lqNv6dDWTKB5g1UmSnFBqozy
+         yw+X4IU83o6+DR/DZY1KkAnlYwj9scmxfHf7eL7REEQRRX2N283VJLNhER2FawhuMXSy
+         dN15YOYc9S0FXdCUMy53P3nIkwGmRYRObykXu6Rd+9ssqpb4FYaqv/9Eql/KhQ5ONbk5
+         ZMVARNiGB2LRspoCIsiPnaqoopVRw2vkVFvbzbmF79hHI781zKUTae3BAdieb4EPUpz/
+         4gFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YNmp6hBxSYlTkhsmzXLxGAqaVCQ3e6vjSozcYohM8Tc=;
-        b=xr730Bh0kcnDKJbILovfVvWpxnMdgT0LAHuwvbZMULrOyH69V1e4KFpQt6zZrhQnKj
-         VWb0fo9gHK3ceIvTfbRQz2TNRMcZLBMQa54F8YCSdLgdiPUburnpX0y7OgA4aqA4+8kk
-         6jBO2g/JUKjNBm8Qfa1dWr8aqewsGiSGejtzm8Exs0Bo0nnMrS44rVXEDius9sY6+aQG
-         VnZkHHb2ys/QdK/vlLs5jw48nj+D5aJS+F8OqZQrdw191ma06PjGsPZnQIQJGokEFdCn
-         oB1vzvZ0DtQIQPORjs3lGsHmPhhSDQKS9PQVtD4gl7V6Y6bgO/QpLM+uJIWRXJ5HJ4hl
-         n0Aw==
-X-Gm-Message-State: AO0yUKVatizRdd/Efhnh284DHTKJ68yeGVGFrhGcCTGps+mH4bPfc7rR
-        eGpiCdkOb4MW6mPfmxFP+OaCvRk+5UUb8IHzjM4C
-X-Google-Smtp-Source: AK7set+HJwoxmCcTyt4BFt1cti5G4e11paT49mcW7S9oeXR5WL6C8HKD/U6xgF+HUE/8U3orKnnx0FFXTUggjICusxU=
-X-Received: by 2002:a2e:b817:0:b0:290:5102:a7f8 with SMTP id
- u23-20020a2eb817000000b002905102a7f8mr798131ljo.63.1675056960020; Sun, 29 Jan
- 2023 21:36:00 -0800 (PST)
+        bh=Pb1DZ5HyR6ozcWWMySi1L96mmW2RSwsZOaJZCjMwx1A=;
+        b=nyR9fR+OAIpwRn8JanIHr8bFAua5mS+7WS/m8p+VRs+fwtO0Ss3moZ/0h38wZhM8Xr
+         0Agw3eF6UV/KiwsVhWM4/xs/4C5ZZabSRuI4vqFXiK5CoIHYPLdtirHNfRcKvlowUOw6
+         K8Vl/KuKElRBcH5PAi4IDCZsK7/O87Xuc+11EGpqYbDpepKmQwBsdS5bXU/lDpk3NtAg
+         gA+eGCzXOLdN6jW0UoelmCHvwrQWn6b9UWiHNqGMI7zfqVE4VgelPLCxH2dtzsuuVlKm
+         NuGI0H0hiID2vWvmc3l5SHnmPVzWeyzgHGDlZ8W9qHODkb1p/ib5fNNXQQTdLnRb9jZO
+         YYtg==
+X-Gm-Message-State: AO0yUKVnn7d7Z5qkFCU2RXLaI4DjVVuFCsbcaoYkCBrCgGm2IC/9o53i
+        c4xXoKIMPV3CZG5iivlMR/9O+Qp6+YpnxLLK5KcCyw4/KTg=
+X-Google-Smtp-Source: AK7set+eZjxbQT4kboTeEq5/wxnLeObUwp/w11P3+AsLSTe27OUyFwRtAl4/vm1euPEl6GS+8vdfTTrxdDychd6Iv9Q=
+X-Received: by 2002:a05:6870:1790:b0:163:3c39:d0d5 with SMTP id
+ r16-20020a056870179000b001633c39d0d5mr1305076oae.215.1675058142846; Sun, 29
+ Jan 2023 21:55:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20230119174036.64046-1-wedsonaf@gmail.com> <20230119174036.64046-5-wedsonaf@gmail.com>
-In-Reply-To: <20230119174036.64046-5-wedsonaf@gmail.com>
-From:   Alice Ferrazzi <alice.ferrazzi@miraclelinux.com>
-Date:   Mon, 30 Jan 2023 14:35:14 +0900
-Message-ID: <CANgtXuM2A80=et=2GQRajy5ntri65QvRH3zg7xr5KPasQ16BUg@mail.gmail.com>
-Subject: Re: [PATCH 5/5] rust: types: implement `ForeignOwnable` for `Arc<T>`
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+References: <20230119174036.64046-1-wedsonaf@gmail.com> <20230119174036.64046-4-wedsonaf@gmail.com>
+ <20230127140319.22af6060.gary@garyguo.net>
+In-Reply-To: <20230127140319.22af6060.gary@garyguo.net>
+From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+Date:   Mon, 30 Jan 2023 02:55:31 -0300
+Message-ID: <CANeycqpUaKuKCjZyw1PiPzMo3rqZQXiFONZOKq1hbhVUA25+tQ@mail.gmail.com>
+Subject: Re: [PATCH 4/5] rust: types: implement `ForeignOwnable` for the unit type
+To:     Gary Guo <gary@garyguo.net>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
@@ -65,18 +66,55 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Jan 20, 2023 at 2:41 AM Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+On Fri, 27 Jan 2023 at 11:03, Gary Guo <gary@garyguo.net> wrote:
 >
-> This allows us to hand ownership of Rust ref-counted objects to
-> the C side of the kernel.
+> On Thu, 19 Jan 2023 14:40:35 -0300
+> Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 >
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > This allows us to use the unit type `()` when we have no object whose
+> > ownership must be managed but one implementing the `ForeignOwnable`
+> > trait is needed.
+> >
+> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > ---
+> >  rust/kernel/types.rs | 13 +++++++++++++
+> >  1 file changed, 13 insertions(+)
+> >
+> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> > index e037c262f23e..8f80cffbff59 100644
+> > --- a/rust/kernel/types.rs
+> > +++ b/rust/kernel/types.rs
+> > @@ -85,6 +85,19 @@ impl<T: 'static> ForeignOwnable for Box<T> {
+> >      }
+> >  }
+> >
+> > +impl ForeignOwnable for () {
+> > +    type Borrowed<'a> = ();
+> > +
+> > +    fn into_foreign(self) -> *const core::ffi::c_void {
+> > +        // We use 1 to be different from a null pointer.
+> > +        1usize as _
+>
+> this should really be `core::ptr::invalid(1)`. That's currently
+> unstable, but can be equivalently written as
+> `NonNull::<()>::dangling().as_ptr()`.
 
-Reviewed-by: Alice Ferrazzi <alice.ferrazzi@miraclelinux.com>
+This has the wrong type, but I agree with the spirit of the
+suggestion. I'll add it to V2.
 
--- 
-======================================
-Cybertrust Japan Co.,Ltd.
-Alice Ferrazzi
-alice.ferrazzi@miraclelinux.com
-======================================
+> This has a different semantic meaning from `as` since it explicitly
+> suggests an invalid provenance and thus will not alias with other
+> pointers. (Although I don't think compiler currently can take advantage
+> of this fact yet)
+>
+> > +    }
+> > +
+> > +    unsafe fn borrow<'a>(_: *const core::ffi::c_void) -> Self::Borrowed<'a> {}
+> > +
+> > +    unsafe fn from_foreign(_: *const core::ffi::c_void) -> Self {}
+> > +}
+> > +
+> >  /// Runs a cleanup function/closure when dropped.
+> >  ///
+> >  /// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
+>
