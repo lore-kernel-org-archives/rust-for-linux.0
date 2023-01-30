@@ -2,119 +2,82 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4F18C54EED
-	for <rust-for-linux@archiver.kernel.org>; Mon, 30 Jan 2023 01:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85004C54EED
+	for <rust-for-linux@archiver.kernel.org>; Mon, 30 Jan 2023 05:34:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235291AbjA3B32 (ORCPT
+        id S229614AbjA3Fek (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 29 Jan 2023 20:29:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53768 "EHLO
+        Mon, 30 Jan 2023 00:34:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbjA3B32 (ORCPT
+        with ESMTP id S235413AbjA3Fej (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 29 Jan 2023 20:29:28 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4D01193C4;
-        Sun, 29 Jan 2023 17:29:26 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8F691B80D52;
-        Mon, 30 Jan 2023 01:29:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395DBC433EF;
-        Mon, 30 Jan 2023 01:29:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675042164;
-        bh=1QHPPOkHUofpih9Jmlmgw0bRuqh8Fb1o1ZhTnb38xaM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=NEgo+H4FDaaL5RQhV97LWpkly81rGnp4W8RKF2CNF5FpOztWr1+fuTxOBz3gP7Kmd
-         jIfPOyfEM6fs6lVM6Y2fkxG6SvgyFC5PRSt5aot14RyKuo7NVh9FgKwA5mZTS77pXF
-         dn48zQlOwhGxxgtZOB8iRihxbekX9WYOqrcAj9emTS3sGHLrlfOmm3feHjfcgEu93H
-         GWs5ZfC8qMsgPgVSummKampNkUdYO29X0oDdJQEUPubaOlM104Qf9kzwY9qlPwsrg/
-         Sj4IB5L2E4GElOCn501Gh4wlOeyKyuiouqnlzaN+s1h33ULxR4YxDroxoC3m6D1FUr
-         psQZ631o6llSw==
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-163bd802238so1190516fac.1;
-        Sun, 29 Jan 2023 17:29:24 -0800 (PST)
-X-Gm-Message-State: AO0yUKXRr+vpzC+D8xbVG6OF8oRh3dSsatYn4f5avX+ul6iQ1zgdpDJh
-        a9hf3/sJzZswbBd+mmqnPZZUnqPfLfRSgue2zXI=
-X-Google-Smtp-Source: AK7set+y4ElpO/no/fM/exM/HohyKTb/NVh6kgI3s5IQP6qKQhWIPe/6MqIiLqiYGROfX+tePBJqQey7KQctSe2K4JI=
-X-Received: by 2002:a05:6870:330b:b0:163:a45a:9e41 with SMTP id
- x11-20020a056870330b00b00163a45a9e41mr208021oae.194.1675042163510; Sun, 29
- Jan 2023 17:29:23 -0800 (PST)
+        Mon, 30 Jan 2023 00:34:39 -0500
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 849951C338
+        for <rust-for-linux@vger.kernel.org>; Sun, 29 Jan 2023 21:34:34 -0800 (PST)
+Received: by mail-lf1-x12f.google.com with SMTP id y25so17325403lfa.9
+        for <rust-for-linux@vger.kernel.org>; Sun, 29 Jan 2023 21:34:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=miraclelinux-com.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=h2DAn1cDWhS4hWbAX5+FKv8Yf9kS0lfsICMw7GzgTVs=;
+        b=Oa6bpA0CeS9crFBiT3tsWK1F958FAFINFWMutxHYPjSfQO41s5btefoXXLK9TT29RI
+         E6Lz/kDDEertuiGLTGrLVQKuxp9pCsqJWPbEHo46Zs701fVNPtYKAseKbM7Y/Xjd5kut
+         zsmZ1ynbiLhqerrBIIpkrPXpUVSELucFhKgl7/fI1NBPLdzi5KB4x/SoAn3QOQAa5ykE
+         VRmz9xmlNWZHl2SKLVyH9osfMBXdHrU+ZEpeYNp19P+tgR6pclqZOWGTApyQ04OwQ4W5
+         wCzCzdHj9hnQjq6QBQj/quyeSAQhvid7JPG9cUvT2tr+rRzkQ5BNBSCBcSxV+hjM1cr2
+         nBjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h2DAn1cDWhS4hWbAX5+FKv8Yf9kS0lfsICMw7GzgTVs=;
+        b=Y7NmUNpF7q+HRvIZ+Quk1zWjSEqaFiJDU4CAWTNR8GRWoY+P1Z0V1zk7L1O6aTwXHq
+         32IaFxuTLpv/p8F0/xPV2SS6kppCPFks6cEhaps4a4W/VVisNc6ZSjBvG7zRYrp+9x7X
+         /XqDRG7bVi9nmg5SsQxgV5ZSVl/uz4wGUw++FfNNpGDUdBZoEAOxeINaDjjfEH5ueW10
+         AtVWZu1CrWv+osz0sJtNmjZaj1rPGryeem2Wwb03IzRWDzhaQAIpLjWYy88wbVZGqeZK
+         o7ATSDSmLSsojsnqfJIRdTL28gDFmLZiIsJM7+bHcS7WKYqvaB71kMlNmr8nFehShQ4C
+         EBUw==
+X-Gm-Message-State: AFqh2koHeUD5mnS76WxO/QSA0FhdlBMiQUZ6rtVhcgK04+o8KCQl2MND
+        eouls/aoaInsLvnVj9m4YD1Q6EXdB7ghP0v25f/E
+X-Google-Smtp-Source: AMrXdXtEdkOYXuOyxZRMxkgDYx46tbObgIxk9ho161qExqZpoelxez3nzvioAqUeoze5GshAQlI6B+HtJBfXHmf0UWo=
+X-Received: by 2002:a19:ae14:0:b0:4cc:8589:595b with SMTP id
+ f20-20020a19ae14000000b004cc8589595bmr6144264lfc.0.1675056872897; Sun, 29 Jan
+ 2023 21:34:32 -0800 (PST)
 MIME-Version: 1.0
-References: <20230129184602.3974058-1-masahiroy@kernel.org>
- <20230129184602.3974058-4-masahiroy@kernel.org> <CANiq72=BRW9TunjKQmeMthm7Esc_YKM++NmWh-Dqc9Av13SNow@mail.gmail.com>
-In-Reply-To: <CANiq72=BRW9TunjKQmeMthm7Esc_YKM++NmWh-Dqc9Av13SNow@mail.gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Mon, 30 Jan 2023 10:28:47 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQttb=qc5vsZNudYwTxmn=y3HZzVqZwAzMvLfUJXa4OFQ@mail.gmail.com>
-Message-ID: <CAK7LNAQttb=qc5vsZNudYwTxmn=y3HZzVqZwAzMvLfUJXa4OFQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] kbuild: srcrpm-pkg: create source package without cleaning
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
+References: <20230119174036.64046-1-wedsonaf@gmail.com> <20230119174036.64046-3-wedsonaf@gmail.com>
+In-Reply-To: <20230119174036.64046-3-wedsonaf@gmail.com>
+From:   Alice Ferrazzi <alice.ferrazzi@miraclelinux.com>
+Date:   Mon, 30 Jan 2023 14:33:47 +0900
+Message-ID: <CANgtXuPjovOGH7yeM28uRXOUX04KSTrzthqG_s+-77CBVdCCuw@mail.gmail.com>
+Subject: Re: [PATCH 3/5] rust: types: implement `ForeignOwnable` for `Box<T>`
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Jan 30, 2023 at 8:20 AM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Fri, Jan 20, 2023 at 2:41 AM Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 >
-> On Sun, Jan 29, 2023 at 7:46 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> >
-> > -               include init io_uring ipc kernel lib mm net rust \
+> This allows us to hand ownership of Rust dynamically allocated
+> objects to the C side of the kernel.
 >
-> For Rust, it is early to deal with packaging, so removing this from
-> here should not hurt.
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> ---
 
-I guess you are talking about kernel-devel-*.rpm
-(and linux-headers-.deb).
-
-They are not useful for building external modules
-written in Rust since they do not contain *.rmeta etc.
-I am not caring about that because Rust support is not
-mature enough yet.
-
-
-This series does not touch binary packages,
-rather it just changes how the source package is created.
-
-I stopped hard-coding the top-level directories.
-The resulting source package still contains all check-in files
-under rust/, so it is good from the source package perspective.
-
-
-
-
-> In any case, I quickly tried the series and noticed that the
-> `.src.rpm` does not end in the `SRPMS` folder (as it did before) -- is
-> that expected?
-
-
-5/5 changed the behavior because rpm-pkg re-uses the
-*.src.rpm generated by srcrpm-pkg.
-
-
-Having *.src.rpm in the kernel tree seems Redhat's preference.
-Commit 8818039f959b2efc0d6f2cb101f8061332f0c77e
-added --define='_srcrpmdir $(srctree)'.
-
-
-
-In contrast, binary rpm files are generated under rpmbuild/RPMS/.
-I want to fix this inconsistency, though.
-
-
+Reviewed-by: Alice Ferrazzi <alice.ferrazzi@miraclelinux.com>
 
 -- 
-Best Regards
-Masahiro Yamada
+======================================
+Cybertrust Japan Co.,Ltd.
+Alice Ferrazzi
+alice.ferrazzi@miraclelinux.com
+======================================
