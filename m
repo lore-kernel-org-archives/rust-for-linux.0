@@ -2,57 +2,115 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6E62C54EED
-	for <rust-for-linux@archiver.kernel.org>; Mon, 30 Jan 2023 08:37:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64D4AC54EAA
+	for <rust-for-linux@archiver.kernel.org>; Mon, 30 Jan 2023 12:00:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235305AbjA3Ih4 (ORCPT
+        id S235401AbjA3MAd (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 30 Jan 2023 03:37:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55854 "EHLO
+        Mon, 30 Jan 2023 07:00:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235394AbjA3Ihz (ORCPT
+        with ESMTP id S235917AbjA3MAa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 30 Jan 2023 03:37:55 -0500
-Received: from mail.penmade.pl (mail.penmade.pl [94.177.230.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DD6DB442
-        for <rust-for-linux@vger.kernel.org>; Mon, 30 Jan 2023 00:37:54 -0800 (PST)
-Received: by mail.penmade.pl (Postfix, from userid 1001)
-        id 574DB843FE; Mon, 30 Jan 2023 08:36:55 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=penmade.pl; s=mail;
-        t=1675067872; bh=CSKXLMgcdpWkXuTgJn5+jsCVobtU9JEF4vCnS5z6McM=;
-        h=Date:From:To:Subject:From;
-        b=GwjkrCfGTq5UozmqYeTVWq9q6cvuFdg2sS7XNNqauBq3Xacc3YA93mT1pFNNbkud5
-         qW3TCVTxdjVaKw43xQeHh9NXu+ckC1RjynoHNrydULEwZ0VtCSto28QxcxBn4GhB7s
-         Ul20WHqNRYaJ7fHTDqyG/5yQxaZsleXV2O3ZBxLooRSclu2ErZFWPMdppiA6I7HAFZ
-         tJHtWIADdCwiLUwQDHaJTOy6zsJ8tDtXfmvbAOGNvM+Hw89lPPI67cqySAT9QoOW/g
-         ShjqHsZ2Ju/aq5mep3bTcNojUOWFTcUjz49llUDR1voFb5RMA4Vb40VMlDf01tG0Wt
-         GiLic41LZdksQ==
-Received: by mail.penmade.pl for <rust-for-linux@vger.kernel.org>; Mon, 30 Jan 2023 08:36:21 GMT
-Message-ID: <20230130072634-0.1.23.4n3t.0.6ocigiy97v@penmade.pl>
-Date:   Mon, 30 Jan 2023 08:36:21 GMT
-From:   "Wiktor Nurek" <wiktor.nurek@penmade.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.penmade.pl
+        Mon, 30 Jan 2023 07:00:30 -0500
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 851F22701;
+        Mon, 30 Jan 2023 04:00:19 -0800 (PST)
+Received: by mail-yb1-xb2c.google.com with SMTP id d8so11720895ybe.9;
+        Mon, 30 Jan 2023 04:00:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1HbguGHpB5FjqpATPjgOHDIrWn/kBKd6drXFRcfzVNs=;
+        b=B38If1QkuwWtrB4fFeIOZ0mF+gcyvYWCVzpQ+7uNh2WDW6E8cIParAuMk9w3aDI7dS
+         re0rwuXk38QKY7cLUiqX8uy2GzVRkA0mcOnE5nN6RGWXJ84p8jmIcN+8zJ1NvgRkTLgC
+         R4b0Cltat49eq4rl9aq1trm0dl99CqKk+fp8+die9j4ol5A9opeKkHxaLnfHIdwfJsbC
+         ukD0lyyLI3PVFkOUS+3XpqTrsMks5Aa6rOPWKVCgPPB3uW5qzdHhlaDX+38icxdW+5dM
+         k4GD7HkvDn0/bUHBJ3nc4jkqcwsoD2JCw3oJM93jnFw88N1nW1BPhu/jfjjBGUlS0fG2
+         +ZZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1HbguGHpB5FjqpATPjgOHDIrWn/kBKd6drXFRcfzVNs=;
+        b=2w7m86FJZcscKt4qsHjjnnRpm0nw7HYoh5PQnC5x0r+i9R5o8ZbzNHSfjPeiCDP3Wp
+         QTS4CMX6uu5S3TiSq2VcJE06vksjobPwzHIcXq/ph54GPMon2/VL/BsH+cPOZYg8s/TM
+         nZl8E8jKNl//SNtiSHS/6ot9j2jv5qkikpIruaaB67dWG72IbmsAhHK7ySjHVJ8+we9J
+         6uH0H6hWe0tXqjrKwWLJOJ1nyKL0AsIxN5P8MD7ziHTy1lnGBN4nxJpQN7rqa0cr9wTR
+         xRn0wt/OpK3X1jdwQVIjMmJ9CltAlSWlqFlGFNuRdV3PU+0XVfpH7DvVgcLEjLJl28jL
+         9S7g==
+X-Gm-Message-State: AFqh2kqBH4rTYW2COo0ftN6mF+fXDedKGjNpcLZ7EDDUs/w8RC73rzRC
+        DE3noBOLyOD/qckkAT+IBhi1xcX7UszJeIvGXKQ=
+X-Google-Smtp-Source: AMrXdXtZMmt5G/oSVrrJr7dHDHlsu+PaGz9sWWvSC9nqJy48wlwExCnPYy3D7LATlmfiivbrUYiAU+/+8iAdRc00MNc=
+X-Received: by 2002:a25:24c4:0:b0:803:197f:3f41 with SMTP id
+ k187-20020a2524c4000000b00803197f3f41mr4140563ybk.489.1675080018737; Mon, 30
+ Jan 2023 04:00:18 -0800 (PST)
 MIME-Version: 1.0
+References: <20230129184602.3974058-1-masahiroy@kernel.org>
+ <20230129184602.3974058-4-masahiroy@kernel.org> <CANiq72=BRW9TunjKQmeMthm7Esc_YKM++NmWh-Dqc9Av13SNow@mail.gmail.com>
+ <CAK7LNAQttb=qc5vsZNudYwTxmn=y3HZzVqZwAzMvLfUJXa4OFQ@mail.gmail.com>
+In-Reply-To: <CAK7LNAQttb=qc5vsZNudYwTxmn=y3HZzVqZwAzMvLfUJXa4OFQ@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 30 Jan 2023 13:00:07 +0100
+Message-ID: <CANiq72miWD_MtTrC0Ua7o4Tk5oDbQSFefwmYCsGx3Y=85ziJfQ@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] kbuild: srcrpm-pkg: create source package without cleaning
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Mon, Jan 30, 2023 at 2:29 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> I guess you are talking about kernel-devel-*.rpm
+> (and linux-headers-.deb).
+>
+> They are not useful for building external modules
+> written in Rust since they do not contain *.rmeta etc.
+> I am not caring about that because Rust support is not
+> mature enough yet.
 
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
+Yeah, that is what I meant, i.e. since the Rust ML was Cc'd, I checked
+and wanted to say removing `rust` from there was OK (an `Acked-by`
+seemed too much for just that line :).
 
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
+> I stopped hard-coding the top-level directories.
+> The resulting source package still contains all check-in files
+> under rust/, so it is good from the source package perspective.
 
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+Sounds good to me.
 
+> 5/5 changed the behavior because rpm-pkg re-uses the
+> *.src.rpm generated by srcrpm-pkg.
 
-Pozdrawiam serdecznie,
-Wiktor Nurek
+(3/5?)
+
+> Having *.src.rpm in the kernel tree seems Redhat's preference.
+> Commit 8818039f959b2efc0d6f2cb101f8061332f0c77e
+> added --define='_srcrpmdir $(srctree)'.
+
+Thanks for the details! I just noticed it, so I thought I would let
+you know just in case.
+
+(Perhaps it could be useful to mention this change in the output in
+the commit message.)
+
+> In contrast, binary rpm files are generated under rpmbuild/RPMS/.
+> I want to fix this inconsistency, though.
+
+That would be nice.
+
+Cheers,
+Miguel
