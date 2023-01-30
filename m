@@ -2,88 +2,158 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A925C54EAA
-	for <rust-for-linux@archiver.kernel.org>; Mon, 30 Jan 2023 17:21:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40C9EC54EAA
+	for <rust-for-linux@archiver.kernel.org>; Mon, 30 Jan 2023 18:42:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237811AbjA3RVf (ORCPT
+        id S236046AbjA3SmL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 30 Jan 2023 12:21:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42280 "EHLO
+        Mon, 30 Jan 2023 13:42:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237818AbjA3RVe (ORCPT
+        with ESMTP id S236122AbjA3SmI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 30 Jan 2023 12:21:34 -0500
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0151340BDD;
-        Mon, 30 Jan 2023 09:21:32 -0800 (PST)
-Received: by mail-yb1-xb2d.google.com with SMTP id x4so14939203ybp.1;
-        Mon, 30 Jan 2023 09:21:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pvdRVAjZEizr7aPmLWgfZD7eFme7nU37G9R8b4oPGLs=;
-        b=M7lx3PQUAlT1VdeEkY0TlHwtIJc24Ezdz+vnV2ki2WwtjSuj1F7BP222dTAqsTiD/U
-         4uJefQq6vxTrFimecjOgb5JYvf+buAC/7MwPywoaNVx7Ly+KUcpH5gRd8e1c0w9/8x5V
-         ks6QdPIOOW2yQG1UT6lz0S3ypDmA+Fsfu3HBI1I/p81SOZlwmceLVnWBSjteDToEkPl6
-         ZmAKuqe6K4if6gXG8MfQL4TAoejhPNXjvAIq032oTSwfDXingz73SeFveUdHD/UM91zt
-         2/S0kTXY9TyvnR65GE2tcuMQQpuci30qBcpl2cu7L9bay5ToUQrG25//t/gpnDqAzscK
-         MShg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pvdRVAjZEizr7aPmLWgfZD7eFme7nU37G9R8b4oPGLs=;
-        b=j4GzQ8sek9iY2cKlqQwwRPVrZBkr1krmEiC7Oa0RrMLCe725+ubc/8u88ejUvtf5yk
-         rP3HK4RI739jlQU6zrdxVFDpftBryNECoEyyBpUkHuNwsda6GUS82SdBOPqsDzDeNikc
-         kgcotLQ9UMv65OcLOuIyi9t1tljVXpz818XMk89ScQMSJnNIW7pryan6KX3q4doGVdKX
-         YoziHMOJt/fLeCNz3vpxVrKoHBTnrXo9sEsYwtLFsyWH4XSR7A0xQMS4xxWwkm6mW8d4
-         S4mSpWdq1rseVET3UMEZK+HnymzfdadFYK/NHRVY0BJ1cK7iNONqoaVxPvZu1L0pk6Hj
-         IsTw==
-X-Gm-Message-State: AO0yUKWb1gddaNYZpOXv5GQ8w1M+T5VzUj7twgsyn6E3k8Zqce9Lc07G
-        Y318SaDsBwsiVanBZVVFdS5Mtu0R7qTZXqXod9dWXHRgc6e10Q==
-X-Google-Smtp-Source: AK7set9WH/i+D5qIE0eLHBunL4gN+76M7Ab8ttc6rXQLZenJqkgm25cjGRJloIeg7I1Viisu3Q4e1cKTg4Uh7rBvhGA=
-X-Received: by 2002:a25:f810:0:b0:80b:e64e:2196 with SMTP id
- u16-20020a25f810000000b0080be64e2196mr1985390ybd.328.1675099291253; Mon, 30
- Jan 2023 09:21:31 -0800 (PST)
-MIME-Version: 1.0
-References: <20230119174036.64046-1-wedsonaf@gmail.com> <20230119174036.64046-4-wedsonaf@gmail.com>
- <20230127140319.22af6060.gary@garyguo.net> <CANiq72kXNvQ-GY-uw24s_1NmQ5G12Cu+JfYKFQ0rC-4Fnm8o8Q@mail.gmail.com>
- <CQ3S1YW1TFJ0.KGRDY0XZGSL4@vincent>
-In-Reply-To: <CQ3S1YW1TFJ0.KGRDY0XZGSL4@vincent>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 30 Jan 2023 18:21:20 +0100
-Message-ID: <CANiq72mk6sdZgz1sXH8f4_uyvyy4KPdE4amK8LPt6DYXTLw6_g@mail.gmail.com>
-Subject: Re: [PATCH 4/5] rust: types: implement `ForeignOwnable` for the unit type
-To:     Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Cc:     Gary Guo <gary@garyguo.net>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Mon, 30 Jan 2023 13:42:08 -0500
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2123.outbound.protection.outlook.com [40.107.104.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD6BE13DD9;
+        Mon, 30 Jan 2023 10:41:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=A9O6v4qm+hOqJj7GES4mjzHknuUHUUhxM19qyGsHHnALI+jB4c4hNu7UFMbUI2a3r94jUz00GMv0/tVA/jYk71IlsZqD+SG5ZLdfzbm2Q0Kn19YYT35eml1SGbAZ1W00eZJWPXgQlzBznSRjmT33kU90NjcLfkApni+5MUUCw6P9bYDE+/SlOCdolwpkppGLv8k0pChCg2xGoTSvjIfj17/OqusvVjdHnD3aa/Vub1WpF2pfeN03difs8eskjpp26N4PMAyWiOfw7AR9n5iUOXBeELKaIm52MLDJosgRZTETZRCe3le8JusAWOgmcUUlYPSUE1TvDYxPlJPk5S8k/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=twEehz9aSLZ4jvnDk9MCgZx2FTFEX2gPExoOj1/Njc4=;
+ b=UZS+7SjvP7OaWi7HBloR0J0TWI/RoP3Q/a0i90Qui4kkFyHivXgn9dqk1Xpy4hgeRhlgyoLHKx+bayUUkw9Pbz0hKWPOwaKTlmNFcj/7vNFA2nB8DBL+yu6bcx4fwmc6KQk1YF2Pv/1Fk5Tey+bUI1Nm5pdVyHY0j5+5F1OCbqdC2yA9HKFsIPIaBK1xq2RcjpGV+p9D89xJz3KfpPasWRf4i+u+Wkq+dzR67XQLe+ZXW8jgekXilWBg7RLsbCm3X+S0qpfXcMRJBRb4BrLmCkekzecBGfMKUpdmAeRVc1szDKkMj4G/b18Riswar47IGxIKFR0fesHUx5Z5FrGKWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=twEehz9aSLZ4jvnDk9MCgZx2FTFEX2gPExoOj1/Njc4=;
+ b=Gewpyd9Qzxi/bngmsIN/uNiFP6R5a7OC6zHMhZYm0l+3HYv4AoDK9CJWaX/0eMkflKomcVw4YjTnSi9MRSK3ai+pxCYVdwQe46uIMjf8hPiH5c448zQibGqFZlPC4/tCNQwOAeWQt5xkywIwUb5rfHfZduivd4er51jvzEAQh6A=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO4P265MB7029.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:34e::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6043.36; Mon, 30 Jan
+ 2023 18:41:56 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::b96e:93ad:4043:6145]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::b96e:93ad:4043:6145%9]) with mapi id 15.20.6043.036; Mon, 30 Jan 2023
+ 18:41:56 +0000
+Date:   Mon, 30 Jan 2023 18:41:51 +0000
+From:   Gary Guo <gary@garyguo.net>
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Subject: Re: [PATCH v2 4/5] rust: types: implement `ForeignOwnable` for the
+ unit type
+Message-ID: <20230130184151.651303ad.gary@garyguo.net>
+In-Reply-To: <20230130064404.744600-4-wedsonaf@gmail.com>
+References: <20230130064404.744600-1-wedsonaf@gmail.com>
+        <20230130064404.744600-4-wedsonaf@gmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LNXP265CA0071.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:5d::35) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB7029:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3330ee5b-a3d0-4be5-6790-08db02f1a9c0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: H5hZFSGCjQuQb0D9YKsulgrCtNzd2Ld0S2TnUjmEf7Yn6L9+IZB14IPRT4yURCTZj3evAfILkH+jCj2MkRuCmhh8x5dEqEelOjJSRDQiClYEmIFyDAyq4mOwc1v76//Gef+npafmypsekF3o0rAL86VSwf+vMEwe4B3OrGZdoGCl48nFRnLSzFLZIQX9dJ8Gxg80ehTYr36Zja6l+WvPLDYJzKUKPblftSopZ1DrfnuO2LovWMj9L/np8QrVzUsyVI/aScjNcH1PgGeatZV/EGzmuztSLhVJAFGI5u+X5eDedVElGPibg1L6aRhvzqPrV+ikxHflfbMKmJZZpelu04RepMea0dk858lJwOTNa4XrwD64XEeDRmYPBkhdXIRogaMHxQUHJ2TRvdBvCJNEOmfIs1hXzDRopD0+UgWONIED81zkubTTC1ZLGnS3sYZW1xBySa8x30nCa6271g6GOfUVu1HEecfwqD++DceQyac4sg74EPLvvmGHd9oiuUylY7IcGJ5uT4FTQBXI/PgikrFMAgrbXcgHwlmsOpCWxkYuEvwAv9W6LlldmKDhftQZXMDJNciAKgaySczKwFZv3ngt4Z5DagkTeZXcBP3TXp+pqzgYuR3Eq4Y4FXLcRR1G+RCLM8iTpemuzsxVjsYAPDw5zyX8TYkFb1detk6MOuCx0IBmVIcMChUuU33RCUkc
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(346002)(366004)(376002)(136003)(396003)(39830400003)(451199018)(8936002)(41300700001)(5660300002)(66556008)(83380400001)(86362001)(38100700002)(66476007)(4326008)(36756003)(6486002)(6916009)(316002)(478600001)(54906003)(8676002)(66946007)(2616005)(186003)(6506007)(26005)(6512007)(6666004)(1076003)(2906002)(81973001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4gm7+KoQegXdA2rboQWiSKXT4h8ijCpZYZvjDpDWH7/0qOL04e8z/yJSxusd?=
+ =?us-ascii?Q?u6vcVdcYjXLQmppbV9KFpT4RG4WDcW2vDVoGBSdAGwMUvAYx7jD4bsOkJ6tv?=
+ =?us-ascii?Q?+VpuRTwLgCQOIccPKb7kK0ycjAOzLx+R+DRfqpqGoO+W8NxzJTWviLzwqgFx?=
+ =?us-ascii?Q?jWRk+kDxDAmD80ecr7O9URhlJCC0ssnqooV4tsumibnbMp48GTlbKaMMB6rB?=
+ =?us-ascii?Q?fHmnamFElz0m4FE6EVDjAwZU0W/0SkJwpmcY0mnZVZeiWXbb3+7f8jwiOA/d?=
+ =?us-ascii?Q?RQfROA13e4DLqgNH1JqJ3Yo9aRMVF1v8yh6CBfCZItq5IAADfymSy+vM4OMq?=
+ =?us-ascii?Q?KVSP5myPwQ14wK6YMllkJNX2keDIFGzGRnLOyh04PRMfLLmkMc0VJ83TjY3h?=
+ =?us-ascii?Q?hdaGXSC6iBbO1rZhb4Brkg911hjb5Eu+10iNOPPhQ+DGAQiDTCBX98H3YjOM?=
+ =?us-ascii?Q?v+rUlzcKSWNbts8LUBqQ4CeixJNsy7ZTIJXSpbWjoBr6hdIyB96niqgOLYlX?=
+ =?us-ascii?Q?4kDA91Z+mQddTnNiX37uj7SNw7OGuqY0eer0D7inhOpefR0nvtB+H91z54gQ?=
+ =?us-ascii?Q?kKftFOkPleRUTTAQGJQxHMZchiFE+thBzd4/2KPRMkskQy1N+gbQlNn54RzJ?=
+ =?us-ascii?Q?vTwaMEhwkPvjDE62sH8SE/VUlr/8ljNt+0MuMXLC/Ci1IRmAEkrMMGSNXez+?=
+ =?us-ascii?Q?I6YGd+uy/KlTAF/uaamNpDVWSKy0jZB1U4wtHLyEA1udUZ3d7nom5J9ZM7JG?=
+ =?us-ascii?Q?EyPEcRT+5bydmxaVx9HlT8YdplDlqHgX3Qbn/OU84L17qCpMUGo0J7CWIfEu?=
+ =?us-ascii?Q?bZ2f1zr9/wBiGz9xZJmsJrAnKEMd48dGe3icMAkwHEYbguu8J3x74GgdHiH3?=
+ =?us-ascii?Q?+VV+cOYlV+INKY7HD0M1WrQwgTjuxYOk1kC5iA+DR5sd7uNSfMMONLoQyTXX?=
+ =?us-ascii?Q?xLQVFOBkBBV26v8Ja8I8fZfFQ7YrteFVSJKjr6X6pweFhh9Wm7j2I7/oXGbH?=
+ =?us-ascii?Q?HKpNczMmrg0GaTatiNpUqFghx2p/nr5lsmStLaEet3LiJLQQR7aNXIAN2PsD?=
+ =?us-ascii?Q?gDC5c/Kj87abGD1zNAI12KSyYhEISr+6MWE+cZjso8e6srJVmilYR6i6lHrW?=
+ =?us-ascii?Q?1TuMN7lm6zcqOC/Ye/wD9pn1YHq7Lh49LdwoC1JHEZ7B7Jhn9aVKLpFq1mly?=
+ =?us-ascii?Q?nTF6clLyZGuYzv80OOTE1dWQAFHZBa+PnDZixUIXV/FV+W9jAj8bItmb8WtT?=
+ =?us-ascii?Q?FjMt2XzpNTpd82Zxqb+jDw/G1c2RsqbzGeu0iamxxb2daif62xdQ3/B2hhW5?=
+ =?us-ascii?Q?dmdNK7cmNFJuj6TyXJ/MxxdY65hQwETixkvrMA4Ry0tjQcgwfHy8nWGZq5Sk?=
+ =?us-ascii?Q?eKFJbgoST2kjlFHso7PrRIurLlzuTeG9HzRoOLcYVrZvNkLxdoIMpjP1iT8M?=
+ =?us-ascii?Q?lATGZ9W7f2LTQhnPh4pFnDim31iTTPanFX7VmCFXqzKQYLaozbF75BVmS6Uk?=
+ =?us-ascii?Q?N9yexWrtDKhsL/Yh79dIxJeD/ILjv8UaC4NEA5h/tuyoUzQvZlhr6oI5OPvY?=
+ =?us-ascii?Q?epJ5N+GkwoZBVSmuh2hsALtka5TvdEFou9M2b6Lt?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3330ee5b-a3d0-4be5-6790-08db02f1a9c0
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2023 18:41:56.2639
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gL8Wtu4I80e5fZF5Y1mkbsfLkyP5GOGWOq6XHoV6DLSsZaHLoW6H7zopZh3h5Y4N8JKNn8RAO+KbV96NBIcA0Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB7029
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jan 28, 2023 at 12:13 PM Vincenzo Palazzo
-<vincenzopalazzodev@gmail.com> wrote:
->
-> From what I remember the feeling was positing into hace `strict_provenance`
->
-> Here is the last meeting  that was back in August
-> https://rust-lang.zulipchat.com/#narrow/stream/213817-t-lang/topic/Stabilizing.20strict.20provenance.20APIs.3F
+On Mon, 30 Jan 2023 03:44:03 -0300
+Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 
-Thanks Vincent! Yeah, as far as I understand Gary was in that meeting
-(in October).
+> This allows us to use the unit type `()` when we have no object whose
+> ownership must be managed but one implementing the `ForeignOwnable`
+> trait is needed.
+> 
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 
-If there has not been anything after that, then I guess it is still
-the case that provenance will probably happen (for better or worse,
-depending on the perspective :) and that a subset of the APIs may get
-stabilized first.
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-Cheers,
-Miguel
+> ---
+> v1 -> v2: use `NonNull::dangling` to generate pointer
+> 
+>  rust/kernel/types.rs | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 411655eca3e9..9d0fdbc55843 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -85,6 +85,18 @@ impl<T: 'static> ForeignOwnable for Box<T> {
+>      }
+>  }
+>  
+> +impl ForeignOwnable for () {
+> +    type Borrowed<'a> = ();
+> +
+> +    fn into_foreign(self) -> *const core::ffi::c_void {
+> +        core::ptr::NonNull::dangling().as_ptr()
+> +    }
+> +
+> +    unsafe fn borrow<'a>(_: *const core::ffi::c_void) -> Self::Borrowed<'a> {}
+> +
+> +    unsafe fn from_foreign(_: *const core::ffi::c_void) -> Self {}
+> +}
+> +
+>  /// Runs a cleanup function/closure when dropped.
+>  ///
+>  /// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
+
