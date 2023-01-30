@@ -2,59 +2,59 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B475C54EED
-	for <rust-for-linux@archiver.kernel.org>; Mon, 30 Jan 2023 05:55:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7901C54EED
+	for <rust-for-linux@archiver.kernel.org>; Mon, 30 Jan 2023 05:59:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235675AbjA3Fzs (ORCPT
+        id S233090AbjA3F7n (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 30 Jan 2023 00:55:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38994 "EHLO
+        Mon, 30 Jan 2023 00:59:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235687AbjA3Fzo (ORCPT
+        with ESMTP id S231377AbjA3F7m (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 30 Jan 2023 00:55:44 -0500
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93BCD18B2A;
-        Sun, 29 Jan 2023 21:55:43 -0800 (PST)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-16332831ed0so13752529fac.10;
-        Sun, 29 Jan 2023 21:55:43 -0800 (PST)
+        Mon, 30 Jan 2023 00:59:42 -0500
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FC27244A5;
+        Sun, 29 Jan 2023 21:59:40 -0800 (PST)
+Received: by mail-oi1-x232.google.com with SMTP id t19so908011oiw.10;
+        Sun, 29 Jan 2023 21:59:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pb1DZ5HyR6ozcWWMySi1L96mmW2RSwsZOaJZCjMwx1A=;
-        b=Lj1/HuR/STv0Mz/5/u+/Yft1AEkDjEab97tPf/LJi9Hc5WLK0VyUeCsmKpebtgcMnY
-         6cTjglZjUFhxappvT9cZLyaifLpY1QmrsFTBnYX5HjV1lqNv6dDWTKB5g1UmSnFBqozy
-         yw+X4IU83o6+DR/DZY1KkAnlYwj9scmxfHf7eL7REEQRRX2N283VJLNhER2FawhuMXSy
-         dN15YOYc9S0FXdCUMy53P3nIkwGmRYRObykXu6Rd+9ssqpb4FYaqv/9Eql/KhQ5ONbk5
-         ZMVARNiGB2LRspoCIsiPnaqoopVRw2vkVFvbzbmF79hHI781zKUTae3BAdieb4EPUpz/
-         4gFA==
+        bh=tNmZuGDZCyWQXg6hFIAxrv4PleoJQNEUOdBk2GK1kxg=;
+        b=iGWeRnXtJgA3FyG9eacCWWbhfKArLf7Ptm4JT9EMdtUhiVZtA7VYweqElcqjEDWWB0
+         KY2iLgsUdQU7yBxq5y3YUEFKIkYTWaZEHVbPZB/y4u4dXIkdxAi7oQcuLSC2wsAxy1I8
+         rFF87ahCfBb9QRfO1ONhclpbBbjqdZkbuZgpcbH4J2/UtEcRCtyDrAOwaORtdL88/2Is
+         9TFoRVuepuGfFJZrj42xmsvOuEt2RmUf0MDnjXannuEMPjLRGK0nkqWEFDzQ+2MclVcn
+         77ClEmAa6xGNR9oXfh48RIWfkrtPpyUBd2hf0KMOfwCcusVeEMRPPuUzD4h+APJYmdnb
+         7WvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Pb1DZ5HyR6ozcWWMySi1L96mmW2RSwsZOaJZCjMwx1A=;
-        b=nyR9fR+OAIpwRn8JanIHr8bFAua5mS+7WS/m8p+VRs+fwtO0Ss3moZ/0h38wZhM8Xr
-         0Agw3eF6UV/KiwsVhWM4/xs/4C5ZZabSRuI4vqFXiK5CoIHYPLdtirHNfRcKvlowUOw6
-         K8Vl/KuKElRBcH5PAi4IDCZsK7/O87Xuc+11EGpqYbDpepKmQwBsdS5bXU/lDpk3NtAg
-         gA+eGCzXOLdN6jW0UoelmCHvwrQWn6b9UWiHNqGMI7zfqVE4VgelPLCxH2dtzsuuVlKm
-         NuGI0H0hiID2vWvmc3l5SHnmPVzWeyzgHGDlZ8W9qHODkb1p/ib5fNNXQQTdLnRb9jZO
-         YYtg==
-X-Gm-Message-State: AO0yUKVnn7d7Z5qkFCU2RXLaI4DjVVuFCsbcaoYkCBrCgGm2IC/9o53i
-        c4xXoKIMPV3CZG5iivlMR/9O+Qp6+YpnxLLK5KcCyw4/KTg=
-X-Google-Smtp-Source: AK7set+eZjxbQT4kboTeEq5/wxnLeObUwp/w11P3+AsLSTe27OUyFwRtAl4/vm1euPEl6GS+8vdfTTrxdDychd6Iv9Q=
-X-Received: by 2002:a05:6870:1790:b0:163:3c39:d0d5 with SMTP id
- r16-20020a056870179000b001633c39d0d5mr1305076oae.215.1675058142846; Sun, 29
- Jan 2023 21:55:42 -0800 (PST)
+        bh=tNmZuGDZCyWQXg6hFIAxrv4PleoJQNEUOdBk2GK1kxg=;
+        b=xZLd8Nu4B5e6ibaQiyV2ltbFVIVCA5Gi6EEjLyc+kK87VLa4CFlpqRADNwyI9b/0CA
+         +fDVpewmnw/zf15KbT4tBGXe+8EtP/FEWWgM6S837fO2RFY0M4ZT4e8nJXGdaAHRNJMN
+         3ovxWawDZD0Swi8unapFmS/xnIIJtbUCmakU3Mt+AIfbIN3IdKj7ZPqPaEKW2uK1IMiJ
+         mHiVQ9OE/fb8KxngYpn41vsbO0VZi6g8lqxrDs+EtHeg5EpIXX+RquuzK4ruzX3QOwjx
+         Sz2T3nFOuVBRNEkbVqDcoLazy7u/PFcS6t94imtCl7+9/h8YalmvEni+3j1szFLcfdhm
+         3g8w==
+X-Gm-Message-State: AFqh2koB3IhjpzPvaiYwQAWc9c2X6l5954boDRhbsgvLoiFYxl1Ndbng
+        l7JoXoHODjIkNJkZEcq4/W8GDOMbJvjWixYz7jyMkU/IybHdnw==
+X-Google-Smtp-Source: AMrXdXtcuZpMtJb4fyuOObKXjBnMCeuJRm+6Xi/FEp6gyng2AFmCX+AgUgsG6LrM3LoHlRNLy+QTah86ySGEqP/E9kw=
+X-Received: by 2002:a05:6808:4346:b0:369:e573:3e54 with SMTP id
+ dx6-20020a056808434600b00369e5733e54mr2248233oib.215.1675058378588; Sun, 29
+ Jan 2023 21:59:38 -0800 (PST)
 MIME-Version: 1.0
-References: <20230119174036.64046-1-wedsonaf@gmail.com> <20230119174036.64046-4-wedsonaf@gmail.com>
- <20230127140319.22af6060.gary@garyguo.net>
-In-Reply-To: <20230127140319.22af6060.gary@garyguo.net>
+References: <20230119174036.64046-1-wedsonaf@gmail.com> <20230119174036.64046-2-wedsonaf@gmail.com>
+ <20230127135533.3dfc7440.gary@garyguo.net>
+In-Reply-To: <20230127135533.3dfc7440.gary@garyguo.net>
 From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-Date:   Mon, 30 Jan 2023 02:55:31 -0300
-Message-ID: <CANeycqpUaKuKCjZyw1PiPzMo3rqZQXiFONZOKq1hbhVUA25+tQ@mail.gmail.com>
-Subject: Re: [PATCH 4/5] rust: types: implement `ForeignOwnable` for the unit type
+Date:   Mon, 30 Jan 2023 02:59:27 -0300
+Message-ID: <CANeycqrWd4Tn8KpfY0Jga-7nrWN9pM23Y3B+j2HAphPbdEOM-Q@mail.gmail.com>
+Subject: Re: [PATCH 2/5] rust: types: introduce `ForeignOwnable`
 To:     Gary Guo <gary@garyguo.net>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
@@ -66,52 +66,103 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, 27 Jan 2023 at 11:03, Gary Guo <gary@garyguo.net> wrote:
+On Fri, 27 Jan 2023 at 10:55, Gary Guo <gary@garyguo.net> wrote:
 >
-> On Thu, 19 Jan 2023 14:40:35 -0300
+> On Thu, 19 Jan 2023 14:40:33 -0300
 > Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 >
-> > This allows us to use the unit type `()` when we have no object whose
-> > ownership must be managed but one implementing the `ForeignOwnable`
-> > trait is needed.
+> > It was originally called `PointerWrapper`. It is used to convert
+> > a Rust object to a pointer representation (void *) that can be
+> > stored on the C side, used, and eventually returned to Rust.
 > >
 > > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 > > ---
-> >  rust/kernel/types.rs | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
+> >  rust/kernel/lib.rs   |  1 +
+> >  rust/kernel/types.rs | 54 ++++++++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 55 insertions(+)
+> >
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index e0b0e953907d..223564f9f0cc 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -16,6 +16,7 @@
+> >  #![feature(coerce_unsized)]
+> >  #![feature(core_ffi_c)]
+> >  #![feature(dispatch_from_dyn)]
+> > +#![feature(generic_associated_types)]
+> >  #![feature(receiver_trait)]
+> >  #![feature(unsize)]
 > >
 > > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> > index e037c262f23e..8f80cffbff59 100644
+> > index f0ad4472292d..5475f6163002 100644
 > > --- a/rust/kernel/types.rs
 > > +++ b/rust/kernel/types.rs
-> > @@ -85,6 +85,19 @@ impl<T: 'static> ForeignOwnable for Box<T> {
-> >      }
-> >  }
+> > @@ -9,6 +9,60 @@ use core::{
+> >      ops::{Deref, DerefMut},
+> >  };
 > >
-> > +impl ForeignOwnable for () {
-> > +    type Borrowed<'a> = ();
+> > +/// Used to transfer ownership to and from foreign (non-Rust) languages.
+> > +///
+> > +/// Ownership is transferred from Rust to a foreign language by calling [`Self::into_foreign`] and
+> > +/// later may be transferred back to Rust by calling [`Self::from_foreign`].
+> > +///
+> > +/// This trait is meant to be used in cases when Rust objects are stored in C objects and
+> > +/// eventually "freed" back to Rust.
+> > +pub trait ForeignOwnable {
+> > +    /// Type of values borrowed between calls to [`ForeignOwnable::into_foreign`] and
+> > +    /// [`ForeignOwnable::from_foreign`].
+> > +    type Borrowed<'a>;
 > > +
-> > +    fn into_foreign(self) -> *const core::ffi::c_void {
-> > +        // We use 1 to be different from a null pointer.
-> > +        1usize as _
+> > +    /// Converts a Rust-owned object to a foreign-owned one.
+> > +    ///
+> > +    /// The foreign representation is a pointer to void.
+> > +    fn into_foreign(self) -> *const core::ffi::c_void;
+> > +
+> > +    /// Borrows a foreign-owned object.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
+> > +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
+> > +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow_mut`]
+> > +    /// for this object must have been dropped.
+> > +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> Self::Borrowed<'a>;
+> > +
+> > +    /// Mutably borrows a foreign-owned object.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
+> > +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
+> > +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
+> > +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
+> > +    unsafe fn borrow_mut<T: ForeignOwnable>(ptr: *const core::ffi::c_void) -> ScopeGuard<T, fn(T)> {
 >
-> this should really be `core::ptr::invalid(1)`. That's currently
-> unstable, but can be equivalently written as
-> `NonNull::<()>::dangling().as_ptr()`.
+> I feel that this should could its own guard (maybe `PointerGuard`?) to
+> be more semantically meaningful than a `ScopeGuard`.
 
-This has the wrong type, but I agree with the spirit of the
-suggestion. I'll add it to V2.
+I prefer not to add yet another type just for this internal type. It's
+only used in the implementation of abstractions, and is exported only
+to make it simpler for users to refer to types indirectly (e.g., `<T
+as ForeignOwnable>::Borrowed<'_>`).
 
-> This has a different semantic meaning from `as` since it explicitly
-> suggests an invalid provenance and thus will not alias with other
-> pointers. (Although I don't think compiler currently can take advantage
-> of this fact yet)
 >
+> > +        // SAFETY: The safety requirements ensure that `ptr` came from a previous call to
+> > +        // `into_foreign`.
+> > +        ScopeGuard::new_with_data(unsafe { T::from_foreign(ptr) }, |d| {
+> > +            d.into_foreign();
+> > +        })
 > > +    }
 > > +
-> > +    unsafe fn borrow<'a>(_: *const core::ffi::c_void) -> Self::Borrowed<'a> {}
-> > +
-> > +    unsafe fn from_foreign(_: *const core::ffi::c_void) -> Self {}
+> > +    /// Converts a foreign-owned object back to a Rust-owned one.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
+> > +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
+> > +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
+> > +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
+> > +    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self;
 > > +}
 > > +
 > >  /// Runs a cleanup function/closure when dropped.
