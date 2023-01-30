@@ -2,47 +2,47 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BBB04C54EAA
-	for <rust-for-linux@archiver.kernel.org>; Mon, 30 Jan 2023 18:49:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87B6DC54EAA
+	for <rust-for-linux@archiver.kernel.org>; Mon, 30 Jan 2023 18:50:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236811AbjA3Stn (ORCPT
+        id S230202AbjA3SuY (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 30 Jan 2023 13:49:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56988 "EHLO
+        Mon, 30 Jan 2023 13:50:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230340AbjA3Stm (ORCPT
+        with ESMTP id S230340AbjA3SuX (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 30 Jan 2023 13:49:42 -0500
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2137.outbound.protection.outlook.com [40.107.8.137])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C532B8697;
-        Mon, 30 Jan 2023 10:49:40 -0800 (PST)
+        Mon, 30 Jan 2023 13:50:23 -0500
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2092.outbound.protection.outlook.com [40.107.6.92])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F3929157;
+        Mon, 30 Jan 2023 10:50:22 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BVkRNS9M6EsCtUJevlttwQlO8scwK8hQrEGXrPer+Dx3SvMcjaJ1OjMJzZVnt3O+ssB5rzdo0/3kvZIy9vDpV6YF5RrwxZtxNIf5AsUYoZ1hDdi3GMotBmgiWvHQgbdmee3QLFZ565DnvN1msK70oEmyHlcKOk1qTOFMhfm5+xHTEGk9Wqo3j+jlk3bSuLKS/cj8JV+8bfYJ3i1XxwaOxu/hC7H5RPql1GheNX2k0SkfjhiuYSEXJzv6RJpLZeb8tWOA/M9zSy5pJopxh0aZkhjZ7JPfxS4gwbzzmlyKbaokkuNI5csaD4kPjGJF/A8R17RtA6tNdyui98bDeZDPwg==
+ b=ejo5q0d7KW6BKNQdV/7mHOcu+xLAR0MH2JMPS6sU5sitHofoTp9pURIrgn3vdl7D0dCM4+TRnGd9WYGZlzsAhsek8lOR56eo6RiaoENrRxZxvZ3xTIbDfmbQWI/kHlp8qg2PVC9i1N9AYVq7i+0AN0QJpAcmvUr5ouE73vHzjzTaMLHr7//LAbPj01/EYu4Tl94C0tn67KDlAbM4ub3BseB/n13ZSiF4RUP3wnFwE+Ph/I3vUjh6snTOlpe1bFvP1WOHUDDf3xwl/wngqNP+yGGlo5yFvLA8gbQwPXqwQHDJHvGBdnhU0qAVgdJNOaxKF3U0sGECojXDQKMfrEQyuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+q7B6+4Cavvq1Dz/KG19sgC6ZRkvRZ0mn+A3cz+lqzs=;
- b=BIUCZs4nf9KDki9AQ/GDzg5O7Fh/9ryJ5r2fumYAPMUCWChxASPMLdTiMKSbQspzNo2ds3qnqLH4I07NyqWsvuQqqpE7VDMKkYcHq3dYhIunkluyP8olL8uiFttirI8sX4BdVGrdg2uIuClz0Qq523mmkOz9Tk74+2tx6Uew35UQ6XMKlk3kzRzFxXMi92ixqqn2ddZjSK7XY/B1yh1J/MYzv1bPTRW9jFkTbOhBinaoDD5E4b1PHus74YoMUejzLkNnoLi+CBm+XGHnjFLGnHvjtFtY7Vggf97RtRJa2cztwlTcVjQbXFU965aAHgpIdDT2W8OYlW/sWHqHvjs3SA==
+ bh=FKH6zNKz1sllYoqSbjarn5I0M+Mc0kx6842Y/gVRjvE=;
+ b=CubrL2vPuYsd76oDyeR2kdA1WeppuuH6IF91YIrQCilf9cWwCGiGc826hOxS+zoEuMSmOgKkdAgw5ei2DUvTJALwG5v2KwFs3GTSgE4+AGPX4dcNhoPijYJmoMDt9USR1ESoc5Z5jamWr/h5G1f/gEvl+QshHxkwZm8QuxCxN2VAnp2rwCf5YWgTw45s6/I2Yw0mdT+hXCXkhyYX4TWwnidvDxKtYzfoo9hD9zHiB4wejjyDdcFOe/hYn4lVXL1RzByZeTnRFttdFfk8Vzzuj4rGsa8tcNKtooD6ZyXA1gDLQjL+Xc1hoHTS0R3N+h61AcPJ6o10vjbN/vX9Mk0irg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+q7B6+4Cavvq1Dz/KG19sgC6ZRkvRZ0mn+A3cz+lqzs=;
- b=NAQpRGg/OW7M/DCLXMuwa/63lQHG58f2LcFUO7sktneWmkVoDDAILTmfiFfDLizs7Wx1r2ls6IpKTmw1N8hc5QDu7iaLniJG5qmeGbik/xE4QA0W/ktcE8FY9ot+Q2PbFw0auzQHIwxUZNAkEh1HhdNmBb/RZWltnF8SUj8/uo0=
+ bh=FKH6zNKz1sllYoqSbjarn5I0M+Mc0kx6842Y/gVRjvE=;
+ b=JzxuwCNaHGNihvm1ncXj0MXUzn04m1/qu5rXxoGXVQaXvZy3ZeRJxMU95q3ZV5SHFm9o83fk0ciCaOcPjW0iF37X8fkJOgU5YvD6sjQmzX9D0lZmZx2aoLHkETTV6SAiat92lgmWeTSoBIgBwbyNya2VvOJXEgiS/3pO46eXRKA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWLP265MB6050.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1d3::10) with
+ by LO0P265MB6727.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:30d::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6043.36; Mon, 30 Jan
- 2023 18:49:38 +0000
+ 2023 18:50:20 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::b96e:93ad:4043:6145]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::b96e:93ad:4043:6145%9]) with mapi id 15.20.6043.036; Mon, 30 Jan 2023
- 18:49:38 +0000
-Date:   Mon, 30 Jan 2023 18:49:37 +0000
+ 18:50:20 +0000
+Date:   Mon, 30 Jan 2023 18:50:18 +0000
 From:   Gary Guo <gary@garyguo.net>
 To:     Wedson Almeida Filho <wedsonaf@gmail.com>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
@@ -50,166 +50,222 @@ Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
-        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH v2 2/5] rust: types: introduce `ForeignOwnable`
-Message-ID: <20230130184937.13dd037e.gary@garyguo.net>
-In-Reply-To: <20230130064404.744600-2-wedsonaf@gmail.com>
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Subject: Re: [PATCH v2 1/5] rust: types: introduce `ScopeGuard`
+Message-ID: <20230130185018.0b90dcde.gary@garyguo.net>
+In-Reply-To: <20230130064404.744600-1-wedsonaf@gmail.com>
 References: <20230130064404.744600-1-wedsonaf@gmail.com>
-        <20230130064404.744600-2-wedsonaf@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0622.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:294::7) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO6P123CA0026.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:313::17) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB6050:EE_
-X-MS-Office365-Filtering-Correlation-Id: f15bdea0-4f29-4560-3547-08db02f2bd59
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB6727:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5222fad3-5984-42ae-7db6-08db02f2d623
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: RusPp9NIxlkePgAtnUqgo1MJZ0fb1B88kOF/f8PhnQyAyOTbialbIn43TvIO2qerwS4DLLxi5gzYjwVYY1RqDgx9votjhiqS5H37FPObIRCFzsE26vRTh07AItNtIkB8ujeMevPf56VaKCFjLnsNi4e9KuH08jhUclZYvgp1RQOHkWfmUZhyFfOUgrbbechIW28cSuDIx9z6TlraMjKwqci9GnwmU0z5jGYjBIFpBZXkz+2cbLpUnYlDvBnvdi6Hb63T4QQY5TPoBo2YogqAhC5oXDGPyT727udg0t67OeMZ7O2I2A3wrakXtI16kMIkkPmItNz3sw8z6UolUdFrAtSKbaUfNJQp/icdm3KDcSe+QQVJx+zOGzWUhrVETf3lPp7C/FmfDA8GzQlgh7Czij1wR2N9j0+VnsXiqhbpzmXnW6GjdxLV1Y/mjjcQrNz1wduvNjlHKswVh1EIiJJU43qOVTP9n2/MdDc5gMRE2hVfbTN9lvChycMJFIL+ytfi3yQRBDp9Y6TSddaE8Fn4fwVa+HcJFxZltqbKtK4MAXRmsGtwNEbnjlEhKhvGCEpXHyMhlKfpV1B2W1yC3cU0lo+i5RMOhsrKVCS5kE4Rkk3yxE8xcWGDdjAuRQePaKcmBAh6z2lMNRN6LZiaXCBOFjiN4HTwydtSPTVTsq0Jxeb3H3Ix9JMbMd6f4l5XJSKnsD2+kfEJNAJ69TFacs3UXoUFU4O0xgLORlZKSCW6zsc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(39830400003)(136003)(376002)(346002)(366004)(396003)(451199018)(36756003)(54906003)(66946007)(66476007)(8676002)(66556008)(4326008)(6916009)(8936002)(316002)(5660300002)(38100700002)(86362001)(26005)(6506007)(186003)(6512007)(1076003)(2906002)(6486002)(478600001)(41300700001)(83380400001)(2616005)(81973001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: c9HEIcmkB4EcQVFgRCfEig9kWc/ca8RmxIwZVj/T+vyUF38+cWME5wcf+UnPPzEEcQvzxsCw26elSHD2MSOjPP+MbID2HQb7EAVSPLHlYN1fzn4/YerVvm5Apaq+YfB++ELVt4hF+joktOFBp6Wb1Vb+dAfuJ83wqoymAzOAelWnXW6rLAH6mvxnjSzTRYr1w+qTds9Tjl9GfsJnoxBYnyDT8SxWhxpNWKDHwqWvBG84albI2E7Z/ztFdJQ6cJ2bkRWsq/B4akQdz74Sm/xP03aYiuV3kFKHhyKCgN87aiZufRL3qTj7PQc9TWvGEeGTzImfTMXTXqLzHzhThctpmIWTHRhUvlTnHfXyVKS2S90Xc7YrBdjs+/PepfaEPXGRjXIfrD8j6kVOeS6it2k7YzjmExuP3S0kvF2S6q04CIe28wtyviqlu478v5xPdAiaAJhKUgARJO1uGM4po1d3J4ngZLQCnThmrNROgH7NNZMYrMtMkWQmbg4lCvxVCQcp+XQp4Sd6OW92R47XL1/gxjXAfrLECtW9LnYpl6ViX6sziv7BprW5UNyd1Ptq+XwM76cZXarTHEAvjcq6FpiSUMmnEvkKdpPizwGbrzPDkN0r6m6gSDE0CCWEzJw30A+Cwbm/gOtblAm5TucMadIY2OR/U0/ATiYas1Jlp29XdxaHNC1BoUw7FFEq4fY5Z6ga
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(136003)(346002)(376002)(396003)(39830400003)(366004)(451199018)(4326008)(66946007)(41300700001)(6916009)(66476007)(66556008)(8676002)(8936002)(316002)(5660300002)(54906003)(6486002)(83380400001)(36756003)(2906002)(6512007)(186003)(26005)(478600001)(6506007)(1076003)(86362001)(2616005)(38100700002)(81973001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?0KYBIzwqkoC5i8vr12byJ2JQhTU9dQh8cuNmIxCk/LQtGSYdapoO/0EDYrpZ?=
- =?us-ascii?Q?/a8EaPN9MsFsjP8co+WadiNXMw8rbptfZZeZTldUNid+fxdGVliL/NBXhI4Z?=
- =?us-ascii?Q?uNSZ8ia5eWwuAI+Iz2yMfKyXi32HZ0hV9wr2MvUe+iCdQYRqXv/d4gbhczrZ?=
- =?us-ascii?Q?QYDJj9OSkberjkj21QH9/VnGZ+hMG1v2kAr6xlpB//I6F0PJfcbwsai3Bn7L?=
- =?us-ascii?Q?NhIvnWK5/tbn838DUedJ8oNjLO+X+M4d+w9JFydtx/cfN3rjmhJwW0qat8rg?=
- =?us-ascii?Q?LIpPTqyd0FeyumOZY4ArOna7OAHPnQcyKafHAioE0RaKb0N0sX80pbCy8fVf?=
- =?us-ascii?Q?+9JBVSNeBmYGQcmPcvqW0mk1NPmyq/0PSfeymVQmfJrBG+rnJ4PTR4LBTemm?=
- =?us-ascii?Q?xB5GIf0PZ6EsqQKM0dGeYbpfo+ZToRwKtmVwlXQKonEe8JF/FVD7SgHnWTCa?=
- =?us-ascii?Q?xWJlFu+dqBdELekoYSuaEDmimzkqJzjscUIXWcTsk+hhCTf6G64+vE+O53ry?=
- =?us-ascii?Q?JRyXDe4KUit0mb8/PpQlRxxI5sGh15rinHYfM9kmABkt9YVAKAG79e2LkEMq?=
- =?us-ascii?Q?/fPSkke66AEmVw2Ox8qy1EI7fDZPSdGDnCi5K6EOHD5WDs/lGh4WmBzwtqzx?=
- =?us-ascii?Q?V/p93IRhBxNndJlzkfbgBvK8LkzoDaOq4ppoVkvVm8YjuUyDUykyZKuze0eG?=
- =?us-ascii?Q?gY2vn5IDya3c6yEp4OSBST/B4jFq8Oi3rC0da5vVUlOmotvWdQQ+skMXksWj?=
- =?us-ascii?Q?rgEwxzkuyW8FPlxPxFvw/XFTtjc2Ra8jYgy1ibbqH2p46nC7Wif+kK/65TRn?=
- =?us-ascii?Q?vRfkv3G7Nvt3Wue/FhFvRgpXmbiUqrYZ8IDAcrj1eWcs+vc+dpdRwSihV2S+?=
- =?us-ascii?Q?78GQbMYEHTekTmfxXMClss5aE3N4jfKuQ0cPy1oDJZb4shWLLcVCFIeIwMSu?=
- =?us-ascii?Q?Ba5CCfAZCqfDPPLvt8o7zR8Nma9fqHJk9ueK+sdcv6WK+WnHkIem0f4W1w7z?=
- =?us-ascii?Q?XFuErV/z/TpiCNx+CuolPVkmyWVGi0DMCRwww3QgaJTN/C3qQe9DDdNMes5u?=
- =?us-ascii?Q?MgIIYwaf17hpbCcy2m9yP7tyZWGoaJ5OJzgoNS6B8IDIBMzJFKXrRgZFlV3u?=
- =?us-ascii?Q?5WvvAq0oj9BUxP83ToVqd+qMCDX+vItoOPd6F7QEn0/6scw7X6085ELsM8Ts?=
- =?us-ascii?Q?DQ1AhfW/mI4d+3qKzy5xCgHE/h9q0ZMcJdv+78gOcZgWEtTY3SYhS2QVOpMw?=
- =?us-ascii?Q?BgcIZMCFDc/VlgIzGfI82vD91LJgu++5THcDX96rUwx/eY8D79RLmTcK3FgC?=
- =?us-ascii?Q?00aizvc7cINPRGXRKUXBDvkm1enQwBoy4LfC3ylQVrWe50SmXZPaVLMJXku2?=
- =?us-ascii?Q?HfnV9wVZc4hmS2YHIkyZuc8pVzJM4XblEPFfWnMRVdDZec46+pSGaQXgkut3?=
- =?us-ascii?Q?OvXztT9UqjqnLG7zyAVT4vcQ7lBL1wbf0OfxNEGqyFiXpqcn2BcT3z7iw1iQ?=
- =?us-ascii?Q?GPtgYCKKbanR/U0HJkXaCzukFhK5fkDnCr/fKeITcXio0OmerckX8uYFJIUC?=
- =?us-ascii?Q?PJIuuWwiAMUtARPE+TXzH96ff6iY1HY3pYGYMzUd?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+vVvTKinX4J4reEsgEm12aQ5bLFv9ugC40n5O36eC5fMlVFObRsVOlcVYZ5V?=
+ =?us-ascii?Q?o9UtDVSwxoGZ3ik/7/6WwM0uwQYXFlBb4urP2piZlZ6n33ZESRd7ysk7zzex?=
+ =?us-ascii?Q?jNdWyllxc5aE5YJX2rfOtg4/D42OkhPJFKREEDFyP7ui8Zy/uT0Kc3CRSiiG?=
+ =?us-ascii?Q?YFSrNsPmH7EUrxaoOJ8d53Deul3ihBaYLQL1XunrAyRAh1KotsX7ffiotsIh?=
+ =?us-ascii?Q?Vle7gBHaEXarbeND3I3X8Nje/B9FX7/jX2Dyvaj/1Y8v4E57hq9u3/Ao59/m?=
+ =?us-ascii?Q?WyIRfWqIhs1cPoN9WZEm+5hk5fcKQxub3tYColsA131lMBzq562P9ToTtWIE?=
+ =?us-ascii?Q?tVpMkF+PBXA+8MZdcaCxiF0BypXsi5eTHURZ+5IQy6F/L7HLULUlH0wpp801?=
+ =?us-ascii?Q?KAx1hQgkAdtXpHki9BGcVEeaSfZzTGu2Jl1pEVJ/gUVqqocFZ1KCNDnTwcrH?=
+ =?us-ascii?Q?jUC6bIUobR9kVIdJnVULuBYj8DSweQdQKwn6EIl5jMsgCfZDZygop3z7IBh+?=
+ =?us-ascii?Q?53g6sISTYjGYpVgzpi4H06Izmh79LzVcA4vvFfPQn6lXLguNHmllgTjnUfY5?=
+ =?us-ascii?Q?/otPPuOUTZ61hk/lhRhoms4naeTlihgZbGOkcL+nRRxzv6IDc5FFkxfPiwlg?=
+ =?us-ascii?Q?RRAJrmrqIwDouWYzS1MSvBs7H8WasvBHeEsp9D4gfAHSXLYNQ1kfCquK4c15?=
+ =?us-ascii?Q?tDt1FJQQyU1lq7xVlfK5nNBD6v0DdsbG8+hTVA27xj519tuq4tu1lXUZlKrl?=
+ =?us-ascii?Q?INcGkd6+pn3gN9QnbVc6BiuQN7d8iCFDNntvH0XNjKKSLsgbpniED1/Cq9ON?=
+ =?us-ascii?Q?jWMGm9qxolTqi2nnpeEBRscEmkY1HlscE1RybD8Z711nrMOiyiId1Ks8RM8Y?=
+ =?us-ascii?Q?ZnH8UUGdKcsRPVO+113kHKSg0khgncE+T3Lh5T9IBLjuSKC0UQ7Xql2Hw839?=
+ =?us-ascii?Q?o6QnU4gO2j95MpYChn+PMrGwokVDpXsYRYjZ7/PD3dbRZWhmxcdzFw9bxqVV?=
+ =?us-ascii?Q?p2tlY9QgU4Hl9Xh89W8b3zeYgQBacpCP99wJTubxMmM6I3R2ZM9iSJ8O6wjk?=
+ =?us-ascii?Q?/FYxHE5OxeEHUhsArUxKu8JEcVgkQu52kM6v1vX0tpVK1WsQpDFsE7onbCJi?=
+ =?us-ascii?Q?LAfeci4RSMNv6Cm1h++orQFWYHbkSA/RuK56cjErS/1lrYmxKoC7t4DetjnD?=
+ =?us-ascii?Q?3JdJuELUe36TZvxj6q7U2GjePzLMlJA9gWb5RV06vg9uzEaxGBOI+gp8iTr1?=
+ =?us-ascii?Q?avY5wPRMzZcWOI1z4ENHlRg1zefYACAY5S+yas+Y/YzBGkBWWULc4xliMBlI?=
+ =?us-ascii?Q?lWlSsIKh2SrLXwKieHB5oguSgtlzFZPFtjSzM1d/ZRl8MUGwY32xYVHLOQcL?=
+ =?us-ascii?Q?BEB/z2ofAQHxLeqMriTG/OtaJ3dswbF7ePK+F+Q5U4LbDcRjzkjS3wE9lriG?=
+ =?us-ascii?Q?p3C6ivez5dVc11ScUSZ4Bj2dMzVbBdro7umv2xNNPFCGMRj6UvzjCNyvm599?=
+ =?us-ascii?Q?FP2TgxY6OPhA5TH6skFBLLzIKRel1oy7vUOjeUuj2U2rxTe+MGx9fWR//iFL?=
+ =?us-ascii?Q?1LtlUDBYhZAbzU1SV3B3skNwIr5C0WXQm1xY+AdM?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f15bdea0-4f29-4560-3547-08db02f2bd59
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5222fad3-5984-42ae-7db6-08db02f2d623
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2023 18:49:38.6544
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2023 18:50:20.3100
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iTyIRnz9MZr7M2IpixsUBbo/ZTIlLGVg0Jxzdri/0XLGqls5qiuUZhg1XaDphB0kBVaYWk0LI21DQ+mSwQoDMg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6050
+X-MS-Exchange-CrossTenant-UserPrincipalName: Kml0B/kWJhZ1tT/sxhUtPgn15nTVKfHE0uwOTD6lSuT5GgVfjuz53m4A1rhRMGs8Rk6ZmMpkFoCoPG2ru30cjA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6727
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, 30 Jan 2023 03:44:01 -0300
+On Mon, 30 Jan 2023 03:44:00 -0300
 Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 
-> It was originally called `PointerWrapper`. It is used to convert
-> a Rust object to a pointer representation (void *) that can be
-> stored on the C side, used, and eventually returned to Rust.
+> This allows us to run some code when the guard is dropped (e.g.,
+> implicitly when it goes out of scope). We can also prevent the
+> guard from running by calling its `dismiss()` method.
 > 
 > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 > Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 
 Reviewed-by: Gary Guo <gary@garyguo.net>
 
 > ---
-> v1 -> v2: Use `Self` instead of generic type in `borrow_mut`
+> v1 -> v2: Simpler type for `ScopeGuard::new()` impl block
 > 
->  rust/kernel/lib.rs   |  1 +
->  rust/kernel/types.rs | 54 ++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 55 insertions(+)
+>  rust/kernel/types.rs | 126 ++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 125 insertions(+), 1 deletion(-)
 > 
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index e0b0e953907d..223564f9f0cc 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -16,6 +16,7 @@
->  #![feature(coerce_unsized)]
->  #![feature(core_ffi_c)]
->  #![feature(dispatch_from_dyn)]
-> +#![feature(generic_associated_types)]
->  #![feature(receiver_trait)]
->  #![feature(unsize)]
->  
 > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index dd834bfcb57b..72710b7442a3 100644
+> index e84e51ec9716..dd834bfcb57b 100644
 > --- a/rust/kernel/types.rs
 > +++ b/rust/kernel/types.rs
-> @@ -8,6 +8,60 @@ use core::{
->      ops::{Deref, DerefMut},
->  };
+> @@ -2,7 +2,131 @@
 >  
-> +/// Used to transfer ownership to and from foreign (non-Rust) languages.
+>  //! Kernel types.
+>  
+> -use core::{cell::UnsafeCell, mem::MaybeUninit};
+> +use core::{
+> +    cell::UnsafeCell,
+> +    mem::MaybeUninit,
+> +    ops::{Deref, DerefMut},
+> +};
+> +
+> +/// Runs a cleanup function/closure when dropped.
 > +///
-> +/// Ownership is transferred from Rust to a foreign language by calling [`Self::into_foreign`] and
-> +/// later may be transferred back to Rust by calling [`Self::from_foreign`].
+> +/// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
 > +///
-> +/// This trait is meant to be used in cases when Rust objects are stored in C objects and
-> +/// eventually "freed" back to Rust.
-> +pub trait ForeignOwnable: Sized {
-> +    /// Type of values borrowed between calls to [`ForeignOwnable::into_foreign`] and
-> +    /// [`ForeignOwnable::from_foreign`].
-> +    type Borrowed<'a>;
+> +/// # Examples
+> +///
+> +/// In the example below, we have multiple exit paths and we want to log regardless of which one is
+> +/// taken:
+> +/// ```
+> +/// # use kernel::ScopeGuard;
+> +/// fn example1(arg: bool) {
+> +///     let _log = ScopeGuard::new(|| pr_info!("example1 completed\n"));
+> +///
+> +///     if arg {
+> +///         return;
+> +///     }
+> +///
+> +///     pr_info!("Do something...\n");
+> +/// }
+> +///
+> +/// # example1(false);
+> +/// # example1(true);
+> +/// ```
+> +///
+> +/// In the example below, we want to log the same message on all early exits but a different one on
+> +/// the main exit path:
+> +/// ```
+> +/// # use kernel::ScopeGuard;
+> +/// fn example2(arg: bool) {
+> +///     let log = ScopeGuard::new(|| pr_info!("example2 returned early\n"));
+> +///
+> +///     if arg {
+> +///         return;
+> +///     }
+> +///
+> +///     // (Other early returns...)
+> +///
+> +///     log.dismiss();
+> +///     pr_info!("example2 no early return\n");
+> +/// }
+> +///
+> +/// # example2(false);
+> +/// # example2(true);
+> +/// ```
+> +///
+> +/// In the example below, we need a mutable object (the vector) to be accessible within the log
+> +/// function, so we wrap it in the [`ScopeGuard`]:
+> +/// ```
+> +/// # use kernel::ScopeGuard;
+> +/// fn example3(arg: bool) -> Result {
+> +///     let mut vec =
+> +///         ScopeGuard::new_with_data(Vec::new(), |v| pr_info!("vec had {} elements\n", v.len()));
+> +///
+> +///     vec.try_push(10u8)?;
+> +///     if arg {
+> +///         return Ok(());
+> +///     }
+> +///     vec.try_push(20u8)?;
+> +///     Ok(())
+> +/// }
+> +///
+> +/// # assert_eq!(example3(false), Ok(()));
+> +/// # assert_eq!(example3(true), Ok(()));
+> +/// ```
+> +///
+> +/// # Invariants
+> +///
+> +/// The value stored in the struct is nearly always `Some(_)`, except between
+> +/// [`ScopeGuard::dismiss`] and [`ScopeGuard::drop`]: in this case, it will be `None` as the value
+> +/// will have been returned to the caller. Since  [`ScopeGuard::dismiss`] consumes the guard,
+> +/// callers won't be able to use it anymore.
+> +pub struct ScopeGuard<T, F: FnOnce(T)>(Option<(T, F)>);
 > +
-> +    /// Converts a Rust-owned object to a foreign-owned one.
-> +    ///
-> +    /// The foreign representation is a pointer to void.
-> +    fn into_foreign(self) -> *const core::ffi::c_void;
-> +
-> +    /// Borrows a foreign-owned object.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
-> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow_mut`]
-> +    /// for this object must have been dropped.
-> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> Self::Borrowed<'a>;
-> +
-> +    /// Mutably borrows a foreign-owned object.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
-> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
-> +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
-> +    unsafe fn borrow_mut(ptr: *const core::ffi::c_void) -> ScopeGuard<Self, fn(Self)> {
-> +        // SAFETY: The safety requirements ensure that `ptr` came from a previous call to
-> +        // `into_foreign`.
-> +        ScopeGuard::new_with_data(unsafe { Self::from_foreign(ptr) }, |d| {
-> +            d.into_foreign();
-> +        })
+> +impl<T, F: FnOnce(T)> ScopeGuard<T, F> {
+> +    /// Creates a new guarded object wrapping the given data and with the given cleanup function.
+> +    pub fn new_with_data(data: T, cleanup_func: F) -> Self {
+> +        // INVARIANT: The struct is being initialised with `Some(_)`.
+> +        Self(Some((data, cleanup_func)))
 > +    }
 > +
-> +    /// Converts a foreign-owned object back to a Rust-owned one.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
-> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
-> +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
-> +    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self;
+> +    /// Prevents the cleanup function from running and returns the guarded data.
+> +    pub fn dismiss(mut self) -> T {
+> +        // INVARIANT: This is the exception case in the invariant; it is not visible to callers
+> +        // because this function consumes `self`.
+> +        self.0.take().unwrap().0
+> +    }
 > +}
 > +
->  /// Runs a cleanup function/closure when dropped.
+> +impl ScopeGuard<(), fn(())> {
+> +    /// Creates a new guarded object with the given cleanup function.
+> +    pub fn new(cleanup: impl FnOnce()) -> ScopeGuard<(), impl FnOnce(())> {
+> +        ScopeGuard::new_with_data((), move |_| cleanup())
+> +    }
+> +}
+> +
+> +impl<T, F: FnOnce(T)> Deref for ScopeGuard<T, F> {
+> +    type Target = T;
+> +
+> +    fn deref(&self) -> &T {
+> +        // The type invariants guarantee that `unwrap` will succeed.
+> +        &self.0.as_ref().unwrap().0
+> +    }
+> +}
+> +
+> +impl<T, F: FnOnce(T)> DerefMut for ScopeGuard<T, F> {
+> +    fn deref_mut(&mut self) -> &mut T {
+> +        // The type invariants guarantee that `unwrap` will succeed.
+> +        &mut self.0.as_mut().unwrap().0
+> +    }
+> +}
+> +
+> +impl<T, F: FnOnce(T)> Drop for ScopeGuard<T, F> {
+> +    fn drop(&mut self) {
+> +        // Run the cleanup function if one is still present.
+> +        if let Some((data, cleanup)) = self.0.take() {
+> +            cleanup(data)
+> +        }
+> +    }
+> +}
+>  
+>  /// Stores an opaque value.
 >  ///
->  /// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
 
