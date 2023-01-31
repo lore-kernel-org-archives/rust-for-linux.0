@@ -2,103 +2,135 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72EE9C636CC
-	for <rust-for-linux@archiver.kernel.org>; Tue, 31 Jan 2023 16:50:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 38BF9C38142
+	for <rust-for-linux@archiver.kernel.org>; Tue, 31 Jan 2023 16:59:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230369AbjAaQuB (ORCPT
+        id S231787AbjAaQ7c (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 31 Jan 2023 11:50:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57838 "EHLO
+        Tue, 31 Jan 2023 11:59:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230366AbjAaQt6 (ORCPT
+        with ESMTP id S231767AbjAaQ7a (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 31 Jan 2023 11:49:58 -0500
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFD102069B
-        for <rust-for-linux@vger.kernel.org>; Tue, 31 Jan 2023 08:49:57 -0800 (PST)
-Date:   Tue, 31 Jan 2023 16:49:47 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1675183793; x=1675442993;
-        bh=ul/r5dgqnSupEUq4aNIIyHVHQIQ84I55hEH0IqmpHPg=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=umhLBs1zyvBE+Lb0j6U5mxLmYoA3/H6s4CxKlxbhXXBlv0ZEVNF4eNyFP0QOcwoxO
-         l4XY32Vo6pR2toAXzkivq7bgOmBX2RbvG9S+MMxiPxRm25YWmcg76uQvMFFXl5ts0y
-         6pDy9J+nc6SBxtC9qn+dR8pKlnPsEe8Yr9FLHLAiHbvlk8GNqUmYS+/ryPpgCVOYYF
-         OFsL0rpLXGaHeuC0fMGH2SPSzC+AEUv1N83ToqY8ZRFW6s94b4y8fzPBYNOw63p7oD
-         6hhPJ6TUITyXJ406d5aXyZwmnX0gjdTlK0QLEtzpsmnAzleWYWOsz8v+OI68O2jU6D
-         t2BGV6+Fcpppw==
-To:     Will Deacon <will@kernel.org>
-From:   =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-        linux-arm-kernel@lists.infradead.org,
-        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>, steve.capper@arm.com
-Subject: Re: [PATCH 1/3] arm64: rust: Enable Rust support for AArch64
-Message-ID: <Bs9NB9XuVGuOkEvvTFpYIPDo-S-bn6LpsSKciLfFkp5J73L84wAsJFXGKYEZ7VtCKYIWUWyKxvtelgi7NuvcDT6kgPXGiz8VoUv6gh-fFGQ=@protonmail.com>
-In-Reply-To: <20230131161905.GC2646@willie-the-truck>
-References: <20230125163739.3798252-1-Jamie.Cunliffe@arm.com> <20230125163739.3798252-2-Jamie.Cunliffe@arm.com> <20230126163552.GD29438@willie-the-truck> <CANiq72mpzRjT1ZHCHcGrOJ_71eQPR_-WgP=5YfDWDBNR6JNP4w@mail.gmail.com> <20230131161905.GC2646@willie-the-truck>
-Feedback-ID: 27884398:user:proton
+        Tue, 31 Jan 2023 11:59:30 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2B5D36FDD;
+        Tue, 31 Jan 2023 08:59:22 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5484B615AE;
+        Tue, 31 Jan 2023 16:59:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225A0C433EF;
+        Tue, 31 Jan 2023 16:59:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1675184361;
+        bh=BZZ3iOKvgr/L8SPBWZpeauGddSKSM+jvubWcKKW0WEY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=J2EZWS1TcdW9aEWcy/YODbZ5dND6rwsVwiWrZbfF6TNRYYqSS/6quGlhQdghmzuJv
+         Sj4mAp7RRkUHtCckW/H8cxOd1+VSRYSVWjdEBbJw5TZsedKxMD2JHMhwETyRN5kshy
+         w6FJOmND/DsCh+DLHHY/UborwycqCFH2nme/C4b0=
+Date:   Tue, 31 Jan 2023 17:59:18 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc:     alex.gaynor@gmail.com, bjorn3_gh@protonmail.com,
+        boqun.feng@gmail.com, gary@garyguo.net,
+        linux-kernel@vger.kernel.org, ojeda@kernel.org,
+        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+Subject: Re: [PATCH] rust: add this_module macro
+Message-ID: <Y9lI5iXD2RrdK43a@kroah.com>
+References: <Y9kwpw18SVx9GZC4@kroah.com>
+ <20230131160728.400481-1-yakoyoku@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230131160728.400481-1-yakoyoku@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tuesday, January 31st, 2023 at 17:19, Will Deacon <will@kernel.org> wrot=
-e:
+On Tue, Jan 31, 2023 at 01:07:28PM -0300, Martin Rodriguez Reboredo wrote:
+> On Tue, Jan 31, 2023 at 04:15:51PM +0100, Greg KH wrote:
+> >On Tue, Jan 31, 2023 at 12:07:45PM -0300, Martin Rodriguez Reboredo wrote:
+> >> On Tue, Jan 31, 2023 at 02:42:08PM +0100, Greg KH wrote:
+> >> >On Tue, Jan 31, 2023 at 10:08:41AM -0300, Martin Rodriguez Reboredo wrote:
+> >> >> Adds a Rust equivalent to the handy THIS_MODULE macro from C.
+> >> >> 
+> >> >> Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> >> >> ---
+> >> >>  rust/kernel/lib.rs | 12 ++++++++++++
+> >> >>  1 file changed, 12 insertions(+)
+> >> >> 
+> >> >> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> >> >> index e0b0e953907d..afb6b0390426 100644
+> >> >> --- a/rust/kernel/lib.rs
+> >> >> +++ b/rust/kernel/lib.rs
+> >> >> @@ -80,6 +80,18 @@ impl ThisModule {
+> >> >>      }
+> >> >>  }
+> >> >>  
+> >> >> +/// Returns the current module.
+> >> >> +#[macro_export]
+> >> >> +macro_rules! this_module {
+> >> >> +    () => {
+> >> >> +        if cfg!(MODULE) {
+> >> >> +            Some(unsafe { $crate::ThisModule::from_ptr(&mut $crate::bindings::__this_module) })
+> >> >> +        } else {
+> >> >> +            None
+> >> >> +        }
+> >> >> +    };
+> >> >> +}
+> >> >
+> >> >While this is handy, what exactly will it be used for?  The C
+> >> >wrappers/shim/whatever should probably handle this for you already when
+> >> >you save this pointer into a structure right?
+> >> >
+> >> >Surely you aren't trying to increment your own module's reference count,
+> >> >right?  That just doesn't work :)
+> >> >
+> >> >thanks,
+> >> >
+> >> >greg k-h
+> >> 
+> >> This was meant for setting the owner field of a file_operations struct
+> >> or the cra_owner field of crypto_alg and many other structs.
+> >
+> >But shouldn't the macro kernel::declare_file_operations() do this for
+> >you automagically?  You should never have to manually say "this module!"
+> >to any structure or function call if we do things right.
+> >
+> >Yes, many "old school" structures in the kernel do this, but we have
+> >learned from the 1990's, see the fun wrappers around simple things like
+> >usb_register_driver(); as an example of how the driver author themselves
+> >should never see a module pointer anywhere.
+> >
+> >> I know that increfing a module without a good reason is dead dumb, so
+> >> I'm not trying to send things in a downwards spiral. @@@
+> >
+> >That's good, but let's not add housekeeping requirements when we do not
+> >have to do so if at all possible please.
+> >
+> >thanks,
+> >
+> >greg k-h
+> 
+> *kicks can*, at least I can take some ideas out of this, anyways, thanks
+> for your reviews.
 
-> On Thu, Jan 26, 2023 at 06:56:01PM +0100, Miguel Ojeda wrote:
->=20
-> > On Thu, Jan 26, 2023 at 5:35 PM Will Deacon will@kernel.org wrote:
-> >=20
-> > > Why do we need to specify this stuff here? LLVM already knows about A=
-Arch64
-> > > and can compute the data-layout string in computeDataLayout(). Can we=
- have
-> > > the tools figure this out for us instead, please?
-> >=20
-> > I agree -- the reason we have this for the moment is to provide full
-> > control of the target spec, in particular for cases where `rustc` may
-> > not provide enough flags to customize exiting builtin target specs
-> > and/or may emit warnings for unknown target features etc.
-> >=20
-> > If it is already enough for arm64 to use e.g. the
-> > `aarch64-unknown-none` target spec plus flags on top, then we should
-> > go for that, because that is the end goal: these target spec files are
-> > unstable in the Rust compiler (and not intended to become stable).
->=20
->=20
-> Please confirm that this is the case, but I really think we should be
-> aiming for that rather than starting off my specifying this stuff manuall=
-y.
->=20
-> > For context, upstream Rust so far has been willing to merge support
-> > for flags and target features that we needed, which is great.
->=20
->=20
-> One thing I ran into while playing around is that 128-bit types aren't
-> supported with ffi unless '-A improper-ctypes' is passed. Given that we
-> use '__uint128_t' to represent the fpsimd state, I think this is probably
-> something which will crop up as an issue.
+I don't mean to reject this out-of-hand, it's just that without a real
+user, it's impossible to review this and say "this is ok" instead of
+"perhaps you should do it this other way"?
 
-This lint exists because u/i128 are indeed not compatible with their C coun=
-terpart on many targets including x86_64 with the SysV ABI. As it turns out=
- however, it is compatible on AArch64. A little under a year ago 128bit int=
- type aliases were added to the libc crate on AArch64 (except on Windows) w=
-hich are equal to u/i128 [1]. In addition it has const assertions for the c=
-orrect size and alignment. As such if rustc every regresses on non-Windows =
-AArch64, this will show up in a crater run and almost definitively be fixed=
-. Because of this I don't think there will be any problem with assuming __u=
-int128_t and u128 are compatible when compiling for AArch64.
+Right now the rust framework is just that, a framework.  Perhaps we
+should not be adding anything else to it until there is a real user of
+it?  Otherwise this will keep coming up again and again.
 
->=20
-> Will
+Treat this like any other kernel feature/addition, you can't add apis
+until you submit a user for it at the same time.  That's one way we have
+been able to evolve and maintain the kernel source tree for so long.
+Without an api user, we have no way to know how it's being used or if
+it's even being used at all.
 
-Cheers,
-Bjorn
+thanks,
 
-[1]: https://github.com/rust-lang/libc/pull/2719/files
+greg k-h
