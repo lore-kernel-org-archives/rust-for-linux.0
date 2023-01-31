@@ -2,184 +2,131 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49DA2C636D3
-	for <rust-for-linux@archiver.kernel.org>; Tue, 31 Jan 2023 16:27:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BE5AC636D3
+	for <rust-for-linux@archiver.kernel.org>; Tue, 31 Jan 2023 16:30:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229504AbjAaQ1q (ORCPT
+        id S232031AbjAaQaH (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 31 Jan 2023 11:27:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36550 "EHLO
+        Tue, 31 Jan 2023 11:30:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230340AbjAaQ1f (ORCPT
+        with ESMTP id S231830AbjAaQ37 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 31 Jan 2023 11:27:35 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AFFE552B4;
-        Tue, 31 Jan 2023 08:27:31 -0800 (PST)
+        Tue, 31 Jan 2023 11:29:59 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76E9F65BD;
+        Tue, 31 Jan 2023 08:29:58 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B680FB81DAB;
-        Tue, 31 Jan 2023 16:27:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B9DC433A1;
-        Tue, 31 Jan 2023 16:27:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F0C0615A6;
+        Tue, 31 Jan 2023 16:29:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D34C433D2;
+        Tue, 31 Jan 2023 16:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675182448;
-        bh=NP4BYZc6xhqctJ8/b5x2SFMZ6bc2TqZIGDHNl8QnbQI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EClBqLqzpH9TSu/oXQeG1LcwgvGu8AeD7eZipdyuVz2L/JC5wMoBtnaCnVriwfhnX
-         XmmI6mUtC0MuKJFPH+JJBdmJabGzT4AQ+Ku/vpZxd5iBjN/I9KYqD72m2okVWBU4Dk
-         F6jNxxcwhZBbBIvt1uhhdgZZEpFudvA9ravL9e80kFkV/WnViiToJDHR3sHL9YzD9f
-         bMdkecnlKa4wjgBCzTLvlj335zn6r71oTaQM3yV2vh8PKAU+r8KvwaqtKPL8SfS3gK
-         E1aVOXMoYFi+zbUU58HRyHI4HVJO8m4oWSbK+EWce9VDSf91ZjDwYoKJdsnFVxAIU6
-         9k9StVR1U6iyA==
+        s=k20201202; t=1675182597;
+        bh=80ARtY9sgkVPESn81Oqqo5DIsJpKbmYVYBaV3VBCuwQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=eWOvPpBqFK7vAeA46vJdFhABLEptcTRkIJIMhzJzD3qCGh0ORrk+NNAvBBoxgd4B9
+         HF4apI7dGTOzdlPbp+pQZ4QKPWag4YFxSk+rAqmkwRTfFSPw17o1Js39Hjd8rNZDNt
+         aSCX+45vylgVAsygQqyHfDlJEnjJqwnHUJKOD8xWx+VM0NeAxLCAGEEvzHJ3S623aE
+         1QXahjRd/RcyZzRQRVi2UHPKX2fgBEhJTNWpiiTUtWmgGEF1zyT7RmHeReUdcNiQeC
+         K+XQMgFLQXdXKrPMm5WCB9rx9CVyjnoruY+F02+fRfA3P+w0FHNhT3qxdbxQ3Fjjfi
+         o/86JlppRhlXw==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-1631b928691so19985324fac.11;
+        Tue, 31 Jan 2023 08:29:57 -0800 (PST)
+X-Gm-Message-State: AFqh2kolhKUfO971MaKZXEzRIfAShLCaJys5G439IrGHo0GYfK4DkZkY
+        cXnwzD5faIUvpfpblXTA21rIhu8Wf/MYI8vEP/s=
+X-Google-Smtp-Source: AK7set8OuDanNI4MWpW21EocGtrdNwWJiAfbBBJxGVJOPOIKqWivQVkp/cG1s+/i10hMquAZLlASXlcwveDmpN3GZOM=
+X-Received: by 2002:a05:6870:110f:b0:160:3296:a9b9 with SMTP id
+ 15-20020a056870110f00b001603296a9b9mr2746630oaf.287.1675182596534; Tue, 31
+ Jan 2023 08:29:56 -0800 (PST)
+MIME-Version: 1.0
+References: <20230129184602.3974058-1-masahiroy@kernel.org>
+ <20230129184602.3974058-4-masahiroy@kernel.org> <CANiq72=BRW9TunjKQmeMthm7Esc_YKM++NmWh-Dqc9Av13SNow@mail.gmail.com>
+ <CAK7LNAQttb=qc5vsZNudYwTxmn=y3HZzVqZwAzMvLfUJXa4OFQ@mail.gmail.com> <CANiq72miWD_MtTrC0Ua7o4Tk5oDbQSFefwmYCsGx3Y=85ziJfQ@mail.gmail.com>
+In-Reply-To: <CANiq72miWD_MtTrC0Ua7o4Tk5oDbQSFefwmYCsGx3Y=85ziJfQ@mail.gmail.com>
 From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     linux-kbuild@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        Miguel Ojeda <ojeda@kernel.org>,
+Date:   Wed, 1 Feb 2023 01:29:20 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAR3Z+G+pvDEsy0M1YOxV74XSEodU=QrKN-NGqd1KgFagg@mail.gmail.com>
+Message-ID: <CAK7LNAR3Z+G+pvDEsy0M1YOxV74XSEodU=QrKN-NGqd1KgFagg@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] kbuild: srcrpm-pkg: create source package without cleaning
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
         Nicolas Schier <nicolas@fjasle.eu>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 4/5] kbuild: srcrpm-pkg: create source package without cleaning
-Date:   Wed,  1 Feb 2023 01:26:14 +0900
-Message-Id: <20230131162615.1575215-4-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230131162615.1575215-1-masahiroy@kernel.org>
-References: <20230131162615.1575215-1-masahiroy@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-If you run 'make (src)rpm-pkg', all objects are lost due to 'make clean',
-which makes the incremental builds impossible.
+On Mon, Jan 30, 2023 at 9:00 PM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Mon, Jan 30, 2023 at 2:29 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+> >
+> > I guess you are talking about kernel-devel-*.rpm
+> > (and linux-headers-.deb).
+> >
+> > They are not useful for building external modules
+> > written in Rust since they do not contain *.rmeta etc.
+> > I am not caring about that because Rust support is not
+> > mature enough yet.
+>
+> Yeah, that is what I meant, i.e. since the Rust ML was Cc'd, I checked
+> and wanted to say removing `rust` from there was OK (an `Acked-by`
+> seemed too much for just that line :).
+>
+> > I stopped hard-coding the top-level directories.
+> > The resulting source package still contains all check-in files
+> > under rust/, so it is good from the source package perspective.
+>
+> Sounds good to me.
+>
+> > 5/5 changed the behavior because rpm-pkg re-uses the
+> > *.src.rpm generated by srcrpm-pkg.
+>
+> (3/5?)
 
-Instead of cleaning, pass the exclude list to tar's --exclude-from
-option.
 
-Previously, the .config was contained in the source tarball.
+Yes.
 
-With this commit, the source rpm consists of separate linux.tar.gz
-and .config.
 
-Remove stale comments. Now, 'make (src)rpm-pkg' works with O= option.
+>
+> > Having *.src.rpm in the kernel tree seems Redhat's preference.
+> > Commit 8818039f959b2efc0d6f2cb101f8061332f0c77e
+> > added --define='_srcrpmdir $(srctree)'.
+>
+> Thanks for the details! I just noticed it, so I thought I would let
+> you know just in case.
+>
+> (Perhaps it could be useful to mention this change in the output in
+> the commit message.)
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
 
-(no changes since v1)
+Fair enough.
 
- scripts/Makefile.package | 50 +++-------------------------------------
- scripts/package/mkspec   |  8 +++----
- 2 files changed, 7 insertions(+), 51 deletions(-)
+I updated the commit description in v3.
 
-diff --git a/scripts/Makefile.package b/scripts/Makefile.package
-index 31c52bd0d180..1383160d0eee 100644
---- a/scripts/Makefile.package
-+++ b/scripts/Makefile.package
-@@ -3,53 +3,11 @@
- 
- include $(srctree)/scripts/Kbuild.include
- 
--# RPM target
--# ---------------------------------------------------------------------------
--# The rpm target generates two rpm files:
--# /usr/src/packages/SRPMS/kernel-2.6.7rc2-1.src.rpm
--# /usr/src/packages/RPMS/i386/kernel-2.6.7rc2-1.<arch>.rpm
--# The src.rpm files includes all source for the kernel being built
--# The <arch>.rpm includes kernel configuration, modules etc.
--#
--# Process to create the rpm files
--# a) clean the kernel
--# b) Generate .spec file
--# c) Build a tar ball, using symlink to make kernel version
--#    first entry in the path
--# d) and pack the result to a tar.gz file
--# e) generate the rpm files, based on kernel.spec
--# - Use /. to avoid tar packing just the symlink
--
--# Note that the rpm-pkg target cannot be used with KBUILD_OUTPUT,
--# but the binrpm-pkg target can; for some reason O= gets ignored.
--
--# Remove hyphens since they have special meaning in RPM filenames
--KERNELPATH := kernel-$(subst -,_,$(KERNELRELEASE))
- KDEB_SOURCENAME ?= linux-upstream
- KBUILD_PKG_ROOTCMD ?="fakeroot -u"
- export KDEB_SOURCENAME
--# Include only those top-level files that are needed by make, plus the GPL copy
--TAR_CONTENT := Documentation LICENSES arch block certs crypto drivers fs \
--               include init io_uring ipc kernel lib mm net rust \
--               samples scripts security sound tools usr virt \
--               .config Makefile \
--               Kbuild Kconfig COPYING $(wildcard localversion*)
- MKSPEC     := $(srctree)/scripts/package/mkspec
- 
--quiet_cmd_src_tar = TAR     $(2).tar.gz
--      cmd_src_tar = \
--if test "$(objtree)" != "$(srctree)"; then \
--	echo >&2; \
--	echo >&2 "  ERROR:"; \
--	echo >&2 "  Building source tarball is not possible outside the"; \
--	echo >&2 "  kernel source tree. Don't set KBUILD_OUTPUT, or use the"; \
--	echo >&2 "  binrpm-pkg or bindeb-pkg target instead."; \
--	echo >&2; \
--	false; \
--fi ; \
--tar -I $(KGZIP) -c $(RCS_TAR_IGNORE) -f $(2).tar.gz \
--	--transform 's:^:$(2)/:S' $(TAR_CONTENT) $(3)
--
- # Source Tarball
- # ---------------------------------------------------------------------------
- 
-@@ -87,12 +45,10 @@ rpm-pkg: srcrpm-pkg
- # srcrpm-pkg
- # ---------------------------------------------------------------------------
- PHONY += srcrpm-pkg
--srcrpm-pkg:
--	$(MAKE) clean
-+srcrpm-pkg: linux.tar.gz
- 	$(CONFIG_SHELL) $(MKSPEC) >$(objtree)/kernel.spec
--	$(call cmd,src_tar,$(KERNELPATH),kernel.spec)
--	+rpmbuild $(RPMOPTS) --target $(UTS_MACHINE)-linux -ts $(KERNELPATH).tar.gz \
--	--define='_smp_mflags %{nil}' --define='_srcrpmdir $(srctree)'
-+	+rpmbuild $(RPMOPTS) --target $(UTS_MACHINE)-linux -bs kernel.spec \
-+	--define='_smp_mflags %{nil}' --define='_sourcedir .' --define='_srcrpmdir .'
- 
- # binrpm-pkg
- # ---------------------------------------------------------------------------
-diff --git a/scripts/package/mkspec b/scripts/package/mkspec
-index 108c0cb95436..83a64d9d7372 100755
---- a/scripts/package/mkspec
-+++ b/scripts/package/mkspec
-@@ -47,7 +47,8 @@ sed -e '/^DEL/d' -e 's/^\t*//' <<EOF
- 	Group: System Environment/Kernel
- 	Vendor: The Linux Community
- 	URL: https://www.kernel.org
--$S	Source: kernel-$__KERNELRELEASE.tar.gz
-+$S	Source0: linux.tar.gz
-+$S	Source1: .config
- 	Provides: $PROVIDES
- $S	BuildRequires: bc binutils bison dwarves
- $S	BuildRequires: (elfutils-libelf-devel or libelf-devel) flex
-@@ -83,9 +84,8 @@ $S$M	This package provides kernel headers and makefiles sufficient to build modu
- $S$M	against the $__KERNELRELEASE kernel package.
- $S$M
- $S	%prep
--$S	%setup -q
--$S	rm -f scripts/basic/fixdep scripts/kconfig/conf
--$S	rm -f tools/objtool/{fixdep,objtool}
-+$S	%setup -q -n linux
-+$S	cp %{SOURCE1} .
- $S
- $S	%build
- $S	$MAKE %{?_smp_mflags} KERNELRELEASE=$KERNELRELEASE KBUILD_BUILD_VERSION=%{release}
+
+>
+> > In contrast, binary rpm files are generated under rpmbuild/RPMS/.
+> > I want to fix this inconsistency, though.
+>
+> That would be nice.
+>
+> Cheers,
+> Miguel
+
+
+
 -- 
-2.34.1
-
+Best Regards
+Masahiro Yamada
