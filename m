@@ -2,135 +2,91 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38BF9C38142
-	for <rust-for-linux@archiver.kernel.org>; Tue, 31 Jan 2023 16:59:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B9AEC38142
+	for <rust-for-linux@archiver.kernel.org>; Tue, 31 Jan 2023 18:56:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231787AbjAaQ7c (ORCPT
+        id S231776AbjAaS4P (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 31 Jan 2023 11:59:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36314 "EHLO
+        Tue, 31 Jan 2023 13:56:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231767AbjAaQ7a (ORCPT
+        with ESMTP id S231830AbjAaS4M (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 31 Jan 2023 11:59:30 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2B5D36FDD;
-        Tue, 31 Jan 2023 08:59:22 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5484B615AE;
-        Tue, 31 Jan 2023 16:59:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225A0C433EF;
-        Tue, 31 Jan 2023 16:59:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1675184361;
-        bh=BZZ3iOKvgr/L8SPBWZpeauGddSKSM+jvubWcKKW0WEY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=J2EZWS1TcdW9aEWcy/YODbZ5dND6rwsVwiWrZbfF6TNRYYqSS/6quGlhQdghmzuJv
-         Sj4mAp7RRkUHtCckW/H8cxOd1+VSRYSVWjdEBbJw5TZsedKxMD2JHMhwETyRN5kshy
-         w6FJOmND/DsCh+DLHHY/UborwycqCFH2nme/C4b0=
-Date:   Tue, 31 Jan 2023 17:59:18 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc:     alex.gaynor@gmail.com, bjorn3_gh@protonmail.com,
-        boqun.feng@gmail.com, gary@garyguo.net,
-        linux-kernel@vger.kernel.org, ojeda@kernel.org,
-        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Subject: Re: [PATCH] rust: add this_module macro
-Message-ID: <Y9lI5iXD2RrdK43a@kroah.com>
-References: <Y9kwpw18SVx9GZC4@kroah.com>
- <20230131160728.400481-1-yakoyoku@gmail.com>
+        Tue, 31 Jan 2023 13:56:12 -0500
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1692C5421F
+        for <rust-for-linux@vger.kernel.org>; Tue, 31 Jan 2023 10:56:10 -0800 (PST)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-4b718cab0e4so215943697b3.9
+        for <rust-for-linux@vger.kernel.org>; Tue, 31 Jan 2023 10:56:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Np+3tYk9rn7yw5a9dv/jRZyc1FKn78F5195S8Kv2g9I=;
+        b=Ochb6R09NK0OdReHe5vdBBSpPnqa2joHM423FSqEyiyOrX5WeqJUbhFBprGFTgReZ7
+         I07ox7KqxtCwrKiX47JndkObr7/r4OzhpwdHn5cFJ56pt1OK7oXa/wX9BOZH7JOrw1D/
+         fipo1gjnBSZWLvwPlGwLFzwDzoSLQ+n/c/fyDLY8nr8Tk9En5Hi4DIrKty2St7Inu7sn
+         YNp7wRu5HMntY9XRZTV4W1Va4RVy2QMIZz4oMtRkwBRxefNXFOrvuwYth2LSgvrsUreB
+         Gzy0ozYP2nThjQEjlVD47sQhljMN4KjhFgreycexxCVsV/4Idz/01ZVI3esX6r58JNIN
+         Z+5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Np+3tYk9rn7yw5a9dv/jRZyc1FKn78F5195S8Kv2g9I=;
+        b=IaxK7uY9KL6YNf2rTVWLhMND/TGkbb+V3TCr5Weh8ETil/3eJchqrv6czH9USOn/09
+         FoiveSE9htmQD25jrJ4VcfNnfBewwdqEqU6fEAoiu36wjwfLIGMdLqZ6zOIVYD3JEm+A
+         cx65eGrFJ8jHUaGQThIoevt9faEiKbGg1V12wmVRwdX/6psnvq1zGmvGuupqLuL0s//r
+         RhU9uEmvJ3bIP5Mp6EnrfAJiTTTGHvE6Uyxlo5KvOwAS/jbc3IouqYrq9elYdk3pIdOZ
+         ZMKKoRvh7FHFwPeu9PnbLcZZBe0cyVOhM4iqDtsJ7gt+8kslCdJ2nWwpF9ZEEbN+Qo4J
+         8RCw==
+X-Gm-Message-State: AFqh2koKAwVzhBsWZrQrSYhj0BDA+WPQ+LWmAsCm7cAYFzb9oZpAzMln
+        TkSSQIq/Rw2VWcAdkrXn7VXLOqqP7LKwqI4p8DI=
+X-Google-Smtp-Source: AMrXdXupRq+9jt/GnEAZKmraD3Ja5cNIWpPfgQTKKD4ARUliYYwOxv0jq+1tstSPuSEtl/rgmL+h0cD60I3rfTH6lok=
+X-Received: by 2002:a81:bb54:0:b0:506:c44:ca69 with SMTP id
+ a20-20020a81bb54000000b005060c44ca69mr3381915ywl.67.1675191369275; Tue, 31
+ Jan 2023 10:56:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230131160728.400481-1-yakoyoku@gmail.com>
+References: <20230125163739.3798252-1-Jamie.Cunliffe@arm.com>
+ <20230125163739.3798252-2-Jamie.Cunliffe@arm.com> <20230126163552.GD29438@willie-the-truck>
+ <CANiq72mpzRjT1ZHCHcGrOJ_71eQPR_-WgP=5YfDWDBNR6JNP4w@mail.gmail.com> <20230131161905.GC2646@willie-the-truck>
+In-Reply-To: <20230131161905.GC2646@willie-the-truck>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 31 Jan 2023 19:55:58 +0100
+Message-ID: <CANiq72=cJPCLmbyAJhY3FEwMS4tonPtJspMG7Kb_EAEZ2CFwhg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] arm64: rust: Enable Rust support for AArch64
+To:     Will Deacon <will@kernel.org>
+Cc:     Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>, steve.capper@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Jan 31, 2023 at 01:07:28PM -0300, Martin Rodriguez Reboredo wrote:
-> On Tue, Jan 31, 2023 at 04:15:51PM +0100, Greg KH wrote:
-> >On Tue, Jan 31, 2023 at 12:07:45PM -0300, Martin Rodriguez Reboredo wrote:
-> >> On Tue, Jan 31, 2023 at 02:42:08PM +0100, Greg KH wrote:
-> >> >On Tue, Jan 31, 2023 at 10:08:41AM -0300, Martin Rodriguez Reboredo wrote:
-> >> >> Adds a Rust equivalent to the handy THIS_MODULE macro from C.
-> >> >> 
-> >> >> Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> >> >> ---
-> >> >>  rust/kernel/lib.rs | 12 ++++++++++++
-> >> >>  1 file changed, 12 insertions(+)
-> >> >> 
-> >> >> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> >> >> index e0b0e953907d..afb6b0390426 100644
-> >> >> --- a/rust/kernel/lib.rs
-> >> >> +++ b/rust/kernel/lib.rs
-> >> >> @@ -80,6 +80,18 @@ impl ThisModule {
-> >> >>      }
-> >> >>  }
-> >> >>  
-> >> >> +/// Returns the current module.
-> >> >> +#[macro_export]
-> >> >> +macro_rules! this_module {
-> >> >> +    () => {
-> >> >> +        if cfg!(MODULE) {
-> >> >> +            Some(unsafe { $crate::ThisModule::from_ptr(&mut $crate::bindings::__this_module) })
-> >> >> +        } else {
-> >> >> +            None
-> >> >> +        }
-> >> >> +    };
-> >> >> +}
-> >> >
-> >> >While this is handy, what exactly will it be used for?  The C
-> >> >wrappers/shim/whatever should probably handle this for you already when
-> >> >you save this pointer into a structure right?
-> >> >
-> >> >Surely you aren't trying to increment your own module's reference count,
-> >> >right?  That just doesn't work :)
-> >> >
-> >> >thanks,
-> >> >
-> >> >greg k-h
-> >> 
-> >> This was meant for setting the owner field of a file_operations struct
-> >> or the cra_owner field of crypto_alg and many other structs.
-> >
-> >But shouldn't the macro kernel::declare_file_operations() do this for
-> >you automagically?  You should never have to manually say "this module!"
-> >to any structure or function call if we do things right.
-> >
-> >Yes, many "old school" structures in the kernel do this, but we have
-> >learned from the 1990's, see the fun wrappers around simple things like
-> >usb_register_driver(); as an example of how the driver author themselves
-> >should never see a module pointer anywhere.
-> >
-> >> I know that increfing a module without a good reason is dead dumb, so
-> >> I'm not trying to send things in a downwards spiral. @@@
-> >
-> >That's good, but let's not add housekeeping requirements when we do not
-> >have to do so if at all possible please.
-> >
-> >thanks,
-> >
-> >greg k-h
-> 
-> *kicks can*, at least I can take some ideas out of this, anyways, thanks
-> for your reviews.
+On Tue, Jan 31, 2023 at 5:19 PM Will Deacon <will@kernel.org> wrote:
+>
+> Please confirm that this is the case, but I really think we should be
+> aiming for that rather than starting off my specifying this stuff manuall=
+y.
 
-I don't mean to reject this out-of-hand, it's just that without a real
-user, it's impossible to review this and say "this is ok" instead of
-"perhaps you should do it this other way"?
+Let's see what Jamie thinks and if he can give it a try.
 
-Right now the rust framework is just that, a framework.  Perhaps we
-should not be adding anything else to it until there is a real user of
-it?  Otherwise this will keep coming up again and again.
+> One thing I ran into while playing around is that 128-bit types aren't
+> supported with ffi unless '-A improper-ctypes' is passed. Given that we
+> use '__uint128_t' to represent the fpsimd state, I think this is probably
+> something which will crop up as an issue.
 
-Treat this like any other kernel feature/addition, you can't add apis
-until you submit a user for it at the same time.  That's one way we have
-been able to evolve and maintain the kernel source tree for so long.
-Without an api user, we have no way to know how it's being used or if
-it's even being used at all.
+Thanks for giving it a go. With what Bj=C3=B6rn has explained (I see the PR
+he linked has `user_fpsimd_struct` as a test case, which is nice), I
+guess it should be fine. We could also add some tests on our side to
+make sure (which we probably want to do anyway for other reasons).
 
-thanks,
+Added to https://github.com/Rust-for-Linux/linux/issues/355.
 
-greg k-h
+Cheers,
+Miguel
