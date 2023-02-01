@@ -2,110 +2,177 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88DB1C636CC
-	for <rust-for-linux@archiver.kernel.org>; Wed,  1 Feb 2023 01:38:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CECE7C38142
+	for <rust-for-linux@archiver.kernel.org>; Wed,  1 Feb 2023 09:40:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230054AbjBABim (ORCPT
+        id S230043AbjBAJk4 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 31 Jan 2023 20:38:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55934 "EHLO
+        Wed, 1 Feb 2023 04:40:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229863AbjBABil (ORCPT
+        with ESMTP id S231770AbjBAJky (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 31 Jan 2023 20:38:41 -0500
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F16D9521DE;
-        Tue, 31 Jan 2023 17:38:40 -0800 (PST)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-4fd37a1551cso226563057b3.13;
-        Tue, 31 Jan 2023 17:38:40 -0800 (PST)
+        Wed, 1 Feb 2023 04:40:54 -0500
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69F1A5D10C
+        for <rust-for-linux@vger.kernel.org>; Wed,  1 Feb 2023 01:40:51 -0800 (PST)
+Received: by mail-ej1-x62b.google.com with SMTP id hx15so30073719ejc.11
+        for <rust-for-linux@vger.kernel.org>; Wed, 01 Feb 2023 01:40:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IYV1PkpzfhgRPyGiRj90Sy3TFLGA2xJdyexuKq3v2Js=;
-        b=XHlEdUJ03iay/M2j1In2oyHo1cfXjMnm6H/Xi6VsNeZKosP/0RmGkFBacbgKUEqBVX
-         i172XHg+X678FCHVRBQi2E68EIzWRcuYKCJvqJBx6Coagl5R8GB+rZ7N0+YKqyxU1mOL
-         NTJs2QKMsZ+HcAxWmPozJVLy8AHNYY+RloncPJWJrgcK9s9rIkB2LZhH8hCccxxrPjM4
-         pV6ss8Ab8SzeVUB1Q7leZXnLYqrd9wv5DMeAR/hI6djn4/OZ4i5+5na7Oa0sCm7/fZjq
-         ojprYntFM7hrCLW+mUs7bU5jfaJurqEiZoiWAeJNCIYXNOrLM4ugSWuJ1fnw7POtAUnl
-         5Rcg==
+        d=metaspace-dk.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=WwWn2SiLiW7sLaC3t5z9qnIk8iNhwtCwJiitRlNyQ/8=;
+        b=jogpAeWNiX1Jz4lazS8c8MTlJNpDcXZ8GDVYjJys7iQGpMmyD3GADSgxPUp+8UYu5c
+         ChxJvvGr6rfWafHRold7G8ZHuXCD5DAmqTATtuDEDVzbSDnOkFAHYP1hNJS+/vJOQCMH
+         4rq9rSwsbd5Oi1O3d2EcPA5J5YicWh7y+GfXZiCtxvRiTliFY2tifRx9sWmx7feNyiER
+         Pdslt9srn6XvCa76BB4S0gWUc6SGdxGP6knvevyMlQBMUh34GTrB/DE/qzINR+JRAxNx
+         Ekx/OBiimEfpkD2ukBeSzqvXKoB//fE+THtXv9wq2/sXeeuKii44ah9AlnW2gA0ZThY+
+         e6ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IYV1PkpzfhgRPyGiRj90Sy3TFLGA2xJdyexuKq3v2Js=;
-        b=5cQ+Ly+og9ra4nSjCN6tEsO0OH/rfveqbdFr9zERcQcampZ7lY9jQOa7DwArbgYCm4
-         sSEF465LH2dbP+OAK14xbio0fLbRnTTX4H4Cnu9azvP78lQ+JyaePVfJvGEoPO1JdNIF
-         rzxfUwBIJlIESLWAHYKgGaDvGl4E/7QxfdPbDbCY5xoQ9vbhGw2uTFntusAZ0ixo0bB0
-         kcmUPv54RXezOPT9YCwDmxJ83F9GtnmzHsOmkt2OnPIHxSod3Io12kE5Mo6hC9aXGVhy
-         aYle2cNqIIZBPTb5kEWhTlZafRc4ZSHFTD6kNfUyeYW0DmbASigLiKJ4P5Hhk3Y/I1Su
-         KcAA==
-X-Gm-Message-State: AO0yUKW9CyKnuGumRRZUJAVjgiu6zE27yw5p2q7tnevazrCxt9RDRVv+
-        SCJsRFchr2u158ehcTfIqOZu0fNzCXgklC5mdaA5fXZrMoajqw==
-X-Google-Smtp-Source: AK7set+iERPfWWyWGiZoAkGhsc3jflB/Hj7kF17HirXukKDxN68JkyGKqVX+lFBorVZcSEKyqJWfcQ+mEh5HrXyxyBg=
-X-Received: by 2002:a05:690c:c87:b0:506:c44:ca69 with SMTP id
- cm7-20020a05690c0c8700b005060c44ca69mr40089ywb.67.1675215519931; Tue, 31 Jan
- 2023 17:38:39 -0800 (PST)
-MIME-Version: 1.0
-References: <20230128072258.3384037-1-boqun.feng@gmail.com>
-In-Reply-To: <20230128072258.3384037-1-boqun.feng@gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 1 Feb 2023 02:38:28 +0100
-Message-ID: <CANiq72mGk72tvLx+uH-puXZ=MvAA9dzNVqTXYmPq2iadwYuyWA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: MAINTAINERS: Add the zulip link
-To:     Boqun Feng <boqun.feng@gmail.com>
-Cc:     rust-for-linux@vger.kernel.org,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WwWn2SiLiW7sLaC3t5z9qnIk8iNhwtCwJiitRlNyQ/8=;
+        b=iwutB+djf38ZaYnqvR/yzglVlR4o1sX9R8b1wv3Hf6FNEFFekcxG6JfdkccEV4rLA4
+         Ugea+Ab5oBWwPdzJBLaoaJiEw6veU6LHpHjtaMzgXhXz/1jdsvT1rS/70bvMKAwXrwMM
+         ZCpWB47C3OXypJQ81HNNID2oYLJz3ng1srrDRGBK8OXEbv6Cff2JVDKJo51TyTqvZiZa
+         IjalITx6Vfcf/qwMAjJ4JkrbCHOM1yZXFoksMmchONW4rAS4EyN6ehCHyzTfmcR8fkhM
+         qTfSIIB3UQcuSs2Wnbbox9MTJWxDlnapscApDdEIQ8ky1jm1rn1exK7AtONgF3J2ckGQ
+         Bk1w==
+X-Gm-Message-State: AO0yUKVXtpshdqiykIHbCfL/cOBjhmqjcEzRwCn1/GTM0mINFQ7iVI7K
+        WfH/LxkprwlqdYKMiKBIp+UzpA==
+X-Google-Smtp-Source: AK7set/I3ZSX+O9UcLe15Di0So9RXz1fxvTlWmnT7fw+tfog1w/9tkLzFeReshElytkmDWaw6cwZYw==
+X-Received: by 2002:a17:906:9610:b0:878:5e84:e1d6 with SMTP id s16-20020a170906961000b008785e84e1d6mr1930486ejx.75.1675244449923;
+        Wed, 01 Feb 2023 01:40:49 -0800 (PST)
+Received: from localhost ([79.142.230.49])
+        by smtp.gmail.com with ESMTPSA id os25-20020a170906af7900b008874c903ec5sm5188677ejb.43.2023.02.01.01.40.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Feb 2023 01:40:49 -0800 (PST)
+References: <20230130064404.744600-1-wedsonaf@gmail.com>
+ <20230130064404.744600-2-wedsonaf@gmail.com>
+User-agent: mu4e 1.9.18; emacs 28.2.50
+From:   Andreas Hindborg <nmi@metaspace.dk>
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>
+Subject: Re: [PATCH v2 2/5] rust: types: introduce `ForeignOwnable`
+Date:   Wed, 01 Feb 2023 10:35:11 +0100
+In-reply-to: <20230130064404.744600-2-wedsonaf@gmail.com>
+Message-ID: <87sffpk9jz.fsf@metaspace.dk>
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jan 28, 2023 at 8:23 AM Boqun Feng <boqun.feng@gmail.com> wrote:
+
+Wedson Almeida Filho <wedsonaf@gmail.com> writes:
+
+> It was originally called `PointerWrapper`. It is used to convert
+> a Rust object to a pointer representation (void *) that can be
+> stored on the C side, used, and eventually returned to Rust.
 >
-> Zulip organization "rust-for-linux" has been created since about 2 years
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> ---
 
-"was created about 2 years ago ... and has proven" maybe?
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 
-> [1]: https://lore.kernel.org/rust-for-linux/CANiq72=3DxVaMQkgCA9rspjV8bhW=
-DGqAn4x78B0_4U1WBJYj1PiA@mail.gmail.com/
+It would be cool to see a debug implementation of this trait that verify
+safety properties by using a counter at runtime. Panic if borrow_mut()
+is called while there are live references in existence returned by
+borrow().
 
-We typically do links as a tag, like:
+> v1 -> v2: Use `Self` instead of generic type in `borrow_mut`
+>
+>  rust/kernel/lib.rs   |  1 +
+>  rust/kernel/types.rs | 54 ++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 55 insertions(+)
+>
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index e0b0e953907d..223564f9f0cc 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -16,6 +16,7 @@
+>  #![feature(coerce_unsized)]
+>  #![feature(core_ffi_c)]
+>  #![feature(dispatch_from_dyn)]
+> +#![feature(generic_associated_types)]
+>  #![feature(receiver_trait)]
+>  #![feature(unsize)]
+>  
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index dd834bfcb57b..72710b7442a3 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -8,6 +8,60 @@ use core::{
+>      ops::{Deref, DerefMut},
+>  };
+>  
+> +/// Used to transfer ownership to and from foreign (non-Rust) languages.
+> +///
+> +/// Ownership is transferred from Rust to a foreign language by calling [`Self::into_foreign`] and
+> +/// later may be transferred back to Rust by calling [`Self::from_foreign`].
+> +///
+> +/// This trait is meant to be used in cases when Rust objects are stored in C objects and
+> +/// eventually "freed" back to Rust.
+> +pub trait ForeignOwnable: Sized {
+> +    /// Type of values borrowed between calls to [`ForeignOwnable::into_foreign`] and
+> +    /// [`ForeignOwnable::from_foreign`].
+> +    type Borrowed<'a>;
+> +
+> +    /// Converts a Rust-owned object to a foreign-owned one.
+> +    ///
+> +    /// The foreign representation is a pointer to void.
+> +    fn into_foreign(self) -> *const core::ffi::c_void;
+> +
+> +    /// Borrows a foreign-owned object.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
+> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
+> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow_mut`]
+> +    /// for this object must have been dropped.
+> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> Self::Borrowed<'a>;
+> +
+> +    /// Mutably borrows a foreign-owned object.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
+> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
+> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
+> +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
+> +    unsafe fn borrow_mut(ptr: *const core::ffi::c_void) -> ScopeGuard<Self, fn(Self)> {
+> +        // SAFETY: The safety requirements ensure that `ptr` came from a previous call to
+> +        // `into_foreign`.
+> +        ScopeGuard::new_with_data(unsafe { Self::from_foreign(ptr) }, |d| {
+> +            d.into_foreign();
+> +        })
+> +    }
+> +
+> +    /// Converts a foreign-owned object back to a Rust-owned one.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
+> +    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
+> +    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] and
+> +    /// [`ForeignOwnable::borrow_mut`] for this object must have been dropped.
+> +    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self;
+> +}
+> +
+>  /// Runs a cleanup function/closure when dropped.
+>  ///
+>  /// The [`ScopeGuard::dismiss`] function prevents the cleanup function from running.
 
-    Link: https://..../ [1]
-
->  R:     Gary Guo <gary@garyguo.net>
->  R:     Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
->  L:     rust-for-linux@vger.kernel.org
-> +C:     zulip://rust-for-linux.zulipchat.com
->  S:     Supported
->  W:     https://github.com/Rust-for-Linux/linux
->  B:     https://github.com/Rust-for-Linux/linux/issues
-
-The preferred order according to the top of the file is `C:` after
-`B:` -- could you please move it? (even if not everybody follows it)
-
-Thanks Boqun!
-
-Also, for reference for others: a few of us discussed a bit in Zulip
-whether to use `zulip://` or `https://` here: `zulip://` hints at the
-fact that it is possible to join with apps/clients and not just with a
-web browser, which is why Boqun wants to use this one. Support for the
-URI scheme in place of the `https://` one isn't great in some of the
-apps, though, so I worried it could be confusing.
-
-Hopefully the URI scheme support will improve in the future. So let's
-try `zulip://` -- it may help getting better support for that URI
-scheme too :)
-
-Cheers,
-Miguel
