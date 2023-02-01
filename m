@@ -2,135 +2,87 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EEADC38142
-	for <rust-for-linux@archiver.kernel.org>; Wed,  1 Feb 2023 18:46:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B492C05027
+	for <rust-for-linux@archiver.kernel.org>; Wed,  1 Feb 2023 22:51:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230131AbjBASqf (ORCPT
+        id S229771AbjBAWvN (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 1 Feb 2023 13:46:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50828 "EHLO
+        Wed, 1 Feb 2023 17:51:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbjBASqe (ORCPT
+        with ESMTP id S229608AbjBAWvM (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 1 Feb 2023 13:46:34 -0500
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02A0759F7;
-        Wed,  1 Feb 2023 10:46:32 -0800 (PST)
-Received: by mail-qt1-x82d.google.com with SMTP id h24so9933306qtr.0;
-        Wed, 01 Feb 2023 10:46:31 -0800 (PST)
+        Wed, 1 Feb 2023 17:51:12 -0500
+Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0CD62529D;
+        Wed,  1 Feb 2023 14:51:11 -0800 (PST)
+Received: by mail-qt1-x832.google.com with SMTP id h24so83201qta.12;
+        Wed, 01 Feb 2023 14:51:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=OeTWkDqjypR+OgsPjgWaQEZKoQPFobObyrEFRJd45t4=;
-        b=YnesV+QGJCO+tYOBKNXn3KHglCGHnc49xzwu0vFwlC8zIGQl+PPHTT5Ilepth4J5Ax
-         +/9T3Xw+w/dH+/xCr1IiMBV2+fHHCVYZBZqiKfQ8xHG2MaVRIWaQwGv5F51goFcPYSi7
-         IpdmZOmGpIAcDXer+x1mKdf2w0eCk0ewVWRBBWy6TlhhftF3OBgvc7WGsMBc2ciDtzL9
-         S1R4zT2ZE8aRqXBTjIODcAo9/njL6j7KuEB9SwQD4+S/9Q76fe8wod5brJ3YYrH00pjm
-         40Ud4ChmQo6JuWUtE67+8OGPMzdaid9Y71LqSfvpDzRo+eBXTPGVrfPt1nOMxaHzI/gU
-         +1lw==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=XZeAHibIDvY1od232Bzk1jjyY4S0jzZKd2wQ9KbzuIc=;
+        b=V7Jo2C4CuPbUs8N7rLVkvQ3gHfTZ8Bn+0/wVt0owZv5aaTi/QIXZL3mItL41LUpA+r
+         OA5IS+3etcTJ2rdLu+QPwaDrsPjvPRVY3w+dhxmB1NL4LbP8zK4QvOlF83FCeA1zdfap
+         ANnCWChugEIhly+lhK8uhZTo7IWfJ5rxWSmLnzQxE/o7UqoUDdDuXuHdYdRATdQgAAvi
+         1+soKHD+QGr1XF5xfde06z5T8DJBAc+RDO8vbdu2oifek+z9G3j/8UGuGueZUZIvs4jn
+         gHGYGv3abZy1ZRLCJWtqQwERp3J5ydCa+Hz/5uL2oO1VlZlj3rhOKzKoWc5xF+TgqNW7
+         4mog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OeTWkDqjypR+OgsPjgWaQEZKoQPFobObyrEFRJd45t4=;
-        b=oMzArw/vnwaPRuMIrPDChWN2FaEUJDfZOwIxbdgbSaKXLU4aBtQ/1syC3050fGo7pK
-         6vVBDgAzn+EynnW/NrCXaY4yINpgnaI7cWUlqFqdsFAPI3GzHdM+AIdQkFxmhDqTZedK
-         6tmTkRjU0Bpb3s/+g6o7A6rbAb7PklajVrhzR8StZBfs4qMi6s+F5Z8h5Z2LJ/83R9lz
-         Jf5ycL8xTv3tZjiz5Ac31/ZeeN8lWdgyipsvF9rL8I+YfAAL/kECL8upcZ18YW2JKeOt
-         WE2lh+giuXIeg0wyEgASABhzFDYx3lwXuyKZ4R7fa2Dby92/KN04N7RljfhU/yTWCEjp
-         7AfQ==
-X-Gm-Message-State: AO0yUKV49PLvDa4i18h1BEH1KMBVViuYeIaddlHajOW3lO1GskYOi2XG
-        FUHjUByzI0hX91N241QqVMw=
-X-Google-Smtp-Source: AK7set9HX2Q4wrbU8BP/0tQHxvhf62Ikvv1UPtBUxpQtRj4bOEmhr+SFO2iLflQ5YuViwC4EmaM3Og==
-X-Received: by 2002:a05:622a:1815:b0:3b8:525f:f0a7 with SMTP id t21-20020a05622a181500b003b8525ff0a7mr6775627qtc.56.1675277191167;
-        Wed, 01 Feb 2023 10:46:31 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id r13-20020a05620a03cd00b0072771acaf09sm2997426qkm.126.2023.02.01.10.46.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Feb 2023 10:46:30 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailauth.nyi.internal (Postfix) with ESMTP id E370C27C0054;
-        Wed,  1 Feb 2023 13:46:29 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Wed, 01 Feb 2023 13:46:29 -0500
-X-ME-Sender: <xms:hbPaY6dGf4sZvAW5S1BHbcKgaQFkU9zJlakq0w3M9bQSFf9SL5_fug>
-    <xme:hbPaY0M7lfoZLhQ5_l5SpEdc3YjLkug0c2RllYMBgmOMFxyJ0MO_afFdbpMgZZBwf
-    hC52oUHdFE57O3p4A>
-X-ME-Received: <xmr:hbPaY7jF7HcZpqpN1_kr7T_0fZsHBZqnuo1BvPt9VWWUW99gKPVptbtWCN0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudefiedguddujecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnheptedvfffhgfdvvedutdefjefhvdevjeehleeihfeiieevffejgfetfffh
-    jeevgefgnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpghhithhhuhgsrdgtohhmpd
-    iiuhhlihhptghhrghtrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghm
-    pehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlih
-    hthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhm
-    rghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:hbPaY3_r9uN2GMNwVmNSVIKapqrq8XRNNZGIR-XXnRS_csPzYUTzvw>
-    <xmx:hbPaY2sjDl-GwVWSAI62aWZSOpELf08QsGuHBI3bNzXz0uQcwHAc6g>
-    <xmx:hbPaY-HSYR45EwnZCYjS3OxAoUeEw3q7oEBZjJvgXwWaIK0mWEtgbA>
-    <xmx:hbPaYz8cILfOq7-vAMYGIUpMiuxcG2t1U4f6cK0LGRyDJmm2IqWqmg>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 1 Feb 2023 13:46:28 -0500 (EST)
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     rust-for-linux@vger.kernel.org
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XZeAHibIDvY1od232Bzk1jjyY4S0jzZKd2wQ9KbzuIc=;
+        b=A5/1O1C5QfDiOR+LWokFo5Np445m96ax1V4ZsvImMvA8CY1zKm4F4HbihzGDu5vXpG
+         DJxXnFL9Hb3P9p/AH/35o6/hlBryNtwKceuxgJoR5x/QaMHquL40BOJfFfV17eEwFrBG
+         hSC/4xtZskthT3W/lytMu2Bjy/CnF6mDf0dr3g3TRTC+jtpYTtI/ijDKR8gFsal3Y+QP
+         3ZIi3kJWgANAbsT31kilerNYPQEKuu44f1pWeepzGWpBuCwHAcvCOnsGPifC6eV7z/Ex
+         lhFUW1G8YAXT+8g3GDxB+UUwW+jStLsnGBtXMjHucEEh4/sIFZYCgndLBBZSj5Z0ty1O
+         BsfA==
+X-Gm-Message-State: AO0yUKVWEHJo4R3SBcMhKev44tkgFY3P6VCaIlvVkYthuKWD0g6lYYVr
+        tKvchRucJcmM2fK5LnmajZuwSXYCXqwak+bXRHg=
+X-Google-Smtp-Source: AK7set9manxB/Bai1aVVNzPerzWJDsG6yzRPWN8Sn+NvU8MVoJZeAMaPw889g7ro76ypFNgK0KLdj9m/uQcGyyH2s9w=
+X-Received: by 2002:a05:622a:134a:b0:3b6:3577:2fd2 with SMTP id
+ w10-20020a05622a134a00b003b635772fd2mr452836qtk.252.1675291870777; Wed, 01
+ Feb 2023 14:51:10 -0800 (PST)
+MIME-Version: 1.0
+References: <CANiq72mGk72tvLx+uH-puXZ=MvAA9dzNVqTXYmPq2iadwYuyWA@mail.gmail.com>
+ <20230201184525.272909-1-boqun.feng@gmail.com>
+In-Reply-To: <20230201184525.272909-1-boqun.feng@gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 1 Feb 2023 23:50:59 +0100
+Message-ID: <CANiq72=j42cdDY9OqA9Z8TQ5kHjTd+9aqxWqbhCsW4+-TR2upg@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: MAINTAINERS: Add the zulip link
+To:     Boqun Feng <boqun.feng@gmail.com>,
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org,
+        Greg KH <gregkh@linuxfoundation.org>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v3] rust: MAINTAINERS: Add the zulip link
-Date:   Wed,  1 Feb 2023 10:45:21 -0800
-Message-Id: <20230201184525.272909-1-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <CANiq72mGk72tvLx+uH-puXZ=MvAA9dzNVqTXYmPq2iadwYuyWA@mail.gmail.com>
-References: <CANiq72mGk72tvLx+uH-puXZ=MvAA9dzNVqTXYmPq2iadwYuyWA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Zulip organization "rust-for-linux" was created 2 years ago[1] and has
-proven to be a great place for Rust related discussion, therefore
-add the information in MAINTAINERS file so that newcomers have more
-options to find guide and help.
+On Wed, Feb 1, 2023 at 7:46 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+>
+> Zulip organization "rust-for-linux" was created 2 years ago[1] and has
+> proven to be a great place for Rust related discussion, therefore
+> add the information in MAINTAINERS file so that newcomers have more
+> options to find guide and help.
+>
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72=xVaMQkgCA9rspjV8bhWDGqAn4x78B0_4U1WBJYj1PiA@mail.gmail.com/ [1]
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-Link: https://lore.kernel.org/rust-for-linux/CANiq72=xVaMQkgCA9rspjV8bhWDGqAn4x78B0_4U1WBJYj1PiA@mail.gmail.com/ [1]
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
-v2 -> v3:
+Applied to rust-next, thanks Boqun!
 
-	*	Commit message improvement per Miguel.
-	*	Reorder the line after "B:" as suggested by Miguel.
+(Vincenzo: if you would like me to apply your tag to v3, please let me know.)
 
-v1 -> v2:
-
-	* 	As suggested by Greg KH, add commit message.
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 42fc47c6edfd..80fc5f050f28 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18222,6 +18222,7 @@ L:	rust-for-linux@vger.kernel.org
- S:	Supported
- W:	https://github.com/Rust-for-Linux/linux
- B:	https://github.com/Rust-for-Linux/linux/issues
-+C:	zulip://rust-for-linux.zulipchat.com
- T:	git https://github.com/Rust-for-Linux/linux.git rust-next
- F:	Documentation/rust/
- F:	rust/
--- 
-2.39.1
-
+Cheers,
+Miguel
