@@ -2,94 +2,77 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81A01C38142
-	for <rust-for-linux@archiver.kernel.org>; Tue, 31 Jan 2023 20:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DA25C636CC
+	for <rust-for-linux@archiver.kernel.org>; Wed,  1 Feb 2023 01:00:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231644AbjAaUre (ORCPT
+        id S229546AbjBABAm (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 31 Jan 2023 15:47:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50820 "EHLO
+        Tue, 31 Jan 2023 20:00:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231364AbjAaUrY (ORCPT
+        with ESMTP id S229761AbjBABAl (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 31 Jan 2023 15:47:24 -0500
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DCD05894B;
-        Tue, 31 Jan 2023 12:47:10 -0800 (PST)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-501c3a414acso219737257b3.7;
-        Tue, 31 Jan 2023 12:47:10 -0800 (PST)
+        Tue, 31 Jan 2023 20:00:41 -0500
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7554588C;
+        Tue, 31 Jan 2023 17:00:39 -0800 (PST)
+Received: by mail-yb1-xb35.google.com with SMTP id e15so20434425ybn.10;
+        Tue, 31 Jan 2023 17:00:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=N9l/9MAVJWA+dZEdm+svYF2/nvT5KD362r+lfb36Gso=;
-        b=Nqp3I4uOLLf7OR349FVCL9q4L2KfkyNDWuK6fM1t2wwrShOseWX6lQMElF/JIFEcYg
-         btGU3YnisYatiRl5djnQe/+w4WAzm6eqgBe/YHLafZYxO/j5rjoO0Gon5MBe1px1+2ur
-         +jr7XkpGL6SKmun/AQCBBf435wWyU9fvBOhQOouCnE04cHc4pMsMsvvkA+5zZdt9bP2A
-         Xe2erOJc1DP0oiM9g1h/vAoJyFvEF4/Cd9svNDUb+qH3jOIVYA7m29ypHi6/EBaDuv09
-         Z9pl2EiK64KZuDCB5acWGssKxHIxU3/QmaBNydNPgfHfaWEwde9yEEkUOWCGX6vCOM2t
-         oR3g==
+        bh=9nPQ4RnUP6Ol9oNSST5l+QUc+nK4Yk250B9dxEqq6J4=;
+        b=Kkj397Rg+PPciClFB+yXJgESfsvk2ZCELMtSsZyxkBVN9Yw7AiM9zLLZWiuCu7IgFU
+         glo01lZbGvI3G5KaKOxHitOvRTHNiPOkY3oRzhvc7r3jDvxkPX3224p7MjL1T8Pu6GqA
+         LN7CFpGFVL0LYDoOqk6YjOaEOfox9zo/zMtTQ7Vj5FHm5tAEoDapRa/U9+Tvn3QnxLgu
+         9m7X3JzZ+83f46gwu9u/PFnx1DOHFypx6+znTRY9S6WgTwAkO5+ZD+de29oEPcP43rHD
+         Q+IZALUfcQbliHTZUt+p4S+8p5/lPjW24bqOlbK9h7qM6liDV/eyKKdi+9YHVPmMv2xj
+         AVFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=N9l/9MAVJWA+dZEdm+svYF2/nvT5KD362r+lfb36Gso=;
-        b=WbaPeMnG+4qqbeJmyyKBPwubyFziWG36Nu3rY7v38uBkljPwng26ypnX/8HjG9kF1m
-         ohHTI7O2wr4V8hzfkYNKGbvZKFhR7UBOFEdAkEOXMUqq8Fb0Ka1v4/G33/q0gufFn8yt
-         jcNqR15PoYflRkL+fLgko0Q+z1K2NKcYqjeHnQ/SZ4rmS4VpGntpF055XP//8Wx9TpFd
-         +K7A4xVQBx8sBXUZWXg7YSshciXKcZHqSUFQ7QbhkXsy8SnMGtkMk6k62vihGu6QUvWD
-         GyQx1XfnDbrUKyrjus83OcojfB1GRasQuqT74bJok5xDve61c5qtzCfdOjBegg7MfUkI
-         Cr+w==
-X-Gm-Message-State: AFqh2kq7RBmnXTJu4vdiaLpNxaT33L+k+Own6lE/SlLxlUR4aH012zag
-        MWVxJBoUXASRefGeEfSkA6aErFY/3/Eieho1gd8=
-X-Google-Smtp-Source: AMrXdXuWh6hLVtSCj5DoHXrF0MnxwIuKMrvqn4ZOfQAgQjDtKVKxwOGPaABVIDhMdOIX2NkzyawvT/TQUJqjUjufAiE=
-X-Received: by 2002:a81:bb54:0:b0:506:c44:ca69 with SMTP id
- a20-20020a81bb54000000b005060c44ca69mr3410557ywl.67.1675198029268; Tue, 31
- Jan 2023 12:47:09 -0800 (PST)
+        bh=9nPQ4RnUP6Ol9oNSST5l+QUc+nK4Yk250B9dxEqq6J4=;
+        b=oLB1CQzCoX0w9hFsQbuH8kSX3c1Qq+yDdRg4iYhHny22LKUgHh9S2OuWFKq29G+0EN
+         DthTZ8R7EKy305Lqa5Xqj3LYfDVtAQoPzZd9jU9tx3AWAIdUQaiXvZldmePEXXjvmgUJ
+         M4nICwvQ1JHzWovReqBrsSyBZETCQV/Q0sTk0fBnIehgo06NcIyxPwXcBdew/uJmwHDh
+         MI8bpkT1XsTvizE5l58PTHEnkjBwyxd68HHSwhHp1c2OckkK/9TVimlPkMr8elTppgKv
+         vXn6YDuImwtS6Xn5mCVt689QcEay7RSuw3pfn+K3SWzTGBb60v05grK9rwTQst84PIbl
+         68sQ==
+X-Gm-Message-State: AO0yUKWLHdBl862DHZ8i0B+Xzatap3F+bzjX5lW7MUVqNtBonWASzBES
+        8NRLhqCKnvDj2QuK2RKd3ayZ8lJiLXOzc//rAQo=
+X-Google-Smtp-Source: AK7set/gj6cQu52jHh1NyWNo+H/vfuONDQLUQWkE88/1LbLRc80+x/3TqqeIVOYN84vbSseQiBcfNAHR4prAGncNVts=
+X-Received: by 2002:a25:ec04:0:b0:7e1:ed59:4e43 with SMTP id
+ j4-20020a25ec04000000b007e1ed594e43mr137320ybh.323.1675213239147; Tue, 31 Jan
+ 2023 17:00:39 -0800 (PST)
 MIME-Version: 1.0
-References: <Y9kwpw18SVx9GZC4@kroah.com> <20230131160728.400481-1-yakoyoku@gmail.com>
- <Y9lI5iXD2RrdK43a@kroah.com>
-In-Reply-To: <Y9lI5iXD2RrdK43a@kroah.com>
+References: <20230130064404.744600-1-wedsonaf@gmail.com>
+In-Reply-To: <20230130064404.744600-1-wedsonaf@gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 31 Jan 2023 21:46:58 +0100
-Message-ID: <CANiq72=5vcBcOwcX5dadp45G+dvRRwpy1KrEXpEANbOW4gPPew@mail.gmail.com>
-Subject: Re: [PATCH] rust: add this_module macro
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        alex.gaynor@gmail.com, bjorn3_gh@protonmail.com,
-        boqun.feng@gmail.com, gary@garyguo.net,
-        linux-kernel@vger.kernel.org, ojeda@kernel.org,
-        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+Date:   Wed, 1 Feb 2023 02:00:27 +0100
+Message-ID: <CANiq72mFUMeovG=wJs_kAWn+j2v7WobgGP5aRBmoZc2ooQqpBA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] rust: types: introduce `ScopeGuard`
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Jan 31, 2023 at 5:59 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+On Mon, Jan 30, 2023 at 7:44 AM Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 >
-> Right now the rust framework is just that, a framework.  Perhaps we
-> should not be adding anything else to it until there is a real user of
-> it?  Otherwise this will keep coming up again and again.
->
-> Treat this like any other kernel feature/addition, you can't add apis
-> until you submit a user for it at the same time.  That's one way we have
-> been able to evolve and maintain the kernel source tree for so long.
-> Without an api user, we have no way to know how it's being used or if
-> it's even being used at all.
+> This allows us to run some code when the guard is dropped (e.g.,
+> implicitly when it goes out of scope). We can also prevent the
+> guard from running by calling its `dismiss()` method.
 
-Agreed. For this patch, it came independently, so I cannot speak about
-its users. For other patch series we have sent, the users are
-out-of-tree, but they want to come in-tree as soon as possible. We are
-coordinating with them to prioritize the submission of the things they
-will depend on.
-
-Since the goal is to submit things piece by piece so that they can be
-properly reviewed, what we have been doing to ameliorate things is to
-provide enough details, examples and documentation for each function,
-type, etc. so that it is hopefully clear how they will be used. If
-there are some cases where it may not be clear, we can also link to
-the upcoming users.
+Series applied to `rust-next`, thanks a lot!
 
 Cheers,
 Miguel
