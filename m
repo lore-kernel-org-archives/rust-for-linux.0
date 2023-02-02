@@ -2,33 +2,34 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44446C636D4
-	for <rust-for-linux@archiver.kernel.org>; Thu,  2 Feb 2023 16:53:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E483EC61DA4
+	for <rust-for-linux@archiver.kernel.org>; Thu,  2 Feb 2023 16:56:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231764AbjBBQxe (ORCPT
+        id S231513AbjBBQ4T (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 2 Feb 2023 11:53:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59732 "EHLO
+        Thu, 2 Feb 2023 11:56:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232442AbjBBQxd (ORCPT
+        with ESMTP id S229608AbjBBQ4S (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 2 Feb 2023 11:53:33 -0500
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 730B465EF4
-        for <rust-for-linux@vger.kernel.org>; Thu,  2 Feb 2023 08:53:32 -0800 (PST)
-Date:   Thu, 02 Feb 2023 16:53:19 +0000
+        Thu, 2 Feb 2023 11:56:18 -0500
+X-Greylist: delayed 167 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 02 Feb 2023 08:56:18 PST
+Received: from mail-40135.protonmail.ch (mail-40135.protonmail.ch [185.70.40.135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9A0765EF4;
+        Thu,  2 Feb 2023 08:56:17 -0800 (PST)
+Date:   Thu, 02 Feb 2023 16:56:06 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1675356808; x=1675616008;
-        bh=CRMJsATKjRLIzIk/IM3Ofjd8VrM0+8WEYA35gsWakuk=;
+        s=protonmail3; t=1675356976; x=1675616176;
+        bh=KTKd/DfSeMG+RDS1R75oSk6PP95+qG0nM4YE2HKPVxM=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=OXYNP3hMhVDDNwxrF896QybQNZ5DyNssvDLLZ4ebhM5uypiDqD2WwqYVUTXk/MhdU
-         bMz98dX6tYPjSj09JSG1HiwTABKa7VIEYWTHOYvdDrSnLifUvwo3kRqQr0I7k9KgHf
-         Xud3Pn5RUhbwq+2mwrSbOFifYQRMQy9XBg8+vJhfjG2wvxImw+VhJWoawci64ZHLjB
-         M5MP+zThXGxcKUHBctuN8VcfQ66xCURRTSr3ZbOe2WVaoffFUiaA8xI0iFe3l1G+st
-         BkoA+YjaAtllTxKTPdiKPTOmvDT0GFjq4SerRWew8u5iqmUY8mJLZsALTOqwsNW9yF
-         7UrX5eh7zlUbg==
+        b=cSJDT6tIdL0uOFani6e+Y5UaS75/DT9DjS5Qxpzt1oOWn+RnPqfyqNRvYMfbxzsmR
+         QhPdSHLEBV0RC9njwj5YdOqGtzCewSwsq6IljOJk5q+cFVBbar8CQFeQkL73BshS69
+         z8rb+KSYLXFfOFru/VAsspkTFJ0Q1PDoKBPvfYdNKCYM01zAds/vkUbDiKvxe9CRmi
+         XzzqYH9uDSRvdQKQ1G7VgGEmwGrXRxAty0wHpeubRZfznHOthG8YKxiRHRRoLkB4vr
+         ApDtclTGD2NukUrT+JS3r6li1sgeNWMxfxR2ewxRaL698qouKRsfxZNRSHbZ1rlM7y
+         gUdHMyNzcWqLQ==
 To:     Boqun Feng <boqun.feng@gmail.com>
 From:   =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
 Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -40,10 +41,10 @@ Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Gary Guo <gary@garyguo.net>,
         Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Subject: Re: [RFC 3/5] rust: sync: Arc: Introduces Arc::get_inner() helper
-Message-ID: <Hoc5Wk4Qi6ck20o1sqzOAXf0p01Ntezl4V2PxizHTorqRdDFeoWnlnWIpsu-nrom3U7EWiLC0KUfatrF18yjh5EiOThk3MBXGFraN8zycPI=@protonmail.com>
-In-Reply-To: <20230201232244.212908-4-boqun.feng@gmail.com>
-References: <20230201232244.212908-1-boqun.feng@gmail.com> <20230201232244.212908-4-boqun.feng@gmail.com>
+Subject: Re: [RFC 5/5] sample: rust: print: Add sampe code for Arc printing
+Message-ID: <GpS33r41srXb-5jSGsywYv1yCxEU8iHy3BmNkMTn0J2ahxiQoDVIzPiOTfzHqX7Qm0lRlqavDbsrmLKIMwl_7cMtCvF6IJ8kELjFPcKNifE=@protonmail.com>
+In-Reply-To: <20230201232244.212908-6-boqun.feng@gmail.com>
+References: <20230201232244.212908-1-boqun.feng@gmail.com> <20230201232244.212908-6-boqun.feng@gmail.com>
 Feedback-ID: 27884398:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -55,82 +56,61 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 On Thursday, February 2nd, 2023 at 00:22, Boqun Feng <boqun.feng@gmail.com>=
  wrote:
 
-
-> Getting a `&ArcInner<T>` should always be safe from a `Arc<T>`,
->=20
-> therefore add this helper function to avoid duplicate unsafe
-> `ptr.as_ref()`.
+> This both demonstrates the usage of different print format in Rust and
+> serves as a selftest for the `Display` and `Debug` implementation of
+> `Arc` and its friends.
 >=20
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
 Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
 
 > ---
->  rust/kernel/sync/arc.rs | 19 ++++++++++---------
->  1 file changed, 10 insertions(+), 9 deletions(-)
+>  samples/rust/rust_print.rs | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
 >=20
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index fbfceaa3096e..4d8de20c996f 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -201,6 +201,13 @@ impl<T: ?Sized> Arc<T> {
->          // reference can be created.
->          unsafe { ArcBorrow::new(self.ptr) }
->      }
+> diff --git a/samples/rust/rust_print.rs b/samples/rust/rust_print.rs
+> index 8b39d9cef6d1..165a8d7b1c07 100644
+> --- a/samples/rust/rust_print.rs
+> +++ b/samples/rust/rust_print.rs
+> @@ -15,6 +15,30 @@ module! {
+>=20
+>  struct RustPrint;
+>=20
+> +fn arc_print() -> Result {
+> +    use kernel::sync::*;
 > +
-> +    /// Returns a reference to the internal [`ArcInner`].
-> +    fn get_inner(&self) -> &ArcInner<T> {
-> +        // SAFETY: By the type invariant, there is necessarily a referen=
-ce to the object, so it is
-> +        // safe to dereference it.
-> +        unsafe { self.ptr.as_ref() }
-> +    }
->  }
+> +    let a =3D Arc::try_new(1)?;
+> +    let b =3D UniqueArc::try_new("hello, world")?;
+> +
+> +    // Prints the value of data in `a`.
+> +    pr_info!("{}", a);
+> +
+> +    // Uses ":?" to print debug fmt of `b`.
+> +    pr_info!("{:?}", b);
+> +
+> +    let a: Arc<&str> =3D b.into();
+> +    let c =3D a.clone();
+> +
+> +    // Uses `dbg` to print, will move `c`.
+> +    dbg!(c);
+> +
+> +    // Prints debug fmt with pretty-print "#" and number-in-hex "x".
+> +    pr_info!("{:#x?}", a);
+> +
+> +    Ok(())
+> +}
+> +
+>  impl kernel::Module for RustPrint {
+>      fn init(_module: &'static ThisModule) -> Result<Self> {
+>          pr_info!("Rust printing macros sample (init)\n");
+> @@ -43,6 +67,8 @@ impl kernel::Module for RustPrint {
+>          pr_cont!(" is {}", "continued");
+>          pr_cont!(" with {}\n", "args");
 >=20
->  impl<T: 'static> ForeignOwnable for Arc<T> {
-> @@ -233,9 +240,7 @@ impl<T: ?Sized> Deref for Arc<T> {
->      type Target =3D T;
->=20
->      fn deref(&self) -> &Self::Target {
-> -        // SAFETY: By the type invariant, there is necessarily a referen=
-ce to the object, so it is
-> -        // safe to dereference it.
-> -        unsafe { &self.ptr.as_ref().data }
-> +        &self.get_inner().data
+> +        arc_print()?;
+> +
+>          Ok(RustPrint)
 >      }
 >  }
->=20
-> @@ -244,7 +249,7 @@ impl<T: ?Sized> Clone for Arc<T> {
->          // INVARIANT: C `refcount_inc` saturates the refcount, so it can=
-not overflow to zero.
->          // SAFETY: By the type invariant, there is necessarily a referen=
-ce to the object, so it is
->          // safe to increment the refcount.
-> -        unsafe { bindings::refcount_inc(self.ptr.as_ref().refcount.get()=
-) };
-> +        unsafe { bindings::refcount_inc(self.get_inner().refcount.get())=
- };
->=20
->          // SAFETY: We just incremented the refcount. This increment is n=
-ow owned by the new `Arc`.
->          unsafe { Self::from_inner(self.ptr) }
-> @@ -253,11 +258,7 @@ impl<T: ?Sized> Clone for Arc<T> {
->=20
->  impl<T: ?Sized> Drop for Arc<T> {
->      fn drop(&mut self) {
-> -        // SAFETY: By the type invariant, there is necessarily a referen=
-ce to the object. We cannot
-> -        // touch `refcount` after it's decremented to a non-zero value b=
-ecause another thread/CPU
-> -        // may concurrently decrement it to zero and free it. It is ok t=
-o have a raw pointer to
-> -        // freed/invalid memory as long as it is never dereferenced.
-> -        let refcount =3D unsafe { self.ptr.as_ref() }.refcount.get();
-> +        let refcount =3D self.get_inner().refcount.get();
->=20
->          // INVARIANT: If the refcount reaches zero, there are no other i=
-nstances of `Arc`, and
->          // this instance is being dropped, so the broken invariant is no=
-t observable.
 > --
 > 2.39.1
