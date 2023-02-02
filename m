@@ -2,157 +2,114 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 885FCC636D3
-	for <rust-for-linux@archiver.kernel.org>; Wed,  1 Feb 2023 23:23:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4915CC05027
+	for <rust-for-linux@archiver.kernel.org>; Thu,  2 Feb 2023 07:27:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232053AbjBAXXJ (ORCPT
+        id S230003AbjBBH1R (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 1 Feb 2023 18:23:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49090 "EHLO
+        Thu, 2 Feb 2023 02:27:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232001AbjBAXXC (ORCPT
+        with ESMTP id S229595AbjBBH1Q (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 1 Feb 2023 18:23:02 -0500
-Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A927A264;
-        Wed,  1 Feb 2023 15:23:00 -0800 (PST)
-Received: by mail-qt1-x830.google.com with SMTP id m12so201226qth.4;
-        Wed, 01 Feb 2023 15:23:00 -0800 (PST)
+        Thu, 2 Feb 2023 02:27:16 -0500
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 712C068106;
+        Wed,  1 Feb 2023 23:27:15 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id u21so1066071edv.3;
+        Wed, 01 Feb 2023 23:27:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=WRf7FsW0svSQ5uvgmd0AHIX9qix6pe5dIuAX0+vgnjk=;
-        b=AaGH4xIRJHiGzFMV++RFKatLGmRKIlREolVmZNjG58XdbhhZh+dfTsMyJYEO+70aem
-         tBqEufwqM5laAYG07ZQPu8n6RGmg+qrsVt5Zqo6b3ISlGXUwbys8dTWui33h1xrvKKA5
-         n1CihKRhSpTe+48nBn480C5vwmB2HicalOCh4HRM7mt6aqy+/iCOMgYHhHUIr5HHjlb+
-         RTvpnbVpRzvWisvXms2l3y4e2SiNqRVZuutfDxnXhU20zU+YdCNjwQK+lRq6PAmCYORR
-         GUZoSPcR+/cRSEgsWhh9yJQuWrTv2e0f9ucLgKuoOFB0FpBtRudXBfgQgpQfmUXiFefQ
-         5bBw==
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y1GINEHnv1gu6lznwNAhoMfT9UtzwsG0ur+qj4v5n9o=;
+        b=VccljSJOxO09q3vStd2j/BKsk0yx0mMDZz0tfQUMDz+bgivwtxNZzaBhWmMH3AqnGR
+         dPcVn7GZkTRwpHLBfaVijDFvFVqo1OZm5ap8tS6ZpQRzZtTRMNjjFX+saenQV0RHEyc9
+         ADnx3bXXwj4zBQ2fE+aUAtFI9DbId3WBknIk09O035J9KZNRrSsBuMoFJCtoKg1rivDf
+         5QAGSS/Khx4oRhIfvQZ+TCmkffco+iiK1ndUl6YVscTl419g25vLocpZmgYI3dO5lw6M
+         bSaGakyAOXOmEvZh+zCTgHpJbHmZh62k/ks0Z7dAOI/VvMxNF7LQvPazW9cR74tXy/Vp
+         BV4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WRf7FsW0svSQ5uvgmd0AHIX9qix6pe5dIuAX0+vgnjk=;
-        b=U37R2xk4+D4anO1F0nsjAloxJMblkiq7mMafhdrkrMXPRp67OS6Cx4Z8iRn1u3d1v/
-         C1JxTnnHxqBHge2pcXJaYUHu73iCYL/LHhaIIXQHR2o2+ZpD4YeepVVRnraG4HO1ZKK8
-         y8XTmYiYNl/a5Yssk0rVk7w5Aycf3qPMTb/Gvrot9qY/qn5WpAU9jTqLvR3EQYoUCB8Z
-         btVvkCRYCZzUd77VsM3IAxtDUl4VYLOqIzcbBlAADbOqSdu1b76LGa9tY15pFWrZtE7L
-         3I3S0ECWgUj3VU3H51S/Xj/fgjOWfN/o9KGH3MG7KkXo40rJhrxCfJlfCwCWCcPtscr6
-         Y2WA==
-X-Gm-Message-State: AO0yUKXTNLQM17qKt4uRunEa3KHfc/k4efigedRgZTSKtg2lJkHBENFd
-        EK2FRHa8Y7uJzoM2jpxu80U=
-X-Google-Smtp-Source: AK7set8a4O590xcb1r76E6BdTkcepn8WXa7kzVn5DCamhrt0fB+pXN3hlNimrLvuOLFWYKwV+G0Z+Q==
-X-Received: by 2002:ac8:5886:0:b0:3b9:b297:5ec5 with SMTP id t6-20020ac85886000000b003b9b2975ec5mr7535406qta.13.1675293779687;
-        Wed, 01 Feb 2023 15:22:59 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id s39-20020a05622a1aa700b003a7e38055c9sm12735406qtc.63.2023.02.01.15.22.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Feb 2023 15:22:58 -0800 (PST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 71F4527C0054;
-        Wed,  1 Feb 2023 18:22:58 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Wed, 01 Feb 2023 18:22:58 -0500
-X-ME-Sender: <xms:UvTaY-AnHLgtb4I40VMzL9cSsKBUaYVsDrybfHp_MjqEaari3wEgug>
-    <xme:UvTaY4hWRvoFfYkqdnThqUilTxrXyJWR4QzO6JE2S0N2YRVEfJCixxv66cpz4hBhQ
-    y33a5KjrutI6398NQ>
-X-ME-Received: <xmr:UvTaYxlgcW4XaiKaGmAptmrIXpURDTndFNdK1xwNGUuoSIb3mw_nV4Vk_FM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudefjedgudduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeegleejiedthedvheeggfejveefjeejkefgveffieeujefhueeigfegueeh
-    geeggfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:UvTaY8zMi2zYNBIfZSv25qmIz8XfGUIKhg5eqvp5Or43Oq9zAeLuNQ>
-    <xmx:UvTaYzQ_2cHwEKVNwA8oxxtDyTuqsFbCu51kTuBO_pvB1BxuBiDpLg>
-    <xmx:UvTaY3Y9H5XPJgAYUTXRCLeo7vSIYAmNVZVcXshqNfeOVwDXyf_bSQ>
-    <xmx:UvTaY4IGnp6pA3NG7yqSPzTVgAOBFkuyylu8H8s1rNiK2-deCp0Alw>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 1 Feb 2023 18:22:57 -0500 (EST)
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Will Deacon <will@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Subject: [RFC 5/5] sample: rust: print: Add sampe code for Arc printing
-Date:   Wed,  1 Feb 2023 15:22:44 -0800
-Message-Id: <20230201232244.212908-6-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230201232244.212908-1-boqun.feng@gmail.com>
-References: <20230201232244.212908-1-boqun.feng@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=y1GINEHnv1gu6lznwNAhoMfT9UtzwsG0ur+qj4v5n9o=;
+        b=YaKjFznM6HD21Jpy95iah9Ozwrb0LXQaQJm7cFN67VSgkmMZT7uSmI+BEFb09SvKSH
+         25/0EodNxky2C59Z5uxP1aesihmiQreTXYGFi/ybrWALcMohwXNMdiUOIS8V0A61BGa7
+         szglBHO2QTTDD+i0b1RC8ba9V2EFkl5+7NfR35Pv3KcASKVy8KrGUcXVccXj2Sj02y1s
+         LhFlt5gfZ3JDJS4YbWfcd6TGa3eDVT/YkeG/flkuyED+Ejsm4YUQkhX0YID3bA15CpJY
+         xeSF+sI6wSJ/jm5Cb/Xpfr3En1E9mlyg/cDM0rRycRONUXIYxp+DHL0mN7FWpANuYYAq
+         VtiQ==
+X-Gm-Message-State: AO0yUKWJv5xviedYfUFxGvJuOQz7R8TtPJVKZw3EAz2agGgnxihb9Sd7
+        iwfaBGEzDCJOO62AIdu/OAhoIYSBBywTYpPr
+X-Google-Smtp-Source: AK7set/wWkhOxY8QrAHVg6gJn4n5qWwY2uvAJjUUddtOBq1alUQRNOCbJ1DZdmimHYmgdFJkoWVt6g==
+X-Received: by 2002:a05:6402:3219:b0:4a2:223d:4514 with SMTP id g25-20020a056402321900b004a2223d4514mr5631397eda.8.1675322833723;
+        Wed, 01 Feb 2023 23:27:13 -0800 (PST)
+Received: from localhost ([169.150.196.150])
+        by smtp.gmail.com with ESMTPSA id b4-20020a50b404000000b004a245350e0fsm5966713edh.36.2023.02.01.23.27.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Feb 2023 23:27:13 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Thu, 02 Feb 2023 08:27:08 +0100
+Message-Id: <CQ7WDMLZJV70.39ULEVF528YB8@vincent>
+Cc:     "Greg KH" <gregkh@linuxfoundation.org>,
+        "Miguel Ojeda" <ojeda@kernel.org>,
+        "Alex Gaynor" <alex.gaynor@gmail.com>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        "Gary Guo" <gary@garyguo.net>,
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] rust: MAINTAINERS: Add the zulip link
+From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
+To:     "Boqun Feng" <boqun.feng@gmail.com>,
+        <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.14.0-38-gb2afc8117fb7
+References: <CANiq72mGk72tvLx+uH-puXZ=MvAA9dzNVqTXYmPq2iadwYuyWA@mail.gmail.com> <20230201184525.272909-1-boqun.feng@gmail.com>
+In-Reply-To: <20230201184525.272909-1-boqun.feng@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This both demonstrates the usage of different print format in Rust and
-serves as a selftest for the `Display` and `Debug` implementation of
-`Arc` and its friends.
+On Wed Feb 1, 2023 at 7:45 PM CET, Boqun Feng wrote:
+> Zulip organization "rust-for-linux" was created 2 years ago[1] and has
+> proven to be a great place for Rust related discussion, therefore
+> add the information in MAINTAINERS file so that newcomers have more
+> options to find guide and help.
+>
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72=3DxVaMQkgCA9rspjV8bh=
+WDGqAn4x78B0_4U1WBJYj1PiA@mail.gmail.com/ [1]
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> ---
+Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
- samples/rust/rust_print.rs | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
 
-diff --git a/samples/rust/rust_print.rs b/samples/rust/rust_print.rs
-index 8b39d9cef6d1..165a8d7b1c07 100644
---- a/samples/rust/rust_print.rs
-+++ b/samples/rust/rust_print.rs
-@@ -15,6 +15,30 @@ module! {
- 
- struct RustPrint;
- 
-+fn arc_print() -> Result {
-+    use kernel::sync::*;
-+
-+    let a = Arc::try_new(1)?;
-+    let b = UniqueArc::try_new("hello, world")?;
-+
-+    // Prints the value of data in `a`.
-+    pr_info!("{}", a);
-+
-+    // Uses ":?" to print debug fmt of `b`.
-+    pr_info!("{:?}", b);
-+
-+    let a: Arc<&str> = b.into();
-+    let c = a.clone();
-+
-+    // Uses `dbg` to print, will move `c`.
-+    dbg!(c);
-+
-+    // Prints debug fmt with pretty-print "#" and number-in-hex "x".
-+    pr_info!("{:#x?}", a);
-+
-+    Ok(())
-+}
-+
- impl kernel::Module for RustPrint {
-     fn init(_module: &'static ThisModule) -> Result<Self> {
-         pr_info!("Rust printing macros sample (init)\n");
-@@ -43,6 +67,8 @@ impl kernel::Module for RustPrint {
-         pr_cont!(" is {}", "continued");
-         pr_cont!(" with {}\n", "args");
- 
-+        arc_print()?;
-+
-         Ok(RustPrint)
-     }
- }
--- 
-2.39.1
+> v2 -> v3:
+>
+> 	*	Commit message improvement per Miguel.
+> 	*	Reorder the line after "B:" as suggested by Miguel.
+>
+> v1 -> v2:
+>
+> 	* 	As suggested by Greg KH, add commit message.
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 42fc47c6edfd..80fc5f050f28 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18222,6 +18222,7 @@ L:	rust-for-linux@vger.kernel.org
+>  S:	Supported
+>  W:	https://github.com/Rust-for-Linux/linux
+>  B:	https://github.com/Rust-for-Linux/linux/issues
+> +C:	zulip://rust-for-linux.zulipchat.com
+>  T:	git https://github.com/Rust-for-Linux/linux.git rust-next
+>  F:	Documentation/rust/
+>  F:	rust/
+> --=20
+> 2.39.1
 
