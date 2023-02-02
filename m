@@ -2,47 +2,47 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06FA8C05027
-	for <rust-for-linux@archiver.kernel.org>; Thu,  2 Feb 2023 14:23:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70EEFC61DA4
+	for <rust-for-linux@archiver.kernel.org>; Thu,  2 Feb 2023 14:24:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232277AbjBBOW7 (ORCPT
+        id S232363AbjBBOY2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 2 Feb 2023 09:22:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38944 "EHLO
+        Thu, 2 Feb 2023 09:24:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232036AbjBBOW6 (ORCPT
+        with ESMTP id S230174AbjBBOY2 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 2 Feb 2023 09:22:58 -0500
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2105.outbound.protection.outlook.com [40.107.6.105])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B317D903A9;
-        Thu,  2 Feb 2023 06:22:55 -0800 (PST)
+        Thu, 2 Feb 2023 09:24:28 -0500
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2128.outbound.protection.outlook.com [40.107.104.128])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE58984FA8;
+        Thu,  2 Feb 2023 06:24:24 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=egkjR/zfjBhFzmdlfKh2Zsa/SGchrxnWHkAvzM9VDs3LA9fU/fKfJziyyRb4FUcxjJ689ICNnIhRY/cZt+a4hIu5OTg9coj32DweU1TPuuiHhM/YR0tkMKkS2DA5ca/CZwOfe20dWJCziKTcKiDtr1XWT2hsT69X3i01AYXtaopppSUd/PLjQ346tKgHnQzK0FN2QQaFtpBVXbCaAbIsYm2h9c0/C7c253jjjO8WJdRa0W+mNwCzm/UNFX3sc4Bx7FZTvTzwtsSy8Bg9tA43gtsfvHY1aaLGjZ3hqPczWC+n3XvnVml5xSrW3D8+a9vKl4fht1uyDVpmCHinmVwPzw==
+ b=k0gwKloeEnmQXCUZC5u3QK/AtMKQAR+wjVhLPoErmKrHc97Bk+eL40TVjqqSSV4xRy0u4DODwU6B/qWMc9siJ5k6L/jgpZUzTYWlleof60Aj8qve9deu/VV56NXVZ12urXMLO3AQtrHj1jgoYsPwvIvTbbEhGSRWeHSF/2LARZMfzFCopZSw3ieCHpUypceRk/GKD3T08NiX2lsWCEDyTgnP3jAuyyNUljUzwEy3hlrSFfI/O6C4ix9s7Os+zlSPnBzoF/Fnfyk/EWolOBMuPU+xr6hZxJA2YFSUu09UX6UGu773HsI+gvaSbQDxrs46HcWwNuaAksuba6IsftFoFA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Mqv5OJsWRJ/nuPg9msDTj+R6y4xFfkPRJeNFsWEzzi4=;
- b=CiSEfWMcy9JrGscvpbImezL9Z1iOC52jK4ILKYZ9iV8WL24jEFNKzNKZDGgERXLPCVj/wb2vYpQUgTmyU3wOPh0+FLbsIM5Cr63nCbO1l+5yWtefeswXIG1QJmXquii6syeK+vT9Kgy2aAZQI3cLbSsi3kvrkQwNzcqrpfNWQTq/FWZH1amKWQwH8Udd7Sk5PmVGfH5fmrsCJwCbGGbuakkBwNwmOYNO3/HcPuSbCmVYzoX7KafbdMjL3W7vdsajeAPnRyroTBaXXkDLqCTvVrciUeOt9qAxFAgfwqKmm/Xh/spPZNmzeMWk8utXULJCBI/2Jkmp3wkpSz70V0MnhQ==
+ bh=bnJMfMfyhYG5uKi7Ic+/eD+hvvhyJnEFB7TYCF9bgAA=;
+ b=mkEsTWOCv+qlOtOE9uD1u4LEtXar5AGdktaOgkIH/zmOLsQUj6SISKjs6qARLtF7/l6Qz3zPEjMVVx/SRKFJKGJJetChe726v3xjN93ltX/fYJ3s45neLgIuB+9Aujr/oTJEiEt/vNxRwPABlW8hZqfn2kjiYLpOhIfy5A8FspSiE6KCm6QRcSbJVsYqai4nsUfWt+ZIGtsErUZiV8U8AfbpE/c1CEHjFJhZ6/ci+F+UOLIQeUEoob3CpX8jms0RHDme90T3bEgnf0eor1guAIsnvAWuXzPCevjb5mTR79KoVLDqozojAVcRLE/9gHuqNs8CV0dcwKLO91uI38pyEw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Mqv5OJsWRJ/nuPg9msDTj+R6y4xFfkPRJeNFsWEzzi4=;
- b=XJHuhGHgkUID+go709PTW+x8PyfkPH4T4EnXfB7OYAlOP/gdJ8XpbN27gmHzscJ6yiHB8nVpbzEm7A9STZlaF52knzAzjloI3CMS65SdA/byOrRNUkmhCiOpifbcSJOiMdm0kMPv1St5lI+6AhQ3Eohsyst+79hNmEac8CR4m10=
+ bh=bnJMfMfyhYG5uKi7Ic+/eD+hvvhyJnEFB7TYCF9bgAA=;
+ b=tHu4GQKLoado6L6fG57iFeRjI9qmZYPXIbuPsf1RZs5ypUMWoT2QfHVFx59KP4/TmAZcQYqGjT0DG38cfvWSIlfFf2VYBFsuV5c9Dy0FvfE4mk3D6+AyqZfjOKFGcx3wkGf58nHQTWlX+RQViUrUYSdf5MLYxEpZDaHKsrLF03I=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB6146.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:247::13) with
+ by LO6P265MB6029.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2a2::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.27; Thu, 2 Feb
- 2023 14:22:53 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.25; Thu, 2 Feb
+ 2023 14:24:22 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::b96e:93ad:4043:6145]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::b96e:93ad:4043:6145%9]) with mapi id 15.20.6064.024; Thu, 2 Feb 2023
- 14:22:53 +0000
-Date:   Thu, 2 Feb 2023 14:22:52 +0000
+ 14:24:22 +0000
+Date:   Thu, 2 Feb 2023 14:24:21 +0000
 From:   Gary Guo <gary@garyguo.net>
 To:     Boqun Feng <boqun.feng@gmail.com>
 Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -54,118 +54,133 @@ Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
         Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Subject: Re: [RFC 2/5] rust: sync: Arc: Introduces ArcInner::count()
-Message-ID: <20230202142252.24d16d63.gary@garyguo.net>
-In-Reply-To: <20230201232244.212908-3-boqun.feng@gmail.com>
+Subject: Re: [RFC 3/5] rust: sync: Arc: Introduces Arc::get_inner() helper
+Message-ID: <20230202142421.7ab724dc.gary@garyguo.net>
+In-Reply-To: <20230201232244.212908-4-boqun.feng@gmail.com>
 References: <20230201232244.212908-1-boqun.feng@gmail.com>
-        <20230201232244.212908-3-boqun.feng@gmail.com>
+        <20230201232244.212908-4-boqun.feng@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0025.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:61::13) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P265CA0059.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2af::15) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB6146:EE_
-X-MS-Office365-Filtering-Correlation-Id: 17983992-3a9e-44a9-0a16-08db0528f8fa
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO6P265MB6029:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12b6e48f-44ea-4c60-23e2-08db05292e01
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: coKM4qrmmPz2AaAeKU6F/r4AVBRw24A+9GnL3Msw4TjX90l75uQWjYpp65ROwQTuvm4wYWWDDh8nZKXKsfUHxkCmKNc7tQVkOXtmU3Dm577/oLC+dLtrce1jk1hkCrh/JS+YvhveDnV9M2VlIVXVRFo4c7SCuWn7Rf40ZMh7BbXIaqYo7K9vv+oInJcW5qdO3s0SZHXIKhMfKQSfFntchq8sdonMnNYAVFiN4YvI7+D4zhXLH5LUUgfLwK+bvnq9WGEy0wP1vkE9vhnQCeiuPZ8vhGQ6rhTSe7xUocbbb9YAexSY35lp+wUzhP+zzK08JF5NV9eEfekEJDs63hthedhyD+SD8KHbImddel6Nv/FlZ62UETUlsBBAfOxjZvYeiJ5JKwuWr1q2CmMA0M47De5V/fQiyPNenbmo8TrcblmlUwdKKgiUgpNazsuzLlA2y69Lz348Rou0PuChRLKHj3CxtjuZhAMJ9kr9ifGKyE2baqyW9KDounbMQ3rVVd7NaqWgwHEQT9bHchukAVRg9+226YZAYUk9B41tdQ4FRHr6zC29b4zELNo7gKtlo71fb5nHRauIJCI2zxXAKWjwzZuCa9mxr0+3QZCUcuUt3UvcSQhchZ4BU5pgJQmt++lk3VxkwZXC6yYjrT1iRDko7w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(136003)(376002)(39830400003)(346002)(396003)(366004)(451199018)(86362001)(2906002)(478600001)(36756003)(6486002)(7416002)(6506007)(186003)(6512007)(26005)(2616005)(8936002)(1076003)(5660300002)(41300700001)(66476007)(8676002)(66556008)(66946007)(6916009)(38100700002)(4326008)(316002)(54906003);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: RneECqwyUcp2iyQSzhUC+FuMb7d+yBuXjF/rJbBEyD9lNsq98+42NBKZtlNjScaj5HdcA/pWqe6i8EUubxP3GZ/ODoO1e4dHJ+iWUWdd8R1vCA6zdjLL8azWy1eqs189z81RqS3VelxxlKnMk6ezBHm9HJrKh+Xm/juzH06+VFZ9EU8peMJKztDG2gybYp6UkEc2Y4Mv+7CY4E8MyFwOunAnR2+mevd2VacnSApBGHpP/r90tKY74u4p56nlACZe8Bw0cPMZWOVpFMQHzVs3mg8E9YnvPaker3N+mHJVd52SBkadikFS4XFJAUn4h+2DjSdjCv/+5JrPI0mzQ9/6nMGwlh/nG++vIAcDQDuriOVfuEzJcDdY+E4cHp8YAZnH1dWYsuzXdSlCs4C1aqaJ7DVyoDozh+FWOaAZ72ap+cSuMXs4q0Nbk4CuRcJY6teY59fQedJ+Aa7mjldCk28H6gAR7L3PyJHaN4mUbde8egGIWoy8nQdCDJVHkYSeYVbGFAC30JS3cwu3CBGbq5eIZWGi+mkk9ERnqK6dy2Y7FPHB3KayhfqxtDymR3DdUX0CEFpr4WxmCAw1lkODDTIbbXmtad2BubT5/w6CojFBoZHPtz+bfL/3xXB/AojwLQYpJOJ7HHKo4gqwY3JpUhKs6g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(136003)(366004)(39830400003)(396003)(376002)(346002)(451199018)(6486002)(86362001)(66946007)(2906002)(41300700001)(316002)(38100700002)(478600001)(8936002)(6506007)(1076003)(26005)(186003)(6512007)(8676002)(66476007)(66556008)(54906003)(7416002)(5660300002)(2616005)(4326008)(36756003)(6916009)(83380400001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9JKamoJ+HO+tTE2tx93SlNBXHNEfCO3PpsjgO0LzQ7VsX3IPwwbh4A2qEL03?=
- =?us-ascii?Q?f5ohC0Zz4mbhc7CHnrPufgkzM5FNRjPBAUjEpFnmgoXJWqzkOp2CYlSwaltt?=
- =?us-ascii?Q?9bBVf+eH/1nA04dzUN7YL1SYxqpw1JZhdgyHgQ7QHv2EUTNaiRtxeW8RNn+J?=
- =?us-ascii?Q?witz45HyfyBkrQGRtVwurqBczi7iFh8fOsqRp6vDKb79onVEYD/b3Tzs2cxn?=
- =?us-ascii?Q?2wuuoVPdvZW89cVTa+4T/M6I3xurCwBVcJl6ZEg1mbNgKk0wD5EXYZ02OeQR?=
- =?us-ascii?Q?YwVDnhOBTSQjnl30IRymoS0pYr8Fw1Lleiw/nb44oyFLQ7P0PaIEbHudjXn9?=
- =?us-ascii?Q?Lv+2ZIbCYYheaqZQhFER8eRh9lskvfb9qpLrx+o6+IaKuF2PJvILrrTxvHMf?=
- =?us-ascii?Q?SOCL6ImYyZf5dgdNIhXwkiv/u5RCts2PqONNKg8ulqjm1TeOJ9VyVnJZb9/l?=
- =?us-ascii?Q?zNcPhW/Sz0WHSz2iRQF1Ju5z7Vre7AfaUPxo6oQVdwycHV1z0T1GxU7HSpzF?=
- =?us-ascii?Q?kfMmaNvxEmEZsq6BFCVV+cDZgGwNTTLZ73AjtRPLaINqPFfrVHo1YP4DBb/e?=
- =?us-ascii?Q?Lzh2S/+p/XCcF6bUNtLStiaH6pTBpBo2sxIRVYNzdmb9NCiUjiMOcYl2jxEk?=
- =?us-ascii?Q?tVDU9LMVkI19kNpObn0MxK6EP5xMOA62VSsHt5FUpcG60+dW2C6B9j0TdTEz?=
- =?us-ascii?Q?TkMbbCV8vgMdYyaZSTSW1eOolSXUBN28Upucl4czHhEWIdxiEcp0N0DJocRv?=
- =?us-ascii?Q?KoCRlbwL50VRWESynSSmQaR96lDYxjVrxSNZ/1iMiJcl9xLH9b6ciZ/TSwTn?=
- =?us-ascii?Q?fTaZHCPrFpeusQo32l2Ov337bKUe2wcbTuP5IpF96cQj4Ox/cBOnX/uoGWPL?=
- =?us-ascii?Q?VGkDdN0Lwv3yyhn0MMqA2YrAmk4jM+qZxGh7NW41/loMFnOMFqCAb09hlDXL?=
- =?us-ascii?Q?hxsBErKgvFNTsUqjM7KY24J6fhEsGjA+PgHdnvbuESyoivbGAIjtq65+FhV2?=
- =?us-ascii?Q?SQSSSZr0RXRyNsqLrnnp4cjxUv1sb9r9ru8ipD3D+Gecp7xs7VtrNR02+mQ6?=
- =?us-ascii?Q?mAkrIz50nZ76sZZFyo9a0ffw0ILL66r1AoG0F9QVf10lk77EKOflt+TN1O3O?=
- =?us-ascii?Q?QqzYjqV3r4WfKYwm54bwPl0YC7ivPhCdQZlkHu/0KSOkZybwRP3UFlCu9bGW?=
- =?us-ascii?Q?os98NAo+4BxqhRw7alAJ6TyhFYTotx8QKRfz0XITqefBKKuoCLKCCGiHCkt6?=
- =?us-ascii?Q?ttZavOBc2ECHmtPrp/VThwYudenD5TdCswBMT/EvdVn/L6BKEM1hECfScEO3?=
- =?us-ascii?Q?UewDeWSm6oWQQ69ajX1RJlDoODEvd6NyZsd3rPl0+n8ovg/QXhnTzLd/xia5?=
- =?us-ascii?Q?24/3XeE1dMQQLUxLQk4iCjy2Y35zMD2PZufDKPQveC4JbeVGtVuT7QAIgGDq?=
- =?us-ascii?Q?ZKMZwsJ7u8WLYy38ldD8K69Qt9hIOeq2Q0BqNkjNpabjBvLpNCRPptgAu3fe?=
- =?us-ascii?Q?0mfXASBMW5u7VtuYIqX/NRoNcDPY1D38Bi784N/w6F+WMgudrAsU2bsg2+in?=
- =?us-ascii?Q?R6Xg5t3RltV7yHAosE7xVFxx83N44UlYHZRlE5Vm?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1/EfPZFtswdk7b17Zubp4jwhaNIfpJRm9w5f7En7EGhOfE/JShDqlowmTArI?=
+ =?us-ascii?Q?iGpyjHGg3+Mvx7xmNvdrst2iZ4uZwM8b+MsY2iR15n/WQISYrERU1aGgy7BJ?=
+ =?us-ascii?Q?UffKzU5pYcUP6Qco26LOqXkhhA6ci5JFY5hzLOaH9S3LaEByKmisorhrMn8+?=
+ =?us-ascii?Q?pa89+ZkaWdXJRTFu8LXuqXKbB/nuiOuD8I1PI+bH2s9roIJYu6HlBXeW2ZMU?=
+ =?us-ascii?Q?VBaw7nuCQ/LrfmEb6YD28xJ9he2Ai+tF8Oa/fPDA6D5sNznnEbJjglHobzPj?=
+ =?us-ascii?Q?vhDw/fCnBlIFxMhQIzhZVTdAkq9x37Yi/8QfYxmGxohm5qj8855XnbaEtYke?=
+ =?us-ascii?Q?N/t9PFinGyB4+tN+5yU2VL9076qrS8XJs8lmjvSQIz/wVnFu4YeJFGiUxFtv?=
+ =?us-ascii?Q?1V3htfl4XGnSQ9S+UBBx6i1xiBMUDxCZWANeYsIl/jXoMwuZnXbzappuAOmB?=
+ =?us-ascii?Q?w3EiEeiAVI9uGemmNvMosCEQ7z9v5I2yAkdgmdmGdZ92pJDDXBvHcPPod022?=
+ =?us-ascii?Q?TGu2/bwyAnGcwBFf00l15L5k0Gz3GKPq91q2lQvyXpPOJw+15TyI1dFKj80T?=
+ =?us-ascii?Q?i6aMZrbCRLRp2orvMTLeWKuLrZYkte5fum0zf+S5zifk/GOIc8opAePXWNX+?=
+ =?us-ascii?Q?LleDoFi19m57vutYL9YT0CZK/EYvr0SPA78FYwcLx5pbKXdOsnD+7BhRN3dI?=
+ =?us-ascii?Q?8Tr/aG7A7Pkxukl4w2VljwZ73UowG4jazlszHvwKP9tbFcUlI9BCvU2o/nXO?=
+ =?us-ascii?Q?l/dDlhlC9oSq4/pIVhEh3Izsu+YCEyZ8yz+/v8OXPTreS5YHbTSEgOoHULO5?=
+ =?us-ascii?Q?hRdL65MyVvJqtmEnXfxBXVvFRcvzoiB3gImtZEAdBmeXWl0duYL0d1HrVMWY?=
+ =?us-ascii?Q?ZFbYbgDWa0/7Ol1GJATaeqYlkOIhpxOFpHc+iba4xDBLngXBoT0jvC6jxMHJ?=
+ =?us-ascii?Q?+RZOYKBWCoLYS4cFdywY4IiozD8fhpsAAUxIbTNdX3UCxTo+vHB6Yo/byHP5?=
+ =?us-ascii?Q?/kyjeSUAyydjIoGxVsSpqr8EVyCf9p8LA5YwA7Nxt2P07LDGKAKo97luZXic?=
+ =?us-ascii?Q?iFmYBw1V+LSSckB49MwK++VczN0MeKak7pNlAnfSrX4TYyQyfoGfLW8UukE9?=
+ =?us-ascii?Q?Fs4sxmqzXyseAadwqQJsJjgyyUCIN7+sZ/GB7K+z/DYd60mh+5Tk+JZMoSKF?=
+ =?us-ascii?Q?jUuLK2tdlebythg2pcSNZVQLzxWnXfKuDSpqU3hPdGkMkTRIifU3QYl6ZlXC?=
+ =?us-ascii?Q?UCN5b4j4/6dPcr+y3Fd+LHaHtrov+6+sVBslGAdSNjFigsOeb2C5pSUmX9ZG?=
+ =?us-ascii?Q?0FB1RmjOOrOBhwdCKEpBQ3CiMt2l5jE7GJ+490jURbp06+I+DauCp4SvjoNP?=
+ =?us-ascii?Q?/NoujmJpw5IF2xQvrgnlTfcS3ck15qprLgpm6pjvzaFVVwbuROrkLaiuIaPL?=
+ =?us-ascii?Q?KYE27pgOn6er0gqbatLVvs503og8tO5yaCdhkZsqxk61yZbuuGBVRPKlsRDm?=
+ =?us-ascii?Q?PP7kDHEE1bHSxL39Jh+x+RVqmS48E4YVnPhoucdBLZrpVuPfJk9bw4H1DAux?=
+ =?us-ascii?Q?padk+qomwqpp5jEgjaJY1RQ5O5lVbgHmvlMoXy+E?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17983992-3a9e-44a9-0a16-08db0528f8fa
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12b6e48f-44ea-4c60-23e2-08db05292e01
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2023 14:22:53.8117
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2023 14:24:22.7619
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: u4bRSFQb9Ao8EjOYYMnfdGjmjugqlF6647K83ZCvo4p6NtRmYEncNTHf986PjGK3mpPi8nxfAcWAAPoiglWLXQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6146
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8l9TfancJghKHTI0us81qRi19haK0BZXSzENbMGfatClSdhtogHCPrZ8bSvAbyKhJqKcvspGRFPXlFYVWrBpEg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6029
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed,  1 Feb 2023 15:22:41 -0800
+On Wed,  1 Feb 2023 15:22:42 -0800
 Boqun Feng <boqun.feng@gmail.com> wrote:
 
-> This allows reading the current count of a refcount in an `ArcInner`.
+> Getting a `&ArcInner<T>` should always be safe from a `Arc<T>`,
+> therefore add this helper function to avoid duplicate unsafe
+> `ptr.as_ref()`.
 > 
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
 Reviewed-by: Gary Guo <gary@garyguo.net>
 
 > ---
->  rust/helpers.c          | 6 ++++++
->  rust/kernel/sync/arc.rs | 9 +++++++++
->  2 files changed, 15 insertions(+)
+>  rust/kernel/sync/arc.rs | 19 ++++++++++---------
+>  1 file changed, 10 insertions(+), 9 deletions(-)
 > 
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index 09a4d93f9d62..afc5f1a39fef 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -46,6 +46,12 @@ bool rust_helper_refcount_dec_and_test(refcount_t *r)
->  }
->  EXPORT_SYMBOL_GPL(rust_helper_refcount_dec_and_test);
->  
-> +unsigned int rust_helper_refcount_read(refcount_t *r)
-> +{
-> +	return refcount_read(r);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_refcount_read);
-> +
->  /*
->   * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
->   * as the Rust `usize` type, so we can use it in contexts where Rust
 > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index fc680a4a795c..fbfceaa3096e 100644
+> index fbfceaa3096e..4d8de20c996f 100644
 > --- a/rust/kernel/sync/arc.rs
 > +++ b/rust/kernel/sync/arc.rs
-> @@ -127,6 +127,15 @@ struct ArcInner<T: ?Sized> {
->      data: T,
+> @@ -201,6 +201,13 @@ impl<T: ?Sized> Arc<T> {
+>          // reference can be created.
+>          unsafe { ArcBorrow::new(self.ptr) }
+>      }
+> +
+> +    /// Returns a reference to the internal [`ArcInner`].
+> +    fn get_inner(&self) -> &ArcInner<T> {
+> +        // SAFETY: By the type invariant, there is necessarily a reference to the object, so it is
+> +        // safe to dereference it.
+> +        unsafe { self.ptr.as_ref() }
+> +    }
 >  }
 >  
-> +impl<T: ?Sized> ArcInner<T> {
-> +    /// Returns the current reference count of [`ArcInner`].
-> +    fn count(&self) -> u32 {
-> +        // SAFETY: `self.refcount.get()` is always a valid pointer, and `refcount_read()` is a
-> +        // normal atomic read (i.e. no data race) only requiring on the address is valid.
-> +        unsafe { bindings::refcount_read(self.refcount.get()) }
-> +    }
-> +}
-> +
->  // This is to allow [`Arc`] (and variants) to be used as the type of `self`.
->  impl<T: ?Sized> core::ops::Receiver for Arc<T> {}
+>  impl<T: 'static> ForeignOwnable for Arc<T> {
+> @@ -233,9 +240,7 @@ impl<T: ?Sized> Deref for Arc<T> {
+>      type Target = T;
 >  
+>      fn deref(&self) -> &Self::Target {
+> -        // SAFETY: By the type invariant, there is necessarily a reference to the object, so it is
+> -        // safe to dereference it.
+> -        unsafe { &self.ptr.as_ref().data }
+> +        &self.get_inner().data
+>      }
+>  }
+>  
+> @@ -244,7 +249,7 @@ impl<T: ?Sized> Clone for Arc<T> {
+>          // INVARIANT: C `refcount_inc` saturates the refcount, so it cannot overflow to zero.
+>          // SAFETY: By the type invariant, there is necessarily a reference to the object, so it is
+>          // safe to increment the refcount.
+> -        unsafe { bindings::refcount_inc(self.ptr.as_ref().refcount.get()) };
+> +        unsafe { bindings::refcount_inc(self.get_inner().refcount.get()) };
+>  
+>          // SAFETY: We just incremented the refcount. This increment is now owned by the new `Arc`.
+>          unsafe { Self::from_inner(self.ptr) }
+> @@ -253,11 +258,7 @@ impl<T: ?Sized> Clone for Arc<T> {
+>  
+>  impl<T: ?Sized> Drop for Arc<T> {
+>      fn drop(&mut self) {
+> -        // SAFETY: By the type invariant, there is necessarily a reference to the object. We cannot
+> -        // touch `refcount` after it's decremented to a non-zero value because another thread/CPU
+> -        // may concurrently decrement it to zero and free it. It is ok to have a raw pointer to
+> -        // freed/invalid memory as long as it is never dereferenced.
+> -        let refcount = unsafe { self.ptr.as_ref() }.refcount.get();
+> +        let refcount = self.get_inner().refcount.get();
+>  
+>          // INVARIANT: If the refcount reaches zero, there are no other instances of `Arc`, and
+>          // this instance is being dropped, so the broken invariant is not observable.
 
