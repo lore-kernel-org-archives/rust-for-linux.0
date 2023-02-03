@@ -2,137 +2,88 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F36FDC61DA4
-	for <rust-for-linux@archiver.kernel.org>; Fri,  3 Feb 2023 19:46:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E350C636CC
+	for <rust-for-linux@archiver.kernel.org>; Fri,  3 Feb 2023 20:08:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232526AbjBCTqT (ORCPT
+        id S232198AbjBCUIU (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 3 Feb 2023 14:46:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44152 "EHLO
+        Fri, 3 Feb 2023 15:08:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbjBCTqS (ORCPT
+        with ESMTP id S229853AbjBCUIT (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 3 Feb 2023 14:46:18 -0500
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD0719DCB3;
-        Fri,  3 Feb 2023 11:46:17 -0800 (PST)
-Received: by mail-qv1-xf32.google.com with SMTP id q10so3499858qvt.10;
-        Fri, 03 Feb 2023 11:46:17 -0800 (PST)
+        Fri, 3 Feb 2023 15:08:19 -0500
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D79B3F2B2;
+        Fri,  3 Feb 2023 12:08:18 -0800 (PST)
+Received: by mail-yb1-xb2c.google.com with SMTP id x139so7584642ybe.13;
+        Fri, 03 Feb 2023 12:08:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=81irN639b02GEcmRvaoW91apai4NlHhMmcLeIDey+EM=;
-        b=T+xYQpi0k8whPSdL51LPz8QhAgaaD2lXc+aswRpA+PXhKBY8YyG04h+w5Zue9Z0C8o
-         gOJumH5ZZY0SJfx0Qv4n058mLQWBep2Z1nJYEsgwdxceusLf130oNMpkya81a2u5Ubuo
-         GafpLRPSW4bIfYlusp9xxPa2DpUvJpf+CF9fc3oRC4M6PS64N7AKQksywMyRFVFoEk6N
-         90y2IQ8zctFy7ILq94Dmkh3cSrGG4h7RY+uft1WPtIatYM/pS9M4/FCyO/mtNQ8Wm2L/
-         36lb9fxezSOzNBA/NDX9yEy1ZyNZsANHu2veCkYAEia08TVa4pPxxQbj5jTYo88LqeWN
-         rymw==
+        bh=QbAktXF0sS52IxrYG4Dn2gJYAu/jBTF+x12d/mOTZII=;
+        b=Wiz0aMG4Js0A/WAmVfG7HL1sKB3JoSwjzoVDuQvMGYQmsRZyven0yKJvwh5r8fFIjz
+         rEgac3suTmyEAvK/TEObT20pZn2YlUdb8sT4/a24yM0L6q0sOIT0CnNHFZ8Z+DUIdyIW
+         VLgyY6Q/0Gl6pr+2L35XHheffsjp5qVDKBxCIGeqhs3mrbRgwX6kYIivVbkARiBPDxlj
+         vcSG+X7begWqJ64rtCerteC7fpARTVcJuVmsSsd6svIknae18lr0qba6xe6gZjN9ugZ2
+         exFmKVSxCLiIMou0X+5XfePc8UhPN2l8GacFksJ/2mprpCrPXTNlnXeTdRJyWfp/RX7B
+         tIUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=81irN639b02GEcmRvaoW91apai4NlHhMmcLeIDey+EM=;
-        b=gEoHG00z4WcxA/27tw1zNGVFCZrXM93abyibEHL6IQaHj0C2Sta6mawJLzrFC91Qzi
-         Jkvb2TyVCGuzuQrdNLNr89IdBeuDJGyjKbr5y9A/n18jGoG7Mv5EDcaPQLgg+pzY8x2H
-         ryAmv3g7MKGyRfiWu6ifb08Fga6WFcsguw/UyKmwhJ2n26rUt4nMXd/bAZBa8RxX7Lxr
-         sBt6XqxefNVunG4/APDfeF1IPlLTEv1Kpr4mkQTJxiotIGdg6norsDCVxllbVgkIO2l/
-         nlzUOClRlxqyUeskddKuOUkYjLpiBTJLcZly2FeFlHT+W4r100/XnNcg1/SZozYNft9m
-         0uFA==
-X-Gm-Message-State: AO0yUKXe3Pg+LBg+k5ZXsMuIHMkWecZhc8LDJQAJtqi4SOxGMkrqAjb0
-        rLuA3CREtDLF5a9fnk3nxxrGBaDlAjs=
-X-Google-Smtp-Source: AK7set/RfsZMziHQcq5BP7Gmtzasl8hL7vvzAoIn2kQ4KTjtXfiqjnj5TRM18FDZiFudtK+Gcp0hog==
-X-Received: by 2002:a05:6214:cab:b0:53a:6241:a50f with SMTP id s11-20020a0562140cab00b0053a6241a50fmr23961779qvs.9.1675453577010;
-        Fri, 03 Feb 2023 11:46:17 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id h67-20020a376c46000000b0070495934152sm2428208qkc.48.2023.02.03.11.46.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Feb 2023 11:46:16 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 5D66327C0054;
-        Fri,  3 Feb 2023 14:46:14 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Fri, 03 Feb 2023 14:46:15 -0500
-X-ME-Sender: <xms:hmTdY7WxKwEnZ8-yP0PzyihlJ5F3cqj4sXPY1WOThGtEScOOakG7mg>
-    <xme:hmTdYzlkFdI6ZwcULyLlllmpmmZi0X3DzpOeVTiOc4LVgOWhRqOqZGAUCZMs0AKgJ
-    fhOhvFi4wIczE5t8Q>
-X-ME-Received: <xmr:hmTdY3Y6E3XdeUOmTrHTe8kmzC7g_xQthubPQA6k2w0O1luhpfPSQw6hJCs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudegtddguddvgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
-    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:hmTdY2VUYZ12_wZxtt--ThR9C2cw_bcUEb6ZlfCmlVhCsjJB53C6Dw>
-    <xmx:hmTdY1lxoxNkdDq7Ccd-aagxNgtoP5_hZt3ypjE9lp4XMCbh7Sftmw>
-    <xmx:hmTdYzfVX2HfxiOPD2az7hfdEoUpeIJzkxCg4LSmKB9pbde6cjjo2Q>
-    <xmx:hmTdY-cLHZDgf5Mm_qYB0JrngOciF1_sxjqigRzRP2DUu6QHAWbibw>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 3 Feb 2023 14:46:14 -0500 (EST)
-Date:   Fri, 3 Feb 2023 11:46:07 -0800
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Gary Guo <gary@garyguo.net>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Will Deacon <will@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+        bh=QbAktXF0sS52IxrYG4Dn2gJYAu/jBTF+x12d/mOTZII=;
+        b=OEkLkmyRTGoRHkM8nMHVFRb1P4DMYmIAQ3IpjVU+tx0G8AFcH80XG1sogs2HQfKL8F
+         5hu2Xm3IEzEGfbqShtJZkV4heeUsIAaw7vawVV+xaWXRCexLW9URN/yCpGlxSdfG+Wua
+         H5zJg75lApeZckauHuzeibUWNXlAOj+XSLseZLndbGs5JN+e2YspUU0T/WQH+GpYIPe7
+         P5NfWKM5x0UOqNvjEs35Ujc7xQhP1BDhjLrKrwUxdKTkuLAXxcbg4RuBvV5osmbcMsQa
+         cYkKoQcwyJZc/igWIkd7EDLW/EK1FPKTZrvJh6pSv8R5o477NiWc77vNIusofCU1r1Ni
+         axjQ==
+X-Gm-Message-State: AO0yUKWQsA0bBdpXrUEUOp4IEDU1gRni76Cq8QgABE26vKotFVnQ5ABS
+        Mxtqk0jrE4FG/Aer+sdN48xumgXJ/GphFcdz7JE=
+X-Google-Smtp-Source: AK7set8QAfUmkO0afIZzcWhmNMfB38HtelV6yUemEGPZBg+nWShDSMi7b8rzAeI8UQlFx45ug6KRvre7r4P6v2bNsg4=
+X-Received: by 2002:a05:6902:4e2:b0:80f:3b51:ddf5 with SMTP id
+ w2-20020a05690204e200b0080f3b51ddf5mr1364611ybs.507.1675454897754; Fri, 03
+ Feb 2023 12:08:17 -0800 (PST)
+MIME-Version: 1.0
+References: <20230203173704.108942-1-mcanal@igalia.com>
+In-Reply-To: <20230203173704.108942-1-mcanal@igalia.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Fri, 3 Feb 2023 21:08:06 +0100
+Message-ID: <CANiq72mzpKCnf=LDhiHEJ6x7Zx3AhkY7jH3EUo+Fg4ig5e44YA@mail.gmail.com>
+Subject: Re: [PATCH] rust: delete rust-project.json when running make clean
+To:     =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Subject: Re: [RFC 4/5] rust: sync: impl Debug for {Unique,}Arc
-Message-ID: <Y91kf/IMiYNw8BdR@boqun-archlinux>
-References: <20230201232244.212908-1-boqun.feng@gmail.com>
- <20230201232244.212908-5-boqun.feng@gmail.com>
- <20230202142804.753c898c.gary@garyguo.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230202142804.753c898c.gary@garyguo.net>
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Melissa Wen <mwen@igalia.com>, linux-kbuild@vger.kernel.org,
+        rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Feb 02, 2023 at 02:28:04PM +0000, Gary Guo wrote:
-> On Wed,  1 Feb 2023 15:22:43 -0800
-> Boqun Feng <boqun.feng@gmail.com> wrote:
-> 
-> > This allows printing macros to print the data and the refcount nubmer
-> > of these struct for debugging purposes.
-> > 
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > ---
-> >  rust/kernel/sync/arc.rs | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
-> > 
-> > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> > index 4d8de20c996f..f143d8305c36 100644
-> > --- a/rust/kernel/sync/arc.rs
-> > +++ b/rust/kernel/sync/arc.rs
-> > @@ -474,6 +474,7 @@ impl<T: ?Sized> Deref for ArcBorrow<'_, T> {
-> >  ///
-> >  /// # test().unwrap();
-> >  /// ```
-> > +#[derive(Debug)]
-> 
-> I don't think this should be a `#[derive(Debug)]`. For `UniqueArc` the
-> refcount field in `Arc` is useless, and we should just delegate the
-> `Debug` impl to that of deref, just like `Display` does.
-> 
+On Fri, Feb 3, 2023 at 6:37 PM Ma=C3=ADra Canal <mcanal@igalia.com> wrote:
+>
+> rust-project.json is the configuration file used by rust-analyzer.
+> As it is a configuration file and it is not needed to build external
+> modules, it should be delete by make clean. So, delete rust-project.json
+> when running make clean.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/939
 
-I was just being lazy ;-) Will change this in v2.
+Thanks Ma=C3=ADra! I will add a tag with Bj=C3=B6rn as a `Suggested-by`, if=
+ he
+is OK with that.
 
-Regards,
-Boqun
-
-> Best,
-> Gary
+Cheers,
+Miguel
