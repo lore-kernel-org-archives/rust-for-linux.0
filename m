@@ -2,65 +2,65 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97736C636D6
-	for <rust-for-linux@archiver.kernel.org>; Fri,  3 Feb 2023 07:43:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50DD4C61DA4
+	for <rust-for-linux@archiver.kernel.org>; Fri,  3 Feb 2023 08:03:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232055AbjBCHna (ORCPT
+        id S232583AbjBCIDy (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 3 Feb 2023 02:43:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60148 "EHLO
+        Fri, 3 Feb 2023 03:03:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230496AbjBCHn3 (ORCPT
+        with ESMTP id S232775AbjBCIDQ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 3 Feb 2023 02:43:29 -0500
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA1E1B449;
-        Thu,  2 Feb 2023 23:43:27 -0800 (PST)
-Received: by mail-qt1-x831.google.com with SMTP id cr22so4624018qtb.10;
-        Thu, 02 Feb 2023 23:43:27 -0800 (PST)
+        Fri, 3 Feb 2023 03:03:16 -0500
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222D51B306;
+        Fri,  3 Feb 2023 00:01:41 -0800 (PST)
+Received: by mail-qt1-x833.google.com with SMTP id v17so4683026qto.3;
+        Fri, 03 Feb 2023 00:01:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oFf9KYeQPAcUoBOf/mOzVaePC0gDGny8p7rFF3Zsr2g=;
-        b=pXigfP4rXkLLFuB8HyAn7teR52dw/IXzeQAqr2kDRPKVxbAGDlIBy4mnnEBEo3ew7c
-         UURLHoFH9pMI6jJLTpK41RMTN64erE6mvRbxJ0KvZyNAxlZlsqozC6YefqtD7kEiTfnv
-         p2zvNigTdXQwcDtxblEyCCbE4EyzfP/e+C6xgOi4pt3/JF9ZD2odO4hMwBeArjoyi3hQ
-         zdjK+PLLQS0hPP1mFhfHObr4Y1aUUHD/O5yN2rlWsc6SDgZ6YHAEXTWwg1amSK6j/f30
-         j6z66KkRscFtO9wDh6L+9xIUGGSd0oMh/fgVBkaK0W6wmOC2C0Dc4J+ltygqwcAffUI0
-         cvYw==
+        bh=Oc7Xh9yuox+AZ7mX/sAoplAbR6gr2cJ5FgTsBxboy74=;
+        b=MTBn3C/Oox57zcfqxepxI7CXCPyjjZyyTXr8oHzGEGS904EHjRipTSqVV8+e1O69D2
+         KEQQ42pQQxM8Taqzvb3AO5Xx9dDMliYcsPaChPj5Ym7/a2/qQLr06+JH6FG4/gWk5QDn
+         dLi2+LnwvAT9P3iXEOHQa9uAp9jf4kYCWqWl+Ir7VcpOLIpduQ536L/1c65xEyESjWm6
+         pYm0IPtGeEnf3kukL6aa2+AWHSWAz9Nb6gHmBORtZ+KuZYol035ymKr3fJsbWegXx6ra
+         OCXydSgGvk/HcJeP07KVSCbrpLwTUd2euILFdwT+LMzKj7QwcKqVMEKhBc5Ro+OhsFje
+         qDdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oFf9KYeQPAcUoBOf/mOzVaePC0gDGny8p7rFF3Zsr2g=;
-        b=yXOYrfkjKd8Yze1oM4Z0tRK6iS68jluGeLFdxcoKYZqDRuvJ2qFspRiqPr0HbIyuJ6
-         r6Wz5Kpvoc2I9lWetOfYG4UuA5CX4cdzFXZLJpaUBqolMKgbFt8oqTtOJf3idn5bBInT
-         WFqdfMN+ThpdWXm3lMjxfxIKyNxnt1nMfr+d7Zya5BzoqayFwYcSJneTI1NZ+bkqgf6g
-         6rFq/qo91LHOy+100LfD3KAN9JU22BRkSkzJmE+af8wkAAar4zgzlNpjomFZsikEmlrX
-         WlOGZ3xci+Nq+Fh4z8KPqT+iMKyWkUkdC/RImyud1Wem3laVKna6a1sDFEBZuKqNZmN6
-         +V/g==
-X-Gm-Message-State: AO0yUKVyiP9uUyJnwj8d1K8Fwo+dXXItGFWL4VSET1uJqC5OwrMfZ6P4
-        3zhqZrwS0+OOYE+N8wEQY5o=
-X-Google-Smtp-Source: AK7set8Lnh4m4u9mvYRGiuMz5HH4jWhWZM5oIcLdp6MGPmhHVv4IfvylZOY/1apoK5yOLAYa+dVnYg==
-X-Received: by 2002:ac8:5e4f:0:b0:3b9:a4c4:ca09 with SMTP id i15-20020ac85e4f000000b003b9a4c4ca09mr18692642qtx.10.1675410206950;
-        Thu, 02 Feb 2023 23:43:26 -0800 (PST)
+        bh=Oc7Xh9yuox+AZ7mX/sAoplAbR6gr2cJ5FgTsBxboy74=;
+        b=X/uAnn2Y9Knv+aWcZ2N+s4ORiXBKRLGOH+imGsErGo2S5xoq7YpIm6fYaeWOL6mlZz
+         sQ9AS7IoXXmXvXxdroWCS9FYWa4zAou2v8nUsqWtdtcejZ9T2EJtPOwjSHo2KwvGZNcU
+         iITXEWZrtLleQUYsMUyDqkZh7M6H8TMQWePQBaXuk62JF0TzCNviSbzZxeAOYqJHYWW/
+         B2G7M1fTUjOlHYsoKEtFBz1IG+Xzz7Yle9W3VLaMxZTpaIp4hT7wR5UDEvzXsCtEp9uj
+         sF1LQT42JiyhfhpcvjrFsT/KYQ/1O/ElHV0IPtWe2/S6WaV+kbuXMhUdbSakv8j6Ls8X
+         LJ0Q==
+X-Gm-Message-State: AO0yUKXpbT6q5SbR9p/IdvKp3lrhH7ZVNT/weG/rsUCJJ/ZyozOE+Ta8
+        Oj0EHLr829a2r8D3dWaVop4=
+X-Google-Smtp-Source: AK7set+zCDAm97GhxYZe06v6HPw8d0RUGW9xczfBBGvmut3tTjEedm10W/DpLz+FhrbzLgT1Rryexg==
+X-Received: by 2002:ac8:4e90:0:b0:3b6:9c63:5ca1 with SMTP id 16-20020ac84e90000000b003b69c635ca1mr18425299qtp.43.1675411300176;
+        Fri, 03 Feb 2023 00:01:40 -0800 (PST)
 Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id d136-20020a37688e000000b006fa4ac86bfbsm1342844qkc.55.2023.02.02.23.43.26
+        by smtp.gmail.com with ESMTPSA id y21-20020a05622a005500b003b9bb59543fsm1172432qtw.61.2023.02.03.00.01.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Feb 2023 23:43:26 -0800 (PST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailauth.nyi.internal (Postfix) with ESMTP id D5F6C27C0054;
-        Fri,  3 Feb 2023 02:43:25 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Fri, 03 Feb 2023 02:43:25 -0500
-X-ME-Sender: <xms:HbvcY6KIUTgbpxCudYR-RJsUIEW9ISjcefBdpEGepILXrEi0Wujg8g>
-    <xme:HbvcYyLVxvTI9lmjPBUfKdtel0x2UMj8ppyNDoam6--fdEBIeoAgM1ScqfRmBGP28
-    2dObwureuVBs1yHyA>
-X-ME-Received: <xmr:HbvcY6uj3cowUOr9_XfnCGGJMdV7RNzJQSmosYIuMQ7lnf9lS70_QJWTGG1Ypz20rvvoJBkvFt8z8kCZ3iSbf6IQR2QIjd7ggwY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudefledguddtlecutefuodetggdotefrod
+        Fri, 03 Feb 2023 00:01:39 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 1F68927C0054;
+        Fri,  3 Feb 2023 03:01:39 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Fri, 03 Feb 2023 03:01:39 -0500
+X-ME-Sender: <xms:Yr_cY4KcdBS-MGpnCLe24vlXv8AY25vK_O548r-0VXsE_yh_HZBS2Q>
+    <xme:Yr_cY4KLEcbXOkuw5WINyD6Y_dOxGLEVw-O1FKKZSWtuoT5YnUrF8ygc6ryg-9sjF
+    sSwvgQGO5zPcRNs7Q>
+X-ME-Received: <xmr:Yr_cY4uKB2gcpJuqOoDangJhh0YsvzhUSJex-9x9qLWFk5M2kBWk3-I5P5AqSN6AKSfi89ZVpvlVNXHAqG0-dIFpYw2D3a7AJ0A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudefledguddufecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
     enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
@@ -70,14 +70,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudefledguddtlecutefuodetgg
     epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
     ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
     higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:HbvcY_a98fGY-ufHEzwzX_Zf7AL6ZIhFo5Q0OCS0DE4a1nGf9d6Slw>
-    <xmx:HbvcYxaqpOOuP6xleHcFxffjnjOLIT4WUWX9xjJBfqtS4boFjB4myA>
-    <xmx:HbvcY7DLGj_061Ecw2L6OYHX3ozu4asNapu4-12NPLTxxKk5AjMokQ>
-    <xmx:HbvcY1Q13IC8bajg5Szu-YtK-3-ZqW6vSj8e5986DlostHq81BziOw>
+X-ME-Proxy: <xmx:Yr_cY1ZLtpgm37sDNDZ0bK7IDKAWNjpsDEIo4Bv7ttCYeghTJJNjrw>
+    <xmx:Yr_cY_Yb2RD2W0zJe6T8iF4REKaoGs88FudQSKRIdD7JqG_mohw3eQ>
+    <xmx:Yr_cYxCIPteuESns17E0vPHEQBIVVlJPu1zlXqkUS4wXNa0_Akh8QA>
+    <xmx:Y7_cYzSimOlJLvqgD3td92-eQVgg6LoY7zWOPBTHR5HRQ4cfMvgR2g>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 3 Feb 2023 02:43:25 -0500 (EST)
-Date:   Thu, 2 Feb 2023 23:43:23 -0800
+ 3 Feb 2023 03:01:38 -0500 (EST)
+Date:   Fri, 3 Feb 2023 00:01:37 -0800
 From:   Boqun Feng <boqun.feng@gmail.com>
 To:     Greg KH <gregkh@linuxfoundation.org>
 Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
@@ -92,7 +92,7 @@ Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
         =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 Subject: Re: [RFC 2/5] rust: sync: Arc: Introduces ArcInner::count()
-Message-ID: <Y9y7G4AY8MPy5E3r@Boquns-Mac-mini.local>
+Message-ID: <Y9y/YVK1bcZgFCU2@Boquns-Mac-mini.local>
 References: <Y9t+3u+2UcAFQc+r@hirez.programming.kicks-ass.net>
  <20230202142153.352ba479.gary@garyguo.net>
  <Y9vZu08L2WaLNJIc@kroah.com>
@@ -112,62 +112,32 @@ List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On Fri, Feb 03, 2023 at 08:38:25AM +0100, Greg KH wrote:
-> On Thu, Feb 02, 2023 at 11:25:08PM -0800, Boqun Feng wrote:
-> > On Fri, Feb 03, 2023 at 06:22:15AM +0100, Greg KH wrote:
-> > > On Thu, Feb 02, 2023 at 10:47:12PM +0100, Miguel Ojeda wrote:
-> > > > On Thu, Feb 2, 2023 at 5:52 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> > > > >
-> > > > > As I said, I'm open to remove the printing of the refcount, and if you
-> > > > > and Peter think maybe it's OK to do that after the explanation above,
-> > > > 
-> > > > Perhaps part of the confusion came from the overloaded "safe" term.
-> > > > 
-> > > > When Gary and Boqun used the term "safe", they meant it in the Rust
-> > > > sense, i.e. calling the method will not allow to introduce undefined
-> > > > behavior. While I think Peter and Greg are using the term to mean
-> > > > something different.
-> > > 
-> > > Yes, I mean it in a "this is not giving you the value you think you are
-> > > getting and you can not rely on it for anything at all as it is going to
-> > > be incorrect" meaning.
-> > > 
-> > > Which in kernel code means "this is not something you should do".
-> > > 
-> > 
-> > Now what really confuses me is why kref_read() is safe..
-> 
-> It isn't, and I hate it and it should be removed from the kernel
-> entirely.  But the scsi and drm developers seem to insist that "their
-> locking model ensures it will be safe to use" and I lost that argument
-> :(
-> 
-> > or how this is different than kref_read().
-> 
-> It isn't, but again, I don't like that and do not agree it should be
-> used as it is almost always a sign that the logic in the code is
-> incorrect.
-> 
+[...]
 > > Needless to say that ArcInner::count() can guarantee not reading 0
 > 
 > How?  Because you have an implicit reference on it already?  If so, then
+
+Yes, roughly a reference ("&") in Rust can be treated as a
+compile-time reference count, so the existence of "&" in fact prevents
+the underlying data from going away, or in Rust term, being "drop"ped.
+
+To get a "&ArcInner<T>", we need a "&Arc<T>", and as long as there is
+a reference to an "Arc<T>", the object won't be dropped, that's the
+proof of the underly object still being referenced.
+
+Other folks may explain this better and accurate, but that's the basic
+idea ;-)
+
+Regards,
+Boqun
+
 > why does reading from it matter at all, as if you have a reference, you
 > know it isn't 0, and that's all that you can really care about.  You
 > don't care about any number other than 0 for a reference count, as by
 > definition, that's what a reference count does :)
 > 
 
-Fair enough!
-
-> > (because of the type invariants) but kref_read() cannot..
-> 
-> I totally agree with you.  Let's not mirror bad decisions of legacy
-> subsystems in the kernel written in C with new designs in Rust please.
-> 
-
-Roger that, will remove this in the next version ;-)
-
-Regards,
-Boqun
+[...]
 
 > thanks,
 > 
