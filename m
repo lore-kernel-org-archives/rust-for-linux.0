@@ -2,83 +2,109 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DECB0C636D4
-	for <rust-for-linux@archiver.kernel.org>; Fri,  3 Feb 2023 17:38:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 455F6C05027
+	for <rust-for-linux@archiver.kernel.org>; Fri,  3 Feb 2023 19:18:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233482AbjBCRid (ORCPT
+        id S233595AbjBCTSh (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 3 Feb 2023 12:38:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45602 "EHLO
+        Fri, 3 Feb 2023 14:18:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233473AbjBCRi2 (ORCPT
+        with ESMTP id S231302AbjBCTSg (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 3 Feb 2023 12:38:28 -0500
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007C893D2;
-        Fri,  3 Feb 2023 09:38:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:
-        Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=NGs0D5IZjQcREfJVznKum6Ng05dV4TpF7IPFxqAtWD4=; b=YGXa/an4mKsbYcwtqloAOvm+hn
-        WaGH9ssdElPqG1yylMqiZL/Wbb819CP05kHWjJaxu0RUR1Tyr4qm0xZAICXsLBxRmf9cK1Jyy2IW8
-        GLZt1Sh3jSLL6CLPn1/e3V4yaiF7nd7AOZb4G+kItgJgCP6MDf7KOWHIDIzlW5Aay4Yv+dz+3wDlv
-        3seIFG/b6/u4FDQLDzWmTwfgEnwNRZ5s93YqLPS2cmgqR1bHDwtXzBy/wnZ/WZuXS8ZgSAmRlLFAn
-        eWGFy2mGKgFKoezMnA0sMXRowdsOQVF2Yu5V7iYPNcfr30EKx71Z43NkgrpT3f81kUbHXukN7bcXX
-        c29c5qIA==;
-Received: from [187.36.234.139] (helo=bowie..)
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-        id 1pO00H-008PW0-ML; Fri, 03 Feb 2023 18:37:38 +0100
-From:   =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
+        Fri, 3 Feb 2023 14:18:36 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BDA11F
+        for <rust-for-linux@vger.kernel.org>; Fri,  3 Feb 2023 11:17:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1675451871;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=BO4vMWECv4J9NpNXP3V95/hRYYcq72yT05Jkf7LUiYo=;
+        b=Y1CQQg0bk4pwCqqYGXQ6viE7UkasYHL7fWVC1yQCIDiKTCqzIwVncKc/wiS3n51H4wgkdn
+        rg2/pbKgCIbXdN1FsGkZJ2EbdMC9RPGEzzln+x6Qz9Rp9rbHlDSV5tUZa3jRL1iNljmVHJ
+        OkkbOOtgDDaCTN6RNDBNQfCxh8tU+OY=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-594-ceXjsHaXOWCCeTGZkqKOBQ-1; Fri, 03 Feb 2023 14:17:50 -0500
+X-MC-Unique: ceXjsHaXOWCCeTGZkqKOBQ-1
+Received: by mail-pj1-f69.google.com with SMTP id e11-20020a17090a77cb00b0022925dd66d3so5032698pjs.4
+        for <rust-for-linux@vger.kernel.org>; Fri, 03 Feb 2023 11:17:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BO4vMWECv4J9NpNXP3V95/hRYYcq72yT05Jkf7LUiYo=;
+        b=Gr/T/LoAKBoIFhEyyLnCmiNrtpq5B3aFR7H4dSHkaNDVccPRFiA7pe6feSSEBJ4++J
+         Fs/MINz/QFVAmbhWsTclCvpX4fLvbUrLxJZ05ETJDAtMQKqKjC6507VsHZhXRm0I9TYv
+         cluhwuml0hjOBEBFw843HqgUAvAvwI7SzF0f97VXc34nU80CMZLSmjlifJgFH2iDGVjI
+         DIxiP3ziL2K4qtthpi17g90+99LV3SAgfRpRbw43su0DigA8faWmF3Zis2lHD78dtIFx
+         UEUtJesn8ld2qhwnMvm+jvS6Eoass1mZG2YD0SlkNHifHhoR9h4RDpb3n6V8JKkCJ0V4
+         UX2w==
+X-Gm-Message-State: AO0yUKVg+LdgiuE9Mu5b3EZ1g9KcZizpg8x7cR69wgcGLB7dpJM89183
+        Mlrh+DyOM05yHK+YL6wFiXfEfQSIgAXDrw4VywaEUIe7e5tola6fpAVWLKB04QCEgeCqlGGANXM
+        hhxwlFC7DBJMVvkh0BeJjDUgD6BQ=
+X-Received: by 2002:a05:6a21:170c:b0:be:e6d3:797b with SMTP id nv12-20020a056a21170c00b000bee6d3797bmr11174161pzb.55.1675451869735;
+        Fri, 03 Feb 2023 11:17:49 -0800 (PST)
+X-Google-Smtp-Source: AK7set+ShFz+W7toatFwTMDcuy98ED66+3PKJrTPzHQS4gMTrCidlVzxlyif4z+Bpqn+zUPRjDPQ0Q==
+X-Received: by 2002:a05:6a21:170c:b0:be:e6d3:797b with SMTP id nv12-20020a056a21170c00b000bee6d3797bmr11174140pzb.55.1675451869483;
+        Fri, 03 Feb 2023 11:17:49 -0800 (PST)
+Received: from ?IPV6:2601:1c0:4680:5870:f0d8:e758:fcd:4c72? ([2601:1c0:4680:5870:f0d8:e758:fcd:4c72])
+        by smtp.gmail.com with ESMTPSA id i5-20020a63b305000000b004efe1f24522sm1806578pgf.23.2023.02.03.11.17.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Feb 2023 11:17:48 -0800 (PST)
+Message-ID: <9d144ca0-5cf2-a575-a30b-22f5ff4e8e2b@redhat.com>
+Date:   Fri, 3 Feb 2023 11:17:47 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [RFC 2/5] rust: sync: Arc: Introduces ArcInner::count()
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        Boqun Feng <boqun.feng@gmail.com>
+Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        Peter Zijlstra <peterz@infradead.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
-Cc:     Melissa Wen <mwen@igalia.com>, linux-kbuild@vger.kernel.org,
-        rust-for-linux@vger.kernel.org,
-        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH] rust: delete rust-project.json when running make clean
-Date:   Fri,  3 Feb 2023 14:37:04 -0300
-Message-Id: <20230203173704.108942-1-mcanal@igalia.com>
-X-Mailer: git-send-email 2.39.1
-MIME-Version: 1.0
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+References: <20230201232244.212908-3-boqun.feng@gmail.com>
+ <Y9t+3u+2UcAFQc+r@hirez.programming.kicks-ass.net>
+ <20230202142153.352ba479.gary@garyguo.net> <Y9vZu08L2WaLNJIc@kroah.com>
+ <Y9vga90K0aVfGUwW@boqun-archlinux> <Y9viM2POUsSnbKUh@kroah.com>
+ <Y9vqJ1h2nkaFRpOY@boqun-archlinux>
+ <CANiq72kMZ9XQvte41Mzu4oXX=ujGRCrGDZDiYUBVD3=JTGG57g@mail.gmail.com>
+ <Y9yaBybest8JBu8A@kroah.com> <Y9y21JyuPF1nCCzr@Boquns-Mac-mini.local>
+ <Y9y58cy1GKZLdyjb@kroah.com>
+From:   Josh Stone <jistone@redhat.com>
+In-Reply-To: <Y9y58cy1GKZLdyjb@kroah.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-rust-project.json is the configuration file used by rust-analyzer.
-As it is a configuration file and it is not needed to build external
-modules, it should be delete by make clean. So, delete rust-project.json
-when running make clean.
+On 2/2/23 11:38 PM, Greg KH wrote:
+> How?  Because you have an implicit reference on it already?  If so, then
+> why does reading from it matter at all, as if you have a reference, you
+> know it isn't 0, and that's all that you can really care about.  You
+> don't care about any number other than 0 for a reference count, as by
+> definition, that's what a reference count does :)
 
-Link: https://github.com/Rust-for-Linux/linux/issues/939
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Makefile b/Makefile
-index f41ec8c8426b..6223d5f82f66 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1573,7 +1573,7 @@ endif # CONFIG_MODULES
- CLEAN_FILES += include/ksym vmlinux.symvers modules-only.symvers \
- 	       modules.builtin modules.builtin.modinfo modules.nsdeps \
- 	       compile_commands.json .thinlto-cache rust/test rust/doc \
--	       .vmlinux.objs .vmlinux.export.c
-+	       rust-project.json .vmlinux.objs .vmlinux.export.c
- 
- # Directories & files removed with 'make mrproper'
- MRPROPER_FILES += include/config include/generated          \
--- 
-2.39.1
+There is an additional ability for 1, mentioned up thread -- if you have
+&mut Arc<T>, and the inner count is 1, then you *know* there aren't any
+other Arc<T> handles anywhere else. Then it is safe to return an
+exclusive &mut T, like the upstream Arc::get_mut and Arc::make_mut. This
+can also be used for owned Arc<T> like the upstream Arc::try_unwrap.
 
