@@ -2,70 +2,67 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 455F6C05027
-	for <rust-for-linux@archiver.kernel.org>; Fri,  3 Feb 2023 19:18:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CB0BC05027
+	for <rust-for-linux@archiver.kernel.org>; Fri,  3 Feb 2023 19:23:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233595AbjBCTSh (ORCPT
+        id S232616AbjBCTXV (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 3 Feb 2023 14:18:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55460 "EHLO
+        Fri, 3 Feb 2023 14:23:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231302AbjBCTSg (ORCPT
+        with ESMTP id S232113AbjBCTW6 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 3 Feb 2023 14:18:36 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BDA11F
-        for <rust-for-linux@vger.kernel.org>; Fri,  3 Feb 2023 11:17:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1675451871;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=BO4vMWECv4J9NpNXP3V95/hRYYcq72yT05Jkf7LUiYo=;
-        b=Y1CQQg0bk4pwCqqYGXQ6viE7UkasYHL7fWVC1yQCIDiKTCqzIwVncKc/wiS3n51H4wgkdn
-        rg2/pbKgCIbXdN1FsGkZJ2EbdMC9RPGEzzln+x6Qz9Rp9rbHlDSV5tUZa3jRL1iNljmVHJ
-        OkkbOOtgDDaCTN6RNDBNQfCxh8tU+OY=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-594-ceXjsHaXOWCCeTGZkqKOBQ-1; Fri, 03 Feb 2023 14:17:50 -0500
-X-MC-Unique: ceXjsHaXOWCCeTGZkqKOBQ-1
-Received: by mail-pj1-f69.google.com with SMTP id e11-20020a17090a77cb00b0022925dd66d3so5032698pjs.4
-        for <rust-for-linux@vger.kernel.org>; Fri, 03 Feb 2023 11:17:50 -0800 (PST)
+        Fri, 3 Feb 2023 14:22:58 -0500
+Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BA023402D;
+        Fri,  3 Feb 2023 11:22:56 -0800 (PST)
+Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-16332831ed0so7797469fac.10;
+        Fri, 03 Feb 2023 11:22:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=pKX+QG3f/kc19mjMKFaEzy5Do8w/6oGAuZfhZ0dN2wQ=;
+        b=hcWWA8n57Bri2yWCkTTmxoPeGkz0Di5IVhEW/KbnfCqBnvfg7TRCHoTYsM0hFrxkT+
+         xEmLJkTcMikBM6c2xIKwaWVT69KnVe1UhWKfvBWVesfH9j1+J7mqQsF0Cd2u4pMZeoXG
+         DDzQ7XnBExZKyByc9QXGYO81U3/ggGzcxRZTjcmfVvOp4WnZGGU1IqT/DWSFr3j1cfTK
+         XkeWok4qaYqR9sDakpThBd4rejW+eSMEbA/06IpSCMFH4wVa5F/yI/7w9s3cN1D0hn2Z
+         YEiymUZxtOosRCCGsFFTh6d1jzMkYi3KiPJN0qwwa1ls2ae/jCKx1ovvmr6Sk+XLtMv3
+         hZaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BO4vMWECv4J9NpNXP3V95/hRYYcq72yT05Jkf7LUiYo=;
-        b=Gr/T/LoAKBoIFhEyyLnCmiNrtpq5B3aFR7H4dSHkaNDVccPRFiA7pe6feSSEBJ4++J
-         Fs/MINz/QFVAmbhWsTclCvpX4fLvbUrLxJZ05ETJDAtMQKqKjC6507VsHZhXRm0I9TYv
-         cluhwuml0hjOBEBFw843HqgUAvAvwI7SzF0f97VXc34nU80CMZLSmjlifJgFH2iDGVjI
-         DIxiP3ziL2K4qtthpi17g90+99LV3SAgfRpRbw43su0DigA8faWmF3Zis2lHD78dtIFx
-         UEUtJesn8ld2qhwnMvm+jvS6Eoass1mZG2YD0SlkNHifHhoR9h4RDpb3n6V8JKkCJ0V4
-         UX2w==
-X-Gm-Message-State: AO0yUKVg+LdgiuE9Mu5b3EZ1g9KcZizpg8x7cR69wgcGLB7dpJM89183
-        Mlrh+DyOM05yHK+YL6wFiXfEfQSIgAXDrw4VywaEUIe7e5tola6fpAVWLKB04QCEgeCqlGGANXM
-        hhxwlFC7DBJMVvkh0BeJjDUgD6BQ=
-X-Received: by 2002:a05:6a21:170c:b0:be:e6d3:797b with SMTP id nv12-20020a056a21170c00b000bee6d3797bmr11174161pzb.55.1675451869735;
-        Fri, 03 Feb 2023 11:17:49 -0800 (PST)
-X-Google-Smtp-Source: AK7set+ShFz+W7toatFwTMDcuy98ED66+3PKJrTPzHQS4gMTrCidlVzxlyif4z+Bpqn+zUPRjDPQ0Q==
-X-Received: by 2002:a05:6a21:170c:b0:be:e6d3:797b with SMTP id nv12-20020a056a21170c00b000bee6d3797bmr11174140pzb.55.1675451869483;
-        Fri, 03 Feb 2023 11:17:49 -0800 (PST)
-Received: from ?IPV6:2601:1c0:4680:5870:f0d8:e758:fcd:4c72? ([2601:1c0:4680:5870:f0d8:e758:fcd:4c72])
-        by smtp.gmail.com with ESMTPSA id i5-20020a63b305000000b004efe1f24522sm1806578pgf.23.2023.02.03.11.17.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Feb 2023 11:17:48 -0800 (PST)
-Message-ID: <9d144ca0-5cf2-a575-a30b-22f5ff4e8e2b@redhat.com>
-Date:   Fri, 3 Feb 2023 11:17:47 -0800
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pKX+QG3f/kc19mjMKFaEzy5Do8w/6oGAuZfhZ0dN2wQ=;
+        b=MrM10mjhEAsAplDUpDOE1rwwFyRlqTxSUGrYCQTay9byi+9YR+cgn+Uul0CuXLqHT5
+         ENlNJmsFGL/i4/ivVG5+njlkyD+TTwF1YhsCvl+m8ASvyg39RNlOifn/aYgNbWBeTB4O
+         H6hgNi/V6bpxO0bJkWIzXtrXeaYTGQbqm+0AIxpoPe/C/wxebxTNzl+YhSi90t+Bpyah
+         Y/GxVpryMsmvOA9wRWtOFn0aM2FJA5c6lj2eQPp+cGAQz6z2AKwI8tN3sWCHTWuddNPa
+         I8b+HaX9m0K8YwH/S6W0oTmOugcQLOqbGZ60FQPK0Kd/1xDsPjQINkBwVsnoxL3xFOz6
+         mVXQ==
+X-Gm-Message-State: AO0yUKW93xga/Aj9QuSfAWZsxlS39jvS79U1QSQp6j2JHUuLnSUewNBc
+        oiWXON0LX/PLZ5zSCUkDCIYaW6t4PlNQ1RCNmqs=
+X-Google-Smtp-Source: AK7set90lQUTFlayzPSXnqM8r23BPi5UGVctFPWzVQhf+PMUB6V/J3d3O4ESdh9fzM8lHRQgOTxagrmjfLIe9EGRgY0=
+X-Received: by 2002:a05:6870:a118:b0:163:cd38:813e with SMTP id
+ m24-20020a056870a11800b00163cd38813emr654596oae.215.1675452175701; Fri, 03
+ Feb 2023 11:22:55 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
+References: <20230201232244.212908-3-boqun.feng@gmail.com> <Y9t+3u+2UcAFQc+r@hirez.programming.kicks-ass.net>
+ <20230202142153.352ba479.gary@garyguo.net> <Y9vZu08L2WaLNJIc@kroah.com>
+ <Y9vga90K0aVfGUwW@boqun-archlinux> <Y9viM2POUsSnbKUh@kroah.com>
+ <Y9vqJ1h2nkaFRpOY@boqun-archlinux> <CANiq72kMZ9XQvte41Mzu4oXX=ujGRCrGDZDiYUBVD3=JTGG57g@mail.gmail.com>
+ <Y9yaBybest8JBu8A@kroah.com> <Y9y21JyuPF1nCCzr@Boquns-Mac-mini.local>
+ <Y9y58cy1GKZLdyjb@kroah.com> <9d144ca0-5cf2-a575-a30b-22f5ff4e8e2b@redhat.com>
+In-Reply-To: <9d144ca0-5cf2-a575-a30b-22f5ff4e8e2b@redhat.com>
+From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+Date:   Fri, 3 Feb 2023 16:22:44 -0300
+Message-ID: <CANeycqo088O+yCA91hujZtxZzbR4UyYrj_yvGYHp0MgWatxmpA@mail.gmail.com>
 Subject: Re: [RFC 2/5] rust: sync: Arc: Introduces ArcInner::count()
-To:     Greg KH <gregkh@linuxfoundation.org>,
-        Boqun Feng <boqun.feng@gmail.com>
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+To:     Josh Stone <jistone@redhat.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
         Gary Guo <gary@garyguo.net>,
         Peter Zijlstra <peterz@infradead.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -73,38 +70,27 @@ Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
         Mark Rutland <mark.rutland@arm.com>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-References: <20230201232244.212908-3-boqun.feng@gmail.com>
- <Y9t+3u+2UcAFQc+r@hirez.programming.kicks-ass.net>
- <20230202142153.352ba479.gary@garyguo.net> <Y9vZu08L2WaLNJIc@kroah.com>
- <Y9vga90K0aVfGUwW@boqun-archlinux> <Y9viM2POUsSnbKUh@kroah.com>
- <Y9vqJ1h2nkaFRpOY@boqun-archlinux>
- <CANiq72kMZ9XQvte41Mzu4oXX=ujGRCrGDZDiYUBVD3=JTGG57g@mail.gmail.com>
- <Y9yaBybest8JBu8A@kroah.com> <Y9y21JyuPF1nCCzr@Boquns-Mac-mini.local>
- <Y9y58cy1GKZLdyjb@kroah.com>
-From:   Josh Stone <jistone@redhat.com>
-In-Reply-To: <Y9y58cy1GKZLdyjb@kroah.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 2/2/23 11:38 PM, Greg KH wrote:
-> How?  Because you have an implicit reference on it already?  If so, then
-> why does reading from it matter at all, as if you have a reference, you
-> know it isn't 0, and that's all that you can really care about.  You
-> don't care about any number other than 0 for a reference count, as by
-> definition, that's what a reference count does :)
+On Fri, 3 Feb 2023 at 16:17, Josh Stone <jistone@redhat.com> wrote:
+>
+> On 2/2/23 11:38 PM, Greg KH wrote:
+> > How?  Because you have an implicit reference on it already?  If so, then
+> > why does reading from it matter at all, as if you have a reference, you
+> > know it isn't 0, and that's all that you can really care about.  You
+> > don't care about any number other than 0 for a reference count, as by
+> > definition, that's what a reference count does :)
+>
+> There is an additional ability for 1, mentioned up thread -- if you have
+> &mut Arc<T>, and the inner count is 1, then you *know* there aren't any
+> other Arc<T> handles anywhere else. Then it is safe to return an
+> exclusive &mut T, like the upstream Arc::get_mut and Arc::make_mut. This
+> can also be used for owned Arc<T> like the upstream Arc::try_unwrap.
 
-There is an additional ability for 1, mentioned up thread -- if you have
-&mut Arc<T>, and the inner count is 1, then you *know* there aren't any
-other Arc<T> handles anywhere else. Then it is safe to return an
-exclusive &mut T, like the upstream Arc::get_mut and Arc::make_mut. This
-can also be used for owned Arc<T> like the upstream Arc::try_unwrap.
-
+The `Arc<T>` in the kernel is pinned so we can't return an `&mut T`,
+though a `Pin<&mut T>` would be ok.
