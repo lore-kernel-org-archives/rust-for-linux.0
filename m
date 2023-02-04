@@ -2,60 +2,60 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C47B2C636CC
-	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Feb 2023 18:56:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 60171C61DA4
+	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Feb 2023 19:05:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231355AbjBDS41 (ORCPT
+        id S233517AbjBDTFL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 4 Feb 2023 13:56:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60246 "EHLO
+        Sat, 4 Feb 2023 14:05:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230379AbjBDS40 (ORCPT
+        with ESMTP id S230379AbjBDTFL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 4 Feb 2023 13:56:26 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5B292312D;
-        Sat,  4 Feb 2023 10:56:25 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id u21so8093438edv.3;
-        Sat, 04 Feb 2023 10:56:25 -0800 (PST)
+        Sat, 4 Feb 2023 14:05:11 -0500
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18D582684B;
+        Sat,  4 Feb 2023 11:05:07 -0800 (PST)
+Received: by mail-ej1-x635.google.com with SMTP id bk15so23824879ejb.9;
+        Sat, 04 Feb 2023 11:05:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XXTvsqqPQTKemZkzT9B470QmaPw1nry7mmJ+mqYkq/Q=;
-        b=h2zCi2SfkjYfKH71RLy9JcK+NZvCxlXvJIlBHzQSDVsQ5L4npmlE4QiphO+6ZRnE9P
-         u5oppkt2LVEgkC8he53Lv9KYaZ0lLN1Kw+T83RmxKtfsKehKPzTuvKelLI5VqaXBTK0X
-         nlgleL8HxHmaMSupYX5HdMv0MazGp6nGw4L/ycNl2B/K3qpJ4CUyAavWXddSwC5X9nD2
-         JoQz5nnMSUX+GEoUk4HzpDeADnNJvzeWEI0cXVElTDDts5nKyrxGSJOsumiifwyJJ9eN
-         jLTFl8K7ykzdGkV3JJwy2oMOi64F712taQFxAhVn5gqywWcFenxgGHA0vcO9b/damYZC
-         OYJQ==
+        bh=J+DlghB0YJ67hLvTX4yJkS05i+iy4cNCXn01Nrycq50=;
+        b=bL7y+r2ajCGekbQLvKC28XGrbQg17hQDcLXQy5DdbojFYQbaerQQE45ROpxPh75jvo
+         4guka4GB0+M/RoZx5aj8eKMxnZVkJ4shlj14FEp76kDjNkyFsdbRiEK2wIkFu6GwJskg
+         +ZoKC5tFlDlo6+P0MgFOopwBBLXlwA1qpo1E1eblxdO4NAVvEYgQjIvMqIb0RO1mA47a
+         TAP0CgR3Bih86Pwhh/UzSutDQVO080J5Wb1c7d8OilYt+XmRxR8zCGBl+YQ340fyspkI
+         zWb5+4LnPr9T0G0qHveSzjN/GQDLmsmc/fCx+lJWqI6TIWSqrwqJbo9dOOCjMNxVUvjQ
+         lL2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=XXTvsqqPQTKemZkzT9B470QmaPw1nry7mmJ+mqYkq/Q=;
-        b=iayqYfnX3j8okc+v541nW2Rh+dhrC6WvQQ69CEt9kZmlyoMgq5wUsMi22atxwyMo99
-         95CthHqCtWJxOXygdZ20twnmPy/kgH/I6gAfIWulJPqAwgDuIl11poD2vJP8/RuE4mrd
-         EhYlURZeZQ3edTFZEmMcncgt8gDFqF/gX1Amc9OBiqM7m66+EvCET2zDbZ6PwDhoiuk/
-         B8JAAPxUrQFbgUgx4TVP7hAfJbdcZj39S/7dOBkkx5/Ffb+KAunJi/XYaGD84LODz7J8
-         xhnC7EYZaAz3krgaqj5GlprR2onnPBtDyYGm1NYJsV1XS3iuUFn4VT8HHSz5peyL3uM6
-         4LwQ==
-X-Gm-Message-State: AO0yUKXAu5XFaiJPNgYdjJE23RlzFU6UjY9WFn+6+8UIRz9IEiO8Z/io
-        nJO/B6gj4QjibLpaUuVHDZk=
-X-Google-Smtp-Source: AK7set+5q4lqvJHvDWQ8+tW0CHqwnIIYtkMKCju2FE25MD4mIhsJrn5KLq25YpKF5P3zea7o0TWmjg==
-X-Received: by 2002:a05:6402:1950:b0:4a2:260f:3bbe with SMTP id f16-20020a056402195000b004a2260f3bbemr15999578edz.23.1675536983707;
-        Sat, 04 Feb 2023 10:56:23 -0800 (PST)
+        bh=J+DlghB0YJ67hLvTX4yJkS05i+iy4cNCXn01Nrycq50=;
+        b=EwzTuO0i3cuE4rNn+zdblcX8jBtet/n8NRlZaQW2VjBD3fWaXJj0ajyhJwelupNy7b
+         XPUZsGeI2Fg1cBU0z1dm0A+m9PiOHssoJBhC9/vnkzDNuYS3owkuo6oeb4eBKtZzVBag
+         /4Cp10TCiFLuG5ki6AAkfltHVXn0T5GkYmmxu70AeKoFaSI1+GqhpClqeWH0it0Zj6mC
+         CNfn9laQ8iMxzCdWe6QiKcEPSTnhLF1vshrs0QHKnGNi3o9fHqMitF6mNRnMCv6DyDXE
+         Zc0pvcUDMefoIQiAKMTowZ9RoEFvLSVSzTC5VrBzsoPfENGLeq1LGzDnxChr2EnUaxpU
+         D/Gw==
+X-Gm-Message-State: AO0yUKVacImp8Q1SUJH8Mk4n+nt+AmAY7ArDExhf7V2Kjvm6FYUhw+R0
+        AC+q6wbDf9ZI9Q38DVCVnZJOgIXQG28xHBpnsR0=
+X-Google-Smtp-Source: AK7set/s5kLN3P1WUlmaq35ShIUiV6+IMJV6AOxXhLgmHMO9GPyka+8Brx95YbvJPmuGwYtYvzh0vA==
+X-Received: by 2002:a17:906:53d5:b0:88c:8c2e:af17 with SMTP id p21-20020a17090653d500b0088c8c2eaf17mr13000055ejo.2.1675537505570;
+        Sat, 04 Feb 2023 11:05:05 -0800 (PST)
 Received: from localhost ([2001:b07:5d37:537d:8c1:b772:7521:b7bd])
-        by smtp.gmail.com with ESMTPSA id lv3-20020a170906bc8300b00883410a786csm3087901ejb.207.2023.02.04.10.56.22
+        by smtp.gmail.com with ESMTPSA id f25-20020a170906391900b0084d4b8f5889sm3170969eje.102.2023.02.04.11.05.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 04 Feb 2023 10:56:23 -0800 (PST)
+        Sat, 04 Feb 2023 11:05:04 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Sat, 04 Feb 2023 19:56:22 +0100
-Message-Id: <CQA0AFBAS9NN.18QN99FQVH9ZF@vincent>
+Date:   Sat, 04 Feb 2023 20:05:03 +0100
+Message-Id: <CQA0H2Z1SGIG.I9OPJD8ADX24@vincent>
 Cc:     "Will Deacon" <will@kernel.org>,
         "Peter Zijlstra" <peterz@infradead.org>,
         "Mark Rutland" <mark.rutland@arm.com>,
@@ -64,58 +64,74 @@ Cc:     "Will Deacon" <will@kernel.org>,
         "Wedson Almeida Filho" <wedsonaf@gmail.com>,
         "Gary Guo" <gary@garyguo.net>,
         =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Subject: Re: [RFC 4/5] rust: sync: impl Debug for {Unique,}Arc
+Subject: Re: [RFC 5/5] sample: rust: print: Add sampe code for Arc printing
 From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
 To:     "Boqun Feng" <boqun.feng@gmail.com>,
         <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.14.0-38-gb2afc8117fb7
 References: <20230201232244.212908-1-boqun.feng@gmail.com>
- <20230201232244.212908-5-boqun.feng@gmail.com>
-In-Reply-To: <20230201232244.212908-5-boqun.feng@gmail.com>
+ <20230201232244.212908-6-boqun.feng@gmail.com>
+In-Reply-To: <20230201232244.212908-6-boqun.feng@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On Thu Feb 2, 2023 at 12:22 AM CET, Boqun Feng wrote:
-> This allows printing macros to print the data and the refcount nubmer
-> of these struct for debugging purposes.
+> This both demonstrates the usage of different print format in Rust and
+> serves as a selftest for the `Display` and `Debug` implementation of
+> `Arc` and its friends.
 >
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 > ---
 Reviwed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 
->  rust/kernel/sync/arc.rs | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  samples/rust/rust_print.rs | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
 >
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 4d8de20c996f..f143d8305c36 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -474,6 +474,7 @@ impl<T: ?Sized> Deref for ArcBorrow<'_, T> {
->  ///
->  /// # test().unwrap();
->  /// ```
-> +#[derive(Debug)]
->  pub struct UniqueArc<T: ?Sized> {
->      inner: Arc<T>,
->  }
-> @@ -545,3 +546,15 @@ impl<T: fmt::Display + ?Sized> fmt::Display for Arc<=
-T> {
->          fmt::Display::fmt(self.deref(), f)
+> diff --git a/samples/rust/rust_print.rs b/samples/rust/rust_print.rs
+> index 8b39d9cef6d1..165a8d7b1c07 100644
+> --- a/samples/rust/rust_print.rs
+> +++ b/samples/rust/rust_print.rs
+> @@ -15,6 +15,30 @@ module! {
+> =20
+>  struct RustPrint;
+> =20
+> +fn arc_print() -> Result {
+> +    use kernel::sync::*;
+> +
+> +    let a =3D Arc::try_new(1)?;
+> +    let b =3D UniqueArc::try_new("hello, world")?;
+> +
+> +    // Prints the value of data in `a`.
+> +    pr_info!("{}", a);
+> +
+> +    // Uses ":?" to print debug fmt of `b`.
+> +    pr_info!("{:?}", b);
+> +
+> +    let a: Arc<&str> =3D b.into();
+> +    let c =3D a.clone();
+> +
+> +    // Uses `dbg` to print, will move `c`.
+> +    dbg!(c);
+> +
+> +    // Prints debug fmt with pretty-print "#" and number-in-hex "x".
+> +    pr_info!("{:#x?}", a);
+> +
+> +    Ok(())
+> +}
+> +
+>  impl kernel::Module for RustPrint {
+>      fn init(_module: &'static ThisModule) -> Result<Self> {
+>          pr_info!("Rust printing macros sample (init)\n");
+> @@ -43,6 +67,8 @@ impl kernel::Module for RustPrint {
+>          pr_cont!(" is {}", "continued");
+>          pr_cont!(" with {}\n", "args");
+> =20
+> +        arc_print()?;
+> +
+>          Ok(RustPrint)
 >      }
 >  }
-> +
-> +impl<T: fmt::Debug + ?Sized> fmt::Debug for Arc<T> {
-> +    /// Formats debug output for [`Arc`].
-> +    ///
-> +    /// Refcount is also printed for debugging purpose.
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        f.debug_struct("Arc")
-> +            .field("refcount", &self.get_inner().count())
-> +            .field("data", &self.deref())
-> +            .finish()
-> +    }
-> +}
 > --=20
 > 2.39.1
 
