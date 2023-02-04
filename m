@@ -2,92 +2,107 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26914C636CC
-	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Feb 2023 10:12:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0D8CC636CC
+	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Feb 2023 10:20:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231526AbjBDKMf (ORCPT
+        id S231176AbjBDKUt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 4 Feb 2023 05:12:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47096 "EHLO
+        Sat, 4 Feb 2023 05:20:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230331AbjBDKMe (ORCPT
+        with ESMTP id S232645AbjBDKUh (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 4 Feb 2023 05:12:34 -0500
-Received: from mout-b-110.mailbox.org (mout-b-110.mailbox.org [IPv6:2001:67c:2050:102:465::110])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C56551D913;
-        Sat,  4 Feb 2023 02:12:32 -0800 (PST)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+        Sat, 4 Feb 2023 05:20:37 -0500
+Received: from mout-b-206.mailbox.org (mout-b-206.mailbox.org [IPv6:2001:67c:2050:102:465::206])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04FDC268E;
+        Sat,  4 Feb 2023 02:20:35 -0800 (PST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-b-110.mailbox.org (Postfix) with ESMTPS id 4P87cX33swz9slS;
-        Sat,  4 Feb 2023 11:12:28 +0100 (CET)
+        by mout-b-206.mailbox.org (Postfix) with ESMTPS id 4P87nr271yz9tKM;
+        Sat,  4 Feb 2023 11:20:32 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyantec.com; s=default;
-        t=1675505548;
+        t=1675506032;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=wBenN//MSS2FnzUOSFVhxKB8bpeGF5Xem1x3AEUv3BY=;
-        b=kYbQRc2hdX3GGIHgmxnC6grhmeksmw779RoTzvoHAI7y/jIbGV4z+snLf8rls6LxgZX5HT
-        LhNN2E3d9yGADoBCbwESFikpy2/KTKO6lO3fN7QtctsWyeuTop1G/4iYVWheGLtVGDjlp1
-        ekfT0o7sLhp4ybDuMxIlyvDlQhzsTj/lBXeQV5gAeEBLu0BqxCcEzMsRPAH7jL5fc77G+N
-        XAIfVHPWM6Jtf55zf3QQ089bSDXfh7nmjq0H+FtT4lEKTeUNXPr4Nw8DzzlVc2R0CDaDr/
-        5Ap6d/IyA2unfvpYw7gNV+sf89CH15WXZsXQpi1hUJRczrk5TO2bXQL3EvB7Xg==
+        bh=/4CnxbYPhSwwcLfDCu2Isb4HFKKjbzoGz1iu24gYOfY=;
+        b=UWiK7weGqMFNV72/qRxSXKYh17yIYHWPrD+0jBJKslbhmR1jWbmSYcjpL8yf4qfxYUAyt7
+        QBJmA8G3I6Mnoxq0Tr3cyV9GjEHi8Pz26ANXIhOqQB1blLG4E36pXqTb9iJDRUvwbV8ZQu
+        P8CC9ow8h7NGD0PstWuI7wZZn1hIh1JVT3EnIlvhmqr/3P4kGUE3p9iRhBqM6Qx89HSy7P
+        RO1RkXMP8C7ArBEmTW2qJ3TW2eIDYCVikwfAvGf7eGfVgKQICWeytAxw03xten/hpzKQOr
+        ZfT6q24nEy8Bvfk37HnnCtbMKIl3vjRbj0p0z4Mqm10u3uOwduvPIXFIuSWoDQ==
 From:   Finn Behrens <fin@nyantec.com>
-To:     =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Will Deacon <will@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Gary Guo <gary@garyguo.net>,
         =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Melissa Wen <mwen@igalia.com>, linux-kbuild@vger.kernel.org,
-        rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: delete rust-project.json when running make clean
-Date:   Sat, 04 Feb 2023 11:12:23 +0100
-Message-ID: <BDCE8CA1-9BC1-4E36-9A7A-CA60A387E200@nyantec.com>
-In-Reply-To: <20230203173704.108942-1-mcanal@igalia.com>
-References: <20230203173704.108942-1-mcanal@igalia.com>
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Subject: Re: [RFC 1/5] rust: sync: impl Display for {Unique,}Arc
+Date:   Sat, 04 Feb 2023 11:20:29 +0100
+Message-ID: <462147AA-C158-4EAE-B1CC-8A9A88F237F3@nyantec.com>
+In-Reply-To: <20230201232244.212908-2-boqun.feng@gmail.com>
+References: <20230201232244.212908-1-boqun.feng@gmail.com>
+ <20230201232244.212908-2-boqun.feng@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4P87nr271yz9tKM
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 
 
-On 3 Feb 2023, at 18:37, Ma=C3=ADra Canal wrote:
+On 2 Feb 2023, at 0:22, Boqun Feng wrote:
 
-> rust-project.json is the configuration file used by rust-analyzer.
-> As it is a configuration file and it is not needed to build external
-> modules, it should be delete by make clean. So, delete rust-project.jso=
-n
-> when running make clean.
+> This allows printing the inner data of `Arc` and its friends if the
+> inner data implements `Display`. It's useful for logging and debugging
+> purpose.
 >
-> Link: https://github.com/Rust-for-Linux/linux/issues/939
-> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Reviewed-by: Finn Behrens <fin@nyantec.com>
+
 > ---
->  Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  rust/kernel/sync/arc.rs | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 >
-> diff --git a/Makefile b/Makefile
-> index f41ec8c8426b..6223d5f82f66 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1573,7 +1573,7 @@ endif # CONFIG_MODULES
->  CLEAN_FILES +=3D include/ksym vmlinux.symvers modules-only.symvers \
->  	       modules.builtin modules.builtin.modinfo modules.nsdeps \
->  	       compile_commands.json .thinlto-cache rust/test rust/doc \
-> -	       .vmlinux.objs .vmlinux.export.c
-> +	       rust-project.json .vmlinux.objs .vmlinux.export.c
->
->  # Directories & files removed with 'make mrproper'
->  MRPROPER_FILES +=3D include/config include/generated          \
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index 519a6ec43644..fc680a4a795c 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -22,6 +22,7 @@ use crate::{
+>  };
+>  use alloc::boxed::Box;
+>  use core::{
+> +    fmt,
+>      marker::{PhantomData, Unsize},
+>      mem::{ManuallyDrop, MaybeUninit},
+>      ops::{Deref, DerefMut},
+> @@ -522,3 +523,15 @@ impl<T: ?Sized> DerefMut for UniqueArc<T> {
+>          unsafe { &mut self.inner.ptr.as_mut().data }
+>      }
+>  }
+> +
+> +impl<T: fmt::Display + ?Sized> fmt::Display for UniqueArc<T> {
+> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> +        fmt::Display::fmt(self.deref(), f)
+> +    }
+> +}
+> +
+> +impl<T: fmt::Display + ?Sized> fmt::Display for Arc<T> {
+> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> +        fmt::Display::fmt(self.deref(), f)
+> +    }
+> +}
 > -- =
 
 > 2.39.1
