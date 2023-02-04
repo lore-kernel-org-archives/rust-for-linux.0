@@ -2,71 +2,102 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5ED68C61DA4
-	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Feb 2023 17:49:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A000DC636CC
+	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Feb 2023 17:59:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229746AbjBDRs7 (ORCPT
+        id S232331AbjBDR7x (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 4 Feb 2023 12:48:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39336 "EHLO
+        Sat, 4 Feb 2023 12:59:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232334AbjBDRs5 (ORCPT
+        with ESMTP id S231165AbjBDR7x (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 4 Feb 2023 12:48:57 -0500
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 793C92684E
-        for <rust-for-linux@vger.kernel.org>; Sat,  4 Feb 2023 09:48:48 -0800 (PST)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-4b718cab0e4so108085177b3.9
-        for <rust-for-linux@vger.kernel.org>; Sat, 04 Feb 2023 09:48:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jsWyxw8Bb8vyQNfNCsnLvRib7t9OzsQ+ISI82lpJft4=;
-        b=pMGKVT0FJmN8pBGd+sJ55YZhWDq7J5q2r9fQfYBC/2gJCYYMJEFAPPogKQ652IQ2iU
-         hIvzQNcYW2/dmmUAQ43U4W2BRORowlqrmb2ioDkjFzNbMCoAo/dQ37K4I637Y9xK9A86
-         wU1bg5Qo7REptLG08pgMZ2z96dtZe95zPokdnBkYKYeySoDvtQ9UCUxiN43xAWvVaqdC
-         tgEbYLF7vGRWRQnArbpWql8lyyvS7L2pXuTzOUSjbwpZjP0Bgpk3/me0AW67yDuISvZK
-         mb4ymw6Ozp10TZVq5uFqndrfj+3/uhrzr0nRZO8THD2h2L2M8927vQOCe5nkKLA/m8Q9
-         xfJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jsWyxw8Bb8vyQNfNCsnLvRib7t9OzsQ+ISI82lpJft4=;
-        b=3WBdjyJqQBMmCVP5mhUL+gIAzdAtDj6GgmUink4JJLthA++p+STaUUejDYNT0y2lwe
-         nxFnP74/EpF8sbAn1vEFPpMZYfP/hdAfkVXhhM8YowTebkZmoQTCRvbghWmqyVfntC4l
-         JDpal/NUqQpGALaBcOwUoQLSVzKVIYXtZtJPujXPNvAG/VYAmL/EHDewaFyu/zDh4/q+
-         qxvOXJ8JxhFZi/juwlS0AYjZhzH84IYhJGz1Ck5sTBVwsR76mLo++MCNpZHl94Hneg46
-         92slCsTzad+tQBiXcgLWJuFK0Z51/nUbqWojFt9QwjsYOu8F7oZGI07Z1p/e7LK3y7NW
-         Aozw==
-X-Gm-Message-State: AO0yUKW9IOkcA6whdnQRmkitYnCMnORRKawmjPkr2Y8+54DH4qs/0Jcq
-        4DFWF4zMlqraxsk4cq+5BXKnhplp7cNeKxRSfzyisepJSCke5A==
-X-Google-Smtp-Source: AK7set/zUZI9OJdOJ3cwIxTbzXqL/UoaylZBuOU2LFRRG6hBAYek4rmrH0ff82mGSXn36QtanroHGOqFOT+4WgJIllQ=
-X-Received: by 2002:a0d:c003:0:b0:501:abfc:b927 with SMTP id
- b3-20020a0dc003000000b00501abfcb927mr1426024ywd.129.1675532927563; Sat, 04
- Feb 2023 09:48:47 -0800 (PST)
+        Sat, 4 Feb 2023 12:59:53 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DB77298E7;
+        Sat,  4 Feb 2023 09:59:51 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 895F960686;
+        Sat,  4 Feb 2023 17:59:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2172C433A4;
+        Sat,  4 Feb 2023 17:59:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675533590;
+        bh=MLnsESm7KSQ2KfPXfR012odIlm0gBxMg3JoRosyTJhY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=rXv871YHlgznr9YfoKdQITVF9FD49IBIspiDTgXiOuM8LAHVXISM7LDTAXQppzf/L
+         vavrwTGHUchKeEauczTL2qMx6iEd/EAehk8qjChyoYn6+iXriS1Yeex71UPPUVTDbD
+         QCKFYtK6XjDiegnymob/YnTDKr7gxL4CK8PN7UjG6ABoDFGxJWD34b0kRLV8SALQ5V
+         bVG0z5MmyJgYqVVghDeTorqIPevQO9y+ZfSROBO48a0CeNxpOSGaS30/H9zKmEFAS9
+         S9s5HDQf5GrV0Ge+AmHvxi7hNIr8QctHjmG83NqnAx8EkAAGnNVpey17nTSrNY4+We
+         RyNH1FdLEp0ZA==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-16a27344a17so1100092fac.4;
+        Sat, 04 Feb 2023 09:59:50 -0800 (PST)
+X-Gm-Message-State: AO0yUKXmt36k8SIeTrZhaUOw7hOHSUIyG/0NXUeE663AhBREME14kQAt
+        YP5R+ZrU2eE9FyQvOYM4lsz2VSdqZwCssRV+HfY=
+X-Google-Smtp-Source: AK7set9WUyVpJZAxcRQpZN7Jg4Mae+qUHgTJZY/+DnKYzpSuLLdSbWUsG47wdSL/jAFUoa1GRLmyZXa+cFxVcfEjpZg=
+X-Received: by 2002:a05:6871:151:b0:163:a45a:9e41 with SMTP id
+ z17-20020a056871015100b00163a45a9e41mr808623oab.194.1675533590117; Sat, 04
+ Feb 2023 09:59:50 -0800 (PST)
 MIME-Version: 1.0
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 4 Feb 2023 18:48:36 +0100
-Message-ID: <CANiq72k2gbip3nQTFAJkwU=MB3n+2SAB9n-DYRcuyD3jj2T_hA@mail.gmail.com>
-Subject: Reminder: informal call in 10 minutes
-To:     rust-for-linux <rust-for-linux@vger.kernel.org>
+References: <20230203173704.108942-1-mcanal@igalia.com> <CANiq72mzpKCnf=LDhiHEJ6x7Zx3AhkY7jH3EUo+Fg4ig5e44YA@mail.gmail.com>
+In-Reply-To: <CANiq72mzpKCnf=LDhiHEJ6x7Zx3AhkY7jH3EUo+Fg4ig5e44YA@mail.gmail.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Sun, 5 Feb 2023 02:59:14 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATqPK+weiRwjKzQazQ7usu+GXbx4tz7q10Yaajn+6=dDg@mail.gmail.com>
+Message-ID: <CAK7LNATqPK+weiRwjKzQazQ7usu+GXbx4tz7q10Yaajn+6=dDg@mail.gmail.com>
+Subject: Re: [PATCH] rust: delete rust-project.json when running make clean
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Melissa Wen <mwen@igalia.com>, linux-kbuild@vger.kernel.org,
+        rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi all,
+On Sat, Feb 4, 2023 at 5:08 AM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Fri, Feb 3, 2023 at 6:37 PM Ma=C3=ADra Canal <mcanal@igalia.com> wrote=
+:
+> >
+> > rust-project.json is the configuration file used by rust-analyzer.
+> > As it is a configuration file and it is not needed to build external
+> > modules, it should be delete by make clean. So, delete rust-project.jso=
+n
+> > when running make clean.
+> >
+> > Link: https://github.com/Rust-for-Linux/linux/issues/939
+>
+> Thanks Ma=C3=ADra! I will add a tag with Bj=C3=B6rn as a `Suggested-by`, =
+if he
+> is OK with that.
+>
+> Cheers,
+> Miguel
 
-We will have our informal call in 10 minutes from now (18:00 UTC first
-Saturday of each month).
 
-As usual, everybody is welcome to join. The meetings take place on
-Google Meet. If you need an invitation, drop me an email!
+Miguel,
 
-If you are in a timezone that cannot easily attend the meetings at
-18:00 UTC, please let us know.
+Are you applying this to your tree,
+or do you want me to pick this up?
 
-Cheers,
-Miguel
+For the former case,
+
+Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+
+
+--=20
+Best Regards
+Masahiro Yamada
