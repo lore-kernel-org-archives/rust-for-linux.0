@@ -2,62 +2,60 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDB80C61DA4
-	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Feb 2023 18:48:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BB4AEC636CC
+	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Feb 2023 18:51:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233249AbjBDSsO (ORCPT
+        id S233223AbjBDSv4 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 4 Feb 2023 13:48:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57082 "EHLO
+        Sat, 4 Feb 2023 13:51:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233356AbjBDSsN (ORCPT
+        with ESMTP id S232331AbjBDSvz (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 4 Feb 2023 13:48:13 -0500
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E94E015543;
-        Sat,  4 Feb 2023 10:48:11 -0800 (PST)
-Received: by mail-ej1-x62e.google.com with SMTP id mc11so23739243ejb.10;
-        Sat, 04 Feb 2023 10:48:11 -0800 (PST)
+        Sat, 4 Feb 2023 13:51:55 -0500
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 309BA76BD;
+        Sat,  4 Feb 2023 10:51:54 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id q19so8088462edd.2;
+        Sat, 04 Feb 2023 10:51:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WTf3il7r+qUfnmE8kG0NPYBSRKTNHfVqKM3rJtokOrg=;
-        b=j7YYbGOBZoGO07U6BsfJWa2yIbjdSF6bVuAmchsXj8289KvVyGiXoOOjqtqz1LqNwH
-         pZPVe1RG7jI7ZaejnAQOYP3XL7oC8wW1O7Tz19JFXzdXj9F98sjY/dE00C/oMdwMTvgi
-         okiJGPb4hyPxYNFf+iS4GeYmPKM1lp1QHDKWju5gdAtffoKORjx0NprU+D8ojuA73Cn6
-         8RPGjKl9F6j9aN/FtIelZXygioLLdfklwhuL7kixDu/66PtWJ6RINpyUo0+3fHLsyxRM
-         9v2upVU5YWCCxM93Fly1mwsdwudrYjf+goIYXjcN+7c3S5C7koRk8qRGFO3mzkiCkpF/
-         iXsw==
+        bh=zfFN7EWqV1F1vf3fk6as4NIr4ktnOVKAa71sjHjqTF0=;
+        b=J2Y2FoUmmKXAew8ZSjpqdjQk5Rja8GR5lTev+PLm56iY3CfMlFJf2XOU4QQyGyQ2uC
+         IG7uJn7Xfhz6A8ps5sPD33UjwnMYeuz3dFiyeWFFEA5e8xdSAsWzVJwO7KYrs6+AnUiG
+         E5VY6Hso+wbGQzNRn1NQchvC5CHFwionOEO4cAM+tqYBA7VeVstEeYf1s4JVcXalBcHZ
+         RxJ3Q6sfdyaD2vU8ZjRln7AeadA3dYGX2KVnUFvZJ3c+BZwqmwRayrTVUblnDMWn0wfY
+         tl9sp1Ft7kmC9PrVXTydhwG/Mnqq6Xeh6hlph42ZdcZU1luP4uaSRLpV0vDJwN0RsVta
+         700g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=WTf3il7r+qUfnmE8kG0NPYBSRKTNHfVqKM3rJtokOrg=;
-        b=X+DrOcoGy/o+Poau5BpbdIlmqkkl3S5Wsn0/BX3oJXx2YKg76NGqVK0sGwOykVoVTc
-         M8TFxzywcmgq7exSLB388H/ALx4sXSGHnmwPGgt/UbWM+gxQoaVTE1H9ZENrhnVzifMU
-         33UIG7vMND0lU1pk8XRYp60aEl/BeJgn/VHD5rqKivMM4rfgq0JoLbfItRQf5Cxqe+mw
-         p+tC4lmt+pcf1U9nAx8nfQY5nGP4uJwPyYCyu0OC9njZlDr9yHRRaafJUuVTZpXXDrfh
-         +JIfWl3uZGdp3MGUFHEUR2eVtl3HR0FB/frJuqOMIstGSAtfpLFur37zOOPi/3BaJRi3
-         pVQA==
-X-Gm-Message-State: AO0yUKXujGt44boGBMYtEgUp14vDK3+mpoSmZ25tcbMh7HXTsf3DHDve
-        VXtK7HScCItwObNeABiV1e0=
-X-Google-Smtp-Source: AK7set+w35CKWh4qe2pjguycwYZUgyWZznLOJ9omq/T90+qDammNPobTCd5Rj44E8fGAwXWwozGbPw==
-X-Received: by 2002:a17:906:7141:b0:877:7157:9358 with SMTP id z1-20020a170906714100b0087771579358mr5959833ejj.10.1675536490416;
-        Sat, 04 Feb 2023 10:48:10 -0800 (PST)
+        bh=zfFN7EWqV1F1vf3fk6as4NIr4ktnOVKAa71sjHjqTF0=;
+        b=dH5rCYr7d3waa7maMjJdxIM4M7ODqO0QpJLR/al4Gf3+jVyLNcPZov/bu+HxiuKZbD
+         fC/izAyiQclXt2181QCZpNsSdstUbhJzLgncbOS4ZY6EeIntVGxF6KLJiGhaRe3N4ZXk
+         IM+EZw8g3BmT1/X3LYORR8qk9utL3X8Qlc1ZbkCAWNOKmXangct7afr5KzhkXSnnqwKo
+         1y63ird8136ywY4i81kTveg6IQ4W5Scoa3KBxVhI4tVPVpWGEzlzLvahW0KKGs0PSFWR
+         N1XKQXG4xnIVQwgrP65zMNzTKYVx4Dy+LQpnw5DprGyyimVf1BcTTtJAkumAFByoX4BF
+         PREA==
+X-Gm-Message-State: AO0yUKU8RxDzwRctCwuDQKyPEu3JRueU8LwymVT5tTJteQ2WnmMHfwNI
+        b+e7UqFhI+Tb8YhQUgym6C4=
+X-Google-Smtp-Source: AK7set9ZGp52xEl3R/rbTR6ebaA42+mcVSU3mJO9Nq5MWYAvrITlOqWSHnmGuzV7rSPln7SqRqZjjQ==
+X-Received: by 2002:a50:f68e:0:b0:4aa:9f59:b6b1 with SMTP id d14-20020a50f68e000000b004aa9f59b6b1mr2502742edn.35.1675536712635;
+        Sat, 04 Feb 2023 10:51:52 -0800 (PST)
 Received: from localhost (93-55-83-125.ip262.fastwebnet.it. [93.55.83.125])
-        by smtp.gmail.com with ESMTPSA id l2-20020a170906938200b007c11e5ac250sm3171286ejx.91.2023.02.04.10.48.09
+        by smtp.gmail.com with ESMTPSA id a15-20020a50ff0f000000b004a2067d6ba4sm2889308edu.52.2023.02.04.10.51.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 04 Feb 2023 10:48:09 -0800 (PST)
+        Sat, 04 Feb 2023 10:51:52 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Sat, 04 Feb 2023 19:48:08 +0100
-Message-Id: <CQA044FTNTE7.AZ4XVCKT1R89@vincent>
-To:     "Boqun Feng" <boqun.feng@gmail.com>,
-        <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Date:   Sat, 04 Feb 2023 19:51:50 +0100
+Message-Id: <CQA06YLAOMGN.T1CEBGNQO34W@vincent>
 Cc:     "Will Deacon" <will@kernel.org>,
         "Peter Zijlstra" <peterz@infradead.org>,
         "Mark Rutland" <mark.rutland@arm.com>,
@@ -66,68 +64,94 @@ Cc:     "Will Deacon" <will@kernel.org>,
         "Wedson Almeida Filho" <wedsonaf@gmail.com>,
         "Gary Guo" <gary@garyguo.net>,
         =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Subject: Re: [RFC 2/5] rust: sync: Arc: Introduces ArcInner::count()
+Subject: Re: [RFC 3/5] rust: sync: Arc: Introduces Arc::get_inner() helper
 From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
+To:     "Boqun Feng" <boqun.feng@gmail.com>,
+        <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.14.0-38-gb2afc8117fb7
 References: <20230201232244.212908-1-boqun.feng@gmail.com>
- <20230201232244.212908-3-boqun.feng@gmail.com>
-In-Reply-To: <20230201232244.212908-3-boqun.feng@gmail.com>
+ <20230201232244.212908-4-boqun.feng@gmail.com>
+In-Reply-To: <20230201232244.212908-4-boqun.feng@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On Thu Feb 2, 2023 at 12:22 AM CET, Boqun Feng wrote:
-> This allows reading the current count of a refcount in an `ArcInner`.
+> Getting a `&ArcInner<T>` should always be safe from a `Arc<T>`,
+> therefore add this helper function to avoid duplicate unsafe
+> `ptr.as_ref()`.
 >
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 > ---
+
 Reviwed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 
->  rust/helpers.c          | 6 ++++++
->  rust/kernel/sync/arc.rs | 9 +++++++++
->  2 files changed, 15 insertions(+)
+>  rust/kernel/sync/arc.rs | 19 ++++++++++---------
+>  1 file changed, 10 insertions(+), 9 deletions(-)
 >
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index 09a4d93f9d62..afc5f1a39fef 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -46,6 +46,12 @@ bool rust_helper_refcount_dec_and_test(refcount_t *r)
->  }
->  EXPORT_SYMBOL_GPL(rust_helper_refcount_dec_and_test);
-> =20
-> +unsigned int rust_helper_refcount_read(refcount_t *r)
-> +{
-> +	return refcount_read(r);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_refcount_read);
-> +
->  /*
->   * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` =
-type
->   * as the Rust `usize` type, so we can use it in contexts where Rust
 > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index fc680a4a795c..fbfceaa3096e 100644
+> index fbfceaa3096e..4d8de20c996f 100644
 > --- a/rust/kernel/sync/arc.rs
 > +++ b/rust/kernel/sync/arc.rs
-> @@ -127,6 +127,15 @@ struct ArcInner<T: ?Sized> {
->      data: T,
+> @@ -201,6 +201,13 @@ impl<T: ?Sized> Arc<T> {
+>          // reference can be created.
+>          unsafe { ArcBorrow::new(self.ptr) }
+>      }
+> +
+> +    /// Returns a reference to the internal [`ArcInner`].
+> +    fn get_inner(&self) -> &ArcInner<T> {
+> +        // SAFETY: By the type invariant, there is necessarily a referen=
+ce to the object, so it is
+> +        // safe to dereference it.
+> +        unsafe { self.ptr.as_ref() }
+> +    }
 >  }
 > =20
-> +impl<T: ?Sized> ArcInner<T> {
-> +    /// Returns the current reference count of [`ArcInner`].
-> +    fn count(&self) -> u32 {
-> +        // SAFETY: `self.refcount.get()` is always a valid pointer, and =
-`refcount_read()` is a
-> +        // normal atomic read (i.e. no data race) only requiring on the =
-address is valid.
-> +        unsafe { bindings::refcount_read(self.refcount.get()) }
-> +    }
-> +}
-> +
->  // This is to allow [`Arc`] (and variants) to be used as the type of `se=
-lf`.
->  impl<T: ?Sized> core::ops::Receiver for Arc<T> {}
+>  impl<T: 'static> ForeignOwnable for Arc<T> {
+> @@ -233,9 +240,7 @@ impl<T: ?Sized> Deref for Arc<T> {
+>      type Target =3D T;
 > =20
+>      fn deref(&self) -> &Self::Target {
+> -        // SAFETY: By the type invariant, there is necessarily a referen=
+ce to the object, so it is
+> -        // safe to dereference it.
+> -        unsafe { &self.ptr.as_ref().data }
+> +        &self.get_inner().data
+>      }
+>  }
+> =20
+> @@ -244,7 +249,7 @@ impl<T: ?Sized> Clone for Arc<T> {
+>          // INVARIANT: C `refcount_inc` saturates the refcount, so it can=
+not overflow to zero.
+>          // SAFETY: By the type invariant, there is necessarily a referen=
+ce to the object, so it is
+>          // safe to increment the refcount.
+> -        unsafe { bindings::refcount_inc(self.ptr.as_ref().refcount.get()=
+) };
+> +        unsafe { bindings::refcount_inc(self.get_inner().refcount.get())=
+ };
+> =20
+>          // SAFETY: We just incremented the refcount. This increment is n=
+ow owned by the new `Arc`.
+>          unsafe { Self::from_inner(self.ptr) }
+> @@ -253,11 +258,7 @@ impl<T: ?Sized> Clone for Arc<T> {
+> =20
+>  impl<T: ?Sized> Drop for Arc<T> {
+>      fn drop(&mut self) {
+> -        // SAFETY: By the type invariant, there is necessarily a referen=
+ce to the object. We cannot
+> -        // touch `refcount` after it's decremented to a non-zero value b=
+ecause another thread/CPU
+> -        // may concurrently decrement it to zero and free it. It is ok t=
+o have a raw pointer to
+> -        // freed/invalid memory as long as it is never dereferenced.
+> -        let refcount =3D unsafe { self.ptr.as_ref() }.refcount.get();
+> +        let refcount =3D self.get_inner().refcount.get();
+> =20
+>          // INVARIANT: If the refcount reaches zero, there are no other i=
+nstances of `Arc`, and
+>          // this instance is being dropped, so the broken invariant is no=
+t observable.
 > --=20
 > 2.39.1
 
