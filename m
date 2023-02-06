@@ -2,84 +2,87 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EAF16C636CC
-	for <rust-for-linux@archiver.kernel.org>; Sun,  5 Feb 2023 00:18:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7880C05027
+	for <rust-for-linux@archiver.kernel.org>; Mon,  6 Feb 2023 23:47:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230126AbjBEASb (ORCPT
+        id S229565AbjBFXr0 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 4 Feb 2023 19:18:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46408 "EHLO
+        Mon, 6 Feb 2023 18:47:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229713AbjBEASa (ORCPT
+        with ESMTP id S229483AbjBFXrZ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 4 Feb 2023 19:18:30 -0500
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F6581E2BB;
-        Sat,  4 Feb 2023 16:18:29 -0800 (PST)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-526f0b3d8d9so49771577b3.3;
-        Sat, 04 Feb 2023 16:18:29 -0800 (PST)
+        Mon, 6 Feb 2023 18:47:25 -0500
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 081EA2A9BE;
+        Mon,  6 Feb 2023 15:47:25 -0800 (PST)
+Received: by mail-yb1-xb2e.google.com with SMTP id i2so13250225ybt.2;
+        Mon, 06 Feb 2023 15:47:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6ydIEfotXDWwFfNGKcCo/siDYBQ4m/BsbRKkwoVldgw=;
-        b=iihm0pPbr1UAhdWY4SkYk0FqK+H7dpLtZiTQipTtSYn0ASJlWlEI406dVHAGI+2XKU
-         FuKVASIiRh49l6Mwuy0iMuExFKXfdeXbmB7J5jqYTQgajT3e7Ff2u9D6CCwGLjh6Dxv+
-         8NnAlmdqirgPAhPyuds5EsqvaMh2sxieP9iNQszlyEIjpEzZ8N0XE1MgIFxXRy5FMsrG
-         n6OgxKV3s12vAh2a+eu98Wym0kwQ6nx48WXjCW6Dfuzj8j6oDJKe93KlwIJjV991clDe
-         Y0RKqWoj7uv5yRkxzhCWBHZ0pjrDObeQvCLxUSdcrZADpn/5ouuwV2lrrk/UY8bbpK75
-         LT1w==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0VIMf/p8DNxnvhdoRgInCxniTaEHL9Qw+dJEsM3OSrE=;
+        b=EGxO0xjAGUZ+SJzVZyBLNa5dKEZe5afTloTr1HTwcrgDVKIEydhIMtIXJMoZyo2upU
+         wYpE6rn1m7XCpUeB4vk9R32oz2s/NnGsFpV4ebz9SoIABAOUCRrxC3wZY5p9bDjLePOW
+         yViJadibxWqK4C67UKTkMIECiovnMw7kmxzn5hX4PDaRnyBXrpJ4ygjYGZqbjjWOl+Nb
+         UsmEj8T8UbxggSh/EDNFvGA7dWUyYacbsMDPFQR1zq8RSWhwQnM0P0KmCjT3CKTm8Grc
+         VI9FMd8h4eGY8DbkE8/PqSWNgLLz/mXmXGd7ny4Jbk/5Br9oVvgoY9W26PrE5Cu/pby6
+         9IzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6ydIEfotXDWwFfNGKcCo/siDYBQ4m/BsbRKkwoVldgw=;
-        b=XbxiKt4URaLNun0MKgDl+YFUTZE+2QoPuH9b447IjkwjVZnxF/sZK3c9+n3mI6tsOp
-         X4xOP1LH6pGlWPPt+Ozl5MBFigohimh/7ZhKXOBy3YadNg2g+G/xnJmYy3CDzuFERQtK
-         Xn8tmSCJYNrJEBeo3SYBnY77JpZc8Hi99HhjhFncN/EPHvx+PQyMB+S7Dt1n8NcWQJBz
-         /HlxeOrKZRcsQP5+fZRxiHCFS20vfOGlmv2bI8HCU/sLL+f5u3aKUPtIbHALh3kPBhkw
-         GS69aUPz5BToMIWiHErLVxnnxid5KEGMMOpu4QPYvRpRNgofOO/wuHU8h7m5N9EYVLxB
-         iiUg==
-X-Gm-Message-State: AO0yUKV7YtQsddC+7szGhkt54mC8c4vkpI+LsXdueXNQsgDVaGeEzfFx
-        gdhTJ22gA161sCGMzEcu6Cl21a0VCQ8px9UaXuY=
-X-Google-Smtp-Source: AK7set/KuOPzw7BWG3UKxJVo60sysR6/kcgBObntvbLyPayzsMWI769QsdfcHWaza3lJFiPBTPHwBu3+gKO7wF5GGk8=
-X-Received: by 2002:a81:5e41:0:b0:501:2887:8c8e with SMTP id
- s62-20020a815e41000000b0050128878c8emr2100790ywb.256.1675556308450; Sat, 04
- Feb 2023 16:18:28 -0800 (PST)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0VIMf/p8DNxnvhdoRgInCxniTaEHL9Qw+dJEsM3OSrE=;
+        b=m2uBCybbHbxaHr5LDbGewJgR3IMG7Ogi4V+QBdRJXTLaLPZ0JfDSQM9aJiFq7BlTty
+         b54pShA67P0X6eJrFgNrFcHSLjdIoIMlgIbmBltdPPXV7EuUtczOTqcxXHsc5R7trZwy
+         43GRVsqRitsoKzGqMWj0JFHSmhLTsyMQMoku18hwRQNMYVOeUXZ7PQx5PoXDSgZh233U
+         zgXyRrlR603WdDqNPnbX0egwp1lpLOtNWV5gC8aGXd+IFtvIDmiE7UUK7ww/VSGM32CB
+         HFY5DGj2aJoKqvxm6I7w8UkdhQLUj34jcv3w8kx04Htz2j3egEwEj6IOi8znF/cVLkyG
+         wdWw==
+X-Gm-Message-State: AO0yUKVm6gjxl0uXNaP2w89rDLjFkNsgZW2EYrbNEESXZT0IAxEnTkl9
+        +yjchjvxL6bh03eB6j0rdTuzgeCGzyIobUTOF+M=
+X-Google-Smtp-Source: AK7set80hjxJwDBD5e4tOifsmc39RMdBrwz6z5NcMTczanHcM5pwCl4oxz97AFQJs8s7o5HuDLXdPlsK/vkkuP5Sgvg=
+X-Received: by 2002:a25:50c5:0:b0:80f:3b51:ddf5 with SMTP id
+ e188-20020a2550c5000000b0080f3b51ddf5mr187801ybb.507.1675727244243; Mon, 06
+ Feb 2023 15:47:24 -0800 (PST)
 MIME-Version: 1.0
-References: <20230203173704.108942-1-mcanal@igalia.com>
-In-Reply-To: <20230203173704.108942-1-mcanal@igalia.com>
+References: <20230130064404.744600-1-wedsonaf@gmail.com> <20230130064404.744600-5-wedsonaf@gmail.com>
+ <87h6w5isfq.fsf@metaspace.dk>
+In-Reply-To: <87h6w5isfq.fsf@metaspace.dk>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sun, 5 Feb 2023 01:18:17 +0100
-Message-ID: <CANiq72ke4GAK40F_vMKhZrpBSpX2xT1ADUxSm8=_+0QciYxVmw@mail.gmail.com>
-Subject: Re: [PATCH] rust: delete rust-project.json when running make clean
-To:     =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
+Date:   Tue, 7 Feb 2023 00:47:13 +0100
+Message-ID: <CANiq72nGh9ypPY2QvJF5oak_1qBBG6z6LhHz8hxgp875HCx48Q@mail.gmail.com>
+Subject: Re: [PATCH v2 5/5] rust: types: implement `ForeignOwnable` for `Arc<T>`
+To:     Andreas Hindborg <nmi@metaspace.dk>
+Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Melissa Wen <mwen@igalia.com>, linux-kbuild@vger.kernel.org,
-        rust-for-linux@vger.kernel.org
+        linux-kernel@vger.kernel.org,
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+        Alice Ferrazzi <alice.ferrazzi@miraclelinux.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Feb 3, 2023 at 6:37 PM Ma=C3=ADra Canal <mcanal@igalia.com> wrote:
+On Wed, Feb 1, 2023 at 11:35 AM Andreas Hindborg <nmi@metaspace.dk> wrote:
 >
-> rust-project.json is the configuration file used by rust-analyzer.
-> As it is a configuration file and it is not needed to build external
-> modules, it should be delete by make clean. So, delete rust-project.json
-> when running make clean.
+> The last part of the sentence does not read clearly to me. Would this
+> make sense instead:
+>
+> // SAFETY: By the safety requirement of this function, we know that `ptr` came from
+> // a previous call to `Arc::into_foreign`, which guarantees that `ptr` is valid and
+> // holds a reference count increment that is transferrable to us.
 
-Applied to `rust-next`, thanks!
+In a private chat with Wedson he agreed the "owned" was a typo and he
+is fine with this change. Thus I rebased to apply this and avoid a v3
+given it is trivial and almost at the top of the stack. If you want
+the `Reviewed-by`, please let me know!
 
 Cheers,
 Miguel
