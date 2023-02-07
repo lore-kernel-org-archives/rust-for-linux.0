@@ -2,93 +2,128 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8466C636D4
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Feb 2023 20:46:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FCBCC636CC
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Feb 2023 20:55:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229545AbjBGUqF (ORCPT
+        id S229980AbjBGUzd (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Feb 2023 15:46:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39366 "EHLO
+        Tue, 7 Feb 2023 15:55:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbjBGUqE (ORCPT
+        with ESMTP id S230256AbjBGUzR (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Feb 2023 15:46:04 -0500
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF0923A84F;
-        Tue,  7 Feb 2023 12:46:03 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id c13so4083877ejz.1;
-        Tue, 07 Feb 2023 12:46:03 -0800 (PST)
+        Tue, 7 Feb 2023 15:55:17 -0500
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25F253FF2F;
+        Tue,  7 Feb 2023 12:54:54 -0800 (PST)
+Received: by mail-qt1-x835.google.com with SMTP id x10so11335722qtr.2;
+        Tue, 07 Feb 2023 12:54:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eUN3UIdP4KIPNBI/X6EMqo5BbUYmuXYRGv5c40D5QhU=;
-        b=gNc4/0rtB9+RmWXc23p0kdo4wH9VnEwX1fkf2JQ5Z2oozvGoUBMzkEbXOgWxZi7Vl6
-         K53sBsMFxmNABndzBnOq1R/EZl7TlKgHdruleeeW2zHqJVmTK+GBxEg4gkx9bQaOz/El
-         1F3ZGCEuTsGfUGJY3YVhTYW++cjwTdfiTGBqC8353mbZr8bpKWKhXMUFW9x50DC8Xu/+
-         D9KTogBxkuqWbz/JjJ9WLGInTiQjaJtzJ5XJy/pOQ/bNJW2TqQNmTDnzgjddVAKRo3dU
-         oACvS2S9hn5VRD4qh5U+RiksON12z0Zts8BAV3/XJo3FtprumPzXD+o4Dg5WnT01ASXN
-         NA5Q==
+        bh=oJYwQvo65YV42CcV67j6ThqJrL2j7vs+//jJJBY1lJU=;
+        b=llA8jH1JKpr+bAusRJRIFeZ/Iqv4GXI5iUR1BlNEKrmRbiDGHQ3cLLgV9tp7uILLIa
+         QdJLlqqYCPybhOpSlLdM0z7SlLvNgbC92+KL73sz+S9zNlQXbpwwyUeIx0GjdtzWUbif
+         6vN+eVYyS6bHiyqYyKB85dWaZN7wTgOPS/a/31naUxzDQtxrlDLj3Ske7AQmlJP/H42Y
+         xCRPkBBy9G+GKOZo7+8p0C+r2VkaLI8OQINhp1P+4V7RPfenBVMskigk1NO8zrlNX8sD
+         xZ7XKWHRuSsW+480scXYEUrry54oxOHjGc2bGflXgYB0civZslT8ehKQKkzMXU0WhFUq
+         SkBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eUN3UIdP4KIPNBI/X6EMqo5BbUYmuXYRGv5c40D5QhU=;
-        b=YsVNuiZfh6s4nxazetjL1trUb32zyWSJeavQE1Lw0jBbrcVxSCQL9bt5yM9lGRZQXo
-         /xNMgPuD5F4yqy6YX2kMhQOjYTR8EBPnnNGspKcA3yD5vEYjuUKXrybPmdP4q9ZxIdzB
-         ANn2PnYeIV9lMTIObxuSNHs6vR61fbhMuTaDBxYhuqIaB9B08j8W0XybamlOsQs9XNEr
-         wXB8W+9xey2Gk0P5n8j3paxKzFFre+Ck06kKM9A9GqI5wCr7G20WJYY64Y7b3xdkry9Y
-         SfA+dtNve83sSKmlbvNPOejFF/Xs0SKeXRUfG0DEU5RuE5WlwN/ulrUdps1bshpmKl/H
-         txNA==
-X-Gm-Message-State: AO0yUKWp1QVZFe4DK0Z3/t6EN6f+shxU4ai49FqFvUiA9JdaOmq7pJgR
-        QoEXSpicQ+4HtCdOcdS8fxg=
-X-Google-Smtp-Source: AK7set/ZmySSZP4tgoA5FLKI8BH6KdmEZFSRIFnAgz8nmerbEUi5Z5b5/fJ9SY4bcakOC9wabc97WA==
-X-Received: by 2002:a17:906:e213:b0:878:71fe:2f12 with SMTP id gf19-20020a170906e21300b0087871fe2f12mr4633860ejb.50.1675802762349;
-        Tue, 07 Feb 2023 12:46:02 -0800 (PST)
-Received: from localhost ([2001:b07:5d37:537d:cd23:cd6e:ae14:44fe])
-        by smtp.gmail.com with ESMTPSA id kd21-20020a17090798d500b008857fe10c5csm7244732ejc.126.2023.02.07.12.46.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Feb 2023 12:46:01 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 07 Feb 2023 20:45:59 +0000
-Message-Id: <CQCMHZWN9GKV.20T08UNZV7FTJ@vincent-arch>
-Cc:     "Miguel Ojeda" <ojeda@kernel.org>,
-        "Alex Gaynor" <alex.gaynor@gmail.com>,
-        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        "Gary Guo" <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        "Will Deacon" <will@kernel.org>,
-        "Peter Zijlstra" <peterz@infradead.org>,
-        "Mark Rutland" <mark.rutland@arm.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        =?utf-8?q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
-        "Finn Behrens" <fin@nyantec.com>
-Subject: Re: [PATCH v2 1/2] rust: sync: impl {Debug,Display} for
- {Unique,}Arc
-From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-To:     "Boqun Feng" <boqun.feng@gmail.com>,
-        <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oJYwQvo65YV42CcV67j6ThqJrL2j7vs+//jJJBY1lJU=;
+        b=U9VBxJMwTZfd/tMQCu787fhYmFMTazHM5M4nz444hXTsCW9PuXNDptyNIGDFxblCXr
+         eOng8FbQshq07IlkFSVlo6K2loOzBV5R7kkSZ21iqS+REejVYICmgJawLISl3wjY6w5X
+         xwrryYPI0sW4TCbHGdnF5NoEGWS7NpaNN23ZlJ24GqG2/M6CG5LOqsTOCdR/WwnF8qKG
+         lRDXClI7KxZ/g2sQbQn92TByYoQUQUilDlr7NDcrWFTqJvLNGKsHQffRn491Ifhw9uAP
+         Hn7WbF8wvNcdd9vW+OiSe0BCI4dwA6OodfJkrmwe6UCK/FwPJB7z+QFPa6Z8ScYJXVoa
+         bjlQ==
+X-Gm-Message-State: AO0yUKX49YJ6FTml82hFiXRFMCliseFjq1b0w+xpDb682c9TcD0a7J50
+        z5bKZF6gx+wT/EbieO4kNRE=
+X-Google-Smtp-Source: AK7set8mDwYpo/iKZ6AafvA0mQowqngfNnOUwxaaIcqcw7DFfC/t2H08eg7u6sWHCgAipUZOpGfzeg==
+X-Received: by 2002:a05:622a:1393:b0:3b6:30b6:b894 with SMTP id o19-20020a05622a139300b003b630b6b894mr6817929qtk.20.1675803293183;
+        Tue, 07 Feb 2023 12:54:53 -0800 (PST)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id q18-20020ae9e412000000b0071f636c108bsm10097714qkc.73.2023.02.07.12.54.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Feb 2023 12:54:52 -0800 (PST)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 2678027C0054;
+        Tue,  7 Feb 2023 15:54:51 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Tue, 07 Feb 2023 15:54:52 -0500
+X-ME-Sender: <xms:m7riY-mxHaW4HQA5Uz3C2ggGAftD8JgtA3Pw_aKmVQi7C-p343d1RA>
+    <xme:m7riY10yPlR8dNxSco9rKxZh_cax1enBHppL0DnldrHl_sIZ67I1NvyBFewbobd07
+    TO8STkFHkafManvVg>
+X-ME-Received: <xmr:m7riY8pX18rbbV0OcA5DxcfLwraFSFaWbh8LktzN0DGea1_FbNjvEaRePtI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudegkedgudegtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:m7riYylJqzWYGfTEtzFcwCy1J4etyIiPpjl9wMqs06IwgKcq7TaSMA>
+    <xmx:m7riY83AuPl60Ug5K69YxE0nSBpXgI190i7ExW1043uxh3qyRfdkyg>
+    <xmx:m7riY5vhxFS7RIhMjLb8mzpAEsOSavC7sRh3_tyCkGFHDWC8kZux5w>
+    <xmx:m7riY31y-VF8J1_T_Zw8oRFFozhZTjZboECSQwudTo1BlRnq3L5kvQ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 7 Feb 2023 15:54:51 -0500 (EST)
+Date:   Tue, 7 Feb 2023 12:54:33 -0800
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Will Deacon <will@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sergio =?iso-8859-1?Q?Gonz=E1lez?= Collado 
+        <sergio.collado@gmail.com>, Finn Behrens <fin@nyantec.com>
+Subject: Re: [PATCH v2 1/2] rust: sync: impl {Debug,Display} for {Unique,}Arc
+Message-ID: <Y+K6iextaWKdqtHP@boqun-archlinux>
 References: <20230207185216.1314638-1-boqun.feng@gmail.com>
  <20230207185216.1314638-2-boqun.feng@gmail.com>
-In-Reply-To: <20230207185216.1314638-2-boqun.feng@gmail.com>
+ <CQCMHZWN9GKV.20T08UNZV7FTJ@vincent-arch>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CQCMHZWN9GKV.20T08UNZV7FTJ@vincent-arch>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> This allows printing the inner data of `Arc` and its friends if the
-> inner data implements `Display` or `Debug`. It's useful for logging and
-> debugging purpose.
->
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Reviwed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-> ---
-With this review I will override my previous one, because it=20
-contains a typo inside the Reviewed-by.
+On Tue, Feb 07, 2023 at 08:45:59PM +0000, Vincenzo Palazzo wrote:
+> > This allows printing the inner data of `Arc` and its friends if the
+> > inner data implements `Display` or `Debug`. It's useful for logging and
+> > debugging purpose.
+> >
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> > Reviwed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+> > ---
+> With this review I will override my previous one, because it 
+> contains a typo inside the Reviewed-by.
+> 
+> Sorry about that!
+> 
 
-Sorry about that!
+No worries.
 
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+> Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+
+Thanks!
+
+Regards,
+Boqun
