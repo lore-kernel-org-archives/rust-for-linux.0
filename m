@@ -2,79 +2,133 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A10FC636CD
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Feb 2023 10:26:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D6ACC6379F
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Feb 2023 18:52:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230260AbjBGK00 (ORCPT
+        id S230207AbjBGSwu (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Feb 2023 05:26:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51390 "EHLO
+        Tue, 7 Feb 2023 13:52:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231251AbjBGK0Z (ORCPT
+        with ESMTP id S229625AbjBGSwt (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Feb 2023 05:26:25 -0500
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CE421E5D0;
-        Tue,  7 Feb 2023 02:26:18 -0800 (PST)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-4a263c4ddbaso190835107b3.0;
-        Tue, 07 Feb 2023 02:26:18 -0800 (PST)
+        Tue, 7 Feb 2023 13:52:49 -0500
+Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41CE8103;
+        Tue,  7 Feb 2023 10:52:47 -0800 (PST)
+Received: by mail-qv1-xf33.google.com with SMTP id k28so9724334qve.5;
+        Tue, 07 Feb 2023 10:52:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pxjIeJLinZUwH77OUYcRmkIbKePj5GVo28r5pHoJ2OQ=;
-        b=NU5Mp6pvYcNZu6SxD0j52CI37qvOSApOdAkgg+viUPvveKcNwmvEv9gJIVpeaO9rjk
-         drRzB9TmlwoqwXjtjCyPQM2O16TUnmEQvU1iqo/YOtCafuVcE6D2YhOLyzGPofEM+p0u
-         BqMaxDY+Ntw9VI+zOsVR91UX5ZfX309AhN6t9opeukH5OCLYDWnWcSa45gEVhm1UQDbA
-         YnjLIInN4glTLUWEd8fkNdcMGCFA5oTpzpSIDl1SX6ZNU2dGGn/D+LXAVrYL8pP2S2sc
-         U28e09g5dU2gYRCmL8YyDAkAng1pxuC40azhnn5vvRLmM8EDKrlM21zcd91u1RGGIo6A
-         7A4g==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=nqRoVqD3VOOrAVkOM3lGwJV6X/xZ3prSf3p+3tCe4H4=;
+        b=i7cNcUSU4o7LvravnjUg2NRDGYvqi3CUowCoaT0qQbWPfBg0WVv6aHXFDEnoIhLM6t
+         +uvQHA3j1JoxBp2v2SMFcKSD4WqWGpO6HjMiDInR50ls6hV+AC+jiGaQWud4rrzdopsK
+         I7WvPqp9C+8t/ptfhPn2NjxWMbhQO6fQri5/ZkhPreryIQXCafzjd31WmHrmbxJVdUHU
+         BCp/KLgndnmkjz5fYVgrh25qLG6jLYHiISFBETpz2r+gd+FAvxOQJb8nU9t4hvKim2T4
+         BAkn2hJSC6Rq4Wwmi3Rtp+592dZ086HOnOaXO1wMQAISm9x9i4BaXZJgiZTPcNPFu1kN
+         69vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pxjIeJLinZUwH77OUYcRmkIbKePj5GVo28r5pHoJ2OQ=;
-        b=mbKHLjVxBYi69nIomfHsczU6YwTy3q/8xNCLDj6jLLcVFSCZaRsf4DNuCcrL9u7f6Z
-         RqJJvuqPHYgnG6Qdiy3FfEY7gFZxaGDVKHI8DRr4uY8R0rhasx508mC88OwBROxgslgK
-         zyvQ+IYiJ+oKFlzx4iOyz0DpH68s07COSjTFbYrfDnDtsZhQJWhpFP/HDBF/vzvqBSws
-         y5NPjPfEXmiIeTPk8D3ZU4/ySy7BUEbd+XWCcoL00UCeYKJBnAFvDJ5g2dabuXL239YZ
-         frPILmNf8sYDmz1Y631vC4eDAAEG+C5BUa9C4i3R+hfszlCH1DoARAYH19ML0QQ3Gaer
-         BFCw==
-X-Gm-Message-State: AO0yUKXVfxc3L/XsQHcE1Fp291VEmJ6UlVDTX/3MwmNZhY694qL6agD1
-        pnvek6sl+kAVX3C3pj+2J2Z7cQDI7mYd7We6C5U=
-X-Google-Smtp-Source: AK7set+Kb2SStc+Ha0e7J9tV59eJCn9T1YJ45BnJL+9s9dP4HAGLhIE6gGEvYP82CspE0BLJ/l3VSoQ87fIIWlswVS8=
-X-Received: by 2002:a81:9e53:0:b0:52a:9f24:de51 with SMTP id
- n19-20020a819e53000000b0052a9f24de51mr184805ywj.462.1675765577782; Tue, 07
- Feb 2023 02:26:17 -0800 (PST)
-MIME-Version: 1.0
-References: <20230130064404.744600-1-wedsonaf@gmail.com> <20230130064404.744600-5-wedsonaf@gmail.com>
- <87h6w5isfq.fsf@metaspace.dk> <CANiq72nGh9ypPY2QvJF5oak_1qBBG6z6LhHz8hxgp875HCx48Q@mail.gmail.com>
- <87357hsttf.fsf@metaspace.dk>
-In-Reply-To: <87357hsttf.fsf@metaspace.dk>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 7 Feb 2023 11:26:06 +0100
-Message-ID: <CANiq72kKSpzhMsASBXy4jzZ4LPg=aHAjc_-_r4Ox4VrKY0Nmcw@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] rust: types: implement `ForeignOwnable` for `Arc<T>`
-To:     Andreas Hindborg <nmi@metaspace.dk>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nqRoVqD3VOOrAVkOM3lGwJV6X/xZ3prSf3p+3tCe4H4=;
+        b=8EFgCtGq8RCxs8tpjDW3rI2nU1O8+U1DhEpS032tvCxFqF/dLvcjPDe6dbNDExCbwp
+         HZbrUEknDn6Urq0OFM7rgcPN+UM9ppI/hRMTSEbDGC4rZD6c+304VvNMZd5QLkgLBQH2
+         lEQ9Jnb1cdlY5xSo3b2iDWdEWjemrOBFjvqsQ5zs4WoBe+Zj/sZlucsgIaZCJ0Nxfxff
+         GhNmNtTXXrdvLChTdrMhFQsCko0YfgBFvCyZIH33Gu6RTh96DlNRimjr5BpmE3Fk1zBj
+         2f9ab4HpvNnCLxOEHgHcB/Nw6snJWJUaBw3bSQURE6tLhFcElckui+RItfqlqoHt0S+D
+         2ShA==
+X-Gm-Message-State: AO0yUKV40h39HSU7rJ4csiWPxQAXACdPRDDsWZXt649bA6miYdzj6Ygb
+        +p6jM5KrrZ84/fjwv7ZnTdU=
+X-Google-Smtp-Source: AK7set/e8UEFpy2N4Y+o0cqf5y0FcBnZRxmWzXMGr0Swxyw2l8TFVbJ6tpnKFuqStvRJXrwCPiWndQ==
+X-Received: by 2002:a05:6214:f6e:b0:56b:f210:8d5d with SMTP id iy14-20020a0562140f6e00b0056bf2108d5dmr7881641qvb.0.1675795966385;
+        Tue, 07 Feb 2023 10:52:46 -0800 (PST)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id l20-20020a37f514000000b0072835b8e4a8sm9902597qkk.75.2023.02.07.10.52.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Feb 2023 10:52:45 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 0F85327C005A;
+        Tue,  7 Feb 2023 13:52:44 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Tue, 07 Feb 2023 13:52:45 -0500
+X-ME-Sender: <xms:_J3iY6Gtt-Uj0j8wNP0lDklItq7l04qew7D5CS1Nc6G7yGLzW3bqtQ>
+    <xme:_J3iY7Wvlcv03tp-Pm8BsiQ-IgmbE9O3axGEARQl3lGtEEqv9vEbDgfj0thzg787T
+    rD1FQQboAHLX_Zzow>
+X-ME-Received: <xmr:_J3iY0LG1BI8CiOovJKpM60NEHnZ3722HGRiCO78RsLQ6L-OS143b7_W_Co>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudegkedgudduhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhepgeegueekgefhvedukedtveejhefhkeffveeufeduiedvleetledtkeehjefg
+    ieevnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhp
+    vghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrd
+    hfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:_J3iY0Eic3QSJjNSX_xcZcEPeY6bmxJqCpEpSlAb6_S6z64zCaJAKw>
+    <xmx:_J3iYwXA-zP7KtI8DGiPjTUXc8dl0e_R-TTmXu5n15JRYfA6r5E7KQ>
+    <xmx:_J3iY3PcNyz1Sj0h6SjoNq1cXCcIhFUXbwRKxfwG-PZ63IBIgD8s2g>
+    <xmx:_J3iYxWbyLPUZEuFIMj8nk_AJVLyN-ihtQat83_BX1V6iAs9zNqIkg>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 7 Feb 2023 13:52:43 -0500 (EST)
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-        Alice Ferrazzi <alice.ferrazzi@miraclelinux.com>
-Content-Type: text/plain; charset="UTF-8"
+        Will Deacon <will@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= 
+        <sergio.collado@gmail.com>, Finn Behrens <fin@nyantec.com>
+Subject: [PATCH v2 0/2] rust: sync: Arc: Implement Debug and Display
+Date:   Tue,  7 Feb 2023 10:52:14 -0800
+Message-Id: <20230207185216.1314638-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.39.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Feb 7, 2023 at 10:34 AM Andreas Hindborg <nmi@metaspace.dk> wrote:
->
-> Sure, if it's no trouble, add my the tag :)
+previous version:
 
-Done!
+v1:	https://lore.kernel.org/rust-for-linux/20230201232244.212908-1-boqun.feng@gmail.com/	
 
-Cheers,
-Miguel
+Changes since v1:
+
+*	Remove the refcount for Debug impl as per Peter and Greg.
+*	Since the refcount_read() bits are removed, therefore squash all
+	4 patches into one (I keep the Reviewed-by tags for anyone that
+	gave to both patch #1 and patch #4 in v1). Thanks for everyone
+	for the reviewing ;-)
+
+
+I found that our Arc doesn't implement `Debug` or `Display` when I tried
+to play with them, therefore add these implementation.
+
+With these changes, I could get the following print with the sample code
+in patch #2:
+
+	[..] rust_print: 1
+	[..] rust_print: "hello, world"
+	[..] rust_print: [samples/rust/rust_print.rs:34] c = "hello, world"
+	[..] rust_print: "hello, world"
+
+Suggestions and comments are welcome!
+
+Regards,
+Boqun
+
+-- 
+2.39.1
+
