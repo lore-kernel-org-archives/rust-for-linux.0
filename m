@@ -2,116 +2,117 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 68D9AC05027
-	for <rust-for-linux@archiver.kernel.org>; Wed,  8 Feb 2023 13:44:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AB2CC636CC
+	for <rust-for-linux@archiver.kernel.org>; Wed,  8 Feb 2023 15:19:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229509AbjBHNoB (ORCPT
+        id S231152AbjBHPTS (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 8 Feb 2023 08:44:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44024 "EHLO
+        Wed, 8 Feb 2023 10:19:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231474AbjBHNn5 (ORCPT
+        with ESMTP id S231151AbjBHPTR (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 8 Feb 2023 08:43:57 -0500
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC4F236680;
-        Wed,  8 Feb 2023 05:43:33 -0800 (PST)
-Date:   Wed, 08 Feb 2023 13:43:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1675863809; x=1676123009;
-        bh=RE1Mtu5hUESEYjkdG+RqP2aIW0mtd84xeu6wYHWjxLg=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=yK1VjFC+8kkmKCYjLneS0SGwziDJD+/zvlFR9hO6QA1hmtU2Y37mSNafOAn7fT102
-         CKzUeipBfvBZlE/NywE8iWkYnnwlHHUTLdStgMsuc70gyR4cMkftnb85kCqBpfyz5R
-         VDOkg7RxSeedpkgrOH9lSi3M6O8x+5L48hFrTb4JW83e/KOIfm1Jk7ayq0Q+QjF4mS
-         UI2Ce6coKUAUe2JUmCRNaFOHgpBIpQyTztepjUUL3nruCLEGaqU7yicAW52CIZEQgA
-         V0mJhL5eoRhEfjDfQTsXhvIE+v4wyWOXUT+WR5w9B2Hno4YyQXOqEX6zc8dnkySRG0
-         wLFFSEoAvS2yQ==
+        Wed, 8 Feb 2023 10:19:17 -0500
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3290F8A77;
+        Wed,  8 Feb 2023 07:19:16 -0800 (PST)
+Received: by mail-yb1-xb29.google.com with SMTP id u7so234894ybk.0;
+        Wed, 08 Feb 2023 07:19:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=GLuIcRVqFE0NAalKrZJUisc9u4XSzDbGTvwQ/4oF4j8=;
+        b=REUcwDrY0U9+AAorsO9T3C0TfMRiyib3AfWq2Qt/rWv53t1Gw5q2jYQ4/RN4kSLrgD
+         8/iEGM7jO8ze+SP5ZCycjj0m5o+7m0+rZ0UeXtKCKde+yEs8K8BaciEn372RDtx9NtvN
+         O/yP3F762pAfrbFXMKnqe817aaUpNapMFDm6xIGHOqEPzGqf4rSHEyoA5/BJzT/jlpWG
+         NjubBxmBkU+5T2KmTIQaScoBly+x1eo43HavtP+YKT5JemMv0CNlIzL6ySroyl+Gc8is
+         7DWhPGQkw9t7Zqj6VmEGHIyRFKZJkJKjpZAogHu7TLDgH1R8HzkSqavYP6yi7Y2Ilq+R
+         BIGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GLuIcRVqFE0NAalKrZJUisc9u4XSzDbGTvwQ/4oF4j8=;
+        b=wzcjjJObh+VTXm03vmmmmqNdVXlRrYnRUYzxr9EFGlux2Pr8YXphUZDpyUkzOpGK/C
+         GTr/OC4S6Jy64WPg3RL7pi3gCL73IzWzYI8bxYXtC96ciyagniS23N9+gdu62ZsfhT8w
+         OcxUFJSLxv3OAjkf3Rx2LAfToMFz6jL1KTvPR3FODJ/XNuKYeOWTXw7u55YmgPa6bUdH
+         HwsKC4B+oFWA+uty2H4M9EObhnLd0qJSKkOtZm6bxCers0AkhizNUjpnrI4S0ohFr2ko
+         6QqVWm62f7snLizIVOCp4Wg1ZHsf2aJNI7I9FBLJClM+9IfsCAyWDBvv/sZev52S3hcR
+         5X2Q==
+X-Gm-Message-State: AO0yUKXI7HTCFr72+6jQfwu0exEjU2AC8zWCXq1tRKvrHvATQKpvGTgr
+        DMJ1dvU/RD+OP8wWfyNUn8mnbNcxy/R+H4zby0w=
+X-Google-Smtp-Source: AK7set+fH9Gee2ZXDR0I8RrrgdNyEEvcCMLmuUZFErMA3ckO1viakRMTjazDaL/qOQaBJMbe54GrsaZgL+qIRq6WAZg=
+X-Received: by 2002:a25:9207:0:b0:8b4:7e1d:edac with SMTP id
+ b7-20020a259207000000b008b47e1dedacmr616864ybo.328.1675869555405; Wed, 08 Feb
+ 2023 07:19:15 -0800 (PST)
+MIME-Version: 1.0
+References: <20230207185216.1314638-1-boqun.feng@gmail.com> <20230207185216.1314638-3-boqun.feng@gmail.com>
+In-Reply-To: <20230207185216.1314638-3-boqun.feng@gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 8 Feb 2023 16:19:04 +0100
+Message-ID: <CANiq72kyrz4efU5=MexgGNth1XxkU1z-GP6xVa7WxApB+PMdFQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] sample: rust: print: Add sampe code for Arc printing
 To:     Boqun Feng <boqun.feng@gmail.com>
-From:   =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
 Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
         Will Deacon <will@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
+        =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
         Finn Behrens <fin@nyantec.com>
-Subject: Re: [PATCH v2 1/2] rust: sync: impl {Debug,Display} for {Unique,}Arc
-Message-ID: <-sv884vbS5p8t4Nc-WGNIRL5C3pUfwkNCv3qQd0d4scRGs2H_98imfPdveRaANkv7l122nZXpXIw2wcgKDtpULHr7u1i6qd4Tr3b_PO9OL4=@protonmail.com>
-In-Reply-To: <20230207185216.1314638-2-boqun.feng@gmail.com>
-References: <20230207185216.1314638-1-boqun.feng@gmail.com> <20230207185216.1314638-2-boqun.feng@gmail.com>
-Feedback-ID: 27884398:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tuesday, February 7th, 2023 at 19:52, Boqun Feng <boqun.feng@gmail.com> =
-wrote:
+On Tue, Feb 7, 2023 at 7:52 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+>
+> +    // Uses `dbg` to print, will move `c`.
+> +    dbg!(c);
 
-> This allows printing the inner data of `Arc` and its friends if the
-> inner data implements `Display` or `Debug`. It's useful for logging and
-> debugging purpose.
->=20
-> Signed-off-by: Boqun Feng boqun.feng@gmail.com
->=20
-> Reviwed-by: Vincenzo Palazzo vincenzopalazzodev@gmail.com
+Perhaps:
 
-Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+    // Uses `dbg` to print, will move `c` (for temporary debugging purposes).
+    dbg!(c);
 
->=20
-> ---
->  rust/kernel/sync/arc.rs | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
->=20
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 519a6ec43644..e6176d9b5b29 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -22,6 +22,7 @@ use crate::{
->  };
->  use alloc::boxed::Box;
->  use core::{
-> +    fmt,
->      marker::{PhantomData, Unsize},
->      mem::{ManuallyDrop, MaybeUninit},
->      ops::{Deref, DerefMut},
-> @@ -522,3 +523,27 @@ impl<T: ?Sized> DerefMut for UniqueArc<T> {
->          unsafe { &mut self.inner.ptr.as_mut().data }
->      }
->  }
-> +
-> +impl<T: fmt::Display + ?Sized> fmt::Display for UniqueArc<T> {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        fmt::Display::fmt(self.deref(), f)
-> +    }
-> +}
-> +
-> +impl<T: fmt::Display + ?Sized> fmt::Display for Arc<T> {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        fmt::Display::fmt(self.deref(), f)
-> +    }
-> +}
-> +
-> +impl<T: fmt::Debug + ?Sized> fmt::Debug for UniqueArc<T> {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        fmt::Debug::fmt(self.deref(), f)
-> +    }
-> +}
-> +
-> +impl<T: fmt::Debug + ?Sized> fmt::Debug for Arc<T> {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        fmt::Debug::fmt(self.deref(), f)
-> +    }
-> +}
-> --
-> 2.39.1
+To make it clear it is not meant to be usually committed into the tree.
+
+> +    // Prints debug fmt with pretty-print "#" and number-in-hex "x".
+> +    pr_info!("{:#x?}", a);
+
+Apparently, `:#x?` is a bit of an accident: `#` means "alternate"
+form, but it turns out it applies to both `x` and `?`, i.e. it is not
+that `#` alone implies pretty-printing.
+
+Given the above and that there are improvements under discussion
+upstream, perhaps we could avoid giving details for the moment and
+just say what it does as a whole, e.g.
+
+    // Pretty-prints the debug formatting with lower-case hexadecimal integers.
+    pr_info!("{:#x?}", a);
+
+Some links for those interested:
+https://doc.rust-lang.org/std/fmt/index.html#sign0,
+https://github.com/rust-lang/rust/issues/75766,
+https://github.com/rust-lang/rust/pull/99138#issuecomment-1385331055
+and https://github.com/rust-lang/libs-team/issues/165.
+
+Finally, there is a small typo in the commit title. What about:
+
+    rust: samples: print: add sample code for `Arc` printing
+
+I can change these bits on my side if you want & agree with them, to
+avoid a v3 just for this.
+
+Thanks for these patches, Boqun!
+
+Cheers,
+Miguel
