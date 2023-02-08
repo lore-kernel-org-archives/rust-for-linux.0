@@ -2,56 +2,57 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 462FDC636CC
-	for <rust-for-linux@archiver.kernel.org>; Wed,  8 Feb 2023 10:01:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3AFE8C636CC
+	for <rust-for-linux@archiver.kernel.org>; Wed,  8 Feb 2023 10:02:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230305AbjBHKBo (ORCPT
+        id S229934AbjBHKCP (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 8 Feb 2023 05:01:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45844 "EHLO
+        Wed, 8 Feb 2023 05:02:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230246AbjBHKBT (ORCPT
+        with ESMTP id S231280AbjBHKCE (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 8 Feb 2023 05:01:19 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C3825B96
-        for <rust-for-linux@vger.kernel.org>; Wed,  8 Feb 2023 02:01:17 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id a10so12599189edu.9
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Feb 2023 02:01:17 -0800 (PST)
+        Wed, 8 Feb 2023 05:02:04 -0500
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24426CA35
+        for <rust-for-linux@vger.kernel.org>; Wed,  8 Feb 2023 02:02:04 -0800 (PST)
+Received: by mail-ej1-x62f.google.com with SMTP id lu11so49916763ejb.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Feb 2023 02:02:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=metaspace-dk.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=eeGfW4z6DR5FCDDPp99LuFiBGzrlsUiKM2Xtf5r9Spg=;
-        b=Q35X9pQB7z7acMAk8N1lf4lpB9pRWfFhMg9/+ZNSCShVqOmi/7Yc3xYxzvhSk7EB/U
-         wa4BfxKxAY/zPX+rlAWWun81z9vISf287M0zP9GIoq5v1lCWFE3u/Gh9bvDZzNo5QAge
-         AQxyF3VwxnT3hvJpjGGdcUt1guKLMxFE+l+NHZFQte3QO58X43/ZGuelUeEu84BVf3Tm
-         j6uXWXb/7UFRleXEPoV3bpsZEAzxT95rDk4VPL3A2fBh5xdhuUSbDWCVBZavq81inBQu
-         +Pv2dxu2SfCzd4oXsXMrVcjUOrYmP5EZRu02FAHjdntb643cPoVsgY24irXb11ubmWQF
-         cUdg==
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pENRh59ONNUBe4kG875eVyzOAMbjZDxrD9e9swaSORw=;
+        b=dzZ57QCEfIOIAlC9+jvgkXKzlyeHhn4pZyA01nHX3ZtrwWUdU8ybdEQr3kBn/Sll59
+         mqg7JNmSwnZAmLzXDcTxFTPEPNTlgXoX5hFnGV+Z9vQxJFvxJ2nIDgPvD8LN3Sx+lRCI
+         yDV+uOL1QCMrJ8K5bsNt/PRiaZJEzV4po2osXW0ABFRaY3LZ226UdSII+lxT7glhhh+a
+         zTVZY5sm1Zzn/9TW+zFJuh5dqLyolmSwxCEB1OIu7t8uq9P9RfHUf008+a6gKCfs/XV9
+         jagZC4Rr1Bip39FuMjQkCh7LFTgLseLUvQ3k5DwG86MVvk8hwFd1xg1gVvfj/8OG3+R9
+         PguA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eeGfW4z6DR5FCDDPp99LuFiBGzrlsUiKM2Xtf5r9Spg=;
-        b=G7eRsYSReHR0akaBGOQ0i6E43zQn+UTyji8lrStjV8iCsczTgWcNI74sYdJrUBPiMh
-         DWI5Z8wM+mizrei+iww5yih8i4+6BRA2GO9LKoi5kjSpQ3oh60Y5v5MBodvxNTcqLy+6
-         AvMX11EuaumkRGwflECYWS+7A1FjAchUF6jXBjURvsKsPjQINQJuThCHgzA5BrgXjll8
-         fRJLRxOfiKYAqcZkxqqoHmkwa+F0U0k1ZuW3QzZb0Q3r1dgppv/as6PXQIzYnGXyEg+4
-         ZCfLDmJzZIiXRLHMYbumQMgooKr08HIQQ0kEW6ueOKaurOojtCqoeXDRapdNZOW4rsdh
-         gBCA==
-X-Gm-Message-State: AO0yUKWNnmFClrxhZ9+YT5Ddts75abmZ+iLAG8ZdGB7G7heIHsV94jBa
-        /s0zVV7MNzj3Y13GuTqEYeS9CA==
-X-Google-Smtp-Source: AK7set+tXQjvPEauyW3PiTsEQ4id4qhGbr4KlYpHJmNWM3ybw290VchBSY0hknR5Morp5fdFa6BpBQ==
-X-Received: by 2002:a50:ccc2:0:b0:4aa:ab08:3240 with SMTP id b2-20020a50ccc2000000b004aaab083240mr7119477edj.18.1675850476334;
-        Wed, 08 Feb 2023 02:01:16 -0800 (PST)
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=pENRh59ONNUBe4kG875eVyzOAMbjZDxrD9e9swaSORw=;
+        b=m6kZBkZuI06SY9L47OFuFGfel+HuYF8UXvVaWtrUvsyvFIkg+ENpE0Qn8hxpijT9Bw
+         o/WtoTF2b/sQPDkggj0pBB3HJxqPfHxUR7dAZI4Cl8pubnyjVIOcnwSZg4rRasLm+c6U
+         ZFAlbn4THKAy74Pp7AXriCrt6vFOgTY+9O1LTWwUL4RrGNr5lpv1fNoJfIvxS52tSfLV
+         4zJyfB7bFV0cBEtwMrAgWuOccaEN8oKJgFd14w4bCOD0eqw9pb8kY32gzi/W4tp395r9
+         7MOTKg9VgGbiNQv5HKVHLWTNpHjME5+vRw9ecN9fZt7TwwWVoh66PZJwVP9cH0AjfGG4
+         P44g==
+X-Gm-Message-State: AO0yUKVHvjuJ03lRuNL0RMDjflKBCElgJ7vYuu7bXyJPBWTh02OYl3Bq
+        THbkXgwrkaoekWtHWw5c+GgQ1w==
+X-Google-Smtp-Source: AK7set87G8hDlBIhPstupcZ7boJjcZi2IXwcAef6+TKGnrQ+w45uCCfzuR9RsuZ8+DKwp+Wh/rpnxQ==
+X-Received: by 2002:a17:907:9c0a:b0:8a9:e031:c49b with SMTP id ld10-20020a1709079c0a00b008a9e031c49bmr6278044ejc.4.1675850522601;
+        Wed, 08 Feb 2023 02:02:02 -0800 (PST)
 Received: from localhost ([194.62.217.4])
-        by smtp.gmail.com with ESMTPSA id g20-20020aa7c854000000b004a24b8b58cbsm7508762edt.16.2023.02.08.02.01.15
+        by smtp.gmail.com with ESMTPSA id u10-20020a170906408a00b008aabf7faa17sm1207367ejj.67.2023.02.08.02.02.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Feb 2023 02:01:15 -0800 (PST)
+        Wed, 08 Feb 2023 02:02:02 -0800 (PST)
 References: <20230207185216.1314638-1-boqun.feng@gmail.com>
- <20230207185216.1314638-2-boqun.feng@gmail.com>
+ <20230207185216.1314638-3-boqun.feng@gmail.com>
 User-agent: mu4e 1.9.18; emacs 28.2.50
 From:   Andreas Hindborg <nmi@metaspace.dk>
 To:     Boqun Feng <boqun.feng@gmail.com>
@@ -68,12 +69,14 @@ Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sergio =?utf-8?Q?Gonz=C3=A1le?= =?utf-8?Q?z?= Collado 
         <sergio.collado@gmail.com>, Finn Behrens <fin@nyantec.com>
-Subject: Re: [PATCH v2 1/2] rust: sync: impl {Debug,Display} for {Unique,}Arc
-Date:   Wed, 08 Feb 2023 11:00:25 +0100
-In-reply-to: <20230207185216.1314638-2-boqun.feng@gmail.com>
-Message-ID: <875ycciihg.fsf@metaspace.dk>
+Subject: Re: [PATCH v2 2/2] sample: rust: print: Add sampe code for Arc
+ printing
+Date:   Wed, 08 Feb 2023 11:01:36 +0100
+In-reply-to: <20230207185216.1314638-3-boqun.feng@gmail.com>
+Message-ID: <87y1p8h3vq.fsf@metaspace.dk>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -81,57 +84,64 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 Boqun Feng <boqun.feng@gmail.com> writes:
 
-> This allows printing the inner data of `Arc` and its friends if the
-> inner data implements `Display` or `Debug`. It's useful for logging and
-> debugging purpose.
+> This both demonstrates the usage of different print format in Rust and
+> serves as a selftest for the `Display` and `Debug` implementation of
+> `Arc` and its friends.
 >
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Reviwed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+> Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+> Reviewed-by: Finn Behrens <fin@nyantec.com>
+> Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 > ---
 
 Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 
->  rust/kernel/sync/arc.rs | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+
+>  samples/rust/rust_print.rs | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
 >
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 519a6ec43644..e6176d9b5b29 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -22,6 +22,7 @@ use crate::{
->  };
->  use alloc::boxed::Box;
->  use core::{
-> +    fmt,
->      marker::{PhantomData, Unsize},
->      mem::{ManuallyDrop, MaybeUninit},
->      ops::{Deref, DerefMut},
-> @@ -522,3 +523,27 @@ impl<T: ?Sized> DerefMut for UniqueArc<T> {
->          unsafe { &mut self.inner.ptr.as_mut().data }
+> diff --git a/samples/rust/rust_print.rs b/samples/rust/rust_print.rs
+> index 8b39d9cef6d1..165a8d7b1c07 100644
+> --- a/samples/rust/rust_print.rs
+> +++ b/samples/rust/rust_print.rs
+> @@ -15,6 +15,30 @@ module! {
+>=20=20
+>  struct RustPrint;
+>=20=20
+> +fn arc_print() -> Result {
+> +    use kernel::sync::*;
+> +
+> +    let a =3D Arc::try_new(1)?;
+> +    let b =3D UniqueArc::try_new("hello, world")?;
+> +
+> +    // Prints the value of data in `a`.
+> +    pr_info!("{}", a);
+> +
+> +    // Uses ":?" to print debug fmt of `b`.
+> +    pr_info!("{:?}", b);
+> +
+> +    let a: Arc<&str> =3D b.into();
+> +    let c =3D a.clone();
+> +
+> +    // Uses `dbg` to print, will move `c`.
+> +    dbg!(c);
+> +
+> +    // Prints debug fmt with pretty-print "#" and number-in-hex "x".
+> +    pr_info!("{:#x?}", a);
+> +
+> +    Ok(())
+> +}
+> +
+>  impl kernel::Module for RustPrint {
+>      fn init(_module: &'static ThisModule) -> Result<Self> {
+>          pr_info!("Rust printing macros sample (init)\n");
+> @@ -43,6 +67,8 @@ impl kernel::Module for RustPrint {
+>          pr_cont!(" is {}", "continued");
+>          pr_cont!(" with {}\n", "args");
+>=20=20
+> +        arc_print()?;
+> +
+>          Ok(RustPrint)
 >      }
 >  }
-> +
-> +impl<T: fmt::Display + ?Sized> fmt::Display for UniqueArc<T> {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        fmt::Display::fmt(self.deref(), f)
-> +    }
-> +}
-> +
-> +impl<T: fmt::Display + ?Sized> fmt::Display for Arc<T> {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        fmt::Display::fmt(self.deref(), f)
-> +    }
-> +}
-> +
-> +impl<T: fmt::Debug + ?Sized> fmt::Debug for UniqueArc<T> {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        fmt::Debug::fmt(self.deref(), f)
-> +    }
-> +}
-> +
-> +impl<T: fmt::Debug + ?Sized> fmt::Debug for Arc<T> {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        fmt::Debug::fmt(self.deref(), f)
-> +    }
-> +}
 
