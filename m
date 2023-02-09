@@ -2,144 +2,63 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED691C636CC
-	for <rust-for-linux@archiver.kernel.org>; Wed,  8 Feb 2023 16:59:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 534B3C05027
+	for <rust-for-linux@archiver.kernel.org>; Thu,  9 Feb 2023 09:11:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231375AbjBHQ7U (ORCPT
+        id S229683AbjBIJLN (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 8 Feb 2023 11:59:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34528 "EHLO
+        Thu, 9 Feb 2023 04:11:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231475AbjBHQ7P (ORCPT
+        with ESMTP id S229595AbjBIJLM (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 8 Feb 2023 11:59:15 -0500
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10E2C1CAD4;
-        Wed,  8 Feb 2023 08:59:12 -0800 (PST)
-Received: by mail-qt1-x831.google.com with SMTP id h24so21530591qtr.0;
-        Wed, 08 Feb 2023 08:59:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7H+/GICwV/V05esZScE/Prqpiew2ARhgCCv2xN08dwc=;
-        b=W65/Gc7k7weum+eWfL3oTk0xiJPKfK+2PWgOz5E068twmIHpxcXc/Te37gb/vAdn+F
-         PI8aYEQuH3TpiarlmzIRFL7ysSqhbICs4GDxKidpCiI2ubos6VCjdptbiAnHSOMALcnT
-         WDT/c9jc8Yspy/xTkXqXZp9+nJtniMMqs/uI0neC48XxnpDSbsGwECT4u2fcnFXoOd2k
-         MU0C6APCZHxd3ucx0/z2f49zeFqyJ5B6CnqYpxrrfbIn3fHB6S1uFCTzLE2DUBUyu5Cw
-         vs75LFcF7lAMJPdQSHEgUkFfwQDGqjYCMvACUQsHuvLmX61uwipblfLghUWKVaX5m0z1
-         6oTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7H+/GICwV/V05esZScE/Prqpiew2ARhgCCv2xN08dwc=;
-        b=3Dq1DTsKtM5Ld62GcUXpV9G6SVX5qy8PxLbrH+Zy0Sy29CWPfqukqULhCQieK6cE0N
-         uTlrhnhn7nsB3S+F+E8u3/yYlxCY2cfcHspUMxCC2AfqWA3XK2mzUURqReHfGc6MyZaM
-         zqGc2PxDrKTE0grQGnHDltetkt4h/ALCGzSvEqOfNHqgeObLkc8eVpxOG4sPxEyMTri1
-         RrGIwxOJfFSh+rVWNqqyEI4fOdNgxggdzQvHxWqGiNf6ULnjG8+CVUFSNhF2XzO7A5g4
-         WERt+K9X+Hn9eCLhgGeUrNqCOVyVu+e/5bGJORN102BOkg1rJfF/Lj8Xnce/gmVz75Dd
-         wlgw==
-X-Gm-Message-State: AO0yUKVyypv9LV500UC3Kz4uj39wklS0XzI0TbfCMNMel6eD34VvGo+g
-        LI6Fp+Nyf0jmPl2FkG3Y+Yc=
-X-Google-Smtp-Source: AK7set94/fD1lnodVmXxavvz8GXyFjHf0dpF7dsGIYaeBY4WR4izTfuU8z39cPTPsr3HaW0fxy6tCg==
-X-Received: by 2002:a05:622a:1aa0:b0:3b8:6a9f:9144 with SMTP id s32-20020a05622a1aa000b003b86a9f9144mr14010379qtc.46.1675875551182;
-        Wed, 08 Feb 2023 08:59:11 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id s20-20020a05620a16b400b0071f40a59fe5sm11970713qkj.127.2023.02.08.08.59.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Feb 2023 08:59:10 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 2BDB527C0054;
-        Wed,  8 Feb 2023 11:59:10 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Wed, 08 Feb 2023 11:59:10 -0500
-X-ME-Sender: <xms:3dTjY73nCjXNPvqJoJWGC6kxu2rM5t12e0JCHKM_CuqKAnCftLC9zA>
-    <xme:3dTjY6GVCjKc0yY8qfEk1uaqFaHXsbVSmOoKQv1_Qe8fk6aKz2erl_K8ftC7TkcaT
-    maCaG2Wsfm6tcKmyw>
-X-ME-Received: <xmr:3dTjY76zvFYog0J0D8nEkj0WUhY-KEc1SbEv8KWenyzGpq9z7M8E-g9EfH4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudehuddgfeefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:3dTjYw2o4DPSUk8FGBYze5nKny_BfPF6YzqlnRQH9-WFS607HwjmjQ>
-    <xmx:3dTjY-H_4lvQKiDQPDm4rfwQ6mlV9poPrvg9s0BT_4H9rzAKMo5VyQ>
-    <xmx:3dTjYx-13ZPLg2x7UbJFT-LUgoRHIMGpIlgrEY9-yGBfst33tuLb9A>
-    <xmx:3tTjY7fndWKmJNNTILs9tKxOPuhWF0bweFWWJfPSweTPN3yIKM565w>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 8 Feb 2023 11:59:09 -0500 (EST)
-Date:   Wed, 8 Feb 2023 08:58:44 -0800
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-        Will Deacon <will@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sergio =?iso-8859-1?Q?Gonz=E1lez?= Collado 
-        <sergio.collado@gmail.com>, Finn Behrens <fin@nyantec.com>
-Subject: Re: [PATCH v2 2/2] sample: rust: print: Add sampe code for Arc
- printing
-Message-ID: <Y+PUxC0ilJTpmA1+@boqun-archlinux>
-References: <20230207185216.1314638-1-boqun.feng@gmail.com>
- <20230207185216.1314638-3-boqun.feng@gmail.com>
- <CANiq72kyrz4efU5=MexgGNth1XxkU1z-GP6xVa7WxApB+PMdFQ@mail.gmail.com>
- <Y+PO9SXyQaWgbQlK@boqun-archlinux>
- <CANiq72kghG4i35Jt2cY0-2CJkzKe-jEfSyU2pJFFqKgfkV7CZg@mail.gmail.com>
+        Thu, 9 Feb 2023 04:11:12 -0500
+X-Greylist: delayed 575 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 09 Feb 2023 01:11:07 PST
+Received: from mail.socialglobal.pl (mail.socialglobal.pl [51.195.90.253])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0800244AD
+        for <rust-for-linux@vger.kernel.org>; Thu,  9 Feb 2023 01:11:07 -0800 (PST)
+Received: by mail.socialglobal.pl (Postfix, from userid 1002)
+        id 30D14268CD; Thu,  9 Feb 2023 09:00:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=socialglobal.pl;
+        s=mail; t=1675933269;
+        bh=XwhyqI/moZPDJ7KCfcA6Gip8fA7ZKcg5SWsKuF/26zk=;
+        h=Date:From:To:Subject:From;
+        b=N/1gwPx3mxlcKk3x6mKnctwMKWsJpKYaV57Ut36W283BmFAuj3iQ4KxOnK+GGEf6x
+         Czz7A2ZbzI7bh07JosCUc6hq5YgBVnPxTc9Dw720odF16lS1p6R14Zj3p1eM/7c/+F
+         1wBVdi5vvgOL5Xxk2PK4iWghVjUzzzi0E7N4+jo7AvNUld3ABooDTs5F9/lEzyc2OE
+         soOYy8HrUn5OkAwuJdNnPXiU4rGYYZr4bGf1gKeOZicAW0KmGjzF86JMRfGfh9lbzk
+         d7SaLTw4uqApo+7nZkq2TrtJg61rwFw5iWiFKrHLoETgukN7Eiat5YXr1HcNKOwCWy
+         GP5tjfWjjdqOQ==
+Received: by mail.socialglobal.pl for <rust-for-linux@vger.kernel.org>; Thu,  9 Feb 2023 09:00:39 GMT
+Message-ID: <20230209074500-0.1.42.vrbn.0.052h62qk5f@socialglobal.pl>
+Date:   Thu,  9 Feb 2023 09:00:39 GMT
+From:   "Dominik Perkowski" <dominik.perkowski@socialglobal.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: Pozycjonowanie- informacja
+X-Mailer: mail.socialglobal.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72kghG4i35Jt2cY0-2CJkzKe-jEfSyU2pJFFqKgfkV7CZg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Feb 08, 2023 at 05:56:43PM +0100, Miguel Ojeda wrote:
-> On Wed, Feb 8, 2023 at 5:34 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > Hmm.. I'm OK with this change, but it's not a typo ;-)
-> 
-> By typo I meant the "sampe", not the other changes -- sorry, I should
-> have been more clear.
+Dzie=C5=84 dobry,=20
 
-Ah, good eyes! Sorry I missed that twice: one when submitting and one
-you mention it's a typo ;-(
+jaki=C5=9B czas temu zg=C5=82osi=C5=82a si=C4=99 do nas firma, kt=C3=B3re=
+j strona internetowa nie pozycjonowa=C5=82a si=C4=99 wysoko w wyszukiwarc=
+e Google.=20
+
+Na podstawie wykonanego przez nas audytu SEO zoptymalizowali=C5=9Bmy tre=C5=
+=9Bci na stronie pod k=C4=85tem wcze=C5=9Bniej opracowanych s=C5=82=C3=B3=
+w kluczowych. Nasz wewn=C4=99trzny system codziennie analizuje prawid=C5=82=
+owe dzia=C5=82anie witryny.  Dzi=C4=99ki indywidualnej strategii, firma z=
+dobywa coraz wi=C4=99cej Klient=C3=B3w. =20
+
+Czy chcieliby Pa=C5=84stwo zwi=C4=99kszy=C4=87 liczb=C4=99 os=C3=B3b odwi=
+edzaj=C4=85cych stron=C4=99 internetow=C4=85 firmy? M=C3=B3g=C5=82bym prz=
+edstawi=C4=87 ofert=C4=99?=20
 
 
-Regards,
-Boqun
-
-> 
-> > 1)      capitalize the first letter after subsystem tags in the title
-> >         since that's kinda the rule for a few subsystems I usually work
-> >         on, I don't have my own preference, just something I'm used to
-> >         ;-)
-> 
-> Yeah, I don't mind one way or the other (in fact, personally I prefer
-> uppercase slightly because it is a bit easier to "scan" visually to
-> see where it starts after the prefixes). The lowercase one is just the
-> one we have used so far for Rust (which I picked looking at what Linus
-> et al. usually do).
-> 
-> > 2)      avoid using "`" in the title to save space because title space
-> >         is precious.
-> 
-> I see, makes sense, thanks!
-> 
-> Cheers,
-> Miguel
+Pozdrawiam serdecznie,
+Dominik Perkowski
