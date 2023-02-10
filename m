@@ -2,72 +2,74 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A2E5BC64EC4
-	for <rust-for-linux@archiver.kernel.org>; Fri, 10 Feb 2023 15:26:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33AF0C05027
+	for <rust-for-linux@archiver.kernel.org>; Fri, 10 Feb 2023 17:22:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232707AbjBJP03 (ORCPT
+        id S231740AbjBJRWK (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 10 Feb 2023 10:26:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56140 "EHLO
+        Fri, 10 Feb 2023 12:22:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232392AbjBJP02 (ORCPT
+        with ESMTP id S232414AbjBJRWJ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 10 Feb 2023 10:26:28 -0500
+        Fri, 10 Feb 2023 12:22:09 -0500
 Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A192172C
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Feb 2023 07:26:27 -0800 (PST)
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C13A6635A7
+        for <rust-for-linux@vger.kernel.org>; Fri, 10 Feb 2023 09:22:07 -0800 (PST)
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 7FCFC3F11B
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Feb 2023 15:26:24 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 89B1E3F123
+        for <rust-for-linux@vger.kernel.org>; Fri, 10 Feb 2023 17:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1676042784;
-        bh=1krz5gzGk/IBtH/mXLuEk6jDYq6rFyZJFvG5QeiBg8o=;
+        s=20210705; t=1676049725;
+        bh=S/oztqFWeJmzmDr/U8nZfNkMKK2hxPAiujJO+Umo16I=;
         h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=v74G2PecauTgOs8g1wxUyoHnBx7B07hjRdLD8EAFTj9KumvRrbgjjq+ZB87UQRXCi
-         aBJNDBKVIln/YZC8b3TrEtIURsVGC2AgTAAo5MYZAn62+Mv5JDbqgGSBhX1DCgbl/9
-         QKA+CwwHpQfdUtaHL5QI+UNEVehsX05kpY3R6mSbpFjcqZ85wCSZr4WhBo3dwJaJWD
-         lppzjQ9rg2k1jlRwFlLP24wjvU3SnHpfO7Urun4eonpEkgx5vHKQrcAV9gWPv2Ey7q
-         hSR1reZDrv/COKPY+8daoB1ONDBqk5gezfq+jHIGECr20AwFxGtpvL9h+7KXJTpu/T
-         1r3sjBY274/JQ==
-Received: by mail-ed1-f70.google.com with SMTP id w3-20020a056402268300b00487e0d9b53fso3760244edd.10
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Feb 2023 07:26:24 -0800 (PST)
+        b=qvyPWeT34QkKF1H90NqcC7RCf83vXhwFnQhk/wrRuX5Aj1g5g7vpqiTmwCiveUY+5
+         GJpnPDgXs3N+jMEd3F+8OvKLzE16LZkNR8LxRqT1+iKbJ4eNs6r00t6J28sCzTuszk
+         T2S/vCt+ckG6nnjKo8ilJBFkxAVGuPYaX4HV/hBE3L3oDJMcIPQafV+ozpsZxsNCLh
+         e2O3zHef9VITfFTI6UOD1EChWAuvwOGzsfV7rlPfEe1yQ4YGCGPc29KGC4FDVbU53g
+         MGLt9aZILvjU5kphfwZPeneeZAhVB4T1TG7V5W7SUaAFUcJkGZxjaMvag+X//qgoIX
+         UhXTyXfVeJtXQ==
+Received: by mail-ej1-f71.google.com with SMTP id qn8-20020a170907210800b0088eda544bd6so3989635ejb.11
+        for <rust-for-linux@vger.kernel.org>; Fri, 10 Feb 2023 09:22:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1krz5gzGk/IBtH/mXLuEk6jDYq6rFyZJFvG5QeiBg8o=;
-        b=1HTAQ+fI0sC+kC8ilqKt/uLKzoFOrETd4sgXRaGUkyTM4t6ESdWoHvvUvpnXiR85M2
-         cUxiPj3rlnK8jUuMCCktCYiWet55tsHJYeXKU1xx9PI9BbIvm216JgEcqIZLizdgaenN
-         KogMCowTy6gn8tmXMQR+hvNfUe78/SYdFijWsb91x5jRad6PBl8Y8Xxl4cTNORiIygWa
-         xn1Iam/1hQUv6l8OT0wv4pINwF7lmiODKHELs+BviW2SHJ225YYFXmc13lK3vJRVbCeQ
-         tBe6RpgIOMhtZaQELjdn0N/G6We86bl6tDgD2SZmucrmbFY1xTmvqXB3WfkGFAOztv9Q
-         3T9Q==
-X-Gm-Message-State: AO0yUKWQW6ixZo9kI6tMe4Jz3AzvDgVliJIU7Kf8N9GF0SGfkc8e4ZAE
-        H7qXMH9z6AbfkMP4KG8Nq1tVGX/SE0HeUFGt4DLICIGrIj+aQ/DI7g2HMGP6q1Dc+Y6BJwNd0u3
-        dJYXh4Wn8io/NHfALMuLvB+KeSr5C6GKsN+PxtlMYoBvp
-X-Received: by 2002:a17:906:80cd:b0:8aa:a445:8215 with SMTP id a13-20020a17090680cd00b008aaa4458215mr14116908ejx.70.1676042784262;
-        Fri, 10 Feb 2023 07:26:24 -0800 (PST)
-X-Google-Smtp-Source: AK7set+MSjkHI+SI0mj2cJ83acvTUv/5JVWnrm71fQP74ZT9FLq6O3gmUFz0qmiBEGiGCpifjEO3fg==
-X-Received: by 2002:a17:906:80cd:b0:8aa:a445:8215 with SMTP id a13-20020a17090680cd00b008aaa4458215mr14116888ejx.70.1676042784093;
-        Fri, 10 Feb 2023 07:26:24 -0800 (PST)
+        bh=S/oztqFWeJmzmDr/U8nZfNkMKK2hxPAiujJO+Umo16I=;
+        b=mQKfiBkdfjpYZXvla4LskW0+j5MmTK0gdi2waHsEs9VEhzhycDkoohbbJjPiQ1+4tV
+         P1v46z6XSkB6f2YkoppZDXyMaiT5IGJPpV71rZO8T8Mo61+jPijcxl8EHsBxKwungE8B
+         PjMHmPJnTTliPNgO4hqSdqM66NbyKNhuqCt1gD9vVc84gLsgdBXR0yPrjbeYINh2DedI
+         MVIiC4jJ7GhmyFafoKWmyEQ+JwzrQxAjB5XFfzPOAti6eyK8JEZESC5xIA+UcGDqfCsZ
+         8/gilxsUZSMgnJF0wWgzOmEavMLqDvcWkHCC7KlwL1QBThrZCK66SnrKLaP2Wb5qknsj
+         RT6A==
+X-Gm-Message-State: AO0yUKXzRzUZxuTb1h/C++U4m0Tj6xt4IH8SVd59Xzw+gOGR+rGYnlMp
+        nu3OrUksdgMNnncrER7l+e03/lUYfQLLqubYDAtmbDPOQclm1PhPzP3xX0u/SB70gZIYJ3EkItm
+        QGcUxhGj/QtpAQJaa8NIrCfonYemxZvHULJDiV+lFXC7X
+X-Received: by 2002:a17:906:1614:b0:87b:dba1:1bf3 with SMTP id m20-20020a170906161400b0087bdba11bf3mr16347217ejd.30.1676049725207;
+        Fri, 10 Feb 2023 09:22:05 -0800 (PST)
+X-Google-Smtp-Source: AK7set/YIySZYVz31YG5CrgtiBo3ntekvjcI08pZJN9QSahhumZtZTxLAgUnewRtPJBbaHEL0+GH+g==
+X-Received: by 2002:a17:906:1614:b0:87b:dba1:1bf3 with SMTP id m20-20020a170906161400b0087bdba11bf3mr16347206ejd.30.1676049725036;
+        Fri, 10 Feb 2023 09:22:05 -0800 (PST)
 Received: from righiandr-XPS-13-7390.homenet.telecomitalia.it (host-87-7-128-191.retail.telecomitalia.it. [87.7.128.191])
-        by smtp.gmail.com with ESMTPSA id f20-20020a170906c09400b00872c0bccab2sm2507689ejz.35.2023.02.10.07.26.23
+        by smtp.gmail.com with ESMTPSA id i12-20020a170906250c00b008adc971f5acsm2655543ejb.178.2023.02.10.09.22.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Feb 2023 07:26:23 -0800 (PST)
+        Fri, 10 Feb 2023 09:22:04 -0800 (PST)
 From:   Andrea Righi <andrea.righi@canonical.com>
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>
 Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        bjorn3_gh@protonmail.com, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: fix regexp in scripts/is_rust_module.sh
-Date:   Fri, 10 Feb 2023 16:26:22 +0100
-Message-Id: <20230210152622.92912-1-andrea.righi@canonical.com>
+        bjorn3_gh@protonmail.com, Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
+        llvm@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: allow to use INIT_STACK_ALL_ZERO
+Date:   Fri, 10 Feb 2023 18:22:03 +0100
+Message-Id: <20230210172203.101331-1-andrea.righi@canonical.com>
 X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -75,34 +77,37 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-nm can use "R" or "r" to show read-only data sections, but
-scripts/is_rust_module.sh can only recognize "r", so with some versions
-of binutils it can fail to detect if a module is a Rust module or not.
+With CONFIG_INIT_STACK_ALL_ZERO enabled, bindgen is passing
+-ftrivial-auto-var-init=zero to clang, that triggers the following:
 
-Right now we're using this script only to determine if we need to skip
-BTF generation (that is disabled globally if CONFIG_RUST is enabled),
-but it's still nice to fix this script to do the proper job.
+  error: '-ftrivial-auto-var-init=zero' hasn't been enabled; enable it at your own peril for benchmarking purpose only with '-enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang'
 
-Moreover, with this patch applied I can also relax the constraint of
-"RUST depends on !DEBUG_INFO_BTF" and build a kernel with Rust and BTF
-enabled at the same time (of course BTF generation is still skipped for
-Rust modules).
+This flag should be dropped in clang-17, but at the moment it seems more
+reasonable to add it to the bindgen CFLAGS to prevent the error above.
 
+In this way we can enable CONFIG_INIT_STACK_ALL_ZERO with CONFIG_RUST
+without triggering any build error.
+
+Link: https://reviews.llvm.org/D125142
 Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
 ---
- scripts/is_rust_module.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/is_rust_module.sh b/scripts/is_rust_module.sh
-index 28b3831a7593..464761a7cf7f 100755
---- a/scripts/is_rust_module.sh
-+++ b/scripts/is_rust_module.sh
-@@ -13,4 +13,4 @@ set -e
- #
- # In the future, checking for the `.comment` section may be another
- # option, see https://github.com/rust-lang/rust/pull/97550.
--${NM} "$*" | grep -qE '^[0-9a-fA-F]+ r _R[^[:space:]]+16___IS_RUST_MODULE[^[:space:]]*$'
-+${NM} "$*" | grep -qE '^[0-9a-fA-F]+ [Rr] _R[^[:space:]]+16___IS_RUST_MODULE[^[:space:]]*$'
+diff --git a/rust/Makefile b/rust/Makefile
+index ff70c4c916f8..5e26db07a1dc 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -267,7 +267,8 @@ BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
+ # All warnings are inhibited since GCC builds are very experimental,
+ # many GCC warnings are not supported by Clang, they may only appear in
+ # some configurations, with new GCC versions, etc.
+-bindgen_extra_c_flags = -w --target=$(BINDGEN_TARGET)
++bindgen_extra_c_flags = -w --target=$(BINDGEN_TARGET) \
++			-enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang
+ 
+ bindgen_c_flags = $(filter-out $(bindgen_skip_c_flags), $(c_flags)) \
+ 	$(bindgen_extra_c_flags)
 -- 
 2.37.2
 
