@@ -2,118 +2,103 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 930D5C636D4
-	for <rust-for-linux@archiver.kernel.org>; Mon, 13 Feb 2023 15:01:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC19EC64ED9
+	for <rust-for-linux@archiver.kernel.org>; Mon, 13 Feb 2023 15:13:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231296AbjBMPBv (ORCPT
+        id S230481AbjBMPNu (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 13 Feb 2023 10:01:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60306 "EHLO
+        Mon, 13 Feb 2023 10:13:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231299AbjBMPBe (ORCPT
+        with ESMTP id S231506AbjBMPNr (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 13 Feb 2023 10:01:34 -0500
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E17941CF64
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Feb 2023 07:01:14 -0800 (PST)
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 094D73F519
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Feb 2023 15:01:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1676300467;
-        bh=o5JzMwOKW+2dlPWOvDNfJRa9ASUKbSbD6R5eHASFS8s=;
-        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-         Content-Type:In-Reply-To;
-        b=YCIVXwVUfIuwUMrsjuKqsIHeISWiIsQS46M7FHlGYGUYa0YukXIh5we2ZvR5hjygf
-         H4IUtUmw1e6vyOzXj2SZEdNcub77Lu9ujCmvJveCjoP4waJkqLgyu8vx0lz4ZG+zQH
-         JZ1qP8o9x663ukCJafTNSkWP8NGqcL7pkPK49a8/r3+8jcsKS2zpnPi7LJ83uq41Mr
-         YsHXaaT41diL3orBRUhYIBlgODTdHG9hnGKEAkQo5DkR9bdx1v4gbOihcT2wH7WVlR
-         wfEK2Iw/x/M7VM5Ol17OFxihwkRPsxa5dfeEvlCl0+qZRJbNuuaUU+OJklfauJRF01
-         uFIx78WkveoLg==
-Received: by mail-ed1-f70.google.com with SMTP id w3-20020a056402268300b00487e0d9b53fso7755221edd.10
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Feb 2023 07:01:06 -0800 (PST)
+        Mon, 13 Feb 2023 10:13:47 -0500
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E34FC173;
+        Mon, 13 Feb 2023 07:13:46 -0800 (PST)
+Received: by mail-oi1-x235.google.com with SMTP id cz14so10425729oib.12;
+        Mon, 13 Feb 2023 07:13:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uGmJRYZjuyKGnRHpGVizxnrzjN+7Vw2t02eSzRstU5Q=;
+        b=PNMLrT9zqA8YoihoJQong+odBSNSFgl2TbQXdC1LARkW4QkK5O5Yr7jmQzWSmkiCWq
+         entTpI4XVsFz2ZyauJ3MUKVDjejrjLNvHUJFwxwMh0G2Duha+/0pIorH5FcCTarKXR7L
+         7BXomvOwsUNuJSDuklDtMguMsMzKkHEFssH8Mxm/lJqRrTWb/fLxf5UIbHsr+2/der/Z
+         YRJqKootI55ekPNdw72g8GvzpOpPJ5IsdLwxk2Abp06uTEJu6cOMAuBTW/8Be8c8CX7H
+         RhMwdymTfcS8sxOjogGJFdgPl26DJkszUJo+zD13XBIgbF79jlAQ8ejPNJAo8IyecNcv
+         vBAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o5JzMwOKW+2dlPWOvDNfJRa9ASUKbSbD6R5eHASFS8s=;
-        b=Z1J82fSWXRrfi7wo44tQfj6uMpaG7GHLpEQnreoe2T7rV76ceFfuiyde6Vb++s2/If
-         ILkPELL1eEiXw0Uw92qja7Ji/ZZZh8gtOjbM2aNztjfFnwVBNFkdHRvWq+B9f1/8J2De
-         5/wfQmW2pWsmTE9Rmh05hAKR25swxrWgBv7j5ytzGF/pGx9CeQXE2R6SgG7MCKGulweb
-         ZQo1+hlCYPsB/68HM0Z5Z8e0F+63o8gdSDXdvbqaqX1l4Luzq6z1DoP4tCyFAd4GW5wk
-         dwgKyKoZDLjw/LUoWWQhKwKYoWEz8iIusCarl6OHhQACqdCVKh6Iqip7LdQG3O71Lcfm
-         KZtQ==
-X-Gm-Message-State: AO0yUKVLnY414W3hj9DkpjQnoy5Z8+wjIPSl55rwZW7B/c+Vd8KTHP0v
-        1w1bUTCft7o0i0Z54fFEqjy0SEy2nlxVhUgUD5uLVDkGK2pWstQrVX/dAe6y7L86QJkVowML6f4
-        +BcFa6mep5ggcoR+XKGnU0N7V0LbXZNGtM9xE8GAMMZjz
-X-Received: by 2002:a50:f611:0:b0:4ac:b3ff:866a with SMTP id c17-20020a50f611000000b004acb3ff866amr9387937edn.24.1676300466336;
-        Mon, 13 Feb 2023 07:01:06 -0800 (PST)
-X-Google-Smtp-Source: AK7set+60e14qkSzS0RxhL6/FXZjLzPukCKBGT4oVZL9k7yilV1xGdz7c911teLM/7YlaPomF5m2uw==
-X-Received: by 2002:a50:f611:0:b0:4ac:b3ff:866a with SMTP id c17-20020a50f611000000b004acb3ff866amr9387917edn.24.1676300466149;
-        Mon, 13 Feb 2023 07:01:06 -0800 (PST)
-Received: from localhost (host-87-7-128-191.retail.telecomitalia.it. [87.7.128.191])
-        by smtp.gmail.com with ESMTPSA id b30-20020a50ccde000000b004acb890553fsm3728198edj.26.2023.02.13.07.01.05
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uGmJRYZjuyKGnRHpGVizxnrzjN+7Vw2t02eSzRstU5Q=;
+        b=QLwDACmm2wC1n8L0Hy8Na2ki+3/FzpeFGL3VpIKGIFdLgm6tBX3RwQxwhOppAA8fbB
+         jSmHlqLJ5yf3+TaX+MfaQ+1X6qX0Pk44qLLih3+omGv4tulOwP9kFQJ1ENJioADRMIoL
+         ZuY0lZVzAWarfpN+MsfOZLsGdrfvlPafww25sfBQGPhOS2s5p1ng9etuev3duwBkkLOO
+         z+FJlVlhsIRQTiESt7dwv5IYqj+JMfHcIjCXT9M30V1LRpJWImUV6fZtAZ69fNEW1gNr
+         1wWUhRIprzn5/3TcOSn6UaZpZc1LUW0qYHxmGdlb0S7WMT7abGByTmdk5okb6Ul3mDms
+         0RaQ==
+X-Gm-Message-State: AO0yUKWKLpdmuQyrJIFlCFePxGb9YTQylGt0qemR0fY/NYbzLUHp2eRs
+        l2Oajqb1nnEr2cjqMSuwOS0=
+X-Google-Smtp-Source: AK7set98LUGd1uv6XZJTm/wzQDt4BWCFoOioSzKmjlDdwSMhgE3nLVQ9r3PGshQrbekZWCRV7zt04w==
+X-Received: by 2002:aca:d0f:0:b0:364:443a:96c3 with SMTP id 15-20020aca0d0f000000b00364443a96c3mr13468625oin.22.1676301225515;
+        Mon, 13 Feb 2023 07:13:45 -0800 (PST)
+Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id s82-20020acac255000000b003785a948b27sm1258952oif.16.2023.02.13.07.13.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Feb 2023 07:01:05 -0800 (PST)
-Date:   Mon, 13 Feb 2023 16:01:05 +0100
-From:   Andrea Righi <andrea.righi@canonical.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Eric Curtin <ecurtin@redhat.com>, Daniel Xu <dxu@dxuuu.xyz>,
-        Martin Reboredo <yakoyoku@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        bjorn3_gh@protonmail.com, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        Mon, 13 Feb 2023 07:13:45 -0800 (PST)
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+To:     miguel.ojeda.sandonis@gmail.com
+Cc:     alex.gaynor@gmail.com, andrea.righi@canonical.com,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dxu@dxuuu.xyz,
+        ecurtin@redhat.com, gary@garyguo.net, linux-kernel@vger.kernel.org,
+        ojeda@kernel.org, rust-for-linux@vger.kernel.org,
+        wedsonaf@gmail.com, yakoyoku@gmail.com
 Subject: Re: [PATCH] rust: fix regexp in scripts/is_rust_module.sh
-Message-ID: <Y+pQsfNiLkspVIK2@righiandr-XPS-13-7390>
-References: <20230210152622.92912-1-andrea.righi@canonical.com>
- <CANiq72=FZtNmYvbb-YPHmQ=bm8rH8VO3M9nemT4i03g9A2PD2Q@mail.gmail.com>
+Date:   Mon, 13 Feb 2023 12:13:39 -0300
+Message-Id: <20230213151339.661225-1-yakoyoku@gmail.com>
+X-Mailer: git-send-email 2.39.1
+In-Reply-To: <'CANiq72=FZtNmYvbb-YPHmQ=bm8rH8VO3M9nemT4i03g9A2PD2Q@mail.gmail.com'>
+References: <'CANiq72=FZtNmYvbb-YPHmQ=bm8rH8VO3M9nemT4i03g9A2PD2Q@mail.gmail.com'>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72=FZtNmYvbb-YPHmQ=bm8rH8VO3M9nemT4i03g9A2PD2Q@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Feb 13, 2023 at 02:19:38PM +0100, Miguel Ojeda wrote:
-> On Fri, Feb 10, 2023 at 4:26 PM Andrea Righi <andrea.righi@canonical.com> wrote:
-> >
-> > nm can use "R" or "r" to show read-only data sections, but
-> > scripts/is_rust_module.sh can only recognize "r", so with some versions
-> > of binutils it can fail to detect if a module is a Rust module or not.
-> 
-> Do you know which versions? If so, it would be nice to document it here.
-> 
-> > Moreover, with this patch applied I can also relax the constraint of
-> > "RUST depends on !DEBUG_INFO_BTF" and build a kernel with Rust and BTF
-> > enabled at the same time (of course BTF generation is still skipped for
-> > Rust modules).
-> 
-> Even if that build succeeds, can you load the modules? i.e. the
-> constraint was there due to
-> https://github.com/Rust-for-Linux/linux/issues/735.
-
-This patch simply fixes scripts/is_rust_module.sh to recognize Rust
-modules from "regular" C modules with certain versions of binutils, so
-that BTF generation is properly skipped for Rust modules.
-
-In this way both C and Rust modules can be loaded correctly (at least in
-my tests I'm able load both with CONFIG_DEBUG_INFO_BTF enabled).
-
-I haven't dropped the "RUST depends on !DEBUG_INFO_BTF" yet, but I think
-with this fix is applied we can relax this constraint.
-
--Andrea
-
-> 
-> Also Cc'ing Daniel, Eric and Martin since they are the ones working on this.
-> 
-> Cheers,
-> Miguel
+On Mon, Feb 13, 2023 at 1:19 PM Miguel Ojeda <ojeda@kernel.org> wrote:=0D
+> On Fri, Feb 10, 2023 at 4:26 PM Andrea Righi <andrea.righi@canonical.com>=
+ wrote:=0D
+> >=0D
+> > nm can use "R" or "r" to show read-only data sections, but=0D
+> > scripts/is_rust_module.sh can only recognize "r", so with some versions=
+=0D
+> > of binutils it can fail to detect if a module is a Rust module or not.=
+=0D
+>=0D
+> Do you know which versions? If so, it would be nice to document it here.=
+=0D
+>=0D
+> > Moreover, with this patch applied I can also relax the constraint of=0D
+> > "RUST depends on !DEBUG_INFO_BTF" and build a kernel with Rust and BTF=
+=0D
+> > enabled at the same time (of course BTF generation is still skipped for=
+=0D
+> > Rust modules).=0D
+>=0D
+> Even if that build succeeds, can you load the modules? i.e. the=0D
+> constraint was there due to=0D
+> https://github.com/Rust-for-Linux/linux/issues/735.=0D
+=0D
+Issue was that the kernel couldn't even load C modules, Rust CUs must be=0D
+skipped in vmlinux for it to work, and because of that the constraint=0D
+!DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE [1] cannot be relaxed until=0D
+version 1.24+ of Pahole is the minimum requirement by the kernel. I'm OK=0D
+with this change but keep in mind that it won't remedy that condition.=0D
+=0D
+Link: https://lore.kernel.org/bpf/20230111152050.559334-1-yakoyoku@gmail.co=
+m/ [1]=0D
