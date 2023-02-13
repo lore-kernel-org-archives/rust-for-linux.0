@@ -2,88 +2,164 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77BE9C636CC
-	for <rust-for-linux@archiver.kernel.org>; Mon, 13 Feb 2023 09:47:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E172EC6379F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 13 Feb 2023 12:10:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231128AbjBMJrB (ORCPT
+        id S230133AbjBMMKL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 13 Feb 2023 04:47:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55780 "EHLO
+        Mon, 13 Feb 2023 07:10:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230514AbjBMJqx (ORCPT
+        with ESMTP id S231511AbjBMMJ7 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 13 Feb 2023 04:46:53 -0500
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E129C10410;
-        Mon, 13 Feb 2023 01:46:49 -0800 (PST)
-Received: by mail-yb1-xb35.google.com with SMTP id q4so13644733ybu.7;
-        Mon, 13 Feb 2023 01:46:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=DBU/ezuP0GVZ71fNKByQduOfc1Jj+Dyhk2z5lN1UcHI=;
-        b=NBNUxdc/tTsxKJOc6uvnhDC66rqqxbTcmzHQHYKxiKlnyjUoKke8b8ewwvKGwzf4Su
-         nSG1DAsLuyPBut5fsyONjm7AegpbSeVD3ap5eoGrzk/fp5mNQhNqGrwBNjVStR2SRdVZ
-         SEI2b2VyAGSyt7gS3sAb6rSMTIcGyR4Jhi6hkIzgz7QEo+DoUtV1vB9DM8ohVWYJ2q+m
-         tB1EmPwjo4V0VpazP1j32PMbeHFzaPQFdcxHPeZM0U+0D+vTfTootUkiyfcKKMtZ/6ZH
-         VfwIfCjMoBOw/U1JrGsN5nFvRFj5EfuVgU6rT0hGV1ZTtYSpw7WbqqdB7vw4yVhevse/
-         +0Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DBU/ezuP0GVZ71fNKByQduOfc1Jj+Dyhk2z5lN1UcHI=;
-        b=UEJjVTOIBVuB4WR2BR+uXFy6D27IhS027yNOaY+/uKB6Fp0clpQWoCLBAnfCE2FzyM
-         XJ26yNjANomLXXxwC1XT2eRNAypBi7hyVbcbyl5iJ1SFGOofIEIWewCdNXk22zrUmPgK
-         IwXMSdZtxJby0o5Vlfe182kLH99HvVf0aanosPzLAGHsS86Y9Rd/Fv955Us9VKow/pat
-         PsMZ1A6nVQ1BAYctUMNMqf7mwunSX9A8J0ruawxXhwRNf6eTByulL/JggDxDb4ku65Ig
-         aErSKkXqRAYBKR9IkaosFeKrgBT8z483XLyaJpfU9lFM9dj7PUoUCyV6iEiu/RiJWfYF
-         gRXg==
-X-Gm-Message-State: AO0yUKUyB0nB5YBXI//4m/3BFbhaeq7Hr1k5hbLIZEIM6mfQq8ISWseI
-        glgMY9lBEVKLfZYUPhLD/BmDZifA2rFe3O5M7Qc=
-X-Google-Smtp-Source: AK7set8PJjCEMwd12n25PFAgAl0ylUJ2NdJ5pPMq70cAwtxduPOojHj+XQ7nKVWAqmRMjVH4gSV1uUmUmyNw9SFelD0=
-X-Received: by 2002:a5b:3cb:0:b0:8e3:28a8:bb5c with SMTP id
- t11-20020a5b03cb000000b008e328a8bb5cmr1410452ybp.154.1676281609042; Mon, 13
- Feb 2023 01:46:49 -0800 (PST)
+        Mon, 13 Feb 2023 07:09:59 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EDBE199CD;
+        Mon, 13 Feb 2023 04:09:37 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB93661000;
+        Mon, 13 Feb 2023 12:09:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2058BC433D2;
+        Mon, 13 Feb 2023 12:09:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676290175;
+        bh=1NWrQgvO8iQvp6xHpJO3OkjSahCDQcgNiru+DBr2/Fs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cn61TnYg83AWZz7FlZdUt8zZE739OgEWUKtkKAmh8XnpirnWLOoRg0KorzkGkKuTo
+         ug+yxedahDnYQrxGb2F7JIGG4ZnN2eQMJWX0P34h0a3+A1Ns+ZSlquMcMGwk9gRJ2U
+         Tu+ZR/g48DRcGqNlcGfVfigbGQ9UiUbvVOwtUXkWNec4t/tdqDIPHtUAo/Udfoa3Y8
+         K1lO+bAjiD0XdHGDRYOcx/JUDgGQDmCQW3cjhajaYRKbcrk3aMRajF4ZH3xk1m+Hcq
+         BzvIcQnX8YlVLdNSrnfXiMKN7lK07V7EWYpXFlnrx2gmcAEikv2Vuayme8m3he69Fh
+         Jy8Zfws7kVtOw==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+        id 7462540025; Mon, 13 Feb 2023 09:09:32 -0300 (-03)
+Date:   Mon, 13 Feb 2023 09:09:32 -0300
+From:   Arnaldo Carvalho de Melo <acme@kernel.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Daniel Borkmann <daniel@iogearbox.net>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        linux-kernel@vger.kernel.org, Neal Gompa <neal@gompa.dev>,
+        Eric Curtin <ecurtin@redhat.com>, bpf@vger.kernel.org,
+        rust-for-linux@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>, Yonghong Song <yhs@fb.com>
+Subject: pahole issues with Rust DWARF was: Re: [PATCH 1/1] pahole/Rust:
+ Check that we're adding DW_TAG_member sorted by byte offset
+Message-ID: <Y+oofL/aJmUjcxIR@kernel.org>
+References: <20230111152050.559334-1-yakoyoku@gmail.com>
+ <aaf97a61-73c9-ff90-422d-9f3a79b0acd6@iogearbox.net>
+ <CANiq72m+8D8OGtkyEjmyqCynp48DCKEw4-zLZ4pm6-OmFe4p1w@mail.gmail.com>
+ <bec74b32-e35f-9489-4748-cbb241b31be7@iogearbox.net>
+ <CANiq72nLrUTcQ+Gx6FTBtOR7+Ad2cNAC-0dEE7mUdk7nQ8T6ag@mail.gmail.com>
+ <Y+atpJV5rqo08dQJ@kernel.org>
 MIME-Version: 1.0
-References: <20230213152714.78b844f4@canb.auug.org.au> <20230213085920.19726-1-bagasdotme@gmail.com>
- <1058405569.122806.1676279498018.JavaMail.zimbra@nod.at>
-In-Reply-To: <1058405569.122806.1676279498018.JavaMail.zimbra@nod.at>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 13 Feb 2023 10:46:38 +0100
-Message-ID: <CANiq72m46N-85C+djWk6iYzWxk5fYGqfzD3wxfH+n=aD-Am46A@mail.gmail.com>
-Subject: Re: [PATCH] Documentation: rust: Fix arch support table
-To:     Richard Weinberger <richard@nod.at>
-Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Rust for Linux Kernel <rust-for-linux@vger.kernel.org>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
-        davidgow <davidgow@google.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Y+atpJV5rqo08dQJ@kernel.org>
+X-Url:  http://acmel.wordpress.com
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Feb 13, 2023 at 10:11 AM Richard Weinberger <richard@nod.at> wrote:
->
-> Applied to linux-um next. :-)
+Em Fri, Feb 10, 2023 at 05:48:36PM -0300, Arnaldo Carvalho de Melo escreveu:
+> I'll go thru the others to see if they are easy (or at least restricted
+> to Rust CUs) as this one.
 
-Ah, I didn't notice you picked the series (I think there was no
-message) -- thanks Richard!
+The namespace.o seems to be ok:
 
-Since it is still unsorted, I am taking the chance to add a "good
-first issue" for that:
-https://github.com/Rust-for-Linux/linux/issues/965
+⬢[acme@toolbox pahole]$ cat ../pahole-rust-cases/namespace.rs
+pub struct S {
+    pub a: i32,
+}
 
-Cheers,
-Miguel
+pub static S: (i32, S) = (42, S { a: 42 });
+⬢[acme@toolbox pahole]$
+
+⬢[acme@toolbox pahole]$ pahole --show_private_classes ../pahole-rust-cases/namespace.o
+struct S {
+	i32                        a __attribute__((__aligned__(4))); /*     0     4 */
+
+	/* size: 4, cachelines: 1, members: 1 */
+	/* forced alignments: 1 */
+	/* last cacheline: 4 bytes */
+} __attribute__((__aligned__(4)));
+struct (i32, namespace::S) {
+	i32                        __0 __attribute__((__aligned__(4))); /*     0     4 */
+	struct S                   __1 __attribute__((__aligned__(4))); /*     4     4 */
+
+	/* size: 8, cachelines: 1, members: 2 */
+	/* forced alignments: 2 */
+	/* last cacheline: 8 bytes */
+} __attribute__((__aligned__(4)));
+⬢[acme@toolbox pahole]$
+
+And encoding/decoding BTF for it:
+
+⬢[acme@toolbox pahole]$ cp ../pahole-rust-cases/namespace.o .
+⬢[acme@toolbox pahole]$ pahole --btf_encode namespace.o
+⬢[acme@toolbox pahole]$ pahole -F btf namespace.o
+struct S {
+	i32                        a;                    /*     0     4 */
+
+	/* size: 4, cachelines: 1, members: 1 */
+	/* last cacheline: 4 bytes */
+};
+struct (i32, namespace::S) {
+	i32                        __0;                  /*     0     4 */
+	struct S                   __1;                  /*     4     4 */
+
+	/* size: 8, cachelines: 1, members: 2 */
+	/* last cacheline: 8 bytes */
+};
+⬢[acme@toolbox pahole]$ readelf -SW namespace.o | grep BTF
+  [18] .BTF              PROGBITS        0000000000000000 00065c 000089 00      0   0  1
+⬢[acme@toolbox pahole]$
+
+
+The core one needs work:
+
+⬢[acme@toolbox pahole]$ pahole ../pahole-rust-cases/core.o |& head
+die__process_class: tag not supported 0x2f (template_type_parameter)!
+die__process_class: tag not supported 0x33 (variant_part)!
+die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x2fd8d> not handled!
+die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x2fdf7> not handled!
+die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x2fe61> not handled!
+die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x2fecb> not handled!
+die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x2ff35> not handled!
+die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x2ff9f> not handled!
+die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x30009> not handled!
+die__create_new_enumeration: DW_TAG_subprogram (0x2e) @ <0x30073> not handled!
+⬢[acme@toolbox pahole]$
+
+ <1><90>: Abbrev Number: 7 (DW_TAG_namespace)
+    <91>   DW_AT_name        : (indirect string, offset: 0x147): core
+ <2><95>: Abbrev Number: 7 (DW_TAG_namespace)
+    <96>   DW_AT_name        : (indirect string, offset: 0x14c): str
+ <3><9a>: Abbrev Number: 7 (DW_TAG_namespace)
+    <9b>   DW_AT_name        : (indirect string, offset: 0x150): iter
+ <4><9f>: Abbrev Number: 8 (DW_TAG_structure_type)
+    <a0>   DW_AT_name        : (indirect string, offset: 0x2e1): Split<core::str::IsWhitespace>
+    <a4>   DW_AT_byte_size   : 64
+    <a5>   DW_AT_alignment   : 8
+ <5><a6>: Abbrev Number: 9 (DW_TAG_template_type_param)
+    <a7>   DW_AT_type        : <0x41fc>
+    <ab>   DW_AT_name        : (indirect string, offset: 0x162): P
+ <5><af>: Abbrev Number: 4 (DW_TAG_member)
+    <b0>   DW_AT_name        : (indirect string, offset: 0x164): __0
+    <b4>   DW_AT_type        : <0xbb>
+    <b8>   DW_AT_alignment   : 8
+    <b9>   DW_AT_data_member_location: 0
+ <5><ba>: Abbrev Number: 0
+ <4><bb>: Abbrev Number: 8 (DW_TAG_structure_type)
+    <bc>   DW_AT_name        : (indirect string, offset: 0x2ba): SplitInternal<core::str::IsWhitespace>
+    <c0>   DW_AT_byte_size   : 64
+    <c1>   DW_AT_alignment   : 8
+ <5><c2>: Abbrev Number: 9 (DW_TAG_template_type_param)
+    <c3>   DW_AT_type        : <0x41fc>
+    <c7>   DW_AT_name        : (indirect string, offset: 0x162): P
+
+- Arnaldo
