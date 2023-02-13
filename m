@@ -2,141 +2,516 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C9BFCC636CC
-	for <rust-for-linux@archiver.kernel.org>; Mon, 13 Feb 2023 17:43:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1858DC6379F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 13 Feb 2023 21:05:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229760AbjBMRni (ORCPT
+        id S229554AbjBMVFx (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 13 Feb 2023 12:43:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56834 "EHLO
+        Mon, 13 Feb 2023 16:05:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229545AbjBMRnh (ORCPT
+        with ESMTP id S229658AbjBMVFw (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 13 Feb 2023 12:43:37 -0500
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F7B41C7F1
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Feb 2023 09:43:36 -0800 (PST)
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Mon, 13 Feb 2023 16:05:52 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B166D1C5A6;
+        Mon, 13 Feb 2023 13:05:17 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 7D83B3F138
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Feb 2023 17:43:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1676310214;
-        bh=92AwtEIk4tSFvds2ogNMkv3Byy8L08pLtOu+QAH2HLM=;
-        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-         Content-Type:In-Reply-To;
-        b=snQCEwItOp01bn/6Akrx+oQLCCpJUVTPF0vCkl1FkBvPtDMKD95j2eGymQscqic6n
-         iR+GtZcitFj1AveFfeCy9dWWVFpbsGPzbu+2kleby2l49zRD+tqNbpaHDLbViHXWYm
-         fTJAtqRH/aqDQMNbMLftuhHDxPPA5U6rG6XJ7Zgu1vcJ2PQsA5l75QQT6mtV5TP+p5
-         1U/wWPk1zMg5v48n/RSeUJZNMvaKkdvU4zVgOTRrkFt3G4uYMjwekaXRwQL5k8G63G
-         seo4BIE1ELzRl038tm7KG4yTyluue1iE9pKgjMnQK9DWQgZpIvkzId8I5oHInrL9+8
-         nXV2t7H6bgfYA==
-Received: by mail-ed1-f69.google.com with SMTP id eo7-20020a056402530700b004aab4319cedso7997637edb.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Feb 2023 09:43:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=92AwtEIk4tSFvds2ogNMkv3Byy8L08pLtOu+QAH2HLM=;
-        b=2RBk4FQTZHK0VP210nd+or5sx/pSJq1fO1zcFIGHWN3Gyz0tveKzTzvwqYiuI4Xvth
-         Gt8YoZGrrLkb2uNZKbDa690HXXotBd2tipsmszul9TgU16OHYSN4jLktjU5vTzgHyQrN
-         Nxd001CgaF9JAVayyc0+vTHzEbF0UbY5jhr/7Yyv/8bR7F/BxH4HMC18YcnHAlAmEDPC
-         QQGhpzatOmcDnF1GK7+zDXen6Kwc+H32ck+vVylXeHqG4mnnLM1ta9/JGPdxwxTvFUy5
-         BykECiIBFqE9taCKHjWIip7IS2LQSZh2s4EgnBJG+PeK2AgPwwofvMf36yeWHAVabi68
-         LHDg==
-X-Gm-Message-State: AO0yUKXsbboY4vLjcX3SqmN2H/SytKWPqoIuY+vOoXsp4kF+7E93o+yP
-        5oW2aiD/ywFgD/ph3t93qOSyuLHmIeJi1HyG3cvxvHFt7T9PK+/OkG+gFuFNPDhxY4GwYWaqY+3
-        amjKB2GxZo6Iu3aQXy7eaOe0Ha9y1pAe/raeHnqeCeb9U
-X-Received: by 2002:a50:d0ce:0:b0:4ac:aa4d:51b8 with SMTP id g14-20020a50d0ce000000b004acaa4d51b8mr10224474edf.17.1676310214065;
-        Mon, 13 Feb 2023 09:43:34 -0800 (PST)
-X-Google-Smtp-Source: AK7set+FgGH4T/lCPgHkgjdP42X02A6Bc6RCVLpZeYniNtHchdPfEKEaUt8cYaecg1fD6CYvf4LEug==
-X-Received: by 2002:a50:d0ce:0:b0:4ac:aa4d:51b8 with SMTP id g14-20020a50d0ce000000b004acaa4d51b8mr10224456edf.17.1676310213849;
-        Mon, 13 Feb 2023 09:43:33 -0800 (PST)
-Received: from localhost (host-87-7-128-191.retail.telecomitalia.it. [87.7.128.191])
-        by smtp.gmail.com with ESMTPSA id f22-20020a50a6d6000000b004acc6cbc451sm1962685edc.36.2023.02.13.09.43.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Feb 2023 09:43:33 -0800 (PST)
-Date:   Mon, 13 Feb 2023 18:43:32 +0100
-From:   Andrea Righi <andrea.righi@canonical.com>
-To:     Eric Curtin <ecurtin@redhat.com>
-Cc:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        miguel.ojeda.sandonis@gmail.com, alex.gaynor@gmail.com,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dxu@dxuuu.xyz,
-        gary@garyguo.net, linux-kernel@vger.kernel.org, ojeda@kernel.org,
-        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Subject: Re: [PATCH] rust: fix regexp in scripts/is_rust_module.sh
-Message-ID: <Y+p2xKIN6TJnQinK@righiandr-XPS-13-7390>
-References: <'CANiq72=FZtNmYvbb-YPHmQ=bm8rH8VO3M9nemT4i03g9A2PD2Q@mail.gmail.com'>
- <20230213151339.661225-1-yakoyoku@gmail.com>
- <Y+pbtZUaRM+gkOUC@righiandr-XPS-13-7390>
- <CAOgh=FySHZSceM_JKjSNX5qTXBSv3Kv3KP6yT27VXADt-_oB5w@mail.gmail.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DE63612B4;
+        Mon, 13 Feb 2023 21:05:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBF3C433D2;
+        Mon, 13 Feb 2023 21:05:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676322316;
+        bh=yUidYxyfTaXEBCaGPjAdgcyqWYF1axurdRo/rwGZXQk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=JASPAg++4l2MNkkrYMBSyGeEHmCSi71e/k7jdWp0Im0sNAna5Tu3WtVwD74kHI+M+
+         1znmwkQA6qhfJGuaP0Bs+Tqv/q3b0z0P7BRlaDXe/9XRqiETj365yD7PO68StYJq6K
+         M8bd+ArNO23ZwPzXvx9UKLjjVlP5agzoD8zXzn1AzudIbAfWOjFbiwSKCtKUvDnXmT
+         zLBUt2E2qGz0LqMDrck7e1EDzMTpzzja95jyehVK85fLmPoqwy2l8/RGHr9ljOeci3
+         8/9WjFjLgYXMz6MN7wrJdNZdKUOawqtHIYOQEiKemN+QvzZZwxI4dsLD8uKAduqkAE
+         60Fk+dvE4ra8w==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+        id 37A5C40025; Mon, 13 Feb 2023 18:05:13 -0300 (-03)
+Date:   Mon, 13 Feb 2023 18:05:13 -0300
+From:   Arnaldo Carvalho de Melo <acme@kernel.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        linux-kernel@vger.kernel.org, Neal Gompa <neal@gompa.dev>,
+        Eric Curtin <ecurtin@redhat.com>, bpf@vger.kernel.org,
+        rust-for-linux@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>, Yonghong Song <yhs@fb.com>,
+        Martin =?utf-8?B?TGnFoWth?= <mliska@suse.cz>
+Subject: Re: pahole issues with Rust DWARF was: Re: [PATCH 1/1] pahole/Rust:
+ Check that we're adding DW_TAG_member sorted by byte offset
+Message-ID: <Y+qmCaNHJFhd9B1v@kernel.org>
+References: <20230111152050.559334-1-yakoyoku@gmail.com>
+ <aaf97a61-73c9-ff90-422d-9f3a79b0acd6@iogearbox.net>
+ <CANiq72m+8D8OGtkyEjmyqCynp48DCKEw4-zLZ4pm6-OmFe4p1w@mail.gmail.com>
+ <bec74b32-e35f-9489-4748-cbb241b31be7@iogearbox.net>
+ <CANiq72nLrUTcQ+Gx6FTBtOR7+Ad2cNAC-0dEE7mUdk7nQ8T6ag@mail.gmail.com>
+ <Y+atpJV5rqo08dQJ@kernel.org>
+ <Y+oofL/aJmUjcxIR@kernel.org>
+ <CANiq72=Ghy2awR_+DACyiq_DAtscx3yoKb4tJ+GkpqVCcV_HEQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAOgh=FySHZSceM_JKjSNX5qTXBSv3Kv3KP6yT27VXADt-_oB5w@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72=Ghy2awR_+DACyiq_DAtscx3yoKb4tJ+GkpqVCcV_HEQ@mail.gmail.com>
+X-Url:  http://acmel.wordpress.com
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Feb 13, 2023 at 04:03:46PM +0000, Eric Curtin wrote:
-> On Mon, 13 Feb 2023 at 15:48, Andrea Righi <andrea.righi@canonical.com> wrote:
-> >
-> > On Mon, Feb 13, 2023 at 12:13:39PM -0300, Martin Rodriguez Reboredo wrote:
-> > > On Mon, Feb 13, 2023 at 1:19 PM Miguel Ojeda <ojeda@kernel.org> wrote:
-> > > > On Fri, Feb 10, 2023 at 4:26 PM Andrea Righi <andrea.righi@canonical.com> wrote:
-> > > > >
-> > > > > nm can use "R" or "r" to show read-only data sections, but
-> > > > > scripts/is_rust_module.sh can only recognize "r", so with some versions
-> > > > > of binutils it can fail to detect if a module is a Rust module or not.
-> > > >
-> > > > Do you know which versions? If so, it would be nice to document it here.
-> > > >
-> > > > > Moreover, with this patch applied I can also relax the constraint of
-> > > > > "RUST depends on !DEBUG_INFO_BTF" and build a kernel with Rust and BTF
-> > > > > enabled at the same time (of course BTF generation is still skipped for
-> > > > > Rust modules).
-> > > >
-> > > > Even if that build succeeds, can you load the modules? i.e. the
-> > > > constraint was there due to
-> > > > https://github.com/Rust-for-Linux/linux/issues/735.
-> > >
-> > > Issue was that the kernel couldn't even load C modules, Rust CUs must be
-> > > skipped in vmlinux for it to work, and because of that the constraint
-> > > !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE [1] cannot be relaxed until
-> > > version 1.24+ of Pahole is the minimum requirement by the kernel. I'm OK
-> > > with this change but keep in mind that it won't remedy that condition.
-> > >
-> > > Link: https://lore.kernel.org/bpf/20230111152050.559334-1-yakoyoku@gmail.com/ [1]
-> >
-> > Oh yes, I'm using pahole 1.24, that's probably why it's all working for
-> > me. So we can't just drop !DEBUG_INFO_BTF, but we can definitely relax
-> > the constraint to "!DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE".
-> 
-> Yup the patch is ok, but we can only build with RUST and
-> DEBUG_INFO_BTF if we have pahole 1.24+ because that is the version
-> smart enough to exclude the Rust CUs.
-> 
-> If you have a version of pahole < 1.24 and you want to include RUST
-> you basically should not have DEBUG_INFO_BTF on at all because your
-> build will fail (unless this change alters the list of CUs passed to
-> pahole).
-> 
-> What is a little confusing is scripts/is_rust_module.sh and pahole
-> "--lang_exclude=rust" feature both attempt to do the same thing,
-> recognize and skip Rust CUs
+Em Mon, Feb 13, 2023 at 01:45:02PM +0100, Miguel Ojeda escreveu:
+> On Mon, Feb 13, 2023 at 1:09 PM Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com> wrote:
+> > The namespace.o seems to be ok:
+ 
+> I saw the other message too -- this looks great, thanks a ton.
+ 
+> > The core one needs work:
+ 
+> If `core.o` works, then I think it is likely other things will work :)
+ 
+> I can try to extract the cases for those into simpler `.o` files, if
+> you would find simpler test cases useful (perhaps for the test suite
+> etc.).
 
-Yep, "pahole --lang_exclude=rust" makes scripts/is_rust_module.sh
-obsolete, so with this applied:
-https://lore.kernel.org/bpf/20230111152050.559334-1-yakoyoku@gmail.com/
+That would be great!
 
-I can just drop scripts/is_rust_module.sh and everything is still
-working.
+I tried starting this path with this, spitted out by ChatGPT (minus the
+'pub' in from of main):
 
-So, if that patch is applied we can do another patch to get rid of
-is_rust_module.sh completely (because to my knowledge this script is
-only used to exclude the BTF generation for the Rust modules).
+⬢[acme@toolbox pahole-rust-cases]$ cat template_type.rs
+// Provided by ChatGPT
 
--Andrea
+use std::ops::Add;
+
+// Define a generic struct template with a single type parameter `T`.
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+// Implement a method for the `Point` struct that adds two points together.
+// The method uses the `Add` trait to ensure that the type `T` supports addition.
+impl<T: Add<Output=T>> Point<T> {
+    fn add_points(self, other: Point<T>) -> Point<T> {
+        Point {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
+    }
+}
+
+pub fn main() {
+    // Create two `Point` instances, using `i32` as the type parameter.
+    let p1 = Point { x: 1, y: 2 };
+    let p2 = Point { x: 3, y: 4 };
+
+    // Add the two points together using the `add_points` method.
+    let p3 = p1.add_points(p2);
+
+    // Print the result.
+    println!("Point: ({}, {})", p3.x, p3.y);
+}
+⬢[acme@toolbox pahole-rust-cases]$
+
+And then handle the DW_TAG_template_type_parameter for a
+DW_TAG_subroutine:
+
+ <3><12d>: Abbrev Number: 5 (DW_TAG_structure_type)
+    <12e>   DW_AT_name        : (indirect string, offset: 0x299): ArgumentV1
+    <132>   DW_AT_byte_size   : 16
+    <133>   DW_AT_alignment   : 8
+ <4><134>: Abbrev Number: 6 (DW_TAG_member)
+    <135>   DW_AT_name        : (indirect string, offset: 0xd7): value
+    <139>   DW_AT_type        : <0x43a>
+    <13d>   DW_AT_alignment   : 8
+    <13e>   DW_AT_data_member_location: 0
+ <4><13f>: Abbrev Number: 6 (DW_TAG_member)
+    <140>   DW_AT_name        : (indirect string, offset: 0x10e): formatter
+    <144>   DW_AT_type        : <0x447>
+    <148>   DW_AT_alignment   : 8
+    <149>   DW_AT_data_member_location: 8
+ <4><14a>: Abbrev Number: 11 (DW_TAG_subprogram)
+    <14b>   DW_AT_linkage_name: (indirect string, offset: 0x2a8): _ZN4core3fmt10ArgumentV13new17h167b8c43a2ee7614E
+    <14f>   DW_AT_name        : (indirect string, offset: 0x2d9): new<i32>
+    <153>   DW_AT_decl_file   : 2
+    <154>   DW_AT_decl_line   : 333
+    <156>   DW_AT_type        : <0x12d>
+    <15a>   DW_AT_inline      : 1       (inlined)
+ <5><15b>: Abbrev Number: 12 (DW_TAG_template_type_param)
+    <15c>   DW_AT_type        : <0x4e3>
+    <160>   DW_AT_name        : (indirect string, offset: 0x125): T
+ <5><164>: Abbrev Number: 13 (DW_TAG_variable)
+
+I'll have to stop now, but was at the point of changing ftype__fprintf()
+somehow to show that template type parameter, with the patch at the end
+of this message I get this:
+
+⬢[acme@toolbox pahole]$ pahole --show_private_classes ../pahole-rust-cases/template_type.o
+die__process_class: tag not supported 0x33 (variant_part)!
+die__process_class: tag not supported 0x2f (template_type_parameter)!
+struct Argument {
+	usize                      position __attribute__((__aligned__(8))); /*     0     8 */
+	struct FormatSpec          format __attribute__((__aligned__(8))); /*     8    48 */
+
+	/* XXX last struct has 7 bytes of padding */
+
+	/* size: 56, cachelines: 1, members: 2 */
+	/* paddings: 1, sum paddings: 7 */
+	/* forced alignments: 2 */
+	/* last cacheline: 56 bytes */
+} __attribute__((__aligned__(8)));
+struct FormatSpec {
+	struct Count               precision __attribute__((__aligned__(8))); /*     0    16 */
+
+	/* XXX last struct has 16 bytes of padding */
+
+	struct Count               width __attribute__((__aligned__(8))); /*    16    16 */
+
+	/* XXX last struct has 16 bytes of padding */
+
+	char                       fill __attribute__((__aligned__(4))); /*    32     4 */
+	u32                        flags __attribute__((__aligned__(4))); /*    36     4 */
+	enum Alignment             align __attribute__((__aligned__(1))); /*    40     1 */
+
+	/* size: 48, cachelines: 1, members: 5 */
+	/* padding: 7 */
+	/* paddings: 2, sum paddings: 32 */
+	/* forced alignments: 5 */
+	/* last cacheline: 48 bytes */
+} __attribute__((__aligned__(8)));
+struct Is {
+
+	/* XXX 8 bytes hole, try to pack */
+
+	usize                      __0 __attribute__((__aligned__(8))); /*     8     8 */
+
+	/* size: 16, cachelines: 1, members: 1 */
+	/* sum members: 8, holes: 1, sum holes: 8 */
+	/* forced alignments: 1, forced holes: 1, sum forced holes: 8 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct Param {
+
+	/* XXX 8 bytes hole, try to pack */
+
+	usize                      __0 __attribute__((__aligned__(8))); /*     8     8 */
+
+	/* size: 16, cachelines: 1, members: 1 */
+	/* sum members: 8, holes: 1, sum holes: 8 */
+	/* forced alignments: 1, forced holes: 1, sum forced holes: 8 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct Implied {
+
+	/* size: 16, cachelines: 1, members: 0 */
+	/* padding: 16 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct Count {
+
+	/* size: 16, cachelines: 1, members: 0 */
+	/* padding: 16 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct ArgumentV1 {
+	struct Opaque *            value __attribute__((__aligned__(8))); /*     0     8 */
+	struct Result<(), core::fmt::Error> (*formatter)(struct Opaque *, struct Formatter *) __attribute__((__aligned__(8))); /*     8     8 */
+
+	/* size: 16, cachelines: 1, members: 2 */
+	/* forced alignments: 2 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct Opaque {
+
+	/* size: 0, cachelines: 0, members: 0 */
+} __attribute__((__aligned__(1)));
+struct Error {
+
+	/* size: 0, cachelines: 0, members: 0 */
+} __attribute__((__aligned__(1)));
+struct Formatter {
+	struct Option<usize>       width __attribute__((__aligned__(8))); /*     0    16 */
+
+	/* XXX last struct has 16 bytes of padding */
+
+	struct Option<usize>       precision __attribute__((__aligned__(8))); /*    16    16 */
+
+	/* XXX last struct has 16 bytes of padding */
+
+	struct &mut dyn core::fmt::Write buf __attribute__((__aligned__(8))); /*    32    16 */
+	u32                        flags __attribute__((__aligned__(4))); /*    48     4 */
+	char                       fill __attribute__((__aligned__(4))); /*    52     4 */
+	enum Alignment             align __attribute__((__aligned__(1))); /*    56     1 */
+
+	/* size: 64, cachelines: 1, members: 6 */
+	/* padding: 7 */
+	/* paddings: 2, sum paddings: 32 */
+	/* forced alignments: 6 */
+} __attribute__((__aligned__(8)));
+struct Arguments {
+	struct &[&str]             pieces __attribute__((__aligned__(8))); /*     0    16 */
+	struct Option<&[core::fmt::rt::v1::Argument]> fmt __attribute__((__aligned__(8))); /*    16    16 */
+
+	/* XXX last struct has 16 bytes of padding */
+
+	struct &[core::fmt::ArgumentV1] args __attribute__((__aligned__(8))); /*    32    16 */
+
+	/* size: 48, cachelines: 1, members: 3 */
+	/* paddings: 1, sum paddings: 16 */
+	/* forced alignments: 3 */
+	/* last cacheline: 48 bytes */
+} __attribute__((__aligned__(8)));
+struct Ok {
+
+	/* XXX 1 byte hole, try to pack */
+
+	()                         __0 __attribute__((__aligned__(1))); /*     1     0 */
+
+	/* size: 1, cachelines: 1, members: 1 */
+	/* forced alignments: 1, forced holes: 1, sum forced holes: 1 */
+	/* last cacheline: 1 bytes */
+} __attribute__((__aligned__(1)));
+struct Err {
+
+	/* XXX 1 byte hole, try to pack */
+
+	struct Error               __0 __attribute__((__aligned__(1))); /*     1     0 */
+
+	/* size: 1, cachelines: 1, members: 1 */
+	/* forced alignments: 1, forced holes: 1, sum forced holes: 1 */
+	/* last cacheline: 1 bytes */
+} __attribute__((__aligned__(1)));
+struct Result<(), core::fmt::Error> {
+
+	/* size: 1, cachelines: 0, members: 0 */
+	/* padding: 1 */
+	/* last cacheline: 1 bytes */
+} __attribute__((__aligned__(1)));
+struct None {
+
+	/* size: 16, cachelines: 1, members: 0 */
+	/* padding: 16 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct Some {
+
+	/* XXX 8 bytes hole, try to pack */
+
+	usize                      __0 __attribute__((__aligned__(8))); /*     8     8 */
+
+	/* size: 16, cachelines: 1, members: 1 */
+	/* sum members: 8, holes: 1, sum holes: 8 */
+	/* forced alignments: 1, forced holes: 1, sum forced holes: 8 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct Option<usize> {
+
+	/* size: 16, cachelines: 1, members: 0 */
+	/* padding: 16 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct Some {
+	struct &[core::fmt::rt::v1::Argument] __0 __attribute__((__aligned__(8))); /*     0    16 */
+
+	/* size: 16, cachelines: 1, members: 1 */
+	/* forced alignments: 1 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct Option<&[core::fmt::rt::v1::Argument]> {
+
+	/* size: 16, cachelines: 1, members: 0 */
+	/* padding: 16 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct &mut dyn core::fmt::Write {
+	struct dyn core::fmt::Write * pointer __attribute__((__aligned__(8))); /*     0     8 */
+	usize *                    vtable __attribute__((__aligned__(8))); /*     8     8 */
+
+	/* size: 16, cachelines: 1, members: 2 */
+	/* forced alignments: 2 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct dyn core::fmt::Write {
+
+	/* size: 0, cachelines: 0, members: 0 */
+} __attribute__((__aligned__(1)));
+struct &[&str] {
+	struct &str *              data_ptr __attribute__((__aligned__(8))); /*     0     8 */
+	usize                      length __attribute__((__aligned__(8))); /*     8     8 */
+
+	/* size: 16, cachelines: 1, members: 2 */
+	/* forced alignments: 2 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct &str {
+	u8 *                       data_ptr __attribute__((__aligned__(8))); /*     0     8 */
+	usize                      length __attribute__((__aligned__(8))); /*     8     8 */
+
+	/* size: 16, cachelines: 1, members: 2 */
+	/* forced alignments: 2 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct &[core::fmt::rt::v1::Argument] {
+	struct Argument *          data_ptr __attribute__((__aligned__(8))); /*     0     8 */
+	usize                      length __attribute__((__aligned__(8))); /*     8     8 */
+
+	/* size: 16, cachelines: 1, members: 2 */
+	/* forced alignments: 2 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct &[core::fmt::ArgumentV1] {
+	struct ArgumentV1 *        data_ptr __attribute__((__aligned__(8))); /*     0     8 */
+	usize                      length __attribute__((__aligned__(8))); /*     8     8 */
+
+	/* size: 16, cachelines: 1, members: 2 */
+	/* forced alignments: 2 */
+	/* last cacheline: 16 bytes */
+} __attribute__((__aligned__(8)));
+struct Point<i32> {
+	i32                        x __attribute__((__aligned__(4))); /*     0     4 */
+	i32                        y __attribute__((__aligned__(4))); /*     4     4 */
+
+	/* size: 8, cachelines: 1, members: 2 */
+	/* forced alignments: 2 */
+	/* last cacheline: 8 bytes */
+} __attribute__((__aligned__(4)));
+⬢[acme@toolbox pahole]$
+
+I'll cut version 1.25 with what is in the 'master' and 'next' now as
+binutils 2.40 is out and emitting DW_TAG_unspecified_type, that isn't
+supported by pahole 1.24 and also Alan's work on optimized functions,
+etc.
+
+- Arnaldo
+
+diff --git a/dwarf_loader.c b/dwarf_loader.c
+index a77598dc3affca88..b767bcaa9322c95a 100644
+--- a/dwarf_loader.c
++++ b/dwarf_loader.c
+@@ -1093,6 +1093,18 @@ static struct parameter *parameter__new(Dwarf_Die *die, struct cu *cu,
+ 	return parm;
+ }
+ 
++static struct template_type_parameter *template_type_parameter__new(Dwarf_Die *die, struct cu *cu, struct conf_load *conf)
++{
++	struct template_type_parameter *parm = tag__alloc(cu, sizeof(*parm));
++
++	if (parm != NULL) {
++		tag__init(&parm->tag, cu, die);
++		parm->name = attr_string(die, DW_AT_name, conf);
++	}
++
++	return parm;
++}
++
+ static struct inline_expansion *inline_expansion__new(Dwarf_Die *die, struct cu *cu, struct conf_load *conf)
+ {
+ 	struct inline_expansion *exp = tag__alloc(cu, sizeof(*exp));
+@@ -1211,6 +1223,7 @@ static void ftype__init(struct ftype *ftype, Dwarf_Die *die, struct cu *cu)
+ #endif
+ 	tag__init(&ftype->tag, cu, die);
+ 	INIT_LIST_HEAD(&ftype->parms);
++	INIT_LIST_HEAD(&ftype->template_type_parms);
+ 	ftype->nr_parms	    = 0;
+ 	ftype->unspec_parms = 0;
+ }
+@@ -1566,6 +1579,19 @@ static struct tag *die__create_new_parameter(Dwarf_Die *die,
+ 	return &parm->tag;
+ }
+ 
++static struct tag *die__create_new_template_type_parameter(Dwarf_Die *die, struct ftype *ftype,
++							   struct cu *cu, struct conf_load *conf)
++{
++	struct template_type_parameter *parm = template_type_parameter__new(die, cu, conf);
++
++	if (parm == NULL)
++		return NULL;
++
++	ftype__add_template_type_parameter(ftype, parm);
++
++	return &parm->tag;
++}
++
+ static struct tag *die__create_new_label(Dwarf_Die *die,
+ 					 struct lexblock *lexblock,
+ 					 struct cu *cu, struct conf_load *conf)
+@@ -1989,6 +2015,8 @@ static int die__process_function(Dwarf_Die *die, struct ftype *ftype,
+ 		case DW_TAG_GNU_template_template_param:
+ #endif
+ 		case DW_TAG_template_type_parameter:
++			tag = die__create_new_template_type_parameter(die, ftype, cu, conf);
++			break;
+ 		case DW_TAG_template_value_parameter:
+ 			/* FIXME: probably we'll have to attach this as a list of
+  			 * template parameters to use at class__fprintf time... 
+diff --git a/dwarves.c b/dwarves.c
+index b43031c93c5cab58..6a8feccc2d45c60d 100644
+--- a/dwarves.c
++++ b/dwarves.c
+@@ -1391,6 +1391,12 @@ void ftype__add_parameter(struct ftype *ftype, struct parameter *parm)
+ 	list_add_tail(&parm->tag.node, &ftype->parms);
+ }
+ 
++void ftype__add_template_type_parameter(struct ftype *ftype, struct template_type_parameter *parm)
++{
++	++ftype->nr_template_type_parms;
++	list_add_tail(&parm->tag.node, &ftype->template_type_parms);
++}
++
+ void lexblock__add_tag(struct lexblock *block, struct tag *tag)
+ {
+ 	list_add_tail(&tag->node, &block->tags);
+diff --git a/dwarves.h b/dwarves.h
+index 24a1909a60389dee..5c9952bfddaed301 100644
+--- a/dwarves.h
++++ b/dwarves.h
+@@ -825,13 +825,30 @@ static inline const char *parameter__name(const struct parameter *parm)
+ 	return parm->name;
+ }
+ 
++struct template_type_parameter {
++	struct tag tag;
++	const char *name;
++};
++
++static inline struct template_type_parameter *tag__template_type_parameter(const struct tag *tag)
++{
++	return (struct template_type_parameter *)tag;
++}
++
++static inline const char *template_type_parameter__name(const struct template_type_parameter *parm)
++{
++	return parm->name;
++}
++
+ /*
+  * tag.tag can be DW_TAG_subprogram_type or DW_TAG_subroutine_type.
+  */
+ struct ftype {
+ 	struct tag	 tag;
+ 	struct list_head parms;
++	struct list_head template_type_parms;
+ 	uint16_t	 nr_parms;
++	uint16_t	 nr_template_type_parms;
+ 	uint8_t		 unspec_parms:1; /* just one bit is needed */
+ 	uint8_t		 optimized_parms:1;
+ 	uint8_t		 processed:1;
+@@ -872,6 +889,8 @@ void ftype__delete(struct ftype *ftype);
+ 	list_for_each_entry_safe_reverse(pos, n, &(ftype)->parms, tag.node)
+ 
+ void ftype__add_parameter(struct ftype *ftype, struct parameter *parm);
++void ftype__add_template_type_parameter(struct ftype *ftype, struct template_type_parameter *parm);
++
+ size_t ftype__fprintf(const struct ftype *ftype, const struct cu *cu,
+ 		      const char *name, const int inlined,
+ 		      const int is_pointer, const int type_spacing, bool is_prototype,
