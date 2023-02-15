@@ -2,73 +2,76 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98433C636CC
-	for <rust-for-linux@archiver.kernel.org>; Wed, 15 Feb 2023 19:18:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42BF2C636D4
+	for <rust-for-linux@archiver.kernel.org>; Wed, 15 Feb 2023 22:30:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229716AbjBOTSB (ORCPT
+        id S229779AbjBOWal (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 15 Feb 2023 14:18:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56200 "EHLO
+        Wed, 15 Feb 2023 17:30:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjBOTR7 (ORCPT
+        with ESMTP id S229781AbjBOWak (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 15 Feb 2023 14:17:59 -0500
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B26A82ED54;
-        Wed, 15 Feb 2023 11:17:58 -0800 (PST)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-4c24993965eso295968547b3.12;
-        Wed, 15 Feb 2023 11:17:58 -0800 (PST)
+        Wed, 15 Feb 2023 17:30:40 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5A3115545;
+        Wed, 15 Feb 2023 14:30:38 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id y1so183991wru.2;
+        Wed, 15 Feb 2023 14:30:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+th/O+lEQQ2oYw1gaBmqYLCJ1+RUw5+Dxy7Tlrst6pQ=;
-        b=AtTrfeIFmuXEDx8ge5BmC3z4syQQjWTI5R+iPApfiqGhLpsl7XORLoYizXxbXR7nTQ
-         2DUJqAL3ZKQAhdtdNH2REcEabvcE3/A9vur+ZYyNBTejDycpL6CfngPX65tTQuO0vPHk
-         6kyJlxLEnlXxH3JcjfqPYxpgOWXNlRvD2gtN1U2t8xnMvykM6+Iu1SGDp9w3TnTKvvw3
-         yc2MrFYoLhndlYf1xElI8Ykgc25MqCsFedU+Pumg6uAwLao1itLc7j+EOjugQrs3jJ3g
-         NVtH8bknEyRcSnVkec5N1wYhLtjWplMFe2GDO/HZ+JKQR0hy8VQSRAIjFbLSz3HWVu66
-         Iglw==
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6FZw+rbuPNpxPQkAbzgbqnhaAls6Wd3rBlTBF6zE2sU=;
+        b=apJUs7dQvTitDwHmsJrfNHfgumGke2KN0f1VSaJYvlncMFOARyecwO47B2h2kcHExn
+         0N3MpDeOuk0QA2viJIXEYqCeXLZICGEizaJ0gK4RsS3An2T8x36of7wvpHI9eM14ZGKS
+         MQ+DO+Nk39SveSQ/wMvlW3LtjkPAl8QVXozkj4jYTsDc9MEJEciSUu/Q2C7wUGyRnGGs
+         d2sJYHbtu3YRXas5iU/AtWGE1shS/2K9Cj6EZbZHcfLlbyMgHjqCRqtW1dz9iKMCxabA
+         ENvG/UqzDY+SIqSb9pON5tHJxJyEDgtQJ752vttL+iQ0zhRS6U/5rx4160IwyxkU49sZ
+         Lkew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+th/O+lEQQ2oYw1gaBmqYLCJ1+RUw5+Dxy7Tlrst6pQ=;
-        b=dk52R4XvPOu2CTxwIt7JrsXETSa5u6Cp+hh4K8L/eMNjzPUog23iAzQbRVyFgBxkSu
-         snytng8MZ6RUw0rdrmK7zdDZPKgOvVnzN2cd5QFhaySzTBODaPe5kqbvqP5n1UTSGXQ0
-         gfW0l7DvFTwW2Om+LguQOJGe7n89zVmnsQBhI3BkdYyVydgSGojTqwAm+anm0OUcK3xg
-         6ZZKoF5m+nqw4SI+PNNK6b0QBt7n/SSzzVGBUK3uJSAbc8ULdZQkr/GXJ79ZvNqYy9pv
-         usx27ONGQkWNkq3IxEpsYm90ptpRPgEkyetNFht7mSyAhqzGyAWiKRKoYzZs+JGHvlhQ
-         AUXw==
-X-Gm-Message-State: AO0yUKWS449s3KhHe7+AIIzXThTF3WsHw0u+5bunBlxT8XdKEnhPXsBd
-        zO9lskkRHAILLG30UtkdiRkq6UoZSQccU4/qJIs=
-X-Google-Smtp-Source: AK7set+mSkXFjBDrpVAa7amVvo+tHNjNU5sLleXqzsUNUNnri5/YeurRP/Kw9VFi/qTb9CHyQR4UwurO5K+rJkZIvV4=
-X-Received: by 2002:a25:9a45:0:b0:92c:dee4:d2d2 with SMTP id
- r5-20020a259a45000000b0092cdee4d2d2mr259779ybo.668.1676488677984; Wed, 15 Feb
- 2023 11:17:57 -0800 (PST)
-MIME-Version: 1.0
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6FZw+rbuPNpxPQkAbzgbqnhaAls6Wd3rBlTBF6zE2sU=;
+        b=ZWWEEqknO1ux1lLDL4ik5d4LZ87qIQhmuZVgD5R7eTS+/W3KH78ze9Q3qoEs7nd+cA
+         NVFYD4VLVZ5/AvQTw37pPbIpm/bI1gFStlv6Pg4+Yi4+LRIzprlX76PPlxIODjnOVoot
+         C9vIo3YaL9+EOSHTmTWfJ9hVHz+8WZrr2UWcnuo8eno49vAHcAektRkY2b1PL8Yzm08D
+         pJrzj8pnHFZFerfgrbYSY9Vu4hhTf9Y4dEb5ZI9hWLposJdj8m2/soOjD1QcfRZom2HP
+         XUnx8mYXQ9B3twPIr2VmLJ458w5vaUMJ7xFYvg5JezU5a4CR8YRQeqFYLi6ZQGkw/SNF
+         kxYg==
+X-Gm-Message-State: AO0yUKVdA23UcNQRk9Eua48VWUUoWhcU883KkR7ZZ0EczvMfZYVbtnZd
+        BEENE46fbrWkdos4fmBIAg0=
+X-Google-Smtp-Source: AK7set8/2BJEkf+A0QdVn0nYN8whIV36+3VYxhcGtj44qJM73ZoRyVtSc6Hdn6x7owSH2IV9wx1E2A==
+X-Received: by 2002:a05:6000:10c1:b0:2c5:56ff:4321 with SMTP id b1-20020a05600010c100b002c556ff4321mr3292756wrx.4.1676500237045;
+        Wed, 15 Feb 2023 14:30:37 -0800 (PST)
+Received: from localhost ([2001:b07:5d37:537d:5e25:9ef5:7977:d60c])
+        by smtp.gmail.com with ESMTPSA id g4-20020a5d6984000000b002c552c6c8c2sm11116335wru.87.2023.02.15.14.30.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Feb 2023 14:30:36 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Wed, 15 Feb 2023 23:30:35 +0100
+Message-Id: <CQJHQFNV0Z2I.24P0M0681CSE1@vincent-arch>
+Cc:     <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH] rust: kernel: Mark rust_fmt_argument as extern "C"
+From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
+To:     "David Gow" <davidgow@google.com>,
+        "Miguel Ojeda" <ojeda@kernel.org>,
+        "Alex Gaynor" <alex.gaynor@gmail.com>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
 References: <20230214224735.264894-1-davidgow@google.com>
 In-Reply-To: <20230214224735.264894-1-davidgow@google.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 15 Feb 2023 20:17:47 +0100
-Message-ID: <CANiq72meQeJU62P-_kzwobPS1tA5vTBnk5CnAWoiiK4GbPn4ag@mail.gmail.com>
-Subject: Re: [PATCH] rust: kernel: Mark rust_fmt_argument as extern "C"
-To:     David Gow <davidgow@google.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Feb 14, 2023 at 11:47 PM David Gow <davidgow@google.com> wrote:
->
 > The rust_fmt_argument function is called from printk() to handle the %pA
 > format specifier.
 >
@@ -78,8 +81,6 @@ On Tue, Feb 14, 2023 at 11:47 PM David Gow <davidgow@google.com> wrote:
 > Cc: stable@vger.kernel.org
 > Fixes: 247b365dc8dc ("rust: add `kernel` crate")
 > Signed-off-by: David Gow <davidgow@google.com>
+> ---
 
-Thanks David -- I will apply `rustfmt` on my side.
-
-Cheers,
-Miguel
+Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
