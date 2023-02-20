@@ -2,96 +2,74 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48522C6379F
-	for <rust-for-linux@archiver.kernel.org>; Wed, 15 Feb 2023 22:31:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91A2BC6379F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 20 Feb 2023 20:22:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229656AbjBOWb5 (ORCPT
+        id S232302AbjBTUW3 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 15 Feb 2023 17:31:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34840 "EHLO
+        Mon, 20 Feb 2023 15:22:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbjBOWb5 (ORCPT
+        with ESMTP id S232615AbjBTUWZ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 15 Feb 2023 17:31:57 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5FE530295;
-        Wed, 15 Feb 2023 14:31:55 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id p5so204663wmg.4;
-        Wed, 15 Feb 2023 14:31:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+NP6F+mj0B0zHcKL+YzogA4xteh+fNIdLHg/UKv8Hk8=;
-        b=PD3RAS8NmDzpGsEbXOD/rQTLRgTaJKbE6PggBpwqQbQGNp1GRdzKoiTSbIZ1Genvtd
-         auq3kbWgXMLcoqytGgSoA3d5/8oaDyZRtYkPFudliqgZrqC1T1RTXtbvoUvlAsu5ZPZv
-         P3pLOvmN8ngE/c56NfxgZRCUtGxGAYPf8kI0zPU0LYLTY6J94ohGj2B3Xvpar5ouBQJR
-         ZWkmDf6O0asGlKhJRLA6yAO21hViYlIo2j+0OPz+cQCT+I3npvGDjCLZNNc7285ewyer
-         Pv/uiafmYqFuxgap9kkljIN1+BdMBBB27Hj3CGKKHnV1JSGgucyuRYZZ+pM1LXpM09YN
-         occQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+NP6F+mj0B0zHcKL+YzogA4xteh+fNIdLHg/UKv8Hk8=;
-        b=3E6qwP38OanPL6APrt4O9WOjjfaXWbYwiBuFxQL2A5dKVPDwgLZEP/Cc5c0mYAB948
-         OFlgzp9LAtishZGVf2IbCllj9KEl+rC+cmLNfojeDrqOIzU8HdqNtxfiiqkXtqz10ad9
-         H3cBlr1/UCHjq4G9hDUHQJs3jEymmlml9k9/DOP7x9adW86XvNzniOkXUB9u/ZQb5ytA
-         fXWH82gFjO7gBcYbgEkqE9Dse4r1CkgKFhVdh5OO64f3fHK2WxO7Xfm1FTcTCUPRK65X
-         lDmQw56XCTpWo81hyT4ZXsiolUVnomPKnHgOqCNN4asR9pJc5OXW+h3j41Cee3ucup09
-         NPPw==
-X-Gm-Message-State: AO0yUKWktbXvzbXMBzGuhesuOhptZBSuJAv0fx3GX4YKqX9dpYZ/Ahn0
-        TvcQNntxgyco+Sk2/488J7c=
-X-Google-Smtp-Source: AK7set9GOpxqnABztlQ3C4s8ZHiFqwZTEk/Va5+GKkEK6i6xpG7YYElxntI4AqF07Uriqvn8rFoMpA==
-X-Received: by 2002:a05:600c:318f:b0:3dd:af7a:53db with SMTP id s15-20020a05600c318f00b003ddaf7a53dbmr3198565wmp.11.1676500314218;
-        Wed, 15 Feb 2023 14:31:54 -0800 (PST)
-Received: from localhost ([2001:b07:5d37:537d:5e25:9ef5:7977:d60c])
-        by smtp.gmail.com with ESMTPSA id x14-20020a1c7c0e000000b003e20970175dsm708665wmc.32.2023.02.15.14.31.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Feb 2023 14:31:53 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 15 Feb 2023 23:31:52 +0100
-Message-Id: <CQJHRF1Y2JPK.24C1KAF449PJR@vincent-arch>
-Cc:     "Miguel Ojeda" <ojeda@kernel.org>,
-        "Alex Gaynor" <alex.gaynor@gmail.com>,
-        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        "Richard Weinberger" <richard@nod.at>,
-        =?utf-8?q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
-        "David Gow" <davidgow@google.com>,
-        "Stephen Rothwell" <sfr@canb.auug.org.au>
-Subject: Re: [PATCH] Documentation: rust: Fix arch support table
-From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-To:     "Bagas Sanjaya" <bagasdotme@gmail.com>,
-        "Rust for Linux Kernel" <rust-for-linux@vger.kernel.org>,
-        "Linux Documentation" <linux-doc@vger.kernel.org>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>
-References: <20230213152714.78b844f4@canb.auug.org.au>
- <20230213085920.19726-1-bagasdotme@gmail.com>
-In-Reply-To: <20230213085920.19726-1-bagasdotme@gmail.com>
+        Mon, 20 Feb 2023 15:22:25 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B640921A12;
+        Mon, 20 Feb 2023 12:21:56 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A96B60F2F;
+        Mon, 20 Feb 2023 20:20:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C422CC433D2;
+        Mon, 20 Feb 2023 20:20:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676924404;
+        bh=99h1FX1DYIZ8FxUg0cKoapThaYPydsBdF/rO8Y7+58s=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=u7loxAInSMPATdjFegvUQlEKrcO8jSZ6o5gyakp8MEdfB3Gnj3bU31av/sdrrKQz2
+         dWWS/m3kJJFAlezBBQaHU21CCWvIdjXOwrbl5sProKcTvTUf4KzmstjcVygYxhzFOn
+         e8jqd4zddwLtROZMaE5xybrVnMKh2MytpCCqUaflcNBa765NHSq+IPf19Iwcs+zbBA
+         3u6fBcdaOpxeVAgpb/RQxnIbHaRI2GlOFVV3T3aPSniCzI000tC3CuLjFwH9Jw69Ng
+         x8ZlDn93pPdm1FnrcjIYhe88+bh2wGS4t/EO+YBNJ50dwB0OGELmwhFdHcYbpi3pTS
+         aa6yF4S7CwF6Q==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id AE259E68D20;
+        Mon, 20 Feb 2023 20:20:04 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust for 6.3
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20230212183249.162376-1-ojeda@kernel.org>
+References: <20230212183249.162376-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20230212183249.162376-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux tags/rust-6.3
+X-PR-Tracked-Commit-Id: 7ea01d3169a28d090fc8f22e7fcb4e4f1090c2d2
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 69adb0bcb833963050d82e645b6a1a0747662490
+Message-Id: <167692440469.19824.12170630179739195973.pr-tracker-bot@kernel.org>
+Date:   Mon, 20 Feb 2023 20:20:04 +0000
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> Stephen Rothwell reported htmldocs warning when merging uml tree:
->
-> Documentation/rust/arch-support.rst:20: WARNING: Blank line required afte=
-r table.
->
-> Fix the arch support table by removing extraneous simple table marker.
->
-> Link: https://lore.kernel.org/linux-next/20230213152714.78b844f4@canb.auu=
-g.org.au/
-> Fixes: 0438aadfa69a34 ("rust: arch/um: Add support for CONFIG_RUST under =
-x86_64 UML")
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> ---
+The pull request you sent on Sun, 12 Feb 2023 19:32:49 +0100:
 
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+> https://github.com/Rust-for-Linux/linux tags/rust-6.3
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/69adb0bcb833963050d82e645b6a1a0747662490
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
