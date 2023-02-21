@@ -2,155 +2,118 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 002BBC61DA3
-	for <rust-for-linux@archiver.kernel.org>; Tue, 21 Feb 2023 11:23:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4358C61DA3
+	for <rust-for-linux@archiver.kernel.org>; Tue, 21 Feb 2023 12:33:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233585AbjBULXc (ORCPT
+        id S232981AbjBUMc7 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 21 Feb 2023 06:23:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48074 "EHLO
+        Tue, 21 Feb 2023 07:32:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233673AbjBULXb (ORCPT
+        with ESMTP id S233997AbjBUMc6 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 21 Feb 2023 06:23:31 -0500
-Received: from mail-40140.protonmail.ch (mail-40140.protonmail.ch [185.70.40.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D097E2D44
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Feb 2023 03:23:26 -0800 (PST)
-Date:   Tue, 21 Feb 2023 11:23:09 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1676978604; x=1677237804;
-        bh=FUM4YFfkGx1kmwu6CRIbJk59at5i8sgLaWNEBJR+WDE=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=n+mPof8vZAPn1R4vMPLzY6/r82O2gsTgrqgI8Rx1hrgWwR6lhmpmoxgLbeKK+qD9d
-         H+DI9JWETLypUx/V5TJnrmg8sWC8X1/mRsI/iith226twKjfcdq8j78Ur2axJgQ6Bg
-         CL3P1WN1pHjsM9s4feA64hpnuT2sJhdDWIPj+pBizRsK0gf6O+3e68z6pgnFHKZW4B
-         SITHVBUP4M/5NwAdDv6tMvSSS1YxNpbUNCZSlCXhnH8g5wbUwve2T8X9g59RsI3nq+
-         GD1dNDET8SrOF9qHKR8cKhKgbp2/Q8VPnQTu/FgG9iFhUV261BdAsoHcS/oi5uV/rK
-         7XQk0k6rzI2RQ==
-To:     Asahi Lina <lina@asahilina.net>
-From:   =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Tue, 21 Feb 2023 07:32:58 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 930A56181;
+        Tue, 21 Feb 2023 04:32:54 -0800 (PST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1676982771;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=tKCc7ZKhDanVma3ABPhFhCDUgxqiBqxzcYUkl0L5zyU=;
+        b=ivgk4gKIT2ewsfr36AojJq3P3xDS8R5OSej9Z9rOJxzKPHQcXLxB2sYdkqzJQBgrK1PgTl
+        b7qbfK9JemyPnKGUxKkctJVCQTyiYABFZUpb20n7J6vaPL4poDmcV1Ybbxnqu07AwxlC8A
+        vEwmCrUaNQ+v4rLvZR0TD1wnANP+XqXAcXmbqIMijd2B1bUVHz2QadmANgQDU87h3CU/VY
+        MrWjC0VME1d/SH0qLP15I4Y5CbMi281vVHPI7C9E1MdUmITKqLtr8zqL11y6FxKh56xxEt
+        XQOmgBnSDDwxsaVMrShWnl5P2lbNrGQqVahduXJpbJDxOnufO0/E0Po+2EO6tA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1676982771;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=tKCc7ZKhDanVma3ABPhFhCDUgxqiBqxzcYUkl0L5zyU=;
+        b=xrRRKYKd+4hfsgfj1c6JmXDCae/ImWilT+Fy5Br5ANW0GMjS/GEhTo12TuYKaI/6B14b+r
+        qrWLhbISvYX+srCg==
+To:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         John Stultz <jstultz@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev
+        Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>
 Subject: Re: [PATCH] rust: time: New module for timekeeping functions
-Message-ID: <cZTGCCR7h2Foi4V_jJVIBGj74UpVRYHnay_ia7nqy_1MBNIj8Ntlux3waD0xJAhvSp4wkBfZ_fo7t90PPfZdfzUIUTa2To27EMfLzY4qUTk=@protonmail.com>
 In-Reply-To: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net>
 References: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net>
-Feedback-ID: 27884398:user:proton
+Date:   Tue, 21 Feb 2023 13:32:51 +0100
+Message-ID: <87v8jvnqq4.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tuesday, February 21st, 2023 at 08:06, Asahi Lina <lina@asahilina.net> w=
-rote:
-
-> This module is intended to contain functions related to kernel
-> timekeeping and time. Initially, this just wraps ktime_get() and
-> ktime_get_boottime() and returns them as core::time::Duration instances.
-> This is useful for drivers that need to implement simple retry loops and
-> timeouts.
->=20
-> Signed-off-by: Asahi Lina lina@asahilina.net
->=20
-> ---
->  rust/bindings/bindings_helper.h |  4 +++-
->  rust/kernel/lib.rs              |  1 +
->  rust/kernel/time.rs             | 25 +++++++++++++++++++++++++
->  3 files changed, 29 insertions(+), 1 deletion(-)
->=20
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 75d85bd6c592..587f3d1c0c9f 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -6,8 +6,10 @@
->   * Sorted alphabetically.
->   */
->=20
-> -#include <linux/slab.h>
-> +#include <linux/ktime.h>
->  #include <linux/refcount.h>
-> +#include <linux/slab.h>
-> +#include <linux/timekeeping.h>
->=20
->  /* `bindgen` gets confused at certain things. */
->  const gfp_t BINDINGS_GFP_KERNEL =3D GFP_KERNEL;
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 223564f9f0cc..371b1b17570e 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -37,6 +37,7 @@ mod static_assert;
->  pub mod std_vendor;
->  pub mod str;
->  pub mod sync;
-> +pub mod time;
->  pub mod types;
->=20
->  #[doc(hidden)]
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> new file mode 100644
-> index 000000000000..02844db47d34
-> --- /dev/null
-> +++ b/rust/kernel/time.rs
-> @@ -0,0 +1,25 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Timekeeping functions.
-> +//!
-> +//! C header: [`include/linux/ktime.h`](../../../../include/linux/ktime.=
-h)
-> +//! C header: [`include/linux/timekeeping.h`](../../../../include/linux/=
-timekeeping.h)
+On Tue, Feb 21 2023 at 16:06, Asahi Lina wrote:
 > +
 > +use crate::bindings;
 > +use core::time::Duration;
 > +
-> +/// Returns the kernel time elapsed since boot, excluding time spent sle=
-eping, as a [`Duration`].
+> +/// Returns the kernel time elapsed since boot, excluding time spent sleeping, as a [`Duration`].
 > +pub fn ktime_get() -> Duration {
 > +    // SAFETY: Function has no side effects and no inputs.
-> +    Duration::from_nanos(unsafe { bindings::ktime_get() }.try_into().unw=
-rap())
+> +    Duration::from_nanos(unsafe { bindings::ktime_get() }.try_into().unwrap())
 
-ktime_t seems to be a signed 64bit int, while Duration::from_nanos expects =
-an unsigned 64bit int. Based on https://lore.kernel.org/all/alpine.DEB.2.21=
-.1903231125480.2157@nanos.tec.linutronix.de/T/#u I think it is fine to cast=
- directly to u64 without doing the overflow check of try_into. This would e=
-liminate a potential BUG() call. I think it would be fine to keep as is if =
-you prefer though. As such:
+Why is this a Duration? From the spec:
 
-Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+    Duration
 
-Cheers,
-Bjorn
+        A Duration type to represent a span of time, typically used for
+        system timeouts.
+
+    Instant
+
+        A measurement of a monotonically nondecreasing clock. Opaque and
+        useful only with Duration.
+
+In my understanding 'Duration' is a time span between two points, while
+ktime_get() and ktime_get_boottime() return the current time of
+monotonically nondecreasing clocks, i.e. they fall into the 'Instant'
+category.
+
+Now the problem is that 'Instant' in it's specification is bound to
+CLOCK_MONOTONIC and there is no way to express CLOCK_BOOTTIME, but
+that's a shortcoming of the spec which ignores CLOCK_BOOTTIME
+completely. IOW, that's also a problem for user space.
+
+This makes sense vs. the other representation:
+
+     SystemTime
+     
+        A measurement of the system clock, useful for talking to
+        external entities like the file system or other processes.
+
+This maps to CLOCK_REALTIME and CLOCK_TAI, i.e. ktime_get_real_ns() and
+ktime_get_clocktai().
+
+Similar to 'Instant' 'SystemTime' is strictly bound to CLOCK_REALTIME
+by specification and there is no way to read CLOCK_TAI.
+
+Please fix this in the spec and do not try to work around that by
+pretending that a clock read is a 'Duration'.
 
 > +}
 > +
-> +/// Returns the kernel time elapsed since boot, including time spent sle=
-eping, as a [`Duration`].
+> +/// Returns the kernel time elapsed since boot, including time spent sleeping, as a [`Duration`].
 > +pub fn ktime_get_boottime() -> Duration {
 > +    Duration::from_nanos(
 > +        // SAFETY: Function has no side effects and no variable inputs.
-> +        unsafe { bindings::ktime_get_with_offset(bindings::tk_offsets_TK=
-_OFFS_BOOT) }
-> +            .try_into()
-> +            .unwrap(),
-> +    )
-> +}
->=20
-> ---
-> base-commit: 89f5349e0673322857bd432fa23113af56673739
-> change-id: 20230221-gpu-up-time-ea9412204c3b
->=20
-> Thank you,
-> ~~ Lina
+> +        unsafe { bindings::ktime_get_with_offset(bindings::tk_offsets_TK_OFFS_BOOT) }
+
+No. Please use ktime_get_boottime() and not the timekeeping internal function.
+
+Thanks,
+
+        tglx
