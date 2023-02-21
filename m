@@ -2,134 +2,80 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04E4BC636D7
-	for <rust-for-linux@archiver.kernel.org>; Tue, 21 Feb 2023 21:33:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84E62C61DA3
+	for <rust-for-linux@archiver.kernel.org>; Tue, 21 Feb 2023 21:47:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229596AbjBUVdv (ORCPT
+        id S230171AbjBUVrG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 21 Feb 2023 16:33:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37694 "EHLO
+        Tue, 21 Feb 2023 16:47:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjBUVdu (ORCPT
+        with ESMTP id S230116AbjBUVrD (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 21 Feb 2023 16:33:50 -0500
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C52392D78;
-        Tue, 21 Feb 2023 13:33:48 -0800 (PST)
-Date:   Tue, 21 Feb 2023 21:33:42 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1677015226; x=1677274426;
-        bh=RL72VfktvZSZwLdg205O+81BI72T3ECpaZs8xJd+WO4=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=hGqbBO7ZNdoE/T5azUEw1vSbnkbSMn0R9j9VkfQ1ZOojcmOiLULDzzsh82thOYiQa
-         fjpdvi9tgiTXcE3z2omjMUzZlBKWAdDcMOs6tW35opwPEa8v0Lps3GNijsHZI0sflo
-         VNEO9a4tEvkEN1cST/7rCBgULJkWOJ2ZUAzefttPQaTGNLIF8NoBS4bPNDrX16IloD
-         sQqbgjBXqQhSs3dEH73bC3T/HltUfxNRaE1OdgyrO90aSDYNAxveHrFYjuFx6IcTzp
-         q2xCeSqnY+2jJbS5kNsbJoPnaaNpfxyUxglFlan2I2sutRKzhVE4DSkUTuSx5ol4k8
-         rEchqKZ7FpKBg==
-To:     Thomas Gleixner <tglx@linutronix.de>
-From:   Heghedus Razvan <heghedus.razvan@protonmail.com>
-Cc:     Asahi Lina <lina@asahilina.net>, Boqun Feng <boqun.feng@gmail.com>,
+        Tue, 21 Feb 2023 16:47:03 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E319C32516;
+        Tue, 21 Feb 2023 13:47:01 -0800 (PST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1677016020;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=cP88n+Q0Efs6fNs0zhSu0osDsFH+tYMLLvPbqm6DPTs=;
+        b=eWBOmMrgb5OWr8fqdcszqqAq++ZQeEJSp+355MsgnJ4PQ3bksoebZn8Rb5shK1dYL2VHoN
+        SgkEzuIHr6aDsc3wviMWOrC44VDsAmwHeJHAuvjYqkYIPuV/b0pT4XkyhIG1vGflKKRxYS
+        MiXC/izWpRd3otRc4F4YDn6UWcbk+OyWYEWJMh9N9xxOHSvAmTzMY8jmcdSgtkdc/EFmDW
+        T+SwlAZMJxBP8XWGATNJV8Gz8nDda9RKkjxZtzvnAqGmJG/bs96+s+VqCIzlpxmSPRTZOq
+        NzRAOaWtW9YkIrHQUu7mpL9YeSB6ImFUSx6wbET44wwYurJzWAiT5EqyALOT7w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1677016020;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=cP88n+Q0Efs6fNs0zhSu0osDsFH+tYMLLvPbqm6DPTs=;
+        b=y+ALlCYrk0pS5oLd1YLS4Vl23zODfwkKurP52vdPMNWoLuyOXDgx/Sqd6ysFnflZAi1TFe
+        +RPottWZb8dKHkAg==
+To:     Josh Stone <jistone@redhat.com>, Asahi Lina <lina@asahilina.net>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         John Stultz <jstultz@google.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev
+        Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        asahi@lists.linux.dev
 Subject: Re: [PATCH] rust: time: New module for timekeeping functions
-Message-ID: <p7e4M5-kxxScH56bBMtlzht2_m33oSfMPHtExSVbDn0WIPYBEbiJjr2NvNhqCJotFhmYqH5h27EWPDhfSmmST0D-dSU1Alq4_BzDQUR48FA=@protonmail.com>
-In-Reply-To: <87edqioo1e.ffs@tglx>
-References: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net> <87v8jvnqq4.ffs@tglx> <Y/TP6as7qqwfcI42@boqun-archlinux> <87h6vfnh0f.ffs@tglx> <7b93bf74-abdc-f8c1-9a12-7c7f080f9e19@asahilina.net> <87edqioo1e.ffs@tglx>
-Feedback-ID: 1233518:user:proton
+In-Reply-To: <65ab5cb1-2dbe-e853-48ea-d1df87706cf0@redhat.com>
+References: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net>
+ <87v8jvnqq4.ffs@tglx> <65ab5cb1-2dbe-e853-48ea-d1df87706cf0@redhat.com>
+Date:   Tue, 21 Feb 2023 22:46:59 +0100
+Message-ID: <87zg96n12k.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tuesday, February 21st, 2023 at 8:45 PM, Thomas Gleixner <tglx@linutroni=
-x.de> wrote:
+On Tue, Feb 21 2023 at 09:13, Josh Stone wrote:
 
+> On 2/21/23 4:32 AM, Thomas Gleixner wrote:
+>> Now the problem is that 'Instant' in it's specification is bound to
+>> CLOCK_MONOTONIC and there is no way to express CLOCK_BOOTTIME, but
+>> that's a shortcoming of the spec which ignores CLOCK_BOOTTIME
+>> completely. IOW, that's also a problem for user space.
+>
+> That's not exactly *specified* -- it's meant to be opaque time. It is
+> documented that this currently uses clock_gettime monotonic on unix
+> targets, but "Disclaimer: These system calls might change over time."
+> CLOCK_MONOTONIC isn't even consistent across unix targets whether that
+> counts suspended time. It's been debated if we should switch to
+> CLOCK_BOOTTIME on Linux, but for now we're sticking to monotonic:
 
-> On Wed, Feb 22 2023 at 01:31, Asahi Lina wrote:
->=20
-> > On 22/02/2023 01.02, Thomas Gleixner wrote:
-> >=20
-> > > I'm not rusty enough, but you really want two types:
-> > >=20
-> > > timestamp and timedelta
-> > >=20
-> > > timestamp is an absolute time on a specific clock which is read via
-> > > now() and you can add time deltas to it. The latter is required for
-> > > arming an absolute timer on the clock.
-> > >=20
-> > > timedelta is a relative time and completely independent of any
-> > > clock. That's what you get when you subtract two timestamps, but you =
-can
-> > > also initialize it from a constant or some other source. timedelta ca=
-n
-> > > be used to arm a relative timer on any clock.
-> >=20
-> > If all clocks end up as the same `timestamp` though, then this isn't
-> > fully safe, because you could subtract `timestamp`s that came from
-> > different clocks and the result would be meaningless. That's why the
-> > Rust std Instant is specifically tied to one and only one system clock
-> > on each platform.
->=20
->=20
-> Fine, but do you agree that:
->=20
-> ts1 =3D tboot.now()
-> ...
-> ts2 =3D tboot.now()
->=20
-> xb =3D ts2 - ts1
->=20
-> then the result x1 cannot be the same data type as ts1, ts2.
->=20
-> From a typesafety perspective
->=20
-> ts1 =3D treal.now()
-> ...
-> ts2 =3D tboot.now()
->=20
-> x =3D ts2 - ts1
->=20
-> would be an invalid operation, but
->=20
-> ts1 =3D treal.now()
-> ...
-> ts2 =3D treal.now()
->=20
-> xr =3D ts2 - ts1
->=20
-> is obviously valid.
->=20
-> But xb abd xr are the same datatype because they represent a time delta.
->=20
-> That's the same the Rust std time semantics:
->=20
-> Duration =3D Instance - Instance valid
-> Duration =3D Systemtime - SystemTime valid
-> Duration =3D Systemtime - Instance invalid
->=20
-> No?
->=20
-I agree with Thomas on this one. The Rust type system is really powerful an=
-d we should take advantage of it. Time deltas can be enforced to be from th=
-e same clock at compile time.
-Just for the sake of it, I wrote a small example on how this can be achieve=
-: https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&edition=3D2021&=
-gist=3D1d0f70bb5329b181f203ce7270e2957a
+You'll need both when you want to implement substantial parts of the low
+level user space stack in Rust. Same for CLOCK_TAI.
 
+Thanks,
 
--- Heghedus Razvan (heghedus.razvan@protonmail.com)
-
-> Thanks,
->=20
-> tglx
+        tglx
