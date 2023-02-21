@@ -2,62 +2,155 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C48ADC61DA3
-	for <rust-for-linux@archiver.kernel.org>; Tue, 21 Feb 2023 09:11:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 002BBC61DA3
+	for <rust-for-linux@archiver.kernel.org>; Tue, 21 Feb 2023 11:23:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233865AbjBUJLo (ORCPT
+        id S233585AbjBULXc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 21 Feb 2023 04:11:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52046 "EHLO
+        Tue, 21 Feb 2023 06:23:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233304AbjBUJLl (ORCPT
+        with ESMTP id S233673AbjBULXb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 21 Feb 2023 04:11:41 -0500
-Received: from mail.socialglobal.pl (mail.socialglobal.pl [51.195.90.253])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93EF223C73
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Feb 2023 01:11:40 -0800 (PST)
-Received: by mail.socialglobal.pl (Postfix, from userid 1002)
-        id 6786D268E8; Tue, 21 Feb 2023 09:11:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=socialglobal.pl;
-        s=mail; t=1676970698;
-        bh=XwhyqI/moZPDJ7KCfcA6Gip8fA7ZKcg5SWsKuF/26zk=;
-        h=Date:From:To:Subject:From;
-        b=SNRHxcUxWl2vSGC83Dda/UDPayX5iHdqkBpKMUFlBdi0hOFplBBBLi8CuG3sNkaSB
-         zZkO2YqKxto5WfufWJ9SEO/tVXefJv5VkHBVg81hG1nxC+r+aqsaVnmnTFXW0bOzdX
-         PW+F4of4szouOmpMtp9qXQVh0RKagl1V1bVWiRy4OroGvtmqXKRy1icQ7BefC68gyg
-         cCDgeA0Lw97QdNurv7YY74P3OwoOyOw5EMP7tRtoYf/1EMjnl3/Ni19f6YyENxQfMA
-         RdD2DUBAIFy/ZqNFbyNZ5fCdXKNZyxDVLlMpXj6Y5SmWm8ecM9hYTb2tC1EX+GeIp1
-         e655qbfjirgpw==
-Received: by mail.socialglobal.pl for <rust-for-linux@vger.kernel.org>; Tue, 21 Feb 2023 09:10:52 GMT
-Message-ID: <20230221074500-0.1.4a.ztus.0.ra3yt9bkdu@socialglobal.pl>
-Date:   Tue, 21 Feb 2023 09:10:52 GMT
-From:   "Dominik Perkowski" <dominik.perkowski@socialglobal.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: Pozycjonowanie- informacja
-X-Mailer: mail.socialglobal.pl
+        Tue, 21 Feb 2023 06:23:31 -0500
+Received: from mail-40140.protonmail.ch (mail-40140.protonmail.ch [185.70.40.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D097E2D44
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Feb 2023 03:23:26 -0800 (PST)
+Date:   Tue, 21 Feb 2023 11:23:09 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1676978604; x=1677237804;
+        bh=FUM4YFfkGx1kmwu6CRIbJk59at5i8sgLaWNEBJR+WDE=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=n+mPof8vZAPn1R4vMPLzY6/r82O2gsTgrqgI8Rx1hrgWwR6lhmpmoxgLbeKK+qD9d
+         H+DI9JWETLypUx/V5TJnrmg8sWC8X1/mRsI/iith226twKjfcdq8j78Ur2axJgQ6Bg
+         CL3P1WN1pHjsM9s4feA64hpnuT2sJhdDWIPj+pBizRsK0gf6O+3e68z6pgnFHKZW4B
+         SITHVBUP4M/5NwAdDv6tMvSSS1YxNpbUNCZSlCXhnH8g5wbUwve2T8X9g59RsI3nq+
+         GD1dNDET8SrOF9qHKR8cKhKgbp2/Q8VPnQTu/FgG9iFhUV261BdAsoHcS/oi5uV/rK
+         7XQk0k6rzI2RQ==
+To:     Asahi Lina <lina@asahilina.net>
+From:   =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        John Stultz <jstultz@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev
+Subject: Re: [PATCH] rust: time: New module for timekeeping functions
+Message-ID: <cZTGCCR7h2Foi4V_jJVIBGj74UpVRYHnay_ia7nqy_1MBNIj8Ntlux3waD0xJAhvSp4wkBfZ_fo7t90PPfZdfzUIUTa2To27EMfLzY4qUTk=@protonmail.com>
+In-Reply-To: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net>
+References: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net>
+Feedback-ID: 27884398:user:proton
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,=20
+On Tuesday, February 21st, 2023 at 08:06, Asahi Lina <lina@asahilina.net> w=
+rote:
 
-jaki=C5=9B czas temu zg=C5=82osi=C5=82a si=C4=99 do nas firma, kt=C3=B3re=
-j strona internetowa nie pozycjonowa=C5=82a si=C4=99 wysoko w wyszukiwarc=
-e Google.=20
+> This module is intended to contain functions related to kernel
+> timekeeping and time. Initially, this just wraps ktime_get() and
+> ktime_get_boottime() and returns them as core::time::Duration instances.
+> This is useful for drivers that need to implement simple retry loops and
+> timeouts.
+>=20
+> Signed-off-by: Asahi Lina lina@asahilina.net
+>=20
+> ---
+>  rust/bindings/bindings_helper.h |  4 +++-
+>  rust/kernel/lib.rs              |  1 +
+>  rust/kernel/time.rs             | 25 +++++++++++++++++++++++++
+>  3 files changed, 29 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 75d85bd6c592..587f3d1c0c9f 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -6,8 +6,10 @@
+>   * Sorted alphabetically.
+>   */
+>=20
+> -#include <linux/slab.h>
+> +#include <linux/ktime.h>
+>  #include <linux/refcount.h>
+> +#include <linux/slab.h>
+> +#include <linux/timekeeping.h>
+>=20
+>  /* `bindgen` gets confused at certain things. */
+>  const gfp_t BINDINGS_GFP_KERNEL =3D GFP_KERNEL;
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 223564f9f0cc..371b1b17570e 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -37,6 +37,7 @@ mod static_assert;
+>  pub mod std_vendor;
+>  pub mod str;
+>  pub mod sync;
+> +pub mod time;
+>  pub mod types;
+>=20
+>  #[doc(hidden)]
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> new file mode 100644
+> index 000000000000..02844db47d34
+> --- /dev/null
+> +++ b/rust/kernel/time.rs
+> @@ -0,0 +1,25 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Timekeeping functions.
+> +//!
+> +//! C header: [`include/linux/ktime.h`](../../../../include/linux/ktime.=
+h)
+> +//! C header: [`include/linux/timekeeping.h`](../../../../include/linux/=
+timekeeping.h)
+> +
+> +use crate::bindings;
+> +use core::time::Duration;
+> +
+> +/// Returns the kernel time elapsed since boot, excluding time spent sle=
+eping, as a [`Duration`].
+> +pub fn ktime_get() -> Duration {
+> +    // SAFETY: Function has no side effects and no inputs.
+> +    Duration::from_nanos(unsafe { bindings::ktime_get() }.try_into().unw=
+rap())
 
-Na podstawie wykonanego przez nas audytu SEO zoptymalizowali=C5=9Bmy tre=C5=
-=9Bci na stronie pod k=C4=85tem wcze=C5=9Bniej opracowanych s=C5=82=C3=B3=
-w kluczowych. Nasz wewn=C4=99trzny system codziennie analizuje prawid=C5=82=
-owe dzia=C5=82anie witryny.  Dzi=C4=99ki indywidualnej strategii, firma z=
-dobywa coraz wi=C4=99cej Klient=C3=B3w. =20
+ktime_t seems to be a signed 64bit int, while Duration::from_nanos expects =
+an unsigned 64bit int. Based on https://lore.kernel.org/all/alpine.DEB.2.21=
+.1903231125480.2157@nanos.tec.linutronix.de/T/#u I think it is fine to cast=
+ directly to u64 without doing the overflow check of try_into. This would e=
+liminate a potential BUG() call. I think it would be fine to keep as is if =
+you prefer though. As such:
 
-Czy chcieliby Pa=C5=84stwo zwi=C4=99kszy=C4=87 liczb=C4=99 os=C3=B3b odwi=
-edzaj=C4=85cych stron=C4=99 internetow=C4=85 firmy? M=C3=B3g=C5=82bym prz=
-edstawi=C4=87 ofert=C4=99?=20
+Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
 
+Cheers,
+Bjorn
 
-Pozdrawiam serdecznie,
-Dominik Perkowski
+> +}
+> +
+> +/// Returns the kernel time elapsed since boot, including time spent sle=
+eping, as a [`Duration`].
+> +pub fn ktime_get_boottime() -> Duration {
+> +    Duration::from_nanos(
+> +        // SAFETY: Function has no side effects and no variable inputs.
+> +        unsafe { bindings::ktime_get_with_offset(bindings::tk_offsets_TK=
+_OFFS_BOOT) }
+> +            .try_into()
+> +            .unwrap(),
+> +    )
+> +}
+>=20
+> ---
+> base-commit: 89f5349e0673322857bd432fa23113af56673739
+> change-id: 20230221-gpu-up-time-ea9412204c3b
+>=20
+> Thank you,
+> ~~ Lina
