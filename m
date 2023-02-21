@@ -2,87 +2,107 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0EB33C636D7
-	for <rust-for-linux@archiver.kernel.org>; Tue, 21 Feb 2023 16:48:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C8889C636D7
+	for <rust-for-linux@archiver.kernel.org>; Tue, 21 Feb 2023 17:14:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233989AbjBUQsQ (ORCPT
+        id S234470AbjBUROX (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 21 Feb 2023 11:48:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51640 "EHLO
+        Tue, 21 Feb 2023 12:14:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234890AbjBUQsO (ORCPT
+        with ESMTP id S234820AbjBUROP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 21 Feb 2023 11:48:14 -0500
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 107A32BF3E;
-        Tue, 21 Feb 2023 08:48:09 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: lina@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 4B918419B4;
-        Tue, 21 Feb 2023 16:37:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1676997469;
-        bh=q6BVFwfAIWk2OOLv8SyurVmk8P7KEbhEcGD+6P4fo20=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To;
-        b=w0kjcj7XYcDPhignP+eQ2qVh5HGJmQQ5Rx8/rTVI+M3XKsWAVsJgXHLtFC6yA7tdh
-         1mIlDwj1XY5GuRUas5orrfa/hBoUc0ADGq41U82jJOlxSw8vTBpQRjsqjTBq8jyQ5E
-         /vBGrRmen+YGGa5UjbgtXO91BRGyQYlx8DW01OuJgHxVPTTOvnknbJUvH6Je39VRVW
-         cmgoUfjK/Mc7kcdUZcltbB2VzQ43KtxNNhOUmqPv7ztXJhMD/8h0Jd6QG9Us0HYhva
-         4GUPYxJXK3f/KF9DcuZmb9kAJh4m6UI/dPxGruORvMh9yk6x/wvYF3ncnGJCXKMBnL
-         dJ+sO2KR8E6Pw==
-Message-ID: <25f16677-8633-8c06-cf67-8024fae7854f@asahilina.net>
-Date:   Wed, 22 Feb 2023 01:37:44 +0900
+        Tue, 21 Feb 2023 12:14:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38A4E9EDB
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Feb 2023 09:13:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1676999608;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1yPp4giTefdhMbNYiavZiH2cm1Lod+7F0kuDYxzrSTg=;
+        b=NeijGzuJtNC0ZIV9fuMs2qvqXyXPKpFQKRZGoULNNJ0BaQsHYuBSkMF0jysNRshCFKixPX
+        WgVRq5n4+REYFJW9EW3/emAjtA5PUBiMEDZzsN6N1J/cx6Sb570YY0405nqwPU3MYpXR/L
+        n05Jn5ZpU6U1kyXznAuOw5rFsFYkhQQ=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-152-TvOG1W4CPfCokOCsYYHYxA-1; Tue, 21 Feb 2023 12:13:27 -0500
+X-MC-Unique: TvOG1W4CPfCokOCsYYHYxA-1
+Received: by mail-pg1-f200.google.com with SMTP id o38-20020a635d66000000b004fbec68e875so1562729pgm.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Feb 2023 09:13:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1yPp4giTefdhMbNYiavZiH2cm1Lod+7F0kuDYxzrSTg=;
+        b=FZ+dZXWkGFD4dU5HXv38Q873HwycU/1BUc9ridIls0IeWv1GIlQHMqZyuZD23By6E5
+         Yy1Y1Ubjk/6Y3A9gJWViTeXJkZcpozzB0bWCIvqvdk6ouA6iMyTkzC6t8HTfbW9levkY
+         vCzbXAaha9AQFEB10jT75xBuClG5y47tmArbw0DEastYoaERRR2TZMHSFIYcH0wUQnXV
+         8Qg14e7+aDY91hEIBu6gCxi2zFq8qbvwUmKyt/xUck7/FlbtuG1BDDukEgJfHSRPuBPz
+         yrrrYF5bzpRuzHT/cjaZb56FUceSEfRchJY6OMpLwDVnG6PTGeAsDgc0X1vLowUBMWN0
+         RqjA==
+X-Gm-Message-State: AO0yUKWQ2VCD3qyrgcw08+Xq3nAiP9PErHe3w8dTnwbJFx2gH8BuZuTa
+        k8WAMu1+2LoV/eqJqKNJ5F5KSrBMAyIm12p2F2Jk8qOmOqLT0CJSVBXp8GmJTuXwLmgMNm5YihS
+        oYtmgtY1WFwObEXNrJ2TNnBKNvXg=
+X-Received: by 2002:a17:902:8b85:b0:19a:b74a:7f7e with SMTP id ay5-20020a1709028b8500b0019ab74a7f7emr5874047plb.28.1676999606334;
+        Tue, 21 Feb 2023 09:13:26 -0800 (PST)
+X-Google-Smtp-Source: AK7set+RtL9IAIPXYJCcn8MrIbfJVmPzlVV8mepNgQVRI7RPXIX1+E4Kx9H9UE8S/26bkU9BkRgtWw==
+X-Received: by 2002:a17:902:8b85:b0:19a:b74a:7f7e with SMTP id ay5-20020a1709028b8500b0019ab74a7f7emr5874025plb.28.1676999606000;
+        Tue, 21 Feb 2023 09:13:26 -0800 (PST)
+Received: from ?IPV6:2601:1c0:4680:5870:8add:adee:83ef:b4f3? ([2601:1c0:4680:5870:8add:adee:83ef:b4f3])
+        by smtp.gmail.com with ESMTPSA id v10-20020a1709029a0a00b0019abb539cddsm10112124plp.10.2023.02.21.09.13.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Feb 2023 09:13:25 -0800 (PST)
+Message-ID: <65ab5cb1-2dbe-e853-48ea-d1df87706cf0@redhat.com>
+Date:   Tue, 21 Feb 2023 09:13:24 -0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
 Subject: Re: [PATCH] rust: time: New module for timekeeping functions
-Content-Language: en-US
-From:   Asahi Lina <lina@asahilina.net>
-To:     Boqun Feng <boqun.feng@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Asahi Lina <lina@asahilina.net>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         John Stultz <jstultz@google.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev
+        Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        asahi@lists.linux.dev
 References: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net>
- <87v8jvnqq4.ffs@tglx> <Y/TP6as7qqwfcI42@boqun-archlinux>
- <6aa15295-219b-225c-607d-e87e3d51d048@asahilina.net>
-In-Reply-To: <6aa15295-219b-225c-607d-e87e3d51d048@asahilina.net>
+ <87v8jvnqq4.ffs@tglx>
+From:   Josh Stone <jistone@redhat.com>
+In-Reply-To: <87v8jvnqq4.ffs@tglx>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 22/02/2023 01.27, Asahi Lina wrote:
-> I think that's the better approach, but I was hoping to leave that for a
-> future patch, especially since right now I'm the only user of this API
-> in the upcoming Apple GPU driver and it only uses it to implement some
-> really simple timeouts for polled operations, which isn't much API
-> coverage... I figured we might get a better idea for what to do once a
-> second user comes along. For example, do we want straight methods like
-> that or std::ops trait impls? And do we make everything fallible or
-> panic on overflow or just wrap?
+On 2/21/23 4:32 AM, Thomas Gleixner wrote:
+> Now the problem is that 'Instant' in it's specification is bound to
+> CLOCK_MONOTONIC and there is no way to express CLOCK_BOOTTIME, but
+> that's a shortcoming of the spec which ignores CLOCK_BOOTTIME
+> completely. IOW, that's also a problem for user space.
 
-Also, it's probably worth mentioning that this kind of refactor can be
-done without rewriting all the user code. For example, here is how I use
-the APIs:
+That's not exactly *specified* -- it's meant to be opaque time. It is
+documented that this currently uses clock_gettime monotonic on unix
+targets, but "Disclaimer: These system calls might change over time."
+CLOCK_MONOTONIC isn't even consistent across unix targets whether that
+counts suspended time. It's been debated if we should switch to
+CLOCK_BOOTTIME on Linux, but for now we're sticking to monotonic:
 
-    let timeout = time::ktime_get() + Duration::from_millis(...);
-    while time::ktime_get() < timeout {
-        [...]
-    }
+https://github.com/rust-lang/rust/pull/88714
 
-Even if ktime_get() starts returning another type, as long as it can
-interoperate with core::time::Duration the same way, it will continue to
-compile (and if it only interoperates with a new kernel-specific
-Duration, you'd only have to change the `use` statement at the top).
+But as others mentioned, this is in the std crate which isn't used by
+the kernel. You could absolutely define your own with more specificity,
+like kernel::time::BootTime, and copy an API similar to Instant's.
 
-~~ Lina
