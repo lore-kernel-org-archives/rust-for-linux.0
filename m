@@ -2,74 +2,146 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91A2BC6379F
-	for <rust-for-linux@archiver.kernel.org>; Mon, 20 Feb 2023 20:22:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B92EFC61DA3
+	for <rust-for-linux@archiver.kernel.org>; Tue, 21 Feb 2023 07:07:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232302AbjBTUW3 (ORCPT
+        id S233113AbjBUHH2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 20 Feb 2023 15:22:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41598 "EHLO
+        Tue, 21 Feb 2023 02:07:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232615AbjBTUWZ (ORCPT
+        with ESMTP id S233039AbjBUHH1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 20 Feb 2023 15:22:25 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B640921A12;
-        Mon, 20 Feb 2023 12:21:56 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Tue, 21 Feb 2023 02:07:27 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0BE41F4B2;
+        Mon, 20 Feb 2023 23:07:25 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A96B60F2F;
-        Mon, 20 Feb 2023 20:20:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C422CC433D2;
-        Mon, 20 Feb 2023 20:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676924404;
-        bh=99h1FX1DYIZ8FxUg0cKoapThaYPydsBdF/rO8Y7+58s=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=u7loxAInSMPATdjFegvUQlEKrcO8jSZ6o5gyakp8MEdfB3Gnj3bU31av/sdrrKQz2
-         dWWS/m3kJJFAlezBBQaHU21CCWvIdjXOwrbl5sProKcTvTUf4KzmstjcVygYxhzFOn
-         e8jqd4zddwLtROZMaE5xybrVnMKh2MytpCCqUaflcNBa765NHSq+IPf19Iwcs+zbBA
-         3u6fBcdaOpxeVAgpb/RQxnIbHaRI2GlOFVV3T3aPSniCzI000tC3CuLjFwH9Jw69Ng
-         x8ZlDn93pPdm1FnrcjIYhe88+bh2wGS4t/EO+YBNJ50dwB0OGELmwhFdHcYbpi3pTS
-         aa6yF4S7CwF6Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id AE259E68D20;
-        Mon, 20 Feb 2023 20:20:04 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust for 6.3
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20230212183249.162376-1-ojeda@kernel.org>
-References: <20230212183249.162376-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20230212183249.162376-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux tags/rust-6.3
-X-PR-Tracked-Commit-Id: 7ea01d3169a28d090fc8f22e7fcb4e4f1090c2d2
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 69adb0bcb833963050d82e645b6a1a0747662490
-Message-Id: <167692440469.19824.12170630179739195973.pr-tracker-bot@kernel.org>
-Date:   Mon, 20 Feb 2023 20:20:04 +0000
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        (Authenticated sender: linasend@asahilina.net)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 3663C4212E;
+        Tue, 21 Feb 2023 07:07:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+        s=default; t=1676963243;
+        bh=A6KIoIu/aWBN1yeja85GO8JYcwY1Qw51Y1+fwsMD53Q=;
+        h=From:Date:Subject:To:Cc;
+        b=XHzIza3Ub/FjJcWrwQHESLsoh9ezdwJTGya8kSVtAe1FKXcEN0itGH1EBuzZ2l74+
+         gtLrDhK1sAeFoFHh/ZMSjv0j5GYVW1sTIiPHKFLNPqTC4Jr5fRlW/XJ/JAuXP9wcpX
+         ErcFiyIu/5MUj8CrwvfXsbm4+uK2J2MbJPpL1zkk3CiDCITxaeMI6fsxElrnNMb6U0
+         LuB938Hfl4B3ajFzIlr9gvQBt8AHVunuie/nrAIv7gpri1T8un7oA/ShRT04xWz2Oc
+         eK9r1kkNjANKKTE13wHlr5ydHgsM+WxB4AgVqfZiWK4QJq4l15Rk2/up5JO4GT2JF9
+         yruLTZsgjvvNw==
+From:   Asahi Lina <lina@asahilina.net>
+Date:   Tue, 21 Feb 2023 16:06:36 +0900
+Subject: [PATCH] rust: time: New module for timekeeping functions
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net>
+X-B4-Tracking: v=1; b=H4sIAHtt9GMC/x2NQQrDIBAAvxL23AXd5NJ+peSgZqsLqRGtIRDy9
+ yw9zsAwJzSuwg1ewwmVd2myZQX7GCAklyOjLMpAhkZDZDGWjr3gT76M7J6TJTJTGD1o4V1j9NX
+ lkLTJfV1VlsofOf6L93xdNyr3I0hyAAAA
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        John Stultz <jstultz@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1676963239; l=2619;
+ i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
+ bh=A6KIoIu/aWBN1yeja85GO8JYcwY1Qw51Y1+fwsMD53Q=;
+ b=PCyQteOlBV30u4Or1zgaDIULokFbkC+cEOyujN6u6p+d3o8raXypNxbmbQsytrR+KgZlcE0PH
+ i7eGpPhDHZmD+14BL1DMnBTwBEJ2NDnS9UV3DRHqqnwHySW4bZp9LTR
+X-Developer-Key: i=lina@asahilina.net; a=ed25519;
+ pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-The pull request you sent on Sun, 12 Feb 2023 19:32:49 +0100:
+This module is intended to contain functions related to kernel
+timekeeping and time. Initially, this just wraps ktime_get() and
+ktime_get_boottime() and returns them as core::time::Duration instances.
+This is useful for drivers that need to implement simple retry loops and
+timeouts.
 
-> https://github.com/Rust-for-Linux/linux tags/rust-6.3
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+---
+ rust/bindings/bindings_helper.h |  4 +++-
+ rust/kernel/lib.rs              |  1 +
+ rust/kernel/time.rs             | 25 +++++++++++++++++++++++++
+ 3 files changed, 29 insertions(+), 1 deletion(-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/69adb0bcb833963050d82e645b6a1a0747662490
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 75d85bd6c592..587f3d1c0c9f 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -6,8 +6,10 @@
+  * Sorted alphabetically.
+  */
+ 
+-#include <linux/slab.h>
++#include <linux/ktime.h>
+ #include <linux/refcount.h>
++#include <linux/slab.h>
++#include <linux/timekeeping.h>
+ 
+ /* `bindgen` gets confused at certain things. */
+ const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 223564f9f0cc..371b1b17570e 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -37,6 +37,7 @@ mod static_assert;
+ pub mod std_vendor;
+ pub mod str;
+ pub mod sync;
++pub mod time;
+ pub mod types;
+ 
+ #[doc(hidden)]
+diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+new file mode 100644
+index 000000000000..02844db47d34
+--- /dev/null
++++ b/rust/kernel/time.rs
+@@ -0,0 +1,25 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Timekeeping functions.
++//!
++//! C header: [`include/linux/ktime.h`](../../../../include/linux/ktime.h)
++//! C header: [`include/linux/timekeeping.h`](../../../../include/linux/timekeeping.h)
++
++use crate::bindings;
++use core::time::Duration;
++
++/// Returns the kernel time elapsed since boot, excluding time spent sleeping, as a [`Duration`].
++pub fn ktime_get() -> Duration {
++    // SAFETY: Function has no side effects and no inputs.
++    Duration::from_nanos(unsafe { bindings::ktime_get() }.try_into().unwrap())
++}
++
++/// Returns the kernel time elapsed since boot, including time spent sleeping, as a [`Duration`].
++pub fn ktime_get_boottime() -> Duration {
++    Duration::from_nanos(
++        // SAFETY: Function has no side effects and no variable inputs.
++        unsafe { bindings::ktime_get_with_offset(bindings::tk_offsets_TK_OFFS_BOOT) }
++            .try_into()
++            .unwrap(),
++    )
++}
 
-Thank you!
+---
+base-commit: 89f5349e0673322857bd432fa23113af56673739
+change-id: 20230221-gpu-up-time-ea9412204c3b
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Thank you,
+~~ Lina
+
