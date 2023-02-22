@@ -2,41 +2,41 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B75B1C61DA3
-	for <rust-for-linux@archiver.kernel.org>; Wed, 22 Feb 2023 00:02:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 65D80C61DA3
+	for <rust-for-linux@archiver.kernel.org>; Wed, 22 Feb 2023 00:24:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbjBVACA (ORCPT
+        id S229448AbjBVAY5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 21 Feb 2023 19:02:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45416 "EHLO
+        Tue, 21 Feb 2023 19:24:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbjBVAB7 (ORCPT
+        with ESMTP id S229560AbjBVAY4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 21 Feb 2023 19:01:59 -0500
+        Tue, 21 Feb 2023 19:24:56 -0500
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F062ED58;
-        Tue, 21 Feb 2023 16:01:59 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F615311C6;
+        Tue, 21 Feb 2023 16:24:55 -0800 (PST)
 From:   Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1677024117;
+        s=2020; t=1677025494;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=xMGpa08Mw3PGW7iuLitm7PdtQJcfT87dyawJM52k+dU=;
-        b=MLRi3hb8X5D/TpPJf1xZH6FufcfF1nogAzow0RQ4qibu3fHoWq8BUChC+xpokPf1UwbI19
-        uDIqwXHlL3WiQyR5OlFSOl8Ua4hbtrFXhd6LxIgOI2J3cBb7alyaR2+8RTvKAycjEYoFAo
-        apHv9u54r5LoPjaK2GNiA8GBe0beGgbzn7QMPW8c4K5F9zOrcqmZTfl09BdyfS4vMxDypu
-        wivxsYkl7X34CsTHgOUjBFN9UElRum0bDPmn0JwYFztaoMsouko6M7QxCYYc9urW/ZHNTU
-        EmtOngioXVeuJwXSPS6xserCcE28HxGsqWLANZ4LyzAm5wCCRdpkMV9Kt+KgqA==
+        bh=RFxbMXXmu1KSWmkyS7CNaBdRPgAJukHwXn3uC7mnL08=;
+        b=Nt9NCiwE+E85SFvkEKjZghHHoGFdoJzJZFovt6bf0Svcxsq/6HikW4zCdeKhLNPh+JqDLh
+        MdEnHXVBVtEkc2Si84GNYmIsOh+k4Meqegjnh56KfIYFibKprJkfMpVEPCtE4ewixknoUL
+        KBVWDT30DpTzj4Hpfthp9jyVrrK9Y+xc26vE/3yFanSd4elbDn+WARhvqO5IA1LVhZ27zN
+        2bYEjsO/bT8FgElwLUqg1zQyqSeU1o7NUA8TjKzpOxY0fGtR7/d9WpGTIrWVpB+qZCcAJs
+        BXrbW6nDl+n6z7+tN4tKgrm/xlcegCxOH+fhAFHA8Yv3ZL4vMW8Fz4z2fiwlDA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1677024117;
+        s=2020e; t=1677025494;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=xMGpa08Mw3PGW7iuLitm7PdtQJcfT87dyawJM52k+dU=;
-        b=HTJMzuLacM9f1T894foCtmTb5LoD1SKgQ/AGK1UWgN7Vt4zfuKK+4V1gA5yWSrVVOMh792
-        NEOgjOiqYk+8+ZCQ==
-To:     Heghedus Razvan <heghedus.razvan@protonmail.com>
+        bh=RFxbMXXmu1KSWmkyS7CNaBdRPgAJukHwXn3uC7mnL08=;
+        b=bPACesJRTqkEvI7v6VwG5UPWY6UuHlhFP3pfLOwSNlH2AszNtq10x52yRx7m2JRdXjqXrJ
+        6pKXsh75FtmgEDBg==
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Asahi Lina <lina@asahilina.net>, Boqun Feng <boqun.feng@gmail.com>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
@@ -45,39 +45,67 @@ Cc:     Asahi Lina <lina@asahilina.net>, Boqun Feng <boqun.feng@gmail.com>,
         =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         John Stultz <jstultz@google.com>,
         Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev
+        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev,
+        Heghedus Razvan <heghedus.razvan@protonmail.com>
 Subject: Re: [PATCH] rust: time: New module for timekeeping functions
-In-Reply-To: <p7e4M5-kxxScH56bBMtlzht2_m33oSfMPHtExSVbDn0WIPYBEbiJjr2NvNhqCJotFhmYqH5h27EWPDhfSmmST0D-dSU1Alq4_BzDQUR48FA=@protonmail.com>
+In-Reply-To: <CANiq72n-++roTv3yDNOA=Mi_sscBZX3xPdZ6RZ0Oxx+T82pf5A@mail.gmail.com>
 References: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net>
  <87v8jvnqq4.ffs@tglx> <Y/TP6as7qqwfcI42@boqun-archlinux>
  <87h6vfnh0f.ffs@tglx> <7b93bf74-abdc-f8c1-9a12-7c7f080f9e19@asahilina.net>
  <87edqioo1e.ffs@tglx>
- <p7e4M5-kxxScH56bBMtlzht2_m33oSfMPHtExSVbDn0WIPYBEbiJjr2NvNhqCJotFhmYqH5h27EWPDhfSmmST0D-dSU1Alq4_BzDQUR48FA=@protonmail.com>
-Date:   Wed, 22 Feb 2023 01:01:56 +0100
-Message-ID: <87r0uimutn.ffs@tglx>
+ <CANiq72n-++roTv3yDNOA=Mi_sscBZX3xPdZ6RZ0Oxx+T82pf5A@mail.gmail.com>
+Date:   Wed, 22 Feb 2023 01:24:53 +0100
+Message-ID: <87o7pmmtre.ffs@tglx>
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Feb 21 2023 at 21:33, Heghedus Razvan wrote:
-> On Tuesday, February 21st, 2023 at 8:45 PM, Thomas Gleixner <tglx@linutronix.de> wrote:
->> That's the same the Rust std time semantics:
->> 
->> Duration = Instance - Instance valid
->> Duration = Systemtime - SystemTime valid
->> Duration = Systemtime - Instance invalid
->> 
->> No?
->> 
-> I agree with Thomas on this one. The Rust type system is really
-> powerful and we should take advantage of it. Time deltas can be
-> enforced to be from the same clock at compile time.  Just for the sake
-> of it, I wrote a small example on how this can be achieve:
-> https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=1d0f70bb5329b181f203ce7270e2957a
+Miguel!
 
-Cute. This code makes even sense to Rustagnostics like me.
+On Tue, Feb 21 2023 at 23:29, Miguel Ojeda wrote:
+> On Tue, Feb 21, 2023 at 7:45 PM Thomas Gleixner <tglx@linutronix.de> wrote:
+>>
+>> But xb abd xr are the same datatype because they represent a time delta.
+>
+> In principle, one could also have different duration types too. For
+> instance, C++'s `std::chrono::duration` type is parametrized on the
+> representation type and the tick period, and thus an operation between
+> two time points like t1 - t0 returns a duration type that depends on
+> the type of the time points, i.e. which clock they were obtained from.
+
+Correct, but for practical purposes I'd assume that the timestamps
+retrieved via ktime_get*() have the same granularity, i.e. 1ns.
+
+TBH, that's not entirely correct because:
+
+    - the underlying hardware clocksource might not have a 1ns
+      resolution
+
+    - the CLOCK_*_COARSE implementations are only advanced once per
+      tick, but are executing significantly faster because they avoid
+      the hardware counter access.
+
+But that's an assumption which has proven to be workable and correct
+with the full zoo of hardware supported by the kernel.
+
+The point is that all CLOCK_* variants, except CLOCK_REALTIME and
+CLOCK_TAI are guaranteed to never go backwards.
+
+CLOCK_REALTIME and CLOCK_TAI are special as they can be set by user
+space and CLOCK_REALTIME has the extra oddities of leap seconds.  But
+that's a well understood issue and is not specific to the kernel.
+
+Back to time deltas (or duration types). Independent of the above it
+might make sense to be type strict about these as well. Especially if we
+go one step further and have timers based on CLOCK_* which need to be
+armed by either timestamps for absolute expiry or time deltas for
+relative to now expiry. I definitely can see a point for requiring
+matching time delta types there.
+
+That said, I have no strong opinions about this particular detail and
+leave it to the Rusties to agree on something sensible.
 
 Thanks,
 
