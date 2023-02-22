@@ -2,167 +2,97 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7552FC64EC4
-	for <rust-for-linux@archiver.kernel.org>; Wed, 22 Feb 2023 06:53:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44272C64EC4
+	for <rust-for-linux@archiver.kernel.org>; Wed, 22 Feb 2023 08:33:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230314AbjBVGxR (ORCPT
+        id S230462AbjBVIdL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 22 Feb 2023 01:53:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57036 "EHLO
+        Wed, 22 Feb 2023 03:33:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbjBVGxQ (ORCPT
+        with ESMTP id S230190AbjBVIdK (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 22 Feb 2023 01:53:16 -0500
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5185111E9F
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Feb 2023 22:53:15 -0800 (PST)
-Date:   Wed, 22 Feb 2023 06:52:54 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1677048791; x=1677307991;
-        bh=2fcc02TJKeCbdCgomqwRMSA3e/UKIY5bgqryL685toA=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=wTbYkHmXqoN9GbVNLkKptyKMXGrQgGe+Rdefi2e5zzAIVBb9dRZfp/wSk2l4aXVpU
-         1fyrANNEhX7goFrgBwTK/90kdr1xAg/0U3phvpWoVRpyqr+/CXradkJ1bBkgYKO5WZ
-         YEoP2/ZoQvfVCuO7JtdHm38RcKWjamat3ojrH3vsHUzL7at8X9l1moZuKeuNyhbkIy
-         NnNyrQ73O6/vrHxcaK2tTf4SW7tEloFar7fYwVoz10SnCw9b52SkXuYqqEjKkckEcI
-         TqAyDIhSW6gyyG1KF20utZo0wysiPgSXq7feeNZNJPK6XpZhsxAZwcDWT65M8HBz8S
-         FRUlXMyvbiSyA==
-To:     Asahi Lina <lina@asahilina.net>
-From:   Heghedus Razvan <heghedus.razvan@protonmail.com>
-Cc:     Boqun Feng <boqun.feng@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 22 Feb 2023 03:33:10 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A62CF1D907;
+        Wed, 22 Feb 2023 00:33:07 -0800 (PST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1677054784;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=4Vi0hyCmETvO266sIihn2iEfnC+waPbsYfKs7U90/uU=;
+        b=KsZfcpE+jZ3CcraoQykrDMrguuCa8oeL7pD5UMapAwCF7/BeF5ce+IeBujSKrb/bObtJEe
+        mfoDdLu0uw3i0a1ciULvrwi4RGwUiOsi6VTVFVKbsnBjQkc20fjBSecSjrMz/lzhlIV9Bt
+        UuUxFIOtLOXvYglH8AyYm68IjR0apmBphaHw9QeQsAIgozLdB2ri+iPyHmt8PNqwvwuCwf
+        qRP73sq2zd9myBrggnpa4P7r2UwzEauTCnWMc3Guhk0CvAXhOXpgM+FVG2TLQQcxWwzRs5
+        el/4yozlEK+cnDPJGFi0jOcenm5qYs4vSFT038UehohkM2zMtoNtu+lLnhup3w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1677054784;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=4Vi0hyCmETvO266sIihn2iEfnC+waPbsYfKs7U90/uU=;
+        b=TfTnEicpwBjyS9gA7fZpVKA6kDubSILcMFW0M8PSVFHuul62H5KG/fVGqGX/zHZ2JSdeuU
+        ZT0Q5G4hzFwzDfAg==
+To:     Asahi Lina <lina@asahilina.net>, Boqun Feng <boqun.feng@gmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         John Stultz <jstultz@google.com>,
         Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
         rust-for-linux@vger.kernel.org, asahi@lists.linux.dev
 Subject: Re: [PATCH] rust: time: New module for timekeeping functions
-Message-ID: <52Hk6hI5jZoH5VNisYoDk6lSpqPoIbZvUKFismYbzOWhUOyli8OmG_h9X-kBJz7jo5GUDUOMZQmY4Gl8aqNEW5b2ufNvjlWyM7wJKcioeng=@protonmail.com>
-In-Reply-To: <03e9af69-3fea-032d-6dc3-ac0ea8e57471@asahilina.net>
-References: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net> <87v8jvnqq4.ffs@tglx> <Y/TP6as7qqwfcI42@boqun-archlinux> <87h6vfnh0f.ffs@tglx> <7b93bf74-abdc-f8c1-9a12-7c7f080f9e19@asahilina.net> <87edqioo1e.ffs@tglx> <CANiq72n-++roTv3yDNOA=Mi_sscBZX3xPdZ6RZ0Oxx+T82pf5A@mail.gmail.com> <87o7pmmtre.ffs@tglx> <Y/WDz013yBIfQPDq@boqun-archlinux> <03e9af69-3fea-032d-6dc3-ac0ea8e57471@asahilina.net>
-Feedback-ID: 1233518:user:proton
+In-Reply-To: <98de1e48-085b-6edb-f1cc-2bf85180196f@asahilina.net>
+References: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net>
+ <87v8jvnqq4.ffs@tglx> <Y/TP6as7qqwfcI42@boqun-archlinux>
+ <6aa15295-219b-225c-607d-e87e3d51d048@asahilina.net> <87bklmonbv.ffs@tglx>
+ <98de1e48-085b-6edb-f1cc-2bf85180196f@asahilina.net>
+Date:   Wed, 22 Feb 2023 09:33:03 +0100
+Message-ID: <87lekqm75s.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-------- Original Message -------
-On Wednesday, February 22nd, 2023 at 6:45 AM, Asahi Lina <lina@asahilina.ne=
-t> wrote:
+Lina !
+
+On Wed, Feb 22 2023 at 13:56, Asahi Lina wrote:
+> On 22/02/2023 04.00, Thomas Gleixner wrote:
+>> Be aware that my Rust foo is not even rusty it's close to non-existant.
+>> That's probaly true for many maintainers you need to interact with.
+>
+> Please do feel free to reach out and ask any questions about all this
+> crazy Rust stuff stuff! We're here to help and I know this is all new to
+> a lot of maintainers. I want people to be comfortable that we aren't
+> just creating more maintenance burden for everyone else.
+
+I can only speak for myself. I'm comfortable and sufficiently curious
+about this particular flavour of crazy.
+
+I don't think these abstractions are a huge burden as long as the folks
+who implement them talk to the relevant maintainers so we don't end
+up with Rust inflicted burdens or ill defined abstractions.
+
+> That's also another conversation that we probably need to have, how do
+> we handle maintainership of Rust abstractions? I think Miguel mentioned
+> that ideally existing subsystem maintainers take over their bits of the
+> Rust side too over time, but of course a lot of people aren't going to
+> be comfortable with that if they don't have a lot of Rust experience
+> yet... personally I'm happy to sign up as co-maintainer or supporter of
+> the abstractions I contribute, or maybe we can just pool resources and
+> have people interested in Rust agree to help support this stuff for
+> every subsystem?
+
+Having subsystem maintainer teams supplemented with a Rust wizard, is
+probably the best option at the moment. Time will tell as always.
+
+Thanks,
+
+        tglx
 
 
-> On 22/02/2023 11.54, Boqun Feng wrote:
->=20
-> > On Wed, Feb 22, 2023 at 01:24:53AM +0100, Thomas Gleixner wrote:
-> >=20
-> > > Miguel!
-> > >=20
-> > > On Tue, Feb 21 2023 at 23:29, Miguel Ojeda wrote:
-> > >=20
-> > > > On Tue, Feb 21, 2023 at 7:45 PM Thomas Gleixner tglx@linutronix.de =
-wrote:
-> > > >=20
-> > > > > But xb abd xr are the same datatype because they represent a time=
- delta.
-> > > >=20
-> > > > In principle, one could also have different duration types too. For
-> > > > instance, C++'s `std::chrono::duration` type is parametrized on the
-> > > > representation type and the tick period, and thus an operation betw=
-een
-> > > > two time points like t1 - t0 returns a duration type that depends o=
-n
-> > > > the type of the time points, i.e. which clock they were obtained fr=
-om.
-> > >=20
-> > > Correct, but for practical purposes I'd assume that the timestamps
-> > > retrieved via ktime_get*() have the same granularity, i.e. 1ns.
-> > >=20
-> > > TBH, that's not entirely correct because:
-> > >=20
-> > > - the underlying hardware clocksource might not have a 1ns
-> > > resolution
-> > >=20
-> > > - the CLOCK_*_COARSE implementations are only advanced once per
-> > > tick, but are executing significantly faster because they avoid
-> > > the hardware counter access.
-> > >=20
-> > > But that's an assumption which has proven to be workable and correct
-> > > with the full zoo of hardware supported by the kernel.
-> > >=20
-> > > The point is that all CLOCK_* variants, except CLOCK_REALTIME and
-> > > CLOCK_TAI are guaranteed to never go backwards.
-> > >=20
-> > > CLOCK_REALTIME and CLOCK_TAI are special as they can be set by user
-> > > space and CLOCK_REALTIME has the extra oddities of leap seconds. But
-> > > that's a well understood issue and is not specific to the kernel.
-> > >=20
-> > > Back to time deltas (or duration types). Independent of the above it
-> > > might make sense to be type strict about these as well. Especially if=
- we
-> > > go one step further and have timers based on CLOCK_* which need to be
-> > > armed by either timestamps for absolute expiry or time deltas for
-> > > relative to now expiry. I definitely can see a point for requiring
-> > > matching time delta types there.
-> > >=20
-> > > That said, I have no strong opinions about this particular detail and
-> > > leave it to the Rusties to agree on something sensible.
-> >=20
-> > I'd like to propose something below to make thing forward quickly:
-> >=20
-> > Given Lina only uses CLOCK_BOOTTIME and CLOCK_MONOTONIC, I'd say we
-> > reuse core::time::Duration and probably remain its ">=3D0" semantics ev=
-en
-> > in the future we change its internal representation to u64.
-> >=20
-> > For timestamp type, use Instant semantics and use different types for
-> > different clocks, i.e. similar to the implementation from Heghedus (muc=
-h
-> > better than mine!). But we can avoid implementing a fully version of
-> > Instant, and focus on just the piece that Lina needs, which I believe
-> > it's elapsed()?
-> >=20
-> > For the future, if we were to support non-monotonic timestamp, maybe we
-> > use the different type name like TimeStamp and TimeDelta.
-> >=20
-> > In short:
-> >=20
-> > * For monotonic clocks, Instant + Duration, and keep them similar
-> > to std semantics.
-> >=20
-> > * For non-monotonic clocks, don't worry it right now, and
-> > probably different types for both stamps and deltas.
-> >=20
-> > Thoughts?
->=20
->=20
-> I actually only used CLOCK_MONOTONIC in the end, so I could even leave
-> CLOCK_BOOTTIME for later, though I like the idea of having scaffolding
-> for several clock types even if we only implement one initially.
->=20
-> This works for me, if you're happy with the idea I'll give it a spin
-> based on Heghedus' example. Heghedus, is it okay if I put you down as
-> Co-developed-by and can I get a signoff? ^^
-Yes, of course. You have my support.
-
--- Heghedus Razvan (heghedus.razvan@protonmail.com)
-
->=20
-> For the actual Instant type, I was thinking it makes sense to just
-> internally represent it as a newtype of Duration as well. Then all the
-> math becomes trivial based on Duration operations, and when we replace
-> Duration with a new u64 type it'll all work out the same. Fundamentally
-> that means Instant types are internally stored as the Duration between
-> the epoch (e.g. system boot) subject to the way that clock ticks, which
-> I think is a reasonable internal representation? (In other words, it's
-> the same as my original patch behind the scenes, but wrapped in type
-> safety).
->=20
-> ~~ Lina
