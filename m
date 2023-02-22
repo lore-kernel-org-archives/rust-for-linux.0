@@ -2,159 +2,108 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 08A4DC61DA4
-	for <rust-for-linux@archiver.kernel.org>; Wed, 22 Feb 2023 04:46:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EAB3C64EC4
+	for <rust-for-linux@archiver.kernel.org>; Wed, 22 Feb 2023 04:56:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229660AbjBVEqL (ORCPT
+        id S229586AbjBVE4b (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 21 Feb 2023 23:46:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43472 "EHLO
+        Tue, 21 Feb 2023 23:56:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjBVEqK (ORCPT
+        with ESMTP id S229641AbjBVE41 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 21 Feb 2023 23:46:10 -0500
+        Tue, 21 Feb 2023 23:56:27 -0500
 Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0444C34313;
-        Tue, 21 Feb 2023 20:46:06 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AE7E3527A;
+        Tue, 21 Feb 2023 20:56:25 -0800 (PST)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
         (Authenticated sender: lina@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id A5FB941A42;
-        Wed, 22 Feb 2023 04:46:00 +0000 (UTC)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 2F44442468;
+        Wed, 22 Feb 2023 04:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1677041164;
-        bh=YefTKoatxpMrsoyHQZsN7uOgHmOyYEP0llX+E4XLaI0=;
+        s=default; t=1677041784;
+        bh=/iiU3vAWbjH5xw1OvZM1qRoWYsNgQONMqzT7xx1tB2o=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=mwbrEHlYFM2LLXsWSzj6/R/gvTddOcyPMIA0rr6nhBG0xwNBYJJnA1hljVj+Xw5Vf
-         zJO314/CeAFJ09brEXce0k4Q+QhvcYZpHHe6Dxni+3TfYzC2NvEjwxPpIK6v+g9R0S
-         6+MUr+kcD4fhSKk6UeNO9PfrUQf0/GHfuFO4wgLOx2Uwt+w6tdI5pYQWW5NFFbX6SR
-         lc/qdwssIk/OYLiE1CCeC5XgUIDuRJWMgLF2vfz1/UZsqwXHofOzOKOyp5qlehufT7
-         Ym+7+/OQI1nYSCN73WpSUYtJvrQki60zq0EOGXKUWCezkxPs5Bo9mhgJs1+wpzTmmA
-         yry5lmvc+zZnQ==
-Message-ID: <03e9af69-3fea-032d-6dc3-ac0ea8e57471@asahilina.net>
-Date:   Wed, 22 Feb 2023 13:45:58 +0900
+        b=v0gmhEzGcu4zLdnDBT0N29zW/CZAgJMs1PXz1jNwqoQrCO/pOSC4FzbaJkMEK22QZ
+         IfjKy6GT2wwOvrG3mkepuosX4lOcHCM4Z/jWQKJwol91vkK1ztqALoKKNGNyktOqeE
+         PPFnwkHcqyWMVKMM65j/JS8G97DXdYwJiWeDKoJnP0sERu43TAefxJ0zxzRoYi1IgD
+         Zgzvog/7tng9ca0XgGjgdxI5Mb3PfELqwrpvAT2IZVMVPj+GWFI7cCqdj6Kl2GDZvi
+         01dhXITb43QlrhYAqs/F0qBfQrC+GVtK9b3JSVmE2rIs8u8TTzmdx9I1fmrMbfRhX1
+         E5s4K2RKuj+tA==
+Message-ID: <98de1e48-085b-6edb-f1cc-2bf85180196f@asahilina.net>
+Date:   Wed, 22 Feb 2023 13:56:19 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.1
 Subject: Re: [PATCH] rust: time: New module for timekeeping functions
 Content-Language: en-US
-To:     Boqun Feng <boqun.feng@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Boqun Feng <boqun.feng@gmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         John Stultz <jstultz@google.com>,
         Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev,
-        Heghedus Razvan <heghedus.razvan@protonmail.com>
+        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev
 References: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net>
  <87v8jvnqq4.ffs@tglx> <Y/TP6as7qqwfcI42@boqun-archlinux>
- <87h6vfnh0f.ffs@tglx> <7b93bf74-abdc-f8c1-9a12-7c7f080f9e19@asahilina.net>
- <87edqioo1e.ffs@tglx>
- <CANiq72n-++roTv3yDNOA=Mi_sscBZX3xPdZ6RZ0Oxx+T82pf5A@mail.gmail.com>
- <87o7pmmtre.ffs@tglx> <Y/WDz013yBIfQPDq@boqun-archlinux>
+ <6aa15295-219b-225c-607d-e87e3d51d048@asahilina.net> <87bklmonbv.ffs@tglx>
 From:   Asahi Lina <lina@asahilina.net>
-In-Reply-To: <Y/WDz013yBIfQPDq@boqun-archlinux>
+In-Reply-To: <87bklmonbv.ffs@tglx>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 22/02/2023 11.54, Boqun Feng wrote:
-> On Wed, Feb 22, 2023 at 01:24:53AM +0100, Thomas Gleixner wrote:
->> Miguel!
->>
->> On Tue, Feb 21 2023 at 23:29, Miguel Ojeda wrote:
->>> On Tue, Feb 21, 2023 at 7:45 PM Thomas Gleixner <tglx@linutronix.de> wrote:
+On 22/02/2023 04.00, Thomas Gleixner wrote:
+>>>>> +}
+>>>>> +
+>>>>> +/// Returns the kernel time elapsed since boot, including time spent sleeping, as a [`Duration`].
+>>>>> +pub fn ktime_get_boottime() -> Duration {
+>>>>> +    Duration::from_nanos(
+>>>>> +        // SAFETY: Function has no side effects and no variable inputs.
+>>>>> +        unsafe { bindings::ktime_get_with_offset(bindings::tk_offsets_TK_OFFS_BOOT) }
 >>>>
->>>> But xb abd xr are the same datatype because they represent a time delta.
->>>
->>> In principle, one could also have different duration types too. For
->>> instance, C++'s `std::chrono::duration` type is parametrized on the
->>> representation type and the tick period, and thus an operation between
->>> two time points like t1 - t0 returns a duration type that depends on
->>> the type of the time points, i.e. which clock they were obtained from.
+>>>> No. Please use ktime_get_boottime() and not the timekeeping internal function.
 >>
->> Correct, but for practical purposes I'd assume that the timestamps
->> retrieved via ktime_get*() have the same granularity, i.e. 1ns.
->>
->> TBH, that's not entirely correct because:
->>
->>     - the underlying hardware clocksource might not have a 1ns
->>       resolution
->>
->>     - the CLOCK_*_COARSE implementations are only advanced once per
->>       tick, but are executing significantly faster because they avoid
->>       the hardware counter access.
->>
->> But that's an assumption which has proven to be workable and correct
->> with the full zoo of hardware supported by the kernel.
->>
->> The point is that all CLOCK_* variants, except CLOCK_REALTIME and
->> CLOCK_TAI are guaranteed to never go backwards.
->>
->> CLOCK_REALTIME and CLOCK_TAI are special as they can be set by user
->> space and CLOCK_REALTIME has the extra oddities of leap seconds.  But
->> that's a well understood issue and is not specific to the kernel.
->>
->> Back to time deltas (or duration types). Independent of the above it
->> might make sense to be type strict about these as well. Especially if we
->> go one step further and have timers based on CLOCK_* which need to be
->> armed by either timestamps for absolute expiry or time deltas for
->> relative to now expiry. I definitely can see a point for requiring
->> matching time delta types there.
->>
->> That said, I have no strong opinions about this particular detail and
->> leave it to the Rusties to agree on something sensible.
->>
+>> `ktime_get_boottime()` is static inline, so it will need a manual helper
+>> wrapper to be callable from Rust (at least until bindgen implements
+>> automatic helper generation, which I hear is coming soon). I was trying
+>> to avoid introducing even more helpers, since helpers.c is kind of
+>> already getting out of hand in my branch with all the stuff that's
+>> getting added... but I can add it if you don't want me to use
+>> ktime_get_with_offset(). It'll also be slower this way though (since the
+>> helper introduces another layer of function calling), and I figured of
+>> all things we probably want time functions to be fast, since they tend
+>> to get called a lot...
 > 
-> I'd like to propose something below to make thing forward quickly:
+> I can understand that, but please add proper comments and an explanation
+> to the changelog then. That would have avoided tripping my taste sensor.
 > 
-> Given Lina only uses CLOCK_BOOTTIME and CLOCK_MONOTONIC, I'd say we
-> reuse core::time::Duration and probably remain its ">=0" semantics even
-> in the future we change its internal representation to u64.
-> 
-> For timestamp type, use Instant semantics and use different types for
-> different clocks, i.e. similar to the implementation from Heghedus (much
-> better than mine!). But we can avoid implementing a fully version of
-> Instant, and focus on just the piece that Lina needs, which I believe
-> it's elapsed()?
-> 
-> For the future, if we were to support non-monotonic timestamp, maybe we
-> use the different type name like TimeStamp and TimeDelta.
-> 
-> In short:
-> 
-> *	For monotonic clocks, Instant + Duration, and keep them similar
-> 	to std semantics.
-> 
-> *	For non-monotonic clocks, don't worry it right now, and
-> 	probably different types for both stamps and deltas.
-> 
-> Thoughts?
+> Be aware that my Rust foo is not even rusty it's close to non-existant.
+> That's probaly true for many maintainers you need to interact with.
 
-I actually only used CLOCK_MONOTONIC in the end, so I could even leave
-CLOCK_BOOTTIME for later, though I like the idea of having scaffolding
-for several clock types even if we only implement one initially.
+I'll add a comment ^^
 
-This works for me, if you're happy with the idea I'll give it a spin
-based on Heghedus' example. Heghedus, is it okay if I put you down as
-Co-developed-by and can I get a signoff? ^^
+Please do feel free to reach out and ask any questions about all this
+crazy Rust stuff stuff! We're here to help and I know this is all new to
+a lot of maintainers. I want people to be comfortable that we aren't
+just creating more maintenance burden for everyone else.
 
-For the actual Instant type, I was thinking it makes sense to just
-internally represent it as a newtype of Duration as well. Then all the
-math becomes trivial based on Duration operations, and when we replace
-Duration with a new u64 type it'll all work out the same. Fundamentally
-that means Instant types are internally stored as the Duration between
-the epoch (e.g. system boot) subject to the way that clock ticks, which
-I think is a reasonable internal representation? (In other words, it's
-the same as my original patch behind the scenes, but wrapped in type
-safety).
+That's also another conversation that we probably need to have, how do
+we handle maintainership of Rust abstractions? I think Miguel mentioned
+that ideally existing subsystem maintainers take over their bits of the
+Rust side too over time, but of course a lot of people aren't going to
+be comfortable with that if they don't have a lot of Rust experience
+yet... personally I'm happy to sign up as co-maintainer or supporter of
+the abstractions I contribute, or maybe we can just pool resources and
+have people interested in Rust agree to help support this stuff for
+every subsystem?
 
 ~~ Lina
