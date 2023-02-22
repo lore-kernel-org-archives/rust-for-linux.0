@@ -2,97 +2,140 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44272C64EC4
-	for <rust-for-linux@archiver.kernel.org>; Wed, 22 Feb 2023 08:33:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 556F5C6379F
+	for <rust-for-linux@archiver.kernel.org>; Wed, 22 Feb 2023 09:47:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230462AbjBVIdL (ORCPT
+        id S231460AbjBVJrH (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 22 Feb 2023 03:33:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48714 "EHLO
+        Wed, 22 Feb 2023 04:47:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230190AbjBVIdK (ORCPT
+        with ESMTP id S229997AbjBVJqp (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 22 Feb 2023 03:33:10 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A62CF1D907;
-        Wed, 22 Feb 2023 00:33:07 -0800 (PST)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1677054784;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=4Vi0hyCmETvO266sIihn2iEfnC+waPbsYfKs7U90/uU=;
-        b=KsZfcpE+jZ3CcraoQykrDMrguuCa8oeL7pD5UMapAwCF7/BeF5ce+IeBujSKrb/bObtJEe
-        mfoDdLu0uw3i0a1ciULvrwi4RGwUiOsi6VTVFVKbsnBjQkc20fjBSecSjrMz/lzhlIV9Bt
-        UuUxFIOtLOXvYglH8AyYm68IjR0apmBphaHw9QeQsAIgozLdB2ri+iPyHmt8PNqwvwuCwf
-        qRP73sq2zd9myBrggnpa4P7r2UwzEauTCnWMc3Guhk0CvAXhOXpgM+FVG2TLQQcxWwzRs5
-        el/4yozlEK+cnDPJGFi0jOcenm5qYs4vSFT038UehohkM2zMtoNtu+lLnhup3w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1677054784;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=4Vi0hyCmETvO266sIihn2iEfnC+waPbsYfKs7U90/uU=;
-        b=TfTnEicpwBjyS9gA7fZpVKA6kDubSILcMFW0M8PSVFHuul62H5KG/fVGqGX/zHZ2JSdeuU
-        ZT0Q5G4hzFwzDfAg==
-To:     Asahi Lina <lina@asahilina.net>, Boqun Feng <boqun.feng@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 22 Feb 2023 04:46:45 -0500
+Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82623C7BD;
+        Wed, 22 Feb 2023 01:44:44 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id ACD3B32007E8;
+        Wed, 22 Feb 2023 04:43:54 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Wed, 22 Feb 2023 04:43:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canishe.com; h=
+        cc:cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1677059034; x=
+        1677145434; bh=VCMoJbjvZg10keVee9p0giqEJ7Kc4L7pxVFap9ybfZA=; b=y
+        CGVI2lgePlD/1NBruHBn3wL4lzzTzWTTNX7Jat5egzFIBzBXbo9V9VIZvTDVmuAz
+        uhONZpVSltUQfcLmQ+4UvryHdKPh3mWbCbSYX3BInJgGfAMuHArK3DNvyaKNp96Z
+        QPYIp46enPGM9eJJaCO83ONVXIrjxFTigWlJeNxAIB856NwHHmJI/u677DDOa4c9
+        H4gWFE9Jw+y9xhTT7OgBeopSssxL1GFcVQ6ml8uxsjbBUTwS51CPCwTDOKQfPj6t
+        VK8aX02ZvkBfCVd3ZLut+aPDPXbDpxN+JAYftfgXDo2sEAJXC13DhNaScQPX/cWg
+        bOHe2FZiWEHoab+ajfuBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1677059034; x=
+        1677145434; bh=VCMoJbjvZg10keVee9p0giqEJ7Kc4L7pxVFap9ybfZA=; b=r
+        ynIIcEjXhd9PuHRDDK/dtkcnvQ5NYUiWJeqWCWyxjzDa1qpEdOHI2S6EyECWWaMA
+        auwovef0BikLJ4Yj3yHjwCQZuzwQ9Qr13mLCN1S8Z4ctGmH7wu+/HkVApsE40nbi
+        iZILcoRRcpthVJfkNLK1EjF0liofL3xT9CoFu7ceAOF6odRnKNM+3MonPlDWNZim
+        jbGgvE/6d8FZPaJzCgQBiBbl/QnAs5aIqhXpVxgzCjp6F5CT/PKV9gqmBSo49Vd0
+        LNGJx7XBvrY6t4VX9fnvOZtUxh11cl7D2KfP+JPboZGlac0UgRjHJA8keD9OBxH7
+        4YRd0sI2xR9l+2LbacKqQ==
+X-ME-Sender: <xms:2eP1Y1y6L604NRigCI4Y9OXZoh1ntdn2BTJhzZEC8nAT7Z7XmHvujA>
+    <xme:2eP1Y1Qdh3sBiZk16m-4Zwyq25KWpUth3eLBVl1areL4EVLpskPxnu12cROhNIcNC
+    n6R4V95oPfRsexu6Q>
+X-ME-Received: <xmr:2eP1Y_VMsdUgngQLvTh68LDzaBuyF_ibp1532O-EWq7QEEg8t5sSDbGkTgaE2rOkwkiDq6rod-ZjZNmXrSu-MpR1MDJuaQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudejledgtdeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurheptggguffhjgffvefgkfhfvffosehtqhhmtdhhtdejnecuhfhrohhmpefirggv
+    lhgrnhcuufhtvggvlhgvuceoghgsshestggrnhhishhhvgdrtghomheqnecuggftrfgrth
+    htvghrnhepheefvedtuedugeefhfeihffgvddvtefgffeuuddvheefffetleevteekgeff
+    vedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepgh
+    gsshestggrnhhishhhvgdrtghomh
+X-ME-Proxy: <xmx:2eP1Y3hOYfRg4NqEaOCGSnCe69lYgQ7hHJg9Iz_aU4VzoneQrnxozQ>
+    <xmx:2eP1Y3D90RyXt0wiwIaq5Wp88sBwPXaJS9xUvj9ZyoBZTDX0LVUOUw>
+    <xmx:2eP1YwIlQjOugwokx7omOhMmhy0h33CEBXi52MyNAP4WiTWrD7bb0Q>
+    <xmx:2uP1Y0J8k0vNIH0pb0He4D3sOj2eGnKpZ9Fi_L4_UpseJZ7ZOtTWzg>
+Feedback-ID: i57a145e2:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 22 Feb 2023 04:43:52 -0500 (EST)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.400.51.1.1\))
+Subject: Re: [PATCH] rust: time: New module for timekeeping functions
+From:   Gaelan Steele <gbs@canishe.com>
+In-Reply-To: <87zg96n12k.ffs@tglx>
+Date:   Wed, 22 Feb 2023 09:43:39 +0000
+Cc:     Josh Stone <jistone@redhat.com>, Asahi Lina <lina@asahilina.net>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         John Stultz <jstultz@google.com>,
         Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
         rust-for-linux@vger.kernel.org, asahi@lists.linux.dev
-Subject: Re: [PATCH] rust: time: New module for timekeeping functions
-In-Reply-To: <98de1e48-085b-6edb-f1cc-2bf85180196f@asahilina.net>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <EE0C3422-B908-4263-B0E8-27B6DFFCF306@canishe.com>
 References: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net>
- <87v8jvnqq4.ffs@tglx> <Y/TP6as7qqwfcI42@boqun-archlinux>
- <6aa15295-219b-225c-607d-e87e3d51d048@asahilina.net> <87bklmonbv.ffs@tglx>
- <98de1e48-085b-6edb-f1cc-2bf85180196f@asahilina.net>
-Date:   Wed, 22 Feb 2023 09:33:03 +0100
-Message-ID: <87lekqm75s.ffs@tglx>
-MIME-Version: 1.0
-Content-Type: text/plain
+ <87v8jvnqq4.ffs@tglx> <65ab5cb1-2dbe-e853-48ea-d1df87706cf0@redhat.com>
+ <87zg96n12k.ffs@tglx>
+To:     Thomas Gleixner <tglx@linutronix.de>
+X-Mailer: Apple Mail (2.3731.400.51.1.1)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Lina !
 
-On Wed, Feb 22 2023 at 13:56, Asahi Lina wrote:
-> On 22/02/2023 04.00, Thomas Gleixner wrote:
->> Be aware that my Rust foo is not even rusty it's close to non-existant.
->> That's probaly true for many maintainers you need to interact with.
->
-> Please do feel free to reach out and ask any questions about all this
-> crazy Rust stuff stuff! We're here to help and I know this is all new to
-> a lot of maintainers. I want people to be comfortable that we aren't
-> just creating more maintenance burden for everyone else.
 
-I can only speak for myself. I'm comfortable and sufficiently curious
-about this particular flavour of crazy.
+> On Feb 21, 2023, at 9:46 PM, Thomas Gleixner <tglx@linutronix.de> =
+wrote:
+>=20
+> On Tue, Feb 21 2023 at 09:13, Josh Stone wrote:
+>=20
+>> On 2/21/23 4:32 AM, Thomas Gleixner wrote:
+>>> Now the problem is that 'Instant' in it's specification is bound to
+>>> CLOCK_MONOTONIC and there is no way to express CLOCK_BOOTTIME, but
+>>> that's a shortcoming of the spec which ignores CLOCK_BOOTTIME
+>>> completely. IOW, that's also a problem for user space.
+>>=20
+>> That's not exactly *specified* -- it's meant to be opaque time. It is
+>> documented that this currently uses clock_gettime monotonic on unix
+>> targets, but "Disclaimer: These system calls might change over time."
+>> CLOCK_MONOTONIC isn't even consistent across unix targets whether =
+that
+>> counts suspended time. It's been debated if we should switch to
+>> CLOCK_BOOTTIME on Linux, but for now we're sticking to monotonic:
+>=20
+> You'll need both when you want to implement substantial parts of the =
+low
+> level user space stack in Rust. Same for CLOCK_TAI.
+>=20
+> Thanks,
+>=20
+>        tglx
 
-I don't think these abstractions are a huge burden as long as the folks
-who implement them talk to the relevant maintainers so we don't end
-up with Rust inflicted burdens or ill defined abstractions.
+std isn=E2=80=99t really designed to provide full coverage of any =
+particular OS
+interface - it has to provide concepts that map cleanly onto Windows and
+every flavor of Unix.[1] Low-level Unix Rust code typically uses the =
+libc
+crate, which just exports everything from libc as an unsafe function, or
+one of several safe wrappers (nix is the most popular one, I=E2=80=99m =
+partial to
+rustix), alongside std.
 
-> That's also another conversation that we probably need to have, how do
-> we handle maintainership of Rust abstractions? I think Miguel mentioned
-> that ideally existing subsystem maintainers take over their bits of the
-> Rust side too over time, but of course a lot of people aren't going to
-> be comfortable with that if they don't have a lot of Rust experience
-> yet... personally I'm happy to sign up as co-maintainer or supporter of
-> the abstractions I contribute, or maybe we can just pool resources and
-> have people interested in Rust agree to help support this stuff for
-> every subsystem?
+[1]: std does in cases provide OS-specific functions - for example,
+std::fs::Metadata (~=3D struct stat) has Unix-specific ways to get the
+mode - but again, the goal here is to be broadly useful, not full
+coverage.
 
-Having subsystem maintainer teams supplemented with a Rust wizard, is
-probably the best option at the moment. Time will tell as always.
-
-Thanks,
-
-        tglx
+Best wishes,
+Gaelan
 
 
