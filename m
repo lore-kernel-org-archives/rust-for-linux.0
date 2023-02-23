@@ -2,148 +2,135 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 350D2C636D6
-	for <rust-for-linux@archiver.kernel.org>; Wed, 22 Feb 2023 19:55:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 313A8C61DA4
+	for <rust-for-linux@archiver.kernel.org>; Thu, 23 Feb 2023 02:59:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232898AbjBVTzt (ORCPT
+        id S233740AbjBWC7d (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 22 Feb 2023 14:55:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35092 "EHLO
+        Wed, 22 Feb 2023 21:59:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232896AbjBVTzs (ORCPT
+        with ESMTP id S233082AbjBWC7c (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 22 Feb 2023 14:55:48 -0500
-Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2133.outbound.protection.outlook.com [40.107.10.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E67516ACD;
-        Wed, 22 Feb 2023 11:55:41 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LbS0sIDMUFr3Ap8pQGsK4ti4bGn24lLry9gDmUCxufPzKCvf0Z/SDUGVE7twpDBTZJ4X3KlqNKcvQHO7XUFnWbTIeroZ6EcJZFFPgjMovZnDZWJ/lEd6Iusrdn9iIZpzBpsXECfjMJNtwXXouxBBD/PibqssUjfrfJ7VJSFH9c4CTtx2H2iNmYtywk7fLFfLzfLCvRNjRbwRwNRkVZMot2/gOjDmL1MUGyXiNT8qr4BxA/2bcX8kmFrPSugiHj8TRKedJapdM1LcZZONkV4Dpcceo4jI3dKpbXoFDaLFhFC5V8FCTGaEPN7AhzaGKJ17K2DG9BoStZAZVQrnUd36vA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SN6fJ7hGgUL5RimHHH1l5kkeJHYu5D5U839n1wd7v+g=;
- b=fCzSgLzO5D3U09jLRcMefg9STkB316oj2kW5zyTHExiMgVdbNNQT3v6fiVVaf0UPkCx4FuF5QVcLtE1eIOFwdjV24kHH8V3K0jainpMywQ7zsy/y3E8wiyVHrELkEymK8IdBnJYt6fvg0F9d6Hku2euTAX6vDofv0c+Y+cV/ypn0K/usskv2MkzZaD72VYJlu3qtdAkaZCuqojdCG+f34MqRp5cMlwGHagAmQASGunYWSVLZlmNZbJlhkxn6LCWeZPz4TB7QEbJP+WXqxAOCn7zvR+UVM/ZRZCMcw53OdbbO8Chod85jUQVuzzZZiidrVMRAkF4JG8tmUEJdrMVmxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SN6fJ7hGgUL5RimHHH1l5kkeJHYu5D5U839n1wd7v+g=;
- b=l+lczL12M7IS6T33jyoC215tr+1k5bWEbCY85DFFMngJ6cFAP/hwCOjv2d3szkStjfIsp/IvBAEQirBcuGoYb/rAzKauBOrHCGiUwa31RTlIsb0NwEm3p1Au2jbBQlNSFqOT8ge016/Pk244ZPgs8TQcbQZ2biqaIZmd9Y6URJU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWLP265MB1889.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:49::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.21; Wed, 22 Feb
- 2023 19:55:39 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::2f2a:55d4:ea1d:dece]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::2f2a:55d4:ea1d:dece%4]) with mapi id 15.20.6134.019; Wed, 22 Feb 2023
- 19:55:39 +0000
-Date:   Wed, 22 Feb 2023 19:55:37 +0000
-From:   Gary Guo <gary@garyguo.net>
-To:     Heghedus Razvan <heghedus.razvan@protonmail.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Asahi Lina <lina@asahilina.net>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 22 Feb 2023 21:59:32 -0500
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DB5843470;
+        Wed, 22 Feb 2023 18:59:31 -0800 (PST)
+Received: by mail-oi1-x229.google.com with SMTP id t22so10229371oiw.12;
+        Wed, 22 Feb 2023 18:59:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4bDaQlm4IekB9ci5Y7wuWrWJVAV12yieyIsNsT+hgOM=;
+        b=YGPJA+i7UZLAPFXwYzlNCPMqISThunBnbc5pTH7YX1EDEmfx/4Y1SoNXZ3LxKf+Zqp
+         uLUywXXUMojb6MaaRk1ZQfYa1pys+gtDmzOg8Zxz6dGRZ8BalIDPJEKcZQRCMYn2ULDO
+         OGCM6WnMg3Oc5nHzuiiVjIqyCazTcJgMz+2nptTn9RSgGYNaJkePYFAmF+FsAQje8vTC
+         xK+1SS4mxHnilTLH1Sv78hzC/8HbXsAd+H3TvtB0i6yF8n/fnWdBSbybIpUqmHNVvDTf
+         DIG5H4YBp4ZDLZCgjZhQVqf7ySSJPGfjx7j9/OCqYYo9dvRueMeA9JrIOW6webJFS41C
+         MXKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4bDaQlm4IekB9ci5Y7wuWrWJVAV12yieyIsNsT+hgOM=;
+        b=yNL3HOsKsycyEfuo4LTaq4u2OMDGgFV1TjDygriCABKcohuQ6ceIj4234xl9qrOZc9
+         FMi018EgoQz7Kpana1MLAF0Rlg/SEEPe8zGTscl1FVQTC7c8ffcXxJa60oZgKMrJ1g6X
+         RRaPJQ4VjE43YzozVlQX3P/dnJc/NnvOZ8566ldsOoNGa/ZshhPxmaM/2EGEltu+qH4h
+         OxbXohpitzppl52zhMH4dxcU+gJz4DZ+ZwdkKel17zKM1kA3JlPKPJqQmMZ5TRS+/mkg
+         XXx7OP+hM1j9ZrR97J5JbVYd8TMDuzsdfGI/Wh2AIj4t/yz7uGudVL9SVt3jwf4nS57H
+         +Arw==
+X-Gm-Message-State: AO0yUKXlFAiT13InhJNVnaf9c8o4xQYi1ujknTrQniFgaAqdrzN5JUkm
+        EXB4vqP3ShQLsHuGn+O5nhy8KZmGL2k=
+X-Google-Smtp-Source: AK7set86T9sQySQYGe/f9RSGkaegNimz6qVa/PdrC/55qa3kx3bg2Yl+X0leE+6JadfF8HY9wn9jMQ==
+X-Received: by 2002:a05:6808:3a8:b0:378:920b:73f6 with SMTP id n8-20020a05680803a800b00378920b73f6mr1847221oie.46.1677121169983;
+        Wed, 22 Feb 2023 18:59:29 -0800 (PST)
+Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id b2-20020aca2202000000b003646062e83bsm2149403oic.29.2023.02.22.18.59.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Feb 2023 18:59:29 -0800 (PST)
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        John Stultz <jstultz@google.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev
-Subject: Re: [PATCH] rust: time: New module for timekeeping functions
-Message-ID: <20230222195537.3462c1c3.gary@garyguo.net>
-In-Reply-To: <p7e4M5-kxxScH56bBMtlzht2_m33oSfMPHtExSVbDn0WIPYBEbiJjr2NvNhqCJotFhmYqH5h27EWPDhfSmmST0D-dSU1Alq4_BzDQUR48FA=@protonmail.com>
-References: <20230221-gpu-up-time-v1-1-bf8fe74b7f55@asahilina.net>
-        <87v8jvnqq4.ffs@tglx>
-        <Y/TP6as7qqwfcI42@boqun-archlinux>
-        <87h6vfnh0f.ffs@tglx>
-        <7b93bf74-abdc-f8c1-9a12-7c7f080f9e19@asahilina.net>
-        <87edqioo1e.ffs@tglx>
-        <p7e4M5-kxxScH56bBMtlzht2_m33oSfMPHtExSVbDn0WIPYBEbiJjr2NvNhqCJotFhmYqH5h27EWPDhfSmmST0D-dSU1Alq4_BzDQUR48FA=@protonmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0244.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:350::10) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
+Subject: [PATCH] scripts: read cfgs from Makefile for rust-analyzer
+Date:   Wed, 22 Feb 2023 23:59:24 -0300
+Message-Id: <20230223025924.526200-1-yakoyoku@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB1889:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2f130720-5e06-40a4-dbea-08db150ec57b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ur8RndepwNhCSuoR/4FapqBxKBQxLgtJ6/9p/M+HWA6w5AvSYqtQ7Eq+6tqj4gW+nGGBjLd5mzS5NTPxbQtR1NpQqrqNvaXN7lNoieI/MNuKKx6RggAHwVoYDzKWLCgIWIoG2wuDq38QA6JKEURCYgUaKYoG8DpfOah4GT+lgkg8k9wDBivJb5W5/oyxpaXIKMscPpL49oGS8ZNt6Hzzm0TLLQfrtT1mYq4h7IhxX88i8BcZeMKxSkcryxj5EWrvqWSXRzf98fe0sMtW3lDrxmFFKdFdWB9w0vAUjOh2EWafbONEELhdiNse/jfgZQ28reIkbA0IDtH0WBxc7qXs2uWncBlqUEmw+LLS+ZrINAfQRnAF0qWv0MJLHbZaT5oPOj9LrExhtu0ZDPbKm64vPv/tI8r0DdbujoaujCQnwl+IqjVuarFRgCWpOLE44/u/MwqFEQ65JP8XuwP7/cdkqnXYqDrRERhcIY/PzXsvQtXgsy0FgexFZLO0fuhq6g2Iw/SLY0qtNX2uIWGjaKzlmBncaRKfdb3Y3e+NK2dZ1ZkMgVx4K8U/SU6/enYjwuWf8JP88g+qa2EIO909wwUezJ6CAHDA1INLNoweys9+7LBWxpUpL6JZCbZ29rfPvgYU
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(366004)(39830400003)(136003)(396003)(376002)(346002)(451199018)(38100700002)(2906002)(5660300002)(8936002)(7416002)(54906003)(186003)(6512007)(26005)(41300700001)(83380400001)(36756003)(2616005)(6916009)(66476007)(66556008)(4326008)(66946007)(8676002)(1076003)(6486002)(86362001)(966005)(478600001)(316002)(6506007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8NUTQIZqLC7ooFQ1poCYZeKhGZxOmVZuRL4O7ZOXqbuYNmfxamL3x9tF5Iec?=
- =?us-ascii?Q?rp4RfQgcC7uZQdF56WjbbZX6RmhQxEKL1/kcDNPTtF2W6upALeYvS4H5JtKg?=
- =?us-ascii?Q?O+wwLCmF20BGHX0TSF3vVpDyifp7GCIhPG3aeW7qqjUpjC6qkuIF7prYiaa/?=
- =?us-ascii?Q?bwgdODGOdzfDj4iaH7E9N2J0VYbTsn2zupdZccSkHcumebNEO7H/EbNE03R+?=
- =?us-ascii?Q?o4VkXzJvEqNAOAMC9ezwUKSR13vZV06at8/QW54CSLh/+rd83s8EaG3bvpLz?=
- =?us-ascii?Q?SUi7mPq8XYS0TdYXxRVhZGzJvbr/JeFfmUudJ9ifOOGCplgXBa2bST+gLv51?=
- =?us-ascii?Q?YuPHPRUNGZoARyS6v1uqqzoSxsplIQplRmG9cR6//Xvwn72YYdgZ2AJsIkII?=
- =?us-ascii?Q?7iQHblqCqy6hEEcbwxUzdiLPV87yHKC59hixuwQNhP3fLVYNBHC1qNcYmW8J?=
- =?us-ascii?Q?Zk0B9cFql5kECz5mTWqghUn3LusByth7Qiw8yPEzawNfnwpFkXejRY9QPiOS?=
- =?us-ascii?Q?DJU+VEsU6uaq6SwLWvYRntVCW/IapsMo33sXHT348fl3oCAM2k5ZVr6dS1d9?=
- =?us-ascii?Q?ynqACMFuRQE0dR1Wyus/3BskObbZ0p/dZl43sCLsQ6UeIkj+mnbSNAwSZ/g3?=
- =?us-ascii?Q?zVbBT9Z0BXdK9YhX4bFGn0ALVrGAytOUJyczq+vRb37U8JCP1Y8btUfJSjl6?=
- =?us-ascii?Q?NMEFHyXBeBdfb5OWofEQhzpJ47/HIAOfQAylgMhCsW7otBkE9G1j48uDNa4S?=
- =?us-ascii?Q?J0j3ISiS8rLIlNnO3eAr0/NDtgT0Pz9Cnxzgp8unprfdwe8HjVZxoJ25N5xc?=
- =?us-ascii?Q?iappDCvwneOMev8TzVVE20CfrLtd1Wf1mStT+ykU7fB86Ho4AuIFhvtP7xUq?=
- =?us-ascii?Q?x/sV62Q7/MFCo8cb9zdoORUvp+44sA3vGLv/YXy0p2RNYSI3OAID7LCAWijC?=
- =?us-ascii?Q?dAi7NrJvXohyBCwrDZM26ykpg1RP96TlX0pAfSnODFH3mvMsinankpEv7npv?=
- =?us-ascii?Q?ZJpDz2AxXNq92s82mwYpN0uZfj0jJ6VS9bylvsqW3BDInymuH+SS6emGBt0k?=
- =?us-ascii?Q?JXaTlYodFqR5bpjtzOYt6Hc5RTz/lKWu+aK07UruFYFoDX4piSFlbZNzcJGm?=
- =?us-ascii?Q?Jty03mIyoRW68qK+vUzOoGYAiOX0g5xuQv/tgX0aCMGlzCwikYEaj+ohd6Cd?=
- =?us-ascii?Q?r/htxlGgH4ZrE4DxzuatGDRpYBrwoB2uFepGRFafEwLxR4cpYjYtarvvpber?=
- =?us-ascii?Q?9uXi/QpEb/C7GpjBxf1f0GF2eRppMcQXEi9lAWnTdAaaWE+y9E1dkt+o67k/?=
- =?us-ascii?Q?0qIgOCeSBLmmHJTj8gWtPLaZDCrMonk24YX5fVPk7b5tuvfjFr+O/u9aTDAO?=
- =?us-ascii?Q?5HovYbkZpHYuevc7aCse+X7hpsaTBUlD6EVQzB73HWJ3SydCqsvdQRf+B7WZ?=
- =?us-ascii?Q?QlegyoPz0kZEoP85S/Exnyi33NrNjNH/FfYPeI690nOOlqNiWcc+vfIkk8Dl?=
- =?us-ascii?Q?CITCLgokQdZwug5sGx1I/yVSbnbygUnKsX6OaUIxGrnIBE3HfT/ortOzbCZC?=
- =?us-ascii?Q?yBRyxSqx5LkiMIZBRPVd5Nfia6xJMmQfho7GI+SV?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2f130720-5e06-40a4-dbea-08db150ec57b
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2023 19:55:39.1586
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Fotp99F1z/ekB8wiv0slYYBw40q5WK3J+Hu7pNMDKKmiPddfgG6nYVCl/PIhHLW+ML06zRhaGyqAa3RXNB0iNA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB1889
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, 21 Feb 2023 21:33:42 +0000
-Heghedus Razvan <heghedus.razvan@protonmail.com> wrote:
+Both `core` and `alloc` had their `cfgs` missing in `rust-project.json`,
+to remedy this `generate_rust_analyzer.py` scans the Makefile from
+inside the `rust` directory for them to be added to a dictionary that
+each key corresponds to a crate and each value, to an array of `cfgs`.
 
-> On Tuesday, February 21st, 2023 at 8:45 PM, Thomas Gleixner <tglx@linutronix.de> wrote:
-> 
-> > That's the same the Rust std time semantics:
-> > 
-> > Duration = Instance - Instance valid
-> > Duration = Systemtime - SystemTime valid
-> > Duration = Systemtime - Instance invalid
-> > 
-> > No?
-> >   
-> I agree with Thomas on this one. The Rust type system is really powerful and we should take advantage of it. Time deltas can be enforced to be from the same clock at compile time.
-> Just for the sake of it, I wrote a small example on how this can be achieve: https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=1d0f70bb5329b181f203ce7270e2957a
-> 
+Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+---
+ scripts/generate_rust_analyzer.py | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-`NowTime` don't need the type parameter. Here's a slightly more polished
-version (also with names changed a bit so it looks more "Rusty"):
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index ecc7ea9a4dcf..8bfadd688ebc 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -9,6 +9,24 @@ import logging
+ import pathlib
+ import sys
+ 
++def makefile_crate_cfgs(makefile):
++    # Get configurations from a Makefile.
++    cfgs = {}
++    with open(makefile) as fd:
++        for line in fd:
++            if line.endswith("-cfgs = \\\n"):
++                crate = line.replace("-cfgs = \\\n", "")
++                cfg = []
++                for l in map(lambda l: l.strip(), fd):
++                    if not l:
++                        cfgs[crate] = cfg
++                        break
++                    l = l.replace("--cfg ", "")
++                    l = l.replace(" \\", "")
++                    cfg.append(l)
++
++    return cfgs
++
+ def generate_crates(srctree, objtree, sysroot_src):
+     # Generate the configuration list.
+     cfg = []
+@@ -24,6 +42,8 @@ def generate_crates(srctree, objtree, sysroot_src):
+     crates = []
+     crates_indexes = {}
+ 
++    makefile_cfgs = makefile_crate_cfgs(srctree / "rust" / "Makefile")
++
+     def append_crate(display_name, root_module, deps, cfg=[], is_workspace_member=True, is_proc_macro=False):
+         crates_indexes[display_name] = len(crates)
+         crates.append({
+@@ -44,6 +64,7 @@ def generate_crates(srctree, objtree, sysroot_src):
+         "core",
+         sysroot_src / "core" / "src" / "lib.rs",
+         [],
++        cfg=makefile_cfgs.get("core", []),
+         is_workspace_member=False,
+     )
+ 
+@@ -57,6 +78,7 @@ def generate_crates(srctree, objtree, sysroot_src):
+         "alloc",
+         srctree / "rust" / "alloc" / "lib.rs",
+         ["core", "compiler_builtins"],
++        cfg=makefile_cfgs.get("alloc", []),
+     )
+ 
+     append_crate(
+-- 
+2.39.2
 
-https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=83702f491050da1c67ab9aa129103f7d
-
-Best,
-Gary
