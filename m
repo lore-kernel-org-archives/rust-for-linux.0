@@ -2,111 +2,110 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 798D9C6FA8E
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 19:22:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 277D4C64ED8
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 20:42:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229525AbjBXTWT (ORCPT
+        id S229513AbjBXUmX (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 14:22:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50888 "EHLO
+        Fri, 24 Feb 2023 15:42:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbjBXTWS (ORCPT
+        with ESMTP id S229492AbjBXUmW (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 14:22:18 -0500
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66B266DD95;
-        Fri, 24 Feb 2023 11:22:17 -0800 (PST)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-5384ff97993so6637327b3.2;
-        Fri, 24 Feb 2023 11:22:17 -0800 (PST)
+        Fri, 24 Feb 2023 15:42:22 -0500
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E32796DDAE;
+        Fri, 24 Feb 2023 12:42:20 -0800 (PST)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-536af432ee5so13451347b3.0;
+        Fri, 24 Feb 2023 12:42:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1dQJ4NeCh2yCYcktvyXPHPtI2YcfoAFO5bG0pt+V4UA=;
-        b=Z7J47KCBMmjnci7204yUSrHA54PyNEiPcbMu5Ng8miUMVQkD+HR4QY9GyRW9KyJFfh
-         gxFIrTY0IEhABroZ9eOc4RT8Q1F3hXyEGgQh7KbL5j21kGbRY0VS2y4dXYGrK53fbdbL
-         vB0SQU4bq7ociZAJhJ68pj14YUqVwCy/OYtmNEqC+KkQKtg5T2C8J6oui6ofREYfH5N1
-         aWQNZymEoVvDWYv54BWvgjvcBjaTm7cR81emeFC2ni7aWahrgIBGmmP2BQM9Kndveih4
-         25BHXzwtU9pVBqtGToE2oViWEskMZPfqGAr3Nqc6z6QNW9Z9LrdMMIlKf4AHkMjwwvw1
-         ZWeQ==
+        bh=2ldkH3+tipVLOPM0MWXmtHwekgdqITx22yGZynxWxbI=;
+        b=dtF6STP7th/ajy1mC0vEUSVWlM9pVmOG3Gn6XA5sl3LA9B9wF3UHwni7+m64GxjbOR
+         VJ8YtDgIepMCXzo3IqidR6Cotkep2peyv5PLBE1o4qjySmPFQpBz1gTEVu5KwgHz/Avx
+         eYeoxs0AEnbKsW+Lwxf7bJsfpZIVDXS8zZWVLrJl03lvJ4GG2rCmVqfdsSFMTAvwZ9hp
+         Jvc/8QtR/Kx/MlWRP2gXnMW5ZZ1S0BWrIDDqfxxr2ZopFa9eZs9Inw++1fPcqsN9pfeu
+         HkTMFCZv5T8sYU5ua56Z/XQ4SqtIwDjglQCvQA22GnAvaT5WFS0PSBOy/wmaUJuWNFfX
+         HUOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1dQJ4NeCh2yCYcktvyXPHPtI2YcfoAFO5bG0pt+V4UA=;
-        b=flnsVgrBuXKJEI98BNbxoOX2eebtvK9x2cXLSPj3h7/4vU/ZEV1h9rFbw+o8Gj7uDo
-         TRHpc2GVfa7fBFC2lfuP6zn2EUz1qJp0rsr79Dav8Bz5hg73gXK7m0Htc4fHyvMnrrGl
-         2azH6UoQW/wXvEBY/s74YtNgKDpzLHVojfrhsmmsh9wCYB/DQZP9v+gRZBxuNB9HiZ/9
-         G1OH3Q9+V++zfKlQlfoIAWLt5vq9ZL/OFGWwLPEIdjjHaAoWoFcTTsELPv0wPIADvmc2
-         5o/d+W184u8CX3gcBWpqkl2oIltXk8fGhoW51K9KkeNZBxtdtNhG4IvxhhvSQWjaDNu5
-         iBJA==
-X-Gm-Message-State: AO0yUKVKpymReAG9QJKsxa7BRbPjaGohavmtHhyHKjYeU0ImRpiCD99N
-        lApmJd/ziIUjmqu1ncCbtUnR9L0fiys674aWxP0=
-X-Google-Smtp-Source: AK7set/R28QvGfhJywxPGFReAP8jrRtUhsgcrOepNyTAwgrhq88lC/ubygi9PjkBfq8WRFDXsuYVy4OFA/sALEh3GNY=
-X-Received: by 2002:a81:b606:0:b0:52e:c79a:cda with SMTP id
- u6-20020a81b606000000b0052ec79a0cdamr5092139ywh.10.1677266536672; Fri, 24 Feb
- 2023 11:22:16 -0800 (PST)
+        bh=2ldkH3+tipVLOPM0MWXmtHwekgdqITx22yGZynxWxbI=;
+        b=jW9+ZTM3iDQ2E7WfMURhEnAxogubst5+o0JtQotgrK/oX8uLq3C8bQbvmohD4O1211
+         vWtksCXzUUkkragdKzLc4IsD9xjvUB5NpcnOgrdIFQ95G2hx5Faf5rox1Jkwprrs9KUH
+         VaDt+Ppgq+5g0Gfp5SCbhwJNtNcTxxwVI2rhliGKo5wtQMmVpvN39/tSjkMcsxOoBEkZ
+         Y5QugFGmgqg/uGOHS8njLSqK3EI/8lHi0LqjcC/w9vKSXpLwTO1gTU0FC8TN2xAVc4iJ
+         RxQ+WzAHlPRCSvb5tqp0nkjljqqQDUSlAi5UVav1tFjVeqMMKSczD3XJZZguMHdR65CZ
+         lw6g==
+X-Gm-Message-State: AO0yUKVMdYMK/8bBN6SO4pBxsOZckp3E6Mrr2Pxp5zcnCxc86czT15TQ
+        29OjT4MGCVt5+RdQHxIK3DSTKyfp33QNfCWhx54HSsDYknA=
+X-Google-Smtp-Source: AK7set/+ywY8A6LUpNjag7/xfz0UOWYQ6RUky53j75FCT+hoIcIZqEDUzCcFtByz4LcO4y0MEBVqzL7jJFm3tgkYRFc=
+X-Received: by 2002:a05:6902:1602:b0:8a3:d147:280b with SMTP id
+ bw2-20020a056902160200b008a3d147280bmr810737ybb.3.1677271339810; Fri, 24 Feb
+ 2023 12:42:19 -0800 (PST)
 MIME-Version: 1.0
-References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
- <20230224-rust-iopt-rtkit-v1-2-49ced3391295@asahilina.net>
- <Y/ieQ0UX/niAG1Hg@kroah.com> <ef3a3638-6381-87ab-d674-644306b6b6ce@asahilina.net>
- <Y/jFeZzZVCpBGvGv@kroah.com> <e6d6d928-4514-55b9-346d-2e5e82220729@arm.com>
- <87de1cd0-a57a-3391-a4b8-599ee0307491@asahilina.net> <59a61ddc-4a96-c846-c12b-0d1e3789683c@arm.com>
- <5a00dcb1-8368-c3ce-6fcb-5932f5eb50a5@asahilina.net>
-In-Reply-To: <5a00dcb1-8368-c3ce-6fcb-5932f5eb50a5@asahilina.net>
+References: <20230224133609.2877396-1-conor.dooley@microchip.com>
+In-Reply-To: <20230224133609.2877396-1-conor.dooley@microchip.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 24 Feb 2023 20:22:05 +0100
-Message-ID: <CANiq72k_NNFsQ=GGCsur34CTYhSFC0m=mHS83mTB8HQCDBcW=w@mail.gmail.com>
-Subject: Re: [PATCH 2/5] rust: device: Add a minimal RawDevice trait
-To:     Asahi Lina <lina@asahilina.net>
-Cc:     Robin Murphy <robin.murphy@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Date:   Fri, 24 Feb 2023 21:42:08 +0100
+Message-ID: <CANiq72=4ZhV=u2ZUr=x-iAS_iMnV8GSiq0tEn7Tj0NanO=D+xQ@mail.gmail.com>
+Subject: Re: [RFC 0/2] RISC-V: enable rust
+To:     Conor Dooley <conor.dooley@microchip.com>
+Cc:     linux-riscv@lists.infradead.org, conor@kernel.org,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        Hector Martin <marcan@marcan.st>,
-        Sven Peter <sven@svenpeter.dev>, Arnd Bergmann <arnd@arndb.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Neal Gompa <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
+        Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Feb 24, 2023 at 5:23 PM Asahi Lina <lina@asahilina.net> wrote:
+Hi Conor,
+
+On Fri, Feb 24, 2023 at 2:37 PM Conor Dooley <conor.dooley@microchip.com> wrote:
 >
-> So I guess what I'm saying is that at the end of the day, if we can't
-> get an interface to be 100% safe and sound and usable, that's probably
-> okay. We're still getting a lot of safe mileage out of the other 99%! ^^
+> This is a somewhat blind (and maybe foolish) attempt at enabling Rust
+> for RISC-V. I've tested this on Icicle, and the modules seem to work.
+> I'd like to play around with Rust on RISC-V, but I'm not interested in
+> using downstream kernels, so figured I should try and see what's
+> missing...
+> I've tagged this as RFC in case I've missed some "WAaaaa you can't do
+> this" somewhere :)
 
-We talked a few times about what approach to take for things where a
-fully safe API is not feasible. There have been differing opinions in
-the past.
+Thanks for sending this and taking the lead on RISC-V -- I appreciate
+you put me as the author, but in this case, it was actually Gary that
+started the RISC-V port [1], and then I sent three PRs on top later
+on.
 
-One approach would be requiring a "global `unsafe`" so to speak, once,
-somewhere in the API -- it does not improve things much, but at least
-it would make the user acknowledge the pitfalls of that particular
-API/feature/subsystem/hardware/... e.g. for module unloading, one
-could ask for an `unsafe` inside the `module!` macro invocation (like
-`unsafe unloadable: true,`). This would allow for `// SAFETY: ...`
-comments.
+When submitting something on behalf of somebody else, I suggest being
+very careful and ideally contacting the authors beforehand. In
+particular, if there has been any modification (including to the
+commit message), then a note should be added explaining so.
 
-Another approach would be declaring some of those "external entities"
-outside the scope of Rust's safety guarantees, like it is done for
-e.g. `/proc/self/mem` in userspace Rust [1]. They would be documented
-wherever relevant, and perhaps we could have an "acknowledged
-soundness holes" list.
+Therefore, please double-check everybody that contributed to the lines
+you are sending (e.g. via `git-blame`) and add them as
+`Co-developed-by`. Also, please add a note of what you changed/wrote
+e.g. square brackets, and `Link` tags to the original PRs/discussions.
 
-Having said that, of course, what we definitely don't want to allow is
-for subsystems to provide unsound safe APIs for no reason.
+See, for instance, what Jamie did at [2] for arm64 or Lina at [3].
 
-[1] https://doc.rust-lang.org/stable/std/os/unix/io/index.html#procselfmem-and-similar-os-features
+[1] https://github.com/Rust-for-Linux/linux/pull/225
+[2] https://lore.kernel.org/rust-for-linux/20230125163739.3798252-2-Jamie.Cunliffe@arm.com/
+[3] https://lore.kernel.org/rust-for-linux/20230224-rust-vec-v1-4-733b5b5a57c5@asahilina.net/
 
 Cheers,
 Miguel
