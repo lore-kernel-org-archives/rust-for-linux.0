@@ -2,120 +2,127 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 537C6C7EE23
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 21:03:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6927CC7EE23
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 21:32:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229549AbjBXVDa (ORCPT
+        id S229446AbjBXVcP (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 16:03:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49072 "EHLO
+        Fri, 24 Feb 2023 16:32:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229642AbjBXVD3 (ORCPT
+        with ESMTP id S229487AbjBXVcP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 16:03:29 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007392699;
-        Fri, 24 Feb 2023 13:03:17 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 94633B81D1B;
-        Fri, 24 Feb 2023 21:03:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FD6C433EF;
-        Fri, 24 Feb 2023 21:03:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677272595;
-        bh=GOPRgmEm/tLlo164VtO08+QtLf9+r2oLkH7o65afRmY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Qt82xGw08+pWQPYenM8GbR0Qn4nQY7XCUDyzCsd556SIZ/mqaZKCxmuMq43nL5sM2
-         YfIhiPwNX+MqauE34NbgOcdxgCE1VDhPmNmRe7Gw5I5NMbJcUjPVWG0rjzsUpEbFZu
-         5wQVKGJY41UTW8GI/u19czDbFT9Hzx9F21e7LadYjUkzgvDjG/o4GMtd1JkoDsPlXE
-         /TNvh8GXartMwOlt9911MkoCWLO1VmPnIe2TazBqh5zPwerPtSXHPlUO9vGvxTYkFw
-         FSCDzkXMYBQXStWUeFQO6sufgUyGj5wxPA+E/iOmye4S57Zdix2f0paxXAu4DwWiaU
-         aTuqaHZpN9kaQ==
-Date:   Fri, 24 Feb 2023 21:03:09 +0000
-From:   Conor Dooley <conor@kernel.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Conor Dooley <conor.dooley@microchip.com>,
-        linux-riscv@lists.infradead.org, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Subject: Re: [RFC RESEND 2/2] RISC-V: enable building the 64-bit kernels with
- rust support
-Message-ID: <Y/kmDcMBcZ2PzcKR@spud>
-References: <20230224135044.2882109-1-conor.dooley@microchip.com>
- <20230224135044.2882109-3-conor.dooley@microchip.com>
- <CANiq72m1bnHZEd1n+tzaTXYqk8kU83CEPSFO7TBMX44J3poKOw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="WdAygoFJPXezUehP"
-Content-Disposition: inline
-In-Reply-To: <CANiq72m1bnHZEd1n+tzaTXYqk8kU83CEPSFO7TBMX44J3poKOw@mail.gmail.com>
+        Fri, 24 Feb 2023 16:32:15 -0500
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 085AF6F032
+        for <rust-for-linux@vger.kernel.org>; Fri, 24 Feb 2023 13:31:57 -0800 (PST)
+Received: by mail-pl1-x62b.google.com with SMTP id e9so876752plh.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 24 Feb 2023 13:31:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cvJN8dmrmNJu4tTYhdlBrzcRSinLAy+Jhaplp/kCRiA=;
+        b=wh807lSO9v29Yu6tO13IzDLOgiVo3Y9CLLlEMCaN5Bfph5SWKk/ief3r4cZyouTDq3
+         ekQ8BZiAaegZvDAKUQ41D41hsAmetgk6oRbzZgr5tZ8Ebv6rouEL0se6NNr8O8vuHMuA
+         Y9E1KcrrOfgbPedMh8QVliNBmDLSSk306iIqsN5Z3WjNY4Kf8EbTZS61IOkrrZWWRWux
+         SIrlqYQU9Ed7MRpv4GK6gK/n40iENTbOVq0sI7jnPIv4ay32p0xTWuzO+r4e3KUxS3Aw
+         mV9fpIWYF+zc1nWP6gzHkwKwUixXjTuaac3chNZcBChKKjLuR16rINK9a4ShFPJKhkRy
+         dJKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cvJN8dmrmNJu4tTYhdlBrzcRSinLAy+Jhaplp/kCRiA=;
+        b=wylRvOmBS1z7YSY+UacL52r3eEhoO/H0NyZFu1CUIdlgk9JD/PNywQoNRtPwTMZ72n
+         4oD0l/vI2mTz04RM3MHSiMIS6DroFZeWTI0AGHr1W8RcWzOIiKcBi3I1+d6I+E0uZMWj
+         nIczlDGRZKabHOkSeHuYki+SmxhoeHJ9kxQtDuLYuSAdUoKIkO5+I+MI4skPBRHSeW9c
+         twDrq6u+NoLp+uZ++nqAskFcuG7JP1CfNDoG3oxUKi2dxQdjTIGvtxXE+dV5sxsVvnfi
+         ntabaSYP7SjRCWe8CUS7XhAzeTcXIZ9MqgLkoUdZ7EYNa+uB4a3VJHqFUSvRC9diaepO
+         4LwA==
+X-Gm-Message-State: AO0yUKXUt3nA16W7evugrduz0jmruM1CmFdPvA78jWzCAYALsS1uhVTt
+        TT1yM0P9N+/TdTTqhJ2yZil+bA==
+X-Google-Smtp-Source: AK7set+inR9Bfe356VnjZRrkMmucPTHHx4QOqBABEwJbFOr2cvrtN9y1cnMB0g/q9qfmCnSJDZEm5g==
+X-Received: by 2002:a17:902:d506:b0:199:4d25:6a4d with SMTP id b6-20020a170902d50600b001994d256a4dmr997355plg.10.1677274316335;
+        Fri, 24 Feb 2023 13:31:56 -0800 (PST)
+Received: from localhost ([50.221.140.188])
+        by smtp.gmail.com with ESMTPSA id jw9-20020a170903278900b0019a7d58e595sm6071070plb.143.2023.02.24.13.31.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Feb 2023 13:31:55 -0800 (PST)
+Date:   Fri, 24 Feb 2023 13:31:55 -0800 (PST)
+X-Google-Original-Date: Fri, 24 Feb 2023 13:31:09 PST (-0800)
+Subject:     Re: [RFC 0/2] RISC-V: enable rust
+In-Reply-To: <20230224133609.2877396-1-conor.dooley@microchip.com>
+CC:     linux-riscv@lists.infradead.org,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Conor Dooley <conor@kernel.org>, ojeda@kernel.org,
+        alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+        gary@garyguo.net, bjorn3_gh@protonmail.com, corbet@lwn.net,
+        Paul Walmsley <paul.walmsley@sifive.com>, nathan@kernel.org,
+        ndesaulniers@google.com, trix@redhat.com,
+        rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     Conor Dooley <conor.dooley@microchip.com>
+Message-ID: <mhng-f429a40f-1869-4c5b-ab4f-e7eec94489e8@palmer-ri-x1c9a>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Fri, 24 Feb 2023 05:36:08 PST (-0800), Conor Dooley wrote:
+> This is a somewhat blind (and maybe foolish) attempt at enabling Rust
+> for RISC-V. I've tested this on Icicle, and the modules seem to work.
+> I'd like to play around with Rust on RISC-V, but I'm not interested in
+> using downstream kernels, so figured I should try and see what's
+> missing...
+> I've tagged this as RFC in case I've missed some "WAaaaa you can't do
+> this" somewhere :)
 
---WdAygoFJPXezUehP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm fine with it, but IIRC the Rust support for most targets was pulled 
+out as they weren't deemed ready to go yet.  If the Rust folks are OK 
+turning on RISC-V support then it's fine with me, but I think it's 
+really more up to them at this point.
 
-On Fri, Feb 24, 2023 at 09:45:05PM +0100, Miguel Ojeda wrote:
-> On Fri, Feb 24, 2023 at 2:51 PM Conor Dooley <conor.dooley@microchip.com>=
- wrote:
+So
 
-> > diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/a=
-rch-support.rst
-> > index 6982b63775da..197919158596 100644
-> > --- a/Documentation/rust/arch-support.rst
-> > +++ b/Documentation/rust/arch-support.rst
-> > @@ -15,5 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAIN=
-ERS`` file.
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-> >  Architecture  Level of support  Constraints
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-> > +``riscv``     Maintained        ``rv64`` only.
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-> >  ``x86``       Maintained        ``x86_64`` only.
->=20
-> I think this separator between rows should not be here (it is not in
-> `rust-for-linux/rust`). Please see
-> https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#simple=
--tables.
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
 
-That's what the "let the automation tell me if I messed up rst" approach
-gets you ;)
+in case folks want to take it via some Rust-related tree, but I'm also 
+fine taking it via the RISC-V tree if that's easier.
 
-
---WdAygoFJPXezUehP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY/kmDQAKCRB4tDGHoIJi
-0nPaAP4scKJyUoodTh1VeLDzWnq6wVMqx2ag5tPkur6OL8OPSwD+J4ShZHdTHo7f
-F5jmK7nrKyOomF7iNe21+bCUkCg/qAs=
-=fdgN
------END PGP SIGNATURE-----
-
---WdAygoFJPXezUehP--
+>
+> Thanks,
+> Conor.
+>
+> CC: Miguel Ojeda <ojeda@kernel.org>
+> CC: Alex Gaynor <alex.gaynor@gmail.com>
+> CC: Wedson Almeida Filho <wedsonaf@gmail.com>
+> CC: Boqun Feng <boqun.feng@gmail.com>
+> CC: Gary Guo <gary@garyguo.net>
+> CC: Björn Roy Baron <bjorn3_gh@protonmail.com>
+> CC: Jonathan Corbet <corbet@lwn.net>
+> CC: Paul Walmsley <paul.walmsley@sifive.com>
+> CC: Palmer Dabbelt <palmer@dabbelt.com>
+> CC: Nathan Chancellor <nathan@kernel.org>
+> CC: Nick Desaulniers <ndesaulniers@google.com>
+> CC: Tom Rix <trix@redhat.com>
+> CC: rust-for-linux@vger.kernel.org
+> CC: linux-doc@vger.kernel.org
+> CC: linux-kernel@vger.kernel.org
+> CC: linux-riscv@lists.infradead.org
+> CC: llvm@lists.linux.dev
+>
+> Miguel Ojeda (2):
+>   scripts: generate_rust_target: enable building on RISC-V
+>   RISC-V: enable building the 64-bit kernels with rust support
+>
+>  Documentation/rust/arch-support.rst |  2 ++
+>  arch/riscv/Kconfig                  |  1 +
+>  arch/riscv/Makefile                 |  3 ++-
+>  scripts/generate_rust_target.rs     | 19 +++++++++++++++++++
+>  4 files changed, 24 insertions(+), 1 deletion(-)
