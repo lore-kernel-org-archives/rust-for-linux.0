@@ -2,138 +2,84 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1487DC61DA3
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 14:34:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FD90C61DA3
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 14:37:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbjBXOeh (ORCPT
+        id S229484AbjBXOhO (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 09:34:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53006 "EHLO
+        Fri, 24 Feb 2023 09:37:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229560AbjBXOeg (ORCPT
+        with ESMTP id S229936AbjBXOhN (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 09:34:36 -0500
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F2C42C67D;
-        Fri, 24 Feb 2023 06:34:35 -0800 (PST)
-Received: by mail-oi1-x236.google.com with SMTP id bi17so16132004oib.3;
-        Fri, 24 Feb 2023 06:34:35 -0800 (PST)
+        Fri, 24 Feb 2023 09:37:13 -0500
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B18F7679B4;
+        Fri, 24 Feb 2023 06:37:11 -0800 (PST)
+Received: by mail-pj1-x102b.google.com with SMTP id gi3-20020a17090b110300b0023762f642dcso2895997pjb.4;
+        Fri, 24 Feb 2023 06:37:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=U7f5POC95tWdgN8iOavzbfp8kNM32j24hhcNafGkcLU=;
-        b=OEIHtp3hjddjSuARK4ULbWTX4MT7gugGdNIgP+ixZSFAmqNxBjhfLGg6lN8V0yrkE+
-         Ecp2AJ1W5kQAScuEqnTDwlTPHkXct0ESXMIa/YbakdRFq137JSsarzhdj01PH5Tj88Fr
-         edMufsLQ7DH4z2/tQM++n6TZ3JpJv0wcI825zlf7yruBKv+ToXuFk+UgD35+8N0KVx0B
-         0XQzWdW+RMHfQ2+IGaI2xIOIm48FoyYMwU6czsFJfWQu0ACpQsMs+vF1VWJSe1vZEgWL
-         PvC4C/2DqEnFsdjTAJyU8OaSTUPg1fD6/Ktb39c8CVwDnaZM/hMqemYhJgtBxMfCl4Kj
-         nIOQ==
+        bh=GtHGA3HFyOs3Fz5IJ5DexsxarDl9tkHRWlmic7uJ/C4=;
+        b=Dx2Grd9BGKbRDkGFAUPYQ8vTzH8QWnDRsrCraVsYxfUEWdevRLBi1R7C5EZoW7zxZ+
+         pLz5iJ+OsoHHhgDycBidBpMHnZMuQ8p67MXtb5rU859qW8JxsTxD83dfz2l2zp1PfH7D
+         3IpSsiccmyOeXVqk5vpQAbjayRtfEjZ0EtE4NMKFqERzsKFNfDaKZ3V0sS8jVgAMJqXl
+         Iqt6vwYqQCLDLJ+/5+bB5BRj73Mi2AjmkamOWkf3SswgDF+YjKKnemJbrIVpmwv8HR+q
+         jNdjAHK4HrQm720hJSG9zDcdielgSq66xcEZpQmUoOIX3NNzITIsdDyEDBef5BH5A2Fj
+         IYwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=U7f5POC95tWdgN8iOavzbfp8kNM32j24hhcNafGkcLU=;
-        b=QdHPe6h/pPUvEEYBK59rzjEl9Myez72/yFZ39WwkRYtgOILawSzvW19Ej9QfmR0mK/
-         5RJc/5dE5+K8FeVWdyTa9Bn3NrMHupsuwcrnBwyVlr2vbjG8im2SzFpIDmtSMK/HrjyF
-         1oHVs6TkWr5P3MQ9DCOZiEJH7m/gkIQPqjq3P8nbHAG4hFJcLWgkdf8wghw10xI28SqZ
-         hKWOekGD7EK6V5+kPxfFwLmo+5tc82aSKo4ZTlwjCprhaV843DNHFCAdejv0mETo+szO
-         PYn5JD1GfrdAWOXD/boqNaHt5OflzqWtMAPUPDys4IaRwFVweLm41dgXkzvNOpjHYUMH
-         eorQ==
-X-Gm-Message-State: AO0yUKX4sVm2H91BPsTss4dlHGe1fmQNiOr6Kv741MF3EN1QRCx4E0ZX
-        aXvjOvPz4O+IBohd+44xRUc=
-X-Google-Smtp-Source: AK7set/LXiCHgH1qPHKSkOLgeyFj3sle61LItHwrs68Wk7g+vCtZIo8xVFWpymalNMwyXni2esdGfg==
-X-Received: by 2002:a54:408d:0:b0:384:833:2a79 with SMTP id i13-20020a54408d000000b0038408332a79mr306634oii.48.1677249274683;
-        Fri, 24 Feb 2023 06:34:34 -0800 (PST)
+        bh=GtHGA3HFyOs3Fz5IJ5DexsxarDl9tkHRWlmic7uJ/C4=;
+        b=XxzcU/EgMS0GdEy/7uUl5IvaRySUDltAdbwyP4jKvCp6mpfz/tAdGaTuFRizRMS3qU
+         oMD3jallG8okoAAXfbLf27Hcu4tIY07EkjpNMWXxozIimdoiCGrseQaGgx1wW7Nhq3Tl
+         yTo1s0Cz64Nk2ZYUMLB+3m4hykc4aTUHSlQbSTuJq/8pF9gpywEsrf8uXoCR+auxD+XZ
+         4BokvKO4JX1s0Zw/YS6nW43YcV3uuZ2/HDCdrJL8cNscMXawQmExrzKB85dysppm9Mgn
+         WtfLftek0IWRNtBk0+Klj+cvA+yCTbrJTMgOxtXqyiKoCpZ/PPodsN9WT9OAzVh14C2y
+         VhpA==
+X-Gm-Message-State: AO0yUKV0M/scMrblbWG5a8+4GkFqKELzKMD0yFeR3tI8LYCvPYTzdjwu
+        J9+am4Y0ps0+2a74lWV3cEg=
+X-Google-Smtp-Source: AK7set/ujXfZPMz7EOm7ZILbEIxe4nKgXMWAwvoatB7ZrSFIzQwgPsGrmI4DoRt0El6v7VLELq5Q8w==
+X-Received: by 2002:a17:902:f605:b0:19c:dd2e:d4f5 with SMTP id n5-20020a170902f60500b0019cdd2ed4f5mr991892plg.36.1677249431225;
+        Fri, 24 Feb 2023 06:37:11 -0800 (PST)
 Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id p129-20020acaf187000000b0037d59e90a07sm657005oih.55.2023.02.24.06.34.31
+        by smtp.gmail.com with ESMTPSA id k4-20020a170902694400b001963a178dfcsm4047493plt.244.2023.02.24.06.37.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Feb 2023 06:34:34 -0800 (PST)
+        Fri, 24 Feb 2023 06:37:10 -0800 (PST)
 From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 To:     lina@asahilina.net
 Cc:     alex.gaynor@gmail.com, asahi@lists.linux.dev,
         bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
         linux-kernel@vger.kernel.org, ojeda@kernel.org,
         rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Subject: Re: [PATCH 1/2] rust: sync: arc: implement Arc<dyn Any + Send + Sync>::downcast()
-Date:   Fri, 24 Feb 2023 11:34:29 -0300
-Message-Id: <20230224143429.754374-1-yakoyoku@gmail.com>
+Subject: Re: [PATCH 2/2] rust: sync: arc: Add UniqueArc<MaybeUninit<T>::assume_init()
+Date:   Fri, 24 Feb 2023 11:37:01 -0300
+Message-Id: <20230224143701.755103-1-yakoyoku@gmail.com>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230224-rust-arc-v1-1-568eea613a41@asahilina.net>
-References: <20230224-rust-arc-v1-1-568eea613a41@asahilina.net>
+In-Reply-To: <20230224-rust-arc-v1-2-568eea613a41@asahilina.net>
+References: <20230224-rust-arc-v1-2-568eea613a41@asahilina.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Feb 24, 2023 at 05:09:47PM +0900, Asahi Lina wrote:=0D
-> This mirrors the standard library's alloc::sync::Arc::downcast().=0D
+On Fri, Feb 24, 2023 at 04:59:34PM +0900, Asahi Lina wrote:=0D
+> We can already create `UniqueArc<MaybeUninit<T>>` instances with=0D
+> `UniqueArc::try_new_uninit()` and write to them with `write()`. Add=0D
+> the missing unsafe `assume_init()` function to promote it to=0D
+> `UniqueArc<T>`, so users can do piece-wise initialization of the=0D
+> contents instead of doing it all at once as long as they keep the=0D
+> invariants (the same requirements as `MaybeUninit::assume_init()`).=0D
 > =0D
-> Based on the Rust standard library implementation, ver 1.62.0,=0D
-> licensed under "Apache-2.0 OR MIT", from:=0D
-> =0D
->     https://github.com/rust-lang/rust/tree/1.62.0/library/alloc/src=0D
-> =0D
-> For copyright details, please see:=0D
-> =0D
->     https://github.com/rust-lang/rust/blob/1.62.0/COPYRIGHT=0D
-> =0D
-> Signed-off-by: Asahi Lina <lina@asahilina.net>=0D
-> ---=0D
->  rust/kernel/sync/arc.rs | 22 ++++++++++++++++++++++=0D
->  1 file changed, 22 insertions(+)=0D
-> =0D
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs=0D
-> index a94e303217c6..752bd7c4699e 100644=0D
-> --- a/rust/kernel/sync/arc.rs=0D
-> +++ b/rust/kernel/sync/arc.rs=0D
-> @@ -22,6 +22,7 @@ use crate::{=0D
->  };=0D
->  use alloc::boxed::Box;=0D
->  use core::{=0D
-> +    any::Any,=0D
->      fmt,=0D
->      marker::{PhantomData, Unsize},=0D
->      mem::{ManuallyDrop, MaybeUninit},=0D
-> @@ -220,6 +221,27 @@ impl<T: 'static> ForeignOwnable for Arc<T> {=0D
->      }=0D
->  }=0D
->  =0D
-> +impl Arc<dyn Any + Send + Sync> {=0D
-> +    /// Attempt to downcast the `Arc<dyn Any + Send + Sync>` to a concre=
-te type.=0D
-> +    // Based on the Rust standard library implementation, ver 1.62.0, wh=
-ich is=0D
-> +    // Apache-2.0 OR MIT.=0D
-> +    pub fn downcast<T>(self) -> core::result::Result<Arc<T>, Self>=0D
-> +    where=0D
-> +        T: Any + Send + Sync,=0D
-> +    {=0D
-> +        if (*self).is::<T>() {=0D
-> +            // SAFETY: We have just checked that the type is correct, so=
- we can cast the pointer.=0D
-> +            unsafe {=0D
-> +                let ptr =3D self.ptr.cast::<ArcInner<T>>();=0D
-> +                core::mem::forget(self);=0D
-=0D
-I see, we cast the inner pointer of the `Arc` to the target type which=0D
-is wrapped in an `ArcInner` that is then used for another `Arc`. This is=0D
-important as this new value now owns the pointer and, by consequence,=0D
-it is safe to forget the passed `Arc` as it won't leak the pointer.=0D
-Thus, this method is safe.=0D
-=0D
-> +                Ok(Arc::from_inner(ptr))=0D
-> +            }=0D
-> +        } else {=0D
-> +            Err(self)=0D
-> +        }=0D
-> +    }=0D
-> +}=0D
-> +=0D
->  impl<T: ?Sized> Deref for Arc<T> {=0D
->      type Target =3D T;=0D
+> This mirrors the std `Arc::assume_init()` function. In the kernel,=0D
+> since we have `UniqueArc`, arguably this only belongs there since most=0D
+> use cases will initialize it immediately after creating it, before=0D
+> demoting it to `Arc` to share it.=0D
 =0D
 Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>=0D
