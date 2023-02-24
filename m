@@ -2,137 +2,86 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 92738C61DA3
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 13:51:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 392C5C678D5
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 14:01:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229639AbjBXNvq (ORCPT
+        id S229709AbjBXOBX (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 08:51:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44138 "EHLO
+        Fri, 24 Feb 2023 09:01:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjBXNvp (ORCPT
+        with ESMTP id S229582AbjBXOBW (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 08:51:45 -0500
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3A5A69ACF;
-        Fri, 24 Feb 2023 05:51:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1677246701; x=1708782701;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ZukmKbhuckdgYPxcrfE3bKQ6TkEUIZBG4kNxEuFJMEs=;
-  b=bcf5dK0AceYDByhTOLgGLHU6PC0bYN1OArEwbbrQG9ZY56KMkNoA8MNP
-   W5nYLuSCp/bWG/s9KZsgo1qcGPnLfGkyIQbdKsDMxs6ncdJAUQ8iKUaDo
-   s+doXSrKE92oRTL4la79pAg+GcC9VxFyNOlVRTFu5F3vM1octttVwYNPN
-   /aCrB4KT80FpOvpsh4OMDA7lLwAte3ZAqVJ4QekMayNp6UZ0dmfnnSJdc
-   l1OF/0GPvZ4U6AkLg4ikhnCaBUSTGDGg2a1KBBxFCOErABDzRPhNzcqV0
-   FAPV98vy8vUkmmtgf9nTJkjTF4x3ZGauESzJQ4jWJDsBMhftxrncjZoK1
-   g==;
-X-IronPort-AV: E=Sophos;i="5.97,324,1669100400"; 
-   d="scan'208";a="138923444"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 24 Feb 2023 06:51:39 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Fri, 24 Feb 2023 06:51:33 -0700
-Received: from wendy.microchip.com (10.10.115.15) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.16 via Frontend
- Transport; Fri, 24 Feb 2023 06:51:30 -0700
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     <linux-riscv@lists.infradead.org>
-CC:     Conor Dooley <conor.dooley@microchip.com>, <conor@kernel.org>,
-        "Miguel Ojeda" <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        "Nathan Chancellor" <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <llvm@lists.linux.dev>
-Subject: [RFC RESEND 2/2] RISC-V: enable building the 64-bit kernels with rust support
-Date:   Fri, 24 Feb 2023 13:50:44 +0000
-Message-ID: <20230224135044.2882109-3-conor.dooley@microchip.com>
+        Fri, 24 Feb 2023 09:01:22 -0500
+Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1F7963A03;
+        Fri, 24 Feb 2023 06:01:21 -0800 (PST)
+Received: by mail-oo1-xc2e.google.com with SMTP id n27-20020a4ad63b000000b005252709efdbso539250oon.4;
+        Fri, 24 Feb 2023 06:01:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cD2V3GFxUMbiUHqwfuQz30DRd9uey95Pb5f4mqZNz5Q=;
+        b=nSQHhui9wzPmOzXMr5aqMMdc/emCD2VEKeowVCo0NrHkcplyLtFZoJHoJSFkK4z40b
+         1Y5bsQqiIwdR5gofZEF35EK9avASKH36E5ex9cJE5wk26qczgQcR+g0acFXnTiiKDgxR
+         PvZla0biMrFKQWZUiXoGS6VgkiqBzncTWilDH6zjbE0U2SVw1hG4kbL7ENtszZEjBb05
+         qptC3JWIkQCUlwk/JXL6N42MpRNrK4D9ejBf0Lzca0apISJPaVzxW40XxUIt1LW/qq0f
+         4QDj1rzPaIjMHxDN33OwyQKN9iTS0IxjFl1iPOh6pz4OLI/4YSXCYDPmBLAYfvu1N4S0
+         XtLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cD2V3GFxUMbiUHqwfuQz30DRd9uey95Pb5f4mqZNz5Q=;
+        b=LCdynrcJKOI/qgwW3xIIVbinJgVRSNcF4a6tj9X0ZpQqzYPblaxl9nyTG25KlpEhX7
+         z2s+dEJclcrZPa+9AXBAXeR8CIzRDRT6twQ4pVwgzUBZiW43zvltKtxZ1W00rDkA46z3
+         pZVClP5gVVPGWFeqxa3dPhXv3pkzDlXWRh6ZH6XpCzTPwevuAgF9SsxPGo8gr87/NBYT
+         ZywL8bt4gj9r3f0Uk9EBSBgvqQlW8mNkWjCM7Fj/ZL7MDWi/o+IWBmhAFoGOGUpe3JjG
+         hTzfpxXlN++qRiY1MA/fO5fSJS4cOPRN3E0FrBSqVtajRU6KvKcA8mUbKu4K6MCa0+Rh
+         4/ZQ==
+X-Gm-Message-State: AO0yUKV2/pvL0tyZBOAAbNPoVb0wqLHiDY20CvgVdZb+G4FCNIiS3U3k
+        0zNKC64YFs4+KTk0Pt3NfPs=
+X-Google-Smtp-Source: AK7set98zYboFrn/b4D2MBfz+3WRgRRGr0dXxRlba6lrQpOjcTAlP8smsxqbzioF9NIua3JNmHd9sg==
+X-Received: by 2002:a05:6820:61f:b0:51f:e2ab:5535 with SMTP id e31-20020a056820061f00b0051fe2ab5535mr8142396oow.0.1677247280363;
+        Fri, 24 Feb 2023 06:01:20 -0800 (PST)
+Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id v14-20020a9d604e000000b0068bbf5f2e49sm4505958otj.37.2023.02.24.06.01.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Feb 2023 06:01:19 -0800 (PST)
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+To:     lina@asahilina.net
+Cc:     alex.gaynor@gmail.com, asahi@lists.linux.dev,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        masahiroy@kernel.org, nathan@kernel.org, ndesaulniers@google.com,
+        nicolas@fjasle.eu, ojeda@kernel.org,
+        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+Subject: Re: [PATCH] rust: Enable the new_uninit feature for kernel and driver crates
+Date:   Fri, 24 Feb 2023 11:01:13 -0300
+Message-Id: <20230224140113.745953-1-yakoyoku@gmail.com>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230224135044.2882109-1-conor.dooley@microchip.com>
-References: <20230224135044.2882109-1-conor.dooley@microchip.com>
+In-Reply-To: <20230224-rust-new_uninit-v1-1-c951443d9e26@asahilina.net>
+References: <20230224-rust-new_uninit-v1-1-c951443d9e26@asahilina.net>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2374; i=conor.dooley@microchip.com; h=from:subject; bh=HpaH7oMTktYgKSCgvr9/FNMbXJinNGLWnda4ScFUHPo=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDMk/Dmwo8fSS+rnrslhV3QIxvewyGfVJjuHBOg8sXjq7yN4O SKzsKGVhEONgkBVTZEm83dcitf6Pyw7nnrcwc1iZQIYwcHEKwETSHzEyNLGy7y/49uWRcuOr+Z2vC6 4smbJ76bE1dctbZCoUmMunr2X4X/Ar9bmz27Vrej8EeOez+1t/dfoyxTXEdtfO1T5qXzbdZgQA
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Miguel Ojeda <ojeda@kernel.org>
-
-The rust modules work on 64-bit RISC-V, with no twiddling required.
-Select HAS_RUST and provide the required flags to kbuild so that the
-modules can be used.
-32-bit is broken in core rust code, so support is limited to 64-bit
-only: ld.lld: error: undefined symbol: __udivdi3
-
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
----
- Documentation/rust/arch-support.rst | 2 ++
- arch/riscv/Kconfig                  | 1 +
- arch/riscv/Makefile                 | 3 ++-
- 3 files changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-index 6982b63775da..197919158596 100644
---- a/Documentation/rust/arch-support.rst
-+++ b/Documentation/rust/arch-support.rst
-@@ -15,5 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
- ============  ================  ==============================================
- Architecture  Level of support  Constraints
- ============  ================  ==============================================
-+``riscv``     Maintained        ``rv64`` only.
-+============  ================  ==============================================
- ``x86``       Maintained        ``x86_64`` only.
- ============  ================  ==============================================
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 81eb031887d2..73174157212d 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -115,6 +115,7 @@ config RISCV
- 	select HAVE_POSIX_CPU_TIMERS_TASK_WORK
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RSEQ
-+	select HAVE_RUST if 64BIT
- 	select HAVE_STACKPROTECTOR
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select IRQ_DOMAIN
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index 76989561566b..0d6fc4e25221 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -29,8 +29,8 @@ ifeq ($(CONFIG_ARCH_RV64I),y)
- 
- 	KBUILD_CFLAGS += -mabi=lp64
- 	KBUILD_AFLAGS += -mabi=lp64
--
- 	KBUILD_LDFLAGS += -melf64lriscv
-+	KBUILD_RUSTFLAGS += -Ctarget-cpu=generic-rv64
- else
- 	BITS := 32
- 	UTS_MACHINE := riscv32
-@@ -38,6 +38,7 @@ else
- 	KBUILD_CFLAGS += -mabi=ilp32
- 	KBUILD_AFLAGS += -mabi=ilp32
- 	KBUILD_LDFLAGS += -melf32lriscv
-+	KBUILD_RUSTFLAGS += -Ctarget-cpu=generic-rv32
- endif
- 
- ifeq ($(CONFIG_LD_IS_LLD),y)
--- 
-2.39.2
-
+On Fri, Feb 24, 2023 at 05:09:47PM +0900, Asahi Lina wrote:=0D
+> The unstable new_uninit feature enables various library APIs to create=0D
+> uninitialized containers, such as `Box::assume_init()`. This is=0D
+> necessary to build abstractions that directly initialize memory at the=0D
+> target location, instead of doing copies through the stack.=0D
+> =0D
+> Will be used by the DRM scheduler abstraction in the kernel crate, and=0D
+> by field-wise initialization (e.g. using `place!()` or a future=0D
+> replacement macro which may itself live in `kernel`) in driver crates.=0D
+=0D
+Very useful to me as some constructors in the USB bindings that I'm=0D
+writting might make use of unitialized memory.=0D
+=0D
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>=0D
