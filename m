@@ -2,126 +2,124 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5071CC678DB
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 08:44:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2BE8C677F1
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 08:50:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229563AbjBXIoW (ORCPT
+        id S229602AbjBXIuj (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 03:44:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56710 "EHLO
+        Fri, 24 Feb 2023 03:50:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjBXIoV (ORCPT
+        with ESMTP id S229497AbjBXIui (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 03:44:21 -0500
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E447B305DC;
-        Fri, 24 Feb 2023 00:44:19 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 952FA5C0114;
-        Fri, 24 Feb 2023 03:44:16 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Fri, 24 Feb 2023 03:44:16 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm3; t=1677228256; x=1677314656; bh=wd581eFP3K
-        lFvq0U5aP/IpGssCNvXt/Gl6A0XM6S2f8=; b=Monkq1jJUfCZdOoiz1FE83JYuY
-        /6RUz5BC3xZtyIEf5ljLKr1dAyekA5oFnuLom7W/uC9diIWNz0L6OeM5+BmVmGVD
-        M14ozvZ9dUDNeydSFXcHXXKUAHwrxxn1pu8pgPD5wH34Q2bmZcLhTCp1BJgGXLtF
-        PjoIdVBjXsAx7FlIh8/hmim7eiWdkf3O7ihTW3o1fOlINP2LP7ttoH2yYvHcSdR+
-        tkbzBSbgwlDmRnVXT3xCz7Eq3n8lpzMfmizZbmGpIvZ7EtjFpvBj4Z9fGc4lwRnV
-        VJtZk+JrBWWE0cxCcx/jCMO7VDEdSpvxBcf32nUW70TBys4qC+LyxSWISbXw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm1; t=1677228256; x=1677314656; bh=wd581eFP3KlFvq0U5aP/IpGssCNv
-        Xt/Gl6A0XM6S2f8=; b=e/TmRPCS0wj/UWm+XzSLvIZ7jY+LnhpHxE3O5247TutF
-        9XkRyxGoGAX0vIdf8uHr91M18S7KiWl589pWfM331mKO2hq0iU3djNTg1ej57zQH
-        l5qPJP8qzRXhEkZx1K2rnj0OZCtu705aqCzLPoijpoCzsITyRgPBKiiO954FBRk+
-        MEgFcUU+RNpKE+jOgghUpgnze5Am2XS6by2Md6NfZItwiiOnIoLEv5U1URKSLWt6
-        srx6M5sqPk6k3JwVPyGb5V717p2Y3gL0uUX1aERG/9nVKCCJXtNf/Xc5QX4QZmt+
-        9P3rJPvFfrpkgBpM23faLFUt9n/pD0UCQA2mWhfxhw==
-X-ME-Sender: <xms:4Hj4Y8HUBy7BvSvp656WhypfqVyJqB9dYDk3RC8_nMme50d0bXplrw>
-    <xme:4Hj4Y1UYXWpQoZIQwpkwZWOC3iAja6rrHgWYpv409hOephFfTzpkogQExvtSecI_Y
-    GL8m_RzZBunNEhuLGI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudekvddguddvtdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
-    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:4Hj4Y2ISPAlmrZ2ZCcuv7Cn4x6FCV0dZA7W9Ja-_8_9eVMv-GxEJ1Q>
-    <xmx:4Hj4Y-FLUxr5PzRy7UmjPJ3CaSSrTo_g7U-IFBmblWyo2hHHoYp7pg>
-    <xmx:4Hj4YyU5U1kox6vJSm0QB9PTNPu4-xZW_QNvTYns3y8mRoyRcsGCrw>
-    <xmx:4Hj4Y2pXfBw3evWyOYheDyOrmguy0dPo-pulBKDAVmqGm79NUZL3Mg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 3B2C8B60086; Fri, 24 Feb 2023 03:44:16 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-172-g9a2dae1853-fm-20230213.001-g9a2dae18
-Mime-Version: 1.0
-Message-Id: <0818df3a-76c9-4cb3-8016-4717f4d5bf18@app.fastmail.com>
-In-Reply-To: <20230224-rust-ioctl-v1-1-5142d365a934@asahilina.net>
-References: <20230224-rust-ioctl-v1-1-5142d365a934@asahilina.net>
-Date:   Fri, 24 Feb 2023 09:43:27 +0100
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Asahi Lina" <lina@asahilina.net>,
-        "Miguel Ojeda" <ojeda@kernel.org>,
-        "Alex Gaynor" <alex.gaynor@gmail.com>,
-        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        asahi@lists.linux.dev, Linux-Arch <linux-arch@vger.kernel.org>
-Subject: Re: [PATCH] rust: ioctl: Add ioctl number manipulation functions
-Content-Type: text/plain
+        Fri, 24 Feb 2023 03:50:38 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C23F31206D;
+        Fri, 24 Feb 2023 00:50:35 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: linasend@asahilina.net)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 9110B3FA55;
+        Fri, 24 Feb 2023 08:50:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+        s=default; t=1677228633;
+        bh=tQrGaAqMYCBhKSnr1KfIUiJLe3za3ls9Y5ZjKTRKLPw=;
+        h=From:Subject:Date:To:Cc;
+        b=UnzTzOwjsEg7GMA3hTnS3jxTaWR7RRJM2Qbhz5Yd/kbdKdH5tGs6auw27WcsUhWPm
+         5SKVedClPkSnzYs0KifMo9+LeWoIpdOmNu4R5Q99BM2apeeXGSrYxshOh113WcTIbU
+         FxtKfkIzfqZh4KGFcDsFIp1fDB8Ephy96kMmoo8W2wgEPnpkKsA2evNZX7ph2heHzJ
+         AMuRvS5cBtlQlQ8953QPlBqwTFNvL7QgCo/cJwI9VKyxRlQAqRswO47ersffubGibt
+         Zx/oQL7hKpmk1gVUpIcLPEIzyAA88JL/B2fWDuP38YIuE2d6qfPNLV+L2MN6wk9Sr+
+         TOik9QnB5jmFw==
+From:   Asahi Lina <lina@asahilina.net>
+Subject: [PATCH 0/5] rust: error: Add missing wrappers to convert to/from
+ kernel error codes
+Date:   Fri, 24 Feb 2023 17:50:18 +0900
+Message-Id: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEp6+GMC/x2NSw6DMAxEr4K8rtXgVuJzlaqLJHXAm4BsqCoh7
+ t6E5ZuZpznAWIUNxuYA5a+YLLlAe2sgzj5PjPIpDOTo4YieqLttyKqLYqK+a1OIg+sSFCF4Ywz
+ qc5yrMq37/VrXvParcpLfdfZ6n+cf4Gama3wAAAA=
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>
+Cc:     Fox Chen <foxhlchen@gmail.com>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, asahi@lists.linux.dev,
+        Asahi Lina <lina@asahilina.net>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1677228630; l=2180;
+ i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
+ bh=tQrGaAqMYCBhKSnr1KfIUiJLe3za3ls9Y5ZjKTRKLPw=;
+ b=3kkWlTBkfsbE+GogOzkuW4+mkz3cQDoMrBDE+y9cx7KXvHr4jG+I4+ATuSs+6374g3Ubh0SQ6
+ l5k0Hli7jKsCeldS7hAxcjsI0BjX+MDCQunCDCnLwVq5bitF70CWnKd
+X-Developer-Key: i=lina@asahilina.net; a=ed25519;
+ pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Feb 24, 2023, at 08:36, Asahi Lina wrote:
-> Add simple 1:1 wrappers of the C ioctl number manipulation functions.
-> Since these are macros we cannot bindgen them directly, and since they
-> should be usable in const context we cannot use helper wrappers, so
-> we'll have to reimplement them in Rust. Thankfully, the C headers do
-> declare defines for the relevant bitfield positions, so we don't need
-> to duplicate that.
->
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
+Hi everyone!
 
-I don't know much rust yet, but it looks like a correct abstraction
-that handles all the corner cases of architectures with unusual
-_IOC_*MASK combinations the same way as the C version.
+This series is part of the set of dependencies for the drm/asahi
+Apple M1/M2 GPU driver.
 
-There is one corner case I'm not sure about:
+It adds a bunch of missing wrappers in kernel::error, which are useful
+to convert to/from kernel error codes. Since these will be used by many
+abstractions coming up soon, I think it makes sense to merge them as
+soon as possible instead of bundling them with the first user. Hence,
+they have allow() tags to silence dead code warnings. These can be
+removed as soon as the first user is in the kernel crate.
 
-> +/// Build an ioctl number, analogous to the C macro of the same name.
-> +const fn _IOC(dir: u32, ty: u32, nr: u32, size: usize) -> u32 {
-> +    core::assert!(dir <= bindings::_IOC_DIRMASK);
-> +    core::assert!(ty <= bindings::_IOC_TYPEMASK);
-> +    core::assert!(nr <= bindings::_IOC_NRMASK);
-> +    core::assert!(size <= (bindings::_IOC_SIZEMASK as usize));
-> +
-> +    (dir << bindings::_IOC_DIRSHIFT)
-> +        | (ty << bindings::_IOC_TYPESHIFT)
-> +        | (nr << bindings::_IOC_NRSHIFT)
-> +        | ((size as u32) << bindings::_IOC_SIZESHIFT)
-> +}
+Getting this in first allows the subsequent abstractions to be merged in
+any order, so we don't have to worry about piecewise rebasing and fixing
+conflicts in the Error wrappers. See [1] for a complete tree with the DRM
+abstractions and all other miscellaneous work-in-progress prerequisites
+rebased on top of mainline.
 
-This has the assertions inside of _IOC() while the C version
-has them in the outer _IOR()/_IOW() /_IOWR() helpers. This was
-intentional since some users of _IOC() pass a variable
-length in rather than sizeof(type), and this would cause
-a link failure in C.
+Most of these have been extracted from the rust-for-linux/rust branch,
+with author attribution to the first/primary author and Co-developed-by:
+for everyone else who touched the code.
 
-How is the _IOC_SIZEMASK assertion evaluated here? It's
-probably ok if this is a compile-time assertion that prevents
-the variable-length arguments, but it would be bad if this
-could lead to a BUG() or panic() in case of a user-supplied
-length that is out of range.
+Attribution changes:
+- One of the patches had Miguel's old email in the tags, updated that per
+  his request.
+- Wedson's email changed from @google.com to @gmail.com (I understand
+  this is the current one).
 
-     Arnd
+Sven: There is one patch from you in this series, do you want to send it
+yourself directly? I understand Wedson and Miguel are okay with me
+sending stuff on their behalf.
+
+[1] https://github.com/Rust-for-Linux/linux/pull/969/commits
+
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+---
+Asahi Lina (1):
+      rust: error: Add Error::to_ptr()
+
+Miguel Ojeda (1):
+      rust: error: Add Error::from_kernel_errno()
+
+Sven Van Asbroeck (1):
+      rust: error: Add a helper to convert a C ERR_PTR to a `Result`
+
+Wedson Almeida Filho (2):
+      rust: error: Add to_result() helper
+      rust: error: Add from_kernel_result!() macro
+ rust/helpers.c       |  19 +++++++
+ rust/kernel/error.rs | 137 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 156 insertions(+)
+---
+base-commit: 83f978b63fa7ad474ca22d7e2772c5988101c9bd
+change-id: 20230224-rust-error-f2871fbc907f
+
+Thank you,
+~~ Lina
+
