@@ -2,74 +2,86 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A774C64ED8
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 07:39:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E2D66C61DA3
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 08:00:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229547AbjBXHjy (ORCPT
+        id S229492AbjBXIAJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 02:39:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60014 "EHLO
+        Fri, 24 Feb 2023 03:00:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229600AbjBXHjx (ORCPT
+        with ESMTP id S229458AbjBXIAH (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 02:39:53 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B344D65AD;
-        Thu, 23 Feb 2023 23:39:13 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Fri, 24 Feb 2023 03:00:07 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 024AC22797;
+        Fri, 24 Feb 2023 00:00:03 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5AD79B81BFD;
-        Fri, 24 Feb 2023 07:38:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746BBC433EF;
-        Fri, 24 Feb 2023 07:38:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1677224332;
-        bh=zPXyGB0UPLWvv4/Y9I3lbN3e/S2N41NQvGh13g7vIIM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=auScaNIp2B5tgCM92UyzPQroNZ1vTcx1YaqYscHqTcx9QiBH6UQ/5fNq0SPYBxz4y
-         ETg/UgCNKK78CV773Kd+Lff1CwgW9yLcXkjcCIQ7t2ltKI0n7eEurQmnOubcJzi337
-         41E69h7J3CaUjGeP+A7V3l5Y6nsv/40AAv+KHlbg=
-Date:   Fri, 24 Feb 2023 08:38:49 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Asahi Lina <lina@asahilina.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        (Authenticated sender: linasend@asahilina.net)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id AC7E9424B9;
+        Fri, 24 Feb 2023 07:59:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+        s=default; t=1677225602;
+        bh=0OwJlzst8QnGBgBcQk6fTLszxJcN7zyR3Uch+1IED3Y=;
+        h=From:Subject:Date:To:Cc;
+        b=azST5eqx5b7QMLR8ATMAy34kmbqzXch0+Izv5mG1EgncDMCGkErboRH25vcweteIG
+         AZJyBCb7qlgUZDiUZ7BlogzLevTk8RqaXRUt56Ix2atp22x7bQOGHA8zl/PErmMbz1
+         lGFmV8w/D5ii9hcnVm5fnUIGL+lCUUK6lIQaPMQLavp5H+VT3JAr0jSr59w3I4B16V
+         hHOhPuVS4P4vy6AjigLEEiiuAwK4qsr64pLR/xR8ANts0/2MCtr+7KknxNbEHJeHD+
+         KUdzagkuyPXsB53DMxFni6bnubHrBETiUHASNBKkQwkKFiZ9w4EOndrUAGreQoOEgF
+         PmxWnEe7YK1VA==
+From:   Asahi Lina <lina@asahilina.net>
+Subject: [PATCH 0/2] rust: sync: Arc: Any downcasting and assume_init()
+Date:   Fri, 24 Feb 2023 16:59:32 +0900
+Message-Id: <20230224-rust-arc-v1-0-568eea613a41@asahilina.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGVu+GMC/x2NMQ6DQAwEv4Jcx4IYRMFXIgrfYcDNgeyAIiH+n
+ jvK2Z3VXuBiKg5DdYHJqa5byvB+VRBXTougTpmBGmobog7t8C+yRQzcRupl6qRnyHpgFwzGKa5
+ lsOxH/bglL/1uMuvvufqM9/0H5guVzXoAAAA=
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev, Finn Behrens <me@kloenk.dev>,
-        Sumera Priyadarsini <sylphrenadin@gmail.com>
-Subject: Re: [PATCH 3/3] rust: macros: Allow specifying multiple module
- aliases
-Message-ID: <Y/hpiWDLm0fB0Xp/@kroah.com>
-References: <20230224-rust-macros-v1-0-b39fae46e102@asahilina.net>
- <20230224-rust-macros-v1-3-b39fae46e102@asahilina.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230224-rust-macros-v1-3-b39fae46e102@asahilina.net>
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1677225599; l=718;
+ i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
+ bh=0OwJlzst8QnGBgBcQk6fTLszxJcN7zyR3Uch+1IED3Y=;
+ b=MsH7fCaHou7xPAAUUnI0ciXy7xK6obm6TD3QPM7GG2vtUQLay6AChAR9KGhsHWG9rlpAgb/C3
+ 8nkD+GkApjUAVK46Lr2bMjadiDcAr0BbXD7zGYEgc9FzOi7nINvuGkg
+X-Developer-Key: i=lina@asahilina.net; a=ed25519;
+ pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Feb 24, 2023 at 04:25:57PM +0900, Asahi Lina wrote:
-> Modules can (and usually do) have multiple alias tags, in order to
-> specify multiple possible device matches for autoloading. Allow this by
-> changing the alias ModuleInfo field to an Option<Vec<String>>.
+Hi everyone,
 
-Note, manually specifying the MODULE_ALIAS is only really ever done for
-platform drivers today (and I would argue we need to fix that up),
-otherwise the use of MODULE_DEVICE_TABLE() should really really be used
-instead of having to manually specify aliases.
+This short series is part of the set of dependencies for the drm/asahi
+Apple M1/M2 GPU driver.
 
-And why would a module alias be needed for new (i.e. rust) code anyway?
-You aren't trying to do any backwards-compatibility stuff yet :)
+The two patches simply add two missing features to the kernel Arc
+implementation which are present in the Rust std version: `Any`
+downcasting and `assume_init()`.
 
-Or is this just for a platform driver?  It's hard to review
-infrastructure changes without seeing any real users :(
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+---
+Asahi Lina (2):
+      rust: sync: arc: implement Arc<dyn Any + Send + Sync>::downcast()
+      rust: sync: arc: Add UniqueArc<MaybeUninit<T>::assume_init()
+ rust/kernel/sync/arc.rs | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
+---
+base-commit: 83f978b63fa7ad474ca22d7e2772c5988101c9bd
+change-id: 20230224-rust-arc-ba3c26ed4e6a
 
-thanks,
+Thank you,
+~~ Lina
 
-greg k-h
