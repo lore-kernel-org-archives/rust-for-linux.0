@@ -2,88 +2,82 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 65AB6C61DA3
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 14:19:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21191C61DA4
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 14:33:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229607AbjBXOTl (ORCPT
+        id S229592AbjBXOdP (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 09:19:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40286 "EHLO
+        Fri, 24 Feb 2023 09:33:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjBXOTk (ORCPT
+        with ESMTP id S229665AbjBXOdP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 09:19:40 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E47E915140;
-        Fri, 24 Feb 2023 06:19:39 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 741FC618EF;
-        Fri, 24 Feb 2023 14:19:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59918C433D2;
-        Fri, 24 Feb 2023 14:19:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1677248378;
-        bh=5Dip4T8i/Ae6EeytUGwMelRYWHubcfbMstd13xVi0Ow=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=z+F73CiWjvJ2iS0cNIYbdsOpTO+NEbcSKCCnL7Sb30dNuDHVDS4mVXDcHw2PYVEh5
-         k1FHw50uaIbs5kvP+/8oZI+hDI2oyur0+GnuJtb/QeiesAT0Q+x55HU/MKouE8v8Y0
-         k6Y8dY34wJ4UWsOePj7T6L7Tp2Urb2eO7zHONlxA=
-Date:   Fri, 24 Feb 2023 15:19:36 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Asahi Lina <lina@asahilina.net>
+        Fri, 24 Feb 2023 09:33:15 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D55DAEC4F;
+        Fri, 24 Feb 2023 06:32:54 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 960481042;
+        Fri, 24 Feb 2023 06:33:37 -0800 (PST)
+Received: from [10.57.16.161] (unknown [10.57.16.161])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CFA923F71A;
+        Fri, 24 Feb 2023 06:32:51 -0800 (PST)
+Message-ID: <e6d6d928-4514-55b9-346d-2e5e82220729@arm.com>
+Date:   Fri, 24 Feb 2023 14:32:47 +0000
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+Subject: Re: [PATCH 2/5] rust: device: Add a minimal RawDevice trait
+Content-Language: en-GB
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Asahi Lina <lina@asahilina.net>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>,
         Hector Martin <marcan@marcan.st>,
         Sven Peter <sven@svenpeter.dev>, Arnd Bergmann <arnd@arndb.de>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Alyssa Rosenzweig <alyssa@rosenzweig.io>,
         Neal Gompa <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-Subject: Re: [PATCH 2/5] rust: device: Add a minimal RawDevice trait
-Message-ID: <Y/jHeP4LileLYxO8@kroah.com>
 References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
  <20230224-rust-iopt-rtkit-v1-2-49ced3391295@asahilina.net>
  <Y/ieQ0UX/niAG1Hg@kroah.com>
  <ef3a3638-6381-87ab-d674-644306b6b6ce@asahilina.net>
  <Y/jFeZzZVCpBGvGv@kroah.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+From:   Robin Murphy <robin.murphy@arm.com>
 In-Reply-To: <Y/jFeZzZVCpBGvGv@kroah.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Feb 24, 2023 at 03:11:05PM +0100, Greg Kroah-Hartman wrote:
+On 2023-02-24 14:11, Greg Kroah-Hartman wrote:
 > Thanks for the detailed rust explainations, I'd like to just highlight
 > one thing:
 > 
 > On Fri, Feb 24, 2023 at 10:15:12PM +0900, Asahi Lina wrote:
-> > On 24/02/2023 20.23, Greg Kroah-Hartman wrote:
-> > > And again, why are bindings needed for a "raw" struct device at all?
-> > > Shouldn't the bus-specific wrappings work better?
-> > 
-> > Because lots of kernel subsystems need to be able to accept "any" device
-> > and don't care about the bus! That's what this is for.
+>> On 24/02/2023 20.23, Greg Kroah-Hartman wrote:
+>>> And again, why are bindings needed for a "raw" struct device at all?
+>>> Shouldn't the bus-specific wrappings work better?
+>>
+>> Because lots of kernel subsystems need to be able to accept "any" device
+>> and don't care about the bus! That's what this is for.
 > 
 > That's great, but:
 > 
-> > All the bus
-> > wrappers would implement this so they can be used as an argument for all
-> > those subsystems (plus a generic one when you just need to pass around
-> > an actual owned generic reference and no longer need bus-specific
-> > operations - you can materialize that out of a RawDevice impl, which is
-> > when get_device() would be called). That's why I'm introducing this now,
-> > because both io_pgtable and rtkit need to take `struct device` pointers
-> > on the C side so we need some "generic struct device" view on the Rust side.
+>> All the bus
+>> wrappers would implement this so they can be used as an argument for all
+>> those subsystems (plus a generic one when you just need to pass around
+>> an actual owned generic reference and no longer need bus-specific
+>> operations - you can materialize that out of a RawDevice impl, which is
+>> when get_device() would be called). That's why I'm introducing this now,
+>> because both io_pgtable and rtkit need to take `struct device` pointers
+>> on the C side so we need some "generic struct device" view on the Rust side.
 > 
 > In looking at both ftkit and io_pgtable, those seem to be good examples
 > of how "not to use a struct device", so trying to make safe bindings
@@ -104,7 +98,20 @@ On Fri, Feb 24, 2023 at 03:11:05PM +0100, Greg Kroah-Hartman wrote:
 > which is constant and soon will be read-only so there are no lifetime
 > rules needed at all (see the major struct bus_type changes going into
 > 6.3-rc1 that will enable that to happen).
-> 
+
+FWIW the DMA API *has* to know which specific device it's operating 
+with, since the relevant properties can and do vary even between 
+different devices within a single bus_type (e.g. DMA masks).
+
+In the case of io-pgtable at least, there's no explicit refcounting 
+since the struct device must be the one representing the physical 
+platform/PCI/etc. device consuming the pagetable, so if that were to 
+disappear from underneath its driver while the pagetable is still in 
+use, things would already have gone very very wrong indeed :)
+
+Cheers,
+Robin.
+
 > So the two subsystems you want to call from rust code don't properly
 > handle the reference count of the object you are going to pass into it,
 > and only need it for debugging and iommu stuff, which is really only the
@@ -119,10 +126,7 @@ On Fri, Feb 24, 2023 at 03:11:05PM +0100, Greg Kroah-Hartman wrote:
 > the rust/C interaction here as we have two different ways of thinking
 > about reference counts from the two worlds and putting them together is
 > going to be "interesting", as can be seen here already.
-
-Also, where are you getting your 'struct device' from in the first
-place?  What bus is createing it and giving it to your rust driver?
-
-thanks,
-
-greg k-h
+> 
+> thanks,
+> 
+> greg k-h
