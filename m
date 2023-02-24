@@ -2,127 +2,115 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6927CC7EE23
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 21:32:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A45B9C7EE23
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 22:20:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229446AbjBXVcP (ORCPT
+        id S229648AbjBXWUt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 16:32:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53828 "EHLO
+        Fri, 24 Feb 2023 17:20:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbjBXVcP (ORCPT
+        with ESMTP id S229539AbjBXWUr (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 16:32:15 -0500
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 085AF6F032
-        for <rust-for-linux@vger.kernel.org>; Fri, 24 Feb 2023 13:31:57 -0800 (PST)
-Received: by mail-pl1-x62b.google.com with SMTP id e9so876752plh.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 24 Feb 2023 13:31:57 -0800 (PST)
+        Fri, 24 Feb 2023 17:20:47 -0500
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF0FF17CEE;
+        Fri, 24 Feb 2023 14:20:46 -0800 (PST)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-53916ab0c6bso18143647b3.7;
+        Fri, 24 Feb 2023 14:20:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cvJN8dmrmNJu4tTYhdlBrzcRSinLAy+Jhaplp/kCRiA=;
-        b=wh807lSO9v29Yu6tO13IzDLOgiVo3Y9CLLlEMCaN5Bfph5SWKk/ief3r4cZyouTDq3
-         ekQ8BZiAaegZvDAKUQ41D41hsAmetgk6oRbzZgr5tZ8Ebv6rouEL0se6NNr8O8vuHMuA
-         Y9E1KcrrOfgbPedMh8QVliNBmDLSSk306iIqsN5Z3WjNY4Kf8EbTZS61IOkrrZWWRWux
-         SIrlqYQU9Ed7MRpv4GK6gK/n40iENTbOVq0sI7jnPIv4ay32p0xTWuzO+r4e3KUxS3Aw
-         mV9fpIWYF+zc1nWP6gzHkwKwUixXjTuaac3chNZcBChKKjLuR16rINK9a4ShFPJKhkRy
-         dJKA==
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=IqQPJNfK638HDk4ODq+fMB7JJcK2vXRJP7v56xO3S9k=;
+        b=HAJsEdyAG1cOY/j+Vs6v1Ro4klVsPX0l7htKPdL5rdyUoEkEXwc3EqGqF/31BqyoeR
+         8Gc70jiB86abn5T/EFSlzm0tBLZDe6nthy/OgbziasK9ExC9MssJnkYayGu/7y7MiZ6x
+         vLpLAmkBnQLWWxaG4HdTQW/iO+UoJzutbQCl7iyYup9ojoeDv3oB+BPX6w3NMnFlrvmF
+         B7v7bhSOYv9K5Go8X+0CQR3SM7rheJYcgwBzKyef9i+y0/2WLsP/SiEOJe2jpYGOKM8V
+         GGno0ZpW+yaMgPcdZajCU49icbCJhJim4ne8u8L16Ek/F5u7Tu8uMzMcwSCfFLS1wYqb
+         87tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cvJN8dmrmNJu4tTYhdlBrzcRSinLAy+Jhaplp/kCRiA=;
-        b=wylRvOmBS1z7YSY+UacL52r3eEhoO/H0NyZFu1CUIdlgk9JD/PNywQoNRtPwTMZ72n
-         4oD0l/vI2mTz04RM3MHSiMIS6DroFZeWTI0AGHr1W8RcWzOIiKcBi3I1+d6I+E0uZMWj
-         nIczlDGRZKabHOkSeHuYki+SmxhoeHJ9kxQtDuLYuSAdUoKIkO5+I+MI4skPBRHSeW9c
-         twDrq6u+NoLp+uZ++nqAskFcuG7JP1CfNDoG3oxUKi2dxQdjTIGvtxXE+dV5sxsVvnfi
-         ntabaSYP7SjRCWe8CUS7XhAzeTcXIZ9MqgLkoUdZ7EYNa+uB4a3VJHqFUSvRC9diaepO
-         4LwA==
-X-Gm-Message-State: AO0yUKXUt3nA16W7evugrduz0jmruM1CmFdPvA78jWzCAYALsS1uhVTt
-        TT1yM0P9N+/TdTTqhJ2yZil+bA==
-X-Google-Smtp-Source: AK7set+inR9Bfe356VnjZRrkMmucPTHHx4QOqBABEwJbFOr2cvrtN9y1cnMB0g/q9qfmCnSJDZEm5g==
-X-Received: by 2002:a17:902:d506:b0:199:4d25:6a4d with SMTP id b6-20020a170902d50600b001994d256a4dmr997355plg.10.1677274316335;
-        Fri, 24 Feb 2023 13:31:56 -0800 (PST)
-Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id jw9-20020a170903278900b0019a7d58e595sm6071070plb.143.2023.02.24.13.31.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Feb 2023 13:31:55 -0800 (PST)
-Date:   Fri, 24 Feb 2023 13:31:55 -0800 (PST)
-X-Google-Original-Date: Fri, 24 Feb 2023 13:31:09 PST (-0800)
-Subject:     Re: [RFC 0/2] RISC-V: enable rust
-In-Reply-To: <20230224133609.2877396-1-conor.dooley@microchip.com>
-CC:     linux-riscv@lists.infradead.org,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Conor Dooley <conor@kernel.org>, ojeda@kernel.org,
-        alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
-        gary@garyguo.net, bjorn3_gh@protonmail.com, corbet@lwn.net,
-        Paul Walmsley <paul.walmsley@sifive.com>, nathan@kernel.org,
-        ndesaulniers@google.com, trix@redhat.com,
-        rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     Conor Dooley <conor.dooley@microchip.com>
-Message-ID: <mhng-f429a40f-1869-4c5b-ab4f-e7eec94489e8@palmer-ri-x1c9a>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IqQPJNfK638HDk4ODq+fMB7JJcK2vXRJP7v56xO3S9k=;
+        b=8CK2Me3hrGMzFt57aY2LHgSpH6uhYleEHN0yQUv1aFI9VKasBfykg4IGRNCKpLDlgv
+         KiZG5ao83IBuEZLuQ1+4vdlPsT8o5nGphVnDQ16QEXVdUXFlTDRVSSMVAvbPlrY27ilE
+         5gELdDPcKH8JZORy/bbDFKY8+lYCc07XkUykmVTv/9ObeOQ4RR943YzEDCkhdSlaykzP
+         etK55gy0L7fhFcf2ehHZ7up+PeAG/9fn7LIh9drfsTF/prZ6rVAqoEa9lu7KCLYvrYju
+         MypYYlxbvnHktgCen85GRjRGgjhZB3/O0rMyZzVeNircnTmA2+mQCv4hGQ1PDf++qbvG
+         4WNA==
+X-Gm-Message-State: AO0yUKXlXxFf6NQWSSFjNAHcilIvWDchZPxLUeJSIWkeOWWD6MGA4TLC
+        GqSiO0tIeidq9KXzZPjj6m/g8weOMs+dp+QOGPI=
+X-Google-Smtp-Source: AK7set+BCO4mvxBMIls68YhyM4z+vOB5zPgpVOZ6T1wB6+em698PSXYG6gf/JzasjxCkItBDvJ2GBFZIoNFQhY4OKBw=
+X-Received: by 2002:a5b:ac8:0:b0:a06:538f:24b2 with SMTP id
+ a8-20020a5b0ac8000000b00a06538f24b2mr3802600ybr.2.1677277245871; Fri, 24 Feb
+ 2023 14:20:45 -0800 (PST)
+MIME-Version: 1.0
+References: <20230224133609.2877396-1-conor.dooley@microchip.com>
+ <CANiq72=4ZhV=u2ZUr=x-iAS_iMnV8GSiq0tEn7Tj0NanO=D+xQ@mail.gmail.com> <Y/kldmYcl7+2FBRB@spud>
+In-Reply-To: <Y/kldmYcl7+2FBRB@spud>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Fri, 24 Feb 2023 23:20:34 +0100
+Message-ID: <CANiq72=btcBOmrz0=ib=2eZiiV1z4_3qm1cqyw1=jUFDiJ77bg@mail.gmail.com>
+Subject: Re: [RFC 0/2] RISC-V: enable rust
+To:     Conor Dooley <conor@kernel.org>
+Cc:     Conor Dooley <conor.dooley@microchip.com>,
+        linux-riscv@lists.infradead.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, 24 Feb 2023 05:36:08 PST (-0800), Conor Dooley wrote:
-> This is a somewhat blind (and maybe foolish) attempt at enabling Rust
-> for RISC-V. I've tested this on Icicle, and the modules seem to work.
-> I'd like to play around with Rust on RISC-V, but I'm not interested in
-> using downstream kernels, so figured I should try and see what's
-> missing...
-> I've tagged this as RFC in case I've missed some "WAaaaa you can't do
-> this" somewhere :)
-
-I'm fine with it, but IIRC the Rust support for most targets was pulled 
-out as they weren't deemed ready to go yet.  If the Rust folks are OK 
-turning on RISC-V support then it's fine with me, but I think it's 
-really more up to them at this point.
-
-So
-
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-
-in case folks want to take it via some Rust-related tree, but I'm also 
-fine taking it via the RISC-V tree if that's easier.
-
+On Fri, Feb 24, 2023 at 10:00 PM Conor Dooley <conor@kernel.org> wrote:
 >
-> Thanks,
-> Conor.
+> The stuff that I have lifted here all had you as the sole author in the
+> "rust" branch downstream, which is why I gave you authorship. Namely:
+> afba78eacb9b ("rust: generate target specification files on the fly")
+> 732b3c386328 ("rust: target: remove `cpu`")
 >
-> CC: Miguel Ojeda <ojeda@kernel.org>
-> CC: Alex Gaynor <alex.gaynor@gmail.com>
-> CC: Wedson Almeida Filho <wedsonaf@gmail.com>
-> CC: Boqun Feng <boqun.feng@gmail.com>
-> CC: Gary Guo <gary@garyguo.net>
-> CC: Björn Roy Baron <bjorn3_gh@protonmail.com>
-> CC: Jonathan Corbet <corbet@lwn.net>
-> CC: Paul Walmsley <paul.walmsley@sifive.com>
-> CC: Palmer Dabbelt <palmer@dabbelt.com>
-> CC: Nathan Chancellor <nathan@kernel.org>
-> CC: Nick Desaulniers <ndesaulniers@google.com>
-> CC: Tom Rix <trix@redhat.com>
-> CC: rust-for-linux@vger.kernel.org
-> CC: linux-doc@vger.kernel.org
-> CC: linux-kernel@vger.kernel.org
-> CC: linux-riscv@lists.infradead.org
-> CC: llvm@lists.linux.dev
->
-> Miguel Ojeda (2):
->   scripts: generate_rust_target: enable building on RISC-V
->   RISC-V: enable building the 64-bit kernels with rust support
->
->  Documentation/rust/arch-support.rst |  2 ++
->  arch/riscv/Kconfig                  |  1 +
->  arch/riscv/Makefile                 |  3 ++-
->  scripts/generate_rust_target.rs     | 19 +++++++++++++++++++
->  4 files changed, 24 insertions(+), 1 deletion(-)
+> I don't see anything from [1] in these commits, so I don't think that I
+> made a mistake here.
+
+It is true that I converted the original target spec files into the
+script, so I added the final lines. However, in that first commit some
+of the deleted files (related to RISC-V) were created by Gary. Thus it
+still feels a bit wrong to not credit Gary or even mention him.
+
+For instance, consider an even more extreme case: somebody moving a
+file or doing formatting/whitespace changes. Would they be the main
+and only author?
+
+> It's RFC for a reason, I've had a poor track record with off-list emails
+> to people that do not know me so would rather do it this way :)
+> Probably should have noted that I wrote the ~placeholder commit messages
+> though, apologies. I'll sort that out for a potential v1.
+
+No problem!
+
+> That's what I did! Unless I missed something that was non-obvious, the
+> only name on the commits I lifted was you. Is there somewhere else I
+> should have looked for that information?
+
+I would have traced the commits back a bit more. For instance, in the
+first commit you mention above, one may see the RISC-V target files
+were removed, so that means something was already there. Checking who
+added those files leads to a few commits from Gary (and one from
+Daniel). And then it is about making a judgement call trying to be
+fair :)
+
+Cheers,
+Miguel
