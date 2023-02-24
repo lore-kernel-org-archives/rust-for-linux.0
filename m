@@ -2,66 +2,46 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A45B9C7EE23
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 22:20:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 65E13C64ED8
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 22:32:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbjBXWUt (ORCPT
+        id S229643AbjBXWcP (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 17:20:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60242 "EHLO
+        Fri, 24 Feb 2023 17:32:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbjBXWUr (ORCPT
+        with ESMTP id S229492AbjBXWcO (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 17:20:47 -0500
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF0FF17CEE;
-        Fri, 24 Feb 2023 14:20:46 -0800 (PST)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-53916ab0c6bso18143647b3.7;
-        Fri, 24 Feb 2023 14:20:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=IqQPJNfK638HDk4ODq+fMB7JJcK2vXRJP7v56xO3S9k=;
-        b=HAJsEdyAG1cOY/j+Vs6v1Ro4klVsPX0l7htKPdL5rdyUoEkEXwc3EqGqF/31BqyoeR
-         8Gc70jiB86abn5T/EFSlzm0tBLZDe6nthy/OgbziasK9ExC9MssJnkYayGu/7y7MiZ6x
-         vLpLAmkBnQLWWxaG4HdTQW/iO+UoJzutbQCl7iyYup9ojoeDv3oB+BPX6w3NMnFlrvmF
-         B7v7bhSOYv9K5Go8X+0CQR3SM7rheJYcgwBzKyef9i+y0/2WLsP/SiEOJe2jpYGOKM8V
-         GGno0ZpW+yaMgPcdZajCU49icbCJhJim4ne8u8L16Ek/F5u7Tu8uMzMcwSCfFLS1wYqb
-         87tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IqQPJNfK638HDk4ODq+fMB7JJcK2vXRJP7v56xO3S9k=;
-        b=8CK2Me3hrGMzFt57aY2LHgSpH6uhYleEHN0yQUv1aFI9VKasBfykg4IGRNCKpLDlgv
-         KiZG5ao83IBuEZLuQ1+4vdlPsT8o5nGphVnDQ16QEXVdUXFlTDRVSSMVAvbPlrY27ilE
-         5gELdDPcKH8JZORy/bbDFKY8+lYCc07XkUykmVTv/9ObeOQ4RR943YzEDCkhdSlaykzP
-         etK55gy0L7fhFcf2ehHZ7up+PeAG/9fn7LIh9drfsTF/prZ6rVAqoEa9lu7KCLYvrYju
-         MypYYlxbvnHktgCen85GRjRGgjhZB3/O0rMyZzVeNircnTmA2+mQCv4hGQ1PDf++qbvG
-         4WNA==
-X-Gm-Message-State: AO0yUKXlXxFf6NQWSSFjNAHcilIvWDchZPxLUeJSIWkeOWWD6MGA4TLC
-        GqSiO0tIeidq9KXzZPjj6m/g8weOMs+dp+QOGPI=
-X-Google-Smtp-Source: AK7set+BCO4mvxBMIls68YhyM4z+vOB5zPgpVOZ6T1wB6+em698PSXYG6gf/JzasjxCkItBDvJ2GBFZIoNFQhY4OKBw=
-X-Received: by 2002:a5b:ac8:0:b0:a06:538f:24b2 with SMTP id
- a8-20020a5b0ac8000000b00a06538f24b2mr3802600ybr.2.1677277245871; Fri, 24 Feb
- 2023 14:20:45 -0800 (PST)
-MIME-Version: 1.0
-References: <20230224133609.2877396-1-conor.dooley@microchip.com>
- <CANiq72=4ZhV=u2ZUr=x-iAS_iMnV8GSiq0tEn7Tj0NanO=D+xQ@mail.gmail.com> <Y/kldmYcl7+2FBRB@spud>
-In-Reply-To: <Y/kldmYcl7+2FBRB@spud>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 24 Feb 2023 23:20:34 +0100
-Message-ID: <CANiq72=btcBOmrz0=ib=2eZiiV1z4_3qm1cqyw1=jUFDiJ77bg@mail.gmail.com>
-Subject: Re: [RFC 0/2] RISC-V: enable rust
-To:     Conor Dooley <conor@kernel.org>
+        Fri, 24 Feb 2023 17:32:14 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B00DE6A79D;
+        Fri, 24 Feb 2023 14:32:13 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2669DB81D50;
+        Fri, 24 Feb 2023 22:32:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCF8C433EF;
+        Fri, 24 Feb 2023 22:32:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677277930;
+        bh=YU/s+bH/87E9Dfu8eF0TeGeix3GsbNFybjbH2XtskK4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mETyRECgSZPUhMAritaTsInlHW3NQ4KmoWnrKDW8rS8CnpxXcUUfVFtdyBTM0UsWM
+         ULYYEhVvw2B9jJvjiYxBo61zDJuK11jrTAdkWcvI+iSmmmbbZLO0Y9m9cR5d1/eJBw
+         P+hhL2hV62T8SzCEecVzG2WK105xkYVvinC4Uk67aVNJ7IVKRoVtnCsiyTIusVCxX0
+         vBKFG0G9Rus8tg8ZWgFCompCXIv5nbVFC18hZ7KDtNI4lgGthc56FoLkjYQ7GA+GsY
+         UzMeWMgs9UNdJCZ9xSSQHXhtcR//sTcfUPeEWigqUl9EupAJxazfWXjwDsFS23prUf
+         8MbqQy2knLp/w==
+Date:   Fri, 24 Feb 2023 22:32:04 +0000
+From:   Conor Dooley <conor@kernel.org>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Conor Dooley <conor.dooley@microchip.com>,
         linux-riscv@lists.infradead.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         Jonathan Corbet <corbet@lwn.net>,
         Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
@@ -70,47 +50,57 @@ Cc:     Conor Dooley <conor.dooley@microchip.com>,
         Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [RFC 0/2] RISC-V: enable rust
+Message-ID: <Y/k65INC1//tXe2U@spud>
+References: <20230224133609.2877396-1-conor.dooley@microchip.com>
+ <CANiq72=4ZhV=u2ZUr=x-iAS_iMnV8GSiq0tEn7Tj0NanO=D+xQ@mail.gmail.com>
+ <Y/kldmYcl7+2FBRB@spud>
+ <CANiq72=btcBOmrz0=ib=2eZiiV1z4_3qm1cqyw1=jUFDiJ77bg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="GPqby4BNY/8U4z3W"
+Content-Disposition: inline
+In-Reply-To: <CANiq72=btcBOmrz0=ib=2eZiiV1z4_3qm1cqyw1=jUFDiJ77bg@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Feb 24, 2023 at 10:00 PM Conor Dooley <conor@kernel.org> wrote:
->
-> The stuff that I have lifted here all had you as the sole author in the
-> "rust" branch downstream, which is why I gave you authorship. Namely:
-> afba78eacb9b ("rust: generate target specification files on the fly")
-> 732b3c386328 ("rust: target: remove `cpu`")
->
-> I don't see anything from [1] in these commits, so I don't think that I
-> made a mistake here.
 
-It is true that I converted the original target spec files into the
-script, so I added the final lines. However, in that first commit some
-of the deleted files (related to RISC-V) were created by Gary. Thus it
-still feels a bit wrong to not credit Gary or even mention him.
+--GPqby4BNY/8U4z3W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-For instance, consider an even more extreme case: somebody moving a
-file or doing formatting/whitespace changes. Would they be the main
-and only author?
+On Fri, Feb 24, 2023 at 11:20:34PM +0100, Miguel Ojeda wrote:
+> On Fri, Feb 24, 2023 at 10:00 PM Conor Dooley <conor@kernel.org> wrote:
 
-> It's RFC for a reason, I've had a poor track record with off-list emails
-> to people that do not know me so would rather do it this way :)
-> Probably should have noted that I wrote the ~placeholder commit messages
-> though, apologies. I'll sort that out for a potential v1.
+> > That's what I did! Unless I missed something that was non-obvious, the
+> > only name on the commits I lifted was you. Is there somewhere else I
+> > should have looked for that information?
+>=20
+> I would have traced the commits back a bit more. For instance, in the
+> first commit you mention above, one may see the RISC-V target files
+> were removed, so that means something was already there. Checking who
+> added those files leads to a few commits from Gary (and one from
+> Daniel).
 
-No problem!
+> And then it is about making a judgement call trying to be fair :)
 
-> That's what I did! Unless I missed something that was non-obvious, the
-> only name on the commits I lifted was you. Is there somewhere else I
-> should have looked for that information?
+It was a few hours ago that I looked properly, but, IIRC, it was a
+conversion from config files to code? My understanding was that
+config files were not copyrightable, hence I looked only at the
+authorship of the code. I'm usually on the anal side about SoB stuff,
+so it is not a matter of me not bothering!
 
-I would have traced the commits back a bit more. For instance, in the
-first commit you mention above, one may see the RISC-V target files
-were removed, so that means something was already there. Checking who
-added those files leads to a few commits from Gary (and one from
-Daniel). And then it is about making a judgement call trying to be
-fair :)
+--GPqby4BNY/8U4z3W
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Cheers,
-Miguel
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCY/k65AAKCRB4tDGHoIJi
+0iCIAQD8yWuiYHTGurcMVu0pSePa/9gxWTaY2XNdYA6jLb5JhgEA+VVYS7bt0vzO
+rAr5s4NsXOudIsskOkB30k8ueF8CJwQ=
+=IIrm
+-----END PGP SIGNATURE-----
+
+--GPqby4BNY/8U4z3W--
