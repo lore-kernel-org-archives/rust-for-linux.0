@@ -2,94 +2,102 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8BAFC61DA3
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 12:41:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B82E4C61DA4
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 12:49:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229620AbjBXMlQ (ORCPT
+        id S229689AbjBXMtV (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 07:41:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39086 "EHLO
+        Fri, 24 Feb 2023 07:49:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjBXMlQ (ORCPT
+        with ESMTP id S229611AbjBXMtU (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 07:41:16 -0500
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0407867E01;
-        Fri, 24 Feb 2023 04:41:15 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        Fri, 24 Feb 2023 07:49:20 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E179552DD6;
+        Fri, 24 Feb 2023 04:49:19 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: lina@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 62C8D3FA55;
-        Fri, 24 Feb 2023 12:41:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1677242473;
-        bh=VYSTeFhUHymOJzVGfDtM32Jjb9Ss3teuG3euFgeyF2w=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=J4Nchlg13ixTkt3we9I2G3XyyTlC08snI5BpXQTwDeRFwBVEvkMH1JN2yk+Fnry4z
-         pAOKJt/b/rlaEz9VwufHXZPzzk7I56n/lbqwSM3sOug1pk3qYLGNHlMl5EauSUmLeJ
-         7jZEhM3s1nlRDGcrHW3M1nmIerMqVR1tFFPlsyJ7SdvlzhQRIqAPMtOF+eo/q7qTWm
-         U159F1HoCS+BX0va6tqkZFpFTIMwLasuTeyMi9MY6+yiDpiGO7SR3sMallMkXYfGIV
-         et9Zoi0Q2w2CUUP+tQs6T06Xe7so+eXExXMGZ+FJ/Mb3u8ZOtg/k8U7DkSosJG3Y7i
-         cmNtWc8X7NkMA==
-Message-ID: <5220876d-f226-117a-d8ed-1d380cd3f14e@asahilina.net>
-Date:   Fri, 24 Feb 2023 21:41:08 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH 3/3] rust: macros: Allow specifying multiple module
- aliases
-Content-Language: en-US
-To:     Greg KH <gregkh@linuxfoundation.org>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A0556188D;
+        Fri, 24 Feb 2023 12:49:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6432AC4339B;
+        Fri, 24 Feb 2023 12:49:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1677242958;
+        bh=tuYHQ+XarG1U3xH8LjrMRpaLxwbZFcHeJ3I/p1szLFM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bf4Iaj4iXDmYS0So4+Fal8DrBahuMVm6EKJXs2nvuZ4hMPWrFsb9G8tJf2JSDhezH
+         HFpMRsHoAuTKXu1KGmfVH1gDRZMgMkGqveXnfKdH0gkJLff9TBToX1+SI6ZimmVPEs
+         rzohnlKDKXbOOYavcCLY0apAoVSGHuK69DL53cqc=
+Date:   Fri, 24 Feb 2023 13:49:16 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Asahi Lina <lina@asahilina.net>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         asahi@lists.linux.dev, Finn Behrens <me@kloenk.dev>,
         Sumera Priyadarsini <sylphrenadin@gmail.com>
+Subject: Re: [PATCH 3/3] rust: macros: Allow specifying multiple module
+ aliases
+Message-ID: <Y/iyTA3Nl5yZ/eMA@kroah.com>
 References: <20230224-rust-macros-v1-0-b39fae46e102@asahilina.net>
  <20230224-rust-macros-v1-3-b39fae46e102@asahilina.net>
  <Y/hpiWDLm0fB0Xp/@kroah.com>
-From:   Asahi Lina <lina@asahilina.net>
-In-Reply-To: <Y/hpiWDLm0fB0Xp/@kroah.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <5220876d-f226-117a-d8ed-1d380cd3f14e@asahilina.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5220876d-f226-117a-d8ed-1d380cd3f14e@asahilina.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 24/02/2023 16.38, Greg KH wrote:
-> On Fri, Feb 24, 2023 at 04:25:57PM +0900, Asahi Lina wrote:
->> Modules can (and usually do) have multiple alias tags, in order to
->> specify multiple possible device matches for autoloading. Allow this by
->> changing the alias ModuleInfo field to an Option<Vec<String>>.
+On Fri, Feb 24, 2023 at 09:41:08PM +0900, Asahi Lina wrote:
+> On 24/02/2023 16.38, Greg KH wrote:
+> > On Fri, Feb 24, 2023 at 04:25:57PM +0900, Asahi Lina wrote:
+> >> Modules can (and usually do) have multiple alias tags, in order to
+> >> specify multiple possible device matches for autoloading. Allow this by
+> >> changing the alias ModuleInfo field to an Option<Vec<String>>.
+> > 
+> > Note, manually specifying the MODULE_ALIAS is only really ever done for
+> > platform drivers today (and I would argue we need to fix that up),
+> > otherwise the use of MODULE_DEVICE_TABLE() should really really be used
+> > instead of having to manually specify aliases.
 > 
-> Note, manually specifying the MODULE_ALIAS is only really ever done for
-> platform drivers today (and I would argue we need to fix that up),
-> otherwise the use of MODULE_DEVICE_TABLE() should really really be used
-> instead of having to manually specify aliases.
+> That's the plan, I just added this before adding support for
+> MODULE_DEVICE_TABLE() when I first realized that it wasn't yet in there!
+> We were briefly hardcoding the bus aliases for downstream kernels
+> because the depmod stuff couldn't work with the way device ID tables
+> were done in Rust downstream at the time (and I only noticed the first
+> time I tried to build it as a module, since I always develop with
+> monolithic kernels). That's fixed now ^^
+> 
+> However, the issue is that right now the module macro already takes a
+> single optional alias, and that doesn't make sense as an API. We could
+> remove support for this entirely (if I get my Rust MODULE_DEVICE_TABLE()
+> implementation in, there will be zero users of the alias argument as far
+> as I know), or add support for multiple aliases. But I think just
+> leaving it as a single alias doesn't really make sense? It doesn't
+> represent the way module aliases work, which is 0..N.
+> 
+> I'm fine with removing it if people prefer that, I just thought that for
+> something as basic as module metadata we might as well do it properly
+> even if there are no users right now, since it's already half in there...
 
-That's the plan, I just added this before adding support for
-MODULE_DEVICE_TABLE() when I first realized that it wasn't yet in there!
-We were briefly hardcoding the bus aliases for downstream kernels
-because the depmod stuff couldn't work with the way device ID tables
-were done in Rust downstream at the time (and I only noticed the first
-time I tried to build it as a module, since I always develop with
-monolithic kernels). That's fixed now ^^
+How about just removing it so that people don't think it is something
+that they really should be doing and adding real MODULE_DEVICE_TABLE()
+support instead?
 
-However, the issue is that right now the module macro already takes a
-single optional alias, and that doesn't make sense as an API. We could
-remove support for this entirely (if I get my Rust MODULE_DEVICE_TABLE()
-implementation in, there will be zero users of the alias argument as far
-as I know), or add support for multiple aliases. But I think just
-leaving it as a single alias doesn't really make sense? It doesn't
-represent the way module aliases work, which is 0..N.
+Although the first filesystem that gets written will need the
+MODULE_ALIAS() logic added back, oh well.
 
-I'm fine with removing it if people prefer that, I just thought that for
-something as basic as module metadata we might as well do it properly
-even if there are no users right now, since it's already half in there...
+Anyway, no objection for me for this for now, just trying to point out
+that drivers really should not be using MODULE_ALIAS() at all.
 
-~~ Lina
+thanks,
+
+greg k-h
