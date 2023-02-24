@@ -2,135 +2,102 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 313A8C61DA4
-	for <rust-for-linux@archiver.kernel.org>; Thu, 23 Feb 2023 02:59:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A656AC64ED8
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 07:26:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233740AbjBWC7d (ORCPT
+        id S229621AbjBXH0d (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 22 Feb 2023 21:59:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47540 "EHLO
+        Fri, 24 Feb 2023 02:26:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233082AbjBWC7c (ORCPT
+        with ESMTP id S229609AbjBXH0c (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 22 Feb 2023 21:59:32 -0500
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DB5843470;
-        Wed, 22 Feb 2023 18:59:31 -0800 (PST)
-Received: by mail-oi1-x229.google.com with SMTP id t22so10229371oiw.12;
-        Wed, 22 Feb 2023 18:59:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4bDaQlm4IekB9ci5Y7wuWrWJVAV12yieyIsNsT+hgOM=;
-        b=YGPJA+i7UZLAPFXwYzlNCPMqISThunBnbc5pTH7YX1EDEmfx/4Y1SoNXZ3LxKf+Zqp
-         uLUywXXUMojb6MaaRk1ZQfYa1pys+gtDmzOg8Zxz6dGRZ8BalIDPJEKcZQRCMYn2ULDO
-         OGCM6WnMg3Oc5nHzuiiVjIqyCazTcJgMz+2nptTn9RSgGYNaJkePYFAmF+FsAQje8vTC
-         xK+1SS4mxHnilTLH1Sv78hzC/8HbXsAd+H3TvtB0i6yF8n/fnWdBSbybIpUqmHNVvDTf
-         DIG5H4YBp4ZDLZCgjZhQVqf7ySSJPGfjx7j9/OCqYYo9dvRueMeA9JrIOW6webJFS41C
-         MXKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4bDaQlm4IekB9ci5Y7wuWrWJVAV12yieyIsNsT+hgOM=;
-        b=yNL3HOsKsycyEfuo4LTaq4u2OMDGgFV1TjDygriCABKcohuQ6ceIj4234xl9qrOZc9
-         FMi018EgoQz7Kpana1MLAF0Rlg/SEEPe8zGTscl1FVQTC7c8ffcXxJa60oZgKMrJ1g6X
-         RRaPJQ4VjE43YzozVlQX3P/dnJc/NnvOZ8566ldsOoNGa/ZshhPxmaM/2EGEltu+qH4h
-         OxbXohpitzppl52zhMH4dxcU+gJz4DZ+ZwdkKel17zKM1kA3JlPKPJqQmMZ5TRS+/mkg
-         XXx7OP+hM1j9ZrR97J5JbVYd8TMDuzsdfGI/Wh2AIj4t/yz7uGudVL9SVt3jwf4nS57H
-         +Arw==
-X-Gm-Message-State: AO0yUKXlFAiT13InhJNVnaf9c8o4xQYi1ujknTrQniFgaAqdrzN5JUkm
-        EXB4vqP3ShQLsHuGn+O5nhy8KZmGL2k=
-X-Google-Smtp-Source: AK7set86T9sQySQYGe/f9RSGkaegNimz6qVa/PdrC/55qa3kx3bg2Yl+X0leE+6JadfF8HY9wn9jMQ==
-X-Received: by 2002:a05:6808:3a8:b0:378:920b:73f6 with SMTP id n8-20020a05680803a800b00378920b73f6mr1847221oie.46.1677121169983;
-        Wed, 22 Feb 2023 18:59:29 -0800 (PST)
-Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id b2-20020aca2202000000b003646062e83bsm2149403oic.29.2023.02.22.18.59.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Feb 2023 18:59:29 -0800 (PST)
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Fri, 24 Feb 2023 02:26:32 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 722391EBDF;
+        Thu, 23 Feb 2023 23:26:31 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: linasend@asahilina.net)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id C94FE4248B;
+        Fri, 24 Feb 2023 07:26:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+        s=default; t=1677223589;
+        bh=nKGhps5DD27EJVZDy1ee9VeyZsp+Mb8LJV4KHerqhaA=;
+        h=From:Subject:Date:To:Cc;
+        b=zexXCZty7onfsKHpn30fdyS96xk4THjzQTKr2yMbkM3zdVyNT+OA+28iGZxOuXjTx
+         nArZgrIBmwygvgzL28XQLDWkm2G5/QhIuU21ROMLCQOtzeUtRuiAiHTmdZ7lIFqYIw
+         7VheS/1xAPZ4H8nFXDPS4FWlazjdlSNp53uF8s4JSns+c+7KVr5m5NhqxLyl8VWRNL
+         rKcBCq2S+5PapCd8ktIXzn3vemb3Uih8oCBeI/ms00XL6SmFiry3i/WMtR6fsKTPdh
+         fbtOs6YM8w3+sAfhUD6q3e8MoqPMEyAN9jel8CeCqmfBd/8Uehgh+2z3Ycql/tLPLt
+         ztIQDkKrtAgig==
+From:   Asahi Lina <lina@asahilina.net>
+Subject: [PATCH 0/3] rust: Miscellaneous macro improvements
+Date:   Fri, 24 Feb 2023 16:25:54 +0900
+Message-Id: <20230224-rust-macros-v1-0-b39fae46e102@asahilina.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIJm+GMC/x2NQQ6DMAwEv4J8rtWQoLbqV6oenGDAhwZkl6oS4
+ u8kHGd3R7uBsQobPJsNlH9iMucC7aWBNFEeGaUvDN754LzvUFf74oeSzoa3EPo4PO6OuIViRDL
+ GqJTTVJ1xWa/nvOa1X5QH+Z9vr/e+HwCnv259AAAA
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
-Subject: [PATCH] scripts: read cfgs from Makefile for rust-analyzer
-Date:   Wed, 22 Feb 2023 23:59:24 -0300
-Message-Id: <20230223025924.526200-1-yakoyoku@gmail.com>
-X-Mailer: git-send-email 2.39.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>,
+        Finn Behrens <me@kloenk.dev>,
+        Sumera Priyadarsini <sylphrenadin@gmail.com>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1677223586; l=1588;
+ i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
+ bh=nKGhps5DD27EJVZDy1ee9VeyZsp+Mb8LJV4KHerqhaA=;
+ b=VdMC491l3CXJjysB+gN/JRXZFdOkZ4zQ6Pu9earrHBjrMRmDFmisUcEWdeXDPkPlavbDFC/SK
+ UfGto5/oEoUANXtk8nLj3pp1JouQCTSXJHJny8JsYj1HO85DU1d3E73
+X-Developer-Key: i=lina@asahilina.net; a=ed25519;
+ pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Both `core` and `alloc` had their `cfgs` missing in `rust-project.json`,
-to remedy this `generate_rust_analyzer.py` scans the Makefile from
-inside the `rust` directory for them to be added to a dictionary that
-each key corresponds to a crate and each value, to an array of `cfgs`.
+Hi everyone!
 
-Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+This short series is part of the set of dependencies for the drm/asahi
+Apple M1/M2 GPU driver.
+
+The first two patches make concat_idents!(bindings::foo, bar) work.
+I use this later in the DRM abstractions to construct DRM IOCTL command
+names [1], which avoids having to import all of bindings::*.
+
+The third patch allows specifying multiple module aliases. Since modules
+can have multiple aliases, the macro naturally needs to be able to take
+an array instead of a single alias. I don't use this in the current
+iteration of the driver, since I introduced proper support for automatic
+modpost alias generation for Rust modules, but it can be useful both to
+remove that support as a blocking factor (we can specify aliases manually
+as a fallback), and for modules which need extra aliases not covered by
+device ID tables.
+
+[1] https://github.com/AsahiLinux/linux/blob/gpu/rebase-20230224/rust/kernel/drm/ioctl.rs#L101
+
+Signed-off-by: Asahi Lina <lina@asahilina.net>
 ---
- scripts/generate_rust_analyzer.py | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+Asahi Lina (3):
+      rust: macros: Make expect_punct() return the Punct directly
+      rust: macros: concat_idents: Allow :: paths in the first argument
+      rust: macros: Allow specifying multiple module aliases
+ rust/macros/concat_idents.rs | 24 +++++++++++++++++++++---
+ rust/macros/helpers.rs       | 14 +++++++++++---
+ rust/macros/module.rs        | 34 +++++++++++++++++++++++++++-------
+ 3 files changed, 59 insertions(+), 13 deletions(-)
+---
+base-commit: 83f978b63fa7ad474ca22d7e2772c5988101c9bd
+change-id: 20230224-rust-macros-633dbf870ae1
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index ecc7ea9a4dcf..8bfadd688ebc 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -9,6 +9,24 @@ import logging
- import pathlib
- import sys
- 
-+def makefile_crate_cfgs(makefile):
-+    # Get configurations from a Makefile.
-+    cfgs = {}
-+    with open(makefile) as fd:
-+        for line in fd:
-+            if line.endswith("-cfgs = \\\n"):
-+                crate = line.replace("-cfgs = \\\n", "")
-+                cfg = []
-+                for l in map(lambda l: l.strip(), fd):
-+                    if not l:
-+                        cfgs[crate] = cfg
-+                        break
-+                    l = l.replace("--cfg ", "")
-+                    l = l.replace(" \\", "")
-+                    cfg.append(l)
-+
-+    return cfgs
-+
- def generate_crates(srctree, objtree, sysroot_src):
-     # Generate the configuration list.
-     cfg = []
-@@ -24,6 +42,8 @@ def generate_crates(srctree, objtree, sysroot_src):
-     crates = []
-     crates_indexes = {}
- 
-+    makefile_cfgs = makefile_crate_cfgs(srctree / "rust" / "Makefile")
-+
-     def append_crate(display_name, root_module, deps, cfg=[], is_workspace_member=True, is_proc_macro=False):
-         crates_indexes[display_name] = len(crates)
-         crates.append({
-@@ -44,6 +64,7 @@ def generate_crates(srctree, objtree, sysroot_src):
-         "core",
-         sysroot_src / "core" / "src" / "lib.rs",
-         [],
-+        cfg=makefile_cfgs.get("core", []),
-         is_workspace_member=False,
-     )
- 
-@@ -57,6 +78,7 @@ def generate_crates(srctree, objtree, sysroot_src):
-         "alloc",
-         srctree / "rust" / "alloc" / "lib.rs",
-         ["core", "compiler_builtins"],
-+        cfg=makefile_cfgs.get("alloc", []),
-     )
- 
-     append_crate(
--- 
-2.39.2
+Thank you,
+~~ Lina
 
