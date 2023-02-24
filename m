@@ -2,134 +2,141 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 921A1C61DA3
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 14:49:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E73DCC61DA4
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 14:57:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230105AbjBXOtS (ORCPT
+        id S229805AbjBXO5T (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 09:49:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39618 "EHLO
+        Fri, 24 Feb 2023 09:57:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230108AbjBXOtQ (ORCPT
+        with ESMTP id S229379AbjBXO5S (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 09:49:16 -0500
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B832453EE2;
-        Fri, 24 Feb 2023 06:49:05 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        Fri, 24 Feb 2023 09:57:18 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8725A64E2A;
+        Fri, 24 Feb 2023 06:57:17 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: lina@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id B2A9C3FA55;
-        Fri, 24 Feb 2023 14:48:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1677250144;
-        bh=9ldx9Szz+whOvxXhwLV1gjd7enNHNzspB3ZXUahx/bs=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=y8hUWhe5Psa20R0C8vtHmx7YDAFLkA9Sqy/C9NZq7AhcKhFlqXR63+xEKbxPc8Axs
-         umqkzWiNNK+LyhUfkEEP8lafaFrsaFbq/xecCk0g2Smyfpsjp9qxBGCNGkQTSE9fP2
-         QPJ2K9EUPEqQ5562021rDvKP7NREziYJz1zuejrxHqkTu3zMf0NTdlpvaOPpH7mKW0
-         sckO8cecEVnQrRkR9yam4t2xi0rJBGNatooQ2i1Wi5y79ilcaORSiUtsHd4LUaU9TM
-         2tK4k95/4qvOGpoGzvQXRWxEAST4MI13YkkCgOq0A3EkwKiMIHvQLEQ5H4RAcCu8Qd
-         sPjvP7kQ+0JAA==
-Message-ID: <87de1cd0-a57a-3391-a4b8-599ee0307491@asahilina.net>
-Date:   Fri, 24 Feb 2023 23:48:56 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Subject: Re: [PATCH 2/5] rust: device: Add a minimal RawDevice trait
-Content-Language: en-US
-To:     Robin Murphy <robin.murphy@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1058F618E6;
+        Fri, 24 Feb 2023 14:57:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D587C433EF;
+        Fri, 24 Feb 2023 14:57:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677250636;
+        bh=BX7ubvR3+x0sfXaoE8k2EQZkDXcr72I1hlLKxFfUneM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LeQAyzUcx24i3ueMY7iYVCIa0WNjPNOdR2O9fKOX1Zw2ZioO/R0gDk8e4oc8g1Cvj
+         FxSMJc0ZD84wdrZMaGSJHxOEhX2i0A3F1/CzWSIf0EpCEP7LoqN2Bq2I2hLN9xyH4Z
+         S0rbr3SZAFB8DuO+TiQON/aD0nYjHLe6jn2JQZaEvlcf3XLSipn96yH68a+vD3ViXb
+         QXOSRBREy4zXA1dbb+bpYd4pXYyDOmGJ+E0il+5z6x3VKBm0E0rsWkX8ivUqz9lJRR
+         HFf0ngDbQYWzhbSk6ovc9LY+bnVvtNoRsPmb1TVo2pCiTab1TKvAejr4+H/pD7zJEn
+         QkfMmKNjAIHhA==
+Date:   Fri, 24 Feb 2023 07:57:13 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Conor Dooley <conor.dooley@microchip.com>
+Cc:     linux-riscv@lists.infradead.org, conor@kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        Hector Martin <marcan@marcan.st>,
-        Sven Peter <sven@svenpeter.dev>, Arnd Bergmann <arnd@arndb.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Neal Gompa <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
- <20230224-rust-iopt-rtkit-v1-2-49ced3391295@asahilina.net>
- <Y/ieQ0UX/niAG1Hg@kroah.com>
- <ef3a3638-6381-87ab-d674-644306b6b6ce@asahilina.net>
- <Y/jFeZzZVCpBGvGv@kroah.com> <e6d6d928-4514-55b9-346d-2e5e82220729@arm.com>
-From:   Asahi Lina <lina@asahilina.net>
-In-Reply-To: <e6d6d928-4514-55b9-346d-2e5e82220729@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: Re: [RFC RESEND 2/2] RISC-V: enable building the 64-bit kernels with
+ rust support
+Message-ID: <Y/jQSUpXH5XwQTqg@dev-arch.thelio-3990X>
+References: <20230224135044.2882109-1-conor.dooley@microchip.com>
+ <20230224135044.2882109-3-conor.dooley@microchip.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230224135044.2882109-3-conor.dooley@microchip.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+Hi Conor,
 
-
-On 2023/02/24 23:32, Robin Murphy wrote:
-> On 2023-02-24 14:11, Greg Kroah-Hartman wrote:
->> Thanks for the detailed rust explainations, I'd like to just highlight
->> one thing:
->>
->> On Fri, Feb 24, 2023 at 10:15:12PM +0900, Asahi Lina wrote:
->>> On 24/02/2023 20.23, Greg Kroah-Hartman wrote:
->>>> And again, why are bindings needed for a "raw" struct device at all?
->>>> Shouldn't the bus-specific wrappings work better?
->>>
->>> Because lots of kernel subsystems need to be able to accept "any" device
->>> and don't care about the bus! That's what this is for.
->>
->> That's great, but:
->>
->>> All the bus
->>> wrappers would implement this so they can be used as an argument for all
->>> those subsystems (plus a generic one when you just need to pass around
->>> an actual owned generic reference and no longer need bus-specific
->>> operations - you can materialize that out of a RawDevice impl, which is
->>> when get_device() would be called). That's why I'm introducing this now,
->>> because both io_pgtable and rtkit need to take `struct device` pointers
->>> on the C side so we need some "generic struct device" view on the
->>> Rust side.
->>
->> In looking at both ftkit and io_pgtable, those seem to be good examples
->> of how "not to use a struct device", so trying to make safe bindings
->> from Rust to these frameworks is very ironic :)
->>
->> rtkit takes a struct device pointer and then never increments it,
->> despite saving it off, which is unsafe.  It then only uses it to print
->> out messages if things go wrong (or right in some cases), which is odd.
->> So it can get away from using a device pointer entirely, except for the
->> devm_apple_rtkit_init() call, which I doubt you want to call from rust
->> code, right?
->>
->> for io_pgtable, that's a bit messier, you want to pass in a device that
->> io_pgtable treats as a "device" but again, it is NEVER properly
->> reference counted, AND, it is only needed to try to figure out the bus
->> operations that dma memory should be allocated from for this device.  So
->> what would be better to save off there would be a pointer to the bus,
->> which is constant and soon will be read-only so there are no lifetime
->> rules needed at all (see the major struct bus_type changes going into
->> 6.3-rc1 that will enable that to happen).
+On Fri, Feb 24, 2023 at 01:50:44PM +0000, Conor Dooley wrote:
+> From: Miguel Ojeda <ojeda@kernel.org>
 > 
-> FWIW the DMA API *has* to know which specific device it's operating
-> with, since the relevant properties can and do vary even between
-> different devices within a single bus_type (e.g. DMA masks).
+> The rust modules work on 64-bit RISC-V, with no twiddling required.
+> Select HAS_RUST and provide the required flags to kbuild so that the
+> modules can be used.
+> 32-bit is broken in core rust code, so support is limited to 64-bit
+> only: ld.lld: error: undefined symbol: __udivdi3
 > 
-> In the case of io-pgtable at least, there's no explicit refcounting
-> since the struct device must be the one representing the physical
-> platform/PCI/etc. device consuming the pagetable, so if that were to
-> disappear from underneath its driver while the pagetable is still in
-> use, things would already have gone very very wrong indeed :)
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+> ---
+>  Documentation/rust/arch-support.rst | 2 ++
+>  arch/riscv/Kconfig                  | 1 +
+>  arch/riscv/Makefile                 | 3 ++-
+>  3 files changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
+> index 6982b63775da..197919158596 100644
+> --- a/Documentation/rust/arch-support.rst
+> +++ b/Documentation/rust/arch-support.rst
+> @@ -15,5 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
+>  ============  ================  ==============================================
+>  Architecture  Level of support  Constraints
+>  ============  ================  ==============================================
+> +``riscv``     Maintained        ``rv64`` only.
+> +============  ================  ==============================================
+>  ``x86``       Maintained        ``x86_64`` only.
+>  ============  ================  ==============================================
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 81eb031887d2..73174157212d 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -115,6 +115,7 @@ config RISCV
+>  	select HAVE_POSIX_CPU_TIMERS_TASK_WORK
+>  	select HAVE_REGS_AND_STACK_ACCESS_API
+>  	select HAVE_RSEQ
+> +	select HAVE_RUST if 64BIT
 
-There's no terribly good way to encode this relationship in safe Rust as
-far as I know. So although it might be "obvious" (and I think my driver
-can never violate it as it is currently designed), this means the Rust
-abstraction will have to take the device reference if the C side does
-not, because safe rust abstractions have to actually make these bugs
-impossible and nothing stops a Rust driver from, say, stashing an
-io_pgtable reference into a global and letting the device go away.
+Just a small drive by comment, you have 'if 64BIT' here...
 
-~~ Lina
+>  	select HAVE_STACKPROTECTOR
+>  	select HAVE_SYSCALL_TRACEPOINTS
+>  	select IRQ_DOMAIN
+> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+> index 76989561566b..0d6fc4e25221 100644
+> --- a/arch/riscv/Makefile
+> +++ b/arch/riscv/Makefile
+> @@ -29,8 +29,8 @@ ifeq ($(CONFIG_ARCH_RV64I),y)
+>  
+>  	KBUILD_CFLAGS += -mabi=lp64
+>  	KBUILD_AFLAGS += -mabi=lp64
+> -
+>  	KBUILD_LDFLAGS += -melf64lriscv
+> +	KBUILD_RUSTFLAGS += -Ctarget-cpu=generic-rv64
+>  else
+>  	BITS := 32
+>  	UTS_MACHINE := riscv32
+> @@ -38,6 +38,7 @@ else
+>  	KBUILD_CFLAGS += -mabi=ilp32
+>  	KBUILD_AFLAGS += -mabi=ilp32
+>  	KBUILD_LDFLAGS += -melf32lriscv
+> +	KBUILD_RUSTFLAGS += -Ctarget-cpu=generic-rv32
+
+but also add KBUILD_RUSTFLAGS for the !64BIT case. Seems like one of
+those can be removed.
+
+>  endif
+>  
+>  ifeq ($(CONFIG_LD_IS_LLD),y)
+> -- 
+> 2.39.2
+> 
+
+Cheers,
+Nathan
