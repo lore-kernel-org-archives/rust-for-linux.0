@@ -2,123 +2,126 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A930AC678DB
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 08:10:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5071CC678DB
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 08:44:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjBXIKF (ORCPT
+        id S229563AbjBXIoW (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 03:10:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58740 "EHLO
+        Fri, 24 Feb 2023 03:44:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229686AbjBXIKE (ORCPT
+        with ESMTP id S229485AbjBXIoV (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 03:10:04 -0500
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1A2E51FB3;
-        Fri, 24 Feb 2023 00:10:02 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: linasend@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 7EC654206F;
-        Fri, 24 Feb 2023 08:09:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1677226201;
-        bh=Vvt7C/Qtdf+lSrPhP4SxMEJD9NARvhOFIMSePHVXMBM=;
-        h=From:Date:Subject:To:Cc;
-        b=jtmrute9igtKAUq7bOnesWb49I1rfuWEjjkwRxjJKybIblRkkQZTa4baPo4/fvE4x
-         nOr7lLn7vcdN+NebByNfjf4n4jv41zIztIBZ2CuHQlIdg9oGyGCG1o7G6LfWVykDtw
-         Hhs+/R3cdHhabErr0K0T8k3Kajv16ZRCv/+LIHPfCfvCvF4sP1VPUEUO9gwFXFDJCV
-         bs0iq7zEPafqj6Fwhv/L07JXKzhym+OutxZo8RsGJ9LQQrDm4dUCbVOqqpPWwR0GG6
-         IZcFTA8BKfZurnVLmd3BRC1nEkqMUvPSgDQOCOLhXYGRRpzM1nw3hJqH+RFb76Oiuh
-         yWT8XXSvUq8Zg==
-From:   Asahi Lina <lina@asahilina.net>
-Date:   Fri, 24 Feb 2023 17:09:47 +0900
-Subject: [PATCH] rust: Enable the new_uninit feature for kernel and driver
- crates
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230224-rust-new_uninit-v1-1-c951443d9e26@asahilina.net>
-X-B4-Tracking: v=1; b=H4sIAMpw+GMC/x2N0Q6CMAxFf4X02UbcIKi/QowZo0JfKmmZmhD+3
- Y3Hc25O7gZGymRwrzZQ+rDxWzJcThXEOchEyGNmcLXztXMNarIVhb7PJCy8Ymi7dvTN7dpFD7k
- aghEOGiTOpZuWdD6S4su+KL34dzz2j33/A1OafPuBAAAA
-To:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, asahi@lists.linux.dev,
-        Asahi Lina <lina@asahilina.net>
-X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1677226197; l=1846;
- i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
- bh=Vvt7C/Qtdf+lSrPhP4SxMEJD9NARvhOFIMSePHVXMBM=;
- b=iGrkIuoxuSMO1QXhhx+sDziNY0zHKFDHhoq50D0J0m6VllqYs8TOIfVBtQZng2W9DYJJ975i8
- 9KKIMpiGKLNAFu65pXllS/2i9f14R8c7WE4G+ZIbAAuZsBgTFFr2esW
-X-Developer-Key: i=lina@asahilina.net; a=ed25519;
- pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
+        Fri, 24 Feb 2023 03:44:21 -0500
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E447B305DC;
+        Fri, 24 Feb 2023 00:44:19 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id 952FA5C0114;
+        Fri, 24 Feb 2023 03:44:16 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Fri, 24 Feb 2023 03:44:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm3; t=1677228256; x=1677314656; bh=wd581eFP3K
+        lFvq0U5aP/IpGssCNvXt/Gl6A0XM6S2f8=; b=Monkq1jJUfCZdOoiz1FE83JYuY
+        /6RUz5BC3xZtyIEf5ljLKr1dAyekA5oFnuLom7W/uC9diIWNz0L6OeM5+BmVmGVD
+        M14ozvZ9dUDNeydSFXcHXXKUAHwrxxn1pu8pgPD5wH34Q2bmZcLhTCp1BJgGXLtF
+        PjoIdVBjXsAx7FlIh8/hmim7eiWdkf3O7ihTW3o1fOlINP2LP7ttoH2yYvHcSdR+
+        tkbzBSbgwlDmRnVXT3xCz7Eq3n8lpzMfmizZbmGpIvZ7EtjFpvBj4Z9fGc4lwRnV
+        VJtZk+JrBWWE0cxCcx/jCMO7VDEdSpvxBcf32nUW70TBys4qC+LyxSWISbXw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm1; t=1677228256; x=1677314656; bh=wd581eFP3KlFvq0U5aP/IpGssCNv
+        Xt/Gl6A0XM6S2f8=; b=e/TmRPCS0wj/UWm+XzSLvIZ7jY+LnhpHxE3O5247TutF
+        9XkRyxGoGAX0vIdf8uHr91M18S7KiWl589pWfM331mKO2hq0iU3djNTg1ej57zQH
+        l5qPJP8qzRXhEkZx1K2rnj0OZCtu705aqCzLPoijpoCzsITyRgPBKiiO954FBRk+
+        MEgFcUU+RNpKE+jOgghUpgnze5Am2XS6by2Md6NfZItwiiOnIoLEv5U1URKSLWt6
+        srx6M5sqPk6k3JwVPyGb5V717p2Y3gL0uUX1aERG/9nVKCCJXtNf/Xc5QX4QZmt+
+        9P3rJPvFfrpkgBpM23faLFUt9n/pD0UCQA2mWhfxhw==
+X-ME-Sender: <xms:4Hj4Y8HUBy7BvSvp656WhypfqVyJqB9dYDk3RC8_nMme50d0bXplrw>
+    <xme:4Hj4Y1UYXWpQoZIQwpkwZWOC3iAja6rrHgWYpv409hOephFfTzpkogQExvtSecI_Y
+    GL8m_RzZBunNEhuLGI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudekvddguddvtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
+    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
+    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
+    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:4Hj4Y2ISPAlmrZ2ZCcuv7Cn4x6FCV0dZA7W9Ja-_8_9eVMv-GxEJ1Q>
+    <xmx:4Hj4Y-FLUxr5PzRy7UmjPJ3CaSSrTo_g7U-IFBmblWyo2hHHoYp7pg>
+    <xmx:4Hj4YyU5U1kox6vJSm0QB9PTNPu4-xZW_QNvTYns3y8mRoyRcsGCrw>
+    <xmx:4Hj4Y2pXfBw3evWyOYheDyOrmguy0dPo-pulBKDAVmqGm79NUZL3Mg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 3B2C8B60086; Fri, 24 Feb 2023 03:44:16 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-172-g9a2dae1853-fm-20230213.001-g9a2dae18
+Mime-Version: 1.0
+Message-Id: <0818df3a-76c9-4cb3-8016-4717f4d5bf18@app.fastmail.com>
+In-Reply-To: <20230224-rust-ioctl-v1-1-5142d365a934@asahilina.net>
+References: <20230224-rust-ioctl-v1-1-5142d365a934@asahilina.net>
+Date:   Fri, 24 Feb 2023 09:43:27 +0100
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Asahi Lina" <lina@asahilina.net>,
+        "Miguel Ojeda" <ojeda@kernel.org>,
+        "Alex Gaynor" <alex.gaynor@gmail.com>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        asahi@lists.linux.dev, Linux-Arch <linux-arch@vger.kernel.org>
+Subject: Re: [PATCH] rust: ioctl: Add ioctl number manipulation functions
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-The unstable new_uninit feature enables various library APIs to create
-uninitialized containers, such as `Box::assume_init()`. This is
-necessary to build abstractions that directly initialize memory at the
-target location, instead of doing copies through the stack.
+On Fri, Feb 24, 2023, at 08:36, Asahi Lina wrote:
+> Add simple 1:1 wrappers of the C ioctl number manipulation functions.
+> Since these are macros we cannot bindgen them directly, and since they
+> should be usable in const context we cannot use helper wrappers, so
+> we'll have to reimplement them in Rust. Thankfully, the C headers do
+> declare defines for the relevant bitfield positions, so we don't need
+> to duplicate that.
+>
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
 
-Will be used by the DRM scheduler abstraction in the kernel crate, and
-by field-wise initialization (e.g. using `place!()` or a future
-replacement macro which may itself live in `kernel`) in driver crates.
+I don't know much rust yet, but it looks like a correct abstraction
+that handles all the corner cases of architectures with unusual
+_IOC_*MASK combinations the same way as the C version.
 
-See [1] [2] [3] for background information.
+There is one corner case I'm not sure about:
 
-[1] https://github.com/Rust-for-Linux/linux/issues/879
-[2] https://github.com/Rust-for-Linux/linux/issues/2
-[3] https://github.com/rust-lang/rust/issues/63291
+> +/// Build an ioctl number, analogous to the C macro of the same name.
+> +const fn _IOC(dir: u32, ty: u32, nr: u32, size: usize) -> u32 {
+> +    core::assert!(dir <= bindings::_IOC_DIRMASK);
+> +    core::assert!(ty <= bindings::_IOC_TYPEMASK);
+> +    core::assert!(nr <= bindings::_IOC_NRMASK);
+> +    core::assert!(size <= (bindings::_IOC_SIZEMASK as usize));
+> +
+> +    (dir << bindings::_IOC_DIRSHIFT)
+> +        | (ty << bindings::_IOC_TYPESHIFT)
+> +        | (nr << bindings::_IOC_NRSHIFT)
+> +        | ((size as u32) << bindings::_IOC_SIZESHIFT)
+> +}
 
-Signed-off-by: Asahi Lina <lina@asahilina.net>
----
- rust/kernel/lib.rs     | 1 +
- scripts/Makefile.build | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+This has the assertions inside of _IOC() while the C version
+has them in the outer _IOR()/_IOW() /_IOWR() helpers. This was
+intentional since some users of _IOC() pass a variable
+length in rather than sizeof(type), and this would cause
+a link failure in C.
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 223564f9f0cc..1118cd3e0b5f 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -17,6 +17,7 @@
- #![feature(core_ffi_c)]
- #![feature(dispatch_from_dyn)]
- #![feature(generic_associated_types)]
-+#![feature(new_uninit)]
- #![feature(receiver_trait)]
- #![feature(unsize)]
- 
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index a0d5c6cca76d..0f637e1ca8dc 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -277,7 +277,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
- # Compile Rust sources (.rs)
- # ---------------------------------------------------------------------------
- 
--rust_allowed_features := core_ffi_c
-+rust_allowed_features := core_ffi_c,new_uninit
- 
- rust_common_cmd = \
- 	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
+How is the _IOC_SIZEMASK assertion evaluated here? It's
+probably ok if this is a compile-time assertion that prevents
+the variable-length arguments, but it would be bad if this
+could lead to a BUG() or panic() in case of a user-supplied
+length that is out of range.
 
----
-base-commit: 83f978b63fa7ad474ca22d7e2772c5988101c9bd
-change-id: 20230224-rust-new_uninit-a575d34987c3
-
-Thank you,
-~~ Lina
-
+     Arnd
