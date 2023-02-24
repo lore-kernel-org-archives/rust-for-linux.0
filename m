@@ -2,215 +2,112 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3D07C61DA4
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 13:15:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 764D8C678D5
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 13:37:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230204AbjBXNPY (ORCPT
+        id S229456AbjBXNh1 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 08:15:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47730 "EHLO
+        Fri, 24 Feb 2023 08:37:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjBXNPW (ORCPT
+        with ESMTP id S229454AbjBXNh1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 08:15:22 -0500
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9750156533;
-        Fri, 24 Feb 2023 05:15:20 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: lina@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id ECC973FA55;
-        Fri, 24 Feb 2023 13:15:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1677244519;
-        bh=JO7LZ+UZTbX7aFX3msEPPny1eqLFld3+UeOQ0vjC2Vs=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=BtDVDBuvwtoz5SQkWrfz9yQbpj9enVmh2+4C/WkmnHhBHWIq8N/3nHVCYBWLWCSPD
-         K5kQucd+G5/rGqWQNOQSWWxyQ+S3EYSrp0hiOrsCH8pRLHOn5tVDbr+NtPaqQY0kMz
-         oj9qAEnw1WOd9sbQbFqe8WIctPAcY1/eMab/vhGIVz8JS99KVXuNbj1X2FR6y0ghx/
-         PUB5m1bYjjZxGNz6qc2dM4vO7kjahci9PmQ4t3W3gBIoRqQiCcRX9YGt10cTiHVONS
-         AhMJMTEoMJXnYWRBYBz0hgtKZu/tyYSF+j0crSxBs3m0AmieVSbytfvXVFUW9rIDj7
-         6VcsRGaLxC3fA==
-Message-ID: <ef3a3638-6381-87ab-d674-644306b6b6ce@asahilina.net>
-Date:   Fri, 24 Feb 2023 22:15:12 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH 2/5] rust: device: Add a minimal RawDevice trait
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Fri, 24 Feb 2023 08:37:27 -0500
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB424BE90;
+        Fri, 24 Feb 2023 05:37:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1677245843; x=1708781843;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=aZzsSFvg1UfLqYXxjgJ2eB+4H3YgR+M3br8uQwZVD1w=;
+  b=QwWy4LSgPP8apy192AgnI4HWGoPp6kkVi/dJTy8dr7aBvBS27oIOccVP
+   H6WVpaitfUP5w2+W9ec5HB/CE1U3jVi4SmWdZaPmXFQTboHPJz9ODceio
+   y9Yb93YsiQ1sAJ615EoKA5+u3Dj6Ntd6oyuVVfFEzXpcEgMeM6nu4n2Jj
+   EkoYId4kEmr3upVO7zF8uYcSEa2xM7ZCBBnqB+rSi5/ffRinzcPdnAHlY
+   slkqlz9FKn1Auk7agsCW97kpOnQqG2aF3rTvhO3WxO87EAbxu5nrDrrK5
+   1Y6IZwIsrhBvV1wZou6g7iAMde8rPZAYTYXiNE8rTcgHN2q5QJdRdZE5z
+   w==;
+X-IronPort-AV: E=Sophos;i="5.97,324,1669100400"; 
+   d="scan'208";a="138922155"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 24 Feb 2023 06:37:22 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Fri, 24 Feb 2023 06:37:20 -0700
+Received: from wendy.microchip.com (10.10.115.15) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.16 via Frontend
+ Transport; Fri, 24 Feb 2023 06:37:17 -0700
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     <linux-riscv@lists.infradead.org>
+CC:     Conor Dooley <conor.dooley@microchip.com>, <conor@kernel.org>,
+        "Miguel Ojeda" <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Hector Martin <marcan@marcan.st>,
-        Sven Peter <sven@svenpeter.dev>, Arnd Bergmann <arnd@arndb.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Neal Gompa <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
- <20230224-rust-iopt-rtkit-v1-2-49ced3391295@asahilina.net>
- <Y/ieQ0UX/niAG1Hg@kroah.com>
-From:   Asahi Lina <lina@asahilina.net>
-In-Reply-To: <Y/ieQ0UX/niAG1Hg@kroah.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        "Nathan Chancellor" <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <llvm@lists.linux.dev>
+Subject: [RFC 0/2] RISC-V: enable rust
+Date:   Fri, 24 Feb 2023 13:36:08 +0000
+Message-ID: <20230224133609.2877396-1-conor.dooley@microchip.com>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1475; i=conor.dooley@microchip.com; h=from:subject; bh=aZzsSFvg1UfLqYXxjgJ2eB+4H3YgR+M3br8uQwZVD1w=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDMk/9rocvX3IpcHZwESXJXif4QPzG+uS7Z+U/3R8YDjTJC6T zbipo5SFQYyDQVZMkSXxdl+L1Po/Ljuce97CzGFlAhnCwMUpABOxMWRk2LhgbcZ94f3W9/ddLXNZq7 b64bvUiUmuPRJzVryeG7I6K4aRYUr5E82VBzfNVau2eiiQ6377v52T4gt7P5kbB5xL+Wr42QA=
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 24/02/2023 20.23, Greg Kroah-Hartman wrote:
-> On Fri, Feb 24, 2023 at 07:53:14PM +0900, Asahi Lina wrote:
->> From: Wedson Almeida Filho <wedsonaf@gmail.com>
->>
->> Add a RawDevice trait which can be implemented by any type representing
->> a device class (such as a PlatformDevice). This is the minimum amount of
->> Device support code required to unblock abstractions that need to take
->> device pointers.
->>
->> Lina: Rewrote commit message, and dropped everything except RawDevice.
->>
->> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
->> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
->> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
->> Signed-off-by: Asahi Lina <lina@asahilina.net>
->> ---
->>  rust/bindings/bindings_helper.h |  1 +
->>  rust/kernel/device.rs           | 23 +++++++++++++++++++++++
->>  rust/kernel/lib.rs              |  1 +
->>  3 files changed, 25 insertions(+)
->>
->> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
->> new file mode 100644
->> index 000000000000..9be021e393ca
->> --- /dev/null
->> +++ b/rust/kernel/device.rs
->> @@ -0,0 +1,23 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Generic devices that are part of the kernel's driver model.
->> +//!
->> +//! C header: [`include/linux/device.h`](../../../../include/linux/device.h)
->> +
->> +use crate::bindings;
->> +
->> +/// A raw device.
->> +///
->> +/// # Safety
->> +///
->> +/// Implementers must ensure that the `*mut device` returned by [`RawDevice::raw_device`] is
->> +/// related to `self`, that is, actions on it will affect `self`. For example, if one calls
->> +/// `get_device`, then the refcount on the device represented by `self` will be incremented.
-> 
-> What is a "implementer" here?  Rust code?  C code?  Who is calling
-> get_device() here, rust code or the driver code or something else?  How
-> are you matching up the reference logic of this structure with the fact
-> that the driver core actually owns the reference, not any rust code?
+This is a somewhat blind (and maybe foolish) attempt at enabling Rust
+for RISC-V. I've tested this on Icicle, and the modules seem to work.
+I'd like to play around with Rust on RISC-V, but I'm not interested in
+using downstream kernels, so figured I should try and see what's
+missing...
+I've tagged this as RFC in case I've missed some "WAaaaa you can't do
+this" somewhere :)
 
-This is a Rust trait, so that would be Rust code. In practice that means
-other abstractions for different device buses, and the generic one which
-I sent as patch 5. It's not a structure, so it doesn't have any
-reference logic itself. That would go into the implementing struct (like
-`Device`). What the comment is saying is that other parts of the Rust
-kernel crate may make assumptions about the relationship between the
-lifetime of the struct implementing RawDevice and the lifetime of the
-underlying `struct device`. So for example, it's not legal to return a
-borrowed reference to a `struct device` that might go away before `self`
-does.
+Thanks,
+Conor.
 
-We should probably make this `Sealed` too, to make sure no driver can
-even try to implement it (which probably wouldn't make sense)... this
-should only ever be implemented by stuff in the kernel crate.
+CC: Miguel Ojeda <ojeda@kernel.org>
+CC: Alex Gaynor <alex.gaynor@gmail.com>
+CC: Wedson Almeida Filho <wedsonaf@gmail.com>
+CC: Boqun Feng <boqun.feng@gmail.com>
+CC: Gary Guo <gary@garyguo.net>
+CC: Björn Roy Baron <bjorn3_gh@protonmail.com>
+CC: Jonathan Corbet <corbet@lwn.net>
+CC: Paul Walmsley <paul.walmsley@sifive.com>
+CC: Palmer Dabbelt <palmer@dabbelt.com>
+CC: Nathan Chancellor <nathan@kernel.org>
+CC: Nick Desaulniers <ndesaulniers@google.com>
+CC: Tom Rix <trix@redhat.com>
+CC: rust-for-linux@vger.kernel.org
+CC: linux-doc@vger.kernel.org
+CC: linux-kernel@vger.kernel.org
+CC: linux-riscv@lists.infradead.org
+CC: llvm@lists.linux.dev
 
-The reference is owned by whoever owns the reference, no? If you call
-get_device(), you own a new reference to the device (which means you can
-keep the pointer around until you call put_device()). Normally in Rust
-you would have logic where whatever Rust structure that owns a reference
-(which in practice is most things that implement RawDevice) would also
-have a `Clone` trait impl that calls `get_device()` and duplicates
-itself, and a `Drop` trait impl that calls `put_device()`. In Rust
-terms, the Rust structure "owns" the device reference, and whatever code
-creates that structure needs to either be allowed to steal the reference
-from its caller or explicitly call `get_device()`.
+Miguel Ojeda (2):
+  scripts: generate_rust_target: enable building on RISC-V
+  RISC-V: enable building the 64-bit kernels with rust support
 
-You can also elide that in some cases though, like when you're just
-passing a device reference down from a callback into Rust code. Then the
-caller guarantees it has a device reference, which will outlive the
-execution of the callback. So the wrapper that calls user Rust code can
-materialize a RawDevice implementation without calling `get_device()`,
-and then pass a Rust reference to it (which means the downstream code
-can't steal it), and then make sure it gets destroyed without a
-`put_device()` before the callback returns. In Rust terms, that's a code
-path that passes a borrowed reference to the device down into user code.
+ Documentation/rust/arch-support.rst |  2 ++
+ arch/riscv/Kconfig                  |  1 +
+ arch/riscv/Makefile                 |  3 ++-
+ scripts/generate_rust_target.rs     | 19 +++++++++++++++++++
+ 4 files changed, 24 insertions(+), 1 deletion(-)
 
-This kind of ties back to why Rust rather than C... C does not encode
-concepts like "borrowing a reference" or "taking over a reference" in
-the type system, so it's really easy to mess up the refcounting and end
-up with dangling references or leaks. Rust does, so once you wrap a C
-API with the matching Rust semantics, there's no way to mess up and have
-those issues any more.
+-- 
+2.39.2
 
-> 
->> +///
->> +/// Additionally, implementers must ensure that the device is never renamed. Commit a5462516aa99
->> +/// ("driver-core: document restrictions on device_rename()") has details on why `device_rename`
->> +/// should not be used.
-> 
-> As much as I would have liked that, that commit was from 2010 and
-> device_rename() is still being used by some pretty large subsystems
-> (networking and IB) and I don't see that going away any year soon.
-> 
-> So yes, your device will be renamed, so don't mess with the device name
-> like I mentioned in review of path 5/5 in this series.
-
-I think we can just drop that part (and the name stuff) then. Wedson, is
-that okay?
-
-> 
->> +pub unsafe trait RawDevice {
->> +    /// Returns the raw `struct device` related to `self`.
->> +    fn raw_device(&self) -> *mut bindings::device;
-> 
-> Again, what prevents this device from going away?  I don't see a call to
-> get_device() here :(
-
-That would be up to the caller, if it needs to keep the pointer around.
-Think of `raw_device()` as just "please return the `struct device *`
-pointer for yourself, thanks". If you need to store that pointer for
-later, you need to call `get_device()`. But most of the time it will be
-used transiently, and then you don't need to take any references since
-the safety requirement above guarantees that `self` owns a reference.
-The caller then just needs to make sure not to throw away `self` before
-it finishes using the returned pointer.
-
-Keep in mind that this is an internal abstraction, it's there to be
-implemented and used by the kernel crate itself. User code can't
-actually do anything with the returned pointer without using `unsafe`
-(so it's safe to expose this) and can't implement the trait without
-`unsafe` either. But it can take dynamic trait arguments of type
-RawDevice and pass them along, which is perfectly fine. Rust guarantees
-that the right `get_device()` and `put_device()` are called when
-references get cloned or dropped, for owned objects, and for borrowed
-references there is no need to touch the refcount.
-
-> And again, why are bindings needed for a "raw" struct device at all?
-> Shouldn't the bus-specific wrappings work better?
-
-Because lots of kernel subsystems need to be able to accept "any" device
-and don't care about the bus! That's what this is for. All the bus
-wrappers would implement this so they can be used as an argument for all
-those subsystems (plus a generic one when you just need to pass around
-an actual owned generic reference and no longer need bus-specific
-operations - you can materialize that out of a RawDevice impl, which is
-when get_device() would be called). That's why I'm introducing this now,
-because both io_pgtable and rtkit need to take `struct device` pointers
-on the C side so we need some "generic struct device" view on the Rust side.
-
-~~ Lina
