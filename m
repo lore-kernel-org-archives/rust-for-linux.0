@@ -2,43 +2,43 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78EC4C61DA3
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 15:45:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DB79C61DA3
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 15:51:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229513AbjBXPp0 (ORCPT
+        id S229452AbjBXPvt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 10:45:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41824 "EHLO
+        Fri, 24 Feb 2023 10:51:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjBXPpZ (ORCPT
+        with ESMTP id S229446AbjBXPvs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 10:45:25 -0500
+        Fri, 24 Feb 2023 10:51:48 -0500
 Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B8574A1DB;
-        Fri, 24 Feb 2023 07:45:22 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9233E66970;
+        Fri, 24 Feb 2023 07:51:46 -0800 (PST)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
         (Authenticated sender: lina@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 37BBA3FB17;
-        Fri, 24 Feb 2023 15:45:15 +0000 (UTC)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 32FDF3FB17;
+        Fri, 24 Feb 2023 15:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1677253521;
-        bh=XJayZUdEhDtog5j7yqj8/MyMgPGm4QWOPiFPBxnyZ58=;
+        s=default; t=1677253905;
+        bh=+KLi0NUptESnmGXbN5DL3EY0IK2dnKR7SFykR2x6pbg=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=oqQsQ+iGjxejaNfyX5CHW2JHh5E+CHJihtTuh5VtJKs3DkwpQvDCW7sQWPRW3OJ7K
-         pnTTr81oZuUw54MKm16//MnvzIi+Nf8a7Nxam23/ZAEvfya6/wKTEjga2fzuTsF2zS
-         Riz+D0jtz9HxQxqzptup1jCb9k0DOPdTAORk5Snn3W9kPIocaKr8gTaWq/AquBnfot
-         lpFxjamb5rDGYMcT5Fvjw7vdW0PvX+3C7qaatrb5ed0E5J9oa729+ItbIJ5ThsLyDM
-         hB8Ur9ZNBNrNqeJCwEaPHLNf7YLXNZ0S30qu1ngztmZI5cToyc4lcBBd4rz1OwtNA3
-         xB1h6ZMaxn/2Q==
-Message-ID: <d7bba84e-2052-ccf9-7934-c87d8ae63136@asahilina.net>
-Date:   Sat, 25 Feb 2023 00:45:14 +0900
+        b=qUebanJ0CMoI1uNj48ED+JrltoKSOFn/n7Ot86+60A8Mg+TFpThfDS/+dGOr4icGU
+         M/OW3bwM3kaktG/wGU1NRaTWjIqsdW+EqWvRjw07tuM81O6ELt2QvIggs4ev/vzym0
+         e3e2QxSWqHJ/DLhvkNkTIsyp+a2HxnNgl//Z4D0tkfl/6Ba9XDLrMyJIiP7/7ilaGZ
+         Gv95EEBsmdhyRX0DJJqC/o2/8TUZa/y3TP21C3z0wKHYtDsZGZ3Bt+w8GxrT4awG/K
+         FotZ93kMqfDyaoKmw4ZEWT8Skv1KdXuNvXfwoGOuLOkrRXj7GGXFrcAOulIXJahqQM
+         7F2lIIc3L77GQ==
+Message-ID: <bd93ed8c-b020-5883-4baa-f9743e395b97@asahilina.net>
+Date:   Sat, 25 Feb 2023 00:51:38 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.1
-Subject: Re: [PATCH 2/5] rust: device: Add a minimal RawDevice trait
+Subject: Re: [PATCH 5/5] rust: device: Add a stub abstraction for devices
 Content-Language: en-US
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
@@ -56,42 +56,52 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Neal Gompa <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, asahi@lists.linux.dev
 References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
- <20230224-rust-iopt-rtkit-v1-2-49ced3391295@asahilina.net>
- <Y/ieQ0UX/niAG1Hg@kroah.com>
- <ef3a3638-6381-87ab-d674-644306b6b6ce@asahilina.net>
- <Y/jFeZzZVCpBGvGv@kroah.com> <Y/jHeP4LileLYxO8@kroah.com>
- <bbc824ee-ef4e-40cb-f009-0d693d757869@asahilina.net>
- <Y/jW161RuT7OtlSf@kroah.com>
+ <20230224-rust-iopt-rtkit-v1-5-49ced3391295@asahilina.net>
+ <Y/idMBIOfFZxXnVM@kroah.com>
+ <26fc1456-0244-a379-0af4-e6adc819545c@asahilina.net>
+ <Y/jZCCl4jbKoOiPX@kroah.com>
 From:   Asahi Lina <lina@asahilina.net>
-In-Reply-To: <Y/jW161RuT7OtlSf@kroah.com>
+In-Reply-To: <Y/jZCCl4jbKoOiPX@kroah.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 25/02/2023 00.25, Greg Kroah-Hartman wrote:
-> On Fri, Feb 24, 2023 at 11:44:59PM +0900, Asahi Lina wrote:
->> On 2023/02/24 23:19, Greg Kroah-Hartman wrote:>> Can we see some users
->> of this code posted so I can see how struct device
->>>> is going to work in a rust driver?  That's the thing I worry most about
->>>> the rust/C interaction here as we have two different ways of thinking
->>>> about reference counts from the two worlds and putting them together is
->>>> going to be "interesting", as can be seen here already.
+On 25/02/2023 00.34, Greg Kroah-Hartman wrote:
+> On Sat, Feb 25, 2023 at 12:10:47AM +0900, Asahi Lina wrote:
+>>>> +impl Device {
+>>>> +    /// Creates a new device instance.
+>>>> +    ///
+>>>> +    /// # Safety
+>>>> +    ///
+>>>> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count.
+>>>> +    pub unsafe fn new(ptr: *mut bindings::device) -> Self {
+>>>> +        // SAFETY: By the safety requirements, ptr is valid and its refcounted will be incremented.
+>>>> +        unsafe { bindings::get_device(ptr) };
 >>>
->>> Also, where are you getting your 'struct device' from in the first
->>> place?  What bus is createing it and giving it to your rust driver?
+>>> You don't check the return value of get_device()?  What if it failed
+>>> (hint, it can)?
 >>
->> That would be platform for my GPU driver, matched via OF compatible.
+>> Really? I looked at the implementation and I don't see how it can fail,
+>> as long as the argument is non-NULL and valid... (which is a
+>> precondition of this unsafe function). Did I miss something?
 > 
-> Ick, a platform device?  The GPU isn't on the PCI bus?  Wow, that's
-> horrid...
+> This function has changed a bit over time, but yes, it could fail if
+> someone else just dropped the last reference right before you tried to
+> grab a new one (look at the implementation of kobject_get()).
+> 
+> Yes, if you "know" you have a non-zero reference count first, it should
+> never fail, but how do you know this?  We have the ability to check the
+> return value of the function, shouldn't that happen?
 
-The internal NVMe controller also isn't on the PCI bus (which is worse
-since that actually has standard PCI bindings)... nothing is on PCI
-buses other than external PCI/Thunderbolt devices. There are no internal
-fake-PCI devices on Apple Silicon like there are on Intel. That's how it
-is on most SoCs (though Apple is the only vendor who has dared to go as
-far as integrating NVMe as far as I know)...
+Well, we know this because it is part of the invariant. If we don't
+uphold invariants, things fall apart... that's why we create safe
+abstractions that don't let you break those invariants after all!
+
+In this particular case though, I don't see what we can usefully do
+here. `device_get()` is going to be part of Clone impls and things like
+that which are non-fallible. At most we can assert!() and rust-panic
+(which is a BUG as far as I know) if it fails... would that be preferable?
 
 ~~ Lina
