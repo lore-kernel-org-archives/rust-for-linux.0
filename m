@@ -2,39 +2,39 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59804C61DA4
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 14:44:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1C90C678D5
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 14:45:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229996AbjBXOoN (ORCPT
+        id S230138AbjBXOpZ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 09:44:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32956 "EHLO
+        Fri, 24 Feb 2023 09:45:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229978AbjBXOoG (ORCPT
+        with ESMTP id S230074AbjBXOpI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 09:44:06 -0500
+        Fri, 24 Feb 2023 09:45:08 -0500
 Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE7151689D;
-        Fri, 24 Feb 2023 06:44:03 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C8A18A9B;
+        Fri, 24 Feb 2023 06:45:07 -0800 (PST)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
         (Authenticated sender: lina@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 2AB393FA55;
-        Fri, 24 Feb 2023 14:43:56 +0000 (UTC)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id A40AC3FA55;
+        Fri, 24 Feb 2023 14:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1677249842;
-        bh=D5wNXpCLthvKzU0v4nv/lr+ty+Pv+guL5ET4c/EH8nE=;
+        s=default; t=1677249906;
+        bh=S1h+B0qxGOxw6VVX44ZvWypG2zHrxFFK2zOWdFGJ3lE=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=Irlcd4vdNdqExEiwyDlVv808VxXgX9m/G5YGPBtDAzaBbtvHVqk+M6pp6lLJRb/Vl
-         6PrAkVvLBUdlAoLtVdfffN7wpTeIp9MFE/g0j0JNbXJ+l6auXoQVRW5MpDE1y2N5mh
-         nPJqUnPdkN8C7BIV5xy8t8S2oK9uEfw0IEBybH4Nqp+XtB/abdrfPIS5jMAOH3drxP
-         DcMRWEwlj3kRo+dDtOQ2XYy/fpEYNkcZcCGzvD3ZTYRlhGSqRoMtRKpCIVHDFV/3xJ
-         3pdo74roDva34gPGO/b/MIfnHB1QxdQJKmEclCybOaUuS9owqxmRxG1HfeiMgx1XuK
-         7jU8V9xYpKXIw==
-Message-ID: <0e3c15bd-a1d6-a363-d7b6-087b6e4cddac@asahilina.net>
-Date:   Fri, 24 Feb 2023 23:43:54 +0900
+        b=t0xd4A5jkegy1YFQ6YxnouRPhGKnWfoka0evEox2WtHsnqgOWh9c4oWlquthowt+H
+         sMHdWcaI8MzvHbTl1obv1nzaSinyfCbhhjnBDhP22p70Wd+qja336nYo9oSy1tfZKB
+         oQEJcAerFPUnf2Qey2+VA8mJt2Kzq0DarRQLVc07zbkrXlfGzwhyDAHXe/cZ/qAuxq
+         PnbE+LrQ3FWjNqqtpnmesa4RKHJKUM5COKVVLXyKuBc8uWbN/PeJJVsmLQyWXDtX1r
+         KfT/nZdpLoK9rkIcCt6worIzQ/e7vjmquZ0CQ07HmMvSzcr4qqlXik+B0h7/lHhRBp
+         Z+FpQ0t4RSWcg==
+Message-ID: <bbc824ee-ef4e-40cb-f009-0d693d757869@asahilina.net>
+Date:   Fri, 24 Feb 2023 23:44:59 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.2
@@ -59,119 +59,25 @@ References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
  <20230224-rust-iopt-rtkit-v1-2-49ced3391295@asahilina.net>
  <Y/ieQ0UX/niAG1Hg@kroah.com>
  <ef3a3638-6381-87ab-d674-644306b6b6ce@asahilina.net>
- <Y/jFeZzZVCpBGvGv@kroah.com>
+ <Y/jFeZzZVCpBGvGv@kroah.com> <Y/jHeP4LileLYxO8@kroah.com>
 From:   Asahi Lina <lina@asahilina.net>
-In-Reply-To: <Y/jFeZzZVCpBGvGv@kroah.com>
+In-Reply-To: <Y/jHeP4LileLYxO8@kroah.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-
-
-On 2023/02/24 23:11, Greg Kroah-Hartman wrote:
-> Thanks for the detailed rust explainations, I'd like to just highlight
-> one thing:
+On 2023/02/24 23:19, Greg Kroah-Hartman wrote:>> Can we see some users
+of this code posted so I can see how struct device
+>> is going to work in a rust driver?  That's the thing I worry most about
+>> the rust/C interaction here as we have two different ways of thinking
+>> about reference counts from the two worlds and putting them together is
+>> going to be "interesting", as can be seen here already.
 > 
-> On Fri, Feb 24, 2023 at 10:15:12PM +0900, Asahi Lina wrote:
->> On 24/02/2023 20.23, Greg Kroah-Hartman wrote:
->>> And again, why are bindings needed for a "raw" struct device at all?
->>> Shouldn't the bus-specific wrappings work better?
->>
->> Because lots of kernel subsystems need to be able to accept "any" device
->> and don't care about the bus! That's what this is for.
-> 
-> That's great, but:
-> 
->> All the bus
->> wrappers would implement this so they can be used as an argument for all
->> those subsystems (plus a generic one when you just need to pass around
->> an actual owned generic reference and no longer need bus-specific
->> operations - you can materialize that out of a RawDevice impl, which is
->> when get_device() would be called). That's why I'm introducing this now,
->> because both io_pgtable and rtkit need to take `struct device` pointers
->> on the C side so we need some "generic struct device" view on the Rust side.
-> 
-> In looking at both ftkit and io_pgtable, those seem to be good examples
-> of how "not to use a struct device", so trying to make safe bindings
-> from Rust to these frameworks is very ironic :)
+> Also, where are you getting your 'struct device' from in the first
+> place?  What bus is createing it and giving it to your rust driver?
 
-And this is why I want to use Rust, and why writing the abstractions for
-C code is so difficult... Rust encodes all these rules in the type
-system, but C doesn't, and so many kernel APIs don't document any of
-this or what the requirements are...
-
-> rtkit takes a struct device pointer and then never increments it,
-> despite saving it off, which is unsafe.  It then only uses it to print
-> out messages if things go wrong (or right in some cases), which is odd.
-> So it can get away from using a device pointer entirely, except for the
-> devm_apple_rtkit_init() call, which I doubt you want to call from rust
-> code, right?
-
-That sounds like we need to fix the C side to grab a reference ^^
-
-We do need to pass the device to the init function though
-(apple_rtkit_init(), this is in the SoC tree which I mentioned as a
-prequisite and already on the way to 6.3-rc1), since at the very least
-it has to pick up the mailbox and all that to initialize.
-
-Alternatively we could say that the C API contract is that the user of
-rtkit has to own a reference, and then the Rust abstraction would have
-to take that reference to make a safe abstraction, but that doesn't
-sound like the better option.
-
-What do you recommend for things that want to print device-associated
-messages, if not holding a reference to the device? Or did I
-misunderstand what you meant? Just pr_foo() isn't great because we have
-a lot of instances of rtkit and then you wouldn't know which device the
-messages are about...
-
-> for io_pgtable, that's a bit messier, you want to pass in a device that
-> io_pgtable treats as a "device" but again, it is NEVER properly
-> reference counted, AND, it is only needed to try to figure out the bus
-> operations that dma memory should be allocated from for this device.  So
-> what would be better to save off there would be a pointer to the bus,
-> which is constant and soon will be read-only so there are no lifetime
-> rules needed at all (see the major struct bus_type changes going into
-> 6.3-rc1 that will enable that to happen).
-> 
-> So the two subsystems you want to call from rust code don't properly
-> handle the reference count of the object you are going to pass into it,
-> and only need it for debugging and iommu stuff, which is really only the
-> bus that the device is on, not good examples to start out with :)
-
-Well, they're two examples that are dependencies for the driver I wrote,
-and I don't think you want me picking easy examples with zero known
-upcoming users... ^^;;
-
-> Yeah, this is yack-shaving, sorry, but it's how we clean up core
-> subsystems for apis and implementations that are not really correct and
-> were not noticed at the time.
-
-I'm fine with helping fix all this, and I don't expect all the
-underlying C code to be perfect already either! I already fixed one
-locking bug in DRM and spent a lot of time trying to figure out lifetime
-rules there, but I didn't dig into rtkit/io_pgtable and didn't realize
-they don't take references properly...
-
-> Can we see some users of this code posted so I can see how struct device
-> is going to work in a rust driver?  That's the thing I worry most about
-> the rust/C interaction here as we have two different ways of thinking
-> about reference counts from the two worlds and putting them together is
-> going to be "interesting", as can be seen here already.
-
-I linked a tree with everything in the cover letter ([4]), look in
-drivers/gpu/drm/asahi for the actual driver. But there are a lot of
-other dependencies that have to go in before that will compile
-(everything else in that branch...)
-
-I know it's hard to review without examples, but I also can't just post
-the driver and everything else as one series now, there's still a lot to
-be improved and fixed and I'm working with the Rust folks on figuring
-out a roadmap for that... and waiting until "everything" is ready and
-perfect would mean we don't get anything done in the meantime and fall
-into a pit of endless rebasing and coordinating downstream trees, which
-also isn't good...
+That would be platform for my GPU driver, matched via OF compatible.
 
 ~~ Lina
