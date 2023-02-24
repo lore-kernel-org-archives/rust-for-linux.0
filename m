@@ -2,86 +2,122 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 392C5C678D5
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 14:01:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F7C9C61DA4
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 14:11:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229709AbjBXOBX (ORCPT
+        id S229659AbjBXOLL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 09:01:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51508 "EHLO
+        Fri, 24 Feb 2023 09:11:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229582AbjBXOBW (ORCPT
+        with ESMTP id S229622AbjBXOLK (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 09:01:22 -0500
-Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1F7963A03;
-        Fri, 24 Feb 2023 06:01:21 -0800 (PST)
-Received: by mail-oo1-xc2e.google.com with SMTP id n27-20020a4ad63b000000b005252709efdbso539250oon.4;
-        Fri, 24 Feb 2023 06:01:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cD2V3GFxUMbiUHqwfuQz30DRd9uey95Pb5f4mqZNz5Q=;
-        b=nSQHhui9wzPmOzXMr5aqMMdc/emCD2VEKeowVCo0NrHkcplyLtFZoJHoJSFkK4z40b
-         1Y5bsQqiIwdR5gofZEF35EK9avASKH36E5ex9cJE5wk26qczgQcR+g0acFXnTiiKDgxR
-         PvZla0biMrFKQWZUiXoGS6VgkiqBzncTWilDH6zjbE0U2SVw1hG4kbL7ENtszZEjBb05
-         qptC3JWIkQCUlwk/JXL6N42MpRNrK4D9ejBf0Lzca0apISJPaVzxW40XxUIt1LW/qq0f
-         4QDj1rzPaIjMHxDN33OwyQKN9iTS0IxjFl1iPOh6pz4OLI/4YSXCYDPmBLAYfvu1N4S0
-         XtLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cD2V3GFxUMbiUHqwfuQz30DRd9uey95Pb5f4mqZNz5Q=;
-        b=LCdynrcJKOI/qgwW3xIIVbinJgVRSNcF4a6tj9X0ZpQqzYPblaxl9nyTG25KlpEhX7
-         z2s+dEJclcrZPa+9AXBAXeR8CIzRDRT6twQ4pVwgzUBZiW43zvltKtxZ1W00rDkA46z3
-         pZVClP5gVVPGWFeqxa3dPhXv3pkzDlXWRh6ZH6XpCzTPwevuAgF9SsxPGo8gr87/NBYT
-         ZywL8bt4gj9r3f0Uk9EBSBgvqQlW8mNkWjCM7Fj/ZL7MDWi/o+IWBmhAFoGOGUpe3JjG
-         hTzfpxXlN++qRiY1MA/fO5fSJS4cOPRN3E0FrBSqVtajRU6KvKcA8mUbKu4K6MCa0+Rh
-         4/ZQ==
-X-Gm-Message-State: AO0yUKV2/pvL0tyZBOAAbNPoVb0wqLHiDY20CvgVdZb+G4FCNIiS3U3k
-        0zNKC64YFs4+KTk0Pt3NfPs=
-X-Google-Smtp-Source: AK7set98zYboFrn/b4D2MBfz+3WRgRRGr0dXxRlba6lrQpOjcTAlP8smsxqbzioF9NIua3JNmHd9sg==
-X-Received: by 2002:a05:6820:61f:b0:51f:e2ab:5535 with SMTP id e31-20020a056820061f00b0051fe2ab5535mr8142396oow.0.1677247280363;
-        Fri, 24 Feb 2023 06:01:20 -0800 (PST)
-Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id v14-20020a9d604e000000b0068bbf5f2e49sm4505958otj.37.2023.02.24.06.01.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Feb 2023 06:01:19 -0800 (PST)
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-To:     lina@asahilina.net
-Cc:     alex.gaynor@gmail.com, asahi@lists.linux.dev,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        masahiroy@kernel.org, nathan@kernel.org, ndesaulniers@google.com,
-        nicolas@fjasle.eu, ojeda@kernel.org,
-        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Subject: Re: [PATCH] rust: Enable the new_uninit feature for kernel and driver crates
-Date:   Fri, 24 Feb 2023 11:01:13 -0300
-Message-Id: <20230224140113.745953-1-yakoyoku@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230224-rust-new_uninit-v1-1-c951443d9e26@asahilina.net>
-References: <20230224-rust-new_uninit-v1-1-c951443d9e26@asahilina.net>
+        Fri, 24 Feb 2023 09:11:10 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AA0412B;
+        Fri, 24 Feb 2023 06:11:09 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C836B61839;
+        Fri, 24 Feb 2023 14:11:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A512EC433EF;
+        Fri, 24 Feb 2023 14:11:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1677247868;
+        bh=ILec1+10culSs+4LFcu4lSKq2NAnqzI8CinlFn1UHX0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=X5RRtLW6bsr/7UHfOmsN3l4DkaUpOu9tISvL05vIbTpOsR9fYGuvcHyaMvmyqaBMJ
+         ZLsK7n4KM2xdKyXZoDZC2QjQcyQtNKZnLtxaG+bu3PkCd9Pj8Bx2Qm6NjymWSWuxJx
+         3kZpU2ead9fExo/nCjFMJLS+SK4UgO8ZYbOH/gv8=
+Date:   Fri, 24 Feb 2023 15:11:05 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Asahi Lina <lina@asahilina.net>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Hector Martin <marcan@marcan.st>,
+        Sven Peter <sven@svenpeter.dev>, Arnd Bergmann <arnd@arndb.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Neal Gompa <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
+Subject: Re: [PATCH 2/5] rust: device: Add a minimal RawDevice trait
+Message-ID: <Y/jFeZzZVCpBGvGv@kroah.com>
+References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
+ <20230224-rust-iopt-rtkit-v1-2-49ced3391295@asahilina.net>
+ <Y/ieQ0UX/niAG1Hg@kroah.com>
+ <ef3a3638-6381-87ab-d674-644306b6b6ce@asahilina.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ef3a3638-6381-87ab-d674-644306b6b6ce@asahilina.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Feb 24, 2023 at 05:09:47PM +0900, Asahi Lina wrote:=0D
-> The unstable new_uninit feature enables various library APIs to create=0D
-> uninitialized containers, such as `Box::assume_init()`. This is=0D
-> necessary to build abstractions that directly initialize memory at the=0D
-> target location, instead of doing copies through the stack.=0D
-> =0D
-> Will be used by the DRM scheduler abstraction in the kernel crate, and=0D
-> by field-wise initialization (e.g. using `place!()` or a future=0D
-> replacement macro which may itself live in `kernel`) in driver crates.=0D
-=0D
-Very useful to me as some constructors in the USB bindings that I'm=0D
-writting might make use of unitialized memory.=0D
-=0D
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>=0D
+Thanks for the detailed rust explainations, I'd like to just highlight
+one thing:
+
+On Fri, Feb 24, 2023 at 10:15:12PM +0900, Asahi Lina wrote:
+> On 24/02/2023 20.23, Greg Kroah-Hartman wrote:
+> > And again, why are bindings needed for a "raw" struct device at all?
+> > Shouldn't the bus-specific wrappings work better?
+> 
+> Because lots of kernel subsystems need to be able to accept "any" device
+> and don't care about the bus! That's what this is for.
+
+That's great, but:
+
+> All the bus
+> wrappers would implement this so they can be used as an argument for all
+> those subsystems (plus a generic one when you just need to pass around
+> an actual owned generic reference and no longer need bus-specific
+> operations - you can materialize that out of a RawDevice impl, which is
+> when get_device() would be called). That's why I'm introducing this now,
+> because both io_pgtable and rtkit need to take `struct device` pointers
+> on the C side so we need some "generic struct device" view on the Rust side.
+
+In looking at both ftkit and io_pgtable, those seem to be good examples
+of how "not to use a struct device", so trying to make safe bindings
+from Rust to these frameworks is very ironic :)
+
+rtkit takes a struct device pointer and then never increments it,
+despite saving it off, which is unsafe.  It then only uses it to print
+out messages if things go wrong (or right in some cases), which is odd.
+So it can get away from using a device pointer entirely, except for the
+devm_apple_rtkit_init() call, which I doubt you want to call from rust
+code, right?
+
+for io_pgtable, that's a bit messier, you want to pass in a device that
+io_pgtable treats as a "device" but again, it is NEVER properly
+reference counted, AND, it is only needed to try to figure out the bus
+operations that dma memory should be allocated from for this device.  So
+what would be better to save off there would be a pointer to the bus,
+which is constant and soon will be read-only so there are no lifetime
+rules needed at all (see the major struct bus_type changes going into
+6.3-rc1 that will enable that to happen).
+
+So the two subsystems you want to call from rust code don't properly
+handle the reference count of the object you are going to pass into it,
+and only need it for debugging and iommu stuff, which is really only the
+bus that the device is on, not good examples to start out with :)
+
+Yeah, this is yack-shaving, sorry, but it's how we clean up core
+subsystems for apis and implementations that are not really correct and
+were not noticed at the time.
+
+Can we see some users of this code posted so I can see how struct device
+is going to work in a rust driver?  That's the thing I worry most about
+the rust/C interaction here as we have two different ways of thinking
+about reference counts from the two worlds and putting them together is
+going to be "interesting", as can be seen here already.
+
+thanks,
+
+greg k-h
