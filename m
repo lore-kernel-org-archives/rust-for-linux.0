@@ -2,44 +2,44 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 764D8C678D5
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 13:37:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CC46C61DA3
+	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 13:51:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229456AbjBXNh1 (ORCPT
+        id S229488AbjBXNvb (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 08:37:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34728 "EHLO
+        Fri, 24 Feb 2023 08:51:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjBXNh1 (ORCPT
+        with ESMTP id S229456AbjBXNva (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 08:37:27 -0500
+        Fri, 24 Feb 2023 08:51:30 -0500
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB424BE90;
-        Fri, 24 Feb 2023 05:37:23 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A99B6798C;
+        Fri, 24 Feb 2023 05:51:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1677245843; x=1708781843;
+  t=1677246689; x=1708782689;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=aZzsSFvg1UfLqYXxjgJ2eB+4H3YgR+M3br8uQwZVD1w=;
-  b=QwWy4LSgPP8apy192AgnI4HWGoPp6kkVi/dJTy8dr7aBvBS27oIOccVP
-   H6WVpaitfUP5w2+W9ec5HB/CE1U3jVi4SmWdZaPmXFQTboHPJz9ODceio
-   y9Yb93YsiQ1sAJ615EoKA5+u3Dj6Ntd6oyuVVfFEzXpcEgMeM6nu4n2Jj
-   EkoYId4kEmr3upVO7zF8uYcSEa2xM7ZCBBnqB+rSi5/ffRinzcPdnAHlY
-   slkqlz9FKn1Auk7agsCW97kpOnQqG2aF3rTvhO3WxO87EAbxu5nrDrrK5
-   1Y6IZwIsrhBvV1wZou6g7iAMde8rPZAYTYXiNE8rTcgHN2q5QJdRdZE5z
-   w==;
+  bh=gL3Cs2+m/4fshHcUNF4uRlCTHPwu5XQNW/5CYVP3NRU=;
+  b=yBFHIfqd0nQ/NWJU0wg3ClHM1oBUl4GrQWsGmQAhU956NVXP0k78AYpE
+   smqOmzw6DHy0005r57Mb9gCD2dE1dgaSn5OAu/4+0IM3w+pPn+fKVGxeZ
+   m1ODFWLVp1dcWf7JbsBqGgF1Yrjc69uqDQ/Ap1tpbUCUKQh6R2a4qZmZ5
+   dPVH8+U6NqV/ackLOkOnJk67JIekh+gg1sHFHNFBx4zQVFY12GrN+XzYf
+   II2vq6qsm3NV7jebOPqB1B8VmdH5eAr4TFM0ZmeHxhKs7mPwDar74aX2x
+   tjAWXjyokUXgzRE472gAOsSs9ZYZ7FdOsKcK7hxkLc11PJW11gc6d4ZgG
+   A==;
 X-IronPort-AV: E=Sophos;i="5.97,324,1669100400"; 
-   d="scan'208";a="138922155"
+   d="scan'208";a="138923417"
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 24 Feb 2023 06:37:22 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 24 Feb 2023 06:51:28 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Fri, 24 Feb 2023 06:37:20 -0700
+ 15.1.2507.16; Fri, 24 Feb 2023 06:51:24 -0700
 Received: from wendy.microchip.com (10.10.115.15) by chn-vm-ex02.mchp-main.com
  (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.16 via Frontend
- Transport; Fri, 24 Feb 2023 06:37:17 -0700
+ Transport; Fri, 24 Feb 2023 06:51:21 -0700
 From:   Conor Dooley <conor.dooley@microchip.com>
 To:     <linux-riscv@lists.infradead.org>
 CC:     Conor Dooley <conor.dooley@microchip.com>, <conor@kernel.org>,
@@ -56,12 +56,12 @@ CC:     Conor Dooley <conor.dooley@microchip.com>, <conor@kernel.org>,
         Tom Rix <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
         <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <llvm@lists.linux.dev>
-Subject: [RFC 0/2] RISC-V: enable rust
-Date:   Fri, 24 Feb 2023 13:36:08 +0000
-Message-ID: <20230224133609.2877396-1-conor.dooley@microchip.com>
+Subject: [RFC RESEND 0/2] RISC-V: enable rust
+Date:   Fri, 24 Feb 2023 13:50:42 +0000
+Message-ID: <20230224135044.2882109-1-conor.dooley@microchip.com>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1475; i=conor.dooley@microchip.com; h=from:subject; bh=aZzsSFvg1UfLqYXxjgJ2eB+4H3YgR+M3br8uQwZVD1w=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDMk/9rocvX3IpcHZwESXJXif4QPzG+uS7Z+U/3R8YDjTJC6T zbipo5SFQYyDQVZMkSXxdl+L1Po/Ljuce97CzGFlAhnCwMUpABOxMWRk2LhgbcZ94f3W9/ddLXNZq7 b64bvUiUmuPRJzVryeG7I6K4aRYUr5E82VBzfNVau2eiiQ6377v52T4gt7P5kbB5xL+Wr42QA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1608; i=conor.dooley@microchip.com; h=from:subject; bh=gL3Cs2+m/4fshHcUNF4uRlCTHPwu5XQNW/5CYVP3NRU=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDMk/DqyX/be4ynaJ06921nXKl9tk5qT9mD3X4ciGE9WnXQoS j77z7yhlYRDjYJAVU2RJvN3XIrX+j8sO5563MHNYmUCGMHBxCsBEoqsY/ucUZijfbD/GaTebVVrZwG PNqjed5778FN916Yi6WqpH+ndGhpUu9zVn9TZPebhcMPv6pm+CzSc8eFpXTAjz/PnG9P/ZaSwA
 X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
@@ -79,6 +79,10 @@ this" somewhere :)
 
 Thanks,
 Conor.
+
+Changes in RFC-RESEND:
+- fixed the asymmetrical additions in the Makefile bits
+- added cc-cover to my git send-email command...
 
 CC: Miguel Ojeda <ojeda@kernel.org>
 CC: Alex Gaynor <alex.gaynor@gmail.com>
