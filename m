@@ -2,159 +2,235 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0375AC64EC7
-	for <rust-for-linux@archiver.kernel.org>; Sat, 25 Feb 2023 22:19:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2FE7C7EE2D
+	for <rust-for-linux@archiver.kernel.org>; Sat, 25 Feb 2023 22:23:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229549AbjBYWT1 (ORCPT
+        id S229486AbjBYWXq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 25 Feb 2023 17:19:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39404 "EHLO
+        Sat, 25 Feb 2023 17:23:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbjBYWT0 (ORCPT
+        with ESMTP id S229473AbjBYWXp (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 25 Feb 2023 17:19:26 -0500
-Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2128.outbound.protection.outlook.com [40.107.10.128])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56313AD26;
-        Sat, 25 Feb 2023 14:19:25 -0800 (PST)
+        Sat, 25 Feb 2023 17:23:45 -0500
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2096.outbound.protection.outlook.com [40.107.11.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F316EE064;
+        Sat, 25 Feb 2023 14:23:43 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Eo1Iq/9z6WgvfNGKb6KypawSBwei/BcXcfsfntvPJ+8PM4C9PVIHxaADqHAwLpRe7loUIqyTj/eBi//xXAU0yNCTbK7oAdgoreydkHCQ9nxDG0dZ6luMVXNUqZ1a0pPpzPtCy+lOPHpU48H+UC2f1zIuwvHxpb35q2OxwPJ3gZw/acMQowdq37Vi3QQz89pUN4Q+7NW4NkebGhUStkTt0gsX7YnXtz6+hZcjuTUywJH0GBBMZ0kiYQGzMYo/2MocdZFc6TIcRXdExTaWCiP0dW5Re+s2ld+lgJDZmyEA6eTe3dVyz2NmThHaLBqO5ncddd8a9cwEqqzok2xgfl32Dg==
+ b=KHrnBS2c+M0M/DvB6o5NSyqayR5bYWjAU8vr9jm91OzzqVQ59xIJIciDfpFa/AG3WnqRSzqIhHIIiabyIJ3g4inSUUEuqZs/3s/uruCyqSZqeH/Fgf8Rgn3PJ9Awi6lro+YkudfYRBJbPE5cXSrgH3Mn+fb67am5PvFf81lPpGgMIaUUR8axVPxT7CbC7Y/QRtzP15sueXrAQ5MYCuaF9NDgPUqn5zuLdpn5GxdA2vaCCLb+XsCUg19sNRII9pkW5OS+Ptt8q8un8uev+aXcU2pmv2KrdDZM49ki6Tb5bG0jbjUKUvoUPrhLPAdIvBN0Fb3XnWV5TUQx/oPbLcqiWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/9SpIewA6ht6srK08bD0aiGj+ttmcfOuM9jW3b8YEJw=;
- b=JSY7Cx160NC/x2s+BpVPkPgV1+efWtpSpIpn6hmVMcga1m9l6W1XaY1hjoUhFdnQ4dxUlIEhdNZ5JhQFwrVzZLnc9HCf1jYQj0rOkmDPE/A8tjwDeXtHa+D6DB4t79io56tNrwgH++CkHIeCsM0K4FUaJ/NnV5J8mPpBQzokh9If7XsrhyMw/JfJf5yWUM7aBEVAWfihUf/wCuNfV7u8sCucr/KyzeW3PjPWEDDOqpw3AFnRHjDoZ+CDhSToW/bvf6xhcTzIsYBVW9U2WhXV7UBmmUnzYBblA7En/IpUffiM2Z3flxdMngOnMjrJw7IdtSrvw81Ef1E5YWQM6EbdQA==
+ bh=UpDhUqma38I7pz7tH9YGoi1DUOESMXhc7MJH26a6ye4=;
+ b=VvIQUXkUzFJo69kaVzLZBSBgTFJI4MhLsEKiCT0cwfpGKGWTc0+Z2skV3yZIVcE98tU4Sypka/ie8Fr1CFu4qCF/xwVw0/g0PHPXEIR31EGNbyr6txZ/JdHN/wWSwtHV2DmfymAQ43K3js98jZ9Uih3ZSD+bwtmmd0sqLfNPbOAUu8Xy1Q+2Rezk7+eRVrqlDSMizUz6i5t7ITQLvsTMKWa4nNBio4651Itsz+AiDWm65xltQMosGaezUkJnrbLuEcQdhAHBVYZgwWQB7WbXGP/JjAVw0epO+fXW4Uc9mB3LIZ8vPQLVwZT2XIqQgntftI4m87cDP52jihUYCgJw0g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/9SpIewA6ht6srK08bD0aiGj+ttmcfOuM9jW3b8YEJw=;
- b=sYRvlDkCeOXzM7rBmmPOBxX8QwxMwdIvX8w4avOF89SNuG1smugZFQASRUJ0pY1wHopr6DTZ0FhmIm5uCr+0Isf9ye8B+eBMq760e+rXo8rvj2Sy0OmF7TjHyO6SSh42CBLYMZeUmUagOMCLiFEHkR8W6evy62Lu++JBwfny1H4=
+ bh=UpDhUqma38I7pz7tH9YGoi1DUOESMXhc7MJH26a6ye4=;
+ b=O0BAaz/e10q7qJNVDfN5HaRDcoD3OFgl/pdhQFoYITTnDwdI71jHMF4zjzl8yTNReM885WnTGjFoQ/ESbZ+OsQQQFlyPiJQbqvsHqvUcyor/auQmlWGyC52PSJ8YCfVXN56qCMrzT6obplAQeZsiMEc7wMh6RNBPj2Vu8SfBLCM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
  by CWLP265MB5066.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1b5::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.26; Sat, 25 Feb
- 2023 22:19:23 +0000
+ 2023 22:23:41 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::2f2a:55d4:ea1d:dece]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::2f2a:55d4:ea1d:dece%3]) with mapi id 15.20.6134.025; Sat, 25 Feb 2023
- 22:19:23 +0000
-Date:   Sat, 25 Feb 2023 22:19:21 +0000
+ 22:23:41 +0000
+Date:   Sat, 25 Feb 2023 22:23:40 +0000
 From:   Gary Guo <gary@garyguo.net>
-To:     Asahi Lina <lina@asahilina.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
         Sven Van Asbroeck <thesven73@gmail.com>,
         Fox Chen <foxhlchen@gmail.com>, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-Subject: Re: [PATCH 2/5] rust: error: Add Error::from_kernel_errno()
-Message-ID: <20230225221921.4b4bc87d.gary@garyguo.net>
-In-Reply-To: <20230224-rust-error-v1-2-f8f9a9a87303@asahilina.net>
+Subject: Re: [PATCH 5/5] rust: error: Add from_kernel_result!() macro
+Message-ID: <20230225222340.34d749ee.gary@garyguo.net>
+In-Reply-To: <Y/lOlcSpc+d9ytq/@boqun-archlinux>
 References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
-        <20230224-rust-error-v1-2-f8f9a9a87303@asahilina.net>
+        <20230224-rust-error-v1-5-f8f9a9a87303@asahilina.net>
+        <Y/lOlcSpc+d9ytq/@boqun-archlinux>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0320.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:197::19) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P123CA0334.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18c::15) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB5066:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1db54e8f-0eab-4e29-2e6b-08db177e5928
+X-MS-Office365-Filtering-Correlation-Id: 2b133978-2715-4a33-7666-08db177ef33e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: kvzmj+9BlJgqdXbMnuS/HL1W4KWVTveq9D3Ntjc7qgaTXbT5EW90eKkIYQCBhfkHoHkGxugpfZriGCtQUUqGA29IB4tjZfL0GbcSRIydOnuYzLlHUvl6ykgjNENCxgzATzaVIqPFWyIqPgYw66sIzqlsPhAIW3NWUwMx+DJigPNO9ofuiG0x8xboZIOrNaTY60l4nOM58l+Abi9kK1vqUeYs4vbuRpV9gKtGpERV4lgiF38ddYK319VJVrAI+NRAoU12yOc2bGHGnMY1VV9ZwZbjmD2NxaP4my1kOFpuTG3EwDBbWMYMxCniLZT9rI1Pz/JHGPggHEwgDLS++eoFgiodpkeMKMcQdo0vtWjN8uLcNERuMGJS7fkKChSs4S+sjisrZ2cIQYmIzXJaKAYxaqMO8BLC+7zd7ytvaEZgSa01m/xNdjhXaj+UEz//RRpC69jW6YgFKQux+DauwmxBt90A5LnF6c24/H2wwZtIfLrZE9+qCritjY7lVPYE4bjOWDOiFDHa+souCKfoch/IAj6y09mideFvuF++kibr47FC9wQu3p1QAfkGtboJq0lyYTy9TFDJoAaTzQLE9CmtrENX/3CanbWDHf5ICZrNir7sEFlzMA8e/BI3rwf+L9WLGVEY6MLrvlHyCW+PNi871w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(396003)(39830400003)(376002)(366004)(346002)(136003)(451199018)(8936002)(7416002)(5660300002)(2906002)(66946007)(66556008)(66476007)(4326008)(6916009)(8676002)(54906003)(478600001)(316002)(6486002)(41300700001)(6512007)(26005)(1076003)(6506007)(186003)(2616005)(86362001)(36756003)(38100700002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: cYl7UECGFdgQkAgT2jmlTQsOr40uLqxHtanUJAg+z+jU1ssts76MJs9wHnUQlehZs2KCjoLYZewmBIUZmzQVRfNSTAWGNFFuPd/7Z3kJNZOWIYUR4uXC1WCwYBIWKoF8qe9qskQPjaO4s3zxEZweg6REMVKhVnZreDdxiagYtMYpNZD0WgR9yqELZpIMZkH67wpMlsMkdh071gmbVNcnqJ7Euf25I6DitYqhyF3Di8IN1Ga/MFLR+ML0nfNTSv07uzrL/Latcu371nJ1+WfsnGPGh420CTcJrm0p9DL2zFuqWZRUoWRgrOt9A72dNcuJ1qZwXZZdpNN2ftz06d2R48sXSUCBzPLnML4JYtKGtdMYKCcICa4zqxGfEqsUOlC+fVBknc/pjATCX2LBxNUN+zALRMfHrIFzr7NSL8APz8k5hu29UpBnnFJjoQEQCmvSJ30M8sLkHUL+0TyElQODM7tY0AA1nWXNgNG5JxxuQaTIrqYLQhSbfQ7wAX4pXKnzf94DpacEjMwPGvtZvWEkG+cYivnzs5WzGvUWkeg/M8YmNSbImlDcr4sMCjciWICf4+gqXeEgP/nWA2IB6/gFV7nMmMrR1XDendfUETjdxS7OolhKaYWLN6SNIXZq2bY5xvM8uXhiFT0pNJpDeVTyIQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(396003)(39830400003)(376002)(366004)(346002)(136003)(451199018)(8936002)(7416002)(5660300002)(2906002)(66946007)(66556008)(66476007)(4326008)(6916009)(8676002)(54906003)(478600001)(316002)(6486002)(41300700001)(6512007)(26005)(1076003)(6506007)(186003)(2616005)(86362001)(36756003)(83380400001)(38100700002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?sbw3orA6ed9y6XxGm2LYtjCmw1Lsr+5EMI1Wd+u4tJO+OI1WbM0b2rgC5uzr?=
- =?us-ascii?Q?pF/lMbnVpwSIUrsHMGa/C2n7VHvVRqrYav1G0PQf3E1523hBqMrv/D5Fc81s?=
- =?us-ascii?Q?ALTmTyhwnpHY+ppMSsviPw7GUdkQ+K02g/ZNt+ewR4vw1tiE6diQHyzysL86?=
- =?us-ascii?Q?1nshiqu9OolsDJYxSCEXA7Z4/LbSEwxVyXoIGMiaQfib2TLmgda9MNMGcAk2?=
- =?us-ascii?Q?yGwLJBQPxeJGtYLBf4D4pJlmt/cVGeFvimWlkEcUyFDlwJJppmJMVzgXwlR8?=
- =?us-ascii?Q?nNGnPnhrM2JkCLkXgP1ShLV9neOEF6QQOLWrkiQ76fWD/IsJ1gNTOGb+QsOz?=
- =?us-ascii?Q?pUGDwmXywagbWPRYfKuYDl7IJ5N14sQlSlUkilKE3wAoV0rg0GpkcBRwdADn?=
- =?us-ascii?Q?khp2KGBBiLjXzrU/VAqdipgwDb4TgnXlVAeb+ErdbtrPQDe4zVQ398t548fj?=
- =?us-ascii?Q?V1kWNWVx0sCd7gk6XUWsKlJnG67O7tnYAyxWODSzuhEtTG+uptUCfjbNZnF6?=
- =?us-ascii?Q?uss0lshDzyQmm5uZRT+e7SkudNVZEFpBjhC3xcSMklIceXAPIy0z0e2xndIT?=
- =?us-ascii?Q?EBn4QMjz1VCa5GQfTLtBhnLNnCmkTcJ2S3vqXfSfCgv4yW6bgPFY0rz9B2sm?=
- =?us-ascii?Q?PhXbqRNWBFwuZwd41DdvyUpmAfBF3bY5bZt72ghgh25FP3fRdjswzaOzOhCP?=
- =?us-ascii?Q?8UUqTZMFfxhpD6JprXKm4P6IYABvX+v4W5HBpfqnHwwha3V0mRAuHW2RzcTN?=
- =?us-ascii?Q?KgMZhbPPXn1LoqCnTryoQMXS0i4GkqYm5TIRKN8XnmaJvaRtLADB78Mf4ANl?=
- =?us-ascii?Q?+cFo2E1AqsC9xqHzaOSuWVMl3Wg53aXm/+Ts42tZ+gQNTfb/A2NEYf3l/aTN?=
- =?us-ascii?Q?H62FxGNJ1PuXOMroy7GTH7j0ea3bHSLepcws2J4AWWPG8oE81dura9uLHk3m?=
- =?us-ascii?Q?r9Mr8VhqdeKtVGZD3HrxZYQrmu7aDPvvNJ4aIueHwcqagRrLKKwiTex1S/Kg?=
- =?us-ascii?Q?K5vd/Y3uGt/Zeu7HMIEQBCAPwCeAc3cQhB9402VXws4t/eUNTb3R11KD8xa6?=
- =?us-ascii?Q?BK/wWbJOEl7waVRlNvzvzJg690vU86LxUCEfC86A6byW6Jk2CebZqAhfRgya?=
- =?us-ascii?Q?WmefJGWILjZAWXDSWchcdBxiZ3H9K8Cgsmd58TYgsEIhh10r+BfnFDneCd/l?=
- =?us-ascii?Q?w97NpvIEWgyDidccJZhsPe3vRnsxzTdUU77rF7sN55xLqWbelhg03udDqw+0?=
- =?us-ascii?Q?/YLNByQ/JNXlEWzW9wFwk2gGJi3z17se0EBENaexiPUuDq3/L6aZbrA9sqeS?=
- =?us-ascii?Q?2PfbZZh0iKJyOjGRTjlMdJau1Hz85smzhN1UoL5n4D1q8TD2dXBnOiemdFKf?=
- =?us-ascii?Q?g4xJR3zW5YRYTvwjrbBmbe6E92LMuduZbv1BOJDOpkl/UGw9yubCCnL5anDZ?=
- =?us-ascii?Q?CSyxlXR/7+ipm3TAyJcPp7B7ELfb7lOmrCUDYLPFkO5fQ1sVA27qGIdJf3WT?=
- =?us-ascii?Q?lrEKNJT5h7Gh5t7nuQzpSHmvSvYvi5rP2icy9ux/0N2JVEZEUVfXCMAQzTUl?=
- =?us-ascii?Q?dvHS5ruoKs6iOLgUTuCxU04AKcwA4pTuqLUmrTwd?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?T9cNKxt1oBks06Xmr0JDJIlugFnpQ72kLZ2pt+L+tM2JDaP2q25vekhLEcde?=
+ =?us-ascii?Q?1r48vvEE1/ffwCWi4SEO0jIAOdCZ/ocXBOpDS/ImhaFp2/02+HhWgiJlyyk1?=
+ =?us-ascii?Q?kRgncJgBR0y1DSEv79PofmYlmLErPfJ6A/Cs/KjrTSIP46PwZRqQaL09M4Dg?=
+ =?us-ascii?Q?U1qFI63UtbvE6OaqKKitN3pZ6TpR/USoDGGI7EgEKezTLVFQ3ytkl/RONcff?=
+ =?us-ascii?Q?u6eTLzMXL3SJMynuM8x1Hy2x4Oxg5C9QaO8B0XxNypxodO2737KMhpJTCnwj?=
+ =?us-ascii?Q?t2ZGM+BwW+YGB6GpDhhc9SAVf+Wf/NKhP9W1HfnUfKKDmmt5fiyTwVLSoVeJ?=
+ =?us-ascii?Q?2f8VI9hFeyPVOOEMP20wj4MqmFPSlWVs4QbSMmrwrF5Xk7MYNebiRz8xEr1C?=
+ =?us-ascii?Q?JOzksAjmdYtCpLLGsfWMyhDPe98MCpz1rxA5ibyMYl44+vCRIIQhkEdaqKKF?=
+ =?us-ascii?Q?RNnXI62rRm7+1uRfRFIpxZyar5qNQBjct+2ldd6Qio6sylWDwhDIL8Q2XuMx?=
+ =?us-ascii?Q?Hb9kEf9hlexldw9dDKvHmWKOgQLpdm1xmGG8h8sWw/0lCkal6YeZ0fHnq3xO?=
+ =?us-ascii?Q?OMf2ZRbGxkHoOIBy4xKqXcRIrPYpZvKH0D/6hLcO8fvjkD5iP4rhw7Ah0Igt?=
+ =?us-ascii?Q?uBvzeDzpCtGvlLSiDhmX5WDAo5QRnm2KW374jG3gevKbf+EQG6rrhh1TFmsU?=
+ =?us-ascii?Q?gbQAIzPzYxyfPGTryScnLNyIkLWGllXrNX6jw8+pvpDdF/NhLobtAfiFoe6E?=
+ =?us-ascii?Q?lOF3dt6re+qC3XTQG+1VFVeEDKGvabhz2202EEnZfubHmiiKjm3n/WhOh3ra?=
+ =?us-ascii?Q?axplkIKRax0EhONJYXBWzAd9GUTrJujB3NmxO1di168RqwTNlF2Q/fcZedCT?=
+ =?us-ascii?Q?J5wnxIPm/tKM7VO29NPav5k8oUy4O5GTOEPqjws0v1rvcjrMLS6o45ML2WmT?=
+ =?us-ascii?Q?wdqUe+Uxf6mKHIL2p/fXZh78daiICrE9pqrrYN8HzpWrVW8GTwCauwll0tE+?=
+ =?us-ascii?Q?c0z+oXlqOOg/wohge4Nl0HfBMbwZ4QPYLQtW1PYxsc6pwk4zndiJj5sDRBT+?=
+ =?us-ascii?Q?lXodNfUYlSvjiEhZQBdKOJWPLQbYoXUd2gkUb4tbe6RhoJ+4l1Kk2mk0fWE3?=
+ =?us-ascii?Q?NQVOMXxyDqIOx58fs6AEpz2yYBZXKS2mGk51jjT0eXrcPgc8UzK5FiWrBf+O?=
+ =?us-ascii?Q?0jRtMfGW8G0YRwT83n8LRwDaxJINz2dpEr7PN7VESHljs+DHdUDAdPmKivdp?=
+ =?us-ascii?Q?2ncEkAznUt8NsjZsai3YNxvCfEnR+TaVDiMERRA8Y+WxRtU6IDPbn72OQsiv?=
+ =?us-ascii?Q?NdDtRquLnrdFz/xZ0A+H4obSHgXrCy8fmtJI3Nseuy0+ptYiGjdmt55jn4SC?=
+ =?us-ascii?Q?5Fl9oqk6+t84nvFlUAuSJ/V1srURZ+D/91RkPmPeKR1hLH7uccCTgjqEKFSB?=
+ =?us-ascii?Q?heV8RpYm0QNtLw01Bwe86lFb/zwiaguxzqvc8b/bhy1X8eZE5kd86+js9nCF?=
+ =?us-ascii?Q?14QxTT9svnbfZIfNiRp7H/Dm/jsmLw6EoSEUzmdKtUjrLmz90Tb/97GDY1Vp?=
+ =?us-ascii?Q?xIaDy34bTytuW4GNYYqkhSMZecVDJGPC7tR1kI3n?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1db54e8f-0eab-4e29-2e6b-08db177e5928
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2b133978-2715-4a33-7666-08db177ef33e
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2023 22:19:23.3118
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2023 22:23:41.8594
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4Kd3DCJk9vT2CdomCETcxZfFzj3okxrr2+00840hMVHkS02JpUyJA3RxF0/MoGNXFM4f4eO4gesMkZqNcp0L4A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6MIDmFtHPEC97i0NfZa84zxA4TDf8ZzxpcSWjqJcG5guJmFZMqWVDr17lLFLUk/pZKGh78IZap2id9LwE0mSCg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5066
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, 24 Feb 2023 17:50:20 +0900
-Asahi Lina <lina@asahilina.net> wrote:
+On Fri, 24 Feb 2023 15:56:05 -0800
+Boqun Feng <boqun.feng@gmail.com> wrote:
 
-> From: Miguel Ojeda <ojeda@kernel.org>
+> On Fri, Feb 24, 2023 at 05:50:23PM +0900, Asahi Lina wrote:
+> > From: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > 
+> > Add a helper macro to easily return C result codes from a Rust function
+> > that calls functions which return a Result<T>.
+> > 
+> > Lina: Imported from rust-for-linux/rust, originally developed by Wedson
+> > as part of file_operations.rs. Added the allow() flags since there is no
+> > user in the kernel crate yet and fixed a typo in a comment.
+> > 
+> > Co-developed-by: Fox Chen <foxhlchen@gmail.com>
+> > Signed-off-by: Fox Chen <foxhlchen@gmail.com>
+> > Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> > ---
+> >  rust/kernel/error.rs | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 52 insertions(+)
+> > 
+> > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> > index cf3d089477d2..8a9222595cd1 100644
+> > --- a/rust/kernel/error.rs
+> > +++ b/rust/kernel/error.rs
+> > @@ -226,3 +226,55 @@ pub(crate) fn from_kernel_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
+> >      }
+> >      Ok(ptr)
+> >  }
+> > +
+> > +// TODO: Remove `dead_code` marker once an in-kernel client is available.
+> > +#[allow(dead_code)]
+> > +pub(crate) fn from_kernel_result_helper<T>(r: Result<T>) -> T
+> > +where
+> > +    T: From<i16>,
+> > +{
+> > +    match r {
+> > +        Ok(v) => v,
+> > +        // NO-OVERFLOW: negative `errno`s are no smaller than `-bindings::MAX_ERRNO`,
+> > +        // `-bindings::MAX_ERRNO` fits in an `i16` as per invariant above,
+> > +        // therefore a negative `errno` always fits in an `i16` and will not overflow.
+> > +        Err(e) => T::from(e.to_kernel_errno() as i16),
+> > +    }
+> > +}
+> > +
+> > +/// Transforms a [`crate::error::Result<T>`] to a kernel C integer result.
+> > +///
+> > +/// This is useful when calling Rust functions that return [`crate::error::Result<T>`]
+> > +/// from inside `extern "C"` functions that need to return an integer
+> > +/// error result.
+> > +///
+> > +/// `T` should be convertible from an `i16` via `From<i16>`.
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// ```ignore
+> > +/// # use kernel::from_kernel_result;
+> > +/// # use kernel::bindings;
+> > +/// unsafe extern "C" fn probe_callback(
+> > +///     pdev: *mut bindings::platform_device,
+> > +/// ) -> core::ffi::c_int {
+> > +///     from_kernel_result! {
+> > +///         let ptr = devm_alloc(pdev)?;
+> > +///         bindings::platform_set_drvdata(pdev, ptr);
+> > +///         Ok(0)
+> > +///     }
+> > +/// }
+> > +/// ```
+> > +// TODO: Remove `unused_macros` marker once an in-kernel client is available.
+> > +#[allow(unused_macros)]
+> > +macro_rules! from_kernel_result {  
 > 
-> Add a function to create `Error` values out of a kernel error return,
-> which safely upholds the invariant that the error code is well-formed
-> (negative and greater than -MAX_ERRNO). If a malformed code is passed
-> in, it will be converted to EINVAL.
+> This actually doesn't need to be a macro, right? The following function
+> version:
 > 
-> Lina: Imported from rust-for-linux/rust as authored by Miguel and Fox
-> with refactoring from Wedson.
+> 	pub fn from_kernel_result<T, F>(f: F) -> T
+> 	where
+> 	    T: From<i16>,
+> 	    F: FnOnce() -> Result<T>;
 > 
-> Co-developed-by: Fox Chen <foxhlchen@gmail.com>
-> Signed-off-by: Fox Chen <foxhlchen@gmail.com>
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> ---
->  rust/kernel/error.rs | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+> is not bad, the above case then can be written as:
 > 
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 8611758e27f4..3b439fdb405c 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -72,6 +72,25 @@ pub mod code {
->  pub struct Error(core::ffi::c_int);
->  
->  impl Error {
-> +    /// Creates an [`Error`] from a kernel error code.
-> +    ///
-> +    /// It is a bug to pass an out-of-range `errno`. `EINVAL` would
-> +    /// be returned in such a case.
-> +    pub(crate) fn from_kernel_errno(errno: core::ffi::c_int) -> Error {
+> 	unsafe extern "C" fn probe_callback(
+> 	    pdev: *mut bindings::platform_device,
+> 	) -> core::ffi::c_int {
+> 	    from_kernel_result(|| {
+> 		let ptr = devm_alloc(pdev)?;
+> 		bindings::platform_set_drvdata(pdev, ptr);
+> 		Ok(0)
+> 	    })
+> 	}
+> 
+> less magical, but the control flow is more clear.
+> 
+> Thoughts?
 
-Maybe just `from_errno`? I don't know why `kernel` would need to be
-emphasised here.
+I don't think even the closure is necessary? Why not just
+
+ 	pub fn from_kernel_result<T: From<i16>>(r: Result<T>) -> T
+
+and
+
+ 	unsafe extern "C" fn probe_callback(
+ 	    pdev: *mut bindings::platform_device,
+ 	) -> core::ffi::c_int {
+ 	    from_kernel_result({
+ 		let ptr = devm_alloc(pdev)?;
+ 		bindings::platform_set_drvdata(pdev, ptr);
+ 		Ok(0)
+ 	    })
+ 	}
+
+?
 
 Best,
 Gary
