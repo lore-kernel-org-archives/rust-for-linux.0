@@ -2,176 +2,178 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 956D2C6FA8E
-	for <rust-for-linux@archiver.kernel.org>; Sat, 25 Feb 2023 00:32:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E71BC7EE2E
+	for <rust-for-linux@archiver.kernel.org>; Sat, 25 Feb 2023 00:39:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229456AbjBYAcD (ORCPT
+        id S229496AbjBYAjA (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 19:32:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48808 "EHLO
+        Fri, 24 Feb 2023 19:39:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjBYAcC (ORCPT
+        with ESMTP id S229464AbjBYAi7 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 19:32:02 -0500
-Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2113.outbound.protection.outlook.com [40.107.10.113])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C5A1A96A;
-        Fri, 24 Feb 2023 16:32:00 -0800 (PST)
+        Fri, 24 Feb 2023 19:38:59 -0500
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on0711.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe14::711])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CAE263A1E;
+        Fri, 24 Feb 2023 16:38:58 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aomnpTA/tgp59DcN9lsmsjQVa1YU1HBX8HdU2gtWF2/Jb2lTcrIG1MDf145j9FroqcpwlZtIo2OOosRcMLx9mFF+aFvKhndDLcLnkIRzbZCJ5gD8cQP00xm+AcCOkqpXwsfiPnmmH3WbosvEDrvbUAnaZHbBaRyJ1m6HMIBeAP94gV7mJrkQ1+ZeIjoE9dBhnKiph8nIy7NgTupKJQI+R+p3wGdKFDZ5egR22eiwNp7auhLSvK6Ij3OQFhVOX9qKYkcrp5RHQgqV0pNw8iaK9po87sjYXxeP0bgBcFuKzuBtmAfzqYRZZGBg2aWQqJBrcQdyuDsDiSSSJeeD9VVMqA==
+ b=GJ6Q6TFNx1MX6jdhkV4mZcl5muZ+0W7POmBvLG6HwI5gd5NPJwQtdqbcKCw0kYH279kSaz5J7cm3/PMCzYLWMBKPKEDsPcwbpvO1xSeXjwFBmXxoWOTzD6qhZWhZfA1xYA1qNT1xLzClvH0kcBuD5Kjl57frHl9XhCsC46baimc+fjWVjbit8nM+AjzRS4Ais5XI9vX5IQFqNgRCnAVODAF8ehM9dHRe47Dd5Rj3rMXluf3XNqIB8j0WA/RUzG99vSbFJJRK6IruXRkSHxkXkvANjJT1KnbQeMkfnOZ08d5I2xbRrHlJ/AkQW8g1gT90BtZ3+AUHhADjYPOOnAzpxg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7xBXut21jLU5MX4AAeVPe0Q/ku0/advdKknJqKrE1Xs=;
- b=ejmhyYnSWx6RVE3ZdUzyNhTTRb286SzekKRrqUk+nfypMRrOUMFHjXiaIfbWQMphqoxYB3V2jkhOIdpFMA2l3nyxnQKQFqzGCdzNEa/Zp4101cRQ9Brvb1bPIkwv0wHxiNTXHslV9BYy0oGjdG4aJcdw4ZMzhoYkWf0vmyrQFFnoXidjE8ekQEOn+npjuMc5aFBkwfck3SkuK5wH6rF8s24KLHbBeB1zRJN40EiqB8k9o2vBvfN2PEDv+bGMljd3MiAr9giyI3j39HCliMHH+TwF05ExU6fdurt60LPnU2qlADMa1cYP9wUPzRfZx4VgCpql8qTrC3w0rSvJ3kdUgw==
+ bh=5YDe2KOc7vhEbaOiydcHaKlxU6DLCBemy/0LRbmP4Fk=;
+ b=YUqlgO2PSR/alHQRX4LP6RmmiA1UkvcdIjYDZoD6Ex3aEjy2i5q3U8Np5MXvJzuUVbUwPfB83UelVECXJemNUGtGs7HTbTTlp59ESxJ5n37N0AShQPvORrip8hDuYxmnNVS0eKfvbFzb5YQ2RLcF9SxllRQqmNmaRVfDouNVZ6LLVGmzm+dGjno3fAzGNlA5WvKz1d7Xe/eU013R76dRiO5x5/I721z7M1PRtyTGXbLCB3LuTsD9IlKlfrxYDOxdXenXbU8ttq3DS5D148SdrPIn4MRccHvfBhfrod/gorCThqWZsyfJ99EetO/WPRk146gsGINq807uZJ2Mm3S/7g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7xBXut21jLU5MX4AAeVPe0Q/ku0/advdKknJqKrE1Xs=;
- b=Uz8ylV55Ov3vh5Ij3MUFdmQ84GO+wAdt6DPmqDu5zKW9RutGlYSnvABVrd+CakEoSUw+UuN+Cn9mxycvgX9LxOsgn69Txk3DM6sfMG9A7bdGOgZu/w2ETp+NtIz/76EAXylOAK7f4vurqbAruovdeLWa1p6CsfZHaRXjLqIdLPI=
+ bh=5YDe2KOc7vhEbaOiydcHaKlxU6DLCBemy/0LRbmP4Fk=;
+ b=rqLQHsaZOGJiM6u4W9vWBxtMnj79v549bBn9vRkN3WxUoxkZ1hUKMQrM8gzhztH6i37BkcV+xnU95zWMxsm+FYDtjlHUNmsCzr9mz1I+NeIOvWLP4R9YR+prcO/aeKTq9JX+SKDv0ZGJohjOCs3i+sg5CBNQg2YOmnTBe+foVc4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO6P265MB6222.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2b4::10) with
+ by CWLP265MB5379.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1c7::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.25; Sat, 25 Feb
- 2023 00:31:58 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.24; Sat, 25 Feb
+ 2023 00:38:54 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::2f2a:55d4:ea1d:dece]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::2f2a:55d4:ea1d:dece%4]) with mapi id 15.20.6134.021; Sat, 25 Feb 2023
- 00:31:57 +0000
-Date:   Sat, 25 Feb 2023 00:31:56 +0000
+ 00:38:54 +0000
+Date:   Sat, 25 Feb 2023 00:38:52 +0000
 From:   Gary Guo <gary@garyguo.net>
-To:     Asahi Lina <lina@asahilina.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev
-Subject: Re: [PATCH 2/3] rust: macros: concat_idents: Allow :: paths in the
- first argument
-Message-ID: <20230225003156.4858d79e.gary@garyguo.net>
-In-Reply-To: <20230224-rust-macros-v1-2-b39fae46e102@asahilina.net>
-References: <20230224-rust-macros-v1-0-b39fae46e102@asahilina.net>
-        <20230224-rust-macros-v1-2-b39fae46e102@asahilina.net>
+To:     "Arnd Bergmann" <arnd@arndb.de>
+Cc:     "Asahi Lina" <lina@asahilina.net>,
+        "Miguel Ojeda" <ojeda@kernel.org>,
+        "Alex Gaynor" <alex.gaynor@gmail.com>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        "Boqun Feng" <boqun.feng@gmail.com>,
+        =?UTF-8?B?Qmo=?= =?UTF-8?B?w7Zybg==?= Roy Baron 
+        <bjorn3_gh@protonmail.com>, linux-kernel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev,
+        Linux-Arch <linux-arch@vger.kernel.org>
+Subject: Re: [PATCH] rust: ioctl: Add ioctl number manipulation functions
+Message-ID: <20230225003852.1bbedc54.gary@garyguo.net>
+In-Reply-To: <0818df3a-76c9-4cb3-8016-4717f4d5bf18@app.fastmail.com>
+References: <20230224-rust-ioctl-v1-1-5142d365a934@asahilina.net>
+        <0818df3a-76c9-4cb3-8016-4717f4d5bf18@app.fastmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0144.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:193::23) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO2P265CA0263.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:8a::35) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO6P265MB6222:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3510fdee-5617-4c4c-2c7f-08db16c7b413
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB5379:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0413223a-d245-478e-8cf2-08db16c8ac41
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: MVZMz+iMFqd/i30dzrOfPT2cDSby6U36pnkTz3xJ2ncRVapaBhBWhKWy3LGn3WT65iUCQi3F/P32Ps96zKbMLpEDy330ZqDeikQYAFGB6Pq1uVujXWTXMeRQ7MBJz1vVoNmZFLXqtSwnZ2qNrtJUG1ghGY5LmrcqdJMHrEiVgz9BkPOaPkJXDY87XQbazFzwXvEtKpIbYKvas0Kf9vbYeoujf32i0aMhXzQkpDU4wKbhQHEWjSqB5+F79Nj8RufhKQdjINwYdSu2Etk+LG5HPIhv2KQlOycLvk9uG3H8UrvRADs7qfetZflqG6jf7np0KUpIOfBMTHIkXIFCZAI5tq3gaVZ9hAbUQQ2aQvhnRgHojEY48TRxFTp5dOvuYjno51lHqLxOT8AkfwQS5JovZhLKR5yuy8g71+ggmXy/O45zV0s/4gBntNbAPt7ofNL4d5k9oEWfmn/PyyE4ykxvemrZ1XdErDvc4XfyD5tvcUyU4tkUw6GHme8M077X4dtUVzTJAjldtm6UolQyR72k4edawN4cWvUSjBDAlBKxmUTPNKz9ib1NIMsNF1i7+DVEaBWGP6ZeQcuFkjYWmzoshHbcE0gJAVuuaaMQAdjCQ2s0GZ7h2fvNXUXMTn6nSS/dNyYOktxnEPWqJqzOs4q1qw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(366004)(396003)(376002)(39830400003)(346002)(136003)(451199018)(83380400001)(36756003)(2906002)(1076003)(6506007)(6512007)(86362001)(54906003)(478600001)(41300700001)(8936002)(6486002)(186003)(26005)(2616005)(316002)(6916009)(8676002)(4326008)(66476007)(5660300002)(66946007)(66556008)(38100700002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: /IHPaTHOCOhHc6GceR2kiAGMRmkA3xbE/wjazzX7E3piUBpUEcCgsiEks7fhEQs2bfuMCIxz7MhApwCpQWbDM9816x7Ye+gtXc9SMy1ql4tzyYU5Gtbj0qF4oCl+Yb4IaplaV8rxo9oGTP5H1YdEo2LOO2ktkYkiPlSgshMWxsNP3eVKbt/eWlH70WjeeMywvnfv+NPW1MUY2MU7C0rO1uDWX+gBayrps6UoR+6Gy2qBSN5yAnbkiCnNIkSrlf8geP6ZCKqQOeCmk1c7aNvZRW0ENWbg5xJbu7ifAj0nrhXtbucdBuw2YnrcrRWck3x9Ty0BXpwnqtO6U41GhphydvFxxgmpgW5m543baVd9g91Bev+I75EjUaPTuS3M50xtVuwA6JYpGa8+muz27QIyoojBoJ5RXG2gW7VGWepazrOMtlUg0f9CZUWVEBEcv0HcdTbLJz778NBpJJ6eHBipkTHQEb2zHues5m2yZueLwTKXK/PsYqBaBkAWJWnJ98+h34v32VU3dTWu8uSziiDvEt2OfD4X/R/N7tg7Re9m8XYdYagQR8iHT+19VCOzcnRapAW83y0VVJKMtAoWF9PXxLFZEFuKCpcNlLSavcQwuIYvchNlzCiI6ecDuGdVJ3l55gYmBWGY0X2+kh2oH3ModQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(366004)(39830400003)(376002)(136003)(346002)(396003)(451199018)(5660300002)(54906003)(66556008)(66476007)(66946007)(316002)(7416002)(478600001)(8936002)(6916009)(8676002)(2906002)(41300700001)(4326008)(6486002)(6512007)(1076003)(6506007)(38100700002)(186003)(26005)(2616005)(36756003)(83380400001)(86362001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?kKfTlJNfwH7KS7/NrgmcTfAqmgiBOLS25l2x6T9/vKOCRuiHcZZaQBrg6/CT?=
- =?us-ascii?Q?LGfds62iE/W3v3qENotMHDrBQkaT00KJ9EgCCkLWvrwuexpstCpBNGCiphUl?=
- =?us-ascii?Q?iWUILL+s5TVfwPdsZ01clYtrdvjaMRiSp8vTHRwcd/KLGxVK6wegST/URU8b?=
- =?us-ascii?Q?S0kVV8s9oIlCCULrmcx3FGDZZpF+2/dguqua91vDqpuTl174Hvfd8i5K3twr?=
- =?us-ascii?Q?t7f4KF6iB8YupNGWQy6w6QajH1E0iMArP/MMUKQp8+0+9blTblGbAvPKu3P/?=
- =?us-ascii?Q?iFhAIVfzjzeFgfAIfWt5n9JOjLdxtSf2ntWEA+HwHuih2tpfkKsHIyAOLPLJ?=
- =?us-ascii?Q?ZSsHv0LXfjjWD3t2DdcFdFt95XoGtaBGxyCuabvFSyKSTRgrs38XMPTphBu7?=
- =?us-ascii?Q?d5sh6eYl79hcd18aOUbaOasO423sFpzJXKxZ7BIn6jK+GMt8r9G1WbfZR6oy?=
- =?us-ascii?Q?eliCgZF4IE4kgbW7lrMs9Hah4/rq4CA1B1SilXMDR7KtVy6rsMi3EL6KjczI?=
- =?us-ascii?Q?wJ+J5kRJkB0FLHf0Em1x4/TjOCrwFAFU/hdS55rJnt2Vd2K+20osK50zIJwr?=
- =?us-ascii?Q?wbMkIIKlDx7BKUuAjRoZjrQmF+5NLrjkMwet1V2+6cn/FW/VDOBiHsxwVi54?=
- =?us-ascii?Q?75JL/DG2AyP8x/CHTIqXg5WVMzO2EWHxsbKn5UeMuiPY41y9ocfBxYYWv44c?=
- =?us-ascii?Q?90g0KXcwtlsGARTe/mheZjNBf0AIkF9aAaoPaFzoTV8OpRPhSaHwJCHpNzQ9?=
- =?us-ascii?Q?TpmBIlosNdu2T9AM3dcJ2953rdx6sgLZWs3JeoECVuEbDIjhTGMuuRs+YFZX?=
- =?us-ascii?Q?l+/UmhQnXh0sflY+V19IaZaRY503/ilclTxlv06vJJ6gNNbcw5eZnhxhuWj0?=
- =?us-ascii?Q?qbxjXO1NvtzTHcPMD1ch4FUiH7BA8oPnvJlWT4xR5yFBLIQJs8iHAv7297U2?=
- =?us-ascii?Q?Me9nu3NPyhyx2vU+7alu7F+RQhf5Q4G0Mlt7YnJb8rk6aZd2qKYcvstNpxCX?=
- =?us-ascii?Q?IVoSWUpYy5d/oVsZkJTUk7mwt52oEpkxAzCbgGAwT15JoRFyBYuCy5LWFfZB?=
- =?us-ascii?Q?iLxPeELfCKsSefzUOykw4vMRezXJXVmW7QnfHkko27v8P5l/YeeibUET5jsB?=
- =?us-ascii?Q?a6eZOIjrSLJt5kwGQq0oOZelpo4V31UPSlCwYAILEK59VvawfvnXGC+DuA3J?=
- =?us-ascii?Q?cRQ0BQZSNn3UFR4rTfse//3FY+k1C5PoQTw+gcttDWYnQGxlHWAdO3sPewap?=
- =?us-ascii?Q?d86RiOB/qyisSLo35iuWa2vx7L827/W7fppLVI3jup3WFvEUfE/czB2cEfEa?=
- =?us-ascii?Q?V2JMWdbBnUTZzgG03oXgkuesjZJK72fiwrDYxItU4v4DJCH1843n58Em1HGc?=
- =?us-ascii?Q?KpxCSJi0r5DL3sOPStl0M8jaXIw+LlZ5HEk7Stk8uw2PdeGjxfS54Fth5Hm5?=
- =?us-ascii?Q?XvMbgyUTFWv6na0vy1kdN3FqWswI/YuxOKJ96VDvqqDRKlWrCtEnIpLy0ixB?=
- =?us-ascii?Q?3IdbZXss3GPDSB4eKxk6G30wyTeKVYiBNiAidDhhZ050BWQqe1SClr4pzq8z?=
- =?us-ascii?Q?TVlzFvjP+VfeoUjnPfD1T8USXst6pn5ZXy12DOoQ?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?my9mGts0YG5dTIvXOpD7SnLlIYMztXFEcKOxgiLcjzjhnsvKB1V+MHJizu4e?=
+ =?us-ascii?Q?cuC3sldohPNuSIH29sTvIPgXANFeKjpyNwAkTZ8bb9FGcpKIj6jRyRlD3/lf?=
+ =?us-ascii?Q?Jo8kygd4o4hfRhZqPsXECyQFX0q4jNfpDtAqn1U+oE+BhMbA0O5MIjqCqjXW?=
+ =?us-ascii?Q?o/pCBaeCZuW1iXTtUGtPmNKnALPpXU8WcFDeL0TGlEgYjjWZlIhGCUsS9VdL?=
+ =?us-ascii?Q?hS37XJFDcdCH0oLYnc/LlqFmFzljedbzheIETPQhI29fYZIT4kdIqnx/6azX?=
+ =?us-ascii?Q?9qw+SAkZPtKfdH3Ikk2Oabmx4aL5MhBVBGbulljB6B2km90NDWGYUUXDcy5B?=
+ =?us-ascii?Q?rRc1kBWHikuSB/62XcSNJKFBpZNeD4+/2G+aYzF5jTuY7gYJ7qIUZWsKCkIy?=
+ =?us-ascii?Q?eDHMviupk1/LCJzTEpWgAlZmrNK7I5YrSadp24lqWVj+J3zSB7/hF2rKrLIh?=
+ =?us-ascii?Q?e6pY7+HBZ16mllq4LT77X/QW8/i9Vw614tErDeKZKd6IbIolHgo9tt85AbzA?=
+ =?us-ascii?Q?QJ70KcPHAsmWFzTWoNuI1wXU1gE4Ow4FC0Xxy4yYoRVKvNKiyY77pYd9FIEh?=
+ =?us-ascii?Q?9LXz/drwRgC0nxpOquTSmNL129/9aw670uitX55FlfBEjac4kxJIUT4mSGQd?=
+ =?us-ascii?Q?RRGkf9nhl58/MXMBrr9Iei7y+v0OQ9qNnB/b4WfOy4xcuCdom1r//VrXLg+Q?=
+ =?us-ascii?Q?0psslHUbpf211ggiRyEy2HhBvciUl4UQ7nOYTSRf7qc91h3ANj4H6BzssUnh?=
+ =?us-ascii?Q?Q5g9WSKOaN0K+3VrZ62QUphetZy2LP2B4SXgeWF1MMtiF+ZZjkmQvYOkWueG?=
+ =?us-ascii?Q?25sEJ78l8YWdwyk36oErnwjE/GYfcDCB0RhBFssjfg/BUdqxfknsdgFr+cP7?=
+ =?us-ascii?Q?kJx5BYpvXtISVnFhZGYmn8hKAis4qZHldKjenMgIoYZ+kJmVxAsHcnl4P14N?=
+ =?us-ascii?Q?4h66JOFa6a23e+sU0j5a824nya13x0L62lzrmfECbvCE197TBLeI5InPqzjC?=
+ =?us-ascii?Q?+vubviDazYtui3qW810DBdkVp7WF+5WsmgS0p/GODQh2BT17+XVohS3+2aC4?=
+ =?us-ascii?Q?TUMXJdpH4oORCJL6zqphAmxpbQgLN8tbduTqtL3PVtqeehpzu6In+/PpUYDP?=
+ =?us-ascii?Q?Rn5PL9JJSGTUDd4LofwH4okggCKC6+xZkrHDqA9T1guR94+XoCzG17CwjcvL?=
+ =?us-ascii?Q?9lLIDp8i2j7Ki2uaPVg6BELOK23AegcBDrjAmFGUx4G7XxqfbRZXKcAtwfT+?=
+ =?us-ascii?Q?oyfjbXDrGISi7uzKaRyjVASj8DJ3NL+nsoS8JVBPgcYeZ65ElAV7kuw4BBol?=
+ =?us-ascii?Q?4abiGKQAP2mstVqQY7XOD2uzy5l3tsrsyMm0pMuRN2lMyMpAvgIoWUS6Vi9Z?=
+ =?us-ascii?Q?URbO9W5TYHEZohvTbU0sfVnG9JsiWGwhruqtb2WHutVsZNh7yjIbZtqOwCWA?=
+ =?us-ascii?Q?3mVVNFRbJNTDwVQ5C6JOLA3Rlz/TSK4X2RjIPhNWsW5dzCBSNzNx+YNUlGsK?=
+ =?us-ascii?Q?oyiT0sHzEZ9lW6X6MXCOuzsHGcyJQDSGXqFew+wwp40naeXijiVWNGsrF55g?=
+ =?us-ascii?Q?aZ0lW+9yvqU2+WOpLWhJI3pcLRiFVdZQzOKqbt0O?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3510fdee-5617-4c4c-2c7f-08db16c7b413
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0413223a-d245-478e-8cf2-08db16c8ac41
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2023 00:31:57.9608
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2023 00:38:54.3566
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uwj0HxrlhiaDXo8rA6P/qxIHM1pu3y+VXSkwu3bjZfFQmBoYM7wCid8ft3oq5vWwuyzcN8nVJm+GXaZg1fEvNw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6222
+X-MS-Exchange-CrossTenant-UserPrincipalName: vozOZLzUtiv8ySeTYu4GW97EQtOyiqiwIXjMkmQMAnE4610PjthviiuMk73759OZHSTxgQL4XaH3J/b49FtLJA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5379
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, 24 Feb 2023 16:25:56 +0900
-Asahi Lina <lina@asahilina.net> wrote:
+On Fri, 24 Feb 2023 09:43:27 +0100
+"Arnd Bergmann" <arnd@arndb.de> wrote:
 
-> This makes things like concat_idents!(bindings::foo, bar) work.
-> Otherwise, there is no way to concatenate two idents and then use the
-> result as part of a type path.
+> On Fri, Feb 24, 2023, at 08:36, Asahi Lina wrote:
+> > Add simple 1:1 wrappers of the C ioctl number manipulation functions.
+> > Since these are macros we cannot bindgen them directly, and since they
+> > should be usable in const context we cannot use helper wrappers, so
+> > we'll have to reimplement them in Rust. Thankfully, the C headers do
+> > declare defines for the relevant bitfield positions, so we don't need
+> > to duplicate that.
+> >
+> > Signed-off-by: Asahi Lina <lina@asahilina.net>  
+> 
+> I don't know much rust yet, but it looks like a correct abstraction
+> that handles all the corner cases of architectures with unusual
+> _IOC_*MASK combinations the same way as the C version.
+> 
+> There is one corner case I'm not sure about:
+> 
+> > +/// Build an ioctl number, analogous to the C macro of the same name.
+> > +const fn _IOC(dir: u32, ty: u32, nr: u32, size: usize) -> u32 {
+> > +    core::assert!(dir <= bindings::_IOC_DIRMASK);
+> > +    core::assert!(ty <= bindings::_IOC_TYPEMASK);
+> > +    core::assert!(nr <= bindings::_IOC_NRMASK);
+> > +    core::assert!(size <= (bindings::_IOC_SIZEMASK as usize));
+> > +
+> > +    (dir << bindings::_IOC_DIRSHIFT)
+> > +        | (ty << bindings::_IOC_TYPESHIFT)
+> > +        | (nr << bindings::_IOC_NRSHIFT)
+> > +        | ((size as u32) << bindings::_IOC_SIZESHIFT)
+> > +}  
+> 
+> This has the assertions inside of _IOC() while the C version
+> has them in the outer _IOR()/_IOW() /_IOWR() helpers. This was
+> intentional since some users of _IOC() pass a variable
+> length in rather than sizeof(type), and this would cause
+> a link failure in C.
+> 
+> How is the _IOC_SIZEMASK assertion evaluated here? It's
+> probably ok if this is a compile-time assertion that prevents
+> the variable-length arguments, but it would be bad if this
+> could lead to a BUG() or panic() in case of a user-supplied
+> length that is out of range.
 
-It seems weird to me that this is called `concat_idents` despite
-working for more things than just idents.
+This is a very good point.
 
-How about just implement a simple version of the `paste` macro instead?
+The code, as currently written, will cause a compile-time error if
+`_IOC` is used in const contexts (i.e. used in const generics
+arguments, or inside a `const {}` block), and it will become a runtime
+`BUG()` if used elsewhere.
+
+We do have a facility to enforce compile-time checks, that's
+`kernel::build_assert!()`. If runtime values are used and the
+compiler can't optimise these assertions out, a link failure would
+be triggered just like how our C code does that.
+
+Lina, could you change these `core::assert!` calls to build assert?
 
 Best,
 Gary
-
-> 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> ---
->  rust/macros/concat_idents.rs | 24 +++++++++++++++++++++---
->  1 file changed, 21 insertions(+), 3 deletions(-)
-> 
-> diff --git a/rust/macros/concat_idents.rs b/rust/macros/concat_idents.rs
-> index 6d955d65016e..d6614b900aa2 100644
-> --- a/rust/macros/concat_idents.rs
-> +++ b/rust/macros/concat_idents.rs
-> @@ -14,10 +14,28 @@ fn expect_ident(it: &mut token_stream::IntoIter) -> Ident {
->  
->  pub(crate) fn concat_idents(ts: TokenStream) -> TokenStream {
->      let mut it = ts.into_iter();
-> -    let a = expect_ident(&mut it);
-> -    assert_eq!(expect_punct(&mut it).as_char(), ',');
-> +    let mut out = TokenStream::new();
-> +    let a = loop {
-> +        let ident = expect_ident(&mut it);
-> +        let punct = expect_punct(&mut it);
-> +        match punct.as_char() {
-> +            ',' => break ident,
-> +            ':' => {
-> +                let punct2 = expect_punct(&mut it);
-> +                assert_eq!(punct2.as_char(), ':');
-> +                out.extend([
-> +                    TokenTree::Ident(ident),
-> +                    TokenTree::Punct(punct),
-> +                    TokenTree::Punct(punct2),
-> +                ]);
-> +            }
-> +            _ => panic!("Expected , or ::"),
-> +        }
-> +    };
-> +
->      let b = expect_ident(&mut it);
->      assert!(it.next().is_none(), "only two idents can be concatenated");
->      let res = Ident::new(&format!("{a}{b}"), b.span());
-> -    TokenStream::from_iter([TokenTree::Ident(res)])
-> +    out.extend([TokenTree::Ident(res)]);
-> +    out
->  }
-> 
-
