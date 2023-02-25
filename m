@@ -2,82 +2,173 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF515C6FA8E
-	for <rust-for-linux@archiver.kernel.org>; Sat, 25 Feb 2023 17:17:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 820ACC64EC7
+	for <rust-for-linux@archiver.kernel.org>; Sat, 25 Feb 2023 22:14:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229609AbjBYRRb (ORCPT
+        id S229566AbjBYWON (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 25 Feb 2023 12:17:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50506 "EHLO
+        Sat, 25 Feb 2023 17:14:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjBYRRa (ORCPT
+        with ESMTP id S229486AbjBYWOM (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 25 Feb 2023 12:17:30 -0500
-X-Greylist: delayed 566 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 25 Feb 2023 09:17:28 PST
-Received: from out-44.mta1.migadu.com (out-44.mta1.migadu.com [95.215.58.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E44A612866
-        for <rust-for-linux@vger.kernel.org>; Sat, 25 Feb 2023 09:17:28 -0800 (PST)
-MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosenzweig.io;
-        s=key1; t=1677344879;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=y7PlEP+T3ywtdXp5JitW0ulIPd3g9+rROb4eABEC9Xg=;
-        b=FDU2+uKCtdcByFBbeUvmHSI/1MzMFsVdvofgWZzHN6BxQhtr/IhHnha09zIiRD2tfiLxg6
-        +A5tqyviacVbPMpKJC8Pny2nVYHtCnoRSZtLI/v9YXKG4o5C9Bjow/RPvYOSCVNdK/l5oH
-        w4f3ewR2iTLgcI9MU2a+1HgHnEjzPuKBg5oV1/8X10CyXaXWXdUta4M7ND5R8c1DR+ffTB
-        N5MCeWpBklPBHXQ92awTucDOPwdDCgPB7XChP+/ufXiysR1TpD1uDFsKQXMyoI9gSbdRy6
-        dFulp8MXDt3WJ2/77Tz6DfJ8kvkAdgqAh8U0Exm4H8DSutposKawa6A36J0cwA==
-Date:   Sat, 25 Feb 2023 17:07:58 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   alyssa@rosenzweig.io
-Message-ID: <96e9949bf7210225515ed48911627743@rosenzweig.io>
-Subject: Re: [PATCH 2/5] rust: device: Add a minimal RawDevice trait
-To:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "Asahi Lina" <lina@asahilina.net>
-Cc:     "Miguel Ojeda" <ojeda@kernel.org>,
-        "Alex Gaynor" <alex.gaynor@gmail.com>,
-        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
-        "=?utf-8?B?QmrDtnJuIFJveSBCYXJvbg==?=" <bjorn3_gh@protonmail.com>,
-        "Will Deacon" <will@kernel.org>,
-        "Robin Murphy" <robin.murphy@arm.com>,
-        "Joerg Roedel" <joro@8bytes.org>,
-        "Hector Martin" <marcan@marcan.st>,
-        "Sven Peter" <sven@svenpeter.dev>, "Arnd Bergmann" <arnd@arndb.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Neal Gompa" <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
+        Sat, 25 Feb 2023 17:14:12 -0500
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2097.outbound.protection.outlook.com [40.107.10.97])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9517415550;
+        Sat, 25 Feb 2023 14:14:09 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SziCAC+6J2Cju6iIzDKuGzvyIlNGxJfyA4c9f857O+aUE1+jREIajhDjny7NZEkc5GgtkaFYiJ46v49MTh4OyQlZSsgjW80xy5F/2dJI+g0Ku0uz9Nb81w1wFEYY2KxSTU4Rdjh2E6QVSoZCkjXtc37thqZIuiagx0DLSpz5/88WtL9clk/p9qBBaNmljNRx2D0FoINXGvDOFnKD1E3UpgV4absjYMmWZWmSh6c8ZnNdR0UdidlxgpM/cWlx7YEzVGnTZXHjXnTBvw6HbzmqUv+2pkMjGP9yWHnnKJA7WVlrq0e6oRomFrF9RTdCZtZfg0p+qe4HaFm/p45MHJYmwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lcWkp0EN5hB6kuivO+ypPbtAvGJAP8GKySfa878AhkE=;
+ b=c71t3XzliN7JLjJWhWEYJ4WFNOlTlBHGYjE3DIjqZXqErWsHc5AZ2SjSImBUM+hiLOFH5V7P3U4T1+3b8pUoIkUGnwQbeErtIsHsTHkYgF0T0kKMwtQej1XatzYIKqNhVcqkU+F/b52Up8qkyZ7sFEXCa6DVdCw1U30xUBHnW6tAk5pGU1IuEswMs8Xo786xcovcL80aT/DOnSC6mU1SMIag1/a2t8tC9AAG7qO4Q2uMqI6Xd5/+fznofvT/Zsz+EkepzQLPr2bthocjQMDDq++zmlXshBVpODlw6VrjpahifE+naQ54Ack3a0qrzemqdWu9Sum38LJl4t3CerJLSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lcWkp0EN5hB6kuivO+ypPbtAvGJAP8GKySfa878AhkE=;
+ b=O3Guw0ggZnN5bcxKLdf9k+u36byHaQKRl3tnKt6xMwFX7oHyHBH10OtbY5mG9GbhYnYY9PvPu/2qg8n/12VwFpJNFtwwu2WIfk7Jgk8FzXe8iGNa32Y6OW7uTLrBZLDmMJnOy9Q+QE169zmt6v4a/zZKvqL2VVKisfpwlJVPETI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWXP265MB2104.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:7a::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.25; Sat, 25 Feb
+ 2023 22:14:07 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece%3]) with mapi id 15.20.6134.025; Sat, 25 Feb 2023
+ 22:14:07 +0000
+Date:   Sat, 25 Feb 2023 22:14:05 +0000
+From:   Gary Guo <gary@garyguo.net>
+To:     Asahi Lina <lina@asahilina.net>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Fox Chen <foxhlchen@gmail.com>, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-In-Reply-To: <Y/jW161RuT7OtlSf@kroah.com>
-References: <Y/jW161RuT7OtlSf@kroah.com>
- <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
- <20230224-rust-iopt-rtkit-v1-2-49ced3391295@asahilina.net>
- <Y/ieQ0UX/niAG1Hg@kroah.com>
- <ef3a3638-6381-87ab-d674-644306b6b6ce@asahilina.net>
- <Y/jFeZzZVCpBGvGv@kroah.com> <Y/jHeP4LileLYxO8@kroah.com>
- <bbc824ee-ef4e-40cb-f009-0d693d757869@asahilina.net>
-X-Migadu-Flow: FLOW_OUT
+Subject: Re: [PATCH 1/5] rust: error: Add Error::to_ptr()
+Message-ID: <20230225221405.62e989c8.gary@garyguo.net>
+In-Reply-To: <20230224-rust-error-v1-1-f8f9a9a87303@asahilina.net>
+References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
+        <20230224-rust-error-v1-1-f8f9a9a87303@asahilina.net>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0591.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:295::13) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWXP265MB2104:EE_
+X-MS-Office365-Filtering-Correlation-Id: 075a8908-346f-4db8-730d-08db177d9caf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 4CeF21aeIHwrGAp/Fcnmv8CEMNLbE3pcADf+EwZ8BsUudxIf9BbAhNdOmmNZLud3/TLhLy1WjYoutaQRYqaUdcgP/3TM24esM6UYOhbzZ62PlbFBrv75ayq3LXBNSGV8uO213UhsYtd7NHaSJxF24AOM7tCe7u2aDdJnZknOIs5uLM3eRfGq9qJB29v5HiqnJTQg3svk1V9/F929iDwPo4sUJZ8YtE7lfE16qeQWmAu5FEWyeeZhNlYn3hhxTYCEQlUP9xSLZCnkEupHWD3fRMt6tHDxKwg+iEOsK1W0ACqiUa1ym1j5Gs1GTtUgRFEfK7JEXHNe/hwR1eq/+qGwZq7XuEksil5b5P+R8HKcVsAojsXNZj+c0Sk514FA1rNQl7PhBruP80bgpmPJm2D3ORWcei1/VKBi+XCmrZf78la3OU2Xp910waG3OfWskTDSGHXxoHJtwhePmav4wnqZNITHf50wtHNGq1HSgkpVAOq31OMBNxc7m7+1k2dB9V/Ca94r8rkVEzqjoMcFJCbZzfa1KGii2iOmM23uLvOATCyupytMxm38pb/KroupdZdjipHJiDEaqrzCtRr0+rkepTq7B1P4tbFdg5U6sxXb9xKzrNkXNwUrEdOLOc8R5RC0txiC5VXhdvemmcjl708qvg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(346002)(376002)(366004)(136003)(39830400003)(396003)(451199018)(7416002)(86362001)(2906002)(38100700002)(478600001)(6486002)(26005)(6512007)(186003)(36756003)(66556008)(54906003)(316002)(66946007)(8676002)(4326008)(6916009)(1076003)(6506007)(41300700001)(8936002)(2616005)(66476007)(5660300002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?kfeSB7KkOenHujjxXfl9Rk3DUL/d5DOQRkmp+LFOg/SkrUKjuMvAu0tidLSd?=
+ =?us-ascii?Q?NHZLzqLuSOFeRxH4K2yzmteY5/swoeUH02r8cyU6Bj66naOaiclU5vLH98Ky?=
+ =?us-ascii?Q?ImReNMqEB3fjU5KmtdfrH40MzcadqFINBEtFbNzCHo04SU0QtwctorlQF3zT?=
+ =?us-ascii?Q?QgUOgDf0ZcnJI8mP+45fYtj5yw7TWpAQLAwyRQZWr2R8vYFhHeRAIDaYYMPr?=
+ =?us-ascii?Q?RqDTPLlIrWy4gNW/gwOF4dug1K25gTXHYq6GrCH6wQmhyKwl7ft+QQTaEW35?=
+ =?us-ascii?Q?Zu2n9ZgopQoDjXmqBY9PasVl4uJRfRJUGOsQQcVlKIH2W9/a1QW6WRc8JIG1?=
+ =?us-ascii?Q?u11JLZAzPQglBOC0jv6CZ1IUX4cML52qg6WzFPfqrZ67MW23RnIyDKkYpUm7?=
+ =?us-ascii?Q?tdc9q3ZzZAJFLvBS3yrLyZlqzIbRQPvLOx0FtN+ycEvAMz7V9O/5lD91GaRX?=
+ =?us-ascii?Q?wYngbnfpmi/gV06mcOU6oRoupIDhMR/K6a+hOJpYvYo67gYlWr+uJSM2nGpq?=
+ =?us-ascii?Q?tqM+qkMNrGeHAPPHwIEsz0Ce5InKyw27slIZBOt00QQnZPw9cY8ME/UYOsGS?=
+ =?us-ascii?Q?ObSMrciVYptht3kukSlv8lziVR+v8JpwkV/P8uq3CiW3/u2otOdqViT991Io?=
+ =?us-ascii?Q?WpgKYZnHnsYf9MNF5+QNE58Gxv5OlIwnkV5l4FlQV+UMy5IGYOKo2mH2wUrV?=
+ =?us-ascii?Q?V3M3zjmGhx9TeKbMApfLksMGFF4divgjPuG9kqEcPTA38DemwY0BiGEazc6R?=
+ =?us-ascii?Q?wvFy367N79dqqbjLQsRnF6TL6Wtw258PYUZD9tRYJSy/yCWrOwMvea0Xz3/R?=
+ =?us-ascii?Q?61nqwfH770CHUwUe3iWLuR6bfNCP2kiLhE8ha9+b/s0FD7hAx+8GQeq73Oau?=
+ =?us-ascii?Q?ZxSakT29pVqOHa3D9Yk3om5FCpZ8ki+K+MJt58U0mdoZzFbVPXhlz1PsTCzF?=
+ =?us-ascii?Q?Q076Hg8WdPnbzdQNp+MYcNlZZmsQ3TfXcjXqctBxN1QM5vNDElmw6tGgQmCX?=
+ =?us-ascii?Q?uWyyFHe8GRAZK3HnpZr6QSoRGqdYpY/HFqXXIsuLOIUGWsOPuUS62iSfibkx?=
+ =?us-ascii?Q?qzGxly8PngIDafoZ8WIOy53Dm1ttwMQYbUIbW+1uIi54IAE7rAWVHSZjKPoL?=
+ =?us-ascii?Q?HfV9e8SmsAgw0Zzlp301EVwb6dA4017p6bTYaYe0ivWUYoAcvBSsf0pGsOEi?=
+ =?us-ascii?Q?aQMJqHmQMBUBzY1f3A0ZaT15Xb0dC3S5C+fR+YZb7VkzMDcQiFQIBvcdyVXK?=
+ =?us-ascii?Q?PbWBMVgFJBvP6h3v1LA+He2b7wfHM430Cs2147e86XfPjycJfptWmjDgCeaD?=
+ =?us-ascii?Q?f7R4W4vcJfuwiBNMRzmVywT4OsQk78iCrg8+v5miAlyVg72oOiSDwCF3hDYA?=
+ =?us-ascii?Q?p2IMt1g+T7ivPcVLSepPMaZqNZckVbbcUGZG0l72Me/8jxAtIRYG3h6Huk/R?=
+ =?us-ascii?Q?ONTxA6XsnGImxl7uuZSvNn0AigbMeZOZ9g7dJdXex3hPdg+sJQZMDuWdja5G?=
+ =?us-ascii?Q?j5JzpQrL7zt0wfrqdmNX6vRaxjMwtLPbHhK+PZLmeJm6upB9l1/YxzsfV5kN?=
+ =?us-ascii?Q?BO6zrlIghiPJXlYSVNn4pZZwNJAhJhgeCF+Xo49r?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 075a8908-346f-4db8-730d-08db177d9caf
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2023 22:14:07.1714
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PL7BTDBj22UaC79LGaWyZImZRmd1JFS+fd/uwRbrF6T+t8bB12b8HbPZ3YeavR6GGgDeTnYpmRzwzqZ3FPo2Xw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2104
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-February 24, 2023 10:25 AM, "Greg Kroah-Hartman" <gregkh@linuxfoundation.=
-org> wrote:=0A=0A> On Fri, Feb 24, 2023 at 11:44:59PM +0900, Asahi Lina w=
-rote:=0A> =0A>> On 2023/02/24 23:19, Greg Kroah-Hartman wrote:>> Can we s=
-ee some users=0A>> of this code posted so I can see how struct device=0A>=
-> is going to work in a rust driver? That's the thing I worry most about=
-=0A>> the rust/C interaction here as we have two different ways of thinki=
-ng=0A>> about reference counts from the two worlds and putting them toget=
-her is=0A>> going to be "interesting", as can be seen here already.=0A>> =
-=0A>> Also, where are you getting your 'struct device' from in the first=
-=0A>> place? What bus is createing it and giving it to your rust driver?=
-=0A>> =0A>> That would be platform for my GPU driver, matched via OF comp=
-atible.=0A> =0A> Ick, a platform device? The GPU isn't on the PCI bus? Wo=
-w, that's=0A> horrid...=0A=0AThis is bog standard for Arm SoCs... As far =
-as I know, it's all platform devices in the Arm GPU world: Mali, Adreno, =
-Tegra, VideoCore, and yes, Imaginapple. not really sure what good PCI wou=
-ld do for integrated GPUs.
+On Fri, 24 Feb 2023 17:50:19 +0900
+Asahi Lina <lina@asahilina.net> wrote:
+
+> This is the Rust equivalent to ERR_PTR(), for use in C callbacks.
+> Marked as #[allow(dead_code)] for now, since it does not have any
+> consumers yet.
+> 
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> ---
+>  rust/helpers.c       | 7 +++++++
+>  rust/kernel/error.rs | 7 +++++++
+>  2 files changed, 14 insertions(+)
+> 
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 09a4d93f9d62..89f4cd1e0df3 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -20,6 +20,7 @@
+>  
+>  #include <linux/bug.h>
+>  #include <linux/build_bug.h>
+> +#include <linux/err.h>
+>  #include <linux/refcount.h>
+>  
+>  __noreturn void rust_helper_BUG(void)
+> @@ -46,6 +47,12 @@ bool rust_helper_refcount_dec_and_test(refcount_t *r)
+>  }
+>  EXPORT_SYMBOL_GPL(rust_helper_refcount_dec_and_test);
+>  
+> +__force void *rust_helper_ERR_PTR(long err)
+> +{
+> +	return ERR_PTR(err);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_ERR_PTR);
+> +
+
+I know that we already have `IS_ERR` in helpers.c, but having to go
+through FFI and helper functions for something as simple as a cast
+feels awkward to me.
+
+Given that `ERR_PTR`'s C definition is very unlike to change, would it
+be problematic if we just reimplement it in Rust as
+
+```rust
+fn ERR_PTR(error: core::ffi::c_long) -> *mut core::ffi::c_void {
+    error as _
+    // Or `core::ptr::invalid(error as _)` with strict provenance
+}
+```
+?
+
+I personally think it should be fine, but I'll leave the decision to
+Miguel.
+
+Best,
+Gary
