@@ -2,213 +2,194 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6B59C6FA8E
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Feb 2023 23:56:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BD39C64ED8
+	for <rust-for-linux@archiver.kernel.org>; Sat, 25 Feb 2023 00:29:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229641AbjBXX4m (ORCPT
+        id S229576AbjBYA3w (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Feb 2023 18:56:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51606 "EHLO
+        Fri, 24 Feb 2023 19:29:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229625AbjBXX4l (ORCPT
+        with ESMTP id S229477AbjBYA3v (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Feb 2023 18:56:41 -0500
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3E784988A;
-        Fri, 24 Feb 2023 15:56:33 -0800 (PST)
-Received: by mail-qt1-x836.google.com with SMTP id h19so1221629qtk.7;
-        Fri, 24 Feb 2023 15:56:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Mg1OhrK00U2abybneZCMDTPfqJM1ATwamgUcjQxT/Ug=;
-        b=GiygabvyzRuFJ8dv+ivRo4TEC+5qtINQFNuDy7WUVNf6VjdtII4weY5pTfheItp32m
-         FAF3kfBxoxVYBIaBU6+ddc0CvpZ6btskJh4DWm7CVnTqHeihGRS8oky97Cy9rpXd6Yiu
-         U0JTpYp60G3Y9W0SruQ+Qk4CMAyqTctP2xfpnmc3jwGzQ7UCuhmL3CbqmbyVIt87U8PX
-         jMy1BcHhv7l59Rb9OYtwpR5LwXlGnyC3CN0WS7NgRAzxXKVnwvethiLcXe6IkXWCdcBI
-         /A1FhsY3XtEiLJ8LizRwRENmtU/Tk6bwlmsmQm0HJdXeUVXMRTBPhVxXpgqp8lqf0Hky
-         1BSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mg1OhrK00U2abybneZCMDTPfqJM1ATwamgUcjQxT/Ug=;
-        b=iM1vsFZ17cIPt0QeyPAb4oNG/KfsyYdlZGvDxtSuWMU3IY6UnKLrIOrUk4HOFtpMRE
-         In7MFlZq6tSt0Vmn8ssIlyEqEkgJ3+qKY8iY5AqpgerFhP9qSliPZkvsy+8tOgZcJC/Y
-         Wce0Zk49w/P1VuznV1HyZrEIoOWrpDS6y6BhC2+mHUyYNQ1er9IaSOfE5UwBxXF0n4Ga
-         bhYzPPw+HQNW5i5lTnSSmNlaoaTYMZcnBVum/EIVBlcWjatCzGlyzN7ZmaGoVBVMubdC
-         avqRBk2aQ1WNubJV7t+zJhKTc6LrBDM2c1XwHH/9wS2RYgwQbE5WyCn87LOIURQOMQdl
-         DC7w==
-X-Gm-Message-State: AO0yUKUsk5ZRk0fdbqLGaFP4E8BtikGJHxNjoxdkK9vGY6xTzyJggQWQ
-        rHeAoV6yEgd+Drgg3PMGBhHOtmkG7Wc=
-X-Google-Smtp-Source: AK7set+CUGse5PQzutt0zUhWY1SRG6tx0fw2YPSB3juRWoaHUjROLJOFGsQFJr0Vbn70qpGsYVHarA==
-X-Received: by 2002:a05:622a:c6:b0:3bf:c665:657 with SMTP id p6-20020a05622a00c600b003bfc6650657mr281115qtw.8.1677282993098;
-        Fri, 24 Feb 2023 15:56:33 -0800 (PST)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id t30-20020a05620a005e00b00742709bc5edsm291976qkt.5.2023.02.24.15.56.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Feb 2023 15:56:32 -0800 (PST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 0933727C0054;
-        Fri, 24 Feb 2023 18:56:31 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Fri, 24 Feb 2023 18:56:32 -0500
-X-ME-Sender: <xms:r075YyXhOKyjdjgVphWHVyKy6cjIrDB_C2iDKSi51bLdZIQxqQLW2A>
-    <xme:r075Y-k2kVqw78n09CMOwAgyd_XbiSjRPOr-VyoaxqoHFU_9M_wxk3LUgxg14yDIZ
-    6hG758rm4MZhBvW2g>
-X-ME-Received: <xmr:r075Y2YPVqsn_xIskHNtbTlLy6bxgqWg1HPpEtVDjE45e7pPW1VC_0Nuv7U>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudekgedgudehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:r075Y5WeZTC3YruI4k9p0OVOq-louwPCjoZKGlOXhpqw-N2pMMTckw>
-    <xmx:r075Y8knXovlpj2zQVtOQDHUDN-qqwuCjHu4ga50I7RvMxKL282wGw>
-    <xmx:r075Y-ciCGuJDpogbTh2hnCx3Bn5iTHz-WCKdWNt4MHk0BKL9ggGEQ>
-    <xmx:r075Y1c-shbs9FZq5sSEnT3_PgEBnnigeaSdiVOBRe-oMdLlsNwFuw>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 24 Feb 2023 18:56:30 -0500 (EST)
-Date:   Fri, 24 Feb 2023 15:56:05 -0800
-From:   Boqun Feng <boqun.feng@gmail.com>
+        Fri, 24 Feb 2023 19:29:51 -0500
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2101.outbound.protection.outlook.com [40.107.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF88F2942D;
+        Fri, 24 Feb 2023 16:29:22 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bloUKFTHdxKbTE7js/J5ydal8sB6kQ68/iS8+U/P2ga4ECCdv8w2q3uSdzfmaYQj/z97XhMRk5dypS3PQnsj8wGdJukUfeNJ55kt9iMe9rOZGq/uDAzPfpQQFtSxGH0VYZtPX+wM9d9yPJblQuTTWbL361X9MGsHBVhEjEPjJlTMLzBGc7RKplSw/SreXWbSEaLDOi1GIWM9YgGRCJUj+LIsLzsxvsgoSJmP58j1QOGEksllhCgCL8rQvBBI1Hv8mVI37KzbseyCOi56C72cmSBOyKYYS+JMIbhTlFPF4VrBP/RD+lmXuT8aYkOSaeLPtk2gmHWJhFieqGWhoic9aA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WGyowKTrdlChRzyX3cHkInL9Sj5Sx+n8EeuF00g/d0k=;
+ b=Fsv7jWl+Z7c7PAXd65/bKYKFQ1mnAo7pIbfYTA5zDkDw8D+zd1MIu6FaqctGQDxssXFvjiofNhsdgkkayQriOuY+pTK2KLwWMjQYEktKZRYwJ2npOr0hdvsiKCyS2PQXWhw0YFqeDKLcfD/ljI2O7+UybsDTDF7TJtVb+3pOvHsF+sf+Qn5MR8qLGeey8YwbQwDyAiEDK1E/fn6uQwDQJeBhlRw0vyYl+5NAGgRgUeAXRWxmaYWFYuYNWrkZXCF6k6Khuf7/FMxLfhQrSdQD8HM9s3YcHd4/CQN2hqVopTqwSPLyVlNvm84n4hp3VyfAkgC7bqFPD3D1FOXnSyx6xw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WGyowKTrdlChRzyX3cHkInL9Sj5Sx+n8EeuF00g/d0k=;
+ b=hB8G7ptvPrbRO6IKVaSJFsJXqKdGaRPoUfK+JyOkX8LTjeXVzvJ/UYF9YUq6R+zZcwnv81ltXY6+FJyNd8ZFE1HiaCHpu9i2gVvClRXB21MW4n4NddnxbaY+13niIkLo595W6MeuEm2t0/UPiIEjanBy1spN1p28Kv44DAcgkhc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO6P265MB6222.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2b4::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.25; Sat, 25 Feb
+ 2023 00:29:20 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece%4]) with mapi id 15.20.6134.021; Sat, 25 Feb 2023
+ 00:29:20 +0000
+Date:   Sat, 25 Feb 2023 00:29:18 +0000
+From:   Gary Guo <gary@garyguo.net>
 To:     Asahi Lina <lina@asahilina.net>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Fox Chen <foxhlchen@gmail.com>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-Subject: Re: [PATCH 5/5] rust: error: Add from_kernel_result!() macro
-Message-ID: <Y/lOlcSpc+d9ytq/@boqun-archlinux>
-References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
- <20230224-rust-error-v1-5-f8f9a9a87303@asahilina.net>
+        Boqun Feng <boqun.feng@gmail.com>,
+        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        asahi@lists.linux.dev
+Subject: Re: [PATCH 1/3] rust: macros: Make expect_punct() return the Punct
+ directly
+Message-ID: <20230225002918.4cfcc4d8.gary@garyguo.net>
+In-Reply-To: <20230224-rust-macros-v1-1-b39fae46e102@asahilina.net>
+References: <20230224-rust-macros-v1-0-b39fae46e102@asahilina.net>
+        <20230224-rust-macros-v1-1-b39fae46e102@asahilina.net>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P265CA0029.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ae::9) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230224-rust-error-v1-5-f8f9a9a87303@asahilina.net>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO6P265MB6222:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7b7b2ae2-a817-4408-e42e-08db16c755eb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: xdl1DhnhdfDX88KsEGgytpH5ByFBamT1lPdBN10j9gq9wlpjQ6A6ty4jHD59vNWLDIGexAjESJ0CLA5+31c7TegypEPH5PWGMFBPwd8t/nFs/ZtdarwWIxk1yO635AA7xA+DCFML+Z3nSxEDGLoRXmUU8XsjgqoVcEjQj82BF/gC6ZG9tBfHU2kjI3gwFHoYXJAxdB15+MufgZRhrCC5JCwHy4Bh6TVj181aJEZpiFRmQNgsxGpgKDTdguKla/zGdQAfGVq8WAGvK5NaFBOjzh++dmSzgrgquZsF0bbsHFfqeyFxgDKHjeVN1wR4EnAI6MYFA32Aj/eytZjYyf49NrA47VCdpNry5AVoPMSoAjyq/rWPiWmIIoC6vjKBcdxB7rJRjEP8d8HhbiYCxviqIWZtzERqFf2dIxDTfNFEAIaSofriRe34dYm0bmYf1jyEVPqkFc8L56n6LvsYRVLbOnKTlFWlnvFUAcxUfqOcVM/Xuxh5kSwK5qkiAlqV+At8D4VxHoqJ6aLiao3LQkKSFQgVlgz+tEW+iCI+0DIVJmbmWAdKGp+u1QXHizGkGOr1HA1jqrj+YbX19T4ZmvsaojPXWYMtnGJdC17YNbxYd3c6I1TIWPsVfpTAHpsk2RgYyTvIwAeP6ctOUi0YrrjkKQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(366004)(396003)(376002)(39830400003)(346002)(136003)(451199018)(83380400001)(36756003)(2906002)(1076003)(6506007)(6512007)(86362001)(54906003)(478600001)(41300700001)(8936002)(6486002)(186003)(26005)(2616005)(316002)(6916009)(8676002)(4326008)(66476007)(5660300002)(66946007)(66556008)(38100700002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jiMJzZ/Fd1UoAlGsS1qm1n42XRwbG71XiV6vJxsR3beM7Q1HPSg+rFEPabNs?=
+ =?us-ascii?Q?BV55ogvX8TbnZa+zO2ir1AAzowMLfgNarM/LS4L1r2r7GYHWQoldjVPmQmDD?=
+ =?us-ascii?Q?tmccTCyfKYRpyTef97gm3f8oZjZmCE108yKUssPJ+XtBaYHmLtesJMQifOlO?=
+ =?us-ascii?Q?Ef7qkd4dsOmDBjNs+3v1CtqDOm5IJhxN4QtvvGj4bxAGUFvl8xGB1Gi3EE9Y?=
+ =?us-ascii?Q?Ie+m6/C3mcB10rLdyopDtxDPBHTbX19eHTJuKZ6Fbq9DbrGy6ohatI/Ca3LY?=
+ =?us-ascii?Q?FH2X65jZ2uYxK6MM2ij8nHW477R2WgP/sxO6UMlgKVt7m1KIzFcAAiySQ4+s?=
+ =?us-ascii?Q?07cWIDnDXbxLzdJb9gz/eqbYRqnY41nBae4Ece6v6f3J4Zi5nkgbKIXqi2Kd?=
+ =?us-ascii?Q?IJIky+t1xcT7O2nUdLa+u+Cu6INl7lbYQLcZzy9TpqJLhZ5RciSnoK//1cXe?=
+ =?us-ascii?Q?s1g7J1gVqbDezPo8QhW1Dtu0HJqdYMjgxjH9AypctbP2XvSyY6p5xs8VkpBy?=
+ =?us-ascii?Q?uxn3Y07quVdpVQVStryyq0WFJWEQGeQtiBLBukDprYLidyvO7v9Q7WtKHiGj?=
+ =?us-ascii?Q?aXfK88GlqhSIxCAbDhQPoilFAFVTPgLW2SCyHRRo5331989A8Y6h1nEdhBL7?=
+ =?us-ascii?Q?lFdnOMDJPaNMuzlPFRVRHwd3oHwWQ39sHjNFjzz0GXoQgjsRMLiRVU3DPEs/?=
+ =?us-ascii?Q?fncwvH4x7S+OqBqHQPNT+z7Tc1y1l9RUU3mWs3wmjhMAWnNC2qyeV5I6cD+t?=
+ =?us-ascii?Q?0PjN7Frs0IDsR/W11f8bgZZpvHn0NwUxQ1384JU2Yd0tk7uqPR0K0ptK0u3y?=
+ =?us-ascii?Q?ekct1L/EzB7zNLyoQk8gj7v5McPLzjlVJfSBMrmRsAdzt/ArHZ8C6QmnXHBE?=
+ =?us-ascii?Q?Jr4DK0ZT1lgPt42MZlZfgNiPpzbez0wt3wbEuUx2+9Z5OVGXYqx+mrBUIIOq?=
+ =?us-ascii?Q?XPf9HWWelq3sQbC/VtTb1FaoJpbzJbL3w0OFWf1UWWP6CJxa0MBo2sMNRFAU?=
+ =?us-ascii?Q?csxUGmIO8huOJfvY91u+XaGEyN58EYTR8Nzf7BMjw7u0PtFSDxTaGXFyeExS?=
+ =?us-ascii?Q?qquVdbMw8zW0b9A6+ptxY5IC5ronOFmIpTJFYtXVcWpYNQFjoewIiJJtEOyk?=
+ =?us-ascii?Q?6ght5BNSNYatquWuaxGTCv3Mm9W+zGnrb8hRojaQJ1wjVHdGg8nhI9/LPbh9?=
+ =?us-ascii?Q?fuN79AmkyyO7sMmvrKxUFcTHLGs5BOIm+JaUClow5dilFNSvVqAm5WLOWZpx?=
+ =?us-ascii?Q?PiBrOeoWHrRWaZC+8PBmA83Gemyn/7h8xv6HPBPcCuDozU0znbs0z209zYGU?=
+ =?us-ascii?Q?UPa3BmkmuYS89RPUZHtdgr4kMqZEL+F7h1LBphQpKF+aPIqZJXQLK06Q7eKj?=
+ =?us-ascii?Q?uyjgUURrjgkc3tXUEbC2OVrm3BaH7Ms+bHbY+mW90HrwcnjD9Rsw5gSR8U2n?=
+ =?us-ascii?Q?fHDJtJpuSkUWkd5lCR40E4vJ86lU0wknozppQXz3hRfSqvFKWyLfHUeP77Ph?=
+ =?us-ascii?Q?XfrwRX6Rn8djDGaI7RkdUR/oZFt/qtYDkt9rAA4YnSlub5ufEWqFKjclpOY9?=
+ =?us-ascii?Q?6xWVF0Kzk7nSCd4EUGUdM3WEfCcKW2hcUUZdzgBT?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b7b2ae2-a817-4408-e42e-08db16c755eb
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2023 00:29:20.0289
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bdZ4A98NwmXLMQLRIXOUvyaYcCtJpgonAF9mlF/57uO7SJXmVSPDmkDFA+UxqTbw4T8IRFeVkeOEpI/exdvuxw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6222
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Feb 24, 2023 at 05:50:23PM +0900, Asahi Lina wrote:
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
+On Fri, 24 Feb 2023 16:25:55 +0900
+Asahi Lina <lina@asahilina.net> wrote:
+
+> This makes it mirror the way expect_ident() works, and means we can more
+> easily push the result back into the token stream.
 > 
-> Add a helper macro to easily return C result codes from a Rust function
-> that calls functions which return a Result<T>.
-> 
-> Lina: Imported from rust-for-linux/rust, originally developed by Wedson
-> as part of file_operations.rs. Added the allow() flags since there is no
-> user in the kernel crate yet and fixed a typo in a comment.
-> 
-> Co-developed-by: Fox Chen <foxhlchen@gmail.com>
-> Signed-off-by: Fox Chen <foxhlchen@gmail.com>
-> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 > Signed-off-by: Asahi Lina <lina@asahilina.net>
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
 > ---
->  rust/kernel/error.rs | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 52 insertions(+)
+>  rust/macros/concat_idents.rs | 2 +-
+>  rust/macros/helpers.rs       | 6 +++---
+>  rust/macros/module.rs        | 4 ++--
+>  3 files changed, 6 insertions(+), 6 deletions(-)
 > 
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index cf3d089477d2..8a9222595cd1 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -226,3 +226,55 @@ pub(crate) fn from_kernel_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
->      }
->      Ok(ptr)
+> diff --git a/rust/macros/concat_idents.rs b/rust/macros/concat_idents.rs
+> index 7e4b450f3a50..6d955d65016e 100644
+> --- a/rust/macros/concat_idents.rs
+> +++ b/rust/macros/concat_idents.rs
+> @@ -15,7 +15,7 @@ fn expect_ident(it: &mut token_stream::IntoIter) -> Ident {
+>  pub(crate) fn concat_idents(ts: TokenStream) -> TokenStream {
+>      let mut it = ts.into_iter();
+>      let a = expect_ident(&mut it);
+> -    assert_eq!(expect_punct(&mut it), ',');
+> +    assert_eq!(expect_punct(&mut it).as_char(), ',');
+>      let b = expect_ident(&mut it);
+>      assert!(it.next().is_none(), "only two idents can be concatenated");
+>      let res = Ident::new(&format!("{a}{b}"), b.span());
+> diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
+> index cf7ad950dc1e..65706ecc007e 100644
+> --- a/rust/macros/helpers.rs
+> +++ b/rust/macros/helpers.rs
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  
+> -use proc_macro::{token_stream, TokenTree};
+> +use proc_macro::{token_stream, Punct, TokenTree};
+>  
+>  pub(crate) fn try_ident(it: &mut token_stream::IntoIter) -> Option<String> {
+>      if let Some(TokenTree::Ident(ident)) = it.next() {
+> @@ -38,9 +38,9 @@ pub(crate) fn expect_ident(it: &mut token_stream::IntoIter) -> String {
+>      try_ident(it).expect("Expected Ident")
 >  }
-> +
-> +// TODO: Remove `dead_code` marker once an in-kernel client is available.
-> +#[allow(dead_code)]
-> +pub(crate) fn from_kernel_result_helper<T>(r: Result<T>) -> T
-> +where
-> +    T: From<i16>,
-> +{
-> +    match r {
-> +        Ok(v) => v,
-> +        // NO-OVERFLOW: negative `errno`s are no smaller than `-bindings::MAX_ERRNO`,
-> +        // `-bindings::MAX_ERRNO` fits in an `i16` as per invariant above,
-> +        // therefore a negative `errno` always fits in an `i16` and will not overflow.
-> +        Err(e) => T::from(e.to_kernel_errno() as i16),
-> +    }
-> +}
-> +
-> +/// Transforms a [`crate::error::Result<T>`] to a kernel C integer result.
-> +///
-> +/// This is useful when calling Rust functions that return [`crate::error::Result<T>`]
-> +/// from inside `extern "C"` functions that need to return an integer
-> +/// error result.
-> +///
-> +/// `T` should be convertible from an `i16` via `From<i16>`.
-> +///
-> +/// # Examples
-> +///
-> +/// ```ignore
-> +/// # use kernel::from_kernel_result;
-> +/// # use kernel::bindings;
-> +/// unsafe extern "C" fn probe_callback(
-> +///     pdev: *mut bindings::platform_device,
-> +/// ) -> core::ffi::c_int {
-> +///     from_kernel_result! {
-> +///         let ptr = devm_alloc(pdev)?;
-> +///         bindings::platform_set_drvdata(pdev, ptr);
-> +///         Ok(0)
-> +///     }
-> +/// }
-> +/// ```
-> +// TODO: Remove `unused_macros` marker once an in-kernel client is available.
-> +#[allow(unused_macros)]
-> +macro_rules! from_kernel_result {
-
-This actually doesn't need to be a macro, right? The following function
-version:
-
-	pub fn from_kernel_result<T, F>(f: F) -> T
-	where
-	    T: From<i16>,
-	    F: FnOnce() -> Result<T>;
-
-is not bad, the above case then can be written as:
-
-	unsafe extern "C" fn probe_callback(
-	    pdev: *mut bindings::platform_device,
-	) -> core::ffi::c_int {
-	    from_kernel_result(|| {
-		let ptr = devm_alloc(pdev)?;
-		bindings::platform_set_drvdata(pdev, ptr);
-		Ok(0)
-	    })
-	}
-
-less magical, but the control flow is more clear.
-
-Thoughts?
-
-Regards,
-Boqun
-
-> +    ($($tt:tt)*) => {{
-> +        $crate::error::from_kernel_result_helper((|| {
-> +            $($tt)*
-> +        })())
-> +    }};
-> +}
-> +
-> +// TODO: Remove `unused_imports` marker once an in-kernel client is available.
-> +#[allow(unused_imports)]
-> +pub(crate) use from_kernel_result;
+>  
+> -pub(crate) fn expect_punct(it: &mut token_stream::IntoIter) -> char {
+> +pub(crate) fn expect_punct(it: &mut token_stream::IntoIter) -> Punct {
+>      if let TokenTree::Punct(punct) = it.next().expect("Reached end of token stream for Punct") {
+> -        punct.as_char()
+> +        punct
+>      } else {
+>          panic!("Expected Punct");
+>      }
+> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+> index a7e363c2b044..07503b242d2d 100644
+> --- a/rust/macros/module.rs
+> +++ b/rust/macros/module.rs
+> @@ -104,7 +104,7 @@ impl ModuleInfo {
+>                  );
+>              }
+>  
+> -            assert_eq!(expect_punct(it), ':');
+> +            assert_eq!(expect_punct(it).as_char(), ':');
+>  
+>              match key.as_str() {
+>                  "type" => info.type_ = expect_ident(it),
+> @@ -119,7 +119,7 @@ impl ModuleInfo {
+>                  ),
+>              }
+>  
+> -            assert_eq!(expect_punct(it), ',');
+> +            assert_eq!(expect_punct(it).as_char(), ',');
+>  
+>              seen_keys.push(key);
+>          }
 > 
-> -- 
-> 2.35.1
-> 
+
