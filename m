@@ -2,60 +2,60 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2BFBC64ED6
-	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Feb 2023 13:56:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87561C64ED6
+	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Feb 2023 14:27:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229495AbjBZN4V (ORCPT
+        id S229593AbjBZO1H (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 26 Feb 2023 08:56:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44638 "EHLO
+        Sun, 26 Feb 2023 09:27:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjBZN4U (ORCPT
+        with ESMTP id S229565AbjBZO1G (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 26 Feb 2023 08:56:20 -0500
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26FEA113FD;
-        Sun, 26 Feb 2023 05:56:19 -0800 (PST)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-53916ab0c6bso108058157b3.7;
-        Sun, 26 Feb 2023 05:56:19 -0800 (PST)
+        Sun, 26 Feb 2023 09:27:06 -0500
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E103BFF2B;
+        Sun, 26 Feb 2023 06:27:01 -0800 (PST)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-536bbef1c5eso108879127b3.9;
+        Sun, 26 Feb 2023 06:27:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=s2ts1GdBaI5yZyaOizgF74ytm6/pL7kpF7zQHufJ0bA=;
-        b=VwflOH0TfCHFHLaMPZDGRDSxtmafqNNzSbRl2rpSUkyic0lIiewaF0bHQNH5KsLdeL
-         2U06MboTEgDBNx4v1Nx6/CLD47KC4ITNQRlrzPlWNx0JFJwW+Ny69ucUl6NBv5vwQBOH
-         fDvh/Tz0IyzaIJZSa6QdKLnJL6dyJT3n0+TuJmMQsHr0NH4DDpAzKA/tlkPWIww8bUZY
-         vMjBGlpk0MK5EhDkqn2TECdylbuxwo7b5G7Di4Ob3iS5Flsh3oRrdnXuLrPBwmyza0FH
-         sKKeQBvBIU28uaqDyxUynI5cuY/c+QuIO1pAOuIOF+5vObPpncAz7CaU7ZUnOokvOWyz
-         MNfg==
+        bh=bGH9kXSraDN+mVD9fqltVHucO9c601DRLuGoJN4kmTQ=;
+        b=QaX5VGmC41VJmIz8TPU/W9pU9Rlq9pZ/fyEg+Y2vn9A1f8ToZJReD9OrGqJ+DTKLRD
+         ns1/z9DlMNvs6CUQN7zDHeudlxt1ro/FaxhLR78SSphz+727jJALOFuSJBjiWbxLsj4L
+         S7krOunD0mliF8uwQvIlK6TtZ5l2L0kySnNA9lZ+vU9GHTrjl0DgynOjiTWfgxsZO6ot
+         q16VJY0Tex84DLUmC12L+ZLNI93kDG9RuQ1boJ+xK1cNEIl0OSUBvueq0do2L9rmZRAp
+         HZsnO6EQQWLCdo1OM9TxtRSJCXCNn+c3H4LijfegmZqH0LIdbLicdKPx5vS/we4W6X9x
+         V84g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=s2ts1GdBaI5yZyaOizgF74ytm6/pL7kpF7zQHufJ0bA=;
-        b=qVhvgqMMP2sWRzV/TNxr1s5dpHjCii4BHZvuOgic8ABEmIEWIQeJ6WQT4lBQoDjgec
-         J3rXfsI8p/NV+lm3YVgvzK1ov0jPtYzX7OhYznCOA6fyeP5GWgNZ6To61rc/er7H07Km
-         cAtoIOfZVGZjPjT2z+7i9Yg89APqwOiy0v57ceGZ0UGyA67tIrr0pA0+VEsUObfIHuFE
-         JCAU5fdc1kEbtVNEwONRb3a0MqYONyRjtYytJ0MdfH6U9T6zGWn1GOVmeTF/O8QRrcxK
-         dJC6kL4/pFpXj3jZCLK+nkZTRhLF8pmwFWlemkDvVunBqOnIj7YWQzNLaYykMjgtSOUj
-         bVLw==
-X-Gm-Message-State: AO0yUKU913Rtym2YgfiMt6Oc3LTfiDYnqRf8I0nrInlekQe5b2xynbqY
-        Gu8I8WkFkAEwi1QoGdGvniOy83g13+GWIBsZE/g=
-X-Google-Smtp-Source: AK7set+3MIhcC3XotHdZeApYs7aBgp83b5XfkTiXvXlXQXkp8joYQ4fYn3WpYA8XGIWBYphJvnqD15afjNTs1frIyhk=
-X-Received: by 2002:a81:af5d:0:b0:52e:cea7:f6e3 with SMTP id
- x29-20020a81af5d000000b0052ecea7f6e3mr8296596ywj.10.1677419778344; Sun, 26
- Feb 2023 05:56:18 -0800 (PST)
+        bh=bGH9kXSraDN+mVD9fqltVHucO9c601DRLuGoJN4kmTQ=;
+        b=k7lEoq2MzBrp7YfnxnzaO6UUFtx8KEPVz6csqaqESZ2EH4MFHXB2Oy7hnJaOhsFPrb
+         6w1C4Th9s6h3mE3dTCJTwS+iuPHaQ8x8uQCVchlQVHqng8h+o/h7CZbMX+eDfZ5XTh/o
+         TG6nCdAwsibtPoYHZZKnKpZttOpGcOrPUJglfL8zbS/JsjWbVmfHtGYAMArXnZ9jwXDW
+         /OGFGd6nU7jsbk0XMnA156eoJV7G7dTW3iEgpw3bCkuJkd3zHMgYYq+pNW4EHREOwvGZ
+         Z066hHze+52MTjlGz67tbeGkUhzsO82dYVjM0ceCjicKn2m/FLKL9G4Jk4g280Ntpbfa
+         Y5Ew==
+X-Gm-Message-State: AO0yUKVG1r/zA0ly6pNy4F3h3dK5uqEYKQKgjFn/gbVoEkYkU/OJWjX4
+        ghtRHKZpNvImSPiLobTO0sBNJBN9nQ2wZBs4Xkc=
+X-Google-Smtp-Source: AK7set+BtJD8RCDTOmU2TeKNwV20RDhvx+4CTS3ldjyAjzOcc5t/EOb7HDEA56Nq2rWGpj4W8kY/ScQOG4rqMg4sfDQ=
+X-Received: by 2002:a05:6902:1:b0:a27:40c4:e12c with SMTP id
+ l1-20020a056902000100b00a2740c4e12cmr6759616ybh.2.1677421621166; Sun, 26 Feb
+ 2023 06:27:01 -0800 (PST)
 MIME-Version: 1.0
 References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
- <20230224-rust-error-v1-2-f8f9a9a87303@asahilina.net> <20230225221921.4b4bc87d.gary@garyguo.net>
-In-Reply-To: <20230225221921.4b4bc87d.gary@garyguo.net>
+ <20230224-rust-error-v1-1-f8f9a9a87303@asahilina.net> <20230225221405.62e989c8.gary@garyguo.net>
+In-Reply-To: <20230225221405.62e989c8.gary@garyguo.net>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sun, 26 Feb 2023 14:56:07 +0100
-Message-ID: <CANiq72k7jN4COyGTGUCUc9jdmYcc53FHpOSOd=uLv_NLKR9gPg@mail.gmail.com>
-Subject: Re: [PATCH 2/5] rust: error: Add Error::from_kernel_errno()
+Date:   Sun, 26 Feb 2023 15:26:50 +0100
+Message-ID: <CANiq72kOb9mbh4HQzH40Ey+Rax3vREsd0Nf2O0apjDpsboE6vQ@mail.gmail.com>
+Subject: Re: [PATCH 1/5] rust: error: Add Error::to_ptr()
 To:     Gary Guo <gary@garyguo.net>
 Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
@@ -71,18 +71,54 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Feb 25, 2023 at 11:19=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Sat, Feb 25, 2023 at 11:14=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> Maybe just `from_errno`? I don't know why `kernel` would need to be
-> emphasised here.
+> I know that we already have `IS_ERR` in helpers.c, but having to go
+> through FFI and helper functions for something as simple as a cast
+> feels awkward to me.
+>
+> Given that `ERR_PTR`'s C definition is very unlike to change, would it
+> be problematic if we just reimplement it in Rust as
+>
+> ```rust
+> fn ERR_PTR(error: core::ffi::c_long) -> *mut core::ffi::c_void {
+>     error as _
+>     // Or `core::ptr::invalid(error as _)` with strict provenance
+> }
+> ```
+> ?
+>
+> I personally think it should be fine, but I'll leave the decision to
+> Miguel.
 
-Yeah, that sounds good to me. It is clear and we don't use "errno"
-elsewhere. This identifier came from the original import, so before we
-started to think about naming policies.
+On one hand, we have tried to minimize duplication (and, in general,
+any changes to the C side) so far where possible, especially
+pre-merge, doing it only when needed, e.g. for `const` purposes.
 
-Though perhaps we can clean it up in a patch later, since we should
-change `to_kernel_errno` below too at the same time. Or if you want to
-send a quick patch for that one, I can put it in first.
+On the other hand, being in the kernel opens up a few possibilities to
+consider, and it is true it feels like some of these could get
+reimplemented, even if not strictly needed. If we can show a
+performance/text size difference on e.g. a non-trivial subsystem or
+module, I think we should do it.
+
+If we do it, then I think we should add a note on the C side so that
+it is clear there is a duplicated implementation elsewhere, avoiding
+future problems. In fact, it would be ideal to do it consistently,
+e.g. also for the ioctl ones. Something like:
+
+    /* Rust: reimplemented as `kernel::error::ERR_PTR`. */
+    static inline void * __must_check ERR_PTR(long error)
+    {
+        return (void *) error;
+    }
+
+Or perhaps something even smaller.
+
+But I don't want to block the rest of the work on this, which may need
+some extra/parallel discussion, so let's keep the helper for the time
+being. That way we can also do that change independently and justify
+the change showing the difference in performance/text, if any, in the
+commit message.
 
 Cheers,
 Miguel
