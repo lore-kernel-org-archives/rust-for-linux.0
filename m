@@ -2,236 +2,258 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC8F1C64EC7
-	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Feb 2023 02:22:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CA18C6FA8E
+	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Feb 2023 13:36:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229540AbjBZCWq (ORCPT
+        id S229560AbjBZNgO (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 25 Feb 2023 21:22:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42384 "EHLO
+        Sun, 26 Feb 2023 08:36:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjBZCWp (ORCPT
+        with ESMTP id S229379AbjBZNgN (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 25 Feb 2023 21:22:45 -0500
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF2A812873;
-        Sat, 25 Feb 2023 18:22:42 -0800 (PST)
-Received: by mail-qt1-x82d.google.com with SMTP id cf14so3375417qtb.10;
-        Sat, 25 Feb 2023 18:22:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eQrE3Rb5HqekvcLNvZWizi/c1lsF9sXCQR/gIeGmvaQ=;
-        b=dG5RuXfj9bZXM22IpDE9seEcoVjgsZ9QVn+Xkl09ikKwruihev0S76jx2VV6kg0z3G
-         VLkIdIJSR7Boews8WOE6PMHhjRm8lXj5V6fPrcmS9SgVt0sK5qOFjOol/PUfYl6DMRcH
-         eeeXN5rmMRIF2S4woGrPbu8Iqb/NSKv8XUgWmhWRCGn9wWeGDdxspjnCjHQP6CXwnEcM
-         kXiN7BJdUOR5sfHl5lNRSMMmRVhzanFBmlrhRfvhmOx5F7oroY91CT0F8fW838qeyFnZ
-         iutknp8v39xnpX5T4uUaFLtqh1XUVTaeEBUnLCBFXanIHnSaR20z1B3EBk8eAhZH0yGe
-         qpgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eQrE3Rb5HqekvcLNvZWizi/c1lsF9sXCQR/gIeGmvaQ=;
-        b=VVXCTyFPRBalMMEIQ5ZEVatAkSmzMkCCR1BwhiQwm9hAIleH7z+Y0T4gUPDcR/30g2
-         1/UPGg4q5134oAP2tUNGXwTasVs+fp3I2eqol2ml4+Sz7q5Ru1AWAz1Y7qJQHrnXIDBW
-         pS7n4l6os8X3H+W/LRCdipi7V5tYpCgdVGW1VYyshOTXzcL+7YWBihvOVZLW/S49Lk6P
-         KyXxQIg1UNLtesfhdFeQY6QnDylIrrQ8tEcN8+Kzzu1BQuIoWhHyiY7NLOG7wgnKT2Tp
-         wuszMCjYUQSjbzalV7V/8Qgc991NADZkeCerXmRkmriW4IH7iDAlTNDLfEcY90qspAO0
-         keWg==
-X-Gm-Message-State: AO0yUKVZbIEmc0z6/KLvP91YzLj0YaGom3GkOffHOxYGQn2P9QM/oK5w
-        ANXFUULMRnOqvTnO0GKj/vs=
-X-Google-Smtp-Source: AK7set9awm+us7IJy7Mt4BX72jK7dpXdkjsvY+lDa/mCNYU2UjWAl7z2bfn9EvWsWnmS2RAKCFx4Vg==
-X-Received: by 2002:ac8:5c92:0:b0:3bf:cfa6:8851 with SMTP id r18-20020ac85c92000000b003bfcfa68851mr3900927qta.20.1677378161763;
-        Sat, 25 Feb 2023 18:22:41 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id i13-20020ac813cd000000b003bfb5fd72a7sm2193055qtj.86.2023.02.25.18.22.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Feb 2023 18:22:41 -0800 (PST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 890F627C005B;
-        Sat, 25 Feb 2023 21:22:40 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Sat, 25 Feb 2023 21:22:40 -0500
-X-ME-Sender: <xms:b8L6Y2SvdaKp7GJQ0i4G7xCBHDO-kdfyuYhxR0IixjybXbl9dlaxGQ>
-    <xme:b8L6Y7yh1ZcbFxEYd2BkZAv44o2yqPN7rh5AjQRUNLt0Kq0Beo0ZQguwfp4rji8Aj
-    UwdlvLlOfs_859N0A>
-X-ME-Received: <xmr:b8L6Yz0d9a2rJRC2YIzQehDtJssOfUorIFEP_0fJ_bTVJqjpjqvks-1OXx0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudekjedggedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeejiefhtdeuvdegvddtudffgfegfeehgfdtiedvveevleevhfekhefftdek
-    ieehvdenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgr
-    uhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsoh
-    hquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:b8L6YyCtwWhSpTlO-NvbHGEXsxCqvcLRYi2qBOzYr1sskkChpWIKOQ>
-    <xmx:b8L6Y_g6xTH-Plp7Emsgjr7MkIL2dfYf_jEUD_B2rjoHKMzUM1Rd_w>
-    <xmx:b8L6Y-qHe1GW4zOhe0A-ROxl3ln_gKfUkeXOgAR6aXwH4ts148rI-A>
-    <xmx:cML6Y0Z7UHYyTxhGAhPd3mlOS4GVRIWxF9B9oMcfCkk4Z4_KIwyROQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 25 Feb 2023 21:22:39 -0500 (EST)
-Date:   Sat, 25 Feb 2023 18:22:11 -0800
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Gary Guo <gary@garyguo.net>
+        Sun, 26 Feb 2023 08:36:13 -0500
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2125.outbound.protection.outlook.com [40.107.11.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4431512063;
+        Sun, 26 Feb 2023 05:36:11 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KCZwN5zAtSActNejr7k0uxVuKz1Kwy1BV3AJUfIwYlY5zRzrIHjOXZ7YFBCfeZC69K/hb3RdOSfuiclElUFN2P8d6H0qKmuz9u3ZAk88D+5GqvsY2Grocgo3jbncg3uK/q4EWKMNRSclTNikwxVF/HMVjrG1+jWm/KEpxgWaQDvXFfAoN0FzBdQqrsuNiGv7SQJOZr80cEFeEw9cAT+2o+QkmkTJ99ARJn+UxbQeDYn4wq7MyWM2keNGw8J6mwMQsz8R0w01eT+Hj15kqm9NgxZk13AiW3eSy+3PjG22CRI9Ur75vxmefFOPbei4FkIY2m7qFSFHKQ9Bh9ymNhQurA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=N8RKnpW8a3h9+ZB0YYxfis+i/bGk4BlHCH/yvSfokkg=;
+ b=l09kTCAY6O1fYn+31KNc0TszW5d+4Wbi/TGo6jwJOJZiuc5b/XlieArepBkLsgCJT6YUEeJfA/CA2k0riLMjQYIpWzjnqp3yA5Jd3YEaCRrdWu9CwvIdg0iLd1TLemAhNdrYCh0EpsK+ZKvOdi6lrqSZc6OiRVVZNNdfd+w8aJt+x8EQtRmJGZKTglE19TrJ9lqC+zCdc5s7awlXvJrMShvGYpZNIKcOJOo/coW3XpQyhLjzlHEi1FGOtANRLfq17kZYOW4XbQCL9KnRAxPYVIuEAgVvW751aPYBqps56SM6ZMnrFG4q4uT4E6SkINswE0ygZwZcvcb3pl5r2XzRGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=N8RKnpW8a3h9+ZB0YYxfis+i/bGk4BlHCH/yvSfokkg=;
+ b=eB1hJmUnomaWAuEZStCPhdZ+0opSaPs8bPcDwUv+R48aab8nYc2mVqPcpCYqsTvNkQBPbBXG5NQkPlVZDPoYj0OzS5WSYX/cBqL9BQw49HHq+nBtpKzpXbynALhy5t4oMZl1tpJ7UgVSgy9KnLEFcBII54I/PZLS3ZMmUBInnJc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO2P265MB2463.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:12e::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.27; Sun, 26 Feb
+ 2023 13:36:08 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece%3]) with mapi id 15.20.6134.027; Sun, 26 Feb 2023
+ 13:36:08 +0000
+Date:   Sun, 26 Feb 2023 13:36:06 +0000
+From:   Gary Guo <gary@garyguo.net>
+To:     Boqun Feng <boqun.feng@gmail.com>
 Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
         Sven Van Asbroeck <thesven73@gmail.com>,
         Fox Chen <foxhlchen@gmail.com>, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, asahi@lists.linux.dev
 Subject: Re: [PATCH 5/5] rust: error: Add from_kernel_result!() macro
-Message-ID: <Y/rCU1S+GDgIojNf@boqun-archlinux>
+Message-ID: <20230226133606.583cd1d8.gary@garyguo.net>
+In-Reply-To: <Y/rCU1S+GDgIojNf@boqun-archlinux>
 References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
- <20230224-rust-error-v1-5-f8f9a9a87303@asahilina.net>
- <Y/lOlcSpc+d9ytq/@boqun-archlinux>
- <20230225222340.34d749ee.gary@garyguo.net>
+        <20230224-rust-error-v1-5-f8f9a9a87303@asahilina.net>
+        <Y/lOlcSpc+d9ytq/@boqun-archlinux>
+        <20230225222340.34d749ee.gary@garyguo.net>
+        <Y/rCU1S+GDgIojNf@boqun-archlinux>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0316.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:197::15) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230225222340.34d749ee.gary@garyguo.net>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO2P265MB2463:EE_
+X-MS-Office365-Filtering-Correlation-Id: 087d11c6-435d-4bb0-1e18-08db17fe6ace
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 7MIwEoRdftiuRzc/Vspq97YaEpc0CN6JvgfIaCJnOoHlC578IiC/3yVvS4bPoQIj0iA6GvZqfEKn4hii6KIm5ij8r0Hjk00yivqwkwK8DS9JPbunh0bGmidb4D8mfYdd3Yavz/pcQUrKzZXco2BIZ6Ot+MCgJYq99FgfTYtamUqYTqjeHMae69lir5K5gDUwGcKWMBEVJNFC/2+fsA1UULDkAwvZeQrIzH7UAkUhabjkLMZcW5utdzpIBSla1qmvAP6ovNuIKnEQVBr9h/0gqv2NYaHakOz6BRxtmBaSL+7azmYTnV4jmVfcQO5TrAEzNin8syYGpzMcYjWN54pnWca586s0KpEqSIgKbfMm5gFygOB/e9vArV8Mtpg1XaJCBR9t7R/P6S5qu9aegkI14IjfLstGRdgqAH8tNsjaSjk9gWqyRJDU7R9Y/roCXy8lHl2kg0O3F6ydZsMzPEQaELSCU1gM82o+uarAjmsHDaeSGSLnsKDKOviJygcw7hySC4FAkHvSESPGA0FX72P0X9CoCzCmuaS7NzDLjZ+Nf//nug+aESkCeTDujqfhQck0zq4UPvW4UjgNNqdUj1hpBW8LVmUSYHCL3BLPiJwhmoM5vBZ5z39wbV/pX4GbAAYG
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(376002)(396003)(346002)(136003)(39830400003)(366004)(451199018)(4326008)(83380400001)(66476007)(66946007)(6916009)(66556008)(41300700001)(316002)(36756003)(8676002)(8936002)(54906003)(38100700002)(2616005)(5660300002)(7416002)(966005)(86362001)(478600001)(186003)(26005)(2906002)(6486002)(1076003)(6506007)(6512007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tVi2SY16YZBQKl4jBc5qNMNkQA908crOv0na74XYmhjGm0DdPDyxK23u9vs+?=
+ =?us-ascii?Q?1S/vrVBTwMxIH6xHI7uh4D9RwccR0bpVUUFskJ2jyfI8MNfeSLNzlIjzC7A6?=
+ =?us-ascii?Q?HRW9GcS3ujvSW6PnJmUzfKr8O/B77YiWTf3vFsngMj/tETslV6mZxewMHtN3?=
+ =?us-ascii?Q?aEKkfuNT4+xgcX62TVJjb0gncxGqwCvvRouzYVRd5oAVWyhpggUgNlWWEqAR?=
+ =?us-ascii?Q?gAFml5zvShekMrbFZg/zGxNlhVjorddVkVooYvH6NOjmf4H6B9DdTZRR3+s9?=
+ =?us-ascii?Q?b7hJMiz4lDcuhJThcHvoV3tGKA4JzOe9BRElX7wlY4Su7WF352KR0RbFBS+e?=
+ =?us-ascii?Q?4zmWL3V16XyPh1sRByLTM0GXotlQjE4h1EfkHuHE8+SwSy39/f5iRlPC+9Yr?=
+ =?us-ascii?Q?tKllNFLfmFblU+5y6Ii1SD1/uRA6QHs+RrGj0BYz9uu2rogevyigF1nvWVbZ?=
+ =?us-ascii?Q?MxYos1E3vNiR4to0WWwU6zBaPEj65NbzpMs8QvffOnEgtvwGVA/mQXqohQha?=
+ =?us-ascii?Q?P7yzk1JCDeSmFoRDCuQ/3sIG4HZjDJcmbzykAuHKHSRPiw53vkipnKeHjH/l?=
+ =?us-ascii?Q?2PrMDSRqDFmK4BdOpxtWwIE/9TMAdp9XldVO8TFaiQWx/s4EzhCUiEqCQoKd?=
+ =?us-ascii?Q?F+K83Rr9xIzbWmWKzM7LekxxaBCqSEuLrO9nq3HqO1NAm/FiA50B3bb1CCuT?=
+ =?us-ascii?Q?mDCeLSZU+1V6Tg6fxrGAOQGU0Bb0qPYS2gxve6mWsfDHfmzX5dkwsks0yu5I?=
+ =?us-ascii?Q?brFfuXb4+mx8YrMM/2LcjhcSZoDT4s7MjwlQPRFRvfsixMs3HjHydKflOBl/?=
+ =?us-ascii?Q?N9Z81XZ97xlwEUkSyzlDdSatQh2lylI1AScz3iXONxJs5RK5ky0r9JJZ6Iyc?=
+ =?us-ascii?Q?uoCTEWVbxjCYF/ld18yZjtYiLRh4gnvbTrFAvsMnKZKOGNNJuP8Wj8I3Wkiw?=
+ =?us-ascii?Q?0ZiWRFkNGLDxv9EH87jqdcvSyzoFZyCheU5lefmE8/SrMT1t2TR+Rgn0iPvu?=
+ =?us-ascii?Q?7aifGCSF9Mst//INY0Pzc6xrpGGlp/LReR15dtyb+zhXl5Kd0i/jzm0fLHwW?=
+ =?us-ascii?Q?VrRhYIlBHsDsiJP8Kt4ZjHtS3RPLIptX77tloLZMt2joX1am1WdKx+NF5fBG?=
+ =?us-ascii?Q?6o1UV1phLSge8EMq+vm01iq6ITxtmtez21aNKjaydc9oM/5bnL6Ntc3AS3hU?=
+ =?us-ascii?Q?PM38+Zjej1v356cVogDk147b4mMzL18NkDlufYbH8Z30UJyYN8NCc9+/1jH2?=
+ =?us-ascii?Q?ccX7uefx5WHT3spGWaW5EQ9w8XFHLs1n8/vh34z3M1nZzhTbJ+HWXwFrEDWW?=
+ =?us-ascii?Q?OIJBIpDaELgNLkUmLh3AoSgffDJ80r3gcmOl3Q5OYpJzQbLIs5jnnRdQ761k?=
+ =?us-ascii?Q?l5SOXVEpIrq598GzDsSDomQzX3Rs0JK0re0eIrSsgnWo+nDHkSs1EUtQcE4a?=
+ =?us-ascii?Q?u0wldQF7UrkaPrbD8yh5cUOLmOcaritg7wBYnDMt7l8Xav5DqRaC3IevChaA?=
+ =?us-ascii?Q?8rE06QrPeURXeDzi5GLhG/OSlibA1tCJ0/G1B7YTPI+EM3CFtDWHnKOp/zra?=
+ =?us-ascii?Q?xMOBZD6wm8n3fG/VoOBf94b62XD9P7lbG20HZIhF?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 087d11c6-435d-4bb0-1e18-08db17fe6ace
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2023 13:36:08.5488
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ihjHhSflVkcFJUeL+zMYnV3I2XhPceX/KL8XnT/i18eIXAgCQrJ8rhhTWHoibulnR3vxs4yPR86fjok7OabMrg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2463
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Feb 25, 2023 at 10:23:40PM +0000, Gary Guo wrote:
-> On Fri, 24 Feb 2023 15:56:05 -0800
-> Boqun Feng <boqun.feng@gmail.com> wrote:
-> 
-> > On Fri, Feb 24, 2023 at 05:50:23PM +0900, Asahi Lina wrote:
-> > > From: Wedson Almeida Filho <wedsonaf@gmail.com>
+On Sat, 25 Feb 2023 18:22:11 -0800
+Boqun Feng <boqun.feng@gmail.com> wrote:
+
+> On Sat, Feb 25, 2023 at 10:23:40PM +0000, Gary Guo wrote:
+> > On Fri, 24 Feb 2023 15:56:05 -0800
+> > Boqun Feng <boqun.feng@gmail.com> wrote:
+> >   
+> > > On Fri, Feb 24, 2023 at 05:50:23PM +0900, Asahi Lina wrote:  
+> > > > From: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > > > 
+> > > > Add a helper macro to easily return C result codes from a Rust function
+> > > > that calls functions which return a Result<T>.
+> > > > 
+> > > > Lina: Imported from rust-for-linux/rust, originally developed by Wedson
+> > > > as part of file_operations.rs. Added the allow() flags since there is no
+> > > > user in the kernel crate yet and fixed a typo in a comment.
+> > > > 
+> > > > Co-developed-by: Fox Chen <foxhlchen@gmail.com>
+> > > > Signed-off-by: Fox Chen <foxhlchen@gmail.com>
+> > > > Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> > > > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> > > > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > > > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> > > > ---
+> > > >  rust/kernel/error.rs | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+> > > >  1 file changed, 52 insertions(+)
+> > > > 
+> > > > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> > > > index cf3d089477d2..8a9222595cd1 100644
+> > > > --- a/rust/kernel/error.rs
+> > > > +++ b/rust/kernel/error.rs
+> > > > @@ -226,3 +226,55 @@ pub(crate) fn from_kernel_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
+> > > >      }
+> > > >      Ok(ptr)
+> > > >  }
+> > > > +
+> > > > +// TODO: Remove `dead_code` marker once an in-kernel client is available.
+> > > > +#[allow(dead_code)]
+> > > > +pub(crate) fn from_kernel_result_helper<T>(r: Result<T>) -> T
+> > > > +where
+> > > > +    T: From<i16>,
+> > > > +{
+> > > > +    match r {
+> > > > +        Ok(v) => v,
+> > > > +        // NO-OVERFLOW: negative `errno`s are no smaller than `-bindings::MAX_ERRNO`,
+> > > > +        // `-bindings::MAX_ERRNO` fits in an `i16` as per invariant above,
+> > > > +        // therefore a negative `errno` always fits in an `i16` and will not overflow.
+> > > > +        Err(e) => T::from(e.to_kernel_errno() as i16),
+> > > > +    }
+> > > > +}
+> > > > +
+> > > > +/// Transforms a [`crate::error::Result<T>`] to a kernel C integer result.
+> > > > +///
+> > > > +/// This is useful when calling Rust functions that return [`crate::error::Result<T>`]
+> > > > +/// from inside `extern "C"` functions that need to return an integer
+> > > > +/// error result.
+> > > > +///
+> > > > +/// `T` should be convertible from an `i16` via `From<i16>`.
+> > > > +///
+> > > > +/// # Examples
+> > > > +///
+> > > > +/// ```ignore
+> > > > +/// # use kernel::from_kernel_result;
+> > > > +/// # use kernel::bindings;
+> > > > +/// unsafe extern "C" fn probe_callback(
+> > > > +///     pdev: *mut bindings::platform_device,
+> > > > +/// ) -> core::ffi::c_int {
+> > > > +///     from_kernel_result! {
+> > > > +///         let ptr = devm_alloc(pdev)?;
+> > > > +///         bindings::platform_set_drvdata(pdev, ptr);
+> > > > +///         Ok(0)
+> > > > +///     }
+> > > > +/// }
+> > > > +/// ```
+> > > > +// TODO: Remove `unused_macros` marker once an in-kernel client is available.
+> > > > +#[allow(unused_macros)]
+> > > > +macro_rules! from_kernel_result {    
 > > > 
-> > > Add a helper macro to easily return C result codes from a Rust function
-> > > that calls functions which return a Result<T>.
+> > > This actually doesn't need to be a macro, right? The following function
+> > > version:
 > > > 
-> > > Lina: Imported from rust-for-linux/rust, originally developed by Wedson
-> > > as part of file_operations.rs. Added the allow() flags since there is no
-> > > user in the kernel crate yet and fixed a typo in a comment.
+> > > 	pub fn from_kernel_result<T, F>(f: F) -> T
+> > > 	where
+> > > 	    T: From<i16>,
+> > > 	    F: FnOnce() -> Result<T>;
 > > > 
-> > > Co-developed-by: Fox Chen <foxhlchen@gmail.com>
-> > > Signed-off-by: Fox Chen <foxhlchen@gmail.com>
-> > > Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-> > > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> > > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> > > Signed-off-by: Asahi Lina <lina@asahilina.net>
-> > > ---
-> > >  rust/kernel/error.rs | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 52 insertions(+)
+> > > is not bad, the above case then can be written as:
 > > > 
-> > > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> > > index cf3d089477d2..8a9222595cd1 100644
-> > > --- a/rust/kernel/error.rs
-> > > +++ b/rust/kernel/error.rs
-> > > @@ -226,3 +226,55 @@ pub(crate) fn from_kernel_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
-> > >      }
-> > >      Ok(ptr)
-> > >  }
-> > > +
-> > > +// TODO: Remove `dead_code` marker once an in-kernel client is available.
-> > > +#[allow(dead_code)]
-> > > +pub(crate) fn from_kernel_result_helper<T>(r: Result<T>) -> T
-> > > +where
-> > > +    T: From<i16>,
-> > > +{
-> > > +    match r {
-> > > +        Ok(v) => v,
-> > > +        // NO-OVERFLOW: negative `errno`s are no smaller than `-bindings::MAX_ERRNO`,
-> > > +        // `-bindings::MAX_ERRNO` fits in an `i16` as per invariant above,
-> > > +        // therefore a negative `errno` always fits in an `i16` and will not overflow.
-> > > +        Err(e) => T::from(e.to_kernel_errno() as i16),
-> > > +    }
-> > > +}
-> > > +
-> > > +/// Transforms a [`crate::error::Result<T>`] to a kernel C integer result.
-> > > +///
-> > > +/// This is useful when calling Rust functions that return [`crate::error::Result<T>`]
-> > > +/// from inside `extern "C"` functions that need to return an integer
-> > > +/// error result.
-> > > +///
-> > > +/// `T` should be convertible from an `i16` via `From<i16>`.
-> > > +///
-> > > +/// # Examples
-> > > +///
-> > > +/// ```ignore
-> > > +/// # use kernel::from_kernel_result;
-> > > +/// # use kernel::bindings;
-> > > +/// unsafe extern "C" fn probe_callback(
-> > > +///     pdev: *mut bindings::platform_device,
-> > > +/// ) -> core::ffi::c_int {
-> > > +///     from_kernel_result! {
-> > > +///         let ptr = devm_alloc(pdev)?;
-> > > +///         bindings::platform_set_drvdata(pdev, ptr);
-> > > +///         Ok(0)
-> > > +///     }
-> > > +/// }
-> > > +/// ```
-> > > +// TODO: Remove `unused_macros` marker once an in-kernel client is available.
-> > > +#[allow(unused_macros)]
-> > > +macro_rules! from_kernel_result {  
+> > > 	unsafe extern "C" fn probe_callback(
+> > > 	    pdev: *mut bindings::platform_device,
+> > > 	) -> core::ffi::c_int {
+> > > 	    from_kernel_result(|| {
+> > > 		let ptr = devm_alloc(pdev)?;
+> > > 		bindings::platform_set_drvdata(pdev, ptr);
+> > > 		Ok(0)
+> > > 	    })
+> > > 	}
+> > > 
+> > > less magical, but the control flow is more clear.
+> > > 
+> > > Thoughts?  
 > > 
-> > This actually doesn't need to be a macro, right? The following function
-> > version:
+> > I don't think even the closure is necessary? Why not just
 > > 
-> > 	pub fn from_kernel_result<T, F>(f: F) -> T
-> > 	where
-> > 	    T: From<i16>,
-> > 	    F: FnOnce() -> Result<T>;
+> >  	pub fn from_kernel_result<T: From<i16>>(r: Result<T>) -> T
 > > 
-> > is not bad, the above case then can be written as:
+> > and
 > > 
-> > 	unsafe extern "C" fn probe_callback(
-> > 	    pdev: *mut bindings::platform_device,
-> > 	) -> core::ffi::c_int {
-> > 	    from_kernel_result(|| {
-> > 		let ptr = devm_alloc(pdev)?;
-> > 		bindings::platform_set_drvdata(pdev, ptr);
-> > 		Ok(0)
-> > 	    })
-> > 	}
-> > 
-> > less magical, but the control flow is more clear.
-> > 
-> > Thoughts?
+> >  	unsafe extern "C" fn probe_callback(
+> >  	    pdev: *mut bindings::platform_device,
+> >  	) -> core::ffi::c_int {
+> >  	    from_kernel_result({
+> >  		let ptr = devm_alloc(pdev)?;  
 > 
-> I don't think even the closure is necessary? Why not just
+> Hmm.. looks like the `?` only "propagating them (the errors) to the
+> calling *function*":
 > 
->  	pub fn from_kernel_result<T: From<i16>>(r: Result<T>) -> T
+> 	https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator
 > 
-> and
+> , so this doesn't work as we expect:
 > 
->  	unsafe extern "C" fn probe_callback(
->  	    pdev: *mut bindings::platform_device,
->  	) -> core::ffi::c_int {
->  	    from_kernel_result({
->  		let ptr = devm_alloc(pdev)?;
+> 	https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=64c9039e1da2c436f9f4f5ea46e97e90
 
-Hmm.. looks like the `?` only "propagating them (the errors) to the
-calling *function*":
+Oh, you're absolutely right, I guess I shouldn't be doing code review
+in the middle of the night...
 
-	https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator
+However, if we have the try blocks then we should be able to just
+rewrite it as
 
-, so this doesn't work as we expect:
+	from_kernel_result(try {
+	    ...
+	})
 
-	https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=64c9039e1da2c436f9f4f5ea46e97e90
+I guess in this sense it might worth keeping this as a macro so we can
+tweak the implementation from closure to try blocks without having to
+edit all use sites?
 
-Hope I didn't miss something subtle here..
-
-Regards,
-Boqun
-
->  		bindings::platform_set_drvdata(pdev, ptr);
->  		Ok(0)
->  	    })
->  	}
-> 
-> ?
-> 
-> Best,
-> Gary
+Best,
+Gary
