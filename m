@@ -2,66 +2,65 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FCF1C64ED6
-	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Feb 2023 13:40:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2BFBC64ED6
+	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Feb 2023 13:56:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229625AbjBZNk6 (ORCPT
+        id S229495AbjBZN4V (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 26 Feb 2023 08:40:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38074 "EHLO
+        Sun, 26 Feb 2023 08:56:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbjBZNk5 (ORCPT
+        with ESMTP id S229478AbjBZN4U (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 26 Feb 2023 08:40:57 -0500
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A45FFA5EC;
-        Sun, 26 Feb 2023 05:40:56 -0800 (PST)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-536c02c9dfbso106623267b3.11;
-        Sun, 26 Feb 2023 05:40:56 -0800 (PST)
+        Sun, 26 Feb 2023 08:56:20 -0500
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26FEA113FD;
+        Sun, 26 Feb 2023 05:56:19 -0800 (PST)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-53916ab0c6bso108058157b3.7;
+        Sun, 26 Feb 2023 05:56:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=diOfltNJgTI4QcRIe1q5nwxDa2bShFvMq96Z1v8BgWA=;
-        b=AkKeoB145HYWoRCQ1yjWXsdzeVkE0qiJz+4wKixkI7Ch6xKzh514t0xHZDjJKGzLoI
-         qVn8ZyKf42a3Eg2B6XGEcwhmVuSl5kESZASUYfaehA223i7MXVbw1LvKvD/cJI8pg8kl
-         8yh5br1o5/m8vqycAV/nIdSyOlmAlJ+KYprfo1ES02EFLF5ue0wz1gZW1jYH4CfHf2qL
-         PO8UJab3vCXRQbA5MraSbP5Duc3difhxsoKMK5YQKsBQ57L6hQZVXi8xw0fM7VFJcMlJ
-         A7yQ9COhtbl6qv5otPnWR6LKcvjrgx8aFrvrp5aO4SM7yzIJMLvmz8q4M5sc3lbjlEJd
-         mSxQ==
+        bh=s2ts1GdBaI5yZyaOizgF74ytm6/pL7kpF7zQHufJ0bA=;
+        b=VwflOH0TfCHFHLaMPZDGRDSxtmafqNNzSbRl2rpSUkyic0lIiewaF0bHQNH5KsLdeL
+         2U06MboTEgDBNx4v1Nx6/CLD47KC4ITNQRlrzPlWNx0JFJwW+Ny69ucUl6NBv5vwQBOH
+         fDvh/Tz0IyzaIJZSa6QdKLnJL6dyJT3n0+TuJmMQsHr0NH4DDpAzKA/tlkPWIww8bUZY
+         vMjBGlpk0MK5EhDkqn2TECdylbuxwo7b5G7Di4Ob3iS5Flsh3oRrdnXuLrPBwmyza0FH
+         sKKeQBvBIU28uaqDyxUynI5cuY/c+QuIO1pAOuIOF+5vObPpncAz7CaU7ZUnOokvOWyz
+         MNfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=diOfltNJgTI4QcRIe1q5nwxDa2bShFvMq96Z1v8BgWA=;
-        b=S7kZXXd8ff8s0wrF+89xA4RMDrXF+3CgdXzZVT0SNORb1icOl0JeyWqxX2wkLnRz6S
-         IqIOizWDRjT3G+Tg5GoDBtaI2s25+eJouek7KP1NeSohX/7OHX6biCQ1p9uNeTe0kKTq
-         m8t71+LEGs8xRZePhS5mtuw/ZguyGPmeDg2OcAb6GktpV0oRTW8RSCKAbH11Ir1gThpb
-         JE5gas6uTrR55voEMXDcFrmsUU9kPNYJYMYZkPzn6pc+QRmRrDvjAh/uC6HGehH8rAmW
-         zTqKL+rn+30bc8TD2aehc5xqGKijLG1Ac84Gogl1eS85Ln7g21rohx7Y4yrkUxYyOt5o
-         MoNA==
-X-Gm-Message-State: AO0yUKXqnFjRTDTY/rrzl4jGVCrCHQ1fO0c1aWmEjjppBbrbUWDE65MP
-        bDdGDNq5cFTWXd3stI8gNwMeH7/WfKf1WSA1wY0=
-X-Google-Smtp-Source: AK7set9rUznC6grtBh19Slp4e0aFAnHCKuGHYtL6QNpch43NKKm67TVU8yIkH3O4rF9oICebvIigo/oap6HR9vL20lE=
-X-Received: by 2002:a81:ad10:0:b0:52e:bb2d:2841 with SMTP id
- l16-20020a81ad10000000b0052ebb2d2841mr8063756ywh.10.1677418855775; Sun, 26
- Feb 2023 05:40:55 -0800 (PST)
+        bh=s2ts1GdBaI5yZyaOizgF74ytm6/pL7kpF7zQHufJ0bA=;
+        b=qVhvgqMMP2sWRzV/TNxr1s5dpHjCii4BHZvuOgic8ABEmIEWIQeJ6WQT4lBQoDjgec
+         J3rXfsI8p/NV+lm3YVgvzK1ov0jPtYzX7OhYznCOA6fyeP5GWgNZ6To61rc/er7H07Km
+         cAtoIOfZVGZjPjT2z+7i9Yg89APqwOiy0v57ceGZ0UGyA67tIrr0pA0+VEsUObfIHuFE
+         JCAU5fdc1kEbtVNEwONRb3a0MqYONyRjtYytJ0MdfH6U9T6zGWn1GOVmeTF/O8QRrcxK
+         dJC6kL4/pFpXj3jZCLK+nkZTRhLF8pmwFWlemkDvVunBqOnIj7YWQzNLaYykMjgtSOUj
+         bVLw==
+X-Gm-Message-State: AO0yUKU913Rtym2YgfiMt6Oc3LTfiDYnqRf8I0nrInlekQe5b2xynbqY
+        Gu8I8WkFkAEwi1QoGdGvniOy83g13+GWIBsZE/g=
+X-Google-Smtp-Source: AK7set+3MIhcC3XotHdZeApYs7aBgp83b5XfkTiXvXlXQXkp8joYQ4fYn3WpYA8XGIWBYphJvnqD15afjNTs1frIyhk=
+X-Received: by 2002:a81:af5d:0:b0:52e:cea7:f6e3 with SMTP id
+ x29-20020a81af5d000000b0052ecea7f6e3mr8296596ywj.10.1677419778344; Sun, 26
+ Feb 2023 05:56:18 -0800 (PST)
 MIME-Version: 1.0
 References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
- <20230224-rust-error-v1-5-f8f9a9a87303@asahilina.net> <Y/lOlcSpc+d9ytq/@boqun-archlinux>
- <20230225222340.34d749ee.gary@garyguo.net> <Y/rCU1S+GDgIojNf@boqun-archlinux>
-In-Reply-To: <Y/rCU1S+GDgIojNf@boqun-archlinux>
+ <20230224-rust-error-v1-2-f8f9a9a87303@asahilina.net> <20230225221921.4b4bc87d.gary@garyguo.net>
+In-Reply-To: <20230225221921.4b4bc87d.gary@garyguo.net>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sun, 26 Feb 2023 14:40:44 +0100
-Message-ID: <CANiq72m8jmW0WEmscR3+C2aiL+FCzYZXj2SrfruCu4UB98ZCYg@mail.gmail.com>
-Subject: Re: [PATCH 5/5] rust: error: Add from_kernel_result!() macro
-To:     Boqun Feng <boqun.feng@gmail.com>
-Cc:     Gary Guo <gary@garyguo.net>, Asahi Lina <lina@asahilina.net>,
-        Miguel Ojeda <ojeda@kernel.org>,
+Date:   Sun, 26 Feb 2023 14:56:07 +0100
+Message-ID: <CANiq72k7jN4COyGTGUCUc9jdmYcc53FHpOSOd=uLv_NLKR9gPg@mail.gmail.com>
+Subject: Re: [PATCH 2/5] rust: error: Add Error::from_kernel_errno()
+To:     Gary Guo <gary@garyguo.net>
+Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Sven Van Asbroeck <thesven73@gmail.com>,
         Fox Chen <foxhlchen@gmail.com>, rust-for-linux@vger.kernel.org,
@@ -72,28 +71,18 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, Feb 26, 2023 at 3:22=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Sat, Feb 25, 2023 at 11:19=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> Hmm.. looks like the `?` only "propagating them (the errors) to the
-> calling *function*":
->
->         https://doc.rust-lang.org/reference/expressions/operator-expr.htm=
-l#the-question-mark-operator
->
-> , so this doesn't work as we expect:
->
->         https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&edition=
-=3D2021&gist=3D64c9039e1da2c436f9f4f5ea46e97e90
->
-> Hope I didn't miss something subtle here..
+> Maybe just `from_errno`? I don't know why `kernel` would need to be
+> emphasised here.
 
-There is `feature(try_blocks)` [1] for that:
+Yeah, that sounds good to me. It is clear and we don't use "errno"
+elsewhere. This identifier came from the original import, so before we
+started to think about naming policies.
 
-    https://play.rust-lang.org/?version=3Dnightly&mode=3Ddebug&edition=3D20=
-21&gist=3D8f40663d2ad51e04a13f2da5c4580fc0
-
-[1] https://github.com/rust-lang/rust/issues/31436.
+Though perhaps we can clean it up in a patch later, since we should
+change `to_kernel_errno` below too at the same time. Or if you want to
+send a quick patch for that one, I can put it in first.
 
 Cheers,
 Miguel
