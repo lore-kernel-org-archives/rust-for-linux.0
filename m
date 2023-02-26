@@ -2,123 +2,89 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87561C64ED6
-	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Feb 2023 14:27:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 248CAC64ED6
+	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Feb 2023 15:56:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbjBZO1H (ORCPT
+        id S229515AbjBZPz7 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 26 Feb 2023 09:27:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60074 "EHLO
+        Sun, 26 Feb 2023 10:55:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229565AbjBZO1G (ORCPT
+        with ESMTP id S229507AbjBZPz6 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 26 Feb 2023 09:27:06 -0500
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E103BFF2B;
-        Sun, 26 Feb 2023 06:27:01 -0800 (PST)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-536bbef1c5eso108879127b3.9;
-        Sun, 26 Feb 2023 06:27:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bGH9kXSraDN+mVD9fqltVHucO9c601DRLuGoJN4kmTQ=;
-        b=QaX5VGmC41VJmIz8TPU/W9pU9Rlq9pZ/fyEg+Y2vn9A1f8ToZJReD9OrGqJ+DTKLRD
-         ns1/z9DlMNvs6CUQN7zDHeudlxt1ro/FaxhLR78SSphz+727jJALOFuSJBjiWbxLsj4L
-         S7krOunD0mliF8uwQvIlK6TtZ5l2L0kySnNA9lZ+vU9GHTrjl0DgynOjiTWfgxsZO6ot
-         q16VJY0Tex84DLUmC12L+ZLNI93kDG9RuQ1boJ+xK1cNEIl0OSUBvueq0do2L9rmZRAp
-         HZsnO6EQQWLCdo1OM9TxtRSJCXCNn+c3H4LijfegmZqH0LIdbLicdKPx5vS/we4W6X9x
-         V84g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bGH9kXSraDN+mVD9fqltVHucO9c601DRLuGoJN4kmTQ=;
-        b=k7lEoq2MzBrp7YfnxnzaO6UUFtx8KEPVz6csqaqESZ2EH4MFHXB2Oy7hnJaOhsFPrb
-         6w1C4Th9s6h3mE3dTCJTwS+iuPHaQ8x8uQCVchlQVHqng8h+o/h7CZbMX+eDfZ5XTh/o
-         TG6nCdAwsibtPoYHZZKnKpZttOpGcOrPUJglfL8zbS/JsjWbVmfHtGYAMArXnZ9jwXDW
-         /OGFGd6nU7jsbk0XMnA156eoJV7G7dTW3iEgpw3bCkuJkd3zHMgYYq+pNW4EHREOwvGZ
-         Z066hHze+52MTjlGz67tbeGkUhzsO82dYVjM0ceCjicKn2m/FLKL9G4Jk4g280Ntpbfa
-         Y5Ew==
-X-Gm-Message-State: AO0yUKVG1r/zA0ly6pNy4F3h3dK5uqEYKQKgjFn/gbVoEkYkU/OJWjX4
-        ghtRHKZpNvImSPiLobTO0sBNJBN9nQ2wZBs4Xkc=
-X-Google-Smtp-Source: AK7set+BtJD8RCDTOmU2TeKNwV20RDhvx+4CTS3ldjyAjzOcc5t/EOb7HDEA56Nq2rWGpj4W8kY/ScQOG4rqMg4sfDQ=
-X-Received: by 2002:a05:6902:1:b0:a27:40c4:e12c with SMTP id
- l1-20020a056902000100b00a2740c4e12cmr6759616ybh.2.1677421621166; Sun, 26 Feb
- 2023 06:27:01 -0800 (PST)
+        Sun, 26 Feb 2023 10:55:58 -0500
+X-Greylist: delayed 899 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 26 Feb 2023 07:55:56 PST
+Received: from mail-41104.protonmail.ch (mail-41104.protonmail.ch [185.70.41.104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AABE8F974
+        for <rust-for-linux@vger.kernel.org>; Sun, 26 Feb 2023 07:55:56 -0800 (PST)
+Date:   Sun, 26 Feb 2023 15:29:29 +0000
+Authentication-Results: mail-41104.protonmail.ch;
+        dkim=pass (2048-bit key) header.d=bamelis.dev header.i=@bamelis.dev header.b="NnJpFcuZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bamelis.dev;
+        s=protonmail; t=1677425384; x=1677684584;
+        bh=eoXPDUG4LE4aVTicadwgIDZhq2nFb3eJVYwjoPAWgDk=;
+        h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+        b=NnJpFcuZlXuf27GopmnXoBKdZBHDadjNr3bhKTq6ZIhl6FVZoqlr2x3v5YgXSNQoW
+         9LofK32wRN5xU4Ee6/iWsNXLLaIMlXFzT3gCa91Lrq2935y/3QOXbSotLNHQFFodAB
+         hS4ptcaSJ9v2/MRcmaPfIOTPpBL4cRrGybBuAn3lHJusVCdozC8Mm8QTWoL6/yk5bz
+         Zh3YgDaHO3jGb5l49mKeSU8LloEp02nlWBEHC2jz9OSFLwzCKDdF0SFmWmkHf5N6JW
+         W9iBFbFOK0Fep5Duj0t2C7Fd7K0T9ezV/sJVxvgqu4bXmBSl0azB4rATcUQHIcqvfJ
+         r4I/kCvH/X0PQ==
+To:     "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>
+From:   dev <thomas@bamelis.dev>
+Subject: [PATCH] rust: sort uml documentation arch support table
+Message-ID: <I0YeaNjTtc4Nh47ZLJfAs6rgfAc_QZxhynNfz-GQKssVZ1S2UI_cTScCkp9-oX-hPYVcP3EfF7N0HMB9iAlm1FcvOJagnQoLeHtiW3bGCgM=@bamelis.dev>
+Feedback-ID: 67636720:user:proton
 MIME-Version: 1.0
-References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
- <20230224-rust-error-v1-1-f8f9a9a87303@asahilina.net> <20230225221405.62e989c8.gary@garyguo.net>
-In-Reply-To: <20230225221405.62e989c8.gary@garyguo.net>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sun, 26 Feb 2023 15:26:50 +0100
-Message-ID: <CANiq72kOb9mbh4HQzH40Ey+Rax3vREsd0Nf2O0apjDpsboE6vQ@mail.gmail.com>
-Subject: Re: [PATCH 1/5] rust: error: Add Error::to_ptr()
-To:     Gary Guo <gary@garyguo.net>
-Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Fox Chen <foxhlchen@gmail.com>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Feb 25, 2023 at 11:14=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> I know that we already have `IS_ERR` in helpers.c, but having to go
-> through FFI and helper functions for something as simple as a cast
-> feels awkward to me.
->
-> Given that `ERR_PTR`'s C definition is very unlike to change, would it
-> be problematic if we just reimplement it in Rust as
->
-> ```rust
-> fn ERR_PTR(error: core::ffi::c_long) -> *mut core::ffi::c_void {
->     error as _
->     // Or `core::ptr::invalid(error as _)` with strict provenance
-> }
-> ```
-> ?
->
-> I personally think it should be fine, but I'll leave the decision to
-> Miguel.
+From: Thomas Bamelis <thomas@bamelis.dev>
 
-On one hand, we have tried to minimize duplication (and, in general,
-any changes to the C side) so far where possible, especially
-pre-merge, doing it only when needed, e.g. for `const` purposes.
+The arch_support table was not sorted alphabetically.
+Sorts the table properly.
 
-On the other hand, being in the kernel opens up a few possibilities to
-consider, and it is true it feels like some of these could get
-reimplemented, even if not strictly needed. If we can show a
-performance/text size difference on e.g. a non-trivial subsystem or
-module, I think we should do it.
+Fixes: 0438aadfa69a ("rust: arch/um: Add support for CONFIG_RUST under x86_=
+64 UML")
+Link: https://lore.kernel.org/rust-for-linux/CANiq72nXMsnUsJNZOG-QZiCVOqa9d=
+RUSMc4RAS3ExLZNJ7VhHg@mail.gmail.com
+Reported-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Signed-off-by: Thomas Bamelis <thomas@bamelis.dev>
+---
+ Documentation/rust/arch-support.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If we do it, then I think we should add a note on the C side so that
-it is clear there is a duplicated implementation elsewhere, avoiding
-future problems. In fact, it would be ideal to do it consistently,
-e.g. also for the ioctl ones. Something like:
+diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-=
+support.rst
+index ed7f4f5b3cf1..b91e9ef4d0c2 100644
+--- a/Documentation/rust/arch-support.rst
++++ b/Documentation/rust/arch-support.rst
+@@ -15,7 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`=
+` file.
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+ Architecture  Level of support  Constraints
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+-``x86``       Maintained        ``x86_64`` only.
+ ``um``        Maintained        ``x86_64`` only.
++``x86``       Maintained        ``x86_64`` only.
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+=20
+--=20
 
-    /* Rust: reimplemented as `kernel::error::ERR_PTR`. */
-    static inline void * __must_check ERR_PTR(long error)
-    {
-        return (void *) error;
-    }
+Thank you,
+Thomas
 
-Or perhaps something even smaller.
-
-But I don't want to block the rest of the work on this, which may need
-some extra/parallel discussion, so let's keep the helper for the time
-being. That way we can also do that change independently and justify
-the change showing the difference in performance/text, if any, in the
-commit message.
-
-Cheers,
-Miguel
