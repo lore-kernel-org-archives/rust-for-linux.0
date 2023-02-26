@@ -2,127 +2,211 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A2BF0C64ED6
-	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Feb 2023 20:59:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AD8FC64ED6
+	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Feb 2023 22:13:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbjBZU7n (ORCPT
+        id S229653AbjBZWNu (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 26 Feb 2023 15:59:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56418 "EHLO
+        Sun, 26 Feb 2023 17:13:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjBZU7n (ORCPT
+        with ESMTP id S229673AbjBZWNq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 26 Feb 2023 15:59:43 -0500
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDFC113D52;
-        Sun, 26 Feb 2023 12:59:37 -0800 (PST)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-53852143afcso125741997b3.3;
-        Sun, 26 Feb 2023 12:59:37 -0800 (PST)
+        Sun, 26 Feb 2023 17:13:46 -0500
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12464D32C;
+        Sun, 26 Feb 2023 14:13:44 -0800 (PST)
+Received: by mail-qt1-x82d.google.com with SMTP id c19so4835433qtn.13;
+        Sun, 26 Feb 2023 14:13:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/a3uSDlfsqZGmv0N4D8ujOHHg7vKPERtZBqNuW3pgYs=;
-        b=qHaN8xbcrctTIZLJmLgSzE/JjYY4a5wt8mpHQixH3Cpthj7X6bTegUsDqKK3X0ezqc
-         t+3FqVF1QElwmSLcZPo4U0OLbPpjqX/OOHrr6TrhgQcZA3ObniMc6HOvXCMAcrBx1eKz
-         RCZCnNnTQwADm//81Y/FuvuNZBO/iq7QX4hd87kr4dPO8uS+FrCtjzd+mciO/pW/byUd
-         FGzem7IH+wT96mdSI8IR3w72Xe4yAEwq0JQT4m34E7CxQ5jnY0G/BmhU8mqUmwiXVP19
-         9vJef43XC0BjzKkLz5kep6z8dJSDCahWVeDymF6Xn6gOrtfX71S7Ht4U5zdwniWh4hCc
-         sCgw==
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=YSvtnIwZ5WRViy9d2TMUt/v4cYgNq+s2fM5I8EDWvtc=;
+        b=L4BNZgYJuHmXZh6jpoP1Ok9qx7UtcelHbhasYhA4IjxXL4dlyxMpdyC3rC1qmzJNvP
+         /9IQsj9TzVY3a8ccbhkO3L71/rQUVTG28Co0H+XPVApyxYfTsWtxqgG+WL/MwS1X/+ib
+         SytdzsQviD065IwWMRpEuCPJuPzon7eOjVevuUQ4CTHhiIoP4F28COli8oUlal2NV24O
+         9QWi9kAUMrK5buVW286Sf+2jkLkdsuDBbAzwhZA7hQ9MJpCIToRqGF5BIIT8CZVrpt9M
+         FeAr/Cu5Rh+qEuNYoeK91j322nC0pLdGry0q2LHwNnGpON/6Tmgx8ffhImmXTmI4+roA
+         SV8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/a3uSDlfsqZGmv0N4D8ujOHHg7vKPERtZBqNuW3pgYs=;
-        b=GMlMvnjXhgNMWNffEinqS0zBP5ZFW2GpNR1Dgkplvoppx/mDTU4WvkbKFxNh8PWcVU
-         +OeTc7awnD9tHtUITNCd22WwxTSShSGlhsdvuPHa4Jhx/9C8I6Nanv+NOaSQH1hBSE93
-         X79XLGf9tAD+L59DMeB+xpx/2YsP4JdfZa52iEWgECAhoTaASLAjyjend0eMNdfIYRhy
-         8t3DMaRZjqfVbtnfLDvUEjex33vP/XrDH2N54ofsXqHHDELuVFDMqiFsXTrQqU328Gen
-         UMj7nbT1yYeFDj6bYu+XachOWQV/3qtp1Ww/5w93MZ4hID5dqzKXyV+OuCc61AmE84Pv
-         w94w==
-X-Gm-Message-State: AO0yUKUyzHzK0qeCmEYLsA2FQIifVymSG2YccT0fQYMgFOSUc34qEZ3D
-        jSxDsnw4Vj30NWS1EVNifprdVD2CaHpt7asP+to=
-X-Google-Smtp-Source: AK7set/61TNdgiOUotaSqBJ3oG75bxwjctCYlnS41y9hd20++fxhpwwM2eiH4YykdQu4/DE7h9xuedSgKUzR30dWaCU=
-X-Received: by 2002:a05:690c:c1a:b0:533:9d13:a067 with SMTP id
- cl26-20020a05690c0c1a00b005339d13a067mr6032856ywb.3.1677445177037; Sun, 26
- Feb 2023 12:59:37 -0800 (PST)
-MIME-Version: 1.0
-References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
- <20230224-rust-error-v1-5-f8f9a9a87303@asahilina.net> <Y/lOlcSpc+d9ytq/@boqun-archlinux>
- <20230225222340.34d749ee.gary@garyguo.net> <Y/rCU1S+GDgIojNf@boqun-archlinux>
- <20230226133606.583cd1d8.gary@garyguo.net> <Y/uiAfZnfbbMrQuD@boqun-archlinux>
-In-Reply-To: <Y/uiAfZnfbbMrQuD@boqun-archlinux>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sun, 26 Feb 2023 21:59:25 +0100
-Message-ID: <CANiq72kTiHF76T0AycM43qj4rUgQpHzBqXujdvk+H2qoDz22AQ@mail.gmail.com>
-Subject: Re: [PATCH 5/5] rust: error: Add from_kernel_result!() macro
-To:     Boqun Feng <boqun.feng@gmail.com>
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YSvtnIwZ5WRViy9d2TMUt/v4cYgNq+s2fM5I8EDWvtc=;
+        b=bpfGjpdsChjZ37UnVqElcveEJbHo/rrbjIbopIxYzekRgGT1j0GNO0qE8KJnnhVgUD
+         r+1BUKfYXshIFSNHezmP0JaAP0V5MGZrpe4jRXekYnLFULll0KeXYPKGtkfBRc3kAh7P
+         Nf2xvN+nmCPDz+e8JVPGE/41nmlRylcgCwlPWOe18gBqghRRwkmz1wfxpa6tg+75C9EL
+         3ufwpy/GTVA0vrlIDos2pbOhgbK33mH3VukrH488PrbHGIrx+k2SxJZUIjgvyrIsiKnv
+         OLbsR/a253OuzAOebQSs4aBgaVzHF7OhGnGp/49RxgYIQkdNpOjc4FEWUtriajvU80/3
+         xAoQ==
+X-Gm-Message-State: AO0yUKXBh8Oowl4ybQUEg9CicZlRfWyHHJL67/lmlRQOk5a0iKFKV456
+        V8bG+eq1L54jdgyVPrYAQF0=
+X-Google-Smtp-Source: AK7set8OSDr9hpaY3SS9NJn62sJ2bXOTexDdPhu2v9fo9Er1B7ekjKM958IsuZx9UXYVFoDTvWAPZQ==
+X-Received: by 2002:a05:622a:14d:b0:3af:4d45:b73 with SMTP id v13-20020a05622a014d00b003af4d450b73mr38461022qtw.33.1677449623091;
+        Sun, 26 Feb 2023 14:13:43 -0800 (PST)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id s67-20020a374546000000b007424239e4casm3693819qka.117.2023.02.26.14.13.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Feb 2023 14:13:42 -0800 (PST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailauth.nyi.internal (Postfix) with ESMTP id DC8C427C005A;
+        Sun, 26 Feb 2023 17:13:41 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Sun, 26 Feb 2023 17:13:41 -0500
+X-ME-Sender: <xms:ldn7Y9MxJP_Xb8X2x5kL8DyZwUd3MB9H_3v_NCxxM1xn59h7UdnjsQ>
+    <xme:ldn7Y__kpldqhgC5CigpCQZFRteHVtnv5UUZpKQpqd_fxMXVAc3YyiERgX1bJa6lo
+    VmBr9DK6FeyfUZhRg>
+X-ME-Received: <xmr:ldn7Y8TyQHhlOWxrMzdLVuLe7ZO3yz1aiZtsNbX16W4isapw4vpqTUsE-XE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudekkedgudefvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepueho
+    qhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeeiheefkefgvdefteejjedukefhieevleeffeevheehfeffhfekhfet
+    veffvefhgfenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvg
+    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhht
+    phgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqd
+    gsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:ldn7Y5vhVpdg9h2nrjjzK09-X1mA5DAX1zBOzolz83Wgv46q_qk68w>
+    <xmx:ldn7Y1cV1x8UZgRu72e7OQSzTTvNGi6bfV9m5V-GPAsIMJR9tKnb7g>
+    <xmx:ldn7Y13c2mpU-Wt3-ayaJxTrAQiwbqCHpBjpXfJ5aB1Gdk8pdASLyQ>
+    <xmx:ldn7Y13ABND4N80_SL-DSpTCU0B8VvHieRwiYaLIBETvBFp07bRxtg>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 26 Feb 2023 17:13:40 -0500 (EST)
+Date:   Sun, 26 Feb 2023 14:13:10 -0800
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Gary Guo <gary@garyguo.net>, Asahi Lina <lina@asahilina.net>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         Sven Van Asbroeck <thesven73@gmail.com>,
         Fox Chen <foxhlchen@gmail.com>, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 5/5] rust: error: Add from_kernel_result!() macro
+Message-ID: <Y/vZdv6IVmrcP7wR@boqun-archlinux>
+References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
+ <20230224-rust-error-v1-5-f8f9a9a87303@asahilina.net>
+ <Y/lOlcSpc+d9ytq/@boqun-archlinux>
+ <20230225222340.34d749ee.gary@garyguo.net>
+ <Y/rCU1S+GDgIojNf@boqun-archlinux>
+ <20230226133606.583cd1d8.gary@garyguo.net>
+ <Y/uiAfZnfbbMrQuD@boqun-archlinux>
+ <CANiq72kTiHF76T0AycM43qj4rUgQpHzBqXujdvk+H2qoDz22AQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kTiHF76T0AycM43qj4rUgQpHzBqXujdvk+H2qoDz22AQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, Feb 26, 2023 at 7:17=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> My preference to function instead of macro here is because I want to
-> avoid the extra level of abstraction and make things explict, so that
-> users and reviewers can understand the API behavior solely based on
-> Rust's types, functions and closures: they are simpler than macros, at
-> least to me ;-)
+On Sun, Feb 26, 2023 at 09:59:25PM +0100, Miguel Ojeda wrote:
+> On Sun, Feb 26, 2023 at 7:17 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > My preference to function instead of macro here is because I want to
+> > avoid the extra level of abstraction and make things explict, so that
+> > users and reviewers can understand the API behavior solely based on
+> > Rust's types, functions and closures: they are simpler than macros, at
+> > least to me ;-)
+> 
+> There is one extra problem with the macro: `rustfmt` does not format
+> the contents if called with braces (as we currently do).
 
-There is one extra problem with the macro: `rustfmt` does not format
-the contents if called with braces (as we currently do).
+Interesting, sounds like a missing feature in `rustfmt` or maybe we
+don't use the correct config ;-)
 
-So when I was cleaning some things up for v8, one of the things I did
-was run manually `rustfmt` on the blocks by removing the macro
-invocation, in commit 77a1a8c952e1 ("rust: kernel: apply `rustfmt` to
-`from_kernel_result!` blocks").
+> 
+> So when I was cleaning some things up for v8, one of the things I did
+> was run manually `rustfmt` on the blocks by removing the macro
+> invocation, in commit 77a1a8c952e1 ("rust: kernel: apply `rustfmt` to
+> `from_kernel_result!` blocks").
+> 
+> Having said that, it does format it when called with parenthesis
+> wrapping the block, so we could do that if we end up with the macro.
+> 
+> > First, I think the macro version here is just a poor-man's try block, in
+> > other words, I'd expect explicit use of try blocks intead of
+> > `from_kernel_result` when the feature is ready. If that's the case, we
+> > need to change the use sites anyway.
+> 
+> Yeah, if we eventually get a better language feature that fits well,
+> then we should use it.
+> 
+> > Do both implementation share the same behavior?
+> 
+> Yeah, a `return` will return to the outer caller in the case of a
+> `try` block, while it returns to the closure (macro) in the other
+> case. Or do you mean something else?
+> 
 
-Having said that, it does format it when called with parenthesis
-wrapping the block, so we could do that if we end up with the macro.
+"Yeah" means they have different behaviors, right? ;-)
 
-> First, I think the macro version here is just a poor-man's try block, in
-> other words, I'd expect explicit use of try blocks intead of
-> `from_kernel_result` when the feature is ready. If that's the case, we
-> need to change the use sites anyway.
+Thanks for confirming and I think you get it, but just in case for
+others reading this: if we use the macro way to implement
+`from_kernel_result` as in this patch:
 
-Yeah, if we eventually get a better language feature that fits well,
-then we should use it.
+	macro_rules! from_kernel_result {
+	    ($($tt:tt)*) => {{
+		$crate::error::from_kernel_result_helper((|| {
+		    $($tt)*
+		})())
+	    }};
+	}
 
-> Do both implementation share the same behavior?
+and later we re-implement with try blocks:
 
-Yeah, a `return` will return to the outer caller in the case of a
-`try` block, while it returns to the closure (macro) in the other
-case. Or do you mean something else?
+	macro_rules! from_kernel_result {
+	    ($($tt:tt)*) => {{
+		$crate::error::from_kernel_result_helper(try {
+		    $($tt)*
+		})
+	    }};
+	}
 
-In that case, I think one could use use a labeled block to `break`
-out, not sure if `try` blocks will allow an easier way.
+the `from_kernel_result` semantics will get changed on the `return`
+statement inside the macro blocks.
 
-We have a case of such a `return` within the closure at `rust/rust` in
-`file.rs`:
+And this is another reason why we want to avoid use macros here. Code
+example as below:
 
-    from_kernel_result! {
-        let off =3D match whence as u32 {
-            bindings::SEEK_SET =3D> SeekFrom::Start(offset.try_into()?),
-            bindings::SEEK_CUR =3D> SeekFrom::Current(offset),
-            bindings::SEEK_END =3D> SeekFrom::End(offset),
-            _ =3D> return Err(EINVAL),
-        };
-        ...
-        Ok(off as bindings::loff_t)
-    }
+	https://play.rust-lang.org/?version=nightly&mode=debug&edition=2021&gist=58ea8b95cdfd6b053561052853b0ac00
 
-Cheers,
-Miguel
+`foo_v1` and `foo_v3` has the exact same function body, but behave
+differently.
+
+> In that case, I think one could use use a labeled block to `break`
+> out, not sure if `try` blocks will allow an easier way.
+> 
+> We have a case of such a `return` within the closure at `rust/rust` in
+> `file.rs`:
+
+Thanks for finding an example! Means we did use return.
+
+For this particular API, I'd say function right now, `try` blocks if
+avaiable.
+
+Regards,
+Boqun
+
+> 
+>     from_kernel_result! {
+>         let off = match whence as u32 {
+>             bindings::SEEK_SET => SeekFrom::Start(offset.try_into()?),
+>             bindings::SEEK_CUR => SeekFrom::Current(offset),
+>             bindings::SEEK_END => SeekFrom::End(offset),
+>             _ => return Err(EINVAL),
+>         };
+>         ...
+>         Ok(off as bindings::loff_t)
+>     }
+> 
+> Cheers,
+> Miguel
