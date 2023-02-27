@@ -2,56 +2,56 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB87AC64ED6
-	for <rust-for-linux@archiver.kernel.org>; Mon, 27 Feb 2023 11:48:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53BF9C64ED8
+	for <rust-for-linux@archiver.kernel.org>; Mon, 27 Feb 2023 11:49:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229549AbjB0LsM (ORCPT
+        id S229470AbjB0LtL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 27 Feb 2023 06:48:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42316 "EHLO
+        Mon, 27 Feb 2023 06:49:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjB0LsK (ORCPT
+        with ESMTP id S229613AbjB0Ls6 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 27 Feb 2023 06:48:10 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D56E7280
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Feb 2023 03:48:08 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id eg37so24437525edb.12
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Feb 2023 03:48:08 -0800 (PST)
+        Mon, 27 Feb 2023 06:48:58 -0500
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87C071C313
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 Feb 2023 03:48:49 -0800 (PST)
+Received: by mail-ed1-x535.google.com with SMTP id ck15so24839437edb.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 Feb 2023 03:48:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=metaspace-dk.20210112.gappssmtp.com; s=20210112;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=t1OjyobwWiaHh7+rjZmP3kOsw+ZJ6qE24StYRceK6RM=;
-        b=MfdeUyIDihZkqJ66TOuvcdrwIcHQ75gXPd4mefzW/M7pgeUQx+DEGAJAHTMwMz1Nkf
-         s7nbTMT5hdOhZoImaVrzzn6m69X7sWn39jYWNsTGPS09Qf/4elBPgqk4XM/w7ZiKNl4i
-         Qgy082SanNeIZThw+apmfj9ki5WIKRMJk1E+01j9HQRGrDVTnb5pM9yQHqyEA2JyyUZ5
-         oddyYRJhtc7Cvup9vnC+qhDWI7eWsSEDFizdpGdck57dtwE4hiNfARcqsPw9nNF8wLYY
-         jG623rPtKr6+hAJm0lv+xaIiz+VUHHGpDoJvkJXBPk9EsQLL1RqYEAp75UfzYLAn1tl4
-         3ZKQ==
+        bh=FrL5lYUkqDlmCEsBUKLgTEfbH9XDD8w+e14IRfNrUoc=;
+        b=7rJVxVp/slSrMx5UlCYNy7nCehokTnlhjyxnBBsk6sQmT0bX/mUzeIIbqN4Qm7tEBB
+         rentsmMLfqNGnWAaGcaiNRkaGIBNkMgbzZ5V2kTDW+983it6bpGtdDFEL7ggW/g3G6fi
+         apmDnxQa7x+b062svrIi4FJUmBHWhLN6uKjXwSEdcTRPghB4eTweMz06byLYNSHztmEV
+         k9GNRfGMwco94gGjVER/Il4JQZ9c01eBQJAchBfvEFOZyj8gv9izFTqhanXJxg/FCto3
+         qbzRRejgV+biY6YF/pQnvV6jsoeiwLD3Tw80pwbeZqiD3J7PpsQgvLeGtka3yq2wFAyk
+         QBbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=t1OjyobwWiaHh7+rjZmP3kOsw+ZJ6qE24StYRceK6RM=;
-        b=ZJZejSMJ0gn6G4SElLUQO+lQxHXV9ciwwBNl4D2Es7G/Y1xfIJHbYH+8LIXlI50MOF
-         1oq3YpgRAhxErVlsAQc8xbo2UqNQT/D2Ciiw9crNZvH5pmgl2MU072Rod+q1zrOvtgEP
-         YR45pVBOYwmfMlx1T+ddrAQnxUD2fqvsA25CXnIar3q3Za+BDiWifw3tMGNHLpQkoCUz
-         rZ/SsU3ySXi1effMFAxAZ5CuS1ealFjEIJyDAPwsNqpXykZuLsoztIAT5fT7luGAfWVj
-         Ai/R3BYYrEJNFl8Ia0gITU7z/lyQTJVP+Q2XYXO/9jx1qLfLgrPIlryfGFH64CI146D8
-         k3KA==
-X-Gm-Message-State: AO0yUKU/I4HnKDXh3e779/othTtMrJsqZDNeFhTZydHG8fKMNJ/SNEgT
-        soa08YWiH5fsGk0eOdgiFyn+Uw==
-X-Google-Smtp-Source: AK7set9v950DkyFJ1v+RucxsNpv6om7VK65PomdteoJ7mIeN1x5e3U9BeP6uh30f6f8UjJi+wGVFPA==
-X-Received: by 2002:a17:906:730c:b0:878:79e6:4672 with SMTP id di12-20020a170906730c00b0087879e64672mr41427544ejc.42.1677498486597;
-        Mon, 27 Feb 2023 03:48:06 -0800 (PST)
+        bh=FrL5lYUkqDlmCEsBUKLgTEfbH9XDD8w+e14IRfNrUoc=;
+        b=Bm5TFk91eVsmStAVEjeFhQu4O6N682vCBToKbKj8IJaj+2WHg23KzwXXFneOEPi0Gk
+         i78DIiAo/jaJHlju4tl/6b6BK+dyHabjMVeiX5t8M9VDL2inx7yMAKAZPkOr2VoeMYBH
+         1vYTu8dzryJe/Mp+x+wKRHS/hcxMF1vGxSSf22cUbip32NLpMwnesTfl3i2VWF3aJK3h
+         H+5amvSxRUUAXN40OdssCuAv1XYT5QOnjtseXHBOa4YmNJa4CIAc0mhDt1+fjgHaZWi8
+         tpp9OJIneBqLukYLYZPuWQc59F/Idq1iaMeawKJkI+6NJELgUlIQ342+ldEBexEVQoI1
+         ZHSg==
+X-Gm-Message-State: AO0yUKV+12h80cGDRHBRbOK8RJ11Tw0TljvznPLfNVk6nEdSJa7g0gf4
+        Y+bDbPfVvfFlEbN4K7njQi/e5g==
+X-Google-Smtp-Source: AK7set+1Xufy3lZTLIWLc/LUY9FQT3FcF0q4uexR/2U7zd+hpwLiFESBhwLurbO+FFlq8cewx0M4Ig==
+X-Received: by 2002:a17:907:6f0e:b0:8f9:ed75:f962 with SMTP id sy14-20020a1709076f0e00b008f9ed75f962mr7928483ejc.18.1677498527989;
+        Mon, 27 Feb 2023 03:48:47 -0800 (PST)
 Received: from localhost ([194.62.217.2])
-        by smtp.gmail.com with ESMTPSA id ky7-20020a170907778700b008db605598b9sm3166679ejc.67.2023.02.27.03.48.05
+        by smtp.gmail.com with ESMTPSA id jr6-20020a170906a98600b008b980c3e013sm3144257ejb.179.2023.02.27.03.48.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Feb 2023 03:48:06 -0800 (PST)
+        Mon, 27 Feb 2023 03:48:47 -0800 (PST)
 References: <20230224-rust-arc-v1-0-568eea613a41@asahilina.net>
- <20230224-rust-arc-v1-1-568eea613a41@asahilina.net>
+ <20230224-rust-arc-v1-2-568eea613a41@asahilina.net>
 User-agent: mu4e 1.9.18; emacs 28.2.50
 From:   Andreas Hindborg <nmi@metaspace.dk>
 To:     Asahi Lina <lina@asahilina.net>
@@ -62,11 +62,11 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         asahi@lists.linux.dev
-Subject: Re: [PATCH 1/2] rust: sync: arc: implement Arc<dyn Any + Send +
- Sync>::downcast()
-Date:   Mon, 27 Feb 2023 12:46:45 +0100
-In-reply-to: <20230224-rust-arc-v1-1-568eea613a41@asahilina.net>
-Message-ID: <87356rba8a.fsf@metaspace.dk>
+Subject: Re: [PATCH 2/2] rust: sync: arc: Add
+ UniqueArc<MaybeUninit<T>::assume_init()
+Date:   Mon, 27 Feb 2023 12:48:34 +0100
+In-reply-to: <20230224-rust-arc-v1-2-568eea613a41@asahilina.net>
+Message-ID: <87y1oj9vmp.fsf@metaspace.dk>
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
@@ -76,62 +76,44 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 Asahi Lina <lina@asahilina.net> writes:
 
-> This mirrors the standard library's alloc::sync::Arc::downcast().
+> We can already create `UniqueArc<MaybeUninit<T>>` instances with
+> `UniqueArc::try_new_uninit()` and write to them with `write()`. Add
+> the missing unsafe `assume_init()` function to promote it to
+> `UniqueArc<T>`, so users can do piece-wise initialization of the
+> contents instead of doing it all at once as long as they keep the
+> invariants (the same requirements as `MaybeUninit::assume_init()`).
 >
-> Based on the Rust standard library implementation, ver 1.62.0,
-> licensed under "Apache-2.0 OR MIT", from:
->
->     https://github.com/rust-lang/rust/tree/1.62.0/library/alloc/src
->
-> For copyright details, please see:
->
->     https://github.com/rust-lang/rust/blob/1.62.0/COPYRIGHT
+> This mirrors the std `Arc::assume_init()` function. In the kernel,
+> since we have `UniqueArc`, arguably this only belongs there since most
+> use cases will initialize it immediately after creating it, before
+> demoting it to `Arc` to share it.
 >
 > Signed-off-by: Asahi Lina <lina@asahilina.net>
 > ---
 
 Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 
->  rust/kernel/sync/arc.rs | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
+>  rust/kernel/sync/arc.rs | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 >
 > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index a94e303217c6..752bd7c4699e 100644
+> index 752bd7c4699e..b8e9477fe865 100644
 > --- a/rust/kernel/sync/arc.rs
 > +++ b/rust/kernel/sync/arc.rs
-> @@ -22,6 +22,7 @@ use crate::{
->  };
->  use alloc::boxed::Box;
->  use core::{
-> +    any::Any,
->      fmt,
->      marker::{PhantomData, Unsize},
->      mem::{ManuallyDrop, MaybeUninit},
-> @@ -220,6 +221,27 @@ impl<T: 'static> ForeignOwnable for Arc<T> {
->      }
->  }
->  
-> +impl Arc<dyn Any + Send + Sync> {
-> +    /// Attempt to downcast the `Arc<dyn Any + Send + Sync>` to a concrete type.
-> +    // Based on the Rust standard library implementation, ver 1.62.0, which is
-> +    // Apache-2.0 OR MIT.
-> +    pub fn downcast<T>(self) -> core::result::Result<Arc<T>, Self>
-> +    where
-> +        T: Any + Send + Sync,
-> +    {
-> +        if (*self).is::<T>() {
-> +            // SAFETY: We have just checked that the type is correct, so we can cast the pointer.
-> +            unsafe {
-> +                let ptr = self.ptr.cast::<ArcInner<T>>();
-> +                core::mem::forget(self);
-> +                Ok(Arc::from_inner(ptr))
-> +            }
-> +        } else {
-> +            Err(self)
-> +        }
+> @@ -512,6 +512,15 @@ impl<T> UniqueArc<MaybeUninit<T>> {
+>      /// Converts a `UniqueArc<MaybeUninit<T>>` into a `UniqueArc<T>` by writing a value into it.
+>      pub fn write(mut self, value: T) -> UniqueArc<T> {
+>          self.deref_mut().write(value);
+> +        // SAFETY: We have just written the contents fully.
+> +        unsafe { self.assume_init() }
 > +    }
-> +}
 > +
->  impl<T: ?Sized> Deref for Arc<T> {
->      type Target = T;
+> +    /// Returns a UniqueArc<T>, assuming the MaybeUninit<T> has already been initialized.
+> +    ///
+> +    /// # Safety
+> +    /// The contents of the UniqueArc must have already been fully initialized.
+> +    pub unsafe fn assume_init(self) -> UniqueArc<T> {
+>          let inner = ManuallyDrop::new(self).inner.ptr;
+>          UniqueArc {
+>              // SAFETY: The new `Arc` is taking over `ptr` from `self.inner` (which won't be
 
