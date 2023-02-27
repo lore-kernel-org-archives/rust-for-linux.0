@@ -2,145 +2,147 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F921C64ED8
-	for <rust-for-linux@archiver.kernel.org>; Mon, 27 Feb 2023 14:38:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B75EC7EE23
+	for <rust-for-linux@archiver.kernel.org>; Mon, 27 Feb 2023 16:12:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229991AbjB0Oh6 (ORCPT
+        id S230061AbjB0QMG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 27 Feb 2023 09:37:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47930 "EHLO
+        Mon, 27 Feb 2023 11:12:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbjB0Oh4 (ORCPT
+        with ESMTP id S229720AbjB0QMF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 27 Feb 2023 09:37:56 -0500
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F9D40F2
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Feb 2023 06:37:53 -0800 (PST)
-Received: by mail-ed1-x52f.google.com with SMTP id cy6so26738866edb.5
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Feb 2023 06:37:53 -0800 (PST)
+        Mon, 27 Feb 2023 11:12:05 -0500
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 904F7222CF;
+        Mon, 27 Feb 2023 08:12:04 -0800 (PST)
+Received: by mail-qt1-x830.google.com with SMTP id s12so7156976qtq.11;
+        Mon, 27 Feb 2023 08:12:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
-         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jardeordj/XaekgQabJqF1lz2rr5vkdnESlvHbFfelw=;
-        b=hganA3faGvuJFN5axMQ5JxQkgWZCh7Su32XCgEwy8s446/VNR4zAmXwj3l8/RfEnQ2
-         T7HSpR309392mmAq+NSWjy2f2JRZUdYdXGx3Dc/B8G7KXAXzP1m1++viAtdWpseS8Inh
-         gJ47k59fCi9TZBjO094HMYh4ah/fq3j+1vLP+bOkPQog/+bgS3no+CvGxpf0ULGy2uvY
-         ygLAR2AAkauWvXKEhL0EX7B6NOVpQ4dRgFort8YAxO0zOMVFSoGmEM/3RagYU4XBhIFo
-         z6fD3QFuibh+hzjwxgfJY+OrWDqLnEIS0Ru9wbpT8+O1U9bTLRxetNRMXZpllx6Sb0fZ
-         IBrQ==
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=HVS+XAReNIqkEZr+HHhHNoC0XqayQ7uaPTuLvcoutJg=;
+        b=lk0sxdpjwkeffBxkze1r6VZFwx01PQ5+VQC/bTgDkHrhafr0dPo82eurd/Hq/t5dHL
+         0Aj0T2gcA0Ix4rquId5YzeFAfJEQRBOmfYkJIlyMi8KTNhHprv1/5Wkf6riYC2qvlZ9p
+         +lqitZkHTpPoORHMIomebpTYdRfkYhoMvF0jgTBONGdWwpLKe93WLpDqyclL9Glg+6p7
+         3GGZQDag+OaslA5no/LhLpn1KzLZlCl94EXhzk6yB5mJyUSjzgKmiE5NM36xFnKPIJ9m
+         bzsyHe48ElQPIg1LjHxEx3sqqbsFrd7daWOF9ZFT/XPeuKvKcJkpsp1ohyDGSP06PEm1
+         gajw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
-         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jardeordj/XaekgQabJqF1lz2rr5vkdnESlvHbFfelw=;
-        b=fullfnFBwLlcsjSJ6Q8VUkEudNsKmaGKKUmAO30S92PEhE27cQ+hNZXOwz4tU0c1p9
-         XbN+lgtMWMsNKmJuswwUKMeHYSGsrA4bEfvmsyFM22iD9DFU+RiWUQOmb/rP2a8kq32O
-         5RBkWXkl3Ks+XJL95MHO650My5/g8SE+rtVL1v3QfeeFcJapuc4njNZHNKMjUkRsZ4za
-         rtxQSAnBzmuWZF2KjMMafbbppDT+oZhRYdiagPnDnlL4zZRtEkkmdPnONFUQqISq1v22
-         afp2R9nj7nofg+dmcHJzQrEInb7TkM4J78+jDnV5KDQeo39ZDZEfl+jED/zNbk3Xb47P
-         o6pQ==
-X-Gm-Message-State: AO0yUKUC5sdNqxtTnOTkTqchYJvLQ3pxolDRdhhdTHt8+thiI1MGhXe8
-        LD2uSEWeZkZf7q+1/3Ouh4RXZw==
-X-Google-Smtp-Source: AK7set+x74nbvd+X2m0N2CUH9bptLVF4b0EcDroO1edwiwkWo4zu/CmTcGWNBrewdzwbDuvrN4DMDQ==
-X-Received: by 2002:a17:906:8608:b0:872:82d3:4162 with SMTP id o8-20020a170906860800b0087282d34162mr28971157ejx.44.1677508672009;
-        Mon, 27 Feb 2023 06:37:52 -0800 (PST)
-Received: from localhost ([194.62.217.2])
-        by smtp.gmail.com with ESMTPSA id kb16-20020a1709070f9000b008cae50b0115sm3263618ejc.87.2023.02.27.06.37.50
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HVS+XAReNIqkEZr+HHhHNoC0XqayQ7uaPTuLvcoutJg=;
+        b=dpbW7BlvJy+nknezbNWi+RzAkdxOnaYogEEmVTZw1FXiCtkuyW8MEyZM5c27w8UnnN
+         f7q+NDhJJqKkf619EfW2tDombkB7Udv4hJ8DI2x2lf3bPoRWDGL4cwrWXkJ4fnOMbNl7
+         G0ftObFpWtZdQ2y98pds0gqzCcooFzSjH/w0W/qqF8t25MYV3zBCHfJ38RdfG3tKPQC5
+         W+32fS5G1HFAxy9PAmAv4yw+uU4q1iXE7hUIB4v41dV//hO0qwMAi/oLIknRQtHia3Ss
+         o/fkoH1AtI949qdp9nn+b5UxkvgMPdAad847XVqcAislTVv2tb3pbjrbeT0CayhBa+kX
+         CY3w==
+X-Gm-Message-State: AO0yUKX5yISHwobpJaHfUznKAazcDsWlNzpQcr6fvFnP8wXcVQs8/dnu
+        VrWY0Ma0RA5Xu903Zvv//+Y=
+X-Google-Smtp-Source: AK7set8DE/smvk2iugB1Wlsd5cvyAWVwCrm5DHYixBwAorNNTxk1UunRx+yF2yQAkpbX46ZK/yVgHA==
+X-Received: by 2002:a05:622a:18f:b0:3bf:aa39:982b with SMTP id s15-20020a05622a018f00b003bfaa39982bmr32687063qtw.32.1677514323651;
+        Mon, 27 Feb 2023 08:12:03 -0800 (PST)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id n188-20020a37bdc5000000b007425f242cb8sm5144325qkf.66.2023.02.27.08.12.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Feb 2023 06:37:51 -0800 (PST)
-References: <20230224-rust-new_uninit-v1-1-c951443d9e26@asahilina.net>
- <87pm9v9rmg.fsf@metaspace.dk>
- <96cb824e-8251-a329-11e5-3618a4e59bc8@asahilina.net>
-User-agent: mu4e 1.9.18; emacs 28.2.50
-From:   Andreas Hindborg <nmi@metaspace.dk>
-To:     Asahi Lina <lina@asahilina.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Mon, 27 Feb 2023 08:12:02 -0800 (PST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 7D53927C0054;
+        Mon, 27 Feb 2023 11:12:01 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Mon, 27 Feb 2023 11:12:02 -0500
+X-ME-Sender: <xms:UNb8YzVn8FT-9qP6SjrCPvxjqIjt2A5On293QHEHdZGkdX9pny1Q1Q>
+    <xme:UNb8Y7mr54l2qZxmzeyZM9yRhQ5Bc4uSHAgF79ICRv7IA5pljWgiWcSo302BeCjkH
+    3wsXx9TVNqcNYrLYA>
+X-ME-Received: <xmr:UNb8Y_ar2I925ZgRm_KZdaLgCgrXWN1KxDshAAt82lo0uXHrYeF_QDJdzzc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudeltddgkeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhepgeekgeettdelffekfedtveelueeiudevjeegieekvdegkedufeetfeei
+    iedvueelnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhht
+    hhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquh
+    hnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:UNb8Y-WnawlW9HJeO3csrPPAPLflnOiv0Ilzx36YoyYjliaXZfd4jQ>
+    <xmx:UNb8Y9n-DVVdEbziGEB3qz7Zcd_a_IShmvQ3na6f-FI4BBY4HB_wjw>
+    <xmx:UNb8Y7cU32gY1lIBL1SuzBmfcVrYU-cxp7_b6dmy_oa3oIIOfKLzMw>
+    <xmx:Udb8YzfDT6D-ZHbriXkmHTvvhiUa8QI8d_x_Uq5-e9Mb8iuK6dvdyg>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 27 Feb 2023 11:11:59 -0500 (EST)
+Date:   Mon, 27 Feb 2023 08:11:27 -0800
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Gary Guo <gary@garyguo.net>, Asahi Lina <lina@asahilina.net>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, asahi@lists.linux.dev
-Subject: Re: [PATCH] rust: Enable the new_uninit feature for kernel and
- driver crates
-Date:   Mon, 27 Feb 2023 15:34:38 +0100
-In-reply-to: <96cb824e-8251-a329-11e5-3618a4e59bc8@asahilina.net>
-Message-ID: <875ybn9nsx.fsf@metaspace.dk>
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Fox Chen <foxhlchen@gmail.com>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
+Subject: Re: [PATCH 5/5] rust: error: Add from_kernel_result!() macro
+Message-ID: <Y/zWL4aeIRbvwKMI@boqun-archlinux>
+References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
+ <20230224-rust-error-v1-5-f8f9a9a87303@asahilina.net>
+ <Y/lOlcSpc+d9ytq/@boqun-archlinux>
+ <20230225222340.34d749ee.gary@garyguo.net>
+ <Y/rCU1S+GDgIojNf@boqun-archlinux>
+ <20230226133606.583cd1d8.gary@garyguo.net>
+ <Y/uiAfZnfbbMrQuD@boqun-archlinux>
+ <CANiq72kTiHF76T0AycM43qj4rUgQpHzBqXujdvk+H2qoDz22AQ@mail.gmail.com>
+ <Y/vZdv6IVmrcP7wR@boqun-archlinux>
+ <CANiq72kHe+BD1ZXjDQD_vWrpx+nBfy8fkjhHa8fx=3Bpk+Uuug@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kHe+BD1ZXjDQD_vWrpx+nBfy8fkjhHa8fx=3Bpk+Uuug@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Mon, Feb 27, 2023 at 01:10:39PM +0100, Miguel Ojeda wrote:
+> On Sun, Feb 26, 2023 at 11:13 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > Interesting, sounds like a missing feature in `rustfmt` or maybe we
+> > don't use the correct config ;-)
+> 
+> It may be coming [1] (I haven't tested if that one would work for us),
+> but in general it is hard for `rustfmt` because the contents are not
+> necessarily valid Rust code.
+> 
+> [1] https://github.com/rust-lang/rustfmt/pull/5538
+> 
+> > "Yeah" means they have different behaviors, right? ;-)
+> 
+> Yes, sorry for the confusion :)
+> 
 
-Asahi Lina <lina@asahilina.net> writes:
+No worries, English is the one to blame ;-)
 
-> On 27/02/2023 22.09, Andreas Hindborg wrote:
->>=20
->> Asahi Lina <lina@asahilina.net> writes:
->>=20
->>> The unstable new_uninit feature enables various library APIs to create
->>> uninitialized containers, such as `Box::assume_init()`. This is
->>> necessary to build abstractions that directly initialize memory at the
->>> target location, instead of doing copies through the stack.
->>>
->>> Will be used by the DRM scheduler abstraction in the kernel crate, and
->>> by field-wise initialization (e.g. using `place!()` or a future
->>> replacement macro which may itself live in `kernel`) in driver crates.
->>>
->>> See [1] [2] [3] for background information.
->>>
->>> [1] https://github.com/Rust-for-Linux/linux/issues/879
->>> [2] https://github.com/Rust-for-Linux/linux/issues/2
->>> [3] https://github.com/rust-lang/rust/issues/63291
->>>
->>> Signed-off-by: Asahi Lina <lina@asahilina.net>
->>> ---
->>>  rust/kernel/lib.rs     | 1 +
->>>  scripts/Makefile.build | 2 +-
->>>  2 files changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
->>> index 223564f9f0cc..1118cd3e0b5f 100644
->>> --- a/rust/kernel/lib.rs
->>> +++ b/rust/kernel/lib.rs
->>> @@ -17,6 +17,7 @@
->>>  #![feature(core_ffi_c)]
->>>  #![feature(dispatch_from_dyn)]
->>>  #![feature(generic_associated_types)]
->>> +#![feature(new_uninit)]
->>>  #![feature(receiver_trait)]
->>>  #![feature(unsize)]
->>>=20=20
->>> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
->>> index a0d5c6cca76d..0f637e1ca8dc 100644
->>> --- a/scripts/Makefile.build
->>> +++ b/scripts/Makefile.build
->>> @@ -277,7 +277,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
->>>  # Compile Rust sources (.rs)
->>>  # --------------------------------------------------------------------=
--------
->>>=20=20
->>> -rust_allowed_features :=3D core_ffi_c
->>> +rust_allowed_features :=3D core_ffi_c,new_uninit
->>=20
->> What is the purpose of adding the feature here? The kernel crate seems
->> to compile fine without this.
->
-> It's for the upcoming DRM abstractions, as I mentioned in the commit
-> message. There's so many dependencies that I'm trying to get as much as
-> I can early to avoid having to review very big patchsets down the line ^^
+> > Thanks for finding an example! Means we did use return.
+> >
+> > For this particular API, I'd say function right now, `try` blocks if
+> > avaiable.
+> 
+> Do you mean going with the closure for the time being and `try` blocks
+> when they become stable? Yeah, I think that is a fair approach.
+> 
 
-I got confused on the different makefile rules used to build kernel
-crate vs module crates. Looks good =F0=9F=91=8D
+Right, and like my original suggestion to Lina, don't use macro for this
+one.
 
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+Regards,
+Boqun
 
+> Cheers,
+> Miguel
