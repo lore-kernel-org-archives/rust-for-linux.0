@@ -2,211 +2,193 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AD8FC64ED6
-	for <rust-for-linux@archiver.kernel.org>; Sun, 26 Feb 2023 22:13:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8692FC64ED6
+	for <rust-for-linux@archiver.kernel.org>; Mon, 27 Feb 2023 07:49:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229653AbjBZWNu (ORCPT
+        id S229486AbjB0HtM (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 26 Feb 2023 17:13:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34194 "EHLO
+        Mon, 27 Feb 2023 02:49:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229673AbjBZWNq (ORCPT
+        with ESMTP id S229841AbjB0HtL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 26 Feb 2023 17:13:46 -0500
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12464D32C;
-        Sun, 26 Feb 2023 14:13:44 -0800 (PST)
-Received: by mail-qt1-x82d.google.com with SMTP id c19so4835433qtn.13;
-        Sun, 26 Feb 2023 14:13:44 -0800 (PST)
+        Mon, 27 Feb 2023 02:49:11 -0500
+Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B79E1BD4
+        for <rust-for-linux@vger.kernel.org>; Sun, 26 Feb 2023 23:49:10 -0800 (PST)
+Received: by mail-vs1-xe2c.google.com with SMTP id m10so9588150vso.4
+        for <rust-for-linux@vger.kernel.org>; Sun, 26 Feb 2023 23:49:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=YSvtnIwZ5WRViy9d2TMUt/v4cYgNq+s2fM5I8EDWvtc=;
-        b=L4BNZgYJuHmXZh6jpoP1Ok9qx7UtcelHbhasYhA4IjxXL4dlyxMpdyC3rC1qmzJNvP
-         /9IQsj9TzVY3a8ccbhkO3L71/rQUVTG28Co0H+XPVApyxYfTsWtxqgG+WL/MwS1X/+ib
-         SytdzsQviD065IwWMRpEuCPJuPzon7eOjVevuUQ4CTHhiIoP4F28COli8oUlal2NV24O
-         9QWi9kAUMrK5buVW286Sf+2jkLkdsuDBbAzwhZA7hQ9MJpCIToRqGF5BIIT8CZVrpt9M
-         FeAr/Cu5Rh+qEuNYoeK91j322nC0pLdGry0q2LHwNnGpON/6Tmgx8ffhImmXTmI4+roA
-         SV8w==
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=F8KYzE4NlaSGkY1lajXGps4EEtpTblMVCSfh4Mg4MWI=;
+        b=iC3ndtczctJfh/wGst0Hb+KbidU6qiYjk4icegXDc22tzUViV72VU1pbizvK/XSaCW
+         2ixEa/L8jgVrxP53r7tSTblR2lbMbUvANn5n2E6BW0zHuoYGPazWAdKp19Rb7GT/PnBl
+         oOVuRPz8UqFqgwdlCj/ZwglHPkTKchEhJyuvBk+g+wGF5KnAgLq3T58kCos7BKhTxzau
+         qj8p2Yalpqr6JkG/LmYVXPx3v/B2WhvYgbIAIcO6FKUzRbrcbidRpoqlNkyXgQzJ4uoy
+         NdbDFygyAYVip70eRePb9vS31CoCmeFzWBlIq70thBlEPRGtqiGK+9xX6k3Hi9gjJ33X
+         +hJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YSvtnIwZ5WRViy9d2TMUt/v4cYgNq+s2fM5I8EDWvtc=;
-        b=bpfGjpdsChjZ37UnVqElcveEJbHo/rrbjIbopIxYzekRgGT1j0GNO0qE8KJnnhVgUD
-         r+1BUKfYXshIFSNHezmP0JaAP0V5MGZrpe4jRXekYnLFULll0KeXYPKGtkfBRc3kAh7P
-         Nf2xvN+nmCPDz+e8JVPGE/41nmlRylcgCwlPWOe18gBqghRRwkmz1wfxpa6tg+75C9EL
-         3ufwpy/GTVA0vrlIDos2pbOhgbK33mH3VukrH488PrbHGIrx+k2SxJZUIjgvyrIsiKnv
-         OLbsR/a253OuzAOebQSs4aBgaVzHF7OhGnGp/49RxgYIQkdNpOjc4FEWUtriajvU80/3
-         xAoQ==
-X-Gm-Message-State: AO0yUKXBh8Oowl4ybQUEg9CicZlRfWyHHJL67/lmlRQOk5a0iKFKV456
-        V8bG+eq1L54jdgyVPrYAQF0=
-X-Google-Smtp-Source: AK7set8OSDr9hpaY3SS9NJn62sJ2bXOTexDdPhu2v9fo9Er1B7ekjKM958IsuZx9UXYVFoDTvWAPZQ==
-X-Received: by 2002:a05:622a:14d:b0:3af:4d45:b73 with SMTP id v13-20020a05622a014d00b003af4d450b73mr38461022qtw.33.1677449623091;
-        Sun, 26 Feb 2023 14:13:43 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id s67-20020a374546000000b007424239e4casm3693819qka.117.2023.02.26.14.13.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Feb 2023 14:13:42 -0800 (PST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailauth.nyi.internal (Postfix) with ESMTP id DC8C427C005A;
-        Sun, 26 Feb 2023 17:13:41 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Sun, 26 Feb 2023 17:13:41 -0500
-X-ME-Sender: <xms:ldn7Y9MxJP_Xb8X2x5kL8DyZwUd3MB9H_3v_NCxxM1xn59h7UdnjsQ>
-    <xme:ldn7Y__kpldqhgC5CigpCQZFRteHVtnv5UUZpKQpqd_fxMXVAc3YyiERgX1bJa6lo
-    VmBr9DK6FeyfUZhRg>
-X-ME-Received: <xmr:ldn7Y8TyQHhlOWxrMzdLVuLe7ZO3yz1aiZtsNbX16W4isapw4vpqTUsE-XE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudekkedgudefvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepueho
-    qhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeeiheefkefgvdefteejjedukefhieevleeffeevheehfeffhfekhfet
-    veffvefhgfenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhht
-    phgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqd
-    gsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:ldn7Y5vhVpdg9h2nrjjzK09-X1mA5DAX1zBOzolz83Wgv46q_qk68w>
-    <xmx:ldn7Y1cV1x8UZgRu72e7OQSzTTvNGi6bfV9m5V-GPAsIMJR9tKnb7g>
-    <xmx:ldn7Y13c2mpU-Wt3-ayaJxTrAQiwbqCHpBjpXfJ5aB1Gdk8pdASLyQ>
-    <xmx:ldn7Y13ABND4N80_SL-DSpTCU0B8VvHieRwiYaLIBETvBFp07bRxtg>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 26 Feb 2023 17:13:40 -0500 (EST)
-Date:   Sun, 26 Feb 2023 14:13:10 -0800
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Gary Guo <gary@garyguo.net>, Asahi Lina <lina@asahilina.net>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Fox Chen <foxhlchen@gmail.com>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-Subject: Re: [PATCH 5/5] rust: error: Add from_kernel_result!() macro
-Message-ID: <Y/vZdv6IVmrcP7wR@boqun-archlinux>
-References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
- <20230224-rust-error-v1-5-f8f9a9a87303@asahilina.net>
- <Y/lOlcSpc+d9ytq/@boqun-archlinux>
- <20230225222340.34d749ee.gary@garyguo.net>
- <Y/rCU1S+GDgIojNf@boqun-archlinux>
- <20230226133606.583cd1d8.gary@garyguo.net>
- <Y/uiAfZnfbbMrQuD@boqun-archlinux>
- <CANiq72kTiHF76T0AycM43qj4rUgQpHzBqXujdvk+H2qoDz22AQ@mail.gmail.com>
+        bh=F8KYzE4NlaSGkY1lajXGps4EEtpTblMVCSfh4Mg4MWI=;
+        b=jXhF2ul2US56yxkW/yQu70NT1NbSBRzGwgcy5hVEXQMk61NA/c2/nde64m49rHt5wI
+         iFDSCpUnaRxa9SQu4EMbhaoF8PCK532EXSht3ArqepMMscDh65NO4C3iCkau6Bm0b7jf
+         7yNuYpHinHar/wY5nCOufClkMeq4Ac47J/GLXYMmc/WDxDhua2+BLeUIVzM0d9jdDpNS
+         MM3qcuDET1y/jhcicqpap3hvwwfzk99pA8/h+tbo32cOsRkb7s24uRogikZ6mGnGxmTR
+         6OievMLJWeUnxM4beZAiKTHYeEGFHHFRAmAdhrBvVN4L2bCotAs3QcGA2Fdl7wqwVA/m
+         c3rQ==
+X-Gm-Message-State: AO0yUKUm7Zj4SVGyqr1ywswtJiPoxJAd7tGiTMhcH5Vw7MshNLV1eciI
+        AN12StSuLbcoj5DfaJjRYG5YHO4XTJKzgHIhEfvNeZnZKSf3tHICIyI=
+X-Google-Smtp-Source: AK7set9TMVQ48negkpqRDV9talu8Qj4XsvjYhxmvYEX+2iLtJaOS40vqhbFZWv4EXP5HpRdI7ibk/IXT8dFanTxR1Yw=
+X-Received: by 2002:a67:db0a:0:b0:414:2344:c353 with SMTP id
+ z10-20020a67db0a000000b004142344c353mr6732894vsj.5.1677484149371; Sun, 26 Feb
+ 2023 23:49:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kTiHF76T0AycM43qj4rUgQpHzBqXujdvk+H2qoDz22AQ@mail.gmail.com>
+References: <I0YeaNjTtc4Nh47ZLJfAs6rgfAc_QZxhynNfz-GQKssVZ1S2UI_cTScCkp9-oX-hPYVcP3EfF7N0HMB9iAlm1FcvOJagnQoLeHtiW3bGCgM=@bamelis.dev>
+In-Reply-To: <I0YeaNjTtc4Nh47ZLJfAs6rgfAc_QZxhynNfz-GQKssVZ1S2UI_cTScCkp9-oX-hPYVcP3EfF7N0HMB9iAlm1FcvOJagnQoLeHtiW3bGCgM=@bamelis.dev>
+From:   David Gow <davidgow@google.com>
+Date:   Mon, 27 Feb 2023 15:48:57 +0800
+Message-ID: <CABVgOSmMx4f79M-VyQCmQfY9AaGta8wDvK62ui+O5kE0BPb1iw@mail.gmail.com>
+Subject: Re: [PATCH] rust: sort uml documentation arch support table
+To:     dev <thomas@bamelis.dev>
+Cc:     "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000dc318105f5a9b680"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, Feb 26, 2023 at 09:59:25PM +0100, Miguel Ojeda wrote:
-> On Sun, Feb 26, 2023 at 7:17 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > My preference to function instead of macro here is because I want to
-> > avoid the extra level of abstraction and make things explict, so that
-> > users and reviewers can understand the API behavior solely based on
-> > Rust's types, functions and closures: they are simpler than macros, at
-> > least to me ;-)
-> 
-> There is one extra problem with the macro: `rustfmt` does not format
-> the contents if called with braces (as we currently do).
+--000000000000dc318105f5a9b680
+Content-Type: text/plain; charset="UTF-8"
 
-Interesting, sounds like a missing feature in `rustfmt` or maybe we
-don't use the correct config ;-)
+On Sun, 26 Feb 2023 at 23:30, dev <thomas@bamelis.dev> wrote:
+>
+> From: Thomas Bamelis <thomas@bamelis.dev>
+>
+> The arch_support table was not sorted alphabetically.
+> Sorts the table properly.
+>
+> Fixes: 0438aadfa69a ("rust: arch/um: Add support for CONFIG_RUST under x86_64 UML")
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72nXMsnUsJNZOG-QZiCVOqa9dRUSMc4RAS3ExLZNJ7VhHg@mail.gmail.com
+> Reported-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+> Signed-off-by: Thomas Bamelis <thomas@bamelis.dev>
+> ---
 
-> 
-> So when I was cleaning some things up for v8, one of the things I did
-> was run manually `rustfmt` on the blocks by removing the macro
-> invocation, in commit 77a1a8c952e1 ("rust: kernel: apply `rustfmt` to
-> `from_kernel_result!` blocks").
-> 
-> Having said that, it does format it when called with parenthesis
-> wrapping the block, so we could do that if we end up with the macro.
-> 
-> > First, I think the macro version here is just a poor-man's try block, in
-> > other words, I'd expect explicit use of try blocks intead of
-> > `from_kernel_result` when the feature is ready. If that's the case, we
-> > need to change the use sites anyway.
-> 
-> Yeah, if we eventually get a better language feature that fits well,
-> then we should use it.
-> 
-> > Do both implementation share the same behavior?
-> 
-> Yeah, a `return` will return to the outer caller in the case of a
-> `try` block, while it returns to the closure (macro) in the other
-> case. Or do you mean something else?
-> 
+Thanks very much for fixing my mistake!
 
-"Yeah" means they have different behaviors, right? ;-)
+This is
+Reviewed-by: David Gow <davidgow@google.com>
 
-Thanks for confirming and I think you get it, but just in case for
-others reading this: if we use the macro way to implement
-`from_kernel_result` as in this patch:
+Cheers,
+-- David
 
-	macro_rules! from_kernel_result {
-	    ($($tt:tt)*) => {{
-		$crate::error::from_kernel_result_helper((|| {
-		    $($tt)*
-		})())
-	    }};
-	}
+>  Documentation/rust/arch-support.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
+> index ed7f4f5b3cf1..b91e9ef4d0c2 100644
+> --- a/Documentation/rust/arch-support.rst
+> +++ b/Documentation/rust/arch-support.rst
+> @@ -15,7 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
+>  ============  ================  ==============================================
+>  Architecture  Level of support  Constraints
+>  ============  ================  ==============================================
+> -``x86``       Maintained        ``x86_64`` only.
+>  ``um``        Maintained        ``x86_64`` only.
+> +``x86``       Maintained        ``x86_64`` only.
+>  ============  ================  ==============================================
+>
+> --
+>
+> Thank you,
+> Thomas
+>
+>
+> _______________________________________________
+> linux-um mailing list
+> linux-um@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-um
 
-and later we re-implement with try blocks:
+--000000000000dc318105f5a9b680
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-	macro_rules! from_kernel_result {
-	    ($($tt:tt)*) => {{
-		$crate::error::from_kernel_result_helper(try {
-		    $($tt)*
-		})
-	    }};
-	}
-
-the `from_kernel_result` semantics will get changed on the `return`
-statement inside the macro blocks.
-
-And this is another reason why we want to avoid use macros here. Code
-example as below:
-
-	https://play.rust-lang.org/?version=nightly&mode=debug&edition=2021&gist=58ea8b95cdfd6b053561052853b0ac00
-
-`foo_v1` and `foo_v3` has the exact same function body, but behave
-differently.
-
-> In that case, I think one could use use a labeled block to `break`
-> out, not sure if `try` blocks will allow an easier way.
-> 
-> We have a case of such a `return` within the closure at `rust/rust` in
-> `file.rs`:
-
-Thanks for finding an example! Means we did use return.
-
-For this particular API, I'd say function right now, `try` blocks if
-avaiable.
-
-Regards,
-Boqun
-
-> 
->     from_kernel_result! {
->         let off = match whence as u32 {
->             bindings::SEEK_SET => SeekFrom::Start(offset.try_into()?),
->             bindings::SEEK_CUR => SeekFrom::Current(offset),
->             bindings::SEEK_END => SeekFrom::End(offset),
->             _ => return Err(EINVAL),
->         };
->         ...
->         Ok(off as bindings::loff_t)
->     }
-> 
-> Cheers,
-> Miguel
+MIIPnwYJKoZIhvcNAQcCoIIPkDCCD4wCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ggz5MIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
+dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
+6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
+c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
+I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
+AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
+BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
+CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
+AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
+MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
+My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
+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
+64VRg2IjDI2fJVE9RD6aMEwGA1UdIARFMEMwQQYJKwYBBAGgMgEoMDQwMgYIKwYBBQUHAgEWJmh0
+dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQCMAAwgZoGCCsG
+AQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9jYS9n
+c2F0bGFzcjNzbWltZWNhMjAyMDBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
+LmNvbS9jYWNlcnQvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3J0MB8GA1UdIwQYMBaAFHzMCmjXouse
+LHIb0c1dlW+N+/JjMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20v
+Y2EvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3JsMA0GCSqGSIb3DQEBCwUAA4IBAQA2lZLYRLu7foeR
+cHo1VeNA974FZBiCm08Kd44/aCMEzdTJvxAE9xbUJf7hS1i6eW49qxuSp3/YLn6U7uatwAcmZcwp
+Zma19ftf3LH+9Hvffk+X8fbPKe6uHkJhR2LktrhRzF159jj67NvXyGQv8J4n7UNeEVP0d5ByvRwv
+tF2bJwlOwRGLoxasKSyDHIyUpwTfWYPq7XvjoGqQ/tDS7Khcc5WncJl0/ZEj7EKjtoGbsDbLdXEF
+m/6vdcYKJzF9ghHewtV3YIU4RE3pEM4aCWWRtJwbExzeue6fI7RqURbNCAyQuSpWv0YQvzsX3ZX3
+c1otrs50n1N0Sf8/rfJxq7sWMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
+R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
+MDIwAhABxy1wm0tAmHKHFkLS9RWPMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAi
+z7OD1iuvvqDIQAmsORRfsUR76ZF7loUR9u7z56rHZzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
+MBwGCSqGSIb3DQEJBTEPFw0yMzAyMjcwNzQ5MDlaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
+BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
+CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAYRYASwOTRNzGu1ahpW1H
+qlE0cvny2k5nCZrrxF8pBiSoSsuOhzeaxlvCkqQvQ+lK5SsAONhSw9jxMGU+NdM5r4oy2XRIThgV
+WE3xLHvEXjSfYv3k3fw7ySOo0TYfT+0cFTN1qd4AsS1MXwaoQRt2fupdcz1kkXJ718tDKoLoSyNa
+LejBzXgoXYfb7vqIBU+DtCPCrFOJwrOg8W/OYTlNpiaqZAUz5E9Sa62KSEInXXQ+Ekp45xt7XUBg
+G9OvES+alwZX4Zl7VX/EpOM9+qRpmHfExkUD+hy/4pU2ZfbLtEON0/O3jGISQPEIyk/a2yXe1lfY
+E+oexZ8DHIt0To32Zg==
+--000000000000dc318105f5a9b680--
