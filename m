@@ -2,107 +2,145 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCF44C64ED9
-	for <rust-for-linux@archiver.kernel.org>; Mon, 27 Feb 2023 13:59:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F921C64ED8
+	for <rust-for-linux@archiver.kernel.org>; Mon, 27 Feb 2023 14:38:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229821AbjB0N7T (ORCPT
+        id S229991AbjB0Oh6 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 27 Feb 2023 08:59:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46562 "EHLO
+        Mon, 27 Feb 2023 09:37:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjB0N7S (ORCPT
+        with ESMTP id S229524AbjB0Oh4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 27 Feb 2023 08:59:18 -0500
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E10E9EFE;
-        Mon, 27 Feb 2023 05:59:16 -0800 (PST)
-Received: by mail-ot1-x32b.google.com with SMTP id g6-20020a056830308600b0068d4b30536aso3559814ots.9;
-        Mon, 27 Feb 2023 05:59:16 -0800 (PST)
+        Mon, 27 Feb 2023 09:37:56 -0500
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F9D40F2
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 Feb 2023 06:37:53 -0800 (PST)
+Received: by mail-ed1-x52f.google.com with SMTP id cy6so26738866edb.5
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 Feb 2023 06:37:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=unp+qLGJP8+58YKKISdSfno956lsSwpDkwJ9G7KtJjc=;
-        b=bgH1FCe4rig0MtFhhCFj1NGgZUm4UtF77mkd/1Q/HjtjYuksmHVUr/r/Qpzc1o1H8F
-         8c5EQrMlkgow5oofpdFWHlHlYYgUO5K7JCEE7Y9Axid1CRyS//HSbPjbcxodfL/G247a
-         g/ey4y6JAVgXSsGIEwW73QxFkOBGul+jWM6iBefMoQbSwimkbxR+pR29ROX2jOBlYeqV
-         OsZZCjYK4OzRWROtwBfnzqykI8XDYghZwDJ/eFRhWSBQmQoTuREpAruQrdxqKolLzV/E
-         tISjRD/OAXqSiWNDJs9JcR6czijxbShGaaoRCNr3Oxyxvtup0M3MK32xxv8nabPrqnR5
-         vlkw==
+        d=metaspace-dk.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jardeordj/XaekgQabJqF1lz2rr5vkdnESlvHbFfelw=;
+        b=hganA3faGvuJFN5axMQ5JxQkgWZCh7Su32XCgEwy8s446/VNR4zAmXwj3l8/RfEnQ2
+         T7HSpR309392mmAq+NSWjy2f2JRZUdYdXGx3Dc/B8G7KXAXzP1m1++viAtdWpseS8Inh
+         gJ47k59fCi9TZBjO094HMYh4ah/fq3j+1vLP+bOkPQog/+bgS3no+CvGxpf0ULGy2uvY
+         ygLAR2AAkauWvXKEhL0EX7B6NOVpQ4dRgFort8YAxO0zOMVFSoGmEM/3RagYU4XBhIFo
+         z6fD3QFuibh+hzjwxgfJY+OrWDqLnEIS0Ru9wbpT8+O1U9bTLRxetNRMXZpllx6Sb0fZ
+         IBrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=unp+qLGJP8+58YKKISdSfno956lsSwpDkwJ9G7KtJjc=;
-        b=myr3ItirQ/PVjWSi08k8YiTJEM5L98tlGwp86PViB/ppL4ZUwhFoREvXaIufDCmXJC
-         4i8tkR21TDxjh5lqdlRowuvkZBbVa1SFrpCTAUpQiSsSIvQist53Z08XmUAB5KbC7uat
-         VWbtjxzbcXGHZKnnR5CQKUi/qOMtrCcMIl8fm9cNg3oDf0Xt9Y/d54PY3r879dT9AJry
-         7gYMWAX6qYl81iA1rmG1XG2KccKcJbNSx0uc1JNjtdywNk9/HIj/yiFLUzoYkrI8fQI9
-         YSp30+UVqReAvvdelRpShmnWKig2uqUJpCEGnMEiUItkBNfp/63+1I0f/O1quQ9T/cV9
-         fJyQ==
-X-Gm-Message-State: AO0yUKXzjcAX5lmDHeYxyxzbDYPz8htpQ3h+b0ZRulxUs7XK9pkX1gl0
-        pg/n2eonalzQ1cGaEkAGdahyIT7ZMv8=
-X-Google-Smtp-Source: AK7set8W4wfK9yMevPg4QyZg5y3a741TO2MJpfMAbvCN2Eyfyg90eSqe24+1IzevZqWCWzrrh+qgQg==
-X-Received: by 2002:a05:6830:43a2:b0:68b:e2bc:3f7 with SMTP id s34-20020a05683043a200b0068be2bc03f7mr4427410otv.18.1677506355439;
-        Mon, 27 Feb 2023 05:59:15 -0800 (PST)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id z14-20020a9d468e000000b00686a19ffef1sm2606492ote.80.2023.02.27.05.59.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Feb 2023 05:59:15 -0800 (PST)
-Message-ID: <066e7233-e248-aad5-7db9-63d009eafa19@gmail.com>
-Date:   Mon, 27 Feb 2023 10:59:10 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH 5/5] rust: error: Add from_kernel_result!() macro
-Content-Language: en-US
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>
-Cc:     Gary Guo <gary@garyguo.net>, Asahi Lina <lina@asahilina.net>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jardeordj/XaekgQabJqF1lz2rr5vkdnESlvHbFfelw=;
+        b=fullfnFBwLlcsjSJ6Q8VUkEudNsKmaGKKUmAO30S92PEhE27cQ+hNZXOwz4tU0c1p9
+         XbN+lgtMWMsNKmJuswwUKMeHYSGsrA4bEfvmsyFM22iD9DFU+RiWUQOmb/rP2a8kq32O
+         5RBkWXkl3Ks+XJL95MHO650My5/g8SE+rtVL1v3QfeeFcJapuc4njNZHNKMjUkRsZ4za
+         rtxQSAnBzmuWZF2KjMMafbbppDT+oZhRYdiagPnDnlL4zZRtEkkmdPnONFUQqISq1v22
+         afp2R9nj7nofg+dmcHJzQrEInb7TkM4J78+jDnV5KDQeo39ZDZEfl+jED/zNbk3Xb47P
+         o6pQ==
+X-Gm-Message-State: AO0yUKUC5sdNqxtTnOTkTqchYJvLQ3pxolDRdhhdTHt8+thiI1MGhXe8
+        LD2uSEWeZkZf7q+1/3Ouh4RXZw==
+X-Google-Smtp-Source: AK7set+x74nbvd+X2m0N2CUH9bptLVF4b0EcDroO1edwiwkWo4zu/CmTcGWNBrewdzwbDuvrN4DMDQ==
+X-Received: by 2002:a17:906:8608:b0:872:82d3:4162 with SMTP id o8-20020a170906860800b0087282d34162mr28971157ejx.44.1677508672009;
+        Mon, 27 Feb 2023 06:37:52 -0800 (PST)
+Received: from localhost ([194.62.217.2])
+        by smtp.gmail.com with ESMTPSA id kb16-20020a1709070f9000b008cae50b0115sm3263618ejc.87.2023.02.27.06.37.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Feb 2023 06:37:51 -0800 (PST)
+References: <20230224-rust-new_uninit-v1-1-c951443d9e26@asahilina.net>
+ <87pm9v9rmg.fsf@metaspace.dk>
+ <96cb824e-8251-a329-11e5-3618a4e59bc8@asahilina.net>
+User-agent: mu4e 1.9.18; emacs 28.2.50
+From:   Andreas Hindborg <nmi@metaspace.dk>
+To:     Asahi Lina <lina@asahilina.net>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Fox Chen <foxhlchen@gmail.com>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
- <20230224-rust-error-v1-5-f8f9a9a87303@asahilina.net>
- <Y/lOlcSpc+d9ytq/@boqun-archlinux> <20230225222340.34d749ee.gary@garyguo.net>
- <Y/rCU1S+GDgIojNf@boqun-archlinux> <20230226133606.583cd1d8.gary@garyguo.net>
- <Y/uiAfZnfbbMrQuD@boqun-archlinux>
- <CANiq72kTiHF76T0AycM43qj4rUgQpHzBqXujdvk+H2qoDz22AQ@mail.gmail.com>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <CANiq72kTiHF76T0AycM43qj4rUgQpHzBqXujdvk+H2qoDz22AQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, asahi@lists.linux.dev
+Subject: Re: [PATCH] rust: Enable the new_uninit feature for kernel and
+ driver crates
+Date:   Mon, 27 Feb 2023 15:34:38 +0100
+In-reply-to: <96cb824e-8251-a329-11e5-3618a4e59bc8@asahilina.net>
+Message-ID: <875ybn9nsx.fsf@metaspace.dk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 2/26/23 17:59, Miguel Ojeda wrote:
-> On Sun, Feb 26, 2023 at 7:17 PM Boqun Feng <boqun.feng@gmail.com> wrote:
->>
->> My preference to function instead of macro here is because I want to
->> avoid the extra level of abstraction and make things explict, so that
->> users and reviewers can understand the API behavior solely based on
->> Rust's types, functions and closures: they are simpler than macros, at
->> least to me ;-)
-> 
-> There is one extra problem with the macro: `rustfmt` does not format
-> the contents if called with braces (as we currently do).
-> 
-> So when I was cleaning some things up for v8, one of the things I did
-> was run manually `rustfmt` on the blocks by removing the macro
-> invocation, in commit 77a1a8c952e1 ("rust: kernel: apply `rustfmt` to
-> `from_kernel_result!` blocks").
-> 
-> Having said that, it does format it when called with parenthesis
-> wrapping the block, so we could do that if we end up with the macro.
 
-Also rust-analyzer can't analyze the insides of a from_kernel_result!
-block. Only thing it can do is to suggest a macro expansion. Plus, this
-macro triggers a clippy lint on a redundant call on a closure. So it's a
-bit annoying to work with.
+Asahi Lina <lina@asahilina.net> writes:
+
+> On 27/02/2023 22.09, Andreas Hindborg wrote:
+>>=20
+>> Asahi Lina <lina@asahilina.net> writes:
+>>=20
+>>> The unstable new_uninit feature enables various library APIs to create
+>>> uninitialized containers, such as `Box::assume_init()`. This is
+>>> necessary to build abstractions that directly initialize memory at the
+>>> target location, instead of doing copies through the stack.
+>>>
+>>> Will be used by the DRM scheduler abstraction in the kernel crate, and
+>>> by field-wise initialization (e.g. using `place!()` or a future
+>>> replacement macro which may itself live in `kernel`) in driver crates.
+>>>
+>>> See [1] [2] [3] for background information.
+>>>
+>>> [1] https://github.com/Rust-for-Linux/linux/issues/879
+>>> [2] https://github.com/Rust-for-Linux/linux/issues/2
+>>> [3] https://github.com/rust-lang/rust/issues/63291
+>>>
+>>> Signed-off-by: Asahi Lina <lina@asahilina.net>
+>>> ---
+>>>  rust/kernel/lib.rs     | 1 +
+>>>  scripts/Makefile.build | 2 +-
+>>>  2 files changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+>>> index 223564f9f0cc..1118cd3e0b5f 100644
+>>> --- a/rust/kernel/lib.rs
+>>> +++ b/rust/kernel/lib.rs
+>>> @@ -17,6 +17,7 @@
+>>>  #![feature(core_ffi_c)]
+>>>  #![feature(dispatch_from_dyn)]
+>>>  #![feature(generic_associated_types)]
+>>> +#![feature(new_uninit)]
+>>>  #![feature(receiver_trait)]
+>>>  #![feature(unsize)]
+>>>=20=20
+>>> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+>>> index a0d5c6cca76d..0f637e1ca8dc 100644
+>>> --- a/scripts/Makefile.build
+>>> +++ b/scripts/Makefile.build
+>>> @@ -277,7 +277,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
+>>>  # Compile Rust sources (.rs)
+>>>  # --------------------------------------------------------------------=
+-------
+>>>=20=20
+>>> -rust_allowed_features :=3D core_ffi_c
+>>> +rust_allowed_features :=3D core_ffi_c,new_uninit
+>>=20
+>> What is the purpose of adding the feature here? The kernel crate seems
+>> to compile fine without this.
+>
+> It's for the upcoming DRM abstractions, as I mentioned in the commit
+> message. There's so many dependencies that I'm trying to get as much as
+> I can early to avoid having to review very big patchsets down the line ^^
+
+I got confused on the different makefile rules used to build kernel
+crate vs module crates. Looks good =F0=9F=91=8D
+
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+
