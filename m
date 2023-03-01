@@ -2,146 +2,82 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D6A1C64ED6
-	for <rust-for-linux@archiver.kernel.org>; Tue, 28 Feb 2023 09:30:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77A7AC6FA9D
+	for <rust-for-linux@archiver.kernel.org>; Wed,  1 Mar 2023 17:16:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230289AbjB1JaU (ORCPT
+        id S229656AbjCARQj (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 28 Feb 2023 04:30:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46558 "EHLO
+        Wed, 1 Mar 2023 12:16:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229565AbjB1JaT (ORCPT
+        with ESMTP id S229676AbjCARQi (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 28 Feb 2023 04:30:19 -0500
-Received: from mout-b-105.mailbox.org (mout-b-105.mailbox.org [195.10.208.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A748C72B2;
-        Tue, 28 Feb 2023 01:30:17 -0800 (PST)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-b-105.mailbox.org (Postfix) with ESMTPS id 4PQsXj4k9fz9tth;
-        Tue, 28 Feb 2023 10:30:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nyantec.com; s=default;
-        t=1677576613;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Bi4OIXDyb2sM777Ha+kervPZF/8SdxTa01qLXizAj9E=;
-        b=E2oZx40qJhRpnOxqow0hYGaXMt3skJHVIKtRaDvjE6GJRrfpbCOiCCap/E6RAlqLWiok06
-        Znz4QT2RqfvV2t+zgYn1vArKmlGNLfmyefZXhv12IZizyw6msqwSVKJZrNZXSu+5GFeDD6
-        kVncADUZew1H07Rj1ie8pNroOZmatrmcKzNUMNImjbN68d0fujX5yAblMGNf0doZ1n5jy0
-        yOX8EPWPzI2V92nIpNWu7Aql+1vOoocnwmert20VHD6GLkkJCfcD1Z9eNuuCUxd6OpNPy7
-        fNefKIH9pwv9+Ifyxs4ZTmM7+SoRaOCSahbuOrANcFL3EbyvW/2xHstkTnUBig==
-From:   Finn Behrens <fin@nyantec.com>
-To:     Asahi Lina <lina@asahilina.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev
+        Wed, 1 Mar 2023 12:16:38 -0500
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74B7147401;
+        Wed,  1 Mar 2023 09:16:33 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id bw19so13977447wrb.13;
+        Wed, 01 Mar 2023 09:16:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1677690992;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4NETed6QsszCCfbxUNnOzWzkjjDv/q/IkI5fEDoX4wI=;
+        b=j5PAiYPlH764lcPR/m7bd58SFHRINpPSYn+8pyDy66s3KWxkMDtOrMr6HS1ftAgCsB
+         KCFgPs0iZGQA0fRKL66/ZxeLPISCuAQgWgbXCseJcE+WFUVNicam9ctuQjs78sgzOI/R
+         WULWUUUgLlLsiDwJ9gZQ/7xnXqNzQjS7gbUDFIu9vH0wYBSDutnBH1yxxehHwccGngjp
+         dGDPw7SXtPa1TpT0Q0wZwhuH/uYHrpfLE/23eHf3gIK7pM2abGWzWjNuTnE6T9V2rLSY
+         5mTlOLEayhKOeQKgzyZt0no97Y5Dk+C0BTGX6hzXfrFvy6YynpKW8UwM7/PZ7y8JWjyB
+         0tOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677690992;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4NETed6QsszCCfbxUNnOzWzkjjDv/q/IkI5fEDoX4wI=;
+        b=efo8i3YH7HRlm2PU65FUu8lGuZiyspJJQPXcfvdOlq0tj/JFR/xoDs1q0clG8tjwIR
+         oj+fJq/9Fw5c1MKVpbtaSnZtwOzoM1N5q1Wrua/J5xJOvNnzFuwByDUOTiw2R0v4iHza
+         nlLFHPnM3KuyOSq3YF1UAV1mv9dKGgLyh3eMTqyh4YhLK7dgOaN8K9m8AhV09n4UvF9F
+         XJmsKIDvWjN/FgRxr7Hm1nyy9fiRP/PoiX3VfeMxI42FzGEMeHypRPvfe+wZr5FVDWde
+         PvWj/2wPdipVUBCVPfeFh0Iy/ZNB8BYU1E+T1yNnKoUJpp8Ov7g6DvrzE8rnSYe3aBx4
+         KdMw==
+X-Gm-Message-State: AO0yUKXxvtqvZTtfmAgibhR+hXBL+4Wq0eM7JtO2R/A2xJOEsOpHKspr
+        vV8tHOxAFG5Sx6vy9QSZ4rQ=
+X-Google-Smtp-Source: AK7set8n6Dv3tseaeJcVVe8S4m2p2/U1dnhpG40bkNzStOXjHpD7+sncmZigwAsWCYG7wao5G6x2DQ==
+X-Received: by 2002:a05:6000:38d:b0:2c5:5ee9:6b27 with SMTP id u13-20020a056000038d00b002c55ee96b27mr4969422wrf.13.1677690991742;
+        Wed, 01 Mar 2023 09:16:31 -0800 (PST)
+Received: from localhost ([2001:b07:5d37:537d:5e25:9ef5:7977:d60c])
+        by smtp.gmail.com with ESMTPSA id q10-20020adfea0a000000b002c567b58e9asm13303970wrm.56.2023.03.01.09.16.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Mar 2023 09:16:30 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Wed, 01 Mar 2023 18:16:29 +0100
+Message-Id: <CQV7TKRQDUHG.2RWP6Z9ERRF9B@vincent-arch>
+Cc:     <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <asahi@lists.linux.dev>
 Subject: Re: [PATCH 1/3] rust: macros: Make expect_punct() return the Punct
  directly
-Date:   Tue, 28 Feb 2023 10:29:59 +0100
-Message-ID: <A74F7C50-1F28-4416-8E99-27B9F63A352B@nyantec.com>
-In-Reply-To: <20230224-rust-macros-v1-1-b39fae46e102@asahilina.net>
+From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
+To:     "Asahi Lina" <lina@asahilina.net>,
+        "Miguel Ojeda" <ojeda@kernel.org>,
+        "Alex Gaynor" <alex.gaynor@gmail.com>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
 References: <20230224-rust-macros-v1-0-b39fae46e102@asahilina.net>
  <20230224-rust-macros-v1-1-b39fae46e102@asahilina.net>
-MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20230224-rust-macros-v1-1-b39fae46e102@asahilina.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-
-
-On 24 Feb 2023, at 8:25, Asahi Lina wrote:
-
-> This makes it mirror the way expect_ident() works, and means we can mor=
-e
+> This makes it mirror the way expect_ident() works, and means we can more
 > easily push the result back into the token stream.
 >
 > Signed-off-by: Asahi Lina <lina@asahilina.net>
-
-Reviewed-by: Finn Behrens <fin@nyantec.com>
-
 > ---
->  rust/macros/concat_idents.rs | 2 +-
->  rust/macros/helpers.rs       | 6 +++---
->  rust/macros/module.rs        | 4 ++--
->  3 files changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/rust/macros/concat_idents.rs b/rust/macros/concat_idents.r=
-s
-> index 7e4b450f3a50..6d955d65016e 100644
-> --- a/rust/macros/concat_idents.rs
-> +++ b/rust/macros/concat_idents.rs
-> @@ -15,7 +15,7 @@ fn expect_ident(it: &mut token_stream::IntoIter) -> I=
-dent {
->  pub(crate) fn concat_idents(ts: TokenStream) -> TokenStream {
->      let mut it =3D ts.into_iter();
->      let a =3D expect_ident(&mut it);
-> -    assert_eq!(expect_punct(&mut it), ',');
-> +    assert_eq!(expect_punct(&mut it).as_char(), ',');
->      let b =3D expect_ident(&mut it);
->      assert!(it.next().is_none(), "only two idents can be concatenated"=
-);
->      let res =3D Ident::new(&format!("{a}{b}"), b.span());
-> diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
-> index cf7ad950dc1e..65706ecc007e 100644
-> --- a/rust/macros/helpers.rs
-> +++ b/rust/macros/helpers.rs
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->
-> -use proc_macro::{token_stream, TokenTree};
-> +use proc_macro::{token_stream, Punct, TokenTree};
->
->  pub(crate) fn try_ident(it: &mut token_stream::IntoIter) -> Option<Str=
-ing> {
->      if let Some(TokenTree::Ident(ident)) =3D it.next() {
-> @@ -38,9 +38,9 @@ pub(crate) fn expect_ident(it: &mut token_stream::Int=
-oIter) -> String {
->      try_ident(it).expect("Expected Ident")
->  }
->
-> -pub(crate) fn expect_punct(it: &mut token_stream::IntoIter) -> char {
-> +pub(crate) fn expect_punct(it: &mut token_stream::IntoIter) -> Punct {=
 
->      if let TokenTree::Punct(punct) =3D it.next().expect("Reached end o=
-f token stream for Punct") {
-> -        punct.as_char()
-> +        punct
->      } else {
->          panic!("Expected Punct");
->      }
-> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-> index a7e363c2b044..07503b242d2d 100644
-> --- a/rust/macros/module.rs
-> +++ b/rust/macros/module.rs
-> @@ -104,7 +104,7 @@ impl ModuleInfo {
->                  );
->              }
->
-> -            assert_eq!(expect_punct(it), ':');
-> +            assert_eq!(expect_punct(it).as_char(), ':');
->
->              match key.as_str() {
->                  "type" =3D> info.type_ =3D expect_ident(it),
-> @@ -119,7 +119,7 @@ impl ModuleInfo {
->                  ),
->              }
->
-> -            assert_eq!(expect_punct(it), ',');
-> +            assert_eq!(expect_punct(it).as_char(), ',');
->
->              seen_keys.push(key);
->          }
->
-> -- =
-
-> 2.35.1
+Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
