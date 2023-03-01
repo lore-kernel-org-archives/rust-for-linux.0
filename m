@@ -2,98 +2,89 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 92E05C64ED6
-	for <rust-for-linux@archiver.kernel.org>; Wed,  1 Mar 2023 17:19:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95009C6FA9D
+	for <rust-for-linux@archiver.kernel.org>; Wed,  1 Mar 2023 17:22:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229658AbjCARTu (ORCPT
+        id S229527AbjCARWd (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 1 Mar 2023 12:19:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48060 "EHLO
+        Wed, 1 Mar 2023 12:22:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229935AbjCARTt (ORCPT
+        with ESMTP id S229629AbjCARWc (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 1 Mar 2023 12:19:49 -0500
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B634A27988;
-        Wed,  1 Mar 2023 09:19:45 -0800 (PST)
-Received: by mail-wm1-x32a.google.com with SMTP id az36so9094135wmb.1;
-        Wed, 01 Mar 2023 09:19:45 -0800 (PST)
+        Wed, 1 Mar 2023 12:22:32 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01389460B9;
+        Wed,  1 Mar 2023 09:22:30 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id p16so9070148wmq.5;
+        Wed, 01 Mar 2023 09:22:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677691184;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
+        d=gmail.com; s=20210112; t=1677691349;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lVLUoMBClRsLJTrNJuKg+DNnna+fSwHUpLxyvEvQJJU=;
-        b=hGIWnqpKj9B5BELlIG92XwTie5VSWrj2kGuAfpbs9LGD9wBDfsgvjaSNcr5apiJC68
-         8DWjmL1lt0KAuvqc7GOc9b6qnzi1zWY4VX8K+g83XUwOFhAjXwghbJ4UgwfGtAh5ydVq
-         oNZpbORAhThRkBVZMv58snaAA5M50UZqTBdiRJ4Ign8yEDbogLuEHLhSkXxPL/anYK4A
-         5I8ndV7qcjphHGcuOs40p0CPebJNIvHsLpwS8H5qSvnNSpfvogjiSGn4vv4MnDBNnprc
-         LFlNS7z42RB1g4m7hZvshlgTsC8IH81R36b19g3yiNwzXDrqp6apeoO3+JJ/oj34Kg3K
-         BAuQ==
+        bh=kDQHP8BG8R5wdJ7RTb+80l2ekEuyVXCqz8ZnvG7NU2E=;
+        b=MXqcEB1rg/3NyMESFE4svUXado9uxbiDrvKogUtcjg2aU575GuICui5bKmW+87FGKM
+         OQIgHtE6lZ1rLlCzzoJwXR5yPulcZM/PumnU+lOGTwKL6jnmiPQhxcRn94NIithJvg/a
+         Yy2M7jN5wkOI9txLQZw0wNcP4db11DaA8wmIQSGjnWLUAuKXH2CiUmPa+5NRNy9OMuvr
+         OD/xdxkSHQsieJYpbtK7LjQwBRnvJSlUFBGTl0leWHR2Az/iixiPZJg4iye1bQW8w7CJ
+         y8sUsxOY5CT3nRjzfZPMlW4BRnk93AAlX3L0DrZ8z8iojrpG5/+bjuJMyJ7WwWrcDff/
+         lCLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677691184;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
+        d=1e100.net; s=20210112; t=1677691349;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=lVLUoMBClRsLJTrNJuKg+DNnna+fSwHUpLxyvEvQJJU=;
-        b=EUPwpwn3ryNdccuEjlZMrgK/1l4CxxgY/Pyz8jzAtMdTYLtF4S0r60PCx7nXenxzs9
-         EZvMYFmy3GSoQNjEULOqLO12c+8OX3jlx+6QVj474XrBlfKuuBPiXkLr9U/VT3aS9q2+
-         HwoZOyPKRRQef3IP4EiJd0OyKnwg5xaqkYON/MN030VWCPBB7G17B8DurWNr10LJJdMF
-         x202maJCT65+WCkJbSRJy5wGa6DBja0DAgs1Hzp/UBzaVPDg+w1u0xobUoCCEm1w9DXP
-         mwjI+1NYS4lxF25zegfpualz0BlMBAUcMs/Wq0JRiVrDnQeClQq056YenhgLL12R4ea2
-         pqmg==
-X-Gm-Message-State: AO0yUKXZCnq47qjzZre6INzpq9rzqIdfxd/qOQaQf3Ni+ek/a+2emAMw
-        ornqR6PMFc3V5WwBHY0ugmQ=
-X-Google-Smtp-Source: AK7set8lQ8cqGjyf5GgzueugEeOGCskEuHNOA6VdFXO1Nx5pZJd05ym6Gw3DKRtCrczGsFG7hufDmA==
-X-Received: by 2002:a05:600c:3319:b0:3eb:383c:187d with SMTP id q25-20020a05600c331900b003eb383c187dmr5249410wmp.27.1677691184203;
-        Wed, 01 Mar 2023 09:19:44 -0800 (PST)
+        bh=kDQHP8BG8R5wdJ7RTb+80l2ekEuyVXCqz8ZnvG7NU2E=;
+        b=AmENHsC/7lEXRQMGLnNfqAsEKt9uIbhM+8ucr4L3YCaVmppC2D5zl0HqQH3m12qNGD
+         dNC2hXKwe036b1+Ff0UJhKgxNPln941wRqP+aeaQ6FHa2liO0yTBT4764P9UYwPdriI+
+         ETILlXj0v3uKWIduFpuXJRtj4UNdMKdgasJ72c9Eb89SJRYgLD9+OONZqW4bZjxBgW01
+         bUPutpFkXne62qNkoxn+IDhFl9/HKjpsMeMPIP5ReYM+so3UYNNarzaIN1SSVrKLIPMY
+         3vKX7vTF6Lxgvh9NdtS3fLYMm+KPpAPzwM3QXBhkVWn/YYsAKv6K6sJVz0XU+ybmnCX+
+         lIcw==
+X-Gm-Message-State: AO0yUKWFhrG/YaBfs15w5j5+/GEJJLgv7BK2mwyaCNoPlwbqr9GCczUa
+        J4g6Lku22krkOhZrgpy5Kyo=
+X-Google-Smtp-Source: AK7set/xIQTGZ0oSP5Ir+iPChbH3yS0TpDGFVtf9t8yYtqEV3aMhGuoNbxDpLj4X7tn8uDDYAraJpw==
+X-Received: by 2002:a05:600c:3507:b0:3dc:4fd7:31e9 with SMTP id h7-20020a05600c350700b003dc4fd731e9mr6131748wmq.7.1677691349057;
+        Wed, 01 Mar 2023 09:22:29 -0800 (PST)
 Received: from localhost ([2001:b07:5d37:537d:5e25:9ef5:7977:d60c])
-        by smtp.gmail.com with ESMTPSA id j40-20020a05600c1c2800b003dd1bd0b915sm210956wms.22.2023.03.01.09.19.42
+        by smtp.gmail.com with ESMTPSA id p21-20020a05600c359500b003e0238d9101sm178410wmq.31.2023.03.01.09.22.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Mar 2023 09:19:43 -0800 (PST)
+        Wed, 01 Mar 2023 09:22:28 -0800 (PST)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 01 Mar 2023 18:19:41 +0100
-Message-Id: <CQV7W12MZX16.PLH1OAM17G7N@vincent-arch>
+Date:   Wed, 01 Mar 2023 18:22:27 +0100
+Message-Id: <CQV7Y50LK5UL.2YJUX3W7B4NU9@vincent-arch>
+Cc:     <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <asahi@lists.linux.dev>
+Subject: Re: [PATCH 1/2] rust: sync: arc: implement Arc<dyn Any + Send +
+ Sync>::downcast()
+From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
 To:     "Asahi Lina" <lina@asahilina.net>,
         "Miguel Ojeda" <ojeda@kernel.org>,
         "Alex Gaynor" <alex.gaynor@gmail.com>,
         "Wedson Almeida Filho" <wedsonaf@gmail.com>,
         "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
         =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <asahi@lists.linux.dev>, "Finn Behrens" <me@kloenk.dev>,
-        "Sumera Priyadarsini" <sylphrenadin@gmail.com>
-Subject: Re: [PATCH 3/3] rust: macros: Allow specifying multiple module
- aliases
-From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-References: <20230224-rust-macros-v1-0-b39fae46e102@asahilina.net>
- <20230224-rust-macros-v1-3-b39fae46e102@asahilina.net>
-In-Reply-To: <20230224-rust-macros-v1-3-b39fae46e102@asahilina.net>
+References: <20230224-rust-arc-v1-0-568eea613a41@asahilina.net>
+ <20230224-rust-arc-v1-1-568eea613a41@asahilina.net>
+In-Reply-To: <20230224-rust-arc-v1-1-568eea613a41@asahilina.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> Modules can (and usually do) have multiple alias tags, in order to
-> specify multiple possible device matches for autoloading. Allow this by
-> changing the alias ModuleInfo field to an Option<Vec<String>>.
+> This mirrors the standard library's alloc::sync::Arc::downcast().
 >
-> Note: For normal device IDs this is autogenerated by modpost (which is
-> not properly integrated with Rust support yet), so it is useful to be
-> able to manually add device match aliases for now, and should still be
-> useful in the future for corner cases that modpost does not handle.
+> Based on the Rust standard library implementation, ver 1.62.0,
+> licensed under "Apache-2.0 OR MIT", from:
 >
-> This pulls in the expect_group() helper from the rfl/rust branch
-> (with credit to authors).
+>     https://github.com/rust-lang/rust/tree/1.62.0/library/alloc/src
 >
-> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Co-developed-by: Finn Behrens <me@kloenk.dev>
-> Signed-off-by: Finn Behrens <me@kloenk.dev>
-> Co-developed-by: Sumera Priyadarsini <sylphrenadin@gmail.com>
-> Signed-off-by: Sumera Priyadarsini <sylphrenadin@gmail.com>
+> For copyright details, please see:
+>
+>     https://github.com/rust-lang/rust/blob/1.62.0/COPYRIGHT
+>
 > Signed-off-by: Asahi Lina <lina@asahilina.net>
 > ---
-
 Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
