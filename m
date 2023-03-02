@@ -2,83 +2,79 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F31D1C6FA8E
-	for <rust-for-linux@archiver.kernel.org>; Thu,  2 Mar 2023 14:59:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 305E7C6FA8E
+	for <rust-for-linux@archiver.kernel.org>; Thu,  2 Mar 2023 15:15:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230101AbjCBO7L (ORCPT
+        id S229960AbjCBPPm (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 2 Mar 2023 09:59:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57946 "EHLO
+        Thu, 2 Mar 2023 10:15:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229820AbjCBO7K (ORCPT
+        with ESMTP id S229987AbjCBPPl (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 2 Mar 2023 09:59:10 -0500
-Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29AD42D65;
-        Thu,  2 Mar 2023 06:59:06 -0800 (PST)
-Received: by mail-oo1-xc30.google.com with SMTP id c184-20020a4a4fc1000000b005250b2dc0easo2677106oob.2;
-        Thu, 02 Mar 2023 06:59:06 -0800 (PST)
+        Thu, 2 Mar 2023 10:15:41 -0500
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6024497EC;
+        Thu,  2 Mar 2023 07:15:37 -0800 (PST)
+Received: by mail-wr1-x42f.google.com with SMTP id j2so16848992wrh.9;
+        Thu, 02 Mar 2023 07:15:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qEpgxeitDDP5Tn7uIim35FMdWdclFw2u8SG1VaCEidM=;
-        b=YVCcOaNBTMmoAfpjjDb1z/1tHgiRHg7yxRnpeWD4pDu1+2dpzchhQKceqHJV8rJJSm
-         EzDLN+F1CbjibolcjaOiNgSGhV0Z64p+Yjj1+mGInnL679FELNsJdEN85NUuXFDGjugN
-         oJj45qgnI2DWoyuPc/No9P1BfvELrrbCeV6dhFM+zVIGOgorZVxOipoHB3hW7unamk4J
-         GQmFkA3zfn0p0o/YrWOFAyEIiFouGhjCcx6roAvtNQKioZrGfrIeloXpwHoZjqeWIDia
-         Xj2ZCJq6ZCdRRhZEPQliQglQPrhWW/19xapVoCn5BRS45AcirO9QBHx6oBZKene1sP3O
-         TkfA==
+        d=gmail.com; s=20210112; t=1677770136;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JHhD6PZbrJdLnN8I5j6dz8m695ceK7U+Bmp/aiVGzQE=;
+        b=oQFwvGzOz0+N/vAFnagvmKGjhskYfnqsEymRMxkLLNXSCYjp8wucJWnk51b3bQJr/9
+         JOuqYBqWnwcYk3dp7OGodTylYwxalkIMxa6N9GBPFDkmf97NWAuGO1MdIZdkVlnHZo1L
+         TU8qzhSzaxAMXaYqd7+oVKZPodqEn25jiy7WbMZMXcsm/1dgYLovG11TKj6D4QHqmH2Q
+         bfSTkJSKs+nfDkvZyImbcxUvI3b1DJnjGtym8aov+rUHubsqUefwBy8lLCbBHOWjqaG6
+         1QcbfIOjVi0jbijnYRzi91FMhDtjJiI2Wu9L3v6UpEhmrh0zrvdlZ6eDQMt/PK2JqZDZ
+         pJkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qEpgxeitDDP5Tn7uIim35FMdWdclFw2u8SG1VaCEidM=;
-        b=ZCgEhp5jCD77bu6uudZl3zjdUK/Y0XhOcfVSfjRqFr6n3v9oddMfw4fvXm4vUQEdWg
-         lQmG91/54i/YxkWlbO6x0GUySR0cqnzgsd4A4jcJejKlmpSK71NWE3kUpYPGu/za7DJ7
-         j1KDtDyPIYOXLJOd2iipYOOE86hxHtKh7pKDxdgkGf0Tc3Jnnt/ojk7FAg0xmviWQKDl
-         a9kTp5lNoPELXFadcvU9T57BzMl38pYRAR7tMsdEr4qGEa/hU70/EHKf1iwWOY1kCjiF
-         ifY9NS9ngDlhpQ259Edyg6VNHWBunqWU/sov4vBGgI9eSQkJ/EA2d3WYPWZfXmSX0ue3
-         sIGQ==
-X-Gm-Message-State: AO0yUKUcjhP3E+rkiXzluWi8eLtgtPR3ZS0KH5MRSFFU26nVgPWzVp1P
-        LwRJECSkDGYc/vXwe9zMn5c=
-X-Google-Smtp-Source: AK7set+SJASFyhOWznnJ//RCUCO/aNdtnRCrVi/mLeEWl1GBQgyJvXjf1BvjxCiPKvsrCpnZfTrlFQ==
-X-Received: by 2002:a4a:a689:0:b0:525:58f7:cbef with SMTP id f9-20020a4aa689000000b0052558f7cbefmr4911251oom.2.1677769145410;
-        Thu, 02 Mar 2023 06:59:05 -0800 (PST)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id v17-20020a4ae051000000b0051ac0f54447sm6076252oos.33.2023.03.02.06.59.02
+        d=1e100.net; s=20210112; t=1677770136;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=JHhD6PZbrJdLnN8I5j6dz8m695ceK7U+Bmp/aiVGzQE=;
+        b=299kJN4wC7RlgrSUPUUatxpxhdiJLVwue5VI2ghhS0KhkM4ex8J7DU5vsglJygmj4X
+         781z6oWCIYUoVdy70vFRsqg6Rfx6IjXY3IyWD3VPsM0wscMSvHvcsFvkUC87H/zx8Jv1
+         p0xs520LixnOirFBrmAXaTlZQFjNjr6O0528YfM94KN2OSJzFIH1u1EA+R5VnxN+lIeo
+         tKLv3AxEEao0gIed0eJ66z8ITH7bRzw68jiRFdNm1+vF/Nza9oP+13r2+klg0u5MjmR5
+         YuMxa38pu8iJnhBtcBP0kdHmoTx1bJpiOdGjnUWvbHWXFFRiez3eBqpNzpVMM23Z97D4
+         HQvQ==
+X-Gm-Message-State: AO0yUKUyNTL3Yx1JEBCMEMAFOKf5qOUnYY/BCtUOUHZJLIJTGKkpIOFB
+        RIkEQiT389qhM8ipO1u2cfM=
+X-Google-Smtp-Source: AK7set/DUvxKY6tPHNQVbTQ+ktOJBEK2ArxzYbGg/5mil44VvguxxxnkP8TJPXm1jEma5Q6daYhYDA==
+X-Received: by 2002:a5d:5092:0:b0:2c9:97f8:2604 with SMTP id a18-20020a5d5092000000b002c997f82604mr7106271wrt.14.1677770136143;
+        Thu, 02 Mar 2023 07:15:36 -0800 (PST)
+Received: from localhost (93-55-83-125.ip262.fastwebnet.it. [93.55.83.125])
+        by smtp.gmail.com with ESMTPSA id v4-20020a5d6784000000b002425be3c9e2sm15627886wru.60.2023.03.02.07.15.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Mar 2023 06:59:05 -0800 (PST)
-Message-ID: <37578649-c696-f3b5-a216-196e210929e5@gmail.com>
-Date:   Thu, 2 Mar 2023 11:59:00 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH 1/1] rust: bindgen: Add `alt_instr` as opaque type
-Content-Language: en-US
-To:     Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>
-Cc:     Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Derek Barbosa <debarbos@redhat.com>,
-        rust-for-linux@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <ZACvxNOuuyifQ9Nx@kernel.org>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <ZACvxNOuuyifQ9Nx@kernel.org>
+        Thu, 02 Mar 2023 07:15:35 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date:   Thu, 02 Mar 2023 16:15:34 +0100
+Message-Id: <CQVZVJ7DRUKZ.2MAN8KWV2U03@vincent-arch>
+Cc:     "Alex Gaynor" <alex.gaynor@gmail.com>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        "Derek Barbosa" <debarbos@redhat.com>,
+        <rust-for-linux@vger.kernel.org>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] rust: bindgen: Add `alt_instr` as opaque type
+From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
+To:     "Arnaldo Carvalho de Melo" <acme@kernel.org>,
+        "Miguel Ojeda" <ojeda@kernel.org>
+References: <ZACvxNOuuyifQ9Nx@kernel.org>
+In-Reply-To: <ZACvxNOuuyifQ9Nx@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 3/2/23 11:16, Arnaldo Carvalho de Melo wrote:
 > To address this build error:
-> 
+>
 >     BINDGEN rust/bindings/bindings_generated.rs
 >     BINDGEN rust/bindings/bindings_helpers_generated.rs
 >     EXPORTS rust/exports_core_generated.h
@@ -88,8 +84,10 @@ On 3/2/23 11:16, Arnaldo Carvalho de Melo wrote:
 >     RUSTC L rust/bindings.o
 >     RUSTC L rust/build_error.o
 >     EXPORTS rust/exports_alloc_generated.h
->   error[E0588]: packed type cannot transitively contain a `#[repr(align)]` type
->        --> /var/home/acme/git/linux/rust/bindings/bindings_generated.rs:10094:1
+>   error[E0588]: packed type cannot transitively contain a `#[repr(align)]=
+` type
+>        --> /var/home/acme/git/linux/rust/bindings/bindings_generated.rs:1=
+0094:1
 >         |
 >   10094 | / pub struct alt_instr {
 >   10095 | |     pub instr_offset: s32,
@@ -100,60 +98,41 @@ On 3/2/23 11:16, Arnaldo Carvalho de Melo wrote:
 >   10100 | | }
 >         | |_^
 >         |
->   note: `alt_instr__bindgen_ty_1__bindgen_ty_1` has a `#[repr(align)]` attribute
->        --> /var/home/acme/git/linux/rust/bindings/bindings_generated.rs:10111:1
+>   note: `alt_instr__bindgen_ty_1__bindgen_ty_1` has a `#[repr(align)]` at=
+tribute
+>        --> /var/home/acme/git/linux/rust/bindings/bindings_generated.rs:1=
+0111:1
 >         |
 >   10111 | / pub struct alt_instr__bindgen_ty_1__bindgen_ty_1 {
->   10112 | |     pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize], u16>,
+>   10112 | |     pub _bitfield_1: __BindgenBitfieldUnit<[u8; 4usize], u16>=
+,
 >   10113 | | }
 >         | |_^
 >   note: `alt_instr` contains a field of type `alt_instr__bindgen_ty_1`
->        --> /var/home/acme/git/linux/rust/bindings/bindings_generated.rs:10097:9
+>        --> /var/home/acme/git/linux/rust/bindings/bindings_generated.rs:1=
+0097:9
 >         |
 >   10097 |     pub __bindgen_anon_1: alt_instr__bindgen_ty_1,
 >         |         ^^^^^^^^^^^^^^^^
->   note: ...which contains a field of type `alt_instr__bindgen_ty_1__bindgen_ty_1`
->        --> /var/home/acme/git/linux/rust/bindings/bindings_generated.rs:10104:9
+>   note: ...which contains a field of type `alt_instr__bindgen_ty_1__bindg=
+en_ty_1`
+>        --> /var/home/acme/git/linux/rust/bindings/bindings_generated.rs:1=
+0104:9
 >         |
->   10104 |     pub __bindgen_anon_1: alt_instr__bindgen_ty_1__bindgen_ty_1,
+>   10104 |     pub __bindgen_anon_1: alt_instr__bindgen_ty_1__bindgen_ty_1=
+,
 >         |         ^^^^^^^^^^^^^^^^
-> 
-
-Reading the kernel sources this field corresponds to an u16 which indeed
-represents a bit set and it says so in a comment on the field. I
-couldn't replicate this issue, though, because this struct is used only
-inside arch pretty much internally, then there's no problem to make it
-opaque. Still, we have to be careful if these kind of things appear in
-the future.
-
-And I notice that You haven't mentioned the version of Bindgen that
-You've used, including its linked libclang too. Otherwise I think this
-could be accepted.
-
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-
+>
 >   error: aborting due to previous error
-> 
+>
 >   For more information about this error, try `rustc --explain E0588`.
 >   make[1]: *** [rust/Makefile:389: rust/bindings.o] Error 1
 >   make: *** [Makefile:1293: prepare] Error 2
-> 
+>
 > Cc: Derek Barbosa <debarbos@redhat.com>
 > Cc: Miguel Ojeda <ojeda@kernel.org>
 > Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-> ---
->  rust/bindgen_parameters | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-> index be4963bf720304da..552d9a85925b9945 100644
-> --- a/rust/bindgen_parameters
-> +++ b/rust/bindgen_parameters
-> @@ -6,6 +6,7 @@
->  --opaque-type local_apic
->  
->  # Packed type cannot transitively contain a `#[repr(align)]` type.
-> +--opaque-type alt_instr
->  --opaque-type x86_msi_data
->  --opaque-type x86_msi_addr_lo
->  
+
+Ah good catch!
+
+Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
