@@ -2,97 +2,57 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F3FCC64ED6
-	for <rust-for-linux@archiver.kernel.org>; Wed,  1 Mar 2023 17:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A38DC678D4
+	for <rust-for-linux@archiver.kernel.org>; Thu,  2 Mar 2023 08:51:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbjCARYc (ORCPT
+        id S229667AbjCBIv0 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 1 Mar 2023 12:24:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52672 "EHLO
+        Thu, 2 Mar 2023 03:51:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229728AbjCARYb (ORCPT
+        with ESMTP id S229496AbjCBIvZ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 1 Mar 2023 12:24:31 -0500
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBC79367E6;
-        Wed,  1 Mar 2023 09:24:30 -0800 (PST)
-Received: by mail-wm1-x332.google.com with SMTP id p23-20020a05600c1d9700b003ead4835046so1037563wms.0;
-        Wed, 01 Mar 2023 09:24:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677691469;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sNpkdoZmqWbaOAVmdJei7p+ZGXFT2prpPoc6LJ5dBsc=;
-        b=H1hL0uZxcat8GWO9QXh3RBN3DAIwfBbtYifyqCAdNxaqgQICwyujdWtRJEcSeMXL/n
-         PAngsJryhFCO3gp3meGjYeSwkPxGiR+BwbRDUN0TgiYiX46jMXB7xfIFxnrgr+HzfwK9
-         VMaJsodlkF8yjTtTxIpOjV6MJKNFSD8gRGgTPBrp4RlJO8t8DjaDE6wgsfSGwg0p/qrH
-         iPWPLrYNyb3SO5K0RdE6dly+Eg6sd9sc66SkgXj2Ff/V9la1H5qXDdShWPVw6H0wBl7h
-         ReXY8rM2cQJtae0ZcBnQqP9o7y410Frlb7Y/ejnGH/zZsUZP83Lw+vccnBnrsfhr1LjU
-         JlEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677691469;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sNpkdoZmqWbaOAVmdJei7p+ZGXFT2prpPoc6LJ5dBsc=;
-        b=4w2uxLkod4foKO3M+SMqeboPOnUjjWyXxaf5GvHJTolMDy0wyFRZGvLihBu6bwuX4A
-         cFoHMQTPhdXesu7VqITOB1XuxJJlm7WnSyUNP/BZmFB2JiPR4WthJDhK+KIu+S7ZRj81
-         WhNi2WJr3yuEla8ipOi9DrmK1SHQtqr9cMexRz3PZOmmzTDQZAaoAwv2Ztaq6T3V/Ugp
-         eQSDyJnVqcpCky4g1sqCUIsvAhQHYLQjiaUn8oqjHRb0CGxh2Tm9EaZ+2JvSdmgXTF5u
-         E5W+Hba+I4Ei/hi72rl5U+YDBCIXqW+o3c7+MY1Kq5iJ3uFlTnO7kKEvAJheF+TRaWk0
-         4vMA==
-X-Gm-Message-State: AO0yUKU4EivWDct1YxUzqhjUk7Q80oxsV0dXON7TQKoyy7EtD9qnS0L6
-        +4UYxzTLlYO6iSdtDA+yO0g=
-X-Google-Smtp-Source: AK7set/qEAM/YZLlke7KZF96LN1MjYAMr6V67vMOMBAYzfxb5ReD44O7Lfw2E+IZzSi1PTzv+CFdPQ==
-X-Received: by 2002:a05:600c:3acb:b0:3eb:38e6:f64f with SMTP id d11-20020a05600c3acb00b003eb38e6f64fmr5419748wms.8.1677691469184;
-        Wed, 01 Mar 2023 09:24:29 -0800 (PST)
-Received: from localhost (93-55-83-125.ip262.fastwebnet.it. [93.55.83.125])
-        by smtp.gmail.com with ESMTPSA id g12-20020a05600c310c00b003dc49e0132asm255828wmo.1.2023.03.01.09.24.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Mar 2023 09:24:28 -0800 (PST)
-Mime-Version: 1.0
+        Thu, 2 Mar 2023 03:51:25 -0500
+Received: from mail.penmade.pl (mail.penmade.pl [94.177.230.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFC042203D
+        for <rust-for-linux@vger.kernel.org>; Thu,  2 Mar 2023 00:51:22 -0800 (PST)
+Received: by mail.penmade.pl (Postfix, from userid 1001)
+        id 32B39837AA; Thu,  2 Mar 2023 08:51:07 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=penmade.pl; s=mail;
+        t=1677747080; bh=CSKXLMgcdpWkXuTgJn5+jsCVobtU9JEF4vCnS5z6McM=;
+        h=Date:From:To:Subject:From;
+        b=vU0zGe13hps0B2DEu2IPgnt0VJu0iuQeBYu/mlRifcKVMqmFdw+8Y1eRE8IgN+FVB
+         IQV3cRMmFbK+uK3TtJs/yz+7kg0FuaUGBJC3FybD07ShRz2mEuf9/wpy29U8xNIy9j
+         1YC+AXxLnz5Q9BAfrgniDFG6fFIvF3yzG7NVNAw0L6Pyh5YNDyGjXRu7NtEQbi7gwO
+         HJZ6iLp9hkwA/mrdZqAZBCq55xzCVFtvZ052B13JS/Uvcs1n8M9hRHh81SQ6MwqOI2
+         RPKFKBS+EBj875ky/r83ZgyFXr1i1F2mso0rGhlX7WBxRIObDBGOUM6iZsMLm4kC7x
+         brqaVRF624H/w==
+Received: by mail.penmade.pl for <rust-for-linux@vger.kernel.org>; Thu,  2 Mar 2023 08:50:52 GMT
+Message-ID: <20230302074500-0.1.2q.bwzm.0.6o98bqrd4s@penmade.pl>
+Date:   Thu,  2 Mar 2023 08:50:52 GMT
+From:   "Wiktor Nurek" <wiktor.nurek@penmade.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
+X-Mailer: mail.penmade.pl
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 01 Mar 2023 18:24:26 +0100
-Message-Id: <CQV7ZNT6LMXI.1XG4YXSH8I7JK@vincent-arch>
-Cc:     <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-kbuild@vger.kernel.org>, <asahi@lists.linux.dev>
-Subject: Re: [PATCH] rust: Enable the new_uninit feature for kernel and
- driver crates
-From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-To:     "Asahi Lina" <lina@asahilina.net>,
-        "Miguel Ojeda" <ojeda@kernel.org>,
-        "Alex Gaynor" <alex.gaynor@gmail.com>,
-        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        "Masahiro Yamada" <masahiroy@kernel.org>,
-        "Nathan Chancellor" <nathan@kernel.org>,
-        "Nick Desaulniers" <ndesaulniers@google.com>,
-        "Nicolas Schier" <nicolas@fjasle.eu>
-References: <20230224-rust-new_uninit-v1-1-c951443d9e26@asahilina.net>
-In-Reply-To: <20230224-rust-new_uninit-v1-1-c951443d9e26@asahilina.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> The unstable new_uninit feature enables various library APIs to create
-> uninitialized containers, such as `Box::assume_init()`. This is
-> necessary to build abstractions that directly initialize memory at the
-> target location, instead of doing copies through the stack.
->
-> Will be used by the DRM scheduler abstraction in the kernel crate, and
-> by field-wise initialization (e.g. using `place!()` or a future
-> replacement macro which may itself live in `kernel`) in driver crates.
->
-> See [1] [2] [3] for background information.
->
-> [1] https://github.com/Rust-for-Linux/linux/issues/879
-> [2] https://github.com/Rust-for-Linux/linux/issues/2
-> [3] https://github.com/rust-lang/rust/issues/63291
->
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> ---
+Dzie=C5=84 dobry,
 
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
+skania nowych zlece=C5=84 ze strony www.
+
+Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
+, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
+=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
+jonowania strony w Google.
+
+Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+
+
+Pozdrawiam serdecznie,
+Wiktor Nurek
