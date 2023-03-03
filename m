@@ -2,95 +2,74 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB7F7C64EC4
-	for <rust-for-linux@archiver.kernel.org>; Fri,  3 Mar 2023 21:22:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D52BC61DA3
+	for <rust-for-linux@archiver.kernel.org>; Fri,  3 Mar 2023 23:05:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231523AbjCCVWW (ORCPT
+        id S233102AbjCCXFy (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 3 Mar 2023 16:22:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33118 "EHLO
+        Fri, 3 Mar 2023 18:05:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231351AbjCCVWV (ORCPT
+        with ESMTP id S232845AbjCCXFo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 3 Mar 2023 16:22:21 -0500
+        Fri, 3 Mar 2023 18:05:44 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AF2C5FEAB;
-        Fri,  3 Mar 2023 13:22:21 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B05EF5FEB8;
+        Fri,  3 Mar 2023 15:05:23 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DD64618E8;
-        Fri,  3 Mar 2023 21:22:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDA1C433D2;
-        Fri,  3 Mar 2023 21:22:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FB48619A0;
+        Fri,  3 Mar 2023 23:04:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 95A7FC433D2;
+        Fri,  3 Mar 2023 23:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677878539;
-        bh=gJXGjh0DckWXjiaLEYJJpfg+bNVZ1df2iQhk0M2idtc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=kBJpYQOsJhvwyGlUGsycf0ueGdMXeZypXvmTxYLkxxRUrQ/x65744wGBRYb3nRgzQ
-         IBMj7vsymxz1sMzw4FgsxeFfVZF90qh4h3dLNENguZI/Nj9rnB9XQJ9IahIVhR8xdg
-         ItELEBUVIYut9NCzVoPz+qFRQrr69DG/SR8hLoD/6m2MvZy7jTHBDKvl8JJtsaaz/e
-         or0oc7ycAoE6Ykr7n6aFC3vwAoUHBp5+8Sc9uVZ2GP9mV+HfGHhqAfbqh2VxRILwb7
-         W4OuQJVCGRDdDKYQbS9u76yL1DkNxLWw4IQnwGe4HfQHHTNhZYHqH6YlPQN6opJCCa
-         LO4GNxWBW4pSg==
-From:   Miguel Ojeda <ojeda@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        s=k20201202; t=1677884666;
+        bh=FcAjh5P8Ii6oUGV8/gve+dRdN7GBcOY0Qu00xV45gNc=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=L110KZyKEI2PHEKEnKc1K+G1a66HLTm/+aFRJ9jGsvb0KSfmRya4h4/j0oVOg9MG9
+         36rVis2Cvf5ESuL+j3Juq2P28fo5p6PzAr6eO4gz8B3SRGajl/6HxuY7eQN29cNCaK
+         7VgcFzG/yzUz/WOofHdi9EOBROfX5at1hV1sISSsae5fU9NbeXAvnuCgIfUCsRf9ci
+         F6tSGED8DltKUftn72phvwL8SH3Gc/x0o/m6OZqGggBxz88DsUtb9v77eLf+Ok6le3
+         eNcxRA7XPXKNUzxiAMYL5ESyP0onfPT8yt73Wf6jAdsXlVwGpFlC9ggr1EI8rjDbs6
+         Qqq27pdgAKO6g==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 82B79C41679;
+        Fri,  3 Mar 2023 23:04:26 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust fixes for 6.3-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20230303212105.78945-1-ojeda@kernel.org>
+References: <20230303212105.78945-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20230303212105.78945-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux tags/rust-fixes-6.3-rc1
+X-PR-Tracked-Commit-Id: 3098cb655e7c9ea1c2919e61234f63ebaab6bb21
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 34c108a02c30627bcd4875e4f32c915acc45305f
+Message-Id: <167788466652.32457.2489864860891486202.pr-tracker-bot@kernel.org>
+Date:   Fri, 03 Mar 2023 23:04:26 +0000
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 6.3-rc1
-Date:   Fri,  3 Mar 2023 22:21:05 +0100
-Message-Id: <20230303212105.78945-1-ojeda@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Fri,  3 Mar 2023 22:21:05 +0100:
 
-Please pull this build error fix for Rust: there was a change during
-the merge window to a C header parsed by the Rust bindings generator,
-introducing a type that it does not handle well. The fix tells
-the generator to treat the type as opaque (for now).
+> https://github.com/Rust-for-Linux/linux tags/rust-fixes-6.3-rc1
 
-It has been only a day on linux-next, but it is straightforward and
-it would be nice to have in v6.3-rc1.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/34c108a02c30627bcd4875e4f32c915acc45305f
 
-I have other fixes planned for this cycle, but I will let those sit
-in linux-next for a while and send them after v6.3-rc1.
+Thank you!
 
-No conflicts expected. No changes to the C side.
-
-Cheers,
-Miguel
-
-The following changes since commit c9c3395d5e3dcc6daee66c6908354d47bf98cb0c:
-
-  Linux 6.2 (2023-02-19 14:24:22 -0800)
-
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux tags/rust-fixes-6.3-rc1
-
-for you to fetch changes up to 3098cb655e7c9ea1c2919e61234f63ebaab6bb21:
-
-  rust: bindgen: Add `alt_instr` as opaque type (2023-03-02 22:44:15 +0100)
-
-----------------------------------------------------------------
-Rust fixes for 6.3-rc1
-
-A single build error fix: there was a change during the merge window
-to a C header parsed by the Rust bindings generator, introducing a
-type that it does not handle well. The fix tells the generator to
-treat the type as opaque (for now).
-
-----------------------------------------------------------------
-Arnaldo Carvalho de Melo (1):
-      rust: bindgen: Add `alt_instr` as opaque type
-
- rust/bindgen_parameters | 1 +
- 1 file changed, 1 insertion(+)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
