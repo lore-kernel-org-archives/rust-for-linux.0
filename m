@@ -2,74 +2,68 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D52BC61DA3
-	for <rust-for-linux@archiver.kernel.org>; Fri,  3 Mar 2023 23:05:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 783C1C678D5
+	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Mar 2023 17:47:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233102AbjCCXFy (ORCPT
+        id S229686AbjCDRrM (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 3 Mar 2023 18:05:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37944 "EHLO
+        Sat, 4 Mar 2023 12:47:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232845AbjCCXFo (ORCPT
+        with ESMTP id S229604AbjCDRrL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 3 Mar 2023 18:05:44 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B05EF5FEB8;
-        Fri,  3 Mar 2023 15:05:23 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FB48619A0;
-        Fri,  3 Mar 2023 23:04:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 95A7FC433D2;
-        Fri,  3 Mar 2023 23:04:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677884666;
-        bh=FcAjh5P8Ii6oUGV8/gve+dRdN7GBcOY0Qu00xV45gNc=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=L110KZyKEI2PHEKEnKc1K+G1a66HLTm/+aFRJ9jGsvb0KSfmRya4h4/j0oVOg9MG9
-         36rVis2Cvf5ESuL+j3Juq2P28fo5p6PzAr6eO4gz8B3SRGajl/6HxuY7eQN29cNCaK
-         7VgcFzG/yzUz/WOofHdi9EOBROfX5at1hV1sISSsae5fU9NbeXAvnuCgIfUCsRf9ci
-         F6tSGED8DltKUftn72phvwL8SH3Gc/x0o/m6OZqGggBxz88DsUtb9v77eLf+Ok6le3
-         eNcxRA7XPXKNUzxiAMYL5ESyP0onfPT8yt73Wf6jAdsXlVwGpFlC9ggr1EI8rjDbs6
-         Qqq27pdgAKO6g==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 82B79C41679;
-        Fri,  3 Mar 2023 23:04:26 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust fixes for 6.3-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20230303212105.78945-1-ojeda@kernel.org>
-References: <20230303212105.78945-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20230303212105.78945-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux tags/rust-fixes-6.3-rc1
-X-PR-Tracked-Commit-Id: 3098cb655e7c9ea1c2919e61234f63ebaab6bb21
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 34c108a02c30627bcd4875e4f32c915acc45305f
-Message-Id: <167788466652.32457.2489864860891486202.pr-tracker-bot@kernel.org>
-Date:   Fri, 03 Mar 2023 23:04:26 +0000
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+        Sat, 4 Mar 2023 12:47:11 -0500
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77BBE1C31A
+        for <rust-for-linux@vger.kernel.org>; Sat,  4 Mar 2023 09:47:01 -0800 (PST)
+Received: by mail-yb1-xb29.google.com with SMTP id 82so4659193ybn.6
+        for <rust-for-linux@vger.kernel.org>; Sat, 04 Mar 2023 09:47:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1677952020;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QnPWfGgu9ZgAW82Qc2D0b+fAtAx4tBkF21CqE5FDyLg=;
+        b=B/z5fpDG3Tvmj8Nwl5JY+CHz5/EihOfjzQixDAvM2fioAv75hyseeH5IAwbtoD0upc
+         upcoBA/MXp5n+O3LLlijmJSezlpCL5jXUykc52vnvUyoBzYrlWxxWKS7xYdMUFvb3z7A
+         YLVrRygdujQx22/cp6LQESnnathWxhQLX1e2vrhT22YfvCNTES1dmnkD6PMmpUyJ/dF4
+         yfoQO/rtrSlxrIixp9zb1zu58PKIzGF+fhy7pkWTTcqFbyvOEh74wvsC40jkaUvhMMEL
+         n2ymJhKv70zpe4tEHGqMqAkzq+XyOn5EZtv6olf1EErU+PgyNM+X/8CKrteAnzBijtly
+         Ndpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677952020;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QnPWfGgu9ZgAW82Qc2D0b+fAtAx4tBkF21CqE5FDyLg=;
+        b=psOXVCes8UU3pG0u2Ft4wLZqgLGPT1Ps95FGrIZKN2kDD+ydS7kewKLos0kOC5V57+
+         6j231lQaR7XdkZ5mXv5q5hYn5NwD3o7mRIkbvT/D9MsF0RHPyfMJ6SxQOw9rsvW5xdLK
+         BrXwbqcTjb4qnBpLJ3RAjH3lgZKtITMKBzc1nQguKCFMVXGf9AN2n2sUAVDkLXimb4mX
+         Z1dafFQAXJZd4Euefab6LQTFQ4ewW1KvGZUIiIxjw6tWzhpQb3iRLlGAb6jhYc5xD3O/
+         O+k2EQemnasr6VUdmB1Sa/rI6CnYmPIfwdogn2S83IBFJgf/F69jdzH+9oCNi3R/nE1j
+         lrLw==
+X-Gm-Message-State: AO0yUKXiYRcDYVsIk/fpVYPveGGNaysyDx9SO4HLNveh5x7y3r/S4J6C
+        MF0K7Cpx5ESalgf/cSGPbNZPjHP4heaU9h7bSob3LP2i+yNP6sKY
+X-Google-Smtp-Source: AK7set9bPKJfhYlJg8DethcIPc8Jcdy4KqXB16bVDV0F8GNrxdssnmvDsqPbWSEf28kjn/hhZ4Uo/ejnU7rC2HClM8E=
+X-Received: by 2002:a25:9c05:0:b0:a6f:b653:9f18 with SMTP id
+ c5-20020a259c05000000b00a6fb6539f18mr2689411ybo.2.1677952020638; Sat, 04 Mar
+ 2023 09:47:00 -0800 (PST)
+MIME-Version: 1.0
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sat, 4 Mar 2023 18:46:49 +0100
+Message-ID: <CANiq72mbDNebYeABVn9_bM4_PpmDzOH6ewJzcrTZM+9PnBNEtw@mail.gmail.com>
+Subject: Reminder: informal call in 15 minutes
+To:     rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-The pull request you sent on Fri,  3 Mar 2023 22:21:05 +0100:
+Hi all,
 
-> https://github.com/Rust-for-Linux/linux tags/rust-fixes-6.3-rc1
+We will have our informal call in 15 minutes from now (18:00 UTC first
+Saturday of each month).
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/34c108a02c30627bcd4875e4f32c915acc45305f
+As usual, everybody is welcome to join. If you need an invitation,
+drop me an email!
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Cheers,
+Miguel
