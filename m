@@ -2,68 +2,88 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 783C1C678D5
-	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Mar 2023 17:47:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8961BC678DB
+	for <rust-for-linux@archiver.kernel.org>; Sat,  4 Mar 2023 19:49:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229686AbjCDRrM (ORCPT
+        id S229447AbjCDTtu (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 4 Mar 2023 12:47:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52826 "EHLO
+        Sat, 4 Mar 2023 14:49:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229604AbjCDRrL (ORCPT
+        with ESMTP id S229616AbjCDTtr (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 4 Mar 2023 12:47:11 -0500
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77BBE1C31A
-        for <rust-for-linux@vger.kernel.org>; Sat,  4 Mar 2023 09:47:01 -0800 (PST)
-Received: by mail-yb1-xb29.google.com with SMTP id 82so4659193ybn.6
-        for <rust-for-linux@vger.kernel.org>; Sat, 04 Mar 2023 09:47:01 -0800 (PST)
+        Sat, 4 Mar 2023 14:49:47 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFFD012588;
+        Sat,  4 Mar 2023 11:49:42 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id f13so23281240edz.6;
+        Sat, 04 Mar 2023 11:49:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677952020;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QnPWfGgu9ZgAW82Qc2D0b+fAtAx4tBkF21CqE5FDyLg=;
-        b=B/z5fpDG3Tvmj8Nwl5JY+CHz5/EihOfjzQixDAvM2fioAv75hyseeH5IAwbtoD0upc
-         upcoBA/MXp5n+O3LLlijmJSezlpCL5jXUykc52vnvUyoBzYrlWxxWKS7xYdMUFvb3z7A
-         YLVrRygdujQx22/cp6LQESnnathWxhQLX1e2vrhT22YfvCNTES1dmnkD6PMmpUyJ/dF4
-         yfoQO/rtrSlxrIixp9zb1zu58PKIzGF+fhy7pkWTTcqFbyvOEh74wvsC40jkaUvhMMEL
-         n2ymJhKv70zpe4tEHGqMqAkzq+XyOn5EZtv6olf1EErU+PgyNM+X/8CKrteAnzBijtly
-         Ndpw==
+        d=gmail.com; s=20210112; t=1677959381;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QdbceIB//4CprYcbvak19Op82ezBXZxuSVZv0PM672w=;
+        b=d346E6D8/LoGxqefmkby/fo6rLlITnLrk8Rf36ObDzrvd9fhdXrjgQzZFRfm+itiRA
+         n+iZFtpvmF7DgGTxL9gC+NM9z0OiMHD7vsRZB3kOe0q23hGmd2jB+C9V4fVhwKvWMhhq
+         Nr3NUJxnvlf6FyPuS8Xctxj6bQRe5gI1y+qWU0ukuU3idp74LfblqOE13eRW0wc431AY
+         3cr6qCpnYICPH6n6wZH63Jl5QhyIXzP7+vv2P97ddiTawlFOkWkCVFEJ9iDobPs20Zo0
+         xscxHC0F/ExnePyin9Vo52S5lA6Et53glNZBjxozqd1FtYsBblPwwrKa8MA0iP1Volk5
+         ttQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677952020;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QnPWfGgu9ZgAW82Qc2D0b+fAtAx4tBkF21CqE5FDyLg=;
-        b=psOXVCes8UU3pG0u2Ft4wLZqgLGPT1Ps95FGrIZKN2kDD+ydS7kewKLos0kOC5V57+
-         6j231lQaR7XdkZ5mXv5q5hYn5NwD3o7mRIkbvT/D9MsF0RHPyfMJ6SxQOw9rsvW5xdLK
-         BrXwbqcTjb4qnBpLJ3RAjH3lgZKtITMKBzc1nQguKCFMVXGf9AN2n2sUAVDkLXimb4mX
-         Z1dafFQAXJZd4Euefab6LQTFQ4ewW1KvGZUIiIxjw6tWzhpQb3iRLlGAb6jhYc5xD3O/
-         O+k2EQemnasr6VUdmB1Sa/rI6CnYmPIfwdogn2S83IBFJgf/F69jdzH+9oCNi3R/nE1j
-         lrLw==
-X-Gm-Message-State: AO0yUKXiYRcDYVsIk/fpVYPveGGNaysyDx9SO4HLNveh5x7y3r/S4J6C
-        MF0K7Cpx5ESalgf/cSGPbNZPjHP4heaU9h7bSob3LP2i+yNP6sKY
-X-Google-Smtp-Source: AK7set9bPKJfhYlJg8DethcIPc8Jcdy4KqXB16bVDV0F8GNrxdssnmvDsqPbWSEf28kjn/hhZ4Uo/ejnU7rC2HClM8E=
-X-Received: by 2002:a25:9c05:0:b0:a6f:b653:9f18 with SMTP id
- c5-20020a259c05000000b00a6fb6539f18mr2689411ybo.2.1677952020638; Sat, 04 Mar
- 2023 09:47:00 -0800 (PST)
-MIME-Version: 1.0
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 4 Mar 2023 18:46:49 +0100
-Message-ID: <CANiq72mbDNebYeABVn9_bM4_PpmDzOH6ewJzcrTZM+9PnBNEtw@mail.gmail.com>
-Subject: Reminder: informal call in 15 minutes
-To:     rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        d=1e100.net; s=20210112; t=1677959381;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=QdbceIB//4CprYcbvak19Op82ezBXZxuSVZv0PM672w=;
+        b=n0eUxUNLIxgP41TtInO5NUqii68X1r3ISZhC8/lCrjzSy4wEYe9vWMe+HiWGccLVf6
+         wfNRnKKTAxoGKIdp1Pqckx4wiIIyY0UYYBUaWO8NZ2JX4W/V+LSXfBJLythtM48QOCBG
+         iN+Z8gs2FcU7utdfvhNoSubPDY511n5eMlf6cqfa5p1Qx5kz5uOHIFP1VfuyZudj+56H
+         nShvr2/VvwcwlKwF28vRMjOJm727bBFG8N4X6MUHyq5lSrn/PkoXgdQtDFukBL8Lmo80
+         6cydtgjLuQWVKQN8I4gtSLd1p6YPEI+3tWdC9tvcpXko7cSbaiI0TUmlGCiXphzoIQYv
+         JGzw==
+X-Gm-Message-State: AO0yUKXtuX8xPsMsSgUrpDRJbdMX2F5ZV4dWkdUONC6NsctiK+0lL1p+
+        oi43xVD2vVw4sDYjxPCA3CictftBFJu4ZCqn0bk=
+X-Google-Smtp-Source: AK7set9VmPrmzAScTDdqvonIYoaYZtyNwRWu8eCgfunHfXqbOViROuouebK9bBdofvnoWu6rjwNZKQ==
+X-Received: by 2002:a17:906:2782:b0:8b1:7daf:6285 with SMTP id j2-20020a170906278200b008b17daf6285mr4944427ejc.35.1677959381342;
+        Sat, 04 Mar 2023 11:49:41 -0800 (PST)
+Received: from localhost ([2001:b07:5d37:537d:5e25:9ef5:7977:d60c])
+        by smtp.gmail.com with ESMTPSA id ke18-20020a17090798f200b008c06de45e75sm2358971ejc.107.2023.03.04.11.49.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 04 Mar 2023 11:49:40 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Sat, 04 Mar 2023 20:49:39 +0100
+Message-Id: <CQXUYHAJ12RS.3EEFE9KI8L9TJ@vincent-arch>
+To:     <patrickblass@mailbox.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+        "Alex Gaynor" <alex.gaynor@gmail.com>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        "Morgan Bartlett" <mjmouse9999@gmail.com>,
+        "Niklas Mohrin" <dev@niklasmohrin.de>
+Cc:     "Geoffrey Thomas" <geofft@ldpreload.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        "Viktor Garske" <viktor@v-gar.de>,
+        "Sven Van Asbroeck" <thesven73@gmail.com>,
+        <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: str: fix requierments->requirements typo for rust
+ str
+From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
+References: <20230303-str-rs-typo-v1-1-d022b4a57591@mailbox.org>
+In-Reply-To: <20230303-str-rs-typo-v1-1-d022b4a57591@mailbox.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi all,
+> From: Patrick Blass <patrickblass@mailbox.org>
+>
+> Fix a trivial spelling error in the rust str file.
+>
+> Fixes: 247b365dc8dc ("rust: add `kernel` crate")
+> Reported-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/978
+> Signed-off-by: Patrick Blass <patrickblass@mailbox.org>
 
-We will have our informal call in 15 minutes from now (18:00 UTC first
-Saturday of each month).
-
-As usual, everybody is welcome to join. If you need an invitation,
-drop me an email!
-
-Cheers,
-Miguel
+Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
