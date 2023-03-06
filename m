@@ -2,124 +2,79 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4CBAC64EC4
-	for <rust-for-linux@archiver.kernel.org>; Mon,  6 Mar 2023 19:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E13BC61DA4
+	for <rust-for-linux@archiver.kernel.org>; Mon,  6 Mar 2023 19:35:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229580AbjCFTd4 (ORCPT
+        id S229938AbjCFTfr (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 6 Mar 2023 14:33:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33926 "EHLO
+        Mon, 6 Mar 2023 14:35:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjCFTdz (ORCPT
+        with ESMTP id S229520AbjCFTfp (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 6 Mar 2023 14:33:55 -0500
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26B746EA4
-        for <rust-for-linux@vger.kernel.org>; Mon,  6 Mar 2023 11:33:54 -0800 (PST)
-Received: by mail-pf1-x42b.google.com with SMTP id z11so6584726pfh.4
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 Mar 2023 11:33:54 -0800 (PST)
+        Mon, 6 Mar 2023 14:35:45 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F25B96A1CD;
+        Mon,  6 Mar 2023 11:35:44 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id ec29so12462357edb.6;
+        Mon, 06 Mar 2023 11:35:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112; t=1678131233;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20210112; t=1678131343;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=C7AQFc3LtW9Lbl6pASToCJCN49VYg0IVzRV+aopA7R0=;
-        b=lX6Kq32L7kysvwkv0O9qBGe6oFp8KQFy0gzkEf+oQYiD01LHgCbmfukA7qQu0tVB14
-         UkRa9CruMi6ymFEZfM3NNHInKaDjLlDsKJa4k6wMiQapb77Ggzcw+E8fVSuOwdwJuWJ7
-         GNPalzre1ndxLDK69qy04r+LBtTLh+hVQSfTvfm0x511eHiLx8Mh3U5PvRAzGzK0atb1
-         YTxEpfyJ9N2uqXwiPHXbKMc9WZ3n7LZrO90tpj9kxXvxyPYHj/fTKIJR9vhWyDTHdSha
-         kdwI6Qsnsz31WSLOZuVhI34BgYFB8UGg9X2K44hh+QJVzko+z/Csqj/8Abost5NH9zuT
-         8iZw==
+        bh=t2FmQ1RxA+JCTff+KO7AZZBMrry2RXo2PGbyJ+O+NTU=;
+        b=IgkVBROv3k/h35WvaHptNCygGYO2EPnMtdR7pvqwoaJPJkuq35AReJMKjzOkyqo97k
+         d10hVnjL1TvevWflF2/XuEulOj95BSf5LalJSesE815fg8ZyfVk3aSx82rMkQ0rZd5te
+         r/rLj3dbOMZYOOMt2p23OUmY0uXawWA9eSMNNyR7GSfqOkOmwkKQI/CWhfdOBiMvCyI8
+         GdNclN5XHOebDQmAE3zJKeYV0RKZ+SJ5q7wrols86UlW66zwJPSE9qfoYzDu/qi3quKd
+         syFPy/kq2EjKRf6YXhxcN32eTugjJbC9lcj2BGpB0y+K0CIjBjwzIWfyOKqwDrRUJQk5
+         nlvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678131233;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=C7AQFc3LtW9Lbl6pASToCJCN49VYg0IVzRV+aopA7R0=;
-        b=To+bct2Ag0lnTIznTurE2917YdWEZ7eRAKc4yluP8jHayKaTBhZlybKu2ZubPJD71E
-         4hpuy8w4LyiqreFzaHLuC6euhzuizWFkI2nzsuYWRcqnRyQF/H1g3SEo7zAOPqaPou+X
-         44G0k58d2rRT5KrQr4ixyAktVEW0Y6vX3tBQMyjTBkT0Y91uKd8GNu5evT9xDsTlBScx
-         3MBUFVo5ORutDVm9VWLVWo1bPhuRIke4B09gOuF9Tqvw14sKnVNETS0k2tntukcxRw6l
-         EE6y3TZjXV2QJaN54gvUDGjVGiXkgO52nJXdqobTUdV/mp/RiifAH3H1yrMUf5lCf0VF
-         2IYQ==
-X-Gm-Message-State: AO0yUKXFkq5tnwMeLyAWILY037BkJ9rqGyWokalYo/cbQNtup4CYPyhA
-        JJjEgTq+bWVwpFIq/K16ClqcUOhKzMbquQITzUpCTA5Od7FGIaxo6Nj1bQ==
-X-Google-Smtp-Source: AK7set8eWmi5aPInvKjDHJn3kJ57Ju1XKRFVH+BoMz9PzaJk6QQag0QUL9fV8tGcvfeJb3jpLQa8164OFUla1hBZPhw=
-X-Received: by 2002:a63:5904:0:b0:4fc:7e60:d0c with SMTP id
- n4-20020a635904000000b004fc7e600d0cmr4033113pgb.11.1678131232887; Mon, 06 Mar
- 2023 11:33:52 -0800 (PST)
-MIME-Version: 1.0
-References: <20230306191712.230658-1-ojeda@kernel.org>
-In-Reply-To: <20230306191712.230658-1-ojeda@kernel.org>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Mon, 6 Mar 2023 11:33:41 -0800
-Message-ID: <CAKwvOdn2dwMheFdzmvVdEdMUxw5Kz6OxXp-CW1Z84OJ=ME2Z7A@mail.gmail.com>
+        d=1e100.net; s=20210112; t=1678131343;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=t2FmQ1RxA+JCTff+KO7AZZBMrry2RXo2PGbyJ+O+NTU=;
+        b=ndjBrlVPr1Q8990Vnzuj0Xvf4FMAXFW0idjqZpBbsTuyyvFgqXmN0o9k6tZTvFdytm
+         +lpyyor9lcQBVwj/w7EQNOh7rBbus3CilPe81TfZ1rn8UNyZmiNI3ltg/evx6qETZw63
+         tk0TpHbelm8Ay+jkhUAFL8Aa/2OsR2Iqqij/F7FnwnEFOAh9BxmBAe62C/Tagan/tgzR
+         oKYNahzgLXHDG9KANE11ONGMWu8NQUjD9joH8sToAVt+lgof6BVLkFKEg9NySbqu5941
+         tQ8cmyrIEIEo/b3yMC6Yuul6PyGXQN4H1YNq6uE72tVAkeax0e+FNhYedOv+SvFeiTvv
+         tpFA==
+X-Gm-Message-State: AO0yUKVJnfL7AaFOnolz1uNMgj+81Yu4FyyVVOtqQsOBgFAxjeKNH/KT
+        ZfudN0p6jePrMAEV6F43c8o=
+X-Google-Smtp-Source: AK7set9FnRqj4wdi7KpzxrX8+EYM492qvgHgKOc71WHv9TSs29+Ns28onXcJgUAKen//D1i8sXWMfg==
+X-Received: by 2002:a17:907:6da3:b0:878:50f7:a35a with SMTP id sb35-20020a1709076da300b0087850f7a35amr14881581ejc.72.1678131343499;
+        Mon, 06 Mar 2023 11:35:43 -0800 (PST)
+Received: from localhost (93-55-83-125.ip262.fastwebnet.it. [93.55.83.125])
+        by smtp.gmail.com with ESMTPSA id fw20-20020a170907501400b00914fec9f40esm558931ejc.71.2023.03.06.11.35.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Mar 2023 11:35:43 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 06 Mar 2023 20:35:41 +0100
+Message-Id: <CQZJWVOTWFL4.1PZ3DHSRFK0FJ@vincent-arch>
+To:     "Miguel Ojeda" <ojeda@kernel.org>,
+        "Jonathan Corbet" <corbet@lwn.net>
+Cc:     <linux-doc@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>
 Subject: Re: [PATCH 1/2] docs: programming-language: remove mention of the
  Intel compiler
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
+References: <20230306191712.230658-1-ojeda@kernel.org>
+In-Reply-To: <20230306191712.230658-1-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Mar 6, 2023 at 11:17=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
 > The Intel compiler support has been removed in commit 95207db8166a
 > ("Remove Intel compiler support").
 >
 > Thus remove its mention in the Documentation too.
 >
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks for the patch!
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-
 > ---
->  Documentation/process/programming-language.rst | 5 -----
->  1 file changed, 5 deletions(-)
->
-> diff --git a/Documentation/process/programming-language.rst b/Documentati=
-on/process/programming-language.rst
-> index 5fc9160ca1fa..10dc772671d8 100644
-> --- a/Documentation/process/programming-language.rst
-> +++ b/Documentation/process/programming-language.rst
-> @@ -12,10 +12,6 @@ under ``-std=3Dgnu11`` [gcc-c-dialect-options]_: the G=
-NU dialect of ISO C11.
->  This dialect contains many extensions to the language [gnu-extensions]_,
->  and many of them are used within the kernel as a matter of course.
->
-> -There is some support for compiling the kernel with ``icc`` [icc]_ for s=
-everal
-> -of the architectures, although at the time of writing it is not complete=
-d,
-> -requiring third-party patches.
-> -
->  Attributes
->  ----------
->
-> @@ -38,7 +34,6 @@ Please refer to ``include/linux/compiler_attributes.h``=
- for more information.
->  .. [c-language] http://www.open-std.org/jtc1/sc22/wg14/www/standards
->  .. [gcc] https://gcc.gnu.org
->  .. [clang] https://clang.llvm.org
-> -.. [icc] https://software.intel.com/en-us/c-compilers
->  .. [gcc-c-dialect-options] https://gcc.gnu.org/onlinedocs/gcc/C-Dialect-=
-Options.html
->  .. [gnu-extensions] https://gcc.gnu.org/onlinedocs/gcc/C-Extensions.html
->  .. [gcc-attribute-syntax] https://gcc.gnu.org/onlinedocs/gcc/Attribute-S=
-yntax.html
->
-> base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
-> --
-> 2.39.2
->
 
-
---=20
-Thanks,
-~Nick Desaulniers
+Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
