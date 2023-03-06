@@ -2,92 +2,87 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA25CC6FD1A
-	for <rust-for-linux@archiver.kernel.org>; Mon,  6 Mar 2023 22:10:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77FD4C61DA4
+	for <rust-for-linux@archiver.kernel.org>; Mon,  6 Mar 2023 22:24:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229784AbjCFWK3 (ORCPT
+        id S229486AbjCFWYv (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 6 Mar 2023 17:10:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36186 "EHLO
+        Mon, 6 Mar 2023 17:24:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229628AbjCFWK2 (ORCPT
+        with ESMTP id S229686AbjCFWYs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 6 Mar 2023 17:10:28 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 379423A876;
-        Mon,  6 Mar 2023 14:10:18 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E8B80B8111A;
-        Mon,  6 Mar 2023 22:10:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8604C433D2;
-        Mon,  6 Mar 2023 22:10:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678140615;
-        bh=KN5F0AoFgFiAv14Zs4VVwE5Kztdka3CdrjT1Qq8snyQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ar1g9Pvs6nI2YGY1crohlcib7jgCpYuLpx4nEfJAxZaICCg/2qHbFgKQMpwWYc5T/
-         pReSqdlGSEgLqnK86GkxEVCGVmg6ocyZwGYIOESDg2YItz4gk2Uq3Y6At8fw2A3XYq
-         2mR1D9LlFGahqIsYtr/+CBUT7ZRazFDCeoMUePlUeSEuw95eUclar8nfFeN52xkpro
-         JXr2YK5zrIZz9Jz+WV6IKAgKW1gyWPAQnmUi0cUxXcVx45kt7JRp2LoAEVLQfAXEDr
-         ZPummfBAAz0Iz9r5LDb+JsNZozRIqIq3rgrHmCS6RKFpP/Eq12V+qJ3uOIQxFXiF4t
-         JcnRdmf6WL4bw==
-From:   Miguel Ojeda <ojeda@kernel.org>
-To:     Jonathan Corbet <corbet@lwn.net>,
+        Mon, 6 Mar 2023 17:24:48 -0500
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC5393B3E7;
+        Mon,  6 Mar 2023 14:24:47 -0800 (PST)
+Received: by mail-yb1-xb30.google.com with SMTP id k23so9733999ybk.13;
+        Mon, 06 Mar 2023 14:24:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678141487;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/HcUaH1X7Qi/9+4nj4EKlp5k2Eh7c4FkvNK1y/esUSw=;
+        b=d7Mv6PYebMheWEsnRKlnuNBlSyisVIT7UHqB0qDW3K/GE61M0+ebcEZ9JDPlyf6yXx
+         ozMi9hC41IDegX+/ey68MvRY2ZJdCl8IOe/RAnuO4dZZQkTdT/e7O1ALJWgppNBOHub6
+         XtSfoLsH7RA4ixmB2EXaBDdcpd/mHFLOVMtAG2/MXpqJwT+9JO2grSdS66Gclo1vdqpC
+         sbOzvtlqdy28Ge3HsxZKF3RkfVMO83mMydWNM8wekhAxZogxZSr2u0pqKeTQTeFsHx6k
+         M0pQtPxpjw6t5wHf4Lxpz0C9wupxrakjFD4RwqNhTWH9QEzs63c1nK0/97qn8oIet8+F
+         7q9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678141487;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/HcUaH1X7Qi/9+4nj4EKlp5k2Eh7c4FkvNK1y/esUSw=;
+        b=7oucTAT/MHKEOFhDjS7UrFXcC7OChDIvGSRoXVBJF3lFAklDJbBFRZvQVh8jkZerk+
+         h+hzKdyQY9HzNGGraVYoqEfwjL1Swb+JLH3jCaVcUC+ZgnTKzIp63ZKvPhWbmG29nm2t
+         nt+IKjNfMMf5fLihrPZ3GitBTz/KVTivgcIWMPvhmp69EH59X/1LrF8/zSvxEtCRgaXN
+         hu3oTsshw51N/eEaFQlxT6dCpD7qYyEeiNflq7/eKYc6dfn8sxKLWKe3odS0GRGcd7nu
+         D8ziMNlduAYWyBGFstoBp3FpfeiAa8RifKs8leF8EDGrGwLLhzUsmDULO2/VCHlpWt1N
+         +dyA==
+X-Gm-Message-State: AO0yUKVgsp950w3XMuEW8ssaonhMaD/hLwtB0sLr99wNRpshRs15WW3h
+        KMGwW0oUgOu2rdQGQDJx+yYh7hl4wr75b7hAEowiK92K4u7W2w==
+X-Google-Smtp-Source: AK7set+FoDileIaD0OWvYJM64YsRE7dvxESFqPRy2decGoDFbxTaGZa22p+SBzQ/yRdESBPE9Vk2vHp2udAy77V+S9E=
+X-Received: by 2002:a5b:585:0:b0:b13:7a6:f462 with SMTP id l5-20020a5b0585000000b00b1307a6f462mr1581883ybp.3.1678141486854;
+ Mon, 06 Mar 2023 14:24:46 -0800 (PST)
+MIME-Version: 1.0
+References: <20230306220959.240235-1-ojeda@kernel.org>
+In-Reply-To: <20230306220959.240235-1-ojeda@kernel.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 6 Mar 2023 23:24:35 +0100
+Message-ID: <CANiq72kF1wy0HWTPFaF3UKOvoZ19kdWe_mCAt8KxY9364-RE-w@mail.gmail.com>
+Subject: Re: [PATCH] docs: rust: point directly to the standalone installers
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
-Cc:     linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH] docs: rust: point directly to the standalone installers
-Date:   Mon,  6 Mar 2023 23:09:59 +0100
-Message-Id: <20230306220959.240235-1-ojeda@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-The Quick Start guide points to the Rust programming language front
-page when it mentions the possibility of using the standalone
-installers instead of `rustup`.
+On Mon, Mar 6, 2023 at 11:10=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> Thus point directly to the page (and anchor) with the table that
+> contains the standalone installers (plus signing key etc.).
 
-This was done to have a hopefully stable link, but it is not too
-helpful: readers need to figure out how to reach the standalone
-installers from there.
+By the way, while it is fairly easy to figure out the links to
+previous stable releases, it would nevertheless be nice to have a way
+to show them. At least there is a `FIXME` comment in those docs about
+it:
 
-Thus point directly to the page (and anchor) with the table that
-contains the standalone installers (plus signing key etc.).
+    https://github.com/rust-lang/rust-forge/blob/793249870cf7610ffe78dcb9c7=
+acc7efdbbcc713/src/infra/other-installation-methods.md?plain=3D1#L99-L101
 
-If the link breaks in the future, we can always update it as
-needed. And anyway having the full link includes the domain and
-gives more information about where the old docs were in such
-a broken link case, which may help.
+So I opened https://github.com/rust-lang/rust-forge/issues/676.
 
-Link: https://lore.kernel.org/linux-doc/CANiq72=gpzQyh1ExGbBWWNdgH-mTATdG5F600jKD1=NLLCn7wg@mail.gmail.com/
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- Documentation/rust/quick-start.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
-index 13b7744b1e27..253d47791f0f 100644
---- a/Documentation/rust/quick-start.rst
-+++ b/Documentation/rust/quick-start.rst
-@@ -40,7 +40,7 @@ and run::
- 
- Otherwise, fetch a standalone installer or install ``rustup`` from:
- 
--	https://www.rust-lang.org
-+	https://forge.rust-lang.org/infra/other-installation-methods.html#standalone
- 
- 
- Rust standard library source
-
-base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
--- 
-2.39.2
-
+Cheers,
+Miguel
