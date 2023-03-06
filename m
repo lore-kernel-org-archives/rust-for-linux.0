@@ -2,139 +2,86 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B851C61DA4
-	for <rust-for-linux@archiver.kernel.org>; Sun,  5 Mar 2023 06:52:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDA47C61DA4
+	for <rust-for-linux@archiver.kernel.org>; Mon,  6 Mar 2023 19:17:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229437AbjCEGwV (ORCPT
+        id S229486AbjCFTRj (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 5 Mar 2023 01:52:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49170 "EHLO
+        Mon, 6 Mar 2023 14:17:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjCEGwU (ORCPT
+        with ESMTP id S229667AbjCFTRh (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 5 Mar 2023 01:52:20 -0500
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BAD2113D4;
-        Sat,  4 Mar 2023 22:52:19 -0800 (PST)
-Received: by mail-oi1-x22d.google.com with SMTP id bj30so4838811oib.6;
-        Sat, 04 Mar 2023 22:52:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677999139;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uVPCnciNS5UZdaDKXjKP9xlP21Nb8O+zMC4ml8/L0BE=;
-        b=Otq9kyRrj+cERFj9zBbxZ3XMskEYcjMSQqfHClhw8AyqWN0n9kBSpBQBYSFyrN0dp4
-         HAB6YOADZidfExEXXd8HmtRrP3PljVPl4Ig2ghTYfrl1yjOmMA1lLSYJjnpXF62xVu9g
-         ecElRrCWr6s1GpWN/89Ns5uc6wbHoXO2gzz5qXdJGj8ba47dWXI4Ard1lICB7fw5YwJM
-         XrOyh2xANNL7WPrursHSAeHYp0YJmcQjEAHWkjB/uWrHm0AOhLjozYNIviyoE0abQUjC
-         Bj7Zqwp53kHFpgEmiVZ/3lNzfteWd2X0gZPWYOVwlznXoHfqvD1wZXPblKFELyi9IY86
-         Oc0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677999139;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uVPCnciNS5UZdaDKXjKP9xlP21Nb8O+zMC4ml8/L0BE=;
-        b=VjpvJ/u+gLdoBQi2Tl1rO0wOg1SBYtAVDhnYxLI4kdQel2tGnXnPCQXk4xmfncRfk4
-         xVLjsoKNiN3bQ8EjBkw6xJ03cQhLSJhoAgdCfpJPASxJUpqbm9Zw6tp+mNZ9DGZBK78Y
-         a9WlwBQNfOapAZQiAWaGkMmzT0VdsrsVqja4VPgA5000eHX676j/LZT15JLSYwRMzkLd
-         8cun420tnYCHa/ThcFvU9cyN2flLa4q4nxo6Tz2KZoqTtQi8wwe7GjjeOwuAzcp8q17A
-         U+eic65RiUb1BK+2+TTf8eYSBKhJtONnIgH9Pr3yYqrEMs2O2pjrmJTNOgnbRwfob8t5
-         5ivA==
-X-Gm-Message-State: AO0yUKWN2ma/h/vNxtIW8tsi4UEWxb2xGiABHXrgt8d+vos0YVPKP3eu
-        xTCwujlaxluM1BIQmI1YrF1fznHk39xhvgw9Bfo=
-X-Google-Smtp-Source: AK7set+6LvV9fYr6gHRrlz/uyOOYWP1W1jPR1mFFdAraWk23w+NeGmQWl5YWkuiv8Wrv2dhMYsvKHxPTEq5kxQEHwdU=
-X-Received: by 2002:a05:6808:484:b0:384:21e7:977c with SMTP id
- z4-20020a056808048400b0038421e7977cmr1941121oid.8.1677999138710; Sat, 04 Mar
- 2023 22:52:18 -0800 (PST)
+        Mon, 6 Mar 2023 14:17:37 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A69CD65443;
+        Mon,  6 Mar 2023 11:17:24 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6108CB810C3;
+        Mon,  6 Mar 2023 19:17:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE2CC433D2;
+        Mon,  6 Mar 2023 19:17:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678130242;
+        bh=olF9iig+Tpza7YeougL8cnA1Y7s1DLREILbJ3Du94yo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=r77Ongm6OktSZOy/HZAQKKcEEa2lo7ZzYUO0sDrbYFjsurv2KCBRMD2/oaMycATbF
+         sAdSaEv6FM7P3RW6Yfk7B8+4qR/92XzVB5GjVGLXG6ar3u7Rx2y8P6ptpxedTTmNXw
+         /KqhyCW4up7XqROrhUFqjNJ05gwKQXXobpn1PXxJP5utsF0anaP5u4Jn3pT0SUqF3a
+         YlsVDyq4QE8cHlF0XSLfrMvq8uGbn246PN6cmhM59wYUdlcIKK/R6YOYU8g26CMccA
+         0SrvEZajzXzIPmMIaaTsVMJ5aBc6gMTjLcDIvJMxmn/jKYcZML85uatTyxL5oegUx8
+         QWplAtyeQAVOw==
+From:   Miguel Ojeda <ojeda@kernel.org>
+To:     Jonathan Corbet <corbet@lwn.net>
+Cc:     linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 1/2] docs: programming-language: remove mention of the Intel compiler
+Date:   Mon,  6 Mar 2023 20:17:11 +0100
+Message-Id: <20230306191712.230658-1-ojeda@kernel.org>
 MIME-Version: 1.0
-References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
- <20230224-rust-iopt-rtkit-v1-2-49ced3391295@asahilina.net>
- <Y/ieQ0UX/niAG1Hg@kroah.com> <ef3a3638-6381-87ab-d674-644306b6b6ce@asahilina.net>
- <Y/jFeZzZVCpBGvGv@kroah.com> <e6d6d928-4514-55b9-346d-2e5e82220729@arm.com>
- <87de1cd0-a57a-3391-a4b8-599ee0307491@asahilina.net> <59a61ddc-4a96-c846-c12b-0d1e3789683c@arm.com>
- <5a00dcb1-8368-c3ce-6fcb-5932f5eb50a5@asahilina.net>
-In-Reply-To: <5a00dcb1-8368-c3ce-6fcb-5932f5eb50a5@asahilina.net>
-From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-Date:   Sun, 5 Mar 2023 03:52:08 -0300
-Message-ID: <CANeycqpYXOdLbUmTce_o6FhSC1rg8TZqe5MkLpsF8E4Dr9352A@mail.gmail.com>
-Subject: Re: [PATCH 2/5] rust: device: Add a minimal RawDevice trait
-To:     Asahi Lina <lina@asahilina.net>
-Cc:     Robin Murphy <robin.murphy@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        Hector Martin <marcan@marcan.st>,
-        Sven Peter <sven@svenpeter.dev>, Arnd Bergmann <arnd@arndb.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Neal Gompa <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, 24 Feb 2023 at 13:23, Asahi Lina <lina@asahilina.net> wrote:
->
-> On 25/02/2023 00.14, Robin Murphy wrote:
-> > On 2023-02-24 14:48, Asahi Lina wrote:
-> >>
-> >>
-> >> On 2023/02/24 23:32, Robin Murphy wrote:
-> >>> FWIW the DMA API *has* to know which specific device it's operating
-> >>> with, since the relevant properties can and do vary even between
-> >>> different devices within a single bus_type (e.g. DMA masks).
-> >>>
-> >>> In the case of io-pgtable at least, there's no explicit refcounting
-> >>> since the struct device must be the one representing the physical
-> >>> platform/PCI/etc. device consuming the pagetable, so if that were to
-> >>> disappear from underneath its driver while the pagetable is still in
-> >>> use, things would already have gone very very wrong indeed :)
-> >>
-> >> There's no terribly good way to encode this relationship in safe Rust as
-> >> far as I know. So although it might be "obvious" (and I think my driver
-> >> can never violate it as it is currently designed), this means the Rust
-> >> abstraction will have to take the device reference if the C side does
-> >> not, because safe rust abstractions have to actually make these bugs
-> >> impossible and nothing stops a Rust driver from, say, stashing an
-> >> io_pgtable reference into a global and letting the device go away.
-> >
-> > If someone did that, then simply holding a struct device reference
-> > wouldn't guarantee much, since it only prevents the pointer itself from
-> > becoming invalid - it still doesn't say any of the data *in* the
-> > structure is still valid and "safe" for what a DMA API call might do
-> > with it.
-> >
-> > At the very least you'd probably have to somehow also guarantee that the
-> > device has a driver bound (which is the closest thing to a general
-> > indication of valid DMA ops across all architectures) and block it from
-> > unbinding for the lifetime of the reference, but that would then mean a
-> > simple driver which expects to tear down its io-pgtable from its .remove
-> > callback could never be unbound due to the circular dependency :/
->
-> I'd like to hear from the other Rust folks about ideas on how to solve
-> this ^^. I think it might fit into the Revocable model for device
-> resources, but it's going to be a bit of an issue for my driver because
-> for me, the io_pgtable objects are deep in the Vm object that has its
-> own refcounting, and those are created and destroyed dynamically at
-> runtime, not just during device probe...
+The Intel compiler support has been removed in commit 95207db8166a
+("Remove Intel compiler support").
 
-Our bus abstractions all require that driver data stored in devices
-implement the `DeviceRemoval` trait, which has a single function:
-device_remove. The idea is that this function will do something to
-relinquish access to resources that shouldn't be accessed after the
-device is unbound (device_remove is called, for whatever reason). This
-mechanism is generic and allows us to break circular dependencies.
+Thus remove its mention in the Documentation too.
 
-One way to implement the `DeviceRemoval` trait is to hold all
-resources in "revocable" wrappers (of which we have several that have
-different constraints/requirements), and then revoke access when
-`device_remove` is called (this results in blocking while concurrent
-users are running, then running "destructors" when they're all done
-and before returning). The part that isn't great about this approach
-is that we introduce error paths everywhere these resources are used
-(because they may have been revoked).
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ Documentation/process/programming-language.rst | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/Documentation/process/programming-language.rst b/Documentation/process/programming-language.rst
+index 5fc9160ca1fa..10dc772671d8 100644
+--- a/Documentation/process/programming-language.rst
++++ b/Documentation/process/programming-language.rst
+@@ -12,10 +12,6 @@ under ``-std=gnu11`` [gcc-c-dialect-options]_: the GNU dialect of ISO C11.
+ This dialect contains many extensions to the language [gnu-extensions]_,
+ and many of them are used within the kernel as a matter of course.
+ 
+-There is some support for compiling the kernel with ``icc`` [icc]_ for several
+-of the architectures, although at the time of writing it is not completed,
+-requiring third-party patches.
+-
+ Attributes
+ ----------
+ 
+@@ -38,7 +34,6 @@ Please refer to ``include/linux/compiler_attributes.h`` for more information.
+ .. [c-language] http://www.open-std.org/jtc1/sc22/wg14/www/standards
+ .. [gcc] https://gcc.gnu.org
+ .. [clang] https://clang.llvm.org
+-.. [icc] https://software.intel.com/en-us/c-compilers
+ .. [gcc-c-dialect-options] https://gcc.gnu.org/onlinedocs/gcc/C-Dialect-Options.html
+ .. [gnu-extensions] https://gcc.gnu.org/onlinedocs/gcc/C-Extensions.html
+ .. [gcc-attribute-syntax] https://gcc.gnu.org/onlinedocs/gcc/Attribute-Syntax.html
+
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+-- 
+2.39.2
+
