@@ -2,79 +2,92 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E13BC61DA4
-	for <rust-for-linux@archiver.kernel.org>; Mon,  6 Mar 2023 19:35:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA25CC6FD1A
+	for <rust-for-linux@archiver.kernel.org>; Mon,  6 Mar 2023 22:10:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229938AbjCFTfr (ORCPT
+        id S229784AbjCFWK3 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 6 Mar 2023 14:35:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35992 "EHLO
+        Mon, 6 Mar 2023 17:10:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbjCFTfp (ORCPT
+        with ESMTP id S229628AbjCFWK2 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 6 Mar 2023 14:35:45 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F25B96A1CD;
-        Mon,  6 Mar 2023 11:35:44 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id ec29so12462357edb.6;
-        Mon, 06 Mar 2023 11:35:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678131343;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t2FmQ1RxA+JCTff+KO7AZZBMrry2RXo2PGbyJ+O+NTU=;
-        b=IgkVBROv3k/h35WvaHptNCygGYO2EPnMtdR7pvqwoaJPJkuq35AReJMKjzOkyqo97k
-         d10hVnjL1TvevWflF2/XuEulOj95BSf5LalJSesE815fg8ZyfVk3aSx82rMkQ0rZd5te
-         r/rLj3dbOMZYOOMt2p23OUmY0uXawWA9eSMNNyR7GSfqOkOmwkKQI/CWhfdOBiMvCyI8
-         GdNclN5XHOebDQmAE3zJKeYV0RKZ+SJ5q7wrols86UlW66zwJPSE9qfoYzDu/qi3quKd
-         syFPy/kq2EjKRf6YXhxcN32eTugjJbC9lcj2BGpB0y+K0CIjBjwzIWfyOKqwDrRUJQk5
-         nlvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678131343;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=t2FmQ1RxA+JCTff+KO7AZZBMrry2RXo2PGbyJ+O+NTU=;
-        b=ndjBrlVPr1Q8990Vnzuj0Xvf4FMAXFW0idjqZpBbsTuyyvFgqXmN0o9k6tZTvFdytm
-         +lpyyor9lcQBVwj/w7EQNOh7rBbus3CilPe81TfZ1rn8UNyZmiNI3ltg/evx6qETZw63
-         tk0TpHbelm8Ay+jkhUAFL8Aa/2OsR2Iqqij/F7FnwnEFOAh9BxmBAe62C/Tagan/tgzR
-         oKYNahzgLXHDG9KANE11ONGMWu8NQUjD9joH8sToAVt+lgof6BVLkFKEg9NySbqu5941
-         tQ8cmyrIEIEo/b3yMC6Yuul6PyGXQN4H1YNq6uE72tVAkeax0e+FNhYedOv+SvFeiTvv
-         tpFA==
-X-Gm-Message-State: AO0yUKVJnfL7AaFOnolz1uNMgj+81Yu4FyyVVOtqQsOBgFAxjeKNH/KT
-        ZfudN0p6jePrMAEV6F43c8o=
-X-Google-Smtp-Source: AK7set9FnRqj4wdi7KpzxrX8+EYM492qvgHgKOc71WHv9TSs29+Ns28onXcJgUAKen//D1i8sXWMfg==
-X-Received: by 2002:a17:907:6da3:b0:878:50f7:a35a with SMTP id sb35-20020a1709076da300b0087850f7a35amr14881581ejc.72.1678131343499;
-        Mon, 06 Mar 2023 11:35:43 -0800 (PST)
-Received: from localhost (93-55-83-125.ip262.fastwebnet.it. [93.55.83.125])
-        by smtp.gmail.com with ESMTPSA id fw20-20020a170907501400b00914fec9f40esm558931ejc.71.2023.03.06.11.35.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Mar 2023 11:35:43 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 06 Mar 2023 20:35:41 +0100
-Message-Id: <CQZJWVOTWFL4.1PZ3DHSRFK0FJ@vincent-arch>
-To:     "Miguel Ojeda" <ojeda@kernel.org>,
-        "Jonathan Corbet" <corbet@lwn.net>
-Cc:     <linux-doc@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>
-Subject: Re: [PATCH 1/2] docs: programming-language: remove mention of the
- Intel compiler
-From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-References: <20230306191712.230658-1-ojeda@kernel.org>
-In-Reply-To: <20230306191712.230658-1-ojeda@kernel.org>
+        Mon, 6 Mar 2023 17:10:28 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 379423A876;
+        Mon,  6 Mar 2023 14:10:18 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E8B80B8111A;
+        Mon,  6 Mar 2023 22:10:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8604C433D2;
+        Mon,  6 Mar 2023 22:10:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1678140615;
+        bh=KN5F0AoFgFiAv14Zs4VVwE5Kztdka3CdrjT1Qq8snyQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ar1g9Pvs6nI2YGY1crohlcib7jgCpYuLpx4nEfJAxZaICCg/2qHbFgKQMpwWYc5T/
+         pReSqdlGSEgLqnK86GkxEVCGVmg6ocyZwGYIOESDg2YItz4gk2Uq3Y6At8fw2A3XYq
+         2mR1D9LlFGahqIsYtr/+CBUT7ZRazFDCeoMUePlUeSEuw95eUclar8nfFeN52xkpro
+         JXr2YK5zrIZz9Jz+WV6IKAgKW1gyWPAQnmUi0cUxXcVx45kt7JRp2LoAEVLQfAXEDr
+         ZPummfBAAz0Iz9r5LDb+JsNZozRIqIq3rgrHmCS6RKFpP/Eq12V+qJ3uOIQxFXiF4t
+         JcnRdmf6WL4bw==
+From:   Miguel Ojeda <ojeda@kernel.org>
+To:     Jonathan Corbet <corbet@lwn.net>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>
+Cc:     linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH] docs: rust: point directly to the standalone installers
+Date:   Mon,  6 Mar 2023 23:09:59 +0100
+Message-Id: <20230306220959.240235-1-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> The Intel compiler support has been removed in commit 95207db8166a
-> ("Remove Intel compiler support").
->
-> Thus remove its mention in the Documentation too.
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
+The Quick Start guide points to the Rust programming language front
+page when it mentions the possibility of using the standalone
+installers instead of `rustup`.
 
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+This was done to have a hopefully stable link, but it is not too
+helpful: readers need to figure out how to reach the standalone
+installers from there.
+
+Thus point directly to the page (and anchor) with the table that
+contains the standalone installers (plus signing key etc.).
+
+If the link breaks in the future, we can always update it as
+needed. And anyway having the full link includes the domain and
+gives more information about where the old docs were in such
+a broken link case, which may help.
+
+Link: https://lore.kernel.org/linux-doc/CANiq72=gpzQyh1ExGbBWWNdgH-mTATdG5F600jKD1=NLLCn7wg@mail.gmail.com/
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ Documentation/rust/quick-start.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
+index 13b7744b1e27..253d47791f0f 100644
+--- a/Documentation/rust/quick-start.rst
++++ b/Documentation/rust/quick-start.rst
+@@ -40,7 +40,7 @@ and run::
+ 
+ Otherwise, fetch a standalone installer or install ``rustup`` from:
+ 
+-	https://www.rust-lang.org
++	https://forge.rust-lang.org/infra/other-installation-methods.html#standalone
+ 
+ 
+ Rust standard library source
+
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+-- 
+2.39.2
+
