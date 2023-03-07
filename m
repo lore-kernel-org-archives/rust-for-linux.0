@@ -2,393 +2,237 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CED76C678D5
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 14:34:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA9CBC6FD1B
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 15:00:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231129AbjCGOeW (ORCPT
+        id S229940AbjCGPAo (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 09:34:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39420 "EHLO
+        Tue, 7 Mar 2023 10:00:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231300AbjCGOdh (ORCPT
+        with ESMTP id S229869AbjCGPAL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 09:33:37 -0500
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 612E2574F3;
-        Tue,  7 Mar 2023 06:28:49 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: linasend@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 108E3426E8;
-        Tue,  7 Mar 2023 14:28:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1678199328;
-        bh=K1giKwscy2LOuMZ2AqcEY9ztp05XIoWRr3vQhLNQ3Zg=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=C8Q+7fYXmoCQcs6Av2OYMPTMZIyuSzXfTLkRhGh0NT0PjTClFUXRliaBU7pDr54pc
-         CCRT3Ih84MQr+URhQR/da7Vkr9ohffUpQSUH8C0hElH04mbmcbhXz0otXJgZ0ASq9o
-         brXr4tr0KGx6AtvwOvV+POQhw0i2gEXsCjAA/XoJ3omx5A4mBGFlkW5saWhQv6gXQV
-         OfnYzJWZNqgvnXU/NPf0IOW787Qql2IlX9qU5XarYRbGgX6EDohlAfZ82itsIDS8MC
-         UhRyv2YUrx4OoUxhS6v+tskkGEbPNFm1p6NBDmkfVOXFuJ+PuUK09FwYmrGqF/OgN+
-         dCEpNS3Zn/XGQ==
-From:   Asahi Lina <lina@asahilina.net>
-Date:   Tue, 07 Mar 2023 23:25:42 +0900
-Subject: [PATCH RFC 17/18] rust: macros: Add versions macro
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230307-rust-drm-v1-17-917ff5bc80a8@asahilina.net>
-References: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net>
-In-Reply-To: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net>
-To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        Tue, 7 Mar 2023 10:00:11 -0500
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22E841BEF;
+        Tue,  7 Mar 2023 06:47:39 -0800 (PST)
+Received: by mail-pj1-x102b.google.com with SMTP id x34so13462435pjj.0;
+        Tue, 07 Mar 2023 06:47:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678200458;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=efaxFGX7RhK5wlkuA3wHJVS02g4I2ZxWwk9Ysl91i4w=;
+        b=DojDqSDfy0L8fiwZ5plEukZbmQpbpmld2wkUtOBNHHXfoQ0q4nMM8KmYfnBt02Tbzh
+         edLT17+NXxBsUwfLo/pAnesJfRZ5bn0oFwZZWjNriQPDULPVXvZlOgTeMDMllGDdaxjU
+         PW8cJYH0AWryRMPx64dFHRjkccaXwkrfi/cJjm/l0Y8poDIjmukkq8UJi7GBTi32Xs5y
+         6pZBWgBo0S+gG3KliiEdFydz1JKbQWEW+Pm15njcEBY+bcaioOzVl61wSgcXTPD9Ph8T
+         rYkcbEjrC7b8Pre9qhSKwR/lPNzQOmAqZt1IxVrBSrbb7HekRxiV4EXodaJfnyuRmckW
+         j06w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678200458;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=efaxFGX7RhK5wlkuA3wHJVS02g4I2ZxWwk9Ysl91i4w=;
+        b=dlIPJXXE06D+RwOv22WmGEUXtwNKCA9zTErUhdf5Wjdr3W8OGTofEIs4q40/LuQsPi
+         ooGvGJprwcsPw8d/a96JY1CyBgh25iDBnPwAsMla7vmZfBabLVXZrrSom+53qFsCix3D
+         2j994pxcOjSNzUPJXXTI69IjuDu0V3P8Ga7i+6iusIk/HW7mE0D0kFYwaTvm9slju/Zb
+         nVrAbXbMZa5meRAnhKSTNe2fBt6ouH1JnqCdvhuSKA5syIckybTCQ0dxZOXURXmFfJ8L
+         O1ohYoopSd73ljw56ZWfc99wMOHiLZPEV2h7rJYoMFZHfAuFfsxTeLP7gxyNEkYvbuW3
+         UbFA==
+X-Gm-Message-State: AO0yUKWYoaxlpn2Xgr173btITHpeOA1eLHFmzFRe/VzYAZk8quvOrtKM
+        1KSzC69GPyEESZAatyg3ESo=
+X-Google-Smtp-Source: AK7set8d9pKclUkLOW+YvhmPqft4bWNEFaqe/nJa3tAKji0KKhXop4s0B4GU0OxLjDN1oPcuwdapBw==
+X-Received: by 2002:a17:903:8cb:b0:19e:8e73:e977 with SMTP id lk11-20020a17090308cb00b0019e8e73e977mr16218574plb.67.1678200458481;
+        Tue, 07 Mar 2023 06:47:38 -0800 (PST)
+Received: from nvrarch.lan ([218.186.180.226])
+        by smtp.gmail.com with ESMTPSA id la16-20020a170902fa1000b0019cb8ffd209sm8518542plb.229.2023.03.07.06.47.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Mar 2023 06:47:37 -0800 (PST)
+From:   Vinay Varma <varmavinaym@gmail.com>
+To:     miguel.ojeda.sandonis@gmail.com
+Cc:     masahiroy@kernel.org, alicef@alicef.me,
+        Vinay Varma <varmavinaym@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        Luben Tuikov <luben.tuikov@amd.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Cc:     Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Karol Herbst <kherbst@redhat.com>,
-        Ella Stanforth <ella@iglunix.org>,
-        Faith Ekstrand <faith.ekstrand@collabora.com>,
-        Mary <mary@mary.zone>, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-        linux-sgx@vger.kernel.org, asahi@lists.linux.dev,
-        Asahi Lina <lina@asahilina.net>
-X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1678199192; l=11529;
- i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
- bh=K1giKwscy2LOuMZ2AqcEY9ztp05XIoWRr3vQhLNQ3Zg=;
- b=yTmTdTgnDEPP5bvMtuxBQS8eHVdb5iATCaf0YsmsBIxfZyfyeyRxQS1UEyj404IIncEWIlNcL
- /1Q1SDH60DgB9Omehl/rG5FxK3HalovAA8A3Q7ZfE+MaYw72aFfcD01
-X-Developer-Key: i=lina@asahilina.net; a=ed25519;
- pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org
+Subject: [PATCH v3] scripts: `make rust-analyzer` for out-of-tree modules
+Date:   Tue,  7 Mar 2023 22:42:34 +0800
+Message-Id: <20230307144233.205819-1-varmavinaym@gmail.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <CANiq72k-KhU398KzV0+8DP0AUYkaf_G+5PwXgzYwbbK6AgcCUg@mail.gmail.com>
+References: <CANiq72k-KhU398KzV0+8DP0AUYkaf_G+5PwXgzYwbbK6AgcCUg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This macro allows Rust code to build multiple versions of the same code,
-conditionally including certain fields or code segments.
+Adds support for out-of-tree rust modules to use the `rust-analyzer`
+make target to generate the rust-project.json file.
 
-The asahi driver uses this to support multiple GPU types and firmware
-revisions in the same codebase, without duplicating everything.
+The change involves adding an optional parameter `external_src` to the
+`generate_rust_analyzer.py` which expects the path to the out-of-tree
+module's source directory. When this parameter is passed, I have chosen
+not to add the non-core modules (samples and drivers) into the result
+since these are not expected to be used in third party modules. Related
+changes are also made to the Makefile and rust/Makefile allowing the
+`rust-analyzer` target to be used for out-of-tree modules as well.
 
-Signed-off-by: Asahi Lina <lina@asahilina.net>
+Link: https://github.com/Rust-for-Linux/linux/pull/914
+Link: https://github.com/Rust-for-Linux/rust-out-of-tree-module/pull/2
+
+Signed-off-by: Vinay Varma <varmavinaym@gmail.com>
 ---
- rust/macros/lib.rs      |   7 ++
- rust/macros/versions.rs | 267 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 274 insertions(+)
+ Makefile                          | 11 ++++++-----
+ rust/Makefile                     |  6 ++++--
+ scripts/generate_rust_analyzer.py | 31 ++++++++++++++++++-------------
+ 3 files changed, 28 insertions(+), 20 deletions(-)
 
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index c1d385e345b9..3ab9bae4ab52 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -5,6 +5,7 @@
- mod concat_idents;
- mod helpers;
- mod module;
-+mod versions;
- mod vtable;
+diff --git a/Makefile b/Makefile
+index 3f6628780eb2..ee7b61dc6075 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1860,11 +1860,6 @@ rustfmt:
+ rustfmtcheck: rustfmt_flags = --check
+ rustfmtcheck: rustfmt
  
- use proc_macro::TokenStream;
-@@ -73,6 +74,12 @@ pub fn module(ts: TokenStream) -> TokenStream {
-     module::module(ts)
- }
+-# IDE support targets
+-PHONY += rust-analyzer
+-rust-analyzer:
+-	$(Q)$(MAKE) $(build)=rust $@
+-
+ # Misc
+ # ---------------------------------------------------------------------------
  
-+/// Declares multiple variants of a structure or impl code
-+#[proc_macro_attribute]
-+pub fn versions(attr: TokenStream, item: TokenStream) -> TokenStream {
-+    versions::versions(attr, item)
-+}
+@@ -1917,6 +1912,7 @@ help:
+ 	@echo  '  modules         - default target, build the module(s)'
+ 	@echo  '  modules_install - install the module'
+ 	@echo  '  clean           - remove generated files in module directory only'
++	@echo  '  rust-analyzer	  - generate rust-project.json rust-analyzer support file'
+ 	@echo  ''
+ 
+ endif # KBUILD_EXTMOD
+@@ -2053,6 +2049,11 @@ quiet_cmd_tags = GEN     $@
+ tags TAGS cscope gtags: FORCE
+ 	$(call cmd,tags)
+ 
++# IDE support targets
++PHONY += rust-analyzer
++rust-analyzer:
++	$(Q)$(MAKE) $(build)=rust $@
 +
- /// Declares or implements a vtable trait.
- ///
- /// Linux's use of pure vtables is very close to Rust traits, but they differ
-diff --git a/rust/macros/versions.rs b/rust/macros/versions.rs
-new file mode 100644
-index 000000000000..3bcd5f557289
---- /dev/null
-+++ b/rust/macros/versions.rs
-@@ -0,0 +1,267 @@
-+use proc_macro::{token_stream, Group, Ident, Punct, Spacing, Span, TokenStream, TokenTree};
+ # Script to generate missing namespace dependencies
+ # ---------------------------------------------------------------------------
+ 
+diff --git a/rust/Makefile b/rust/Makefile
+index 8f598a904f38..41c1435cd8d4 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -389,8 +389,10 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
+ 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@)
+ 
+ rust-analyzer:
+-	$(Q)$(srctree)/scripts/generate_rust_analyzer.py $(srctree) $(objtree) \
+-		$(RUST_LIB_SRC) > $(objtree)/rust-project.json
++	$(Q)$(srctree)/scripts/generate_rust_analyzer.py \
++		$(abs_srctree) $(abs_objtree) \
++		$(RUST_LIB_SRC) $(KBUILD_EXTMOD) > \
++		$(if $(KBUILD_EXTMOD),$(extmod_prefix),$(objtree))/rust-project.json
+ 
+ $(obj)/core.o: private skip_clippy = 1
+ $(obj)/core.o: private skip_flags = -Dunreachable_pub
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index ecc7ea9a4dcf..741ccd6efe2b 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -6,10 +6,11 @@
+ import argparse
+ import json
+ import logging
++import os
+ import pathlib
+ import sys
+ 
+-def generate_crates(srctree, objtree, sysroot_src):
++def generate_crates(srctree, objtree, sysroot_src, external_src):
+     # Generate the configuration list.
+     cfg = []
+     with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
+@@ -65,7 +66,7 @@ def generate_crates(srctree, objtree, sysroot_src):
+         [],
+         is_proc_macro=True,
+     )
+-    crates[-1]["proc_macro_dylib_path"] = "rust/libmacros.so"
++    crates[-1]["proc_macro_dylib_path"] = f"{objtree}/rust/libmacros.so"
+ 
+     append_crate(
+         "build_error",
+@@ -95,25 +96,28 @@ def generate_crates(srctree, objtree, sysroot_src):
+         "exclude_dirs": [],
+     }
+ 
++    def is_root_crate(build_file, target):
++        return os.path.exists(build_file) and target in open(build_file).read()
 +
-+use crate::helpers::{expect_group, expect_punct};
-+
-+fn drop_until_punct(it: &mut impl Iterator<Item = TokenTree>, delimiter: &str) {
-+    let mut depth: isize = 0;
-+    for token in it.by_ref() {
-+        if let TokenTree::Punct(punct) = token {
-+            match punct.as_char() {
-+                '<' => {
-+                    depth += 1;
-+                }
-+                '>' => {
-+                    depth -= 1;
-+                }
-+                _ => {
-+                    if depth == 0 && delimiter.contains(&punct.to_string()) {
-+                        break;
-+                    }
-+                }
-+            }
-+        }
-+    }
-+}
-+
-+struct VersionConfig {
-+    fields: &'static [&'static str],
-+    enums: &'static [&'static [&'static str]],
-+    versions: &'static [&'static [&'static str]],
-+}
-+
-+static AGX_VERSIONS: VersionConfig = VersionConfig {
-+    fields: &["G", "V"],
-+    enums: &[&["G13", "G14"], &["V12_3", "V12_4", "V13_0B4", "V13_2"]],
-+    versions: &[
-+        &["G13", "V12_3"],
-+        &["G14", "V12_4"],
-+        &["G13", "V13_2"],
-+        &["G14", "V13_2"],
-+    ],
-+};
-+
-+fn check_version(config: &VersionConfig, ver: &[usize], it: &mut token_stream::IntoIter) -> bool {
-+    let first = it.next().unwrap();
-+    let val: bool = match &first {
-+        TokenTree::Group(group) => check_version(config, ver, &mut group.stream().into_iter()),
-+        TokenTree::Ident(ident) => {
-+            let key = config
-+                .fields
-+                .iter()
-+                .position(|&r| r == ident.to_string())
-+                .unwrap_or_else(|| panic!("Unknown field {}", ident));
-+            let mut operator = expect_punct(it).to_string();
-+            let mut rhs_token = it.next().unwrap();
-+            if let TokenTree::Punct(punct) = &rhs_token {
-+                operator.extend(std::iter::once(punct.as_char()));
-+                rhs_token = it.next().unwrap();
-+            }
-+            let rhs_name = if let TokenTree::Ident(ident) = &rhs_token {
-+                ident.to_string()
-+            } else {
-+                panic!("Unexpected token {}", ident)
-+            };
-+
-+            let rhs = config.enums[key]
-+                .iter()
-+                .position(|&r| r == rhs_name)
-+                .unwrap_or_else(|| panic!("Unknown value for {}:{}", ident, rhs_name));
-+            let lhs = ver[key];
-+
-+            match operator.as_str() {
-+                "==" => lhs == rhs,
-+                "!=" => lhs != rhs,
-+                ">" => lhs > rhs,
-+                ">=" => lhs >= rhs,
-+                "<" => lhs < rhs,
-+                "<=" => lhs <= rhs,
-+                _ => panic!("Unknown operator {}", operator),
-+            }
-+        }
-+        _ => {
-+            panic!("Unknown token {}", first)
-+        }
-+    };
-+
-+    let boolop = it.next();
-+    match boolop {
-+        Some(TokenTree::Punct(punct)) => {
-+            let right = expect_punct(it).to_string();
-+            if right != punct.to_string() {
-+                panic!("Unexpected op {}{}", punct, right);
-+            }
-+            match punct.as_char() {
-+                '&' => val && check_version(config, ver, it),
-+                '|' => val || check_version(config, ver, it),
-+                _ => panic!("Unexpected op {}{}", right, right),
-+            }
-+        }
-+        Some(a) => panic!("Unexpected op {}", a),
-+        None => val,
-+    }
-+}
-+
-+fn filter_versions(
-+    config: &VersionConfig,
-+    tag: &str,
-+    ver: &[usize],
-+    mut it: &mut token_stream::IntoIter,
-+    is_struct: bool,
-+) -> Vec<TokenTree> {
-+    let mut out = Vec::<TokenTree>::new();
-+
-+    while let Some(token) = it.next() {
-+        let mut tail: Option<TokenTree> = None;
-+        match &token {
-+            TokenTree::Punct(punct) if punct.to_string() == "#" => {
-+                let group = expect_group(it);
-+                let mut grp_it = group.stream().into_iter();
-+                let attr = grp_it.next().unwrap();
-+                match attr {
-+                    TokenTree::Ident(ident) if ident.to_string() == "ver" => {
-+                        if check_version(config, ver, &mut grp_it) {
-+                        } else if is_struct {
-+                            drop_until_punct(&mut it, ",");
-+                        } else {
-+                            let first = it.next().unwrap();
-+                            match &first {
-+                                TokenTree::Group(_) => (),
-+                                _ => {
-+                                    drop_until_punct(&mut it, ",;");
-+                                }
-+                            }
-+                        }
-+                    }
-+                    _ => {
-+                        out.push(token.clone());
-+                        out.push(TokenTree::Group(group.clone()));
-+                    }
-+                }
-+                continue;
-+            }
-+            TokenTree::Punct(punct) if punct.to_string() == ":" => {
-+                let next = it.next();
-+                match next {
-+                    Some(TokenTree::Punct(punct)) if punct.to_string() == ":" => {
-+                        let next = it.next();
-+                        match next {
-+                            Some(TokenTree::Ident(idtag)) if idtag.to_string() == "ver" => {
-+                                let ident = match out.pop() {
-+                                    Some(TokenTree::Ident(ident)) => ident,
-+                                    a => panic!("$ver not following ident: {:?}", a),
-+                                };
-+                                let name = ident.to_string() + tag;
-+                                let new_ident = Ident::new(name.as_str(), ident.span());
-+                                out.push(TokenTree::Ident(new_ident));
-+                                continue;
-+                            }
-+                            Some(a) => {
-+                                out.push(token.clone());
-+                                out.push(token.clone());
-+                                tail = Some(a);
-+                            }
-+                            None => {
-+                                out.push(token.clone());
-+                                out.push(token.clone());
-+                            }
-+                        }
-+                    }
-+                    Some(a) => {
-+                        out.push(token.clone());
-+                        tail = Some(a);
-+                    }
-+                    None => {
-+                        out.push(token.clone());
-+                        continue;
-+                    }
-+                }
-+            }
-+            _ => {
-+                tail = Some(token);
-+            }
-+        }
-+        match &tail {
-+            Some(TokenTree::Group(group)) => {
-+                let new_body =
-+                    filter_versions(config, tag, ver, &mut group.stream().into_iter(), is_struct);
-+                let mut stream = TokenStream::new();
-+                stream.extend(new_body);
-+                let mut filtered_group = Group::new(group.delimiter(), stream);
-+                filtered_group.set_span(group.span());
-+                out.push(TokenTree::Group(filtered_group));
-+            }
-+            Some(token) => {
-+                out.push(token.clone());
-+            }
-+            None => {}
-+        }
-+    }
-+
-+    out
-+}
-+
-+pub(crate) fn versions(attr: TokenStream, item: TokenStream) -> TokenStream {
-+    let config = match attr.to_string().as_str() {
-+        "AGX" => &AGX_VERSIONS,
-+        _ => panic!("Unknown version group {}", attr),
-+    };
-+
-+    let mut it = item.into_iter();
-+    let mut out = TokenStream::new();
-+    let mut body: Vec<TokenTree> = Vec::new();
-+    let mut is_struct = false;
-+
-+    while let Some(token) = it.next() {
-+        match token {
-+            TokenTree::Punct(punct) if punct.to_string() == "#" => {
-+                body.push(TokenTree::Punct(punct));
-+                body.push(it.next().unwrap());
-+            }
-+            TokenTree::Ident(ident)
-+                if ["struct", "enum", "union", "const", "type"]
-+                    .contains(&ident.to_string().as_str()) =>
-+            {
-+                is_struct = ident.to_string() != "const";
-+                body.push(TokenTree::Ident(ident));
-+                body.push(it.next().unwrap());
-+                // This isn't valid syntax in a struct definition, so add it for the user
-+                body.push(TokenTree::Punct(Punct::new(':', Spacing::Joint)));
-+                body.push(TokenTree::Punct(Punct::new(':', Spacing::Alone)));
-+                body.push(TokenTree::Ident(Ident::new("ver", Span::call_site())));
-+                break;
-+            }
-+            TokenTree::Ident(ident) if ident.to_string() == "impl" => {
-+                body.push(TokenTree::Ident(ident));
-+                break;
-+            }
-+            TokenTree::Ident(ident) if ident.to_string() == "fn" => {
-+                body.push(TokenTree::Ident(ident));
-+                break;
-+            }
-+            _ => {
-+                body.push(token);
-+            }
-+        }
-+    }
-+
-+    body.extend(it);
-+
-+    for ver in config.versions {
-+        let tag = ver.join("");
-+        let mut ver_num = Vec::<usize>::new();
-+        for (i, comp) in ver.iter().enumerate() {
-+            let idx = config.enums[i].iter().position(|&r| r == *comp).unwrap();
-+            ver_num.push(idx);
-+        }
-+        let tt = TokenStream::from_iter(body.clone().into_iter());
-+        out.extend(filter_versions(
-+            config,
-+            &tag,
-+            &ver_num,
-+            &mut tt.into_iter(),
-+            is_struct,
-+        ));
-+    }
-+
-+    out
-+}
-
+     # Then, the rest outside of `rust/`.
+     #
+     # We explicitly mention the top-level folders we want to cover.
+-    for folder in ("samples", "drivers"):
++    for folder in ("samples", "drivers") if external_src is None else [external_src]:
+         for path in (srctree / folder).rglob("*.rs"):
+             logging.info("Checking %s", path)
+             name = path.name.replace(".rs", "")
+ 
+             # Skip those that are not crate roots.
+-            if f"{name}.o" not in open(path.parent / "Makefile").read():
+-                continue
++            if is_root_crate(path.parent / "Makefile", f"{name}.o") or \
++               is_root_crate(path.parent / "Kbuild", f"{name}.o"):
+ 
+-            logging.info("Adding %s", name)
+-            append_crate(
+-                name,
+-                path,
+-                ["core", "alloc", "kernel"],
+-                cfg=cfg,
+-            )
++                logging.info("Adding %s", name)
++                append_crate(
++                    name,
++                    path,
++                    ["core", "alloc", "kernel"],
++                    cfg=cfg,
++                )
+ 
+     return crates
+ 
+@@ -123,6 +127,7 @@ def main():
+     parser.add_argument("srctree", type=pathlib.Path)
+     parser.add_argument("objtree", type=pathlib.Path)
+     parser.add_argument("sysroot_src", type=pathlib.Path)
++    parser.add_argument("exttree", type=pathlib.Path, nargs="?")
+     args = parser.parse_args()
+ 
+     logging.basicConfig(
+@@ -131,7 +136,7 @@ def main():
+     )
+ 
+     rust_project = {
+-        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src),
++        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree),
+         "sysroot_src": str(args.sysroot_src),
+     }
+ 
 -- 
-2.35.1
+2.39.2
 
