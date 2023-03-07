@@ -2,91 +2,108 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28CEAC678D5
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 10:57:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B73BC678DB
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 11:06:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229966AbjCGK5H (ORCPT
+        id S229787AbjCGLGE (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 05:57:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42516 "EHLO
+        Tue, 7 Mar 2023 06:06:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230296AbjCGK4m (ORCPT
+        with ESMTP id S231384AbjCGLFY (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 05:56:42 -0500
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB37457D2C;
-        Tue,  7 Mar 2023 02:56:41 -0800 (PST)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-536be69eadfso237928437b3.1;
-        Tue, 07 Mar 2023 02:56:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678186601;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bPOHIY+gc8hcUU6SBmeBbgRx0IvK4FL5OmeKKmmeG0c=;
-        b=PFdukvBPDDh0hDaR0PstyR2iC4hbrhIkphg1WMlxchabdYYe2Twc9ALPRctsDXh66a
-         87KfbWOTKvcIGkhvH6+ML8X5Z+0VL4Es0451Qu370/K8u/mEc3WS/mCKa4OU3i2f5noE
-         QFYnVm/1ePinq+SbMpDWAUnLgNQaqxkexF1yKa+XakdjqxmvgdquTy1/O7pcvSEQEZH+
-         eh4k1B7/LNejIIEKKvwc0/7kXp46yNfUFFQ5NCYVeGdCbwtHF8vp1qqRTlcLQbPlkdrz
-         7dkwWdOPL1rq+9esaqYlvvePBXVcWh+BQPTGsZxKMyNVxhZ58nriRWAsj0aVr8dkGzxH
-         DN3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678186601;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bPOHIY+gc8hcUU6SBmeBbgRx0IvK4FL5OmeKKmmeG0c=;
-        b=Xajgu1XRpdZrLD2DeLfDMAYvapJX7i/UeFpX9KshGGcfSJ4IyzBPzfzrxdGqJuNMM/
-         GxEq3AasMioXwnU28U2m8L6vEWQqlEj0W/uz50ZzbphoxiUCkFBVuo81nav7IZWy2g5m
-         ZYcvNrwqg7vTkyKvwUEUKvjRyMnGORa2ZtY5D/CfxWr6mYrOLM1oWaWMkeiiKhZO/mSs
-         JwS5EERXQH4cIUPTfa2PK5+5vUcuQLAw0KLlXDit0z587aUtY1dxNj8og776RONWE9l+
-         dBmK3fTXueVIUx/rAWDhOW8ZLrfIbZ7+gqONGBGZTgeZueN7C2ZF9s+4C43glh0m9QS5
-         bhiw==
-X-Gm-Message-State: AO0yUKUYiceNGxiheBU6I6hkAM0yQFSvD7be2PpJYwqKo7I3bu3JxPh1
-        AXUPL1mDNC78po1wPkPk1YNWjdAc6upR1j0ZtlQ=
-X-Google-Smtp-Source: AK7set/vZP5VgbdieRCGNt1P4MDgpVw9hkloznp6byCCn62NkrbtjZscaBSfnfsnnnnthyx3ZGOqFsywK3xzdXzGsPw=
-X-Received: by 2002:a81:431e:0:b0:533:8080:16ee with SMTP id
- q30-20020a81431e000000b00533808016eemr9046679ywa.10.1678186601088; Tue, 07
- Mar 2023 02:56:41 -0800 (PST)
-MIME-Version: 1.0
-References: <20230307102441.94417-1-conor.dooley@microchip.com> <20230307102441.94417-3-conor.dooley@microchip.com>
-In-Reply-To: <20230307102441.94417-3-conor.dooley@microchip.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 7 Mar 2023 11:56:30 +0100
-Message-ID: <CANiq72nLjBgMSUTtWuF7qU5vG9rA3v=ekWk1d6+SNiGkfcaS8Q@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] RISC-V: enable building 64-bit kernels with rust support
-To:     Conor Dooley <conor.dooley@microchip.com>
-Cc:     linux-riscv@lists.infradead.org, conor@kernel.org,
+        Tue, 7 Mar 2023 06:05:24 -0500
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 502A77BA10;
+        Tue,  7 Mar 2023 03:02:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1678186964; x=1709722964;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=297I+f2QIP3fYjyaueh8DMg0UU/5q5ZcWqC31Xzuzco=;
+  b=c827tRuEk4tOKbbAsJ7tWbZxGDRuDW1TsnAXUTKRUgnhG6aVhtg55XuH
+   e24wQQgpb/9w/0raoKsu12wcl5YyycBMwKK+Aygms0tXK1Mle/pRn2UXu
+   1eZ3o5DLVPgM2dcXWVODDBf/TeB5HFqhxyU17EVW4UF1+GHttOBcxPJxN
+   Pl76/bHwcGqP1rq3apbbQRXrDoKjsqJFzfCVbpQl/+805XJ64wMkZ9fmu
+   UVvIxWAepkimZMOPitsVHWrXgMZJyVxmpinOiF6y+JcRdYyrQ5A7DlxkR
+   fvsQcZpSe4ER47W+R7jyxUTF5xQA1gTNVNm+kwIsZjMzxZecpMQcodEjV
+   g==;
+X-IronPort-AV: E=Sophos;i="5.98,240,1673938800"; 
+   d="asc'?scan'208";a="203976780"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 07 Mar 2023 04:01:54 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Tue, 7 Mar 2023 04:01:46 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16 via Frontend
+ Transport; Tue, 7 Mar 2023 04:01:42 -0700
+Date:   Tue, 7 Mar 2023 11:01:13 +0000
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC:     <linux-riscv@lists.infradead.org>, <conor@kernel.org>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         Jonathan Corbet <corbet@lwn.net>,
         Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Tom Rix <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <llvm@lists.linux.dev>
+Subject: Re: [PATCH v1 2/2] RISC-V: enable building 64-bit kernels with rust
+ support
+Message-ID: <ZAcZeWYUU75BK5FO@wendy>
+References: <20230307102441.94417-1-conor.dooley@microchip.com>
+ <20230307102441.94417-3-conor.dooley@microchip.com>
+ <CANiq72nLjBgMSUTtWuF7qU5vG9rA3v=ekWk1d6+SNiGkfcaS8Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="FkEia1k7ZMsXTyfP"
+Content-Disposition: inline
+In-Reply-To: <CANiq72nLjBgMSUTtWuF7qU5vG9rA3v=ekWk1d6+SNiGkfcaS8Q@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Mar 7, 2023 at 11:25=E2=80=AFAM Conor Dooley <conor.dooley@microchi=
-p.com> wrote:
->
-> While adding RISC-V to the table, I took the chance to re-sort it
-> alphabetically.
+--FkEia1k7ZMsXTyfP
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-For reference, there is a patch for this coming at:
+On Tue, Mar 07, 2023 at 11:56:30AM +0100, Miguel Ojeda wrote:
+> On Tue, Mar 7, 2023 at 11:25=E2=80=AFAM Conor Dooley <conor.dooley@microc=
+hip.com> wrote:
+> >
+> > While adding RISC-V to the table, I took the chance to re-sort it
+> > alphabetically.
+>=20
+> For reference, there is a patch for this coming at:
+>=20
+>     https://lore.kernel.org/rust-for-linux/I0YeaNjTtc4Nh47ZLJfAs6rgfAc_QZ=
+xhynNfz-GQKssVZ1S2UI_cTScCkp9-oX-hPYVcP3EfF7N0HMB9iAlm1FcvOJagnQoLeHtiW3bGC=
+gM=3D@bamelis.dev/
 
-    https://lore.kernel.org/rust-for-linux/I0YeaNjTtc4Nh47ZLJfAs6rgfAc_QZxh=
-ynNfz-GQKssVZ1S2UI_cTScCkp9-oX-hPYVcP3EfF7N0HMB9iAlm1FcvOJagnQoLeHtiW3bGCgM=
-=3D@bamelis.dev/
+Cool. Git should resolve that, probably without even generating a
+conflict in -next, right?
 
-Cheers,
-Miguel
+
+--FkEia1k7ZMsXTyfP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZAcZeQAKCRB4tDGHoIJi
+0iWbAP9z3UWgpmmPL9iCnUOvG6wdr7hbXIjO7rXRgnhbqt0fkwD9HQMjWbIh05Hm
+OgvH3JO4XhG7ZCQ2aWRBhDWQ86BUSAM=
+=cBqK
+-----END PGP SIGNATURE-----
+
+--FkEia1k7ZMsXTyfP--
