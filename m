@@ -2,86 +2,108 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13BCBC678D5
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 12:25:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 989A7C6FD1B
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 12:31:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231476AbjCGMY7 (ORCPT
+        id S230096AbjCGMbX (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 07:24:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44226 "EHLO
+        Tue, 7 Mar 2023 07:31:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231480AbjCGMY6 (ORCPT
+        with ESMTP id S229976AbjCGMbW (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 07:24:58 -0500
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBF9C4DE35;
-        Tue,  7 Mar 2023 04:24:57 -0800 (PST)
-Received: by mail-yb1-xb2e.google.com with SMTP id i6so11151904ybu.8;
-        Tue, 07 Mar 2023 04:24:57 -0800 (PST)
+        Tue, 7 Mar 2023 07:31:22 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB50E76F68
+        for <rust-for-linux@vger.kernel.org>; Tue,  7 Mar 2023 04:31:20 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id l1so11897215wry.12
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Mar 2023 04:31:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678191897;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GpEQa5LQr4Ebi2yIjm00KTBCaif7x7L4argp6haEfHE=;
-        b=edxGVUK3xgTtGS7H1wjRbHfs/6JdaPY04qE9IaKVLN2X2qd55X0FT8rz4ra+E0fsvb
-         mGsHC/B7KtP1xb2Ll+wd/z/Gq2ioy0BoW2PAs9fdWhaRq7y8b9BlIhRT8YBOO2TjT75n
-         579IJXtMCrQ2PyxjD4Lr+PrmCpvgYfqkMGzLIr8h5fsUzK2VrPQMcoWg0ozu2idD06L1
-         nynrMEAG3iI77i8ude8nLxiOxXuB1s2OuYbdB0e+d7FSMhL14DbWB24QVk3ZbBDwRfZN
-         fgMAbbp09dOsUC3l62ZCPph1KfI3vCELarZFx58nllDlDWib2+FejK4bLpNFHC0l9/1a
-         HdFA==
+        d=metaspace-dk.20210112.gappssmtp.com; s=20210112; t=1678192279;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=BLN4UncZUSgoRCKUIm4eF2t2H/1MDhbeJ976lCdE5GA=;
+        b=08E6zZ8ABAZEGeccsGotZ9ZWL0kfvCUtAvAvNJl07mtxkbgz/541DjYIs/InFQKg9+
+         fuLPWU89TlX/x6VLupGJ3eUxcBzXKVo+/XXSxP6ipyPYLDXWe3D558CqSmDR29BNa8OG
+         Ko3vC/EcuZqQ8zVVXq/UVKNIttyyNg9V+fQ1Yi5n4aj1faPxJogMSe6b629k53PLZfwp
+         KqiMqeWEApNyR4t29rMNEUgMCfRydMhiKdKgIi8ZG4Hmtg+NJydam3IcZBvSJT1xYwjN
+         gqORAVYSDVDOdqYopXt1Zgr1fmgHuh8tzKRGSYk3mMDjD879comzzEWESjj721C3GFqT
+         y9fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678191897;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GpEQa5LQr4Ebi2yIjm00KTBCaif7x7L4argp6haEfHE=;
-        b=OY/cm50AHaMke64qm9AGR9GanQK9jkm58Z310OtzuJ9+F79dAMge7S/zmcyN5YJVN2
-         zONEvx6DJxGrKcpJegP/4zGb71GBupIN5s5M31W1Q/HaKSLLh62aiLYdO63iyZWnpGUn
-         nKIOVf0xg73RzsnQ/h2A0NTIJMD6xwWJCcT9vu0Pgkm1u/iAU1bh0LRAfq9oJ9fyGzY8
-         +oHqlVTyzZmsEuNs6BbKIa7MV9TcooC3Q8l3VkCpnCM6LelzB9zNdESm2yxZGweG2c6r
-         PSqCJQwkLMqqt+hzYfEf8E+MzQdc29HCmWXDH4dDgwbG9lADU54hi5lyrOPNbFyx4Nx1
-         vBmA==
-X-Gm-Message-State: AO0yUKUx1zqZfpW/mBX0vntj9OPBacpCarMh5tt7LMlPi0Cp0+NZJVZk
-        b74tEdPur0yvsZTo0ZTwHwUDB2ib0xxLEYINSWA=
-X-Google-Smtp-Source: AK7set/igNCY1H5Ocdykbu7tR0GiJl5qYzFnvvGsuXFWOnDrbDeu9dD+Db3vZ+5orz8ysFFWitw6gSrbYgYA75KvBcg=
-X-Received: by 2002:a5b:b03:0:b0:ad7:b81e:69bd with SMTP id
- z3-20020a5b0b03000000b00ad7b81e69bdmr6455019ybp.2.1678191897100; Tue, 07 Mar
- 2023 04:24:57 -0800 (PST)
-MIME-Version: 1.0
-References: <CANiq72k4cOEOykgUhgqaXPC7xhX2EoC8c4sr1oFEhKMfEdi=wA@mail.gmail.com>
- <20230121052507.885734-1-varmavinaym@gmail.com>
-In-Reply-To: <20230121052507.885734-1-varmavinaym@gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 7 Mar 2023 13:24:46 +0100
-Message-ID: <CANiq72k-KhU398KzV0+8DP0AUYkaf_G+5PwXgzYwbbK6AgcCUg@mail.gmail.com>
-Subject: Re: [PATCH v2] scripts: `make rust-analyzer` for out-of-tree modules
-To:     Vinay Varma <varmavinaym@gmail.com>
-Cc:     alicef@alicef.me, Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
+        d=1e100.net; s=20210112; t=1678192279;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BLN4UncZUSgoRCKUIm4eF2t2H/1MDhbeJ976lCdE5GA=;
+        b=DYc6Ji65jKCNj32ro0u1UaJgP8XO/i8FAUgTIgDFr0aamFh2IRr5c9WweJC1hQ+gDG
+         wJmb+CBsqadUy9Pb6ZAfn2ZVWnNU+d7ztrcOPsK1cOv4HCUL+1ZQI0/qgbgZ5e3E7teV
+         FQtznIOFJ7Vg5yL7KEcKMy6lRSTlu/bPJ/M+P3P4Z60UBlfjL+A67ktKDBs/qtqVDgSN
+         QFx6hU8Q/V3Cc905KAuLdbf7b8Pi/mCBSORuxZMT34RsFR11sU8EZJ23ToIBApxu/gLK
+         r3+S9FVQ6NxAhqg9HajMXvrEhEamcpbAxGsNRB7FFws2W+0VYw2OpCBRB8gB+cDJpzQl
+         kfow==
+X-Gm-Message-State: AO0yUKVYb+iQG5mTpKxUU0CKDKtvTq1L6WR66X9TZBc7zYp47WHC/w8O
+        JHQeyK3DEbfVVB+HtXfkwDMvGNAsZ/IML58EZsQ=
+X-Google-Smtp-Source: AK7set+iDIpJXiSmE9vwoJaVBF7W/DlBhKqa+iqOiX3z9Vaq+qXlgewnIdG6jqHUBIct8A5xJj+qXw==
+X-Received: by 2002:adf:e44c:0:b0:2c7:148c:b04f with SMTP id t12-20020adfe44c000000b002c7148cb04fmr9024090wrm.37.1678192279337;
+        Tue, 07 Mar 2023 04:31:19 -0800 (PST)
+Received: from localhost ([165.225.194.197])
+        by smtp.gmail.com with ESMTPSA id z1-20020adff1c1000000b002c70c99db74sm12525038wro.86.2023.03.07.04.31.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Mar 2023 04:31:18 -0800 (PST)
+References: <20230306220959.240235-1-ojeda@kernel.org>
+User-agent: mu4e 1.9.18; emacs 28.2.50
+From:   Andreas Hindborg <nmi@metaspace.dk>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH] docs: rust: point directly to the standalone installers
+Date:   Tue, 07 Mar 2023 13:29:44 +0100
+In-reply-to: <20230306220959.240235-1-ojeda@kernel.org>
+Message-ID: <87ilfcivzf.fsf@metaspace.dk>
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Vinay,
 
-On Sat, Jan 21, 2023 at 6:25 AM Vinay Varma <varmavinaym@gmail.com> wrote:
+Miguel Ojeda <ojeda@kernel.org> writes:
+
+> The Quick Start guide points to the Rust programming language front
+> page when it mentions the possibility of using the standalone
+> installers instead of `rustup`.
 >
-> Adds support for out-of-tree rust modules to use the `rust-analyzer`
-> make target to generate the rust-project.json file.
+> This was done to have a hopefully stable link, but it is not too
+> helpful: readers need to figure out how to reach the standalone
+> installers from there.
+>
+> Thus point directly to the page (and anchor) with the table that
+> contains the standalone installers (plus signing key etc.).
+>
+> If the link breaks in the future, we can always update it as
+> needed. And anyway having the full link includes the domain and
+> gives more information about where the old docs were in such
+> a broken link case, which may help.
+>
+> Link: https://lore.kernel.org/linux-doc/CANiq72=gpzQyh1ExGbBWWNdgH-mTATdG5F600jKD1=NLLCn7wg@mail.gmail.com/
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  Documentation/rust/quick-start.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
+> index 13b7744b1e27..253d47791f0f 100644
+> --- a/Documentation/rust/quick-start.rst
+> +++ b/Documentation/rust/quick-start.rst
+> @@ -40,7 +40,7 @@ and run::
+>  
+>  Otherwise, fetch a standalone installer or install ``rustup`` from:
 
-Could you please address (some of) Masahiro's and Alice's feedback in
-a new version?
+I guess we should remove "or install ``rustup``" from this sentence?
 
-Thanks!
-
-Cheers,
-Miguel
+BR Andreas
