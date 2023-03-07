@@ -2,100 +2,130 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE194C678D4
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 09:32:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DC405C678D4
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 10:25:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230255AbjCGJci (ORCPT
+        id S230197AbjCGKZa (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 04:32:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53636 "EHLO
+        Tue, 7 Mar 2023 05:25:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229967AbjCGJci (ORCPT
+        with ESMTP id S230164AbjCGKZ1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 04:32:38 -0500
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0432E2BEEB
-        for <rust-for-linux@vger.kernel.org>; Tue,  7 Mar 2023 01:32:26 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: lina@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 6C5D8419B4;
-        Tue,  7 Mar 2023 09:32:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1678181544;
-        bh=E+JBWGs90CdsgRhJ7Zj1p+d0LYrXwYt0/AWj3SgArpw=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=s4P4pvjfv5JEOIgSvJj5mE8Xe3JVdCY0Artpw2XU+79GEnyk18IZfL53ZY68K0Z61
-         Zx4I2KDkH35kQCKvhzj7eVyFlc/lFgWUH/R3rGgSIuED59J8/tTd8mvXAHM7rg4WTa
-         dV+QU49mNizRUm88fMmWiShSR+Dml7fyx95Cf6lmzVVu5O5Ihvzt+bZ7dNIkw0L7x/
-         rZDFO9tzNVvFxWzwOzQ7K01qHiu87OT9D45rj6gXgSR9w7DWL+yNZr3c2Ew82suH09
-         O5X6Mk2epO867E+Cj5qBsV6EyYlzcoOS2UPvoJubV2HPtQQ3ADcjHO30aVPIyZjKHS
-         4wBWOID8uCisA==
-Message-ID: <e76cb3e8-3d29-1caa-588c-29686c536d37@asahilina.net>
-Date:   Tue, 7 Mar 2023 18:32:20 +0900
+        Tue, 7 Mar 2023 05:25:27 -0500
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AAB95073C;
+        Tue,  7 Mar 2023 02:25:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1678184720; x=1709720720;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OInxuMJtdIyDPn0imEFBCcfPVJWWAD2dQ/VhXFHBFuY=;
+  b=Gwp215xaiOgI+uTvcjyvH1nPDsHOfrIjUIwFUhV8yeAujtjxiRJ1rNNx
+   vwlJDCs86lytaHGkRF6y6UYj0tVXhftNddrWhkN/B6jeA/iypDOYRyXXG
+   QPYm2Tie/YoSmyE/6UEK7NZ/xN2z7ZK2r+Rp0tl/n/P0AjEWEB2Ic4vK/
+   Pd9f1GW3Ze2H7QGwBdHxl/Drj52Yh9xdmoBumWouQwE4IImcMG9B8URJB
+   qTHvcZnfjJCWoteQwlCQFWW2vmscntcXHsHnyWRsKrKf/mcYplBHERdY3
+   WOSTn91EM+95OhKnZIlMqSTrPZQ2Pz2LO4wnmk9Sgda3ZFMqed37p/FXL
+   g==;
+X-IronPort-AV: E=Sophos;i="5.98,240,1673938800"; 
+   d="scan'208";a="140694248"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 07 Mar 2023 03:25:18 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Tue, 7 Mar 2023 03:25:15 -0700
+Received: from wendy.microchip.com (10.10.115.15) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.16 via Frontend
+ Transport; Tue, 7 Mar 2023 03:25:12 -0700
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     <linux-riscv@lists.infradead.org>
+CC:     <conor@kernel.org>, <conor.dooley@microchip.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        "Nathan Chancellor" <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <llvm@lists.linux.dev>
+Subject: [PATCH v1 0/2] RISC-V: enable rust
+Date:   Tue, 7 Mar 2023 10:24:39 +0000
+Message-ID: <20230307102441.94417-1-conor.dooley@microchip.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH 0/3] Rust enablement for AArch64
-Content-Language: en-US
-To:     Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-        linux-arm-kernel@lists.infradead.org,
-        rust-for-linux@vger.kernel.org
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, steve.capper@arm.com
-References: <20230125163739.3798252-1-Jamie.Cunliffe@arm.com>
-From:   Asahi Lina <lina@asahilina.net>
-In-Reply-To: <20230125163739.3798252-1-Jamie.Cunliffe@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2088; i=conor.dooley@microchip.com; h=from:subject; bh=OInxuMJtdIyDPn0imEFBCcfPVJWWAD2dQ/VhXFHBFuY=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDCnsAs8kPwY+WPDTW83kbZ7n9rULE84/3btU3L1pj9Su+gea apKSHaUsDGIcDLJiiiyJt/tapNb/cdnh3PMWZg4rE8gQBi5OAZhIhAPDP9vQmtgpq6++Ptj9MuPKLd 5J942cmbL2szoy/Ciezv3hViXD//KFmxlmvp0gz2ITs0bPJ+dy7MGQD2/k7rwL1QlWf+3wgRcA
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 26/01/2023 01.37, Jamie Cunliffe wrote:
-> The first patch is from Miguel's tree to enable Rust support for
-> AArch64. This has been tested with the Rust samples, and the generated
-> code has also been manually inspected.
-> 
-> The second patch enables the PAC ret and BTI options in the Rust build
-> flags to match the options that are used when building C.
-> 
-> The third patch disables the neon and fp target features to avoid fp &
-> simd registers. The use of fp-armv8 will cause a warning from rustc
-> about an unknown feature that is specified. The target feature is
-> still passed through to LLVM, this behaviour is documented as part of
-> the warning. This will be fixed in a future version of the rustc
-> toolchain. This pull request should address it,
-> https://github.com/rust-lang/rust/pull/107294
-> 
-> 
-> Jamie Cunliffe (2):
->   arm64: rust: Enable PAC support for Rust.
->   arm64: rust: Disable neon and fp target features.
-> 
-> Miguel Ojeda (1):
->   arm64: rust: Enable Rust support for AArch64
-> 
->  Documentation/rust/arch-support.rst |  1 +
->  arch/arm64/Kconfig                  |  1 +
->  arch/arm64/Makefile                 |  4 ++++
->  scripts/generate_rust_target.rs     | 13 ++++++++++++-
->  4 files changed, 18 insertions(+), 1 deletion(-)
-> 
+After the authorship debacle on the RFC, I've tried to be even more
+careful this time around. Gary opted for a Co-developed-by in the replies
+of the RFC stuff, so I have given them one.
+I have added SoB's too, but if that is not okay Gary, then please scream
+loudly.
 
-Just as a note, we ran into an issue with this patchset. There is a
-missing `BINDGEN_TARGET_arm64` in rust/Makefile (around line 255).
-Without that, bindgen fails.
+As this is lifted from the state of the Rust-for-Linux tree, the commit
+messages from there cannot be preserved, so these patches have commit
+messages that I wrote.
 
- # Derived from `scripts/Makefile.clang`.
- BINDGEN_TARGET_x86     := x86_64-linux-gnu
-+BINDGEN_TARGET_arm64   := aarch64-linux-gnu
- BINDGEN_TARGET         := $(BINDGEN_TARGET_$(SRCARCH))
+I've tested this on Icicle, and the modules seem to work as expected.
+Unfortunately there appear to be implicit 32-bit divisions (or similar)
+in core Rust code, so, as in the downstream Rust-for-Linux tree, Rust is
+only enabled for 64-bit.
 
-(No need to credit us for that ^^)
+Thanks,
+Conor.
 
-Thanks!
-~~ Lina
+Changes in v1:
+- rebase on v6.3-rc1
+- resort the `um` entry in the arch-support table while adding RISC-V
+  to it
+- drop 32-bit bits
+- have another crack at assigning authorship
+
+Changes in RFC-RESEND:
+- fix the asymmetrical additions in the Makefile bits
+- add cc-cover to my git send-email command...
+
+CC: Miguel Ojeda <ojeda@kernel.org>
+CC: Alex Gaynor <alex.gaynor@gmail.com>
+CC: Wedson Almeida Filho <wedsonaf@gmail.com>
+CC: Boqun Feng <boqun.feng@gmail.com>
+CC: Gary Guo <gary@garyguo.net>
+CC: Björn Roy Baron <bjorn3_gh@protonmail.com>
+CC: Jonathan Corbet <corbet@lwn.net>
+CC: Paul Walmsley <paul.walmsley@sifive.com>
+CC: Palmer Dabbelt <palmer@dabbelt.com>
+CC: Nathan Chancellor <nathan@kernel.org>
+CC: Nick Desaulniers <ndesaulniers@google.com>
+CC: Tom Rix <trix@redhat.com>
+CC: rust-for-linux@vger.kernel.org
+CC: linux-doc@vger.kernel.org
+CC: linux-kernel@vger.kernel.org
+CC: linux-riscv@lists.infradead.org
+CC: llvm@lists.linux.dev
+
+Miguel Ojeda (2):
+  scripts: generate_rust_target: enable building on RISC-V
+  RISC-V: enable building 64-bit kernels with rust support
+
+ Documentation/rust/arch-support.rst |  3 ++-
+ arch/riscv/Kconfig                  |  1 +
+ arch/riscv/Makefile                 |  2 ++
+ scripts/generate_rust_target.rs     | 16 ++++++++++++++++
+ 4 files changed, 21 insertions(+), 1 deletion(-)
+
+-- 
+2.39.2
+
