@@ -2,261 +2,166 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A577C6FD1A
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 16:18:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90383C678D5
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 16:35:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230248AbjCGQSm (ORCPT
+        id S229895AbjCGQfb (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 11:18:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49224 "EHLO
+        Tue, 7 Mar 2023 11:35:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230236AbjCGQSV (ORCPT
+        with ESMTP id S231393AbjCGQfM (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 11:18:21 -0500
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E98E3A83;
-        Tue,  7 Mar 2023 08:18:05 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: lina@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 048F541DF4;
-        Tue,  7 Mar 2023 16:17:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1678205882;
-        bh=Qw94FegwAslJUaCniB68UUeUX0OwCWRdd88BzdgPXQE=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=Bq5PvOWNwJHYFmQhlxM7mXUiwYE4dpW4OGTiXLi0dz4416AAQi8EIVK020edvpeoI
-         MRmpbh+Fg9QzKeLgMX2oVPVeJGkAA+yCUHZfyQRMuLdLMzMybsWEgSllQqjrK2obvb
-         uuhWDg57cQUvWnPK9qbJbKJlj6ztFWRi5xyfm4xXtfdQTksQxfx7yahzy47cDf6IHl
-         EmJ0kxZYA6+x3n9X9YkPOtyYRB9otB/Czkj+vCGPFKh85Dc4nPmn+46I+5huY5GE9+
-         DmJT+qSOcFyA0rh43AJ7DTVxDsXimY9L8YcZ51TS+cAM/7x4yspjeM8gSRXAEK2IPc
-         D+HcWcb6Nl4gw==
-Message-ID: <687b54e7-b9a6-f37b-e5e6-8972e3670cc1@asahilina.net>
-Date:   Wed, 8 Mar 2023 01:17:54 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH RFC 00/18] Rust DRM subsystem abstractions (& preview AGX
- driver)
-Content-Language: en-US
-To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        Tue, 7 Mar 2023 11:35:12 -0500
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2110.outbound.protection.outlook.com [40.107.10.110])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D87439227B;
+        Tue,  7 Mar 2023 08:33:39 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=G798BCxKLhQX6KDAvas+3xNBJ/nu2TQqsO7JpXZwtTWgNMTEiIh0k5tDiiuEHtN4I7MCT+f4lwrbqzdku+i5vJc9+xXY5vr5ndf42SmmI+AOtmxXW1wIaip0WWF2WagXjAc/xrKB4YkBs2yEc45cKmBfxibFBvXAkON2PXboOZmEKvUt4LxdvYEI6nQTJn447SvoEShI8K1woMA16GyxXUPOHhxi6eLhUt1IOT/VP7RChqH0dTZdOVivkS6lYw7whIRt7J8STdt+PbewTQ7x3rYjg6iJ7NvR0LCaWtyoey102DtZ/Y3xQnkh03WmrVb50bXJAMu+EYKU6k1+RgulXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BPDcPVrL8+kJydvKJvWRNpaL7HTX0t8Q+2z5YL4jb/0=;
+ b=Z6FIw5EAVqypv+MRo+EucrSyVeDrOGcMtusHnm4oflsSUG7cG3TDRdmffikoy6TbiUwh0xfHDPjTG9CeSNtXE7CpoI9FSCl3DhsAFYZ3d/sF9XBVBmRLcjUDRMKvYR8u8fYZkwQJTTBr2j+z6vXLY3a+RtmfBrZ21IFvDCgTkZhFq6MrDSYs1AgiLkXQBN9FGdZQWID+SBAsv4w8XiNNFNsYtL2I4tnEr5SCVw3noo3pOj8kVH3vmdgj+X3tmLA5ulrAHzWqgLj2Yk25xxalRhHTq2Ho/FM+S/NSMRNwsPAgXVyt/jexEAp8/sYRt3pCoUWbTzl58FrinB6HN4rHew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BPDcPVrL8+kJydvKJvWRNpaL7HTX0t8Q+2z5YL4jb/0=;
+ b=IQXAT2aIt3e1870gFe482e4YF3QImiiCkb8SV5uq4qfTWT0W2Q1vRtQAcvNmKNM1Bwj5KyP6GbR2fFAdrbRFlSP0V+g5bZFEPaYWizFW8Yw5BTVVoxYKIiCH2KHF0p343m0/Xlt67ajwA6SZh7/A0D/dj3wncCJNrned3XRCEjc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWXP265MB2021.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:7d::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.29; Tue, 7 Mar
+ 2023 16:32:08 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece%3]) with mapi id 15.20.6156.029; Tue, 7 Mar 2023
+ 16:32:08 +0000
+Date:   Tue, 7 Mar 2023 16:32:04 +0000
+From:   Gary Guo <gary@garyguo.net>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Asahi Lina <lina@asahilina.net>,
+        Andreas Hindborg <nmi@metaspace.dk>,
+        rust-for-linux@vger.kernel.org,
+        Andreas Hindborg <a.hindborg@samsung.com>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Luben Tuikov <luben.tuikov@amd.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Cc:     Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Karol Herbst <kherbst@redhat.com>,
-        Ella Stanforth <ella@iglunix.org>,
-        Faith Ekstrand <faith.ekstrand@collabora.com>,
-        Mary <mary@mary.zone>, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-        linux-sgx@vger.kernel.org, asahi@lists.linux.dev
-References: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net>
-From:   Asahi Lina <lina@asahilina.net>
-In-Reply-To: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net>
+        Boqun Feng <boqun.feng@gmail.com>,
+        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] scripts: rust-analyzer: Skip crate module directories
+Message-ID: <20230307163204.44278987.gary@garyguo.net>
+In-Reply-To: <CANiq72mvL3f-MZiZiZp-uZDQGCnYJ9yFh_QTWrTMUkUdiXdm=Q@mail.gmail.com>
+References: <20230307120736.75492-1-nmi@metaspace.dk>
+        <CANiq72mvL3f-MZiZiZp-uZDQGCnYJ9yFh_QTWrTMUkUdiXdm=Q@mail.gmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: LO4P123CA0029.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:151::16) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWXP265MB2021:EE_
+X-MS-Office365-Filtering-Correlation-Id: 473b6a52-d60d-44a1-420a-08db1f297eef
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 6yDZ88FCp9raGKOTwmZpJwlFucXVLirAWWsl8USGVtSlQOGKvQAzNIhAM2cTfKL+/EzyfKhgiHjn5W6q70d6t8v+HewqStXR3Lki6RPPIJnubMsJ6JPXGka2v8qcUN01cAqEA+/M5Xz61JcIfNczAUgnqnfPM2bVMO8TYmFU/0kNdBpfTEKzymtmxclM3oPNeZxSw0f70a0AXLDK285j+ecG/IQA9Y48r6mqwUsM4IH+zm+VBPa+k0v/UgAE0F9B5acZpr7QYW2H8IUluaswOaYToxcEOAmGMyqWMh3dsxGjs1XYHhhfdKiU/e4zBwuI+tvFyTn/HACPtlwqeKbs5oaFxe/G6WkLgs41odvd3jN9jV3u/sDt4aCKE0KWwWUS4ZRR69gcbFToBKxZW/C7WjT8l56OwwMvBVB1LpdXUiB0epjoUqnhxVazNh8t7gaRlfkf6L4iAquXKQilq/0e1P80DmbulXH2X1AGYi+ZeQRAcar/m1zRFoAZwPYXNstUHKG+OswQXOQOWIAiB9PXQH6E1Xkzsg/KsU4liACjkdasKyvf8/cdy6is0a8py6Gv3RgLkjaUdL6Pgno1Abi0HvjlGnBQhtV9X8nGeU7TsfeGIMPyEfxzeQIUbfqQ+iMe
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(366004)(376002)(39830400003)(346002)(396003)(136003)(451199018)(2906002)(5660300002)(7416002)(8936002)(41300700001)(4326008)(66946007)(6916009)(66556008)(83380400001)(66476007)(8676002)(316002)(54906003)(53546011)(6666004)(478600001)(6486002)(966005)(6512007)(1076003)(6506007)(2616005)(86362001)(186003)(38100700002)(26005)(36756003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Yk5JMk54Wnd6cFo0M1h1dHNpc3c4VjZkS01TV1BJYW03ejl5Ykd6d3BJZUd2?=
+ =?utf-8?B?KzRESERHN0VDUTVIdTBhbUJSVGJxaG9TTDNFT2hPOGdRZjFkWmdrQ0VsTlcv?=
+ =?utf-8?B?WG1ybXBSOVA1WDV1RlNmMmFtb3hkUmFnais1SHhwNWNzM3pUNytzWmpESitl?=
+ =?utf-8?B?SzI1a05zakZkQmVhVG52bWpjZzhGRWQ0Ny8reU9SWTQrNnhSTGdDdWR5c0R2?=
+ =?utf-8?B?ZmF3YjA4QnZNYnBaeXVhWVcrUXpxTkJIQjdvWktWR1A0NWJldG1zTE1PUDVK?=
+ =?utf-8?B?RmlMcUNrSnIrdnFmOVJVQ1lidVU2RGhDbUlRNk5jMjJvb25CSFBudTVsOGNL?=
+ =?utf-8?B?d0xjY2lVdGpNTnNPVW14a0NxbElkbFlvcFREd2Z5blJUYVQrYkRVeXFMQkRh?=
+ =?utf-8?B?QzJjT2xvRDZoeloxWFdITm9NcElXN1R0UFk1c21kSHpjTkZDQVhObEE1aFF2?=
+ =?utf-8?B?YW40SHBzRm85RFBzV1BSQ3krRXdlMjZPbks3ZFcxS3ZTajBzNWFzVjdMTS9I?=
+ =?utf-8?B?MlVyVUFHc3lVR2RiMzZvSlU0VTZybEdMWlNXYlZYK2RBRFRVOER2eCtWZHBF?=
+ =?utf-8?B?VmNKYzBIeXQ1NG9LTDF5b2ZCWnN5YTJWdjhFMlJnblFYODVGOHBoWnZ6eWpT?=
+ =?utf-8?B?dFYxbmQ2bW9wa2V0OUFEazQ1WC9zSjZwdUNzMzJ0Nm9ObVFUYnNZRG01UTVq?=
+ =?utf-8?B?ZFR2eGJUdVY2eFI1cG1CZnlDOE56V1p1TlVtRDd3K1lESWlhalJhVFY4WGFL?=
+ =?utf-8?B?Y1hRYzUzTlZ2NFA0ZVNKSUJ0Uk9ac0YxWEpjTm5DK3FmQ1Z4YzNQK2ptNk4x?=
+ =?utf-8?B?cGR2cGZUYUNEUVNxcDIrUFRaL2NLSTluZkJsVnZjWmxtb3JzM0RuTU5zbHZp?=
+ =?utf-8?B?Uk5YRlRaZWVMSTBLNnY1MkFLYU9MS3Q0N2YycVRVNGJyRmVwOG5wbXBIOWlp?=
+ =?utf-8?B?UFNGbzBJL0RMSTlkSDJUOUlmYzNsS3I2VkMzdmF0SndmMkNVSytzTnhZdU5L?=
+ =?utf-8?B?ZnFya3RFWmQzQi9UZnN3d1puTVozSC9RcEZteG1IZi9uVUNpOTBSbm5ZSWx4?=
+ =?utf-8?B?dmx1WHhpTEE4Z1hLMEx1VTV4YlN2ckI5T1dCNDllTWp6ODNaNkczVTJka0F6?=
+ =?utf-8?B?dC9zUWE2THhTaFl5bDkrV1BXTjNIbHRoUGZlV1Z1TkR0TmdqNUFtUUZBSXhl?=
+ =?utf-8?B?M1EraTVXRDJGNDhxRHFJRHZ0c3hQRjkyOVBocnR0Q3pmSjN0N0ppT0pSMlRz?=
+ =?utf-8?B?ZS9Ea3pYVm9mU0d4bnBUa3RycFREMGRML1lTYVhxTHlXbFJmZW43a2VZTlBm?=
+ =?utf-8?B?Mk5FcGM5b251SnVibEk4eUFEamdDbXEwcGRuU0pKSjF0ZC9uRHdtNVc3MWht?=
+ =?utf-8?B?RzhPcTV6UkZyTFNlT2RTU1BsU3FkQyt3eTB6cVlrSXljOFY4dlZ1SU1wVU94?=
+ =?utf-8?B?ZjlJTldYajBGYVRRVW14V2ZsQ3lWamdOdG10OThOOWdRZjJPc0JlODd0WVRx?=
+ =?utf-8?B?WnhZUFNHTjhFNTVNUlhwYkMvcTJOczB4dzY2bnZ2TkJ5WStXa0ZIODk5UDht?=
+ =?utf-8?B?dTVyU2ZxeEk3aVhQbGRyRnUrVDdFN0RKUGdsc1pxMnNKOWNaVTV6R2NvL3Rs?=
+ =?utf-8?B?bkJXMmR2cG5YMWZwajRMSWs4YytITm5JSzVLWVJtRm45VlIxclRpemNMNlQw?=
+ =?utf-8?B?Y3RRL3A5ekNmR1pxemQrbHd5ZW1pRjJQai8vTGNKNUxYWTF1ZjE2MFhUSXFH?=
+ =?utf-8?B?TkRHV0daN2dxK0dKTEZhTDQ4NEdqbEdjVHNSaVlRdUdDdFFjUUNQL09oeEVt?=
+ =?utf-8?B?M3V1M015Z3R0YjlzNFgxVlFQblpHZWRxSGxQa2t5b3FjeVliWk1TcVhyZ2hB?=
+ =?utf-8?B?VnJRZmo2WldPRVd4RytlTG8walZQZ09HeTdpdU5CY1hPMmlkTTJjY1owTzMw?=
+ =?utf-8?B?bGFuUi90ZnJPUFhubkUvbU5Vd011ZFpmM25BUHJKUmRWM1k5Q1lTSWlIZmJ4?=
+ =?utf-8?B?a01Xdmk4T1Y3Y0p0b0E0SkVjU3BpMXdWTWJzcXYzQUFEMkJ4R3B6SmZuS0tR?=
+ =?utf-8?B?Z0tJOXloRzJqeldzN3czaHo1V2w4cEJsejFvTjRpRUkyWlhNOENNT0JzSlBD?=
+ =?utf-8?Q?d+VqtSMEXEkcaSTZAvz/z5I4J?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 473b6a52-d60d-44a1-420a-08db1f297eef
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2023 16:32:08.8192
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2aUvTIGq8gDPM6uOrpexM86W0Gx+ws1gphczq6/j4p0l3rnHsqNtM8cLhL4fyqqwXkTi9pK80krOstImDRxNzQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2021
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-That was supposed to have Markdown-style section headings, but I forgot
-that b4 considers a leading # as a comment... sorry for the abrupt topic
-changes...
+On Tue, 7 Mar 2023 13:38:10 +0100
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-The intended headings are below.
+> On Tue, Mar 7, 2023 at 1:08=E2=80=AFPM Andreas Hindborg <nmi@metaspace.dk=
+> wrote:
+> >
+> > When generating rust-analyzer configuration, skip module directories. =
+=20
+>=20
+> This is https://github.com/Rust-for-Linux/linux/pull/883, also handled
+> by Vinay's patch
+> https://lore.kernel.org/rust-for-linux/20230118160220.776302-1-varmavinay=
+m@gmail.com/.
+>=20
+> Lina's approach is arguably a bit more idiomatic in Python in that it
+> is usually encouraged to follow the "Easier to ask for forgiveness
+> than permission" approach.
+>=20
+> Lina, would you like to submit yours? Or do you prefer a `Link: ` /
+> `Reported-by: ` / `Co-developed-by: ` here?
+>=20
+> > If `driver_mod` is a module of the crate `driver`, the directory `drive=
+r_mod`
+> > may not contain `Makefile`, and `generate_rust_analyzer.py` will fail. =
+=20
+>=20
+> By the way, note that in the kernel crate we are avoiding `mod.rs`
+> files, instead using `name.rs` in the parent folder, in other to make
+> it easier to find the files. I will add a note about it in the docs.
 
-On 07/03/2023 23.25, Asahi Lina wrote:
-> Hi everyone!
-> 
-> This is my first take on the Rust abstractions for the DRM
-> subsystem. It includes the abstractions themselves, some minor
-> prerequisite changes to the C side, as well as the drm-asahi GPU driver
-> (for reference on how the abstractions are used, but not necessarily
-> intended to land together).
-> 
-> These patches apply on top of the tree at [1], which is based on
-> 6.3-rc1 with a large number of Rust abstraction/support commits added on
-> top. Most of these are not prerequisites for the DRM abstractions
-> themselves, but rather only of the driver.
-> 
-> * #1-12 introduce the abstractions, module by module, with minor C
->   changes before the dependent abstraction.
->   * Patch 10 is a little addition to drm_sched that I ended up needing,
->     but I can pull it out of the abstraction into its own patch if
->     needed.
-> * #13-14 add a minor feature to drm/gem and its abstraction used
->   by the driver.
-> * #15-16 introduce the (unstable) asahi UAPI. This is obviously not
->   ready for merge yet, but comments are welcome!
-> * #17 adds a Rust helper macro to handle GPU core/firmware differences.
->   This probably belongs in the driver at this point, but right now it
->   has to live in rust/macros since there is no mechanism for per-driver
->   proc macros.
-> * #18 adds the driver proper, in one big commit, for reference purposes.
+I personally think mod.rs makes it easier for me to find files because
+all related stuff are contained inside a single directory, especially
+the parent modules and submodules are closed related.
 
-## Background
+That's just personal opinion though.
 
-> I've been working since mid last year on an Apple AGX GPU driver for
-> Linux, using the (at the time) out-of-tree Rust support. As part of this
-> effort, I've been writing safe Rust abstractions for portions of the DRM
-> subsystem.
-> 
-> Now that Rust itself is upstream, I'd like to get all the abstractions
-> upstreamed so we can eventually get the driver upstreamed!
-> 
-> These abstractions have been used by the driver since our release in
-> December [2], in a simpler synchronous-submission form:
-> 
-> * drm::ioctl
-> * drm::device
-> * drm::drv
-> * drm::file
-> * drm::{gem, gem::shmem}
-> * drm::mm
-> 
-> This series adds these too, which are used by the explicit sync refactor
-> of the driver (the version in this series):
-> 
-> * drm::syncobj
-> * drm::sched
-> * dma_fence
-> 
-> The major dependencies for the DRM abstractions themselves are:
-> 
-> * [3] rust: error: Add missing wrappers to convert to/from kernel error codes
-> * [4] rust: Miscellaneous macro improvements
-> * [5] rust: Add a Sealed trait
-> * [6] rust: device: Add a minimal RawDevice trait
-> * [7] rust: Enable the new_uninit feature for kernel and driver crates
-> * [8] rust: ioctl: Add ioctl number manipulation functions
-> * [9] rust: sync: Arc: Any downcasting and assume_init()
-> *     rust: Add `container_of` and `offset_of` macros
-> *     kernel::sync::mutex and dependencies
-> 
-> Most of these (the ones with links) have already been submitted, and I
-> expect all of them to land for 6.4 (the mutex one will likely be last,
-> since there is some refactoring that will happen over the current state
-> to make it more ergonomic to use). The mutex dep is only necessary for
-> drm::mm and dma_fence, and transitively drm::syncobj and drm::sched.
-
-## State
-
-> Things work! We've had most of the abstractions in production edge
-> kernels with the driver, and the new explicit sync stuff has passed
-> quite a few torture tests (this is how we found the drm_sched issue,
-> patch 11).
-> 
-> The abstractions are intended to be safe (safety review very welcome!).
-> While writing them, I tried to avoid making any changes to the C side
-> unless absolutely necessary. I understand that it will probably make
-> sense to adjust the C side to make some things easier, but I wanted to
-> start from this as a baseline.
-> 
-> Known issues:
-> 
-> - The existing Rust integration does not currently allow building
->   abstractions as modules, so the Rust abstractions are only available
->   for DRM components that are built in. I added some extra Kconfig
->   symbols to deal with this, so a driver built as a module can depende
->   on having those built in. This should go away in the future (but may
->   not be ready in time for submission... I understand this probably
->   shouldn't be a blocker though?).
-> 
-> - DRM relies heavily on the "subclassing" pattern for driver objects,
->   and this doesn't map well to Rust. I tried several approaches for
->   various bits, so we can see how they work out. In particular, whether
->   wrapper types should pretend to be smart pointers and Deref to their
->   inner driver-specific types, and whether they should be marked as
->   method receivers (Yuck, internal rustc implementation hacks! But
->   Arc<T> already does the same thing and it makes usage in
->   driver-implemented callbacks as `self` possible) are things I'd love
->   to discuss ^^.
-> 
-> - Only what I need for my driver is implemented (plus a small amount of
->   obvious extras where better API completeness makes sense). I think the
->   general idea with Rust abstractions is that we add things as they
->   become necessary.
-> 
-> - The plain GEM vs. GEM-shmem duality ended up with quite a hairy type
->   hierarchy. I'd love to figure out how to make this simpler...
-> 
-> - drm::mm ends up requiring a built-in mutex in the abstraction, instead
->   of delegating that to the user with the usual Rust mutability rules.
->   This is because nodes can be dropped at any time, and those operations
->   need to be synchronized. We could try to avoid forbidding those drops
->   or mark the node type !Send, but that would make it a lot less
->   ergonomic to use...
-> 
-> I'm looking for feedback on the abstractions of all kinds, so we can
-> move towards an upstreamable version. Optimistically, I'd love to get
-> this upstream for 6.5, and the driver for 6.6.
-> 
-> Please feel free to ask any questions about the Rust bits, since I know
-> a lot of this is new to many of the C folks!
-
-## About the drm-asahi driver
-
-> This is a fairly complete driver for Apple AGX G13 and G14 series GPUs.
-> 
-> The driver today supports the Apple M1, M1 Pro, M1 Max, M1 Ultra, and M2
-> SoCs, across two firmware revisions each. It has an explicit sync UAPI
-> heavily inspired by the upcoming Intel Xe UAPI, designed with Vulkan
-> support in mind. On the Mesa side we currently have a Gallium driver
-> that is mostly already upstream (missing the UAPI bits mostly) and
-> passes the dEQP GLES2/EGL tests, with most of GLES3.0 passing in
-> downstream work-in-progress branches. This is a reverse engineered
-> community driver (we have no hardware documentation of any kind, other
-> than some hints from aspects shared with PowerVR).
-> 
-> While developing the driver, I tried to make use of Rust's safety and
-> lifetime features to provide not just CPU-side safety, but also
-> partial firmware-ABI safety. Thanks to this, it has turned out to be
-> a very stable driver even though GPU firmware crashes are fatal (no
-> restart capability, need to reboot!) and the FW/driver interface is a
-> huge mess of unsafe shared memory structures with complex pointer
-> chains. There are over 70 ABI types and 3000+ lines of firmware ABI type
-> definitions that vary between firmware builds and GPU cores...
-> 
-> In a simpler blocking-submission form, it has been shipping in Asahi
-> Linux edge kernels since December [2], with lots of users and zero (!)
-> reported oopses (and only a couple reports of GPU firmware crashes,
-> though that issue should now be fixed). It has survived OOM scenarios
-> (Rust makes error cleanup easy!), UAPI-level fuzzing, countless broken
-> Mesa builds, uptimes of 40+ days, and more.
-> 
-> The explicit sync refactor significantly increases performance (and
-> potential problems), but this version has survived a lot of torture
-> with dEQP/piglit tests and some manual corner case testing.
-> 
-> In other words, Rust works! ^^
-> 
-> There are some design notes on the driver and further links at [10].
-
-## Links
-
-> [1] https://github.com/AsahiLinux/linux.git drm-rfc-base-20230307
-> [2] https://asahilinux.org/2022/12/gpu-drivers-now-in-asahi-linux/
-> [3] https://lore.kernel.org/rust-for-linux/20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net/T/
-> [4] https://lore.kernel.org/rust-for-linux/20230224-rust-macros-v1-0-b39fae46e102@asahilina.net/T/
-> [5] https://lore.kernel.org/rust-for-linux/20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net/T/#m515bad2cff7f5a46f55897e6b73c6c2f1fb2c638
-> [6] https://lore.kernel.org/rust-for-linux/20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net/T/#m4c64e390c43b3ff1b8470fc8b37eaf87f6e12c94
-> [7] https://lore.kernel.org/rust-for-linux/CQV7ZNT6LMXI.1XG4YXSH8I7JK@vincent-arch/T/
-> [8] https://lore.kernel.org/rust-for-linux/61f734d6-1497-755f-3632-3f261b890846@asahilina.net/T/
-> [9] https://lore.kernel.org/rust-for-linux/20230224-rust-arc-v1-0-568eea613a41@asahilina.net/T/
-> [10] https://github.com/AsahiLinux/docs/wiki/SW:AGX-driver-notes
-
-~~ Lina
+Best,
+Gary
