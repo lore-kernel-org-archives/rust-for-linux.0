@@ -2,108 +2,93 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B73BC678DB
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 11:06:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FDC3C678D4
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 11:11:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229787AbjCGLGE (ORCPT
+        id S230466AbjCGLK6 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 06:06:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55798 "EHLO
+        Tue, 7 Mar 2023 06:10:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231384AbjCGLFY (ORCPT
+        with ESMTP id S230492AbjCGLKi (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 06:05:24 -0500
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 502A77BA10;
-        Tue,  7 Mar 2023 03:02:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1678186964; x=1709722964;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=297I+f2QIP3fYjyaueh8DMg0UU/5q5ZcWqC31Xzuzco=;
-  b=c827tRuEk4tOKbbAsJ7tWbZxGDRuDW1TsnAXUTKRUgnhG6aVhtg55XuH
-   e24wQQgpb/9w/0raoKsu12wcl5YyycBMwKK+Aygms0tXK1Mle/pRn2UXu
-   1eZ3o5DLVPgM2dcXWVODDBf/TeB5HFqhxyU17EVW4UF1+GHttOBcxPJxN
-   Pl76/bHwcGqP1rq3apbbQRXrDoKjsqJFzfCVbpQl/+805XJ64wMkZ9fmu
-   UVvIxWAepkimZMOPitsVHWrXgMZJyVxmpinOiF6y+JcRdYyrQ5A7DlxkR
-   fvsQcZpSe4ER47W+R7jyxUTF5xQA1gTNVNm+kwIsZjMzxZecpMQcodEjV
-   g==;
-X-IronPort-AV: E=Sophos;i="5.98,240,1673938800"; 
-   d="asc'?scan'208";a="203976780"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 07 Mar 2023 04:01:54 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Tue, 7 Mar 2023 04:01:46 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16 via Frontend
- Transport; Tue, 7 Mar 2023 04:01:42 -0700
-Date:   Tue, 7 Mar 2023 11:01:13 +0000
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-CC:     <linux-riscv@lists.infradead.org>, <conor@kernel.org>,
+        Tue, 7 Mar 2023 06:10:38 -0500
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A90C04EC7;
+        Tue,  7 Mar 2023 03:07:40 -0800 (PST)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-536bbe5f888so237915527b3.8;
+        Tue, 07 Mar 2023 03:07:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678187260;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ezWI+YqtGSWosoo4M5sZg2WqWcmUK1NfNwH+n8V7ZCM=;
+        b=LuDiyIoNJ4vTfsKW2ge6iUNxEd8mvXODtJaI+szTJxwEO66HxU/s4bmVVK9dcwXnm/
+         QWRZVbOXaDFcQX6RimoGoGiKuIIajLYc26PZAdg2UmAFnv/KaKOeURvisNCgZi+ESOA9
+         oPUkR4U14jLYUEa/RDk+t3dJMMMJCVlxth1Nko993D9oFNnePQksBikmXx7bPM+WpXOF
+         yiUveNKPhjRWZZiWN+G2Ir0L6M7AS3DJJ0NS6Xq6vQDyXHeN2icq9w7ifGGK8wOAfApj
+         OLcYmBP0kNbBpEvna/hpD13FRhHyIFOArYIjr9skWceDsiBLwkvUtQIGWRnfH6qZw+1+
+         lwLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678187260;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ezWI+YqtGSWosoo4M5sZg2WqWcmUK1NfNwH+n8V7ZCM=;
+        b=vPdwsRX4VTkPKGAnvFsOmSSBVwZJRy918AqKHBGRTflTsodOWVAKNEtkNIpZk6zny9
+         edlzy5iZpnIY5bvOuVAa6Io9NUrfgNYDesUglp1klJEhCeCbUqEYJBDoqDduwXMUoKJ0
+         BkEb7hDf23V7qwx/D8zqc+Cn6A8ZWlQfBcLuCeSvY3EzYSl5CYDptOU0UOUm9Ba+1SRu
+         tIVQF9joDlr8SpzCSx979FGlw/CbxAwGfkV98Gd5LT8DpnfWbrxh18AfpGOAXbSg961+
+         /+chhS3gS83ciVCK1wnVRfNj9RTlkBk0+meAZwPkhkuI4bpby0r0xcPqR+5xyK0bvpoq
+         SnVw==
+X-Gm-Message-State: AO0yUKXFK6omXCfnxAJ6ynCnCzLVEMtbBoe8ELWBFXvzZqqUcDjjgUOB
+        MqT9z9duh2xdrKmKJMX8roscKecUhViRH3P8q7g=
+X-Google-Smtp-Source: AK7set9mt9UYnbLiU961T5A6R3gBGXlq8VmcrLo/C8E0ADEMyOzY+pN/ywBe+SU5kncac16bq8sQPDmSAjiKbFf3Oew=
+X-Received: by 2002:a81:ad24:0:b0:52e:bb2d:2841 with SMTP id
+ l36-20020a81ad24000000b0052ebb2d2841mr8435908ywh.10.1678187259869; Tue, 07
+ Mar 2023 03:07:39 -0800 (PST)
+MIME-Version: 1.0
+References: <20230307102441.94417-1-conor.dooley@microchip.com>
+In-Reply-To: <20230307102441.94417-1-conor.dooley@microchip.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 7 Mar 2023 12:07:29 +0100
+Message-ID: <CANiq72=i9je2864iTvZBFnhVLhF7Cema7EPCcdWOJ3mr62SqDg@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
+To:     Conor Dooley <conor.dooley@microchip.com>
+Cc:     linux-riscv@lists.infradead.org, conor@kernel.org,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Jonathan Corbet <corbet@lwn.net>,
         Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <llvm@lists.linux.dev>
-Subject: Re: [PATCH v1 2/2] RISC-V: enable building 64-bit kernels with rust
- support
-Message-ID: <ZAcZeWYUU75BK5FO@wendy>
-References: <20230307102441.94417-1-conor.dooley@microchip.com>
- <20230307102441.94417-3-conor.dooley@microchip.com>
- <CANiq72nLjBgMSUTtWuF7qU5vG9rA3v=ekWk1d6+SNiGkfcaS8Q@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="FkEia1k7ZMsXTyfP"
-Content-Disposition: inline
-In-Reply-To: <CANiq72nLjBgMSUTtWuF7qU5vG9rA3v=ekWk1d6+SNiGkfcaS8Q@mail.gmail.com>
+        Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
---FkEia1k7ZMsXTyfP
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, Mar 7, 2023 at 11:25=E2=80=AFAM Conor Dooley <conor.dooley@microchi=
+p.com> wrote:
+>
+> I have added SoB's too, but if that is not okay Gary, then please scream
+> loudly.
 
-On Tue, Mar 07, 2023 at 11:56:30AM +0100, Miguel Ojeda wrote:
-> On Tue, Mar 7, 2023 at 11:25=E2=80=AFAM Conor Dooley <conor.dooley@microc=
-hip.com> wrote:
-> >
-> > While adding RISC-V to the table, I took the chance to re-sort it
-> > alphabetically.
->=20
-> For reference, there is a patch for this coming at:
->=20
->     https://lore.kernel.org/rust-for-linux/I0YeaNjTtc4Nh47ZLJfAs6rgfAc_QZ=
-xhynNfz-GQKssVZ1S2UI_cTScCkp9-oX-hPYVcP3EfF7N0HMB9iAlm1FcvOJagnQoLeHtiW3bGC=
-gM=3D@bamelis.dev/
+Note that `Co-developed-by`s always go with a `Signed-off-by`s, i.e.
+it is not possible to add just a `Co-developed-by`.
 
-Cool. Git should resolve that, probably without even generating a
-conflict in -next, right?
+By the way, like for the Arm patch set, if you end up doing a v2,
+could you please add the `BINDGEN_TARGET_*` in `rust/Makefile` (GCC
+builds are really experimental, but since they are there anyway, it is
+best to be consistent and add it).
 
-
---FkEia1k7ZMsXTyfP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZAcZeQAKCRB4tDGHoIJi
-0iWbAP9z3UWgpmmPL9iCnUOvG6wdr7hbXIjO7rXRgnhbqt0fkwD9HQMjWbIh05Hm
-OgvH3JO4XhG7ZCQ2aWRBhDWQ86BUSAM=
-=cBqK
------END PGP SIGNATURE-----
-
---FkEia1k7ZMsXTyfP--
+Cheers,
+Miguel
