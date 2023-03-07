@@ -2,84 +2,112 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC6D3C678D4
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 12:45:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29FFFC678D5
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 12:52:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229540AbjCGMpX (ORCPT
+        id S229540AbjCGMwo (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 07:45:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39480 "EHLO
+        Tue, 7 Mar 2023 07:52:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbjCGMpU (ORCPT
+        with ESMTP id S229613AbjCGMwg (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 07:45:20 -0500
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 835BB4D28D;
-        Tue,  7 Mar 2023 04:45:19 -0800 (PST)
-Received: by mail-yb1-xb2c.google.com with SMTP id e82so11208773ybh.9;
-        Tue, 07 Mar 2023 04:45:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678193118;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6fe876EcuA+jdmCESHMii/7cG2YSZKquEdS/vIty4+A=;
-        b=ODIJueFdMNGe95gTEbyF5NczLJmY23TtUj51PPOLopdCMmLFgcThOhcAVkvfDnoWal
-         kGcukFh7EtTc0RW08h2lwJk9aOVAolceIRIuOJKABA+/zAdgaUpAp0J6WXyT61J/a/ft
-         tMygDnofeR6ck4paPkOSPfFEJuAPyTXIDnzWEuv74MGISTIw5i3wp84FjjkivYkMTQNV
-         FU0w7dBuB3gmGh574Vs6I2bg7ztdeRTZAVPhfzpAy8Wm7v0N0ZXCBkDy2WwAsC0hnMsQ
-         Jq33qja3vVL9a+IU3LhBjW8TtcIMuTPXr7vEKx28eD2rp6bXV+a/1SMLI9FZ3Nb60QUo
-         VT9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678193118;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6fe876EcuA+jdmCESHMii/7cG2YSZKquEdS/vIty4+A=;
-        b=6n44r0H4VAevPhKEl8J/JUIJduSE0hjVGB9hovq+oiJxmICYT1Qq7rxd3R079/FUve
-         oYR87JL2Zdda0bf7I/Rz2rdRQjBI7m0UyTSji/Xc5s1GD/+gyNTbKT3cQnhL2/7c27ZA
-         MFYiFrkMHS3jTYzcWX2+36y4NltP7XwG8Vj9/simPSHPZMu1rQNNaRc7lyDBVYsryB1n
-         VavQrstQVsMrwGs42VPNvyLBkoprbcydbMibk7WIBajvWKwL2DMHBc89hZazox5XLafM
-         xjrPO9up8hOI1QsTtWnCZX+c0N8v3RwG7plVcvZOxIvZ5AXWiVglD7t5tXiY8sd35O7z
-         2Clg==
-X-Gm-Message-State: AO0yUKW04GYUCBabe/yPe5pJFk/YLFp46tk7ejCrujdvsodPYX0wDqSn
-        yqQfcMzpJdB2NERsn6xuBQK8tmOvdGJ7/JOOvjE=
-X-Google-Smtp-Source: AK7set+4i6X4+McENdJYEtkgtVMIkW1tvDFHTItHQ5/EcD88Yp6L91Q8oXnhMttrnbcAi9OAVXl2NClL+dgdZd9VEek=
-X-Received: by 2002:a25:656:0:b0:a27:3ecc:ffe7 with SMTP id
- 83-20020a250656000000b00a273eccffe7mr11410509ybg.3.1678193118746; Tue, 07 Mar
- 2023 04:45:18 -0800 (PST)
-MIME-Version: 1.0
-References: <20230306220959.240235-1-ojeda@kernel.org> <87ilfcivzf.fsf@metaspace.dk>
-In-Reply-To: <87ilfcivzf.fsf@metaspace.dk>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 7 Mar 2023 13:45:07 +0100
-Message-ID: <CANiq72m_y=eCsJLxRP+bFvhmR5yAVK7=W6Hijb_CozWnL__dQw@mail.gmail.com>
-Subject: Re: [PATCH] docs: rust: point directly to the standalone installers
-To:     Andreas Hindborg <nmi@metaspace.dk>
-Cc:     Miguel Ojeda <ojeda@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Tue, 7 Mar 2023 07:52:36 -0500
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CB577E795;
+        Tue,  7 Mar 2023 04:52:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1678193551; x=1709729551;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=db3CujOdnnk4JvHTbGCquQDaWmCdFrEeKYWPbrMS3TQ=;
+  b=XWUHrInrmqWrTdOAc8yjeQugHE0jYJwdP+Mg5vwc73iw3TIAPCoXHdsL
+   RKslF2kcxXOxAJd12fhvJumeF7aCgcOSyc5qo8L0Dqukwrat65+ViVpYM
+   +z/K0hI4iMeanyGgAfFWbqv7wOR0NXymmeREQ+dqyKmLbsCLUIYmyu8PO
+   X9r3VlKQVZjthFscreeKspFGPFaU7D8EYmwyHYc/9ADthPcFPTq3he8Bd
+   cEmjlEoKW2MJ25ZUvtHxPtPetr6/doWGSpowe7uvodcAXMdBuTfr61rVh
+   u4qZuAoi34vjVrZOhcUYu65BcuN2758cl/hyHRUycKJRC3ivPgH2cUsC5
+   A==;
+X-IronPort-AV: E=Sophos;i="5.98,240,1673938800"; 
+   d="asc'?scan'208";a="200357617"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 07 Mar 2023 05:52:27 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Tue, 7 Mar 2023 05:52:26 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16 via Frontend
+ Transport; Tue, 7 Mar 2023 05:52:23 -0700
+Date:   Tue, 7 Mar 2023 12:51:55 +0000
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC:     <linux-riscv@lists.infradead.org>, <conor@kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <llvm@lists.linux.dev>
+Subject: Re: [PATCH v1 2/2] RISC-V: enable building 64-bit kernels with rust
+ support
+Message-ID: <36af5bd6-883c-4968-8ace-2e31ec51907d@spud>
+References: <20230307102441.94417-1-conor.dooley@microchip.com>
+ <20230307102441.94417-3-conor.dooley@microchip.com>
+ <CANiq72nLjBgMSUTtWuF7qU5vG9rA3v=ekWk1d6+SNiGkfcaS8Q@mail.gmail.com>
+ <ZAcZeWYUU75BK5FO@wendy>
+ <CANiq72kz2qxsB9JG7OB02KMAfy-YvokCFWMuEj_bkaY8i5tdVg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="OghjveGlJgfPwijn"
+Content-Disposition: inline
+In-Reply-To: <CANiq72kz2qxsB9JG7OB02KMAfy-YvokCFWMuEj_bkaY8i5tdVg@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Mar 7, 2023 at 1:31=E2=80=AFPM Andreas Hindborg <nmi@metaspace.dk> =
-wrote:
->
-> I guess we should remove "or install ``rustup``" from this sentence?
+--OghjveGlJgfPwijn
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Good point -- the page contains installers for `rustup` itself too
-above the URL fragment, but we are pointing directly to the fragment,
-so it can be confusing.
+On Tue, Mar 07, 2023 at 12:56:30PM +0100, Miguel Ojeda wrote:
+> On Tue, Mar 7, 2023 at 12:01=E2=80=AFPM Conor Dooley <conor.dooley@microc=
+hip.com> wrote:
+> >
+> > Cool. Git should resolve that, probably without even generating a
+> > conflict in -next, right?
+>=20
+> I think it will conflict.
+>=20
+> Since the cleanup is elsewhere and it may add work for the -next
+> maintainer, it is probably best to take it out in v2.
 
-I think I will split the sentence and add an extra link to the other
-fragment, since there is one for that too (`#rustup`).
+If you think it will conflict as-is, it's probably gonna conflict either
+way.
+You've pointed out several small bits, I'll send a v2 in a few days.
 
 Cheers,
-Miguel
+Conor.
+
+--OghjveGlJgfPwijn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZAczawAKCRB4tDGHoIJi
+0q2zAQCGrMXmp1otmx9KctfrHf1Ol5KJTxzDmuBtPfHgBLOgQAEA74Ce5Fhsb+MK
+1rRf0Dnx0FHgQLhpzxjlfV51kr0qUwc=
+=QvX9
+-----END PGP SIGNATURE-----
+
+--OghjveGlJgfPwijn--
