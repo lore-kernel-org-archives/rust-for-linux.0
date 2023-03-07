@@ -2,99 +2,87 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 347C0C678D5
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 19:59:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 214A5C6FA99
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 20:21:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230526AbjCGT7U (ORCPT
+        id S231338AbjCGUVu (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 14:59:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56562 "EHLO
+        Tue, 7 Mar 2023 15:21:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231526AbjCGT7C (ORCPT
+        with ESMTP id S230043AbjCGUVt (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 14:59:02 -0500
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9B824493;
-        Tue,  7 Mar 2023 11:55:39 -0800 (PST)
-Received: by mail-yb1-xb36.google.com with SMTP id k23so12555885ybk.13;
-        Tue, 07 Mar 2023 11:55:39 -0800 (PST)
+        Tue, 7 Mar 2023 15:21:49 -0500
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC421A3B4F;
+        Tue,  7 Mar 2023 12:21:48 -0800 (PST)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-536bf92b55cso265429537b3.12;
+        Tue, 07 Mar 2023 12:21:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678218938;
+        d=gmail.com; s=20210112; t=1678220508;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=W0IZLqmZy0tkE3D6dehIaOZJMQhJ6wIO1l7RgkyXBKU=;
-        b=P1sOOl+jOSGV2KvhWDTm43KAlEkQoK1UU4EX0jCulOuurJF0V1C7CQ02KMaGUqTw9X
-         QZKqqhQXAIeC9WFvTnpXfeJVdEDypFi1ohEtENR9FUFx1uQLLf6fmHpydoUTAfAY4ho+
-         Kri4JCyuykgvVY0sp3gqvrf1lKz/Vlp16qkwU2/n9IDp0gqun48Bsir6i6iW3xa+nRUo
-         EfpjSr7lZlWuyRRp1tvBgpfyoGfBFgYKhA1HCd4eDaZBUtR0H+U/DTkQpmSikp35L3i1
-         KTLziDNysQ6CLpKJHuAfc1hVcxXQIuUodvQ6BuDM3pxJ35VK0gIAUAbhWn+9OPqwmABW
-         TyMg==
+        bh=p+IY8UzAM/RZ3TeWbW0ubM4NqyIzYaaPyJwWrG0C17g=;
+        b=o3XBQrg0E7Gu4Bfj1UMKOqzr+iqyEw8RAolsQ0y0e9rP5fT6Ko80YcyP4xerW3tVy2
+         uXftt5CH6v5UNl5a5kGaIGmV8RHWqX5zdXXKYop5T61DkG+3qC/ueohmOU4CbyDQkfq3
+         5BmOVQCR3+QizmQhtYB8KgJ9Wi/R/dwAx+lQ2Ci81vxj800rVHtLcWP2AlA6+beu/D7e
+         kn1JuRPQOCWTCPY7sWHQp00cP9+fXCDJc2PK5yUE3Kytzk39Cfzx4lLa34iqNy04afwa
+         9/Uc8StrmKVSvZjXNfkWUvcCeA54MwgD7xk/iD6KiIa2Ue5EQD6sF1/NT1VH+54ynche
+         /LDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678218938;
+        d=1e100.net; s=20210112; t=1678220508;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=W0IZLqmZy0tkE3D6dehIaOZJMQhJ6wIO1l7RgkyXBKU=;
-        b=XbLh1k92vvcYqn2EEN71PPVfsySCpUmZ3v3HrAlHrJh/nE9ETktZ5HbpMIHZbAvZU8
-         lpD1vaTuDERUfyOSZZ0iDhOqjlcj05KED46de2V05Fn/zGvN+eLwYAFpmLtw1uixsYpO
-         zsX2kkZARV5LmpOT79zT06XRrcfuwlkdgo3eW6zgn5XEuJBRsWQSG4qcl3tpkobAkb+b
-         +IvSpbuE6IRb6/vQXkOat/Ao40zV+bEvm2qNupTYrqasauf8BxX7cfZPHIPqIuGmlGtA
-         +BHuW0MkoYLgaiykJRSW7Akp+QIU1JPocWDUu6T9oLdoEe951BKVeIJhwkZ6Kddnq4ot
-         C5Dw==
-X-Gm-Message-State: AO0yUKWgtP9Q5rEx5KPjw0Dhk9ce2udNiu7XMi4FFntui2ksF22m6mty
-        FkC9mi8PwWnaxposekb4ct8sVxMX47HNPZEutow=
-X-Google-Smtp-Source: AK7set9q7Fr5lAcQ+rUn/aXjIXW/u94G5SLO1K/+kqdRhPEJFxECPOa51JwvvrUobgAJvlH9+sSBCHaRLK4iCfY53Yg=
-X-Received: by 2002:a05:6902:4c2:b0:a36:3875:564a with SMTP id
- v2-20020a05690204c200b00a363875564amr9258448ybs.2.1678218938404; Tue, 07 Mar
- 2023 11:55:38 -0800 (PST)
+        bh=p+IY8UzAM/RZ3TeWbW0ubM4NqyIzYaaPyJwWrG0C17g=;
+        b=VPa73ucpziHbF38DJMoeGQ4HSQRieiHspOkiYuDIG2TROaaA67rZ3s5sPRcCO0437p
+         dPQR0lher3SI2Ka+AVR0kI40SPWOtRvJDUUh8XCHKds12/xt5seInWTILBrxonMFJoqW
+         qsF5R8S3CgABf/8BBrCTslrpmWxbwBC2Qmnfgf0zIfophDcoGdx0lmtVjEJTuZjti6hU
+         XIi3snfCV69iP2iZJEdBUZ/6qBjqdW+5a/4Vrnekhyd3PiZLtsEd8n0E5VCUk/H+466z
+         slq/9UzXunnw3tydaP5HvStOb0xWE+sYSDe1KJCHWOrsuebfTGTQjNYYy6GykEGv4xw1
+         RrNA==
+X-Gm-Message-State: AO0yUKXMc31hdCLoW2KmVOt5GSfLyOmlfcX2qoDmZTqhp8d0E864HQt1
+        nN0/ju1PTIRWyTtAoqixfO4+qxBNwtgkyGpqW/A=
+X-Google-Smtp-Source: AK7set8WHeDUH2QzZ+qXXUTEET93/pMiobKm119Tu1NVq9tGU/rw9YM9TSLJVmG610ERzpj35YEYE8yjCa4xNbbiPjM=
+X-Received: by 2002:a81:ad24:0:b0:52e:bb2d:2841 with SMTP id
+ l36-20020a81ad24000000b0052ebb2d2841mr9465097ywh.10.1678220508034; Tue, 07
+ Mar 2023 12:21:48 -0800 (PST)
 MIME-Version: 1.0
-References: <CANiq72k4cOEOykgUhgqaXPC7xhX2EoC8c4sr1oFEhKMfEdi=wA@mail.gmail.com>
- <20230121052507.885734-1-varmavinaym@gmail.com> <CAK7LNAT1p=ykc1yruvzRiYthCAuXNcLq9461Mdgz95Z39_MYxQ@mail.gmail.com>
- <ZAdYIMYAwsOwErIl@nvrarch>
-In-Reply-To: <ZAdYIMYAwsOwErIl@nvrarch>
+References: <20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net>
+ <20230224-rust-error-v1-1-f8f9a9a87303@asahilina.net> <20230225221405.62e989c8.gary@garyguo.net>
+ <CANiq72kOb9mbh4HQzH40Ey+Rax3vREsd0Nf2O0apjDpsboE6vQ@mail.gmail.com>
+In-Reply-To: <CANiq72kOb9mbh4HQzH40Ey+Rax3vREsd0Nf2O0apjDpsboE6vQ@mail.gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 7 Mar 2023 20:55:27 +0100
-Message-ID: <CANiq72=mg3LEdqaiy+4VDn67-C++Fyz21gefns_EvgUwGfPCTQ@mail.gmail.com>
-Subject: Re: [PATCH v2] scripts: `make rust-analyzer` for out-of-tree modules
-To:     Vinay Varma <varmavinaym@gmail.com>
-Cc:     Masahiro Yamada <masahiroy@kernel.org>, alicef@alicef.me,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
+Date:   Tue, 7 Mar 2023 21:21:37 +0100
+Message-ID: <CANiq72=jWZS+UGx20XcdpRSWxG_CBhmB7Xyib8SCeCFYZdf4aQ@mail.gmail.com>
+Subject: Re: [PATCH 1/5] rust: error: Add Error::to_ptr()
+To:     Gary Guo <gary@garyguo.net>
+Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Fox Chen <foxhlchen@gmail.com>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Mar 7, 2023 at 4:28=E2=80=AFPM Vinay Varma <varmavinaym@gmail.com> =
-wrote:
+On Sun, Feb 26, 2023 at 3:26=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Sorry, got caught up with another project and lost track of this thread.
-> I have updated the patch and replied to some of the threads inline.
+> But I don't want to block the rest of the work on this, which may need
+> some extra/parallel discussion, so let's keep the helper for the time
+> being. That way we can also do that change independently and justify
+> the change showing the difference in performance/text, if any, in the
+> commit message.
 
-No problem -- thanks!
-
-Note that we may need a rebase after
-https://lore.kernel.org/rust-for-linux/20230307120736.75492-1-nmi@metaspace=
-.dk/
-(or equivalent) lands in `rust-fixes`. So perhaps wait for that, then
-rebase (especially if we go with the EAFP style), and then others may
-want to give it a spin for a re-test.
-
-When you rebase, please consider putting `f"{name}.o"` inside the
-function to avoid repetition, and perhaps consider inverting the
-condition to avoid indenting the file further (and reducing the diff).
-It makes the "Skip ..." comment more understandable (otherwise, you
-may want to change the comment to "Only process ..." or similar
-instead of using "Skip ...").
+Opened https://github.com/Rust-for-Linux/linux/issues/984 to help to
+remember it.
 
 Cheers,
 Miguel
