@@ -2,241 +2,261 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03D4DC6FD1A
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 15:59:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A577C6FD1A
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 16:18:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230107AbjCGP7O (ORCPT
+        id S230248AbjCGQSm (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 10:59:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41552 "EHLO
+        Tue, 7 Mar 2023 11:18:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231633AbjCGP6Q (ORCPT
+        with ESMTP id S230236AbjCGQSV (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 10:58:16 -0500
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46E19477D;
-        Tue,  7 Mar 2023 07:57:04 -0800 (PST)
-Received: by mail-pj1-x1033.google.com with SMTP id h11-20020a17090a2ecb00b00237c740335cso12268393pjs.3;
-        Tue, 07 Mar 2023 07:57:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678204624;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0+WhmNvyuzqlExpYYh7Rlrgluvlj6y0oW+rTW+VkZB4=;
-        b=V3sin0IBOGbhGIEs2LKhORy9EQaehgDvid40b0dvoHNQIGRt3VoQbCI2S9S9rOaGlm
-         HxJPN7egTgZ/7NXm/vw2EhjYFCX2YJvgUFSrJsHXMebXyu6+c6LU1d+kOzs9t3M9G7hI
-         yr3t1Iieh0+wp0w3ijKHszJA3CMU06cha6l9doSi3v3CgqkksAGBJ1PnzjZ5vsM0UADQ
-         0iIi75xFhx4H0+sSfBLMON6QHUW8UDLayK3nxcMssCPVPLxHG1/SREpaAyfbr+CFBVIs
-         ghyBxTAZaVWUO2/WaxrPupGd+0wIA4h/582X+QDFHgSxSVA0MzjKrwB6WRBcd/NEGpL2
-         uAsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678204624;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0+WhmNvyuzqlExpYYh7Rlrgluvlj6y0oW+rTW+VkZB4=;
-        b=zBGS6pdFc7nlE8J0L1tod8OxtcpX3pq62T2TEOeb/vj4eKQn9DB4DXl2aEdQZx+HEf
-         5lSKfYp4Z16Yc0kcsdrDAGT1IxtqHhfa5ARHF6f/BB44AOrKWv+Wh1s5ZmwawZQilQf6
-         c2z9eC60gZtJry/DHaNXjbQUC+8qFPSq5/fUGD4yXsCg3+NGGrQcX7NTzjJcbhJE47L9
-         3s9nXQYuqa+BOe1FWL3suOTFK97uy3kOJNrYrgWS8HCF2CFNv35lV8tTmvRRi3uIJXuO
-         +G/2Bh8e9qR4RptjWqOs0Ger0tGH/4sbkOLO3BH1K79sGwoE+RnW+iuAMq95FAAY1dzT
-         yaHA==
-X-Gm-Message-State: AO0yUKWdiCo40c6bhanjBj96cgNDTSvyEBUSqfLmU8iU05hGTl0UKNaT
-        4v53iETDvCMgHEXAzCClT+CQpK0gwDVMZQ==
-X-Google-Smtp-Source: AK7set+yZM9Dwc6FqtYsJowtfxw9gQp79YeaxR3WXOXCIzmggTmF27wy9SYGXc/IWDYEO869x99FJA==
-X-Received: by 2002:a17:90a:6485:b0:237:461c:b44d with SMTP id h5-20020a17090a648500b00237461cb44dmr15265856pjj.46.1678204624100;
-        Tue, 07 Mar 2023 07:57:04 -0800 (PST)
-Received: from nvrarch.lan ([218.186.180.226])
-        by smtp.gmail.com with ESMTPSA id v9-20020a17090ae98900b00233afe09177sm9405070pjy.8.2023.03.07.07.57.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Mar 2023 07:57:03 -0800 (PST)
-From:   Vinay Varma <varmavinaym@gmail.com>
-Cc:     masahiroy@kernel.org, alicef@alicef.me,
-        Vinay Varma <varmavinaym@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
+        Tue, 7 Mar 2023 11:18:21 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E98E3A83;
+        Tue,  7 Mar 2023 08:18:05 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: lina@asahilina.net)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 048F541DF4;
+        Tue,  7 Mar 2023 16:17:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+        s=default; t=1678205882;
+        bh=Qw94FegwAslJUaCniB68UUeUX0OwCWRdd88BzdgPXQE=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=Bq5PvOWNwJHYFmQhlxM7mXUiwYE4dpW4OGTiXLi0dz4416AAQi8EIVK020edvpeoI
+         MRmpbh+Fg9QzKeLgMX2oVPVeJGkAA+yCUHZfyQRMuLdLMzMybsWEgSllQqjrK2obvb
+         uuhWDg57cQUvWnPK9qbJbKJlj6ztFWRi5xyfm4xXtfdQTksQxfx7yahzy47cDf6IHl
+         EmJ0kxZYA6+x3n9X9YkPOtyYRB9otB/Czkj+vCGPFKh85Dc4nPmn+46I+5huY5GE9+
+         DmJT+qSOcFyA0rh43AJ7DTVxDsXimY9L8YcZ51TS+cAM/7x4yspjeM8gSRXAEK2IPc
+         D+HcWcb6Nl4gw==
+Message-ID: <687b54e7-b9a6-f37b-e5e6-8972e3670cc1@asahilina.net>
+Date:   Wed, 8 Mar 2023 01:17:54 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH RFC 00/18] Rust DRM subsystem abstractions (& preview AGX
+ driver)
+Content-Language: en-US
+To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org
-Subject: [PATCH v4] scripts: `make rust-analyzer` for out-of-tree modules
-Date:   Tue,  7 Mar 2023 23:55:22 +0800
-Message-Id: <20230307155521.241104-1-varmavinaym@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230307144233.205819-1-varmavinaym@gmail.com>
-References: <20230307144233.205819-1-varmavinaym@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Luben Tuikov <luben.tuikov@amd.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Cc:     Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Karol Herbst <kherbst@redhat.com>,
+        Ella Stanforth <ella@iglunix.org>,
+        Faith Ekstrand <faith.ekstrand@collabora.com>,
+        Mary <mary@mary.zone>, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+        linux-sgx@vger.kernel.org, asahi@lists.linux.dev
+References: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net>
+From:   Asahi Lina <lina@asahilina.net>
+In-Reply-To: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Adds support for out-of-tree rust modules to use the `rust-analyzer`
-make target to generate the rust-project.json file.
+That was supposed to have Markdown-style section headings, but I forgot
+that b4 considers a leading # as a comment... sorry for the abrupt topic
+changes...
 
-The change involves adding an optional parameter `external_src` to the
-`generate_rust_analyzer.py` which expects the path to the out-of-tree
-module's source directory. When this parameter is passed, I have chosen
-not to add the non-core modules (samples and drivers) into the result
-since these are not expected to be used in third party modules. Related
-changes are also made to the Makefile and rust/Makefile allowing the
-`rust-analyzer` target to be used for out-of-tree modules as well.
+The intended headings are below.
 
-Link: https://github.com/Rust-for-Linux/linux/pull/914
-Link: https://github.com/Rust-for-Linux/rust-out-of-tree-module/pull/2
+On 07/03/2023 23.25, Asahi Lina wrote:
+> Hi everyone!
+> 
+> This is my first take on the Rust abstractions for the DRM
+> subsystem. It includes the abstractions themselves, some minor
+> prerequisite changes to the C side, as well as the drm-asahi GPU driver
+> (for reference on how the abstractions are used, but not necessarily
+> intended to land together).
+> 
+> These patches apply on top of the tree at [1], which is based on
+> 6.3-rc1 with a large number of Rust abstraction/support commits added on
+> top. Most of these are not prerequisites for the DRM abstractions
+> themselves, but rather only of the driver.
+> 
+> * #1-12 introduce the abstractions, module by module, with minor C
+>   changes before the dependent abstraction.
+>   * Patch 10 is a little addition to drm_sched that I ended up needing,
+>     but I can pull it out of the abstraction into its own patch if
+>     needed.
+> * #13-14 add a minor feature to drm/gem and its abstraction used
+>   by the driver.
+> * #15-16 introduce the (unstable) asahi UAPI. This is obviously not
+>   ready for merge yet, but comments are welcome!
+> * #17 adds a Rust helper macro to handle GPU core/firmware differences.
+>   This probably belongs in the driver at this point, but right now it
+>   has to live in rust/macros since there is no mechanism for per-driver
+>   proc macros.
+> * #18 adds the driver proper, in one big commit, for reference purposes.
 
-Signed-off-by: Vinay Varma <varmavinaym@gmail.com>
----
- Makefile                          | 11 +++++-----
- rust/Makefile                     |  6 ++++--
- scripts/generate_rust_analyzer.py | 36 +++++++++++++++++++------------
- 3 files changed, 32 insertions(+), 21 deletions(-)
+## Background
 
-diff --git a/Makefile b/Makefile
-index 3f6628780eb2..ee7b61dc6075 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1860,11 +1860,6 @@ rustfmt:
- rustfmtcheck: rustfmt_flags = --check
- rustfmtcheck: rustfmt
- 
--# IDE support targets
--PHONY += rust-analyzer
--rust-analyzer:
--	$(Q)$(MAKE) $(build)=rust $@
--
- # Misc
- # ---------------------------------------------------------------------------
- 
-@@ -1917,6 +1912,7 @@ help:
- 	@echo  '  modules         - default target, build the module(s)'
- 	@echo  '  modules_install - install the module'
- 	@echo  '  clean           - remove generated files in module directory only'
-+	@echo  '  rust-analyzer	  - generate rust-project.json rust-analyzer support file'
- 	@echo  ''
- 
- endif # KBUILD_EXTMOD
-@@ -2053,6 +2049,11 @@ quiet_cmd_tags = GEN     $@
- tags TAGS cscope gtags: FORCE
- 	$(call cmd,tags)
- 
-+# IDE support targets
-+PHONY += rust-analyzer
-+rust-analyzer:
-+	$(Q)$(MAKE) $(build)=rust $@
-+
- # Script to generate missing namespace dependencies
- # ---------------------------------------------------------------------------
- 
-diff --git a/rust/Makefile b/rust/Makefile
-index 8f598a904f38..41c1435cd8d4 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -389,8 +389,10 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
- 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@)
- 
- rust-analyzer:
--	$(Q)$(srctree)/scripts/generate_rust_analyzer.py $(srctree) $(objtree) \
--		$(RUST_LIB_SRC) > $(objtree)/rust-project.json
-+	$(Q)$(srctree)/scripts/generate_rust_analyzer.py \
-+		$(abs_srctree) $(abs_objtree) \
-+		$(RUST_LIB_SRC) $(KBUILD_EXTMOD) > \
-+		$(if $(KBUILD_EXTMOD),$(extmod_prefix),$(objtree))/rust-project.json
- 
- $(obj)/core.o: private skip_clippy = 1
- $(obj)/core.o: private skip_flags = -Dunreachable_pub
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index ecc7ea9a4dcf..7a1a958b1f8a 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -6,10 +6,11 @@
- import argparse
- import json
- import logging
-+import os
- import pathlib
- import sys
- 
--def generate_crates(srctree, objtree, sysroot_src):
-+def generate_crates(srctree, objtree, sysroot_src, external_src):
-     # Generate the configuration list.
-     cfg = []
-     with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
-@@ -65,7 +66,7 @@ def generate_crates(srctree, objtree, sysroot_src):
-         [],
-         is_proc_macro=True,
-     )
--    crates[-1]["proc_macro_dylib_path"] = "rust/libmacros.so"
-+    crates[-1]["proc_macro_dylib_path"] = f"{objtree}/rust/libmacros.so"
- 
-     append_crate(
-         "build_error",
-@@ -95,25 +96,31 @@ def generate_crates(srctree, objtree, sysroot_src):
-         "exclude_dirs": [],
-     }
- 
-+    def is_root_crate(build_file, target):
-+        return os.path.exists(build_file) and target in open(build_file).read()
-+
-     # Then, the rest outside of `rust/`.
-     #
-     # We explicitly mention the top-level folders we want to cover.
--    for folder in ("samples", "drivers"):
--        for path in (srctree / folder).rglob("*.rs"):
-+    extra_dirs = map(lambda dir: srctree / dir, ("samples", "drivers"))
-+    if external_src is not None:
-+        extra_dirs = [external_src]
-+    for folder in extra_dirs:
-+        for path in folder.rglob("*.rs"):
-             logging.info("Checking %s", path)
-             name = path.name.replace(".rs", "")
- 
-             # Skip those that are not crate roots.
--            if f"{name}.o" not in open(path.parent / "Makefile").read():
--                continue
-+            if is_root_crate(path.parent / "Makefile", f"{name}.o") or \
-+               is_root_crate(path.parent / "Kbuild", f"{name}.o"):
- 
--            logging.info("Adding %s", name)
--            append_crate(
--                name,
--                path,
--                ["core", "alloc", "kernel"],
--                cfg=cfg,
--            )
-+                logging.info("Adding %s", name)
-+                append_crate(
-+                    name,
-+                    path,
-+                    ["core", "alloc", "kernel"],
-+                    cfg=cfg,
-+                )
- 
-     return crates
- 
-@@ -123,6 +130,7 @@ def main():
-     parser.add_argument("srctree", type=pathlib.Path)
-     parser.add_argument("objtree", type=pathlib.Path)
-     parser.add_argument("sysroot_src", type=pathlib.Path)
-+    parser.add_argument("exttree", type=pathlib.Path, nargs="?")
-     args = parser.parse_args()
- 
-     logging.basicConfig(
-@@ -131,7 +139,7 @@ def main():
-     )
- 
-     rust_project = {
--        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src),
-+        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree),
-         "sysroot_src": str(args.sysroot_src),
-     }
- 
--- 
-2.39.2
+> I've been working since mid last year on an Apple AGX GPU driver for
+> Linux, using the (at the time) out-of-tree Rust support. As part of this
+> effort, I've been writing safe Rust abstractions for portions of the DRM
+> subsystem.
+> 
+> Now that Rust itself is upstream, I'd like to get all the abstractions
+> upstreamed so we can eventually get the driver upstreamed!
+> 
+> These abstractions have been used by the driver since our release in
+> December [2], in a simpler synchronous-submission form:
+> 
+> * drm::ioctl
+> * drm::device
+> * drm::drv
+> * drm::file
+> * drm::{gem, gem::shmem}
+> * drm::mm
+> 
+> This series adds these too, which are used by the explicit sync refactor
+> of the driver (the version in this series):
+> 
+> * drm::syncobj
+> * drm::sched
+> * dma_fence
+> 
+> The major dependencies for the DRM abstractions themselves are:
+> 
+> * [3] rust: error: Add missing wrappers to convert to/from kernel error codes
+> * [4] rust: Miscellaneous macro improvements
+> * [5] rust: Add a Sealed trait
+> * [6] rust: device: Add a minimal RawDevice trait
+> * [7] rust: Enable the new_uninit feature for kernel and driver crates
+> * [8] rust: ioctl: Add ioctl number manipulation functions
+> * [9] rust: sync: Arc: Any downcasting and assume_init()
+> *     rust: Add `container_of` and `offset_of` macros
+> *     kernel::sync::mutex and dependencies
+> 
+> Most of these (the ones with links) have already been submitted, and I
+> expect all of them to land for 6.4 (the mutex one will likely be last,
+> since there is some refactoring that will happen over the current state
+> to make it more ergonomic to use). The mutex dep is only necessary for
+> drm::mm and dma_fence, and transitively drm::syncobj and drm::sched.
 
+## State
+
+> Things work! We've had most of the abstractions in production edge
+> kernels with the driver, and the new explicit sync stuff has passed
+> quite a few torture tests (this is how we found the drm_sched issue,
+> patch 11).
+> 
+> The abstractions are intended to be safe (safety review very welcome!).
+> While writing them, I tried to avoid making any changes to the C side
+> unless absolutely necessary. I understand that it will probably make
+> sense to adjust the C side to make some things easier, but I wanted to
+> start from this as a baseline.
+> 
+> Known issues:
+> 
+> - The existing Rust integration does not currently allow building
+>   abstractions as modules, so the Rust abstractions are only available
+>   for DRM components that are built in. I added some extra Kconfig
+>   symbols to deal with this, so a driver built as a module can depende
+>   on having those built in. This should go away in the future (but may
+>   not be ready in time for submission... I understand this probably
+>   shouldn't be a blocker though?).
+> 
+> - DRM relies heavily on the "subclassing" pattern for driver objects,
+>   and this doesn't map well to Rust. I tried several approaches for
+>   various bits, so we can see how they work out. In particular, whether
+>   wrapper types should pretend to be smart pointers and Deref to their
+>   inner driver-specific types, and whether they should be marked as
+>   method receivers (Yuck, internal rustc implementation hacks! But
+>   Arc<T> already does the same thing and it makes usage in
+>   driver-implemented callbacks as `self` possible) are things I'd love
+>   to discuss ^^.
+> 
+> - Only what I need for my driver is implemented (plus a small amount of
+>   obvious extras where better API completeness makes sense). I think the
+>   general idea with Rust abstractions is that we add things as they
+>   become necessary.
+> 
+> - The plain GEM vs. GEM-shmem duality ended up with quite a hairy type
+>   hierarchy. I'd love to figure out how to make this simpler...
+> 
+> - drm::mm ends up requiring a built-in mutex in the abstraction, instead
+>   of delegating that to the user with the usual Rust mutability rules.
+>   This is because nodes can be dropped at any time, and those operations
+>   need to be synchronized. We could try to avoid forbidding those drops
+>   or mark the node type !Send, but that would make it a lot less
+>   ergonomic to use...
+> 
+> I'm looking for feedback on the abstractions of all kinds, so we can
+> move towards an upstreamable version. Optimistically, I'd love to get
+> this upstream for 6.5, and the driver for 6.6.
+> 
+> Please feel free to ask any questions about the Rust bits, since I know
+> a lot of this is new to many of the C folks!
+
+## About the drm-asahi driver
+
+> This is a fairly complete driver for Apple AGX G13 and G14 series GPUs.
+> 
+> The driver today supports the Apple M1, M1 Pro, M1 Max, M1 Ultra, and M2
+> SoCs, across two firmware revisions each. It has an explicit sync UAPI
+> heavily inspired by the upcoming Intel Xe UAPI, designed with Vulkan
+> support in mind. On the Mesa side we currently have a Gallium driver
+> that is mostly already upstream (missing the UAPI bits mostly) and
+> passes the dEQP GLES2/EGL tests, with most of GLES3.0 passing in
+> downstream work-in-progress branches. This is a reverse engineered
+> community driver (we have no hardware documentation of any kind, other
+> than some hints from aspects shared with PowerVR).
+> 
+> While developing the driver, I tried to make use of Rust's safety and
+> lifetime features to provide not just CPU-side safety, but also
+> partial firmware-ABI safety. Thanks to this, it has turned out to be
+> a very stable driver even though GPU firmware crashes are fatal (no
+> restart capability, need to reboot!) and the FW/driver interface is a
+> huge mess of unsafe shared memory structures with complex pointer
+> chains. There are over 70 ABI types and 3000+ lines of firmware ABI type
+> definitions that vary between firmware builds and GPU cores...
+> 
+> In a simpler blocking-submission form, it has been shipping in Asahi
+> Linux edge kernels since December [2], with lots of users and zero (!)
+> reported oopses (and only a couple reports of GPU firmware crashes,
+> though that issue should now be fixed). It has survived OOM scenarios
+> (Rust makes error cleanup easy!), UAPI-level fuzzing, countless broken
+> Mesa builds, uptimes of 40+ days, and more.
+> 
+> The explicit sync refactor significantly increases performance (and
+> potential problems), but this version has survived a lot of torture
+> with dEQP/piglit tests and some manual corner case testing.
+> 
+> In other words, Rust works! ^^
+> 
+> There are some design notes on the driver and further links at [10].
+
+## Links
+
+> [1] https://github.com/AsahiLinux/linux.git drm-rfc-base-20230307
+> [2] https://asahilinux.org/2022/12/gpu-drivers-now-in-asahi-linux/
+> [3] https://lore.kernel.org/rust-for-linux/20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net/T/
+> [4] https://lore.kernel.org/rust-for-linux/20230224-rust-macros-v1-0-b39fae46e102@asahilina.net/T/
+> [5] https://lore.kernel.org/rust-for-linux/20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net/T/#m515bad2cff7f5a46f55897e6b73c6c2f1fb2c638
+> [6] https://lore.kernel.org/rust-for-linux/20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net/T/#m4c64e390c43b3ff1b8470fc8b37eaf87f6e12c94
+> [7] https://lore.kernel.org/rust-for-linux/CQV7ZNT6LMXI.1XG4YXSH8I7JK@vincent-arch/T/
+> [8] https://lore.kernel.org/rust-for-linux/61f734d6-1497-755f-3632-3f261b890846@asahilina.net/T/
+> [9] https://lore.kernel.org/rust-for-linux/20230224-rust-arc-v1-0-568eea613a41@asahilina.net/T/
+> [10] https://github.com/AsahiLinux/docs/wiki/SW:AGX-driver-notes
+
+~~ Lina
