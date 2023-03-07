@@ -2,237 +2,393 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA9CBC6FD1B
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 15:00:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3F9EC6FD1B
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 15:02:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229940AbjCGPAo (ORCPT
+        id S229705AbjCGPCU (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 10:00:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37240 "EHLO
+        Tue, 7 Mar 2023 10:02:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229869AbjCGPAL (ORCPT
+        with ESMTP id S229709AbjCGPBn (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 10:00:11 -0500
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22E841BEF;
-        Tue,  7 Mar 2023 06:47:39 -0800 (PST)
-Received: by mail-pj1-x102b.google.com with SMTP id x34so13462435pjj.0;
-        Tue, 07 Mar 2023 06:47:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678200458;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=efaxFGX7RhK5wlkuA3wHJVS02g4I2ZxWwk9Ysl91i4w=;
-        b=DojDqSDfy0L8fiwZ5plEukZbmQpbpmld2wkUtOBNHHXfoQ0q4nMM8KmYfnBt02Tbzh
-         edLT17+NXxBsUwfLo/pAnesJfRZ5bn0oFwZZWjNriQPDULPVXvZlOgTeMDMllGDdaxjU
-         PW8cJYH0AWryRMPx64dFHRjkccaXwkrfi/cJjm/l0Y8poDIjmukkq8UJi7GBTi32Xs5y
-         6pZBWgBo0S+gG3KliiEdFydz1JKbQWEW+Pm15njcEBY+bcaioOzVl61wSgcXTPD9Ph8T
-         rYkcbEjrC7b8Pre9qhSKwR/lPNzQOmAqZt1IxVrBSrbb7HekRxiV4EXodaJfnyuRmckW
-         j06w==
+        Tue, 7 Mar 2023 10:01:43 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37FFC664F6
+        for <rust-for-linux@vger.kernel.org>; Tue,  7 Mar 2023 06:48:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1678200529;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=hEcJ1Ioa5rcUn7+lKergEBYkkirnPMObuZdVZ/fudgM=;
+        b=UsjGi6XSrXX8ZEXDcCvYwY1w+UBA8wk0E71RH0UW6wmBxwPVzTRa4MxtpHU7NjN8LuRCmD
+        738tqrGPtWzQGzqDEdHacHQuOaQpp9a3PA27nzYe8GxYzUnigchHEry1gRbZmQu5qlXEJM
+        63kI7X64lA7AMKicmTt5L3yNCF/+aho=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-477-wT9Oa8VlPY6SVwOBb7stsw-1; Tue, 07 Mar 2023 09:48:48 -0500
+X-MC-Unique: wT9Oa8VlPY6SVwOBb7stsw-1
+Received: by mail-lj1-f198.google.com with SMTP id a9-20020a05651c210900b0028b97d2c493so4312716ljq.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Mar 2023 06:48:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678200458;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20210112; t=1678200526;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=efaxFGX7RhK5wlkuA3wHJVS02g4I2ZxWwk9Ysl91i4w=;
-        b=dlIPJXXE06D+RwOv22WmGEUXtwNKCA9zTErUhdf5Wjdr3W8OGTofEIs4q40/LuQsPi
-         ooGvGJprwcsPw8d/a96JY1CyBgh25iDBnPwAsMla7vmZfBabLVXZrrSom+53qFsCix3D
-         2j994pxcOjSNzUPJXXTI69IjuDu0V3P8Ga7i+6iusIk/HW7mE0D0kFYwaTvm9slju/Zb
-         nVrAbXbMZa5meRAnhKSTNe2fBt6ouH1JnqCdvhuSKA5syIckybTCQ0dxZOXURXmFfJ8L
-         O1ohYoopSd73ljw56ZWfc99wMOHiLZPEV2h7rJYoMFZHfAuFfsxTeLP7gxyNEkYvbuW3
-         UbFA==
-X-Gm-Message-State: AO0yUKWYoaxlpn2Xgr173btITHpeOA1eLHFmzFRe/VzYAZk8quvOrtKM
-        1KSzC69GPyEESZAatyg3ESo=
-X-Google-Smtp-Source: AK7set8d9pKclUkLOW+YvhmPqft4bWNEFaqe/nJa3tAKji0KKhXop4s0B4GU0OxLjDN1oPcuwdapBw==
-X-Received: by 2002:a17:903:8cb:b0:19e:8e73:e977 with SMTP id lk11-20020a17090308cb00b0019e8e73e977mr16218574plb.67.1678200458481;
-        Tue, 07 Mar 2023 06:47:38 -0800 (PST)
-Received: from nvrarch.lan ([218.186.180.226])
-        by smtp.gmail.com with ESMTPSA id la16-20020a170902fa1000b0019cb8ffd209sm8518542plb.229.2023.03.07.06.47.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Mar 2023 06:47:37 -0800 (PST)
-From:   Vinay Varma <varmavinaym@gmail.com>
-To:     miguel.ojeda.sandonis@gmail.com
-Cc:     masahiroy@kernel.org, alicef@alicef.me,
-        Vinay Varma <varmavinaym@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
+        bh=hEcJ1Ioa5rcUn7+lKergEBYkkirnPMObuZdVZ/fudgM=;
+        b=iTOVD9nWjhrQ/m+S/pqzV59zfefVGYvq/jZtf1oWpJjqNqIoXhfBEXUB+9y5n29jen
+         j9s7usq3DcLeeFziIg6uZoZfa9KdZVbfvULDn414J072MEycS7Vdy42obF+NwnIa5jq7
+         djzGEe1HTMhSlv7s0cPBjjRPvAaJeDxrGffXOOsPR5WoFZKfuPOhZ7XldtC9t2BS+b+W
+         OKe5eK88GO/CeiG/duGvO1fe3pJFWxlXLOWxd60rvBayGkQbBpVwPNLNLwovPDkapl2v
+         PWQ1TmqMvL79yJK+xYk3q7uto7NKDfxZGEUJzbFuANKd7K+Mwhsr/H9PgnfhAlEPfvLa
+         /txw==
+X-Gm-Message-State: AO0yUKU1T58oNENb2fipyOFzEMKjdIFjBrgJJAwOrjLQXw/4FDj1rbbJ
+        Pqw4erJp9lrlNph/2jCAvAmPKiRWGCpL7zOiIDpoz05pbSZwQuj4JdZfrkHXQIE5rU19/ULxXbL
+        is1SGaPULowbVnYQZ2fp102s+I6g2+CO2MyMte9+9Hsw=
+X-Received: by 2002:a2e:aa8b:0:b0:295:acea:5875 with SMTP id bj11-20020a2eaa8b000000b00295acea5875mr4477672ljb.2.1678200526201;
+        Tue, 07 Mar 2023 06:48:46 -0800 (PST)
+X-Google-Smtp-Source: AK7set9Nm+BnCAuFWBT6ldo5btnOpcoIa+hBu7QQtIIrMaTiFSsqO2edyNtRlc3Vd4Z8J6sUmTfu+uOU+Y0OU1Lgfbw=
+X-Received: by 2002:a2e:aa8b:0:b0:295:acea:5875 with SMTP id
+ bj11-20020a2eaa8b000000b00295acea5875mr4477655ljb.2.1678200525832; Tue, 07
+ Mar 2023 06:48:45 -0800 (PST)
+MIME-Version: 1.0
+References: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net> <20230307-rust-drm-v1-1-917ff5bc80a8@asahilina.net>
+In-Reply-To: <20230307-rust-drm-v1-1-917ff5bc80a8@asahilina.net>
+From:   Karol Herbst <kherbst@redhat.com>
+Date:   Tue, 7 Mar 2023 15:48:33 +0100
+Message-ID: <CACO55tt7NQASBq=G08h6nZBGk-5DOpzPZ3_wBVfEWBfdyydaAA@mail.gmail.com>
+Subject: Re: [PATCH RFC 01/18] rust: drm: ioctl: Add DRM ioctl abstraction
+To:     Asahi Lina <lina@asahilina.net>
+Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org
-Subject: [PATCH v3] scripts: `make rust-analyzer` for out-of-tree modules
-Date:   Tue,  7 Mar 2023 22:42:34 +0800
-Message-Id: <20230307144233.205819-1-varmavinaym@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <CANiq72k-KhU398KzV0+8DP0AUYkaf_G+5PwXgzYwbbK6AgcCUg@mail.gmail.com>
-References: <CANiq72k-KhU398KzV0+8DP0AUYkaf_G+5PwXgzYwbbK6AgcCUg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Luben Tuikov <luben.tuikov@amd.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        linaro-mm-sig@lists.linaro.org, rust-for-linux@vger.kernel.org,
+        asahi@lists.linux.dev, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Mary <mary@mary.zone>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        linux-sgx@vger.kernel.org, Ella Stanforth <ella@iglunix.org>,
+        Faith Ekstrand <faith.ekstrand@collabora.com>,
+        linux-media@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Adds support for out-of-tree rust modules to use the `rust-analyzer`
-make target to generate the rust-project.json file.
+On Tue, Mar 7, 2023 at 3:27=E2=80=AFPM Asahi Lina <lina@asahilina.net> wrot=
+e:
+>
+> DRM drivers need to be able to declare which driver-specific ioctls they
+> support. This abstraction adds the required types and a helper macro to
+> generate the ioctl definition inside the DRM driver.
+>
+> Note that this macro is not usable until further bits of the
+> abstraction are in place (but it will not fail to compile on its own, if
+> not called).
+>
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> ---
+>  drivers/gpu/drm/Kconfig         |   7 ++
+>  rust/bindings/bindings_helper.h |   2 +
+>  rust/kernel/drm/ioctl.rs        | 147 ++++++++++++++++++++++++++++++++++=
+++++++
+>  rust/kernel/drm/mod.rs          |   5 ++
+>  rust/kernel/lib.rs              |   2 +
+>  5 files changed, 163 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+> index dc0f94f02a82..dab8f0f9aa96 100644
+> --- a/drivers/gpu/drm/Kconfig
+> +++ b/drivers/gpu/drm/Kconfig
+> @@ -27,6 +27,13 @@ menuconfig DRM
+>           details.  You should also select and configure AGP
+>           (/dev/agpgart) support if it is available for your platform.
+>
+> +# Rust abstractions cannot be built as modules currently, so force them =
+as
+> +# bool by using these intermediate symbols. In the future these could be
+> +# tristate once abstractions themselves can be built as modules.
+> +config RUST_DRM
+> +       bool "Rust support for the DRM subsystem"
+> +       depends on DRM=3Dy
+> +
+>  config DRM_MIPI_DBI
+>         tristate
+>         depends on DRM
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 91bb7906ca5a..2687bef1676f 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -6,6 +6,7 @@
+>   * Sorted alphabetically.
+>   */
+>
+> +#include <drm/drm_ioctl.h>
+>  #include <linux/delay.h>
+>  #include <linux/device.h>
+>  #include <linux/dma-mapping.h>
+> @@ -23,6 +24,7 @@
+>  #include <linux/sysctl.h>
+>  #include <linux/timekeeping.h>
+>  #include <linux/xarray.h>
+> +#include <uapi/drm/drm.h>
+>
 
-The change involves adding an optional parameter `external_src` to the
-`generate_rust_analyzer.py` which expects the path to the out-of-tree
-module's source directory. When this parameter is passed, I have chosen
-not to add the non-core modules (samples and drivers) into the result
-since these are not expected to be used in third party modules. Related
-changes are also made to the Makefile and rust/Makefile allowing the
-`rust-analyzer` target to be used for out-of-tree modules as well.
+might make more sense to add this chunk to the patch actually needing it
 
-Link: https://github.com/Rust-for-Linux/linux/pull/914
-Link: https://github.com/Rust-for-Linux/rust-out-of-tree-module/pull/2
+>  /* `bindgen` gets confused at certain things. */
+>  const gfp_t BINDINGS_GFP_KERNEL =3D GFP_KERNEL;
+> diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+> new file mode 100644
+> index 000000000000..10304efbd5f1
+> --- /dev/null
+> +++ b/rust/kernel/drm/ioctl.rs
+> @@ -0,0 +1,147 @@
+> +// SPDX-License-Identifier: GPL-2.0 OR MIT
+> +#![allow(non_snake_case)]
+> +
+> +//! DRM IOCTL definitions.
+> +//!
+> +//! C header: [`include/linux/drm/drm_ioctl.h`](../../../../include/linu=
+x/drm/drm_ioctl.h)
+> +
+> +use crate::ioctl;
+> +
+> +const BASE: u32 =3D bindings::DRM_IOCTL_BASE as u32;
+> +
+> +/// Construct a DRM ioctl number with no argument.
+> +pub const fn IO(nr: u32) -> u32 {
+> +    ioctl::_IO(BASE, nr)
+> +}
+> +
+> +/// Construct a DRM ioctl number with a read-only argument.
+> +pub const fn IOR<T>(nr: u32) -> u32 {
+> +    ioctl::_IOR::<T>(BASE, nr)
+> +}
+> +
+> +/// Construct a DRM ioctl number with a write-only argument.
+> +pub const fn IOW<T>(nr: u32) -> u32 {
+> +    ioctl::_IOW::<T>(BASE, nr)
+> +}
+> +
+> +/// Construct a DRM ioctl number with a read-write argument.
+> +pub const fn IOWR<T>(nr: u32) -> u32 {
+> +    ioctl::_IOWR::<T>(BASE, nr)
+> +}
+> +
+> +/// Descriptor type for DRM ioctls. Use the `declare_drm_ioctls!{}` macr=
+o to construct them.
+> +pub type DrmIoctlDescriptor =3D bindings::drm_ioctl_desc;
+> +
+> +/// This is for ioctl which are used for rendering, and require that the=
+ file descriptor is either
+> +/// for a render node, or if it=E2=80=99s a legacy/primary node, then it=
+ must be authenticated.
+> +pub const AUTH: u32 =3D bindings::drm_ioctl_flags_DRM_AUTH;
+> +
+> +/// This must be set for any ioctl which can change the modeset or displ=
+ay state. Userspace must
+> +/// call the ioctl through a primary node, while it is the active master=
+.
+> +///
+> +/// Note that read-only modeset ioctl can also be called by unauthentica=
+ted clients, or when a
+> +/// master is not the currently active one.
+> +pub const MASTER: u32 =3D bindings::drm_ioctl_flags_DRM_MASTER;
+> +
+> +/// Anything that could potentially wreak a master file descriptor needs=
+ to have this flag set.
+> +///
+> +/// Current that=E2=80=99s only for the SETMASTER and DROPMASTER ioctl, =
+which e.g. logind can call to force
+> +/// a non-behaving master (display compositor) into compliance.
+> +///
+> +/// This is equivalent to callers with the SYSADMIN capability.
+> +pub const ROOT_ONLY: u32 =3D bindings::drm_ioctl_flags_DRM_ROOT_ONLY;
+> +
+> +/// Whether drm_ioctl_desc.func should be called with the DRM BKL held o=
+r not. Enforced as the
+> +/// default for all modern drivers, hence there should never be a need t=
+o set this flag.
+> +///
+> +/// Do not use anywhere else than for the VBLANK_WAIT IOCTL, which is th=
+e only legacy IOCTL which
+> +/// needs this.
+> +pub const UNLOCKED: u32 =3D bindings::drm_ioctl_flags_DRM_UNLOCKED;
+> +
+> +/// This is used for all ioctl needed for rendering only, for drivers wh=
+ich support render nodes.
+> +/// This should be all new render drivers, and hence it should be always=
+ set for any ioctl with
+> +/// `AUTH` set. Note though that read-only query ioctl might have this s=
+et, but have not set
+> +/// DRM_AUTH because they do not require authentication.
+> +pub const RENDER_ALLOW: u32 =3D bindings::drm_ioctl_flags_DRM_RENDER_ALL=
+OW;
+> +
+> +/// Declare the DRM ioctls for a driver.
+> +///
+> +/// Each entry in the list should have the form:
+> +///
+> +/// `(ioctl_number, argument_type, flags, user_callback),`
+> +///
+> +/// `argument_type` is the type name within the `bindings` crate.
+> +/// `user_callback` should have the following prototype:
+> +///
+> +/// ```
+> +/// fn foo(device: &kernel::drm::device::Device<Self>,
+> +///        data: &mut bindings::argument_type,
+> +///        file: &kernel::drm::file::File<Self::File>,
+> +/// )
+> +/// ```
+> +/// where `Self` is the drm::drv::Driver implementation these ioctls are=
+ being declared within.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// kernel::declare_drm_ioctls! {
+> +///     (FOO_GET_PARAM, drm_foo_get_param, ioctl::RENDER_ALLOW, my_get_p=
+aram_handler),
+> +/// }
 
-Signed-off-by: Vinay Varma <varmavinaym@gmail.com>
----
- Makefile                          | 11 ++++++-----
- rust/Makefile                     |  6 ++++--
- scripts/generate_rust_analyzer.py | 31 ++++++++++++++++++-------------
- 3 files changed, 28 insertions(+), 20 deletions(-)
+I am wondering.. couldn't we make it a proc_macro and just tag all the
+functions instead? Though I also see the point of having a central
+list of all ioctls... Maybe we should have some higher level
+discussions around on _how_ we want things to look like.
 
-diff --git a/Makefile b/Makefile
-index 3f6628780eb2..ee7b61dc6075 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1860,11 +1860,6 @@ rustfmt:
- rustfmtcheck: rustfmt_flags = --check
- rustfmtcheck: rustfmt
- 
--# IDE support targets
--PHONY += rust-analyzer
--rust-analyzer:
--	$(Q)$(MAKE) $(build)=rust $@
--
- # Misc
- # ---------------------------------------------------------------------------
- 
-@@ -1917,6 +1912,7 @@ help:
- 	@echo  '  modules         - default target, build the module(s)'
- 	@echo  '  modules_install - install the module'
- 	@echo  '  clean           - remove generated files in module directory only'
-+	@echo  '  rust-analyzer	  - generate rust-project.json rust-analyzer support file'
- 	@echo  ''
- 
- endif # KBUILD_EXTMOD
-@@ -2053,6 +2049,11 @@ quiet_cmd_tags = GEN     $@
- tags TAGS cscope gtags: FORCE
- 	$(call cmd,tags)
- 
-+# IDE support targets
-+PHONY += rust-analyzer
-+rust-analyzer:
-+	$(Q)$(MAKE) $(build)=rust $@
-+
- # Script to generate missing namespace dependencies
- # ---------------------------------------------------------------------------
- 
-diff --git a/rust/Makefile b/rust/Makefile
-index 8f598a904f38..41c1435cd8d4 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -389,8 +389,10 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
- 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@)
- 
- rust-analyzer:
--	$(Q)$(srctree)/scripts/generate_rust_analyzer.py $(srctree) $(objtree) \
--		$(RUST_LIB_SRC) > $(objtree)/rust-project.json
-+	$(Q)$(srctree)/scripts/generate_rust_analyzer.py \
-+		$(abs_srctree) $(abs_objtree) \
-+		$(RUST_LIB_SRC) $(KBUILD_EXTMOD) > \
-+		$(if $(KBUILD_EXTMOD),$(extmod_prefix),$(objtree))/rust-project.json
- 
- $(obj)/core.o: private skip_clippy = 1
- $(obj)/core.o: private skip_flags = -Dunreachable_pub
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index ecc7ea9a4dcf..741ccd6efe2b 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -6,10 +6,11 @@
- import argparse
- import json
- import logging
-+import os
- import pathlib
- import sys
- 
--def generate_crates(srctree, objtree, sysroot_src):
-+def generate_crates(srctree, objtree, sysroot_src, external_src):
-     # Generate the configuration list.
-     cfg = []
-     with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
-@@ -65,7 +66,7 @@ def generate_crates(srctree, objtree, sysroot_src):
-         [],
-         is_proc_macro=True,
-     )
--    crates[-1]["proc_macro_dylib_path"] = "rust/libmacros.so"
-+    crates[-1]["proc_macro_dylib_path"] = f"{objtree}/rust/libmacros.so"
- 
-     append_crate(
-         "build_error",
-@@ -95,25 +96,28 @@ def generate_crates(srctree, objtree, sysroot_src):
-         "exclude_dirs": [],
-     }
- 
-+    def is_root_crate(build_file, target):
-+        return os.path.exists(build_file) and target in open(build_file).read()
-+
-     # Then, the rest outside of `rust/`.
-     #
-     # We explicitly mention the top-level folders we want to cover.
--    for folder in ("samples", "drivers"):
-+    for folder in ("samples", "drivers") if external_src is None else [external_src]:
-         for path in (srctree / folder).rglob("*.rs"):
-             logging.info("Checking %s", path)
-             name = path.name.replace(".rs", "")
- 
-             # Skip those that are not crate roots.
--            if f"{name}.o" not in open(path.parent / "Makefile").read():
--                continue
-+            if is_root_crate(path.parent / "Makefile", f"{name}.o") or \
-+               is_root_crate(path.parent / "Kbuild", f"{name}.o"):
- 
--            logging.info("Adding %s", name)
--            append_crate(
--                name,
--                path,
--                ["core", "alloc", "kernel"],
--                cfg=cfg,
--            )
-+                logging.info("Adding %s", name)
-+                append_crate(
-+                    name,
-+                    path,
-+                    ["core", "alloc", "kernel"],
-+                    cfg=cfg,
-+                )
- 
-     return crates
- 
-@@ -123,6 +127,7 @@ def main():
-     parser.add_argument("srctree", type=pathlib.Path)
-     parser.add_argument("objtree", type=pathlib.Path)
-     parser.add_argument("sysroot_src", type=pathlib.Path)
-+    parser.add_argument("exttree", type=pathlib.Path, nargs="?")
-     args = parser.parse_args()
- 
-     logging.basicConfig(
-@@ -131,7 +136,7 @@ def main():
-     )
- 
-     rust_project = {
--        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src),
-+        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree),
-         "sysroot_src": str(args.sysroot_src),
-     }
- 
--- 
-2.39.2
+> +/// ```
+> +///
+> +#[macro_export]
+> +macro_rules! declare_drm_ioctls {
+> +    ( $(($cmd:ident, $struct:ident, $flags:expr, $func:expr)),* $(,)? ) =
+=3D> {
+> +        const IOCTLS: &'static [$crate::drm::ioctl::DrmIoctlDescriptor] =
+=3D {
+> +            const _:() =3D {
+> +                let i: u32 =3D $crate::bindings::DRM_COMMAND_BASE;
+> +                // Assert that all the IOCTLs are in the right order and=
+ there are no gaps,
+> +                // and that the sizeof of the specified type is correct.
+> +                $(
+> +                    let cmd: u32 =3D $crate::macros::concat_idents!($cra=
+te::bindings::DRM_IOCTL_, $cmd);
+> +                    ::core::assert!(i =3D=3D $crate::ioctl::_IOC_NR(cmd)=
+);
+> +                    ::core::assert!(core::mem::size_of::<$crate::binding=
+s::$struct>() =3D=3D $crate::ioctl::_IOC_SIZE(cmd));
+
+::core::mem::size_of
+
+> +                    let i: u32 =3D i + 1;
+> +                )*
+> +            };
+> +
+> +            let ioctls =3D &[$(
+> +                $crate::bindings::drm_ioctl_desc {
+> +                    cmd: $crate::macros::concat_idents!($crate::bindings=
+::DRM_IOCTL_, $cmd) as u32,
+> +                    func: {
+> +                        #[allow(non_snake_case)]
+> +                        unsafe extern "C" fn $cmd(
+> +                                raw_dev: *mut $crate::bindings::drm_devi=
+ce,
+> +                                raw_data: *mut ::core::ffi::c_void,
+> +                                raw_file_priv: *mut $crate::bindings::dr=
+m_file,
+> +                        ) -> core::ffi::c_int {
+
+::core
+
+> +                            // SAFETY: We never drop this, and the DRM c=
+ore ensures the device lives
+> +                            // while callbacks are being called.
+> +                            //
+> +                            // FIXME: Currently there is nothing enforci=
+ng that the types of the
+> +                            // dev/file match the current driver these i=
+octls are being declared
+> +                            // for, and it's not clear how to enforce th=
+is within the type system.
+> +                            let dev =3D ::core::mem::ManuallyDrop::new(u=
+nsafe {
+> +                                $crate::drm::device::Device::from_raw(ra=
+w_dev)
+> +                            });
+> +                            // SAFETY: This is just the ioctl argument, =
+which hopefully has the right type
+> +                            // (we've done our best checking the size).
+> +                            let data =3D unsafe { &mut *(raw_data as *mu=
+t $crate::bindings::$struct) };
+> +                            // SAFETY: This is just the DRM file structu=
+re
+> +                            let file =3D unsafe { $crate::drm::file::Fil=
+e::from_raw(raw_file_priv) };
+> +
+> +                            match $func(&*dev, data, &file) {
+> +                                Err(e) =3D> e.to_kernel_errno(),
+> +                                Ok(i) =3D> i.try_into().unwrap_or(ERANGE=
+.to_kernel_errno()),
+
+need to specify the namespace on ERANGE, no?
+
+> +                            }
+> +                        }
+> +                        Some($cmd)
+> +                    },
+> +                    flags: $flags,
+> +                    name: $crate::c_str!(::core::stringify!($cmd)).as_ch=
+ar_ptr(),
+> +                }
+> +            ),*];
+> +            ioctls
+> +        };
+> +    };
+> +}
+> diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
+> new file mode 100644
+> index 000000000000..9ec6d7cbcaf3
+> --- /dev/null
+> +++ b/rust/kernel/drm/mod.rs
+> @@ -0,0 +1,5 @@
+> +// SPDX-License-Identifier: GPL-2.0 OR MIT
+> +
+> +//! DRM subsystem abstractions.
+> +
+> +pub mod ioctl;
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 7903490816bf..cb23d24c6718 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -37,6 +37,8 @@ mod build_assert;
+>  pub mod delay;
+>  pub mod device;
+>  pub mod driver;
+> +#[cfg(CONFIG_RUST_DRM)]
+> +pub mod drm;
+>  pub mod error;
+>  pub mod io_buffer;
+>  pub mod io_mem;
+>
+> --
+> 2.35.1
+>
 
