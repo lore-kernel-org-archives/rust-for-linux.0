@@ -2,59 +2,61 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3124C678D4
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 11:22:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98762C6FA99
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 11:56:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229639AbjCGLV7 (ORCPT
+        id S230134AbjCGL4o (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 06:21:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46932 "EHLO
+        Tue, 7 Mar 2023 06:56:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbjCGLV7 (ORCPT
+        with ESMTP id S230338AbjCGL4n (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 06:21:59 -0500
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 418FB7D8C;
-        Tue,  7 Mar 2023 03:21:58 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id t4so10983745ybg.11;
-        Tue, 07 Mar 2023 03:21:58 -0800 (PST)
+        Tue, 7 Mar 2023 06:56:43 -0500
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D338B2D5D;
+        Tue,  7 Mar 2023 03:56:41 -0800 (PST)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-536b7ffdd34so240009557b3.6;
+        Tue, 07 Mar 2023 03:56:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678188117;
+        d=gmail.com; s=20210112; t=1678190201;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+6M7Rrz8d9sk58/G5zmHZtDU4PDW4DV0zcA0ptQ1Png=;
-        b=UvPobudrKein15cSeOXHadW3ZwXyETu9tdRk/e0W67OcmbQVHqprMAqPs5BFbtRInN
-         bMb0324eNAx+3ZRMjr0fYXKGBZ//61yIXN3o9Xz87LSxsjbWhsu+oDg0E6JsnjeENazR
-         CZgdgsEndyjCgUTVtXV4OXqJ9POmLz7IwIanvZ4YrF91nK5YWyZjnaIO32evJzdmPd07
-         pp4n5JdsJTv2tOXxrOaaZ4LdXFJwVLjcJV0mbdPq9cV385dnSujp9ht4BW9THOovXQO8
-         iU7s9FaQ4pw1yIkqdjsnDZvp3YOrtzvlEg0GrliwRMC8uHJ/W6ibcE2v4OG0RdrEAKyk
-         Rwvw==
+        bh=Fpzu6mM9TObEaWPqTRbV/lVIlKZNjyI+OGMeOTlpmmM=;
+        b=HlTlFZ6JpzfQr4iv30oIdQyWt5EKVG4KlPTb+CtXgnhcokg9agdArzRPjQaAhjClKC
+         ZdKh92km6nxWkT3uQOqDjCk/L1h0yTo3J3/U6pK8OkC1WlgHQdR+UJzqYNSNfKh56g1h
+         P6SjgUcedkQsE7840DprGK0z/3YIOuMtgwSwzxamhNMXCsjz/bOD5MvATFVETc5SR+UT
+         iBVMPMKPl2EtwWqT8Im+I1/eoqcIyrslwnxUhawQPD4rEIjHRjbkTYaGZlWu3279wo1m
+         o9hRTRw9GolZcvpByHOv1j8JCWQJ9mYMpP+s0DjAfQlcib7hjtoM8L2U5RyjFmGHJHtj
+         o/vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678188117;
+        d=1e100.net; s=20210112; t=1678190201;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+6M7Rrz8d9sk58/G5zmHZtDU4PDW4DV0zcA0ptQ1Png=;
-        b=dOgS5he6N0pDv/yggWMSWBGYZy4gAexc6NUmfrtsC24BoKhMJOsPzGvLWtC0i+wChK
-         RZCh2sJIEnn9pQMLZQkN2RKIv4wkm2YFJb1bGEXk6c1kCoZgbLXlMDmDcyHIwSgvXOVm
-         L4CanNDLhV6jIjP9OTqBaLk4mZfOXIwOg+qmaoXvhXW9amWVMn0TgSnJ35ClJVx+Womz
-         o5IJYtudSVN+1TKRwGrZHJFTsIp3VCsWRPx0T4hFozE3ifs+Bed9lf7S7z44zI9h+Mgl
-         sKEl4U0EPvX6iljXydueQ4pgmzymBEkaNLNBNU6tmLi2As2wM/O1kUwXu4bjklYjgz0D
-         NOVQ==
-X-Gm-Message-State: AO0yUKUFRgUV7YCcTcChTLnhCSKJbtg84BcAtUNf48n6drCfKXx0YOL/
-        vlV8j8RB6hlkTCjWfjnE2FfE5ZzT2Dz/1d9k0SQhVNXzlfhUrQ==
-X-Google-Smtp-Source: AK7set9Xm/+t4RsbYIh8ZTtsG14e7fG27l8U4WG+CAhTtfNoZ/TFjDRHLzJOC1Pb6hQWIxMo+D0M4xfhEHmOcmY6vLs=
-X-Received: by 2002:a5b:b03:0:b0:ad7:b81e:69bd with SMTP id
- z3-20020a5b0b03000000b00ad7b81e69bdmr6382804ybp.2.1678188117463; Tue, 07 Mar
- 2023 03:21:57 -0800 (PST)
+        bh=Fpzu6mM9TObEaWPqTRbV/lVIlKZNjyI+OGMeOTlpmmM=;
+        b=cHALOOMvsCyHU1iZevMB7BNvTmCEuGZ2QrVW+xMmkzlu1fZWWQEpOsx+BE81RwGuaX
+         i3Qwy24l9zkQ+fvWX8GyPJF9HLRWND3W2vGGTIGJ4mz2GPVNtMiT/IHqb7YvCrLZqtPK
+         9DCONtTxtUhKUMj4FK5OHzAqPYBdy46K2NHMTEbTT/VAQNLq9AO6tbq7JYYsG6mRXifL
+         4apwYv+s4Q0T8I42gKDHqAOX2yjW1Lj2NPhyO1W2gd7qw+nNxINOiWGtKKjhCScvFX/z
+         Yowgqg6AXw9MKABOd5LXb301jsw0OGr43Lszzb8AYQVmN9gAXb0a6PRWubmi73JBqHvF
+         j+zg==
+X-Gm-Message-State: AO0yUKVniY7V+qj2Hrl+BiLwk0F355pCLoZ9CKPZn4FPbXnqs5NAp/H3
+        jNiWcVj+yAFa4rVVf8HpTKKmDtzSgk/2/OHM1kY=
+X-Google-Smtp-Source: AK7set+XuApmsHpeE59OAObEV85h6yLM1xkplSm7PT1n4hNgCYOTpCcCuw40R2D3CdnvscfMkze9+dwV/8bTBkxG6YU=
+X-Received: by 2002:a81:b61a:0:b0:52e:c79a:cda with SMTP id
+ u26-20020a81b61a000000b0052ec79a0cdamr9075327ywh.10.1678190201054; Tue, 07
+ Mar 2023 03:56:41 -0800 (PST)
 MIME-Version: 1.0
-References: <20230307102441.94417-1-conor.dooley@microchip.com> <20230307102441.94417-2-conor.dooley@microchip.com>
-In-Reply-To: <20230307102441.94417-2-conor.dooley@microchip.com>
+References: <20230307102441.94417-1-conor.dooley@microchip.com>
+ <20230307102441.94417-3-conor.dooley@microchip.com> <CANiq72nLjBgMSUTtWuF7qU5vG9rA3v=ekWk1d6+SNiGkfcaS8Q@mail.gmail.com>
+ <ZAcZeWYUU75BK5FO@wendy>
+In-Reply-To: <ZAcZeWYUU75BK5FO@wendy>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 7 Mar 2023 12:21:46 +0100
-Message-ID: <CANiq72mB5jXPuLy4mcYsa-q4yjHeryVWZrDf6wavvpj5FkwMOw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] scripts: generate_rust_target: enable building on RISC-V
+Date:   Tue, 7 Mar 2023 12:56:30 +0100
+Message-ID: <CANiq72kz2qxsB9JG7OB02KMAfy-YvokCFWMuEj_bkaY8i5tdVg@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] RISC-V: enable building 64-bit kernels with rust support
 To:     Conor Dooley <conor.dooley@microchip.com>
 Cc:     linux-riscv@lists.infradead.org, conor@kernel.org,
         Miguel Ojeda <ojeda@kernel.org>,
@@ -76,22 +78,16 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Mar 7, 2023 at 11:25=E2=80=AFAM Conor Dooley <conor.dooley@microchi=
+On Tue, Mar 7, 2023 at 12:01=E2=80=AFPM Conor Dooley <conor.dooley@microchi=
 p.com> wrote:
 >
-> Despite removing 32-bit support, I kept the structure of the if
-> statement, despite early return being stylistically preferred, for
-> alignment with the Rust-for-Linux tree. I'm happy to respin to sort that
-> out of desired.
+> Cool. Git should resolve that, probably without even generating a
+> conflict in -next, right?
 
-This is a case of 2 "equal" sides to the branch (though at the moment
-an error), so it sounds good, and it will mean a smaller diff later.
+I think it will conflict.
 
-> +            panic!("32-bit RISC-V is an unsupported architecture")
-
-Nit: if there is a v2, please add a semicolon to be consistent with
-the others in the file (not sure which style we will go for, it looks
-like `rustfmt` accepts both ways).
+Since the cleanup is elsewhere and it may add work for the -next
+maintainer, it is probably best to take it out in v2.
 
 Cheers,
 Miguel
