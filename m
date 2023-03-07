@@ -2,95 +2,100 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D34DC678DB
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 09:26:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE194C678D4
+	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 09:32:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbjCGJ0W (ORCPT
+        id S230255AbjCGJci (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 04:26:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45352 "EHLO
+        Tue, 7 Mar 2023 04:32:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229613AbjCGJ0U (ORCPT
+        with ESMTP id S229967AbjCGJci (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 04:26:20 -0500
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA7F653717;
-        Tue,  7 Mar 2023 01:26:19 -0800 (PST)
-Received: by mail-ed1-x532.google.com with SMTP id k10so25722872edk.13;
-        Tue, 07 Mar 2023 01:26:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678181178;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6ztapAqrp0P0arwM5QDm4n16xyUTGqlP0zUmPheiyv8=;
-        b=ajw0Ap8dLJ0TFUrTkUnw3NQh/6Hl0eG+9B/0Z8Yq8vvj9ltkeF2rPq7WWmcgAjZVkF
-         bxz27W2e73rYXr0qP7TsVMmHHd3f2707LiWu8HnA9FJJdGvjByP3u2JwFrd+2IEjpMh2
-         VXx1liWRNYheg/Z4ARSHN7aAPHjB8ZJYzp8GAq668mmoAGIr860MEy5QgntC+Qdtmr2Z
-         Hcr+1aAyzC6pyp22E3MAl0/YmvGo/OHR8BJgORQLg4SRU6CJzU5CfdF5hl8ZLz1VDKrz
-         UnaKsxxdqy26QfWtTtfYH6+AkiCn2lq6EjqHDHbBX+zcFLevhTfHK+m6BBWqML6HxdzI
-         Qv3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678181178;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6ztapAqrp0P0arwM5QDm4n16xyUTGqlP0zUmPheiyv8=;
-        b=fJpNKTbFRGagRufsVsf9sdNDDCkoMnWDR0/ncYQtejM8hDZ427Mq5JLl4uiQE5p5o8
-         L01c52rkfOHOn+7myJbaLsBv1VbBG71THSJOxwYtWcZoSgBUmSjsybBUQVD1P6R1yg0s
-         aR9kMXdkK8suqb07RVQ6h7gvgVYyJHNAhyXJOhJS6cxXEhoahHFG4Tg8w1Vf77GQMWih
-         mOzoVD1tN/yLzk2WC1AiUnGm2g72ebOZdSenz4z7YsiFHKmr5mvhMaFlqEbsvJOnXPpt
-         JUdjmgUbuywx9Y5hTd7yzBa1p9xLyWdqxPy5782AtKGWx3cI3V/Iy5gClzI50wceaRVV
-         jQ4w==
-X-Gm-Message-State: AO0yUKVsXvF3SZa8j+aZe9Jb8j0Qr9ZgNxQNLT0mKsQ4Gk6BMr+r1RNB
-        FPh8laKIg2vrFGJYL2id2FY=
-X-Google-Smtp-Source: AK7set9vnOx118VHRJHv28HiwsiIKXKtrIehHz+W/nZGoYhuq4nLXCAiKufIQdTAhvQTJ74zUjoavQ==
-X-Received: by 2002:a17:906:fa82:b0:8ea:a647:a5aa with SMTP id lt2-20020a170906fa8200b008eaa647a5aamr18566645ejb.38.1678181178059;
-        Tue, 07 Mar 2023 01:26:18 -0800 (PST)
-Received: from localhost ([2001:b07:5d37:537d:5e25:9ef5:7977:d60c])
-        by smtp.gmail.com with ESMTPSA id hb15-20020a170906b88f00b008d09b900614sm5741459ejb.80.2023.03.07.01.26.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Mar 2023 01:26:17 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+        Tue, 7 Mar 2023 04:32:38 -0500
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0432E2BEEB
+        for <rust-for-linux@vger.kernel.org>; Tue,  7 Mar 2023 01:32:26 -0800 (PST)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: lina@asahilina.net)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 6C5D8419B4;
+        Tue,  7 Mar 2023 09:32:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+        s=default; t=1678181544;
+        bh=E+JBWGs90CdsgRhJ7Zj1p+d0LYrXwYt0/AWj3SgArpw=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=s4P4pvjfv5JEOIgSvJj5mE8Xe3JVdCY0Artpw2XU+79GEnyk18IZfL53ZY68K0Z61
+         Zx4I2KDkH35kQCKvhzj7eVyFlc/lFgWUH/R3rGgSIuED59J8/tTd8mvXAHM7rg4WTa
+         dV+QU49mNizRUm88fMmWiShSR+Dml7fyx95Cf6lmzVVu5O5Ihvzt+bZ7dNIkw0L7x/
+         rZDFO9tzNVvFxWzwOzQ7K01qHiu87OT9D45rj6gXgSR9w7DWL+yNZr3c2Ew82suH09
+         O5X6Mk2epO867E+Cj5qBsV6EyYlzcoOS2UPvoJubV2HPtQQ3ADcjHO30aVPIyZjKHS
+         4wBWOID8uCisA==
+Message-ID: <e76cb3e8-3d29-1caa-588c-29686c536d37@asahilina.net>
+Date:   Tue, 7 Mar 2023 18:32:20 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH 0/3] Rust enablement for AArch64
+Content-Language: en-US
+To:     Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        rust-for-linux@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, steve.capper@arm.com
+References: <20230125163739.3798252-1-Jamie.Cunliffe@arm.com>
+From:   Asahi Lina <lina@asahilina.net>
+In-Reply-To: <20230125163739.3798252-1-Jamie.Cunliffe@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 07 Mar 2023 10:26:16 +0100
-Message-Id: <CR01KTDBXXM6.1IJUOC2OAJQX2@vincent-arch>
-Cc:     <linux-doc@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>
-Subject: Re: [PATCH] docs: rust: point directly to the standalone installers
-From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-To:     "Miguel Ojeda" <ojeda@kernel.org>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        "Alex Gaynor" <alex.gaynor@gmail.com>,
-        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-References: <20230306220959.240235-1-ojeda@kernel.org>
-In-Reply-To: <20230306220959.240235-1-ojeda@kernel.org>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> The Quick Start guide points to the Rust programming language front
-> page when it mentions the possibility of using the standalone
-> installers instead of `rustup`.
->
-> This was done to have a hopefully stable link, but it is not too
-> helpful: readers need to figure out how to reach the standalone
-> installers from there.
->
-> Thus point directly to the page (and anchor) with the table that
-> contains the standalone installers (plus signing key etc.).
->
-> If the link breaks in the future, we can always update it as
-> needed. And anyway having the full link includes the domain and
-> gives more information about where the old docs were in such
-> a broken link case, which may help.
->
-> Link: https://lore.kernel.org/linux-doc/CANiq72=3DgpzQyh1ExGbBWWNdgH-mTAT=
-dG5F600jKD1=3DNLLCn7wg@mail.gmail.com/
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
+On 26/01/2023 01.37, Jamie Cunliffe wrote:
+> The first patch is from Miguel's tree to enable Rust support for
+> AArch64. This has been tested with the Rust samples, and the generated
+> code has also been manually inspected.
+> 
+> The second patch enables the PAC ret and BTI options in the Rust build
+> flags to match the options that are used when building C.
+> 
+> The third patch disables the neon and fp target features to avoid fp &
+> simd registers. The use of fp-armv8 will cause a warning from rustc
+> about an unknown feature that is specified. The target feature is
+> still passed through to LLVM, this behaviour is documented as part of
+> the warning. This will be fixed in a future version of the rustc
+> toolchain. This pull request should address it,
+> https://github.com/rust-lang/rust/pull/107294
+> 
+> 
+> Jamie Cunliffe (2):
+>   arm64: rust: Enable PAC support for Rust.
+>   arm64: rust: Disable neon and fp target features.
+> 
+> Miguel Ojeda (1):
+>   arm64: rust: Enable Rust support for AArch64
+> 
+>  Documentation/rust/arch-support.rst |  1 +
+>  arch/arm64/Kconfig                  |  1 +
+>  arch/arm64/Makefile                 |  4 ++++
+>  scripts/generate_rust_target.rs     | 13 ++++++++++++-
+>  4 files changed, 18 insertions(+), 1 deletion(-)
+> 
 
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Just as a note, we ran into an issue with this patchset. There is a
+missing `BINDGEN_TARGET_arm64` in rust/Makefile (around line 255).
+Without that, bindgen fails.
+
+ # Derived from `scripts/Makefile.clang`.
+ BINDGEN_TARGET_x86     := x86_64-linux-gnu
++BINDGEN_TARGET_arm64   := aarch64-linux-gnu
+ BINDGEN_TARGET         := $(BINDGEN_TARGET_$(SRCARCH))
+
+(No need to credit us for that ^^)
+
+Thanks!
+~~ Lina
