@@ -2,84 +2,109 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA83AC6FA99
-	for <rust-for-linux@archiver.kernel.org>; Tue,  7 Mar 2023 20:22:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5D5AC6FA99
+	for <rust-for-linux@archiver.kernel.org>; Wed,  8 Mar 2023 00:55:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231789AbjCGUWp (ORCPT
+        id S229628AbjCHAzw (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 7 Mar 2023 15:22:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35998 "EHLO
+        Tue, 7 Mar 2023 19:55:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231815AbjCGUWo (ORCPT
+        with ESMTP id S229484AbjCHAzv (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 7 Mar 2023 15:22:44 -0500
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BEABA6144;
-        Tue,  7 Mar 2023 12:22:40 -0800 (PST)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-536cb25982eso265730007b3.13;
-        Tue, 07 Mar 2023 12:22:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678220559;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OBSyTdrPOJVHUi62H8HJoL0JClhcgKSy5jHuy2pt1Ro=;
-        b=moRxMRhToGIlBlURExNXwaSqcDqloQmsfa6GGj7GDlwLRkD93O48yrUADnGC/lXSPJ
-         V2GzzO1lYJkNgtJqoVmZm0aT4Sm3u3lU7Hi07XGKEzZrWMhuDxKZEopMfzNbLWhpBTRF
-         7slSWL0b0G9RwjS9Zyd0L0Ud3ta6nb20QvbZuFQq7zksZtlo2337D76LNG+yePOD3SBK
-         gQuDRvl5CbKHea+RINhAva920U0ekvqLvXhd6aZ8Rwkcj8C2Bd7qPEcaiPW1of7ifyW+
-         /M6XgrYJklZmaQo+cVa8uBIJEv3il2+ty2MWxddrKfjJrs569x/u9QpK/pcBx2vykkDj
-         dOdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678220559;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OBSyTdrPOJVHUi62H8HJoL0JClhcgKSy5jHuy2pt1Ro=;
-        b=edQQxAz8XjNL0keK1dE/TgZha12g+Et6ficUKjvpzPiWdbUQOWQyNyh8xmrml1rDGH
-         nXFu1TtL1Devkf8BNYL7b6wp2Rz9OI40geHIlkyb78YUD4146LIcNpg09SlQ9Vf96Tgn
-         GOtsBjeFTdseJbZunabWoyYawT97fZ1oD1vqElXopiAy56y2DZYtQ3/QlEkEaVEYr1Ej
-         eH9v21rQ4lGjsKJbkBeSJ2iGMA2DGZHfn6chGKISWUDOK7yw1lCDthvuj8gcjU4G+7uv
-         dd7vIZsGrUOeN2WtM9AESUAbTPNvDbcjSoUnZePOv5bTK/3ZWHLvT4GFNov4MaHCh4oq
-         MLow==
-X-Gm-Message-State: AO0yUKWsxt+GtHPnmGh4Z1Sb5H3qeJee83HRDX2146zEDmsvcjRPqY+9
-        wk4iORISd/vJpINiTNLrDvthDwQFsBuOvCfn384=
-X-Google-Smtp-Source: AK7set+L982y6Gqt0c6yuAz3Ny1/mK3S/lN4t37WxZPkJKzOI8RPld789a+1NBfsZIEjJtxEa8/6pZZjmpfINNZCZ/M=
-X-Received: by 2002:a81:ad24:0:b0:52e:bb2d:2841 with SMTP id
- l36-20020a81ad24000000b0052ebb2d2841mr9466387ywh.10.1678220559220; Tue, 07
- Mar 2023 12:22:39 -0800 (PST)
-MIME-Version: 1.0
-References: <20230224-rust-macros-v1-0-b39fae46e102@asahilina.net>
- <20230224-rust-macros-v1-2-b39fae46e102@asahilina.net> <20230225003156.4858d79e.gary@garyguo.net>
-In-Reply-To: <20230225003156.4858d79e.gary@garyguo.net>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 7 Mar 2023 21:22:28 +0100
-Message-ID: <CANiq72mSjqkib1gpocT3YbWRMz1Uj68Yh5DTZjthAd+=z_4tSg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust: macros: concat_idents: Allow :: paths in the
- first argument
-To:     Gary Guo <gary@garyguo.net>
-Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Tue, 7 Mar 2023 19:55:51 -0500
+X-Greylist: delayed 886 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Mar 2023 16:55:49 PST
+Received: from a27-22.smtp-out.us-west-2.amazonses.com (a27-22.smtp-out.us-west-2.amazonses.com [54.240.27.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE8A29AFE1;
+        Tue,  7 Mar 2023 16:55:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=s25kmyuhzvo7troimxqpmtptpemzlc6l; d=exabit.dev; t=1678235640;
+        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding;
+        bh=hByjQKgqwH57WOIPZC7o+pxFfUYAeO+49C7DJJ1GLFg=;
+        b=cla1TKtKRJlLNHsclYB6ouf58iP213dERQku7qUDNb99l6+1ojWseCYpQtgzRUqj
+        WVu1msPYYPc1sne/Mck5YzOyzjugqXi/ew3lF4pwRQmrctL3zER392MztS0rhF4w7CS
+        DvuDjWo6fEtr3NVuGoto0U70wGfTuBxigOCcB0Sf5olKOtL8BnxBojyvj70tE99Rj+U
+        Ilc066Zp2hXpH552xfR64zpc4p4hyj+ZzODbFupoAaNcMF4dvlurLlvG9WwK0eMRiyc
+        35+6MjkJEvo6YEHH4qvgosIh9GjSXaO0tS5sk0Tt2h4/R1N8+EPTdXLYq9izphQkuKm
+        CqW961Hfig==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1678235640;
+        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+        bh=hByjQKgqwH57WOIPZC7o+pxFfUYAeO+49C7DJJ1GLFg=;
+        b=JwoYJ7oqGdOXLAyST48LCg5VhHIPmUZqxUaIHd+jr2C47JOaUT2AqLmkK/uG2AVt
+        jeNygHV/az/u5WqnszR90X3BdKn2ac6TfvPSdnLStkUKdvpEYhAYHfadihg1viRNfnI
+        VUWkAg537oGvqNuo9Q4MvsPdl++Kd/ZI8OT1VSzc=
+Date:   Wed, 8 Mar 2023 00:33:59 +0000
+Message-ID: <01010186bea3a046-f1f68507-2d3c-41c3-9066-44199e2ce071-000000@us-west-2.amazonses.com>
+To:     bjorn3_gh@protonmail.com
+Cc:     daniel.almeida@collabora.com, wedsonaf@gmail.com, ojeda@kernel.org,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+        virtualization@lists.linux-foundation.org, kernel@collabora.com
+Subject: Re: [PATCH] rust: virtio: add virtio support
+From:   FUJITA Tomonori <tomo@exabit.dev>
+In-Reply-To: <OBVROfBri9SuVdfyos-71URYovcNLhbDb_50cECWMwhycY2sHH90w28f0qlJ_q_dMuCnOD_4nQCVUnwOkgyCEH1298nsVLW0YFuuiIlLPow=@protonmail.com>
+References: <20230307130332.53029-1-daniel.almeida@collabora.com>
+        <OBVROfBri9SuVdfyos-71URYovcNLhbDb_50cECWMwhycY2sHH90w28f0qlJ_q_dMuCnOD_4nQCVUnwOkgyCEH1298nsVLW0YFuuiIlLPow=@protonmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-8859-1
 Content-Transfer-Encoding: quoted-printable
+Feedback-ID: 1.us-west-2.j0GTvY5MHQQ5Spu+i4ZGzzYI1gDE7m7iuMEacWMZbe8=:AmazonSES
+X-SES-Outgoing: 2023.03.08-54.240.27.22
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Feb 25, 2023 at 1:32=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
->
-> It seems weird to me that this is called `concat_idents` despite
-> working for more things than just idents.
->
-> How about just implement a simple version of the `paste` macro instead?
+On Tue, 07 Mar 2023 17:09:27 +0000
+Bj=F6rn Roy Baron <bjorn3_gh@protonmail.com> wrote:
 
-Opened https://github.com/Rust-for-Linux/linux/issues/983 in case we
-end up applying the patch.
+> On Tuesday, March 7th, 2023 at 14:03, Daniel Almeida <daniel.almeida@=
+collabora.com> wrote:
+> =
 
-Cheers,
-Miguel
+>> This patch adds virtIO support to the rust crate. This includes the
+>> capability to create a virtIO driver (through the module_virtio_driv=
+er
+>> macro and the respective Driver trait) as well as initial virtqueue
+>> support.
+>> =
+
+>> A sample virtIO module is included for conveninence.
+>> =
+
+>> Signed-off-by: Daniel Almeida daniel.almeida@collabora.com
+>> =
+
+>> ---
+>> =
+
+>> Ok so this is my first Rust contribution here. It's part of a virtIO=
+
+>> driver I was originally writing. Both the probing and the virtqueue
+>> support in here were confirmed as working in said prototype driver, =
+and
+>> the pieces were picked separately into this patch.
+>> =
+
+>> Feel free to point me to the best practices around Rust patch
+>> submission, as the C stuff like checkpatch etc probably does not app=
+ly
+>> yet. I did take care to run clippy though.
+>> =
+
+> =
+
+> Great to see Rust support for the driver side of VirtIO! I've got a c=
+ouple of review comments, but I don't see any big issues. Maybe you cou=
+ld write an actual driver which uses add_sgs though? It doesn't have to=
+ be complicated, but just something to show how it will work. That may =
+help with checking if the api is usable. You might try something like v=
+irtio-console or virtio-entropy I think.
+
+There was an attempt to implement virtio-net, which might be useful:
+
+https://github.com/Rust-for-Linux/linux/pull/886
+
+C versions of virtio-console, virtio-rng, and virtio-net exists. Both
+C and Rust versions in mainline?
+
+Are there guidelines on pushing a Rust driver in mainline?
