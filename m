@@ -2,51 +2,52 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B996CC64EC4
-	for <rust-for-linux@archiver.kernel.org>; Thu,  9 Mar 2023 19:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F1F6C61DA4
+	for <rust-for-linux@archiver.kernel.org>; Thu,  9 Mar 2023 19:43:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229913AbjCITGU (ORCPT
+        id S229651AbjCITnk (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 9 Mar 2023 14:06:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56124 "EHLO
+        Thu, 9 Mar 2023 14:43:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229722AbjCITGT (ORCPT
+        with ESMTP id S229761AbjCITnh (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 9 Mar 2023 14:06:19 -0500
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E15DE681B;
-        Thu,  9 Mar 2023 11:06:18 -0800 (PST)
-Received: by mail-oi1-x22b.google.com with SMTP id c11so2454757oiw.2;
-        Thu, 09 Mar 2023 11:06:18 -0800 (PST)
+        Thu, 9 Mar 2023 14:43:37 -0500
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B56FDC0BB;
+        Thu,  9 Mar 2023 11:43:34 -0800 (PST)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-53d277c1834so54481537b3.10;
+        Thu, 09 Mar 2023 11:43:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678388777;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uiR/LxAk1QZhjuyMutqfTRyaOwiD3/uAEjdq2NyCr5I=;
-        b=CmSV4PcskOsOfskSPqsTCagXfYrxKTHr67DtGnhFSUUEbxtngijG8dj3qp0tj1W/pW
-         sj180XfYMSzWyc9tmgzP51WfZL1boMSN1+QIDtybvd2AVS2M2/qsOS1mWhRVxjFnzQn4
-         y5+/p40WgMUik0eWapisOWE0fY2e1CdppLWkNolY5RCtWkIz1ryj256oN6RFbhK53HJu
-         egBslxMjzjC74e+ELdQxHG8mnhLr9gADfJkKD+3+mOTBMDMWtlrmYleGAcI6wLIGxaL/
-         FzjOSBvvvx7zu7Pgk6GRL2uRcSTgBXWpCi3k1CV2q0ELkvusl5WVmG7jhrob0dPJckQY
-         0U1w==
+        d=gmail.com; s=20210112; t=1678391013;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6fzFppmaiKwMNk0er/cwV+CNdXpU1VQrp0ms6icnzwQ=;
+        b=farO1s2lLl1ZzC6+RaeHAywmVA8pH4+eSu+hQdD9EidYgOA19kAR9fKQcenYXFpJEq
+         i3MfPhRQbdfjbJTQNjLTZ0oX0aCm2mbIAAtrCThMHktDEX0e9oq48nI4jJIUkTh2fFHZ
+         npOLUp8J03k2yH2COT7eGF0K/b5oC4cSgl4AfERUion2pEb0Eg7V3CnryJnZK9Eji6Tp
+         IRJRVRWutXbyz0xigxp8gKjteJPNIxdjp4OEYTCq98VHw2XoJMDQg3w3JzBR83IDH3ZK
+         GlxUQ43zw/o2/dxlmiQMsf0BvLP/SsY3Py1MMc9t2nQZReVfbYfCkw7knA5L6D43CQkw
+         CD6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678388777;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uiR/LxAk1QZhjuyMutqfTRyaOwiD3/uAEjdq2NyCr5I=;
-        b=a6E0w8Mhuh22nj6Vj/PA1yh2LuShkbqy5x2gDHIUOKkLksaWmmijsTH4zYiegitV0L
-         oXxdcN/4XLgtcvtrf5XfglvFNWuOWDIyjdgEgRxrdqIe7zuv58HW80cCp/KxhNNBNGa9
-         /Qi6rWWgXSutwTwHV6k8D40v5mhCCejw9Yx0YeompcedbBskCTxwWOyZhdoEoqNAWX/M
-         mNphfQVzt0e7WolIowpSRjMrDuNK5QDSyGIVjZVNgwbhZ0h0hFhwF7lIW0V4cBYgd8nX
-         v1/qjEXwZnEGvspfEGmAXwwluUiGDL5yaJdhi9EYwK66vfsbJtbuRh2Q+h4hLmS0XODh
-         vLdg==
-X-Gm-Message-State: AO0yUKX+62Cgf4reem4eQNWr+uX7/830HBIS3IPxkzJ0AoWFC40evHBu
-        53Sut+N+eunXozrALR8i8GNfFGCKOOA22Jb86Xw=
-X-Google-Smtp-Source: AK7set87qA9G55hYDeAgDKjAFWrHWbcLmbSx2inlaWZTuEgN9lIV0ItZEbzGVO7zQam/cTpyfLSoM7NeJhITOb+Nff8=
-X-Received: by 2002:a05:6808:2343:b0:384:87c:759b with SMTP id
- ef3-20020a056808234300b00384087c759bmr6699556oib.4.1678388777423; Thu, 09 Mar
- 2023 11:06:17 -0800 (PST)
+        d=1e100.net; s=20210112; t=1678391013;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6fzFppmaiKwMNk0er/cwV+CNdXpU1VQrp0ms6icnzwQ=;
+        b=DEjJMgJHacD+BdRjvHg6muwgUsyyWPwxrCkS3WUATeJStdPsm9gIMg+7/ndtSQZ3d0
+         Lo96AaD/YYOd8N2Xl1Xmd4RAY0NJ6K0jq2qZ7NSKwATFzMNs0NP9yotjbKBXBhA75b1r
+         SAf4K8pUeVUw0OkOmsPNpXpDTerJpREcBA8t0D5JYgLmsr1WFtWuDPgjPDQBYStGwWf3
+         4RMbEr86dpZhy8DUdkD9CS9KexpKeJuuBUJwrJb8AtPX8Wiu5edOt/zoratY/WOvmZb+
+         yDOaoi5tfjFL+lCYX7yC7x/ljWX4dD0toQdpfJKX3cjCF9XzWSwYEOsK6DG+YLX0W5rl
+         fyjw==
+X-Gm-Message-State: AO0yUKWOKX6sfzH+POvtC3sMAc2AotaFr12ZveKC4a+d3Rlen9/aykaP
+        erKVKHMDKjBU0VaqRM04rOKgxx6mLk9ToO5VD1g=
+X-Google-Smtp-Source: AK7set81OVQ0jMTTm9Fysqt7xMJGFBdLCoTZwS68fmOf8B+wf3hflmeCwvASOIQ5OHY6uzAabYbB+3iLzPcgyJVe8l4=
+X-Received: by 2002:a81:a983:0:b0:52e:e095:d840 with SMTP id
+ g125-20020a81a983000000b0052ee095d840mr15226417ywh.0.1678391013537; Thu, 09
+ Mar 2023 11:43:33 -0800 (PST)
 MIME-Version: 1.0
 References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
  <20230224-rust-iopt-rtkit-v1-5-49ced3391295@asahilina.net>
@@ -54,12 +55,14 @@ References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
  <ZAnB/DozWsir1cIE@kroah.com> <CANeycqrtjKMfpae_DUp-VrDZugJVO7mcbBvUBB+zAc=E6aU4tw@mail.gmail.com>
  <ZAoTNlF+bHyyGs7x@kroah.com>
 In-Reply-To: <ZAoTNlF+bHyyGs7x@kroah.com>
-From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-Date:   Thu, 9 Mar 2023 16:06:06 -0300
-Message-ID: <CANeycqqBVyDa=e+heDM-Wa9Bz30PESdMJ8Eu0OCPLh4Kqv+xwQ@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 9 Mar 2023 20:43:22 +0100
+Message-ID: <CANiq72nkqu+o5QvmLKvk82rJ6b6O2KdC-iYq9zFZFwVyf_Fv9A@mail.gmail.com>
 Subject: Re: [PATCH 5/5] rust: device: Add a stub abstraction for devices
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
+Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Asahi Lina <lina@asahilina.net>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
@@ -73,47 +76,13 @@ Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
         Neal Gompa <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, asahi@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, 9 Mar 2023 at 14:11, Greg Kroah-Hartman
+On Thu, Mar 9, 2023 at 6:11=E2=80=AFPM Greg Kroah-Hartman
 <gregkh@linuxfoundation.org> wrote:
->
-> On Thu, Mar 09, 2023 at 01:46:39PM -0300, Wedson Almeida Filho wrote:
-> > On Thu, 9 Mar 2023 at 08:24, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > > > > > +        // owns a reference. This is satisfied by the call to `get_device` above.
-> > > > > > +        Self { ptr }
-> > > > > > +    }
-> > > > > > +
-> > > > > > +    /// Creates a new device instance from an existing [`RawDevice`] instance.
-> > > > > > +    pub fn from_dev(dev: &dyn RawDevice) -> Self {
-> > > > >
-> > > > > I am a rust newbie, but I don't understand this "RawDevice" here at all.
-> > > >
-> > > > Different buses will have their own Rust "Device" type, for example,
-> > > > pci::Device, amba::Device, platform::Device that wrap their C
-> > > > counterparts pci_dev, amba_device, platform_device.
-> > > >
-> > > > "RawDevice" is a trait for functionality that is common to all
-> > > > devices. It exposes the "struct device" of each bus/subsystem so that
-> > > > functions that work on any "struct device", for example, `clk_get`,
-> > > > `pr_info`. will automatically work on all subsystems.
-> > >
-> > > Why is this being called "Raw" then?  Why not just "Device" to follow
-> > > along with the naming scheme that the kernel already uses?
-> >
-> > Because it gives us access to underlying raw `struct device` pointer,
-> > in Rust raw pointers are those unsafe `*mut T` or `*const T`. I'm not
-> > married to the name though, we should probably look for a better one
-> > if this one is confusing.
-> >
-> > Just "Device" is already taken. It's a ref-counted `struct device` (it
-> > calls get_device/put_device in the right places automatically,
-> > guarantees no dandling pointers); it is meant to be used by code that
-> > needs to hold on to devices when they don't care about the bus. (It in
-> > fact implements `RawDevice`.)
 >
 > I don't understand, why do you need both of these?  Why can't one just
 > do?  Why would you need one without the other?  I would think that
@@ -121,76 +90,58 @@ On Thu, 9 Mar 2023 at 14:11, Greg Kroah-Hartman
 > refer to a "larger" underlying struct device memory chunk in a way that
 > can be passed around without knowing, or caring, what the "real" device
 > type is.
-
-`Device` is a struct, it is the Rust abstraction for C's `struct device`.
-
-Let's use the platform bus as our running example: we have
-`platform::Device` as the Rust abstraction for C's `struct
-platform_device`.
-
-Let's use `clk_get`as our running example of a function that takes a
-`struct device` as argument.
-
-If we have a platform device, we can't just call `clk_get` because the
-types don't match. In C, we access the `dev` field of `struct
-platform_device` before we call `clk_get` (i.e., we call
-clk_get(&pdev->dev, ...)), but in Rust we don't want to make the
-fields of `platform::Device` public, especially because they're fields
-of a C struct. So as part of `platform::Device` we'd have to implement
-something like:
-
-impl platform::Device {
-    fn get_device(&self) -> &Device {
-    ...
-    }
-}
-
-Then calling `clk_get` would be something like:
-
-pdev.get_device().clk_get(...)
-
-The problem is that `clk_get` doesn't know that `platform::Device` is
-a device, that's why we need this `get_device()` call on each bus
-abstraction of a device, plus on each call to bus-agnostic device
-functions.
-
-Since we're implementing this "adapter" function anyway, we may as
-well put in a _trait_ and improve how people use it. We say: every
-struct that is a device should implement the `RawDevice` (or
-`IsDevice`, or whatever we decide to call it) trait. Then
-`platform::Device` would still have to implement something like:
-
-impl RawDevice for platform::Device {
-    fn get_device(&self) -> &Device {
-    ...
-    }
-}
-
-(Note that we went from `impl X` to `impl RawDevice for X`.)
-
-With this trait, users can call `clk_get` on a platform device as follows:
-
-pdev.clk_get(...)
-
-So we improve the experience of driver developers by having bus
-abstraction developers add "RawDevice for" to their impl block of the
-`get_device` function for their device.
-
-> >  How about `IsDevice`?
 >
-> That sounds like a question, and would return a boolean, not a structure :)
-
-`RawDevice` is not a struct, it's a trait that is implemented by
-bus-specific structs.
-
-> > Then, for example, the platform bus would implement `IsDevice` for
-> > `plaform::Device`.
+> That sounds like a question, and would return a boolean, not a structure =
+:)
 >
 > I don't really understand that, sorry.
 
-I tried to explain it above. I think the source of the problem is the
-distinction between `struct` and `trait`, the latter of course doesn't
-exist in C.
+To complement what Wedson wrote, perhaps this helps a bit, since there
+are a few `*Device` things around (I will prefix things with the
+module they are in for clarity):
+
+  - `device::RawDevice` is a trait, not a struct. This means it is
+just an interface/property/tag/feature. Then types (like structs) can
+say "I support/provide/implement this trait". In this case, it
+requires those types implementing `device::RawDevice` to provide a
+suitable `raw_device()` method.
+
+  - Then, you have `device::Device`. This is an actual struct,
+containing a `struct device *`. It implements `device::RawDevice`, by
+returning the pointer.
+
+  - Then there are others like `platform::Device` or `amba::Device`.
+They are also structs, containing e.g. `struct platform_device *` or
+anything they may need. They implement `device::RawDevice` too if it
+makes sense, say, by returning a pointer to the `->dev` in their C
+struct.
+
+So you have two different kinds of entities here. One is the trait,
+and the others are structs that promise to implement that trait
+correctly, regardless of how each struct manages to do it.
+
+The trait can also then provide extra default functionality for those
+that have implemented it. For instance, the `clk_get()` method Wedson
+mentioned can be defined in the trait, and in its body we can call the
+`raw_device()` to do so. `raw_device()` is available because we are
+inside the trait, even if each struct implementing the trait provides
+a different implementation.
+
+Traits are sometimes named after the "main" method they contain, e.g.
+`ToString` may be a trait with a `to_string()` method. Here
+`device::RawDevice` has a `raw_device()` method, so it makes sense in
+that way.
+
+Wedson was suggesting `device::IsDevice` as an alternative, because
+`device::Device` is taken for the ref-counted device. Of course, other
+arrangements of names could be possible.
+
+`IsDevice` uses Pascal case, so by convention it would be fairly clear
+that it would not be a function returning a boolean. But one may
+expect that it is a trait that implements a `is_device()` method,
+though. (And if that was the case, which it isn't, one could then
+indeed expect that such a method would return the boolean you
+expected).
 
 Cheers,
--Wedson
+Miguel
