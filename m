@@ -2,206 +2,185 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 66CEBC64EC4
-	for <rust-for-linux@archiver.kernel.org>; Thu,  9 Mar 2023 14:17:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84C63C64EC4
+	for <rust-for-linux@archiver.kernel.org>; Thu,  9 Mar 2023 16:55:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231240AbjCIOQ6 (ORCPT
+        id S230088AbjCIQzo (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 9 Mar 2023 09:16:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57842 "EHLO
+        Thu, 9 Mar 2023 11:55:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231389AbjCIOQj (ORCPT
+        with ESMTP id S230043AbjCIQz1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 9 Mar 2023 09:16:39 -0500
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB4E92CC42;
-        Thu,  9 Mar 2023 06:16:36 -0800 (PST)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: lina@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 8735242037;
-        Thu,  9 Mar 2023 14:16:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1678371395;
-        bh=tUUTZQN+QgD1rn1cHyCzhI7aFoqTUUMz0V4QKuTRQe4=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=HjY8oRPlc2CKr20/2jvE1xNtj9x6nJjr9+b1EGdHtTJOh8GMnTUNULcz049Y2BCc7
-         zNix/c/l5q04IeQPfaE8EacKG/v3bkO1C4SDe4Jv7CEVNPvuAENth2GdoDWRBxvPpm
-         SjDtPv89trwUCLVxH/2a6sSJAcw36eKjpLq+W1zVWssd5HHEEbEesEeRj2qGgp5Fn2
-         XbHgR14z2/1bmxa1zbiQSjiiCh4OkRUc4zj6AHT3MvQv4VN384RsyrlOMLi9KEzZM5
-         oPddH7HwLjDPcE+kPmXoSXwheMydufOcxaKPxmTTHE6plTgfpKPVlVOSusvbcQcuSG
-         TsFvLK+TY0Uxg==
-Message-ID: <ac5a748a-bd1c-1076-a17f-42367494976c@asahilina.net>
-Date:   Thu, 9 Mar 2023 23:16:25 +0900
+        Thu, 9 Mar 2023 11:55:27 -0500
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3F8D22C8E;
+        Thu,  9 Mar 2023 08:46:50 -0800 (PST)
+Received: by mail-ot1-x32e.google.com with SMTP id g6-20020a056830308600b0068d4b30536aso1383816ots.9;
+        Thu, 09 Mar 2023 08:46:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678380410;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=cZWG9NcS5ykP9v/z+VYKPHVgXZgQF/ixQK++XhQHyv0=;
+        b=ROhuLW1vwLot6HIlrXjC/U39b1KB/ymFHAULRVmJmYTHvQjO2s536s27znTD6vYQWu
+         AFu2hEHRsx9Qnn6RFoma3Ym/Y1zU978Ai1Ga1plXa8U8t1GehznhbW3QR4/760ZuEVVz
+         Bn24Hsb0UDrAjjix9GZ6HUhr81ejX5H2Fc97HDN4N0c9nHwD7w0korwz8LG+GU2a5aer
+         wUMfHXWPnDHqJa2UjK2LVVPfwNI9iV5bCBDnUHwms9DB52WgfElnVq2wA2VlLQXelcXf
+         ixwsnVIu4g4TXIvLwCf5cwB7YdTBqUUAEDuaTxCveN6UMFJY1HyXdrT+yr5d8rlV5rlq
+         Np/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678380410;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cZWG9NcS5ykP9v/z+VYKPHVgXZgQF/ixQK++XhQHyv0=;
+        b=r6gEXw4rfqavQ/vIr6i5VDIivN0eFfJ1ZmrS6QyTVSId0d6BX5ulTkTSmNDVU8CBGy
+         ASYPdGAHsqzrZ6HVa+wdHf3JXkI2rqH5dQ7itBhFCEZeh1VBu1pz4Y8hRFr2yedYpvFG
+         k8O3Eo0yY4bq3sjPHd4B/Dhg8HVC+d2JNrkEL/IiA3AGtx5/DJwbud0C2QIP9D6cIndN
+         DVLtCK9DSebfysanbylQ0EYLEP9BUMydhyUo8Haade9TCwuS9sRObmY3ZyHWfk5qbBF3
+         q9Bhmqza5qOm2A/t+OhL3igDttHp/7UMCxjzZzvxIyRtMeWNlN9tg64Z/wIkpiSoJxXo
+         Gmcw==
+X-Gm-Message-State: AO0yUKXDjqpPfOWRq4aTEFZeQzYrBoOMnf8I9T+e7aBT1jLJplnafRdL
+        COFhMv7kgdi4pPwPuirf8bsrZUUvH0AnI4F2s/8=
+X-Google-Smtp-Source: AK7set+M1B7ieaN3AXAypWhbsj8RaNdd+DzdWjfKY2U1mxetJaLWjUxzCk5xH6bVhSDST/9lCqB7H2rmHqpUQGycVd4=
+X-Received: by 2002:a05:6830:26ca:b0:690:d39d:ee41 with SMTP id
+ m10-20020a05683026ca00b00690d39dee41mr7090562otu.7.1678380410066; Thu, 09 Mar
+ 2023 08:46:50 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH RFC 06/18] rust: drm: gem: shmem: Add DRM shmem helper
- abstraction
-Content-Language: en-US
-To:     =?UTF-8?Q?Ma=c3=adra_Canal?= <mcanal@igalia.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Miguel Ojeda <ojeda@kernel.org>,
+References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
+ <20230224-rust-iopt-rtkit-v1-5-49ced3391295@asahilina.net>
+ <Y/idMBIOfFZxXnVM@kroah.com> <CANeycqoHwp3URSPGvnNZx+9PdbC90UVFWLwg4w=JBHQnjnGUPA@mail.gmail.com>
+ <ZAnB/DozWsir1cIE@kroah.com>
+In-Reply-To: <ZAnB/DozWsir1cIE@kroah.com>
+From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+Date:   Thu, 9 Mar 2023 13:46:39 -0300
+Message-ID: <CANeycqrtjKMfpae_DUp-VrDZugJVO7mcbBvUBB+zAc=E6aU4tw@mail.gmail.com>
+Subject: Re: [PATCH 5/5] rust: device: Add a stub abstraction for devices
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Luben Tuikov <luben.tuikov@amd.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Cc:     linaro-mm-sig@lists.linaro.org, rust-for-linux@vger.kernel.org,
-        Karol Herbst <kherbst@redhat.com>, asahi@lists.linux.dev,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Mary <mary@mary.zone>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        linux-sgx@vger.kernel.org, Ella Stanforth <ella@iglunix.org>,
-        Faith Ekstrand <faith.ekstrand@collabora.com>,
-        linux-media@vger.kernel.org
-References: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net>
- <20230307-rust-drm-v1-6-917ff5bc80a8@asahilina.net>
- <ff51483e-2d72-3a7b-0632-58ea36cc3d8e@igalia.com>
- <488728fc-ada2-20a3-79be-8109d891a8cb@asahilina.net>
- <8e091158-7826-1215-e717-081b25f48108@igalia.com>
-From:   Asahi Lina <lina@asahilina.net>
-In-Reply-To: <8e091158-7826-1215-e717-081b25f48108@igalia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Hector Martin <marcan@marcan.st>,
+        Sven Peter <sven@svenpeter.dev>, Arnd Bergmann <arnd@arndb.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Neal Gompa <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 09/03/2023 20.47, Maíra Canal wrote:
-> On 3/9/23 02:25, Asahi Lina wrote:
->> On 08/03/2023 22.38, Maíra Canal wrote:
->>> On 3/7/23 11:25, Asahi Lina wrote:
->>>> The DRM shmem helper includes common code useful for drivers which
->>>> allocate GEM objects as anonymous shmem. Add a Rust abstraction for
->>>> this. Drivers can choose the raw GEM implementation or the shmem layer,
->>>> depending on their needs.
->>>>
->>>> Signed-off-by: Asahi Lina <lina@asahilina.net>
->>>> ---
->>>>    drivers/gpu/drm/Kconfig         |   5 +
->>>>    rust/bindings/bindings_helper.h |   2 +
->>>>    rust/helpers.c                  |  67 +++++++
->>>>    rust/kernel/drm/gem/mod.rs      |   3 +
->>>>    rust/kernel/drm/gem/shmem.rs    | 381 ++++++++++++++++++++++++++++++++++++++++
->>>>    5 files changed, 458 insertions(+)
->>>>
->>>
->>> [...]
->>>
->>>> +unsafe extern "C" fn gem_create_object<T: DriverObject>(
->>>> +    raw_dev: *mut bindings::drm_device,
->>>> +    size: usize,
->>>> +) -> *mut bindings::drm_gem_object {
->>>> +    // SAFETY: GEM ensures the device lives as long as its objects live,
->>>> +    // so we can conjure up a reference from thin air and never drop it.
->>>> +    let dev = ManuallyDrop::new(unsafe { device::Device::from_raw(raw_dev) });
->>>> +
->>>> +    let inner = match T::new(&*dev, size) {
->>>> +        Ok(v) => v,
->>>> +        Err(e) => return e.to_ptr(),
->>>> +    };
->>>> +
->>>> +    let p = unsafe {
->>>> +        bindings::krealloc(
->>>> +            core::ptr::null(),
->>>> +            Object::<T>::SIZE,
->>>> +            bindings::GFP_KERNEL | bindings::__GFP_ZERO,
->>>> +        ) as *mut Object<T>
->>>> +    };
->>>> +
->>>> +    if p.is_null() {
->>>> +        return ENOMEM.to_ptr();
->>>> +    }
->>>> +
->>>> +    // SAFETY: p is valid as long as the alloc succeeded
->>>> +    unsafe {
->>>> +        addr_of_mut!((*p).dev).write(dev);
->>>> +        addr_of_mut!((*p).inner).write(inner);
->>>> +    }
->>>> +
->>>> +    // SAFETY: drm_gem_shmem_object is safe to zero-init, and
->>>> +    // the rest of Object has been initialized
->>>> +    let new: &mut Object<T> = unsafe { &mut *(p as *mut _) };
->>>> +
->>>> +    new.obj.base.funcs = &Object::<T>::VTABLE;
->>>> +    &mut new.obj.base
->>>> +}
->>>
->>> It would be nice to allow to set wc inside the gem_create_object callback,
->>> as some drivers do it so, like v3d, vc4, panfrost, lima...
->>
->> This is actually a bit tricky to do safely, because we can't just have a
->> callback that takes the drm_gem_shmem_object instance inside
->> gem_create_object because it is not fully initialized yet from the point
->> of view of the gem shmem API. Maybe we could have some sort of temporary
->> proxy object that only lets you do safe things like set map_wc? Or maybe
->> the new() callback could return something like a ShmemTemplate<T> type
->> that contains both the inner data and some miscellaneous fields like the
->> initial map_wc state?
-> 
-> I see that most drivers use this hook to set map_wc and set funcs. What
-> are your thoughts on something like this?
-> 
-> Best Regards,
-> - Maíra Canal
-> 
->  From 61f23f4a39028c9d34d3df58d7640bfcd64e9af9 Mon Sep 17 00:00:00 2001
-> From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-> Date: Thu, 9 Mar 2023 08:24:09 -0300
-> Subject: [PATCH] rust: drm: gem: shmem: Set map_wc on gem_create_object
->   callback
-> MIME-Version: 1.0
-> Content-Type: text/plain; charset=UTF-8
-> Content-Transfer-Encoding: 8bit
-> 
-> Some drivers use the gem_create_object callback to define the mapping of
-> the object write-combined (map_wc). Currently, the DRM Rust abstractions
-> doesn't allow such operation. So, add a method to the DriverObject trait
-> to allow drivers to set map_wc on the gem_create_object callback. By
-> default, the method returns false, which is the shmem default value.
-> 
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
-> ---
->   rust/kernel/drm/gem/shmem.rs | 7 +++++++
->   1 file changed, 7 insertions(+)
-> 
-> diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-> index 8f17eba0be99..a7f33b66f60a 100644
-> --- a/rust/kernel/drm/gem/shmem.rs
-> +++ b/rust/kernel/drm/gem/shmem.rs
-> @@ -24,6 +24,11 @@ use gem::BaseObject;
->   pub trait DriverObject: gem::BaseDriverObject<Object<Self>> {
->       /// Parent `Driver` for this object.
->       type Driver: drv::Driver;
-> +
-> +    /// Define the map object write-combined
-> +    fn set_wc() -> bool {
-> +        false
-> +    }
->   }
+On Thu, 9 Mar 2023 at 08:24, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Sun, Mar 05, 2023 at 03:39:25AM -0300, Wedson Almeida Filho wrote:
+> > > > +    /// Returns the name of the device.
+> > > > +    fn name(&self) -> &CStr {
+> > > > +        let ptr = self.raw_device();
+> > > > +
+> > > > +        // SAFETY: `ptr` is valid because `self` keeps it alive.
+> > > > +        let name = unsafe { bindings::dev_name(ptr) };
+> > > > +
+> > > > +        // SAFETY: The name of the device remains valid while it is alive (because the device is
+> > > > +        // never renamed, per the safety requirement of this trait). This is guaranteed to be the
+> > > > +        // case because the reference to `self` outlives the one of the returned `CStr` (enforced
+> > > > +        // by the compiler because of their lifetimes).
+> > > > +        unsafe { CStr::from_char_ptr(name) }
+> > >
+> > > Why can the device never be renamed?  Devices are renamed all the time,
+> > > sometimes when you least expect it (i.e. by userspace).  So how is this
+> > > considered "safe"? and actually correct?
+> > >
+> > > Again, maybe seeing a real user of this might make more sense, but
+> > > as-is, this feels wrong and not needed at all.
+> >
+> > This requirement is to allow callers to use the string without having
+> > to make a copy of it.
+> >
+> > If subsystems/buses are not following what the C documentation says,
+> > as you point out in another thread, we have a several options: (a)
+> > remove access to names altogether, (b) leave things as they are, then
+> > those subsystems wouldn't be able to honour the safety requirements of
+> > this trait therefore they wouldn't implement it, (c) make a copy of
+> > the string, etc.
+>
+> How about we fix the documentation in the .c code and also drop this as
+> you really don't need it now.
+>
+> Want to send a patch for the driver core code fix?
 
-I think if you're going to make it a static function like that, we might
-as well just make it an associated constant like `DEFAULT_WC`? After all
-there is no information gem_create_object gets other than the size so we
-can't really do anything more useful, and `set_wc()` can't do much other
-than return a constant ^^
+Sure, will do.
 
-The only corner case I can think of is cases where the WC mode depends
-on the device (for example, if some devices want to enable it or not
-depending on whether the particular hardware variant is cache-coherent),
-but then it should probably just be part of the return value for T::new
-since that function already gets all available information (device and
-size). But I think a constant works for now, we can always extend it
-when a use case comes for doing more.
+> > > > +        // owns a reference. This is satisfied by the call to `get_device` above.
+> > > > +        Self { ptr }
+> > > > +    }
+> > > > +
+> > > > +    /// Creates a new device instance from an existing [`RawDevice`] instance.
+> > > > +    pub fn from_dev(dev: &dyn RawDevice) -> Self {
+> > >
+> > > I am a rust newbie, but I don't understand this "RawDevice" here at all.
+> >
+> > Different buses will have their own Rust "Device" type, for example,
+> > pci::Device, amba::Device, platform::Device that wrap their C
+> > counterparts pci_dev, amba_device, platform_device.
+> >
+> > "RawDevice" is a trait for functionality that is common to all
+> > devices. It exposes the "struct device" of each bus/subsystem so that
+> > functions that work on any "struct device", for example, `clk_get`,
+> > `pr_info`. will automatically work on all subsystems.
+>
+> Why is this being called "Raw" then?  Why not just "Device" to follow
+> along with the naming scheme that the kernel already uses?
 
-~~ Lina
+Because it gives us access to underlying raw `struct device` pointer,
+in Rust raw pointers are those unsafe `*mut T` or `*const T`. I'm not
+married to the name though, we should probably look for a better one
+if this one is confusing.
+
+Just "Device" is already taken. It's a ref-counted `struct device` (it
+calls get_device/put_device in the right places automatically,
+guarantees no dandling pointers); it is meant to be used by code that
+needs to hold on to devices when they don't care about the bus. (It in
+fact implements `RawDevice`.)
+
+ How about `IsDevice`?
+
+Then, for example, the platform bus would implement `IsDevice` for
+`plaform::Device`.
+
+> > For example, as part writing Rust abstractions for a platform devices,
+> > we have a platform::Device type, which is wrapper around `struct
+> > platform_device`. It has a bunch of associated functions that do
+> > things that are specific to the platform bus. But then they also
+> > implement the `RawDevice` trait (by implementing `raw_device` that
+> > returns &pdev->dev), which allows drivers to call `clk_get` and the
+> > printing functions directly.
+> >
+> > Let's say `pdev` is a platform device; if we wanted to call `clk_get`
+> > in C, we'd do something like:
+> >
+> > clk = clk_get(&pdev->dev, NULL);
+> >
+> > In Rust, we'd do:
+> >
+> > clk = pdev.clk_get(None);
+> >
+> > (Note that we didn't have to know that pdev had a field whose type is
+> > a `struct device` that we could use to call clk_get on; `RawDevice`
+> > encoded this information.)
+> >
+> > Does the intent of the abstraction make sense to you now?
+>
+> A bit more, yes.  But I want to see some real users before agreeing that
+> it is sane :)
+
+Fair enough.
+
+Cheers,
+-Wedson
