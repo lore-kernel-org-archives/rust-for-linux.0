@@ -2,146 +2,371 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F1F6C61DA4
-	for <rust-for-linux@archiver.kernel.org>; Thu,  9 Mar 2023 19:43:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A55FC6FD19
+	for <rust-for-linux@archiver.kernel.org>; Thu,  9 Mar 2023 19:59:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229651AbjCITnk (ORCPT
+        id S230280AbjCIT7c (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 9 Mar 2023 14:43:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51960 "EHLO
+        Thu, 9 Mar 2023 14:59:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229761AbjCITnh (ORCPT
+        with ESMTP id S230269AbjCIT7a (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 9 Mar 2023 14:43:37 -0500
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B56FDC0BB;
-        Thu,  9 Mar 2023 11:43:34 -0800 (PST)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-53d277c1834so54481537b3.10;
-        Thu, 09 Mar 2023 11:43:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678391013;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6fzFppmaiKwMNk0er/cwV+CNdXpU1VQrp0ms6icnzwQ=;
-        b=farO1s2lLl1ZzC6+RaeHAywmVA8pH4+eSu+hQdD9EidYgOA19kAR9fKQcenYXFpJEq
-         i3MfPhRQbdfjbJTQNjLTZ0oX0aCm2mbIAAtrCThMHktDEX0e9oq48nI4jJIUkTh2fFHZ
-         npOLUp8J03k2yH2COT7eGF0K/b5oC4cSgl4AfERUion2pEb0Eg7V3CnryJnZK9Eji6Tp
-         IRJRVRWutXbyz0xigxp8gKjteJPNIxdjp4OEYTCq98VHw2XoJMDQg3w3JzBR83IDH3ZK
-         GlxUQ43zw/o2/dxlmiQMsf0BvLP/SsY3Py1MMc9t2nQZReVfbYfCkw7knA5L6D43CQkw
-         CD6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678391013;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6fzFppmaiKwMNk0er/cwV+CNdXpU1VQrp0ms6icnzwQ=;
-        b=DEjJMgJHacD+BdRjvHg6muwgUsyyWPwxrCkS3WUATeJStdPsm9gIMg+7/ndtSQZ3d0
-         Lo96AaD/YYOd8N2Xl1Xmd4RAY0NJ6K0jq2qZ7NSKwATFzMNs0NP9yotjbKBXBhA75b1r
-         SAf4K8pUeVUw0OkOmsPNpXpDTerJpREcBA8t0D5JYgLmsr1WFtWuDPgjPDQBYStGwWf3
-         4RMbEr86dpZhy8DUdkD9CS9KexpKeJuuBUJwrJb8AtPX8Wiu5edOt/zoratY/WOvmZb+
-         yDOaoi5tfjFL+lCYX7yC7x/ljWX4dD0toQdpfJKX3cjCF9XzWSwYEOsK6DG+YLX0W5rl
-         fyjw==
-X-Gm-Message-State: AO0yUKWOKX6sfzH+POvtC3sMAc2AotaFr12ZveKC4a+d3Rlen9/aykaP
-        erKVKHMDKjBU0VaqRM04rOKgxx6mLk9ToO5VD1g=
-X-Google-Smtp-Source: AK7set81OVQ0jMTTm9Fysqt7xMJGFBdLCoTZwS68fmOf8B+wf3hflmeCwvASOIQ5OHY6uzAabYbB+3iLzPcgyJVe8l4=
-X-Received: by 2002:a81:a983:0:b0:52e:e095:d840 with SMTP id
- g125-20020a81a983000000b0052ee095d840mr15226417ywh.0.1678391013537; Thu, 09
- Mar 2023 11:43:33 -0800 (PST)
-MIME-Version: 1.0
-References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
- <20230224-rust-iopt-rtkit-v1-5-49ced3391295@asahilina.net>
- <Y/idMBIOfFZxXnVM@kroah.com> <CANeycqoHwp3URSPGvnNZx+9PdbC90UVFWLwg4w=JBHQnjnGUPA@mail.gmail.com>
- <ZAnB/DozWsir1cIE@kroah.com> <CANeycqrtjKMfpae_DUp-VrDZugJVO7mcbBvUBB+zAc=E6aU4tw@mail.gmail.com>
- <ZAoTNlF+bHyyGs7x@kroah.com>
-In-Reply-To: <ZAoTNlF+bHyyGs7x@kroah.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 9 Mar 2023 20:43:22 +0100
-Message-ID: <CANiq72nkqu+o5QvmLKvk82rJ6b6O2KdC-iYq9zFZFwVyf_Fv9A@mail.gmail.com>
-Subject: Re: [PATCH 5/5] rust: device: Add a stub abstraction for devices
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Asahi Lina <lina@asahilina.net>,
+        Thu, 9 Mar 2023 14:59:30 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26EFAF9EF7;
+        Thu,  9 Mar 2023 11:59:27 -0800 (PST)
+Received: from 2603-8080-2102-63d7-c4a8-7e10-0391-f3ff.res6.spectrum.com (2603-8080-2102-63d7-c4a8-7e10-0391-f3ff.res6.spectrum.com [IPv6:2603:8080:2102:63d7:c4a8:7e10:391:f3ff])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: gfxstrand)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 0FCC8660304A;
+        Thu,  9 Mar 2023 19:59:18 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1678391965;
+        bh=NqKVAOhcKdhQW0/TxyKzapD+cj1W7moCr1nx/DjwpP4=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=XLDUUeexPtWWfguSgsO3s2uFYzDQ5oyXB7UxKkODfYmLDKkWgNNML0gpRL7k9P6Ig
+         Gcapetoj8+9KXXygkDKUrt+Ey6JzGtr4vJsAD9BLzEWeYFKIiBKJ9y4Rgp2ZxawXPg
+         rs0hIvXlg8MyvYJkWQ4pDH1uQXkdC8Rp/k5zDCHXEsegGRetc4eIZ1hYxZqpwgVCWY
+         dmKndolpBV3X28bBdfLIeQhbD6bQ1rq5P0VfFJATYwGHS5TIfGTIrUqr2nsCZKURUi
+         oqdcLW+uq5/ktpZXr8jNXwn25TtV+Fb0BAlHomMl4OKV6n+L21hhTus2l4xxkrydhT
+         lB4ORAMuOH0Yg==
+Message-ID: <777dea65ef81c402d0765b1244b40633c483f4b2.camel@collabora.com>
+Subject: Re: [PATCH RFC 11/18] drm/scheduler: Clean up jobs when the
+ scheduler is torn down
+From:   Faith Ekstrand <faith.ekstrand@collabora.com>
+To:     Asahi Lina <lina@asahilina.net>,
+        Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Hector Martin <marcan@marcan.st>,
-        Sven Peter <sven@svenpeter.dev>, Arnd Bergmann <arnd@arndb.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Neal Gompa <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
+        =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Luben Tuikov <luben.tuikov@amd.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Cc:     Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Karol Herbst <kherbst@redhat.com>,
+        Ella Stanforth <ella@iglunix.org>, Mary <mary@mary.zone>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        rust-for-linux@vger.kernel.org, linux-media@vger.kernel.org,
+        linaro-mm-sig@lists.linaro.org, linux-sgx@vger.kernel.org,
+        asahi@lists.linux.dev
+Date:   Thu, 09 Mar 2023 13:59:14 -0600
+In-Reply-To: <9403e89d-a78f-8abd-2869-20da23d89475@asahilina.net>
+References: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net>
+         <20230307-rust-drm-v1-11-917ff5bc80a8@asahilina.net>
+         <bbd7c5ee-c2f0-3e19-757d-a9aff1a26d3d@linux.intel.com>
+         <585fa052-4eff-940e-b307-2415c315686a@amd.com>
+         <3320e497-09c0-6eb6-84c5-bab2e63f28ec@asahilina.net>
+         <7b39ef96-3ec5-c492-6e1b-bf065b7c90a2@amd.com>
+         <0f14c1ae-0c39-106c-9563-7c1c672154c0@asahilina.net>
+         <e18500b5-21a0-77fd-8434-86258cefce5a@amd.com>
+         <8696d00a-c642-b080-c19a-b0e619e4b585@asahilina.net>
+         <5f0814a3-4be3-a609-d3b3-dd51a4f459a1@amd.com>
+         <9403e89d-a78f-8abd-2869-20da23d89475@asahilina.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+MIME-Version: 1.0
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Mar 9, 2023 at 6:11=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> I don't understand, why do you need both of these?  Why can't one just
-> do?  Why would you need one without the other?  I would think that
-> "Device" and "RawDevice" here would be the same thing, that is a way to
-> refer to a "larger" underlying struct device memory chunk in a way that
-> can be passed around without knowing, or caring, what the "real" device
-> type is.
->
-> That sounds like a question, and would return a boolean, not a structure =
-:)
->
-> I don't really understand that, sorry.
+On Thu, 2023-03-09 at 18:43 +0900, Asahi Lina wrote:
+> On 09/03/2023 17.42, Christian K=C3=B6nig wrote:
+> > Am 08.03.23 um 20:37 schrieb Asahi Lina:
+> > > On 09/03/2023 03.12, Christian K=C3=B6nig wrote:
+> > > > Am 08.03.23 um 18:32 schrieb Asahi Lina:
+> > > > > [SNIP]
+> > > > > Yes but... none of this cleans up jobs that are already
+> > > > > submitted by the
+> > > > > scheduler and in its pending list, with registered completion
+> > > > > callbacks,
+> > > > > which were already popped off of the entities.
+> > > > >=20
+> > > > > *That* is the problem this patch fixes!
+> > > > Ah! Yes that makes more sense now.
+> > > >=20
+> > > > > > We could add a warning when users of this API doesn't do
+> > > > > > this
+> > > > > > correctly, but cleaning up incorrect API use is clearly
+> > > > > > something we
+> > > > > > don't want here.
+> > > > > It is the job of the Rust abstractions to make incorrect API
+> > > > > use that
+> > > > > leads to memory unsafety impossible. So even if you don't
+> > > > > want that in
+> > > > > C, it's my job to do that for Rust... and right now, I just
+> > > > > can't
+> > > > > because drm_sched doesn't provide an API that can be safely
+> > > > > wrapped
+> > > > > without weird bits of babysitting functionality on top (like
+> > > > > tracking
+> > > > > jobs outside or awkwardly making jobs hold a reference to the
+> > > > > scheduler
+> > > > > and defer dropping it to another thread).
+> > > > Yeah, that was discussed before but rejected.
+> > > >=20
+> > > > The argument was that upper layer needs to wait for the hw to
+> > > > become
+> > > > idle before the scheduler can be destroyed anyway.
+> > > Unfortunately, that's not a requirement you can encode in the
+> > > Rust type
+> > > system easily as far as I know, and Rust safety rules mean we
+> > > need to
+> > > make it safe even if the upper layer doesn't do this... (or else
+> > > we have
+> > > to mark the entire drm_sched abstraction unsafe, but that would
+> > > be a pity).
+> >=20
+> > Yeah, that should really not be something we should do.
+> >=20
+> > But you could make the scheduler depend on your fw context object,
+> > don't=20
+> > you?
+>=20
+> Yes, and that would fix the problem for this driver, but it wouldn't
+> make the abstraction safe. The thing is we have to make it
+> *impossible*
+> to misuse drm_sched in such a way that it crashes, at the Rust
+> abstraction level. If we start depending on the driver following
+> rules
+> like that, that means the drm_sched abstraction has to be marked
+> unsafe.
+>=20
+> > Detaching the scheduler from the underlying hw fences is certainly=20
+> > possible, but we removed that functionality because some people
+> > people=20
+> > tried to force push some Windows recovery module into Linux. We are
+> > in=20
+> > the process of reverting that and cleaning things up once more, but
+> > that=20
+> > will take a while.
+>=20
+> Okay, but I don't see why that should block the Rust abstractions...
+> I
+> don't even need a new API to do that, all I need is to know that
+> drm_sched_fini() will do it so it won't crash when the hw fences
+> complete later, as this patch does.
+>=20
+> > Instead of detaching you could also block for the hw to become
+> > idle, but=20
+> > if you do that synchronous on process termination you run into
+> > trouble=20
+> > as well.
+>=20
+> Yes, but again this something that can only be done at the driver
+> level
+> so it doesn't solve the safe abstraction problem...
+>=20
+> > > The firmware queue is itself reference counted and any firmware
+> > > queue
+> > > that has acquired an event notification resource (that is, which
+> > > is busy
+> > > with running or upcoming jobs) hands off a reference to itself
+> > > into the
+> > > event subsystem, so it can get notified of job completions by the
+> > > firmware. Then once it becomes idle it unregisters itself, and at
+> > > that
+> > > point if it has no owning userspace queue, that would be the last
+> > > reference and it gets dropped. So we don't tear down firmware
+> > > queues
+> > > until they are idle.
+> >=20
+> > And could those fw queue not reference the scheduler?
+>=20
+> Yes but again, that rule can't be encoded in the abstraction... so
+> that
+> makes it unsafe. The goal is to have a safe abstraction, which means
+> that all the rules that you need to follow to avoid memory safety
+> issues
+> are checked by the Rust compiler.
+>=20
+> > > I actually don't know of any way to actively abort jobs on the
+> > > firmware,
+> > > so this is pretty much the only option I have. I've even seen
+> > > long-running compute jobs on macOS run to completion even if you
+> > > kill
+> > > the submitting process, so there might be no way to do this at
+> > > all.
+> > > Though in practice since we unmap everything from the VM anyway
+> > > when the
+> > > userspace stuff gets torn down, almost any normal GPU work is
+> > > going to
+> > > immediately fault at that point (macOS doesn't do this because
+> > > macOS
+> > > effectively does implicit sync with BO tracking at the kernel
+> > > level...).
+> >=20
+> > Oh, that is an interesting information. How does macOS do explicit
+> > sync=20
+> > then or isn't that supported at all?
+>=20
+> They have the equivalent of sync objects at the UAPI level, but they
+> also have the implicit stuff and their UAPI seems to always pass a BO
+> list to the kernel as far as we could tell, even though it still
+> works
+> without it. I think it's a weird hybrid of explicit+implicit sync.
+> From
+> the Metal docs:
+>=20
+> > By default, Metal tracks the write hazards and synchronizes the
+> > resources
+> > (see Resource Fundamentals) you create from an MTLDevice and
+> > directly bind
+> > to a pipeline. However, Metal doesn=E2=80=99t, by default, track resour=
+ces
+> > you
+> > allocate from an MTLHeap (see Memory Heaps).
+>=20
+> So it's both, and you can override it...
+>=20
+> At the firmware level, I've never seen Metal use queue barriers yet
+> like
+> I do (other than the vertex->fragment ones), so either they always do
+> CPU round trips for cross-subqueue sync (render<->compute) or we just
+> haven't figured out the magic combination to get it to do that yet.
+> Honestly, I suspect they just always do it on the CPU. macOS is
+> pretty
+> ugly behind the scenes and it's pretty obvious a lot of their own
+> driver
+> was rushed (the firmware seems to support quite a few features the
+> driver doesn't... maybe it even has a job abort mechanism, we just
+> haven't found it yet).
+>=20
+> Of course, our goal is to do things better than macOS (and we already
+> do
+> some things better!) but getting confident enough about firmware/HW
+> details to diverge from what macOS does is tricky and a slow
+> process...
+>=20
+> > > By the way, I don't really use the hardware recovery stuff right
+> > > now.
+> > > I'm not even sure if there is a sensible way I could use it,
+> > > since as I
+> > > said we can't exactly abort jobs. I know there are ways to lock
+> > > up the
+> > > firmware/GPU, but so far those have all been things the kernel
+> > > driver
+> > > can prevent, and I'm not even sure if there is any way to recover
+> > > from
+> > > that anyway. The firmware itself has its own timeouts and
+> > > recovery for
+> > > "normal" problems. From the point of view of the driver and
+> > > everything
+> > > above it, in-flight commands during a GPU fault or timeout are
+> > > just
+> > > marked complete by the firmware, after a firmware recovery cycle
+> > > where
+> > > the driver gets notified of the problem (that's when we mark the
+> > > commands failed so we can propagate the error).
+> >=20
+> > Yeah, that's exactly what we are telling our fw people for years
+> > that we=20
+> > need this as well.
+>=20
+> Yeah, the ugly bit is that the firmware does a full GPU recovery even
+> on
+> simple page faults (which could be handled more gracefully) so even
+> stuff like that can possibly break concurrent GPU work.
+>=20
+> On the other hand, macOS configures things so page faults are ignored
+> and silently return all-00 on reads for shader accesses, which is how
+> they implement sparse buffers/textures... and we'll probably have to
+> do
+> that to improve reliability against app faults if nothing else. But
+> right now the driver enables explicit page faults for everything so
+> we
+> can debug Mesa (it's a kernel module param, GPU global and I haven't
+> found a way to change it after initial load unfortunately, but it
+> might
+> be possible).
+>=20
+> I think there's also a way to do actual page fault handling (like
+> swap
+> in pages and resume the GPU), but that's one of those firmware
+> features
+> Apple's driver just never uses as far as I can tell. There's so much
+> unexplored territory...
+>=20
+> >=20
+> > > There is no re-submission or anything, userspace just gets told
+> > > of the problem but
+> > > the queue survives.
+> >=20
+> > > In the future it might be possible to re-submit innocent commands
+> >=20
+> > Long story short: Don't do this! This is what the Windows drivers
+> > have=20
+> > been doing and it creates tons of problems.
 
-To complement what Wedson wrote, perhaps this helps a bit, since there
-are a few `*Device` things around (I will prefix things with the
-module they are in for clarity):
+Yeah, we tried to do a bit of that in the GL days.  It was a bad idea.
 
-  - `device::RawDevice` is a trait, not a struct. This means it is
-just an interface/property/tag/feature. Then types (like structs) can
-say "I support/provide/implement this trait". In this case, it
-requires those types implementing `device::RawDevice` to provide a
-suitable `raw_device()` method.
+> > Just signal the problem back to userspace and let the user space
+> > driver=20
+> > decide what to do.
+> >=20
+> > The background is that most graphics applications (games etc..)
+> > then=20
+> > rather start on the next frame instead of submitting the current
+> > one=20
+> > again while compute applications make sure that the abort and tell
+> > the=20
+> > user that the calculations might be corrupted and need to be
+> > redone.
 
-  - Then, you have `device::Device`. This is an actual struct,
-containing a `struct device *`. It implements `device::RawDevice`, by
-returning the pointer.
+The guarantee that Vulkan makes is that, if you idle the GPU and you
+haven't gotten a DEVICE_LOST yet, your data is good.  If you get a
+DEVICE_LOST, all bets are off.  The problem is that, no matter how fast
+the error propagation may be in the kernel or userspace driver, errors
+can still show up in strange ways.  An OOB buffer access could end up
+modifying a shader binary which gets run 3 frames later and causes a
+corruption.  Once you've faulted, you really have no idea how far back
+is good or what memory is corrupted.  You have to assume that
+everything mapped to the GPU VA space is potentially toast.
 
-  - Then there are others like `platform::Device` or `amba::Device`.
-They are also structs, containing e.g. `struct platform_device *` or
-anything they may need. They implement `device::RawDevice` too if it
-makes sense, say, by returning a pointer to the `->dev` in their C
-struct.
+> Then we're good with what we're currently doing, since we already
+> notify
+> userspace like that!
+>=20
+> Actually I wanted to ask about error notifications. Right now we have
+> an
+> out-of-band mechanism to provide detailed fault info to userspace
+> which
+> works fine, but in principle it's optional.
 
-So you have two different kinds of entities here. One is the trait,
-and the others are structs that promise to implement that trait
-correctly, regardless of how each struct manages to do it.
+This is fine, in principal.  Because of the nature of errors, async is
+fine as long as the error shows up eventually.  Faster is better, for
+sure, but error latency doesn't really matter in practice.
 
-The trait can also then provide extra default functionality for those
-that have implemented it. For instance, the `clk_get()` method Wedson
-mentioned can be defined in the trait, and in its body we can call the
-`raw_device()` to do so. `raw_device()` is available because we are
-inside the trait, even if each struct implementing the trait provides
-a different implementation.
+> However, I also mark the hw
+> =C2=A0fences as errored when a fault happens (with an errno that describe=
+s
+> the overall situation), but that never makes it into the drm_sched
+> job
+> complete fence. I looked at the drm_sched code and I didn't see any
+> error propagation. Is that supposed to work, or am I supposed to
+> directly mark the drm_sched side fence as complete, or did I
+> misunderstand all this? I get the feeling maybe existing drivers just
+> rely on the recovery/timeout/etc paths to mark jobs as errored (since
+> those do it explicitly) and never need error forwarding from the hw
+> fence?
 
-Traits are sometimes named after the "main" method they contain, e.g.
-`ToString` may be a trait with a `to_string()` method. Here
-`device::RawDevice` has a `raw_device()` method, so it makes sense in
-that way.
+The end behavior needs to be that all fences for all jobs submitted to
+the queue get signaled.  That's needed to satisfy the finite time
+guarantees of dma_fence.  Exactly how that happens (let the job run,
+abort all the jobs, etc.) is an implementation detail for the driver to
+decide.  If you want, you can also set a bit on the context (or queue)
+to mark it as dead and start returning EIO or similar from any ioctls
+trying to submit more work if you wanted.  Not required but you can.
 
-Wedson was suggesting `device::IsDevice` as an alternative, because
-`device::Device` is taken for the ref-counted device. Of course, other
-arrangements of names could be possible.
-
-`IsDevice` uses Pascal case, so by convention it would be fairly clear
-that it would not be a function returning a boolean. But one may
-expect that it is a trait that implements a `is_device()` method,
-though. (And if that was the case, which it isn't, one could then
-indeed expect that such a method would return the boolean you
-expected).
-
-Cheers,
-Miguel
+~Faith
