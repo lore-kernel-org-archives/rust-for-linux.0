@@ -2,211 +2,95 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59F7DC61DA4
-	for <rust-for-linux@archiver.kernel.org>; Sat, 11 Mar 2023 05:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B074C6FD1C
+	for <rust-for-linux@archiver.kernel.org>; Sat, 11 Mar 2023 14:01:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbjCKFlT (ORCPT
+        id S229562AbjCKOBK (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 11 Mar 2023 00:41:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53850 "EHLO
+        Sat, 11 Mar 2023 09:01:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229968AbjCKFlK (ORCPT
+        with ESMTP id S229478AbjCKOBI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 11 Mar 2023 00:41:10 -0500
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5534F4014;
-        Fri, 10 Mar 2023 21:41:06 -0800 (PST)
-Received: by mail-qt1-x835.google.com with SMTP id l18so8179410qtp.1;
-        Fri, 10 Mar 2023 21:41:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678513266;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hBnbrHjdJqCycEaPHLF3SoWIQqolVe0vVU3sGJzdcqg=;
-        b=JCrmDH75MWI6C4BQ6Nt6hJet7wA8eJiW8PPfMZAOC9Eb0zicSw4iJgBXqGFl4tbd07
-         kSBQhixAf+a1xmDOjNKCmPKrl6L0jyPy/MOtfMx9LA76vw9NYif240OF35sL3cMAdrB9
-         20UyOpDx/F6mf8b3T23HfOV7LfqSH7uVgI6mrf8fs1Q0T6nbzCSt+bd7gdRZXbXoB6nN
-         Oag00Y1PIbB6zIzFq+TWAH9VD4h1Ew4SVDYx0dtZxHQwgF/P2YuoacOmlGijGey0sRgp
-         pH3r+gp3XuwduyRHF4szq8xbf7fCxHENdRJr7mQhhZD/4GVsssboE4kBk98s6xNoZW7g
-         2BkA==
+        Sat, 11 Mar 2023 09:01:08 -0500
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BE14BCBBB
+        for <rust-for-linux@vger.kernel.org>; Sat, 11 Mar 2023 06:01:05 -0800 (PST)
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com [209.85.208.71])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 1D63B3F11D
+        for <rust-for-linux@vger.kernel.org>; Sat, 11 Mar 2023 14:01:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1678543263;
+        bh=0Du4MUdpFWmUO+Ch2VT29REc6UPxR2BI4xE9PibtUU8=;
+        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+        b=CzvQeOrhqZ9vEFJGQnHxlFSepFLG6R4lxzp5yQFqT983Ot5JfbGpJyf8H0mrD4Ydx
+         9WNe7uvq1IVRAcPyFSVSg1IWRhQhIew4MttEG8qD/K5kQBy9lyg8syu3o3WVgEqOlz
+         wPh2s7IB+ZyWScXXuQBs3/ati8MTXmnjzW3fnZYTDHY1usn2mRVrXSci/MzlaQyW8X
+         RcBN7UOAAnnxLEK18iJptGQvuQ/qcod5MxgsuKDSemUEc9IHmuYXrH6LblDmwV9xLz
+         a+8wbleMf9ipXfNhjlxL1y4dSWcxcFMuA+8JztzwqCxwyh56urkQSSL1Nah0N9Q7ul
+         YU8knjvp9NXCA==
+Received: by mail-ed1-f71.google.com with SMTP id en6-20020a056402528600b004fa01232e6aso2806247edb.16
+        for <rust-for-linux@vger.kernel.org>; Sat, 11 Mar 2023 06:01:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678513266;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hBnbrHjdJqCycEaPHLF3SoWIQqolVe0vVU3sGJzdcqg=;
-        b=YMZMdfnRiH8MTy6TCSryZEdGPCo/dKKlMW+NHDJSinYpkOcOco3vRgHt9tAY7ma8VU
-         Lx5/FchxuhPrO41MmANma53lmkQRoqRyC4g8oBhhOYEeDRyO9RU3DM/FF0AksBi3Y4Sg
-         jO/s2FmCTc+iY1a5a9/CidrVYnMuH0jiaEUWwnPRhjVyxP7G5ZDUJJidj2TqmkSNTyLn
-         0ozFAaWHvNwSG0zy3UqQTizye5UCr4R+aPo5Kcj480lHshCc3hcBYmrVOnv6YiGjpvRM
-         gIsM+5RmRVPCDrFT+yr6N+xxwJnopy5VwuQDMGJL1TByBywsEQoYEUDXP8rouamykrH5
-         Gm5g==
-X-Gm-Message-State: AO0yUKUEfOF3mHlI46+tz4Nhwr6B6dThhGGklid7jNCXtOWKRaztpmaV
-        0dMGC5VXIEuTJflc7ChV17M=
-X-Google-Smtp-Source: AK7set/plVrigjnAHyTng8mFOgTpletal/lAWhwq8z+Al90Y9yMeAfybv5E81mH4i9EeLrrAFNPPTg==
-X-Received: by 2002:a05:622a:182a:b0:3bf:cd42:7724 with SMTP id t42-20020a05622a182a00b003bfcd427724mr49636710qtc.11.1678513265735;
-        Fri, 10 Mar 2023 21:41:05 -0800 (PST)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id h9-20020ac85e09000000b003ba2a15f93dsm1381649qtx.26.2023.03.10.21.41.04
+        d=1e100.net; s=20210112; t=1678543262;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Du4MUdpFWmUO+Ch2VT29REc6UPxR2BI4xE9PibtUU8=;
+        b=xqJkGfblguJ55CWgrSP7hhXjRXN99yqjGxO2UmviJM1k32TCNvEU8NRa9VqWNEaw2n
+         yQyhWnl8bb455Cws5El6EA72VAcoX9Ul7iT0tXpF4onlbZ4IsI1//yBM5ovCrTon8fBC
+         uO/7OiXq29/HpqQmK3Mr+rQhAf3kxKKrGFsnSEK9g0Y+o2Rug+3qo2tBQSyQ8uqvxAjq
+         2/piDGbi+mRo5r7+I6bye7qThLk+wxEuhe1/EdE+8kRdX9O4OzInYICZaoRl+As51Gmo
+         qK7kw6W02AefboWaXDBIYpX4fRqLe++E311m7HmSmveVjuybFpd1k17AucykFWR4AVBT
+         PB8g==
+X-Gm-Message-State: AO0yUKVfjvYphVLfO+MIKIX5NzznBr1QKg5mZ0vJzuaDv/AI/OD11nVO
+        BcjPJvvJGjU1bmG+ANCRa4MT1VxiEqQo0qqGqn4aTyRL+Ngjy8TkSB56jR218eMwPbkB//daMOl
+        6RgaoX2KkGox/+OwYLkgSAnLYD+Ecc0tIOa/sClXHv0zUyLj8DESJ
+X-Received: by 2002:a17:906:ceca:b0:8c0:386e:6693 with SMTP id si10-20020a170906ceca00b008c0386e6693mr26802374ejb.63.1678543262182;
+        Sat, 11 Mar 2023 06:01:02 -0800 (PST)
+X-Google-Smtp-Source: AK7set8taICLYeSKFlGpkBSUw2MKUcxvdC+phQPQS2RQTWBB6k3LON/5vCFLXWv7vdHQddy+FwCMOA==
+X-Received: by 2002:a17:906:ceca:b0:8c0:386e:6693 with SMTP id si10-20020a170906ceca00b008c0386e6693mr26802348ejb.63.1678543261878;
+        Sat, 11 Mar 2023 06:01:01 -0800 (PST)
+Received: from localhost (host-79-53-23-214.retail.telecomitalia.it. [79.53.23.214])
+        by smtp.gmail.com with ESMTPSA id ox12-20020a170907100c00b00922e3221c88sm320243ejb.117.2023.03.11.06.01.01
+        for <rust-for-linux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Mar 2023 21:41:05 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 799A327C0054;
-        Sat, 11 Mar 2023 00:41:04 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Sat, 11 Mar 2023 00:41:04 -0500
-X-ME-Sender: <xms:bhQMZBfymQwN8rpPD2I7inos-RmgCfUvR91xgSJj-Px65DbLzROxRw>
-    <xme:bhQMZPPZNhTZ8fqeWdzBYxy5q3nKRCA6MQ5bTsT0vdKXySaD6SMOcUY2A4GfVaF4R
-    P1aXaOiW7idfkQaVA>
-X-ME-Received: <xmr:bhQMZKh2j4CRc34OgSzc7zD9IHg1IyreWKH49AqSiafOVd15IptlpyxDJn0CFxLtXFlRxuXA21Fntiq7r8iDpGS0_h8QDVZr72c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdduledgkeegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeefuddvvdelieeguefgveffvdffudeiueejiedvudfhleejgefhgeffveff
-    hfekffenucffohhmrghinhepphhtrhdruggvvhenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
-    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:bhQMZK_hc_mxP2PBVZaKsvEYZbv5qnMolvIg5gNaCSbqHa6VYq2CbQ>
-    <xmx:bhQMZNsVsl6HnB3_XXn1BcSra2Nh0ZQsFKDSptGHjauurJofQj_idQ>
-    <xmx:bhQMZJGsQOI_bpjrAdFslcuZpUS4v9HbNv-4iPwrqzy7x9s5B1Mw2g>
-    <xmx:cBQMZNd1EQ9WNauHj_wI5NjKkSljOiZ_2aFgNwPO5npgKD1jkWbpdQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 11 Mar 2023 00:41:02 -0500 (EST)
-Date:   Fri, 10 Mar 2023 21:41:00 -0800
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Asahi Lina <lina@asahilina.net>
-Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Luben Tuikov <luben.tuikov@amd.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Karol Herbst <kherbst@redhat.com>,
-        Ella Stanforth <ella@iglunix.org>,
-        Faith Ekstrand <faith.ekstrand@collabora.com>,
-        Mary <mary@mary.zone>, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-        linux-sgx@vger.kernel.org, asahi@lists.linux.dev
-Subject: Re: [PATCH RFC 02/18] rust: drm: Add Device and Driver abstractions
-Message-ID: <ZAwUbAWvPt9aavXp@Boquns-Mac-mini.local>
-References: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net>
- <20230307-rust-drm-v1-2-917ff5bc80a8@asahilina.net>
+        Sat, 11 Mar 2023 06:01:01 -0800 (PST)
+Date:   Sat, 11 Mar 2023 15:01:00 +0100
+From:   Andrea Righi <andrea.righi@canonical.com>
+To:     rust-for-linux@vger.kernel.org
+Subject: distribute linux-headers to build out-of-tree Rust modules
+Message-ID: <ZAyJnCKa65WKozEJ@righiandr-XPS-13-7390>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230307-rust-drm-v1-2-917ff5bc80a8@asahilina.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Mar 07, 2023 at 11:25:27PM +0900, Asahi Lina wrote:
-> Add the initial abstractions for DRM drivers and devices. These go
-> together in one commit since they are fairly tightly coupled types.
-> 
-> A few things have been stubbed out, to be implemented as further bits of
-> the DRM subsystem are introduced.
-> 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> ---
->  rust/bindings/bindings_helper.h |   3 +
->  rust/kernel/drm/device.rs       |  76 +++++++++
->  rust/kernel/drm/drv.rs          | 339 ++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/drm/mod.rs          |   2 +
->  4 files changed, 420 insertions(+)
-> 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 2687bef1676f..2a999138c4ae 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -6,10 +6,13 @@
->   * Sorted alphabetically.
->   */
->  
-> +#include <drm/drm_device.h>
-> +#include <drm/drm_drv.h>
->  #include <drm/drm_ioctl.h>
->  #include <linux/delay.h>
->  #include <linux/device.h>
->  #include <linux/dma-mapping.h>
-> +#include <linux/fs.h>
->  #include <linux/ioctl.h>
->  #include <linux/io-pgtable.h>
->  #include <linux/ktime.h>
-> diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-> new file mode 100644
-> index 000000000000..6007f941137a
-> --- /dev/null
-> +++ b/rust/kernel/drm/device.rs
-> @@ -0,0 +1,76 @@
-> +// SPDX-License-Identifier: GPL-2.0 OR MIT
-> +
-> +//! DRM device.
-> +//!
-> +//! C header: [`include/linux/drm/drm_device.h`](../../../../include/linux/drm/drm_device.h)
-> +
-> +use crate::{bindings, device, drm, types::ForeignOwnable};
-> +use core::marker::PhantomData;
-> +
-> +/// Represents a reference to a DRM device. The device is reference-counted and is guaranteed to
-> +/// not be dropped while this object is alive.
-> +pub struct Device<T: drm::drv::Driver> {
-> +    // Type invariant: ptr must be a valid and initialized drm_device,
-> +    // and this value must either own a reference to it or the caller
-> +    // must ensure that it is never dropped if the reference is borrowed.
-> +    pub(super) ptr: *mut bindings::drm_device,
-> +    _p: PhantomData<T>,
-> +}
-> +
-> +impl<T: drm::drv::Driver> Device<T> {
-> +    // Not intended to be called externally, except via declare_drm_ioctls!()
-> +    #[doc(hidden)]
-> +    pub unsafe fn from_raw(raw: *mut bindings::drm_device) -> Device<T> {
-> +        Device {
-> +            ptr: raw,
-> +            _p: PhantomData,
-> +        }
-> +    }
-> +
-> +    #[allow(dead_code)]
-> +    pub(crate) fn raw(&self) -> *const bindings::drm_device {
-> +        self.ptr
-> +    }
-> +
-> +    pub(crate) fn raw_mut(&mut self) -> *mut bindings::drm_device {
-> +        self.ptr
-> +    }
+Hello,
 
-Since you can always get a *mut bindings::drm_device safely from
+I'm trying to distribute a linux-headers package (deb) that would allow
+to build out-of-tree Rust modules.
 
-	a.raw() as *mut _
+Everything looks fine, except for the following error:
 
-, this mutable version seems unnecesarry to me. In other words, no way
-to prevent getting a *mut bindings::drm_device from only &Device.
+error[E0461]: couldn't find crate `core` with expected target triple target-10951614936105594995
+  |
+  = note: the following crate versions were found:
+          crate `core`, target triple target-3759196539525232825: /usr/src/linux-headers-6.2.0-16-generic/rust/libcore.rmeta
 
-Regards,
-Boqun
+All I need to do is to "refresh" the headers by running a
+"make modules_prepare" after installing my linux-headers package on my
+system and then everything works perfectly.
 
-> +
-> +    /// Returns a borrowed reference to the user data associated with this Device.
-> +    pub fn data(&self) -> <T::Data as ForeignOwnable>::Borrowed<'_> {
-> +        unsafe { T::Data::borrow((*self.ptr).dev_private) }
-> +    }
-> +}
-> +
-[...]
+Is this because my system, where I try to build the out-of-tree module,
+has different toolchain versions (e.g., binutils) than the build host?
+
+Any pointer/documentation to better understand how the target triple
+version is determined?
+
+Thanks,
+-Andrea
