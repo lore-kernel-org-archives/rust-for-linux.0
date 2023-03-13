@@ -2,274 +2,210 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1975C6FD19
-	for <rust-for-linux@archiver.kernel.org>; Mon, 13 Mar 2023 15:30:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B529C6FD1F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 13 Mar 2023 17:03:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbjCMPaS (ORCPT
+        id S229961AbjCMRD4 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 13 Mar 2023 11:30:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42332 "EHLO
+        Mon, 13 Mar 2023 13:03:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230135AbjCMPaR (ORCPT
+        with ESMTP id S229754AbjCMRDt (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 13 Mar 2023 11:30:17 -0400
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7EE76F61B;
-        Mon, 13 Mar 2023 08:30:10 -0700 (PDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id ks17so8430734qvb.6;
-        Mon, 13 Mar 2023 08:30:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678721410;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Jd1uhDexD1fTeVUTZwzyBv6R36OtMUMQh14tizhOt7E=;
-        b=TbZj5H4Naew3PShQ5wyJz66N3q4s3E1MumhRPvQO36Eu8hjLCPe1xE41HAezbyWA4j
-         y1AfUxQ4uW4PhYSI9e7Ay8BJV7VmDH5jc8FXFXr85IUldk6HS+3GUDRT7QaouBFlj+Rd
-         btPL+uYRGb7PbwOWH1oLjW+qoQC+TQv9wn3F+k0NON6denSpjMhqKjiOYmERxN70xU1m
-         kQ+4W5taIXIh8PVd6PtPf2JNhyDA1jGujYAZnNrdScXo8D67xLp4OtCJv5t3w7wGxjP0
-         h90w4U+rqYqoWr+z6EbubvkchhhbMYnnI572JhU+Of95xG/Yn2rZO6UutvNcQblTx+nT
-         alyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678721410;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Jd1uhDexD1fTeVUTZwzyBv6R36OtMUMQh14tizhOt7E=;
-        b=vEObSmr4YpDWQ5IQ16Op8YLqQMcvCMvo9gyYyA8VHAaybqYGfg4UdUjEcolMSW5ZFo
-         qdkMnMfnNCHn5XN3xMBrQne9IbL9pw8xPtVQce5zY4vcNodgPCpnBtD1drbti+SFX48D
-         QCYyiQvJ7GnFbo6iY2mIrtLKf15m0NfrQt78xjchEc0Q0+oVPx98eR7PAEhXRqbgkJ96
-         5EcMLYkLQ/O/kkTVjP8gELrZEKP4JR7iInFbOKBApaygdu+5kZKBgyw2OnDSW1tl507S
-         CHXD5Uh/e0TTK4Dz22GsGDzioGs6g//fQgTMjxuHv0Cqowaqrl0oR2ZW8z4mE1wIeU39
-         /ONw==
-X-Gm-Message-State: AO0yUKXNNNjgA4xwDS23jAokum+BuYErviEu02unCg1/015cMnVYgoSN
-        AOubjuKdtHpOwjF2cqWdVDE=
-X-Google-Smtp-Source: AK7set/9bTJ3eytY6vZKlLwE9CigHsMKhM0Z707By1RQYxGcHEQj6dEWWrHycuixBMgFEi8BtC4jRQ==
-X-Received: by 2002:ad4:5aee:0:b0:57e:56f5:5410 with SMTP id c14-20020ad45aee000000b0057e56f55410mr14631652qvh.39.1678721409382;
-        Mon, 13 Mar 2023 08:30:09 -0700 (PDT)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id i127-20020a37b885000000b00742a23cada8sm2994956qkf.131.2023.03.13.08.30.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Mar 2023 08:30:08 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 1ADCE27C0054;
-        Mon, 13 Mar 2023 11:30:07 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Mon, 13 Mar 2023 11:30:08 -0400
-X-ME-Sender: <xms:f0EPZGG8JjoiBJFwsJCirAsg282aecwzlf9GiJ_4GM2rh49f-gWCZg>
-    <xme:f0EPZHV3H58oU6zFdx_DvRceRxQpHzoldHekdsQ5UPljOM_a_ANrxGwYNqgnBu7jy
-    VITgIssb5sglhJk4A>
-X-ME-Received: <xmr:f0EPZAJT9ZK_n0q6oU9fBNKXePN4IG5341Yw_Q8uPJexskcKst0V00c_rSAvSJrd86On-Deh4afW3o8Z7Fbv4tSxGXfTeMV9Q-o>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddvgedgjeeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:f0EPZAGQw4Fs-kHZQsuejUIRXMlciJNw5GiLp-Sz1na4b7SUesDvvw>
-    <xmx:f0EPZMX61M6cC5qbgAsqmRvbKx5eJqyLtRUovs_9On-7tdCXEtinhw>
-    <xmx:f0EPZDNgfu5Uc9lprm4izgn7SuIpBPqPz_yKkvxl4bPoQMdwmNeNkA>
-    <xmx:f0EPZAoAh8-_hOv0z6O8Y8U_y1gcRUjq5rmjLH9Q-4jQOmnqyNChFg>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Mar 2023 11:30:06 -0400 (EDT)
-Date:   Mon, 13 Mar 2023 08:30:05 -0700
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     y86-dev <y86-dev@protonmail.com>
-Cc:     "ojeda@kernel.org" <ojeda@kernel.org>,
-        "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
-        "wedsonaf@gmail.com" <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>,
-        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "patches@lists.linux.dev" <patches@lists.linux.dev>
-Subject: Re: [PATCH v1 1/3] rust: macros: add `quote!` macro
-Message-ID: <ZA9BfSEjAQ9xnZD7@Boquns-Mac-mini.local>
-References: <u9FrnEbtGtyUPp-CmzAQIv--8hmKwHdIIPiq-3IHJPcHdaJi_VXuDdVR2Js2GzvtWgCNrBLp4PhQs3tTlWNVDBZfIStCHiS9SoMtsDgc4oM=@protonmail.com>
+        Mon, 13 Mar 2023 13:03:49 -0400
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on0711.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe15::711])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52645CDE5;
+        Mon, 13 Mar 2023 10:03:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cML3ib6q27+G/IooFayVY1W2z58cRG/zEjnvgIYNs7EvTxBQGRwJvU40BR2sueFNC4UHtv4Tml9/xMN4G26gCfGNexlyHFdzpAc32xo6vQyua57ostNYFnlfAqW4cujXIF+/dhm5UPvm37saoXgdVZvvc0+5/w6grckZDupWvUgvGhdpahcSmK9xQjBT5OIyctwAu3UmgfJJqmjQZYzh0qDR2cfOtk6Gsju5RyoL2Orx5RwKgedZEkwAyIk+DKckm8nw940xm3IWbzAfeYsPvy6oXYMsbpGkBYmB45tZUmp/K5jg4smZMZJNiOViGF4YQL3/8HIknOCSSy8RYOWFxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4IaMazu2wE8Y5R2/e/pjFvlwSFlZeU4J57m51qZiEvA=;
+ b=NVQVOODhDA3OY9K2fX+DMGAiELyZXTM83qSX033xjzDQlQGjTYxt36JxU7d2x77fcoYn84DT/sEqOiYg2Oq0xfO1LjsxP0X3y8FtgRMRUBAXi0reEflG/8kJBFwjfiwbinq59Y7U3+NPGiBdrdns9VHhwVkBYUqpZi9gpxE8MKy4uTWsOc20vxLruhte3+r1ZElBg47IftIzIt13ab59mtcpoV4/KW5qfp363Jjq0acCScPH0f0PDGSXJrSEhhWhysmQpRK7ityhL2lrxwD/HcvzohRxpnrDUZZ1VsmDvS4Pg8XmVfYE3JMzy+2e0G4lTRdCw81tqcAFlNL3jzjHPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4IaMazu2wE8Y5R2/e/pjFvlwSFlZeU4J57m51qZiEvA=;
+ b=uJZeIbM70qqNFlrIPZC9cSQ/j0pEjzlvDqkgCVwYQAR5+uyO3cDh1ZD/6jGDwGtzzQrobEbxC19OAh6o/6459ZFhF9WnNbvJkWanqTNlMOlzANpRM6TBS03y6fTf9pqN0rG/WCjoUX50/h4Zw855Xy7EOKFET4pdCcby/f2GwYU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO0P265MB5796.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:266::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.24; Mon, 13 Mar
+ 2023 17:01:36 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece%3]) with mapi id 15.20.6178.024; Mon, 13 Mar 2023
+ 17:01:36 +0000
+Date:   Mon, 13 Mar 2023 17:01:33 +0000
+From:   Gary Guo <gary@garyguo.net>
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Asahi Lina <lina@asahilina.net>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Hector Martin <marcan@marcan.st>,
+        Sven Peter <sven@svenpeter.dev>, Arnd Bergmann <arnd@arndb.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Neal Gompa <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
+Subject: Re: [PATCH 5/5] rust: device: Add a stub abstraction for devices
+Message-ID: <20230313170133.36dff88b.gary@garyguo.net>
+In-Reply-To: <CANeycqqBVyDa=e+heDM-Wa9Bz30PESdMJ8Eu0OCPLh4Kqv+xwQ@mail.gmail.com>
+References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
+        <20230224-rust-iopt-rtkit-v1-5-49ced3391295@asahilina.net>
+        <Y/idMBIOfFZxXnVM@kroah.com>
+        <CANeycqoHwp3URSPGvnNZx+9PdbC90UVFWLwg4w=JBHQnjnGUPA@mail.gmail.com>
+        <ZAnB/DozWsir1cIE@kroah.com>
+        <CANeycqrtjKMfpae_DUp-VrDZugJVO7mcbBvUBB+zAc=E6aU4tw@mail.gmail.com>
+        <ZAoTNlF+bHyyGs7x@kroah.com>
+        <CANeycqqBVyDa=e+heDM-Wa9Bz30PESdMJ8Eu0OCPLh4Kqv+xwQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P123CA0068.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1::32) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <u9FrnEbtGtyUPp-CmzAQIv--8hmKwHdIIPiq-3IHJPcHdaJi_VXuDdVR2Js2GzvtWgCNrBLp4PhQs3tTlWNVDBZfIStCHiS9SoMtsDgc4oM=@protonmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB5796:EE_
+X-MS-Office365-Filtering-Correlation-Id: 00e06877-f0c2-4d70-4cf5-08db23e49ac3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 8hz5uCVdBWtfhDe+RzGg2arbF2+FdoxcmCEdGl5xXLdDzoNS2Y5TueCAsWPH7kazOEGfKzpEuafxMetq/jn6gXd+QnbX0qrs8q4kG3XSy7sIlLJgdsQNZXc5QpFD44m4omMK9mTY3P6Yia8333VlVWc04hwdoRIOOT/txncPkEY4QaqPezyuDFIwI0g7GDJrZNEiU9qgjGZPrHjOpgtyBevveSS+GpuPS22LahvHNKwWjaS5dpu8wWPrTnNzNMUdg44j9Va5ocoUtX6KQ9/r87LrE2olb1PC0iAzYLckyhQbmG7SWjhCgOBduR85s4uQhyLuLbmxTT1DaGAF19d9JWtqnZkUpZ69Ji575SuEm61jjQV1ORe2atWGple1ufUIP2YvttnmmYj/Efj0/RH7CTQsDTXufRTFBcsJXtHuEaf0Lx492+cuEiaFzKcd2VkDeySPSxarDSFf4k+zn7im9KKeobBhq/H7QAm2I97ys8aYMvD5LzyZ+XjVlLuKlrW1n+WZWy5V8qaxIa5Qn82HGmaP74Wj0Alo00XiBkfS9x3Grz03q3BOQu1t9mxpX/NfBQrWWwPZNvwwosNlEx7M7JIaMcNj+QzGbPJHb3sYH7TzlMTyznEeDVW/VcL7IetR/3akcC7hUsRHoLItM81qIg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(346002)(396003)(39830400003)(136003)(376002)(366004)(451199018)(2616005)(7416002)(186003)(6512007)(26005)(1076003)(6506007)(83380400001)(8936002)(6666004)(38100700002)(5660300002)(6486002)(66556008)(66476007)(2906002)(8676002)(4326008)(6916009)(66946007)(41300700001)(478600001)(316002)(54906003)(86362001)(36756003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+Ix2+TM5G9aZq+ZgngbhaIo+jw0RcpLACW1sSqZjahaDQ+PWOnCJRngxXbpA?=
+ =?us-ascii?Q?SsaXzO/wYrF1LybfjjP1qRja+mv6FKuzZC2mnFIhtg/l3STakojHnMmliREV?=
+ =?us-ascii?Q?fx/z/wXX7WHSBAtdE25DOoAzFfSw0vhwfbyEnBr3JZ8EjADTgSszt0vKiJ0q?=
+ =?us-ascii?Q?gRhxi01+OWto/+GS2/YB5qIWeUXjYmWEUiwCym6krA3xS8zx4m4yQSgt1jFv?=
+ =?us-ascii?Q?ppYmcEYRZvauMvJLDgssM6v5OyxCqSP6yR4IJY+rwFd1SP3zy90wqwldU1hh?=
+ =?us-ascii?Q?u8pfv6XEdL+PAqcv4egWnTHMC4/DhJe0Bilkh33RsXdfJYzCGcUvVKoOdqRK?=
+ =?us-ascii?Q?P26oPqgejBu2PsRtv65icHYC451eYDcL1FnXPFE/KNWZ3P6EKJIPtkW4xgPy?=
+ =?us-ascii?Q?7mUqXKRnHXK/IYhJC3r1iLtje35a2zw1HX2rNlKyAUdm/vXkepe0n8vm4t/z?=
+ =?us-ascii?Q?IWFxI/lZsHMJBkJAkQTd53d2BMr/V64avk7kijuFSIwc+zrXVamDZD2StP81?=
+ =?us-ascii?Q?rVLyY7pKiq9E+DLiOrfkPgUukYZbK/7N8E0lpBBr8ZT+XFEr3t7/UxXBgid+?=
+ =?us-ascii?Q?fP+sEIDOGjcIIiSuTc8LhUzNRZSxMHgadgPzbOTvefHvxHNyfxVbXhk+r9zL?=
+ =?us-ascii?Q?5vM1JUQBNTAJ2l5L3fTDs3tDuIxhLCGLMawYVQrFpZtZgbw8A61bupj8q7qz?=
+ =?us-ascii?Q?wiZrkdx6xHkUROWe/Jq4A7qtX5g/IkyvIiBpIBR2icem4itiQEUQiPAK66IP?=
+ =?us-ascii?Q?rFpmY34eDV85L2SO1rdL65+RoJoD1S2bXd3v2bpk7i9UTQ3L2gtaM98Che4v?=
+ =?us-ascii?Q?4d4mpUlEDYN6l3fkbUliX7BVrA9SL6G7lIs52K30UCHSkWCVUbTrCXmcJPJ/?=
+ =?us-ascii?Q?gTPJY9POCAQALoi7fgP5xiFuj3CxIYgyuGJs36xcF3UkuTM/8tD6Hdke6Vqo?=
+ =?us-ascii?Q?eDGsJJWD/izi2V+EWcxkDM58rFMum4+4kLqoWAzuxjWpSWvjVit6/mgK9X8d?=
+ =?us-ascii?Q?NQUkNfNXWvMBDEMxYp+/ZPMHMwRDN1sVYIJ8Q5nJZv4LuMAMG3hsJ/YYhKW4?=
+ =?us-ascii?Q?V6nHVwd0PsTu9MQZg1wvta5LnyDWAza1I8UhnsXwvv8SmslYyjCCgS6tQ65d?=
+ =?us-ascii?Q?MKHjBqWXs8XRCmKBwutjnMTuVY36BA1VZJ4HDLq2ZT+TD9E3IAskSpDm4zlS?=
+ =?us-ascii?Q?qfGI5Mbh7O1vqDdc/Jr6gJ9GL0jL8pyN9G7OqSfauwjAUw6gWJjYcAKLw+UJ?=
+ =?us-ascii?Q?+JhjVVFJTkpjajuoTA3VLDiWxOK2kHQsAzmqexg5jmjYZx4ekyt6jhHVJRcu?=
+ =?us-ascii?Q?NBaEw8x3K2tfjfFdDIKsLtjfZGcOp9uRNtlvH6AgK0ejAn108ocMuR/V1ERW?=
+ =?us-ascii?Q?rC35qHlKyVgS3DvHeEOofqZkDlLILdLnnE+8bz/RAv7GYd3j/v2Q0euXF8is?=
+ =?us-ascii?Q?Nla360eN6/EA8C7cxFJ+vj/NveW+gkxcHHfRJdZdU6CivYcJvpp0ogDSdlXP?=
+ =?us-ascii?Q?RSb7RH82FOgiDpWypvQkK7lYWh1euh39gwtmui9m8eIkZu0MU9jW+7TxCS35?=
+ =?us-ascii?Q?8UJvFky2GTdNUVpmLBmAMMHvfC+1YHt4xesPBPq7?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 00e06877-f0c2-4d70-4cf5-08db23e49ac3
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2023 17:01:36.0781
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AsyN4iVNYCQaeYO9Ajzwk9EOOptsBPHEcv266zoHJC0zgkPCLCZE16nlOTOJbOPcMIGIGtRlgH8Ok69R/wG/ww==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5796
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Mar 13, 2023 at 01:23:18AM +0000, y86-dev wrote:
-> From: Gary Guo <gary@garyguo.net>
+On Thu, 9 Mar 2023 16:06:06 -0300
+Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+
+> On Thu, 9 Mar 2023 at 14:11, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Thu, Mar 09, 2023 at 01:46:39PM -0300, Wedson Almeida Filho wrote:  
+> > > On Thu, 9 Mar 2023 at 08:24, Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:  
+> > > > > > > +        // owns a reference. This is satisfied by the call to `get_device` above.
+> > > > > > > +        Self { ptr }
+> > > > > > > +    }
+> > > > > > > +
+> > > > > > > +    /// Creates a new device instance from an existing [`RawDevice`] instance.
+> > > > > > > +    pub fn from_dev(dev: &dyn RawDevice) -> Self {  
+> > > > > >
+> > > > > > I am a rust newbie, but I don't understand this "RawDevice" here at all.  
+> > > > >
+> > > > > Different buses will have their own Rust "Device" type, for example,
+> > > > > pci::Device, amba::Device, platform::Device that wrap their C
+> > > > > counterparts pci_dev, amba_device, platform_device.
+> > > > >
+> > > > > "RawDevice" is a trait for functionality that is common to all
+> > > > > devices. It exposes the "struct device" of each bus/subsystem so that
+> > > > > functions that work on any "struct device", for example, `clk_get`,
+> > > > > `pr_info`. will automatically work on all subsystems.  
+> > > >
+> > > > Why is this being called "Raw" then?  Why not just "Device" to follow
+> > > > along with the naming scheme that the kernel already uses?  
+> > >
+> > > Because it gives us access to underlying raw `struct device` pointer,
+> > > in Rust raw pointers are those unsafe `*mut T` or `*const T`. I'm not
+> > > married to the name though, we should probably look for a better one
+> > > if this one is confusing.
+> > >
+> > > Just "Device" is already taken. It's a ref-counted `struct device` (it
+> > > calls get_device/put_device in the right places automatically,
+> > > guarantees no dandling pointers); it is meant to be used by code that
+> > > needs to hold on to devices when they don't care about the bus. (It in
+> > > fact implements `RawDevice`.)  
+> >
+> > I don't understand, why do you need both of these?  Why can't one just
+> > do?  Why would you need one without the other?  I would think that
+> > "Device" and "RawDevice" here would be the same thing, that is a way to
+> > refer to a "larger" underlying struct device memory chunk in a way that
+> > can be passed around without knowing, or caring, what the "real" device
+> > type is.  
 > 
-> Add the `quote!` macro for creating `TokenStream`s directly via the
-> given Rust tokens. It also supports repetitions using iterators.
+> `Device` is a struct, it is the Rust abstraction for C's `struct device`.
 > 
-> It will be used by the pin-init API proc-macros to generate code.
+> Let's use the platform bus as our running example: we have
+> `platform::Device` as the Rust abstraction for C's `struct
+> platform_device`.
 > 
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
-
-Not sure whether I missed any sutble details, but the macros look
-straight-forward. One thing could be improved is having a doc describing
-what `quote!` does, a link to the quote crate will do the trick.
-
-Anyway, the code looks good to me.
-
-Acked-by: Boqun Feng <boqun.feng@gmail.com>
-
-Regards,
-Boqun
-
-> ---
->  rust/macros/lib.rs   |   2 +
->  rust/macros/quote.rs | 125 +++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 127 insertions(+)
->  create mode 100644 rust/macros/quote.rs
+> Let's use `clk_get`as our running example of a function that takes a
+> `struct device` as argument.
 > 
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index c1d385e345b9..82b520f024dd 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -2,6 +2,8 @@
->  
->  //! Crate for all kernel procedural macros.
->  
-> +#[macro_use]
-> +mod quote;
->  mod concat_idents;
->  mod helpers;
->  mod module;
-> diff --git a/rust/macros/quote.rs b/rust/macros/quote.rs
-> new file mode 100644
-> index 000000000000..55b663d665ec
-> --- /dev/null
-> +++ b/rust/macros/quote.rs
-> @@ -0,0 +1,125 @@
-> +use proc_macro::{TokenStream, TokenTree};
-> +
-> +pub(crate) trait ToTokens {
-> +    fn to_tokens(&self, tokens: &mut TokenStream);
-> +}
-> +
-> +impl<T: ToTokens> ToTokens for Option<T> {
-> +    fn to_tokens(&self, tokens: &mut TokenStream) {
-> +        if let Some(v) = self {
-> +            v.to_tokens(tokens);
-> +        }
-> +    }
-> +}
-> +
-> +impl ToTokens for proc_macro::Group {
-> +    fn to_tokens(&self, tokens: &mut TokenStream) {
-> +        tokens.extend([TokenTree::from(self.clone())]);
-> +    }
-> +}
-> +
-> +impl ToTokens for TokenTree {
-> +    fn to_tokens(&self, tokens: &mut TokenStream) {
-> +        tokens.extend([self.clone()]);
-> +    }
-> +}
-> +
-> +impl ToTokens for TokenStream {
-> +    fn to_tokens(&self, tokens: &mut TokenStream) {
-> +        tokens.extend(self.clone());
-> +    }
-> +}
-> +
-> +macro_rules! quote_spanned {
-> +    ($span:expr => $($tt:tt)*) => {{
-> +        let mut tokens = Vec::new();
-> +        let span = $span;
-> +        quote_spanned!(@proc tokens span $($tt)*);
-> +        proc_macro::TokenStream::from_iter(tokens)
-> +    }};
-> +    (@proc $v:ident $span:ident) => {};
-> +    (@proc $v:ident $span:ident #$id:ident $($tt:tt)*) => {
-> +        let mut ts = proc_macro::TokenStream::new();
-> +        crate::quote::ToTokens::to_tokens(&$id, &mut ts);
-> +        $v.extend(ts.into_iter());
-> +        quote_spanned!(@proc $v $span $($tt)*);
-> +    };
-> +    (@proc $v:ident $span:ident #(#$id:ident)* $($tt:tt)*) => {
-> +        for token in $id {
-> +            let mut ts = proc_macro::TokenStream::new();
-> +            crate::quote::ToTokens::to_tokens(&token, &mut ts);
-> +            $v.extend(ts.into_iter());
-> +        }
-> +        quote_spanned!(@proc $v $span $($tt)*);
-> +    };
-> +    (@proc $v:ident $span:ident ( $($inner:tt)* ) $($tt:tt)*) => {
-> +        let mut tokens = Vec::new();
-> +        quote_spanned!(@proc tokens $span $($inner)*);
-> +        $v.push(proc_macro::TokenTree::Group(proc_macro::Group::new(
-> +            proc_macro::Delimiter::Parenthesis,
-> +            proc_macro::TokenStream::from_iter(tokens)
-> +        )));
-> +        quote_spanned!(@proc $v $span $($tt)*);
-> +    };
-> +    (@proc $v:ident $span:ident [ $($inner:tt)* ] $($tt:tt)*) => {
-> +        let mut tokens = Vec::new();
-> +        quote_spanned!(@proc tokens $span $($inner)*);
-> +        $v.push(proc_macro::TokenTree::Group(proc_macro::Group::new(
-> +            proc_macro::Delimiter::Bracket,
-> +            proc_macro::TokenStream::from_iter(tokens)
-> +        )));
-> +        quote_spanned!(@proc $v $span $($tt)*);
-> +    };
-> +    (@proc $v:ident $span:ident { $($inner:tt)* } $($tt:tt)*) => {
-> +        let mut tokens = Vec::new();
-> +        quote_spanned!(@proc tokens $span $($inner)*);
-> +        $v.push(proc_macro::TokenTree::Group(proc_macro::Group::new(
-> +            proc_macro::Delimiter::Brace,
-> +            proc_macro::TokenStream::from_iter(tokens)
-> +        )));
-> +        quote_spanned!(@proc $v $span $($tt)*);
-> +    };
-> +    (@proc $v:ident $span:ident :: $($tt:tt)*) => {
-> +        $v.push(
-> +            proc_macro::TokenTree::Punct(proc_macro::Punct::new(':', proc_macro::Spacing::Joint))
-> +        );
-> +        $v.push(
-> +            proc_macro::TokenTree::Punct(proc_macro::Punct::new(':', proc_macro::Spacing::Alone))
-> +        );
-> +        quote_spanned!(@proc $v $span $($tt)*);
-> +    };
-> +    (@proc $v:ident $span:ident : $($tt:tt)*) => {
-> +        $v.push(
-> +            proc_macro::TokenTree::Punct(proc_macro::Punct::new(':', proc_macro::Spacing::Alone))
-> +        );
-> +        quote_spanned!(@proc $v $span $($tt)*);
-> +    };
-> +    (@proc $v:ident $span:ident , $($tt:tt)*) => {
-> +        $v.push(
-> +            proc_macro::TokenTree::Punct(proc_macro::Punct::new(',', proc_macro::Spacing::Alone))
-> +        );
-> +        quote_spanned!(@proc $v $span $($tt)*);
-> +    };
-> +    (@proc $v:ident $span:ident @ $($tt:tt)*) => {
-> +        $v.push(
-> +            proc_macro::TokenTree::Punct(proc_macro::Punct::new('@', proc_macro::Spacing::Alone))
-> +        );
-> +        quote_spanned!(@proc $v $span $($tt)*);
-> +    };
-> +    (@proc $v:ident $span:ident ! $($tt:tt)*) => {
-> +        $v.push(
-> +            proc_macro::TokenTree::Punct(proc_macro::Punct::new('!', proc_macro::Spacing::Alone))
-> +        );
-> +        quote_spanned!(@proc $v $span $($tt)*);
-> +    };
-> +    (@proc $v:ident $span:ident $id:ident $($tt:tt)*) => {
-> +        $v.push(proc_macro::TokenTree::Ident(proc_macro::Ident::new(stringify!($id), $span)));
-> +        quote_spanned!(@proc $v $span $($tt)*);
-> +    };
-> +}
-> +
-> +macro_rules! quote {
-> +    ($($tt:tt)*) => {
-> +        quote_spanned!(proc_macro::Span::mixed_site() => $($tt)*)
-> +    }
-> +}
-> -- 
-> 2.39.2
+> If we have a platform device, we can't just call `clk_get` because the
+> types don't match. In C, we access the `dev` field of `struct
+> platform_device` before we call `clk_get` (i.e., we call
+> clk_get(&pdev->dev, ...)), but in Rust we don't want to make the
+> fields of `platform::Device` public, especially because they're fields
+> of a C struct. So as part of `platform::Device` we'd have to implement
+> something like:
+> 
+> impl platform::Device {
+>     fn get_device(&self) -> &Device {
+>     ...
+>     }
+> }
+> 
+> Then calling `clk_get` would be something like:
+> 
+> pdev.get_device().clk_get(...)
+
+Just thinking out loud here, would it work if `platform::Device`
+implements `Deref<Target = Device>`?
+
+Best,
+Gary
