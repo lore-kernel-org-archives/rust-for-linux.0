@@ -2,210 +2,296 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B529C6FD1F
-	for <rust-for-linux@archiver.kernel.org>; Mon, 13 Mar 2023 17:03:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3BF6C74A4B
+	for <rust-for-linux@archiver.kernel.org>; Mon, 13 Mar 2023 17:50:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229961AbjCMRD4 (ORCPT
+        id S229899AbjCMRui (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 13 Mar 2023 13:03:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38012 "EHLO
+        Mon, 13 Mar 2023 13:50:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229754AbjCMRDt (ORCPT
+        with ESMTP id S229665AbjCMRuh (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 13 Mar 2023 13:03:49 -0400
-Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on0711.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe15::711])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52645CDE5;
-        Mon, 13 Mar 2023 10:03:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cML3ib6q27+G/IooFayVY1W2z58cRG/zEjnvgIYNs7EvTxBQGRwJvU40BR2sueFNC4UHtv4Tml9/xMN4G26gCfGNexlyHFdzpAc32xo6vQyua57ostNYFnlfAqW4cujXIF+/dhm5UPvm37saoXgdVZvvc0+5/w6grckZDupWvUgvGhdpahcSmK9xQjBT5OIyctwAu3UmgfJJqmjQZYzh0qDR2cfOtk6Gsju5RyoL2Orx5RwKgedZEkwAyIk+DKckm8nw940xm3IWbzAfeYsPvy6oXYMsbpGkBYmB45tZUmp/K5jg4smZMZJNiOViGF4YQL3/8HIknOCSSy8RYOWFxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4IaMazu2wE8Y5R2/e/pjFvlwSFlZeU4J57m51qZiEvA=;
- b=NVQVOODhDA3OY9K2fX+DMGAiELyZXTM83qSX033xjzDQlQGjTYxt36JxU7d2x77fcoYn84DT/sEqOiYg2Oq0xfO1LjsxP0X3y8FtgRMRUBAXi0reEflG/8kJBFwjfiwbinq59Y7U3+NPGiBdrdns9VHhwVkBYUqpZi9gpxE8MKy4uTWsOc20vxLruhte3+r1ZElBg47IftIzIt13ab59mtcpoV4/KW5qfp363Jjq0acCScPH0f0PDGSXJrSEhhWhysmQpRK7ityhL2lrxwD/HcvzohRxpnrDUZZ1VsmDvS4Pg8XmVfYE3JMzy+2e0G4lTRdCw81tqcAFlNL3jzjHPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4IaMazu2wE8Y5R2/e/pjFvlwSFlZeU4J57m51qZiEvA=;
- b=uJZeIbM70qqNFlrIPZC9cSQ/j0pEjzlvDqkgCVwYQAR5+uyO3cDh1ZD/6jGDwGtzzQrobEbxC19OAh6o/6459ZFhF9WnNbvJkWanqTNlMOlzANpRM6TBS03y6fTf9pqN0rG/WCjoUX50/h4Zw855Xy7EOKFET4pdCcby/f2GwYU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB5796.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:266::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.24; Mon, 13 Mar
- 2023 17:01:36 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::2f2a:55d4:ea1d:dece]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::2f2a:55d4:ea1d:dece%3]) with mapi id 15.20.6178.024; Mon, 13 Mar 2023
- 17:01:36 +0000
-Date:   Mon, 13 Mar 2023 17:01:33 +0000
-From:   Gary Guo <gary@garyguo.net>
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Asahi Lina <lina@asahilina.net>,
+        Mon, 13 Mar 2023 13:50:37 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 274FC78CBB;
+        Mon, 13 Mar 2023 10:50:09 -0700 (PDT)
+Received: from 2603-8080-2102-63d7-c4a8-7e10-0391-f3ff.res6.spectrum.com (2603-8080-2102-63d7-c4a8-7e10-0391-f3ff.res6.spectrum.com [IPv6:2603:8080:2102:63d7:c4a8:7e10:391:f3ff])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: gfxstrand)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id C57FB6602179;
+        Mon, 13 Mar 2023 17:50:02 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1678729807;
+        bh=xAoSrt6ok3rZEBjY+weW5rQvZBVH8IFHlHFW3Km1xIE=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=oSWXTgrlnOu+4tRAuaTAhAxxQPeXH9BthRHi10Q9cQbXmnkh3bucEb9d2wQJZCWD1
+         1z2j9H6C9DXjOv5OEyK4Sj2jinbBdVER4qizvl/SDiNngN4X2GK8ibY5HMN/jUiM0K
+         Lgb6wuw6jRM3dxATRJR2vIIU09devvxy61sEzOWeK1nF1Hze8dC35r9dSuGxJ6P9Yc
+         ubFZnsGEb/WR1Wv+c0FzKfGuK2UsjxOC/6d/SCbm6mqA6pSMvvmy447L/+HmcuH2gC
+         fdCmebbYSohZS2wJXNt1zOCWQ2qcBzDZexbOxd7dTRFDn4ZnANbAx4hk0gT+L5AsRJ
+         FJff+kwAI+EYA==
+Message-ID: <5a0db63c043adc47b289b3f1d22935a0a63c926e.camel@collabora.com>
+Subject: Re: [PATCH RFC 03/18] rust: drm: file: Add File abstraction
+From:   Faith Ekstrand <faith.ekstrand@collabora.com>
+To:     Asahi Lina <lina@asahilina.net>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Hector Martin <marcan@marcan.st>,
-        Sven Peter <sven@svenpeter.dev>, Arnd Bergmann <arnd@arndb.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Neal Gompa <neal@gompa.dev>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, asahi@lists.linux.dev
-Subject: Re: [PATCH 5/5] rust: device: Add a stub abstraction for devices
-Message-ID: <20230313170133.36dff88b.gary@garyguo.net>
-In-Reply-To: <CANeycqqBVyDa=e+heDM-Wa9Bz30PESdMJ8Eu0OCPLh4Kqv+xwQ@mail.gmail.com>
-References: <20230224-rust-iopt-rtkit-v1-0-49ced3391295@asahilina.net>
-        <20230224-rust-iopt-rtkit-v1-5-49ced3391295@asahilina.net>
-        <Y/idMBIOfFZxXnVM@kroah.com>
-        <CANeycqoHwp3URSPGvnNZx+9PdbC90UVFWLwg4w=JBHQnjnGUPA@mail.gmail.com>
-        <ZAnB/DozWsir1cIE@kroah.com>
-        <CANeycqrtjKMfpae_DUp-VrDZugJVO7mcbBvUBB+zAc=E6aU4tw@mail.gmail.com>
-        <ZAoTNlF+bHyyGs7x@kroah.com>
-        <CANeycqqBVyDa=e+heDM-Wa9Bz30PESdMJ8Eu0OCPLh4Kqv+xwQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P123CA0068.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1::32) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Luben Tuikov <luben.tuikov@amd.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Cc:     Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Karol Herbst <kherbst@redhat.com>,
+        Ella Stanforth <ella@iglunix.org>, Mary <mary@mary.zone>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        rust-for-linux@vger.kernel.org, linux-media@vger.kernel.org,
+        linaro-mm-sig@lists.linaro.org, linux-sgx@vger.kernel.org,
+        asahi@lists.linux.dev
+Date:   Mon, 13 Mar 2023 12:49:57 -0500
+In-Reply-To: <28fa3f97-4c7c-212e-2be2-fb1c05f7f576@asahilina.net>
+References: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net>
+         <20230307-rust-drm-v1-3-917ff5bc80a8@asahilina.net>
+         <9ba89e97155400fb379f5101ccb8960d0bcbc025.camel@collabora.com>
+         <28fa3f97-4c7c-212e-2be2-fb1c05f7f576@asahilina.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB5796:EE_
-X-MS-Office365-Filtering-Correlation-Id: 00e06877-f0c2-4d70-4cf5-08db23e49ac3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 8hz5uCVdBWtfhDe+RzGg2arbF2+FdoxcmCEdGl5xXLdDzoNS2Y5TueCAsWPH7kazOEGfKzpEuafxMetq/jn6gXd+QnbX0qrs8q4kG3XSy7sIlLJgdsQNZXc5QpFD44m4omMK9mTY3P6Yia8333VlVWc04hwdoRIOOT/txncPkEY4QaqPezyuDFIwI0g7GDJrZNEiU9qgjGZPrHjOpgtyBevveSS+GpuPS22LahvHNKwWjaS5dpu8wWPrTnNzNMUdg44j9Va5ocoUtX6KQ9/r87LrE2olb1PC0iAzYLckyhQbmG7SWjhCgOBduR85s4uQhyLuLbmxTT1DaGAF19d9JWtqnZkUpZ69Ji575SuEm61jjQV1ORe2atWGple1ufUIP2YvttnmmYj/Efj0/RH7CTQsDTXufRTFBcsJXtHuEaf0Lx492+cuEiaFzKcd2VkDeySPSxarDSFf4k+zn7im9KKeobBhq/H7QAm2I97ys8aYMvD5LzyZ+XjVlLuKlrW1n+WZWy5V8qaxIa5Qn82HGmaP74Wj0Alo00XiBkfS9x3Grz03q3BOQu1t9mxpX/NfBQrWWwPZNvwwosNlEx7M7JIaMcNj+QzGbPJHb3sYH7TzlMTyznEeDVW/VcL7IetR/3akcC7hUsRHoLItM81qIg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(346002)(396003)(39830400003)(136003)(376002)(366004)(451199018)(2616005)(7416002)(186003)(6512007)(26005)(1076003)(6506007)(83380400001)(8936002)(6666004)(38100700002)(5660300002)(6486002)(66556008)(66476007)(2906002)(8676002)(4326008)(6916009)(66946007)(41300700001)(478600001)(316002)(54906003)(86362001)(36756003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+Ix2+TM5G9aZq+ZgngbhaIo+jw0RcpLACW1sSqZjahaDQ+PWOnCJRngxXbpA?=
- =?us-ascii?Q?SsaXzO/wYrF1LybfjjP1qRja+mv6FKuzZC2mnFIhtg/l3STakojHnMmliREV?=
- =?us-ascii?Q?fx/z/wXX7WHSBAtdE25DOoAzFfSw0vhwfbyEnBr3JZ8EjADTgSszt0vKiJ0q?=
- =?us-ascii?Q?gRhxi01+OWto/+GS2/YB5qIWeUXjYmWEUiwCym6krA3xS8zx4m4yQSgt1jFv?=
- =?us-ascii?Q?ppYmcEYRZvauMvJLDgssM6v5OyxCqSP6yR4IJY+rwFd1SP3zy90wqwldU1hh?=
- =?us-ascii?Q?u8pfv6XEdL+PAqcv4egWnTHMC4/DhJe0Bilkh33RsXdfJYzCGcUvVKoOdqRK?=
- =?us-ascii?Q?P26oPqgejBu2PsRtv65icHYC451eYDcL1FnXPFE/KNWZ3P6EKJIPtkW4xgPy?=
- =?us-ascii?Q?7mUqXKRnHXK/IYhJC3r1iLtje35a2zw1HX2rNlKyAUdm/vXkepe0n8vm4t/z?=
- =?us-ascii?Q?IWFxI/lZsHMJBkJAkQTd53d2BMr/V64avk7kijuFSIwc+zrXVamDZD2StP81?=
- =?us-ascii?Q?rVLyY7pKiq9E+DLiOrfkPgUukYZbK/7N8E0lpBBr8ZT+XFEr3t7/UxXBgid+?=
- =?us-ascii?Q?fP+sEIDOGjcIIiSuTc8LhUzNRZSxMHgadgPzbOTvefHvxHNyfxVbXhk+r9zL?=
- =?us-ascii?Q?5vM1JUQBNTAJ2l5L3fTDs3tDuIxhLCGLMawYVQrFpZtZgbw8A61bupj8q7qz?=
- =?us-ascii?Q?wiZrkdx6xHkUROWe/Jq4A7qtX5g/IkyvIiBpIBR2icem4itiQEUQiPAK66IP?=
- =?us-ascii?Q?rFpmY34eDV85L2SO1rdL65+RoJoD1S2bXd3v2bpk7i9UTQ3L2gtaM98Che4v?=
- =?us-ascii?Q?4d4mpUlEDYN6l3fkbUliX7BVrA9SL6G7lIs52K30UCHSkWCVUbTrCXmcJPJ/?=
- =?us-ascii?Q?gTPJY9POCAQALoi7fgP5xiFuj3CxIYgyuGJs36xcF3UkuTM/8tD6Hdke6Vqo?=
- =?us-ascii?Q?eDGsJJWD/izi2V+EWcxkDM58rFMum4+4kLqoWAzuxjWpSWvjVit6/mgK9X8d?=
- =?us-ascii?Q?NQUkNfNXWvMBDEMxYp+/ZPMHMwRDN1sVYIJ8Q5nJZv4LuMAMG3hsJ/YYhKW4?=
- =?us-ascii?Q?V6nHVwd0PsTu9MQZg1wvta5LnyDWAza1I8UhnsXwvv8SmslYyjCCgS6tQ65d?=
- =?us-ascii?Q?MKHjBqWXs8XRCmKBwutjnMTuVY36BA1VZJ4HDLq2ZT+TD9E3IAskSpDm4zlS?=
- =?us-ascii?Q?qfGI5Mbh7O1vqDdc/Jr6gJ9GL0jL8pyN9G7OqSfauwjAUw6gWJjYcAKLw+UJ?=
- =?us-ascii?Q?+JhjVVFJTkpjajuoTA3VLDiWxOK2kHQsAzmqexg5jmjYZx4ekyt6jhHVJRcu?=
- =?us-ascii?Q?NBaEw8x3K2tfjfFdDIKsLtjfZGcOp9uRNtlvH6AgK0ejAn108ocMuR/V1ERW?=
- =?us-ascii?Q?rC35qHlKyVgS3DvHeEOofqZkDlLILdLnnE+8bz/RAv7GYd3j/v2Q0euXF8is?=
- =?us-ascii?Q?Nla360eN6/EA8C7cxFJ+vj/NveW+gkxcHHfRJdZdU6CivYcJvpp0ogDSdlXP?=
- =?us-ascii?Q?RSb7RH82FOgiDpWypvQkK7lYWh1euh39gwtmui9m8eIkZu0MU9jW+7TxCS35?=
- =?us-ascii?Q?8UJvFky2GTdNUVpmLBmAMMHvfC+1YHt4xesPBPq7?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 00e06877-f0c2-4d70-4cf5-08db23e49ac3
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2023 17:01:36.0781
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AsyN4iVNYCQaeYO9Ajzwk9EOOptsBPHEcv266zoHJC0zgkPCLCZE16nlOTOJbOPcMIGIGtRlgH8Ok69R/wG/ww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5796
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, 9 Mar 2023 16:06:06 -0300
-Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+On Fri, 2023-03-10 at 07:16 +0900, Asahi Lina wrote:
+> On 10/03/2023 06.16, Faith Ekstrand wrote:
+> > On Tue, 2023-03-07 at 23:25 +0900, Asahi Lina wrote:
+> > > A DRM File is the DRM counterpart to a kernel file structure,
+> > > representing an open DRM file descriptor. Add a Rust abstraction
+> > > to
+> > > allow drivers to implement their own File types that implement
+> > > the
+> > > DriverFile trait.
+> > >=20
+> > > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> > > ---
+> > > =C2=A0rust/bindings/bindings_helper.h |=C2=A0=C2=A0 1 +
+> > > =C2=A0rust/kernel/drm/drv.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 7 ++-
+> > > =C2=A0rust/kernel/drm/file.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 | 113
+> > > ++++++++++++++++++++++++++++++++++++++++
+> > > =C2=A0rust/kernel/drm/mod.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
+> > > =C2=A04 files changed, 120 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/rust/bindings/bindings_helper.h
+> > > b/rust/bindings/bindings_helper.h
+> > > index 2a999138c4ae..7d7828faf89c 100644
+> > > --- a/rust/bindings/bindings_helper.h
+> > > +++ b/rust/bindings/bindings_helper.h
+> > > @@ -8,6 +8,7 @@
+> > > =C2=A0
+> > > =C2=A0#include <drm/drm_device.h>
+> > > =C2=A0#include <drm/drm_drv.h>
+> > > +#include <drm/drm_file.h>
+> > > =C2=A0#include <drm/drm_ioctl.h>
+> > > =C2=A0#include <linux/delay.h>
+> > > =C2=A0#include <linux/device.h>
+> > > diff --git a/rust/kernel/drm/drv.rs b/rust/kernel/drm/drv.rs
+> > > index 29a465515dc9..1dcb651e1417 100644
+> > > --- a/rust/kernel/drm/drv.rs
+> > > +++ b/rust/kernel/drm/drv.rs
+> > > @@ -144,6 +144,9 @@ pub trait Driver {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0 /// Should be either `drm::gem::Object<T>` o=
+r
+> > > `drm::gem::shmem::Object<T>`.
+> > > =C2=A0=C2=A0=C2=A0=C2=A0 type Object: AllocImpl;
+> > > =C2=A0
+> > > +=C2=A0=C2=A0=C2=A0 /// The type used to represent a DRM File (client=
+)
+> > > +=C2=A0=C2=A0=C2=A0 type File: drm::file::DriverFile;
+> > > +
+> > > =C2=A0=C2=A0=C2=A0=C2=A0 /// Driver metadata
+> > > =C2=A0=C2=A0=C2=A0=C2=A0 const INFO: DriverInfo;
+> > > =C2=A0
+> > > @@ -213,8 +216,8 @@ macro_rules! drm_device_register {
+> > > =C2=A0impl<T: Driver> Registration<T> {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0 const VTABLE: bindings::drm_driver =3D drm_l=
+egacy_fields! {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 load: None,
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 open: None, // TODO: File=
+ abstraction
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 postclose: None, // TODO:=
+ File abstraction
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 open: Some(drm::file::ope=
+n_callback::<T::File>),
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 postclose:
+> > > Some(drm::file::postclose_callback::<T::File>),
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 lastclose: None,
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unload: None,
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 release: None,
+> > > diff --git a/rust/kernel/drm/file.rs b/rust/kernel/drm/file.rs
+> > > new file mode 100644
+> > > index 000000000000..48751e93c38a
+> > > --- /dev/null
+> > > +++ b/rust/kernel/drm/file.rs
+> > > @@ -0,0 +1,113 @@
+> > > +// SPDX-License-Identifier: GPL-2.0 OR MIT
+> > > +
+> > > +//! DRM File objects.
+> > > +//!
+> > > +//! C header:
+> > > [`include/linux/drm/drm_file.h`](../../../../include/linux/drm/dr
+> > > m_fi
+> > > le.h)
+> > > +
+> > > +use crate::{bindings, drm, error::Result};
+> > > +use alloc::boxed::Box;
+> > > +use core::marker::PhantomData;
+> > > +use core::ops::Deref;
+> > > +
+> > > +/// Trait that must be implemented by DRM drivers to represent a
+> > > DRM
+> > > File (a client instance).
+> > > +pub trait DriverFile {
+> > > +=C2=A0=C2=A0=C2=A0 /// The parent `Driver` implementation for this
+> > > `DriverFile`.
+> > > +=C2=A0=C2=A0=C2=A0 type Driver: drm::drv::Driver;
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0 /// Open a new file (called when a client opens t=
+he DRM
+> > > device).
+> > > +=C2=A0=C2=A0=C2=A0 fn open(device: &drm::device::Device<Self::Driver=
+>) ->
+> > > Result<Box<Self>>;
+> > > +}
+> > > +
+> > > +/// An open DRM File.
+> > > +///
+> > > +/// # Invariants
+> > > +/// `raw` is a valid pointer to a `drm_file` struct.
+> > > +#[repr(transparent)]
+> > > +pub struct File<T: DriverFile> {
+> > > +=C2=A0=C2=A0=C2=A0 raw: *mut bindings::drm_file,
+> > > +=C2=A0=C2=A0=C2=A0 _p: PhantomData<T>,
+> > > +}
+> > > +
+> > > +pub(super) unsafe extern "C" fn open_callback<T: DriverFile>(
+> > > +=C2=A0=C2=A0=C2=A0 raw_dev: *mut bindings::drm_device,
+> > > +=C2=A0=C2=A0=C2=A0 raw_file: *mut bindings::drm_file,
+> > > +) -> core::ffi::c_int {
+> > > +=C2=A0=C2=A0=C2=A0 let drm =3D core::mem::ManuallyDrop::new(unsafe {
+> > > drm::device::Device::from_raw(raw_dev) });
+> >=20
+> > Maybe you can help educate me a bit here... This feels like a
+> > really
+> > sketchy pattern.=C2=A0 We're creating a Device from a pointer, an
+> > operation
+> > which inherently consumes a reference but then marking it
+> > ManuallyDrop
+> > so drm_device_put() never gets called.=C2=A0 It took me a while but I
+> > think
+> > I figured out what you're trying to do: Make it so all the Rust
+> > stuff
+> > works with Device, not drm_device but it still feels really wrong.=C2=
+=A0
+> > It
+> > works, it just feels like there's a lot of unsafe abstraction
+> > juggling
+> > happening here and I expect this operation is going to be pretty
+> > common
+> > in the Rust abstraction layer.
+>=20
+> So I think this is going to be a pretty common pattern in this kind
+> of
+> abstraction. The problem is that, of course, in C there is no
+> distinction between an owned reference and a borrowed one. Here we
+> have
+> a borrowed reference to a struct drm_device, and we need to turn it
+> into
+> a &Device (which is the Rust equivalent type). But for &Device to
+> exist
+> we need a Device to exist in the first place, and Device normally
+> implies ownership of the underlying drm_device.
 
-> On Thu, 9 Mar 2023 at 14:11, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Thu, Mar 09, 2023 at 01:46:39PM -0300, Wedson Almeida Filho wrote:  
-> > > On Thu, 9 Mar 2023 at 08:24, Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:  
-> > > > > > > +        // owns a reference. This is satisfied by the call to `get_device` above.
-> > > > > > > +        Self { ptr }
-> > > > > > > +    }
-> > > > > > > +
-> > > > > > > +    /// Creates a new device instance from an existing [`RawDevice`] instance.
-> > > > > > > +    pub fn from_dev(dev: &dyn RawDevice) -> Self {  
-> > > > > >
-> > > > > > I am a rust newbie, but I don't understand this "RawDevice" here at all.  
-> > > > >
-> > > > > Different buses will have their own Rust "Device" type, for example,
-> > > > > pci::Device, amba::Device, platform::Device that wrap their C
-> > > > > counterparts pci_dev, amba_device, platform_device.
-> > > > >
-> > > > > "RawDevice" is a trait for functionality that is common to all
-> > > > > devices. It exposes the "struct device" of each bus/subsystem so that
-> > > > > functions that work on any "struct device", for example, `clk_get`,
-> > > > > `pr_info`. will automatically work on all subsystems.  
-> > > >
-> > > > Why is this being called "Raw" then?  Why not just "Device" to follow
-> > > > along with the naming scheme that the kernel already uses?  
-> > >
-> > > Because it gives us access to underlying raw `struct device` pointer,
-> > > in Rust raw pointers are those unsafe `*mut T` or `*const T`. I'm not
-> > > married to the name though, we should probably look for a better one
-> > > if this one is confusing.
-> > >
-> > > Just "Device" is already taken. It's a ref-counted `struct device` (it
-> > > calls get_device/put_device in the right places automatically,
-> > > guarantees no dandling pointers); it is meant to be used by code that
-> > > needs to hold on to devices when they don't care about the bus. (It in
-> > > fact implements `RawDevice`.)  
-> >
-> > I don't understand, why do you need both of these?  Why can't one just
-> > do?  Why would you need one without the other?  I would think that
-> > "Device" and "RawDevice" here would be the same thing, that is a way to
-> > refer to a "larger" underlying struct device memory chunk in a way that
-> > can be passed around without knowing, or caring, what the "real" device
-> > type is.  
-> 
-> `Device` is a struct, it is the Rust abstraction for C's `struct device`.
-> 
-> Let's use the platform bus as our running example: we have
-> `platform::Device` as the Rust abstraction for C's `struct
-> platform_device`.
-> 
-> Let's use `clk_get`as our running example of a function that takes a
-> `struct device` as argument.
-> 
-> If we have a platform device, we can't just call `clk_get` because the
-> types don't match. In C, we access the `dev` field of `struct
-> platform_device` before we call `clk_get` (i.e., we call
-> clk_get(&pdev->dev, ...)), but in Rust we don't want to make the
-> fields of `platform::Device` public, especially because they're fields
-> of a C struct. So as part of `platform::Device` we'd have to implement
-> something like:
-> 
-> impl platform::Device {
->     fn get_device(&self) -> &Device {
->     ...
->     }
-> }
-> 
-> Then calling `clk_get` would be something like:
-> 
-> pdev.get_device().clk_get(...)
+Thanks! Putting it in terms of borrow really helps clear up the
+difference.
 
-Just thinking out loud here, would it work if `platform::Device`
-implements `Deref<Target = Device>`?
+> We could just acquire a reference here, but then we're needlessly
+> grabbing a ref only to drop it at the end of the function, which is
+> pointless when the caller is holding another reference for us while
+> the
+> callback runs. And of course Rust likes to claim to offer zero-cost
+> abstractions, so it would be kind of sad to have to do that... ^^
 
-Best,
-Gary
+Yeah, I agree we don't want to take extra references.
+
+> Just doing drm::device::Device::from_raw(raw_dev) is a ticking time
+> bomb, because we haven't acquired a reference (which would normally
+> be
+> required). If that Device ever gets dropped, we've messed up the
+> refcounting and stolen the caller's reference. We could try to ensure
+> it
+> gets passed to core::mem::forget in all paths out, but that gets
+> error-prone very quickly when trying to cover error paths. So
+> instead,
+> we put it into a ManuallyDrop. That takes care of neutering the ref
+> drop, so we don't have to worry about messing that up. Then the only
+> remaining safety requirement is that that the ManuallyDrop<Device>
+> never
+> escape the callback function, and that's easy to ensure: we only pass
+> a
+> &ref to the user (which via auto-deref ends up being a &Device), and
+> then nothing bad can happen. If the user wants an owned reference to
+> the
+> device to keep around, they can call .clone() on it and that's when
+> the
+> incref happens.
+>=20
+> Basically, ManuallyDrop<T> where T is a reference counted type
+> represents a borrowed reference to a T coming from the C side. You
+> can
+> see another use of this pattern in gem::Object, which contains a
+> ManuallyDrop<Device> that represents a borrowed reference to the
+> device
+> that owns that object. The DRM core (as far as I know!) guarantees
+> that
+> DRM devices outlive all of their GEM objects, so we can materialize a
+> borrowed reference and as long as it never leaves the GEM object, it
+> will be sound. Then we can take &Device references from it whenever
+> we
+> want, and the usual Rust borrow checker rules ensure we can't do
+> something illegal.
+
+Ok, that all matches my understanding of what I thought was going on. I
+do wonder if it would be good to wrap this up in a
+
+struct DeviceBorrow {
+   dev: ManuallyDrop<Device>
+}
+
+impl DeviceBorrow {
+   pub unsafe fn from_raw(*mut bindings::drm_device) -> DeviceBorrow;
+}
+
+impl Deref<Device> for DeviceBorrow {
+   ...
+}
+
+with documentation, etc.  Seeing a ManuallyDrop which is never dropped
+sets my rust senses tingling.  Maybe that's too much typing for each
+object?  I don't want to add a bunch of extra work but this seems like
+a pretty common pattern we're going to hit everywhere.
+
+~Faith
