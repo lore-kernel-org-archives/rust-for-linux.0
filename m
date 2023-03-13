@@ -2,127 +2,77 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DDDBC6FD19
-	for <rust-for-linux@archiver.kernel.org>; Mon, 13 Mar 2023 01:24:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 641D3C6FD1F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 13 Mar 2023 01:35:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229609AbjCMBYz (ORCPT
+        id S229628AbjCMBft (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 12 Mar 2023 21:24:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59308 "EHLO
+        Sun, 12 Mar 2023 21:35:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbjCMBYw (ORCPT
+        with ESMTP id S229534AbjCMBfs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 12 Mar 2023 21:24:52 -0400
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD5D037569
-        for <rust-for-linux@vger.kernel.org>; Sun, 12 Mar 2023 18:24:39 -0700 (PDT)
-Date:   Mon, 13 Mar 2023 01:24:27 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1678670676; x=1678929876;
-        bh=cuPbajrG04DWKCw3k4p3kDYIB2rguZndGg7ZIQkRsVg=;
-        h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-        b=bgkauahIibdtHbqnw5u75ZP+3pa8tnBflxvHg0QDi+LaQ4hS5neh7oZPKGxxF8YMX
-         uiFMBdnsvkybeMOngMrw5QQBU8O93YuyGNKnhIclhiE99yvkUPeB493/O2LHmIPdtC
-         td7WAurrA1L9hA4RA7Ylv90LdtVgeHkIJIZ3ZujOGEcCAZBPwrJP/miBJ073UuMT0+
-         5rZRh/N7nTEZAsX6c/bOncyEsIKOKeTGbruRtiHKGP6MyRTGZjsGx31iuV4Pj3EEYA
-         8QOqfgyNMFsyCSx7lRyv+P87iGZ1DO79SG3Kx5YYASMkqYWe3yjA7wJmbzIFycP7kI
-         7FT3k9SJgOjMA==
-To:     "ojeda@kernel.org" <ojeda@kernel.org>,
-        "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
-        "wedsonaf@gmail.com" <wedsonaf@gmail.com>,
-        "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>
-From:   y86-dev <y86-dev@protonmail.com>
-Cc:     "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "patches@lists.linux.dev" <patches@lists.linux.dev>
-Subject: [PATCH v1 3/3] rust: sync: reduce stack usage of `UniqueArc::try_new_uninit`
-Message-ID: <Rip04cG4jD8kWRp4EAJ_UjB6HDenuUkC6m3lOTvzG8e7QLFEmrX4q3jgqZEzjmpd4MIplGcEjzWJ2Yj3nlDEqgfqxsnLq3_gPxW4Oo-8PN8=@protonmail.com>
-Feedback-ID: 40624463:user:proton
+        Sun, 12 Mar 2023 21:35:48 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB61E2472A
+        for <rust-for-linux@vger.kernel.org>; Sun, 12 Mar 2023 18:35:43 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-541a05e4124so26480317b3.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 12 Mar 2023 18:35:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678671343;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jQY9axLjHAeAKXuWF4/IhEXMYhGLO2zftPOMSzsNkik=;
+        b=SK57ly/L/50DhFf5SyG+pyT7EJjxD7zYRDDXNBDWF1TfYK6MdYIHkOeZq5jd//JO+O
+         jZhG7G4phtRt26nFE4mYW16lt3kzkc0t3TAiayupEoHCJvRwHaKjTfmDe23+h9jIqrax
+         khf+Xj/6mITJJZEu7AyX9JfWm7+mmCBhHVEESpTxums0dzwkpIWpGwHiOFr6e8BrquRf
+         AfZbx0BUvzsjDwZpcWSpHQjLXF446o5900ojeNfZwrTgdAsNSNlHoJJzaosln3F3QjrK
+         2qpsGZOR8kq9WxGz5Ikuo3wqJBcDdGN5yY9+ma0+NVZFxOXOkda0nODLL/BMZbPF2Ppa
+         pHSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678671343;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jQY9axLjHAeAKXuWF4/IhEXMYhGLO2zftPOMSzsNkik=;
+        b=Qpgib9ysbmWlBJ012GfzIRpt4nLfJe4fe8HY/35b70Zxm/ThWCfHCgCjiYnYh6XeT7
+         p810tvFj+qTFtlY/9NbAVwvPU9fbae7Wa68PfDVIKHcdhTaBBjOOfkb8MbHYGAdAscdY
+         zyins42hC8eEbPQaLtWW/dbs8Rofrh1xT0Wmh0Cr5yyLh0aqPrfmEO7zqGcgb8wauge3
+         LIPCw//pXMrrEnSBRodVPWvuMq33OGLyhZAO/OcGqspkB6L5YGBmBRN5t9KOrBYk1Hg8
+         Qt/OQvhn9cav2xGF/qfxKFXILzJLdJbdWbbz4BCvLESJCpsQfDROhYiWQWNMgyDw8/D6
+         uwPw==
+X-Gm-Message-State: AO0yUKWfMPHq6bIJf6sLz9x+qaMMeA3wkwCTrD2lKNe7YVXYpeJNPrpP
+        oUS/UEnCI0sObn5XIu6gFPzUdXFQPzvcumwY36s=
+X-Google-Smtp-Source: AK7set8aqRtOHmpPYLjUv+UyKHc4w0ZQj+o0mA8F3qOowpFHeP1Oit0A6F5ICt/EWJrNmcCxeWKMzCptqm7F4WAxb5c=
+X-Received: by 2002:a81:af62:0:b0:541:8285:b1c with SMTP id
+ x34-20020a81af62000000b0054182850b1cmr2766235ywj.10.1678671343138; Sun, 12
+ Mar 2023 18:35:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <ZAyJnCKa65WKozEJ@righiandr-XPS-13-7390> <-sFVmNNf30qsKc4eJpPbRN0rKWrj8NTpzhADsBb71F_lqa7eZAa7tOUESLJL_f5TraFzq2nfikArgxXrXtLdvatMIccCT4VMxvgAMfH9PdM=@protonmail.com>
+ <ZAzedS9sx5l6gmzB@righiandr-XPS-13-7390> <CR4G3AY4U6IJ.2ZRJBDCGH9Z0Q@vincent-arch>
+In-Reply-To: <CR4G3AY4U6IJ.2ZRJBDCGH9Z0Q@vincent-arch>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 13 Mar 2023 02:35:32 +0100
+Message-ID: <CANiq72nTNaDt67kVJ8ES5dvGYJanCXLo4a5gShYJJCY=0A=23A@mail.gmail.com>
+Subject: Re: distribute linux-headers to build out-of-tree Rust modules
+To:     Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Cc:     Andrea Righi <andrea.righi@canonical.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-`UniqueArc::try_new_uninit` calls `Arc::try_new(MaybeUninit::uninit())`.
-This results in the uninitialized memory being placed on the stack,
-which may be arbitrarily large due to the generic `T` and thus could
-cause a stack overflow for large types.
+On Sun, Mar 12, 2023 at 2:45=E2=80=AFPM Vincenzo Palazzo
+<vincenzopalazzodev@gmail.com> wrote:
+>
+> Maybe we should increase the compiler version required by rust in the
+> kernel?
 
-Change the implementation to use the pin-init API which enables in-place
-initialization. In particular it avoids having to first construct and
-then move the uninitialized memory from the stack into the final location.
+There will be an upgrade soon. :)
 
-Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
----
- rust/kernel/lib.rs      |  1 -
- rust/kernel/sync/arc.rs | 12 +++++++++++-
- 2 files changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 3e2777d26ff5..d9df77132fa2 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -27,7 +27,6 @@
- #[cfg(not(CONFIG_RUST))]
- compile_error!("Missing kernel configuration for conditional compilation")=
-;
-=20
--#[allow(unused_extern_crates)]
- // Allow proc-macros to refer to `::kernel` inside the `kernel` crate (thi=
-s crate).
- extern crate self as kernel;
-=20
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 5b4f64dd3ac8..6782d66039e1 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -18,6 +18,7 @@
- use crate::{
-     bindings,
-     error::{Error, Result},
-+    init,
-     init::{InPlaceInit, Init, PinInit},
-     types::{ForeignOwnable, Opaque},
- };
-@@ -29,6 +30,7 @@ use core::{
-     pin::Pin,
-     ptr::NonNull,
- };
-+use macros::pin_data;
-=20
- /// A reference-counted pointer to an instance of `T`.
- ///
-@@ -121,6 +123,7 @@ pub struct Arc<T: ?Sized> {
-     _p: PhantomData<ArcInner<T>>,
- }
-=20
-+#[pin_data]
- #[repr(C)]
- struct ArcInner<T: ?Sized> {
-     refcount: Opaque<bindings::refcount_t>,
-@@ -501,9 +504,16 @@ impl<T> UniqueArc<T> {
-=20
-     /// Tries to allocate a new [`UniqueArc`] instance whose contents are =
-not initialised yet.
-     pub fn try_new_uninit() -> Result<UniqueArc<MaybeUninit<T>>> {
-+        // INVARIANT: The refcount is initialised to a non-zero value.
-+        let inner =3D Box::init(init!(ArcInner<MaybeUninit<T>> {
-+            // SAFETY: There are no safety requirements for this FFI call.
-+            refcount: Opaque::new(unsafe { bindings::REFCOUNT_INIT(1) }),
-+            data <- init::uninit(),
-+        }))?;
-         Ok(UniqueArc::<MaybeUninit<T>> {
-             // INVARIANT: The newly-created object has a ref-count of 1.
--            inner: Arc::try_new(MaybeUninit::uninit())?,
-+            // SAFETY: The pointer from the `Box` is valid.
-+            inner: unsafe { Arc::from_inner(Box::leak(inner).into()) },
-         })
-     }
- }
---=20
-2.39.2
+Cheers,
+Miguel
