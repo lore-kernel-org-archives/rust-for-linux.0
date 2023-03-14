@@ -2,59 +2,211 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFBACC6FD1C
-	for <rust-for-linux@archiver.kernel.org>; Tue, 14 Mar 2023 09:09:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4ED3EC7618A
+	for <rust-for-linux@archiver.kernel.org>; Tue, 14 Mar 2023 14:38:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229573AbjCNJJH (ORCPT
+        id S229840AbjCNOib (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 14 Mar 2023 05:09:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40504 "EHLO
+        Tue, 14 Mar 2023 10:38:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbjCNJJG (ORCPT
+        with ESMTP id S230451AbjCNOi3 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 14 Mar 2023 05:09:06 -0400
-X-Greylist: delayed 467 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Mar 2023 02:09:04 PDT
-Received: from mail.docworker.pl (mail.docworker.pl [94.177.230.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B615731E07
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Mar 2023 02:09:04 -0700 (PDT)
-Received: by mail.docworker.pl (Postfix, from userid 1002)
-        id CB9DD83B6F; Tue, 14 Mar 2023 10:00:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=docworker.pl; s=mail;
-        t=1678784473; bh=F9Uuk9o83BVy7SpscM/nJos6FHfnp2pKrNUqPErj3yg=;
-        h=Date:From:To:Subject:From;
-        b=yHCv91mHkcEpOEit1RAw8OLje4pLyrm7/Pq/Us3jG7DxI516BRXanA9m/FvHcCc/q
-         ubztWBlTiKzdGX6TULz05dXGErIClGwDzhfl8amRnKx2Te+1n0Y4Xq5op4gFWsEKeD
-         UFchWpEq2Z+miOPHUucF0BceyoOuFTDLozf/9of0/Ig3RCat0CI4ArWu+UcaM9jKyN
-         5FK3SKGScr/mJbpTKH8M/JRolbR3LV7rs6gUaERLO6B8tLV1I9L7RzqnHTC4zAJb+a
-         pouaN0oVkTcxAFgeflgN80FmAoNOdb9hyd7bZ6elVvNv5rnCxYuAvMeZ6Fe0laWiSj
-         +WAsMIY4XIlsA==
-Received: by mail.docworker.pl for <rust-for-linux@vger.kernel.org>; Tue, 14 Mar 2023 09:00:24 GMT
-Message-ID: <20230314084505-0.1.f.135e.0.nuq56707tx@docworker.pl>
-Date:   Tue, 14 Mar 2023 09:00:24 GMT
-From:   =?UTF-8?Q? "Mi=C5=82osz_G=C3=B3recki" ?= 
-        <milosz.gorecki@docworker.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: Zapytanie ofertowe 
-X-Mailer: mail.docworker.pl
+        Tue, 14 Mar 2023 10:38:29 -0400
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C2765943B
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Mar 2023 07:38:27 -0700 (PDT)
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id D09D23F216
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Mar 2023 14:38:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1678804704;
+        bh=288VuNJSsTmZZFRO0N0jW/xRk9rWGq8/Z/699waOGV4=;
+        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+         Content-Type:In-Reply-To;
+        b=T3RWIkTEj4yKHOABKS2BGaeioDzKtZLVPAk3VzB/XvZL9mtUhfPA4yDJWnVscOQ+E
+         Ov8al6UPY4JJ4Ri0kAz8O1yNUYSanssEkfOK4T6jMVpBT+9Vx4av5+6raaSorxSzhR
+         NOf6H30INCauC0EPFQnOo3Feiuilv6/j872TZ3GTfz97sdfJ3w5GnuRWDgsuqBL0ul
+         ppJvozYR0wfVagu2lKEp0rVZTHouEzOlJu4RIuVOKT/pEAHjUbtLeMse3WVBMguaHX
+         4xHkxVgWJ7QmIe0AdC/fo2WO5f/KqMptMOKmDu1Lj6gG5RIzOlnaLcNXlY9eWcS8rb
+         dZECgNtAZFsOQ==
+Received: by mail-ed1-f69.google.com with SMTP id i42-20020a0564020f2a00b004fd23c238beso6304327eda.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Mar 2023 07:38:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678804704;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=288VuNJSsTmZZFRO0N0jW/xRk9rWGq8/Z/699waOGV4=;
+        b=g5rkuWDPeFRpVLEmw6rP3ttwDMshXBI5gFX/iN9Pr/f+5yItC/zFOcWWOsgY89ArJ5
+         L273qcw/5OkkUvIy1JvkYs8bCivuCTH4P4E7Ov3+s5m5cxN4DZvf5DMI2CXl8tqkEA99
+         E2MGIveu3ZofRGeYkN9ITU0mewHVnqgyfLSkHwcDQJDC0TbUpH/sFJ5iF1hUNqXZwKyl
+         bTCkvdjcbPSnsgmD6sh1K/i52F/9ozir4fccp6XqVS642DdNcO5n5VUIYRXjJEwT18wV
+         nCiQ6QysxEUm9SnkabyevLLmNsTzFC3ZmXGde8zs3NPZIct2gAvrRwbFguzrV5vZjN01
+         LrBA==
+X-Gm-Message-State: AO0yUKUi+ZxPFt5WH5xb8IcylaifKazCFJJLUx1jxfj36G86ILx4tUt/
+        XvQvkbpfXmNEw61mqWL/zLZ4eNhW16RcYPyp0Si4A+Yzl/cHaj4Cl6PTQbOrdpMEZh8epFRLdAe
+        UsRDWRjkb4Xz8YR29/ZVJ+6zW33cpWLm5wK4lmnOAHZIE
+X-Received: by 2002:aa7:d402:0:b0:4fe:1b54:4351 with SMTP id z2-20020aa7d402000000b004fe1b544351mr1915028edq.4.1678804704638;
+        Tue, 14 Mar 2023 07:38:24 -0700 (PDT)
+X-Google-Smtp-Source: AK7set/9UQPw+w9rgl+fak2wtd9z0XAPlW1SUX/vS1Y0goDh90JNitSGRt9qq6R5GMdI7yAfTMFM5Q==
+X-Received: by 2002:aa7:d402:0:b0:4fe:1b54:4351 with SMTP id z2-20020aa7d402000000b004fe1b544351mr1914999edq.4.1678804704301;
+        Tue, 14 Mar 2023 07:38:24 -0700 (PDT)
+Received: from localhost (host-79-53-23-214.retail.telecomitalia.it. [79.53.23.214])
+        by smtp.gmail.com with ESMTPSA id u19-20020a50c053000000b004fc537aec3csm1143462edd.74.2023.03.14.07.38.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Mar 2023 07:38:24 -0700 (PDT)
+Date:   Tue, 14 Mar 2023 15:38:23 +0100
+From:   Andrea Righi <andrea.righi@canonical.com>
+To:     Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+Cc:     Gary Guo <gary@garyguo.net>, Kees Cook <keescook@chromium.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        linux-kbuild@vger.kernel.org,
+        Wedson Almeida Filho <wedsonaf@google.com>,
+        Joel Stanley <joel@jms.id.au>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        rust-for-linux@vger.kernel.org,
+        Guo Zhengkui <guozhengkui@vivo.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
+Subject: Re: [PATCH] modpost: support arbitrary symbol length in modversion
+Message-ID: <ZBCG3ykG1q4GEcIf@righiandr-XPS-13-7390>
+References: <20230111161155.1349375-1-gary@garyguo.net>
+ <ZA+IUIOAgrWH2oZ0@righiandr-XPS-13-7390>
+ <20230313214853.GY19419@kitsune.suse.cz>
+ <ZA+bXi0o27XPx3nz@righiandr-XPS-13-7390>
+ <20230313220234.GZ19419@kitsune.suse.cz>
+ <ZA+fGpAdnvB5VwKW@righiandr-XPS-13-7390>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZA+fGpAdnvB5VwKW@righiandr-XPS-13-7390>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Szanowni Pa=C5=84stwo,
+On Mon, Mar 13, 2023 at 11:09:31PM +0100, Andrea Righi wrote:
+> On Mon, Mar 13, 2023 at 11:02:34PM +0100, Michal Suchánek wrote:
+> > On Mon, Mar 13, 2023 at 10:53:34PM +0100, Andrea Righi wrote:
+> > > On Mon, Mar 13, 2023 at 10:48:53PM +0100, Michal Suchánek wrote:
+> > > > Hello,
+> > > > 
+> > > > On Mon, Mar 13, 2023 at 09:32:16PM +0100, Andrea Righi wrote:
+> > > > > On Wed, Jan 11, 2023 at 04:11:51PM +0000, Gary Guo wrote:
+> > > > > > Currently modversion uses a fixed size array of size (64 - sizeof(long))
+> > > > > > to store symbol names, thus placing a hard limit on length of symbols.
+> > > > > > Rust symbols (which encodes crate and module names) can be quite a bit
+> > > > > > longer. The length limit in kallsyms is increased to 512 for this reason.
+> > > > > > 
+> > > > > > It's a waste of space to simply expand the fixed array size to 512 in
+> > > > > > modversion info entries. I therefore make it variably sized, with offset
+> > > > > > to the next entry indicated by the initial "next" field.
+> > > > > > 
+> > > > > > In addition to supporting longer-than-56/60 byte symbols, this patch also
+> > > > > > reduce the size for short symbols by getting rid of excessive 0 paddings.
+> > > > > > There are still some zero paddings to ensure "next" and "crc" fields are
+> > > > > > properly aligned.
+> > > > > > 
+> > > > > > This patch does have a tiny drawback that it makes ".mod.c" files generated
+> > > > > > a bit less easy to read, as code like
+> > > > > > 
+> > > > > > 	"\x08\x00\x00\x00\x78\x56\x34\x12"
+> > > > > > 	"symbol\0\0"
+> > > > > > 
+> > > > > > is generated as opposed to
+> > > > > > 
+> > > > > > 	{ 0x12345678, "symbol" },
+> > > > > > 
+> > > > > > because the structure is now variable-length. But hopefully nobody reads
+> > > > > > the generated file :)
+> > > > > > 
+> > > > > > Link: b8a94bfb3395 ("kallsyms: increase maximum kernel symbol length to 512")
+> > > > > > Link: https://github.com/Rust-for-Linux/linux/pull/379
+> > > > > > 
+> > > > > > Signed-off-by: Gary Guo <gary@garyguo.net>
+> > > > > 
+> > > > > Is there any newer version of this patch?
+> > > > > 
+> > > > > I'm doing some tests with it, but I'm getting boot failures on ppc64
+> > > > > with this applied (at boot kernel is spitting out lots of oops'es and
+> > > > > unfortunately it's really hard to copy paste or just read them from the
+> > > > > console).
+> > > > 
+> > > > Are you using the ELF ABI v1 or v2?
+> > > > 
+> > > > v1 may have some additional issues when it comes to these symbol tables.
+> > > > 
+> > > > Thanks
+> > > > 
+> > > > Michal
+> > > 
+> > > I have CONFIG_PPC64_ELF_ABI_V2=y in my .config, so I guess I'm using v2.
+> > > 
+> > > BTW, the issue seems to be in dedotify_versions(), as a silly test I
+> > > tried to comment out this function completely to be a no-op and now my
+> > > system boots fine (but I guess I'm probably breaking something else).
+> > 
+> > Probably not. You should not have the extra leading dot on ABI v2. So if
+> > dedotify does something that means something generates and then expects
+> > back symbols with a leading dot, and this workaround for ABI v1 breaks
+> > that. Or maybe it is called when it shouldn't.
+> 
+> Hm.. I'll add some debugging to this function to see what happens exactly.
 
-Od blisko 8 lat skutecznie wspieramy naszych partner=C3=B3w w pozyskiwani=
-u klient=C3=B3w. =C5=9Awiadczymy us=C5=82ug=C4=99 generowania lead=C3=B3w=
- z kilkoma unikalnymi cechami jak gwarancja realnego uruchomienia rozm=C3=
-=B3w lub wymiana kontaktu. Nadmieni=C4=99 tak=C5=BCe, i=C5=BC kontakty pr=
-zekazywane s=C4=85 na wy=C5=82=C4=85czno=C5=9B=C4=87.
+Alright I've done more tests across different architectures. My problem
+with ppc64 is that this architecture is evaluating sechdrs[i].sh_size
+using get_stubs_size(), that apparently can add some extra padding, so
+doing (vers + vers->next < end) isn't a reliable check to determine the
+end of the variable array, because sometimes "end" can be greater than
+the last "vers + vers->next" entry.
 
-Je=C5=9Bli w chwili obecnej poszukujecie Pa=C5=84stwo nowych zapyta=C5=84=
- i lead=C3=B3w sprzeda=C5=BCowych prosz=C4=99 o kontakt lub wskazanie ter=
-minu rozmowy.
+In general I think it'd be more reliable to add a dummy NULL entry at
+the end of the modversion array.
 
+Moreover, I think we also need to enforce struct modversion_info to be
+__packed, just to make sure that no extra padding is added (otherwise it
+may break our logic to determine the offset of the next entry).
 
-Pozdrawiam serdecznie
-Mi=C5=82osz G=C3=B3recki
+> @@ -2062,16 +2066,25 @@ static void add_versions(struct buffer *b, struct module *mod)
+>  				s->name, mod->name);
+>  			continue;
+>  		}
+> -		if (strlen(s->name) >= MODULE_NAME_LEN) {
+> -			error("too long symbol \"%s\" [%s.ko]\n",
+> -			      s->name, mod->name);
+> -			break;
+> -		}
+> -		buf_printf(b, "\t{ %#8x, \"%s\" },\n",
+> -			   s->crc, s->name);
+> +		name_len = strlen(s->name);
+> +		name_len_padded = (name_len + 1 + 3) & ~3;
+> +
+> +		/* Offset to next entry */
+> +		tmp = TO_NATIVE(8 + name_len_padded);
+
+^ Here's another issue that I found, you can't use TO_NATIVE() in this
+way, some compilers are complaining (like on s390x this doesn't build).
+
+So we need to do something like:
+
+	/* Offset to next entry */
+	tmp = 8 + name_len_padded
+	tmp = TO_NATIVE(tmp);
+
+I'll do some additional tests with these changes and send an updated
+patch (for those that are interested).
+
+-Andrea
