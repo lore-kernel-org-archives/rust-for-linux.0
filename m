@@ -2,38 +2,40 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FDA7C6FD1C
-	for <rust-for-linux@archiver.kernel.org>; Tue, 14 Mar 2023 08:56:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFBACC6FD1C
+	for <rust-for-linux@archiver.kernel.org>; Tue, 14 Mar 2023 09:09:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229960AbjCNI4e (ORCPT
+        id S229573AbjCNJJH (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 14 Mar 2023 04:56:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49288 "EHLO
+        Tue, 14 Mar 2023 05:09:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbjCNI4e (ORCPT
+        with ESMTP id S229626AbjCNJJG (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 14 Mar 2023 04:56:34 -0400
-Received: from mail.penmade.pl (mail.penmade.pl [94.177.230.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A1E13B678
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Mar 2023 01:56:32 -0700 (PDT)
-Received: by mail.penmade.pl (Postfix, from userid 1001)
-        id EA65783584; Tue, 14 Mar 2023 08:56:23 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=penmade.pl; s=mail;
-        t=1678784188; bh=CSKXLMgcdpWkXuTgJn5+jsCVobtU9JEF4vCnS5z6McM=;
+        Tue, 14 Mar 2023 05:09:06 -0400
+X-Greylist: delayed 467 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Mar 2023 02:09:04 PDT
+Received: from mail.docworker.pl (mail.docworker.pl [94.177.230.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B615731E07
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Mar 2023 02:09:04 -0700 (PDT)
+Received: by mail.docworker.pl (Postfix, from userid 1002)
+        id CB9DD83B6F; Tue, 14 Mar 2023 10:00:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=docworker.pl; s=mail;
+        t=1678784473; bh=F9Uuk9o83BVy7SpscM/nJos6FHfnp2pKrNUqPErj3yg=;
         h=Date:From:To:Subject:From;
-        b=qBdMfIEzj+9nUKJ5t/ACin/csEDC0tmUhdMD6y9Vo+0SPzFuY5oG6k3YjDFIg1FSM
-         lxX/BCA31fDjErifJAsgzHNvzVa6W/3Wuw4wjdLSJar+h4TuKM1x0G0lV3aIkJFp9r
-         q7SMI8FXLBd+sk3MwSO2nfvo7+th9HEVPz+idtw85+WxFlga+cFLcrZApsm9aogSLh
-         ikiZYbPleM0grVx1FFkhP6z4ZElR1jAhDZZDzmkgTqvhD10CHACYuZ3IC2dED8T56g
-         1287+HOofFykF1y6VmfGiAtXdBrx8Le9IJv05E7nTFaKJqyJ7uSbBpMIiZPbxjyMDe
-         YPtlJpjMXsBSg==
-Received: by mail.penmade.pl for <rust-for-linux@vger.kernel.org>; Tue, 14 Mar 2023 08:56:15 GMT
-Message-ID: <20230314074501-0.1.2y.bwzm.0.yi9qhjik2d@penmade.pl>
-Date:   Tue, 14 Mar 2023 08:56:15 GMT
-From:   "Wiktor Nurek" <wiktor.nurek@penmade.pl>
+        b=yHCv91mHkcEpOEit1RAw8OLje4pLyrm7/Pq/Us3jG7DxI516BRXanA9m/FvHcCc/q
+         ubztWBlTiKzdGX6TULz05dXGErIClGwDzhfl8amRnKx2Te+1n0Y4Xq5op4gFWsEKeD
+         UFchWpEq2Z+miOPHUucF0BceyoOuFTDLozf/9of0/Ig3RCat0CI4ArWu+UcaM9jKyN
+         5FK3SKGScr/mJbpTKH8M/JRolbR3LV7rs6gUaERLO6B8tLV1I9L7RzqnHTC4zAJb+a
+         pouaN0oVkTcxAFgeflgN80FmAoNOdb9hyd7bZ6elVvNv5rnCxYuAvMeZ6Fe0laWiSj
+         +WAsMIY4XIlsA==
+Received: by mail.docworker.pl for <rust-for-linux@vger.kernel.org>; Tue, 14 Mar 2023 09:00:24 GMT
+Message-ID: <20230314084505-0.1.f.135e.0.nuq56707tx@docworker.pl>
+Date:   Tue, 14 Mar 2023 09:00:24 GMT
+From:   =?UTF-8?Q? "Mi=C5=82osz_G=C3=B3recki" ?= 
+        <milosz.gorecki@docworker.pl>
 To:     <rust-for-linux@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.penmade.pl
+Subject: Zapytanie ofertowe 
+X-Mailer: mail.docworker.pl
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -41,18 +43,18 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Szanowni Pa=C5=84stwo,
 
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
+Od blisko 8 lat skutecznie wspieramy naszych partner=C3=B3w w pozyskiwani=
+u klient=C3=B3w. =C5=9Awiadczymy us=C5=82ug=C4=99 generowania lead=C3=B3w=
+ z kilkoma unikalnymi cechami jak gwarancja realnego uruchomienia rozm=C3=
+=B3w lub wymiana kontaktu. Nadmieni=C4=99 tak=C5=BCe, i=C5=BC kontakty pr=
+zekazywane s=C4=85 na wy=C5=82=C4=85czno=C5=9B=C4=87.
 
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
-
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+Je=C5=9Bli w chwili obecnej poszukujecie Pa=C5=84stwo nowych zapyta=C5=84=
+ i lead=C3=B3w sprzeda=C5=BCowych prosz=C4=99 o kontakt lub wskazanie ter=
+minu rozmowy.
 
 
-Pozdrawiam serdecznie,
-Wiktor Nurek
+Pozdrawiam serdecznie
+Mi=C5=82osz G=C3=B3recki
