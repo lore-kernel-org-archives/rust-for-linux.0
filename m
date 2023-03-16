@@ -2,287 +2,254 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9641DC7618D
-	for <rust-for-linux@archiver.kernel.org>; Thu, 16 Mar 2023 13:40:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4346C6FD19
+	for <rust-for-linux@archiver.kernel.org>; Thu, 16 Mar 2023 17:39:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230410AbjCPNkv (ORCPT
+        id S230079AbjCPRj0 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 16 Mar 2023 09:40:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38756 "EHLO
+        Thu, 16 Mar 2023 13:39:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230370AbjCPNkt (ORCPT
+        with ESMTP id S230123AbjCPRjO (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 16 Mar 2023 09:40:49 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C2E0C080B
-        for <rust-for-linux@vger.kernel.org>; Thu, 16 Mar 2023 06:40:46 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id ay8so1293449wmb.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 16 Mar 2023 06:40:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1678974045;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EczCGKLk4fBTHmXyHSJ7ilvmJkZQHqbhf3hkS/Fo9ig=;
-        b=PcXHkg2DYEsN4SGmyoKoPXIk7dghTl5j1DrVQd/I+VAlz8ytLioRVaYUlY0BsynH1D
-         Re0TvwlalBhQsYImYDkeNrZBpsj3te+fCYUSH+1Xmy/rxOPP2nbxuLR3tfsCx4KO/eoZ
-         h9Bz2UewqJAlReH7xWEXkMxtktP7ySRXi5cJc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678974045;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EczCGKLk4fBTHmXyHSJ7ilvmJkZQHqbhf3hkS/Fo9ig=;
-        b=vvFijDS7Ruw9GHf6yhKxC11PR2ctwXis15c0sXfEZyQ8DG9zhgguj8OQhUZ664csvA
-         x9M+2WtFxwi/5T3ZiSeUWWQPgvetdr9kQn/D81MaFSHudUV2vqgChALtduXJSZlKt6WO
-         81/tCI8FO+1JQvOytyPck2RzMUl/jULTJzkTpZJYCIptwd6iOxgHgVVIvrMyRNfhhTXR
-         AYw1+xO/1VGLu/YUjbqN9OTAknPwDgtN6K90NZWyjd5jlE1l/BxW9X+Bx57YBBwhVaSu
-         LW3kmTy91/0f7lnm7QbiUaO5H4sJJ8xcFOCMABGhjIHBi2SfvPS1QP/CQZIO6k0HLwLy
-         zFUw==
-X-Gm-Message-State: AO0yUKVYP+cLLg2wrErkCzbX4vfv2R/bJlT1doz8bLgeTgfIruurFFdK
-        iXLAKAR33ps+jxPH4cu9DYdJ1Q==
-X-Google-Smtp-Source: AK7set/fjat3yH3Fc06VMIK6e7qPeFsvuNYHOJTB0RKC8hvnm2dYtyI5Jh2XJJySBg2aaliqjCVONw==
-X-Received: by 2002:a05:600c:3b92:b0:3eb:42f6:ac55 with SMTP id n18-20020a05600c3b9200b003eb42f6ac55mr2688631wms.1.1678974044966;
-        Thu, 16 Mar 2023 06:40:44 -0700 (PDT)
-Received: from phenom.ffwll.local (212-51-149-33.fiber7.init7.net. [212.51.149.33])
-        by smtp.gmail.com with ESMTPSA id y16-20020a05600c365000b003ed23845666sm4915002wmq.45.2023.03.16.06.40.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Mar 2023 06:40:44 -0700 (PDT)
-Date:   Thu, 16 Mar 2023 14:40:42 +0100
-From:   Daniel Vetter <daniel@ffwll.ch>
-To:     Karol Herbst <kherbst@redhat.com>
-Cc:     Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Asahi Lina <lina@asahilina.net>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Luben Tuikov <luben.tuikov@amd.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Ella Stanforth <ella@iglunix.org>,
-        Faith Ekstrand <faith.ekstrand@collabora.com>,
-        Mary <mary@mary.zone>, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-        linux-sgx@vger.kernel.org, asahi@lists.linux.dev
-Subject: Re: [PATCH RFC 10/18] drm/scheduler: Add can_run_job callback
-Message-ID: <ZBMcWuu+W2zfP64O@phenom.ffwll.local>
-Mail-Followup-To: Karol Herbst <kherbst@redhat.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Asahi Lina <lina@asahilina.net>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Luben Tuikov <luben.tuikov@amd.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Ella Stanforth <ella@iglunix.org>,
-        Faith Ekstrand <faith.ekstrand@collabora.com>,
-        Mary <mary@mary.zone>, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-        linux-sgx@vger.kernel.org, asahi@lists.linux.dev
-References: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net>
- <20230307-rust-drm-v1-10-917ff5bc80a8@asahilina.net>
- <cd788ccf-0cf1-85d5-1bf8-efc259bd7e11@amd.com>
- <CACO55tsnCMQt8UW5_UCY139kpZOdNXbMkBkFfUiB12jW5UgVmA@mail.gmail.com>
- <0d6cd23b-8c9e-067d-97ff-aa35dbbcf9bf@amd.com>
- <CACO55tumNMYrcJ0LhnLfTK4DmGLHD-bt3xpXyoPe98V2wmgXQg@mail.gmail.com>
- <269c4fb7-60f6-6778-444d-15703febea58@amd.com>
- <CACO55tuVVnC-_iVmX=SGGVF=0t6kqqr0Cy0pGe3YoppBgUbiXw@mail.gmail.com>
+        Thu, 16 Mar 2023 13:39:14 -0400
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2136.outbound.protection.outlook.com [40.107.11.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A293E2536;
+        Thu, 16 Mar 2023 10:38:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IE/IOYVC6S8ME266H7hYzi6F/2r7KpJz5yvyiADR8fYb+cusUvMPiLPHzgEi0RuMMGrEmP2n6aWv4hZ8fT8aUN44GtqmLtGzaX+KlglOa5IWZFxg8Jt/wzOQvs56g6sDh+nD+X1u8uEWM7fx1AJzCfpybUtkD+uJXR6qQDoW2VweKDSFGUSx+81LhPT0QOswjO4HVOJdFkcOCm1Pev6l3CTODQOrcNcrdZ/ponWTbr2y4p+5CGamPvlCIdEqpSvmwTdyQCkYMVdiGQ5UmpP0BHHMMPE9SFWMq6y7BJBeCBaZypIoiZdeVyKpgIkCUd/ENSU1lzxyOlmHWCgdwHIt6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IS97sT05ZBg2aMy8byrSb6hopK9iFccuHMFDBlgJBi8=;
+ b=LD4/HlWFFMndbR62ZIW5Ks09vluv7jU7ON+Tu/XQm5+MEQu6tZxT2A/Y8Msbejm4qYRVotFIHvg+Kb8uloaQyThLUbHFWTD1fuWd4fzbYMC3Z9deJWDMeLVu+UAXCs3VnPRBXSmc+MRU4kkd+IAkCc/Yf1yMWpEtXTW+sL8+5hzvtFbkKxG+oOhCZYayZ3ZQDN9QCjMgBZrXcQJmJhJ4V1z5qHI95kHBVOYb9msR/BjxDEXgmG8NMuLwogIl0jzeq21LpKmXL5F28SWzbUUXxf0dx6ZI1+dzcsZ58W2fxnreaHj79ry+c45qSUdvsz4LRdpcvebKf5vYcR7/jbuW1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IS97sT05ZBg2aMy8byrSb6hopK9iFccuHMFDBlgJBi8=;
+ b=emPhyQx79BLJ066bWEGShxzExUOH/ETZ50AwJXNV+Aoy26qa2qOaokTL4sZH1z/AuE6BCmZH8nH3N5SqoYi2zoCp17BFkW02HpJuTNtIONTyUXht4iERYFlEY+ryd7b9J/UXa4AnunULwjZ986cFPsGy+/pb2UeW6py5Z4k5HCs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO0P265MB5731.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:264::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.31; Thu, 16 Mar
+ 2023 17:38:50 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece%3]) with mapi id 15.20.6178.031; Thu, 16 Mar 2023
+ 17:38:49 +0000
+Date:   Thu, 16 Mar 2023 17:38:48 +0000
+From:   Gary Guo <gary@garyguo.net>
+To:     y86-dev <y86-dev@protonmail.com>
+Cc:     "ojeda@kernel.org" <ojeda@kernel.org>,
+        "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
+        "wedsonaf@gmail.com" <wedsonaf@gmail.com>,
+        "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
+        "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>,
+        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "patches@lists.linux.dev" <patches@lists.linux.dev>
+Subject: Re: [PATCH v1 2/3] rust: add pin-init API
+Message-ID: <20230316173848.18b45232.gary@garyguo.net>
+In-Reply-To: <ct76zcR4JhAXHG90VDfewAmzPJmEHhMvvOf-MejsM_uZsdcsBs9qVLJNYvNvTHOBLlOedgQ4Dm16M2DSDRBIF-olZfq2zp4XboRsCxsm3CA=@protonmail.com>
+References: <D0mWM1KEcWLeFa7IIqPygHlXRTD6gRFHvJKaegYzQXo9zTx7YbSpVLeYLFfq53s2S30Wx7v0khkPMOy6Ng5HiNZ5x7TXtOyLB58vUHtq6ro=@protonmail.com>
+        <20230315200722.57487341.gary@garyguo.net>
+        <ct76zcR4JhAXHG90VDfewAmzPJmEHhMvvOf-MejsM_uZsdcsBs9qVLJNYvNvTHOBLlOedgQ4Dm16M2DSDRBIF-olZfq2zp4XboRsCxsm3CA=@protonmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P265CA0024.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ae::19) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACO55tuVVnC-_iVmX=SGGVF=0t6kqqr0Cy0pGe3YoppBgUbiXw@mail.gmail.com>
-X-Operating-System: Linux phenom 6.1.0-5-amd64 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB5731:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1c1d3fc-b35d-4e4b-fb35-08db26454d82
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: t+1svFOJJ1g/89z32YHUxd+GAePSNpXr+kPQgvCzvs404vwdsSgh1a+DVhy3E2R/8Fu4AKLPSmgae9785RUUklm8DqT25DJ7DTYibw9NLFBKXVodciv/O0PsQ2VcT0d9FrA4G53nMcX5vjKDkBfpj1H6EeQeuemtIbQrnERbL935iEsM6sNZaJ2bvl9JJepbpfg6HfHHloJQleXxDAM80B+bncYrxjcnIukGfocSeER/KqZKMZ/8mJCXra76NK9jZdszwkMnVPZQKybWDWyTm7EgtmaTXlbRmKBqiZkBo5GugGw96WMIMyFPhtNWztfv/t3ikWGhymtFqB9nKDMqVZHZPqVYDXK5zvQIs8mPCXp0EPLiXPyUfnzM2LkY3+prQZyf2Xqprb4a1ZPSrHoDSrz9pGUbQD+mqvGDVtwdRsjdLajUObjDpldAsXwKZKYD8TsdqXl9X0Pcdeuqaq80PBWmBwhUdBkpiw+IV2jwZzHXIQEpgNhAe/29dR0anyJfB1a4vWt2Jg7JBc7P5jse8smeenkiAu1rpCr+x7IXVL2VzpBCG29CYJ/wP1prOCq/KquVtjQsYvJ1aZn6vr7cir12KsMOwl3GffwIPsrE+Qimto2JfFOxPa+FelSUA1mUxL0uUKyDITNpHY6Vcb/Iag==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230025)(39830400003)(136003)(376002)(396003)(366004)(346002)(451199018)(36756003)(86362001)(2906002)(38100700002)(5660300002)(41300700001)(8936002)(26005)(1076003)(2616005)(6512007)(186003)(6506007)(4326008)(316002)(54906003)(83380400001)(66476007)(6486002)(6916009)(66556008)(66946007)(8676002)(478600001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?6jyGMqTTZ9+XPMkaIrRO6Bf+24fr7IjeE5lvxjqhhNmn9ujxzVuvgmvxOF86?=
+ =?us-ascii?Q?JL+VoQkivhZ4COW2p7AOAtOZVZQx/UoMZJiR1sWENF4YZjNq4Ram625CDnEW?=
+ =?us-ascii?Q?P2sdIDtiFh19gGIzyvUAdESfWZKx8D7a/zbpQYLPXqSr1ZIlcF9CswNkypLx?=
+ =?us-ascii?Q?ZfNmb5Dg/dKIvFLnPkxmyhNiActxgwTDXhvNTcZsg8em+O1pUKOz1CQt1Gqi?=
+ =?us-ascii?Q?TnUPdEbrkP16llSz1iSaV71x5rBDOfEc+a8261+SLjrjzPFgLBQ7euucIA8e?=
+ =?us-ascii?Q?Wx0R+Yp2+V00i1Cq65soaYnSxn1QoFP3yDg+fJfyfqKdMAuzDnDH71P/ebs1?=
+ =?us-ascii?Q?ABtXiBHBGvMJmtd3CKkAUPfPsFJeo1rMCibR1CASXS87snQ7RY7zb18H+Tbk?=
+ =?us-ascii?Q?x83Wtxy9ov172yeW6vVVlxEYoshQPDzXzT3dwXP7qnyhd8RNCBoF2gBYgIlQ?=
+ =?us-ascii?Q?y3st0HE4HcBBdIIDLHGJv4sseG7L06MDP6o5eKYvJwvLeIHuYRT/CUrFicK7?=
+ =?us-ascii?Q?AhklNBNnVStOH0Br3YDMeNrGPySFbmbor2cWut6PI2Z3+lrmpY00yq/2OXSO?=
+ =?us-ascii?Q?wU4yj85Wn32SDRzuF+jgHBWXTa2ksYDCe/jKL0rfeyA9lBofbaUZvvnJ0hEv?=
+ =?us-ascii?Q?jBqjpmIb7DaPSGeb/Mu7dD3NqTZJIOzyKILN5RLSDn4mZu5RJlDypnuQlYTs?=
+ =?us-ascii?Q?ZnnyEmWlCDEk4HJoM8e4o+u/4XikiV5WhO5E+EEL4q8wq8OKlwICbF5vfE4a?=
+ =?us-ascii?Q?6DJPD8Z7SbPgv85vftNyz/VPANzQKS14TBQ/DcvjrsD5fqwzuFkFwq36PSgX?=
+ =?us-ascii?Q?CRJ9Y1jmmjhkzGfn/oCd4GsetcR1hlPsRMJpgIigyEUrE0/cBKEraJCiVrnA?=
+ =?us-ascii?Q?55HEoQJGEaSoNvrF9JRKYBK8ZxMC2hFDRqP9rDDLVP9IfE1VrEF3zlseGrE+?=
+ =?us-ascii?Q?Nh1r2GF9GIxEMda/g534lyplMIpgdOmzc6KOWKhGfgSGcjDb4O6OYrm3tSKW?=
+ =?us-ascii?Q?2KNlt2DR/JgUNTrhRFTpTjzjc2AaJetTrx0URS2xrW4wJyPoLE+ZhOHS/leG?=
+ =?us-ascii?Q?Pac8ITO0XFd1c+MfM7mVoCOpKA6l3NwCyQwpZ6Z/J48BkxUT5m4GJK3Kptyx?=
+ =?us-ascii?Q?07jOM1jw+CtaTxQi8DUmVmtIQRGZ4igcHzdYC6AhKij+67uN2DqR5xZITSHe?=
+ =?us-ascii?Q?jt50EVcauLZNfhzTNhOD4kjyUeA5r6UDp2PkaOFD7NvDUxYkljDs30jea2em?=
+ =?us-ascii?Q?gDVP/vM3J1qsrwqoBi9xkn0GSvE7iwDm6SHcg2h74r7FEQPgkJlq+3jQqcWC?=
+ =?us-ascii?Q?NZkzPWLfn9KY1Sbw2rqRDa+CU3WBEkL/4dIBcAQD/LcCsKhlJun3N3nrb+xb?=
+ =?us-ascii?Q?Yym72n0aVMpCIcptOLehUJmPt2PLZet8slRisAWh18fbK1hT2HqbueF6lbhP?=
+ =?us-ascii?Q?d/+uCly4G1rUkydStOD2C5OnSmG0l7J4tj5cw57Y3uu9kICZDwHV/hVzDgX6?=
+ =?us-ascii?Q?opqePcaIBqdgP51xRJkDXyMTWV/bXkIWgNam+qUAohU5tS/IKyACdubjvc6H?=
+ =?us-ascii?Q?Xy5/2GC7eQb/FZRa7JF87pRP5CysSu+i1tcDIssz?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1c1d3fc-b35d-4e4b-fb35-08db26454d82
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Mar 2023 17:38:49.9491
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2FCanFeJW39p95H0vEsceP/R5/PEFuzM9o3kUZB/I0v0YfPrIwI6HfAe3zXmZKrVWhGJiMmKl3B8Uf26gShYcw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5731
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Mar 08, 2023 at 04:19:17PM +0100, Karol Herbst wrote:
-> On Wed, Mar 8, 2023 at 4:09 PM Christian König <christian.koenig@amd.com> wrote:
-> >
-> > Am 08.03.23 um 15:43 schrieb Karol Herbst:
-> > > [SNIP]
-> > > "further"? There was no discussion at all,
-> >
-> > Yeah, well that is exactly what I wanted to archive.
-> >
-> > >   you just started off like
-> > > that. If you think somebody misses that connection, you can point out
-> > > to documentation/videos whatever so the contributor can understand
-> > > what's wrong with an approach. You did that, so that's fine. It's just
-> > > starting off _any_ discussion with a "Well complete NAK" is terrible
-> > > style. I'd feel uncomfortable if that happened to me and I'm sure
-> > > there are enough people like that that we should be more reasonable
-> > > with our replies. Just.. don't.
-> > >
-> > > We are all humans here and people react negatively to such things. And
-> > > if people do it on purpose it just makes it worse.
-> >
-> > I completely see your point, I just don't know how to improve it.
-> >
-> > I don't stop people like this because I want to make them uncomfortable
-> > but because I want to prevent further discussions on that topic.
-> >
-> > In other words how can I make people notice that this is something
-> > fundamental while still being polite?
+On Thu, 16 Mar 2023 09:38:16 +0000
+y86-dev <y86-dev@protonmail.com> wrote:
 
-Ask them to improve the docs. Gets them on board, and for bonus point you
-- can check they actually get it when you review the doc patch
-- get scheduler docs for free
-- have an easily pasteable link for next time around instead of just an
-  aggressive NAK that helps no one really (aside from getting people
-  boiling).
+> > > +
+> > > +/// Trait facilitating pinned destruction.
+> > > +///
+> > > +/// Use [`pinned_drop`] to implement this trait safely:
+> > > +///
+> > > +/// ```rust
+> > > +/// # use kernel::sync::Mutex;
+> > > +/// use kernel::macros::pinned_drop;
+> > > +/// use core::pin::Pin;
+> > > +/// #[pin_data(PinnedDrop)]
+> > > +/// struct Foo {
+> > > +///     #[pin]
+> > > +///     mtx: Mutex<usize>,
+> > > +/// }
+> > > +///
+> > > +/// #[pinned_drop]
+> > > +/// impl PinnedDrop for Foo {
+> > > +///     fn drop(self: Pin<&mut Self>) {
+> > > +///         pr_info!("Foo is being dropped!");
+> > > +///     }
+> > > +/// }
+> > > +/// ```
+> > > +///
+> > > +/// # Safety
+> > > +///
+> > > +/// This trait must be implemented with [`pinned_drop`].
+> > > +///
+> > > +/// [`pinned_drop`]: kernel::macros::pinned_drop
+> > > +pub unsafe trait PinnedDrop: __PinData {
+> > > +    /// Executes the pinned destructor of this type.
+> > > +    ///
+> > > +    /// # Safety
+> > > +    ///
+> > > +    /// Only call this from `<Self as Drop>::drop`.
+> > > +    unsafe fn drop(self: Pin<&mut Self>);
+> > > +
+> > > +    // Used by the `pinned_drop` proc-macro to ensure that only safe operations are used in `drop`.
+> > > +    // the function should not be called.
+> > > +    #[doc(hidden)]
+> > > +    fn __ensure_no_unsafe_op_in_drop(self: Pin<&mut Self>);  
+> >
+> > One idea to avoid this extra function is to have an unsafe token to the
+> > drop function.
+> >
+> > fn drop(self: Pin<&mut Self>, token: TokenThatCanOnlyBeCreatedUnsafely);  
+> 
+> What is wrong with having this extra function? If the problem is that this
+> function might be called, then we could add a parameter with an
+> unconstructable type.
+> 
+> I think that `drop` should be `unsafe`, since it really does have
+> the requirement of only being called in the normal drop impl.
 
-It's not really about being polite but making sure that efficient
-communiction happens and that you don't have to repeat yourself. In rare
-cases you get to type the docs themself when people are too dense to learn
-(like what I had to do with the various dma_fence docs).
+The point to avoid having two functions with the same body. This would
+require double the amount of checks needed by the compiler (and make
+error message worth if anything's wrong in the body of `drop`).
 
-> I think a little improvement over this would be to at least wait a few
-> replies before resorting to those strong statements. Just before it
-> becomes a risk in just wasting time.
+This current approach is really just a hack to avoid code from doing
+unsafe stuff without using `unsafe` block -- and the best solution is
+just to avoid make `drop` function unsafe. However we don't want drop
+function to be actually called from safe code, and that's the point of
+a token that can only be created unsafely is force `drop` to *not* be
+called by safe code. The token is a proof that `unsafe` is being used.
 
-See above what I'm trying to do. When the message doesn't sink in as
-either a proper doc patch or when linking to the doc patch for next time
-around (because let's face it, this entire concept of "dma_fence committed
-for execution" is extremely trick, there will be repeations of this
-question until we've sunset dma_fence, which is probably decades away).
-
-If the learning does not happen, then it's the time to whack the big
-hammer (and if people don't get it, you can escalate to Dave&me, we have
-tools to make sure people get the message). But this really should be the
-end, not the start of the escalation chain :-)
-
-Cheers, Daniel
+This way the `__ensure_no_unsafe_op_in_drop` function would not be
+needed.
 
 > 
-> > >>>> This is clearly going against the idea of having jobs only depend on
-> > >>>> fences and nothing else which is mandatory for correct memory management.
-> > >>>>
-> > >>> I'm sure it's all documented and there is a design document on how
-> > >>> things have to look like you can point out? Might help to get a better
-> > >>> understanding on how things should be.
-> > >> Yeah, that's the problematic part. We have documented this very
-> > >> extensively:
-> > >> https://www.kernel.org/doc/html/v5.9/driver-api/dma-buf.html#indefinite-dma-fences
-> > >>
-> > >> And both Jason and Daniel gave talks about the underlying problem and
-> > > fyi:
-> > > s/Jason/Faith/g
+> > > +}
+> > > +
+> > > +/// Smart pointer that can initialize memory in-place.
+> > > +pub trait InPlaceInit<T>: Sized {
+> > > +    /// Use the given initializer to in-place initialize a `T`.
+> > > +    ///
+> > > +    /// If `T: !Unpin` it will not be able to move afterwards.
+> > > +    fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Pin<Self>>
+> > > +    where
+> > > +        Error: From<E>;
+> > > +
+> > > +    /// Use the given initializer to in-place initialize a `T`.
+> > > +    fn init<E>(init: impl Init<T, E>) -> error::Result<Self>
+> > > +    where
+> > > +        Error: From<E>;
+> > > +}  
 > >
-> > +1. I wasn't aware of that.
-> >
-> > >> try to come up with patches to raise warnings when that happens, but
-> > >> people still keep coming up with the same idea over and over again.
-> > >>
-> > > Yes, and we'll have to tell them over and over again. Nothing wrong
-> > > with that. That's just part of maintaining such a big subsystem. And
-> > > that's definitely not a valid reason to phrase things like above.
-> > >
-> > >> It's just that the technical relationship between preventing jobs from
-> > >> running and with that preventing dma_fences from signaling and the core
-> > >> memory management with page faults and shrinkers waiting for those
-> > >> fences is absolutely not obvious.
-> > >>
-> > >> We had at least 10 different teams from different companies falling into
-> > >> the same trap already and either the patches were rejected of hand or
-> > >> had to painfully reverted or mitigated later on.
-> > >>
-> > > Sure, but that's just part of the job. And pointing out fundamental
-> > > mistakes early on is important, but the situation won't get any better
-> > > by being like that. Yes, we'll have to repeat the same words over and
-> > > over again, and yes that might be annoying, but that's just how it is.
-> >
-> > Well I have no problem explaining people why a solution doesn't work.
-> >
-> > But what usually happens is that people don't realize that they need to
-> > back of from a design and completely start over.
-> >
-> > Regards,
-> > Christian.
-> >
-> > >
-> > >> Regards,
-> > >> Christian.
-> > >>
-> > >>>> If the hw is busy with something you need to return the fence for this
-> > >>>> from the prepare_job callback so that the scheduler can be notified when
-> > >>>> the hw is available again.
-> > >>>>
-> > >>>> Regards,
-> > >>>> Christian.
-> > >>>>
-> > >>>>> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> > >>>>> ---
-> > >>>>>     drivers/gpu/drm/scheduler/sched_main.c | 10 ++++++++++
-> > >>>>>     include/drm/gpu_scheduler.h            |  8 ++++++++
-> > >>>>>     2 files changed, 18 insertions(+)
-> > >>>>>
-> > >>>>> diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
-> > >>>>> index 4e6ad6e122bc..5c0add2c7546 100644
-> > >>>>> --- a/drivers/gpu/drm/scheduler/sched_main.c
-> > >>>>> +++ b/drivers/gpu/drm/scheduler/sched_main.c
-> > >>>>> @@ -1001,6 +1001,16 @@ static int drm_sched_main(void *param)
-> > >>>>>                 if (!entity)
-> > >>>>>                         continue;
-> > >>>>>
-> > >>>>> +             if (sched->ops->can_run_job) {
-> > >>>>> +                     sched_job = to_drm_sched_job(spsc_queue_peek(&entity->job_queue));
-> > >>>>> +                     if (!sched_job) {
-> > >>>>> +                             complete_all(&entity->entity_idle);
-> > >>>>> +                             continue;
-> > >>>>> +                     }
-> > >>>>> +                     if (!sched->ops->can_run_job(sched_job))
-> > >>>>> +                             continue;
-> > >>>>> +             }
-> > >>>>> +
-> > >>>>>                 sched_job = drm_sched_entity_pop_job(entity);
-> > >>>>>
-> > >>>>>                 if (!sched_job) {
-> > >>>>> diff --git a/include/drm/gpu_scheduler.h b/include/drm/gpu_scheduler.h
-> > >>>>> index 9db9e5e504ee..bd89ea9507b9 100644
-> > >>>>> --- a/include/drm/gpu_scheduler.h
-> > >>>>> +++ b/include/drm/gpu_scheduler.h
-> > >>>>> @@ -396,6 +396,14 @@ struct drm_sched_backend_ops {
-> > >>>>>         struct dma_fence *(*prepare_job)(struct drm_sched_job *sched_job,
-> > >>>>>                                          struct drm_sched_entity *s_entity);
-> > >>>>>
-> > >>>>> +     /**
-> > >>>>> +      * @can_run_job: Called before job execution to check whether the
-> > >>>>> +      * hardware is free enough to run the job.  This can be used to
-> > >>>>> +      * implement more complex hardware resource policies than the
-> > >>>>> +      * hw_submission limit.
-> > >>>>> +      */
-> > >>>>> +     bool (*can_run_job)(struct drm_sched_job *sched_job);
-> > >>>>> +
-> > >>>>>         /**
-> > >>>>>              * @run_job: Called to execute the job once all of the dependencies
-> > >>>>>              * have been resolved.  This may be called multiple times, if
-> > >>>>>
-> >
+> > Is this trait used? Or the methods could be inherent methods?  
 > 
+> I need an extension trait for `Box`, since it is inside of the `alloc`
+> crate and so I figured that I might as well use it for other types. I do
+> not think we can avoid the extension trait for `Box`, but I could make the
+> functions for `UniqueArc` inherent. What do you think?
 
--- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Good point, I forget about `Box`.
+
+> 
+> > > +/// An initializer that leaves the memory uninitialized.
+> > > +///
+> > > +/// The initializer is a no-op. The `slot` memory is not changed.
+> > > +#[inline]
+> > > +pub fn uninit<T>() -> impl Init<MaybeUninit<T>> {
+> > > +    // SAFETY: The memory is allowed to be uninitialized.
+> > > +    unsafe { init_from_closure(|_| Ok(())) }
+> > > +}  
+> >
+> > Do you think there's a value to have a `Uninitable` which is
+> > implemented for both `MaybeUninit` and `Opaque`?  
+> 
+> If we really need it for `Opaque`, then it probably should be an inherent
+> function. I do not really see additional use for an `Uninitable` trait.
+
+Fair.
+
+> > > +// This trait is only implemented via the `#[pin_data]` proc-macro. It is used to facilitate
+> > > +// the pin projections within the initializers.
+> > > +#[doc(hidden)]
+> > > +pub unsafe trait __PinData {
+> > > +    type __PinData;
+> > > +}
+> > > +
+> > > +/// Stack initializer helper type. Use [`stack_pin_init`] instead of this primitive.  
+> >
+> > `#[doc(hidden)]`?  
+> 
+> This trait is implementation detail of the `#[pin_data]` macro. Why should
+> it be visible in the rust-docs?
+
+I am commenting about `stack_pin_init` (note the doc comment above my
+comment). `StackInit` is an implementation detail of `stack_pin_init`
+and shouldn't be exposed, IMO. Or do you think manual use of
+`StackInit` is needed?
+
+Best,
+Gary
