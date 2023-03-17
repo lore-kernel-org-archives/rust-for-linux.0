@@ -2,156 +2,219 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6218BC6FD1F
-	for <rust-for-linux@archiver.kernel.org>; Thu, 16 Mar 2023 23:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C4B9C6FD1D
+	for <rust-for-linux@archiver.kernel.org>; Fri, 17 Mar 2023 12:13:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229923AbjCPXIc (ORCPT
+        id S230036AbjCQMNg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 16 Mar 2023 19:08:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52586 "EHLO
+        Fri, 17 Mar 2023 08:13:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjCPXIb (ORCPT
+        with ESMTP id S230015AbjCQMNa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 16 Mar 2023 19:08:31 -0400
-Received: from mail-4324.protonmail.ch (mail-4324.protonmail.ch [185.70.43.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 481DA1B571;
-        Thu, 16 Mar 2023 16:08:30 -0700 (PDT)
-Date:   Thu, 16 Mar 2023 23:08:09 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1679008107; x=1679267307;
-        bh=RdJwww2uvpzoysL9F0tXhEGT0GvPdq65lmBm2Zylcbg=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=ZdWvBT0TeUg6A0ZKKr31UdOcYoYWLttR9awIs6+khWO/kZTZEtRiyk8roZFBBSABp
-         a6Yi18rswqADWNghtORfqRR4XtBUx0DVEIxEmhqjuLELmurEg0BxNrrcI/nNNdY+r1
-         KzNLD7CHdnOoFs7SV23uzxV3lqUmq9VdCb0G95+HV+9q18E5bzvKFpz+FbC6vsX3C+
-         ZTt4SrBN6fzBoo1S2XTZhXpY34cC1UWK8xfS27s1NJgpCdp2c9ff1P0kf46lRllphd
-         EGg9kF+b9ZuX/dohR1LWNo1RUnvUctyiPDpT9lngz1Cj8AZ0Ayr/gdgWvrHQWkvFyC
-         nqXKOK+E+TW2A==
-To:     Gary Guo <gary@garyguo.net>
-From:   y86-dev <y86-dev@protonmail.com>
-Cc:     "ojeda@kernel.org" <ojeda@kernel.org>,
-        "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
-        "wedsonaf@gmail.com" <wedsonaf@gmail.com>,
-        "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
-        "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>,
-        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "patches@lists.linux.dev" <patches@lists.linux.dev>
-Subject: Re: [PATCH v1 2/3] rust: add pin-init API
-Message-ID: <mtmuEYnjtcWcHUOLMmGQ35qZ6AhxE7bna6gGB4u1Ldh9MLvSdZT2xKL43LYy71MMNQbwEvkWmUkEOO3HiiNrIgmYvIVjDt1kBVxaBI23ERY=@protonmail.com>
-In-Reply-To: <20230316173848.18b45232.gary@garyguo.net>
-References: <D0mWM1KEcWLeFa7IIqPygHlXRTD6gRFHvJKaegYzQXo9zTx7YbSpVLeYLFfq53s2S30Wx7v0khkPMOy6Ng5HiNZ5x7TXtOyLB58vUHtq6ro=@protonmail.com> <20230315200722.57487341.gary@garyguo.net> <ct76zcR4JhAXHG90VDfewAmzPJmEHhMvvOf-MejsM_uZsdcsBs9qVLJNYvNvTHOBLlOedgQ4Dm16M2DSDRBIF-olZfq2zp4XboRsCxsm3CA=@protonmail.com> <20230316173848.18b45232.gary@garyguo.net>
-Feedback-ID: 40624463:user:proton
+        Fri, 17 Mar 2023 08:13:30 -0400
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F23C50730
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Mar 2023 05:13:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+        In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=kJaQBIOfBDs0RWrdELn2youmyuMDTiMuE+q39Kq1BLg=; b=hTiBfpccfb2e+p5dsLtL8znqCw
+        KybIWKF8huofaSYeHF5npijUa3pg8ERQM9bVNP/ctX3S+A6s8yaWMwo6UiTGKmEQ2EdpwZuoV1S1K
+        S8QEaoD1s5gV5641IKz/3Px8Unlfnw5ipOt5B3MePzeAeYdLGqQZAkueB7rG5Ol7HlqFq/KBb2pua
+        JheFiMmnwFQ4TdHX1vBIWXb/3qEyBmcjs8v0UjQaEIz6D1Hwj/62Mce0SVl9SkwFRguCj41s174LK
+        OKlsA3RT1z/b7ZYx5VQrWuI0C7lPCoeaXnut9/8P8TWV/Rw9gusy3sQpZ0GlH5xDUCN1QA5jTfiL9
+        hWYird5A==;
+Received: from [177.34.168.16] (helo=bowie..)
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+        id 1pd8xA-00FrGz-Da; Fri, 17 Mar 2023 13:13:00 +0100
+From:   =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Asahi Lina <lina@asahilina.net>,
+        Faith Ekstrand <faith.ekstrand@collabora.com>
+Cc:     rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Melissa Wen <mwen@igalia.com>,
+        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [RFC PATCH 1/9] rust: dma_resv: add DMA Reservation abstraction
+Date:   Fri, 17 Mar 2023 09:12:05 -0300
+Message-Id: <20230317121213.93991-2-mcanal@igalia.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230317121213.93991-1-mcanal@igalia.com>
+References: <20230317121213.93991-1-mcanal@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thursday, March 16th, 2023 at 18:38, Gary Guo <gary@garyguo.net> wrote:
-> On Thu, 16 Mar 2023 09:38:16 +0000
-> y86-dev <y86-dev@protonmail.com> wrote:
->
-> > > > +
-> > > > +/// Trait facilitating pinned destruction.
-> > > > +///
-> > > > +/// Use [`pinned_drop`] to implement this trait safely:
-> > > > +///
-> > > > +/// ```rust
-> > > > +/// # use kernel::sync::Mutex;
-> > > > +/// use kernel::macros::pinned_drop;
-> > > > +/// use core::pin::Pin;
-> > > > +/// #[pin_data(PinnedDrop)]
-> > > > +/// struct Foo {
-> > > > +///     #[pin]
-> > > > +///     mtx: Mutex<usize>,
-> > > > +/// }
-> > > > +///
-> > > > +/// #[pinned_drop]
-> > > > +/// impl PinnedDrop for Foo {
-> > > > +///     fn drop(self: Pin<&mut Self>) {
-> > > > +///         pr_info!("Foo is being dropped!");
-> > > > +///     }
-> > > > +/// }
-> > > > +/// ```
-> > > > +///
-> > > > +/// # Safety
-> > > > +///
-> > > > +/// This trait must be implemented with [`pinned_drop`].
-> > > > +///
-> > > > +/// [`pinned_drop`]: kernel::macros::pinned_drop
-> > > > +pub unsafe trait PinnedDrop: __PinData {
-> > > > +    /// Executes the pinned destructor of this type.
-> > > > +    ///
-> > > > +    /// # Safety
-> > > > +    ///
-> > > > +    /// Only call this from `<Self as Drop>::drop`.
-> > > > +    unsafe fn drop(self: Pin<&mut Self>);
-> > > > +
-> > > > +    // Used by the `pinned_drop` proc-macro to ensure that only sa=
-fe operations are used in `drop`.
-> > > > +    // the function should not be called.
-> > > > +    #[doc(hidden)]
-> > > > +    fn __ensure_no_unsafe_op_in_drop(self: Pin<&mut Self>);
-> > >
-> > > One idea to avoid this extra function is to have an unsafe token to t=
-he
-> > > drop function.
-> > >
-> > > fn drop(self: Pin<&mut Self>, token: TokenThatCanOnlyBeCreatedUnsafel=
-y);
-> >
-> > What is wrong with having this extra function? If the problem is that t=
-his
-> > function might be called, then we could add a parameter with an
-> > unconstructable type.
-> >
-> > I think that `drop` should be `unsafe`, since it really does have
-> > the requirement of only being called in the normal drop impl.
->
-> The point to avoid having two functions with the same body. This would
-> require double the amount of checks needed by the compiler (and make
-> error message worth if anything's wrong in the body of `drop`).
->
-> This current approach is really just a hack to avoid code from doing
-> unsafe stuff without using `unsafe` block -- and the best solution is
-> just to avoid make `drop` function unsafe. However we don't want drop
-> function to be actually called from safe code, and that's the point of
-> a token that can only be created unsafely is force `drop` to *not* be
-> called by safe code. The token is a proof that `unsafe` is being used.
->
-> This way the `__ensure_no_unsafe_op_in_drop` function would not be
-> needed.
+The DMA reservation object provides a mechanism to manage a container
+of dma_fence object associated with a resource. So, add an abstraction
+to allow Rust drivers to interact with this subsystem.
 
-That makes sense.
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+---
+ rust/bindings/bindings_helper.h |  1 +
+ rust/helpers.c                  | 19 +++++++++
+ rust/kernel/dma_resv.rs         | 75 +++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |  1 +
+ 4 files changed, 96 insertions(+)
+ create mode 100644 rust/kernel/dma_resv.rs
 
-> > > > +// This trait is only implemented via the `#[pin_data]` proc-macro=
-. It is used to facilitate
-> > > > +// the pin projections within the initializers.
-> > > > +#[doc(hidden)]
-> > > > +pub unsafe trait __PinData {
-> > > > +    type __PinData;
-> > > > +}
-> > > > +
-> > > > +/// Stack initializer helper type. Use [`stack_pin_init`] instead =
-of this primitive.
-> > >
-> > > `#[doc(hidden)]`?
-> >
-> > This trait is implementation detail of the `#[pin_data]` macro. Why sho=
-uld
-> > it be visible in the rust-docs?
->
-> I am commenting about `stack_pin_init` (note the doc comment above my
-> comment). `StackInit` is an implementation detail of `stack_pin_init`
-> and shouldn't be exposed, IMO. Or do you think manual use of
-> `StackInit` is needed?
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 3fcf3ee330ad..1bf6d762d36e 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -19,6 +19,7 @@
+ #include <linux/dma-fence.h>
+ #include <linux/dma-fence-chain.h>
+ #include <linux/dma-mapping.h>
++#include <linux/dma-resv.h>
+ #include <linux/fs.h>
+ #include <linux/iosys-map.h>
+ #include <linux/io-pgtable.h>
+diff --git a/rust/helpers.c b/rust/helpers.c
+index 7cded4a36375..18c0c434ad73 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -25,6 +25,7 @@
+ #include <linux/build_bug.h>
+ #include <linux/device.h>
+ #include <linux/dma-fence.h>
++#include <linux/dma-resv.h>
+ #include <linux/dma-fence-chain.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/err.h>
+@@ -437,6 +438,24 @@ void rust_helper_dma_fence_set_error(struct dma_fence *fence, int error)
+ }
+ EXPORT_SYMBOL_GPL(rust_helper_dma_fence_set_error);
+ 
++enum dma_resv_usage rust_helper_dma_resv_usage_rw(bool write)
++{
++	return dma_resv_usage_rw(write);
++}
++EXPORT_SYMBOL_GPL(rust_helper_dma_resv_usage_rw);
++
++int rust_helper_dma_resv_lock(struct dma_resv *obj, struct ww_acquire_ctx *ctx)
++{
++	return dma_resv_lock(obj, ctx);
++}
++EXPORT_SYMBOL_GPL(rust_helper_dma_resv_lock);
++
++void rust_helper_dma_resv_unlock(struct dma_resv *obj)
++{
++	dma_resv_unlock(obj);
++}
++EXPORT_SYMBOL_GPL(rust_helper_dma_resv_unlock);
++
+ #endif
+ 
+ #ifdef CONFIG_DRM
+diff --git a/rust/kernel/dma_resv.rs b/rust/kernel/dma_resv.rs
+new file mode 100644
+index 000000000000..5e45aad4ae75
+--- /dev/null
++++ b/rust/kernel/dma_resv.rs
+@@ -0,0 +1,75 @@
++// SPDX-License-Identifier: GPL-2.0 OR MIT
++
++//! DMA resv abstraction
++//!
++//! C header: [`include/linux/dma-resv.h`](../../include/linux/dma-resv.h)
++
++use crate::bindings;
++use crate::dma_fence::RawDmaFence;
++use crate::error::{Error, Result};
++
++/// A generic DMA Resv Object
++///
++/// # Invariants
++/// ptr is a valid pointer to a dma_resv and we own a reference to it.
++pub struct DmaResv {
++    ptr: *mut bindings::dma_resv,
++}
++
++impl DmaResv {
++    /// Create a new DmaResv object from a raw pointer to a dma_resv.
++    ///
++    /// # Safety
++    /// The caller must own a reference to the dma_resv, which is transferred to the new object.
++    pub unsafe fn from_raw(ptr: *mut bindings::dma_resv) -> Self {
++        Self { ptr }
++    }
++
++    /// Returns the implicit synchronization usage for write or read accesses.
++    pub fn usage_rw(&self, write: bool) -> bindings::dma_resv_usage {
++        // SAFETY: write is a valid bool.
++        unsafe { bindings::dma_resv_usage_rw(write) }
++    }
++
++    /// Reserve space to add fences to a dma_resv object.
++    pub fn reserve_fences(&self, num_fences: u32) -> Result {
++        // SAFETY: We own a reference to this dma_resv.
++        let ret = unsafe { bindings::dma_resv_reserve_fences(self.ptr, num_fences) };
++
++        if ret != 0 {
++            return Err(Error::from_kernel_errno(ret));
++        }
++        Ok(())
++    }
++
++    /// Add a fence to the dma_resv object
++    pub fn add_fences(
++        &self,
++        fence: &dyn RawDmaFence,
++        num_fences: u32,
++        usage: bindings::dma_resv_usage,
++    ) -> Result {
++        // SAFETY: We own a reference to this dma_resv.
++        unsafe { bindings::dma_resv_lock(self.ptr, core::ptr::null_mut()) };
++
++        let ret = self.reserve_fences(num_fences);
++        if ret.is_ok() {
++            // SAFETY: ptr is locked with dma_resv_lock(), and dma_resv_reserve_fences()
++            // has been called.
++            unsafe {
++                bindings::dma_resv_add_fence(self.ptr, fence.raw(), usage);
++            }
++        }
++
++        // SAFETY: We own a reference to this dma_resv.
++        unsafe { bindings::dma_resv_unlock(self.ptr) };
++
++        ret
++    }
++
++    /// Test if a reservation object’s fences have been signaled.
++    pub fn test_signaled(&self, usage: bindings::dma_resv_usage) -> bool {
++        // SAFETY: We own a reference to this dma_resv.
++        unsafe { bindings::dma_resv_test_signaled(self.ptr, usage) }
++    }
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index ba18deedf6b6..b9fbb07d0bdc 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -38,6 +38,7 @@ pub mod delay;
+ pub mod device;
+ #[cfg(CONFIG_DMA_SHARED_BUFFER)]
+ pub mod dma_fence;
++pub mod dma_resv;
+ pub mod driver;
+ #[cfg(CONFIG_DRM = "y")]
+ pub mod drm;
+-- 
+2.39.2
 
-I thought that it could be used by something else, but I will hide it for
-now.
-
-Cheers,
-Benno
