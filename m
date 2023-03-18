@@ -2,135 +2,119 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C080C76196
-	for <rust-for-linux@archiver.kernel.org>; Fri, 17 Mar 2023 12:14:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14F4DC761A6
+	for <rust-for-linux@archiver.kernel.org>; Sat, 18 Mar 2023 04:16:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230082AbjCQMOE (ORCPT
+        id S229959AbjCREQU (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 17 Mar 2023 08:14:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59470 "EHLO
+        Sat, 18 Mar 2023 00:16:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230051AbjCQMOC (ORCPT
+        with ESMTP id S229892AbjCREQT (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 17 Mar 2023 08:14:02 -0400
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5C85D5147
-        for <rust-for-linux@vger.kernel.org>; Fri, 17 Mar 2023 05:13:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-        s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-        In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=3MBGRyVcfZD+2SmE5BBIh6mlfln4sjziRqqN19lxLOA=; b=FTtyXD8St5MctcW02ez1YiXt8o
-        P+y/eYpxKR51E0UxTHtaV8HV8cjjbly+jKpJ5+GePpclczZI4GunG4jT8Q2M9Wl/YLDQVK+k1a+Bj
-        YrKAuUn15K95vTltUzUlqbY1Xy9l03bgYlAA5qAQo/x2TESecak2b+4SHIJoeymo5m60t9Veq+f5K
-        WN64aM0dvksfpxGuJuISAewHmlaReZImsWxyELVIc3Q3OiLs1JAkeoTuZ9xVKjkHI2WAQKCPV8EXV
-        /aKqKazL8v9v/pGBKj7LFAStm2sOTNo3mgmDsJjuyy80T6+OIv+HQuJnDOixUvTwhDIoMLhXSFLfS
-        X81v2rbw==;
-Received: from [177.34.168.16] (helo=bowie..)
-        by fanzine2.igalia.com with esmtpsa 
-        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-        id 1pd8xw-00FrGz-JZ; Fri, 17 Mar 2023 13:13:49 +0100
-From:   =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        Sat, 18 Mar 2023 00:16:19 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F241B26A8
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Mar 2023 21:16:17 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5417f156cb9so66612797b3.8
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Mar 2023 21:16:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1679112977;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=39Fefym6R4RrQjQOXnUkj5Wbs7EvPing/MjHK7t/Lyw=;
+        b=lSAzuBmFZ+h8hiSzVh0biFlm455SUKogAcvaf1DponXDVrVupq8TYodfl/wuKq3+lG
+         StIer+QGQznxUabXcz2df43r3hGbTAZmZFmuhtEuptxU9lRGI2GQfhVMjBHn7E6oe9rY
+         EIEg8HGk++eNcDMhd150EGX8kmfrSXpRDtZ1Jmj+5TpUC1UhlNjrE5Qm5qB076rcW5nX
+         b0mnyKdlSuPrmiRCFOmpwbvvLCp+sq/Z0vpQkfDRC0evcIRZsN6hp5UqmpznRXafyYp7
+         1YcVKN2gtFUK/BfZcoLNkgVX91sNHKGVoiuKcaydIFpibjnyQfWUE+qS+w6SRTh1CNuN
+         gAeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679112977;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=39Fefym6R4RrQjQOXnUkj5Wbs7EvPing/MjHK7t/Lyw=;
+        b=dkUBtxPeO9QeByFx9yRG8Nszl0TKxaywSqTLNfc79ZWFeQhMYR9d5s/CReHmifQvf5
+         DYrQ96nNNd67q5ttu+Rd+HyiIPd407yTMFzHEILDdSfoMn/JpwUwAht1HRFUXZ4esiIh
+         vLkGh1ZwZdSAHsKqxJCN3FARzeQC06+46wBg40Ob1taSOGnGcK+JnhEiixh1hvHVBezE
+         HGraJykCS006HHpinP5QkbT3XkotIasNuxXoqzHrLclb8u08JRd4/GcivG7kYmN0x4pV
+         rkBel9KANDyOp7A7yzt0mCp6KtHwTVe38zBagGtK4QbbURGOHK89PcC34fe3Vh5LsvuA
+         3jtg==
+X-Gm-Message-State: AO0yUKVKjCUheUsg6c+NlgMIK6PusMrUfqqWsrG8T7K8i6/R+Jp6d76O
+        kqAaSVuRA/xKiczJzrvEeeRmExgW1fCgkQ==
+X-Google-Smtp-Source: AK7set8R2hY7ySptFbksr8tOnpVYxuTWiaaKxkqJCvC0czQRuIKj/2zJ7wSxtFdQ8Yte+Avdjdb73Hxrct/0kw==
+X-Received: from slicestar.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:20a1])
+ (user=davidgow job=sendgmr) by 2002:a81:af4d:0:b0:544:b7ff:b0df with SMTP id
+ x13-20020a81af4d000000b00544b7ffb0dfmr3997390ywj.2.1679112977179; Fri, 17 Mar
+ 2023 21:16:17 -0700 (PDT)
+Date:   Sat, 18 Mar 2023 12:15:54 +0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.40.0.rc1.284.g88254d51c5-goog
+Message-ID: <20230318041555.4192172-1-davidgow@google.com>
+Subject: [PATCH] arch:um: Only disable SSE on clang to work around old GCC bugs
+From:   David Gow <davidgow@google.com>
+To:     Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <nathan@kernel.org>,
         Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        Asahi Lina <lina@asahilina.net>,
-        Faith Ekstrand <faith.ekstrand@collabora.com>
-Cc:     rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Melissa Wen <mwen@igalia.com>,
-        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [RFC PATCH 9/9] drm/rustgem: create dummy IOCTL with number 0x00
-Date:   Fri, 17 Mar 2023 09:12:13 -0300
-Message-Id: <20230317121213.93991-10-mcanal@igalia.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230317121213.93991-1-mcanal@igalia.com>
-References: <20230317121213.93991-1-mcanal@igalia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        SeongJae Park <sj@kernel.org>
+Cc:     David Gow <davidgow@google.com>, linux-um@lists.infradead.org,
+        x86@kernel.org, llvm@lists.linux.dev,
+        rust-for-linux@vger.kernel.org, kunit-dev@googlegroups.com,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-In order to declare IOCTLs with the current Rust abstractions, we use
-the kernel::declare_drm_ioctls! macro. This macro considers that the
-IOCTLs are in the right order and there are no gaps. This isn't the case
-for vgem, which start the IOCTLs with 0x01, instead of 0x00.
+As part of the Rust support for UML, we disable SSE (and similar flags)
+to match the normal x86 builds. This both makes sense (we ideally want a
+similar configuration to x86), and works around a crash bug with SSE
+generation under Rust with LLVM.
 
-With the intention to use the kernel::declare_drm_ioctls! macro, create
-a dummy IOCTL with number 0x00, that returns EINVAL.
+However, this breaks compiling stdlib.h under gcc < 11, as the x86_64
+ABI requires floating-point return values be stored in an SSE register.
+gcc 11 fixes this by only doing register allocation when a function is
+actually used, and since we never use atof(), it shouldn't be a problem:
+https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99652
 
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Nevertheless, only disable SSE on clang setups, as that's a simple way
+of working around everyone's bugs.
+
+Fixes: 884981867947 ("rust: arch/um: Disable FP/SIMD instruction to match x86")
+Reported-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
+Link: https://lore.kernel.org/linux-um/6df2ecef9011d85654a82acd607fdcbc93ad593c.camel@huaweicloud.com/
+Tested-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
+Tested-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: David Gow <davidgow@google.com>
 ---
- drivers/gpu/drm/rustgem/file.rs | 8 ++++++++
- drivers/gpu/drm/rustgem/vgem.rs | 1 +
- include/uapi/drm/vgem_drm.h     | 4 ++++
- 3 files changed, 13 insertions(+)
+ arch/x86/Makefile.um | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/rustgem/file.rs b/drivers/gpu/drm/rustgem/file.rs
-index a3714e8ca206..f26b74204361 100644
---- a/drivers/gpu/drm/rustgem/file.rs
-+++ b/drivers/gpu/drm/rustgem/file.rs
-@@ -27,6 +27,14 @@ impl drm::file::DriverFile for File {
- }
+diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
+index b70559b821df..2106a2bd152b 100644
+--- a/arch/x86/Makefile.um
++++ b/arch/x86/Makefile.um
+@@ -3,9 +3,14 @@ core-y += arch/x86/crypto/
  
- impl File {
-+    pub(crate) fn dummy(
-+        _device: &VgemDevice,
-+        _data: &mut bindings::drm_vgem_dummy,
-+        _file: &DrmFile,
-+    ) -> Result<u32> {
-+        Err(EINVAL)
-+    }
-+
-     /// vgem_fence_attach_ioctl (DRM_IOCTL_VGEM_FENCE_ATTACH):
-     ///
-     /// Create and attach a fence to the vGEM handle. This fence is then exposed
-diff --git a/drivers/gpu/drm/rustgem/vgem.rs b/drivers/gpu/drm/rustgem/vgem.rs
-index c2fc55bb39bd..64e8f1c2cbca 100644
---- a/drivers/gpu/drm/rustgem/vgem.rs
-+++ b/drivers/gpu/drm/rustgem/vgem.rs
-@@ -55,6 +55,7 @@ impl drv::Driver for VgemDriver {
-     const FEATURES: u32 = drv::FEAT_GEM | drv::FEAT_RENDER;
+ #
+ # Disable SSE and other FP/SIMD instructions to match normal x86
++# This is required to work around issues in older LLVM versions, but breaks
++# GCC versions < 11. See:
++# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99652
+ #
++ifeq ($(CONFIG_CC_IS_CLANG),y)
+ KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
+ KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
++endif
  
-     kernel::declare_drm_ioctls! {
-+        (VGEM_DUMMY, drm_vgem_dummy, ioctl::RENDER_ALLOW, file::File::dummy),
-         (VGEM_FENCE_ATTACH, drm_vgem_fence_attach, ioctl::RENDER_ALLOW, file::File::attach),
-         (VGEM_FENCE_SIGNAL, drm_vgem_fence_signal, ioctl::RENDER_ALLOW, file::File::signal),
-     }
-diff --git a/include/uapi/drm/vgem_drm.h b/include/uapi/drm/vgem_drm.h
-index 53ee3af0b25a..1348f8e819ed 100644
---- a/include/uapi/drm/vgem_drm.h
-+++ b/include/uapi/drm/vgem_drm.h
-@@ -36,9 +36,12 @@ extern "C" {
- /* Please note that modifications to all structs defined here are
-  * subject to backwards-compatibility constraints.
-  */
-+#define DRM_VGEM_DUMMY		0x0
- #define DRM_VGEM_FENCE_ATTACH	0x1
- #define DRM_VGEM_FENCE_SIGNAL	0x2
- 
-+struct drm_vgem_dummy { };
-+
- struct drm_vgem_fence_attach {
- 	__u32 handle;
- 	__u32 flags;
-@@ -54,6 +57,7 @@ struct drm_vgem_fence_signal {
- 
- /* Note: this is an enum so that it can be resolved by Rust bindgen. */
- enum {
-+	DRM_IOCTL_VGEM_DUMMY		= DRM_IOW(DRM_COMMAND_BASE + DRM_VGEM_DUMMY, struct drm_vgem_dummy),
- 	DRM_IOCTL_VGEM_FENCE_ATTACH	= DRM_IOWR(DRM_COMMAND_BASE + DRM_VGEM_FENCE_ATTACH, struct drm_vgem_fence_attach),
- 	DRM_IOCTL_VGEM_FENCE_SIGNAL	= DRM_IOW(DRM_COMMAND_BASE + DRM_VGEM_FENCE_SIGNAL, struct drm_vgem_fence_signal),
- };
+ ifeq ($(CONFIG_X86_32),y)
+ START := 0x8048000
 -- 
-2.39.2
+2.40.0.rc1.284.g88254d51c5-goog
 
