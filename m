@@ -2,132 +2,245 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24E8EC6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Mon, 20 Mar 2023 17:27:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DB7DC6FD20
+	for <rust-for-linux@archiver.kernel.org>; Tue, 21 Mar 2023 19:50:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233475AbjCTR1a (ORCPT
+        id S229782AbjCUTuF (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 20 Mar 2023 13:27:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56020 "EHLO
+        Tue, 21 Mar 2023 15:50:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231194AbjCTR04 (ORCPT
+        with ESMTP id S229513AbjCUTuE (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 20 Mar 2023 13:26:56 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE80111EB3;
-        Mon, 20 Mar 2023 10:22:28 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id y14so11136174wrq.4;
-        Mon, 20 Mar 2023 10:22:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679332940;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lxjjxaJTXTboGVrfO6rMCJaEH+UFkfq+cnWcxaf6bDM=;
-        b=e7NNTBrcXYI6ZeGCPVcm1gqNsy0fhqmhF1hY5CpuPfiD09pAc8mDyuSPHZ2abjnEQs
-         5MeUNkf9+Qpn/gJ0TIQFqf1B8wOb7ZAewpBP6p+pX/q3NXaUD16HbZZC6fkbtWE4igUE
-         HWYwcgk257n6oww6LsojLHml+jZ/D96pSwk1dP8Uuj9PqRCNSJNie0HouKYdgrWY57o5
-         jZsA6U7EfydUc7Q6aytVYpqsZh/KZNqpOnrHIaSJlajFx+HXsoQLIx9/GdPjDA5F6HEj
-         stbisFtVA6wAsC+WofyDQyT68vLvYIkMy8kzd+rhsPvwKhzPQY7SiMlZf2Q1sXeDo345
-         evxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679332940;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=lxjjxaJTXTboGVrfO6rMCJaEH+UFkfq+cnWcxaf6bDM=;
-        b=DAxSSjyKocjxA/RnWBuXJmsNxVFseana1Fmgzmeg9G9y9vU0T+9dn3bU1rGCuFaFIZ
-         uiQ/o5ar67U4isRRBJ/+FQXntUwmzHkSj2Te7H+AjIhZFXFRjA82FInEFj7zj4sy2udm
-         CmVPA5osXIygfP1iIt3mIRGElcE9EEKPVmq9zteXNQJQeviYgu4QnL31IB27OsZKBdnE
-         ScFBTcTHvugtmdwdi7MFyVSNy3ReDUbPhsPi/snyWomD1qoc3YVjbU/Ry4T1g/6vecqo
-         7nBFgy8IMomoZVoao7clZKKFSw4rxAI7tKMCoquPTsJXx1Ql2T9m7l0EUga/dAI7e92u
-         AIJg==
-X-Gm-Message-State: AO0yUKU5Fco3tFxMkf1vm2xcJ29WJ7pxg/5pwwd8onSIPNMEmLqxeHeO
-        tDX9nVxS2X2v9jCHNnDLwK4=
-X-Google-Smtp-Source: AK7set/ymi8bJFB2BEvtQ2c1G0ARXELEvqljjbsIS1JkE7eUXiLHhggKQZscZsry8GAlEe38EPXVMw==
-X-Received: by 2002:a05:6000:1081:b0:2d4:53d7:ea7f with SMTP id y1-20020a056000108100b002d453d7ea7fmr121431wrw.3.1679332940533;
-        Mon, 20 Mar 2023 10:22:20 -0700 (PDT)
-Received: from localhost (93-55-83-125.ip262.fastwebnet.it. [93.55.83.125])
-        by smtp.gmail.com with ESMTPSA id p17-20020adfcc91000000b002c71dd1109fsm9426966wrj.47.2023.03.20.10.22.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Mar 2023 10:22:20 -0700 (PDT)
-Mime-Version: 1.0
+        Tue, 21 Mar 2023 15:50:04 -0400
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550D5976F;
+        Tue, 21 Mar 2023 12:49:58 -0700 (PDT)
+Date:   Tue, 21 Mar 2023 19:49:50 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1679428196; x=1679687396;
+        bh=G5OcfJ1sRCppIjvccB3dNK4jRstnIpG0oGXnr2BMLSs=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=bHvk1Ac6pHL1Afyx6ou/eLGrvVaRYvERQsJeRAoexo24UmVJqgmqvvdOXPZPrFOrd
+         GCM0mZBrWS+WbSjx1EK1rf5EAyhWxLCGo02NsFUgf48HdZiEiW3Od+d/oFo7P1zE68
+         WJoztjM+mAl51Ou63bBjHuh1I+ButYNT2pYoG4KcwNukLo4C77VifWr+yL3GRezN7J
+         8QkOauGfoSnv/Zr+cl/ybjMTuCgb4ZJJ4O+aT7tbgHzIvCW8ccBeQxcDSnyZCnrYrs
+         iQp6vcWcaY3sAoWsGC1GeM/nhVseJKJ1YVO8yZBY30bq9U/bnSUtc2t3ohM22CMlkE
+         T2VnyFRGIC77Q==
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+From:   Benno Lossin <y86-dev@protonmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev
+Subject: [PATCH v2 1/5] rust: macros: add `quote!` macro
+Message-ID: <20230321194934.908891-2-y86-dev@protonmail.com>
+In-Reply-To: <20230321194934.908891-1-y86-dev@protonmail.com>
+References: <20230321194934.908891-1-y86-dev@protonmail.com>
+Feedback-ID: 40624463:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 20 Mar 2023 18:22:18 +0100
-Message-Id: <CRBDUDH0574S.1JGPTCYLLSBMC@vincent-arch>
-Cc:     <linux-um@lists.infradead.org>, <x86@kernel.org>,
-        <llvm@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
-        <kunit-dev@googlegroups.com>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] arch:um: Only disable SSE on clang to work around old
- GCC bugs
-From:   "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-To:     "David Gow" <davidgow@google.com>,
-        "Richard Weinberger" <richard@nod.at>,
-        "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
-        "Johannes Berg" <johannes@sipsolutions.net>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        "Ingo Molnar" <mingo@redhat.com>,
-        "Nick Desaulniers" <ndesaulniers@google.com>,
-        "Nathan Chancellor" <nathan@kernel.org>,
-        "Miguel Ojeda" <ojeda@kernel.org>,
-        "Roberto Sassu" <roberto.sassu@huaweicloud.com>,
-        "SeongJae Park" <sj@kernel.org>
-References: <20230318041555.4192172-1-davidgow@google.com>
-In-Reply-To: <20230318041555.4192172-1-davidgow@google.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> As part of the Rust support for UML, we disable SSE (and similar flags)
-> to match the normal x86 builds. This both makes sense (we ideally want a
-> similar configuration to x86), and works around a crash bug with SSE
-> generation under Rust with LLVM.
->
-> However, this breaks compiling stdlib.h under gcc < 11, as the x86_64
-> ABI requires floating-point return values be stored in an SSE register.
-> gcc 11 fixes this by only doing register allocation when a function is
-> actually used, and since we never use atof(), it shouldn't be a problem:
-> https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D99652
->
-> Nevertheless, only disable SSE on clang setups, as that's a simple way
-> of working around everyone's bugs.
->
-> Fixes: 884981867947 ("rust: arch/um: Disable FP/SIMD instruction to match=
- x86")
-> Reported-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
-> Link: https://lore.kernel.org/linux-um/6df2ecef9011d85654a82acd607fdcbc93=
-ad593c.camel@huaweicloud.com/
-> Tested-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
-> Tested-by: SeongJae Park <sj@kernel.org>
-> Signed-off-by: David Gow <davidgow@google.com>
-> ---
->  arch/x86/Makefile.um | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
-> index b70559b821df..2106a2bd152b 100644
-> --- a/arch/x86/Makefile.um
-> +++ b/arch/x86/Makefile.um
-> @@ -3,9 +3,14 @@ core-y +=3D arch/x86/crypto/
-> =20
->  #
->  # Disable SSE and other FP/SIMD instructions to match normal x86
-> +# This is required to work around issues in older LLVM versions, but bre=
-aks
-> +# GCC versions < 11. See:
-> +# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D99652
->  #
-> +ifeq ($(CONFIG_CC_IS_CLANG),y)
->  KBUILD_CFLAGS +=3D -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
->  KBUILD_RUSTFLAGS +=3D -Ctarget-feature=3D-sse,-sse2,-sse3,-ssse3,-sse4.1=
-,-sse4.2,-avx,-avx2
-> +endif
-> =20
->  ifeq ($(CONFIG_X86_32),y)
->  START :=3D 0x8048000
-> --=20
-> 2.40.0.rc1.284.g88254d51c5-goog
+From: Gary Guo <gary@garyguo.net>
+
+Add the `quote!` macro for creating `TokenStream`s directly via the
+given Rust tokens. It also supports repetitions using iterators.
+
+It will be used by the pin-init API proc-macros to generate code.
+
+Signed-off-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
+---
+ rust/macros/lib.rs   |   2 +
+ rust/macros/quote.rs | 143 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 145 insertions(+)
+ create mode 100644 rust/macros/quote.rs
+
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index c1d385e345b9..82b520f024dd 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -2,6 +2,8 @@
+
+ //! Crate for all kernel procedural macros.
+
++#[macro_use]
++mod quote;
+ mod concat_idents;
+ mod helpers;
+ mod module;
+diff --git a/rust/macros/quote.rs b/rust/macros/quote.rs
+new file mode 100644
+index 000000000000..00fc75fecd03
+--- /dev/null
++++ b/rust/macros/quote.rs
+@@ -0,0 +1,143 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
++
++use proc_macro::{TokenStream, TokenTree};
++
++pub(crate) trait ToTokens {
++    fn to_tokens(&self, tokens: &mut TokenStream);
++}
++
++impl<T: ToTokens> ToTokens for Option<T> {
++    fn to_tokens(&self, tokens: &mut TokenStream) {
++        if let Some(v) =3D self {
++            v.to_tokens(tokens);
++        }
++    }
++}
++
++impl ToTokens for proc_macro::Group {
++    fn to_tokens(&self, tokens: &mut TokenStream) {
++        tokens.extend([TokenTree::from(self.clone())]);
++    }
++}
++
++impl ToTokens for TokenTree {
++    fn to_tokens(&self, tokens: &mut TokenStream) {
++        tokens.extend([self.clone()]);
++    }
++}
++
++impl ToTokens for TokenStream {
++    fn to_tokens(&self, tokens: &mut TokenStream) {
++        tokens.extend(self.clone());
++    }
++}
++
++/// Converts tokens into [`proc_macro::TokenStream`] and performs variable=
+ interpolations with
++/// the given span.
++///
++/// This is a similar to the
++/// [`quote_spanned!`](https://docs.rs/quote/latest/quote/macro.quote_span=
+ned.html) macro from the
++/// `quote` crate but provides only just enough functionality needed by th=
+e current `macros` crate.
++macro_rules! quote_spanned {
++    ($span:expr =3D> $($tt:tt)*) =3D> {
++    #[allow(clippy::vec_init_then_push)]
++    {
++        let mut tokens =3D Vec::new();
++        let span =3D $span;
++        quote_spanned!(@proc tokens span $($tt)*);
++        proc_macro::TokenStream::from_iter(tokens)
++    }};
++    (@proc $v:ident $span:ident) =3D> {};
++    (@proc $v:ident $span:ident #$id:ident $($tt:tt)*) =3D> {
++        let mut ts =3D proc_macro::TokenStream::new();
++        crate::quote::ToTokens::to_tokens(&$id, &mut ts);
++        $v.extend(ts.into_iter());
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++    (@proc $v:ident $span:ident #(#$id:ident)* $($tt:tt)*) =3D> {
++        for token in $id {
++            let mut ts =3D proc_macro::TokenStream::new();
++            crate::quote::ToTokens::to_tokens(&token, &mut ts);
++            $v.extend(ts.into_iter());
++        }
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++    (@proc $v:ident $span:ident ( $($inner:tt)* ) $($tt:tt)*) =3D> {
++        let mut tokens =3D Vec::new();
++        quote_spanned!(@proc tokens $span $($inner)*);
++        $v.push(proc_macro::TokenTree::Group(proc_macro::Group::new(
++            proc_macro::Delimiter::Parenthesis,
++            proc_macro::TokenStream::from_iter(tokens)
++        )));
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++    (@proc $v:ident $span:ident [ $($inner:tt)* ] $($tt:tt)*) =3D> {
++        let mut tokens =3D Vec::new();
++        quote_spanned!(@proc tokens $span $($inner)*);
++        $v.push(proc_macro::TokenTree::Group(proc_macro::Group::new(
++            proc_macro::Delimiter::Bracket,
++            proc_macro::TokenStream::from_iter(tokens)
++        )));
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++    (@proc $v:ident $span:ident { $($inner:tt)* } $($tt:tt)*) =3D> {
++        let mut tokens =3D Vec::new();
++        quote_spanned!(@proc tokens $span $($inner)*);
++        $v.push(proc_macro::TokenTree::Group(proc_macro::Group::new(
++            proc_macro::Delimiter::Brace,
++            proc_macro::TokenStream::from_iter(tokens)
++        )));
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++    (@proc $v:ident $span:ident :: $($tt:tt)*) =3D> {
++        $v.push(
++            proc_macro::TokenTree::Punct(proc_macro::Punct::new(':', proc_=
+macro::Spacing::Joint))
++        );
++        $v.push(
++            proc_macro::TokenTree::Punct(proc_macro::Punct::new(':', proc_=
+macro::Spacing::Alone))
++        );
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++    (@proc $v:ident $span:ident : $($tt:tt)*) =3D> {
++        $v.push(
++            proc_macro::TokenTree::Punct(proc_macro::Punct::new(':', proc_=
+macro::Spacing::Alone))
++        );
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++    (@proc $v:ident $span:ident , $($tt:tt)*) =3D> {
++        $v.push(
++            proc_macro::TokenTree::Punct(proc_macro::Punct::new(',', proc_=
+macro::Spacing::Alone))
++        );
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++    (@proc $v:ident $span:ident @ $($tt:tt)*) =3D> {
++        $v.push(
++            proc_macro::TokenTree::Punct(proc_macro::Punct::new('@', proc_=
+macro::Spacing::Alone))
++        );
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++    (@proc $v:ident $span:ident ! $($tt:tt)*) =3D> {
++        $v.push(
++            proc_macro::TokenTree::Punct(proc_macro::Punct::new('!', proc_=
+macro::Spacing::Alone))
++        );
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++    (@proc $v:ident $span:ident $id:ident $($tt:tt)*) =3D> {
++        $v.push(proc_macro::TokenTree::Ident(proc_macro::Ident::new(string=
+ify!($id), $span)));
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
++}
++
++/// Converts tokens into [`proc_macro::TokenStream`] and performs variable=
+ interpolations with
++/// mixed site span ([`Span::mixed_site()`]).
++///
++/// This is a similar to the [`quote!`](https://docs.rs/quote/latest/quote=
+/macro.quote.html) macro
++/// from the `quote` crate but provides only just enough functionality nee=
+ded by the current
++/// `macros` crate.
++///
++/// [`Span::mixed_site()`]: https://doc.rust-lang.org/proc_macro/struct.Sp=
+an.html#method.mixed_site
++macro_rules! quote {
++    ($($tt:tt)*) =3D> {
++        quote_spanned!(proc_macro::Span::mixed_site() =3D> $($tt)*)
++    }
++}
+--
+2.39.2
 
 
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
