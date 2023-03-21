@@ -2,197 +2,111 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 489F2C6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Tue, 21 Mar 2023 20:06:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DCF90C6FD1D
+	for <rust-for-linux@archiver.kernel.org>; Tue, 21 Mar 2023 20:13:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229995AbjCUUGi (ORCPT
+        id S229513AbjCUUNI (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 21 Mar 2023 16:06:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43340 "EHLO
+        Tue, 21 Mar 2023 16:13:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229900AbjCUUGh (ORCPT
+        with ESMTP id S229574AbjCUUNH (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 21 Mar 2023 16:06:37 -0400
-Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D791BE;
-        Tue, 21 Mar 2023 13:06:35 -0700 (PDT)
-Received: by mail-qv1-xf30.google.com with SMTP id g9so10617440qvt.8;
-        Tue, 21 Mar 2023 13:06:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679429194;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q+UDFGhD29Q4QGajkdg6XZG5EljYTtzigwRFZgqLDEw=;
-        b=NvQRQBFjdDqWOMsPDgwMdxIElTVo/eitAnoLlPKchBb6ZDgaO2l7dUO1STIyAKRISa
-         uKbKm7p0TIxXRdnOHNuHG9d2NwUqhjD/ofxbh1hRkYkxfDvKFsa4qqTs798qQFgLrkYA
-         w+xkkTP0bXimCajhXKDVAOgA9dLmLUlmUn71MrMZHFfsUpH0pI1opNrDjFDH+k8MYQR8
-         LAlaGxzvoNCql0qG7gQY9FW3/pyf5XlOz/tfOio54aoOMdtuJTx8ygMPKFr4/8mZezZV
-         unujiS9rEIVIY94RrMzT9N4DAbUQbKq/RmlAXMjf2PKEt9Gtsx2BcuDGmGGPQcbcsQiv
-         HThA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679429194;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q+UDFGhD29Q4QGajkdg6XZG5EljYTtzigwRFZgqLDEw=;
-        b=ENNNY4AoTIz1JuCr8TwN/raq3SboqLWxJvgnEpiAYB31BKR5tzjTECN/qsyP6/jhgD
-         GoqBzdv67280N38z61qlHAZctajq8qLsALh3wF/uWkIriDVs7SQPuLHiDkdIfVJ1H1yy
-         GOr6b2lNADY4f0MBEodMACRHQ+MqgHkeO70Jo4YW76PId+ejuWXwtRqTREfAalPKvcrQ
-         OgerlFb+zOERReIDw4Hc5bus1VkMdcT5XbmSkuh+TBFQ7TuLKc/0wNu12wsWOz8jY3zu
-         vNGPxUkAQ3sUBrQNT63hjGwyrE+pOVM7k6i35aZYwg9oNU4cJY1imPbkp4eR7S7WxzQh
-         9KqA==
-X-Gm-Message-State: AO0yUKXqnoY1uJizN38dXuYwL7xd+KFLoH4ilf3ijJE0Z+xM6OD+U90w
-        BNjeoZBgtEGfoX5tCzVQEns=
-X-Google-Smtp-Source: AK7set98BOPBmOhKRECVy8ukKPM2PnWRfbBO9l4tLkEW6UHNPe7Fisvr4bfL8+5yyzICmEs8orFiQQ==
-X-Received: by 2002:a05:6214:20e9:b0:56e:98a1:fff1 with SMTP id 9-20020a05621420e900b0056e98a1fff1mr1948967qvk.7.1679429194064;
-        Tue, 21 Mar 2023 13:06:34 -0700 (PDT)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id s80-20020a37a953000000b00741a984943fsm2064570qke.40.2023.03.21.13.06.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Mar 2023 13:06:33 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 215DB27C005C;
-        Tue, 21 Mar 2023 16:06:32 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Tue, 21 Mar 2023 16:06:33 -0400
-X-ME-Sender: <xms:SA4aZL2GQ-ZgWfwYuqq07EJgMYDKtidAQNmVdYnv5HfaKm5Fhq700w>
-    <xme:SA4aZKFIABoqr2FKtzDkcAFLHqH9w0AyDzbNu-UPUBPMBj505APD3OkPp0TT-TZR5
-    HTKty6z9_3-GCKzcw>
-X-ME-Received: <xmr:SA4aZL7qK91sd5NrTRXgRgJ79zOyL0EBLGy6vyS7xqstMe09TqY-NBF-81w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdegtddgudefudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
-    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:SA4aZA0TpRBMSDGmMZQDfId7yIoAzGl_L_wf7QL72Ojj4Q37rBtByA>
-    <xmx:SA4aZOGOpndl07w8XJL_cUtubgBp8VarLtxFRvOP2skOKfWVF7SV4A>
-    <xmx:SA4aZB-Ym-wVZTfLG50NWXKuA9vhQK8GJPlhTo_NNDMDurcTaL7wMg>
-    <xmx:SA4aZMb-wlWRoEkIGGBkW8SuSExgygkd6LIsjlfylti6JnvSC90HEA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 21 Mar 2023 16:06:32 -0400 (EDT)
-Date:   Tue, 21 Mar 2023 13:06:14 -0700
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Benno Lossin <y86-dev@protonmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: Re: [PATCH v2 4/5] rust: init: add common init-helper functions for
- `Opaque`
-Message-ID: <ZBoONi8oMO4X7DWy@boqun-archlinux>
-References: <20230321194934.908891-1-y86-dev@protonmail.com>
- <20230321194934.908891-5-y86-dev@protonmail.com>
+        Tue, 21 Mar 2023 16:13:07 -0400
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDD825071C;
+        Tue, 21 Mar 2023 13:12:10 -0700 (PDT)
+Received: from fews2.riseup.net (fews2-pn.riseup.net [10.0.1.84])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256
+         client-signature RSA-PSS (2048 bits) client-digest SHA256)
+        (Client CN "mail.riseup.net", Issuer "R3" (not verified))
+        by mx1.riseup.net (Postfix) with ESMTPS id 4Ph2nh23XDzDqGt;
+        Tue, 21 Mar 2023 20:12:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+        t=1679429528; bh=+4hKPyRMH2aAK35R9DtVSpBun70VepUerw2XjaTytxU=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=cnch0x4zGxsR9VcUGElrbA7sE/iBGr3H+sdwfYJ4+SiLz3Odfgd7jOUhGap+KYViM
+         zi1bsUKERut+p8wrLXb3bAC/JUBiyoqP9DSKFbqqoXm+jMhRuyOd+Hzvo3D/ltY8ts
+         FEnJ/T9QtDnPvc5H9n/Ci5fvDIdLLCWA33tXns78=
+X-Riseup-User-ID: 1C3CD006F550256050AEC2FA37B1A54058F970E2E8F94543F974B5CEED22D817
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+         by fews2.riseup.net (Postfix) with ESMTPSA id 4Ph2nP1MWTz1y8Z;
+        Tue, 21 Mar 2023 20:11:52 +0000 (UTC)
+Message-ID: <a7313cdd-c54e-cbbf-e8e9-8330184912ac@riseup.net>
+Date:   Tue, 21 Mar 2023 17:11:47 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230321194934.908891-5-y86-dev@protonmail.com>
+Subject: Re: [PATCH] arch:um: Only disable SSE on clang to work around old GCC
+ bugs
+Content-Language: en-US
+To:     David Gow <davidgow@google.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        SeongJae Park <sj@kernel.org>
+Cc:     linux-um@lists.infradead.org, x86@kernel.org, llvm@lists.linux.dev,
+        rust-for-linux@vger.kernel.org, kunit-dev@googlegroups.com,
+        linux-kernel@vger.kernel.org
+References: <20230318041555.4192172-1-davidgow@google.com>
+From:   Arthur Grillo Queiroz Cabral <arthurgrillo@riseup.net>
+In-Reply-To: <20230318041555.4192172-1-davidgow@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Mar 21, 2023 at 07:50:05PM +0000, Benno Lossin wrote:
-> Add helper functions to more easily initialize `Opaque<T>` via FFI.
-> These functions take a function pointer to the FFI-initialization
-> function and take between 0-4 other arguments. It then returns an
-> initializer that uses the FFI function along with the given arguments to
-> initialize an `Opaque<T>`.
+
+
+On 18/03/23 01:15, 'David Gow' via KUnit Development wrote:
+> As part of the Rust support for UML, we disable SSE (and similar flags)
+> to match the normal x86 builds. This both makes sense (we ideally want a
+> similar configuration to x86), and works around a crash bug with SSE
+> generation under Rust with LLVM.
 > 
-> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
+> However, this breaks compiling stdlib.h under gcc < 11, as the x86_64
+> ABI requires floating-point return values be stored in an SSE register.
+> gcc 11 fixes this by only doing register allocation when a function is
+> actually used, and since we never use atof(), it shouldn't be a problem:
+> https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99652
+> 
+> Nevertheless, only disable SSE on clang setups, as that's a simple way
+> of working around everyone's bugs.
+> 
+> Fixes: 884981867947 ("rust: arch/um: Disable FP/SIMD instruction to match x86")
+> Reported-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
+> Link: https://lore.kernel.org/linux-um/6df2ecef9011d85654a82acd607fdcbc93ad593c.camel@huaweicloud.com/
+> Tested-by: Roberto Sassu <roberto.sassu@huaweicloud.com>
+> Tested-by: SeongJae Park <sj@kernel.org>
+> Signed-off-by: David Gow <davidgow@google.com>
 > ---
->  rust/kernel/init.rs        |  1 +
->  rust/kernel/init/common.rs | 42 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 43 insertions(+)
->  create mode 100644 rust/kernel/init/common.rs
+>  arch/x86/Makefile.um | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-> index 895845db6f2b..5b8adb8727b2 100644
-> --- a/rust/kernel/init.rs
-> +++ b/rust/kernel/init.rs
-> @@ -207,6 +207,7 @@ use core::{
->      ptr,
->  };
-> 
-> +pub mod common;
->  #[doc(hidden)]
->  pub mod macros;
-> 
-> diff --git a/rust/kernel/init/common.rs b/rust/kernel/init/common.rs
-> new file mode 100644
-> index 000000000000..f8c6e9dff786
-> --- /dev/null
-> +++ b/rust/kernel/init/common.rs
-> @@ -0,0 +1,42 @@
-> +// SPDX-License-Identifier: Apache-2.0 OR MIT
-> +
-> +//! Module containing common kernel initializer functions.
-> +
-> +use crate::{
-> +    init::{self, PinInit},
-> +    types::Opaque,
-> +};
-> +
-> +macro_rules! create_func {
-> +    ($name:ident $(, $arg_name:ident: $arg_typ:ident)*) => {
-> +        /// Create an initializer using the given initializer function from C.
-> +        ///
-> +        /// # Safety
-> +        ///
-> +        /// The given function **must** under all circumstances initialize the memory location to a
-> +        /// valid `T`. If it fails to do so it results in UB.
-> +        ///
-> +        /// If any parameters are given, those need to be valid for the function. Valid means that
-> +        /// calling the function with those parameters complies with the above requirement **and**
-> +        /// every other requirement on the function itself.
-> +        pub unsafe fn $name<T $(, $arg_typ)*>(
-> +            init_func: unsafe extern "C" fn(*mut T $(, $arg_name: $arg_typ)*),
-> +            $($arg_name: $arg_typ,)*
-> +        ) -> impl PinInit<Opaque<T>> {
-> +            // SAFETY: The safety contract of this function ensures that `init_func` fully
-> +            // initializes `slot`.
-> +            unsafe {
-> +                init::pin_init_from_closure(move |slot| {
-> +                    init_func(Opaque::raw_get(slot) $(, $arg_name)*);
-> +                    Ok(())
-> +                })
-> +            }
-> +        }
-> +    }
-> +}
-> +
-> +create_func!(ffi_init);
-> +create_func!(ffi_init1, arg1: A1);
-> +create_func!(ffi_init2, arg1: A1, arg2: A2);
-> +create_func!(ffi_init3, arg1: A1, arg2: A2, arg3: A3);
-> +create_func!(ffi_init4, arg1: A1, arg2: A2, arg3: A3, arg4: A4);
+> diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
+> index b70559b821df..2106a2bd152b 100644
+> --- a/arch/x86/Makefile.um
+> +++ b/arch/x86/Makefile.um
+> @@ -3,9 +3,14 @@ core-y += arch/x86/crypto/
+>  
+>  #
+>  # Disable SSE and other FP/SIMD instructions to match normal x86
+> +# This is required to work around issues in older LLVM versions, but breaks
+> +# GCC versions < 11. See:
+> +# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99652
+>  #
+> +ifeq ($(CONFIG_CC_IS_CLANG),y)
+>  KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
+>  KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
+> +endif
+>  
+>  ifeq ($(CONFIG_X86_32),y)
+>  START := 0x8048000
 
-I wonder whether it's better to make these as methods of Opaque<T>, i.e.
-	
-	impl<T> Opaque<T> {
-	    pub unsafe fn ffi_init(...) -> impl PinInit<Self> {
-	    	...
-	    }
-	    ...
-	}
-
-then it's a little more obvious to users that these methods are for
-Opaque type pin init.
-
-Thoughts?
-
-Regards,
-Boqun
-
-> --
-> 2.39.2
-> 
-> 
+Tested-by: Arthur Grillo <arthurgrillo@riseup.net>
