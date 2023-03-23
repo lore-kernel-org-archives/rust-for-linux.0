@@ -2,196 +2,94 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4558FC6FD1C
-	for <rust-for-linux@archiver.kernel.org>; Thu, 23 Mar 2023 12:35:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8429FC76195
+	for <rust-for-linux@archiver.kernel.org>; Thu, 23 Mar 2023 13:05:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231708AbjCWMfz (ORCPT
+        id S229917AbjCWNFt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 23 Mar 2023 08:35:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36212 "EHLO
+        Thu, 23 Mar 2023 09:05:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231627AbjCWMfy (ORCPT
+        with ESMTP id S229863AbjCWNFs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 23 Mar 2023 08:35:54 -0400
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480E91C7EF;
-        Thu, 23 Mar 2023 05:35:46 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: linasend@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 495EE420CF;
-        Thu, 23 Mar 2023 12:35:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1679574944;
-        bh=k+/jNhkIqz21sSLfPIEvNUhnHjFRyyWDKLpN6Jw1wxU=;
-        h=From:Date:Subject:To:Cc;
-        b=VXelSGS2IcIt3B+VHlZr9BxU5mUptTGoqcA6yRdv4+ynP69yhP4tnhBZPsOtpS2cf
-         H+0XWFHrrU0U3mV8fxE5x6NspLo2zVit53oGLM5ij/8plajqQaOXab3PbQxP3E2cl4
-         NyzweZJVCTLbFURO58z+9uy84e/RdbtASBQ8fS5u2zClkF6FN28wjEaMDxn7b+GUZe
-         hHTI0vDQzsGivABMCad2aDpl5S0+5rhEAaRM0TmxrZrSJfA6begDehIed19FcfKdSZ
-         GakS9CwZSy7ZDpZpghMwB/mks9+LzW2GQW2xMb/1HOIm2c8d4aPH6yUT/n5c3ew5NI
-         LCNZ8QV5w09Ag==
-From:   Asahi Lina <lina@asahilina.net>
-Date:   Thu, 23 Mar 2023 21:35:10 +0900
-Subject: [PATCH v2] rust: macros: Allow specifying multiple module aliases
+        Thu, 23 Mar 2023 09:05:48 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F7FB32509;
+        Thu, 23 Mar 2023 06:05:36 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id i6so24698190ybu.8;
+        Thu, 23 Mar 2023 06:05:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679576735;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gucyIJVMKP+NqT9WF5OyPIqU6hJihw7ITPbLS8iJbWI=;
+        b=GOGeKOJMQko4GNrdrl0mulhsICJWZdDn90U2cKkLhGP54YTFtiZnLSOnlzxNCdR87d
+         +JK8pY3IBSYeUY2u1ICxEfLMdLl/Num/+fjmL2Hh+VO087ynS7XLoAqedR3r4uwD9E8q
+         zJ+m2gOMkiDGlB8e9jOsPen071tSUipsLC1Jkwb+ukVcRZ8y+3cG4GJTRXs1eoYy45YD
+         Y5OByw1pywvSMjoItJhsl3UD37TQj10qN+muJ3COOPImgYlOALIHF9lOppGtnXMjjZLt
+         EGGJTB7K0fJ9WAVJo3KgwdfWbrqgMlvFy3AVJ3Eh7Qard/+N5PfXMGCe/PiVmgjx5ufH
+         DmFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679576735;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gucyIJVMKP+NqT9WF5OyPIqU6hJihw7ITPbLS8iJbWI=;
+        b=JwRK5RnolPDFvVYisoYT4BzTNAW+RYYzOyGIaPx/2NV3nSYEuCUxcl5IRLIFbL6lTg
+         m8HEgWyQECOwlKbP8KR3ct/bvcxXItFrAjGHxz+py2k6BLd/1qo3uc1cy5BlHpmLk5LI
+         2ETTOam+wXk/Eudl3ju+izAYi3ZkTPJpQl043NObrfo3XU6prtz0+kUyfSf2j4+d9lH8
+         qOOEroNzd72nEmFOlk5JVaTm+mnDtHekkuPKC7wiUId3GWP2B6jnnRvPdwd8C05s1EwZ
+         G4F2GzX0LcEqhi+NVj6U3yqzPhosjNt86B6TlE5nw2HpenMYijBG0TZZfHcRFNwQQ3sJ
+         CWpQ==
+X-Gm-Message-State: AAQBX9eh65Sz8DmcpClaltkZPGD3lY1p8VyHd1SZ+2jVy6hDrnBtEMSC
+        x6HvrU+xOnLwIdkaXEGzVxv7X96jjL1i+Vm5/pY=
+X-Google-Smtp-Source: AKy350amHGvdoGB6oMTdWl9KkL9uI8iQ8PXcVN7k41xhsfQsfPgZsU8wJ6U8gAoeENI2187lnxyCHxpSc/TinLiE3pk=
+X-Received: by 2002:a05:6902:100d:b0:b6d:fc53:c5c0 with SMTP id
+ w13-20020a056902100d00b00b6dfc53c5c0mr2121997ybt.1.1679576735709; Thu, 23 Mar
+ 2023 06:05:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230224-rust-macros-v2-1-7396e8b7018d@asahilina.net>
-X-B4-Tracking: v=1; b=H4sIAH1HHGQC/22Nyw6CMBBFf4V0bbUPgsrK/zAspjDQSbSQDhAN4
- d9tWbs8N/fkbIIxErKoi01EXIlpDAnMqRCthzCgpC6xMMpYZUwp48KzfEMbR5aVtZ3rb1cFqEU
- yHDBKFyG0PjvDtFyOe95NPkwRe/ocuWeT2BPPY/we9VXn9X9o1VJJZ+89YFmhVuYBDJ5eFOAcc
- BbNvu8/O05zf8sAAAA=
-To:     Miguel Ojeda <ojeda@kernel.org>,
+References: <20230224-rust-ioctl-v3-1-3c5f7a6954b5@asahilina.net>
+In-Reply-To: <20230224-rust-ioctl-v3-1-3c5f7a6954b5@asahilina.net>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 23 Mar 2023 14:05:24 +0100
+Message-ID: <CANiq72nk+KSz6X0Lxg4kc_Bui=17XhboJ6q6j8gRg7Nsshziug@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: ioctl: Add ioctl number manipulation functions
+To:     Asahi Lina <lina@asahilina.net>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev, Finn Behrens <me@kloenk.dev>,
-        Sumera Priyadarsini <sylphrenadin@gmail.com>,
-        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
-        Asahi Lina <lina@asahilina.net>
-X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1679574940; l=4848;
- i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
- bh=k+/jNhkIqz21sSLfPIEvNUhnHjFRyyWDKLpN6Jw1wxU=;
- b=lgA5l4q9e7uUQnB7Ylry8BsisMHTO8M6xNJaAdgue98S+UwcbB6JqodsZB4SVNwB6A3JhYROn
- 1AoPjlEVO6FA6p3zP6kBTa5PiqljotC48ADXoTMQ5hmrHHcP8XX5LDY
-X-Developer-Key: i=lina@asahilina.net; a=ed25519;
- pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev,
+        linux-arch@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Modules can (and usually do) have multiple alias tags, in order to
-specify multiple possible device matches for autoloading. Allow this by
-changing the alias ModuleInfo field to an Option<Vec<String>>.
+On Thu, Mar 23, 2023 at 1:34=E2=80=AFPM Asahi Lina <lina@asahilina.net> wro=
+te:
+>
+> Changes in v3:
+> - Actually made the change intended in v2.
+> - Link to v2: https://lore.kernel.org/r/20230224-rust-ioctl-v2-1-5325e76a=
+92df@asahilina.net
+>
+> Changes in v2:
+> - Changed from assert!() to build_assert!() (static_assert!() can't work
+>   here)
+> - Link to v1: https://lore.kernel.org/r/20230224-rust-ioctl-v1-1-5142d365=
+a934@asahilina.net
 
-Note: For normal device IDs this is autogenerated by modpost (which is
-not properly integrated with Rust support yet), so it is useful to be
-able to manually add device match aliases for now, and should still be
-useful in the future for corner cases that modpost does not handle.
+It seems `#[inline(always)]` got added to a few of those, right? (The
+addition looks fine to me, but just to understand if is it an omission
+in the changelog, or an unintended change, or intended for another
+reason).
 
-This pulls in the expect_group() helper from the rfl/rust branch
-(with credit to authors).
+Thanks!
 
-Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Co-developed-by: Finn Behrens <me@kloenk.dev>
-Signed-off-by: Finn Behrens <me@kloenk.dev>
-Co-developed-by: Sumera Priyadarsini <sylphrenadin@gmail.com>
-Signed-off-by: Sumera Priyadarsini <sylphrenadin@gmail.com>
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
-Signed-off-by: Asahi Lina <lina@asahilina.net>
----
-Note: This used to be part of the series
-"rust: Miscellaneous macro improvements", but we agreed to drop the
-concat_idents!() change for now (and therefore the prerequisite it
-carried), so that leaves just the module macro change.
----
- rust/macros/helpers.rs | 10 +++++++++-
- rust/macros/module.rs  | 30 +++++++++++++++++++++++++-----
- 2 files changed, 34 insertions(+), 6 deletions(-)
-
-diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
-index cf7ad950dc1e..b2bdd4d8c958 100644
---- a/rust/macros/helpers.rs
-+++ b/rust/macros/helpers.rs
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use proc_macro::{token_stream, TokenTree};
-+use proc_macro::{token_stream, Group, TokenTree};
- 
- pub(crate) fn try_ident(it: &mut token_stream::IntoIter) -> Option<String> {
-     if let Some(TokenTree::Ident(ident)) = it.next() {
-@@ -56,6 +56,14 @@ pub(crate) fn expect_string_ascii(it: &mut token_stream::IntoIter) -> String {
-     string
- }
- 
-+pub(crate) fn expect_group(it: &mut token_stream::IntoIter) -> Group {
-+    if let TokenTree::Group(group) = it.next().expect("Reached end of token stream for Group") {
-+        group
-+    } else {
-+        panic!("Expected Group");
-+    }
-+}
-+
- pub(crate) fn expect_end(it: &mut token_stream::IntoIter) {
-     if it.next().is_some() {
-         panic!("Expected end");
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index a7e363c2b044..5e7ab83908a0 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -1,9 +1,27 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- use crate::helpers::*;
--use proc_macro::{token_stream, Literal, TokenStream, TokenTree};
-+use proc_macro::{token_stream, Delimiter, Literal, TokenStream, TokenTree};
- use std::fmt::Write;
- 
-+fn expect_string_array(it: &mut token_stream::IntoIter) -> Vec<String> {
-+    let group = expect_group(it);
-+    assert_eq!(group.delimiter(), Delimiter::Bracket);
-+    let mut values = Vec::new();
-+    let mut it = group.stream().into_iter();
-+
-+    while let Some(val) = try_string(&mut it) {
-+        assert!(val.is_ascii(), "Expected ASCII string");
-+        values.push(val);
-+        match it.next() {
-+            Some(TokenTree::Punct(punct)) => assert_eq!(punct.as_char(), ','),
-+            None => break,
-+            _ => panic!("Expected ',' or end of array"),
-+        }
-+    }
-+    values
-+}
-+
- struct ModInfoBuilder<'a> {
-     module: &'a str,
-     counter: usize,
-@@ -78,7 +96,7 @@ struct ModuleInfo {
-     name: String,
-     author: Option<String>,
-     description: Option<String>,
--    alias: Option<String>,
-+    alias: Option<Vec<String>>,
- }
- 
- impl ModuleInfo {
-@@ -112,7 +130,7 @@ impl ModuleInfo {
-                 "author" => info.author = Some(expect_string(it)),
-                 "description" => info.description = Some(expect_string(it)),
-                 "license" => info.license = expect_string_ascii(it),
--                "alias" => info.alias = Some(expect_string_ascii(it)),
-+                "alias" => info.alias = Some(expect_string_array(it)),
-                 _ => panic!(
-                     "Unknown key \"{}\". Valid keys are: {:?}.",
-                     key, EXPECTED_KEYS
-@@ -163,8 +181,10 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-         modinfo.emit("description", &description);
-     }
-     modinfo.emit("license", &info.license);
--    if let Some(alias) = info.alias {
--        modinfo.emit("alias", &alias);
-+    if let Some(aliases) = info.alias {
-+        for alias in aliases {
-+            modinfo.emit("alias", &alias);
-+        }
-     }
- 
-     // Built-in modules also export the `file` modinfo string.
-
----
-base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
-change-id: 20230224-rust-macros-633dbf870ae1
-
-Thank you,
-~~ Lina
-
+Cheers,
+Miguel
