@@ -2,87 +2,85 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C373C74A5B
-	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 22:33:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 397A8C74A5B
+	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 22:34:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230362AbjC2Wd0 (ORCPT
+        id S230355AbjC2WeE (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 29 Mar 2023 18:33:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47740 "EHLO
+        Wed, 29 Mar 2023 18:34:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230365AbjC2WdU (ORCPT
+        with ESMTP id S230246AbjC2WeD (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 29 Mar 2023 18:33:20 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3DA76A6D;
-        Wed, 29 Mar 2023 15:33:16 -0700 (PDT)
-Date:   Wed, 29 Mar 2023 22:33:03 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680129195; x=1680388395;
-        bh=V+3/FcGLR6mUBShB+6Z9iCT8/lNGpbiYW8ilej7HttM=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=bDcPvqDeoH3HgHItPWiY5emWTJ2TX1MqqC7sOLgsCNM8WmYcK/611sDpdtejDg9vS
-         CD8Uz3Hwdb7Q9J60WqcXrp0iCYnz/5jejXKuwNbraYsuR0pz0CgmfM/jQAM0meV9NK
-         EcW/syx2qDYE2D0ZGrv+njm9ulKY2QONkjjIBI4CcAQkx4OOFEFsWgL2H6KMTj8M8F
-         +9h6gMRCzyieRB66Hz34ZmRHoPQBUCF8jLbwAJLsjhARLowJJof0wyKAVV+o1dTk6c
-         jiKOnUKHa05PP1d8O8K5ZWVQaWRCG8N9IsrwDv+zdYLDx5c1GPnkxX+jzVvWvnUo6r
-         3YK7ZkTB84MUQ==
-To:     Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 29 Mar 2023 18:34:03 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EB7E4C28;
+        Wed, 29 Mar 2023 15:33:37 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-5445009c26bso320880257b3.8;
+        Wed, 29 Mar 2023 15:33:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680129211;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+6LTpXnaShPp/aMOnarhhdVl/37J/Widlt3z574l3DQ=;
+        b=hDaZdrk41ASjkEzCvgtAYPEY93vGhSPpacpR5s/Iztg0al+4OR9WwyGQjxhSKHq7UO
+         LzcKz4yfdWeaSB1y70SzSaGoDXpvTCY9d8st7Iwxx/nMcsvNqg6IzabV6eDouXNXfzad
+         RuOtcr1o2yH+CieYYJhc1J4qsk6NKkwUxlpMccU+BTKG8HqgUvs0COGL18+HDOlY5r9X
+         VzM6DiBkqh/bI8W37K1rHojR3GgmN6zNN9vQSzG6JZDkctQS9CeeRrkpxaQPMnl4qKy+
+         DnebD7e5l++CV0kpc5EDL3X4pmKdBRmTKKbcDrE9qD+HA7TgOEMZD/xw+1Ctid4mAphM
+         TU3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680129211;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+6LTpXnaShPp/aMOnarhhdVl/37J/Widlt3z574l3DQ=;
+        b=GNx/v8HyFz1JlHx0Ej1oVyjUsrRCb0x8BmmY544/dCSCZge34+BHvphEaHeBFUjc4v
+         vFUPrieU/h52ii8+Kamwu1Qzmsk2JIa5TsSZZImG2ns3RISbhj7mJsoM6AYvj9yDZnyp
+         8gFBL/AJdyWrTNAHruz1VnzZi0NN6veWo+GbKm+DSNcaOFPcFt+xvTfaQC6GezNeCBWD
+         C7QnhIFgiCqfLW64/Xpl60dGzfv6p22EaxVIl1I8uIKK1zwqAiDbfQrjCNf/ojhKVjow
+         +oc99KoLMptqxdj18utN1ByQ0Us4PcjWrXRj64FHXRh+MVzPgsFwv4qr5W495qUBgSAJ
+         qwQw==
+X-Gm-Message-State: AAQBX9dutHbUcRlBElOtvn2nJCWyQ/upERW0gJNyXutKrUWaEkkvnYq/
+        SyBkJhGYK2poU5ORxlWkn8NtEkCIcCGB/yK8tj8=
+X-Google-Smtp-Source: AKy350aXIUrzCs9LU5BXnUcMqWrHW+cLIALFyiDM1Dcp1H4b4wNsQcU8byHZ7G6UXIIDugN6++uSfCCMcUetOHypZH0=
+X-Received: by 2002:a81:ac46:0:b0:533:8f19:4576 with SMTP id
+ z6-20020a81ac46000000b005338f194576mr10246162ywj.0.1680129211333; Wed, 29 Mar
+ 2023 15:33:31 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230224-rust-error-v2-0-3900319812da@asahilina.net>
+ <20230224-rust-error-v2-1-3900319812da@asahilina.net> <0849f870-2d95-8c3a-c7dc-2b18dcee4c65@gmail.com>
+ <CANiq72ko9tY4dsK9Srte2oYQp8G=PMyLDTOR33-yNTVXmfyzeA@mail.gmail.com> <2a10a97f-70ba-5216-a527-067deda6a94e@gmail.com>
+In-Reply-To: <2a10a97f-70ba-5216-a527-067deda6a94e@gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 30 Mar 2023 00:33:20 +0200
+Message-ID: <CANiq72n=B+OTU+gp6bVExvxhqFiuT=0A7y56AG6A4xSWXG22Gg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] rust: error: Rename to_kernel_errno() -> to_errno()
+To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <alice@ryhl.io>
-From:   y86-dev@protonmail.com
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: [PATCH v3 03/13] rust: types: add `Opaque::raw_get`
-Message-ID: <20230329223239.138757-4-y86-dev@protonmail.com>
-In-Reply-To: <20230329223239.138757-1-y86-dev@protonmail.com>
-References: <20230329223239.138757-1-y86-dev@protonmail.com>
-Feedback-ID: 40624463:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Fox Chen <foxhlchen@gmail.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        asahi@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Benno Lossin <y86-dev@protonmail.com>
+On Wed, Mar 29, 2023 at 8:16=E2=80=AFPM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
+>
+> Ah, yes, they were supposed to have my email with it. I wasn't that
+> livened up when I sent them.
 
-This function mirrors `UnsafeCell::raw_get`. It avoids creating a
-reference and allows solely using raw pointers.
-The `pin-init` API will be using this, since uninitialized memory
-requires raw pointers.
+No problem at all! And thanks for reviewing!
 
-Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
----
- rust/kernel/types.rs | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 9d0fdbc55843..ff2b2fac951d 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -238,6 +238,14 @@ impl<T> Opaque<T> {
-     pub fn get(&self) -> *mut T {
-         UnsafeCell::raw_get(self.0.as_ptr())
-     }
-+
-+    /// Gets the value behind `this`.
-+    ///
-+    /// This function is useful to get access to the value without creatin=
-g intermediate
-+    /// references.
-+    pub const fn raw_get(this: *const Self) -> *mut T {
-+        UnsafeCell::raw_get(this.cast::<UnsafeCell<T>>())
-+    }
- }
-
- /// A sum type that always holds either a value of type `L` or `R`.
---
-2.39.2
-
-
+Cheers,
+Miguel
