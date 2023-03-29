@@ -2,58 +2,104 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA82FC6FD20
-	for <rust-for-linux@archiver.kernel.org>; Fri, 24 Mar 2023 09:09:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE793C74A5B
+	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 11:40:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229938AbjCXJJr (ORCPT
+        id S229612AbjC2Lkp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 24 Mar 2023 05:09:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59822 "EHLO
+        Wed, 29 Mar 2023 07:40:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230011AbjCXJJm (ORCPT
+        with ESMTP id S229459AbjC2Lko (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 24 Mar 2023 05:09:42 -0400
-Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2A851B554
-        for <rust-for-linux@vger.kernel.org>; Fri, 24 Mar 2023 02:09:40 -0700 (PDT)
-Received: by mail.lokoho.com (Postfix, from userid 1001)
-        id 14B308A8BC; Fri, 24 Mar 2023 09:07:55 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
-        t=1679648918; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
-        h=Date:From:To:Subject:From;
-        b=kDxrPS6su73BhjvxlvfWNfppxmNJtKLNGW/vJrO9el3+V6jvuPgLSV4BEbwZYS60z
-         QI/wRH2dKm7wvVHplmsf/Gl1rZzoVS8qKlK8dJTYIszV89JjhklQ4eYEWsGNxwX3da
-         nPFPwWq/8aKu4ll4utHH50gfqExugx36jv0ASwbWCQrQ4Cc4KFaDszyAFo7a5i8vFv
-         8TD0Xnikxph5HWWwmYLzqANOLEfX4Rlv4fwZlZVY83ZXrKry4ZAHZeqYDBUg8ZtOYS
-         5lzrqhsZITJM1H6x4ipgf8547JKQks1EV2v2tkuRotqCnecGkhcWpviYWivqO5Ajkr
-         TyX1MgoyCkMsg==
-Received: by mail.lokoho.com for <rust-for-linux@vger.kernel.org>; Fri, 24 Mar 2023 09:07:23 GMT
-Message-ID: <20230324074501-0.1.4v.1lxvp.0.33neyj5mpc@lokoho.com>
-Date:   Fri, 24 Mar 2023 09:07:23 GMT
-From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.lokoho.com
+        Wed, 29 Mar 2023 07:40:44 -0400
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419239E;
+        Wed, 29 Mar 2023 04:40:42 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: linasend@asahilina.net)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 31D284247C;
+        Wed, 29 Mar 2023 11:40:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+        s=default; t=1680090039;
+        bh=sgkJirkqva0+PxNuqlvJAdh/8AuGnLCXCYPdCELUlwo=;
+        h=From:Subject:Date:To:Cc;
+        b=uifV4TGE4jPUce3MH0xUpkihM9a6blY7pA0w4nuRwCaPdTtmzVfuyZzz+XAy4sgf7
+         3SP9PWvGMVJx9mXxuN9qJucuYn0hyvJj4Z4RiaFVuzsPV6SCIt396KgRS33KW5TMgk
+         AmP08hvqlKjBdTEpHWPYDcJKLjyc4Jwbzu4kb9Q0E919BeW3bh825uXmVrKprPO0Ge
+         T78jgzSxe3ycFXi2l1xmMBNahsA/CHH5UCWkc3DboTGhET0xxXdZjXMVzqSsIz5rIo
+         PtPUhD3RmuKo5vdQKhE13TP93OFLTCDDDbrfNS7FKIwGbDDObX6JO29d5Ef6SrT/O7
+         kIXJ3myU9t5AQ==
+From:   Asahi Lina <lina@asahilina.net>
+Subject: [PATCH 0/2] rust: Add uapi crate
+Date:   Wed, 29 Mar 2023 20:40:17 +0900
+Message-Id: <20230329-rust-uapi-v1-0-ee78f2933726@asahilina.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKIjJGQC/x2N0QqDMAxFf0XyvDKNFdb9yvAhrZkGRpVEx0D89
+ 1UfD/cc7g7GKmzwrHZQ/orJnAs0twrSRHlkJ0NhwBrbusXgdLPVbbSIewTvseFA3YBQ/EjGLir
+ lNJ1F9PfLlTmtn3NflN/yu75e/XH8AZU0bYh7AAAA
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1680090036; l=1778;
+ i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
+ bh=sgkJirkqva0+PxNuqlvJAdh/8AuGnLCXCYPdCELUlwo=;
+ b=JAcBC6InJetx1oLYXbylVQ6zXKv9RfrKEn2QqgZdQHk+Hl+tXDUGrONRmBYZgzAXNfUiEqbyH
+ 3SRCJz6L1WMDOz0AlTX8hP5En++UM7F5E5e6xAYz7VWKLK1EndDLDX2
+X-Developer-Key: i=lina@asahilina.net; a=ed25519;
+ pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+In general, direct bindgen bindings for C kernel APIs are not intended
+to be used by drivers outside of the `kernel` crate. However, some
+drivers do need to interact directly with UAPI definitions to implement
+userspace APIs.
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+Instead of making this an exception to the use of the `bindings` crate,
+introduce a new `uapi` crate that will contain only these publicly
+usable definitions. The build logic mirrors the `bindings` crate, but
+there is no helper support since UAPIs are only intended to contain
+constant and type definitions, not function prototypes.
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+In the future, we would like to extend this to also auto-derive and
+validate certain safety properties for UAPI structure definitions, such
+as that they are safely castable to/from "bag of bits" buffers.
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+The first patch introduces the `uapi` crate proper and stands on its own,
+while the second patch modifies the ioctl crate (which I sent as a
+separate series) to use the new crate. Miguel: if/once everything looks
+good, feel free to merge just patch #1 and I can squash #2 into the ioctl
+crate, or you can squash it yourself, or just merge both series in
+sequence, whatever works ^^
 
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+---
+Asahi Lina (2):
+      rust: uapi: Add UAPI crate
+      rust: ioctl: Move to the uapi crate
+ rust/.gitignore         |  1 +
+ rust/Makefile           | 18 ++++++++++++++++--
+ rust/kernel/ioctl.rs    | 32 ++++++++++++++++----------------
+ rust/kernel/lib.rs      |  1 +
+ rust/uapi/lib.rs        | 27 +++++++++++++++++++++++++++
+ rust/uapi/uapi_helper.h |  9 +++++++++
+ 6 files changed, 70 insertions(+), 18 deletions(-)
+---
+base-commit: 5aa20836252a607ce5d3fa96f9807b56e9f6b1ca
+change-id: 20230329-rust-uapi-894421e9a5d2
 
-Pozdrawiam
-Adam Charachuta
+Thank you,
+~~ Lina
+
