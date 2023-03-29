@@ -2,170 +2,101 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 40B60C6FD18
-	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 15:28:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A99AC6FD18
+	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 18:16:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230358AbjC2P2r (ORCPT
+        id S229459AbjC2SQi (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 29 Mar 2023 11:28:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37750 "EHLO
+        Wed, 29 Mar 2023 14:16:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbjC2P2r (ORCPT
+        with ESMTP id S229695AbjC2SQh (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 29 Mar 2023 11:28:47 -0400
-Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02EC3C15;
-        Wed, 29 Mar 2023 08:28:45 -0700 (PDT)
-Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-17ab3a48158so16613301fac.1;
-        Wed, 29 Mar 2023 08:28:45 -0700 (PDT)
+        Wed, 29 Mar 2023 14:16:37 -0400
+Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3E5649D5;
+        Wed, 29 Mar 2023 11:16:35 -0700 (PDT)
+Received: by mail-ot1-x32c.google.com with SMTP id r40-20020a05683044a800b006a14270bc7eso5339623otv.6;
+        Wed, 29 Mar 2023 11:16:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680103725;
+        d=gmail.com; s=20210112; t=1680113795;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=I/0qYcjpAAKRuBZ39NrE5H4YmMIUNZBowPVzOCdw31g=;
-        b=J0rnh8tOyV6nyKFSNlBg9zhfe5I0kCzHK+GFOHljGYDX8gjKeqf9oqxhlxvkRTwKhp
-         DWjsCE1cwAtxRlM6tnp8MHJJIa6/lb3qcaUPHjHyPVh0YPse8KfH6Kc3sNYz8cJ8aFui
-         +5h8QHvRnm5nl45scpyNuThRzNJ/FS1Uv7BGnzbkRG9XmwSUYcByJj0+OthIIy7Oxahm
-         Xnvll1t8ItqcyRgZInPh8LYZIkvONTn4f125W4c+MtxQM6I/67bLz2XVBkh7Ayw21Ct1
-         3rdaRT8R/wNQRsMu3utuLHd9/GntbCyBp8q/L40pO8ppxswtJYwv2ieBG1NMpmxk8Obv
-         DjNQ==
+        bh=somFh1uhW0pZ9Km2n8zQjRO2r+wUA8O/Rj4+D8ShWV0=;
+        b=HIhTQSyU7RjD/NNa0Sgd3HMaFspLoot1hSfelzXW3lLXeb+gghjEUS9R7gtM+cx+C0
+         cPMUc4+8CAR8JrrtRkh4v2Czk5DS3a9qdb8spGAhvqBrQULEPgAQ0gWTnExC1/+nybxt
+         snjL11AAbXxFxf5Z1RsIO8FLmnQYcyXQr5wib8KJDiLbZJGZDvATIl9CbmGlP4q6vFtL
+         aoBD8Ubz8NGFMYsNJAhGnvpKFR/E43cuCMbSGJCyXJxkIrMA8EIYVxj5vx/S+52GEPaG
+         yDtR+kS+9CiGeD1lxudgIcaiTZS6Y2XLh+VWyWnik3jHjwFJeKmQ3ZsxPGLdclICqsq7
+         ckUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680103725;
+        d=1e100.net; s=20210112; t=1680113795;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I/0qYcjpAAKRuBZ39NrE5H4YmMIUNZBowPVzOCdw31g=;
-        b=60YdMhzUSWZ5WiVWTNyiN0Yt49swJ2TuYSmEGpiNyL9MidVykikUs6e0uGqPEZWHS/
-         jJZRKvNfCDt7nzbpmHldwEU+bTIgs9c69GZS/4F8waJtO5ZTUHWLIX88VeD+l3spKNsK
-         +Olvkr6uDonh00MxOn5vQ7C6Y/nLvvi6VyI6HRrHpus4r8kUKTaGYA+GPegnn6eEb9MH
-         OaM6Q5Ol4sCtk9C7xtwp2EM9jyHJEEQ+Fa1TE2eDkLbXLWY7al9EDbDHHog7tqhp0hSh
-         Qtb8KfFDls8e/YzJFI8KU4r9QeX3Q1efFyYqBRC1L4Fv9023DW+np3z49AvpU5rJ62IV
-         MvyQ==
-X-Gm-Message-State: AO0yUKUPu8WF/C21XHch1ZXPsRtPunzHg6Q8E9eG7WQtK4rt3oFDXLkZ
-        YO/l38I2FwjkFC37fAY4tLYSwi99PQg=
-X-Google-Smtp-Source: AKy350aQWL881y11040LysOhsXi8xeHNH+bEKwS3hawo3395Fo0RPQK9fEmJb1Q1WOdZF/gD4iiDoA==
-X-Received: by 2002:a05:6870:910c:b0:176:3849:4e96 with SMTP id o12-20020a056870910c00b0017638494e96mr13343721oae.13.1680103725182;
-        Wed, 29 Mar 2023 08:28:45 -0700 (PDT)
+        bh=somFh1uhW0pZ9Km2n8zQjRO2r+wUA8O/Rj4+D8ShWV0=;
+        b=RIKdCSctl7nOYcRMZeb4vHVvQAY6TCuIbnto36oBKQn5AAwkQHEPQk2gJq62smksAe
+         3CzZu5Wp2a6rZwrJ74YsYF8k6iMryJ9ma87jj1GP4fLIKIfNXg7LVS8GuP6g03ji/TXN
+         FvB6eooCjbOMfxrp2tnkpAPtNX0S82psfE+TuITbR4rZTUI5Owe7DDWvB1CeIi+klWD3
+         iV4EGt6wt4Yu4Nuo1JdNaH3FSRQ62wp+rmPDR3YTYqA+ACLaB+5cp7QzsRH8sVcqNX6J
+         h77zzSWST5f70v/XsHG8c9wejfI9iDKHOwCTGjX0WszggId5TMO2x/6CnFv7Po4zElBx
+         8mhg==
+X-Gm-Message-State: AAQBX9dTdRjmQiNYDE5SOagQm4AH2jPIsF4FMc3PYiwwjYwji6lsdL9I
+        GZRL+47oFSVS3DXOlfCs0v0=
+X-Google-Smtp-Source: AK7set9t1ky4C84DCB0Oa9W5iSm8eMk1sho1/wGcP0jut+StvjNl5/Wwed9jFJUtSLvjILKMX92JiQ==
+X-Received: by 2002:a9d:7e96:0:b0:69d:d4f4:733d with SMTP id m22-20020a9d7e96000000b0069dd4f4733dmr9367901otp.4.1680113795235;
+        Wed, 29 Mar 2023 11:16:35 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id p16-20020a9d76d0000000b0068bd922a244sm14328829otl.20.2023.03.29.08.28.42
+        by smtp.gmail.com with ESMTPSA id a12-20020a056830008c00b006a11de6cd02sm5663072oto.34.2023.03.29.11.16.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Mar 2023 08:28:44 -0700 (PDT)
-Message-ID: <859172d0-062b-82ba-4df6-e10851b69b31@gmail.com>
-Date:   Wed, 29 Mar 2023 12:28:41 -0300
+        Wed, 29 Mar 2023 11:16:34 -0700 (PDT)
+Message-ID: <2a10a97f-70ba-5216-a527-067deda6a94e@gmail.com>
+Date:   Wed, 29 Mar 2023 15:16:30 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCH 2/2] rust: ioctl: Move to the uapi crate
+Subject: Re: [PATCH v2 1/6] rust: error: Rename to_kernel_errno() ->
+ to_errno()
 Content-Language: en-US
-To:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Fox Chen <foxhlchen@gmail.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         asahi@lists.linux.dev
-References: <20230329-rust-uapi-v1-0-ee78f2933726@asahilina.net>
- <20230329-rust-uapi-v1-2-ee78f2933726@asahilina.net>
+References: <20230224-rust-error-v2-0-3900319812da@asahilina.net>
+ <20230224-rust-error-v2-1-3900319812da@asahilina.net>
+ <0849f870-2d95-8c3a-c7dc-2b18dcee4c65@gmail.com>
+ <CANiq72ko9tY4dsK9Srte2oYQp8G=PMyLDTOR33-yNTVXmfyzeA@mail.gmail.com>
 From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230329-rust-uapi-v1-2-ee78f2933726@asahilina.net>
+In-Reply-To: <CANiq72ko9tY4dsK9Srte2oYQp8G=PMyLDTOR33-yNTVXmfyzeA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 3/29/23 08:40, Asahi Lina wrote:
-> Now that we have the uapi crate, this abstraction can use that instead
-> of bindings.
+On 3/29/23 12:04, Miguel Ojeda wrote:
+> On Wed, Mar 29, 2023 at 4:47 PM Martin Rodriguez Reboredo
+> <yakoyoku@gmail.com> wrote:
+>>
+>> Reviewed-by: Martin Rodriguez Reboredo
 > 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> ---
->  rust/kernel/ioctl.rs | 32 ++++++++++++++++----------------
->  1 file changed, 16 insertions(+), 16 deletions(-)
+> These (in the different patches) are supposed to have
+> <yakoyoku@gmail.com> email when I take them, right? (no need to resend
+> them)
 > 
-> diff --git a/rust/kernel/ioctl.rs b/rust/kernel/ioctl.rs
-> index b2076113b6a8..007437959395 100644
-> --- a/rust/kernel/ioctl.rs
-> +++ b/rust/kernel/ioctl.rs
-> @@ -10,40 +10,40 @@ use crate::build_assert;
->  /// Build an ioctl number, analogous to the C macro of the same name.
->  #[inline(always)]
->  const fn _IOC(dir: u32, ty: u32, nr: u32, size: usize) -> u32 {
-> -    build_assert!(dir <= bindings::_IOC_DIRMASK);
-> -    build_assert!(ty <= bindings::_IOC_TYPEMASK);
-> -    build_assert!(nr <= bindings::_IOC_NRMASK);
-> -    build_assert!(size <= (bindings::_IOC_SIZEMASK as usize));
-> +    build_assert!(dir <= uapi::_IOC_DIRMASK);
-> +    build_assert!(ty <= uapi::_IOC_TYPEMASK);
-> +    build_assert!(nr <= uapi::_IOC_NRMASK);
-> +    build_assert!(size <= (uapi::_IOC_SIZEMASK as usize));
->  
-> -    (dir << bindings::_IOC_DIRSHIFT)
-> -        | (ty << bindings::_IOC_TYPESHIFT)
-> -        | (nr << bindings::_IOC_NRSHIFT)
-> -        | ((size as u32) << bindings::_IOC_SIZESHIFT)
-> +    (dir << uapi::_IOC_DIRSHIFT)
-> +        | (ty << uapi::_IOC_TYPESHIFT)
-> +        | (nr << uapi::_IOC_NRSHIFT)
-> +        | ((size as u32) << uapi::_IOC_SIZESHIFT)
->  }
->  
->  /// Build an ioctl number for an argumentless ioctl.
->  #[inline(always)]
->  pub const fn _IO(ty: u32, nr: u32) -> u32 {
-> -    _IOC(bindings::_IOC_NONE, ty, nr, 0)
-> +    _IOC(uapi::_IOC_NONE, ty, nr, 0)
->  }
->  
->  /// Build an ioctl number for an read-only ioctl.
->  #[inline(always)]
->  pub const fn _IOR<T>(ty: u32, nr: u32) -> u32 {
-> -    _IOC(bindings::_IOC_READ, ty, nr, core::mem::size_of::<T>())
-> +    _IOC(uapi::_IOC_READ, ty, nr, core::mem::size_of::<T>())
->  }
->  
->  /// Build an ioctl number for an write-only ioctl.
->  #[inline(always)]
->  pub const fn _IOW<T>(ty: u32, nr: u32) -> u32 {
-> -    _IOC(bindings::_IOC_WRITE, ty, nr, core::mem::size_of::<T>())
-> +    _IOC(uapi::_IOC_WRITE, ty, nr, core::mem::size_of::<T>())
->  }
->  
->  /// Build an ioctl number for a read-write ioctl.
->  #[inline(always)]
->  pub const fn _IOWR<T>(ty: u32, nr: u32) -> u32 {
->      _IOC(
-> -        bindings::_IOC_READ | bindings::_IOC_WRITE,
-> +        uapi::_IOC_READ | uapi::_IOC_WRITE,
->          ty,
->          nr,
->          core::mem::size_of::<T>(),
-> @@ -52,20 +52,20 @@ pub const fn _IOWR<T>(ty: u32, nr: u32) -> u32 {
->  
->  /// Get the ioctl direction from an ioctl number.
->  pub const fn _IOC_DIR(nr: u32) -> u32 {
-> -    (nr >> bindings::_IOC_DIRSHIFT) & bindings::_IOC_DIRMASK
-> +    (nr >> uapi::_IOC_DIRSHIFT) & uapi::_IOC_DIRMASK
->  }
->  
->  /// Get the ioctl type from an ioctl number.
->  pub const fn _IOC_TYPE(nr: u32) -> u32 {
-> -    (nr >> bindings::_IOC_TYPESHIFT) & bindings::_IOC_TYPEMASK
-> +    (nr >> uapi::_IOC_TYPESHIFT) & uapi::_IOC_TYPEMASK
->  }
->  
->  /// Get the ioctl number from an ioctl number.
->  pub const fn _IOC_NR(nr: u32) -> u32 {
-> -    (nr >> bindings::_IOC_NRSHIFT) & bindings::_IOC_NRMASK
-> +    (nr >> uapi::_IOC_NRSHIFT) & uapi::_IOC_NRMASK
->  }
->  
->  /// Get the ioctl size from an ioctl number.
->  pub const fn _IOC_SIZE(nr: u32) -> usize {
-> -    ((nr >> bindings::_IOC_SIZESHIFT) & bindings::_IOC_SIZEMASK) as usize
-> +    ((nr >> uapi::_IOC_SIZESHIFT) & uapi::_IOC_SIZEMASK) as usize
->  }
-> 
+> Cheers,
+> Miguel
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Ah, yes, they were supposed to have my email with it. I wasn't that
+livened up when I sent them.
+
+Thanks
+-> Martin
