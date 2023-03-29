@@ -2,49 +2,46 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 52A07C761A6
-	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 12:04:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AF4CC6FD18
+	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 12:04:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229485AbjC2MEs (ORCPT
+        id S229999AbjC2MEt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 29 Mar 2023 08:04:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43052 "EHLO
+        Wed, 29 Mar 2023 08:04:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229870AbjC2MEr (ORCPT
+        with ESMTP id S229750AbjC2MEs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 29 Mar 2023 08:04:47 -0400
+        Wed, 29 Mar 2023 08:04:48 -0400
 Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1613EC0;
-        Wed, 29 Mar 2023 05:04:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEFC4C0;
+        Wed, 29 Mar 2023 05:04:47 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: linasend@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id DAB2E41F46;
-        Wed, 29 Mar 2023 12:04:38 +0000 (UTC)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id DF14441F98;
+        Wed, 29 Mar 2023 12:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1680091482;
-        bh=Yfc+fy732lyQt6gGO91ACOiJTuz48vubsBwwxur11wo=;
-        h=From:Subject:Date:To:Cc;
-        b=RZsZOcVUZ0d9GrN3HSV+yS/VF+QXLp1kfu39MoxlhGN/tRe9g3HF5clXxWd5+sQ1D
-         6l/135hq9v87EpOrWZAlv0m2h4hNj0X2TnveirP86Yjxzdz5c0dJI+q8PrdBfvm9op
-         54Tfj5rPOtnfESJG8aOIewkmrt4YRKHP076/w6cHbUYHfCzhqXJMewFvU5EJeluIX/
-         frhEMujTHtLk8RNStmsrS7EdwqCyjyew9dPZGXZbT8IQr0O2rUfcr35BPvS767ZOHJ
-         xEwO8iFFUJVccSY7IspXmc2U/qNwlZIgSxHD8HyhoHImm8ke6w3DQ4iIkMbJQeV1ud
-         sNpQKnmR3sEtQ==
+        s=default; t=1680091486;
+        bh=7wja8b7e1cR7sIIhKDHqBGrFHH4ZjjMoaG3eC2S/l8g=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=LkP9Ew+YkGZHBzX3b2qYbkE7xE0CHA/iZmwS4N+CxN7LgjWneIu9PHW5BFwVvChfx
+         004xcRMCJ9EmycJwq1YC7TsehLfdcq5z0BR/EBb6xlotuU6Dwt0cYsjj+zM0vwYCd4
+         A78F7/TuXmCFRUnvkgv0JTWx+uVVt3dijOdkNp6jva+WSSG/9qlmq9U0n+Ql6E1msi
+         j1md0IBdYgcyQP+ksBGqWNgWgijcaOFAoxdUbyKFzBwWXWLdQNfZKVH8jpJJBJ7V5f
+         bHJtjnH4WBsb9chQsRPvS+4bb4wBvGFK0fH1NtFFZYPMob4Jy9RaaL5b1RzBnHNpMe
+         gAn2Z/VKBNwVQ==
 From:   Asahi Lina <lina@asahilina.net>
-Subject: [PATCH v2 0/6] rust: error: Add missing wrappers to convert
- to/from kernel error codes
-Date:   Wed, 29 Mar 2023 21:04:32 +0900
-Message-Id: <20230224-rust-error-v2-0-3900319812da@asahilina.net>
+Date:   Wed, 29 Mar 2023 21:04:33 +0900
+Subject: [PATCH v2 1/6] rust: error: Rename to_kernel_errno() -> to_errno()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFApJGQC/22NywrCMBBFf0WydkoeYltX/od0MY0TMyCpTGpQS
- v/dtGuX514OZ1GZhCmry2FRQoUzT6mCPR6Uj5geBHyvrKy2Tlt7AnnnGUhkEgi2a00Yfa/boKo
- wYiYYBZOPm1LOjQPxZrteQoE/e+c2VI6c50m+e7aYbf1bKAY0hC702GPXOu2umDHykxM2iWY1r
- Ov6A000rsTDAAAA
+Message-Id: <20230224-rust-error-v2-1-3900319812da@asahilina.net>
+References: <20230224-rust-error-v2-0-3900319812da@asahilina.net>
+In-Reply-To: <20230224-rust-error-v2-0-3900319812da@asahilina.net>
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -57,80 +54,53 @@ Cc:     Fox Chen <foxhlchen@gmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>
 X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1680091478; l=2539;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1680091478; l=1196;
  i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
- bh=Yfc+fy732lyQt6gGO91ACOiJTuz48vubsBwwxur11wo=;
- b=8VE+1hLmLEQnXlFMHNZhxNihXuC0OkabmAzruuyZSoUBNOiSuZ+ZUQRAg8jRCuemCmMlA2u6y
- Q+qrzSX3jGGCk8KWS1XACLzHsbSjen8KmmkIl+iBu49gaX4kKzYyUO5
+ bh=7wja8b7e1cR7sIIhKDHqBGrFHH4ZjjMoaG3eC2S/l8g=;
+ b=kne0zLSHrTRwLBNWWdJZlyhEqojrap6mEiUNwT9Hya5xcb05TI6ZxL69UCWKZQx6xmRUYUVM3
+ Jzl9RWFoI49D0aF6WsvriRs9AcTLEXYceVVElED7tqThMqYoX15j38o
 X-Developer-Key: i=lina@asahilina.net; a=ed25519;
  pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi everyone!
-
-This series is part of the set of dependencies for the drm/asahi
-Apple M1/M2 GPU driver.
-
-It adds a bunch of missing wrappers in kernel::error, which are useful
-to convert to/from kernel error codes. Since these will be used by many
-abstractions coming up soon, I think it makes sense to merge them as
-soon as possible instead of bundling them with the first user. Hence,
-they have allow() tags to silence dead code warnings. These can be
-removed as soon as the first user is in the kernel crate.
-
-Getting this in first allows the subsequent abstractions to be merged in
-any order, so we don't have to worry about piecewise rebasing and fixing
-conflicts in the Error wrappers. See [1] for a complete tree with the DRM
-abstractions and all other miscellaneous work-in-progress prerequisites
-rebased on top of mainline.
-
-Most of these have been extracted from the rust-for-linux/rust branch,
-with author attribution to the first/primary author and Co-developed-by:
-for everyone else who touched the code.
-
-Attribution changes:
-- One of the patches had Miguel's old email in the tags, updated that per
-  his request.
-- Wedson's email changed from @google.com to @gmail.com (I understand
-  this is the current one).
-
-Sven: There is one patch from you in this series, do you want to send it
-yourself directly? I understand Wedson and Miguel are okay with me
-sending stuff on their behalf.
-
-[1] https://github.com/Rust-for-Linux/linux/pull/969/commits
+This is kernel code, so specifying "kernel" is redundant. Let's simplify
+things and just call it to_errno().
 
 Signed-off-by: Asahi Lina <lina@asahilina.net>
 ---
-Changes in v2:
-- Removed the redundant _kernel from various function names.
-- Replaced the from_result!{} macro with a from_result() function taking a closure.
-- Link to v1: https://lore.kernel.org/r/20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net
+ rust/kernel/error.rs  | 2 +-
+ rust/macros/module.rs | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
----
-Asahi Lina (2):
-      rust: error: Rename to_kernel_errno() -> to_errno()
-      rust: error: Add Error::to_ptr()
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 5b9751d7ff1d..35894fa35efe 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -73,7 +73,7 @@ pub struct Error(core::ffi::c_int);
+ 
+ impl Error {
+     /// Returns the kernel error code.
+-    pub fn to_kernel_errno(self) -> core::ffi::c_int {
++    pub fn to_errno(self) -> core::ffi::c_int {
+         self.0
+     }
+ }
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index a7e363c2b044..143336543866 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -258,7 +258,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+                         return 0;
+                     }}
+                     Err(e) => {{
+-                        return e.to_kernel_errno();
++                        return e.to_errno();
+                     }}
+                 }}
+             }}
 
-Miguel Ojeda (1):
-      rust: error: Add Error::from_errno()
-
-Sven Van Asbroeck (1):
-      rust: error: Add a helper to convert a C ERR_PTR to a `Result`
-
-Wedson Almeida Filho (2):
-      rust: error: Add to_result() helper
-      rust: error: Add from_result() helper
- rust/helpers.c        |  19 ++++++++
- rust/kernel/error.rs  | 126 +++++++++++++++++++++++++++++++++++++++++++++++++-
- rust/macros/module.rs |   2 +-
- 3 files changed, 145 insertions(+), 2 deletions(-)
----
-base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
-change-id: 20230224-rust-error-f2871fbc907f
-
-Thank you,
-~~ Lina
+-- 
+2.40.0
 
