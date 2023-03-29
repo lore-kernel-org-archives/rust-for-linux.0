@@ -2,49 +2,49 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FDC7C74A5B
-	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 20:36:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D205C74A5B
+	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 20:42:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229705AbjC2Ug2 (ORCPT
+        id S229781AbjC2Ump (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 29 Mar 2023 16:36:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45514 "EHLO
+        Wed, 29 Mar 2023 16:42:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229764AbjC2UgS (ORCPT
+        with ESMTP id S229682AbjC2Ump (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 29 Mar 2023 16:36:18 -0400
-Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2115.outbound.protection.outlook.com [40.107.11.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C07F45FC8;
-        Wed, 29 Mar 2023 13:36:17 -0700 (PDT)
+        Wed, 29 Mar 2023 16:42:45 -0400
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2139.outbound.protection.outlook.com [40.107.11.139])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CD065BAB;
+        Wed, 29 Mar 2023 13:42:43 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iSi8+VTvHayGRLho1YzQBNlJEeGq+7OJsE6YgPCysE3HIeYUCShZVmj5wtaF8MA5kDhUOgXOMimcjjbWywwtqMHuKEbx0g0jTiPkkwazr9dPJt91u9/ApeRj0SmuFkoJNMydK2JtX48we7qrBoVAbFPEr9+grsJ5lXp5nlK/NueZidPUU03EKyii/V8JnRqhZPFIQL9aFdp95yGO5jcb9wJuiodXB55mfcif7zcCHvPsgfcwlZZJ7DL64y5ucFA96GVfg8YUMzhyCwqDB/7bagNVHZJZFSXcMqDjcfyQ3kCANkglZaoc/GaU87WIJGqMsWwXrA5gO949GEqdionOIg==
+ b=lBwE3YcKx9yat3yLcMhCllJbYBpD8hyumC+SQHBJYNmQtbJJistkUoydzIryWyQyOEDBRxNXZhRX1aQmU+dzVensOPwDV4AcOLyN4vNfk+6oVDNlrwK3FDT3kAYBLcz29RPlAw5DDgOo47vEAqGnZJDRokAj7UU5KavVhjBvNQ8n3gb8LNFUeVV/wDGOVN6EWck2JiJfSwH34HcibUrxum0kV9gJXle83JWf7zcUJ6UjQ2uBNUaN0O8Ak9ZFg+4a8W4ZH1vuNs75SFTMFtALIyEQJb/cY6LOAA/aNkOB9P4ob1vIgzQlUvXNXxUY0N4o7g00pJHnBtzBxqZregQ9vA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o7bcpjhXazC8pVFSGyi6u1MPpHHra4Nrwlf8jhfH3VI=;
- b=QypME55x7N9R4xrH04hYXAsb+ALfllZ7ZEQKGtPi7fMg63KHNpsJ1vRplZOb++t3r5ey8aM6oqIXvgeu6/I0Mwy/0qIa+pQYuttuQPj+w+unbvizZSBmvyTBOCE3NxA3vYP5JoK13jU054lUDIEVWwMZD7zWA3lXIV3iSh7ria5G2zy7zzp/5mOavAaljwbxuTZh+9lBCdc8Ak4d4BoXgPGk1D3KJ5g28Lj26DVw71CrQWGZBsI7cMz5UE0o2l5DbSecx2Wv8rzv9rIYZxjh88Qlfspg6iBemZlKvZ7ig98k9foyPZs2EAA47A0BE/wcxdINfiyHbZON28zOs5nJ/w==
+ bh=5IkwpJYO4PenG5tOM021SXA2uj0ZLR/vmXrfJIFG/kY=;
+ b=ZP1imgws7g9XRDaGDEkpmQ+UzR3hOVWCn3+PSW/RxePY9mTv/J/WjT9vvQ+uMHKtpOJlkhmx2hWyr/vm+q/yFMa9Ztwd17i2K5VNZf+UJbJdMbXBBJbuh9BHLPvqMzx/dqK8gonjiP5fCuYZVu6A/+fwZ3uq9sIjoj7oLgLD9TmZE7CFVFm/dujdUIudapOsQAs44hqEwzzyMzMlPHREf+vMvzvVfgPdIKiwoHi7yev0XVkLzNtlkBAU90YIr9teLZmMiJFrZuA41B2YOBzpsOsqTKqZjgKVg4q2WeQNNDsIK2zRWQY572hpO1Ix++sjSITi1TJjZqsHhRWFYIvwMw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o7bcpjhXazC8pVFSGyi6u1MPpHHra4Nrwlf8jhfH3VI=;
- b=L66HwaybGvkMZy/JmgFR8EZQm3yDS4Wo6ZWwRGVHeCcXXlZuy6F18MxLxyJO9dvnbtxtHW6nXpuFu50mqaxA06TGsEc6qDplFjX5jUGQamva9cqdm17e7Ae0lqe8fpiruq70P/l5Giewz7dLTjGb0hLUDbau9p8d2104yrJgQ1M=
+ bh=5IkwpJYO4PenG5tOM021SXA2uj0ZLR/vmXrfJIFG/kY=;
+ b=BWFczot6odW/NOeAsz/2BDN2m4yreO+atoZAiTbVnpFdJ44PNVTpJIxRjyZMNVmHrFgkOp6mhuCWIqxFbHlDyJqWSHcJk+xDqX8KKfnJtgZbzK7IQzOZtmUv59Q/LDvree0UMOwhuJle7v0q9FozMvvwAb05mLUsBGNSzDeUcm4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO6P265MB5984.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2a5::5) with
+ by CWLP265MB7163.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1f3::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6222.33; Wed, 29 Mar
- 2023 20:36:15 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6222.35; Wed, 29 Mar
+ 2023 20:42:41 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::2f2a:55d4:ea1d:dece]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::2f2a:55d4:ea1d:dece%4]) with mapi id 15.20.6222.035; Wed, 29 Mar 2023
- 20:36:15 +0000
-Date:   Wed, 29 Mar 2023 21:36:14 +0100
+ 20:42:41 +0000
+Date:   Wed, 29 Mar 2023 21:42:39 +0100
 From:   Gary Guo <gary@garyguo.net>
-To:     Asahi Lina <lina@asahilina.net>
+To:     Asahi Lina <lina@asahilina.net>, asahi@lists.linux.dev
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -54,108 +54,200 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Fox Chen <foxhlchen@gmail.com>,
         Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
         Andreas Hindborg <a.hindborg@samsung.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev
-Subject: Re: [PATCH v2 4/6] rust: error: Add to_result() helper
-Message-ID: <20230329213614.5fa23dba.gary@garyguo.net>
-In-Reply-To: <20230224-rust-error-v2-4-3900319812da@asahilina.net>
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 5/6] rust: error: Add a helper to convert a C ERR_PTR
+ to a `Result`
+Message-ID: <20230329214239.6a19825a.gary@garyguo.net>
+In-Reply-To: <20230224-rust-error-v2-5-3900319812da@asahilina.net>
 References: <20230224-rust-error-v2-0-3900319812da@asahilina.net>
-        <20230224-rust-error-v2-4-3900319812da@asahilina.net>
+        <20230224-rust-error-v2-5-3900319812da@asahilina.net>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0053.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ac::19) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P123CA0474.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a8::11) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO6P265MB5984:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4316ca1-2949-473a-f71e-08db30953e51
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB7163:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67670cb9-e25d-43b8-15db-08db309623fd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vCyRxCh//wneacHOC6o8Ctpmp7eeKGcdA2ZehcmNroNJEfkKxJ8zfN5HLmwNVXfSQM2BJKCvxpmwTWhVBCuUh9e0iMwA2tIX2TuNfjUNPXtdOgxmwl+FlWOuvEz8a6qCIvWwxUfb6SvhkTXRzb93Mag43OZZHrAMt7MDdKYwC28WzKHXB1t6Aj0qb74OhlpnRkjMlyKa3P6vh4PFtvEg+3G0laTvgP1wScVpebLLpQkBkozJ6smkPkWwI8rc4N6+2iA1e8NCkff92x7rW2nfbMEeBjtKX6X59UHtHmEzLKXjH+LUSXWM3kGe4LGZSGuLxynf9OxpguJtBGE0XsH1Lt+j3Ej46FJgm4vUPlq2mXJ2YEPV8j3sKx5IH08VNLJOKQEWqbPPhmFAxuueQZMr2DfZ7KBQMpKz6tTI2+aLnvjoOfyBndFyDxKdh+gkfHCZQ0fslzIirNsxINHeD1URoJOOIfvuCG7tsOXG1qrvhnnE2s2KPBXdzEm1qZU4sWa5EbPDveinuFN9Zcss+HJ2+0IYO5bCVnfjKLZnKYu695o7jsqrRJFC2ET4pCYWD1dr
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(366004)(376002)(346002)(136003)(39830400003)(396003)(451199021)(6486002)(478600001)(6506007)(6512007)(54906003)(186003)(4326008)(5660300002)(41300700001)(2616005)(8936002)(7416002)(2906002)(1076003)(26005)(316002)(38100700002)(66946007)(66556008)(36756003)(8676002)(66476007)(6916009)(86362001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: savEbAEgcVRUl2VP73vaD2PkyVyF0qXZuZuyxkiAGbA9+EL1nYLdjcZxvKkMEJuFLelEgWpXjstKameLMHsBZb0bgXkA5mRbQN6JNW/iWaeFm+lEpKUKYORU1qmrGzBeLWsnEzLisB6hfNwgdjbc3Ozjc98tgtyPlbJHR3Wa0NUKF24d+uJ5uDpNtKzl9e1NN/xBLTmZhx9sNGkfKwbqwK/NvCy4uyDYdZIcjEoQfR1bQZ+OpQCw+FXMLKwtSyyBqxLT4mDJQ506YiCwYbhjK/LgyPWClOoAC6sfYdWw43C8G4f38RFofRX6KZdPNcc39xrlQwbvWxZ3qYLE4AnUi1QY5QOlqYdN9YUCnZm7QWTEyoaUFw8bWU75/ecxzvjxGbuYpb4CoOm9nVIXx6JPRqpICMAmMIY/Lk6qpve5kbvfjTuTiuH86t8hk1UAp+gVgkYE43NRokNIDBwurfj9blAxYKrHmRqzlA9ZEadQ1DqVfZX4fquAmviHH0AFq+qwYPGXZpbiP72pzumBTDaAvw789unj4ZrPReZITl+TWruzN+pGhFRQIaUwS0glHwBIG+F9xN8nvSenr8r4oW/QtMZwmAQo0QiPLBYkribj2vw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(396003)(346002)(366004)(39830400003)(376002)(136003)(451199021)(6506007)(26005)(1076003)(7416002)(6486002)(38100700002)(186003)(2616005)(8936002)(2906002)(5660300002)(6512007)(8676002)(66556008)(478600001)(316002)(36756003)(54906003)(41300700001)(86362001)(66476007)(66946007)(4326008)(83380400001)(81973001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?n0+5Rv+NtAVn2fLyvdYm72pde9B/fSkj9NWbHnU4UUgvjqcJLJo88Lqaza6v?=
- =?us-ascii?Q?cWj3gf6LH5b10Fpp3AprQs2crHhXeh6z7YGjyx+7lSjADXiNVilu/tvFT4ub?=
- =?us-ascii?Q?0tP8/Ncn8/HY9dsSVVt2TGD5JqR46fltDbeSgQWZhlH0f+Z4uxLYg8fpuXnl?=
- =?us-ascii?Q?e4K20tDOZtpSSDkTXnaK4Lui+14d2VAMbCKIYgxhNAAWejmCZvIpw2pEZXSH?=
- =?us-ascii?Q?oqLp9O/h0Pe/m7bvJfUbRUhV5Ju71e2ogmPlM/4HzRAr3gDpahMy3hq4JJuy?=
- =?us-ascii?Q?tXoqbvA0no8jH3ucOu997tczRpmGWmmixeEFd1cIVg6FK1q2A4UZ5T5iRXNA?=
- =?us-ascii?Q?h4YsWANjQTZ88eYjrA2+zuR6Dn4uFrJxRZXfsPc4eguPIml8NwQbZ6HAwaOI?=
- =?us-ascii?Q?5LSdk6FJXL0poB2G/QNlUbcGS5GKGmTGWAtNyrBnc43FtnIllRH2AJ533Vgk?=
- =?us-ascii?Q?UyMyoi+NDc912PGzN2AhRl4V9c5tbWdox+YWNI6vAuT8e+gH51jYegCbPHZy?=
- =?us-ascii?Q?/I8JvssAEfol2DGbSXxSzlWCYqMGXMK1WLjwB45hjjZlmmkycwqTsLOyc4K1?=
- =?us-ascii?Q?Py6bS0FaAERA1jhsFqaeSeE0I1bNVnmFtZJfa90UsyeTPZ1X+mPIdu4G13ZP?=
- =?us-ascii?Q?SWUMqiQCJy60EvsOeAM+hbXZUiFRy7l6TigaQvUBV5J7ci6PZ+Fl5xncMMuj?=
- =?us-ascii?Q?EQvtpcJNi/qpPnpNqtfu/TPpc2X2V1sCYb3pTZIn93DiBdOvnKxlclUNA/U+?=
- =?us-ascii?Q?V9cPjhJJ/+bSX6Q6wKfxx8C8WXqhfEVBCKeHJqlFSbKRdV4ktgLF0IXG75wd?=
- =?us-ascii?Q?Ogg3Twrqzve9m8rr2R86iIHnauzck4eCdf6DZQDkryXWVN+S7Wf5guJ+qmX/?=
- =?us-ascii?Q?Cwd9NfKovDCGLGlFlmsAovnYkVASFcubj3qJU6Mk5nyv5twY4yeb3yUO5bMK?=
- =?us-ascii?Q?LCqOcPlPZydcsxpOO+h/0iQWgXNKoiA8Vtv7NnyIRqt23PEEeh3LWErs7AMG?=
- =?us-ascii?Q?L9U+lx/TmfXRTEaMpD6fXppAZaFJNwKuXVtGRGafnbw+QIUbkl6bJ6iuDZzY?=
- =?us-ascii?Q?SkzWnztwvOipCEX+1OvuHcCIyLi2OFTsF5R8iYQpQ7lPhCg1TXw9Fot0zvVY?=
- =?us-ascii?Q?Y1ISpnyuimJRSUVOVDXWfO9rosshpFXfKyHgPUfXCSPtSctXWnnnwRz8JwXf?=
- =?us-ascii?Q?/U49BjZBzqbHn55BBmo1pomYYtC6WE/26WIuXV30FGKm8UlA+baOVnfL+vU4?=
- =?us-ascii?Q?KZ5sDmmZqn7Vrrk0expIj+DLNrKqBsA9Azi+/IjOT4jJvr5mf58QNxlQK8DK?=
- =?us-ascii?Q?X/spTeiqhXT5U3PjnaWWaJrijigbw9rZ0NT9KFYUEpqHi0kgFeNdRqjine9Q?=
- =?us-ascii?Q?CDllALUIiyq/3S4HrJq+MKBSjFKSDuAU2rg/btqBTy1Cx6xZB7sOMFwDEc6+?=
- =?us-ascii?Q?hEahakzFe3AqiFrOfxO1ImVKFbolQ0Vz+yQFzwjxwDPYtTLBOlB1W0jep4nY?=
- =?us-ascii?Q?wZPs8MVhe+dZeNeZKlnETS+3BQV4Rb8PIqoW5R5GmTEWt/7ZodS27GMvugnH?=
- =?us-ascii?Q?XVBhG/DPikdNA6s6nOiLlkq4xkVm8P1o+repEeJn?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?9rktulCcuXSC6EP1Zat3NQPmEyshTRG0tTRDr2QA0SW87DOF9JlTA70c9g2q?=
+ =?us-ascii?Q?u54zDp24KSwybTPsAmTe6nyO5I0Dn0KQhEWl7P1G8zL7Nnd7OC76TDH2JPxx?=
+ =?us-ascii?Q?LLZTCxMsAJlJzIopb93OqvTFjfFQc3iVcqVh4UuAK3wWJnXApka8AnUuNKv6?=
+ =?us-ascii?Q?jJWA5ywhmNiL26aJ21y8FHn/KuFx2OtwxkCvQlORa3c43VRcgLSVW9ic11GE?=
+ =?us-ascii?Q?TKPuoFjQrgayX5mQsluowXQEv5qvjjGVvblznDANi8gSdLTe9sLH4dVK0FmI?=
+ =?us-ascii?Q?RkNZfUa2IohqZfHX7ygQihdzwGeHeWgdziNjvYF4Yhz5feyn1JZme9VW8U3q?=
+ =?us-ascii?Q?BzDYCgdOZy6t+sBN+xVdbMOiqGNdNltVcYvN9vdLcR++/OZQpu9FR54z88DB?=
+ =?us-ascii?Q?nKK9QZN69/tXpjwJJGZJpC5t5HblYQR7zCNYDj1/9NmQn8YMlH9rFfIBJs6t?=
+ =?us-ascii?Q?5DtYreCU7hkFc3yd9OThHbDuNbk0FIcfCuwY27BOYp3DHrNJBlE8RB95kz2K?=
+ =?us-ascii?Q?wE+GJzqQfRUexYux5tl/Hhte5wEsIsYQC7kMIejmuvCLfUca4Ph1zAAExOzF?=
+ =?us-ascii?Q?E3UR++03G1en3HRXC0AiAbqD5iRXiQc+pcrWXDJK0cnFugwickgOvHbsVRQD?=
+ =?us-ascii?Q?1K6am8/iVs1hn4K/5V0mJ/atwx7ggjeYxz8cjCsngcqAl41fJCazopAr4qe+?=
+ =?us-ascii?Q?F4R+VKyMwari/cnKZe4zjkoU0M/Pgiv757XD7OdzHhAlIS249w8lzwAEY92y?=
+ =?us-ascii?Q?U42yOgD8WRHud3O4l46vqGHft8U3DWLQBNlcjaWA6TLol5pA1xzxCfzroXeO?=
+ =?us-ascii?Q?FF5QSAI+jwAKhcneQraElmZdQmGVWqaz+ZioXkwGUfE1wBzhaf8HQgKUhtYQ?=
+ =?us-ascii?Q?G1Fu9+9zAmsUPf4e9KcFWPViUikQEimLeaFe7+J8SHlWdwXjMB0pHgs1JM7f?=
+ =?us-ascii?Q?oD31qWngGyGI5SofkA2FuRQQzuSXTtJzNbCrfCh7muCQ0DrRn9FePVLtb7CH?=
+ =?us-ascii?Q?mzSuhkLRa/Ydp+pQ6UH3rMnyMhNcftnyHGwgt9qCd1qKB1+WR7FZfKVdiNpE?=
+ =?us-ascii?Q?an+XjwHpskOnP9+pwyeCQRlV4j6YX0kt0zyHYJVuomksFyRQIbwGu0Au4/AA?=
+ =?us-ascii?Q?U2U7fJQsdkFVvbN9Ddw1izXrSggGOswBdE+PDMZs6O2o8U5F28ZaoLe+XYnp?=
+ =?us-ascii?Q?UUnDvT0myPvijTxjvJOUFdEXOt9VOqwo2UCiu9YyQtkGjTAP8bqHhz5RVHh9?=
+ =?us-ascii?Q?Xgi1TnLgM24CzurObS82Mw1qqfei5Npk5KKRTxVgeLLOO0UUHqeR9A4khNbW?=
+ =?us-ascii?Q?GFUWMmCdORrDnuRqF4igkmj0bcRWuRv3vCHqLgC2P4Hza77uqtetp+zvbpL+?=
+ =?us-ascii?Q?V8gEVfkWNzV0PdWXNvJNhDzWct5HegcEtgZ9nlDWHBnouCgkYP5LU9vQuTLj?=
+ =?us-ascii?Q?dG6b0uT7AHh+vtPYmlLwojpsrcEo70JfwJms+HvkF1hWGKgtQ6nhAjg7Wuov?=
+ =?us-ascii?Q?5Mek0Nbe9RsxtAOeZ1RCjMQaBQRd2LCCKwDTTZjCvt9K/qnrQiSRJ4SJ/7Vd?=
+ =?us-ascii?Q?M3cQOQCzkYkcLJFLom3gSdO6vAliMTK2QPge/ryX?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4316ca1-2949-473a-f71e-08db30953e51
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67670cb9-e25d-43b8-15db-08db309623fd
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2023 20:36:15.7969
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2023 20:42:41.1485
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Axv7ttGaZb7PLgYLwbUO3+fM73QjKHg68DDc5yYIZvuegOknKnEbq8kyPfTTkVbkmWyPWGdbDc9rmCh2ZkaCig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB5984
+X-MS-Exchange-CrossTenant-UserPrincipalName: Mv5xk3BsVyQpeeJ1FS033NM6m72o3TIW14vsxhKR1pnsld92XoNnspEIiOq+2K2ZqVfHH2Y5SVopGqruzEE3Nw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7163
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, 29 Mar 2023 21:04:36 +0900
+On Wed, 29 Mar 2023 21:04:37 +0900
 Asahi Lina <lina@asahilina.net> wrote:
 
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
+> From: Sven Van Asbroeck <thesven73@gmail.com>
 > 
-> Add a to_result() helper to convert kernel C return values to a Rust
-> Result, mapping >=0 values to Ok(()) and negative values to Err(...),
-> with Error::from_errno() ensuring that the errno is within range.
+> Some kernel C API functions return a pointer which embeds an optional
+> `errno`. Callers are supposed to check the returned pointer with
+> `IS_ERR()` and if this returns `true`, retrieve the `errno` using
+> `PTR_ERR()`.
 > 
-> Lina: Imported from rust-for-linux/rust, originally developed by Wedson
-> as part of the AMBA device driver support.
+> Create a Rust helper function to implement the Rust equivalent:
+> transform a `*mut T` to `Result<*mut T>`.
 > 
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+> Lina: Imported from rust-for-linux/linux, with subsequent refactoring
+> and contributions squashed in and attributed below. Replaced usage of
+> from_kernel_errno_unchecked() with an open-coded constructor, since this
+> is the only user anyway. Renamed the function to from_err_ptr().
+> 
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Co-developed-by: Fox Chen <foxhlchen@gmail.com>
+> Signed-off-by: Fox Chen <foxhlchen@gmail.com>
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Sven Van Asbroeck <thesven73@gmail.com>
 > Signed-off-by: Asahi Lina <lina@asahilina.net>
 > ---
->  rust/kernel/error.rs | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  rust/helpers.c       | 12 ++++++++++++
+>  rust/kernel/error.rs | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 61 insertions(+)
 > 
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 89f4cd1e0df3..04b9be46e887 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -53,6 +53,18 @@ __force void *rust_helper_ERR_PTR(long err)
+>  }
+>  EXPORT_SYMBOL_GPL(rust_helper_ERR_PTR);
+>  
+> +bool rust_helper_IS_ERR(__force const void *ptr)
+> +{
+> +	return IS_ERR(ptr);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_IS_ERR);
+> +
+> +long rust_helper_PTR_ERR(__force const void *ptr)
+> +{
+> +	return PTR_ERR(ptr);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_PTR_ERR);
+> +
+>  /*
+>   * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
+>   * as the Rust `usize` type, so we can use it in contexts where Rust
 > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 659468bd1735..4f599c4d1752 100644
+> index 4f599c4d1752..6b10129075a7 100644
 > --- a/rust/kernel/error.rs
 > +++ b/rust/kernel/error.rs
-> @@ -167,3 +167,13 @@ impl From<core::convert::Infallible> for Error {
->  /// it should still be modeled as returning a `Result` rather than
->  /// just an [`Error`].
->  pub type Result<T = ()> = core::result::Result<T, Error>;
+> @@ -177,3 +177,52 @@ pub fn to_result(err: core::ffi::c_int) -> Result {
+>          Ok(())
+>      }
+>  }
 > +
-> +/// Converts an integer as returned by a C kernel function to an error if it's negative, and
-> +/// `Ok(())` otherwise.
-> +pub fn to_result(err: core::ffi::c_int) -> Result {
-> +    if err < 0 {
-> +        Err(Error::from_errno(err))
-> +    } else {
-> +        Ok(())
+> +/// Transform a kernel "error pointer" to a normal pointer.
+> +///
+> +/// Some kernel C API functions return an "error pointer" which optionally
+> +/// embeds an `errno`. Callers are supposed to check the returned pointer
+> +/// for errors. This function performs the check and converts the "error pointer"
+> +/// to a normal pointer in an idiomatic fashion.
+> +///
+> +/// # Examples
+> +///
+> +/// ```ignore
+> +/// # use kernel::from_err_ptr;
+> +/// # use kernel::bindings;
+> +/// fn devm_platform_ioremap_resource(
+> +///     pdev: &mut PlatformDevice,
+> +///     index: u32,
+> +/// ) -> Result<*mut core::ffi::c_void> {
+> +///     // SAFETY: FFI call.
+> +///     unsafe {
+> +///         from_err_ptr(bindings::devm_platform_ioremap_resource(
+> +///             pdev.to_ptr(),
+> +///             index,
+> +///         ))
+> +///     }
+> +/// }
+> +/// ```
+> +// TODO: Remove `dead_code` marker once an in-kernel client is available.
+> +#[allow(dead_code)]
+> +pub(crate) fn from_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
+> +    // CAST: Casting a pointer to `*const core::ffi::c_void` is always valid.
+> +    let const_ptr: *const core::ffi::c_void = ptr.cast();
+> +    // SAFETY: The FFI function does not deref the pointer.
+> +    if unsafe { bindings::IS_ERR(const_ptr) } {
+> +        // SAFETY: The FFI function does not deref the pointer.
+> +        let err = unsafe { bindings::PTR_ERR(const_ptr) };
+> +        // CAST: If `IS_ERR()` returns `true`,
+> +        // then `PTR_ERR()` is guaranteed to return a
+> +        // negative value greater-or-equal to `-bindings::MAX_ERRNO`,
+> +        // which always fits in an `i16`, as per the invariant above.
+> +        // And an `i16` always fits in an `i32`. So casting `err` to
+> +        // an `i32` can never overflow, and is always valid.
+> +        //
+> +        // SAFETY: `IS_ERR()` ensures `err` is a
+> +        // negative value greater-or-equal to `-bindings::MAX_ERRNO`.
+
+The comment here should read `INVARIANT: ` because now you are
+constructing `Error` which have type invariants.
+
+Where is `from_kernel_errno_unchecked`? I believe the `rust` branch
+on GitHub have it, as it's generally good to limit places where type
+invariants are used directly, so the method is used to convert an
+invariant requirement to a safety requirement that is more obvious due
+to use of `unsafe`.
+
+> +        #[cfg_attr(CONFIG_ARM, allow(clippy::unnecessary_cast))]
+
+This should either be gated based on pointer size, or should just be a
+blanket allow without cfg gating.
+
+> +        return Err(Error(err as i32));
 > +    }
+> +    Ok(ptr)
 > +}
 > 
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Best,
+Gary
+
