@@ -2,62 +2,62 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 998D3C74A5B
-	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 14:48:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4395C74A5B
+	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 14:49:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229603AbjC2Osj (ORCPT
+        id S229567AbjC2Ot5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 29 Mar 2023 10:48:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53214 "EHLO
+        Wed, 29 Mar 2023 10:49:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229768AbjC2Os0 (ORCPT
+        with ESMTP id S229790AbjC2Ot4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 29 Mar 2023 10:48:26 -0400
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A36B1189;
-        Wed, 29 Mar 2023 07:47:42 -0700 (PDT)
-Received: by mail-oi1-x236.google.com with SMTP id bm2so11762623oib.4;
-        Wed, 29 Mar 2023 07:47:42 -0700 (PDT)
+        Wed, 29 Mar 2023 10:49:56 -0400
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8901D196;
+        Wed, 29 Mar 2023 07:49:49 -0700 (PDT)
+Received: by mail-oi1-x22a.google.com with SMTP id r14so6075831oiw.12;
+        Wed, 29 Mar 2023 07:49:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680101262;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20210112; t=1680101389;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=OXBqzVlrFRt5YtMWe/wv26dM8rUqdeUJBzFLACIXocU=;
-        b=h8dOBgu5K5HtZFYHFm7gq4Ng+p4q+BT6YRGX0QCSa9PR/lBjQdMhr56cHlFRmPOcwM
-         jEFGueBVPNeP38jfo/uYdMo0VY8fxG3l30CJSKb047fTxjJEcyoP0AeKU097gVPhNdcL
-         UnutSu7hssch1ZespwaVB0CS6B32PXQlB/WFWqKmxT1zqc0NZ4wA7EnzmmhHx8XHQ8nv
-         SB7ky8Hp22VUF1weadMY6LShg4J5RyViSSeyidqV1U1U7iDb5xTpngLl7lZ0kmZCas8y
-         d/OUrY1nTjo207/0SjaHgPF63j4FIh1uXgF8Kp+f441DEdH3gzkGtcjmWrt8+oazbkVF
-         rKCQ==
+        bh=vRqpC2pNLFE0BwqBPX96lUg22eDDLB+g7ixyozfNakU=;
+        b=iMG/FLKtqXGOz1EhsGEHAlEIa33i0ikt2fvQ9xAImPoNz8MT1oWTcp4cAcDKRjhjO8
+         zsPV4Pc2bo17qw2PI7BD+NYAkDBxCFbmZ20eGUWLomD0TCJZ0M7/SYJkNrf369ybiQxx
+         6/KTfQQxvAzeeGZ9emrm8EpyKFvzqX59A/NdQiPML8pxM61+ktxZrTg8sRSlCzKMJKBZ
+         TPmyYsVrdG8yYU8Y/oiNuMS8zy3EIqyB17m/6alrn/HKl/CSj6cFX3EOgkcoiMgSuZGX
+         EFCWfi4Q+ma447ADUJjewkpeY7vMDtCzmOM8iRG7TxDOqm0uoos94PH4AMRiunZx7hTl
+         lWTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680101262;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20210112; t=1680101389;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OXBqzVlrFRt5YtMWe/wv26dM8rUqdeUJBzFLACIXocU=;
-        b=e592kz5w4QWY1YYC2SYYyEk+ipfAbasLD6id/RtiUVQdItb0zPgIi0z0BvWvZE5+K8
-         m6qar786+/UMBCj0E5+wY/uZNhMJTFTVVRpBuWNlrD+nsel/271jATD4PbKCsLcIL5Wb
-         NQsFEikopd/tX2FmOtMm8j/NgEC/a2RfOsfkVk8qH0Kb2c1Wy8MImDA02So4HE//waJN
-         zTAF0ZLosAp3bdTw7181MYYPTKBczEiPnoZbdqAakYs+DzIiXR5WjXM5Mo9FE4Id/X32
-         J/elvEjOVIUUWjggHVZrNfhscJS5Zkm7DIWOKeKHK0X7LnnWW7/7Qw/Y+vU3l9lquvI7
-         TqiQ==
-X-Gm-Message-State: AO0yUKWu7fjYSKEw9V3d2j2EVRPula8Ddg3hCgR0K5gF0Xm15ANrTQ67
-        Jjtro9DYi4cTZ3yMa45wADw=
-X-Google-Smtp-Source: AK7set9pyV7+2EOOD9QC0w1Kjlj4Nucya/1GCIeVTBAJw811qo3Fxz9RUqKEsBnwjcQbApog1WUJ2g==
-X-Received: by 2002:a05:6808:659:b0:383:e7c8:4000 with SMTP id z25-20020a056808065900b00383e7c84000mr8531757oih.13.1680101261977;
-        Wed, 29 Mar 2023 07:47:41 -0700 (PDT)
+        bh=vRqpC2pNLFE0BwqBPX96lUg22eDDLB+g7ixyozfNakU=;
+        b=cefY7mKfiGnsV0lmbmWy/c4sHjydSEsKWCym9ZpPCnwO5EbgBZ+oPoMQI3iMN5UQLs
+         ORFIKkj3wHYz5mxdyV0oIpP2usIA7dYeexjRx85khhnYWBh1PiuvVP9hciiEgg9jHLnv
+         gUFEt68XxSrMwUbLmteq8PjGavUs9Ec6EiiHA8qCqCQ3A5iII8ENFICofXbT2vEUJtpB
+         x0voV/5LJISByFHEBrdhl51tkvv+i4M1BCE8LIFM0ju/T+qDaX06uNXfsNEFy0sUYjkq
+         pT0PKXEJxTGJaVYV2aQzfn4ahJXKzd5Vrub0pRavtkCxXUl4xfkgP6a1VTNVbShwJIuB
+         /p9Q==
+X-Gm-Message-State: AO0yUKVFtraSu236PhpTSTweb3E3MeppUbS97pIedjKoRlYbGOqQfVls
+        e+l3P2ojQRKEYjIiZOjAdzg=
+X-Google-Smtp-Source: AK7set9TgXi4XHJUWaDV/8TsTUYmyeTkMiwiPoODzO+yO5pUgrzeWwxA555ocT8N3LcxNIfdR/bH+Q==
+X-Received: by 2002:aca:2b0a:0:b0:386:d4f7:6791 with SMTP id i10-20020aca2b0a000000b00386d4f76791mr8510594oik.37.1680101388925;
+        Wed, 29 Mar 2023 07:49:48 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id s186-20020acac2c3000000b00383cc29d6b2sm13506162oif.51.2023.03.29.07.47.39
+        by smtp.gmail.com with ESMTPSA id e62-20020acab541000000b0038694b7dc09sm4621956oif.55.2023.03.29.07.49.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Mar 2023 07:47:41 -0700 (PDT)
-Message-ID: <0849f870-2d95-8c3a-c7dc-2b18dcee4c65@gmail.com>
-Date:   Wed, 29 Mar 2023 11:47:37 -0300
+        Wed, 29 Mar 2023 07:49:48 -0700 (PDT)
+Message-ID: <64a4a0fe-d364-4cd0-e2e5-8e7cfd782ee6@gmail.com>
+Date:   Wed, 29 Mar 2023 11:49:44 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCH v2 1/6] rust: error: Rename to_kernel_errno() ->
- to_errno()
+Subject: Re: [PATCH v2 2/6] rust: error: Add Error::to_ptr()
+Content-Language: en-US
 To:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -69,10 +69,9 @@ Cc:     Fox Chen <foxhlchen@gmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         asahi@lists.linux.dev
 References: <20230224-rust-error-v2-0-3900319812da@asahilina.net>
- <20230224-rust-error-v2-1-3900319812da@asahilina.net>
-Content-Language: en-US
+ <20230224-rust-error-v2-2-3900319812da@asahilina.net>
 From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230224-rust-error-v2-1-3900319812da@asahilina.net>
+In-Reply-To: <20230224-rust-error-v2-2-3900319812da@asahilina.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -80,41 +79,18 @@ List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On 3/29/23 09:04, Asahi Lina wrote:
-> This is kernel code, so specifying "kernel" is redundant. Let's simplify
-> things and just call it to_errno().
+> [...]
 > 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> ---
->  rust/kernel/error.rs  | 2 +-
->  rust/macros/module.rs | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 5b9751d7ff1d..35894fa35efe 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -73,7 +73,7 @@ pub struct Error(core::ffi::c_int);
->  
->  impl Error {
->      /// Returns the kernel error code.
-> -    pub fn to_kernel_errno(self) -> core::ffi::c_int {
-> +    pub fn to_errno(self) -> core::ffi::c_int {
->          self.0
->      }
+> +
+> +    /// Returns the error encoded as a pointer.
+> +    #[allow(dead_code)]
+> +    pub(crate) fn to_ptr<T>(self) -> *mut T {
+> +        // SAFETY: Valid as long as self.0 is a valid error
+> +        unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
+> +    }
 >  }
-> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-> index a7e363c2b044..143336543866 100644
-> --- a/rust/macros/module.rs
-> +++ b/rust/macros/module.rs
-> @@ -258,7 +258,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
->                          return 0;
->                      }}
->                      Err(e) => {{
-> -                        return e.to_kernel_errno();
-> +                        return e.to_errno();
->                      }}
->                  }}
->              }}
+>  
+>  impl From<AllocError> for Error {
 > 
 
 Reviewed-by: Martin Rodriguez Reboredo
