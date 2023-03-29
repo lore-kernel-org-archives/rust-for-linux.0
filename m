@@ -2,124 +2,85 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7EC6C6FD18
-	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 14:55:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76EDAC74A5B
+	for <rust-for-linux@archiver.kernel.org>; Wed, 29 Mar 2023 15:05:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230039AbjC2OzI (ORCPT
+        id S230046AbjC2PFJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 29 Mar 2023 10:55:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41468 "EHLO
+        Wed, 29 Mar 2023 11:05:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbjC2OzI (ORCPT
+        with ESMTP id S229834AbjC2PFI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 29 Mar 2023 10:55:08 -0400
-Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4536712E;
-        Wed, 29 Mar 2023 07:55:07 -0700 (PDT)
-Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-177b78067ffso16476841fac.7;
-        Wed, 29 Mar 2023 07:55:07 -0700 (PDT)
+        Wed, 29 Mar 2023 11:05:08 -0400
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47C393AB4;
+        Wed, 29 Mar 2023 08:05:02 -0700 (PDT)
+Received: by mail-yb1-xb36.google.com with SMTP id b18so19721478ybp.1;
+        Wed, 29 Mar 2023 08:05:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680101705;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=00J2tFQAR6OeqFvOfd4m1mRnl/Lfkd+F4P/jvBTwR64=;
-        b=mBw3isB0a1lWAdTqHxdwioIarsu2c33Jbf2ro3MVQKkVS7vwS0GCcz1C/XS+tDklxV
-         3cETivgOWeXaiLXxq9FahWs4ZREjvb5G3ReGLP7K3bQF7g+nCaZGOKIBD00qaseVd5xm
-         aaoWgCtl/WeE1xtJQ7itFaB76z+IDoxIoCz6UI1Yg6LrQICF9n95579fcHod19gOB3nh
-         PxYZ6ruPeIw0MN/HYlnrq/2uuDxOuOJQ+nq9ySzbyEMa7A9n3gIzbgAsAL1VJtKMPxUX
-         GnNSCnUc638Czhs2GXAuzrHT8AIpwUxCNnK3DcB3AtQlwiVX4tfxDc73MxNQoLXKKwmw
-         PqjQ==
+        d=gmail.com; s=20210112; t=1680102301;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IbthZAg2EI6S7hVKN4zQsrXR4eiiYbr1ymfLGy5VzFk=;
+        b=O5b3QarlhM2wVotMDKJUIS9Ke9T+0xCUt+Firm4XuSeUk+ujnTGb8urU0KFo8uZmBM
+         i2AJTxnng7A+PGuSX8Ie/c1+e13XP/7vwk6ggHZh4iWh6Zxo5r/m+eo06fvF1ihMfHf9
+         eSiz6oVNMU8aboEpamh6FZ1vip17ca6B5bDUUlKuINTJ7HL9+JGDT5Ws9SQ1LA57zyLI
+         RvK7NxzJ1fR2gca5un2xJYkhBUmesWtP+RMuJW9R21aVXOhV4olFh6KMyyW01NiYvjNF
+         kc6DiySPtYSASr44CsUvHPhW6pqdc3BYm64nW9fHf+OxZ2seO6ZBclngdyL2pf2nkQP4
+         MdRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680101705;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=00J2tFQAR6OeqFvOfd4m1mRnl/Lfkd+F4P/jvBTwR64=;
-        b=Em7dPiRWr07H0DBLtjHvu6Bf1RqDFbzWvRD7T1JmH1HwGB5pIZ9iHUEb9NFaQ3ObRs
-         k2LHK+Z/9y2uMlIDU8fBx+6o+cyLSatvcMFikUJr0LcTg0N6SO2jSY3CnRD8kY+04nLv
-         546/Vf9dsntqTwybRGT7xm4DHRdX60QuUGoOXHT+ypiMDcJGr9T3iuWK+F/udfBUHJYa
-         d2mklE88BMCW56DKFhfFL1eOnzam2DAHgLMKl4N7E3vLaioBm0/hRDNuhE3Sf1Tt5NLQ
-         72v+m0Qs7bs6Yb7DIs/AzW0a4O4DTCP6UHgdit73RD64kzoz8kzJbxJkSjvHNpBs8SwY
-         75CA==
-X-Gm-Message-State: AO0yUKU4fQfAe+2VSyHdd758UuShKw6EFcgq4UrIaO6rgZHjQRIhEbnL
-        OK9RFWJiMoph0aadBKY7Dn+qtDoWRRo=
-X-Google-Smtp-Source: AKy350beORPmwZIBbiLlLRNWPpKJeHvKoLbHpBB2RSMF0sQJeYJuwtLaAUnyFC7BzWXnQCJgL+L8/A==
-X-Received: by 2002:a05:6870:9129:b0:177:b438:b0a with SMTP id o41-20020a056870912900b00177b4380b0amr11242837oae.53.1680101705512;
-        Wed, 29 Mar 2023 07:55:05 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id wi22-20020a056871a71600b00176d49bb898sm11800496oab.44.2023.03.29.07.55.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Mar 2023 07:55:05 -0700 (PDT)
-Message-ID: <bc99d578-0905-5cf6-db0d-1ebad2b3d9b2@gmail.com>
-Date:   Wed, 29 Mar 2023 11:55:01 -0300
+        d=1e100.net; s=20210112; t=1680102301;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IbthZAg2EI6S7hVKN4zQsrXR4eiiYbr1ymfLGy5VzFk=;
+        b=Y74PINxgQ4TjgqJ3bWtqq5tKoElRtt/XvnNBZv3XW4H8lk0WfUHJF4tGrPMfK8NDAU
+         XWDuFnuaySmxM43rHcIyMmtiGRYCdWllSLY9aUyOmRKRyVgK54eliorjBMGWUo5zEZ2y
+         zLDQduXeBNpbs5+xVezQC+OIbdMXF3VJXNDJ1X/jMtOutRaefe7gEKByh/Mnap+7hw1h
+         yKr7zLxEyj8ePo3nRTb8RPHAW3ocBHjaAnJG1HmllWqSftYdrmcWrBfoJmZ8KusNDB4L
+         cRe4QeVMbRAF6KjxvQedeorhgcXSb9yysFHRX+ecPQQDd89mGpaNDYF0GSZ6HD3C0pyk
+         u2vw==
+X-Gm-Message-State: AAQBX9cQwQrEQxK9CVmygj4sO3mo/RzqxFd106l7iyvPVMhZByGBMlgc
+        /owJYBFK9tEydmVBTnFPzfap1feM4AZ2HAR+ydQ=
+X-Google-Smtp-Source: AKy350bX9861FLdgC2783Ji32zVywDnx4KhoXmIAZH6o1cbNCCb8RVfB1pT+qcgCDnwsz6YsabM/NughBZ3ZsnXR2kU=
+X-Received: by 2002:a05:6902:1004:b0:b75:968e:f282 with SMTP id
+ w4-20020a056902100400b00b75968ef282mr12771867ybt.11.1680102301286; Wed, 29
+ Mar 2023 08:05:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v2 6/6] rust: error: Add from_result() helper
-Content-Language: en-US
-To:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
+References: <20230224-rust-error-v2-0-3900319812da@asahilina.net>
+ <20230224-rust-error-v2-1-3900319812da@asahilina.net> <0849f870-2d95-8c3a-c7dc-2b18dcee4c65@gmail.com>
+In-Reply-To: <0849f870-2d95-8c3a-c7dc-2b18dcee4c65@gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 29 Mar 2023 17:04:50 +0200
+Message-ID: <CANiq72ko9tY4dsK9Srte2oYQp8G=PMyLDTOR33-yNTVXmfyzeA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] rust: error: Rename to_kernel_errno() -> to_errno()
+To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>
-Cc:     Fox Chen <foxhlchen@gmail.com>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Fox Chen <foxhlchen@gmail.com>,
         Andreas Hindborg <a.hindborg@samsung.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         asahi@lists.linux.dev
-References: <20230224-rust-error-v2-0-3900319812da@asahilina.net>
- <20230224-rust-error-v2-6-3900319812da@asahilina.net>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230224-rust-error-v2-6-3900319812da@asahilina.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 3/29/23 09:04, Asahi Lina wrote:
-> [...]
-> 
-> +
-> +/// Calls a closure returning a [`crate::error::Result<T>`] and converts the result to
-> +/// a C integer result.
-> +///
-> +/// This is useful when calling Rust functions that return [`crate::error::Result<T>`]
-> +/// from inside `extern "C"` functions that need to return an integer error result.
-> +///
-> +/// `T` should be convertible from an `i16` via `From<i16>`.
-> +///
-> +/// # Examples
-> +///
-> +/// ```ignore
-> +/// # use kernel::from_result;
-> +/// # use kernel::bindings;
-> +/// unsafe extern "C" fn probe_callback(
-> +///     pdev: *mut bindings::platform_device,
-> +/// ) -> core::ffi::c_int {
-> +///     from_result(|| {
-> +///         let ptr = devm_alloc(pdev)?;
-> +///         bindings::platform_set_drvdata(pdev, ptr);
-> +///         Ok(0)
-> +///     })
-> +/// }
-> +/// ```
-> +// TODO: Remove `dead_code` marker once an in-kernel client is available.
-> +#[allow(dead_code)]
-> +pub(crate) fn from_result<T, F>(f: F) -> T
-> +where
-> +    T: From<i16>,
-> +    F: FnOnce() -> Result<T>,
-> +{
-> +    match f() {
-> +        Ok(v) => v,
-> +        // NO-OVERFLOW: negative `errno`s are no smaller than `-bindings::MAX_ERRNO`,
-> +        // `-bindings::MAX_ERRNO` fits in an `i16` as per invariant above,
-> +        // therefore a negative `errno` always fits in an `i16` and will not overflow.
-> +        Err(e) => T::from(e.to_errno() as i16),
-> +    }
-> +}
-> 
+On Wed, Mar 29, 2023 at 4:47=E2=80=AFPM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
+>
+> Reviewed-by: Martin Rodriguez Reboredo
 
-Reviewed-by: Martin Rodriguez Reboredo
+These (in the different patches) are supposed to have
+<yakoyoku@gmail.com> email when I take them, right? (no need to resend
+them)
+
+Cheers,
+Miguel
