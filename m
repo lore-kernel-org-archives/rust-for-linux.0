@@ -2,109 +2,125 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81F1FC7619A
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 21:10:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ADE08C7619A
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 22:36:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229458AbjC3VKn (ORCPT
+        id S229914AbjC3Wgf (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 17:10:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36684 "EHLO
+        Thu, 30 Mar 2023 18:36:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229816AbjC3VK3 (ORCPT
+        with ESMTP id S230372AbjC3Wgd (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 17:10:29 -0400
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC02FE072
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 14:10:28 -0700 (PDT)
-Date:   Thu, 30 Mar 2023 21:10:18 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680210626; x=1680469826;
-        bh=CLgO8As5bEevfVZ/jlQ4M8lt0TNqWZbzE5S1UXMu7FY=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=pFBML9XxmyoxWjuk6ywiVWrCOW6OE8kh4TAkzA7CucR8s8/0Eh6POncencqSHcx6D
-         Ki+nVIErkEYsQYZ681qxbbtQO6PzfVebBXTBbuvS5AkjhRbNvCSf9jRpQCKkvP7Te4
-         uvLEsH3EAX3QHuWEY2sH9w17fMiIcDJoEKTtshc60IYLOS5uyth0b9fs0dLa5Cjssi
-         QhnPt6IPSKtPQ5batHvYhRFlJCJ3im/SgawP2QGBJ0w7dsR01GLMUZ+4WLnVYxwKcZ
-         O0xFishbiN03E5LaAJFe4v0zfTjYDG/C2HKp6q5Z2+LaJbdePRO69pysLhF5c9tEQO
-         r3mreGAdPb/gw==
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
-From:   Benno Lossin <y86-dev@protonmail.com>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH 13/13] rust: sync: introduce `LockedBy`
-Message-ID: <8a5d6cf1-17eb-6cb9-fb45-0a4d454d385e@protonmail.com>
-In-Reply-To: <CANeycqotBmHkXAFbibp3BerEt=RA6sse+dgAkmpcy+oFMiA-vA@mail.gmail.com>
-References: <20230330043954.562237-1-wedsonaf@gmail.com> <20230330043954.562237-13-wedsonaf@gmail.com> <04034640-2d89-dd63-07e5-29fa612aa458@protonmail.com> <06a7c5e7-fc5f-3860-7f17-7f3609de669a@protonmail.com> <CANeycqotBmHkXAFbibp3BerEt=RA6sse+dgAkmpcy+oFMiA-vA@mail.gmail.com>
-Feedback-ID: 40624463:user:proton
+        Thu, 30 Mar 2023 18:36:33 -0400
+Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD57DD308;
+        Thu, 30 Mar 2023 15:36:31 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.west.internal (Postfix) with ESMTP id 0735832001C6;
+        Thu, 30 Mar 2023 18:36:27 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Thu, 30 Mar 2023 18:36:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
+        :content-transfer-encoding:content-type:content-type:date:date
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1680215787; x=1680302187; bh=XeSiGqg2CwSebiVN2ce25LntTFIojl0mClJ
+        DW8Z7Pok=; b=EhX3fAjN9Fr6yV5pb1z4rpHbLGkrwoLM8QUuEjyj2wbsJiahwSf
+        5pn/IcG1Xkzs7+cCmzwtDFzMbxn3phciU8bJ6pE+3OphkxwjjnW72F5Yd9p7D6U0
+        sUApF7bwzDyubK9ZcIAdbY3Eb41cfXF8n83df9Oj1RBsO/q8nFNLe1i+Y4KW/37H
+        aQyvqinyp4LJes6GYg0QMbbr90pHG4FhTmzTUCz4JqnroJHDOngzN1jNOdMy6XrR
+        VaI5JgTACJzKRXLrCUiK/N6pcURO/Tzq1NfZct7gDwhzIZ79kI3oTj1eBIlTjMLg
+        vqL7UH94gmOtS2H6uvUeQfE4G3SAPMEyAMA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1680215787; x=1680302187; bh=XeSiGqg2CwSebiVN2ce25LntTFIojl0mClJ
+        DW8Z7Pok=; b=AUDSR6OOiTzX3D0VrICdZyoxWH/+nv372dXGYxrDMobV6tNE6GB
+        JIcKqdRiWzcnZVoXJqPVoNEa+HEbYlPnu6boCvfUnBGltn+QEu73lh08+N8mUfRd
+        fFZYZ7n7aSPehdHWIQxFMqyiUCnuA5bEH/5J8uptBKTI86bGxQaazUaXV7GO3M7+
+        kLW6yKpfer89RmuLaeotBg9LChnEtFAYILj7dp80Lg27ETXI8BovW4NFenID21hv
+        PAkBPPA/DedCf8gjfoFdwkMK2kh18yNoIsQDHLvNLqdLeKdzdObp1GwJOhEi44p3
+        pPYqL61+6m9Iy+ogDn86vlOzBpoA+0LBn3Q==
+X-ME-Sender: <xms:6w4mZOd1D33aNjScThSJYDb9UhE92zaHcf3uE8IVB-dp-tNQ3vmVMQ>
+    <xme:6w4mZIPZbG52gP8QFFc_YPzh2GHnr9WEPAinG6FTy9BPSqXxidYj4I8IAZmGv5BcU
+    EYe6vH6T47JWNJvvA>
+X-ME-Received: <xmr:6w4mZPim6OVR0tUkJ_EffM-fZErgLNfFp4LlXa6Up0ixI4F55k-j0it8JGOt2CpuxM70Ufe0eO6r_Y9nyQMds9wTMA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeitddguddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpeetlhhi
+    tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
+    ehudduvdetkedvkedtudeludfgfffhudegjeeguedvvedtteevjeehheeiffefgeenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvse
+    hrhihhlhdrihho
+X-ME-Proxy: <xmx:6w4mZL9TlSubGRc3uJlgmLXPTh90b6iCw3TuXcBskUUhNhbW3mkkgw>
+    <xmx:6w4mZKsGKspbVeSuzbKRVhlPRW5otFcj43gHpOtsejVPtp8NabliDg>
+    <xmx:6w4mZCEVbcbDcay0IjoRCtqHshdAi5MtVsvQIO5Cd0Qa0Yx11khF5Q>
+    <xmx:6w4mZIA9bxFu9R8fjaeVlqfLUKNFp7Cp0vRNh3R_mua4AYcJkIlNmA>
+Feedback-ID: i56684263:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 30 Mar 2023 18:36:25 -0400 (EDT)
+Message-ID: <5dd90c62-0dc5-1225-c66c-e8f201cb0d59@ryhl.io>
+Date:   Fri, 31 Mar 2023 00:36:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 09/13] rust: init: add `Zeroable` trait and
+ `init::zeroed` function
+Content-Language: en-US-large
+To:     y86-dev@protonmail.com
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+References: <20230329223239.138757-10-y86-dev@protonmail.com>
+From:   Alice Ryhl <alice@ryhl.io>
+In-Reply-To: <20230329223239.138757-10-y86-dev@protonmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 30.03.23 23:04, Wedson Almeida Filho wrote:
-> On Thu, 30 Mar 2023 at 08:45, Benno Lossin <y86-dev@protonmail.com> wrote=
-:
->>
->> On 30.03.23 13:28, Benno Lossin wrote:
->>       struct Outer {
->>           mtx1: Mutex<()>,
->>           mtx2: Mutex<()>,
->>           inners: Vec<Inner>,
->>       }
->>
->>       struct Inner {
->>           count: LockedBy<usize, ()>,
->>       }
->>
->>       fn new_inner(outer: &Outer) -> Inner {
->>           Inner { count: LockedBy::new(&outer.mtx1, 0) }
->>       }
->>
->>       fn evil(outer: &Outer) {
->>           let inner =3D outer.inners.get(0).unwrap();
->>           let mut guard1 =3D outer.mtx1.lock();
->>           let mut guard2 =3D outer.mtx2.lock();
->>          // The pointee of `guard1` and `guard2` have the same address.
->>           let ref1 =3D inner.count.access_mut(&mut *guard1);
->>           let ref2 =3D inner.count.access_mut(&mut *guard2);
->>           mem::swap(ref1, ref2);
->>       }
->
-> This doesn't reproduce the issue because `mtx2` itself is not a ZST
-> (it contains a `struct mutex` before the data it protects).
->
-> Something like the following should reproduce it though:
->
->      struct Outer {
->           mtx1: Mutex<()>,
->           zst: (),
->       }
->
->       fn evil(outer: &Outer) {
->           let lb =3D LockedBy::new(&outer.mtx1, 0u8);
->           let value =3D lb.access(&outer.zst);
->           // Accessing "value" without holding `mtx1`.
->           pr_info!("{}", *value);
->       }
+On 3/30/23 00:33, y86-dev@protonmail.com wrote:
+> From: Benno Lossin <y86-dev@protonmail.com>
+> 
+> Add the `Zeroable` trait which marks types that can be initialized by
+> writing `0x00` to every byte of the type. Also add the `init::zeroed`
+> function that creates an initializer for a `Zeroable` type that writes
+> `0x00` to every byte.
+> 
+> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
 
-You are correct, but in your example you also cannot be sure that it
-works, since the layout of the `Mutex` and `Outer` is `repr(Rust)`.
-And so you cannot be sure that `zst` has the same address as `value`
-inside of the `Mutex` (since the `struct mutex` could be in between).
-But regardless, lets just deny ZSTs in `LockedBy` since the fix is
-easy and it would be weird to put a ZST in a lock in the first place.
-(Not that you have argued against it)
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
---
-Cheers,
-Benno
+> +impl_zeroable! {
+> +    // SAFETY: All primitives that are allowed to be zero.
+> +    bool,
+> +    char,
+> +    u8, u16, u32, u64, u128, usize,
+> +    i8, i16, i32, i64, i128, isize,
+> +    f32, f64,
+> +    // SAFETY: There is nothing to zero.
+> +    core::marker::PhantomPinned, Infallible, (),
+> +}
 
+Here are some other types it might make sense to add:
 
+  * Option<NonNull<T>>
+  * Option<Box<T>>
+  * Option<NonZeroU32>
+  * PhantomData<T>
+  * MaybeUninit<T>
+
+> +
+> +// SAFETY: We are allowed to zero padding bytes.
+> +unsafe impl<const N: usize, T: Zeroable> Zeroable for [T; N] {}
+
+There are no padding bytes in [T; N].
