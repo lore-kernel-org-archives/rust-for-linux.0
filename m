@@ -2,247 +2,194 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B35EAC6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 18:52:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B45A1C6FD1D
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 18:56:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231543AbjC3SwL (ORCPT
+        id S230088AbjC3S44 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 14:52:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53614 "EHLO
+        Thu, 30 Mar 2023 14:56:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231148AbjC3SwJ (ORCPT
+        with ESMTP id S229505AbjC3S4z (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 14:52:09 -0400
-Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC316E053;
-        Thu, 30 Mar 2023 11:51:55 -0700 (PDT)
-Received: by mail-qv1-xf33.google.com with SMTP id q88so14721561qvq.13;
-        Thu, 30 Mar 2023 11:51:55 -0700 (PDT)
+        Thu, 30 Mar 2023 14:56:55 -0400
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72B97DE;
+        Thu, 30 Mar 2023 11:56:54 -0700 (PDT)
+Received: by mail-qt1-x829.google.com with SMTP id g19so19464095qts.9;
+        Thu, 30 Mar 2023 11:56:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680202315;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=47c2PWe5qVyOha958jeE3aoNiiHAs1FUFUGGzZPy6+s=;
-        b=i+yPxp67+6wWMO6khlTB7hcLHxO3x5IUhf5QLePIW3oTXsKlFXYc6o4bVv/6jnUca/
-         +cGP2fi/kcJ+j/nb+t+xXj/lmjDg4cY3bP2uxSya64ST3ZZTDnObxvXiMgFJsSouwRda
-         WaFGskNfwTZWPSgmnx0VCLMNSLEpFzYigZMgsmpMynQ8vTe6XCwTdy5d9kRIHxMKkkIy
-         Ro8gL4mycEyt3WqErpEaBcrKj4FHt2t/FXkhynvPkBVdpsEQxV3WOVkb7/2F0vFUe2wT
-         /WPFYucwZMmF35crfOorCaJckDzoQOpEkU4JZqQzFX4RT3SYRy7wFU1E49G89B7WVd5w
-         6Alw==
+        d=gmail.com; s=20210112; t=1680202613;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5zikl0+WJQyfKb/6s3F2mXqcF7vsu9H00XXtQyNQeZY=;
+        b=BCeJlB/WCdMVcQoouTNUiVPfEN4YQdGq9/QIK8d637YJvH2O75zO5nU5wtf6FSEVOd
+         WcStVyVDR+ssG1lXHg3JaX3hqYm2019ZqSsMcpybMLueu0hmIUeuBMlQqRWWiszrUjRn
+         NFXGift3YBxrZMaQxaLaFcY+jO/qXe1iCgD6lhLMUNn/uWptmC0SJu88oWhJtM0NWDa/
+         i5uZF5Ml/7PEu7iuRb6F6rFqvgPvKeSTL2R/QkWXSWusF45Z7ase7dCCTuM63Fhj6eao
+         OnytynZ9xj4P14Q9hGskhF23/UO12BMBO2fgzxZkfrNlHoeVOWosykW8WM4Af4Eq2XKu
+         r5iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680202315;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=47c2PWe5qVyOha958jeE3aoNiiHAs1FUFUGGzZPy6+s=;
-        b=4s4f0pOX0t5og5Wc/g/FxGqWBD9QlgzIAlTnerpWl+EQ2uWG6zffe79QZqFuX4oRrI
-         UT14fQn/ro7LYB5LoNnQHh84a9IpVeXGsYkZigXKt3vOcUV7QReQEqTw2dgr9QbzVHY7
-         a4U85XVcIXr2MIPDkfB5AIxwf6AYdJChYfuI5cJ3trrPK96lshwg8QaQE41zIP2zIkcV
-         wjx8459QbW7MdKA10JqojuHzmUwiQjzT7Rb535WrOB+AiT5X12em5YfzB52bC+ENUmGz
-         1+pZHsL90s1qNKNRXs1FVGkRvkUsANDy+WODmkihgwsUoJTYhcprn2zGeUKTbRK+AuNC
-         0hUg==
-X-Gm-Message-State: AAQBX9f2uatVmRdc5evrK0roOTalPLlxQg240Bi1AnPa++qRi3rMf85b
-        I1NNFy05phMx87Geqg/RaUs=
-X-Google-Smtp-Source: AKy350afu04tCKTl/mkx1KSAbuLdHxHoW4h+N7kPyrx2raFUmNSxENkwGYAutU0eOwmO1BZvqA9vYA==
-X-Received: by 2002:ad4:5dcd:0:b0:5a9:c0a1:d31a with SMTP id m13-20020ad45dcd000000b005a9c0a1d31amr35356911qvh.49.1680202314820;
-        Thu, 30 Mar 2023 11:51:54 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1680202613;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5zikl0+WJQyfKb/6s3F2mXqcF7vsu9H00XXtQyNQeZY=;
+        b=h/ebU4JnMRBA9ZZ4Sa7XFS9PZKzdpVfdIBcgqhB7h+0w8nz4Z9D3kgLonCdIqiO1ho
+         x5vQQJVSfofGy9/hZtycD4b01OxO9OXwhWbzRLXjkDqltpk+Q/ylJtvmeneIkQACfKCi
+         t0j4ba1SLt8UdNyD+EOl69QUAHaHJ+eM7mrt4WNvYtbEoZHja6MTScjoKSxvBBAPzMxx
+         CJvPN42bCJkYtkrisJ9JGB8n/aJXDRKbdxhU1BzVi0udZlUZT4/BRjLL4oYkimhT7SzX
+         F+QkHoAewkNEIcg74y3zh4GmCfMIR0Dnm/WAnflhRn3Il7sclIXkZDgXyJPeh90Kd/8q
+         h90A==
+X-Gm-Message-State: AO0yUKW5ffwBBIvAI7cqByypUBypuDpjDgsKThg+1ymx88d1ZBqMB84V
+        gF3mlZEGxDgJ760v8gm0Kw8=
+X-Google-Smtp-Source: AK7set/3WMVb9vsAmARpC95V/lR3kXuS87LcY7A3jLWIpRagLQ/bzrQsQQ0EitiZlAxm9lGbxYnTmA==
+X-Received: by 2002:ac8:588c:0:b0:3bf:cff2:2c2f with SMTP id t12-20020ac8588c000000b003bfcff22c2fmr39724358qta.44.1680202613609;
+        Thu, 30 Mar 2023 11:56:53 -0700 (PDT)
 Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id l2-20020a37f902000000b007422fd3009esm79251qkj.20.2023.03.30.11.51.53
+        by smtp.gmail.com with ESMTPSA id 18-20020a05620a041200b00746059d9c3fsm80346qkp.35.2023.03.30.11.56.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Mar 2023 11:51:54 -0700 (PDT)
+        Thu, 30 Mar 2023 11:56:53 -0700 (PDT)
 Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailauth.nyi.internal (Postfix) with ESMTP id B1A2227C0054;
-        Thu, 30 Mar 2023 14:51:53 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Thu, 30 Mar 2023 14:51:53 -0400
-X-ME-Sender: <xms:SdolZH6chbPT7xkezYY8101iVtPwWd-gWXp9mzT2NZvLWqpvoKMf4Q>
-    <xme:SdolZM7xmkqZF6oDyqrDkAnJxBRuj67-QIKBvymFtOaG_TttX2qJNUiM74tQCitCv
-    BpEttfAkgbuRVd43g>
-X-ME-Received: <xmr:SdolZOdggH7l5hf2QJcmCpWt8L8fgBkWKhhjg04p3QDvUq74Iszl4JxLs_osKw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdehledgfeelucetufdoteggodetrfdotf
+        by mailauth.nyi.internal (Postfix) with ESMTP id 8E42727C0054;
+        Thu, 30 Mar 2023 14:56:52 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Thu, 30 Mar 2023 14:56:52 -0400
+X-ME-Sender: <xms:dNslZJy4Yg0KxBAWiVD1zyhH0fwCbTG1z8PTip2AT0vZzr7x6xNLpg>
+    <xme:dNslZJTeqiQaHkF8A31SdGBQagWdqvWLny8HztNWbPtTQLHRTTxm0JM3rn_zblDhd
+    ZO72xz2s9vtH76hZQ>
+X-ME-Received: <xmr:dNslZDUViqCA2miPefZMbz0NqalmJ8jg8Ovx0iruoWM1KLWS4l6LpnWzzA2myA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdehledggedtucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhu
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
     nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeegleejiedthedvheeggfejveefjeejkefgveffieeujefhueeigfegueeh
-    geeggfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
     gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
     gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
     igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:SdolZII4kB9iIa9M-yz0fTCBcq7JnnsSdlrnRPbejOzxTOsGed9EJQ>
-    <xmx:SdolZLKfSBN2tHShTRpzQovc2fU0WzCxhth208dwfIBVB3h46MOPSg>
-    <xmx:SdolZByHZIqHl1Oml3ixm6w3iQX7Bu_d1UmsaWZ4hBetQaHGt3xOEA>
-    <xmx:SdolZNyY2uMb4HForYuYOnC6_EZC4-jJT1Du4Y47lo0Y5Q7M_Qd_eA>
+X-ME-Proxy: <xmx:dNslZLgRmDHi7er86a7MbP6LlcF4vd-epg4KVaDa-J0OLSbhWaA0fg>
+    <xmx:dNslZLCfjt9y_A_oA_wU_rLfl_X1ExzJea78BBXbQ-t8pHvIbKdXDQ>
+    <xmx:dNslZEK6WKqFMcJ1oWRWr8_1nULp_K4Mv7QwbysO6r1WIRwv_FXThQ>
+    <xmx:dNslZILheVYjgtGe6J6kBn70si5Mm6J86icPY3cb8qBVmjPCVYVnAA>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Mar 2023 14:51:53 -0400 (EDT)
+ 30 Mar 2023 14:56:51 -0400 (EDT)
+Date:   Thu, 30 Mar 2023 11:56:07 -0700
 From:   Boqun Feng <boqun.feng@gmail.com>
 To:     Peter Zijlstra <peterz@infradead.org>
 Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
         rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <walmeida@microsoft.com>,
         Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
         Waiman Long <longman@redhat.com>
-Subject: [DRAFT 2/2] locking/selftest: Add AA deadlock selftest for Mutex and SpinLock
-Date:   Thu, 30 Mar 2023 11:51:03 -0700
-Message-Id: <20230330185103.1444086-2-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230330185103.1444086-1-boqun.feng@gmail.com>
-References: <ZCXZMNj7aOKbC7Ev@boqun-archlinux>
- <20230330185103.1444086-1-boqun.feng@gmail.com>
+Subject: Re: [PATCH 03/13] rust: lock: introduce `Mutex`
+Message-ID: <ZCXbR+Pnff6jrstu@boqun-archlinux>
+References: <20230330043954.562237-1-wedsonaf@gmail.com>
+ <20230330043954.562237-3-wedsonaf@gmail.com>
+ <20230330130108.GE124812@hirez.programming.kicks-ass.net>
+ <ZCXZMNj7aOKbC7Ev@boqun-archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZCXZMNj7aOKbC7Ev@boqun-archlinux>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
- lib/locking-selftest.c       |  3 +-
- lib/rust_locking_selftest.rs | 99 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 101 insertions(+), 1 deletion(-)
+On Thu, Mar 30, 2023 at 11:47:12AM -0700, Boqun Feng wrote:
+> On Thu, Mar 30, 2023 at 03:01:08PM +0200, Peter Zijlstra wrote:
+> > On Thu, Mar 30, 2023 at 01:39:44AM -0300, Wedson Almeida Filho wrote:
+> > > From: Wedson Almeida Filho <walmeida@microsoft.com>
+> > > 
+> > > This is the `struct mutex` lock backend and allows Rust code to use the
+> > > kernel mutex idiomatically.
+> > 
+> > What, if anything, are the plans to support the various lockdep
+> > annotations? Idem for the spinlock thing in the other patch I suppose.
+> 
+> FWIW:
+> 
+> *	At the init stage, SpinLock and Mutex in Rust use initializers
+> 	that are aware of the lockdep, so everything (lockdep_map and
+> 	lock_class) is all set up.
+> 
+> *	At acquire or release time, Rust locks just use ffi to call C
+> 	functions that have lockdep annotations in them, so lockdep
+> 	should just work.
+> 
+> In fact, I shared some same worry as you, so I already work on adding
+> lockdep selftests for Rust lock APIs, will send them shortly, although
+> they are just draft.
+> 
 
-diff --git a/lib/locking-selftest.c b/lib/locking-selftest.c
-index 9ef3ad92bc47..a4830e3cc998 100644
---- a/lib/locking-selftest.c
-+++ b/lib/locking-selftest.c
-@@ -60,6 +60,7 @@ __setup("debug_locks_verbose=", setup_debug_locks_verbose);
- #define LOCKTYPE_RTMUTEX 0x20
- #define LOCKTYPE_LL	0x40
- #define LOCKTYPE_SPECIAL 0x80
-+#define LOCKTYPE_RUST	0x100
- 
- static struct ww_acquire_ctx t, t2;
- static struct ww_mutex o, o2, o3;
-@@ -1427,7 +1428,7 @@ static int testcase_successes;
- static int expected_testcase_failures;
- static int unexpected_testcase_failures;
- 
--static void dotest(void (*testcase_fn)(void), int expected, int lockclass_mask)
-+void dotest(void (*testcase_fn)(void), int expected, int lockclass_mask)
- {
- 	int saved_preempt_count = preempt_count();
- #ifdef CONFIG_PREEMPT_RT
-diff --git a/lib/rust_locking_selftest.rs b/lib/rust_locking_selftest.rs
-index 61560a2f3c6b..c050edf2ac9a 100644
---- a/lib/rust_locking_selftest.rs
-+++ b/lib/rust_locking_selftest.rs
-@@ -2,11 +2,110 @@
- 
- //! Selftests for Rust locking APIs.
- 
-+use kernel::pr_cont;
- use kernel::prelude::*;
- const __LOG_PREFIX: &[u8] = b"locking selftest\0";
- 
-+extern "C" {
-+    fn dotest(
-+        testcase_fn: extern "C" fn(),
-+        expected: core::ffi::c_int,
-+        lockclass_mask: core::ffi::c_int,
-+    );
-+}
-+
-+/// Same as the definition in lib/locking-selftest.c
-+#[allow(dead_code)]
-+enum Expectation {
-+    Failure = 0,
-+    Success = 1,
-+    Timeout = 2,
-+}
-+
-+trait LockTest {
-+    const EXPECTED: Expectation;
-+    const MASK: i32;
-+
-+    fn test();
-+}
-+
-+extern "C" fn bridge<T: LockTest>() {
-+    T::test();
-+}
-+
-+fn test<T: LockTest>() {
-+    pr_cont!("\n");
-+    pr_cont!("{}: ", core::any::type_name::<T>());
-+    unsafe {
-+        dotest(bridge::<T>, T::EXPECTED as core::ffi::c_int, T::MASK);
-+    }
-+    pr_cont!("\n");
-+}
-+
-+struct SpinLockAATest;
-+
-+impl LockTest for SpinLockAATest {
-+    const EXPECTED: Expectation = Expectation::Failure;
-+    const MASK: i32 = 0x100; // TODO
-+
-+    fn test() {
-+        use kernel::static_lock_class;
-+        use kernel::sync::SpinLock;
-+        use kernel::{c_str, stack_pin_init};
-+
-+        let key = static_lock_class!();
-+        let name = c_str!("A1");
-+
-+        stack_pin_init!(
-+            let a1 = SpinLock::new(0, name, key)
-+        );
-+
-+        stack_pin_init!(
-+            let a2 = SpinLock::new(0, name, key)
-+        );
-+
-+        let a1 = a1.unwrap();
-+        let a2 = a2.unwrap();
-+
-+        let _x = a1.lock();
-+        let _y = a2.lock();
-+    }
-+}
-+
-+struct MutexAATest;
-+
-+impl LockTest for MutexAATest {
-+    const EXPECTED: Expectation = Expectation::Failure;
-+    const MASK: i32 = 0x100; // TODO
-+
-+    fn test() {
-+        use kernel::static_lock_class;
-+        use kernel::sync::Mutex;
-+        use kernel::{c_str, stack_pin_init};
-+
-+        let key = static_lock_class!();
-+        let name = c_str!("A1");
-+
-+        stack_pin_init!(
-+            let a1 = Mutex::new(0, name, key)
-+        );
-+
-+        stack_pin_init!(
-+            let a2 = Mutex::new(0, name, key)
-+        );
-+
-+        let a1 = a1.unwrap();
-+        let a2 = a2.unwrap();
-+
-+        let _x = a1.lock();
-+        let _y = a2.lock();
-+    }
-+}
-+
- /// Entry point for tests.
- #[no_mangle]
- pub extern "C" fn rust_locking_test() {
-     pr_info!("Selftests for Rust locking APIs");
-+    test::<SpinLockAATest>();
-+    test::<MutexAATest>();
- }
--- 
-2.39.2
+Needless to say, the test shows that lockdep works for deadlock
+detection (although currently they are only simple cases):
 
+	[...] locking selftest: Selftests for Rust locking APIs
+	[...] rust_locking_selftest::SpinLockAATest: 
+	[...] 
+	[...] ============================================
+	[...] WARNING: possible recursive locking detected
+	[...] 6.3.0-rc1-00049-gee35790bd43e-dirty #99 Not tainted
+	[...] --------------------------------------------
+	[...] swapper/0/0 is trying to acquire lock:
+	[...] ffffffff8c603e30 (A1){+.+.}-{2:2}, at: _RNvXNtNtNtCs1t6xtuX2C8s_6kernel4sync4lock8spinlockNtB2_15SpinLockBackendNtB4_7Backend4lock+0x6/0x10
+	[...] 
+	[...] but task is already holding lock:
+	[...] ffffffff8c603de0 (A1){+.+.}-{2:2}, at: _RNvXNtNtNtCs1t6xtuX2C8s_6kernel4sync4lock8spinlockNtB2_15SpinLockBackendNtB4_7Backend4lock+0x6/0x10
+	[...] 
+	[...] other info that might help us debug this:
+	[...]  Possible unsafe locking scenario:
+	[...] 
+	[...]        CPU0
+	[...]        ----
+	[...]   lock(A1);
+	[...]   lock(A1);
+	[...] 
+	[...]  *** DEADLOCK ***
+	[...] 
+	[...]  May be due to missing lock nesting notation
+	[...] 
+	[...] 1 lock held by swapper/0/0:
+	[...]  #0: ffffffff8c603de0 (A1){+.+.}-{2:2}, at: _RNvXNtNtNtCs1t6xtuX2C8s_6kernel4sync4lock8spinlockNtB2_15SpinLockBackendNtB4_7Backend4lock+0x6/0x10
+	[...] 
+	[...] stack backtrace:
+	[...] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.3.0-rc1-00049-gee35790bd43e-dirty #99
+	[...] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.1-1-1 04/01/2014
+	[...] Call Trace:
+	[...]  <TASK>
+	[...]  dump_stack_lvl+0x6d/0xa0
+	[...]  __lock_acquire+0x825/0x2e20
+	[...]  ? __lock_acquire+0x626/0x2e20
+	[...]  ? prb_read_valid+0x24/0x50
+	[...]  ? printk_get_next_message+0xf6/0x380
+	[...]  ? _RNvXNtNtNtCs1t6xtuX2C8s_6kernel4sync4lock8spinlockNtB2_15SpinLockBackendNtB4_7Backend4lock+0x6/0x10
+	[...]  lock_acquire+0x109/0x2c0
+	[...]  ? _RNvXNtNtNtCs1t6xtuX2C8s_6kernel4sync4lock8spinlockNtB2_15SpinLockBackendNtB4_7Backend4lock+0x6/0x10
+	[...]  _raw_spin_lock+0x2e/0x40
+	[...]  ? _RNvXNtNtNtCs1t6xtuX2C8s_6kernel4sync4lock8spinlockNtB2_15SpinLockBackendNtB4_7Backend4lock+0x6/0x10
+	[...]  _RNvXNtNtNtCs1t6xtuX2C8s_6kernel4sync4lock8spinlockNtB2_15SpinLockBackendNtB4_7Backend4lock+0x6/0x10
+	[...]  _RNvXCsaDWbe1gW6fC_21rust_locking_selftestNtB2_14SpinLockAATestNtB2_8LockTest4test+0xa5/0xe0
+	[...]  ? prb_read_valid+0x24/0x50
+	[...]  dotest+0x5a/0x8d0
+	[...]  rust_locking_test+0xf8/0x210
+	[...]  ? _printk+0x58/0x80
+	[...]  ? local_lock_release+0x60/0x60
+	[...]  locking_selftest+0x328f/0x32b0
+	[...]  start_kernel+0x285/0x420
+	[...]  secondary_startup_64_no_verify+0xe1/0xeb
+	[...]  </TASK>
+	[...]   ok  | lockclass mask: 100, debug_locks: 0, expected: 0
+
+Regards,
+Boqun
+
+> Regards,
+> Boqun
