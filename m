@@ -2,45 +2,48 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C089C6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 15:39:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9634AC6FD1D
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 15:39:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233169AbjC3Pj1 (ORCPT
+        id S233262AbjC3Pju (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 11:39:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46138 "EHLO
+        Thu, 30 Mar 2023 11:39:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233152AbjC3Pj0 (ORCPT
+        with ESMTP id S233264AbjC3Pjq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 11:39:26 -0400
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FFC893CA
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 08:39:07 -0700 (PDT)
-Date:   Thu, 30 Mar 2023 15:38:54 +0000
+        Thu, 30 Mar 2023 11:39:46 -0400
+Received: from mail-41103.protonmail.ch (mail-41103.protonmail.ch [185.70.41.103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4E1FC0
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 08:39:34 -0700 (PDT)
+Date:   Thu, 30 Mar 2023 15:19:51 +0000
+Authentication-Results: mail-41103.protonmail.ch;
+        dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="EWfJX+CK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680190744; x=1680449944;
-        bh=78dr7bQ+n1CF5BDMkt72hk6Mu6tYllNVNQReiUB0IjI=;
+        s=protonmail3; t=1680189597; x=1680448797;
+        bh=Z3JCbWaaWUMZEyUU5ytYZUzOcZ8CnK3JDGgkqkS7+eI=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=JGzM4eUkMb2oKzbtBusmrJvRD2L8QnkKxZtArCmw0bGeVW/gzfBagKYDIOFvMXgTX
-         zzqdOjM5qc/ZysddzD8REBjEkoimegRnJnqNn3MuBjtOiWcX+yicS69x2D02Z8RXfW
-         k1woEYcHMUsdNKJrhyv4gF4ZWKeibAh0kBlHugsy7p2OcwtlXSVx2TYZI6YQ94xu0u
-         OcmOPeXjPvGFba00XAH6u4xUYZA2wzCHw8JpcvJgYB9O8POjE3tVVaXkTAUO7Utbv/
-         p9+CijLBTzJRZ/THBoUMPfnzRsmj2P/qrp+V+Rc0v1fQwEzYbgjvFnXGO3UYpNd/9q
-         9xBbAy0ia7lLA==
+        b=EWfJX+CKcZmbhRYtFful5fvUIEi+TDwouuLODz7hj1r1918HfMDyWmRZFA7CEdBGa
+         MFSu1v9YXcYEHVMI5dI7lkiMhcjF3LTeMNPQRxUIOHo17qwuyX1Twuza49DxD4U+i7
+         JjL/CScn6HFXql4n8Cj5Vozl9xDbIulns4ebrZVUpSD7po9J9WmoHeJ1TKlXL/ZCmz
+         js4+NtwWITHIShFuzwi1eZ0e9c/WfErbn4klebzYePWA61DNiUL3TNT4KHrtMC8eEr
+         YYicgA9rE6pVOKM5FOa27XbxXKsM9hAtPIcPT52BTt8gGo1ItxzZWaD+07p8CYqnTW
+         57va7nW5NWcSQ==
 To:     Alice Ryhl <alice@ryhl.io>
 From:   Benno Lossin <y86-dev@protonmail.com>
 Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Subject: Re: [PATCH v3 05/13] rust: init: add initialization macros
-Message-ID: <226e4772-0e10-6593-7cfe-e1e290a0216c@protonmail.com>
-In-Reply-To: <f9f1d67f-5c89-d508-d582-528273b635db@ryhl.io>
-References: <20230329223239.138757-1-y86-dev@protonmail.com> <20230329223239.138757-6-y86-dev@protonmail.com> <f9f1d67f-5c89-d508-d582-528273b635db@ryhl.io>
+        Boqun Feng <boqun.feng@gmail.com>,
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Gary Guo <gary@garyguo.net>
+Subject: Re: [PATCH v3 08/13] rust: init: add `stack_pin_init!` macro
+Message-ID: <4b048bfc-e4fe-8c2f-ebfe-9b6a410cd8b8@protonmail.com>
+In-Reply-To: <ada8307d-5177-2094-683f-bce619f1ea44@ryhl.io>
+References: <20230329223239.138757-1-y86-dev@protonmail.com> <20230329223239.138757-9-y86-dev@protonmail.com> <ada8307d-5177-2094-683f-bce619f1ea44@ryhl.io>
 Feedback-ID: 40624463:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -49,94 +52,59 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 30.03.23 16:21, Alice Ryhl wrote:
+On 30.03.23 17:00, Alice Ryhl wrote:
 > On 3/30/23 00:33, y86-dev@protonmail.com wrote:
 >> From: Benno Lossin <y86-dev@protonmail.com>
 >>
->> Add the following initializer macros:
->> - `#[pin_data]` to annotate structurally pinned fields of structs,
->>     needed for `pin_init!` and `try_pin_init!` to select the correct
->>     initializer of fields.
->> - `pin_init!` create a pin-initializer for a struct with the
->>     `Infallible` error type.
->> - `try_pin_init!` create a pin-initializer for a struct with a custom
->>     error type (`kernel::error::Error` is the default).
->> - `init!` create an in-place-initializer for a struct with the
->>     `Infallible` error type.
->> - `try_init!` create an in-place-initializer for a struct with a custom
->>     error type (`kernel::error::Error` is the default).
+>> The `stack_pin_init!` macro allows pin-initializing a value on the
+>> stack. It accepts a `impl PinInit<T, E>` to initialize a `T`. It allows
+>> propagating any errors via `?` or handling it normally via `match`.
 >>
->> Also add their needed internal helper traits and structs.
->>
->> Co-developed-by: Gary Guo <gary@garyguo.net>
->> Signed-off-by: Gary Guo <gary@garyguo.net>
 >> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
 >
 > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 >
->> +/// ```rust
->> +/// # #![allow(clippy::disallowed_names, clippy::new_ret_no_self)]
->> +/// # use kernel::{init, pin_init, prelude::*, init::*};
->> +/// # use core::pin::Pin;
->> +/// # #[pin_data]
->> +/// # struct Foo {
->> +/// #     a: usize,
->> +/// #     b: Bar,
->> +/// # }
->> +/// # #[pin_data]
->> +/// # struct Bar {
->> +/// #     x: u32,
->> +/// # }
->> +///
->> +/// impl Foo {
->> +///     fn new() -> impl PinInit<Self> {
+>> ---
+>> +#[macro_export]
+>> +macro_rules! stack_pin_init {
+>> +    (let $var:ident $(: $t:ty)? =3D $val:expr) =3D> {
+>> +        let mut $var =3D $crate::init::__internal::StackInit$(::<$t>)?:=
+:uninit();
+>> +        let mut $var =3D {
+>> +            let val =3D $val;
+>> +            unsafe { $crate::init::__internal::StackInit::init(&mut $va=
+r, val) }
+>> +        };
+>> +    };
+>> +    (let $var:ident $(: $t:ty)? =3D? $val:expr) =3D> {
+>> +        let mut $var =3D $crate::init::__internal::StackInit$(::<$t>)?:=
+:uninit();
+>> +        let mut $var =3D {
+>> +            let val =3D $val;
+>> +            unsafe { $crate::init::__internal::StackInit::init(&mut $va=
+r, val)? }
+>> +        };
+>> +    };
+>> +}
 >
-> I would remove the empty line above `impl Foo` so that the example
-> doesn't start with an empty line when rendered.
+> This will be inconvenient to use if the initializer is infallible and is
+> used inside an infallible function. However, I'm not sure what a better
+> alternative would be. Perhaps we should have three variants?
+
+That could be an option, any ideas for the syntax though? Or should it
+be a different macro like `stack_pin_init!` and `try_stack_pin_init!`?
+
+> Also, maybe a `<-` rather than `=3D` would be more consistent?
+
+That is sadly not possible, since `<-` is not allowed after `ty` fragments.
+
+> Anyway, I don't think this should block the PR. We can revisit it later
+> if it becomes a problem.
 
 Sure.
-
->
->> +/// # Syntax
->> +///
->> +/// As already mentioned in the examples above, inside of `pin_init!` a=
- `struct` initializer with
->> +/// the following modifications is expected:
->> +/// - Fields that you want to initialize in-place have to use `<-` inst=
-ead of `:`.
->> +/// - In front of the initializer you can write `&this in` to have acce=
-ss to a [`NonNull<Self>`]
->> +///   pointer named `this` inside of the initializer.
->> +///
->> +/// For instance:
->> +///
->> +/// ```rust
->> +/// # use kernel::pin_init;
->> +/// # use macros::pin_data;
->> +/// # use core::{ptr::addr_of_mut, marker::PhantomPinned};
->> +/// #[pin_data]
->> +/// struct Buf {
->> +///     ptr: *mut u8,
->
-> I'd add a comment on the `ptr` field saying "points at `buf`".
-
-Sure.
-
->
->> +/// impl BigBuf {
->> +///     fn new() -> impl PinInit<Self, Error> {
->> +///         try_pin_init!(Self {
->> +///             big: {
->> +///                 let zero =3D Box::try_new_zeroed()?;
->> +///                 unsafe { zero.assume_init() }
->> +///             },
->
-> Is there a reason for not using `Box::init(kernel::init::zeroed())?` here=
-?
-
-No, this was probably designed prior to `zeroed`, will change it.
 
 --
 Cheers,
 Benno
+
 
