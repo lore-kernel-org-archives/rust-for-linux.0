@@ -2,42 +2,42 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09926C761A6
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 12:52:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EDEC1C77B60
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 12:59:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231596AbjC3Mwp (ORCPT
+        id S231767AbjC3M7u (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 08:52:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48354 "EHLO
+        Thu, 30 Mar 2023 08:59:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231585AbjC3Mwp (ORCPT
+        with ESMTP id S231721AbjC3M7o (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 08:52:45 -0400
+        Thu, 30 Mar 2023 08:59:44 -0400
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED1CC55B7;
-        Thu, 30 Mar 2023 05:52:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79B6E9EF5;
+        Thu, 30 Mar 2023 05:59:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=LbriNcVAfY0UBPuz6jCJeTcqNiFUFNZB08aDLtgpT/A=; b=G+wU3ww+N8ZKrDEEm+k3MVeXsp
-        AozFQ/e5GK+eLPLTHEo0asbNced1a6eoDaynCcHy5mXw8pwX0oUcequD4vH5zwIgaL4AVLSL5qOJW
-        /AiQXMF7g+VF11RkCM9+cxbFHifxKqHN0+EWjyxOb06hSZU6pd2sYpQqvliROc68NT7M50FA4yR/4
-        sbSf5HhDp1axHNCwOy4mCxQYyOj9wTvVESS2CgRTpFTF2RMxi0zoQGF2S3q9JXzzZfu2l7nQAAHgE
-        yfS5B9zCf0f2TXmC1av0tDEslPFeHeaWPu2N5lkT5/5A0ZSeNpwI8SqiUNSkaSj30Uco8HuKZmmHF
-        nRS9J40Q==;
+        bh=UL7W2tzjfyF4OgCjneaPuyZJqekRRwSCQhOyLLp43Jk=; b=nNmNcxwTdfBZooOAXeHgpqbzac
+        YmZZ8wDDt2nH3z0jCIVkowr8x23tD6YxwwOAk6rAj8pTshUdDULUJITs7DiMEnPIaQNNw3xdsb/qx
+        vSsgqu0QhfwhfmbKxgxIXjHuHfFU5wmgILJMSy7WPBjDxoisImaE5nTo6nCecH1MlxmDov5Gf6gqS
+        +v1s0zvqKVRA0nacCNdep+UhUke0JaJ65D8q2wX+C4CNd/qsv56zEftf/ztcO05U10c5QYSgWmK03
+        ygAc9exCCi/hEYF8wFxKH4oREB4Ggofzi4H4gbVTTvy+peteD+OVwOOjHTHWplCF33JVEeE1dtUYT
+        PM2lo0Pg==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
         by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1phrlQ-00APu7-0Q; Thu, 30 Mar 2023 12:52:25 +0000
+        id 1phrsG-00AQFb-3c; Thu, 30 Mar 2023 12:59:28 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 716AE300134;
-        Thu, 30 Mar 2023 14:52:23 +0200 (CEST)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 7BC07300134;
+        Thu, 30 Mar 2023 14:59:27 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 5101920134244; Thu, 30 Mar 2023 14:52:23 +0200 (CEST)
-Date:   Thu, 30 Mar 2023 14:52:23 +0200
+        id 618F320134244; Thu, 30 Mar 2023 14:59:27 +0200 (CEST)
+Date:   Thu, 30 Mar 2023 14:59:27 +0200
 From:   Peter Zijlstra <peterz@infradead.org>
 To:     Wedson Almeida Filho <wedsonaf@gmail.com>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
@@ -49,7 +49,7 @@ Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
         Waiman Long <longman@redhat.com>
 Subject: Re: [PATCH 12/13] rust: sync: introduce `CondVar`
-Message-ID: <20230330125223.GC124812@hirez.programming.kicks-ass.net>
+Message-ID: <20230330125927.GD124812@hirez.programming.kicks-ass.net>
 References: <20230330043954.562237-1-wedsonaf@gmail.com>
  <20230330043954.562237-12-wedsonaf@gmail.com>
 MIME-Version: 1.0
@@ -61,27 +61,96 @@ List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On Thu, Mar 30, 2023 at 01:39:53AM -0300, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
-> 
-> This is the traditional condition variable or monitor synchronisation
-> primitive. It is implemented with C's `wait_queue_head_t`.
-> 
-> It allows users to release a lock and go to sleep while guaranteeing
-> that notifications won't be missed. This is achieved by enqueuing a wait
-> entry before releasing the lock.
-> 
 
-> +/// A conditional variable.
-> +///
-> +/// Exposes the kernel's [`struct wait_queue_head`] as a condition variable. It allows the caller to
-> +/// atomically release the given lock and go to sleep. It reacquires the lock when it wakes up. And
-> +/// it wakes up when notified by another thread (via [`CondVar::notify_one`] or
-> +/// [`CondVar::notify_all`]) or because the thread received a signal. It may also wake up
-> +/// spuriously.
+> +impl CondVar {
+> +    /// Constructs a new condvar initialiser.
+> +    #[allow(clippy::new_ret_no_self)]
+> +    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
+> +        pin_init!(Self {
+> +            _pin: PhantomPinned,
+> +            // SAFETY: `__init_waitqueue_head` initialises the waitqueue head, and both `name` and
+> +            // `key` have static lifetimes so they live indefinitely.
+> +            wait_list <- unsafe {
+> +                Opaque::ffi_init2(
+> +                    bindings::__init_waitqueue_head,
+> +                    name.as_char_ptr(),
+> +                    key.as_ptr(),
+> +                )
+> +            },
+> +        })
+> +    }
+> +
+> +    fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guard<'_, T, B>) {
+> +        let wait = Opaque::<bindings::wait_queue_entry>::uninit();
+> +
+> +        // SAFETY: `wait` points to valid memory.
+> +        unsafe { bindings::init_wait(wait.get()) };
+> +
+> +        // SAFETY: Both `wait` and `wait_list` point to valid memory.
+> +        unsafe {
+> +            bindings::prepare_to_wait_exclusive(self.wait_list.get(), wait.get(), wait_state as _)
+> +        };
 
-Urgh so wide :-/
+I can't read this rust gunk, but where is the condition test gone?
 
-But no, threads can *always* and for any reason, have spurious wakeups.
+Also, where is the loop gone to?
 
-Also, is this hard tied to mutex? If so, you should probably use swait
-instead of wait.
+> +
+> +        // SAFETY: No arguments, switches to another thread.
+> +        guard.do_unlocked(|| unsafe { bindings::schedule() });
+> +
+> +        // SAFETY: Both `wait` and `wait_list` point to valid memory.
+> +        unsafe { bindings::finish_wait(self.wait_list.get(), wait.get()) };
+> +    }
+> +
+> +    /// Releases the lock and waits for a notification in interruptible mode.
+> +    ///
+> +    /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
+> +    /// thread to sleep, reacquiring the lock on wake up. It wakes up when notified by
+> +    /// [`CondVar::notify_one`] or [`CondVar::notify_all`], or when the thread receives a signal.
+> +    /// It may also wake up spuriously.
+> +    ///
+> +    /// Returns whether there is a signal pending.
+> +    #[must_use = "wait returns if a signal is pending, so the caller must check the return value"]
+> +    pub fn wait<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) -> bool {
+> +        self.wait_internal(bindings::TASK_INTERRUPTIBLE, guard);
+> +        Task::current().signal_pending()
+> +    }
+> +
+> +    /// Releases the lock and waits for a notification in uninterruptible mode.
+> +    ///
+> +    /// Similar to [`CondVar::wait`], except that the wait is not interruptible. That is, the
+> +    /// thread won't wake up due to signals. It may, however, wake up supirously.
+> +    pub fn wait_uninterruptible<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) {
+> +        self.wait_internal(bindings::TASK_UNINTERRUPTIBLE, guard)
+> +    }
+> +
+> +    /// Calls the kernel function to notify the appropriate number of threads with the given flags.
+> +    fn notify(&self, count: i32, flags: u32) {
+> +        // SAFETY: `wait_list` points to valid memory.
+> +        unsafe {
+> +            bindings::__wake_up(
+> +                self.wait_list.get(),
+> +                bindings::TASK_NORMAL,
+> +                count,
+> +                flags as _,
+> +            )
+> +        };
+> +    }
+> +
+> +    /// Wakes a single waiter up, if any.
+> +    ///
+> +    /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
+> +    /// completely (as opposed to automatically waking up the next waiter).
+> +    pub fn notify_one(&self) {
+> +        self.notify(1, 0);
+> +    }
+> +
+> +    /// Wakes all waiters up, if any.
+> +    ///
+> +    /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
+> +    /// completely (as opposed to automatically waking up the next waiter).
+> +    pub fn notify_all(&self) {
+> +        self.notify(0, 0);
+> +    }
+> +}
