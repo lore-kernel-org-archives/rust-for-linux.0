@@ -2,48 +2,46 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9634AC6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 15:39:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 73A03C6FD1D
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 15:48:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233262AbjC3Pju (ORCPT
+        id S233274AbjC3PsW (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 11:39:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47218 "EHLO
+        Thu, 30 Mar 2023 11:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233264AbjC3Pjq (ORCPT
+        with ESMTP id S233266AbjC3PsU (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 11:39:46 -0400
-Received: from mail-41103.protonmail.ch (mail-41103.protonmail.ch [185.70.41.103])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4E1FC0
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 08:39:34 -0700 (PDT)
-Date:   Thu, 30 Mar 2023 15:19:51 +0000
-Authentication-Results: mail-41103.protonmail.ch;
-        dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="EWfJX+CK"
+        Thu, 30 Mar 2023 11:48:20 -0400
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30A993F9;
+        Thu, 30 Mar 2023 08:47:49 -0700 (PDT)
+Date:   Thu, 30 Mar 2023 15:46:47 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680189597; x=1680448797;
-        bh=Z3JCbWaaWUMZEyUU5ytYZUzOcZ8CnK3JDGgkqkS7+eI=;
+        s=protonmail3; t=1680191248; x=1680450448;
+        bh=TLUDrNmdKGfXY8JzBtXZFUEJp1pnuEMoVXaEZm0mHDE=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=EWfJX+CKcZmbhRYtFful5fvUIEi+TDwouuLODz7hj1r1918HfMDyWmRZFA7CEdBGa
-         MFSu1v9YXcYEHVMI5dI7lkiMhcjF3LTeMNPQRxUIOHo17qwuyX1Twuza49DxD4U+i7
-         JjL/CScn6HFXql4n8Cj5Vozl9xDbIulns4ebrZVUpSD7po9J9WmoHeJ1TKlXL/ZCmz
-         js4+NtwWITHIShFuzwi1eZ0e9c/WfErbn4klebzYePWA61DNiUL3TNT4KHrtMC8eEr
-         YYicgA9rE6pVOKM5FOa27XbxXKsM9hAtPIcPT52BTt8gGo1ItxzZWaD+07p8CYqnTW
-         57va7nW5NWcSQ==
-To:     Alice Ryhl <alice@ryhl.io>
+        b=VvuPNklxOOPw6MsY85d7zG7QBg7+ulXX85QLBrMULrntA1URpCh7+EUWRgD0p2ODj
+         sPVFUDFRKzmU3uCvphLrfU9uzgTmKqMgd4aujvZaL6XPh2Iz8JAwginXDpxuxCJYFG
+         sXQ9ADf/ZLKRJxYjuSb36enVOhI50oljWaItEZh2PUvCGgmXJugcSvEugmzsbDpFcc
+         yZnNZPTW9QtOo/SadHckBgCYPEoK/MdCkt4T4zeWvC175kCaLRlN7LpDNYIcKC0ELO
+         cEZY6kqXfR8mzDRKy2VQO7qIFwWv4RqfxUv2rjfe6JJOaaOBtiCeViHnMf7RmYUHfR
+         z74aHDQ1D8sbQ==
+To:     Andreas Hindborg <nmi@metaspace.dk>
 From:   Benno Lossin <y86-dev@protonmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Gary Guo <gary@garyguo.net>
-Subject: Re: [PATCH v3 08/13] rust: init: add `stack_pin_init!` macro
-Message-ID: <4b048bfc-e4fe-8c2f-ebfe-9b6a410cd8b8@protonmail.com>
-In-Reply-To: <ada8307d-5177-2094-683f-bce619f1ea44@ryhl.io>
-References: <20230329223239.138757-1-y86-dev@protonmail.com> <20230329223239.138757-9-y86-dev@protonmail.com> <ada8307d-5177-2094-683f-bce619f1ea44@ryhl.io>
+        Alice Ryhl <alice@ryhl.io>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v3 04/13] rust: add pin-init API core
+Message-ID: <6c3985d3-6b81-df0e-5c22-12a0d8044119@protonmail.com>
+In-Reply-To: <87h6u24bip.fsf@metaspace.dk>
+References: <20230329223239.138757-1-y86-dev@protonmail.com> <20230329223239.138757-5-y86-dev@protonmail.com> <87h6u24bip.fsf@metaspace.dk>
 Feedback-ID: 40624463:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -52,59 +50,27 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 30.03.23 17:00, Alice Ryhl wrote:
-> On 3/30/23 00:33, y86-dev@protonmail.com wrote:
->> From: Benno Lossin <y86-dev@protonmail.com>
->>
->> The `stack_pin_init!` macro allows pin-initializing a value on the
->> stack. It accepts a `impl PinInit<T, E>` to initialize a `T`. It allows
->> propagating any errors via `?` or handling it normally via `match`.
->>
->> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
+On 30.03.23 15:05, Andreas Hindborg wrote:
+>> +//! [`Arc<T>`]: crate::sync::Arc
+>> +//! [`impl PinInit<Foo>`]: PinInit
+>> +//! [`impl PinInit<T, E>`]: PinInit
+>> +//! [`impl Init<T, E>`]: Init
+>> +//! [`Opaque`]: kernel::types::Opaque
+>> +//! [`pin_data`]: ::macros::pin_data
+>> +//! [`UniqueArc<T>`]: kernel::sync::UniqueArc
+>> +//! [`Box<T>`]: alloc::boxed::Box
+>> +
+>> +use core::{convert::Infallible, marker::PhantomData, mem::MaybeUninit};
+>> +
+>> +/// A pinned initializer for `T`.
 >
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->
->> ---
->> +#[macro_export]
->> +macro_rules! stack_pin_init {
->> +    (let $var:ident $(: $t:ty)? =3D $val:expr) =3D> {
->> +        let mut $var =3D $crate::init::__internal::StackInit$(::<$t>)?:=
-:uninit();
->> +        let mut $var =3D {
->> +            let val =3D $val;
->> +            unsafe { $crate::init::__internal::StackInit::init(&mut $va=
-r, val) }
->> +        };
->> +    };
->> +    (let $var:ident $(: $t:ty)? =3D? $val:expr) =3D> {
->> +        let mut $var =3D $crate::init::__internal::StackInit$(::<$t>)?:=
-:uninit();
->> +        let mut $var =3D {
->> +            let val =3D $val;
->> +            unsafe { $crate::init::__internal::StackInit::init(&mut $va=
-r, val)? }
->> +        };
->> +    };
->> +}
->
-> This will be inconvenient to use if the initializer is infallible and is
-> used inside an infallible function. However, I'm not sure what a better
-> alternative would be. Perhaps we should have three variants?
+> "An initializer for a pinned `T`" instead?
 
-That could be an option, any ideas for the syntax though? Or should it
-be a different macro like `stack_pin_init!` and `try_stack_pin_init!`?
-
-> Also, maybe a `<-` rather than `=3D` would be more consistent?
-
-That is sadly not possible, since `<-` is not allowed after `ty` fragments.
-
-> Anyway, I don't think this should block the PR. We can revisit it later
-> if it becomes a problem.
-
-Sure.
+To me this does not really make sense, since the type `T` cannot be
+pinned, only an instance can be. But maybe I should use the term
+`pin-initializer` instead.
 
 --
 Cheers,
 Benno
-
 
