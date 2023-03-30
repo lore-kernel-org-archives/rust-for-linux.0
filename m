@@ -2,45 +2,51 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D34B0C761A6
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 15:29:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4537C6FD1D
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 15:36:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233074AbjC3P33 (ORCPT
+        id S233189AbjC3Pge (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 11:29:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53292 "EHLO
+        Thu, 30 Mar 2023 11:36:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233082AbjC3P3V (ORCPT
+        with ESMTP id S233190AbjC3Pg0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 11:29:21 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E87DD32E
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 08:29:04 -0700 (PDT)
-Date:   Thu, 30 Mar 2023 15:28:17 +0000
+        Thu, 30 Mar 2023 11:36:26 -0400
+X-Greylist: delayed 553 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 30 Mar 2023 08:36:01 PDT
+Received: from mail-41104.protonmail.ch (mail-41104.protonmail.ch [185.70.41.104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98108E073
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 08:36:01 -0700 (PDT)
+Date:   Thu, 30 Mar 2023 15:16:21 +0000
+Authentication-Results: mail-41104.protonmail.ch;
+        dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="cOof9CWD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680190102; x=1680449302;
-        bh=kpaOTyrKqsw1XHAwXmaqpibdDWFN/5HsmHgDh0lZUrg=;
+        s=protonmail3; t=1680189390; x=1680448590;
+        bh=RFJsZt4PoyY34NqeT0ENI5ZWm6qyrS5nHiUvq+C365Y=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=odsQp3kuPYH79BQTdgIjYANBF/X5AwTkHo+Rx+bFHO+jN8jDLzyn/3n3aV3s5tX+S
-         bUUbfGNFYEz9U7kyM7IJxHptVFFoh9xJC4OzG2tvcX1aPlBVT/Og0t42oiFq7VX4bg
-         ZNv1QBD/PHk8n6EFgpLYq9lECnxEvb2FZUPbXGr84UXs82YAm34zWk/lDWt2B0CjX5
-         5bdOAOi5zwpCtvpYrEonpP296gvgJRfTzA5j6qTMwkcV8tsfo5j2vikdhtAGEuEIvb
-         NctaMjaE+N187DL9lX+jQES9OGdzCMkWerxcpRStLoDW5fuvSgc/KxVGiz72rdeSv9
-         h3hthoAXLcpPA==
-To:     Alice Ryhl <alice@ryhl.io>
-From:   Benno Lossin <y86-dev@protonmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+        b=cOof9CWD18CgA86f1wPCs6LHKCiYvfg3NtPnu42gtskj0YfGSo8dJf+7s6QN4g+58
+         DeYkftVFrBPmOl02YrYw44gCxVO66GhuHn5FAX8BJevHqmKvbj/qtGVTOt/uOj5T01
+         I3ItVqd67QmPUb8LGhV/Rmx3LzNO8G3wQx32wgPNxHvzNNkpmMwQE2ls291232cjD3
+         DK+udlLKGLEC0CM2dYGnFlboDS+NJCsDnXJWkZEChNBj7t3r0qtCEI0ccCpjF7QEyI
+         7YRrxJMSYwuit/73PF9ZXi/J+gVayhDAm5NefJopBphXPIKPCxhgHHYbfd/cxfke9+
+         gvAlfpfYlgvDw==
+To:     David Laight <David.Laight@ACULAB.COM>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Subject: Re: [PATCH v3 06/13] rust: init/sync: add `InPlaceInit` trait to pin-initialize smart pointers
-Message-ID: <3ea5cd8d-84ca-59bd-de50-fef185233a50@protonmail.com>
-In-Reply-To: <1f93a045-5bd8-e07f-cf1b-7b1196c8ab54@ryhl.io>
-References: <20230329223239.138757-1-y86-dev@protonmail.com> <20230329223239.138757-7-y86-dev@protonmail.com> <1f93a045-5bd8-e07f-cf1b-7b1196c8ab54@ryhl.io>
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Alice Ryhl <alice@ryhl.io>
+From:   Benno Lossin <y86-dev@protonmail.com>
+Cc:     "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "patches@lists.linux.dev" <patches@lists.linux.dev>
+Subject: Re: [PATCH v3 12/13] rust: sync: reduce stack usage of `UniqueArc::try_new_uninit`
+Message-ID: <ed3f5907-bc28-46b5-5a61-79dd2719349f@protonmail.com>
+In-Reply-To: <7f55875c46ab4c4989323ede57f6e46d@AcuMS.aculab.com>
+References: <20230329223239.138757-13-y86-dev@protonmail.com> <7f55875c46ab4c4989323ede57f6e46d@AcuMS.aculab.com>
 Feedback-ID: 40624463:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -49,59 +55,38 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 30.03.23 16:37, Alice Ryhl wrote:
-> On 3/30/23 00:33, y86-dev@protonmail.com wrote:
->> From: Benno Lossin <y86-dev@protonmail.com>
+On 30.03.23 16:58, David Laight wrote:
+> From: y86-dev@protonmail.com
+>> Sent: 29 March 2023 23:34
 >>
->> The `InPlaceInit` trait that provides two functions, for initializing
->> using `PinInit<T, E>` and `Init<T>`. It is implemented by `Arc<T>`,
->> `UniqueArc<T>` and `Box<T>`.
->>
->> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
->   > ---
->   >
->> +/// Smart pointer that can initialize memory in-place.
->> +pub trait InPlaceInit<T>: Sized {
->> +    /// Use the given initializer to in-place initialize a `T`.
->> +    ///
->> +    /// If `T: !Unpin` it will not be able to move afterwards.
->> +    fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Pin<Self>=
+>> `UniqueArc::try_new_uninit` calls `Arc::try_new(MaybeUninit::uninit())`.
+>> This results in the uninitialized memory being placed on the stack,
+>> which may be arbitrarily large due to the generic `T` and thus could
+>> cause a stack overflow for large types.
 >
->> +    where
->> +        Error: From<E>;
->> +
->> +    /// Use the given initializer to in-place initialize a `T`.
->> +    fn init<E>(init: impl Init<T, E>) -> error::Result<Self>
->> +    where
->> +        Error: From<E>;
->> +}
->
-> This definition is potentially rather limiting, because it can only be
-> used with error types that can be converted into a `kernel::Error`. What
-> do you think of this alternative?
->
-> pub trait InPlaceInit<T>: Sized {
->       fn pin_init<E>(init: impl PinInit<T, E>) -> Result<Pin<Self>, E>
->       where
->           E: From<AllocError>;
->
->       fn init<E>(init: impl Init<T, E>) -> Result<Self, E>
->       where
->           E: From<AllocError>;
-> }
+> Does that mean rust is using (the equivalent of) alloca() ?
 
-I initially implemented it like this, but it required almost always that
-`E` is specified, I will try and see if the situation is any different now,
-but I do not think so. In the user-space version of this API (see [1]) I
-have four functions, normal variants that return an `AllocError` and `try`
-variants that look exactly like what you suggested. In the kernel, we could
-make the normal variants as they are now and add the `try` variants as you
-described.
-
-[1]: https://docs.rs/pinned-init/0.0.5/pinned_init/trait.InPlaceInit.html
+No, the compiler knows the size of `T` statically (this is a requirement
+for calling `MaybeUninit::uninit()`). It would simply reserve stack
+space for a stack variable (like the C compiler would also do) and since
+the type is generic and user-specified, it could be larger than the
+stack size. The problem is that the Rust compiler does not optimize the
+stack variable away. This fix avoids creating a stack variable in the
+first place.
 
 --
 Cheers,
 Benno
+
+
+>
+> That is banned for C code in the kernel for any sizes.
+>
+> =09David
+>
+> -
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1=
+ 1PT, UK
+> Registration No: 1397386 (Wales)
 
 
