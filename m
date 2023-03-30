@@ -2,105 +2,108 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FA31C761A6
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 14:45:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 69E78C761A6
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 14:57:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231710AbjC3OpH (ORCPT
+        id S232633AbjC3O5P (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 10:45:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52440 "EHLO
+        Thu, 30 Mar 2023 10:57:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231367AbjC3OpG (ORCPT
+        with ESMTP id S232664AbjC3O5E (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 10:45:06 -0400
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB8A86A42;
-        Thu, 30 Mar 2023 07:45:04 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.west.internal (Postfix) with ESMTP id 879B1320093E;
-        Thu, 30 Mar 2023 10:45:03 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Thu, 30 Mar 2023 10:45:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-        :content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1680187503; x=1680273903; bh=eEEZ+8AfxYs0SGGK+yrFh1itzbAaHrsVMFs
-        UFFMshlo=; b=pfxN3IQjKzzMo0Ixa0+GXvS7zmYXHkbJBNrNDYsCCs30dB1EIv2
-        vzO/B6wa06tdi8ZFO70TBX/8CpP8a66//bO3CF316ALp6O+gQyOOnHS2wETx4xlP
-        DUNa+Rlx+JOEUBeatPX8Jb9jcKg1+toPj6PXFEHmSHn1JIbwnIAvHeF4u/u/nkaf
-        x70N1rBGhYuGH0TWiwnAeTtFS2QD82qmUnWKviC2+iiJoUor/HFUNQaSr71tTAul
-        KkGnDPjEUkH+vif4yn7Bz9vOFFUwEmiQMG/LRUUPOJ4Nlwi/czrOTxwzHwkz/Gpy
-        RqdHs2+oyf5y6arkAIG884+pT7siHbDUoFQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1680187503; x=1680273903; bh=eEEZ+8AfxYs0SGGK+yrFh1itzbAaHrsVMFs
-        UFFMshlo=; b=Dd1oKzSkUlSptfN3q8E81cbrplV2+wGgYzYTmsa+KYKJlu3AfJ6
-        3tISYeksof/Ekt7lNAnOSGIjhnZvvsjzyZYWBS0ToQgq2qUqZ6Cq0YmGbSMOqGaw
-        V37TDr4psdRb6aYJnQSRW2LCjQGdwzDFnWLV8JsC6K0X/Ce2sgbWOMoqyAyWzZAj
-        Rep3y5UVerTAVHABpBlRY1c5ZHW9F7JPXMdgqo1zuDol0lbemLF4d/xykcQKhg4L
-        h5koENzeteiz+7/DWuNBbiPSUGf9kJQ2mztBBwX0tdAMMHwcVJgmsk32SxRl1gYj
-        6GJw4sY0qdVmd5me352RBlTQcEn/ii5VZwQ==
-X-ME-Sender: <xms:bqAlZNd1BgzlxjB0BWTut3AqYlH1jBKy_Q2-QTAP3Oy7tQrI0QOzRQ>
-    <xme:bqAlZLNyyUh-Rt4gTZql8fUVOK8J8SAS1bi9NPSmjTa2unqKYa1BX5T0BlAeTyM-E
-    6wUUaMCkXUXbZ_Y2A>
-X-ME-Received: <xmr:bqAlZGgAN-n5qfb8mG0KolhUvTXzNDot2PEdUOS8riF29EuWMJZTrMqmgAtpBjIvnvfw_5pE0YxCyB4rpPB95nKWvw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdehkedgjeekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpeetlhhi
-    tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
-    ehudduvdetkedvkedtudeludfgfffhudegjeeguedvvedtteevjeehheeiffefgeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvse
-    hrhihhlhdrihho
-X-ME-Proxy: <xmx:b6AlZG8IjIsS-t5IHzWxFJ-mwIfNBfyJ8H2juHjnBtdkwmVthw-NRg>
-    <xmx:b6AlZJsVy36bplWAHqxFP_Zd5KQERPF5e0Fma9yW_khj3EHOJtlguw>
-    <xmx:b6AlZFERrEce4MrwEvlivLNYeGFahM5Bpm8G_6mH9HncoAZaf7kkzg>
-    <xmx:b6AlZPDSxgveiF_p_M5LKhFJ3DouKldEJG0nsItMJhy8kHRzp3O8UA>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Mar 2023 10:45:01 -0400 (EDT)
-Message-ID: <a31d0ea3-710d-8ac9-5be1-fa268a7aa36c@ryhl.io>
-Date:   Thu, 30 Mar 2023 16:45:14 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 07/13] rust: init: add `PinnedDrop` trait and macros
-Content-Language: en-US
-To:     y86-dev@protonmail.com
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+        Thu, 30 Mar 2023 10:57:04 -0400
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD40ECDCF;
+        Thu, 30 Mar 2023 07:56:44 -0700 (PDT)
+Received: by mail-ot1-x334.google.com with SMTP id f4-20020a9d0384000000b0069fab3f4cafso10127624otf.9;
+        Thu, 30 Mar 2023 07:56:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680188202;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=33ML0sCiZsmNYfIFvzdCr7eA6//B/DCyhkc4DfMG7yU=;
+        b=hhjyyGJ5Z0Z9yX+gD6bwCy3N0MKqvKQvuAKssumxFM6eTwIyp5Oo20vI2M48SmAnwc
+         OGKJJ/EKx/osI6bXWGgXsawSSeJI/xNBk826LDFym/449NtzxHgDgQx+v+7YHl6taobR
+         w8gR5lsLuk+8uf+VTcf7e4kiGKagtMAIUdnouhZuFSljwm3XZN2Y3iEpAfiJIxfW5Umi
+         aV2I3c8AbUY8F8ZodWmx3LMt7RmTkOJbtjpS/kUd2Yk4xr5KGrhRfYVoAGX3nhWgGwpc
+         sPFJ4vnxIIvmQOrxFf3TWPxwIsNH6ZT7vJZQNEhhiYn2p+POO94/i1Q7myXLnWb+ya92
+         b6Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680188202;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=33ML0sCiZsmNYfIFvzdCr7eA6//B/DCyhkc4DfMG7yU=;
+        b=4Wn88KRGra19tiC5KTWra5EMvKefIEqVNEbo7uxVVDsHJgGF1x/kd8jjf36qQApB9J
+         PRLDYvdpQywLLIS8L+KBqt3P4ti41Vhu79crhJx8J8S8epnbf8HCgwJAoF72b/B3EV6s
+         ZBWV7a0006f6iCyUXcOSrApZ0k7epwXTv4npZdcapMwQYFZ5nHLxyD5pXXWHQY6DClkD
+         QCjMqSyoWLFAAvrcRR7C2fOMak6cp+mxATolFbwVQXMTsDPGSxyrkHmFCWrCan2Gr4gH
+         LKo9lvmGaeUr1V8fDqTKzEyjyVVaE8rpCVNEe/kipcs/KANG0Px97ft5tM0nEpZjVOT9
+         c+mw==
+X-Gm-Message-State: AAQBX9fGJITOspvkhMYf7A0KP7W5pD2kA7PpdBxwYJJqkGPikbEg0J6J
+        wKgr9A0ZuzG3sk8P9GeLJGo=
+X-Google-Smtp-Source: AKy350YMbqNcniqsqDGNpoQIaqTLdf6LjevJjKOilBkazQbxdkPIpJF6FeKur4gcsonWQu9dRqAzyA==
+X-Received: by 2002:a05:6830:1644:b0:6a1:7eaa:3836 with SMTP id h4-20020a056830164400b006a17eaa3836mr591188otr.5.1680188202533;
+        Thu, 30 Mar 2023 07:56:42 -0700 (PDT)
+Received: from wedsonaf-dev ([189.124.190.154])
+        by smtp.gmail.com with ESMTPSA id d11-20020a05683018eb00b0069f1774cde8sm8625555otf.71.2023.03.30.07.56.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Mar 2023 07:56:42 -0700 (PDT)
+Date:   Thu, 30 Mar 2023 11:56:33 -0300
+From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-References: <20230329223239.138757-1-y86-dev@protonmail.com>
- <20230329223239.138757-8-y86-dev@protonmail.com>
-From:   Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20230329223239.138757-8-y86-dev@protonmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH 12/13] rust: sync: introduce `CondVar`
+Message-ID: <ZCWjIaByRHDhdCud@wedsonaf-dev>
+References: <20230330043954.562237-1-wedsonaf@gmail.com>
+ <20230330043954.562237-12-wedsonaf@gmail.com>
+ <20230330125927.GD124812@hirez.programming.kicks-ass.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230330125927.GD124812@hirez.programming.kicks-ass.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 3/30/23 00:33, y86-dev@protonmail.com wrote:
-> From: Benno Lossin <y86-dev@protonmail.com>
+On Thu, Mar 30, 2023 at 02:59:27PM +0200, Peter Zijlstra wrote:
+> On Thu, Mar 30, 2023 at 01:39:53AM -0300, Wedson Almeida Filho wrote:
 > 
-> The `PinnedDrop` trait that facilitates destruction of pinned types.
-> It has to be implemented via the `#[pinned_drop]` macro, since the
-> `drop` function should not be called by normal code, only by other
-> destructors. It also only works on structs that are annotated with
-> `#[pin_data(PinnedDrop)]`.
+> > +    fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guard<'_, T, B>) {
+> > +        let wait = Opaque::<bindings::wait_queue_entry>::uninit();
+> > +
+> > +        // SAFETY: `wait` points to valid memory.
+> > +        unsafe { bindings::init_wait(wait.get()) };
+> > +
+> > +        // SAFETY: Both `wait` and `wait_list` point to valid memory.
+> > +        unsafe {
+> > +            bindings::prepare_to_wait_exclusive(self.wait_list.get(), wait.get(), wait_state as _)
+> > +        };
 > 
-> Co-developed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
+> I can't read this rust gunk, but where is the condition test gone?
+> 
+> Also, where is the loop gone to?
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+They're both at the caller. The usage of condition variables is something like:
 
-I noticed the same thing as Gary with the name `create`, but otherwise LGTM.
+while guard.value != v {
+    condvar.wait_uninterruptible(&mut guard);
+}
+
+(Note that this is not specific to the kernel or to Rust: this is how condvars
+work in general. You'll find this in any textbook on the topic.)
+
+In the implementation of wait_internal(), we add the local wait entry to the
+wait queue _before_ releasing the lock (i.e., before the test result can
+change), so we guarantee that we don't miss wake up attempts.
+
+Thanks,
+-Wedson
