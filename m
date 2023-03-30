@@ -2,290 +2,263 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5290DC6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 11:29:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D6F3C761AF
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 11:45:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230019AbjC3L3G (ORCPT
+        id S231816AbjC3LpN (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 07:29:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40934 "EHLO
+        Thu, 30 Mar 2023 07:45:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbjC3L3F (ORCPT
+        with ESMTP id S231990AbjC3Loy (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 07:29:05 -0400
-X-Greylist: delayed 46535 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 30 Mar 2023 04:29:04 PDT
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78901128
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 04:29:04 -0700 (PDT)
-Date:   Thu, 30 Mar 2023 11:28:54 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680175742; x=1680434942;
-        bh=XfCZyP1vsJsXaXjTfv1aS0dAtrtbQWCUhyE0nUwDrgE=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=sGf5sEb1DbkT0HO0LPOU5LecCYKJsBm6TkNOEqvbq2NDFRPni8cSDhCyQAvcy8fM7
-         QB9/SB+d7AuiBc1JMbHQBuPrAaNiR8j5860e/oOsFr0OGTwpkE5dhkBEjo5j0uLqfG
-         0enrLqXlelh9+g76uazHDwb1JxV4bcUxW03U5kDem6FcPIhrfNIo9PjYeno0eZ50N6
-         T7Lu1Cv4W77p3heuGpD7EIogLN+I1HEJX2LPbYMCg6IS9Dapo8rkc4J2Kc4lKaZwkh
-         jsUdTdjEFkEGTnHOmGaN5xUMPE9cAwEDj/FrfGbqIKh6P9DfpRsKeQ/3SvAbnyMIqd
-         1oj2CawBNCJnA==
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org
-From:   Benno Lossin <y86-dev@protonmail.com>
+        Thu, 30 Mar 2023 07:44:54 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C76399EE2
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 04:44:32 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id u11-20020a05600c19cb00b003edcc414997so11554550wmq.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 04:44:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20210112.gappssmtp.com; s=20210112; t=1680176658;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=g0JdgbhClOFYZkBIrmVYKwypeprdaD8BQ3RAt+KP9Fs=;
+        b=UGQs1w6ZJO+wmBd9qR0yAZA5IBTIe62IsjIs/jWOm2AoRAOmFSeGY973sd6WoW1ERC
+         pg1FLyq0GqIlIl0lDQ5kX+yLMT8purlrGX3jHIqR9D2kGtmQMoBFNHy1rz9Pu6IWf+1B
+         JvIvOWNJUKwf0AbZSsO0bj3BOcQ1H5FewikKJ7KAGFiuks+XOPuvICDrZdX4uTT0qjZb
+         jzQKs4in03r0HM8NGlJg9VCu7QYn7gESWvNtrO2rokhnJASDOltY6KSqEvXJKsAkn/uc
+         mhqdt0BSEbvp0jBdSGQZQb7re9ZsUjV0joOKZbWuOD5BLX1q0z7+UUIv3L63fV5QBYlI
+         UBmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680176658;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g0JdgbhClOFYZkBIrmVYKwypeprdaD8BQ3RAt+KP9Fs=;
+        b=GAjDLyos7IvfNBwa1iPNKyJOvCSjhv4u8mNcWhiLOHU/T/k0Kp2BDnaKD0RGzao65P
+         HBf7U6zfQlN0mfIV5VXQoliFjy3X+TOeAvh7bT1Pil0uLnuHF8kpZ9zOBBlNRrFLcHxu
+         Nt0EfvJb7vu0CP30jLoUGNJyLwaa7gAx03sE9mC9eJ3a08W9eg8l+tJbAh0oDWP80tKC
+         D2K+ao2MNyaFsr0JCdmKPvI0KjAjR2WQTsAOasHU3aS03M+SXuHY4A8I2XUkoLc2SeE6
+         FBax8ZzlrNYDGpSXsd8zb0a8OALVUTvdFCs0ZELon2GjB5rOFpznCapuW8U3ToW1BF6i
+         kV+A==
+X-Gm-Message-State: AO0yUKWvZdmt+C7tlaoiNyf9P9m3oUazH65QfPE0HG+tWSCxsI1FzNdI
+        sxrpxAOApmJsGsJOOCefAnRF7g==
+X-Google-Smtp-Source: AK7set86Se45lU8RiKxEAJPVjl82rkHkBCzt88SKrtkidgTB0cn034DBzdmyHV1BF4ygXgTH+MThNg==
+X-Received: by 2002:a7b:c38a:0:b0:3ee:1acd:b039 with SMTP id s10-20020a7bc38a000000b003ee1acdb039mr17418382wmj.34.1680176658316;
+        Thu, 30 Mar 2023 04:44:18 -0700 (PDT)
+Received: from localhost ([147.161.155.91])
+        by smtp.gmail.com with ESMTPSA id o5-20020a05600c510500b003ef5bb63f13sm6025059wms.10.2023.03.30.04.44.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Mar 2023 04:44:17 -0700 (PDT)
+References: <20230329223239.138757-1-y86-dev@protonmail.com>
+ <20230329223239.138757-2-y86-dev@protonmail.com>
+User-agent: mu4e 1.9.18; emacs 28.2.50
+From:   Andreas Hindborg <nmi@metaspace.dk>
+To:     y86-dev@protonmail.com
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH 13/13] rust: sync: introduce `LockedBy`
-Message-ID: <04034640-2d89-dd63-07e5-29fa612aa458@protonmail.com>
-In-Reply-To: <20230330043954.562237-13-wedsonaf@gmail.com>
-References: <20230330043954.562237-1-wedsonaf@gmail.com> <20230330043954.562237-13-wedsonaf@gmail.com>
-Feedback-ID: 40624463:user:proton
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Alice Ryhl <alice@ryhl.io>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v3 01/13] rust: macros: add `quote!` macro
+Date:   Thu, 30 Mar 2023 13:42:29 +0200
+In-reply-to: <20230329223239.138757-2-y86-dev@protonmail.com>
+Message-ID: <877cuy5ur2.fsf@metaspace.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 30.03.23 06:39, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
+
+y86-dev@protonmail.com writes:
+
+> From: Gary Guo <gary@garyguo.net>
 >
-> This allows us to have data protected by a lock despite not being
-> wrapped by it. Access is granted by providing evidence that the lock is
-> held by the caller.
+> Add the `quote!` macro for creating `TokenStream`s directly via the
+> given Rust tokens. It also supports repetitions using iterators.
 >
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> It will be used by the pin-init API proc-macros to generate code.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
 > ---
->   rust/kernel/sync.rs           |   2 +
->   rust/kernel/sync/lock.rs      |   2 +-
->   rust/kernel/sync/locked_by.rs | 126 ++++++++++++++++++++++++++++++++++
->   3 files changed, 129 insertions(+), 1 deletion(-)
->   create mode 100644 rust/kernel/sync/locked_by.rs
+>  rust/macros/lib.rs   |   2 +
+>  rust/macros/quote.rs | 145 +++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 147 insertions(+)
+>  create mode 100644 rust/macros/quote.rs
 >
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index d6dd0e2c1678..f8edb6d0d794 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -10,10 +10,12 @@ use crate::types::Opaque;
->   mod arc;
->   mod condvar;
->   pub mod lock;
-> +mod locked_by;
+> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+> index c1d385e345b9..82b520f024dd 100644
+> --- a/rust/macros/lib.rs
+> +++ b/rust/macros/lib.rs
+> @@ -2,6 +2,8 @@
 >
->   pub use arc::{Arc, ArcBorrow, UniqueArc};
->   pub use condvar::CondVar;
->   pub use lock::{mutex::Mutex, spinlock::SpinLock};
-> +pub use locked_by::LockedBy;
+>  //! Crate for all kernel procedural macros.
 >
->   /// Represents a lockdep class. It's a wrapper around C's `lock_class_k=
-ey`.
->   #[repr(transparent)]
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index f52ba9ab1b70..51c996ca2109 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -111,7 +111,7 @@ pub struct Lock<T: ?Sized, B: Backend> {
->       _pin: PhantomPinned,
->
->       /// The data protected by the lock.
-> -    data: UnsafeCell<T>,
-> +    pub(crate) data: UnsafeCell<T>,
->   }
->
->   // SAFETY: `Lock` can be transferred across thread boundaries iff the d=
-ata it protects can.
-> diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.r=
-s
+> +#[macro_use]
+> +mod quote;
+>  mod concat_idents;
+>  mod helpers;
+>  mod module;
+> diff --git a/rust/macros/quote.rs b/rust/macros/quote.rs
 > new file mode 100644
-> index 000000000000..cbfd4e84b770
+> index 000000000000..7efb009c25a9
 > --- /dev/null
-> +++ b/rust/kernel/sync/locked_by.rs
-> @@ -0,0 +1,126 @@
-> +// SPDX-License-Identifier: GPL-2.0
+> +++ b/rust/macros/quote.rs
+> @@ -0,0 +1,145 @@
+> +// SPDX-License-Identifier: Apache-2.0 OR MIT
 > +
-> +//! A wrapper for data protected by a lock that does not wrap it.
+> +use proc_macro::{TokenStream, TokenTree};
 > +
-> +use super::{lock::Backend, lock::Lock};
-> +use core::{cell::UnsafeCell, ptr};
-> +
-> +/// Allows access to some data to be serialised by a lock that does not =
-wrap it.
-> +///
-> +/// In most cases, data protected by a lock is wrapped by the appropriat=
-e lock type, e.g.,
-> +/// [`super::Mutex`] or [`super::SpinLock`]. [`LockedBy`] is meant for c=
-ases when this is not
-> +/// possible. For example, if a container has a lock and some data in th=
-e contained elements needs
-> +/// to be protected by the same lock.
-> +///
-> +/// [`LockedBy`] wraps the data in lieu of another locking primitive, an=
-d only allows access to it
-> +/// when the caller shows evidence that the 'external' lock is locked.
-> +///
-> +/// # Examples
-> +///
-> +/// The following is an example for illustrative purposes: `InnerDirecto=
-ry::bytes_used` is an
-> +/// aggregate of all `InnerFile::bytes_used` and must be kept consistent=
-; so we wrap `InnerFile` in
-> +/// a `LockedBy` so that it shares a lock with `InnerDirectory`. This al=
-lows us to enforce at
-> +/// compile-time that access to `InnerFile` is only granted when an `Inn=
-erDirectory` is also
-> +/// locked; we enforce at run time that the right `InnerDirectory` is lo=
-cked.
-> +///
-> +/// ```
-> +/// use kernel::sync::{LockedBy, Mutex};
-> +///
-> +/// struct InnerFile {
-> +///     bytes_used: u64,
-> +/// }
-> +///
-> +/// struct File {
-> +///     _ino: u32,
-> +///     inner: LockedBy<InnerFile, InnerDirectory>,
-> +/// }
-> +///
-> +/// struct InnerDirectory {
-> +///     /// The sum of the bytes used by all files.
-> +///     bytes_used: u64,
-> +///     _files: Vec<File>,
-> +/// }
-> +///
-> +/// struct Directory {
-> +///     _ino: u32,
-> +///     inner: Mutex<InnerDirectory>,
-> +/// }
-> +///
-> +/// /// Prints `bytes_used` from both the directory and file.
-> +/// fn print_bytes_used(dir: &Directory, file: &File) {
-> +///     let guard =3D dir.inner.lock();
-> +///     let inner_file =3D file.inner.access(&guard);
-> +///     pr_info!("{} {}", guard.bytes_used, inner_file.bytes_used);
-> +/// }
-> +///
-> +/// /// Increments `bytes_used` for both the directory and file.
-> +/// fn inc_bytes_used(dir: &Directory, file: &File) {
-> +///     let mut guard =3D dir.inner.lock();
-> +///     guard.bytes_used +=3D 10;
-> +///
-> +///     let file_inner =3D file.inner.access_mut(&mut guard);
-
-Missing deref (`*`) in front of `guard`.
-
-> +///     file_inner.bytes_used +=3D 10;
-> +/// }
-> +///
-> +/// /// Creates a new file.
-> +/// fn new_file(ino: u32, dir: &Directory) -> File {
-> +///     File {
-> +///         _ino: ino,
-> +///         inner: LockedBy::new(&dir.inner, InnerFile { bytes_used: 0 }=
-),
-> +///     }
-> +/// }
-> +/// ```
-> +pub struct LockedBy<T: ?Sized, U: ?Sized> {
-> +    owner: *const U,
-> +    data: UnsafeCell<T>,
+> +pub(crate) trait ToTokens {
+> +    fn to_tokens(&self, tokens: &mut TokenStream);
 > +}
 > +
-> +// SAFETY: `LockedBy` can be transferred across thread boundaries iff th=
-e data it protects can.
-> +unsafe impl<T: ?Sized + Send, U: ?Sized> Send for LockedBy<T, U> {}
-> +
-> +// SAFETY: `LockedBy` serialises the interior mutability it provides, so=
- it is `Sync` as long as the
-> +// data it protects is `Send`.
-> +unsafe impl<T: ?Sized + Send, U: ?Sized> Sync for LockedBy<T, U> {}
-> +
-> +impl<T, U: ?Sized> LockedBy<T, U> {
-> +    /// Constructs a new instance of [`LockedBy`].
-> +    ///
-> +    /// It stores a raw pointer to the owner that is never dereferenced.=
- It is only used to ensure
-> +    /// that the right owner is being used to access the protected data.=
- If the owner is freed, the
-> +    /// data becomes inaccessible; if another instance of the owner is a=
-llocated *on the same
-> +    /// memory location*, the data becomes accessible again: none of thi=
-s affects memory safety
-> +    /// because in any case at most one thread (or CPU) can access the p=
-rotected data at a time.
-> +    pub fn new(owner: &Lock<U, impl Backend>, data: T) -> Self {
-> +        Self {
-> +            owner: owner.data.get(),
-> +            data: UnsafeCell::new(data),
+> +impl<T: ToTokens> ToTokens for Option<T> {
+> +    fn to_tokens(&self, tokens: &mut TokenStream) {
+> +        if let Some(v) = self {
+> +            v.to_tokens(tokens);
 > +        }
 > +    }
 > +}
 > +
-> +impl<T: ?Sized, U: ?Sized> LockedBy<T, U> {
-> +    /// Returns a reference to the protected data when the caller provid=
-es evidence (via a
-> +    /// reference) that the owner is locked.
-> +    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
-> +        if !ptr::eq(owner, self.owner) {
-> +            panic!("mismatched owners");
-> +        }
-> +
-> +        // SAFETY: `owner` is evidence that the owner is locked.
-> +        unsafe { &*self.data.get() }
-> +    }
-> +
-> +    /// Returns a mutable reference to the protected data when the calle=
-r provides evidence (via a
-> +    /// mutable owner) that the owner is locked mutably.
-> +    ///
-> +    /// Showing a mutable reference to the owner is sufficient because w=
-e know no other references
-> +    /// can exist to it.
-> +    pub fn access_mut<'a>(&'a self, owner: &'a mut U) -> &'a mut T {
-> +        if !ptr::eq(owner, self.owner) {
-> +            panic!("mismatched owners");
-> +        }
-> +
-> +        // SAFETY: `owner` is evidence that there is only one reference =
-to the owner.
-> +        unsafe { &mut *self.data.get() }
+> +impl ToTokens for proc_macro::Group {
+> +    fn to_tokens(&self, tokens: &mut TokenStream) {
+> +        tokens.extend([TokenTree::from(self.clone())]);
 > +    }
 > +}
-> --
-> 2.34.1
->
+> +
+> +impl ToTokens for TokenTree {
+> +    fn to_tokens(&self, tokens: &mut TokenStream) {
+> +        tokens.extend([self.clone()]);
+> +    }
+> +}
+> +
+> +impl ToTokens for TokenStream {
+> +    fn to_tokens(&self, tokens: &mut TokenStream) {
+> +        tokens.extend(self.clone());
+> +    }
+> +}
+> +
+> +/// Converts tokens into [`proc_macro::TokenStream`] and performs variable interpolations with
+> +/// the given span.
+> +///
+> +/// This is a similar to the
+> +/// [`quote_spanned!`](https://docs.rs/quote/latest/quote/macro.quote_spanned.html) macro from the
+> +/// `quote` crate but provides only just enough functionality needed by the current `macros` crate.
+> +#[allow(unused_macros)]
+> +macro_rules! quote_spanned {
+> +    ($span:expr => $($tt:tt)*) => {
+> +    #[allow(clippy::vec_init_then_push)]
+> +    {
+> +        let mut tokens = Vec::new();
+> +        let span = $span;
+> +        quote_spanned!(@proc tokens span $($tt)*);
+> +        proc_macro::TokenStream::from_iter(tokens)
 
-What happens if the the protected data `U` is a ZST? Then the address
-comparing will not work, since all ZST references have the same address.
-For example:
+Should this be `::alloc::vec::Vec` and
+`::proc_macro::TokenStream::from_iter` ?
 
-     struct Outer {
-         mtx: Mutex<()>,
-         inners: Vec<Inner>,
-     }
+Best regards,
+Andreas
 
-     struct Inner {
-         count: LockedBy<usize, ()>,
-     }
-
-     fn evil(inner: &Inner) {
-         // can create two mutable references at the same time:
-         let a =3D inner.count.access_mut(&mut ());
-         let b =3D inner.count.access_mut(&mut ());
-         core::mem::swap(a, b);
-     }
-
-Maybe prevent this by checking for `assert!(mem::size_of::<U>() !=3D 0);`
-in the `new` function? Though I am not sure if a ZST is the only way for
-values to share addresses.
-
---
-Cheers,
-Benno
-
+> +    }};
+> +    (@proc $v:ident $span:ident) => {};
+> +    (@proc $v:ident $span:ident #$id:ident $($tt:tt)*) => {
+> +        let mut ts = proc_macro::TokenStream::new();
+> +        crate::quote::ToTokens::to_tokens(&$id, &mut ts);
+> +        $v.extend(ts.into_iter());
+> +        quote_spanned!(@proc $v $span $($tt)*);
+> +    };
+> +    (@proc $v:ident $span:ident #(#$id:ident)* $($tt:tt)*) => {
+> +        for token in $id {
+> +            let mut ts = proc_macro::TokenStream::new();
+> +            crate::quote::ToTokens::to_tokens(&token, &mut ts);
+> +            $v.extend(ts.into_iter());
+> +        }
+> +        quote_spanned!(@proc $v $span $($tt)*);
+> +    };
+> +    (@proc $v:ident $span:ident ( $($inner:tt)* ) $($tt:tt)*) => {
+> +        let mut tokens = Vec::new();
+> +        quote_spanned!(@proc tokens $span $($inner)*);
+> +        $v.push(proc_macro::TokenTree::Group(proc_macro::Group::new(
+> +            proc_macro::Delimiter::Parenthesis,
+> +            proc_macro::TokenStream::from_iter(tokens)
+> +        )));
+> +        quote_spanned!(@proc $v $span $($tt)*);
+> +    };
+> +    (@proc $v:ident $span:ident [ $($inner:tt)* ] $($tt:tt)*) => {
+> +        let mut tokens = Vec::new();
+> +        quote_spanned!(@proc tokens $span $($inner)*);
+> +        $v.push(proc_macro::TokenTree::Group(proc_macro::Group::new(
+> +            proc_macro::Delimiter::Bracket,
+> +            proc_macro::TokenStream::from_iter(tokens)
+> +        )));
+> +        quote_spanned!(@proc $v $span $($tt)*);
+> +    };
+> +    (@proc $v:ident $span:ident { $($inner:tt)* } $($tt:tt)*) => {
+> +        let mut tokens = Vec::new();
+> +        quote_spanned!(@proc tokens $span $($inner)*);
+> +        $v.push(proc_macro::TokenTree::Group(proc_macro::Group::new(
+> +            proc_macro::Delimiter::Brace,
+> +            proc_macro::TokenStream::from_iter(tokens)
+> +        )));
+> +        quote_spanned!(@proc $v $span $($tt)*);
+> +    };
+> +    (@proc $v:ident $span:ident :: $($tt:tt)*) => {
+> +        $v.push(
+> +            proc_macro::TokenTree::Punct(proc_macro::Punct::new(':', proc_macro::Spacing::Joint))
+> +        );
+> +        $v.push(
+> +            proc_macro::TokenTree::Punct(proc_macro::Punct::new(':', proc_macro::Spacing::Alone))
+> +        );
+> +        quote_spanned!(@proc $v $span $($tt)*);
+> +    };
+> +    (@proc $v:ident $span:ident : $($tt:tt)*) => {
+> +        $v.push(
+> +            proc_macro::TokenTree::Punct(proc_macro::Punct::new(':', proc_macro::Spacing::Alone))
+> +        );
+> +        quote_spanned!(@proc $v $span $($tt)*);
+> +    };
+> +    (@proc $v:ident $span:ident , $($tt:tt)*) => {
+> +        $v.push(
+> +            proc_macro::TokenTree::Punct(proc_macro::Punct::new(',', proc_macro::Spacing::Alone))
+> +        );
+> +        quote_spanned!(@proc $v $span $($tt)*);
+> +    };
+> +    (@proc $v:ident $span:ident @ $($tt:tt)*) => {
+> +        $v.push(
+> +            proc_macro::TokenTree::Punct(proc_macro::Punct::new('@', proc_macro::Spacing::Alone))
+> +        );
+> +        quote_spanned!(@proc $v $span $($tt)*);
+> +    };
+> +    (@proc $v:ident $span:ident ! $($tt:tt)*) => {
+> +        $v.push(
+> +            proc_macro::TokenTree::Punct(proc_macro::Punct::new('!', proc_macro::Spacing::Alone))
+> +        );
+> +        quote_spanned!(@proc $v $span $($tt)*);
+> +    };
+> +    (@proc $v:ident $span:ident $id:ident $($tt:tt)*) => {
+> +        $v.push(proc_macro::TokenTree::Ident(proc_macro::Ident::new(stringify!($id), $span)));
+> +        quote_spanned!(@proc $v $span $($tt)*);
+> +    };
+> +}
+> +
+> +/// Converts tokens into [`proc_macro::TokenStream`] and performs variable interpolations with
+> +/// mixed site span ([`Span::mixed_site()`]).
+> +///
+> +/// This is a similar to the [`quote!`](https://docs.rs/quote/latest/quote/macro.quote.html) macro
+> +/// from the `quote` crate but provides only just enough functionality needed by the current
+> +/// `macros` crate.
+> +///
+> +/// [`Span::mixed_site()`]: https://doc.rust-lang.org/proc_macro/struct.Span.html#method.mixed_site
+> +#[allow(unused_macros)]
+> +macro_rules! quote {
+> +    ($($tt:tt)*) => {
+> +        quote_spanned!(proc_macro::Span::mixed_site() => $($tt)*)
+> +    }
+> +}
 
