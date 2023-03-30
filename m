@@ -2,128 +2,110 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 25DECC6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 14:36:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AE38C6FD1D
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 14:44:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231777AbjC3Og4 (ORCPT
+        id S232114AbjC3OoJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 10:36:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44344 "EHLO
+        Thu, 30 Mar 2023 10:44:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231396AbjC3Ogy (ORCPT
+        with ESMTP id S232135AbjC3OoI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 10:36:54 -0400
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE3AC5BA0;
-        Thu, 30 Mar 2023 07:36:53 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.west.internal (Postfix) with ESMTP id 5C848320092D;
-        Thu, 30 Mar 2023 10:36:52 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Thu, 30 Mar 2023 10:36:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-        :content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1680187011; x=1680273411; bh=mEU0nion2muXlTfUR8cesDV/AWMQCwWe/7k
-        pJqZM+CM=; b=lOcePaeEvFUwkff08Ll9SURQYawK4c3C361GvZCwPNO8rSTU1vg
-        srgt5wYHN1Yy40ktgnBGN0nd3E3TsYANDXNm9/Ozsp55ZAoFXN4VZ3Z2QkbhL6jN
-        hdWhhPsgTK/DBP8IEvRTtPD1VsIKmszGKwp21ztfYvT4sWTWLUyIJ8CjdynUooII
-        g7KufWKRbsCK4z+CVq0dUPvraGm8nGf5vU8R2FpDFI+RYwEiFzkQ+9HT/bBNFdCU
-        AxeH8n1EkukN7daXHS4H8FpOOVPKr+08KlXq28/ENZIMDzWQlkqaOZblQ9qD3U39
-        oJNz4/eioT5pmdrZdgYlKcvdrcHjObCryqA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1680187011; x=1680273411; bh=mEU0nion2muXlTfUR8cesDV/AWMQCwWe/7k
-        pJqZM+CM=; b=U+1Ihw8g8cVw3w0tdthGsHQW7Sg73ShV9oapDg+bYlxpaITQJpF
-        fOzcy6YWltiSJp9TFqtLRiS1R/PA20uF8f2t/j9oadz1isaD6OvLQ78TdlWRdYk9
-        KrCAfDgJlou6E8VcCM/VNnLpfqal0YXiD1WyH6E/C2mLRc5dTpzsyDl9WCn9B5jk
-        /kMZKcQjkM82Eb5yfrKFMZexfgV3jBChJXpnS7YC/P7asXQV2p5edjEZHOISA+eo
-        AdYqnlQiRiERUpgPa7eubr1Pb/Wgdw7nkFgl8QKsIECfbQARGi5yW6JgrXd2dU1+
-        Fa2accxo1rTadDmsrOUb2mUXjxJ0HO2akdw==
-X-ME-Sender: <xms:g54lZOB8RWwbfUdP-D5bdUHz7zOyDrUybfCnvvu--9FMsli_EVmbHQ>
-    <xme:g54lZIiHPS6I74Wp0Dh7Jq7xXPXpWwBN6ZFcL-ksCIuij_12u6j9DJF202M9Ou3Xu
-    hZCi3edGxwvKr-sxQ>
-X-ME-Received: <xmr:g54lZBk9t9Ao68W-pCXjJtsXJcL5u_F0ADlMyDtQ0_WH1viM1C4SRU3ftULEIMABppQ3byGBXy2kI0h4fD8Y6ELdzw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdehkedgjeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpeetlhhi
-    tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
-    ehudduvdetkedvkedtudeludfgfffhudegjeeguedvvedtteevjeehheeiffefgeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvse
-    hrhihhlhdrihho
-X-ME-Proxy: <xmx:g54lZMzl2MQKpXrn4Wletjsbn7txpcmKyElTTielHY319dlscAOaQA>
-    <xmx:g54lZDTkIqtNEKVGhmUfiqhf2Sq8TorCRlfOT3kLjyyPaB2DY-tTkA>
-    <xmx:g54lZHZ-uC-atbcq6IGYswS_zopJwyERLc00TctXQr1l-4U9bRRxNQ>
-    <xmx:g54lZOGdA7QC66m6Firw3oWfIqCU-FJH5ikTynN7TOaPNNg9bbFZnw>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Mar 2023 10:36:49 -0400 (EDT)
-Message-ID: <1f93a045-5bd8-e07f-cf1b-7b1196c8ab54@ryhl.io>
-Date:   Thu, 30 Mar 2023 16:37:01 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 06/13] rust: init/sync: add `InPlaceInit` trait to
- pin-initialize smart pointers
-Content-Language: en-US
-To:     y86-dev@protonmail.com
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+        Thu, 30 Mar 2023 10:44:08 -0400
+Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ED4176B3;
+        Thu, 30 Mar 2023 07:44:03 -0700 (PDT)
+Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-17997ccf711so19987897fac.0;
+        Thu, 30 Mar 2023 07:44:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680187442;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=M59Zhlyue+8YucUN9CbNq8WgSVKkMeAwGI1kFlClvWI=;
+        b=S+j8LaCm6UEQDjtGt+RxgfCmBk1JE4gXT3XjF7e/k4NfYX+GRLTSLYO3lEh4EohhgX
+         xSSqV7kHVsbGoGaTYeDiSaLW8geOql4v/YU00Am7SSdiYYT34GJpyIytHoH7InX5K1Z7
+         O3X3MKlPTnunSmv4Xa4mfGRG93ADd0z2n4xPgRmWNzM3H+hGSZa1xFjW9WUVUxgxbTzA
+         YI/WQxjzR0yAw+/ow5/DgbigPA0UNXOpP/VwGdpSfhhPJxXVDkK3WPo9jwt44YduG7Q+
+         N+5po5P1bvyFbjo8aEj4wG8gm2akSqChvVflczd2fJJ34WoYS7Csu4KDtseZgkNeC50r
+         wzvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680187442;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M59Zhlyue+8YucUN9CbNq8WgSVKkMeAwGI1kFlClvWI=;
+        b=30EujOZY0MdfW/fql0Vb9xFMaEcr99UTonYVtuFIXlz2MWNpK2wlPNAFYex8W5je5P
+         I2II0USmnoxONZ1PVh8J5NzdGmBGdvRhlnHjAbTfGC8tZfduAF1BrhR8MqNv+iRrBEWZ
+         YOvGKJzIPNdqIXhO9180x+H/FKe/lgR83Ak8FTusyRRx0mIpV8Fr1UK4KwTVSQoPHkvw
+         YTLkLr1BL3S5XkZFjUm9OBl02a19OZK//IkVLl427MnGjIF+4E/34zf74gR+JCkPkbsi
+         OCgS86N6CFf2kJgTSwlxytwOcMr3CQBaRW5FcNnkhNoqW7DtpklfgasHQyYeZYKHIoDi
+         HFIA==
+X-Gm-Message-State: AAQBX9dO59xiMa7Tcbfx0cXz2xIZNEf6l2MDTMbAtTBjjjwU57d4YF92
+        W/TJa3br7AgZilNd1YQIc0k=
+X-Google-Smtp-Source: AKy350bTycHczbqfayfmBmcZYXTDdV1/OLKONTgYIIWZFgTJ7BMWHyyd5uD3Wj/6om/OKXEjay/jiA==
+X-Received: by 2002:a05:6870:3118:b0:177:b77c:3430 with SMTP id v24-20020a056870311800b00177b77c3430mr13765538oaa.35.1680187442173;
+        Thu, 30 Mar 2023 07:44:02 -0700 (PDT)
+Received: from wedsonaf-dev ([189.124.190.154])
+        by smtp.gmail.com with ESMTPSA id xg8-20020a056870cf8800b00177ba198612sm12883872oab.53.2023.03.30.07.43.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Mar 2023 07:44:01 -0700 (PDT)
+Date:   Thu, 30 Mar 2023 11:43:54 -0300
+From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-References: <20230329223239.138757-1-y86-dev@protonmail.com>
- <20230329223239.138757-7-y86-dev@protonmail.com>
-From:   Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20230329223239.138757-7-y86-dev@protonmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH 12/13] rust: sync: introduce `CondVar`
+Message-ID: <ZCWgKnuRpUfWs2wT@wedsonaf-dev>
+References: <20230330043954.562237-1-wedsonaf@gmail.com>
+ <20230330043954.562237-12-wedsonaf@gmail.com>
+ <20230330125223.GC124812@hirez.programming.kicks-ass.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230330125223.GC124812@hirez.programming.kicks-ass.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 3/30/23 00:33, y86-dev@protonmail.com wrote:
-> From: Benno Lossin <y86-dev@protonmail.com>
+On Thu, Mar 30, 2023 at 02:52:23PM +0200, Peter Zijlstra wrote:
+> On Thu, Mar 30, 2023 at 01:39:53AM -0300, Wedson Almeida Filho wrote:
+> > From: Wedson Almeida Filho <walmeida@microsoft.com>
+> > 
+> > This is the traditional condition variable or monitor synchronisation
+> > primitive. It is implemented with C's `wait_queue_head_t`.
+> > 
+> > It allows users to release a lock and go to sleep while guaranteeing
+> > that notifications won't be missed. This is achieved by enqueuing a wait
+> > entry before releasing the lock.
+> > 
 > 
-> The `InPlaceInit` trait that provides two functions, for initializing
-> using `PinInit<T, E>` and `Init<T>`. It is implemented by `Arc<T>`,
-> `UniqueArc<T>` and `Box<T>`.
+> > +/// A conditional variable.
+> > +///
+> > +/// Exposes the kernel's [`struct wait_queue_head`] as a condition variable. It allows the caller to
+> > +/// atomically release the given lock and go to sleep. It reacquires the lock when it wakes up. And
+> > +/// it wakes up when notified by another thread (via [`CondVar::notify_one`] or
+> > +/// [`CondVar::notify_all`]) or because the thread received a signal. It may also wake up
+> > +/// spuriously.
 > 
-> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
- > ---
- >
-> +/// Smart pointer that can initialize memory in-place.
-> +pub trait InPlaceInit<T>: Sized {
-> +    /// Use the given initializer to in-place initialize a `T`.
-> +    ///
-> +    /// If `T: !Unpin` it will not be able to move afterwards.
-> +    fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Pin<Self>>
-> +    where
-> +        Error: From<E>;
-> +
-> +    /// Use the given initializer to in-place initialize a `T`.
-> +    fn init<E>(init: impl Init<T, E>) -> error::Result<Self>
-> +    where
-> +        Error: From<E>;
-> +}
+> Urgh so wide :-/
 
-This definition is potentially rather limiting, because it can only be 
-used with error types that can be converted into a `kernel::Error`. What 
-do you think of this alternative?
+Thanks for reviewing :)
 
-pub trait InPlaceInit<T>: Sized {
-     fn pin_init<E>(init: impl PinInit<T, E>) -> Result<Pin<Self>, E>
-     where
-         E: From<AllocError>;
+> But no, threads can *always* and for any reason, have spurious wakeups.
 
-     fn init<E>(init: impl Init<T, E>) -> Result<Self, E>
-     where
-         E: From<AllocError>;
-}
+I don't believe I said otherwise. Is there anything in the text above you'd like to see changed?
+
+> Also, is this hard tied to mutex? If so, you should probably use swait
+> instead of wait.
+
+This is not tied to mutex, it works with any lock.
+
+Cheers,
+-Wedson
