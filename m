@@ -2,51 +2,45 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4537C6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 15:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9574C6FD1D
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 15:37:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233189AbjC3Pge (ORCPT
+        id S233089AbjC3PhJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 11:36:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38216 "EHLO
+        Thu, 30 Mar 2023 11:37:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233190AbjC3Pg0 (ORCPT
+        with ESMTP id S233137AbjC3PhI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 11:36:26 -0400
-X-Greylist: delayed 553 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 30 Mar 2023 08:36:01 PDT
-Received: from mail-41104.protonmail.ch (mail-41104.protonmail.ch [185.70.41.104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98108E073
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 08:36:01 -0700 (PDT)
-Date:   Thu, 30 Mar 2023 15:16:21 +0000
-Authentication-Results: mail-41104.protonmail.ch;
-        dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="cOof9CWD"
+        Thu, 30 Mar 2023 11:37:08 -0400
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A07D0D50B
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 08:36:36 -0700 (PDT)
+Date:   Thu, 30 Mar 2023 15:36:29 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680189390; x=1680448590;
-        bh=RFJsZt4PoyY34NqeT0ENI5ZWm6qyrS5nHiUvq+C365Y=;
+        s=protonmail3; t=1680190593; x=1680449793;
+        bh=BFhSFq3J8IyHD8N/GJl+CpIhHOZfQHYWPId2eeLRAZk=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=cOof9CWD18CgA86f1wPCs6LHKCiYvfg3NtPnu42gtskj0YfGSo8dJf+7s6QN4g+58
-         DeYkftVFrBPmOl02YrYw44gCxVO66GhuHn5FAX8BJevHqmKvbj/qtGVTOt/uOj5T01
-         I3ItVqd67QmPUb8LGhV/Rmx3LzNO8G3wQx32wgPNxHvzNNkpmMwQE2ls291232cjD3
-         DK+udlLKGLEC0CM2dYGnFlboDS+NJCsDnXJWkZEChNBj7t3r0qtCEI0ccCpjF7QEyI
-         7YRrxJMSYwuit/73PF9ZXi/J+gVayhDAm5NefJopBphXPIKPCxhgHHYbfd/cxfke9+
-         gvAlfpfYlgvDw==
-To:     David Laight <David.Laight@ACULAB.COM>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        b=snCcK7u/bNBcYmywMJ1/hoYfNPUpab5DYWsPfsI3mGFS8NicIrzagfnFvjI9ZyRpq
+         VR6j0ZFWmed3XNnGh+0jSJHV/dedOil8FAdU5FA0qybzAyfiwhE3/pMP5dYevTZcb7
+         zrmtfZDxkOl9XROZZB3ElybjbhMzgNr6aMmfAnlUd78xRyGs2Dyj8YXAsKj9T9qOMg
+         C1BrnOmTGriTcz2dPtOvJc6cGOrXN/GmGoiOzFA9uQ58kZmnybTyArmkuq0/9euS+P
+         ARJcLS4trYz/hIMZtVBS7RRoieU4VLFuav2RsWqIPpSkqi0Xw/+Wn3fosq+qgvH+OS
+         hcGhA9prSYwng==
+To:     Alice Ryhl <alice@ryhl.io>
+From:   Benno Lossin <y86-dev@protonmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <alice@ryhl.io>
-From:   Benno Lossin <y86-dev@protonmail.com>
-Cc:     "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "patches@lists.linux.dev" <patches@lists.linux.dev>
-Subject: Re: [PATCH v3 12/13] rust: sync: reduce stack usage of `UniqueArc::try_new_uninit`
-Message-ID: <ed3f5907-bc28-46b5-5a61-79dd2719349f@protonmail.com>
-In-Reply-To: <7f55875c46ab4c4989323ede57f6e46d@AcuMS.aculab.com>
-References: <20230329223239.138757-13-y86-dev@protonmail.com> <7f55875c46ab4c4989323ede57f6e46d@AcuMS.aculab.com>
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Subject: Re: [PATCH v3 04/13] rust: add pin-init API core
+Message-ID: <9c2d4516-f0d7-73ca-d64b-df60e9bd6df1@protonmail.com>
+In-Reply-To: <ce17f68e-521f-f55e-8ae2-35bcd6ebd709@ryhl.io>
+References: <20230329223239.138757-1-y86-dev@protonmail.com> <20230329223239.138757-5-y86-dev@protonmail.com> <ce17f68e-521f-f55e-8ae2-35bcd6ebd709@ryhl.io>
 Feedback-ID: 40624463:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -55,38 +49,70 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 30.03.23 16:58, David Laight wrote:
-> From: y86-dev@protonmail.com
->> Sent: 29 March 2023 23:34
+On 30.03.23 15:33, Alice Ryhl wrote:
+> On 3/30/23 00:33, y86-dev@protonmail.com wrote:
+>> From: Benno Lossin <y86-dev@protonmail.com>
 >>
->> `UniqueArc::try_new_uninit` calls `Arc::try_new(MaybeUninit::uninit())`.
->> This results in the uninitialized memory being placed on the stack,
->> which may be arbitrarily large due to the generic `T` and thus could
->> cause a stack overflow for large types.
+>> This API is used to facilitate safe pinned initialization of structs. It
+>> replaces cumbersome `unsafe` manual initialization with elegant safe mac=
+ro
+>> invocations.
+>>
+>> Due to the size of this change it has been split into six commits:
+>> 1. This commit introducing the basic public interface: traits and
+>>      functions to represent and create initializers.
+>> 2. Adds the `#[pin_data]`, `pin_init!`, `try_pin_init!`, `init!` and
+>>      `try_init!` macros along with their internal types.
+>> 3. Adds the `InPlaceInit` trait that allows using an initializer to crea=
+te
+>>      an object inside of a `Box<T>` and other smart pointers.
+>> 4. Adds the `PinnedDrop` trait and adds macro support for it in
+>>      the `#[pin_data]` macro.
+>> 5. Adds the `stack_pin_init!` macro allowing to pin-initialize a struct =
+on
+>>      the stack.
+>> 6. Adds the `Zeroable` trait and `init::zeroed` function to initialize
+>>      types that have `0x00` in all bytes as a valid bit pattern.
+>>
+>> Co-developed-by: Gary Guo <gary@garyguo.net>
+>> Signed-off-by: Gary Guo <gary@garyguo.net>
+>> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
 >
-> Does that mean rust is using (the equivalent of) alloca() ?
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>
+>> +//! Aside from pinned initialization, this API also supports in-place c=
+onstruction without pinning,
+>> +//! the marcos/types/functions are generally named like the pinned vari=
+ants without the `pin`
+>> +//! prefix.
+>
+> Typo: Should be "macros".
+>
+>> +type Invariant<T> =3D PhantomData<fn(*mut T) -> *mut T>;
+>
+> I think it would make sense to include a link to the nomicon on the
+> documentation for the Invariant type.
+>
+> E.g. this link: https://doc.rust-lang.org/nomicon/subtyping.html
 
-No, the compiler knows the size of `T` statically (this is a requirement
-for calling `MaybeUninit::uninit()`). It would simply reserve stack
-space for a stack variable (like the C compiler would also do) and since
-the type is generic and user-specified, it could be larger than the
-stack size. The problem is that the Rust compiler does not optimize the
-stack variable away. This fix avoids creating a stack variable in the
-first place.
+Sure that is a good idea.
+
+>> +// This is the module-internal type implementing `PinInit` and `Init`. =
+It is unsafe to create this
+>> +// type, since the closure needs to fulfill the same safety requirement=
+ as the
+>> +// `__pinned_init`/`__init` functions.
+>> +struct InitClosure<F, T: ?Sized, E>(F, Invariant<(E, T)>);
+>
+> Documentation for a type should use /// rather than //.
+>
+> I think it would help to call out explicitly in the documentation on
+> this type that it is an implementation detail of the
+> pin_init_from_closure and init_from_closure methods.
+
+Yeah, I will also move this into `__internal.rs` and add the comment.
 
 --
 Cheers,
 Benno
-
-
->
-> That is banned for C code in the kernel for any sizes.
->
-> =09David
->
-> -
-> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1=
- 1PT, UK
-> Registration No: 1397386 (Wales)
-
 
