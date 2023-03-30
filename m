@@ -2,125 +2,106 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51FFFC6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 15:08:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D34B0C761A6
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 15:29:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232732AbjC3PIA (ORCPT
+        id S233074AbjC3P33 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 11:08:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54408 "EHLO
+        Thu, 30 Mar 2023 11:29:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232749AbjC3PH7 (ORCPT
+        with ESMTP id S233082AbjC3P3V (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 11:07:59 -0400
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 228F0CDDC;
-        Thu, 30 Mar 2023 08:07:17 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.west.internal (Postfix) with ESMTP id E856032006F2;
-        Thu, 30 Mar 2023 11:07:15 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Thu, 30 Mar 2023 11:07:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-        :content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1680188835; x=1680275235; bh=LBgpEuVRLV1T8u09/zjqM82d32cWiHoXkNx
-        4ST+kG3A=; b=Mn2MQFtCMDufOJX/6+aQOJNyHseLzzRKdAl2dO3KvU3v+w7h9Fc
-        YeMbp6Cc7bQPwqD7q8HOefnxg0+5xUhPtFnKMYr9VV6B1/G3XC0Mj3Pnz0cX6kTc
-        uuniZZct/z2dQ+I1bV87rOUXNvnGbt+nTaoFaA3biIl+RVphQ4QU89OtoMk7Co9u
-        qhl8lguld4RTt6DYWM10Xvny1FBFLA7behEISgiYVYTauHzzY3M6IgDDYvuQNulB
-        gKyiomP4RUuIPOIRwvvJylhRBJIBcWnnuKiJ+B8oW/QGF6GDnPEndrnxLd8BXEny
-        LnU2Lm9b6noFb8WUJDXXrMFIXRmBpBAkalQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1680188835; x=1680275235; bh=LBgpEuVRLV1T8u09/zjqM82d32cWiHoXkNx
-        4ST+kG3A=; b=XrNXNbEqRcpRfGFnpxb5OG2gI1kYvM77ukQD9XGDt/0/lp4GlpF
-        VM40nAoTCVRL8X7earO8EhwyWu+PZryL4F9vZQts1FNvIURzy491ijZt7h1nxTKC
-        6X1igKRoCrwvruAcRspvoFDEQHIjrbQZdMoYGbIP+P5CXX1eJwXJisDr0FVO7AUi
-        J+e+SIILArAEWLTOAMWw9UKwAJtVM4rlxcf2KubOc25x/HpMxPsJcXbfzDyb3bu2
-        z9Me3HVFJQVqIHl+Vtn6sm9V06fa95UZqJCJgtIeBbqXcoWwH7wZD5Lo2HdmlrdN
-        DKwDtpj+j6I1Fk5KHb0/ztRvUbTcJ+/KaRw==
-X-ME-Sender: <xms:oqUlZA3HyT_ZP9c7LvJBKQ1DBgmtTwPP21y_j06WP_3BTFVbBY84zw>
-    <xme:oqUlZLGKsX-x7Y3WImwclD2jYFXlYy1syCU9RGqrz5m2zJNh9PXeU51dW4h0GK_Bt
-    AETGIpsItcjMMMQYQ>
-X-ME-Received: <xmr:oqUlZI5rvzGY9Nh2d_QcPcIaC_3NwCZnL97qnK6ML07DPmW9RJPZEsDno5D0AR-imcti3Lc5C7MeCh17gc45HEq8kg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdehkedgkeefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpeetlhhi
-    tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
-    ehudduvdetkedvkedtudeludfgfffhudegjeeguedvvedtteevjeehheeiffefgeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvse
-    hrhihhlhdrihho
-X-ME-Proxy: <xmx:o6UlZJ3L7bg3mKPH15UanuEBi4SgIJ19qVaUzA3psLyxp-TmmrsxlA>
-    <xmx:o6UlZDGELnnJchL74s60kQ0pFZHLXeHAd6KlVAS5L23u8-qjtFq-8A>
-    <xmx:o6UlZC_rpD8zsl4y8ZVEr63-BgMwK81_pec2VdNQVjijbO84d_e2HQ>
-    <xmx:o6UlZJZTeFQJCKyMOHHQ7hXQBYzXXBCNEro5hLKKGQMfPGQGI-dkiw>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Mar 2023 11:07:13 -0400 (EDT)
-Message-ID: <672f991f-96af-9389-278d-77bde2ee2db8@ryhl.io>
-Date:   Thu, 30 Mar 2023 17:07:26 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 08/13] rust: init: add `stack_pin_init!` macro
-Content-Language: en-US
-To:     Gary Guo <gary@garyguo.net>, y86-dev@protonmail.com
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Thu, 30 Mar 2023 11:29:21 -0400
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E87DD32E
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 08:29:04 -0700 (PDT)
+Date:   Thu, 30 Mar 2023 15:28:17 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1680190102; x=1680449302;
+        bh=kpaOTyrKqsw1XHAwXmaqpibdDWFN/5HsmHgDh0lZUrg=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=odsQp3kuPYH79BQTdgIjYANBF/X5AwTkHo+Rx+bFHO+jN8jDLzyn/3n3aV3s5tX+S
+         bUUbfGNFYEz9U7kyM7IJxHptVFFoh9xJC4OzG2tvcX1aPlBVT/Og0t42oiFq7VX4bg
+         ZNv1QBD/PHk8n6EFgpLYq9lECnxEvb2FZUPbXGr84UXs82YAm34zWk/lDWt2B0CjX5
+         5bdOAOi5zwpCtvpYrEonpP296gvgJRfTzA5j6qTMwkcV8tsfo5j2vikdhtAGEuEIvb
+         NctaMjaE+N187DL9lX+jQES9OGdzCMkWerxcpRStLoDW5fuvSgc/KxVGiz72rdeSv9
+         h3hthoAXLcpPA==
+To:     Alice Ryhl <alice@ryhl.io>
+From:   Benno Lossin <y86-dev@protonmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-References: <20230329223239.138757-1-y86-dev@protonmail.com>
- <20230329223239.138757-9-y86-dev@protonmail.com>
- <20230330120600.45418253.gary@garyguo.net>
-From:   Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20230330120600.45418253.gary@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Subject: Re: [PATCH v3 06/13] rust: init/sync: add `InPlaceInit` trait to pin-initialize smart pointers
+Message-ID: <3ea5cd8d-84ca-59bd-de50-fef185233a50@protonmail.com>
+In-Reply-To: <1f93a045-5bd8-e07f-cf1b-7b1196c8ab54@ryhl.io>
+References: <20230329223239.138757-1-y86-dev@protonmail.com> <20230329223239.138757-7-y86-dev@protonmail.com> <1f93a045-5bd8-e07f-cf1b-7b1196c8ab54@ryhl.io>
+Feedback-ID: 40624463:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 3/30/23 13:06, Gary Guo wrote:
->> +impl<T> StackInit<T> {
->> +    /// Creates a new [`StackInit<T>`] that is uninitialized. Use [`stack_pin_init`] instead of this
->> +    /// primitive.
+On 30.03.23 16:37, Alice Ryhl wrote:
+> On 3/30/23 00:33, y86-dev@protonmail.com wrote:
+>> From: Benno Lossin <y86-dev@protonmail.com>
+>>
+>> The `InPlaceInit` trait that provides two functions, for initializing
+>> using `PinInit<T, E>` and `Init<T>`. It is implemented by `Arc<T>`,
+>> `UniqueArc<T>` and `Box<T>`.
+>>
+>> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
+>   > ---
+>   >
+>> +/// Smart pointer that can initialize memory in-place.
+>> +pub trait InPlaceInit<T>: Sized {
+>> +    /// Use the given initializer to in-place initialize a `T`.
 >> +    ///
->> +    /// [`stack_pin_init`]: kernel::stack_pin_init
->> +    #[inline]
->> +    pub fn uninit() -> Self {
->> +        Self(MaybeUninit::uninit(), false)
->> +    }
+>> +    /// If `T: !Unpin` it will not be able to move afterwards.
+>> +    fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Pin<Self>=
+>
+>> +    where
+>> +        Error: From<E>;
 >> +
->> +    /// Initializes the contents and returns the result.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// The caller ensures that `self` is on the stack and not accessible in any other way, if this
->> +    /// function returns `Ok`.
->> +    #[inline]
->> +    pub unsafe fn init<E>(&mut self, init: impl PinInit<T, E>) -> Result<Pin<&mut T>, E> {
-> 
-> Could this be made safe if the signature takes `self: Pin<&mut Self>`
-> instead?
-> 
-> The std `pin!` macro is stable in
-> 1.68 so we can just `core::pin::pin!(StackInit::uninit())` and then
-> call `init` on it.
-> 
-> Best,
-> Gary
+>> +    /// Use the given initializer to in-place initialize a `T`.
+>> +    fn init<E>(init: impl Init<T, E>) -> error::Result<Self>
+>> +    where
+>> +        Error: From<E>;
+>> +}
+>
+> This definition is potentially rather limiting, because it can only be
+> used with error types that can be converted into a `kernel::Error`. What
+> do you think of this alternative?
+>
+> pub trait InPlaceInit<T>: Sized {
+>       fn pin_init<E>(init: impl PinInit<T, E>) -> Result<Pin<Self>, E>
+>       where
+>           E: From<AllocError>;
+>
+>       fn init<E>(init: impl Init<T, E>) -> Result<Self, E>
+>       where
+>           E: From<AllocError>;
+> }
 
-Yeah, I think that would work. If it's marked safe, then it will be 
-possible to call `init` several times, but this is fine if `init` 
-transitions the `StackInit` back into its uninitialized state before 
-attempting to initialize it again.
+I initially implemented it like this, but it required almost always that
+`E` is specified, I will try and see if the situation is any different now,
+but I do not think so. In the user-space version of this API (see [1]) I
+have four functions, normal variants that return an `AllocError` and `try`
+variants that look exactly like what you suggested. In the kernel, we could
+make the normal variants as they are now and add the `try` variants as you
+described.
+
+[1]: https://docs.rs/pinned-init/0.0.5/pinned_init/trait.InPlaceInit.html
+
+--
+Cheers,
+Benno
+
+
