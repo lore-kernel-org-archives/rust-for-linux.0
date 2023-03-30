@@ -2,136 +2,158 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E83AC761AF
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 09:12:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82A3EC6FD1D
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 10:50:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230342AbjC3JMe (ORCPT
+        id S230284AbjC3Ku1 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 05:12:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40148 "EHLO
+        Thu, 30 Mar 2023 06:50:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229862AbjC3JMW (ORCPT
+        with ESMTP id S230139AbjC3KuT (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 05:12:22 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0EE67AAB;
-        Thu, 30 Mar 2023 02:12:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1680167531; x=1711703531;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Ro+17oDK7rnlBrMsXFzotd23YydUQ9691qY+Ptq0G7I=;
-  b=tVyVk0/LVO0WPg+UwKLeKbN1fDkacYdBN5JyjboazW3UTiUs5i7/+LDn
-   eAl2qdeKqrpNpAn6dAviszNpc+ZWWsG+dh0yYFiggnb535NyhTIRntZ3B
-   5wgtihHx2ZpluAMTqzk1+vGrw4iS8FBopA/CSj0VY5e43lyoX3z5BD80s
-   CK4ZtsJ3/fFvq6su9xfh5KQIIsn1J0xnjgDcYvm0N+Yvx1sxFQo6uza4D
-   ZaRdHPcUAiYw767tG9YFxUuqu7VK1NXEjHWLSdL6eAbxIHOX/QYt9BE2g
-   lV0+8wN+XwPjZsM2AV6R4KvzAd9Zi1ILL7xZslXCKOenCmTKpC2DroZpY
-   g==;
-X-IronPort-AV: E=Sophos;i="5.98,303,1673938800"; 
-   d="asc'?scan'208";a="218661930"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 30 Mar 2023 02:12:10 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Thu, 30 Mar 2023 02:12:10 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Thu, 30 Mar 2023 02:12:07 -0700
-Date:   Thu, 30 Mar 2023 10:11:53 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-CC:     <linux-riscv@lists.infradead.org>, <conor@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        Thu, 30 Mar 2023 06:50:19 -0400
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2112.outbound.protection.outlook.com [40.107.10.112])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2CC483FC;
+        Thu, 30 Mar 2023 03:50:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=G+gurpft2CdOyovfMpQIwZRKWN3IgFaq8guS7L/QHP6AVQeL+VaTCh4gV43ZqEBZTSWc5HhNi40o4K7m9HRMDTc9LHOPIl1CtGe+o7DdhCaYY0cUfqfQgn8ynoTpJdOs2RSUvskL/Dk0oVPwiT8A24RaLPg8pXX/z4acPRL4qoF25EbXgWCX2Pqk9S2LsWzO/mYc9jzoDznPTEjhQNpqJmMIDbQlxlciwhmhaWF7rBrftFzfeW9QBT550snFap7DzMz3nCyuCeDdoX9BZCedZ2bbLrTYPm9iJ6iNRTsAubES/7Qexywllt8mKUmrnNz6MA66P3ZfV/DCW7JrXN3Y2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+0CVLuvF2A2VdXUY0USK22+H4CCtevhGrlRNMDIWAqY=;
+ b=mgNbq1cEtKaWcWCqvjVjd/li9WJE18CiuwrTnT3WyYALu8EhlF9SyL9sZiwh1FPWv/+bbrBZQD3CNacvqqSy/NO1kWfHOnMumdUv6/lK1/G5PcZX8JH65fW1PS05zw8P6FvAnhB9rAAcoplrbY1DgxPmMW81ea0n33eheb1ObmDLISakCHtv1V1yHjzITiVrAMmsO1impQ4V2eLsmQJxdXvhnfNxmrfMmJjtuwM4/ePYlcbF7cShPyPswPNY8GYBdmVN6zSTi4h470TOZAGrky19ekzjQv5wsfY/VlvSAjKbKKqDxBMWXqrzTOJfpfRx3xA15/F7+OP6XMarzKrprQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+0CVLuvF2A2VdXUY0USK22+H4CCtevhGrlRNMDIWAqY=;
+ b=jt4AhCkRdjH4Afb+VzbE7Ir+qWonVUbro2+ivUe0Dp9fiUlgILuDB4tP1yZyuLW3AVrlFYSGLq268VPCZHmNNT4iOdZfiDdIsRNpoHJ+k55YztYBolPFAh4mV6F+iB0+0arerLAsJFyNpw/KzOClYxvd4kinCdlDnbmviLcJVuY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO4P265MB6601.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2f9::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6222.35; Thu, 30 Mar
+ 2023 10:50:14 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2f2a:55d4:ea1d:dece%4]) with mapi id 15.20.6222.035; Thu, 30 Mar 2023
+ 10:50:14 +0000
+Date:   Thu, 30 Mar 2023 11:49:46 +0100
+From:   Gary Guo <gary@garyguo.net>
+To:     y86-dev@protonmail.com
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <llvm@lists.linux.dev>
-Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
-Message-ID: <b5fba6b3-177c-4325-905a-8f9f633a592a@spud>
-References: <20230307102441.94417-1-conor.dooley@microchip.com>
- <CANiq72=i9je2864iTvZBFnhVLhF7Cema7EPCcdWOJ3mr62SqDg@mail.gmail.com>
- <a6220e52-9934-422b-9b05-95705b8fd684@spud>
+        Boqun Feng <boqun.feng@gmail.com>,
+        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Alice Ryhl <alice@ryhl.io>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v3 03/13] rust: types: add `Opaque::raw_get`
+Message-ID: <20230330114946.696c8e72.gary@garyguo.net>
+In-Reply-To: <20230329223239.138757-4-y86-dev@protonmail.com>
+References: <20230329223239.138757-1-y86-dev@protonmail.com>
+        <20230329223239.138757-4-y86-dev@protonmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO6P123CA0049.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:310::9) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="3sMGWrE3WbodPTsC"
-Content-Disposition: inline
-In-Reply-To: <a6220e52-9934-422b-9b05-95705b8fd684@spud>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB6601:EE_
+X-MS-Office365-Filtering-Correlation-Id: 40d36b12-299b-42fd-b3a7-08db310c8acd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: kwW7DcfavzrfhLXimV4rfOKtqqOTPWjqfwbhrdQndz/ImEnSF/1BBpwWeW6CVE+srV0sSziOKjvM3Oy4nOMjmTv0drND017PAW5X+Y3HUKXwcpjgzkGwLL3JzJvhOwmrCpBT/mbNQedJf4AG8OiyxOyW5EXCwWUIvweIjwCCbS0jaVYoqfagEx1kMj4X5XzVVC1tkqz8P94g4rWheERoF3fqUEn0R/zJT6Xge8rfoJFqe6ACBvAlKFWzpfPvPjcIFLzJPLGvbuTrSpTRT84rKrFkp3IK9ryYkQklDuv7ZjaNEfQ46NA3BRCKyle+lZk7q6rtK8YhC3FVzVCK0q818gmqzMu23109Q2faoaxP/PN+mGkc9ahJdbAU44f/tHS4y9mJwdSn2qmhnEAgZAxeICZh0ynWI2DrhQjv2mCnddSOXa+Opz+fPTaa2D5Ig7jmDqqP0/HV6yaIiBGydeNMgE9kfRyf0bNETpd4LK0yomgEZ5QmqeHeai99izKOUMeE7Jt7dImW7rdK6xaLVxZcWzy4JG610I9Zli31uH3j/9UwiEzqCKgCnB0+hapT+Z4B5cHyJKbsr0gxTgM5F6OxVuu05FrPIx9O66KizMsx6G0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(346002)(39830400003)(376002)(366004)(396003)(136003)(451199021)(83380400001)(1076003)(6666004)(26005)(66556008)(54906003)(6512007)(316002)(6506007)(36756003)(4326008)(66946007)(8676002)(66476007)(41300700001)(86362001)(6916009)(478600001)(6486002)(38100700002)(2616005)(5660300002)(8936002)(7416002)(186003)(2906002)(81973001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?g/j+Eh9ieQ6wKCn3+QlL56JMVQKwix63XdScrbBw845Ti+WzlG5vUTUwXO9N?=
+ =?us-ascii?Q?8zSOYXvHRXrSantbIlIv4E5ha/My+/xkQ6HE+jk6fvAZtLqY6gzJfJEMQwQO?=
+ =?us-ascii?Q?b5KxsbvfeKC8HIoDyqVGAdqVlsumYvvE46MYFwpC7ug8oVJrj5gqDEnLHWJH?=
+ =?us-ascii?Q?lISMMJgiBwCEFHpMDPOy1lK0iAp8XWBs1FqiGQ+17FYPPhrTHSw3foRRMmCL?=
+ =?us-ascii?Q?Mhv5gU1CQhNpM/PvRyTPHvZcPp7INQ693o0NcHUwfzTu0cwcMZ4Cx1rghT2g?=
+ =?us-ascii?Q?QzWaz+0VS5M90lwu3CPRTRWAyYFQfKYIlLx1YugZqJawisRKgelx8dt49bwQ?=
+ =?us-ascii?Q?aMMDyGncCZDqPiBhSw2IHp6Gq2t4wtvy2787jODhw7Ae7D76VvegvKku5zTx?=
+ =?us-ascii?Q?TmHx73TwWMK1NoqCAR2iqIPZqCZPYLX+7UnWQbjol7sT1Vb765fg/Hyjb4PX?=
+ =?us-ascii?Q?mbM/Dse23OWbrmJO8jNvdGpXIdMcFnEKNG/DnkXHctWFm9GVIEdoZtYjAjVP?=
+ =?us-ascii?Q?JeI2vIE8RrqHkKMP1a2ZNJvVoaWOxIzfa9vwUrKUnVPRk3eG3+BoPBAO4vUU?=
+ =?us-ascii?Q?PKCq8N/rJXjWX2+/L0joG1xv8MqcgIcuBGIpHAvP+l2KVv05SslGonJHvN9e?=
+ =?us-ascii?Q?VtxlOigk5LtZNaaPmmYBX/L2bCDbmKYfODll3vWJX1TfCeh2we326WfrLB/R?=
+ =?us-ascii?Q?Ad/CY/uYuNqzlp17aPL8WEXUEYfaWMttn18MKbtr3CmH19jdCItlMsRotEWH?=
+ =?us-ascii?Q?LpwM5/sB9cZI4ZNV2DXXfvVMX1v2jXbhC/s90OTObzsjzCFY0EhU5Lg+By2h?=
+ =?us-ascii?Q?AQAIUap6Jqy6B5HksMQPG3VVGVOws4uP/wvV0BW9rZR7nyEKfwabyFWX+FDl?=
+ =?us-ascii?Q?XQGEF6Ccu1VpnTS3MRUaefD1mFyzZhWY1EU9cSpUltC3UeVP6JCTT61UkJbz?=
+ =?us-ascii?Q?2qjRU2LPbFVlaZaAOAmwOypuHWiggZq0TbDwAYD8kCBiDQAbzsDVpCdc9Qah?=
+ =?us-ascii?Q?f7bvL7EbNnczdpaAS6SLaWBE3bLRVRNySzc/toDrHFLh33eFuVg0KtMgcVEJ?=
+ =?us-ascii?Q?geL45hMtYqj/B7xPlFyPinDbjlPESDGd0WQ49OSGfdYNRotdl3zCmtfDLWSr?=
+ =?us-ascii?Q?s9Shu2u2YNuiH/LUJmpTpEmCrgYg+uUNv2IHdNpBks4+9t2idwHp+79/qICc?=
+ =?us-ascii?Q?fF3883n4Ad+ejg/NieBErJHLximcctEFXQSRz/gJiv2KT00TbPxdi8+UCseP?=
+ =?us-ascii?Q?Ne2IZAf5b3GqBdP5BRmxuLH/2OFXCNSplo+hLuGfFeiO9O9QDBLh8dipUSsU?=
+ =?us-ascii?Q?1jSGGzCqctU9qNA88iq3wTq2NhYnBoRzD4UA2esauOmoa2RpAVyU8YcJtic5?=
+ =?us-ascii?Q?MdNP99DYzDMee6DcXVnrzK2SPnwC6pEjvTU1JuHkdwaoAfqgf74FzmbG+fLf?=
+ =?us-ascii?Q?Q7Tqh+Tt3VDfCOOtzpeELolUJK4TMfKKPEahpm0hKsiankZCjQfJe+ahq/lN?=
+ =?us-ascii?Q?9XB2qZntY7XpyjuAatb6i0/73RXF+ykL5jVezq+atE/u2jljSMP5yIDULays?=
+ =?us-ascii?Q?lhNR7WGnQZwh+x/MZZwOlBOdKijGNAYrewLmzYVx?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40d36b12-299b-42fd-b3a7-08db310c8acd
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2023 10:50:14.3347
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /0jmTXnTNOMZV81IHKBOXAc3wMPpWzyhdPo5ThiR6S442cZV/ZA4W440o27zWf0frTpoYpp+bpq0gxwkuNZWEg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6601
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
---3sMGWrE3WbodPTsC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Wed, 29 Mar 2023 22:33:03 +0000
+y86-dev@protonmail.com wrote:
 
-On Thu, Mar 30, 2023 at 09:23:45AM +0100, Conor Dooley wrote:
-> On Tue, Mar 07, 2023 at 12:07:29PM +0100, Miguel Ojeda wrote:
+> From: Benno Lossin <y86-dev@protonmail.com>
+> 
+> This function mirrors `UnsafeCell::raw_get`. It avoids creating a
+> reference and allows solely using raw pointers.
+> The `pin-init` API will be using this, since uninitialized memory
+> requires raw pointers.
+> 
+> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
 
-> > By the way, like for the Arm patch set, if you end up doing a v2,
-> > could you please add the `BINDGEN_TARGET_*` in `rust/Makefile` (GCC
-> > builds are really experimental, but since they are there anyway, it is
-> > best to be consistent and add it).
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-Hmm, so I came across this commit while looking at that:
-https://github.com/Rust-for-Linux/linux/commit/cfc17fed52b9585e2f19e2381bfb7094561b8027a
-(rust: bindgen: ignore RISC-V extensions for GCC builds)
+> ---
+>  rust/kernel/types.rs | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 9d0fdbc55843..ff2b2fac951d 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -238,6 +238,14 @@ impl<T> Opaque<T> {
+>      pub fn get(&self) -> *mut T {
+>          UnsafeCell::raw_get(self.0.as_ptr())
+>      }
+> +
+> +    /// Gets the value behind `this`.
+> +    ///
+> +    /// This function is useful to get access to the value without creating intermediate
+> +    /// references.
+> +    pub const fn raw_get(this: *const Self) -> *mut T {
+> +        UnsafeCell::raw_get(this.cast::<UnsafeCell<T>>())
+> +    }
+>  }
+> 
+>  /// A sum type that always holds either a value of type `L` or `R`.
+> --
+> 2.39.2
+> 
+> 
 
-I don't want to add even more workarounds for this sort of thing,
-especially as in this case it is outside of arch/riscv.
-The extension stuff when mixing compilers is such a massive pain & given
-this one requires Rust it's even less likely to be tested when someone
-comes along and adds some additional extension support that appears in
--march :(
-
-I'd rather do this in the RISC-V Makefile so that it does not get
-forgotten.
-
-If my understanding of bindgen is correct, we don't actually need to be
-honest to it about what extensions the rest of the kernel is compiled
-with, only make sure that it is not called with arguments it does not
-understand?
-
-| bindgen_c_flags_patsubst1 = $(patsubst -march=rv%_zicbom,-march=rv%,$(bindgen_c_flags_patsubst2))
-
-This one is no longer needed as of 9a5c09dd9701 ("Merge patch series
-"Remove toolchain dependencies for Zicbom"").
-
-| bindgen_c_flags_patsubst  = $(patsubst -march=rv%_zicsr_zifencei,-march=rv%,$(bindgen_c_flags_patsubst1))
-
-Oh and clang-17 is going to support both of these, and Nathan and I
-already spent a bunch of time fixing the fallout from that!
-It still functions correctly without having them passed, but I have
-heard requiring these may become the default at some point too.
-What's done here may end up needing to be dynamic, but that bridge can be
-crossed if/when we come to it.
-
-What version of GCC do I need to replicate this? I can build tip-of-tree
-gcc if needs be.
-
-Cheers,
-Conor.
-
---3sMGWrE3WbodPTsC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZCVSWQAKCRB4tDGHoIJi
-0qpsAQD93N6ZELaSuCLnFRRrVX6KqM1buvhJrxpnIPixxEBkYgEAtdX2bVK2gcK0
-Nb8PM/km+TWTR+ljihbHfIH7vEsl0AE=
-=NGwF
------END PGP SIGNATURE-----
-
---3sMGWrE3WbodPTsC--
