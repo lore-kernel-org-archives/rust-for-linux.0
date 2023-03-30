@@ -2,112 +2,86 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F324C6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 12:49:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09926C761A6
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 12:52:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231583AbjC3Mtz (ORCPT
+        id S231596AbjC3Mwp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 08:49:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45622 "EHLO
+        Thu, 30 Mar 2023 08:52:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230135AbjC3Mtw (ORCPT
+        with ESMTP id S231585AbjC3Mwp (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 08:49:52 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B8CF119
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 05:49:51 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id o32so10839922wms.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 30 Mar 2023 05:49:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20210112.gappssmtp.com; s=20210112; t=1680180590;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=9+K5/0WWDeVeEe+OTVzrXk5PiHrboI0Tjgq0g0AOhqY=;
-        b=5yrrhu0VweMt6Y3/KG3eiBCU7L/Ncld4Yj1Q9vbwylygiYJJp37Y3Yl9ZYbOARjBR/
-         Uqnvrm9o266KXf5oiCGk5Y+79SMIZR4Xw76rnVYg+bI8T1wyW2UdJlf/+1K86rPDOG1S
-         wSgUtYC0o1iQFAKJg1RWG6D+5BfRhb61YmR6/6vXgYILDxy9u/BMX7Day95N/DB9Ia44
-         eTSgQ8M8sDk8BMfmiwpI8sSGJlGIkVh5q0Par+BJP43CMnEW1RgqbojWzOVYJBCxNsbY
-         uYthcb8eV04lThKYQNhenWK5KI2lgyRO0Y37Aji3sII21IrL0OH0GqPft0Qaq0siR9Mk
-         ZOrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680180590;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9+K5/0WWDeVeEe+OTVzrXk5PiHrboI0Tjgq0g0AOhqY=;
-        b=pG9Fl8oADoezHq+augDfBC7MfwqubcJkbK7Zg8IumezCIdj6J0wGS3JqYNII0ydcJ8
-         CzAel746Lo5dA4MYNkEvvR1GQTrQyVgBzx1eUssA7EN/o43Zp2EIRQok8kaVw+sTkp9A
-         qRf1rbLhFWnUSfzAWhIKkHM2Ndf5prIX3vfVRNR9JsgSWCgsKz3nKiGO4X2Va5mf6Zhm
-         LhJ83CzzqqiEVOwkr/l8htguXSAYJ6chyDSjJFaS4y+FglCZeqAxgPTbmh1KWf6Ew8bN
-         aM2gx3lc0GgSMpRD9PzVh5RFuhLSLDObNmrpnBS0BK0JL+3BFKToP4vGuYdF+HWCcmEq
-         PpUA==
-X-Gm-Message-State: AAQBX9eE6VrvNQAwPwDlVcIowiXCEwDCPzxUdVBi8L9Gdl66Y/PuE8JM
-        jap32N0yH0XWUFpWXAvu/A/6MA==
-X-Google-Smtp-Source: AKy350YVrGbxE3Bd4v1m+F3ok9Nrusg2V+E0fusX9dtc6+f5OdSxphjAN8y5r7KCDqNoGUKoYKHcGw==
-X-Received: by 2002:a1c:f20e:0:b0:3ef:6ae7:89bd with SMTP id s14-20020a1cf20e000000b003ef6ae789bdmr11318687wmc.6.1680180589697;
-        Thu, 30 Mar 2023 05:49:49 -0700 (PDT)
-Received: from localhost ([194.62.217.4])
-        by smtp.gmail.com with ESMTPSA id h16-20020a05600c315000b003eda46d6792sm6175846wmo.32.2023.03.30.05.49.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Mar 2023 05:49:49 -0700 (PDT)
-References: <20230329223239.138757-1-y86-dev@protonmail.com>
- <20230329223239.138757-4-y86-dev@protonmail.com>
-User-agent: mu4e 1.9.18; emacs 28.2.50
-From:   Andreas Hindborg <nmi@metaspace.dk>
-To:     y86-dev@protonmail.com
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Thu, 30 Mar 2023 08:52:45 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED1CC55B7;
+        Thu, 30 Mar 2023 05:52:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=LbriNcVAfY0UBPuz6jCJeTcqNiFUFNZB08aDLtgpT/A=; b=G+wU3ww+N8ZKrDEEm+k3MVeXsp
+        AozFQ/e5GK+eLPLTHEo0asbNced1a6eoDaynCcHy5mXw8pwX0oUcequD4vH5zwIgaL4AVLSL5qOJW
+        /AiQXMF7g+VF11RkCM9+cxbFHifxKqHN0+EWjyxOb06hSZU6pd2sYpQqvliROc68NT7M50FA4yR/4
+        sbSf5HhDp1axHNCwOy4mCxQYyOj9wTvVESS2CgRTpFTF2RMxi0zoQGF2S3q9JXzzZfu2l7nQAAHgE
+        yfS5B9zCf0f2TXmC1av0tDEslPFeHeaWPu2N5lkT5/5A0ZSeNpwI8SqiUNSkaSj30Uco8HuKZmmHF
+        nRS9J40Q==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1phrlQ-00APu7-0Q; Thu, 30 Mar 2023 12:52:25 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 716AE300134;
+        Thu, 30 Mar 2023 14:52:23 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 5101920134244; Thu, 30 Mar 2023 14:52:23 +0200 (CEST)
+Date:   Thu, 30 Mar 2023 14:52:23 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <alice@ryhl.io>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Andreas Hindborg <a.hindborg@samsung.com>
-Subject: Re: [PATCH v3 03/13] rust: types: add `Opaque::raw_get`
-Date:   Thu, 30 Mar 2023 14:32:19 +0200
-In-reply-to: <20230329223239.138757-4-y86-dev@protonmail.com>
-Message-ID: <87leje4d5f.fsf@metaspace.dk>
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH 12/13] rust: sync: introduce `CondVar`
+Message-ID: <20230330125223.GC124812@hirez.programming.kicks-ass.net>
+References: <20230330043954.562237-1-wedsonaf@gmail.com>
+ <20230330043954.562237-12-wedsonaf@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230330043954.562237-12-wedsonaf@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Thu, Mar 30, 2023 at 01:39:53AM -0300, Wedson Almeida Filho wrote:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
+> 
+> This is the traditional condition variable or monitor synchronisation
+> primitive. It is implemented with C's `wait_queue_head_t`.
+> 
+> It allows users to release a lock and go to sleep while guaranteeing
+> that notifications won't be missed. This is achieved by enqueuing a wait
+> entry before releasing the lock.
+> 
 
-y86-dev@protonmail.com writes:
+> +/// A conditional variable.
+> +///
+> +/// Exposes the kernel's [`struct wait_queue_head`] as a condition variable. It allows the caller to
+> +/// atomically release the given lock and go to sleep. It reacquires the lock when it wakes up. And
+> +/// it wakes up when notified by another thread (via [`CondVar::notify_one`] or
+> +/// [`CondVar::notify_all`]) or because the thread received a signal. It may also wake up
+> +/// spuriously.
 
-> From: Benno Lossin <y86-dev@protonmail.com>
->
-> This function mirrors `UnsafeCell::raw_get`. It avoids creating a
-> reference and allows solely using raw pointers.
-> The `pin-init` API will be using this, since uninitialized memory
-> requires raw pointers.
->
-> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
-> ---
+Urgh so wide :-/
 
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+But no, threads can *always* and for any reason, have spurious wakeups.
 
->  rust/kernel/types.rs | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 9d0fdbc55843..ff2b2fac951d 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -238,6 +238,14 @@ impl<T> Opaque<T> {
->      pub fn get(&self) -> *mut T {
->          UnsafeCell::raw_get(self.0.as_ptr())
->      }
-> +
-> +    /// Gets the value behind `this`.
-> +    ///
-> +    /// This function is useful to get access to the value without creating intermediate
-> +    /// references.
-> +    pub const fn raw_get(this: *const Self) -> *mut T {
-> +        UnsafeCell::raw_get(this.cast::<UnsafeCell<T>>())
-> +    }
->  }
->
->  /// A sum type that always holds either a value of type `L` or `R`.
-
+Also, is this hard tied to mutex? If so, you should probably use swait
+instead of wait.
