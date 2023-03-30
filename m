@@ -2,149 +2,297 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 92732C6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 20:28:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9916FC6FD1D
+	for <rust-for-linux@archiver.kernel.org>; Thu, 30 Mar 2023 20:45:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229634AbjC3U2c (ORCPT
+        id S229849AbjC3UpA (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 30 Mar 2023 16:28:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34914 "EHLO
+        Thu, 30 Mar 2023 16:45:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbjC3U2b (ORCPT
+        with ESMTP id S229678AbjC3Uo7 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 30 Mar 2023 16:28:31 -0400
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46FF7C9;
-        Thu, 30 Mar 2023 13:28:30 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.west.internal (Postfix) with ESMTP id 1907D3200959;
-        Thu, 30 Mar 2023 16:28:29 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Thu, 30 Mar 2023 16:28:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-        :content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1680208108; x=1680294508; bh=vQs4ynDb5KaPKtPAzLl0Rc9EXZoECrk6bMr
-        SAt43TCw=; b=DV2BCGAEYE89/0qB9BCxZL65j8OujS0AqVHYgP6geTlizxxKs+a
-        n+h1/Rq0qDKGEvXlhQ3O/WNsnR1iUWY5opFs1bthRv66hQkp2mSUsBFhJ365fqrc
-        uWVQjDkLbzhI9GwllS5MMma21dc+SJjKS91l+tC9sSGHCPWo+8H6n/Vxj9+whEwL
-        q/U2I1Cy3UsFHQyuS8n8rolINuuX/p0H5US0IQtqQh4QJRA3IUX6RgaOWaYVkxQA
-        nda80+Px8RfxpltFBmJn98UEWFHA8DLkegrG7PBbgVMF/vH9fzzreLw3H6EASD79
-        z3Mf3fHhdb1gpToC6TpqWN2+xHZPmk8jrwg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1680208108; x=1680294508; bh=vQs4ynDb5KaPKtPAzLl0Rc9EXZoECrk6bMr
-        SAt43TCw=; b=bRz94HWqUtIeSEAzn9WBi4BZ43hv/ArbNIhDIIKZl6nL1zBd+Mp
-        Ny0EEMvuLcADVBfXvTvp4W4uT+lwMvjIz0CqAGyLB2j0hItCZIGMgUPK+6v8lzim
-        bNwZV/CR4DhR+pQDW08TC71bTSu//+oOs6BcbDH5gN248SatJxg/YxaDUB28s38Z
-        Z+4sG4kLIFAajLDA1HQEuat345FU4SBVXUdnmubK0VvGgAYTmLdAeBtCBtPS1xYE
-        ss5nvUNvlxpc+q6yCElrDpKQhZNFkw3y/cn8PbyvXVD0yrvzYHKR38Cy+ucnLDj3
-        iHzRN/qeEno8Zs8jHNmGDCCAkqGJS02kfCA==
-X-ME-Sender: <xms:7PAlZE4LdH6MfIWcK86D0nh3fEvpWyFbRVGPpqGqP4gM9PNddOetaQ>
-    <xme:7PAlZF4Ab3G-ixntqtRu8jRr-L8KdvGcBd7SDwWZxJTWxVDYa2tIrN2kz3chSSHcA
-    -yIRgpsWCU2_GNJsQ>
-X-ME-Received: <xmr:7PAlZDf0n9iBXwebCjcjH9hi2yNN6uhQwSLdMPSGALw0L6Sp_lzGL-aDOePtKwxrjI4Q34-GZZ-vc5qvklokLLJPeQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdehledgheekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpeetlhhi
-    tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
-    ehudduvdetkedvkedtudeludfgfffhudegjeeguedvvedtteevjeehheeiffefgeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvse
-    hrhihhlhdrihho
-X-ME-Proxy: <xmx:7PAlZJLRGwv-m5P859fhegQuoC4OXi1gbj8brIte6NvQJY-KQtCrGg>
-    <xmx:7PAlZIIr_cPRw5ujzGZp5TORke02iXhHqjz4pOJ5zsSajB-4k_HCQQ>
-    <xmx:7PAlZKzuoEDQkDo2dJDJamRTY6LRmmV2ICj127z9ifJA3RJZMzjVEA>
-    <xmx:7PAlZH9YIMHufS8oLxuw1Bwk8GgPgl_dhOnQAiRd9gsClXYKvvHwuA>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Mar 2023 16:28:26 -0400 (EDT)
-Message-ID: <ae53994a-aaa5-8a57-4284-85000229249d@ryhl.io>
-Date:   Thu, 30 Mar 2023 22:28:25 +0200
+        Thu, 30 Mar 2023 16:44:59 -0400
+Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5211C2137;
+        Thu, 30 Mar 2023 13:44:47 -0700 (PDT)
+Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-5416698e889so377941367b3.2;
+        Thu, 30 Mar 2023 13:44:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680209086;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=oWfRGrpV5MJhPuww+93USL8lTo4MhD+IDxAXmRenEE0=;
+        b=RRrq66w5fA18DW2TXvpqltKDQPui3LnHtaBY3Y918G6PkSz4qvLMe1yDxJkW4yFmsn
+         +liLaQbHb7qlSEm55ssE61imbeX+/ihhzRI97+jPbpi/yCIiJTgNLKYLBNjRrSCGphvK
+         Rd9z0iQEPpZDjUwzz/iVYaTCFZTLMqNV58RmcILQe1HU0zM9r7RZa1mlyjqCMFXkx515
+         /6j9OFb7QXBRLb+Orbqau2Sq8k2tPERQdVyElLuPiOWC6TBURASaxjE+cjByqT0xlwL5
+         cvMszKVnJrj/jV9QxNW+FhwM0riUqFB7Ycff+14sBXpciHockzsn3NQgY8ivRwSu9qov
+         GhJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680209086;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oWfRGrpV5MJhPuww+93USL8lTo4MhD+IDxAXmRenEE0=;
+        b=AzRqscyR36Jz9B684rY2qZWxb2WS8Bj2HHUilG16a0moslrV0TlSCeLGCNuJmtshOR
+         SFBGEaQ1P6xkKxUg28imHakv2b2ZRjEAqnM7QxdWQj8qKZBWKvG4pVgsWExxWUVmqp5Y
+         /tHhAsbYCPNiPgnev8i0eKk4VVRCHp8Gdy4THNDO/UfpJ46aqN8rQr5THKdZhiKWoxZs
+         W3c2juxVIgkEAxaC1lr6KJ9UpxrV2/IfZJexuXSKGhwhLK0k+n55cNEbcerk7SU7PSE/
+         0hP9Bqd8+T6PmLTivUOzxqPyFgl2LEkHrw6ta6GYJd/lzk9z3jfcte95wVPqEbJFUNqe
+         ENLw==
+X-Gm-Message-State: AAQBX9cWqnSpnO5iIduqAzIcYo0WYLZ5eJrJB0qgf7REBwvnZ3jl+7p1
+        DM+23Jk0H0l899vKWghGAsEYApInHfILmLWVl8g=
+X-Google-Smtp-Source: AKy350aDkocMGFpO7n1YFWL3FJ2z/mYK/32VzTb13F/atRRkMuOwT6fOLl+z3cPly5RP2vYK4QVu87g5/fMGZaEG20Y=
+X-Received: by 2002:a81:c84a:0:b0:541:753d:32f9 with SMTP id
+ k10-20020a81c84a000000b00541753d32f9mr12273495ywl.9.1680209086380; Thu, 30
+ Mar 2023 13:44:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 08/13] rust: init: add `stack_pin_init!` macro
-Content-Language: en-US-large
+References: <20230330043954.562237-1-wedsonaf@gmail.com> <20230330043954.562237-13-wedsonaf@gmail.com>
+ <04034640-2d89-dd63-07e5-29fa612aa458@protonmail.com>
+In-Reply-To: <04034640-2d89-dd63-07e5-29fa612aa458@protonmail.com>
+From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+Date:   Thu, 30 Mar 2023 17:44:37 -0300
+Message-ID: <CANeycqo=bbGHz_3OiDUDXwwesvO9t57twALcbgGdx=kCRb-SFg@mail.gmail.com>
+Subject: Re: [PATCH 13/13] rust: sync: introduce `LockedBy`
 To:     Benno Lossin <y86-dev@protonmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Gary Guo <gary@garyguo.net>
-References: <20230329223239.138757-1-y86-dev@protonmail.com>
- <20230329223239.138757-9-y86-dev@protonmail.com>
- <ada8307d-5177-2094-683f-bce619f1ea44@ryhl.io>
- <4b048bfc-e4fe-8c2f-ebfe-9b6a410cd8b8@protonmail.com>
-From:   Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <4b048bfc-e4fe-8c2f-ebfe-9b6a410cd8b8@protonmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 3/30/23 17:19, Benno Lossin wrote:
-> On 30.03.23 17:00, Alice Ryhl wrote:
->> On 3/30/23 00:33, y86-dev@protonmail.com wrote:
->>> From: Benno Lossin <y86-dev@protonmail.com>
->>>
->>> The `stack_pin_init!` macro allows pin-initializing a value on the
->>> stack. It accepts a `impl PinInit<T, E>` to initialize a `T`. It allows
->>> propagating any errors via `?` or handling it normally via `match`.
->>>
->>> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
->>
->> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->>
->>> ---
->>> +#[macro_export]
->>> +macro_rules! stack_pin_init {
->>> +    (let $var:ident $(: $t:ty)? = $val:expr) => {
->>> +        let mut $var = $crate::init::__internal::StackInit$(::<$t>)?::uninit();
->>> +        let mut $var = {
->>> +            let val = $val;
->>> +            unsafe { $crate::init::__internal::StackInit::init(&mut $var, val) }
->>> +        };
->>> +    };
->>> +    (let $var:ident $(: $t:ty)? =? $val:expr) => {
->>> +        let mut $var = $crate::init::__internal::StackInit$(::<$t>)?::uninit();
->>> +        let mut $var = {
->>> +            let val = $val;
->>> +            unsafe { $crate::init::__internal::StackInit::init(&mut $var, val)? }
->>> +        };
->>> +    };
->>> +}
->>
->> This will be inconvenient to use if the initializer is infallible and is
->> used inside an infallible function. However, I'm not sure what a better
->> alternative would be. Perhaps we should have three variants?
-> 
-> That could be an option, any ideas for the syntax though? Or should it
-> be a different macro like `stack_pin_init!` and `try_stack_pin_init!`?
+Hey Benno,
 
-You've also split up the other macros into a fallible and infallible 
-version, so I think the same would be fine here. Perhaps use 
-`stack_pin_try_init!` as the name?
+Thanks for reviewing!
 
->> Also, maybe a `<-` rather than `=` would be more consistent?
-> 
-> That is sadly not possible, since `<-` is not allowed after `ty` fragments.
-> 
->> Anyway, I don't think this should block the PR. We can revisit it later
->> if it becomes a problem.
-> 
-> Sure.
-> 
+On Thu, 30 Mar 2023 at 08:29, Benno Lossin <y86-dev@protonmail.com> wrote:
+>
+> On 30.03.23 06:39, Wedson Almeida Filho wrote:
+> > From: Wedson Almeida Filho <walmeida@microsoft.com>
+> >
+> > This allows us to have data protected by a lock despite not being
+> > wrapped by it. Access is granted by providing evidence that the lock is
+> > held by the caller.
+> >
+> > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> > ---
+> >   rust/kernel/sync.rs           |   2 +
+> >   rust/kernel/sync/lock.rs      |   2 +-
+> >   rust/kernel/sync/locked_by.rs | 126 ++++++++++++++++++++++++++++++++++
+> >   3 files changed, 129 insertions(+), 1 deletion(-)
+> >   create mode 100644 rust/kernel/sync/locked_by.rs
+> >
+> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> > index d6dd0e2c1678..f8edb6d0d794 100644
+> > --- a/rust/kernel/sync.rs
+> > +++ b/rust/kernel/sync.rs
+> > @@ -10,10 +10,12 @@ use crate::types::Opaque;
+> >   mod arc;
+> >   mod condvar;
+> >   pub mod lock;
+> > +mod locked_by;
+> >
+> >   pub use arc::{Arc, ArcBorrow, UniqueArc};
+> >   pub use condvar::CondVar;
+> >   pub use lock::{mutex::Mutex, spinlock::SpinLock};
+> > +pub use locked_by::LockedBy;
+> >
+> >   /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
+> >   #[repr(transparent)]
+> > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> > index f52ba9ab1b70..51c996ca2109 100644
+> > --- a/rust/kernel/sync/lock.rs
+> > +++ b/rust/kernel/sync/lock.rs
+> > @@ -111,7 +111,7 @@ pub struct Lock<T: ?Sized, B: Backend> {
+> >       _pin: PhantomPinned,
+> >
+> >       /// The data protected by the lock.
+> > -    data: UnsafeCell<T>,
+> > +    pub(crate) data: UnsafeCell<T>,
+> >   }
+> >
+> >   // SAFETY: `Lock` can be transferred across thread boundaries iff the data it protects can.
+> > diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.rs
+> > new file mode 100644
+> > index 000000000000..cbfd4e84b770
+> > --- /dev/null
+> > +++ b/rust/kernel/sync/locked_by.rs
+> > @@ -0,0 +1,126 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! A wrapper for data protected by a lock that does not wrap it.
+> > +
+> > +use super::{lock::Backend, lock::Lock};
+> > +use core::{cell::UnsafeCell, ptr};
+> > +
+> > +/// Allows access to some data to be serialised by a lock that does not wrap it.
+> > +///
+> > +/// In most cases, data protected by a lock is wrapped by the appropriate lock type, e.g.,
+> > +/// [`super::Mutex`] or [`super::SpinLock`]. [`LockedBy`] is meant for cases when this is not
+> > +/// possible. For example, if a container has a lock and some data in the contained elements needs
+> > +/// to be protected by the same lock.
+> > +///
+> > +/// [`LockedBy`] wraps the data in lieu of another locking primitive, and only allows access to it
+> > +/// when the caller shows evidence that the 'external' lock is locked.
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// The following is an example for illustrative purposes: `InnerDirectory::bytes_used` is an
+> > +/// aggregate of all `InnerFile::bytes_used` and must be kept consistent; so we wrap `InnerFile` in
+> > +/// a `LockedBy` so that it shares a lock with `InnerDirectory`. This allows us to enforce at
+> > +/// compile-time that access to `InnerFile` is only granted when an `InnerDirectory` is also
+> > +/// locked; we enforce at run time that the right `InnerDirectory` is locked.
+> > +///
+> > +/// ```
+> > +/// use kernel::sync::{LockedBy, Mutex};
+> > +///
+> > +/// struct InnerFile {
+> > +///     bytes_used: u64,
+> > +/// }
+> > +///
+> > +/// struct File {
+> > +///     _ino: u32,
+> > +///     inner: LockedBy<InnerFile, InnerDirectory>,
+> > +/// }
+> > +///
+> > +/// struct InnerDirectory {
+> > +///     /// The sum of the bytes used by all files.
+> > +///     bytes_used: u64,
+> > +///     _files: Vec<File>,
+> > +/// }
+> > +///
+> > +/// struct Directory {
+> > +///     _ino: u32,
+> > +///     inner: Mutex<InnerDirectory>,
+> > +/// }
+> > +///
+> > +/// /// Prints `bytes_used` from both the directory and file.
+> > +/// fn print_bytes_used(dir: &Directory, file: &File) {
+> > +///     let guard = dir.inner.lock();
+> > +///     let inner_file = file.inner.access(&guard);
+> > +///     pr_info!("{} {}", guard.bytes_used, inner_file.bytes_used);
+> > +/// }
+> > +///
+> > +/// /// Increments `bytes_used` for both the directory and file.
+> > +/// fn inc_bytes_used(dir: &Directory, file: &File) {
+> > +///     let mut guard = dir.inner.lock();
+> > +///     guard.bytes_used += 10;
+> > +///
+> > +///     let file_inner = file.inner.access_mut(&mut guard);
+>
+> Missing deref (`*`) in front of `guard`.
+
+`Deref` coercion obviates the need for an explicit dereference. This
+works as is.
+
+> > +///     file_inner.bytes_used += 10;
+> > +/// }
+> > +///
+> > +/// /// Creates a new file.
+> > +/// fn new_file(ino: u32, dir: &Directory) -> File {
+> > +///     File {
+> > +///         _ino: ino,
+> > +///         inner: LockedBy::new(&dir.inner, InnerFile { bytes_used: 0 }),
+> > +///     }
+> > +/// }
+> > +/// ```
+> > +pub struct LockedBy<T: ?Sized, U: ?Sized> {
+> > +    owner: *const U,
+> > +    data: UnsafeCell<T>,
+> > +}
+> > +
+> > +// SAFETY: `LockedBy` can be transferred across thread boundaries iff the data it protects can.
+> > +unsafe impl<T: ?Sized + Send, U: ?Sized> Send for LockedBy<T, U> {}
+> > +
+> > +// SAFETY: `LockedBy` serialises the interior mutability it provides, so it is `Sync` as long as the
+> > +// data it protects is `Send`.
+> > +unsafe impl<T: ?Sized + Send, U: ?Sized> Sync for LockedBy<T, U> {}
+> > +
+> > +impl<T, U: ?Sized> LockedBy<T, U> {
+> > +    /// Constructs a new instance of [`LockedBy`].
+> > +    ///
+> > +    /// It stores a raw pointer to the owner that is never dereferenced. It is only used to ensure
+> > +    /// that the right owner is being used to access the protected data. If the owner is freed, the
+> > +    /// data becomes inaccessible; if another instance of the owner is allocated *on the same
+> > +    /// memory location*, the data becomes accessible again: none of this affects memory safety
+> > +    /// because in any case at most one thread (or CPU) can access the protected data at a time.
+> > +    pub fn new(owner: &Lock<U, impl Backend>, data: T) -> Self {
+> > +        Self {
+> > +            owner: owner.data.get(),
+> > +            data: UnsafeCell::new(data),
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +impl<T: ?Sized, U: ?Sized> LockedBy<T, U> {
+> > +    /// Returns a reference to the protected data when the caller provides evidence (via a
+> > +    /// reference) that the owner is locked.
+> > +    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
+> > +        if !ptr::eq(owner, self.owner) {
+> > +            panic!("mismatched owners");
+> > +        }
+> > +
+> > +        // SAFETY: `owner` is evidence that the owner is locked.
+> > +        unsafe { &*self.data.get() }
+> > +    }
+> > +
+> > +    /// Returns a mutable reference to the protected data when the caller provides evidence (via a
+> > +    /// mutable owner) that the owner is locked mutably.
+> > +    ///
+> > +    /// Showing a mutable reference to the owner is sufficient because we know no other references
+> > +    /// can exist to it.
+> > +    pub fn access_mut<'a>(&'a self, owner: &'a mut U) -> &'a mut T {
+> > +        if !ptr::eq(owner, self.owner) {
+> > +            panic!("mismatched owners");
+> > +        }
+> > +
+> > +        // SAFETY: `owner` is evidence that there is only one reference to the owner.
+> > +        unsafe { &mut *self.data.get() }
+> > +    }
+> > +}
+> > --
+> > 2.34.1
+> >
+>
+> What happens if the the protected data `U` is a ZST? Then the address
+> comparing will not work, since all ZST references have the same address.
+
+Indeed SZTs are problematic. I'll add a restriction to rule them out.
+
+> For example:
+>
+>      struct Outer {
+>          mtx: Mutex<()>,
+>          inners: Vec<Inner>,
+>      }
+>
+>      struct Inner {
+>          count: LockedBy<usize, ()>,
+>      }
+>
+>      fn evil(inner: &Inner) {
+>          // can create two mutable references at the same time:
+>          let a = inner.count.access_mut(&mut ());
+>          let b = inner.count.access_mut(&mut ());
+>          core::mem::swap(a, b);
+>      }
+>
+> Maybe prevent this by checking for `assert!(mem::size_of::<U>() != 0);`
+> in the `new` function? Though I am not sure if a ZST is the only way for
+> values to share addresses.
+
+I'll add such an assert a part of a `const` inside an impl block so
+that we get it to fail at compile time if misused.
+
+>
 > --
 > Cheers,
 > Benno
-> 
-> 
+>
+>
