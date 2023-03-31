@@ -2,56 +2,55 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 361EAC6FD18
-	for <rust-for-linux@archiver.kernel.org>; Fri, 31 Mar 2023 12:44:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43F5DC6FD18
+	for <rust-for-linux@archiver.kernel.org>; Fri, 31 Mar 2023 12:52:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230337AbjCaMoi (ORCPT
+        id S232449AbjCaMwS (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 31 Mar 2023 08:44:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39872 "EHLO
+        Fri, 31 Mar 2023 08:52:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231931AbjCaMof (ORCPT
+        with ESMTP id S232439AbjCaMwG (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 31 Mar 2023 08:44:35 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9448820637
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Mar 2023 05:44:11 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id j24so22298115wrd.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Mar 2023 05:44:11 -0700 (PDT)
+        Fri, 31 Mar 2023 08:52:06 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6307A1CB98
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 Mar 2023 05:51:45 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id h17so22258989wrt.8
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 Mar 2023 05:51:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20210112.gappssmtp.com; s=20210112; t=1680266648;
+        d=metaspace-dk.20210112.gappssmtp.com; s=20210112; t=1680267099;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pj2oN2LwZ2WDVYe/kJrJYhEskC0mu3RJkM2yXvZMoo0=;
-        b=romFrc+yurgbCwzfpHvf55mEkveW/UWgdUQvLlSgn+vNSyDFcUbgBY6A5BD6RLggkS
-         WFOb/znbl01YD+TZx9uMbPqgmpfGbTf9s9+lNnFUnvgbNAJbhVGCd5PKqxY6SfLU+0yT
-         TvIr4GX4qQ/A2nqAmxsCIQSQ69eLj/KN1ybe0we8EHFy5iFRQOOwNUhwl219CA223pis
-         Vj9z1byg7h9oEldI6Gog2U6NVyJYXVTP/3eUm96zH8KWMDzD9t4YtrLdvA7vjrxc4B97
-         o5Yg/fGOZd/8zHhTqrS3oNdz2D0Jp2YK3Di+n8X1CZwCDcqAvwxh62DxzzkoYk+Wb1yo
-         PPUw==
+        bh=UsGubbzk0dCjG5wCsoY5mRw327zyvC5R+ejx+1+wa68=;
+        b=03sQJJ1LaNV8LEYEs1ETSwJlzUJlhnJ8G2vSy8+UA5LIU3mqUs7QN4TDdNoDAk9Eqk
+         V8R3E702XY/7PSlW6boqvagNy4uVcrpSmGt7yzS353DV+ASE0U0lYFQgQqo8J3C3fMFp
+         W6j9R1u7FwlqjnBD1+IXqwwReW987DCIb218egtvqoewVBqVdaqv3WKrLn3aELu5d7Rw
+         2dPAIoqnk7mevLWNAVeWFMLjfju7xSYJBXoYUtmb5NtOt068fpBJJnJZPq7DIdUNScAo
+         03xlxqvSKLTk6hHlE9Qu3u2X6QoOg/jmK30cMU+qQ1do4hIeb0Zck7DUW5e6IZwkVCsy
+         ECFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680266648;
+        d=1e100.net; s=20210112; t=1680267099;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Pj2oN2LwZ2WDVYe/kJrJYhEskC0mu3RJkM2yXvZMoo0=;
-        b=kULV7FW4RqmRg4xg1iKZ0R3r7viaP9nzOSFgI+BVAFVAfz/CTYQ/FUEvVcVnUofded
-         PNmpca1qQ531lHEqM2/9Ik4Z5Pg2I4VF8bSQN0ATCFvDoZYMkHEiASX9g5G5J7BVz5uo
-         +FS50VWmBGaZjaTJWeqMS29C6gSlNyN1pzVEPAklIjPLytt3k1hCxVj6kvuiwrIKMMVG
-         EOJiQhoFOvH8StSsyuvwaYJuPJLNCvst5Cq1exU3phL/mvROgmt8rfCrOHvep/yTZaav
-         5hbdsvT1mgnxid9ej3vXAS9sOEwv5neCvN/ZmSmSA3Ih331rBQ9rdU0c0G/FwpZ+7Tdi
-         JA4Q==
-X-Gm-Message-State: AAQBX9e9Yi5DKv1Pd/x023SqaXaueeaXwIEucC82cSPdjI2q1B7RQdkn
-        qKLkbIba5DFtq5cFDGYIN0w5ja1YulU+927FGlw=
-X-Google-Smtp-Source: AKy350ao52RjPAABRebzNyJWrFOWCr3+nwOfqSWPcCtqMC225ZVtUvGv6uakeGn9QcWOxDPpdU7z8w==
-X-Received: by 2002:a5d:44c4:0:b0:2c5:4f2d:d9b4 with SMTP id z4-20020a5d44c4000000b002c54f2dd9b4mr20341258wrr.58.1680266648536;
-        Fri, 31 Mar 2023 05:44:08 -0700 (PDT)
+        bh=UsGubbzk0dCjG5wCsoY5mRw327zyvC5R+ejx+1+wa68=;
+        b=Wqsa/11HM1fYxkJxAtXnYHn1tLhGv1YR1fyOLNA6TyL4KqlZNVzqNs1XDy2LHtIC7M
+         z5AhN36cM5B5yq8q7zTljIHyyUF+dPP6RGgu5FwEAsz74lnBpn8l2eojS/aIOvaYPFYi
+         XXXtRq06R2BuHiUxtwl7boMPMp2E9gCRCAorPrIvVn5yinTErIvBqM7llFPYh/P6pdn7
+         ZeAnaOEYbmzFJliSjmvh9ipIbKv69iXi8ku3DqvunxfLCk0maNgzcxLNcByfAV/VQKhb
+         YsHxhfrq9Yli3cLmJr9lWAUkaZ2aJy/Bu2g4Zhm9kwXZ9tMzHxNU9iDW96WGVPpx8beg
+         huOw==
+X-Gm-Message-State: AAQBX9fmNKIvRxclqUBR1x7s0BcImCK9eBDbKTBOqdYNLPreP+Ez7Up3
+        znvkQVYP8Naw4scODOnbP9au+g==
+X-Google-Smtp-Source: AKy350aDcoHRT3JiiMvfouQyjeJsV4oDEXMvorqyhiIA+F6ahoEd/4aNjEXVaQZExo/0h8Md4kambQ==
+X-Received: by 2002:adf:f2c6:0:b0:2d1:5b75:28f0 with SMTP id d6-20020adff2c6000000b002d15b7528f0mr20065546wrp.39.1680267098890;
+        Fri, 31 Mar 2023 05:51:38 -0700 (PDT)
 Received: from localhost ([165.225.194.194])
-        by smtp.gmail.com with ESMTPSA id s12-20020adfeccc000000b002da1261aa44sm2155877wro.48.2023.03.31.05.44.08
+        by smtp.gmail.com with ESMTPSA id o11-20020a056000010b00b002de9a0b0a20sm2104329wrx.113.2023.03.31.05.51.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Mar 2023 05:44:08 -0700 (PDT)
-References: <20230329223239.138757-1-y86-dev@protonmail.com>
- <20230329223239.138757-9-y86-dev@protonmail.com>
+        Fri, 31 Mar 2023 05:51:38 -0700 (PDT)
+References: <20230329223239.138757-11-y86-dev@protonmail.com>
 User-agent: mu4e 1.9.18; emacs 28.2.50
 From:   Andreas Hindborg <nmi@metaspace.dk>
 To:     y86-dev@protonmail.com
@@ -63,10 +62,11 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alice Ryhl <alice@ryhl.io>, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, patches@lists.linux.dev,
         Andreas Hindborg <a.hindborg@samsung.com>
-Subject: Re: [PATCH v3 08/13] rust: init: add `stack_pin_init!` macro
-Date:   Fri, 31 Mar 2023 14:43:33 +0200
-In-reply-to: <20230329223239.138757-9-y86-dev@protonmail.com>
-Message-ID: <87fs9l2iqw.fsf@metaspace.dk>
+Subject: Re: [PATCH v3 10/13] rust: prelude: add `pin-init` API items to
+ prelude
+Date:   Fri, 31 Mar 2023 14:50:59 +0200
+In-reply-to: <20230329223239.138757-11-y86-dev@protonmail.com>
+Message-ID: <87bkk92ied.fsf@metaspace.dk>
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
@@ -78,185 +78,40 @@ y86-dev@protonmail.com writes:
 
 > From: Benno Lossin <y86-dev@protonmail.com>
 >
-> The `stack_pin_init!` macro allows pin-initializing a value on the
-> stack. It accepts a `impl PinInit<T, E>` to initialize a `T`. It allows
-> propagating any errors via `?` or handling it normally via `match`.
+> Add `pin-init` API macros and traits to the prelude.
 >
 > Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
 > ---
 
-
 Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 
-
->  rust/kernel/init.rs            | 70 +++++++++++++++++++++++++++++++---
->  rust/kernel/init/__internal.rs | 46 ++++++++++++++++++++++
->  2 files changed, 110 insertions(+), 6 deletions(-)
+>  rust/kernel/prelude.rs | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 >
-> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-> index 428b5c2ac516..3358f14beffb 100644
-> --- a/rust/kernel/init.rs
-> +++ b/rust/kernel/init.rs
-> @@ -12,7 +12,8 @@
->  //!
->  //! To initialize a `struct` with an in-place constructor you will need two things:
->  //! - an in-place constructor,
-> -//! - a memory location that can hold your `struct`.
-> +//! - a memory location that can hold your `struct` (this can be the [stack], an [`Arc<T>`],
-> +//!   [`UniqueArc<T>`], [`Box<T>`] or any other smart pointer that implements [`InPlaceInit`]).
->  //!
->  //! To get an in-place constructor there are generally three options:
->  //! - directly creating an in-place constructor using the [`pin_init!`] macro,
-> @@ -180,6 +181,7 @@
->  //! [pinning]: https://doc.rust-lang.org/std/pin/index.html
->  //! [structurally pinned fields]:
->  //!     https://doc.rust-lang.org/std/pin/index.html#pinning-is-structural-for-field
-> +//! [stack]: crate::stack_pin_init
->  //! [`Arc<T>`]: crate::sync::Arc
->  //! [`impl PinInit<Foo>`]: PinInit
->  //! [`impl PinInit<T, E>`]: PinInit
-> @@ -199,6 +201,62 @@ pub mod __internal;
->  #[doc(hidden)]
->  pub mod macros;
+> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> index 0bc1c97e5604..fcdc511d2ce8 100644
+> --- a/rust/kernel/prelude.rs
+> +++ b/rust/kernel/prelude.rs
+> @@ -18,7 +18,7 @@ pub use core::pin::Pin;
+>  pub use alloc::{boxed::Box, vec::Vec};
 >
-> +/// Initialize and pin a type directly on the stack.
-> +///
-> +/// # Examples
-> +///
-> +/// ```rust
-> +/// # #![allow(clippy::disallowed_names, clippy::new_ret_no_self)]
-> +/// # use kernel::{init, pin_init, stack_pin_init, init::*, sync::Mutex, new_mutex};
-> +/// # use macros::pin_data;
-> +/// # use core::pin::Pin;
-> +/// #[pin_data]
-> +/// struct Foo {
-> +///     #[pin]
-> +///     a: Mutex<usize>,
-> +///     b: Bar,
-> +/// }
-> +///
-> +/// #[pin_data]
-> +/// struct Bar {
-> +///     x: u32,
-> +/// }
-> +///
-> +/// let a = new_mutex!(42, "Foo::a");
-> +///
-> +/// stack_pin_init!(let foo =? pin_init!(Foo {
-> +///     a,
-> +///     b: Bar {
-> +///         x: 64,
-> +///     },
-> +/// }));
-> +/// let foo: Pin<&mut Foo> = foo;
-> +/// # Ok::<(), core::convert::Infallible>(())
-> +/// ```
-> +///
-> +/// # Syntax
-> +///
-> +/// A normal `let` binding with optional type annotation. The expression is expected to implement
-> +/// [`PinInit`]. Additionally a `?` can be put after the `=`, this will assign `Pin<&mut T>` to the
-> +/// variable instead of `Result<Pin<&mut T>, E>`.
-> +#[macro_export]
-> +macro_rules! stack_pin_init {
-> +    (let $var:ident $(: $t:ty)? = $val:expr) => {
-> +        let mut $var = $crate::init::__internal::StackInit$(::<$t>)?::uninit();
-> +        let mut $var = {
-> +            let val = $val;
-> +            unsafe { $crate::init::__internal::StackInit::init(&mut $var, val) }
-> +        };
-> +    };
-> +    (let $var:ident $(: $t:ty)? =? $val:expr) => {
-> +        let mut $var = $crate::init::__internal::StackInit$(::<$t>)?::uninit();
-> +        let mut $var = {
-> +            let val = $val;
-> +            unsafe { $crate::init::__internal::StackInit::init(&mut $var, val)? }
-> +        };
-> +    };
-> +}
-> +
->  /// Construct an in-place, pinned initializer for `struct`s.
->  ///
->  /// This macro defaults the error to [`Infallible`]. If you need [`Error`], then use
-> @@ -916,8 +974,8 @@ macro_rules! try_init {
->  /// A pinned initializer for `T`.
->  ///
->  /// To use this initializer, you will need a suitable memory location that can hold a `T`. This can
-> -/// be [`Box<T>`], [`Arc<T>`], [`UniqueArc<T>`]. Use the [`InPlaceInit::pin_init`] function of a
-> -/// smart pointer like [`Arc<T>`] on this.
-> +/// be [`Box<T>`], [`Arc<T>`], [`UniqueArc<T>`] or even the stack (see [`stack_pin_init!`]). Use the
-> +/// [`InPlaceInit::pin_init`] function of a smart pointer like [`Arc<T>`] on this.
->  ///
->  /// Also see the [module description](self).
->  ///
-> @@ -952,9 +1010,9 @@ pub unsafe trait PinInit<T: ?Sized, E = Infallible>: Sized {
->  /// An initializer for `T`.
->  ///
->  /// To use this initializer, you will need a suitable memory location that can hold a `T`. This can
-> -/// be [`Box<T>`], [`Arc<T>`], [`UniqueArc<T>`]. Use the [`InPlaceInit::init`] function of a smart
-> -/// pointer like [`Arc<T>`] on this. Because [`PinInit<T, E>`] is a super trait, you can
-> -/// use every function that takes it as well.
-> +/// be [`Box<T>`], [`Arc<T>`], [`UniqueArc<T>`] or even the stack (see [`stack_pin_init!`]). Use the
-> +/// [`InPlaceInit::init`] function of a smart pointer like [`Arc<T>`] on this. Because
-> +/// [`PinInit<T, E>`] is a super trait, you can use every function that takes it as well.
->  ///
->  /// Also see the [module description](self).
->  ///
-> diff --git a/rust/kernel/init/__internal.rs b/rust/kernel/init/__internal.rs
-> index 4a3c7bf27a06..bf33c8e96e6d 100644
-> --- a/rust/kernel/init/__internal.rs
-> +++ b/rust/kernel/init/__internal.rs
-> @@ -89,6 +89,52 @@ unsafe impl<T: ?Sized> HasInitData for T {
->      }
->  }
+>  #[doc(no_inline)]
+> -pub use macros::{module, vtable};
+> +pub use macros::{module, pin_data, pinned_drop, vtable};
 >
-> +/// Stack initializer helper type. Use [`stack_pin_init`] instead of this primitive.
-> +///
-> +/// # Invariants
-> +///
-> +/// If `self.1` is true, then `self.0` is initialized.
-> +///
-> +/// [`stack_pin_init`]: kernel::stack_pin_init
-> +pub struct StackInit<T>(MaybeUninit<T>, bool);
+>  pub use super::build_assert;
+>
+> @@ -27,8 +27,12 @@ pub use super::build_assert;
+>  pub use super::dbg;
+>  pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
+>
+> +pub use super::{init, pin_init, try_init, try_pin_init};
 > +
-> +impl<T> Drop for StackInit<T> {
-> +    #[inline]
-> +    fn drop(&mut self) {
-> +        if self.1 {
-> +            // SAFETY: As we are being dropped, we only call this once. And since `self.1 == true`,
-> +            // `self.0` has to be initialized.
-> +            unsafe { self.0.assume_init_drop() };
-> +        }
-> +    }
-> +}
+>  pub use super::static_assert;
+>
+>  pub use super::error::{code::*, Error, Result};
+>
+>  pub use super::{str::CStr, ThisModule};
 > +
-> +impl<T> StackInit<T> {
-> +    /// Creates a new [`StackInit<T>`] that is uninitialized. Use [`stack_pin_init`] instead of this
-> +    /// primitive.
-> +    ///
-> +    /// [`stack_pin_init`]: kernel::stack_pin_init
-> +    #[inline]
-> +    pub fn uninit() -> Self {
-> +        Self(MaybeUninit::uninit(), false)
-> +    }
-> +
-> +    /// Initializes the contents and returns the result.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller ensures that `self` is on the stack and not accessible in any other way, if this
-> +    /// function returns `Ok`.
-> +    #[inline]
-> +    pub unsafe fn init<E>(&mut self, init: impl PinInit<T, E>) -> Result<Pin<&mut T>, E> {
-> +        // SAFETY: The memory slot is valid and this type ensures that it will stay pinned.
-> +        unsafe { init.__pinned_init(self.0.as_mut_ptr())? };
-> +        self.1 = true;
-> +        // SAFETY: The slot is now pinned, since we will never give access to `&mut T`.
-> +        Ok(unsafe { Pin::new_unchecked(self.0.assume_init_mut()) })
-> +    }
-> +}
-> +
->  /// When a value of this type is dropped, it drops a `T`.
->  ///
->  /// Can be forgotton to prevent the drop.
+> +pub use super::init::{InPlaceInit, Init, PinInit};
 
