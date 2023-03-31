@@ -2,92 +2,82 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC96DC76196
-	for <rust-for-linux@archiver.kernel.org>; Fri, 31 Mar 2023 13:39:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11C38C76196
+	for <rust-for-linux@archiver.kernel.org>; Fri, 31 Mar 2023 21:53:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232793AbjCaNjs (ORCPT
+        id S231159AbjCaVxE (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 31 Mar 2023 09:39:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38916 "EHLO
+        Fri, 31 Mar 2023 17:53:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232151AbjCaNjr (ORCPT
+        with ESMTP id S231800AbjCaVxD (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 31 Mar 2023 09:39:47 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2E52469A;
-        Fri, 31 Mar 2023 06:39:46 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id cf7so27433485ybb.5;
-        Fri, 31 Mar 2023 06:39:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680269986;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p8HyCR6qUgL2YL9MIarBVNh91rgqxInYdUkkRv7lzCA=;
-        b=nRQVT9ShE0pExTB54GDQVPUoE5xeg0yZISdISWCkiaC/z9HRj31sfeE6I5mTha44sY
-         FqPQHA8gp7feZ2Ap/WXLKcka4qprU9xOlYAwx/PsdGZrVMjzLZqi2emdau+nG0Hbv0C3
-         3/kWmtGI/xWfhv3DXsK6HXxEZX3kBUw71sF2+RvpC1SgGXf/T9LO5ytk9j8HSurCFxee
-         8IykdnR/8W6eifFOBjLc/iLlqTguUMNQnQ6jcxlYoujxYzVJa5RTq3wnT+T4zjX/HXub
-         ROpXfaWDFJ+FMzmoEHNv30WTzud50vzxa8ncXd6vRq1MBzStrtfx2oA3T2JFefm8Cyoo
-         i9+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680269986;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p8HyCR6qUgL2YL9MIarBVNh91rgqxInYdUkkRv7lzCA=;
-        b=mbEyhHuUMFMzMr/MwtW1ynR8B/oO0YS/R26No2V8Wz0GtQg4+Br5ph0c5dVg7LLn+n
-         KbHcZFlJLhf1oXh0b5LMmEAvKaHYdh8h/BawaaSMneJ1Ljw16ucYJrC3rOyrOXcJiZQx
-         tkHKGzYUJCRUaahPgWwvfGP2iyH/x+rnxVBOf2M98LS/v736gZ+GgmZRo2KWaFtjwtqx
-         H2CtHcAtThurDUgl5/1jOIjlOzFIKA05lweqwObirQHaRGwMtSWx4AjqhpTULYI+3DgU
-         eirnQY2WyJhCLEhkOUT7Uca3c7R5VgsQuIu+5XOEw2L/0T7TuDovH2bsWIivafkeX3DD
-         h92Q==
-X-Gm-Message-State: AAQBX9frankr/7+py7nHf2chcvc1xfTqL+kyGYxQbUYGx4xDzxXp0zxZ
-        NwPsOiERCfj9LtQxwEF19VZxu1N23J9hG1z4PEw=
-X-Google-Smtp-Source: AKy350apgoEPMUQxWR00klwXYYscnIAK0OZLPQx0ko6VrOlHD0pJFBErJN002gXBJZ2Hpee+HGT0ekYIUQKFrIQIx4Q=
-X-Received: by 2002:a25:2f84:0:b0:b6e:d788:eba0 with SMTP id
- v126-20020a252f84000000b00b6ed788eba0mr17842248ybv.11.1680269986074; Fri, 31
- Mar 2023 06:39:46 -0700 (PDT)
+        Fri, 31 Mar 2023 17:53:03 -0400
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 906C321A8E
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 Mar 2023 14:52:35 -0700 (PDT)
+Date:   Fri, 31 Mar 2023 21:51:35 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1680299509; x=1680558709;
+        bh=hROJyTm6NeZLJh+vRRO9kol8Xhevc/WCzv7AS4Ky5PI=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=Sn5nYBKD4eegGoUxIP+3J1/1yvip3+a7+UsizNlGLHFjc01CEf209czQb+8GedlKG
+         cBniXokJuBvOCMJlntdiBYTEPRWEHdZbhp2a8PbBYxb7wkv1ezhu+AI/2290vA8ZE5
+         Km/+vS2sKTFvG5fWcBJdaOLLmamgK0a2GhGSkLH8prturH5H/yfc9KcFfqo1BPLeXo
+         f6WJ0ku3qmNl/4GSTMm1s/A/DqusdRUtAMa+aVe4fiU9R75Z91zz7RuO/yJRS2hovq
+         ylSQ99BL8puCfTLoi80axvR49EyZ7r+TgHGOGiFxl5j6VV01tRgSQJwmDhBUpLoYcu
+         BIZ/vS1rKzQUw==
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Alice Ryhl <alice@ryhl.io>
+From:   y86-dev@protonmail.com
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, Benno Lossin <y86-dev@protonmail.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH v4 01/15] rust: enable the `pin_macro` feature
+Message-ID: <20230331215053.585759-2-y86-dev@protonmail.com>
+In-Reply-To: <20230331215053.585759-1-y86-dev@protonmail.com>
+References: <20230331215053.585759-1-y86-dev@protonmail.com>
+Feedback-ID: 40624463:user:proton
 MIME-Version: 1.0
-References: <20230318041555.4192172-1-davidgow@google.com>
-In-Reply-To: <20230318041555.4192172-1-davidgow@google.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 31 Mar 2023 15:39:35 +0200
-Message-ID: <CANiq72==YbpCJPLOkCBGRkTYCOokLrEUNASn_JUpY2Ndw1sHfw@mail.gmail.com>
-Subject: Re: [PATCH] arch:um: Only disable SSE on clang to work around old GCC bugs
-To:     David Gow <davidgow@google.com>
-Cc:     Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        SeongJae Park <sj@kernel.org>, linux-um@lists.infradead.org,
-        x86@kernel.org, llvm@lists.linux.dev,
-        rust-for-linux@vger.kernel.org, kunit-dev@googlegroups.com,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Mar 18, 2023 at 5:16=E2=80=AFAM David Gow <davidgow@google.com> wro=
-te:
->
-> Nevertheless, only disable SSE on clang setups, as that's a simple way
-> of working around everyone's bugs.
+From: Benno Lossin <y86-dev@protonmail.com>
 
-Sounds good to me. If GCC >=3D 11 has fixed it, should we instead test
-for GCC < 11, i.e. it could help catching future new regressions like
-the linked GCC bug, if I understand correctly, right? Of course, that
-could be done for the next cycle, since this one minimizes the
-original change w.r.t. v6.2.
+This feature enables the use of the `pin!` macro for the `stack_pin_init!`
+macro. This feature is already stabilized in Rust version 1.68.
 
-By the way, missing space on the title (`arch:um`).
+Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
+Cc: Gary Guo <gary@garyguo.net>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/lib.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-Cheers,
-Miguel
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 223564f9f0cc..4317b6d5f50b 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -17,6 +17,7 @@
+ #![feature(core_ffi_c)]
+ #![feature(dispatch_from_dyn)]
+ #![feature(generic_associated_types)]
++#![feature(pin_macro)]
+ #![feature(receiver_trait)]
+ #![feature(unsize)]
+
+--
+2.39.2
+
+
