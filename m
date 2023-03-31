@@ -2,84 +2,127 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CA63C6FD18
-	for <rust-for-linux@archiver.kernel.org>; Fri, 31 Mar 2023 07:09:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9164DC6FD18
+	for <rust-for-linux@archiver.kernel.org>; Fri, 31 Mar 2023 07:28:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230484AbjCaHJt (ORCPT
+        id S230077AbjCaH2W (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 31 Mar 2023 03:09:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32784 "EHLO
+        Fri, 31 Mar 2023 03:28:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230466AbjCaHJm (ORCPT
+        with ESMTP id S229530AbjCaH2V (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 31 Mar 2023 03:09:42 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55B91191CB
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Mar 2023 00:09:40 -0700 (PDT)
-Date:   Fri, 31 Mar 2023 07:09:30 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680246578; x=1680505778;
-        bh=yc7pszNaS5MbnHhdKhl5ZeYs5tmQLP8mPSrXEB1Pfk4=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=P77Mw4qMdqZYI2RdWmjZNTsGKTQyZ77FieQWyPBpdBBmiAqwn7bM0hYslj+c7jbPc
-         4/UkSxuVIWihc8PVv+QsXkBOkSiQhk9IDPczy8+kO/AYbK3ZG1ZEFCB9qkr5iMgixU
-         jrW4bSSBPQwEc1Ck3bTBS9YAk/qI9HTraRRN9o0vSsOnbhAQGQARKE6r8OuMmKCiAh
-         afZlEO2dX17N/zaQKYEbO+XfQ65sfB6FswvnGw/6da6+cgIgsn5u/SDPSX4QYDPwQR
-         xlaQm3ZYPwI7ItkJ0SUqanHEc7cxGns7nzWfu13woHHx9sKmh2MGBlKCmtaWOh6TMJ
-         A8BIO+WjxIqkw==
-To:     Alice Ryhl <alice@ryhl.io>, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-From:   Benno Lossin <y86-dev@protonmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: Re: [PATCH v3 09/13] rust: init: add `Zeroable` trait and `init::zeroed` function
-Message-ID: <06e72e1f-af49-d952-7dd5-c80b9e3f27ee@protonmail.com>
-In-Reply-To: <19db6213-297b-a33d-7331-3c1a5b72fad9@ryhl.io>
-References: <20230329223239.138757-10-y86-dev@protonmail.com> <19db6213-297b-a33d-7331-3c1a5b72fad9@ryhl.io>
-Feedback-ID: 40624463:user:proton
+        Fri, 31 Mar 2023 03:28:21 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1621C768B;
+        Fri, 31 Mar 2023 00:28:21 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.nyi.internal (Postfix) with ESMTP id 813DF5C019A;
+        Fri, 31 Mar 2023 03:28:20 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Fri, 31 Mar 2023 03:28:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
+        :content-transfer-encoding:content-type:content-type:date:date
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1680247700; x=1680334100; bh=5MJfRpO+dCBuD2QslsP+SHMLwF08YAQPZ56
+        IkAHTbT0=; b=XLCxyHafha+KRYaz/Xp/c2jIG4Q+V18mqz9L5W1fhQmGBqiNlVv
+        7j8vZ3S2AfG2SIClEEwMv7/XC/htYnuvcNqoyvGmXvn1kkEcxINFNicBjBRQVVLF
+        iz5dqgp2RnxKOfKrMNsgjDDcU4qaZgFwWQKgHvC8HEzGQ/PApmuNRid0QliTgM8m
+        VTAgWxBxi6Xg04e06wSVFrAaP0aiK+TrjiLvuXr05lPb7IFlie0a87o7c4nj6VeV
+        rSPs4e3fzbP4KRQoZdWQV/XAx+sPwRdSV8/NBFhX1E1DCVZmmY9e5PK4dvWblkWw
+        +dhK6oSscSztWdpueJsQ6qjmb0tJgRD4M1A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1680247700; x=1680334100; bh=5MJfRpO+dCBuD2QslsP+SHMLwF08YAQPZ56
+        IkAHTbT0=; b=EJLBUuFHcas3fEMOIEwV1AgefTVcrxPr7G5wkugubuV37eS6RAa
+        efX7mMYC8+3sqk8AA49pe82WX9VmcT3ne1QCMd6cQrfi0InVAnKBot02MZqqBqDe
+        fVJVIOcSz1e/u2okUC3yMkzdH5sJmzx4WbVpaUWRcApRs9slc06IHn0ZHUPYWC1h
+        H8XmEloTjTJOBixeKvYpKYZnVXsLCtLD9eZyq6lqd48NaYXwMjeXFIOCWlCvozMt
+        0UcRBMz5rryBbkjj2vwMAVn6FmaoDxFkxZ5Z2GkQNMTGs+4tt9H4OvREMjVTK66F
+        WXffatQVyvoTXT2jxT6gHgUGXXs/m63o9FQ==
+X-ME-Sender: <xms:lIsmZCxROcorE8JDboyMqAa1kUmw8MhJF81dq2tEn1gK6Kzm79OQgA>
+    <xme:lIsmZOQz293jC9gSf9RLEOnHi7JnSJdnEIUd6JmTup3O6SvuocmXWLZNPLwmBSQ27
+    RoatHC-cd92rF-lIg>
+X-ME-Received: <xmr:lIsmZEVIhOzhuglxbgFY2fX4PUVeJtbM0MmYGig7VwTPJot4z4cse7xw5IxCWOZajjJ7HNvFIG1MOqePXBHEWMet8g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeitddguddulecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttdefjeenucfhrhhomheptehl
+    ihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnh
+    epheduuddvteekvdektdduledugfffhfdugeejgeeuvdevtdetveejheehiefffeegnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvg
+    esrhihhhhlrdhioh
+X-ME-Proxy: <xmx:lIsmZIgvwEfrWPsWIPGu0p-K9ekXvkV_RqMdh5d7sS4f3gs0mIPoPw>
+    <xmx:lIsmZEAxLDUknQKkN30GQtdqg44a4gQykjPgPvlLcB1We5HGsFLNMg>
+    <xmx:lIsmZJIU97-7qVrnswYonGot2ZcQyzppuw2-pG98gfiwcAOw13tdPw>
+    <xmx:lIsmZNJvo_yQqazjeEqlR6tVruIKuGSFCUgPyxh9kjUMGjyz4g8Q5g>
+Feedback-ID: i56684263:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 31 Mar 2023 03:28:16 -0400 (EDT)
+Message-ID: <1cd137de-6ca0-a079-429f-6cb964a0f811@ryhl.io>
+Date:   Fri, 31 Mar 2023 09:28:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 01/13] rust: sync: introduce `LockClassKey`
+Content-Language: en-US
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        rust-for-linux@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>
+References: <20230330043954.562237-1-wedsonaf@gmail.com>
+From:   Alice Ryhl <alice@ryhl.io>
+In-Reply-To: <20230330043954.562237-1-wedsonaf@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 31.03.23 00:40, Alice Ryhl wrote:
-> On 3/30/23 00:33, y86-dev@protonmail.com wrote:
->> From: Benno Lossin <y86-dev@protonmail.com>
->>
->> Add the `Zeroable` trait which marks types that can be initialized by
->> writing `0x00` to every byte of the type. Also add the `init::zeroed`
->> function that creates an initializer for a `Zeroable` type that writes
->> `0x00` to every byte.
->>
->> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
->> ---
->> +// SAFETY: `null` pointer is valid.
->> +unsafe impl<T: ?Sized> Zeroable for *mut T {}
->> +unsafe impl<T: ?Sized> Zeroable for *const T {}
->
-> Actually, I just realized that this is not ok for unsized types. When T
-> is unsized, the raw pointer is a fat pointer with a vtable, and the
-> vtable part is not necessarily zeroable.
->
-> However, it would be ok to do it for `*const [T]` since the fat part of
-> the pointer is just the length in this case, and a length of zero is fine=
-.
->
-> See more here:
-> https://github.com/Lokathor/bytemuck/blob/8391afa876ba2e99dffb0c991cc7fa7=
-75287d106/src/zeroable.rs#L56-L65
+On 3/30/23 06:39, Wedson Almeida Filho wrote:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
+> 
+> It is a wrapper around C's `lock_class_key`, which is used by the
+> synchronisation primitives that are checked with lockdep. This is in
+> preparation for introducing Rust abstractions for these primitives.
+> 
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Waiman Long <longman@redhat.com>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> ---
+> +// SAFETY: `bindings::lock_class_key` is designed to be used concurrently from multiple threads and
+> +// provides its own synchronization.
+> +unsafe impl Sync for LockClassKey {}
 
-Wow I forgot about fat pointers completely! Good catch!
+No Send?
 
---
-Cheers,
-Benno
+> +
+> +impl LockClassKey {
+> +    /// Creates a new lock class key.
+> +    pub const fn new() -> Self {
+> +        Self(Opaque::uninit())
+> +    }
+> +
+> +    #[allow(dead_code)]
+> +    pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+> +        self.0.get()
+> +    }
 
-
+I would just make this pub and drop the `#[allow(dead_code)]`. I think 
+it is often useful to have methods like this available publicly.
