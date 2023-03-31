@@ -2,56 +2,56 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FBDDC6FD18
-	for <rust-for-linux@archiver.kernel.org>; Fri, 31 Mar 2023 12:02:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F204C6FD18
+	for <rust-for-linux@archiver.kernel.org>; Fri, 31 Mar 2023 12:03:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbjCaMCV (ORCPT
+        id S231982AbjCaMDt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 31 Mar 2023 08:02:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44008 "EHLO
+        Fri, 31 Mar 2023 08:03:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229792AbjCaMCU (ORCPT
+        with ESMTP id S231149AbjCaMDs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 31 Mar 2023 08:02:20 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5698110C1
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Mar 2023 05:02:19 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id r11so22123613wrr.12
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Mar 2023 05:02:19 -0700 (PDT)
+        Fri, 31 Mar 2023 08:03:48 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D16B61D2E1
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 Mar 2023 05:03:46 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id l37so12739903wms.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 Mar 2023 05:03:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20210112.gappssmtp.com; s=20210112; t=1680264138;
+        d=metaspace-dk.20210112.gappssmtp.com; s=20210112; t=1680264225;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=me6wuukqjm6+JgHKL/b7Cfg/XRIamYGaPs47EOLk4SA=;
-        b=NtEMRH7lOht6iy9cvC9nfq7w6MPzHGqwFfvITBaIWiPIICbDdkmz5L3qKu16YujBLP
-         rJapPCtzjxPECq39Es2y1wu50GTpiSXNHyVqN3YIBKq7VXjTjRm6NuFxKINK4VcA67kO
-         u7EqxjhmWwl9c0TqtWNB+bs/Ph2/g5d48oFH7tq4WjjTn8Su2S/cV6XOl8ndff4boVuZ
-         cU0ly+emc0ndyjSiTOAOwRKOw/yfxdA0UEpb7kct7f0QQzXPEtVPu4al3ldiv8gD95Q/
-         2qaHmJR4la9wVKcs9PuyrSR19P6ijNL5/xSkEzYkkdDrd/nxyZ2iOttIzECWMFNh0vmh
-         OkdA==
+        bh=IRLPm58nvNy/2NFW9neC7Qw5GTvVFQCMvaYOxcSEPmA=;
+        b=0BgaJCtMEiEOlcg8O3FcHhdaMk9i73ICEwE5v97F1WAbUlcHbQnGsqNMz9brTOGwyr
+         JSHjHjyl4I1quIv6hVdfYZBXMJt/hodKk8vQRw7fbnZXx1kNutcXsYfDvjTIKw9VUr4m
+         e49tfQLIXGiv7p/nWI2pIOswlc1F6NypOwJKw8EGiBfNuwnd9rKsmmT1T1pie39aHKPb
+         d+ACBxPozHIeMPMwYWMX8eaJDVATpJZErWLknavTpM4kt0FHdieULuMZOm+9IiyQh/5u
+         U50IcPWGOsih/HqfdWiEoOqYF6z1gIslXeGClJI1zaDEHNR1BEeO/3y/lpul5YdUU71K
+         v25A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680264138;
+        d=1e100.net; s=20210112; t=1680264225;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=me6wuukqjm6+JgHKL/b7Cfg/XRIamYGaPs47EOLk4SA=;
-        b=vqPbcpcSdQvxmyJ+biko9U4dMwQs2TBfDAPMnc4fN9Jjq7SGN7U1baEEGa2FJmIF4m
-         kSnF95r9NFM5hH6pONO79yjy9jhWs48K8cAEiKCRNd68CJsH3fFoFzXnJkLTM8T7Y973
-         qgFY4UlL5tOx1yafg8G+lK0yA+Yans0E0AIIimi/6r7bgC0gUNivC7Kd1IDLve5qx6/d
-         oBkZOsNqjDONGZHgB5d2vlTyTpChPgQHUY6PMmyCL0e+a4sK/gLXxcmiGbr/7tcvRn62
-         JLxjuYF1P1VdQ3wQHaGtNeKtDkIF1z69PDa9fZy2uUxkhybVlZuczV8HldtoSnNKgWZk
-         Fkcg==
-X-Gm-Message-State: AAQBX9eFKtTGWt2XnEFTpvxYHk+zjSm+vdABiNMbr6KD+2EN5vX/Tfb2
-        U78vpUzNYkuPjukCY43v87289A==
-X-Google-Smtp-Source: AKy350aJxK4HdPucT44lt8HLnYYH/U3bSyRG2tAOfK7Gdna0jErfLf3jUp17vzmvhF9FC2LNVs+HVg==
-X-Received: by 2002:adf:f6cc:0:b0:2cf:1c43:7056 with SMTP id y12-20020adff6cc000000b002cf1c437056mr19268160wrp.36.1680264137871;
-        Fri, 31 Mar 2023 05:02:17 -0700 (PDT)
+        bh=IRLPm58nvNy/2NFW9neC7Qw5GTvVFQCMvaYOxcSEPmA=;
+        b=RlnnTkR+GDDYxYam0aXt6EdZ5aOKDkRb7z7VTMXOCVTiNXz6JVhngCKXWkLMhEto6M
+         r8oqTjowK5TT1xY7NXzW9kN8thQZEL3OQqCJt2XjPALzMNEmAzK54/nXYF5AkrEx9rKL
+         NIGm+Z2H/qxGKqVyHWhXBZiW1zyLVQsr0lGUVkS41TrGc+86yyWT5ee0vjoIIj7kgiNq
+         jG4uoP30+ZtMMVJfbRhX/3Y7Mkjf3Gkjl8usyB+xrvLhRqArjZf03AoceKq15Re7J+Fz
+         ukajcIAx96ES4RK+I36clI/z9CZuEhIrhpwdKHwnFS0z4umxC3foj5CjuOBS+k8S6Tkl
+         VPEg==
+X-Gm-Message-State: AO0yUKUsir4WCiXNaeh+MF59watOvW72SymVeH2TTH6WOL6SiCJygZrO
+        OcYAigmV4LDBXLHwH1CfEiE2zQ==
+X-Google-Smtp-Source: AK7set9z+4TYwXvwxxS/ReumUqCrNxDNO7RSbX+Xb7eBl+H7zYeDXuRhsdk3E1jRdTpdbc8wKebjAQ==
+X-Received: by 2002:a05:600c:218d:b0:3eb:29fe:f922 with SMTP id e13-20020a05600c218d00b003eb29fef922mr19875265wme.29.1680264224939;
+        Fri, 31 Mar 2023 05:03:44 -0700 (PDT)
 Received: from localhost ([147.161.155.91])
-        by smtp.gmail.com with ESMTPSA id l5-20020a5d5265000000b002e55cc69169sm2064017wrc.38.2023.03.31.05.02.17
+        by smtp.gmail.com with ESMTPSA id i2-20020a05600c290200b003edc11c2ecbsm2517307wmd.4.2023.03.31.05.03.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Mar 2023 05:02:17 -0700 (PDT)
+        Fri, 31 Mar 2023 05:03:44 -0700 (PDT)
 References: <20230329223239.138757-1-y86-dev@protonmail.com>
- <20230329223239.138757-5-y86-dev@protonmail.com>
+ <20230329223239.138757-6-y86-dev@protonmail.com>
 User-agent: mu4e 1.9.18; emacs 28.2.50
 From:   Andreas Hindborg <nmi@metaspace.dk>
 To:     y86-dev@protonmail.com
@@ -63,10 +63,10 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alice Ryhl <alice@ryhl.io>, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, patches@lists.linux.dev,
         Andreas Hindborg <a.hindborg@samsung.com>
-Subject: Re: [PATCH v3 04/13] rust: add pin-init API core
-Date:   Fri, 31 Mar 2023 14:00:31 +0200
-In-reply-to: <20230329223239.138757-5-y86-dev@protonmail.com>
-Message-ID: <87sfdl2kon.fsf@metaspace.dk>
+Subject: Re: [PATCH v3 05/13] rust: init: add initialization macros
+Date:   Fri, 31 Mar 2023 14:02:47 +0200
+In-reply-to: <20230329223239.138757-6-y86-dev@protonmail.com>
+Message-ID: <87o7o92km7.fsf@metaspace.dk>
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
@@ -78,31 +78,25 @@ y86-dev@protonmail.com writes:
 
 > From: Benno Lossin <y86-dev@protonmail.com>
 >
-> This API is used to facilitate safe pinned initialization of structs. It
-> replaces cumbersome `unsafe` manual initialization with elegant safe macro
-> invocations.
+> Add the following initializer macros:
+> - `#[pin_data]` to annotate structurally pinned fields of structs,
+>   needed for `pin_init!` and `try_pin_init!` to select the correct
+>   initializer of fields.
+> - `pin_init!` create a pin-initializer for a struct with the
+>   `Infallible` error type.
+> - `try_pin_init!` create a pin-initializer for a struct with a custom
+>   error type (`kernel::error::Error` is the default).
+> - `init!` create an in-place-initializer for a struct with the
+>   `Infallible` error type.
+> - `try_init!` create an in-place-initializer for a struct with a custom
+>   error type (`kernel::error::Error` is the default).
 >
-> Due to the size of this change it has been split into six commits:
-> 1. This commit introducing the basic public interface: traits and
->    functions to represent and create initializers.
-> 2. Adds the `#[pin_data]`, `pin_init!`, `try_pin_init!`, `init!` and
->    `try_init!` macros along with their internal types.
-> 3. Adds the `InPlaceInit` trait that allows using an initializer to create
->    an object inside of a `Box<T>` and other smart pointers.
-> 4. Adds the `PinnedDrop` trait and adds macro support for it in
->    the `#[pin_data]` macro.
-> 5. Adds the `stack_pin_init!` macro allowing to pin-initialize a struct on
->    the stack.
-> 6. Adds the `Zeroable` trait and `init::zeroed` function to initialize
->    types that have `0x00` in all bytes as a valid bit pattern.
+> Also add their needed internal helper traits and structs.
 >
-> --
-
-<snip>
-
 > Co-developed-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
 > ---
 
 Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+
