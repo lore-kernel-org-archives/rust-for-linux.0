@@ -2,65 +2,65 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62155C761A6
-	for <rust-for-linux@archiver.kernel.org>; Fri, 31 Mar 2023 22:24:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FD6AC76196
+	for <rust-for-linux@archiver.kernel.org>; Fri, 31 Mar 2023 22:43:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbjCaWYI (ORCPT
+        id S232467AbjCaWnt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 31 Mar 2023 18:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50774 "EHLO
+        Fri, 31 Mar 2023 18:43:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231879AbjCaWYI (ORCPT
+        with ESMTP id S229523AbjCaWns (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 31 Mar 2023 18:24:08 -0400
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C9631EA02;
-        Fri, 31 Mar 2023 15:24:07 -0700 (PDT)
-Received: by mail-qv1-xf2e.google.com with SMTP id cu4so17428975qvb.3;
-        Fri, 31 Mar 2023 15:24:07 -0700 (PDT)
+        Fri, 31 Mar 2023 18:43:48 -0400
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A86F40C4;
+        Fri, 31 Mar 2023 15:43:48 -0700 (PDT)
+Received: by mail-qv1-xf2c.google.com with SMTP id g9so17396076qvt.8;
+        Fri, 31 Mar 2023 15:43:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680301446;
+        d=gmail.com; s=20210112; t=1680302627;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WtftlvxQJ039HPxSLQblKHBrwyQ77QzbzDmRY3gJhwU=;
-        b=Ctn+GnX1rq1Z7HSzKakAN5zxRYXrz1UW4nISkjn0Vnb4KaVx+Ycx+g7RWTQ2ZW7Uw9
-         IizLYZ5zcA7xeP8wr7jSn6Fd5BlZdHJIwUabFbnC+tZ1ddWK+TfLXnIkty6d+9vg1bvC
-         bDAqtDu31uLhWoqDX2B75cO+Pqo4C120ZoGCytBzTgsSo20w9qa5/IL1RqM+gqn8vrSu
-         q4LBsvjd2x1IN2QzifFIM/E8WUbPDmBokkaR+0ZamLEc+F8Q1GrsPqn4DXhzPAeHUeOY
-         Z8+LT7OI0khd9kXHlVoTI5di2vSsNr0ApgqJvjm5p22eYdrZtti+gIaJ/o4bWoI4Yatj
-         6xCA==
+        bh=Z68cLSzY8qouNicndmDzpyE4iZo9ng0T1yzVNfPtg5I=;
+        b=dqK52i7UNhFDVCklDxEMxq8p268JsxkUx161UP6CF0yTS/OWTpj/yZxkbolZhUPpgR
+         9H8rwNwI+mdfxLtb+mijruSzZfVW6zTjMfEXLKBVBYSHgxWSjUJcR07KurFLOkqqhn/m
+         TL8tlCVm3vOF4unJSWv/GWlYa5b75kJj02ELP5DfeAZDDkn2nQ256q8wxhx2zRtcDpYp
+         wFYg+ImU76EaZVHvI7j6K43fnnnvdRppXVdwojiL0DOteMngFmZfbSr6u+bMa1Hd+nZh
+         D3b2fTGPVJyBXCbGHVEgwwrgYcggIqNLndoHfglQZLGXO91y5FefDjCvCeRe58ArgZ8z
+         g90w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680301446;
+        d=1e100.net; s=20210112; t=1680302627;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WtftlvxQJ039HPxSLQblKHBrwyQ77QzbzDmRY3gJhwU=;
-        b=tJkBl6Fg6bdtu9A2ax+CEBTHnj9oF7rCYjcKZw7SFSPLJ9pEUWtHIGXzI/EJN7nhTT
-         1vFE4rEWfcRXEHTDm9dFqrntp6mPw3RjSvOeN4NAgcgAArB/oL+QceHIuccX8ghoUm+s
-         zjUQc+1zD5J8FgyscT7XuBcmYyIK+n/tZ3+uvnAmWot9BHUXoJ8DNlLJeJvTWoEPbPiM
-         peAvxvKhqbmTyswFmE1xC8EU1KaP0ZE3rQxOycT9MqlO7y0uKAaPYOrM39j3fA1gYiMe
-         i7Dn0oNaiUtQ2NTJ6wa62mEc+RMb95Rlt+ajp+J4ikID/KX1jNBKmDgRquU/E+IU6Eje
-         TB9w==
-X-Gm-Message-State: AAQBX9fBN4RZxnpH4a5+TSWXeOoEtQTbOe+2yGgzHmptSxgvws4Vq6+U
-        ELLqc2O2J0LUmq7uO9jzavM=
-X-Google-Smtp-Source: AKy350aYKxU1nt9CaIHh9UA5sMMVmy62LYl/MTSN9NDTiDP/B3htWeBAUOlUh6tpfYXRtuzh/jLq9w==
-X-Received: by 2002:ad4:5ca7:0:b0:5cc:e059:efa3 with SMTP id q7-20020ad45ca7000000b005cce059efa3mr47450729qvh.23.1680301446517;
-        Fri, 31 Mar 2023 15:24:06 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id g10-20020a0cfdca000000b005dd8b9345d2sm873652qvs.106.2023.03.31.15.24.05
+        bh=Z68cLSzY8qouNicndmDzpyE4iZo9ng0T1yzVNfPtg5I=;
+        b=p286N6M4dmdspACuqpfdullCKzU9EnbtdLT88hTmLrq77pPjpJNVlkU1NILQrK2cIQ
+         WHwi2pELoSet7mxZGkBDXG7aRZCLTgy5SsX9pvwBYH3G0boesfHhUdvN4NTYhO4r9rCX
+         3T2ZTfrBRBGaSqXK/dL6HIxG6FMF5BulUmlFbSakS1/vDudW3S0+56aiRqnLG+TuTrp3
+         0tCncq1giqgP1nD/k5fLdU0pnwgSTUWPZMomIsabmylXKtTJzFaB1h3AesSKBBE4cktV
+         JeM0H42GnGRWxSKkIAbtMgI9TmOi0g3arv6hqJ/NbhQbVwTV9+nlAWabOz/1mVejACSK
+         3vJw==
+X-Gm-Message-State: AAQBX9eCVves9UtVdfCrq78WxbbxplJH4rUQOp1uxKm+m92csKEvGPR+
+        GF3JH26SKKecMWkQ3atCZwk=
+X-Google-Smtp-Source: AKy350ZXwe++el+DV4pQSmxn25w6+phmBkTE7V5Eye6newalJw9YXmQ/3GvSBet5sVBfzyyRLgWWHg==
+X-Received: by 2002:a05:6214:518b:b0:5bb:eefc:1623 with SMTP id kl11-20020a056214518b00b005bbeefc1623mr41302505qvb.42.1680302627280;
+        Fri, 31 Mar 2023 15:43:47 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id lf8-20020a0562142cc800b005dd8b9345c2sm901979qvb.90.2023.03.31.15.43.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Mar 2023 15:24:06 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 8C69427C0054;
-        Fri, 31 Mar 2023 18:24:05 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Fri, 31 Mar 2023 18:24:05 -0400
-X-ME-Sender: <xms:hV0nZA_ferdFOrQoFRFaXmBcjljGfG01srEMtk6iut8YnymAUOELMg>
-    <xme:hV0nZIuPgm8ETE9ojbKeoVAcrKfsmos19wt0ZVIGW-u1nnjqN-X9FX08yfE_yQgl9
-    ei_RjavxkmXwKOtLw>
-X-ME-Received: <xmr:hV0nZGBYEp3yk6VcqgNYoTC5zPl9ry0NfzQyONlvUiA6C6P6TD8vPKXDSiUyKQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeivddgudduucetufdoteggodetrfdotf
+        Fri, 31 Mar 2023 15:43:46 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 67E7C27C0054;
+        Fri, 31 Mar 2023 18:43:46 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Fri, 31 Mar 2023 18:43:46 -0400
+X-ME-Sender: <xms:IWInZEkQ-da63e7Rxc00_PZTxfHHkx_fcb0rb23rS97rezxyDj07xw>
+    <xme:IWInZD2h7-XVzu01iz_rfYRHwIciVoBfhbo8yKcXMorc4jHOiXlVeOu2e54ZXBY86
+    uyY2VzEW-kiNv-aWg>
+X-ME-Received: <xmr:IWInZCrNgLMoLQmiL54HXmP28qI_KToslueRA6RkGlINlsztDLpBK6PxvlSz8w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeivddgudegucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
@@ -70,14 +70,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeivddgudduucetufdoteggod
     gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
     gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
     igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:hV0nZAdNmVkF3mgkB9c6PMxVuYkkH7ozusQwKnT8WL6a5d9ZL8HPhQ>
-    <xmx:hV0nZFPaMTKoe1zhdOda5PwubWlA0wD2oWMrFA0iA2LDwOIphRfCUQ>
-    <xmx:hV0nZKkjy-jDU_xxl2-qxRAFmhIidHvX7qUx0eMCv38L5j3iy7DrSA>
-    <xmx:hV0nZKlyBXk5RDqo7MnSxNtSCSm71vyvHNNVWTL65KY4LZVsNV6f_w>
+X-ME-Proxy: <xmx:IWInZAmDxvlMvGtFT8MOR3jPbbxuJ--RRxPN7DdFc_PLFlnEi8RL1A>
+    <xmx:IWInZC2lz4mzNVzWg39QTHd-rjXe8VOMnGLEx6GFj4Lvv99w0ahqzQ>
+    <xmx:IWInZHteMgjklFbCHBvBmM28GQgioElnzFTZ8WRNjTVBID7ldOGK7w>
+    <xmx:ImInZPsF2aenqlWCYnThHrQSBDneBZOIWRo9sfC8yfRwcnVlZZmCvg>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 31 Mar 2023 18:24:04 -0400 (EDT)
-Date:   Fri, 31 Mar 2023 15:23:17 -0700
+ 31 Mar 2023 18:43:45 -0400 (EDT)
+Date:   Fri, 31 Mar 2023 15:42:57 -0700
 From:   Boqun Feng <boqun.feng@gmail.com>
 To:     y86-dev@protonmail.com
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
@@ -89,61 +89,75 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         linux-kernel@vger.kernel.org, patches@lists.linux.dev,
         Andreas Hindborg <a.hindborg@samsung.com>,
         Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH v4 01/15] rust: enable the `pin_macro` feature
-Message-ID: <ZCddVfb9vUw8j7u/@boqun-archlinux>
-References: <20230331215053.585759-1-y86-dev@protonmail.com>
- <20230331215053.585759-2-y86-dev@protonmail.com>
- <ZCdWErZLBFl205UP@boqun-archlinux>
+Subject: Re: [PATCH v4 08/15] rust: init/sync: add `InPlaceInit` trait to
+ pin-initialize smart pointers
+Message-ID: <ZCdh8fwSGTjDW6vE@boqun-archlinux>
+References: <20230331215053.585759-9-y86-dev@protonmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZCdWErZLBFl205UP@boqun-archlinux>
+In-Reply-To: <20230331215053.585759-9-y86-dev@protonmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Mar 31, 2023 at 02:52:18PM -0700, Boqun Feng wrote:
-> On Fri, Mar 31, 2023 at 09:51:35PM +0000, y86-dev@protonmail.com wrote:
-> > From: Benno Lossin <y86-dev@protonmail.com>
-> > 
-> > This feature enables the use of the `pin!` macro for the `stack_pin_init!`
-> > macro. This feature is already stabilized in Rust version 1.68.
-> > 
-> > Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
-> > Cc: Gary Guo <gary@garyguo.net>
-> > Cc: Andreas Hindborg <a.hindborg@samsung.com>
-> > Cc: Alice Ryhl <aliceryhl@google.com>
+On Fri, Mar 31, 2023 at 09:53:25PM +0000, y86-dev@protonmail.com wrote:
+[...]
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index eee7008e5e3e..24dc96603090 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -17,6 +17,7 @@
 > 
-> Acked-by: Boqun Feng <boqun.feng@gmail.com>
-> 
+>  use crate::{
+>      bindings,
+> +    init::{InPlaceInit, Init, PinInit},
+>      types::{ForeignOwnable, Opaque},
+>  };
+>  use alloc::boxed::Box;
+> @@ -163,6 +164,28 @@ impl<T> Arc<T> {
+>          // `Arc` object.
+>          Ok(unsafe { Self::from_inner(Box::leak(inner).into()) })
+>      }
+> +
+> +    /// Use the given initializer to in-place initialize a `T`.
+> +    ///
+> +    /// If `T: !Unpin` it will not be able to move afterwards.
+> +    #[inline]
+> +    pub fn pin_init<E>(init: impl PinInit<T, E>) -> Result<Self>
 
-Hmm.. actually I think you will need to add this in the
-scripts/Makefile.build, because the user (stack_pin_init!()) is a macro,
-feel free to add my acked-by after that.
+`Result` became `core::result::Result` after patch #3, so you will need
+to refer to `crate::error::Result` here. Alternatively you can change
+patch #3 to use the full path i.e. `core::result::Result`. 
+
+> +    where
+> +        Error: From<E>,
+
+In my env, looks like the compiler doesn't know which `Error` it
+is after removing use of `crate::error::Result` in patch #3, you
+probably need to deal with this as well.
 
 Regards,
 Boqun
 
-> Regards,
-> Boqun
+> +    {
+> +        UniqueArc::pin_init(init).map(|u| u.into())
+> +    }
+> +
+> +    /// Use the given initializer to in-place initialize a `T`.
+> +    ///
+> +    /// This is equivalent to [`pin_init`], since an [`Arc`] is always pinned.
+> +    #[inline]
+> +    pub fn init<E>(init: impl Init<T, E>) -> Result<Self>
+> +    where
+> +        Error: From<E>,
+> +    {
+> +        UniqueArc::init(init).map(|u| u.into())
+> +    }
+>  }
 > 
-> > ---
-> >  rust/kernel/lib.rs | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > index 223564f9f0cc..4317b6d5f50b 100644
-> > --- a/rust/kernel/lib.rs
-> > +++ b/rust/kernel/lib.rs
-> > @@ -17,6 +17,7 @@
-> >  #![feature(core_ffi_c)]
-> >  #![feature(dispatch_from_dyn)]
-> >  #![feature(generic_associated_types)]
-> > +#![feature(pin_macro)]
-> >  #![feature(receiver_trait)]
-> >  #![feature(unsize)]
-> > 
-> > --
-> > 2.39.2
-> > 
-> > 
+>  impl<T: ?Sized> Arc<T> {
+> --
+> 2.39.2
+> 
+> 
