@@ -2,129 +2,92 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E712FC76196
-	for <rust-for-linux@archiver.kernel.org>; Fri, 31 Mar 2023 13:08:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC96DC76196
+	for <rust-for-linux@archiver.kernel.org>; Fri, 31 Mar 2023 13:39:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232744AbjCaNIV (ORCPT
+        id S232793AbjCaNjs (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 31 Mar 2023 09:08:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44818 "EHLO
+        Fri, 31 Mar 2023 09:39:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232740AbjCaNIU (ORCPT
+        with ESMTP id S232151AbjCaNjr (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 31 Mar 2023 09:08:20 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42CA11A949
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Mar 2023 06:08:16 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id n19so12858126wms.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Mar 2023 06:08:16 -0700 (PDT)
+        Fri, 31 Mar 2023 09:39:47 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2E52469A;
+        Fri, 31 Mar 2023 06:39:46 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id cf7so27433485ybb.5;
+        Fri, 31 Mar 2023 06:39:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20210112.gappssmtp.com; s=20210112; t=1680268095;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=E8V1Bl8K2mO5BPBfvC+IG4HaObqCUBUdhVKIlW8yaQo=;
-        b=D+VDfK4ViTsTLqpx0PYLWBqb8J4neG7eMOaU8bJKAHpCu3K2VVXJrxkgG7HWg3RF7O
-         3YhBpfhQuOWzGFwPd9EmvBhb2eEAFocYMNDJPJ63OD12pRlFkZYUjZznBY6J4SL7/GRa
-         HkrePY+ZI4Y/ouzuNx3DPy13aqAAt2vp+0saNScT4C60weOcSvZGni0SvWvojiB366yb
-         a7Ku97b4NEoRLLi2nYa99gWk2ScH284ibaIerojT0XEi4+DAZIxIOtjVCdMvdE+cMlPb
-         jAihkEPRJd+qbjGxkmWlVI6kKtUBJ+6S9Ff2/Ok/Ks1Hj7kA+poVXUGC5E3UfQtpTiuX
-         wqAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680268095;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20210112; t=1680269986;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E8V1Bl8K2mO5BPBfvC+IG4HaObqCUBUdhVKIlW8yaQo=;
-        b=XXO/2FBsuxYFaFfNDLe2Tmlb1vxdCi11K7lMSudgRE/ST2DytI4Uj5Fv76jhR9Ugg7
-         P1BSaOeiyQSOGgiZ3tikYn5OWrvMpqpAGE1fmIYggDceepejBwfclzogJkSbAx7fY4uX
-         3Iid4iInGbZwfGFhpePJoENk5eCBcMjtrKXDeExtGuUaqLwOsKONxlzd+rdKxTQ6XAVH
-         pMMFL4vztePpvoQY/3zHtPKdB/i2N9l0A0moAUoDvDKFe1aEcUzwFBura6arrZpqGc5s
-         VpF9DQlgs6BWha1KF/xcJ1mwSrrq7Y7ojMqJas5wQOppDRZqd+GyxQY0wrN6RWKgMG2d
-         x8uw==
-X-Gm-Message-State: AO0yUKXkn6epMjPxvtjAmYGph0r9C0De1iAkfc0ZqQfEWKtkqCYgVPTO
-        EKRTfywH6JyXoZ1XcvLjBv6otA==
-X-Google-Smtp-Source: AK7set9GiuiV4b5e/vjtDk8YReJcNQd/gJiW/RM6IisXdlqLJy0t+QpeZbakT348E4FFd5LuKwCOKg==
-X-Received: by 2002:a7b:c8c3:0:b0:3ed:711c:e8fe with SMTP id f3-20020a7bc8c3000000b003ed711ce8femr23029661wml.2.1680268094744;
-        Fri, 31 Mar 2023 06:08:14 -0700 (PDT)
-Received: from localhost ([194.62.217.4])
-        by smtp.gmail.com with ESMTPSA id v16-20020a5d6110000000b002d89e113691sm2173758wrt.52.2023.03.31.06.08.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Mar 2023 06:08:14 -0700 (PDT)
-References: <20230329223239.138757-14-y86-dev@protonmail.com>
-User-agent: mu4e 1.9.18; emacs 28.2.50
-From:   Andreas Hindborg <nmi@metaspace.dk>
-To:     y86-dev@protonmail.com
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <alice@ryhl.io>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Andreas Hindborg <a.hindborg@samsung.com>
-Subject: Re: [PATCH v3 13/13] rust: sync: add functions for initializing
- `UniqueArc<MaybeUninit<T>>`
-Date:   Fri, 31 Mar 2023 15:07:18 +0200
-In-reply-to: <20230329223239.138757-14-y86-dev@protonmail.com>
-Message-ID: <87v8ih1329.fsf@metaspace.dk>
+        bh=p8HyCR6qUgL2YL9MIarBVNh91rgqxInYdUkkRv7lzCA=;
+        b=nRQVT9ShE0pExTB54GDQVPUoE5xeg0yZISdISWCkiaC/z9HRj31sfeE6I5mTha44sY
+         FqPQHA8gp7feZ2Ap/WXLKcka4qprU9xOlYAwx/PsdGZrVMjzLZqi2emdau+nG0Hbv0C3
+         3/kWmtGI/xWfhv3DXsK6HXxEZX3kBUw71sF2+RvpC1SgGXf/T9LO5ytk9j8HSurCFxee
+         8IykdnR/8W6eifFOBjLc/iLlqTguUMNQnQ6jcxlYoujxYzVJa5RTq3wnT+T4zjX/HXub
+         ROpXfaWDFJ+FMzmoEHNv30WTzud50vzxa8ncXd6vRq1MBzStrtfx2oA3T2JFefm8Cyoo
+         i9+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680269986;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p8HyCR6qUgL2YL9MIarBVNh91rgqxInYdUkkRv7lzCA=;
+        b=mbEyhHuUMFMzMr/MwtW1ynR8B/oO0YS/R26No2V8Wz0GtQg4+Br5ph0c5dVg7LLn+n
+         KbHcZFlJLhf1oXh0b5LMmEAvKaHYdh8h/BawaaSMneJ1Ljw16ucYJrC3rOyrOXcJiZQx
+         tkHKGzYUJCRUaahPgWwvfGP2iyH/x+rnxVBOf2M98LS/v736gZ+GgmZRo2KWaFtjwtqx
+         H2CtHcAtThurDUgl5/1jOIjlOzFIKA05lweqwObirQHaRGwMtSWx4AjqhpTULYI+3DgU
+         eirnQY2WyJhCLEhkOUT7Uca3c7R5VgsQuIu+5XOEw2L/0T7TuDovH2bsWIivafkeX3DD
+         h92Q==
+X-Gm-Message-State: AAQBX9frankr/7+py7nHf2chcvc1xfTqL+kyGYxQbUYGx4xDzxXp0zxZ
+        NwPsOiERCfj9LtQxwEF19VZxu1N23J9hG1z4PEw=
+X-Google-Smtp-Source: AKy350apgoEPMUQxWR00klwXYYscnIAK0OZLPQx0ko6VrOlHD0pJFBErJN002gXBJZ2Hpee+HGT0ekYIUQKFrIQIx4Q=
+X-Received: by 2002:a25:2f84:0:b0:b6e:d788:eba0 with SMTP id
+ v126-20020a252f84000000b00b6ed788eba0mr17842248ybv.11.1680269986074; Fri, 31
+ Mar 2023 06:39:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20230318041555.4192172-1-davidgow@google.com>
+In-Reply-To: <20230318041555.4192172-1-davidgow@google.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Fri, 31 Mar 2023 15:39:35 +0200
+Message-ID: <CANiq72==YbpCJPLOkCBGRkTYCOokLrEUNASn_JUpY2Ndw1sHfw@mail.gmail.com>
+Subject: Re: [PATCH] arch:um: Only disable SSE on clang to work around old GCC bugs
+To:     David Gow <davidgow@google.com>
+Cc:     Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        SeongJae Park <sj@kernel.org>, linux-um@lists.infradead.org,
+        x86@kernel.org, llvm@lists.linux.dev,
+        rust-for-linux@vger.kernel.org, kunit-dev@googlegroups.com,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-
-y86-dev@protonmail.com writes:
-
-> From: Benno Lossin <y86-dev@protonmail.com>
+On Sat, Mar 18, 2023 at 5:16=E2=80=AFAM David Gow <davidgow@google.com> wro=
+te:
 >
-> Add two functions `init_with` and `pin_init_with` to
-> `UniqueArc<MaybeUninit<T>>` to initialize the memory of already allocated
-> `UniqueArc`s. This is useful when you want to allocate memory check some
-> condition inside of a context where allocation is forbidden and then
-> conditionally initialize an object.
->
-> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
-> ---
+> Nevertheless, only disable SSE on clang setups, as that's a simple way
+> of working around everyone's bugs.
 
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+Sounds good to me. If GCC >=3D 11 has fixed it, should we instead test
+for GCC < 11, i.e. it could help catching future new regressions like
+the linked GCC bug, if I understand correctly, right? Of course, that
+could be done for the next cycle, since this one minimizes the
+original change w.r.t. v6.2.
 
->  rust/kernel/sync/arc.rs | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
->
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 4ed6329a5e5f..64b0e9d67025 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -540,6 +540,30 @@ impl<T> UniqueArc<MaybeUninit<T>> {
->              inner: unsafe { Arc::from_inner(inner.cast()) },
->          }
->      }
-> +
-> +    /// Initialize `self` using the given initializer.
-> +    pub fn init_with<E>(mut self, init: impl Init<T, E>) -> core::result::Result<UniqueArc<T>, E> {
-> +        // SAFETY: The supplied pointer is valid for initialization.
-> +        match unsafe { init.__init(self.as_mut_ptr()) } {
-> +            // SAFETY: Initialization completed successfully.
-> +            Ok(()) => Ok(unsafe { self.assume_init() }),
-> +            Err(err) => Err(err),
-> +        }
-> +    }
-> +
-> +    /// Pin-initialize `self` using the given pin-initializer.
-> +    pub fn pin_init_with<E>(
-> +        mut self,
-> +        init: impl PinInit<T, E>,
-> +    ) -> core::result::Result<Pin<UniqueArc<T>>, E> {
-> +        // SAFETY: The supplied pointer is valid for initialization and we will later pin the value
-> +        // to ensure it does not move.
-> +        match unsafe { init.__pinned_init(self.as_mut_ptr()) } {
-> +            // SAFETY: Initialization completed successfully.
-> +            Ok(()) => Ok(unsafe { self.assume_init() }.into()),
-> +            Err(err) => Err(err),
-> +        }
-> +    }
->  }
->
->  impl<T: ?Sized> From<UniqueArc<T>> for Pin<UniqueArc<T>> {
+By the way, missing space on the title (`arch:um`).
 
+Cheers,
+Miguel
