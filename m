@@ -2,138 +2,100 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2125AC77B60
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 09:50:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC1BBC76196
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 10:02:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231553AbjDCJuB (ORCPT
+        id S231492AbjDCKCC (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Apr 2023 05:50:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60724 "EHLO
+        Mon, 3 Apr 2023 06:02:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231928AbjDCJti (ORCPT
+        with ESMTP id S231971AbjDCKBs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Apr 2023 05:49:38 -0400
+        Mon, 3 Apr 2023 06:01:48 -0400
 Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A25341880B;
-        Mon,  3 Apr 2023 02:48:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F24B049DA;
+        Mon,  3 Apr 2023 03:01:41 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: linasend@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 147614212E;
-        Mon,  3 Apr 2023 09:48:39 +0000 (UTC)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id DEC7242037;
+        Mon,  3 Apr 2023 10:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1680515323;
-        bh=0XYYkBWr58zEeLbGvBN8vR1PLhMpCbVIUQ1o32lb38s=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=sMKCFGFxxwmp1IBV+QGIUiiZtR8eBU/H2Zb0MaeI81HRDxM60TEflmViWiZGtb/kp
-         yXXOvxo1s72f3j3ppSMqWAF7xcSZdle6Ju7VPe1LSxK6LseybuTTnMGc8zsDVl65IB
-         o3iumoiBBihcMRKoWNeFOfQDGSCSgzLk0Tn3Q8hF9i+wHzjKuilo/bdzg+STr7vzJw
-         HL/RWUHhseEQ1ySx3y1EsIon7ytjmjdb6wAS5E6ZgdjJbxDddyoUQG9AOwRCahyvTV
-         PwTktu6vhHGRQ5npCOMRC4RWHUmW26baQsA0m5w4U37Uso3WQi8tmyq8Pj9/qfYr51
-         UbrllLTNIpKqw==
+        s=default; t=1680516100;
+        bh=5iG+gKdxqfqrOEbvILYGGdMiMNN4NG28/z/pH6bZA08=;
+        h=From:Subject:Date:To:Cc;
+        b=bfMEkvcp6B3G05vneL/GYZA6QOpF/jpx112ukqVEMsHbb8aOTEfzfgYpAeAsU3rMj
+         3d7BMrBu+jZBw2zliSfttuKVx5ud8RIjx5rutmrxXgxySnSMNdusoKPjmIjq/MVu7V
+         DtBgdekW8DdaP500+4c+dHEyo/ZhqqP8890xkAVM0bfRrjuo86gSYtzcNK21NaJYbi
+         D3bcKuRiLaD4Vu4uRb6WU4ZTKybdCV0wYEDQy//8s3UUp7cySH72MHFPuHWS1CqCBu
+         aAVUamVpSsymmpIlcZfTMkeb7exWHH2OzzAckNT3gNYsESyYdohJEUX9fte6kpTn3g
+         Wz7TQbfH9CNBw==
 From:   Asahi Lina <lina@asahilina.net>
-Date:   Mon, 03 Apr 2023 18:48:15 +0900
-Subject: [PATCH v3 6/6] rust: error: Add from_result() helper
+Subject: [PATCH v2 0/2] rust: sync: Arc: Any downcasting and assume_init()
+Date:   Mon, 03 Apr 2023 19:01:10 +0900
+Message-Id: <20230224-rust-arc-v2-0-5c97a865b276@asahilina.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230224-rust-error-v3-6-03779bddc02b@asahilina.net>
-References: <20230224-rust-error-v3-0-03779bddc02b@asahilina.net>
-In-Reply-To: <20230224-rust-error-v3-0-03779bddc02b@asahilina.net>
+X-B4-Tracking: v=1; b=H4sIAOajKmQC/22NSw6CMBCGr2Jm7RDaYmNceQ/DYiijncQUM8VGQ
+ 7i7hbXL738ukFmFM1wOCygXyTKlCvZ4gBApPRhlrAy2ta61tkN95xlJAw7kgvU8duwJanygzDg
+ opRC3QvGNQw1ms17Kd/nsL7e+cpQ8T/rdT4vZ1D/7xWCLJ39mJm8cdeZKmaI8JVGTeIZ+XdcfW
+ a1geL8AAAA=
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>
-Cc:     Fox Chen <foxhlchen@gmail.com>,
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Cc:     Andreas Hindborg <a.hindborg@samsung.com>,
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
         Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>,
+        Benno Lossin <y86-dev@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>
 X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1680515295; l=2506;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1680516096; l=1090;
  i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
- bh=OO5WuZKnDBBhoWLs7QqycJet5HzYwjS+slg6t+nBjnQ=;
- b=KZpqgzMr3JkNXDpCxb17Mi7L4pw3c69TRnawuee09u5W1l95mTzU1HBFSSoFHNZzzoi37FUN4
- yhLDK+Gk42GAXCVsT52I9IOiugVtKqfzPiAVAF2x4iKHcR86gUTY0yJ
+ bh=5iG+gKdxqfqrOEbvILYGGdMiMNN4NG28/z/pH6bZA08=;
+ b=nkt1UWwOCWdkdM7BD3JwGd6hwT66+1JyRfcoXByFQvi0Zq6G+g3lbhQSXfIf+fefXIB1o4rvA
+ pT1Sg/44QLUDO3xd9pAflcjuqRhchfbf4LzWoYrLFVdRM8DKbEAORvy
 X-Developer-Key: i=lina@asahilina.net; a=ed25519;
  pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Hi everyone,
 
-Add a helper function to easily return C result codes from a Rust function
-that calls functions which return a Result<T>.
+This short series is part of the set of dependencies for the drm/asahi
+Apple M1/M2 GPU driver.
 
-Lina: Imported from rust-for-linux/rust, originally developed by Wedson
-as part of file_operations.rs. Added the allow() flags since there is no
-user in the kernel crate yet and fixed a typo in a comment. Replaced the
-macro with a function taking a closure, per discussion on the ML.
+The two patches simply add two missing features to the kernel Arc
+implementation which are present in the Rust std version: `Any`
+downcasting and `assume_init()`.
 
-Co-developed-by: Fox Chen <foxhlchen@gmail.com>
-Signed-off-by: Fox Chen <foxhlchen@gmail.com>
-Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 Signed-off-by: Asahi Lina <lina@asahilina.net>
 ---
- rust/kernel/error.rs | 39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+Changes in v2:
+- #1: Moved the new function to a separate file, to keep the licensing
+  clearer.
+- #2: Replaced the safety comment with Benno's, from his pin-init series
+  (we both wrote the same patch).
+- Link to v1: https://lore.kernel.org/r/20230224-rust-arc-v1-0-568eea613a41@asahilina.net
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 67637b874267..5f4114b30b94 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -237,3 +237,42 @@ pub(crate) fn from_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
-     }
-     Ok(ptr)
- }
-+
-+/// Calls a closure returning a [`crate::error::Result<T>`] and converts the result to
-+/// a C integer result.
-+///
-+/// This is useful when calling Rust functions that return [`crate::error::Result<T>`]
-+/// from inside `extern "C"` functions that need to return an integer error result.
-+///
-+/// `T` should be convertible from an `i16` via `From<i16>`.
-+///
-+/// # Examples
-+///
-+/// ```ignore
-+/// # use kernel::from_result;
-+/// # use kernel::bindings;
-+/// unsafe extern "C" fn probe_callback(
-+///     pdev: *mut bindings::platform_device,
-+/// ) -> core::ffi::c_int {
-+///     from_result(|| {
-+///         let ptr = devm_alloc(pdev)?;
-+///         bindings::platform_set_drvdata(pdev, ptr);
-+///         Ok(0)
-+///     })
-+/// }
-+/// ```
-+// TODO: Remove `dead_code` marker once an in-kernel client is available.
-+#[allow(dead_code)]
-+pub(crate) fn from_result<T, F>(f: F) -> T
-+where
-+    T: From<i16>,
-+    F: FnOnce() -> Result<T>,
-+{
-+    match f() {
-+        Ok(v) => v,
-+        // NO-OVERFLOW: negative `errno`s are no smaller than `-bindings::MAX_ERRNO`,
-+        // `-bindings::MAX_ERRNO` fits in an `i16` as per invariant above,
-+        // therefore a negative `errno` always fits in an `i16` and will not overflow.
-+        Err(e) => T::from(e.to_errno() as i16),
-+    }
-+}
+---
+Asahi Lina (2):
+      rust: sync: arc: Implement Arc<dyn Any + Send + Sync>::downcast()
+      rust: sync: arc: Add UniqueArc<MaybeUninit<T>::assume_init()
+ rust/kernel/sync/arc.rs            | 13 +++++++++++++
+ rust/kernel/sync/arc/std_vendor.rs | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 41 insertions(+)
+---
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+change-id: 20230224-rust-arc-ba3c26ed4e6a
 
--- 
-2.40.0
+Thank you,
+~~ Lina
 
