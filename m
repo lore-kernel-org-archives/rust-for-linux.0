@@ -2,164 +2,179 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6981C761AF
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 14:04:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6835FC76188
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 15:25:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232250AbjDCOE4 (ORCPT
+        id S232157AbjDCPZf (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Apr 2023 10:04:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41348 "EHLO
+        Mon, 3 Apr 2023 11:25:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232746AbjDCOEv (ORCPT
+        with ESMTP id S229509AbjDCPZe (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Apr 2023 10:04:51 -0400
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC35626256;
-        Mon,  3 Apr 2023 07:04:50 -0700 (PDT)
-Received: by mail-qv1-xf29.google.com with SMTP id t13so21181463qvn.2;
-        Mon, 03 Apr 2023 07:04:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680530690;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IW/bOD1HON6noswE8BaYkjAqkjl3OaERY6frVvhB+38=;
-        b=LCQ6bs8Gfin2bwNb4d1tNEVZAVH/EyB38lXDsyXGLre7GgP4o2jXDCjLEKpumBD2ig
-         el+D5GcKJ9v/LbOtn4evnAgGvkvAoWjZPaKC7b0zLd7zOTvwjNFVp5jaXYfK32pKLEw6
-         mAiLJtAAYkdvl9FoLTl6+x4X/l3tBvXq3p+/5cuPJ4SwQ3QLEun/80cMEejqaIR8YRPA
-         R1X3nMXbhkU8FOSUbSYwGWE5AZw456NCmgqT+4r9v5yKTMXidkqB6QvyzGmFmY77XySF
-         k0HZWmYHKpw/Vl6b5bOVaOZH6px71T7ca5Bm/CroxmhQGdR+TuWhTwlebYj/vhlP0daJ
-         9LUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680530690;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IW/bOD1HON6noswE8BaYkjAqkjl3OaERY6frVvhB+38=;
-        b=g17CYP+zhpS8xC2b0erPvkOQ8Yn1/lsgvDal2cmGIAUEmQ4/e1+qzWMtgAYQVQiOMT
-         0RKMuNINAotECsRHEjl8zHsOYyx66m42SSjb6qUAJGkMtX8Mp2gr13UZxR+j8X0p/CbR
-         ONDxfQHewCiCR3UyZsYlFOpGleWoJ0SWJ0TFLBZ2AUZDaj5mA2sHp4J5XioAu/V/khZS
-         fR0WDLXfaPea4VQVZ2IBIVvlaK+xMldPP8Xr7wzgzbEJ6cE9aCW7zQOPj2sEpngr46Jr
-         a4JPKX8Pg/qk96NKmc3nFNy0F+xY+14VIMilVGPDqSAhK+AOromtGb6dQEhg1hQxossW
-         yLQQ==
-X-Gm-Message-State: AAQBX9cpTFZyTXt1kiU/qF345Q+gejLBPzGqXt2I8gqAEaUKKG5zv1Y2
-        d9h/Lymf+UVrbRF9pEFYgz0=
-X-Google-Smtp-Source: AKy350ZDzpP75p8Igfl3itcmCsQAp/xqznxr+zste2QmpAjnoDCuVmXnWiPeTZLxvSoPOJVNY08/VQ==
-X-Received: by 2002:a05:6214:2aad:b0:56e:9317:eb9a with SMTP id js13-20020a0562142aad00b0056e9317eb9amr64055030qvb.29.1680530689400;
-        Mon, 03 Apr 2023 07:04:49 -0700 (PDT)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id lw6-20020a05621457c600b005dd8b934595sm2660000qvb.45.2023.04.03.07.04.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Apr 2023 07:04:48 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 54ABA27C005B;
-        Mon,  3 Apr 2023 10:04:47 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Mon, 03 Apr 2023 10:04:48 -0400
-X-ME-Sender: <xms:_twqZHVU5kZ2Uw8hM-xQNFwU3OaVyXzoqUg9dK3uTE6P9lcY7HVVwA>
-    <xme:_twqZPkvxbkEnbkP92xdtUiIQM-T0IMsBIdXCS0CpTJsHhy1F2eQzCgoKRAR6QMLE
-    Il9Ac6AsGoboCHfig>
-X-ME-Received: <xmr:_twqZDZ7-2AUbLkYyI5H8FqmGdQFzEVCf9wy0vRE4lWhQIB0hM3a41erB3xvtbvUtFeVKyOjfRb7O9PkYzmKwP0FVx31rU3_8KE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeijedgjedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:_twqZCVmcerRNHKREL3vequB-KHfBJVJCaHPnu-3AoAtIDGIVLv9CA>
-    <xmx:_twqZBmAbTBr7rx7sfhAVExceJaoeurPT-7YQqXUVCMtvzhaKpntYQ>
-    <xmx:_twqZPecqEWPpwHkpToq1PFDQH3aR-fykgMX87TqoSXFVUbi4Whpgw>
-    <xmx:_9wqZHfbi_-Lsuq6codE32HlvTysBdqI5h65qY0pfFeAE9y5FaYCZw>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Apr 2023 10:04:45 -0400 (EDT)
-Date:   Mon, 3 Apr 2023 07:04:43 -0700
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Mon, 3 Apr 2023 11:25:34 -0400
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2138.outbound.protection.outlook.com [40.107.11.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CDD618C;
+        Mon,  3 Apr 2023 08:25:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BecrfdrLKlzmzYygCw3hvJ5g8LtPWg/v/76c6zHLGdzHjSNmQBSmgPfgeaDP6cY+JGm+ocd07TnozEeNaDb7c/9X6D0+MCDSqk6+kZcyKZ8ZtfX0JXoMgXSkxo5D5ZTl1ReKlnpXPJMo2QMpmecWMKC4FXGqA5k3TzTeyofPdDGX+zKnD30VuQV+2Lsc3Wk3NYQ1xf75Xb6PBGJstCog1cnvppsxhlzYQw0iLWM741BI2j8ZPb5EjbIWKK/ZBroOxePGK42yelbDC0ND+PY1BshTxn0RUnzB7oGs/vwTlDPj6x9Sfxs9Yhl+p6TyKqxlAr6FaKzXmQBovnqRrX7owQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eEpR9DdwSdywvOnOKyGeB1ujg21la3wgt1NUXUhhDac=;
+ b=fbiKZt7lep90H8o2dVM/mdwcoLgwiYD/Y1mvT5ZIDUcGfseCP6TivyQC6dtWhbxM4+uguZYYxrMfEshnPn0l7FVu6aKpwQrs/Or8kUCX9Nf7e7c1Hab+6z3KYo0ZW2fTaqfOPOD1JjzS58S+0vKqSg4QOQCQcbmU/K05QZM62khXzw7sjJ375Q0+ebj51LTPOAosjHu11YCdIT1jtzAfHQuvhjUrb9N7TDHuj8F+G9f11Ozant5lynxRvlARe7RAhrCL+2eltjerqJ1xb9enBgPnp8TfhT70CMmQGW2AsZac6vw9dglGc9BsGAOiV17ocsTM2B5Ve5kkFkmhTIYeQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eEpR9DdwSdywvOnOKyGeB1ujg21la3wgt1NUXUhhDac=;
+ b=lwhu7Av5vNPV0OW5IZqGKF6SHo5F/A93m987f/KxdziQg0uo+JK91oUsius9clbyHo0HhwN8PI+ivQs6YYnyK78x9MbVQ6f0gglKDtQUHlxyG6rfTJghyLqae37GjS0Y8EPV4C+BSYLbux64finfgO1A03Z0TyOfeDmBIsFUHyA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWXP265MB5783.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1ae::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.33; Mon, 3 Apr
+ 2023 15:25:30 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::e1a3:5e38:b483:8161]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::e1a3:5e38:b483:8161%5]) with mapi id 15.20.6254.033; Mon, 3 Apr 2023
+ 15:25:30 +0000
+Date:   Mon, 3 Apr 2023 16:25:29 +0100
+From:   Gary Guo <gary@garyguo.net>
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
         rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
+        =?UTF-8?B?Qmo=?= =?UTF-8?B?w7Zybg==?= Roy Baron 
+        <bjorn3_gh@protonmail.com>, linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <walmeida@microsoft.com>,
         Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
         Waiman Long <longman@redhat.com>
 Subject: Re: [PATCH 03/13] rust: lock: introduce `Mutex`
-Message-ID: <ZCrc+5q2Kp63gfPu@Boquns-Mac-mini.local>
+Message-ID: <20230403162529.7bef76e6.gary@garyguo.net>
+In-Reply-To: <ZCrZkUaoslXHpige@wedsonaf-dev>
 References: <20230330043954.562237-1-wedsonaf@gmail.com>
- <20230330043954.562237-3-wedsonaf@gmail.com>
- <20230330130108.GE124812@hirez.programming.kicks-ass.net>
- <ZCXZMNj7aOKbC7Ev@boqun-archlinux>
- <20230403082052.GR4253@hirez.programming.kicks-ass.net>
+        <20230330043954.562237-3-wedsonaf@gmail.com>
+        <20230330130108.GE124812@hirez.programming.kicks-ass.net>
+        <ZCXZMNj7aOKbC7Ev@boqun-archlinux>
+        <20230403082052.GR4253@hirez.programming.kicks-ass.net>
+        <ZCrZkUaoslXHpige@wedsonaf-dev>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0658.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:316::7) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230403082052.GR4253@hirez.programming.kicks-ass.net>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWXP265MB5783:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f2814d3-2647-43a7-c073-08db3457a912
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: plRABDkVsjCoJpayC4OcoWw1uZQDRefoG1p+CYYIzhXjPx3jYfVbcOUrHSBt6mW5JR4kaHmW8RGEJMV2J/chODY6bQmUXrG+ixCYvPwNyFlXn6JQENBUNDIldL0p6skNzX1MpExf8MYgqNTrh1qE/lm//GMUScCzdN4vOB1CVC+g0nTNrQYRNldysY8LlN8yde2Kj+SNogH6mdVofvYWuOkpeLJ6XvJs3NEFsrg74OzkTytbAGcxc5PG5nMYRnnsz/WG91hNib0iqI27u3orxkF3yMrRQN6ceI/erTPkV0nuDIfxzsvrdKGbbSXGmXi0QvlT7FACLhFAd9aldzDwONkKQOydSLwbRrfYHK4US/SeUmu18tmb1sWE4GVqjauOjNiP6oHmqbzIzqsSC7tiiYJsa2MtJTBFRG3UHMhi1iZuYYlaQKHmAsBchfkY4bOgSsXNa4BrFUtInnJAaL10QKzvhxiuQ3yKnXUmkwLyDXtr3FlRoMG7BOExPWbKbIn8S768YkkWIaTh1Y6U+2QK/w5wSPixm3q6pUkPTogMd6PBbwZKKvUOTTU7O6oIRlZx/Bm5fME/GE4mct29rrokW7Dvy7MMrEVeNiY0OxF2j7Q=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(136003)(366004)(376002)(396003)(39830400003)(346002)(451199021)(8676002)(6916009)(66556008)(66946007)(66476007)(54906003)(316002)(478600001)(4326008)(8936002)(7416002)(41300700001)(5660300002)(38100700002)(45080400002)(6486002)(186003)(83380400001)(2616005)(6506007)(26005)(1076003)(6512007)(86362001)(36756003)(2906002)(81973001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?nPdNvG++FbyRZ9q/ESRkbZ/682/NoyHeBlcWVxfZugxhwpOw1EHpdlTjJCan?=
+ =?us-ascii?Q?zU4oHSvVz91DHYAB1hi75fACoxNs3HPBzEXGu18uqGUPb7HxXfBeuKHXNUei?=
+ =?us-ascii?Q?/FviPxrMf7VZiynyk9PhGfiBh4MEQnB8y+xgJRE99aRdRgG24h633qbMBvwV?=
+ =?us-ascii?Q?IlpQC6XhJe3/C34nNTl8+L2I14wDxCnA6zVHGK+5EcBFKycQeselL3VsvlTZ?=
+ =?us-ascii?Q?VEGdI2TRPRIIgsaHOLAAN8ayeMroC0NS9k6zAACndJ01t9K1Dp772/hsvTdu?=
+ =?us-ascii?Q?4EyWZS2AqgGYWSAvv986m1MKeVRsz74pGOWapUUPsiV51YdNOHP95dqXlL0M?=
+ =?us-ascii?Q?wapEiMdp1axPH0dUr6q82i6x9pbSbChCHmQ9+FIUIJO8UUg8gFfgYMeLMhJH?=
+ =?us-ascii?Q?KNUBzoqq5UYehz6rq+VluWQi5fc+fIFA63qWE+q5k+ZmZqUjB1DXKNmUsXI9?=
+ =?us-ascii?Q?UK3eLSI1EFOXDMh4vBT2PDeN9WWABtZ/OyJGPq96bKpqTgm4vSUdwmhXHtp7?=
+ =?us-ascii?Q?Qgvzhjsni0mUcsbgGnUKNBENjmoPHBprF1QBAOfIk4SoxYJxQi1QbeXSEfqw?=
+ =?us-ascii?Q?iuvcqf1OLKiCl7EQ1B54fnpr3Al6NfgpOYrhPbDhcgUAG3ubRf7OsaO76nJy?=
+ =?us-ascii?Q?q1u44ndKbOVQaxmEtnLft8VjCiRQ6ZzkiyWHj7Ti4Kymq7dj/GyeWHAtJRFG?=
+ =?us-ascii?Q?X4ne/Y/7DaHt7+HzGB3dzhcrcKzdMyDZ7U/9RscFvlD89QNyRUdEQUPBjD75?=
+ =?us-ascii?Q?khLviWar2uN/g6Oaq4qa8iz+blgVvXnHSdqd/oIEwHCsx3945UgXquLbBTU2?=
+ =?us-ascii?Q?QJTir3cVEg/Uj29kcN+TnAFN0sAoPCGaj9oAg1rdQ9pqiS83YqsaHjyGuWC2?=
+ =?us-ascii?Q?NzJR6kzZeAxVmP8xjspCLRBm/QznFY0K1h7MhHpn4YkyAA9DYkRWX9RSolon?=
+ =?us-ascii?Q?ceEDMF9Mim/Kjd0KmQmR2r9/X5rltUk9w7A3LHewyIu6LYqxOziQmgiOc4rF?=
+ =?us-ascii?Q?xj9w7HH38KSb+BOM5i8df9FlJH7awqHJr0KqpT/qfD+1A/5C1sulYdrjfWj/?=
+ =?us-ascii?Q?+/X3WiPj2tntSl8DlB/T11jx4BoTmgUc4WEw3qXlJ2ITIOfsiKB2bbzALDmU?=
+ =?us-ascii?Q?/V+gT/IP5ctVugd7dQg/dix+OMDChr7FgClsIdV5YNjBTXjFia07NVoiCh9Q?=
+ =?us-ascii?Q?GtSbeT+o8narAboFAZocBLqYp5/satsmyGt+BMUQGsop+8TNax6hPgyKTgTz?=
+ =?us-ascii?Q?wKXAwV12t/02U8YITLNd59YvI0m28Kmrb67qkStqHTknMRricVu9KmeLQk3W?=
+ =?us-ascii?Q?icOF2hLz9AQlw/F71PMLpe2vzM9KdlOBCLQTn1W9GEuYnCrMfDaJzqNW5F1n?=
+ =?us-ascii?Q?cbdYLUIUqxnHFytSHXwSsMAKjYk44rwg2sLizXSm26zs9Brez/0OYfSIvDpQ?=
+ =?us-ascii?Q?SIEQyADNFymFCOysJGXbIkLqcjsfknAKHy3Db1c2+2AFh2MEoCOZhgl8Aqqd?=
+ =?us-ascii?Q?q3QU7vhCVEUyWU/FbIVhXSM5y0cGDZqODXncAEa2Fh4FYtgCz0B8aNtsOY59?=
+ =?us-ascii?Q?3Fq2QMRQgOXNkYpu6U8Yflhez+O461IPyiGuSl29?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f2814d3-2647-43a7-c073-08db3457a912
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2023 15:25:30.8146
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8EsOGrnybq0+aCmEGZzYpiF1CDkyi6pgYsZqNS99LCCrSN91TYAlv5X0CrqERWrbPc+S7QOLkd3dpg8z4hK43Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB5783
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Apr 03, 2023 at 10:20:52AM +0200, Peter Zijlstra wrote:
-> On Thu, Mar 30, 2023 at 11:47:12AM -0700, Boqun Feng wrote:
-> > On Thu, Mar 30, 2023 at 03:01:08PM +0200, Peter Zijlstra wrote:
-> > > On Thu, Mar 30, 2023 at 01:39:44AM -0300, Wedson Almeida Filho wrote:
-> > > > From: Wedson Almeida Filho <walmeida@microsoft.com>
+On Mon, 3 Apr 2023 10:50:09 -0300
+Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+
+> On Mon, Apr 03, 2023 at 10:20:52AM +0200, Peter Zijlstra wrote:
+> > On Thu, Mar 30, 2023 at 11:47:12AM -0700, Boqun Feng wrote:  
+> > > On Thu, Mar 30, 2023 at 03:01:08PM +0200, Peter Zijlstra wrote:  
+> > > > On Thu, Mar 30, 2023 at 01:39:44AM -0300, Wedson Almeida Filho wrote:  
+> > > > > From: Wedson Almeida Filho <walmeida@microsoft.com>
+> > > > > 
+> > > > > This is the `struct mutex` lock backend and allows Rust code to use the
+> > > > > kernel mutex idiomatically.  
 > > > > 
-> > > > This is the `struct mutex` lock backend and allows Rust code to use the
-> > > > kernel mutex idiomatically.
+> > > > What, if anything, are the plans to support the various lockdep
+> > > > annotations? Idem for the spinlock thing in the other patch I suppose.  
 > > > 
-> > > What, if anything, are the plans to support the various lockdep
-> > > annotations? Idem for the spinlock thing in the other patch I suppose.
+> > > FWIW:
+> > > 
+> > > *	At the init stage, SpinLock and Mutex in Rust use initializers
+> > > 	that are aware of the lockdep, so everything (lockdep_map and
+> > > 	lock_class) is all set up.
+> > > 
+> > > *	At acquire or release time, Rust locks just use ffi to call C
+> > > 	functions that have lockdep annotations in them, so lockdep
+> > > 	should just work.
+> > >   
 > > 
-> > FWIW:
-> > 
-> > *	At the init stage, SpinLock and Mutex in Rust use initializers
-> > 	that are aware of the lockdep, so everything (lockdep_map and
-> > 	lock_class) is all set up.
-> > 
-> > *	At acquire or release time, Rust locks just use ffi to call C
-> > 	functions that have lockdep annotations in them, so lockdep
-> > 	should just work.
-> > 
+> > ffi is what the C++ world calls RAII ?  
 > 
-> ffi is what the C++ world calls RAII ?
+> No, ffi is 'foreign function interface', it just means that the caller will use
+> the same ABI as the callee.
 > 
-
-ffi is foreign function interface, it means calling a C function from
-Rust. Sorry if I make things confusing ;-)
-
-> But yes, I got that far, but I wondered about things like
-> spin_lock_nested(&foo, SINGLE_DEPTH_NESTING) and other such 'advanced'
-> annotations.
+> > But yes, I got that far, but I wondered about things like
+> > spin_lock_nested(&foo, SINGLE_DEPTH_NESTING) and other such 'advanced'
+> > annotations.
+> > 
+> > Surely we're going to be needing them at some point. I suppose you can
+> > do the single depth nesting one with a special guard type (or whatever
+> > you call that in the rust world) ?  
 > 
+> I haven't looked at all the advanced annotations, but something like
+> spin_lock_nested/mutex_lock_nested can be exposed as a lock_nested() associated
+> function of the `Lock` type, so one would do:
+> 
+>   let guard = my_mutex.lock_nested(SINGLE_DEPTH_NESTING);
+>   // Do something with data protected by my_mutex.
 
-Right, I haven't really thought through them, but I think it's easy to
-add them later (famous later words).
+I don't think an additional function would work. It's not okay to
+perform both nested locking and non-nested locking on the same lock
+because non-nested locking will give you a mutable reference, and
+getting another reference from nested lock guard would violate aliasing
+rules.
 
-> Surely we're going to be needing them at some point. I suppose you can
-> do the single depth nesting one with a special guard type (or whatever
-> you call that in the rust world) ?
+A new lock type would be needed for nested locking, and guard of it can
+only hand out immutable reference.
 
-or a different method for Lock:
-
-	impl Lock { // implementation block for type `Lock`
-	//                 v function is called via a.lock_nested(SINGLE_DEPTH_NESTING), a is a Lock
-	    fn lock_nested(&self, level: i32) -> Guard<..> {
-	//  ^ defines a function           ^ returns a guard
-
-	        ..  
-	    }
-	}
-
-since Rust side just uses the same function to unlock as C side, so a
-normal Guard type suffices, because we don't treat nested lock
-differently at unlock time. But if we were to add some more checking at
-compile time, we could have a slight different Guard or something.
-
-Regards,
-Boqun
+Best,
+Gary
