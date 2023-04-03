@@ -2,182 +2,191 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DC71C76188
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 15:27:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B45D5C76188
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 15:44:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231979AbjDCP1k (ORCPT
+        id S231769AbjDCPoo (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Apr 2023 11:27:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60688 "EHLO
+        Mon, 3 Apr 2023 11:44:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbjDCP1j (ORCPT
+        with ESMTP id S232369AbjDCPon (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Apr 2023 11:27:39 -0400
-Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2132.outbound.protection.outlook.com [40.107.11.132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B81C18C;
-        Mon,  3 Apr 2023 08:27:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d8cd2pLlpgIFYK570KSToxLvQiJEZBFJzB6AET+tZ3Z9NdVoPCvITwyYvm+XtOcMuH9KjKnCICnZYWmHC52vjyy8ICdd3iw26kDjs5xPYrTNBKvwVGUV2br4m9xd5WAnODeu8iD/RJS2i8fhrcjXh0ZvaLmHnydeODEQiI280fHTYU5Bdz+9i1Yb2zQMEEB2/SLoQhzV1g14jUYBlEP8CqQQVfw40MijO9FRFIbTi0DEcKs6GJ+TkXirmXGjcDR1dSnGOAGlpYCkdDVL2btqM92oMqru0GrO2UKsVhs9QPLcOSlgC06Tsw74c4L+P4CqV4231Kbv+LAzr55JqdaXWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jPAjl5xsky7UkfTLxxhBRWc0YRfTL2g4XMeQbM7WmMo=;
- b=BI2Svoc/GBx8NdmkjiYHaQtbJWxvRsFh92rKUgjrp2HgbQ7xS6m3Fpm6yd+voEq76eay4A7x4a/N6eNHE+ZhuEKj5hTOHqBh9NVe+lHSM3YFgMtVc5hH4aveCRIOEy3lX9rhGR/4KJHBH5AbnnZQGGc3Ao8e7cCze6fMh9/FMkL+YnGp8H+LmbFKZMAMoT1kpol8hp8NvnNnQOtcsR1/JhowoC9OpjkoXB134vn6VGK/wsaKdxvfiXOWWCic10nEWxc/bvz26ci5CgudLycOmFue9R8mXWgHlH8h1S/17c65dW9kfN/XVBw0Aa2hKq+Dtd4/LSe3QH/a8kIkEgWgQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jPAjl5xsky7UkfTLxxhBRWc0YRfTL2g4XMeQbM7WmMo=;
- b=k4IJGrfV9fVKwyueEozc7LBsvAzFMKrMMqKxlhQb9+JeaYYtoAWxtdDcg1AQX0QJDQ7FxAf7yyP0HnTk2dznnwy6ENOYW9HQwtn02RYm6WH0h8Pip+c+a/TjSuYC5yW58kjENYcBN6XrVzxYU3rSz0QGFbS705qz6ZDAHk1HZ9c=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWLP265MB1988.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:6a::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.33; Mon, 3 Apr
- 2023 15:27:34 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::e1a3:5e38:b483:8161]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::e1a3:5e38:b483:8161%5]) with mapi id 15.20.6254.033; Mon, 3 Apr 2023
- 15:27:34 +0000
-Date:   Mon, 3 Apr 2023 16:27:32 +0100
-From:   Gary Guo <gary@garyguo.net>
-To:     Asahi Lina <lina@asahilina.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Mon, 3 Apr 2023 11:44:43 -0400
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D5392D49;
+        Mon,  3 Apr 2023 08:44:41 -0700 (PDT)
+Received: by mail-qt1-x829.google.com with SMTP id t19so28697797qta.12;
+        Mon, 03 Apr 2023 08:44:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680536680;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kclZcPGzLT8qD+FxOEEZz3AYIvik9LusU8EytUnJ65w=;
+        b=R3kQPYI0RGcmUaPVY9ZIhhTYXdPCCoxzw+W2mUQdu4i9JRrSWH9k3cWB0QhAmHHnmt
+         dZJr7j+pVgxWHkz3ontXO/DVjylkzGjkqDdOpxYt14UN1QZbp6u43IfLuWq5rf2vHBSP
+         K1guvuQ9Lpwt1dlMFR+VVWxzIA7aJxey5FOwniB6pbhnLOrDA4e4KCZ7i4mMfmXDvRI1
+         jb/yxiRZrYggjckx+1v+ddNbcOFwQr69aSqeWv4OuV1PpcL/SeSHY+6bALXy82daUU63
+         FpuP257J5GtF8JuD2oFDKtNk2HwS617p8B9KHsU5aeIIfe36FY/DG25tABwDF9aDPlnZ
+         uvLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680536680;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kclZcPGzLT8qD+FxOEEZz3AYIvik9LusU8EytUnJ65w=;
+        b=jK8PvoNJTUq3UIDKq27NK2niwWbQmHO+SyyCTONMG0yeFPEJ+p5LFPUrOj/Z5nwFo8
+         eSEA1E9ySEFQpB9OKXsaPFjQgqvRAkHNsJ+DlXGmrZGjfEmiuJZBqZ/W0g8R7PDJ42SZ
+         DCw0eeScykL1VF9Uqyvbs42I+7/sZPsJ9b/eFDZN3Eo5VaIgLlR30ehE826DHHVuAwD6
+         Qg5nezGajB97RdLHMB0lZSzQh5U3R5kj4lNgszjLIgyKjQzYJMDVB+TMRFmrtPMbC7Jw
+         yBSAL3WM1DU65OeltAAz8ROQAgmo/B+49cDTGYe2CZkyfRcMQYR9EArSnIeljJuOMXBw
+         iXlg==
+X-Gm-Message-State: AAQBX9c+bLbrLubGFHc19PGdlPPzeq0ugJxgEediYHowxQC9byiAaNJJ
+        0YdCBD8k5BMzjdw5bcgX8QQ=
+X-Google-Smtp-Source: AKy350a4pXXSBX2zmejuRMoR7fs0yhKdvJH71TAvkzpfOEYoHftV3Ksp0JQJM2xQSG89xm/ZkC6hkg==
+X-Received: by 2002:a05:622a:1ba7:b0:3e6:38b6:88f5 with SMTP id bp39-20020a05622a1ba700b003e638b688f5mr22401490qtb.25.1680536680239;
+        Mon, 03 Apr 2023 08:44:40 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id bn29-20020a05620a2add00b00743592b4745sm2840494qkb.109.2023.04.03.08.44.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Apr 2023 08:44:39 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 25D4A27C0054;
+        Mon,  3 Apr 2023 11:44:39 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Mon, 03 Apr 2023 11:44:39 -0400
+X-ME-Sender: <xms:ZvQqZLU-6mPuai5kHi2iQpimfzNuUYUsjb54TU608RjXadqy_3UIsA>
+    <xme:ZvQqZDlt5Qs8AIx2qIoT7pKYaxjUIrgRbzW-mrt1MR1mb3A7b2O8oiyA1qL1CTqZQ
+    _FGNXgzaSnQzS-1Gw>
+X-ME-Received: <xmr:ZvQqZHYPvUaH0ISFUpcOAck-EVHDlBt6vZl1WgIlX_1DAmrYJO_VoCblINisFZ9X9qL8Zit7hI0XMOKWKuJi4lgz8ONKDEKDEnU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeijedgledvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:ZvQqZGUFD9Q1XbmHX3eLnB1qVQwZGqsuOTZLlPdeY-iqzhQsVdbDBA>
+    <xmx:ZvQqZFnOnZRu2tQGAMr9s8C4UNNo7PlET6bn0i2Py8AYcrkmhx7IrQ>
+    <xmx:ZvQqZDduh_eDtCU45ZyQxbi5f9G1UAmbWUWuksUTyqTMYFPwbOX5JA>
+    <xmx:Z_QqZLd8wbdnu9R8XA-RTyUlrl00oEReIS1NPmzHU428KkUMAOJDcA>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 3 Apr 2023 11:44:38 -0400 (EDT)
+Date:   Mon, 3 Apr 2023 08:44:36 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Gary Guo <gary@garyguo.net>
+Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Fox Chen <foxhlchen@gmail.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev
-Subject: Re: [PATCH v3 2/6] rust: error: Add Error::to_ptr()
-Message-ID: <20230403162732.4509df69.gary@garyguo.net>
-In-Reply-To: <20230224-rust-error-v3-2-03779bddc02b@asahilina.net>
-References: <20230224-rust-error-v3-0-03779bddc02b@asahilina.net>
-        <20230224-rust-error-v3-2-03779bddc02b@asahilina.net>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0355.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18d::18) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH 03/13] rust: lock: introduce `Mutex`
+Message-ID: <ZCr0ZDlvlFHFIRbh@Boquns-Mac-mini.local>
+References: <20230330043954.562237-1-wedsonaf@gmail.com>
+ <20230330043954.562237-3-wedsonaf@gmail.com>
+ <20230330130108.GE124812@hirez.programming.kicks-ass.net>
+ <ZCXZMNj7aOKbC7Ev@boqun-archlinux>
+ <20230403082052.GR4253@hirez.programming.kicks-ass.net>
+ <ZCrZkUaoslXHpige@wedsonaf-dev>
+ <20230403162529.7bef76e6.gary@garyguo.net>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB1988:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9e0f6ba-9927-49e9-81a0-08db3457f297
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZZyGaCJeOeLUI7F2piXPXfVouz4nmK+dSWvjp/dASsEocDALh2n5AlPuQdNDJ77vZCBnJnQlKpaKteQLrjqpyfbAXNUUiLOAuR2Ee0Eh9bOBjDIfSdTV4v0k73H2G8YydzZyAu9oPrSnJaepnYK4kZCXyCWIemh6MrJ//PKrX9y5sR1QjPUmlJ4SgQd4fW6TEG3e2kjbUGYDi0BDWeFWqSmsnr3zJ7QZyR3EkImXYrJ5BWGlFCujCANTY+fJCQTKwyHhRmEsfA7MI9Io4npoxQlBcBKyZNcAqiuyBey+B6olhZolfJ3qKidxAN5h/Z5SRKg0ddz57nIEZzYw/7xfE0imGOKjJMQiXAOXA2GjBxtbnMT+G1Rts3q+m6R42g5ShuBa8o4fXi2ZXGds70mTT8x2b8QteIFyOYMpBQnj3ia7erl0LLb3bSPp2SQeYgGlLawycxpCaB2nc/v4E42pprXjvMcVpwgQSNIU/ZhstOwhvq7qpnKvEuavv9Z61wCVzI+AjZwczYMk6thBzou2iaCGkl3uC0kb1QAuL+T5Ou73fefjnVNiDkMaOOgBsV/5
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(396003)(366004)(136003)(346002)(39830400003)(376002)(451199021)(6916009)(8676002)(66476007)(4326008)(66556008)(66946007)(478600001)(316002)(54906003)(8936002)(41300700001)(7416002)(38100700002)(5660300002)(186003)(2616005)(6486002)(26005)(6506007)(6512007)(1076003)(86362001)(36756003)(2906002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?IrJLASMOXe8qCHkHqSaGpB4qjAGq76tWZA/s/2Sd/inoFs5AAvj85/GnR8JC?=
- =?us-ascii?Q?W5MfPUfRaPaHzD3jbxwA4+egX+dUIr/tXtNtKKTNdsqzIajA/9g5SgkrcOYX?=
- =?us-ascii?Q?D7Gu4u0iuXcR3ipe39vx62QTeD60vwHfMO344gIu6l8pDyuXLqD155ZVjluP?=
- =?us-ascii?Q?cDx9YzqQ14fmqvr9wK2K7m64odSaMqdYSvMu0VtDrOQa/erHARx7dlsWFfn8?=
- =?us-ascii?Q?002uxeJATq23sRykkK5A4uFBTyyVn69OgUIdstAI8oAz69xo7D93979kMvVe?=
- =?us-ascii?Q?G6i+4uFwvqd1ZntFaKQu7XiQjz3AyHk/NZHvToI194nstt9kLSLtT/2i7Qgl?=
- =?us-ascii?Q?P8FjCSElQ7RkCu+JQkgooBRvAjRlmXB/9vnmfnXaACcEtdMIwy3UBMlZNoMj?=
- =?us-ascii?Q?cK/v7NptI0GCD7Ftz82vUEv7J016kGBjJGXlL4oBMTGFkDA7nu17nP5Cz04v?=
- =?us-ascii?Q?qdAvxdSPH7Q/dAigcV/Af+djVSrL9xM/9LYUrIhpa6x9QZ1L6wo4zINBaFha?=
- =?us-ascii?Q?jJ8AI7RabLxpw9BRo0aif3ZsgGkAURJF7e0+4YVzc5mkQh1UuKMf3rLbY1np?=
- =?us-ascii?Q?kdJ8LJRkP9kvEsqoub12BgEibqZ7HHXoS5RMS3NLFLFLxYG493ZLxYr7D42h?=
- =?us-ascii?Q?UP9X68RePMktGnlcFStVm2wlhUC1bWO5BVhfhfEkwtcRX3vjcGTSN+JQUlvB?=
- =?us-ascii?Q?ouWyDvQyLoK6p7mEPYXIfR9BahTVvm03iFTvVHvf2+8roqpA0bHvGDQowa6Q?=
- =?us-ascii?Q?tuqZvZhz9tGIxOHa7YZx01NArYRWyZT1XnujNTJxejIfFcPJgTJI4SD1csbC?=
- =?us-ascii?Q?mlM51w3UdF8FDz9vpdIcsNoHMoqBkSK7zXHNVvc4EIw1beK2w7WY4HAgplh+?=
- =?us-ascii?Q?jsmid03/Rn0weIfVxEwTEPmhjcvBLUarM1a6QVqYXoFwrXRGj1FMAyMAZE3e?=
- =?us-ascii?Q?ZJ0rp+oIutTmlooARUDE0CnVMD6CndzgXsv24tDi7ofCiY/PmfAo1Cgvwbyt?=
- =?us-ascii?Q?Q3lB/Nu0ptaaJY8tbBKmxlO3eVvUS9mZ4N6W9EXo9ZXwbUQ2nKoxiYh2ruaR?=
- =?us-ascii?Q?alieNFA4ndQo2lNhTDnKbRb/1uMPsVrFwL9+0rPZthMhIZQ1Kjc7sXwrIZPQ?=
- =?us-ascii?Q?P9CpIU3calbPL9tiwvyNECbq1IMkvnrU5VS/V7xq6ropHhr+iK9f8fzt3N5N?=
- =?us-ascii?Q?x3mYUD9iG7WqYgvq8Gt+M9C69pQ1//ugfAQTW676XuY82SGuMlIbs8zgXyhg?=
- =?us-ascii?Q?D7M2tZDxR+Cc/p1tN9qsnGUPQ8zWTKeqAgukiC5jUZLYJq+GQzkGE8bNPAiv?=
- =?us-ascii?Q?+aujGnqltlAiber8OqAmbbuX4kMLaRTadLOeb6bhEqTs9B/Wd9NMss/pgWKt?=
- =?us-ascii?Q?o0GL1Hd0GH/kfFNJ+DxAz6H5DZ0Gb1+HEX0HoDh30EArRjx9kbpRy2afov2f?=
- =?us-ascii?Q?neaFXsPWHOx0toM1N8XgPL8Kodd+ryfJYunTecZCBQV4KiGBQaMf/+iZQCcV?=
- =?us-ascii?Q?4CNS/1TAP8J3q3m0wngKYaYNkGTz9z0AyaBTmEM7DOAD9eHm3m1Xp1U/uDkL?=
- =?us-ascii?Q?PokWrM23GL0PhcBQmNNPkfPvv5PicgVyAi2BUMlD?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9e0f6ba-9927-49e9-81a0-08db3457f297
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2023 15:27:34.0997
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0jsTi5laJW4ljUnFUgpbMrDqH2FlQ99uhdnq+sMWOydWhT/5n+QdGJXF321N7gKTQA2oEeTSUCx9UmikRiJa+w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB1988
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230403162529.7bef76e6.gary@garyguo.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, 03 Apr 2023 18:48:11 +0900
-Asahi Lina <lina@asahilina.net> wrote:
-
-> This is the Rust equivalent to ERR_PTR(), for use in C callbacks.
-> Marked as #[allow(dead_code)] for now, since it does not have any
-> consumers yet.
+On Mon, Apr 03, 2023 at 04:25:29PM +0100, Gary Guo wrote:
+> On Mon, 3 Apr 2023 10:50:09 -0300
+> Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 > 
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-
-Reviewed-by: Gary Guo <gary@garyguo.net>
-
-> ---
->  rust/helpers.c       | 7 +++++++
->  rust/kernel/error.rs | 7 +++++++
->  2 files changed, 14 insertions(+)
+> > On Mon, Apr 03, 2023 at 10:20:52AM +0200, Peter Zijlstra wrote:
+> > > On Thu, Mar 30, 2023 at 11:47:12AM -0700, Boqun Feng wrote:  
+> > > > On Thu, Mar 30, 2023 at 03:01:08PM +0200, Peter Zijlstra wrote:  
+> > > > > On Thu, Mar 30, 2023 at 01:39:44AM -0300, Wedson Almeida Filho wrote:  
+> > > > > > From: Wedson Almeida Filho <walmeida@microsoft.com>
+> > > > > > 
+> > > > > > This is the `struct mutex` lock backend and allows Rust code to use the
+> > > > > > kernel mutex idiomatically.  
+> > > > > 
+> > > > > What, if anything, are the plans to support the various lockdep
+> > > > > annotations? Idem for the spinlock thing in the other patch I suppose.  
+> > > > 
+> > > > FWIW:
+> > > > 
+> > > > *	At the init stage, SpinLock and Mutex in Rust use initializers
+> > > > 	that are aware of the lockdep, so everything (lockdep_map and
+> > > > 	lock_class) is all set up.
+> > > > 
+> > > > *	At acquire or release time, Rust locks just use ffi to call C
+> > > > 	functions that have lockdep annotations in them, so lockdep
+> > > > 	should just work.
+> > > >   
+> > > 
+> > > ffi is what the C++ world calls RAII ?  
+> > 
+> > No, ffi is 'foreign function interface', it just means that the caller will use
+> > the same ABI as the callee.
+> > 
+> > > But yes, I got that far, but I wondered about things like
+> > > spin_lock_nested(&foo, SINGLE_DEPTH_NESTING) and other such 'advanced'
+> > > annotations.
+> > > 
+> > > Surely we're going to be needing them at some point. I suppose you can
+> > > do the single depth nesting one with a special guard type (or whatever
+> > > you call that in the rust world) ?  
+> > 
+> > I haven't looked at all the advanced annotations, but something like
+> > spin_lock_nested/mutex_lock_nested can be exposed as a lock_nested() associated
+> > function of the `Lock` type, so one would do:
+> > 
+> >   let guard = my_mutex.lock_nested(SINGLE_DEPTH_NESTING);
+> >   // Do something with data protected by my_mutex.
 > 
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index 09a4d93f9d62..89f4cd1e0df3 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -20,6 +20,7 @@
->  
->  #include <linux/bug.h>
->  #include <linux/build_bug.h>
-> +#include <linux/err.h>
->  #include <linux/refcount.h>
->  
->  __noreturn void rust_helper_BUG(void)
-> @@ -46,6 +47,12 @@ bool rust_helper_refcount_dec_and_test(refcount_t *r)
->  }
->  EXPORT_SYMBOL_GPL(rust_helper_refcount_dec_and_test);
->  
-> +__force void *rust_helper_ERR_PTR(long err)
-> +{
-> +	return ERR_PTR(err);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_ERR_PTR);
-> +
->  /*
->   * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
->   * as the Rust `usize` type, so we can use it in contexts where Rust
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 35894fa35efe..154d0ca6e2dc 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -76,6 +76,13 @@ impl Error {
->      pub fn to_errno(self) -> core::ffi::c_int {
->          self.0
->      }
-> +
-> +    /// Returns the error encoded as a pointer.
-> +    #[allow(dead_code)]
-> +    pub(crate) fn to_ptr<T>(self) -> *mut T {
-> +        // SAFETY: self.0 is a valid error due to its invariant.
-> +        unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
-> +    }
->  }
->  
->  impl From<AllocError> for Error {
-> 
+> I don't think an additional function would work. It's not okay to
+> perform both nested locking and non-nested locking on the same lock
 
+Note that lock_nested() here is simply a lockdep concept, it means
+locking nested under the same lock class (key), not lock instance, for
+example:
+
+	spinlock_t X1;
+	spinlock_t X2;
+
+	// X1 and X2 are of the same lock class X
+	spin_lock(&X1);
+	spin_lock(&X2); // lockdep will report a deadlock.
+
+	// However, if we know that X1 and X2 has some ordering to lock,
+	// e.g. X1 is the lock for a directory and X2 is the lock for
+	// the file in the directory, we can
+	spin_lock(&X1);
+	spin_lock_nested(&X2, SINGLE_DEPTH_NESTING);
+
+	// and lockdep won't complain.
+
+There is some design space here for Rust, since we may be able to put
+the nested information in the type.
+
+Regards,
+Boqun
+
+> because non-nested locking will give you a mutable reference, and
+> getting another reference from nested lock guard would violate aliasing
+> rules.
+> 
+> A new lock type would be needed for nested locking, and guard of it can
+> only hand out immutable reference.
+> 
+> Best,
+> Gary
