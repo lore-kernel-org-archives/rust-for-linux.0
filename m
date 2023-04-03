@@ -2,205 +2,175 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20E4AC76196
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 19:20:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A37A4C76196
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 21:07:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231571AbjDCTU4 (ORCPT
+        id S232605AbjDCVHP (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Apr 2023 15:20:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42646 "EHLO
+        Mon, 3 Apr 2023 17:07:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231627AbjDCTUz (ORCPT
+        with ESMTP id S231636AbjDCVHO (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Apr 2023 15:20:55 -0400
-Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2100.outbound.protection.outlook.com [40.107.10.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE0EA40E6;
-        Mon,  3 Apr 2023 12:20:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=a4+BbNyQGBEFS7PoJUWzTYWuCYwM16Ug1haDXPUdbIc21ZCNBU2J5ZoqKKx34+IuBTV6OW00UDA/c3kvxNYRJJ95naJ8H0A+v3KrULIoPlLftieJzNW1vcDkKiJoF/RHVLpZDkyeYcZheeCFOuTq3q37bIW46Mm03n6RVm80yui/AV2LK+HCMgedBtCrR+rEfkr177MpCUEfM6CxcuD2qFh5+8UjV0ZcDCVxf2mMJBWzwNSC9ndC4WEEqiHvk6jkY9IjwPtpYs+30Pc0oV7YFC8RXT8ADO4gzYb2xhLtav1rqNHnUQVYtJLzjhujuzlndtViZ+lNZ6/zJVH+SosRbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hTzI5nnitNAo/mErvZOoPGcXZaGxKaLfamGb4m7gi3c=;
- b=Xrav/5bAZNz/XDFv5qEA32HQWwXq7eyMeQleUFxijiP00LreL3LTEe3IIlSMShaowDrLrtdOlVvoNx79C9zr2sA23QO8AutU8N8za2GiUqurLqlCrpgg1rlfnPxwkvT2PbolGgueTgDMa/IsRcLmcbwSJNWFbH+IWWtuZz9z/7To5QzkjVrwzdONwN2rk2s/Am/AEYvcOkfbi5fPb6WQhHFZHU+tnYCAuy4lhZfLxFpFyGkoTMzOMI2ckdQlwo0G8Fygz9p2E+WfAQlRY89b5LXn1hgbB0WtBLfrpTtnliVqMEfznmeFmRiDA0Ak12Gk8S1DLZTPiLrBKaaN0KI7mA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hTzI5nnitNAo/mErvZOoPGcXZaGxKaLfamGb4m7gi3c=;
- b=g1hPTndcc/FNCkfe3ukk4bLR213zSVUgfNpXDsiw0M8lye6ZwjsaS3qVZ//sNn10rq0c+RgaX1wZ9NMianQNu+IZ94Oeci75bLdyKtEJ134F5S8swBDq4GEb5L/V4Ga0o/pwU13rkdf5zMj407X1q/ZKwZzAsm6bS59hLscNTTc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWXP265MB2391.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:7c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.33; Mon, 3 Apr
- 2023 19:20:18 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::e1a3:5e38:b483:8161]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::e1a3:5e38:b483:8161%5]) with mapi id 15.20.6254.033; Mon, 3 Apr 2023
- 19:20:18 +0000
-Date:   Mon, 3 Apr 2023 20:20:15 +0100
-From:   Gary Guo <gary@garyguo.net>
+        Mon, 3 Apr 2023 17:07:14 -0400
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 339191BD0;
+        Mon,  3 Apr 2023 14:07:13 -0700 (PDT)
+Date:   Mon, 03 Apr 2023 21:06:49 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1680556031; x=1680815231;
+        bh=Ygcel1PvnMoe3RHJ38UCoAZrKYRkopyr0hOnUB7vewE=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=w18BWd4XymeKr9glYoZHqwLcVivawa55JNf6WPwPjen8au9DMMLMFxeTf5Al4zBrh
+         RXxIpXDggEITn+Ct6No4+78+Us2apw0H7dktahZBnH+FbuyKREJd4K80uK/TpsR/dN
+         Ef/781PugEn0S9xCc51NAU1EyKk7fmWnJ5vEUkJlc/PEDa1LwCDnpC1J63WXNDRqxI
+         fRsv3JILSveZbz9O8vsssDuEkGd/Hp6mJve3BT2H3Myx55igXzk/kIeGEMAHYekuBM
+         GmHIsP4oBA6Bfu4m/0JvFEpDP7WrAKcvcQzhEzsbpfTa10UxYMlQ21Z5YajijuCJFM
+         j6BfubfY0nIrA==
 To:     Alice Ryhl <alice@ryhl.io>
-Cc:     Benno Lossin <y86-dev@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+From:   y86-dev <y86-dev@protonmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev, Alice Ryhl <aliceryhl@google.com>,
         Andreas Hindborg <a.hindborg@samsung.com>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>
-Subject: Re: [PATCH v5 11/15] rust: init: add `Zeroable` trait and
- `init::zeroed` function
-Message-ID: <20230403202015.22e351bb.gary@garyguo.net>
-In-Reply-To: <dc983245-2de9-2aa4-16c3-ae11a8c20b6f@ryhl.io>
-References: <20230403154422.168633-1-y86-dev@protonmail.com>
-        <20230403160511.174894-4-y86-dev@protonmail.com>
-        <dc983245-2de9-2aa4-16c3-ae11a8c20b6f@ryhl.io>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0698.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:37b::11) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Subject: Re: [PATCH v5 14/15] rust: sync: reduce stack usage of `UniqueArc::try_new_uninit`
+Message-ID: <IPLyc9BujE_3VnXZSkge4KAkU2UP7JQGWIOlhWq4Dfli3k_M5luHYkPrxH5ig1E3G_iTKkaSJuzsXCdSx6e3AC4iLYlVqNULFvBr4VYR2MQ=@protonmail.com>
+In-Reply-To: <d50b28f0-e989-7392-505b-2dd9f00abef6@ryhl.io>
+References: <20230403154422.168633-1-y86-dev@protonmail.com> <20230403160511.174894-7-y86-dev@protonmail.com> <d50b28f0-e989-7392-505b-2dd9f00abef6@ryhl.io>
+Feedback-ID: 40624463:user:proton
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWXP265MB2391:EE_
-X-MS-Office365-Filtering-Correlation-Id: c2dbe589-1c3b-402d-9a0b-08db347875c2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1qoz/ExN43JTf63pCViIPPvoBCazVU+HLXYQrz47C+Zaj3kGhg9XikUnavIh+Sq97GxabVDLJ4u4Tx8Gd59HKUd1GNoRKEq9Ve/zd7F3SmwRgQ3sj7m1TEv/KOapUV0IR+JkhI/l//xxraXk3en/bxOTMZwwRh77G/OFJI/iMoWjONkK5guatVlmUrN4oEzJmrwy2vtua8Sn9RVFdhMk7LnykhsfH4zGPFK5Hs2S6XxoHcpmkaDO5Db9GyT0N+aCpAaDcfLNi8NVqoc1nb007gSv/FVIDaDMqsBqnArzECDkEsC39Vl2rFW12V53f1Abrc/l0+Sj1/mSXDCtcpAPq9N/+4QW8ZhPKokbcXGaLHUn945kCaYV4lUGerb4fqpDarnputTiutbhxV6RSoeAKqMncX91gK2d9Ig+dNpoSExuJ3XpM3jdaJOD6eh1PUVpSsYY1msbUKSVgMigqyAxmVgHbAspW9M/pwSXC+EpMXSUweVcW9oV39nR0XQNrTZZL4lp+OasrQuBtdIgYMcXa2/4RWHTSXSBoJ/tOExTUC1iwWZTMke/ixzwDBirtjiOe5iXLlpH6m1Zex9VkG1sLFX0Z1sbG6QiUBzWQF+GOTM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(346002)(366004)(39830400003)(396003)(376002)(136003)(451199021)(6916009)(66476007)(4326008)(8676002)(316002)(66556008)(66946007)(478600001)(8936002)(54906003)(41300700001)(5660300002)(7416002)(38100700002)(53546011)(186003)(83380400001)(2616005)(6486002)(6666004)(6506007)(6512007)(26005)(1076003)(86362001)(36756003)(2906002)(81973001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XolaOQC0GDomt5K8a4cxIK3qYQ/j5osgFcFakHV238gRFdZEnj6xwb9vFgsO?=
- =?us-ascii?Q?fHEhNAmYMy5vE4M001Bdu14886FFWpap44v5MInap8yF1JJ6wiTgpxz/6oFn?=
- =?us-ascii?Q?GeqxEOVj0Xc5qrVTP7k3nHGtrBUg6MWRhNsJDT9l4JVIvOwKYtTQvUhNSBoC?=
- =?us-ascii?Q?8DMlU4ubkLHvOU2hcxFRagZbhEjfLU8h8zEDF4n7bt9MjOONEB651m7RKm3M?=
- =?us-ascii?Q?nIk4ZESBmQygAv/6l2iOOvdzYyILUkJ13PvrSvr1ERH/NOBIWgsNtQwLmDE3?=
- =?us-ascii?Q?Vh+pTcl/OMzNUpErdmRU5saHc9FK3SaagOPVFdrCFPKOuoHb1FbStN+jcdKf?=
- =?us-ascii?Q?zkvAOrHEhdGub3HUZohVZbZr/SgHKr+trknaQysUGaouPZpqs7e0msQNjAlm?=
- =?us-ascii?Q?zDnI7/e/HEJdn8wThmw8WvEZTEbNA4vIzhLRen06usayE5SwtV/TigP99CGX?=
- =?us-ascii?Q?qP4yp46yQ5VRq1eJFTvoti4O73uupNjIK2+c9uA3PbTK3C971Hb8iCr3ViM/?=
- =?us-ascii?Q?FETT9eIHLbpFmmLctNoscVBQ4Yk4Q9nXtLyUUUdXO6IvD5ErrLf9+0xOGX2h?=
- =?us-ascii?Q?1wkOCfnNu2uBjC2fXkEXDDHI8yCoewzvxDnxudXiodrcqGDLurIbSxFfr+mQ?=
- =?us-ascii?Q?P93QGKmrFduDOgLczJn/SacsHNqxSPl+TbpBU9MpXQxfa2IlIEZbfqk3032r?=
- =?us-ascii?Q?OzOgfT0xXowBlS4wqlAmjeeJmUEn2CBwg9GgPnMHAnv2XOKoZxXCgHrJ4l5m?=
- =?us-ascii?Q?fM4OwvPqm5YgNqukd2VI9SP+K/eSQnFLCSCRrGqi7qgYObfcl/kBATaaZpaL?=
- =?us-ascii?Q?AAF9uq3nW3Ib3GOIzrx6+y1Yn9pyA9k0kYzQs8PDXITFubT/do9znqd2Aozs?=
- =?us-ascii?Q?0Z7cWb6J068h5VuEQw8/+MApHtEyf2r87lw5sNwVoOeE+FNXFEVeyXvkK6pR?=
- =?us-ascii?Q?BNKj+XZ8Jf5BunnVVZ1UsfNn3kVazUK68hnEPyXdmKrxcoFRlbtwe/mKRbCp?=
- =?us-ascii?Q?ZDVCjIhRIMkegq1r34tBMIHyHxwIX2aWw9qv6/+ducnFIm2IoMX3GumsmlJI?=
- =?us-ascii?Q?JMkqKtaRjFNEd4IKVglXZ+jR2dr0NRduGYkHPAohnZgi+ExbiIcvZqZIwPcH?=
- =?us-ascii?Q?CF3FjgoDwbk0grSXt+sjiP7qzxPHId6l4x9srjxKTamFAC1iliJWiXRXYKNO?=
- =?us-ascii?Q?u+wKv829ZCs0oeIQhxCXaQPm7AjNaDYl60QEvZAhTK2ZXJ0ZR3Ti1wXl2Ru8?=
- =?us-ascii?Q?mcuQto88JsQ598EqS4iLeITHanKF9HYMLe7upnZ2qlycsNOBa//l3jjDdir7?=
- =?us-ascii?Q?keqoNy0sXcfjaRe7adIVjMVJYc8jsRGccquDXnCx89JK3IKB5WZ36KZLkFpB?=
- =?us-ascii?Q?EpPo87guFt4ZniZsfTZIw9bzQi8MF1wKNeqaMUpJLXZAx3qoXyxTKeaVx2QN?=
- =?us-ascii?Q?K2vj7AIHZTws0WuECVh5LxYa8HoB1aDGVXHIhox7kldeDJpsL1Aer5GZhxAk?=
- =?us-ascii?Q?tEVUTVwosR/cmfdTawZN0feHHzoAVQaMJ4hFF8ZkSjFFBBuEUrykZDUdSFqO?=
- =?us-ascii?Q?JlVNTYIMiTzfCAqaLLIqIeRpTWHKsof2SR1qptPV?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: c2dbe589-1c3b-402d-9a0b-08db347875c2
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2023 19:20:18.0990
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oXI3ofRVYMs7h3+xHnh1JdBOKKih+tV8FSL34rOG49Fg4C//yLW79l5Qj5Q/PEqiMZha3706/sldmofbAOkADw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2391
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, 3 Apr 2023 19:56:29 +0200
-Alice Ryhl <alice@ryhl.io> wrote:
-
+On 03.04.23 19:56, Alice Ryhl wrote:
 > On 4/3/23 18:05, Benno Lossin wrote:
-> > Add the `Zeroable` trait which marks types that can be initialized by
-> > writing `0x00` to every byte of the type. Also add the `init::zeroed`
-> > function that creates an initializer for a `Zeroable` type that writes
-> > `0x00` to every byte.
-> > 
-> > Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
-> > Cc: Gary Guo <gary@garyguo.net>
-> > Cc: Alice Ryhl <aliceryhl@google.com>
-> > Cc: Andreas Hindborg <a.hindborg@samsung.com>  
-> 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> 
-> I have two minor suggestions - take them or leave them.
-> 
-> > +pub fn zeroed<T: Zeroable + Unpin>() -> impl Init<T> {
-> > +    // SAFETY: Because `T: Zeroable`, all bytes zero is a valid bit pattern for `T`
-> > +    // and because we write all zeroes, the memory is initialized.
-> > +    unsafe {
-> > +        init_from_closure(|slot: *mut T| {
-> > +            slot.write_bytes(0, 1);
-> > +            Ok(())
-> > +        })
-> > +    }
-> > +}  
-> 
-> You don't need `T: Unpin` here.
-> 
-> > +macro_rules! impl_zeroable {
-> > +    ($($({$($generics:tt)*})? $t:ty, )*) => {
-> > +        $(unsafe impl$($($generics)*)? Zeroable for $t {})*
-> > +    };
-> > +}
-> > +
-> > +impl_zeroable! {
-> > +    // SAFETY: All primitives that are allowed to be zero.
-> > +    bool,
-> > +    char,
-> > +    u8, u16, u32, u64, u128, usize,
-> > +    i8, i16, i32, i64, i128, isize,
-> > +    f32, f64,
-> > +
-> > +    // SAFETY: These are ZSTs, there is nothing to zero.
-> > +    {<T: ?Sized>} PhantomData<T>, core::marker::PhantomPinned, Infallible, (),
-> > +
-> > +    // SAFETY: Type is allowed to take any value, including all zeros.
-> > +    {<T>} MaybeUninit<T>,
-> > +
-> > +    // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee).
-> > +    Option<NonZeroU8>, Option<NonZeroU16>, Option<NonZeroU32>, Option<NonZeroU64>,
-> > +    Option<NonZeroU128>, Option<NonZeroUsize>,
-> > +    Option<NonZeroI8>, Option<NonZeroI16>, Option<NonZeroI32>, Option<NonZeroI64>,
-> > +    Option<NonZeroI128>, Option<NonZeroIsize>,
-> > +
-> > +    // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee).
-> > +    //
-> > +    // In this case we are allowed to use `T: ?Sized`, since all zeros is the `None` variant.
-> > +    {<T: ?Sized>} Option<NonNull<T>>,
-> > +    {<T: ?Sized>} Option<Box<T>>,
-> > +
-> > +    // SAFETY: `null` pointer is valid.
-> > +    //
-> > +    // We cannot use `T: ?Sized`, since the VTABLE pointer part of fat pointers is not allowed to be
-> > +    // null.
-> > +    {<T>} *mut T, {<T>} *const T,
-> > +
-> > +    // SAFETY: `null` pointer is valid and the metadata part of these fat pointers is allowed to be
-> > +    // zero.
-> > +    {<T>} *mut [T], {<T>} *const [T], *mut str, *const str,
-> > +
-> > +    // SAFETY: `T` is `Zeroable`.
-> > +    {<const N: usize, T: Zeroable>} [T; N], {<T: Zeroable>} Wrapping<T>,
-> > +}  
-> 
-> Arguably, it would make sense to just expand this macro. The code 
-> doesn't become that much longer, and it removes the need to understand 
-> the macro.
+>>        /// Tries to allocate a new [`UniqueArc`] instance whose contents=
+ are not initialised yet.
+>>        pub fn try_new_uninit() -> Result<UniqueArc<MaybeUninit<T>>, Allo=
+cError> {
+>> -        Ok(UniqueArc::<MaybeUninit<T>> {
+>> +        // INVARIANT: The refcount is initialised to a non-zero value.
+>> +        let inner =3D Box::try_init::<AllocError>(try_init!(ArcInner {
+>> +            // SAFETY: There are no safety requirements for this FFI ca=
+ll.
+>> +            refcount: Opaque::new(unsafe { bindings::REFCOUNT_INIT(1) }=
+),
+>> +            data <- init::uninit::<T, AllocError>(),
+>> +        }? AllocError))?;
+>> +        Ok(UniqueArc {
+>>                // INVARIANT: The newly-created object has a ref-count of=
+ 1.
+>> -            inner: Arc::try_new(MaybeUninit::uninit())?,
+>> +            // SAFETY: The pointer from the `Box` is valid.
+>> +            inner: unsafe { Arc::from_inner(Box::leak(inner).into()) },
+>>            })
+>>        }
+>>    }
+>=20
+> I'm curious - do you know whether this compiles to the same machine code
+> as this?
+>=20
+> pub fn try_new_uninit() -> Result<UniqueArc<MaybeUninit<T>>, AllocError> =
+{
+>       let inner: Box<MaybeUninit<ArcInner<T>>> =3D Box::try_new_uninit()?=
+;
+>       let ptr =3D Box::into_raw(inner) as *mut ArcInner<T>;
+>       addr_of_mut!((*ptr).refcount).write(bindings::REFCOUNT_INIT(1));
+>       Ok(UniqueArc {
+>           inner: Arc {
+>               ptr: unsafe { NonNull::new_unchecked(ptr) },
+>               _p: PhantomData,
+>           }
+>       })
+> }
 
-I think it makes sense to use macro for non-generic types (primitives
-and `NonZero`s. It'll be quite verbose if these are just expanded.
+Yes it compiles to exactly the same assembly (byte for byte), because I was
+not sure if I was compiling the right thing, I compiled this function:
 
-For the generic ones, I have no preference.
+    unsafe { core::arch::asm!("ud2") };
+    let r1 =3D UniqueArc::try_new_uninit();
+    unsafe { core::arch::asm!("ud2") };
+    let r2 =3D UniqueArc::try_new_uninit2();
+    unsafe { core::arch::asm!("ud2") };
+
+The `ud2` instructions are for better visibility, as I have not read a lot
+of assembly. The above disassembles to this:
+
+    ffffffff8143bb80 <_RNvXCsdVu6umiBwhr_12rust_minimalNtB2_11RustMinimalNt=
+CsfATHBUcknU9_6kernel6Module4init>:
+    ffffffff8143bb80:=0941 57                =09push   r15
+    ffffffff8143bb82:=0941 56                =09push   r14
+    ffffffff8143bb84:=0953                   =09push   rbx
+    ffffffff8143bb85:=0949 89 ff             =09mov    r15,rdi
+    ffffffff8143bb88:=090f 0b                =09ud2
+    ffffffff8143bb8a:=09bf 04 00 10 00       =09mov    edi,0x100004
+    ffffffff8143bb8f:=09be 04 00 00 00       =09mov    esi,0x4
+    ffffffff8143bb94:=09e8 a7 23 f5 ff       =09call   ffffffff8138df40 <__=
+rust_alloc>
+    ffffffff8143bb99:=0948 85 c0             =09test   rax,rax
+    ffffffff8143bb9c:=0974 12                =09je     ffffffff8143bbb0 <_R=
+NvXCsdVu6umiBwhr_12rust_minimalNtB2_11RustMinimalNtCsfATHBUcknU9_6kernel6Mo=
+dule4init+0x30>
+    ffffffff8143bb9e:=0949 89 c6             =09mov    r14,rax
+    ffffffff8143bba1:=09bf 01 00 00 00       =09mov    edi,0x1
+    ffffffff8143bba6:=09e8 e5 fc f4 ff       =09call   ffffffff8138b890 <ru=
+st_helper_REFCOUNT_INIT>
+    ffffffff8143bbab:=0941 89 06             =09mov    DWORD PTR [r14],eax
+    ffffffff8143bbae:=09eb 03                =09jmp    ffffffff8143bbb3 <_R=
+NvXCsdVu6umiBwhr_12rust_minimalNtB2_11RustMinimalNtCsfATHBUcknU9_6kernel6Mo=
+dule4init+0x33>
+    ffffffff8143bbb0:=0945 31 f6             =09xor    r14d,r14d
+    ffffffff8143bbb3:=090f 0b                =09ud2
+    ffffffff8143bbb5:=09bf 04 00 10 00       =09mov    edi,0x100004
+    ffffffff8143bbba:=09be 04 00 00 00       =09mov    esi,0x4
+    ffffffff8143bbbf:=09e8 7c 23 f5 ff       =09call   ffffffff8138df40 <__=
+rust_alloc>
+    ffffffff8143bbc4:=0948 85 c0             =09test   rax,rax
+    ffffffff8143bbc7:=0974 11                =09je     ffffffff8143bbda <_R=
+NvXCsdVu6umiBwhr_12rust_minimalNtB2_11RustMinimalNtCsfATHBUcknU9_6kernel6Mo=
+dule4init+0x5a>
+    ffffffff8143bbc9:=0948 89 c3             =09mov    rbx,rax
+    ffffffff8143bbcc:=09bf 01 00 00 00       =09mov    edi,0x1
+    ffffffff8143bbd1:=09e8 ba fc f4 ff       =09call   ffffffff8138b890 <ru=
+st_helper_REFCOUNT_INIT>
+    ffffffff8143bbd6:=0989 03                =09mov    DWORD PTR [rbx],eax
+    ffffffff8143bbd8:=09eb 02                =09jmp    ffffffff8143bbdc <_R=
+NvXCsdVu6umiBwhr_12rust_minimalNtB2_11RustMinimalNtCsfATHBUcknU9_6kernel6Mo=
+dule4init+0x5c>
+    ffffffff8143bbda:=0931 db                =09xor    ebx,ebx
+    ffffffff8143bbdc:=090f 0b                =09ud2
+    ffffffff8143bbde:=094d 89 77 08          =09mov    QWORD PTR [r15+0x8],=
+r14
+    ffffffff8143bbe2:=0949 89 5f 10          =09mov    QWORD PTR [r15+0x10]=
+,rbx
+    ffffffff8143bbe6:=0941 c7 07 00 00 00 00 =09mov    DWORD PTR [r15],0x0
+    ffffffff8143bbed:=094c 89 f8             =09mov    rax,r15
+    ffffffff8143bbf0:=095b                   =09pop    rbx
+    ffffffff8143bbf1:=0941 5e                =09pop    r14
+    ffffffff8143bbf3:=0941 5f                =09pop    r15
+    ffffffff8143bbf5:=09c3                   =09ret
+
+I have not done extensive enough tests to be sure about this in general,
+but most of the examples of the pin-init API that I looked at were
+optimized to the same assembly as manual initialization.
+
+The only examples were this was not the case was when I had triply nested
+structs with `Box`es that all were initialized via `PinInit`. That was the
+point were the initialization closure was not inlined any more.
+I also verified that in this particular case the closure was again inlined
+after adding `#[inline]` to it (which requires `stmt_expr_attributes`).
+
+At some point I might do a more thorough analysis.
+
+--=20
+Cheers,
+Benno
