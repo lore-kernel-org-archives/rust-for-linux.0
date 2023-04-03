@@ -2,108 +2,89 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D46AC76188
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 16:06:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2032CC761A6
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 16:33:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232599AbjDCQGt (ORCPT
+        id S232340AbjDCQdA (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Apr 2023 12:06:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35306 "EHLO
+        Mon, 3 Apr 2023 12:33:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233226AbjDCQGj (ORCPT
+        with ESMTP id S232291AbjDCQc7 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Apr 2023 12:06:39 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC2D53AB5;
-        Mon,  3 Apr 2023 09:06:13 -0700 (PDT)
-Date:   Mon, 03 Apr 2023 16:06:02 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680537965; x=1680797165;
-        bh=S5ndiOTk444R587cz6eQKsLf+C57xcupLszBquLvesM=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=D1B+Y+omvyh0YiZ7aLHE5yXMoYPPexH0Sm74LEUhuLk7et6jQjwZBYYklUxQcKwD+
-         opxmhpc8HH5QM3BlB9ofIpTyuqO5g69IsjlfWjFVxLPeQ+8ZQrWf8f/OPf1m5ZNOrS
-         QYcXGHkIsEKLWqaFhz/dK/onb0LRWEyQv5IDrMohCWkSuSKNs3RpoyiFaPuHnwqIMC
-         vQuKijouFY8DAfTDlitS6yMOlKpxwBXzaiwPVONcqU9OqrdovPzsdZxCXOp7z5hdYf
-         uxMFw3djYFtaAM51WSyvs+fvbz6ZudDvB11K4QsC8k02R2YqZw63PFycnh0aLg2sI5
-         0nC2tXzjreQUA==
-To:     Miguel Ojeda <ojeda@kernel.org>,
+        Mon, 3 Apr 2023 12:32:59 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DAF02D44;
+        Mon,  3 Apr 2023 09:32:43 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-545cb3c9898so487069637b3.7;
+        Mon, 03 Apr 2023 09:32:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680539563;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YVyyKhZhVKFELaIeQcqrXX4LwNgdwjSlp3Qd8NQAQ4Y=;
+        b=alovpYhaZ6LPgZSHYZtdkBDDP0URHuvySe8G9XIGLclC488EV1E3u8rlGcp9dZbnFJ
+         /i8Lzo6P6svFjgqn96yjhxT0ADCbnoj2Px0Gowwg4kddCMBKZwm3AmjpfV+9Gkh1WaV3
+         Z97HoGa5/whNh0FKrEWHg/Svs0YwBmikaDdmu7JOj1JqIRkjxiafRgY58IWwyeOxGfHk
+         qxn0OLjqQ1rLbUhR6XiXIjMbK3SGCGFnx64x3b0ilnbiCCWmir8GsI6733wJ47xX31MP
+         8LOYK1RonB8ftVBLCb7+O1MaQS79d0rkBJUTkpeJKXOg2rDoN4sEoZgmxBq1BSBKjYCH
+         gitQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680539563;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YVyyKhZhVKFELaIeQcqrXX4LwNgdwjSlp3Qd8NQAQ4Y=;
+        b=XjCR5RwvgIsj8lhg3gKeFncsN7nTqbrqhTOXaoLn7E/Xe6EbBulGndGfjUfdSU3XC5
+         /WFBIa0Pzs4bIXd4ylQt9JwFtP4nrU5o4VQw/X5dLfE8BGSNUD5l6HK5oJnANlYBjxrK
+         87p8euwBulBvyZZPgB7Y5Mf1uI1spYGqOpw7jBrqip98EbstkWBRmxAPSkwWzEFXk0gZ
+         30Ox/8kDjVBeDdRDYZHdXc19UEen2umtT6iHkxnPb4jghe4QrvtemgJSzv7jNLl2haOf
+         DzIenZuGlEN4UvOL3Ai1afZixXZYLfzkt8QMFOIESWcdzA2aTWj5nHoYvK0h+8RZ3L2N
+         sTGw==
+X-Gm-Message-State: AAQBX9fE2EM+vc93KKUp2Bj4hTZ8CaQpBIXzomxDRmHZbL4Q5bmw6GRk
+        3AxSaZySSRx+2mSMChmHAKTUtpDBF3N6c51HTns=
+X-Google-Smtp-Source: AKy350aADD43LM+6Fyr445lMNk19yeKF5hWPrYO4YfT7Tju/V/ectKNIFIvehRrqfUvXOPFrQuLZ31r3hVYGzRsmpTo=
+X-Received: by 2002:a81:ac46:0:b0:533:8f19:4576 with SMTP id
+ z6-20020a81ac46000000b005338f194576mr18159721ywj.0.1680539562651; Mon, 03 Apr
+ 2023 09:32:42 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230307102441.94417-1-conor.dooley@microchip.com>
+ <CANiq72=i9je2864iTvZBFnhVLhF7Cema7EPCcdWOJ3mr62SqDg@mail.gmail.com> <a6220e52-9934-422b-9b05-95705b8fd684@spud>
+In-Reply-To: <a6220e52-9934-422b-9b05-95705b8fd684@spud>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 3 Apr 2023 18:32:31 +0200
+Message-ID: <CANiq72=FN3zB-gajQYDxXmnmx7J0UNstFuexSCOg8Oe2fnG=yw@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
+To:     Conor Dooley <conor.dooley@microchip.com>
+Cc:     linux-riscv@lists.infradead.org, conor@kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <alice@ryhl.io>
-From:   Benno Lossin <y86-dev@protonmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Benno Lossin <y86-dev@protonmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>
-Subject: [PATCH v5 15/15] rust: sync: add functions for initializing `UniqueArc<MaybeUninit<T>>`
-Message-ID: <20230403160511.174894-8-y86-dev@protonmail.com>
-In-Reply-To: <20230403154422.168633-1-y86-dev@protonmail.com>
-References: <20230403154422.168633-1-y86-dev@protonmail.com>
-Feedback-ID: 40624463:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Add two functions `init_with` and `pin_init_with` to
-`UniqueArc<MaybeUninit<T>>` to initialize the memory of already allocated
-`UniqueArc`s. This is useful when you want to allocate memory check some
-condition inside of a context where allocation is forbidden and then
-conditionally initialize an object.
+On Thu, Mar 30, 2023 at 10:24=E2=80=AFAM Conor Dooley
+<conor.dooley@microchip.com> wrote:
+>
+> Aye, but that does not mean that I am entitled to add someone else's!
 
-Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
----
- rust/kernel/sync/arc.rs | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+Yeah, definitely! I meant that, from what you said, it sounded like
+adding the `Co-developed-by` was OK without the other (i.e. due to the
+"too" in your sentence).
 
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index d05caa723718..d1a79cce5e54 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -541,6 +541,30 @@ impl<T> UniqueArc<MaybeUninit<T>> {
-             inner: unsafe { Arc::from_inner(inner.cast()) },
-         }
-     }
-+
-+    /// Initialize `self` using the given initializer.
-+    pub fn init_with<E>(mut self, init: impl Init<T, E>) -> core::result::=
-Result<UniqueArc<T>, E> {
-+        // SAFETY: The supplied pointer is valid for initialization.
-+        match unsafe { init.__init(self.as_mut_ptr()) } {
-+            // SAFETY: Initialization completed successfully.
-+            Ok(()) =3D> Ok(unsafe { self.assume_init() }),
-+            Err(err) =3D> Err(err),
-+        }
-+    }
-+
-+    /// Pin-initialize `self` using the given pin-initializer.
-+    pub fn pin_init_with<E>(
-+        mut self,
-+        init: impl PinInit<T, E>,
-+    ) -> core::result::Result<Pin<UniqueArc<T>>, E> {
-+        // SAFETY: The supplied pointer is valid for initialization and we=
- will later pin the value
-+        // to ensure it does not move.
-+        match unsafe { init.__pinned_init(self.as_mut_ptr()) } {
-+            // SAFETY: Initialization completed successfully.
-+            Ok(()) =3D> Ok(unsafe { self.assume_init() }.into()),
-+            Err(err) =3D> Err(err),
-+        }
-+    }
- }
-
- impl<T: ?Sized> From<UniqueArc<T>> for Pin<UniqueArc<T>> {
---
-2.39.2
-
-
+Cheers,
+Miguel
