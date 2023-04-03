@@ -2,48 +2,47 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC1BBC76196
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 10:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77670C761A6
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 10:02:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231492AbjDCKCC (ORCPT
+        id S231937AbjDCKCH (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Apr 2023 06:02:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52382 "EHLO
+        Mon, 3 Apr 2023 06:02:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231971AbjDCKBs (ORCPT
+        with ESMTP id S232163AbjDCKBv (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Apr 2023 06:01:48 -0400
+        Mon, 3 Apr 2023 06:01:51 -0400
 Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F24B049DA;
-        Mon,  3 Apr 2023 03:01:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8778524D;
+        Mon,  3 Apr 2023 03:01:49 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: linasend@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id DEC7242037;
-        Mon,  3 Apr 2023 10:01:36 +0000 (UTC)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id D7606423BA;
+        Mon,  3 Apr 2023 10:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1680516100;
-        bh=5iG+gKdxqfqrOEbvILYGGdMiMNN4NG28/z/pH6bZA08=;
-        h=From:Subject:Date:To:Cc;
-        b=bfMEkvcp6B3G05vneL/GYZA6QOpF/jpx112ukqVEMsHbb8aOTEfzfgYpAeAsU3rMj
-         3d7BMrBu+jZBw2zliSfttuKVx5ud8RIjx5rutmrxXgxySnSMNdusoKPjmIjq/MVu7V
-         DtBgdekW8DdaP500+4c+dHEyo/ZhqqP8890xkAVM0bfRrjuo86gSYtzcNK21NaJYbi
-         D3bcKuRiLaD4Vu4uRb6WU4ZTKybdCV0wYEDQy//8s3UUp7cySH72MHFPuHWS1CqCBu
-         aAVUamVpSsymmpIlcZfTMkeb7exWHH2OzzAckNT3gNYsESyYdohJEUX9fte6kpTn3g
-         Wz7TQbfH9CNBw==
+        s=default; t=1680516108;
+        bh=+HaSZDGbivQJSY7YEFbLidqycutVbcVcWgZLNHkg3sc=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=PEBvY//MxjhXn7GofQK56jt6e0nLl+Cz8rwP5nuTiXfdMcbDcl9MNXNzupCuKIyOS
+         EeWYAjJgQRMUkPkzVUbeKo9E+NXlQ8LiPxACOmWFafGWMFfc8xhPlXlL9Tjenfpv75
+         W31kEJZh3fji0IuhFrEFOPY+AkbrHjz48RQyWPC32fQJOE8VRmENcvKcxg2B2QhZ9d
+         nA9sc+MvZ31pV60s9ZdwnPR7RQ5WBjqadpmcNxYsQbZRFV16grxPLJyeUNT88xaWYc
+         CSxtgq8EkkCoYGtpoa/K39A+gnuBigcUCxasY9M1sDflFEnMRO+0on/e9qorkY7Jbc
+         GEJgHiUoTEwAg==
 From:   Asahi Lina <lina@asahilina.net>
-Subject: [PATCH v2 0/2] rust: sync: Arc: Any downcasting and assume_init()
-Date:   Mon, 03 Apr 2023 19:01:10 +0900
-Message-Id: <20230224-rust-arc-v2-0-5c97a865b276@asahilina.net>
+Date:   Mon, 03 Apr 2023 19:01:12 +0900
+Subject: [PATCH v2 2/2] rust: sync: arc: Add
+ UniqueArc<MaybeUninit<T>::assume_init()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOajKmQC/22NSw6CMBCGr2Jm7RDaYmNceQ/DYiijncQUM8VGQ
- 7i7hbXL738ukFmFM1wOCygXyTKlCvZ4gBApPRhlrAy2ta61tkN95xlJAw7kgvU8duwJanygzDg
- opRC3QvGNQw1ms17Kd/nsL7e+cpQ8T/rdT4vZ1D/7xWCLJ39mJm8cdeZKmaI8JVGTeIZ+XdcfW
- a1geL8AAAA=
+Message-Id: <20230224-rust-arc-v2-2-5c97a865b276@asahilina.net>
+References: <20230224-rust-arc-v2-0-5c97a865b276@asahilina.net>
+In-Reply-To: <20230224-rust-arc-v2-0-5c97a865b276@asahilina.net>
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -56,46 +55,59 @@ Cc:     Andreas Hindborg <a.hindborg@samsung.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>
 X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1680516096; l=1090;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1680516096; l=1928;
  i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
- bh=5iG+gKdxqfqrOEbvILYGGdMiMNN4NG28/z/pH6bZA08=;
- b=nkt1UWwOCWdkdM7BD3JwGd6hwT66+1JyRfcoXByFQvi0Zq6G+g3lbhQSXfIf+fefXIB1o4rvA
- pT1Sg/44QLUDO3xd9pAflcjuqRhchfbf4LzWoYrLFVdRM8DKbEAORvy
+ bh=+HaSZDGbivQJSY7YEFbLidqycutVbcVcWgZLNHkg3sc=;
+ b=D/SmqTHwoV04N4AZ+pjn10VxfxZKRJYh1xmzLnOtmSG/S67qFVwAk3MdCshzPNeavWKr3bfxk
+ fxnk5n1jxLuCUZL+ITvXD8CsT/RYmCobT9gRBt8mc0zEpd/tyYjEIkt
 X-Developer-Key: i=lina@asahilina.net; a=ed25519;
  pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi everyone,
+We can already create `UniqueArc<MaybeUninit<T>>` instances with
+`UniqueArc::try_new_uninit()` and write to them with `write()`. Add
+the missing unsafe `assume_init()` function to promote it to
+`UniqueArc<T>`, so users can do piece-wise initialization of the
+contents instead of doing it all at once as long as they keep the
+invariants (the same requirements as `MaybeUninit::assume_init()`).
 
-This short series is part of the set of dependencies for the drm/asahi
-Apple M1/M2 GPU driver.
+This mirrors the std `Arc::assume_init()` function. In the kernel,
+since we have `UniqueArc`, arguably this only belongs there since most
+use cases will initialize it immediately after creating it, before
+demoting it to `Arc` to share it.
 
-The two patches simply add two missing features to the kernel Arc
-implementation which are present in the Rust std version: `Any`
-downcasting and `assume_init()`.
-
+Co-authored-by: Benno Lossin <y86-dev@protonmail.com>
+Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
 Signed-off-by: Asahi Lina <lina@asahilina.net>
 ---
-Changes in v2:
-- #1: Moved the new function to a separate file, to keep the licensing
-  clearer.
-- #2: Replaced the safety comment with Benno's, from his pin-init series
-  (we both wrote the same patch).
-- Link to v1: https://lore.kernel.org/r/20230224-rust-arc-v1-0-568eea613a41@asahilina.net
+ rust/kernel/sync/arc.rs | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
----
-Asahi Lina (2):
-      rust: sync: arc: Implement Arc<dyn Any + Send + Sync>::downcast()
-      rust: sync: arc: Add UniqueArc<MaybeUninit<T>::assume_init()
- rust/kernel/sync/arc.rs            | 13 +++++++++++++
- rust/kernel/sync/arc/std_vendor.rs | 28 ++++++++++++++++++++++++++++
- 2 files changed, 41 insertions(+)
----
-base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
-change-id: 20230224-rust-arc-ba3c26ed4e6a
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index b904ed898d3a..b664b41e473d 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -489,6 +489,17 @@ impl<T> UniqueArc<MaybeUninit<T>> {
+     /// Converts a `UniqueArc<MaybeUninit<T>>` into a `UniqueArc<T>` by writing a value into it.
+     pub fn write(mut self, value: T) -> UniqueArc<T> {
+         self.deref_mut().write(value);
++        // SAFETY: We have just written the contents fully.
++        unsafe { self.assume_init() }
++    }
++
++    /// Unsafely assume that `self` is initialized.
++    ///
++    /// # Safety
++    ///
++    /// The caller guarantees that the value behind this pointer has been initialized. It is
++    /// *immediate* UB to call this when the value is not initialized.
++    pub unsafe fn assume_init(self) -> UniqueArc<T> {
+         let inner = ManuallyDrop::new(self).inner.ptr;
+         UniqueArc {
+             // SAFETY: The new `Arc` is taking over `ptr` from `self.inner` (which won't be
 
-Thank you,
-~~ Lina
+-- 
+2.40.0
 
