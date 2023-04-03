@@ -2,128 +2,120 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 064E5C76196
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 13:36:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D966C76196
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 13:50:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229945AbjDCNgJ (ORCPT
+        id S229379AbjDCNu6 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Apr 2023 09:36:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39404 "EHLO
+        Mon, 3 Apr 2023 09:50:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbjDCNgJ (ORCPT
+        with ESMTP id S231634AbjDCNu5 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Apr 2023 09:36:09 -0400
-Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A3BB26A9;
-        Mon,  3 Apr 2023 06:36:08 -0700 (PDT)
-Received: by mail-oo1-xc33.google.com with SMTP id l7-20020a4abe07000000b0053e1205c84bso4244489oop.9;
-        Mon, 03 Apr 2023 06:36:08 -0700 (PDT)
+        Mon, 3 Apr 2023 09:50:57 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170EB1DF80;
+        Mon,  3 Apr 2023 06:50:20 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id w13so10368655oik.2;
+        Mon, 03 Apr 2023 06:50:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680528967;
+        d=gmail.com; s=20210112; t=1680529818;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MYKF1IOFdYdmMau8S74pH0eQKa7KDditNTWLVFfh1xU=;
-        b=L72sR8rVpm5kXFW93EZ4PrhCcMDwXowaf6adss76iNOTOukW7EfOLq4xSpMeYXP7Ny
-         vCa5fHNDvOrIhRZ7g79HG87tQ3Sidqv+M/+MluNJiCBYfg2iR+9mG4BlNaf4TGfL8hPp
-         o3UvcnAJBKMy/BLwv4eOXf+u3l5QLBM5N8X/RHfyNyS8ff0JleFiXZ3Knlo4VFNtlQzX
-         vz+WsOya4LJPxTe0EJjd5yCC22KnMdu26Hq2IQjtm6RNVU/F42tqPz23V/URefgOD9I7
-         wlCU14A+zAJoFVspF84+VfTEf2GqcrvxOvnDtBWJFG11I8GfAugHqYyrxsue4nl67vyg
-         XdbA==
+        bh=InpwIkfzMfFKvnUynZiDQ4EYC27ogHEpEwT6lD5JTZU=;
+        b=Q8xv2xnIMER0v9Il8wiCe/yWjZjrBQRXMgoZmxz+BNRL+naN1f34yfFTXhhqEUZo0n
+         97mHDkYMAfPIQEilTAnjRqS/PBbBG8y9Htnoq/FqIG9G2Ocydmi7IALhiSSvK6PQ1/O0
+         C5W+eUG/X9zXQiwklc5OY8vueJp6IirvRkL9gPrwlRPcUYPJtMaWLPlSN+v9TkkIGmU8
+         yHkaZiX5nCsM5v8igTmMzPUSb0V+r+orKDy4/ak9c1+4o+8rr24WpHLeElYygqCHLpub
+         uZ0JQlIt3Be8NtcU8EniYPhrpIXMOx5K1VN6+ck/EKqnnkCRD4FKtiBx1Dr7otugrHNV
+         R/cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680528967;
+        d=1e100.net; s=20210112; t=1680529818;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MYKF1IOFdYdmMau8S74pH0eQKa7KDditNTWLVFfh1xU=;
-        b=xR5fdUuwODDHpC5hzHbs7EIb1sobcbEB1ICwDYFoo9BBsNS4ETk34D2fl3+8qtPHNB
-         fT9r57fYzUpigzHtjiHvgZpb6//8P9I9F4o8J8sP/htt9knOZhoy37kz304ipzwqGjqd
-         QxKmWwsBlGNS4JYyEEmhiJOqGidDSpwAB3yV7tY4irUx17fhZDb6NS7lfYH5j04zCmwW
-         VLY+fI/oIITF/6dYLgGPTnk1yuDYoh23XLKDvLEZNJIy+HIO0LHnqEGQmjBAYWFcNOMH
-         XwDTnodOADN0wK8nFkI1IF+SFd+UlgYBwGy8kt7pRBywx8/k7HK2Fm8TQUfZDxpg/cXb
-         hqLQ==
-X-Gm-Message-State: AO0yUKWR8YVv2dFLWxS/yL3HW4itDrhwsRqe5zHOMCcV3+ONyTlUWcz6
-        8/EYwYhxmB4y2y+dC+YlvZ0=
-X-Google-Smtp-Source: AK7set99HvhvZ4qBDldx7BlcBiuxil1nBzB/DEtMzvSzNxKAuNow0gRY/3kakarANXXCi2A/QgmktA==
-X-Received: by 2002:a4a:4fce:0:b0:53b:6bc2:6429 with SMTP id c197-20020a4a4fce000000b0053b6bc26429mr16827535oob.0.1680528967434;
-        Mon, 03 Apr 2023 06:36:07 -0700 (PDT)
+        bh=InpwIkfzMfFKvnUynZiDQ4EYC27ogHEpEwT6lD5JTZU=;
+        b=Sp0DD1PSnJtjbfTi6YaAP6+GsXABSUvVqYO6hGVZBBrGPZrrVgOwhWRmVbjiRMmPgw
+         ItiEEawg3F+owaKG8lVaJKveazjSIn9qKbmbzH6s1hiLIzcDn7AZJ4rgQtz63hHrmSOE
+         76+fSl1w4DdJS88nMH+DkgtvhnowatmtDw3457Y/AKzPTrAcBPm7u+BTpmYflKgaU3/o
+         rsW7xWO1TlnqyVC9y4Y2ku2oSHfp7G/+zwXXwYrP9IqSgo4OxQunx+sO7VmcXYFCx9jG
+         nj8RsZbhzVbyO6ZCIfYB6tDFGJ0QZegazjy7sLGE6+EUcSPZUlY2A4KD8vblqS1544cC
+         f7DA==
+X-Gm-Message-State: AAQBX9dc6nXHV3CXEBuDwPY5EqZsqNzr768QWmjnGh2Ml9P4ouHHktjW
+        iMO5UmFrdkLE4wAAw9sU/uc=
+X-Google-Smtp-Source: AKy350YvvRrZtco0zHUDCvnjm4ThL3hC+XGGBF0DyYSjuxDIy1FgOKbiwQt6y/aXCiCqhq32GpiN5g==
+X-Received: by 2002:a54:4d01:0:b0:389:93da:f533 with SMTP id v1-20020a544d01000000b0038993daf533mr4847055oix.40.1680529818512;
+        Mon, 03 Apr 2023 06:50:18 -0700 (PDT)
 Received: from wedsonaf-dev ([189.124.190.154])
-        by smtp.gmail.com with ESMTPSA id n15-20020a4ad62f000000b0053a7aaa85a0sm4005858oon.0.2023.04.03.06.36.02
+        by smtp.gmail.com with ESMTPSA id p20-20020a4a8e94000000b0049fd5c02d25sm4019354ook.12.2023.04.03.06.50.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Apr 2023 06:36:07 -0700 (PDT)
-Date:   Mon, 3 Apr 2023 10:35:58 -0300
+        Mon, 03 Apr 2023 06:50:18 -0700 (PDT)
+Date:   Mon, 3 Apr 2023 10:50:09 -0300
 From:   Wedson Almeida Filho <wedsonaf@gmail.com>
 To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+Cc:     Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Gary Guo <gary@garyguo.net>,
         =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <walmeida@microsoft.com>,
         Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
         Waiman Long <longman@redhat.com>
-Subject: Re: [PATCH 12/13] rust: sync: introduce `CondVar`
-Message-ID: <ZCrWPiqfAxsBNL+W@wedsonaf-dev>
+Subject: Re: [PATCH 03/13] rust: lock: introduce `Mutex`
+Message-ID: <ZCrZkUaoslXHpige@wedsonaf-dev>
 References: <20230330043954.562237-1-wedsonaf@gmail.com>
- <20230330043954.562237-12-wedsonaf@gmail.com>
- <20230330125927.GD124812@hirez.programming.kicks-ass.net>
- <ZCWjIaByRHDhdCud@wedsonaf-dev>
- <20230403085959.GS4253@hirez.programming.kicks-ass.net>
+ <20230330043954.562237-3-wedsonaf@gmail.com>
+ <20230330130108.GE124812@hirez.programming.kicks-ass.net>
+ <ZCXZMNj7aOKbC7Ev@boqun-archlinux>
+ <20230403082052.GR4253@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230403085959.GS4253@hirez.programming.kicks-ass.net>
+In-Reply-To: <20230403082052.GR4253@hirez.programming.kicks-ass.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Apr 03, 2023 at 10:59:59AM +0200, Peter Zijlstra wrote:
-> On Thu, Mar 30, 2023 at 11:56:33AM -0300, Wedson Almeida Filho wrote:
-> > On Thu, Mar 30, 2023 at 02:59:27PM +0200, Peter Zijlstra wrote:
-> > > On Thu, Mar 30, 2023 at 01:39:53AM -0300, Wedson Almeida Filho wrote:
+On Mon, Apr 03, 2023 at 10:20:52AM +0200, Peter Zijlstra wrote:
+> On Thu, Mar 30, 2023 at 11:47:12AM -0700, Boqun Feng wrote:
+> > On Thu, Mar 30, 2023 at 03:01:08PM +0200, Peter Zijlstra wrote:
+> > > On Thu, Mar 30, 2023 at 01:39:44AM -0300, Wedson Almeida Filho wrote:
+> > > > From: Wedson Almeida Filho <walmeida@microsoft.com>
+> > > > 
+> > > > This is the `struct mutex` lock backend and allows Rust code to use the
+> > > > kernel mutex idiomatically.
 > > > 
-> > > > +    fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guard<'_, T, B>) {
-> > > > +        let wait = Opaque::<bindings::wait_queue_entry>::uninit();
-> > > > +
-> > > > +        // SAFETY: `wait` points to valid memory.
-> > > > +        unsafe { bindings::init_wait(wait.get()) };
-> > > > +
-> > > > +        // SAFETY: Both `wait` and `wait_list` point to valid memory.
-> > > > +        unsafe {
-> > > > +            bindings::prepare_to_wait_exclusive(self.wait_list.get(), wait.get(), wait_state as _)
-> > > > +        };
-> > > 
-> > > I can't read this rust gunk, but where is the condition test gone?
-> > > 
-> > > Also, where is the loop gone to?
+> > > What, if anything, are the plans to support the various lockdep
+> > > annotations? Idem for the spinlock thing in the other patch I suppose.
 > > 
-> > They're both at the caller. The usage of condition variables is something like:
+> > FWIW:
 > > 
-> > while guard.value != v {
-> >     condvar.wait_uninterruptible(&mut guard);
-> > }
+> > *	At the init stage, SpinLock and Mutex in Rust use initializers
+> > 	that are aware of the lockdep, so everything (lockdep_map and
+> > 	lock_class) is all set up.
 > > 
-> > (Note that this is not specific to the kernel or to Rust: this is how condvars
-> > work in general. You'll find this in any textbook on the topic.)
+> > *	At acquire or release time, Rust locks just use ffi to call C
+> > 	functions that have lockdep annotations in them, so lockdep
+> > 	should just work.
 > > 
-> > In the implementation of wait_internal(), we add the local wait entry to the
-> > wait queue _before_ releasing the lock (i.e., before the test result can
-> > change), so we guarantee that we don't miss wake up attempts.
 > 
-> Ah, so you've not yet been exposed to the wonderful 'feature' where
-> pthread_cond_timedwait() gets called with .mutex=NULL and people expect
-> things to just work :/ (luckily not accepted by the majority of
-> implementations)
+> ffi is what the C++ world calls RAII ?
 
-Rust doesn't have this problem: a `Guard` cannot exist without a lock, and one
-cannot call `wait` or `wait_uninterruptible` without a `Guard`.
+No, ffi is 'foreign function interface', it just means that the caller will use
+the same ABI as the callee.
 
-> Or a little more devious, calling signal and not holding the same mutex.
+> But yes, I got that far, but I wondered about things like
+> spin_lock_nested(&foo, SINGLE_DEPTH_NESTING) and other such 'advanced'
+> annotations.
+> 
+> Surely we're going to be needing them at some point. I suppose you can
+> do the single depth nesting one with a special guard type (or whatever
+> you call that in the rust world) ?
 
-We don't require that callers hold the lock while singaling. If they signal when
-the condition isn't satisfied (with or without the lock held, it doesn't
-matter), it will just look like a spurious signal to the waiting thread.
+I haven't looked at all the advanced annotations, but something like
+spin_lock_nested/mutex_lock_nested can be exposed as a lock_nested() associated
+function of the `Lock` type, so one would do:
 
-> I just got alarm bells going off because I see prepare_to_wait without an
-> obvious loop around it.
-
-Fair enough, we do need a loop.
+  let guard = my_mutex.lock_nested(SINGLE_DEPTH_NESTING);
+  // Do something with data protected by my_mutex.
