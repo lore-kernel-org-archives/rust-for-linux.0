@@ -2,33 +2,33 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23BAFC76196
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 15:45:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48D89C76188
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 15:46:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232624AbjDCPpl (ORCPT
+        id S233033AbjDCPqC (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Apr 2023 11:45:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51196 "EHLO
+        Mon, 3 Apr 2023 11:46:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232204AbjDCPpb (ORCPT
+        with ESMTP id S232808AbjDCPpr (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Apr 2023 11:45:31 -0400
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47FFD3A99;
-        Mon,  3 Apr 2023 08:45:13 -0700 (PDT)
-Date:   Mon, 03 Apr 2023 15:44:58 +0000
+        Mon, 3 Apr 2023 11:45:47 -0400
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A758240F6
+        for <rust-for-linux@vger.kernel.org>; Mon,  3 Apr 2023 08:45:28 -0700 (PDT)
+Date:   Mon, 03 Apr 2023 15:45:08 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680536711; x=1680795911;
-        bh=NOtOxMB2O2qfeH9Un+9EFwj4vLjfj5tD+KDIQcfJKm8=;
+        s=protonmail3; t=1680536726; x=1680795926;
+        bh=7rH6H6G+ATzJ5NdhnHFFoHIa5Qvd43Dus1uGWQ71zqY=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=Kc1mKsi1EvChhlr+Hwv9ESwI6XrDrz59+80MK5y+srICbJj3Iyqt3j9WKmqUy55cT
-         3ReN/JTZwA+EW11d4LmcW391LGo5uIetEYXEN8UKX3SPJOKKHTYwypvgEMOGHHt7Ap
-         DfrqbMjuY5SRN6LXqPmGw6kk7Sj7qQaBX54KFAXarPhO2bE09bn6tCnh0OKJDN9g8P
-         Ajvy1fqYT4xzYh4Hs2BjBlhpivyKAFzEw/agEE5MfJw2JLzzVXDIM8fB3hzTFS2dtr
-         Ovp5RUvygyq+2DflraBsuTI3JxSzOeoBdS6Kx0RRk4ptf20y/vyOZ6ZaI8OkHAgf38
-         d8yaP6h8Wdnhw==
+        b=rOhPrLQYAcKOWJDIU61GZz6rq/yIy1wLIxWh57OGv3fmXFw7r5v7+S03zLG3pXTxm
+         8nanqh+YIm0CVcVeWxA1NvyBMnNg+1KR1C5MdWqvKMcHcctsH6sVnXR96dCM7Zihpm
+         DLhpujgwjcrNizjgXs4mWNPd4cqXkbn/8X8rdPrrfci8ZBu6gJD4BxeE8v5n2tTuDh
+         lLpGrC4ZyfcgVztNhTa4kLwP+vC+Yf3vrDPp8BaLSuwlcelXcoxshPx/qdhWhfgMWz
+         mlLUw/OcRT+SwGY6gT2fmmvFLlN1hTRyTKlZKvskGX1ID2zx3wHxUBk6ekkTfjsTnx
+         Veh8ArMiQoonA==
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -40,8 +40,8 @@ Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev, Benno Lossin <y86-dev@protonmail.com>,
         Andreas Hindborg <a.hindborg@samsung.com>,
         Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH v5 03/15] rust: sync: change error type of constructor functions
-Message-ID: <20230403154422.168633-4-y86-dev@protonmail.com>
+Subject: [PATCH v5 05/15] rust: types: add `Opaque::raw_get`
+Message-ID: <20230403154422.168633-6-y86-dev@protonmail.com>
 In-Reply-To: <20230403154422.168633-1-y86-dev@protonmail.com>
 References: <20230403154422.168633-1-y86-dev@protonmail.com>
 Feedback-ID: 40624463:user:proton
@@ -52,64 +52,39 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Change the error type of the constructors of `Arc` and `UniqueArc` to be
-`AllocError` instead of `Error`. This makes the API more clear as to
-what can go wrong when calling `try_new` or its variants.
+This function mirrors `UnsafeCell::raw_get`. It avoids creating a
+reference and allows solely using raw pointers.
+The `pin-init` API will be using this, since uninitialized memory
+requires raw pointers.
 
 Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
-Cc: Gary Guo <gary@garyguo.net>
-Cc: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/sync/arc.rs | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ rust/kernel/types.rs | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index f2f1c83d72ba..aa7135f0f238 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -17,11 +17,11 @@
-
- use crate::{
-     bindings,
--    error::Result,
-     types::{ForeignOwnable, Opaque},
- };
- use alloc::boxed::Box;
- use core::{
-+    alloc::AllocError,
-     marker::{PhantomData, Unsize},
-     mem::{ManuallyDrop, MaybeUninit},
-     ops::{Deref, DerefMut},
-@@ -149,7 +149,7 @@ unsafe impl<T: ?Sized + Sync + Send> Sync for Arc<T> {}
-
- impl<T> Arc<T> {
-     /// Constructs a new reference counted instance of `T`.
--    pub fn try_new(contents: T) -> Result<Self> {
-+    pub fn try_new(contents: T) -> Result<Self, AllocError> {
-         // INVARIANT: The refcount is initialised to a non-zero value.
-         let value =3D ArcInner {
-             // SAFETY: There are no safety requirements for this FFI call.
-@@ -469,7 +469,7 @@ pub struct UniqueArc<T: ?Sized> {
-
- impl<T> UniqueArc<T> {
-     /// Tries to allocate a new [`UniqueArc`] instance.
--    pub fn try_new(value: T) -> Result<Self> {
-+    pub fn try_new(value: T) -> Result<Self, AllocError> {
-         Ok(Self {
-             // INVARIANT: The newly-created object has a ref-count of 1.
-             inner: Arc::try_new(value)?,
-@@ -477,7 +477,7 @@ impl<T> UniqueArc<T> {
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index 9d0fdbc55843..ff2b2fac951d 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -238,6 +238,14 @@ impl<T> Opaque<T> {
+     pub fn get(&self) -> *mut T {
+         UnsafeCell::raw_get(self.0.as_ptr())
      }
++
++    /// Gets the value behind `this`.
++    ///
++    /// This function is useful to get access to the value without creatin=
+g intermediate
++    /// references.
++    pub const fn raw_get(this: *const Self) -> *mut T {
++        UnsafeCell::raw_get(this.cast::<UnsafeCell<T>>())
++    }
+ }
 
-     /// Tries to allocate a new [`UniqueArc`] instance whose contents are =
-not initialised yet.
--    pub fn try_new_uninit() -> Result<UniqueArc<MaybeUninit<T>>> {
-+    pub fn try_new_uninit() -> Result<UniqueArc<MaybeUninit<T>>, AllocErro=
-r> {
-         Ok(UniqueArc::<MaybeUninit<T>> {
-             // INVARIANT: The newly-created object has a ref-count of 1.
-             inner: Arc::try_new(MaybeUninit::uninit())?,
+ /// A sum type that always holds either a value of type `L` or `R`.
 --
 2.39.2
 
