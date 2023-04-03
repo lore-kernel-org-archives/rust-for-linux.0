@@ -2,163 +2,102 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48ECBC76188
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 17:15:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2822C76196
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 17:56:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231987AbjDCRPG (ORCPT
+        id S232054AbjDCR4O (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Apr 2023 13:15:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50678 "EHLO
+        Mon, 3 Apr 2023 13:56:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231411AbjDCRPF (ORCPT
+        with ESMTP id S231645AbjDCR4N (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Apr 2023 13:15:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284B61BF0;
-        Mon,  3 Apr 2023 10:15:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B9FF762276;
-        Mon,  3 Apr 2023 17:15:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E2DC433D2;
-        Mon,  3 Apr 2023 17:14:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680542103;
-        bh=goHoB2jLaOy/EZiBpWOJOkuOxo+2a8uUDASlH5Rjdeo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZwzCFdR2HlV/3xEQ2th+BoUWRZxclFUkHHSDMfWoUpFshEVDp4PwvXfwPfwER46zu
-         utJLROIS9/Qc/2ko2aE1xfHFyTEz59HpTsq4MoWb4c8DmwUTg+qDyjk3du2n2sBJvX
-         dQUKlZ5L1keWxOxmBB8S08JMiituLrqzxnnE06tbsYuy+/FLZTfjyTp/0PDW7Kairo
-         c84lBAg53Eb2j6lj7QaRqTK0B9n6oGkXHkX5TPH+344DGvaXCqX7DY4VXPMy8FoKmA
-         nFSYMz35eiNfDuL4I3hMZwKn8jWjD0oZGCwIJEYgZes3oq7ZktScL+GuTEm6fj2N7i
-         43CXpTlrr0RJg==
-Date:   Mon, 3 Apr 2023 18:14:57 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Conor Dooley <conor.dooley@microchip.com>,
-        linux-riscv@lists.infradead.org, Miguel Ojeda <ojeda@kernel.org>,
+        Mon, 3 Apr 2023 13:56:13 -0400
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 219D72710;
+        Mon,  3 Apr 2023 10:55:53 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id C12715C0130;
+        Mon,  3 Apr 2023 13:55:50 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Mon, 03 Apr 2023 13:55:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
+        :content-transfer-encoding:content-type:content-type:date:date
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1680544550; x=1680630950; bh=dTmrn8YSJjQ6WsksbGTSgRXcTnrxTJU/czk
+        blQD1EmQ=; b=u6E0++7A4iolZKYZppveiU6uMsdhrLJsiA1NYEfnBPYYrku4q5E
+        xHW8SKvttqrviwOCf+3WsqlzHzUXJ48/ojtj1udc67hP5xzQ7iauZxeZxOMKdwDz
+        Vn67SQvhU+T+HSCQnSAfjHH0+wP3fC8zQeAdwVOr+73NpCsPRmnvJk9s9mzgiWTd
+        3CXY4+fJP72b+r4W96iH8vb9YXifrd/JK/7IKRt9wxKv0CBFeWxDGQL5G2XkJiHy
+        DlHjPJ4bLZY65bDCtOLKTk7Ubvll9XvKNgmxApArEyvOnt9M0SnDVgvL45COp/Xq
+        WWnpVHxnEBbKzzauZS69l7FbYO13KOCWJYQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1680544550; x=1680630950; bh=dTmrn8YSJjQ6WsksbGTSgRXcTnrxTJU/czk
+        blQD1EmQ=; b=W3hnw3276B+lWcruHF/tn+EKlU3Aba1gKkyZtiX6JzwTLpw9jrG
+        JuloL2JiwgEwZSj+kLx0W0kH/C824ASvHPimwXUtBlpkJ7ft+qsWFi5O+IVjswLh
+        6x82iXYLjmGPsI7D9e9Tg3iZN3z7jXg1YB75uypmSxmx0vMCPClorwIaLuzZhZCe
+        LHYGZ6w5yoo4ZENymFEvqClhmtwxer9oaSjlItwoMCW3PG1ODrniZUolSpcH8M59
+        FNa8Ca3d/TwswQj/bkR5NhHK42rM9WfRQKaHhcqCTj9Q10pSJ6YZAvsbhElmuexa
+        mnkVgYqc3OdfrI9F1JnyNyzjBznldT7/phw==
+X-ME-Sender: <xms:JhMrZCFNrrvmvPJGBdv1D5up2CdUS35irMeNajTJMDHDx4sdzSNK2Q>
+    <xme:JhMrZDWZ5IJdHUm7Ef4rmQGE_XW5fOeqVgsSuPHS9tfbZGRnHFlO7QwDm8twzW5b8
+    NzB6f9xinfFKfvv1w>
+X-ME-Received: <xmr:JhMrZMIxN0eArtQtH2pu18FeGwZ657T8pudTVLKsbvKz_cYJ06mwF7hTXSY2KvB08M9bGtZO885HVPE92GimkBR1Lg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeijedguddvtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefkffggfgfhuffvvehfjggtgfesthejredttdefjeenucfhrhhomheptehl
+    ihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnh
+    ephfehueeileevjeefkeetvdffveffudeuhffgtedvuefgiefgiedvjeegvdejleejnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvg
+    esrhihhhhlrdhioh
+X-ME-Proxy: <xmx:JhMrZMHn70hMGm4lBkaV-nv8hKncpERu0o30LYX_IB4yRAhAgIYoYA>
+    <xmx:JhMrZIXXjNh8c9f-i85gsTHYupxRV_DHZES9SSjJAGTFoUsxzuw61w>
+    <xmx:JhMrZPPdG0MN_rLwGJH6SJHo3YXE6G5qogrODyBY_ZeUBTO0dbiXUw>
+    <xmx:JhMrZBNVHC45FoYYph5Y89nNuRn5K4pxH1EZ0Yo_nUMznpt1x2fxkA>
+Feedback-ID: i56684263:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 3 Apr 2023 13:55:48 -0400 (EDT)
+Message-ID: <b3a2bf3c-305a-029f-e4f8-f06d2beeb481@ryhl.io>
+Date:   Mon, 3 Apr 2023 19:55:59 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+From:   Alice Ryhl <alice@ryhl.io>
+Subject: Re: [PATCH v5 01/15] rust: enable the `pin_macro` feature
+To:     Benno Lossin <y86-dev@protonmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, Andreas Hindborg <a.hindborg@samsung.com>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
-Message-ID: <20230403-repose-cartwheel-c3e10c231cae@spud>
-References: <20230307102441.94417-1-conor.dooley@microchip.com>
- <CANiq72=i9je2864iTvZBFnhVLhF7Cema7EPCcdWOJ3mr62SqDg@mail.gmail.com>
- <a6220e52-9934-422b-9b05-95705b8fd684@spud>
- <b5fba6b3-177c-4325-905a-8f9f633a592a@spud>
- <CANiq72mip7Xs5vnS4KccxCmBmRbKGki7AYTTHxwaeyr3amvSWw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="XTCdhfO5W5YlGhZZ"
-Content-Disposition: inline
-In-Reply-To: <CANiq72mip7Xs5vnS4KccxCmBmRbKGki7AYTTHxwaeyr3amvSWw@mail.gmail.com>
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+References: <20230403154422.168633-1-y86-dev@protonmail.com>
+ <20230403154422.168633-2-y86-dev@protonmail.com>
+Content-Language: en-US
+In-Reply-To: <20230403154422.168633-2-y86-dev@protonmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On 4/3/23 17:44, Benno Lossin wrote:
+> This feature enables the use of the `pin!` macro for the `stack_pin_init!`
+> macro. This feature is already stabilized in Rust version 1.68.
+> 
+> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
+> Cc: Gary Guo <gary@garyguo.net>
+> Cc: Andreas Hindborg <a.hindborg@samsung.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Acked-by: Boqun Feng <boqun.feng@gmail.com>
 
---XTCdhfO5W5YlGhZZ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Apr 03, 2023 at 06:35:45PM +0200, Miguel Ojeda wrote:
-> On Thu, Mar 30, 2023 at 11:12=E2=80=AFAM Conor Dooley
-> <conor.dooley@microchip.com> wrote:
-> >
-> > I'd rather do this in the RISC-V Makefile so that it does not get
-> > forgotten.
->=20
-> Sounds good to me! We want to have the least amount of things possible
-> in the common pieces (e.g. for the target spec file we moved some
-> flags); so the more we move out to `arch/`, the better.
->=20
-> > If my understanding of bindgen is correct, we don't actually need to be
-> > honest to it about what extensions the rest of the kernel is compiled
-> > with, only make sure that it is not called with arguments it does not
-> > understand?
->=20
-> As long as bindgen generates things with the right ABI etc., yeah.
-> But, in principle, enabling one extension one side but not the other
-> could be wrong if it ends up in something that Rust uses, e.g. if the
-> C side does:
->=20
->     #ifdef __ARM_ARCH_7R__
->         int x;
->     #else
->         char x;
->     #endif
->=20
-> and Rust attempts to use it, then particular `-march` builds could be bro=
-ken.
-
-To be on the safe side then, we should really disable the extensions
-across the whole kernel. I don't *think* we have any madness at the
-moment like in the above, but it is better to be on the safe side.
-As I note below, it's just one extension for now anyway.
-
-> > What version of GCC do I need to replicate this? I can build tip-of-tree
-> > gcc if needs be.
->=20
-> Sorry, what do you want to replicate? If you mean what we had in the
-> old GitHub CI, I see:
->=20
->     CONFIG_CC_VERSION_TEXT=3D"riscv64-linux-gnu-gcc (Ubuntu
-> 11.3.0-1ubuntu1~22.04) 11.3.0"
->=20
-> which successfully boots in QEMU for the kernel config we tested.
-
-No, I misunderstood your question. I thought you meant something else
-entirely.
-
-> But if you are asking what should be supported, I guess it depends on
-> the RISC-V maintainers. Ideally, everything that the kernel supports
-> (GCC >=3D 5.1),
-
-Heh, as if that number is true across the board!
-
-> but since the GCC+Rust builds are so experimental, I
-> think as long as something is tested from time to time, it would be
-> great (to at least know not everything is completely broken).
->=20
-> But if you think that would be too much effort to maintain, or even
-> GCC builds in general, then please feel free to ignore it for the time
-> being, i.e. it is better to have LLVM builds rather than nothing! :)
-
-Yeah, it may be worth getting just the LLVM bits in. I abhor the -march
-handling and it may end up looking like shite with the zicsr &
-zifencei handling.
-Worst comes to worst, can permit gcc builds by just removing all the
-extensions that get passed in -march for RUST && CC_IS_GCC type
-scenarios. The only one of those at the moment is zihintpause & I don't
-suppose too many tears will be shed over that.
-For now it's safe to assume that LLVM doesn't require zicsr or zifencei
-[1], we don't need to do a version dance right away.
-
-=C2=AF\_(=E3=83=84)_/=C2=AF,
-Conor.
-
-1 - https://reviews.llvm.org/D147183#4233360
-
---XTCdhfO5W5YlGhZZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZCsJkAAKCRB4tDGHoIJi
-0sYFAQDDRMpXIXaf93gLvJjaLEOPJ8XmdZ81CElLrdC/W/n/QgD/TsQf3QYbIo/K
-DV49NcCFvY9TYFvAJ4G3pq6JXWWEEgw=
-=tW4o
------END PGP SIGNATURE-----
-
---XTCdhfO5W5YlGhZZ--
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
