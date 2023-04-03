@@ -2,105 +2,116 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 900AEC76196
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 09:00:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B22DC76196
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 09:34:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231868AbjDCJAZ (ORCPT
+        id S231725AbjDCJex (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Apr 2023 05:00:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51016 "EHLO
+        Mon, 3 Apr 2023 05:34:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231846AbjDCJAW (ORCPT
+        with ESMTP id S232111AbjDCJe1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Apr 2023 05:00:22 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F575CDC4;
-        Mon,  3 Apr 2023 02:00:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=evda/SuAwOIMhD/EDAEOROxMBHIC6v8BvQ+meUe3n+Q=; b=GgBB6OBKxMGzKsYRvT2vCOPV06
-        z3QkqxC+8CwokpPcZ8LkMCS5/Ir6IZO/X51iYN8FGMZ/+YzoMH7nYmowSbxghrxkEgcJ0TwjFitvk
-        lPJU0SxNzjCws2YL2nEPRtmSdtCEQQwPUdvvBZ88JeG6dXGBQanJw+BCjxUfaENDZrWMihcBzYhFH
-        15lree/JtoNSrcHGfmXmlQBwtX3S5AggbpjfObTXcWxKjQ2yJi6B3THx2Fuow2kIllJBlLEsmeb0+
-        F/Tiru4/b+bpN0tL6WLSuB5Pr+EWPCobzvwP0PXkkXb0BlP0lKpdWtccMTcC3ytMk+WQm1y5P9PaM
-        OYOMl8nA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1pjG2j-008oBc-08;
-        Mon, 03 Apr 2023 09:00:01 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        Mon, 3 Apr 2023 05:34:27 -0400
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30BE01117E;
+        Mon,  3 Apr 2023 02:34:02 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id DF358300338;
-        Mon,  3 Apr 2023 10:59:59 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id C0F27285EA717; Mon,  3 Apr 2023 10:59:59 +0200 (CEST)
-Date:   Mon, 3 Apr 2023 10:59:59 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Waiman Long <longman@redhat.com>
-Subject: Re: [PATCH 12/13] rust: sync: introduce `CondVar`
-Message-ID: <20230403085959.GS4253@hirez.programming.kicks-ass.net>
-References: <20230330043954.562237-1-wedsonaf@gmail.com>
- <20230330043954.562237-12-wedsonaf@gmail.com>
- <20230330125927.GD124812@hirez.programming.kicks-ass.net>
- <ZCWjIaByRHDhdCud@wedsonaf-dev>
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: linasend@asahilina.net)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 49C1642037;
+        Mon,  3 Apr 2023 09:33:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+        s=default; t=1680514438;
+        bh=QF2xjWnU+Upz2uOIFUZSXuBfb3X3n6mqz6fHktFg6Y0=;
+        h=From:Subject:Date:To:Cc;
+        b=o5jY98udMPDyja3v8O2S6/AWf2UgvbLViBr5/ajaIdUj9nULu5Km1ruc+rG+tJrqN
+         j9+V05imSeFYFO2aPw5atEqYJdsZbcttgr6LV9jxh1uxF6mg75tjZzn/6GOPy37GI9
+         MaXZ3mVyskBwzdWamR4I1j8mZxVHZbqKqh0xNa+aOjjxY1CQYcE4IzgnD/Zp6Vz9kf
+         uiGllrswYtk3m3DMCom7+lnI01D89/Di1LYetwhkp77vTdXLSx8Q2LaQrpe10wDVcy
+         IcSzsJ4L7HjlP5dv++rwhBiFacrD0SRTVDfsJ+Dt9eCSH+35Zf/QpeV2trdFgGfj97
+         Gczju5SOnvxLg==
+From:   Asahi Lina <lina@asahilina.net>
+Subject: [PATCH v2 0/2] rust: Add uapi crate
+Date:   Mon, 03 Apr 2023 18:33:51 +0900
+Message-Id: <20230329-rust-uapi-v2-0-bca5fb4d4a12@asahilina.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZCWjIaByRHDhdCud@wedsonaf-dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAH+dKmQC/22Nyw6CMBBFf8V07RA6RR6u/A/DYoDBTmIKaaHRE
+ P7dwtrluY+cTQX2wkHdL5vyHCXI5BLg9aJ6S+7FIENihTma3GADfg0LrDQL1E1RoOaGbgOqtO8
+ oMHSeXG+PRywzA77XRzV7HuVzap5tYithmfz3tEZ9pP8EUUMOzFU9YmNMheWDAll5i6PM8aLaf
+ d9/WFad5sEAAAA=
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>
+X-Mailer: b4 0.12.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1680514434; l=2079;
+ i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
+ bh=QF2xjWnU+Upz2uOIFUZSXuBfb3X3n6mqz6fHktFg6Y0=;
+ b=cexXIb2Ua4kAUE1Fqp7maY6ZSva2VPVE2kt7u1P+uTfDgFL4Y3TdGVrlRHs/vcMi2nrhkSnet
+ WwkIHk2S416CzTv/1vmbbVeTVq8UpJBhkZhx7nek15DU3izf+PONyw8
+X-Developer-Key: i=lina@asahilina.net; a=ed25519;
+ pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Mar 30, 2023 at 11:56:33AM -0300, Wedson Almeida Filho wrote:
-> On Thu, Mar 30, 2023 at 02:59:27PM +0200, Peter Zijlstra wrote:
-> > On Thu, Mar 30, 2023 at 01:39:53AM -0300, Wedson Almeida Filho wrote:
-> > 
-> > > +    fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guard<'_, T, B>) {
-> > > +        let wait = Opaque::<bindings::wait_queue_entry>::uninit();
-> > > +
-> > > +        // SAFETY: `wait` points to valid memory.
-> > > +        unsafe { bindings::init_wait(wait.get()) };
-> > > +
-> > > +        // SAFETY: Both `wait` and `wait_list` point to valid memory.
-> > > +        unsafe {
-> > > +            bindings::prepare_to_wait_exclusive(self.wait_list.get(), wait.get(), wait_state as _)
-> > > +        };
-> > 
-> > I can't read this rust gunk, but where is the condition test gone?
-> > 
-> > Also, where is the loop gone to?
-> 
-> They're both at the caller. The usage of condition variables is something like:
-> 
-> while guard.value != v {
->     condvar.wait_uninterruptible(&mut guard);
-> }
-> 
-> (Note that this is not specific to the kernel or to Rust: this is how condvars
-> work in general. You'll find this in any textbook on the topic.)
-> 
-> In the implementation of wait_internal(), we add the local wait entry to the
-> wait queue _before_ releasing the lock (i.e., before the test result can
-> change), so we guarantee that we don't miss wake up attempts.
+In general, direct bindgen bindings for C kernel APIs are not intended
+to be used by drivers outside of the `kernel` crate. However, some
+drivers do need to interact directly with UAPI definitions to implement
+userspace APIs.
 
-Ah, so you've not yet been exposed to the wonderful 'feature' where
-pthread_cond_timedwait() gets called with .mutex=NULL and people expect
-things to just work :/ (luckily not accepted by the majority of
-implementations)
+Instead of making this an exception to the use of the `bindings` crate,
+introduce a new `uapi` crate that will contain only these publicly
+usable definitions. The build logic mirrors the `bindings` crate, but
+there is no helper support since UAPIs are only intended to contain
+constant and type definitions, not function prototypes.
 
-Or a little more devious, calling signal and not holding the same mutex.
+In the future, we would like to extend this to also auto-derive and
+validate certain safety properties for UAPI structure definitions, such
+as that they are safely castable to/from "bag of bits" buffers.
 
-But then yes, I suppose it should work. I just got alarm bells going off
-because I see prepare_to_wait without an obvious loop around it.
+The first patch introduces the `uapi` crate proper and stands on its own,
+while the second patch introduces the `ioctl` module in the kernel crate
+that uses it.
+
+(Miguel: this series should apply stand-alone now)
+
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+---
+Changes in v2:
+- Fixed the trailing '\' warning (mirroring the fix from Vicenzo
+  Palazzo)
+- Pulled in the ioctl module patch into this series. Per the discussion
+  in the meeting, this could be moved into the uapi crate in principle,
+  but we can decide to do that later since the whole buildsystem is
+  likely to undergo major changes anyway.
+- Link to v1: https://lore.kernel.org/r/20230329-rust-uapi-v1-0-ee78f2933726@asahilina.net
+
+---
+Asahi Lina (2):
+      rust: uapi: Add UAPI crate
+      rust: ioctl: Add ioctl number manipulation functions
+ rust/.gitignore         |  1 +
+ rust/Makefile           | 18 +++++++++++--
+ rust/kernel/ioctl.rs    | 71 +++++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs      |  2 ++
+ rust/uapi/lib.rs        | 27 +++++++++++++++++++
+ rust/uapi/uapi_helper.h |  9 +++++++
+ 6 files changed, 126 insertions(+), 2 deletions(-)
+---
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+change-id: 20230329-rust-uapi-894421e9a5d2
+
+Thank you,
+~~ Lina
+
