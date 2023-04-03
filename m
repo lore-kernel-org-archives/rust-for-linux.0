@@ -2,171 +2,141 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1301CC761A6
-	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 09:35:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94F57C761A6
+	for <rust-for-linux@archiver.kernel.org>; Mon,  3 Apr 2023 09:49:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232030AbjDCJfj (ORCPT
+        id S232102AbjDCJtK (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 3 Apr 2023 05:35:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34740 "EHLO
+        Mon, 3 Apr 2023 05:49:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231267AbjDCJfN (ORCPT
+        with ESMTP id S232383AbjDCJsx (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 3 Apr 2023 05:35:13 -0400
+        Mon, 3 Apr 2023 05:48:53 -0400
 Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A581025C;
-        Mon,  3 Apr 2023 02:34:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 407CAEB4A;
+        Mon,  3 Apr 2023 02:48:21 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: linasend@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 4CFCB423BA;
-        Mon,  3 Apr 2023 09:34:02 +0000 (UTC)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 4463F41E64;
+        Mon,  3 Apr 2023 09:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1680514445;
-        bh=SDM5ek/CE6FiKqreYBHfMz3sZGIrU/VxZUpt63EoDg4=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=LmOYmscjE3LwgLD9P9o4Ci8hz4+jSYPZvRUlSSUpCYBmsCQCqPNounJCXWtPyd3Dc
-         XoW9EgpI5XYSLM8a5gJlnfmYOGj2DYah5413Ob113FUniByPvTfA3GacsYCOnGqmV2
-         E+byz0Y0cL6xq6/M7DHJ5exwj5NmWv1gRXTL4J8x6nnOIQdH9QUJgthWPZ6hNgPjxu
-         w+Q+uSfS12tTSgMTjtHkZkc3xvSFycNcC+lb+WoIO16mnQKr2rcWf8t5nIf3WhDTgA
-         zmUwWUoX7ahUQp/sIvR8q3pkFv7G0JAi97dUc0s4Dx9Gh6eB2OMyb8W7VT9A6377OP
-         WK9v6fwhcVoHg==
+        s=default; t=1680515299;
+        bh=03IUxiM2NYytsEqkQE0lVeut6Us6UiwebZUlwtHiGAw=;
+        h=From:Subject:Date:To:Cc;
+        b=aoUxhbKxLFpvEJeDumfIatd9IjwP2zReeLidrQ1Ep5+PVvi6js4j9xBpeVqGfzXmy
+         o438S0uS1YXY0hhlkh+L34mCmGIrxUlPu5+urHmz8HBvbbTmVNVheRpUZJJ+SlAHwW
+         UPdHHqEVBrS9yB0oWXZZMKbxpdSzDPS//LUSa1chCqk+CUMxJw84mkte31t7YiaWZ+
+         3uj5w57+t+JEMxiVdlLdtWMhQ5t04c/dE6i1nQSihEviQTcvD5jKGUcz2UoDExmQg4
+         cGN4+lQx8tI8zI6cvsF4JKaX5uIXhzIIP787AVgj6OZsl/xCnqElBpziEsPFkrcgrn
+         RGDLOmmyvy0IQ==
 From:   Asahi Lina <lina@asahilina.net>
-Date:   Mon, 03 Apr 2023 18:33:53 +0900
-Subject: [PATCH v2 2/2] rust: ioctl: Add ioctl number manipulation
- functions
+Subject: [PATCH v3 0/6] rust: error: Add missing wrappers to convert
+ to/from kernel error codes
+Date:   Mon, 03 Apr 2023 18:48:09 +0900
+Message-Id: <20230224-rust-error-v3-0-03779bddc02b@asahilina.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230329-rust-uapi-v2-2-bca5fb4d4a12@asahilina.net>
-References: <20230329-rust-uapi-v2-0-bca5fb4d4a12@asahilina.net>
-In-Reply-To: <20230329-rust-uapi-v2-0-bca5fb4d4a12@asahilina.net>
+X-B4-Tracking: v=1; b=H4sIANmgKmQC/3WNzQ7CIBAGX8Vwdht+jAVPvofxsKUgJIaapRJN0
+ 3cXejR6nN3MNwvLjqLL7LRbGLkSc5xSBbXfMRsw3RzEsTKTXCou5QHomWdwRBOBl7oXfrCG955
+ VYcDsYCBMNjSlHDsFZEV7Pcj5+No6l2vlEPM80XvLFtGuPwtFAAevvUGDuldcnTFjiPeYsEtuZ
+ m2qyP+6rLoynCthtJAjfuvrun4A9VVoMgIBAAA=
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        Sven Van Asbroeck <thesven73@gmail.com>
+Cc:     Fox Chen <foxhlchen@gmail.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>
 X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1680514434; l=3343;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1680515295; l=2833;
  i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
- bh=SDM5ek/CE6FiKqreYBHfMz3sZGIrU/VxZUpt63EoDg4=;
- b=LHDkVMUjIhnbPwKIIJMWnc8W7YRkmeOb6N304PCQzDppQzdlX/TcgenWDUJDtfPsp/sGbVj48
- cpNbG13R5njA1zH3eTmFV8FL4Uv0D/p2BKjs2k2w2uQJ+7d9J4S8GOm
+ bh=03IUxiM2NYytsEqkQE0lVeut6Us6UiwebZUlwtHiGAw=;
+ b=AEvTg7zbHfH1jU1Nbh1O5xfdN5frIkRqX2gs26fdTWv1Oydau6SiA0q51h0OP0PTgMgdeJvdu
+ wlnzkf+pIgxBOIKxCX14E7suJNdfxb//pkXsNoq83FYVeWPulNAZWWv
 X-Developer-Key: i=lina@asahilina.net; a=ed25519;
  pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Add simple 1:1 wrappers of the C ioctl number manipulation functions.
-Since these are macros we cannot bindgen them directly, and since they
-should be usable in const context we cannot use helper wrappers, so
-we'll have to reimplement them in Rust. Thankfully, the C headers do
-declare defines for the relevant bitfield positions, so we don't need
-to duplicate that.
+Hi everyone!
+
+This series is part of the set of dependencies for the drm/asahi
+Apple M1/M2 GPU driver.
+
+It adds a bunch of missing wrappers in kernel::error, which are useful
+to convert to/from kernel error codes. Since these will be used by many
+abstractions coming up soon, I think it makes sense to merge them as
+soon as possible instead of bundling them with the first user. Hence,
+they have allow() tags to silence dead code warnings. These can be
+removed as soon as the first user is in the kernel crate.
+
+Getting this in first allows the subsequent abstractions to be merged in
+any order, so we don't have to worry about piecewise rebasing and fixing
+conflicts in the Error wrappers. See [1] for a complete tree with the DRM
+abstractions and all other miscellaneous work-in-progress prerequisites
+rebased on top of mainline.
+
+Most of these have been extracted from the rust-for-linux/rust branch,
+with author attribution to the first/primary author and Co-developed-by:
+for everyone else who touched the code.
+
+Attribution changes:
+- One of the patches had Miguel's old email in the tags, updated that per
+  his request.
+- Wedson's email changed from @google.com to @gmail.com (I understand
+  this is the current one).
+
+Sven: There is one patch from you in this series, do you want to send it
+yourself directly? I understand Wedson and Miguel are okay with me
+sending stuff on their behalf.
+
+[1] https://github.com/Rust-for-Linux/linux/pull/969/commits
 
 Signed-off-by: Asahi Lina <lina@asahilina.net>
 ---
- rust/kernel/ioctl.rs | 71 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs   |  1 +
- 2 files changed, 72 insertions(+)
+Changes in v3:
+- Re-introduced from_errno_unchecked() (but private to this module since
+  it has no outside users) and used it in from_err_ptr().
+- Updated safety comment in to_ptr().
+- Link to v2: https://lore.kernel.org/r/20230224-rust-error-v2-0-3900319812da@asahilina.net
 
-diff --git a/rust/kernel/ioctl.rs b/rust/kernel/ioctl.rs
-new file mode 100644
-index 000000000000..007437959395
---- /dev/null
-+++ b/rust/kernel/ioctl.rs
-@@ -0,0 +1,71 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#![allow(non_snake_case)]
-+
-+//! ioctl() number definitions
-+//!
-+//! C header: [`include/asm-generic/ioctl.h`](../../../../include/asm-generic/ioctl.h)
-+
-+use crate::build_assert;
-+
-+/// Build an ioctl number, analogous to the C macro of the same name.
-+#[inline(always)]
-+const fn _IOC(dir: u32, ty: u32, nr: u32, size: usize) -> u32 {
-+    build_assert!(dir <= uapi::_IOC_DIRMASK);
-+    build_assert!(ty <= uapi::_IOC_TYPEMASK);
-+    build_assert!(nr <= uapi::_IOC_NRMASK);
-+    build_assert!(size <= (uapi::_IOC_SIZEMASK as usize));
-+
-+    (dir << uapi::_IOC_DIRSHIFT)
-+        | (ty << uapi::_IOC_TYPESHIFT)
-+        | (nr << uapi::_IOC_NRSHIFT)
-+        | ((size as u32) << uapi::_IOC_SIZESHIFT)
-+}
-+
-+/// Build an ioctl number for an argumentless ioctl.
-+#[inline(always)]
-+pub const fn _IO(ty: u32, nr: u32) -> u32 {
-+    _IOC(uapi::_IOC_NONE, ty, nr, 0)
-+}
-+
-+/// Build an ioctl number for an read-only ioctl.
-+#[inline(always)]
-+pub const fn _IOR<T>(ty: u32, nr: u32) -> u32 {
-+    _IOC(uapi::_IOC_READ, ty, nr, core::mem::size_of::<T>())
-+}
-+
-+/// Build an ioctl number for an write-only ioctl.
-+#[inline(always)]
-+pub const fn _IOW<T>(ty: u32, nr: u32) -> u32 {
-+    _IOC(uapi::_IOC_WRITE, ty, nr, core::mem::size_of::<T>())
-+}
-+
-+/// Build an ioctl number for a read-write ioctl.
-+#[inline(always)]
-+pub const fn _IOWR<T>(ty: u32, nr: u32) -> u32 {
-+    _IOC(
-+        uapi::_IOC_READ | uapi::_IOC_WRITE,
-+        ty,
-+        nr,
-+        core::mem::size_of::<T>(),
-+    )
-+}
-+
-+/// Get the ioctl direction from an ioctl number.
-+pub const fn _IOC_DIR(nr: u32) -> u32 {
-+    (nr >> uapi::_IOC_DIRSHIFT) & uapi::_IOC_DIRMASK
-+}
-+
-+/// Get the ioctl type from an ioctl number.
-+pub const fn _IOC_TYPE(nr: u32) -> u32 {
-+    (nr >> uapi::_IOC_TYPESHIFT) & uapi::_IOC_TYPEMASK
-+}
-+
-+/// Get the ioctl number from an ioctl number.
-+pub const fn _IOC_NR(nr: u32) -> u32 {
-+    (nr >> uapi::_IOC_NRSHIFT) & uapi::_IOC_NRMASK
-+}
-+
-+/// Get the ioctl size from an ioctl number.
-+pub const fn _IOC_SIZE(nr: u32) -> usize {
-+    ((nr >> uapi::_IOC_SIZESHIFT) & uapi::_IOC_SIZEMASK) as usize
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index afec0792d982..63f796781b7c 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -30,6 +30,7 @@ compile_error!("Missing kernel configuration for conditional compilation");
- mod allocator;
- mod build_assert;
- pub mod error;
-+pub mod ioctl;
- pub mod prelude;
- pub mod print;
- mod static_assert;
+Changes in v2:
+- Removed the redundant _kernel from various function names.
+- Replaced the from_result!{} macro with a from_result() function taking a closure.
+- Link to v1: https://lore.kernel.org/r/20230224-rust-error-v1-0-f8f9a9a87303@asahilina.net
 
--- 
-2.40.0
+---
+Asahi Lina (2):
+      rust: error: Rename to_kernel_errno() -> to_errno()
+      rust: error: Add Error::to_ptr()
+
+Miguel Ojeda (1):
+      rust: error: Add Error::from_errno{_unchecked}()
+
+Sven Van Asbroeck (1):
+      rust: error: Add a helper to convert a C ERR_PTR to a `Result`
+
+Wedson Almeida Filho (2):
+      rust: error: Add to_result() helper
+      rust: error: Add from_result() helper
+ rust/helpers.c        |  19 +++++++
+ rust/kernel/error.rs  | 137 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ rust/macros/module.rs |   2 +-
+ 3 files changed, 156 insertions(+), 2 deletions(-)
+---
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+change-id: 20230224-rust-error-f2871fbc907f
+
+Thank you,
+~~ Lina
 
