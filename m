@@ -2,209 +2,602 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 60628C761A6
-	for <rust-for-linux@archiver.kernel.org>; Tue,  4 Apr 2023 13:25:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E80F1C761AF
+	for <rust-for-linux@archiver.kernel.org>; Tue,  4 Apr 2023 14:25:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234248AbjDDNZm (ORCPT
+        id S235698AbjDDOZZ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 4 Apr 2023 09:25:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37000 "EHLO
+        Tue, 4 Apr 2023 10:25:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234198AbjDDNZl (ORCPT
+        with ESMTP id S235228AbjDDOZY (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 4 Apr 2023 09:25:41 -0400
-Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2121.outbound.protection.outlook.com [40.107.11.121])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B209F19A6;
-        Tue,  4 Apr 2023 06:25:39 -0700 (PDT)
+        Tue, 4 Apr 2023 10:25:24 -0400
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2099.outbound.protection.outlook.com [40.107.10.99])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A01D3C17;
+        Tue,  4 Apr 2023 07:25:21 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SYnyW6I5k37mOeypVNpSN2qLqwytDVOwiu4PEEZewuWu4SSyW2PJXXhtFWVDcyl+pFzku5QRO4RGtMz7fSyZtGp2XExz1HW74vfEXc4uTcZ1IYOCQP1tKdeqRyrq3ruVTqEuudjZ1Zxq3/vkHz6eDQhwupH34eqJySXNjAaDeqAM0Ax05zN7uCdCBZV9wTFuhm+tm6pq7CR2R3WYcbkbNI7azQSohdkY/EimlZ6JjV8vGM8zjpgRhY7SjCvukY33YUkCS619cEx6aSr7UIgD7s4spHqgzDmfrxdVRWBFx7Wj1FdMdyfvc8ByDwMyHM6TzpE//IVhzeaJJ1fXfcUCpg==
+ b=mxg5CXjGYFNxyRUYysEcHqGIzyoUyfz9bEWVrILtFfnt2QWM43Hx35sWKuvVuEsxYuCJzNKQzblKNu7Pd+6F3arzyFdwzZoLN37RlrPEPu0tnb8EDjX8UqLfZ2mZ3gjYufiLQDvZo/ctG7Sw9fqimW9T8iN83RSp4q+4SvNUlpOfuDUJwr+DCcm70D2EK3LpBrnbZif1JU7SgsbepxXX5N4B9ComPcK+lSyHMzhp002fAQa/FEunbu3hJutn2s9LR2qCqSUEEFQGd9TNTYNv+ZH4uCcVguq1OTqQubaZvPVFORV13eBb1GNr+GeVbaw1mTuiZEP9cZ12kva7I9vI2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UHXzunnPTuoYOyVuL3YIOCvzwY8XXrIHLDWiVYBqcY4=;
- b=a9MHSLnHzSxFYLA9ASJ0EdbJDs1Jd/jsaglICzpUaiZK3kaJs8zBqsYHQPyrqcsZugtN4INiOeNGwRaJqy0UuD5ATuNIwPRUg8pz2ub1ogQc0BT61CnjlqB9KUJ2s1PKDIDkwcsxEN0UkBY2niqUhzVC8sZ0vNUsXsVvMDils5vVgoRCDjiCOuMln9jgBuzX1DrWnz37KCtpWyPdIu2jqYVb2gFBr6XhZe1AH3XnFyNE+E4rVK2SyV8WBGf6nuMiUbxAcCWMEhD5cSjG+7KZv59a2+SQfIfoXW7BSFVoXT8VnkeMyYwwb+hXbZcyEzmi+3A2coZGx6Et9037RIBdtQ==
+ bh=8hWE2YH/Z5mSSTYa6sP0+kfeHP7pxzrCq6BAnqhRMgc=;
+ b=K+O5jZh9ux2m+W30komef4Ix2RpnJLUKEVXLFbWe36qykbhm3Mfri3JNzsDhyTI8sdc3xR1zZuUFv0JQ91L8eraDKGgKl5mH+V/Z2SJ5N8H/2JwaJiRPIA1UHwq8E4UggKbJ/V8RIkaIYa4hwIvU9drB/tUm296HdodOFK0lYTqid3Smch6aVTPU99CEdMY/dZ3UrI/hZvwhH/XUqZfpRNvyNW7E6h/GRjI/XjcnD6Fix7Lf3HC9toYmGnKhM+bbKPY1/UirLttGXLSpAHZaDzsNBVLz6LoZV3ROzXNKAxQn0BZBZpEvcF63XmTtN1c8grWrKxu7yPLIm+ebUWJQ3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UHXzunnPTuoYOyVuL3YIOCvzwY8XXrIHLDWiVYBqcY4=;
- b=qmPCb+9QjhtJq0UCkPDy2zMc0Qnqc3usA4jDXkufwHItbbi5M5ndP/uiaGwQmc6V6D2J39R0MGiPiTh5tTvoA+nM3vP3SpDNcm0mTsbMydZNPDlw8sAzKIt7JN41tOLcF5Uv7UkKleGdM6Kp+9mVKo/TYPrpE2hVBed7qosIHGI=
+ bh=8hWE2YH/Z5mSSTYa6sP0+kfeHP7pxzrCq6BAnqhRMgc=;
+ b=J3ZNIZain3+3GJ+weMcQ6fiDdoNkOyKqNLGAfLrOnpShiJmA9tWNNv4ufJdAflWLb0jnRxsCrSppVOAcZt/4o2lx2gC5DWbS69nDtosXQSbtMuj3dd9vNWJMK5YRUrK+Tr3RrTo3lWLzHQULch1WjjOLvYpIn4+3Un/+dec1LZ4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO4P265MB6263.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:279::8) with
+ by CWLP265MB5499.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1b9::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.35; Tue, 4 Apr
- 2023 13:25:37 +0000
+ 2023 14:25:18 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::e1a3:5e38:b483:8161]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::e1a3:5e38:b483:8161%5]) with mapi id 15.20.6254.035; Tue, 4 Apr 2023
- 13:25:37 +0000
-Date:   Tue, 4 Apr 2023 14:25:35 +0100
+ 14:25:18 +0000
+Date:   Tue, 4 Apr 2023 15:25:16 +0100
 From:   Gary Guo <gary@garyguo.net>
-To:     Benno Lossin <y86-dev@protonmail.com>
+To:     Asahi Lina <lina@asahilina.net>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <alice@ryhl.io>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>
-Subject: Re: [PATCH v5 14/15] rust: sync: reduce stack usage of
- `UniqueArc::try_new_uninit`
-Message-ID: <20230404142535.63d75904.gary@garyguo.net>
-In-Reply-To: <20230403160511.174894-7-y86-dev@protonmail.com>
-References: <20230403154422.168633-1-y86-dev@protonmail.com>
-        <20230403160511.174894-7-y86-dev@protonmail.com>
+        Matthew Wilcox <willy@infradead.org>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Neal Gompa <neal@gompa.dev>, linux-kernel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev
+Subject: Re: [PATCH v3] rust: xarray: Add an abstraction for XArray
+Message-ID: <20230404152516.0368a92b.gary@garyguo.net>
+In-Reply-To: <20230224-rust-xarray-v3-1-04305b1173a5@asahilina.net>
+References: <20230224-rust-xarray-v3-1-04305b1173a5@asahilina.net>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0305.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:196::22) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P265CA0230.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:315::6) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB6263:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc3eb80d-919c-4a13-53fc-08db351013cb
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB5499:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7841446f-3e71-487f-6f51-08db35186a22
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: S1oUGXDO5WuLPU8k9d1ViLu90WcV3UuCi6MagZ3Upwn7dUj2PO0jkUwtBneLJ8TFqONz9lRXK0hTHWbpf9s9X5/CiFFUojcmuWdAxOSGy8avNX4kwQt24tSBf1fvc1pXqcZTXMNWA4rdX2G1lEq+inBCbNFAtEIEVJRsLlwHIBVxv7H3fTW3ltTSxNfsugOGLLWZo6GMcnTGJQXQvFr3vOeeDBXF/WTrzGJwG+kTj1nsrLr/MRzd2y/GkADMoTQfcRfG5FWsn4RVydUljQrLGTFLDCrGUIHwOuwRt3q9hpBP7mvIU2sHGLv90AqLJQBeV+7qSjONRnmOo7eWVej22vU4vnGIuKrXTrSu0FdscxF+Mlhgkug91ZdFLLpUb9zBjJz/mlgeSYo66zn3BiyRFdncJ1ImvboJQGCmvcBhn2iHKn8c5rLy5nboaa51vfIZGiquc7NHcFDpamJYe9j/NP77o8MATU2UpRHhKmXZSEizXjD3WK7LgL9iuRIWf7W2d8c/J/BkUEeUzBuFh7BR5K8X59HrLuADNPI1gjbrodhsn2tEvlr9rNrbb3NydXMKWp/B+nzBcaxx2ZW4iAZQ+/Axz8l9/KkzEkxwxBGzDW8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(39830400003)(396003)(366004)(346002)(376002)(136003)(451199021)(86362001)(36756003)(2906002)(2616005)(6486002)(186003)(83380400001)(6512007)(26005)(1076003)(6506007)(4326008)(8676002)(66946007)(66476007)(66556008)(478600001)(7416002)(41300700001)(38100700002)(316002)(6916009)(54906003)(5660300002)(8936002)(81973001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: u9371RJs1MNdUYtpbgStuV51E2vFcO3wUkIvZlad7fIJHssIpU7D4GJo+hiSsIUAr0bmBSsCK6b/F9uLgHHfY/BjubEuL7pGhziOazZvW/u+QiUFIrJm/WDt09GzJG0dySGZDH28M46D2LLZbdehH8UnCP9IPAzaYCVwKjHuXnQByA18bAfQKOQdWToOk/xbdiQ2keNdgAmk4gYivAsTh8LV5l+7QWC6u5EZji6jCkF+E+QpT58ty/0nEQVZKlZ5q1fxAX4z/48gomB25bPJgkM+KW12oPbINIAknv77xkrSQTyYN693d9WPMzTuxb2J8dByjMdydzMfiI/+L0b7CK6jIC5KC9ybqiuUu/OQJO8yM4ZBW+Re50wo3T8a48xP6A7q/uMGghRyJWcQNAcChSgRfvhyOs0wsJEpWOik1cMUXm+kXv1fg9Htv0Icfpj02KvCzTLFHNuTZqFvTdtJgQiPk5yJxWNRl3Qv8HxqnCnjvpt+xa+xB7CkrszRTo6xfnQaFvnFF2epNE7ztY0jPjDCRUWeYfd2eVCBYagJeC4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(376002)(346002)(366004)(136003)(39830400003)(396003)(451199021)(478600001)(4326008)(8676002)(66946007)(66556008)(66476007)(41300700001)(316002)(54906003)(30864003)(8936002)(5660300002)(7416002)(38100700002)(6916009)(186003)(83380400001)(2616005)(966005)(6486002)(26005)(6506007)(1076003)(6512007)(86362001)(36756003)(2906002)(66899021);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CZRe/T8bxIWEzAt47pdTeqmpAeeQPpF4v+S1HLkMP4uodoCll/SJRxBD5N4j?=
- =?us-ascii?Q?0vfIe4mO8A2iUAKbM9RQApyif9kmgwwMp+nIuWm9FWy2WoxdPfXgwv0rjiLI?=
- =?us-ascii?Q?rwaxX5F0AyhRZjAYsPztfryVR+OkHmP9uhLzSjAt5+kY+/gqA6Z7SaoH+naK?=
- =?us-ascii?Q?gA17V/vaTb6n/ShuEsfjufkiLJPmV6OccqU0smXy9evFvXTVkEb5Cfu9Y7ti?=
- =?us-ascii?Q?lPFIr0xxwMMetniWF4/nztCPNA7bmc6kTAZ0RLLBzqB5yem4ihIInel7fDyu?=
- =?us-ascii?Q?gCpWjRXQCTG2DIQPbcaTuRqCDS6H0vsgzaEv0iF9kjGqRgzmvzgoEmr2Mqpu?=
- =?us-ascii?Q?f24zQIGlDQGMekhDpnrsMJ+b267wYmRtaKEaaiEEitR592sBDMpR6Q81abxZ?=
- =?us-ascii?Q?g9vb8Q8/Y0WqQFnFvbBrGdJfwD8eWMSrbC5+sS/vHxjN1wMps1M/VHpzlJmW?=
- =?us-ascii?Q?iQOFEDUADJMwsXxbrtwGi7q9H3g70w6XkIHnnBq7OsLX9YeuXKwsmfiJhW6V?=
- =?us-ascii?Q?wSjQ5R3MAGh2oXENOcZd8bHa+YUBLzVKq3m0t0evNoqM69bnX7Wpmai6CbLx?=
- =?us-ascii?Q?YheUO3oP5RWBWAcA8ZP3igGuJEP1Gz+533aek/ToetdKka2JwSy3WborBwbe?=
- =?us-ascii?Q?ZAgcgCNf7mrRpZ6ke6vL9EqPbUYcvECKcw8aFsGpGcVR8cKmCliFIXzHEbbH?=
- =?us-ascii?Q?qWnNOD78ag3wtDU0E1MLMzc8unTd2XmfTeTeVIPI4JJ/1GSWqRkC8xv2HwzD?=
- =?us-ascii?Q?bH7UuOf3O6FvgdnqfvbjNavmi2j+r70rCG0zYWOa45z/scA715bnSX7fjxGj?=
- =?us-ascii?Q?QDuuJgra013JWGZKejsza6yUyOyLMtSkxNg8OxAUF4lrzPI4ovyAer+/X46M?=
- =?us-ascii?Q?luNru6w5vn0wMZ9awwfIYdGUAFuxO8XgRa9vpX9hOE4qGdMakxHoJHAsOYUB?=
- =?us-ascii?Q?0yAXZIZNmIsztlkcETXWt77UWk2YLmq4AeOOclQE5LhaW9lZ/5dGoV+SspO1?=
- =?us-ascii?Q?MUUL7Tpo1fJ4+xBFmSpxNKU7pVWQ3xUIEUsxFH74JB/1L1p+QBPjPSei8VEN?=
- =?us-ascii?Q?ns0WpviZ/0IxJLr6m0CqtGDWaPF4lj4RrEazJ6hP+5THxTsu+sKy4ueNAluC?=
- =?us-ascii?Q?9KosYs6JT9pWaBy8wGQtZ7Y+VooQS7KWEi76e/HoUMPkpFiyJksmK2oVx01r?=
- =?us-ascii?Q?IwHYQMB1WnABQqgC5cobZrnsCCVvg9d3KRgIPxoTHNjHprvZUeNMfDBzDlmu?=
- =?us-ascii?Q?dP0dQQRapnlSGRxttjpy/re4XONodAmzNCvPlYND0HJ2lWq3qAKha2nLQY7o?=
- =?us-ascii?Q?pVDsiMVX5+MPafcSp6lhDrQf3wIyZ8+MCgBlbguQc2l15TiqFcjN+gZ1c5SN?=
- =?us-ascii?Q?t2L3caaZ3VIqVqtecQJD2O533Sfi3iIqzhFp08ANO1TzDDqeg7RioyZRbL2j?=
- =?us-ascii?Q?wYIF8RZGrPhqdeBiNFCrTALCevW0CWfdR56BmoD8Ee8ZHfZfCZkhT5AzieTv?=
- =?us-ascii?Q?nZtz+S0PLGcTfQMfi3phrgQnS7t065Fr+RcDaF1XyrinKHHidcdfI5hcCFls?=
- =?us-ascii?Q?YlN75K8LcPNMEhXCBM3ShO3qn7N0fljyuMvVccoR?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3qP37CiDTImCZIagG47Dt1pfX5Cu1WrfO+jbG8syJ0Qf0JCUbd0LJI5h+YXC?=
+ =?us-ascii?Q?JcrTOb+EdZSs6aUWDs8SgoxLPSu3Ke+4oUH//PIVbmJjKRz+DScDzyovy2uy?=
+ =?us-ascii?Q?3jjwjpBSqfi+OvfE1bYDmegLUxqgMQp2lIIa/cMoGXuisfpw4zaLnQNEqUlE?=
+ =?us-ascii?Q?C6WEzqFoL+ME+fr481e2ME2/2Pk4TsCAplplDePEms5QoymENFHuBHwD/9CC?=
+ =?us-ascii?Q?0FdKws5VO2qcRTFKmzmc0Xosn/7zuNEpeRDKJmWAGOrjqbhdDVp1wcUbTELk?=
+ =?us-ascii?Q?m8ITBZGRpGje6Vj2HOZESGuNnAbKF+YTLoyrUnjybtB5QpbyY7N3QExhDmEi?=
+ =?us-ascii?Q?zh4X/uoFGuMPBriCRrwKU6Fms+SLqLZZHv2l/LIvZAACUnIWKkX0+0tmPKv7?=
+ =?us-ascii?Q?avaAUksznyQI4Lif510kKaBbpClSI/M9/v8NY4T7sucUkPYCM1GnuvKtSxLJ?=
+ =?us-ascii?Q?xZ9p6dUuIwGpsMZk5tjHdn3xcPgRRhlhhRHccyq2ZYUBjKPDD90vHjB51Iqq?=
+ =?us-ascii?Q?8pQT+teXVxn58bksdMKRNOzbttvj280Gm20Fu0yzHOXzqAOHGukj9rAr/mzd?=
+ =?us-ascii?Q?FTmV7fN4Wew0NpjCgT5jj1qPhiYxg1jHfGTlarR9tuSLWjQbx7FHqte/8kDz?=
+ =?us-ascii?Q?wnoOmrlyuQuNHLa52OmdR3uBSeUer+Qxn1qeN3XEowQmfTp8UX9SQi5L6rku?=
+ =?us-ascii?Q?PrpSDkLLwSzIowhNt944zcbvhY7Y8wKyN7oO0sdATE0UIgKUITyZttRj08tb?=
+ =?us-ascii?Q?5wzJgR7vAIXOyskh6kxcgHYIYg8GrYYPv4cgor4dCaa0GTUhZvFnKhmESQEF?=
+ =?us-ascii?Q?TXHyn2Q5i2fGOda/Zfckpw7Xdv4ihnJtmWWwqJH4y5kD9Sow+EoPnXTHnj5T?=
+ =?us-ascii?Q?1ay8u3c6g6gToubfMHqDkSxilX3LzpAtYDhXO1M0vkcvnlaMl7suS+vTiZfA?=
+ =?us-ascii?Q?dpWOZDL9q6N7xu+eu2pFnAwlFO/X0j7aMZwybpGWiLFUKM8cLlyBVveV9VJf?=
+ =?us-ascii?Q?QIYl5kJs1XDixBi5VYEi/9lUAapy6KGV2/NZBFKnOsZdN5AsoYy4OQ4CkWjj?=
+ =?us-ascii?Q?iY2H0l99CjAPAzV0YG5Pkr5dWzlqeRXuO7PkCmtSvHtlV7ZQ2x+V1dVhvbAM?=
+ =?us-ascii?Q?LgqpRqVtLWLFHh6I0e3q7VgDzejaInN5L2pB+CiFWGSGCbLv5ivpEACiKZcO?=
+ =?us-ascii?Q?cWaxA/seLMxy1hf0o533I5rCnn0SyRMGpUpdRsCvhePj4mP4HQkriA3sfptf?=
+ =?us-ascii?Q?loDXdMgq6akPqAXPvvVWT0fT+65QH81gC22GDl3k84WB3hL9xrDb52e7Gpfx?=
+ =?us-ascii?Q?OqE1kg042ZQJTBi7YpEXQf0lxRs/N/NobYcz8RVarImCfaE/aMxlu6M3A5vl?=
+ =?us-ascii?Q?oAprTgHB7Vogfr2+dD1E7E3cpWBzfC3yxkimMjiPxfJEOUr1KJjZ0OKS3W5c?=
+ =?us-ascii?Q?nUPOsi/EQEdQZ+g287o3YrAaMeo2YpwiFpaRGHBPcMsL6nQlG5M+CdwgwdKX?=
+ =?us-ascii?Q?/a8FVu5SuHWR2akZB3/cqiL/QUynMNofDFDL6qm5NACwzbSyVw8iWxd1xgae?=
+ =?us-ascii?Q?Cw6ozBeZYFaqwNlYdrMb1dCgwIm9WXQbcH8j0Y94?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc3eb80d-919c-4a13-53fc-08db351013cb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7841446f-3e71-487f-6f51-08db35186a22
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2023 13:25:37.2244
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2023 14:25:18.0794
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6Yx/D5lurw8Wsdeq+P/kWddCky4jbVLa4j7nVoZzfJ292Vnqw4GtgVmXTS1KtL5bYdyr8KLlZs1oaxHwtYLjXw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6263
+X-MS-Exchange-CrossTenant-UserPrincipalName: FWZskYPzsutkKntuKXSpWaKPqc0+9raIbKOAaaSUqD+lM8ONgFTl7qoeW6579BmPKS/J78U/HvPiOhfkHvmbqA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5499
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, 03 Apr 2023 16:05:56 +0000
-Benno Lossin <y86-dev@protonmail.com> wrote:
+On Mon, 03 Apr 2023 19:14:23 +0900
+Asahi Lina <lina@asahilina.net> wrote:
 
-> `UniqueArc::try_new_uninit` calls `Arc::try_new(MaybeUninit::uninit())`.
-> This results in the uninitialized memory being placed on the stack,
-> which may be arbitrarily large due to the generic `T` and thus could
-> cause a stack overflow for large types.
+> The XArray is an abstract data type which behaves like a very large
+> array of pointers. Add a Rust abstraction for this data type.
 > 
-> Change the implementation to use the pin-init API which enables in-place
-> initialization. In particular it avoids having to first construct and
-> then move the uninitialized memory from the stack into the final location.
+> The initial implementation uses explicit locking on get operations and
+> returns a guard which blocks mutation, ensuring that the referenced
+> object remains alive. To avoid excessive serialization, users are
+> expected to use an inner type that can be efficiently cloned (such as
+> Arc<T>), and eagerly clone and drop the guard to unblock other users
+> after a lookup.
 > 
-> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
-> Cc: Gary Guo <gary@garyguo.net>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: Andreas Hindborg <a.hindborg@samsung.com>
-
-Reviewed-by: Gary Guo <gary@garyguo.net>
-
+> Future variants may support using RCU instead to avoid mutex locking.
+> 
+> This abstraction also introduces a reservation mechanism, which can be
+> used by alloc-capable XArrays to reserve a free slot without immediately
+> filling it, and then do so at a later time. If the reservation is
+> dropped without being filled, the slot is freed again for other users,
+> which eliminates the need for explicit cleanup code.
+> 
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
 > ---
->  rust/kernel/lib.rs      |  1 -
->  rust/kernel/sync/arc.rs | 16 +++++++++++++---
->  2 files changed, 13 insertions(+), 4 deletions(-)
 > 
+> Hi everyone!
+> 
+> This abstraction is part of the set of dependencies for the drm/asahi
+> Apple M1/M2 GPU driver.
+> 
+> The branch at [1] contains the full series of patches rebased on
+> upstream leading to the complete driver, for reference on how it is
+> intended to be used.
+> 
+> Thank you everyone who helped review this on GitHub [2]! I hope I didn't
+> forget any CCs...
+> 
+> Note that I dropped the convenience `Deref` impl for `Guard`, since I
+> couldn't figure out how to do it safely. Suggestions welcome, or we can
+> leave it for a future improvement ^^
+> 
+> [1] https://github.com/AsahiLinux/linux/tree/gpu/rebase-20230224
+> [2] https://github.com/Rust-for-Linux/linux/pull/952
+> 
+> Changes in v3:
+> - Updated to the error v2/v3 series API.
+> - Renamed `err` to `ret` for consistency with the other instance.
+> - Link to v2: https://lore.kernel.org/r/20230224-rust-xarray-v2-1-4eeb0134944c@asahilina.net
+> Changes in v2:
+> - Added Pin requirement for all XArray operations, to close a
+>   soundness hole due to the lock in the XArray (locks are not safe to
+>   move while locked). Creation does not require pinning in place, since
+>   the lock cannot be acquired at that point.
+> - Added safety note to Drop impl about why we don't need to do the lock
+>   unlock dance to ensure soundness in case of a dropped lock guard.
+> - Downstream drm/asahi driver was also rebased on this version to prove
+>   it works (previously it was still on a pre-v1 version).
+> - This still depends on the Error series (v1). v2 of that will need a
+>   trivial rename of Error::from_kernel_errno -> Error::from_errno. If
+>   this version of XArray ends up looking good, I'll send a trivial v4 of
+>   XArray with the rename, after sending the v2 of the Error series.
+> - Link to v1: https://lore.kernel.org/r/20230224-rust-xarray-v1-1-80f0904ce5d3@asahilina.net
+> ---
+>  rust/bindings/bindings_helper.h |  17 +++
+>  rust/helpers.c                  |  37 +++++
+>  rust/kernel/lib.rs              |   1 +
+>  rust/kernel/xarray.rs           | 302 ++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 357 insertions(+)
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 75d85bd6c592..bd364f9e25fe 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -8,7 +8,24 @@
+>  
+>  #include <linux/slab.h>
+>  #include <linux/refcount.h>
+> +#include <linux/xarray.h>
+>  
+>  /* `bindgen` gets confused at certain things. */
+>  const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
+>  const gfp_t BINDINGS___GFP_ZERO = __GFP_ZERO;
+> +
+> +const gfp_t BINDINGS_XA_FLAGS_LOCK_IRQ = XA_FLAGS_LOCK_IRQ;
+> +const gfp_t BINDINGS_XA_FLAGS_LOCK_BH = XA_FLAGS_LOCK_BH;
+> +const gfp_t BINDINGS_XA_FLAGS_TRACK_FREE = XA_FLAGS_TRACK_FREE;
+> +const gfp_t BINDINGS_XA_FLAGS_ZERO_BUSY = XA_FLAGS_ZERO_BUSY;
+> +const gfp_t BINDINGS_XA_FLAGS_ALLOC_WRAPPED = XA_FLAGS_ALLOC_WRAPPED;
+> +const gfp_t BINDINGS_XA_FLAGS_ACCOUNT = XA_FLAGS_ACCOUNT;
+> +const gfp_t BINDINGS_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
+> +const gfp_t BINDINGS_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
+> +
+> +const xa_mark_t BINDINGS_XA_MARK_0 = XA_MARK_0;
+> +const xa_mark_t BINDINGS_XA_MARK_1 = XA_MARK_1;
+> +const xa_mark_t BINDINGS_XA_MARK_2 = XA_MARK_2;
+> +const xa_mark_t BINDINGS_XA_PRESENT = XA_PRESENT;
+> +const xa_mark_t BINDINGS_XA_MARK_MAX = XA_MARK_MAX;
+> +const xa_mark_t BINDINGS_XA_FREE_MARK = XA_FREE_MARK;
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 04b9be46e887..21a8e086472f 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -22,6 +22,7 @@
+>  #include <linux/build_bug.h>
+>  #include <linux/err.h>
+>  #include <linux/refcount.h>
+> +#include <linux/xarray.h>
+>  
+>  __noreturn void rust_helper_BUG(void)
+>  {
+> @@ -65,6 +66,42 @@ long rust_helper_PTR_ERR(__force const void *ptr)
+>  }
+>  EXPORT_SYMBOL_GPL(rust_helper_PTR_ERR);
+>  
+> +void rust_helper_xa_init_flags(struct xarray *xa, gfp_t flags)
+> +{
+> +	xa_init_flags(xa, flags);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_xa_init_flags);
+> +
+> +bool rust_helper_xa_empty(struct xarray *xa)
+> +{
+> +	return xa_empty(xa);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_xa_empty);
+> +
+> +int rust_helper_xa_alloc(struct xarray *xa, u32 *id, void *entry, struct xa_limit limit, gfp_t gfp)
+> +{
+> +	return xa_alloc(xa, id, entry, limit, gfp);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_xa_alloc);
+> +
+> +void rust_helper_xa_lock(struct xarray *xa)
+> +{
+> +	xa_lock(xa);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_xa_lock);
+> +
+> +void rust_helper_xa_unlock(struct xarray *xa)
+> +{
+> +	xa_unlock(xa);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_xa_unlock);
+> +
+> +int rust_helper_xa_err(void *entry)
+> +{
+> +	return xa_err(entry);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_xa_err);
+> +
+>  /*
+>   * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
+>   * as the Rust `usize` type, so we can use it in contexts where Rust
 > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 821bd067151c..2d7606135ef6 100644
+> index 223564f9f0cc..3eb0a18acd55 100644
 > --- a/rust/kernel/lib.rs
 > +++ b/rust/kernel/lib.rs
-> @@ -28,7 +28,6 @@
->  #[cfg(not(CONFIG_RUST))]
->  compile_error!("Missing kernel configuration for conditional compilation");
+> @@ -38,6 +38,7 @@ pub mod std_vendor;
+>  pub mod str;
+>  pub mod sync;
+>  pub mod types;
+> +pub mod xarray;
+>  
+>  #[doc(hidden)]
+>  pub use bindings;
+> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+> new file mode 100644
+> index 000000000000..365a3288a787
+> --- /dev/null
+> +++ b/rust/kernel/xarray.rs
+> @@ -0,0 +1,302 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! XArray abstraction.
+> +//!
+> +//! C header: [`include/linux/xarray.h`](../../include/linux/xarray.h)
+> +
+> +use crate::{
+> +    bindings,
+> +    error::{Error, Result},
+> +    types::{ForeignOwnable, Opaque, ScopeGuard},
+> +};
+> +use core::{
+> +    marker::{PhantomData, PhantomPinned},
+> +    pin::Pin,
+> +    ptr::NonNull,
+> +};
+> +
+> +/// Flags passed to `XArray::new` to configure the `XArray`.
+> +type Flags = bindings::gfp_t;
+> +
+> +/// Flag values passed to `XArray::new` to configure the `XArray`.
+> +pub mod flags {
+> +    /// Use IRQ-safe locking.
+> +    pub const LOCK_IRQ: super::Flags = bindings::BINDINGS_XA_FLAGS_LOCK_IRQ;
+> +    /// Use softirq-safe locking.
+> +    pub const LOCK_BH: super::Flags = bindings::BINDINGS_XA_FLAGS_LOCK_BH;
+> +    /// Track which entries are free (distinct from None).
+> +    pub const TRACK_FREE: super::Flags = bindings::BINDINGS_XA_FLAGS_TRACK_FREE;
+> +    /// Initialize array index 0 as busy.
+> +    pub const ZERO_BUSY: super::Flags = bindings::BINDINGS_XA_FLAGS_ZERO_BUSY;
+> +    /// Use GFP_ACCOUNT for internal memory allocations.
+> +    pub const ACCOUNT: super::Flags = bindings::BINDINGS_XA_FLAGS_ACCOUNT;
+> +    /// Create an allocating `XArray` starting at index 0.
+> +    pub const ALLOC: super::Flags = bindings::BINDINGS_XA_FLAGS_ALLOC;
+> +    /// Create an allocating `XArray` starting at index 1.
+> +    pub const ALLOC1: super::Flags = bindings::BINDINGS_XA_FLAGS_ALLOC1;
+> +}
+> +
+> +/// Wrapper for a value owned by the `XArray` which holds the `XArray` lock until dropped.
+> +pub struct Guard<'a, T: ForeignOwnable>(NonNull<T>, Pin<&'a XArray<T>>);
+> +
+> +impl<'a, T: ForeignOwnable> Guard<'a, T> {
+> +    /// Borrow the underlying value wrapped by the `Guard`.
+> +    ///
+> +    /// Returns a `T::Borrowed` type for the owned `ForeignOwnable` type.
+> +    pub fn borrow(&self) -> T::Borrowed<'_> {
+> +        // SAFETY: The value is owned by the `XArray`, the lifetime it is borrowed for must not
+> +        // outlive the `XArray` itself, nor the Guard that holds the lock ensuring the value
+> +        // remains in the `XArray`.
+> +        unsafe { T::borrow(self.0.as_ptr() as _) }
+> +    }
+> +}
+> +
+> +impl<'a, T: ForeignOwnable> Drop for Guard<'a, T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The XArray we have a reference to owns the C xarray object.
+> +        unsafe { bindings::xa_unlock(self.1.xa.get()) };
+> +    }
+> +}
+> +
+> +/// Represents a reserved slot in an `XArray`, which does not yet have a value but has an assigned
+> +/// index and may not be allocated by any other user. If the Reservation is dropped without
+> +/// being filled, the entry is marked as available again.
+> +///
+> +/// Users must ensure that reserved slots are not filled by other mechanisms, or otherwise their
+> +/// contents may be dropped and replaced (which will print a warning).
+> +pub struct Reservation<'a, T: ForeignOwnable>(Pin<&'a XArray<T>>, usize, PhantomData<T>);
+> +
+> +impl<'a, T: ForeignOwnable> Reservation<'a, T> {
+> +    /// Stores a value into the reserved slot.
+> +    pub fn store(self, value: T) -> Result<usize> {
+> +        if self.0.replace(self.1, value)?.is_some() {
+> +            crate::pr_err!("XArray: Reservation stored but the entry already had data!\n");
+> +            // Consider it a success anyway, not much we can do
+> +        }
+> +        let index = self.1;
+> +        // The reservation is now fulfilled, so do not run our destructor.
+> +        core::mem::forget(self);
+> +        Ok(index)
+> +    }
+> +
+> +    /// Returns the index of this reservation.
+> +    pub fn index(&self) -> usize {
+> +        self.1
+> +    }
+> +}
+> +
+> +impl<'a, T: ForeignOwnable> Drop for Reservation<'a, T> {
+> +    fn drop(&mut self) {
+> +        if self.0.remove(self.1).is_some() {
+> +            crate::pr_err!("XArray: Reservation dropped but the entry was not empty!\n");
+> +        }
+> +    }
+> +}
+> +
+> +/// An array which efficiently maps sparse integer indices to owned objects.
+> +///
+> +/// This is similar to a `Vec<Option<T>>`, but more efficient when there are holes in the
+> +/// index space, and can be efficiently grown.
+> +///
+> +/// This structure is expected to often be used with an inner type that can either be efficiently
+> +/// cloned, such as an `Arc<T>`.
+> +pub struct XArray<T: ForeignOwnable> {
+> +    xa: Opaque<bindings::xarray>,
+> +    _p: PhantomData<T>,
+> +    _q: PhantomPinned,
+> +}
+> +
+> +impl<T: ForeignOwnable> XArray<T> {
+> +    /// Creates a new `XArray` with the given flags.
+> +    pub fn new(flags: Flags) -> XArray<T> {
+> +        let xa = Opaque::uninit();
+> +
+> +        // SAFETY: We have just created `xa`. This data structure does not require
+> +        // pinning.
+> +        unsafe { bindings::xa_init_flags(xa.get(), flags) };
+> +
+> +        // INVARIANT: Initialize the `XArray` with a valid `xa`.
+> +        XArray {
+> +            xa,
+> +            _p: PhantomData,
+> +            _q: PhantomPinned,
+> +        }
+> +    }
+> +
+> +    /// Replaces an entry with a new value, returning the old value (if any).
+> +    pub fn replace(self: Pin<&Self>, index: usize, value: T) -> Result<Option<T>> {
+> +        let new = value.into_foreign();
+> +        // SAFETY: `new` just came from into_foreign(), and we dismiss this guard if
+> +        // the xa_store operation succeeds and takes ownership of the pointer.
+> +        let guard = ScopeGuard::new(|| unsafe {
+> +            T::from_foreign(new);
+> +        });
+> +
+> +        // SAFETY: `self.xa` is always valid by the type invariant, and we are storing
+> +        // a `T::into_foreign()` result which upholds the later invariants.
+> +        let old = unsafe {
+> +            bindings::xa_store(
+> +                self.xa.get(),
+> +                index.try_into()?,
+> +                new as *mut _,
+> +                bindings::GFP_KERNEL,
+> +            )
+> +        };
+
+XArray's doc says the pointer must be 4-byte aligned, but I didn't see
+any checks.
+
+> +
+> +        let ret = unsafe { bindings::xa_err(old) };
+> +        if ret != 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else if old.is_null() {
+> +            guard.dismiss();
+> +            Ok(None)
+> +        } else {
+> +            guard.dismiss();
+> +            // SAFETY: The old value must have been stored by either this function or
+> +            // `alloc_limits_opt`, both of which ensure non-NULL entries are valid
+> +            // ForeignOwnable pointers.
+> +            Ok(Some(unsafe { T::from_foreign(old) }))
+> +        }
+> +    }
+> +
+> +    /// Replaces an entry with a new value, dropping the old value (if any).
+> +    pub fn set(self: Pin<&Self>, index: usize, value: T) -> Result {
+> +        self.replace(index, value)?;
+> +        Ok(())
+> +    }
+> +
+> +    /// Looks up and returns a reference to an entry in the array, returning a `Guard` if it
+> +    /// exists.
+> +    ///
+> +    /// This guard blocks all other actions on the `XArray`. Callers are expected to drop the
+> +    /// `Guard` eagerly to avoid blocking other users, such as by taking a clone of the value.
+> +    pub fn get(self: Pin<&Self>, index: usize) -> Option<Guard<'_, T>> {
+> +        // SAFETY: `self.xa` is always valid by the type invariant.
+> +        unsafe { bindings::xa_lock(self.xa.get()) };
+> +
+> +        // SAFETY: `self.xa` is always valid by the type invariant.
+> +        let guard = ScopeGuard::new(|| unsafe { bindings::xa_unlock(self.xa.get()) });
+> +
+> +        // SAFETY: `self.xa` is always valid by the type invariant.
+> +        let p = unsafe { bindings::xa_load(self.xa.get(), index.try_into().ok()?) };
+> +
+> +        NonNull::new(p as *mut T).map(|p| {
+> +            guard.dismiss();
+> +            Guard(p, self)
+> +        })
+> +    }
+> +
+> +    /// Removes and returns an entry, returning it if it existed.
+> +    pub fn remove(self: Pin<&Self>, index: usize) -> Option<T> {
+> +        let p = unsafe { bindings::xa_erase(self.xa.get(), index.try_into().ok()?) };
+> +        if p.is_null() {
+> +            None
+> +        } else {
+> +            Some(unsafe { T::from_foreign(p) })
+> +        }
+> +    }
+> +
+> +    /// Allocates a new index in the array, optionally storing a new value into it, with
+> +    /// configurable bounds for the index range to allocate from.
+> +    ///
+> +    /// If `value` is `None`, then the index is reserved from further allocation but remains
+> +    /// free for storing a value into it.
+> +    fn alloc_limits_opt(self: Pin<&Self>, value: Option<T>, min: u32, max: u32) -> Result<usize> {
+> +        let new = value.map_or(core::ptr::null(), |a| a.into_foreign());
+> +        let mut id: u32 = 0;
+> +
+> +        // SAFETY: `self.xa` is always valid by the type invariant. If this succeeds, it
+> +        // takes ownership of the passed `T` (if any). If it fails, we must drop the
+> +        // `T` again.
+> +        let ret = unsafe {
+> +            bindings::xa_alloc(
+> +                self.xa.get(),
+> +                &mut id,
+> +                new as *mut _,
+> +                bindings::xa_limit { min, max },
+> +                bindings::GFP_KERNEL,
+> +            )
+> +        };
+> +
+> +        if ret < 0 {
+> +            // Make sure to drop the value we failed to store
+> +            if !new.is_null() {
+> +                // SAFETY: If `new` is not NULL, it came from the `ForeignOwnable` we got
+> +                // from the caller.
+> +                unsafe { T::from_foreign(new) };
+> +            }
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            Ok(id as usize)
+> +        }
+> +    }
+> +
+> +    /// Allocates a new index in the array, storing a new value into it, with configurable
+> +    /// bounds for the index range to allocate from.
+> +    pub fn alloc_limits(self: Pin<&Self>, value: T, min: u32, max: u32) -> Result<usize> {
+> +        self.alloc_limits_opt(Some(value), min, max)
+> +    }
+> +
+> +    /// Allocates a new index in the array, storing a new value into it.
+> +    pub fn alloc(self: Pin<&Self>, value: T) -> Result<usize> {
+> +        self.alloc_limits(value, 0, u32::MAX)
+> +    }
+> +
+> +    /// Reserves a new index in the array within configurable bounds for the index.
+> +    ///
+> +    /// Returns a `Reservation` object, which can then be used to store a value at this index or
+> +    /// otherwise free it for reuse.
+> +    pub fn reserve_limits(self: Pin<&Self>, min: u32, max: u32) -> Result<Reservation<'_, T>> {
+> +        Ok(Reservation(
+> +            self,
+> +            self.alloc_limits_opt(None, min, max)?,
+> +            PhantomData,
+> +        ))
+> +    }
+> +
+> +    /// Reserves a new index in the array.
+> +    ///
+> +    /// Returns a `Reservation` object, which can then be used to store a value at this index or
+> +    /// otherwise free it for reuse.
+> +    pub fn reserve(self: Pin<&Self>) -> Result<Reservation<'_, T>> {
+> +        Ok(Reservation(
+> +            self,
+> +            self.alloc_limits_opt(None, 0, u32::MAX)?,
+> +            PhantomData,
+> +        ))
+> +    }
+> +}
+> +
+> +impl<T: ForeignOwnable> Drop for XArray<T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: `self.xa` is valid by the type invariant, and as we have the only reference to
+> +        // the `XArray` we can safely iterate its contents and drop everything.
+> +        unsafe {
+> +            let mut index: core::ffi::c_ulong = 0;
+> +            let mut entry = bindings::xa_find(
+> +                self.xa.get(),
+> +                &mut index,
+> +                core::ffi::c_ulong::MAX,
+> +                bindings::BINDINGS_XA_PRESENT,
+> +            );
+> +            while !entry.is_null() {
+> +                T::from_foreign(entry);
+> +                entry = bindings::xa_find_after(
+> +                    self.xa.get(),
+> +                    &mut index,
+> +                    core::ffi::c_ulong::MAX,
+> +                    bindings::BINDINGS_XA_PRESENT,
+> +                );
+> +            }
+> +
+> +            // Locked locks are not safe to drop. Normally we would want to try_lock()/unlock() here
+> +            // for safety or something similar, but in this case xa_destroy() is guaranteed to
+> +            // acquire the lock anyway. This will deadlock if a lock guard was improperly dropped,
+> +            // but that is not UB, so it's sufficient for soundness purposes.
+> +            bindings::xa_destroy(self.xa.get());
+> +        }
+> +    }
+> +}
+> +
+> +// SAFETY: XArray is thread-safe and all mutation operations are internally locked.
+> +unsafe impl<T: Send + ForeignOwnable> Send for XArray<T> {}
+> +unsafe impl<T: Sync + ForeignOwnable> Sync for XArray<T> {}
 > 
-> -#[allow(unused_extern_crates)]
->  // Allow proc-macros to refer to `::kernel` inside the `kernel` crate (this crate).
->  extern crate self as kernel;
+> ---
+> base-commit: 34abc9dde6a9083d2dc0a7791f5100d2eeb95bb3
+> change-id: 20230224-rust-xarray-f503f9e5455e
 > 
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 43a53fbe175d..d05caa723718 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -18,7 +18,8 @@
->  use crate::{
->      bindings,
->      error::{self, Error},
-> -    init::{InPlaceInit, Init, PinInit},
-> +    init::{self, InPlaceInit, Init, PinInit},
-> +    try_init,
->      types::{ForeignOwnable, Opaque},
->  };
->  use alloc::boxed::Box;
-> @@ -30,6 +31,7 @@ use core::{
->      pin::Pin,
->      ptr::NonNull,
->  };
-> +use macros::pin_data;
-> 
->  /// A reference-counted pointer to an instance of `T`.
->  ///
-> @@ -122,6 +124,7 @@ pub struct Arc<T: ?Sized> {
->      _p: PhantomData<ArcInner<T>>,
->  }
-> 
-> +#[pin_data]
->  #[repr(C)]
->  struct ArcInner<T: ?Sized> {
->      refcount: Opaque<bindings::refcount_t>,
-> @@ -502,9 +505,16 @@ impl<T> UniqueArc<T> {
-> 
->      /// Tries to allocate a new [`UniqueArc`] instance whose contents are not initialised yet.
->      pub fn try_new_uninit() -> Result<UniqueArc<MaybeUninit<T>>, AllocError> {
-> -        Ok(UniqueArc::<MaybeUninit<T>> {
-> +        // INVARIANT: The refcount is initialised to a non-zero value.
-> +        let inner = Box::try_init::<AllocError>(try_init!(ArcInner {
-> +            // SAFETY: There are no safety requirements for this FFI call.
-> +            refcount: Opaque::new(unsafe { bindings::REFCOUNT_INIT(1) }),
-> +            data <- init::uninit::<T, AllocError>(),
-> +        }? AllocError))?;
-> +        Ok(UniqueArc {
->              // INVARIANT: The newly-created object has a ref-count of 1.
-> -            inner: Arc::try_new(MaybeUninit::uninit())?,
-> +            // SAFETY: The pointer from the `Box` is valid.
-> +            inner: unsafe { Arc::from_inner(Box::leak(inner).into()) },
->          })
->      }
->  }
-> --
-> 2.39.2
-> 
+> Thank you,
+> ~~ Lina
 > 
 
