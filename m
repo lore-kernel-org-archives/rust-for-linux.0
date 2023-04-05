@@ -2,35 +2,35 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E56FC76188
-	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 18:00:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EACCAC7619A
+	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 18:06:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229553AbjDESAU (ORCPT
+        id S231230AbjDESGR (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 5 Apr 2023 14:00:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51134 "EHLO
+        Wed, 5 Apr 2023 14:06:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbjDESAT (ORCPT
+        with ESMTP id S229520AbjDESGQ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 5 Apr 2023 14:00:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24F935B1;
-        Wed,  5 Apr 2023 11:00:18 -0700 (PDT)
+        Wed, 5 Apr 2023 14:06:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE2397AB4;
+        Wed,  5 Apr 2023 11:05:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48F7863CE5;
-        Wed,  5 Apr 2023 18:00:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B340C433D2;
-        Wed,  5 Apr 2023 18:00:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D197262AE1;
+        Wed,  5 Apr 2023 18:04:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7D3C433D2;
+        Wed,  5 Apr 2023 18:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1680717617;
-        bh=OTSz0e1YbSXma0rl8uSmOCO0265qUI7OXz6bhD+l8Xs=;
+        s=korg; t=1680717865;
+        bh=obVhYxJKBBoA7HVqXFhkbOTlzAXaW51MKLppnaTtTb4=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ie2hpT+QKck6Dn81IJpjOTA4b3RDVu74pXkTzJ7wrbH6zXFPSvkzqHm5pEL9H2NLu
-         8WfdomburLLccbFNf2kyD9kLTsDSqI+uImOvRvOafDaNC4yIef1HcsUF5FrwAs2iYR
-         qoCG9AEaivZwowuUuuAQnkwA9LUYAwurMTYK8Kwk=
-Date:   Wed, 5 Apr 2023 20:00:15 +0200
+        b=10uiDljOReLp1iop28j6oN0VL6nRPn6EP8GxfDWQxjYGz7xXyvArePOBHCi4e+ETi
+         PEsRdh2GAvXQMa/FXvHbh2HrdXwcpkh5S3P9ffRAvEVI9GtmrQThN83LtjtWeSzvFs
+         5+msqjbcp5NBFwLkkI6rhaoXN5UhpvT1IIF4chus=
+Date:   Wed, 5 Apr 2023 20:04:22 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
 To:     Wedson Almeida Filho <wedsonaf@gmail.com>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
@@ -42,60 +42,28 @@ Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
         Waiman Long <longman@redhat.com>
-Subject: Re: [PATCH v2 01/13] rust: sync: introduce `LockClassKey`
-Message-ID: <2023040519-crank-quarry-ef26@gregkh>
+Subject: Re: [PATCH v2 03/13] rust: lock: introduce `Mutex`
+Message-ID: <2023040509-tamer-clinic-c14c@gregkh>
 References: <20230405175111.5974-1-wedsonaf@gmail.com>
+ <20230405175111.5974-3-wedsonaf@gmail.com>
+ <2023040554-promoter-chevron-10b2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230405175111.5974-1-wedsonaf@gmail.com>
+In-Reply-To: <2023040554-promoter-chevron-10b2@gregkh>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Apr 05, 2023 at 02:50:59PM -0300, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
+On Wed, Apr 05, 2023 at 08:03:11PM +0200, Greg KH wrote:
+> On Wed, Apr 05, 2023 at 02:51:01PM -0300, Wedson Almeida Filho wrote:
+> > +void rust_helper_mutex_lock(struct mutex *lock)
+> > +{
+> > +	mutex_lock(lock);
+> > +}
+> > +EXPORT_SYMBOL_GPL(rust_helper_mutex_lock);
+> > +
 > 
-> It is a wrapper around C's `lock_class_key`, which is used by the
-> synchronisation primitives that are checked with lockdep. This is in
-> preparation for introducing Rust abstractions for these primitives.
-> 
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Waiman Long <longman@redhat.com>
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> ---
-> v1 -> v2: Fixed a typo in comment
-> 
->  rust/kernel/sync.rs | 45 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 45 insertions(+)
-> 
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 33da23e3076d..84a4b560828c 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -5,6 +5,51 @@
->  //! This module contains the kernel APIs related to synchronisation that have been ported or
->  //! wrapped for usage by Rust code in the kernel.
->  
-> +use crate::types::Opaque;
-> +
->  mod arc;
->  
->  pub use arc::{Arc, ArcBorrow, UniqueArc};
-> +
-> +/// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
-> +#[repr(transparent)]
-> +pub struct LockClassKey(Opaque<bindings::lock_class_key>);
+> No need to ever unlock a mutex?
 
-Will this disappear into "nothing" if lockdep is disabled in the build?
-
-If not, it should, if so, I couldn't see where that option was, sorry
-for the noise.
-
-thanks,
-
-greg k-h
+Oh nevermind, mutex_lock() is a macro, mutex_unlock() is not...
