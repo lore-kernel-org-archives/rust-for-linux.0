@@ -2,120 +2,127 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E1FAC76188
-	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 20:46:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFB73C76188
+	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 20:50:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232739AbjDEUqq (ORCPT
+        id S232640AbjDEUuB (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 5 Apr 2023 16:46:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40784 "EHLO
+        Wed, 5 Apr 2023 16:50:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232683AbjDEUqo (ORCPT
+        with ESMTP id S232985AbjDEUuA (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 5 Apr 2023 16:46:44 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CF91BF
-        for <rust-for-linux@vger.kernel.org>; Wed,  5 Apr 2023 13:46:41 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id t10so144092649edd.12
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Apr 2023 13:46:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20210112.gappssmtp.com; s=20210112; t=1680727600;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=PjVK3OcYLqF4e28UZO8WCt8ffeDwGmSl2Tba2xHUZTQ=;
-        b=S+FdGx5OVDOWQ5NuClG6fFfByhM2/uoL0xdBSpNlIboO6AGKXYv1pvtR2kEIBF2v4w
-         Uly2Hz01alFFO2T+djikpxMRSJnCd9IXU44uuX25AUrkgzYGL7zbRApowvRQzu8J5KNh
-         kEzfSQHpHEZ5WJg25yd/d7auULoMB6ftWjkuWB9XgetRuRFLN1ej6aHCLAHSth0Uaf8p
-         0ZmUWWUrsSMBHh8tTWLEIIZVC7S2W90Xpm4ad96OE9Td91v7frJfEV9QnzNXVBaBnc8G
-         WY7ARbfUIYTwTJngzPviMkVSdp+c0w/j314svGS7lC3JIvE0PhsfyU37Qa33UvDD1d+g
-         +7KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680727600;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PjVK3OcYLqF4e28UZO8WCt8ffeDwGmSl2Tba2xHUZTQ=;
-        b=zKzElovLIqy+fFmOUageoOgbD5nJZrx/xFD9btUNzK8i4uBQ08lnLAdCoWEOOLtc3g
-         3ZN4mWsa8OnS29nM1ZL88RpiAvj900A/i1oPl9treZllUjYORc2ujzVOTqFS6slCJHBW
-         Eu+NdxCAsEtpMddhHP/4D1gc32vFw0ihtAXjA/yuFF1KkxmJad7H1Tv0OOnJi1pRXfe/
-         McZc8OqQqXCz7nR4oKnZ5BcM28YEkMtrLPYF0+qlxqinjmcUs39E/8NclniVwl0dJwh8
-         XffM018dIsvgBlj0caiVLyV1jUt0NepMnV9Vn8SdGdUM0P/w7/MeA9lIcvpRu5jeYSd7
-         EtIA==
-X-Gm-Message-State: AAQBX9foYvX3ZY1ft5jvKQBtzOJYWXhy0EdaXOe6VHwb1YcDDVVcjeL9
-        O4v2JV/vfZKZESux5+pYUdnx0Q==
-X-Google-Smtp-Source: AKy350aGDXTiJvSHX/YUEcY6IQZp4Bdeq9EFS0GjiPQShb4Gy7iz8du0uRkNAB08ACzio3QUcIPdCA==
-X-Received: by 2002:a17:906:16c8:b0:933:3a22:8513 with SMTP id t8-20020a17090616c800b009333a228513mr4053369ejd.53.1680727599845;
-        Wed, 05 Apr 2023 13:46:39 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id xb7-20020a170907070700b00948c2f245a9sm3928942ejb.110.2023.04.05.13.46.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Apr 2023 13:46:39 -0700 (PDT)
-References: <20230405193445.745024-1-y86-dev@protonmail.com>
- <20230405193445.745024-2-y86-dev@protonmail.com>
-User-agent: mu4e 1.10.1; emacs 28.2.50
-From:   Andreas Hindborg <nmi@metaspace.dk>
-To:     Benno Lossin <y86-dev@protonmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 5 Apr 2023 16:50:00 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AF6A10E7;
+        Wed,  5 Apr 2023 13:49:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=IKKsnS3MuUIvRxMy4gZqz2HRi+ZqkC38lFixxuuqyM0=; b=fE14ROxcsZyXXmo/B5pJ4W4N7Y
+        BL9RtcBObIBQP/0sd7V5jWKBJCz8XJSFdaseUG5oekzFKVgjuSYzxKu6Uc9dXu+SJ3JppkqmcWjbH
+        hM93rlw1sXbzoSMyDOYJYy5VyseTmP/h5f2BpVl8IzNhm5WEZ+ANtK4lggPZUFCc01Jy3CI7Lcr7o
+        qSaC+u81xVk2+VP9FezUkzI1pt7zLW1h4TDhaZT6+ZubXunWdEUx20wDNw4+AjEdMeezAwbnbkjAx
+        RVTo6TX23eHJWeBE948QSCg+cxyVX0aRK5iS3YHn0htgslwFijmbwaYqCAhDwkocw+qmqJbZBuvwC
+        /B3+rYJA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pkA4d-00Gkcy-NU; Wed, 05 Apr 2023 20:49:43 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 0CE1C30036C;
+        Wed,  5 Apr 2023 22:49:43 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id E98FA26A19DBF; Wed,  5 Apr 2023 22:49:42 +0200 (CEST)
+Date:   Wed, 5 Apr 2023 22:49:42 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <alice@ryhl.io>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>
-Subject: Re: [PATCH v6 01/15] rust: enable the `pin_macro` feature
-Date:   Wed, 05 Apr 2023 22:45:57 +0200
-In-reply-to: <20230405193445.745024-2-y86-dev@protonmail.com>
-Message-ID: <87fs9et5u8.fsf@metaspace.dk>
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH v2 03/13] rust: lock: introduce `Mutex`
+Message-ID: <20230405204942.GH365912@hirez.programming.kicks-ass.net>
+References: <20230405175111.5974-1-wedsonaf@gmail.com>
+ <20230405175111.5974-3-wedsonaf@gmail.com>
+ <2023040554-promoter-chevron-10b2@gregkh>
+ <2023040509-tamer-clinic-c14c@gregkh>
+ <20230405191826.GA365912@hirez.programming.kicks-ass.net>
+ <ZC3YWLmIick4jSSv@wedsonaf-dev>
+ <20230405202932.GG365912@hirez.programming.kicks-ass.net>
+ <ZC3cxzpnrnXf/osU@wedsonaf-dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZC3cxzpnrnXf/osU@wedsonaf-dev>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Wed, Apr 05, 2023 at 05:40:39PM -0300, Wedson Almeida Filho wrote:
+> On Wed, Apr 05, 2023 at 10:29:32PM +0200, Peter Zijlstra wrote:
+> > On Wed, Apr 05, 2023 at 05:21:44PM -0300, Wedson Almeida Filho wrote:
+> > > On Wed, Apr 05, 2023 at 09:18:26PM +0200, Peter Zijlstra wrote:
+> > > > On Wed, Apr 05, 2023 at 08:04:22PM +0200, Greg KH wrote:
+> > > > > On Wed, Apr 05, 2023 at 08:03:11PM +0200, Greg KH wrote:
+> > > > > > On Wed, Apr 05, 2023 at 02:51:01PM -0300, Wedson Almeida Filho wrote:
+> > > > > > > +void rust_helper_mutex_lock(struct mutex *lock)
+> > > > > > > +{
+> > > > > > > +	mutex_lock(lock);
+> > > > > > > +}
+> > > > > > > +EXPORT_SYMBOL_GPL(rust_helper_mutex_lock);
+> > > > > > > +
+> > > > > > 
+> > > > > > No need to ever unlock a mutex?
+> > > > > 
+> > > > > Oh nevermind, mutex_lock() is a macro, mutex_unlock() is not...
+> > > > 
+> > > > Yeah, so I despise all these stupid helpers... but I suppose it's the
+> > > > best they could come up with to interface the languages :/
+> > > > 
+> > > > The only hope is that the thing can do cross-language LTO or something
+> > > > to re-inline stuff.
+> > > 
+> > > One thing we could to do improve the situation is to convert some of the
+> > > existing macros into inline functions on the header files.
+> > > 
+> > > We can't do it for all cases (e.g., cases like mutex_init that declare a new
+> > > static variable when lockdep is enabled) but mutex_lock is just a function
+> > > when lockdep is disabled, and just calls mutex_lock_nested() when it is enabled.
+> > > 
+> > > How do you feel about this?
+> > > 
+> > > -#define mutex_lock(lock) mutex_lock_nested(lock, 0)
+> > > +static inline void mutex_lock(struct mutex *lock)
+> > > +{
+> > > +       mutex_lock_nested(lock, 0);
+> > > +}
+> > 
+> > Can rust actually parse C headers and inline C functions ? I thought the
+> > whole problem was that it can only call C ABI symbols (which inline
+> > functions are not).
+> 
+> Rust can't. We use a tool called bindgen to read C header files and generate
+> equivalent Rust (extern "C") declarations for functions. The tool has been
+> enhanced recently (https://github.com/rust-lang/rust-bindgen/pull/2335) to
+> handle static inline functions by automatically generating helpers like the one
+> above (in addition to the Rust decls).
 
-Benno Lossin <y86-dev@protonmail.com> writes:
+Oh man, that's sad, I was hoping it would write the equivalent inline
+function in rust.
 
-> This feature enables the use of the `pin!` macro for the `stack_pin_init!`
-> macro. This feature is already stabilized in Rust version 1.68.
->
-> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Acked-by: Boqun Feng <boqun.feng@gmail.com>
-> Cc: Andreas Hindborg <a.hindborg@samsung.com>
-> ---
+> So the situation is improved in that we don't need to manually write (and
+> commit) the helpers. It may improve further in the future if we get better
+> integration of the languages.
 
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
-
->  rust/kernel/lib.rs     | 1 +
->  scripts/Makefile.build | 2 +-
->  2 files changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 223564f9f0cc..4317b6d5f50b 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -17,6 +17,7 @@
->  #![feature(core_ffi_c)]
->  #![feature(dispatch_from_dyn)]
->  #![feature(generic_associated_types)]
-> +#![feature(pin_macro)]
->  #![feature(receiver_trait)]
->  #![feature(unsize)]
->
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index 76323201232a..ba4102b9d94d 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -277,7 +277,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
->  # Compile Rust sources (.rs)
->  # ---------------------------------------------------------------------------
->
-> -rust_allowed_features := core_ffi_c
-> +rust_allowed_features := core_ffi_c,pin_macro
->
->  rust_common_cmd = \
->  	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
-
+But yeah, feel free to convert macros to inline functions where the
+difference is moot. There is indeed no real reason for mutex_lock() to
+not be an inline function in that case.
