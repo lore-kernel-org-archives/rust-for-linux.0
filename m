@@ -2,116 +2,150 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49ED3C7619A
-	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 17:42:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BEF50C7619A
+	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 17:51:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233431AbjDERmk (ORCPT
+        id S230114AbjDERvt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 5 Apr 2023 13:42:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57036 "EHLO
+        Wed, 5 Apr 2023 13:51:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233162AbjDERme (ORCPT
+        with ESMTP id S230031AbjDERvt (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 5 Apr 2023 13:42:34 -0400
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D41B96196;
-        Wed,  5 Apr 2023 10:42:29 -0700 (PDT)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-54601d90118so535712717b3.12;
-        Wed, 05 Apr 2023 10:42:29 -0700 (PDT)
+        Wed, 5 Apr 2023 13:51:49 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F794ED2;
+        Wed,  5 Apr 2023 10:51:48 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id r16so27164948oij.5;
+        Wed, 05 Apr 2023 10:51:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680716549;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=86x0PDp2dRuf4KN9mwGdfvGa22shKRZzxNZEoJhsc00=;
-        b=neZ+pF44MG3C4xAeYyqgKVPoze49D81zPReOTcgWHOL242Ty4prwJlWbXFx/fBCIED
-         y+YX8HaGyT5nd+vBjPjNNsU3ihOCbUgnAWYHsJJi3cGLGON1L7+cAFD+3vOsA6Tpwpgs
-         XzBNI6hgFNaxG5ggzl+yRYqO5RnW+1Q2EQ7MmQVmLH4ZW1V1ZyVhDJ9MRB9wXkE89uAJ
-         VH0QeoPyDWh6OgJ2HnjBByzm7WMnEiubhuBuV+o8N67XghIMn9f/63POcdrEVpN0oPvu
-         /o3KTxyNCwRTBsEg/WVGfwDoAenlnTDPQplTb6mNwZ3YQyKwZym4N619f6kxRMT2DoJM
-         Z2/g==
+        d=gmail.com; s=20210112; t=1680717107;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gMP0vMNBwrLjFKEPy2CMu1fnlfs0/NqzPWZqghLoLH0=;
+        b=FlNG5Mh+LYHiKmpVO5Kkc4ndfZx6rglAL3tzSlmi/R1LjGSO+vBbn6ks5jH5DYpZgt
+         FT+BqMYU+CEicm4jafguOkkUALEXGHPS4q1txwi8kO8aH8je0r/wiM+0UiVVrl2BvUrP
+         1VniGaZvNHas/TWAvQ5/7l6AvbmGkHLL4JIbGTjspA4xamSeiaJQRAxWfJV80u6FtTHM
+         OW4aksSQ5cf9DyJHjnGu9daZqwAiLwpFR74E+UZvj8ApO280bzLe8K8JsYCkkZYsL7xw
+         aFEv2G0FgZ+65ZbkB9QDtO66naum9o1X12ufKAhJdQ2ZbMQ2LAXsT9NRMDUv4towzBK6
+         gm6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680716549;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20210112; t=1680717107;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=86x0PDp2dRuf4KN9mwGdfvGa22shKRZzxNZEoJhsc00=;
-        b=M+IzhsNxl7PazHZxGgICH1I6916zc4MfqhmmoP83KjpR7Ku7R3t5F21+TG0W77u92H
-         d31QTcSYvx0KEuvQy3AAisqOGky8dXBXNDRMBdlbS2sfrp+szxXnDlNoPc1iC5ztUJEp
-         QATwSE+2jt+GJ8kC9E9EzedLpuPG6peRexiUh5FigW5T+gbWnc6GqzfcVdtDVTrIgP7w
-         goaldowu09ui0mtlepPN50SZBD5qdwattbodPCobC8MnQ7+FG4iSu1/VnRWrzl1Lahj6
-         OWuYxadwJj3b2fwVzUdK7SWZyA5iwIY9Tta1S1R5Bz/aWXOWq6JsMxZQ1DUlqa9TaK6r
-         UVKQ==
-X-Gm-Message-State: AAQBX9dW+Kv8w4snWvG2kCP+9wxFYKj4YrTDx/0Y7VZK55xl0oBU0T1u
-        LRqxqtL4WnTfsyFl69+RuGwjQ/FiEb4MFiFfDU4=
-X-Google-Smtp-Source: AKy350YRQYsEzjOQOfJlCfHpRc8kN0PYcDnrp9nYnw2f2Jy0Xn91S51iKuHZ1OzLGeGabDojkcaR55dxksCqK96KjFo=
-X-Received: by 2002:a81:ce07:0:b0:53d:2772:65d with SMTP id
- t7-20020a81ce07000000b0053d2772065dmr4176918ywi.9.1680716548909; Wed, 05 Apr
- 2023 10:42:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230330043954.562237-1-wedsonaf@gmail.com> <1cd137de-6ca0-a079-429f-6cb964a0f811@ryhl.io>
-In-Reply-To: <1cd137de-6ca0-a079-429f-6cb964a0f811@ryhl.io>
+        bh=gMP0vMNBwrLjFKEPy2CMu1fnlfs0/NqzPWZqghLoLH0=;
+        b=SfZPn6gAXjbBPHGulWdhKaQkqlagEQS2yHaIMW5/hT7RlVi0UR5zxwHA4kpfomwtJy
+         IXvqpIhzF2VQMY3vkJTBjMiX/g3v1X90UPpjz0u7cjq9iO4Pd0b9uAGl9W4+3bqqoepO
+         zO3JVYSpAOxgrXYDSX3rZVcDSt3TwPwkZsQ6v6ZWl6efUT3vXxlLm0RQvN56E5ziWAEn
+         KRUcZegsp4hB7uFwBLpHe9IqeORMFnwHTv+MNKTY5ToJzQoiTbNEubtiGAcd6fQ/zyRQ
+         LrMIGdI0K5LivBb9NoQKoUdlMUm/Vbq7tYDmfulAJ4hKQMnxMRqT+qwY1lvViQxPgUIx
+         cvag==
+X-Gm-Message-State: AAQBX9egCtYV3tTiHvam437CAFFKAto6OIiP4cxPHdVb7RVd6FXIfi/p
+        52Fyf+HM//UafxGxE7AtJG7vWA++zoSYEw==
+X-Google-Smtp-Source: AKy350Ybgro8MIK4AzIvRa3zXk/XENDtnfhCGSoUuq5/14ejQ7qXBL1w6SUNewjY+UAc1V1QqpvdzA==
+X-Received: by 2002:a05:6808:6084:b0:386:f58a:2262 with SMTP id de4-20020a056808608400b00386f58a2262mr3259621oib.57.1680717107544;
+        Wed, 05 Apr 2023 10:51:47 -0700 (PDT)
+Received: from wedsonaf-dev.home.lan ([189.124.190.154])
+        by smtp.googlemail.com with ESMTPSA id w185-20020aca62c2000000b003896e31867esm6604045oib.49.2023.04.05.10.51.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Apr 2023 10:51:47 -0700 (PDT)
 From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-Date:   Wed, 5 Apr 2023 14:42:17 -0300
-Message-ID: <CANeycqq0ORMD2ybFoysnFVYcpnkVpr10GKyqsFuq8kehKveyTg@mail.gmail.com>
-Subject: Re: [PATCH 01/13] rust: sync: introduce `LockClassKey`
-To:     Alice Ryhl <alice@ryhl.io>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+To:     rust-for-linux@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <walmeida@microsoft.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
         Waiman Long <longman@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: [PATCH v2 01/13] rust: sync: introduce `LockClassKey`
+Date:   Wed,  5 Apr 2023 14:50:59 -0300
+Message-Id: <20230405175111.5974-1-wedsonaf@gmail.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, 31 Mar 2023 at 04:28, Alice Ryhl <alice@ryhl.io> wrote:
->
-> On 3/30/23 06:39, Wedson Almeida Filho wrote:
-> > From: Wedson Almeida Filho <walmeida@microsoft.com>
-> >
-> > It is a wrapper around C's `lock_class_key`, which is used by the
-> > synchronisation primitives that are checked with lockdep. This is in
-> > preparation for introducing Rust abstractions for these primitives.
-> >
-> > Cc: Peter Zijlstra <peterz@infradead.org>
-> > Cc: Ingo Molnar <mingo@redhat.com>
-> > Cc: Will Deacon <will@kernel.org>
-> > Cc: Waiman Long <longman@redhat.com>
-> > Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> > ---
-> > +// SAFETY: `bindings::lock_class_key` is designed to be used concurrently from multiple threads and
-> > +// provides its own synchronization.
-> > +unsafe impl Sync for LockClassKey {}
->
-> No Send?
+From: Wedson Almeida Filho <walmeida@microsoft.com>
 
-We haven't needed it. We can add it when needed.
+It is a wrapper around C's `lock_class_key`, which is used by the
+synchronisation primitives that are checked with lockdep. This is in
+preparation for introducing Rust abstractions for these primitives.
 
-> > +
-> > +impl LockClassKey {
-> > +    /// Creates a new lock class key.
-> > +    pub const fn new() -> Self {
-> > +        Self(Opaque::uninit())
-> > +    }
-> > +
-> > +    #[allow(dead_code)]
-> > +    pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
-> > +        self.0.get()
-> > +    }
->
-> I would just make this pub and drop the `#[allow(dead_code)]`. I think
-> it is often useful to have methods like this available publicly.
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+---
+v1 -> v2: Fixed a typo in comment
 
-The `allow(dead_code)` is removed on the next patch, it's here just to
-make this patch compile when applied alone.
+ rust/kernel/sync.rs | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-This isn't public because the return type refers to a type from
-`bindings`, which we intend to eventually hide from drivers, making it
-public now would like our lives harder in the future.
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index 33da23e3076d..84a4b560828c 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -5,6 +5,51 @@
+ //! This module contains the kernel APIs related to synchronisation that have been ported or
+ //! wrapped for usage by Rust code in the kernel.
+ 
++use crate::types::Opaque;
++
+ mod arc;
+ 
+ pub use arc::{Arc, ArcBorrow, UniqueArc};
++
++/// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
++#[repr(transparent)]
++pub struct LockClassKey(Opaque<bindings::lock_class_key>);
++
++// SAFETY: `bindings::lock_class_key` is designed to be used concurrently from multiple threads and
++// provides its own synchronization.
++unsafe impl Sync for LockClassKey {}
++
++impl LockClassKey {
++    /// Creates a new lock class key.
++    pub const fn new() -> Self {
++        Self(Opaque::uninit())
++    }
++
++    #[allow(dead_code)]
++    pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
++        self.0.get()
++    }
++}
++
++/// Defines a new static lock class and returns a pointer to it.
++#[doc(hidden)]
++#[macro_export]
++macro_rules! static_lock_class {
++    () => {{
++        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
++        &CLASS
++    }};
++}
++
++/// Returns the given string, if one is provided, otherwise generates one based on the source code
++/// location.
++#[doc(hidden)]
++#[macro_export]
++macro_rules! optional_name {
++    () => {
++        $crate::c_str!(core::concat!(core::file!(), ":", core::line!()))
++    };
++    ($name:literal) => {
++        $crate::c_str!($name)
++    };
++}
+-- 
+2.34.1
+
