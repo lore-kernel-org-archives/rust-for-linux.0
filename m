@@ -2,33 +2,33 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84F15C761AF
-	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 19:35:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B397C7619A
+	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 19:36:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232560AbjDETfn (ORCPT
+        id S230307AbjDETf7 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 5 Apr 2023 15:35:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53296 "EHLO
+        Wed, 5 Apr 2023 15:35:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjDETfm (ORCPT
+        with ESMTP id S233160AbjDETf5 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 5 Apr 2023 15:35:42 -0400
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C497C5B9D
-        for <rust-for-linux@vger.kernel.org>; Wed,  5 Apr 2023 12:35:40 -0700 (PDT)
-Date:   Wed, 05 Apr 2023 19:35:35 +0000
+        Wed, 5 Apr 2023 15:35:57 -0400
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DD0665A6;
+        Wed,  5 Apr 2023 12:35:53 -0700 (PDT)
+Date:   Wed, 05 Apr 2023 19:35:47 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680723338; x=1680982538;
-        bh=0fJvllTidlaCaBo/L7PXilYIMiZzcU0zSrjFdHjiHhM=;
+        s=protonmail3; t=1680723351; x=1680982551;
+        bh=/3m6gBMij6Ax7PcQaOILDRRx86A/6McrrYe3eb+j60U=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=Fxif8rejuKpk/l/W8YF7xN4PsUldUMWaYkCeF0cSmqf39ZQBQAPT5/VvAEaVQP8Qk
-         yWOQtoDd/RLcY3hDXIzSMOmwV+u+0kinLF+jUrj+fnHm8Kg5kuPBw5HBWe632wBKq8
-         i/dd8/kUGR9Azl39wvXs4SQHkhpQAAiJMukJzAZL2N92z6sfN/DdPOjAK0bOEPoEOn
-         BIkqCMFzyzoAMIU9h8mphq2nADjSG5xWg9QPGrZVsozZQW9ZnrJns6aABSXvTt+fyu
-         /ec5bW+UPS+YPcZ/DkQ6UOi1YJIBMak2teChMLfbuaxC6xvCzzm02fSubkcN7kEsw/
-         2Dxu1z2R2Q/3g==
+        b=d5UfZ3bOq8HhPP+stoilwMW+1Gwq/mN7HWJhmR+DzEOP7+jOZScHJaoU0RLORcrSo
+         b27+pNIWMk2q5iDrnfUueRCAuLsc+94p3nquMLIdamW9dAPu/vKRxfOGpvTZIhzCZ2
+         2PnsqfKZUjrOcnnR7u+LTQFl/CJU28DBs6DNRUWwP1OB/Lfvw80VUShqIsvuQ6T0HZ
+         TehbYVMMxqSXg2tQGxCsyiKgfoGGYwRnzcdzY4h7J6pVK1Dm3nWAHeq7xRJanuqIWX
+         diCA3Io77s/t+JIlfQjKKJrVF5c7XzuinbQfxe6WLwxPgIweAK3CELvYPDBdYvkcpg
+         KCsOGNZGA9LBg==
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -38,10 +38,10 @@ To:     Miguel Ojeda <ojeda@kernel.org>,
 From:   Benno Lossin <y86-dev@protonmail.com>
 Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev, Benno Lossin <y86-dev@protonmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>
-Subject: [PATCH v6 01/15] rust: enable the `pin_macro` feature
-Message-ID: <20230405193445.745024-2-y86-dev@protonmail.com>
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH v6 03/15] rust: sync: change error type of constructor functions
+Message-ID: <20230405193445.745024-4-y86-dev@protonmail.com>
 In-Reply-To: <20230405193445.745024-1-y86-dev@protonmail.com>
 References: <20230405193445.745024-1-y86-dev@protonmail.com>
 Feedback-ID: 40624463:user:proton
@@ -52,45 +52,64 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This feature enables the use of the `pin!` macro for the `stack_pin_init!`
-macro. This feature is already stabilized in Rust version 1.68.
+Change the error type of the constructors of `Arc` and `UniqueArc` to be
+`AllocError` instead of `Error`. This makes the API more clear as to
+what can go wrong when calling `try_new` or its variants.
 
 Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Reviewed-by: Gary Guo <gary@garyguo.net>
-Acked-by: Boqun Feng <boqun.feng@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>
 ---
- rust/kernel/lib.rs     | 1 +
- scripts/Makefile.build | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ rust/kernel/sync/arc.rs | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 223564f9f0cc..4317b6d5f50b 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -17,6 +17,7 @@
- #![feature(core_ffi_c)]
- #![feature(dispatch_from_dyn)]
- #![feature(generic_associated_types)]
-+#![feature(pin_macro)]
- #![feature(receiver_trait)]
- #![feature(unsize)]
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index f2f1c83d72ba..aa7135f0f238 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -17,11 +17,11 @@
 
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 76323201232a..ba4102b9d94d 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -277,7 +277,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
- # Compile Rust sources (.rs)
- # ------------------------------------------------------------------------=
----
+ use crate::{
+     bindings,
+-    error::Result,
+     types::{ForeignOwnable, Opaque},
+ };
+ use alloc::boxed::Box;
+ use core::{
++    alloc::AllocError,
+     marker::{PhantomData, Unsize},
+     mem::{ManuallyDrop, MaybeUninit},
+     ops::{Deref, DerefMut},
+@@ -149,7 +149,7 @@ unsafe impl<T: ?Sized + Sync + Send> Sync for Arc<T> {}
 
--rust_allowed_features :=3D core_ffi_c
-+rust_allowed_features :=3D core_ffi_c,pin_macro
+ impl<T> Arc<T> {
+     /// Constructs a new reference counted instance of `T`.
+-    pub fn try_new(contents: T) -> Result<Self> {
++    pub fn try_new(contents: T) -> Result<Self, AllocError> {
+         // INVARIANT: The refcount is initialised to a non-zero value.
+         let value =3D ArcInner {
+             // SAFETY: There are no safety requirements for this FFI call.
+@@ -469,7 +469,7 @@ pub struct UniqueArc<T: ?Sized> {
 
- rust_common_cmd =3D \
- =09RUST_MODFILE=3D$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
+ impl<T> UniqueArc<T> {
+     /// Tries to allocate a new [`UniqueArc`] instance.
+-    pub fn try_new(value: T) -> Result<Self> {
++    pub fn try_new(value: T) -> Result<Self, AllocError> {
+         Ok(Self {
+             // INVARIANT: The newly-created object has a ref-count of 1.
+             inner: Arc::try_new(value)?,
+@@ -477,7 +477,7 @@ impl<T> UniqueArc<T> {
+     }
+
+     /// Tries to allocate a new [`UniqueArc`] instance whose contents are =
+not initialised yet.
+-    pub fn try_new_uninit() -> Result<UniqueArc<MaybeUninit<T>>> {
++    pub fn try_new_uninit() -> Result<UniqueArc<MaybeUninit<T>>, AllocErro=
+r> {
+         Ok(UniqueArc::<MaybeUninit<T>> {
+             // INVARIANT: The newly-created object has a ref-count of 1.
+             inner: Arc::try_new(MaybeUninit::uninit())?,
 --
 2.39.2
 
