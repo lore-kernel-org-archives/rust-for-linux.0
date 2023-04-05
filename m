@@ -2,131 +2,120 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7FF2C7619A
-	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 20:42:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E1FAC76188
+	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 20:46:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234495AbjDEUmB (ORCPT
+        id S232739AbjDEUqq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 5 Apr 2023 16:42:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56878 "EHLO
+        Wed, 5 Apr 2023 16:46:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232447AbjDEUlq (ORCPT
+        with ESMTP id S232683AbjDEUqo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 5 Apr 2023 16:41:46 -0400
-Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 235938A6B;
-        Wed,  5 Apr 2023 13:40:58 -0700 (PDT)
-Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-17ab3a48158so39997974fac.1;
-        Wed, 05 Apr 2023 13:40:58 -0700 (PDT)
+        Wed, 5 Apr 2023 16:46:44 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CF91BF
+        for <rust-for-linux@vger.kernel.org>; Wed,  5 Apr 2023 13:46:41 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id t10so144092649edd.12
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Apr 2023 13:46:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680727246;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AfCjLWvZIUyrgKze4xPpxcziixhKFGAgi7gT/eIT+U8=;
-        b=Le7L6+VD0Sv7hAIrRqgQlJc6ChQGeWIYqtkZd2fflXlmHFZnyUlwL6zmbHpm/0mTGs
-         nTpqfWAwXZ2LnlsheP7fuSbRETmvyxctIKmMqez8E1GnGyUqEIknJiv8wV34TUNmzTQo
-         aa/BZRwkZSFDC6DoUsuhDsRXbA4LENTp7kgPuBAdDAPbnfIBRsifpEi8bL0/lZUy4i1L
-         YH6WyPULBzQfWedumPha366T2Px4ttbX6t5mmR4YDK9wbLcEFJXfz0jiLS4gR/C6GSv7
-         8AJeVfYLuFE1o4Huk+Zy7aBrtZwceDvjIToR9Je7UMsHXcbpwvDudS5OzMpeVdq9Rei1
-         MV2g==
+        d=metaspace-dk.20210112.gappssmtp.com; s=20210112; t=1680727600;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=PjVK3OcYLqF4e28UZO8WCt8ffeDwGmSl2Tba2xHUZTQ=;
+        b=S+FdGx5OVDOWQ5NuClG6fFfByhM2/uoL0xdBSpNlIboO6AGKXYv1pvtR2kEIBF2v4w
+         Uly2Hz01alFFO2T+djikpxMRSJnCd9IXU44uuX25AUrkgzYGL7zbRApowvRQzu8J5KNh
+         kEzfSQHpHEZ5WJg25yd/d7auULoMB6ftWjkuWB9XgetRuRFLN1ej6aHCLAHSth0Uaf8p
+         0ZmUWWUrsSMBHh8tTWLEIIZVC7S2W90Xpm4ad96OE9Td91v7frJfEV9QnzNXVBaBnc8G
+         WY7ARbfUIYTwTJngzPviMkVSdp+c0w/j314svGS7lC3JIvE0PhsfyU37Qa33UvDD1d+g
+         +7KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680727246;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20210112; t=1680727600;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AfCjLWvZIUyrgKze4xPpxcziixhKFGAgi7gT/eIT+U8=;
-        b=2Vzdfv2jO/YjdBJ7b4DrUtOHq39OWml0kkBfGgV2KIjYHkzAw7K09rHKpS9rXpl/uu
-         vkQp5Ab6d9nYCIEQYEcmv60FHGM9m1GpxWjP4U7mBWUw6YpgycALV6RWiyol3/dDObbw
-         CmetyosiHhgpTbDOTYX/4ryfxvnKxZBqzPcfzEdsNhzP/APXETntygB94nHUKziTV3Uf
-         UrQKPAE9+tpBRBeAudmhsVeb5XVQgvbJ16UkZxAiZXvzD9Jdg25lJouygONIcG1jQ535
-         pmmXezb5FqMEVjDXH2ZTEQ2TeVPo0XYOpltP7T57vc9+1iDB50dXpIWZHiajQtOgN1pk
-         LnAg==
-X-Gm-Message-State: AAQBX9cwmGtEJxrYjRthgctJ0Zhv6Mz4gmL2vIX60eAqtEnTmNB5osln
-        slNWq0IRILCTmAO9ingDogo=
-X-Google-Smtp-Source: AKy350YHZqITSCSHJLqDyeFxsbBpFfc7dh8uKfXjKnRN7VvLgSzusK6v7T6nW9Fa3P3El6KBOZxelg==
-X-Received: by 2002:a05:6870:b68e:b0:17a:c83d:8f9d with SMTP id cy14-20020a056870b68e00b0017ac83d8f9dmr3925311oab.19.1680727246300;
-        Wed, 05 Apr 2023 13:40:46 -0700 (PDT)
-Received: from wedsonaf-dev ([189.124.190.154])
-        by smtp.gmail.com with ESMTPSA id uq11-20020a056870df0b00b00176d49bb898sm6273610oab.44.2023.04.05.13.40.42
+        bh=PjVK3OcYLqF4e28UZO8WCt8ffeDwGmSl2Tba2xHUZTQ=;
+        b=zKzElovLIqy+fFmOUageoOgbD5nJZrx/xFD9btUNzK8i4uBQ08lnLAdCoWEOOLtc3g
+         3ZN4mWsa8OnS29nM1ZL88RpiAvj900A/i1oPl9treZllUjYORc2ujzVOTqFS6slCJHBW
+         Eu+NdxCAsEtpMddhHP/4D1gc32vFw0ihtAXjA/yuFF1KkxmJad7H1Tv0OOnJi1pRXfe/
+         McZc8OqQqXCz7nR4oKnZ5BcM28YEkMtrLPYF0+qlxqinjmcUs39E/8NclniVwl0dJwh8
+         XffM018dIsvgBlj0caiVLyV1jUt0NepMnV9Vn8SdGdUM0P/w7/MeA9lIcvpRu5jeYSd7
+         EtIA==
+X-Gm-Message-State: AAQBX9foYvX3ZY1ft5jvKQBtzOJYWXhy0EdaXOe6VHwb1YcDDVVcjeL9
+        O4v2JV/vfZKZESux5+pYUdnx0Q==
+X-Google-Smtp-Source: AKy350aGDXTiJvSHX/YUEcY6IQZp4Bdeq9EFS0GjiPQShb4Gy7iz8du0uRkNAB08ACzio3QUcIPdCA==
+X-Received: by 2002:a17:906:16c8:b0:933:3a22:8513 with SMTP id t8-20020a17090616c800b009333a228513mr4053369ejd.53.1680727599845;
+        Wed, 05 Apr 2023 13:46:39 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id xb7-20020a170907070700b00948c2f245a9sm3928942ejb.110.2023.04.05.13.46.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Apr 2023 13:40:46 -0700 (PDT)
-Date:   Wed, 5 Apr 2023 17:40:39 -0300
-From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 05 Apr 2023 13:46:39 -0700 (PDT)
+References: <20230405193445.745024-1-y86-dev@protonmail.com>
+ <20230405193445.745024-2-y86-dev@protonmail.com>
+User-agent: mu4e 1.10.1; emacs 28.2.50
+From:   Andreas Hindborg <nmi@metaspace.dk>
+To:     Benno Lossin <y86-dev@protonmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Waiman Long <longman@redhat.com>
-Subject: Re: [PATCH v2 03/13] rust: lock: introduce `Mutex`
-Message-ID: <ZC3cxzpnrnXf/osU@wedsonaf-dev>
-References: <20230405175111.5974-1-wedsonaf@gmail.com>
- <20230405175111.5974-3-wedsonaf@gmail.com>
- <2023040554-promoter-chevron-10b2@gregkh>
- <2023040509-tamer-clinic-c14c@gregkh>
- <20230405191826.GA365912@hirez.programming.kicks-ass.net>
- <ZC3YWLmIick4jSSv@wedsonaf-dev>
- <20230405202932.GG365912@hirez.programming.kicks-ass.net>
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Alice Ryhl <alice@ryhl.io>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>
+Subject: Re: [PATCH v6 01/15] rust: enable the `pin_macro` feature
+Date:   Wed, 05 Apr 2023 22:45:57 +0200
+In-reply-to: <20230405193445.745024-2-y86-dev@protonmail.com>
+Message-ID: <87fs9et5u8.fsf@metaspace.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230405202932.GG365912@hirez.programming.kicks-ass.net>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Apr 05, 2023 at 10:29:32PM +0200, Peter Zijlstra wrote:
-> On Wed, Apr 05, 2023 at 05:21:44PM -0300, Wedson Almeida Filho wrote:
-> > On Wed, Apr 05, 2023 at 09:18:26PM +0200, Peter Zijlstra wrote:
-> > > On Wed, Apr 05, 2023 at 08:04:22PM +0200, Greg KH wrote:
-> > > > On Wed, Apr 05, 2023 at 08:03:11PM +0200, Greg KH wrote:
-> > > > > On Wed, Apr 05, 2023 at 02:51:01PM -0300, Wedson Almeida Filho wrote:
-> > > > > > +void rust_helper_mutex_lock(struct mutex *lock)
-> > > > > > +{
-> > > > > > +	mutex_lock(lock);
-> > > > > > +}
-> > > > > > +EXPORT_SYMBOL_GPL(rust_helper_mutex_lock);
-> > > > > > +
-> > > > > 
-> > > > > No need to ever unlock a mutex?
-> > > > 
-> > > > Oh nevermind, mutex_lock() is a macro, mutex_unlock() is not...
-> > > 
-> > > Yeah, so I despise all these stupid helpers... but I suppose it's the
-> > > best they could come up with to interface the languages :/
-> > > 
-> > > The only hope is that the thing can do cross-language LTO or something
-> > > to re-inline stuff.
-> > 
-> > One thing we could to do improve the situation is to convert some of the
-> > existing macros into inline functions on the header files.
-> > 
-> > We can't do it for all cases (e.g., cases like mutex_init that declare a new
-> > static variable when lockdep is enabled) but mutex_lock is just a function
-> > when lockdep is disabled, and just calls mutex_lock_nested() when it is enabled.
-> > 
-> > How do you feel about this?
-> > 
-> > -#define mutex_lock(lock) mutex_lock_nested(lock, 0)
-> > +static inline void mutex_lock(struct mutex *lock)
-> > +{
-> > +       mutex_lock_nested(lock, 0);
-> > +}
-> 
-> Can rust actually parse C headers and inline C functions ? I thought the
-> whole problem was that it can only call C ABI symbols (which inline
-> functions are not).
 
-Rust can't. We use a tool called bindgen to read C header files and generate
-equivalent Rust (extern "C") declarations for functions. The tool has been
-enhanced recently (https://github.com/rust-lang/rust-bindgen/pull/2335) to
-handle static inline functions by automatically generating helpers like the one
-above (in addition to the Rust decls).
+Benno Lossin <y86-dev@protonmail.com> writes:
 
-So the situation is improved in that we don't need to manually write (and
-commit) the helpers. It may improve further in the future if we get better
-integration of the languages.
+> This feature enables the use of the `pin!` macro for the `stack_pin_init!`
+> macro. This feature is already stabilized in Rust version 1.68.
+>
+> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Acked-by: Boqun Feng <boqun.feng@gmail.com>
+> Cc: Andreas Hindborg <a.hindborg@samsung.com>
+> ---
+
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+
+>  rust/kernel/lib.rs     | 1 +
+>  scripts/Makefile.build | 2 +-
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 223564f9f0cc..4317b6d5f50b 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -17,6 +17,7 @@
+>  #![feature(core_ffi_c)]
+>  #![feature(dispatch_from_dyn)]
+>  #![feature(generic_associated_types)]
+> +#![feature(pin_macro)]
+>  #![feature(receiver_trait)]
+>  #![feature(unsize)]
+>
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 76323201232a..ba4102b9d94d 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -277,7 +277,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
+>  # Compile Rust sources (.rs)
+>  # ---------------------------------------------------------------------------
+>
+> -rust_allowed_features := core_ffi_c
+> +rust_allowed_features := core_ffi_c,pin_macro
+>
+>  rust_common_cmd = \
+>  	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
+
