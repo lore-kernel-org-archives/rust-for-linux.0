@@ -2,161 +2,339 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D833C77B6C
-	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 21:18:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BA0FC7619A
+	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 21:35:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231530AbjDEVSu (ORCPT
+        id S232498AbjDEVfO (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 5 Apr 2023 17:18:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38460 "EHLO
+        Wed, 5 Apr 2023 17:35:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjDEVSt (ORCPT
+        with ESMTP id S229587AbjDEVfN (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 5 Apr 2023 17:18:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB9F161BF;
-        Wed,  5 Apr 2023 14:18:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45A6F627A2;
-        Wed,  5 Apr 2023 21:18:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D2CC433D2;
-        Wed,  5 Apr 2023 21:18:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680729527;
-        bh=3D9E+zdKhNeQGnjhKiuzQ19pZBm6xsFwUsG365Tt6ng=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pxd9rkpLlhpRHvuHej02a/ljQ7E2IhvWw4PRSohdHqzr07nUTrDc6/7mhB56fWJQ1
-         HyL8aJUYbWe20NBolux+V8BSGnhstCF6OqBiXigTMuqc40pabYt8K9h43c6WMi3/H1
-         nM1RoPJXZ+xHVWn+HzqZT4StTdKeVfJAbchdq0Y3ZNI/T5Pqi7KJtxLg3MIpuxjomy
-         oth9ep9SrIwkscxszAgLpKX8FMNHkYN1DUd641YcCGcve8XIzlEU2EwSlTETMDfe1t
-         KKq2rkwW6ib2OJChbu9pDYDPStgwkSYeTQaKTPdVBT7mbJf4LX3kb/UgLQjqH2ViLn
-         OenrK9xcqtGaw==
-Date:   Wed, 5 Apr 2023 22:18:41 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Conor Dooley <conor.dooley@microchip.com>,
-        linux-riscv@lists.infradead.org, Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 5 Apr 2023 17:35:13 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16ECB7AA1
+        for <rust-for-linux@vger.kernel.org>; Wed,  5 Apr 2023 14:35:11 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id eg48so144423272edb.13
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Apr 2023 14:35:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20210112.gappssmtp.com; s=20210112; t=1680730509;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=XsbPLOoZy3IpCVle9f3gfXkiDPXo3wFa1tXKUWRKGVg=;
+        b=p0m+HR1QQ3N+oi6geD/qwqW7kEa4uqZsXJHk3StcmFJTsjTxSXLBuJzEZeKbVTf69X
+         kFBbgPdfJSIEl/j6MZSWFMzNZGHFg5HKSvg6l11ehsHq/GnWjreNi6Q1bZkhL9sYl95b
+         4Z25B1HJt1GmR9s+9S8Co0m+ZRaLZ4ybI+ycA+nqBqoG8oIP5cnStCEvCoy5dIDcNmhJ
+         ngslMDl5mQT3FdIBE8Kvt9U7M09W8YG6drbBl7KKd5rxT3Sh/N4po3g64M7coBnRUg9S
+         vtXRjhhaRDha82MZ8NK1Q5cptG4C0r7yeCUIwSSgB4sXhHpjyFnsjnwbVxrbLBud7xU4
+         oSnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680730509;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XsbPLOoZy3IpCVle9f3gfXkiDPXo3wFa1tXKUWRKGVg=;
+        b=o2nHAnu1csveldR4/g/Rqnw6qdA2VwHczWJGSloXBiOLsbsVlvlOWM+crL8+f+MFnB
+         6abPsUzjDlhWFoWXToP43Ow767stnR+Z8X48C3tyme5KEaSoE4kU7uHh2Xh17qIzsB9F
+         6XaDS8xN3Y0S4jdabOpGcwEl29bovT4eg/E4f565spSm66L80wprWd7LvTeJNGIT+oVr
+         vga1wVQ7Q2jBAGn7no02Hmck7e0W1i2oPGiAa1fPX+mc/RjUJgzDuHYZN5OG6NsblHRa
+         whyY1sYxxjjzT2O7P6zmN/KNi8W1cRWOWQZwANLXfWKXg/yjtZAVWO8RMx45bNXvyRwe
+         VlTQ==
+X-Gm-Message-State: AAQBX9f7IL1/enq/DINYEproNVn1vV6dVgQZNkFeneLXdqFJP3S0Vv//
+        IJUG9yC0TmjN3Dkscw80sFZ/6w==
+X-Google-Smtp-Source: AKy350Y1d7gbDVVNTMqhI+CI6pBTgOs7TRKtMFmndCYIelLHIglwKV/vWSWJO9AopwvBlNldCSA+6A==
+X-Received: by 2002:a17:906:d79b:b0:93f:9b68:a0f4 with SMTP id pj27-20020a170906d79b00b0093f9b68a0f4mr3707529ejb.26.1680730509442;
+        Wed, 05 Apr 2023 14:35:09 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id qp24-20020a170907207800b0093f822321fesm7799826ejb.137.2023.04.05.14.35.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Apr 2023 14:35:09 -0700 (PDT)
+References: <20230405193445.745024-1-y86-dev@protonmail.com>
+ <20230405193445.745024-9-y86-dev@protonmail.com>
+User-agent: mu4e 1.10.1; emacs 28.2.50
+From:   Andreas Hindborg <nmi@metaspace.dk>
+To:     Benno Lossin <y86-dev@protonmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
-Message-ID: <20230405-itinerary-handgrip-a5ffba368148@spud>
-References: <20230307102441.94417-1-conor.dooley@microchip.com>
- <CANiq72=i9je2864iTvZBFnhVLhF7Cema7EPCcdWOJ3mr62SqDg@mail.gmail.com>
- <a6220e52-9934-422b-9b05-95705b8fd684@spud>
- <b5fba6b3-177c-4325-905a-8f9f633a592a@spud>
- <CANiq72mip7Xs5vnS4KccxCmBmRbKGki7AYTTHxwaeyr3amvSWw@mail.gmail.com>
- <20230403-repose-cartwheel-c3e10c231cae@spud>
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Alice Ryhl <alice@ryhl.io>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>
+Subject: Re: [PATCH v6 08/15] rust: init/sync: add `InPlaceInit` trait to
+ pin-initialize smart pointers
+Date:   Wed, 05 Apr 2023 23:34:35 +0200
+In-reply-to: <20230405193445.745024-9-y86-dev@protonmail.com>
+Message-ID: <87355et3lf.fsf@metaspace.dk>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="FcRyeZL+VScw/Opu"
-Content-Disposition: inline
-In-Reply-To: <20230403-repose-cartwheel-c3e10c231cae@spud>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 
---FcRyeZL+VScw/Opu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Benno Lossin <y86-dev@protonmail.com> writes:
 
-On Mon, Apr 03, 2023 at 06:14:57PM +0100, Conor Dooley wrote:
-> On Mon, Apr 03, 2023 at 06:35:45PM +0200, Miguel Ojeda wrote:
+> The `InPlaceInit` trait that provides two functions, for initializing
+> using `PinInit<T, E>` and `Init<T>`. It is implemented by `Arc<T>`,
+> `UniqueArc<T>` and `Box<T>`.
+>
+> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Cc: Andreas Hindborg <a.hindborg@samsung.com>
+> ---
 
-> > As long as bindgen generates things with the right ABI etc., yeah.
-> > But, in principle, enabling one extension one side but not the other
-> > could be wrong if it ends up in something that Rust uses, e.g. if the
-> > C side does:
-> >=20
-> >     #ifdef __ARM_ARCH_7R__
-> >         int x;
-> >     #else
-> >         char x;
-> >     #endif
-> >=20
-> > and Rust attempts to use it, then particular `-march` builds could be b=
-roken.
->=20
-> To be on the safe side then, we should really disable the extensions
-> across the whole kernel. I don't *think* we have any madness at the
-> moment like in the above, but it is better to be on the safe side.
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 
-So I am still of this opinion. I don't want to silently have a mismatch
-between one side of the kernel and the other. Recipe for disaster.
-If it's off for the Rust side of things, it should be off for C too.
+>  rust/kernel/init.rs     | 128 ++++++++++++++++++++++++++++++++++++----
+>  rust/kernel/sync/arc.rs |  24 ++++++++
+>  2 files changed, 139 insertions(+), 13 deletions(-)
+>
+> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+> index ecef0376d726..6499cf5c9c20 100644
+> --- a/rust/kernel/init.rs
+> +++ b/rust/kernel/init.rs
+> @@ -114,10 +114,16 @@
+>  //! [`impl Init<T, E>`]: Init
+>  //! [`Opaque`]: kernel::types::Opaque
+>  //! [`pin_data`]: ::macros::pin_data
+> -//! [`UniqueArc<T>`]: kernel::sync::UniqueArc
+>
+> +use crate::{
+> +    error::{self, Error},
+> +    sync::UniqueArc,
+> +};
+>  use alloc::boxed::Box;
+> -use core::{cell::Cell, convert::Infallible, marker::PhantomData, mem::MaybeUninit, ptr};
+> +use core::{
+> +    alloc::AllocError, cell::Cell, convert::Infallible, marker::PhantomData, mem::MaybeUninit,
+> +    pin::Pin, ptr,
+> +};
+>
+>  #[doc(hidden)]
+>  pub mod __internal;
+> @@ -309,7 +315,6 @@ pub mod macros;
+>  ///
+>  /// [`try_pin_init!`]: kernel::try_pin_init
+>  /// [`NonNull<Self>`]: core::ptr::NonNull
+> -/// [`Error`]: kernel::error::Error
+>  // For a detailed example of how this macro works, see the module documentation of the hidden
+>  // module `__internal` inside of `init/__internal.rs`.
+>  #[macro_export]
+> @@ -363,8 +368,6 @@ macro_rules! pin_init {
+>  ///     }
+>  /// }
+>  /// ```
+> -///
+> -/// [`Error`]: kernel::error::Error
+>  // For a detailed example of how this macro works, see the module documentation of the hidden
+>  // module `__internal` inside of `init/__internal.rs`.
+>  #[macro_export]
+> @@ -586,8 +589,6 @@ macro_rules! try_pin_init {
+>  ///
+>  /// This initializer is for initializing data in-place that might later be moved. If you want to
+>  /// pin-initialize, use [`pin_init!`].
+> -///
+> -/// [`Error`]: kernel::error::Error
+>  // For a detailed example of how this macro works, see the module documentation of the hidden
+>  // module `__internal` inside of `init/__internal.rs`.
+>  #[macro_export]
+> @@ -635,8 +636,6 @@ macro_rules! init {
+>  ///     }
+>  /// }
+>  /// ```
+> -///
+> -/// [`Error`]: kernel::error::Error
+>  // For a detailed example of how this macro works, see the module documentation of the hidden
+>  // module `__internal` inside of `init/__internal.rs`.
+>  #[macro_export]
+> @@ -842,7 +841,8 @@ macro_rules! try_init {
+>  /// A pin-initializer for the type `T`.
+>  ///
+>  /// To use this initializer, you will need a suitable memory location that can hold a `T`. This can
+> -/// be [`Box<T>`], [`Arc<T>`], [`UniqueArc<T>`].
+> +/// be [`Box<T>`], [`Arc<T>`], [`UniqueArc<T>`]. Use the [`InPlaceInit::pin_init`] function of a
+> +/// smart pointer like [`Arc<T>`] on this.
+>  ///
+>  /// Also see the [module description](self).
+>  ///
+> @@ -861,7 +861,6 @@ macro_rules! try_init {
+>  ///
+>  /// [`Arc<T>`]: crate::sync::Arc
+>  /// [`Arc::pin_init`]: crate::sync::Arc::pin_init
+> -/// [`UniqueArc<T>`]: kernel::sync::UniqueArc
+>  #[must_use = "An initializer must be used in order to create its value."]
+>  pub unsafe trait PinInit<T: ?Sized, E = Infallible>: Sized {
+>      /// Initializes `slot`.
+> @@ -878,7 +877,8 @@ pub unsafe trait PinInit<T: ?Sized, E = Infallible>: Sized {
+>  /// An initializer for `T`.
+>  ///
+>  /// To use this initializer, you will need a suitable memory location that can hold a `T`. This can
+> -/// be [`Box<T>`], [`Arc<T>`], [`UniqueArc<T>`]. Because [`PinInit<T, E>`] is a super trait, you can
+> +/// be [`Box<T>`], [`Arc<T>`], [`UniqueArc<T>`]. Use the [`InPlaceInit::init`] function of a smart
+> +/// pointer like [`Arc<T>`] on this. Because [`PinInit<T, E>`] is a super trait, you can
+>  /// use every function that takes it as well.
+>  ///
+>  /// Also see the [module description](self).
+> @@ -903,7 +903,6 @@ pub unsafe trait PinInit<T: ?Sized, E = Infallible>: Sized {
+>  /// move the pointee after initialization.
+>  ///
+>  /// [`Arc<T>`]: crate::sync::Arc
+> -/// [`UniqueArc<T>`]: kernel::sync::UniqueArc
+>  #[must_use = "An initializer must be used in order to create its value."]
+>  pub unsafe trait Init<T: ?Sized, E = Infallible>: Sized {
+>      /// Initializes `slot`.
+> @@ -982,3 +981,106 @@ unsafe impl<T> Init<T> for T {
+>          Ok(())
+>      }
+>  }
+> +
+> +/// Smart pointer that can initialize memory in-place.
+> +pub trait InPlaceInit<T>: Sized {
+> +    /// Use the given pin-initializer to pin-initialize a `T` inside of a new smart pointer of this
+> +    /// type.
+> +    ///
+> +    /// If `T: !Unpin` it will not be able to move afterwards.
+> +    fn try_pin_init<E>(init: impl PinInit<T, E>) -> Result<Pin<Self>, E>
+> +    where
+> +        E: From<AllocError>;
+> +
+> +    /// Use the given pin-initializer to pin-initialize a `T` inside of a new smart pointer of this
+> +    /// type.
+> +    ///
+> +    /// If `T: !Unpin` it will not be able to move afterwards.
+> +    fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Pin<Self>>
+> +    where
+> +        Error: From<E>,
+> +    {
+> +        // SAFETY: We delegate to `init` and only change the error type.
+> +        let init = unsafe {
+> +            pin_init_from_closure(|slot| init.__pinned_init(slot).map_err(|e| Error::from(e)))
+> +        };
+> +        Self::try_pin_init(init)
+> +    }
+> +
+> +    /// Use the given initializer to in-place initialize a `T`.
+> +    fn try_init<E>(init: impl Init<T, E>) -> Result<Self, E>
+> +    where
+> +        E: From<AllocError>;
+> +
+> +    /// Use the given initializer to in-place initialize a `T`.
+> +    fn init<E>(init: impl Init<T, E>) -> error::Result<Self>
+> +    where
+> +        Error: From<E>,
+> +    {
+> +        // SAFETY: We delegate to `init` and only change the error type.
+> +        let init = unsafe {
+> +            init_from_closure(|slot| init.__pinned_init(slot).map_err(|e| Error::from(e)))
+> +        };
+> +        Self::try_init(init)
+> +    }
+> +}
+> +
+> +impl<T> InPlaceInit<T> for Box<T> {
+> +    #[inline]
+> +    fn try_pin_init<E>(init: impl PinInit<T, E>) -> Result<Pin<Self>, E>
+> +    where
+> +        E: From<AllocError>,
+> +    {
+> +        let mut this = Box::try_new_uninit()?;
+> +        let slot = this.as_mut_ptr();
+> +        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+> +        // slot is valid and will not be moved, because we pin it later.
+> +        unsafe { init.__pinned_init(slot)? };
+> +        // SAFETY: All fields have been initialized.
+> +        Ok(unsafe { this.assume_init() }.into())
+> +    }
+> +
+> +    #[inline]
+> +    fn try_init<E>(init: impl Init<T, E>) -> Result<Self, E>
+> +    where
+> +        E: From<AllocError>,
+> +    {
+> +        let mut this = Box::try_new_uninit()?;
+> +        let slot = this.as_mut_ptr();
+> +        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+> +        // slot is valid.
+> +        unsafe { init.__init(slot)? };
+> +        // SAFETY: All fields have been initialized.
+> +        Ok(unsafe { this.assume_init() })
+> +    }
+> +}
+> +
+> +impl<T> InPlaceInit<T> for UniqueArc<T> {
+> +    #[inline]
+> +    fn try_pin_init<E>(init: impl PinInit<T, E>) -> Result<Pin<Self>, E>
+> +    where
+> +        E: From<AllocError>,
+> +    {
+> +        let mut this = UniqueArc::try_new_uninit()?;
+> +        let slot = this.as_mut_ptr();
+> +        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+> +        // slot is valid and will not be moved, because we pin it later.
+> +        unsafe { init.__pinned_init(slot)? };
+> +        // SAFETY: All fields have been initialized.
+> +        Ok(unsafe { this.assume_init() }.into())
+> +    }
+> +
+> +    #[inline]
+> +    fn try_init<E>(init: impl Init<T, E>) -> Result<Self, E>
+> +    where
+> +        E: From<AllocError>,
+> +    {
+> +        let mut this = UniqueArc::try_new_uninit()?;
+> +        let slot = this.as_mut_ptr();
+> +        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+> +        // slot is valid.
+> +        unsafe { init.__init(slot)? };
+> +        // SAFETY: All fields have been initialized.
+> +        Ok(unsafe { this.assume_init() })
+> +    }
+> +}
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index eee7008e5e3e..43a53fbe175d 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -17,6 +17,8 @@
+>
+>  use crate::{
+>      bindings,
+> +    error::{self, Error},
+> +    init::{InPlaceInit, Init, PinInit},
+>      types::{ForeignOwnable, Opaque},
+>  };
+>  use alloc::boxed::Box;
+> @@ -163,6 +165,28 @@ impl<T> Arc<T> {
+>          // `Arc` object.
+>          Ok(unsafe { Self::from_inner(Box::leak(inner).into()) })
+>      }
+> +
+> +    /// Use the given initializer to in-place initialize a `T`.
+> +    ///
+> +    /// If `T: !Unpin` it will not be able to move afterwards.
+> +    #[inline]
+> +    pub fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Self>
+> +    where
+> +        Error: From<E>,
+> +    {
+> +        UniqueArc::pin_init(init).map(|u| u.into())
+> +    }
+> +
+> +    /// Use the given initializer to in-place initialize a `T`.
+> +    ///
+> +    /// This is equivalent to [`pin_init`], since an [`Arc`] is always pinned.
+> +    #[inline]
+> +    pub fn init<E>(init: impl Init<T, E>) -> error::Result<Self>
+> +    where
+> +        Error: From<E>,
+> +    {
+> +        UniqueArc::init(init).map(|u| u.into())
+> +    }
+>  }
+>
+>  impl<T: ?Sized> Arc<T> {
 
-> > but since the GCC+Rust builds are so experimental, I
-> > think as long as something is tested from time to time, it would be
-> > great (to at least know not everything is completely broken).
-> >=20
-> > But if you think that would be too much effort to maintain, or even
-> > GCC builds in general, then please feel free to ignore it for the time
-> > being, i.e. it is better to have LLVM builds rather than nothing! :)
->=20
-> Yeah, it may be worth getting just the LLVM bits in. I abhor the -march
-> handling and it may end up looking like shite with the zicsr &
-> zifencei handling.
-> Worst comes to worst, can permit gcc builds by just removing all the
-> extensions that get passed in -march for RUST && CC_IS_GCC type
-> scenarios. The only one of those at the moment is zihintpause & I don't
-> suppose too many tears will be shed over that.
-
-Been thinking about this some more, and I don't really like where this
-is going. I think I am gonna explicitly disable gcc support if
-anything.
-I wrote out a list of issues I have with all of this, but I then had
-second thoughts about some of them, so I've deleted that section of this
-mail.
-I need to think long and hard about the mixing and matching of support
-between several versions of the tools (bindgen/llvm, rustc, gcc) for
-different extensions & potentially different versions of the ISA spec.
-
-I'll revisit this when my thoughts have settled down.
-
-> For now it's safe to assume that LLVM doesn't require zicsr or zifencei
-> [1], we don't need to do a version dance right away.
-
-I also needed to remove `-mno-riscv-attribute` from bindgen's cflags
-for things to work. That's probably not something yous have to deal with
-as you're on an old kernel for the rust branch. Or maybe it got
-backported to v6.2.n, idk.
-
-Oh and bindgen doesn't actually seem to succeed with the hacks anyway:
-thread 'main' panicked at '"ftrace_branch_data_union_(anonymous_at__/__/inc=
-lude/linux/compiler_types_h_146_2)" is not a valid Ident'
-I had a quick check on lore but didn't see a fix for that one.
-
-And there's also the code model that doesn't yet seem to be handled.
-The script looks to always use medany. Writing that here lest I forget
-about it.
-
-Either way, I marked the series as "Changes Requested" on patchwork :)
-
-Cheers,
-Conor.
-
---FcRyeZL+VScw/Opu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZC3lsQAKCRB4tDGHoIJi
-0pGOAQCeaM10rBdEcndRndqlaTF3FEa+T27gVhKcLhUC1A/dPgEA4f8S9UEUIK+6
-uLp00YAput5xzfDJIKKH5PE3oMmd/gE=
-=b9VZ
------END PGP SIGNATURE-----
-
---FcRyeZL+VScw/Opu--
