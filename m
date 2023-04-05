@@ -2,127 +2,122 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFB73C76188
-	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 20:50:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CAF7CC76188
+	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 21:03:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232640AbjDEUuB (ORCPT
+        id S229907AbjDEVD2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 5 Apr 2023 16:50:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44922 "EHLO
+        Wed, 5 Apr 2023 17:03:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232985AbjDEUuA (ORCPT
+        with ESMTP id S229587AbjDEVD1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 5 Apr 2023 16:50:00 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AF6A10E7;
-        Wed,  5 Apr 2023 13:49:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=IKKsnS3MuUIvRxMy4gZqz2HRi+ZqkC38lFixxuuqyM0=; b=fE14ROxcsZyXXmo/B5pJ4W4N7Y
-        BL9RtcBObIBQP/0sd7V5jWKBJCz8XJSFdaseUG5oekzFKVgjuSYzxKu6Uc9dXu+SJ3JppkqmcWjbH
-        hM93rlw1sXbzoSMyDOYJYy5VyseTmP/h5f2BpVl8IzNhm5WEZ+ANtK4lggPZUFCc01Jy3CI7Lcr7o
-        qSaC+u81xVk2+VP9FezUkzI1pt7zLW1h4TDhaZT6+ZubXunWdEUx20wDNw4+AjEdMeezAwbnbkjAx
-        RVTo6TX23eHJWeBE948QSCg+cxyVX0aRK5iS3YHn0htgslwFijmbwaYqCAhDwkocw+qmqJbZBuvwC
-        /B3+rYJA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1pkA4d-00Gkcy-NU; Wed, 05 Apr 2023 20:49:43 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 0CE1C30036C;
-        Wed,  5 Apr 2023 22:49:43 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id E98FA26A19DBF; Wed,  5 Apr 2023 22:49:42 +0200 (CEST)
-Date:   Wed, 5 Apr 2023 22:49:42 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 5 Apr 2023 17:03:27 -0400
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA03840D3;
+        Wed,  5 Apr 2023 14:03:26 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id t19so36277837qta.12;
+        Wed, 05 Apr 2023 14:03:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680728606;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iC6S0Dd2wld+hFfeTW38jpjfvqTCQBMPpfTFPRnn/3Y=;
+        b=eVWI8JOB0Had3eImwcXP0NoKKQ6I2s3MyEt3DNSFiUrTVYCm104vOLyhAjR/VAT7ad
+         PPEF/QAko3n3Q/io0d/zmQJO9DWimzOr4tkqXrygIY4InIIaKRjflbIRTosoplEZpPi5
+         VpeDsFVvfttkDAb8JN8PZnOj69ZTtXTSGxuQ+KQlxc69faA1Fz33khhfMIW6MrzwfXVk
+         UdOn736Mh8vUSwjQgQghEr61biqcyq6Z0p1OPTO1XVOpl7dRqeIj59y8+fqQ9qa3fPXu
+         a+4sc8QFjNWCHRjGJ1cPwTaD4+4rgOxx0GH1AmeovU1I8E9li58kn0ZUCzioSp8keiOz
+         YJgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680728606;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iC6S0Dd2wld+hFfeTW38jpjfvqTCQBMPpfTFPRnn/3Y=;
+        b=3HthH86z4RxapDDaN23wnKQLyoQKUT06xpgOdNzgLxbHD4tHei6FrPqHP3FvakIdZp
+         CjHe9scxRrGaC9FBUao+kJfTjPrV2uvAI2o1FZUG4k4a/JZb2EnXmiZZqzlhT4fIL54L
+         WtQi8p4j9YN1qeaIomstHbxcYSfs85v/FCn4jiazSjAkjRspmBZtO++2/DMeIk4I7dOS
+         jtLpYfZkufjCwEmmxPbYxpYa/CKIaLX60DTipuHeDAOVpLOgelKBysvjxdeUj0+XZhNn
+         XzaerM3O+oOuCtpThCPzwutYFpvi0z0euLIxOByyS3cmkxSwkyotS9WjQsG76oBymGZG
+         OUZA==
+X-Gm-Message-State: AAQBX9c+PwC7aBH35PFop5+nL+udBL8nDVy7YOySnZB8c73k26PjEP4Q
+        45JXxWT9VgZQrf0tTTJYdX4=
+X-Google-Smtp-Source: AKy350aRL7IyXF1vZb82PW7LiWWRNpZCTqbPmjXNkeYpJSLW6nfQdG7gkP1VaMxaYraVyWiWYIVzzg==
+X-Received: by 2002:ac8:5a84:0:b0:3d3:fe29:1caf with SMTP id c4-20020ac85a84000000b003d3fe291cafmr6902530qtc.0.1680728605725;
+        Wed, 05 Apr 2023 14:03:25 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id 15-20020a37080f000000b007485a383921sm4686543qki.116.2023.04.05.14.03.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Apr 2023 14:03:25 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailauth.nyi.internal (Postfix) with ESMTP id B2DCF27C0054;
+        Wed,  5 Apr 2023 17:03:24 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Wed, 05 Apr 2023 17:03:24 -0400
+X-ME-Sender: <xms:HOItZJx3fVNX-q2IeOqrKBXk2JG6hCxtnPdDBEUV7TLHwVlOCoxPEQ>
+    <xme:HOItZJQxqBmoyZioJiw7SkqQWw41IRs7sgXxIOaEIEb6sL2pqq42fImUubknd_2Qw
+    9DSzxr3ZhN2m4D7lg>
+X-ME-Received: <xmr:HOItZDVs-AyUF5YGTsgSNUehQxxe4zF9XHAt7mSGv7Mmo3Kh_GyK3PXzdnlcDg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdejuddgudehkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:HOItZLgcvbIXFoL62LJyL9wrDorZ9Clnzd0Z_hXLuxkTbNtdzzrVbg>
+    <xmx:HOItZLBONkhNe_qEkICkn9z6uSoGClmEPjxa3PrgDUDuA-JREaHHCQ>
+    <xmx:HOItZEI9-DTwcujZQ2D63OZvZOU3c2UL6JlHXwy6K5e9_6X0PKFTvA>
+    <xmx:HOItZP7sjfqG4TDmELTOvSYi6SQ1aIdrGJNI1XKAPkrIRyIIuVHuiw>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 5 Apr 2023 17:03:23 -0400 (EDT)
+Date:   Wed, 5 Apr 2023 14:02:22 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Benno Lossin <y86-dev@protonmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
         =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Waiman Long <longman@redhat.com>
-Subject: Re: [PATCH v2 03/13] rust: lock: introduce `Mutex`
-Message-ID: <20230405204942.GH365912@hirez.programming.kicks-ass.net>
-References: <20230405175111.5974-1-wedsonaf@gmail.com>
- <20230405175111.5974-3-wedsonaf@gmail.com>
- <2023040554-promoter-chevron-10b2@gregkh>
- <2023040509-tamer-clinic-c14c@gregkh>
- <20230405191826.GA365912@hirez.programming.kicks-ass.net>
- <ZC3YWLmIick4jSSv@wedsonaf-dev>
- <20230405202932.GG365912@hirez.programming.kicks-ass.net>
- <ZC3cxzpnrnXf/osU@wedsonaf-dev>
+        Alice Ryhl <alice@ryhl.io>,
+        Andreas Hindborg <nmi@metaspace.dk>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev
+Subject: Re: [PATCH v6 00/15] Rust pin-init API for pinned initialization of
+ structs
+Message-ID: <ZC3h3q+56gM8pKOX@boqun-archlinux>
+References: <20230405193445.745024-1-y86-dev@protonmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZC3cxzpnrnXf/osU@wedsonaf-dev>
+In-Reply-To: <20230405193445.745024-1-y86-dev@protonmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Apr 05, 2023 at 05:40:39PM -0300, Wedson Almeida Filho wrote:
-> On Wed, Apr 05, 2023 at 10:29:32PM +0200, Peter Zijlstra wrote:
-> > On Wed, Apr 05, 2023 at 05:21:44PM -0300, Wedson Almeida Filho wrote:
-> > > On Wed, Apr 05, 2023 at 09:18:26PM +0200, Peter Zijlstra wrote:
-> > > > On Wed, Apr 05, 2023 at 08:04:22PM +0200, Greg KH wrote:
-> > > > > On Wed, Apr 05, 2023 at 08:03:11PM +0200, Greg KH wrote:
-> > > > > > On Wed, Apr 05, 2023 at 02:51:01PM -0300, Wedson Almeida Filho wrote:
-> > > > > > > +void rust_helper_mutex_lock(struct mutex *lock)
-> > > > > > > +{
-> > > > > > > +	mutex_lock(lock);
-> > > > > > > +}
-> > > > > > > +EXPORT_SYMBOL_GPL(rust_helper_mutex_lock);
-> > > > > > > +
-> > > > > > 
-> > > > > > No need to ever unlock a mutex?
-> > > > > 
-> > > > > Oh nevermind, mutex_lock() is a macro, mutex_unlock() is not...
-> > > > 
-> > > > Yeah, so I despise all these stupid helpers... but I suppose it's the
-> > > > best they could come up with to interface the languages :/
-> > > > 
-> > > > The only hope is that the thing can do cross-language LTO or something
-> > > > to re-inline stuff.
-> > > 
-> > > One thing we could to do improve the situation is to convert some of the
-> > > existing macros into inline functions on the header files.
-> > > 
-> > > We can't do it for all cases (e.g., cases like mutex_init that declare a new
-> > > static variable when lockdep is enabled) but mutex_lock is just a function
-> > > when lockdep is disabled, and just calls mutex_lock_nested() when it is enabled.
-> > > 
-> > > How do you feel about this?
-> > > 
-> > > -#define mutex_lock(lock) mutex_lock_nested(lock, 0)
-> > > +static inline void mutex_lock(struct mutex *lock)
-> > > +{
-> > > +       mutex_lock_nested(lock, 0);
-> > > +}
-> > 
-> > Can rust actually parse C headers and inline C functions ? I thought the
-> > whole problem was that it can only call C ABI symbols (which inline
-> > functions are not).
+On Wed, Apr 05, 2023 at 07:35:30PM +0000, Benno Lossin wrote:
+> Changelog:
+> v5 -> v6:
+> - Change `pinned_drop` macro to allow `mut self` in the signature.
+> - Change statement fragment to tt fragemnt in `pinned_drop` to prevent
+>   parsing errors.
+> - Move evaluation of the value in `stack_pin_init!`/`stack_try_pin_init!`
+>   to the beginning.
+
+Could you elaborate why? To make sure the $val evaluation happens
+unconditionally?
+
+> - Move setting uninitialized flag in front of dropping the value in
+>   `StackInit::init`.
+> - Remove `Unpin` requirement on `zeroed()`.
+> - Add note about `Pointee` to the `Zeroable` impl on raw pointers.
 > 
-> Rust can't. We use a tool called bindgen to read C header files and generate
-> equivalent Rust (extern "C") declarations for functions. The tool has been
-> enhanced recently (https://github.com/rust-lang/rust-bindgen/pull/2335) to
-> handle static inline functions by automatically generating helpers like the one
-> above (in addition to the Rust decls).
 
-Oh man, that's sad, I was hoping it would write the equivalent inline
-function in rust.
-
-> So the situation is improved in that we don't need to manually write (and
-> commit) the helpers. It may improve further in the future if we get better
-> integration of the languages.
-
-But yeah, feel free to convert macros to inline functions where the
-difference is moot. There is indeed no real reason for mutex_lock() to
-not be an inline function in that case.
+Regards,
+Boqun
