@@ -2,96 +2,92 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B4C3C7619A
-	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 20:05:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BB73C7619A
+	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Apr 2023 20:14:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232244AbjDEUFW (ORCPT
+        id S232683AbjDEUOm (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 5 Apr 2023 16:05:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42110 "EHLO
+        Wed, 5 Apr 2023 16:14:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbjDEUFV (ORCPT
+        with ESMTP id S234271AbjDEUOl (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 5 Apr 2023 16:05:21 -0400
-Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D463A268B;
-        Wed,  5 Apr 2023 13:05:18 -0700 (PDT)
-Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-177ca271cb8so39867443fac.2;
-        Wed, 05 Apr 2023 13:05:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680725118;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jnLNhgHegwlksR6QMEavxXDZkqPjONybl034vvnWzPc=;
-        b=HiJ0NJorOc4gkxW3fGbhTxLMvU+aZPzT/MPyGFj8wPOuLsCcO/9SqqBSgfVMqvBqB2
-         a6+pATtsjGGPFiisH3Kk9gLMY11+HzvIBawLyza0rzsXlmh+egc7xkA1XupIddGceoD5
-         91dUBp7cuS0XdyhgoOg8lhdvG+DdX9qT7ItPmYJ23vcTW6szhaFNe2R+guxavLVmVXot
-         AQv+7teZ9irvTFCLgYp0lbKIRp3OtElcVEZQDTXd0a58aqxbDZKBXZBx1lS3UIjy9Lln
-         k5GNslobz/FoshP2bnfdtdvAjNC06L91cOWAN4eC4aHbpX6lb2xNTK9qX6Bt/ZLM0rw1
-         gDAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680725118;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jnLNhgHegwlksR6QMEavxXDZkqPjONybl034vvnWzPc=;
-        b=NGOSpe94G/PdasXaMDUbVAPkqNGl5edzfWZf/0+murT1jpipFTWPQT3LhERXXFsWrY
-         VcpnZYc7cqm6tMILUrWS3ftisN7uPvzz2yECI+s+Bub+TZwlJYp4JzOLOG1rc9aI/rHW
-         xeQRZAwn4u9so5gx9ieQtBkHc2QVIc/1ZXqaVt0CWS4vGilp9E4ZBjwSQev3AcxNvbQt
-         04Rh8re/d//htqbqEv7rFkeL9wCCMzmQoUrmflRJZDyBwP54zO8eYg+oq9YF5RUHmWZO
-         xPii0Nry+kdfi8SyVwlMIElKOh2XsloJUcQ+p7890oLRStp5sDRcN72QMWiDpcYOUGzI
-         LLDQ==
-X-Gm-Message-State: AAQBX9fyKuAN9dt9YHQMFYRNOM3buo1DY2XhcDOhCdCRIrJPcpEYAEGk
-        8pTiygJuSSGTH1vr+P3eVX0=
-X-Google-Smtp-Source: AKy350bPX/bQq1ufAW8x/lXcs8DDhXaJi4hxMKxMZ+9Fk8b3+ynSE5RZxYWZGxqhXDKOfIOZ2b5YdA==
-X-Received: by 2002:a05:6870:832a:b0:180:7b07:2845 with SMTP id p42-20020a056870832a00b001807b072845mr4111048oae.47.1680725118085;
-        Wed, 05 Apr 2023 13:05:18 -0700 (PDT)
-Received: from wedsonaf-dev ([189.124.190.154])
-        by smtp.gmail.com with ESMTPSA id i18-20020a056830011200b006a0ae1c4263sm7339186otp.48.2023.04.05.13.05.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Apr 2023 13:05:17 -0700 (PDT)
-Date:   Wed, 5 Apr 2023 17:05:10 -0300
-From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Waiman Long <longman@redhat.com>
-Subject: Re: [PATCH v2 01/13] rust: sync: introduce `LockClassKey`
-Message-ID: <ZC3UdivcMmcZ5MTJ@wedsonaf-dev>
-References: <20230405175111.5974-1-wedsonaf@gmail.com>
- <2023040519-crank-quarry-ef26@gregkh>
+        Wed, 5 Apr 2023 16:14:41 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50F801BCB;
+        Wed,  5 Apr 2023 13:14:28 -0700 (PDT)
+Received: from localhost.localdomain (unknown [IPv6:2804:14d:72b4:8284:32a8:8167:f815:2895])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: dwlsalmeida)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 63E7866030CD;
+        Wed,  5 Apr 2023 21:14:25 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1680725667;
+        bh=v2OezC2eOoKmX+pqSD+mVfxyCEzS9XKNpWmxKSDdPnk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UxbfPa4nKsc8IT7K38/+QZoKPGeSO33cym7VJPvwXMLJQboCJdKGYeCZzoLvFwAB/
+         Ki6KVuioJ81Dx4HoZP3E3r58c0104VG2zms2QHsqQ+6ppYY7goIkEPYBm7imu83IAH
+         XZ/NL5wgA4dYxI/ejlOHCYPVLfNTI3YrsGJ75P4+XWheHkXj0RlU/35JzebHLwt8W1
+         MTfh/hjZtqF/0309g6IxmMCFa4nvfJQMUajl6hgqvZTfPblL6SHGlu+pQhoqWCkyxM
+         PF5yTCJH6up83YRVaBapmI2eZC3OLe15ZvxsPJXWJ3EW3Mjs6JZfPCwQvBTtDMdeuF
+         iqI37j9a5CUOA==
+From:   Daniel Almeida <daniel.almeida@collabora.com>
+To:     wedsonaf@gmail.com, ojeda@kernel.org
+Cc:     Daniel Almeida <daniel.almeida@collabora.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org
+Subject: [PATCH v2 0/2] rust: virtio: add virtio support
+Date:   Wed,  5 Apr 2023 17:14:14 -0300
+Message-Id: <20230405201416.395840-1-daniel.almeida@collabora.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023040519-crank-quarry-ef26@gregkh>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Apr 05, 2023 at 08:00:15PM +0200, Greg KH wrote:
-> On Wed, Apr 05, 2023 at 02:50:59PM -0300, Wedson Almeida Filho wrote:
-> > From: Wedson Almeida Filho <walmeida@microsoft.com>
-> > 
-> > +/// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
-> > +#[repr(transparent)]
-> > +pub struct LockClassKey(Opaque<bindings::lock_class_key>);
-> 
-> Will this disappear into "nothing" if lockdep is disabled in the build?
-> 
-> If not, it should, if so, I couldn't see where that option was, sorry
-> for the noise.
+This used to be a single patch, but I split it into two with the
+addition of struct Scatterlist.
 
-Yeah, the C definition of lock_class_key is an empty struct, which is a
-zero-sized type. So instances of this type will occupy 0 bytes.
+Again a bit new with Rust submissions. I was told by Gary Guo to
+rebase on top of rust-next, but it seems *very* behind?
 
-We'll still have the cost of passing pointers from Rust to C of instances of
-this type, which we could add an alternate version (dependent on lockdep being
-enabled or not) in Rust to avoid, but since it will be optimised away when LTO
-is enabled and doesn't add up to much when LTO is disabled, we chose the simpler
-option of having a single implementation.
+The first patch does not build on its own due to a dead_code warning.
+It is hard to not have dead code when one is adding infrastructure to be
+used by others at a later opportunity. Let me know if you would like to
+see the patches squashed into one to fix this.
+
+As suggested by Bjorn, I added a small virtio-entropy based sample.
+It is a very bare-bones clone of virtio-rng.c that only sends a
+single request.
+
+Changes from v1:
+
+- Addressed review comments by Miguel and Bjorn.
+- Added a scatterlist abstraction
+- Added a virtio-rng based sample
+
+Daniel Almeida (2):
+  rust: add scatterlist support
+  rust: virtio: add virtio support
+
+ rust/bindings/bindings_helper.h |   3 +
+ rust/helpers.c                  |  25 +++
+ rust/kernel/lib.rs              |   3 +
+ rust/kernel/scatterlist.rs      |  40 +++++
+ rust/kernel/virtio.rs           | 261 ++++++++++++++++++++++++++++++++
+ rust/kernel/virtio/virtqueue.rs | 126 +++++++++++++++
+ samples/rust/Kconfig            |  10 ++
+ samples/rust/Makefile           |   1 +
+ samples/rust/rust_virtio.rs     | 195 ++++++++++++++++++++++++
+ 9 files changed, 664 insertions(+)
+ create mode 100644 rust/kernel/scatterlist.rs
+ create mode 100644 rust/kernel/virtio.rs
+ create mode 100644 rust/kernel/virtio/virtqueue.rs
+ create mode 100644 samples/rust/rust_virtio.rs
+
+-- 
+2.40.0
+
