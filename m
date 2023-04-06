@@ -2,128 +2,95 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29E54C7618D
-	for <rust-for-linux@archiver.kernel.org>; Thu,  6 Apr 2023 06:57:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9579AC77B6C
+	for <rust-for-linux@archiver.kernel.org>; Thu,  6 Apr 2023 08:38:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235027AbjDFG5h (ORCPT
+        id S235638AbjDFIic convert rfc822-to-8bit (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 6 Apr 2023 02:57:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33742 "EHLO
+        Thu, 6 Apr 2023 04:38:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235383AbjDFG5g (ORCPT
+        with ESMTP id S235582AbjDFIib (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 6 Apr 2023 02:57:36 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA7A8AD11;
-        Wed,  5 Apr 2023 23:57:09 -0700 (PDT)
-Date:   Thu, 06 Apr 2023 06:56:09 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680764174; x=1681023374;
-        bh=x9eH5jLzlqlD1oeTC6skO4fRxBR6eOlDpRkl8IwVxoE=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=bACR+JIcC17dQkUDTOdz3igPN7NdemtDMVCzZ9hrPxMBnu4Mc0kiG1Cy9Ru+wU8cn
-         1jiZsOHRVr1JoF6hkeyTq4S/3xn7F8kIEVf7q37xeNSRpLETOALYDxKutilYck4OyR
-         kXvod+SRn7yF4H9AU1NsJblvg6tId10aJd5eFe6McqlmYLM2vEYxovQo5ouw7Lc3bA
-         RBQU2g2dYhRAmLwyJsxlR53JMN/yEh6akzWNywUE/+l+N/7axerMOt3yciStV5CkbA
-         dgkT0S0TWKcWe+5U8VZ1JlhWiqq9ivCieB9AW3t1ruk7TxYh8nsimAU9dpUA89Cijd
-         CLEFtR3gl3h3g==
-To:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Thu, 6 Apr 2023 04:38:31 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C47C6E9F
+        for <rust-for-linux@vger.kernel.org>; Thu,  6 Apr 2023 01:38:28 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-125-7fp48nBONLqGXvfFx8rEDg-1; Thu, 06 Apr 2023 09:38:25 +0100
+X-MC-Unique: 7fp48nBONLqGXvfFx8rEDg-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 6 Apr
+ 2023 09:38:24 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Thu, 6 Apr 2023 09:38:24 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Peter Zijlstra' <peterz@infradead.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>
+CC:     Greg KH <gregkh@linuxfoundation.org>,
+        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        "Alex Gaynor" <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <alice@ryhl.io>, Andreas Hindborg <nmi@metaspace.dk>
-From:   Benno Lossin <y86-dev@protonmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Benno Lossin <y86-dev@protonmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>
-Subject: [PATCH v6.1] rust: types: add `Opaque::pin_init`
-Message-ID: <20230406065546.787669-1-y86-dev@protonmail.com>
-In-Reply-To: <20230405193445.745024-14-y86-dev@protonmail.com>
-References: <20230405193445.745024-1-y86-dev@protonmail.com> <20230405193445.745024-14-y86-dev@protonmail.com>
-Feedback-ID: 40624463:user:proton
+        =?iso-8859-1?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>
+Subject: RE: [PATCH v2 03/13] rust: lock: introduce `Mutex`
+Thread-Topic: [PATCH v2 03/13] rust: lock: introduce `Mutex`
+Thread-Index: AQHZaAAyCAs/X7+57kyon/cEM0LTmK8d9EKQ
+Date:   Thu, 6 Apr 2023 08:38:24 +0000
+Message-ID: <f9573e45c6a14644abc6fcd4d3c98897@AcuMS.aculab.com>
+References: <20230405175111.5974-1-wedsonaf@gmail.com>
+ <20230405175111.5974-3-wedsonaf@gmail.com>
+ <2023040554-promoter-chevron-10b2@gregkh>
+ <2023040509-tamer-clinic-c14c@gregkh>
+ <20230405191826.GA365912@hirez.programming.kicks-ass.net>
+ <ZC3YWLmIick4jSSv@wedsonaf-dev>
+ <20230405202932.GG365912@hirez.programming.kicks-ass.net>
+ <ZC3cxzpnrnXf/osU@wedsonaf-dev>
+ <20230405204942.GH365912@hirez.programming.kicks-ass.net>
+In-Reply-To: <20230405204942.GH365912@hirez.programming.kicks-ass.net>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Add support for pin-init in combination with `Opaque<T>`, the `pin_init`
-function initializes the contents via a user-supplied initializer for
-`T`.
+From: Peter Zijlstra
+> Sent: 05 April 2023 21:50
+> 
+> On Wed, Apr 05, 2023 at 05:40:39PM -0300, Wedson Almeida Filho wrote:
+...
+> > So the situation is improved in that we don't need to manually write (and
+> > commit) the helpers. It may improve further in the future if we get better
+> > integration of the languages.
+> 
+> But yeah, feel free to convert macros to inline functions where the
+> difference is moot. There is indeed no real reason for mutex_lock() to
+> not be an inline function in that case.
 
-Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>
-Cc: Gary Guo <gary@garyguo.net>
----
- rust/kernel/init.rs  |  3 +++
- rust/kernel/types.rs | 18 ++++++++++++++++++
- 2 files changed, 21 insertions(+)
+mutex_lock() is probably ok.
+But there are cases where gcc generates much better code
+for #defines than for inline functions.
+Almost certainly because the front end gets to optimise
+#defines, but inlines are done much later on.
 
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index ffd539e2f5ef..23d879e53b26 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -177,6 +177,9 @@
- //! }
- //! ```
- //!
-+//! For more information on how to use [`pin_init_from_closure()`], take a=
- look at the uses inside
-+//! the `kernel` crate. The [`sync`] module is a good starting point.
-+//!
- //! [`sync`]: kernel::sync
- //! [pinning]: https://doc.rust-lang.org/std/pin/index.html
- //! [structurally pinned fields]:
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index ff2b2fac951d..cf1cbd6a1447 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -2,6 +2,7 @@
+	David
 
- //! Kernel types.
-
-+use crate::init::{self, PinInit};
- use alloc::boxed::Box;
- use core::{
-     cell::UnsafeCell,
-@@ -234,6 +235,23 @@ impl<T> Opaque<T> {
-         Self(MaybeUninit::uninit())
-     }
-
-+    /// Creates a pin-initializer for `Opaque<T>`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// [`PinInit<T, E>`] promises that the [`Pin` `Drop` guarantee] is up=
-held for the type `T` if
-+    /// initialization succeeds. `Opaque` is a wrapper that allows holding=
- uninitialized values of
-+    /// `T`, so it does not drop the `T` when it is dropped. When calling =
-this function the caller
-+    /// needs to guarantee that:
-+    /// - either `T` does not have drop glue ([`core::mem::needs_drop`] re=
-tuns `false`),
-+    /// - or the caller ensures the drop guarantee manually.
-+    ///
-+    /// [`Pin` `Drop` guarantee]: https://doc.rust-lang.org/core/pin/index=
-.html#drop-guarantee
-+    pub unsafe fn pin_init<E>(init: impl PinInit<T, E>) -> impl PinInit<Se=
-lf, E> {
-+        // SAFETY: `init` initializes the only field of this struct.
-+        unsafe { init::pin_init_from_closure(|slot| init.__pinned_init(Sel=
-f::raw_get(slot))) }
-+    }
-+
-     /// Returns a raw pointer to the opaque data.
-     pub fn get(&self) -> *mut T {
-         UnsafeCell::raw_get(self.0.as_ptr())
---
-2.39.2
-
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
