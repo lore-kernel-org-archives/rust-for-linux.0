@@ -2,46 +2,46 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06DC4C76196
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0CD5C77B75
 	for <rust-for-linux@archiver.kernel.org>; Thu,  6 Apr 2023 21:58:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229459AbjDFV5h (ORCPT
+        id S230139AbjDFV5i (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 6 Apr 2023 17:57:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44440 "EHLO
+        Thu, 6 Apr 2023 17:57:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229812AbjDFV5F (ORCPT
+        with ESMTP id S238783AbjDFV5N (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 6 Apr 2023 17:57:05 -0400
+        Thu, 6 Apr 2023 17:57:13 -0400
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8679EC166;
-        Thu,  6 Apr 2023 14:56:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62F12B453;
+        Thu,  6 Apr 2023 14:56:37 -0700 (PDT)
 Received: from localhost.localdomain (unknown [IPv6:2804:14d:72b4:8284:32a8:8167:f815:2895])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: dwlsalmeida)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 72D8666031D8;
-        Thu,  6 Apr 2023 22:56:27 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id B759766031D9;
+        Thu,  6 Apr 2023 22:56:33 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1680818190;
-        bh=TtJ2WnTRRkClhj1i41IWbhWF3uLZCg3n4yAehksz+EQ=;
+        s=mail; t=1680818196;
+        bh=Z1mWh6lO7+hdoozjzHbSbRzBrAE3llpM//4UJUMybns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ik0lOVuKltSX4y1PfBu6VtFlVFA0pILRH2V1/WCWU/rLrhfJeQ6sta6PLgKugNPvX
-         g5U1EB29IDbYe1DNPCZekG5g8PqFaBPEW0tx5sA94q8zjXezQ1Be1Z22mclr51iY81
-         rQFPOyedj55Iy4NibjdvwpMAdqn6sC5llmmMLgLU91J5scKfrXCsJ1c9ck34F3zD+A
-         jAW2TmtQ3Qlt030U9zLFQSyNyRwnAqBmDcPijl9aoNeRhb7ozXc1fKti9K/GCiJKuc
-         UNYfIRGGTIeaJaO0K2YRPRUU12D8NItP2cWXVWpuSNwMU1SrBUW08e+B8lkpOAQ4kZ
-         3nC5PgPdkRbmg==
+        b=QAQepvs3Zbpe0+7Y9i4iiyVuHrSwrwPxURN0SnPqlGdXKKV2xwAcxDJo/g7rthf6F
+         tKTIaCLdCWpceHIn/aD/e2JtpmxEJNGtLOdAsZiA7JxNK0cBxGsFj5+LVQq6+t7cLP
+         cO2vM1NDzL5Cf93rZ/tHahn8YVzTJgGYBf1QcjiaqVgFi+5lqYNu7VHmeLfEZIZ5UD
+         OJEvHEtuYBWTyx/nslLupNS5l+EEkWXRvBy/id14oXNfTExAsgV2Fqf+KFxzPD+1Ow
+         wpTVW+O5X4Kzaykh/HAxMQt+Cp8AlxWHTJb8b0KY3Qzc3RB1D+2aCHESAzurWihORA
+         Olef4SVXq8PYQ==
 From:   Daniel Almeida <daniel.almeida@collabora.com>
 To:     wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
         hverkuil@xs4all.nl
 Cc:     Daniel Almeida <daniel.almeida@collabora.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-media@vger.kernel.org, kernel@collabora.com
-Subject: [PATCH 1/6] rust: media: add the media module
-Date:   Thu,  6 Apr 2023 18:56:10 -0300
-Message-Id: <20230406215615.122099-2-daniel.almeida@collabora.com>
+Subject: [PATCH 3/6] rust: sync: introduce FfiMutex
+Date:   Thu,  6 Apr 2023 18:56:12 -0300
+Message-Id: <20230406215615.122099-4-daniel.almeida@collabora.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230406215615.122099-1-daniel.almeida@collabora.com>
 References: <20230406215615.122099-1-daniel.almeida@collabora.com>
@@ -51,51 +51,105 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-As part of the initial rust v4l2 support, add the media module
-to the kernel crate.
+Introduce an owned mutex that can be passed as bindings::mutex when
+initializing C data structures. The kernel will be locking it without
+user intervention so there is no data to protect and no guard type.
 
 Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- rust/kernel/lib.rs            | 2 ++
- rust/kernel/media/mod.rs      | 5 +++++
- rust/kernel/media/v4l2/mod.rs | 3 +++
- 3 files changed, 10 insertions(+)
- create mode 100644 rust/kernel/media/mod.rs
- create mode 100644 rust/kernel/media/v4l2/mod.rs
+ rust/kernel/sync.rs           |  1 +
+ rust/kernel/sync/ffi_mutex.rs | 70 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 71 insertions(+)
+ create mode 100644 rust/kernel/sync/ffi_mutex.rs
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index c20b37e88ab2..d7e8f3297405 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -48,6 +48,8 @@ pub mod types;
- #[doc(hidden)]
- pub use bindings;
- pub use macros;
-+#[cfg(CONFIG_MEDIA_SUPPORT)]
-+pub mod media;
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index b07db83972ac..1415062be34d 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -26,6 +26,7 @@ use core::{cell::UnsafeCell, mem::MaybeUninit, pin::Pin};
  
- #[cfg(CONFIG_ARM_AMBA)]
- pub mod amba;
-diff --git a/rust/kernel/media/mod.rs b/rust/kernel/media/mod.rs
+ mod arc;
+ mod condvar;
++pub mod ffi_mutex;
+ mod guard;
+ mod locked_by;
+ mod mutex;
+diff --git a/rust/kernel/sync/ffi_mutex.rs b/rust/kernel/sync/ffi_mutex.rs
 new file mode 100644
-index 000000000000..342e66382719
+index 000000000000..e615ec4059f6
 --- /dev/null
-+++ b/rust/kernel/media/mod.rs
-@@ -0,0 +1,5 @@
++++ b/rust/kernel/sync/ffi_mutex.rs
+@@ -0,0 +1,70 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! Media subsystem
++//! An owned mutex that can be passed as bindings::mutex when initializing C
++//! data structures. The kernel will be locking it without user intervention so
++//! there is no data to protect and no guard type.
 +
-+pub mod v4l2;
-diff --git a/rust/kernel/media/v4l2/mod.rs b/rust/kernel/media/v4l2/mod.rs
-new file mode 100644
-index 000000000000..068dd9b4863d
---- /dev/null
-+++ b/rust/kernel/media/v4l2/mod.rs
-@@ -0,0 +1,3 @@
-+// SPDX-License-Identifier: GPL-2.0 OR MIT
++#![allow(dead_code)]
 +
-+//! Abstractions for include/media/v4l2-*.h
++use crate::prelude::*;
++use crate::sync::{LockClassKey, LockIniter};
++use core::marker::PhantomPinned;
++use core::pin::Pin;
++
++use crate::Opaque;
++
++/// An owned mutex that can be passed as bindings::mutex when initializing C
++/// data structures. The kernel will be locking it without user intervention so
++/// there is no data to protect and no guard type.
++pub struct FfiMutex {
++    mutex: Opaque<bindings::mutex>,
++    _pin: PhantomPinned,
++}
++
++impl FfiMutex {
++    /// Constructs a new Mutex for FFI purposes.
++    ///
++    /// # Safety
++    ///
++    /// The caller must call [`FfiMutex::init_lock`] before using the raw Mutex.
++    pub const unsafe fn new() -> Self {
++        Self {
++            mutex: Opaque::uninit(),
++            _pin: PhantomPinned,
++        }
++    }
++
++    /// Returns the inner bindings::mutex
++    ///
++    /// # Safety
++    ///
++    /// The caller must call [`FfiMutex::init_lock`] before using the raw Mutex.
++    pub(crate) unsafe fn raw(self: &mut Pin<&mut Self>) -> *mut bindings::mutex {
++        let this = self.as_mut();
++        // SAFETY: mutex is pinned when Lock is. The argument to the function is not moved.
++        let this = unsafe { this.map_unchecked_mut(|x| &mut x.mutex) };
++        // This does not move from the field.
++        this.get()
++    }
++}
++
++impl LockIniter for FfiMutex {
++    fn init_lock(self: Pin<&mut Self>, name: &'static CStr, key: &'static LockClassKey) {
++        unsafe { bindings::__mutex_init(self.mutex.get(), name.as_char_ptr(), key.get()) };
++    }
++}
++
++// SAFETY: the underlying bindings::mutex can be used from any thread.
++unsafe impl Send for FfiMutex {}
++// SAFETY: two threads can try locking the underlying bindings::mutex at the
++// same thread without issues.
++unsafe impl Sync for FfiMutex {}
++
++/// Safely initialises a [`FfiMutex`] with the given name, generating a new lock
++/// class.
++#[macro_export]
++macro_rules! ffi_mutex_init {
++    ($mutex:expr, $name:literal) => {
++        $crate::init_with_lockdep!($mutex, $name);
++    };
++}
 -- 
 2.40.0
 
