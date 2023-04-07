@@ -2,156 +2,100 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A416C76196
-	for <rust-for-linux@archiver.kernel.org>; Fri,  7 Apr 2023 23:36:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC733C77B6C
+	for <rust-for-linux@archiver.kernel.org>; Sat,  8 Apr 2023 00:00:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229497AbjDGXgx (ORCPT
+        id S229502AbjDGX77 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 7 Apr 2023 19:36:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34086 "EHLO
+        Fri, 7 Apr 2023 19:59:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjDGXgw (ORCPT
+        with ESMTP id S229459AbjDGX76 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 7 Apr 2023 19:36:52 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7698CA27B;
-        Fri,  7 Apr 2023 16:36:51 -0700 (PDT)
-Received: from [IPv6:2804:14d:72b4:8284:32a8:8167:f815:2895] (unknown [IPv6:2804:14d:72b4:8284:32a8:8167:f815:2895])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: dwlsalmeida)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 6C54B6603133;
-        Sat,  8 Apr 2023 00:36:48 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1680910610;
-        bh=U92h6mBorkK2GfO57Y3hQxwoW1sYUwbwLA36Ut5C1Po=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=mBwiG5b5MVsT1PirCzrJr2STC4IIeHt1bhofLwHTCr/kvUCMvCDpcQGlw1PlvrbH8
-         EgBMjRKPPx7+ViGjF2UfdApetygAq2YEiDu8ZmnfAovOS4frAise1umLMZHxwzEiKe
-         0GGiAmjfKvzgYmp8Rff3scuTrB3VoNeOZ+S2LN0rabAHOL9kiBtAkSiHCvU3jLEoay
-         n6AtxJMhhdeOI9kyswCfbuKsoRgGLcxkwUkR40UDyrL40V9l/Brs3vEGlH3s5CBxsm
-         TX3Flg16U0lFFutLi6/JDnhgNwqs/TvWxTP0xbSl2L5tcLuDmcyECEstGM5oIQt3NK
-         n+fVGlrwH0FqQ==
-Message-ID: <f8b738940f2502e582acb59229d419825c9a1ffb.camel@collabora.com>
-Subject: Re: [PATCH v2 2/2] rust: virtio: add virtio support
-From:   Daniel Almeida <daniel.almeida@collabora.com>
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc:     ojeda@kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org
-Date:   Fri, 07 Apr 2023 20:36:35 -0300
-In-Reply-To: <CANeycqoh+ePXODJ57UT1UdhHDgzDXr=KoQEo7HiSDJDHha2dsQ@mail.gmail.com>
-References: <20230405201416.395840-1-daniel.almeida@collabora.com>
-         <20230405201416.395840-3-daniel.almeida@collabora.com>
-         <CANeycqoh+ePXODJ57UT1UdhHDgzDXr=KoQEo7HiSDJDHha2dsQ@mail.gmail.com>
+        Fri, 7 Apr 2023 19:59:58 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2F8FBB96;
+        Fri,  7 Apr 2023 16:59:57 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id z9so94624ybs.9;
+        Fri, 07 Apr 2023 16:59:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680911997; x=1683503997;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mGZafIXu1oZoLrFZaJuaTlQovGr7le+3cdq/cC4fsMs=;
+        b=mVY1J6nlfbu/iYNUUB1czpzlhOwb6wotQJWPnqexv2JfgOnhKeRX/F+x4jXLi4KF4T
+         u5xIxlRTrqStnOiox2EguzbvIiDwEd8bQ8owcaDQeXZd9bVw7BgD4FlfQmdQvaR8lTQ0
+         mtjFdli66KAO9crZx1LlPIcO+bVH4674rJE6gG+7Pg9ZI84IdnHA8Sk8foPtKdqgZiCn
+         Wk7LMnTUMXIcM0dj+S40slHKAXaq/vP0jokBTgo/7dLNggylJuApVWHPCxgRIWshDvXm
+         n7lpCF9BHx+UCQnJC64VpxS2/y8hIdOpyiByxo4jj46wiSmlm2HaG7HAG0PxzUdBSEX+
+         pFCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680911997; x=1683503997;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mGZafIXu1oZoLrFZaJuaTlQovGr7le+3cdq/cC4fsMs=;
+        b=dS+2UYZxyzZKEEnlO1npA9Lsr4Zu3NRindkPxHPkvW9EWZzpQBtEkM60QML7NT811I
+         GrQuZQ0cdmGmDHCG1bMX8TH3zmXbYDnqvkwlVICC0jyDlAxIK43tvJmKy3b7KKawkbKO
+         LkoSo0uT8GmOM39hz3sCn4qomXIBeVQrcuBgMStKE8F/c5Tt+Fvkjm6BPIko90MmdEd9
+         dPGXZ98D4fKiLNww4vMVFaXVh81mEmCFGKnWnKaGchupRnAa2VQjBfEbuBBszeNHyA53
+         +dKhVQEPJauYoEuOAt9LjxI5K0hMVlz0FOL3arfHGeIVSKCJaIwSoGthZqqq2DtkM0Aj
+         B+VQ==
+X-Gm-Message-State: AAQBX9eucAJ3hEzQifXPc6dFerZXuWkyYlEMdIr7eqMK/81jY8B60GDm
+        7RJNXR5OlYvBCcAqMg11PNdJwrEh1F1GhsrbF0o=
+X-Google-Smtp-Source: AKy350ZpczCV/ZtLHhbbuXp2lBGHxIpWYiQmG6s+QUOx8PqHwoFw68K8f5Hrb4p88m8kd/Us5psKv5+ktMAeBr1z4Tg=
+X-Received: by 2002:a25:df47:0:b0:b8e:ce2d:290a with SMTP id
+ w68-20020a25df47000000b00b8ece2d290amr337491ybg.11.1680911996813; Fri, 07 Apr
+ 2023 16:59:56 -0700 (PDT)
+MIME-Version: 1.0
+References: <CANiq72k4cOEOykgUhgqaXPC7xhX2EoC8c4sr1oFEhKMfEdi=wA@mail.gmail.com>
+ <20230121052507.885734-1-varmavinaym@gmail.com> <CAK7LNAT1p=ykc1yruvzRiYthCAuXNcLq9461Mdgz95Z39_MYxQ@mail.gmail.com>
+ <ZAdYIMYAwsOwErIl@nvrarch> <CANiq72=mg3LEdqaiy+4VDn67-C++Fyz21gefns_EvgUwGfPCTQ@mail.gmail.com>
+In-Reply-To: <CANiq72=mg3LEdqaiy+4VDn67-C++Fyz21gefns_EvgUwGfPCTQ@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sat, 8 Apr 2023 01:59:45 +0200
+Message-ID: <CANiq72kD_ESDSh-gVmUS18HtVmkY=bgxkR7Wo=OiwfMyyD8EFw@mail.gmail.com>
+Subject: Re: [PATCH v2] scripts: `make rust-analyzer` for out-of-tree modules
+To:     Vinay Varma <varmavinaym@gmail.com>
+Cc:     Masahiro Yamada <masahiroy@kernel.org>, alicef@alicef.me,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 
-MIME-Version: 1.0
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Wedson, Martin,
+On Tue, Mar 7, 2023 at 8:55=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> No problem -- thanks!
+>
+> Note that we may need a rebase after
+> https://lore.kernel.org/rust-for-linux/20230307120736.75492-1-nmi@metaspa=
+ce.dk/
+> (or equivalent) lands in `rust-fixes`. So perhaps wait for that, then
+> rebase (especially if we go with the EAFP style), and then others may
+> want to give it a spin for a re-test.
+>
+> When you rebase, please consider putting `f"{name}.o"` inside the
+> function to avoid repetition, and perhaps consider inverting the
+> condition to avoid indenting the file further (and reducing the diff).
+> It makes the "Skip ..." comment more understandable (otherwise, you
+> may want to change the comment to "Only process ..." or similar
+> instead of using "Skip ...").
 
-First of all, thanks for the review.
+The EAFP style change landed in `rust-fixes` at
+https://github.com/Rust-for-Linux/linux/commit/5c7548d5a25306dcdb97689479be=
+81cacc8ce596.
 
-
-> > +=C2=A0=C2=A0=C2=A0 /// VirtIO driver remove.
-> > +=C2=A0=C2=A0=C2=A0 ///
-> > +=C2=A0=C2=A0=C2=A0 /// Called when a virtio device is removed.
-> > +=C2=A0=C2=A0=C2=A0 /// Implementers should prepare the device for comp=
-lete
-> > removal here.
-> > +=C2=A0=C2=A0=C2=A0 ///
-> > +=C2=A0=C2=A0=C2=A0 /// In particular, implementers must ensure no buff=
-ers are
-> > left over in the
-> > +=C2=A0=C2=A0=C2=A0 /// virtqueues in use by calling [`virtqueue::get_b=
-uf()`]
-> > until `None` is
-> > +=C2=A0=C2=A0=C2=A0 /// returned.
->=20
-> What happens if implementers don't do this?
->=20
-> If this is a safety requirement, we need to find a different way to
-> enforce it.
->=20
-> >=20
-
-This is the worst part of this patch by far, unfortunately. If one
-doesn't do this, then s/he will leak the `data` field passed in through
-into_foreign() here:
-
-
-
-> +        // SAFETY: `self.ptr` is valid as per the type invariant.
-> +        let res =3D unsafe {
-> +            bindings::virtqueue_add_sgs(
-> +                self.ptr,
-> +                sgs.as_mut_ptr(),
-> +                num_out as u32,
-> +                num_in as u32,
-> +                data.into_foreign() as _,
-> +                gfp,
-> +            )
-> +        };
-> +
-
-Note the comment here:
-
-
-> +            // SAFETY: if there is a buffer token, it came from
-> +            // `into_foreign()` as called in `add_sgs()`.
-> +            <T::PrivateData as ForeignOwnable>::from_foreign(buf)
-
-
-To be honest, I tried coming up with something clever to solve this,
-but couldn't. Ideally this should happen when this function is called:
-
-> +    extern "C" fn remove_callback(virtio_device: *mut
-bindings::virtio_device) {
-
-
-But I did not find a way to iterate over the the `vqs` member from the
-Rust side, i.e.:
-
-```
-
-struct virtio_device {
-	int index;
-	bool failed;
-	bool config_enabled;
-	bool config_change_pending;
-	spinlock_t config_lock;
-	spinlock_t vqs_list_lock; /* Protects VQs list access */
-	struct device dev;
-	struct virtio_device_id id;
-	const struct virtio_config_ops *config;
-	const struct vringh_config_ops *vringh_config;
-	struct list_head vqs; <------------------
-```
-
-Is there any wrappers over list_for_each_entry(), etc, to be used from
-Rust? If so, I could not find them.
-
-Doing this cleanup from Virtqueue::Drop() is not an option either:
-since we wrap over a pointer owned by the kernel, there's no guarantee
-that the actual virtqueue is going away when drop is called on the
-wrapper. In fact, this is never the case, as virtqueues are deleted
-through this call:
-
-
-> +void rust_helper_virtio_del_vqs(struct virtio_device *vdev)
-> +{
-> +       vdev->config->del_vqs(vdev);
-> +}
-> +
-
-
-
-Suggestions welcome,
-
--- Daniel
-
+Cheers,
+Miguel
