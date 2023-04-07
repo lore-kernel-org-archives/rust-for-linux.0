@@ -2,109 +2,158 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78481C6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Fri,  7 Apr 2023 06:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 763E5C6FD1D
+	for <rust-for-linux@archiver.kernel.org>; Fri,  7 Apr 2023 07:05:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231528AbjDGGCe (ORCPT
+        id S238615AbjDGHFd (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 7 Apr 2023 02:02:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38432 "EHLO
+        Fri, 7 Apr 2023 03:05:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229844AbjDGGCd (ORCPT
+        with ESMTP id S232540AbjDGHFc (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 7 Apr 2023 02:02:33 -0400
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C096C40CE
-        for <rust-for-linux@vger.kernel.org>; Thu,  6 Apr 2023 23:02:31 -0700 (PDT)
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+        Fri, 7 Apr 2023 03:05:32 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4766EF5
+        for <rust-for-linux@vger.kernel.org>; Fri,  7 Apr 2023 00:05:31 -0700 (PDT)
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 1B4873F243
-        for <rust-for-linux@vger.kernel.org>; Fri,  7 Apr 2023 06:02:29 +0000 (UTC)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id EC7043F20A
+        for <rust-for-linux@vger.kernel.org>; Fri,  7 Apr 2023 07:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1680847349;
-        bh=zft3hVuwccqOkIe+/jXqzbhmeCB7evQzBPJj2Wk1H3M=;
-        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-         Content-Type:In-Reply-To;
-        b=gS16hkVG5dO458cwTtzME3atj2rvaCDCP1FCz+Jafc/0+rbq126vr/JiQ2AsPBdcA
-         a5JIWFR1Vhd5SD1x2irJkBswY+UQL29cbwmH8SE4ZKSCx8X6H1/KVg1+ITYe5Es6B2
-         I4oggT3cK5Kyv3Yq8q9yGDrIpr9qrqTF750+/dXMvVR981tuH2V59y7f8ay0BQmbUv
-         MCat5yicqLNGDsyH911X5vCGxh60mFK7rPV8/FEsbW5WPzb01iRYgiGxOO57Hm7o1P
-         HYKKxo91b+GIISfCU/VK8emxPmgEiyO/Sq1DY5DffB3N6goZ3rG7sd5OzhsPLh14Rs
-         7nas1rLhfruYA==
-Received: by mail-ej1-f69.google.com with SMTP id e25-20020a170906749900b0094131bc45b3so1150659ejl.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Apr 2023 23:02:29 -0700 (PDT)
+        s=20210705; t=1680851126;
+        bh=7wCvsU3M9Fv6Z9EHNIgdooWMu4RgxKEfVO+unBDF31s=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+        b=NsedwMjQiZyM+89/KGUibwj+LQfKJ74b9ZmWLkZyDOrdQaZjaJY0vKCbsXZjqm0da
+         qBHfIDDTjbF5LLk2jvM6bDKYJIMCXAP0yCWxn3m2rYwticxi0ttqUGyWelhmymVVpQ
+         JMoCfKXRHZiiQkCcc4kNC+6IxQaCC9r/y+kWqCHWJqBkSKjmUaXoODjnauWfjXlfAp
+         KqpTEFl3i/Z6sp+yUqdbCwyENx41D2CA/xHye2IMj7Mg7wSCZtCZuc3sBBnJ2E039K
+         urLuogevYzqTWba1cyPFe9XTQMeI6S5yELm84NH8nm9tQluLhTHNYJuYKVHcgRhKhN
+         HgNNKPhDlbKjg==
+Received: by mail-ed1-f72.google.com with SMTP id f15-20020a50a6cf000000b0050050d2326aso53294426edc.18
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Apr 2023 00:05:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680847348; x=1683439348;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zft3hVuwccqOkIe+/jXqzbhmeCB7evQzBPJj2Wk1H3M=;
-        b=S6JNXAnArxxi9bIYqiX5TLTVU4UzsUBiECYgJTa2/iFwu96YlPPRyBGbGp84XxVTuz
-         Fb9fL3toVvKOR5Fmf2SY9kC15IIUsJLvkUDLRwMxLdYzLiJcv+KFd24z/Q+zIb+zgcd7
-         A4JEt8zlzmhfieDirZq0XRkq9fxxitmGR8RUPKprxJggdVKMPt+gWP294dpcmES2ypn4
-         W6dVds3k3LURLrTMPWzUNtQGLOtKTE4CCQhqqh4scJ7Z23hDbYyPb910MBnuSwi6e+sN
-         QU92Wt2CzlFVtif1fO74QBYxnnPbS+/AugVMVCkilZ5kL/nlOYbpNaGEoq6R+0YKnE48
-         3eyQ==
-X-Gm-Message-State: AAQBX9eilpis7sgamkr2pRVa7Qro9et1WSdbP6N/8OutCREjqHhVD4Gg
-        teAKDMijwNNVkXuGKnslwv89nGOb3PZdP1kcSY5AiTmtUuGTWjrS2Gru+aqDTP9Vd/oaPo4hlqP
-        8r7auB9Dd7ZYF6Xl1i+QCi+BH1Ug6Q/vMhp2N7jnhKQ5r
-X-Received: by 2002:a17:906:5fc4:b0:931:6f5b:d284 with SMTP id k4-20020a1709065fc400b009316f5bd284mr1250727ejv.57.1680847347843;
-        Thu, 06 Apr 2023 23:02:27 -0700 (PDT)
-X-Google-Smtp-Source: AKy350biOzYn0MLoPwUbPrGmvYajrj8BaF1U15y7bLZbkGzboiLnXtS/QsXw/tQKAqwtS4E9vpJ9KQ==
-X-Received: by 2002:a17:906:5fc4:b0:931:6f5b:d284 with SMTP id k4-20020a1709065fc400b009316f5bd284mr1250697ejv.57.1680847347521;
-        Thu, 06 Apr 2023 23:02:27 -0700 (PDT)
-Received: from localhost (host-79-33-132-140.retail.telecomitalia.it. [79.33.132.140])
-        by smtp.gmail.com with ESMTPSA id mb14-20020a170906eb0e00b00947a749fc3esm1677028ejb.33.2023.04.06.23.02.27
+        d=1e100.net; s=20210112; t=1680851126; x=1683443126;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7wCvsU3M9Fv6Z9EHNIgdooWMu4RgxKEfVO+unBDF31s=;
+        b=45fQ1BKdavhdc12Jbh/g0XbfC0myzeOF7KCr+p9loRqBK992OTP9n84gHwssHFdcWk
+         X4HjmhcOH4axhMGxErZc62AgHLQBEYQ6bgcEMxdqJ+midAtXZJhnRvvYXBjAPKsZ+FpS
+         WUAhcDTLjMkerT0XySWcNigjoQWUNREQd9r74LIvZmlqZs5Rj/I3FXsK1ajbPN36sQRx
+         EO5x5X5AgvlCGGuBSLG1SP6gWVSNvfB54jKKfpwpdzzR66DQXep0x30x5w1CgPJKd1TP
+         kVSajMk9z1TYhHdkhe531SRCJiMvOmOreWlqhcgaiq3RwwelGuQSeKsd8o0mGqEu2VXA
+         AXLQ==
+X-Gm-Message-State: AAQBX9eNiMxXQzmzEqZZmzDpkNqe2NSlkOPTQKNWHrGP5QgSnrXZpHbv
+        LA5ISkUUVUOV/nIANqrErYCDYg4UWn9QUePOAisSxgcjCiXlHp/BmNamarRVXKXKVXUj3BQeU3/
+        y2kLB2d7kMr8CMOKmxoARB0nkrZ2v6scfRfJCGWlTIYAm
+X-Received: by 2002:a17:906:66c1:b0:878:711d:9310 with SMTP id k1-20020a17090666c100b00878711d9310mr1273971ejp.1.1680851126441;
+        Fri, 07 Apr 2023 00:05:26 -0700 (PDT)
+X-Google-Smtp-Source: AKy350bzjSQgbr52e5pu0pxHM3+EK8myuLmAkwr/R04rHg5N7fdgj3sVGTxfmYaqxI5wPSe/V3+Jxg==
+X-Received: by 2002:a17:906:66c1:b0:878:711d:9310 with SMTP id k1-20020a17090666c100b00878711d9310mr1273943ejp.1.1680851126066;
+        Fri, 07 Apr 2023 00:05:26 -0700 (PDT)
+Received: from localhost.localdomain (host-79-33-132-140.retail.telecomitalia.it. [79.33.132.140])
+        by smtp.gmail.com with ESMTPSA id s7-20020a170906a18700b00929fc8d264dsm1766736ejy.17.2023.04.07.00.05.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Apr 2023 23:02:27 -0700 (PDT)
-Date:   Fri, 7 Apr 2023 08:02:26 +0200
+        Fri, 07 Apr 2023 00:05:25 -0700 (PDT)
 From:   Andrea Righi <andrea.righi@canonical.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Kees Cook <kees@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        bjorn3_gh@protonmail.com, Kees Cook <keescook@chromium.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: allow to use INIT_STACK_ALL_ZERO
-Message-ID: <ZC+x8pqUVzWQ35fv@righiandr-XPS-13-7390>
-References: <20230210215141.108958-1-andrea.righi@canonical.com>
- <8178319F-4188-4F8E-AD8D-DCC392E26DBF@kernel.org>
- <Y+daEOZgaiF3IMTX@righiandr-XPS-13-7390>
- <4E6FDE1C-47B6-46A6-AF31-28AEB2348344@kernel.org>
- <Y+entVlMoV83vyzz@righiandr-XPS-13-7390>
- <CANiq72nQ4-md=KxtUcz3jHDXhLUdw1JxgbSKp7QsN0QKS3pV1A@mail.gmail.com>
+        Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
+        Eric Curtin <ecurtin@redhat.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Neal Gompa <neal@gompa.dev>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        llvm@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: [PATCH] scripts: rust: drop is_rust_module.sh
+Date:   Fri,  7 Apr 2023 09:05:17 +0200
+Message-Id: <20230407070517.204676-1-andrea.righi@canonical.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nQ4-md=KxtUcz3jHDXhLUdw1JxgbSKp7QsN0QKS3pV1A@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Apr 07, 2023 at 12:52:18AM +0200, Miguel Ojeda wrote:
-> On Sat, Feb 11, 2023 at 3:35 PM Andrea Righi <andrea.righi@canonical.com> wrote:
-> >
-> > oic, with clang-16 we get a deprecated warning (but it doesn't fail),
-> > then starting with clang-17 the -enable.. flag is not available anymore.
-> 
-> Wait, Kees' link says it is deprecated in Clang 16, and the removal
-> will happen in 18.
-> 
-> > Then I agree that a better check would be version < 16, instead of < 17.
-> 
-> Applied to `rust-fixes` with that changed. Please take a look if it is
-> what you expected (both content and commit message):
-> https://github.com/Rust-for-Linux/linux/commit/1921ea54ab0d91d7a660c5bb980fce1efc9223f9
+Commit c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
+introduced the constraint "!DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE"
+to enable RUST.
 
-The check (< 16) looks correct and the comment also looks correct to me,
-this option will be removed in clang 18, as mentioned here:
-https://github.com/llvm/llvm-project/blob/llvmorg-16.0.0-rc2/clang/docs/ReleaseNotes.rst#deprecated-compiler-flags
+With this constraint we don't need is_rust_module.sh anymore, because
+'pahole --lang_exclude=rust' already has the capability to exclude Rust
+CUs. If pahole isn't recent enough (< 1.24) to support --lang_exclude,
+then DEBUG_INFO_BTF can't be enabled with RUST and is_rust_module.sh
+isn't used as well.
 
-(Maybe we could add also this link as a reference)
+In any case is_rust_module.sh is obsolete and we can just drop it.
 
-Thanks!
--Andrea
+Link: https://lore.kernel.org/lkml/Y+p2xKIN6TJnQinK@righiandr-XPS-13-7390/
+Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
+---
+ rust/macros/module.rs     |  2 +-
+ scripts/Makefile.modfinal |  2 --
+ scripts/is_rust_module.sh | 16 ----------------
+ 3 files changed, 1 insertion(+), 19 deletions(-)
+ delete mode 100755 scripts/is_rust_module.sh
+
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index a7e363c2b044..608406f33a70 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -179,7 +179,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+             /// Used by the printing macros, e.g. [`info!`].
+             const __LOG_PREFIX: &[u8] = b\"{name}\\0\";
+ 
+-            /// The \"Rust loadable module\" mark, for `scripts/is_rust_module.sh`.
++            /// The \"Rust loadable module\" mark.
+             //
+             // This may be best done another way later on, e.g. as a new modinfo
+             // key or a new section. For the moment, keep it simple.
+diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
+index 4703f652c009..e6f8fa3c9b8d 100644
+--- a/scripts/Makefile.modfinal
++++ b/scripts/Makefile.modfinal
+@@ -41,8 +41,6 @@ quiet_cmd_btf_ko = BTF [M] $@
+       cmd_btf_ko = 							\
+ 	if [ ! -f vmlinux ]; then					\
+ 		printf "Skipping BTF generation for %s due to unavailability of vmlinux\n" $@ 1>&2; \
+-	elif [ -n "$(CONFIG_RUST)" ] && $(srctree)/scripts/is_rust_module.sh $@; then 		\
+-		printf "Skipping BTF generation for %s because it's a Rust module\n" $@ 1>&2; \
+ 	else								\
+ 		LLVM_OBJCOPY="$(OBJCOPY)" $(PAHOLE) -J $(PAHOLE_FLAGS) --btf_base vmlinux $@; \
+ 		$(RESOLVE_BTFIDS) -b vmlinux $@; 			\
+diff --git a/scripts/is_rust_module.sh b/scripts/is_rust_module.sh
+deleted file mode 100755
+index 28b3831a7593..000000000000
+--- a/scripts/is_rust_module.sh
++++ /dev/null
+@@ -1,16 +0,0 @@
+-#!/bin/sh
+-# SPDX-License-Identifier: GPL-2.0
+-#
+-# is_rust_module.sh module.ko
+-#
+-# Returns `0` if `module.ko` is a Rust module, `1` otherwise.
+-
+-set -e
+-
+-# Using the `16_` prefix ensures other symbols with the same substring
+-# are not picked up (even if it would be unlikely). The last part is
+-# used just in case LLVM decides to use the `.` suffix.
+-#
+-# In the future, checking for the `.comment` section may be another
+-# option, see https://github.com/rust-lang/rust/pull/97550.
+-${NM} "$*" | grep -qE '^[0-9a-fA-F]+ r _R[^[:space:]]+16___IS_RUST_MODULE[^[:space:]]*$'
+-- 
+2.39.2
+
