@@ -2,33 +2,33 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39BEEC6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Fri,  7 Apr 2023 21:01:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC66FC6FD1D
+	for <rust-for-linux@archiver.kernel.org>; Fri,  7 Apr 2023 21:59:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231283AbjDGVBC (ORCPT
+        id S231459AbjDGV7i (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 7 Apr 2023 17:01:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51458 "EHLO
+        Fri, 7 Apr 2023 17:59:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230492AbjDGVA6 (ORCPT
+        with ESMTP id S229666AbjDGV7h (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 7 Apr 2023 17:00:58 -0400
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C017C66A
-        for <rust-for-linux@vger.kernel.org>; Fri,  7 Apr 2023 14:00:52 -0700 (PDT)
-Date:   Fri, 07 Apr 2023 21:00:33 +0000
+        Fri, 7 Apr 2023 17:59:37 -0400
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06875FF0
+        for <rust-for-linux@vger.kernel.org>; Fri,  7 Apr 2023 14:59:36 -0700 (PDT)
+Date:   Fri, 07 Apr 2023 21:59:20 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680901250; x=1681160450;
-        bh=4IoVoYHk/m+r33Ey5oyqbrK9BhCHBjy9lr54Zr+fTow=;
+        s=protonmail3; t=1680904774; x=1681163974;
+        bh=/4akTJdCic2QY2I7m0VwCcocwGvSRK4Skfpuoyu1kww=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=IXMpZwoCjpN56q0H8V5aJJNlFIIONima/PlYClX/FGZGwy/6tUK448uAMF/t9SkWJ
-         ErUVMCKnAhx2VLFz4N1feeMkYu7vtOEGexEK0JrfzA6V9QHT4sx4qBo3lR78V5R8IU
-         J7I5SC3j+9iZV0oTBnfrB1kP0SAGPPYv1TWGzsFLPzekD0JMDGHonBnk8LrZP/A8oa
-         RQE4eo21OOk+LptJ38zz2Auq10KQFwcgL/ATZr5k8z/sgzgxPayU7mH5tCm7PW9EIp
-         nClnf9XCZGw3cJnkv3am/ukoOIqXBB0AM4WK1HNCiebJerdT+ljwuT5v1BgjGXF19g
-         5qLoKi2q0qTiw==
+        b=uU2Fx9cUTnwZVafX317cac7uuUYBszjxUHcrXR0M/49VMnpHsIFWvicKQmUXyGfGw
+         yo3iax0MkyH3ttcV2HgFBhzSdV+hnBij/umqs9nXUQwapzsGIPEL+XrcdVJFvZNN+9
+         WxcFazU6mh/WXaa3swlfQnNMUgVATSAZT6HKxjKi1GmnUdgWc/OYG+sA+uN7ST6NbY
+         s/Fr1U1SwkmObE7e8g2aq+LBX9GHUTc4u81/FUDQu4wzjktFYqYJElNc9DGcWirqvK
+         aT5++lwop2chx993BQyfLsVnjKejfP25T4LXza0rkQRyS6uZWkxsKrRylQZovUxLx0
+         ld8n//87XrniA==
 To:     Wedson Almeida Filho <wedsonaf@gmail.com>,
         rust-for-linux@vger.kernel.org
 From:   Benno Lossin <y86-dev@protonmail.com>
@@ -38,10 +38,10 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH v2 13/13] rust: sync: introduce `LockedBy`
-Message-ID: <68b859ca-f67b-07dd-c5c7-7f8884e5b9f1@protonmail.com>
-In-Reply-To: <20230405175111.5974-13-wedsonaf@gmail.com>
-References: <20230405175111.5974-1-wedsonaf@gmail.com> <20230405175111.5974-13-wedsonaf@gmail.com>
+Subject: Re: [PATCH v2 08/13] rust: introduce `ARef`
+Message-ID: <236fe27d-ce0c-88e0-6830-f4079ef23a87@protonmail.com>
+In-Reply-To: <20230405175111.5974-8-wedsonaf@gmail.com>
+References: <20230405175111.5974-1-wedsonaf@gmail.com> <20230405175111.5974-8-wedsonaf@gmail.com>
 Feedback-ID: 40624463:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -53,229 +53,178 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 On 05.04.23 19:51, Wedson Almeida Filho wrote:
 > From: Wedson Almeida Filho <walmeida@microsoft.com>
 >
-> This allows us to have data protected by a lock despite not being
-> wrapped by it. Access is granted by providing evidence that the lock is
-> held by the caller.
+> This is an owned reference to an object that is always ref-counted. This
+> is meant to be used in wrappers for C types that have their own ref
+> counting functions, for example, tasks, files, inodes, dentries, etc.
 >
 > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
 > ---
-> v1 -> v2: Added build_assert to rule out zero-sized types
+> v1 -> v2: No changes
 >
->   rust/kernel/sync.rs           |   2 +
->   rust/kernel/sync/lock.rs      |   2 +-
->   rust/kernel/sync/locked_by.rs | 128 ++++++++++++++++++++++++++++++++++
->   3 files changed, 131 insertions(+), 1 deletion(-)
->   create mode 100644 rust/kernel/sync/locked_by.rs
+>   rust/kernel/types.rs | 107 +++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 107 insertions(+)
 >
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index d6dd0e2c1678..f8edb6d0d794 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -10,10 +10,12 @@ use crate::types::Opaque;
->   mod arc;
->   mod condvar;
->   pub mod lock;
-> +mod locked_by;
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index dbfae9bb97ce..b071730253c7 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -6,8 +6,10 @@ use crate::init::{self, PinInit};
+>   use alloc::boxed::Box;
+>   use core::{
+>       cell::UnsafeCell,
+> +    marker::PhantomData,
+>       mem::MaybeUninit,
+>       ops::{Deref, DerefMut},
+> +    ptr::NonNull,
+>   };
 >
->   pub use arc::{Arc, ArcBorrow, UniqueArc};
->   pub use condvar::CondVar;
->   pub use lock::{mutex::Mutex, spinlock::SpinLock};
-> +pub use locked_by::LockedBy;
->
->   /// Represents a lockdep class. It's a wrapper around C's `lock_class_k=
-ey`.
->   #[repr(transparent)]
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index f52ba9ab1b70..51c996ca2109 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -111,7 +111,7 @@ pub struct Lock<T: ?Sized, B: Backend> {
->       _pin: PhantomPinned,
->
->       /// The data protected by the lock.
-> -    data: UnsafeCell<T>,
-> +    pub(crate) data: UnsafeCell<T>,
+>   /// Used to transfer ownership to and from foreign (non-Rust) languages=
+.
+> @@ -295,6 +297,111 @@ opaque_init_funcs! {
+>       "Rust" manual_init4(arg1: A1, arg2: A2, arg3: A3, arg4: A4);
 >   }
 >
->   // SAFETY: `Lock` can be transferred across thread boundaries iff the d=
-ata it protects can.
-> diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.r=
-s
-> new file mode 100644
-> index 000000000000..191e37d804e5
-> --- /dev/null
-> +++ b/rust/kernel/sync/locked_by.rs
-> @@ -0,0 +1,128 @@
-> +// SPDX-License-Identifier: GPL-2.0
+> +/// Types that are _always_ reference counted.
+> +///
+> +/// It allows such types to define their own custom ref increment and de=
+crement functions.
+> +/// Additionally, it allows users to convert from a shared reference `&T=
+` to an owned reference
+> +/// [`ARef<T>`].
+> +///
+> +/// This is usually implemented by wrappers to existing structures on th=
+e C side of the code. For
+> +/// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc) to=
+ create reference-counted
+> +/// instances of a type.
+> +///
+> +/// # Safety
+> +///
+> +/// Implementers must ensure that increments to the reference count keep=
+ the object alive in memory
+> +/// at least until matching decrements are performed.
+> +///
+> +/// Implementers must also ensure that all instances are reference-count=
+ed. (Otherwise they
+> +/// won't be able to honour the requirement that [`AlwaysRefCounted::inc=
+_ref`] keep the object
+> +/// alive.)
+> +pub unsafe trait AlwaysRefCounted {
+> +    /// Increments the reference count on the object.
+> +    fn inc_ref(&self);
 > +
-> +//! A wrapper for data protected by a lock that does not wrap it.
-> +
-> +use super::{lock::Backend, lock::Lock};
-> +use core::{cell::UnsafeCell, ptr};
-> +
-> +/// Allows access to some data to be serialised by a lock that does not =
-wrap it.
-> +///
-> +/// In most cases, data protected by a lock is wrapped by the appropriat=
-e lock type, e.g.,
-> +/// [`super::Mutex`] or [`super::SpinLock`]. [`LockedBy`] is meant for c=
-ases when this is not
-> +/// possible. For example, if a container has a lock and some data in th=
-e contained elements needs
-> +/// to be protected by the same lock.
-> +///
-> +/// [`LockedBy`] wraps the data in lieu of another locking primitive, an=
-d only allows access to it
-> +/// when the caller shows evidence that the 'external' lock is locked.
-> +///
-
-Maybe add that the `access`/`access_mut` functions panic when the supplied
-external value is not the correct one.
-
-> +/// # Examples
-> +///
-> +/// The following is an example for illustrative purposes: `InnerDirecto=
-ry::bytes_used` is an
-> +/// aggregate of all `InnerFile::bytes_used` and must be kept consistent=
-; so we wrap `InnerFile` in
-> +/// a `LockedBy` so that it shares a lock with `InnerDirectory`. This al=
-lows us to enforce at
-> +/// compile-time that access to `InnerFile` is only granted when an `Inn=
-erDirectory` is also
-> +/// locked; we enforce at run time that the right `InnerDirectory` is lo=
-cked.
-> +///
-> +/// ```
-> +/// use kernel::sync::{LockedBy, Mutex};
-> +///
-> +/// struct InnerFile {
-> +///     bytes_used: u64,
-> +/// }
-> +///
-> +/// struct File {
-> +///     _ino: u32,
-> +///     inner: LockedBy<InnerFile, InnerDirectory>,
-> +/// }
-> +///
-> +/// struct InnerDirectory {
-> +///     /// The sum of the bytes used by all files.
-> +///     bytes_used: u64,
-> +///     _files: Vec<File>,
-> +/// }
-> +///
-> +/// struct Directory {
-> +///     _ino: u32,
-> +///     inner: Mutex<InnerDirectory>,
-> +/// }
-> +///
-> +/// /// Prints `bytes_used` from both the directory and file.
-> +/// fn print_bytes_used(dir: &Directory, file: &File) {
-> +///     let guard =3D dir.inner.lock();
-> +///     let inner_file =3D file.inner.access(&guard);
-> +///     pr_info!("{} {}", guard.bytes_used, inner_file.bytes_used);
-> +/// }
-> +///
-> +/// /// Increments `bytes_used` for both the directory and file.
-> +/// fn inc_bytes_used(dir: &Directory, file: &File) {
-> +///     let mut guard =3D dir.inner.lock();
-> +///     guard.bytes_used +=3D 10;
-> +///
-> +///     let file_inner =3D file.inner.access_mut(&mut guard);
-> +///     file_inner.bytes_used +=3D 10;
-> +/// }
-> +///
-> +/// /// Creates a new file.
-> +/// fn new_file(ino: u32, dir: &Directory) -> File {
-> +///     File {
-> +///         _ino: ino,
-> +///         inner: LockedBy::new(&dir.inner, InnerFile { bytes_used: 0 }=
-),
-> +///     }
-> +/// }
-> +/// ```
-> +pub struct LockedBy<T: ?Sized, U: ?Sized> {
-> +    owner: *const U,
-> +    data: UnsafeCell<T>,
-> +}
-> +
-> +// SAFETY: `LockedBy` can be transferred across thread boundaries iff th=
-e data it protects can.
-> +unsafe impl<T: ?Sized + Send, U: ?Sized> Send for LockedBy<T, U> {}
-> +
-> +// SAFETY: `LockedBy` serialises the interior mutability it provides, so=
- it is `Sync` as long as the
-> +// data it protects is `Send`.
-> +unsafe impl<T: ?Sized + Send, U: ?Sized> Sync for LockedBy<T, U> {}
-> +
-> +impl<T, U: ?Sized> LockedBy<T, U> {
-> +    /// Constructs a new instance of [`LockedBy`].
+> +    /// Decrements the reference count on the object.
 > +    ///
-> +    /// It stores a raw pointer to the owner that is never dereferenced.=
- It is only used to ensure
-> +    /// that the right owner is being used to access the protected data.=
- If the owner is freed, the
-> +    /// data becomes inaccessible; if another instance of the owner is a=
-llocated *on the same
-> +    /// memory location*, the data becomes accessible again: none of thi=
-s affects memory safety
-> +    /// because in any case at most one thread (or CPU) can access the p=
-rotected data at a time.
-> +    pub fn new(owner: &Lock<U, impl Backend>, data: T) -> Self {
-
-I think it would be sensible to also do the ZST check here, then it will
-fail immediately on construction (but also keep the other location, as it
-does not add any runtime cost).
-
-Also, I think you should mention in the documentation that ZSTs are not
-supported. And it would be good to have an explaining comment on the
-`build_assert!` why we disallow ZSTs here.
-
-> +        Self {
-> +            owner: owner.data.get(),
-> +            data: UnsafeCell::new(data),
-> +        }
-> +    }
+> +    /// Frees the object when the count reaches zero.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that there was a previous matching increment=
+ to the reference count,
+> +    /// and that the object is no longer used after its reference count =
+is decremented (as it may
+> +    /// result in the object being freed), unless the caller owns anothe=
+r increment on the refcount
+> +    /// (e.g., it calls [`AlwaysRefCounted::inc_ref`] twice, then calls
+> +    /// [`AlwaysRefCounted::dec_ref`] once).
+> +    unsafe fn dec_ref(obj: NonNull<Self>);
 > +}
 > +
-> +impl<T: ?Sized, U> LockedBy<T, U> {
-> +    /// Returns a reference to the protected data when the caller provid=
-es evidence (via a
-> +    /// reference) that the owner is locked.
+> +/// An owned reference to an always-reference-counted object.
+> +///
+> +/// The object's reference count is automatically decremented when an in=
+stance of [`ARef`] is
+> +/// dropped. It is also automatically incremented when a new instance is=
+ created via
+> +/// [`ARef::clone`].
+> +///
+> +/// # Invariants
+> +///
+> +/// The pointer stored in `ptr` is non-null and valid for the lifetime o=
+f the [`ARef`] instance. In
+> +/// particular, the [`ARef`] instance owns an increment on the underlyin=
+g object's reference count.
+> +pub struct ARef<T: AlwaysRefCounted> {
+> +    ptr: NonNull<T>,
+> +    _p: PhantomData<T>,
+> +}
+> +
+> +impl<T: AlwaysRefCounted> ARef<T> {
+> +    /// Creates a new instance of [`ARef`].
+> +    ///
+> +    /// It takes over an increment of the reference count on the underly=
+ing object.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the reference count was incremented at =
+least once, and that they
+> +    /// are properly relinquishing one increment. That is, if there is o=
+nly one increment, callers
+> +    /// must not use the underlying object anymore -- it is only safe to=
+ do so via the newly
+> +    /// created [`ARef`].
 
-Maybe add a `# Panic` section, also for `access_mut`.
+I think you should also mention that the pointee at `ptr` must live
+at least until this `ARef` decides to decrement the refcount.
+Otherwise I would interpret the docs as written to allow you to give
+a pointer to the stack and then free the backing storage and then
+continue to use the `ARef`.
 
 --
 Cheers,
 Benno
 
-> +    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
-> +        crate::build_assert!(core::mem::size_of::<U>() > 0);
-> +        if !ptr::eq(owner, self.owner) {
-> +            panic!("mismatched owners");
+> +    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+> +        // INVARIANT: The safety requirements guarantee that the new ins=
+tance now owns the
+> +        // increment on the refcount.
+> +        Self {
+> +            ptr,
+> +            _p: PhantomData,
 > +        }
-> +
-> +        // SAFETY: `owner` is evidence that the owner is locked.
-> +        unsafe { &*self.data.get() }
-> +    }
-> +
-> +    /// Returns a mutable reference to the protected data when the calle=
-r provides evidence (via a
-> +    /// mutable owner) that the owner is locked mutably.
-> +    ///
-> +    /// Showing a mutable reference to the owner is sufficient because w=
-e know no other references
-> +    /// can exist to it.
-> +    pub fn access_mut<'a>(&'a self, owner: &'a mut U) -> &'a mut T {
-> +        crate::build_assert!(core::mem::size_of::<U>() > 0);
-> +        if !ptr::eq(owner, self.owner) {
-> +            panic!("mismatched owners");
-> +        }
-> +
-> +        // SAFETY: `owner` is evidence that there is only one reference =
-to the owner.
-> +        unsafe { &mut *self.data.get() }
 > +    }
 > +}
+> +
+> +impl<T: AlwaysRefCounted> Clone for ARef<T> {
+> +    fn clone(&self) -> Self {
+> +        self.inc_ref();
+> +        // SAFETY: We just incremented the refcount above.
+> +        unsafe { Self::from_raw(self.ptr) }
+> +    }
+> +}
+> +
+> +impl<T: AlwaysRefCounted> Deref for ARef<T> {
+> +    type Target =3D T;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: The type invariants guarantee that the object is vali=
+d.
+> +        unsafe { self.ptr.as_ref() }
+> +    }
+> +}
+> +
+> +impl<T: AlwaysRefCounted> From<&T> for ARef<T> {
+> +    fn from(b: &T) -> Self {
+> +        b.inc_ref();
+> +        // SAFETY: We just incremented the refcount above.
+> +        unsafe { Self::from_raw(NonNull::from(b)) }
+> +    }
+> +}
+> +
+> +impl<T: AlwaysRefCounted> Drop for ARef<T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The type invariants guarantee that the `ARef` owns th=
+e reference we're about to
+> +        // decrement.
+> +        unsafe { T::dec_ref(self.ptr) };
+> +    }
+> +}
+> +
+>   /// A sum type that always holds either a value of type `L` or `R`.
+>   pub enum Either<L, R> {
+>       /// Constructs an instance of [`Either`] containing a value of type=
+ `L`.
 > --
 > 2.34.1
 >
