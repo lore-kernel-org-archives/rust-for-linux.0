@@ -2,33 +2,33 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC66FC6FD1D
-	for <rust-for-linux@archiver.kernel.org>; Fri,  7 Apr 2023 21:59:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04D73C77B6C
+	for <rust-for-linux@archiver.kernel.org>; Fri,  7 Apr 2023 22:36:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231459AbjDGV7i (ORCPT
+        id S230027AbjDGWgg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 7 Apr 2023 17:59:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
+        Fri, 7 Apr 2023 18:36:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229666AbjDGV7h (ORCPT
+        with ESMTP id S229927AbjDGWgg (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 7 Apr 2023 17:59:37 -0400
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06875FF0
-        for <rust-for-linux@vger.kernel.org>; Fri,  7 Apr 2023 14:59:36 -0700 (PDT)
-Date:   Fri, 07 Apr 2023 21:59:20 +0000
+        Fri, 7 Apr 2023 18:36:36 -0400
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46680CA1C
+        for <rust-for-linux@vger.kernel.org>; Fri,  7 Apr 2023 15:36:33 -0700 (PDT)
+Date:   Fri, 07 Apr 2023 22:36:23 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680904774; x=1681163974;
-        bh=/4akTJdCic2QY2I7m0VwCcocwGvSRK4Skfpuoyu1kww=;
+        s=protonmail3; t=1680906990; x=1681166190;
+        bh=IIaZmpCFpkxGjU/FsPVtL5bPNI0nYH0A3NRltRJW1jE=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=uU2Fx9cUTnwZVafX317cac7uuUYBszjxUHcrXR0M/49VMnpHsIFWvicKQmUXyGfGw
-         yo3iax0MkyH3ttcV2HgFBhzSdV+hnBij/umqs9nXUQwapzsGIPEL+XrcdVJFvZNN+9
-         WxcFazU6mh/WXaa3swlfQnNMUgVATSAZT6HKxjKi1GmnUdgWc/OYG+sA+uN7ST6NbY
-         s/Fr1U1SwkmObE7e8g2aq+LBX9GHUTc4u81/FUDQu4wzjktFYqYJElNc9DGcWirqvK
-         aT5++lwop2chx993BQyfLsVnjKejfP25T4LXza0rkQRyS6uZWkxsKrRylQZovUxLx0
-         ld8n//87XrniA==
+        b=faFNPbuU86mssQA+UYJ0/mFqkfEQH8bDgCQ0h0DKMs0fAfZOS4qCKYpbjmu6LUZBJ
+         u165IgfMeME1zAySeqpSdI5nbYam9DCT7MNfvP3zYhrbwFaK3wXdrozqpf3iYcF5PD
+         JxkJJzZsZ/1LmQzzhl3OQjwJ9zpKEDzRTfbTytmEyGPlZUgOFqaoi4ncgyCZfFxHPD
+         RKr1xIslwLRlRTsu8NjObVNMl9WcVVROnzN29OTdHmiwHnpBVt6FNh26sezknrqWcu
+         43P0za3NiiSO458kdN6vG7cYtl2PxBFx4KzCG5P68iC1tqvbktS1Yf1xurl+U32C6l
+         qpd71mE42segw==
 To:     Wedson Almeida Filho <wedsonaf@gmail.com>,
         rust-for-linux@vger.kernel.org
 From:   Benno Lossin <y86-dev@protonmail.com>
@@ -37,11 +37,13 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH v2 08/13] rust: introduce `ARef`
-Message-ID: <236fe27d-ce0c-88e0-6830-f4079ef23a87@protonmail.com>
-In-Reply-To: <20230405175111.5974-8-wedsonaf@gmail.com>
-References: <20230405175111.5974-1-wedsonaf@gmail.com> <20230405175111.5974-8-wedsonaf@gmail.com>
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v2 10/13] rust: introduce `current`
+Message-ID: <d5e55c0f-ed6e-19ee-4bb7-58c8fdad8e29@protonmail.com>
+In-Reply-To: <20230405175111.5974-10-wedsonaf@gmail.com>
+References: <20230405175111.5974-1-wedsonaf@gmail.com> <20230405175111.5974-10-wedsonaf@gmail.com>
 Feedback-ID: 40624463:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -53,178 +55,196 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 On 05.04.23 19:51, Wedson Almeida Filho wrote:
 > From: Wedson Almeida Filho <walmeida@microsoft.com>
 >
-> This is an owned reference to an object that is always ref-counted. This
-> is meant to be used in wrappers for C types that have their own ref
-> counting functions, for example, tasks, files, inodes, dentries, etc.
+> This allows Rust code to get a reference to the current task without
+> having to increment the refcount, but still guaranteeing memory safety.
 >
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
 > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
 > ---
-> v1 -> v2: No changes
+> v1 -> v2: Make `current` a macro to prevent it from escaping the caller
 >
->   rust/kernel/types.rs | 107 +++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 107 insertions(+)
+>   rust/helpers.c         |  6 +++
+>   rust/kernel/prelude.rs |  2 +
+>   rust/kernel/task.rs    | 93 +++++++++++++++++++++++++++++++++++++++++-
+>   3 files changed, 100 insertions(+), 1 deletion(-)
 >
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index dbfae9bb97ce..b071730253c7 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -6,8 +6,10 @@ use crate::init::{self, PinInit};
->   use alloc::boxed::Box;
->   use core::{
->       cell::UnsafeCell,
-> +    marker::PhantomData,
->       mem::MaybeUninit,
->       ops::{Deref, DerefMut},
-> +    ptr::NonNull,
->   };
->
->   /// Used to transfer ownership to and from foreign (non-Rust) languages=
-.
-> @@ -295,6 +297,111 @@ opaque_init_funcs! {
->       "Rust" manual_init4(arg1: A1, arg2: A2, arg3: A3, arg4: A4);
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 58a194042c86..96441744030e 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -100,6 +100,12 @@ bool rust_helper_refcount_dec_and_test(refcount_t *r=
+)
 >   }
+>   EXPORT_SYMBOL_GPL(rust_helper_refcount_dec_and_test);
 >
-> +/// Types that are _always_ reference counted.
-> +///
-> +/// It allows such types to define their own custom ref increment and de=
-crement functions.
-> +/// Additionally, it allows users to convert from a shared reference `&T=
-` to an owned reference
-> +/// [`ARef<T>`].
-> +///
-> +/// This is usually implemented by wrappers to existing structures on th=
-e C side of the code. For
-> +/// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc) to=
- create reference-counted
-> +/// instances of a type.
-> +///
-> +/// # Safety
-> +///
-> +/// Implementers must ensure that increments to the reference count keep=
- the object alive in memory
-> +/// at least until matching decrements are performed.
-> +///
-> +/// Implementers must also ensure that all instances are reference-count=
-ed. (Otherwise they
-> +/// won't be able to honour the requirement that [`AlwaysRefCounted::inc=
-_ref`] keep the object
-> +/// alive.)
-> +pub unsafe trait AlwaysRefCounted {
-> +    /// Increments the reference count on the object.
-> +    fn inc_ref(&self);
+> +struct task_struct *rust_helper_get_current(void)
+> +{
+> +=09return current;
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_get_current);
 > +
-> +    /// Decrements the reference count on the object.
+>   void rust_helper_get_task_struct(struct task_struct *t)
+>   {
+>   =09get_task_struct(t);
+> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> index fcdc511d2ce8..c28587d68ebc 100644
+> --- a/rust/kernel/prelude.rs
+> +++ b/rust/kernel/prelude.rs
+> @@ -36,3 +36,5 @@ pub use super::error::{code::*, Error, Result};
+>   pub use super::{str::CStr, ThisModule};
+>
+>   pub use super::init::{InPlaceInit, Init, PinInit};
+> +
+> +pub use super::current;
+> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+> index 8d7a8222990f..468387a5f7eb 100644
+> --- a/rust/kernel/task.rs
+> +++ b/rust/kernel/task.rs
+> @@ -5,7 +5,17 @@
+>   //! C header: [`include/linux/sched.h`](../../../../include/linux/sched=
+.h).
+>
+>   use crate::bindings;
+> -use core::{cell::UnsafeCell, ptr};
+> +use core::{cell::UnsafeCell, marker::PhantomData, ops::Deref, ptr};
+> +
+> +/// Returns the currently running task.
+> +#[macro_export]
+> +macro_rules! current {
+> +    () =3D> {
+> +        // SAFETY: Deref + addr-of below create a temporary `TaskRef` th=
+at cannot outlive the
+> +        // caller.
+> +        unsafe { &*$crate::task::Task::current() }
+> +    };
+> +}
+>
+>   /// Wraps the kernel's `struct task_struct`.
+>   ///
+> @@ -13,6 +23,42 @@ use core::{cell::UnsafeCell, ptr};
+>   ///
+>   /// Instances of this type are always ref-counted, that is, a call to `=
+get_task_struct` ensures
+>   /// that the allocation remains valid at least until the matching call =
+to `put_task_struct`.
+> +///
+> +/// # Examples
+> +///
+> +/// The following is an example of getting the PID of the current thread=
+ with zero additional cost
+> +/// when compared to the C version:
+> +///
+> +/// ```
+> +/// let pid =3D current!().pid();
+> +/// ```
+> +///
+> +/// Getting the PID of the current process, also zero additional cost:
+> +///
+> +/// ```
+> +/// let pid =3D current!().group_leader().pid();
+> +/// ```
+> +///
+> +/// Getting the current task and storing it in some struct. The referenc=
+e count is automatically
+> +/// incremented when creating `State` and decremented when it is dropped=
+:
+> +///
+> +/// ```
+> +/// use kernel::{task::Task, types::ARef};
+> +///
+> +/// struct State {
+> +///     creator: ARef<Task>,
+> +///     index: u32,
+> +/// }
+> +///
+> +/// impl State {
+> +///     fn new() -> Self {
+> +///         Self {
+> +///             creator: current!().into(),
+> +///             index: 0,
+> +///         }
+> +///     }
+> +/// }
+> +/// ```
+>   #[repr(transparent)]
+>   pub struct Task(pub(crate) UnsafeCell<bindings::task_struct>);
+>
+> @@ -25,6 +71,24 @@ unsafe impl Sync for Task {}
+>   type Pid =3D bindings::pid_t;
+>
+>   impl Task {
+> +    /// Returns a task reference for the currently executing task/thread=
+.
 > +    ///
-> +    /// Frees the object when the count reaches zero.
-> +    ///
+
+Add a link to the `current!` macro as a safe version of this function.
+
 > +    /// # Safety
 > +    ///
-> +    /// Callers must ensure that there was a previous matching increment=
- to the reference count,
-> +    /// and that the object is no longer used after its reference count =
-is decremented (as it may
-> +    /// result in the object being freed), unless the caller owns anothe=
-r increment on the refcount
-> +    /// (e.g., it calls [`AlwaysRefCounted::inc_ref`] twice, then calls
-> +    /// [`AlwaysRefCounted::dec_ref`] once).
-> +    unsafe fn dec_ref(obj: NonNull<Self>);
-> +}
+> +    /// Callers must ensure that the returned [`TaskRef`] doesn't outliv=
+e the current task/thread.
+> +    pub unsafe fn current<'a>() -> TaskRef<'a> {
+> +        // SAFETY: Just an FFI call with no additional safety requiremen=
+ts.
+> +        let ptr =3D unsafe { bindings::get_current() };
 > +
-> +/// An owned reference to an always-reference-counted object.
+> +        TaskRef {
+> +            // SAFETY: If the current thread is still running, the curre=
+nt task is valid. Given
+> +            // that `TaskRef` is not `Send`, we know it cannot be transf=
+erred to another thread
+> +            // (where it could potentially outlive the caller).
+> +            task: unsafe { &*ptr.cast() },
+> +            _not_send: PhantomData,
+> +        }
+> +    }
+> +
+>       /// Returns the group leader of the given task.
+>       pub fn group_leader(&self) -> &Task {
+>           // SAFETY: By the type invariant, we know that `self.0` is vali=
+d.
+> @@ -69,3 +133,30 @@ unsafe impl crate::types::AlwaysRefCounted for Task {
+>           unsafe { bindings::put_task_struct(obj.cast().as_ptr()) }
+>       }
+>   }
+> +
+> +/// A wrapper for a shared reference to [`Task`] that isn't [`Send`].
 > +///
-> +/// The object's reference count is automatically decremented when an in=
-stance of [`ARef`] is
-> +/// dropped. It is also automatically incremented when a new instance is=
- created via
-> +/// [`ARef::clone`].
+> +/// We make this explicitly not [`Send`] so that we can use it to repres=
+ent the current thread
+> +/// without having to increment/decrement the task's reference count.
 > +///
 > +/// # Invariants
 > +///
-> +/// The pointer stored in `ptr` is non-null and valid for the lifetime o=
-f the [`ARef`] instance. In
-> +/// particular, the [`ARef`] instance owns an increment on the underlyin=
-g object's reference count.
-> +pub struct ARef<T: AlwaysRefCounted> {
-> +    ptr: NonNull<T>,
-> +    _p: PhantomData<T>,
+> +/// The wrapped [`Task`] remains valid for the lifetime of the object.
+> +pub struct TaskRef<'a> {
+> +    task: &'a Task,
+> +    _not_send: PhantomData<*mut ()>,
 > +}
 > +
-> +impl<T: AlwaysRefCounted> ARef<T> {
-> +    /// Creates a new instance of [`ARef`].
-> +    ///
-> +    /// It takes over an increment of the reference count on the underly=
-ing object.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that the reference count was incremented at =
-least once, and that they
-> +    /// are properly relinquishing one increment. That is, if there is o=
-nly one increment, callers
-> +    /// must not use the underlying object anymore -- it is only safe to=
- do so via the newly
-> +    /// created [`ARef`].
+> +impl Deref for TaskRef<'_> {
+> +    type Target =3D Task;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        self.task
+> +    }
+> +}
+> +
+> +impl From<TaskRef<'_>> for crate::types::ARef<Task> {
+> +    fn from(t: TaskRef<'_>) -> Self {
+> +        t.deref().into()
+> +    }
+> +}
 
-I think you should also mention that the pointee at `ptr` must live
-at least until this `ARef` decides to decrement the refcount.
-Otherwise I would interpret the docs as written to allow you to give
-a pointer to the stack and then free the backing storage and then
-continue to use the `ARef`.
+Maybe we can hide this struct and return an `impl Deref<Target =3D Task>`
+in `Task::current` instead (it will still be `!Send`)? Users do not
+really need to see this implementation detail.
 
 --
 Cheers,
 Benno
 
-> +    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-> +        // INVARIANT: The safety requirements guarantee that the new ins=
-tance now owns the
-> +        // increment on the refcount.
-> +        Self {
-> +            ptr,
-> +            _p: PhantomData,
-> +        }
-> +    }
-> +}
-> +
-> +impl<T: AlwaysRefCounted> Clone for ARef<T> {
-> +    fn clone(&self) -> Self {
-> +        self.inc_ref();
-> +        // SAFETY: We just incremented the refcount above.
-> +        unsafe { Self::from_raw(self.ptr) }
-> +    }
-> +}
-> +
-> +impl<T: AlwaysRefCounted> Deref for ARef<T> {
-> +    type Target =3D T;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        // SAFETY: The type invariants guarantee that the object is vali=
-d.
-> +        unsafe { self.ptr.as_ref() }
-> +    }
-> +}
-> +
-> +impl<T: AlwaysRefCounted> From<&T> for ARef<T> {
-> +    fn from(b: &T) -> Self {
-> +        b.inc_ref();
-> +        // SAFETY: We just incremented the refcount above.
-> +        unsafe { Self::from_raw(NonNull::from(b)) }
-> +    }
-> +}
-> +
-> +impl<T: AlwaysRefCounted> Drop for ARef<T> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: The type invariants guarantee that the `ARef` owns th=
-e reference we're about to
-> +        // decrement.
-> +        unsafe { T::dec_ref(self.ptr) };
-> +    }
-> +}
-> +
->   /// A sum type that always holds either a value of type `L` or `R`.
->   pub enum Either<L, R> {
->       /// Constructs an instance of [`Either`] containing a value of type=
- `L`.
 > --
 > 2.34.1
 >
