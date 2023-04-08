@@ -2,108 +2,98 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F6F6C77B61
-	for <rust-for-linux@archiver.kernel.org>; Sat,  8 Apr 2023 12:27:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B8E4C7619A
+	for <rust-for-linux@archiver.kernel.org>; Sat,  8 Apr 2023 13:42:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231454AbjDHM1y (ORCPT
+        id S229647AbjDHNmG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 8 Apr 2023 08:27:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34922 "EHLO
+        Sat, 8 Apr 2023 09:42:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231278AbjDHM1Z (ORCPT
+        with ESMTP id S229696AbjDHNmG (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 8 Apr 2023 08:27:25 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23C4C11658
-        for <rust-for-linux@vger.kernel.org>; Sat,  8 Apr 2023 05:26:58 -0700 (PDT)
-Date:   Sat, 08 Apr 2023 12:26:33 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1680956808; x=1681216008;
-        bh=S5ndiOTk444R587cz6eQKsLf+C57xcupLszBquLvesM=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=OOrubc/LRQIdYFRctgkFbcNDLiGSXGD0U+/c1+PBFxg5roifhVsFIopbaVNtgQRce
-         3bNmW7rO4LCRdZaqzSGGI/6Muy+hQ36+5DBOFxNIIRvfAEqk007iyVmWvp9u76zWga
-         VHTHg2hU7/Lonqx0eZeNfhytztlyZXkdOV0DV0fNtq8y9rxLUp3x92Zsr1CxWdlMXm
-         IhznCMtgGp/B8cEIvFL00NjW7t0AEhD4+ZZMjpX32+TtHqtVOxPT+9YUCYH5snDFN+
-         zhm74iTuqbJGUy4Y+zIfAVAcYvjyQjnzkDkubwF46ysWgAM2km640rDebmaWQlO3Y5
-         wu81/QyW3onBw==
-To:     Miguel Ojeda <ojeda@kernel.org>,
+        Sat, 8 Apr 2023 09:42:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C832CD53C;
+        Sat,  8 Apr 2023 06:42:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F67D60959;
+        Sat,  8 Apr 2023 13:42:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5255C4339E;
+        Sat,  8 Apr 2023 13:42:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680961323;
+        bh=+rvCJwQnhgHtRPTA4FpOWMqeq2UPBg8NLPxv4nEuxX0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=j8wXnh8jcxeZy5hlnL9j7yhf1PfZDoBKolcpy8BAI3zytnC6o3YeEcQ21+RGU398S
+         lwlY1lX1+rGmxa3RW1a4ssgZVrMNHXDCC6WIPr8GtoapHSeRq8QJ4+1MkRoPe/q1co
+         pBZRK9TS0XYB4rlCrpX5ng+gaXL15uri2QVjR6Fo1l66G9KP7d7+87JoNRfKRWutR0
+         HW8KaNz2q7SbsqNYO02xV8LQKQ8X11uv0ovd00bz1EsLtjqCS292zKcsS54/wMPkBY
+         +uoYQ0p8nmdgW2/VffK8mE2GMfG1FpQRopt7rW1Yx0C1UStZhRxsOGAwfAxnow3PDU
+         QQ1B9czlK0ofA==
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-183f4efa98aso7338404fac.2;
+        Sat, 08 Apr 2023 06:42:03 -0700 (PDT)
+X-Gm-Message-State: AAQBX9dA5dw3P+QzJm+QO4Nf7oxi0zIrxD8wfTvooJpOm7DS9gZ084xA
+        Nfodljys+vmFyg7Xrr+jn2PFxFWa1zyZs9s8Z9E=
+X-Google-Smtp-Source: AKy350YM5FAGa/kRWBMoLt816ScO0UDcA4Pm4t4Ada1UZVKLZfKRP4ulOWZgDvkSe3Ul/chuG7STZWY4sSR50yAJtLg=
+X-Received: by 2002:a05:6870:1119:b0:17e:d9e2:a55c with SMTP id
+ 25-20020a056870111900b0017ed9e2a55cmr2268082oaf.11.1680961323046; Sat, 08 Apr
+ 2023 06:42:03 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230407070517.204676-1-andrea.righi@canonical.com>
+In-Reply-To: <20230407070517.204676-1-andrea.righi@canonical.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Sat, 8 Apr 2023 22:41:26 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATG0rmbV79Uo8a8mX5uFNn878UbP0BEJ3c=cYSsO_a3ww@mail.gmail.com>
+Message-ID: <CAK7LNATG0rmbV79Uo8a8mX5uFNn878UbP0BEJ3c=cYSsO_a3ww@mail.gmail.com>
+Subject: Re: [PATCH] scripts: rust: drop is_rust_module.sh
+To:     Andrea Righi <andrea.righi@canonical.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <alice@ryhl.io>, Andreas Hindborg <nmi@metaspace.dk>
-From:   Benno Lossin <y86-dev@protonmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Benno Lossin <y86-dev@protonmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>
-Subject: [PATCH v7 15/15] rust: sync: add functions for initializing `UniqueArc<MaybeUninit<T>>`
-Message-ID: <20230408122429.1103522-16-y86-dev@protonmail.com>
-In-Reply-To: <20230408122429.1103522-1-y86-dev@protonmail.com>
-References: <20230408122429.1103522-1-y86-dev@protonmail.com>
-Feedback-ID: 40624463:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
+        Eric Curtin <ecurtin@redhat.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Neal Gompa <neal@gompa.dev>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        llvm@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Add two functions `init_with` and `pin_init_with` to
-`UniqueArc<MaybeUninit<T>>` to initialize the memory of already allocated
-`UniqueArc`s. This is useful when you want to allocate memory check some
-condition inside of a context where allocation is forbidden and then
-conditionally initialize an object.
-
-Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
----
- rust/kernel/sync/arc.rs | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index d05caa723718..d1a79cce5e54 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -541,6 +541,30 @@ impl<T> UniqueArc<MaybeUninit<T>> {
-             inner: unsafe { Arc::from_inner(inner.cast()) },
-         }
-     }
-+
-+    /// Initialize `self` using the given initializer.
-+    pub fn init_with<E>(mut self, init: impl Init<T, E>) -> core::result::=
-Result<UniqueArc<T>, E> {
-+        // SAFETY: The supplied pointer is valid for initialization.
-+        match unsafe { init.__init(self.as_mut_ptr()) } {
-+            // SAFETY: Initialization completed successfully.
-+            Ok(()) =3D> Ok(unsafe { self.assume_init() }),
-+            Err(err) =3D> Err(err),
-+        }
-+    }
-+
-+    /// Pin-initialize `self` using the given pin-initializer.
-+    pub fn pin_init_with<E>(
-+        mut self,
-+        init: impl PinInit<T, E>,
-+    ) -> core::result::Result<Pin<UniqueArc<T>>, E> {
-+        // SAFETY: The supplied pointer is valid for initialization and we=
- will later pin the value
-+        // to ensure it does not move.
-+        match unsafe { init.__pinned_init(self.as_mut_ptr()) } {
-+            // SAFETY: Initialization completed successfully.
-+            Ok(()) =3D> Ok(unsafe { self.assume_init() }.into()),
-+            Err(err) =3D> Err(err),
-+        }
-+    }
- }
-
- impl<T: ?Sized> From<UniqueArc<T>> for Pin<UniqueArc<T>> {
---
-2.39.2
+On Fri, Apr 7, 2023 at 4:05=E2=80=AFPM Andrea Righi <andrea.righi@canonical=
+.com> wrote:
+>
+> Commit c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
+> introduced the constraint "!DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE"
+> to enable RUST.
+>
+> With this constraint we don't need is_rust_module.sh anymore, because
+> 'pahole --lang_exclude=3Drust' already has the capability to exclude Rust
+> CUs. If pahole isn't recent enough (< 1.24) to support --lang_exclude,
+> then DEBUG_INFO_BTF can't be enabled with RUST and is_rust_module.sh
+> isn't used as well.
+>
+> In any case is_rust_module.sh is obsolete and we can just drop it.
+>
+> Link: https://lore.kernel.org/lkml/Y+p2xKIN6TJnQinK@righiandr-XPS-13-7390=
+/
+> Signed-off-by: Andrea Righi
 
 
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+
+
+--=20
+Best Regards
+Masahiro Yamada
