@@ -2,157 +2,223 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AA8FC7619A
-	for <rust-for-linux@archiver.kernel.org>; Sat,  8 Apr 2023 10:31:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AAEBDC7619A
+	for <rust-for-linux@archiver.kernel.org>; Sat,  8 Apr 2023 12:25:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbjDHKbc convert rfc822-to-8bit (ORCPT
+        id S229647AbjDHMZ3 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 8 Apr 2023 06:31:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59184 "EHLO
+        Sat, 8 Apr 2023 08:25:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbjDHKbb (ORCPT
+        with ESMTP id S229559AbjDHMZ3 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 8 Apr 2023 06:31:31 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 537D8E42;
-        Sat,  8 Apr 2023 03:30:52 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id g17so2347901ejt.1;
-        Sat, 08 Apr 2023 03:30:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680949729; x=1683541729;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5prd9jiPY6aPPA4NHCME6A4G1D5JLdJePd4hvf7GCtE=;
-        b=AjZlqcHGxyPDHiJOvjnNcJjTxQke1F4mllun5eHihqwumioIQPPE9RBgQFx3I0HOP1
-         5pVMCvFywv8j8fl0fAW3C+xEiDRZ/XFWoFQqXKPlzWg9HdHlIX4lQJ656XJ/FuBOuGK2
-         GDrj1uGquLZSbIPXKHyY+LhlhQ9H7idwcsOdF3WNdrXwQbZcfbKj031aOYvLjjNORbvs
-         ZIXvBazkpfXyT37GbltfJ+I9e183xW46lzbJefrOtQUPcdcM5kbVGE+04JC4hUDFLmfW
-         LaTR37HGu1TVqOtnObcWZqc0V5MRMKcX9cgIQ2Lsgk8SCIbajiIYPX2U0ktTB2kYHu+8
-         AMrg==
-X-Gm-Message-State: AAQBX9cDxpcp9g8mS9rH60D+gblbNVsJxbBgLyWZoAtl39PDf2vibeSX
-        smGWa6oQba3k9SdMogxOx8ZfHrAZcUptpCEb
-X-Google-Smtp-Source: AKy350YHTXVFSmt/CeCoIJAShRJWWuhKn47T0Y8awo2NZYWPHGZyOHqe3R9QVWrVl7PSOxAfjLUDfA==
-X-Received: by 2002:a17:906:bce7:b0:94a:5361:d448 with SMTP id op7-20020a170906bce700b0094a5361d448mr31930ejb.31.1680949729010;
-        Sat, 08 Apr 2023 03:28:49 -0700 (PDT)
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
-        by smtp.gmail.com with ESMTPSA id gt19-20020a170906f21300b00905a1abecbfsm3006359ejb.47.2023.04.08.03.28.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Apr 2023 03:28:48 -0700 (PDT)
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-94a34d3812cso21542366b.2;
-        Sat, 08 Apr 2023 03:28:48 -0700 (PDT)
-X-Received: by 2002:a50:d0d9:0:b0:4fb:f19:87f with SMTP id g25-20020a50d0d9000000b004fb0f19087fmr2476755edf.3.1680949727831;
- Sat, 08 Apr 2023 03:28:47 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230407070517.204676-1-andrea.righi@canonical.com>
-In-Reply-To: <20230407070517.204676-1-andrea.righi@canonical.com>
-From:   Neal Gompa <neal@gompa.dev>
-Date:   Sat, 8 Apr 2023 06:28:11 -0400
-X-Gmail-Original-Message-ID: <CAEg-Je8X4mCq7wCD5ASOafQR_Wap2uQsgTwAVGH221CGXfiT9w@mail.gmail.com>
-Message-ID: <CAEg-Je8X4mCq7wCD5ASOafQR_Wap2uQsgTwAVGH221CGXfiT9w@mail.gmail.com>
-Subject: Re: [PATCH] scripts: rust: drop is_rust_module.sh
-To:     Andrea Righi <andrea.righi@canonical.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Sat, 8 Apr 2023 08:25:29 -0400
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3781876AF
+        for <rust-for-linux@vger.kernel.org>; Sat,  8 Apr 2023 05:25:27 -0700 (PDT)
+Date:   Sat, 08 Apr 2023 12:25:12 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1680956724; x=1681215924;
+        bh=tzdDTbN3tpX2XmJibizQwZqpEThygt4DIudc3sder8U=;
+        h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+        b=UNleLHVDe+5KrPJOOLbmSQlS8FwVq0ol2nFWA24RtBVuD3idVU5FyBpWmLA1g4pUj
+         bUoQeRfK2M6tmzPlFx2hJyWm8U86ZkIDQlrx7LuSvl/ToW9Iw1S83phvN9T/LD4zXF
+         JW3bkOj0GKf3elnPcI7iufdxCDDDyR8S8ZkBCocXIAk6lKC4GyA7r8roMJ+WIOBZW+
+         yHqqWu1XZfczhjvH96RbQSbubRQLsB4LpfRY7KwYPvC91WMqCZwU/9r+fL3RlhJb2U
+         WJc8yT5XLx9dHZQmK3ii3rgCB8oNzuVJVVHV+YhH1P4Je2kzPi9O7eArCwTFejvPf6
+         54pr1NhcLixrw==
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
-        Eric Curtin <ecurtin@redhat.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        llvm@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Alice Ryhl <alice@ryhl.io>, Andreas Hindborg <nmi@metaspace.dk>
+From:   Benno Lossin <y86-dev@protonmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, Benno Lossin <y86-dev@protonmail.com>
+Subject: [PATCH v7 00/15] Rust pin-init API for pinned initialization of structs
+Message-ID: <20230408122429.1103522-1-y86-dev@protonmail.com>
+Feedback-ID: 40624463:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Apr 7, 2023 at 3:05 AM Andrea Righi <andrea.righi@canonical.com> wrote:
->
-> Commit c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
-> introduced the constraint "!DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE"
-> to enable RUST.
->
-> With this constraint we don't need is_rust_module.sh anymore, because
-> 'pahole --lang_exclude=rust' already has the capability to exclude Rust
-> CUs. If pahole isn't recent enough (< 1.24) to support --lang_exclude,
-> then DEBUG_INFO_BTF can't be enabled with RUST and is_rust_module.sh
-> isn't used as well.
->
-> In any case is_rust_module.sh is obsolete and we can just drop it.
->
-> Link: https://lore.kernel.org/lkml/Y+p2xKIN6TJnQinK@righiandr-XPS-13-7390/
-> Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
-> ---
->  rust/macros/module.rs     |  2 +-
->  scripts/Makefile.modfinal |  2 --
->  scripts/is_rust_module.sh | 16 ----------------
->  3 files changed, 1 insertion(+), 19 deletions(-)
->  delete mode 100755 scripts/is_rust_module.sh
->
-> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-> index a7e363c2b044..608406f33a70 100644
-> --- a/rust/macros/module.rs
-> +++ b/rust/macros/module.rs
-> @@ -179,7 +179,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
->              /// Used by the printing macros, e.g. [`info!`].
->              const __LOG_PREFIX: &[u8] = b\"{name}\\0\";
->
-> -            /// The \"Rust loadable module\" mark, for `scripts/is_rust_module.sh`.
-> +            /// The \"Rust loadable module\" mark.
->              //
->              // This may be best done another way later on, e.g. as a new modinfo
->              // key or a new section. For the moment, keep it simple.
-> diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
-> index 4703f652c009..e6f8fa3c9b8d 100644
-> --- a/scripts/Makefile.modfinal
-> +++ b/scripts/Makefile.modfinal
-> @@ -41,8 +41,6 @@ quiet_cmd_btf_ko = BTF [M] $@
->        cmd_btf_ko =                                                     \
->         if [ ! -f vmlinux ]; then                                       \
->                 printf "Skipping BTF generation for %s due to unavailability of vmlinux\n" $@ 1>&2; \
-> -       elif [ -n "$(CONFIG_RUST)" ] && $(srctree)/scripts/is_rust_module.sh $@; then           \
-> -               printf "Skipping BTF generation for %s because it's a Rust module\n" $@ 1>&2; \
->         else                                                            \
->                 LLVM_OBJCOPY="$(OBJCOPY)" $(PAHOLE) -J $(PAHOLE_FLAGS) --btf_base vmlinux $@; \
->                 $(RESOLVE_BTFIDS) -b vmlinux $@;                        \
-> diff --git a/scripts/is_rust_module.sh b/scripts/is_rust_module.sh
-> deleted file mode 100755
-> index 28b3831a7593..000000000000
-> --- a/scripts/is_rust_module.sh
-> +++ /dev/null
-> @@ -1,16 +0,0 @@
-> -#!/bin/sh
-> -# SPDX-License-Identifier: GPL-2.0
-> -#
-> -# is_rust_module.sh module.ko
-> -#
-> -# Returns `0` if `module.ko` is a Rust module, `1` otherwise.
-> -
-> -set -e
-> -
-> -# Using the `16_` prefix ensures other symbols with the same substring
-> -# are not picked up (even if it would be unlikely). The last part is
-> -# used just in case LLVM decides to use the `.` suffix.
-> -#
-> -# In the future, checking for the `.comment` section may be another
-> -# option, see https://github.com/rust-lang/rust/pull/97550.
-> -${NM} "$*" | grep -qE '^[0-9a-fA-F]+ r _R[^[:space:]]+16___IS_RUST_MODULE[^[:space:]]*$'
-> --
-> 2.39.2
->
+This is the seventh version of the pin-init API. See [1] for v6.
 
-LGTM.
+The tree at [2] contains these patches applied on top of 6.3-rc1.
+The Rust-doc documentation of the pin-init API can be found at [3].
 
-Reviewed-by: Neal Gompa <neal@gompa.dev>
+These patches are a long way coming, since I held a presentation on
+safe pinned initialization at Kangrejos [4]. And my discovery of this
+problem was almost a year ago [5].
 
-
+- #1 enables the `pin_macro` feature which is already stable in Rust
+  version 1.68.
+- #2 adds a utility macro `quote!` for proc-macros. This macro converts
+  the typed characters directly into Rust tokens that are the output of
+  proc-macros. It is used by the pin-init API proc-macros.
+- #3 changes the `Err` types of the constructor functions of `Arc` and
+  `UniqueArc` to `AllocError`.
+- #4 adds the `assume_init` function to `UniqueArc<MaybeUninit<T>>` that
+  unsafely assumes the pointee to be initialized and returns a
+  `UniqueArc<T>`. `UniqueArc::write` is modified to use this new function.
+  Later patches use it as well.
+- #5 adds `Opaque::raw_get` to access the value inside of an `Opaque` from
+  a raw pointer only.
+- #6-11 introduce the pin-init API. The commit message of #4 details the
+  problem it solves and lays out the overall architecture. The
+  implementation details are fairly complex; however, this is required to
+  provide a safe API for users -- reducing the amount of `unsafe` code is a
+  key goal of the Rust support in the kernel. An example of the
+  before/after difference from the point of view of users is provided in
+  the commit message. It is a goal to at some point have pin-init as a
+  language feature of Rust. A first step in this direction is the Field
+  Projection RFC [6].
+- #12 adds important traits and macros from pin-init to the prelude.
+- #13 adds functions for easier initialization of `Opaque<T>` via
+  FFI and raw pointer initializer functions. This is necessary when writing
+  Rust wrappers and will be used by Wedson's `sync` module patches.
+- #14 improves the `UniqueArc::try_new_uninit` function by using the
+  pin-init API. The old version first allocated uninitialized memory on the
+  stack and then moved it into the location in the heap. The new version
+  directly allocates this on the heap.
+- #15 adds functions for initializing already allocated `UniqueArc`s, this
+  will be used by the Android Binder driver.
 
 --
-真実はいつも一つ！/ Always, there's only one truth!
+
+Changelog:
+v6 -> v7:
+- Changed `DropGuard` and `StackInit` from a tuple struct to a named
+  struct.
+- Improve `SAFETY` and add `INVARIANT` comments to `StackInit`.
+- Change `Opaque::ffi_init` to take a closure instead of a function
+  pointer to allow better tracking via klint.
+
+v5 -> v6:
+- Change `pinned_drop` macro to allow `mut self` in the signature.
+- Change statement fragment to tt fragemnt in `pinned_drop` to prevent
+  parsing errors.
+- Move evaluation of the value in `stack_pin_init!`/`stack_try_pin_init!`
+  to the beginning.
+- Move setting uninitialized flag in front of dropping the value in
+  `StackInit::init`.
+- Remove `Unpin` requirement on `zeroed()`.
+- Add note about `Pointee` to the `Zeroable` impl on raw pointers.
+
+v4 -> v5:
+- Add `pin_macro` to `rust_allowed_features`.
+- Improve wording of commit message #6.
+- Remove `PinInit` as a supertrait from `Init`, instead add a blanket impl:
+  `impl PinInit<T, E> for Init<T, E>`.
+- Fix `BigBuf` example on `try_init!`.
+- Fix imports in `arc.rs`.
+
+v3 -> v4:
+- Improve documentation.
+- Fixing doc-tests imports, comments and full paths in macro examples.
+- Implement `Zeroable` for many more types.
+- Fix unsoundness: `Zeroable` allowed to create fat pointers with a null
+  VTABLE pointer.
+- Split fallible components from `stack_pin_init!` into
+  `stack_try_pin_init!`.
+- Move `Invariant` type alias and `InitClosure` into `__internal`.
+- Change the error type of the constructor functions of `Arc` and
+  `UniqueArc` to `AllocError`.
+- Add `try` variants to `InPlaceInit` to allow custom error types.
+- Make `StackInit::init` a safe function.
+- Rename `OnlyCallFromDrop::create` to `OnlyCallFromDrop::new`.
+- Enable the `pin_macro` feature for use inside of `stack_pin_init!`.
+- Make `quote!` and `quote_spanned!` use absolute paths.
+
+v2 -> v3:
+- Split the big original commit into six smaller commits.
+- Use `PinnedDrop` in the `RawFoo` code example.
+- Move the `init::common::ffi_init` functions to `Opaque::ffi_init`.
+- Move all `#[doc(hidden)]`, internal types into the new `__internal`
+  module.
+- Specify safety guarantees and requirements of the initializer macros.
+- Add a detailed example of what the expanded code of the various macros
+  looks like.
+- Require generics in the initializer macros to use turbofish syntax
+  (`::<>`).
+- Refactor the internals of the initializer macros, this way they have
+  better type inference and generic arguments can be omitted more often.
+- Replace `init::from_value` with a blanket impl of the initializer traits
+  for ordinary objects.
+- Add initializing functions for already allocated `UniqueArc`s.
+- Add `Opaque::manual_init` functions akin to `ffi_init`, but they take an
+  `extern "Rust" fn` instead.
+- Documentation and inline comment improvements.
+
+v1 -> v2:
+- Split the common module and `UniqueArc::assume_init` into their own
+  commits.
+- Change the generics syntax of `pin_init!` to reflect normal struct
+  generic syntax.
+- Replace `PinnedDrop::__ensure_no_unsafe_op_in_drop` with an only unsafely
+  creatable token.
+- Hide `StackInit<T>` in the docs, because it is internal API.
+- Improve macro internals of `pin_init!` according to Gary's review.
+- Add check for `PhantomPinned` fields without a `#[pin]` attribute in
+  `#[pin_data]`, as those fields will not have the intended effect.
+- Add docs to `quote.rs`.
+
+[1] https://lore.kernel.org/rust-for-linux/20230405193445.745024-1-y86-dev@=
+protonmail.com/
+[2] https://github.com/y86-dev/linux.git patch/pinned-init-v7
+[3] https://rust-for-linux.github.io/docs/pinned-init/kernel/init
+[4] https://kangrejos.com
+[5] https://github.com/Rust-for-Linux/linux/issues/772
+[6] https://github.com/rust-lang/rfcs/pull/3318
+
+Benno Lossin (14):
+  rust: enable the `pin_macro` feature
+  rust: sync: change error type of constructor functions
+  rust: sync: add `assume_init` to `UniqueArc`
+  rust: types: add `Opaque::raw_get`
+  rust: add pin-init API core
+  rust: init: add initialization macros
+  rust: init/sync: add `InPlaceInit` trait to pin-initialize smart
+    pointers
+  rust: init: add `PinnedDrop` trait and macros
+  rust: init: add `stack_pin_init!` macro
+  rust: init: add `Zeroable` trait and `init::zeroed` function
+  rust: prelude: add `pin-init` API items to prelude
+  rust: types: add `Opaque::ffi_init`
+  rust: sync: reduce stack usage of `UniqueArc::try_new_uninit`
+  rust: sync: add functions for initializing `UniqueArc<MaybeUninit<T>>`
+
+Gary Guo (1):
+  rust: macros: add `quote!` macro
+
+ rust/kernel/init.rs            | 1427 ++++++++++++++++++++++++++++++++
+ rust/kernel/init/__internal.rs |  235 ++++++
+ rust/kernel/init/macros.rs     |  971 ++++++++++++++++++++++
+ rust/kernel/lib.rs             |    7 +
+ rust/kernel/prelude.rs         |    6 +-
+ rust/kernel/sync/arc.rs        |   81 +-
+ rust/kernel/types.rs           |   28 +
+ rust/macros/lib.rs             |   80 ++
+ rust/macros/pin_data.rs        |   79 ++
+ rust/macros/pinned_drop.rs     |   49 ++
+ rust/macros/quote.rs           |  143 ++++
+ scripts/Makefile.build         |    2 +-
+ 12 files changed, 3100 insertions(+), 8 deletions(-)
+ create mode 100644 rust/kernel/init.rs
+ create mode 100644 rust/kernel/init/__internal.rs
+ create mode 100644 rust/kernel/init/macros.rs
+ create mode 100644 rust/macros/pin_data.rs
+ create mode 100644 rust/macros/pinned_drop.rs
+ create mode 100644 rust/macros/quote.rs
+
+
+base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
+--
+2.39.2
+
+
