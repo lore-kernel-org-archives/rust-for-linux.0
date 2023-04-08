@@ -2,349 +2,169 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0702BC77B61
-	for <rust-for-linux@archiver.kernel.org>; Sat,  8 Apr 2023 07:55:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7F52C7619A
+	for <rust-for-linux@archiver.kernel.org>; Sat,  8 Apr 2023 10:27:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230214AbjDHHzY (ORCPT
+        id S229871AbjDHK1D (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 8 Apr 2023 03:55:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60720 "EHLO
+        Sat, 8 Apr 2023 06:27:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230211AbjDHHzE (ORCPT
+        with ESMTP id S229886AbjDHK06 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 8 Apr 2023 03:55:04 -0400
-Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19D05FF07;
-        Sat,  8 Apr 2023 00:54:40 -0700 (PDT)
-Received: by mail-oi1-x22f.google.com with SMTP id w19so402335oiv.13;
-        Sat, 08 Apr 2023 00:54:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680940469;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SnSCuSd2GDwIObMZY9AnCzoNvpOGG9vzBuYvI79rp0M=;
-        b=MK/2j344qMj13ANxSzPNK12+eQ/5CsqbseP3MDQEaGz8chUqKeXXY4OhkMnz62bNZJ
-         at6Tk8ff3ubUC2SddJlys22XFzceNFnjx2fOpZ22hwvM7MvktVCMOuyCZClgWKUnDlPL
-         K/VVBZmdj8BiB3ty6VwGqx9QlVc71YWPavRd0JR7jHfpobdaSeaaa00rZ/C0LDzlsoUX
-         wkPP/wmcBCYJu9hd7Jxo7RY1bDkU0p9rCdKqoRxyOmC3nvqP6rRT7w2irpWwuTyPJDye
-         Gm4511sd3JIfb//tbYlSHYLFaguCDpq0vYuOufPo5UtwXgA0F13Zl6EYJyjzlsqvIP0b
-         M9Xw==
+        Sat, 8 Apr 2023 06:26:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17A06D50B
+        for <rust-for-linux@vger.kernel.org>; Sat,  8 Apr 2023 03:25:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1680949499;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=b+B9to8j2Lzj7TcvjD6Ev0dSy316NI/IHJxCACF6SvY=;
+        b=fu/Ej+v+WRhPR9Yc92tRKm96J5z19InT4pqW0pIVds5Vxh00Gm4zT+VISpa2ra7ybO2XY+
+        Erz4LzapiwbM1t6ZL5Cuoqncre7Qik7453keWbe+QaA2ptfGXBhn1Nh+RsLQGLD8Qe74aS
+        5rQMSBo4nZlrhD/1STWZSEZHGP0UOSg=
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
+ [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-569-K3BgL5Z5PJOo9mDKWrTqnw-1; Sat, 08 Apr 2023 06:24:57 -0400
+X-MC-Unique: K3BgL5Z5PJOo9mDKWrTqnw-1
+Received: by mail-ua1-f71.google.com with SMTP id h17-20020a9f3011000000b00751d7bbfb13so743522uab.4
+        for <rust-for-linux@vger.kernel.org>; Sat, 08 Apr 2023 03:24:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680940469;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SnSCuSd2GDwIObMZY9AnCzoNvpOGG9vzBuYvI79rp0M=;
-        b=wfW0nRXfPt5yppbTN+wKEPe2N2GSL9fjTndsDJ2TLU4IGzSx8aCXS7NgE+kbQRS23o
-         TG3YbcqKXrYv1T4TYtFSZFLeMKTtjTnC603D7y3DjwLLYYUmyGRfsgrvQyUYE+/J6fOr
-         fXc5aNP5QhhJfIpLHQEp+1YtYjMnxlXvS78LjIPrlZ7/wSVlXmlkGoLvirrzD5/yPmj7
-         t5xJK8BRh/GJKWioDg0nNkSy+RKiytyyj9uy5ijhgZWnxHadI0MlO83ztwzShkZZVo2J
-         I0nNVbQYAfif0H0snDxk+8sam3jyuLu67jRGbTDvxz6mRqhVCQE1rpR6+zihSb/+CmEa
-         aTzA==
-X-Gm-Message-State: AAQBX9dkVpxTr/5pRrsTONwebOOoBiD8suvMHyV2oP2CbDRmcyKbcvcL
-        FOr9HpYM6FARfvXyRGK1XMSug0LrGfM=
-X-Google-Smtp-Source: AKy350YJ1LApfrwPn1qru0jNNOvAOCBzO1vIdegbe9cgMStJkBdtv68FrfBPy0k2Ug3rdqgnHXJL0g==
-X-Received: by 2002:aca:2110:0:b0:386:94a8:f9af with SMTP id 16-20020aca2110000000b0038694a8f9afmr1823701oiz.52.1680940469675;
-        Sat, 08 Apr 2023 00:54:29 -0700 (PDT)
-Received: from wedsonaf-dev.home.lan ([189.124.190.154])
-        by smtp.googlemail.com with ESMTPSA id o6-20020a4a9586000000b0051ffe0fe11bsm2435175ooi.6.2023.04.08.00.54.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Apr 2023 00:54:29 -0700 (PDT)
-From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-To:     rust-for-linux@vger.kernel.org
+        d=1e100.net; s=20210112; t=1680949497;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b+B9to8j2Lzj7TcvjD6Ev0dSy316NI/IHJxCACF6SvY=;
+        b=4hLqwlvRC5SeI49vaSzWLl+9qHM7sazJuKzlfnBTJr2MGy+tn4g8SNd5k/NvpmK+BR
+         wEjS0qPdFAjJYMe/o+6wry0s7qWvJDUIe7yNEckY8GqCIhOTHQGyx2r8jN2uKMfo5Bzp
+         xi1etujk33ay1c9cTT5TVPmbc5jHgQizKDR/CVpPKBDrB6qRar0iRSYiEDguUv+GwqSL
+         Q+UHX2wyIIkm7yBRnNXxozD/nupJowA6sMpZyaZ8UEzu7cBUzUd878qovgCzd1JTioWV
+         yFpVEteKFi3vpkSbNrGiIiCkCeK34nXyC1WHkv7ljQezbJrD8UJEPPQPZAImEuVGbcNQ
+         W3bg==
+X-Gm-Message-State: AAQBX9fYnmBHMTtiuaClp674I19RhLqpmAjIHG/a2XsQC9dM18X+fP56
+        uGMCUPVVQ2Ii6mRz3OYs40hEK1o1ESen+mHKa/E518p4p5gALzUBG+/eyJS09OiBVB1M8lm7Sfl
+        CHsjO5jZVxZtZ5SQkOcmjTNASbh015l+NZqBceV4HDw8=
+X-Received: by 2002:a1f:2a4b:0:b0:43c:2acb:9a60 with SMTP id q72-20020a1f2a4b000000b0043c2acb9a60mr2566286vkq.3.1680949497399;
+        Sat, 08 Apr 2023 03:24:57 -0700 (PDT)
+X-Google-Smtp-Source: AKy350bcRbIrqbYLXQvhgU1yB25jrUYi60umTA4Aj4dtEtmHkg2stdHgIeAeLt4yqtCa6AkG6OTgIuIzrtdJ+KnT83g=
+X-Received: by 2002:a1f:2a4b:0:b0:43c:2acb:9a60 with SMTP id
+ q72-20020a1f2a4b000000b0043c2acb9a60mr2566263vkq.3.1680949497089; Sat, 08 Apr
+ 2023 03:24:57 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230407070517.204676-1-andrea.righi@canonical.com>
+In-Reply-To: <20230407070517.204676-1-andrea.righi@canonical.com>
+From:   Eric Curtin <ecurtin@redhat.com>
+Date:   Sat, 8 Apr 2023 11:24:41 +0100
+Message-ID: <CAOgh=FxE_Y3Chr3wCG5QkoPZW5-BjrVCM9moEZGy=xMkv2fKOA@mail.gmail.com>
+Subject: Re: [PATCH] scripts: rust: drop is_rust_module.sh
+To:     Andrea Righi <andrea.righi@canonical.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Waiman Long <longman@redhat.com>
-Subject: [PATCH v3 12/13] rust: sync: introduce `CondVar`
-Date:   Sat,  8 Apr 2023 04:53:39 -0300
-Message-Id: <20230408075340.25237-12-wedsonaf@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230408075340.25237-1-wedsonaf@gmail.com>
-References: <20230408075340.25237-1-wedsonaf@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Neal Gompa <neal@gompa.dev>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        llvm@lists.linux.dev, linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Wedson Almeida Filho <walmeida@microsoft.com>
+On Fri, 7 Apr 2023 at 08:05, Andrea Righi <andrea.righi@canonical.com> wrote:
+>
+> Commit c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
+> introduced the constraint "!DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE"
+> to enable RUST.
+>
+> With this constraint we don't need is_rust_module.sh anymore, because
+> 'pahole --lang_exclude=rust' already has the capability to exclude Rust
+> CUs. If pahole isn't recent enough (< 1.24) to support --lang_exclude,
+> then DEBUG_INFO_BTF can't be enabled with RUST and is_rust_module.sh
+> isn't used as well.
+>
+> In any case is_rust_module.sh is obsolete and we can just drop it.
+>
+> Link: https://lore.kernel.org/lkml/Y+p2xKIN6TJnQinK@righiandr-XPS-13-7390/
+> Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
 
-This is the traditional condition variable or monitor synchronisation
-primitive. It is implemented with C's `wait_queue_head_t`.
+Ran this in an Asahi Fedora build to be sure.
 
-It allows users to release a lock and go to sleep while guaranteeing
-that notifications won't be missed. This is achieved by enqueuing a wait
-entry before releasing the lock.
+Tested-by: Eric Curtin <ecurtin@redhat.com>
+Reviewed-by: Eric Curtin <ecurtin@redhat.com>
 
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
----
-v1 -> v2: Use the new `current` macro
-v2 -> v3: Use new Opaque::ffi_init from Benno's series
+Is mise le meas/Regards,
 
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers.c                  |   7 ++
- rust/kernel/sync.rs             |   2 +
- rust/kernel/sync/condvar.rs     | 174 ++++++++++++++++++++++++++++++++
- rust/kernel/sync/lock.rs        |   1 -
- 5 files changed, 184 insertions(+), 1 deletion(-)
- create mode 100644 rust/kernel/sync/condvar.rs
+Eric Curtin
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 03656a44a83f..50e7a76d5455 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -8,6 +8,7 @@
- 
- #include <linux/slab.h>
- #include <linux/refcount.h>
-+#include <linux/wait.h>
- #include <linux/sched.h>
- 
- /* `bindgen` gets confused at certain things. */
-diff --git a/rust/helpers.c b/rust/helpers.c
-index 96441744030e..8ff2559c1572 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -24,6 +24,7 @@
- #include <linux/mutex.h>
- #include <linux/spinlock.h>
- #include <linux/sched/signal.h>
-+#include <linux/wait.h>
- 
- __noreturn void rust_helper_BUG(void)
- {
-@@ -76,6 +77,12 @@ void rust_helper_spin_unlock_irqrestore(spinlock_t *lock, unsigned long flags)
- }
- EXPORT_SYMBOL_GPL(rust_helper_spin_unlock_irqrestore);
- 
-+void rust_helper_init_wait(struct wait_queue_entry *wq_entry)
-+{
-+	init_wait(wq_entry);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_init_wait);
-+
- int rust_helper_signal_pending(struct task_struct *t)
- {
- 	return signal_pending(t);
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index c997ff7e951e..431402180aa8 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -8,9 +8,11 @@
- use crate::types::Opaque;
- 
- mod arc;
-+mod condvar;
- pub mod lock;
- 
- pub use arc::{Arc, ArcBorrow, UniqueArc};
-+pub use condvar::CondVar;
- pub use lock::{mutex::Mutex, spinlock::SpinLock};
- 
- /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-new file mode 100644
-index 000000000000..ef882e2af746
---- /dev/null
-+++ b/rust/kernel/sync/condvar.rs
-@@ -0,0 +1,174 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! A condition variable.
-+//!
-+//! This module allows Rust code to use the kernel's [`struct wait_queue_head`] as a condition
-+//! variable.
-+
-+use super::{lock::Backend, lock::Guard, LockClassKey};
-+use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque};
-+use core::marker::PhantomPinned;
-+use macros::pin_data;
-+
-+/// Creates a [`CondVar`] initialiser with the given name and a newly-created lock class.
-+#[macro_export]
-+macro_rules! new_condvar {
-+    ($($name:literal)?) => {
-+        $crate::sync::CondVar::new($crate::optional_name!($($name)?), $crate::static_lock_class!())
-+    };
-+}
-+
-+/// A conditional variable.
-+///
-+/// Exposes the kernel's [`struct wait_queue_head`] as a condition variable. It allows the caller to
-+/// atomically release the given lock and go to sleep. It reacquires the lock when it wakes up. And
-+/// it wakes up when notified by another thread (via [`CondVar::notify_one`] or
-+/// [`CondVar::notify_all`]) or because the thread received a signal. It may also wake up
-+/// spuriously.
-+///
-+/// Instances of [`CondVar`] need a lock class and to be pinned. The recommended way to create such
-+/// instances is with the [`pin_init`](crate::pin_init) and [`new_condvar`] macros.
-+///
-+/// # Examples
-+///
-+/// The following is an example of using a condvar with a mutex:
-+///
-+/// ```
-+/// use kernel::sync::{CondVar, Mutex};
-+/// use kernel::{new_condvar, new_mutex};
-+///
-+/// #[pin_data]
-+/// pub struct Example {
-+///     #[pin]
-+///     value: Mutex<u32>,
-+///
-+///     #[pin]
-+///     value_changed: CondVar,
-+/// }
-+///
-+/// /// Waits for `e.value` to become `v`.
-+/// fn wait_for_vaue(e: &Example, v: u32) {
-+///     let mut guard = e.value.lock();
-+///     while *guard != v {
-+///         e.value_changed.wait_uninterruptible(&mut guard);
-+///     }
-+/// }
-+///
-+/// /// Increments `e.value` and notifies all potential waiters.
-+/// fn increment(e: &Example) {
-+///     *e.value.lock() += 1;
-+///     e.value_changed.notify_all();
-+/// }
-+///
-+/// /// Allocates a new boxed `Example`.
-+/// fn new_example() -> Result<Pin<Box<Example>>> {
-+///     Box::pin_init(pin_init!(Example {
-+///         value <- new_mutex!(0),
-+///         value_changed <- new_condvar!(),
-+///     }))
-+/// }
-+/// ```
-+///
-+/// [`struct wait_queue_head`]: ../../../include/linux/wait.h
-+#[pin_data]
-+pub struct CondVar {
-+    #[pin]
-+    pub(crate) wait_list: Opaque<bindings::wait_queue_head>,
-+
-+    /// A condvar needs to be pinned because it contains a [`struct list_head`] that is
-+    /// self-referential, so it cannot be safely moved once it is initialised.
-+    #[pin]
-+    _pin: PhantomPinned,
-+}
-+
-+// SAFETY: `CondVar` only uses a `struct wait_queue_head`, which is safe to use on any thread.
-+#[allow(clippy::non_send_fields_in_send_ty)]
-+unsafe impl Send for CondVar {}
-+
-+// SAFETY: `CondVar` only uses a `struct wait_queue_head`, which is safe to use on multiple threads
-+// concurrently.
-+unsafe impl Sync for CondVar {}
-+
-+impl CondVar {
-+    /// Constructs a new condvar initialiser.
-+    #[allow(clippy::new_ret_no_self)]
-+    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
-+        pin_init!(Self {
-+            _pin: PhantomPinned,
-+            // SAFETY: `slot` is valid while the closure is called and both `name` and `key` have
-+            // static lifetimes so they live indefinitely.
-+            wait_list <- Opaque::ffi_init(|slot| unsafe {
-+                bindings::__init_waitqueue_head(slot, name.as_char_ptr(), key.as_ptr())
-+            }),
-+        })
-+    }
-+
-+    fn wait_internal<T: ?Sized, B: Backend>(&self, wait_state: u32, guard: &mut Guard<'_, T, B>) {
-+        let wait = Opaque::<bindings::wait_queue_entry>::uninit();
-+
-+        // SAFETY: `wait` points to valid memory.
-+        unsafe { bindings::init_wait(wait.get()) };
-+
-+        // SAFETY: Both `wait` and `wait_list` point to valid memory.
-+        unsafe {
-+            bindings::prepare_to_wait_exclusive(self.wait_list.get(), wait.get(), wait_state as _)
-+        };
-+
-+        // SAFETY: No arguments, switches to another thread.
-+        guard.do_unlocked(|| unsafe { bindings::schedule() });
-+
-+        // SAFETY: Both `wait` and `wait_list` point to valid memory.
-+        unsafe { bindings::finish_wait(self.wait_list.get(), wait.get()) };
-+    }
-+
-+    /// Releases the lock and waits for a notification in interruptible mode.
-+    ///
-+    /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
-+    /// thread to sleep, reacquiring the lock on wake up. It wakes up when notified by
-+    /// [`CondVar::notify_one`] or [`CondVar::notify_all`], or when the thread receives a signal.
-+    /// It may also wake up spuriously.
-+    ///
-+    /// Returns whether there is a signal pending.
-+    #[must_use = "wait returns if a signal is pending, so the caller must check the return value"]
-+    pub fn wait<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) -> bool {
-+        self.wait_internal(bindings::TASK_INTERRUPTIBLE, guard);
-+        crate::current!().signal_pending()
-+    }
-+
-+    /// Releases the lock and waits for a notification in uninterruptible mode.
-+    ///
-+    /// Similar to [`CondVar::wait`], except that the wait is not interruptible. That is, the
-+    /// thread won't wake up due to signals. It may, however, wake up supirously.
-+    pub fn wait_uninterruptible<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) {
-+        self.wait_internal(bindings::TASK_UNINTERRUPTIBLE, guard)
-+    }
-+
-+    /// Calls the kernel function to notify the appropriate number of threads with the given flags.
-+    fn notify(&self, count: i32, flags: u32) {
-+        // SAFETY: `wait_list` points to valid memory.
-+        unsafe {
-+            bindings::__wake_up(
-+                self.wait_list.get(),
-+                bindings::TASK_NORMAL,
-+                count,
-+                flags as _,
-+            )
-+        };
-+    }
-+
-+    /// Wakes a single waiter up, if any.
-+    ///
-+    /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
-+    /// completely (as opposed to automatically waking up the next waiter).
-+    pub fn notify_one(&self) {
-+        self.notify(1, 0);
-+    }
-+
-+    /// Wakes all waiters up, if any.
-+    ///
-+    /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
-+    /// completely (as opposed to automatically waking up the next waiter).
-+    pub fn notify_all(&self) {
-+        self.notify(0, 0);
-+    }
-+}
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index a2c654ec5bd3..c365bc909dff 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -179,7 +179,6 @@ pub struct Guard<'a, T: ?Sized, B: Backend> {
- unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
- 
- impl<T: ?Sized, B: Backend> Guard<'_, T, B> {
--    #[allow(dead_code)]
-     pub(crate) fn do_unlocked(&mut self, cb: impl FnOnce()) {
-         // SAFETY: The caller owns the lock, so it is safe to unlock it.
-         unsafe { B::unlock(self.lock.state.get(), &self.state) };
--- 
-2.34.1
+> ---
+>  rust/macros/module.rs     |  2 +-
+>  scripts/Makefile.modfinal |  2 --
+>  scripts/is_rust_module.sh | 16 ----------------
+>  3 files changed, 1 insertion(+), 19 deletions(-)
+>  delete mode 100755 scripts/is_rust_module.sh
+>
+> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+> index a7e363c2b044..608406f33a70 100644
+> --- a/rust/macros/module.rs
+> +++ b/rust/macros/module.rs
+> @@ -179,7 +179,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+>              /// Used by the printing macros, e.g. [`info!`].
+>              const __LOG_PREFIX: &[u8] = b\"{name}\\0\";
+>
+> -            /// The \"Rust loadable module\" mark, for `scripts/is_rust_module.sh`.
+> +            /// The \"Rust loadable module\" mark.
+>              //
+>              // This may be best done another way later on, e.g. as a new modinfo
+>              // key or a new section. For the moment, keep it simple.
+> diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
+> index 4703f652c009..e6f8fa3c9b8d 100644
+> --- a/scripts/Makefile.modfinal
+> +++ b/scripts/Makefile.modfinal
+> @@ -41,8 +41,6 @@ quiet_cmd_btf_ko = BTF [M] $@
+>        cmd_btf_ko =                                                     \
+>         if [ ! -f vmlinux ]; then                                       \
+>                 printf "Skipping BTF generation for %s due to unavailability of vmlinux\n" $@ 1>&2; \
+> -       elif [ -n "$(CONFIG_RUST)" ] && $(srctree)/scripts/is_rust_module.sh $@; then           \
+> -               printf "Skipping BTF generation for %s because it's a Rust module\n" $@ 1>&2; \
+>         else                                                            \
+>                 LLVM_OBJCOPY="$(OBJCOPY)" $(PAHOLE) -J $(PAHOLE_FLAGS) --btf_base vmlinux $@; \
+>                 $(RESOLVE_BTFIDS) -b vmlinux $@;                        \
+> diff --git a/scripts/is_rust_module.sh b/scripts/is_rust_module.sh
+> deleted file mode 100755
+> index 28b3831a7593..000000000000
+> --- a/scripts/is_rust_module.sh
+> +++ /dev/null
+> @@ -1,16 +0,0 @@
+> -#!/bin/sh
+> -# SPDX-License-Identifier: GPL-2.0
+> -#
+> -# is_rust_module.sh module.ko
+> -#
+> -# Returns `0` if `module.ko` is a Rust module, `1` otherwise.
+> -
+> -set -e
+> -
+> -# Using the `16_` prefix ensures other symbols with the same substring
+> -# are not picked up (even if it would be unlikely). The last part is
+> -# used just in case LLVM decides to use the `.` suffix.
+> -#
+> -# In the future, checking for the `.comment` section may be another
+> -# option, see https://github.com/rust-lang/rust/pull/97550.
+> -${NM} "$*" | grep -qE '^[0-9a-fA-F]+ r _R[^[:space:]]+16___IS_RUST_MODULE[^[:space:]]*$'
+> --
+> 2.39.2
+>
 
