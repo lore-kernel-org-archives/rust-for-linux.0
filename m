@@ -2,98 +2,162 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B8E4C7619A
-	for <rust-for-linux@archiver.kernel.org>; Sat,  8 Apr 2023 13:42:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B83FBC77B6C
+	for <rust-for-linux@archiver.kernel.org>; Sat,  8 Apr 2023 15:22:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229647AbjDHNmG (ORCPT
+        id S229833AbjDHPWI (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 8 Apr 2023 09:42:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51814 "EHLO
+        Sat, 8 Apr 2023 11:22:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229696AbjDHNmG (ORCPT
+        with ESMTP id S229494AbjDHPWI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 8 Apr 2023 09:42:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C832CD53C;
-        Sat,  8 Apr 2023 06:42:04 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F67D60959;
-        Sat,  8 Apr 2023 13:42:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5255C4339E;
-        Sat,  8 Apr 2023 13:42:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680961323;
-        bh=+rvCJwQnhgHtRPTA4FpOWMqeq2UPBg8NLPxv4nEuxX0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=j8wXnh8jcxeZy5hlnL9j7yhf1PfZDoBKolcpy8BAI3zytnC6o3YeEcQ21+RGU398S
-         lwlY1lX1+rGmxa3RW1a4ssgZVrMNHXDCC6WIPr8GtoapHSeRq8QJ4+1MkRoPe/q1co
-         pBZRK9TS0XYB4rlCrpX5ng+gaXL15uri2QVjR6Fo1l66G9KP7d7+87JoNRfKRWutR0
-         HW8KaNz2q7SbsqNYO02xV8LQKQ8X11uv0ovd00bz1EsLtjqCS292zKcsS54/wMPkBY
-         +uoYQ0p8nmdgW2/VffK8mE2GMfG1FpQRopt7rW1Yx0C1UStZhRxsOGAwfAxnow3PDU
-         QQ1B9czlK0ofA==
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-183f4efa98aso7338404fac.2;
-        Sat, 08 Apr 2023 06:42:03 -0700 (PDT)
-X-Gm-Message-State: AAQBX9dA5dw3P+QzJm+QO4Nf7oxi0zIrxD8wfTvooJpOm7DS9gZ084xA
-        Nfodljys+vmFyg7Xrr+jn2PFxFWa1zyZs9s8Z9E=
-X-Google-Smtp-Source: AKy350YM5FAGa/kRWBMoLt816ScO0UDcA4Pm4t4Ada1UZVKLZfKRP4ulOWZgDvkSe3Ul/chuG7STZWY4sSR50yAJtLg=
-X-Received: by 2002:a05:6870:1119:b0:17e:d9e2:a55c with SMTP id
- 25-20020a056870111900b0017ed9e2a55cmr2268082oaf.11.1680961323046; Sat, 08 Apr
- 2023 06:42:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230407070517.204676-1-andrea.righi@canonical.com>
-In-Reply-To: <20230407070517.204676-1-andrea.righi@canonical.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Sat, 8 Apr 2023 22:41:26 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATG0rmbV79Uo8a8mX5uFNn878UbP0BEJ3c=cYSsO_a3ww@mail.gmail.com>
-Message-ID: <CAK7LNATG0rmbV79Uo8a8mX5uFNn878UbP0BEJ3c=cYSsO_a3ww@mail.gmail.com>
-Subject: Re: [PATCH] scripts: rust: drop is_rust_module.sh
-To:     Andrea Righi <andrea.righi@canonical.com>
+        Sat, 8 Apr 2023 11:22:08 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D92F593E0
+        for <rust-for-linux@vger.kernel.org>; Sat,  8 Apr 2023 08:22:05 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id y7so13549010ljp.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 08 Apr 2023 08:22:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20210112.gappssmtp.com; s=20210112; t=1680967324; x=1683559324;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=2JKqdvpjALTNY14K+ULfr5K58GEjzN+kYH1iVVw0tNA=;
+        b=Ys8BSrbpC92W7+nHHSby0VNSxoRgHZ68oiCSbzNMSUPRakTtMaCvgxF4QwpDePoZlq
+         GMPrRgw+SQ7VCyKioHOfdF27zQFjAmX4xU00wcLKqZ2AJJ4IwZ8v/8jhm1J4DsW9UruB
+         tvXNPPtvQ8KnKJf/tkLSH9UWdZQhklJj2g2fE9pIPZ4AqZxjd/gsazt8MN8FzCQM0Il+
+         bCryuDNohY19/sGzUZnPyIz2N40P6xGAC51L8MwvgyLjj+T9yJK9wm7E4sv5ZUdRNcLB
+         Oa5hmLLgh8hE234iBMK2qwSnf5mMmcMTZTOSabbup2XhJxNyMlfaBQSiTglJpMQNepnV
+         pu0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680967324; x=1683559324;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2JKqdvpjALTNY14K+ULfr5K58GEjzN+kYH1iVVw0tNA=;
+        b=gXzj//qs3QeMmO3OLv5EYjIOJyr2sNbeOVz0+wCOebDChwNcyIhA4uTivkEFrTo6Wf
+         T3Vsz87lfkBVRIwLGsi7JyzkkYVXNbBzTq6cA5XlvwyigSWOovoKxPVdq1P5yZK2KKE1
+         JMM/lQf+Exl7GiqwwPvWz613tBNRBcVP2CWrIjw9DMmql2dHzz+cCT/PJj1LXbMr6Gsu
+         knpMXr/2EX/9jM+aVReE92ZGkuR9DkOVZumCDfkVcsDyA5Oz1946X23KDM6c0oDNWVxt
+         sXHKHSjX76YsZ963gM5sjonZM8g/ZMoq3/F0pDeDCZ61yBZ2JiSJpf0WAQ79ky8DONg/
+         matg==
+X-Gm-Message-State: AAQBX9etMXgUaxK/78C911lnxc/FruyGd8PfspUxxgxd9YQ1Fe0EQdCq
+        8eYl2frv3ikKKNA4muMTIad8iA==
+X-Google-Smtp-Source: AKy350bqba2V+QO9gNz6grpg3wAhPK0lXK/6RxwK2/UfThFmGHSCZgkhl6NsvgijZx+Dq1bIKLaIKA==
+X-Received: by 2002:a2e:7808:0:b0:2a6:16b5:2fc1 with SMTP id t8-20020a2e7808000000b002a616b52fc1mr1650988ljc.23.1680967324115;
+        Sat, 08 Apr 2023 08:22:04 -0700 (PDT)
+Received: from localhost ([2a00:4820:4370:1100:7604:f1ff:fe0c:2c95])
+        by smtp.gmail.com with ESMTPSA id l10-20020ac2554a000000b004dc4b00a1eesm1208789lfk.261.2023.04.08.08.22.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Apr 2023 08:22:03 -0700 (PDT)
+References: <20230408122429.1103522-1-y86-dev@protonmail.com>
+ <20230408122429.1103522-14-y86-dev@protonmail.com>
+User-agent: mu4e 1.10.1; emacs 28.2.50
+From:   Andreas Hindborg <nmi@metaspace.dk>
+To:     Benno Lossin <y86-dev@protonmail.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
-        Eric Curtin <ecurtin@redhat.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Neal Gompa <neal@gompa.dev>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        llvm@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Alice Ryhl <alice@ryhl.io>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>
+Subject: Re: [PATCH v7 13/15] rust: types: add `Opaque::ffi_init`
+Date:   Sat, 08 Apr 2023 17:21:19 +0200
+In-reply-to: <20230408122429.1103522-14-y86-dev@protonmail.com>
+Message-ID: <87h6tqs8kl.fsf@metaspace.dk>
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Apr 7, 2023 at 4:05=E2=80=AFPM Andrea Righi <andrea.righi@canonical=
-.com> wrote:
->
-> Commit c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
-> introduced the constraint "!DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE"
-> to enable RUST.
->
-> With this constraint we don't need is_rust_module.sh anymore, because
-> 'pahole --lang_exclude=3Drust' already has the capability to exclude Rust
-> CUs. If pahole isn't recent enough (< 1.24) to support --lang_exclude,
-> then DEBUG_INFO_BTF can't be enabled with RUST and is_rust_module.sh
-> isn't used as well.
->
-> In any case is_rust_module.sh is obsolete and we can just drop it.
->
-> Link: https://lore.kernel.org/lkml/Y+p2xKIN6TJnQinK@righiandr-XPS-13-7390=
-/
-> Signed-off-by: Andrea Righi
 
+Benno Lossin <y86-dev@protonmail.com> writes:
 
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+> This function allows to easily initialize `Opaque` with the pin-init
+> API. `Opaque::ffi_init` takes a closure and returns a pin-initializer.
+> This pin-initiailizer calls the given closure with a pointer to the
+> inner `T`.
+>
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Benno Lossin <y86-dev@protonmail.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: Andreas Hindborg <a.hindborg@samsung.com>
+> ---
 
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 
---=20
-Best Regards
-Masahiro Yamada
+>  rust/kernel/init.rs  |  9 +++++++++
+>  rust/kernel/types.rs | 20 ++++++++++++++++++++
+>  2 files changed, 29 insertions(+)
+>
+> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+> index ffd539e2f5ef..a1298c8bbda0 100644
+> --- a/rust/kernel/init.rs
+> +++ b/rust/kernel/init.rs
+> @@ -177,6 +177,14 @@
+>  //! }
+>  //! ```
+>  //!
+> +//! For the special case where initializing a field is a single FFI-function call that cannot fail,
+> +//! there exist the helper function [`Opaque::ffi_init`]. This function initialize a single
+> +//! [`Opaque`] field by just delegating to the supplied closure. You can use these in combination
+> +//! with [`pin_init!`].
+> +//!
+> +//! For more information on how to use [`pin_init_from_closure()`], take a look at the uses inside
+> +//! the `kernel` crate. The [`sync`] module is a good starting point.
+> +//!
+>  //! [`sync`]: kernel::sync
+>  //! [pinning]: https://doc.rust-lang.org/std/pin/index.html
+>  //! [structurally pinned fields]:
+> @@ -187,6 +195,7 @@
+>  //! [`impl PinInit<T, E>`]: PinInit
+>  //! [`impl Init<T, E>`]: Init
+>  //! [`Opaque`]: kernel::types::Opaque
+> +//! [`Opaque::ffi_init`]: kernel::types::Opaque::ffi_init
+>  //! [`pin_data`]: ::macros::pin_data
+>
+>  use crate::{
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index ff2b2fac951d..3a46ec1a00cd 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -2,6 +2,7 @@
+>
+>  //! Kernel types.
+>
+> +use crate::init::{self, PinInit};
+>  use alloc::boxed::Box;
+>  use core::{
+>      cell::UnsafeCell,
+> @@ -234,6 +235,25 @@ impl<T> Opaque<T> {
+>          Self(MaybeUninit::uninit())
+>      }
+>
+> +    /// Creates a pin-initializer from the given initializer closure.
+> +    ///
+> +    /// The returned initializer calls the given closure with the pointer to the inner `T` of this
+> +    /// `Opaque`. Since this memory is uninitialized, the closure is not allowed to read from it.
+> +    ///
+> +    /// This function is safe, because the `T` inside of an `Opaque` is allowed to be
+> +    /// uninitialized. Additionally, access to the inner `T` requires `unsafe`, so the caller needs
+> +    /// to verify at that point that the inner value is valid.
+> +    pub fn ffi_init(init_func: impl FnOnce(*mut T)) -> impl PinInit<Self> {
+> +        // SAFETY: We contain a `MaybeUninit`, so it is OK for the `init_func` to not fully
+> +        // initiailize the `T`.
+> +        unsafe {
+> +            init::pin_init_from_closure::<_, ::core::convert::Infallible>(move |slot| {
+> +                init_func(Self::raw_get(slot));
+> +                Ok(())
+> +            })
+> +        }
+> +    }
+> +
+>      /// Returns a raw pointer to the opaque data.
+>      pub fn get(&self) -> *mut T {
+>          UnsafeCell::raw_get(self.0.as_ptr())
+
