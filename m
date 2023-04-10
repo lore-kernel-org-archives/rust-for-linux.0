@@ -2,82 +2,147 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96F72C76196
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Apr 2023 20:37:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C8E1C77B6F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Apr 2023 22:46:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbjDJUhS (ORCPT
+        id S229698AbjDJWq2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 10 Apr 2023 16:37:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55616 "EHLO
+        Mon, 10 Apr 2023 18:46:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjDJUhR (ORCPT
+        with ESMTP id S229693AbjDJWq1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 10 Apr 2023 16:37:17 -0400
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 210C619A0;
-        Mon, 10 Apr 2023 13:37:17 -0700 (PDT)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-54f64b29207so12465877b3.8;
-        Mon, 10 Apr 2023 13:37:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1681159036; x=1683751036;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v8QvW1VarPjYVTHLxFJpvXLheEBz6bVhRPOQi5hYm98=;
-        b=OubFNi9n8x1DQAAsaljbTa3uy1mW1ABNLjmnFjAYxNtXJHc0xd+/WBO2f76vtmmQWO
-         HsARpOz/J6JBSP2EiXJwGaQdulsK4yZwVKUDrY4c2F6/YLmK7dUufryhq22Ws1lslVtv
-         BuRIUXNfxUvF22B2PaIcmfcGJsBCPoDETrnzKdVSkFSRialq6owF8PhKzWkOJ7EPl2GS
-         asxomAv8mjpaUSxF9roYzQ9ybfwH1YVJztC233PfuHUFRQdZsV2Gp93uuaA+oyDbaPfj
-         UXvYo/GHRmYjWqGPBhGQPz9eMFTLcR0usgwwzUiTfApLBJpPtWQTMHvP9e1BuOUw8+9g
-         x0Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681159036; x=1683751036;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v8QvW1VarPjYVTHLxFJpvXLheEBz6bVhRPOQi5hYm98=;
-        b=bAmlcjBJUYp9usCMW562ID62JChU2cCOXeMt8xQYTOWgvf313IfuW0Z3W89Y6BUwQe
-         kcpzD0z3oQJ1yW06Ead/AnppodQ0CXOwIAhq1M6tO6GRxhFiWxXfLyppIyQXG0w3hBCz
-         PQP+3S8YzQQ8WCBVAqsMnOCpX4dbsFLdTRrkxP2CuGl0QDPL3JMBYvaK52vnKNqHhyte
-         wK+J7/SWmoL7RotgPztg/jDMzpRrEElmVAgqMyQTBWMrW7b/kwbskXp98NXxEWb+8n9z
-         /3qoXYv7aKmObLcF0PbhCppmwhRnxZtR5SM+T2Xa4ZzMk8BNzh9/fk/aSlYcCnttXKN6
-         PzNg==
-X-Gm-Message-State: AAQBX9cvZoAYQlbryA9grp7xvlR9ln8D+28qruCwsyxoI9/Uln1F3A3R
-        QdT0sYr4FlfmbA170WmH7elMEUoE0Qur7RHOdz8=
-X-Google-Smtp-Source: AKy350Zfo/UKBdmut9j3vGbVJr5E+g68a0Q3jVpAFqX2SKJuvmU14Qc/J+nbfYOt6JKMpSlpHzSlkQjeIlGwJYlgDdg=
-X-Received: by 2002:a81:c609:0:b0:53c:6fda:835f with SMTP id
- l9-20020a81c609000000b0053c6fda835fmr3657739ywi.0.1681159036275; Mon, 10 Apr
- 2023 13:37:16 -0700 (PDT)
+        Mon, 10 Apr 2023 18:46:27 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26B021BDB;
+        Mon, 10 Apr 2023 15:46:26 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2001:569:beb1:1500:c96f:992f:7c34:9ff])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: dbrouwer)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 2D46F6603085;
+        Mon, 10 Apr 2023 23:46:22 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1681166783;
+        bh=9c4iluAe1XdyJtOZMymDhLS/AIaO/Q70FhnFi5leiec=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LbH8Nb8XBTgz2eveAwcbCXjuqnrQFv4M/8nsYMmyus/G0NRk+AhZZNgaKU8cmXQjf
+         gjmDdxX0yT3mRuLsJjJmInQJ9D8aniu0vwxiI4wakMCp1VOvH9kYKCdFnWp1gMDjiy
+         Is/zCj8eOreZabG0ospwUdYCUEQQXLeYQVYSA453f9AHYWmYcMxOrDWF70yKp9t6gK
+         +ZLu8JbtgUktuUxjHl8bWWnmfrRjxvwlLWSbmu6JdVG1lF7RSbKeTl/L26Tih5CmbZ
+         C+KfysLHNx6GNxK0h4DJd7KydBbHmHdkNKtI0dzSa/RUczyzc7ON01Q5G4BgxMI5ex
+         k8Zv19l+uHaZQ==
+Date:   Mon, 10 Apr 2023 15:46:03 -0700
+From:   Deborah Brouwer <deborah.brouwer@collabora.com>
+To:     Daniel Almeida <daniel.almeida@collabora.com>
+Cc:     wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
+        hverkuil@xs4all.nl, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        kernel@collabora.com
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+Message-ID: <ZDSRSWhWsN34MghQ@xps>
+References: <20230406215615.122099-1-daniel.almeida@collabora.com>
 MIME-Version: 1.0
-References: <20230223025924.526200-1-yakoyoku@gmail.com>
-In-Reply-To: <20230223025924.526200-1-yakoyoku@gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 10 Apr 2023 22:37:05 +0200
-Message-ID: <CANiq72=wqAJeqCdwDr8yXh29B_70dc51+auMmnWAahOz+f8p0w@mail.gmail.com>
-Subject: Re: [PATCH] scripts: read cfgs from Makefile for rust-analyzer
-To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230406215615.122099-1-daniel.almeida@collabora.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Feb 23, 2023 at 3:59=E2=80=AFAM Martin Rodriguez Reboredo
-<yakoyoku@gmail.com> wrote:
->
-> Both `core` and `alloc` had their `cfgs` missing in `rust-project.json`,
-> to remedy this `generate_rust_analyzer.py` scans the Makefile from
-> inside the `rust` directory for them to be added to a dictionary that
-> each key corresponds to a crate and each value, to an array of `cfgs`.
+On Thu, Apr 06, 2023 at 06:56:09PM -0300, Daniel Almeida wrote:
+> Hi all, this is my first attempt at adding Rust support to the
+> media subsystem.
+> 
+> It adds just enough support to write a clone of the virtio-camera
+> prototype written by my colleague, Dmitry Osipenko, available at [0].
+> 
+> Basically, there's support for video_device_register,
+> v4l2_device_register and for some ioctls in v4l2_ioctl_ops. There is
+> also some initial vb2 support, alongside some wrappers for some types
+> found in videodev2.h.
+> 
+> I wrote a sample Rust driver just to prove that this probes, and
+> that you get a message on dmesg whenever an ioctl is called.
+> 
+> As there is no actual implementation for any of the ioctls, this module
+> can misbehave with some programs. I can work around this in a future
+> submission.
+> 
+> Note that this is based on the rust branch, as opposed to rust-next. The
+> reasoning is simple: I expect this series to just kickstart some
+> discussion around the subject. Actual upstreaming can come up much
+> later, at which point I can rebase on the rust branch.
 
-We should pass the values to the script instead, rather than relying
-on how our `Makefile` is written, even if we control it.
+Hi Daniel - I don't know if the 'rust branch' is common knowledge but
+it helped me to know it was this:
+https://github.com/Rust-for-Linux/linux
 
-Cheers,
-Miguel
+For what it's worth, I was able to get the V4L2 Rust sample probed
+pretty easily following the quick start instructions
+https://docs.kernel.org/rust/quick-start.html
+
+Cool to see this working!
+Deb
+
+> 
+> Lastly, the origins of this series trace back to a v4l2 virtIO driver I
+> was writing in Rust. As the project was eventually shelved for other
+> reasons, I picked both the virtIO and the v4l2 bindings into their own
+> patches which I am now in the process of submitting. This is to say that
+> I tested this code with said driver and CrosVM in the past, and it
+> worked ok.
+> 
+> Please let me know your thoughts.
+> 
+> [0]: https://gitlab.collabora.com/dmitry.osipenko/linux-kernel-rd/-/commit/055a2c322e931a8b388f864f1db81bbdfd525602
+> 
+> Daniel Almeida (6):
+>   rust: media: add the media module
+>   rust: media: add initial videodev2.h abstractions
+>   rust: sync: introduce FfiMutex
+>   rust: media: videobuf2: add a videobuf2 abstraction
+>   rust: media: add {video|v4l2}_device_register support
+>   rust: media: add v4l2 rust sample
+> 
+>  rust/bindings/bindings_helper.h        |   8 +
+>  rust/kernel/lib.rs                     |   2 +
+>  rust/kernel/media/mod.rs               |   6 +
+>  rust/kernel/media/v4l2/capabilities.rs |  80 ++++
+>  rust/kernel/media/v4l2/dev.rs          | 369 +++++++++++++++
+>  rust/kernel/media/v4l2/device.rs       | 115 +++++
+>  rust/kernel/media/v4l2/enums.rs        | 135 ++++++
+>  rust/kernel/media/v4l2/format.rs       | 178 ++++++++
+>  rust/kernel/media/v4l2/framesize.rs    | 176 +++++++
+>  rust/kernel/media/v4l2/inputs.rs       | 104 +++++
+>  rust/kernel/media/v4l2/ioctls.rs       | 608 +++++++++++++++++++++++++
+>  rust/kernel/media/v4l2/mmap.rs         |  81 ++++
+>  rust/kernel/media/v4l2/mod.rs          |  13 +
+>  rust/kernel/media/videobuf2/core.rs    | 552 ++++++++++++++++++++++
+>  rust/kernel/media/videobuf2/mod.rs     |   5 +
+>  rust/kernel/sync.rs                    |   1 +
+>  rust/kernel/sync/ffi_mutex.rs          |  70 +++
+>  samples/rust/Kconfig                   |  11 +
+>  samples/rust/Makefile                  |   1 +
+>  samples/rust/rust_v4l2.rs              | 403 ++++++++++++++++
+>  20 files changed, 2918 insertions(+)
+>  create mode 100644 rust/kernel/media/mod.rs
+>  create mode 100644 rust/kernel/media/v4l2/capabilities.rs
+>  create mode 100644 rust/kernel/media/v4l2/dev.rs
+>  create mode 100644 rust/kernel/media/v4l2/device.rs
+>  create mode 100644 rust/kernel/media/v4l2/enums.rs
+>  create mode 100644 rust/kernel/media/v4l2/format.rs
+>  create mode 100644 rust/kernel/media/v4l2/framesize.rs
+>  create mode 100644 rust/kernel/media/v4l2/inputs.rs
+>  create mode 100644 rust/kernel/media/v4l2/ioctls.rs
+>  create mode 100644 rust/kernel/media/v4l2/mmap.rs
+>  create mode 100644 rust/kernel/media/v4l2/mod.rs
+>  create mode 100644 rust/kernel/media/videobuf2/core.rs
+>  create mode 100644 rust/kernel/media/videobuf2/mod.rs
+>  create mode 100644 rust/kernel/sync/ffi_mutex.rs
+>  create mode 100644 samples/rust/rust_v4l2.rs
+> 
+> -- 
+> 2.40.0
+> 
