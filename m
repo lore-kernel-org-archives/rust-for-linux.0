@@ -2,172 +2,318 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A805C76196
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Apr 2023 18:59:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 793E6C77B61
+	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Apr 2023 19:52:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbjDJS7M (ORCPT
+        id S229763AbjDJTwU (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 10 Apr 2023 14:59:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37886 "EHLO
+        Mon, 10 Apr 2023 15:52:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbjDJS7L (ORCPT
+        with ESMTP id S229748AbjDJTwS (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 10 Apr 2023 14:59:11 -0400
-Received: from mail.turbocat.net (turbocat.net [IPv6:2a01:4f8:c17:6c4b::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C86F10C7;
-        Mon, 10 Apr 2023 11:59:09 -0700 (PDT)
-Received: from [10.36.2.154] (unknown [46.212.121.255])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.turbocat.net (Postfix) with ESMTPSA id F37982601F3;
-        Mon, 10 Apr 2023 20:59:04 +0200 (CEST)
-Message-ID: <6fc0a0c6-a7c9-5350-9b9e-1ea9dab568d0@selasky.org>
-Date:   Mon, 10 Apr 2023 20:59:05 +0200
+        Mon, 10 Apr 2023 15:52:18 -0400
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F851FD9
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Apr 2023 12:52:15 -0700 (PDT)
+Date:   Mon, 10 Apr 2023 19:52:02 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1681156333; x=1681415533;
+        bh=OsSwIV0V7Teevx9+UO//v20A5wjZhEmjmtkdt2dwJ4I=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=R2YrYZNQJ6Sp3/KPPbcahb+WskuK48dRS04srEdJqcvtBh3fTtS6ensXVY5dsTU1S
+         c1SuuZlwfnt2ZkehXUFmSHIWPWzvxvH/2GyMSmoZbhNU0JEFHvKVf1WpkVe0pr6MmK
+         3hJbIoaZIRzmm/cSB19tfDkit2rPacKmTIOxlgZW4w2hhUFTk1ARk1s/1CvSLp5h1t
+         cyv7Er1BP75bhUvDGR5VT/9dQvQrEQvf5fc45QE0rkVTjAQWjxPZCSTqhETaJXDVxI
+         fTioLYd8z0vNM1gV6crghCpeZIRLUdR25AioMK0dZRQZe76DDMXdcpIiCuv6+pGlAd
+         le5Ws58yLCw/w==
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        rust-for-linux@vger.kernel.org
+From:   Benno Lossin <y86-dev@protonmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH v3 13/13] rust: sync: introduce `LockedBy`
+Message-ID: <6855e33f-445e-12b8-33e4-6b9559e16097@protonmail.com>
+In-Reply-To: <20230408075340.25237-13-wedsonaf@gmail.com>
+References: <20230408075340.25237-1-wedsonaf@gmail.com> <20230408075340.25237-13-wedsonaf@gmail.com>
+Feedback-ID: 40624463:user:proton
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; FreeBSD amd64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-Content-Language: en-US
-To:     Daniel Almeida <daniel.almeida@collabora.com>, wedsonaf@gmail.com,
-        ojeda@kernel.org, mchehab@kernel.org, hverkuil@xs4all.nl
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, kernel@collabora.com
-References: <20230406215615.122099-1-daniel.almeida@collabora.com>
- <441a96cb-7dd1-0885-df64-933ebdb55e9e@selasky.org>
- <0ec4becd05c49e8f0bf214fbd62208ea67c2b4c3.camel@collabora.com>
-From:   Hans Petter Selasky <hps@selasky.org>
-In-Reply-To: <0ec4becd05c49e8f0bf214fbd62208ea67c2b4c3.camel@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Daniel,
+On 08.04.23 09:53, Wedson Almeida Filho wrote:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
+>
+> This allows us to have data protected by a lock despite not being
+> wrapped by it. Access is granted by providing evidence that the lock is
+> held by the caller.
+>
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> ---
+> v1 -> v2: Added build_assert to rule out zero-sized types
+> v2 -> v3: Improve comments around panics and support for ZSTs
+>
+>   rust/kernel/sync.rs           |   2 +
+>   rust/kernel/sync/lock.rs      |   2 +-
+>   rust/kernel/sync/locked_by.rs | 147 ++++++++++++++++++++++++++++++++++
+>   3 files changed, 150 insertions(+), 1 deletion(-)
+>   create mode 100644 rust/kernel/sync/locked_by.rs
+>
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index 431402180aa8..d219ee518eff 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -10,10 +10,12 @@ use crate::types::Opaque;
+>   mod arc;
+>   mod condvar;
+>   pub mod lock;
+> +mod locked_by;
+>
+>   pub use arc::{Arc, ArcBorrow, UniqueArc};
+>   pub use condvar::CondVar;
+>   pub use lock::{mutex::Mutex, spinlock::SpinLock};
+> +pub use locked_by::LockedBy;
+>
+>   /// Represents a lockdep class. It's a wrapper around C's `lock_class_k=
+ey`.
+>   #[repr(transparent)]
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index c365bc909dff..84d8d7d01aaa 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -111,7 +111,7 @@ pub struct Lock<T: ?Sized, B: Backend> {
+>       _pin: PhantomPinned,
+>
+>       /// The data protected by the lock.
+> -    data: UnsafeCell<T>,
+> +    pub(crate) data: UnsafeCell<T>,
+>   }
+>
+>   // SAFETY: `Lock` can be transferred across thread boundaries iff the d=
+ata it protects can.
+> diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.r=
+s
+> new file mode 100644
+> index 000000000000..ab0ecb013f54
+> --- /dev/null
+> +++ b/rust/kernel/sync/locked_by.rs
+> @@ -0,0 +1,147 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! A wrapper for data protected by a lock that does not wrap it.
+> +
+> +use super::{lock::Backend, lock::Lock};
+> +use core::{cell::UnsafeCell, ptr};
+> +
+> +/// Allows access to some data to be serialised by a lock that does not =
+wrap it.
+> +///
+> +/// In most cases, data protected by a lock is wrapped by the appropriat=
+e lock type, e.g.,
+> +/// [`super::Mutex`] or [`super::SpinLock`]. [`LockedBy`] is meant for c=
+ases when this is not
+> +/// possible. For example, if a container has a lock and some data in th=
+e contained elements needs
+> +/// to be protected by the same lock.
+> +///
+> +/// [`LockedBy`] wraps the data in lieu of another locking primitive, an=
+d only allows access to it
+> +/// when the caller shows evidence that the 'external' lock is locked. I=
+t panics if the evidence
+> +/// refers to the wrong instance of the lock.
+> +///
 
-On 4/9/23 16:10, Daniel Almeida wrote:
-> Hi Hans! Thank you for chiming in!
-> 
-> There's a few things in your email that I disagree with and that I'd
-> like to
-> address.
-> 
->> I think V4L2 should be written in primarily one language.
-> 
-> It is, in C. This series is about adding *bindings* to write *drivers*
-> in Rust
-> *for those interested*. The v4l2 core remains untouched, and I don't
-> think there
-> are any plans to introduce Rust outside of drivers in the kernel at
-> all, last I
-> heard.
+Maybe add a small section that ZSTs are not allowed for `U`,
+since they do not have to have unique addresses.
 
-I see your point, but still I think it is better to have good examples, 
-than to say, there is a room for everything, just come here :-)
+> +/// # Examples
+> +///
+> +/// The following is an example for illustrative purposes: `InnerDirecto=
+ry::bytes_used` is an
+> +/// aggregate of all `InnerFile::bytes_used` and must be kept consistent=
+; so we wrap `InnerFile` in
+> +/// a `LockedBy` so that it shares a lock with `InnerDirectory`. This al=
+lows us to enforce at
+> +/// compile-time that access to `InnerFile` is only granted when an `Inn=
+erDirectory` is also
+> +/// locked; we enforce at run time that the right `InnerDirectory` is lo=
+cked.
+> +///
+> +/// ```
+> +/// use kernel::sync::{LockedBy, Mutex};
+> +///
+> +/// struct InnerFile {
+> +///     bytes_used: u64,
+> +/// }
+> +///
+> +/// struct File {
+> +///     _ino: u32,
+> +///     inner: LockedBy<InnerFile, InnerDirectory>,
+> +/// }
+> +///
+> +/// struct InnerDirectory {
+> +///     /// The sum of the bytes used by all files.
+> +///     bytes_used: u64,
+> +///     _files: Vec<File>,
+> +/// }
+> +///
+> +/// struct Directory {
+> +///     _ino: u32,
+> +///     inner: Mutex<InnerDirectory>,
+> +/// }
+> +///
+> +/// /// Prints `bytes_used` from both the directory and file.
+> +/// fn print_bytes_used(dir: &Directory, file: &File) {
+> +///     let guard =3D dir.inner.lock();
+> +///     let inner_file =3D file.inner.access(&guard);
+> +///     pr_info!("{} {}", guard.bytes_used, inner_file.bytes_used);
+> +/// }
+> +///
+> +/// /// Increments `bytes_used` for both the directory and file.
+> +/// fn inc_bytes_used(dir: &Directory, file: &File) {
+> +///     let mut guard =3D dir.inner.lock();
+> +///     guard.bytes_used +=3D 10;
+> +///
+> +///     let file_inner =3D file.inner.access_mut(&mut guard);
+> +///     file_inner.bytes_used +=3D 10;
+> +/// }
+> +///
+> +/// /// Creates a new file.
+> +/// fn new_file(ino: u32, dir: &Directory) -> File {
+> +///     File {
+> +///         _ino: ino,
+> +///         inner: LockedBy::new(&dir.inner, InnerFile { bytes_used: 0 }=
+),
+> +///     }
+> +/// }
+> +/// ```
+> +pub struct LockedBy<T: ?Sized, U: ?Sized> {
+> +    owner: *const U,
+> +    data: UnsafeCell<T>,
+> +}
+> +
+> +// SAFETY: `LockedBy` can be transferred across thread boundaries iff th=
+e data it protects can.
+> +unsafe impl<T: ?Sized + Send, U: ?Sized> Send for LockedBy<T, U> {}
+> +
+> +// SAFETY: `LockedBy` serialises the interior mutability it provides, so=
+ it is `Sync` as long as the
+> +// data it protects is `Send`.
+> +unsafe impl<T: ?Sized + Send, U: ?Sized> Sync for LockedBy<T, U> {}
+> +
+> +impl<T, U: ?Sized> LockedBy<T, U> {
+> +    /// Constructs a new instance of [`LockedBy`].
+> +    ///
+> +    /// It stores a raw pointer to the owner that is never dereferenced.=
+ It is only used to ensure
+> +    /// that the right owner is being used to access the protected data.=
+ If the owner is freed, the
+> +    /// data becomes inaccessible; if another instance of the owner is a=
+llocated *on the same
+> +    /// memory location*, the data becomes accessible again: none of thi=
+s affects memory safety
+> +    /// because in any case at most one thread (or CPU) can access the p=
+rotected data at a time.
+> +    pub fn new(owner: &Lock<U, impl Backend>, data: T) -> Self {
 
-Adding a dependency to build the Rust compiler even to build one or two 
-V4L2 device drivers, would mean a lot to my small hselasky/webcamd 
-project. It already has to fetch a copy of the Linux kernel, and now has 
-to bootstrap Rust from stage0 to stageN. I personally say no. It's like 
-XCode unfortunately. I download 100's of GBytes of upgrades to XCode, 
-and barely upload one millionth worth of code back to Apple. It's not 
-good. Software developers shouldn't have to download more stuff than 
-they upload?
+I suggested this already on v2, but I think it was to late, since
+you quickly sent v3 after I sent my reply, so reiterating the point here.
 
-> 
->> You assume that all code is running inside the kernel and needs to be
-> perfect.
-> 
-> No I do not assume that. In fact, Rust code is absolutely not
-> guaranteed to be
-> bug free and definitely not "perfect".
+I think we should have `build_assert!(mem::size_of::<Lock<T, B>>() > 0)`
+here to ensure that you cannot have two locks referring to the same
+memory location.
 
-The definition of "bugs" may vary of course. I was thinking more like 
-stack exploits, missing validation of arrays and so on.
+This is rather pedantic, since I doubt that we would introduce a
+`Backend` that has a ZST as the `State`, but it also does not hurt
+and might prevent a hard to identify bug later.
 
-> On the other hand, I would take Rust over C any day. Thus I am
-> contributing some
-> of the infrastructure to make this possible for me and for others.
-I must admit I'm not a Rust guy and don't see the advantages of Rust 
-like you do.
+> +        Self {
+> +            owner: owner.data.get(),
+> +            data: UnsafeCell::new(data),
+> +        }
+> +    }
+> +}
+> +
+> +impl<T: ?Sized, U> LockedBy<T, U> {
+> +    /// Returns a reference to the protected data when the caller provid=
+es evidence (via a
+> +    /// reference) that the owner is locked.
+> +    ///
+> +    /// `U` cannot be a zero-sized type (ZST) because there are ways to =
+get an `&U` that matches
+> +    /// the data protected by the lock without actually holding it.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `owner` is different from the data protected by the lo=
+ck used in
+> +    /// [`new`](LockedBy::new).
+> +    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
+> +        // Detect the usage of SZTs, which are supported, at compile tim=
+e.
 
-> IMHO I think you're approaching this from the wrong angle. It isn't
-> that Linux
-> *needs* Rust. It's more about providing a new and safer choice with
-> modern ergonomics for developers, is all.
+Typos: "SZTs" -> "ZSTs" and "supported" -> "unsupported"? Also found below.
 
-Why not move Linux-V4L2 drivers to user-space? In my opinion Rust is 
-much more easy to get going there than at the kernel level.
+> +        crate::build_assert!(core::mem::size_of::<U>() > 0);
 
-> 
->> I would rather like more drive on that, than flowing down the Rust
-> stream.
-> 
-> These two things are not mutually exclusive :)
-> 
->> Rust is cool, Java is cool, VM's are cool.
-> 
-> I don't see why Java and virtual machines are being brought into the
-> discussion
-> for this patchset here. And compilation times are a part of life,
-> sadly. Also,
-> can you substantiate your claim that Rust is slow?
+Could you add a meaningful error message here? Like
+"Cannot use `LockedBy` where `U` is a ZST, since it does
+not guarantee address uniqueness."
+Also add this in the calls to `build_assert!` below and above.
 
-Rust is slow based on my observations building Firefox from sources. The 
-Rust compiler spends a significant amount of time per source file.
+--
+Cheers,
+Benno
 
->> Engineering energy would be much more focused, if hardware vendors
-> could agree
-> more about what binary formats to use for their device protocols,
-> 
-> I understand, but my patchset is not to blame here. In fact, I have no
-> say at
-> all over these things.
-> 
->> than changing the coding language
-> 
-> This simply is not what is happening here. Again this is about giving
-> kernel
-> developers another *option* of programming language, not about ditching
-> C.
+> +        if !ptr::eq(owner, self.owner) {
+> +            panic!("mismatched owners");
+> +        }
+> +
+> +        // SAFETY: `owner` is evidence that the owner is locked.
+> +        unsafe { &*self.data.get() }
+> +    }
+> +
+> +    /// Returns a mutable reference to the protected data when the calle=
+r provides evidence (via a
+> +    /// mutable owner) that the owner is locked mutably.
+> +    ///
+> +    /// `U` cannot be a zero-sized type (ZST) because there are ways to =
+get an `&mut U` that
+> +    /// matches the data protected by the lock without actually holding =
+it.
+> +    ///
+> +    /// Showing a mutable reference to the owner is sufficient because w=
+e know no other references
+> +    /// can exist to it.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `owner` is different from the data protected by the lo=
+ck used in
+> +    /// [`new`](LockedBy::new).
+> +    pub fn access_mut<'a>(&'a self, owner: &'a mut U) -> &'a mut T {
+> +        // Detect the usage of SZTs, which are supported, at compile tim=
+e.
+> +        crate::build_assert!(core::mem::size_of::<U>() > 0);
+> +        if !ptr::eq(owner, self.owner) {
+> +            panic!("mismatched owners");
+> +        }
+> +
+> +        // SAFETY: `owner` is evidence that there is only one reference =
+to the owner.
+> +        unsafe { &mut *self.data.get() }
+> +    }
+> +}
+> --
+> 2.34.1
+>
 
-I think this option belongs in user-space and not Linux (the kernel). 
-More stuff should be moved there, that is my view.
-
-> 
->> that now anyone can be let loose to program in the Linux kernel
-> without
-> risking any damage
-> 
-> Who's "anyone"? Plus the review process stays in place, so hardly any
-> changes to
-> code quality here.
-
-Maybe the word "anyone" was a bit unclear in this regard. I take that 
-back for now.
-
->> I'm glad if not everyone out there can do my job writing C-code for
-> device
-> drivers. We don't need more people to mess around there  simply.
-> 
-> Ok we differ strongly here. In particular, I am totally neutral to your
-> first
-> statement.
-> 
-> The reality is that it isn't up to anyone to say who should or
-> shouldn't become
-> a kernel developer. The resources are out there for anyone to try, and
-> if
-> maintainers take in their patches, then that's the end of the story.
-The GPLv2 license should not be the only reason behind Linux developers 
-putting drivers in the kernel-space. I think moving more stuff to 
-user-space would benefit a greater purpose.
-
-Summed up:
-
-My main objection is Rust compiler support for _kernel_ V4L2 drivers. My 
-opinion it belongs to user-space for now and why not do something there 
-instead?
-
---HPS
