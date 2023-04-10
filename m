@@ -2,147 +2,86 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C8E1C77B6F
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Apr 2023 22:46:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CDB3C77B61
+	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Apr 2023 22:55:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229698AbjDJWq2 (ORCPT
+        id S229721AbjDJWzL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 10 Apr 2023 18:46:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39816 "EHLO
+        Mon, 10 Apr 2023 18:55:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229693AbjDJWq1 (ORCPT
+        with ESMTP id S229711AbjDJWzL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 10 Apr 2023 18:46:27 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26B021BDB;
-        Mon, 10 Apr 2023 15:46:26 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2001:569:beb1:1500:c96f:992f:7c34:9ff])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: dbrouwer)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 2D46F6603085;
-        Mon, 10 Apr 2023 23:46:22 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1681166783;
-        bh=9c4iluAe1XdyJtOZMymDhLS/AIaO/Q70FhnFi5leiec=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LbH8Nb8XBTgz2eveAwcbCXjuqnrQFv4M/8nsYMmyus/G0NRk+AhZZNgaKU8cmXQjf
-         gjmDdxX0yT3mRuLsJjJmInQJ9D8aniu0vwxiI4wakMCp1VOvH9kYKCdFnWp1gMDjiy
-         Is/zCj8eOreZabG0ospwUdYCUEQQXLeYQVYSA453f9AHYWmYcMxOrDWF70yKp9t6gK
-         +ZLu8JbtgUktuUxjHl8bWWnmfrRjxvwlLWSbmu6JdVG1lF7RSbKeTl/L26Tih5CmbZ
-         C+KfysLHNx6GNxK0h4DJd7KydBbHmHdkNKtI0dzSa/RUczyzc7ON01Q5G4BgxMI5ex
-         k8Zv19l+uHaZQ==
-Date:   Mon, 10 Apr 2023 15:46:03 -0700
-From:   Deborah Brouwer <deborah.brouwer@collabora.com>
-To:     Daniel Almeida <daniel.almeida@collabora.com>
-Cc:     wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
-        hverkuil@xs4all.nl, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        kernel@collabora.com
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-Message-ID: <ZDSRSWhWsN34MghQ@xps>
-References: <20230406215615.122099-1-daniel.almeida@collabora.com>
+        Mon, 10 Apr 2023 18:55:11 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B702B1FE2;
+        Mon, 10 Apr 2023 15:55:09 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id h198so12723122ybg.12;
+        Mon, 10 Apr 2023 15:55:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1681167309; x=1683759309;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6ZMGcCTlE+zHI0tSBZIhG1RUtOrAXSPTg9DRTosSr84=;
+        b=V3AWAMswbv3KXy6gRUE5e6i77GX2Q+KHI2CeJXconURp7tnipLoUMF58wfer5mZ17Y
+         J0VlEPLxrm4P7JMb2jf2LRYsweR1vII1OMHBAIsV/m21CWfMtnhyeBi+nmysrBGAmxkM
+         kfXA7lG2HLxrIo3C3GZhvLaFkFUAF+J9NMl3ACDvClw4ox1ahgrmi88q26dyoFrqgyxY
+         KXM8Nqyw/R1AcSiAlaWbP9gc7NciM3gsYxJqH85E5qY5pi/3b6v8OBIedR4W4eOYkfUZ
+         jPbpkcYr2fvh0q5EQ78E2aZnFDWdKKoNRUqVfbg3fluu+6hLm5YAYxtBAr88exiruGYj
+         hQSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681167309; x=1683759309;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6ZMGcCTlE+zHI0tSBZIhG1RUtOrAXSPTg9DRTosSr84=;
+        b=xJiYqxJzZYsbuL8jFHXUg/QSHjHUUbPuvlnFhjQW8zSWNBN3lA13iG0p0kLEq+mxUS
+         m6qG/HOQD3CUlk0STb+LD9Iljs54025zySRTgUDPhbDgL3VqIlBwpOuw/U2nF4gCy+hG
+         VkHQ6QQoERVdLOPfhei3zQUGEyLjWKl1CdM+HGBdivwIK/9SYq3sAFYulHtV+neg7ma4
+         BDwvr2joVY4Zqfs/4fgD6mvlqX6rTnvJblMXObOYi14ACDvkxEypoi+//QhCG675obmt
+         PX5Sv4ZPFyVF2WT3Sb04DJ6v1dsNllRLKG2v6lAseNPzgNvtDtoQUyt2r0ygbEntuYOR
+         NWxg==
+X-Gm-Message-State: AAQBX9fd54kalQPcJT9RYvTK1+OEd16HdB6vRkmHKZgRI6LZHLXRbBvD
+        GkT1IOODpvdmx8vDNCuehwfWvnhpFEphA0F5fCw=
+X-Google-Smtp-Source: AKy350bgn7KVMwsTMtrTJFSi6z+5NSo5iZGnhQdP/RRXvV29DIqkb/r7UGXavV9Ze5Tc2GnK0BI5Z+OuzTjwVW6f1f0=
+X-Received: by 2002:a25:d4d1:0:b0:b80:2bf9:2f78 with SMTP id
+ m200-20020a25d4d1000000b00b802bf92f78mr8219512ybf.11.1681167308928; Mon, 10
+ Apr 2023 15:55:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230406215615.122099-1-daniel.almeida@collabora.com>
+References: <20230408122429.1103522-1-y86-dev@protonmail.com>
+In-Reply-To: <20230408122429.1103522-1-y86-dev@protonmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 11 Apr 2023 00:54:58 +0200
+Message-ID: <CANiq72kQ95gLdfSMNNbB5qn2WdJ7ujbXFwTpuHJQLK8v-qha6A@mail.gmail.com>
+Subject: Re: [PATCH v7 00/15] Rust pin-init API for pinned initialization of structs
+To:     Benno Lossin <y86-dev@protonmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Alice Ryhl <alice@ryhl.io>,
+        Andreas Hindborg <nmi@metaspace.dk>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, Asahi Lina <lina@asahilina.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Apr 06, 2023 at 06:56:09PM -0300, Daniel Almeida wrote:
-> Hi all, this is my first attempt at adding Rust support to the
-> media subsystem.
-> 
-> It adds just enough support to write a clone of the virtio-camera
-> prototype written by my colleague, Dmitry Osipenko, available at [0].
-> 
-> Basically, there's support for video_device_register,
-> v4l2_device_register and for some ioctls in v4l2_ioctl_ops. There is
-> also some initial vb2 support, alongside some wrappers for some types
-> found in videodev2.h.
-> 
-> I wrote a sample Rust driver just to prove that this probes, and
-> that you get a message on dmesg whenever an ioctl is called.
-> 
-> As there is no actual implementation for any of the ioctls, this module
-> can misbehave with some programs. I can work around this in a future
-> submission.
-> 
-> Note that this is based on the rust branch, as opposed to rust-next. The
-> reasoning is simple: I expect this series to just kickstart some
-> discussion around the subject. Actual upstreaming can come up much
-> later, at which point I can rebase on the rust branch.
+On Sat, Apr 8, 2023 at 2:25=E2=80=AFPM Benno Lossin <y86-dev@protonmail.com=
+> wrote:
+>
+> This is the seventh version of the pin-init API. See [1] for v6.
 
-Hi Daniel - I don't know if the 'rust branch' is common knowledge but
-it helped me to know it was this:
-https://github.com/Rust-for-Linux/linux
+Applied to `rust-next`. Thanks!
 
-For what it's worth, I was able to get the V4L2 Rust sample probed
-pretty easily following the quick start instructions
-https://docs.kernel.org/rust/quick-start.html
+The `assume_init` patch was dropped from this one as discussed
+elsewhere with Lina who sent a similar patch, which required adjusting
+that patch's `SAFETY` comment. I also applied the `Reviewed-by`s from
+here to there since it was essentially the same patch.
 
-Cool to see this working!
-Deb
-
-> 
-> Lastly, the origins of this series trace back to a v4l2 virtIO driver I
-> was writing in Rust. As the project was eventually shelved for other
-> reasons, I picked both the virtIO and the v4l2 bindings into their own
-> patches which I am now in the process of submitting. This is to say that
-> I tested this code with said driver and CrosVM in the past, and it
-> worked ok.
-> 
-> Please let me know your thoughts.
-> 
-> [0]: https://gitlab.collabora.com/dmitry.osipenko/linux-kernel-rd/-/commit/055a2c322e931a8b388f864f1db81bbdfd525602
-> 
-> Daniel Almeida (6):
->   rust: media: add the media module
->   rust: media: add initial videodev2.h abstractions
->   rust: sync: introduce FfiMutex
->   rust: media: videobuf2: add a videobuf2 abstraction
->   rust: media: add {video|v4l2}_device_register support
->   rust: media: add v4l2 rust sample
-> 
->  rust/bindings/bindings_helper.h        |   8 +
->  rust/kernel/lib.rs                     |   2 +
->  rust/kernel/media/mod.rs               |   6 +
->  rust/kernel/media/v4l2/capabilities.rs |  80 ++++
->  rust/kernel/media/v4l2/dev.rs          | 369 +++++++++++++++
->  rust/kernel/media/v4l2/device.rs       | 115 +++++
->  rust/kernel/media/v4l2/enums.rs        | 135 ++++++
->  rust/kernel/media/v4l2/format.rs       | 178 ++++++++
->  rust/kernel/media/v4l2/framesize.rs    | 176 +++++++
->  rust/kernel/media/v4l2/inputs.rs       | 104 +++++
->  rust/kernel/media/v4l2/ioctls.rs       | 608 +++++++++++++++++++++++++
->  rust/kernel/media/v4l2/mmap.rs         |  81 ++++
->  rust/kernel/media/v4l2/mod.rs          |  13 +
->  rust/kernel/media/videobuf2/core.rs    | 552 ++++++++++++++++++++++
->  rust/kernel/media/videobuf2/mod.rs     |   5 +
->  rust/kernel/sync.rs                    |   1 +
->  rust/kernel/sync/ffi_mutex.rs          |  70 +++
->  samples/rust/Kconfig                   |  11 +
->  samples/rust/Makefile                  |   1 +
->  samples/rust/rust_v4l2.rs              | 403 ++++++++++++++++
->  20 files changed, 2918 insertions(+)
->  create mode 100644 rust/kernel/media/mod.rs
->  create mode 100644 rust/kernel/media/v4l2/capabilities.rs
->  create mode 100644 rust/kernel/media/v4l2/dev.rs
->  create mode 100644 rust/kernel/media/v4l2/device.rs
->  create mode 100644 rust/kernel/media/v4l2/enums.rs
->  create mode 100644 rust/kernel/media/v4l2/format.rs
->  create mode 100644 rust/kernel/media/v4l2/framesize.rs
->  create mode 100644 rust/kernel/media/v4l2/inputs.rs
->  create mode 100644 rust/kernel/media/v4l2/ioctls.rs
->  create mode 100644 rust/kernel/media/v4l2/mmap.rs
->  create mode 100644 rust/kernel/media/v4l2/mod.rs
->  create mode 100644 rust/kernel/media/videobuf2/core.rs
->  create mode 100644 rust/kernel/media/videobuf2/mod.rs
->  create mode 100644 rust/kernel/sync/ffi_mutex.rs
->  create mode 100644 samples/rust/rust_v4l2.rs
-> 
-> -- 
-> 2.40.0
-> 
+Cheers,
+Miguel
