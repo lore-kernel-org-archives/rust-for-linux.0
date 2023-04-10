@@ -2,240 +2,328 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28487C77B6F
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Apr 2023 18:05:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BD4FC76196
+	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Apr 2023 18:14:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230370AbjDJSF2 (ORCPT
+        id S230447AbjDJSOY (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 10 Apr 2023 14:05:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46734 "EHLO
+        Mon, 10 Apr 2023 14:14:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230373AbjDJSF0 (ORCPT
+        with ESMTP id S230450AbjDJSOX (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 10 Apr 2023 14:05:26 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 514801BC1;
-        Mon, 10 Apr 2023 11:05:23 -0700 (PDT)
-Date:   Mon, 10 Apr 2023 18:04:51 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1681149919; x=1681409119;
-        bh=U23Pxj6RmRXluaupeIIMF2+OgyhNmuLdOBsJ8ac8t5U=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=jqTai2OjeGJSWBhhS2vtfoWFT8IrFEzaTAx2Es/P9khzhP5bfX1SZGcqSSDlrgi1P
-         uBgaWpDxOAwW8OMqF7J6n+9PcR5ZOpH7AFCYN1UyF3joWFzYFL7kZB13R0c27WVMtL
-         X8e9g/qczUxDoK7eS/HL7fdDpscy2RQBUHsERv3aXl7a36pHp6L0zWng7x2KdkOs3m
-         qNMlAcI1OkPCGk2aER5BJirri/djpfU3HrZGrrC+1ZHmQPh8C5QUhEqjBjgwFcv7C5
-         4/18mM8O3mc6P9Sndp1UGvrDNORCQ0t3IizJAx7uJumUFDNbLaXzXUVIHRKuyeSV/h
-         3Pj41pZx7ookQ==
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org
-From:   Benno Lossin <y86-dev@protonmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Mon, 10 Apr 2023 14:14:23 -0400
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0DEB1BF8;
+        Mon, 10 Apr 2023 11:14:21 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id cj22so6408911qtb.3;
+        Mon, 10 Apr 2023 11:14:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1681150461; x=1683742461;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WgswBvjvPVN9EODWp24b5y7J/5TVQZ53Ui2VNPSM2t0=;
+        b=f0TzmAHcGI1a8pEJQrld2hDmHAvYpBa13m61ZjIPEQly/FYWTybSgywtTR/zqjepSt
+         UYoG3uynRj9B3jpwCdWLHzB4OZbvqKi3XdjwLpAUipDOgvLj0Gt7hfF5ynIHZaHkMrzN
+         3jEWEIEEMy8BQCl6/w+ckTn9vuGe6e2v18mPmHVbAFUIQ5Qq5c2A7YrH/c3mgYmmWmNT
+         mzoRXAgVBKJX4Beu2k61Ku8rBGmBBaid0bu9wSNhVLhGCyHdnZ5eIP9zqf4JK1+GP+ei
+         lv/fPEWlkAzTRuBIkQFxzpSRXvYTyDsfzWXlvRqLDG32RXWZgOVy5j6UV+6uijLDY9+e
+         hJqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681150461; x=1683742461;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WgswBvjvPVN9EODWp24b5y7J/5TVQZ53Ui2VNPSM2t0=;
+        b=p4xU9D+l+W8Kxb81Hm4JMm/Sdb+qbIRVSzX0qfwCi8GBBBFShT7Bl59yetAuu79xw6
+         T5ZljbmJ/nUhW0HDVGHarwbio2kIVisMbLIy0O4jiGxRa7tHKxtHyTSp5AeZ06abmqDZ
+         rKmW0zgPIbwa6agWHev7DnNqYmycYtJLnqrOl4GpF5qxJdZlBAiU7Uu/P0O+fPSvJuH8
+         NwVkTrXvt6Us01/iWHcS94ZA4YzVZHS8TqnmLlWmcGQR4toHwxAA5AF1NpuRG+0MGY4a
+         qMz2Sw2wNhS/MXHu5Me8A5KqpyoCrrmfj1V9mqOkunVIvZQGAtCi9xKHHEDYvYEFUbIW
+         s9Yg==
+X-Gm-Message-State: AAQBX9cuQx3KNeEqibrjdzvC8Jpiqqk22ztNKHGjaMjvxGPXmh1Mq+/E
+        3jAPCPV+2LBZtcSiv5Cp6o6Gce6Z2SY=
+X-Google-Smtp-Source: AKy350YZyyHC+BdnkNOp6zIPGk3yJVwnPCrViCa3+pGl4na8+pUJHxzlFnAM++4kCrPskpywtjm2Og==
+X-Received: by 2002:a05:622a:1911:b0:3e4:eb8f:8a7b with SMTP id w17-20020a05622a191100b003e4eb8f8a7bmr29881478qtc.29.1681150460718;
+        Mon, 10 Apr 2023 11:14:20 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id dm6-20020a05620a1d4600b00741a984943fsm3416726qkb.40.2023.04.10.11.14.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Apr 2023 11:14:19 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 9B50327C0054;
+        Mon, 10 Apr 2023 14:14:19 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Mon, 10 Apr 2023 14:14:19 -0400
+X-ME-Sender: <xms:-1E0ZCdbnxHA8Taf3Blp99-BaNCIBjbhU8ChWOn4tVGWLsXpI60Uiw>
+    <xme:-1E0ZMP1qM78QT3RoByQiVnjCsOLX8sk5eDz6JfZ9SLZs7wKDPRDjHbPfUYyDqwSK
+    1-i7Aw6LtevxxID1w>
+X-ME-Received: <xmr:-1E0ZDgu4muTxn4OmczjoDlgJGkZkmP871NT4TevBW1qPjoUoD-XQ3E7SNGnMw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdekvddguddvudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:-1E0ZP9pV5U7jlGq-Wd2Kr0NHcyiDI7uOwUz3T2aHotjLv8596THew>
+    <xmx:-1E0ZOv_yjSRor9QXk3wdu4ClCXAB6-F2D7edAPtQwEkBmgGs_ZhAg>
+    <xmx:-1E0ZGG15hMA-D8-rH4jDMN3DXUN8f683As9ccAa48ZJIEhZgcXIxQ>
+    <xmx:-1E0ZL92lzkEqAm9O2UA-sHKhZyAfN640J7uxFLXTgNrSBY4j5vtdg>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 10 Apr 2023 14:14:18 -0400 (EDT)
+Date:   Mon, 10 Apr 2023 11:13:02 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v3 10/13] rust: introduce `current`
-Message-ID: <08df022b-c0e9-bac6-a57f-296217dc81ed@protonmail.com>
-In-Reply-To: <20230408075340.25237-10-wedsonaf@gmail.com>
-References: <20230408075340.25237-1-wedsonaf@gmail.com> <20230408075340.25237-10-wedsonaf@gmail.com>
-Feedback-ID: 40624463:user:proton
+        Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH v3 13/13] rust: sync: introduce `LockedBy`
+Message-ID: <ZDRRrnPZ0cAfEPTW@boqun-archlinux>
+References: <20230408075340.25237-1-wedsonaf@gmail.com>
+ <20230408075340.25237-13-wedsonaf@gmail.com>
+ <ZDRLaDEnrLhQmW+F@boqun-archlinux>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZDRLaDEnrLhQmW+F@boqun-archlinux>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 08.04.23 09:53, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
->
-> This allows Rust code to get a reference to the current task without
-> having to increment the refcount, but still guaranteeing memory safety.
->
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> ---
-> v1 -> v2: Make `current` a macro to prevent it from escaping the caller
-> v2 -> v3:
-> - Mention `current` macro in `Task::current`
-> - Hide implementation of `TaskRef` inside `Task::current`
->
->   rust/helpers.c         |  6 +++
->   rust/kernel/prelude.rs |  2 +
->   rust/kernel/task.rs    | 88 +++++++++++++++++++++++++++++++++++++++++-
->   3 files changed, 95 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index 58a194042c86..96441744030e 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -100,6 +100,12 @@ bool rust_helper_refcount_dec_and_test(refcount_t *r=
-)
->   }
->   EXPORT_SYMBOL_GPL(rust_helper_refcount_dec_and_test);
->
-> +struct task_struct *rust_helper_get_current(void)
-> +{
-> +=09return current;
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_get_current);
-> +
->   void rust_helper_get_task_struct(struct task_struct *t)
->   {
->   =09get_task_struct(t);
-> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-> index fcdc511d2ce8..c28587d68ebc 100644
-> --- a/rust/kernel/prelude.rs
-> +++ b/rust/kernel/prelude.rs
-> @@ -36,3 +36,5 @@ pub use super::error::{code::*, Error, Result};
->   pub use super::{str::CStr, ThisModule};
->
->   pub use super::init::{InPlaceInit, Init, PinInit};
-> +
-> +pub use super::current;
-> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-> index d70cad131956..5269a562cb1b 100644
-> --- a/rust/kernel/task.rs
-> +++ b/rust/kernel/task.rs
-> @@ -5,7 +5,17 @@
->   //! C header: [`include/linux/sched.h`](../../../../include/linux/sched=
-.h).
->
->   use crate::{bindings, types::Opaque};
-> -use core::ptr;
-> +use core::{marker::PhantomData, ops::Deref, ptr};
-> +
-> +/// Returns the currently running task.
-> +#[macro_export]
-> +macro_rules! current {
-> +    () =3D> {
-> +        // SAFETY: Deref + addr-of below create a temporary `TaskRef` th=
-at cannot outlive the
-> +        // caller.
-> +        unsafe { &*$crate::task::Task::current() }
-> +    };
-> +}
->
->   /// Wraps the kernel's `struct task_struct`.
->   ///
-> @@ -15,6 +25,42 @@ use core::ptr;
->   ///
->   /// Instances of this type are always ref-counted, that is, a call to `=
-get_task_struct` ensures
->   /// that the allocation remains valid at least until the matching call =
-to `put_task_struct`.
-> +///
-> +/// # Examples
-> +///
-> +/// The following is an example of getting the PID of the current thread=
- with zero additional cost
-> +/// when compared to the C version:
-> +///
-> +/// ```
-> +/// let pid =3D current!().pid();
-> +/// ```
-> +///
-> +/// Getting the PID of the current process, also zero additional cost:
-> +///
-> +/// ```
-> +/// let pid =3D current!().group_leader().pid();
-> +/// ```
-> +///
-> +/// Getting the current task and storing it in some struct. The referenc=
-e count is automatically
-> +/// incremented when creating `State` and decremented when it is dropped=
-:
-> +///
-> +/// ```
-> +/// use kernel::{task::Task, types::ARef};
-> +///
-> +/// struct State {
-> +///     creator: ARef<Task>,
-> +///     index: u32,
-> +/// }
-> +///
-> +/// impl State {
-> +///     fn new() -> Self {
-> +///         Self {
-> +///             creator: current!().into(),
-> +///             index: 0,
-> +///         }
-> +///     }
-> +/// }
-> +/// ```
->   #[repr(transparent)]
->   pub struct Task(pub(crate) Opaque<bindings::task_struct>);
->
-> @@ -27,6 +73,46 @@ unsafe impl Sync for Task {}
->   type Pid =3D bindings::pid_t;
->
->   impl Task {
-> +    /// Returns a task reference for the currently executing task/thread=
-.
-> +    ///
-> +    /// The recommended way to get the current task/thread is to use the
-> +    /// [`current`](crate::current) macro because it is safe.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that the returned object doesn't outlive the=
- current task/thread.
-> +    pub unsafe fn current() -> impl Deref<Target =3D Task> {
-> +        pub struct TaskRef<'a> {
-> +            task: &'a Task,
-> +            _not_send: PhantomData<*mut ()>,
-> +        }
-> +
-> +        impl Deref for TaskRef<'_> {
-> +            type Target =3D Task;
-> +
-> +            fn deref(&self) -> &Self::Target {
-> +                self.task
-> +            }
-> +        }
-> +
-> +        impl From<TaskRef<'_>> for crate::types::ARef<Task> {
-> +            fn from(t: TaskRef<'_>) -> Self {
-> +                t.deref().into()
-> +            }
-> +        }
+On Mon, Apr 10, 2023 at 10:46:16AM -0700, Boqun Feng wrote:
+> On Sat, Apr 08, 2023 at 04:53:40AM -0300, Wedson Almeida Filho wrote:
+> > From: Wedson Almeida Filho <walmeida@microsoft.com>
+> > 
+> > This allows us to have data protected by a lock despite not being
+> > wrapped by it. Access is granted by providing evidence that the lock is
+> > held by the caller.
+> > 
+> > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> > ---
+> > v1 -> v2: Added build_assert to rule out zero-sized types
+> > v2 -> v3: Improve comments around panics and support for ZSTs
+> > 
+> >  rust/kernel/sync.rs           |   2 +
+> >  rust/kernel/sync/lock.rs      |   2 +-
+> >  rust/kernel/sync/locked_by.rs | 147 ++++++++++++++++++++++++++++++++++
+> >  3 files changed, 150 insertions(+), 1 deletion(-)
+> >  create mode 100644 rust/kernel/sync/locked_by.rs
+> > 
+> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> > index 431402180aa8..d219ee518eff 100644
+> > --- a/rust/kernel/sync.rs
+> > +++ b/rust/kernel/sync.rs
+> > @@ -10,10 +10,12 @@ use crate::types::Opaque;
+> >  mod arc;
+> >  mod condvar;
+> >  pub mod lock;
+> > +mod locked_by;
+> >  
+> >  pub use arc::{Arc, ArcBorrow, UniqueArc};
+> >  pub use condvar::CondVar;
+> >  pub use lock::{mutex::Mutex, spinlock::SpinLock};
+> > +pub use locked_by::LockedBy;
+> >  
+> >  /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
+> >  #[repr(transparent)]
+> > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> > index c365bc909dff..84d8d7d01aaa 100644
+> > --- a/rust/kernel/sync/lock.rs
+> > +++ b/rust/kernel/sync/lock.rs
+> > @@ -111,7 +111,7 @@ pub struct Lock<T: ?Sized, B: Backend> {
+> >      _pin: PhantomPinned,
+> >  
+> >      /// The data protected by the lock.
+> > -    data: UnsafeCell<T>,
+> > +    pub(crate) data: UnsafeCell<T>,
+> >  }
+> >  
+> >  // SAFETY: `Lock` can be transferred across thread boundaries iff the data it protects can.
+> > diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.rs
+> > new file mode 100644
+> > index 000000000000..ab0ecb013f54
+> > --- /dev/null
+> > +++ b/rust/kernel/sync/locked_by.rs
+> > @@ -0,0 +1,147 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! A wrapper for data protected by a lock that does not wrap it.
+> > +
+> > +use super::{lock::Backend, lock::Lock};
+> > +use core::{cell::UnsafeCell, ptr};
+> > +
+> > +/// Allows access to some data to be serialised by a lock that does not wrap it.
+> > +///
+> > +/// In most cases, data protected by a lock is wrapped by the appropriate lock type, e.g.,
+> > +/// [`super::Mutex`] or [`super::SpinLock`]. [`LockedBy`] is meant for cases when this is not
+> > +/// possible. For example, if a container has a lock and some data in the contained elements needs
+> > +/// to be protected by the same lock.
+> > +///
+> > +/// [`LockedBy`] wraps the data in lieu of another locking primitive, and only allows access to it
+> > +/// when the caller shows evidence that the 'external' lock is locked. It panics if the evidence
+> > +/// refers to the wrong instance of the lock.
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// The following is an example for illustrative purposes: `InnerDirectory::bytes_used` is an
+> > +/// aggregate of all `InnerFile::bytes_used` and must be kept consistent; so we wrap `InnerFile` in
+> > +/// a `LockedBy` so that it shares a lock with `InnerDirectory`. This allows us to enforce at
+> > +/// compile-time that access to `InnerFile` is only granted when an `InnerDirectory` is also
+> > +/// locked; we enforce at run time that the right `InnerDirectory` is locked.
+> > +///
+> > +/// ```
+> > +/// use kernel::sync::{LockedBy, Mutex};
+> > +///
+> > +/// struct InnerFile {
+> > +///     bytes_used: u64,
+> > +/// }
+> > +///
+> > +/// struct File {
+> > +///     _ino: u32,
+> > +///     inner: LockedBy<InnerFile, InnerDirectory>,
+> > +/// }
+> > +///
+> > +/// struct InnerDirectory {
+> > +///     /// The sum of the bytes used by all files.
+> > +///     bytes_used: u64,
+> > +///     _files: Vec<File>,
+> > +/// }
+> > +///
+> > +/// struct Directory {
+> > +///     _ino: u32,
+> > +///     inner: Mutex<InnerDirectory>,
+> > +/// }
+> > +///
+> > +/// /// Prints `bytes_used` from both the directory and file.
+> > +/// fn print_bytes_used(dir: &Directory, file: &File) {
+> > +///     let guard = dir.inner.lock();
+> > +///     let inner_file = file.inner.access(&guard);
+> > +///     pr_info!("{} {}", guard.bytes_used, inner_file.bytes_used);
+> > +/// }
+> > +///
+> > +/// /// Increments `bytes_used` for both the directory and file.
+> > +/// fn inc_bytes_used(dir: &Directory, file: &File) {
+> > +///     let mut guard = dir.inner.lock();
+> > +///     guard.bytes_used += 10;
+> > +///
+> > +///     let file_inner = file.inner.access_mut(&mut guard);
+> > +///     file_inner.bytes_used += 10;
+> > +/// }
+> > +///
+> > +/// /// Creates a new file.
+> > +/// fn new_file(ino: u32, dir: &Directory) -> File {
+> > +///     File {
+> > +///         _ino: ino,
+> > +///         inner: LockedBy::new(&dir.inner, InnerFile { bytes_used: 0 }),
+> > +///     }
+> > +/// }
+> > +/// ```
+> > +pub struct LockedBy<T: ?Sized, U: ?Sized> {
+> > +    owner: *const U,
+> > +    data: UnsafeCell<T>,
+> > +}
+> > +
+> > +// SAFETY: `LockedBy` can be transferred across thread boundaries iff the data it protects can.
+> > +unsafe impl<T: ?Sized + Send, U: ?Sized> Send for LockedBy<T, U> {}
+> > +
+> > +// SAFETY: `LockedBy` serialises the interior mutability it provides, so it is `Sync` as long as the
+> > +// data it protects is `Send`.
+> > +unsafe impl<T: ?Sized + Send, U: ?Sized> Sync for LockedBy<T, U> {}
+> > +
+> > +impl<T, U: ?Sized> LockedBy<T, U> {
+> > +    /// Constructs a new instance of [`LockedBy`].
+> > +    ///
+> > +    /// It stores a raw pointer to the owner that is never dereferenced. It is only used to ensure
+> > +    /// that the right owner is being used to access the protected data. If the owner is freed, the
+> > +    /// data becomes inaccessible; if another instance of the owner is allocated *on the same
+> > +    /// memory location*, the data becomes accessible again: none of this affects memory safety
+> > +    /// because in any case at most one thread (or CPU) can access the protected data at a time.
+> > +    pub fn new(owner: &Lock<U, impl Backend>, data: T) -> Self {
+> > +        Self {
+> > +            owner: owner.data.get(),
+> 
+> Given we use the address of the `data` as a key to verify holding a
+> lock, I think we should use `Pin<_>` in the function signature, i.e.
+> 
+> 	pub fn new(owner: Pin<&Lock<U, impl Backend>, data: T) -> Self {
+> 	    Self {
+> 	        owner: owner.get_ref().data.get()
+> 		data: UnsafeCell::new(data),
+> 	    }
+> 	}
+> 
+> Thoughts?
+> 
 
-I think we can remove this `From` impl, since the type is never exposed
-to the outside (there still is the `From<&T> for ARef<T>` impl, so users
-can still do `current!().into()` to get an `ARef<Task>`).
+Nevermind for now, since `Lock` is a pin-inited type, we can revisit
+this later.
 
---
-Cheers,
-Benno
+Regards,
+Boqun
 
-> +
-> +        // SAFETY: Just an FFI call with no additional safety requiremen=
-ts.
-> +        let ptr =3D unsafe { bindings::get_current() };
-> +
-> +        TaskRef {
-> +            // SAFETY: If the current thread is still running, the curre=
-nt task is valid. Given
-> +            // that `TaskRef` is not `Send`, we know it cannot be transf=
-erred to another thread
-> +            // (where it could potentially outlive the caller).
-> +            task: unsafe { &*ptr.cast() },
-> +            _not_send: PhantomData,
-> +        }
-> +    }
-> +
->       /// Returns the group leader of the given task.
->       pub fn group_leader(&self) -> &Task {
->           // SAFETY: By the type invariant, we know that `self.0` is a va=
-lid task. Valid tasks always
-> --
-> 2.34.1
->
-
+> Regards,
+> Boqun
+> 
+> > +            data: UnsafeCell::new(data),
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +impl<T: ?Sized, U> LockedBy<T, U> {
+> > +    /// Returns a reference to the protected data when the caller provides evidence (via a
+> > +    /// reference) that the owner is locked.
+> > +    ///
+> > +    /// `U` cannot be a zero-sized type (ZST) because there are ways to get an `&U` that matches
+> > +    /// the data protected by the lock without actually holding it.
+> > +    ///
+> > +    /// # Panics
+> > +    ///
+> > +    /// Panics if `owner` is different from the data protected by the lock used in
+> > +    /// [`new`](LockedBy::new).
+> > +    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
+> > +        // Detect the usage of SZTs, which are supported, at compile time.
+> > +        crate::build_assert!(core::mem::size_of::<U>() > 0);
+> > +        if !ptr::eq(owner, self.owner) {
+> > +            panic!("mismatched owners");
+> > +        }
+> > +
+> > +        // SAFETY: `owner` is evidence that the owner is locked.
+> > +        unsafe { &*self.data.get() }
+> > +    }
+> > +
+> > +    /// Returns a mutable reference to the protected data when the caller provides evidence (via a
+> > +    /// mutable owner) that the owner is locked mutably.
+> > +    ///
+> > +    /// `U` cannot be a zero-sized type (ZST) because there are ways to get an `&mut U` that
+> > +    /// matches the data protected by the lock without actually holding it.
+> > +    ///
+> > +    /// Showing a mutable reference to the owner is sufficient because we know no other references
+> > +    /// can exist to it.
+> > +    ///
+> > +    /// # Panics
+> > +    ///
+> > +    /// Panics if `owner` is different from the data protected by the lock used in
+> > +    /// [`new`](LockedBy::new).
+> > +    pub fn access_mut<'a>(&'a self, owner: &'a mut U) -> &'a mut T {
+> > +        // Detect the usage of SZTs, which are supported, at compile time.
+> > +        crate::build_assert!(core::mem::size_of::<U>() > 0);
+> > +        if !ptr::eq(owner, self.owner) {
+> > +            panic!("mismatched owners");
+> > +        }
+> > +
+> > +        // SAFETY: `owner` is evidence that there is only one reference to the owner.
+> > +        unsafe { &mut *self.data.get() }
+> > +    }
+> > +}
+> > -- 
+> > 2.34.1
+> > 
