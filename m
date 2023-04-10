@@ -2,86 +2,84 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CDB3C77B61
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Apr 2023 22:55:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14B3CC77B73
+	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Apr 2023 23:40:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229721AbjDJWzL (ORCPT
+        id S230000AbjDJXk0 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 10 Apr 2023 18:55:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44902 "EHLO
+        Mon, 10 Apr 2023 19:40:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229711AbjDJWzL (ORCPT
+        with ESMTP id S229717AbjDJXkY (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 10 Apr 2023 18:55:11 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B702B1FE2;
-        Mon, 10 Apr 2023 15:55:09 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id h198so12723122ybg.12;
-        Mon, 10 Apr 2023 15:55:09 -0700 (PDT)
+        Mon, 10 Apr 2023 19:40:24 -0400
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11783211D;
+        Mon, 10 Apr 2023 16:40:23 -0700 (PDT)
+Received: by mail-yb1-xb2e.google.com with SMTP id ch3so7394924ybb.4;
+        Mon, 10 Apr 2023 16:40:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1681167309; x=1683759309;
+        d=gmail.com; s=20210112; t=1681170022; x=1683762022;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6ZMGcCTlE+zHI0tSBZIhG1RUtOrAXSPTg9DRTosSr84=;
-        b=V3AWAMswbv3KXy6gRUE5e6i77GX2Q+KHI2CeJXconURp7tnipLoUMF58wfer5mZ17Y
-         J0VlEPLxrm4P7JMb2jf2LRYsweR1vII1OMHBAIsV/m21CWfMtnhyeBi+nmysrBGAmxkM
-         kfXA7lG2HLxrIo3C3GZhvLaFkFUAF+J9NMl3ACDvClw4ox1ahgrmi88q26dyoFrqgyxY
-         KXM8Nqyw/R1AcSiAlaWbP9gc7NciM3gsYxJqH85E5qY5pi/3b6v8OBIedR4W4eOYkfUZ
-         jPbpkcYr2fvh0q5EQ78E2aZnFDWdKKoNRUqVfbg3fluu+6hLm5YAYxtBAr88exiruGYj
-         hQSQ==
+        bh=NTQtPc1KR8cL03Cu4yvySUtsAqnCh9TcCbpIOpD082E=;
+        b=LvCJtpdvUXGmM5tCLD26vrPYHaTbyVySqbpJLltLM6laOR5DGneYwNdHidQ/0KRQzo
+         fAS5G/mV8BrIRT/7FJPmSRVPu4JmIyI2BIM7LU4APXhshOi0MRmTdq0EJX+ESRyt5Odv
+         DT3aGKmmgweMnnvRcQ+qOHBoiJxHg9DbzjmucNInrCEQrndG/2kJabIALJ5GnVQzi6lF
+         2iehIqncrVGa2AZ70aQbaQHcdWT1zx0wRJ+EW19+YB+HqSfmQ3cCnOyp/WY974BDKMBP
+         uS8ifM14G92fEi8A++D1kZFIrQ0G7OMvvWbO6z8gEYqkFrF3RliA7fV20j/HfJjscxw4
+         33EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681167309; x=1683759309;
+        d=1e100.net; s=20210112; t=1681170022; x=1683762022;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6ZMGcCTlE+zHI0tSBZIhG1RUtOrAXSPTg9DRTosSr84=;
-        b=xJiYqxJzZYsbuL8jFHXUg/QSHjHUUbPuvlnFhjQW8zSWNBN3lA13iG0p0kLEq+mxUS
-         m6qG/HOQD3CUlk0STb+LD9Iljs54025zySRTgUDPhbDgL3VqIlBwpOuw/U2nF4gCy+hG
-         VkHQ6QQoERVdLOPfhei3zQUGEyLjWKl1CdM+HGBdivwIK/9SYq3sAFYulHtV+neg7ma4
-         BDwvr2joVY4Zqfs/4fgD6mvlqX6rTnvJblMXObOYi14ACDvkxEypoi+//QhCG675obmt
-         PX5Sv4ZPFyVF2WT3Sb04DJ6v1dsNllRLKG2v6lAseNPzgNvtDtoQUyt2r0ygbEntuYOR
-         NWxg==
-X-Gm-Message-State: AAQBX9fd54kalQPcJT9RYvTK1+OEd16HdB6vRkmHKZgRI6LZHLXRbBvD
-        GkT1IOODpvdmx8vDNCuehwfWvnhpFEphA0F5fCw=
-X-Google-Smtp-Source: AKy350bgn7KVMwsTMtrTJFSi6z+5NSo5iZGnhQdP/RRXvV29DIqkb/r7UGXavV9Ze5Tc2GnK0BI5Z+OuzTjwVW6f1f0=
-X-Received: by 2002:a25:d4d1:0:b0:b80:2bf9:2f78 with SMTP id
- m200-20020a25d4d1000000b00b802bf92f78mr8219512ybf.11.1681167308928; Mon, 10
- Apr 2023 15:55:08 -0700 (PDT)
+        bh=NTQtPc1KR8cL03Cu4yvySUtsAqnCh9TcCbpIOpD082E=;
+        b=ynTDW6AAQpuOMsgqkxGCMuU8WtE/z3l2pwjmQmRSNkWEkCk0b+x93CYbV87KhyDP58
+         pIINnhf1a3WudawLr8wBJZVx+MXmCw4K4vw+Ky7D1If5zs/72DMzVkMcpg8kxsuSPTiK
+         7D+5BLGha5X+Zu4JkxQzyGxaQpUnItz0FYTbvlnjeOPPSRpjaunXYD0ZceJ4IAlppEaY
+         lkCyxWPlP4UupDFJxj73X+X2wm3BWpb8GTn1MW2GXC9rKXn7ezZsFgKsIpNmM+N7n5AJ
+         OgWPqQpbJRgizXG0QmDprglVTz8j9n//erBDGnExGQShMqaMGnMqy9HDv+PrM8+9J0F/
+         FHOQ==
+X-Gm-Message-State: AAQBX9dlupK5k9UnSVtt3gg8dTOuLbrGZBuz+o34nsvjkdaokr0iiCCB
+        EzLeuyKCbl075akvIV/ONVDUmbiobhIQNSpMNhk=
+X-Google-Smtp-Source: AKy350byC3UZ5q46Cg3jjcDOCZuOE/5kBZ8jGkWjtaZzjZe5hvjzf3F5KgEQU7es7Q5ChrZQ4u786jZiUPkl5fwvbpA=
+X-Received: by 2002:a25:3157:0:b0:b8e:db4a:a366 with SMTP id
+ x84-20020a253157000000b00b8edb4aa366mr4583298ybx.11.1681170022289; Mon, 10
+ Apr 2023 16:40:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230408122429.1103522-1-y86-dev@protonmail.com>
-In-Reply-To: <20230408122429.1103522-1-y86-dev@protonmail.com>
+References: <20230406215615.122099-1-daniel.almeida@collabora.com>
+ <441a96cb-7dd1-0885-df64-933ebdb55e9e@selasky.org> <0ec4becd05c49e8f0bf214fbd62208ea67c2b4c3.camel@collabora.com>
+In-Reply-To: <0ec4becd05c49e8f0bf214fbd62208ea67c2b4c3.camel@collabora.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 11 Apr 2023 00:54:58 +0200
-Message-ID: <CANiq72kQ95gLdfSMNNbB5qn2WdJ7ujbXFwTpuHJQLK8v-qha6A@mail.gmail.com>
-Subject: Re: [PATCH v7 00/15] Rust pin-init API for pinned initialization of structs
-To:     Benno Lossin <y86-dev@protonmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <alice@ryhl.io>,
-        Andreas Hindborg <nmi@metaspace.dk>,
+Date:   Tue, 11 Apr 2023 01:40:11 +0200
+Message-ID: <CANiq72k018LHbL7qqYXuuorD2ayrnTik8WD6MXPZgo5wR6VA9g@mail.gmail.com>
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+To:     Daniel Almeida <daniel.almeida@collabora.com>
+Cc:     Hans Petter Selasky <hps@selasky.org>, wedsonaf@gmail.com,
+        ojeda@kernel.org, mchehab@kernel.org, hverkuil@xs4all.nl,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Asahi Lina <lina@asahilina.net>
+        linux-media@vger.kernel.org, kernel@collabora.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Apr 8, 2023 at 2:25=E2=80=AFPM Benno Lossin <y86-dev@protonmail.com=
-> wrote:
+On Sun, Apr 9, 2023 at 4:10=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
 >
-> This is the seventh version of the pin-init API. See [1] for v6.
+> and I don't
+> think there
+> are any plans to introduce Rust outside of drivers in the kernel at
+> all, last I
+> heard.
 
-Applied to `rust-next`. Thanks!
-
-The `assume_init` patch was dropped from this one as discussed
-elsewhere with Lina who sent a similar patch, which required adjusting
-that patch's `SAFETY` comment. I also applied the `Reviewed-by`s from
-here to there since it was essentially the same patch.
+This was indeed our original proposal (actually, for "leaf" modules in
+general, not only device drivers), but where the line is drawn is up
+to the kernel maintainers. For instance, some of them have expressed
+interest in potentially having Rust subsystems in the future.
 
 Cheers,
 Miguel
