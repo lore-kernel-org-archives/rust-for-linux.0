@@ -2,119 +2,151 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D461C7619A
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 07:12:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26DC3C7619A
+	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 07:51:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230418AbjDKHMA (ORCPT
+        id S229955AbjDKHvN (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Apr 2023 03:12:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60288 "EHLO
+        Tue, 11 Apr 2023 03:51:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229998AbjDKHLo (ORCPT
+        with ESMTP id S229773AbjDKHvN (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Apr 2023 03:11:44 -0400
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BE0B40E5
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Apr 2023 00:11:15 -0700 (PDT)
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Tue, 11 Apr 2023 03:51:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 394D1B9;
+        Tue, 11 Apr 2023 00:51:11 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id D460D3F237
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Apr 2023 07:11:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1681197070;
-        bh=H2cQrPMQwRi8jarZD975xdrVJAqj415FcPf9JaE0c7U=;
-        h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-         Content-Type:In-Reply-To;
-        b=TcUpqy7T552lvZKejNXbGxKvgJ1D+4DMKSaXSoyBmdU4ol3ViHrrc4PGJYXN0xQ5X
-         8Grq3oUDabKlZNCepoABnD6VmK4pP6wzqxHXRS4RtLQT3K4qDq65nFTU9GNt9OSec4
-         rh7Kk2Gt2WdsOa14OyFXQC6i92nHOMHVKxsyUN8Wh27LFL7nFI+TMkSF49aHPhLhlN
-         Ft58JH3JWAFmN02jy1/oRhGG1wziytogc3J+GgYr7Z49jRopmEOj8ab3DgKeEZUdqi
-         uWlcpqpqnvwSLV25rehuDHoY33TAbwjIIpzY8TJfJkyIAmWelG3rUAFWRPlKNywgJb
-         5fHfaiAgwD+Ig==
-Received: by mail-oo1-f70.google.com with SMTP id k3-20020a4a9483000000b00541aa021802so2899541ooi.7
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Apr 2023 00:11:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681197069; x=1683789069;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H2cQrPMQwRi8jarZD975xdrVJAqj415FcPf9JaE0c7U=;
-        b=m+Ia58thLAcVm9+ijzNxSvfYo0BuYOslXSh+JDWYuJaNnvEELTmdcHt19fU/Uxy6O5
-         qKrJyha0Vir1EttpBXdKQLwMJRa+nDFFh3wg249qAL4lugLYdXeCwCvCYNIDA6X80a/S
-         jOfAADsu9sc4LqlSlcpYRp4HMOJ/1Wxq2ffisU2T0g+J+w0ENEsmFqn/5e4klKjrN+nz
-         WeaJ7ATSvzC7U4mH003NjHfsmy8+Kr3ktXJBaNsGM9hIYwrSmceAlM0CuhdfnsW86yM+
-         GbQFiP1CGWJGdttpFc250ZnTWupSOhbyLZP2X8884z6uw2M/3vnPiLE826u1nNtsiHZ3
-         M+zQ==
-X-Gm-Message-State: AAQBX9clyqZ5UmNehoA+kAAhtmTw6ytMqxjH3dPLOaN+y/7W7lP1Hk9z
-        1/J7EFmUWWHceBbCD13I4URTZZxUne9XodKHNe52MJnBqua6JDvn8BSRVlC6oySWC4rUkvKEatu
-        uhEq4pCFrSEGFOc7xP/0rufK8EohpzDhYjCd9z21gTWII
-X-Received: by 2002:a05:6871:828:b0:17a:ce6b:726 with SMTP id q40-20020a056871082800b0017ace6b0726mr7752384oap.57.1681197069543;
-        Tue, 11 Apr 2023 00:11:09 -0700 (PDT)
-X-Google-Smtp-Source: AKy350ZDpfH1S+/bTj8wmoZi6wmxQ2DDVizMlGxNu+x8TONxy1ApAhRI2g3WiK73fTHA1Yt6F2NnBw==
-X-Received: by 2002:a05:6871:828:b0:17a:ce6b:726 with SMTP id q40-20020a056871082800b0017ace6b0726mr7752366oap.57.1681197069290;
-        Tue, 11 Apr 2023 00:11:09 -0700 (PDT)
-Received: from localhost (uk.sesame.canonical.com. [185.125.190.60])
-        by smtp.gmail.com with ESMTPSA id e5-20020a4a8f05000000b0054157801d51sm5362192ool.38.2023.04.11.00.11.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Apr 2023 00:11:08 -0700 (PDT)
-Date:   Tue, 11 Apr 2023 09:11:06 +0200
-From:   Andrea Righi <andrea.righi@canonical.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Kees Cook <kees@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        bjorn3_gh@protonmail.com, Kees Cook <keescook@chromium.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: allow to use INIT_STACK_ALL_ZERO
-Message-ID: <ZDUICqLhv6uSk9an@righiandr-XPS-13-7390>
-References: <20230210215141.108958-1-andrea.righi@canonical.com>
- <8178319F-4188-4F8E-AD8D-DCC392E26DBF@kernel.org>
- <Y+daEOZgaiF3IMTX@righiandr-XPS-13-7390>
- <4E6FDE1C-47B6-46A6-AF31-28AEB2348344@kernel.org>
- <Y+entVlMoV83vyzz@righiandr-XPS-13-7390>
- <CANiq72nQ4-md=KxtUcz3jHDXhLUdw1JxgbSKp7QsN0QKS3pV1A@mail.gmail.com>
- <ZC+x8pqUVzWQ35fv@righiandr-XPS-13-7390>
- <CANiq72ngN9bAiWaVVyJkkEK_WAoTQVb5mmYLMqs5PK7pu6gV9A@mail.gmail.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C852B61BCD;
+        Tue, 11 Apr 2023 07:51:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D739C433D2;
+        Tue, 11 Apr 2023 07:51:08 +0000 (UTC)
+Message-ID: <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
+Date:   Tue, 11 Apr 2023 09:51:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72ngN9bAiWaVVyJkkEK_WAoTQVb5mmYLMqs5PK7pu6gV9A@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+Content-Language: en-US
+To:     Daniel Almeida <daniel.almeida@collabora.com>, wedsonaf@gmail.com,
+        ojeda@kernel.org, mchehab@kernel.org
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, kernel@collabora.com
+References: <20230406215615.122099-1-daniel.almeida@collabora.com>
+From:   Hans Verkuil <hverkuil@xs4all.nl>
+In-Reply-To: <20230406215615.122099-1-daniel.almeida@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sun, Apr 09, 2023 at 10:49:58PM +0200, Miguel Ojeda wrote:
-> On Fri, Apr 7, 2023 at 8:02 AM Andrea Righi <andrea.righi@canonical.com> wrote:
-> >
-> > The check (< 16) looks correct and the comment also looks correct to me,
-> > this option will be removed in clang 18, as mentioned here:
-> > https://github.com/llvm/llvm-project/blob/llvmorg-16.0.0-rc2/clang/docs/ReleaseNotes.rst#deprecated-compiler-flags
-> >
-> > (Maybe we could add also this link as a reference)
+Hi Daniel,
+
+On 06/04/2023 23:56, Daniel Almeida wrote:
+> Hi all, this is my first attempt at adding Rust support to the
+> media subsystem.
 > 
-> Thanks for taking a look -- Kees' link added!
+> It adds just enough support to write a clone of the virtio-camera
+> prototype written by my colleague, Dmitry Osipenko, available at [0].
 > 
-> I removed "(as the name of the option suggests)" from the commit
-> message, by the way, since the name of the option suggests the
-> original `-ftrivial` option was to be removed, not the `-enable` one.
-> If that understanding is wrong, please let me know!
+> Basically, there's support for video_device_register,
+> v4l2_device_register and for some ioctls in v4l2_ioctl_ops. There is
+> also some initial vb2 support, alongside some wrappers for some types
+> found in videodev2.h.
+> 
+> I wrote a sample Rust driver just to prove that this probes, and
+> that you get a message on dmesg whenever an ioctl is called.
+> 
+> As there is no actual implementation for any of the ioctls, this module
+> can misbehave with some programs. I can work around this in a future
+> submission.
+> 
+> Note that this is based on the rust branch, as opposed to rust-next. The
+> reasoning is simple: I expect this series to just kickstart some
+> discussion around the subject. Actual upstreaming can come up much
+> later, at which point I can rebase on the rust branch.
+> 
+> Lastly, the origins of this series trace back to a v4l2 virtIO driver I
+> was writing in Rust. As the project was eventually shelved for other
+> reasons, I picked both the virtIO and the v4l2 bindings into their own
+> patches which I am now in the process of submitting. This is to say that
+> I tested this code with said driver and CrosVM in the past, and it
+> worked ok.
+> 
+> Please let me know your thoughts.
 
-Yes, that looks more clear, the name of the option is a bit misleading. :)
+I think this could be a good topic to discuss at the upcoming media summit:
 
-To be clear what is going to be removed is
--enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang,
-in this way clang will be compatible with gcc and they can both use
--ftrivial-auto-var-init=zero.
+https://lore.kernel.org/linux-media/893a7e34-1d98-23e2-4d27-d25cb3ee5bf0@xs4all.nl/
 
-Thanks,
--Andrea
+Please reply to that message with a topic description if you are interested.
 
+One of my main concerns here is time: as subsystem maintainers we can barely
+keep up with all the incoming patches. Introducing support for a new language
+would add only more pressure. Even though these are mainly bindings (as I
+understand it), this would still require that every change to a C kAPI is
+duplicated in rust, requiring someone to do that work, and have maintainers
+with enough rust knowledge to verify it.
 
+And just reading about a new programming language is not enough to be able to
+properly review code: that requires far more experience IMHO. The only way
+to acquire that experience is by writing non-trivial drivers in rust.
+
+And that in turn takes a lot of time. Which we do not have.
+
+Regards,
+
+	Hans
 
 > 
-> Cheers,
-> Miguel
+> [0]: https://gitlab.collabora.com/dmitry.osipenko/linux-kernel-rd/-/commit/055a2c322e931a8b388f864f1db81bbdfd525602
+> 
+> Daniel Almeida (6):
+>   rust: media: add the media module
+>   rust: media: add initial videodev2.h abstractions
+>   rust: sync: introduce FfiMutex
+>   rust: media: videobuf2: add a videobuf2 abstraction
+>   rust: media: add {video|v4l2}_device_register support
+>   rust: media: add v4l2 rust sample
+> 
+>  rust/bindings/bindings_helper.h        |   8 +
+>  rust/kernel/lib.rs                     |   2 +
+>  rust/kernel/media/mod.rs               |   6 +
+>  rust/kernel/media/v4l2/capabilities.rs |  80 ++++
+>  rust/kernel/media/v4l2/dev.rs          | 369 +++++++++++++++
+>  rust/kernel/media/v4l2/device.rs       | 115 +++++
+>  rust/kernel/media/v4l2/enums.rs        | 135 ++++++
+>  rust/kernel/media/v4l2/format.rs       | 178 ++++++++
+>  rust/kernel/media/v4l2/framesize.rs    | 176 +++++++
+>  rust/kernel/media/v4l2/inputs.rs       | 104 +++++
+>  rust/kernel/media/v4l2/ioctls.rs       | 608 +++++++++++++++++++++++++
+>  rust/kernel/media/v4l2/mmap.rs         |  81 ++++
+>  rust/kernel/media/v4l2/mod.rs          |  13 +
+>  rust/kernel/media/videobuf2/core.rs    | 552 ++++++++++++++++++++++
+>  rust/kernel/media/videobuf2/mod.rs     |   5 +
+>  rust/kernel/sync.rs                    |   1 +
+>  rust/kernel/sync/ffi_mutex.rs          |  70 +++
+>  samples/rust/Kconfig                   |  11 +
+>  samples/rust/Makefile                  |   1 +
+>  samples/rust/rust_v4l2.rs              | 403 ++++++++++++++++
+>  20 files changed, 2918 insertions(+)
+>  create mode 100644 rust/kernel/media/mod.rs
+>  create mode 100644 rust/kernel/media/v4l2/capabilities.rs
+>  create mode 100644 rust/kernel/media/v4l2/dev.rs
+>  create mode 100644 rust/kernel/media/v4l2/device.rs
+>  create mode 100644 rust/kernel/media/v4l2/enums.rs
+>  create mode 100644 rust/kernel/media/v4l2/format.rs
+>  create mode 100644 rust/kernel/media/v4l2/framesize.rs
+>  create mode 100644 rust/kernel/media/v4l2/inputs.rs
+>  create mode 100644 rust/kernel/media/v4l2/ioctls.rs
+>  create mode 100644 rust/kernel/media/v4l2/mmap.rs
+>  create mode 100644 rust/kernel/media/v4l2/mod.rs
+>  create mode 100644 rust/kernel/media/videobuf2/core.rs
+>  create mode 100644 rust/kernel/media/videobuf2/mod.rs
+>  create mode 100644 rust/kernel/sync/ffi_mutex.rs
+>  create mode 100644 samples/rust/rust_v4l2.rs
+> 
+
