@@ -2,47 +2,47 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 68021C7619A
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 20:42:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45422C76196
+	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 20:45:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229717AbjDKUmO (ORCPT
+        id S229773AbjDKUp3 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Apr 2023 16:42:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46850 "EHLO
+        Tue, 11 Apr 2023 16:45:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbjDKUmN (ORCPT
+        with ESMTP id S229777AbjDKUpW (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Apr 2023 16:42:13 -0400
-Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2118.outbound.protection.outlook.com [40.107.10.118])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 280C73C11;
-        Tue, 11 Apr 2023 13:42:10 -0700 (PDT)
+        Tue, 11 Apr 2023 16:45:22 -0400
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2121.outbound.protection.outlook.com [40.107.11.121])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4A254EFE;
+        Tue, 11 Apr 2023 13:45:11 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FJ/hOxp6SmvstlTGOoAWyoxqJCLClx//AfQa5EJL7sWbGg9EocrrzpoF+gFF7ZiHRKV9xRlVjfPuYoBJ8p0ZAXuuDgOvXD6rujFTjrLxHNg2HvZqpGsSiLsHcotoQs9ueQTUv6F0i9tp59BzJJD8AgMJgaxWbZpAT3GI9yOBCCVpTOcjsFinfhjXZV8ZiAcnI7AiSfF6eQJH5Y0ai7NUdIxQUiTHqSVxbojWGfWIr+WGhUYhfPXo+x+JeQcEE//1GkNl8AaeqEWuHmVZ5Tbz8f4mfRMXgXLt9/UYiz28ofTyx9zjAzxIkQFVGTBqEq8IpQK4FmdqVUPorzIB9reChA==
+ b=Ks21msVRC9zpLTdl3PL129Ngj1rDnC7yT9mIJiTbk14CcNJUIErHHkHUr+EwdY6wPW0IN7M/n8b8jkgbYf1bG6UF5CMSmpbEi+Nxy+MNB664/BrmwXq2046RFStkRT3GEgDdth5r6rfNngWj9ELTZeKrJBblke49y3sZMDM1f5eo6FiJoE6XOWXjyeKfHO4J2o8w/1bONq/cqOB3aGKxgDE0DQ1yCxB6bHeUMNA3jtL8cJC0EucQSiV73xHrYyGaIEc34AKXno4Js791jBeRdJfrvSpK3Wo/G+r+sLeoJXEoZ4aAif1Y6sK5U9NlKmvDrg/hRxFLXpS3Dgbj/4m1rw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cqwC5unwidSgHLYiSoVzcIV3hVwfwuv1W0lvHjhmOoE=;
- b=egXwhIBfXg8SeTrr2b9Tz8vpTwFCLYV8K/m4WQbGvEaqlujxVPLss++Sru1I1dOf4NEkILG1vipBSpbKqul+CvaokppqaGyQQr1Az98+MQF4YA4/Klw5Ub7TTj06aocIJJ9G2YDn8QMJxN99eC3wDBLq1SZBbrGLmrxKjY0rIYo5PK7RdZdvnjTQW0Ww9G0VtHB8+HzzcbbkJ0K+spqbdP8UJ5VLAUKhL1qLLY0fNg/bZrYdwQuvH4QYVu2heumn8F2R3Ira9k5vL03yGV8Q/kt6QD2OjfixonEIzXBUGub8tgffqq2CT3zA/i/3tUyi3X0BvCBLOYdNuLLNQzdqnQ==
+ bh=yFBMJqwEdzL6JglkpB2E/Nz9XmKCKYzaJ3J/bPNx2bA=;
+ b=M5IdoorzY3EovlnI0zugHIHk7+HYlkUhkYNDtxmBRdK+5hFz6i6fhwx0isAadZd9gazoZAf9eD4r+rWlPKrKwyNHuVvx0R9TezVFYwaCo/KxJxwugaFA12+L0nJWZnlswQEz5kwU4vTVBacYYz78P01iKExFUdFwQLli7U4JCGtVcOroF4gMQNpDBEQDbOTpJHVCIQ5N8eyJKLslzDPQnvfPH1uTzp8G+kO+GOZ+4Jr6awikk8Tda7psj35jFpzyfmLCzo92G87iuriF1tvWzBa1k64tdqN0XF33bOCORrniUntDoKQOflCbw4xrTN+/zgzOazS3eMroQBKzmMg0dQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cqwC5unwidSgHLYiSoVzcIV3hVwfwuv1W0lvHjhmOoE=;
- b=F69OdPX6l0a86wTqLH+UuvjiTA6ivoxrVmRF3UeFGbd8XRzy1fsUXJH4BASmGew1mgZp7rymraZkwD2H7xKlSPfrZvEwXS+T8XXG30hBm8Vl7VTjjRafkTQyF1hKD5I6JXOoMYXEsTg5jegVtaISrbREEntaXogOn79IeuKzMaM=
+ bh=yFBMJqwEdzL6JglkpB2E/Nz9XmKCKYzaJ3J/bPNx2bA=;
+ b=g9NUCCs18XyL+u1xnbrn9rFPO0nZ8iPmZU+wOYU5nt7Z+g0s9sUNMBsT6oB0ciCnZ2wep+kiR9DOhodywKXHqkP6R7nXe++i4y/ShbSrqNQ/pD+h/yh4BwLtyljnajPrtuNKUjCgK8UK15RTL+TShw/eHmsmurVYvluML5RqGek=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO6P265MB7375.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:31b::9) with
+ by LO0P265MB6850.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2d7::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6277.38; Tue, 11 Apr
- 2023 20:42:07 +0000
+ 2023 20:45:09 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::e1a3:5e38:b483:8161]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::e1a3:5e38:b483:8161%6]) with mapi id 15.20.6277.038; Tue, 11 Apr 2023
- 20:42:07 +0000
-Date:   Tue, 11 Apr 2023 21:42:05 +0100
+ 20:45:09 +0000
+Date:   Tue, 11 Apr 2023 21:45:08 +0100
 From:   Gary Guo <gary@garyguo.net>
 To:     Wedson Almeida Filho <wedsonaf@gmail.com>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
@@ -52,287 +52,216 @@ Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <walmeida@microsoft.com>,
         Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH v4 02/13] rust: sync: introduce `Lock` and `Guard`
-Message-ID: <20230411214205.5753343f.gary@garyguo.net>
-In-Reply-To: <20230411054543.21278-2-wedsonaf@gmail.com>
+Subject: Re: [PATCH v4 08/13] rust: introduce `ARef`
+Message-ID: <20230411214508.5c2c3e82.gary@garyguo.net>
+In-Reply-To: <20230411054543.21278-8-wedsonaf@gmail.com>
 References: <20230411054543.21278-1-wedsonaf@gmail.com>
-        <20230411054543.21278-2-wedsonaf@gmail.com>
+        <20230411054543.21278-8-wedsonaf@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0095.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2bc::19) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P265CA0296.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:38f::10) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO6P265MB7375:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4d318aa-3ed9-44f8-5719-08db3acd3762
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB6850:EE_
+X-MS-Office365-Filtering-Correlation-Id: 383cd59f-871f-431b-d279-08db3acda3be
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 03M5UT5R8qSEvsisq3KgfciBFgDf3iz9vvu45dCxVRHf65cVSrwcsB6bMa89uMgwq5mM8szD0u3Ne1YXVmdH1gYR7R7o0NGebu/f337Foi0faGHO0urHEoaUkT0yAyYwS43mFdWteu0uwWC08CfOHpvMczejWl2mJAe4+kgScu7TTaelftvZMaC5Fwfe1ekOCRdCqJd/XGwtDQcG6OKzI7PHp/R+2HxQrOb6ZzLnfVFJwKuHdv0pewTGDUtUpXrLR92MuJurMSZe89HNY1/XLQfkfqGug3IRe9M09X6N1I7OcOZD/eqD31rAMCvZc2OPw00ID/Ur0vZQUn75t50KdoRqPiaRa5z+4gUXGSnkPZGzZt5rLMxFzvDeiwetbWZKkVtiJR+tjCDHcaMd6kpOjjZ31uVTqj60j4qqBefmKMUw0dhFdchoPSexmws+uzAVX72R6lfAaaBWCAYp3cpBkJVz2jT6X1jcgXQ21GMrRTIBfAVRJGfAl9hchdWMcH2K4Wlan56caFKGNuxKP4M0GL6vS5D44Yd7exvZvXLn9VY2Gpz785r8dUFpEm7+QLkVLtmqz10ovN7kVvrde3ElCybWTuY7RjJqiSEFFTDptwU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(396003)(39830400003)(346002)(136003)(376002)(366004)(451199021)(478600001)(45080400002)(1076003)(26005)(316002)(6506007)(186003)(54906003)(2906002)(5660300002)(4326008)(66946007)(8676002)(6916009)(66476007)(6486002)(41300700001)(8936002)(66556008)(83380400001)(86362001)(36756003)(6512007)(2616005)(38100700002)(81973001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: pA30oZ0azS6CkQxKaP6b+8+MV8ts5gaAn1W+o6xrPSzD2J5pAH4dwWX64kTOk2BJfUB3C7ndeN7UVKxa8ztiqL3Wm0xeeK6bLHEK+yXaKyQ8oFFW2EtjxQ5UkjQTBvqTgTOQZ8OvAOP3j4yCq8+/s+wr5ZX7Un/Ei5nZsbxiFlWnd1TGrQssdTSfWR+S3TSuiZk6hF2X9NHPTVIxd5gQ7RMLIQ4bHWyGjXMg5OMDYpijNgBwPh8KT70tIvjKm7EbJWLBG3ln2yKjAfBwcypf8pRHAMbz3O6iT+N1RjQoqQU1ADC/M98KYzrTGHLI9013JXBTTbWqSgnNxMJbFhXpFlnis0REPOd8G4iSaHh/sXs3T/8GXLgYiM2vh1scdqL54fggdHwpIbw0myNm42/r/WUUDkle6VB/kb2xRKtW5N1p7oDPDFmcqdu0jnjnCIj5dbyeAlgzg26KlIl/Z6WVu5WwxZgHLLcQoXuI57X3Usnp/r9uH95t2GE+H4e1DQXO/VdD50bdpt/jObQCNgIu0iHTS0Iy2FUZra9LWXYtWZcYXrNm1WHy5C1YMEeYB6iG+dYYoXZYD1P3J5ZP9FFzy9KiG+lIONQ7XPrtPe+U4a4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(396003)(39830400003)(346002)(136003)(376002)(366004)(451199021)(478600001)(45080400002)(1076003)(26005)(316002)(6506007)(186003)(54906003)(2906002)(5660300002)(4326008)(66946007)(8676002)(6916009)(66476007)(6486002)(41300700001)(8936002)(66556008)(86362001)(36756003)(6512007)(2616005)(38100700002)(81973001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?WWYx/DklYQJ4A2uYxKhAcZ/5oXy/Xd4kcjxOFe+vzQ5Ie3TvKf5F7V7TLDk0?=
- =?us-ascii?Q?7U6xFgtCUMmv8iF+/7f4B7UoiWFDNvhRuiAvPUvgbslj8HjvD7L2nMs8R+Cb?=
- =?us-ascii?Q?aP9v2mvkdYZCPzVur1t26SCg/tUAHFj56937Enjun9TFJFddBazzXqivNrCX?=
- =?us-ascii?Q?RlNO/Qy/g8agppj6EOzL0kEkN9hBMflUcsVZlEO1N4VkGA66ZxSh+Ijozmyh?=
- =?us-ascii?Q?biifAyFmeSUv+61Sk53Ofcad64E8BCUfMwget6Eeo6p74PPlT7Tz2v0jh6ll?=
- =?us-ascii?Q?xlQlU9eYjUWtKCO268hPP1jTQqtGLQNAVXsfFgbxt46/aC3rgMqLXV7ecD4Y?=
- =?us-ascii?Q?QC1akWlEW/aiCKjM7o3roCLzjnDJsRniVtzmY7+f/nyc/tdyJddFKLQ3v+gy?=
- =?us-ascii?Q?uUfh3Nykak7UIMMlJNrnYbgBFik/5GjivdK270j83n7k6WED7gjLVJp5Q7pg?=
- =?us-ascii?Q?H11fGtpqX4QY27HGQMJqSonG0Gql4NRkrzdk2mgpV2p+KO0f7GBI5Rd2/+HQ?=
- =?us-ascii?Q?dr/h/PC9jY8twvX5jo/pK5nmNqMVhMJ7Fwk61LvfCbtoII+6yQIhtJuIlTnu?=
- =?us-ascii?Q?LMhraxRmZiiMmyZsJ2ITVf2YsdNi3DyMHya1Zo7oxG+XFK8jJxoJVBwXaV1D?=
- =?us-ascii?Q?ncXpvkvQuVplCNmmT4u4yRPLG1/pLMuQhtV3vNG38mJW0O1obzgbpANenFlM?=
- =?us-ascii?Q?WKUSHVToX4CWd6hVQ8+pe2mjJHpQHmf/uGpaECXYd//cMvQAqddHjcl2corM?=
- =?us-ascii?Q?1s2nhnNJ3O7tpLzcQdGAjE2kvL4ibi+5fZO0/n/QfUqRb47AjrmeKJL0qPeM?=
- =?us-ascii?Q?iiw5Nv7B1Y+Mg3yq4m0MnuGbSfCvVnasFx2MvxC+Dcp5Fo1ZQsoa+dMkzj0t?=
- =?us-ascii?Q?1D0+YQWjsUMnv6qSOFnZXoJboyU4Eletcq5sE//N2K1ALZiQFevTp3wt5ZUh?=
- =?us-ascii?Q?AUtWCviuUgGwgwJLwUAWUmYkFh3bs0niJJHk1voJJSBGc9tTrcZ2cR3VIACf?=
- =?us-ascii?Q?/HX/459kSbHVH0+gZdFO106/V0amjjLfPoTjFc6ZJP3F1Uzs9MIl2WQWaMBg?=
- =?us-ascii?Q?dOJjV3yqVMPTWLMjw/BT3/l8gHozukjc7G2n8AtEtse0ysdSOXmtrS4JRAOY?=
- =?us-ascii?Q?ZMIcXTTKT36ezGmGjBqnKzMV94tiFBBfd6KtI6GtQIdshIOelrz2xKY7D47F?=
- =?us-ascii?Q?F8SHT2vkyH1wri6kFyO6MG0jOAiUiX921ANNJZOlkRmC0T0ryhVdCEGdfj+e?=
- =?us-ascii?Q?pVMU5u2MtV82ucfJYDQ0DBc6i+AD6YDiAHkBcIg4a2naeLLqyKEjIiG6SAt3?=
- =?us-ascii?Q?g7cvgQEEERQw6+g2naJDYuvteZ3ONF1OtsG4mpA6RM3jw8bID2+hEmDleGld?=
- =?us-ascii?Q?o95X7EiasTxRlVu2Qdh1pRaz6n+lITpC84p8pZtCBltEnM4SdncvoVzLipMh?=
- =?us-ascii?Q?tp/yY/iWyUSQVfWR0Cwy40cGBFQ0dFamoEM37DRifuO57IZYoCDARcS7B9+G?=
- =?us-ascii?Q?LKwSC7UFbv/OjUSMtFS2N20MOchXq5RIJMsElHWTGDV+th1KeqzoHR8rv6ai?=
- =?us-ascii?Q?pZRNkmwTptwZuhmEZCIuE6UUY3YZ2fBhhuMBx048?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?sJT+dr14qzP1RBKP/7ECg+xqQRqnfYg/ZyhFVNxOq3qYkYw09oS1gQ5idzQg?=
+ =?us-ascii?Q?oQNorILgMqgQv/6JD09bWEM7GZZH+mKB60HdAll7V7FQ8vwdNTefXastMhUf?=
+ =?us-ascii?Q?d2329ypX8tL9ryaz8+nw8kgj+Sq+lb8lcus3vMqvThIbPMOctxXIYyOWnDlK?=
+ =?us-ascii?Q?g56TkChYkbhXxfDZkPKx1re5wX01BmEeI9Yaszxi6Bsb3rvdLWFZeS56CeEi?=
+ =?us-ascii?Q?lSMh7SxISAd8ulYOjXzT1mpFd7I08UZBgwq9SsLVmPsdOYCUGbXDijHIylmL?=
+ =?us-ascii?Q?SPxRmq9ZoL/pIUJvYdVAJDRyLL+vYFv7d34lYnj/BH07z7klXov0zWxhJBFq?=
+ =?us-ascii?Q?Hb+lmrwHnenVt8SOsrwMis7iYznLIVinf4xs9FKkSCavbX5d4932O+DlYQMk?=
+ =?us-ascii?Q?0NSZ8GcVaTvlR8xg3hJThmrV+a3SecNmrtVgeRjbOn7S2gwtFomV1NUNjbyo?=
+ =?us-ascii?Q?wwFh0xUU5INEjpfbdslOKYvY+9H52PEcsQXPpedv0jmn/Y1XPf/jamlzO2Ni?=
+ =?us-ascii?Q?/cRSHvmanNBePTU49sTECWD61sBAbVqr5dDxEqo1IrdmiTOSX/H06Lu0c2BN?=
+ =?us-ascii?Q?Z2h87bchZUgU9bThMZTFP2ORd6nQ/TTDc4XnPt8zID7lwkXtn/fhqL6vTZKD?=
+ =?us-ascii?Q?bwXxqh5BWc+AFd95uU9Wyla3fNJXmrIeGX1k2rWkM8KvO4t638SYE0oOEwGr?=
+ =?us-ascii?Q?szY1A/1zLeEcD//BqQebLe/lN4oK/uy+hrKrA5+4XLaZZLE6cDVootnEU91F?=
+ =?us-ascii?Q?2UM3FBowwHGLQNYsLyZEF/2l2SSixxl+knWj91oEMehQTdaj/3f4Q8F0T+cJ?=
+ =?us-ascii?Q?MBXfWGmnta5vvEYQvr0LOE3iCahwkg3nV0cVTw8Qx+yl8UqhLJ9z5+Ezq4/F?=
+ =?us-ascii?Q?VO7T6H/Fmux5u45hxsbYgQzZpzoSJe/Rh0Ky7ALR3/3zRtHdxDywf5wXxKxx?=
+ =?us-ascii?Q?I/BGPE/lWgZ3YxrOZY2fv6OZoW33lAbTLgbOXLj/HxR9ax7vaLd/ZQ9Trvhn?=
+ =?us-ascii?Q?UNni/0YsiOeP0N2IQle9pmuMPDqgQJs9/TtMy88v97Q1Dk+pJQkCX5bj8OSf?=
+ =?us-ascii?Q?Z+Cf/DhgaM5So7GTm21iBU9wtQEl6DGCpnTYc01FoHtb6Nb5+BXKOmGaIGC8?=
+ =?us-ascii?Q?vdY9I8CTWYTIyYXdWOoclpDbxcbsiLQ3J//ivli46h2yGGh1vveX0Wfx1mG+?=
+ =?us-ascii?Q?02iFVq09L8k9zPBE0NtUUOA0o7867yVzp/mN8dF1LlZi/Zk2P9ksOLimi+Kk?=
+ =?us-ascii?Q?Ecqk70gWMyln+bxuZE3cu4zGVL1+iR+c8W+YYdsR7R2MxI7j/ZpuLgmkOCzj?=
+ =?us-ascii?Q?6OxqXQPcf97Qe45WvbdnDYIGRliSB37E6hxtq9nbSxmYuQlKnQKbrwu4moIK?=
+ =?us-ascii?Q?PwZluZGUP5UKFjqlgNvC3Ok3H8uALyegBgLocEB/tXy4gdjvpSicrhgEjppq?=
+ =?us-ascii?Q?yl7PeRX9HqGy5rI3/AYdS0lfK6eERZovDoc6PREhfIF+gaqSDi5pmXbRJTeZ?=
+ =?us-ascii?Q?yBuy4fmStOjmJmQzneUf0+DXQdx1uEp2ktLcLzmdZWzq9M237P6yKwjiOS/s?=
+ =?us-ascii?Q?VEAs66L0mgP7DUXUKjj1ABg5abiXZEeOwQxZH+83?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4d318aa-3ed9-44f8-5719-08db3acd3762
+X-MS-Exchange-CrossTenant-Network-Message-Id: 383cd59f-871f-431b-d279-08db3acda3be
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2023 20:42:07.6366
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2023 20:45:09.4279
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KBqPmhvXfwvPuQcIKje6VMLYUZxpsH5ecBeUivb+mP2NKdM0m6zW+wlvWnTsHZ6OfPJQU0hDm28q7NKDCOVT5w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB7375
+X-MS-Exchange-CrossTenant-UserPrincipalName: KPRtckFpHEFL2t6HFBsstxI+ktVjisQOVxU4kPUjGzsu6QORx3SgO5rJLlzXek25oJ8H0KXNvLEft1g082yA7Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6850
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, 11 Apr 2023 02:45:32 -0300
+On Tue, 11 Apr 2023 02:45:38 -0300
 Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 
 > From: Wedson Almeida Filho <walmeida@microsoft.com>
 > 
-> They are generic Rust implementations of a lock and a lock guard that
-> contain code that is common to all locks. Different backends will be
-> introduced in subsequent commits.
+> This is an owned reference to an object that is always ref-counted. This
+> is meant to be used in wrappers for C types that have their own ref
+> counting functions, for example, tasks, files, inodes, dentries, etc.
 > 
 > Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Suggested-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
 > ---
 > v1 -> v2: No changes
-> v2 -> v3: Use new Opaque::ffi_init from Benno's series
-> v3 -> v4: Fixed name of parameter in Lock comment
+> v2 -> v3: No changes
+> v3 -> v4: No changes
 > 
->  rust/kernel/sync.rs      |   2 +-
->  rust/kernel/sync/lock.rs | 162 +++++++++++++++++++++++++++++++++++++++
->  2 files changed, 163 insertions(+), 1 deletion(-)
->  create mode 100644 rust/kernel/sync/lock.rs
+>  rust/kernel/types.rs | 107 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 107 insertions(+)
 > 
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 541d235ffbeb..81b0998eaa18 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -8,6 +8,7 @@
->  use crate::types::Opaque;
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index a4b1e3778da7..29db59d6119a 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -6,8 +6,10 @@ use crate::init::{self, PinInit};
+>  use alloc::boxed::Box;
+>  use core::{
+>      cell::UnsafeCell,
+> +    marker::PhantomData,
+>      mem::MaybeUninit,
+>      ops::{Deref, DerefMut},
+> +    ptr::NonNull,
+>  };
 >  
->  mod arc;
-> +pub mod lock;
->  
->  pub use arc::{Arc, ArcBorrow, UniqueArc};
->  
-> @@ -25,7 +26,6 @@ impl LockClassKey {
->          Self(Opaque::uninit())
+>  /// Used to transfer ownership to and from foreign (non-Rust) languages.
+> @@ -268,6 +270,111 @@ impl<T> Opaque<T> {
 >      }
+>  }
 >  
-> -    #[allow(dead_code)]
->      pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
->          self.0.get()
->      }
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> new file mode 100644
-> index 000000000000..1a8ecccf4f24
-> --- /dev/null
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -0,0 +1,162 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Generic kernel lock and guard.
-> +//!
-> +//! It contains a generic Rust lock and guard that allow for different backends (e.g., mutexes,
-> +//! spinlocks, raw spinlocks) to be provided with minimal effort.
-> +
-> +use super::LockClassKey;
-> +use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque};
-> +use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned};
-> +use macros::pin_data;
-> +
-> +/// The "backend" of a lock.
+> +/// Types that are _always_ reference counted.
 > +///
-> +/// It is the actual implementation of the lock, without the need to repeat patterns used in all
-> +/// locks.
+> +/// It allows such types to define their own custom ref increment and decrement functions.
+> +/// Additionally, it allows users to convert from a shared reference `&T` to an owned reference
+> +/// [`ARef<T>`].
+> +///
+> +/// This is usually implemented by wrappers to existing structures on the C side of the code. For
+> +/// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc) to create reference-counted
+> +/// instances of a type.
 > +///
 > +/// # Safety
 > +///
-> +/// - Implementers must ensure that only one thread/CPU may access the protected data once the lock
-> +/// is owned, that is, between calls to `lock` and `unlock`.
-> +pub unsafe trait Backend {
-> +    /// The state required by the lock.
-> +    type State;
-> +
-> +    /// The state required to be kept between lock and unlock.
-> +    type GuardState;
-> +
-> +    /// Initialises the lock.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must be valid for write for the duration of the call, while `name` and `key` must
-> +    /// remain valid for read indefinitely.
-> +    unsafe fn init(
-> +        ptr: *mut Self::State,
-> +        name: *const core::ffi::c_char,
-> +        key: *mut bindings::lock_class_key,
-> +    );
-
-Any reason that this takes FFI types rather than just `&'static CStr` and `&'static LockClassKey`?
-
-> +
-> +    /// Acquires the lock, making the caller its owner.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that [`Backend::init`] has been previously called.
-> +    #[must_use]
-> +    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState;
-> +
-> +    /// Releases the lock, giving up its ownership.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// It must only be called by the current owner of the lock.
-> +    unsafe fn unlock(ptr: *mut Self::State, guard_state: &Self::GuardState);
-> +}
-> +
-> +/// A mutual exclusion primitive.
+> +/// Implementers must ensure that increments to the reference count keep the object alive in memory
+> +/// at least until matching decrements are performed.
 > +///
-> +/// Exposes one of the kernel locking primitives. Which one is exposed depends on the lock banckend
-> +/// specified as the generic parameter `B`.
-> +#[pin_data]
-> +pub struct Lock<T: ?Sized, B: Backend> {
-> +    /// The kernel lock object.
-> +    #[pin]
-> +    state: Opaque<B::State>,
+> +/// Implementers must also ensure that all instances are reference-counted. (Otherwise they
+> +/// won't be able to honour the requirement that [`AlwaysRefCounted::inc_ref`] keep the object
+> +/// alive.)
+> +pub unsafe trait AlwaysRefCounted {
+> +    /// Increments the reference count on the object.
+> +    fn inc_ref(&self);
 > +
-> +    /// Some locks are known to be self-referential (e.g., mutexes), while others are architecture
-> +    /// or config defined (e.g., spinlocks). So we conservatively require them to be pinned in case
-> +    /// some architecture uses self-references now or in the future.
-> +    #[pin]
-> +    _pin: PhantomPinned,
-> +
-> +    /// The data protected by the lock.
-> +    data: UnsafeCell<T>,
-> +}
-> +
-> +// SAFETY: `Lock` can be transferred across thread boundaries iff the data it protects can.
-> +unsafe impl<T: ?Sized + Send, B: Backend> Send for Lock<T, B> {}
-> +
-> +// SAFETY: `Lock` serialises the interior mutability it provides, so it is `Sync` as long as the
-> +// data it protects is `Send`.
-> +unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
-> +
-> +impl<T, B: Backend> Lock<T, B> {
-> +    /// Constructs a new lock initialiser.
-> +    #[allow(clippy::new_ret_no_self)]
-> +    pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
-> +        pin_init!(Self {
-> +            data: UnsafeCell::new(t),
-> +            _pin: PhantomPinned,
-> +            // SAFETY: `slot` is valid while the closure is called and both `name` and `key` have
-> +            // static lifetimes so they live indefinitely.
-> +            state <- Opaque::ffi_init(|slot| unsafe {
-> +                B::init(slot, name.as_char_ptr(), key.as_ptr())
-> +            }),
-> +        })
-> +    }
-> +}
-
-There is not drop implementation on `Lock`, which implies all locks can
-be just forgotten?
-
-I believe we discussed a case where this is can lead to UAF when a lock
-is dropped while it is locked (e.g. because the guard is forgotten).
-
-> +
-> +impl<T: ?Sized, B: Backend> Lock<T, B> {
-> +    /// Acquires the lock and gives the caller access to the data protected by it.
-> +    pub fn lock(&self) -> Guard<'_, T, B> {
-> +        // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
-> +        // that `init` was called.
-> +        let state = unsafe { B::lock(self.state.get()) };
-> +        // SAFETY: The lock was just acquired.
-> +        unsafe { Guard::new(self, state) }
-> +    }
-> +}
-> +
-> +/// A lock guard.
-> +///
-> +/// Allows mutual exclusion primitives that implement the `Backend` trait to automatically unlock
-> +/// when a guard goes out of scope. It also provides a safe and convenient way to access the data
-> +/// protected by the lock.
-> +#[must_use = "the lock unlocks immediately when the guard is unused"]
-> +pub struct Guard<'a, T: ?Sized, B: Backend> {
-> +    pub(crate) lock: &'a Lock<T, B>,
-> +    pub(crate) state: B::GuardState,
-> +    _not_send: PhantomData<*mut ()>,
-> +}
-> +
-> +// SAFETY: `Guard` is sync when the data protected by the lock is also sync.
-> +unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
-> +
-> +impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
-> +    type Target = T;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        // SAFETY: The caller owns the lock, so it is safe to deref the protected data.
-> +        unsafe { &*self.lock.data.get() }
-> +    }
-> +}
-> +
-> +impl<T: ?Sized, B: Backend> core::ops::DerefMut for Guard<'_, T, B> {
-> +    fn deref_mut(&mut self) -> &mut Self::Target {
-> +        // SAFETY: The caller owns the lock, so it is safe to deref the protected data.
-> +        unsafe { &mut *self.lock.data.get() }
-> +    }
-> +}
-> +
-> +impl<T: ?Sized, B: Backend> Drop for Guard<'_, T, B> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: The caller owns the lock, so it is safe to unlock it.
-> +        unsafe { B::unlock(self.lock.state.get(), &self.state) };
-> +    }
-> +}
-> +
-> +impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
-> +    /// Constructs a new immutable lock guard.
+> +    /// Decrements the reference count on the object.
+> +    ///
+> +    /// Frees the object when the count reaches zero.
 > +    ///
 > +    /// # Safety
 > +    ///
-> +    /// The caller must ensure that it owns the lock.
-> +    pub(crate) unsafe fn new(lock: &'a Lock<T, B>, state: B::GuardState) -> Self {
+> +    /// Callers must ensure that there was a previous matching increment to the reference count,
+> +    /// and that the object is no longer used after its reference count is decremented (as it may
+> +    /// result in the object being freed), unless the caller owns another increment on the refcount
+> +    /// (e.g., it calls [`AlwaysRefCounted::inc_ref`] twice, then calls
+> +    /// [`AlwaysRefCounted::dec_ref`] once).
+> +    unsafe fn dec_ref(obj: NonNull<Self>);
+> +}
+> +
+> +/// An owned reference to an always-reference-counted object.
+> +///
+> +/// The object's reference count is automatically decremented when an instance of [`ARef`] is
+> +/// dropped. It is also automatically incremented when a new instance is created via
+> +/// [`ARef::clone`].
+> +///
+> +/// # Invariants
+> +///
+> +/// The pointer stored in `ptr` is non-null and valid for the lifetime of the [`ARef`] instance. In
+> +/// particular, the [`ARef`] instance owns an increment on the underlying object's reference count.
+> +pub struct ARef<T: AlwaysRefCounted> {
+> +    ptr: NonNull<T>,
+> +    _p: PhantomData<T>,
+> +}
+> +
+> +impl<T: AlwaysRefCounted> ARef<T> {
+> +    /// Creates a new instance of [`ARef`].
+> +    ///
+> +    /// It takes over an increment of the reference count on the underlying object.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the reference count was incremented at least once, and that they
+> +    /// are properly relinquishing one increment. That is, if there is only one increment, callers
+> +    /// must not use the underlying object anymore -- it is only safe to do so via the newly
+> +    /// created [`ARef`].
+> +    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+> +        // INVARIANT: The safety requirements guarantee that the new instance now owns the
+> +        // increment on the refcount.
 > +        Self {
-> +            lock,
-> +            state,
-> +            _not_send: PhantomData,
+> +            ptr,
+> +            _p: PhantomData,
 > +        }
 > +    }
 > +}
+> +
+> +impl<T: AlwaysRefCounted> Clone for ARef<T> {
+> +    fn clone(&self) -> Self {
+> +        self.inc_ref();
+> +        // SAFETY: We just incremented the refcount above.
+> +        unsafe { Self::from_raw(self.ptr) }
+> +    }
+> +}
+> +
+> +impl<T: AlwaysRefCounted> Deref for ARef<T> {
+> +    type Target = T;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: The type invariants guarantee that the object is valid.
+> +        unsafe { self.ptr.as_ref() }
+> +    }
+> +}
+> +
+> +impl<T: AlwaysRefCounted> From<&T> for ARef<T> {
+> +    fn from(b: &T) -> Self {
+> +        b.inc_ref();
+> +        // SAFETY: We just incremented the refcount above.
+> +        unsafe { Self::from_raw(NonNull::from(b)) }
+> +    }
+> +}
+> +
+> +impl<T: AlwaysRefCounted> Drop for ARef<T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The type invariants guarantee that the `ARef` owns the reference we're about to
+> +        // decrement.
+> +        unsafe { T::dec_ref(self.ptr) };
+> +    }
+> +}
+> +
+>  /// A sum type that always holds either a value of type `L` or `R`.
+>  pub enum Either<L, R> {
+>      /// Constructs an instance of [`Either`] containing a value of type `L`.
 
