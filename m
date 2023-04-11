@@ -2,103 +2,106 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4855CC7619A
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 11:17:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC243C76196
+	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 12:02:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbjDKLRf (ORCPT
+        id S229583AbjDKMCc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Apr 2023 07:17:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56868 "EHLO
+        Tue, 11 Apr 2023 08:02:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229931AbjDKLRe (ORCPT
+        with ESMTP id S229535AbjDKMCb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Apr 2023 07:17:34 -0400
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9D86421E;
-        Tue, 11 Apr 2023 04:17:31 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id ch3so8741391ybb.4;
-        Tue, 11 Apr 2023 04:17:31 -0700 (PDT)
+        Tue, 11 Apr 2023 08:02:31 -0400
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 626AF2D48;
+        Tue, 11 Apr 2023 05:02:29 -0700 (PDT)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-54c12009c30so260600497b3.9;
+        Tue, 11 Apr 2023 05:02:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1681211851; x=1683803851;
+        d=gmail.com; s=20210112; t=1681214548; x=1683806548;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fd3u6ypnNuoPbKSx66oxDBYsbBNUgXKJyWsz/Cc9XCs=;
-        b=hGLRl87JLi5CMoqAmhzXcPMA0V/AQ6lxdgw6dDTpjaCTjlEd39kmQ77M7zJc0LcHfx
-         DJOLQaK7n1O+kDx0oVukcENjRTOr8mXUGAMQsm8R8CGWXPJlb4g9ZCKeLPeJkEL5NG6x
-         h0rmyo+fq6N9WXMJaj5x/06twGYEvWz5UaxuSmbfCQ9aPsHlu3DIpOWJlLSPV0a8bAG2
-         fgZLFNI+MLdVfyjVSin3XhDHbGNGrYEUSVeN7+ik/jcpAf6tepTPFY3JWMb+uRs2ry00
-         xFLV4MGILZ+fDv9WOstqZ2BSVQh1sbid+Ouocqt/S/symCGAlQyFYahgWR+AcXpI3Y6W
-         mW1g==
+        bh=ed7arILbQ+stDRGb56PqaQ+j9TQJHYphyg1/PYzOzmk=;
+        b=Rwzq71gbowUoM1rvXcOluWBU+VCGjiqx7m3L1o5hn8j/rSPX63A5ROU62NLYNp8f3t
+         ZMn4wS9oGTB+Aq+cHjzNqbpzdGhHfimD9LFSr7wP79I5AzQzrUvHz+fm6SRkZwFdrO4Y
+         29w2UtSlrUWIk8HTzjWVqvOsGsqFl8V4PNsZ06tMAEHyd0p+ZywHif+XCKkiRvmcvHTb
+         LGM269EiBhnrGjCnPefeix7Aeqy99y0isbvsLzff/tXL8rBrfemZCjLc2LO4URwa9ygz
+         ZJimYqA1ZtgSvruHRkaRARcX856JhE/E9BilkCC9pDdjMzT4PzeQX9jrsAXihK1OljAt
+         l3+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681211851; x=1683803851;
+        d=1e100.net; s=20210112; t=1681214548; x=1683806548;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fd3u6ypnNuoPbKSx66oxDBYsbBNUgXKJyWsz/Cc9XCs=;
-        b=K2Gw2hy3mYLaRk/V2HQchB/zXc2G1W4bEJaSt61aZDuA4esEiUhD92ITpElMTisk1R
-         1gNdip0nxjOO62iPctNziDf9qOvSKVMQxkCMoUGHQ9mcadaubcwGcE0et9JTMimAR7xf
-         0OgI2upzJES11iEHO3P8SzM8hJpFT7NXD3Gcqsvn2ZWjQWHnTqrvqJ087x34xfXjjSW1
-         kbZOg5+AG7koaNx437/mOIXhNWyWYaZQAVySeHn8gL77+WQl1Rcf4uFtCHiWXaae1xlE
-         XgG5k9wfBIIMNVdQuTNFMYMPBSzU4FTiCKXE/PKdzqK/kQit7O2KNSyoWJeAknSWIVSe
-         A3ig==
-X-Gm-Message-State: AAQBX9c9q5uQmehPTeyVuPx9TZRxCGwWBtWUM4wY63xftzulkjSVqe+c
-        RxrhJAva3e/GJEbGDIpUTgcDIQ6SYkb4hXoHql4=
-X-Google-Smtp-Source: AKy350au3uYIW78d6r18IS62Iyy3h3HK3ZJChvUuw0OR4uM6IFzMNee3q+8sLaXzXyvJ+vmdhmtuDQsDdPRONr40Jio=
-X-Received: by 2002:a25:7781:0:b0:b8e:cad0:6e57 with SMTP id
- s123-20020a257781000000b00b8ecad06e57mr5445631ybc.11.1681211850832; Tue, 11
- Apr 2023 04:17:30 -0700 (PDT)
+        bh=ed7arILbQ+stDRGb56PqaQ+j9TQJHYphyg1/PYzOzmk=;
+        b=xUvaXyH3bNVFsvvnHgGW77ZzXi0k5JED7kIEtlmOURh68LumBx6Liv1nhddlYEyOEq
+         wn6ExwtVUiY42f0ixHpJnZA1xo93+VASQoLMgXJfplM9mf3LJP2n6jgKSfd1QjXePzFi
+         +DqW5M2riCNAEkIl5RcddXeG08I0Yc6sSCfUFePdhi8+YRsC0D1WjailZvyCqJg7yrDA
+         ss5HPbPPkjXGUHB6LCTWzSTwoEyq1mtp9Mbse4+GJl/ykL0M1BNUF81WJVbT4szhF1o1
+         Z9lkEuYB2tCNG27j0khqUQlGdKLY0H3hU94KJUI+bbGjTD6s7Yqw0XHw8l90gtLC7Gbc
+         8GGQ==
+X-Gm-Message-State: AAQBX9d5mPqo3ByXsgU9XRcticY+VClmOlHYOYNR7ABsfx8weJs9gaI/
+        zILKt6FxHhUloZXuA7qod2Z6Z8vkGAgkokPOQbDVR6FaTQc=
+X-Google-Smtp-Source: AKy350bTta5wlLDVlBVYshj5v4fpgjnfKMPomn04Qb5vKkFkokQQY8rUGHNvQAkn5ODnufUsqE9RZ2CCKKgwhLJfb0g=
+X-Received: by 2002:a81:a887:0:b0:546:63a:6e23 with SMTP id
+ f129-20020a81a887000000b00546063a6e23mr1594858ywh.0.1681214548487; Tue, 11
+ Apr 2023 05:02:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230210215141.108958-1-andrea.righi@canonical.com>
- <8178319F-4188-4F8E-AD8D-DCC392E26DBF@kernel.org> <Y+daEOZgaiF3IMTX@righiandr-XPS-13-7390>
- <4E6FDE1C-47B6-46A6-AF31-28AEB2348344@kernel.org> <Y+entVlMoV83vyzz@righiandr-XPS-13-7390>
- <CANiq72nQ4-md=KxtUcz3jHDXhLUdw1JxgbSKp7QsN0QKS3pV1A@mail.gmail.com>
- <ZC+x8pqUVzWQ35fv@righiandr-XPS-13-7390> <CANiq72ngN9bAiWaVVyJkkEK_WAoTQVb5mmYLMqs5PK7pu6gV9A@mail.gmail.com>
- <ZDUICqLhv6uSk9an@righiandr-XPS-13-7390>
-In-Reply-To: <ZDUICqLhv6uSk9an@righiandr-XPS-13-7390>
+References: <20230406215615.122099-1-daniel.almeida@collabora.com> <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
+In-Reply-To: <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 11 Apr 2023 13:17:19 +0200
-Message-ID: <CANiq72=JVJw_1vrecMDZhReYqJ2anGfhdkZW-ukt-ANDj_Fidw@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: allow to use INIT_STACK_ALL_ZERO
-To:     Andrea Righi <andrea.righi@canonical.com>
-Cc:     Kees Cook <kees@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        bjorn3_gh@protonmail.com, Kees Cook <keescook@chromium.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Tue, 11 Apr 2023 14:02:17 +0200
+Message-ID: <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+To:     Hans Verkuil <hverkuil@xs4all.nl>
+Cc:     Daniel Almeida <daniel.almeida@collabora.com>, wedsonaf@gmail.com,
+        ojeda@kernel.org, mchehab@kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, kernel@collabora.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Apr 11, 2023 at 9:11=E2=80=AFAM Andrea Righi <andrea.righi@canonica=
-l.com> wrote:
+On Tue, Apr 11, 2023 at 9:51=E2=80=AFAM Hans Verkuil <hverkuil@xs4all.nl> w=
+rote:
 >
-> Yes, that looks more clear, the name of the option is a bit misleading. :=
-)
->
-> To be clear what is going to be removed is
-> -enable-trivial-auto-var-init-zero-knowing-it-will-be-removed-from-clang,
-> in this way clang will be compatible with gcc and they can both use
-> -ftrivial-auto-var-init=3Dzero.
+> One of my main concerns here is time: as subsystem maintainers we can bar=
+ely
+> keep up with all the incoming patches. Introducing support for a new lang=
+uage
+> would add only more pressure. Even though these are mainly bindings (as I
+> understand it), this would still require that every change to a C kAPI is
+> duplicated in rust, requiring someone to do that work, and have maintaine=
+rs
+> with enough rust knowledge to verify it.
 
-Exactly, i.e. `-enable` is the one getting removed, but the wording
-within it (`knowing-it-will-be-removed-from-clang`) meant that the
-`-ftrivial...=3Dzero` one was the one that would be removed, not
-`-enable` itself (even if now what will happen is the opposite than
-what the option suggested originally).
+Indeed, that is one of the main costs.
 
-So when I read the commit message, the "this additional option ... is
-going to be removed in the future (as the name of the option
-suggests)" sounded wrong, since the name did not suggest that, but
-rather that `-ftrivial...=3Dzero` would be removed, not itself (since
-that was the original plan).
+One potential solution is to have somebody step up as the maintainer
+of the Rust side (e.g. the author of the abstractions).
 
-If I understood the story properly, that is. :)
+Of course, that will not make the work go to zero, since there still
+needs to be some degree of communication even if the new maintainer
+does all the Rust side work, but it may make it feasible, especially
+if the abstracted parts of the C API do not change too frequently.
 
-Thanks for taking a look!
+It is also an opportunity for existing maintainers to see how the Rust
+side would work meanwhile the work gets done, and potentially a chance
+to get a new maintainer involved with the whole subsystem in the
+future.
+
+Some subsystems may want to give that maintainer a different
+`MAINTAINERS` entry, e.g. as a child subsystem that sends PRs to the
+main one and may be marked as "experimental". This is also a way to
+see how the new abstractions work or not, giving maintainers more time
+to decide whether to commit to a Rust side or not.
+
+I don't mean to say it would be doable for the media subsystem, but
+please consider it.
 
 Cheers,
 Miguel
