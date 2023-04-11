@@ -2,104 +2,162 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0116CC77B70
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 15:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD097C76196
+	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 15:55:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbjDKPdG (ORCPT
+        id S231137AbjDKPzc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Apr 2023 11:33:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54832 "EHLO
+        Tue, 11 Apr 2023 11:55:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbjDKPdG (ORCPT
+        with ESMTP id S231211AbjDKPza (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Apr 2023 11:33:06 -0400
-X-Greylist: delayed 74038 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 11 Apr 2023 08:33:05 PDT
-Received: from mail.turbocat.net (turbocat.net [88.99.82.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B0B1997;
-        Tue, 11 Apr 2023 08:33:05 -0700 (PDT)
-Received: from [10.36.2.154] (unknown [46.212.121.255])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Tue, 11 Apr 2023 11:55:30 -0400
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48B92D63;
+        Tue, 11 Apr 2023 08:55:25 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.turbocat.net (Postfix) with ESMTPSA id 5CBF126235F;
-        Tue, 11 Apr 2023 17:33:03 +0200 (CEST)
-Message-ID: <ca17f815-5779-d37c-e3f8-2a6c2983fe45@selasky.org>
-Date:   Tue, 11 Apr 2023 17:33:01 +0200
+        (Authenticated sender: lina@asahilina.net)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 5C0B141F72;
+        Tue, 11 Apr 2023 15:55:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+        s=default; t=1681228523;
+        bh=0KFpXLyxRFISS+Ok78SUbTpjO3mej+5SYnKp4vu77tU=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=hOObcoIiPm5nhpMj85/3ogUsMGJrj56TwD86fbkKjYVe/c110SbKsDbRTHUqG+5FE
+         KmykrTUYIo3fmB5oK8tKQwztpD7oZdbeonfpHRQyZwZRhtFVpam7IQJ2C23OYQjE5e
+         4HuKdCxVPJEDldq15KUrCiYLTGcnDWbbEWJ09Vo2WECsGjOZialoojz/PXFTPqsT/x
+         YcGiZ6tYyE75PNRD0lOlz4u8diH104iZtfWmVI8ZDtoQK1MeH9lAAwVo0q7MbT9EXb
+         U/YFgOASC0xPcI52P9Hysioz6uGprvR24xMnkh4DJHBgziClpKr5qir2Yucvf2O8f/
+         3aXJWmfVDpYpQ==
+Message-ID: <1bb98ef1-727a-45d6-3cf6-39765fe99c5c@asahilina.net>
+Date:   Wed, 12 Apr 2023 00:55:18 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; FreeBSD amd64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3] rust: xarray: Add an abstraction for XArray
 Content-Language: en-US
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Daniel Almeida <daniel.almeida@collabora.com>, wedsonaf@gmail.com,
-        ojeda@kernel.org, mchehab@kernel.org, hverkuil@xs4all.nl,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, kernel@collabora.com
-References: <20230406215615.122099-1-daniel.almeida@collabora.com>
- <441a96cb-7dd1-0885-df64-933ebdb55e9e@selasky.org>
- <0ec4becd05c49e8f0bf214fbd62208ea67c2b4c3.camel@collabora.com>
- <6fc0a0c6-a7c9-5350-9b9e-1ea9dab568d0@selasky.org>
- <CANiq72m812+L6dc4Qs2wUXW85eBQwgrjWYYKc1MSsqN5AG_sFw@mail.gmail.com>
- <9f896097-8410-4d09-b614-6e792b2160f4@selasky.org>
- <CANiq72mv2uYe1x6cy4zUq8XHhAZcYYpt6hVXMG4yQZeqw1kY7Q@mail.gmail.com>
- <1d50d25c-e64b-01f4-029f-8b40b46848fd@selasky.org>
- <CANiq72mbM+WBcvj1TwU2u9kLz=EucLhLR-a5nzZEDa7VJ0s2_A@mail.gmail.com>
-From:   Hans Petter Selasky <hps@selasky.org>
-In-Reply-To: <CANiq72mbM+WBcvj1TwU2u9kLz=EucLhLR-a5nzZEDa7VJ0s2_A@mail.gmail.com>
+To:     Gary Guo <gary@garyguo.net>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Neal Gompa <neal@gompa.dev>, linux-kernel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, asahi@lists.linux.dev
+References: <20230224-rust-xarray-v3-1-04305b1173a5@asahilina.net>
+ <20230404152516.0368a92b.gary@garyguo.net>
+From:   Asahi Lina <lina@asahilina.net>
+In-Reply-To: <20230404152516.0368a92b.gary@garyguo.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 4/11/23 16:19, Miguel Ojeda wrote:
-> On Tue, Apr 11, 2023 at 3:15 PM Hans Petter Selasky <hps@selasky.org> wrote:
+On 04/04/2023 23.25, Gary Guo wrote:
+> On Mon, 03 Apr 2023 19:14:23 +0900
+> Asahi Lina <lina@asahilina.net> wrote:
+> 
+>> The XArray is an abstract data type which behaves like a very large
+>> array of pointers. Add a Rust abstraction for this data type.
 >>
->> If you cannot build a new toolchain without a new kernel.
+>> The initial implementation uses explicit locking on get operations and
+>> returns a guard which blocks mutation, ensuring that the referenced
+>> object remains alive. To avoid excessive serialization, users are
+>> expected to use an inner type that can be efficiently cloned (such as
+>> Arc<T>), and eagerly clone and drop the guard to unblock other users
+>> after a lookup.
+>>
+>> Future variants may support using RCU instead to avoid mutex locking.
+>>
+>> This abstraction also introduces a reservation mechanism, which can be
+>> used by alloc-capable XArrays to reserve a free slot without immediately
+>> filling it, and then do so at a later time. If the reservation is
+>> dropped without being filled, the slot is freed again for other users,
+>> which eliminates the need for explicit cleanup code.
+>>
+>> Signed-off-by: Asahi Lina <lina@asahilina.net>
+>> ---
+>>
+>> Hi everyone!
+>>
+>> This abstraction is part of the set of dependencies for the drm/asahi
+>> Apple M1/M2 GPU driver.
+>>
+>> The branch at [1] contains the full series of patches rebased on
+>> upstream leading to the complete driver, for reference on how it is
+>> intended to be used.
+>>
+>> Thank you everyone who helped review this on GitHub [2]! I hope I didn't
+>> forget any CCs...
+>>
+>> Note that I dropped the convenience `Deref` impl for `Guard`, since I
+>> couldn't figure out how to do it safely. Suggestions welcome, or we can
+>> leave it for a future improvement ^^
+>>
+>> [1] https://github.com/AsahiLinux/linux/tree/gpu/rebase-20230224
+>> [2] https://github.com/Rust-for-Linux/linux/pull/952
+>>
+>> Changes in v3:
+>> - Updated to the error v2/v3 series API.
+>> - Renamed `err` to `ret` for consistency with the other instance.
+>> - Link to v2: https://lore.kernel.org/r/20230224-rust-xarray-v2-1-4eeb0134944c@asahilina.net
+>> Changes in v2:
+>> - Added Pin requirement for all XArray operations, to close a
+>>    soundness hole due to the lock in the XArray (locks are not safe to
+>>    move while locked). Creation does not require pinning in place, since
+>>    the lock cannot be acquired at that point.
+>> - Added safety note to Drop impl about why we don't need to do the lock
+>>    unlock dance to ensure soundness in case of a dropped lock guard.
+>> - Downstream drm/asahi driver was also rebased on this version to prove
+>>    it works (previously it was still on a pre-v1 version).
+>> - This still depends on the Error series (v1). v2 of that will need a
+>>    trivial rename of Error::from_kernel_errno -> Error::from_errno. If
+>>    this version of XArray ends up looking good, I'll send a trivial v4 of
+>>    XArray with the rename, after sending the v2 of the Error series.
+>> - Link to v1: https://lore.kernel.org/r/20230224-rust-xarray-v1-1-80f0904ce5d3@asahilina.net
+>> ---
+>>   rust/bindings/bindings_helper.h |  17 +++
+>>   rust/helpers.c                  |  37 +++++
+>>   rust/kernel/lib.rs              |   1 +
+>>   rust/kernel/xarray.rs           | 302 ++++++++++++++++++++++++++++++++++++++++
+>>   4 files changed, 357 insertions(+)
+>>
+[snip]
+>> +    /// Replaces an entry with a new value, returning the old value (if any).
+>> +    pub fn replace(self: Pin<&Self>, index: usize, value: T) -> Result<Option<T>> {
+>> +        let new = value.into_foreign();
+>> +        // SAFETY: `new` just came from into_foreign(), and we dismiss this guard if
+>> +        // the xa_store operation succeeds and takes ownership of the pointer.
+>> +        let guard = ScopeGuard::new(|| unsafe {
+>> +            T::from_foreign(new);
+>> +        });
+>> +
+>> +        // SAFETY: `self.xa` is always valid by the type invariant, and we are storing
+>> +        // a `T::into_foreign()` result which upholds the later invariants.
+>> +        let old = unsafe {
+>> +            bindings::xa_store(
+>> +                self.xa.get(),
+>> +                index.try_into()?,
+>> +                new as *mut _,
+>> +                bindings::GFP_KERNEL,
+>> +            )
+>> +        };
 > 
+> XArray's doc says the pointer must be 4-byte aligned, but I didn't see
+> any checks.
 
-Hi,
+Hmm... should we just assert that at runtime here?
 
-> Why not?
+I doubt any reasonable boxed type will ever have a non-aligned address 
+in practice, but I guess it's technically not impossible. Maybe we 
+should just add it to the contract for ForeignOwnable?
 
-To me it is very simple:
+~~ Lina
 
-Look at this:
-
--#define FE_GET_PROPERTY                   _IOR('o', 83, struct 
-dtv_properties)
-+#define FE_GET_PROPERTY                   _IOW('o', 83, struct 
-dtv_properties)
-+#define FE_GET_PROPERTY_OLD       _IOR('o', 83, struct dtv_properties)
-
-The FE_GET_PROPERTY IOCTL definition is incorrectly specified as reading 
-data. While it is actually writing data. When will this be fixed in 
-Linux - I think never. That's just the way both Linux and GIT works, 
-unfortunately, though that's another discussion. You can put stuff in, 
-but you can't easily get stuff out, without it having consequences.
-
-Similarly rustc may depend on an incorrectly specified ioctl() 
-definition, also via other libraries and static linking, that just have 
-to stay incorrectly defined, because it was initially incorrectly defined.
-
-Daniel, please explain why the few lines of chunk above (and there are 
-some more) cannot be upstreamed into Linux?
-
-> 
->> Then you are stuck forever to build a new toolchain and kernel? Do you
->> agree?
-> 
-> No, I don't agree, because I don't understand why you cannot build the
-> new toolchain in the old kernel, or use a pre-built toolchain for that
-> matter (whether built by you or by somebody else).
-> 
->> Or you can say, someone else needs to deal with it, but then you have a
->> single point of failure.
-> 
-> No, you could build your own toolchain and save it somewhere, if you
-> don't want to rely on a build from somebody else.
-
-I'm trying to explain something difficult. And I'm OK that you neither 
-understand nor agree about my viewpoint. See my replies above.
-
---HPS
