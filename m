@@ -2,122 +2,104 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5779C76196
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 20:54:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59D82C7619A
+	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 21:19:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229612AbjDKUyT (ORCPT
+        id S230009AbjDKVTG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Apr 2023 16:54:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57054 "EHLO
+        Tue, 11 Apr 2023 17:19:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjDKUyT (ORCPT
+        with ESMTP id S229901AbjDKVTA (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Apr 2023 16:54:19 -0400
-Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2102.outbound.protection.outlook.com [40.107.11.102])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3203B18E;
-        Tue, 11 Apr 2023 13:54:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fW7Cy3vgQQG2jAHsp6lwZCPRPyt3oJ3jshXmqklj2bNgzTLpLX3uKkJwtD84Kx4WttvccLVR/NVF/BQYznVETDbVg0fUbEySH39WYFBLd1m93vf/coQPqIUE51uY187+cK6b2YqDpL2Xv6ArFAE0L/NmFqbS0iXfPLOaJvMJmocxoqeZxnDCBWQQQ2l870/5WU3htrkH6msuKWKzoQ34W3SZYmsdYIAlpVpMdw42wk/IfHQ2VGn52WLIx73WBDecIv+mwPhtkNVGS977mvM7y3SMZtpuNIsIsWyJ0k1Bf2c4MVbsoJ7/MwW35rvSWxOzsmJ9opXoOeSCUeObXPJygA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UHT9/3IgM5DNaAMZXlnaYpZVXq8+qLlTkVCrgCGuvjQ=;
- b=RNFsUtmIC3wZF2VhHg1sEynhehm/JoqSubRF6JUghkCvGxuvCWBfpeLCuq3G2EOr+/okqZvt9l+hDSlKRa0Tuk5q4/DXNuOHShAnA5Md9H32GpfY84EeiWDkNXgmKyYW+ofMey8H+jB2g/wBZSEXWqiHaJv5KGk6NJYSPTEDK2sUWxJ2ko5CUQob8mxp3sGHaAk0IUKX6qzrnJMwTgYpwOjJHd21wh5I6Dgm3Dx+5sstmijymqcAYoHImrroC+eHU1D5oCuw7Rp9addZfjb37mZXWEC43cj5AcZ7Sz6ECRaRwk+IOciiydBo2lmuI/8SgU0zpEU2XNCxulfP9B747Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UHT9/3IgM5DNaAMZXlnaYpZVXq8+qLlTkVCrgCGuvjQ=;
- b=eGO6oL3eYoAHWM749nzDpZ/oD/gxFv1ElRD/FZNZjBqtL/MZsi1SI8YSlSZd9BqyKbwCWdURHawVO7KmfpLGxzaHEoUgz3NCdPCp2PX8n+n9HA3HlHYvhmc6zy+yKIQliZXE2zsB9ESSQ0yqub5TqHYyJ9r5JwJivb7z8htV8yA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB6850.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2d7::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6277.38; Tue, 11 Apr
- 2023 20:54:15 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::e1a3:5e38:b483:8161]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::e1a3:5e38:b483:8161%6]) with mapi id 15.20.6277.038; Tue, 11 Apr 2023
- 20:54:15 +0000
-Date:   Tue, 11 Apr 2023 21:54:13 +0100
-From:   Gary Guo <gary@garyguo.net>
+        Tue, 11 Apr 2023 17:19:00 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A28AB49C6;
+        Tue, 11 Apr 2023 14:18:31 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id cg4so1303783qtb.11;
+        Tue, 11 Apr 2023 14:18:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681247911; x=1683839911;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I72JI0HmuhcR/9S4kGdSzNF4b8LMw2MFqyRGVWooTqA=;
+        b=NyfMUmdlup5japawUMWJP3+HCA+WxfOkdxSOrEgWCpHW5Tu1GO1zpvA0d6xRk/iKzh
+         pRfMtOoVE9pzxhcfmlXdr9Ree4i68RKp2CZkyK58uLme6ogj+q31wp0RiGjKvFYqUwwq
+         9Hrqjhix8wxli7YWMKsFuBs1j5334k1IgLqAlYLIgGYlZ9aDoIU7mhumYuacq5KAQv5q
+         yLyXBi6m1yeJDVeFHyxeMY3U6e9XpzzNI3SR4GwhPngeBbFWBtzdjdiQwUtdqLHjKQwn
+         8C/vAF92I2V2gvjY5+PwZ5xWrq7XAWtAEG3bsGSZ3FOFUQYyNBqCeMqIjtJXiQK0vAi+
+         gLYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681247911; x=1683839911;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=I72JI0HmuhcR/9S4kGdSzNF4b8LMw2MFqyRGVWooTqA=;
+        b=aIwfNImOPILc1HtwZls0qKpxnpKF7hNX5ndz4/LuPeLMe1KzoVk3YNrRFZiXYRpe1I
+         VKb3Czj0TZRm1Bsvu05RuHo2Y7asrukJSkutZWXlW51K8+d9SCe+0Q1PTOLbDwLVTzR1
+         WhcJj6gPVbb0QPOn2ZUpAh7DhIYYPQQY8y5ReH5y8W2NcW3JursXyx53ICLgKcMiml0P
+         2D7gWW5YhOBPug1ONyHb9i3H+U8MWJynzntbo9E6yOmezqVV1MrKBqNoP0Jg0NQzN+w8
+         +fu0shNKRjY7zwderMry62X+UlvdQotxn+196g7YLCn9F7SuUhsYW3u46S7TYu7RrErI
+         1g8g==
+X-Gm-Message-State: AAQBX9enovOmRTjbeciv9v9iq9rG8wNaUkOjpEdghH9Iupwe5GUan8bg
+        UwYWGggbXIU/IcpLyatgW3w=
+X-Google-Smtp-Source: AKy350bzAcSBlkBP/1soVpvos54/6iaYEHKV3gd9RQABlIbmkfa7wCxxQxUsOGIxBdjdDWjDAj56dw==
+X-Received: by 2002:a05:622a:144d:b0:3e6:6502:16a2 with SMTP id v13-20020a05622a144d00b003e6650216a2mr6526098qtx.38.1681247910708;
+        Tue, 11 Apr 2023 14:18:30 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id r14-20020ac867ce000000b003b835e7e283sm3845148qtp.44.2023.04.11.14.18.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Apr 2023 14:18:30 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 80ABF27C0054;
+        Tue, 11 Apr 2023 17:18:29 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Tue, 11 Apr 2023 17:18:29 -0400
+X-ME-Sender: <xms:pc41ZKKokh0WKLBI0UERgPPkrK98lUI_FffWY0fX6O3XbkNL9b50aw>
+    <xme:pc41ZCJ1QZRJ2eXGlKNcGItBn-R7wWt7KDKk9Tm7AG0YjvzhEYysc6ezEszU5Zibs
+    EtdfAwxMyArKnCH5w>
+X-ME-Received: <xmr:pc41ZKvD012Z8kCVEKSfxg-tQuJmLwNlEPGyPlob_lvWRm-rkgD4mwjcf_0LMw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdekgedgudeitdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:pc41ZPZdfSVxzovzgOaAxtIUynbNVOf5CS7Zy4HbMUWXu9XCeTrjUw>
+    <xmx:pc41ZBbK18cOcoQI2W50Fy1sadRb4reHLllc0xEcI91Sz5z116VrKQ>
+    <xmx:pc41ZLBrn9eFbew3cAt4d-8IwyTS9E4MLerlsEsa_iRszINBicvfhQ>
+    <xmx:pc41ZPPsdnttDoROyiVfbpsoVVIAtX8Aiac8IWsINh8k-I_tWv15lA>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 11 Apr 2023 17:18:28 -0400 (EDT)
+Date:   Tue, 11 Apr 2023 14:17:09 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
 To:     Wedson Almeida Filho <wedsonaf@gmail.com>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <walmeida@microsoft.com>,
         Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 Subject: Re: [PATCH v4 11/13] rust: lock: add `Guard::do_unlocked`
-Message-ID: <20230411215413.7720246f.gary@garyguo.net>
-In-Reply-To: <20230411054543.21278-11-wedsonaf@gmail.com>
+Message-ID: <ZDXOVXFlq7eXRTIS@boqun-archlinux>
 References: <20230411054543.21278-1-wedsonaf@gmail.com>
-        <20230411054543.21278-11-wedsonaf@gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO0P265CA0011.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:355::19) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+ <20230411054543.21278-11-wedsonaf@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB6850:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2cdcbdb9-8fb2-492f-0a8c-08db3acee8fa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7smx6Pe1/DdfkpSXQaQMeRKkCmkkH8iQXrRUJpntTofGXbbflk2hTCT+U8x7moNfzVHIDa3VY05fvmyINBCgX0Y+YqfyQCy2+uT9Jhw+zoqZKeARmKa4adyjeaDNUYnTJIlYB0+RHWJuu9xP2HKrs9CYkO4c0FunSyhyA253brw9aPJjwgGTLjz/eko/OjrBcJOE9D1Xt/60iKCGv4+g0hhBrpT1jQGtbeKI9BVB2UCpxEfT++ouFxlzNU9pAUASnqStHc11yIQMOFiD9/j+TMkSMnqf742mojxzUus7wQ12kQJExOJGxcBq1OG1DjTjjUGQQJrEl+XLJeikaK0uUIFzMMfkY1YQsx94TOjnIZ7vjjaa0N/mXZssuT6iG6e3iIs04eV2k5wKM1MGHsffXZLt+0KUhKnQFt8eqkvx1cJChNgpDRkCFwG539mF/W6U76TAUZ9645BoBUJVjC7MlfBcw8e4+fDqazPTk4lAg47mA9tZEKn+Qd+0RF2j7ms7fYarkQWN1PmgMAElf96IU3pL0LzGXRUqhCFYB1vOL2iswaLJ7oq9XDJIlylMX0zCwsVqim0+4i97ju3XIZ4YYHbebGRJPyE0fdg39z/GYaw=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(396003)(39830400003)(346002)(136003)(376002)(366004)(451199021)(478600001)(45080400002)(1076003)(26005)(316002)(6506007)(186003)(54906003)(2906002)(5660300002)(4326008)(66946007)(8676002)(6916009)(66476007)(6486002)(41300700001)(8936002)(66556008)(83380400001)(86362001)(36756003)(6512007)(2616005)(38100700002)(81973001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Pyjhf0djOQxuI94h03sKck/YHgQJ6RmGx8rxjs+QBw0f+bHOReS951PtStMQ?=
- =?us-ascii?Q?sCJg0x/MPghsQkZUSCEuwviXxjOHpvp6gFWYnbdh2FPmtAVk71K9Sl00wnfk?=
- =?us-ascii?Q?b3JQKoUBCObs5VmYAfmlUcpwdClr9k0IzGXdoKfVTbIsCS/q+9WUNRbxD5tr?=
- =?us-ascii?Q?CxkwPadYKXkxxonUpobKz5oc4p8TB8YJk1gus7ckvsrNlq/GVTvLGubiV0cJ?=
- =?us-ascii?Q?Pq3Jjc9bMP+DxHP4+MauiufPwV6ezugSA/wVCtCA4SAj9AtKidwOf3YvfOX7?=
- =?us-ascii?Q?R3EI1Enz76Ou/6otpFOU3xvPlZLpOb5+JMw0yZPr7Vp6oSN7Ych5rsOZ3Cwp?=
- =?us-ascii?Q?cMbsk0xEiyFisVJp+NA4JZeKWi0qW6Pw2XET6yA3eVXre51vUe/MTcZQR2Zg?=
- =?us-ascii?Q?IcFCWfXPcxrux7ksTigFjob/rNalHz5ToGkJoSMlF1gbHGNfmy+pGyDaf3DB?=
- =?us-ascii?Q?+fL9R2Q3CVuJqXxfUeSmukBAKnxIX2FGMJvxZJVmLS5UuK+zNb1L8HPOzXsQ?=
- =?us-ascii?Q?iCzHV2h19EL/Ok3omQt5S4O23jd2AAffIytkbhpppY+/oBJTb2qShxnkQcYq?=
- =?us-ascii?Q?R2vV041t+sI3Rbg4M4p1WOKbWPbyPde7jikFlaovFnT3SWVBlO//jY9NAn1g?=
- =?us-ascii?Q?tKW4PknRwnahi1ByKLTkw91Ieizsw/1fncsmUKr4C4A38RGTuKpCXDonLSKe?=
- =?us-ascii?Q?pTmFMT+3FXx8de96nJGGrbeh6t5xiR6hHUvGPcr9MHpY6HVX+JZ0g4QUmFew?=
- =?us-ascii?Q?rs8Lnp50FzA5caJqRccq8yoBJNxICmJDa/V3i5ohjbjb8Q/ZDrPyUzEyWwSe?=
- =?us-ascii?Q?1CHVeeQaQ0OwvoaxO36Ugt86gUgTHZsj2i0Ih3bz/+I35Wr1wQiaXj+Hm2Dk?=
- =?us-ascii?Q?9nG76gUwJlOUCzncZR+2ovcIZc0EKlOVAgS1Y0LZ2ZJrnbDugDUBtP0paeu3?=
- =?us-ascii?Q?WJg6VTFTBvt23+u/9kQuqji8wAsDt6W/NOX/Gx9XzB7vExXA8qzWI5aw6J8l?=
- =?us-ascii?Q?jGIMl9+BLnVIZ9oBGBUF14lU3UhfqV4NRSrmhSvPGU1WwmCQUpHzPzn8Baip?=
- =?us-ascii?Q?1vZO2xFakKEK3haChmW3XhnaXn2IQEhKiHrxiv4nJ6bbncnMKj5EU9sQQ+f/?=
- =?us-ascii?Q?1FhRjc2wL6pAvvdLD1CRLr1INcY/BB5Wt3yvemvSd9jrzxMC1dJ9ovPBjFA8?=
- =?us-ascii?Q?E0o91tO3ViF5jVcFWmdHplE7rAkAb6MPnG9IgyBmcLJzUCDmvB2Fa87naBnq?=
- =?us-ascii?Q?26Th9MksDh9ESH7FIitmG4GzpQj62rcRIAoHN4qH5rs+s4U/W4Jf0ySsdVsn?=
- =?us-ascii?Q?4psqZaUL2tWM5IwbT5aZOwyGWEBrFCB7qYH5zqBIC0kdFDNQc6KavNqhPeyQ?=
- =?us-ascii?Q?CmcKMHsNxJT4hOm+mVJyHVRxMCCs96ivrwNk7pMhyh+h/0ZbFWqmT1KvQhRG?=
- =?us-ascii?Q?nUxNfmzr5SOFUoG5Skv9IAslE/jBRRFo/n8NRCqcandeXO3m1dyd2UcBAwz+?=
- =?us-ascii?Q?nHRvA3RDyZZvidT4qlRSsvp5Fb36JCjHLPkZdbCZzjfbJjtfyBqzNqFBXYVY?=
- =?us-ascii?Q?YI++k7QQ7GNFhfU1IporYDSjqcGnHQtTH6DZoarG?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2cdcbdb9-8fb2-492f-0a8c-08db3acee8fa
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2023 20:54:15.0681
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yRPwjD7rtM+ob2uvUZn4Jl4MAJAzs2OxgMrrfdK9xMf58cJBmvQB84FsRCzPZkiJa2SjIFNnP56dT0ShbQ9yXg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6850
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230411054543.21278-11-wedsonaf@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, 11 Apr 2023 02:45:41 -0300
-Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
-
+On Tue, Apr 11, 2023 at 02:45:41AM -0300, Wedson Almeida Filho wrote:
 > From: Wedson Almeida Filho <walmeida@microsoft.com>
 > 
 > It releases the lock, executes some function provided by the caller,
@@ -164,6 +146,16 @@ Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 > +    /// # Safety
 > +    ///
 > +    /// Callers must ensure that `state` comes from a previous call to [`Backend::lock`] (or
+
+I think you mean
+
+"Callers must ensure that `guard_state` comes ..."
+
+, right?
+
+Regards,
+Boqun
+
 > +    /// variant) that has been unlocked with [`Backend::unlock`] and will be relocked now.
 > +    unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
 > +        // SAFETY: The safety requirements ensure that the lock is initialised.
@@ -184,19 +176,6 @@ Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 > +        cb();
 > +        // SAFETY: The lock was just unlocked above and is being relocked now.
 > +        unsafe { B::relock(self.lock.state.get(), &mut self.state) };
-
-This should be
-
-	let _guard = ScopeGuard::new(|| unsafe {
-	    B::relock(self.lock.state.get(), &mut self.state) }
-	});
-	cb();
-
-Although we currently use `-Cpanic=abort`, I think as a general rule we
-should still try to make code unwind-safe, so it can remain sound if
-someone takes the code and use it for userspace (e.g. for testing
-purpose, or maybe sharing codebase with tools).
-
 > +    }
 > +}
 > +
@@ -251,4 +230,6 @@ purpose, or maybe sharing codebase with tools).
 >      unsafe fn lock_irqsave(ptr: *mut Self::State) -> Self::GuardState {
 >          // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
 >          // memory, and that it has been initialised before.
-
+> -- 
+> 2.34.1
+> 
