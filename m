@@ -2,94 +2,75 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF231C77B70
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 13:15:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A42DC77B77
+	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 14:01:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230271AbjDKNPq (ORCPT
+        id S230313AbjDKOBl (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Apr 2023 09:15:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53768 "EHLO
+        Tue, 11 Apr 2023 10:01:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230222AbjDKNPp (ORCPT
+        with ESMTP id S231260AbjDKOBg (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Apr 2023 09:15:45 -0400
-Received: from mail.turbocat.net (turbocat.net [IPv6:2a01:4f8:c17:6c4b::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C060AA6;
-        Tue, 11 Apr 2023 06:15:41 -0700 (PDT)
-Received: from [10.36.2.154] (unknown [46.212.121.255])
+        Tue, 11 Apr 2023 10:01:36 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DD040E8;
+        Tue, 11 Apr 2023 07:01:25 -0700 (PDT)
+Received: from [IPV6:2804:14d:72ba:89f6::54d7] (unknown [IPv6:2804:14d:72ba:89f6::54d7])
         (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mail.turbocat.net (Postfix) with ESMTPSA id A26302615BF;
-        Tue, 11 Apr 2023 15:15:39 +0200 (CEST)
-Message-ID: <1d50d25c-e64b-01f4-029f-8b40b46848fd@selasky.org>
-Date:   Tue, 11 Apr 2023 15:15:40 +0200
+        (Authenticated sender: dwlsalmeida)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 4F06266031EA;
+        Tue, 11 Apr 2023 15:01:19 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1681221684;
+        bh=EYGWwnPROZzN2bhC/9ghXtcVDKwLhKwK3egm6aLzTTI=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=KPvDPs16JUS2BCC3WvKZkkdkK7l8rrg2fWmm7/eGL4YjET8E9YRxTpR5LqfkcPM/Z
+         Rmqz/wJm/pLVqz6IiLNx6k0StrqvOYnVJe9BP/abuOMJTJPchKiJ8Az7+BSof5Cbyr
+         Sf9nlaqkAL589VRR6jj3gz7oZCxvOYUe/+ugJ2BB8Z9+GT6dTqYxmmYocMfIihpQG5
+         0N8uZCmntrthpOPEQAyYZ7lvBHB5djpRMr6swUj1LEfrhSF1QOG1UAMgafM9zF7Erq
+         rDPDP3AjXtbT3VIyKnAnl0+9YfQz+IEgX/Xrt5Y7NLHFYc9D4kygTgB4uo9r7T2im7
+         ycTuAD9usSaFg==
+Message-ID: <f8e11d45-3803-47eb-4323-48efe36d102f@collabora.com>
+Date:   Tue, 11 Apr 2023 11:01:12 -0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; FreeBSD amd64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
 Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-Content-Language: en-US
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Daniel Almeida <daniel.almeida@collabora.com>, wedsonaf@gmail.com,
-        ojeda@kernel.org, mchehab@kernel.org, hverkuil@xs4all.nl,
+To:     Willy Tarreau <w@1wt.eu>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Hans Verkuil <hverkuil@xs4all.nl>, wedsonaf@gmail.com,
+        ojeda@kernel.org, mchehab@kernel.org,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-media@vger.kernel.org, kernel@collabora.com
 References: <20230406215615.122099-1-daniel.almeida@collabora.com>
- <441a96cb-7dd1-0885-df64-933ebdb55e9e@selasky.org>
- <0ec4becd05c49e8f0bf214fbd62208ea67c2b4c3.camel@collabora.com>
- <6fc0a0c6-a7c9-5350-9b9e-1ea9dab568d0@selasky.org>
- <CANiq72m812+L6dc4Qs2wUXW85eBQwgrjWYYKc1MSsqN5AG_sFw@mail.gmail.com>
- <9f896097-8410-4d09-b614-6e792b2160f4@selasky.org>
- <CANiq72mv2uYe1x6cy4zUq8XHhAZcYYpt6hVXMG4yQZeqw1kY7Q@mail.gmail.com>
-From:   Hans Petter Selasky <hps@selasky.org>
-In-Reply-To: <CANiq72mv2uYe1x6cy4zUq8XHhAZcYYpt6hVXMG4yQZeqw1kY7Q@mail.gmail.com>
+ <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
+ <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
+ <ZDVXbw/097jvjKvK@1wt.eu>
+Content-Language: en-US
+From:   Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <ZDVXbw/097jvjKvK@1wt.eu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 4/11/23 14:36, Miguel Ojeda wrote:
-> On Tue, Apr 11, 2023 at 11:52 AM Hans Petter Selasky<hps@selasky.org>  wrote:
->> Assume you need to update both the kernel and the rust compiler at the
->> same time. How do you do that? In the binary download case you have two
->> machines. One to build rust and one to build the kernel, so it is
->> technically not possible?
-> I don't understand the problem -- you can build (or download) new
-> toolchains without changing the kernel, and you can keep several
-> kernels and several toolchains installed, too.
-> 
+Hans (Verkuil),
 
-Hi Miguel,
+> One potential solution is to have somebody step up as the maintainer
+> of the Rust side (e.g. the author of the abstractions).
 
-What I'm saying is a bit difficult to get about right off the bat.
+I'd be willing to step up as maintainer for the Rust V4L2 stuff. I will 
+also be contributing more bindings if we decide that's worthwhile, 
+because right now this is obviously very incomplete.
 
- >you can build (or download) new toolchains without changing the kernel
+IIRC, Benjamin was originally looking into Rust for the AV1 driver he's 
+just written in C, but back then there was just too much work to be done 
+to even get started on the task. My point is that maybe these type of 
+drivers - i.e.: m2m codec stuff - are good candidates for Rust, because 
+the codec-specific bits are very self-contained.
 
-Yes, most of the time, but not always. Let me rephrase it:
-
-If you cannot build a new toolchain without a new kernel.
-
-And:
-
-You cannot build a new kernel without a new toolchain.
-
-Then you are stuck forever to build a new toolchain and kernel? Do you 
-agree?
-
-Or you can say, someone else needs to deal with it, but then you have a 
-single point of failure.
-
-It's like the next version of the Rust compiler depends on the previous 
-version of the Rust compiler.
-
-But now you have (Version of Linux and version of Rust) depends on 
-(Version of Linux and version of Rust).
-
-So in order to upgrade either Linux or Rust, you may be forced to go 
-through multiple, upgrade kernel, reboot, upgrade rust, build kernel, 
-reboot and so on.
-
-And that is an annoying complication when upgrading a system.
-
---HPS
+-- Daniel
