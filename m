@@ -2,93 +2,94 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CA27C77B6F
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 12:50:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF231C77B70
+	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 13:15:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbjDKMuM (ORCPT
+        id S230271AbjDKNPq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Apr 2023 08:50:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42736 "EHLO
+        Tue, 11 Apr 2023 09:15:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229555AbjDKMuL (ORCPT
+        with ESMTP id S230222AbjDKNPp (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Apr 2023 08:50:11 -0400
-Received: from 1wt.eu (wtarreau.pck.nerim.net [62.212.114.60])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2A0903AAB;
-        Tue, 11 Apr 2023 05:50:04 -0700 (PDT)
-Received: (from willy@localhost)
-        by mail.home.local (8.17.1/8.17.1/Submit) id 33BCnpwX005890;
-        Tue, 11 Apr 2023 14:49:51 +0200
-Date:   Tue, 11 Apr 2023 14:49:51 +0200
-From:   Willy Tarreau <w@1wt.eu>
+        Tue, 11 Apr 2023 09:15:45 -0400
+Received: from mail.turbocat.net (turbocat.net [IPv6:2a01:4f8:c17:6c4b::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C060AA6;
+        Tue, 11 Apr 2023 06:15:41 -0700 (PDT)
+Received: from [10.36.2.154] (unknown [46.212.121.255])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by mail.turbocat.net (Postfix) with ESMTPSA id A26302615BF;
+        Tue, 11 Apr 2023 15:15:39 +0200 (CEST)
+Message-ID: <1d50d25c-e64b-01f4-029f-8b40b46848fd@selasky.org>
+Date:   Tue, 11 Apr 2023 15:15:40 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; FreeBSD amd64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+Content-Language: en-US
 To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Hans Verkuil <hverkuil@xs4all.nl>,
-        Daniel Almeida <daniel.almeida@collabora.com>,
-        wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
+Cc:     Daniel Almeida <daniel.almeida@collabora.com>, wedsonaf@gmail.com,
+        ojeda@kernel.org, mchehab@kernel.org, hverkuil@xs4all.nl,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-media@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-Message-ID: <ZDVXbw/097jvjKvK@1wt.eu>
 References: <20230406215615.122099-1-daniel.almeida@collabora.com>
- <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
- <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ <441a96cb-7dd1-0885-df64-933ebdb55e9e@selasky.org>
+ <0ec4becd05c49e8f0bf214fbd62208ea67c2b4c3.camel@collabora.com>
+ <6fc0a0c6-a7c9-5350-9b9e-1ea9dab568d0@selasky.org>
+ <CANiq72m812+L6dc4Qs2wUXW85eBQwgrjWYYKc1MSsqN5AG_sFw@mail.gmail.com>
+ <9f896097-8410-4d09-b614-6e792b2160f4@selasky.org>
+ <CANiq72mv2uYe1x6cy4zUq8XHhAZcYYpt6hVXMG4yQZeqw1kY7Q@mail.gmail.com>
+From:   Hans Petter Selasky <hps@selasky.org>
+In-Reply-To: <CANiq72mv2uYe1x6cy4zUq8XHhAZcYYpt6hVXMG4yQZeqw1kY7Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Miguel!
+On 4/11/23 14:36, Miguel Ojeda wrote:
+> On Tue, Apr 11, 2023 at 11:52â€¯AM Hans Petter Selasky<hps@selasky.org>  wrote:
+>> Assume you need to update both the kernel and the rust compiler at the
+>> same time. How do you do that? In the binary download case you have two
+>> machines. One to build rust and one to build the kernel, so it is
+>> technically not possible?
+> I don't understand the problem -- you can build (or download) new
+> toolchains without changing the kernel, and you can keep several
+> kernels and several toolchains installed, too.
+> 
 
-On Tue, Apr 11, 2023 at 02:02:17PM +0200, Miguel Ojeda wrote:
-> On Tue, Apr 11, 2023 at 9:51 AM Hans Verkuil <hverkuil@xs4all.nl> wrote:
-> >
-> > One of my main concerns here is time: as subsystem maintainers we can barely
-> > keep up with all the incoming patches. Introducing support for a new language
-> > would add only more pressure. Even though these are mainly bindings (as I
-> > understand it), this would still require that every change to a C kAPI is
-> > duplicated in rust, requiring someone to do that work, and have maintainers
-> > with enough rust knowledge to verify it.
-> 
-> Indeed, that is one of the main costs.
-> 
-> One potential solution is to have somebody step up as the maintainer
-> of the Rust side (e.g. the author of the abstractions).
-> 
-> Of course, that will not make the work go to zero, since there still
-> needs to be some degree of communication even if the new maintainer
-> does all the Rust side work, but it may make it feasible, especially
-> if the abstracted parts of the C API do not change too frequently.
-> 
-> It is also an opportunity for existing maintainers to see how the Rust
-> side would work meanwhile the work gets done, and potentially a chance
-> to get a new maintainer involved with the whole subsystem in the
-> future.
-> 
-> Some subsystems may want to give that maintainer a different
-> `MAINTAINERS` entry, e.g. as a child subsystem that sends PRs to the
-> main one and may be marked as "experimental". This is also a way to
-> see how the new abstractions work or not, giving maintainers more time
-> to decide whether to commit to a Rust side or not.
-> 
-> I don't mean to say it would be doable for the media subsystem, but
-> please consider it.
+Hi Miguel,
 
-This might sound strange, but I suspect that having a TAINT_RUST flag
-could possibly help maintainers that are already lacking time, because
-it may quickly allow some of them to ask "please try again without the
-Rust code to see if the problem is still there", just like happens with
-out-of-tree code for which the knowledge is limited to null. This could
-allow to route issue reports to one maintainer when an issue is confirmed
-in both cases or to another one when it only happens in a single case.
+What I'm saying is a bit difficult to get about right off the bat.
 
-Of course it will not help with code reviews but we know that a great
-part of maintainers' time it spent trying to analyse problem reports
-that happen under vague conditions. All the time not spent debugging
-something not well understood is more time available for reviews.
+ >you can build (or download) new toolchains without changing the kernel
 
-Just my two cents,
-Willy
+Yes, most of the time, but not always. Let me rephrase it:
+
+If you cannot build a new toolchain without a new kernel.
+
+And:
+
+You cannot build a new kernel without a new toolchain.
+
+Then you are stuck forever to build a new toolchain and kernel? Do you 
+agree?
+
+Or you can say, someone else needs to deal with it, but then you have a 
+single point of failure.
+
+It's like the next version of the Rust compiler depends on the previous 
+version of the Rust compiler.
+
+But now you have (Version of Linux and version of Rust) depends on 
+(Version of Linux and version of Rust).
+
+So in order to upgrade either Linux or Rust, you may be forced to go 
+through multiple, upgrade kernel, reboot, upgrade rust, build kernel, 
+reboot and so on.
+
+And that is an annoying complication when upgrading a system.
+
+--HPS
