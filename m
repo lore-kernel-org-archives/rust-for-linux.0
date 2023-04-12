@@ -2,118 +2,110 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CEEEAC77B6F
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Apr 2023 22:14:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F403C77B73
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 02:59:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229604AbjDKWOU (ORCPT
+        id S229704AbjDLC7L (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Apr 2023 18:14:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60842 "EHLO
+        Tue, 11 Apr 2023 22:59:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229559AbjDKWOR (ORCPT
+        with ESMTP id S229659AbjDLC7J (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Apr 2023 18:14:17 -0400
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1910E4222;
-        Tue, 11 Apr 2023 15:14:16 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id y186so9890150yby.13;
-        Tue, 11 Apr 2023 15:14:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681251255; x=1683843255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F/UWLyiDh8yYEw7KICe5ElabtXdg6v0QHoKVJvAxmcY=;
-        b=nH8uJEcx+2QyedS8V7Aq1C0OB1ffVwTB3pLg0RYL3XUYbuyz5Ua3JZprbonKrPKOIK
-         9WKRX4CLkQsdefQdtss+nxMduRuieptJpBpfppcZhjxwf3Jt6EQ0xqsABs+oS08IsJ+E
-         zCvTC66mNrHv/rFIx4PF5wBHjdELDtN5BxELoEBv0fE765gDjr9oXnE24aChIkrYz0jB
-         jzWlGzVWxmQhrlqsoZQXicxm5th1d1ZPmYpOzMeZvq0NME4QBNBd0+aLzgnd809p0lBz
-         HiFBe+V/aZxgjSlV4a8GC0LbtKUNJUcJPu5ji2lYQUryDSp9EIO+mBfnS8TU9zE8CRhx
-         FXmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681251255; x=1683843255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F/UWLyiDh8yYEw7KICe5ElabtXdg6v0QHoKVJvAxmcY=;
-        b=pAvNsvsUCAXYtzHdy+bG4gLj1Ab/jBX3wC7IUnZHg6PNo2GTZV+cmUu0h71P/+HzY4
-         /Fxlu2k28c16XCKdFBxrPLC993Gf2oB1YTfPZuXNXFNdlxKQJJSYZXrd+C5rxrXiQY2v
-         gS0RIf7DabKUc4BOVBwDnKzXzrhX3A3lle8wLo2/arbpEhK0MHdDjJm/eP612/scfSS2
-         z8cK7BoCfC/la43JaFEnrP29/8pnVjPq/t6CGI2quLLj8xh6sqYEsJQ2UihjxaP5zTJI
-         2SeHSAW+Q2459uuV4x5T3W6q3bnURDaDAAKDLzYRxCmfphk14aTBeJad/0cZ7RyKJQnm
-         fSPg==
-X-Gm-Message-State: AAQBX9d99xCDVQWQ49j5c49xYD4nBmHM95BL59yh4EQZhwOiyxjtbnc9
-        uUfrV1XRgpbuLAyZaTpYmMuk1cnl6yJA51cD3jE=
-X-Google-Smtp-Source: AKy350b084T3XNmq5EJ0K2FTMUxRxNDH3tQfrdccD1GPorKAlXLPAR2ZU4geQmtpsCx8vltf7phcSVqGyPdnwKuOS+E=
-X-Received: by 2002:a25:c690:0:b0:b77:e465:cb16 with SMTP id
- k138-20020a25c690000000b00b77e465cb16mr2633767ybf.11.1681251255169; Tue, 11
- Apr 2023 15:14:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230406215615.122099-1-daniel.almeida@collabora.com>
- <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl> <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
- <ZDVXbw/097jvjKvK@1wt.eu> <CANiq72n8ZV_bs_xp5rNtar4vmfknJtZg4OHJW6vHuhVFmGs8mg@mail.gmail.com>
- <ZDWQXDRknzFhngyk@1wt.eu> <CANiq72n=s23naD4-UkmuLesekDTf4b5bsmWc+fYANYPq+X1R9w@mail.gmail.com>
- <ZDXCeKkbPoZi5k6t@1wt.eu>
-In-Reply-To: <ZDXCeKkbPoZi5k6t@1wt.eu>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 12 Apr 2023 00:14:03 +0200
-Message-ID: <CANiq72kceQ8aWk7mtB4MoepUr3hNzF34d=DfVzdeCLGRAZwE6g@mail.gmail.com>
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-To:     Willy Tarreau <w@1wt.eu>
-Cc:     Hans Verkuil <hverkuil@xs4all.nl>,
+        Tue, 11 Apr 2023 22:59:09 -0400
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 891D05589
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Apr 2023 19:59:03 -0700 (PDT)
+Received: from cwcc.thunk.org (pool-173-48-120-46.bstnma.fios.verizon.net [173.48.120.46])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 33C2wZZu031187
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 11 Apr 2023 22:58:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+        t=1681268317; bh=zRuRID1z90VR55CAaVZuRCvfNFHtlJxq/Hc6njhL5mQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=Q6eq9W5jIgLrV8r00PWgoLh8tmlUMRKmdjaw0YJ336taBk5oeHJLMsyV+PNvUYj1j
+         B7S4GEevbzPi16GfrHyODh/6aR/z5zYTwwr2hf4nUe2MV81szeLQoFMviD/x/OuP70
+         DAq3detdKfDy+K6qDRHC5yCHkP/bJ7ZHd7lUKxmxQjJiTHvn8SSn5sWuTii8UkX6UH
+         7+2wbd5q3LIOaOYa898dz5YZtZX9HkeEXshwyJz6XaIMaWp7hMleN7k20mddTontM8
+         p1aXjRJukUkBycSjm+JIkpVsFu8s6H0mgk3Opi99+tGhHn4dLIGWcS8lynVv+sklMW
+         kswFWN5WOY0LA==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+        id E999015C4935; Tue, 11 Apr 2023 22:58:34 -0400 (EDT)
+Date:   Tue, 11 Apr 2023 22:58:34 -0400
+From:   "Theodore Ts'o" <tytso@mit.edu>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Deborah Brouwer <deborah.brouwer@collabora.com>,
         Daniel Almeida <daniel.almeida@collabora.com>,
         wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, kernel@collabora.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        hverkuil@xs4all.nl, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        kernel@collabora.com
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+Message-ID: <20230412025834.GA301301@mit.edu>
+References: <20230406215615.122099-1-daniel.almeida@collabora.com>
+ <ZDSRSWhWsN34MghQ@xps>
+ <CANiq72=n1b=fJ2XZZx_MLKkbKMTmnmTBMgA3GJ_hqyARPtwEiQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72=n1b=fJ2XZZx_MLKkbKMTmnmTBMgA3GJ_hqyARPtwEiQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Apr 11, 2023 at 10:26=E2=80=AFPM Willy Tarreau <w@1wt.eu> wrote:
->
-> I don't know, maybe that would be a bit too fine. But at least a tainted
-> flag is much less intrusive than forcing a user to rebuild and disable
-> possibly important features that they would only be willing to disable
-> for just a test.
+On Tue, Apr 11, 2023 at 04:22:56PM +0200, Miguel Ojeda wrote:
+> 
+> Thanks, it is great to hear that the guide helped! :)
+> 
+> On resources: nowadays we have a webpage, too. Still to be completed,
+> but you may find it useful already: https://rust-for-linux.com
 
-It may be useful early on to have an easy way to check if any Rust
-modules got loaded (though note that `RUST` is not tristate so far, so
-you would still have something loaded). It could be extra optional
-output in e.g. `lsmod`.
+Something that would perhaps be useful is to document (a) what
+versions of Rust is available for various distributions, or pointers
+to how to get that information for various distributions.  For
+example, you can get that information from Debian using [1].  It
+appears that Fedora isn't distributing rustc at *all*, at least
+according to [2], so apparently for Fedora people will need to install
+it from source.
 
-However, I don't know why that should imply tainting, especially
-medium- and long-term -- please see below.
+[1] https://packages.debian.org/search?keywords=rustc&searchon=names&suite=all&section=all
+[2] https://idroot.us/install-rust-fedora-37/
 
-> have a hard time understanding that code that interacts with their
-> subsystems, even if they try hard. It's exactly the same reason why
-> 25 years ago Linus asked to stop abusing assembly code. If a language
-> is only understood by a subset of developers, by nature it becomes
-> more difficult to maintain in some areas.
+The other thing that would be worth documenting is (b) something about
+what versions of Rust people have actually tested.  The comments at
+[3] are quite scary, since per [4], the minimum version of Rustc
+supported is 1.62.0 --- and per [3], **only** Rust 1.62.0 is
+supported, since we use unstable Rust features.
 
-Yeah, but that is why the idea was that Rust goes first into
-subsystems where maintainers are willing to put some time into it now
-and evaluate its merits. That way we also build more Rust expertise
-across the kernel over time, so that later it is easier for others
-(e.g. by having examples of API design and drivers, more people to
-refer to, better tooling...).
+[3] https://rust-for-linux.com/rust-version-policy
+[4] https://docs.kernel.org/process/changes.html
 
-But, yes, if Rust grows to be really successful within the kernel,
-then at some point some basic understanding of Rust will be needed by
-most kernel developers. I think that is fine, as long as there is
-enough time to adjust.
+But for example, with Debian, Debian stable is shipping Rust 1.48.0,
+and Debian testing (which is currently in "hard freeze" so it can be
+released as Debian stable this summer) is shipping Rustc 1.63.0.
 
-> Sure, but as you said, "if they can". I thought that it could be both
-> elegant, lightweight and convenient. But I'm not trying to sell this
-> idea, just sharing it.
+Since I use Debian testing, the question which is foremost in my mind
+is whether I can expect to have things work if I use the
+distro-provided 1.63.0 rustc, or is this really a case of "it's not
+Rust 1.62.0, so good luck to you"?
 
-To be clear, it is still up to each subsystem to decide whether to
-take Rust code. What I meant by "if they can" is that, if they are
-willing to, then ideally the code would go through their tree too. The
-exception are core APIs, where I asked for flexibility from all sides,
-so that those subsystems willing to try Rust do not get completely
-blocked.
+If the goal is accelerate adoption of Rustc, and calm people's fears
+vis-a-vis using Rust, it's not enough to say, "why don't you use the
+distribution-provided version or Rust"?  It would be helpful if those
+Rust pioneers can share what versions of Rust they have tested
+against, especially for those commonly used distributions, such as
+Debian, and give us a report whether we should expect things to work,
+so we can ignore the scary warning from the build system that we're
+using an unsupported version of Rust, and if it breaks, we get to keep
+both pieces.
+
+And for those distributions that don't currently ship Rust, such as
+Fedora, if someone could build their own unofficial packages, until we
+can convince Red Hat to start shipping -their own supported Rust
+compilers, that might be a great way of bridging that gap.
 
 Cheers,
-Miguel
+
+					- Ted
