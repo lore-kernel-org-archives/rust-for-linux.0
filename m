@@ -2,59 +2,59 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98A0BC77B71
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 11:18:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7541DC7619A
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 11:40:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230241AbjDLLSF (ORCPT
+        id S229995AbjDLLjh (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Apr 2023 07:18:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41890 "EHLO
+        Wed, 12 Apr 2023 07:39:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230256AbjDLLR4 (ORCPT
+        with ESMTP id S231430AbjDLLjN (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Apr 2023 07:17:56 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 877066EA5;
-        Wed, 12 Apr 2023 04:17:35 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id e127so11251716ybf.8;
-        Wed, 12 Apr 2023 04:17:35 -0700 (PDT)
+        Wed, 12 Apr 2023 07:39:13 -0400
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2616E8D;
+        Wed, 12 Apr 2023 04:38:50 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id d204so2919398ybh.6;
+        Wed, 12 Apr 2023 04:38:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681298205;
+        d=gmail.com; s=20221208; t=1681299529;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=C9vgeMqqjwy92KIDibUs2lkkbVvQINAuG9wgc3eeu+E=;
-        b=YugBswhPW+UhUWOJGhp/3WcZfP2rk1uY6rRxt7D9a45ZGQi7bmJwVshblR38ZWSTDH
-         23IewvaIooujWdTVmhuNFhegCozkDECYBPgvRVChB8msUVI2SNVgrjIH7lYnlOZYMohJ
-         Pgv9jvUJ5kmmdfZf6nXgVV3aLtUk+TfVIDQtgThI6UyIuFbbtKleLyRh7+Nsf78yem0J
-         pkUqD8mx7kBIRxzJHncZ1nqcswhDiiCjKqqOykPVV0PacTIAh7A2XPyC4YfLVvVbKaDS
-         KsYEWmD7m0tclgJ8bDmrrrnm/ukRg7yjFngUYgI8HK5JBmsz1XWk1UBlY9imNPMgsaVG
-         FLBA==
+        bh=n3dVbDu7hAlbrDiv9/ZUJT5TunPW1jIu8qSPcKdVUhU=;
+        b=E8YA+5NwAFyuyF5c9CAsk6B3qXsfn6KDFcmfhhsycsEhhLITBpjTy8RyTKB8oyWR8/
+         z8WN9HxcDM4Zpyt9tSxUyb+SZAwuBr+jG8WPlXt+DrU3H74bqT7+46BYsddmRAd2dbBN
+         PRVK9XdznWPklPcpGIrVIJaSBuZj3D7s0IQQm1a6zZFimcxTzy3K4c81Yf9vcXdX/Tak
+         7OW8sl1zchJTB429wrO68zU27RYjFwWJKDB2UMBO3QHlUBaJX6YpwosWDg9E7AbHeRcU
+         aM9j8E8xBYHBUgCx/LRkSYa/fzNqyMMqnc/7Kg/t6epWC+NPOt3zzfZcNx6hd3+qv626
+         8tsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681298205;
+        d=1e100.net; s=20210112; t=1681299529;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=C9vgeMqqjwy92KIDibUs2lkkbVvQINAuG9wgc3eeu+E=;
-        b=2X6RFWcfyPIu1yI7MFoPxifrEiJe+GXNs3E4kqs4TkW/k/zBMedCzzoW5w9/3X+08i
-         BTHXyKwa+2f0CxIvZabwAZBlnBpkGvdQCkJHk8y8rSzF0aLbOMLFnWi3HDpX1HFr2bsJ
-         UNdZkDxLU3gCdDD2BGQpgZVVuPZJDEn81roLljtB+te6BKz1o7wYLdHJ/o1CA8bElEmY
-         OrFmi9mLt9+JKBjYowPjLKd7iNDck1cQc+sD15sCIb4510CI26cHiTi6uTt/7eR7qoYO
-         6ThXCxF1xPAzEaF3Urgn8xeQET5z0HYF8BHJtWQz2nBagyta+nV2GSRoVy3w13d878Le
-         CYMg==
-X-Gm-Message-State: AAQBX9fmBDq1LbncWk46wn7p69pbdppwYi/FFBCu0e+nydt0TYqdR30J
-        t8o0DvuXalN4lYy6VNkA+GFpspaVk1/me3duEnA=
-X-Google-Smtp-Source: AKy350ZogyWOgeIKf0FJs7/NpXzfm0pEigEA01THt0IprIJDLF6hOjHgmhMxlHgIUinKnvrvqgCTGZU0vUFdGSTaYo0=
-X-Received: by 2002:a25:7390:0:b0:b6e:d788:eba4 with SMTP id
- o138-20020a257390000000b00b6ed788eba4mr8849797ybc.6.1681298204957; Wed, 12
- Apr 2023 04:16:44 -0700 (PDT)
+        bh=n3dVbDu7hAlbrDiv9/ZUJT5TunPW1jIu8qSPcKdVUhU=;
+        b=xBzY5TswBY8bxeyy9m9sqSPCWXU6mhB4dOASenf4f4cGtktEJxC/Iy7SN9BVqi7cJ+
+         YZ/55LG4R4jzTCgCmf2Tjg9sJeJFNMhq5pos7Jz1GgtQYY3Uuv35F26AiKMrmWw4Yf6g
+         WrxQLGqOYuklFumEURfnjresTLP0mfisYpmUwlaYChMOWTzuIyzmDGr0S4WVDcvcW/lC
+         /wOL+0VdYGYRr3uUqPL+X+E6icd1vy2wtjKGmAeaIU9Bbp07edkc16/+VylYeLrs56Fe
+         KY+49Qa7N2aWQD85xDRTS0xd/4d7UYGfbMGpXJTuj/VYKUcMT/OODIVF1luYRPg3a7dw
+         ViSA==
+X-Gm-Message-State: AAQBX9f0Dq9OF4PApsi1eqruuCnSINpOxc9YYHDZ8KxAUf2cA3O2urU7
+        HMUAfwc+0ncWYt4SjrpFMxXE5xCJaYX7OvABy/A=
+X-Google-Smtp-Source: AKy350brNge+xFYJe3IaBRFamG5X/vSyGyNc5rgLbVaEWJaioYUVHjGnuijcFavHtqRc1Yin0k92d8Y8dJ0l3WWZ3lM=
+X-Received: by 2002:a25:d705:0:b0:b6b:6a39:949c with SMTP id
+ o5-20020a25d705000000b00b6b6a39949cmr6851264ybg.6.1681299528860; Wed, 12 Apr
+ 2023 04:38:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230411054543.21278-1-wedsonaf@gmail.com> <20230411054543.21278-11-wedsonaf@gmail.com>
- <20230411215413.7720246f.gary@garyguo.net>
-In-Reply-To: <20230411215413.7720246f.gary@garyguo.net>
+References: <20230411054543.21278-1-wedsonaf@gmail.com> <20230411054543.21278-2-wedsonaf@gmail.com>
+ <20230411214205.5753343f.gary@garyguo.net>
+In-Reply-To: <20230411214205.5753343f.gary@garyguo.net>
 From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-Date:   Wed, 12 Apr 2023 08:16:34 -0300
-Message-ID: <CANeycqon3yUn_666ozTiU_G=16JcnRS54cdu28Yxd0=Pm_jpzA@mail.gmail.com>
-Subject: Re: [PATCH v4 11/13] rust: lock: add `Guard::do_unlocked`
+Date:   Wed, 12 Apr 2023 08:38:37 -0300
+Message-ID: <CANeycqqM-k2odQzNffaYQ6Nrxii=XUp3VsQ8mQ3vw=WA5mykJw@mail.gmail.com>
+Subject: Re: [PATCH v4 02/13] rust: sync: introduce `Lock` and `Guard`
 To:     Gary Guo <gary@garyguo.net>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
@@ -68,149 +68,254 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, 11 Apr 2023 at 17:54, Gary Guo <gary@garyguo.net> wrote:
+On Tue, 11 Apr 2023 at 17:42, Gary Guo <gary@garyguo.net> wrote:
 >
-> On Tue, 11 Apr 2023 02:45:41 -0300
+> On Tue, 11 Apr 2023 02:45:32 -0300
 > Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 >
 > > From: Wedson Almeida Filho <walmeida@microsoft.com>
 > >
-> > It releases the lock, executes some function provided by the caller,
-> > then reacquires the lock. This is preparation for the implementation of
-> > condvars, which will sleep after between unlocking and relocking.
-> >
-> > We need an explicit `relock` method for primitives like `SpinLock` that
-> > have an irqsave variant: we use the guard state to determine if the lock
-> > was originally acquired with the regular `lock` function or
-> > `lock_irqsave`.
+> > They are generic Rust implementations of a lock and a lock guard that
+> > contain code that is common to all locks. Different backends will be
+> > introduced in subsequent commits.
 > >
 > > Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> > Suggested-by: Gary Guo <gary@garyguo.net>
 > > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
 > > ---
 > > v1 -> v2: No changes
-> > v2 -> v3: No changes
-> > v3 -> v4: No changes
+> > v2 -> v3: Use new Opaque::ffi_init from Benno's series
+> > v3 -> v4: Fixed name of parameter in Lock comment
 > >
-> >  rust/kernel/sync/lock.rs          | 25 +++++++++++++++++++++++++
-> >  rust/kernel/sync/lock/spinlock.rs | 17 +++++++++++++++--
-> >  2 files changed, 40 insertions(+), 2 deletions(-)
+> >  rust/kernel/sync.rs      |   2 +-
+> >  rust/kernel/sync/lock.rs | 162 +++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 163 insertions(+), 1 deletion(-)
+> >  create mode 100644 rust/kernel/sync/lock.rs
 > >
+> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> > index 541d235ffbeb..81b0998eaa18 100644
+> > --- a/rust/kernel/sync.rs
+> > +++ b/rust/kernel/sync.rs
+> > @@ -8,6 +8,7 @@
+> >  use crate::types::Opaque;
+> >
+> >  mod arc;
+> > +pub mod lock;
+> >
+> >  pub use arc::{Arc, ArcBorrow, UniqueArc};
+> >
+> > @@ -25,7 +26,6 @@ impl LockClassKey {
+> >          Self(Opaque::uninit())
+> >      }
+> >
+> > -    #[allow(dead_code)]
+> >      pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+> >          self.0.get()
+> >      }
 > > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> > index 819b8ea5ba2b..cde57756795f 100644
-> > --- a/rust/kernel/sync/lock.rs
+> > new file mode 100644
+> > index 000000000000..1a8ecccf4f24
+> > --- /dev/null
 > > +++ b/rust/kernel/sync/lock.rs
-> > @@ -22,6 +22,9 @@ pub mod spinlock;
-> >  ///
-> >  /// - Implementers must ensure that only one thread/CPU may access the protected data once the lock
-> >  /// is owned, that is, between calls to `lock` and `unlock`.
-> > +/// - Implementers must also ensure that `relock` uses the same locking method as the original
-> > +/// lock operation. For example, it should disable interrupts if [`IrqSaveBackend::lock_irqsave`]
-> > +/// is used.
-> >  pub unsafe trait Backend {
-> >      /// The state required by the lock.
-> >      type State;
-> > @@ -55,6 +58,17 @@ pub unsafe trait Backend {
-> >      ///
-> >      /// It must only be called by the current owner of the lock.
-> >      unsafe fn unlock(ptr: *mut Self::State, guard_state: &Self::GuardState);
+> > @@ -0,0 +1,162 @@
+> > +// SPDX-License-Identifier: GPL-2.0
 > > +
-> > +    /// Reacquires the lock, making the caller its owner.
+> > +//! Generic kernel lock and guard.
+> > +//!
+> > +//! It contains a generic Rust lock and guard that allow for different backends (e.g., mutexes,
+> > +//! spinlocks, raw spinlocks) to be provided with minimal effort.
+> > +
+> > +use super::LockClassKey;
+> > +use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque};
+> > +use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned};
+> > +use macros::pin_data;
+> > +
+> > +/// The "backend" of a lock.
+> > +///
+> > +/// It is the actual implementation of the lock, without the need to repeat patterns used in all
+> > +/// locks.
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// - Implementers must ensure that only one thread/CPU may access the protected data once the lock
+> > +/// is owned, that is, between calls to `lock` and `unlock`.
+> > +pub unsafe trait Backend {
+> > +    /// The state required by the lock.
+> > +    type State;
+> > +
+> > +    /// The state required to be kept between lock and unlock.
+> > +    type GuardState;
+> > +
+> > +    /// Initialises the lock.
 > > +    ///
 > > +    /// # Safety
 > > +    ///
-> > +    /// Callers must ensure that `state` comes from a previous call to [`Backend::lock`] (or
-> > +    /// variant) that has been unlocked with [`Backend::unlock`] and will be relocked now.
-> > +    unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
-> > +        // SAFETY: The safety requirements ensure that the lock is initialised.
-> > +        *guard_state = unsafe { Self::lock(ptr) };
+> > +    /// `ptr` must be valid for write for the duration of the call, while `name` and `key` must
+> > +    /// remain valid for read indefinitely.
+> > +    unsafe fn init(
+> > +        ptr: *mut Self::State,
+> > +        name: *const core::ffi::c_char,
+> > +        key: *mut bindings::lock_class_key,
+> > +    );
+>
+> Any reason that this takes FFI types rather than just `&'static CStr` and `&'static LockClassKey`?
+
+Yes, because we want to move work that is done by all backend
+implementations into `Lock`. This includes calls to convert these to
+ffi types.
+
+> > +
+> > +    /// Acquires the lock, making the caller its owner.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// Callers must ensure that [`Backend::init`] has been previously called.
+> > +    #[must_use]
+> > +    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState;
+> > +
+> > +    /// Releases the lock, giving up its ownership.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// It must only be called by the current owner of the lock.
+> > +    unsafe fn unlock(ptr: *mut Self::State, guard_state: &Self::GuardState);
+> > +}
+> > +
+> > +/// A mutual exclusion primitive.
+> > +///
+> > +/// Exposes one of the kernel locking primitives. Which one is exposed depends on the lock banckend
+> > +/// specified as the generic parameter `B`.
+> > +#[pin_data]
+> > +pub struct Lock<T: ?Sized, B: Backend> {
+> > +    /// The kernel lock object.
+> > +    #[pin]
+> > +    state: Opaque<B::State>,
+> > +
+> > +    /// Some locks are known to be self-referential (e.g., mutexes), while others are architecture
+> > +    /// or config defined (e.g., spinlocks). So we conservatively require them to be pinned in case
+> > +    /// some architecture uses self-references now or in the future.
+> > +    #[pin]
+> > +    _pin: PhantomPinned,
+> > +
+> > +    /// The data protected by the lock.
+> > +    data: UnsafeCell<T>,
+> > +}
+> > +
+> > +// SAFETY: `Lock` can be transferred across thread boundaries iff the data it protects can.
+> > +unsafe impl<T: ?Sized + Send, B: Backend> Send for Lock<T, B> {}
+> > +
+> > +// SAFETY: `Lock` serialises the interior mutability it provides, so it is `Sync` as long as the
+> > +// data it protects is `Send`.
+> > +unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
+> > +
+> > +impl<T, B: Backend> Lock<T, B> {
+> > +    /// Constructs a new lock initialiser.
+> > +    #[allow(clippy::new_ret_no_self)]
+> > +    pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
+> > +        pin_init!(Self {
+> > +            data: UnsafeCell::new(t),
+> > +            _pin: PhantomPinned,
+> > +            // SAFETY: `slot` is valid while the closure is called and both `name` and `key` have
+> > +            // static lifetimes so they live indefinitely.
+> > +            state <- Opaque::ffi_init(|slot| unsafe {
+> > +                B::init(slot, name.as_char_ptr(), key.as_ptr())
+> > +            }),
+> > +        })
 > > +    }
-> >  }
-> >
-> >  /// The "backend" of a lock that supports the irq-save variant.
-> > @@ -164,6 +178,17 @@ pub struct Guard<'a, T: ?Sized, B: Backend> {
-> >  // SAFETY: `Guard` is sync when the data protected by the lock is also sync.
-> >  unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
-> >
-> > +impl<T: ?Sized, B: Backend> Guard<'_, T, B> {
-> > +    #[allow(dead_code)]
-> > +    pub(crate) fn do_unlocked(&mut self, cb: impl FnOnce()) {
-> > +        // SAFETY: The caller owns the lock, so it is safe to unlock it.
-> > +        unsafe { B::unlock(self.lock.state.get(), &self.state) };
-> > +        cb();
-> > +        // SAFETY: The lock was just unlocked above and is being relocked now.
-> > +        unsafe { B::relock(self.lock.state.get(), &mut self.state) };
+> > +}
 >
-> This should be
->
->         let _guard = ScopeGuard::new(|| unsafe {
->             B::relock(self.lock.state.get(), &mut self.state) }
->         });
->         cb();
->
-> Although we currently use `-Cpanic=abort`, I think as a general rule we
-> should still try to make code unwind-safe, so it can remain sound if
-> someone takes the code and use it for userspace (e.g. for testing
-> purpose, or maybe sharing codebase with tools).
+> There is not drop implementation on `Lock`, which implies all locks can
+> be just forgotten?
 
-Good point. Although this has not been something we cared about in the
-last couple of years because we abort, I think we should carefully
-review code for this as we upstream.
+Yes, all locks can be forgotten.
 
-It is also important for async scenarios: we need to go back to a
-consistent state when we tear down `Future` instances.
+> I believe we discussed a case where this is can lead to UAF when a lock
+> is dropped while it is locked (e.g. because the guard is forgotten).
 
+Yes, this is the issue brought up by Boqun:
+https://github.com/Rust-for-Linux/linux/issues/862
+
+The issue arises when a mutex guard is forgotten and the task that
+owns it exits. Then another task trying to acquire the mutex will lead
+to a UAF. A drop implementation on the lock doesn't solve this.
+
+One solution is to increment the refcount on the current task when we
+acquire the mutex and decrement it when we release, but if we do that,
+the cost of acquiring/releasing a mutex gets much worse in Rust than
+it is in C.
+
+Another solution might be to force disable CONFIG_MUTEX_SPIN_ON_OWNER
+when Rust is enabled, which is undesirable because it affects the
+performance of C code as well.
+
+Even a closure-based lock (which I believe you suggested at the time)
+doesn't solve this completely because the thread may exit during the
+closure execution and leave a dangling pointer in the mutex.
+
+So we don't have a good solution for this yet.
+
+> > +
+> > +impl<T: ?Sized, B: Backend> Lock<T, B> {
+> > +    /// Acquires the lock and gives the caller access to the data protected by it.
+> > +    pub fn lock(&self) -> Guard<'_, T, B> {
+> > +        // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
+> > +        // that `init` was called.
+> > +        let state = unsafe { B::lock(self.state.get()) };
+> > +        // SAFETY: The lock was just acquired.
+> > +        unsafe { Guard::new(self, state) }
 > > +    }
 > > +}
 > > +
-> >  impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
-> >      type Target = T;
-> >
-> > diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-> > index 34dec09a97c0..e2a2f68e6d93 100644
-> > --- a/rust/kernel/sync/lock/spinlock.rs
-> > +++ b/rust/kernel/sync/lock/spinlock.rs
-> > @@ -4,6 +4,7 @@
-> >  //!
-> >  //! This module allows Rust code to use the kernel's `spinlock_t`.
-> >
-> > +use super::IrqSaveBackend;
-> >  use crate::bindings;
-> >
-> >  /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
-> > @@ -95,7 +96,8 @@ pub type SpinLock<T> = super::Lock<T, SpinLockBackend>;
-> >  /// A kernel `spinlock_t` lock backend.
-> >  pub struct SpinLockBackend;
-> >
-> > -// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion.
-> > +// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. `relock` uses the
-> > +// same scheme as `unlock` to figure out which locking method was used originally.
-> >  unsafe impl super::Backend for SpinLockBackend {
-> >      type State = bindings::spinlock_t;
-> >      type GuardState = Option<core::ffi::c_ulong>;
-> > @@ -127,13 +129,24 @@ unsafe impl super::Backend for SpinLockBackend {
-> >              None => unsafe { bindings::spin_unlock(ptr) },
-> >          }
-> >      }
+> > +/// A lock guard.
+> > +///
+> > +/// Allows mutual exclusion primitives that implement the `Backend` trait to automatically unlock
+> > +/// when a guard goes out of scope. It also provides a safe and convenient way to access the data
+> > +/// protected by the lock.
+> > +#[must_use = "the lock unlocks immediately when the guard is unused"]
+> > +pub struct Guard<'a, T: ?Sized, B: Backend> {
+> > +    pub(crate) lock: &'a Lock<T, B>,
+> > +    pub(crate) state: B::GuardState,
+> > +    _not_send: PhantomData<*mut ()>,
+> > +}
 > > +
-> > +    unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
-> > +        let _ = match guard_state {
-> > +            // SAFETY: The safety requiments of this function ensure that `ptr` has been
-> > +            // initialised.
-> > +            None => unsafe { Self::lock(ptr) },
-> > +            // SAFETY: The safety requiments of this function ensure that `ptr` has been
-> > +            // initialised.
-> > +            Some(_) => unsafe { Self::lock_irqsave(ptr) },
-> > +        };
+> > +// SAFETY: `Guard` is sync when the data protected by the lock is also sync.
+> > +unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
+> > +
+> > +impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
+> > +    type Target = T;
+> > +
+> > +    fn deref(&self) -> &Self::Target {
+> > +        // SAFETY: The caller owns the lock, so it is safe to deref the protected data.
+> > +        unsafe { &*self.lock.data.get() }
 > > +    }
-> >  }
-> >
-> >  // SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. We use the `irqsave`
-> >  // variant of the C lock acquisition functions to disable interrupts and retrieve the original
-> >  // interrupt state, and the `irqrestore` variant of the lock release functions to restore the state
-> >  // in `unlock` -- we use the guard context to determine which method was used to acquire the lock.
-> > -unsafe impl super::IrqSaveBackend for SpinLockBackend {
-> > +unsafe impl IrqSaveBackend for SpinLockBackend {
-> >      unsafe fn lock_irqsave(ptr: *mut Self::State) -> Self::GuardState {
-> >          // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
-> >          // memory, and that it has been initialised before.
+> > +}
+> > +
+> > +impl<T: ?Sized, B: Backend> core::ops::DerefMut for Guard<'_, T, B> {
+> > +    fn deref_mut(&mut self) -> &mut Self::Target {
+> > +        // SAFETY: The caller owns the lock, so it is safe to deref the protected data.
+> > +        unsafe { &mut *self.lock.data.get() }
+> > +    }
+> > +}
+> > +
+> > +impl<T: ?Sized, B: Backend> Drop for Guard<'_, T, B> {
+> > +    fn drop(&mut self) {
+> > +        // SAFETY: The caller owns the lock, so it is safe to unlock it.
+> > +        unsafe { B::unlock(self.lock.state.get(), &self.state) };
+> > +    }
+> > +}
+> > +
+> > +impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
+> > +    /// Constructs a new immutable lock guard.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The caller must ensure that it owns the lock.
+> > +    pub(crate) unsafe fn new(lock: &'a Lock<T, B>, state: B::GuardState) -> Self {
+> > +        Self {
+> > +            lock,
+> > +            state,
+> > +            _not_send: PhantomData,
+> > +        }
+> > +    }
+> > +}
 >
