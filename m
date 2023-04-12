@@ -2,180 +2,246 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5B8EC77B71
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 12:22:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 13585C77B6E
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 14:36:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229818AbjDLMWG (ORCPT
+        id S231669AbjDLOf7 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Apr 2023 08:22:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59218 "EHLO
+        Wed, 12 Apr 2023 10:35:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbjDLMWF (ORCPT
+        with ESMTP id S231636AbjDLOfz (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Apr 2023 08:22:05 -0400
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBEDA30EE;
-        Wed, 12 Apr 2023 05:22:03 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-54ee17a659bso216626037b3.4;
-        Wed, 12 Apr 2023 05:22:03 -0700 (PDT)
+        Wed, 12 Apr 2023 10:35:55 -0400
+Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8686B903A;
+        Wed, 12 Apr 2023 07:35:33 -0700 (PDT)
+Received: by mail-qv1-xf36.google.com with SMTP id ld14so9576749qvb.13;
+        Wed, 12 Apr 2023 07:35:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681302123; x=1683894123;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1681310132; x=1683902132;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aLEMcRFTyUAXgsUesoN6Zq5nWJj2e3OHS8pE8Im9o7E=;
-        b=g+c0nMl+4jFEqOfCwWdCwrjCBStI4eeuBk7kN9bRdc71fO/jhyx5I+37F+MqFLEi76
-         WAaoc2ecmuh0gSld+2xvj9FA1V2rHIDHxMMxKspk0HP36O9OgE0sm+MnyP07+Ke40Dgo
-         1ddB1Y8eyWyL+TovZbXanwwzEu7Rk5oxTX1fanfXJ4snNzxYwmlmDx9gqiaGV0gs4vMD
-         y+UIbvoZXdiE3N3iXR/VqwRR1e2ELYfML9lNJXiVp6RRAY3TlKlo/l6bQEpCiHRJgAK/
-         CKVSO0r/d8bsX0aIX2XKzfH1bC7ZfA9mm7klOI4EQJ8+KO+bSPmsC7ucVz9Wb49vpYk9
-         RDug==
+        bh=ZHkcIU7rc3ebfaK8LBPNnKR0o/dDri4Ykk2Lt1sdDxc=;
+        b=lnTFwKmjT4HteMYgDgpyDfifNh4fEwpWx1sGbpanoJvBVNU2usgiSQtu/1/FOgJjz8
+         C3XfiGZtufrjKtNvlnTuH+AoLhvUqKylYk7Gds3Q22PmVHhf4fkFQ4dJOTAaNR85b+HQ
+         BB6p1iWHoR1FtsS2Kr2+GdPfa40xolMUCvRnvAND7EMWTQ2K+pkwULMK8bKcKpHJLccf
+         toKW1qexK1S4vDX7AbuFZ3jguuEOpZ+xoa9U3WZ/KFXgQTB+ltQ0HNigqIGLxjO0GoHK
+         Gd9eO6/aeaCQKXWnevUN+JOuYVnSXDksB0RMMIE/kMFU8CXv6IqVNSDyMWck6PeffV2x
+         mohw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681302123; x=1683894123;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20210112; t=1681310132; x=1683902132;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aLEMcRFTyUAXgsUesoN6Zq5nWJj2e3OHS8pE8Im9o7E=;
-        b=1wA28uLntCQJRl4gaRTrpk8OlxA1c5PWTUt0wWI7hrvGwmP++O3BDFMWzIIFlA5N6/
-         u6QBvoHaU5wQmJnrjMTNinU9ebDLAe5DQHxr5Q9x8Asb+DBdAqhrSN9OdyknfN/d2K9Q
-         vgAH6eOZ5txFPe+lH/UZN3DupAlOOb/WPDz+pod5g8fKb+/2BE5Z4F20JdklLBnlm2RN
-         SFS2yd2pjNmfWMSc8c6LpSrPs1NOdTwvliGE2coop6c69OCWyUa0Y4ydoW/m1CmRHv7q
-         m9qCueKrNzOWD9CiuklxkmYW6xciMqzcnux/Vj0et3nDrSO26X1wLF3S2J3dOQCjhxi9
-         0RTw==
-X-Gm-Message-State: AAQBX9fWpyUgcCUXOakF8eDkgv9Q9qegf+E5Iqh+2QDLsvuhM2bsjS+d
-        ZOM0CiXqF2l/mtlGFOqZiWhPpTp2URUkzhanJko=
-X-Google-Smtp-Source: AKy350YNcqK5qJODUZEAf5Uj7XPszr1ypdJwZxTSNID1I2FOApV03k2Jh4KyBmrJ+yF2KknUZUI8IWce3ajOsFENu3o=
-X-Received: by 2002:a81:eb08:0:b0:54f:97dd:633 with SMTP id
- n8-20020a81eb08000000b0054f97dd0633mr981566ywm.4.1681302123094; Wed, 12 Apr
- 2023 05:22:03 -0700 (PDT)
+        bh=ZHkcIU7rc3ebfaK8LBPNnKR0o/dDri4Ykk2Lt1sdDxc=;
+        b=PbPPlmuQSn+o1soejC5USZ4HNv3LODVgRO0PNTr5SYWubtrkjlZprU4y9xe4BF7J7U
+         +hcmDBGLSUdzjjN+0sS4h7AlkfXRT/Nh6pdEgGjPA/6LbAc/fcIyhP/qU+mE9DsAueLN
+         2JyMSqN117u1RLJC0TkL8WnYz/50fOrN3eXwqkTNSe78F6mvJ1XRIUiR826LLbQ3IMGB
+         1SZsCrrzIE79dEOPcsMkRqcWe+cEtgDhr7ipUZSQ99RsKGPIJuUGPxe35HNKXlP7sai/
+         5RuBaMMHqnMQC6IASwbvO0brdUNvdXhjAWpkwV3wE/NqFw46BJz4rOJEzDbj7xz+4SiJ
+         /hSA==
+X-Gm-Message-State: AAQBX9evLvEWVi0YaMBGrokgzg85d/qlUqDfQ+u0JbluUld3DiYwdJ9b
+        53Y0Y9XTM1eyQFFPb7v1vvU=
+X-Google-Smtp-Source: AKy350YF5VGAX6u7avFkWoscCQE0TC9bRSdNMax3xT7GNZDlhSlwsDNUbxA8sxKQDtmMIg5w8aLHpg==
+X-Received: by 2002:a05:6214:f2f:b0:5e6:aa6a:1b with SMTP id iw15-20020a0562140f2f00b005e6aa6a001bmr28302024qvb.49.1681310132522;
+        Wed, 12 Apr 2023 07:35:32 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id mb4-20020a056214550400b005dd8b934585sm4870364qvb.29.2023.04.12.07.35.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Apr 2023 07:35:31 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 4828727C0054;
+        Wed, 12 Apr 2023 10:35:30 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Wed, 12 Apr 2023 10:35:31 -0400
+X-ME-Sender: <xms:ssE2ZOHWm-D6f07-5N-6isWgKr9hqqrYnvDmwLSeEIiagFLmqRnHcg>
+    <xme:ssE2ZPW_yiKF8w7yPzi7QnvJvfMto08y4nGc1uUPXndD2rbcU6Jra4oMcTr6lY4uM
+    OYTVv6AvQ9lWgDQRQ>
+X-ME-Received: <xmr:ssE2ZIIxBlzT1WmbsIiQoDqJbrrTGagKmJjbMlYh6fqH9fK_rqhO89ToTXBO0YYm1vup9y8RxlH_eE7V1rhqxvuAtJELEORUWjw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdekiedgjeelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtrodttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeeitdefvefhteeklefgtefhgeelkeefffelvdevhfehueektdevhfettddv
+    teevvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:ssE2ZIFM2WO5Y-um_ggwBVVpGwVwESHnCxUWyguYQ0NqxgOEN-TniA>
+    <xmx:ssE2ZEU9cV-2Bcrx3oUUG3mwektPsUjyVF2TRP9y8BXJrTS66MH9tg>
+    <xmx:ssE2ZLOwxTLu4fZ3AO_yV1gXh-uORnfOdCA_4c5XEikL0EOPrDde6g>
+    <xmx:ssE2ZIp-jNDzlE_11AeAIzslqmo7d9wW5CPhYylVg7YRhmZItLycfg>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 12 Apr 2023 10:35:30 -0400 (EDT)
+Date:   Wed, 12 Apr 2023 07:35:28 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Subject: Re: [PATCH v4 11/13] rust: lock: add `Guard::do_unlocked`
+Message-ID: <ZDbBsBIZwMhbquRG@Boquns-Mac-mini.local>
+References: <20230411054543.21278-1-wedsonaf@gmail.com>
+ <20230411054543.21278-11-wedsonaf@gmail.com>
+ <ZDZOzzMvvxr4rsW4@Boquns-Mac-mini.local>
+ <CANeycqqpR6Gs5Qb_pc2j_QV-JAc8xR360vth6We8xWU1GU5ASA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230406215615.122099-1-daniel.almeida@collabora.com>
- <ZDSRSWhWsN34MghQ@xps> <CANiq72=n1b=fJ2XZZx_MLKkbKMTmnmTBMgA3GJ_hqyARPtwEiQ@mail.gmail.com>
- <20230412025834.GA301301@mit.edu>
-In-Reply-To: <20230412025834.GA301301@mit.edu>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 12 Apr 2023 14:21:51 +0200
-Message-ID: <CANiq72mT3bVDKdHgaea-6WiZazd8Mvurqmqegbe5JZxVyLR8Yg@mail.gmail.com>
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-To:     "Theodore Ts'o" <tytso@mit.edu>
-Cc:     Deborah Brouwer <deborah.brouwer@collabora.com>,
-        Daniel Almeida <daniel.almeida@collabora.com>,
-        wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
-        hverkuil@xs4all.nl, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        kernel@collabora.com, jistone@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANeycqqpR6Gs5Qb_pc2j_QV-JAc8xR360vth6We8xWU1GU5ASA@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Apr 12, 2023 at 4:58=E2=80=AFAM Theodore Ts'o <tytso@mit.edu> wrote=
-:
->
-> Something that would perhaps be useful is to document (a) what
-> versions of Rust is available for various distributions, or pointers
-> to how to get that information for various distributions.  For
-> example, you can get that information from Debian using [1].  It
-> appears that Fedora isn't distributing rustc at *all*, at least
-> according to [2], so apparently for Fedora people will need to install
-> it from source.
+On Wed, Apr 12, 2023 at 08:07:40AM -0300, Wedson Almeida Filho wrote:
+> On Wed, 12 Apr 2023 at 03:25, Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > On Tue, Apr 11, 2023 at 02:45:41AM -0300, Wedson Almeida Filho wrote:
+> > [...]
+> > > +
+> > > +    unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
+> > > +        let _ = match guard_state {
+> > > +            // SAFETY: The safety requiments of this function ensure that `ptr` has been
+> > > +            // initialised.
+> > > +            None => unsafe { Self::lock(ptr) },
+> > > +            // SAFETY: The safety requiments of this function ensure that `ptr` has been
+> > > +            // initialised.
+> > > +            Some(_) => unsafe { Self::lock_irqsave(ptr) },
+> > > +        };
+> > > +    }
+> > >  }
+> > >
+> >
+> > One thing I'm little worried about the above is that we don't store back
+> > the new GuardState into `guard_state`, the particular case I'm worried
+> > about is as follow:
+> >
+> >         // IRQ is enabled.
+> >         // Disabling IRQ
+> >         unsafe { bindings::local_irq_disable(); }
+> >
+> >         let mut g = unsafe { SpinLockBackend::lock(&mut lock as *mut _) };
+> >         // `g` records irq state is "irq disabled"
+> >
+> >         unsafe { SpinLockBackend::unlock(&mut lock as *mut _, &g); }
+> >         // restore into "irq disabled" mode.
+> >         // IRQ is disabled.
+> >
+> >         // Enabling IRQ
+> >         unsafe { bindings::local_irq_enable(); }
+> >         // IRQ is enabled.
+> >
+> >         unsafe { SpinLockBackend::relock(&mut lock as *mut _, &mut g) }
+> >         // `g` still records irq state is "irq disabled"
+> 
+> Yes, that's by design. If you want it to record the new "irq enabled"
+> state, then you should call `lock()`, not `relock()`.
+> 
+> >         unsafe { SpinLockBackend::unlock(&mut lock as *mut _, &g); }
+> >         // restore into "irq disabled" mode.
+> >         // IRQ is disabled.
+> >
+> >
+> > This looks pretty scary to me, I would expect `relock()` updates the
+> > latest GuardState to the guard. Any reason it's implemented this way?
+> 
+> A `relock()` followed by an `unlock()` takes the state back to how it
+> was when `lock()` was originally called: this is precisely why
+> `relock()` exists.
+> 
+> Consider the following case:
+> 
+> ```
+> local_disable_irq();
+> let mut guard = spinlock.lock();
 
-As far as I understand, Fedora is actually one of the distributions
-that provide a very up-to-date Rust toolchain (the latest) and can be
-installed via `dnf` [1][2].
+I think you meant `spinlock.lock_irqsave()` here, right?
 
-Cc'ing Josh Stone who maintains the toolchain in Fedora, just in case
-there is something I am missing that the webpage may be referring to.
+> 
+> guard.do_unlocked(|| {
+>     local_irq_enable();
+>     schedule();
+> });
+> 
+> drop(guard);
+> ```
+> 
+> What would you expect the state to be? It's meant to be the state
 
-[1] https://packages.fedoraproject.org/pkgs/rust/rust/
-[2] https://developer.fedoraproject.org/tech/languages/rust/rust-installati=
-on.html
+I understand your point but I would expect people to code like:
 
-> The other thing that would be worth documenting is (b) something about
-> what versions of Rust people have actually tested.  The comments at
-> [3] are quite scary, since per [4], the minimum version of Rustc
-> supported is 1.62.0 --- and per [3], **only** Rust 1.62.0 is
-> supported, since we use unstable Rust features.
+```
+local_disable_irq();
+let mut guard = spinlock.lock(); // or lock_irqsave(), doesn't matter
 
-The one that we test, for the moment, is the minimum one (since it is
-the "only" one) -- I will make it more clear in the webpage.
+guard.do_unlocked(|| {
+    local_irq_enable();
+    schedule();
+    local_irq_disable();
+});
 
-> But for example, with Debian, Debian stable is shipping Rust 1.48.0,
-> and Debian testing (which is currently in "hard freeze" so it can be
-> released as Debian stable this summer) is shipping Rustc 1.63.0.
->
-> Since I use Debian testing, the question which is foremost in my mind
-> is whether I can expect to have things work if I use the
-> distro-provided 1.63.0 rustc, or is this really a case of "it's not
-> Rust 1.62.0, so good luck to you"?
+drop(guard);
+```
 
-Distro versions should be fine (as in: it is not an issue of "official
-prebuilt images" vs. "distro binaries"). But short-term you likely
-need to match the numbered version (or perform small changes in the
-kernel side when needed). So, in practice, the easiest route is to use
-the binaries provided by Rust itself (via `rustup` or standalone
-installers). We could also provide them at kernel.org like for other
-toolchains if that helps.
+And the closure in do_unlocked() can also be something like:
+```
+	guard.do_unlocked(|| {
+	    local_irq_enabled();
+	    let _g = ScopeGuard::new(|| {
+	        local_irq_disabled();
+	    });
 
-So if distributions want to start using Rust code in their kernels
-right now (i.e. before we can declare a proper minimum) with their own
-`rustc` package, then one approach they can use is to provide an extra
-`rustc-kernel` package matching the version required by the kernel (or
-to change the kernel side a bit to make it compile).
+	    schedule();
 
-We could, in principle, attempt to support several versions in the
-kernel side, but given the upstreaming of the first Rust modules is
-still going on (and the abstractions they depend on), we still have
-some time. Moreover, the first Rust modules may not be needed by most
-distributions: what is being upstreamed is the Android Binder driver,
-the Asahi GPU driver and the NVMe driver so far.
+	    if (some_cond) {
+	    	return; // return early
+	    }
 
-So it is up to distributions to decide whether they need to use one of
-those modules early on, and if that is the case and they need to do so
-before we can declare a minimum, then I think it is reasonable to ask
-them to match the version. Some particular users, e.g. Android, as far
-as I understand, they are OK with matching the version for the time
-being.
+	    if (other_cond) {
+	    	return;
+	    }
+	})
 
-In summary, the issue is that the minimum version we will eventually
-support is "in the future".
+```
 
-> If the goal is accelerate adoption of Rustc, and calm people's fears
-> vis-a-vis using Rust, it's not enough to say, "why don't you use the
-> distribution-provided version or Rust"?  It would be helpful if those
-> Rust pioneers can share what versions of Rust they have tested
-> against, especially for those commonly used distributions, such as
-> Debian, and give us a report whether we should expect things to work,
-> so we can ignore the scary warning from the build system that we're
-> using an unsupported version of Rust, and if it breaks, we get to keep
-> both pieces.
+One benefit (other that code looks symmetric) is we can use the same
+closure in other place. Also it helps klint since we keep the irq
+enablement state change as local as possible: we can go ahead and
+require irq enabled state should not be changed between the closure in
+do_unlock().
 
-Definitely -- we should be testing distro-versions in CI as soon as it
-is (reasonably) possible. We could even do so already for those
-distributions that track the latest version, but then it means we will
-be upgrading more often (every 6 weeks) in the kernel side. There
-would still be small windows where it may not work depending on how
-the schedules match, though (but distros could keep a `rustc-old` for
-some days until it matches again, for instance).
+Maybe I'm missing something, but the current `relock` semantics is
+really tricky to get ;-)
 
-> Fedora, if someone could build their own unofficial packages, until we
-> can convince Red Hat to start shipping -their own supported Rust
-> compilers, that might be a great way of bridging that gap.
+Regards,
+Boqun
 
-I think all major distributions already ship Rust. From a quick look:
-Fedora (1.68.2), Gentoo (1.68.2), Arch (1.68.2), openSUSE (1.68.0 for
-the rolling one), Ubuntu (1.67.1 for 23.04), Debian (1.63.0 this
-summer), Red Hat (1.62.1 in 9.1)...
-
-As mentioned above, if kernel maintainers are happy with more frequent
-upgrades (i.e. tracking the latest release), it would at least be
-easier for those in distributions that track the latest Rust release
--- I would like to do that, in fact, if nobody opposes, since our idea
-is to anyhow upgrade the compiler required in the kernel until we hit
-the minimum.
-
-What do you think?
-
-Cheers,
-Miguel
+> right before `spinlock.lock()` was called, that's what the guard
+> represents.
+> 
+> If you want to preserve a new state, then you don't want `relock()`,
+> you just want a new `lock()` call.
+> 
+> > Regards,
+> > Boqun
+> >
+> > >  // SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. We use the `irqsave`
+> > >  // variant of the C lock acquisition functions to disable interrupts and retrieve the original
+> > >  // interrupt state, and the `irqrestore` variant of the lock release functions to restore the state
+> > >  // in `unlock` -- we use the guard context to determine which method was used to acquire the lock.
+> > > -unsafe impl super::IrqSaveBackend for SpinLockBackend {
+> > > +unsafe impl IrqSaveBackend for SpinLockBackend {
+> > >      unsafe fn lock_irqsave(ptr: *mut Self::State) -> Self::GuardState {
+> > >          // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
+> > >          // memory, and that it has been initialised before.
+> > > --
+> > > 2.34.1
+> > >
