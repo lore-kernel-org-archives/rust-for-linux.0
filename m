@@ -2,208 +2,180 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2F1DC77B6E
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 12:15:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5B8EC77B71
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 12:22:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230230AbjDLMPC (ORCPT
+        id S229818AbjDLMWG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Apr 2023 08:15:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55078 "EHLO
+        Wed, 12 Apr 2023 08:22:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231403AbjDLMPB (ORCPT
+        with ESMTP id S229507AbjDLMWF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Apr 2023 08:15:01 -0400
-Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC2130C8;
-        Wed, 12 Apr 2023 05:14:53 -0700 (PDT)
-Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-1842df7cb53so13536922fac.10;
-        Wed, 12 Apr 2023 05:14:53 -0700 (PDT)
+        Wed, 12 Apr 2023 08:22:05 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBEDA30EE;
+        Wed, 12 Apr 2023 05:22:03 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-54ee17a659bso216626037b3.4;
+        Wed, 12 Apr 2023 05:22:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681301692;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uiqDAcpDbm3LWcuzi55KjMvH2NOjaDMDvdDPxCg5sgo=;
-        b=mWc/QZ1jnDB/TFevIji1BKcQT0kHUiw+14j0FjmVrbwRQcU/szbV+jYRbblWvfEELt
-         pwjgUUkZh5TJGOoi02zC6j+qMOhYFhOBKj5kUZAdQ3sPbYnXl5Mbi5yquhyx6W62E80R
-         xtEYlC4LwnJzLn2cZ6ZvzeaQ2+dJEcDTrfLM81OvuEs6ny+FgZmOidDVrR3nQMHccnne
-         Uu61Fh8BPr9UfgX5nuaVBE9DuCr0fvKkce3/0O2XctwntA+xijobgXgKxa/RxZK7pssd
-         LRNtlBF4vGaihttrvNYYZcfqW2zi1q7XbfSsKRnOgUNhL3eTaLswnu3Nrqw7vhKUQufs
-         e7Vg==
+        d=gmail.com; s=20221208; t=1681302123; x=1683894123;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aLEMcRFTyUAXgsUesoN6Zq5nWJj2e3OHS8pE8Im9o7E=;
+        b=g+c0nMl+4jFEqOfCwWdCwrjCBStI4eeuBk7kN9bRdc71fO/jhyx5I+37F+MqFLEi76
+         WAaoc2ecmuh0gSld+2xvj9FA1V2rHIDHxMMxKspk0HP36O9OgE0sm+MnyP07+Ke40Dgo
+         1ddB1Y8eyWyL+TovZbXanwwzEu7Rk5oxTX1fanfXJ4snNzxYwmlmDx9gqiaGV0gs4vMD
+         y+UIbvoZXdiE3N3iXR/VqwRR1e2ELYfML9lNJXiVp6RRAY3TlKlo/l6bQEpCiHRJgAK/
+         CKVSO0r/d8bsX0aIX2XKzfH1bC7ZfA9mm7klOI4EQJ8+KO+bSPmsC7ucVz9Wb49vpYk9
+         RDug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681301692;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uiqDAcpDbm3LWcuzi55KjMvH2NOjaDMDvdDPxCg5sgo=;
-        b=OFfHXCUlMnMGZAnXGk1fbQQoYeHZaX0kPv4cprInAbz2ZJ/7Gbx4yjKNpNo2MT3T+O
-         YnAWPb2LCb5WKxEKh3U25GAGjUnNh4dSJzHFBGMVqTY/+4vvO2qym2Xx1tepXrtuAGrH
-         33E5SxMUBgoaMqWzKGtvsQfIJOHM4cpXp/YSvLTqQtkRV4PzB8sGQXRPY2QoQN1FoD+r
-         aTQqHjsUWHuXejYrMav8yNZ2Rp1YsRd54A7Vw+bcGrjAORumg9fRTnSKPS1/47m9GBeX
-         mf1t3+et67N2QUaUiRon1tfJScLg8+g7iF3Syb+494ON1IqqWvxTCMw6g9DCToiyOmiO
-         eS4Q==
-X-Gm-Message-State: AAQBX9eLZIjKV/qQ4syDDRH/zV2e+yAX30vbWlfoDfi8Yg3v9GB7+qrI
-        5ginI8rVnwvmZyOjZ0FOWuUw8SUotgQ=
-X-Google-Smtp-Source: AKy350YkvsrWoWA1hmR6zPHbpWFsEdnVvSNMvB4saWDLEiKdana2r5Tv4kG59+50tW8UkW66BHrRhA==
-X-Received: by 2002:a05:6870:332a:b0:185:ef7d:429f with SMTP id x42-20020a056870332a00b00185ef7d429fmr1331931oae.57.1681301692390;
-        Wed, 12 Apr 2023 05:14:52 -0700 (PDT)
-Received: from wedsonaf-dev.home.lan ([189.124.190.154])
-        by smtp.googlemail.com with ESMTPSA id x17-20020a4a97d1000000b00541cb3cf2d2sm3681937ooi.13.2023.04.12.05.14.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Apr 2023 05:14:52 -0700 (PDT)
-From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-To:     rust-for-linux@vger.kernel.org
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: [PATCH v4.1] rust: lock: add `Guard::do_unlocked`
-Date:   Wed, 12 Apr 2023 09:14:31 -0300
-Message-Id: <20230412121431.41627-1-wedsonaf@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20210112; t=1681302123; x=1683894123;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aLEMcRFTyUAXgsUesoN6Zq5nWJj2e3OHS8pE8Im9o7E=;
+        b=1wA28uLntCQJRl4gaRTrpk8OlxA1c5PWTUt0wWI7hrvGwmP++O3BDFMWzIIFlA5N6/
+         u6QBvoHaU5wQmJnrjMTNinU9ebDLAe5DQHxr5Q9x8Asb+DBdAqhrSN9OdyknfN/d2K9Q
+         vgAH6eOZ5txFPe+lH/UZN3DupAlOOb/WPDz+pod5g8fKb+/2BE5Z4F20JdklLBnlm2RN
+         SFS2yd2pjNmfWMSc8c6LpSrPs1NOdTwvliGE2coop6c69OCWyUa0Y4ydoW/m1CmRHv7q
+         m9qCueKrNzOWD9CiuklxkmYW6xciMqzcnux/Vj0et3nDrSO26X1wLF3S2J3dOQCjhxi9
+         0RTw==
+X-Gm-Message-State: AAQBX9fWpyUgcCUXOakF8eDkgv9Q9qegf+E5Iqh+2QDLsvuhM2bsjS+d
+        ZOM0CiXqF2l/mtlGFOqZiWhPpTp2URUkzhanJko=
+X-Google-Smtp-Source: AKy350YNcqK5qJODUZEAf5Uj7XPszr1ypdJwZxTSNID1I2FOApV03k2Jh4KyBmrJ+yF2KknUZUI8IWce3ajOsFENu3o=
+X-Received: by 2002:a81:eb08:0:b0:54f:97dd:633 with SMTP id
+ n8-20020a81eb08000000b0054f97dd0633mr981566ywm.4.1681302123094; Wed, 12 Apr
+ 2023 05:22:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230406215615.122099-1-daniel.almeida@collabora.com>
+ <ZDSRSWhWsN34MghQ@xps> <CANiq72=n1b=fJ2XZZx_MLKkbKMTmnmTBMgA3GJ_hqyARPtwEiQ@mail.gmail.com>
+ <20230412025834.GA301301@mit.edu>
+In-Reply-To: <20230412025834.GA301301@mit.edu>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 12 Apr 2023 14:21:51 +0200
+Message-ID: <CANiq72mT3bVDKdHgaea-6WiZazd8Mvurqmqegbe5JZxVyLR8Yg@mail.gmail.com>
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+To:     "Theodore Ts'o" <tytso@mit.edu>
+Cc:     Deborah Brouwer <deborah.brouwer@collabora.com>,
+        Daniel Almeida <daniel.almeida@collabora.com>,
+        wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
+        hverkuil@xs4all.nl, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        kernel@collabora.com, jistone@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Wedson Almeida Filho <walmeida@microsoft.com>
+On Wed, Apr 12, 2023 at 4:58=E2=80=AFAM Theodore Ts'o <tytso@mit.edu> wrote=
+:
+>
+> Something that would perhaps be useful is to document (a) what
+> versions of Rust is available for various distributions, or pointers
+> to how to get that information for various distributions.  For
+> example, you can get that information from Debian using [1].  It
+> appears that Fedora isn't distributing rustc at *all*, at least
+> according to [2], so apparently for Fedora people will need to install
+> it from source.
 
-It releases the lock, executes some function provided by the caller,
-then reacquires the lock. This is preparation for the implementation of
-condvars, which will sleep after between unlocking and relocking.
+As far as I understand, Fedora is actually one of the distributions
+that provide a very up-to-date Rust toolchain (the latest) and can be
+installed via `dnf` [1][2].
 
-We need an explicit `relock` method for primitives like `SpinLock` that
-have an irqsave variant: we use the guard state to determine if the lock
-was originally acquired with the regular `lock` function or
-`lock_irqsave`.
+Cc'ing Josh Stone who maintains the toolchain in Fedora, just in case
+there is something I am missing that the webpage may be referring to.
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
----
-v1 -> v2: No changes
-v2 -> v3: No changes
-v3 -> v4: No changes
-v4 -> v4.1:
-- Use ScopeGuard to relock
-- Fix parameter name in `relock` documentation
+[1] https://packages.fedoraproject.org/pkgs/rust/rust/
+[2] https://developer.fedoraproject.org/tech/languages/rust/rust-installati=
+on.html
 
- rust/kernel/sync/lock.rs          | 30 +++++++++++++++++++++++++++++-
- rust/kernel/sync/lock/spinlock.rs | 17 +++++++++++++++--
- 2 files changed, 44 insertions(+), 3 deletions(-)
+> The other thing that would be worth documenting is (b) something about
+> what versions of Rust people have actually tested.  The comments at
+> [3] are quite scary, since per [4], the minimum version of Rustc
+> supported is 1.62.0 --- and per [3], **only** Rust 1.62.0 is
+> supported, since we use unstable Rust features.
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 819b8ea5ba2b..ff2c2a0e2830 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -6,7 +6,7 @@
- //! spinlocks, raw spinlocks) to be provided with minimal effort.
- 
- use super::LockClassKey;
--use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque};
-+use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque, types::ScopeGuard};
- use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned};
- use macros::pin_data;
- 
-@@ -22,6 +22,9 @@ pub mod spinlock;
- ///
- /// - Implementers must ensure that only one thread/CPU may access the protected data once the lock
- /// is owned, that is, between calls to `lock` and `unlock`.
-+/// - Implementers must also ensure that `relock` uses the same locking method as the original
-+/// lock operation. For example, it should disable interrupts if [`IrqSaveBackend::lock_irqsave`]
-+/// is used.
- pub unsafe trait Backend {
-     /// The state required by the lock.
-     type State;
-@@ -55,6 +58,17 @@ pub unsafe trait Backend {
-     ///
-     /// It must only be called by the current owner of the lock.
-     unsafe fn unlock(ptr: *mut Self::State, guard_state: &Self::GuardState);
-+
-+    /// Reacquires the lock, making the caller its owner.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that `guard_state` comes from a previous call to [`Backend::lock`] (or
-+    /// variant) that has been unlocked with [`Backend::unlock`] and will be relocked now.
-+    unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
-+        // SAFETY: The safety requirements ensure that the lock is initialised.
-+        *guard_state = unsafe { Self::lock(ptr) };
-+    }
- }
- 
- /// The "backend" of a lock that supports the irq-save variant.
-@@ -164,6 +178,20 @@ pub struct Guard<'a, T: ?Sized, B: Backend> {
- // SAFETY: `Guard` is sync when the data protected by the lock is also sync.
- unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
- 
-+impl<T: ?Sized, B: Backend> Guard<'_, T, B> {
-+    #[allow(dead_code)]
-+    pub(crate) fn do_unlocked(&mut self, cb: impl FnOnce()) {
-+        // SAFETY: The caller owns the lock, so it is safe to unlock it.
-+        unsafe { B::unlock(self.lock.state.get(), &self.state) };
-+
-+        // SAFETY: The lock was just unlocked above and is being relocked now.
-+        let _relock =
-+            ScopeGuard::new(|| unsafe { B::relock(self.lock.state.get(), &mut self.state) });
-+
-+        cb();
-+    }
-+}
-+
- impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
-     type Target = T;
- 
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index 34dec09a97c0..e2a2f68e6d93 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -4,6 +4,7 @@
- //!
- //! This module allows Rust code to use the kernel's `spinlock_t`.
- 
-+use super::IrqSaveBackend;
- use crate::bindings;
- 
- /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
-@@ -95,7 +96,8 @@ pub type SpinLock<T> = super::Lock<T, SpinLockBackend>;
- /// A kernel `spinlock_t` lock backend.
- pub struct SpinLockBackend;
- 
--// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion.
-+// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. `relock` uses the
-+// same scheme as `unlock` to figure out which locking method was used originally.
- unsafe impl super::Backend for SpinLockBackend {
-     type State = bindings::spinlock_t;
-     type GuardState = Option<core::ffi::c_ulong>;
-@@ -127,13 +129,24 @@ unsafe impl super::Backend for SpinLockBackend {
-             None => unsafe { bindings::spin_unlock(ptr) },
-         }
-     }
-+
-+    unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
-+        let _ = match guard_state {
-+            // SAFETY: The safety requiments of this function ensure that `ptr` has been
-+            // initialised.
-+            None => unsafe { Self::lock(ptr) },
-+            // SAFETY: The safety requiments of this function ensure that `ptr` has been
-+            // initialised.
-+            Some(_) => unsafe { Self::lock_irqsave(ptr) },
-+        };
-+    }
- }
- 
- // SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. We use the `irqsave`
- // variant of the C lock acquisition functions to disable interrupts and retrieve the original
- // interrupt state, and the `irqrestore` variant of the lock release functions to restore the state
- // in `unlock` -- we use the guard context to determine which method was used to acquire the lock.
--unsafe impl super::IrqSaveBackend for SpinLockBackend {
-+unsafe impl IrqSaveBackend for SpinLockBackend {
-     unsafe fn lock_irqsave(ptr: *mut Self::State) -> Self::GuardState {
-         // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
-         // memory, and that it has been initialised before.
--- 
-2.34.1
+The one that we test, for the moment, is the minimum one (since it is
+the "only" one) -- I will make it more clear in the webpage.
 
+> But for example, with Debian, Debian stable is shipping Rust 1.48.0,
+> and Debian testing (which is currently in "hard freeze" so it can be
+> released as Debian stable this summer) is shipping Rustc 1.63.0.
+>
+> Since I use Debian testing, the question which is foremost in my mind
+> is whether I can expect to have things work if I use the
+> distro-provided 1.63.0 rustc, or is this really a case of "it's not
+> Rust 1.62.0, so good luck to you"?
+
+Distro versions should be fine (as in: it is not an issue of "official
+prebuilt images" vs. "distro binaries"). But short-term you likely
+need to match the numbered version (or perform small changes in the
+kernel side when needed). So, in practice, the easiest route is to use
+the binaries provided by Rust itself (via `rustup` or standalone
+installers). We could also provide them at kernel.org like for other
+toolchains if that helps.
+
+So if distributions want to start using Rust code in their kernels
+right now (i.e. before we can declare a proper minimum) with their own
+`rustc` package, then one approach they can use is to provide an extra
+`rustc-kernel` package matching the version required by the kernel (or
+to change the kernel side a bit to make it compile).
+
+We could, in principle, attempt to support several versions in the
+kernel side, but given the upstreaming of the first Rust modules is
+still going on (and the abstractions they depend on), we still have
+some time. Moreover, the first Rust modules may not be needed by most
+distributions: what is being upstreamed is the Android Binder driver,
+the Asahi GPU driver and the NVMe driver so far.
+
+So it is up to distributions to decide whether they need to use one of
+those modules early on, and if that is the case and they need to do so
+before we can declare a minimum, then I think it is reasonable to ask
+them to match the version. Some particular users, e.g. Android, as far
+as I understand, they are OK with matching the version for the time
+being.
+
+In summary, the issue is that the minimum version we will eventually
+support is "in the future".
+
+> If the goal is accelerate adoption of Rustc, and calm people's fears
+> vis-a-vis using Rust, it's not enough to say, "why don't you use the
+> distribution-provided version or Rust"?  It would be helpful if those
+> Rust pioneers can share what versions of Rust they have tested
+> against, especially for those commonly used distributions, such as
+> Debian, and give us a report whether we should expect things to work,
+> so we can ignore the scary warning from the build system that we're
+> using an unsupported version of Rust, and if it breaks, we get to keep
+> both pieces.
+
+Definitely -- we should be testing distro-versions in CI as soon as it
+is (reasonably) possible. We could even do so already for those
+distributions that track the latest version, but then it means we will
+be upgrading more often (every 6 weeks) in the kernel side. There
+would still be small windows where it may not work depending on how
+the schedules match, though (but distros could keep a `rustc-old` for
+some days until it matches again, for instance).
+
+> Fedora, if someone could build their own unofficial packages, until we
+> can convince Red Hat to start shipping -their own supported Rust
+> compilers, that might be a great way of bridging that gap.
+
+I think all major distributions already ship Rust. From a quick look:
+Fedora (1.68.2), Gentoo (1.68.2), Arch (1.68.2), openSUSE (1.68.0 for
+the rolling one), Ubuntu (1.67.1 for 23.04), Debian (1.63.0 this
+summer), Red Hat (1.62.1 in 9.1)...
+
+As mentioned above, if kernel maintainers are happy with more frequent
+upgrades (i.e. tracking the latest release), it would at least be
+easier for those in distributions that track the latest Rust release
+-- I would like to do that, in fact, if nobody opposes, since our idea
+is to anyhow upgrade the compiler required in the kernel until we hit
+the minimum.
+
+What do you think?
+
+Cheers,
+Miguel
