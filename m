@@ -2,58 +2,58 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A766C7619A
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 11:07:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 51E52C7619A
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 11:10:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229841AbjDLLHy (ORCPT
+        id S229585AbjDLLKo (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Apr 2023 07:07:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60124 "EHLO
+        Wed, 12 Apr 2023 07:10:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbjDLLHx (ORCPT
+        with ESMTP id S229565AbjDLLKo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Apr 2023 07:07:53 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B56D6A60;
-        Wed, 12 Apr 2023 04:07:52 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-54c061acbc9so351658207b3.11;
-        Wed, 12 Apr 2023 04:07:52 -0700 (PDT)
+        Wed, 12 Apr 2023 07:10:44 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058006EA5;
+        Wed, 12 Apr 2023 04:10:19 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id q5so14069254ybk.7;
+        Wed, 12 Apr 2023 04:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681297671;
+        d=gmail.com; s=20221208; t=1681297810;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+0tHhoLaNH21wv0oq5mHGI1fOn2fqnxMjXKIfupUAhY=;
-        b=e+swkbxqpSikjMu4Ym4/TcQ6kqy9uQ3Geo9IvLWoYrR77zM4L1lJBhLSISGU5J1Sgm
-         xHHk5vS38naiRIRK4WLlRLso1dMAh8h5c0NLaE9v7PEebn9niewxb4lncH+Mfakeycfq
-         KL0vtdtS/kRHbpdpbqjimd21xhTMEzgy2EhKdZF0MsDxdTgdtkcjYA19jWkqJQ4Cvnul
-         ty6NbM52DcuXqqunzXLQf1CemY2SPtUWkyrg8OE1VznNOtVh4/ElfBurpgG0UqEi4aeF
-         OE6aTqxRoUA+338Vd5f75CbPj7l4nHx788g5QOxkPRd/G/eQHPQxMOwHmu2Ff3h7H+Jd
-         R5Pg==
+        bh=chKAIM4ZxxQVL8Xid6ujCOrtYPL9y4QPjMJ/OigHilk=;
+        b=nU/I7mboOTPCQqM4XPuxWrMb0lfd5MpHHU1F2gzx9H0Md857K1Sms/0Dmw3g2UjMPA
+         azq9eMvskSskpkHs6DdwT+qdC6JEHLmmu/hwNId1aFImiKTDtBydjXXSgeSllRqvKbyt
+         3xpMnZsAN/knei+Rfj7CvvETRm06iRGm8TyVlanOZMevwX+NVLMYXQ1BWutyV2Yd0Ljo
+         n+KEkMI3nAu5ih3xMGAPXzmAeYKhXxchwMid0maejPmfhKBgvY7T8j5N6BZEHW6whU16
+         5omAJbGTdM7IsTIoxcs+4AIqZ7H6Oapd0Nnjr8SHgKF4qoOOoQ2mGFd4ZMqAO7onPRsq
+         hAng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681297671;
+        d=1e100.net; s=20210112; t=1681297810;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+0tHhoLaNH21wv0oq5mHGI1fOn2fqnxMjXKIfupUAhY=;
-        b=D5Jr0krUe0EoQfrmYG/QahSgcdsGn3ONtdMSSDKTlkqLCNxwARIRRnc7FIHdYT+zSm
-         5Vsn1Ve3tKt4Siun6LkUSIV0PyKTSt2Nfsq+GLTNCOLz16cjWoD5Or1nIHTdPRZx6Ix7
-         EvBmylw7zYGVro+L49A0bJqd/E2I8dvUPv1dt5Dc3WaObwD9SywJN96fbSVYk1lCS0K4
-         VB7o6ulCSlXWDh7wPd9NI0S+dDP6lqgpkulV4ljEo5urxsUlPbVFQ/A3Lt0vqBQhaI7S
-         aFVooOMm0oxz0QNd9Kb9dnuawScwyd/J77awU894RWfbT2P9W9awwHKpR0/I21qyIihG
-         T5nA==
-X-Gm-Message-State: AAQBX9dantb8yaUc/89VxtqeQOZwdD7/zLsNjYY4i4ug3BdLYVo2Qfzp
-        H9w2vDFlkqJijZy99LBIU3esQx72AWvzKpWsPIE=
-X-Google-Smtp-Source: AKy350Y6pqOnwZEL92tv7EI/FvQHD+G5n+I4rzULnolMOyCFbynl2b3l6MESX3o1NwyErd7LTsYLBRsNJdUaPe7qW3I=
-X-Received: by 2002:a81:af0c:0:b0:54c:c979:7f95 with SMTP id
- n12-20020a81af0c000000b0054cc9797f95mr7858106ywh.9.1681297671489; Wed, 12 Apr
- 2023 04:07:51 -0700 (PDT)
+        bh=chKAIM4ZxxQVL8Xid6ujCOrtYPL9y4QPjMJ/OigHilk=;
+        b=Z0J31zOI3Lam5F+uvPn969/EY/hIn2q3sfumVmAVii7gJrXsQw5N1AHCJGjyMjx7qF
+         i/C9BCO2SITSD2GkWSDXUWIwa4ohjw/5XFQgQkBbxFI5oQMwxXcXBkcEwcjpq4dwGv8q
+         Q2GbOYF/Hxw+AxjvNHcz/LLDUBbTErn0MAecUmjN3S8kqf+x2PE4PQnUEg5H9NNzFpOv
+         zplHMOmI5q6RaX3z3FQgo06gNINrj2l5TDEPWP4qmr7kn24HVqFTsGFWWvYjyVcEuGaR
+         PwSoPpwvQ6ddKFrqLJoBDr6du/3TCfJ98njK1yuo/++BaU5FfeQ7fQN/SAZ6R8ii41js
+         +Kuw==
+X-Gm-Message-State: AAQBX9dtgHgEjgNKytH2Gh+3r+ApMOxd1zRPehxXrLJ6ZG2aZVlcn0bP
+        w6ebjaBl3av3EPzTP7j2dpcELuU1Axfq92KfhDc=
+X-Google-Smtp-Source: AKy350YJeoWcJSKxKNPdLiHTnHz11u4bZUO+tYRek3nCmaFVkqul25T/YbSECDpDc9xM3E98GqMYtAynfPTUATsEyhw=
+X-Received: by 2002:a25:73c2:0:b0:b8f:3e29:fb9a with SMTP id
+ o185-20020a2573c2000000b00b8f3e29fb9amr894425ybc.6.1681297809723; Wed, 12 Apr
+ 2023 04:10:09 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230411054543.21278-1-wedsonaf@gmail.com> <20230411054543.21278-11-wedsonaf@gmail.com>
- <ZDZOzzMvvxr4rsW4@Boquns-Mac-mini.local>
-In-Reply-To: <ZDZOzzMvvxr4rsW4@Boquns-Mac-mini.local>
+ <ZDXOVXFlq7eXRTIS@boqun-archlinux>
+In-Reply-To: <ZDXOVXFlq7eXRTIS@boqun-archlinux>
 From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-Date:   Wed, 12 Apr 2023 08:07:40 -0300
-Message-ID: <CANeycqqpR6Gs5Qb_pc2j_QV-JAc8xR360vth6We8xWU1GU5ASA@mail.gmail.com>
+Date:   Wed, 12 Apr 2023 08:09:58 -0300
+Message-ID: <CANeycqo0bdXwuEMEbx8HREmTYGmBqG1EuT-jNMyZk304krOx1Q@mail.gmail.com>
 Subject: Re: [PATCH v4 11/13] rust: lock: add `Guard::do_unlocked`
 To:     Boqun Feng <boqun.feng@gmail.com>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
@@ -68,10 +68,122 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, 12 Apr 2023 at 03:25, Boqun Feng <boqun.feng@gmail.com> wrote:
+On Tue, 11 Apr 2023 at 18:18, Boqun Feng <boqun.feng@gmail.com> wrote:
 >
 > On Tue, Apr 11, 2023 at 02:45:41AM -0300, Wedson Almeida Filho wrote:
-> [...]
+> > From: Wedson Almeida Filho <walmeida@microsoft.com>
+> >
+> > It releases the lock, executes some function provided by the caller,
+> > then reacquires the lock. This is preparation for the implementation of
+> > condvars, which will sleep after between unlocking and relocking.
+> >
+> > We need an explicit `relock` method for primitives like `SpinLock` that
+> > have an irqsave variant: we use the guard state to determine if the lock
+> > was originally acquired with the regular `lock` function or
+> > `lock_irqsave`.
+> >
+> > Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> > ---
+> > v1 -> v2: No changes
+> > v2 -> v3: No changes
+> > v3 -> v4: No changes
+> >
+> >  rust/kernel/sync/lock.rs          | 25 +++++++++++++++++++++++++
+> >  rust/kernel/sync/lock/spinlock.rs | 17 +++++++++++++++--
+> >  2 files changed, 40 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> > index 819b8ea5ba2b..cde57756795f 100644
+> > --- a/rust/kernel/sync/lock.rs
+> > +++ b/rust/kernel/sync/lock.rs
+> > @@ -22,6 +22,9 @@ pub mod spinlock;
+> >  ///
+> >  /// - Implementers must ensure that only one thread/CPU may access the protected data once the lock
+> >  /// is owned, that is, between calls to `lock` and `unlock`.
+> > +/// - Implementers must also ensure that `relock` uses the same locking method as the original
+> > +/// lock operation. For example, it should disable interrupts if [`IrqSaveBackend::lock_irqsave`]
+> > +/// is used.
+> >  pub unsafe trait Backend {
+> >      /// The state required by the lock.
+> >      type State;
+> > @@ -55,6 +58,17 @@ pub unsafe trait Backend {
+> >      ///
+> >      /// It must only be called by the current owner of the lock.
+> >      unsafe fn unlock(ptr: *mut Self::State, guard_state: &Self::GuardState);
+> > +
+> > +    /// Reacquires the lock, making the caller its owner.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// Callers must ensure that `state` comes from a previous call to [`Backend::lock`] (or
+>
+> I think you mean
+>
+> "Callers must ensure that `guard_state` comes ..."
+>
+> , right?
+
+That's right, thanks for spotting this!
+
+I renamed the parameter names (based on your feedback :)) but didn't
+update the comment accordingly. Will do.
+
+> Regards,
+> Boqun
+>
+> > +    /// variant) that has been unlocked with [`Backend::unlock`] and will be relocked now.
+> > +    unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
+> > +        // SAFETY: The safety requirements ensure that the lock is initialised.
+> > +        *guard_state = unsafe { Self::lock(ptr) };
+> > +    }
+> >  }
+> >
+> >  /// The "backend" of a lock that supports the irq-save variant.
+> > @@ -164,6 +178,17 @@ pub struct Guard<'a, T: ?Sized, B: Backend> {
+> >  // SAFETY: `Guard` is sync when the data protected by the lock is also sync.
+> >  unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
+> >
+> > +impl<T: ?Sized, B: Backend> Guard<'_, T, B> {
+> > +    #[allow(dead_code)]
+> > +    pub(crate) fn do_unlocked(&mut self, cb: impl FnOnce()) {
+> > +        // SAFETY: The caller owns the lock, so it is safe to unlock it.
+> > +        unsafe { B::unlock(self.lock.state.get(), &self.state) };
+> > +        cb();
+> > +        // SAFETY: The lock was just unlocked above and is being relocked now.
+> > +        unsafe { B::relock(self.lock.state.get(), &mut self.state) };
+> > +    }
+> > +}
+> > +
+> >  impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
+> >      type Target = T;
+> >
+> > diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+> > index 34dec09a97c0..e2a2f68e6d93 100644
+> > --- a/rust/kernel/sync/lock/spinlock.rs
+> > +++ b/rust/kernel/sync/lock/spinlock.rs
+> > @@ -4,6 +4,7 @@
+> >  //!
+> >  //! This module allows Rust code to use the kernel's `spinlock_t`.
+> >
+> > +use super::IrqSaveBackend;
+> >  use crate::bindings;
+> >
+> >  /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
+> > @@ -95,7 +96,8 @@ pub type SpinLock<T> = super::Lock<T, SpinLockBackend>;
+> >  /// A kernel `spinlock_t` lock backend.
+> >  pub struct SpinLockBackend;
+> >
+> > -// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion.
+> > +// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. `relock` uses the
+> > +// same scheme as `unlock` to figure out which locking method was used originally.
+> >  unsafe impl super::Backend for SpinLockBackend {
+> >      type State = bindings::spinlock_t;
+> >      type GuardState = Option<core::ffi::c_ulong>;
+> > @@ -127,13 +129,24 @@ unsafe impl super::Backend for SpinLockBackend {
+> >              None => unsafe { bindings::spin_unlock(ptr) },
+> >          }
+> >      }
 > > +
 > > +    unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
 > > +        let _ = match guard_state {
@@ -85,68 +197,6 @@ On Wed, 12 Apr 2023 at 03:25, Boqun Feng <boqun.feng@gmail.com> wrote:
 > > +    }
 > >  }
 > >
->
-> One thing I'm little worried about the above is that we don't store back
-> the new GuardState into `guard_state`, the particular case I'm worried
-> about is as follow:
->
->         // IRQ is enabled.
->         // Disabling IRQ
->         unsafe { bindings::local_irq_disable(); }
->
->         let mut g = unsafe { SpinLockBackend::lock(&mut lock as *mut _) };
->         // `g` records irq state is "irq disabled"
->
->         unsafe { SpinLockBackend::unlock(&mut lock as *mut _, &g); }
->         // restore into "irq disabled" mode.
->         // IRQ is disabled.
->
->         // Enabling IRQ
->         unsafe { bindings::local_irq_enable(); }
->         // IRQ is enabled.
->
->         unsafe { SpinLockBackend::relock(&mut lock as *mut _, &mut g) }
->         // `g` still records irq state is "irq disabled"
-
-Yes, that's by design. If you want it to record the new "irq enabled"
-state, then you should call `lock()`, not `relock()`.
-
->         unsafe { SpinLockBackend::unlock(&mut lock as *mut _, &g); }
->         // restore into "irq disabled" mode.
->         // IRQ is disabled.
->
->
-> This looks pretty scary to me, I would expect `relock()` updates the
-> latest GuardState to the guard. Any reason it's implemented this way?
-
-A `relock()` followed by an `unlock()` takes the state back to how it
-was when `lock()` was originally called: this is precisely why
-`relock()` exists.
-
-Consider the following case:
-
-```
-local_disable_irq();
-let mut guard = spinlock.lock();
-
-guard.do_unlocked(|| {
-    local_irq_enable();
-    schedule();
-});
-
-drop(guard);
-```
-
-What would you expect the state to be? It's meant to be the state
-right before `spinlock.lock()` was called, that's what the guard
-represents.
-
-If you want to preserve a new state, then you don't want `relock()`,
-you just want a new `lock()` call.
-
-> Regards,
-> Boqun
->
 > >  // SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. We use the `irqsave`
 > >  // variant of the C lock acquisition functions to disable interrupts and retrieve the original
 > >  // interrupt state, and the `irqrestore` variant of the lock release functions to restore the state
