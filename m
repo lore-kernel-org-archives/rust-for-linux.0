@@ -2,256 +2,208 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D33EC7619A
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 11:43:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2F1DC77B6E
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 12:15:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229712AbjDLLnD (ORCPT
+        id S230230AbjDLMPC (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Apr 2023 07:43:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48686 "EHLO
+        Wed, 12 Apr 2023 08:15:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229609AbjDLLnC (ORCPT
+        with ESMTP id S231403AbjDLMPB (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Apr 2023 07:43:02 -0400
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 546287D8A;
-        Wed, 12 Apr 2023 04:42:39 -0700 (PDT)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-54ee17a659bso214720527b3.4;
-        Wed, 12 Apr 2023 04:42:39 -0700 (PDT)
+        Wed, 12 Apr 2023 08:15:01 -0400
+Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC2130C8;
+        Wed, 12 Apr 2023 05:14:53 -0700 (PDT)
+Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-1842df7cb53so13536922fac.10;
+        Wed, 12 Apr 2023 05:14:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681299756;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Sps2lgbVwDuXXXI80T/3O3aUQpu4+Dlo0VHxWSwvXYo=;
-        b=YGwfJLx6dX9gIxIO9JL/EKtmxT51BuSvfU6Q2PTUTEn7o4Hu3wv8SZgErzJ1d+gLeu
-         2YjCqihiktb4kVINCzxpjFrU2twYI5cbM49OKepZOS6cmt8Q5XCV/gLg/8yCudw7gfEc
-         TmDWeMkubI/3PGxH+pmX/nmPYZlR9EZ99mInklPbUwQQoWCvUn9Q5vzZqScnCLdUIFt8
-         VxeW5sOxPpj92W6YJYY70FKKbxPwk2g/FUA/4TQaWBwmFhxhH/MqkMVOM9F9wC/RgWxU
-         t5Qqkj+C4roKx+VHrs0sdAA+PcNVgciNuJGw+2vEyaN5LbQaQEXANEt/rW24rEDf/qgr
-         //uQ==
+        d=gmail.com; s=20221208; t=1681301692;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uiqDAcpDbm3LWcuzi55KjMvH2NOjaDMDvdDPxCg5sgo=;
+        b=mWc/QZ1jnDB/TFevIji1BKcQT0kHUiw+14j0FjmVrbwRQcU/szbV+jYRbblWvfEELt
+         pwjgUUkZh5TJGOoi02zC6j+qMOhYFhOBKj5kUZAdQ3sPbYnXl5Mbi5yquhyx6W62E80R
+         xtEYlC4LwnJzLn2cZ6ZvzeaQ2+dJEcDTrfLM81OvuEs6ny+FgZmOidDVrR3nQMHccnne
+         Uu61Fh8BPr9UfgX5nuaVBE9DuCr0fvKkce3/0O2XctwntA+xijobgXgKxa/RxZK7pssd
+         LRNtlBF4vGaihttrvNYYZcfqW2zi1q7XbfSsKRnOgUNhL3eTaLswnu3Nrqw7vhKUQufs
+         e7Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681299756;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20210112; t=1681301692;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Sps2lgbVwDuXXXI80T/3O3aUQpu4+Dlo0VHxWSwvXYo=;
-        b=BlRYOSFaKeCJpc08//g6XIx+0vLsfClFO2ZnLF+xiCZXBef7UNAAFd/dV9qtetaaEH
-         SahTtRDFmohMwKEtkqu8Ig/wzHdkV8mcPdpm34YvYBuxuBOjciM3Iy0nV4TFn6xjWL6e
-         u5u4XotoBvMH8LKqT0O+tlVEm0lmDffqWEqzUOygmiU46ye3Ky215IjllUGkTd/zAu98
-         ryBnSDOvCSi7BQ3k6jys/F2yq2hAcppPfQGURWR5cgbRGGxz/jyn5lwr+5v4Wk6Kf7wE
-         vbMoCtaTfVw8PDrYkt6foch/nSfWupvs1uBEQ6bAqUX75WwX9OI61mpsajeUMuNVMmjn
-         8emA==
-X-Gm-Message-State: AAQBX9d66rx+XgMXb48AwqUaAEtPH7Rx86mZ83Zdrwy7f7txaK7Gf2EO
-        SRQzk0wWAtal7L3NUdtr5hNl3wDGwFI9e74xtpk=
-X-Google-Smtp-Source: AKy350anHGb0xKWZc1uPiKi4ebaK4nMT/gY8wz+WRQBvZOKoxHxYwwOFehDO/JYiq68CaQAzr1DtBZZZ9IBtHCgWeoE=
-X-Received: by 2002:a05:690c:d0f:b0:545:f3ed:d251 with SMTP id
- cn15-20020a05690c0d0f00b00545f3edd251mr2030970ywb.1.1681299756014; Wed, 12
- Apr 2023 04:42:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230411054543.21278-1-wedsonaf@gmail.com> <20230411054543.21278-9-wedsonaf@gmail.com>
- <20230411214721.2d6f8fda.gary@garyguo.net>
-In-Reply-To: <20230411214721.2d6f8fda.gary@garyguo.net>
+        bh=uiqDAcpDbm3LWcuzi55KjMvH2NOjaDMDvdDPxCg5sgo=;
+        b=OFfHXCUlMnMGZAnXGk1fbQQoYeHZaX0kPv4cprInAbz2ZJ/7Gbx4yjKNpNo2MT3T+O
+         YnAWPb2LCb5WKxEKh3U25GAGjUnNh4dSJzHFBGMVqTY/+4vvO2qym2Xx1tepXrtuAGrH
+         33E5SxMUBgoaMqWzKGtvsQfIJOHM4cpXp/YSvLTqQtkRV4PzB8sGQXRPY2QoQN1FoD+r
+         aTQqHjsUWHuXejYrMav8yNZ2Rp1YsRd54A7Vw+bcGrjAORumg9fRTnSKPS1/47m9GBeX
+         mf1t3+et67N2QUaUiRon1tfJScLg8+g7iF3Syb+494ON1IqqWvxTCMw6g9DCToiyOmiO
+         eS4Q==
+X-Gm-Message-State: AAQBX9eLZIjKV/qQ4syDDRH/zV2e+yAX30vbWlfoDfi8Yg3v9GB7+qrI
+        5ginI8rVnwvmZyOjZ0FOWuUw8SUotgQ=
+X-Google-Smtp-Source: AKy350YkvsrWoWA1hmR6zPHbpWFsEdnVvSNMvB4saWDLEiKdana2r5Tv4kG59+50tW8UkW66BHrRhA==
+X-Received: by 2002:a05:6870:332a:b0:185:ef7d:429f with SMTP id x42-20020a056870332a00b00185ef7d429fmr1331931oae.57.1681301692390;
+        Wed, 12 Apr 2023 05:14:52 -0700 (PDT)
+Received: from wedsonaf-dev.home.lan ([189.124.190.154])
+        by smtp.googlemail.com with ESMTPSA id x17-20020a4a97d1000000b00541cb3cf2d2sm3681937ooi.13.2023.04.12.05.14.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Apr 2023 05:14:52 -0700 (PDT)
 From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-Date:   Wed, 12 Apr 2023 08:42:25 -0300
-Message-ID: <CANeycqrkTSOwf2TBQpanfYQ0bQkZiJUTZ+Lj-1uoZ1d13TEmaQ@mail.gmail.com>
-Subject: Re: [PATCH v4 09/13] rust: add basic `Task`
-To:     Gary Guo <gary@garyguo.net>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+To:     rust-for-linux@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <walmeida@microsoft.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
         Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: [PATCH v4.1] rust: lock: add `Guard::do_unlocked`
+Date:   Wed, 12 Apr 2023 09:14:31 -0300
+Message-Id: <20230412121431.41627-1-wedsonaf@gmail.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, 11 Apr 2023 at 17:47, Gary Guo <gary@garyguo.net> wrote:
->
-> On Tue, 11 Apr 2023 02:45:39 -0300
-> Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
->
-> > From: Wedson Almeida Filho <walmeida@microsoft.com>
-> >
-> > It is an abstraction for C's `struct task_struct`. It implements
-> > `AlwaysRefCounted`, so the refcount of the wrapped object is managed
-> > safely on the Rust side.
-> >
-> > Cc: Ingo Molnar <mingo@redhat.com>
-> > Cc: Peter Zijlstra <peterz@infradead.org>
-> > Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> > ---
-> > v1 -> v2: No changes
-> > v2 -> v3: Wrap task_struct with `Opaque` instead of `UnsafeCell`
-> > v3 -> v4: No changes
-> >
-> >  rust/bindings/bindings_helper.h |  1 +
-> >  rust/helpers.c                  | 19 +++++++++
-> >  rust/kernel/lib.rs              |  1 +
-> >  rust/kernel/task.rs             | 75 +++++++++++++++++++++++++++++++++
-> >  4 files changed, 96 insertions(+)
-> >  create mode 100644 rust/kernel/task.rs
-> >
-> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> > index 75d85bd6c592..03656a44a83f 100644
-> > --- a/rust/bindings/bindings_helper.h
-> > +++ b/rust/bindings/bindings_helper.h
-> > @@ -8,6 +8,7 @@
-> >
-> >  #include <linux/slab.h>
-> >  #include <linux/refcount.h>
-> > +#include <linux/sched.h>
-> >
-> >  /* `bindgen` gets confused at certain things. */
-> >  const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
-> > diff --git a/rust/helpers.c b/rust/helpers.c
-> > index efd5b1e86f6e..f545923aedd8 100644
-> > --- a/rust/helpers.c
-> > +++ b/rust/helpers.c
-> > @@ -24,6 +24,7 @@
-> >  #include <linux/refcount.h>
-> >  #include <linux/mutex.h>
-> >  #include <linux/spinlock.h>
-> > +#include <linux/sched/signal.h>
-> >
-> >  __noreturn void rust_helper_BUG(void)
-> >  {
-> > @@ -76,6 +77,12 @@ void rust_helper_spin_unlock_irqrestore(spinlock_t *lock, unsigned long flags)
-> >  }
-> >  EXPORT_SYMBOL_GPL(rust_helper_spin_unlock_irqrestore);
-> >
-> > +int rust_helper_signal_pending(struct task_struct *t)
-> > +{
-> > +     return signal_pending(t);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_signal_pending);
-> > +
-> >  refcount_t rust_helper_REFCOUNT_INIT(int n)
-> >  {
-> >       return (refcount_t)REFCOUNT_INIT(n);
-> > @@ -112,6 +119,18 @@ long rust_helper_PTR_ERR(__force const void *ptr)
-> >  }
-> >  EXPORT_SYMBOL_GPL(rust_helper_PTR_ERR);
-> >
-> > +void rust_helper_get_task_struct(struct task_struct *t)
-> > +{
-> > +     get_task_struct(t);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_get_task_struct);
-> > +
-> > +void rust_helper_put_task_struct(struct task_struct *t)
-> > +{
-> > +     put_task_struct(t);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
-> > +
-> >  /*
-> >   * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
-> >   * as the Rust `usize` type, so we can use it in contexts where Rust
-> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > index 2d7606135ef6..ee27e10da479 100644
-> > --- a/rust/kernel/lib.rs
-> > +++ b/rust/kernel/lib.rs
-> > @@ -44,6 +44,7 @@ mod static_assert;
-> >  pub mod std_vendor;
-> >  pub mod str;
-> >  pub mod sync;
-> > +pub mod task;
-> >  pub mod types;
-> >
-> >  #[doc(hidden)]
-> > diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-> > new file mode 100644
-> > index 000000000000..d70cad131956
-> > --- /dev/null
-> > +++ b/rust/kernel/task.rs
-> > @@ -0,0 +1,75 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Tasks (threads and processes).
-> > +//!
-> > +//! C header: [`include/linux/sched.h`](../../../../include/linux/sched.h).
-> > +
-> > +use crate::{bindings, types::Opaque};
-> > +use core::ptr;
-> > +
-> > +/// Wraps the kernel's `struct task_struct`.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// All instances are valid tasks created by the C portion of the kernel.
-> > +///
-> > +/// Instances of this type are always ref-counted, that is, a call to `get_task_struct` ensures
-> > +/// that the allocation remains valid at least until the matching call to `put_task_struct`.
-> > +#[repr(transparent)]
-> > +pub struct Task(pub(crate) Opaque<bindings::task_struct>);
-> > +
-> > +// SAFETY: It's OK to access `Task` through references from other threads because we're either
-> > +// accessing properties that don't change (e.g., `pid`, `group_leader`) or that are properly
-> > +// synchronised by C code (e.g., `signal_pending`).
-> > +unsafe impl Sync for Task {}
-> > +
-> > +/// The type of process identifiers (PIDs).
-> > +type Pid = bindings::pid_t;
->
-> This'll just end up being `i32`. I think it'll be more desirable that
-> this is defined as a new type.
+From: Wedson Almeida Filho <walmeida@microsoft.com>
 
-We may very well decide that we want to make this a new type.
+It releases the lock, executes some function provided by the caller,
+then reacquires the lock. This is preparation for the implementation of
+condvars, which will sleep after between unlocking and relocking.
 
-But that should be done in a different patch.
+We need an explicit `relock` method for primitives like `SpinLock` that
+have an irqsave variant: we use the guard state to determine if the lock
+was originally acquired with the regular `lock` function or
+`lock_irqsave`.
 
-> > +
-> > +impl Task {
-> > +    /// Returns the group leader of the given task.
-> > +    pub fn group_leader(&self) -> &Task {
-> > +        // SAFETY: By the type invariant, we know that `self.0` is a valid task. Valid tasks always
-> > +        // have a valid group_leader.
-> > +        let ptr = unsafe { *ptr::addr_of!((*self.0.get()).group_leader) };
-> > +
-> > +        // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
-> > +        // and given that a task has a reference to its group leader, we know it must be valid for
-> > +        // the lifetime of the returned task reference.
-> > +        unsafe { &*ptr.cast() }
-> > +    }
-> > +
-> > +    /// Returns the PID of the given task.
-> > +    pub fn pid(&self) -> Pid {
-> > +        // SAFETY: By the type invariant, we know that `self.0` is a valid task. Valid tasks always
-> > +        // have a valid pid.
-> > +        unsafe { *ptr::addr_of!((*self.0.get()).pid) }
-> > +    }
-> > +
-> > +    /// Determines whether the given task has pending signals.
-> > +    pub fn signal_pending(&self) -> bool {
-> > +        // SAFETY: By the type invariant, we know that `self.0` is valid.
-> > +        unsafe { bindings::signal_pending(self.0.get()) != 0 }
-> > +    }
-> > +
-> > +    /// Wakes up the task.
-> > +    pub fn wake_up(&self) {
-> > +        // SAFETY: By the type invariant, we know that `self.0.get()` is non-null and valid.
-> > +        // And `wake_up_process` is safe to be called for any valid task, even if the task is
-> > +        // running.
-> > +        unsafe { bindings::wake_up_process(self.0.get()) };
-> > +    }
-> > +}
-> > +
-> > +// SAFETY: The type invariants guarantee that `Task` is always ref-counted.
-> > +unsafe impl crate::types::AlwaysRefCounted for Task {
-> > +    fn inc_ref(&self) {
-> > +        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
-> > +        unsafe { bindings::get_task_struct(self.0.get()) };
-> > +    }
-> > +
-> > +    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-> > +        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
-> > +        unsafe { bindings::put_task_struct(obj.cast().as_ptr()) }
-> > +    }
-> > +}
->
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+---
+v1 -> v2: No changes
+v2 -> v3: No changes
+v3 -> v4: No changes
+v4 -> v4.1:
+- Use ScopeGuard to relock
+- Fix parameter name in `relock` documentation
+
+ rust/kernel/sync/lock.rs          | 30 +++++++++++++++++++++++++++++-
+ rust/kernel/sync/lock/spinlock.rs | 17 +++++++++++++++--
+ 2 files changed, 44 insertions(+), 3 deletions(-)
+
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 819b8ea5ba2b..ff2c2a0e2830 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -6,7 +6,7 @@
+ //! spinlocks, raw spinlocks) to be provided with minimal effort.
+ 
+ use super::LockClassKey;
+-use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque};
++use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque, types::ScopeGuard};
+ use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned};
+ use macros::pin_data;
+ 
+@@ -22,6 +22,9 @@ pub mod spinlock;
+ ///
+ /// - Implementers must ensure that only one thread/CPU may access the protected data once the lock
+ /// is owned, that is, between calls to `lock` and `unlock`.
++/// - Implementers must also ensure that `relock` uses the same locking method as the original
++/// lock operation. For example, it should disable interrupts if [`IrqSaveBackend::lock_irqsave`]
++/// is used.
+ pub unsafe trait Backend {
+     /// The state required by the lock.
+     type State;
+@@ -55,6 +58,17 @@ pub unsafe trait Backend {
+     ///
+     /// It must only be called by the current owner of the lock.
+     unsafe fn unlock(ptr: *mut Self::State, guard_state: &Self::GuardState);
++
++    /// Reacquires the lock, making the caller its owner.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that `guard_state` comes from a previous call to [`Backend::lock`] (or
++    /// variant) that has been unlocked with [`Backend::unlock`] and will be relocked now.
++    unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
++        // SAFETY: The safety requirements ensure that the lock is initialised.
++        *guard_state = unsafe { Self::lock(ptr) };
++    }
+ }
+ 
+ /// The "backend" of a lock that supports the irq-save variant.
+@@ -164,6 +178,20 @@ pub struct Guard<'a, T: ?Sized, B: Backend> {
+ // SAFETY: `Guard` is sync when the data protected by the lock is also sync.
+ unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
+ 
++impl<T: ?Sized, B: Backend> Guard<'_, T, B> {
++    #[allow(dead_code)]
++    pub(crate) fn do_unlocked(&mut self, cb: impl FnOnce()) {
++        // SAFETY: The caller owns the lock, so it is safe to unlock it.
++        unsafe { B::unlock(self.lock.state.get(), &self.state) };
++
++        // SAFETY: The lock was just unlocked above and is being relocked now.
++        let _relock =
++            ScopeGuard::new(|| unsafe { B::relock(self.lock.state.get(), &mut self.state) });
++
++        cb();
++    }
++}
++
+ impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
+     type Target = T;
+ 
+diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+index 34dec09a97c0..e2a2f68e6d93 100644
+--- a/rust/kernel/sync/lock/spinlock.rs
++++ b/rust/kernel/sync/lock/spinlock.rs
+@@ -4,6 +4,7 @@
+ //!
+ //! This module allows Rust code to use the kernel's `spinlock_t`.
+ 
++use super::IrqSaveBackend;
+ use crate::bindings;
+ 
+ /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
+@@ -95,7 +96,8 @@ pub type SpinLock<T> = super::Lock<T, SpinLockBackend>;
+ /// A kernel `spinlock_t` lock backend.
+ pub struct SpinLockBackend;
+ 
+-// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion.
++// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. `relock` uses the
++// same scheme as `unlock` to figure out which locking method was used originally.
+ unsafe impl super::Backend for SpinLockBackend {
+     type State = bindings::spinlock_t;
+     type GuardState = Option<core::ffi::c_ulong>;
+@@ -127,13 +129,24 @@ unsafe impl super::Backend for SpinLockBackend {
+             None => unsafe { bindings::spin_unlock(ptr) },
+         }
+     }
++
++    unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
++        let _ = match guard_state {
++            // SAFETY: The safety requiments of this function ensure that `ptr` has been
++            // initialised.
++            None => unsafe { Self::lock(ptr) },
++            // SAFETY: The safety requiments of this function ensure that `ptr` has been
++            // initialised.
++            Some(_) => unsafe { Self::lock_irqsave(ptr) },
++        };
++    }
+ }
+ 
+ // SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. We use the `irqsave`
+ // variant of the C lock acquisition functions to disable interrupts and retrieve the original
+ // interrupt state, and the `irqrestore` variant of the lock release functions to restore the state
+ // in `unlock` -- we use the guard context to determine which method was used to acquire the lock.
+-unsafe impl super::IrqSaveBackend for SpinLockBackend {
++unsafe impl IrqSaveBackend for SpinLockBackend {
+     unsafe fn lock_irqsave(ptr: *mut Self::State) -> Self::GuardState {
+         // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
+         // memory, and that it has been initialised before.
+-- 
+2.34.1
+
