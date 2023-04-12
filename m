@@ -2,95 +2,178 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5274CC77B6E
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 18:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA9C8C77B6E
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 19:14:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230083AbjDLSoE (ORCPT
+        id S229667AbjDLTOv (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Apr 2023 14:44:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54412 "EHLO
+        Wed, 12 Apr 2023 15:14:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230013AbjDLSoD (ORCPT
+        with ESMTP id S229733AbjDLTOu (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Apr 2023 14:44:03 -0400
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D3D93C11
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Apr 2023 11:44:02 -0700 (PDT)
-Received: by mail-qv1-xf32.google.com with SMTP id ly9so11528427qvb.5
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Apr 2023 11:44:02 -0700 (PDT)
+        Wed, 12 Apr 2023 15:14:50 -0400
+Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E2E55FCF;
+        Wed, 12 Apr 2023 12:14:49 -0700 (PDT)
+Received: by mail-qt1-x831.google.com with SMTP id fv6so293518qtb.9;
+        Wed, 12 Apr 2023 12:14:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20221208.gappssmtp.com; s=20221208; t=1681325041; x=1683917041;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NA3yKE/A/kXoMe2VU/QiDPUbIiNd9/qULMU5+xukd6U=;
-        b=T96QhM5Sh+19QAqixHf79oSq09AeNY57s1bb9hNgC1Fjdlfd+Lk9MayayE6mffYJ7+
-         92/xlz+ghBXN+hpjI2YWV4wgPGFVyNVPhTSHBe17VgzAENIaAyOZdFv0nlM5U/q7QvUk
-         LGWGdDIEvpN8UsXExM8Z74bi+XuMf72JY3Z8CI2zUMDkImIm8AA21IXU2qPuvHfepNYr
-         RJCQ1dm8j/TPvS49mvv1Ax8VxFjAwJF5VyAh5UMRrGrgOO1f0RdTmhoK0Tx02Aw0sXyJ
-         pqIlb4q/3rWhIFb2I/pcBbv1grpU0kbkpCRefnDTbSdtaVzc+NUNj1yqB4MWImjmYb+V
-         8jvQ==
+        d=gmail.com; s=20221208; t=1681326888; x=1683918888;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sWnu6RVyhi4uzC7Ry2QjeXJ1CWSfmQfPfbgbdIGcaFA=;
+        b=kh5JKCDo9SPvWTnKK2hPJ25n8o1kiO7ZCmp7IglmcT9z29vxB/VwDDRKYAF7rsAbFz
+         d1ttDHBhehAPT1cY8kSR4csY5PpIfm/42SgmXtzDSFAN0TfyxSgGAdHFRHuMczL2qucH
+         K4QAEbRyX6DOLUQdINZFf9tOcYVnxAsR3nAfpinH599MSXcqvW2bLHW62Tv/K87WOCer
+         1n+2LDs/RP34oOlmw0zBLgPECiubajQqlZn6SlnYSZ2Ol0sSECCW0dPxRZttlsF+QNTG
+         R6vHl7hfZOqzBHkeIsNjlfqnVcDLVQz04whuospxr3uTz5oUblOXtiv0GPYmouPhnvuq
+         yu5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681325041; x=1683917041;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NA3yKE/A/kXoMe2VU/QiDPUbIiNd9/qULMU5+xukd6U=;
-        b=hEgpxOg+oM0mGB/QteB4ntr0n+de3r/jir5jvJ6l5YBMhyn/3lMdrB1N6Dm0Y1s9Tb
-         rc6NBWYF1S6m+28QZh91ZeD98zJoXyh5GyxAGojRIPeMY5EYSSErki3SNRkqbTHmxxg9
-         DorwssB+l75uJm0UgaAoHOPsMgp/dBWd7HNHecFEXCd1ROa4INSlOlEaAR/r699ZoReW
-         bB0Yu5DO2l4O6Fwp8BCxA6I9Fl1s67KoaA5RyUt4nk5WCOst6fzd/CQwZngX7BiN/qfX
-         f+qE7XDdOd8BXTNAyiX2OFvqQxSA3mQqN5FLSu5nibpdL1HRhqGHiUUDfsOswlL3jg4G
-         NLrQ==
-X-Gm-Message-State: AAQBX9eXhNhGjZCHkFKtuJILaZOk7jQzxD6Q2KUQGpnGjm9JSNqfcTW9
-        TwfU+UA8UQuod3cLzURLtDZOJg==
-X-Google-Smtp-Source: AKy350Y3OC9A50D1pW6cq4oVehWpe37l+cmYeLQ8rIj8dC+wF1vYlypEuM8OFvq1g0Zqah6s+Gwivw==
-X-Received: by 2002:ad4:4eef:0:b0:5a3:725e:425c with SMTP id dv15-20020ad44eef000000b005a3725e425cmr27210024qvb.2.1681325041277;
-        Wed, 12 Apr 2023 11:44:01 -0700 (PDT)
-Received: from nicolas-tpx395.localdomain ([2606:6d00:15:199e::580])
-        by smtp.gmail.com with ESMTPSA id m10-20020ad44b6a000000b005dd8b9345cesm4987525qvx.102.2023.04.12.11.44.00
+        d=1e100.net; s=20221208; t=1681326888; x=1683918888;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sWnu6RVyhi4uzC7Ry2QjeXJ1CWSfmQfPfbgbdIGcaFA=;
+        b=exlerfFlGdwdAon3vXIgkjP7MtuBRN+YCL3r+eVGj/BKLoWkN1wZAyRti+MjQGkN/c
+         0davhkmpA2AosHM2zAbhsUlbcmOycwI+vRKFmHfczAhl+yoKn3kiBBUjO7cG6purvLPR
+         aYK+BfKacT/GYkyTwl1l5rR7RgpirAoEzRtKDy3w9eQlDH9F/NhPKVfFijKYMO+oshCv
+         Yd4y0gHsiIJ+EjutEkutRRVmHH6YIdKH0Zmn8vCGxo9qjaMDHggaUvWv5E8WtzuidInj
+         bh6UagGOFGqe4t3gn8KRivFRQ0jJEFMnQnUZYt+S6CKjeeL80r028tBTDYgw0tIEWrec
+         dJ7Q==
+X-Gm-Message-State: AAQBX9dtOwuHHVhSmIoD9/nvSHm5nYZkfaNTGvB4OMSUyov0yZgGeUUI
+        d/9ksieU5xsMTLsVRnnudBTsWeSkZP0=
+X-Google-Smtp-Source: AKy350ZVLQ44IG1f4rg4LVxAu2yzZPrUV+qRRm01OWAVrErTfgleOHgyvR3VdeBTIueBQA508uxBWA==
+X-Received: by 2002:a05:622a:88:b0:3e8:8f:3140 with SMTP id o8-20020a05622a008800b003e8008f3140mr7799511qtw.24.1681326888132;
+        Wed, 12 Apr 2023 12:14:48 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id o5-20020ac872c5000000b003c033b23a9asm4398905qtp.12.2023.04.12.12.14.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Apr 2023 11:44:00 -0700 (PDT)
-Message-ID: <3fa75b5748022c63dfb75ff82e1d4a84d58a296a.camel@ndufresne.ca>
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-From:   Nicolas Dufresne <nicolas@ndufresne.ca>
-To:     Theodore Ts'o <tytso@mit.edu>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Deborah Brouwer <deborah.brouwer@collabora.com>,
-        Daniel Almeida <daniel.almeida@collabora.com>,
-        wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
-        hverkuil@xs4all.nl, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        kernel@collabora.com
-Date:   Wed, 12 Apr 2023 14:44:00 -0400
-In-Reply-To: <20230412025834.GA301301@mit.edu>
-References: <20230406215615.122099-1-daniel.almeida@collabora.com>
-         <ZDSRSWhWsN34MghQ@xps>
-         <CANiq72=n1b=fJ2XZZx_MLKkbKMTmnmTBMgA3GJ_hqyARPtwEiQ@mail.gmail.com>
-         <20230412025834.GA301301@mit.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        Wed, 12 Apr 2023 12:14:47 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailauth.nyi.internal (Postfix) with ESMTP id C673F27C0054;
+        Wed, 12 Apr 2023 15:14:46 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Wed, 12 Apr 2023 15:14:46 -0400
+X-ME-Sender: <xms:JgM3ZBdBPwa1GuuV-wzKK07S-qzaWy5f1XluchjD7yb2RFizR1UbRg>
+    <xme:JgM3ZPN8k7jp6Uk4f_ZzNzOZ9mvmpx_ysKV8stXlZURiF32psyW7QAekxJBpW1piX
+    6iexbw825m2gMU11g>
+X-ME-Received: <xmr:JgM3ZKjdcvqlITLXh5Q3tp7YouNMi60vMnDyEt8J-jnphZrFRF9Fr5zlAxvMOg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdekiedgudefjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:JgM3ZK-80CEJzK3qJSFfa3L_5-5EGp9hZGDpSPtWGfQII9a4vfUHeA>
+    <xmx:JgM3ZNtU_d5IKGewScMoYMweHq_cIsH5W9Nf3pcIHxIBr1TXymOVBA>
+    <xmx:JgM3ZJF_5DDkWNLILnJDSvbMLK-iS3iu275v5irHr0IIspXE70zw_A>
+    <xmx:JgM3ZGG_ktda9njN0jQo2DkEm0n_leFjhdqFMPJ4QJ5uO1RsHwMKBw>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 12 Apr 2023 15:14:46 -0400 (EDT)
+Date:   Wed, 12 Apr 2023 12:14:44 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 04/13] locking/spinlock: introduce
+ spin_lock_init_with_key
+Message-ID: <ZDcDJKgi4f3OF05d@boqun-archlinux>
+References: <20230411054543.21278-1-wedsonaf@gmail.com>
+ <20230411054543.21278-4-wedsonaf@gmail.com>
+ <CANeycqqM5o_4gj2rT=8yV0NGTRWY=jTA6HT4F2Esho-WAJCPOQ@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANeycqqM5o_4gj2rT=8yV0NGTRWY=jTA6HT4F2Esho-WAJCPOQ@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Theodore,
+On Tue, Apr 11, 2023 at 03:05:07PM -0300, Wedson Almeida Filho wrote:
+> On Tue, 11 Apr 2023 at 02:46, Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+> >
+> > From: Wedson Almeida Filho <walmeida@microsoft.com>
+> >
+> > Rust cannot call C macros, so it has its own macro to create a new lock
+> > class when a spin lock is initialised. This new function allows Rust
+> > code to pass the lock class it generates to the C implementation.
+> >
+> > Cc: Peter Zijlstra <peterz@infradead.org>
+> > Cc: Ingo Molnar <mingo@redhat.com>
+> > Cc: Will Deacon <will@kernel.org>
+> > Cc: Waiman Long <longman@redhat.com>
+> > Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
 
-Le mardi 11 avril 2023 =C3=A0 22:58 -0400, Theodore Ts'o a =C3=A9crit=C2=A0=
-:
-> And for those distributions that don't currently ship Rust, such as
-> Fedora, if someone could build their own unofficial packages, until we
-> can convince Red Hat to start shipping -their own supported Rust
-> compilers, that might be a great way of bridging that gap.
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-Rust can be installed from package on Fedora. I sense a lot of unverified
-supposition to justify your argument. I don't believe this contribute much =
-to
-the discussion. It takes about 30s to search on your preferred search engin=
-e and
-find the fact the Fedora ships rustc, and the version is very recent.
+> > ---
+> > v1 -> v2: No changes
+> > v2 -> v3: No changes
+> > v3 -> v4: No changes
+> >
+> >  include/linux/spinlock.h | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+> > index be48f1cb1878..cdc92d095133 100644
+> > --- a/include/linux/spinlock.h
+> > +++ b/include/linux/spinlock.h
+> > @@ -327,12 +327,17 @@ static __always_inline raw_spinlock_t *spinlock_check(spinlock_t *lock)
+> >
+> >  #ifdef CONFIG_DEBUG_SPINLOCK
+> >
+> > +static inline void spin_lock_init_with_key(spinlock_t *lock, const char *name,
+> > +                                          struct lock_class_key *key)
+> > +{
+> > +       __raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
+> > +}
+> > +
+> >  # define spin_lock_init(lock)                                  \
+> >  do {                                                           \
+> >         static struct lock_class_key __key;                     \
+> >                                                                 \
+> > -       __raw_spin_lock_init(spinlock_check(lock),              \
+> > -                            #lock, &__key, LD_WAIT_CONFIG);    \
+> > +       spin_lock_init_with_key(lock, #lock, &__key);           \
+> >  } while (0)
+> 
+> Peter, the code above is just factoring out spin lock init when
+> lockdep is enabled to take a lock class key.
+> 
+> Would you be able to review it?
+> 
+> If it's ok with you, we'd like to carry it through the rust tree
+> because we have code that depends on it.
 
-regards,
-Nicolas
+Same ask here ;-) Peter, do you think it's Ok to take it via rust tree?
+Thanks!
+
+Regards,
+Boqun
+
+> 
+> Thanks,
+> -Wedson
+> 
+> >
+> >  #else
+> > --
+> > 2.34.1
+> >
