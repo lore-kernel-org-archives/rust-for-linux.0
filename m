@@ -2,72 +2,160 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C35DAC7619A
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 10:24:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A766C7619A
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 11:07:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229580AbjDLKYI (ORCPT
+        id S229841AbjDLLHy (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Apr 2023 06:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36202 "EHLO
+        Wed, 12 Apr 2023 07:07:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230390AbjDLKYB (ORCPT
+        with ESMTP id S229536AbjDLLHx (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Apr 2023 06:24:01 -0400
-Received: from mail.turbocat.net (turbocat.net [88.99.82.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B90872B8;
-        Wed, 12 Apr 2023 03:23:58 -0700 (PDT)
-Received: from [10.36.2.154] (unknown [46.212.121.255])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by mail.turbocat.net (Postfix) with ESMTPSA id B66AB260C85;
-        Wed, 12 Apr 2023 12:23:55 +0200 (CEST)
-Message-ID: <d8728db4-81d2-6204-9b9f-f9256f574d0c@selasky.org>
-Date:   Wed, 12 Apr 2023 12:23:56 +0200
+        Wed, 12 Apr 2023 07:07:53 -0400
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B56D6A60;
+        Wed, 12 Apr 2023 04:07:52 -0700 (PDT)
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-54c061acbc9so351658207b3.11;
+        Wed, 12 Apr 2023 04:07:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681297671;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+0tHhoLaNH21wv0oq5mHGI1fOn2fqnxMjXKIfupUAhY=;
+        b=e+swkbxqpSikjMu4Ym4/TcQ6kqy9uQ3Geo9IvLWoYrR77zM4L1lJBhLSISGU5J1Sgm
+         xHHk5vS38naiRIRK4WLlRLso1dMAh8h5c0NLaE9v7PEebn9niewxb4lncH+Mfakeycfq
+         KL0vtdtS/kRHbpdpbqjimd21xhTMEzgy2EhKdZF0MsDxdTgdtkcjYA19jWkqJQ4Cvnul
+         ty6NbM52DcuXqqunzXLQf1CemY2SPtUWkyrg8OE1VznNOtVh4/ElfBurpgG0UqEi4aeF
+         OE6aTqxRoUA+338Vd5f75CbPj7l4nHx788g5QOxkPRd/G/eQHPQxMOwHmu2Ff3h7H+Jd
+         R5Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681297671;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+0tHhoLaNH21wv0oq5mHGI1fOn2fqnxMjXKIfupUAhY=;
+        b=D5Jr0krUe0EoQfrmYG/QahSgcdsGn3ONtdMSSDKTlkqLCNxwARIRRnc7FIHdYT+zSm
+         5Vsn1Ve3tKt4Siun6LkUSIV0PyKTSt2Nfsq+GLTNCOLz16cjWoD5Or1nIHTdPRZx6Ix7
+         EvBmylw7zYGVro+L49A0bJqd/E2I8dvUPv1dt5Dc3WaObwD9SywJN96fbSVYk1lCS0K4
+         VB7o6ulCSlXWDh7wPd9NI0S+dDP6lqgpkulV4ljEo5urxsUlPbVFQ/A3Lt0vqBQhaI7S
+         aFVooOMm0oxz0QNd9Kb9dnuawScwyd/J77awU894RWfbT2P9W9awwHKpR0/I21qyIihG
+         T5nA==
+X-Gm-Message-State: AAQBX9dantb8yaUc/89VxtqeQOZwdD7/zLsNjYY4i4ug3BdLYVo2Qfzp
+        H9w2vDFlkqJijZy99LBIU3esQx72AWvzKpWsPIE=
+X-Google-Smtp-Source: AKy350Y6pqOnwZEL92tv7EI/FvQHD+G5n+I4rzULnolMOyCFbynl2b3l6MESX3o1NwyErd7LTsYLBRsNJdUaPe7qW3I=
+X-Received: by 2002:a81:af0c:0:b0:54c:c979:7f95 with SMTP id
+ n12-20020a81af0c000000b0054cc9797f95mr7858106ywh.9.1681297671489; Wed, 12 Apr
+ 2023 04:07:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; FreeBSD amd64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-Content-Language: en-US
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Daniel Almeida <daniel.almeida@collabora.com>,
-        wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
-        hverkuil@xs4all.nl, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        kernel@collabora.com
-References: <0ec4becd05c49e8f0bf214fbd62208ea67c2b4c3.camel@collabora.com>
- <6fc0a0c6-a7c9-5350-9b9e-1ea9dab568d0@selasky.org>
- <CANiq72m812+L6dc4Qs2wUXW85eBQwgrjWYYKc1MSsqN5AG_sFw@mail.gmail.com>
- <9f896097-8410-4d09-b614-6e792b2160f4@selasky.org>
- <CANiq72mv2uYe1x6cy4zUq8XHhAZcYYpt6hVXMG4yQZeqw1kY7Q@mail.gmail.com>
- <1d50d25c-e64b-01f4-029f-8b40b46848fd@selasky.org>
- <CANiq72mbM+WBcvj1TwU2u9kLz=EucLhLR-a5nzZEDa7VJ0s2_A@mail.gmail.com>
- <ca17f815-5779-d37c-e3f8-2a6c2983fe45@selasky.org>
- <CANiq72mn1nD38DGHpFQzerC=_ifR39Vpbb_PzLv5Q75SdzTxQg@mail.gmail.com>
- <8ff91d0c-624b-2704-24b0-5b7c4ca0db1e@selasky.org>
- <2023041243-clarinet-scallion-6fb0@gregkh>
-From:   Hans Petter Selasky <hps@selasky.org>
-In-Reply-To: <2023041243-clarinet-scallion-6fb0@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20230411054543.21278-1-wedsonaf@gmail.com> <20230411054543.21278-11-wedsonaf@gmail.com>
+ <ZDZOzzMvvxr4rsW4@Boquns-Mac-mini.local>
+In-Reply-To: <ZDZOzzMvvxr4rsW4@Boquns-Mac-mini.local>
+From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+Date:   Wed, 12 Apr 2023 08:07:40 -0300
+Message-ID: <CANeycqqpR6Gs5Qb_pc2j_QV-JAc8xR360vth6We8xWU1GU5ASA@mail.gmail.com>
+Subject: Re: [PATCH v4 11/13] rust: lock: add `Guard::do_unlocked`
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 4/12/23 12:13, Greg KH wrote:
-> On Wed, Apr 12, 2023 at 12:00:59PM +0200, Hans Petter Selasky wrote:
->> That's why the toolchain should be included in the Linux kernel. So that the
->> people using Linux know that the toolchain works as intended when compiling
->> the Linux kernel.
-> 
-> That's not how Linux has ever worked, sorry.  So this is not even a
-> valid discussion anymore.
-> 
+On Wed, 12 Apr 2023 at 03:25, Boqun Feng <boqun.feng@gmail.com> wrote:
+>
+> On Tue, Apr 11, 2023 at 02:45:41AM -0300, Wedson Almeida Filho wrote:
+> [...]
+> > +
+> > +    unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
+> > +        let _ = match guard_state {
+> > +            // SAFETY: The safety requiments of this function ensure that `ptr` has been
+> > +            // initialised.
+> > +            None => unsafe { Self::lock(ptr) },
+> > +            // SAFETY: The safety requiments of this function ensure that `ptr` has been
+> > +            // initialised.
+> > +            Some(_) => unsafe { Self::lock_irqsave(ptr) },
+> > +        };
+> > +    }
+> >  }
+> >
+>
+> One thing I'm little worried about the above is that we don't store back
+> the new GuardState into `guard_state`, the particular case I'm worried
+> about is as follow:
+>
+>         // IRQ is enabled.
+>         // Disabling IRQ
+>         unsafe { bindings::local_irq_disable(); }
+>
+>         let mut g = unsafe { SpinLockBackend::lock(&mut lock as *mut _) };
+>         // `g` records irq state is "irq disabled"
+>
+>         unsafe { SpinLockBackend::unlock(&mut lock as *mut _, &g); }
+>         // restore into "irq disabled" mode.
+>         // IRQ is disabled.
+>
+>         // Enabling IRQ
+>         unsafe { bindings::local_irq_enable(); }
+>         // IRQ is enabled.
+>
+>         unsafe { SpinLockBackend::relock(&mut lock as *mut _, &mut g) }
+>         // `g` still records irq state is "irq disabled"
 
-Well, maybe it's time to change your views on that and stop being a rock 
-thrower on your friends, the compiler folks, whenever something goes wrong:
+Yes, that's by design. If you want it to record the new "irq enabled"
+state, then you should call `lock()`, not `relock()`.
 
-https://news.ycombinator.com/item?id=8089321
+>         unsafe { SpinLockBackend::unlock(&mut lock as *mut _, &g); }
+>         // restore into "irq disabled" mode.
+>         // IRQ is disabled.
+>
+>
+> This looks pretty scary to me, I would expect `relock()` updates the
+> latest GuardState to the guard. Any reason it's implemented this way?
 
---HPS
+A `relock()` followed by an `unlock()` takes the state back to how it
+was when `lock()` was originally called: this is precisely why
+`relock()` exists.
+
+Consider the following case:
+
+```
+local_disable_irq();
+let mut guard = spinlock.lock();
+
+guard.do_unlocked(|| {
+    local_irq_enable();
+    schedule();
+});
+
+drop(guard);
+```
+
+What would you expect the state to be? It's meant to be the state
+right before `spinlock.lock()` was called, that's what the guard
+represents.
+
+If you want to preserve a new state, then you don't want `relock()`,
+you just want a new `lock()` call.
+
+> Regards,
+> Boqun
+>
+> >  // SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. We use the `irqsave`
+> >  // variant of the C lock acquisition functions to disable interrupts and retrieve the original
+> >  // interrupt state, and the `irqrestore` variant of the lock release functions to restore the state
+> >  // in `unlock` -- we use the guard context to determine which method was used to acquire the lock.
+> > -unsafe impl super::IrqSaveBackend for SpinLockBackend {
+> > +unsafe impl IrqSaveBackend for SpinLockBackend {
+> >      unsafe fn lock_irqsave(ptr: *mut Self::State) -> Self::GuardState {
+> >          // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
+> >          // memory, and that it has been initialised before.
+> > --
+> > 2.34.1
+> >
