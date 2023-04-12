@@ -2,63 +2,63 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51E52C7619A
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 11:10:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98A0BC77B71
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 11:18:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbjDLLKo (ORCPT
+        id S230241AbjDLLSF (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Apr 2023 07:10:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35150 "EHLO
+        Wed, 12 Apr 2023 07:18:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229565AbjDLLKo (ORCPT
+        with ESMTP id S230256AbjDLLR4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Apr 2023 07:10:44 -0400
+        Wed, 12 Apr 2023 07:17:56 -0400
 Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058006EA5;
-        Wed, 12 Apr 2023 04:10:19 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id q5so14069254ybk.7;
-        Wed, 12 Apr 2023 04:10:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 877066EA5;
+        Wed, 12 Apr 2023 04:17:35 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id e127so11251716ybf.8;
+        Wed, 12 Apr 2023 04:17:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681297810;
+        d=gmail.com; s=20221208; t=1681298205;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=chKAIM4ZxxQVL8Xid6ujCOrtYPL9y4QPjMJ/OigHilk=;
-        b=nU/I7mboOTPCQqM4XPuxWrMb0lfd5MpHHU1F2gzx9H0Md857K1Sms/0Dmw3g2UjMPA
-         azq9eMvskSskpkHs6DdwT+qdC6JEHLmmu/hwNId1aFImiKTDtBydjXXSgeSllRqvKbyt
-         3xpMnZsAN/knei+Rfj7CvvETRm06iRGm8TyVlanOZMevwX+NVLMYXQ1BWutyV2Yd0Ljo
-         n+KEkMI3nAu5ih3xMGAPXzmAeYKhXxchwMid0maejPmfhKBgvY7T8j5N6BZEHW6whU16
-         5omAJbGTdM7IsTIoxcs+4AIqZ7H6Oapd0Nnjr8SHgKF4qoOOoQ2mGFd4ZMqAO7onPRsq
-         hAng==
+        bh=C9vgeMqqjwy92KIDibUs2lkkbVvQINAuG9wgc3eeu+E=;
+        b=YugBswhPW+UhUWOJGhp/3WcZfP2rk1uY6rRxt7D9a45ZGQi7bmJwVshblR38ZWSTDH
+         23IewvaIooujWdTVmhuNFhegCozkDECYBPgvRVChB8msUVI2SNVgrjIH7lYnlOZYMohJ
+         Pgv9jvUJ5kmmdfZf6nXgVV3aLtUk+TfVIDQtgThI6UyIuFbbtKleLyRh7+Nsf78yem0J
+         pkUqD8mx7kBIRxzJHncZ1nqcswhDiiCjKqqOykPVV0PacTIAh7A2XPyC4YfLVvVbKaDS
+         KsYEWmD7m0tclgJ8bDmrrrnm/ukRg7yjFngUYgI8HK5JBmsz1XWk1UBlY9imNPMgsaVG
+         FLBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681297810;
+        d=1e100.net; s=20210112; t=1681298205;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=chKAIM4ZxxQVL8Xid6ujCOrtYPL9y4QPjMJ/OigHilk=;
-        b=Z0J31zOI3Lam5F+uvPn969/EY/hIn2q3sfumVmAVii7gJrXsQw5N1AHCJGjyMjx7qF
-         i/C9BCO2SITSD2GkWSDXUWIwa4ohjw/5XFQgQkBbxFI5oQMwxXcXBkcEwcjpq4dwGv8q
-         Q2GbOYF/Hxw+AxjvNHcz/LLDUBbTErn0MAecUmjN3S8kqf+x2PE4PQnUEg5H9NNzFpOv
-         zplHMOmI5q6RaX3z3FQgo06gNINrj2l5TDEPWP4qmr7kn24HVqFTsGFWWvYjyVcEuGaR
-         PwSoPpwvQ6ddKFrqLJoBDr6du/3TCfJ98njK1yuo/++BaU5FfeQ7fQN/SAZ6R8ii41js
-         +Kuw==
-X-Gm-Message-State: AAQBX9dtgHgEjgNKytH2Gh+3r+ApMOxd1zRPehxXrLJ6ZG2aZVlcn0bP
-        w6ebjaBl3av3EPzTP7j2dpcELuU1Axfq92KfhDc=
-X-Google-Smtp-Source: AKy350YJeoWcJSKxKNPdLiHTnHz11u4bZUO+tYRek3nCmaFVkqul25T/YbSECDpDc9xM3E98GqMYtAynfPTUATsEyhw=
-X-Received: by 2002:a25:73c2:0:b0:b8f:3e29:fb9a with SMTP id
- o185-20020a2573c2000000b00b8f3e29fb9amr894425ybc.6.1681297809723; Wed, 12 Apr
- 2023 04:10:09 -0700 (PDT)
+        bh=C9vgeMqqjwy92KIDibUs2lkkbVvQINAuG9wgc3eeu+E=;
+        b=2X6RFWcfyPIu1yI7MFoPxifrEiJe+GXNs3E4kqs4TkW/k/zBMedCzzoW5w9/3X+08i
+         BTHXyKwa+2f0CxIvZabwAZBlnBpkGvdQCkJHk8y8rSzF0aLbOMLFnWi3HDpX1HFr2bsJ
+         UNdZkDxLU3gCdDD2BGQpgZVVuPZJDEn81roLljtB+te6BKz1o7wYLdHJ/o1CA8bElEmY
+         OrFmi9mLt9+JKBjYowPjLKd7iNDck1cQc+sD15sCIb4510CI26cHiTi6uTt/7eR7qoYO
+         6ThXCxF1xPAzEaF3Urgn8xeQET5z0HYF8BHJtWQz2nBagyta+nV2GSRoVy3w13d878Le
+         CYMg==
+X-Gm-Message-State: AAQBX9fmBDq1LbncWk46wn7p69pbdppwYi/FFBCu0e+nydt0TYqdR30J
+        t8o0DvuXalN4lYy6VNkA+GFpspaVk1/me3duEnA=
+X-Google-Smtp-Source: AKy350ZogyWOgeIKf0FJs7/NpXzfm0pEigEA01THt0IprIJDLF6hOjHgmhMxlHgIUinKnvrvqgCTGZU0vUFdGSTaYo0=
+X-Received: by 2002:a25:7390:0:b0:b6e:d788:eba4 with SMTP id
+ o138-20020a257390000000b00b6ed788eba4mr8849797ybc.6.1681298204957; Wed, 12
+ Apr 2023 04:16:44 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230411054543.21278-1-wedsonaf@gmail.com> <20230411054543.21278-11-wedsonaf@gmail.com>
- <ZDXOVXFlq7eXRTIS@boqun-archlinux>
-In-Reply-To: <ZDXOVXFlq7eXRTIS@boqun-archlinux>
+ <20230411215413.7720246f.gary@garyguo.net>
+In-Reply-To: <20230411215413.7720246f.gary@garyguo.net>
 From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-Date:   Wed, 12 Apr 2023 08:09:58 -0300
-Message-ID: <CANeycqo0bdXwuEMEbx8HREmTYGmBqG1EuT-jNMyZk304krOx1Q@mail.gmail.com>
+Date:   Wed, 12 Apr 2023 08:16:34 -0300
+Message-ID: <CANeycqon3yUn_666ozTiU_G=16JcnRS54cdu28Yxd0=Pm_jpzA@mail.gmail.com>
 Subject: Re: [PATCH v4 11/13] rust: lock: add `Guard::do_unlocked`
-To:     Boqun Feng <boqun.feng@gmail.com>
+To:     Gary Guo <gary@garyguo.net>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
+        Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <walmeida@microsoft.com>,
@@ -68,9 +68,11 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, 11 Apr 2023 at 18:18, Boqun Feng <boqun.feng@gmail.com> wrote:
+On Tue, 11 Apr 2023 at 17:54, Gary Guo <gary@garyguo.net> wrote:
 >
-> On Tue, Apr 11, 2023 at 02:45:41AM -0300, Wedson Almeida Filho wrote:
+> On Tue, 11 Apr 2023 02:45:41 -0300
+> Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+>
 > > From: Wedson Almeida Filho <walmeida@microsoft.com>
 > >
 > > It releases the lock, executes some function provided by the caller,
@@ -117,21 +119,6 @@ On Tue, 11 Apr 2023 at 18:18, Boqun Feng <boqun.feng@gmail.com> wrote:
 > > +    /// # Safety
 > > +    ///
 > > +    /// Callers must ensure that `state` comes from a previous call to [`Backend::lock`] (or
->
-> I think you mean
->
-> "Callers must ensure that `guard_state` comes ..."
->
-> , right?
-
-That's right, thanks for spotting this!
-
-I renamed the parameter names (based on your feedback :)) but didn't
-update the comment accordingly. Will do.
-
-> Regards,
-> Boqun
->
 > > +    /// variant) that has been unlocked with [`Backend::unlock`] and will be relocked now.
 > > +    unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
 > > +        // SAFETY: The safety requirements ensure that the lock is initialised.
@@ -152,6 +139,26 @@ update the comment accordingly. Will do.
 > > +        cb();
 > > +        // SAFETY: The lock was just unlocked above and is being relocked now.
 > > +        unsafe { B::relock(self.lock.state.get(), &mut self.state) };
+>
+> This should be
+>
+>         let _guard = ScopeGuard::new(|| unsafe {
+>             B::relock(self.lock.state.get(), &mut self.state) }
+>         });
+>         cb();
+>
+> Although we currently use `-Cpanic=abort`, I think as a general rule we
+> should still try to make code unwind-safe, so it can remain sound if
+> someone takes the code and use it for userspace (e.g. for testing
+> purpose, or maybe sharing codebase with tools).
+
+Good point. Although this has not been something we cared about in the
+last couple of years because we abort, I think we should carefully
+review code for this as we upstream.
+
+It is also important for async scenarios: we need to go back to a
+consistent state when we tear down `Future` instances.
+
 > > +    }
 > > +}
 > > +
@@ -206,6 +213,4 @@ update the comment accordingly. Will do.
 > >      unsafe fn lock_irqsave(ptr: *mut Self::State) -> Self::GuardState {
 > >          // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
 > >          // memory, and that it has been initialised before.
-> > --
-> > 2.34.1
-> >
+>
