@@ -2,117 +2,150 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81D1DC77B6C
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Apr 2023 22:22:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6738BC77B61
+	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Apr 2023 08:02:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229656AbjDLWV7 (ORCPT
+        id S229917AbjDMICz (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Apr 2023 18:21:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34120 "EHLO
+        Thu, 13 Apr 2023 04:02:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbjDLWV6 (ORCPT
+        with ESMTP id S229579AbjDMICy (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Apr 2023 18:21:58 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9465B4EDD;
-        Wed, 12 Apr 2023 15:21:57 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id e9so42752080ljq.4;
-        Wed, 12 Apr 2023 15:21:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681338116; x=1683930116;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TJr6AWFebjK1Coi807z+XBUR1Np+UcCq6pNM3vMGwoo=;
-        b=aNuQQWmbgSMWmF1ot1asUunY9Gtyu9/w4nuwYix+fSMpVIlCplQvbcBt6ATr0gP6zy
-         21wf8/gsMaOWQAoOnnfASoVsyM76miHNwFyJnme8ADMsg+1kjc4ZjN4Y+zI32F1+cr0S
-         FJ1NaoY3mTLXj8jryuimEXKCWhofdVNAbvE1HwaNhJt/A2Qo5WQCZCWoBOXsxBl2jtbM
-         0ROSrO9fpaBHAEUVifIfSZSNHgyHdG7OX1jzuzhlMYSvbfsjlB+MSN0j5u4+1jZDY5AG
-         0GoFgVHdYQHhCtUI6fBKVbOBD/X995rGDzp7NdPDDVqg0hU/NKLfq3PGcVmBlQQmBMKl
-         I1lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681338116; x=1683930116;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TJr6AWFebjK1Coi807z+XBUR1Np+UcCq6pNM3vMGwoo=;
-        b=Y7ouMq0EHvA2oGEP2pAp60D3bW9pEaBmMaEW/czjDqUpshjYN55Ms+lZZH2zGOjyRB
-         p9ePzi41lDdJ8l8v4RHxR+2dipdW6HRQNitPB3v/QpnXLV8UCMaT3fIRs4TrcIdJ+6Jr
-         I+jNlj9VMMfNqWRzvx2Lk8iFsU9r3ZJIY7dMht3U1uL9Dl+jY3WYu0dZv2FxImipuTW1
-         +ltktM08n39gUtZWdxAQvaaBM8+x7HPN4aOAOtG3Sh44Lo1HRsBXdpiLVguqMSyFiiQC
-         jNiiERMlXSlHkJIfp5KpdCQyXgCZrdlSisflzAB69Pym5z7TI8Q2Q1PnZjpRy31G5pgI
-         HOFQ==
-X-Gm-Message-State: AAQBX9cNNllkah4Gy3pjx1KG0dDnuBsuperzpOT48d3q1qq0b1IoT5eY
-        hOQnKLM2t0lF2fen2wom8elUWryVA8XpEZjq6nY=
-X-Google-Smtp-Source: AKy350ZKq0MErucl+c8u4wpRhsUOwBNFfKHT4tb97uXRU0ahEt4j/D4sUk0PdPgT82Uvx9Nus5B+BCaePsGQTAdrvu4=
-X-Received: by 2002:a2e:8296:0:b0:2a7:73ce:93be with SMTP id
- y22-20020a2e8296000000b002a773ce93bemr73252ljg.9.1681338115661; Wed, 12 Apr
- 2023 15:21:55 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230412221823.830135-1-ojeda@kernel.org>
-In-Reply-To: <20230412221823.830135-1-ojeda@kernel.org>
-From:   Alex Gaynor <alex.gaynor@gmail.com>
-Date:   Wed, 12 Apr 2023 18:21:44 -0400
-Message-ID: <CAFRnB2VygPYBY7MbxoftzEtqs52YG5AN_EO72Nm1ukLWnApa=Q@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: add Benno Lossin as Rust reviewer
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Thu, 13 Apr 2023 04:02:54 -0400
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63E171996;
+        Thu, 13 Apr 2023 01:02:52 -0700 (PDT)
+Date:   Thu, 13 Apr 2023 08:02:43 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=defwzdmaenehngew2pjqi5ow4e.protonmail; t=1681372970; x=1681632170;
+        bh=tgvPbiKBjIQ3zUaZAx9h4mi+To8BUxn+30NwtaLSZ0Y=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=jeRXmJfamXCYFqKHvosjUlzyG/O4SoY5AxOqyWMtfMhkhTaBolyFq/sQmZQQfDX1m
+         k5kdbd4IusypgHeIWNu6zSqz3IWqRHizQJ0U+gFb7f+MzaO6BftJiOsOGTtjQoZ/mX
+         S3e480l3tOfsLlboWvWHJus+JLIpzeYKrIhdCuEViAW3JPsmzGI+LeNieYorxCl0+P
+         NEdcdgLFFg1p3yw2sQBmn2IBOvkggq+U+g7bOC8oQaukDg0hxJCeZ5mOgnG8+Lsmds
+         iyXrxmemA9hisU/YYQ4BZAlMAfKv05/Hx746rPuR0ArtaewHJmwg0fOZWcS9Qn1C3C
+         kLhhSGQx6fx8Q==
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        rust-for-linux@vger.kernel.org
+From:   Benno Lossin <benno.lossin@proton.me>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Benno Lossin <benno.lossin@proton.me>
-Content-Type: text/plain; charset="UTF-8"
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Subject: Re: [PATCH v4 01/13] rust: sync: introduce `LockClassKey`
+Message-ID: <a9428aa7-efc0-f6e8-6bc3-5a3173a09e7e@proton.me>
+In-Reply-To: <20230411054543.21278-1-wedsonaf@gmail.com>
+References: <20230411054543.21278-1-wedsonaf@gmail.com>
+Feedback-ID: 71780778:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+On 11.04.23 07:45, Wedson Almeida Filho wrote:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
+>
+> It is a wrapper around C's `lock_class_key`, which is used by the
+> synchronisation primitives that are checked with lockdep. This is in
+> preparation for introducing Rust abstractions for these primitives.
+>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Waiman Long <longman@redhat.com>
+> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
 
-On Wed, Apr 12, 2023 at 6:18=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Benno has been involved with the Rust for Linux project for
-> the better part of a year now. He has been working on solving
-> the safe pinned initialization problem [1], which resulted in
-> the pin-init API patch series [2] that allows to reduce the
-> need for `unsafe` code in the kernel. He is also working on
-> the field projection RFC for Rust [3] to bring pin-init as
-> a language feature.
->
-> His expertise with the language will be very useful to have
-> around in the future if Rust grows within the kernel, thus
-> add him to the `RUST` entry as reviewer.
->
-> Link: https://rust-for-linux.com/the-safe-pinned-initialization-problem [=
-1]
-> Link: https://lore.kernel.org/rust-for-linux/20230408122429.1103522-1-y86=
--dev@protonmail.com/ [2]
-> Link: https://github.com/rust-lang/rfcs/pull/3318 [3]
-> Cc: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
 > ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
+> v1 -> v2: Fixed a typo in comment
+> v2 -> v3: Replaced `core` with `::core` in macro
+> v3 -> v4:
+> - Rebased on top of rust-next now that all dependencies are applied
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 90abe83c02f3..bf9deaa4aa5a 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -18225,6 +18225,7 @@ M:      Wedson Almeida Filho <wedsonaf@gmail.com>
->  R:     Boqun Feng <boqun.feng@gmail.com>
->  R:     Gary Guo <gary@garyguo.net>
->  R:     Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
-> +R:     Benno Lossin <benno.lossin@proton.me>
->  L:     rust-for-linux@vger.kernel.org
->  S:     Supported
->  W:     https://github.com/Rust-for-Linux/linux
+>   rust/kernel/sync.rs | 45 +++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 45 insertions(+)
 >
-> base-commit: 09a9639e56c01c7a00d6c0ca63f4c7c41abe075d
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index 33da23e3076d..541d235ffbeb 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -5,6 +5,51 @@
+>   //! This module contains the kernel APIs related to synchronisation tha=
+t have been ported or
+>   //! wrapped for usage by Rust code in the kernel.
+>
+> +use crate::types::Opaque;
+> +
+>   mod arc;
+>
+>   pub use arc::{Arc, ArcBorrow, UniqueArc};
+> +
+> +/// Represents a lockdep class. It's a wrapper around C's `lock_class_ke=
+y`.
+> +#[repr(transparent)]
+> +pub struct LockClassKey(Opaque<bindings::lock_class_key>);
+> +
+> +// SAFETY: `bindings::lock_class_key` is designed to be used concurrentl=
+y from multiple threads and
+> +// provides its own synchronization.
+> +unsafe impl Sync for LockClassKey {}
+> +
+> +impl LockClassKey {
+> +    /// Creates a new lock class key.
+> +    pub const fn new() -> Self {
+> +        Self(Opaque::uninit())
+> +    }
+> +
+> +    #[allow(dead_code)]
+> +    pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+> +        self.0.get()
+> +    }
+> +}
+> +
+> +/// Defines a new static lock class and returns a pointer to it.
+> +#[doc(hidden)]
+> +#[macro_export]
+> +macro_rules! static_lock_class {
+> +    () =3D> {{
+> +        static CLASS: $crate::sync::LockClassKey =3D $crate::sync::LockC=
+lassKey::new();
+> +        &CLASS
+> +    }};
+> +}
+> +
+> +/// Returns the given string, if one is provided, otherwise generates on=
+e based on the source code
+> +/// location.
+> +#[doc(hidden)]
+> +#[macro_export]
+> +macro_rules! optional_name {
+> +    () =3D> {
+> +        $crate::c_str!(::core::concat!(::core::file!(), ":", ::core::lin=
+e!()))
+> +    };
+> +    ($name:literal) =3D> {
+> +        $crate::c_str!($name)
+> +    };
+> +}
+>
+> base-commit: 2d0dec625d872a41632a68fce2e69453ed87df91
 > --
-> 2.40.0
+> 2.34.1
 >
 
-
---=20
-All that is necessary for evil to succeed is for good people to do nothing.
