@@ -2,84 +2,128 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD69EC77B61
-	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Apr 2023 11:43:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBCDEC77B61
+	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Apr 2023 12:33:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229978AbjDMLnP (ORCPT
+        id S229593AbjDMMda (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 13 Apr 2023 07:43:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43824 "EHLO
+        Thu, 13 Apr 2023 08:33:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229656AbjDMLnO (ORCPT
+        with ESMTP id S229530AbjDMMd3 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 13 Apr 2023 07:43:14 -0400
-Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52CF1DE;
-        Thu, 13 Apr 2023 04:43:12 -0700 (PDT)
-Received: by mail-ot1-x32c.google.com with SMTP id k22-20020a9d7016000000b006a43382e5b9so424326otj.3;
-        Thu, 13 Apr 2023 04:43:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681386191; x=1683978191;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mtkxny2XQ1LJCG2ofJudelWHLWK11yhtce+Fr/hSPn8=;
-        b=oXjbFJvk92wtbyCcl59f74SM1mU4r5QhoXD8WwDF5VnGA0gYWNUw/ZTzhjZp7Gt5T8
-         DTKAzl1FIuBZ/JcyGWZEO9j1jr844bTUfa+rnFDx8ijPSkwqCYe+yPipv3IFsySaa2cD
-         Srql1CUGrCo25m+nxA5Os4/G2ciOKszpPW5EUWpwzyqTTyWmMws1U/DSqbvogFACFnBr
-         qO+hc6kcMnaHDXnCSh6cObRJL8ICMvRJOV8BgNKdQhIER+60oAU2YA0c6OOwtcGRwsJj
-         XYbwWAo3T/QFgUIRB6QYa4gOfgO65t/pJiJ7qNn3d/KfDkaNG1/yFL4bNl0NmwrjIljk
-         Ujqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681386191; x=1683978191;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mtkxny2XQ1LJCG2ofJudelWHLWK11yhtce+Fr/hSPn8=;
-        b=bE9PPhp2lCtVOUAHwPbAQzu+CIdmBu9vxVKGls/RQKiE25rZ4FAqpGPf02jft6qHzL
-         1IHYSiOSgCYHvxGsmFhaoyJvm37asaENwTkpthkEMYLJJRdt1u5FOnfK1iYEzTF8yRPX
-         7hqc87ANy39UqPSdHDjAkeWCS4ypyXhv19G7p4/mEAW48p8Yao/0KdUQldt53QjdaObf
-         hyrkO5FF4jT7chMEbLdvmMmgM74OxRZqkV83wqQRtspUuSlRHUgN21yfV6Ne1t5eF7fS
-         Ondhy+W/pcH8DniQWbGhMne866xZAJ/BdcogFT/Tp/686c07tYtAVxbQwjl6Qqr/9O1I
-         JtHA==
-X-Gm-Message-State: AAQBX9dffxyjOUQyxxU32bO84DIgVpeREOYmq8V2p0NpcZ8jp/3kjSk1
-        OzVtId0i6vOwcBj3Z6dr23wAve3wDwI=
-X-Google-Smtp-Source: AKy350YZTDJKV+tiTbQnkjJAINUoycnSG+9D+G9cnYQXR8TK/HyVLbFOZpwTulkcVVsHrnC6L0M7PQ==
-X-Received: by 2002:a9d:6c55:0:b0:6a3:c51c:e615 with SMTP id g21-20020a9d6c55000000b006a3c51ce615mr797209otq.8.1681386191480;
-        Thu, 13 Apr 2023 04:43:11 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id w24-20020a9d6758000000b006a11dd6d2c1sm597872otm.29.2023.04.13.04.43.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Apr 2023 04:43:11 -0700 (PDT)
-Message-ID: <1b61b5dc-a006-3307-b478-baa5520cb8af@gmail.com>
-Date:   Thu, 13 Apr 2023 08:43:07 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] rust: init: broaden the blanket impl of `Init`
-To:     Benno Lossin <benno.lossin@proton.me>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        Thu, 13 Apr 2023 08:33:29 -0400
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2115.outbound.protection.outlook.com [40.107.11.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A068A2688;
+        Thu, 13 Apr 2023 05:33:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TL8Ko6GL7ea5eHYkAFrlSUbR21zHDAV7jdzVJbR5VdWKIpYL9GnQ1U2/sNJ+sWVBfo7Nm3F1EmXB150oRNghZvr7egGtkH0evnHzAFJL3wNmfM5ALLmZ8M5hS2TSOnVaztexF4jYvSlOf0+FMsP8nNLP050/aAH4NluQ0llfqwMS58GB666YnfjAn48X/rjd5eoLFO9MNozakm7bV75BTUO1faQisUvdVbxBsKkEXus8x4g4oQur+lAqdocyKo2RtEGsMICDcKpaEFF2f+IxV8rL6rwls39vR7BuYJdIgPEUUSVDsiXZeoJJOFWmT/2Tz0G1EOFGl0+sSIyiF6S50Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BVZwvtbSlJvHeYYL4sRBXvG6tfbiExH/YROdtaGa9sk=;
+ b=Au3uHkiYZuiwUfTOlYHTwZSKYxUBnJ+e7KU4mDM2AI9mRy8IIVb3KinwI69itwgB8n1waYUpVCRWAVbapokViK4G3UxC22HC32fAztCIEUiOgI2G1U60k079Y1fPQ73lLhxDio+S54l/FcEPU/lfZIqZTI0a91NLe6RhW/x0wpnM93n31R8cWn4DNksEb+hpmUZ82dGPzdPZgTkZlzHtJs7YfiVj+WwVS+VGtTBvk5hEpM/ZLbJOPPm52Xt/OngfmMAt6HnoHoWpL7XiJ8H/3xPaSQlTlplQoQ+x4UrEJNwqzBXL8lygDEzAh2unDW0g9YofVOG+lBji0FGl0J5UzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BVZwvtbSlJvHeYYL4sRBXvG6tfbiExH/YROdtaGa9sk=;
+ b=YOUOapf+kNd+yXFk6bgPSfR83EvDiojrHftaMAicvxObjMhcNqJ7Ab6V5eyXUY/jXKOkkKlLsjsz3UT8qA7+hd3rfKNUF3M9hC8OuqyT+WBn/zeazRtWIsqXTpdgS5RLTDo3Lb2oHX5pbG6wOyvV6tXo8k3yWbu9mH7cxzpSm3E=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWLP265MB7008.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1fe::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6298.30; Thu, 13 Apr
+ 2023 12:33:25 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::e1a3:5e38:b483:8161]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::e1a3:5e38:b483:8161%6]) with mapi id 15.20.6298.030; Thu, 13 Apr 2023
+ 12:33:25 +0000
+Date:   Thu, 13 Apr 2023 13:33:22 +0100
+From:   Gary Guo <gary@garyguo.net>
+To:     Benno Lossin <benno.lossin@proton.me>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Boqun Feng <boqun.feng@gmail.com>,
+        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-References: <20230413100157.740697-1-benno.lossin@proton.me>
-Content-Language: en-US
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Subject: Re: [PATCH] rust: init: broaden the blanket impl of `Init`
+Message-ID: <20230413133322.12d58380.gary@garyguo.net>
 In-Reply-To: <20230413100157.740697-1-benno.lossin@proton.me>
-Content-Type: text/plain; charset=UTF-8
+References: <20230413100157.740697-1-benno.lossin@proton.me>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P265CA0005.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ad::17) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB7008:EE_
+X-MS-Office365-Filtering-Correlation-Id: 16e8f172-be96-4141-b3a5-08db3c1b46bf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: sV2m93CI0n/y6l3VypvlrmHFojYezn/RYv4/LR/ntVZ1TP6DR0PweFsb299l5PUIBEzpeOUfryfDFlauqQ/gDZHeAe787gBiFP0KncVGkGHWM3M2Ss474Jl8iH4PRYlg0hKhFl4P1en/MOitRc5XGdVti/3Gkd9sijFhDAkTGne3GE0HDrbfo+bgNNulvL9st8dm9OdTsBfVu4WhZYIZ/aTV9m3evOmzpr0DxPof60T+BfLqVa8L0FkICDX1333E+r+uQQ2yJUIu0qcDuAEJSTTo2rvMHTQcC/8tVdMXsJKEir/LldOXoQmqWMBoSUOvr+24IWVRbLKT1Ae7zQ4DPkOSK2s/+N1aa1TDWgZIQVoy2k89jcxQ8MtX90mEunJDKdP6RgufYF/C0k5ObYD/1XoG6lEUT95uH0oLAqx7RsXyOv5WFghlfEgKcD2fkRWZ/JCg2LXsG4D2KZ0U7zU3SIQ7KECNBSXCYNoZMvA5rHXmsIyVlSR1rke1v5OdkS1DmRwfkK/krHszeTtdB4Rcp2r8wGbUabu7X36vR4OSEUpVkBqvsleM6/jxBHsJ0yO1YGS2z6CokNTTF+fOR5W9ur0G7790rpd0L1yZSB+jf8I=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(136003)(396003)(366004)(376002)(346002)(39830400003)(451199021)(54906003)(478600001)(83380400001)(38100700002)(2616005)(6506007)(186003)(1076003)(36756003)(86362001)(6512007)(26005)(6486002)(6666004)(2906002)(41300700001)(66556008)(316002)(66476007)(66946007)(6916009)(4326008)(8676002)(8936002)(5660300002)(81973001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?sVIk7ajJPJliOtzKNQCMTMGmpAlf/m6ruRY2xhfRa7hflCaOh+2L/jLbraOk?=
+ =?us-ascii?Q?6uWK5MmYvQgeLbjGcmdQGEs/bDEbBTBcb6A7ouyzF13611o626XNz0Ww9I4i?=
+ =?us-ascii?Q?CfjX9pz1BqnplRaw/x+IXww5lyVBCSw5Ze5O/w2c57ilCKmjp46O6bL10TR5?=
+ =?us-ascii?Q?s9rzjTse5c/pbxqbApItxKRTKI+5Go+pvxB1yE3Pp5yynBjkwty8fyHKdUG7?=
+ =?us-ascii?Q?D0wp89O2Ko1YsnJOZcHSM2oxN2dH6snKnj/EMQ7gfNL5gvztQwoqgUPvDaiw?=
+ =?us-ascii?Q?x3Eao5nOS/UNM6w+Lq1mDU00MBPhVvRZP/63gFwOC2JjUMMRVYB7xTEKkKvX?=
+ =?us-ascii?Q?sAT8wBZ+t8q/ZJQcVwap+vL2QBfm24z/xUV8W8w+lcjPOTNVbciZq1JZ/KDg?=
+ =?us-ascii?Q?BwpbZpLdhn6CIY3ZWtKIktR/pHLkl+sDVyzKb7pxnJwP+L/h1gR9BDXFbZyH?=
+ =?us-ascii?Q?HAcxDptNd2/T7YYMtjTINuOwOd2BBfB7iovnLZR4tl0+NzvN+wM6nJwLvyis?=
+ =?us-ascii?Q?UNHU9TioKMlLwlNcxILSrUgR+ANAjsXtW8huglMdK13HW5APB/k8qi+USCK3?=
+ =?us-ascii?Q?/R/pwec6Z96n8b/0SHLg1Qsc63ysLYcMq7xfJS2Bmf6MYTbhQ/Kc4NTnbbI1?=
+ =?us-ascii?Q?VUz3/7iU+3WdUZ7PiVFv91t8siVOT4sW0hM44rWyf3AL8dHxBmDxPWuXv0Aa?=
+ =?us-ascii?Q?6yXm91sf7i2FPzMnn8ijsiEMGX55ciF/TsKY7U3SZ7JYYTxRc7/oQ+NIGCmX?=
+ =?us-ascii?Q?KEvvCo7wZg4v84pHLlvhRj46jvFJ+aIY0lTodYwuMyYYGWoDTBkEv4qDLlb3?=
+ =?us-ascii?Q?Ay5Rlp7FfcoO0OnhD+bFhnLs26d+NaivwUdHQhZeOfYiNC/ClSvz2+n/iqig?=
+ =?us-ascii?Q?7ievE5chI0eMUM3kBiOOYXCixfRjGkVQviaAWyelJytwzoxx8WvTcLlumOHa?=
+ =?us-ascii?Q?PnbMGYfvLsz8UwstUiut31y26Lyx+GuKIxMjJMn+dluaNhPT/4mWQBQaFxk/?=
+ =?us-ascii?Q?DSB84X/lYGs0EB96YyQAN+1Krw/gBgUKvHNPe7WmLELafkHBicLgJlbnXoGx?=
+ =?us-ascii?Q?FgwIYcGKGQxsrdbtZdDJ+CP7NTaBYYe6w3M2+6NmEgLkN7Oc5jJs/8o1EO1v?=
+ =?us-ascii?Q?veDJaLEcwvH+IFGuJHzes5kkzG0L8ErESMMqbrU2A46O3y1bcS1LFPBwvVUH?=
+ =?us-ascii?Q?/5ro70omORWD0NrH18AsAxBN7OTzsFLFci91cYPPJX0i5KwyAHY/a8uXUa4g?=
+ =?us-ascii?Q?DnGnBwKVuSmqFbSygsJBuzSYWTAUpJ3v9+XKGSvOO48BPIiyUUPZNdpEagcn?=
+ =?us-ascii?Q?p6W5+4rXp/Zz5tk4c2r035OatrDNooD0M9jZ8QiwNHReF9uNPaR8ekTSrArG?=
+ =?us-ascii?Q?cUaLkfCnccL4Uqo/c+Qac9U6kc6hAXeeT6PzaHtnzWNuPjPKRmBCel0PkPcZ?=
+ =?us-ascii?Q?92xXQaU58dI3ItphW/jxo5NpZAqWQ3iSZFgK6feOzARwUqRJvL19oHaH0PSG?=
+ =?us-ascii?Q?6DPIyYOFYSC6Tqj6kYiSd6MqHLrc9MJQUh9Fk2eR9XWtIeeLykd4KcZYfc3X?=
+ =?us-ascii?Q?6S+cKsHW8mb5dpXrPbtgQfWjq3PJoDJQkY4nHpxe?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 16e8f172-be96-4141-b3a5-08db3c1b46bf
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2023 12:33:25.3618
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7VCDAHObTdkJDzZDFSNLI/keGtM9aNEvvQ042pudQS8Lo+coZ/aw2eYWnCQS7Dkrf+pDNv3h/lwORD2nUMtvDg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7008
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 4/13/23 07:02, Benno Lossin wrote:
+On Thu, 13 Apr 2023 10:02:17 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
+
 > This makes it possible to use `T` as a `impl Init<T, E>` for every error
 > type `E` instead of just `Infallible`.
 > 
 > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
 > ---
 > 
 > @Miguel: you can squash this patch into 90e53c5e70a69 or put it on top of
@@ -110,4 +154,3 @@ On 4/13/23 07:02, Benno Lossin wrote:
 > 
 > 
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
