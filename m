@@ -2,294 +2,164 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A935AC77B6C
-	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Apr 2023 08:59:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27DA8C77B6E
+	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Apr 2023 09:09:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230315AbjDMI7N (ORCPT
+        id S230413AbjDMJJ3 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 13 Apr 2023 04:59:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49356 "EHLO
+        Thu, 13 Apr 2023 05:09:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229737AbjDMI6n (ORCPT
+        with ESMTP id S229845AbjDMJJJ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 13 Apr 2023 04:58:43 -0400
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0701F49FE;
-        Thu, 13 Apr 2023 01:56:32 -0700 (PDT)
-Date:   Thu, 13 Apr 2023 08:56:18 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1681376188; x=1681635388;
-        bh=g737EIKMRnF2623bcmw1pojpvM3xa1H2tKB2+vbIn8Y=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=LyuAJogirvUQPcmeaGUpoAVY3tbakTyN2dL1/pB0jbFXDAUKtGZp6toHX4Lv6RZZS
-         slFhcx29zmnwpwfwtUnLl6qxxggNl4tNPLBmTf4Ya7kOw8LIn758mwm8pajZAaNWHV
-         QqiqwHVRwm251zya9RYAdsJVpuM7Bek99sC7XtlHTLJ8dunlBabmUYHX4VAV0l1jpy
-         K7ZMmG682QbhKPMyPFYkfhiVZ1HQbqOXUeN6RkzQn91jUP8qv6HgaVCN+rGPa4qOgw
-         qqxqdZ7Mt/MjiXVDtQ2qvVd4dEd+BHOii4eRaNXwjPsYI2Mp+N6kytvhQ2hdXoRzY6
-         H7xNA9YGvtndA==
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org
-From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Thu, 13 Apr 2023 05:09:09 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E88B9EFD
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Apr 2023 02:08:41 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-94a342f4c8eso62977066b.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Apr 2023 02:08:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1681376919; x=1683968919;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=nkjgOgQaTYoZ/lKd7dVARVfqkaE07lmb/0LHBLtokwI=;
+        b=DmoWt1n1Ndk0BWG21tCK1h/xsJJlunkF2WpVs99xIvEXKpe5ltyfLYqxTAZlILPjQu
+         J0BoRNDUS/3gofHiPN6VKDvi7fPzRUp20lR7YhZ54S7YPNwy5es5XSUW0DhfS/PVXHiR
+         wBx5l34LCS4yi/71c8fHfgOz/fXZ50VIqOtO8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681376919; x=1683968919;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nkjgOgQaTYoZ/lKd7dVARVfqkaE07lmb/0LHBLtokwI=;
+        b=QOiYxxPUnngU1/szKOK5j/8ZecVEW+9Um0OJyhGvN57yiKLtZRLdPlJ8810/EJ0q6B
+         +fF/0KSCvdALB6FHAPEjP4KmXYY14RBk3cylgfZwLEUmSJ/kQOGAZJefXz9CTg6L6NsN
+         ckxu/HqRvkt91Bqi3jBhRmge43wMN0ptP2Qtu0jnLRPAuU338IKRE5ZKqzInHcVbMoZt
+         iWeHXKWCJ3DkYcDMn+XN8K0M1uUjssTwuEilSSgLQgjgUOCovWaqSGUqu1jT6pYfNS9I
+         deV+17HCqByAB3/srZtBSiDBB6Y5J6rJ7Ig+9e5VlMlCPZOe+CABvKxfbF7G4KqstYUR
+         ornA==
+X-Gm-Message-State: AAQBX9dSEbiO0K5r0XZUZYdp5nAJZ/CsYJ/bwUbrYAlB2iD0TfEZVGAK
+        EXqclA/Gbz06TqsWXal8xlpTxQ==
+X-Google-Smtp-Source: AKy350b6vu931p6e6pBjGO1MNjEijdRssMKrtNHNhyq7g+jatjk4ndtAxi122ESnhSE2KG/hTsQLTg==
+X-Received: by 2002:a17:906:19c:b0:94a:80f2:d210 with SMTP id 28-20020a170906019c00b0094a80f2d210mr1722697ejb.4.1681376918955;
+        Thu, 13 Apr 2023 02:08:38 -0700 (PDT)
+Received: from phenom.ffwll.local (212-51-149-33.fiber7.init7.net. [212.51.149.33])
+        by smtp.gmail.com with ESMTPSA id fy1-20020a170906b7c100b0094e4b8816e0sm650537ejb.217.2023.04.13.02.08.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Apr 2023 02:08:38 -0700 (PDT)
+Date:   Thu, 13 Apr 2023 11:08:36 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     =?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>
+Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Waiman Long <longman@redhat.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH v4 03/13] rust: lock: introduce `Mutex`
-Message-ID: <fb1ce18b-6d63-6e76-1e55-53974711cbe0@proton.me>
-In-Reply-To: <20230411054543.21278-3-wedsonaf@gmail.com>
-References: <20230411054543.21278-1-wedsonaf@gmail.com> <20230411054543.21278-3-wedsonaf@gmail.com>
-Feedback-ID: 71780778:user:proton
+        Asahi Lina <lina@asahilina.net>,
+        Faith Ekstrand <faith.ekstrand@collabora.com>,
+        rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Melissa Wen <mwen@igalia.com>
+Subject: Re: [RFC PATCH 9/9] drm/rustgem: create dummy IOCTL with number 0x00
+Message-ID: <ZDfGlHgzwF3UfvrX@phenom.ffwll.local>
+References: <20230317121213.93991-1-mcanal@igalia.com>
+ <20230317121213.93991-10-mcanal@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230317121213.93991-10-mcanal@igalia.com>
+X-Operating-System: Linux phenom 6.1.0-7-amd64 
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 11.04.23 07:45, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
->
-> This is the `struct mutex` lock backend and allows Rust code to use the
-> kernel mutex idiomatically.
->
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Waiman Long <longman@redhat.com>
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+On Fri, Mar 17, 2023 at 09:12:13AM -0300, Maíra Canal wrote:
+> In order to declare IOCTLs with the current Rust abstractions, we use
+> the kernel::declare_drm_ioctls! macro. This macro considers that the
+> IOCTLs are in the right order and there are no gaps. This isn't the case
+> for vgem, which start the IOCTLs with 0x01, instead of 0x00.
+> 
+> With the intention to use the kernel::declare_drm_ioctls! macro, create
+> a dummy IOCTL with number 0x00, that returns EINVAL.
+> 
+> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+
+Random idea, but we might want to push a dummy nop and einval ioctl to the
+gem rust stuff, that's generally handy. We have it on the C side too :-)
+-Daniel
+
 > ---
-> v1 -> v2: No changes
-> v2 -> v3: No changes
-> v4 -> v4: No changes
->
->   rust/helpers.c                 |   7 ++
->   rust/kernel/sync.rs            |   1 +
->   rust/kernel/sync/lock.rs       |   2 +
->   rust/kernel/sync/lock/mutex.rs | 118 +++++++++++++++++++++++++++++++++
->   4 files changed, 128 insertions(+)
->   create mode 100644 rust/kernel/sync/lock/mutex.rs
->
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index 04b9be46e887..86af099d2d66 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -22,6 +22,7 @@
->   #include <linux/build_bug.h>
->   #include <linux/err.h>
->   #include <linux/refcount.h>
-> +#include <linux/mutex.h>
->
->   __noreturn void rust_helper_BUG(void)
->   {
-> @@ -29,6 +30,12 @@ __noreturn void rust_helper_BUG(void)
->   }
->   EXPORT_SYMBOL_GPL(rust_helper_BUG);
->
-> +void rust_helper_mutex_lock(struct mutex *lock)
-> +{
-> +=09mutex_lock(lock);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_mutex_lock);
-> +
->   refcount_t rust_helper_REFCOUNT_INIT(int n)
->   {
->   =09return (refcount_t)REFCOUNT_INIT(n);
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 81b0998eaa18..693f0b7f4e4f 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -11,6 +11,7 @@ mod arc;
->   pub mod lock;
->
->   pub use arc::{Arc, ArcBorrow, UniqueArc};
-> +pub use lock::mutex::Mutex;
->
->   /// Represents a lockdep class. It's a wrapper around C's `lock_class_k=
-ey`.
->   #[repr(transparent)]
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index 1a8ecccf4f24..98de109d9e40 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -10,6 +10,8 @@ use crate::{bindings, init::PinInit, pin_init, str::CSt=
-r, types::Opaque};
->   use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned=
-};
->   use macros::pin_data;
->
-> +pub mod mutex;
-> +
->   /// The "backend" of a lock.
->   ///
->   /// It is the actual implementation of the lock, without the need to re=
-peat patterns used in all
-> diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex=
-.rs
-> new file mode 100644
-> index 000000000000..923472f04af4
-> --- /dev/null
-> +++ b/rust/kernel/sync/lock/mutex.rs
-> @@ -0,0 +1,118 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! A kernel mutex.
-> +//!
-> +//! This module allows Rust code to use the kernel's `struct mutex`.
-> +
-> +use crate::bindings;
-> +
-> +/// Creates a [`Mutex`] initialiser with the given name and a newly-crea=
-ted lock class.
-> +///
-> +/// It uses the name if one is given, otherwise it generates one based o=
-n the file name and line
-> +/// number.
-> +#[macro_export]
-> +macro_rules! new_mutex {
-> +    ($inner:expr $(, $name:literal)? $(,)?) =3D> {
-> +        $crate::sync::Mutex::new(
-> +            $inner, $crate::optional_name!($($name)?), $crate::static_lo=
-ck_class!())
-> +    };
-> +}
-> +
-> +/// A mutual exclusion primitive.
-> +///
-> +/// Exposes the kernel's [`struct mutex`]. When multiple threads attempt=
- to lock the same mutex,
-> +/// only one at a time is allowed to progress, the others will block (sl=
-eep) until the mutex is
-> +/// unlocked, at which point another thread will be allowed to wake up a=
-nd make progress.
-> +///
-> +/// Since it may block, [`Mutex`] needs to be used with care in atomic c=
-ontexts.
-> +///
-> +/// Instances of [`Mutex`] need a lock class and to be pinned. The recom=
-mended way to create such
-
-The first sentence reads weird, missing another 'need'?
-
-> +/// instances is with the [`pin_init`](crate::pin_init) and [`new_mutex`=
-] macros.
-> +///
-> +/// # Examples
-> +///
-> +/// The following example shows how to declare, allocate and initialise =
-a struct (`Example`) that
-> +/// contains an inner struct (`Inner`) that is protected by a mutex.
-> +///
-> +/// ```
-> +/// use kernel::{init::InPlaceInit, init::PinInit, new_mutex, pin_init, =
-sync::Mutex};
-> +///
-> +/// struct Inner {
-> +///     a: u32,
-> +///     b: u32,
-> +/// }
-> +///
-> +/// #[pin_data]
-> +/// struct Example {
-> +///     c: u32,
-> +///     #[pin]
-> +///     d: Mutex<Inner>,
-> +/// }
-> +///
-> +/// impl Example {
-> +///     fn new() -> impl PinInit<Self> {
-> +///         pin_init!(Self {
-> +///             c: 10,
-> +///             d <- new_mutex!(Inner { a: 20, b: 30 }),
-> +///         })
-> +///     }
-> +/// }
-> +///
-> +/// // Allocate a boxed `Example`.
-> +/// let e =3D Box::pin_init(Example::new())?;
-> +/// assert_eq!(e.c, 10);
-> +/// assert_eq!(e.d.lock().a, 20);
-> +/// assert_eq!(e.d.lock().b, 30);
-> +/// ```
-> +///
-> +/// The following example shows how to use interior mutability to modify=
- the contents of a struct
-> +/// protected by a mutex despite only having a shared reference:
-
-I would not bring up interior mutability here, the `Mutex` uses it, but
-not the user of the `Mutex`. I would just say:
-
-     To access the data behind a `Mutex`, simply take a shared reference to
-     the `Mutex` and call `lock()` on it. This function returns a guard obj=
-ect
-     that dereferences to the protected data. The `Mutex` is unlocked when =
-the
-     guard object goes out of scope.
-
-> +///
-> +/// ```
-> +/// use kernel::sync::Mutex;
-> +///
-> +/// struct Example {
-> +///     a: u32,
-> +///     b: u32,
-> +/// }
-> +///
-> +/// fn example(m: &Mutex<Example>) {
-> +///     let mut guard =3D m.lock();
-> +///     guard.a +=3D 10;
-> +///     guard.b +=3D 20;
-> +/// }
-> +/// ```
-> +///
-> +/// [`struct mutex`]: ../../../../include/linux/mutex.h
-> +pub type Mutex<T> =3D super::Lock<T, MutexBackend>;
-> +
-> +/// A kernel `struct mutex` lock backend.
-> +pub struct MutexBackend;
-> +
-> +// SAFETY: The underlying kernel `struct mutex` object ensures mutual ex=
-clusion.
-> +unsafe impl super::Backend for MutexBackend {
-> +    type State =3D bindings::mutex;
-> +    type GuardState =3D ();
-> +
-> +    unsafe fn init(
-> +        ptr: *mut Self::State,
-> +        name: *const core::ffi::c_char,
-> +        key: *mut bindings::lock_class_key,
-> +    ) {
-> +        // SAFETY: The safety requirements ensure that `ptr` is valid fo=
-r writes, and `name` and
-> +        // `key` are valid for read indefinitely.
-> +        unsafe { bindings::__mutex_init(ptr, name, key) }
+>  drivers/gpu/drm/rustgem/file.rs | 8 ++++++++
+>  drivers/gpu/drm/rustgem/vgem.rs | 1 +
+>  include/uapi/drm/vgem_drm.h     | 4 ++++
+>  3 files changed, 13 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/rustgem/file.rs b/drivers/gpu/drm/rustgem/file.rs
+> index a3714e8ca206..f26b74204361 100644
+> --- a/drivers/gpu/drm/rustgem/file.rs
+> +++ b/drivers/gpu/drm/rustgem/file.rs
+> @@ -27,6 +27,14 @@ impl drm::file::DriverFile for File {
+>  }
+>  
+>  impl File {
+> +    pub(crate) fn dummy(
+> +        _device: &VgemDevice,
+> +        _data: &mut bindings::drm_vgem_dummy,
+> +        _file: &DrmFile,
+> +    ) -> Result<u32> {
+> +        Err(EINVAL)
 > +    }
 > +
-> +    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
-> +        // SAFETY: The safety requirements of this function ensure that =
-`ptr` points to valid
-> +        // memory, and that it has been initialised before.
-> +        unsafe { bindings::mutex_lock(ptr) };
-> +    }
+>      /// vgem_fence_attach_ioctl (DRM_IOCTL_VGEM_FENCE_ATTACH):
+>      ///
+>      /// Create and attach a fence to the vGEM handle. This fence is then exposed
+> diff --git a/drivers/gpu/drm/rustgem/vgem.rs b/drivers/gpu/drm/rustgem/vgem.rs
+> index c2fc55bb39bd..64e8f1c2cbca 100644
+> --- a/drivers/gpu/drm/rustgem/vgem.rs
+> +++ b/drivers/gpu/drm/rustgem/vgem.rs
+> @@ -55,6 +55,7 @@ impl drv::Driver for VgemDriver {
+>      const FEATURES: u32 = drv::FEAT_GEM | drv::FEAT_RENDER;
+>  
+>      kernel::declare_drm_ioctls! {
+> +        (VGEM_DUMMY, drm_vgem_dummy, ioctl::RENDER_ALLOW, file::File::dummy),
+>          (VGEM_FENCE_ATTACH, drm_vgem_fence_attach, ioctl::RENDER_ALLOW, file::File::attach),
+>          (VGEM_FENCE_SIGNAL, drm_vgem_fence_signal, ioctl::RENDER_ALLOW, file::File::signal),
+>      }
+> diff --git a/include/uapi/drm/vgem_drm.h b/include/uapi/drm/vgem_drm.h
+> index 53ee3af0b25a..1348f8e819ed 100644
+> --- a/include/uapi/drm/vgem_drm.h
+> +++ b/include/uapi/drm/vgem_drm.h
+> @@ -36,9 +36,12 @@ extern "C" {
+>  /* Please note that modifications to all structs defined here are
+>   * subject to backwards-compatibility constraints.
+>   */
+> +#define DRM_VGEM_DUMMY		0x0
+>  #define DRM_VGEM_FENCE_ATTACH	0x1
+>  #define DRM_VGEM_FENCE_SIGNAL	0x2
+>  
+> +struct drm_vgem_dummy { };
 > +
-> +    unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardSt=
-ate) {
-> +        // SAFETY: The safety requirements of this function ensure that =
-`ptr` is valid and that the
-> +        // caller is the owner of the mutex.
-> +        unsafe { bindings::mutex_unlock(ptr) };
-> +    }
-> +}
-> --
-> 2.34.1
->
+>  struct drm_vgem_fence_attach {
+>  	__u32 handle;
+>  	__u32 flags;
+> @@ -54,6 +57,7 @@ struct drm_vgem_fence_signal {
+>  
+>  /* Note: this is an enum so that it can be resolved by Rust bindgen. */
+>  enum {
+> +	DRM_IOCTL_VGEM_DUMMY		= DRM_IOW(DRM_COMMAND_BASE + DRM_VGEM_DUMMY, struct drm_vgem_dummy),
+>  	DRM_IOCTL_VGEM_FENCE_ATTACH	= DRM_IOWR(DRM_COMMAND_BASE + DRM_VGEM_FENCE_ATTACH, struct drm_vgem_fence_attach),
+>  	DRM_IOCTL_VGEM_FENCE_SIGNAL	= DRM_IOW(DRM_COMMAND_BASE + DRM_VGEM_FENCE_SIGNAL, struct drm_vgem_fence_signal),
+>  };
+> -- 
+> 2.39.2
+> 
 
-
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
