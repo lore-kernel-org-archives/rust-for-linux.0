@@ -2,275 +2,390 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 523C1C77B6C
-	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Apr 2023 09:19:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14FD7C77B61
+	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Apr 2023 09:24:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230097AbjDMJTU (ORCPT
+        id S230219AbjDMJYI (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 13 Apr 2023 05:19:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45586 "EHLO
+        Thu, 13 Apr 2023 05:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230347AbjDMJTM (ORCPT
+        with ESMTP id S230183AbjDMJYH (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 13 Apr 2023 05:19:12 -0400
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 221309767
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Apr 2023 02:19:09 -0700 (PDT)
-Date:   Thu, 13 Apr 2023 09:19:00 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1681377547; x=1681636747;
-        bh=TV/Ywtf2zqhc2JmzZp1z4jc7r7gspEQExHyrYAkbvS0=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=CnKqm9MdAl2DaU4KRYPheRwn7e/sI4yoCyT8kjzPbpYUOEmGaDSNrDMWDo72P24f2
-         ryt+GA/C1eB9OXlfeDtIAwrRxB2Zu41KoxBjB89+5l6cy+3EtkWIOqzSom10O46PEH
-         S5wmrzz2tjqV6TlB1AfcUGQVXy9rOrk2Z2l+p814BlvakKT9JUhcydH8PjGVHKhgUX
-         s+Qf1PdAYsaaPaeGKocUxVoIkP5lFX2RYDdogrY8061Q3lr8DXSnPzBdctb8cS7+yq
-         Yd0tW8ALtRKS4iZxdcioyU3DlpJJM8Fr9M7NLlU2KOXBXoH0gTKXSvceIyiTLzGwhh
-         cb/EBvXzpOIww==
-To:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org
-From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Thu, 13 Apr 2023 05:24:07 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D6D38A4B
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Apr 2023 02:24:03 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-505048d50aeso177551a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Apr 2023 02:24:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1681377841; x=1683969841;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=njfKQpwLuv9TM47N/8Q44JKVE3mB36cKGfD6ZSMFaBE=;
+        b=EpRabewTf14VvElILrLEJatAS47TvJfs81peIsQ94s+dmaW++3x2x8tODlZ6l1yBtN
+         LrT6Bt5U/KEK2PS9WktPnrnreCYGHIFA8GndZ6gMj9DN9AwCUH0Y6U6Szi/LeXl3Cihu
+         uOKVavtaRS2RcDiWSbmx8CJSudF/h7SFcuU9E=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681377841; x=1683969841;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=njfKQpwLuv9TM47N/8Q44JKVE3mB36cKGfD6ZSMFaBE=;
+        b=ikjrxhOf3fEUfMWlg20eOYHfIZnllXXiTUFtMsNh0/H2TUFXC7SBVWW1P/YpvqlqNS
+         bsBdqsrzv/tOJZbci8FCBViFpZFheW92Rh5ELaBGzKsPsPOPhlrK7Dy9goj0hp7OOEpa
+         snmyjVjT7rtPFdIHNfliUqIFsP/vBF/kkKJAsChY58n3SN87q8jtqxIHlu9uq3s6zpFR
+         O/vXRko7tmtTzSC7zu7qEV2IWbgVU01hfd7/dwWxucIpiCgUvLwvwSuw/RlTfQTi2Eyq
+         fB8I2jXGQ5QdpUstACvNbpez/g0CoDGa4wxUqOCcmJqwJnTAJJUAsaL+ClxGG24VqEXg
+         0F0w==
+X-Gm-Message-State: AAQBX9cizgdQZq2cf8h6rI1NVxoV4jJFPe4f2INKBYbpxDvtUGp5eKwK
+        qThDE7TNUk/+3RhAW1WtMUyPRQ==
+X-Google-Smtp-Source: AKy350YQ6zAXTaLzpC/COJc60JZlW4nm7Tqb3mO4pquC2nITZvuCWwMbff4F81iA5Se0zE8ajB0UhQ==
+X-Received: by 2002:a17:906:7297:b0:94a:5f0d:d9d6 with SMTP id b23-20020a170906729700b0094a5f0dd9d6mr1671149ejl.4.1681377841465;
+        Thu, 13 Apr 2023 02:24:01 -0700 (PDT)
+Received: from phenom.ffwll.local (212-51-149-33.fiber7.init7.net. [212.51.149.33])
+        by smtp.gmail.com with ESMTPSA id u24-20020a1709064ad800b0094dffd03d7asm680000ejt.182.2023.04.13.02.24.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Apr 2023 02:24:01 -0700 (PDT)
+Date:   Thu, 13 Apr 2023 11:23:58 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Asahi Lina <lina@asahilina.net>
+Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH v4 08/13] rust: introduce `ARef`
-Message-ID: <f8575380-e710-d505-837c-bfcabe0eff00@proton.me>
-In-Reply-To: <20230411054543.21278-8-wedsonaf@gmail.com>
-References: <20230411054543.21278-1-wedsonaf@gmail.com> <20230411054543.21278-8-wedsonaf@gmail.com>
-Feedback-ID: 71780778:user:proton
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Luben Tuikov <luben.tuikov@amd.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Karol Herbst <kherbst@redhat.com>,
+        Ella Stanforth <ella@iglunix.org>,
+        Faith Ekstrand <faith.ekstrand@collabora.com>,
+        Mary <mary@mary.zone>, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+        linux-sgx@vger.kernel.org, asahi@lists.linux.dev
+Subject: Re: [PATCH RFC 01/18] rust: drm: ioctl: Add DRM ioctl abstraction
+Message-ID: <ZDfKLjKOfDHkEc1V@phenom.ffwll.local>
+Mail-Followup-To: Asahi Lina <lina@asahilina.net>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Luben Tuikov <luben.tuikov@amd.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Karol Herbst <kherbst@redhat.com>,
+        Ella Stanforth <ella@iglunix.org>,
+        Faith Ekstrand <faith.ekstrand@collabora.com>,
+        Mary <mary@mary.zone>, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+        linux-sgx@vger.kernel.org, asahi@lists.linux.dev
+References: <20230307-rust-drm-v1-0-917ff5bc80a8@asahilina.net>
+ <20230307-rust-drm-v1-1-917ff5bc80a8@asahilina.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230307-rust-drm-v1-1-917ff5bc80a8@asahilina.net>
+X-Operating-System: Linux phenom 6.1.0-7-amd64 
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 11.04.23 07:45, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
->
-> This is an owned reference to an object that is always ref-counted. This
-> is meant to be used in wrappers for C types that have their own ref
-> counting functions, for example, tasks, files, inodes, dentries, etc.
->
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+On Tue, Mar 07, 2023 at 11:25:26PM +0900, Asahi Lina wrote:
+> DRM drivers need to be able to declare which driver-specific ioctls they
+> support. This abstraction adds the required types and a helper macro to
+> generate the ioctl definition inside the DRM driver.
+> 
+> Note that this macro is not usable until further bits of the
+> abstraction are in place (but it will not fail to compile on its own, if
+> not called).
+> 
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
+
+A bunch of thoughts/questions:
+
+- You have the pub functions to create ioctl numbers, but it looks like
+  most drivers just do this in the C uapi headers instead and then use the
+  direct number from the bindings? I wonder whether we shouldn't just use
+  that as standard way, since in the end we do need the C headers for
+  userspace to use the ioctls/structs. Or could we generate the headers
+  from rust?
+
+- More type safety would be nice. You have the one for device, but not yet
+  for DrmFile. At least if I read the examples in asahi/vgem right. Also
+  the FIXME for how to make sure you generate the table for the right kind
+  of driver would be nice to fix.
+
+- Type safety against the size of the struct an ioctl number is great!
+
+- I wonder whether we could adjust the type according to _IOR/W/RW, i.e.
+  if you have W then your ioctl function is Result<Struct>, if not then
+  Result<()> since it's just errno, and you get the paramater only when
+  you have R set. We had in the past confusions where people got this
+  wrong and wondered why their parameters don't make it to userspace.
+
+- There's also the question of drm_ioctl() zero-extending the ioctl
+  parameter struct both ways (i.e. kernel kernel or newer userspace). I
+  think trying to encode that with Some() is overkill, but maybe worth a
+  thought.
+
+- It would be _really_ great if rust ioctl abstractions enforce
+  https://dri.freedesktop.org/docs/drm/process/botching-up-ioctls.html at
+  the type level, i.e. everything naturally aligned, no gaps, all that
+  stuff. This would also hold for get/put_user and all these things (I
+  didn't look into that stuff yet in the drivers when you pull in entire
+  arrays).
+
+Cheers, Daniel
 > ---
-> v1 -> v2: No changes
-> v2 -> v3: No changes
-> v3 -> v4: No changes
->
->   rust/kernel/types.rs | 107 +++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 107 insertions(+)
->
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index a4b1e3778da7..29db59d6119a 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -6,8 +6,10 @@ use crate::init::{self, PinInit};
->   use alloc::boxed::Box;
->   use core::{
->       cell::UnsafeCell,
-> +    marker::PhantomData,
->       mem::MaybeUninit,
->       ops::{Deref, DerefMut},
-> +    ptr::NonNull,
->   };
->
->   /// Used to transfer ownership to and from foreign (non-Rust) languages=
-.
-> @@ -268,6 +270,111 @@ impl<T> Opaque<T> {
->       }
->   }
->
-> +/// Types that are _always_ reference counted.
-> +///
-> +/// It allows such types to define their own custom ref increment and de=
-crement functions.
-> +/// Additionally, it allows users to convert from a shared reference `&T=
-` to an owned reference
-> +/// [`ARef<T>`].
-> +///
-> +/// This is usually implemented by wrappers to existing structures on th=
-e C side of the code. For
-> +/// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc) to=
- create reference-counted
-> +/// instances of a type.
-> +///
-> +/// # Safety
-> +///
-> +/// Implementers must ensure that increments to the reference count keep=
- the object alive in memory
-> +/// at least until matching decrements are performed.
-> +///
-> +/// Implementers must also ensure that all instances are reference-count=
-ed. (Otherwise they
-> +/// won't be able to honour the requirement that [`AlwaysRefCounted::inc=
-_ref`] keep the object
-> +/// alive.)
-
-`dec_ref` states below that it 'Frees the object when the count reaches
-zero.', this should also be stated here, since implementers should adhere
-to that when implementing `dec_ref`.
-
-> +pub unsafe trait AlwaysRefCounted {
-> +    /// Increments the reference count on the object.
-> +    fn inc_ref(&self);
-
-
-
+>  drivers/gpu/drm/Kconfig         |   7 ++
+>  rust/bindings/bindings_helper.h |   2 +
+>  rust/kernel/drm/ioctl.rs        | 147 ++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/drm/mod.rs          |   5 ++
+>  rust/kernel/lib.rs              |   2 +
+>  5 files changed, 163 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+> index dc0f94f02a82..dab8f0f9aa96 100644
+> --- a/drivers/gpu/drm/Kconfig
+> +++ b/drivers/gpu/drm/Kconfig
+> @@ -27,6 +27,13 @@ menuconfig DRM
+>  	  details.  You should also select and configure AGP
+>  	  (/dev/agpgart) support if it is available for your platform.
+>  
+> +# Rust abstractions cannot be built as modules currently, so force them as
+> +# bool by using these intermediate symbols. In the future these could be
+> +# tristate once abstractions themselves can be built as modules.
+> +config RUST_DRM
+> +	bool "Rust support for the DRM subsystem"
+> +	depends on DRM=y
 > +
-> +    /// Decrements the reference count on the object.
-> +    ///
-> +    /// Frees the object when the count reaches zero.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that there was a previous matching increment=
- to the reference count,
-> +    /// and that the object is no longer used after its reference count =
-is decremented (as it may
-> +    /// result in the object being freed), unless the caller owns anothe=
-r increment on the refcount
-> +    /// (e.g., it calls [`AlwaysRefCounted::inc_ref`] twice, then calls
-> +    /// [`AlwaysRefCounted::dec_ref`] once).
-> +    unsafe fn dec_ref(obj: NonNull<Self>);
+>  config DRM_MIPI_DBI
+>  	tristate
+>  	depends on DRM
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 91bb7906ca5a..2687bef1676f 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -6,6 +6,7 @@
+>   * Sorted alphabetically.
+>   */
+>  
+> +#include <drm/drm_ioctl.h>
+>  #include <linux/delay.h>
+>  #include <linux/device.h>
+>  #include <linux/dma-mapping.h>
+> @@ -23,6 +24,7 @@
+>  #include <linux/sysctl.h>
+>  #include <linux/timekeeping.h>
+>  #include <linux/xarray.h>
+> +#include <uapi/drm/drm.h>
+>  
+>  /* `bindgen` gets confused at certain things. */
+>  const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
+> diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+> new file mode 100644
+> index 000000000000..10304efbd5f1
+> --- /dev/null
+> +++ b/rust/kernel/drm/ioctl.rs
+> @@ -0,0 +1,147 @@
+> +// SPDX-License-Identifier: GPL-2.0 OR MIT
+> +#![allow(non_snake_case)]
+> +
+> +//! DRM IOCTL definitions.
+> +//!
+> +//! C header: [`include/linux/drm/drm_ioctl.h`](../../../../include/linux/drm/drm_ioctl.h)
+> +
+> +use crate::ioctl;
+> +
+> +const BASE: u32 = bindings::DRM_IOCTL_BASE as u32;
+> +
+> +/// Construct a DRM ioctl number with no argument.
+> +pub const fn IO(nr: u32) -> u32 {
+> +    ioctl::_IO(BASE, nr)
 > +}
 > +
-> +/// An owned reference to an always-reference-counted object.
+> +/// Construct a DRM ioctl number with a read-only argument.
+> +pub const fn IOR<T>(nr: u32) -> u32 {
+> +    ioctl::_IOR::<T>(BASE, nr)
+> +}
+> +
+> +/// Construct a DRM ioctl number with a write-only argument.
+> +pub const fn IOW<T>(nr: u32) -> u32 {
+> +    ioctl::_IOW::<T>(BASE, nr)
+> +}
+> +
+> +/// Construct a DRM ioctl number with a read-write argument.
+> +pub const fn IOWR<T>(nr: u32) -> u32 {
+> +    ioctl::_IOWR::<T>(BASE, nr)
+> +}
+> +
+> +/// Descriptor type for DRM ioctls. Use the `declare_drm_ioctls!{}` macro to construct them.
+> +pub type DrmIoctlDescriptor = bindings::drm_ioctl_desc;
+> +
+> +/// This is for ioctl which are used for rendering, and require that the file descriptor is either
+> +/// for a render node, or if it’s a legacy/primary node, then it must be authenticated.
+> +pub const AUTH: u32 = bindings::drm_ioctl_flags_DRM_AUTH;
+> +
+> +/// This must be set for any ioctl which can change the modeset or display state. Userspace must
+> +/// call the ioctl through a primary node, while it is the active master.
 > +///
-> +/// The object's reference count is automatically decremented when an in=
-stance of [`ARef`] is
-> +/// dropped. It is also automatically incremented when a new instance is=
- created via
-> +/// [`ARef::clone`].
+> +/// Note that read-only modeset ioctl can also be called by unauthenticated clients, or when a
+> +/// master is not the currently active one.
+> +pub const MASTER: u32 = bindings::drm_ioctl_flags_DRM_MASTER;
+> +
+> +/// Anything that could potentially wreak a master file descriptor needs to have this flag set.
 > +///
-> +/// # Invariants
+> +/// Current that’s only for the SETMASTER and DROPMASTER ioctl, which e.g. logind can call to force
+> +/// a non-behaving master (display compositor) into compliance.
 > +///
-> +/// The pointer stored in `ptr` is non-null and valid for the lifetime o=
-f the [`ARef`] instance. In
-> +/// particular, the [`ARef`] instance owns an increment on the underlyin=
-g object's reference count.
-> +pub struct ARef<T: AlwaysRefCounted> {
-> +    ptr: NonNull<T>,
-> +    _p: PhantomData<T>,
+> +/// This is equivalent to callers with the SYSADMIN capability.
+> +pub const ROOT_ONLY: u32 = bindings::drm_ioctl_flags_DRM_ROOT_ONLY;
+> +
+> +/// Whether drm_ioctl_desc.func should be called with the DRM BKL held or not. Enforced as the
+> +/// default for all modern drivers, hence there should never be a need to set this flag.
+> +///
+> +/// Do not use anywhere else than for the VBLANK_WAIT IOCTL, which is the only legacy IOCTL which
+> +/// needs this.
+> +pub const UNLOCKED: u32 = bindings::drm_ioctl_flags_DRM_UNLOCKED;
+> +
+> +/// This is used for all ioctl needed for rendering only, for drivers which support render nodes.
+> +/// This should be all new render drivers, and hence it should be always set for any ioctl with
+> +/// `AUTH` set. Note though that read-only query ioctl might have this set, but have not set
+> +/// DRM_AUTH because they do not require authentication.
+> +pub const RENDER_ALLOW: u32 = bindings::drm_ioctl_flags_DRM_RENDER_ALLOW;
+> +
+> +/// Declare the DRM ioctls for a driver.
+> +///
+> +/// Each entry in the list should have the form:
+> +///
+> +/// `(ioctl_number, argument_type, flags, user_callback),`
+> +///
+> +/// `argument_type` is the type name within the `bindings` crate.
+> +/// `user_callback` should have the following prototype:
+> +///
+> +/// ```
+> +/// fn foo(device: &kernel::drm::device::Device<Self>,
+> +///        data: &mut bindings::argument_type,
+> +///        file: &kernel::drm::file::File<Self::File>,
+> +/// )
+> +/// ```
+> +/// where `Self` is the drm::drv::Driver implementation these ioctls are being declared within.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// kernel::declare_drm_ioctls! {
+> +///     (FOO_GET_PARAM, drm_foo_get_param, ioctl::RENDER_ALLOW, my_get_param_handler),
+> +/// }
+> +/// ```
+> +///
+> +#[macro_export]
+> +macro_rules! declare_drm_ioctls {
+> +    ( $(($cmd:ident, $struct:ident, $flags:expr, $func:expr)),* $(,)? ) => {
+> +        const IOCTLS: &'static [$crate::drm::ioctl::DrmIoctlDescriptor] = {
+> +            const _:() = {
+> +                let i: u32 = $crate::bindings::DRM_COMMAND_BASE;
+> +                // Assert that all the IOCTLs are in the right order and there are no gaps,
+> +                // and that the sizeof of the specified type is correct.
+> +                $(
+> +                    let cmd: u32 = $crate::macros::concat_idents!($crate::bindings::DRM_IOCTL_, $cmd);
+> +                    ::core::assert!(i == $crate::ioctl::_IOC_NR(cmd));
+> +                    ::core::assert!(core::mem::size_of::<$crate::bindings::$struct>() == $crate::ioctl::_IOC_SIZE(cmd));
+> +                    let i: u32 = i + 1;
+> +                )*
+> +            };
+> +
+> +            let ioctls = &[$(
+> +                $crate::bindings::drm_ioctl_desc {
+> +                    cmd: $crate::macros::concat_idents!($crate::bindings::DRM_IOCTL_, $cmd) as u32,
+> +                    func: {
+> +                        #[allow(non_snake_case)]
+> +                        unsafe extern "C" fn $cmd(
+> +                                raw_dev: *mut $crate::bindings::drm_device,
+> +                                raw_data: *mut ::core::ffi::c_void,
+> +                                raw_file_priv: *mut $crate::bindings::drm_file,
+> +                        ) -> core::ffi::c_int {
+> +                            // SAFETY: We never drop this, and the DRM core ensures the device lives
+> +                            // while callbacks are being called.
+> +                            //
+> +                            // FIXME: Currently there is nothing enforcing that the types of the
+> +                            // dev/file match the current driver these ioctls are being declared
+> +                            // for, and it's not clear how to enforce this within the type system.
+> +                            let dev = ::core::mem::ManuallyDrop::new(unsafe {
+> +                                $crate::drm::device::Device::from_raw(raw_dev)
+> +                            });
+> +                            // SAFETY: This is just the ioctl argument, which hopefully has the right type
+> +                            // (we've done our best checking the size).
+> +                            let data = unsafe { &mut *(raw_data as *mut $crate::bindings::$struct) };
+> +                            // SAFETY: This is just the DRM file structure
+> +                            let file = unsafe { $crate::drm::file::File::from_raw(raw_file_priv) };
+> +
+> +                            match $func(&*dev, data, &file) {
+> +                                Err(e) => e.to_kernel_errno(),
+> +                                Ok(i) => i.try_into().unwrap_or(ERANGE.to_kernel_errno()),
+> +                            }
+> +                        }
+> +                        Some($cmd)
+> +                    },
+> +                    flags: $flags,
+> +                    name: $crate::c_str!(::core::stringify!($cmd)).as_char_ptr(),
+> +                }
+> +            ),*];
+> +            ioctls
+> +        };
+> +    };
 > +}
+> diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
+> new file mode 100644
+> index 000000000000..9ec6d7cbcaf3
+> --- /dev/null
+> +++ b/rust/kernel/drm/mod.rs
+> @@ -0,0 +1,5 @@
+> +// SPDX-License-Identifier: GPL-2.0 OR MIT
 > +
-> +impl<T: AlwaysRefCounted> ARef<T> {
-> +    /// Creates a new instance of [`ARef`].
-> +    ///
-> +    /// It takes over an increment of the reference count on the underly=
-ing object.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that the reference count was incremented at =
-least once, and that they
-> +    /// are properly relinquishing one increment. That is, if there is o=
-nly one increment, callers
-> +    /// must not use the underlying object anymore -- it is only safe to=
- do so via the newly
-> +    /// created [`ARef`].
-> +    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-> +        // INVARIANT: The safety requirements guarantee that the new ins=
-tance now owns the
-> +        // increment on the refcount.
-> +        Self {
-> +            ptr,
-> +            _p: PhantomData,
-> +        }
-> +    }
-> +}
+> +//! DRM subsystem abstractions.
 > +
-> +impl<T: AlwaysRefCounted> Clone for ARef<T> {
-> +    fn clone(&self) -> Self {
-> +        self.inc_ref();
-> +        // SAFETY: We just incremented the refcount above.
-> +        unsafe { Self::from_raw(self.ptr) }
-> +    }
-> +}
-> +
-> +impl<T: AlwaysRefCounted> Deref for ARef<T> {
-> +    type Target =3D T;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        // SAFETY: The type invariants guarantee that the object is vali=
-d.
-> +        unsafe { self.ptr.as_ref() }
-> +    }
-> +}
-> +
-> +impl<T: AlwaysRefCounted> From<&T> for ARef<T> {
-> +    fn from(b: &T) -> Self {
-> +        b.inc_ref();
-> +        // SAFETY: We just incremented the refcount above.
-> +        unsafe { Self::from_raw(NonNull::from(b)) }
-> +    }
-> +}
+> +pub mod ioctl;
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 7903490816bf..cb23d24c6718 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -37,6 +37,8 @@ mod build_assert;
+>  pub mod delay;
+>  pub mod device;
+>  pub mod driver;
+> +#[cfg(CONFIG_RUST_DRM)]
+> +pub mod drm;
+>  pub mod error;
+>  pub mod io_buffer;
+>  pub mod io_mem;
+> 
+> -- 
+> 2.35.1
+> 
 
-This impl seems unsound to me, as we can do this:
-
-     struct MyStruct {
-         raw: Opaque<bindings::my_struct>, // This has a `refcount_t` insid=
-e.
-     }
-
-     impl MyStruct {
-         fn new() -> Self { ... }
-     }
-
-     unsafe impl AlwaysRefCounted for MyStruct { ... } // Implemented corre=
-ctly.
-
-     fn evil() -> ARef<MyStruct> {
-         let my_struct =3D MyStruct::new();
-         ARef::from(&my_struct) // We return a pointer to the stack!
-     }
-
-similarly, this can also be done with a `Box`:
-
-     fn evil2() -> ARef<MyStruct> {
-         let my_struct =3D Box::new(MyStruct::new());
-         ARef::from(&*my_struct)
-         // Box is freed here, even just dropping the `ARef` will result in
-         // a UAF.
-     }
-
-Additionally, I think that `AlwaysRefCounted::inc_ref` should not be safe,
-as the caller must not deallocate the memory until the refcount is zero.
-
-Another pitfall of `ARef`: it does not deallocate the memory when the
-refcount reaches zero. People might expect that this code would not leak
-memory:
-
-     let foo =3D Box::try_new(Foo::new())?;
-     let foo =3D Box::leak(foo); // Leak the box, such that we do not
-                               // deallocate the memory too early.
-     let foo =3D ARef::from(foo);
-     drop(foo); // refcount is now zero, but the memory is never deallocate=
-d.
-
-
-> +
-> +impl<T: AlwaysRefCounted> Drop for ARef<T> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: The type invariants guarantee that the `ARef` owns th=
-e reference we're about to
-> +        // decrement.
-> +        unsafe { T::dec_ref(self.ptr) };
-> +    }
-> +}
-> +
->   /// A sum type that always holds either a value of type `L` or `R`.
->   pub enum Either<L, R> {
->       /// Constructs an instance of [`Either`] containing a value of type=
- `L`.
-> --
-> 2.34.1
->
-
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
