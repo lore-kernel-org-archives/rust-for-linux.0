@@ -2,291 +2,106 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33594C77B61
-	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Apr 2023 17:06:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF57BC77B61
+	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Apr 2023 18:36:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229622AbjDMRGR (ORCPT
+        id S229647AbjDMSg5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 13 Apr 2023 13:06:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38490 "EHLO
+        Thu, 13 Apr 2023 14:36:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230033AbjDMRGP (ORCPT
+        with ESMTP id S229546AbjDMSg4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 13 Apr 2023 13:06:15 -0400
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BEA159F9;
-        Thu, 13 Apr 2023 10:06:14 -0700 (PDT)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-54fbb713301so52550377b3.11;
-        Thu, 13 Apr 2023 10:06:14 -0700 (PDT)
+        Thu, 13 Apr 2023 14:36:56 -0400
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4CE9769C
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Apr 2023 11:36:52 -0700 (PDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id v7so14975631ybi.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Apr 2023 11:36:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681405573; x=1683997573;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=IUYlznoUrbB0p3XNuf/X8IzvdcyNbHt0erhjLaXu/Hk=;
-        b=gI1nS0dcMKhyxQ6KtTDJYis4ipnsTs5kQWuexkpPyzs57fv6rNiq6KsosRRFJmzxRL
-         T7zJXKuZugM+eaDLQg4rez0PXrb85TnMv7X/EyBgyd53Qhv9tNn0DRpCXdnzPND666to
-         TliD9ErmCJmbyuuhaKhXPl36Izst9mZfQ3L1/OVyP5P48RTaIvbqKEetU1KKF7UGkI5N
-         nQgV5bqWjkFE3aFEmI1unrIgqiWhxHXcqv+CfVvFJJq6LWCbxvphBVzGn8IsAEywOM/W
-         nDC4zjMsAe3HU/L+a/xqU1Re3hPw27GODBZYgmkvG5igMuIoeAmwIzOWWRlVIpiVWfxS
-         BEzg==
+        d=gmail.com; s=20221208; t=1681411012; x=1684003012;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SdAg+sjDTKhwZroJsdvwbvBG/acx9YbCJMZ8RmzweSU=;
+        b=qb9KBdg2c1k076CiMZGEPY/JBKLDqUu9Oj+wk1JV2IXySeStiBKtu7ybtIg/0n7sBv
+         17snKAOi4itsIVW+d/5mQ13to74X8R5hCJqr3uKFBG4kVXABWsC8quwre1II7VBhkCYE
+         RnWoJhYvjJtYJz8wcb+tLx759HGPVOHVTMck58o9CZ2I30IJNXc8MvJy31rMWlm9w7Ud
+         XJIbfiwEpSXJXuJ+YzpbsnIfkkFs32jCc/O5G8/3l9WLFkg0T79GtTDDDa99IItVjNWN
+         4AThxiv5mUmc564d8n1CL3lipsIWamFYMSqxduQ43ixXyfNoy67EAzso+jX5FWIU9EOM
+         B8EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681405573; x=1683997573;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IUYlznoUrbB0p3XNuf/X8IzvdcyNbHt0erhjLaXu/Hk=;
-        b=U+atQzXZaLRD7edT6AIe64ReBP3wAuwN1x+/vUKevkGoO/DzAOa2uoFwoT6zIstEZ6
-         dgxC/+pJ3TuqznMqN8zxwpGJIfia1daCfv+bOpYtHYiHTca6lBUAJvE3JGJim1d18oC0
-         CQg9Ih1jGyVVDnaIITg7mVu8pHOHSWE7eQU8x77g1HAxoIQDVqKO44ey3iJUeZTMQxdt
-         /Ly7BxX0E8ptS/aLbvmmCKeghlPNcu5zFeWohTRkgDgjEpwimJSTbjrAzHm1V7n0ghYM
-         k7+4TGWc9bmbN5chBvIAIXFCz+VRNzzHBBW6Kys+b5Qgn0Vh+7KY3z5Y+NjlyB6OQl2q
-         Pb5w==
-X-Gm-Message-State: AAQBX9dKjwM2ohMS5/EORM0ZZ8nhoQQnDOqqGPiVNW6U2quIrqdCcHDI
-        z44PH39XHE7otxxOrjmJBaJXvuTgxq+0JrExh2U=
-X-Google-Smtp-Source: AKy350apRzhwGxN6Wa/0P0M+YPonP87XH/WnaVL4UlyEAXnh70TXuz/kGk5f3GXv1X6EI/8Eax3NBsOdG6r4vtMDCB8=
-X-Received: by 2002:a81:af53:0:b0:549:14b0:84af with SMTP id
- x19-20020a81af53000000b0054914b084afmr1649461ywj.1.1681405571885; Thu, 13 Apr
- 2023 10:06:11 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1681411012; x=1684003012;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SdAg+sjDTKhwZroJsdvwbvBG/acx9YbCJMZ8RmzweSU=;
+        b=fVELfkLowXDu0oZyOCwt04j3v/S8y/N2z99AG82nRg0IDpcDnAyt6T8g/GDfhS+21l
+         cxI7NG5QgL3TDy6LkceqwXUcSAS04D1q6sQ7SWveHqMNxjVPHTEkcdqSZCkkpu+BzDyY
+         IBzY6kGb0XwkJ0zThBJsvb97Wu254n7bkpM+i4Ssx+dsXdTZ+1aQsCXSpfMXR7g74xhM
+         MZ3JljkbEDd4n+L8LkvaM1gqWQFdjiVnn5g92hrf1A8kvphX8e/dOr7wFN/STeUFQ2fG
+         lstRMT9wnU5ufKMns0FPbjWwFoLCWm3v28RgFj3x+AyyNxzNlQgvEDiUEB0qAg/oteke
+         iIAQ==
+X-Gm-Message-State: AAQBX9dcVKqmVGZDMGeYhZZ15biSpA/NUCnk7zu9WsBf3lYpPq59CxBQ
+        NcVIVDVmNjmpF4r2mu/Ah1ofBPqUvi5l21s5BvECORGo
+X-Google-Smtp-Source: AKy350bcWbY1h7DX93wsOvQqJL5PiHOy9EilAzMsD8pLeZ/0anYecxNe/OX6CoDd/pMkd9myc19NBLxSGwb+jGdFsaE=
+X-Received: by 2002:a25:e08c:0:b0:b8f:3647:d757 with SMTP id
+ x134-20020a25e08c000000b00b8f3647d757mr2077276ybg.11.1681411012075; Thu, 13
+ Apr 2023 11:36:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230411054543.21278-1-wedsonaf@gmail.com> <20230411054543.21278-8-wedsonaf@gmail.com>
- <f8575380-e710-d505-837c-bfcabe0eff00@proton.me>
-In-Reply-To: <f8575380-e710-d505-837c-bfcabe0eff00@proton.me>
-From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-Date:   Thu, 13 Apr 2023 14:06:01 -0300
-Message-ID: <CANeycqp_WfJxFDrxJGQ=UO2HOKtKYJCbOwGu50vZKyQSzYuiPQ@mail.gmail.com>
-Subject: Re: [PATCH v4 08/13] rust: introduce `ARef`
-To:     Benno Lossin <benno.lossin@proton.me>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org,
-        Wedson Almeida Filho <walmeida@microsoft.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+References: <20230413140138.348137-1-amiculas@cisco.com>
+In-Reply-To: <20230413140138.348137-1-amiculas@cisco.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 13 Apr 2023 20:36:41 +0200
+Message-ID: <CANiq72mTyMzJVMEAfNo9TyevN8jbqV0L=ba8=Ym-2Oxhm7oniQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: Add functions to create and modify an Inode
+To:     Ariel Miculas <ariel.miculas@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, Ariel Miculas <amiculas@cisco.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, 13 Apr 2023 at 06:19, Benno Lossin <benno.lossin@proton.me> wrote:
->
-> On 11.04.23 07:45, Wedson Almeida Filho wrote:
-> > From: Wedson Almeida Filho <walmeida@microsoft.com>
-> >
-> > This is an owned reference to an object that is always ref-counted. This
-> > is meant to be used in wrappers for C types that have their own ref
-> > counting functions, for example, tasks, files, inodes, dentries, etc.
-> >
-> > Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> > ---
-> > v1 -> v2: No changes
-> > v2 -> v3: No changes
-> > v3 -> v4: No changes
-> >
-> >   rust/kernel/types.rs | 107 +++++++++++++++++++++++++++++++++++++++++++
-> >   1 file changed, 107 insertions(+)
-> >
-> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> > index a4b1e3778da7..29db59d6119a 100644
-> > --- a/rust/kernel/types.rs
-> > +++ b/rust/kernel/types.rs
-> > @@ -6,8 +6,10 @@ use crate::init::{self, PinInit};
-> >   use alloc::boxed::Box;
-> >   use core::{
-> >       cell::UnsafeCell,
-> > +    marker::PhantomData,
-> >       mem::MaybeUninit,
-> >       ops::{Deref, DerefMut},
-> > +    ptr::NonNull,
-> >   };
-> >
-> >   /// Used to transfer ownership to and from foreign (non-Rust) languages.
-> > @@ -268,6 +270,111 @@ impl<T> Opaque<T> {
-> >       }
-> >   }
-> >
-> > +/// Types that are _always_ reference counted.
-> > +///
-> > +/// It allows such types to define their own custom ref increment and decrement functions.
-> > +/// Additionally, it allows users to convert from a shared reference `&T` to an owned reference
-> > +/// [`ARef<T>`].
-> > +///
-> > +/// This is usually implemented by wrappers to existing structures on the C side of the code. For
-> > +/// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc) to create reference-counted
-> > +/// instances of a type.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// Implementers must ensure that increments to the reference count keep the object alive in memory
-> > +/// at least until matching decrements are performed.
-> > +///
-> > +/// Implementers must also ensure that all instances are reference-counted. (Otherwise they
-> > +/// won't be able to honour the requirement that [`AlwaysRefCounted::inc_ref`] keep the object
-> > +/// alive.)
->
-> `dec_ref` states below that it 'Frees the object when the count reaches
-> zero.', this should also be stated here, since implementers should adhere
-> to that when implementing `dec_ref`.
+Hi Ariel,
 
-This section is for safety requirements. Freeing the object doesn't
-fall into this category.
+On Thu, Apr 13, 2023 at 4:15=E2=80=AFPM Ariel Miculas <ariel.miculas@gmail.=
+com> wrote:
+>
+> Add try_new_inode function associated to SuperBlock which allocates a
+> new inode and implement a few setter functions for INode.
 
-> > +pub unsafe trait AlwaysRefCounted {
-> > +    /// Increments the reference count on the object.
-> > +    fn inc_ref(&self);
->
->
->
-> > +
-> > +    /// Decrements the reference count on the object.
-> > +    ///
-> > +    /// Frees the object when the count reaches zero.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Callers must ensure that there was a previous matching increment to the reference count,
-> > +    /// and that the object is no longer used after its reference count is decremented (as it may
-> > +    /// result in the object being freed), unless the caller owns another increment on the refcount
-> > +    /// (e.g., it calls [`AlwaysRefCounted::inc_ref`] twice, then calls
-> > +    /// [`AlwaysRefCounted::dec_ref`] once).
-> > +    unsafe fn dec_ref(obj: NonNull<Self>);
-> > +}
-> > +
-> > +/// An owned reference to an always-reference-counted object.
-> > +///
-> > +/// The object's reference count is automatically decremented when an instance of [`ARef`] is
-> > +/// dropped. It is also automatically incremented when a new instance is created via
-> > +/// [`ARef::clone`].
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// The pointer stored in `ptr` is non-null and valid for the lifetime of the [`ARef`] instance. In
-> > +/// particular, the [`ARef`] instance owns an increment on the underlying object's reference count.
-> > +pub struct ARef<T: AlwaysRefCounted> {
-> > +    ptr: NonNull<T>,
-> > +    _p: PhantomData<T>,
-> > +}
-> > +
-> > +impl<T: AlwaysRefCounted> ARef<T> {
-> > +    /// Creates a new instance of [`ARef`].
-> > +    ///
-> > +    /// It takes over an increment of the reference count on the underlying object.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Callers must ensure that the reference count was incremented at least once, and that they
-> > +    /// are properly relinquishing one increment. That is, if there is only one increment, callers
-> > +    /// must not use the underlying object anymore -- it is only safe to do so via the newly
-> > +    /// created [`ARef`].
-> > +    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-> > +        // INVARIANT: The safety requirements guarantee that the new instance now owns the
-> > +        // increment on the refcount.
-> > +        Self {
-> > +            ptr,
-> > +            _p: PhantomData,
-> > +        }
-> > +    }
-> > +}
-> > +
-> > +impl<T: AlwaysRefCounted> Clone for ARef<T> {
-> > +    fn clone(&self) -> Self {
-> > +        self.inc_ref();
-> > +        // SAFETY: We just incremented the refcount above.
-> > +        unsafe { Self::from_raw(self.ptr) }
-> > +    }
-> > +}
-> > +
-> > +impl<T: AlwaysRefCounted> Deref for ARef<T> {
-> > +    type Target = T;
-> > +
-> > +    fn deref(&self) -> &Self::Target {
-> > +        // SAFETY: The type invariants guarantee that the object is valid.
-> > +        unsafe { self.ptr.as_ref() }
-> > +    }
-> > +}
-> > +
-> > +impl<T: AlwaysRefCounted> From<&T> for ARef<T> {
-> > +    fn from(b: &T) -> Self {
-> > +        b.inc_ref();
-> > +        // SAFETY: We just incremented the refcount above.
-> > +        unsafe { Self::from_raw(NonNull::from(b)) }
-> > +    }
-> > +}
->
-> This impl seems unsound to me, as we can do this:
->
->      struct MyStruct {
->          raw: Opaque<bindings::my_struct>, // This has a `refcount_t` inside.
->      }
->
->      impl MyStruct {
->          fn new() -> Self { ... }
->      }
->
->      unsafe impl AlwaysRefCounted for MyStruct { ... } // Implemented correctly.
->
->      fn evil() -> ARef<MyStruct> {
->          let my_struct = MyStruct::new();
->          ARef::from(&my_struct) // We return a pointer to the stack!
->      }
->
-> similarly, this can also be done with a `Box`:
->
->      fn evil2() -> ARef<MyStruct> {
->          let my_struct = Box::new(MyStruct::new());
->          ARef::from(&*my_struct)
->          // Box is freed here, even just dropping the `ARef` will result in
->          // a UAF.
->      }
+Thanks for the patch!
 
-This implementation of `AlwaysRefCounted` is in violation of the
-safety requirements of the trait, namely:
+This seems to be based on the `rust` branch: the filesystem
+abstractions we have there are not yet in mainline, so we can't take
+this now since `fs.rs` does not exist yet. Please see
+https://rust-for-linux.com/branches.
 
-/// Implementers must ensure that increments to the reference count
-keep the object alive in memory
-/// at least until matching decrements are performed.
-///
-/// Implementers must also ensure that all instances are
-reference-counted. (Otherwise they
-/// won't be able to honour the requirement that
-[`AlwaysRefCounted::inc_ref`] keep the object
-/// alive.)
+Also, I haven't reviewed the patch, but some quick notes below that
+you may find useful.
 
-It boils down `MyStruct::new` in your example. It's not refcounted.
+> +        let inode =3D unsafe { bindings::new_inode(self.0.get()) };
 
-> Additionally, I think that `AlwaysRefCounted::inc_ref` should not be safe,
-> as the caller must not deallocate the memory until the refcount is zero.
+Please follow the coding conventions / guidelines of the rest of other
+code. For instance, we require `// SAFETY` comments on all `unsafe`
+blocks. Please see https://docs.kernel.org/rust/coding-guidelines.html
+for some details.
 
-The existence of an `&T` is evidence that the refcount is non-zero, so
-it is safe to increment it. The caller cannot free the object without
-violating the safety requirements.
+> +    /// set the field i_mode of the inode
 
-> Another pitfall of `ARef`: it does not deallocate the memory when the
-> refcount reaches zero. People might expect that this code would not leak
-> memory:
->
->      let foo = Box::try_new(Foo::new())?;
->      let foo = Box::leak(foo); // Leak the box, such that we do not
->                                // deallocate the memory too early.
->      let foo = ARef::from(foo);
->      drop(foo); // refcount is now zero, but the memory is never deallocated.
+Ditto, for docs.
 
-This is also in violation of the safety requirements of `AlwaysRefCounted`.
+> +    pub fn set_fop(&mut self, fop: *const bindings::file_operations) {
 
-> > +
-> > +impl<T: AlwaysRefCounted> Drop for ARef<T> {
-> > +    fn drop(&mut self) {
-> > +        // SAFETY: The type invariants guarantee that the `ARef` owns the reference we're about to
-> > +        // decrement.
-> > +        unsafe { T::dec_ref(self.ptr) };
-> > +    }
-> > +}
-> > +
-> >   /// A sum type that always holds either a value of type `L` or `R`.
-> >   pub enum Either<L, R> {
-> >       /// Constructs an instance of [`Either`] containing a value of type `L`.
-> > --
-> > 2.34.1
-> >
->
+If this is intended to be used by modules (as it appears to be since
+it is public in a public module), then you will likely need to avoid
+referring to `bindings::` so that modules do not need to deal directly
+with the C types.
+
+Moreover, the fact that a safe function takes a raw pointer raises
+some questions -- what happens if somebody passes a dangling pointer,
+for instance?
+
+Cheers,
+Miguel
