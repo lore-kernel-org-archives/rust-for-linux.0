@@ -2,33 +2,33 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B8C9C77B6C
-	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Apr 2023 08:46:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A935AC77B6C
+	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Apr 2023 08:59:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230054AbjDMIqp (ORCPT
+        id S230315AbjDMI7N (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 13 Apr 2023 04:46:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44126 "EHLO
+        Thu, 13 Apr 2023 04:59:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229678AbjDMIqn (ORCPT
+        with ESMTP id S229737AbjDMI6n (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 13 Apr 2023 04:46:43 -0400
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F448A72
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Apr 2023 01:46:39 -0700 (PDT)
-Date:   Thu, 13 Apr 2023 08:46:25 +0000
+        Thu, 13 Apr 2023 04:58:43 -0400
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0701F49FE;
+        Thu, 13 Apr 2023 01:56:32 -0700 (PDT)
+Date:   Thu, 13 Apr 2023 08:56:18 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1681375595; x=1681634795;
-        bh=0I/cvvpMNFNtXs2XWin/vszkgzAUgAeUAKIfq3GLX/k=;
+        s=protonmail; t=1681376188; x=1681635388;
+        bh=g737EIKMRnF2623bcmw1pojpvM3xa1H2tKB2+vbIn8Y=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=RWlzmm1GQzYZ1nwcTa2ePHSXZP6eZrmkB3cTRabXCOzxK6+aKS1J9fc1QQtyUwr3e
-         csfMhLobVFT4Sjq2YqccWNQPyK5JnY6LtSGR9CW6QVJOeP0Pe4P4CcA0DGY7ZMIX0i
-         SwY80tor+0D37nGvRafPstMk5LZHUnypb62s0gHwy67otDpqPul6002wacgTkBBz8i
-         cX53Qd25rwJMJie8OfsyBXLHdmoH/qymi18zoc2rAklD1uLLGkoAL5trHAgZcvKotx
-         XV5hUe77luobTLvn2iDKtoF3BjOPJF+rkVhIQ/0na+MzX7orXEF4prY0VktfmqT/Mj
-         ivkYF2aBC7i7A==
+        b=LyuAJogirvUQPcmeaGUpoAVY3tbakTyN2dL1/pB0jbFXDAUKtGZp6toHX4Lv6RZZS
+         slFhcx29zmnwpwfwtUnLl6qxxggNl4tNPLBmTf4Ya7kOw8LIn758mwm8pajZAaNWHV
+         QqiqwHVRwm251zya9RYAdsJVpuM7Bek99sC7XtlHTLJ8dunlBabmUYHX4VAV0l1jpy
+         K7ZMmG682QbhKPMyPFYkfhiVZ1HQbqOXUeN6RkzQn91jUP8qv6HgaVCN+rGPa4qOgw
+         qqxqdZ7Mt/MjiXVDtQ2qvVd4dEd+BHOii4eRaNXwjPsYI2Mp+N6kytvhQ2hdXoRzY6
+         H7xNA9YGvtndA==
 To:     Wedson Almeida Filho <wedsonaf@gmail.com>,
         rust-for-linux@vger.kernel.org
 From:   Benno Lossin <benno.lossin@proton.me>
@@ -38,11 +38,14 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <walmeida@microsoft.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>,
         Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH v4 02/13] rust: sync: introduce `Lock` and `Guard`
-Message-ID: <94625fe6-b87a-a8f0-5b2a-a8152d5f7436@proton.me>
-In-Reply-To: <20230411054543.21278-2-wedsonaf@gmail.com>
-References: <20230411054543.21278-1-wedsonaf@gmail.com> <20230411054543.21278-2-wedsonaf@gmail.com>
+Subject: Re: [PATCH v4 03/13] rust: lock: introduce `Mutex`
+Message-ID: <fb1ce18b-6d63-6e76-1e55-53974711cbe0@proton.me>
+In-Reply-To: <20230411054543.21278-3-wedsonaf@gmail.com>
+References: <20230411054543.21278-1-wedsonaf@gmail.com> <20230411054543.21278-3-wedsonaf@gmail.com>
 Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -54,270 +57,239 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 On 11.04.23 07:45, Wedson Almeida Filho wrote:
 > From: Wedson Almeida Filho <walmeida@microsoft.com>
 >
-> They are generic Rust implementations of a lock and a lock guard that
-> contain code that is common to all locks. Different backends will be
-> introduced in subsequent commits.
+> This is the `struct mutex` lock backend and allows Rust code to use the
+> kernel mutex idiomatically.
 >
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Waiman Long <longman@redhat.com>
 > Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Suggested-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
 > ---
 > v1 -> v2: No changes
-> v2 -> v3: Use new Opaque::ffi_init from Benno's series
-> v3 -> v4: Fixed name of parameter in Lock comment
+> v2 -> v3: No changes
+> v4 -> v4: No changes
 >
->   rust/kernel/sync.rs      |   2 +-
->   rust/kernel/sync/lock.rs | 162 +++++++++++++++++++++++++++++++++++++++
->   2 files changed, 163 insertions(+), 1 deletion(-)
->   create mode 100644 rust/kernel/sync/lock.rs
+>   rust/helpers.c                 |   7 ++
+>   rust/kernel/sync.rs            |   1 +
+>   rust/kernel/sync/lock.rs       |   2 +
+>   rust/kernel/sync/lock/mutex.rs | 118 +++++++++++++++++++++++++++++++++
+>   4 files changed, 128 insertions(+)
+>   create mode 100644 rust/kernel/sync/lock/mutex.rs
 >
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 04b9be46e887..86af099d2d66 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -22,6 +22,7 @@
+>   #include <linux/build_bug.h>
+>   #include <linux/err.h>
+>   #include <linux/refcount.h>
+> +#include <linux/mutex.h>
+>
+>   __noreturn void rust_helper_BUG(void)
+>   {
+> @@ -29,6 +30,12 @@ __noreturn void rust_helper_BUG(void)
+>   }
+>   EXPORT_SYMBOL_GPL(rust_helper_BUG);
+>
+> +void rust_helper_mutex_lock(struct mutex *lock)
+> +{
+> +=09mutex_lock(lock);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_mutex_lock);
+> +
+>   refcount_t rust_helper_REFCOUNT_INIT(int n)
+>   {
+>   =09return (refcount_t)REFCOUNT_INIT(n);
 > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 541d235ffbeb..81b0998eaa18 100644
+> index 81b0998eaa18..693f0b7f4e4f 100644
 > --- a/rust/kernel/sync.rs
 > +++ b/rust/kernel/sync.rs
-> @@ -8,6 +8,7 @@
->   use crate::types::Opaque;
->
->   mod arc;
-> +pub mod lock;
+> @@ -11,6 +11,7 @@ mod arc;
+>   pub mod lock;
 >
 >   pub use arc::{Arc, ArcBorrow, UniqueArc};
+> +pub use lock::mutex::Mutex;
 >
-> @@ -25,7 +26,6 @@ impl LockClassKey {
->           Self(Opaque::uninit())
->       }
->
-> -    #[allow(dead_code)]
->       pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
->           self.0.get()
->       }
+>   /// Represents a lockdep class. It's a wrapper around C's `lock_class_k=
+ey`.
+>   #[repr(transparent)]
 > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> new file mode 100644
-> index 000000000000..1a8ecccf4f24
-> --- /dev/null
+> index 1a8ecccf4f24..98de109d9e40 100644
+> --- a/rust/kernel/sync/lock.rs
 > +++ b/rust/kernel/sync/lock.rs
-> @@ -0,0 +1,162 @@
+> @@ -10,6 +10,8 @@ use crate::{bindings, init::PinInit, pin_init, str::CSt=
+r, types::Opaque};
+>   use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned=
+};
+>   use macros::pin_data;
+>
+> +pub mod mutex;
+> +
+>   /// The "backend" of a lock.
+>   ///
+>   /// It is the actual implementation of the lock, without the need to re=
+peat patterns used in all
+> diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex=
+.rs
+> new file mode 100644
+> index 000000000000..923472f04af4
+> --- /dev/null
+> +++ b/rust/kernel/sync/lock/mutex.rs
+> @@ -0,0 +1,118 @@
 > +// SPDX-License-Identifier: GPL-2.0
 > +
-> +//! Generic kernel lock and guard.
+> +//! A kernel mutex.
 > +//!
-> +//! It contains a generic Rust lock and guard that allow for different b=
-ackends (e.g., mutexes,
-> +//! spinlocks, raw spinlocks) to be provided with minimal effort.
+> +//! This module allows Rust code to use the kernel's `struct mutex`.
 > +
-> +use super::LockClassKey;
-> +use crate::{bindings, init::PinInit, pin_init, str::CStr, types::Opaque}=
-;
-> +use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned}=
-;
-> +use macros::pin_data;
+> +use crate::bindings;
 > +
-> +/// The "backend" of a lock.
+> +/// Creates a [`Mutex`] initialiser with the given name and a newly-crea=
+ted lock class.
 > +///
-> +/// It is the actual implementation of the lock, without the need to rep=
-eat patterns used in all
-> +/// locks.
-> +///
-> +/// # Safety
-> +///
-> +/// - Implementers must ensure that only one thread/CPU may access the p=
-rotected data once the lock
-> +/// is owned, that is, between calls to `lock` and `unlock`.
-
-I am a bit confused which data is protected. The `Backend` should not be
-aware of any data it protects. To me the safety requirement is:
-- Up to one thread may be in the critical section at any one time.
-- When `lock` returns, the current thread has entered the critical
-   section.
-- A thread leaves the critical section by calling `unlock`.
-
-> +pub unsafe trait Backend {
-> +    /// The state required by the lock.
-> +    type State;
-> +
-> +    /// The state required to be kept between lock and unlock.
-> +    type GuardState;
-> +
-> +    /// Initialises the lock.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must be valid for write for the duration of the call, whil=
-e `name` and `key` must
-> +    /// remain valid for read indefinitely.
-
-- Only call this function once on uninitialized memory.
-
-Do we require some sort of drop guarantee like pin? This function does not
-state anything about `State` having to be pinned, but `Lock` is `!Unpin`
-(and also pins the state). If other people decide to use `Backend`
-somewhere, these things should be clear.
-
-> +    unsafe fn init(
-> +        ptr: *mut Self::State,
-> +        name: *const core::ffi::c_char,
-> +        key: *mut bindings::lock_class_key,
-> +    );
-> +
-> +    /// Acquires the lock, making the caller its owner.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that [`Backend::init`] has been previously c=
-alled.
-
-Is it safe to call this function twice? Does `unlock` have to be
-called, or is one allowed to drop the value before?
-
-> +    #[must_use]
-> +    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState;
-> +
-> +    /// Releases the lock, giving up its ownership.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// It must only be called by the current owner of the lock.
-> +    unsafe fn unlock(ptr: *mut Self::State, guard_state: &Self::GuardSta=
-te);
+> +/// It uses the name if one is given, otherwise it generates one based o=
+n the file name and line
+> +/// number.
+> +#[macro_export]
+> +macro_rules! new_mutex {
+> +    ($inner:expr $(, $name:literal)? $(,)?) =3D> {
+> +        $crate::sync::Mutex::new(
+> +            $inner, $crate::optional_name!($($name)?), $crate::static_lo=
+ck_class!())
+> +    };
 > +}
 > +
 > +/// A mutual exclusion primitive.
 > +///
-> +/// Exposes one of the kernel locking primitives. Which one is exposed d=
-epends on the lock banckend
-
-Typo: 'banckend' -> '[`Backend`]' (I would prefer a link here)
-
-> +/// specified as the generic parameter `B`.
-> +#[pin_data]
-> +pub struct Lock<T: ?Sized, B: Backend> {
-> +    /// The kernel lock object.
-> +    #[pin]
-> +    state: Opaque<B::State>,
-> +
-> +    /// Some locks are known to be self-referential (e.g., mutexes), whi=
-le others are architecture
-> +    /// or config defined (e.g., spinlocks). So we conservatively requir=
-e them to be pinned in case
-> +    /// some architecture uses self-references now or in the future.
-> +    #[pin]
-> +    _pin: PhantomPinned,
-> +
-> +    /// The data protected by the lock.
-> +    data: UnsafeCell<T>,
-> +}
-> +
-> +// SAFETY: `Lock` can be transferred across thread boundaries iff the da=
-ta it protects can.
-
-Are there backends where `Backend::State: !Send`? If so we should add
-this as a bound, if not, there should be a comment here, since it is
-unconditionally implemented. Same for `Sync`
-
-> +unsafe impl<T: ?Sized + Send, B: Backend> Send for Lock<T, B> {}
-> +
-> +// SAFETY: `Lock` serialises the interior mutability it provides, so it =
-is `Sync` as long as the
-> +// data it protects is `Send`.
-> +unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
-> +
-> +impl<T, B: Backend> Lock<T, B> {
-> +    /// Constructs a new lock initialiser.
-> +    #[allow(clippy::new_ret_no_self)]
-> +    pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) ->=
- impl PinInit<Self> {
-> +        pin_init!(Self {
-> +            data: UnsafeCell::new(t),
-> +            _pin: PhantomPinned,
-> +            // SAFETY: `slot` is valid while the closure is called and b=
-oth `name` and `key` have
-> +            // static lifetimes so they live indefinitely.
-> +            state <- Opaque::ffi_init(|slot| unsafe {
-> +                B::init(slot, name.as_char_ptr(), key.as_ptr())
-> +            }),
-> +        })
-> +    }
-> +}
-> +
-> +impl<T: ?Sized, B: Backend> Lock<T, B> {
-> +    /// Acquires the lock and gives the caller access to the data protec=
-ted by it.
-> +    pub fn lock(&self) -> Guard<'_, T, B> {
-> +        // SAFETY: The constructor of the type calls `init`, so the exis=
-tence of the object proves
-
-I would make 'the type' concrete here: 'The constructor of `Self` ...'. And
-then '... so the existence of `self` ...'.
-
-> +        // that `init` was called.
-> +        let state =3D unsafe { B::lock(self.state.get()) };
-> +        // SAFETY: The lock was just acquired.
-> +        unsafe { Guard::new(self, state) }
-> +    }
-> +}
-> +
-> +/// A lock guard.
+> +/// Exposes the kernel's [`struct mutex`]. When multiple threads attempt=
+ to lock the same mutex,
+> +/// only one at a time is allowed to progress, the others will block (sl=
+eep) until the mutex is
+> +/// unlocked, at which point another thread will be allowed to wake up a=
+nd make progress.
 > +///
-> +/// Allows mutual exclusion primitives that implement the `Backend` trai=
-t to automatically unlock
+> +/// Since it may block, [`Mutex`] needs to be used with care in atomic c=
+ontexts.
+> +///
+> +/// Instances of [`Mutex`] need a lock class and to be pinned. The recom=
+mended way to create such
 
-Make `Backend` a link.
+The first sentence reads weird, missing another 'need'?
 
-> +/// when a guard goes out of scope. It also provides a safe and convenie=
-nt way to access the data
-> +/// protected by the lock.
-> +#[must_use =3D "the lock unlocks immediately when the guard is unused"]
-> +pub struct Guard<'a, T: ?Sized, B: Backend> {
-> +    pub(crate) lock: &'a Lock<T, B>,
-> +    pub(crate) state: B::GuardState,
-> +    _not_send: PhantomData<*mut ()>,
-> +}
+> +/// instances is with the [`pin_init`](crate::pin_init) and [`new_mutex`=
+] macros.
+> +///
+> +/// # Examples
+> +///
+> +/// The following example shows how to declare, allocate and initialise =
+a struct (`Example`) that
+> +/// contains an inner struct (`Inner`) that is protected by a mutex.
+> +///
+> +/// ```
+> +/// use kernel::{init::InPlaceInit, init::PinInit, new_mutex, pin_init, =
+sync::Mutex};
+> +///
+> +/// struct Inner {
+> +///     a: u32,
+> +///     b: u32,
+> +/// }
+> +///
+> +/// #[pin_data]
+> +/// struct Example {
+> +///     c: u32,
+> +///     #[pin]
+> +///     d: Mutex<Inner>,
+> +/// }
+> +///
+> +/// impl Example {
+> +///     fn new() -> impl PinInit<Self> {
+> +///         pin_init!(Self {
+> +///             c: 10,
+> +///             d <- new_mutex!(Inner { a: 20, b: 30 }),
+> +///         })
+> +///     }
+> +/// }
+> +///
+> +/// // Allocate a boxed `Example`.
+> +/// let e =3D Box::pin_init(Example::new())?;
+> +/// assert_eq!(e.c, 10);
+> +/// assert_eq!(e.d.lock().a, 20);
+> +/// assert_eq!(e.d.lock().b, 30);
+> +/// ```
+> +///
+> +/// The following example shows how to use interior mutability to modify=
+ the contents of a struct
+> +/// protected by a mutex despite only having a shared reference:
+
+I would not bring up interior mutability here, the `Mutex` uses it, but
+not the user of the `Mutex`. I would just say:
+
+     To access the data behind a `Mutex`, simply take a shared reference to
+     the `Mutex` and call `lock()` on it. This function returns a guard obj=
+ect
+     that dereferences to the protected data. The `Mutex` is unlocked when =
+the
+     guard object goes out of scope.
+
+> +///
+> +/// ```
+> +/// use kernel::sync::Mutex;
+> +///
+> +/// struct Example {
+> +///     a: u32,
+> +///     b: u32,
+> +/// }
+> +///
+> +/// fn example(m: &Mutex<Example>) {
+> +///     let mut guard =3D m.lock();
+> +///     guard.a +=3D 10;
+> +///     guard.b +=3D 20;
+> +/// }
+> +/// ```
+> +///
+> +/// [`struct mutex`]: ../../../../include/linux/mutex.h
+> +pub type Mutex<T> =3D super::Lock<T, MutexBackend>;
 > +
-> +// SAFETY: `Guard` is sync when the data protected by the lock is also s=
-ync.
-> +unsafe impl<T: Sync + ?Sized, B: Backend> Sync for Guard<'_, T, B> {}
+> +/// A kernel `struct mutex` lock backend.
+> +pub struct MutexBackend;
 > +
-> +impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
-> +    type Target =3D T;
+> +// SAFETY: The underlying kernel `struct mutex` object ensures mutual ex=
+clusion.
+> +unsafe impl super::Backend for MutexBackend {
+> +    type State =3D bindings::mutex;
+> +    type GuardState =3D ();
 > +
-> +    fn deref(&self) -> &Self::Target {
-> +        // SAFETY: The caller owns the lock, so it is safe to deref the =
-protected data.
-> +        unsafe { &*self.lock.data.get() }
+> +    unsafe fn init(
+> +        ptr: *mut Self::State,
+> +        name: *const core::ffi::c_char,
+> +        key: *mut bindings::lock_class_key,
+> +    ) {
+> +        // SAFETY: The safety requirements ensure that `ptr` is valid fo=
+r writes, and `name` and
+> +        // `key` are valid for read indefinitely.
+> +        unsafe { bindings::__mutex_init(ptr, name, key) }
 > +    }
-> +}
 > +
-> +impl<T: ?Sized, B: Backend> core::ops::DerefMut for Guard<'_, T, B> {
-> +    fn deref_mut(&mut self) -> &mut Self::Target {
-> +        // SAFETY: The caller owns the lock, so it is safe to deref the =
-protected data.
-> +        unsafe { &mut *self.lock.data.get() }
+> +    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
+> +        // SAFETY: The safety requirements of this function ensure that =
+`ptr` points to valid
+> +        // memory, and that it has been initialised before.
+> +        unsafe { bindings::mutex_lock(ptr) };
 > +    }
-> +}
 > +
-> +impl<T: ?Sized, B: Backend> Drop for Guard<'_, T, B> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: The caller owns the lock, so it is safe to unlock it.
-> +        unsafe { B::unlock(self.lock.state.get(), &self.state) };
-> +    }
-> +}
-> +
-> +impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
-> +    /// Constructs a new immutable lock guard.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that it owns the lock.
-> +    pub(crate) unsafe fn new(lock: &'a Lock<T, B>, state: B::GuardState)=
- -> Self {
-> +        Self {
-> +            lock,
-> +            state,
-> +            _not_send: PhantomData,
-> +        }
+> +    unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardSt=
+ate) {
+> +        // SAFETY: The safety requirements of this function ensure that =
+`ptr` is valid and that the
+> +        // caller is the owner of the mutex.
+> +        unsafe { bindings::mutex_unlock(ptr) };
 > +    }
 > +}
 > --
 > 2.34.1
 >
+
 
