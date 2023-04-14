@@ -2,171 +2,146 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F143C77B6E
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Apr 2023 11:55:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8932C77B6E
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Apr 2023 12:02:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230141AbjDNLzF (ORCPT
+        id S229448AbjDNMCo (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Apr 2023 07:55:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50792 "EHLO
+        Fri, 14 Apr 2023 08:02:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229752AbjDNLzE (ORCPT
+        with ESMTP id S229941AbjDNMCa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Apr 2023 07:55:04 -0400
+        Fri, 14 Apr 2023 08:02:30 -0400
 Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F71530FA;
-        Fri, 14 Apr 2023 04:55:02 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id 6CF745C0060;
-        Fri, 14 Apr 2023 07:55:01 -0400 (EDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE66F4230;
+        Fri, 14 Apr 2023 05:02:28 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id 620365C0056;
+        Fri, 14 Apr 2023 08:02:28 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Fri, 14 Apr 2023 07:55:01 -0400
+  by compute3.internal (MEProxy); Fri, 14 Apr 2023 08:02:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
         :content-transfer-encoding:content-type:content-type:date:date
         :from:from:in-reply-to:in-reply-to:message-id:mime-version
         :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-        1681473301; x=1681559701; bh=2I4MzMrmxZMH1ZdqLmrFqtevk4RMUqxEQ3b
-        kyYHe2wU=; b=Vyq2vmJcTpxKjTN6uQWHwHuka1/yjJcUNUecMDbRCmDy0AIPpgn
-        RGo4jiyr2+uEW5m8kXyStOHZQqsHw9cwg/PWmrNjbLNizzj3ZkhPmqkviD8kedK+
-        XcMyFdgOZLOY79y+/QOtpbsmaCQzLx3Czs2Bc4/8oByFhWrW7JvA6sE76+DzzXhA
-        wgHOPqjXLQYW/6fnA6tlJW8ghq1DvhyjzeBmgwWla1wD2j2SGqjphzj+RG/exwB/
-        DqjJ8pWCbzA98skxarxEcguhJ/nzMSQbXgJBVnrKcJTW0dVpUZWlg6J4ldjjQ+6L
-        sIF0vauVFJha4FCVd/JpPY4mygnADnOdy9g==
+        1681473748; x=1681560148; bh=jmg3WDJnOye7aJxA4k2ecYkrHqICWicLafd
+        h+i740ss=; b=JA6lhI2UPYHwIx1gZKnZCxV62cD0efkjJ5sq1CxM0MP2SVcVOD1
+        bGGz/7UKX22jDpKakRQzmn4YlYaizNWRK76Uilw2yytd05FGveEb6SuV8onYTLuT
+        xRwWnK5ApYZxhZy7uO0dvQhJ31Exqb87E4oxCAfR1mM8ikHbaJ87R+s0bC17jKxP
+        XG0JLu11cLbXIUSSKrgQnSC1wWLkFXN7r6SWvAE97U7nS8KRIBlisWCBsEou6K+/
+        ZuDWjVk1lxc2ARbgDc++dt1DM7l8/iDzdNcj0oxRb1bJWIBViL7Wr0CMBYHLpAVC
+        EeqnfXD2/JFCh4GKF8JrxR2HdgPhSWIFHww==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-transfer-encoding
         :content-type:content-type:date:date:feedback-id:feedback-id
         :from:from:in-reply-to:in-reply-to:message-id:mime-version
         :references:reply-to:sender:subject:subject:to:to:x-me-proxy
         :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-        1681473301; x=1681559701; bh=2I4MzMrmxZMH1ZdqLmrFqtevk4RMUqxEQ3b
-        kyYHe2wU=; b=gOvywEzYW2kLxtKU6vBtR33APK/e2IMy7UOz0mzGhej4EC2LqG5
-        E5RsPuNE1irskwS2RxdYxNcIYLwprWksj4GRXaxmt9z7qxxPYh+wRcva3vmMOamU
-        t3XepIOpY6ZNbx8UgVnM6YB502BYhp6UL3wBSkYXNfGsuGnqVx90K7+1FzcwlPF2
-        KPI+x/AVo9ivMivjKrfO6p96juiaLbo2uhu4g6TxNskFFPXYxuEfbQHdDGYS8wfk
-        YwV8qTcW49oMT6R854QzNgz3wSXnzjTVdt0r36SwN9IzO6mXKu7qrqSnPRvHabRp
-        Y/lorbdtkQnqZMpau6FVGVyCLnIHFa6Q0ng==
-X-ME-Sender: <xms:FT85ZOMX6NVnh9l8MG-lHdl3fPAtJFj5VHCtbh8SefnupEn0d2OQAg>
-    <xme:FT85ZM85gsCbScp3pjVJrWcNJMmQx4kTFlPzrj9oxGYEDNvMSuG04AlUVTAzVVJFg
-    9KWxU_0WApfNG4xNA>
-X-ME-Received: <xmr:FT85ZFTvlrs6ZyEnOWhyaglbeRS2TKxclyOFJXxBIzdvreAB8RKI827cpJbQzh1Vf5WV6N9-jgmTrdRQLt_zHtXtb2R8w-IKol2aeCJNHU8b>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeltddggeegucetufdoteggodetrfdotf
+        1681473748; x=1681560148; bh=jmg3WDJnOye7aJxA4k2ecYkrHqICWicLafd
+        h+i740ss=; b=FjpZJ3v5V1wLMCnCXEwV4kPNJT+v3YN5//KeTHlX7Nbvq34CyMS
+        kl8brX1IUsmOlQa3ACyEYBTAr/ZmT9uAJAMOgyg2zRBFC+M9/D/M5OpN9heVinKA
+        G6mejKXatUIMuau+rAynpqQsRvn2B/Va5zz4smxHSgaGy1Uv5e2RIk6CXw4ZC9YZ
+        rqds8m7dcM5KGAMiyo9LNnyTn4A1JuHmhbCJZRAgMbJVTk2rJ4fBcqn0OBcYhKj9
+        NAFPHnfGuCef+WqZQ08qvJ4ME1cPjBwJBfKHekLvZ9/Vz5RB6jYRUI1liZfl+ISw
+        lnCM2QIkBB+2L8C09XUSaBpPhQO5PenNl3g==
+X-ME-Sender: <xms:1EA5ZF_Ugv0Afu98CF9HAQxrynkMy9ZWLuvBiLQRK_Iv99F1YB8CoQ>
+    <xme:1EA5ZJviC-0F_1dq9Q4x1Q8HoLU7ulR1uWSywJTShULsduMD7or_RH9y94KPZWXNQ
+    Obr2gpojehx_1iHUQ>
+X-ME-Received: <xmr:1EA5ZDAW6-O43CC18kFAHqIT4D6__L5FmEq_tjfYM6qWK_oaPgk0_Wd9EF1CKye9aoI-CmdfFZcldkvkXtF-FnXOGw1u-RUEFW8zNH1QyV2B>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeltddggeejucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpeetlhhi
     tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
-    ehudduvdetkedvkedtudeludfgfffhudegjeeguedvvedtteevjeehheeiffefgeenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvse
-    hrhihhlhdrihho
-X-ME-Proxy: <xmx:FT85ZOvKnDiNZjuSE5VAK2IFEUOI709LOT22KmfKwENU32av1Vdmew>
-    <xmx:FT85ZGdM-Q9Xjt3j3ImLNXt7c70ddiew1uG1JK7NvxrT176cqWfieQ>
-    <xmx:FT85ZC2upAnlAxCACz_iQWi-HBn-6W_ASnxojg-j-MxECL1YA7GtVQ>
-    <xmx:FT85ZM2yB6UGDV2T4WZwpiWE49voktYOMPXTYjlDXedL1H8q2q__6g>
+    efvddvgeelgfdtjeegteelgffffeeljeetiedtveeghfeihefhteekgedvfefhheenucff
+    ohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    hrrghmpehmrghilhhfrhhomheprghlihgtvgesrhihhhhlrdhioh
+X-ME-Proxy: <xmx:1EA5ZJf-KpohgFDa3HoLQCecRrOg0ZbO217uV_L1N93gfsvlk4Ck_Q>
+    <xmx:1EA5ZKPUgSZG4kNvDPXKX_goq6m5SXERmoPhaKD7jaNKDe8EpEBiRQ>
+    <xmx:1EA5ZLmXfOsHOxkyCFliaebGTNyeTGPZW6Imk-qBaDBEBOo8WHwo0g>
+    <xmx:1EA5ZLjqS_prlWR54jRTW7x03gqNbsNDYkRAEoYweVYrtuueGH5L0Q>
 Feedback-ID: i56684263:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 14 Apr 2023 07:54:57 -0400 (EDT)
-Message-ID: <433dcb57-e5d6-bb2b-5c5a-74768cccecab@ryhl.io>
-Date:   Fri, 14 Apr 2023 13:55:20 +0200
+ 14 Apr 2023 08:02:26 -0400 (EDT)
+Message-ID: <5628890a-a975-9283-7ce7-969d1501de1f@ryhl.io>
+Date:   Fri, 14 Apr 2023 14:02:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
-Subject: Re: [PATCH v4 12/13] rust: sync: introduce `CondVar`
+Subject: Re: [PATCH v4 02/13] rust: sync: introduce `Lock` and `Guard`
+Content-Language: en-US
 To:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        rust-for-linux@vger.kernel.org
+        Gary Guo <gary@garyguo.net>, rust-for-linux@vger.kernel.org
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org,
         Wedson Almeida Filho <walmeida@microsoft.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Waiman Long <longman@redhat.com>,
         Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 References: <20230411054543.21278-1-wedsonaf@gmail.com>
- <20230411054543.21278-12-wedsonaf@gmail.com>
-Content-Language: en-US
+ <20230411054543.21278-2-wedsonaf@gmail.com>
+ <20230411214205.5753343f.gary@garyguo.net>
+ <CANeycqqM-k2odQzNffaYQ6Nrxii=XUp3VsQ8mQ3vw=WA5mykJw@mail.gmail.com>
 From:   Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20230411054543.21278-12-wedsonaf@gmail.com>
+In-Reply-To: <CANeycqqM-k2odQzNffaYQ6Nrxii=XUp3VsQ8mQ3vw=WA5mykJw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 4/11/23 07:45, Wedson Almeida Filho wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
+On 4/12/23 13:38, Wedson Almeida Filho wrote:
+> On Tue, 11 Apr 2023 at 17:42, Gary Guo <gary@garyguo.net> wrote:
+>>
+>> On Tue, 11 Apr 2023 02:45:32 -0300
+>> Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
+>>
+>>> From: Wedson Almeida Filho <walmeida@microsoft.com>
+>>>
+>>> They are generic Rust implementations of a lock and a lock guard that
+>>> contain code that is common to all locks. Different backends will be
+>>> introduced in subsequent commits.
+>>>
+>>> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+>>> Suggested-by: Gary Guo <gary@garyguo.net>
+>>> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+>>> --- >>
+>> There is not drop implementation on `Lock`, which implies all locks can
+>> be just forgotten?
 > 
-> This is the traditional condition variable or monitor synchronisation
-> primitive. It is implemented with C's `wait_queue_head_t`.
+> Yes, all locks can be forgotten.
+
+Are the locks not pinned? Pinning comes with the guarantee that the 
+value remains valid until the destructor runs, so the only kind of 
+forgetting you can do to a lock is the one where the memory containing 
+it is leaked, meaning that its not a UAF to use it after forgetting it.
+
+My understanding is that the issue had to do with forgetting the guard 
+types, since those were not pinned.
+
+>> I believe we discussed a case where this is can lead to UAF when a lock
+>> is dropped while it is locked (e.g. because the guard is forgotten).
 > 
-> It allows users to release a lock and go to sleep while guaranteeing
-> that notifications won't be missed. This is achieved by enqueuing a wait
-> entry before releasing the lock.
+> Yes, this is the issue brought up by Boqun:
+> https://github.com/Rust-for-Linux/linux/issues/862
 > 
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Waiman Long <longman@redhat.com>
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-I have a few methods below that the binder driver will need on the 
-condvar. I'll let it be up to you whether you wish to include them in 
-this patch. Otherwise, we will add them when we start upstreaming binder.
-
-> +    /// Releases the lock and waits for a notification in interruptible mode.
-> +    ///
-> +    /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
-> +    /// thread to sleep, reacquiring the lock on wake up. It wakes up when notified by
-> +    /// [`CondVar::notify_one`] or [`CondVar::notify_all`], or when the thread receives a signal.
-> +    /// It may also wake up spuriously.
-> +    ///
-> +    /// Returns whether there is a signal pending.
-> +    #[must_use = "wait returns if a signal is pending, so the caller must check the return value"]
-> +    pub fn wait<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) -> bool {
-> +        self.wait_internal(bindings::TASK_INTERRUPTIBLE, guard);
-> +        crate::current!().signal_pending()
-> +    }
-
-The binder driver will need a `wait_timeout` method.
-
-> +    /// Calls the kernel function to notify the appropriate number of threads with the given flags.
-> +    fn notify(&self, count: i32, flags: u32) {
-> +        // SAFETY: `wait_list` points to valid memory.
-> +        unsafe {
-> +            bindings::__wake_up(
-> +                self.wait_list.get(),
-> +                bindings::TASK_NORMAL,
-> +                count,
-> +                flags as _,
-> +            )
-> +        };
-> +    }
-> +
-> +    /// Wakes a single waiter up, if any.
-> +    ///
-> +    /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
-> +    /// completely (as opposed to automatically waking up the next waiter).
-> +    pub fn notify_one(&self) {
-> +        self.notify(1, 0);
-> +    }
-> +
-> +    /// Wakes all waiters up, if any.
-> +    ///
-> +    /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
-> +    /// completely (as opposed to automatically waking up the next waiter).
-> +    pub fn notify_all(&self) {
-> +        self.notify(0, 0);
-> +    }
-
-Android binder will also need a `notify_sync` method. It could be 
-implemented like this:
-
-/// Calls the kernel function to notify one thread synchronously.
-pub fn notify_sync(&self) {
-     // SAFETY: `wait_list` points to valid memory.
-     unsafe { bindings::__wake_up_sync(self.wait_list.get(), 
-bindings::TASK_NORMAL) };
-}
+> The issue arises when a mutex guard is forgotten and the task that
+> owns it exits. Then another task trying to acquire the mutex will lead
+> to a UAF. A drop implementation on the lock doesn't solve this.
+> 
+> One solution is to increment the refcount on the current task when we
+> acquire the mutex and decrement it when we release, but if we do that,
+> the cost of acquiring/releasing a mutex gets much worse in Rust than
+> it is in C.
+> 
+> Another solution might be to force disable CONFIG_MUTEX_SPIN_ON_OWNER
+> when Rust is enabled, which is undesirable because it affects the
+> performance of C code as well.
+> 
+> Even a closure-based lock (which I believe you suggested at the time)
+> doesn't solve this completely because the thread may exit during the
+> closure execution and leave a dangling pointer in the mutex.
+> 
+> So we don't have a good solution for this yet.
