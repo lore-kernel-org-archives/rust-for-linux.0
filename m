@@ -2,92 +2,109 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80FC3C77B75
-	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Apr 2023 22:17:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BAEA9C77B75
+	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Apr 2023 23:31:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231371AbjDRWRc (ORCPT
+        id S231247AbjDRXbv (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 18 Apr 2023 18:17:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52568 "EHLO
+        Tue, 18 Apr 2023 19:31:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230390AbjDRWRb (ORCPT
+        with ESMTP id S229750AbjDRXbu (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 18 Apr 2023 18:17:31 -0400
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 911AB900D;
-        Tue, 18 Apr 2023 15:17:30 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-54fc337a650so225895217b3.4;
-        Tue, 18 Apr 2023 15:17:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681856250; x=1684448250;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rb2s/DWEwvCew7IiBKqmaCUL3AUYlAJqbW50mt5B9Nk=;
-        b=hDtShXc3PhXwEbKRY4G2WLgsSyRF+JlOKSwb7zF8RpLSWYw1Ui0KT7RIu1xgItuaxI
-         86GyFY1+9B+v7UwYAl+PRbu6tHmqgKonS3DRDuLmbC4R2rzGfofv4mXSqo7UPX8POTs3
-         DcQpSzckH5HDYYfmb6xSuDFxN2RjgBuWjvPa31FSQwFs3WqvlFVF1ar742iW/0IIEAB+
-         UTWwyxQRGX2nJuUC8I3xr/UHfXUcmwOURrTqMvXsCYiAY6GvoL7uqdw4DUKVxS21uRAP
-         ElFkX5TOvMm1Mzwxw0o/yrRzbJ0a5lJvP/djpsBn0k9QzcK4lbWWiFzwkSyEFFviJyQE
-         YUsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681856250; x=1684448250;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rb2s/DWEwvCew7IiBKqmaCUL3AUYlAJqbW50mt5B9Nk=;
-        b=KXxGYuAd85LyJaHVKS1DjGLo0W5lXh7P0iMKWcakN1somWQ00ZElMBmBQOA6D7TqTk
-         ibsbENCHIW1FCZ1iXDp6ioaV1IHNZ5XM2g2lKcgGHTI86+3GDs9BPUa15lyS2x5IjbdL
-         OfsRwUt8hstAmPqD9i46/OGrDYToJL3cYEEAkr0V6iLtwH8+yNXyYub44/941HC/X5Mr
-         yloo6USZmoQKvV6BSCix3rPj5M4p1msN4LHqTmapi5nSGsVjNELdwrdMD0Xievv7fCRv
-         56a5HCWdh2O7sCEpJBgQd4Hoh/TVrAO4gajPqjLCiUDdUe6eszLNW82hTfKc0FCXuMRC
-         N5lQ==
-X-Gm-Message-State: AAQBX9elOlR4DFGEB8YCsN+NZjSiUb7Xju1Tx0BLF/jmMP2ZBBap3zi6
-        XYTaUasLDqoUx1XvYqsA5GR6V0X1+sv++pxnd2k=
-X-Google-Smtp-Source: AKy350aKpMRZeEGfnc9bETCHrbDggSQVw30EgyEAxHgEaM9A0/+OWAUgagoXXsySH3ULOC9RpQdNrADkLYmFLckQmHw=
-X-Received: by 2002:a0d:c185:0:b0:54f:cc36:2fae with SMTP id
- c127-20020a0dc185000000b0054fcc362faemr1431271ywd.41.1681856249759; Tue, 18
- Apr 2023 15:17:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230418214347.324156-1-ojeda@kernel.org>
-In-Reply-To: <20230418214347.324156-1-ojeda@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 19 Apr 2023 00:17:18 +0200
-Message-ID: <CANiq72m1TpRDscA9E6PrZRtEogDsSXF8XQZ6bbhXCfptb34tbg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Rust 1.68.2 upgrade
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Tue, 18 Apr 2023 19:31:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EED8776B6;
+        Tue, 18 Apr 2023 16:31:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A58C62F93;
+        Tue, 18 Apr 2023 23:31:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1734BC433EF;
+        Tue, 18 Apr 2023 23:31:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681860696;
+        bh=dXrs6HEsN21LvkE2B3upLi4G+i29wmCt/lPdjsvXpGI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=kHUv3WsqPqzTUjKZj5daYdXJVOeGYPfR+HG/1Ev5CEQ8LdaBAskFK4XARG+8WHt/l
+         GRshbswOxIG769iM5hqnzpq+Me6XxQeuva7mJ4pTq26GfkqPkePob7eqP4FjCFoGKj
+         YVreXt3MhxRSydf5g8/5BTs4qeLw+dStiJ4bxqgBZehB3XlYIduJUmcsj0fLs2YxKs
+         8zM7imnjJv5k5PVMlIrKpk2CRnIf3UhYDigJQ1XRnUJXxBvLly+IlibqKRWYDZDLEA
+         P4yKAZZu33mYQriE3r4DblTGy29Q6smgowNEh7YCYmBkJBZ91sSGahWyPJPFjW+p2g
+         cko7jlNtKcWhg==
+From:   Miguel Ojeda <ojeda@kernel.org>
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Josh Stone <jistone@redhat.com>,
-        William Brown <william.brown@suse.com>,
-        Georgy Yakovlev <gyakovlev@gentoo.org>,
-        Jan Alexander Steffens <jan.steffens@gmail.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Jean Delvare <jdelvare@suse.de>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH] .gitattributes: set diff driver for Rust source code files
+Date:   Wed, 19 Apr 2023 01:30:48 +0200
+Message-Id: <20230418233048.335281-1-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Apr 18, 2023 at 11:44=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
->
-> This is the first upgrade to the Rust toolchain since the initial Rust
-> merge, from 1.62.0 to 1.68.2 (i.e. the latest).
->
-> Please see the last patch message for a long explanation of the upgrade,
-> the policy for future upgrades and some indications on how to easily
-> review this.
->
-> The series is based on `rust-next`.
+Git supports a builtin Rust diff driver [1] since v2.23.0 (2019).
 
-The third patch may be too big for vger -- for those looking for it,
-Lore has it at https://lore.kernel.org/all/20230418214347.324156-4-ojeda@ke=
-rnel.org/
+It improves the choice of hunk headers in some cases, such as
+diffs within methods, since those are indented in Rust within
+an `impl` block, and therefore the default diff driver would
+pick the outer `impl` block instead (rather than the method
+where the changed code is).
 
-Cheers,
-Miguel
+For instance, with the default diff driver:
+
+    @@ -455,6 +455,8 @@ impl fmt::Write for RawFormatter {
+             // Amount that we can copy. `saturating_sub` ensures we get 0 if `pos` goes past `end`.
+             let len_to_copy = core::cmp::min(pos_new, self.end).saturating_sub(self.pos);
+
+    +        test_diff_driver();
+    +
+             if len_to_copy > 0 {
+                 // SAFETY: If `len_to_copy` is non-zero, then we know `pos` has not gone past `end`
+                 // yet, so it is valid for write per the type invariants.
+
+With the Rust diff driver:
+
+    @@ -455,6 +455,8 @@ fn write_str(&mut self, s: &str) -> fmt::Result {
+             // Amount that we can copy. `saturating_sub` ensures we get 0 if `pos` goes past `end`.
+             let len_to_copy = core::cmp::min(pos_new, self.end).saturating_sub(self.pos);
+
+    +        test_diff_driver();
+    +
+             if len_to_copy > 0 {
+                 // SAFETY: If `len_to_copy` is non-zero, then we know `pos` has not gone past `end`
+                 // yet, so it is valid for write per the type invariants.
+
+Thus set the `rust` diff driver for `*.rs` source files.
+
+Link: https://git-scm.com/docs/gitattributes#_defining_a_custom_hunk_header [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ .gitattributes | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/.gitattributes b/.gitattributes
+index c9ba5bfc4036..2325c529e185 100644
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -2,3 +2,4 @@
+ *.[ch] diff=cpp
+ *.dts diff=dts
+ *.dts[io] diff=dts
++*.rs diff=rust
+
+base-commit: 09a9639e56c01c7a00d6c0ca63f4c7c41abe075d
+-- 
+2.40.0
+
