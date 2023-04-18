@@ -2,43 +2,64 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF2ACC6FD18
-	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Apr 2023 21:44:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80FC3C77B75
+	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Apr 2023 22:17:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233055AbjDRVom (ORCPT
+        id S231371AbjDRWRc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 18 Apr 2023 17:44:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59188 "EHLO
+        Tue, 18 Apr 2023 18:17:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232946AbjDRVoj (ORCPT
+        with ESMTP id S230390AbjDRWRb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 18 Apr 2023 17:44:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A135849FD;
-        Tue, 18 Apr 2023 14:44:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 27BA463972;
-        Tue, 18 Apr 2023 21:44:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD04C4339E;
-        Tue, 18 Apr 2023 21:44:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681854275;
-        bh=dxHo8fng5fKFUsmtr5U2E97vDNeCPOyudAHUgofO3Ow=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pzQSEkJzeinJqr/xLkeLsbod8v/LF8j9j1o3R4KhOtcMDbcfdi2dPjR0Qfr+FlcBP
-         fZ1/hjf+pLrZSqLXhDjPDrCof1m2Ct0b7+2k+nwb5r+4XJj4R4V3za+zUUvJMXNhq3
-         7OlFy+sJaXcfLBIvBwDmWPTJNJzQsolMCPf8De9Mlym9S71PJa9xWdKwZbNhud3jS5
-         cC3l659+12sptujUJmIjTidlA4J2sH8TQr+F0n1/O3pb+PubueNXSRbjASwj4aj9X9
-         j+lrGC0gUD8YhXNcb+fxfZE4vvpMhEct5F9/9bztS6x5AuoL/zLbbYm5oNcrKGLGSU
-         I8rtbhExZhwAg==
-From:   Miguel Ojeda <ojeda@kernel.org>
-To:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Tue, 18 Apr 2023 18:17:31 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 911AB900D;
+        Tue, 18 Apr 2023 15:17:30 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-54fc337a650so225895217b3.4;
+        Tue, 18 Apr 2023 15:17:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681856250; x=1684448250;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rb2s/DWEwvCew7IiBKqmaCUL3AUYlAJqbW50mt5B9Nk=;
+        b=hDtShXc3PhXwEbKRY4G2WLgsSyRF+JlOKSwb7zF8RpLSWYw1Ui0KT7RIu1xgItuaxI
+         86GyFY1+9B+v7UwYAl+PRbu6tHmqgKonS3DRDuLmbC4R2rzGfofv4mXSqo7UPX8POTs3
+         DcQpSzckH5HDYYfmb6xSuDFxN2RjgBuWjvPa31FSQwFs3WqvlFVF1ar742iW/0IIEAB+
+         UTWwyxQRGX2nJuUC8I3xr/UHfXUcmwOURrTqMvXsCYiAY6GvoL7uqdw4DUKVxS21uRAP
+         ElFkX5TOvMm1Mzwxw0o/yrRzbJ0a5lJvP/djpsBn0k9QzcK4lbWWiFzwkSyEFFviJyQE
+         YUsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681856250; x=1684448250;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rb2s/DWEwvCew7IiBKqmaCUL3AUYlAJqbW50mt5B9Nk=;
+        b=KXxGYuAd85LyJaHVKS1DjGLo0W5lXh7P0iMKWcakN1somWQ00ZElMBmBQOA6D7TqTk
+         ibsbENCHIW1FCZ1iXDp6ioaV1IHNZ5XM2g2lKcgGHTI86+3GDs9BPUa15lyS2x5IjbdL
+         OfsRwUt8hstAmPqD9i46/OGrDYToJL3cYEEAkr0V6iLtwH8+yNXyYub44/941HC/X5Mr
+         yloo6USZmoQKvV6BSCix3rPj5M4p1msN4LHqTmapi5nSGsVjNELdwrdMD0Xievv7fCRv
+         56a5HCWdh2O7sCEpJBgQd4Hoh/TVrAO4gajPqjLCiUDdUe6eszLNW82hTfKc0FCXuMRC
+         N5lQ==
+X-Gm-Message-State: AAQBX9elOlR4DFGEB8YCsN+NZjSiUb7Xju1Tx0BLF/jmMP2ZBBap3zi6
+        XYTaUasLDqoUx1XvYqsA5GR6V0X1+sv++pxnd2k=
+X-Google-Smtp-Source: AKy350aKpMRZeEGfnc9bETCHrbDggSQVw30EgyEAxHgEaM9A0/+OWAUgagoXXsySH3ULOC9RpQdNrADkLYmFLckQmHw=
+X-Received: by 2002:a0d:c185:0:b0:54f:cc36:2fae with SMTP id
+ c127-20020a0dc185000000b0054fcc362faemr1431271ywd.41.1681856249759; Tue, 18
+ Apr 2023 15:17:29 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230418214347.324156-1-ojeda@kernel.org>
+In-Reply-To: <20230418214347.324156-1-ojeda@kernel.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 19 Apr 2023 00:17:18 +0200
+Message-ID: <CANiq72m1TpRDscA9E6PrZRtEogDsSXF8XQZ6bbhXCfptb34tbg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] Rust 1.68.2 upgrade
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
         Josh Stone <jistone@redhat.com>,
         William Brown <william.brown@suse.com>,
@@ -46,48 +67,27 @@ Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         Jan Alexander Steffens <jan.steffens@gmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-Subject: [PATCH 2/3] rust: arc: fix intra-doc link in `Arc<T>::init`
-Date:   Tue, 18 Apr 2023 23:43:46 +0200
-Message-Id: <20230418214347.324156-3-ojeda@kernel.org>
-In-Reply-To: <20230418214347.324156-1-ojeda@kernel.org>
-References: <20230418214347.324156-1-ojeda@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-`Arc<T>::init` refers to `Arc<T>::pin_init` via an intra-doc link
-using the text `pin_init`, rather than more explicitly, which makes
-`rustdoc` point it to the `pin_init!` macro instead.
+On Tue, Apr 18, 2023 at 11:44=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
+>
+> This is the first upgrade to the Rust toolchain since the initial Rust
+> merge, from 1.62.0 to 1.68.2 (i.e. the latest).
+>
+> Please see the last patch message for a long explanation of the upgrade,
+> the policy for future upgrades and some indications on how to easily
+> review this.
+>
+> The series is based on `rust-next`.
 
-This is required for the compiler upgrade since the newer `rustdoc`
-would trigger the `broken_intra_doc_links` lint [1], but in this case
-the macro was not the intended target to begin with, and so the actual
-fix is to make it point to the right place, regardless of the upgrade.
+The third patch may be too big for vger -- for those looking for it,
+Lore has it at https://lore.kernel.org/all/20230418214347.324156-4-ojeda@ke=
+rnel.org/
 
-Thus make it more explicit.
-
-Fixes: 92c4a1e7e81c ("rust: init/sync: add `InPlaceInit` trait to pin-initialize smart pointers")
-Link: https://github.com/rust-lang/rust/issues/106142 [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- rust/kernel/sync/arc.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index e6d206242465..1b0734fdf6a7 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -185,7 +185,7 @@ impl<T> Arc<T> {
- 
-     /// Use the given initializer to in-place initialize a `T`.
-     ///
--    /// This is equivalent to [`pin_init`], since an [`Arc`] is always pinned.
-+    /// This is equivalent to [`Arc<T>::pin_init`], since an [`Arc`] is always pinned.
-     #[inline]
-     pub fn init<E>(init: impl Init<T, E>) -> error::Result<Self>
-     where
--- 
-2.40.0
-
+Cheers,
+Miguel
