@@ -2,88 +2,82 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A4C86C6FD18
-	for <rust-for-linux@archiver.kernel.org>; Wed, 19 Apr 2023 02:46:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42C06C6FD18
+	for <rust-for-linux@archiver.kernel.org>; Wed, 19 Apr 2023 03:03:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231557AbjDSCqR (ORCPT
+        id S231740AbjDSDDG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 18 Apr 2023 22:46:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59246 "EHLO
+        Tue, 18 Apr 2023 23:03:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232041AbjDSCqF (ORCPT
+        with ESMTP id S231393AbjDSDDF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 18 Apr 2023 22:46:05 -0400
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54B59755;
-        Tue, 18 Apr 2023 19:45:38 -0700 (PDT)
-Received: by mail-ot1-x335.google.com with SMTP id 46e09a7af769-6a437526b7cso879817a34.1;
-        Tue, 18 Apr 2023 19:45:38 -0700 (PDT)
+        Tue, 18 Apr 2023 23:03:05 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 005E1868F;
+        Tue, 18 Apr 2023 20:02:51 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-38c0a331d3cso918553b6e.1;
+        Tue, 18 Apr 2023 20:02:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681872330; x=1684464330;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=E069ZTY6nFYszV+/5FzOjU5LbuCwW8x4gHc3aSQEBg8=;
-        b=UhQs5Y/3zpq4zX5sMEGThvciVqiFLBfm1teJcsEZzz5FG1jhGuAJZkW4WWBG0z5odO
-         sIXPLrBUHBnj8uidXCrTBCqtfVRG8xeEpmxLVT4wVF5v9L7mSJMNlOrg6HfxAg1TN5dR
-         YJlOs7ksl1ob5qSztI2NE/qskge0XjDaEErG7SKNd9xxyH9QG3TH1LBOiA7wf8f4POs7
-         agk65MtIa5mBrXA3Yv3GHJazl3hkeLYE/yUpkGWPB8cBiJSR8ViIxrBVPPpkobNj+paK
-         XBKV6NG2FlizvxxbwP0GNoFJMjyPLaCxkz7LXDqjCF8abkw55v26qf3Q6kGodaDE5j3z
-         vsSQ==
+        d=gmail.com; s=20221208; t=1681873371; x=1684465371;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qy2us3ZF8Tj2uMWYJJfvUD27ubXE3+0nUE1gRG9Duwk=;
+        b=k/vAgxx03RaApkIGw+hA6V35gOL56X2LGZ0CU09W/ENxcytiBPHMnZbvII0+LGyMrZ
+         M47ldLvvPyLrrBs+s/xlM4X6KHXHUnjNuvpcHI0besLf9fatk9EqJnZimdG+3h4Z60pL
+         q3fwAF8j4i9oYyu4IDGjybA9416G9JfwToAfoNHfKicxpqjYAfBTHzvK6zPm2jguSGmb
+         n5W6UrLfYvnm6ZkgOICc4UbNKWxR8jwuVEtryMoxbNcAylxDP1HbvbrDVZRp/BCyppmn
+         rBX+PT+TedqXAguPXZHZP3h1NdX3JDsVsc+CJrD/PhVYkQLpxjIoIhAZuRoh2pz9yMFJ
+         f/aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681872330; x=1684464330;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=E069ZTY6nFYszV+/5FzOjU5LbuCwW8x4gHc3aSQEBg8=;
-        b=bLT2Zb2BO41He+ZrGJNW+xuQSm1BQfm2B0q0MhIOB8S9Q9rDA2ZFTeiYFxJfwdSoT2
-         0519txWQlYTwPTlv9JR3Lv7yUk6ta5yhxhswtOkvnraJlwuOfXyN76b1PSGPYWafA3PH
-         FYv5Cpu/R/+QOIY8oJyb8s26vKg4s+l3BUwdj1NNqDz1PX2Az7LQletXPFUHwj/creyp
-         mhRplPjWyUMfpidWAusKCePHyVNS16LrM4+r6tmXz+4KaapP31fEXEQGSC9w/zbvXzLA
-         THED22DHMSNy9gyB2MagxpBwPCQ0Mvc28vknTTJviZ2Nr/Q1iSekiR1Shob4HKGZFV/z
-         WNSw==
-X-Gm-Message-State: AAQBX9fcH7ybEPKVeOUZSUEtOrd2YdlcM1ZqY7xteWU7u0Af0nraGXOq
-        4vCQjJVs9vpIHb0AjjfJuD8=
-X-Google-Smtp-Source: AKy350b+TpaRh7+IMRxW7bQHLeOF/kqFYVzDURhqDqBXE7Ss1mrHoC4nEcZ4sXwTsyTxEAG+z4Q4EQ==
-X-Received: by 2002:a9d:6d0f:0:b0:6a5:cf29:f310 with SMTP id o15-20020a9d6d0f000000b006a5cf29f310mr2239494otp.34.1681872329921;
-        Tue, 18 Apr 2023 19:45:29 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id m14-20020a9d644e000000b006a4308f1e2asm6165250otl.54.2023.04.18.19.45.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Apr 2023 19:45:29 -0700 (PDT)
-Message-ID: <2fc535da-0d83-049a-53a6-e310d12a884a@gmail.com>
-Date:   Tue, 18 Apr 2023 23:45:25 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] .gitattributes: set diff driver for Rust source code
- files
-To:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Jean Delvare <jdelvare@suse.de>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-References: <20230418233048.335281-1-ojeda@kernel.org>
-Content-Language: en-US
+        d=1e100.net; s=20221208; t=1681873371; x=1684465371;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qy2us3ZF8Tj2uMWYJJfvUD27ubXE3+0nUE1gRG9Duwk=;
+        b=bdyTBkwn/bY3FYTe3gKPJamQugDS4ZoZ8EnaujM947FMUUIdRV35Pz5gnwU8bMTiCG
+         AraVH+Izo8k7FbyyEDJ9GtkYgFEee2VspEtStWGC6OvmlV1YP25wBhTA6g6i0eeKmCPK
+         T+M9C5yKr31ieaeaUk3NiLKTPmI6ov0b/FxdB0ejQ2sesKcbtoj9uYayd3qUfBuO4H/f
+         /998dDj5z7cS4Oyqka6yQnwEN4rNGuiCJ4vqyx2IgaYzPQ4NJ/I4UPxXFpO3LukO/jZu
+         FWsK1EJckY0TR3hrqZke0rCg3uUhZniNxQVayMY0P7NaqWYCs03H62sShwl4VEcxkn07
+         Z7TA==
+X-Gm-Message-State: AAQBX9fl1FDz1YPaIUtpo++uNZkSWV7A5wH74BgXHLgbPfIh97fY+n1a
+        0omWsMfSHg7QssOkv+FxOLUGcXMkg34=
+X-Google-Smtp-Source: AKy350Y6+wITuOdfOsSOOKiQoCcAoM5PO9PRAiLdSl7AkNOZ2vuecpem+Nn85c8JloA5j/LWfiSYTg==
+X-Received: by 2002:a05:6808:f86:b0:38d:e2b0:d5ea with SMTP id o6-20020a0568080f8600b0038de2b0d5eamr2209793oiw.44.1681873370896;
+        Tue, 18 Apr 2023 20:02:50 -0700 (PDT)
+Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id bi9-20020a056808188900b00387160bcd46sm6498859oib.46.2023.04.18.20.02.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Apr 2023 20:02:50 -0700 (PDT)
 From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230418233048.335281-1-ojeda@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To:     ojeda@kernel.org
+Cc:     alex.gaynor@gmail.com, benno.lossin@proton.me,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+        gyakovlev@gentoo.org, jan.steffens@gmail.com, jistone@redhat.com,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
+        william.brown@suse.com
+Subject: Re: [PATCH 3/3] rust: upgrade to Rust 1.68.2
+Date:   Wed, 19 Apr 2023 00:02:43 -0300
+Message-Id: <20230419030243.540348-1-yakoyoku@gmail.com>
+X-Mailer: git-send-email 2.40.0
+In-Reply-To: <20230418214347.324156-4-ojeda@kernel.org>
+References: <20230418214347.324156-4-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 4/18/23 20:30, Miguel Ojeda wrote:
-> Git supports a builtin Rust diff driver [1] since v2.23.0 (2019).
-> 
+On 4/18/23 18:43, Miguel Ojeda wrote:
 > [...]
 
-At this stage in the game such an improvement in diffs is required.
+Kinda bunch to review, although may I ask if each time the `alloc`
+crate is updated is worth to mention the changes upon it [1], can be
+skipped otherwise.
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Link: https://github.com/rust-lang/rust/commits/master/library/alloc [1]
+
+Reviewed-By: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
