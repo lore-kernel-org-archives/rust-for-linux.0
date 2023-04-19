@@ -2,298 +2,290 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A48D0C6FD18
-	for <rust-for-linux@archiver.kernel.org>; Wed, 19 Apr 2023 12:38:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 57759C77B73
+	for <rust-for-linux@archiver.kernel.org>; Wed, 19 Apr 2023 17:45:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232645AbjDSMiJ (ORCPT
+        id S233594AbjDSRpN (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 19 Apr 2023 08:38:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55224 "EHLO
+        Wed, 19 Apr 2023 13:45:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231592AbjDSMiI (ORCPT
+        with ESMTP id S233263AbjDSRpC (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 19 Apr 2023 08:38:08 -0400
-Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2100.outbound.protection.outlook.com [40.107.10.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90A5183;
-        Wed, 19 Apr 2023 05:38:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Sy91eoBkl5smra0SrJG3tci97AzaC8/gJzFa3OSvKEOQyyewORFGuiDCLu164aQLmzs4KWj3YtOJSbknhbYo60g5GIj0VW2nhU2m94D0VLkSB4ZeZtqFA/PwQbMvEYOgsx25NRkG1dXTFP+/xtjD4y6EyAum46Kv61Nrp7BPmRqUJqlYawJ8fXk7+ngOXKrwGxP3Zi6+fWr0SWAjBdYeKRKV7FZBNjcZOO4MNC6vBSCwwKRDVEy9ZIf4HkN4Q0L8K8EGKFy0nEjrHl9zKKH4YHJBHSinNIkyhbSMRxw9AKSHXRXd+y5wOBChkzjaz5uvAmyWjmsXJjIm2b5bzZiHTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=96CxkOnVD7MyCxUKu39s8yzmocls13zxOdopgrCIdDI=;
- b=ak/uFp8Kfq5yRvKgtCcLpPA1NeOPD40P73PUHakLeQveP1yt1nz7Zc3C9Y/dJqDf+ptIToJrgd3ydsO66ABw5g6js/8cgRagZXlrLuyQJkIDikIaqNgu0QKpXAr6PT3JvGJOPNoWj22FYfLj6a9QcxcHHrPJDo+uWhSVm38SmE5UrKyHucevmfgPtYKS5xpRmgdz3xN9N6g0hBnpVQ8IXf71GxYI/TDBXt7VJkMtsesCX+3qvwm79eg7MSzZn2QZOJuWMPAbAk3ixolYEVV1DIYP4e6SUnSeKySp225DXklBYszNsv9i1TQRrdoCU89YUmuDsgaLdmDUrPsa9Ilo1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=96CxkOnVD7MyCxUKu39s8yzmocls13zxOdopgrCIdDI=;
- b=CdnIx+qe4vWTnAflx4OdtD/eLISnUWJCExty8ryU2Jj1RXeiirbsh4J+El6VqlSi2fcfZxqilxbUoK4XVsZSznLCMm8v8zxjI06vxTvYlHXZtaMvdKAR0CzsmzHbsY9/a2T7sU8ttUBm9qcatCmrGOiYYGEpy1/FQ+QVWKAYaVE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:15f::14)
- by CWLP265MB4971.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:13e::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6319.22; Wed, 19 Apr
- 2023 12:38:03 +0000
-Received: from CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1b25:7ea3:7339:6a0f]) by CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1b25:7ea3:7339:6a0f%4]) with mapi id 15.20.6319.020; Wed, 19 Apr 2023
- 12:38:03 +0000
-Date:   Wed, 19 Apr 2023 13:38:00 +0100
-From:   Gary Guo <gary@garyguo.net>
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Wed, 19 Apr 2023 13:45:02 -0400
+Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E09472A0;
+        Wed, 19 Apr 2023 10:44:51 -0700 (PDT)
+Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-18777914805so297825fac.1;
+        Wed, 19 Apr 2023 10:44:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681926291; x=1684518291;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+ROxF1m2E3+7Rhy4bCnkyAJPHzO/m6/QTfEY4C+9JAc=;
+        b=AjM8E+kpHI+BtRFpFjJD8UQlP+oaY81H6l5eDMl0Zh+vOMI6VbCELcfvLZIJHrBsO9
+         8tFoiW/pbq8FdbtECcdG+zZCT1DBZlGsuXLstQIEQ1S20pKtmgd3tthlBLbNT0iFPX4H
+         0fJQfQAtLzuMNHTUXpo1lmey/1ThxoxRHwvcWIlBSsHKAGIwgJT4fWvCjDqkagQ9l02f
+         7TmlFGkxthw0Sx3/MqCT2DyK1RBvoUzpAszVYoX5oJKo8P2P55af7/5aW8lqOI5ySlBO
+         ABJWmDdMfPxx8g4aJiiA/+/i+9bDNHdm0JqNSqIvmEo6oMXceazrT+loPSgQ3ELOQW5F
+         8sVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681926291; x=1684518291;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+ROxF1m2E3+7Rhy4bCnkyAJPHzO/m6/QTfEY4C+9JAc=;
+        b=E76JXRM7DUgFMKBKowpOzucLIX335nMlPM7xjznb/0xCka7XkB7ds7qoxIl6t6iU31
+         cKkrpL2VJBGP9y6oL/t76Vvv6diEKcMZWj6jL/qCmPMktsUpnlTRHfb7ZRuLwYfI45GZ
+         O8SCdEnhFb1nJcwzJWlqKjG7c8ZaFtvHMIloA8KEHv2CjiEmnUNfFJ76tKx09ePAJg+I
+         BWdMBPgh6CFRrp0WXBzqJDHBW8jaC+kTzGP+VY6T4K4j3Uq9fiz2ufF6iLvFmM4Vg4QE
+         U06eNPlW625QTMtbMgOS1TIH9GoeRYlqHrlczqm3JnJv0iM11s/wKdog5JGM2bVY4zCf
+         qmSQ==
+X-Gm-Message-State: AAQBX9etjOHUuoMXKxR2rm72UtKtNw2OmZkAf0eny+8K6qsXc4vw4m/y
+        OgTfE2VFnmeLfS9kF6soEXP5n0PRVCk=
+X-Google-Smtp-Source: AKy350YmNJ+gaYDWISkFj7OVb0ZtcGGu6qc0dfvsLYGxq02UG/b+4kbd6TPguNtreqZbDycVumqXXg==
+X-Received: by 2002:a05:6870:c0d0:b0:184:4216:4cb4 with SMTP id e16-20020a056870c0d000b0018442164cb4mr232989oad.21.1681926290815;
+        Wed, 19 Apr 2023 10:44:50 -0700 (PDT)
+Received: from wedsonaf-dev.home.lan ([189.124.190.154])
+        by smtp.googlemail.com with ESMTPSA id du3-20020a0568703a0300b001723a2e84b6sm6987585oab.6.2023.04.19.10.44.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Apr 2023 10:44:50 -0700 (PDT)
+From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+To:     rust-for-linux@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Josh Stone <jistone@redhat.com>,
-        William Brown <william.brown@suse.com>,
-        Georgy Yakovlev <gyakovlev@gentoo.org>,
-        Jan Alexander Steffens <jan.steffens@gmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: Re: [PATCH 3/3] rust: upgrade to Rust 1.68.2
-Message-ID: <20230419133800.0da0857a.gary@garyguo.net>
-In-Reply-To: <20230418214347.324156-4-ojeda@kernel.org>
-References: <20230418214347.324156-1-ojeda@kernel.org>
-        <20230418214347.324156-4-ojeda@kernel.org>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0411.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:189::20) To CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:15f::14)
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org,
+        Wedson Almeida Filho <walmeida@microsoft.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Subject: [PATCH v4.1] rust: lock: introduce `SpinLock`
+Date:   Wed, 19 Apr 2023 14:44:26 -0300
+Message-Id: <20230419174426.132207-1-wedsonaf@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP265MB5186:EE_|CWLP265MB4971:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4a8787f0-8fbc-465d-38b9-08db40d2eab7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: mzDZRhGWlroJvRboNUMaiIZKwVF2X92exqbq9sKMgyjqWLmudsrLjVWlnMA27pfaGKYtbpnN9wERRG/RofX/6yPbPaDXPcnAfoSeiokehdqQsLNgaWGYa1OuOmj/Us7YDLB2VlEyS/qx0uxvq+z+nKZrhUxoez+LkHsOLOjShI8qa0sVPVOFwyMhVms7L+Ak/+iGz4Dd6WNEhdT+qO0ZChq1UfgUUEh4Jr/WNq9b83NpPRdMSvCtW9xdlMBMHc4RbxMPk/U8qlHQh/0qkVM3Est9JtmIGNBN9yV7MRD3ScX62mPjFN9pzgKLnbgoGOR/OCDbbs65IXWdpx7xGNPjbpPtT9nqGqbYfCiuJcngCbGiTxpyYkZmjE6A2u2JpJ5/MWXzJCAZcAq0N58ad5uc4SM7iKnZGqUdsM4P44EWawDUQa86chIAR/3GV6N2lzGkP3l1pg5y8fVNewRed9exILeEKsBydgt53Vsqp9icgAjDteRTrwI7gvWOjQpLGC1fnDAfigg0sFfTJ6cuaQrcq5jdOSUiene8FM2xAk8oiiA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(39830400003)(136003)(346002)(366004)(396003)(376002)(451199021)(5660300002)(7416002)(8676002)(8936002)(41300700001)(6916009)(316002)(4326008)(66476007)(66556008)(66946007)(2906002)(66899021)(54906003)(478600001)(86362001)(26005)(38100700002)(966005)(36756003)(6486002)(83380400001)(6506007)(1076003)(186003)(6512007)(2616005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?J0fLGQiH3VguQt8O14zXtuwC0M3JRN3X6+mYu08aLqECWayV4NoCITsGwDR3?=
- =?us-ascii?Q?VwlY4nynPM9pc2tk8kI6WdTfoQXp6S0f+zyoAiGSj/YQkIaTZBDiWuWd5Muk?=
- =?us-ascii?Q?eG3N5qr36v3Bb5EmlqiyeUWRVPeyUXdg245uAbMwp4pNAPjwRGrsP2Ccn76E?=
- =?us-ascii?Q?0EP/ITWKncBgI8lfDw+Q6gf2MgGNZC5e2BdQq7q9aynkU7/NQsmRJqHwNT1G?=
- =?us-ascii?Q?8/BMfhn4+G+Hqa+w27BmDzCEyfcerPrp0SOeC6J5nq71OuelZ5vIK8fBiFEH?=
- =?us-ascii?Q?OTC0HGD54cn3H7Oydz7Mx5yST4WV6gd9X+2WOnoX07LAno8RTYOe1AMiZQom?=
- =?us-ascii?Q?afId+itn5a54JeO8GTYyY5LbzbNTlkqpCuo1du14j9cZ3INtxzfMSAs+9f1w?=
- =?us-ascii?Q?qpKlNzHbLeOT9GmOO5FSQoG+fQ4t18L5qR+dCsx9SSeHkP/+/fZYT8O1pLou?=
- =?us-ascii?Q?/PMOPSGRAUcF9iH3cwB6L9Ax7Pd6SBqYftqLwjCKJaL6yfYtZ/oyoLGA74pm?=
- =?us-ascii?Q?KaF7gjmZ6oLtmP52PNDpRjrod5LaipVbLSiAdpsGiYCSyP8cHTGjDI2Bzx9w?=
- =?us-ascii?Q?9TglLN+c+cjVjFewcLa0jyu9SRQsOCwTEkY9h03ZLBlL9H/xV9OqkV9KPFPF?=
- =?us-ascii?Q?66t+WJFg4sQ/wgvD5uhyI38ptHBaRj23AbI5UsfYT1b9l4xiI/oFQXGa6ZaI?=
- =?us-ascii?Q?Q69tOUz/QUa9aVe4+wbo5GOcDuZiLZ7vD+/uStrpZXkozaaESva9MmbiC51F?=
- =?us-ascii?Q?c6zXj9Pga3kVub938BuGqdN6t4ID4Qy+up17cupvFQnuJLHa3NglG4zHgKFT?=
- =?us-ascii?Q?tK2ZJEY+sOhRk7uoyjRyrNlVPuF1wcw4qUj7P9Fm3AqbiTdRLmD2tm8w7GXC?=
- =?us-ascii?Q?/SkTpADN+E/lpd9ZgZmc+dPNn8Tzz1ClvOMw28QOjlk3J1jTOYeknxwxHosD?=
- =?us-ascii?Q?TrUjC3u4MsrwZFMg+8xXP/5ruTqkmz80mHXAgsXvdbqbPiYQi3P639+jKoJt?=
- =?us-ascii?Q?3d5UIt5bz8mlXlJLEJJAEGRC/vPQNOxG2nRjzcDPqlktDcDIdN7uwgmuYHED?=
- =?us-ascii?Q?ajHyR7EaF7GeBAPqlNQcAD20SMrxLHqR7hU7JKYTx0DOScUPozyILKLEKnY3?=
- =?us-ascii?Q?kXCU7/20glGKUauSE89khxsa3Qq/AvnFcR6e1GiNfz/98V7LN+BXPRx6Dazx?=
- =?us-ascii?Q?932GxLvO96yQv1yoalfe4vvMx+fkfLmqftv+isXAfdlp9KnuIGdTvxnmYViU?=
- =?us-ascii?Q?2xOkcrlCDuQCK71B0Wg7y9kQ4GDeiFqDVSpi9VWHFNJPTljZAQPjfmPC8Inz?=
- =?us-ascii?Q?I0zD9yvzQT8nIiPNRIT6H8ALqRtn44NTXMaEFWFpXfT6pMr8Nau1YdH+kLiS?=
- =?us-ascii?Q?h19Jb0KfkQUAByViXyaoI4fRv1GVNW58QtsTvGPqkZdo7z854u/TX9v5ko0e?=
- =?us-ascii?Q?I0k8roaBior5j/AM7+R1PUyeS8GyQp5uYSCRzr65VznGnyOIkHqOIHn06Fgc?=
- =?us-ascii?Q?y9GEuZ0qcVu8o3V1E0zep6ct7CCwCz+jRElXKAz6viOFnqGO+qk8d5YXCkVF?=
- =?us-ascii?Q?UfDJ8vR05bNy/xaWACCMybKneLsUAIWw07s6kCvt?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4a8787f0-8fbc-465d-38b9-08db40d2eab7
-X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2023 12:38:02.9619
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DVecpYUTmOYAoGmuDw/ibTKaMsHKXcKaV+s2DefjoZNQO2NdC/RkTXLVLMbKXuAAUJe8O8z+RwRol/2+ttAAug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB4971
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, 18 Apr 2023 23:43:47 +0200
-Miguel Ojeda <ojeda@kernel.org> wrote:
+From: Wedson Almeida Filho <walmeida@microsoft.com>
 
-> This is the first upgrade to the Rust toolchain since the initial Rust
-> merge, from 1.62.0 to 1.68.2 (i.e. the latest).
-> 
-> # Context
-> 
-> The kernel currently supports only a single Rust version [1] (rather
-> than a minimum) given our usage of some "unstable" Rust features [2]
-> which do not promise backwards compatibility.
-> 
-> The goal is to reach a point where we can declare a minimum version for
-> the toolchain. For instance, by waiting for some of the features to be
-> stabilized. Therefore, the first minimum Rust version that the kernel
-> will support is "in the future".
-> 
-> # Upgrade policy
-> 
-> Given we will eventually need to reach that minimum version, it would be
-> ideal to upgrade the compiler from time to time to be as close as
-> possible to that goal and find any issues sooner. In the extreme, we
-> could upgrade as soon as a new Rust release is out. Of course, upgrading
-> so often is in stark contrast to what one normally would need for GCC
-> and LLVM, especially given the release schedule: 6 weeks for Rust vs.
-> half a year for LLVM and a year for GCC.
-> 
-> Having said that, there is no particular advantage to updating slowly
-> either: kernel developers in "stable" distributions are unlikely to be
-> able to use their distribution-provided Rust toolchain for the kernel
-> anyway [3]. Instead, by routinely upgrading to the latest instead,
-> kernel developers using Linux distributions that track the latest Rust
-> release may be able to use those rather than Rust-provided ones,
-> especially if their package manager allows to pin / hold back /
-> downgrade the version for some days during windows where the version may
-> not match. For instance, Arch, Fedora, Gentoo and openSUSE all provide
-> and track the latest version of Rust as they get released every 6 weeks.
-> 
-> Then, when the minimum version is reached, we will stop upgrading and
-> decide how wide the window of support will be. For instance, a year of
-> Rust versions. We will probably want to start small, and then widen it
-> over time, just like the kernel did originally for LLVM, see commit
-> 3519c4d6e08e ("Documentation: add minimum clang/llvm version").
-> 
-> # Unstable features stabilized
-> 
-> This upgrade allows us to remove the following unstable features since
-> they were stabilized:
-> 
->   - `feature(explicit_generic_args_with_impl_trait)` (1.63).
->   - `feature(core_ffi_c)` (1.64).
->   - `feature(generic_associated_types)` (1.65).
->   - `feature(const_ptr_offset_from)` (1.65, *).
->   - `feature(bench_black_box)` (1.66, *).
->   - `feature(pin_macro)` (1.68).
-> 
-> The ones marked with `*` apply only to our old `rust` branch, not
-> mainline yet, i.e. only for code that we may potentially upstream.
-> 
-> With this patch applied, the only unstable feature allowed to be used
-> outside the `kernel` crate is `new_uninit`, though other code to be
-> upstreamed may increase the list.
-> 
-> Please see [2] for details.
-> 
-> # Other required changes
-> 
-> Since 1.63, `rustdoc` triggers the `broken_intra_doc_links` lint for
-> links pointing to exported (`#[macro_export]`) `macro_rules`. An issue
-> was opened upstream [4], but it turns out it is intended behavior. For
-> the moment, just add an explicit reference for each link. Later we can
-> revisit this if `rustdoc` removes the compatibility measure.
-> 
-> Nevertheless, this was helpful to discover a link that was pointing to
-> the wrong place unintentionally. Since that one was actually wrong, it
-> is fixed in a previous commit independently.
-> 
-> Another change was the addition of `cfg(no_rc)` and `cfg(no_sync)` in
-> upstream [5], thus remove our original changes for that.
-> 
-> Similarly, upstream now tests that it compiles successfully with
-> `#[cfg(not(no_global_oom_handling))]` [6], which allow us to get rid
-> of some changes, such as an `#[allow(dead_code)]`.
-> 
-> In addition, remove another `#[allow(dead_code)]` due to new uses
-> within the standard library.
-> 
-> Finally, add `try_extend_trusted` and move the code in `spec_extend.rs`
-> since upstream moved it for the infallible version.
-> 
-> # `alloc` upgrade and reviewing
-> 
-> There are a large amount of changes, but the vast majority of them are
-> due to our `alloc` fork being upgraded at once.
-> 
-> There are two kinds of changes to be aware of: the ones coming from
-> upstream, which we should follow as closely as possible, and the updates
-> needed in our added fallible APIs to keep them matching the newer
-> infallible APIs coming from upstream.
-> 
-> Instead of taking a look at the diff of this patch, an alternative
-> approach is reviewing a diff of the changes between upstream `alloc` and
-> the kernel's. This allows to easily inspect the kernel additions only,
-> especially to check if the fallible methods we already have still match
-> the infallible ones in the new version coming from upstream.
-> 
-> Another approach is reviewing the changes introduced in the additions in
-> the kernel fork between the two versions. This is useful to spot
-> potentially unintended changes to our additions.
-> 
-> To apply these approaches, one may follow steps similar to the following
-> to generate a pair of patches that show the differences between upstream
-> Rust and the kernel (for the subset of `alloc` we use) before and after
-> applying this patch:
-> 
->     # Get the difference with respect to the old version.
->     git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
->     git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
->         cut -d/ -f3- |
->         grep -Fv README.md |
->         xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
->     git -C linux diff --patch-with-stat --summary -R > old.patch
->     git -C linux restore rust/alloc
-> 
->     # Apply this patch.
->     git -C linux am rust-upgrade.patch
-> 
->     # Get the difference with respect to the new version.
->     git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
->     git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
->         cut -d/ -f3- |
->         grep -Fv README.md |
->         xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
->     git -C linux diff --patch-with-stat --summary -R > new.patch
->     git -C linux restore rust/alloc
-> 
-> Now one may check the `new.patch` to take a look at the additions (first
-> approach) or at the difference between those two patches (second
-> approach). For the latter, a side-by-side tool is recommended.
-> 
-> Link: https://rust-for-linux.com/rust-version-policy [1]
-> Link: https://github.com/Rust-for-Linux/linux/issues/2 [2]
-> Link: https://lore.kernel.org/rust-for-linux/CANiq72mT3bVDKdHgaea-6WiZazd8Mvurqmqegbe5JZxVyLR8Yg@mail.gmail.com/ [3]
-> Link: https://github.com/rust-lang/rust/issues/106142 [4]
-> Link: https://github.com/rust-lang/rust/pull/89891 [5]
-> Link: https://github.com/rust-lang/rust/pull/98652 [6]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+This is the `spinlock_t` lock backend and allows Rust code to use the
+kernel spinlock idiomatically.
 
-I took this opportunity to re-review our diff with upstream alloc crate.
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+---
+v1 -> v2: No changes
+v2 -> v3: No changes
+v3 -> v4: No changes
+v4 -> v4.1:
+- Use __raw_spin_lock_init instead of spin_lock_init_with_key 
 
-All the try_ series methods added to `Vec` and `RawVec` looks correct to
-me.
+ rust/helpers.c                    |  24 +++++++
+ rust/kernel/sync.rs               |   2 +-
+ rust/kernel/sync/lock.rs          |   1 +
+ rust/kernel/sync/lock/spinlock.rs | 116 ++++++++++++++++++++++++++++++
+ 4 files changed, 142 insertions(+), 1 deletion(-)
+ create mode 100644 rust/kernel/sync/lock/spinlock.rs
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+diff --git a/rust/helpers.c b/rust/helpers.c
+index 86af099d2d66..1af5fcbd7f72 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -23,6 +23,7 @@
+ #include <linux/err.h>
+ #include <linux/refcount.h>
+ #include <linux/mutex.h>
++#include <linux/spinlock.h>
+ 
+ __noreturn void rust_helper_BUG(void)
+ {
+@@ -36,6 +37,29 @@ void rust_helper_mutex_lock(struct mutex *lock)
+ }
+ EXPORT_SYMBOL_GPL(rust_helper_mutex_lock);
+ 
++void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
++				  struct lock_class_key *key)
++{
++#ifdef CONFIG_DEBUG_SPINLOCK
++	 __raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
++#else
++	spin_lock_init(lock);
++#endif
++}
++EXPORT_SYMBOL_GPL(rust_helper___spin_lock_init);
++
++void rust_helper_spin_lock(spinlock_t *lock)
++{
++	spin_lock(lock);
++}
++EXPORT_SYMBOL_GPL(rust_helper_spin_lock);
++
++void rust_helper_spin_unlock(spinlock_t *lock)
++{
++	spin_unlock(lock);
++}
++EXPORT_SYMBOL_GPL(rust_helper_spin_unlock);
++
+ refcount_t rust_helper_REFCOUNT_INIT(int n)
+ {
+ 	return (refcount_t)REFCOUNT_INIT(n);
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index 693f0b7f4e4f..c997ff7e951e 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -11,7 +11,7 @@ mod arc;
+ pub mod lock;
+ 
+ pub use arc::{Arc, ArcBorrow, UniqueArc};
+-pub use lock::mutex::Mutex;
++pub use lock::{mutex::Mutex, spinlock::SpinLock};
+ 
+ /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
+ #[repr(transparent)]
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 98de109d9e40..08adc3747033 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -11,6 +11,7 @@ use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned};
+ use macros::pin_data;
+ 
+ pub mod mutex;
++pub mod spinlock;
+ 
+ /// The "backend" of a lock.
+ ///
+diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+new file mode 100644
+index 000000000000..a52d20fc9755
+--- /dev/null
++++ b/rust/kernel/sync/lock/spinlock.rs
+@@ -0,0 +1,116 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! A kernel spinlock.
++//!
++//! This module allows Rust code to use the kernel's `spinlock_t`.
++
++use crate::bindings;
++
++/// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
++///
++/// It uses the name if one is given, otherwise it generates one based on the file name and line
++/// number.
++#[macro_export]
++macro_rules! new_spinlock {
++    ($inner:expr $(, $name:literal)? $(,)?) => {
++        $crate::sync::SpinLock::new(
++            $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
++    };
++}
++
++/// A spinlock.
++///
++/// Exposes the kernel's [`spinlock_t`]. When multiple CPUs attempt to lock the same spinlock, only
++/// one at a time is allowed to progress, the others will block (spinning) until the spinlock is
++/// unlocked, at which point another CPU will be allowed to make progress.
++///
++/// Instances of [`SpinLock`] need a lock class and to be pinned. The recommended way to create such
++/// instances is with the [`pin_init`](crate::pin_init) and [`new_spinlock`] macros.
++///
++/// # Examples
++///
++/// The following example shows how to declare, allocate and initialise a struct (`Example`) that
++/// contains an inner struct (`Inner`) that is protected by a spinlock.
++///
++/// ```
++/// use kernel::{init::InPlaceInit, init::PinInit, new_spinlock, pin_init, sync::SpinLock};
++///
++/// struct Inner {
++///     a: u32,
++///     b: u32,
++/// }
++///
++/// #[pin_data]
++/// struct Example {
++///     c: u32,
++///     #[pin]
++///     d: SpinLock<Inner>,
++/// }
++///
++/// impl Example {
++///     fn new() -> impl PinInit<Self> {
++///         pin_init!(Self {
++///             c: 10,
++///             d <- new_spinlock!(Inner { a: 20, b: 30 }),
++///         })
++///     }
++/// }
++///
++/// // Allocate a boxed `Example`.
++/// let e = Box::pin_init(Example::new())?;
++/// assert_eq!(e.c, 10);
++/// assert_eq!(e.d.lock().a, 20);
++/// assert_eq!(e.d.lock().b, 30);
++/// ```
++///
++/// The following example shows how to use interior mutability to modify the contents of a struct
++/// protected by a spinlock despite only having a shared reference:
++///
++/// ```
++/// use kernel::sync::SpinLock;
++///
++/// struct Example {
++///     a: u32,
++///     b: u32,
++/// }
++///
++/// fn example(m: &SpinLock<Example>) {
++///     let mut guard = m.lock();
++///     guard.a += 10;
++///     guard.b += 20;
++/// }
++/// ```
++///
++/// [`spinlock_t`]: ../../../../include/linux/spinlock.h
++pub type SpinLock<T> = super::Lock<T, SpinLockBackend>;
++
++/// A kernel `spinlock_t` lock backend.
++pub struct SpinLockBackend;
++
++// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion.
++unsafe impl super::Backend for SpinLockBackend {
++    type State = bindings::spinlock_t;
++    type GuardState = ();
++
++    unsafe fn init(
++        ptr: *mut Self::State,
++        name: *const core::ffi::c_char,
++        key: *mut bindings::lock_class_key,
++    ) {
++        // SAFETY: The safety requirements ensure that `ptr` is valid for writes, and `name` and
++        // `key` are valid for read indefinitely.
++        unsafe { bindings::__spin_lock_init(ptr, name, key) }
++    }
++
++    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
++        // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
++        // memory, and that it has been initialised before.
++        unsafe { bindings::spin_lock(ptr) }
++    }
++
++    unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
++        // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
++        // caller is the owner of the mutex.
++        unsafe { bindings::spin_unlock(ptr) }
++    }
++}
+-- 
+2.34.1
 
-> ---
->  Documentation/process/changes.rst |   2 +-
->  rust/alloc/alloc.rs               |  55 ++--
->  rust/alloc/boxed.rs               | 446 ++++++++++++++++++++++++++--
->  rust/alloc/collections/mod.rs     |   5 +-
->  rust/alloc/lib.rs                 |  71 +++--
->  rust/alloc/raw_vec.rs             |  16 +-
->  rust/alloc/slice.rs               | 447 ++++------------------------
->  rust/alloc/vec/drain.rs           |  81 +++++-
->  rust/alloc/vec/drain_filter.rs    |  60 +++-
->  rust/alloc/vec/into_iter.rs       | 125 ++++++--
->  rust/alloc/vec/is_zero.rs         |  96 ++++++-
->  rust/alloc/vec/mod.rs             | 464 +++++++++++++++++++++++-------
->  rust/alloc/vec/set_len_on_drop.rs |   5 +
->  rust/alloc/vec/spec_extend.rs     |  63 +---
->  rust/bindings/lib.rs              |   1 -
->  rust/kernel/build_assert.rs       |   2 +
->  rust/kernel/init.rs               |   5 +
->  rust/kernel/lib.rs                |   4 -
->  rust/kernel/std_vendor.rs         |   2 +
->  scripts/Makefile.build            |   2 +-
->  scripts/min-tool-version.sh       |   2 +-
->  21 files changed, 1274 insertions(+), 680 deletions(-)
