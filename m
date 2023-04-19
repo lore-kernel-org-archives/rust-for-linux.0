@@ -2,97 +2,88 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1306CC6FD18
-	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Apr 2023 23:57:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4C86C6FD18
+	for <rust-for-linux@archiver.kernel.org>; Wed, 19 Apr 2023 02:46:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230343AbjDRX5c (ORCPT
+        id S231557AbjDSCqR (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 18 Apr 2023 19:57:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58970 "EHLO
+        Tue, 18 Apr 2023 22:46:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229750AbjDRX5b (ORCPT
+        with ESMTP id S232041AbjDSCqF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 18 Apr 2023 19:57:31 -0400
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DF9F449F
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Apr 2023 16:57:29 -0700 (PDT)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-54f6a796bd0so365056097b3.12
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Apr 2023 16:57:29 -0700 (PDT)
+        Tue, 18 Apr 2023 22:46:05 -0400
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54B59755;
+        Tue, 18 Apr 2023 19:45:38 -0700 (PDT)
+Received: by mail-ot1-x335.google.com with SMTP id 46e09a7af769-6a437526b7cso879817a34.1;
+        Tue, 18 Apr 2023 19:45:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681862248; x=1684454248;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y0Z320UVZ6CaFW67cVrQWKNYrUACWZGC7nJsr2ZHt5Q=;
-        b=blpnW/MQq7l0A9CNywU7ke45QocGifO8/kvdF2qnKcYYO6K+fzTq1hWO5+SmZ5d/0p
-         AIupzydQxhEQESV+x3NMCOW52tNXG9/jZJvdLSNSNINmp0ny5CgJL8HU06kV5sScMmJz
-         Uxwkt5e5FcvMGTZTcAgMChAu7PCRUnzK37oCzvBujIVvjP+yD0rzeRbhX5jA+udeybvo
-         EF3NqgKNR5kcW0VWTNqeywK4hPNc7QmT+DL/Svvt1WOfuI6umOb6aEkvmy3jFvWyOrzP
-         +k5M+FoHCEYZm4jbqIkwGPd92W1yj9SeoWtAmlr5zpL5inoiBgXpxRGdmnJymMJMsk0Q
-         Rz1A==
+        d=gmail.com; s=20221208; t=1681872330; x=1684464330;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=E069ZTY6nFYszV+/5FzOjU5LbuCwW8x4gHc3aSQEBg8=;
+        b=UhQs5Y/3zpq4zX5sMEGThvciVqiFLBfm1teJcsEZzz5FG1jhGuAJZkW4WWBG0z5odO
+         sIXPLrBUHBnj8uidXCrTBCqtfVRG8xeEpmxLVT4wVF5v9L7mSJMNlOrg6HfxAg1TN5dR
+         YJlOs7ksl1ob5qSztI2NE/qskge0XjDaEErG7SKNd9xxyH9QG3TH1LBOiA7wf8f4POs7
+         agk65MtIa5mBrXA3Yv3GHJazl3hkeLYE/yUpkGWPB8cBiJSR8ViIxrBVPPpkobNj+paK
+         XBKV6NG2FlizvxxbwP0GNoFJMjyPLaCxkz7LXDqjCF8abkw55v26qf3Q6kGodaDE5j3z
+         vsSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681862248; x=1684454248;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y0Z320UVZ6CaFW67cVrQWKNYrUACWZGC7nJsr2ZHt5Q=;
-        b=fFngERhH9oVN1V0KEhegzupxrVM+txC23YgFqSc5/EJ6FlGI7WqmNUqE6udSDm8J+1
-         GLpeEkZPnx+xRUooWAYW027TFzIjCCjc8rGfzOGTV8DaVUtPO7xGbCnKtbD2Bc6+ab/y
-         DAsKPSHD+D+baRLKhzVfUBGpUor4b9oAqODyPqC+V+/CtNFQ7iyWvaAHgI9tNzTquoeF
-         X7qwY5m2HD019LLy0IU8fP/hW7yIxQLobnTfveIDsdvqDccvHi4VHZtfIJfL8keChrUF
-         GlhRk7UlcNzEAImX5qzlYQvRv8Ra5+4GfoOmYxe/2x+8CjUlkB83JValXdxhWD1gHQAp
-         FobA==
-X-Gm-Message-State: AAQBX9fY5MPJ1GzhadOcXBW7vTXZ5ggcxWtCtDMx3V+gF6vk5F13PucD
-        J9+LsxKhnSkZQlxhbZhcprFAX1A16ob7wGGGZCCXBcaal+0L9A==
-X-Google-Smtp-Source: AKy350ZKumxi0zZc5vUluX4cqh2yA9VEfZ3o/ZrPZ/37oEITquC289CFuNZ6hJ2aW8LALYKH4CwJ6wYwCIxVH6QdImk=
-X-Received: by 2002:a0d:db0f:0:b0:54f:7971:4f7b with SMTP id
- d15-20020a0ddb0f000000b0054f79714f7bmr1829330ywe.20.1681862248756; Tue, 18
- Apr 2023 16:57:28 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1681872330; x=1684464330;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=E069ZTY6nFYszV+/5FzOjU5LbuCwW8x4gHc3aSQEBg8=;
+        b=bLT2Zb2BO41He+ZrGJNW+xuQSm1BQfm2B0q0MhIOB8S9Q9rDA2ZFTeiYFxJfwdSoT2
+         0519txWQlYTwPTlv9JR3Lv7yUk6ta5yhxhswtOkvnraJlwuOfXyN76b1PSGPYWafA3PH
+         FYv5Cpu/R/+QOIY8oJyb8s26vKg4s+l3BUwdj1NNqDz1PX2Az7LQletXPFUHwj/creyp
+         mhRplPjWyUMfpidWAusKCePHyVNS16LrM4+r6tmXz+4KaapP31fEXEQGSC9w/zbvXzLA
+         THED22DHMSNy9gyB2MagxpBwPCQ0Mvc28vknTTJviZ2Nr/Q1iSekiR1Shob4HKGZFV/z
+         WNSw==
+X-Gm-Message-State: AAQBX9fcH7ybEPKVeOUZSUEtOrd2YdlcM1ZqY7xteWU7u0Af0nraGXOq
+        4vCQjJVs9vpIHb0AjjfJuD8=
+X-Google-Smtp-Source: AKy350b+TpaRh7+IMRxW7bQHLeOF/kqFYVzDURhqDqBXE7Ss1mrHoC4nEcZ4sXwTsyTxEAG+z4Q4EQ==
+X-Received: by 2002:a9d:6d0f:0:b0:6a5:cf29:f310 with SMTP id o15-20020a9d6d0f000000b006a5cf29f310mr2239494otp.34.1681872329921;
+        Tue, 18 Apr 2023 19:45:29 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id m14-20020a9d644e000000b006a4308f1e2asm6165250otl.54.2023.04.18.19.45.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Apr 2023 19:45:29 -0700 (PDT)
+Message-ID: <2fc535da-0d83-049a-53a6-e310d12a884a@gmail.com>
+Date:   Tue, 18 Apr 2023 23:45:25 -0300
 MIME-Version: 1.0
-References: <20230413140138.348137-1-amiculas@cisco.com> <CANiq72mTyMzJVMEAfNo9TyevN8jbqV0L=ba8=Ym-2Oxhm7oniQ@mail.gmail.com>
- <CAPDJoNt_jCPfkmS7pRVA=1-U6csPEMuYsjTdwYm3HpUyZBVEUQ@mail.gmail.com>
-In-Reply-To: <CAPDJoNt_jCPfkmS7pRVA=1-U6csPEMuYsjTdwYm3HpUyZBVEUQ@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 19 Apr 2023 01:57:17 +0200
-Message-ID: <CANiq72=bGB3q1f+-Z2h09xSD-FXrzqejXy0g0xeDHm2YFf6F1Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: Add functions to create and modify an Inode
-To:     Ariel Miculas <ariel.miculas@gmail.com>
-Cc:     rust-for-linux@vger.kernel.org, Ariel Miculas <amiculas@cisco.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] .gitattributes: set diff driver for Rust source code
+ files
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Jean Delvare <jdelvare@suse.de>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev
+References: <20230418233048.335281-1-ojeda@kernel.org>
+Content-Language: en-US
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230418233048.335281-1-ojeda@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Apr 13, 2023 at 8:55=E2=80=AFPM Ariel Miculas <ariel.miculas@gmail.=
-com> wrote:
->
-> Thanks Miguel, you've clarified some questions I had about the branches a=
-nd the development process.
+On 4/18/23 20:30, Miguel Ojeda wrote:
+> Git supports a builtin Rust diff driver [1] since v2.23.0 (2019).
+> 
+> [...]
 
-My pleasure!
+At this stage in the game such an improvement in diffs is required.
 
-> Regarding the rust branch, it says:
-> > However, please feel free to submit new PRs for this branch.
->
-> Does it make sense to open PRs against the rust branch in github and ask =
-for feedback that way or should the existing fs.rs from the rust branch be =
-merged into rust-next instead (and then I could submit patches)?
-> For context, I'm trying to add the necessary fs abstractions in order to =
-be able to rewrite lwnfs (https://lwn.net/Articles/57369/) in rust. I want =
-to ask for feedback early because I'm not sure the abstractions I come up w=
-ith are the right ones.
-
-Yes, in general, please feel free to submit PRs there. The PRs will
-not be merged, because the branch is effectively frozen and will
-eventually go away / get archived, but you may still find it useful to
-get early feedback. The mailing list is meant for mainline development
-instead.
-
-As for mainline, anyone can also send patches, of course, as long as
-they are ready to be applied (again, in general, e.g. for filesystem
-APIs, please wait until things get a bit more settled down as Wedson
-mentioned -- when in doubt, you can always ask in Zulip).
-
-Cheers,
-Miguel
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
