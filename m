@@ -2,61 +2,62 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5093C77B73
-	for <rust-for-linux@archiver.kernel.org>; Thu, 20 Apr 2023 13:12:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84928C77B72
+	for <rust-for-linux@archiver.kernel.org>; Thu, 20 Apr 2023 13:20:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231222AbjDTNM6 (ORCPT
+        id S229710AbjDTNUI (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 20 Apr 2023 09:12:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58456 "EHLO
+        Thu, 20 Apr 2023 09:20:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230477AbjDTNM5 (ORCPT
+        with ESMTP id S229671AbjDTNUH (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 20 Apr 2023 09:12:57 -0400
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CE9710D2;
-        Thu, 20 Apr 2023 06:12:55 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2a8bdcf87f4so4754211fa.2;
-        Thu, 20 Apr 2023 06:12:55 -0700 (PDT)
+        Thu, 20 Apr 2023 09:20:07 -0400
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A49730EE;
+        Thu, 20 Apr 2023 06:20:06 -0700 (PDT)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-54fc337a650so41181157b3.4;
+        Thu, 20 Apr 2023 06:20:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681996374; x=1684588374;
+        d=gmail.com; s=20221208; t=1681996805; x=1684588805;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=D2zHLuZQqv995ZnaTJ8GLCbIdGNJLSCJHtTeZLLgszs=;
-        b=rcxPnJyw2eJcMgMizZ9JkG80D9A7zgP84qNx43gP76d52MreGttItft3Exv84l+om1
-         XrLk8CGQgZoOlnESaD9zaL87N/BDb+vepvaeX8VY2bh/EPAfx8pxOW9tOtqCjg0f4jRt
-         fzacQUaiE7zMRYpjSY1RqYuuwTo4FPooWwNCn+gGNaonBe6dVuNAotpMroAohlt3dfgK
-         2UlXM+BFTPAH2vJZHOMcnudQzATLkwwujqBF1yXHXKdJncq/nJT2C+/AZbBFhF7WzVMD
-         TZTWiuN+8tM6gR3MN17vXl6TwIaMdnBlhGK9rHjIoVS/xhQqF1nymbBDD18NhnF/WBhk
-         jfjA==
+        bh=GNWH6oFsPxt4uPBf5ZSd4rkNU90YfqXsmZC9RT6Nk4w=;
+        b=iBt7XnIlW5ja5FIDgbzbXy90Z5dz+WEqL1GT5rddfr4IDXDBglyDQqL4MB3d5wV79O
+         72WaiSC031h4s62DtdESzUHchGzdGsLEEZB3gkKiHP4P4QE6zXkkNfBsK/y91Wg1j6We
+         p7AIjuCPht+pvxNVK++2byKRkYY48tFcv2pbfG0lW6jCN+vV6VtQiwt7sYxpRxr1N3BI
+         Lvv4EeickuOUPtUEQb0T1dkxPCFzPtUueuiozLiIPscAtaIuop9+mk/+qln+j5blJS6R
+         SCq13GOqi/uUtHoAw40p4I8fQE8DVKqpzbdWYqn4U+Qn77EhdAzZOvoGgHmLRHQBHDux
+         MLjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681996374; x=1684588374;
+        d=1e100.net; s=20221208; t=1681996805; x=1684588805;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=D2zHLuZQqv995ZnaTJ8GLCbIdGNJLSCJHtTeZLLgszs=;
-        b=L0o7UQ7i0LoXD0FlOKbNmdePcNIciZVllDxKBuMc+buOFUFhTqgRZMSQLBhu/xT71Z
-         bU/L6JmakiCGCv7PU7Pqsn2MrFPjR4yhtdcfw0eZISDTgV/6g7ngpsyPe9pDHT2Dj78S
-         ikaWB4vOnzwUqrwVH8QI3Rtl/GGXoBCeFJoXHmaOVaefDGt718X0rAMtUXPtAwUr5qS9
-         SugxKh81MvrboRI3bY32xsYdzQnXKtOnZqkqsQg1Fl/ipaJQR8jAGqeXnOMOr9mD2a28
-         aZ72h3lCjBt0tUanqYMd7vvzc5R4h8yX+6Aob9P3udxHxLDBYfXoYggmMHYNWtXIcHiE
-         K0ug==
-X-Gm-Message-State: AAQBX9f0GjjEbFQdDCxbGxFzBz78YybrqI51diYF4BUlg57sG6jxQ3P8
-        m1lkM8dWeEHvTX4FFL5NSkM9AlQ1qoQwyFhcSI8=
-X-Google-Smtp-Source: AKy350ZutqwJZvzTeNbJ2LJiZaQbkLDXCebqvFCuOgRt0LR5RBao08S9wHcKpEySpbV/IEqglu7EifuEI24NJ+6eWns=
-X-Received: by 2002:ac2:43a9:0:b0:4db:5133:59a6 with SMTP id
- t9-20020ac243a9000000b004db513359a6mr368815lfl.13.1681996373645; Thu, 20 Apr
- 2023 06:12:53 -0700 (PDT)
+        bh=GNWH6oFsPxt4uPBf5ZSd4rkNU90YfqXsmZC9RT6Nk4w=;
+        b=jH4cGy9iKZ+6Z/DHsBK1Afqp/Bdlrf4bzk6yGUov1XkXUyFivqaS4VG4Qz5g+qwAll
+         4BkpnLO2bD1npx5wQldPY44zA67tJybDtUYZ7rNEJ8ADSHnBbkOvYcfqi6aFrBdK6zDc
+         p2Av8u5MF3slIyk76RNegF6lrfIXoEheFsRcnN3nQPnihPzNTOP4ZxFrWPI+OVmwy9RP
+         s1Ip97NlBuKnz0rUvjgCW3pTTJsGEN1RFZAENwa1GDbo4G08Bl9Ce+VAczXhAGbwtjf+
+         Ptac5B1Rir245i8AwcLi+dbAy6aCqfaQQVM15vhxGXaxS6nOdmUPCRuIB15kOVpY+hpn
+         XYeg==
+X-Gm-Message-State: AAQBX9fFWVTqRk6cszy20dl6bNLFE1f/AjTxC3eQbkxo77MMAWpd4oCi
+        N9BkrJ1BzpLrwEBQFYPXB8b2kqvDvywLw8rFoT8=
+X-Google-Smtp-Source: AKy350Yna17ciObxlr7T445+ng1yrw5kvVgZMoxKaKzazogoVuc+cNXRmbuMczDLtoYwXPnB4yL2NRiFKi3fLM1VgfE=
+X-Received: by 2002:a0d:df50:0:b0:54f:a5ed:1978 with SMTP id
+ i77-20020a0ddf50000000b0054fa5ed1978mr754804ywe.38.1681996805473; Thu, 20 Apr
+ 2023 06:20:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230418214347.324156-1-ojeda@kernel.org>
-In-Reply-To: <20230418214347.324156-1-ojeda@kernel.org>
-From:   Ariel Miculas <ariel.miculas@gmail.com>
-Date:   Thu, 20 Apr 2023 16:12:42 +0300
-Message-ID: <CAPDJoNsG1E25yYM+L_H21vVCt-5S16etx3KMxx8ySZtWMQt4FQ@mail.gmail.com>
+References: <20230418214347.324156-1-ojeda@kernel.org> <CAPDJoNsG1E25yYM+L_H21vVCt-5S16etx3KMxx8ySZtWMQt4FQ@mail.gmail.com>
+In-Reply-To: <CAPDJoNsG1E25yYM+L_H21vVCt-5S16etx3KMxx8ySZtWMQt4FQ@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 20 Apr 2023 15:19:54 +0200
+Message-ID: <CANiq72mtb9V+1a7nPEHBCeg_fob4rpPTWJZjdahnGL2Mg3uoUA@mail.gmail.com>
 Subject: Re: [PATCH 0/3] Rust 1.68.2 upgrade
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+To:     Ariel Miculas <ariel.miculas@gmail.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
@@ -73,67 +74,16 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-I've applied the patch series, upgraded rustc and built the kernel:
+On Thu, Apr 20, 2023 at 3:13=E2=80=AFPM Ariel Miculas <ariel.miculas@gmail.=
+com> wrote:
+>
+> $ make LLVM=3D1 rustavailable
 
-$ rustup override set $(scripts/min-tool-version.sh rustc)
-$ rustup component add rust-src # Rust standard library source
-$ cargo install --locked --version $(scripts/min-tool-version.sh
-bindgen) bindgen
-$ make LLVM=3D1 rustavailable
-$ grep  RUSTC_VERSION .config
-CONFIG_RUSTC_VERSION_TEXT=3D"rustc 1.68.2 (9eb3afe9e 2023-03-27)"
-$ make LLVM=3D1 -j$(nproc)
+Since you showed the output of the other commands, did this one show
+"Rust is available!"? I guess so -- I imagine you edited the commands
+for the email, e.g. the config changed too.
 
-Then I ran the kernel in qemu-system-x86_64, inserted the
-rust_minimal.ko kernel module and checked that it behaves as expected.
-
-Tested-by: Ariel Miculas <amiculas@cisco.com>
+That is fine, as long as it works as expected :) Thanks a lot for testing!
 
 Cheers,
-Ariel
-
-On Wed, Apr 19, 2023 at 12:48=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
->
-> This is the first upgrade to the Rust toolchain since the initial Rust
-> merge, from 1.62.0 to 1.68.2 (i.e. the latest).
->
-> Please see the last patch message for a long explanation of the upgrade,
-> the policy for future upgrades and some indications on how to easily
-> review this.
->
-> The series is based on `rust-next`.
->
-> Miguel Ojeda (3):
->   rust: alloc: clarify what is the upstream version
->   rust: arc: fix intra-doc link in `Arc<T>::init`
->   rust: upgrade to Rust 1.68.2
->
->  Documentation/process/changes.rst |   2 +-
->  rust/alloc/README.md              |   3 +
->  rust/alloc/alloc.rs               |  55 ++--
->  rust/alloc/boxed.rs               | 446 ++++++++++++++++++++++++++--
->  rust/alloc/collections/mod.rs     |   5 +-
->  rust/alloc/lib.rs                 |  71 +++--
->  rust/alloc/raw_vec.rs             |  16 +-
->  rust/alloc/slice.rs               | 447 ++++------------------------
->  rust/alloc/vec/drain.rs           |  81 +++++-
->  rust/alloc/vec/drain_filter.rs    |  60 +++-
->  rust/alloc/vec/into_iter.rs       | 125 ++++++--
->  rust/alloc/vec/is_zero.rs         |  96 ++++++-
->  rust/alloc/vec/mod.rs             | 464 +++++++++++++++++++++++-------
->  rust/alloc/vec/set_len_on_drop.rs |   5 +
->  rust/alloc/vec/spec_extend.rs     |  63 +---
->  rust/bindings/lib.rs              |   1 -
->  rust/kernel/build_assert.rs       |   2 +
->  rust/kernel/init.rs               |   5 +
->  rust/kernel/lib.rs                |   4 -
->  rust/kernel/std_vendor.rs         |   2 +
->  rust/kernel/sync/arc.rs           |   2 +-
->  scripts/Makefile.build            |   2 +-
->  scripts/min-tool-version.sh       |   2 +-
->  23 files changed, 1278 insertions(+), 681 deletions(-)
->
-> --
-> 2.40.0
->
+Miguel
