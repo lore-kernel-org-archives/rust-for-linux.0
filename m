@@ -2,88 +2,119 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84928C77B72
-	for <rust-for-linux@archiver.kernel.org>; Thu, 20 Apr 2023 13:20:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 699ECC77B73
+	for <rust-for-linux@archiver.kernel.org>; Thu, 20 Apr 2023 13:45:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229710AbjDTNUI (ORCPT
+        id S230192AbjDTNpl (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 20 Apr 2023 09:20:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35112 "EHLO
+        Thu, 20 Apr 2023 09:45:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229671AbjDTNUH (ORCPT
+        with ESMTP id S229547AbjDTNpl (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 20 Apr 2023 09:20:07 -0400
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A49730EE;
-        Thu, 20 Apr 2023 06:20:06 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-54fc337a650so41181157b3.4;
-        Thu, 20 Apr 2023 06:20:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681996805; x=1684588805;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GNWH6oFsPxt4uPBf5ZSd4rkNU90YfqXsmZC9RT6Nk4w=;
-        b=iBt7XnIlW5ja5FIDgbzbXy90Z5dz+WEqL1GT5rddfr4IDXDBglyDQqL4MB3d5wV79O
-         72WaiSC031h4s62DtdESzUHchGzdGsLEEZB3gkKiHP4P4QE6zXkkNfBsK/y91Wg1j6We
-         p7AIjuCPht+pvxNVK++2byKRkYY48tFcv2pbfG0lW6jCN+vV6VtQiwt7sYxpRxr1N3BI
-         Lvv4EeickuOUPtUEQb0T1dkxPCFzPtUueuiozLiIPscAtaIuop9+mk/+qln+j5blJS6R
-         SCq13GOqi/uUtHoAw40p4I8fQE8DVKqpzbdWYqn4U+Qn77EhdAzZOvoGgHmLRHQBHDux
-         MLjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681996805; x=1684588805;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GNWH6oFsPxt4uPBf5ZSd4rkNU90YfqXsmZC9RT6Nk4w=;
-        b=jH4cGy9iKZ+6Z/DHsBK1Afqp/Bdlrf4bzk6yGUov1XkXUyFivqaS4VG4Qz5g+qwAll
-         4BkpnLO2bD1npx5wQldPY44zA67tJybDtUYZ7rNEJ8ADSHnBbkOvYcfqi6aFrBdK6zDc
-         p2Av8u5MF3slIyk76RNegF6lrfIXoEheFsRcnN3nQPnihPzNTOP4ZxFrWPI+OVmwy9RP
-         s1Ip97NlBuKnz0rUvjgCW3pTTJsGEN1RFZAENwa1GDbo4G08Bl9Ce+VAczXhAGbwtjf+
-         Ptac5B1Rir245i8AwcLi+dbAy6aCqfaQQVM15vhxGXaxS6nOdmUPCRuIB15kOVpY+hpn
-         XYeg==
-X-Gm-Message-State: AAQBX9fFWVTqRk6cszy20dl6bNLFE1f/AjTxC3eQbkxo77MMAWpd4oCi
-        N9BkrJ1BzpLrwEBQFYPXB8b2kqvDvywLw8rFoT8=
-X-Google-Smtp-Source: AKy350Yna17ciObxlr7T445+ng1yrw5kvVgZMoxKaKzazogoVuc+cNXRmbuMczDLtoYwXPnB4yL2NRiFKi3fLM1VgfE=
-X-Received: by 2002:a0d:df50:0:b0:54f:a5ed:1978 with SMTP id
- i77-20020a0ddf50000000b0054fa5ed1978mr754804ywe.38.1681996805473; Thu, 20 Apr
- 2023 06:20:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230418214347.324156-1-ojeda@kernel.org> <CAPDJoNsG1E25yYM+L_H21vVCt-5S16etx3KMxx8ySZtWMQt4FQ@mail.gmail.com>
-In-Reply-To: <CAPDJoNsG1E25yYM+L_H21vVCt-5S16etx3KMxx8ySZtWMQt4FQ@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 20 Apr 2023 15:19:54 +0200
-Message-ID: <CANiq72mtb9V+1a7nPEHBCeg_fob4rpPTWJZjdahnGL2Mg3uoUA@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Rust 1.68.2 upgrade
-To:     Ariel Miculas <ariel.miculas@gmail.com>
+        Thu, 20 Apr 2023 09:45:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D00465BA1;
+        Thu, 20 Apr 2023 06:45:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D770648EF;
+        Thu, 20 Apr 2023 13:45:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8706FC433D2;
+        Thu, 20 Apr 2023 13:45:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681998338;
+        bh=RnOWekaQtj+JQYrTgnzTzI0QzSEmzMSVVESQmRMRKRY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ZXl0SDt8j18gYVDmXrZpG2TwC/PsWXwLBDzrCl28TeuAD+vKqDIS3+pu8msvQQ5GU
+         Jjf2ano3ad+vpxYpnBxF5jn6O4O2TGHXubkCrz7T2Gzfdy5ywzKnJja362HKAJbk3+
+         9VT76s/ZrZbw9DKmS7v9W70uwaJkARMJ10TwUfOP60ZYXVqN/JGL3DFDdp+/1b+5Ws
+         ZyolKIf0DLPFRpdBstamYlaD5WucAxptF5bLooqBmYrJgyBmKISygM+hZNky0GG17S
+         r4oPqabhapPKxLHEMzUgzGVbd/QajLx4ldJOFMMFosTg6oO4+/TW8znv/7ehWpdRCE
+         Puzn1wBQbmNAg==
+From:   Miguel Ojeda <ojeda@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Josh Stone <jistone@redhat.com>,
-        William Brown <william.brown@suse.com>,
-        Georgy Yakovlev <gyakovlev@gentoo.org>,
-        Jan Alexander Steffens <jan.steffens@gmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.3
+Date:   Thu, 20 Apr 2023 15:44:58 +0200
+Message-Id: <20230420134458.942139-1-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Apr 20, 2023 at 3:13=E2=80=AFPM Ariel Miculas <ariel.miculas@gmail.=
-com> wrote:
->
-> $ make LLVM=3D1 rustavailable
+Hi Linus,
 
-Since you showed the output of the other commands, did this one show
-"Rust is available!"? I guess so -- I imagine you edited the commands
-for the email, e.g. the config changed too.
+Please pull these fixes for Rust.
 
-That is fine, as long as it works as expected :) Thanks a lot for testing!
+Most of them are straightforward. The last one is more complex, but it
+only touches Rust + GCC builds which are for the moment best-effort.
+
+They have been in linux-next for more than a week, but I reworded
+yesterday the second-to-last to add a correction to the commit message
+(no changes otherwise -- the original commits can be found starting at
+8197cc33f421 in linux-next).
+
+No conflicts expected. No changes to the C side.
 
 Cheers,
 Miguel
+
+The following changes since commit 7e364e56293bb98cae1b55fd835f5991c4e96e7d:
+
+  Linux 6.3-rc5 (2023-04-02 14:29:29 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux tags/rust-fixes-6.3
+
+for you to fetch changes up to d966c3cab924fb750fefef11e77a6fa07dd5420e:
+
+  rust: allow to use INIT_STACK_ALL_ZERO (2023-04-19 19:34:43 +0200)
+
+----------------------------------------------------------------
+Rust fixes for v6.3
+
+ - Build: Rust + GCC build fix and 'grep' warning fix.
+
+ - Code: Missing 'extern "C"' fix.
+
+ - Scripts: 'is_rust_module.sh' and 'generate_rust_analyzer.py' fixes.
+
+ - A couple trivial fixes.
+
+----------------------------------------------------------------
+Andrea Righi (2):
+      rust: fix regexp in scripts/is_rust_module.sh
+      rust: allow to use INIT_STACK_ALL_ZERO
+
+Asahi Lina (1):
+      scripts: generate_rust_analyzer: Handle sub-modules with no Makefile
+
+David Gow (1):
+      rust: kernel: Mark rust_fmt_argument as extern "C"
+
+Patrick Blass (1):
+      rust: str: fix requierments->requirements typo
+
+Thomas Bamelis (1):
+      rust: sort uml documentation arch support table
+
+Vincenzo Palazzo (1):
+      rust: build: Fix grep warning
+
+ Documentation/rust/arch-support.rst |  2 +-
+ rust/Makefile                       | 16 +++++++++++++++-
+ rust/kernel/print.rs                |  6 +++++-
+ rust/kernel/str.rs                  |  2 +-
+ scripts/generate_rust_analyzer.py   |  5 ++++-
+ scripts/is_rust_module.sh           |  2 +-
+ 6 files changed, 27 insertions(+), 6 deletions(-)
