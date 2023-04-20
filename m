@@ -2,114 +2,98 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1758C77B7E
-	for <rust-for-linux@archiver.kernel.org>; Thu, 20 Apr 2023 15:40:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AAB5BC77B73
+	for <rust-for-linux@archiver.kernel.org>; Thu, 20 Apr 2023 17:17:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229831AbjDTPko (ORCPT
+        id S230429AbjDTRRD (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 20 Apr 2023 11:40:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39732 "EHLO
+        Thu, 20 Apr 2023 13:17:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232109AbjDTPkn (ORCPT
+        with ESMTP id S229563AbjDTRRC (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 20 Apr 2023 11:40:43 -0400
-Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95DA61991;
-        Thu, 20 Apr 2023 08:40:40 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id F146C732;
-        Thu, 20 Apr 2023 15:40:39 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net F146C732
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-        t=1682005240; bh=UF61JW6oRtLJIYx10KbxIyUy5rSXTyyXgGlY7V2DrHg=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=Qcb4dlTc5ho5ToPMXUQ80Nry1hsqMBl2qEbaTo4ZKLPU3xmAuicagZzKzCd+LxXaj
-         jxZ0adq+YtQ6huKRsNejlznrRbNlCMNy8ZqBQruRdYn/G79kOgt9bjdwaEZM8thry5
-         c4GRXrjPaShA+V7Mr3otYovIIStDnFB+mqFGLFdiBT3aYlSDzu0UFL8cr0PbWzDc/Z
-         iLddw/ryvzvL5VchGaN3+8ymqcXzJNXmDA7CHhyV0/roHnxHGUCHQmCUlGBPmHpeGZ
-         nO9/C2KW+UZQy8v7stRhB0Q+zePmY7CnNITn4qLN53b0CpDXrsWNHcFU49jq55WNNS
-         yCfVXzeQCQSHA==
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Zipeng Zhang <zhangzipeng0@foxmail.com>
-Cc:     ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-        boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-        nathan@kernel.org, ndesaulniers@google.com, trix@redhat.com,
-        masahiroy@kernel.org, codeagain@codeagain.dev,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
-        Zipeng Zhang <zhangzipeng0@foxmail.com>
+        Thu, 20 Apr 2023 13:17:02 -0400
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A52FE67;
+        Thu, 20 Apr 2023 10:17:00 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id n193so2645755ybf.12;
+        Thu, 20 Apr 2023 10:17:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682011019; x=1684603019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iR3MrYbDMYps02FpM6CgXLeP0ow7vP9dNqGf0sKZVkU=;
+        b=feAhS6Gn5OV5Nz56PvCNsQQbwHKpP2XUJx+Rxk3BWh2G0DJ8XgpcrpkMYqNtu2PlxG
+         Ymcju82iy+Ky3oowVt6Dl5q7FfQinxh53sBwmmWDmuaiZ19/HY9hBEySYF/fWeAsVCk1
+         EGEwfyfTG/+QXWyaq5pjQsqEZszr4a4D6vces80Bgj02hvwL1RGiLaJpwswAQO2lzym3
+         gJOaK96xyucW0NKY5tFxOvX9YoUQJRZGHqdlQo6AyCyFaHeyCDMrx7uIkIdm9ffC9OhA
+         nl+P+DestXdIoa40lCbxAwcBW61PIpAu7bnP1blZU9hqih5lTYKIcu3teBJTP8FmgHUo
+         cprg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682011019; x=1684603019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iR3MrYbDMYps02FpM6CgXLeP0ow7vP9dNqGf0sKZVkU=;
+        b=UL9AAI2lAksCTPTbYyyvqond/72ROj4XYh481DvyweqqcSIpc4tJViGGjywYACLpXW
+         f3FMCLwmmc8YFwWTtwNyvyVXUhV8jyojrmLRHTcrsOb0HnbiOct+Y4VLxk90vmWDNj8m
+         QHAP7wZd/B6TgnnaiHLXFyv2SbDXV25w936FV8jQJhUKSIIhqH7DICTgoVhh0UD5ImmX
+         hPW35Rjh/oU5toShvm8GJmj2pvytuyxPmHl07+uLtPNO9YbR6iQ3cikvYG+lw4kw9AR0
+         R6G84iNlXjJ6JnpEXay9/c4KcmufADXfyzB/HPT90Nd53qddybl1gdyV5rCS09fOwFj5
+         OCCA==
+X-Gm-Message-State: AAQBX9cynSo3gUgiu4R0BIpL+Y21h76myEwDuiJUrPpkVReTI2F9vCkD
+        qxR5r9DERP5eNc6Bc1nJUGW0I8jouhktdS6QkuQ=
+X-Google-Smtp-Source: AKy350b+9jyLFlcvFZTFwaDafV4O6IuCCJNUZWmUt4dda8BcGy2rSeuJ9k+2jdOPTM1SqvEljb+qQWNrtFbjMzzfWxA=
+X-Received: by 2002:a25:183:0:b0:b8f:545f:aa0a with SMTP id
+ 125-20020a250183000000b00b8f545faa0amr1973346ybb.31.1682011019151; Thu, 20
+ Apr 2023 10:16:59 -0700 (PDT)
+MIME-Version: 1.0
+References: <tencent_CB1A298D31FD221496FF657CD7EF406E6605@qq.com>
+ <87sfcuu0fm.fsf@meer.lwn.net> <87o7nitvd4.fsf@meer.lwn.net>
+In-Reply-To: <87o7nitvd4.fsf@meer.lwn.net>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 20 Apr 2023 19:16:48 +0200
+Message-ID: <CANiq72k7gVJ1gjN-qbkUM_hh=1QEb8ezKb8FnaD9hnF2kka8Ng@mail.gmail.com>
 Subject: Re: [PATCH] Documentation/process/changes: Escape --options to fix
  Sphinx output
-In-Reply-To: <87sfcuu0fm.fsf@meer.lwn.net>
-References: <tencent_CB1A298D31FD221496FF657CD7EF406E6605@qq.com>
- <87sfcuu0fm.fsf@meer.lwn.net>
-Date:   Thu, 20 Apr 2023 09:40:39 -0600
-Message-ID: <87o7nitvd4.fsf@meer.lwn.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+To:     Jonathan Corbet <corbet@lwn.net>
+Cc:     Zipeng Zhang <zhangzipeng0@foxmail.com>, ojeda@kernel.org,
+        alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+        gary@garyguo.net, bjorn3_gh@protonmail.com, nathan@kernel.org,
+        ndesaulniers@google.com, trix@redhat.com, masahiroy@kernel.org,
+        codeagain@codeagain.dev, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Jonathan Corbet <corbet@lwn.net> writes:
+On Thu, Apr 20, 2023 at 5:40=E2=80=AFPM Jonathan Corbet <corbet@lwn.net> wr=
+ote:
+>
+> We have long disabled the "html_use_smartypants" option to prevent Sphinx
+> from mangling "--" sequences (among others).  Unfortunately, Sphinx chang=
+ed
+> that option to "smartquotes" in the 1.6.6 release, and seemingly didn't s=
+ee
+> fit to warn about the use of the obsolete option, resulting in the
+> aforementioned mangling returning.  Disable this behavior again and hope
+> that the option name stays stable for a while.
 
-> The right solution, if it is possible, is to convince Sphinx to stop
-> messing with "--" altogether.  Substituting em-dashes is of limited
-> cosmetic value and, I think, is something we could do without.
+I think it was deprecated in v1.6, and removed in v1.7. There seems to
+be code for printing a deprecation warning during v1.6, though.
 
-Ah ... I get it now.  We *did* disable this once by disabling the
-"html_use_smartypants" option in conf.py.  The Sphinx folks changed the
-name of that option in the 1.6.6 release, though, silently turning that
-behavior back on.  It only took us five years to notice...  I think I'll
-just drop the attached patch into docs-next.
+> +# If true, Docutils "smart quotes will be used to convert quotes and das=
+hes
 
-Thanks for bringing this up!
+Missing quote in "smart quotes"? Or maybe Saxon genitive?
 
-jon
+Other than that, sounds good to me!
 
-------------8<-----------------
-From 995addeb4ab2a2c4beaf8b90a4dc8c1d64735d29 Mon Sep 17 00:00:00 2001
-From: Jonathan Corbet <corbet@lwn.net>
-Date: Thu, 20 Apr 2023 09:34:35 -0600
-Subject: [PATCH] docs: turn off "smart quotes" in the HTML build
+Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
 
-We have long disabled the "html_use_smartypants" option to prevent Sphinx
-from mangling "--" sequences (among others).  Unfortunately, Sphinx changed
-that option to "smartquotes" in the 1.6.6 release, and seemingly didn't see
-fit to warn about the use of the obsolete option, resulting in the
-aforementioned mangling returning.  Disable this behavior again and hope
-that the option name stays stable for a while.
-
-Reported-by: Zipeng Zhang <zhangzipeng0@foxmail.com>
-Link: https://lore.kernel.org/lkml/tencent_CB1A298D31FD221496FF657CD7EF406E=
-6605@qq.com
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
----
- Documentation/conf.py | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/Documentation/conf.py b/Documentation/conf.py
-index db16814f182f..3d1f74f76e64 100644
---- a/Documentation/conf.py
-+++ b/Documentation/conf.py
-@@ -343,9 +343,10 @@ sys.stderr.write("Using %s theme\n" % html_theme)
- # so a file named "default.css" will overwrite the builtin "default.css".
- html_static_path =3D ['sphinx-static']
-=20
--# If true, SmartyPants will be used to convert quotes and dashes to
--# typographically correct entities.
--html_use_smartypants =3D False
-+# If true, Docutils "smart quotes will be used to convert quotes and dashes
-+# to typographically correct entities.  This will convert "--" to "=E2=80=
-=94",
-+# which is not always what we want, so disable it.
-+smartquotes =3D False
-=20
- # Custom sidebar templates, maps document names to template names.
- # Note that the RTD theme ignores this
---=20
-2.40.0
-
+Cheers,
+Miguel
