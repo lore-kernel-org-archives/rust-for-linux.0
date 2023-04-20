@@ -2,49 +2,37 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 106AEC77B73
-	for <rust-for-linux@archiver.kernel.org>; Thu, 20 Apr 2023 14:42:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1758C77B7E
+	for <rust-for-linux@archiver.kernel.org>; Thu, 20 Apr 2023 15:40:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231907AbjDTOmy (ORCPT
+        id S229831AbjDTPko (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 20 Apr 2023 10:42:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37352 "EHLO
+        Thu, 20 Apr 2023 11:40:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231394AbjDTOmw (ORCPT
+        with ESMTP id S232109AbjDTPkn (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 20 Apr 2023 10:42:52 -0400
-X-Greylist: delayed 10840 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 20 Apr 2023 07:42:49 PDT
-Received: from out203-205-221-242.mail.qq.com (out203-205-221-242.mail.qq.com [203.205.221.242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6B32358D;
-        Thu, 20 Apr 2023 07:42:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-        s=s201512; t=1682001766;
-        bh=E7pJ8JH4za56KdbQ6Rbh54isxL4xVCKZ8wbfrIdCrY4=;
-        h=From:To:Cc:Subject:Date;
-        b=jNltLnjMKF8YGszO6aKdDhv2Z8SQHg9SqXl4lis83fZWswvK0y2bydMuLxiVMgWEJ
-         7eiYfJD9RPpexwT9XbBDL96GpWxqX1KKCNDLXhCO3PXtVN7QVPC9kqTvSwBX70R2Tq
-         cea4UCEAOpjgauwsPZbVlkg2tdnr7OiCcLVBVUmE=
-Received: from localhost.localdomain.localdomain ([219.238.10.2])
-        by newxmesmtplogicsvrszb6-0.qq.com (NewEsmtp) with SMTP
-        id 584A06E6; Thu, 20 Apr 2023 18:22:04 +0800
-X-QQ-mid: xmsmtpt1681986124t3chxyu9v
-Message-ID: <tencent_CB1A298D31FD221496FF657CD7EF406E6605@qq.com>
-X-QQ-XMAILINFO: NDgMZBR9sMmaUT5c7qkd18KH0pTZHNxLkthc94tfL7YUCpyUPjjdyeaVUNbCkP
-         Xdgm/eyJwxAZS4dPTg2sKcLaUI8eaIhmLzOM0vNJDMaEdT7akJPqVx3mpJPekU0qOUDy8SvoBbMk
-         c0wcUflwJmMqIPdgAmXdGiW2FnU3oEWiWedOeqePUcnP4YW/EvkWPMYLmCBlLoJzF8erE5JqqBcm
-         wRiDheW/eTeACjfXNGZ/lr/Stb6heSJOYTCdVmOjAnOSYaUz2uR8Hh/4Xi3QYR/GHh65yPpzc2iW
-         u6TZMIyjlfNa0jQ9Su/5KaJYkTKcGoCAucH/loiVH8GotCg9IFpWKvGNDVe3lSO/EpR8XNJarsSc
-         Zo/Wcb/SgszkAWgdbqFg7w3YKPf9TEIjR/iZ6gVn82+jD1rnw5DFX4hmQ0O33m1pGT5XH2fVp0ke
-         UtQrLIPzFKh40cBcluvVmlgSm5nwOj0QbFCu4/vNaXHl03+sv/ROotLQ8LIOoS5f2JWTRIPH6gII
-         6cKEvHexMxgQOjAK3c5fzOYtCnoe2n3LydK0dimXW9Qn9YoooLJV53JgPESzKAQNRURLzux7jyRG
-         sqsNvx/zCYo2fhD7iI2GA7Zy65OpvxgN/rdnwaPBFeaR1IeCqPtHABnEzbOIqr7CmeQG9o/MIpRf
-         /wpXIciMOv7ZkrfBL9r0NR+DkF2WeLOGFg8ADgSPoY7tqlLp8ikJOJsIHSucjKjUcMOjUKqmX5VA
-         DzLlGOwjqNXAhSLI1hAdvhmAtvRY0Z5SN+myYvUckYKc2Y2+ukac6UfYlg1brXbnJfxVVtX/gStc
-         Lzeho3r0AclG1G2s/Tm0B8V96UncmB/PEs/udqPNEc/RdNgFcMCGlOLalNloWc2Gft+ZmCv4WTjj
-         FeZV9c7x3uMwT8CY9uJ+Qc9LZpL3wl5FXe4EVfYZjnFQAXS6ob7a5zJFgwpbgcXoO4wvWjjC4Lwe
-         haLUGrCRpt093vedzAr8jylwhgvlAU
-From:   Zipeng Zhang <zhangzipeng0@foxmail.com>
-To:     corbet@lwn.net
+        Thu, 20 Apr 2023 11:40:43 -0400
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95DA61991;
+        Thu, 20 Apr 2023 08:40:40 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id F146C732;
+        Thu, 20 Apr 2023 15:40:39 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net F146C732
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+        t=1682005240; bh=UF61JW6oRtLJIYx10KbxIyUy5rSXTyyXgGlY7V2DrHg=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=Qcb4dlTc5ho5ToPMXUQ80Nry1hsqMBl2qEbaTo4ZKLPU3xmAuicagZzKzCd+LxXaj
+         jxZ0adq+YtQ6huKRsNejlznrRbNlCMNy8ZqBQruRdYn/G79kOgt9bjdwaEZM8thry5
+         c4GRXrjPaShA+V7Mr3otYovIIStDnFB+mqFGLFdiBT3aYlSDzu0UFL8cr0PbWzDc/Z
+         iLddw/ryvzvL5VchGaN3+8ymqcXzJNXmDA7CHhyV0/roHnxHGUCHQmCUlGBPmHpeGZ
+         nO9/C2KW+UZQy8v7stRhB0Q+zePmY7CnNITn4qLN53b0CpDXrsWNHcFU49jq55WNNS
+         yCfVXzeQCQSHA==
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Zipeng Zhang <zhangzipeng0@foxmail.com>
 Cc:     ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
         boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
         nathan@kernel.org, ndesaulniers@google.com, trix@redhat.com,
@@ -52,86 +40,76 @@ Cc:     ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
         linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
         rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
         Zipeng Zhang <zhangzipeng0@foxmail.com>
-Subject: [PATCH] Documentation/process/changes: Escape --options to fix Sphinx output
-Date:   Thu, 20 Apr 2023 18:21:31 +0800
-X-OQ-MSGID: <20230420102131.16545-1-zhangzipeng0@foxmail.com>
-X-Mailer: git-send-email 2.39.2
+Subject: Re: [PATCH] Documentation/process/changes: Escape --options to fix
+ Sphinx output
+In-Reply-To: <87sfcuu0fm.fsf@meer.lwn.net>
+References: <tencent_CB1A298D31FD221496FF657CD7EF406E6605@qq.com>
+ <87sfcuu0fm.fsf@meer.lwn.net>
+Date:   Thu, 20 Apr 2023 09:40:39 -0600
+Message-ID: <87o7nitvd4.fsf@meer.lwn.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Add an escape character to resolve the problem of
-"--version" being displayed as "–version".
+Jonathan Corbet <corbet@lwn.net> writes:
 
-Without such escaping, -- is rendered as – (en dash).
+> The right solution, if it is possible, is to convince Sphinx to stop
+> messing with "--" altogether.  Substituting em-dashes is of limited
+> cosmetic value and, I think, is something we could do without.
 
-Signed-off-by: Zipeng Zhang <zhangzipeng0@foxmail.com>
+Ah ... I get it now.  We *did* disable this once by disabling the
+"html_use_smartypants" option in conf.py.  The Sphinx folks changed the
+name of that option in the 1.6.6 release, though, silently turning that
+behavior back on.  It only took us five years to notice...  I think I'll
+just drop the attached patch into docs-next.
+
+Thanks for bringing this up!
+
+jon
+
+------------8<-----------------
+From 995addeb4ab2a2c4beaf8b90a4dc8c1d64735d29 Mon Sep 17 00:00:00 2001
+From: Jonathan Corbet <corbet@lwn.net>
+Date: Thu, 20 Apr 2023 09:34:35 -0600
+Subject: [PATCH] docs: turn off "smart quotes" in the HTML build
+
+We have long disabled the "html_use_smartypants" option to prevent Sphinx
+from mangling "--" sequences (among others).  Unfortunately, Sphinx changed
+that option to "smartquotes" in the 1.6.6 release, and seemingly didn't see
+fit to warn about the use of the obsolete option, resulting in the
+aforementioned mangling returning.  Disable this behavior again and hope
+that the option name stays stable for a while.
+
+Reported-by: Zipeng Zhang <zhangzipeng0@foxmail.com>
+Link: https://lore.kernel.org/lkml/tencent_CB1A298D31FD221496FF657CD7EF406E=
+6605@qq.com
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
 ---
- Documentation/process/changes.rst | 38 +++++++++++++++----------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ Documentation/conf.py | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/process/changes.rst b/Documentation/process/changes.rst
-index ef540865ad22..2d2747e1964a 100644
---- a/Documentation/process/changes.rst
-+++ b/Documentation/process/changes.rst
-@@ -29,17 +29,17 @@ you probably needn't concern yourself with pcmciautils.
- ====================== ===============  ========================================
-         Program        Minimal version       Command to check the version
- ====================== ===============  ========================================
--GNU C                  5.1              gcc --version
--Clang/LLVM (optional)  11.0.0           clang --version
--Rust (optional)        1.62.0           rustc --version
--bindgen (optional)     0.56.0           bindgen --version
--GNU make               3.82             make --version
--bash                   4.2              bash --version
-+GNU C                  5.1              gcc \--version
-+Clang/LLVM (optional)  11.0.0           clang \--version
-+Rust (optional)        1.62.0           rustc \--version
-+bindgen (optional)     0.56.0           bindgen \--version
-+GNU make               3.82             make \--version
-+bash                   4.2              bash \--version
- binutils               2.25             ld -v
--flex                   2.5.35           flex --version
--bison                  2.0              bison --version
--pahole                 1.16             pahole --version
--util-linux             2.10o            fdformat --version
-+flex                   2.5.35           flex \--version
-+bison                  2.0              bison \--version
-+pahole                 1.16             pahole \--version
-+util-linux             2.10o            fdformat \--version
- kmod                   13               depmod -V
- e2fsprogs              1.41.4           e2fsck -V
- jfsutils               1.1.3            fsck.jfs -V
-@@ -49,17 +49,17 @@ squashfs-tools         4.0              mksquashfs -version
- btrfs-progs            0.18             btrfsck
- pcmciautils            004              pccardctl -V
- quota-tools            3.09             quota -V
--PPP                    2.4.0            pppd --version
--nfs-utils              1.0.5            showmount --version
--procps                 3.2.0            ps --version
--udev                   081              udevd --version
--grub                   0.93             grub --version || grub-install --version
--mcelog                 0.6              mcelog --version
-+PPP                    2.4.0            pppd \--version
-+nfs-utils              1.0.5            showmount \--version
-+procps                 3.2.0            ps \--version
-+udev                   081              udevd \--version
-+grub                   0.93             grub \--version || grub-install \--version
-+mcelog                 0.6              mcelog \--version
- iptables               1.4.2            iptables -V
- openssl & libcrypto    1.0.0            openssl version
--bc                     1.06.95          bc --version
--Sphinx\ [#f1]_         1.7              sphinx-build --version
--cpio                   any              cpio --version
-+bc                     1.06.95          bc \--version
-+Sphinx\ [#f1]_         1.7              sphinx-build \--version
-+cpio                   any              cpio \--version
- ====================== ===============  ========================================
- 
- .. [#f1] Sphinx is needed only to build the Kernel documentation
--- 
-2.39.2
+diff --git a/Documentation/conf.py b/Documentation/conf.py
+index db16814f182f..3d1f74f76e64 100644
+--- a/Documentation/conf.py
++++ b/Documentation/conf.py
+@@ -343,9 +343,10 @@ sys.stderr.write("Using %s theme\n" % html_theme)
+ # so a file named "default.css" will overwrite the builtin "default.css".
+ html_static_path =3D ['sphinx-static']
+=20
+-# If true, SmartyPants will be used to convert quotes and dashes to
+-# typographically correct entities.
+-html_use_smartypants =3D False
++# If true, Docutils "smart quotes will be used to convert quotes and dashes
++# to typographically correct entities.  This will convert "--" to "=E2=80=
+=94",
++# which is not always what we want, so disable it.
++smartquotes =3D False
+=20
+ # Custom sidebar templates, maps document names to template names.
+ # Note that the RTD theme ignores this
+--=20
+2.40.0
 
