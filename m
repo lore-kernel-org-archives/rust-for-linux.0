@@ -2,84 +2,90 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12C00C7618E
-	for <rust-for-linux@archiver.kernel.org>; Fri, 21 Apr 2023 23:48:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86D9FC77B61
+	for <rust-for-linux@archiver.kernel.org>; Mon, 24 Apr 2023 08:11:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233836AbjDUXs4 (ORCPT
+        id S231555AbjDXIL5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 21 Apr 2023 19:48:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39898 "EHLO
+        Mon, 24 Apr 2023 04:11:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233855AbjDUXsy (ORCPT
+        with ESMTP id S231551AbjDXILs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 21 Apr 2023 19:48:54 -0400
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C0582137;
-        Fri, 21 Apr 2023 16:48:50 -0700 (PDT)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-54f6f0dae19so12848897b3.0;
-        Fri, 21 Apr 2023 16:48:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682120929; x=1684712929;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tLOHSowAq3qXxVnp8tQm0eq1f2X6Iz2Ob1qD9V70Jyc=;
-        b=N6FlboiknJp6c3M8T/xFon/pnuArObgBjhHXYdXy6bl1PlLUyDQjS14PTHy1fKFBrg
-         H+RBH0tYkzYHl46iJGFKYpFtJ75H+ecQGmLEEUb7S0pGJgAt69lH/1IS5quQ4qLwVtOf
-         u+ld1xcGZYVvnFj4d15tuSkaK3IjGK78unsQvKt87YWucazsEpoMeN1iaYAOqkFi+CWm
-         TQ4BgDHIdIGicv6TisI5OPxaD+b9U8Ml9PH/0mvWs+WhwytJKZAWXtnW9WLZm2M/Mj86
-         +oQltTkY7/D2T0daxBxOa/5JCL3CSOG6SQ6rcu7E9bbeEPTFmVC07Lwe71fo11cFe2vW
-         t7nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682120929; x=1684712929;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tLOHSowAq3qXxVnp8tQm0eq1f2X6Iz2Ob1qD9V70Jyc=;
-        b=g0WdpUWpgT2um5D5GaKJlYkW2JbNxPQljpYcNdk3bChfiVh6mjqGYgT3PNFLikUoRL
-         hgpRHdbwiL3JoiMSZOr34vmBSB+Zr8FjHVriTsc7tQe17KDtZSSJuLysba9FMKfX8sbO
-         Y6t4e+P7lhEUXBVXAI0e31WRkFAvyepPXYUg/LeWPMD6sfplokQX1i0ANzffoYp18sRK
-         t5wQPf+Mobu/1TZCmlurYAqidquffMauOqAozSbb7yh8ltKVMYpWIU+DmOXY68VPlasA
-         cJDW+1o4bhUTfh/0nRCYk/6dDU0O3BSeNVTNBa7TSyRjbXrwSAb5y2jtzGkAxRLDUl3I
-         NmHA==
-X-Gm-Message-State: AAQBX9f/+iMqEPyDYixI3UfSCW4Bh+mnN6d9QHC2xRH+x9Bl6FFCQbMT
-        98utHE1G9MxZNJ+nc/wtdbua0YN4seIeJ5PVrik=
-X-Google-Smtp-Source: AKy350YUefHIkuKUui23iIRLtVxZ0q1CQI13Km7pDYoawxBws41dSc8jEVMIOQP++qYawwQ+uNh0e0QPUs+F1eVk7RQ=
-X-Received: by 2002:a81:8302:0:b0:54f:9b01:b353 with SMTP id
- t2-20020a818302000000b0054f9b01b353mr3028442ywf.9.1682120929644; Fri, 21 Apr
- 2023 16:48:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230329-rust-uapi-v2-0-bca5fb4d4a12@asahilina.net>
-In-Reply-To: <20230329-rust-uapi-v2-0-bca5fb4d4a12@asahilina.net>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 22 Apr 2023 01:48:38 +0200
-Message-ID: <CANiq72kZcDfV-hz6ku93RFxg3eOYfNp1d=-GWYy97T8maoZpMQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] rust: Add uapi crate
-To:     Asahi Lina <lina@asahilina.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Mon, 24 Apr 2023 04:11:48 -0400
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38FA910E7;
+        Mon, 24 Apr 2023 01:11:47 -0700 (PDT)
+Date:   Mon, 24 Apr 2023 08:11:33 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=protonmail; t=1682323903; x=1682583103;
+        bh=9tXLJw7aS2XfS2d3gc4JfQ1c+axPiaqoVKfXWCkw42E=;
+        h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+        b=bf4SNBhMwTguIdAncVzh5qLxV1ZYWi5GolZ7vhl4PHQALjDS4AaYfZPVsJxi3p4Xy
+         J9c0TDW7wOHdvqGNedNTQfjXceAGYPKLW05jU0wRyPNiFDDJW5uDo1eVsOUag1aqkj
+         dzDynwvOS/V1XjvKh9Wvz/1PjZksRH24dtFWDY1KvqhbNtAisuGuzEmhYvZrqCA53v
+         59BuMDz2nIa3f41puY8UTwzFHvaMTBrIHbfP4W6q71ha+k477z6NSu9tcTXK3Uie0C
+         h8JsTD9qERL7wpGzDU7nSSHk8//0sM7gDHTiWgE4CT+VN4lF6+yTEj158C8QFJO6J1
+         fu/YtqWt9PCBw==
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        asahi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+From:   Benno Lossin <benno.lossin@proton.me>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, Benno Lossin <benno.lossin@proton.me>
+Subject: [PATCH 1/4] rust: macros: fix usage of `#[allow]` in `quote!`
+Message-ID: <20230424081112.99890-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Apr 3, 2023 at 11:34=E2=80=AFAM Asahi Lina <lina@asahilina.net> wro=
-te:
->
-> The first patch introduces the `uapi` crate proper and stands on its own,
-> while the second patch introduces the `ioctl` module in the kernel crate
-> that uses it.
+When using `quote!` as part of an expression that was not the last one
+in a function, the `#[allow(clippy::vec_init_then_push)]` attribute
+would be present on an expression, which is not allowed.
+This patch refactors that part of the macro to use a statement instead.
 
-Applied to `rust-next`, with added support for the `rustdoc` and
-`rusttest` targets, since we want to keep those working. Thanks!
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+---
+ rust/macros/quote.rs | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-Cheers,
-Miguel
+diff --git a/rust/macros/quote.rs b/rust/macros/quote.rs
+index c8e08b3c1e4c..dddbb4e6f4cb 100644
+--- a/rust/macros/quote.rs
++++ b/rust/macros/quote.rs
+@@ -39,12 +39,14 @@ impl ToTokens for TokenStream {
+ /// [`quote_spanned!`](https://docs.rs/quote/latest/quote/macro.quote_span=
+ned.html) macro from the
+ /// `quote` crate but provides only just enough functionality needed by th=
+e current `macros` crate.
+ macro_rules! quote_spanned {
+-    ($span:expr =3D> $($tt:tt)*) =3D> {
+-    #[allow(clippy::vec_init_then_push)]
+-    {
+-        let mut tokens =3D ::std::vec::Vec::new();
+-        let span =3D $span;
+-        quote_spanned!(@proc tokens span $($tt)*);
++    ($span:expr =3D> $($tt:tt)*) =3D> {{
++        let mut tokens;
++        #[allow(clippy::vec_init_then_push)]
++        {
++            tokens =3D ::std::vec::Vec::new();
++            let span =3D $span;
++            quote_spanned!(@proc tokens span $($tt)*);
++        }
+         ::proc_macro::TokenStream::from_iter(tokens)
+     }};
+     (@proc $v:ident $span:ident) =3D> {};
+
+base-commit: ea76e08f4d901a450619831a255e9e0a4c0ed162
+--
+2.40.0
+
+
