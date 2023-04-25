@@ -2,347 +2,125 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1604FC77B78
-	for <rust-for-linux@archiver.kernel.org>; Mon, 24 Apr 2023 14:26:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9336EC77B71
+	for <rust-for-linux@archiver.kernel.org>; Tue, 25 Apr 2023 20:06:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231133AbjDXO0O (ORCPT
+        id S236229AbjDYUGp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 24 Apr 2023 10:26:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54296 "EHLO
+        Tue, 25 Apr 2023 16:06:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231750AbjDXOZx (ORCPT
+        with ESMTP id S231735AbjDYUGo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 24 Apr 2023 10:25:53 -0400
-Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 096A67EC1;
-        Mon, 24 Apr 2023 07:25:52 -0700 (PDT)
-Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-18ebb77aecfso2287374fac.1;
-        Mon, 24 Apr 2023 07:25:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682346351; x=1684938351;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zKS+UBunzq6RfUrusjalANtwKikt5ldpe5+nBfA+L40=;
-        b=dCtzoGH6Qn9+Lq9vX9Hoq0tuDq+B0xGs6WXZL4ZJjiV0wyiz3ZrffOrKd1lhNsEYcA
-         c5jgaQWBWVV85KdGWu4XFZVGf4zYmrCSf1A3qouLH4lSJKjQIw0Pte2EB6FvCYGMm9id
-         zob2QzjXP+H5ksLaqVQvXowYFSPu3kFxc4NqxBPuUWrqjAGJf0PEKICVFcO4M9iFmJC4
-         DAxieo3a4u20dH1y30Fxdfng59czns7NFttybfi4l6Y6As7cMwGMuxfB0Y7QaXXwspVv
-         I64Es9jBvK36KosnfvBa4NBPPoLa2LdLyuZFxm9bsEXTVSpYlg0L2GLrSm6PJldy/Ktv
-         yIiQ==
+        Tue, 25 Apr 2023 16:06:44 -0400
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11ED2C15F
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Apr 2023 13:06:43 -0700 (PDT)
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-76371bc5167so962881539f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Apr 2023 13:06:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682346351; x=1684938351;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zKS+UBunzq6RfUrusjalANtwKikt5ldpe5+nBfA+L40=;
-        b=RRZ/nMGEVUoS0iFWQVeN3sVDNzZdUgyZvJtc8h+dipj0rw3Ml8Bk5DXFQIC6QvR6Jv
-         Sw/ARKVxeFmjWnqZuZ/DelnouVf/HEQUjKA+WKePuB59fcSYuTs3Sgl+lwCBRylFTS1I
-         7ziQs7PeZ2jxElUZeu/1alPQFBbLqymu5azRGwPrUVAdUrHsuZQuHE+v3UaaDYY2JNJV
-         4VUoy12/VPTkxFl9XlNX2/36qsLRCvN/lTEQHcS7WzVma71liVHFFzhRK9eu3OIGbP3n
-         S35ZmwzhQwMO669BSR9R7RnB4LqUj2/nR5+1f5kkIlwOipYU6vTd9blqljyq7JMqRtAJ
-         l9zQ==
-X-Gm-Message-State: AAQBX9cknY7krxtau3eW3kwnCjRIpWdTolu7231XZB6HSA89Xxb41SQ9
-        FTLYYnulpLdlo1XB/IoIgZA=
-X-Google-Smtp-Source: AKy350YBZkhcmWOL6eMDDY6RuJrJMKAU7V18TedHplJCqLwmQ+gvFhsZzeTwfTlpU2SlmkQRWXpW4Q==
-X-Received: by 2002:aca:db56:0:b0:38e:4e96:1292 with SMTP id s83-20020acadb56000000b0038e4e961292mr10895461oig.3.1682346351041;
-        Mon, 24 Apr 2023 07:25:51 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id r66-20020acac145000000b0038c36edc51dsm4546095oif.24.2023.04.24.07.25.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Apr 2023 07:25:50 -0700 (PDT)
-Message-ID: <dfa10c1f-43f6-a93e-e4ca-2362b895636e@gmail.com>
-Date:   Mon, 24 Apr 2023 11:24:54 -0300
+        d=1e100.net; s=20221208; t=1682453202; x=1685045202;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p4fMexIJHfqxhZnypL/zvA27ZdlKr/POdpuWq1kaqlA=;
+        b=Z6cBauc/2Py3TkatnKC+btHGlYibjUcNFORsk0ZrPGJK9g3+Y8WSD+DLMhgY8KWQ9E
+         GJhcTp6ktJhht6UJQqvpVYID9EB60J8H782o5wycYgKYZxJbe3fZ0PfLGK2mpDTrb1Fw
+         DmbM4ihlwQUdHkxtix6ycBXTxsRSLeFCq7PNjozSphsYcDXMKJrEcpCN67mvf/BbbX72
+         oDrindHMD+++X0f6wHWymZwssyyQPGAJKAAmFYOMFiOORoV/xPgCSE/wNqqtktWXVQes
+         c8Gfa47JsC/aeS6Ait/dsvx72f+5YdUS1YY2stJs8XiXvfeXJ0EF/kpRWQFWotF2bcuw
+         5ZPA==
+X-Gm-Message-State: AAQBX9c7uTcbxphk7WCKQ15hH0OFfOP3umdGy5fbLpw78Ztdg2CfBsxm
+        E6nPSBtEKF0A3Q/zIdWgLfXaMRxGh74vsvze78DWVINuh4or
+X-Google-Smtp-Source: AKy350aQpy7LmHkX25TQItyrllevYSOkpnrGATU0KYX8z+pBI37JoSpVyiOL7HDqHPER/bQraSij19oH8DEO5YVadTcKjm/ZyXqj
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 4/4] rust: init: update macro expansion example in docs
-Content-Language: en-US
-To:     Benno Lossin <benno.lossin@proton.me>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-References: <20230424081112.99890-1-benno.lossin@proton.me>
- <20230424081112.99890-4-benno.lossin@proton.me>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230424081112.99890-4-benno.lossin@proton.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a6b:7e4b:0:b0:745:70d7:4962 with SMTP id
+ k11-20020a6b7e4b000000b0074570d74962mr7687052ioq.0.1682453202331; Tue, 25 Apr
+ 2023 13:06:42 -0700 (PDT)
+Date:   Tue, 25 Apr 2023 13:06:42 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000079eebe05fa2ea9ad@google.com>
+Subject: [syzbot] upstream boot error: BUG: unable to handle kernel NULL
+ pointer dereference in __dabt_svc
+From:   syzbot <syzbot+d692037148a8169fc9dd@syzkaller.appspotmail.com>
+To:     alex.gaynor@gmail.com, andriy.shevchenko@linux.intel.com,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
+        bpf@vger.kernel.org, gary@garyguo.net,
+        linux-kernel@vger.kernel.org, linux@rasmusvillemoes.dk,
+        ojeda@kernel.org, pmladek@suse.com, rostedt@goodmis.org,
+        rust-for-linux@vger.kernel.org, senozhatsky@chromium.org,
+        syzkaller-bugs@googlegroups.com, wedsonaf@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 4/24/23 05:11, Benno Lossin wrote:
-> Also improve the explaining comments.
-> 
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> ---
->  rust/kernel/init/macros.rs | 85 +++++++++++++++++++++-----------------
->  1 file changed, 48 insertions(+), 37 deletions(-)
-> 
-> diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
-> index 541cfad1d8be..00aa4e956c0a 100644
-> --- a/rust/kernel/init/macros.rs
-> +++ b/rust/kernel/init/macros.rs
-> @@ -16,8 +16,9 @@
->  //!
->  //! We will look at the following example:
->  //!
-> -//! ```rust
-> +//! ```rust,ignore
->  //! # use kernel::init::*;
-> +//! # use core::pin::Pin;
->  //! #[pin_data]
->  //! #[repr(C)]
->  //! struct Bar<T> {
-> @@ -71,11 +72,12 @@
->  //!
->  //! Here is the definition of `Bar` from our example:
->  //!
-> -//! ```rust
-> +//! ```rust,ignore
->  //! # use kernel::init::*;
->  //! #[pin_data]
->  //! #[repr(C)]
->  //! struct Bar<T> {
-> +//!     #[pin]
->  //!     t: T,
->  //!     pub x: usize,
->  //! }
-> @@ -83,7 +85,7 @@
->  //!
->  //! This expands to the following code:
->  //!
-> -//! ```rust
-> +//! ```rust,ignore
->  //! // Firstly the normal definition of the struct, attributes are preserved:
->  //! #[repr(C)]
->  //! struct Bar<T> {
-> @@ -116,20 +118,22 @@
->  //!         unsafe fn t<E>(
->  //!             self,
->  //!             slot: *mut T,
-> -//!             init: impl ::kernel::init::Init<T, E>,
-> +//!             // Since `t` is `#[pin]`, this is `PinInit`.
-> +//!             init: impl ::kernel::init::PinInit<T, E>,
->  //!         ) -> ::core::result::Result<(), E> {
-> -//!             unsafe { ::kernel::init::Init::__init(init, slot) }
-> +//!             unsafe { ::kernel::init::PinInit::__pinned_init(init, slot) }
->  //!         }
->  //!         pub unsafe fn x<E>(
->  //!             self,
->  //!             slot: *mut usize,
-> +//!             // Since `x` is not `#[pin]`, this is `Init`.
->  //!             init: impl ::kernel::init::Init<usize, E>,
->  //!         ) -> ::core::result::Result<(), E> {
->  //!             unsafe { ::kernel::init::Init::__init(init, slot) }
->  //!         }
->  //!     }
->  //!     // Implement the internal `HasPinData` trait that associates `Bar` with the pin-data struct
-> -//!     // that we constructed beforehand.
-> +//!     // that we constructed above.
->  //!     unsafe impl<T> ::kernel::init::__internal::HasPinData for Bar<T> {
->  //!         type PinData = __ThePinData<T>;
->  //!         unsafe fn __pin_data() -> Self::PinData {
-> @@ -160,6 +164,8 @@
->  //!     struct __Unpin<'__pin, T> {
->  //!         __phantom_pin: ::core::marker::PhantomData<fn(&'__pin ()) -> &'__pin ()>,
->  //!         __phantom: ::core::marker::PhantomData<fn(Bar<T>) -> Bar<T>>,
-> +//!         // Our only `#[pin]` field is `t`.
-> +//!         t: T,
->  //!     }
->  //!     #[doc(hidden)]
->  //!     impl<'__pin, T>
-> @@ -193,7 +199,7 @@
->  //!
->  //! Here is the impl on `Bar` defining the new function:
->  //!
-> -//! ```rust
-> +//! ```rust,ignore
->  //! impl<T> Bar<T> {
->  //!     fn new(t: T) -> impl PinInit<Self> {
->  //!         pin_init!(Self { t, x: 0 })
-> @@ -203,7 +209,7 @@
->  //!
->  //! This expands to the following code:
->  //!
-> -//! ```rust
-> +//! ```rust,ignore
->  //! impl<T> Bar<T> {
->  //!     fn new(t: T) -> impl PinInit<Self> {
->  //!         {
-> @@ -232,25 +238,31 @@
->  //!                     // that will refer to this struct instead of the one defined above.
->  //!                     struct __InitOk;
->  //!                     // This is the expansion of `t,`, which is syntactic sugar for `t: t,`.
-> -//!                     unsafe { ::core::ptr::write(&raw mut (*slot).t, t) };
-> +//!                     unsafe { ::core::ptr::write(::core::addr_of_mut!((*slot).t), t) };
->  //!                     // Since initialization could fail later (not in this case, since the error
-> -//!                     // type is `Infallible`) we will need to drop this field if it fails. This
-> -//!                     // `DropGuard` will drop the field when it gets dropped and has not yet
-> -//!                     // been forgotten. We make a reference to it, so users cannot `mem::forget`
-> -//!                     // it from the initializer, since the name is the same as the field.
-> +//!                     // type is `Infallible`) we will need to drop this field if there is an
-> +//!                     // error later. This `DropGuard` will drop the field when it gets dropped
-> +//!                     // and has not yet been forgotten. We make a reference to it, so users
-> +//!                     // cannot `mem::forget` it from the initializer, since the name is the same
-> +//!                     // as the field (including hygiene).
->  //!                     let t = &unsafe {
-> -//!                         ::kernel::init::__internal::DropGuard::new(&raw mut (*slot).t)
-> +//!                         ::kernel::init::__internal::DropGuard::new(
-> +//!                             ::core::addr_of_mut!((*slot).t),
-> +//!                         )
->  //!                     };
->  //!                     // Expansion of `x: 0,`:
->  //!                     // Since this can be an arbitrary expression we cannot place it inside of
->  //!                     // the `unsafe` block, so we bind it here.
->  //!                     let x = 0;
-> -//!                     unsafe { ::core::ptr::write(&raw mut (*slot).x, x) };
-> +//!                     unsafe { ::core::ptr::write(::core::addr_of_mut!((*slot).x), x) };
-> +//!                     // We again create a `DropGuard`.
->  //!                     let x = &unsafe {
-> -//!                         ::kernel::init::__internal::DropGuard::new(&raw mut (*slot).x)
-> +//!                         ::kernel::init::__internal::DropGuard::new(
-> +//!                             ::core::addr_of_mut!((*slot).x),
-> +//!                         )
->  //!                     };
->  //!
-> -//!                     // Here we use the type checker to ensuer that every field has been
-> +//!                     // Here we use the type checker to ensure that every field has been
->  //!                     // initialized exactly once, since this is `if false` it will never get
->  //!                     // executed, but still type-checked.
->  //!                     // Additionally we abuse `slot` to automatically infer the correct type for
-> @@ -272,7 +284,7 @@
->  //!                         };
->  //!                     }
->  //!                     // Since initialization has successfully completed, we can now forget the
-> -//!                     // guards.
-> +//!                     // guards. This is not `mem::forget`, since we only have `&DropGuard`.
->  //!                     unsafe { ::kernel::init::__internal::DropGuard::forget(t) };
->  //!                     unsafe { ::kernel::init::__internal::DropGuard::forget(x) };
->  //!                 }
-> @@ -280,7 +292,7 @@
->  //!                 // `__InitOk` that we need to return.
->  //!                 Ok(__InitOk)
->  //!             });
-> -//!             // Change the return type of the closure.
-> +//!             // Change the return type from `__InitOk` to `()`.
->  //!             let init = move |slot| -> ::core::result::Result<(), ::core::convert::Infallible> {
->  //!                 init(slot).map(|__InitOk| ())
->  //!             };
-> @@ -299,7 +311,7 @@
->  //! Since we already took a look at `#[pin_data]` on `Bar`, this section will only explain the
->  //! differences/new things in the expansion of the `Foo` definition:
->  //!
-> -//! ```rust
-> +//! ```rust,ignore
->  //! #[pin_data(PinnedDrop)]
->  //! struct Foo {
->  //!     a: usize,
-> @@ -310,7 +322,7 @@
->  //!
->  //! This expands to the following code:
->  //!
-> -//! ```rust
-> +//! ```rust,ignore
->  //! struct Foo {
->  //!     a: usize,
->  //!     b: Bar<u32>,
-> @@ -330,8 +342,6 @@
->  //!         unsafe fn b<E>(
->  //!             self,
->  //!             slot: *mut Bar<u32>,
-> -//!             // Note that this is `PinInit` instead of `Init`, this is because `b` is
-> -//!             // structurally pinned, as marked by the `#[pin]` attribute.
->  //!             init: impl ::kernel::init::PinInit<Bar<u32>, E>,
->  //!         ) -> ::core::result::Result<(), E> {
->  //!             unsafe { ::kernel::init::PinInit::__pinned_init(init, slot) }
-> @@ -359,14 +369,13 @@
->  //!     struct __Unpin<'__pin> {
->  //!         __phantom_pin: ::core::marker::PhantomData<fn(&'__pin ()) -> &'__pin ()>,
->  //!         __phantom: ::core::marker::PhantomData<fn(Foo) -> Foo>,
-> -//!         // Since this field is `#[pin]`, it is listed here.
->  //!         b: Bar<u32>,
->  //!     }
->  //!     #[doc(hidden)]
->  //!     impl<'__pin> ::core::marker::Unpin for Foo where __Unpin<'__pin>: ::core::marker::Unpin {}
->  //!     // Since we specified `PinnedDrop` as the argument to `#[pin_data]`, we expect `Foo` to
->  //!     // implement `PinnedDrop`. Thus we do not need to prevent `Drop` implementations like
-> -//!     // before, instead we implement it here and delegate to `PinnedDrop`.
-> +//!     // before, instead we implement `Drop` here and delegate to `PinnedDrop`.
->  //!     impl ::core::ops::Drop for Foo {
->  //!         fn drop(&mut self) {
->  //!             // Since we are getting dropped, no one else has a reference to `self` and thus we
-> @@ -388,7 +397,7 @@
->  //!
->  //! Here is the `PinnedDrop` impl for `Foo`:
->  //!
-> -//! ```rust
-> +//! ```rust,ignore
->  //! #[pinned_drop]
->  //! impl PinnedDrop for Foo {
->  //!     fn drop(self: Pin<&mut Self>) {
-> @@ -399,7 +408,7 @@
->  //!
->  //! This expands to the following code:
->  //!
-> -//! ```rust
-> +//! ```rust,ignore
->  //! // `unsafe`, full path and the token parameter are added, everything else stays the same.
->  //! unsafe impl ::kernel::init::PinnedDrop for Foo {
->  //!     fn drop(self: Pin<&mut Self>, _: ::kernel::init::__internal::OnlyCallFromDrop) {
-> @@ -410,10 +419,10 @@
->  //!
->  //! ## `pin_init!` on `Foo`
->  //!
-> -//! Since we already took a look at `pin_init!` on `Bar`, this section will only explain the
-> -//! differences/new things in the expansion of `pin_init!` on `Foo`:
-> +//! Since we already took a look at `pin_init!` on `Bar`, this section will only show the expansion
-> +//! of `pin_init!` on `Foo`:
->  //!
-> -//! ```rust
-> +//! ```rust,ignore
->  //! let a = 42;
->  //! let initializer = pin_init!(Foo {
->  //!     a,
-> @@ -423,7 +432,7 @@
->  //!
->  //! This expands to the following code:
->  //!
-> -//! ```rust
-> +//! ```rust,ignore
->  //! let a = 42;
->  //! let initializer = {
->  //!     struct __InitOk;
-> @@ -438,13 +447,15 @@
->  //!     >(data, move |slot| {
->  //!         {
->  //!             struct __InitOk;
-> -//!             unsafe { ::core::ptr::write(&raw mut (*slot).a, a) };
-> -//!             let a = &unsafe { ::kernel::init::__internal::DropGuard::new(&raw mut (*slot).a) };
-> +//!             unsafe { ::core::ptr::write(::core::addr_of_mut!((*slot).a), a) };
-> +//!             let a = &unsafe {
-> +//!                 ::kernel::init::__internal::DropGuard::new(::core::addr_of_mut!((*slot).a))
-> +//!             };
->  //!             let b = Bar::new(36);
-> -//!             // Here we use `data` to access the correct field and require that `b` is of type
-> -//!             // `PinInit<Bar<u32>, Infallible>`.
-> -//!             unsafe { data.b(&raw mut (*slot).b, b)? };
-> -//!             let b = &unsafe { ::kernel::init::__internal::DropGuard::new(&raw mut (*slot).b) };
-> +//!             unsafe { data.b(::core::addr_of_mut!((*slot).b), b)? };
-> +//!             let b = &unsafe {
-> +//!                 ::kernel::init::__internal::DropGuard::new(::core::addr_of_mut!((*slot).b))
-> +//!             };
->  //!
->  //!             #[allow(unreachable_code, clippy::diverging_sub_expression)]
->  //!             if false {
-> --
-> 2.40.0
-> 
-> 
+Hello,
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+syzbot found the following issue on:
+
+HEAD commit:    de10553fce40 Merge tag 'x86-apic-2023-04-24' of git://git...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=14bdae68280000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=975b8311f6b96bca
+dashboard link: https://syzkaller.appspot.com/bug?extid=d692037148a8169fc9dd
+compiler:       arm-linux-gnueabi-gcc (Debian 10.2.1-6) 10.2.1 20210110, GNU ld (GNU Binutils for Debian) 2.35.2
+userspace arch: arm
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d692037148a8169fc9dd@syzkaller.appspotmail.com
+
+8<--- cut here ---
+Unable to handle kernel NULL pointer dereference at virtual address 000005fc when read
+[000005fc] *pgd=80000080004003, *pmd=00000000
+Internal error: Oops: 206 [#1] PREEMPT SMP ARM
+Modules linked in:
+CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-syzkaller #0
+Hardware name: ARM-Versatile Express
+Insufficient stack space to handle exception!
+Task stack:     [0xdf85c000..0xdf85e000]
+IRQ stack:      [0xdf804000..0xdf806000]
+Overflow stack: [0x828ae000..0x828af000]
+Internal error: kernel stack overflow: 0 [#2] PREEMPT SMP ARM
+Modules linked in:
+CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-syzkaller #0
+Hardware name: ARM-Versatile Express
+PC is at __dabt_svc+0x14/0x60 arch/arm/kernel/entry-armv.S:210
+LR is at vsnprintf+0x378/0x408 lib/vsprintf.c:2862
+pc : [<80200a74>]    lr : [<817ad5d8>]    psr: 00000193
+sp : df804028  ip : df805868  fp : df805864
+r10: 00000060  r9 : ffffffff  r8 : 00000010
+r7 : 00000020  r6 : 00000004  r5 : ffffffff  r4 : df805960
+r3 : ffffffff  r2 : 00000040  r1 : ffffffff  r0 : 8264d250
+Flags: nzcv  IRQs off  FIQs on  Mode SVC_32  ISA ARM  Segment none
+Control: 30c5387d  Table: 80003000  DAC: 00000000
+Register r0 information:
+8<--- cut here ---
+Unable to handle kernel NULL pointer dereference at virtual address 000001ff when read
+[000001ff] *pgd=80000080004003, *pmd=00000000
+Internal error: Oops: 206 [#3] PREEMPT SMP ARM
+Modules linked in:
+CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-syzkaller #0
+Hardware name: ARM-Versatile Express
+PC is at __find_vmap_area mm/vmalloc.c:841 [inline]
+PC is at find_vmap_area mm/vmalloc.c:1862 [inline]
+PC is at find_vm_area mm/vmalloc.c:2571 [inline]
+PC is at vmalloc_dump_obj+0x38/0xb4 mm/vmalloc.c:4108
+LR is at __raw_spin_lock include/linux/spinlock_api_smp.h:132 [inline]
+LR is at _raw_spin_lock+0x18/0x58 kernel/locking/spinlock.c:154
+pc : [<8046b2f0>]    lr : [<817db0f4>]    psr: 20000193
+sp : 828aeef8  ip : 828aeee0  fp : 828aef0c
+r10: 828f3980  r9 : 8241c964  r8 : 8264d41c
+r7 : 60000193  r6 : 00000001  r5 : 8264e000  r4 : 00000207
+r3 : 80216bd4  r2 : 00001d4c  r1 : 00000000  r0 : 00000001
+Flags: nzCv  IRQs off  FIQs on  Mode SVC_32  ISA ARM  Segment none
+Control: 30c5387d  Table: 80003000  DAC: 00000000
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
