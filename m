@@ -2,96 +2,102 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AB17C77B61
-	for <rust-for-linux@archiver.kernel.org>; Tue, 25 Apr 2023 20:26:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9962AC77B76
+	for <rust-for-linux@archiver.kernel.org>; Tue, 25 Apr 2023 20:28:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229978AbjDYU0f (ORCPT
+        id S232147AbjDYU25 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 25 Apr 2023 16:26:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40356 "EHLO
+        Tue, 25 Apr 2023 16:28:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229960AbjDYU0f (ORCPT
+        with ESMTP id S229960AbjDYU24 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 25 Apr 2023 16:26:35 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E19C61545E;
-        Tue, 25 Apr 2023 13:26:33 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-b99efd7c335so1903848276.0;
-        Tue, 25 Apr 2023 13:26:33 -0700 (PDT)
+        Tue, 25 Apr 2023 16:28:56 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF802D32E;
+        Tue, 25 Apr 2023 13:28:54 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-2f87c5b4635so5650596f8f.1;
+        Tue, 25 Apr 2023 13:28:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682454393; x=1685046393;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ztj/pjzcD/5i0nuLrEPO12i9eGvh86GmaKFkyefTt74=;
-        b=EMARqdV5KGNh5makMhN3X+U7H5PFRj4fYhANYm/ZPnrGWhAGdKrk0/7Y44HEYDvZ6X
-         Zwxu7YCsh+xy/sa4qeBdbMY+YVH+zNXvTLJ91B2LWlsbG83dzGrNzeTQ2B6vZQb9LPeA
-         1FjczEa5bGpNhR/p9vMsm1cixbtbpHXL3Qbbq1b/AMNm3HL+2Gtk7J43zw1s5/sGPhF8
-         x4JzgCJMy+00Elj98CvM6LFizFLq7d+LXJwaUj3Th2yUly4Q3nKuH1AQM37PwilGX9SR
-         IMiCksG1RJaPPrDApbs+mvZZumKpkrrRLYCLwIYl4nlqcz0Bsuqu1i1dKrUzcZpSo4I2
-         N+xg==
+        d=gmail.com; s=20221208; t=1682454533; x=1685046533;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z3DoJzuoAqhNjvSUCYmCLbH+X+jsvgK0x4ldD98bDkU=;
+        b=kYLBOIZlJqw0U+oVS3BBAqthHyzo2Pox3BNqe26Or2d9A0cq/xtk1zz4dpqZ840v/X
+         za/nkpFq40GvgK+ysqYcBSWXAososJPuaGrQiD+APEKvJi3L/WRKQnWmWwr8dPSCUkwr
+         l+kGRF38XY1aczDSom+ydwAYCs3p8YhJpfZlBXdhyJe57jPp/k8E7BwmghnGgkR8npM5
+         KyKD+yk1p3u2Rs1cQpuRe5sJf/KUrshxkx2uXFOT960j7bs6y85QdCOA/I5N0xHmKWUg
+         x/1pcyz0tl9Tkhs0+xkuua67GjY1ABru80Z1V572dC4gSwq7UscM5OEBtFMvXlH3EmIE
+         SxzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682454393; x=1685046393;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ztj/pjzcD/5i0nuLrEPO12i9eGvh86GmaKFkyefTt74=;
-        b=G5R2v4gvSLClTfQmFVZdltSM9e3J2K5w58aZ9bk8fXuXktMeIWSIi7dofmsQWkLBg7
-         uKpKq2qlnVARXVpnfmef5ZWpIDNZcSP0//0FanjhUjH34zvnMH/yiXoGDCt11S9F8ZGY
-         Qaj7y6eIEqDEHmWkLMsKNl2BPb/LHlqHa/7dI2ek7U/G/GQkbod6GZCRFlMzVtFGCj7k
-         tlxbg232p6E0erdpdZRJqA5DiluMhkBGMlJ11nBmx/wTojNj6ZgFES9d9sWppCOQJfsK
-         nwL8vC+V3+jrQdVAqjprZ77OJ4+k5rrxBtiuyUPbYaTeSlKG5yaKu+aQctV0g5tV2GHy
-         zOmA==
-X-Gm-Message-State: AAQBX9fP/ibMabYqSzhfmFV7HRPvm9+cu4vvh6ahiBePWcdnTgwqH31w
-        EJ23OrN8DNIVHPKLrEWlx1+DMhASgQp7xFyh0Sg=
-X-Google-Smtp-Source: AKy350byuGUcUfM0yyAPQOM13tZ/8PRD5a6HcKoz6ElVQuJl6zAzfUzJ1JfepnyHFSv8XSePV5W8VMC+7272cDwyRl0=
-X-Received: by 2002:a25:5057:0:b0:b92:3edc:d4f0 with SMTP id
- e84-20020a255057000000b00b923edcd4f0mr14082369ybb.20.1682454393112; Tue, 25
- Apr 2023 13:26:33 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1682454533; x=1685046533;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z3DoJzuoAqhNjvSUCYmCLbH+X+jsvgK0x4ldD98bDkU=;
+        b=TKBlHm7qTI2Wt3WEeP+IHVRstR10IZk7gtJbUyGnfyNgvWNghqQQg3KLWd3vNFfBOt
+         G5Y+MwL2D1wcGohIQ5GTbAdOS6fZibmmjgWxnY8PJfJcQTzUnfQEiJCxAXd+zWGWUyT7
+         tRc9emJQIwn8YqeAmxSJ7bC6pAoBT2EBDxVIFcUXFuY3+31+aVKT9WoDukkXfvun8Vd/
+         lOQPnen3dMs7dAMBMP3VvEQc6Bs7KC/izXDaa/hw8+9moAcosVuXY6ANhga/6LXxOAVG
+         /x7sXXLaS/WMnFxAIvW+VjZARUO+0g5MlFuy4Z19g3shYzcCx+D9OBJZZCsf7neJKCEe
+         /vNw==
+X-Gm-Message-State: AAQBX9dLj23PKG2jNg4i3+tBg3xERBl+rB1j+Pvm/BB1d+9W3hW4OqYu
+        rhNi8rGM+Ktk1LacBVK8YBy8o70FLUrNYA==
+X-Google-Smtp-Source: AKy350avUsK0YErj5DEfepD4jutOZ3V2aIOx3oyFKD7KwQRuKOb4H3ntrx/co0bZ1dbFzIgat+wtbA==
+X-Received: by 2002:adf:e952:0:b0:2cf:e74f:2957 with SMTP id m18-20020adfe952000000b002cfe74f2957mr13495464wrn.33.1682454532774;
+        Tue, 25 Apr 2023 13:28:52 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:2f0e:c07:300:175c:44ef:f037:8f88])
+        by smtp.gmail.com with ESMTPSA id m6-20020a5d6246000000b002feea065cc9sm13795739wrv.111.2023.04.25.13.28.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Apr 2023 13:28:52 -0700 (PDT)
+From:   Ariel Miculas <ariel.miculas@gmail.com>
+X-Google-Original-From: Ariel Miculas <amiculas@cisco.com>
+To:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+        boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+        benno.lossin@proton.me
+Cc:     Ariel Miculas <amiculas@cisco.com>
+Subject: [PATCH] rust: Sort rust/helpers.c's #include directives
+Date:   Tue, 25 Apr 2023 23:28:48 +0300
+Message-Id: <20230425202848.261139-1-amiculas@cisco.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-References: <00000000000079eebe05fa2ea9ad@google.com>
-In-Reply-To: <00000000000079eebe05fa2ea9ad@google.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 25 Apr 2023 22:26:22 +0200
-Message-ID: <CANiq72mor1BkxpAT=v0EsQJN-7fvMjo9K5ooVk1x7ZbBDEyn8g@mail.gmail.com>
-Subject: Re: [syzbot] upstream boot error: BUG: unable to handle kernel NULL
- pointer dereference in __dabt_svc
-To:     syzkaller@googlegroups.com
-Cc:     alex.gaynor@gmail.com, andriy.shevchenko@linux.intel.com,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
-        bpf@vger.kernel.org, gary@garyguo.net,
-        linux-kernel@vger.kernel.org, linux@rasmusvillemoes.dk,
-        ojeda@kernel.org, pmladek@suse.com, rostedt@goodmis.org,
-        rust-for-linux@vger.kernel.org, senozhatsky@chromium.org,
-        syzkaller-bugs@googlegroups.com, wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi syzbot engineers,
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1003
+Signed-off-by: Ariel Miculas <amiculas@cisco.com>
+---
+ rust/helpers.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-On Tue, Apr 25, 2023 at 10:06=E2=80=AFPM syzbot
-<syzbot+d692037148a8169fc9dd@syzkaller.appspotmail.com> wrote:
->
-> HEAD commit:    de10553fce40 Merge tag 'x86-apic-2023-04-24' of git://git=
-...
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=3D14bdae6828000=
-0
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D975b8311f6b96=
-bca
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3Dd692037148a8169=
-fc9dd
-> compiler:       arm-linux-gnueabi-gcc (Debian 10.2.1-6) 10.2.1 20210110, =
-GNU ld (GNU Binutils for Debian) 2.35.2
-> userspace arch: arm
+diff --git a/rust/helpers.c b/rust/helpers.c
+index 81e80261d597..59a23b1647fb 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -18,13 +18,17 @@
+  * accidentally exposed.
+  */
+ 
++/*
++ * Sorted alphabetically.
++ */
++
+ #include <linux/bug.h>
+ #include <linux/build_bug.h>
+ #include <linux/err.h>
+-#include <linux/refcount.h>
+ #include <linux/mutex.h>
+-#include <linux/spinlock.h>
++#include <linux/refcount.h>
+ #include <linux/sched/signal.h>
++#include <linux/spinlock.h>
+ #include <linux/wait.h>
+ 
+ __noreturn void rust_helper_BUG(void)
+-- 
+2.40.0
 
-I am not sure what triggered the bot to consider Rust here -- the
-config does not enable it.
-
-What am I missing?
-
-Cheers,
-Miguel
