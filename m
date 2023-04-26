@@ -2,105 +2,127 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54734C7618E
-	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 06:34:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67CA7C77B60
+	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 06:40:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230435AbjDZGeW (ORCPT
+        id S239483AbjDZGkp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 26 Apr 2023 02:34:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51818 "EHLO
+        Wed, 26 Apr 2023 02:40:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239024AbjDZGeW (ORCPT
+        with ESMTP id S234101AbjDZGko (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 26 Apr 2023 02:34:22 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5262526A5
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Apr 2023 23:34:20 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-4efea87c578so7068e87.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Apr 2023 23:34:20 -0700 (PDT)
+        Wed, 26 Apr 2023 02:40:44 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FDC126AD
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Apr 2023 23:40:38 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4efd5e4d302so7112e87.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Apr 2023 23:40:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1682490858; x=1685082858;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XekK5PekC7GoeZPCg+JQ/nn8VHa69nWLh19xCdeTJX8=;
-        b=tNobsBe8wdLBadc9rDYBW9mMu9SV1Pa4ANSSxEBEcmKyXI5i9RZTFE2JLVFX2djq3M
-         /fVF1Gih5smO/7k+3WrWaZg7nIUyDHQsOkAMRclD6F7wR4W9xj9qg+Fi5D4yqH2PSVUg
-         zRypLAW3/GVV2HdQk3Zo6oeK9ZrLiPB6V7aSDXYEMXfJ3QqrgyxavVT/Y8gfh6L4UQUu
-         477lIryfWrqBaJxGZ3CjaK6IFAXTek82lKqy51o9MVPJOIcyLb7SgCnq4Uk25Kg0z9ho
-         FOn+1/cwleiYiDUrNkiOtSsVctAV5OOOIJdpYttNgOQ2x36nPx40HPtAO4KXAuDERZt1
-         nMsQ==
+        d=google.com; s=20221208; t=1682491237; x=1685083237;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=26EaJCB4BLLjpmwn+UJgLwabpmkPDEPq9rinV+1slYg=;
+        b=VDIVNx8LrwzttePAvdnXS2sDN2anEP+SmBVydC+gTIck5cs4NM01wEgckxFMBH/8DB
+         Fj29SrK1x8MLN7v/rA5mQg5Z7ai9GdF/tuYZpKTkAI77zFORov6oyciyadm1vr4xipxM
+         n3lY1Dbh0xQ/asAgJJMz3gzsb1oFS2/5DAoftRk3WUOfPehnCVlh0vc9LeOvzWC9Rd6C
+         nLX81wAUVKYDjTRmapCXJZjDjvhh1kYV67j4tsJJn5m+CaiwKrThuufoKGxnsnjSyTZ8
+         yWH8uUpOy850MNsLVVOCzlwBYW+awdFfPQYzAOUeWf90+uvCsErqJ9gISEvLcHf0bsNJ
+         ZepQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682490858; x=1685082858;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XekK5PekC7GoeZPCg+JQ/nn8VHa69nWLh19xCdeTJX8=;
-        b=JrXxy3WNuJ7rlB+W8WtVGZF6OFwG7al8LTfuLM69lsnAMXZEDW5fb0uf+l50uo0efw
-         KMfp5IWvMpOLeAOcjq9F9bx0zF/4pt7MfXWqqmgAWOWPugBDLFkQ0vJ6hfOt/ULHdBk9
-         tBn15KWjfmDgVLN/GkLslIKx8VJzDtZ0ZqQpYpE+WB6K3clLeGuhNPFsWiKtShIG1ztd
-         pw7tX15RXw8ChUeJ7+eX0Styq3FjtJB10jwSnU95bEnkkkJxpoQJNbv5FKAO8ESNemqA
-         FbqKc24NAX7Do+Ib+8NxkX/mxIBCtAyztwqV+pAXwq4GdSpGCoJptf9sTMQlWLSZPQVA
-         F+Bg==
-X-Gm-Message-State: AC+VfDx939PcGzlaZ6BwonR3LkV/xPyPXjKAXjV00yOhXHGCnxAwS+n4
-        Lv5uuKmHP3ZXXN2WqS0dGJKv7doEEKizdp/bmq+chg==
-X-Google-Smtp-Source: ACHHUZ5a3/l9GMjyHQhJHM3/n5Wle1SDQKtgzHRC2aZgoZGtyH4dB5Vj7wN0dpP43pA24oEUaBPjG0HUmgIGEYHDH8M=
-X-Received: by 2002:a05:6512:3c8b:b0:4e8:5117:71ae with SMTP id
- h11-20020a0565123c8b00b004e8511771aemr80332lfv.3.1682490858408; Tue, 25 Apr
- 2023 23:34:18 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1682491237; x=1685083237;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=26EaJCB4BLLjpmwn+UJgLwabpmkPDEPq9rinV+1slYg=;
+        b=F5QunlpsNmfqEzO4WMiErE2RennefG/carryVM8LpRusxLgw2SBnuARIJeCv3mCfvJ
+         Tne/+w9CcOsGcJdFA3r9A6q0HevtQ2vCTGOA7U5E92JjlCwAB0CJ2xeZqAVmZAFax2zp
+         XAtipshYyBH14MSBOI/Rc0JpR9zw1OgDhi2k5O2AC+w6NNynzuhWdN5tBSarnphfguon
+         mh7W+tUzaTnLQDN6o7Lz0TGaf0NT46/w5HFCGvJFXn3X+R0VPZbMJoPL9ysDrGS68t+l
+         bxI8xAZ+UkGfrXbUvJ+jO5rW58HQq3dNBF76Z+ihr+df/kEM71oXX1vym80kwnwYQmyD
+         5sdQ==
+X-Gm-Message-State: AC+VfDwwgZQxFQGsTmS2fCiBxHAAXrSrA7rt4kbo7GCBvOclK+but20N
+        syMemu3bPdO3xpvB2daSeuHJfAPI78GccZ5PVmzp+A==
+X-Google-Smtp-Source: ACHHUZ5cVNzl395xaBLbIB0gf8rLCrYPuaZPJN0WZn147Mwa5s1vko3C35Ob71ekGdCqtq/gzHms8ZpADoD8xdj8JKI=
+X-Received: by 2002:a05:6512:4023:b0:4ea:e5e2:c893 with SMTP id
+ br35-20020a056512402300b004eae5e2c893mr65339lfb.1.1682491236524; Tue, 25 Apr
+ 2023 23:40:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <00000000000079eebe05fa2ea9ad@google.com> <CANiq72mor1BkxpAT=v0EsQJN-7fvMjo9K5ooVk1x7ZbBDEyn8g@mail.gmail.com>
-In-Reply-To: <CANiq72mor1BkxpAT=v0EsQJN-7fvMjo9K5ooVk1x7ZbBDEyn8g@mail.gmail.com>
+References: <00000000000079eebe05fa2ea9ad@google.com> <20230426044928.GD1496740@google.com>
+In-Reply-To: <20230426044928.GD1496740@google.com>
 From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Wed, 26 Apr 2023 08:34:05 +0200
-Message-ID: <CACT4Y+aMdct_tjSYsBvvtGoDji6feOiANogRbp3N41qkzU+5CQ@mail.gmail.com>
+Date:   Wed, 26 Apr 2023 08:40:23 +0200
+Message-ID: <CACT4Y+bJQOYV4_VumkrwobDio8CH-oqT2Wuo4Gzz2+BkX6tqzA@mail.gmail.com>
 Subject: Re: [syzbot] upstream boot error: BUG: unable to handle kernel NULL
  pointer dereference in __dabt_svc
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     syzkaller@googlegroups.com, alex.gaynor@gmail.com,
-        andriy.shevchenko@linux.intel.com, bjorn3_gh@protonmail.com,
-        boqun.feng@gmail.com, bpf@vger.kernel.org, gary@garyguo.net,
+To:     Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc:     syzbot <syzbot+d692037148a8169fc9dd@syzkaller.appspotmail.com>,
+        alex.gaynor@gmail.com, andriy.shevchenko@linux.intel.com,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
+        bpf@vger.kernel.org, gary@garyguo.net,
         linux-kernel@vger.kernel.org, linux@rasmusvillemoes.dk,
         ojeda@kernel.org, pmladek@suse.com, rostedt@goodmis.org,
-        rust-for-linux@vger.kernel.org, senozhatsky@chromium.org,
-        syzkaller-bugs@googlegroups.com, wedsonaf@gmail.com
+        rust-for-linux@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+        wedsonaf@gmail.com,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, 25 Apr 2023 at 23:36, Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Wed, 26 Apr 2023 at 06:49, Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
 >
-> Hi syzbot engineers,
+> On (23/04/25 13:06), syzbot wrote:
+> > 8<--- cut here ---
+> > Unable to handle kernel NULL pointer dereference at virtual address 000005fc when read
+> > [000005fc] *pgd=80000080004003, *pmd=00000000
+> > Internal error: Oops: 206 [#1] PREEMPT SMP ARM
+> > Modules linked in:
+> > CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-syzkaller #0
+> > Hardware name: ARM-Versatile Express
 >
-> On Tue, Apr 25, 2023 at 10:06=E2=80=AFPM syzbot
-> <syzbot+d692037148a8169fc9dd@syzkaller.appspotmail.com> wrote:
-> >
-> > HEAD commit:    de10553fce40 Merge tag 'x86-apic-2023-04-24' of git://g=
-it...
-> > git tree:       upstream
-> > console output: https://syzkaller.appspot.com/x/log.txt?x=3D14bdae68280=
-000
-> > kernel config:  https://syzkaller.appspot.com/x/.config?x=3D975b8311f6b=
-96bca
-> > dashboard link: https://syzkaller.appspot.com/bug?extid=3Dd692037148a81=
-69fc9dd
-> > compiler:       arm-linux-gnueabi-gcc (Debian 10.2.1-6) 10.2.1 20210110=
-, GNU ld (GNU Binutils for Debian) 2.35.2
-> > userspace arch: arm
+> > Insufficient stack space to handle exception!
 >
-> I am not sure what triggered the bot to consider Rust here -- the
-> config does not enable it.
+> So much stuff is going on there.
 >
-> What am I missing?
+> > Task stack:     [0xdf85c000..0xdf85e000]
+> > IRQ stack:      [0xdf804000..0xdf806000]
+> > Overflow stack: [0x828ae000..0x828af000]
+> > Internal error: kernel stack overflow: 0 [#2] PREEMPT SMP ARM
+> > Modules linked in:
+> > CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-syzkaller #0
+> > Hardware name: ARM-Versatile Express
+> > PC is at __dabt_svc+0x14/0x60 arch/arm/kernel/entry-armv.S:210
+> > LR is at vsnprintf+0x378/0x408 lib/vsprintf.c:2862
+> > pc : [<80200a74>]    lr : [<817ad5d8>]    psr: 00000193
+> > sp : df804028  ip : df805868  fp : df805864
+> > r10: 00000060  r9 : ffffffff  r8 : 00000010
+> > r7 : 00000020  r6 : 00000004  r5 : ffffffff  r4 : df805960
+> > r3 : ffffffff  r2 : 00000040  r1 : ffffffff  r0 : 8264d250
+> > Flags: nzcv  IRQs off  FIQs on  Mode SVC_32  ISA ARM  Segment none
+> > Control: 30c5387d  Table: 80003000  DAC: 00000000
+> > Register r0 information:
+> > 8<--- cut here ---
+> > Unable to handle kernel NULL pointer dereference at virtual address 000001ff when read
+> > [000001ff] *pgd=80000080004003, *pmd=00000000
+> > Internal error: Oops: 206 [#3] PREEMPT SMP ARM
+> > Modules linked in:
+> > CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-syzkaller #0
+> > Hardware name: ARM-Versatile Express
+> > PC is at __find_vmap_area mm/vmalloc.c:841 [inline]
+> > PC is at find_vmap_area mm/vmalloc.c:1862 [inline]
+> > PC is at find_vm_area mm/vmalloc.c:2571 [inline]
+> > PC is at vmalloc_dump_obj+0x38/0xb4 mm/vmalloc.c:4108
+> > LR is at __raw_spin_lock include/linux/spinlock_api_smp.h:132 [inline]
+> > LR is at _raw_spin_lock+0x18/0x58 kernel/locking/spinlock.c:154
+>
+> Not sure if I can make sense out of this.
 
-Hi Miguel,
++linux-arm-kernel@
 
-The crash is in lib/vsprintf.c and:
-
-$ scripts/get_maintainer.pl -f lib/vsprintf.c
-...
-rust-for-linux@vger.kernel.org (open list:RUST)
-...
+I suspect this is some recent arch/arm related corruption.
+There are also these similar boot crashes that started happening at
+roughly the same time:
+https://syzkaller.appspot.com/bug?id=4d697346183db2f86ba2f76acb7d66e7731f88df
+https://syzkaller.appspot.com/bug?id=dcd98d67539fe4d0d28d2e655e510569eda6f4de
