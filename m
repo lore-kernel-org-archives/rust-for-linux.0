@@ -2,127 +2,108 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67CA7C77B60
-	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 06:40:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DD40C77B60
+	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 08:15:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239483AbjDZGkp (ORCPT
+        id S239875AbjDZIO7 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 26 Apr 2023 02:40:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55610 "EHLO
+        Wed, 26 Apr 2023 04:14:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234101AbjDZGko (ORCPT
+        with ESMTP id S240097AbjDZIOr (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 26 Apr 2023 02:40:44 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FDC126AD
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Apr 2023 23:40:38 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4efd5e4d302so7112e87.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Apr 2023 23:40:38 -0700 (PDT)
+        Wed, 26 Apr 2023 04:14:47 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9511010F8;
+        Wed, 26 Apr 2023 01:14:46 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-504eb1155d3so50844008a12.1;
+        Wed, 26 Apr 2023 01:14:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1682491237; x=1685083237;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=26EaJCB4BLLjpmwn+UJgLwabpmkPDEPq9rinV+1slYg=;
-        b=VDIVNx8LrwzttePAvdnXS2sDN2anEP+SmBVydC+gTIck5cs4NM01wEgckxFMBH/8DB
-         Fj29SrK1x8MLN7v/rA5mQg5Z7ai9GdF/tuYZpKTkAI77zFORov6oyciyadm1vr4xipxM
-         n3lY1Dbh0xQ/asAgJJMz3gzsb1oFS2/5DAoftRk3WUOfPehnCVlh0vc9LeOvzWC9Rd6C
-         nLX81wAUVKYDjTRmapCXJZjDjvhh1kYV67j4tsJJn5m+CaiwKrThuufoKGxnsnjSyTZ8
-         yWH8uUpOy850MNsLVVOCzlwBYW+awdFfPQYzAOUeWf90+uvCsErqJ9gISEvLcHf0bsNJ
-         ZepQ==
+        d=gmail.com; s=20221208; t=1682496884; x=1685088884;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hPHglsVUSyVNHBx390LARMYYSXfZEHD/f4PadDVbYcU=;
+        b=EeoNuAEcf2hhG/SwOGenpr6F1p5OHWgy1xltdtaneBsVTMX+a69xyKUj/BkIkN/j37
+         bJcSROx816NyF5j8gM3zeRgjm3NSgs3cyBmeBJPwHqz+BiJfb/xOg6/8L873+0s9fD62
+         ihgbvXTeI6vK1bnPLH1hcscIzf8/bo8N3alkHh/vdugZDo5DCYlSp9+XFmhbHwagND/R
+         fXX7/stY8rRicHX3qWPCXqcTGxB0L4vWk5mPZidUXNzpJr5bK8+6wJ74r4J/daCqKfbE
+         6R0Ij8duEQcpUAIpRV5bYHCQ9rXqQzYyuoldDVpm7ZEzdrms4NFhTsKsq5I1pTz+wz8W
+         3FhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682491237; x=1685083237;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=26EaJCB4BLLjpmwn+UJgLwabpmkPDEPq9rinV+1slYg=;
-        b=F5QunlpsNmfqEzO4WMiErE2RennefG/carryVM8LpRusxLgw2SBnuARIJeCv3mCfvJ
-         Tne/+w9CcOsGcJdFA3r9A6q0HevtQ2vCTGOA7U5E92JjlCwAB0CJ2xeZqAVmZAFax2zp
-         XAtipshYyBH14MSBOI/Rc0JpR9zw1OgDhi2k5O2AC+w6NNynzuhWdN5tBSarnphfguon
-         mh7W+tUzaTnLQDN6o7Lz0TGaf0NT46/w5HFCGvJFXn3X+R0VPZbMJoPL9ysDrGS68t+l
-         bxI8xAZ+UkGfrXbUvJ+jO5rW58HQq3dNBF76Z+ihr+df/kEM71oXX1vym80kwnwYQmyD
-         5sdQ==
-X-Gm-Message-State: AC+VfDwwgZQxFQGsTmS2fCiBxHAAXrSrA7rt4kbo7GCBvOclK+but20N
-        syMemu3bPdO3xpvB2daSeuHJfAPI78GccZ5PVmzp+A==
-X-Google-Smtp-Source: ACHHUZ5cVNzl395xaBLbIB0gf8rLCrYPuaZPJN0WZn147Mwa5s1vko3C35Ob71ekGdCqtq/gzHms8ZpADoD8xdj8JKI=
-X-Received: by 2002:a05:6512:4023:b0:4ea:e5e2:c893 with SMTP id
- br35-20020a056512402300b004eae5e2c893mr65339lfb.1.1682491236524; Tue, 25 Apr
- 2023 23:40:36 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1682496884; x=1685088884;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hPHglsVUSyVNHBx390LARMYYSXfZEHD/f4PadDVbYcU=;
+        b=JGxZBzbEegIGQ320xJr8ryydVmcSuB1b2yWWd12GNdi76xvw7wlHZP8hBMrxV+A6ue
+         zY3MNwsefsS4H3cViZzZSpdbPtNOVDV6JvwlkxmLLr5rE7u3L+MThTOXi03Q/nHDiTJr
+         Z26T6hLSNSmXe4PpQvu+/kKkf00NX75vgM01DkO8ovY6d5/AVxVcLAvTyrxwR5uKg3r0
+         2LyGsFEQOdHhAQuDEYnAwdvjvzLw5DK86DR9/QabQl9wesVocKpaAB8W2UMPO6ruYf5U
+         bvxTRXsRu5Cx7e8Uq/DsoYUV7BB6fshqs/RN7t9A9FosffTlsHsCBxS3GEJoZZ3mQMi/
+         sMwA==
+X-Gm-Message-State: AC+VfDzTOEc+HBisyi4B9PjN/GCoNQDcRGdXPE+4kUEkegEVqXofPNVC
+        WBUCZN5ArRrkkI1Ytc+LyGUDMp7s0VrAMkR+
+X-Google-Smtp-Source: ACHHUZ5ifaUF9TCr2CIibnbLYrCjMciYkU+k8zKlZavuwFG1FgAA3/ED3ElVlVsWDW3+HPfbxfIA2A==
+X-Received: by 2002:a17:906:198:b0:94e:cfd0:ed9f with SMTP id 24-20020a170906019800b0094ecfd0ed9fmr1409547ejb.26.1682496884403;
+        Wed, 26 Apr 2023 01:14:44 -0700 (PDT)
+Received: from archlinux-cisco.cisco.com ([2001:420:c0c0:1004::3c7])
+        by smtp.gmail.com with ESMTPSA id h13-20020a170906718d00b0095386574c81sm7872609ejk.51.2023.04.26.01.14.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Apr 2023 01:14:43 -0700 (PDT)
+From:   Ariel Miculas <ariel.miculas@gmail.com>
+X-Google-Original-From: Ariel Miculas <amiculas@cisco.com>
+To:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+        boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+        benno.lossin@proton.me
+Cc:     Ariel Miculas <amiculas@cisco.com>
+Subject: [PATCH] rust: Sort rust/helpers.c's #include directives
+Date:   Wed, 26 Apr 2023 11:13:54 +0300
+Message-Id: <20230426081354.38922-1-amiculas@cisco.com>
+X-Mailer: git-send-email 2.40.0
+In-Reply-To: <CANiq72kXa-SgRiVhvjU7X4fa8XSJB4po9xf_V4L6Gn2o+t6T+Q@mail.gmail.com>
+References: <CANiq72kXa-SgRiVhvjU7X4fa8XSJB4po9xf_V4L6Gn2o+t6T+Q@mail.gmail.com>
 MIME-Version: 1.0
-References: <00000000000079eebe05fa2ea9ad@google.com> <20230426044928.GD1496740@google.com>
-In-Reply-To: <20230426044928.GD1496740@google.com>
-From:   Dmitry Vyukov <dvyukov@google.com>
-Date:   Wed, 26 Apr 2023 08:40:23 +0200
-Message-ID: <CACT4Y+bJQOYV4_VumkrwobDio8CH-oqT2Wuo4Gzz2+BkX6tqzA@mail.gmail.com>
-Subject: Re: [syzbot] upstream boot error: BUG: unable to handle kernel NULL
- pointer dereference in __dabt_svc
-To:     Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc:     syzbot <syzbot+d692037148a8169fc9dd@syzkaller.appspotmail.com>,
-        alex.gaynor@gmail.com, andriy.shevchenko@linux.intel.com,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
-        bpf@vger.kernel.org, gary@garyguo.net,
-        linux-kernel@vger.kernel.org, linux@rasmusvillemoes.dk,
-        ojeda@kernel.org, pmladek@suse.com, rostedt@goodmis.org,
-        rust-for-linux@vger.kernel.org, syzkaller-bugs@googlegroups.com,
-        wedsonaf@gmail.com,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, 26 Apr 2023 at 06:49, Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> On (23/04/25 13:06), syzbot wrote:
-> > 8<--- cut here ---
-> > Unable to handle kernel NULL pointer dereference at virtual address 000005fc when read
-> > [000005fc] *pgd=80000080004003, *pmd=00000000
-> > Internal error: Oops: 206 [#1] PREEMPT SMP ARM
-> > Modules linked in:
-> > CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-syzkaller #0
-> > Hardware name: ARM-Versatile Express
->
-> > Insufficient stack space to handle exception!
->
-> So much stuff is going on there.
->
-> > Task stack:     [0xdf85c000..0xdf85e000]
-> > IRQ stack:      [0xdf804000..0xdf806000]
-> > Overflow stack: [0x828ae000..0x828af000]
-> > Internal error: kernel stack overflow: 0 [#2] PREEMPT SMP ARM
-> > Modules linked in:
-> > CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-syzkaller #0
-> > Hardware name: ARM-Versatile Express
-> > PC is at __dabt_svc+0x14/0x60 arch/arm/kernel/entry-armv.S:210
-> > LR is at vsnprintf+0x378/0x408 lib/vsprintf.c:2862
-> > pc : [<80200a74>]    lr : [<817ad5d8>]    psr: 00000193
-> > sp : df804028  ip : df805868  fp : df805864
-> > r10: 00000060  r9 : ffffffff  r8 : 00000010
-> > r7 : 00000020  r6 : 00000004  r5 : ffffffff  r4 : df805960
-> > r3 : ffffffff  r2 : 00000040  r1 : ffffffff  r0 : 8264d250
-> > Flags: nzcv  IRQs off  FIQs on  Mode SVC_32  ISA ARM  Segment none
-> > Control: 30c5387d  Table: 80003000  DAC: 00000000
-> > Register r0 information:
-> > 8<--- cut here ---
-> > Unable to handle kernel NULL pointer dereference at virtual address 000001ff when read
-> > [000001ff] *pgd=80000080004003, *pmd=00000000
-> > Internal error: Oops: 206 [#3] PREEMPT SMP ARM
-> > Modules linked in:
-> > CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-syzkaller #0
-> > Hardware name: ARM-Versatile Express
-> > PC is at __find_vmap_area mm/vmalloc.c:841 [inline]
-> > PC is at find_vmap_area mm/vmalloc.c:1862 [inline]
-> > PC is at find_vm_area mm/vmalloc.c:2571 [inline]
-> > PC is at vmalloc_dump_obj+0x38/0xb4 mm/vmalloc.c:4108
-> > LR is at __raw_spin_lock include/linux/spinlock_api_smp.h:132 [inline]
-> > LR is at _raw_spin_lock+0x18/0x58 kernel/locking/spinlock.c:154
->
-> Not sure if I can make sense out of this.
+Sort the #include directives of rust/helpers.c alphabetically and add a
+comment specifying this.
 
-+linux-arm-kernel@
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1003
+Signed-off-by: Ariel Miculas <amiculas@cisco.com>
+---
+ rust/helpers.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-I suspect this is some recent arch/arm related corruption.
-There are also these similar boot crashes that started happening at
-roughly the same time:
-https://syzkaller.appspot.com/bug?id=4d697346183db2f86ba2f76acb7d66e7731f88df
-https://syzkaller.appspot.com/bug?id=dcd98d67539fe4d0d28d2e655e510569eda6f4de
+diff --git a/rust/helpers.c b/rust/helpers.c
+index 81e80261d597..73c01db0c828 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -16,15 +16,17 @@
+  *
+  * All symbols are exported as GPL-only to guarantee no GPL-only feature is
+  * accidentally exposed.
++ *
++ * Sorted alphabetically.
+  */
+ 
+ #include <linux/bug.h>
+ #include <linux/build_bug.h>
+ #include <linux/err.h>
+-#include <linux/refcount.h>
+ #include <linux/mutex.h>
+-#include <linux/spinlock.h>
++#include <linux/refcount.h>
+ #include <linux/sched/signal.h>
++#include <linux/spinlock.h>
+ #include <linux/wait.h>
+ 
+ __noreturn void rust_helper_BUG(void)
+-- 
+2.40.0
+
