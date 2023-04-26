@@ -2,95 +2,89 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B76F4C7618E
-	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 21:04:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27F42C7618E
+	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 21:28:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239755AbjDZVEl (ORCPT
+        id S233825AbjDZV2a (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 26 Apr 2023 17:04:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40158 "EHLO
+        Wed, 26 Apr 2023 17:28:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236145AbjDZVEk (ORCPT
+        with ESMTP id S232195AbjDZV23 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 26 Apr 2023 17:04:40 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55D971FCE;
-        Wed, 26 Apr 2023 14:04:38 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4efd6e26585so6071359e87.1;
-        Wed, 26 Apr 2023 14:04:38 -0700 (PDT)
+        Wed, 26 Apr 2023 17:28:29 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AFE4E76;
+        Wed, 26 Apr 2023 14:28:28 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-b99f0a0052fso4230819276.3;
+        Wed, 26 Apr 2023 14:28:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682543076; x=1685135076;
+        d=gmail.com; s=20221208; t=1682544507; x=1685136507;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oXn3Qe0ODKJu31q9zPWv7Wmykn21fz2cAXCa+pUXVoQ=;
-        b=WnwgJNi1yxyfEGQQ7qnDBXMXxYlhc8kk5doJj1MFlZFUlWsGR2kSYlR5qtAwGj67XS
-         d0bGeQ27Ipo9petOd1HfqmvSDBdeOziOKvuaG4EyeziQwGwwNPqQ75MCII+4xJ/67Vdc
-         /h3jCMETSFWSoPzuDdYpmhY+XzZf3VpDCsIMKxPr7RJtsE4s3i+rzqSkWxePwPa/9Hsr
-         ZD/ZlB/sS7YhP7CByBEAk5qBcTFNFYqLv047rh91xUGNDJ46Tr9WwgcIMJh4I6CXsLNA
-         nyfL5tFLdk9apvjT6z02eHwBCjRYhCKJsjFFPa9c3b4EEMQDo/Y0yfiSAZqdUGPOsrGw
-         ICVA==
+        bh=csnG/aChZgPBgsRf67ljm6apadApqU0JoShp+C1rCfY=;
+        b=AcqzPNAqbFwr3Zd1l7i8Gdo2WXhAjJOUyP/djgqVYxwTr93FMPuUVNiGqC98ALD4Ni
+         pPYVt63Trvd1j4Eq39POj+cyJ5CzJIAIruMDpJ8FANdkfjVXJfF/xrRvSjIstqv5Ez6c
+         46p+/cu4pa9826QPY4C3rMo2DH2YmwUgE482Dt45CGy/OahCBX/KWjt9Qf3JOM8eFGAD
+         142UloN2xOLVPy/BUfi5p0XzYyXtJrFqRhhlVvjMNjVygxNITb0m1tN+qdF7Yr4HcZnL
+         sFPhRDqsYQdGcJWTOYP4rxbsTr8MiKwkereb5cAECm+mohK6EBpEkD6mLJv2CcHIEA33
+         c2Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682543076; x=1685135076;
+        d=1e100.net; s=20221208; t=1682544507; x=1685136507;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oXn3Qe0ODKJu31q9zPWv7Wmykn21fz2cAXCa+pUXVoQ=;
-        b=Zqg6vrdE1wLlpE6bbsmckS9K5+oCVpRfe6vyhuwaU0IGiNkuh/ryWDyN8YjHluaDad
-         p5hDH7Q9fcy3osS2YjiMDrndQ1JfJODoQGinHZ2ikSt//sEzDZBesi+bGPc6GyD8A6AF
-         wfYe3yZYmiZUeu1SxHor/ltUEWdB61kKFWOz5RyE2NWXr8z4XCy8jIUDU+jefhfqHb02
-         j8eyZaPm9YyRVirW+gjsfq9DLDLat8l2iB7n+9FZjCYhHUNNBXFT2QMdDgVTDtuuOEUP
-         apVT3mHDYRj7PFri1ED1lygsr8rveIxSqhbKkJtjo/Wm7C3Px0zXBMuWzini1FFw40Q7
-         UflA==
-X-Gm-Message-State: AAQBX9ezNU6JVW99i5x3VFZfOgzW58SJ5e+fMyQvXonZTlAniW75tKp9
-        fMxoh1K1yA8zI6BhVPhkvzYRu5eYALda8uKhzhxIpxBC6SONypXC
-X-Google-Smtp-Source: AKy350bEaJOLX5xin8Kf5h/5gskz1USLtiV6Ugoxug3gasB+LEYv4sfOOeIFzjf0V7VqbXJzqiwVooke9iDP4Wnxa/4=
-X-Received: by 2002:ac2:4904:0:b0:4ec:9e40:e445 with SMTP id
- n4-20020ac24904000000b004ec9e40e445mr6631940lfi.19.1682543076324; Wed, 26 Apr
- 2023 14:04:36 -0700 (PDT)
+        bh=csnG/aChZgPBgsRf67ljm6apadApqU0JoShp+C1rCfY=;
+        b=Mt2d7mHzNrsL6B+j7cXBw+mbEorQXfQAMfFP7wRz+EpEIFTcyzVJvL7Byp2iJ5degZ
+         Me8JdaEvsPM3b070wkrzj8xyvy5e4uYQPCB1fpiIHOiXCBGWRzCIJ2np/xoGt9c5iC2y
+         EFl9Ut7DbphNih37zu1WwJskHnHyr83bNQXXJZIgqg3jp4lH0yuIPIKV2mT36sDwEq/2
+         SNgRSwD+l2kCDkyb5aXtMElQlIvqmc2ogT6tIBVWI3CDOizODhg+N7RfxwGAGC/yCCOh
+         3SmfDz/QAU6q7TRB0v0VUYGkYVbfpJRMkOVLV+xMgFONyBaxc8c36Q2WWE2W3W9Rn3VI
+         o4vA==
+X-Gm-Message-State: AAQBX9dJUXH/JxzYUvc4eXUn+Cg1H67qn6suFft+3uuzIsfbBI1iJhS0
+        pltOnk7egpQPrHUdYKbv56fjPcRBdKvbui88nkM=
+X-Google-Smtp-Source: AKy350Y+eCrQTpMQt+hqdrQAnZo/eYVzzSodJwnQ6aWkIJSJZbmPk9uwTZd8uxZw/2DbyxvfCZFTkQvspxyn9uKJDQA=
+X-Received: by 2002:a81:5e43:0:b0:555:ac76:a880 with SMTP id
+ s64-20020a815e43000000b00555ac76a880mr15308726ywb.1.1682544507411; Wed, 26
+ Apr 2023 14:28:27 -0700 (PDT)
 MIME-Version: 1.0
 References: <CANiq72nm-tWGPHMaNF11baVRDFpk8ruvTAVDEWKfraEzADWqQQ@mail.gmail.com>
  <20230426204923.16195-1-amiculas@cisco.com> <4b8e3c30-9626-dffd-0aff-4b5c650154ad@gmail.com>
-In-Reply-To: <4b8e3c30-9626-dffd-0aff-4b5c650154ad@gmail.com>
-From:   Ariel Miculas <ariel.miculas@gmail.com>
-Date:   Thu, 27 Apr 2023 00:04:24 +0300
-Message-ID: <CAPDJoNuX17h0=F7VRP=-VODG1bcdCYZAD+WNSofvpWPwwvbxMg@mail.gmail.com>
+ <CAPDJoNuX17h0=F7VRP=-VODG1bcdCYZAD+WNSofvpWPwwvbxMg@mail.gmail.com>
+In-Reply-To: <CAPDJoNuX17h0=F7VRP=-VODG1bcdCYZAD+WNSofvpWPwwvbxMg@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 26 Apr 2023 23:28:16 +0200
+Message-ID: <CANiq72nX9uHanKZ4at80O3p-c2S8WM4SCRGF3f=PHdO3itEZUA@mail.gmail.com>
 Subject: Re: [PATCH v3] rust: helpers: sort includes alphabetically in rust/helpers.c
-To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc:     Ariel Miculas <amiculas@cisco.com>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, ojeda@kernel.org,
-        alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
-        gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me
+To:     Ariel Miculas <ariel.miculas@gmail.com>
+Cc:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Ariel Miculas <amiculas@cisco.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+        boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+        benno.lossin@proton.me
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This is the format I see in https://docs.kernel.org/process/5.Posting.html#
-```
-Link: https://example.com/somewhere.html  optional-other-stuff
-```
-And looking briefly through the git log I see the simple `Link:
-www.example.com` format.
-But I'm happy to change this if needed, can you point me to the right forma=
-t?
+On Wed, Apr 26, 2023 at 11:04=E2=80=AFPM Ariel Miculas <ariel.miculas@gmail=
+.com> wrote:
+>
+> This is the format I see in https://docs.kernel.org/process/5.Posting.htm=
+l#
+> ```
+> Link: https://example.com/somewhere.html  optional-other-stuff
+> ```
+> And looking briefly through the git log I see the simple `Link:
+> www.example.com` format.
 
-On Wed, Apr 26, 2023 at 11:57=E2=80=AFPM Martin Rodriguez Reboredo
-<yakoyoku@gmail.com> wrote:
->
-> On 4/26/23 17:49, Ariel Miculas wrote:
-> > Sort the #include directives of rust/helpers.c alphabetically and add a
-> > comment specifying this. The reason for this is to improve readability
-> > and to be consistent with the other files with a similar approach withi=
-n
-> > 'rust/'.
-> >
-> > Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> > Link: https://github.com/Rust-for-Linux/linux/issues/1003
-> > Signed-off-by: Ariel Miculas <amiculas@cisco.com>
-> > ---
-> > [...]
-> Shouldn't the link use the `Link: <url> [1]` format? Otherwise LGTM.
->
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Indeed, the one you have in the commit is the right one :)
+
+There are 5 commits in the kernel with the format mentioned by Martin,
+but they were probably unintentional.
+
+Cheers,
+Miguel
