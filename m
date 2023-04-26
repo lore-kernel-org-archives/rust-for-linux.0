@@ -2,70 +2,57 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DD40C77B60
-	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 08:15:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B57DEC77B60
+	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 08:20:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239875AbjDZIO7 (ORCPT
+        id S239683AbjDZIUg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 26 Apr 2023 04:14:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40426 "EHLO
+        Wed, 26 Apr 2023 04:20:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240097AbjDZIOr (ORCPT
+        with ESMTP id S239654AbjDZIUg (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 26 Apr 2023 04:14:47 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9511010F8;
-        Wed, 26 Apr 2023 01:14:46 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-504eb1155d3so50844008a12.1;
-        Wed, 26 Apr 2023 01:14:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682496884; x=1685088884;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hPHglsVUSyVNHBx390LARMYYSXfZEHD/f4PadDVbYcU=;
-        b=EeoNuAEcf2hhG/SwOGenpr6F1p5OHWgy1xltdtaneBsVTMX+a69xyKUj/BkIkN/j37
-         bJcSROx816NyF5j8gM3zeRgjm3NSgs3cyBmeBJPwHqz+BiJfb/xOg6/8L873+0s9fD62
-         ihgbvXTeI6vK1bnPLH1hcscIzf8/bo8N3alkHh/vdugZDo5DCYlSp9+XFmhbHwagND/R
-         fXX7/stY8rRicHX3qWPCXqcTGxB0L4vWk5mPZidUXNzpJr5bK8+6wJ74r4J/daCqKfbE
-         6R0Ij8duEQcpUAIpRV5bYHCQ9rXqQzYyuoldDVpm7ZEzdrms4NFhTsKsq5I1pTz+wz8W
-         3FhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682496884; x=1685088884;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hPHglsVUSyVNHBx390LARMYYSXfZEHD/f4PadDVbYcU=;
-        b=JGxZBzbEegIGQ320xJr8ryydVmcSuB1b2yWWd12GNdi76xvw7wlHZP8hBMrxV+A6ue
-         zY3MNwsefsS4H3cViZzZSpdbPtNOVDV6JvwlkxmLLr5rE7u3L+MThTOXi03Q/nHDiTJr
-         Z26T6hLSNSmXe4PpQvu+/kKkf00NX75vgM01DkO8ovY6d5/AVxVcLAvTyrxwR5uKg3r0
-         2LyGsFEQOdHhAQuDEYnAwdvjvzLw5DK86DR9/QabQl9wesVocKpaAB8W2UMPO6ruYf5U
-         bvxTRXsRu5Cx7e8Uq/DsoYUV7BB6fshqs/RN7t9A9FosffTlsHsCBxS3GEJoZZ3mQMi/
-         sMwA==
-X-Gm-Message-State: AC+VfDzTOEc+HBisyi4B9PjN/GCoNQDcRGdXPE+4kUEkegEVqXofPNVC
-        WBUCZN5ArRrkkI1Ytc+LyGUDMp7s0VrAMkR+
-X-Google-Smtp-Source: ACHHUZ5ifaUF9TCr2CIibnbLYrCjMciYkU+k8zKlZavuwFG1FgAA3/ED3ElVlVsWDW3+HPfbxfIA2A==
-X-Received: by 2002:a17:906:198:b0:94e:cfd0:ed9f with SMTP id 24-20020a170906019800b0094ecfd0ed9fmr1409547ejb.26.1682496884403;
-        Wed, 26 Apr 2023 01:14:44 -0700 (PDT)
-Received: from archlinux-cisco.cisco.com ([2001:420:c0c0:1004::3c7])
-        by smtp.gmail.com with ESMTPSA id h13-20020a170906718d00b0095386574c81sm7872609ejk.51.2023.04.26.01.14.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Apr 2023 01:14:43 -0700 (PDT)
-From:   Ariel Miculas <ariel.miculas@gmail.com>
-X-Google-Original-From: Ariel Miculas <amiculas@cisco.com>
+        Wed, 26 Apr 2023 04:20:36 -0400
+X-Greylist: delayed 122 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 26 Apr 2023 01:20:34 PDT
+Received: from aer-iport-6.cisco.com (aer-iport-6.cisco.com [173.38.203.68])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE2210F6
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Apr 2023 01:20:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=cisco.com; i=@cisco.com; l=991; q=dns/txt; s=iport;
+  t=1682497235; x=1683706835;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=1hVL1dW3Hnp9rI/JcRp6myvUhJgzNin3XL8Qc6rAluY=;
+  b=ZvYI2I8eXx01ZthPEUqJQc1gSrk1WNs1Yn1B2wUGqjY9xJhHAvyaTRTt
+   dWY77kPhT6YkMjSZTW+QSPgOfmA5C5VZFqkK1VKEz05sJRVIsJ0+5VjJA
+   a2GIYkqVQbmJOHwa69ZAQI/a31aVplPvL44wuJ4DAjIjZwYWSaMwD4yWa
+   c=;
+X-IronPort-AV: E=Sophos;i="5.99,227,1677542400"; 
+   d="scan'208";a="4880063"
+Received: from aer-iport-nat.cisco.com (HELO aer-core-1.cisco.com) ([173.38.203.22])
+  by aer-iport-6.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 26 Apr 2023 08:17:25 +0000
+Received: from archlinux-cisco.cisco.com ([10.61.201.228])
+        (authenticated bits=0)
+        by aer-core-1.cisco.com (8.15.2/8.15.2) with ESMTPSA id 33Q8HHVM024264
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Wed, 26 Apr 2023 08:17:25 GMT
+From:   Ariel Miculas <amiculas@cisco.com>
 To:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
         boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
         benno.lossin@proton.me
 Cc:     Ariel Miculas <amiculas@cisco.com>
 Subject: [PATCH] rust: Sort rust/helpers.c's #include directives
-Date:   Wed, 26 Apr 2023 11:13:54 +0300
-Message-Id: <20230426081354.38922-1-amiculas@cisco.com>
+Date:   Wed, 26 Apr 2023 11:17:15 +0300
+Message-Id: <20230426081715.40834-1-amiculas@cisco.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <CANiq72kXa-SgRiVhvjU7X4fa8XSJB4po9xf_V4L6Gn2o+t6T+Q@mail.gmail.com>
 References: <CANiq72kXa-SgRiVhvjU7X4fa8XSJB4po9xf_V4L6Gn2o+t6T+Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Authenticated-User: amiculas
+X-Outbound-SMTP-Client: 10.61.201.228, [10.61.201.228]
+X-Outbound-Node: aer-core-1.cisco.com
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
