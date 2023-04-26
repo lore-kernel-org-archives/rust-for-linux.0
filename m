@@ -2,102 +2,158 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D4B7C7618E
-	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 17:56:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 16BE9C7618E
+	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 20:02:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233540AbjDZR4E (ORCPT
+        id S235154AbjDZUCX (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 26 Apr 2023 13:56:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39366 "EHLO
+        Wed, 26 Apr 2023 16:02:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230043AbjDZR4D (ORCPT
+        with ESMTP id S233321AbjDZUCW (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 26 Apr 2023 13:56:03 -0400
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 490C04EF5;
-        Wed, 26 Apr 2023 10:56:02 -0700 (PDT)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-54fb8a8a597so89158327b3.0;
-        Wed, 26 Apr 2023 10:56:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682531761; x=1685123761;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hNnFeQsCpLxS8BWhDUFhfQgFVbVpcjM4oqjjdFxwN7g=;
-        b=hUS52wWcuyYhQ2sYsB1elyCiRL5WnwDSjRZdypEG8+lsAsMH0xB/VPibZwzEGP1tnK
-         ufsAeF3GUkg6a9PXxHX+aSVoZGOybH6tqXhUiz7j0/N7MJLy16k6Mls+u70qtS/Ju2IN
-         t4aQe/LSPVrtz27GGSofwEyfDQpt0sK8HKf1Ocs9eF/YcsrV1q52hnymodVSoRvu/+JR
-         qfmFNLYlAQVInFONl1np/ZpFGEGfDB80ERIviInRbJ+d2Xx+MdfWWua+Jo3rPsQg/dxj
-         gthgKJ8T6A6//1A4/c+muHl/9gWhzVgQPkKfgwmQPyeaz2mtwAvOS+ZmcAkWNLGHADFq
-         RmTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682531761; x=1685123761;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hNnFeQsCpLxS8BWhDUFhfQgFVbVpcjM4oqjjdFxwN7g=;
-        b=DBQOh1w9rNY56f89DvPNyRE9FLJDvyxczBxojTr4dkMfQ3mum0u5j9W8xYI24Wbcyu
-         biHX8uVT+qxvXTKHTlywPSd2OvIBSt8b73FFfLuLllRrJQlVbG6WNbMnFB8IgXloXgc7
-         ZIqG7O9lJL+yhaclZ7txsFZLophXtFlNR03rBpJqQfZ49XXbdjYSP8s1mWnq7MY0953l
-         olg9kKehBrlWOqL6Tjxc1nRs/CkE0Z9d/nsqUSMspgUH4+uMbPOcieiCY5QMEc2jBykp
-         W3kwlShc4JZ/dWEWObNd5EL7yvqFTryGY/Ee1SwQb545Hd0MMoakWrlJpkw7p2hTeFCl
-         kjQA==
-X-Gm-Message-State: AAQBX9f5bCqNZYFaWt7Rdo+nf7sEZBGLRNsfOuAWrjCU3Xr+2SS9STDb
-        UHgy94LqJYe4A0wCAlNz5hLcOhkeXncBN1KxHAk=
-X-Google-Smtp-Source: AKy350bMaZOhtxUuPaoTkMfU9W5kpbDAZdv0hnpL0C8l3iRJH97GTQOubU51xDiVDprmSc60a5CGJV+tzKnC1i2SkTk=
-X-Received: by 2002:a81:9195:0:b0:555:cd89:cc50 with SMTP id
- i143-20020a819195000000b00555cd89cc50mr14033716ywg.29.1682531761421; Wed, 26
- Apr 2023 10:56:01 -0700 (PDT)
+        Wed, 26 Apr 2023 16:02:22 -0400
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FA5AD2;
+        Wed, 26 Apr 2023 13:02:20 -0700 (PDT)
+Received: from hillosipuli.retiisi.eu (82-181-192-243.bb.dnainternet.fi [82.181.192.243])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sailus)
+        by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4Q68sj3rvkz49Q1R;
+        Wed, 26 Apr 2023 23:02:17 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+        t=1682539338;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8rfI7yW5iAyvACe+eNHb7XIJwwBJSYOM1MVr/do/rQk=;
+        b=fWyoknReNi32uex96QxCkPJQFwK1GACks0ieD7bBRtLPTG2FbplSNzFmZfM+xxIeAYcL6p
+        EJJHE4dqLcS7O33dDK2+E5UHcKlAN9mXQ0G73n0W5f/j+3GiaBfBSkR1mVuQyn/oXqhk0c
+        1D+nofwqyKOUShyhO5lklSQOlx09jsiFGZdjlkP7jHyBdY778O60300BnKYr/68ExFekYZ
+        NHI1h01zoRn4A9Wt4VEjEY0krCQIEuZ0IvPaz+iRW0WIJyBkGx1cIVEGiBPpUL2meOahSf
+        LDLjE4Om+QHwIsy+prxMP8fYdNjsFXycmqlQ4/D5RUX/JzfUqI60RYhTgb3nGg==
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1682539338; a=rsa-sha256;
+        cv=none;
+        b=den9DyFyBDEnYfDypgfErIdfmvFRKgfu1cnm/+KtP0XKpNih/NEWc9Hfp75rlCm9KoSzX3
+        Yx7cr11Ic3+Ww7uTpv6BS8sx5za17uDHyvYTSfZJaLWxi+JOIwD4PW140hJ0toztl1tI++
+        eYDkypoOgyjOURWDT/uzxUXaPi0x31Z+htKvNlrQW39yCFat06Dmhn/OWqXhCLNJVnYL9+
+        0iAfKGQW1MFp6LuduvZg3Ot2BqKTvsXz76WoQvF4cjrObgv8xuOLzAi54MO8Zy18mM376K
+        SkXcFdwCRjFqKTQyNKhpqtQVcBFPAbyWmW2dsvoRVq0Du0eL+N5pr7adqezNUQ==
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+        s=lahtoruutu; t=1682539338;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8rfI7yW5iAyvACe+eNHb7XIJwwBJSYOM1MVr/do/rQk=;
+        b=uiNuOz7yndn4oPHV0oCF2jATvQeuWQtipJLPJlz9Tmwfq3VtXG6a+vKdVLIpS0w2bOMQBs
+        SWZN4HjkbYwF40lKgYJPLvAqaA3LPP14tWJYVYEppIWcs/EqN8GAKDyZ6zFhFHmhOn5vhF
+        5aH8xeb873KBdErxIUgOf11Si4nWy3/1rr11/YVtbCe5pGRqD5g2IltiA1XYD2A/XQlkRU
+        znJyG/98bDJc14nuUMG5dcgl/0uLb3ulFv5v5BnMZcMxOMJqUm/+EnSk6R92lVXgA/IW3o
+        3sgc2ALTD0n+7a0yLUNNQ7B5pXKZArk8UBVpYkCjScHBtxy473hBD/jhpdMXtA==
+Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 39DE8634C91;
+        Wed, 26 Apr 2023 22:58:07 +0300 (EEST)
+Date:   Wed, 26 Apr 2023 22:58:06 +0300
+From:   Sakari Ailus <sakari.ailus@iki.fi>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Hans Verkuil <hverkuil@xs4all.nl>,
+        Daniel Almeida <daniel.almeida@collabora.com>,
+        wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+Message-ID: <ZEmCTm3MAD+Is82V@valkosipuli.retiisi.eu>
+References: <20230406215615.122099-1-daniel.almeida@collabora.com>
+ <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
+ <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
+ <20230426003210.GA31260@pendragon.ideasonboard.com>
+ <CANiq72nLtpOn2HcOneoQ6v_TcYAEj_W8z2HCQvF4HmB4+OoSZA@mail.gmail.com>
+ <20230426163512.GE18120@pendragon.ideasonboard.com>
 MIME-Version: 1.0
-References: <CANiq72kXa-SgRiVhvjU7X4fa8XSJB4po9xf_V4L6Gn2o+t6T+Q@mail.gmail.com>
- <20230426081715.40834-1-amiculas@cisco.com>
-In-Reply-To: <20230426081715.40834-1-amiculas@cisco.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 26 Apr 2023 19:55:50 +0200
-Message-ID: <CANiq72nm-tWGPHMaNF11baVRDFpk8ruvTAVDEWKfraEzADWqQQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: Sort rust/helpers.c's #include directives
-To:     Ariel Miculas <amiculas@cisco.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-        boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-        benno.lossin@proton.me
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230426163512.GE18120@pendragon.ideasonboard.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Apr 26, 2023 at 10:18=E2=80=AFAM Ariel Miculas <amiculas@cisco.com>=
- wrote:
->
-> Sort the #include directives of rust/helpers.c alphabetically and add a
-> comment specifying this.
->
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1003
-> Signed-off-by: Ariel Miculas <amiculas@cisco.com>
+Hi Laurent, Miguel,
 
-Looks better, and the content is fine!
+On Wed, Apr 26, 2023 at 07:35:12PM +0300, Laurent Pinchart wrote:
+> Hi Miguel,
+> 
+> (CC'ing Sakari Ailus)
 
-A few minor notes and tips:
+Thanks for cc'ing me.
 
-  - Please annotate the version of the series when you resubmit a
-patch series, e.g. v2, v3, etc. `git-format-patch` can do this for you
-via e.g. `-v2`.
+> 
+> On Wed, Apr 26, 2023 at 06:18:35PM +0200, Miguel Ojeda wrote:
+> > On Wed, Apr 26, 2023 at 2:32 AM Laurent Pinchart wrote:
+> > >
+> > > Now, I hope that mentioning "lifetime management problems" will be
+> > > enough to nerd-snipe a rust enthusiast or two to help fix the C code in
+> > > order to implement proper rust bindings on top ;-)
+> > 
+> > Good idea ;)
+> > 
+> > I think it is definitely a good opportunity to consider how Rust could
+> > fit the new design, and perhaps borrow some ideas from Rust for the
+> > new design, even. If you feel like a quick meeting could help on that,
+> > please let us know.
+> 
+> I think we have a fairly good view of what needs to be done, the rules
+> are the same regardless of the programming language and whether the
+> compiler or reviewers enforce them (Hans, Sakari, please feel free to
+> disagree). Thanks for your offer though, it's appreciated.
 
-  - Typically the title would be prefixed like "rust: helpers: sort
-includes". In general, try to take a look at a subsystem's pattern for
-similar commits.
+I guess on many you don't need to care about lifetime management if you can
+assume that certain things never go away. Sometimes these assumptions prove
+incorrect, and that's what's happened here.
 
-  - The description should also give the rationale for the change,
-i.e. the "why" and the "what". This one, for instance, could say that
-this is done to improve readability and to be consistent with the
-other files with a similar approach within `rust/`.
+> 
+> > > That would certainly be a required step, but I don't think it would be
+> > > enough. On good days I see the media subsystem as barely able to cope
+> > > with the current load, on bad days it feels it's completely collapsing.
+> > >
+> > > We have homework to do when it comes to maintenance for the media
+> > > subsystem, we're doing *really* badly at the moment regarding community
+> > > management and attracting (and retaining) new core contributors. This is
+> > > a topic I really want to discuss face to face during the media workshop
+> > > in Prague (and I know that many people are looking forward to that
+> > > discussion).
+> > 
+> > I am sorry to hear that. One idea would be offsetting the extra work
+> > by having the Rust person also take care of some of the C parts too.
+> > That way you can also potentially get them to be a full maintainer at
+> > some point, even if the Rust experiment does not pan out.
+> 
+> That's certainly something I would consider very positive. If anyone is
+> interested in having a look at (part of) the problem and possible
+> solutions, [1] is the most recent patch series posted to handle some of
+> the lifetime issues, and [2] is a more generic version of part of [1].
+> 
+> [1] https://lore.kernel.org/linux-media/20230201214535.347075-1-sakari.ailus@linux.intel.com/
+> [2] https://lore.kernel.org/linux-kernel/161117153248.2853729.2452425259045172318.stgit@dwillia2-desk3.amr.corp.intel.com/
 
-I can fix these on my side if you prefer, but it may be good practice
-if you want to send a quick new version.
+Thanks for the pointer, this would be nice indeed.
 
-Thanks!
+I haven't had time to work on the media device referencing series, overall
+it should be good for merging but Hans found an issue I haven't had time to
+debug yet. I do intend to continue that in the near future though.
 
-Cheers,
-Miguel
+-- 
+Regards,
+
+Sakari Ailus
