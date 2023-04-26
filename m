@@ -2,98 +2,110 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 40F82C77B61
-	for <rust-for-linux@archiver.kernel.org>; Tue, 25 Apr 2023 20:38:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72598C77B7F
+	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 00:32:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232019AbjDYUiK (ORCPT
+        id S237479AbjDZAcF (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 25 Apr 2023 16:38:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46394 "EHLO
+        Tue, 25 Apr 2023 20:32:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231927AbjDYUiJ (ORCPT
+        with ESMTP id S236413AbjDZAcE (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 25 Apr 2023 16:38:09 -0400
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E25051447E;
-        Tue, 25 Apr 2023 13:38:08 -0700 (PDT)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-552a6357d02so74736307b3.3;
-        Tue, 25 Apr 2023 13:38:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682455088; x=1685047088;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PSMFraWDnuFxIY/5xKaBGC0hsSHLhpd6E/RRLTqgcXY=;
-        b=LcWTSi2md/Jgl0vEgTlmq1D0O7x5GrEXezRFqMP/H6OX4ccxDAcihkPmEnIEotGSep
-         SUP58Pbnle9L9PNptK/GjKmR7RC9xFnLlLHh6nNFivXsr2ILH5ldut+7TRpRmwNCwi7j
-         EPqStuSqxHLRNn9SSfQzgmaWwxwr097UCTg0/vG1NDOyhzPKyfj1CgXZQ6JBCRydSpsG
-         dVW1K+7v/fntNEgeftywaDp4/J64gVt0JgXqnMMeiiqRaqzxXujflQmW8tF3GFsnfPDB
-         NTbhiOBA3M031TA+vGNwXkCy55OKPepT92i+9RjR4sKHLoK5ubtkDS6092MZiHwz1Y3V
-         yazQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682455088; x=1685047088;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PSMFraWDnuFxIY/5xKaBGC0hsSHLhpd6E/RRLTqgcXY=;
-        b=j16MJmrmP3MUaiUJOLb+fkj9YHHWZqkKJ0WKDnPICEPwxDQ9RXZ/UzxZwNUs8VLIWn
-         ZQrSux0oHzkqZvy83sfs66bRlbOTOfZhXw8/7+HCELd3VfFlmCoYZHK/Hwj/Ck+HzWVV
-         zJHp/vlQ04h7LrB17DNkTrktSXluzJENitzFJJOOVFiSUrmTIt322J4Ja3Gr546uv8Ct
-         taG1NwGS31LrVB594fxyJmBBZvYj8qYEXEE5mI7UrVhAAEE+NDdBp636O7zXMy1Crepm
-         nT639+6lUbg7AAV12WO3FD2kAZWXKonCtzhZTv8kYFjFPqjnO6MZczTJUJICuaEkky+q
-         Tb/g==
-X-Gm-Message-State: AAQBX9ceHThaAISGuDre0buAWBE51DYTBLsSJvaYqvnedHkRmmvuz52S
-        u2pb0GWD+icxUxYfemOIH+QqHIaowZwRrkcpYe20RVEyh1M=
-X-Google-Smtp-Source: AKy350ZBhwoxLWkqkcvqti/j91TBOklHYVdf2aJArf2lmXX31SYCKkZTeBmEhsgDhUhzm0zqXlNytRCjORZ4cU0Xzmg=
-X-Received: by 2002:a81:4602:0:b0:54d:c121:6c88 with SMTP id
- t2-20020a814602000000b0054dc1216c88mr12361981ywa.20.1682455088009; Tue, 25
- Apr 2023 13:38:08 -0700 (PDT)
+        Tue, 25 Apr 2023 20:32:04 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18BE2B236;
+        Tue, 25 Apr 2023 17:32:03 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (133-32-181-51.west.xps.vectant.ne.jp [133.32.181.51])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id DA23A2CF;
+        Wed, 26 Apr 2023 02:31:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1682469108;
+        bh=J0H/I3MHC57rloZ2Y3S5PUrNrgy8f/8EJ9VwOYm2S10=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=YREWwOIE7IwcRZFehUJe5hzIshER8rKPV/zBWdvqT8YRPhPwcwWEK2/kKpnYy/oPD
+         0MHQFIDqEDkHAmxevwQ4vwN3JYfCvefeSzL2eHvLmjPQmgcbaTJi3A9ygbFDxmUWXd
+         VfqZrWUcKvyUZZRdADk7kX7VfKWQ/Rs73vhD6Fu8=
+Date:   Wed, 26 Apr 2023 03:32:10 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Hans Verkuil <hverkuil@xs4all.nl>,
+        Daniel Almeida <daniel.almeida@collabora.com>,
+        wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+Message-ID: <20230426003210.GA31260@pendragon.ideasonboard.com>
+References: <20230406215615.122099-1-daniel.almeida@collabora.com>
+ <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
+ <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230425202848.261139-1-amiculas@cisco.com>
-In-Reply-To: <20230425202848.261139-1-amiculas@cisco.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 25 Apr 2023 22:37:57 +0200
-Message-ID: <CANiq72kXa-SgRiVhvjU7X4fa8XSJB4po9xf_V4L6Gn2o+t6T+Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: Sort rust/helpers.c's #include directives
-To:     Ariel Miculas <ariel.miculas@gmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-        boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-        benno.lossin@proton.me, Ariel Miculas <amiculas@cisco.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Ariel,
+On Tue, Apr 11, 2023 at 02:02:17PM +0200, Miguel Ojeda wrote:
+> On Tue, Apr 11, 2023 at 9:51 AM Hans Verkuil <hverkuil@xs4all.nl> wrote:
+> >
+> > One of my main concerns here is time: as subsystem maintainers we can barely
+> > keep up with all the incoming patches. Introducing support for a new language
+> > would add only more pressure. Even though these are mainly bindings (as I
+> > understand it), this would still require that every change to a C kAPI is
+> > duplicated in rust, requiring someone to do that work, and have maintainers
+> > with enough rust knowledge to verify it.
 
-On Tue, Apr 25, 2023 at 10:28=E2=80=AFPM Ariel Miculas <ariel.miculas@gmail=
-.com> wrote:
->
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1003
-> Signed-off-by: Ariel Miculas <amiculas@cisco.com>
+Another issue is that the V4L2 subsystem is plagued with lifetime
+management problems. I don't think rust bindings could be safely written
+for the MC and V4L2 subdev in-kernel APIs at the moment for instance.
+Sakari recently attempted to fix some of those issues (again), see [1].
+Progress is slow on this front because V4L2 is generally understaffed.
 
-First of all, thanks for the patch!
+[1] https://lore.kernel.org//20230201214535.347075-1-sakari.ailus@linux.intel.com
 
-These tags look OK, but if you want to attribute the patches to your
-Cisco address, could you please send them from that address?
+Now, I hope that mentioning "lifetime management problems" will be
+enough to nerd-snipe a rust enthusiast or two to help fix the C code in
+order to implement proper rust bindings on top ;-)
 
-Also, the commit description is missing. In the kernel, we give the
-rationale for a change and describe what the patch does for every
-commit.
+> Indeed, that is one of the main costs.
+> 
+> One potential solution is to have somebody step up as the maintainer
+> of the Rust side (e.g. the author of the abstractions).
 
-Please take a look at `Documentation/process/submitting-patches.rst`
-and try `scripts/checkpatch.pl` -- it can point some issues like this.
+That would certainly be a required step, but I don't think it would be
+enough. On good days I see the media subsystem as barely able to cope
+with the current load, on bad days it feels it's completely collapsing.
 
-> +/*
-> + * Sorted alphabetically.
-> + */
+We have homework to do when it comes to maintenance for the media
+subsystem, we're doing *really* badly at the moment regarding community
+management and attracting (and retaining) new core contributors. This is
+a topic I really want to discuss face to face during the media workshop
+in Prague (and I know that many people are looking forward to that
+discussion).
 
-Please join this comment with the top one, i.e. please do not open a
-new /* */ block, like it is done in the other file mentioned in the
-linked issue.
+> Of course, that will not make the work go to zero, since there still
+> needs to be some degree of communication even if the new maintainer
+> does all the Rust side work, but it may make it feasible, especially
+> if the abstracted parts of the C API do not change too frequently.
+> 
+> It is also an opportunity for existing maintainers to see how the Rust
+> side would work meanwhile the work gets done, and potentially a chance
+> to get a new maintainer involved with the whole subsystem in the
+> future.
+> 
+> Some subsystems may want to give that maintainer a different
+> `MAINTAINERS` entry, e.g. as a child subsystem that sends PRs to the
+> main one and may be marked as "experimental". This is also a way to
+> see how the new abstractions work or not, giving maintainers more time
+> to decide whether to commit to a Rust side or not.
+> 
+> I don't mean to say it would be doable for the media subsystem, but
+> please consider it.
 
-Cheers,
-Miguel
+-- 
+Regards,
+
+Laurent Pinchart
