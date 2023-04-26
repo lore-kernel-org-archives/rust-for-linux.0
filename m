@@ -2,95 +2,88 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5333CC7618E
-	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 20:49:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C961BC7618E
+	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 20:55:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233628AbjDZUts (ORCPT
+        id S232224AbjDZUzc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 26 Apr 2023 16:49:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32858 "EHLO
+        Wed, 26 Apr 2023 16:55:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239959AbjDZUtr (ORCPT
+        with ESMTP id S234643AbjDZUzb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 26 Apr 2023 16:49:47 -0400
-Received: from aer-iport-3.cisco.com (aer-iport-3.cisco.com [173.38.203.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D2623C15;
-        Wed, 26 Apr 2023 13:49:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=1121; q=dns/txt; s=iport;
-  t=1682542173; x=1683751773;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ZbVNXlIv8G5b2W+u/CXT4H6oOP5oKHIlM/cd0euePXI=;
-  b=by0kjwrrhmPt/+n8NMmGFg4EhbREfEE+KG9rbO1v1UWPpN9x7oR4ePmI
-   SMwm5LZ7AY3d7VMQHt4R2+xYciXMl5p0okKDDqwBNdSA/U6k0WvZWEhdL
-   DpDnbtt9KF0aSd/39Ca4RZKgIEFok4jmcSCv8TFDi6soyfp5mOEp7qMEy
-   A=;
-X-CSE-ConnectionGUID: ZAQgjrNlTbCMw4RSGzqICw==
-X-CSE-MsgGUID: 8DPdC6ZmQyCqMKY/NAvaJA==
-X-IronPort-AV: E=Sophos;i="5.99,229,1677542400"; 
-   d="scan'208";a="7233052"
-Received: from aer-iport-nat.cisco.com (HELO aer-core-10.cisco.com) ([173.38.203.22])
-  by aer-iport-3.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 20:49:31 +0000
-Received: from archlinux-cisco.cisco.com (ams3-vpn-dhcp2960.cisco.com [10.61.75.144])
-        (authenticated bits=0)
-        by aer-core-10.cisco.com (8.15.2/8.15.2) with ESMTPSA id 33QKnOPF053840
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Wed, 26 Apr 2023 20:49:30 GMT
-From:   Ariel Miculas <amiculas@cisco.com>
-To:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-        boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-        benno.lossin@proton.me
-Cc:     Ariel Miculas <amiculas@cisco.com>
-Subject: [PATCH v3] rust: helpers: sort includes alphabetically in rust/helpers.c
-Date:   Wed, 26 Apr 2023 23:49:23 +0300
-Message-Id: <20230426204923.16195-1-amiculas@cisco.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <CANiq72nm-tWGPHMaNF11baVRDFpk8ruvTAVDEWKfraEzADWqQQ@mail.gmail.com>
-References: <CANiq72nm-tWGPHMaNF11baVRDFpk8ruvTAVDEWKfraEzADWqQQ@mail.gmail.com>
+        Wed, 26 Apr 2023 16:55:31 -0400
+Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBCCE1FE6;
+        Wed, 26 Apr 2023 13:55:29 -0700 (PDT)
+Received: by mail-oo1-xc33.google.com with SMTP id 006d021491bc7-541b60e0a7fso4128533eaf.1;
+        Wed, 26 Apr 2023 13:55:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682542529; x=1685134529;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N7BDHHCRt4+aajzCfPWxNu1orJw4/MC8hMj/R8/hq0Q=;
+        b=hJmHaj8bMSyyd1pbrp/d/AV15mwTKEOwMJPLuTsvFfgdodrp+bLrkLD0PJrIgbXEgR
+         QPUYr7KZ5uRaVfLcN6nkQkpi4AG2iYRveH6DIAaZFjKHu+6KuFGi59qlZCAYgLZ3uSN4
+         spFJRw+tsIn2tjEgYOYlzTNKC/NYAxw05S6lhGWiIeSVjbU8P94GObnCglXqOY4kx8ge
+         RZZGybKpRBQYxqSSE+hEdUCFmeDmTEBE6/jtjbwx0aKm4Ln8D2SsENt7K3qqC4V08QZ0
+         HkGTXwCae6hgflRzB380uvjl5/3bo3QhhcQlX4GYPHFQ7jZ7jNbcmKo6E57WwJ0gi2E2
+         JHkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682542529; x=1685134529;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N7BDHHCRt4+aajzCfPWxNu1orJw4/MC8hMj/R8/hq0Q=;
+        b=cTBryZqNI3SoNvIJQikhf9jM5S6E8E2NFS8AFXi7FKgmdzL+grFyoGJsiFfxO1NaHq
+         1LHQ9IxZLUn2o/ReBdusVaSsb8eSVE2ScDVQwvKkZ4G9ZHCOiK0PvxcaeA+iqZye2iro
+         vIpBH+2MtzTPiatdc1/SFesUsckd23a+aeCraPhI2ggnpYM4Z4yh9v8oMhq0Z+JAYwjA
+         XmlwFXQLaXSFCWjsZ77Klr9V659OPEZcxJBLtewzeOF+fiXbWfJlIqltDUwsNpa8IBcJ
+         HfV43E0oYIyEFVCPV1wGLByzztDzFvSroPItIztsXSmUywXlhlSraw6VnZZboGzOfCl8
+         1o+A==
+X-Gm-Message-State: AAQBX9cuOGiRtEnUoc3+nmo8ZjIvYcYdqEI+2DOQYAAUHuaS9bfpmFje
+        TiWKnkt6tM3iQkQS5w+JyvM=
+X-Google-Smtp-Source: AKy350ZBvklTH3Zq7nm6uj53wA0YTB3dSTdpbO/3rQMj4/PKskuHIj+Rz0UoC8xQfqL03EucEkLGwQ==
+X-Received: by 2002:a54:4489:0:b0:38e:8e30:677d with SMTP id v9-20020a544489000000b0038e8e30677dmr8468566oiv.3.1682542528807;
+        Wed, 26 Apr 2023 13:55:28 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id q9-20020acaf209000000b003908004b37dsm280080oih.26.2023.04.26.13.55.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Apr 2023 13:55:28 -0700 (PDT)
+Message-ID: <4b8e3c30-9626-dffd-0aff-4b5c650154ad@gmail.com>
+Date:   Wed, 26 Apr 2023 17:55:25 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3] rust: helpers: sort includes alphabetically in
+ rust/helpers.c
+Content-Language: en-US
+To:     Ariel Miculas <amiculas@cisco.com>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ojeda@kernel.org,
+        alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+        gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me
+References: <CANiq72nm-tWGPHMaNF11baVRDFpk8ruvTAVDEWKfraEzADWqQQ@mail.gmail.com>
+ <20230426204923.16195-1-amiculas@cisco.com>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230426204923.16195-1-amiculas@cisco.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Sort the #include directives of rust/helpers.c alphabetically and add a
-comment specifying this. The reason for this is to improve readability
-and to be consistent with the other files with a similar approach within
-'rust/'.
+On 4/26/23 17:49, Ariel Miculas wrote:
+> Sort the #include directives of rust/helpers.c alphabetically and add a
+> comment specifying this. The reason for this is to improve readability
+> and to be consistent with the other files with a similar approach within
+> 'rust/'.
+> 
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1003
+> Signed-off-by: Ariel Miculas <amiculas@cisco.com>
+> ---
+> [...]
+Shouldn't the link use the `Link: <url> [1]` format? Otherwise LGTM.
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1003
-Signed-off-by: Ariel Miculas <amiculas@cisco.com>
----
- rust/helpers.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/rust/helpers.c b/rust/helpers.c
-index 81e80261d597..73c01db0c828 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -16,15 +16,17 @@
-  *
-  * All symbols are exported as GPL-only to guarantee no GPL-only feature is
-  * accidentally exposed.
-+ *
-+ * Sorted alphabetically.
-  */
- 
- #include <linux/bug.h>
- #include <linux/build_bug.h>
- #include <linux/err.h>
--#include <linux/refcount.h>
- #include <linux/mutex.h>
--#include <linux/spinlock.h>
-+#include <linux/refcount.h>
- #include <linux/sched/signal.h>
-+#include <linux/spinlock.h>
- #include <linux/wait.h>
- 
- __noreturn void rust_helper_BUG(void)
--- 
-2.40.0
-
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
