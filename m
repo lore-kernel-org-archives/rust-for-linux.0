@@ -2,162 +2,67 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75C7CC77B78
-	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 11:37:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBE51C7618E
+	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 13:29:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240110AbjDZLhl (ORCPT
+        id S240436AbjDZN3u (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 26 Apr 2023 07:37:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39606 "EHLO
+        Wed, 26 Apr 2023 09:29:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230401AbjDZLh3 (ORCPT
+        with ESMTP id S240534AbjDZN3o (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 26 Apr 2023 07:37:29 -0400
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B9B53C0C;
-        Wed, 26 Apr 2023 04:37:28 -0700 (PDT)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-54fb8a8a597so83247497b3.0;
-        Wed, 26 Apr 2023 04:37:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682509047; x=1685101047;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lALWCsz62LMjyxVOtF5eFTXt3IIcI+kzdO5VholoM0M=;
-        b=aioUzD9jPCAN3+Y5ZT3ovJOGMiPiJ+2Pbj8X11ALOrbMWxlL6sGdsVqrAVckXGxlwE
-         zEZqzhh804Vn6luTB7ecv8o/AhVB59USNr84Sg76F3w7rJyIZbYZSyTAJ5aUNRHMZyJC
-         2EuO9WdFV2KiXGh9t1qZixZ3+oKXM86tPps541kAJjwuUV0nQ4zokKpILJ6gAsk6SR/+
-         uB7CUAP+/0ubTre/so20SSSSgkWVZ8Iq8gEU5mJVMQfaD7Hnw8KN9eoXSaUwuB4smkJv
-         6oc4CuJxXeXNwEeGRIgEQqvpoItkD9ct+nZH32t8wiu6jqJtKnL8a54ZuG4pbS6ckgDL
-         rBEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682509047; x=1685101047;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lALWCsz62LMjyxVOtF5eFTXt3IIcI+kzdO5VholoM0M=;
-        b=IVHZCBIXewqKq7Uh+1ORwLGY/l6YykVguK+aHr6d3B/sZlwp47MPEuYv24hkRqImMf
-         N+7s1gorUD9bN9/qK7HgyB0Rh5PyC2W0VxDOk5Ptyh3De7kfNqjdRXGw6GiiywNhayFd
-         t13m8MmlJHsRQQLk7ixEDhLPzofc0kHQDjc098bjQWkV33KM38OiIed/AP2Y2CHGlPL8
-         F+7cMr8wR2bh8ojYCV7fd4E7k0SLbnwIjJKb3kKgKqKiKOOXCESZ8EvsECxmIwGQmboz
-         w0/keYM8bGotov4pGttWonWSFxYrd7cVdhs3BTzVbOr6hrVIVMBSsQvYj6raMg5KVfis
-         nWpw==
-X-Gm-Message-State: AAQBX9f5Jsb4/8JPe/gEGGcZHPxvME5LZe0U8SsJZOkYPH0ob9fb+bLQ
-        DxO0EpKJ0+KPjMvIo4YEV5pzYC0mNO7WEibl1wo=
-X-Google-Smtp-Source: AKy350bnB3r9FlsXadUNiokOGQ0tpZzid9gBfpCokyroyABd4z3nFL48eg2idUGJ/BoPRJjqSzCj9cGB6LqdRtdQJLs=
-X-Received: by 2002:a0d:e24e:0:b0:552:a605:e408 with SMTP id
- l75-20020a0de24e000000b00552a605e408mr13495487ywe.12.1682509047657; Wed, 26
- Apr 2023 04:37:27 -0700 (PDT)
+        Wed, 26 Apr 2023 09:29:44 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C2A114;
+        Wed, 26 Apr 2023 06:29:42 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (133-32-181-51.west.xps.vectant.ne.jp [133.32.181.51])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2DE192D8;
+        Wed, 26 Apr 2023 15:29:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1682515769;
+        bh=RI8z4Eo+45ZBt/YIKZ6uFhIQL5StFvtCFGTNDoDxnis=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=vfTKzySPNhs6oxWcOF9m/g3fYAphPf3rA8xMjxZHuFCGchanpXeisroR6VGqJ7r2k
+         AKG/jvwBVqDakU0pucABCTZQ3+SOFYJa8pN81qW8eRsJWQHIdj2F02SKYZY8b0Xgcq
+         aT+Pq436dAuvt19/85On8T3u1mJTs8TMELwCQ6ZQ=
+Date:   Wed, 26 Apr 2023 16:29:49 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Hans Verkuil <hverkuil@xs4all.nl>,
+        Daniel Almeida <daniel.almeida@collabora.com>,
+        wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+Message-ID: <20230426132949.GD18120@pendragon.ideasonboard.com>
+References: <20230406215615.122099-1-daniel.almeida@collabora.com>
+ <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
+ <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
+ <20230426003210.GA31260@pendragon.ideasonboard.com>
+ <57ec90ad-8535-fa7d-d6de-d5c1d06f37d3@metux.net>
 MIME-Version: 1.0
-References: <00000000000079eebe05fa2ea9ad@google.com> <CANiq72mor1BkxpAT=v0EsQJN-7fvMjo9K5ooVk1x7ZbBDEyn8g@mail.gmail.com>
- <CACT4Y+aMdct_tjSYsBvvtGoDji6feOiANogRbp3N41qkzU+5CQ@mail.gmail.com>
- <CANiq72nm2dU2o_x_GQ5SdsXaK6yZiDXG2hXEYMykViEAZvuMqQ@mail.gmail.com>
- <CACT4Y+YyYnwg4a1zjTnBU=t0x5Brt1rGuzz-5pXf2Fz3cKf4FQ@mail.gmail.com>
- <CANiq72=vMydenfkxQx4X7kYvHD0cHzNK19xxxqow3WcLStsdRA@mail.gmail.com> <CACT4Y+ZrwXB1W31Rr7rUUOoW15YbKfnC0khY9KnNk8FTf5uQnA@mail.gmail.com>
-In-Reply-To: <CACT4Y+ZrwXB1W31Rr7rUUOoW15YbKfnC0khY9KnNk8FTf5uQnA@mail.gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 26 Apr 2023 13:37:16 +0200
-Message-ID: <CANiq72=pZy6RzomqbKtM5Ky43+Y0y3c1HQkbwrpS-1FHcEqYqg@mail.gmail.com>
-Subject: Re: [syzbot] upstream boot error: BUG: unable to handle kernel NULL
- pointer dereference in __dabt_svc
-To:     Dmitry Vyukov <dvyukov@google.com>
-Cc:     syzkaller@googlegroups.com, alex.gaynor@gmail.com,
-        andriy.shevchenko@linux.intel.com, bjorn3_gh@protonmail.com,
-        boqun.feng@gmail.com, bpf@vger.kernel.org, gary@garyguo.net,
-        linux-kernel@vger.kernel.org, linux@rasmusvillemoes.dk,
-        ojeda@kernel.org, pmladek@suse.com, rostedt@goodmis.org,
-        rust-for-linux@vger.kernel.org, senozhatsky@chromium.org,
-        syzkaller-bugs@googlegroups.com, wedsonaf@gmail.com,
-        Joe Perches <joe@perches.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <57ec90ad-8535-fa7d-d6de-d5c1d06f37d3@metux.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Apr 26, 2023 at 12:43=E2=80=AFPM Dmitry Vyukov <dvyukov@google.com>=
- wrote:
->
-> I understand your intentions and they make sense.
+On Wed, Apr 26, 2023 at 03:13:10PM +0200, Enrico Weigelt, metux IT consult wrote:
+> On 26.04.23 02:32, Laurent Pinchart wrote:
+> 
+> > We have homework to do when it comes to maintenance for the media
+> > subsystem, we're doing *really* badly at the moment regarding community
+> > management and attracting (and retaining) new core contributors. 
+> 
+> Is this a problem of the subsys (core) itself or individual drivers ?
 
-Thanks! I am glad you agree it may have some value -- please see below
-for details.
+It's first and foremost a subsystem core issue. Drivers will also have
+to be fixed, but the core needs to be handled first.
 
-> But adding this logic to syzbot won't help thousands of users of
-> get_maintainer.pl and dozens of other testing systems. There also will
+-- 
+Regards,
 
-I haven't said otherwise -- as I said, I think it would be nice to
-have this be part of the kernel itself. :)
-
-> be a bit of get_maintainer.pl inside of syzbot code, so now all kernel
-> developers will need to be aware of it and also submit changes to
-> syzbot when they want to change maintainers logic.
->
-> I think this also equally applies to all other users of K:.
-> And a number of them had similar complaints re how K; works.
-
-Yeah, I would imagine so.
-
-> I am thinking if K: should actually apply just to patches and be
-> ignored for source files?
-
-I considered that -- for things like Rust, it could make sense, but
-perhaps somebody is already using `K:` to match files they do care
-about, rather than `F:`. So we would need to ask others, but I think
-it is fine.
-
-> If there are files that belong to "rust" (or "bpf" or any other user
-> of K:), then I think these should be just listed explicitly in the
-> subsystem (that should be a limited set of files that can be
-> enumerated with wildcards).
-
-Yes, at least for Rust, modulo omissions, we match files explicitly
-with `F:`. We have a couple unimportant omissions, e.g.
-`.rustfmt.toml`, but I can send a patch.
-
-Personally, I have always seen `F:` files (and `N:`-matched ones) as
-having more weight than `K:`-matched ones, i.e. I saw `K:` as more of
-a "it depends on what it matches -- discretion needed".
-
-From a quick look, most `K:`-using subsystems seem to list `F:` and
-`N:` as I would expect.
-
-> It's also reasonable to apply K: to patches.
-
-Yes, definitely, for Rust, that is our main use case, i.e. it is
-mainly why we wanted to have the `K:` entry: to catch changes to
-things that are tagged with "Rust" in C files (early on, at least).
-
-It is particularly important for us, since we are also considering
-having more of these annotations in the future.
-
-> But if a random source file happened to mention "rust" somewhere once,
-> I am not sure you want to be CCed on all issues in that file.
-> Does it sound reasonable?
-
-For Rust, yes, that would probably work for us. Not sure for all
-subsystems using `K:`, though.
-
-Having said that, I suggested including the kernel config too in this
-decision (i.e. not for the patches case, but for testers finding
-runtime issues), because it adds information: it leaves reports out
-when something is not even enabled but matched via `K:`, but still
-allows a Cc when matched via `K:` and enabled. It is, of course, still
-potentially a false positive, but some subsystems may want to hear
-about those.
-
-For instance, for Rust, this would be fine early on, since we don't
-expect many to have `RUST=3Dy` to begin with, and thus the odd false
-positive report via `K:` is fine. Later on, this heuristic may change,
-and we may not change those matches anymore (especially since, by
-then, the goal is that subsystems would be taking care of their own
-Rust bits).
-
-This is what I was suggesting to then put in `get_maintainer.pl`, e.g.
-a `--bot` option (or `--runtime`, or `--config-based-filtering`, or
-similar) option. Then the bots can add that option on their side.
-
-Thanks again for considering this!
-
-Cheers,
-Miguel
+Laurent Pinchart
