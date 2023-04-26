@@ -2,88 +2,95 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C961BC7618E
-	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 20:55:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B76F4C7618E
+	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 21:04:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232224AbjDZUzc (ORCPT
+        id S239755AbjDZVEl (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 26 Apr 2023 16:55:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36444 "EHLO
+        Wed, 26 Apr 2023 17:04:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234643AbjDZUzb (ORCPT
+        with ESMTP id S236145AbjDZVEk (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 26 Apr 2023 16:55:31 -0400
-Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBCCE1FE6;
-        Wed, 26 Apr 2023 13:55:29 -0700 (PDT)
-Received: by mail-oo1-xc33.google.com with SMTP id 006d021491bc7-541b60e0a7fso4128533eaf.1;
-        Wed, 26 Apr 2023 13:55:29 -0700 (PDT)
+        Wed, 26 Apr 2023 17:04:40 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55D971FCE;
+        Wed, 26 Apr 2023 14:04:38 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4efd6e26585so6071359e87.1;
+        Wed, 26 Apr 2023 14:04:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682542529; x=1685134529;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N7BDHHCRt4+aajzCfPWxNu1orJw4/MC8hMj/R8/hq0Q=;
-        b=hJmHaj8bMSyyd1pbrp/d/AV15mwTKEOwMJPLuTsvFfgdodrp+bLrkLD0PJrIgbXEgR
-         QPUYr7KZ5uRaVfLcN6nkQkpi4AG2iYRveH6DIAaZFjKHu+6KuFGi59qlZCAYgLZ3uSN4
-         spFJRw+tsIn2tjEgYOYlzTNKC/NYAxw05S6lhGWiIeSVjbU8P94GObnCglXqOY4kx8ge
-         RZZGybKpRBQYxqSSE+hEdUCFmeDmTEBE6/jtjbwx0aKm4Ln8D2SsENt7K3qqC4V08QZ0
-         HkGTXwCae6hgflRzB380uvjl5/3bo3QhhcQlX4GYPHFQ7jZ7jNbcmKo6E57WwJ0gi2E2
-         JHkA==
+        d=gmail.com; s=20221208; t=1682543076; x=1685135076;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oXn3Qe0ODKJu31q9zPWv7Wmykn21fz2cAXCa+pUXVoQ=;
+        b=WnwgJNi1yxyfEGQQ7qnDBXMXxYlhc8kk5doJj1MFlZFUlWsGR2kSYlR5qtAwGj67XS
+         d0bGeQ27Ipo9petOd1HfqmvSDBdeOziOKvuaG4EyeziQwGwwNPqQ75MCII+4xJ/67Vdc
+         /h3jCMETSFWSoPzuDdYpmhY+XzZf3VpDCsIMKxPr7RJtsE4s3i+rzqSkWxePwPa/9Hsr
+         ZD/ZlB/sS7YhP7CByBEAk5qBcTFNFYqLv047rh91xUGNDJ46Tr9WwgcIMJh4I6CXsLNA
+         nyfL5tFLdk9apvjT6z02eHwBCjRYhCKJsjFFPa9c3b4EEMQDo/Y0yfiSAZqdUGPOsrGw
+         ICVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682542529; x=1685134529;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N7BDHHCRt4+aajzCfPWxNu1orJw4/MC8hMj/R8/hq0Q=;
-        b=cTBryZqNI3SoNvIJQikhf9jM5S6E8E2NFS8AFXi7FKgmdzL+grFyoGJsiFfxO1NaHq
-         1LHQ9IxZLUn2o/ReBdusVaSsb8eSVE2ScDVQwvKkZ4G9ZHCOiK0PvxcaeA+iqZye2iro
-         vIpBH+2MtzTPiatdc1/SFesUsckd23a+aeCraPhI2ggnpYM4Z4yh9v8oMhq0Z+JAYwjA
-         XmlwFXQLaXSFCWjsZ77Klr9V659OPEZcxJBLtewzeOF+fiXbWfJlIqltDUwsNpa8IBcJ
-         HfV43E0oYIyEFVCPV1wGLByzztDzFvSroPItIztsXSmUywXlhlSraw6VnZZboGzOfCl8
-         1o+A==
-X-Gm-Message-State: AAQBX9cuOGiRtEnUoc3+nmo8ZjIvYcYdqEI+2DOQYAAUHuaS9bfpmFje
-        TiWKnkt6tM3iQkQS5w+JyvM=
-X-Google-Smtp-Source: AKy350ZBvklTH3Zq7nm6uj53wA0YTB3dSTdpbO/3rQMj4/PKskuHIj+Rz0UoC8xQfqL03EucEkLGwQ==
-X-Received: by 2002:a54:4489:0:b0:38e:8e30:677d with SMTP id v9-20020a544489000000b0038e8e30677dmr8468566oiv.3.1682542528807;
-        Wed, 26 Apr 2023 13:55:28 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id q9-20020acaf209000000b003908004b37dsm280080oih.26.2023.04.26.13.55.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Apr 2023 13:55:28 -0700 (PDT)
-Message-ID: <4b8e3c30-9626-dffd-0aff-4b5c650154ad@gmail.com>
-Date:   Wed, 26 Apr 2023 17:55:25 -0300
+        d=1e100.net; s=20221208; t=1682543076; x=1685135076;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oXn3Qe0ODKJu31q9zPWv7Wmykn21fz2cAXCa+pUXVoQ=;
+        b=Zqg6vrdE1wLlpE6bbsmckS9K5+oCVpRfe6vyhuwaU0IGiNkuh/ryWDyN8YjHluaDad
+         p5hDH7Q9fcy3osS2YjiMDrndQ1JfJODoQGinHZ2ikSt//sEzDZBesi+bGPc6GyD8A6AF
+         wfYe3yZYmiZUeu1SxHor/ltUEWdB61kKFWOz5RyE2NWXr8z4XCy8jIUDU+jefhfqHb02
+         j8eyZaPm9YyRVirW+gjsfq9DLDLat8l2iB7n+9FZjCYhHUNNBXFT2QMdDgVTDtuuOEUP
+         apVT3mHDYRj7PFri1ED1lygsr8rveIxSqhbKkJtjo/Wm7C3Px0zXBMuWzini1FFw40Q7
+         UflA==
+X-Gm-Message-State: AAQBX9ezNU6JVW99i5x3VFZfOgzW58SJ5e+fMyQvXonZTlAniW75tKp9
+        fMxoh1K1yA8zI6BhVPhkvzYRu5eYALda8uKhzhxIpxBC6SONypXC
+X-Google-Smtp-Source: AKy350bEaJOLX5xin8Kf5h/5gskz1USLtiV6Ugoxug3gasB+LEYv4sfOOeIFzjf0V7VqbXJzqiwVooke9iDP4Wnxa/4=
+X-Received: by 2002:ac2:4904:0:b0:4ec:9e40:e445 with SMTP id
+ n4-20020ac24904000000b004ec9e40e445mr6631940lfi.19.1682543076324; Wed, 26 Apr
+ 2023 14:04:36 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v3] rust: helpers: sort includes alphabetically in
- rust/helpers.c
-Content-Language: en-US
-To:     Ariel Miculas <amiculas@cisco.com>, rust-for-linux@vger.kernel.org,
+References: <CANiq72nm-tWGPHMaNF11baVRDFpk8ruvTAVDEWKfraEzADWqQQ@mail.gmail.com>
+ <20230426204923.16195-1-amiculas@cisco.com> <4b8e3c30-9626-dffd-0aff-4b5c650154ad@gmail.com>
+In-Reply-To: <4b8e3c30-9626-dffd-0aff-4b5c650154ad@gmail.com>
+From:   Ariel Miculas <ariel.miculas@gmail.com>
+Date:   Thu, 27 Apr 2023 00:04:24 +0300
+Message-ID: <CAPDJoNuX17h0=F7VRP=-VODG1bcdCYZAD+WNSofvpWPwwvbxMg@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: helpers: sort includes alphabetically in rust/helpers.c
+To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc:     Ariel Miculas <amiculas@cisco.com>, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, ojeda@kernel.org,
         alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
         gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me
-References: <CANiq72nm-tWGPHMaNF11baVRDFpk8ruvTAVDEWKfraEzADWqQQ@mail.gmail.com>
- <20230426204923.16195-1-amiculas@cisco.com>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230426204923.16195-1-amiculas@cisco.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 4/26/23 17:49, Ariel Miculas wrote:
-> Sort the #include directives of rust/helpers.c alphabetically and add a
-> comment specifying this. The reason for this is to improve readability
-> and to be consistent with the other files with a similar approach within
-> 'rust/'.
-> 
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1003
-> Signed-off-by: Ariel Miculas <amiculas@cisco.com>
-> ---
-> [...]
-Shouldn't the link use the `Link: <url> [1]` format? Otherwise LGTM.
+This is the format I see in https://docs.kernel.org/process/5.Posting.html#
+```
+Link: https://example.com/somewhere.html  optional-other-stuff
+```
+And looking briefly through the git log I see the simple `Link:
+www.example.com` format.
+But I'm happy to change this if needed, can you point me to the right forma=
+t?
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+On Wed, Apr 26, 2023 at 11:57=E2=80=AFPM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
+>
+> On 4/26/23 17:49, Ariel Miculas wrote:
+> > Sort the #include directives of rust/helpers.c alphabetically and add a
+> > comment specifying this. The reason for this is to improve readability
+> > and to be consistent with the other files with a similar approach withi=
+n
+> > 'rust/'.
+> >
+> > Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1003
+> > Signed-off-by: Ariel Miculas <amiculas@cisco.com>
+> > ---
+> > [...]
+> Shouldn't the link use the `Link: <url> [1]` format? Otherwise LGTM.
+>
+> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
