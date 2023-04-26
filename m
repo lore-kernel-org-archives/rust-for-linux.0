@@ -2,109 +2,78 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50C42C7618E
-	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 16:35:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00592C77B78
+	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 17:14:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231276AbjDZQfI (ORCPT
+        id S234644AbjDZROm (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 26 Apr 2023 12:35:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45270 "EHLO
+        Wed, 26 Apr 2023 13:14:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbjDZQfH (ORCPT
+        with ESMTP id S234727AbjDZROj (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 26 Apr 2023 12:35:07 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4A2876A9;
-        Wed, 26 Apr 2023 09:35:04 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (133-32-181-51.west.xps.vectant.ne.jp [133.32.181.51])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 56A8FD8B;
-        Wed, 26 Apr 2023 18:34:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1682526891;
-        bh=IlGICYbf2OmcQrRb9AvvNng682xHYM1XcOoTpyp8pVE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rvoao20PXhbOZI7SFOjI1tXqZ5sM8F97vCVmkC28g+MEh1z4VRfthI4m/Yw10BVwR
-         c2fSyxoVbW8FPZ0T4RdJPCvR1e9jT8ycHEfZ/ZsJRToJIINCFhLbBBemWFefLKvx8C
-         2xoUZMLo1RYWApbSSzw9xLdSnJ2/atEbKy6657og=
-Date:   Wed, 26 Apr 2023 19:35:12 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Hans Verkuil <hverkuil@xs4all.nl>,
-        Daniel Almeida <daniel.almeida@collabora.com>,
-        wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
+        Wed, 26 Apr 2023 13:14:39 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3670446A1;
+        Wed, 26 Apr 2023 10:14:38 -0700 (PDT)
+Received: from [100.127.1.155] (unknown [152.37.90.84])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: dwlsalmeida)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id B4B756600864;
+        Wed, 26 Apr 2023 18:14:35 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1682529275;
+        bh=Dcun5oNCOCFo7L673tpG/HZq/i2cDaSzyIlQU9SgMeU=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=m+0l8j60/rL8i+QHt9zvW3X7PTAwK9B9JjmdoyeXnZJvptHrrNg9QUrqFrYzWlXSJ
+         66KchxA+NrA82qxYe3V+zqsB1m5eK47yXBOLedEzh7JR7BPAgqiRHESV08Al/cbM5N
+         6QatVh8IvgfqpIPX4xIPiThG6tYRWvy4nHRotXzk+puZAGlumj08tRGPxuY1/f/QDb
+         cEx1AL9UduYPVttQ4hxd6/atvogoOQmr9X9W0Ebpfg0P1qk1QLayFvWSsNYZ+72mh2
+         l/0CItHpL4SZrNfBgIt7VOeAdpFRjDw7KyIZQ0qqP7XYKcE+2H5Gg+7kVPym+Xc5qa
+         3uoD/oODmDjeQ==
+Message-ID: <7b4ea4fc-7d73-d229-4645-366b1ea574fb@collabora.com>
+Date:   Wed, 26 Apr 2023 18:14:33 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+Content-Language: en-US
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Hans Verkuil <hverkuil@xs4all.nl>, wedsonaf@gmail.com,
+        ojeda@kernel.org, mchehab@kernel.org,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-media@vger.kernel.org, kernel@collabora.com,
         Sakari Ailus <sakari.ailus@iki.fi>
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-Message-ID: <20230426163512.GE18120@pendragon.ideasonboard.com>
 References: <20230406215615.122099-1-daniel.almeida@collabora.com>
  <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
  <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
  <20230426003210.GA31260@pendragon.ideasonboard.com>
  <CANiq72nLtpOn2HcOneoQ6v_TcYAEj_W8z2HCQvF4HmB4+OoSZA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nLtpOn2HcOneoQ6v_TcYAEj_W8z2HCQvF4HmB4+OoSZA@mail.gmail.com>
+ <20230426163512.GE18120@pendragon.ideasonboard.com>
+From:   Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20230426163512.GE18120@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Miguel,
+Hi,
 
-(CC'ing Sakari Ailus)
+As I said higher up on this thread, I can maintain the Rust bits and 
+help out with the issues around it.
 
-On Wed, Apr 26, 2023 at 06:18:35PM +0200, Miguel Ojeda wrote:
-> On Wed, Apr 26, 2023 at 2:32 AM Laurent Pinchart wrote:
-> >
-> > Now, I hope that mentioning "lifetime management problems" will be
-> > enough to nerd-snipe a rust enthusiast or two to help fix the C code in
-> > order to implement proper rust bindings on top ;-)
-> 
-> Good idea ;)
-> 
-> I think it is definitely a good opportunity to consider how Rust could
-> fit the new design, and perhaps borrow some ideas from Rust for the
-> new design, even. If you feel like a quick meeting could help on that,
-> please let us know.
+IMHO, we should at least try this. Who knows, it might work out :)
 
-I think we have a fairly good view of what needs to be done, the rules
-are the same regardless of the programming language and whether the
-compiler or reviewers enforce them (Hans, Sakari, please feel free to
-disagree). Thanks for your offer though, it's appreciated.
+Laurent, maybe we can take a piecemeal approach? Right now there are no 
+bindings for MC, but I wouldn't complain about fixing some of the C code 
+when the time comes.
 
-> > That would certainly be a required step, but I don't think it would be
-> > enough. On good days I see the media subsystem as barely able to cope
-> > with the current load, on bad days it feels it's completely collapsing.
-> >
-> > We have homework to do when it comes to maintenance for the media
-> > subsystem, we're doing *really* badly at the moment regarding community
-> > management and attracting (and retaining) new core contributors. This is
-> > a topic I really want to discuss face to face during the media workshop
-> > in Prague (and I know that many people are looking forward to that
-> > discussion).
-> 
-> I am sorry to hear that. One idea would be offsetting the extra work
-> by having the Rust person also take care of some of the C parts too.
-> That way you can also potentially get them to be a full maintainer at
-> some point, even if the Rust experiment does not pan out.
+Just FYI, I am writing some more bindings, just enough to write a 
+stateless decoder driver. I hope to finish it in time for the media 
+summit. It will give us a more in-depth idea of the pros and cons here.
 
-That's certainly something I would consider very positive. If anyone is
-interested in having a look at (part of) the problem and possible
-solutions, [1] is the most recent patch series posted to handle some of
-the lifetime issues, and [2] is a more generic version of part of [1].
-
-[1] https://lore.kernel.org/linux-media/20230201214535.347075-1-sakari.ailus@linux.intel.com/
-[2] https://lore.kernel.org/linux-kernel/161117153248.2853729.2452425259045172318.stgit@dwillia2-desk3.amr.corp.intel.com/
-
-> Of course, easier said than done, and managing more people always
-> takes extra time, but getting more people seems to be part of the
-> solution anyway, from what you say.
-> 
-> In any case, thanks a lot for at least considering it :)
-
--- 
-Regards,
-
-Laurent Pinchart
+-- Daniel
