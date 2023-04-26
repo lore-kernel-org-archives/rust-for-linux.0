@@ -2,110 +2,115 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72598C77B7F
-	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 00:32:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C6DEC77B60
+	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 04:49:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237479AbjDZAcF (ORCPT
+        id S239314AbjDZEtl (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 25 Apr 2023 20:32:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47610 "EHLO
+        Wed, 26 Apr 2023 00:49:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236413AbjDZAcE (ORCPT
+        with ESMTP id S239146AbjDZEtk (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 25 Apr 2023 20:32:04 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18BE2B236;
-        Tue, 25 Apr 2023 17:32:03 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (133-32-181-51.west.xps.vectant.ne.jp [133.32.181.51])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id DA23A2CF;
-        Wed, 26 Apr 2023 02:31:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1682469108;
-        bh=J0H/I3MHC57rloZ2Y3S5PUrNrgy8f/8EJ9VwOYm2S10=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YREWwOIE7IwcRZFehUJe5hzIshER8rKPV/zBWdvqT8YRPhPwcwWEK2/kKpnYy/oPD
-         0MHQFIDqEDkHAmxevwQ4vwN3JYfCvefeSzL2eHvLmjPQmgcbaTJi3A9ygbFDxmUWXd
-         VfqZrWUcKvyUZZRdADk7kX7VfKWQ/Rs73vhD6Fu8=
-Date:   Wed, 26 Apr 2023 03:32:10 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Hans Verkuil <hverkuil@xs4all.nl>,
-        Daniel Almeida <daniel.almeida@collabora.com>,
-        wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-Message-ID: <20230426003210.GA31260@pendragon.ideasonboard.com>
-References: <20230406215615.122099-1-daniel.almeida@collabora.com>
- <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
- <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
+        Wed, 26 Apr 2023 00:49:40 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A08518D
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Apr 2023 21:49:36 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1a69f686345so52633675ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Apr 2023 21:49:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1682484575; x=1685076575;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q87RPXE6DI0eKRLmsGLLiia6SM1aDcMrG91sJC9XiNc=;
+        b=JRGC94+4PwQd6bj+bhMJ0luv77EUyXGXDPWLgjM+9V5XYwVSoDJsyG/MNujIHT3wMU
+         xnqxxjhnlc52TYDsWIGO7u9ZKOE67uPf20AzGUTi6bDwdSGfRczZFPkhbkgd+6uAS5un
+         f/CRZaDq5DKbiW8pq5UmoMX6r/dM2KCv99OmA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682484575; x=1685076575;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q87RPXE6DI0eKRLmsGLLiia6SM1aDcMrG91sJC9XiNc=;
+        b=DWRphjHPceQIiL8tATOEcCgpi0qSetf9X0TP2IypqpdUS2kFcf8ONzbVssIJHLvS8G
+         WFu9RtWs1XieQdrCy/BPevlt1IqrMU+LJzpupecPapzRhOJKG62bRF7GjdbnhXwOB/xj
+         E6sn5AmHK3dU1avJDdix/LTOMkNCEjweMHzRLCB9B6F40QWFwRgc4vTgcJU7zfk53RbA
+         BpD4I+atMjZIYGQ5i3G0o+Ojg9hNX6eL9s66jMH3wYm6Q40pE7IIhvRomldmFz13hcEQ
+         bYiygSbqZQ6CPGuN6mNHe90qQJqW/oydyYCLOvs+bKQh2C2f0q5IApp0T2auTwU4y6+G
+         Uo+A==
+X-Gm-Message-State: AAQBX9eBz6WVE3qVL9KWLiSCxqVnsmQYRoInRPT4OpnKNlZuiX64mJam
+        Q4GTcnsDwV7sa18m8eA0iTKpAw==
+X-Google-Smtp-Source: AKy350ZMC1xD9dDoVpHt3Z1nGYL5MHRDxYRmBb0Li+R4+np0wLm8hyHeiS8ybBCDD+HubMTW09NfWw==
+X-Received: by 2002:a17:902:a989:b0:1a6:5575:9059 with SMTP id bh9-20020a170902a98900b001a655759059mr18495024plb.62.1682484575457;
+        Tue, 25 Apr 2023 21:49:35 -0700 (PDT)
+Received: from google.com (KD124209188001.ppp-bb.dion.ne.jp. [124.209.188.1])
+        by smtp.gmail.com with ESMTPSA id bt20-20020a17090af01400b00246cfdb570asm10533287pjb.27.2023.04.25.21.49.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Apr 2023 21:49:34 -0700 (PDT)
+Date:   Wed, 26 Apr 2023 13:49:28 +0900
+From:   Sergey Senozhatsky <senozhatsky@chromium.org>
+To:     syzbot <syzbot+d692037148a8169fc9dd@syzkaller.appspotmail.com>
+Cc:     alex.gaynor@gmail.com, andriy.shevchenko@linux.intel.com,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
+        bpf@vger.kernel.org, gary@garyguo.net,
+        linux-kernel@vger.kernel.org, linux@rasmusvillemoes.dk,
+        ojeda@kernel.org, pmladek@suse.com, rostedt@goodmis.org,
+        rust-for-linux@vger.kernel.org, senozhatsky@chromium.org,
+        syzkaller-bugs@googlegroups.com, wedsonaf@gmail.com
+Subject: Re: [syzbot] upstream boot error: BUG: unable to handle kernel NULL
+ pointer dereference in __dabt_svc
+Message-ID: <20230426044928.GD1496740@google.com>
+References: <00000000000079eebe05fa2ea9ad@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
+In-Reply-To: <00000000000079eebe05fa2ea9ad@google.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Apr 11, 2023 at 02:02:17PM +0200, Miguel Ojeda wrote:
-> On Tue, Apr 11, 2023 at 9:51 AM Hans Verkuil <hverkuil@xs4all.nl> wrote:
-> >
-> > One of my main concerns here is time: as subsystem maintainers we can barely
-> > keep up with all the incoming patches. Introducing support for a new language
-> > would add only more pressure. Even though these are mainly bindings (as I
-> > understand it), this would still require that every change to a C kAPI is
-> > duplicated in rust, requiring someone to do that work, and have maintainers
-> > with enough rust knowledge to verify it.
+On (23/04/25 13:06), syzbot wrote:
+> 8<--- cut here ---
+> Unable to handle kernel NULL pointer dereference at virtual address 000005fc when read
+> [000005fc] *pgd=80000080004003, *pmd=00000000
+> Internal error: Oops: 206 [#1] PREEMPT SMP ARM
+> Modules linked in:
+> CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-syzkaller #0
+> Hardware name: ARM-Versatile Express
 
-Another issue is that the V4L2 subsystem is plagued with lifetime
-management problems. I don't think rust bindings could be safely written
-for the MC and V4L2 subdev in-kernel APIs at the moment for instance.
-Sakari recently attempted to fix some of those issues (again), see [1].
-Progress is slow on this front because V4L2 is generally understaffed.
+> Insufficient stack space to handle exception!
 
-[1] https://lore.kernel.org//20230201214535.347075-1-sakari.ailus@linux.intel.com
+So much stuff is going on there.
 
-Now, I hope that mentioning "lifetime management problems" will be
-enough to nerd-snipe a rust enthusiast or two to help fix the C code in
-order to implement proper rust bindings on top ;-)
+> Task stack:     [0xdf85c000..0xdf85e000]
+> IRQ stack:      [0xdf804000..0xdf806000]
+> Overflow stack: [0x828ae000..0x828af000]
+> Internal error: kernel stack overflow: 0 [#2] PREEMPT SMP ARM
+> Modules linked in:
+> CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-syzkaller #0
+> Hardware name: ARM-Versatile Express
+> PC is at __dabt_svc+0x14/0x60 arch/arm/kernel/entry-armv.S:210
+> LR is at vsnprintf+0x378/0x408 lib/vsprintf.c:2862
+> pc : [<80200a74>]    lr : [<817ad5d8>]    psr: 00000193
+> sp : df804028  ip : df805868  fp : df805864
+> r10: 00000060  r9 : ffffffff  r8 : 00000010
+> r7 : 00000020  r6 : 00000004  r5 : ffffffff  r4 : df805960
+> r3 : ffffffff  r2 : 00000040  r1 : ffffffff  r0 : 8264d250
+> Flags: nzcv  IRQs off  FIQs on  Mode SVC_32  ISA ARM  Segment none
+> Control: 30c5387d  Table: 80003000  DAC: 00000000
+> Register r0 information:
+> 8<--- cut here ---
+> Unable to handle kernel NULL pointer dereference at virtual address 000001ff when read
+> [000001ff] *pgd=80000080004003, *pmd=00000000
+> Internal error: Oops: 206 [#3] PREEMPT SMP ARM
+> Modules linked in:
+> CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.3.0-syzkaller #0
+> Hardware name: ARM-Versatile Express
+> PC is at __find_vmap_area mm/vmalloc.c:841 [inline]
+> PC is at find_vmap_area mm/vmalloc.c:1862 [inline]
+> PC is at find_vm_area mm/vmalloc.c:2571 [inline]
+> PC is at vmalloc_dump_obj+0x38/0xb4 mm/vmalloc.c:4108
+> LR is at __raw_spin_lock include/linux/spinlock_api_smp.h:132 [inline]
+> LR is at _raw_spin_lock+0x18/0x58 kernel/locking/spinlock.c:154
 
-> Indeed, that is one of the main costs.
-> 
-> One potential solution is to have somebody step up as the maintainer
-> of the Rust side (e.g. the author of the abstractions).
-
-That would certainly be a required step, but I don't think it would be
-enough. On good days I see the media subsystem as barely able to cope
-with the current load, on bad days it feels it's completely collapsing.
-
-We have homework to do when it comes to maintenance for the media
-subsystem, we're doing *really* badly at the moment regarding community
-management and attracting (and retaining) new core contributors. This is
-a topic I really want to discuss face to face during the media workshop
-in Prague (and I know that many people are looking forward to that
-discussion).
-
-> Of course, that will not make the work go to zero, since there still
-> needs to be some degree of communication even if the new maintainer
-> does all the Rust side work, but it may make it feasible, especially
-> if the abstracted parts of the C API do not change too frequently.
-> 
-> It is also an opportunity for existing maintainers to see how the Rust
-> side would work meanwhile the work gets done, and potentially a chance
-> to get a new maintainer involved with the whole subsystem in the
-> future.
-> 
-> Some subsystems may want to give that maintainer a different
-> `MAINTAINERS` entry, e.g. as a child subsystem that sends PRs to the
-> main one and may be marked as "experimental". This is also a way to
-> see how the new abstractions work or not, giving maintainers more time
-> to decide whether to commit to a Rust side or not.
-> 
-> I don't mean to say it would be doable for the media subsystem, but
-> please consider it.
-
--- 
-Regards,
-
-Laurent Pinchart
+Not sure if I can make sense out of this.
