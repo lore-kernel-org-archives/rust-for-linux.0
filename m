@@ -2,78 +2,77 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00592C77B78
-	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 17:14:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8822EC77B78
+	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 17:26:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234644AbjDZROm (ORCPT
+        id S234872AbjDZR0D (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 26 Apr 2023 13:14:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39092 "EHLO
+        Wed, 26 Apr 2023 13:26:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234727AbjDZROj (ORCPT
+        with ESMTP id S236258AbjDZR0C (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 26 Apr 2023 13:14:39 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3670446A1;
-        Wed, 26 Apr 2023 10:14:38 -0700 (PDT)
-Received: from [100.127.1.155] (unknown [152.37.90.84])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: dwlsalmeida)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id B4B756600864;
-        Wed, 26 Apr 2023 18:14:35 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1682529275;
-        bh=Dcun5oNCOCFo7L673tpG/HZq/i2cDaSzyIlQU9SgMeU=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=m+0l8j60/rL8i+QHt9zvW3X7PTAwK9B9JjmdoyeXnZJvptHrrNg9QUrqFrYzWlXSJ
-         66KchxA+NrA82qxYe3V+zqsB1m5eK47yXBOLedEzh7JR7BPAgqiRHESV08Al/cbM5N
-         6QatVh8IvgfqpIPX4xIPiThG6tYRWvy4nHRotXzk+puZAGlumj08tRGPxuY1/f/QDb
-         cEx1AL9UduYPVttQ4hxd6/atvogoOQmr9X9W0Ebpfg0P1qk1QLayFvWSsNYZ+72mh2
-         l/0CItHpL4SZrNfBgIt7VOeAdpFRjDw7KyIZQ0qqP7XYKcE+2H5Gg+7kVPym+Xc5qa
-         3uoD/oODmDjeQ==
-Message-ID: <7b4ea4fc-7d73-d229-4645-366b1ea574fb@collabora.com>
-Date:   Wed, 26 Apr 2023 18:14:33 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-Content-Language: en-US
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Hans Verkuil <hverkuil@xs4all.nl>, wedsonaf@gmail.com,
+        Wed, 26 Apr 2023 13:26:02 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA5E08685;
+        Wed, 26 Apr 2023 10:25:30 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (133-32-181-51.west.xps.vectant.ne.jp [133.32.181.51])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4A56AD8B;
+        Wed, 26 Apr 2023 19:25:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1682529917;
+        bh=C0w6HV85tx1i2so4OVKA9mCXsw1kPxaiuII4qstxlfU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=EQ0bZVrdpyGZDU/zwyHl+M6Zx/+e0pMdiY38bj+Jy/QSUHufgHVJmaEXFNtNJQvrY
+         noZDokVSwQB5cs4wZ0fVCAVsZoc6WyBSTgpsCj8AxQQ5mZmWN+fGU84qhsV0sqcnfO
+         plV49hvKeQc44jrsBVsj5g+D8EZ7sFXxeN3VP4KU=
+Date:   Wed, 26 Apr 2023 20:25:39 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Daniel Almeida <daniel.almeida@collabora.com>
+Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Hans Verkuil <hverkuil@xs4all.nl>, wedsonaf@gmail.com,
         ojeda@kernel.org, mchehab@kernel.org,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-media@vger.kernel.org, kernel@collabora.com,
         Sakari Ailus <sakari.ailus@iki.fi>
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+Message-ID: <20230426172539.GD2326@pendragon.ideasonboard.com>
 References: <20230406215615.122099-1-daniel.almeida@collabora.com>
  <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
  <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
  <20230426003210.GA31260@pendragon.ideasonboard.com>
  <CANiq72nLtpOn2HcOneoQ6v_TcYAEj_W8z2HCQvF4HmB4+OoSZA@mail.gmail.com>
  <20230426163512.GE18120@pendragon.ideasonboard.com>
-From:   Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20230426163512.GE18120@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <7b4ea4fc-7d73-d229-4645-366b1ea574fb@collabora.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <7b4ea4fc-7d73-d229-4645-366b1ea574fb@collabora.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi,
+Hi Daniel,
 
-As I said higher up on this thread, I can maintain the Rust bits and 
-help out with the issues around it.
+On Wed, Apr 26, 2023 at 06:14:33PM +0100, Daniel Almeida wrote:
+> Hi,
+> 
+> As I said higher up on this thread, I can maintain the Rust bits and 
+> help out with the issues around it.
+> 
+> IMHO, we should at least try this. Who knows, it might work out :)
+> 
+> Laurent, maybe we can take a piecemeal approach? Right now there are no 
+> bindings for MC, but I wouldn't complain about fixing some of the C code 
+> when the time comes.
 
-IMHO, we should at least try this. Who knows, it might work out :)
+The lifetime issues affect plain V4L2 video nodes too I'm afraid :-)
 
-Laurent, maybe we can take a piecemeal approach? Right now there are no 
-bindings for MC, but I wouldn't complain about fixing some of the C code 
-when the time comes.
+> Just FYI, I am writing some more bindings, just enough to write a 
+> stateless decoder driver. I hope to finish it in time for the media 
+> summit. It will give us a more in-depth idea of the pros and cons here.
 
-Just FYI, I am writing some more bindings, just enough to write a 
-stateless decoder driver. I hope to finish it in time for the media 
-summit. It will give us a more in-depth idea of the pros and cons here.
+-- 
+Regards,
 
--- Daniel
+Laurent Pinchart
