@@ -2,75 +2,110 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 469B0C77B60
-	for <rust-for-linux@archiver.kernel.org>; Sun, 30 Apr 2023 20:08:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06799C77B73
+	for <rust-for-linux@archiver.kernel.org>; Mon,  1 May 2023 20:12:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232105AbjD3UIY (ORCPT
+        id S230008AbjEAUMv (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 30 Apr 2023 16:08:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54364 "EHLO
+        Mon, 1 May 2023 16:12:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232082AbjD3UIS (ORCPT
+        with ESMTP id S232967AbjEAULM (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 30 Apr 2023 16:08:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27A2810D7;
-        Sun, 30 Apr 2023 13:08:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Mon, 1 May 2023 16:11:12 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86E742122;
+        Mon,  1 May 2023 13:11:10 -0700 (PDT)
+Received: from nicolas-tpx395.localdomain (unknown [IPv6:2606:6d00:15:199e::7a9])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D57A61038;
-        Sun, 30 Apr 2023 20:08:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CCF44C433D2;
-        Sun, 30 Apr 2023 20:08:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682885289;
-        bh=t2xJTluT8JPh7EIo5tKzDvYugPPh/MSnmHWUEwOKqbM=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=Ei7+eWZSJXM9vlUcMaFpn9qVwSVQ7OWzEdseS5OssZiindn+dvnOttvIxwgbmM1Vd
-         Z7etv0i6Gg8vn8uV+w7gHZLNQK7K5dQk7TvJuIPkLmSB92nv+Fp5g47hQaVGPFok63
-         FFjB9dsB4bmHxUM98tewiTC+s9mwCWjXAsP5eHf5PJXB0l9S/lONH+4l3dVNMn1+hf
-         4wg/Rh6solCNCxolBYMKjyAJx0sDCOfj5H+mngXaVuDWs3b0NaT4im0aXqXSdwuqrH
-         QSQe+Tui/nqRtZrohv5v4zVZ7OmbmUwEwGhdhdYtYP9w1cIpGhMM13IKNcsiObVIpp
-         B6wbnU2Pq4q9Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id B7FF9E5FFC9;
-        Sun, 30 Apr 2023 20:08:09 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust for 6.4
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20230429012119.421536-1-ojeda@kernel.org>
-References: <20230429012119.421536-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20230429012119.421536-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux tags/rust-6.4
-X-PR-Tracked-Commit-Id: ea76e08f4d901a450619831a255e9e0a4c0ed162
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 310897659cf056016e2c772a028f9b8abc934928
-Message-Id: <168288528974.32747.13019561296474196328.pr-tracker-bot@kernel.org>
-Date:   Sun, 30 Apr 2023 20:08:09 +0000
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+        (Authenticated sender: nicolas)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id E938366031D1;
+        Mon,  1 May 2023 21:11:07 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1682971869;
+        bh=E9+JAVIKOHUI/bC6kIDQQn55ysbLwtpFNYyDx0fneP8=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=BhHXgX3o5ZSyzRWSJ5h07HbeIb+zUisczD5d39AM5bW85PBAIY9nd/57+HxVKCfYp
+         c6dDkozSKoYu6YWaxk/I2/CZLTL8Ktbo0215IDromeXgp1qNXXJD+u+ldVwb8F4ItD
+         MQUS9e3FaW92dhhqwWxb6hKToSDeadtGsq4fAuEIBSEBOE99cH5UlnR2Iz1PwIBqhu
+         44UYzqvt4x8c3kTbiEHbdH7ZAu9PhRptO+EuRgK0LkfWEb2P1hgjQnCur0kBRqhshc
+         TMdTVhdBGT9e6kMNl/CGpU1xDeSNFpv4ITUaGvGn6sWP40zpRD6LhSgMiwtgG7HoZm
+         193YfHz8tvmMQ==
+Message-ID: <9cf10a4d7a9eec237f5d18f79f6ae4bd031489bb.camel@collabora.com>
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+From:   Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Daniel Almeida <daniel.almeida@collabora.com>
+Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Hans Verkuil <hverkuil@xs4all.nl>, wedsonaf@gmail.com,
+        ojeda@kernel.org, mchehab@kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, kernel@collabora.com,
+        Sakari Ailus <sakari.ailus@iki.fi>
+Date:   Mon, 01 May 2023 16:10:58 -0400
+In-Reply-To: <20230426172539.GD2326@pendragon.ideasonboard.com>
+References: <20230406215615.122099-1-daniel.almeida@collabora.com>
+         <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
+         <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
+         <20230426003210.GA31260@pendragon.ideasonboard.com>
+         <CANiq72nLtpOn2HcOneoQ6v_TcYAEj_W8z2HCQvF4HmB4+OoSZA@mail.gmail.com>
+         <20230426163512.GE18120@pendragon.ideasonboard.com>
+         <7b4ea4fc-7d73-d229-4645-366b1ea574fb@collabora.com>
+         <20230426172539.GD2326@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1 (3.48.1-1.fc38) 
+MIME-Version: 1.0
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-The pull request you sent on Sat, 29 Apr 2023 03:21:19 +0200:
+Le mercredi 26 avril 2023 =C3=A0 20:25 +0300, Laurent Pinchart a =C3=A9crit=
+=C2=A0:
+> Hi Daniel,
+>=20
+> On Wed, Apr 26, 2023 at 06:14:33PM +0100, Daniel Almeida wrote:
+> > Hi,
+> >=20
+> > As I said higher up on this thread, I can maintain the Rust bits and=
+=20
+> > help out with the issues around it.
+> >=20
+> > IMHO, we should at least try this. Who knows, it might work out :)
+> >=20
+> > Laurent, maybe we can take a piecemeal approach? Right now there are no=
+=20
+> > bindings for MC, but I wouldn't complain about fixing some of the C cod=
+e=20
+> > when the time comes.
+>=20
+> The lifetime issues affect plain V4L2 video nodes too I'm afraid :-)
 
-> https://github.com/Rust-for-Linux/linux tags/rust-6.4
+Everything under the bindings is unsafe code, so it does not prevent doing =
+upper
+implementation and have other things be memory safe. It just make Rust less
+helpful in some cases (I guess everything across ops).
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/310897659cf056016e2c772a028f9b8abc934928
+There is low hanging fruit if some folks are interested. I see legitimate
+benefit in rewriting in rust the JPEG parser, the H.264 reference list
+generator, and maybe VP9 probability update lib. AV1 driver will need a lib=
+ to
+reduce duplicates, this could be done straight in Rust (offering a C interf=
+ace
+of course, so it does not matter if the users are written in rust or C).
 
-Thank you!
+Nicolas
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+>=20
+> > Just FYI, I am writing some more bindings, just enough to write a=20
+> > stateless decoder driver. I hope to finish it in time for the media=20
+> > summit. It will give us a more in-depth idea of the pros and cons here.
+>=20
+> --=20
+> Regards,
+>=20
+> Laurent Pinchart
+>=20
+
