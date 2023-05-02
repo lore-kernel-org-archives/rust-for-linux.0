@@ -2,94 +2,141 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E367C77B73
-	for <rust-for-linux@archiver.kernel.org>; Tue,  2 May 2023 13:59:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEF47C77B7E
+	for <rust-for-linux@archiver.kernel.org>; Tue,  2 May 2023 17:00:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233972AbjEBN7e (ORCPT
+        id S229945AbjEBRAJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 2 May 2023 09:59:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55954 "EHLO
+        Tue, 2 May 2023 13:00:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233934AbjEBN7d (ORCPT
+        with ESMTP id S229586AbjEBRAJ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 2 May 2023 09:59:33 -0400
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABA791A5;
-        Tue,  2 May 2023 06:59:30 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: lina@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 4FB044214F;
-        Tue,  2 May 2023 13:59:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1683035969;
-        bh=8Wn3w9SLbhBFAEK8pHc8Xyamcv2XxT5RZDDxAaNh7AM=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=Z9E8L28FKAybrZUWOPVDX7Q++j8ioGIUeuqYwowdgAg02iiAt5iHk2ebfiJDdwnvV
-         S/FPph/bI5ll4r4AcrC2dtjfa+3Q6A2/jJG+N5oXmUczrlv+o20zTpuGxyg6l62rtW
-         9iNWs742FySAdCAB/KGkaK1/iKu9ecV+4lu7er9EDL6tVHx2CfvOlmzsevU8wFBssf
-         He2/09jqhheQXflYSh1HwjQ83wHUq9D0cZi8KTkLSKE3JgU45v28v/pzGYe8iCg0eY
-         amKKBEQZzp40+rvnAVZ9ZpamJdnBFudzCr5FbcXBiEMHVYvhFDwZhBvfelf5+Qo79Y
-         kYOdnZE6jqSaw==
-Message-ID: <b48b84fe-c71f-b3e4-890c-8ccb26e6bdb0@asahilina.net>
-Date:   Tue, 2 May 2023 22:59:24 +0900
+        Tue, 2 May 2023 13:00:09 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E8EB2114;
+        Tue,  2 May 2023 10:00:07 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-b9d9dad9edfso5219188276.2;
+        Tue, 02 May 2023 10:00:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683046806; x=1685638806;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2JuzgaRSwqX93Paz8QMIW2w6sN1tsO1/zDhr8bQyJhU=;
+        b=eFRn/beJBSstmGMrZtoYnDVn0LbYK/XQfQeez8QUz+OFuKfJjo5HdP0RhIVCl/oKoQ
+         0beAEmckSFMVmC/FvrSqxNkyd/oze7dqbUYNYYXtZhFLwp34FhEmy+PyxECIglxEob3b
+         h61xNGFSSStI3aKEEiSetu0lubr5OPti/2v7lBAYxz11WmypJFzep6Du33BINW45Xa4O
+         QtyuxfJjPl03PTmspIcq4lRLFMIhqbtK2KGRY8b4JK4IZrUKw8SSqo8G/pv8cFF5w2s0
+         XU7leAQ+qTmAmfsJTn6tZGCiJNOZrrU7hDNgd9diAFWPrLAfzfDGiMxJsJdhUtD1u7pq
+         XA8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683046806; x=1685638806;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2JuzgaRSwqX93Paz8QMIW2w6sN1tsO1/zDhr8bQyJhU=;
+        b=KqYuBpi304r2uC41s0DG8XnK0S8fbjmnIEaKDf6h3+wVdq+0gCgTTHBd/258Q4CUvi
+         KYkjJwxYBincvWzY4UapR5QvkLPMs9dnJDAUDDzOHLJrvTed0fApuwM4k90ZIZjvgocU
+         4yChE1EiJqJ+z9MkmOVv+YQ8wgJVbZU5gPCJzVo9Osli74zHQQfH7CZqwYBJNxK2ax1A
+         JkiL0NMYHDmxrzbYObUmC+nwIX71EwbAShd6GrcmBJlfU/H88LuIFoPuxoc1o0Wb9yO6
+         Mxsk182+3OHf8IKyncnSqcwbcsn72OuYO5fMrM+ITjCzwYn9Ez48HiwCG7LrIV1s40Qa
+         Sm2A==
+X-Gm-Message-State: AC+VfDw55W3HAW8mtkKeZzKQfzQGk3gY3eEjVQR4YITJgn24pfAzqpUx
+        3XUbrQOhM4Al1LHmiXxb+uByfYkP2kfu72ucPGrQUH6kD7o=
+X-Google-Smtp-Source: ACHHUZ6bE/xq2Qn+iEAMe8Oxl5bvh8V3EXlR1Li/Xdmzx4xFCozf90pZSHDYVUQp6VAj57DeQOOyUAOUucuphEvie0U=
+X-Received: by 2002:a25:cd45:0:b0:b9d:7887:4423 with SMTP id
+ d66-20020a25cd45000000b00b9d78874423mr12778541ybf.16.1683046806559; Tue, 02
+ May 2023 10:00:06 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH] rust: error: allow specifying error type on `Result`
-Content-Language: en-US
-To:     Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+References: <20230502125306.358283-1-aliceryhl@google.com>
+In-Reply-To: <20230502125306.358283-1-aliceryhl@google.com>
+From:   Wedson Almeida Filho <wedsonaf@gmail.com>
+Date:   Tue, 2 May 2023 13:59:56 -0300
+Message-ID: <CANeycqo+htksD_nj-eyCTOtE0TQHJR+dHZ1Hu8cL5eXNt4cd=A@mail.gmail.com>
+Subject: Re: [PATCH] rust: str: add conversion from `CStr` to `CString`
+To:     Alice Ryhl <aliceryhl@google.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-References: <20230502124015.356001-1-aliceryhl@google.com>
-From:   Asahi Lina <lina@asahilina.net>
-In-Reply-To: <20230502124015.356001-1-aliceryhl@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 02/05/2023 21.40, Alice Ryhl wrote:
-> Currently, if the `kernel::error::Result` type is in scope (which is
-> often is, since it's in the kernel's prelude), you cannot write
-> `Result<T, SomeOtherErrorType>` when you want to use a different error
-> type than `kernel::error::Error`.
-> 
-> To solve this we change the error type from being hard-coded to just
-> being a default generic parameter. This still lets you write `Result<T>`
-> when you just want to use the `Error` error type, but also lets you
-> write `Result<T, SomeOtherErrorType>` when necessary.
-> 
+On Tue, 2 May 2023 at 09:53, Alice Ryhl <aliceryhl@google.com> wrote:
+>
+> These methods can be used to copy the data in a temporary c string into
+> a separate allocation, so that it can be accessed later even if the
+> original is deallocated.
+>
+> The API in this file mirrors the standard library API for the `&str` and
+> `String` types. The `ToOwned` trait is not implemented because it
+> assumes that allocations are infallible.
+>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->   rust/kernel/error.rs | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 5f4114b30b94..01dd4d2f63d2 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -177,7 +177,7 @@ impl From<core::convert::Infallible> for Error {
->   /// Note that even if a function does not return anything when it succeeds,
->   /// it should still be modeled as returning a `Result` rather than
->   /// just an [`Error`].
-> -pub type Result<T = ()> = core::result::Result<T, Error>;
-> +pub type Result<T = (), E = Error> = core::result::Result<T, E>;
->   
->   /// Converts an integer as returned by a C kernel function to an error if it's negative, and
->   /// `Ok(())` otherwise.
-> 
+>  rust/kernel/str.rs | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+>
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index b771310fa4a4..54935ff3a610 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -2,6 +2,7 @@
+>
+>  //! String representations.
+>
+> +use alloc::collections::TryReserveError;
+>  use alloc::vec::Vec;
+>  use core::fmt::{self, Write};
+>  use core::ops::{self, Deref, Index};
+> @@ -199,6 +200,12 @@ impl CStr {
+>      pub unsafe fn as_str_unchecked(&self) -> &str {
+>          unsafe { core::str::from_utf8_unchecked(self.as_bytes()) }
+>      }
+> +
+> +    /// Convert this [`CStr`] into a [`CString`] by allocating memory and
+> +    /// copying over the string data.
+> +    pub fn to_cstring(&self) -> Result<CString, TryReserveError> {
+> +        CString::try_from(self)
+> +    }
+>  }
+>
+>  impl fmt::Display for CStr {
+> @@ -584,6 +591,20 @@ impl Deref for CString {
+>      }
+>  }
+>
+> +impl<'a> TryFrom<&'a CStr> for CString {
+> +    type Error = TryReserveError;
+
+Wouldn't `AllocError` make more sense? Or even Error (with ENOMEM value).
+
+`TryReserveError` is documented as "The error type for try_reserve
+methods." -- that fact the we use a `Vec` is an implementation detail,
+I feel it's better not to leak this fact through the public API.
+
+> +
+> +    fn try_from(cstr: &'a CStr) -> Result<CString, TryReserveError> {
+> +        let len = cstr.len_with_nul();
+> +        let mut buf = Vec::try_with_capacity(len)?;
+> +        buf.try_extend_from_slice(cstr.as_bytes_with_nul())?;
+> +
+> +        // INVARIANT: The CStr and CString types have the same invariants for
+> +        // the string data, and we copied it over without changes.
+> +        Ok(CString { buf })
+> +    }
+> +}
+> +
+>  /// A convenience alias for [`core::format_args`].
+>  #[macro_export]
+>  macro_rules! fmt {
+>
 > base-commit: ea76e08f4d901a450619831a255e9e0a4c0ed162
-
-Reviewed-by: Asahi Lina <lina@asahilina.net>
-
-~~ Lina
-
+> --
+> 2.40.1.495.gc816e09b53d-goog
+>
