@@ -2,91 +2,125 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39682C77B7E
-	for <rust-for-linux@archiver.kernel.org>; Tue,  2 May 2023 18:05:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1376C77B73
+	for <rust-for-linux@archiver.kernel.org>; Tue,  2 May 2023 18:16:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233753AbjEBSFx (ORCPT
+        id S234074AbjEBSQl (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 2 May 2023 14:05:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49002 "EHLO
+        Tue, 2 May 2023 14:16:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233143AbjEBSFw (ORCPT
+        with ESMTP id S229575AbjEBSQk (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 2 May 2023 14:05:52 -0400
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0BA11AC
-        for <rust-for-linux@vger.kernel.org>; Tue,  2 May 2023 11:05:47 -0700 (PDT)
-Date:   Tue, 02 May 2023 18:05:35 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1683050746; x=1683309946;
-        bh=znP+osTE6o5AJ/qvNTfPmzh+zPk8QH79B6JsIRrwNuA=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=l3A8wvNYGDLcC28ydvG/pfcymsjWjUmOqECSmGEVnXNt9j//sHKxmyTHSjgYngZgJ
-         CvGT/32QrU9mR9wVpjdPEObBZKph3hZsYNA4pgHKACtmqM7zkzzg3ou7rAYKESlokE
-         Pq5FwaBzWokMSF7oic8i0avf87th5+u5dzXE4jepOGdfFI9+SkjHwj7WFfmify2/UL
-         ipfrxpGlrwkW/oKRqLuYozja6DhMo2cHfE82wfQFZ1ds0J7+/TSnbJCRgokSQ6D4cZ
-         ncBoMajboMugZz5XbkovvxLdi/RUc2PC4MPdtTFpkI4RMpIEMkaKBhRw4k9m0Il9+Q
-         BSmOkKPoA27yQ==
-To:     Alice Ryhl <aliceryhl@google.com>
-From:   Benno Lossin <benno.lossin@proton.me>
+        Tue, 2 May 2023 14:16:40 -0400
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B45F6EC;
+        Tue,  2 May 2023 11:16:38 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id 378F85C00C7;
+        Tue,  2 May 2023 14:16:36 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Tue, 02 May 2023 14:16:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
+        :content-transfer-encoding:content-type:content-type:date:date
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1683051396; x=1683137796; bh=gRaJ+D8upH0CzVnGVpD0jcCp3qLvV1xzPMZ
+        YZq2YRko=; b=EyrPOiozK/Fc8+rQe6EiQwZZvYGY40mKnr64LslwNMRgJiKYBLU
+        ZsroAojo1M2fRvQwGgYaWCBfO3xRWzXiLofI7zg8p4PaInKuGdfyqPYdsdEn44Jv
+        f7NtydfgtP0qmk+xxUvEtp4qs+bSkI6o56blF8KTuqgs8J4hQtAPuvP5hnrvjYFy
+        8GXRv0SQwYdVKp5Kp/g1OESSQm+HPOFOVT/b/3/ehNMXczNi4MpNiAu0iLSXP6bb
+        HIngyn3Bj3Ypz/N5LeVa1ge+YTSqR5RKxBdOGttF3IRqfIoUyvvHal4UDb5cZGdG
+        yq8mY4bPJN4vEM/lrtdQXCcXWnwQMiT37aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+        1683051396; x=1683137796; bh=gRaJ+D8upH0CzVnGVpD0jcCp3qLvV1xzPMZ
+        YZq2YRko=; b=Xk2rKxj0nQIattvbHpT+OpTF4Dx015K7RvgQ0w6+ouZJ5X0Qgc9
+        1N+aysufQ5Rdwhx0h4+3BFROv8t3Hnm6l1f6wHCYVtR7y6MIZ4FcLuCMSt2Xyk9P
+        K9r6NLVVGcMblWnJ9xBx4u44aW2GtThcxFr/+Z0gzQEQ1j3ko/qRRceHqBuY/Nq+
+        +JxSZM+MCcMjHv1eaiHPJrECi4kFq0cx+CerSooRJRAJMEQ/DCxxwVxUmvTBodXz
+        4k+m94I5BxVgJV/y0GGqMm/yxWi9X2gRWxLGK/NS2mrE0DFF3wyuVsIr9xRUTYBO
+        TtsubKvepbFVOMFx+AxcHv88SqLGf2ZdZ6g==
+X-ME-Sender: <xms:hFNRZGAVpvX2e9OhB9VPLxMUq3XARc8uGXQU1SxDu_WwK7YSpudIrg>
+    <xme:hFNRZAh2YQvDKhBcOnLSBPJWQmvJZTfGntOWRsvOfZAd0pbVO-WZAY95N4UYeDB15
+    Q7fW06IcNRX05Nn_A>
+X-ME-Received: <xmr:hFNRZJnJSh9cuW-sNtCATtwQp7T8eKQVemoKCEs8X0W_uDka9vljOnNcvU19Edeb4yNWc49f7-7Pq1kx7M4aJoij6w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfedviedguddvfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttdefjeenucfhrhhomheptehl
+    ihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnh
+    epheduuddvteekvdektdduledugfffhfdugeejgeeuvdevtdetveejheehiefffeegnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvg
+    esrhihhhhlrdhioh
+X-ME-Proxy: <xmx:hFNRZEy45k8ALRjWAArIbhkajw_4iA0IBX4G6Bu7SH_CuZXYXkZVYQ>
+    <xmx:hFNRZLSEJFmC0KiowwFSuMuk353qgiQQAXPSx0V3ILqZLjQA5wsGRw>
+    <xmx:hFNRZPbUnLK7GjyVAOc5zQqhWVDReXkoMRAIOO5Q4cQ7musCkzab_w>
+    <xmx:hFNRZGFKk3jCriPyP-LaLlLihNq67mRyab56TATqEAQp0GI51ntdWA>
+Feedback-ID: i56684263:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 2 May 2023 14:16:34 -0400 (EDT)
+Message-ID: <c9b27926-fcf5-b343-e70c-799a684faa75@ryhl.io>
+Date:   Tue, 2 May 2023 20:17:04 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] rust: str: add conversion from `CStr` to `CString`
+Content-Language: en-US
+To:     Benno Lossin <benno.lossin@proton.me>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-Subject: Re: [PATCH] rust: error: allow specifying error type on `Result`
-Message-ID: <Er7lvaSfICjicKWuIRGmTFh0P6hhG2fXUcky3Nt-Gr4XghX46r4bR9vUlggldACzw8CasUm6TuXT4U0Yxqh5tJsdctOPuDDysBTarB6FENc=@proton.me>
-In-Reply-To: <20230502124015.356001-1-aliceryhl@google.com>
-References: <20230502124015.356001-1-aliceryhl@google.com>
-Feedback-ID: 71780778:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20230502125306.358283-1-aliceryhl@google.com>
+ <CANeycqo+htksD_nj-eyCTOtE0TQHJR+dHZ1Hu8cL5eXNt4cd=A@mail.gmail.com>
+ <LUCgVpZBQNex70PxHGlNVauiTqldfXpTUbd9l0tkBl4yHBQ6qWIhIQu4eZn03UG4a3jrKqt4FyL81321CSXgdISmzYnn69DejmZ-UgXJgD0=@proton.me>
+From:   Alice Ryhl <alice@ryhl.io>
+In-Reply-To: <LUCgVpZBQNex70PxHGlNVauiTqldfXpTUbd9l0tkBl4yHBQ6qWIhIQu4eZn03UG4a3jrKqt4FyL81321CSXgdISmzYnn69DejmZ-UgXJgD0=@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 02.05.23 14:40, Alice Ryhl wrote:
-> Currently, if the `kernel::error::Result` type is in scope (which is
-> often is, since it's in the kernel's prelude), you cannot write
-> `Result<T, SomeOtherErrorType>` when you want to use a different error
-> type than `kernel::error::Error`.
->=20
-> To solve this we change the error type from being hard-coded to just
-> being a default generic parameter. This still lets you write `Result<T>`
-> when you just want to use the `Error` error type, but also lets you
-> write `Result<T, SomeOtherErrorType>` when necessary.
->=20
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On 5/2/23 20:02, Benno Lossin wrote:
+> On 02.05.23 18:59, Wedson Almeida Filho wrote:
+>> On Tue, 2 May 2023 at 09:53, Alice Ryhl <aliceryhl@google.com> wrote:
+>>>
+>>> +impl<'a> TryFrom<&'a CStr> for CString {
+>>> +    type Error = TryReserveError;
+>>
+>> Wouldn't `AllocError` make more sense? Or even Error (with ENOMEM value).
+>>
+>> `TryReserveError` is documented as "The error type for try_reserve
+>> methods." -- that fact the we use a `Vec` is an implementation detail,
+>> I feel it's better not to leak this fact through the public API.
+> 
+> I agree, it should be `AllocError`. There is a `From<AllocError> for Error`
+> with `ENOMEM` as the value, so `AllocError` is the most compatible, since it
+> simply converts to `Error` via `?`.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Sounds good to me.
 
-> ---
->   rust/kernel/error.rs | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 5f4114b30b94..01dd4d2f63d2 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -177,7 +177,7 @@ impl From<core::convert::Infallible> for Error {
->   /// Note that even if a function does not return anything when it succe=
-eds,
->   /// it should still be modeled as returning a `Result` rather than
->   /// just an [`Error`].
-> -pub type Result<T =3D ()> =3D core::result::Result<T, Error>;
-> +pub type Result<T =3D (), E =3D Error> =3D core::result::Result<T, E>;
->=20
->   /// Converts an integer as returned by a C kernel function to an error =
-if it's negative, and
->   /// `Ok(())` otherwise.
->=20
-> base-commit: ea76e08f4d901a450619831a255e9e0a4c0ed162
-> --
-> 2.40.1.495.gc816e09b53d-goog
->=20
+> Technically, `TryReserveError` represents two different kinds of errors:
+> - CapacityOverflow -- triggered when exceeding `isize::MAX` bytes of size
+> - AllocError -- memory allocation failed
+> 
+> I think it is fine to coalesce these into `AllocError`, since allocating
+> `isize::MAX` might as well be considered an OOM error.
+In fact, the `isize::MAX` case is unreachable since that would require 
+you to already have a `&CStr` of that size, which Rust does not allow.
 
+> With that fixed:
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
+Thanks both of you. I'll submit a v2 tomorrow.
+
+Alice
