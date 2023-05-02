@@ -2,56 +2,56 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 40286C7EE21
-	for <rust-for-linux@archiver.kernel.org>; Tue,  2 May 2023 12:40:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 413CDC77B7E
+	for <rust-for-linux@archiver.kernel.org>; Tue,  2 May 2023 12:53:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234021AbjEBMky (ORCPT
+        id S233638AbjEBMxj (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 2 May 2023 08:40:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56550 "EHLO
+        Tue, 2 May 2023 08:53:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234147AbjEBMkw (ORCPT
+        with ESMTP id S233614AbjEBMxi (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 2 May 2023 08:40:52 -0400
-Received: from mail-ed1-x54a.google.com (mail-ed1-x54a.google.com [IPv6:2a00:1450:4864:20::54a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00AA959D0
-        for <rust-for-linux@vger.kernel.org>; Tue,  2 May 2023 05:40:50 -0700 (PDT)
-Received: by mail-ed1-x54a.google.com with SMTP id 4fb4d7f45d1cf-50bcd24504eso1429032a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 May 2023 05:40:50 -0700 (PDT)
+        Tue, 2 May 2023 08:53:38 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 977B6E4D
+        for <rust-for-linux@vger.kernel.org>; Tue,  2 May 2023 05:53:37 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-b9a7df507c5so7498224276.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 May 2023 05:53:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683031249; x=1685623249;
+        d=google.com; s=20221208; t=1683032017; x=1685624017;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=ADtw/qW1A9BDeVMPTl0uodglbiJnCrGJeTfJlSlwBKg=;
-        b=RtMUrDSWYfljcmZM/ZtUMzf01ONWDqjrPnyBWPRvafhDE2ibUgIMV4q2TPupNf49Hn
-         LCSAs6t9MhQVa4Cjq4Z5jZS8uPlpzgWmjfiso1xgiADZNeIql8OJLlUI/AF/gKddo1Q7
-         putis1pK61uDgfKDnRrk/qsNBCqJvN0emkuYAppsSRgrA0amla/syw7lWZJ2015dUb6E
-         7IjrAmQ7gLKNIIeUNyTmukgtEIQH7TKHWerk+VKWds7L0O1rNLagmd/HvQ6wk+Nm6Cc5
-         VNGUV1iObaiBxMV2zsNZO9SWbnE8TaWL6/YCZgSPaWVGajYPUtn0bnfQ9zON4bfXpGVb
-         vuuQ==
+        bh=yD3RHOmw2YonU9lq/qLKI0ISZtFJQuh0JdGUDdx5IQ4=;
+        b=Nd8aPNd3NegOIXfFnsIObxs6yMD8V4tXgHyCuXTTN/BZDFLwElKICS86m6HIeGPcJo
+         sa21trMsksNhMFTJpnRHFOxe6gNFa2PqBhWUMgMEqBNGYcOmhcrg8ei2+afLGBQtW/1I
+         YIMFA+EfZnd6QWWaANQ6O85meD1Xgamv1yPKfhukbtXAhHP9s5JJiBaZJQdgAi8CTqMJ
+         Qw+6goOIKN8vyJJALi4cHybsIVUi6VKK1rXv+P7sExw7GiS2FJJRPFi1pw8zKYjxwhbK
+         Ccmy/M8HU8QnaK9dBM6FoQA3CxY0dQgSjB+fxgTqTuEnRE+Rb8jAuL2v7MM0U9luLK2k
+         Agjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683031249; x=1685623249;
+        d=1e100.net; s=20221208; t=1683032017; x=1685624017;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ADtw/qW1A9BDeVMPTl0uodglbiJnCrGJeTfJlSlwBKg=;
-        b=Vb9AqiRWLw1CCwNckJxWx1dhAkdYgoOqJymbKdhh+S3WxTvwvElzkAAxMUdHMMcULk
-         tvbHN5tKyRUE9SiKhSSyJR0QkIZ8AYLoG5WzJ6hMvD31xG1c8Fz3Z0qq2jb0p7McixSD
-         /cCqAdbEIDcvuVdkb2jV4akRpzdC2phRljUEASjzf+kWTVRMmsjwrpYZx+fCNgMj9BRU
-         ia0c3Qa3Mxd4Ix0Q1N2Nrtwp1JVF+26+D+uWX5j0e6Mgwsh0fZ/uLghCbAgNhwpTrQrS
-         00fxOOy+1EyRdAQWUPIuprVH/7SJSu/EOspC7kP9bsH8Kt0Lk/7z4Sg+zKDHIskXRCZX
-         FYrA==
-X-Gm-Message-State: AC+VfDxnTplHNBXL29yVDD7i4mdeQjsQXaRvqnjKo860CUsil49jRGc5
-        vs5xilYsp0hRQAh3SihrcuX2tNr2mOcaa3A=
-X-Google-Smtp-Source: ACHHUZ4PGt9JNY1496rQhEH+WLmSav3+qf88yqqFPW52fA2YiYcRFGcqDl4OEBgAI76aE3ZWAWeGyNcuQPShBzg=
+        bh=yD3RHOmw2YonU9lq/qLKI0ISZtFJQuh0JdGUDdx5IQ4=;
+        b=THc1etcvW3I+AObKD5rqvX9lp2OGCiVbx0kNmlZOGokxS3AM/r+4Q1cV24idgX68wa
+         Fy+LEPSzttpoub2NYKYYGoTAUjWPa/KYniqo8M1AsJTooNb5nURDEjYwHJG5Zc1t39fK
+         mnPFZHgHMJKm+ZVjQL5W2a4BaJ+AAGP+BHruIXEcdfHOP+R68y+zfwsn8QCtOFL2osfL
+         cfOs+vulg0drisrBe20SiT/twj+iW8tV4wYuXNCQBggxgvHC3QvxBRI6hJI7+QALWcc3
+         68Ip4nS62MgQhE4w5aTy6mBbQbg/jAt+MgUQC5LPoA64Pu5lLDCW1RlFJqbp3l11eqJi
+         16lQ==
+X-Gm-Message-State: AC+VfDw3CyQiAYspWN7HW4Bc6SjEsnjdTFTjnRoseAbkpXFtXii/H/GH
+        gfme+oMup1E0pHdm1//LqjUewv3pHWWh0j4=
+X-Google-Smtp-Source: ACHHUZ5gPH29sQUYLHBCrXjx3vdTmEARKf1rg93iTFELyjd4V+wNVN9mwS0ZUXmZdt8eM/8Fc88lx09nESpYrVE=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a50:9fe3:0:b0:50b:c83b:22d8 with SMTP id
- c90-20020a509fe3000000b0050bc83b22d8mr2063829edf.3.1683031242984; Tue, 02 May
- 2023 05:40:42 -0700 (PDT)
-Date:   Tue,  2 May 2023 12:40:15 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:100e:b0:b8f:47c4:58ed with SMTP
+ id w14-20020a056902100e00b00b8f47c458edmr10400410ybt.9.1683032016822; Tue, 02
+ May 2023 05:53:36 -0700 (PDT)
+Date:   Tue,  2 May 2023 12:53:06 +0000
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.40.1.495.gc816e09b53d-goog
-Message-ID: <20230502124015.356001-1-aliceryhl@google.com>
-Subject: [PATCH] rust: error: allow specifying error type on `Result`
+Message-ID: <20230502125306.358283-1-aliceryhl@google.com>
+Subject: [PATCH] rust: str: add conversion from `CStr` to `CString`
 From:   Alice Ryhl <aliceryhl@google.com>
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -66,34 +66,65 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Currently, if the `kernel::error::Result` type is in scope (which is
-often is, since it's in the kernel's prelude), you cannot write
-`Result<T, SomeOtherErrorType>` when you want to use a different error
-type than `kernel::error::Error`.
+These methods can be used to copy the data in a temporary c string into
+a separate allocation, so that it can be accessed later even if the
+original is deallocated.
 
-To solve this we change the error type from being hard-coded to just
-being a default generic parameter. This still lets you write `Result<T>`
-when you just want to use the `Error` error type, but also lets you
-write `Result<T, SomeOtherErrorType>` when necessary.
+The API in this file mirrors the standard library API for the `&str` and
+`String` types. The `ToOwned` trait is not implemented because it
+assumes that allocations are infallible.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/error.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/str.rs | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 5f4114b30b94..01dd4d2f63d2 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -177,7 +177,7 @@ impl From<core::convert::Infallible> for Error {
- /// Note that even if a function does not return anything when it succeeds,
- /// it should still be modeled as returning a `Result` rather than
- /// just an [`Error`].
--pub type Result<T = ()> = core::result::Result<T, Error>;
-+pub type Result<T = (), E = Error> = core::result::Result<T, E>;
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index b771310fa4a4..54935ff3a610 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -2,6 +2,7 @@
  
- /// Converts an integer as returned by a C kernel function to an error if it's negative, and
- /// `Ok(())` otherwise.
+ //! String representations.
+ 
++use alloc::collections::TryReserveError;
+ use alloc::vec::Vec;
+ use core::fmt::{self, Write};
+ use core::ops::{self, Deref, Index};
+@@ -199,6 +200,12 @@ impl CStr {
+     pub unsafe fn as_str_unchecked(&self) -> &str {
+         unsafe { core::str::from_utf8_unchecked(self.as_bytes()) }
+     }
++
++    /// Convert this [`CStr`] into a [`CString`] by allocating memory and
++    /// copying over the string data.
++    pub fn to_cstring(&self) -> Result<CString, TryReserveError> {
++        CString::try_from(self)
++    }
+ }
+ 
+ impl fmt::Display for CStr {
+@@ -584,6 +591,20 @@ impl Deref for CString {
+     }
+ }
+ 
++impl<'a> TryFrom<&'a CStr> for CString {
++    type Error = TryReserveError;
++
++    fn try_from(cstr: &'a CStr) -> Result<CString, TryReserveError> {
++        let len = cstr.len_with_nul();
++        let mut buf = Vec::try_with_capacity(len)?;
++        buf.try_extend_from_slice(cstr.as_bytes_with_nul())?;
++
++        // INVARIANT: The CStr and CString types have the same invariants for
++        // the string data, and we copied it over without changes.
++        Ok(CString { buf })
++    }
++}
++
+ /// A convenience alias for [`core::format_args`].
+ #[macro_export]
+ macro_rules! fmt {
 
 base-commit: ea76e08f4d901a450619831a255e9e0a4c0ed162
 -- 
