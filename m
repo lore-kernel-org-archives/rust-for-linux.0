@@ -2,125 +2,90 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E1376C77B73
-	for <rust-for-linux@archiver.kernel.org>; Tue,  2 May 2023 18:16:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 885B5C77B78
+	for <rust-for-linux@archiver.kernel.org>; Tue,  2 May 2023 19:14:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234074AbjEBSQl (ORCPT
+        id S229573AbjEBTN6 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 2 May 2023 14:16:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53616 "EHLO
+        Tue, 2 May 2023 15:13:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229575AbjEBSQk (ORCPT
+        with ESMTP id S229481AbjEBTN5 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 2 May 2023 14:16:40 -0400
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B45F6EC;
-        Tue,  2 May 2023 11:16:38 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id 378F85C00C7;
-        Tue,  2 May 2023 14:16:36 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Tue, 02 May 2023 14:16:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-        :content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-        1683051396; x=1683137796; bh=gRaJ+D8upH0CzVnGVpD0jcCp3qLvV1xzPMZ
-        YZq2YRko=; b=EyrPOiozK/Fc8+rQe6EiQwZZvYGY40mKnr64LslwNMRgJiKYBLU
-        ZsroAojo1M2fRvQwGgYaWCBfO3xRWzXiLofI7zg8p4PaInKuGdfyqPYdsdEn44Jv
-        f7NtydfgtP0qmk+xxUvEtp4qs+bSkI6o56blF8KTuqgs8J4hQtAPuvP5hnrvjYFy
-        8GXRv0SQwYdVKp5Kp/g1OESSQm+HPOFOVT/b/3/ehNMXczNi4MpNiAu0iLSXP6bb
-        HIngyn3Bj3Ypz/N5LeVa1ge+YTSqR5RKxBdOGttF3IRqfIoUyvvHal4UDb5cZGdG
-        yq8mY4bPJN4vEM/lrtdQXCcXWnwQMiT37aw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-        1683051396; x=1683137796; bh=gRaJ+D8upH0CzVnGVpD0jcCp3qLvV1xzPMZ
-        YZq2YRko=; b=Xk2rKxj0nQIattvbHpT+OpTF4Dx015K7RvgQ0w6+ouZJ5X0Qgc9
-        1N+aysufQ5Rdwhx0h4+3BFROv8t3Hnm6l1f6wHCYVtR7y6MIZ4FcLuCMSt2Xyk9P
-        K9r6NLVVGcMblWnJ9xBx4u44aW2GtThcxFr/+Z0gzQEQ1j3ko/qRRceHqBuY/Nq+
-        +JxSZM+MCcMjHv1eaiHPJrECi4kFq0cx+CerSooRJRAJMEQ/DCxxwVxUmvTBodXz
-        4k+m94I5BxVgJV/y0GGqMm/yxWi9X2gRWxLGK/NS2mrE0DFF3wyuVsIr9xRUTYBO
-        TtsubKvepbFVOMFx+AxcHv88SqLGf2ZdZ6g==
-X-ME-Sender: <xms:hFNRZGAVpvX2e9OhB9VPLxMUq3XARc8uGXQU1SxDu_WwK7YSpudIrg>
-    <xme:hFNRZAh2YQvDKhBcOnLSBPJWQmvJZTfGntOWRsvOfZAd0pbVO-WZAY95N4UYeDB15
-    Q7fW06IcNRX05Nn_A>
-X-ME-Received: <xmr:hFNRZJnJSh9cuW-sNtCATtwQp7T8eKQVemoKCEs8X0W_uDka9vljOnNcvU19Edeb4yNWc49f7-7Pq1kx7M4aJoij6w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfedviedguddvfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttdefjeenucfhrhhomheptehl
-    ihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnh
-    epheduuddvteekvdektdduledugfffhfdugeejgeeuvdevtdetveejheehiefffeegnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvg
-    esrhihhhhlrdhioh
-X-ME-Proxy: <xmx:hFNRZEy45k8ALRjWAArIbhkajw_4iA0IBX4G6Bu7SH_CuZXYXkZVYQ>
-    <xmx:hFNRZLSEJFmC0KiowwFSuMuk353qgiQQAXPSx0V3ILqZLjQA5wsGRw>
-    <xmx:hFNRZPbUnLK7GjyVAOc5zQqhWVDReXkoMRAIOO5Q4cQ7musCkzab_w>
-    <xmx:hFNRZGFKk3jCriPyP-LaLlLihNq67mRyab56TATqEAQp0GI51ntdWA>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 2 May 2023 14:16:34 -0400 (EDT)
-Message-ID: <c9b27926-fcf5-b343-e70c-799a684faa75@ryhl.io>
-Date:   Tue, 2 May 2023 20:17:04 +0200
+        Tue, 2 May 2023 15:13:57 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E704213E;
+        Tue,  2 May 2023 12:13:56 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-b9a824c3a95so6031762276.1;
+        Tue, 02 May 2023 12:13:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683054835; x=1685646835;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a7bqXSElpi/kZ95+932oHdNMDi2f2Hw+ckoBAhrXnLU=;
+        b=NugvqEoNVCmNjjMu6rG8gjVmAacxV4qKihwwPet1KOg7WBeNEHQ3QykLvtHRCmiEoP
+         /4JtJupV8eWfNDU0YrSN+cUrcCYrAlgSQpNnQP0l9i8nurV8GHCZl7vwzJrNB5K4DjRW
+         kkOB0Mtq3rdzfsm5way8BcoVSF1TyzH3mZLEJG3eponnOoOLqjjXtXzbUV9gyY7dHxav
+         +FpiQW49wLZ4Ka/UHpUSX9Z0C68HiLWTMdI+/Umrgz5vTM1fsVdLvZ9iCJKJWPbiahWb
+         zoQqUk6lSJlwggyLc8UYURXhkkR3rFQYdUO89F7eHF3SP1CdPoO/Y159cLsHGLhSlv9z
+         pJyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683054835; x=1685646835;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a7bqXSElpi/kZ95+932oHdNMDi2f2Hw+ckoBAhrXnLU=;
+        b=U8ptOWkMv1YiHAHE9TO1nDYh0W6udKJWCx0mC47loo3oi5cdQXaNENOeGgXCoMR8OJ
+         WVPs3PcKM8QUne7s4P36iPEanHhz9sVNH4vvZB/m7ks1X7b/QBvlvz7ezkwBCwdu6TYr
+         x1BrB38i36rp/mERqNOX/qRbOcirxaJCR69jvIwwOGd1tRWTF+zEhw7fccGt1vIekoBs
+         oF4TrcUgci4/BNhInMUYSgb4Tv2uytrzsbRer5EDThgMNE92e75RQvyMyKZ3oMMMNcTT
+         NrGbj/fn/T2eKY2uttqsEP96msvWJKefr8I6GiMbOklHOlupEwnb/lBpl55N7yeKq76e
+         q1IQ==
+X-Gm-Message-State: AC+VfDyza5+DarkkQ5uykHvR9GCnfLnSNbcpRTFvN4IgB7j/O600Gdoh
+        BrnMENDZj8u3F2aYiP7xg/Bel8ioeH1VWs6fFZLm2JfC
+X-Google-Smtp-Source: ACHHUZ6Z7yFXaaRPi3hIqKCJhW8bL57T6q3yhMHwB9Hwm3KXVJ5ba3Lnkt6dghfWd/qqs175p0LFPF+AzcxBRTiBcDA=
+X-Received: by 2002:a25:e74b:0:b0:b99:75f:8f24 with SMTP id
+ e72-20020a25e74b000000b00b99075f8f24mr19203396ybh.30.1683054835487; Tue, 02
+ May 2023 12:13:55 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] rust: str: add conversion from `CStr` to `CString`
-Content-Language: en-US
-To:     Benno Lossin <benno.lossin@proton.me>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+References: <20230406215615.122099-1-daniel.almeida@collabora.com>
+ <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl> <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
+ <20230426003210.GA31260@pendragon.ideasonboard.com> <CANiq72nLtpOn2HcOneoQ6v_TcYAEj_W8z2HCQvF4HmB4+OoSZA@mail.gmail.com>
+ <20230426163512.GE18120@pendragon.ideasonboard.com> <7b4ea4fc-7d73-d229-4645-366b1ea574fb@collabora.com>
+ <20230426172539.GD2326@pendragon.ideasonboard.com> <9cf10a4d7a9eec237f5d18f79f6ae4bd031489bb.camel@collabora.com>
+ <fe2dc70b-915c-ca2b-be81-a8ee66cf41cd@asahilina.net>
+In-Reply-To: <fe2dc70b-915c-ca2b-be81-a8ee66cf41cd@asahilina.net>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 2 May 2023 21:13:44 +0200
+Message-ID: <CANiq72m8cOWrO21PhUFcBap2j7ooKtAKdkOU9u8y-xGj_8fvoA@mail.gmail.com>
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+To:     Asahi Lina <lina@asahilina.net>
+Cc:     Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Daniel Almeida <daniel.almeida@collabora.com>,
+        Hans Verkuil <hverkuil@xs4all.nl>, wedsonaf@gmail.com,
+        ojeda@kernel.org, mchehab@kernel.org,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-References: <20230502125306.358283-1-aliceryhl@google.com>
- <CANeycqo+htksD_nj-eyCTOtE0TQHJR+dHZ1Hu8cL5eXNt4cd=A@mail.gmail.com>
- <LUCgVpZBQNex70PxHGlNVauiTqldfXpTUbd9l0tkBl4yHBQ6qWIhIQu4eZn03UG4a3jrKqt4FyL81321CSXgdISmzYnn69DejmZ-UgXJgD0=@proton.me>
-From:   Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <LUCgVpZBQNex70PxHGlNVauiTqldfXpTUbd9l0tkBl4yHBQ6qWIhIQu4eZn03UG4a3jrKqt4FyL81321CSXgdISmzYnn69DejmZ-UgXJgD0=@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        linux-media@vger.kernel.org, kernel@collabora.com,
+        Sakari Ailus <sakari.ailus@iki.fi>,
+        Antoni Boucher <bouanto@zoho.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 5/2/23 20:02, Benno Lossin wrote:
-> On 02.05.23 18:59, Wedson Almeida Filho wrote:
->> On Tue, 2 May 2023 at 09:53, Alice Ryhl <aliceryhl@google.com> wrote:
->>>
->>> +impl<'a> TryFrom<&'a CStr> for CString {
->>> +    type Error = TryReserveError;
->>
->> Wouldn't `AllocError` make more sense? Or even Error (with ENOMEM value).
->>
->> `TryReserveError` is documented as "The error type for try_reserve
->> methods." -- that fact the we use a `Vec` is an implementation detail,
->> I feel it's better not to leak this fact through the public API.
-> 
-> I agree, it should be `AllocError`. There is a `From<AllocError> for Error`
-> with `ENOMEM` as the value, so `AllocError` is the most compatible, since it
-> simply converts to `Error` via `?`.
+On Mon, May 1, 2023 at 10:17=E2=80=AFPM Asahi Lina <lina@asahilina.net> wro=
+te:
+>
+> Unfortunately I don't think actually replacing the C implementations
+> will be possible until Rust architecture support is on par with C, which
+> probably means waiting until gccrs is ready...
 
-Sounds good to me.
+There is also a second approach via `rustc_codegen_gcc`: Antoni (Cc'd)
+showed in Kangrejos and LPC last year that it could compile the Rust
+kernel code (with a few tweaks).
 
-> Technically, `TryReserveError` represents two different kinds of errors:
-> - CapacityOverflow -- triggered when exceeding `isize::MAX` bytes of size
-> - AllocError -- memory allocation failed
-> 
-> I think it is fine to coalesce these into `AllocError`, since allocating
-> `isize::MAX` might as well be considered an OOM error.
-In fact, the `isize::MAX` case is unreachable since that would require 
-you to already have a `&CStr` of that size, which Rust does not allow.
-
-> With that fixed:
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-Thanks both of you. I'll submit a v2 tomorrow.
-
-Alice
+Cheers,
+Miguel
