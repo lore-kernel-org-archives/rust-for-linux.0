@@ -2,126 +2,100 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AA0AC77B7C
-	for <rust-for-linux@archiver.kernel.org>; Mon,  1 May 2023 20:19:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40286C7EE21
+	for <rust-for-linux@archiver.kernel.org>; Tue,  2 May 2023 12:40:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232457AbjEAUTs (ORCPT
+        id S234021AbjEBMky (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 1 May 2023 16:19:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55638 "EHLO
+        Tue, 2 May 2023 08:40:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232402AbjEAUTr (ORCPT
+        with ESMTP id S234147AbjEBMkw (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 1 May 2023 16:19:47 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D1B810F8;
-        Mon,  1 May 2023 13:19:46 -0700 (PDT)
-Received: from nicolas-tpx395.localdomain (unknown [IPv6:2606:6d00:15:199e::7a9])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: nicolas)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id CAF8366031D1;
-        Mon,  1 May 2023 21:19:43 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1682972385;
-        bh=pbrESEfekhsjMPolhasTcArmhhrFw3yLtkwB4eep2Ek=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=RMZMcaTlhP2lDPfA/lTZbV/PM/UFX+xtS+iOz+gSZmo2XFfEBRQIevK2tEX1ASUxX
-         ANv85eA8Bh+NAN8bpFuD+E2BuszL4xqToCqLbtCEyvsnfrmeG9+e9LJHI/MzFz7LTK
-         uMt831pr7IIBUYFMQHC9qlDuhAkR5uApJ6wpwilHe8m4hDB9SUght+LLs+txr/Y966
-         0JjSFzZZF/wNa/mBB03zKrf1h5kQLraG56XMBLMeiwiIF5J2qaThG1FmXKVF3LYvC6
-         oz4erpCGrDc92fPnE6U6TpjEhgO/DYpS6zYQKacwVZFPPU6AvbSv4lIz7E1m8eN7LC
-         Q/IYe4zMhY9Kw==
-Message-ID: <75d9d50fd0e6858ee05a3f2799028b8dc846ec93.camel@collabora.com>
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-From:   Nicolas Dufresne <nicolas.dufresne@collabora.com>
-To:     Asahi Lina <lina@asahilina.net>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Daniel Almeida <daniel.almeida@collabora.com>
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Hans Verkuil <hverkuil@xs4all.nl>, wedsonaf@gmail.com,
-        ojeda@kernel.org, mchehab@kernel.org,
+        Tue, 2 May 2023 08:40:52 -0400
+Received: from mail-ed1-x54a.google.com (mail-ed1-x54a.google.com [IPv6:2a00:1450:4864:20::54a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00AA959D0
+        for <rust-for-linux@vger.kernel.org>; Tue,  2 May 2023 05:40:50 -0700 (PDT)
+Received: by mail-ed1-x54a.google.com with SMTP id 4fb4d7f45d1cf-50bcd24504eso1429032a12.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 May 2023 05:40:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1683031249; x=1685623249;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ADtw/qW1A9BDeVMPTl0uodglbiJnCrGJeTfJlSlwBKg=;
+        b=RtMUrDSWYfljcmZM/ZtUMzf01ONWDqjrPnyBWPRvafhDE2ibUgIMV4q2TPupNf49Hn
+         LCSAs6t9MhQVa4Cjq4Z5jZS8uPlpzgWmjfiso1xgiADZNeIql8OJLlUI/AF/gKddo1Q7
+         putis1pK61uDgfKDnRrk/qsNBCqJvN0emkuYAppsSRgrA0amla/syw7lWZJ2015dUb6E
+         7IjrAmQ7gLKNIIeUNyTmukgtEIQH7TKHWerk+VKWds7L0O1rNLagmd/HvQ6wk+Nm6Cc5
+         VNGUV1iObaiBxMV2zsNZO9SWbnE8TaWL6/YCZgSPaWVGajYPUtn0bnfQ9zON4bfXpGVb
+         vuuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683031249; x=1685623249;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ADtw/qW1A9BDeVMPTl0uodglbiJnCrGJeTfJlSlwBKg=;
+        b=Vb9AqiRWLw1CCwNckJxWx1dhAkdYgoOqJymbKdhh+S3WxTvwvElzkAAxMUdHMMcULk
+         tvbHN5tKyRUE9SiKhSSyJR0QkIZ8AYLoG5WzJ6hMvD31xG1c8Fz3Z0qq2jb0p7McixSD
+         /cCqAdbEIDcvuVdkb2jV4akRpzdC2phRljUEASjzf+kWTVRMmsjwrpYZx+fCNgMj9BRU
+         ia0c3Qa3Mxd4Ix0Q1N2Nrtwp1JVF+26+D+uWX5j0e6Mgwsh0fZ/uLghCbAgNhwpTrQrS
+         00fxOOy+1EyRdAQWUPIuprVH/7SJSu/EOspC7kP9bsH8Kt0Lk/7z4Sg+zKDHIskXRCZX
+         FYrA==
+X-Gm-Message-State: AC+VfDxnTplHNBXL29yVDD7i4mdeQjsQXaRvqnjKo860CUsil49jRGc5
+        vs5xilYsp0hRQAh3SihrcuX2tNr2mOcaa3A=
+X-Google-Smtp-Source: ACHHUZ4PGt9JNY1496rQhEH+WLmSav3+qf88yqqFPW52fA2YiYcRFGcqDl4OEBgAI76aE3ZWAWeGyNcuQPShBzg=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a50:9fe3:0:b0:50b:c83b:22d8 with SMTP id
+ c90-20020a509fe3000000b0050bc83b22d8mr2063829edf.3.1683031242984; Tue, 02 May
+ 2023 05:40:42 -0700 (PDT)
+Date:   Tue,  2 May 2023 12:40:15 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.40.1.495.gc816e09b53d-goog
+Message-ID: <20230502124015.356001-1-aliceryhl@google.com>
+Subject: [PATCH] rust: error: allow specifying error type on `Result`
+From:   Alice Ryhl <aliceryhl@google.com>
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        "=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, kernel@collabora.com,
-        Sakari Ailus <sakari.ailus@iki.fi>
-Date:   Mon, 01 May 2023 16:19:35 -0400
-In-Reply-To: <fe2dc70b-915c-ca2b-be81-a8ee66cf41cd@asahilina.net>
-References: <20230406215615.122099-1-daniel.almeida@collabora.com>
-         <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
-         <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
-         <20230426003210.GA31260@pendragon.ideasonboard.com>
-         <CANiq72nLtpOn2HcOneoQ6v_TcYAEj_W8z2HCQvF4HmB4+OoSZA@mail.gmail.com>
-         <20230426163512.GE18120@pendragon.ideasonboard.com>
-         <7b4ea4fc-7d73-d229-4645-366b1ea574fb@collabora.com>
-         <20230426172539.GD2326@pendragon.ideasonboard.com>
-         <9cf10a4d7a9eec237f5d18f79f6ae4bd031489bb.camel@collabora.com>
-         <fe2dc70b-915c-ca2b-be81-a8ee66cf41cd@asahilina.net>
+        patches@lists.linux.dev, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1 (3.48.1-1.fc38) 
-MIME-Version: 1.0
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Le mardi 02 mai 2023 =C3=A0 05:17 +0900, Asahi Lina a =C3=A9crit=C2=A0:
-> On 02/05/2023 05.10, Nicolas Dufresne wrote:
-> > Le mercredi 26 avril 2023 =C3=A0 20:25 +0300, Laurent Pinchart a =C3=A9=
-crit=C2=A0:
-> > > Hi Daniel,
-> > >=20
-> > > On Wed, Apr 26, 2023 at 06:14:33PM +0100, Daniel Almeida wrote:
-> > > > Hi,
-> > > >=20
-> > > > As I said higher up on this thread, I can maintain the Rust bits an=
-d
-> > > > help out with the issues around it.
-> > > >=20
-> > > > IMHO, we should at least try this. Who knows, it might work out :)
-> > > >=20
-> > > > Laurent, maybe we can take a piecemeal approach? Right now there ar=
-e no
-> > > > bindings for MC, but I wouldn't complain about fixing some of the C=
- code
-> > > > when the time comes.
-> > >=20
-> > > The lifetime issues affect plain V4L2 video nodes too I'm afraid :-)
-> >=20
-> > Everything under the bindings is unsafe code, so it does not prevent do=
-ing upper
-> > implementation and have other things be memory safe. It just make Rust =
-less
-> > helpful in some cases (I guess everything across ops).
-> >=20
-> > There is low hanging fruit if some folks are interested. I see legitima=
-te
-> > benefit in rewriting in rust the JPEG parser, the H.264 reference list
-> > generator, and maybe VP9 probability update lib. AV1 driver will need a=
- lib to
-> > reduce duplicates, this could be done straight in Rust (offering a C in=
-terface
-> > of course, so it does not matter if the users are written in rust or C)=
-.
->=20
-> Unfortunately I don't think actually replacing the C implementations=20
-> will be possible until Rust architecture support is on par with C, which=
-=20
-> probably means waiting until gccrs is ready...
->=20
-> We could have both implementations until then (and only use the C one=20
-> where Rust doesn't work), but the code duplication has an extra=20
-> maintenance cost so it's not free. That's why people are mostly focusing=
-=20
-> on drivers first instead of core code.
+Currently, if the `kernel::error::Result` type is in scope (which is
+often is, since it's in the kernel's prelude), you cannot write
+`Result<T, SomeOtherErrorType>` when you want to use a different error
+type than `kernel::error::Error`.
 
-Didn't know that, let's postpone this idea then.
+To solve this we change the error type from being hard-coded to just
+being a default generic parameter. This still lets you write `Result<T>`
+when you just want to use the `Error` error type, but also lets you
+write `Result<T, SomeOtherErrorType>` when necessary.
 
-thanks,
-Nicolas
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/error.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->=20
-> ~~ Lina
->=20
->=20
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 5f4114b30b94..01dd4d2f63d2 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -177,7 +177,7 @@ impl From<core::convert::Infallible> for Error {
+ /// Note that even if a function does not return anything when it succeeds,
+ /// it should still be modeled as returning a `Result` rather than
+ /// just an [`Error`].
+-pub type Result<T = ()> = core::result::Result<T, Error>;
++pub type Result<T = (), E = Error> = core::result::Result<T, E>;
+ 
+ /// Converts an integer as returned by a C kernel function to an error if it's negative, and
+ /// `Ok(())` otherwise.
+
+base-commit: ea76e08f4d901a450619831a255e9e0a4c0ed162
+-- 
+2.40.1.495.gc816e09b53d-goog
 
