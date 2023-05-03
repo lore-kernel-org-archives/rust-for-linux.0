@@ -2,55 +2,55 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74781C7EE26
-	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 09:07:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F156C7EE2E
+	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 09:07:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229872AbjECJH0 (ORCPT
+        id S229804AbjECJHb (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 3 May 2023 05:07:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45288 "EHLO
+        Wed, 3 May 2023 05:07:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjECJHX (ORCPT
+        with ESMTP id S229792AbjECJH1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 3 May 2023 05:07:23 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF7712700
-        for <rust-for-linux@vger.kernel.org>; Wed,  3 May 2023 02:07:18 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-3062db220a3so2193187f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 May 2023 02:07:18 -0700 (PDT)
+        Wed, 3 May 2023 05:07:27 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1037E4C09
+        for <rust-for-linux@vger.kernel.org>; Wed,  3 May 2023 02:07:21 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-3063b5f32aaso957148f8f.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 May 2023 02:07:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1683104837; x=1685696837;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1683104840; x=1685696840;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eyybpekGpHGVvvaVewFrSrZRoEZZ/l3dGyzewmhKKwg=;
-        b=Hpob7q1r0p4V0caXE2crEE/51FttP5ZNpxWPBnl62DekIdsJcpMiZqQ+U+0jmvfFhs
-         BuAsztkxherqbyie+iWYnyQMMPYONBuj/oH4n3bIkTFCW6YxZ1Qzi8QEu4wrtQeU4R3m
-         7pVC6wXg8s6dc6fWLdUSxUdlxle+M8WZmsl6xw4ADtWTPKY3Cr+OeVC1eL/tZD3HUO9D
-         q8HSTwHe/phJrkywr0Cj2YrKfBXdA8V3FvuTAJaBlWK+ou8a65EmklXozWcnoVqQl1Nt
-         SaOHMzoSKIqGjhbX5y3I97bbfDs7YJsYXztcWuw71U7QjlCUZXS0UIkgwyYoGaNAdEA8
-         IrdQ==
+        bh=8Hg9EF+CTDGGAsWt0N5WyI6rk7QsJ8yExmPcN8MX0qQ=;
+        b=d+lWf2ETGwZ6l0kF5yoMkucYwDf2kDuSHvqzafoL6LSaWDyChZFeb/y3Ask+uZL3ub
+         Crm1FWg7HSXUUHQu4aZsOctpyLqbz0tvhgPgilALIxNAKTgLG9YZ5O7UUoSFUznFtAd7
+         8OtJqUv7m3XxiwrPol077Wc7De84xWLwlJ9zH1FgVk7LrKu7kj7KMolcbNdrGquUbXHA
+         gx1o+RI6ewKReUGP7O57duA5S2sDgZdoARg8MtGBlJBT45+yVJtwMrDiwgD1CJt2xVPz
+         ns0renNS1R/Xu68zuPNBQGUcpB38HrRkV/8/C94FuyxzQvT6lrnKR7AKdmaNVmf1WOts
+         FeSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683104837; x=1685696837;
+        d=1e100.net; s=20221208; t=1683104840; x=1685696840;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eyybpekGpHGVvvaVewFrSrZRoEZZ/l3dGyzewmhKKwg=;
-        b=VVQZPwWNQoukVHTYpXWbIobwJGIEu1z6dgYEJq4elifC8oJXwxxGsXwQ97eO1G6cUK
-         CljepN8qB8a1Z46sic7C3C43wHGWDWSfHRUCxQps2kHsndq+c5U7JQT2L+IZyHdYUj//
-         apnH/1n1uLSCoKX4ggd0/xaDmwR/4SUSFdg4CwQOCV1hWgTROMTl+yM0LWhRvs5Oad6E
-         xJcLDliNbrUQLLyhLiz7LOcibmdAyAI/zIQ3wDUNc87lGokXORxL8LJ+DA6mjCRf9xKb
-         TO3jXLLZY/ptIo7OSLmThMb164Fe16jp0tjg5ixWH6g9TpDe91P28mQ5U9S5CzN4b7rx
-         8/Yg==
-X-Gm-Message-State: AC+VfDyl4UY46XnIHrwQa7hv6fiHkYBBMr+zR5LvbXkqJHsbK3l1LvmV
-        Cxh63zaLk+K8FlALecSFFCH7rQ==
-X-Google-Smtp-Source: ACHHUZ4c7pdGYmFDE+EObHEdf29jnpXn/rtwlDJWATkEBCQ9LPR+y1yLX/HtD1fPIL1dXO2oFBe9Lg==
-X-Received: by 2002:a5d:54d1:0:b0:306:2ff6:5cbf with SMTP id x17-20020a5d54d1000000b003062ff65cbfmr6873320wrv.24.1683104837081;
-        Wed, 03 May 2023 02:07:17 -0700 (PDT)
+        bh=8Hg9EF+CTDGGAsWt0N5WyI6rk7QsJ8yExmPcN8MX0qQ=;
+        b=ORZ6XB/gtRRCJsBI7g20E6Ix0ltY2r17lfsr1cuyzk4FlQh/KN8b9KOT8UnG/JrXt+
+         nZrO3p48PbZb0GezlYmpzIFhQzWedtWYYeF5hyfLpCA+MIggNfQBeX5TvykvaPmVIfGS
+         7TSbfgM/HvrJMtSkj+2I8QkVNW0GrgIb3K+IAQMcbz0g0HhaeMTqXFaemEEm3mIB8n6c
+         10CiVk3KxWKj9UMyRgkT3c3NJvHMX5iulY+6KGFj0PTTC7vrHSmWuUB3vzD+fqvjfW0g
+         6HsGS8h8QKuI1Lk9JI+RaFejivXpDmHMvmXqXpHGJHvUGkUo85UqI0gfuam30lhuTCq9
+         t+XQ==
+X-Gm-Message-State: AC+VfDwj42ZwZEtXOuiJ18E+D+2zyJ8V2vlZ5xBvvHbcC8rIwQtWQNNZ
+        rAEOdLuNwHZmfeB4B2Jpynp/uw==
+X-Google-Smtp-Source: ACHHUZ6T2y7vjejoAr+gXXz7fkMQ4wlDgEasl/1jBzVe1iLoMPS+zptIdaYP9DejgMdUNDfXGrvBNg==
+X-Received: by 2002:adf:e484:0:b0:306:320b:5dbd with SMTP id i4-20020adfe484000000b00306320b5dbdmr5824254wrm.71.1683104840210;
+        Wed, 03 May 2023 02:07:20 -0700 (PDT)
 Received: from localhost ([147.161.155.99])
-        by smtp.gmail.com with ESMTPSA id e2-20020a056000120200b00306281cfa59sm9741741wrx.47.2023.05.03.02.07.16
+        by smtp.gmail.com with ESMTPSA id v12-20020adfe28c000000b0030497b3224bsm20046305wri.64.2023.05.03.02.07.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 May 2023 02:07:16 -0700 (PDT)
+        Wed, 03 May 2023 02:07:19 -0700 (PDT)
 From:   Andreas Hindborg <nmi@metaspace.dk>
 To:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
         Keith Busch <kbusch@kernel.org>,
@@ -68,9 +68,9 @@ Cc:     Andreas Hindborg <a.hindborg@samsung.com>,
         Benno Lossin <benno.lossin@proton.me>,
         Andreas Hindborg <nmi@metaspace.dk>,
         linux-kernel@vger.kernel.org (open list), gost.dev@samsung.com
-Subject: [RFC PATCH 01/11] rust: add radix tree abstraction
-Date:   Wed,  3 May 2023 11:06:58 +0200
-Message-Id: <20230503090708.2524310-2-nmi@metaspace.dk>
+Subject: [RFC PATCH 04/11] rust: block: introduce `kernel::block::bio` module
+Date:   Wed,  3 May 2023 11:07:01 +0200
+Message-Id: <20230503090708.2524310-5-nmi@metaspace.dk>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230503090708.2524310-1-nmi@metaspace.dk>
 References: <20230503090708.2524310-1-nmi@metaspace.dk>
@@ -82,257 +82,348 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 From: Andreas Hindborg <a.hindborg@samsung.com>
 
-Add abstractions for the C radix_tree. This abstraction allows Rust code to use
-the radix_tree as a map from `u64` keys to `ForeignOwnable` values.
+Add abstractions for working with `struct bio`.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 ---
- rust/bindings/bindings_helper.h |   2 +
- rust/bindings/lib.rs            |   1 +
- rust/helpers.c                  |  22 +++++
- rust/kernel/lib.rs              |   1 +
- rust/kernel/radix_tree.rs       | 156 ++++++++++++++++++++++++++++++++
- 5 files changed, 182 insertions(+)
- create mode 100644 rust/kernel/radix_tree.rs
+ rust/kernel/block.rs            |   1 +
+ rust/kernel/block/bio.rs        |  93 ++++++++++++++++
+ rust/kernel/block/bio/vec.rs    | 181 ++++++++++++++++++++++++++++++++
+ rust/kernel/block/mq/request.rs |  16 +++
+ 4 files changed, 291 insertions(+)
+ create mode 100644 rust/kernel/block/bio.rs
+ create mode 100644 rust/kernel/block/bio/vec.rs
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 50e7a76d5455..52834962b94d 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -10,7 +10,9 @@
- #include <linux/refcount.h>
- #include <linux/wait.h>
- #include <linux/sched.h>
-+#include <linux/radix-tree.h>
+diff --git a/rust/kernel/block.rs b/rust/kernel/block.rs
+index 4c93317a568a..1797859551fd 100644
+--- a/rust/kernel/block.rs
++++ b/rust/kernel/block.rs
+@@ -2,4 +2,5 @@
  
- /* `bindgen` gets confused at certain things. */
- const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
-+const gfp_t BINDINGS_GFP_ATOMIC = GFP_ATOMIC;
- const gfp_t BINDINGS___GFP_ZERO = __GFP_ZERO;
-diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
-index 7b246454e009..62f36a9eb1f4 100644
---- a/rust/bindings/lib.rs
-+++ b/rust/bindings/lib.rs
-@@ -51,4 +51,5 @@ mod bindings_helper {
- pub use bindings_raw::*;
+ //! Types for working with the block layer
  
- pub const GFP_KERNEL: gfp_t = BINDINGS_GFP_KERNEL;
-+pub const GFP_ATOMIC: gfp_t = BINDINGS_GFP_ATOMIC;
- pub const __GFP_ZERO: gfp_t = BINDINGS___GFP_ZERO;
-diff --git a/rust/helpers.c b/rust/helpers.c
-index 81e80261d597..5dd5e325b7cc 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -26,6 +26,7 @@
- #include <linux/spinlock.h>
- #include <linux/sched/signal.h>
- #include <linux/wait.h>
-+#include <linux/radix-tree.h>
- 
- __noreturn void rust_helper_BUG(void)
- {
-@@ -128,6 +129,27 @@ void rust_helper_put_task_struct(struct task_struct *t)
- }
- EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
- 
-+void rust_helper_init_radix_tree(struct xarray *tree, gfp_t gfp_mask)
-+{
-+	INIT_RADIX_TREE(tree, gfp_mask);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_init_radix_tree);
-+
-+void **rust_helper_radix_tree_iter_init(struct radix_tree_iter *iter,
-+					unsigned long start)
-+{
-+	return radix_tree_iter_init(iter, start);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_radix_tree_iter_init);
-+
-+void **rust_helper_radix_tree_next_slot(void **slot,
-+					struct radix_tree_iter *iter,
-+					unsigned flags)
-+{
-+	return radix_tree_next_slot(slot, iter, flags);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_radix_tree_next_slot);
-+
- /*
-  * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
-  * as the Rust `usize` type, so we can use it in contexts where Rust
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 676995d4e460..a85cb6aae8d6 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -40,6 +40,7 @@ pub mod init;
- pub mod ioctl;
- pub mod prelude;
- pub mod print;
-+pub mod radix_tree;
- mod static_assert;
- #[doc(hidden)]
- pub mod std_vendor;
-diff --git a/rust/kernel/radix_tree.rs b/rust/kernel/radix_tree.rs
++pub mod bio;
+ pub mod mq;
+diff --git a/rust/kernel/block/bio.rs b/rust/kernel/block/bio.rs
 new file mode 100644
-index 000000000000..f659ab8b017c
+index 000000000000..6e93e4420105
 --- /dev/null
-+++ b/rust/kernel/radix_tree.rs
-@@ -0,0 +1,156 @@
++++ b/rust/kernel/block/bio.rs
+@@ -0,0 +1,93 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! RadixTree abstraction.
++//! Types for working with the bio layer.
 +//!
-+//! C header: [`include/linux/radix_tree.h`](../../include/linux/radix_tree.h)
++//! C header: [`include/linux/blk_types.h`](../../include/linux/blk_types.h)
 +
-+use crate::error::to_result;
-+use crate::error::Result;
-+use crate::types::ForeignOwnable;
-+use crate::types::Opaque;
-+use crate::types::ScopeGuard;
-+use alloc::boxed::Box;
-+use core::marker::PhantomData;
-+use core::pin::Pin;
++use core::fmt;
++use core::ptr::NonNull;
 +
-+type Key = u64;
++mod vec;
 +
-+/// A map of `u64` to `ForeignOwnable`
++pub use vec::BioSegmentIterator;
++pub use vec::Segment;
++
++/// A wrapper around a `struct bio` pointer
 +///
 +/// # Invariants
 +///
-+/// - `tree` always points to a valid and initialized `struct radix_tree`.
-+/// - Pointers stored in the tree are created by a call to `ForignOwnable::into_foreign()`
-+pub struct RadixTree<V: ForeignOwnable> {
-+    tree: Pin<Box<Opaque<bindings::xarray>>>,
-+    _marker: PhantomData<V>,
-+}
++/// First field must alwyas be a valid pointer to a valid `struct bio`.
++pub struct Bio<'a>(
++    NonNull<crate::bindings::bio>,
++    core::marker::PhantomData<&'a ()>,
++);
 +
-+impl<V: ForeignOwnable> RadixTree<V> {
-+    /// Create a new radix tree
-+    ///
-+    /// Note: This function allocates memory with `GFP_ATOMIC`.
-+    pub fn new() -> Result<Self> {
-+        let tree = Pin::from(Box::try_new(Opaque::uninit())?);
-+
-+        // SAFETY: `tree` points to allocated but not initialized memory. This
-+        // call will initialize the memory.
-+        unsafe { bindings::init_radix_tree(tree.get(), bindings::GFP_ATOMIC) };
-+
-+        Ok(Self {
-+            tree,
-+            _marker: PhantomData,
-+        })
++impl<'a> Bio<'a> {
++    /// Returns an iterator over segments in this `Bio`. Does not consider
++    /// segments of other bios in this bio chain.
++    #[inline(always)]
++    pub fn segment_iter(&'a self) -> BioSegmentIterator<'a> {
++        BioSegmentIterator::new(self)
 +    }
 +
-+    /// Try to insert a value into the tree
-+    pub fn try_insert(&mut self, key: Key, value: V) -> Result<()> {
-+        // SAFETY: `self.tree` points to a valid and initialized `struct radix_tree`
-+        let ret =
-+            unsafe { bindings::radix_tree_insert(self.tree.get(), key, value.into_foreign() as _) };
-+        to_result(ret)
++    /// Get a pointer to the `bio_vec` off this bio
++    #[inline(always)]
++    fn io_vec(&self) -> *const bindings::bio_vec {
++        // SAFETY: By type invariant, get_raw() returns a valid pointer to a
++        // valid `struct bio`
++        unsafe { (*self.get_raw()).bi_io_vec }
 +    }
 +
-+    /// Search for `key` in the map. Returns a reference to the associated
-+    /// value if found.
-+    pub fn get(&self, key: Key) -> Option<V::Borrowed<'_>> {
-+        // SAFETY: `self.tree` points to a valid and initialized `struct radix_tree`
-+        let item =
-+            core::ptr::NonNull::new(unsafe { bindings::radix_tree_lookup(self.tree.get(), key) })?;
-+
-+        // SAFETY: `item` was created by a call to
-+        // `ForeignOwnable::into_foreign()`. As `get_mut()` and `remove()` takes
-+        // a `&mut self`, no mutable borrows for `item` can exist and
-+        // `ForeignOwnable::from_foreign()` cannot be called until this borrow
-+        // is dropped.
-+        Some(unsafe { V::borrow(item.as_ptr()) })
++    /// Return a copy of the `bvec_iter` for this `Bio`
++    #[inline(always)]
++    fn iter(&self) -> bindings::bvec_iter {
++        // SAFETY: self.0 is always a valid pointer
++        unsafe { (*self.get_raw()).bi_iter }
 +    }
 +
-+    /// Search for `key` in the map. Return a mutable reference to the
-+    /// associated value if found.
-+    pub fn get_mut(&mut self, key: Key) -> Option<MutBorrow<'_, V>> {
-+        let item =
-+            core::ptr::NonNull::new(unsafe { bindings::radix_tree_lookup(self.tree.get(), key) })?;
-+
-+        // SAFETY: `item` was created by a call to
-+        // `ForeignOwnable::into_foreign()`. As `get()` takes a `&self` and
-+        // `remove()` takes a `&mut self`, no borrows for `item` can exist and
-+        // `ForeignOwnable::from_foreign()` cannot be called until this borrow
-+        // is dropped.
-+        Some(MutBorrow {
-+            guard: unsafe { V::borrow_mut(item.as_ptr()) },
-+            _marker: core::marker::PhantomData,
-+        })
++    /// Get the next `Bio` in the chain
++    #[inline(always)]
++    fn next(&self) -> Option<Bio<'a>> {
++        // SAFETY: self.0 is always a valid pointer
++        let next = unsafe { (*self.get_raw()).bi_next };
++        Some(Self(NonNull::new(next)?, core::marker::PhantomData))
 +    }
 +
-+    /// Search for `key` in the map. If `key` is found, the key and value is
-+    /// removed from the map and the value is returned.
-+    pub fn remove(&mut self, key: Key) -> Option<V> {
-+        // SAFETY: `self.tree` points to a valid and initialized `struct radix_tree`
-+        let item =
-+            core::ptr::NonNull::new(unsafe { bindings::radix_tree_delete(self.tree.get(), key) })?;
++    /// Return the raw pointer of the wrapped `struct bio`
++    #[inline(always)]
++    fn get_raw(&self) -> *const bindings::bio {
++        self.0.as_ptr()
++    }
 +
-+        // SAFETY: `item` was created by a call to
-+        // `ForeignOwnable::into_foreign()` and no borrows to `item` can exist
-+        // because this function takes a `&mut self`.
-+        Some(unsafe { ForeignOwnable::from_foreign(item.as_ptr()) })
++    /// Create an instance of `Bio` from a raw pointer. Does check that the
++    /// pointer is not null.
++    #[inline(always)]
++    pub(crate) unsafe fn from_raw(ptr: *mut bindings::bio) -> Option<Bio<'a>> {
++        Some(Self(NonNull::new(ptr)?, core::marker::PhantomData))
 +    }
 +}
 +
-+impl<V: ForeignOwnable> Drop for RadixTree<V> {
-+    fn drop(&mut self) {
-+        let mut iter = bindings::radix_tree_iter {
-+            index: 0,
-+            next_index: 0,
-+            tags: 0,
-+            node: core::ptr::null_mut(),
-+        };
++impl core::fmt::Display for Bio<'_> {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        write!(f, "Bio {:?}", self.0.as_ptr())
++    }
++}
 +
-+        // SAFETY: Iter is valid as we allocated it on the stack above
-+        let mut slot = unsafe { bindings::radix_tree_iter_init(&mut iter, 0) };
-+        loop {
-+            if slot.is_null() {
-+                // SAFETY: Both `self.tree` and `iter` are valid
-+                slot = unsafe { bindings::radix_tree_next_chunk(self.tree.get(), &mut iter, 0) };
-+            }
++/// An iterator over `Bio`
++pub struct BioIterator<'a> {
++    pub(crate) bio: Option<Bio<'a>>,
++}
 +
-+            if slot.is_null() {
-+                break;
-+            }
++impl<'a> core::iter::Iterator for BioIterator<'a> {
++    type Item = Bio<'a>;
 +
-+            // SAFETY: `self.tree` is valid and iter is managed by
-+            // `radix_tree_next_chunk()` and `radix_tree_next_slot()`
-+            let item = unsafe { bindings::radix_tree_delete(self.tree.get(), iter.index) };
-+            assert!(!item.is_null());
++    #[inline(always)]
++    fn next(&mut self) -> Option<Bio<'a>> {
++        if let Some(current) = self.bio.take() {
++            self.bio = current.next();
++            Some(current)
++        } else {
++            None
++        }
++    }
++}
+diff --git a/rust/kernel/block/bio/vec.rs b/rust/kernel/block/bio/vec.rs
+new file mode 100644
+index 000000000000..acd328a6fe54
+--- /dev/null
++++ b/rust/kernel/block/bio/vec.rs
+@@ -0,0 +1,181 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+            // SAFETY: All items in the tree are created by a call to
-+            // `ForeignOwnable::into_foreign()`.
-+            let _ = unsafe { V::from_foreign(item) };
++//! Types for working with `struct bio_vec` IO vectors
++//!
++//! C header: [`include/linux/bvec.h`](../../include/linux/bvec.h)
 +
-+            // SAFETY: `self.tree` is valid and iter is managed by
-+            // `radix_tree_next_chunk()` and `radix_tree_next_slot()`. Slot is
-+            // not null.
-+            slot = unsafe { bindings::radix_tree_next_slot(slot, &mut iter, 0) };
++use super::Bio;
++use crate::error::Result;
++use crate::pages::Pages;
++use core::fmt;
++use core::mem::ManuallyDrop;
++
++#[inline(always)]
++fn mp_bvec_iter_offset(bvec: *const bindings::bio_vec, iter: &bindings::bvec_iter) -> u32 {
++    (unsafe { (*bvec_iter_bvec(bvec, iter)).bv_offset }) + iter.bi_bvec_done
++}
++
++#[inline(always)]
++fn mp_bvec_iter_page(
++    bvec: *const bindings::bio_vec,
++    iter: &bindings::bvec_iter,
++) -> *mut bindings::page {
++    unsafe { (*bvec_iter_bvec(bvec, iter)).bv_page }
++}
++
++#[inline(always)]
++fn mp_bvec_iter_page_idx(bvec: *const bindings::bio_vec, iter: &bindings::bvec_iter) -> usize {
++    (mp_bvec_iter_offset(bvec, iter) / crate::PAGE_SIZE) as usize
++}
++
++#[inline(always)]
++fn mp_bvec_iter_len(bvec: *const bindings::bio_vec, iter: &bindings::bvec_iter) -> u32 {
++    iter.bi_size
++        .min(unsafe { (*bvec_iter_bvec(bvec, iter)).bv_len } - iter.bi_bvec_done)
++}
++
++#[inline(always)]
++fn bvec_iter_bvec(
++    bvec: *const bindings::bio_vec,
++    iter: &bindings::bvec_iter,
++) -> *const bindings::bio_vec {
++    unsafe { bvec.add(iter.bi_idx as usize) }
++}
++
++#[inline(always)]
++fn bvec_iter_page(
++    bvec: *const bindings::bio_vec,
++    iter: &bindings::bvec_iter,
++) -> *mut bindings::page {
++    unsafe { mp_bvec_iter_page(bvec, iter).add(mp_bvec_iter_page_idx(bvec, iter)) }
++}
++
++#[inline(always)]
++fn bvec_iter_len(bvec: *const bindings::bio_vec, iter: &bindings::bvec_iter) -> u32 {
++    mp_bvec_iter_len(bvec, iter).min(crate::PAGE_SIZE - bvec_iter_offset(bvec, iter))
++}
++
++#[inline(always)]
++fn bvec_iter_offset(bvec: *const bindings::bio_vec, iter: &bindings::bvec_iter) -> u32 {
++    mp_bvec_iter_offset(bvec, iter) % crate::PAGE_SIZE
++}
++
++/// A wrapper around a `strutct bio_vec` - a contiguous range of physical memory addresses
++///
++/// # Invariants
++///
++/// `bio_vec` must always be initialized and valid
++pub struct Segment<'a> {
++    bio_vec: bindings::bio_vec,
++    _marker: core::marker::PhantomData<&'a ()>,
++}
++
++impl Segment<'_> {
++    /// Get he lenght of the segment in bytes
++    #[inline(always)]
++    pub fn len(&self) -> usize {
++        self.bio_vec.bv_len as usize
++    }
++
++    /// Returns true if the length of the segment is 0
++    #[inline(always)]
++    pub fn is_empty(&self) -> bool {
++        self.len() == 0
++    }
++
++    /// Get the offset field of the `bio_vec`
++    #[inline(always)]
++    pub fn offset(&self) -> usize {
++        self.bio_vec.bv_offset as usize
++    }
++
++    /// Copy data of this segment into `page`.
++    #[inline(always)]
++    pub fn copy_to_page_atomic(&self, page: &mut Pages<0>) -> Result {
++        // SAFETY: self.bio_vec is valid and thus bv_page must be a valid
++        // pointer to a `struct page`. We do not own the page, but we prevent
++        // drop by wrapping the `Pages` in `ManuallyDrop`.
++        let our_page = ManuallyDrop::new(unsafe { Pages::<0>::from_raw(self.bio_vec.bv_page) });
++        let our_map = our_page.kmap_atomic();
++
++        // TODO: Checck offset is within page - what guarantees does `bio_vec` provide?
++        let ptr = unsafe { (our_map.get_ptr() as *const u8).add(self.offset()) };
++
++        unsafe { page.write_atomic(ptr, self.offset(), self.len()) }
++    }
++
++    /// Copy data from `page` into this segment
++    #[inline(always)]
++    pub fn copy_from_page_atomic(&mut self, page: &Pages<0>) -> Result {
++        // SAFETY: self.bio_vec is valid and thus bv_page must be a valid
++        // pointer to a `struct page`. We do not own the page, but we prevent
++        // drop by wrapping the `Pages` in `ManuallyDrop`.
++        let our_page = ManuallyDrop::new(unsafe { Pages::<0>::from_raw(self.bio_vec.bv_page) });
++        let our_map = our_page.kmap_atomic();
++
++        // TODO: Checck offset is within page
++        let ptr = unsafe { (our_map.get_ptr() as *mut u8).add(self.offset()) };
++
++        unsafe { page.read_atomic(ptr, self.offset(), self.len()) }
++    }
++}
++
++impl core::fmt::Display for Segment<'_> {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        write!(
++            f,
++            "Segment {:?} len: {}",
++            self.bio_vec.bv_page, self.bio_vec.bv_len
++        )
++    }
++}
++
++/// An iterator over `Segment`
++pub struct BioSegmentIterator<'a> {
++    bio: &'a Bio<'a>,
++    iter: bindings::bvec_iter,
++}
++
++impl<'a> BioSegmentIterator<'a> {
++    #[inline(always)]
++    pub(crate) fn new(bio: &'a Bio<'a>) -> BioSegmentIterator<'_> {
++        Self {
++            bio,
++            iter: bio.iter(),
 +        }
 +    }
 +}
 +
-+/// A mutable borrow of an object owned by a `RadixTree`
-+pub struct MutBorrow<'a, V: ForeignOwnable> {
-+    guard: ScopeGuard<V, fn(V)>,
-+    _marker: core::marker::PhantomData<&'a mut V>,
-+}
++impl<'a> core::iter::Iterator for BioSegmentIterator<'a> {
++    type Item = Segment<'a>;
 +
-+impl<'a, V: ForeignOwnable> core::ops::Deref for MutBorrow<'a, V> {
-+    type Target = ScopeGuard<V, fn(V)>;
++    #[inline(always)]
++    fn next(&mut self) -> Option<Self::Item> {
++        if self.iter.bi_size == 0 {
++            return None;
++        }
 +
-+    fn deref(&self) -> &Self::Target {
-+        &self.guard
++        // Macro
++        // bio_vec = bio_iter_iovec(bio, self.iter)
++        // bio_vec = bvec_iter_bvec(bio.bi_io_vec, self.iter);
++        let bio_vec_ret = bindings::bio_vec {
++            bv_page: bvec_iter_page(self.bio.io_vec(), &self.iter),
++            bv_len: bvec_iter_len(self.bio.io_vec(), &self.iter),
++            bv_offset: bvec_iter_offset(self.bio.io_vec(), &self.iter),
++        };
++
++        // Static C function
++        unsafe {
++            bindings::bio_advance_iter_single(
++                self.bio.get_raw(),
++                &mut self.iter as *mut bindings::bvec_iter,
++                bio_vec_ret.bv_len,
++            )
++        };
++
++        Some(Segment {
++            bio_vec: bio_vec_ret,
++            _marker: core::marker::PhantomData,
++        })
 +    }
 +}
+diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+index e95ae3fd71ad..ccb1033b64b6 100644
+--- a/rust/kernel/block/mq/request.rs
++++ b/rust/kernel/block/mq/request.rs
+@@ -11,6 +11,9 @@ use crate::{
+ };
+ use core::marker::PhantomData;
+ 
++use crate::block::bio::Bio;
++use crate::block::bio::BioIterator;
 +
-+impl<'a, V: ForeignOwnable> core::ops::DerefMut for MutBorrow<'a, V> {
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        &mut self.guard
+ /// A wrapper around a blk-mq `struct request`. This represents an IO request.
+ pub struct Request<T: Operations> {
+     ptr: *mut bindings::request,
+@@ -63,6 +66,19 @@ impl<T: Operations> Request<T> {
+         }
+     }
+ 
++    /// Get a wrapper for the first Bio in this request
++    #[inline(always)]
++    pub fn bio(&self) -> Option<Bio<'_>> {
++        let ptr = unsafe { (*self.ptr).bio };
++        unsafe { Bio::from_raw(ptr) }
 +    }
-+}
++
++    /// Get an iterator over all bio structurs in this request
++    #[inline(always)]
++    pub fn bio_iter(&self) -> BioIterator<'_> {
++        BioIterator { bio: self.bio() }
++    }
++
+     /// Get the target sector for the request
+     #[inline(always)]
+     pub fn sector(&self) -> usize {
 -- 
 2.40.0
 
