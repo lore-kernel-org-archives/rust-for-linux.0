@@ -2,87 +2,385 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5577BC77B7F
-	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 09:51:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B50CAC7EE22
+	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 10:35:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230037AbjECJvw (ORCPT
+        id S229713AbjECKfA (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 3 May 2023 05:51:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46702 "EHLO
+        Wed, 3 May 2023 06:35:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230057AbjECJvO (ORCPT
+        with ESMTP id S229569AbjECKe7 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 3 May 2023 05:51:14 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E273459C4;
-        Wed,  3 May 2023 02:50:21 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-b980e16b27bso4089591276.2;
-        Wed, 03 May 2023 02:50:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683107415; x=1685699415;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QekGgvtyEzq9qE+03olGY6PTWKf2S/rVt9efjf9645c=;
-        b=WsTIAv3bpWOgkPRuIYqZmMp394vBVAZM3e+78YksbATEi6TYx4ncIdBp2gkiI/Dn0J
-         g7ixO5LtBI9/wl5AveftdXS3FFfJUZlG3ZPDUWRNTZAUco1T6IOhftsb8O0Phf4PLbgA
-         jjf5T5P5bnKzXbDMgnMcT4iAIUWEgY1idOvKAvnRH1hH5Nk7wVFwUM0XfSA8zkPzm0hj
-         Pd29/tulY9tynfFbxQonA2XD6aZuFBLLAdm/7o8xG73OCngG2GFgpQHlD/jTeRh8ubpE
-         LLUQpwqrePx3HWMl53EnRxveDxItayIq9LHi4Sr89Rf/E5mZnk6YjVILEsbRFG1gxqGy
-         tLGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683107415; x=1685699415;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QekGgvtyEzq9qE+03olGY6PTWKf2S/rVt9efjf9645c=;
-        b=Mv7i7cD6wz3/2RaFL0gzErchwgTDh6M7uDzJn6rETH7Ju/hP9l4ZfAn7RWdwdhQLLG
-         MMX1FCaPJPq2dTEDHA+rY8nzsjtDMlpObjvft8gGzTEiDOJaZjmG0z5KjGWe141Q9K1F
-         oCER1oCZ8HWYFnMODX/0yTDfco6kUPnely9WTJiKk1mi9UyQxdkqw6lz4nzdQki4H73g
-         Umthfu5admlMyXAyxv9tJ/A9h8FLgozpJh2iVtU7WAu2hlfPidKWeLr5uQX5bTqFj90d
-         Hnx3uuSjQX+bmsLxMO31Bnj1A/fWrXCByWQP/tSIsR/+p4ZzrdkOytfkWd/bL/2X31IB
-         RhZw==
-X-Gm-Message-State: AC+VfDwJ0miSGO5EDJcudYciJBEmn6OkpUC/rlD9wpljmowXaqWgYEax
-        cWX00X66RR8eJZSfaRJlKCd1zGpXYm8OA6aCx1A=
-X-Google-Smtp-Source: ACHHUZ51tM2esQU/LFCG4LG2gkjQEPdQQLrnENbaAmdLcdpeRoGlsvShOAlPwpg360fmYxWwDUfBitbPDNG576Eefko=
-X-Received: by 2002:a05:6902:723:b0:b99:8359:b485 with SMTP id
- l3-20020a056902072300b00b998359b485mr22675047ybt.18.1683107415347; Wed, 03
- May 2023 02:50:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230503083941.499090-1-aliceryhl@google.com>
-In-Reply-To: <20230503083941.499090-1-aliceryhl@google.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 3 May 2023 11:50:04 +0200
-Message-ID: <CANiq72mz7rjsQ6kP4ttsMwSozwFWk-CUzChYf+vkKtTV6QtSOg@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: error: add ERESTARTSYS error code
-To:     Alice Ryhl <aliceryhl@google.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Wed, 3 May 2023 06:34:59 -0400
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DA6E49FF;
+        Wed,  3 May 2023 03:34:54 -0700 (PDT)
+Date:   Wed, 03 May 2023 10:34:44 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=c45gzkyicfbjnkpxq5pov66h5q.protonmail; t=1683110091; x=1683369291;
+        bh=yTuWhDy/Ex1N0qe/tRLjDHy7FCNkp6ne4TYP1/rZsdg=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=ZLnppUjDO5/ZP57uoTL/7IP8spu2w07LX2fj6ethh59+P6lMTzQq0TPuM8kqNUmhj
+         c8C7CcZBD3GECplmgo+yxWh2PVeEm6Q400eG6I0Q8tKJFNuFuMhUNR7V8boXTPgx+g
+         MN6HnTvP1x9CZ6dpZgdJotX7ouUTEicG/rm5vEwfMGZP7fqwel38thFomM7IUb6/tX
+         sM3qNyOBHwPScEy3WYnEnS65D8KtNweMAHAtqxzEs8JxYTHEd6g5sEeI3MSLUwRv2m
+         4cS4I++rrJieiEg8ssNt34rvZAh2ZtrZtInpwSh3M87bd+R1SJiV94KQ5DJmS7Jpkv
+         jFi9KJsjQ1m2A==
+To:     Andreas Hindborg <nmi@metaspace.dk>
+From:   Benno Lossin <benno.lossin@proton.me>
+Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Keith Busch <kbusch@kernel.org>,
+        Damien Le Moal <Damien.LeMoal@wdc.com>,
+        Hannes Reinecke <hare@suse.de>,
+        lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
+        linux-block@vger.kernel.org,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org, gost.dev@samsung.com
+Subject: Re: [RFC PATCH 01/11] rust: add radix tree abstraction
+Message-ID: <615XOkalORUFcLI8ZOdiEloHy_FyOO8k4hFe8uQ-Cd1wcrAvIYvbzkMeIs2ofJ5L37owbU2vB3Gg6Ya5NroUeggwAMssPRfdBfBZ4vvMr_w=@proton.me>
+In-Reply-To: <20230503090708.2524310-2-nmi@metaspace.dk>
+References: <20230503090708.2524310-1-nmi@metaspace.dk> <20230503090708.2524310-2-nmi@metaspace.dk>
+Feedback-ID: 71780778:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, May 3, 2023 at 10:40=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> This error code was probably excluded here originally because it never
-> actually reaches user programs when a syscall returns it. However, from
+> From: Andreas Hindborg <a.hindborg@samsung.com>
+>=20
+> Add abstractions for the C radix_tree. This abstraction allows Rust code =
+to use
+> the radix_tree as a map from `u64` keys to `ForeignOwnable` values.
+>=20
+> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+> ---
+>  rust/bindings/bindings_helper.h |   2 +
+>  rust/bindings/lib.rs            |   1 +
+>  rust/helpers.c                  |  22 +++++
+>  rust/kernel/lib.rs              |   1 +
+>  rust/kernel/radix_tree.rs       | 156 ++++++++++++++++++++++++++++++++
+>  5 files changed, 182 insertions(+)
+>  create mode 100644 rust/kernel/radix_tree.rs
+>=20
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 50e7a76d5455..52834962b94d 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -10,7 +10,9 @@
+>  #include <linux/refcount.h>
+>  #include <linux/wait.h>
+>  #include <linux/sched.h>
+> +#include <linux/radix-tree.h>
 
-The reason is that commit 266def2a0f5b ("rust: error: add codes from
-`errno-base.h`") only introduced the ones from
-`include/uapi/asm-generic/errno-base.h`, but not the ones from
-`include/linux/errno.h` (or `include/uapi/asm-generic/errno.h`).
+Can you sort these alphabetically? Also the constants down below.
 
-Given this is an independent patch, should we introduce the rest too, at on=
-ce?
+>=20
+>  /* `bindgen` gets confused at certain things. */
+>  const gfp_t BINDINGS_GFP_KERNEL =3D GFP_KERNEL;
+> +const gfp_t BINDINGS_GFP_ATOMIC =3D GFP_ATOMIC;
+>  const gfp_t BINDINGS___GFP_ZERO =3D __GFP_ZERO;
+> diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
+> index 7b246454e009..62f36a9eb1f4 100644
+> --- a/rust/bindings/lib.rs
+> +++ b/rust/bindings/lib.rs
+> @@ -51,4 +51,5 @@ mod bindings_helper {
+>  pub use bindings_raw::*;
+>=20
+>  pub const GFP_KERNEL: gfp_t =3D BINDINGS_GFP_KERNEL;
+> +pub const GFP_ATOMIC: gfp_t =3D BINDINGS_GFP_ATOMIC;
+>  pub const __GFP_ZERO: gfp_t =3D BINDINGS___GFP_ZERO;
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 81e80261d597..5dd5e325b7cc 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -26,6 +26,7 @@
+>  #include <linux/spinlock.h>
+>  #include <linux/sched/signal.h>
+>  #include <linux/wait.h>
+> +#include <linux/radix-tree.h>
+>=20
+>  __noreturn void rust_helper_BUG(void)
+>  {
+> @@ -128,6 +129,27 @@ void rust_helper_put_task_struct(struct task_struct =
+*t)
+>  }
+>  EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
+>=20
+> +void rust_helper_init_radix_tree(struct xarray *tree, gfp_t gfp_mask)
+> +{
+> +=09INIT_RADIX_TREE(tree, gfp_mask);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_init_radix_tree);
+> +
+> +void **rust_helper_radix_tree_iter_init(struct radix_tree_iter *iter,
+> +=09=09=09=09=09unsigned long start)
+> +{
+> +=09return radix_tree_iter_init(iter, start);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_radix_tree_iter_init);
+> +
+> +void **rust_helper_radix_tree_next_slot(void **slot,
+> +=09=09=09=09=09struct radix_tree_iter *iter,
+> +=09=09=09=09=09unsigned flags)
+> +{
+> +=09return radix_tree_next_slot(slot, iter, flags);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_radix_tree_next_slot);
+> +
+>  /*
+>   * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` =
+type
+>   * as the Rust `usize` type, so we can use it in contexts where Rust
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 676995d4e460..a85cb6aae8d6 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -40,6 +40,7 @@ pub mod init;
+>  pub mod ioctl;
+>  pub mod prelude;
+>  pub mod print;
+> +pub mod radix_tree;
+>  mod static_assert;
+>  #[doc(hidden)]
+>  pub mod std_vendor;
+> diff --git a/rust/kernel/radix_tree.rs b/rust/kernel/radix_tree.rs
+> new file mode 100644
+> index 000000000000..f659ab8b017c
+> --- /dev/null
+> +++ b/rust/kernel/radix_tree.rs
+> @@ -0,0 +1,156 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! RadixTree abstraction.
+> +//!
+> +//! C header: [`include/linux/radix_tree.h`](../../include/linux/radix_t=
+ree.h)
+> +
+> +use crate::error::to_result;
+> +use crate::error::Result;
+> +use crate::types::ForeignOwnable;
+> +use crate::types::Opaque;
+> +use crate::types::ScopeGuard;
+> +use alloc::boxed::Box;
+> +use core::marker::PhantomData;
+> +use core::pin::Pin;
 
+I would prefer `use crate::{error::{...}, types::{...}};`.
+
+> +
+> +type Key =3D u64;
+
+Is there a reason to not make this `pub`?
+
+> +
+> +/// A map of `u64` to `ForeignOwnable`
+> +///
+> +/// # Invariants
+> +///
+> +/// - `tree` always points to a valid and initialized `struct radix_tree=
+`.
+> +/// - Pointers stored in the tree are created by a call to `ForignOwnabl=
+e::into_foreign()`
+> +pub struct RadixTree<V: ForeignOwnable> {
+> +    tree: Pin<Box<Opaque<bindings::xarray>>>,
+> +    _marker: PhantomData<V>,
+> +}
+
+Design question: why is the tree boxed? Shouldn't the user decide how
+they want to manage the memory of the tree? In other words, should
+`tree` just be `Opaque<bindings::xarray>` and this type initialized via
+`pin-init`?
+
+> +
+> +impl<V: ForeignOwnable> RadixTree<V> {
+> +    /// Create a new radix tree
+> +    ///
+> +    /// Note: This function allocates memory with `GFP_ATOMIC`.
+
+There probably is a reason why this uses `GFP_ATOMIC`, but I think if we
+decide that the tree allocates memory there should be also a function
+with `GFP_KERNEL`. That function should be called `new()` and this one
+`new_atomic()` or `new_gfp(gfp: gfp_t)`. Also note that I think the
+return type should be `Result<Self, AllocError>`, we should be explicit
+where we can be.
+
+> +    pub fn new() -> Result<Self> {
+> +        let tree =3D Pin::from(Box::try_new(Opaque::uninit())?);
+> +
+> +        // SAFETY: `tree` points to allocated but not initialized memory=
+. This
+> +        // call will initialize the memory.
+> +        unsafe { bindings::init_radix_tree(tree.get(), bindings::GFP_ATO=
+MIC) };
+> +
+> +        Ok(Self {
+> +            tree,
+> +            _marker: PhantomData,
+> +        })
+> +    }
+> +
+> +    /// Try to insert a value into the tree
+> +    pub fn try_insert(&mut self, key: Key, value: V) -> Result<()> {
+> +        // SAFETY: `self.tree` points to a valid and initialized `struct=
+ radix_tree`
+
+Also add that the invariant of only inserting `ForignOwnable` pointers
+is upheld.
+
+> +        let ret =3D
+> +            unsafe { bindings::radix_tree_insert(self.tree.get(), key, v=
+alue.into_foreign() as _) };
+
+Instead of `as _` prefer to use `.cast::<$type>()` or in this case probably=
+ `.cast_mut()`.
+
+> +        to_result(ret)
+> +    }
+> +
+> +    /// Search for `key` in the map. Returns a reference to the associat=
+ed
+> +    /// value if found.
+> +    pub fn get(&self, key: Key) -> Option<V::Borrowed<'_>> {
+> +        // SAFETY: `self.tree` points to a valid and initialized `struct=
+ radix_tree`
+> +        let item =3D
+> +            core::ptr::NonNull::new(unsafe { bindings::radix_tree_lookup=
+(self.tree.get(), key) })?;
+
+You use `NonNull` quiet a bit, consider importing it.
+
+> +
+> +        // SAFETY: `item` was created by a call to
+> +        // `ForeignOwnable::into_foreign()`. As `get_mut()` and `remove(=
+)` takes
+> +        // a `&mut self`, no mutable borrows for `item` can exist and
+> +        // `ForeignOwnable::from_foreign()` cannot be called until this =
+borrow
+> +        // is dropped.
+> +        Some(unsafe { V::borrow(item.as_ptr()) })
+> +    }
+> +
+> +    /// Search for `key` in the map. Return a mutable reference to the
+> +    /// associated value if found.
+> +    pub fn get_mut(&mut self, key: Key) -> Option<MutBorrow<'_, V>> {
+> +        let item =3D
+> +            core::ptr::NonNull::new(unsafe { bindings::radix_tree_lookup=
+(self.tree.get(), key) })?;
+> +
+> +        // SAFETY: `item` was created by a call to
+> +        // `ForeignOwnable::into_foreign()`. As `get()` takes a `&self` =
+and
+> +        // `remove()` takes a `&mut self`, no borrows for `item` can exi=
+st and
+> +        // `ForeignOwnable::from_foreign()` cannot be called until this =
+borrow
+> +        // is dropped.
+> +        Some(MutBorrow {
+> +            guard: unsafe { V::borrow_mut(item.as_ptr()) },
+> +            _marker: core::marker::PhantomData,
+> +        })
+> +    }
+> +
+> +    /// Search for `key` in the map. If `key` is found, the key and valu=
+e is
+> +    /// removed from the map and the value is returned.
+> +    pub fn remove(&mut self, key: Key) -> Option<V> {
+> +        // SAFETY: `self.tree` points to a valid and initialized `struct=
+ radix_tree`
+> +        let item =3D
+> +            core::ptr::NonNull::new(unsafe { bindings::radix_tree_delete=
+(self.tree.get(), key) })?;
+> +
+> +        // SAFETY: `item` was created by a call to
+> +        // `ForeignOwnable::into_foreign()` and no borrows to `item` can=
+ exist
+> +        // because this function takes a `&mut self`.
+> +        Some(unsafe { ForeignOwnable::from_foreign(item.as_ptr()) })
+> +    }
+> +}
+> +
+> +impl<V: ForeignOwnable> Drop for RadixTree<V> {
+> +    fn drop(&mut self) {
+> +        let mut iter =3D bindings::radix_tree_iter {
+> +            index: 0,
+> +            next_index: 0,
+> +            tags: 0,
+> +            node: core::ptr::null_mut(),
+> +        };
+> +
+> +        // SAFETY: Iter is valid as we allocated it on the stack above
+> +        let mut slot =3D unsafe { bindings::radix_tree_iter_init(&mut it=
+er, 0) };
+> +        loop {
+> +            if slot.is_null() {
+> +                // SAFETY: Both `self.tree` and `iter` are valid
+> +                slot =3D unsafe { bindings::radix_tree_next_chunk(self.t=
+ree.get(), &mut iter, 0) };
+> +            }
+> +
+> +            if slot.is_null() {
+> +                break;
+> +            }
+> +
+> +            // SAFETY: `self.tree` is valid and iter is managed by
+> +            // `radix_tree_next_chunk()` and `radix_tree_next_slot()`
+> +            let item =3D unsafe { bindings::radix_tree_delete(self.tree.=
+get(), iter.index) };
+> +            assert!(!item.is_null());
+> +
+> +            // SAFETY: All items in the tree are created by a call to
+> +            // `ForeignOwnable::into_foreign()`.
+> +            let _ =3D unsafe { V::from_foreign(item) };
+> +
+> +            // SAFETY: `self.tree` is valid and iter is managed by
+> +            // `radix_tree_next_chunk()` and `radix_tree_next_slot()`. S=
+lot is
+> +            // not null.
+> +            slot =3D unsafe { bindings::radix_tree_next_slot(slot, &mut =
+iter, 0) };
+> +        }
+> +    }
+> +}
+> +
+> +/// A mutable borrow of an object owned by a `RadixTree`
+> +pub struct MutBorrow<'a, V: ForeignOwnable> {
+> +    guard: ScopeGuard<V, fn(V)>,
+> +    _marker: core::marker::PhantomData<&'a mut V>,
+> +}
+> +
+> +impl<'a, V: ForeignOwnable> core::ops::Deref for MutBorrow<'a, V> {
+> +    type Target =3D ScopeGuard<V, fn(V)>;
+
+Why is `Target =3D ScopeGuard`? I think it makes more sense to use
+`Target =3D V`.
+
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        &self.guard
+> +    }
+> +}
+> +
+> +impl<'a, V: ForeignOwnable> core::ops::DerefMut for MutBorrow<'a, V> {
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        &mut self.guard
+> +    }
+> +}
+> --
+> 2.40.0
+>=20
+
+--
 Cheers,
-Miguel
+Benno
