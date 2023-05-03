@@ -2,78 +2,87 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8AB9C7EE2A
-	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 11:00:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46A16C77B7F
+	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 11:01:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230020AbjECLAD (ORCPT
+        id S230055AbjECLBj (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 3 May 2023 07:00:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57954 "EHLO
+        Wed, 3 May 2023 07:01:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbjECLAC (ORCPT
+        with ESMTP id S230168AbjECLB0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 3 May 2023 07:00:02 -0400
-Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B96149F7
-        for <rust-for-linux@vger.kernel.org>; Wed,  3 May 2023 04:00:00 -0700 (PDT)
-Received: by mail-ej1-x64a.google.com with SMTP id a640c23a62f3a-94f59fc787fso477025366b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 May 2023 04:00:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683111599; x=1685703599;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q2flrzqrP+i7aYqtQguBZoK/d1T9EPNvaJivqwFd9T0=;
-        b=SynCK35TIyLV9RAsgu/wZep3yuWP9RqrRGi3a+dU+S6i2JQ9j/9wWWdYlxcfT7OJeA
-         MPadvq86aNWnLmQA896/Sg7QmD/KotZIzs0LX3cCFPvGECrWJ3PxqgDEvWGt0Hcbmlre
-         dol4G2AGK0nA/coq8WrfJSuibkYOzatiq8eykuNQORPPa7jF3WXmvVROhqTH4VW+qXPC
-         KN1ckIrDHidr2Y1hYCsKdlX663h1T66qO3bxoAeXK3ZYNsRQxc9o/qpdWhE0Ae5LkEK/
-         m2yWQbwewGKgvYNvzFkKrB1Ce/e90/jxnFjutFdvSqq+w9ZSckrnGGHEzshEsnbN+PVo
-         psEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683111599; x=1685703599;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q2flrzqrP+i7aYqtQguBZoK/d1T9EPNvaJivqwFd9T0=;
-        b=UCOEPGwI56WsxxsqBryC8NOQO0a87Vwns61DmyTYMShUfd1q0O7bDgR/SpZoE19gi6
-         91y9lIRPDTm3j/Rf9gUkL4+XUu7FF9Jo8YqFel7w5uM4FnXIfJ9Ea9GRZvXoVOMGxWgB
-         WMtDDz2FMcL0jrGF8Rbh3IrN3Avz6iDYAcmKRk+zcUph5TU/MEk65CobWu8M1eQqpbVM
-         gb6oH45Xt0Gmi0DXXeIteF3ye/flQa1ES/gOP8PIkqKFzFVvEqeqVGNiHJaHxtNhGZUA
-         HUBN6N/SiQgyKnw4qBeHfHezV10gTGeupa6q7aB7v4rUjgyl4fizrdwWp5HfAvPqRePS
-         phqg==
-X-Gm-Message-State: AC+VfDz7Wpv9LKteKChSPGQOJZEVjQskb3WbhC4dCWuKz4D1xnfIuhMo
-        W1JL3IRV1EJP5xX2jRHP797ivq1CePcNoGc=
-X-Google-Smtp-Source: ACHHUZ6SacIL6tXwsdztLRNtTxrAY3AjLbfHWLlQjTdPFAlO71jHQIXs1LFwEkD76LO+wTYrNLxnd//3yA1+5A4=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a17:907:b13:b0:94e:f130:93f0 with SMTP
- id h19-20020a1709070b1300b0094ef13093f0mr1194892ejl.1.1683111598801; Wed, 03
- May 2023 03:59:58 -0700 (PDT)
-Date:   Wed,  3 May 2023 10:59:35 +0000
-In-Reply-To: <20230426224748.34056-1-materoy@proton.me>
-Mime-Version: 1.0
-References: <20230426224748.34056-1-materoy@proton.me>
-X-Mailer: git-send-email 2.40.1.495.gc816e09b53d-goog
-Message-ID: <20230503105935.518315-1-aliceryhl@google.com>
-Subject: Re: [PATCH v1] rust: error: add ERESTARTSYS error code
-From:   Alice Ryhl <aliceryhl@google.com>
-To:     materoy@proton.me
-Cc:     alex.gaynor@gmail.com, aliceryhl@google.com,
-        benno.lossin@proton.me, bjorn3_gh@protonmail.com,
-        boqun.feng@gmail.com, gary@garyguo.net,
-        linux-kernel@vger.kernel.org, ojeda@kernel.org,
-        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
-        yakoyoku@gmail.com
+        Wed, 3 May 2023 07:01:26 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E48159E8;
+        Wed,  3 May 2023 04:00:59 -0700 (PDT)
+Received: from [IPv6:2804:14d:72b4:8284:32a8:8167:f815:2895] (unknown [IPv6:2804:14d:72b4:8284:32a8:8167:f815:2895])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: dwlsalmeida)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id B25156600010;
+        Wed,  3 May 2023 12:00:53 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1683111657;
+        bh=YgZoFypi9uBzyCleV28/+qccnmAQ9nqEaGbJaWVfyOI=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=oG7sXoN3W0Ip2e6rvOzM+wj6NYpQu709wQqRJnIFuQ6W+VyeaPUpjk/rRiG4L70xE
+         4bhH14TnwyLVojgsFxLSIKFcK2QeHTa8GLMcE08xoefgIdSqjTnVdZQe+24n1NOILk
+         cE1cjxXis+yFH65uk3fma9e9bOI6uFwxd/0zf2iloldTSBUgo3gV5Q1+dJzw5B60TX
+         DUUKQ8g6XUXesoo5SDIAH2rAPlfxE+aDEPHOzADhqVkfHmsaaeBHW9riV476rNJYdg
+         gJvgCNQ6CAw+fKtydNgfggARwcxWiRf4E0Er4wSz1RJjI1wLmrehefWaJulgXqYeyQ
+         LlqPOZW1bvQ2g==
+Message-ID: <56777298b3883fc2b105af52be80cf5f0cf14be0.camel@collabora.com>
+Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+From:   Daniel Almeida <daniel.almeida@collabora.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Asahi Lina <lina@asahilina.net>
+Cc:     Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Hans Verkuil <hverkuil@xs4all.nl>, wedsonaf@gmail.com,
+        ojeda@kernel.org, mchehab@kernel.org,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, kernel@collabora.com,
+        Sakari Ailus <sakari.ailus@iki.fi>,
+        Antoni Boucher <bouanto@zoho.com>
+Date:   Wed, 03 May 2023 08:00:40 -0300
+In-Reply-To: <CANiq72m8cOWrO21PhUFcBap2j7ooKtAKdkOU9u8y-xGj_8fvoA@mail.gmail.com>
+References: <20230406215615.122099-1-daniel.almeida@collabora.com>
+         <136035a4-26df-1c14-e51e-406b4ee5fe33@xs4all.nl>
+         <CANiq72kzgopREcNcAnjCBk2u9b9cJ4f_jPix6LWYSkcOV5kubw@mail.gmail.com>
+         <20230426003210.GA31260@pendragon.ideasonboard.com>
+         <CANiq72nLtpOn2HcOneoQ6v_TcYAEj_W8z2HCQvF4HmB4+OoSZA@mail.gmail.com>
+         <20230426163512.GE18120@pendragon.ideasonboard.com>
+         <7b4ea4fc-7d73-d229-4645-366b1ea574fb@collabora.com>
+         <20230426172539.GD2326@pendragon.ideasonboard.com>
+         <9cf10a4d7a9eec237f5d18f79f6ae4bd031489bb.camel@collabora.com>
+         <fe2dc70b-915c-ca2b-be81-a8ee66cf41cd@asahilina.net>
+         <CANiq72m8cOWrO21PhUFcBap2j7ooKtAKdkOU9u8y-xGj_8fvoA@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 
+MIME-Version: 1.0
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 27.04.23 00:57, Roy Matero <materoy@proton.me> wrote:
-> Fix sorting of rust/bindings/binding_helper.h's includes,
-> to maintain consistency and rust idoms
-> 
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1002
-> 
-> Signed-off-by: Roy Matero <materoy@proton.me>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Hi Lina, all,
+
+I disagree that we need to wait for anything as a precondition for
+writing the things Nicolas listed. The reason being that he listed out
+some very self-contained codebases. These would not depend on the
+kernel crate either for the most part (or at all, even, but going from
+memory here..).
+
+Note that the codec library in particular would rarely be touched after
+it's written, as the algorithms in there are more or less "set in
+stone" by the codec specs.
+
+Maintaining these until they can be merged would be essentially free,
+unless I am missing something?
+
+
+-- Daniel
+
