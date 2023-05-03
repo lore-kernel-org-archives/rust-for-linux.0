@@ -2,55 +2,55 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C77F5C7EE29
-	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 09:07:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE816C77B75
+	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 09:08:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229962AbjECJHz (ORCPT
+        id S229970AbjECJII (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 3 May 2023 05:07:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45890 "EHLO
+        Wed, 3 May 2023 05:08:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229957AbjECJHj (ORCPT
+        with ESMTP id S229975AbjECJHk (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 3 May 2023 05:07:39 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7845046A8
-        for <rust-for-linux@vger.kernel.org>; Wed,  3 May 2023 02:07:26 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-2f40b891420so4700309f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 May 2023 02:07:26 -0700 (PDT)
+        Wed, 3 May 2023 05:07:40 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D324249F9
+        for <rust-for-linux@vger.kernel.org>; Wed,  3 May 2023 02:07:28 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3f1950f5628so47382955e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 May 2023 02:07:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1683104844; x=1685696844;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1683104847; x=1685696847;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pfKdjWdresPJSdXc5oUQnKkLhNP+u1b3Z6UA6/bvZEs=;
-        b=zxf3V0pixeyAdrD64XjVTcoz5GBZP1Ez2NPEYfg4bJ+8OpHIgbs5IPYWoyRFF/oRls
-         1HiTMTqiw5oPzKcjXk85WtG2qWppkjvU02IYtCNv/P6lilDjZ3I/tCqie+hxdHS9fI72
-         TFUlh6Wb66UftjAJVkN8zXebQeRzUQEjndgJGChQSPHdwiL4EDhLk2wZR45z/mLS3qsS
-         0hle1vi+M/A5q3ANxKiVAd1H1NxXbl8yRYYvbayFD9yVys1oohANbByOMWC+mJ8fu1Aq
-         h3If9GnckODucwV34nms5ONfQlshxGTXJ2YdkMkaVW/TPTSFD4UmrIVnUA6QvhXfqCL+
-         1Ffw==
+        bh=NatBW5eIyTK1anrfiMCu2himhC60W7yfvOzay2vGAv8=;
+        b=p4BdIUQKmjerjPm5oD73Ay9h/299qjSSXcgv4Bb+Qmp2g4owzjxFGY/dLkga6OOGno
+         Nr2jHy7hW1KNXt2jFPKbJW4XgnrPwqb0NM4WY1MM+UiU7g1J3uHlVIYp9v2p258ltsrF
+         t7OVqRC2Ti6RK+iAoEbzM+tW8O5ETUmXvIXQ0Nxl6UW1vz8hYm/rqZHDMKt3tb7YvkKb
+         iSqk4PNYf+RSBTYroInYiqq9Vr6T8hmJUsoBUh2dCy7hB3MQazTr8tkOvGxRyX7V7C39
+         56UYzcYTSvClGccgLv6Ha/V3GAC/brvbNBumsb2Up+/YyAQ1fBFju2Cj4nuQOlnNUGET
+         azOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683104844; x=1685696844;
+        d=1e100.net; s=20221208; t=1683104847; x=1685696847;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pfKdjWdresPJSdXc5oUQnKkLhNP+u1b3Z6UA6/bvZEs=;
-        b=gSZfHatVeAP6H9qce19/zWrpvTmff4ZC1Ne9WE+N8rz/bnoK34teqd/uNmLmlWBtF9
-         /0keUBjYOqZUKM7jx4UKBo/0ZrAhYgq5Y5uF1G9Vs2OoO9VVDOtWdw+36gthQBM7I5mj
-         VTTgmmvhlOI4zxDhrJMzctIHIQfJAN2K+U0APt50QAzjCkT8+ejCrzvgVNv20OeNN9wl
-         Ye7fOYKIrbuT7kYMCOqPHIqjWd8XQ/Dmj0CoEyWOcNfNwZqX74m7AGNaRWxD4yoy4Gpy
-         c8iKH5GbMpmJ58F7tJQzMlLlxbt2yNiRvtKFctKWmsrq501LJsSlMlhu/FfzOxq4PMKu
-         XgVg==
-X-Gm-Message-State: AC+VfDyIysbal+SL/qDoKkC+KHfFc8/ZEAEFWpWbl54S9adYyiaUsZFA
-        8hukK26T0oUQAoGewyDLxPKjYl42yRkBfkVGvhI=
-X-Google-Smtp-Source: ACHHUZ5UM0xcnar/k/FZ+nJlonCpodkAJIUEXzZR9u3QQyFGMIWvcy7zXUt0eX7nCk//Wv22bv3Duw==
-X-Received: by 2002:adf:ee8d:0:b0:306:42e2:5ec3 with SMTP id b13-20020adfee8d000000b0030642e25ec3mr912726wro.6.1683104844271;
-        Wed, 03 May 2023 02:07:24 -0700 (PDT)
+        bh=NatBW5eIyTK1anrfiMCu2himhC60W7yfvOzay2vGAv8=;
+        b=Motun0UfMJpFQNrAaSMs4hYTh3faI4xHDtnl9OgkoixxjGht6kOpOBBDvSsy2v7VoQ
+         syOL9CV9AX9tbVqDcPzVkFI2bYrdoha8mz2SEZ+46XWLobHmi8p9Ij2EjEpZf1pmFly7
+         skCSCiuXGwfq+lmC03nmCbcwBmJXexYYfFH2DvpNXqzEZYlOlP3J9NQ0b8B98+YUvTjX
+         bikYPZuxvAkdFp5BzhTumfcWnE88HKq3Ybj1i8gSh2KaRp9B8db1LmIWLPkPRx4pVYV8
+         g4pBiotrpeL50wYhnXnHSCNxf6l3/Ezkav7HsrYEnUqYkjKsTsXKs07lJ8+y2eM0MD3R
+         dxDA==
+X-Gm-Message-State: AC+VfDzvKRIM5RbER7lKR5tkpW05DfF6SDAuJpC+0L1buZ3MDq/ITkzW
+        HgQ7P7lk54Mqgb+lKZW8QvwjmQ==
+X-Google-Smtp-Source: ACHHUZ4V+4yXzD+7jMqjGJI2nu+9smDJfF7r7MsYfyR2VAHsFx3pXLD9Y8eoC2R23SPbbiOVCzgrKw==
+X-Received: by 2002:a1c:4b0c:0:b0:3ee:b3bf:5f7c with SMTP id y12-20020a1c4b0c000000b003eeb3bf5f7cmr14680443wma.23.1683104846390;
+        Wed, 03 May 2023 02:07:26 -0700 (PDT)
 Received: from localhost ([147.161.155.99])
-        by smtp.gmail.com with ESMTPSA id k11-20020a7bc40b000000b003f173a2b2f6sm1248839wmi.12.2023.05.03.02.07.23
+        by smtp.gmail.com with ESMTPSA id x2-20020a05600c21c200b003f182c11667sm1233908wmj.39.2023.05.03.02.07.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 May 2023 02:07:24 -0700 (PDT)
+        Wed, 03 May 2023 02:07:26 -0700 (PDT)
 From:   Andreas Hindborg <nmi@metaspace.dk>
 To:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
         Keith Busch <kbusch@kernel.org>,
@@ -58,7 +58,7 @@ To:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
         Hannes Reinecke <hare@suse.de>,
         lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
         linux-block@vger.kernel.org
-Cc:     Wedson Almeida Filho <walmeida@microsoft.com>,
+Cc:     Andreas Hindborg <a.hindborg@samsung.com>,
         Matthew Wilcox <willy@infradead.org>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
@@ -66,12 +66,11 @@ Cc:     Wedson Almeida Filho <walmeida@microsoft.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Andreas Hindborg <a.hindborg@samsung.com>,
         Andreas Hindborg <nmi@metaspace.dk>,
         linux-kernel@vger.kernel.org (open list), gost.dev@samsung.com
-Subject: [RFC PATCH 08/11] rust: lock: implement `IrqSaveBackend` for `SpinLock`
-Date:   Wed,  3 May 2023 11:07:05 +0200
-Message-Id: <20230503090708.2524310-9-nmi@metaspace.dk>
+Subject: [RFC PATCH 10/11] rust: add null block driver
+Date:   Wed,  3 May 2023 11:07:07 +0200
+Message-Id: <20230503090708.2524310-11-nmi@metaspace.dk>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230503090708.2524310-1-nmi@metaspace.dk>
 References: <20230503090708.2524310-1-nmi@metaspace.dk>
@@ -81,30 +80,107 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Wedson Almeida Filho <walmeida@microsoft.com>
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-This allows Rust code to use the `lock_irqsave` variant of spinlocks.
+The driver is implemented entirely using safe Rust. This initial version
+supports direct completion, read and write requests, blk-mq and optional memory
+backing.
 
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 ---
- rust/helpers.c                    | 16 ++++++++++++
- rust/kernel/sync/lock/spinlock.rs | 41 +++++++++++++++++++++++++------
- 2 files changed, 50 insertions(+), 7 deletions(-)
+ drivers/block/Kconfig         |   4 +
+ drivers/block/Makefile        |   4 +
+ drivers/block/rnull-helpers.c |  60 ++++++++++++
+ drivers/block/rnull.rs        | 177 ++++++++++++++++++++++++++++++++++
+ scripts/Makefile.build        |   2 +-
+ 5 files changed, 246 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/block/rnull-helpers.c
+ create mode 100644 drivers/block/rnull.rs
 
-diff --git a/rust/helpers.c b/rust/helpers.c
-index a59341084774..7f5b95f652e1 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -203,6 +203,22 @@ struct page *rust_helper_alloc_pages(gfp_t gfp_mask, unsigned int order)
- }
- EXPORT_SYMBOL_GPL(rust_helper_alloc_pages);
+diff --git a/drivers/block/Kconfig b/drivers/block/Kconfig
+index f79f20430ef7..644ef1bc7574 100644
+--- a/drivers/block/Kconfig
++++ b/drivers/block/Kconfig
+@@ -354,6 +354,10 @@ config VIRTIO_BLK
+ 	  This is the virtual block driver for virtio.  It can be used with
+           QEMU based VMMs (like KVM or Xen).  Say Y or M.
  
-+unsigned long rust_helper_spin_lock_irqsave(spinlock_t *lock)
++config BLK_DEV_RS_NULL
++	tristate "Rust null block driver"
++	depends on RUST
++
+ config BLK_DEV_RBD
+ 	tristate "Rados block device (RBD)"
+ 	depends on INET && BLOCK
+diff --git a/drivers/block/Makefile b/drivers/block/Makefile
+index 101612cba303..cebbeece4bc2 100644
+--- a/drivers/block/Makefile
++++ b/drivers/block/Makefile
+@@ -9,6 +9,10 @@
+ # needed for trace events
+ ccflags-y				+= -I$(src)
+ 
++obj-$(CONFIG_BLK_DEV_RS_NULL) += rnull_mod.o
++rnull_mod-y := rnull-helpers.o rnull.o
++LLVM_LINK_FIX_drivers/block/rnull_mod.o := 1
++
+ obj-$(CONFIG_MAC_FLOPPY)	+= swim3.o
+ obj-$(CONFIG_BLK_DEV_SWIM)	+= swim_mod.o
+ obj-$(CONFIG_BLK_DEV_FD)	+= floppy.o
+diff --git a/drivers/block/rnull-helpers.c b/drivers/block/rnull-helpers.c
+new file mode 100644
+index 000000000000..826f2773ed93
+--- /dev/null
++++ b/drivers/block/rnull-helpers.c
+@@ -0,0 +1,60 @@
++
++#include <linux/bio.h>
++
++__attribute__((always_inline))
++void rust_helper_bio_advance_iter_single(const struct bio *bio,
++                                           struct bvec_iter *iter, unsigned int bytes)
++{
++	bio_advance_iter_single(bio, iter, bytes);
++}
++
++__attribute__((always_inline)) void *rust_helper_kmap(struct page *page)
++{
++	return kmap(page);
++}
++
++__attribute__((always_inline)) void rust_helper_kunmap(struct page *page)
++{
++	return kunmap(page);
++}
++
++__attribute__((always_inline)) void *rust_helper_kmap_atomic(struct page *page)
++{
++	return kmap_atomic(page);
++}
++
++__attribute__((always_inline)) void rust_helper_kunmap_atomic(void* address)
++{
++	kunmap_atomic(address);
++}
++
++__attribute__((always_inline)) struct page *
++rust_helper_alloc_pages(gfp_t gfp_mask, unsigned int order)
++{
++	return alloc_pages(gfp_mask, order);
++}
++
++__attribute__((always_inline)) void rust_helper_spin_lock_irq(spinlock_t *lock)
++{
++	spin_lock_irq(lock);
++}
++
++__attribute__((always_inline)) void
++rust_helper_spin_unlock_irq(spinlock_t *lock)
++{
++	spin_unlock_irq(lock);
++}
++__attribute__((always_inline)) unsigned long
++rust_helper_spin_lock_irqsave(spinlock_t *lock)
 +{
 +	unsigned long flags;
 +
@@ -112,91 +188,207 @@ index a59341084774..7f5b95f652e1 100644
 +
 +	return flags;
 +}
-+EXPORT_SYMBOL_GPL(rust_helper_spin_lock_irqsave);
-+
-+void rust_helper_spin_unlock_irqrestore(spinlock_t *lock, unsigned long flags)
++__attribute__((always_inline)) void
++rust_helper_spin_unlock_irqrestore(spinlock_t *lock, unsigned long flags)
 +{
 +	spin_unlock_irqrestore(lock, flags);
 +}
-+EXPORT_SYMBOL_GPL(rust_helper_spin_unlock_irqrestore);
+diff --git a/drivers/block/rnull.rs b/drivers/block/rnull.rs
+new file mode 100644
+index 000000000000..d95025664a60
+--- /dev/null
++++ b/drivers/block/rnull.rs
+@@ -0,0 +1,177 @@
++// SPDX-License-Identifier: GPL-2.0
 +
- /*
-  * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
-  * as the Rust `usize` type, so we can use it in contexts where Rust
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index e39142a8148c..50b8775bb49d 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -64,6 +64,8 @@ macro_rules! new_spinlock {
- /// assert_eq!(e.c, 10);
- /// assert_eq!(e.d.lock().a, 20);
- /// assert_eq!(e.d.lock().b, 30);
-+/// assert_eq!(e.d.lock_irqsave().a, 20);
-+/// assert_eq!(e.d.lock_irqsave().b, 30);
- /// ```
- ///
- /// The following example shows how to use interior mutability to modify the contents of a struct
-@@ -81,6 +83,12 @@ macro_rules! new_spinlock {
- ///     let mut guard = m.lock();
- ///     guard.a += 10;
- ///     guard.b += 20;
-+///
-+/// fn example2(m: &SpinLock<Example>) {
-+///     let mut guard = m.lock_irqsave();
-+///     guard.a += 10;
-+///     guard.b += 20;
-+/// }
- /// }
- /// ```
- ///
-@@ -94,7 +102,7 @@ pub struct SpinLockBackend;
- // default implementation that always calls the same locking method.
- unsafe impl super::Backend for SpinLockBackend {
-     type State = CachePadded<bindings::spinlock_t>;
--    type GuardState = ();
-+    type GuardState = Option<core::ffi::c_ulong>;
- 
-     unsafe fn init(
-         ptr: *mut Self::State,
-@@ -110,13 +118,32 @@ unsafe impl super::Backend for SpinLockBackend {
-     unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
-         // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
-         // memory, and that it has been initialised before.
--        unsafe { bindings::spin_lock((&mut *ptr).deref_mut()) }
-+        unsafe { bindings::spin_lock((&mut *ptr).deref_mut()) };
-+        None
-     }
- 
--    #[inline(always)]
--    unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
--        // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
--        // caller is the owner of the mutex.
--        unsafe { bindings::spin_unlock((&mut *ptr).deref_mut()) }
-+    unsafe fn unlock(ptr: *mut Self::State, guard_state: &Self::GuardState) {
-+        match guard_state {
-+            // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that
-+            // the caller is the owner of the mutex.
-+            Some(flags) => unsafe {
-+                bindings::spin_unlock_irqrestore((&mut *ptr).deref_mut(), *flags)
-+            },
-+            // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that
-+            // the caller is the owner of the mutex.
-+            None => unsafe { bindings::spin_unlock((&mut *ptr).deref_mut()) },
-+        }
++//! This is a null block driver. It currently supports optional memory backing,
++//! blk-mq interface and direct completion. The driver is configured at module
++//! load time by parameters `memory_backed` and `capacity_mib`.
++
++use kernel::{
++    bindings,
++    block::{
++        bio::Segment,
++        mq::{self, GenDisk, Operations, TagSet},
++    },
++    error::Result,
++    macros::vtable,
++    new_mutex, new_spinlock,
++    pages::Pages,
++    pr_info,
++    prelude::*,
++    radix_tree::RadixTree,
++    sync::{Arc, Mutex, SpinLock},
++    types::ForeignOwnable,
++};
++
++module! {
++    type: NullBlkModule,
++    name: "rs_null_blk",
++    author: "Andreas Hindborg",
++    license: "GPL v2",
++    params: {
++        memory_backed: bool {
++            default: true,
++            permissions: 0,
++            description: "Use memory backing",
++        },
++        capacity_mib: u64 {
++            default: 4096,
++            permissions: 0,
++            description: "Device capacity in MiB",
++        },
++    },
++}
++
++struct NullBlkModule {
++    _disk: Pin<Box<Mutex<GenDisk<NullBlkDevice>>>>,
++}
++
++fn add_disk(tagset: Arc<TagSet<NullBlkDevice>>) -> Result<GenDisk<NullBlkDevice>> {
++    let tree = RadixTree::new()?;
++    let queue_data = Box::pin_init(new_spinlock!(tree, "rnullb:mem"))?;
++
++    let disk = GenDisk::try_new(tagset, queue_data)?;
++    disk.set_name(format_args!("rnullb{}", 0))?;
++    disk.set_capacity(*capacity_mib.read() << 11);
++    disk.set_queue_logical_block_size(4096);
++    disk.set_queue_physical_block_size(4096);
++    disk.set_rotational(false);
++    Ok(disk)
++}
++
++impl kernel::Module for NullBlkModule {
++    fn init(_module: &'static ThisModule) -> Result<Self> {
++        pr_info!("Rust null_blk loaded\n");
++        // Major device number?
++        let tagset = TagSet::try_new(1, (), 256, 1)?;
++        let disk = Box::pin_init(new_mutex!(add_disk(tagset)?, "nullb:disk"))?;
++
++        disk.lock().add()?;
++
++        Ok(Self { _disk: disk })
 +    }
 +}
 +
-+// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. We use the `irqsave`
-+// variant of the C lock acquisition functions to disable interrupts and retrieve the original
-+// interrupt state, and the `irqrestore` variant of the lock release functions to restore the state
-+// in `unlock` -- we use the guard context to determine which method was used to acquire the lock.
-+unsafe impl super::IrqSaveBackend for SpinLockBackend {
-+    unsafe fn lock_irqsave(ptr: *mut Self::State) -> Self::GuardState {
-+        // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
-+        // memory, and that it has been initialised before.
-+        Some(unsafe { bindings::spin_lock_irqsave((&mut *ptr).deref_mut()) })
-     }
- }
++impl Drop for NullBlkModule {
++    fn drop(&mut self) {
++        pr_info!("Dropping rnullb\n");
++    }
++}
++
++struct NullBlkDevice;
++type Tree = kernel::radix_tree::RadixTree<Box<Pages<0>>>;
++type Data = Pin<Box<SpinLock<Tree>>>;
++
++impl NullBlkDevice {
++    #[inline(always)]
++    fn write(tree: &mut Tree, sector: usize, segment: &Segment<'_>) -> Result {
++        let idx = sector >> 3; // TODO: PAGE_SECTOR_SHIFT
++        let mut page = if let Some(page) = tree.get_mut(idx as u64) {
++            page
++        } else {
++            tree.try_insert(idx as u64, Box::try_new(Pages::new()?)?)?;
++            tree.get_mut(idx as u64).unwrap()
++        };
++
++        segment.copy_to_page_atomic(&mut page)?;
++
++        Ok(())
++    }
++
++    #[inline(always)]
++    fn read(tree: &mut Tree, sector: usize, segment: &mut Segment<'_>) -> Result {
++        let idx = sector >> 3; // TODO: PAGE_SECTOR_SHIFT
++        if let Some(page) = tree.get(idx as u64) {
++            segment.copy_from_page_atomic(page)?;
++        }
++
++        Ok(())
++    }
++
++    #[inline(never)]
++    fn transfer(
++        command: bindings::req_op,
++        tree: &mut Tree,
++        sector: usize,
++        segment: &mut Segment<'_>,
++    ) -> Result {
++        match command {
++            bindings::req_op_REQ_OP_WRITE => Self::write(tree, sector, segment)?,
++            bindings::req_op_REQ_OP_READ => Self::read(tree, sector, segment)?,
++            _ => (),
++        }
++        Ok(())
++    }
++}
++
++#[vtable]
++impl Operations for NullBlkDevice {
++    type RequestData = ();
++    type QueueData = Data;
++    type HwData = ();
++    type TagSetData = ();
++
++    fn new_request_data(
++        _tagset_data: <Self::TagSetData as ForeignOwnable>::Borrowed<'_>,
++    ) -> Result<Self::RequestData> {
++        Ok(())
++    }
++
++    #[inline(always)]
++    fn queue_rq(
++        _hw_data: <Self::HwData as ForeignOwnable>::Borrowed<'_>,
++        queue_data: <Self::QueueData as ForeignOwnable>::Borrowed<'_>,
++        rq: &mq::Request<Self>,
++        _is_last: bool,
++    ) -> Result {
++        rq.start();
++        if *memory_backed.read() {
++            let mut tree = queue_data.lock_irqsave();
++
++            let mut sector = rq.sector();
++            for bio in rq.bio_iter() {
++                for mut segment in bio.segment_iter() {
++                    let _ = Self::transfer(rq.command(), &mut tree, sector, &mut segment);
++                    sector += segment.len() >> 9; // TODO: SECTOR_SHIFT
++                }
++            }
++        }
++        rq.end_ok();
++        Ok(())
++    }
++
++    fn commit_rqs(
++        _hw_data: <Self::HwData as ForeignOwnable>::Borrowed<'_>,
++        _queue_data: <Self::QueueData as ForeignOwnable>::Borrowed<'_>,
++    ) {
++    }
++
++    fn complete(_rq: &mq::Request<Self>) {
++        //rq.end_ok();
++    }
++
++    fn init_hctx(
++        _tagset_data: <Self::TagSetData as ForeignOwnable>::Borrowed<'_>,
++        _hctx_idx: u32,
++    ) -> Result<Self::HwData> {
++        Ok(())
++    }
++}
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 9f94fc83f086..94127fc3cf77 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -277,7 +277,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
+ # Compile Rust sources (.rs)
+ # ---------------------------------------------------------------------------
+ 
+-rust_allowed_features := core_ffi_c,explicit_generic_args_with_impl_trait,new_uninit,pin_macro
++rust_allowed_features := core_ffi_c,explicit_generic_args_with_impl_trait,new_uninit,pin_macro,allocator_api
+ 
+ rust_common_cmd = \
+ 	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
 -- 
 2.40.0
 
