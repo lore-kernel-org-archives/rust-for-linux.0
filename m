@@ -2,85 +2,142 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1D7EC77B75
-	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 16:48:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9348AC77B78
+	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 19:03:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229486AbjECQrq (ORCPT
+        id S229899AbjECTDT (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 3 May 2023 12:47:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36180 "EHLO
+        Wed, 3 May 2023 15:03:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229826AbjECQrc (ORCPT
+        with ESMTP id S229498AbjECTDS (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 3 May 2023 12:47:32 -0400
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2E159DD;
-        Wed,  3 May 2023 09:47:29 -0700 (PDT)
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1aaef97652fso30184645ad.0;
-        Wed, 03 May 2023 09:47:29 -0700 (PDT)
+        Wed, 3 May 2023 15:03:18 -0400
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E9C67D8E;
+        Wed,  3 May 2023 12:03:16 -0700 (PDT)
+Received: by mail-ot1-x332.google.com with SMTP id 46e09a7af769-6a5febde157so2045733a34.3;
+        Wed, 03 May 2023 12:03:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683140596; x=1685732596;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=U0zanob5psot+MN0L3Jo7naT487S45wikpSmD7HcN6I=;
+        b=Y7pSDCAs4pgUkzQE6IaengKTj1KGR+dM7m5U3wjgt7c/cAzupQ8ZjRa/epStopoCba
+         Wyq07v5dOlnTpxO7t5xG29NSHxsXk2PcsRwDTFlq6fLPQBjmf4pPov6zNik3HWm3WHGN
+         GhAi44H8g1tTcl2btjSqtOPOoCgQLsteMFrkzQqXZZ3MPOqpBcTXZ7Ima21AVABQusnH
+         65dIh2UplkfUHuEMOTqqTtTzq2GFZUgwLfQsjiz7/6p5qq4mprddOXnvEWVPpIB5PIWg
+         kDNXb/T4+KqC1xLF/PMMpWiqvNhSzdm0DQZJNsakJrvOwxvzyIVu89RgUIaYh4/mY5+O
+         rchA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683132449; x=1685724449;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1683140596; x=1685732596;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=umgEn3cqi31k8FAoc6eHggscu0a8wyQqY+YT1k4FgE4=;
-        b=M4mwG7mL+dUSl3I2W3utKmlZWAheVeiFt2NuVhDdST8u3xvtQcfEw4u/V/LyEyNSpb
-         KAH5XOOP0vrGhsdtW2Tp2FkUeq1S1wmZsfsdhl95U6PCj3M0CHlvyf0pdGCqyQ5FbWzN
-         ZcYAiyiDzD7so7lYpj2ltcIErcBXi5q8FCK72ETNR4idwL+OWAbCGbZAIrdGa59TbGBq
-         QLzm7t/GBk0CfzlOzP8paMIrSoVHjyJaetLWqtrkuq6ftmHnGgadadXE7/E9xZX0rXHZ
-         xQFEvZYFJy/7hdMDCZj/u7LxKrGRnaAlHt2jvwdZUkgaXSYK6x/864UY2PQRg/FK3ijL
-         kEQQ==
-X-Gm-Message-State: AC+VfDxC5uTRBdWyugVQx0VW5MDZjJX13CzgEyvDJGhSQY9r9zTC4ffG
-        HzHRxGbwGLLA02QUflSVqYM=
-X-Google-Smtp-Source: ACHHUZ4pRU+8JVmqhik5EA6Xabeqqj93jGvFii5MsVXC+4XabS4MDDjGwO+ipEKbgomNvIjNIpwc5Q==
-X-Received: by 2002:a17:903:1cd:b0:1a9:581e:d809 with SMTP id e13-20020a17090301cd00b001a9581ed809mr902959plh.7.1683132448605;
-        Wed, 03 May 2023 09:47:28 -0700 (PDT)
-Received: from ?IPV6:2620:15c:211:201:c683:a90b:5f41:5878? ([2620:15c:211:201:c683:a90b:5f41:5878])
-        by smtp.gmail.com with ESMTPSA id t4-20020a170902b20400b001a96496f250sm18247374plr.34.2023.05.03.09.47.26
+        bh=U0zanob5psot+MN0L3Jo7naT487S45wikpSmD7HcN6I=;
+        b=NbtHjyKkszgVfP3gLdDdNOAPAnG0xnTBUKgwXC0RMPCJjrmuymRxFjexnW/37CUxlb
+         HxYEeHr5tQvbZTWQIUyr4abWvDBXucNwKXSrz4oxN+NJxrgoWASkxBGiyuuosWe35OeH
+         EQyBuEm+OfBWR6Ac9Lvwqzc/+1T/dOYCb2auPQsLOKani8cgCKf23EeI1VKEhvdeIwtn
+         p66jqIr3d3oyrRKIyws88OJvcxyKzWn4J/aZNrkw5abp2r6XjSvjNcWmudT8fpmkCiwN
+         /EiMMRhw9f7XZPcBvsHYen8Fn4rmHvf+/UAn3BP93ak2P3FdD5SIe6vDny/DtOszBMwJ
+         Cq3A==
+X-Gm-Message-State: AC+VfDwvWlRi95obIOLCCPTuIDAQxyJdQIYJaOECQGoZQbRNxqUnWzJ8
+        AbyKbsruCra1tLJYS3WpAs8=
+X-Google-Smtp-Source: ACHHUZ45fCKODtKeE+8Qp8r2XRVU4mmpJKXM3rSpGuOzwTDG+lKyAuq1oQHcakWua1AVejIv1wPKQA==
+X-Received: by 2002:a05:6870:a704:b0:191:d6cd:6f5b with SMTP id g4-20020a056870a70400b00191d6cd6f5bmr5786911oam.22.1683140595817;
+        Wed, 03 May 2023 12:03:15 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id dv5-20020a056870d88500b0018459cc0f52sm897161oab.24.2023.05.03.12.03.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 May 2023 09:47:28 -0700 (PDT)
-Message-ID: <da7b815d-3da8-38e5-9b25-b9cfb6878293@acm.org>
-Date:   Wed, 3 May 2023 09:47:25 -0700
+        Wed, 03 May 2023 12:03:15 -0700 (PDT)
+Message-ID: <0aef40dd-a437-58e1-5fa5-b44412a2a89f@gmail.com>
+Date:   Wed, 3 May 2023 16:01:00 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-From:   Bart Van Assche <bvanassche@acm.org>
-Subject: Re: [RFC PATCH 00/11] Rust null block driver
-To:     Andreas Hindborg <nmi@metaspace.dk>, Jens Axboe <axboe@kernel.dk>,
-        Christoph Hellwig <hch@lst.de>,
-        Keith Busch <kbusch@kernel.org>,
-        Damien Le Moal <Damien.LeMoal@wdc.com>,
-        Hannes Reinecke <hare@suse.de>,
-        lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
-        linux-block@vger.kernel.org
-Cc:     Andreas Hindborg <a.hindborg@samsung.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
+ Thunderbird/102.10.1
+Subject: Re: [PATCH v2] rust: str: add conversion from `CStr` to `CString`
+Content-Language: en-US
+To:     Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Alex Gaynor <alex.gaynor@gmail.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        open list <linux-kernel@vger.kernel.org>, gost.dev@samsung.com
-References: <20230503090708.2524310-1-nmi@metaspace.dk>
-Content-Language: en-US
-In-Reply-To: <20230503090708.2524310-1-nmi@metaspace.dk>
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev
+References: <20230503141016.683634-1-aliceryhl@google.com>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230503141016.683634-1-aliceryhl@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 5/3/23 02:06, Andreas Hindborg wrote:
-> This is an early preview of a null block driver written in Rust.
+On 5/3/23 11:10, Alice Ryhl wrote:
+> These methods can be used to copy the data in a temporary c string into
+> a separate allocation, so that it can be accessed later even if the
+> original is deallocated.
+> 
+> The API in this change mirrors the standard library API for the `&str`
+> and `String` types. The `ToOwned` trait is not implemented because it
+> assumes that allocations are infallible.
+> 
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>   rust/kernel/str.rs | 22 ++++++++++++++++++++++
+>   1 file changed, 22 insertions(+)
+> 
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index b771310fa4a4..f3dc5b24ea55 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -2,6 +2,7 @@
+>   
+>   //! String representations.
+>   
+> +use alloc::alloc::AllocError;
+>   use alloc::vec::Vec;
+>   use core::fmt::{self, Write};
+>   use core::ops::{self, Deref, Index};
+> @@ -199,6 +200,12 @@ impl CStr {
+>       pub unsafe fn as_str_unchecked(&self) -> &str {
+>           unsafe { core::str::from_utf8_unchecked(self.as_bytes()) }
+>       }
+> +
+> +    /// Convert this [`CStr`] into a [`CString`] by allocating memory and
+> +    /// copying over the string data.
+> +    pub fn to_cstring(&self) -> Result<CString, AllocError> {
+> +        CString::try_from(self)
+> +    }
+>   }
+>   
+>   impl fmt::Display for CStr {
+> @@ -584,6 +591,21 @@ impl Deref for CString {
+>       }
+>   }
+>   
+> +impl<'a> TryFrom<&'a CStr> for CString {
+> +    type Error = AllocError;
+> +
+> +    fn try_from(cstr: &'a CStr) -> Result<CString, AllocError> {
+> +        let mut buf = Vec::new();
+> +
+> +        buf.try_extend_from_slice(cstr.as_bytes_with_nul())
+> +            .map_err(|_| AllocError)?;
+> +
+> +        // INVARIANT: The `CStr` and `CString` types have the same invariants for
+> +        // the string data, and we copied it over without changes.
+> +        Ok(CString { buf })
+> +    }
+> +}
+> +
+>   /// A convenience alias for [`core::format_args`].
+>   #[macro_export]
+>   macro_rules! fmt {
+> 
+> base-commit: ea76e08f4d901a450619831a255e9e0a4c0ed162
 
-It is not clear to me why this effort was started? As far as I know the 
-null_blk driver is only used by kernel developers for testing kernel 
-changes so end users are not affected by bugs in this driver. 
-Additionally, performance of this driver is critical since this driver 
-is used to measure block layer performance. Does this mean that C is a 
-better choice than Rust for this driver?
-
-Thanks,
-
-Bart.
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
