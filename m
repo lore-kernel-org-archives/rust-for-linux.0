@@ -2,103 +2,78 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1832C77B7F
-	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 10:45:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8AB9C7EE2A
+	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 11:00:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230042AbjECKpP (ORCPT
+        id S230020AbjECLAD (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 3 May 2023 06:45:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50642 "EHLO
+        Wed, 3 May 2023 07:00:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230104AbjECKpN (ORCPT
+        with ESMTP id S229939AbjECLAC (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 3 May 2023 06:45:13 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D50F435A6
-        for <rust-for-linux@vger.kernel.org>; Wed,  3 May 2023 03:45:09 -0700 (PDT)
-Date:   Wed, 03 May 2023 10:45:06 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1683110708; x=1683369908;
-        bh=SJENI6Xn7thgyOwQEG5tYhCtG+qo2jUnMSGkLldh2PU=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=OSdko56aHCHeMD/cu7G6Z6q+PGNmNm3IEp5v54rcYBL+2WXSzYLluEkhtWVezjrVo
-         tBKmYOZw2GVZCf/+xXNmaJA+sQbvL9M+E7lCd1zBGWC8qbgrXZt/Us7lUSUwZxu+hH
-         by3Z9TUgmGS7DT1RrcANiDXxOP40mJe67u5k5a7PlSDNXbxVGeoIMRCDiN7T5935GO
-         9puy2NEejbCxlkbVlgPE6dW9Azi4ZqFL/TqkRfzwjc9ben0a4OJ2JzfJeria7RjUup
-         uRcxEvsLYnuOAMjAMVYe8U8NPVglMeeI4TfG6tfi8+BuwCzW/BL9fDJtV1sLEFssmU
-         d0ScU0FDE2/Ww==
-To:     materoy@proton.me
-From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: bindings: fix sorting of rust/bindings/bindings_helper.h's #includes
-Message-ID: <dIXozfBEyCqYQ9-l0IgxfaoL6paYc_6NjXMxHp3qUqAxQdF-c5qRoULMp4K_Lv4bCOPRez2c_4v4PuFKMysFxhNkK2r1t0grU89YosKzTbE=@proton.me>
+        Wed, 3 May 2023 07:00:02 -0400
+Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B96149F7
+        for <rust-for-linux@vger.kernel.org>; Wed,  3 May 2023 04:00:00 -0700 (PDT)
+Received: by mail-ej1-x64a.google.com with SMTP id a640c23a62f3a-94f59fc787fso477025366b.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 May 2023 04:00:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1683111599; x=1685703599;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q2flrzqrP+i7aYqtQguBZoK/d1T9EPNvaJivqwFd9T0=;
+        b=SynCK35TIyLV9RAsgu/wZep3yuWP9RqrRGi3a+dU+S6i2JQ9j/9wWWdYlxcfT7OJeA
+         MPadvq86aNWnLmQA896/Sg7QmD/KotZIzs0LX3cCFPvGECrWJ3PxqgDEvWGt0Hcbmlre
+         dol4G2AGK0nA/coq8WrfJSuibkYOzatiq8eykuNQORPPa7jF3WXmvVROhqTH4VW+qXPC
+         KN1ckIrDHidr2Y1hYCsKdlX663h1T66qO3bxoAeXK3ZYNsRQxc9o/qpdWhE0Ae5LkEK/
+         m2yWQbwewGKgvYNvzFkKrB1Ce/e90/jxnFjutFdvSqq+w9ZSckrnGGHEzshEsnbN+PVo
+         psEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683111599; x=1685703599;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q2flrzqrP+i7aYqtQguBZoK/d1T9EPNvaJivqwFd9T0=;
+        b=UCOEPGwI56WsxxsqBryC8NOQO0a87Vwns61DmyTYMShUfd1q0O7bDgR/SpZoE19gi6
+         91y9lIRPDTm3j/Rf9gUkL4+XUu7FF9Jo8YqFel7w5uM4FnXIfJ9Ea9GRZvXoVOMGxWgB
+         WMtDDz2FMcL0jrGF8Rbh3IrN3Avz6iDYAcmKRk+zcUph5TU/MEk65CobWu8M1eQqpbVM
+         gb6oH45Xt0Gmi0DXXeIteF3ye/flQa1ES/gOP8PIkqKFzFVvEqeqVGNiHJaHxtNhGZUA
+         HUBN6N/SiQgyKnw4qBeHfHezV10gTGeupa6q7aB7v4rUjgyl4fizrdwWp5HfAvPqRePS
+         phqg==
+X-Gm-Message-State: AC+VfDz7Wpv9LKteKChSPGQOJZEVjQskb3WbhC4dCWuKz4D1xnfIuhMo
+        W1JL3IRV1EJP5xX2jRHP797ivq1CePcNoGc=
+X-Google-Smtp-Source: ACHHUZ6SacIL6tXwsdztLRNtTxrAY3AjLbfHWLlQjTdPFAlO71jHQIXs1LFwEkD76LO+wTYrNLxnd//3yA1+5A4=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a17:907:b13:b0:94e:f130:93f0 with SMTP
+ id h19-20020a1709070b1300b0094ef13093f0mr1194892ejl.1.1683111598801; Wed, 03
+ May 2023 03:59:58 -0700 (PDT)
+Date:   Wed,  3 May 2023 10:59:35 +0000
 In-Reply-To: <20230426224748.34056-1-materoy@proton.me>
+Mime-Version: 1.0
 References: <20230426224748.34056-1-materoy@proton.me>
-Feedback-ID: 71780778:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Mailer: git-send-email 2.40.1.495.gc816e09b53d-goog
+Message-ID: <20230503105935.518315-1-aliceryhl@google.com>
+Subject: Re: [PATCH v1] rust: error: add ERESTARTSYS error code
+From:   Alice Ryhl <aliceryhl@google.com>
+To:     materoy@proton.me
+Cc:     alex.gaynor@gmail.com, aliceryhl@google.com,
+        benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+        boqun.feng@gmail.com, gary@garyguo.net,
+        linux-kernel@vger.kernel.org, ojeda@kernel.org,
+        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
+        yakoyoku@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 27.04.23 00:57, materoy@proton.me wrote:
-> From: Roy Matero <materoy@proton.me>
->=20
+On 27.04.23 00:57, Roy Matero <materoy@proton.me> wrote:
 > Fix sorting of rust/bindings/binding_helper.h's includes,
 > to maintain consistency and rust idoms
->=20
+> 
 > Suggested-by: Miguel Ojeda <ojeda@kernel.org>
 > Link: https://github.com/Rust-for-Linux/linux/issues/1002
->=20
+> 
 > Signed-off-by: Roy Matero <materoy@proton.me>
 
-A couple of nits for the commit message (these can be
-applied by Miguel when picking the patch, if he agrees):
-- capitalize 'Rust',
-- add a `.` at the end,
-- remove the newline between the tags.
-
-I am not sure if the tags at the end should be sorted in any
-way.
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-> ---
->   rust/bindings/bindings_helper.h | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 50e7a76d5455..dc8d97272e71 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -6,10 +6,10 @@
->    * Sorted alphabetically.
->    */
->=20
-> -#include <linux/slab.h>
->   #include <linux/refcount.h>
-> -#include <linux/wait.h>
->   #include <linux/sched.h>
-> +#include <linux/slab.h>
-> +#include <linux/wait.h>
->=20
->   /* `bindgen` gets confused at certain things. */
->   const gfp_t BINDINGS_GFP_KERNEL =3D GFP_KERNEL;
-> --
-> 2.40.1
->=20
-
---=20
-Cheers,
-Benno
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
