@@ -2,152 +2,575 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 884A2C77B78
-	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 12:04:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE048C77B75
+	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 12:31:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229528AbjECMEA (ORCPT
+        id S229706AbjECMb6 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 3 May 2023 08:04:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32842 "EHLO
+        Wed, 3 May 2023 08:31:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbjECMD7 (ORCPT
+        with ESMTP id S229697AbjECMb6 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 3 May 2023 08:03:59 -0400
-Received: from mail-ed1-x549.google.com (mail-ed1-x549.google.com [IPv6:2a00:1450:4864:20::549])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1192C5592
-        for <rust-for-linux@vger.kernel.org>; Wed,  3 May 2023 05:03:58 -0700 (PDT)
-Received: by mail-ed1-x549.google.com with SMTP id 4fb4d7f45d1cf-506e62603f6so4709394a12.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 May 2023 05:03:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683115436; x=1685707436;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aNh3nAoRMa4V5EaowqHF7s4OcqODGsJdMyDwfRXX5Dc=;
-        b=7EkdGqODljDSobiIzTDmeQFUKbnYpVmD2o1PGwhi/GkC7qaRoP2QddYAMvQrwIUsV9
-         hBHpRu4OBxaO+ZLejbgWYiXPbfeL50zkdaoV/xeRyMBrr9PNasu68wJOhbM/6iX3PZZe
-         ih8mtHWMoa4bgZoAmgFjvT3icnvTrIYrPX0sPlC46XUwkaYGIBKLv4Ncgv4GrgzYT6hZ
-         DsVOdOe7WvizW//5nGqTrETTxBgBLAJ6Vy3+6xo/YJBinp1kiseAcq9GDW5oOoXxt95W
-         qz5dX6Bc3EqGXfzua98UA39AgWsuVBtu5yTosXvOWdk88Rk4We+AK3a0VrmMbfEiMqWh
-         QD7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683115436; x=1685707436;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aNh3nAoRMa4V5EaowqHF7s4OcqODGsJdMyDwfRXX5Dc=;
-        b=RWS1Dg2kMNIfklpOuunj94pk0cP18DHgA3rAMMibhqPrLfTRkRAFx7y4SdA2MAaS5r
-         Fd+GI1WNaXjkUGDOh6fQbCeBwU5BE1EjYG5M3pMRVFqi4+SZKbw6sruMWuwYsVAfjcy2
-         YohayL5dsJJHu6/fG7rTZOGf9CHRVKT45szYieMLV/OYluRarI7rnwmfDEcoNY72ULoh
-         x4zmpxMs2k7k8RTvnT69sfnlApQtbVhHDGHyLL27LjQeX474n9dBQULH/jATnmw0Zsw5
-         bLZIuDTrWckj22qHq3WOGm6Vi89HaSQyB/PypzIvKx/XMf68OBInqlxgjcoYDAkicncU
-         kWXQ==
-X-Gm-Message-State: AC+VfDyVA146L/EFhudX6hqhoBHjV4VwmKpwAvp3WkRMTwVVZiXb0jja
-        NtBfcg9Qv1fXIj/2bSeddHjlR8UgdHCSZAk=
-X-Google-Smtp-Source: ACHHUZ5Sg0i/GCzPD8JGP59MFHRO+1dlXdn7nksVppSZZKhJAPPp/c+7q+SGeENBK7IAdZi0eNSEBr9c3w6cg8A=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a17:906:cc14:b0:94f:2cba:b785 with SMTP
- id ml20-20020a170906cc1400b0094f2cbab785mr1253805ejb.12.1683115436592; Wed,
- 03 May 2023 05:03:56 -0700 (PDT)
-Date:   Wed,  3 May 2023 12:03:54 +0000
-In-Reply-To: <20230503090708.2524310-7-nmi@metaspace.dk>
-Mime-Version: 1.0
-References: <20230503090708.2524310-7-nmi@metaspace.dk>
-X-Mailer: git-send-email 2.40.1.495.gc816e09b53d-goog
-Message-ID: <20230503120354.534136-1-aliceryhl@google.com>
-Subject: Re: [RFC PATCH 06/11] rust: apply cache line padding for `SpinLock`
-From:   Alice Ryhl <aliceryhl@google.com>
-To:     nmi@metaspace.dk
-Cc:     Damien.LeMoal@wdc.com, a.hindborg@samsung.com,
-        alex.gaynor@gmail.com, axboe@kernel.dk, benno.lossin@proton.me,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-        gost.dev@samsung.com, hare@suse.de, hch@lst.de, kbusch@kernel.org,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lsf-pc@lists.linux-foundation.org, ojeda@kernel.org,
-        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
-        willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
+        Wed, 3 May 2023 08:31:58 -0400
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5282C10E5;
+        Wed,  3 May 2023 05:31:52 -0700 (PDT)
+Date:   Wed, 03 May 2023 12:31:43 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=protonmail; t=1683117108; x=1683376308;
+        bh=H/Cq7pFaigX2dUKEq8WTB0frQmt8n3yAg0FsAZllXZw=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=Qr2Fc62o5IXOSSTJXhbKWa7+sgdGsObhwRAn/Qe3ln7HwupE9okoCS8K5SY8LzC0q
+         BMmEb6JaXKKnEQ1J+9CE7HD1dZRXDmNasXE3USEk8pYR47FwzYIbCZZz5k1Wj1+NBa
+         glFkdDqmCm6ZPjRiDpd3l4ffxj0ne92Koy/V8/p/y5GE5kJ/rIgyYDI89zHyZv8/Rz
+         Lfz4bLhBS/EeIXJDTvYPCBhrV1eOCm5ca6e0MkCg55VGEjSklcE5c2kdh/9idCBaMx
+         sIkWln+xFPP0FfM0FlEdgFMy5cSoqgFS6KF4Kxdycsnuhfl/gAEVGo/2SmEu8fwu1N
+         f2127SINa9BJg==
+To:     Andreas Hindborg <nmi@metaspace.dk>
+From:   Benno Lossin <benno.lossin@proton.me>
+Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Keith Busch <kbusch@kernel.org>,
+        Damien Le Moal <Damien.LeMoal@wdc.com>,
+        Hannes Reinecke <hare@suse.de>,
+        lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
+        linux-block@vger.kernel.org,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org, gost.dev@samsung.com
+Subject: Re: [RFC PATCH 02/11] rust: add `pages` module for handling page allocation
+Message-ID: <LENFIdWyfQLEP0OtqLWgW9LAr7dW5BruyHO-G8RurzAJCEDkVkQgds9_pzJ5I98qpnrunvFixdiHQtSwa04CgxEBFlISAHz8_q-C28j_f6o=@proton.me>
+In-Reply-To: <20230503090708.2524310-3-nmi@metaspace.dk>
+References: <20230503090708.2524310-1-nmi@metaspace.dk> <20230503090708.2524310-3-nmi@metaspace.dk>
+Feedback-ID: 71780778:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, 3 May 2023 11:07:03 +0200, Andreas Hindborg <a.hindborg@samsung.com> wrote:
-> The kernel `struct spinlock` is 4 bytes on x86 when lockdep is not enabled. The
-> structure is not padded to fit a cache line. The effect of this for `SpinLock`
-> is that the lock variable and the value protected by the lock will share a cache
-> line, depending on the alignment requirements of the protected value. Aligning
-> the lock variable and the protected value to a cache line yields a 20%
-> performance increase for the Rust null block driver for sequential reads to
-> memory backed devices at 6 concurrent readers.
-> 
+On 03.05.23 11:06, Andreas Hindborg wrote:
+> From: Andreas Hindborg <a.hindborg@samsung.com>
+>=20
+> This patch adds support for working with pages of order 0. Support for pa=
+ges
+> with higher order is deferred. Page allocation flags are fixed in this pa=
+tch.
+> Future work might allow the user to specify allocation flags.
+>=20
+> This patch is a heavily modified version of code available in the rust tr=
+ee [1],
+> primarily adding support for multiple page mapping strategies.
+>=20
+> [1] https://github.com/rust-for-Linux/linux/tree/bc22545f38d74473cfef3e9f=
+d65432733435b79f/rust/kernel/pages.rs
+>=20
 > Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-
-This applies the cacheline padding to all spinlocks unconditionally.
-It's not clear to me that we want to do that. Instead, I suggest using
-`SpinLock<CachePadded<T>>` in the null block driver to opt-in to the
-cache padding there, and let other drivers choose whether or not they
-want to cache pad their locks.
-
-On Wed, 3 May 2023 11:07:03 +0200, Andreas Hindborg <a.hindborg@samsung.com> wrote:
-> diff --git a/rust/kernel/cache_padded.rs b/rust/kernel/cache_padded.rs
+> ---
+>  rust/helpers.c       |  31 +++++
+>  rust/kernel/lib.rs   |   6 +
+>  rust/kernel/pages.rs | 284 +++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 321 insertions(+)
+>  create mode 100644 rust/kernel/pages.rs
+>=20
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 5dd5e325b7cc..9bd9d95da951 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -27,6 +27,7 @@
+>  #include <linux/sched/signal.h>
+>  #include <linux/wait.h>
+>  #include <linux/radix-tree.h>
+> +#include <linux/highmem.h>
+>=20
+>  __noreturn void rust_helper_BUG(void)
+>  {
+> @@ -150,6 +151,36 @@ void **rust_helper_radix_tree_next_slot(void **slot,
+>  }
+>  EXPORT_SYMBOL_GPL(rust_helper_radix_tree_next_slot);
+>=20
+> +void *rust_helper_kmap(struct page *page)
+> +{
+> +=09return kmap(page);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_kmap);
+> +
+> +void rust_helper_kunmap(struct page *page)
+> +{
+> +=09return kunmap(page);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_kunmap);
+> +
+> +void *rust_helper_kmap_atomic(struct page *page)
+> +{
+> +=09return kmap_atomic(page);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_kmap_atomic);
+> +
+> +void rust_helper_kunmap_atomic(void *address)
+> +{
+> +=09kunmap_atomic(address);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_kunmap_atomic);
+> +
+> +struct page *rust_helper_alloc_pages(gfp_t gfp_mask, unsigned int order)
+> +{
+> +=09return alloc_pages(gfp_mask, order);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_alloc_pages);
+> +
+>  /*
+>   * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` =
+type
+>   * as the Rust `usize` type, so we can use it in contexts where Rust
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index a85cb6aae8d6..8bef6686504b 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -38,6 +38,7 @@ mod build_assert;
+>  pub mod error;
+>  pub mod init;
+>  pub mod ioctl;
+> +pub mod pages;
+>  pub mod prelude;
+>  pub mod print;
+>  pub mod radix_tree;
+> @@ -57,6 +58,11 @@ pub use uapi;
+>  #[doc(hidden)]
+>  pub use build_error::build_error;
+>=20
+> +/// Page size defined in terms of the `PAGE_SHIFT` macro from C.
+> #@
+> #@ `PAGE_SHIFT` is not using a doc-link.
+> #@
+> +///
+> +/// [`PAGE_SHIFT`]: ../../../include/asm-generic/page.h
+> +pub const PAGE_SIZE: u32 =3D 1 << bindings::PAGE_SHIFT;
+> #@
+> #@ This should be of type `usize`.
+> #@
+> +
+>  /// Prefix to appear before log messages printed from within the `kernel=
+` crate.
+>  const __LOG_PREFIX: &[u8] =3D b"rust_kernel\0";
+>=20
+> diff --git a/rust/kernel/pages.rs b/rust/kernel/pages.rs
 > new file mode 100644
-> index 000000000000..758678e71f50
+> index 000000000000..ed51b053dd5d
 > --- /dev/null
-> +++ b/rust/kernel/cache_padded.rs
-> 
-> +impl<T> CachePadded<T> {
-> +    /// Pads and aligns a value to 64 bytes.
-> +    #[inline(always)]
-> +    pub(crate) const fn new(t: T) -> CachePadded<T> {
-> +        CachePadded::<T> { value: t }
+> +++ b/rust/kernel/pages.rs
+> @@ -0,0 +1,284 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Kernel page allocation and management.
+> +//!
+> +//! This module currently provides limited support. It supports pages of=
+ order 0
+> +//! for most operations. Page allocation flags are fixed.
+> +
+> +use crate::{bindings, error::code::*, error::Result, PAGE_SIZE};
+> +use core::{marker::PhantomData, ptr};
+> +
+> +/// A set of physical pages.
+> +///
+> +/// `Pages` holds a reference to a set of pages of order `ORDER`. Having=
+ the order as a generic
+> +/// const allows the struct to have the same size as a pointer.
+> #@
+> #@ I would remove the 'Having the order as a...' sentence. Since that is
+> #@ just implementation detail.
+> #@
+> +///
+> +/// # Invariants
+> +///
+> +/// The pointer `Pages::pages` is valid and points to 2^ORDER pages.
+> #@
+> #@ `Pages::pages` -> `pages`.
+> #@
+> +pub struct Pages<const ORDER: u32> {
+> +    pub(crate) pages: *mut bindings::page,
+> +}
+> +
+> +impl<const ORDER: u32> Pages<ORDER> {
+> +    /// Allocates a new set of contiguous pages.
+> +    pub fn new() -> Result<Self> {
+> +        let pages =3D unsafe {
+> +            bindings::alloc_pages(
+> +                bindings::GFP_KERNEL | bindings::__GFP_ZERO | bindings::=
+___GFP_HIGHMEM,
+> +                ORDER,
+> +            )
+> +        };
+> #@
+> #@ Missing `SAFETY` comment.
+> #@
+> +        if pages.is_null() {
+> +            return Err(ENOMEM);
+> +        }
+> +        // INVARIANTS: We checked that the allocation above succeeded.
+> +        // SAFETY: We allocated pages above
+> +        Ok(unsafe { Self::from_raw(pages) })
+> +    }
+> +
+> +    /// Create a `Pages` from a raw `struct page` pointer
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Caller must own the pages pointed to by `ptr` as these will be f=
+reed
+> +    /// when the returned `Pages` is dropped.
+> +    pub unsafe fn from_raw(ptr: *mut bindings::page) -> Self {
+> +        Self { pages: ptr }
 > +    }
 > +}
-
-Please make this `pub` instead of just `pub(crate)`. Other drivers might
-want to use this directly.
-
-On Wed, 3 May 2023 11:07:03 +0200, Andreas Hindborg <a.hindborg@samsung.com> wrote:
-> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-> index 979b56464a4e..e39142a8148c 100644
-> --- a/rust/kernel/sync/lock/spinlock.rs
-> +++ b/rust/kernel/sync/lock/spinlock.rs
-> @@ -100,18 +103,20 @@ unsafe impl super::Backend for SpinLockBackend {
->      ) {
->          // SAFETY: The safety requirements ensure that `ptr` is valid for writes, and `name` and
->          // `key` are valid for read indefinitely.
-> -        unsafe { bindings::__spin_lock_init(ptr, name, key) }
-> +        unsafe { bindings::__spin_lock_init((&mut *ptr).deref_mut(), name, key) }
->      }
->  
+> +
+> +impl Pages<0> {
 > +    #[inline(always)]
->      unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
->          // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
->          // memory, and that it has been initialised before.
-> -        unsafe { bindings::spin_lock(ptr) }
-> +        unsafe { bindings::spin_lock((&mut *ptr).deref_mut()) }
->      }
->  
+> #@
+> #@ Is this really needed? I think this function should be inlined
+> #@ automatically.
+> #@
+> +    fn check_offset_and_map<I: MappingInfo>(
+> +        &self,
+> +        offset: usize,
+> +        len: usize,
+> +    ) -> Result<PageMapping<'_, I>>
+> +    where
+> +        Pages<0>: MappingActions<I>,
+> #@
+> #@ Why not use `Self: MappingActions<I>`?
+> #@
+> +    {
+> +        let end =3D offset.checked_add(len).ok_or(EINVAL)?;
+> +        if end as u32 > PAGE_SIZE {
+> #@
+> #@ Remove the `as u32`, since `PAGE_SIZE` should be of type `usize`.
+> #@
+> +            return Err(EINVAL);
+> #@
+> #@ I think it would make sense to create a more descriptive Rust error wi=
+th
+> #@ a `From` impl to turn it into an `Error`. It always is better to know =
+from
+> #@ the signature what exactly can go wrong when calling a function.
+> #@
+> +        }
+> +
+> +        let mapping =3D <Self as MappingActions<I>>::map(self);
+> +
+> +        Ok(mapping)
+> #@
+> #@ I would merge these lines.
+> #@
+> +    }
+> +
 > +    #[inline(always)]
->      unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
->          // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
->          // caller is the owner of the mutex.
-> -        unsafe { bindings::spin_unlock(ptr) }
-> +        unsafe { bindings::spin_unlock((&mut *ptr).deref_mut()) }
->      }
->  }
+> +    unsafe fn read_internal<I: MappingInfo>(
+> #@
+> #@ Missing `# Safety` section.
+> #@
+> +        &self,
+> +        dest: *mut u8,
+> +        offset: usize,
+> +        len: usize,
+> +    ) -> Result
+> +    where
+> +        Pages<0>: MappingActions<I>,
+> +    {
+> +        let mapping =3D self.check_offset_and_map::<I>(offset, len)?;
+> +
+> +        unsafe { ptr::copy_nonoverlapping((mapping.ptr as *mut u8).add(o=
+ffset), dest, len) };
+> #@
+> #@ Missing `SAFETY` comment. Replace `as *mut u8` with `.cast::<u8>()`.
+> #@
+> +        Ok(())
+> +    }
+> +
+> +    /// Maps the pages and reads from them into the given buffer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the destination buffer is valid for the=
+ given
+> +    /// length. Additionally, if the raw buffer is intended to be recast=
+, they
+> +    /// must ensure that the data can be safely cast;
+> +    /// [`crate::io_buffer::ReadableFromBytes`] has more details about i=
+t.
+> +    /// `dest` may not point to the source page.
+> #@
+> #@ - `dest` is valid for writes for `len`.
+> #@ - What is meant by 'the raw buffer is intended to be recast'?
+> #@ - `io_buffer` does not yet exist in `rust-next`.
+> #@
+> +    #[inline(always)]
+> +    pub unsafe fn read(&self, dest: *mut u8, offset: usize, len: usize) =
+-> Result {
+> +        unsafe { self.read_internal::<NormalMappingInfo>(dest, offset, l=
+en) }
+> #@
+> #@ Missing `SAFETY` comment.
+> #@
+> +    }
+> +
+> +    /// Maps the pages and reads from them into the given buffer. The pa=
+ge is
+> +    /// mapped atomically.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the destination buffer is valid for the=
+ given
+> +    /// length. Additionally, if the raw buffer is intended to be recast=
+, they
+> +    /// must ensure that the data can be safely cast;
+> +    /// [`crate::io_buffer::ReadableFromBytes`] has more details about i=
+t.
+> +    /// `dest` may not point to the source page.
+> +    #[inline(always)]
+> +    pub unsafe fn read_atomic(&self, dest: *mut u8, offset: usize, len: =
+usize) -> Result {
+> +        unsafe { self.read_internal::<AtomicMappingInfo>(dest, offset, l=
+en) }
+> #@
+> #@ Missing `SAFETY` comment.
+> #@
+> +    }
+> +
+> +    #[inline(always)]
+> +    unsafe fn write_internal<I: MappingInfo>(
+> #@
+> #@ Missing `# Safety` section.
+> #@
+> +        &self,
+> +        src: *const u8,
+> +        offset: usize,
+> +        len: usize,
+> +    ) -> Result
+> +    where
+> +        Pages<0>: MappingActions<I>,
+> +    {
+> +        let mapping =3D self.check_offset_and_map::<I>(offset, len)?;
+> +
+> +        unsafe { ptr::copy_nonoverlapping(src, (mapping.ptr as *mut u8).=
+add(offset), len) };
+> #@
+> #@ Missing `SAFETY` comment.
+> #@
+> +        Ok(())
+> +    }
+> +
+> +    /// Maps the pages and writes into them from the given buffer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the buffer is valid for the given lengt=
+h.
+> +    /// Additionally, if the page is (or will be) mapped by userspace, t=
+hey must
+> +    /// ensure that no kernel data is leaked through padding if it was c=
+ast from
+> +    /// another type; [`crate::io_buffer::WritableToBytes`] has more det=
+ails
+> +    /// about it. `src` must not point to the destination page.
+> #@
+> #@ `src` is valid for reads for `len`.
+> #@
+> +    #[inline(always)]
+> +    pub unsafe fn write(&self, src: *const u8, offset: usize, len: usize=
+) -> Result {
+> +        unsafe { self.write_internal::<NormalMappingInfo>(src, offset, l=
+en) }
+> +    }
+> +
+> +    /// Maps the pages and writes into them from the given buffer. The p=
+age is
+> +    /// mapped atomically.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the buffer is valid for the given lengt=
+h.
+> +    /// Additionally, if the page is (or will be) mapped by userspace, t=
+hey must
+> +    /// ensure that no kernel data is leaked through padding if it was c=
+ast from
+> +    /// another type; [`crate::io_buffer::WritableToBytes`] has more det=
+ails
+> +    /// about it. `src` must not point to the destination page.
+> +    #[inline(always)]
+> +    pub unsafe fn write_atomic(&self, src: *const u8, offset: usize, len=
+: usize) -> Result {
+> +        unsafe { self.write_internal::<AtomicMappingInfo>(src, offset, l=
+en) }
+> +    }
+> +
+> +    /// Maps the page at index 0.
+> +    #[inline(always)]
+> +    pub fn kmap(&self) -> PageMapping<'_, NormalMappingInfo> {
+> +        let ptr =3D unsafe { bindings::kmap(self.pages) };
+> #@
+> #@ Missing `SAFETY` comment.
+> #@
+> +
+> +        PageMapping {
+> +            page: self.pages,
+> +            ptr,
+> +            _phantom: PhantomData,
+> +            _phantom2: PhantomData,
+> +        }
+> +    }
+> +
+> +    /// Atomically Maps the page at index 0.
+> +    #[inline(always)]
+> +    pub fn kmap_atomic(&self) -> PageMapping<'_, AtomicMappingInfo> {
+> +        let ptr =3D unsafe { bindings::kmap_atomic(self.pages) };
+> #@
+> #@ Missing `SAFETY` comment.
+> #@
+> +
+> +        PageMapping {
+> +            page: self.pages,
+> +            ptr,
+> +            _phantom: PhantomData,
+> +            _phantom2: PhantomData,
+> +        }
+> +    }
+> +}
+> +
+> +impl<const ORDER: u32> Drop for Pages<ORDER> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: By the type invariants, we know the pages are allocat=
+ed with the given order.
+> +        unsafe { bindings::__free_pages(self.pages, ORDER) };
+> +    }
+> +}
+> +
+> +/// Specifies the type of page mapping
+> +pub trait MappingInfo {}
+> +
+> +/// Encapsulates methods to map and unmap pages
+> +pub trait MappingActions<I: MappingInfo>
+> +where
+> +    Pages<0>: MappingActions<I>,
+> +{
+> +    /// Map a page into the kernel address scpace
+> #@
+> #@ Typo.
+> #@
+> +    fn map(pages: &Pages<0>) -> PageMapping<'_, I>;
+> +
+> +    /// Unmap a page specified by `mapping`
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Must only be called by `PageMapping::drop()`.
+> +    unsafe fn unmap(mapping: &PageMapping<'_, I>);
+> +}
+> +
+> +/// A type state indicating that pages were mapped atomically
+> +pub struct AtomicMappingInfo;
+> +impl MappingInfo for AtomicMappingInfo {}
+> +
+> +/// A type state indicating that pages were not mapped atomically
+> +pub struct NormalMappingInfo;
+> +impl MappingInfo for NormalMappingInfo {}
+> +
+> +impl MappingActions<AtomicMappingInfo> for Pages<0> {
+> +    #[inline(always)]
+> +    fn map(pages: &Pages<0>) -> PageMapping<'_, AtomicMappingInfo> {
+> +        pages.kmap_atomic()
+> +    }
+> +
+> +    #[inline(always)]
+> +    unsafe fn unmap(mapping: &PageMapping<'_, AtomicMappingInfo>) {
+> +        // SAFETY: An instance of `PageMapping` is created only when `km=
+ap` succeeded for the given
+> +        // page, so it is safe to unmap it here.
+> +        unsafe { bindings::kunmap_atomic(mapping.ptr) };
+> +    }
+> +}
+> +
+> +impl MappingActions<NormalMappingInfo> for Pages<0> {
+> +    #[inline(always)]
+> +    fn map(pages: &Pages<0>) -> PageMapping<'_, NormalMappingInfo> {
+> +        pages.kmap()
+> +    }
+> +
+> +    #[inline(always)]
+> +    unsafe fn unmap(mapping: &PageMapping<'_, NormalMappingInfo>) {
+> +        // SAFETY: An instance of `PageMapping` is created only when `km=
+ap` succeeded for the given
+> +        // page, so it is safe to unmap it here.
+> +        unsafe { bindings::kunmap(mapping.page) };
+> +    }
+> +}
+> #@
+> #@ I am not sure if this is the best implementation, why do the `kmap` an=
+d
+> #@ `kmap_atomic` functions exist? Would it not make sense to implement
+> #@ them entirely in `MappingActions::map`?
+> #@
+> +
+> +/// An owned page mapping. When this struct is dropped, the page is unma=
+pped.
+> +pub struct PageMapping<'a, I: MappingInfo>
+> +where
+> +    Pages<0>: MappingActions<I>,
+> +{
+> +    page: *mut bindings::page,
+> +    ptr: *mut core::ffi::c_void,
+> +    _phantom: PhantomData<&'a i32>,
+> +    _phantom2: PhantomData<I>,
+> +}
+> +
+> +impl<'a, I: MappingInfo> PageMapping<'a, I>
+> +where
+> +    Pages<0>: MappingActions<I>,
+> +{
+> +    /// Return a pointer to the wrapped `struct page`
+> +    #[inline(always)]
+> +    pub fn get_ptr(&self) -> *mut core::ffi::c_void {
+> +        self.ptr
+> +    }
+> +}
+> +
+> +// Because we do not have Drop specialization, we have to do this dance.=
+ Life
+> +// would be much more simple if we could have `impl Drop for PageMapping=
+<'_,
+> +// Atomic>` and `impl Drop for PageMapping<'_, NotAtomic>`
+> +impl<I: MappingInfo> Drop for PageMapping<'_, I>
+> +where
+> +    Pages<0>: MappingActions<I>,
+> +{
+> +    #[inline(always)]
+> +    fn drop(&mut self) {
+> +        // SAFETY: We are OK to call this because we are `PageMapping::d=
+rop()`
+> +        unsafe { <Pages<0> as MappingActions<I>>::unmap(self) }
+> +    }
+> +}
+> --
+> 2.40.0
 
-I would prefer to remain in pointer-land for the above operations. I
-think that this leads to core that is more obviously correct.
+Here are some more general things:
+- I think we could use this as an opportunity to add more docs about how
+  paging works, or at least add some links to the C documentation.
+- Can we improve the paging API? I have not given it any thought yet, but
+  the current API looks very primitive.
+- Documentation comments should form complete sentences (so end with `.`).
 
-For example:
+--
+Cheers,
+Benno
 
-```
-impl<T> CachePadded<T> {
-    pub const fn raw_get(ptr: *mut Self) -> *mut T {
-        core::ptr::addr_of_mut!((*ptr).value)
-    }
-}
-
-#[inline(always)]
-unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
-    unsafe { bindings::spin_unlock(CachePadded::raw_get(ptr)) }
-}
-```
