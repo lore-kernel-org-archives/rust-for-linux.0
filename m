@@ -2,55 +2,55 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 852E3C7EE29
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74781C7EE26
 	for <rust-for-linux@archiver.kernel.org>; Wed,  3 May 2023 09:07:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbjECJH0 (ORCPT
+        id S229872AbjECJH0 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
         Wed, 3 May 2023 05:07:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45318 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229804AbjECJHZ (ORCPT
+        with ESMTP id S229449AbjECJHX (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 3 May 2023 05:07:25 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC3AB46A8
-        for <rust-for-linux@vger.kernel.org>; Wed,  3 May 2023 02:07:19 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-3063afa2372so1356510f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 May 2023 02:07:19 -0700 (PDT)
+        Wed, 3 May 2023 05:07:23 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF7712700
+        for <rust-for-linux@vger.kernel.org>; Wed,  3 May 2023 02:07:18 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-3062db220a3so2193187f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 May 2023 02:07:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1683104838; x=1685696838;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1683104837; x=1685696837;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=s2OF8cEuaV6eZXvZ8+TxAkEcAWTLOcEvP8M1z8Cu3eg=;
-        b=gxwZbpfudAGlkc9suPmtflL1jblQr4MK2hN1E3gaOGf/Plu3em+uZBGDw0rNUr7SUW
-         EFB1a9htiLdSYQkjbn0JwIhIuQzJvNeRrzMlV0eXOLXXzIMN08VTuR5LYMKTn7m05OvH
-         9LHtC/oRDhdH3ACVUabMlgXW9Ewt8dD9XDI4Ez+21QfYADeNMEfiUmJzzu0XcckSKJuW
-         Nj3Eh8mnhKzN9/T17uqbvi142/KhX1PBU6Qk/kU/ro0xuE5e8kN3AfwwdKqZvdZVSRvp
-         4qO3v7fHN7bd8dDrEFaz1iXrwav7RAETaSSc1oLICAvTlYivVQel8jdUiGT3J45aYlDO
-         jWSQ==
+        bh=eyybpekGpHGVvvaVewFrSrZRoEZZ/l3dGyzewmhKKwg=;
+        b=Hpob7q1r0p4V0caXE2crEE/51FttP5ZNpxWPBnl62DekIdsJcpMiZqQ+U+0jmvfFhs
+         BuAsztkxherqbyie+iWYnyQMMPYONBuj/oH4n3bIkTFCW6YxZ1Qzi8QEu4wrtQeU4R3m
+         7pVC6wXg8s6dc6fWLdUSxUdlxle+M8WZmsl6xw4ADtWTPKY3Cr+OeVC1eL/tZD3HUO9D
+         q8HSTwHe/phJrkywr0Cj2YrKfBXdA8V3FvuTAJaBlWK+ou8a65EmklXozWcnoVqQl1Nt
+         SaOHMzoSKIqGjhbX5y3I97bbfDs7YJsYXztcWuw71U7QjlCUZXS0UIkgwyYoGaNAdEA8
+         IrdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683104838; x=1685696838;
+        d=1e100.net; s=20221208; t=1683104837; x=1685696837;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=s2OF8cEuaV6eZXvZ8+TxAkEcAWTLOcEvP8M1z8Cu3eg=;
-        b=G+6GbpPG6iHzmHGpRuXuqPl9gIpEYuK6zBsFCfjM8pM7Pk/10jL8040kaJwU+JAfkr
-         Ds8gL63ycGG0x4iuyYS7piNocUjIHahZWTNR/Gl+GbOjpAUwuVjuNR5RhZ1JJKH7zb0Y
-         O0/ymlFpfnl/+gph+c2pTvDoVJIUYsEh89FGV5s0vDXhG1pQkIvkwTCDsHGOVMjRv8z6
-         l6CWg2Mn+FBcpI4bqLwB8ggvXGbVqIfuJIRQNsjtzg5bhwPKqRvpFy9e2Pf6U4EPy+U0
-         YRYHybRflKQg4THRnSO2v2p+hUHYMvGKzV2RzX9eqghlJXQCpzm9bUwg9c5XWSg7plM4
-         SmVw==
-X-Gm-Message-State: AC+VfDz176y9nIcVW5nXnuvGPs7YK+jNc1qww6BurmkAYpfiz3iRFtHo
-        Bo7VbxsFOxFWBB9JG1Hr5n7hCg==
-X-Google-Smtp-Source: ACHHUZ7yrDB5gpNUkKE0X5q8MEbvZmkfVFN8rXKsdmGE0Vy4CSxFk+RB6D8+DyE/dyNCU1ItHJSB8g==
-X-Received: by 2002:a05:6000:1145:b0:306:2cf5:79dc with SMTP id d5-20020a056000114500b003062cf579dcmr6255554wrx.35.1683104838080;
-        Wed, 03 May 2023 02:07:18 -0700 (PDT)
-Received: from localhost ([147.161.155.99])
-        by smtp.gmail.com with ESMTPSA id t15-20020adfe44f000000b002f00793bd7asm33035982wrm.27.2023.05.03.02.07.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        bh=eyybpekGpHGVvvaVewFrSrZRoEZZ/l3dGyzewmhKKwg=;
+        b=VVQZPwWNQoukVHTYpXWbIobwJGIEu1z6dgYEJq4elifC8oJXwxxGsXwQ97eO1G6cUK
+         CljepN8qB8a1Z46sic7C3C43wHGWDWSfHRUCxQps2kHsndq+c5U7JQT2L+IZyHdYUj//
+         apnH/1n1uLSCoKX4ggd0/xaDmwR/4SUSFdg4CwQOCV1hWgTROMTl+yM0LWhRvs5Oad6E
+         xJcLDliNbrUQLLyhLiz7LOcibmdAyAI/zIQ3wDUNc87lGokXORxL8LJ+DA6mjCRf9xKb
+         TO3jXLLZY/ptIo7OSLmThMb164Fe16jp0tjg5ixWH6g9TpDe91P28mQ5U9S5CzN4b7rx
+         8/Yg==
+X-Gm-Message-State: AC+VfDyl4UY46XnIHrwQa7hv6fiHkYBBMr+zR5LvbXkqJHsbK3l1LvmV
+        Cxh63zaLk+K8FlALecSFFCH7rQ==
+X-Google-Smtp-Source: ACHHUZ4c7pdGYmFDE+EObHEdf29jnpXn/rtwlDJWATkEBCQ9LPR+y1yLX/HtD1fPIL1dXO2oFBe9Lg==
+X-Received: by 2002:a5d:54d1:0:b0:306:2ff6:5cbf with SMTP id x17-20020a5d54d1000000b003062ff65cbfmr6873320wrv.24.1683104837081;
         Wed, 03 May 2023 02:07:17 -0700 (PDT)
+Received: from localhost ([147.161.155.99])
+        by smtp.gmail.com with ESMTPSA id e2-20020a056000120200b00306281cfa59sm9741741wrx.47.2023.05.03.02.07.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 May 2023 02:07:16 -0700 (PDT)
 From:   Andreas Hindborg <nmi@metaspace.dk>
 To:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
         Keith Busch <kbusch@kernel.org>,
@@ -68,9 +68,9 @@ Cc:     Andreas Hindborg <a.hindborg@samsung.com>,
         Benno Lossin <benno.lossin@proton.me>,
         Andreas Hindborg <nmi@metaspace.dk>,
         linux-kernel@vger.kernel.org (open list), gost.dev@samsung.com
-Subject: [RFC PATCH 02/11] rust: add `pages` module for handling page allocation
-Date:   Wed,  3 May 2023 11:06:59 +0200
-Message-Id: <20230503090708.2524310-3-nmi@metaspace.dk>
+Subject: [RFC PATCH 01/11] rust: add radix tree abstraction
+Date:   Wed,  3 May 2023 11:06:58 +0200
+Message-Id: <20230503090708.2524310-2-nmi@metaspace.dk>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230503090708.2524310-1-nmi@metaspace.dk>
 References: <20230503090708.2524310-1-nmi@metaspace.dk>
@@ -82,384 +82,255 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 From: Andreas Hindborg <a.hindborg@samsung.com>
 
-This patch adds support for working with pages of order 0. Support for pages
-with higher order is deferred. Page allocation flags are fixed in this patch.
-Future work might allow the user to specify allocation flags.
-
-This patch is a heavily modified version of code available in the rust tree [1],
-primarily adding support for multiple page mapping strategies.
-
-[1] https://github.com/rust-for-Linux/linux/tree/bc22545f38d74473cfef3e9fd65432733435b79f/rust/kernel/pages.rs
+Add abstractions for the C radix_tree. This abstraction allows Rust code to use
+the radix_tree as a map from `u64` keys to `ForeignOwnable` values.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 ---
- rust/helpers.c       |  31 +++++
- rust/kernel/lib.rs   |   6 +
- rust/kernel/pages.rs | 284 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 321 insertions(+)
- create mode 100644 rust/kernel/pages.rs
+ rust/bindings/bindings_helper.h |   2 +
+ rust/bindings/lib.rs            |   1 +
+ rust/helpers.c                  |  22 +++++
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/radix_tree.rs       | 156 ++++++++++++++++++++++++++++++++
+ 5 files changed, 182 insertions(+)
+ create mode 100644 rust/kernel/radix_tree.rs
 
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 50e7a76d5455..52834962b94d 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -10,7 +10,9 @@
+ #include <linux/refcount.h>
+ #include <linux/wait.h>
+ #include <linux/sched.h>
++#include <linux/radix-tree.h>
+ 
+ /* `bindgen` gets confused at certain things. */
+ const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
++const gfp_t BINDINGS_GFP_ATOMIC = GFP_ATOMIC;
+ const gfp_t BINDINGS___GFP_ZERO = __GFP_ZERO;
+diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
+index 7b246454e009..62f36a9eb1f4 100644
+--- a/rust/bindings/lib.rs
++++ b/rust/bindings/lib.rs
+@@ -51,4 +51,5 @@ mod bindings_helper {
+ pub use bindings_raw::*;
+ 
+ pub const GFP_KERNEL: gfp_t = BINDINGS_GFP_KERNEL;
++pub const GFP_ATOMIC: gfp_t = BINDINGS_GFP_ATOMIC;
+ pub const __GFP_ZERO: gfp_t = BINDINGS___GFP_ZERO;
 diff --git a/rust/helpers.c b/rust/helpers.c
-index 5dd5e325b7cc..9bd9d95da951 100644
+index 81e80261d597..5dd5e325b7cc 100644
 --- a/rust/helpers.c
 +++ b/rust/helpers.c
-@@ -27,6 +27,7 @@
+@@ -26,6 +26,7 @@
+ #include <linux/spinlock.h>
  #include <linux/sched/signal.h>
  #include <linux/wait.h>
- #include <linux/radix-tree.h>
-+#include <linux/highmem.h>
++#include <linux/radix-tree.h>
  
  __noreturn void rust_helper_BUG(void)
  {
-@@ -150,6 +151,36 @@ void **rust_helper_radix_tree_next_slot(void **slot,
+@@ -128,6 +129,27 @@ void rust_helper_put_task_struct(struct task_struct *t)
  }
- EXPORT_SYMBOL_GPL(rust_helper_radix_tree_next_slot);
+ EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
  
-+void *rust_helper_kmap(struct page *page)
++void rust_helper_init_radix_tree(struct xarray *tree, gfp_t gfp_mask)
 +{
-+	return kmap(page);
++	INIT_RADIX_TREE(tree, gfp_mask);
 +}
-+EXPORT_SYMBOL_GPL(rust_helper_kmap);
++EXPORT_SYMBOL_GPL(rust_helper_init_radix_tree);
 +
-+void rust_helper_kunmap(struct page *page)
++void **rust_helper_radix_tree_iter_init(struct radix_tree_iter *iter,
++					unsigned long start)
 +{
-+	return kunmap(page);
++	return radix_tree_iter_init(iter, start);
 +}
-+EXPORT_SYMBOL_GPL(rust_helper_kunmap);
++EXPORT_SYMBOL_GPL(rust_helper_radix_tree_iter_init);
 +
-+void *rust_helper_kmap_atomic(struct page *page)
++void **rust_helper_radix_tree_next_slot(void **slot,
++					struct radix_tree_iter *iter,
++					unsigned flags)
 +{
-+	return kmap_atomic(page);
++	return radix_tree_next_slot(slot, iter, flags);
 +}
-+EXPORT_SYMBOL_GPL(rust_helper_kmap_atomic);
-+
-+void rust_helper_kunmap_atomic(void *address)
-+{
-+	kunmap_atomic(address);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_kunmap_atomic);
-+
-+struct page *rust_helper_alloc_pages(gfp_t gfp_mask, unsigned int order)
-+{
-+	return alloc_pages(gfp_mask, order);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_alloc_pages);
++EXPORT_SYMBOL_GPL(rust_helper_radix_tree_next_slot);
 +
  /*
   * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
   * as the Rust `usize` type, so we can use it in contexts where Rust
 diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index a85cb6aae8d6..8bef6686504b 100644
+index 676995d4e460..a85cb6aae8d6 100644
 --- a/rust/kernel/lib.rs
 +++ b/rust/kernel/lib.rs
-@@ -38,6 +38,7 @@ mod build_assert;
- pub mod error;
- pub mod init;
+@@ -40,6 +40,7 @@ pub mod init;
  pub mod ioctl;
-+pub mod pages;
  pub mod prelude;
  pub mod print;
- pub mod radix_tree;
-@@ -57,6 +58,11 @@ pub use uapi;
++pub mod radix_tree;
+ mod static_assert;
  #[doc(hidden)]
- pub use build_error::build_error;
- 
-+/// Page size defined in terms of the `PAGE_SHIFT` macro from C.
-+///
-+/// [`PAGE_SHIFT`]: ../../../include/asm-generic/page.h
-+pub const PAGE_SIZE: u32 = 1 << bindings::PAGE_SHIFT;
-+
- /// Prefix to appear before log messages printed from within the `kernel` crate.
- const __LOG_PREFIX: &[u8] = b"rust_kernel\0";
- 
-diff --git a/rust/kernel/pages.rs b/rust/kernel/pages.rs
+ pub mod std_vendor;
+diff --git a/rust/kernel/radix_tree.rs b/rust/kernel/radix_tree.rs
 new file mode 100644
-index 000000000000..ed51b053dd5d
+index 000000000000..f659ab8b017c
 --- /dev/null
-+++ b/rust/kernel/pages.rs
-@@ -0,0 +1,284 @@
++++ b/rust/kernel/radix_tree.rs
+@@ -0,0 +1,156 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! Kernel page allocation and management.
++//! RadixTree abstraction.
 +//!
-+//! This module currently provides limited support. It supports pages of order 0
-+//! for most operations. Page allocation flags are fixed.
++//! C header: [`include/linux/radix_tree.h`](../../include/linux/radix_tree.h)
 +
-+use crate::{bindings, error::code::*, error::Result, PAGE_SIZE};
-+use core::{marker::PhantomData, ptr};
++use crate::error::to_result;
++use crate::error::Result;
++use crate::types::ForeignOwnable;
++use crate::types::Opaque;
++use crate::types::ScopeGuard;
++use alloc::boxed::Box;
++use core::marker::PhantomData;
++use core::pin::Pin;
 +
-+/// A set of physical pages.
-+///
-+/// `Pages` holds a reference to a set of pages of order `ORDER`. Having the order as a generic
-+/// const allows the struct to have the same size as a pointer.
++type Key = u64;
++
++/// A map of `u64` to `ForeignOwnable`
 +///
 +/// # Invariants
 +///
-+/// The pointer `Pages::pages` is valid and points to 2^ORDER pages.
-+pub struct Pages<const ORDER: u32> {
-+    pub(crate) pages: *mut bindings::page,
++/// - `tree` always points to a valid and initialized `struct radix_tree`.
++/// - Pointers stored in the tree are created by a call to `ForignOwnable::into_foreign()`
++pub struct RadixTree<V: ForeignOwnable> {
++    tree: Pin<Box<Opaque<bindings::xarray>>>,
++    _marker: PhantomData<V>,
 +}
 +
-+impl<const ORDER: u32> Pages<ORDER> {
-+    /// Allocates a new set of contiguous pages.
++impl<V: ForeignOwnable> RadixTree<V> {
++    /// Create a new radix tree
++    ///
++    /// Note: This function allocates memory with `GFP_ATOMIC`.
 +    pub fn new() -> Result<Self> {
-+        let pages = unsafe {
-+            bindings::alloc_pages(
-+                bindings::GFP_KERNEL | bindings::__GFP_ZERO | bindings::___GFP_HIGHMEM,
-+                ORDER,
-+            )
++        let tree = Pin::from(Box::try_new(Opaque::uninit())?);
++
++        // SAFETY: `tree` points to allocated but not initialized memory. This
++        // call will initialize the memory.
++        unsafe { bindings::init_radix_tree(tree.get(), bindings::GFP_ATOMIC) };
++
++        Ok(Self {
++            tree,
++            _marker: PhantomData,
++        })
++    }
++
++    /// Try to insert a value into the tree
++    pub fn try_insert(&mut self, key: Key, value: V) -> Result<()> {
++        // SAFETY: `self.tree` points to a valid and initialized `struct radix_tree`
++        let ret =
++            unsafe { bindings::radix_tree_insert(self.tree.get(), key, value.into_foreign() as _) };
++        to_result(ret)
++    }
++
++    /// Search for `key` in the map. Returns a reference to the associated
++    /// value if found.
++    pub fn get(&self, key: Key) -> Option<V::Borrowed<'_>> {
++        // SAFETY: `self.tree` points to a valid and initialized `struct radix_tree`
++        let item =
++            core::ptr::NonNull::new(unsafe { bindings::radix_tree_lookup(self.tree.get(), key) })?;
++
++        // SAFETY: `item` was created by a call to
++        // `ForeignOwnable::into_foreign()`. As `get_mut()` and `remove()` takes
++        // a `&mut self`, no mutable borrows for `item` can exist and
++        // `ForeignOwnable::from_foreign()` cannot be called until this borrow
++        // is dropped.
++        Some(unsafe { V::borrow(item.as_ptr()) })
++    }
++
++    /// Search for `key` in the map. Return a mutable reference to the
++    /// associated value if found.
++    pub fn get_mut(&mut self, key: Key) -> Option<MutBorrow<'_, V>> {
++        let item =
++            core::ptr::NonNull::new(unsafe { bindings::radix_tree_lookup(self.tree.get(), key) })?;
++
++        // SAFETY: `item` was created by a call to
++        // `ForeignOwnable::into_foreign()`. As `get()` takes a `&self` and
++        // `remove()` takes a `&mut self`, no borrows for `item` can exist and
++        // `ForeignOwnable::from_foreign()` cannot be called until this borrow
++        // is dropped.
++        Some(MutBorrow {
++            guard: unsafe { V::borrow_mut(item.as_ptr()) },
++            _marker: core::marker::PhantomData,
++        })
++    }
++
++    /// Search for `key` in the map. If `key` is found, the key and value is
++    /// removed from the map and the value is returned.
++    pub fn remove(&mut self, key: Key) -> Option<V> {
++        // SAFETY: `self.tree` points to a valid and initialized `struct radix_tree`
++        let item =
++            core::ptr::NonNull::new(unsafe { bindings::radix_tree_delete(self.tree.get(), key) })?;
++
++        // SAFETY: `item` was created by a call to
++        // `ForeignOwnable::into_foreign()` and no borrows to `item` can exist
++        // because this function takes a `&mut self`.
++        Some(unsafe { ForeignOwnable::from_foreign(item.as_ptr()) })
++    }
++}
++
++impl<V: ForeignOwnable> Drop for RadixTree<V> {
++    fn drop(&mut self) {
++        let mut iter = bindings::radix_tree_iter {
++            index: 0,
++            next_index: 0,
++            tags: 0,
++            node: core::ptr::null_mut(),
 +        };
-+        if pages.is_null() {
-+            return Err(ENOMEM);
-+        }
-+        // INVARIANTS: We checked that the allocation above succeeded.
-+        // SAFETY: We allocated pages above
-+        Ok(unsafe { Self::from_raw(pages) })
-+    }
 +
-+    /// Create a `Pages` from a raw `struct page` pointer
-+    ///
-+    /// # Safety
-+    ///
-+    /// Caller must own the pages pointed to by `ptr` as these will be freed
-+    /// when the returned `Pages` is dropped.
-+    pub unsafe fn from_raw(ptr: *mut bindings::page) -> Self {
-+        Self { pages: ptr }
-+    }
-+}
++        // SAFETY: Iter is valid as we allocated it on the stack above
++        let mut slot = unsafe { bindings::radix_tree_iter_init(&mut iter, 0) };
++        loop {
++            if slot.is_null() {
++                // SAFETY: Both `self.tree` and `iter` are valid
++                slot = unsafe { bindings::radix_tree_next_chunk(self.tree.get(), &mut iter, 0) };
++            }
 +
-+impl Pages<0> {
-+    #[inline(always)]
-+    fn check_offset_and_map<I: MappingInfo>(
-+        &self,
-+        offset: usize,
-+        len: usize,
-+    ) -> Result<PageMapping<'_, I>>
-+    where
-+        Pages<0>: MappingActions<I>,
-+    {
-+        let end = offset.checked_add(len).ok_or(EINVAL)?;
-+        if end as u32 > PAGE_SIZE {
-+            return Err(EINVAL);
-+        }
++            if slot.is_null() {
++                break;
++            }
 +
-+        let mapping = <Self as MappingActions<I>>::map(self);
++            // SAFETY: `self.tree` is valid and iter is managed by
++            // `radix_tree_next_chunk()` and `radix_tree_next_slot()`
++            let item = unsafe { bindings::radix_tree_delete(self.tree.get(), iter.index) };
++            assert!(!item.is_null());
 +
-+        Ok(mapping)
-+    }
++            // SAFETY: All items in the tree are created by a call to
++            // `ForeignOwnable::into_foreign()`.
++            let _ = unsafe { V::from_foreign(item) };
 +
-+    #[inline(always)]
-+    unsafe fn read_internal<I: MappingInfo>(
-+        &self,
-+        dest: *mut u8,
-+        offset: usize,
-+        len: usize,
-+    ) -> Result
-+    where
-+        Pages<0>: MappingActions<I>,
-+    {
-+        let mapping = self.check_offset_and_map::<I>(offset, len)?;
-+
-+        unsafe { ptr::copy_nonoverlapping((mapping.ptr as *mut u8).add(offset), dest, len) };
-+        Ok(())
-+    }
-+
-+    /// Maps the pages and reads from them into the given buffer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that the destination buffer is valid for the given
-+    /// length. Additionally, if the raw buffer is intended to be recast, they
-+    /// must ensure that the data can be safely cast;
-+    /// [`crate::io_buffer::ReadableFromBytes`] has more details about it.
-+    /// `dest` may not point to the source page.
-+    #[inline(always)]
-+    pub unsafe fn read(&self, dest: *mut u8, offset: usize, len: usize) -> Result {
-+        unsafe { self.read_internal::<NormalMappingInfo>(dest, offset, len) }
-+    }
-+
-+    /// Maps the pages and reads from them into the given buffer. The page is
-+    /// mapped atomically.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that the destination buffer is valid for the given
-+    /// length. Additionally, if the raw buffer is intended to be recast, they
-+    /// must ensure that the data can be safely cast;
-+    /// [`crate::io_buffer::ReadableFromBytes`] has more details about it.
-+    /// `dest` may not point to the source page.
-+    #[inline(always)]
-+    pub unsafe fn read_atomic(&self, dest: *mut u8, offset: usize, len: usize) -> Result {
-+        unsafe { self.read_internal::<AtomicMappingInfo>(dest, offset, len) }
-+    }
-+
-+    #[inline(always)]
-+    unsafe fn write_internal<I: MappingInfo>(
-+        &self,
-+        src: *const u8,
-+        offset: usize,
-+        len: usize,
-+    ) -> Result
-+    where
-+        Pages<0>: MappingActions<I>,
-+    {
-+        let mapping = self.check_offset_and_map::<I>(offset, len)?;
-+
-+        unsafe { ptr::copy_nonoverlapping(src, (mapping.ptr as *mut u8).add(offset), len) };
-+        Ok(())
-+    }
-+
-+    /// Maps the pages and writes into them from the given buffer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that the buffer is valid for the given length.
-+    /// Additionally, if the page is (or will be) mapped by userspace, they must
-+    /// ensure that no kernel data is leaked through padding if it was cast from
-+    /// another type; [`crate::io_buffer::WritableToBytes`] has more details
-+    /// about it. `src` must not point to the destination page.
-+    #[inline(always)]
-+    pub unsafe fn write(&self, src: *const u8, offset: usize, len: usize) -> Result {
-+        unsafe { self.write_internal::<NormalMappingInfo>(src, offset, len) }
-+    }
-+
-+    /// Maps the pages and writes into them from the given buffer. The page is
-+    /// mapped atomically.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that the buffer is valid for the given length.
-+    /// Additionally, if the page is (or will be) mapped by userspace, they must
-+    /// ensure that no kernel data is leaked through padding if it was cast from
-+    /// another type; [`crate::io_buffer::WritableToBytes`] has more details
-+    /// about it. `src` must not point to the destination page.
-+    #[inline(always)]
-+    pub unsafe fn write_atomic(&self, src: *const u8, offset: usize, len: usize) -> Result {
-+        unsafe { self.write_internal::<AtomicMappingInfo>(src, offset, len) }
-+    }
-+
-+    /// Maps the page at index 0.
-+    #[inline(always)]
-+    pub fn kmap(&self) -> PageMapping<'_, NormalMappingInfo> {
-+        let ptr = unsafe { bindings::kmap(self.pages) };
-+
-+        PageMapping {
-+            page: self.pages,
-+            ptr,
-+            _phantom: PhantomData,
-+            _phantom2: PhantomData,
-+        }
-+    }
-+
-+    /// Atomically Maps the page at index 0.
-+    #[inline(always)]
-+    pub fn kmap_atomic(&self) -> PageMapping<'_, AtomicMappingInfo> {
-+        let ptr = unsafe { bindings::kmap_atomic(self.pages) };
-+
-+        PageMapping {
-+            page: self.pages,
-+            ptr,
-+            _phantom: PhantomData,
-+            _phantom2: PhantomData,
++            // SAFETY: `self.tree` is valid and iter is managed by
++            // `radix_tree_next_chunk()` and `radix_tree_next_slot()`. Slot is
++            // not null.
++            slot = unsafe { bindings::radix_tree_next_slot(slot, &mut iter, 0) };
 +        }
 +    }
 +}
 +
-+impl<const ORDER: u32> Drop for Pages<ORDER> {
-+    fn drop(&mut self) {
-+        // SAFETY: By the type invariants, we know the pages are allocated with the given order.
-+        unsafe { bindings::__free_pages(self.pages, ORDER) };
++/// A mutable borrow of an object owned by a `RadixTree`
++pub struct MutBorrow<'a, V: ForeignOwnable> {
++    guard: ScopeGuard<V, fn(V)>,
++    _marker: core::marker::PhantomData<&'a mut V>,
++}
++
++impl<'a, V: ForeignOwnable> core::ops::Deref for MutBorrow<'a, V> {
++    type Target = ScopeGuard<V, fn(V)>;
++
++    fn deref(&self) -> &Self::Target {
++        &self.guard
 +    }
 +}
 +
-+/// Specifies the type of page mapping
-+pub trait MappingInfo {}
-+
-+/// Encapsulates methods to map and unmap pages
-+pub trait MappingActions<I: MappingInfo>
-+where
-+    Pages<0>: MappingActions<I>,
-+{
-+    /// Map a page into the kernel address scpace
-+    fn map(pages: &Pages<0>) -> PageMapping<'_, I>;
-+
-+    /// Unmap a page specified by `mapping`
-+    ///
-+    /// # Safety
-+    ///
-+    /// Must only be called by `PageMapping::drop()`.
-+    unsafe fn unmap(mapping: &PageMapping<'_, I>);
-+}
-+
-+/// A type state indicating that pages were mapped atomically
-+pub struct AtomicMappingInfo;
-+impl MappingInfo for AtomicMappingInfo {}
-+
-+/// A type state indicating that pages were not mapped atomically
-+pub struct NormalMappingInfo;
-+impl MappingInfo for NormalMappingInfo {}
-+
-+impl MappingActions<AtomicMappingInfo> for Pages<0> {
-+    #[inline(always)]
-+    fn map(pages: &Pages<0>) -> PageMapping<'_, AtomicMappingInfo> {
-+        pages.kmap_atomic()
-+    }
-+
-+    #[inline(always)]
-+    unsafe fn unmap(mapping: &PageMapping<'_, AtomicMappingInfo>) {
-+        // SAFETY: An instance of `PageMapping` is created only when `kmap` succeeded for the given
-+        // page, so it is safe to unmap it here.
-+        unsafe { bindings::kunmap_atomic(mapping.ptr) };
-+    }
-+}
-+
-+impl MappingActions<NormalMappingInfo> for Pages<0> {
-+    #[inline(always)]
-+    fn map(pages: &Pages<0>) -> PageMapping<'_, NormalMappingInfo> {
-+        pages.kmap()
-+    }
-+
-+    #[inline(always)]
-+    unsafe fn unmap(mapping: &PageMapping<'_, NormalMappingInfo>) {
-+        // SAFETY: An instance of `PageMapping` is created only when `kmap` succeeded for the given
-+        // page, so it is safe to unmap it here.
-+        unsafe { bindings::kunmap(mapping.page) };
-+    }
-+}
-+
-+/// An owned page mapping. When this struct is dropped, the page is unmapped.
-+pub struct PageMapping<'a, I: MappingInfo>
-+where
-+    Pages<0>: MappingActions<I>,
-+{
-+    page: *mut bindings::page,
-+    ptr: *mut core::ffi::c_void,
-+    _phantom: PhantomData<&'a i32>,
-+    _phantom2: PhantomData<I>,
-+}
-+
-+impl<'a, I: MappingInfo> PageMapping<'a, I>
-+where
-+    Pages<0>: MappingActions<I>,
-+{
-+    /// Return a pointer to the wrapped `struct page`
-+    #[inline(always)]
-+    pub fn get_ptr(&self) -> *mut core::ffi::c_void {
-+        self.ptr
-+    }
-+}
-+
-+// Because we do not have Drop specialization, we have to do this dance. Life
-+// would be much more simple if we could have `impl Drop for PageMapping<'_,
-+// Atomic>` and `impl Drop for PageMapping<'_, NotAtomic>`
-+impl<I: MappingInfo> Drop for PageMapping<'_, I>
-+where
-+    Pages<0>: MappingActions<I>,
-+{
-+    #[inline(always)]
-+    fn drop(&mut self) {
-+        // SAFETY: We are OK to call this because we are `PageMapping::drop()`
-+        unsafe { <Pages<0> as MappingActions<I>>::unmap(self) }
++impl<'a, V: ForeignOwnable> core::ops::DerefMut for MutBorrow<'a, V> {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        &mut self.guard
 +    }
 +}
 -- 
