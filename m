@@ -2,169 +2,122 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A3D8C77B7F
-	for <rust-for-linux@archiver.kernel.org>; Wed, 26 Apr 2023 14:31:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F3C1C7EE22
+	for <rust-for-linux@archiver.kernel.org>; Thu,  4 May 2023 18:27:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240947AbjDZObr (ORCPT
+        id S229911AbjEDS1S (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 26 Apr 2023 10:31:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40228 "EHLO
+        Thu, 4 May 2023 14:27:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240902AbjDZObp (ORCPT
+        with ESMTP id S229892AbjEDS1R (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 26 Apr 2023 10:31:45 -0400
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7EE64EE6;
-        Wed, 26 Apr 2023 07:31:43 -0700 (PDT)
-Received: from [192.168.1.43] ([77.7.2.190]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MlfL0-1qaKbV2V0s-00inbM; Wed, 26 Apr 2023 16:31:35 +0200
-Message-ID: <9c11af81-cc30-dcc0-33cf-058d74080f1c@metux.net>
-Date:   Wed, 26 Apr 2023 16:31:34 +0200
+        Thu, 4 May 2023 14:27:17 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD8F772B8
+        for <rust-for-linux@vger.kernel.org>; Thu,  4 May 2023 11:27:14 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-9536df4b907so156831266b.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 May 2023 11:27:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1683224833; x=1685816833;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=VIMgKLx654jhHRx4qIRTthK1ysjXXrrNqdoOVgSmOeE=;
+        b=qU+Ug89ilc6WN9TDAJzjO2f/60V8+1eXF/EYEp3lE+kxcCO8muY745qsFg4YsxdLhM
+         GFFdVNRZ2FzIT711c0qNXBZAs2ZsygMEjKETMcJC0wwNakwNctVl1INHAPzh7fC1LrMM
+         tsyDEWeNJvvUTUwdmwd0RVxd1f1JvD/Wjz4SlJ6JL3WtA3sYNzVrm6pWpQ0q70dMNaR/
+         HtvRLiiprdATGWlPxlk8i1r7DAaOmkgXfgl0Kk5tQAK1q5oMK7JWE4mGTEHSf7dh8bFa
+         8z7Eq1g2UFrwsaFNvu+DQNyVcJCNQnRbbFq6u8q1J6YbU3wb/U047orn+37qTQXJfP60
+         fMGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683224833; x=1685816833;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VIMgKLx654jhHRx4qIRTthK1ysjXXrrNqdoOVgSmOeE=;
+        b=ZvqE/3CKNcG0Fo7O5JeAA+lTfFjk9nDhSshRhGQmBm31g8q+TvSU20cO19BT82CX4m
+         huV+y4QBuC12IqvDufRS8/uOr8mAKsjweU6FBOI9WJFsuVvlL2K+OgpWzpXWmDq2iI0N
+         1CPAlpui9oyoekES9QK9tdzivn+UFks0vFYlLITlQ+GpiFYrePldAXSUEWsdRaEsvTrd
+         0HXwdVXStXJko62z5KuUy32NaBQSU1IJKBzZ7BI3QCe8acoAhzUGQv1FswguqIlVsDGI
+         UfVqyqKiflsymfuj0GmW1evRJc+wPBl0kmjQdHyKi+X/FWt66gYYzRIBS+il5asoxD+s
+         7d+g==
+X-Gm-Message-State: AC+VfDz7qIuI0lLCkC3prAQMwUi5FgyLMAH/31KqGR5S2wZA6kMCp18L
+        13T5sK1STYwUtIP+VAcpYA4fJw==
+X-Google-Smtp-Source: ACHHUZ5dFQ2scibNXes6IJDnR0tdDuJuLNmlk0EA0qORzsVLoMVrcrrTq8YUAiE1JBAp9pWLKJIeyg==
+X-Received: by 2002:a17:907:62aa:b0:961:a67:29c with SMTP id nd42-20020a17090762aa00b009610a67029cmr6647365ejc.70.1683224832922;
+        Thu, 04 May 2023 11:27:12 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id li14-20020a170907198e00b009572db67bf2sm17304971ejc.89.2023.05.04.11.27.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 May 2023 11:27:12 -0700 (PDT)
+References: <20230503090708.2524310-1-nmi@metaspace.dk>
+ <da7b815d-3da8-38e5-9b25-b9cfb6878293@acm.org>
+User-agent: mu4e 1.10.3; emacs 28.2.50
+From:   Andreas Hindborg <nmi@metaspace.dk>
+To:     Bart Van Assche <bvanassche@acm.org>
+Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Keith Busch <kbusch@kernel.org>,
+        Damien Le Moal <Damien.LeMoal@wdc.com>,
+        Hannes Reinecke <hare@suse.de>,
+        lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
+        linux-block@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj?= =?utf-8?Q?=C3=B6rn?= Roy Baron 
+        <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+        open list <linux-kernel@vger.kernel.org>, gost.dev@samsung.com
+Subject: Re: [RFC PATCH 00/11] Rust null block driver
+Date:   Thu, 04 May 2023 20:15:23 +0200
+In-reply-to: <da7b815d-3da8-38e5-9b25-b9cfb6878293@acm.org>
+Message-ID: <87jzxot0jk.fsf@metaspace.dk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
-Content-Language: tl
-To:     Hans Petter Selasky <hps@selasky.org>,
-        Daniel Almeida <daniel.almeida@collabora.com>,
-        wedsonaf@gmail.com, ojeda@kernel.org, mchehab@kernel.org,
-        hverkuil@xs4all.nl
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, kernel@collabora.com
-References: <20230406215615.122099-1-daniel.almeida@collabora.com>
- <441a96cb-7dd1-0885-df64-933ebdb55e9e@selasky.org>
-From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
-In-Reply-To: <441a96cb-7dd1-0885-df64-933ebdb55e9e@selasky.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:Ow8I91kmxMh/ASGHlIt0oFQKmCEOyR3w3fqp/P6Qz4ZUIz/H16b
- NJGi5boB95K44w9Kwc3RqLJqeOe3tkSQgK5GehEpaVqbt25AUrssVyhdsvp/lxhymleTgzw
- ImtXEMiej4B6dh2UgQQCpdjUQNK6K8Vz1A4cmcGcKBMwlS2FpVpKBVtiy0xgRWXfrb6dl5D
- RDM1NB3U+qvP2uOr0Ronw==
-UI-OutboundReport: notjunk:1;M01:P0:kDmh3DcH/z8=;EFi6kEKyvxwGd7krUNNdmsxKACj
- RSDjpoQ0OaQVQkaS8bRMJJS9FUygLdSg+VxkE3OjlMjNPmLVgzavkDRqvMK7Qge9aJ0882vnQ
- Iaklm8gkHnEUxeODuEQ/hqwVvMv2dMQSs+CLwz9zcBMgqV51KdcQCUBYt6UN7MXnLJ+IEYa+0
- +/FqjwPgn4X5lefKjqbzW3DXrTNeLJHY66FtBKhKN47Bc0MOTW8XZ11IaqdcbI1QNbz0waP/E
- M6VaJOQ/sRa6xnL5/kOmmfMB+rvZYpX22wJHgrWkx2lTRIHYRz6orUBLoeBymfb0OqyVgQeB5
- sHpVxflbGLyqmIYqkA+FoAW25DS9g5+9KEKTlza4ErbOHKtI2APp3JpD4PKU26pa0zHX1B4Tb
- iyC+cyteAhFy+OhWr260tQUtcU1Ha2g7urclstxIL3XobvWAmgny4xscWvp7x1m1D/VrbQIr7
- QOZJDaPwh3m1QcCeULQzFA+BxigFC3koHbyqjmgHOst2z0yizFhBhK60OSDeXVoRxcIKyU2tr
- wjyM/mUaOC3c2+AFPA7JcVomqxHkcd4epCRiob3AUp9D2pG/Eg9Zj3loqiY8jUE0QI9LvLhql
- wJ6FxLJPWIaPvWkOg5VYgIfDzU7k27Jj9fdjWVJuG0+I/Wc2TK0xdwQzkeDHwFHZ8gV3FICPR
- exBOiMBfXTTtAmSM030Q4ZOaHUrWC82jgtfo0t7TJQ==
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 08.04.23 21:43, Hans Petter Selasky wrote:
 
-> You assume that all 
-> code is running inside the kernel and needs to be perfect. 
+Hi Bart,
 
-Yes, of course. It's kernel code.
+Bart Van Assche <bvanassche@acm.org> writes:
 
-If you're borrowing kernel code for your userland stuff, than it's up
-to you to take care of it.
+> On 5/3/23 02:06, Andreas Hindborg wrote:
+>> This is an early preview of a null block driver written in Rust.
+>
+> It is not clear to me why this effort was started? As far as I know the null_blk
+> driver is only used by kernel developers for testing kernel changes so end users
+> are not affected by bugs in this driver. Additionally, performance of this
+> driver is critical since this driver is used to measure block layer performance.
+> Does this mean that C is a better choice than Rust for this driver?
 
-There is no such thing like stable/fixed in-kernel APIs - it always has
-been this way.
+I take it you did not read the rest of the cover letter. Let me quote
+some of it here:
 
-> But I think 
-> you could just aswell implement the next USB webcam V4L2 driver in Perl 
-> for that sake.
+> A null block driver is a good opportunity to evaluate Rust bindings for the
+> block layer. It is a small and simple driver and thus should be simple to reason
+> about. Further, the null block driver is not usually deployed in production
+> environments. Thus, it should be fairly straight forward to review, and any
+> potential issues are not going to bring down any production workloads.
+>
+> Being small and simple, the null block driver is a good place to introduce the
+> Linux kernel storage community to Rust. This will help prepare the community for
+> future Rust projects and facilitate a better maintenance process for these
+> projects.
+>
+> The statistics presented in my previous message [1] show that the C null block
+> driver has had a significant amount of memory safety related problems in the
+> past. 41% of fixes merged for the C null block driver are fixes for memory
+> safety issues. This makes the null block driver a good candidate for rewriting
+> in Rust.
 
-That would't be v4l anymore.
+In relation to performance, it turns out that there is not much of a
+difference. For memory safety bugs - I think we are better off without
+them, no matter if we are user facing or not.
 
-> The reason for my point of view, is that I think most of the drivers in 
-> media/ should run in user-space, and not inside the kernel.
+If it is still unclear to you why this effort was started, please do let
+me know and I shall try to clarify further :)
 
-Feel free to provide fully userspace drivers for those devices, but
-that's totally unrelated to kernel development (no matter whether you're
-copying over kernel code into your userland project).
-
-> The example of secure V4L2 programming is already here:
-> https://github.com/hselasky/webcamd
-
-BSD code is not in scope of the LKML.
-
-> I would rather like more drive on that, than flowing down the Rust 
-> stream.
-
-Orthogonal topic.
-
-> Rust is cool, Java is cool, VM's are cool. The only bad about 
-> cool things, is that they are so slow. For many years I completely 
-> avoided C++ code for the sake it is very slow to compile, compared to 
-> bare C code. And when looking at how Firefox is building using Rust, I 
-> am a little worried, why we need so much code in there!
-
-Yes, compiling Rust is slow, compared to C. That's the price for
-sophisticated optimizations. How often do you have to do a full
-recompile ?
-
-> Engineering energy would be much more focused, if hardware vendors could 
-> agree more about what binary formats to use for their device protocols, 
-
-Indeed. But we (kernel folks) have no influence on that. If we could,
-we'd already standardized HW interfaces for lots of things and so only
-a small percentage of the drivers we currently have, while still
-supporting the same number of HW (or even more). But unfortunately thats
-not under our control. Therefore offtopic.
-
-> than changing the coding language, so that now anyone can be let loose 
-> to program in the Linux kernel without risking any damage.
-
-AFAIK, this discussion isn't about changing the kernel's programming
-language, but just adding language bindings, so some new drivers could
-be written in that language. If this really happens and you really want
-a C implementation, feel free to send patches.
-
-> The goal for Linux driver development should be fewer drivers and not 
-> more. 
-
-Depends on specific case. We already have lots of drivers that support
-wide range of devices. But it doesn't make sense having monster drivers
-for entirely different devices.
-
-> I don't want Linux to become the next Microsoft, with gigabytes 
-> of drivers which are never used for anything.
-
-Actually, we're doing a pretty good job of generalizing things that can
-be generalized (if you find room for more improvements, feel free to
-send patches). Nobody here seriously intents dropping the subsystem and
-lib architectures in favour of monolithic monster drivers like in
-Windows world.
-
-> The webcamd daemon already is close to 6 MBytes big on amd64 on FreeBSD. 
-> Inside there is support for 510 drivers (counting =y keywords), built 
-> straight off Linus Torvalds:
-
-You have ~500 drivers in one 6MB binary and blame us for writing too
-much code ? Maybe you should think about modularization (which we do
-have in the kernel).
-
-And, btw, FreeBSD is completely off-topic here.
-
-> The USB video class is great, instead of tons of GSPCA devices, then 
-> yeah, we don't need to drag around so much legacy binaries, just to make 
-> everyone happy. What did Apple do? Custom PCI webcam devices? Why can't 
-> they just stick with virtual USB devices, and then have a dual 
-> configured device, one config for their own HD codec, and one config for 
-> people like me, just needing the framebuffer.
-
-Well, they just could have an USB device layered on-top of a tiny PCI-
-USB bridge. We're the wrong to blame - talk to Apple.
-
-
---mtx
-
--- 
----
-Hinweis: unverschlüsselte E-Mails können leicht abgehört und manipuliert
-werden ! Für eine vertrauliche Kommunikation senden Sie bitte ihren
-GPG/PGP-Schlüssel zu.
----
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+Best regards,
+Andreas
