@@ -2,94 +2,118 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6D7BC77B7D
-	for <rust-for-linux@archiver.kernel.org>; Fri,  5 May 2023 09:59:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0EB73C77B7D
+	for <rust-for-linux@archiver.kernel.org>; Fri,  5 May 2023 10:54:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231803AbjEEJ7U (ORCPT
+        id S230411AbjEEKx4 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 5 May 2023 05:59:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57754 "EHLO
+        Fri, 5 May 2023 06:53:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231611AbjEEJ7S (ORCPT
+        with ESMTP id S229717AbjEEKxz (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 5 May 2023 05:59:18 -0400
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5C021816A;
-        Fri,  5 May 2023 02:59:16 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id 3f1490d57ef6-ba1815e12efso1391843276.3;
-        Fri, 05 May 2023 02:59:16 -0700 (PDT)
+        Fri, 5 May 2023 06:53:55 -0400
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0822C18DEF;
+        Fri,  5 May 2023 03:53:53 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-b9a6eec8611so13274126276.0;
+        Fri, 05 May 2023 03:53:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683280756; x=1685872756;
+        d=gmail.com; s=20221208; t=1683284032; x=1685876032;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5d14VMN/dsF84pYxIA+HqaO2W48hhJ6NH76UKybrOHI=;
-        b=WhLJfFKieiNArlBXBw8k4VHZ/gQd6jJfyapaDf5LZ8depVowiY48yU9MB8qKG363Yh
-         dvPU6ODE0dykQlianl3bbpt6FHeJ8Ph56WmSAtwIWsjlk1I8q0BckQti2OxsdRrVTCpI
-         vlQkwJwURbE6QHR1jxhzr6GhUEz+iWjkaDv5ZikyqOE3oBmgaJkrrG7H6J3I/qIHKzS4
-         BP5rpCjVh7qNTw+HJv2vkJ9InryWiHgkSqz2G+gyxw58FTvj/eBj4ozsP+Lo2bUmMaA6
-         yZLOGRaiOv3pTdatHSs3zpx38vOWBCk6u/TP7ir79d8XCm2vw0wjRRe87LpJNcb0fOwJ
-         Ge9Q==
+        bh=QgaBKeEIlxAuYAP7cdMu1VdHHIFJCXTzQ7O6ZwAYCqE=;
+        b=s3pJv8phz4dcw/96mqO39Pu3tK+YbrwOtXJVou33ycR8vmYxCXLQC/YEJvQ9zA3kMt
+         Ekg9Nut3sqVhf3wQLuaeewXuP8M5PXc6cOjYB77jqgS0K27wq70pD5Nss5Lf69SZmEd/
+         HvHhjiU2TUv5M6r1dsUc/I08StmvCi74BoNwzxW1fQ8u5XvQ0vDBG21zfooscBMGU7au
+         CfPCMsAUGAXuj3oX/cCCRTBzxMLg6TJwpr03asJ33tyRsVwCE4MdqS85wGZXc8fdh3MN
+         vtQU5Eq8nh5YAq+wpHIk5TygGi/ep7R+y9Hm41l29oqNeLbtNA7ls41OYud0S+FmuCuz
+         488w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683280756; x=1685872756;
+        d=1e100.net; s=20221208; t=1683284032; x=1685876032;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5d14VMN/dsF84pYxIA+HqaO2W48hhJ6NH76UKybrOHI=;
-        b=KecRbVX6bAshzKfaeT0Y+a1FH/HU3KMKCFdzcwRUzDLfz52DtS2eTAOJd9x98rcuxv
-         t85GChM9FmE/78RqheAJbvfsZWjMZCb0f5HC5hP6QK/RxxlxZEsIjJiD1J+Nzq1xwYML
-         zQEUmu0eyd1q/2iEpoAdFpGx/3rV4uy1L1383c7S2tie4ursH7N94EyquRAxICzfZ4Je
-         Q4ZlN+Q9ZEE6vDgzELpmGwW9bpdJRF48Viv6W6q3WLbOhjLdqVVoS3OCf3AQIZy+AMdT
-         6cUL/klYsUI+GWKIQ0rSyt+FBYA5PIIFmt7HnBGT9djw90shG5Z/9FYwaWg27QLe8V68
-         eH+Q==
-X-Gm-Message-State: AC+VfDx2bJ9z2ShE1+1T5H7qhNvdB7YgR3N7SZKJ+rOKu7Vvcx7cMSaN
-        /Ip7szljAFziBy6xjQ64d9mXbXEUYLfaDyC1f/0=
-X-Google-Smtp-Source: ACHHUZ598taEicUanJWBqC5xD3xyd3QwAlvZRfXr/O+pf/peYRpl819lf6glbrOTTHFtXPeY54wv6krCM6jXRtuDkkk=
-X-Received: by 2002:a25:38c:0:b0:b8f:5340:b052 with SMTP id
- 134-20020a25038c000000b00b8f5340b052mr1134211ybd.15.1683280755967; Fri, 05
- May 2023 02:59:15 -0700 (PDT)
+        bh=QgaBKeEIlxAuYAP7cdMu1VdHHIFJCXTzQ7O6ZwAYCqE=;
+        b=KmJtspgCotmlIahDryS4fjvHSKmA2nijQnf4E/PQZKQwaeycRBLGWvVJQaOBkgdSAJ
+         4nnyQl067Y0+83AEQUQMz7abOU35iGhN62FVnI0JHY9NVkqekRpMq2ZE1mWUkCJHq2p1
+         o0h5yewplBLU4J54n+tSIMqiqYCaDqqDVl+/aNYSdopYXj2maRkZnkPAbke2OvBL/UOK
+         Ew3pLAr6VYyEJa6UpjUV9xlOFvYdAsXH76MprB86rtJunkHsXCBnE7qNEoG2h1JByb43
+         JWNMiOhuwSmu4sD7l3HJ3nYNF754tI/PLL3mRrl0hfjJaelfaDFWaptDUa5mghjqr0tw
+         Hq4w==
+X-Gm-Message-State: AC+VfDxSgGfLD81Dmxpkdip/Sej0S6q8DKqXP6nMKFYYIY/sraSKRvFT
+        P1ToBe539Ku1p37xqG7exS3cqpstxu8lytOg3v8=
+X-Google-Smtp-Source: ACHHUZ7hJdO+nwsRv/rDJf2nGSyHPLvHPOluSAFe/tzWxJV9t4hvlk4iI83oot0NAp+ExTHfErnivZj0KMddbnmc/E0=
+X-Received: by 2002:a05:6902:729:b0:b9e:6c09:2d96 with SMTP id
+ l9-20020a056902072900b00b9e6c092d96mr1409374ybt.12.1683284032199; Fri, 05 May
+ 2023 03:53:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230418214347.324156-1-ojeda@kernel.org> <CAPDJoNsG1E25yYM+L_H21vVCt-5S16etx3KMxx8ySZtWMQt4FQ@mail.gmail.com>
- <CANiq72mtb9V+1a7nPEHBCeg_fob4rpPTWJZjdahnGL2Mg3uoUA@mail.gmail.com>
- <CAPDJoNvGQBNN6X6fs26tjUy7LbpJjWwPvQuf=1+nSwj94aa6LA@mail.gmail.com>
- <CANiq72m7zdYo566PxX3g03+XPpHnrQy7GG9WkgEP82mK_2JBpw@mail.gmail.com> <CAPFo5VJpGq70X6efWESDoCYE3J0pjgMB1c7X_ACA4Q9MxnoHQw@mail.gmail.com>
-In-Reply-To: <CAPFo5VJpGq70X6efWESDoCYE3J0pjgMB1c7X_ACA4Q9MxnoHQw@mail.gmail.com>
+References: <20230503090708.2524310-1-nmi@metaspace.dk> <da7b815d-3da8-38e5-9b25-b9cfb6878293@acm.org>
+ <87jzxot0jk.fsf@metaspace.dk> <b9a1c1b2-3baa-2cad-31ae-8b14e4ee5709@acm.org>
+ <ZFP+8apHunCCMmOZ@kbusch-mbp.dhcp.thefacebook.com> <e7bc2155-613b-8904-9942-2e9615b0dc63@kernel.dk>
+ <CANiq72nAMH1SfGmPTEjGHfevbb9tMLN4W7gJ3nBpJcvkCEsZ4g@mail.gmail.com> <80ed2c0e-54db-777a-175b-1aa3ff776724@kernel.dk>
+In-Reply-To: <80ed2c0e-54db-777a-175b-1aa3ff776724@kernel.dk>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 5 May 2023 11:59:05 +0200
-Message-ID: <CANiq72ma+kGPWVGocuPoY6YL13PzCwEMgKN2Yi2Ok42jxBQdTg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Rust 1.68.2 upgrade
-To:     Fabien Parent <fabien.parent@linaro.org>
-Cc:     Ariel Miculas <ariel.miculas@gmail.com>,
+Date:   Fri, 5 May 2023 12:53:41 +0200
+Message-ID: <CANiq72=3kGRy-3Lq5oxUEhu5d-377QrhuzhvoKRL+_QvbnJE7A@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/11] Rust null block driver
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Keith Busch <kbusch@kernel.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Andreas Hindborg <nmi@metaspace.dk>,
+        Christoph Hellwig <hch@lst.de>,
+        Damien Le Moal <Damien.LeMoal@wdc.com>,
+        Hannes Reinecke <hare@suse.de>,
+        lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
+        linux-block@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
         Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Josh Stone <jistone@redhat.com>,
-        William Brown <william.brown@suse.com>,
-        Georgy Yakovlev <gyakovlev@gentoo.org>,
-        Jan Alexander Steffens <jan.steffens@gmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
+        open list <linux-kernel@vger.kernel.org>, gost.dev@samsung.com,
+        Daniel Vetter <daniel@ffwll.ch>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Fabien,
-
-On Fri, May 5, 2023 at 12:28=E2=80=AFAM Fabien Parent <fabien.parent@linaro=
-.org> wrote:
+On Thu, May 4, 2023 at 10:22=E2=80=AFPM Jens Axboe <axboe@kernel.dk> wrote:
 >
-> I'm getting the following error when running rusttest on top of your patc=
-hset:
+> Right, but that doesn't really solve the problem when the rust bindings
+> get in the way of changes that you are currently making. Or if you break
+> them inadvertently. I do see benefits to that approach, but it's no
+> panacea.
+>
+> This seems to assume that time is plentiful and we can just add more to
+> our plate, which isn't always true. While I'd love to do more rust and
+> get more familiar with it, the time still has to be there for that. I'm
+> actually typing this on a laptop with a rust gpu driver :-)
+>
+> And this isn't just on me, there are other regular contributors and
+> reviewers that would need to be onboard with this.
 
-Yeah, it is expected: the series was based on `rust-next` which gained
-the `uapi` crate later on.
+Indeed -- I didn't mean to imply it wouldn't be time consuming, only
+that it might be an alternative approach compared to having existing
+maintainers do it. Of course, it depends on the dynamics of the
+subsystem, how busy the subsystem is, whether there is good rapport,
+etc.
 
-Thanks for reporting it!
+> Each case is different though, different people and different schedules
+> and priorities. So while the above is promising, it's also just
+> annecdotal and doesn't necessarily apply to our case.
+
+Definitely, in the end subsystems know best if there is enough time
+available (from everybody) to pull it off. I only meant to say that
+the security angle is not the only benefit.
+
+For instance, like you said, the error handling, plus a bunch more
+that people usually enjoy: stricter typing, more information on
+signatures, sum types, pattern matching, privacy, closures, generics,
+etc.
 
 Cheers,
 Miguel
