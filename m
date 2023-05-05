@@ -2,113 +2,79 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 95047C77B7C
-	for <rust-for-linux@archiver.kernel.org>; Thu,  4 May 2023 22:28:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F735C77B7F
+	for <rust-for-linux@archiver.kernel.org>; Fri,  5 May 2023 03:52:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229645AbjEDW2K (ORCPT
+        id S229871AbjEEDwa (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 4 May 2023 18:28:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33614 "EHLO
+        Thu, 4 May 2023 23:52:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbjEDW2J (ORCPT
+        with ESMTP id S230072AbjEEDwX (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 4 May 2023 18:28:09 -0400
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F15AB186
-        for <rust-for-linux@vger.kernel.org>; Thu,  4 May 2023 15:28:08 -0700 (PDT)
-Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-52c6f81193cso737493a12.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 May 2023 15:28:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683239288; x=1685831288;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=14Y397b4BvvmmP2dEn/DY1zpvluNh4u4ZUFFXog6oMo=;
-        b=XSfEEbqKaI4xnyRsCgpfDXeW73mBJo4ioGGPcA3EgvmnsFS4C8tVIio4NfkUMQtLjh
-         3uaOCUodHmac+zBMOCMTwbb9h7W5QaMBpP/jF4F2Uo8hDxgAwaUuqtbXA78Tu97UJHUt
-         zG3AgPIGvXUZI0C8Pa/oSjWdZdccqRLRck/ZBe1uQecrKD/4zMuAUPCagIwxg8e35780
-         JfHE3UZ0hE180g53GzqaVTByRZhjS4wWVSlJjTbGXkz4mz0+DniXWzd8tXMetX1YKn72
-         lYruzcN1QoPZT5k9wOJHBtutw5H9zq1Tf/AcXP9mAflLZup62O/48gCMoeMj/tfP/+3M
-         NeOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683239288; x=1685831288;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=14Y397b4BvvmmP2dEn/DY1zpvluNh4u4ZUFFXog6oMo=;
-        b=Uzfi5QqqUpH0CqXS6k1SU9T8F3OStE3zM+wqMHL7LLU3SnCvI2S9MTftvCw3rzL7TH
-         Qnm/P+P0aFrj1bwrzecWQ0Wi3SORxN9KnQa+Z9Y3dr6C2OgvXuFhulU84QOFCQjQz2MJ
-         t+0gAIlfVfBWlnIvy4WHrVbDiK63RhnpSiSXJxiPySnawn4B00iW88qwGlFPippfY6St
-         WapnWNlTwkYFb29SlKgDNksfyx5PH7pBiZ4+Gwupg/SiKepnKyo59xH1pB+1shj38J/D
-         RqpmuoyAgdHKO41VqH6ZqEiIHAjGXRrLte3ZYBguzBK1psPlGxADyKq6iJfjbt4Ft83l
-         C4Pw==
-X-Gm-Message-State: AC+VfDwdWjYOLh7jWFJRevgoDNghtxXVO1LO+Usb88PoEB+u8MyLxuz2
-        hnrgsrtAnLWBqv6GC/nchX5EgJaSRhTdoq9Kdx6A2g==
-X-Google-Smtp-Source: ACHHUZ6r8wbeiVxPGDv1nvrWX0mu3liDZBBew1HY0J11ZfzafuKGlLj7woEc5lgEFX8fsZihe/a8kRXXcvNFMYOZLz4=
-X-Received: by 2002:a17:903:44b:b0:1ab:f74:a111 with SMTP id
- iw11-20020a170903044b00b001ab0f74a111mr5019402plb.63.1683239288468; Thu, 04
- May 2023 15:28:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230418214347.324156-1-ojeda@kernel.org> <CAPDJoNsG1E25yYM+L_H21vVCt-5S16etx3KMxx8ySZtWMQt4FQ@mail.gmail.com>
- <CANiq72mtb9V+1a7nPEHBCeg_fob4rpPTWJZjdahnGL2Mg3uoUA@mail.gmail.com>
- <CAPDJoNvGQBNN6X6fs26tjUy7LbpJjWwPvQuf=1+nSwj94aa6LA@mail.gmail.com> <CANiq72m7zdYo566PxX3g03+XPpHnrQy7GG9WkgEP82mK_2JBpw@mail.gmail.com>
-In-Reply-To: <CANiq72m7zdYo566PxX3g03+XPpHnrQy7GG9WkgEP82mK_2JBpw@mail.gmail.com>
-From:   Fabien Parent <fabien.parent@linaro.org>
-Date:   Fri, 5 May 2023 00:27:57 +0200
-Message-ID: <CAPFo5VJpGq70X6efWESDoCYE3J0pjgMB1c7X_ACA4Q9MxnoHQw@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Rust 1.68.2 upgrade
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Ariel Miculas <ariel.miculas@gmail.com>,
+        Thu, 4 May 2023 23:52:23 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF47D11572;
+        Thu,  4 May 2023 20:52:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=GAX3xUURHmNrkqo48U3apChUo8nPnawKi2Wp+78HVCE=; b=oe8Fd59RI3I0udKddZe67tmtWu
+        26Z6CrfGkbKBTyULCmFyjGbF350CBZXF60nLAxLmejJgwjGeOdaXtumY4liwrk8k4sCOQfHC0WWMr
+        b3XoA8krZlnoxINZdJa79wPOGg9dKhNYKcYBptxkOuShmxxQNTkGCT7qDdy2ZSZW1sMQ5sJJY9+ix
+        vKij9ozHGnjb8MNDk3BC1WtulxGIVYmDuW6AJkc+k0eDyCOTEBSMWlmXTuGKnMCW0cxR83XQx3pD0
+        +y5ohfzHT7Hzg1HGAy0n13SelXE98QeNBxU4UcIY7NncRRPDguTcyMmVkdDm+DEwIuxj4xiylss6Z
+        6JCa8Pyw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1pumUF-009eOy-1o;
+        Fri, 05 May 2023 03:52:03 +0000
+Date:   Thu, 4 May 2023 20:52:03 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Keith Busch <kbusch@kernel.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Andreas Hindborg <nmi@metaspace.dk>,
+        Christoph Hellwig <hch@lst.de>,
+        Damien Le Moal <Damien.LeMoal@wdc.com>,
+        Hannes Reinecke <hare@suse.de>,
+        lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
+        linux-block@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
         Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Josh Stone <jistone@redhat.com>,
-        William Brown <william.brown@suse.com>,
-        Georgy Yakovlev <gyakovlev@gentoo.org>,
-        Jan Alexander Steffens <jan.steffens@gmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        open list <linux-kernel@vger.kernel.org>, gost.dev@samsung.com
+Subject: Re: [RFC PATCH 00/11] Rust null block driver
+Message-ID: <ZFR9Y12sSRGHvUZK@infradead.org>
+References: <20230503090708.2524310-1-nmi@metaspace.dk>
+ <da7b815d-3da8-38e5-9b25-b9cfb6878293@acm.org>
+ <87jzxot0jk.fsf@metaspace.dk>
+ <b9a1c1b2-3baa-2cad-31ae-8b14e4ee5709@acm.org>
+ <ZFP+8apHunCCMmOZ@kbusch-mbp.dhcp.thefacebook.com>
+ <e7bc2155-613b-8904-9942-2e9615b0dc63@kernel.dk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e7bc2155-613b-8904-9942-2e9615b0dc63@kernel.dk>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Miguel,
+On Thu, May 04, 2023 at 01:02:19PM -0600, Jens Axboe wrote:
+> null_blk or not, it's more if we want to go down this path of
+> maintaining rust bindings for the block code in general. If the answer
+> to that is yes, then doing null_blk seems like a great choice as it's
+> not a critical piece of infrastructure. It might even be a good idea to
+> be able to run both, for performance purposes, as the bindings or core
+> changes.
 
-I'm getting the following error when running rusttest on top of your patchs=
-et:
-
-$ make LLVM=3D1 RUSTC=3D/home/fparent/.rustup/toolchains/1.68.2-x86_64-unkn=
-own-linux-gnu/bin/rustc
-RUSTDOC=3D/home/fparent/.rustup/toolchains/1.68.2-x86_64-unknown-linux-gnu/=
-bin/rustdoc
-rusttest
-  RUSTC L rust/uapi.o
-error: the feature `core_ffi_c` has been stable since 1.64.0 and no
-longer requires an attribute to enable
-  --> rust/uapi/lib.rs:11:12
-   |
-11 | #![feature(core_ffi_c)]
-   |            ^^^^^^^^^^
-
-After manually removing line 11 in lib.rs, the error was gone.
-
-Fabien
-
-On Thu, 20 Apr 2023 at 19:20, Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Thu, Apr 20, 2023 at 7:18=E2=80=AFPM Ariel Miculas <ariel.miculas@gmai=
-l.com> wrote:
-> >
-> > Yes, I've edited the commands since I've run them out of order, let me
-> > include the output of commands and my general setup.
->
-> Thanks for confirming! (and for all the output!).
->
-> Cheers,
-> Miguel
+Yes.  And I'm not in favor of it, especially right now.  There is
+so much work we need to do that requires changes all over (e.g.
+sorting out the request_queue vs gendisk, and making the bio_vec
+folio or even better physical address based), and the last thing I
+need is a binding to a another language, one that happens to have
+nice features but that also is really ugly.
