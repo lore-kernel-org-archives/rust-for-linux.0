@@ -2,90 +2,115 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C98A1C77B75
-	for <rust-for-linux@archiver.kernel.org>; Sun,  7 May 2023 08:57:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54738C77B7C
+	for <rust-for-linux@archiver.kernel.org>; Sun,  7 May 2023 15:23:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229670AbjEGI5H (ORCPT
+        id S231637AbjEGPXY (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 7 May 2023 04:57:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37954 "EHLO
+        Sun, 7 May 2023 11:23:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjEGI5G (ORCPT
+        with ESMTP id S231653AbjEGPXY (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 7 May 2023 04:57:06 -0400
-X-Greylist: delayed 601 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 07 May 2023 01:57:05 PDT
-Received: from dexter.1e0.uk (dexter.1e0.uk [IPv6:2a01:7e00:e002:1401::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10C42E6B
-        for <rust-for-linux@vger.kernel.org>; Sun,  7 May 2023 01:57:04 -0700 (PDT)
-From:   Matthew Leach <dev@mattleach.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mattleach.net;
-        s=mail; t=1683448881;
-        bh=d7c0tHXtXZTYK41BLQMysbdl49fk0po3esW2L5nenJc=;
-        h=From:To:Cc:Subject:Date;
-        b=id+EAaopeckeYhTESRhnYsDGfAamiYmnb6M2L7D8d6aQ485fpPB63x3jk/T0m9tvG
-         /+PE034VUCNgIvNh95VQJKqvrEdm8q7RMoDJ11ds/K7H38yohWurGvMxa0WADt3yWS
-         Eg6tBqpdqmdLdls9wEW87rAwk3oKH3YPCEjlVkPY=
-To:     Miguel Ojeda <ojeda@kernel.org>,
+        Sun, 7 May 2023 11:23:24 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A65C17FCD;
+        Sun,  7 May 2023 08:23:16 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-3f19afc4f60so23341445e9.1;
+        Sun, 07 May 2023 08:23:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683472994; x=1686064994;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cXfYAxy/0WQK3eurmoC5L3aB81s98dVICzFWcsOt+GA=;
+        b=opwmOyCf3zacpjaTp05ZgrNC6QDcPbiGf7IX0xqQX9eOnaeApS9sKjzDIuQBbTE6h6
+         YupY3Mu69A/dY4z0ts4OSW2sCPKzM4w9fkS1NdIYmrYlVfq8wNzuHFWB9E37m1UzwB3+
+         tvsv8do87qGhJNcKk2ii71nCmU+jFXcIP9TvyUxX+go03o4W0XG1jqQsNOK4BUfBy87v
+         2FdEsnAyM7XcF49BJsiNVOp20RBLIXAy7CErnypx/LExlyZ8ebn+pQLhXDQGMORzToW2
+         KmgS+m/KyaNMEOFsQIifgIdD7+X+bU+0d2ut4sq5RSV8lRQuqHZZjVg9Y2D55PnIt0W+
+         tT8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683472994; x=1686064994;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cXfYAxy/0WQK3eurmoC5L3aB81s98dVICzFWcsOt+GA=;
+        b=MiJxYKVYC9C9EBjMFNIWRmQ0rJUaxbYn4juDANk1yVxLWcsSJ5/3zAyWfdNeqaX3q7
+         UNiAGiqQ/MV8wmjSGEGNqWIQK+gzG+Ovrp02VjAmHI6lW5+7DsT+AQCpg7eqsM5QjcOc
+         80bA+/Ps9ZTKqwrChVVEfkfd3E9wl5+fX2ACfJB8iyIr0FF4oTJCOe66NNoG0wnBRQ8m
+         cpb+GaB7T+oPF/y61fsB82qbGAl/pSCAswiHBCTYoFxfrbGG3IL0+9DPKH5m6syNzDcY
+         HGArSYOCkcZjs87qRm2S4B5643xOhyUz9CPQnot7/N+N2es7Xs+qLFe5hr7MnwJqU6bv
+         TKPw==
+X-Gm-Message-State: AC+VfDyGp5s8rqBAhxCErsMknkxjt9HJEc+me+lHPaiQ83sAk9/M3fK5
+        a89CZfo5H0WUSIuVEduJANA=
+X-Google-Smtp-Source: ACHHUZ7z1wk89lMWxDlAcZxxE0xL7fz35swhns0FZt859CE35le8Qm8pASHhZskAqXlS0KR4Ew/cXg==
+X-Received: by 2002:a1c:720f:0:b0:3f4:16bc:bd1c with SMTP id n15-20020a1c720f000000b003f416bcbd1cmr3169835wmc.3.1683472994534;
+        Sun, 07 May 2023 08:23:14 -0700 (PDT)
+Received: from localhost.localdomain ([2.222.93.88])
+        by smtp.gmail.com with ESMTPSA id c17-20020adffb11000000b003075428aad5sm8231630wrr.29.2023.05.07.08.23.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 May 2023 08:23:14 -0700 (PDT)
+From:   Ben Gooding <ben.gooding.dev@gmail.com>
+Cc:     ben.gooding.dev@gmail.com, Benno Lossin <benno.lossin@proton.me>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matthew Leach <dev@mattleach.net>
-Subject: [PATCH] scripts: rust_is_available: check for empty libclang version
-Date:   Sun,  7 May 2023 09:41:16 +0100
-Message-Id: <20230507084116.1099067-1-dev@mattleach.net>
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: lock: Add intra-doc links to the Backend trait
+Date:   Sun,  7 May 2023 16:22:29 +0100
+Message-Id: <20230507152232.803-1-ben.gooding.dev@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-If bindgen can't find libclang, then bindgen will panic with the
-following error:
+Also fix a minor typo in one of the comments
 
-thread 'main' panicked at 'Unable to find libclang: "couldn't find any
-valid shared libraries matching: ['libclang.so', 'libclang-*.so',
-'libclang.so.*', 'libclang-*.so.*'], set the `LIBCLANG_PATH` environment
-variable to a path where one of these files can be found.
-
-This is outputted to stderr, leaving stdout empty. The empty string is
-then passed to get_canonical_version and the following is show to the
-user:
-
-$ make LLVM=1 rustavailable
-./scripts/rust_is_available.sh: line 21: 100000 *  + 100 *  + : syntax error: operand expected (error token is "+ ")
-make: *** [Makefile:1825: rustavailable] Error 1
-
-Note: bindgen's bad exit code isn't caught by 'set -e' since it is ran
-in a subshell.
-
-Fix this by prnting out a more helpful error message if the output of
-bindgen is empty.
-
-Signed-off-by: Matthew Leach <dev@mattleach.net>
+Suggested-by: Benno Lossin <benno.lossin@proton.me>
+Link: https://lore.kernel.org/rust-for-linux/94625fe6-b87a-a8f0-5b2a-a8152d5f7436@proton.me/
+Link: https://github.com/Rust-for-Linux/linux/issues/1001
+Signed-off-by: Ben Gooding <ben.gooding.dev@gmail.com>
 ---
- scripts/rust_is_available.sh | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ rust/kernel/sync/lock.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index aebbf1913970..e5478429841c 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -107,6 +107,15 @@ bindgen_libclang_version=$( \
- 		| head -n 1 \
- )
- bindgen_libclang_min_version=$($min_tool_version llvm)
-+if [ -z "$bindgen_libclang_version" ]; then
-+	if [ "$1" = -v ]; then
-+		echo >&2 "***"
-+		echo >&2 "*** libclang could not be found by bindgen.  Ensure that LIBCLANG_PATH"
-+		echo >&2 "*** is set correctly."
-+		echo >&2 "***"
-+	fi
-+	exit 1;
-+fi
- bindgen_libclang_cversion=$(get_canonical_version $bindgen_libclang_version)
- bindgen_libclang_min_cversion=$(get_canonical_version $bindgen_libclang_min_version)
- if [ "$bindgen_libclang_cversion" -lt "$bindgen_libclang_min_cversion" ]; then
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index a2216325632d..95466201dab7 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -72,7 +72,7 @@ pub unsafe trait Backend {
+ 
+ /// A mutual exclusion primitive.
+ ///
+-/// Exposes one of the kernel locking primitives. Which one is exposed depends on the lock backend
++/// Exposes one of the kernel locking primitives. Which one is exposed depends on the lock [backend](Backend)
+ /// specified as the generic parameter `B`.
+ #[pin_data]
+ pub struct Lock<T: ?Sized, B: Backend> {
+@@ -90,7 +90,7 @@ pub struct Lock<T: ?Sized, B: Backend> {
+     pub(crate) data: UnsafeCell<T>,
+ }
+ 
+-// SAFETY: `Lock` can be transferred across thread boundaries iff the data it protects can.
++// SAFETY: `Lock` can be transferred across thread boundaries if the data it protects can.
+ unsafe impl<T: ?Sized + Send, B: Backend> Send for Lock<T, B> {}
+ 
+ // SAFETY: `Lock` serialises the interior mutability it provides, so it is `Sync` as long as the
+@@ -126,7 +126,7 @@ impl<T: ?Sized, B: Backend> Lock<T, B> {
+ 
+ /// A lock guard.
+ ///
+-/// Allows mutual exclusion primitives that implement the `Backend` trait to automatically unlock
++/// Allows mutual exclusion primitives that implement the [`Backend`] trait to automatically unlock
+ /// when a guard goes out of scope. It also provides a safe and convenient way to access the data
+ /// protected by the lock.
+ #[must_use = "the lock unlocks immediately when the guard is unused"]
 -- 
-2.39.2
+2.34.1
 
