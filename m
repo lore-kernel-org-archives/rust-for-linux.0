@@ -2,101 +2,84 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB4A4C77B7C
-	for <rust-for-linux@archiver.kernel.org>; Sun,  7 May 2023 23:16:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ADC13C77B75
+	for <rust-for-linux@archiver.kernel.org>; Sun,  7 May 2023 23:31:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232010AbjEGXQA (ORCPT
+        id S229508AbjEGXbd (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 7 May 2023 19:16:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44630 "EHLO
+        Sun, 7 May 2023 19:31:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229716AbjEGXP7 (ORCPT
+        with ESMTP id S229507AbjEGXbb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 7 May 2023 19:15:59 -0400
-Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70E5055A6;
-        Sun,  7 May 2023 16:15:58 -0700 (PDT)
-Received: by mail-oo1-xc33.google.com with SMTP id 006d021491bc7-54ca586a3b4so2105693eaf.0;
-        Sun, 07 May 2023 16:15:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683501358; x=1686093358;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=39pa+zYrSAhBZrw5yqjNa16fen8+bjk5IjKC1kvtfe0=;
-        b=MgV7BeY3PNetBfpSUs4ZzFTektayUzOvgtdhpOnfhw2ArKVafi+taH7PqEsk9ngzf9
-         WFKmXpyX1fIDL2VeIrE666jD/3QohQUk9hkltZeRVuyE3Y0a95iTE+E0N4qlva1miBpp
-         oYn1Knhm7jdXEzPAvhJjLFulAcckvk7NAekT7jXXr+nIzAIR+5Epbo55G++EL5i4oOvV
-         fNrW3L9xOWiOFDosT9kJg2FnYxDWVKRtkVAKQ0vD9CHFPROhXSGvjq4VV1uJfCiYoBbw
-         mu1JBn2QePC7RFasraXG5668t5T6IIKUYwHN6cLpPH9SNkAZLahvxJn7eVAdcPkfz7cQ
-         sAoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683501358; x=1686093358;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=39pa+zYrSAhBZrw5yqjNa16fen8+bjk5IjKC1kvtfe0=;
-        b=GbFTQPNA/1x5Y0OMsiPq5NWsXJddkxi8BGh+WGw0B+1V5G5k7NgFBNoocDVH6ow5xu
-         HIpQqPgppdUE1tpWVk0XwBdxquWakufxufZNO8mbgjWoafN07gc4BQCcFvGyQaZdRIay
-         fNOHimSG6HzDl0bVFvYy5lMz45Bc7diEo4c1MRvC+k6r+/lW3psRxPstxoPCUpA5w8Pi
-         g4xN4COWxLsYxLf6WlMamcV+eSZvjfhSynkoTCdmJh5obus2Zk1O3Y537GTTj+c6isZn
-         rdkTR4BGV5M6OaPObPepk+9iU7VpPRSjHFokesvpkEzqlleBNyqXDR3Pyn9I6Uxyi3WC
-         bmDQ==
-X-Gm-Message-State: AC+VfDx0Tafxyi5q8ZReCQdAyKCDNLa37Hk1wWbMbK3QELLSgGf+kjAk
-        WB21DWKSU2egCzIaDhy4uZc=
-X-Google-Smtp-Source: ACHHUZ6MFPlDYGyBsr9K/EyvsfpP9Y8cKvWHYRK4w8yUtZEctrzDRpWP4UaVgM5wfxD8bThImmqRvQ==
-X-Received: by 2002:a4a:3242:0:b0:546:ecb3:f42 with SMTP id s2-20020a4a3242000000b00546ecb30f42mr3713986ooe.8.1683501357694;
-        Sun, 07 May 2023 16:15:57 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id u22-20020a4ae696000000b0054f2a39e35fsm2949767oot.44.2023.05.07.16.15.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 May 2023 16:15:57 -0700 (PDT)
-Message-ID: <44dc8206-a42b-047b-bd2d-62b54fbe8ee8@gmail.com>
-Date:   Sun, 7 May 2023 20:15:54 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH] scripts: rust_is_available: check for empty libclang
- version
-Content-Language: en-US
-To:     Matthew Leach <dev@mattleach.net>, Miguel Ojeda <ojeda@kernel.org>,
+        Sun, 7 May 2023 19:31:31 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E924886BE;
+        Sun,  7 May 2023 16:31:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=BUVBPdJNfX+NvARu2ntIXNIYA3Z9htVV8ADqSWHvC50=; b=n68XH7Z0kRUMjXqTxz0GjNZgA2
+        o9gGHcpt9lf7+QviupkjuyWpJehlLY+V49Jl6wNx6GGXr4ysabnRbJ5Bs2hLB4dEwORnPQ29JbnZW
+        kjCmris7SBDSp9K+n1oKXKgofxfK1LQ63ShxKPV35r87w7/2pzOp/luzgACPW8xXEcvofRaDo8lis
+        rUP3woe7e8xfiz40u6LQnVp1+Eowe9aXxS2r57nJnoPyKuDTF9l3leAPhkdx4o94KyZRWHa/iKLxz
+        3eQr1AA3RPBf+nfLCsh1p8kvU5P49r/aI8wNS1KhCiOyt+fXLSIj2K2l0I3jEHpBfH+MOVy8iK2BP
+        2KLDrAjw==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1pvnqX-00Gpd9-03;
+        Sun, 07 May 2023 23:31:17 +0000
+Date:   Sun, 7 May 2023 16:31:16 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Andreas Hindborg <nmi@metaspace.dk>
+Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Keith Busch <kbusch@kernel.org>,
+        Damien Le Moal <Damien.LeMoal@wdc.com>,
+        Hannes Reinecke <hare@suse.de>,
+        lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
+        linux-block@vger.kernel.org,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230507084116.1099067-1-dev@mattleach.net>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230507084116.1099067-1-dev@mattleach.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        open list <linux-kernel@vger.kernel.org>, gost.dev@samsung.com
+Subject: Re: [RFC PATCH 00/11] Rust null block driver
+Message-ID: <ZFg0xPy0dbd1b0rP@bombadil.infradead.org>
+References: <20230503090708.2524310-1-nmi@metaspace.dk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230503090708.2524310-1-nmi@metaspace.dk>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 5/7/23 05:41, Matthew Leach wrote:
-> If bindgen can't find libclang, then bindgen will panic with the
-> following error:
-> 
-> thread 'main' panicked at 'Unable to find libclang: "couldn't find any
-> valid shared libraries matching: ['libclang.so', 'libclang-*.so',
-> 'libclang.so.*', 'libclang-*.so.*'], set the `LIBCLANG_PATH` environment
-> variable to a path where one of these files can be found.
-> 
-> This is outputted to stderr, leaving stdout empty. The empty string is
-> then passed to get_canonical_version and the following is show to the
-> user:
-> 
-> $ make LLVM=1 rustavailable
-> ./scripts/rust_is_available.sh: line 21: 100000 *  + 100 *  + : syntax error: operand expected (error token is "+ ")
-> make: *** [Makefile:1825: rustavailable] Error 1
-> 
-> Note: bindgen's bad exit code isn't caught by 'set -e' since it is ran
-> in a subshell.
-> 
-> Fix this by prnting out a more helpful error message if the output of
-> bindgen is empty.
-> 
-> Signed-off-by: Matthew Leach <dev@mattleach.net>
-> ---
-> [...]
+On Wed, May 03, 2023 at 11:06:57AM +0200, Andreas Hindborg wrote:
+> The statistics presented in my previous message [1] show that the C null block
+> driver has had a significant amount of memory safety related problems in the
+> past. 41% of fixes merged for the C null block driver are fixes for memory
+> safety issues. This makes the null block driver a good candidate for rewriting
+> in Rust.
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Curious, how long does it take to do an analysis like this? Are there efforts
+to automate this a bit more? We have efforts to use machine learning to
+evaluate stable candidate patches, we probably should be able to qualify
+commits as fixing "memory safety", I figure.
+
+Because what I'd love to see is if we can could easily obtain similar
+statistics for arbitrary parts of the kernel. The easiest way to break
+this down might be by kconfig symbol for instance, and then based on
+that gather more information about subsystems.
+
+Then the rationale for considerating adopting rust bindings for certain areas
+of the kernel becomes a bit clearer.
+
+I figured some of this work has already been done, but I just haven't seen it
+yet.
+
+  Luis
