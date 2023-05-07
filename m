@@ -2,84 +2,123 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ADC13C77B75
-	for <rust-for-linux@archiver.kernel.org>; Sun,  7 May 2023 23:31:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2C0FC77B7D
+	for <rust-for-linux@archiver.kernel.org>; Sun,  7 May 2023 23:58:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229508AbjEGXbd (ORCPT
+        id S229507AbjEGX6D (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 7 May 2023 19:31:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48202 "EHLO
+        Sun, 7 May 2023 19:58:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbjEGXbb (ORCPT
+        with ESMTP id S229960AbjEGX57 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 7 May 2023 19:31:31 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E924886BE;
-        Sun,  7 May 2023 16:31:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=BUVBPdJNfX+NvARu2ntIXNIYA3Z9htVV8ADqSWHvC50=; b=n68XH7Z0kRUMjXqTxz0GjNZgA2
-        o9gGHcpt9lf7+QviupkjuyWpJehlLY+V49Jl6wNx6GGXr4ysabnRbJ5Bs2hLB4dEwORnPQ29JbnZW
-        kjCmris7SBDSp9K+n1oKXKgofxfK1LQ63ShxKPV35r87w7/2pzOp/luzgACPW8xXEcvofRaDo8lis
-        rUP3woe7e8xfiz40u6LQnVp1+Eowe9aXxS2r57nJnoPyKuDTF9l3leAPhkdx4o94KyZRWHa/iKLxz
-        3eQr1AA3RPBf+nfLCsh1p8kvU5P49r/aI8wNS1KhCiOyt+fXLSIj2K2l0I3jEHpBfH+MOVy8iK2BP
-        2KLDrAjw==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
-        id 1pvnqX-00Gpd9-03;
-        Sun, 07 May 2023 23:31:17 +0000
-Date:   Sun, 7 May 2023 16:31:16 -0700
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     Andreas Hindborg <nmi@metaspace.dk>
+        Sun, 7 May 2023 19:57:59 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBCD43C15
+        for <rust-for-linux@vger.kernel.org>; Sun,  7 May 2023 16:57:56 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2ac82912a59so40840491fa.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 07 May 2023 16:57:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1683503875; x=1686095875;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=heWdWnuVsDgy3YSrIEI7KZvF6zrJpOnz1cwOgPMljgY=;
+        b=GzRn0fYn5L+kd6X0Fe48aiNfUfW6wkqLabswGuWW5mgWqR/2GjUF84ljLns2d+o1sg
+         a6vuGpW1z3TO+tfiggPQdcXC+NEPg8Gh+PNIyfpCncjeBL1vTkaxKrMTeCu23pZd3yit
+         6CGMwxzuMtyjwtR5iJ0TuEsqd/d/2ICCNAm4Cn4ajDtiHfe8Ianjb+FNkEzlklqzN2QL
+         jkIr4lE+mJBktzp3KrpGdeIFLkglGatWFaYxPDWX00GYxlYGVOTsBpq/x6aGVc/tklVC
+         ZeZZVQrSP2pHCxqWHvyGLCe+VZwLSj97UPEe64VFJlxifThdQuL0WWJMJ6f1a+LGsuXU
+         6Zaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683503875; x=1686095875;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=heWdWnuVsDgy3YSrIEI7KZvF6zrJpOnz1cwOgPMljgY=;
+        b=Mc5w3CoSAOrCmglHrZqyVJ0BXjmzA0e+b4c6h8MG1Vn7afl65wgSCGnkEQW8u3ZbGU
+         UiyM6XClugE/GUlwL92qw2p39ecy7xcAn6IqjyoO14WZx4IheYQGFe1xerJQjEv+kJLf
+         yAzCMUhYio/U2hzWBkOH0DMjzu3Srrx/5M8mvTvcK9wwGjlVyrQN1vrsTqJIoDNwfIin
+         ZqZkRfc71ZYl3JWoZScR83US0IkHVGjeznCi3mpcoSO6g/wQybmDBZ/N2ceVv7wM6kxM
+         zrApvWhgmjXescSrLyeBDCxRIeUbyCAAP+HI2ouf+69nciEiynRnMKHraeHDv0sKKFrO
+         qzVw==
+X-Gm-Message-State: AC+VfDyUFF1UNRGdMpoawHK/saZsuD4+Dyn40dE8GsbkeMC1MBeFt2Ay
+        39fcjjcCXpqXKkfLauCJLtFwkw==
+X-Google-Smtp-Source: ACHHUZ5KDAewVtMMEUBKPDOXSl6kc4Kl99MUiOwLSnK0jQvpZ9OmWx9CGYgRWJyoQRHGvIlZiklKYQ==
+X-Received: by 2002:a2e:9bcb:0:b0:2ac:8090:630e with SMTP id w11-20020a2e9bcb000000b002ac8090630emr2346480ljj.28.1683503875097;
+        Sun, 07 May 2023 16:57:55 -0700 (PDT)
+Received: from localhost (77.241.128.113.mobile.3.dk. [77.241.128.113])
+        by smtp.gmail.com with ESMTPSA id s15-20020ac25fef000000b004f01ae1e63esm1086678lfg.272.2023.05.07.16.57.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 May 2023 16:57:54 -0700 (PDT)
+References: <20230503090708.2524310-1-nmi@metaspace.dk>
+ <ZFg0xPy0dbd1b0rP@bombadil.infradead.org>
+User-agent: mu4e 1.10.3; emacs 28.2.50
+From:   Andreas Hindborg <nmi@metaspace.dk>
+To:     Luis Chamberlain <mcgrof@kernel.org>
 Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
         Keith Busch <kbusch@kernel.org>,
         Damien Le Moal <Damien.LeMoal@wdc.com>,
         Hannes Reinecke <hare@suse.de>,
         lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
-        linux-block@vger.kernel.org,
-        Andreas Hindborg <a.hindborg@samsung.com>,
-        Matthew Wilcox <willy@infradead.org>,
+        linux-block@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
+        =?utf-8?Q?Bj?= =?utf-8?Q?=C3=B6rn?= Roy Baron 
+        <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
         open list <linux-kernel@vger.kernel.org>, gost.dev@samsung.com
 Subject: Re: [RFC PATCH 00/11] Rust null block driver
-Message-ID: <ZFg0xPy0dbd1b0rP@bombadil.infradead.org>
-References: <20230503090708.2524310-1-nmi@metaspace.dk>
+Date:   Mon, 08 May 2023 01:37:19 +0200
+In-reply-to: <ZFg0xPy0dbd1b0rP@bombadil.infradead.org>
+Message-ID: <87mt2fae4i.fsf@metaspace.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230503090708.2524310-1-nmi@metaspace.dk>
-Sender: Luis Chamberlain <mcgrof@infradead.org>
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, May 03, 2023 at 11:06:57AM +0200, Andreas Hindborg wrote:
-> The statistics presented in my previous message [1] show that the C null block
-> driver has had a significant amount of memory safety related problems in the
-> past. 41% of fixes merged for the C null block driver are fixes for memory
-> safety issues. This makes the null block driver a good candidate for rewriting
-> in Rust.
 
-Curious, how long does it take to do an analysis like this? Are there efforts
-to automate this a bit more? We have efforts to use machine learning to
-evaluate stable candidate patches, we probably should be able to qualify
-commits as fixing "memory safety", I figure.
+Luis Chamberlain <mcgrof@kernel.org> writes:
 
-Because what I'd love to see is if we can could easily obtain similar
-statistics for arbitrary parts of the kernel. The easiest way to break
-this down might be by kconfig symbol for instance, and then based on
-that gather more information about subsystems.
+> On Wed, May 03, 2023 at 11:06:57AM +0200, Andreas Hindborg wrote:
+>> The statistics presented in my previous message [1] show that the C null block
+>> driver has had a significant amount of memory safety related problems in the
+>> past. 41% of fixes merged for the C null block driver are fixes for memory
+>> safety issues. This makes the null block driver a good candidate for rewriting
+>> in Rust.
+>
+> Curious, how long does it take to do an analysis like this? Are there efforts
+> to automate this a bit more? We have efforts to use machine learning to
+> evaluate stable candidate patches, we probably should be able to qualify
+> commits as fixing "memory safety", I figure.
+>
+> Because what I'd love to see is if we can could easily obtain similar
+> statistics for arbitrary parts of the kernel. The easiest way to break
+> this down might be by kconfig symbol for instance, and then based on
+> that gather more information about subsystems.
+>
 
-Then the rationale for considerating adopting rust bindings for certain areas
-of the kernel becomes a bit clearer.
+I spent around 4 hours with a spreadsheet and git. It would be cool if
+that work could be automated. It's not always clear from the commit
+heading that a commit is a fix. When it is clear that it is a fix, it
+might not be clear what is fixed. I had to look at the diff quite a few
+commits.
 
-I figured some of this work has already been done, but I just haven't seen it
-yet.
+There is some work mentioning the ratio of memory safety issues fixed in
+the kernel, but none of them go into details for specific subsystems as
+far as I know. 20% of bugs fixed in stable Linux Kernel branches for
+drivers are memory safety issues [1]. 65% of recent Linux kernel
+vulnerabilities are memory safety issues [2]
 
-  Luis
+> Then the rationale for considerating adopting rust bindings for certain areas
+> of the kernel becomes a bit clearer.
+
+As mentioned elsewhere in this thread there are other benefits from
+deploying Rust than provable absence of memory safety issues.
+
+Best regards
+Andreas
+
+[1] http://dx.doi.org/10.15514/ISPRAS-2018-30(6)-8
+[2] https://lssna19.sched.com/event/RHaT/writing-linux-kernel-modules-in-safe-rust-geoffrey-thomas-two-sigma-investments-alex-gaynor-alloy
