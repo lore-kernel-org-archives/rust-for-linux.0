@@ -2,174 +2,90 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FA40C77B75
-	for <rust-for-linux@archiver.kernel.org>; Fri,  5 May 2023 21:47:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C98A1C77B75
+	for <rust-for-linux@archiver.kernel.org>; Sun,  7 May 2023 08:57:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232200AbjEEVrq (ORCPT
+        id S229670AbjEGI5H (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 5 May 2023 17:47:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47524 "EHLO
+        Sun, 7 May 2023 04:57:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233691AbjEEVrl (ORCPT
+        with ESMTP id S229472AbjEGI5G (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 5 May 2023 17:47:41 -0400
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EE1B5FCD;
-        Fri,  5 May 2023 14:47:27 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-55a14807e4cso41183697b3.1;
-        Fri, 05 May 2023 14:47:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683323246; x=1685915246;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HvdowzOHeTXQwWFXBaRl5zQyQlspUjEq1JSPOTsC1Wc=;
-        b=c/9ssS17ygEIXrjB8ms2tCiAauSNkrwY3FrgLn0D4OGpJl3juPuZJhnyb0JmoBmYni
-         ETFaF7dTfqcXfSqQu0ubAWwUgEOHVpTrEkyKZkvwt79nUSdjGp3pWnOCs7wm6TLhWmGe
-         PRSs7yqpoLqTURBcqejEOQEPBkthVBfDd1h6Lx3f6OaNcc8IySO1QrIeC4aq4UoyAZj2
-         WLslZ7g5pGxZQxY8KDWw1GhuzL7CJHM71gcTLGvw88r+Ln+i7VCIlwpwwgFBaGxK8vQP
-         GdPRs4Jgccsra0RD96j+c3O/Jz0FA0Sf48OdKtkQTynk8oBps/WjadB0bHc8GLSMHi2c
-         azAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683323246; x=1685915246;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HvdowzOHeTXQwWFXBaRl5zQyQlspUjEq1JSPOTsC1Wc=;
-        b=U0knbndYk8I4xS3F9sBUu1E2JDK8vG+9boaenyRD8DMTPxZQuD3K6lqcd2G1si7/Sb
-         5ATqzJGSQ3zgTBcLQxi+lkLs5IymLGyvcnC3G6710fzUgqFLo2t/Rfwc3a2WkbZqSZdH
-         H5EuZjTZF+HlzEOISXPc7KoUBtbtdULOecw/qZXIHgcMSks9VntaTprq7QF9IRT74kOt
-         U9pcXoE1bu4+FO0ywdK0KphNNWcOeInXWkE6aBy2QNTf+p5gIQop/69QbzHIsLHQMKAt
-         XibW7Y0MLFZvSfRdBbAr/Hoa1YyahFu9z+qKE1uaZfPHEwK7yk1cSCMhCcynDQjJ4zTh
-         +69Q==
-X-Gm-Message-State: AC+VfDwyPTtWBFrnDivG0IDQTwE13/J6v2etECB4h+Cg4b6aX/nb0vxm
-        aig9zQXvuQ5ZaVHcXNdix0Bb3eWn6io=
-X-Google-Smtp-Source: ACHHUZ66ftSX4i7hbbPSR3DK3+7rOK5fIi/dVvwoFHwbdOXcz+DBdCps2CahNWCWdvpN3vQUAJJkPw==
-X-Received: by 2002:ad4:5b84:0:b0:5ea:922:bea9 with SMTP id 4-20020ad45b84000000b005ea0922bea9mr3890271qvp.14.1683323225820;
-        Fri, 05 May 2023 14:47:05 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id t17-20020a0cde11000000b0061b698e2acesm902736qvk.18.2023.05.05.14.47.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 May 2023 14:47:05 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 8CFE427C005A;
-        Fri,  5 May 2023 17:47:04 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Fri, 05 May 2023 17:47:04 -0400
-X-ME-Sender: <xms:V3lVZJ9EaSeFMeC4hvnPgsdMB1bmqJnnwbBZm92tK-RVC6HFpmOalA>
-    <xme:V3lVZNstA8h5kNOOjiLW5IzUbk5AKCHVPd6MBuT_004NZHWge5HUUDbVTm58DtHXe
-    cduZUFO-tTgIiEsLQ>
-X-ME-Received: <xmr:V3lVZHCg0SsdbD248LS8GYMDYHEcsbj8FgQFML9mQjg7pABuBaKn8LNarr8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeffedgtddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:V3lVZNdbiUqEBK1U70KWkAYCgpEnQIj6hJDc_zxU3swojKVfs5dNuA>
-    <xmx:V3lVZOMId30i86Lv_VOwQu8DjAmqNDLLrKVD3pfx-C2X-n9vDiLloA>
-    <xmx:V3lVZPlW1emwRpkFQ5_pB6ub8LXhknrD6Tq84JA570W0Dg3tIaddnA>
-    <xmx:WHlVZKvnzdGWwdD9NTDR2GlJbVsrXA9WuxCpml6FnPcqGBzLSvobOg>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 May 2023 17:47:02 -0400 (EDT)
-Date:   Fri, 5 May 2023 14:46:58 -0700
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Keith Busch <kbusch@kernel.org>
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        Christoph Hellwig <hch@lst.de>,
-        Damien Le Moal <Damien.LeMoal@wdc.com>,
-        Hannes Reinecke <hare@suse.de>,
-        lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
-        linux-block@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
+        Sun, 7 May 2023 04:57:06 -0400
+X-Greylist: delayed 601 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 07 May 2023 01:57:05 PDT
+Received: from dexter.1e0.uk (dexter.1e0.uk [IPv6:2a01:7e00:e002:1401::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10C42E6B
+        for <rust-for-linux@vger.kernel.org>; Sun,  7 May 2023 01:57:04 -0700 (PDT)
+From:   Matthew Leach <dev@mattleach.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mattleach.net;
+        s=mail; t=1683448881;
+        bh=d7c0tHXtXZTYK41BLQMysbdl49fk0po3esW2L5nenJc=;
+        h=From:To:Cc:Subject:Date;
+        b=id+EAaopeckeYhTESRhnYsDGfAamiYmnb6M2L7D8d6aQ485fpPB63x3jk/T0m9tvG
+         /+PE034VUCNgIvNh95VQJKqvrEdm8q7RMoDJ11ds/K7H38yohWurGvMxa0WADt3yWS
+         Eg6tBqpdqmdLdls9wEW87rAwk3oKH3YPCEjlVkPY=
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        open list <linux-kernel@vger.kernel.org>, gost.dev@samsung.com,
-        Daniel Vetter <daniel@ffwll.ch>
-Subject: Re: [RFC PATCH 00/11] Rust null block driver
-Message-ID: <ZFV5UicPNkNE4g3I@boqun-archlinux>
-References: <da7b815d-3da8-38e5-9b25-b9cfb6878293@acm.org>
- <87jzxot0jk.fsf@metaspace.dk>
- <b9a1c1b2-3baa-2cad-31ae-8b14e4ee5709@acm.org>
- <ZFP+8apHunCCMmOZ@kbusch-mbp.dhcp.thefacebook.com>
- <e7bc2155-613b-8904-9942-2e9615b0dc63@kernel.dk>
- <CANiq72nAMH1SfGmPTEjGHfevbb9tMLN4W7gJ3nBpJcvkCEsZ4g@mail.gmail.com>
- <80ed2c0e-54db-777a-175b-1aa3ff776724@kernel.dk>
- <CANiq72=3kGRy-3Lq5oxUEhu5d-377QrhuzhvoKRL+_QvbnJE7A@mail.gmail.com>
- <ZFT1mOQq0YllZl7V@Boquns-Mac-mini.local>
- <ZFVcMtRFoaEK/PqY@kbusch-mbp.dhcp.thefacebook.com>
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthew Leach <dev@mattleach.net>
+Subject: [PATCH] scripts: rust_is_available: check for empty libclang version
+Date:   Sun,  7 May 2023 09:41:16 +0100
+Message-Id: <20230507084116.1099067-1-dev@mattleach.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZFVcMtRFoaEK/PqY@kbusch-mbp.dhcp.thefacebook.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, May 05, 2023 at 01:42:42PM -0600, Keith Busch wrote:
-> On Fri, May 05, 2023 at 05:24:56AM -0700, Boqun Feng wrote:
-> > 
-> > The Rust bindings are actually the way of communication between
-> > subsystem mantainers and Rust driver writers, and can help reduce the
-> > amount of work: You can have the abstraction the way you like.
-> 
-> We don't have stable APIs or structures here, so let's be clear-eyed
+If bindgen can't find libclang, then bindgen will panic with the
+following error:
 
-Of course, but every API change need to cover all in-tree users, right?
+thread 'main' panicked at 'Unable to find libclang: "couldn't find any
+valid shared libraries matching: ['libclang.so', 'libclang-*.so',
+'libclang.so.*', 'libclang-*.so.*'], set the `LIBCLANG_PATH` environment
+variable to a path where one of these files can be found.
 
-> about the maintenance burden these bindings create for linux-block
-> contributors. Not a hard "no" from me, but this isn't something to
-> handwave over.
+This is outputted to stderr, leaving stdout empty. The empty string is
+then passed to get_canonical_version and the following is show to the
+user:
 
-Not tried to handwave over anything ;-) The fact IIUC is simply that Rust
-drivers can call C function, so say a in-tree Rust driver does something
-as follow:
+$ make LLVM=1 rustavailable
+./scripts/rust_is_available.sh: line 21: 100000 *  + 100 *  + : syntax error: operand expected (error token is "+ ")
+make: *** [Makefile:1825: rustavailable] Error 1
 
-	struct Foo {
-		ptr: *mut bio; // A pointer to bio.
-		...
-	}
+Note: bindgen's bad exit code isn't caught by 'set -e' since it is ran
+in a subshell.
 
-	impl Foo {
-		pub fn bar(&self) {
-			unsafe {
-				// calling a C function "do_sth_to_bio".
-				// void do_sth_to_bio(struct bio *bio);
-				bindings::do_sth_to_bio(self.ptr);
-			}
-		}
-	}
+Fix this by prnting out a more helpful error message if the output of
+bindgen is empty.
 
-That's an user of the block layer, and that user could exist even
-without Bio abstraction. And whenever a linux-block developer wants to
-refactor the "do_sth_to_bio" with a slightly different semantics, that
-user will need to be taken into consideration, meaning reading the Rust
-code of Foo to understand the usage.
+Signed-off-by: Matthew Leach <dev@mattleach.net>
+---
+ scripts/rust_is_available.sh | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Now with a Bio abstraction, the immediate effect would be there should
-be no Rust code is allowed to directly calls block layer functions
-without using Bio abstraction. And hopefully Bio abstraction along with
-other bindings is a place good enough to reasoning about semanitcs
-changes or refactoring, so no need to read the code of Foo to understand
-the usage. Of course, some C side changes may result into changes in
-Rust bindings as well, but that doesn't make things worse. (Need to
-understand Foo in that case if there is no Rust bindings).
+diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
+index aebbf1913970..e5478429841c 100755
+--- a/scripts/rust_is_available.sh
++++ b/scripts/rust_is_available.sh
+@@ -107,6 +107,15 @@ bindgen_libclang_version=$( \
+ 		| head -n 1 \
+ )
+ bindgen_libclang_min_version=$($min_tool_version llvm)
++if [ -z "$bindgen_libclang_version" ]; then
++	if [ "$1" = -v ]; then
++		echo >&2 "***"
++		echo >&2 "*** libclang could not be found by bindgen.  Ensure that LIBCLANG_PATH"
++		echo >&2 "*** is set correctly."
++		echo >&2 "***"
++	fi
++	exit 1;
++fi
+ bindgen_libclang_cversion=$(get_canonical_version $bindgen_libclang_version)
+ bindgen_libclang_min_cversion=$(get_canonical_version $bindgen_libclang_min_version)
+ if [ "$bindgen_libclang_cversion" -lt "$bindgen_libclang_min_cversion" ]; then
+-- 
+2.39.2
 
-Of course, this is just my 2 cents. I could be completely wrong.
-(Put the Rust-for-Linux hat on) Needless to say with or without the Rust
-bindings for the block layer, we are (at least I'm) happy to help on any
-Rust related questions/bugs/issues for linux-block ;-)
-
-Regards,
-Boqun
