@@ -2,111 +2,98 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CE43C77B7C
-	for <rust-for-linux@archiver.kernel.org>; Sun,  7 May 2023 15:28:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A67B8C77B7C
+	for <rust-for-linux@archiver.kernel.org>; Sun,  7 May 2023 16:28:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231364AbjEGP2m (ORCPT
+        id S231580AbjEGQ17 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 7 May 2023 11:28:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33532 "EHLO
+        Sun, 7 May 2023 12:27:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjEGP2l (ORCPT
+        with ESMTP id S231245AbjEGQ16 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 7 May 2023 11:28:41 -0400
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5324440E1;
-        Sun,  7 May 2023 08:28:40 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id C54C15C0053;
-        Sun,  7 May 2023 11:28:37 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Sun, 07 May 2023 11:28:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-        :content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-        1683473317; x=1683559717; bh=jSecnGEXP3oKiemnPTucAF4AVP7Y26l75Iy
-        Xcjx5H4s=; b=hi2GOU70BRy+g8KosP0q3kD/9mJbkAcYPR3alWPPSEMTx8/13K0
-        Vgd0DQsexDyPuppf+vCgEP8OYFnAUwJk8SoRlH4TUE4MBLoUMRGdvwQ8HMnm/Yk8
-        1qgHKs/lv1Pvdru65uLVuFiG9NNrmMLED/t1U7pth9FT/aJhrkl2BlpvpSaDOCy1
-        psYz4sNQWZkLw+6MoYgudqYHtcVajUeHXv+CW9BvA5d70VkA3UaOgp24vYx9odCY
-        C9Z2zw/60gSM3lT4oN5SIeju/zGBRv5fhGKTdcHoqJYxb2uWy9/Butj83nVmgraz
-        dDmpvXniBYLrmspgl0OSY9D3V0uqOZ6v1yw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-        1683473317; x=1683559717; bh=jSecnGEXP3oKiemnPTucAF4AVP7Y26l75Iy
-        Xcjx5H4s=; b=QUAzPGFn9Xi7NUWu4t9J09hSnZbUmKSYXbGA6a+h4/+eJPDMoUv
-        1sG97gEmlIxXy8SxTqaZaC10gU/k9vArQpQXbU+BP2owSVon8MzY5ksUVLgx73mU
-        rvLHDln0HpGxyOoVrtvislP3dC87IbSN2HhOmHcssYIahScXRiZYMsmU61IzZ16M
-        97NBv0+ZvbvdYVemHaqlOu1yimIdfqnbB4WoorUXVjtVc/AhZNVnXUwbYjlXXGw8
-        wXAg+xdde7ceLeGvu4EqVE/2uGJDpuQqcLtjAGtn95Rcpc1LBhwBHlTHhcR2EXWK
-        Y4Zz2keOJuVl4d00Gn0aljR4qj5Clm1CTRg==
-X-ME-Sender: <xms:pcNXZPRM-aJpRN_CqqIrT-kVK3mXmyEUiS0Vdbzig5XoYh8y0veWZg>
-    <xme:pcNXZAwYLzCvRIj2yRyOOUePSs_DFFk5QF21SRZw0kblSa2tEovbi_fdgqfAXHDas
-    Mn_xnJkPEPYg6iTQw>
-X-ME-Received: <xmr:pcNXZE1dGF6knh09hfZ6OpizL_kjWDdWXhd01TXBJv4DYVf6vfQ3APgWABCmu5RLJfyuR-ayK2qFizNloF1GqPsodg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefiedgkeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpeetlhhi
-    tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
-    ejfeetudeuteehkeduteffvdeviefgteejhfefiedvtddvlefffedtueeggfekheenucff
-    ohhmrghinhepkhgvrhhnvghlrdhorhhgpdhgihhthhhusgdrtghomhenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvsehrhihhlhdr
-    ihho
-X-ME-Proxy: <xmx:pcNXZPBTEgLQhlBISZI_1QEajWQBm9N8_YQ_FXEc3GLf3mXPUb3bfw>
-    <xmx:pcNXZIghuxZeC9S8CXfqnNO-EW-1aqBhV--YrCmCJVrGd9lGeZirGg>
-    <xmx:pcNXZDoTFCiGMp3KBKV-OZGmLr99iJ00QEPuPE-ZnpbcLIOI892zfg>
-    <xmx:pcNXZLNQJNFGul_MutsXCTvr0WdgYENyVaflHdgJ3puFZCtq_w0AmQ>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 7 May 2023 11:28:35 -0400 (EDT)
-Message-ID: <7f464c01-d4ec-d632-fa40-0c3f18c2ffca@ryhl.io>
-Date:   Sun, 7 May 2023 17:29:08 +0200
+        Sun, 7 May 2023 12:27:58 -0400
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2F07A5FC;
+        Sun,  7 May 2023 09:27:52 -0700 (PDT)
+Received: by mail-wr1-x442.google.com with SMTP id ffacd0b85a97d-3063208beedso3497951f8f.1;
+        Sun, 07 May 2023 09:27:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683476871; x=1686068871;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LH7Gskf0JBlpJmh8+F9VpZ1h6y3N33yjdkZhVHwbcas=;
+        b=n0WcNb6RrINFMqnVPb2zmYiu7XPmXKRLRfUTweUgs2tCCPq3TgZHo3HwjXzpEWgKH1
+         MgtyN2XbKe890EIZJ9mDQ/k5im1rxH2X2PskXRJfIFA+iDo4/aBqRNEq8XeSa6V/Tzpk
+         GgVFUmyx08KggByVpAA3ptvQ7s7c4+8DdKpheochEtKTyIFtOKwHWTFBNsJgTPVjR/8z
+         ADWiimnekR4pQk30WlGy6rRQ3F++7IrtecmYp2ebw29IMt5f9n1TIZkz3AKfNFgJUWOs
+         3tQ1YkURRn7QfUWyZIa2LaRGh+AgfwT3MPH8Aod2K+ygXrr06D15O/16s1aKdLwN0I3W
+         Vtfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683476871; x=1686068871;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LH7Gskf0JBlpJmh8+F9VpZ1h6y3N33yjdkZhVHwbcas=;
+        b=kiuBv0IqTph3LWBfDBUJu1w0vD68HLNEMEGBHSZQlbSS3y6VThkuUHz5en65s+KLHz
+         xUn3XCfWSG8lVyos/xBnBbLLIIFxJkfmWt88J57JL/63K7yrJveLgo2+j2ZnXeRwtaM6
+         q40I2uqqEiOPBmJkAhXpAdeCtB3Vl41X7X4waLEnJmFumSD5/nmlLrupV0EE5zPQ31it
+         L6T57jLG26rtd8k+xR3CVnb/gYmap54R69cpNe0Xyu66VGY76uEbX+gdqCezYDYepQ1Y
+         SN4LNkxjVyNm1kfOKmsxD7Ve87HhwDVguo5HRO3qYjF1FNjeSTjZJxpDga1bpyHg42xh
+         wZZw==
+X-Gm-Message-State: AC+VfDzXsEPuH13fwPIJeOP0m0OYU9YDL9BXa0B9Rlrjf+RG0SKPrKOP
+        YJF17OgEt/Pk8vrOHh4MXQY=
+X-Google-Smtp-Source: ACHHUZ5AY4yMv7lBXwF2AMsU1MfeUUj8HA/N9Y8FIQJdVsb6ddEsilpecArcuHegkFLe4ZTEWVS2Mw==
+X-Received: by 2002:a5d:40c3:0:b0:306:2b2b:8c56 with SMTP id b3-20020a5d40c3000000b003062b2b8c56mr5306981wrq.37.1683476871003;
+        Sun, 07 May 2023 09:27:51 -0700 (PDT)
+Received: from localhost.localdomain ([2.222.93.88])
+        by smtp.gmail.com with ESMTPSA id n3-20020a5d4843000000b003047d5b8817sm8695318wrs.80.2023.05.07.09.27.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 May 2023 09:27:50 -0700 (PDT)
+From:   Ben Gooding <ben.gooding.dev@gmail.com>
+To:     alice@ryhl.io
+Cc:     alex.gaynor@gmail.com, ben.gooding.dev@gmail.com,
+        benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+        boqun.feng@gmail.com, gary@garyguo.net,
+        linux-kernel@vger.kernel.org, ojeda@kernel.org,
+        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
+        yakoyoku@gmail.com
+Subject: [PATCH] rust: lock: Reflow long documentation line
+Date:   Sun,  7 May 2023 17:27:39 +0100
+Message-Id: <20230507162739.17392-1-ben.gooding.dev@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <7f464c01-d4ec-d632-fa40-0c3f18c2ffca@ryhl.io>
+References: <7f464c01-d4ec-d632-fa40-0c3f18c2ffca@ryhl.io>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH] rust: lock: Add intra-doc links to the Backend trait
-To:     Ben Gooding <ben.gooding.dev@gmail.com>
-Cc:     Benno Lossin <benno.lossin@proton.me>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230507152232.803-1-ben.gooding.dev@gmail.com>
-Content-Language: en-US
-From:   Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20230507152232.803-1-ben.gooding.dev@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 5/7/23 17:22, Ben Gooding wrote:
-> Also fix a minor typo in one of the comments
-> 
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://lore.kernel.org/rust-for-linux/94625fe6-b87a-a8f0-5b2a-a8152d5f7436@proton.me/
-> Link: https://github.com/Rust-for-Linux/linux/issues/1001
-> Signed-off-by: Ben Gooding <ben.gooding.dev@gmail.com>
-> ---
-> -/// Exposes one of the kernel locking primitives. Which one is exposed depends on the lock backend
-> +/// Exposes one of the kernel locking primitives. Which one is exposed depends on the lock [backend](Backend)
+Suggested-by: Alice Ryhl <alice@ryhl.io>
+Signed-off-by: Ben Gooding <ben.gooding.dev@gmail.com>
+---
+ rust/kernel/sync/lock.rs | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-This line is too long. Please reflow at 100 characters.
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 95466201dab7..04413f6f145a 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -72,8 +72,10 @@ pub unsafe trait Backend {
+ 
+ /// A mutual exclusion primitive.
+ ///
+-/// Exposes one of the kernel locking primitives. Which one is exposed depends on the lock [backend](Backend)
+-/// specified as the generic parameter `B`.
++/// Exposes one of the kernel locking primitives. Which one is exposed depends on the lock
++/// [backend] specified as the generic parameter `B`.
++/// 
++/// [backend]: Backend
+ #[pin_data]
+ pub struct Lock<T: ?Sized, B: Backend> {
+     /// The kernel lock object.
+-- 
+2.34.1
 
-You can also consider this option:
-
-/// Exposes one of the kernel locking primitives. Which one is exposed 
-depends on the lock [backend]
-/// specified as the generic parameter `B`.
-///
-/// [backend]: Backend
