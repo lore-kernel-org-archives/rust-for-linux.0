@@ -2,181 +2,993 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DDA5C77B73
-	for <rust-for-linux@archiver.kernel.org>; Mon,  8 May 2023 11:47:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0ABDEC77B75
+	for <rust-for-linux@archiver.kernel.org>; Mon,  8 May 2023 12:29:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236245AbjEHLrY (ORCPT
+        id S234130AbjEHM3g (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 8 May 2023 07:47:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44310 "EHLO
+        Mon, 8 May 2023 08:29:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236264AbjEHLrL (ORCPT
+        with ESMTP id S234159AbjEHM33 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 8 May 2023 07:47:11 -0400
-Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2129.outbound.protection.outlook.com [40.107.10.129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF6B106FF;
-        Mon,  8 May 2023 04:47:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ij+ykIkuqPeeYmPz04BKlVSHBQ/Z/o2ZcFe21zl+bO4topbhaTIGdKOCZv3UGG1JuoG07oR46JpFWdnUn+BfyAP2JjYPq8/RHVeGGVPsVtkhNTK4nmKBroZJcleiECtpthDsG0iVTnce/oz0mTNQR0SGZ3YC1t4IOzim6UnW9fELpR0D+wGZIhcqbfFBsc1/BzFkJ7aqFsPGuLqURy7zWA2nGvNnvzje6DlrCREZdMl9zZumb16l7KuqIEMZAVRvGTGdS/ek4Vb8Qz1CZlr+4a9HhVNSFsljbsid/3SjGA3jEIbzmbqm9O5SBKGU8w4g/sC9QJRKpmrC5FzdiPGlOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tLdmoJazkcFVVj/WqYmTJ1Hnta7DFL4Whpe8B6rWpfc=;
- b=lXLS4TxfHInHL7mF3hzBg7lrQUygYefJvy5oueLeV4AoEADNmSE7d9J3pXJIfp55GJJbnzIDT3XD3Qk2bNFW1uY/HS88sraCXIeaWETy/p8ltSLbiAhbfNQK0PUaAycK/t+IImHV0KToRkgNLaOUDD0US8Gt6RFlrA+mfIUZ4D2Kg2lVCEvCPCROgousxeihbci9Qv8fZ5jhkS/8niLenWrusGLwVhNfo0c0e64ZpETiF5GsENDtcvODRisgewhgo8q04KWhqK6eehEr3bbmho7brPUPG1J3nEYly/cFWXXV20rUXRV+xVWSdNy0xuREW9czp1HubkkYlVxNNb3ehQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tLdmoJazkcFVVj/WqYmTJ1Hnta7DFL4Whpe8B6rWpfc=;
- b=O+fommvO3MftVXJrTCrCXW+K4SeJtzcm2KHRr32OxjjfYgX7zMEjJ3T2aFYog8IymIg6ACYHRXYd3yyd1j3Km8AAe08Kr2Q7Rcfz0fC51TnNmbDaNiInyXWN96JAC5RhgVlxTfgu5TvkwkUJQP9vMN5Kl22WGW4eO0oQ4dFfiWk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB6996.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2ed::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.17; Mon, 8 May
- 2023 11:47:03 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1d51:d482:270c:7daf]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1d51:d482:270c:7daf%4]) with mapi id 15.20.6387.017; Mon, 8 May 2023
- 11:47:03 +0000
-Date:   Mon, 8 May 2023 12:47:01 +0100
-From:   Gary Guo <gary@garyguo.net>
-To:     Alice Ryhl <aliceryhl@google.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Mon, 8 May 2023 08:29:29 -0400
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C1273847A;
+        Mon,  8 May 2023 05:29:19 -0700 (PDT)
+Date:   Mon, 08 May 2023 12:29:08 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=protonmail; t=1683548955; x=1683808155;
+        bh=2o+QhLEI39Ivg9mw6YMEs+As5D9Y3PgvTGz97q5/fpQ=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=lMIPvhJJVjkedVkpCbyoZ6ZrjxSIqOnubXVOnj1uRUkn8s9+d2UhZBgAJqxs5Wvmm
+         HZKPFjxHu87wcifX82m5MLRRnf0mOeEuba9GqzkVhM/19DaeJpKt9wC/Ot08OZhpoZ
+         j0QWE2IbsaE+BO/R5TZE0mH4SBAmT3C+SiD5aaYlrmyPTAI09PH72OMa737jCS6tU+
+         b41dXFpnwWf74ksfPEQ2OjklTfI/X1/cQx9bb/zHnLgl2Ls0pD+p6cysEW3b5xb7vG
+         NKfbB1envtkZuZNq/LzcCHpzmJzgLNlwt5efpkzc4tGO51lI5mgPFg7x1gJqo4Fw+g
+         Sq7Y0wQ0/gS9g==
+To:     Andreas Hindborg <nmi@metaspace.dk>
+From:   Benno Lossin <benno.lossin@proton.me>
+Cc:     Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Keith Busch <kbusch@kernel.org>,
+        Damien Le Moal <Damien.LeMoal@wdc.com>,
+        Hannes Reinecke <hare@suse.de>,
+        lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
+        linux-block@vger.kernel.org,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        "=?UTF-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: Re: [PATCH v2] rust: error: add missing error codes
-Message-ID: <20230508124701.443ba331.gary@garyguo.net>
-In-Reply-To: <20230504064854.774820-1-aliceryhl@google.com>
-References: <20230504064854.774820-1-aliceryhl@google.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0197.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:318::13) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org, gost.dev@samsung.com
+Subject: Re: [RFC PATCH 03/11] rust: block: introduce `kernel::block::mq` module
+Message-ID: <iL2M45BoRlK6yS9y8uo0A5yUXcZWMkdk3vtH3LRFSWXfvPVagVZ-0YC7taIKOBFUcjJYA_2xNNFPoC4WL-_ulCHOLkbqvsZlIshE_LEeYtU=@proton.me>
+In-Reply-To: <20230503090708.2524310-4-nmi@metaspace.dk>
+References: <20230503090708.2524310-1-nmi@metaspace.dk> <20230503090708.2524310-4-nmi@metaspace.dk>
+Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB6996:EE_
-X-MS-Office365-Filtering-Correlation-Id: d501ed7b-c641-496a-52ad-08db4fb9f0e0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: h3MxCwuA7FnVPefR0SdEqaDHHbMQJvStZMKyPFlsMYCgU2ZjizarilQHUoiO57PyfcM/dXxz447BQh5aEnzmmpadVXFvnaecpRXQNz65U31KewZ5wZ58wxeSJEBUCTX4u4X9IyhROsKmlr5eP/oULY+2snLLPxTberhd+ajehBWKHpVNJgXh6aTL+7a9XJnnmRdc8v+IqSgWolHY2JWOYAToANA2deNPXXE1Bflb6IHxdC6DbXWOrM/9Kts2K5nDsvWhh7OYNWwo+USL9RbMWGNrhJ9rDsBpIyWUWYr9vUrz4L03gbhgNHmllD0VE2VNFrRb/evBbTLfXTqZ+xNbXqZapsQDbtL3QlZFszqN0vCZGYrF5mU9BPxCMHx9T6eXfAqdcHQK3fgDETcyEHBES0LyaAOIXoLEDMWoxtqT+msh+ARVvowiUbBNstaleA+iTPe+c8ELDXUp3hCxcgZGEZjsmwJPp31ySa6XHMJjQz1KcB+4IbLJpxcbQGVOFIqFS4i/17FwWwsoW3P/bi25RHWNdGdnfT33cgeRaG8jcML/TkwH4qZALC277CLYlLkz
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(366004)(346002)(396003)(136003)(376002)(39830400003)(451199021)(6486002)(6506007)(6512007)(26005)(1076003)(83380400001)(36756003)(2616005)(38100700002)(86362001)(186003)(2906002)(7416002)(54906003)(316002)(8676002)(8936002)(41300700001)(6916009)(4326008)(5660300002)(66946007)(66476007)(66556008)(478600001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PDi5xTJFu1uLCSUNVgmKyz/zW1wqBcb0BUz9wkmK5AXGG1/6aCTbnp3aWQl+?=
- =?us-ascii?Q?TRz17YqaUIvn9UEu22kJh506V+Ld4m7zVCgpaYPTGX55dEt7UA4r2RWuCqVn?=
- =?us-ascii?Q?50G4/lF8bj5Dhqw53y6Ufg7nd1IQIPQixlxcgCN0JQ9P54CXxdxySDnTXOeG?=
- =?us-ascii?Q?mWUMIUUVHVi6XouGfpDmBZ0dsOJFdnQYB8x4RxNxEoM4wt0inHzhYy0hJhCt?=
- =?us-ascii?Q?QFZxPBXIzVdQDMG6YXWORPQZ7posBAO1f1HeGl7ms9jwhYyOvJdXqxvsCxIz?=
- =?us-ascii?Q?nwv/SMjYDpyTQzVY+weolgvjZ/Jjs4PVoTC7DTGeO3hH5Il56E879jt84QD8?=
- =?us-ascii?Q?AE8bbID/DkJZPiQBOa7km/WcDmfrUtIXx0JFN8WDhObXg/LR0kfW5XKUEXM0?=
- =?us-ascii?Q?LAA6833UU5XgIW4U2Xcie7dCOaRJluxCF8QkVH1DzAb0eoc2CJzx6nwLIGhI?=
- =?us-ascii?Q?eF+BY8orNHXWePNsrw8OWu3RSSgqubXi0WuAejZ1bSKhEFAH008OAm/IH7Vf?=
- =?us-ascii?Q?Z/yPqAf98IvuMD9OVq7VALpslT8nRADd0fvQur3Tc3BPWRDf8w1t97fyYeBZ?=
- =?us-ascii?Q?ARxDLPtMrB3djTa5JGp3ZpEpzrA+6/kY628We6qwwAfdBbdOgzgqOP7BepIk?=
- =?us-ascii?Q?lt0+7f1OkGdqltDtWRIhO4W+wsGrQklg5CV3LFlhYJkxADifmG3DIgQAo0e4?=
- =?us-ascii?Q?N6YEjsglbsNF5mNjn1KZ4F5Y8r/PRAtr56Hor5GLPxSY/mt1u9B6SbxCP0fZ?=
- =?us-ascii?Q?yi/5jhkDttQTK9kuH/HvloYHLbGI/WqkBRFHb2t8VdGNntSJY/UoxjPOzGqi?=
- =?us-ascii?Q?Tn6DPuZqVqNVnFPuscn+QNEKrSpLPt66BzWepMWvjSTbxqK+7LAAjN3gqAxb?=
- =?us-ascii?Q?pK+LH7CWdTpyZ5khdjqV2moWwEbsdlA3zAwDZEYhwZU1p4a8cKX7smp5w5o1?=
- =?us-ascii?Q?OhzHITmoOILYjSFuILXjhAiapQ7Jn2g6vm35CJlfNKi/aOL8J6yJuwFHU5/k?=
- =?us-ascii?Q?Fo7AdbIeApgIMLbB/ffSAHNJt4AoO8A7ZCjYJN/PGZdZqo2rSOcIHpANonC4?=
- =?us-ascii?Q?1wgecbFeHENAj24H2A48niDQWlncdrXgN82VOhm951zb058eSAzfe2ab3yQ5?=
- =?us-ascii?Q?0VCo+sYCx7GvCWF8QTqKo0o5a3gVFw1rVpG1NvELNnz0KalbEGP7AXxEBomG?=
- =?us-ascii?Q?3L2HD5QbtAdOREOu82RwpWkaNwTO6tW1b/D6ohmiIIexBy9rVps7WWE1NglA?=
- =?us-ascii?Q?ykCOfZSMs4tIKAJtTOVZfVSmVU9h7aanSzBTGFWODpqo56abCMmGJdfwEuQz?=
- =?us-ascii?Q?JAzBsV+p2F4CtM5MvM77DVFt/KDEOrexgzjGBlf5VeoyvhtuXFI+6sl7k0Pd?=
- =?us-ascii?Q?WfarDukKg1KMilJxVanQQ3O7kF+K60C7hmr9kxsuz6F55BkW2+/VNKi7sMuI?=
- =?us-ascii?Q?uKzTSbQfpJxRqJ2zlrIpGzJfzkGmYmGsh4FS8viU0ByrOUZdkB+1bsR4ElRw?=
- =?us-ascii?Q?weC46k02E4cX4fmetmiMMgZRCWU7FBlv4lco4VOo9YbqkyPU1LKWSgOIWIku?=
- =?us-ascii?Q?huNBsayyuGQxFji81OJsh5FK7qzvO6x6wt5gFP+P?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d501ed7b-c641-496a-52ad-08db4fb9f0e0
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 11:47:03.3104
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O+0YtEdC9a+tzKpns0gq82H1TZAs73p3VjNlMa0Kwwby7blBtAvRegHlNKv+ULnwAKf/PFRSIoC+m9g7WAKK5w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6996
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu,  4 May 2023 06:48:54 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
+I have left some comments below. Some of them are not really
+suggestions, but rather I would like to know the rationale of the
+design, as I am not familiar at all with the C side and have mostly
+no idea what the called functions do.
 
-> This adds the error codes from `include/linux/errno.h` to the list of
-> Rust error constants. These errors were not included originally, because
-> they are not supposed to be visible from userspace. However, they are
-> still a perfectly valid error to use when writing a kernel driver. For
-> example, you might want to return ERESTARTSYS if you receive a signal
-> during a call to `schedule`.
-
-`include/linux/errno.h` also includes all of `asm/errno.h`,
-which defines EDEADLK - EHWPOISON, which is not included in this patch.
-I feel like these error codes should be added first?
-
-> 
-> This patch inserts an annotation to skip rustfmt on the list of error
-> codes. Without it, three of the error codes are split over several
-> lines, which looks terribly inconsistent.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Wednesday, May 3rd, 2023 at 11:07, Andreas Hindborg <nmi@metaspace.dk> w=
+rote:
+> From: Andreas Hindborg <a.hindborg@samsung.com>
+>=20
+> Add initial abstractions for working with blk-mq.
+>=20
+> This patch is a maintained, refactored subset of code originally publishe=
+d by
+> Wedson Almeida Filho <wedsonaf@gmail.com> [1].
+>=20
+> [1] https://github.com/wedsonaf/linux/tree/f2cfd2fe0e2ca4e90994f96afe268b=
+bd4382a891/rust/kernel/blk/mq.rs
+>=20
+> Cc: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 > ---
->  rust/kernel/error.rs | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
-> 
+>  rust/bindings/bindings_helper.h    |   2 +
+>  rust/helpers.c                     |  22 +++
+>  rust/kernel/block.rs               |   5 +
+>  rust/kernel/block/mq.rs            |  15 ++
+>  rust/kernel/block/mq/gen_disk.rs   | 133 +++++++++++++++
+>  rust/kernel/block/mq/operations.rs | 260 +++++++++++++++++++++++++++++
+>  rust/kernel/block/mq/raw_writer.rs |  30 ++++
+>  rust/kernel/block/mq/request.rs    |  71 ++++++++
+>  rust/kernel/block/mq/tag_set.rs    |  92 ++++++++++
+>  rust/kernel/error.rs               |   4 +
+>  rust/kernel/lib.rs                 |   1 +
+>  11 files changed, 635 insertions(+)
+>  create mode 100644 rust/kernel/block.rs
+>  create mode 100644 rust/kernel/block/mq.rs
+>  create mode 100644 rust/kernel/block/mq/gen_disk.rs
+>  create mode 100644 rust/kernel/block/mq/operations.rs
+>  create mode 100644 rust/kernel/block/mq/raw_writer.rs
+>  create mode 100644 rust/kernel/block/mq/request.rs
+>  create mode 100644 rust/kernel/block/mq/tag_set.rs
+>=20
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 52834962b94d..86c07eeb1ba1 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -11,6 +11,8 @@
+>  #include <linux/wait.h>
+>  #include <linux/sched.h>
+>  #include <linux/radix-tree.h>
+> +#include <linux/blk_types.h>
+> +#include <linux/blk-mq.h>
+>=20
+>  /* `bindgen` gets confused at certain things. */
+>  const gfp_t BINDINGS_GFP_KERNEL =3D GFP_KERNEL;
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 9bd9d95da951..a59341084774 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -18,6 +18,7 @@
+>   * accidentally exposed.
+>   */
+>=20
+> +#include <linux/bio.h>
+>  #include <linux/bug.h>
+>  #include <linux/build_bug.h>
+>  #include <linux/err.h>
+> @@ -28,6 +29,8 @@
+>  #include <linux/wait.h>
+>  #include <linux/radix-tree.h>
+>  #include <linux/highmem.h>
+> +#include <linux/blk-mq.h>
+> +#include <linux/blkdev.h>
+>=20
+>  __noreturn void rust_helper_BUG(void)
+>  {
+> @@ -130,6 +133,25 @@ void rust_helper_put_task_struct(struct task_struct =
+*t)
+>  }
+>  EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
+>=20
+> +struct bio_vec rust_helper_req_bvec(struct request *rq)
+> +{
+> +=09return req_bvec(rq);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_req_bvec);
+> +
+> +void *rust_helper_blk_mq_rq_to_pdu(struct request *rq)
+> +{
+> +=09return blk_mq_rq_to_pdu(rq);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_blk_mq_rq_to_pdu);
+> +
+> +void rust_helper_bio_advance_iter_single(const struct bio *bio,
+> +                                         struct bvec_iter *iter,
+> +                                         unsigned int bytes) {
+> +  bio_advance_iter_single(bio, iter, bytes);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_bio_advance_iter_single);
+> +
+>  void rust_helper_init_radix_tree(struct xarray *tree, gfp_t gfp_mask)
+>  {
+>  =09INIT_RADIX_TREE(tree, gfp_mask);
+> diff --git a/rust/kernel/block.rs b/rust/kernel/block.rs
+> new file mode 100644
+> index 000000000000..4c93317a568a
+> --- /dev/null
+> +++ b/rust/kernel/block.rs
+> @@ -0,0 +1,5 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Types for working with the block layer
+> +
+> +pub mod mq;
+> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+> new file mode 100644
+> index 000000000000..5b40f6a73c0f
+> --- /dev/null
+> +++ b/rust/kernel/block/mq.rs
+> @@ -0,0 +1,15 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! This module provides types for implementing drivers that interface t=
+he
+> +//! blk-mq subsystem
+> +
+> +mod gen_disk;
+> +mod operations;
+> +mod raw_writer;
+> +mod request;
+> +mod tag_set;
+> +
+> +pub use gen_disk::GenDisk;
+> +pub use operations::Operations;
+> +pub use request::Request;
+> +pub use tag_set::TagSet;
+> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_=
+disk.rs
+> new file mode 100644
+> index 000000000000..50496af15bbf
+> --- /dev/null
+> +++ b/rust/kernel/block/mq/gen_disk.rs
+> @@ -0,0 +1,133 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! GenDisk abstraction
+> +//!
+> +//! C header: [`include/linux/blkdev.h`](../../include/linux/blkdev.h)
+> +//! C header: [`include/linux/blk_mq.h`](../../include/linux/blk_mq.h)
+> +
+> +use crate::block::mq::{raw_writer::RawWriter, Operations, TagSet};
+> +use crate::{
+> +    bindings, error::from_err_ptr, error::Result, sync::Arc, types::Fore=
+ignOwnable,
+> +    types::ScopeGuard,
+> +};
+> +use core::fmt::{self, Write};
+> +
+> +/// A generic block device
+> +///
+> +/// # Invariants
+> +///
+> +///  - `gendisk` must always point to an initialized and valid `struct g=
+endisk`.
+> +pub struct GenDisk<T: Operations> {
+> +    _tagset: Arc<TagSet<T>>,
+> +    gendisk: *mut bindings::gendisk,
+
+Why are these two fields not embedded? Shouldn't the user decide where
+to allocate?
+
+> +}
+> +
+> +// SAFETY: `GenDisk` is an owned pointer to a `struct gendisk` and an `A=
+rc` to a
+> +// `TagSet` It is safe to send this to other threads as long as T is Sen=
+d.
+> +unsafe impl<T: Operations + Send> Send for GenDisk<T> {}
+> +
+> +impl<T: Operations> GenDisk<T> {
+> +    /// Try to create a new `GenDisk`
+> +    pub fn try_new(tagset: Arc<TagSet<T>>, queue_data: T::QueueData) -> =
+Result<Self> {
+> +        let data =3D queue_data.into_foreign();
+> +        let recover_data =3D ScopeGuard::new(|| {
+> +            // SAFETY: T::QueueData was created by the call to `into_for=
+eign()` above
+> +            unsafe { T::QueueData::from_foreign(data) };
+> +        });
+> +
+> +        let lock_class_key =3D crate::sync::LockClassKey::new();
+> +
+> +        // SAFETY: `tagset.raw_tag_set()` points to a valid and initiali=
+zed tag set
+> +        let gendisk =3D from_err_ptr(unsafe {
+> +            bindings::__blk_mq_alloc_disk(tagset.raw_tag_set(), data as =
+_, lock_class_key.as_ptr())
+
+Avoid `as _` casts.
+
+> +        })?;
+> +
+> +        const TABLE: bindings::block_device_operations =3D bindings::blo=
+ck_device_operations {
+> +            submit_bio: None,
+> +            open: None,
+> +            release: None,
+> +            ioctl: None,
+> +            compat_ioctl: None,
+> +            check_events: None,
+> +            unlock_native_capacity: None,
+> +            getgeo: None,
+> +            set_read_only: None,
+> +            swap_slot_free_notify: None,
+> +            report_zones: None,
+> +            devnode: None,
+> +            alternative_gpt_sector: None,
+> +            get_unique_id: None,
+> +            owner: core::ptr::null_mut(),
+> +            pr_ops: core::ptr::null_mut(),
+> +            free_disk: None,
+> +            poll_bio: None,
+> +        };
+> +
+> +        // SAFETY: gendisk is a valid pointer as we initialized it above
+> +        unsafe { (*gendisk).fops =3D &TABLE };
+> +
+> +        recover_data.dismiss();
+> +        Ok(Self {
+> +            _tagset: tagset,
+> +            gendisk,
+> +        })
+> +    }
+> +
+> +    /// Set the name of the device
+> +    pub fn set_name(&self, args: fmt::Arguments<'_>) -> Result {
+> +        let mut raw_writer =3D RawWriter::from_array(unsafe { &mut (*sel=
+f.gendisk).disk_name });
+
+Missing `SAFETY` also see below.
+
+> +        raw_writer.write_fmt(args)?;
+> +        raw_writer.write_char('\0')?;
+> +        Ok(())
+> +    }
+> +
+> +    /// Register the device with the kernel. When this function return, =
+the
+> +    /// device is accessible from VFS. The kernel may issue reads to the=
+ device
+> +    /// during registration to discover partition infomation.
+> +    pub fn add(&self) -> Result {
+> +        crate::error::to_result(unsafe {
+> +            bindings::device_add_disk(core::ptr::null_mut(), self.gendis=
+k, core::ptr::null_mut())
+> +        })
+> +    }
+> +
+> +    /// Call to tell the block layer the capcacity of the device
+> +    pub fn set_capacity(&self, sectors: u64) {
+> +        unsafe { bindings::set_capacity(self.gendisk, sectors) };
+> +    }
+> +
+> +    /// Set the logical block size of the device
+> +    pub fn set_queue_logical_block_size(&self, size: u32) {
+> +        unsafe { bindings::blk_queue_logical_block_size((*self.gendisk).=
+queue, size) };
+> +    }
+> +
+> +    /// Set the physical block size of the device
+
+What does this *do*? I do not think the doc string gives any meaningful
+information not present in the function name (this might just be,
+because I have no idea of what this is and anyone with just a little
+more knowledge would know, but I still wanted to mention it).
+
+> +    pub fn set_queue_physical_block_size(&self, size: u32) {
+> +        unsafe { bindings::blk_queue_physical_block_size((*self.gendisk)=
+.queue, size) };
+> +    }
+> +
+> +    /// Set the rotational media attribute for the device
+> +    pub fn set_rotational(&self, rotational: bool) {
+> +        if !rotational {
+> +            unsafe {
+> +                bindings::blk_queue_flag_set(bindings::QUEUE_FLAG_NONROT=
+, (*self.gendisk).queue)
+> +            };
+> +        } else {
+> +            unsafe {
+> +                bindings::blk_queue_flag_clear(bindings::QUEUE_FLAG_NONR=
+OT, (*self.gendisk).queue)
+> +            };
+> +        }
+> +    }
+> +}
+> +
+> +impl<T: Operations> Drop for GenDisk<T> {
+> +    fn drop(&mut self) {
+> +        let queue_data =3D unsafe { (*(*self.gendisk).queue).queuedata }=
+;
+> +
+> +        unsafe { bindings::del_gendisk(self.gendisk) };
+> +
+> +        // SAFETY: `queue.queuedata` was created by `GenDisk::try_new()`=
+ with a
+> +        // call to `ForeignOwnable::into_pointer()` to create `queuedata=
+`.
+> +        // `ForeignOwnable::from_foreign()` is only called here.
+> +        let _queue_data =3D unsafe { T::QueueData::from_foreign(queue_da=
+ta) };
+> +    }
+> +}
+> diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/op=
+erations.rs
+> new file mode 100644
+> index 000000000000..fb1ab707d1f0
+> --- /dev/null
+> +++ b/rust/kernel/block/mq/operations.rs
+> @@ -0,0 +1,260 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! This module provides an interface for blk-mq drivers to implement.
+> +//!
+> +//! C header: [`include/linux/blk-mq.h`](../../include/linux/blk-mq.h)
+> +
+> +use crate::{
+> +    bindings,
+> +    block::mq::{tag_set::TagSetRef, Request},
+> +    error::{from_result, Result},
+> +    types::ForeignOwnable,
+> +};
+> +use core::{marker::PhantomData, pin::Pin};
+> +
+> +/// Implement this trait to interface blk-mq as block devices
+> +#[macros::vtable]
+> +pub trait Operations: Sized {
+
+Is this trait really safe? Are there **no** requirements for e.g.
+`QueueData`? So could I use `Box<()>`?
+
+> +    /// Data associated with a request. This data is located next to the=
+ request
+> +    /// structure.
+> +    type RequestData;
+> +
+> +    /// Data associated with the `struct request_queue` that is allocate=
+d for
+> +    /// the `GenDisk` associated with this `Operations` implementation.
+> +    type QueueData: ForeignOwnable;
+> +
+> +    /// Data associated with a dispatch queue. This is stored as a point=
+er in
+> +    /// `struct blk_mq_hw_ctx`.
+> +    type HwData: ForeignOwnable;
+> +
+> +    /// Data associated with a tag set. This is stored as a pointer in `=
+struct
+> +    /// blk_mq_tag_set`.
+> +    type TagSetData: ForeignOwnable;
+> +
+> +    /// Called by the kernel to allocate a new `RequestData`. The struct=
+ure will
+> +    /// eventually be pinned, so defer initialization to `init_request_d=
+ata()`
+> +    fn new_request_data(
+> +        _tagset_data: <Self::TagSetData as ForeignOwnable>::Borrowed<'_>=
+,
+> +    ) -> Result<Self::RequestData>;
+> +
+> +    /// Called by the kernel to initialize a previously allocated `Reque=
+stData`
+> +    fn init_request_data(
+> +        _tagset_data: <Self::TagSetData as ForeignOwnable>::Borrowed<'_>=
+,
+> +        _data: Pin<&mut Self::RequestData>,
+> +    ) -> Result {
+> +        Ok(())
+> +    }
+> +
+> +    /// Called by the kernel to queue a request with the driver. If `is_=
+last` is
+> +    /// `false`, the driver is allowed to defer commiting the request.
+> +    fn queue_rq(
+> +        hw_data: <Self::HwData as ForeignOwnable>::Borrowed<'_>,
+> +        queue_data: <Self::QueueData as ForeignOwnable>::Borrowed<'_>,
+> +        rq: &Request<Self>,
+> +        is_last: bool,
+> +    ) -> Result;
+> +
+> +    /// Called by the kernel to indicate that queued requests should be =
+submitted
+> +    fn commit_rqs(
+> +        hw_data: <Self::HwData as ForeignOwnable>::Borrowed<'_>,
+> +        queue_data: <Self::QueueData as ForeignOwnable>::Borrowed<'_>,
+> +    );
+> +
+> +    /// Called by the kernel when the request is completed
+> +    fn complete(_rq: &Request<Self>);
+> +
+> +    /// Called by the kernel to allocate and initialize a driver specifi=
+c hardware context data
+> +    fn init_hctx(
+> +        tagset_data: <Self::TagSetData as ForeignOwnable>::Borrowed<'_>,
+> +        hctx_idx: u32,
+> +    ) -> Result<Self::HwData>;
+> +
+> +    /// Called by the kernel to poll the device for completed requests. =
+Only used for poll queues.
+> +    fn poll(_hw_data: <Self::HwData as ForeignOwnable>::Borrowed<'_>) ->=
+ i32 {
+> +        unreachable!()
+
+Why are these implemented this way? Should this really panic? Maybe
+return an error? Why `i32` as the return type? If it can error it should
+be `Result<u32>`.
+
+> +    }
+> +
+> +    /// Called by the kernel to map submission queues to CPU cores.
+> +    fn map_queues(_tag_set: &TagSetRef) {
+> +        unreachable!()
+> +    }
+> +
+> +    // There is no need for exit_request() because `drop` will be called=
+.
+> +}
+> +
+> +pub(crate) struct OperationsVtable<T: Operations>(PhantomData<T>);
+> +
+> +impl<T: Operations> OperationsVtable<T> {
+> +    // # Safety
+> +    //
+> +    // The caller of this function must ensure that `hctx` and `bd` are =
+valid
+> +    // and initialized. The pointees must outlive this function. Further
+> +    // `hctx->driver_data` must be a pointer created by a call to
+> +    // `Self::init_hctx_callback()` and the pointee must outlive this fu=
+nction.
+> +    // This function must not be called with a `hctx` for which
+> +    // `Self::exit_hctx_callback()` has been called.
+> +    unsafe extern "C" fn queue_rq_callback(
+> +        hctx: *mut bindings::blk_mq_hw_ctx,
+> +        bd: *const bindings::blk_mq_queue_data,
+> +    ) -> bindings::blk_status_t {
+> +        // SAFETY: `bd` is valid as required by the safety requirement f=
+or this function.
+> +        let rq =3D unsafe { (*bd).rq };
+> +
+> +        // SAFETY: The safety requirement for this function ensure that
+> +        // `(*hctx).driver_data` was returned by a call to
+> +        // `Self::init_hctx_callback()`. That function uses
+> +        // `PointerWrapper::into_pointer()` to create `driver_data`. Fur=
+ther,
+> +        // the returned value does not outlive this function and
+> +        // `from_foreign()` is not called until `Self::exit_hctx_callbac=
+k()` is
+> +        // called. By the safety requirement of this function and contra=
+ct with
+> +        // the `blk-mq` API, `queue_rq_callback()` will not be called af=
+ter that
+> +        // point.
+
+This safety section and the others here are rather long and mostly
+repeat themselves. Is it possible to put this in its own module and
+explain the safety invariants in that module and then in these safety
+sections just refer to some labels from that section?
+
+I think we should discuss this in our next meeting.
+
+> +        let hw_data =3D unsafe { T::HwData::borrow((*hctx).driver_data) =
+};
+> +
+> +        // SAFETY: `hctx` is valid as required by this function.
+> +        let queue_data =3D unsafe { (*(*hctx).queue).queuedata };
+> +
+> +        // SAFETY: `queue.queuedata` was created by `GenDisk::try_new()`=
+ with a
+> +        // call to `ForeignOwnable::into_pointer()` to create `queuedata=
+`.
+> +        // `ForeignOwnable::from_foreign()` is only called when the tags=
+et is
+> +        // dropped, which happens after we are dropped.
+> +        let queue_data =3D unsafe { T::QueueData::borrow(queue_data) };
+> +
+> +        // SAFETY: `bd` is valid as required by the safety requirement f=
+or this function.
+> +        let ret =3D T::queue_rq(
+> +            hw_data,
+> +            queue_data,
+> +            &unsafe { Request::from_ptr(rq) },
+> +            unsafe { (*bd).last },
+> +        );
+> +        if let Err(e) =3D ret {
+> +            e.to_blk_status()
+> +        } else {
+> +            bindings::BLK_STS_OK as _
+> +        }
+> +    }
+> +
+> +    unsafe extern "C" fn commit_rqs_callback(hctx: *mut bindings::blk_mq=
+_hw_ctx) {
+> +        let hw_data =3D unsafe { T::HwData::borrow((*hctx).driver_data) =
+};
+> +
+> +        // SAFETY: `hctx` is valid as required by this function.
+> +        let queue_data =3D unsafe { (*(*hctx).queue).queuedata };
+> +
+> +        // SAFETY: `queue.queuedata` was created by `GenDisk::try_new()`=
+ with a
+> +        // call to `ForeignOwnable::into_pointer()` to create `queuedata=
+`.
+> +        // `ForeignOwnable::from_foreign()` is only called when the tags=
+et is
+> +        // dropped, which happens after we are dropped.
+> +        let queue_data =3D unsafe { T::QueueData::borrow(queue_data) };
+> +        T::commit_rqs(hw_data, queue_data)
+> +    }
+> +
+> +    unsafe extern "C" fn complete_callback(rq: *mut bindings::request) {
+> +        T::complete(&unsafe { Request::from_ptr(rq) });
+> +    }
+> +
+> +    unsafe extern "C" fn poll_callback(
+> +        hctx: *mut bindings::blk_mq_hw_ctx,
+> +        _iob: *mut bindings::io_comp_batch,
+> +    ) -> core::ffi::c_int {
+> +        let hw_data =3D unsafe { T::HwData::borrow((*hctx).driver_data) =
+};
+> +        T::poll(hw_data)
+> +    }
+> +
+> +    unsafe extern "C" fn init_hctx_callback(
+> +        hctx: *mut bindings::blk_mq_hw_ctx,
+> +        tagset_data: *mut core::ffi::c_void,
+> +        hctx_idx: core::ffi::c_uint,
+> +    ) -> core::ffi::c_int {
+> +        from_result(|| {
+> +            let tagset_data =3D unsafe { T::TagSetData::borrow(tagset_da=
+ta) };
+> +            let data =3D T::init_hctx(tagset_data, hctx_idx)?;
+> +            unsafe { (*hctx).driver_data =3D data.into_foreign() as _ };
+> +            Ok(0)
+> +        })
+> +    }
+> +
+> +    unsafe extern "C" fn exit_hctx_callback(
+> +        hctx: *mut bindings::blk_mq_hw_ctx,
+> +        _hctx_idx: core::ffi::c_uint,
+> +    ) {
+> +        let ptr =3D unsafe { (*hctx).driver_data };
+> +        unsafe { T::HwData::from_foreign(ptr) };
+> +    }
+> +
+> +    unsafe extern "C" fn init_request_callback(
+> +        set: *mut bindings::blk_mq_tag_set,
+> +        rq: *mut bindings::request,
+> +        _hctx_idx: core::ffi::c_uint,
+> +        _numa_node: core::ffi::c_uint,
+> +    ) -> core::ffi::c_int {
+> +        from_result(|| {
+> +            // SAFETY: The tagset invariants guarantee that all requests=
+ are allocated with extra memory
+> +            // for the request data.
+> +            let pdu =3D unsafe { bindings::blk_mq_rq_to_pdu(rq) } as *mu=
+t T::RequestData;
+> +            let tagset_data =3D unsafe { T::TagSetData::borrow((*set).dr=
+iver_data) };
+> +
+> +            let v =3D T::new_request_data(tagset_data)?;
+> +
+> +            // SAFETY: `pdu` memory is valid, as it was allocated by the=
+ caller.
+> +            unsafe { pdu.write(v) };
+> +
+> +            let tagset_data =3D unsafe { T::TagSetData::borrow((*set).dr=
+iver_data) };
+> +            // SAFETY: `pdu` memory is valid and properly initialised.
+> +            T::init_request_data(tagset_data, unsafe { Pin::new_unchecke=
+d(&mut *pdu) })?;
+> +
+> +            Ok(0)
+> +        })
+> +    }
+> +
+> +    unsafe extern "C" fn exit_request_callback(
+> +        _set: *mut bindings::blk_mq_tag_set,
+> +        rq: *mut bindings::request,
+> +        _hctx_idx: core::ffi::c_uint,
+> +    ) {
+> +        // SAFETY: The tagset invariants guarantee that all requests are=
+ allocated with extra memory
+> +        // for the request data.
+> +        let pdu =3D unsafe { bindings::blk_mq_rq_to_pdu(rq) } as *mut T:=
+:RequestData;
+> +
+> +        // SAFETY: `pdu` is valid for read and write and is properly ini=
+tialised.
+> +        unsafe { core::ptr::drop_in_place(pdu) };
+> +    }
+> +
+> +    unsafe extern "C" fn map_queues_callback(tag_set_ptr: *mut bindings:=
+:blk_mq_tag_set) {
+> +        let tag_set =3D unsafe { TagSetRef::from_ptr(tag_set_ptr) };
+> +        T::map_queues(&tag_set);
+> +    }
+> +
+> +    const VTABLE: bindings::blk_mq_ops =3D bindings::blk_mq_ops {
+> +        queue_rq: Some(Self::queue_rq_callback),
+> +        queue_rqs: None,
+> +        commit_rqs: Some(Self::commit_rqs_callback),
+> +        get_budget: None,
+> +        put_budget: None,
+> +        set_rq_budget_token: None,
+> +        get_rq_budget_token: None,
+> +        timeout: None,
+> +        poll: if T::HAS_POLL {
+> +            Some(Self::poll_callback)
+> +        } else {
+> +            None
+> +        },
+> +        complete: Some(Self::complete_callback),
+> +        init_hctx: Some(Self::init_hctx_callback),
+> +        exit_hctx: Some(Self::exit_hctx_callback),
+> +        init_request: Some(Self::init_request_callback),
+> +        exit_request: Some(Self::exit_request_callback),
+> +        cleanup_rq: None,
+> +        busy: None,
+> +        map_queues: if T::HAS_MAP_QUEUES {
+> +            Some(Self::map_queues_callback)
+> +        } else {
+> +            None
+> +        },
+> +        #[cfg(CONFIG_BLK_DEBUG_FS)]
+> +        show_rq: None,
+> +    };
+> +
+> +    pub(crate) const unsafe fn build() -> &'static bindings::blk_mq_ops =
+{
+> +        &Self::VTABLE
+> +    }
+
+Why is this function `unsafe`?
+
+> +}
+
+Some `# Safety` and `SAFETY` missing in this hunk.
+
+> diff --git a/rust/kernel/block/mq/raw_writer.rs b/rust/kernel/block/mq/ra=
+w_writer.rs
+> new file mode 100644
+> index 000000000000..25c16ee0b1f7
+> --- /dev/null
+> +++ b/rust/kernel/block/mq/raw_writer.rs
+> @@ -0,0 +1,30 @@
+> +use core::fmt::{self, Write};
+> +
+> +pub(crate) struct RawWriter {
+> +    ptr: *mut u8,
+> +    len: usize,
+> +}
+> +
+> +impl RawWriter {
+> +    unsafe fn new(ptr: *mut u8, len: usize) -> Self {
+> +        Self { ptr, len }
+> +    }
+> +
+> +    pub(crate) fn from_array<const N: usize>(a: &mut [core::ffi::c_char;=
+ N]) -> Self {
+> +        unsafe { Self::new(&mut a[0] as *mut _ as _, N) }
+> +    }
+
+This function needs to be `unsafe`, because it never captures the
+lifetime of `a`. I can write:
+    let mut a =3D Box::new([0; 10]);
+    let mut writer =3D RawWriter::from_array(&mut *a);
+    drop(a);
+    writer.write_str("Abc"); // UAF
+Alternatively add a lifetime to `RawWriter`.
+
+> +}
+> +
+> +impl Write for RawWriter {
+> +    fn write_str(&mut self, s: &str) -> fmt::Result {
+> +        let bytes =3D s.as_bytes();
+> +        let len =3D bytes.len();
+> +        if len > self.len {
+> +            return Err(fmt::Error);
+> +        }
+> +        unsafe { core::ptr::copy_nonoverlapping(&bytes[0], self.ptr, len=
+) };
+> +        self.ptr =3D unsafe { self.ptr.add(len) };
+> +        self.len -=3D len;
+> +        Ok(())
+> +    }
+> +}
+> diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/reque=
+st.rs
+> new file mode 100644
+> index 000000000000..e95ae3fd71ad
+> --- /dev/null
+> +++ b/rust/kernel/block/mq/request.rs
+> @@ -0,0 +1,71 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! This module provides a wrapper for the C `struct request` type.
+> +//!
+> +//! C header: [`include/linux/blk-mq.h`](../../include/linux/blk-mq.h)
+> +
+> +use crate::{
+> +    bindings,
+> +    block::mq::Operations,
+> +    error::{Error, Result},
+> +};
+> +use core::marker::PhantomData;
+> +
+> +/// A wrapper around a blk-mq `struct request`. This represents an IO re=
+quest.
+> +pub struct Request<T: Operations> {
+> +    ptr: *mut bindings::request,
+
+Why is this not embedded?
+
+> +    _p: PhantomData<T>,
+> +}
+> +
+> +impl<T: Operations> Request<T> {
+> +    pub(crate) unsafe fn from_ptr(ptr: *mut bindings::request) -> Self {
+> +        Self {
+> +            ptr,
+> +            _p: PhantomData,
+> +        }
+> +    }
+> +
+> +    /// Get the command identifier for the request
+> +    pub fn command(&self) -> u32 {
+> +        unsafe { (*self.ptr).cmd_flags & ((1 << bindings::REQ_OP_BITS) -=
+ 1) }
+> +    }
+> +
+> +    /// Call this to indicate to the kernel that the request has been is=
+sued by the driver
+> +    pub fn start(&self) {
+> +        unsafe { bindings::blk_mq_start_request(self.ptr) };
+> +    }
+> +
+> +    /// Call this to indicate to the kernel that the request has been co=
+mpleted without errors
+> +    // TODO: Consume rq so that we can't use it after ending it?
+> +    pub fn end_ok(&self) {
+> +        unsafe { bindings::blk_mq_end_request(self.ptr, bindings::BLK_ST=
+S_OK as _) };
+> +    }
+> +
+> +    /// Call this to indicate to the kernel that the request completed w=
+ith an error
+> +    pub fn end_err(&self, err: Error) {
+> +        unsafe { bindings::blk_mq_end_request(self.ptr, err.to_blk_statu=
+s()) };
+> +    }
+> +
+> +    /// Call this to indicate that the request completed with the status=
+ indicated by `status`
+> +    pub fn end(&self, status: Result) {
+> +        if let Err(e) =3D status {
+> +            self.end_err(e);
+> +        } else {
+> +            self.end_ok();
+> +        }
+> +    }
+> +
+> +    /// Call this to schedule defered completion of the request
+> +    // TODO: Consume rq so that we can't use it after completing it?
+> +    pub fn complete(&self) {
+> +        if !unsafe { bindings::blk_mq_complete_request_remote(self.ptr) =
+} {
+> +            T::complete(&unsafe { Self::from_ptr(self.ptr) });
+> +        }
+> +    }
+> +
+> +    /// Get the target sector for the request
+> +    #[inline(always)]
+
+Why is this `inline(always)`?
+
+> +    pub fn sector(&self) -> usize {
+> +        unsafe { (*self.ptr).__sector as usize }
+> +    }
+> +}
+> diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_s=
+et.rs
+> new file mode 100644
+> index 000000000000..d122db7f6d0e
+> --- /dev/null
+> +++ b/rust/kernel/block/mq/tag_set.rs
+> @@ -0,0 +1,92 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! This module provides the `TagSet` struct to wrap the C `struct blk_m=
+q_tag_set`.
+> +//!
+> +//! C header: [`include/linux/blk-mq.h`](../../include/linux/blk-mq.h)
+> +
+> +use crate::{
+> +    bindings,
+> +    block::mq::{operations::OperationsVtable, Operations},
+> +    error::{Error, Result},
+> +    sync::Arc,
+> +    types::ForeignOwnable,
+> +};
+> +use core::{cell::UnsafeCell, convert::TryInto, marker::PhantomData};
+> +
+> +/// A wrapper for the C `struct blk_mq_tag_set`
+> +pub struct TagSet<T: Operations> {
+> +    inner: UnsafeCell<bindings::blk_mq_tag_set>,
+> +    _p: PhantomData<T>,
+> +}
+> +
+> +impl<T: Operations> TagSet<T> {
+> +    /// Try to create a new tag set
+> +    pub fn try_new(
+> +        nr_hw_queues: u32,
+> +        tagset_data: T::TagSetData,
+> +        num_tags: u32,
+> +        num_maps: u32,
+> +    ) -> Result<Arc<Self>> {
+
+Why force the users to use `Arc`?
+
+> +        let tagset =3D Arc::try_new(Self {
+> +            inner: UnsafeCell::new(bindings::blk_mq_tag_set::default()),
+> +            _p: PhantomData,
+> +        })?;
+> +
+> +        // SAFETY: We just allocated `tagset`, we know this is the only =
+reference to it.
+> +        let inner =3D unsafe { &mut *tagset.inner.get() };
+> +
+> +        inner.ops =3D unsafe { OperationsVtable::<T>::build() };
+> +        inner.nr_hw_queues =3D nr_hw_queues;
+> +        inner.timeout =3D 0; // 0 means default which is 30 * HZ in C
+> +        inner.numa_node =3D bindings::NUMA_NO_NODE;
+> +        inner.queue_depth =3D num_tags;
+> +        inner.cmd_size =3D core::mem::size_of::<T::RequestData>().try_in=
+to()?;
+> +        inner.flags =3D bindings::BLK_MQ_F_SHOULD_MERGE;
+> +        inner.driver_data =3D tagset_data.into_foreign() as _;
+> +        inner.nr_maps =3D num_maps;
+> +
+> +        // SAFETY: `inner` points to valid and initialised memory.
+> +        let ret =3D unsafe { bindings::blk_mq_alloc_tag_set(inner) };
+> +        if ret < 0 {
+> +            // SAFETY: We created `driver_data` above with `into_foreign=
+`
+> +            unsafe { T::TagSetData::from_foreign(inner.driver_data) };
+> +            return Err(Error::from_errno(ret));
+> +        }
+> +
+> +        Ok(tagset)
+> +    }
+> +
+> +    /// Return the pointer to the wrapped `struct blk_mq_tag_set`
+> +    pub(crate) fn raw_tag_set(&self) -> *mut bindings::blk_mq_tag_set {
+> +        self.inner.get()
+> +    }
+> +}
+> +
+> +impl<T: Operations> Drop for TagSet<T> {
+> +    fn drop(&mut self) {
+> +        let tagset_data =3D unsafe { (*self.inner.get()).driver_data };
+> +
+> +        // SAFETY: `inner` is valid and has been properly initialised du=
+ring construction.
+> +        unsafe { bindings::blk_mq_free_tag_set(self.inner.get()) };
+> +
+> +        // SAFETY: `tagset_data` was created by a call to
+> +        // `ForeignOwnable::into_foreign` in `TagSet::try_new()`
+> +        unsafe { T::TagSetData::from_foreign(tagset_data) };
+> +    }
+> +}
+> +
+> +/// A tag set reference. Used to control lifetime and prevent drop of Ta=
+gSet references passed to
+> +/// `Operations::map_queues()`
+> +pub struct TagSetRef {
+> +    ptr: *mut bindings::blk_mq_tag_set,
+> +}
+> +
+> +impl TagSetRef {
+> +    pub(crate) unsafe fn from_ptr(tagset: *mut bindings::blk_mq_tag_set)=
+ -> Self {
+> +        Self { ptr: tagset }
+> +    }
+> +
+> +    pub fn ptr(&self) -> *mut bindings::blk_mq_tag_set {
+> +        self.ptr
+> +    }
+> +}
+
+This is a **very** thin abstraction, why is it needed?
+
 > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 5f4114b30b94..de4fa8640f29 100644
+> index 5f4114b30b94..421fef677321 100644
 > --- a/rust/kernel/error.rs
 > +++ b/rust/kernel/error.rs
-> @@ -14,6 +14,7 @@ use core::num::TryFromIntError;
->  use core::str::Utf8Error;
->  
->  /// Contains the C-compatible error codes.
-> +#[rustfmt::skip]
->  pub mod code {
->      macro_rules! declare_err {
->          ($err:tt $(,)? $($doc:expr),+) => {
-> @@ -58,6 +59,25 @@ pub mod code {
->      declare_err!(EPIPE, "Broken pipe.");
->      declare_err!(EDOM, "Math argument out of domain of func.");
->      declare_err!(ERANGE, "Math result not representable.");
-> +    declare_err!(ERESTARTSYS, "Restart the system call.");
-> +    declare_err!(ERESTARTNOINTR, "System call was interrupted by a signal and will be restarted.");
-> +    declare_err!(ERESTARTNOHAND, "Restart if no handler.");
-> +    declare_err!(ENOIOCTLCMD, "No ioctl command.");
-> +    declare_err!(ERESTART_RESTARTBLOCK, "Restart by calling sys_restart_syscall.");
-> +    declare_err!(EPROBE_DEFER, "Driver requests probe retry.");
-> +    declare_err!(EOPENSTALE, "Open found a stale dentry.");
-> +    declare_err!(ENOPARAM, "Parameter not supported.");
-> +    declare_err!(EBADHANDLE, "Illegal NFS file handle.");
-> +    declare_err!(ENOTSYNC, "Update synchronization mismatch.");
-> +    declare_err!(EBADCOOKIE, "Cookie is stale.");
-> +    declare_err!(ENOTSUPP, "Operation is not supported.");
-> +    declare_err!(ETOOSMALL, "Buffer or request is too small.");
-> +    declare_err!(ESERVERFAULT, "An untranslatable error occurred.");
-> +    declare_err!(EBADTYPE, "Type not supported by server.");
-> +    declare_err!(EJUKEBOX, "Request initiated, but will not complete before timeout.");
-> +    declare_err!(EIOCBQUEUED, "iocb queued, will get completion event.");
-> +    declare_err!(ERECALLCONFLICT, "Conflict with recalled state.");
-> +    declare_err!(ENOGRACE, "NFS file lock reclaim refused.");
->  }
->  
->  /// Generic integer kernel error.
-> 
-> base-commit: ea76e08f4d901a450619831a255e9e0a4c0ed162
+> @@ -107,6 +107,10 @@ impl Error {
+>          self.0
+>      }
+>=20
+> +    pub(crate) fn to_blk_status(self) -> bindings::blk_status_t {
+> +        unsafe { bindings::errno_to_blk_status(self.0) }
+> +    }
+> +
+>      /// Returns the error encoded as a pointer.
+>      #[allow(dead_code)]
+>      pub(crate) fn to_ptr<T>(self) -> *mut T {
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 8bef6686504b..cd798d12d97c 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -34,6 +34,7 @@ extern crate self as kernel;
+>  #[cfg(not(test))]
+>  #[cfg(not(testlib))]
+>  mod allocator;
+> +pub mod block;
+>  mod build_assert;
+>  pub mod error;
+>  pub mod init;
+> --
+> 2.40.0
+>=20
 
+--
+Cheers,
+Benno
