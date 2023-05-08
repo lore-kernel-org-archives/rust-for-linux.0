@@ -2,47 +2,47 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D0EAC77B75
-	for <rust-for-linux@archiver.kernel.org>; Mon,  8 May 2023 11:42:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DDA5C77B73
+	for <rust-for-linux@archiver.kernel.org>; Mon,  8 May 2023 11:47:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236262AbjEHLmo (ORCPT
+        id S236245AbjEHLrY (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 8 May 2023 07:42:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38676 "EHLO
+        Mon, 8 May 2023 07:47:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236168AbjEHLm1 (ORCPT
+        with ESMTP id S236264AbjEHLrL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 8 May 2023 07:42:27 -0400
-Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on0705.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe14::705])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4CDE423B0;
-        Mon,  8 May 2023 04:41:44 -0700 (PDT)
+        Mon, 8 May 2023 07:47:11 -0400
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2129.outbound.protection.outlook.com [40.107.10.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF6B106FF;
+        Mon,  8 May 2023 04:47:05 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BdXzbmXgXYIcXa6i8vd9t5ldBrgDvUyYJxQFDUsX1jcB3og9V35PN6BlW7lDJ2G0VvTLqpNSgMqhInHibQ5ltu/Tm9KWcwJdtuY1d7Ry34xwm1YGOppyurMUtk7W2qmbk9zBL4IAOzB48Yo5+Tybi17lR5YTqrto+szXMn7fWcHFgydappC2uDLP1nkCgLlOnr0vHyPI/m2rW67tumuPazyScyyTyB7ArjsHLSHo/D8eX5GzpqpVu9bTBuX2pXh8jXiiheRCwBTGTqAEcU5/NSDcpFtfHVev2AHdFmWIohnBpCDn6YaTqkvIPCfGzMLllUqV1F5DK63xFnyTz687cw==
+ b=Ij+ykIkuqPeeYmPz04BKlVSHBQ/Z/o2ZcFe21zl+bO4topbhaTIGdKOCZv3UGG1JuoG07oR46JpFWdnUn+BfyAP2JjYPq8/RHVeGGVPsVtkhNTK4nmKBroZJcleiECtpthDsG0iVTnce/oz0mTNQR0SGZ3YC1t4IOzim6UnW9fELpR0D+wGZIhcqbfFBsc1/BzFkJ7aqFsPGuLqURy7zWA2nGvNnvzje6DlrCREZdMl9zZumb16l7KuqIEMZAVRvGTGdS/ek4Vb8Qz1CZlr+4a9HhVNSFsljbsid/3SjGA3jEIbzmbqm9O5SBKGU8w4g/sC9QJRKpmrC5FzdiPGlOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+a2xSRtgTt/BUBnFViuF9Gwr6iyfiwiFr4vZ2GGl8Jk=;
- b=DzqD5I2oMr3TI19Jjk4ecA1ucVaUM3Mzdyv1mqeRrHnsq0ePCHG4HACFL5WXI67VNvh+t1Pk+D6YXk4dYZvYIevxZtmf6ulsgh32paSwPBMDHweanbeDg337iTSBTViAgdzCQ0cPSl7SX3XIwdway+6zFD1/ZbebHbgyJDVVsTCRIZy/AkK9mXczRhz1RxqhQJClx1cF9Rx/EyakumKKTxTpdcUrzHD4G9jF3iT2FiYMYZLgDNRtva6Fa/6ODN7dOYs/Dl3E6FKKCORWfNZZB94yZ3QJPv8/LkISVz2JWrKldvGPEn9Zlg4nLA2PDSMGsbxwQYvAtwSZIiDcdoYJcA==
+ bh=tLdmoJazkcFVVj/WqYmTJ1Hnta7DFL4Whpe8B6rWpfc=;
+ b=lXLS4TxfHInHL7mF3hzBg7lrQUygYefJvy5oueLeV4AoEADNmSE7d9J3pXJIfp55GJJbnzIDT3XD3Qk2bNFW1uY/HS88sraCXIeaWETy/p8ltSLbiAhbfNQK0PUaAycK/t+IImHV0KToRkgNLaOUDD0US8Gt6RFlrA+mfIUZ4D2Kg2lVCEvCPCROgousxeihbci9Qv8fZ5jhkS/8niLenWrusGLwVhNfo0c0e64ZpETiF5GsENDtcvODRisgewhgo8q04KWhqK6eehEr3bbmho7brPUPG1J3nEYly/cFWXXV20rUXRV+xVWSdNy0xuREW9czp1HubkkYlVxNNb3ehQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+a2xSRtgTt/BUBnFViuF9Gwr6iyfiwiFr4vZ2GGl8Jk=;
- b=mkrw3/yiH8V4s0b+umBvmEj7iFpt/rdKpfAENTEfCEMGZAa6kAWBNQUNM9euiEFBtZ+y7+yNNNkIMa+90vCNBkb1+sMWjmbvOE0TQ8XN0eqP3Q1IyWz6xiIWEx083YbSWe9N8mWREZvElfCt2BY1xXSuyJ7SzdUw7YtoS/R+cbk=
+ bh=tLdmoJazkcFVVj/WqYmTJ1Hnta7DFL4Whpe8B6rWpfc=;
+ b=O+fommvO3MftVXJrTCrCXW+K4SeJtzcm2KHRr32OxjjfYgX7zMEjJ3T2aFYog8IymIg6ACYHRXYd3yyd1j3Km8AAe08Kr2Q7Rcfz0fC51TnNmbDaNiInyXWN96JAC5RhgVlxTfgu5TvkwkUJQP9vMN5Kl22WGW4eO0oQ4dFfiWk=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO3P265MB1946.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:10b::12) with
+ by LO0P265MB6996.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2ed::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.17; Mon, 8 May
- 2023 11:41:29 +0000
+ 2023 11:47:03 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1d51:d482:270c:7daf]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1d51:d482:270c:7daf%4]) with mapi id 15.20.6387.017; Mon, 8 May 2023
- 11:41:29 +0000
-Date:   Mon, 8 May 2023 12:41:27 +0100
+ 11:47:03 +0000
+Date:   Mon, 8 May 2023 12:47:01 +0100
 From:   Gary Guo <gary@garyguo.net>
 To:     Alice Ryhl <aliceryhl@google.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
@@ -51,142 +51,132 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>,
         "=?UTF-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-Subject: Re: [PATCH v2] rust: str: add conversion from `CStr` to `CString`
-Message-ID: <20230508124127.77a97c54.gary@garyguo.net>
-In-Reply-To: <20230503141016.683634-1-aliceryhl@google.com>
-References: <20230503141016.683634-1-aliceryhl@google.com>
+Subject: Re: [PATCH v2] rust: error: add missing error codes
+Message-ID: <20230508124701.443ba331.gary@garyguo.net>
+In-Reply-To: <20230504064854.774820-1-aliceryhl@google.com>
+References: <20230504064854.774820-1-aliceryhl@google.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0338.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18c::19) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P265CA0197.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:318::13) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO3P265MB1946:EE_
-X-MS-Office365-Filtering-Correlation-Id: 48f39b23-9d8e-4520-038f-08db4fb929a1
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB6996:EE_
+X-MS-Office365-Filtering-Correlation-Id: d501ed7b-c641-496a-52ad-08db4fb9f0e0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vQYeF+901nNbFEA+4QpgDiKfxicrqy5xkMPqys+YWNkrtcZDrBveUcZwLKPsTiT1c3YKQdUG2rLRYpBhCp5jG3xHQmBmBY4GixAsjQUpapl/91a9FvoTLj/CMBSzSojnKGwHNbzudPr4nQZgE25R9LTjlyvN9bqJtGjhTmSySUB/jdbT4TZrD/uVqQYp6eq3IUrpEKAWod5Rp/1WAetul8oyUIVJcDsF1P89bMbxxjDLbYt4Zcges8eRROC+upeMPoMeBBu6+P+HJxMlLQKnIY/OvNvyCUKeEewuJj8afNrYmfIM7RK+os+a7ir95bSJYMPkeLJiH76URhQoTEOBikusJpi7ZtPbmmabYkoQnBL+5t/AMKqvc0x+208seVmdn4vv0isoMM68J4viTKTK32T5XbG0ANSXcIZk/jURRDnwkwQ24KN2ZixbmTPt5E2cnbm7/aKdRFBNEz1KzA+41qLMnGFiWQxzfVfjor4A/qokBJvcGfveM6HVI0ioqefvQh5EiqfmnShGRg0YoZ0NZ5Eki+R2fnyemy3EZgs+lB7dV9TW745f0PxMLscRN4LFxqxSl2qQpjC7pmU7gXMQqjFgNe+AEqml2Ck13yzxlyE=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(366004)(376002)(39830400003)(396003)(346002)(136003)(451199021)(26005)(6506007)(1076003)(6512007)(6486002)(83380400001)(36756003)(2616005)(38100700002)(86362001)(186003)(54906003)(2906002)(8936002)(8676002)(316002)(41300700001)(478600001)(7416002)(6916009)(4326008)(66476007)(66946007)(5660300002)(66556008)(66899021)(81973001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: h3MxCwuA7FnVPefR0SdEqaDHHbMQJvStZMKyPFlsMYCgU2ZjizarilQHUoiO57PyfcM/dXxz447BQh5aEnzmmpadVXFvnaecpRXQNz65U31KewZ5wZ58wxeSJEBUCTX4u4X9IyhROsKmlr5eP/oULY+2snLLPxTberhd+ajehBWKHpVNJgXh6aTL+7a9XJnnmRdc8v+IqSgWolHY2JWOYAToANA2deNPXXE1Bflb6IHxdC6DbXWOrM/9Kts2K5nDsvWhh7OYNWwo+USL9RbMWGNrhJ9rDsBpIyWUWYr9vUrz4L03gbhgNHmllD0VE2VNFrRb/evBbTLfXTqZ+xNbXqZapsQDbtL3QlZFszqN0vCZGYrF5mU9BPxCMHx9T6eXfAqdcHQK3fgDETcyEHBES0LyaAOIXoLEDMWoxtqT+msh+ARVvowiUbBNstaleA+iTPe+c8ELDXUp3hCxcgZGEZjsmwJPp31ySa6XHMJjQz1KcB+4IbLJpxcbQGVOFIqFS4i/17FwWwsoW3P/bi25RHWNdGdnfT33cgeRaG8jcML/TkwH4qZALC277CLYlLkz
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(366004)(346002)(396003)(136003)(376002)(39830400003)(451199021)(6486002)(6506007)(6512007)(26005)(1076003)(83380400001)(36756003)(2616005)(38100700002)(86362001)(186003)(2906002)(7416002)(54906003)(316002)(8676002)(8936002)(41300700001)(6916009)(4326008)(5660300002)(66946007)(66476007)(66556008)(478600001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XRmzCCYAPJzsamQOzfCAoRCyarx8RxzdHMtCdGfFQDLGgBWDIPg2gzf2UIu8?=
- =?us-ascii?Q?b9JKM4MIRgpcojLR+ljGQGX989igkpMa1Fi3VNkb2pIfsXx8Far9VkF1qkrz?=
- =?us-ascii?Q?psg6H72RYLnZiQVkwcfukPGdT+nP76jXBV6ulSoOt1egHmtM8Qvim/ynBh0o?=
- =?us-ascii?Q?ESQ9CWaagIoRhPMPExfp8EBXbKHsSJNI5BinQYsz/XwXNo18GdOWB7VHGZ6L?=
- =?us-ascii?Q?zjk5w3BP1BroSRaMvaxGCpSJEgbamN+iI0SfoC9x7qA5Zh47OQH+NqSOeSgK?=
- =?us-ascii?Q?ckVILY/tjgobwedCghJfach7KJ2Y+SJV8iDsbbdyuFNvkRlJ8hHLQh/60jjR?=
- =?us-ascii?Q?cWCUgWBffc/s/VqacRU94MJXlU1SdZwOz7HrnnjnaZVmJTd4QbKSRszIL9O/?=
- =?us-ascii?Q?r/xDKVbJnwoBGBABtcBIU0ejjZyRJzkO5BfrRMCgEWthO5mmQaG7Aql0d7+c?=
- =?us-ascii?Q?UVFRHCiVOhTkhlZ850ztHrIZw8HwpWxndMP9fvE5huiT0j2aJ8MA6/LNxk6t?=
- =?us-ascii?Q?NEyqC+r9KY2ng2tItpA2ytYS/oUX5dfoaoyuqHorIXUeUjgCZdki7F/WDOOf?=
- =?us-ascii?Q?kKuSL6VDvMQgu6JMR5urQomSz6aW1NbVP7LdpIKSEnuyivwqqILQdqO4zmw0?=
- =?us-ascii?Q?G9LIwxxKUa9PNWQJigLJYOgPGeTUJeAmU2u5tqB+ZTiMVRBVVbis4lOmexyb?=
- =?us-ascii?Q?9uThfQlJflaQO1aeOmOipEQbffxTTIIC/CuzsQ0t2sN7kJ2JYLPiDMN3CuHV?=
- =?us-ascii?Q?CLWsSAOL63kWFqeNkFCv4vEAr7Sec7aIQ4xIQI8cc8SJC1iCWaIF4dUuYGUT?=
- =?us-ascii?Q?gQp385AmrAf8OECh/srGJ4O7JFqyfAFd3cxEqGv/44MK0HpUHvTWT397hevM?=
- =?us-ascii?Q?dfqdDx2BYlvmtIpg8ldcOYuB/nQ1caScnijBDFxxFbTrzgKTKxHL6bLf5JVW?=
- =?us-ascii?Q?ANxe5dD/P4Nbv/X+fxqNzsVDE4u/2iVaTPh0F8jdCzZgnoYGChPWDl2qxm/z?=
- =?us-ascii?Q?5rgVDUuN7Yr5lvE0CQ5pDMMqQNJG/7PGzsnu7lzA39vyBG4lpBC/gHybo3BQ?=
- =?us-ascii?Q?a+khlFJ+gJ0KEjM2Zxz3cxbQjARyzyiecrrTMgjStlDMv+wSmXM2ouJbW12L?=
- =?us-ascii?Q?p4tvDJJlTAuX0Lc2kcJpK7iOms3KYhJNkAUFnIq9tiFP3cu5I8MRtFFLxkeV?=
- =?us-ascii?Q?8wzRG6NKDyJygXcACKruUwDdjbkqY6rv164/nNrfRsYaca2FEeWFDR2Y8w5o?=
- =?us-ascii?Q?MQ9wiy2PxmhtKwltiZ6QUn84kiFWK++IVrRLb+XxBFNZGPedcCMyMRCPj/Az?=
- =?us-ascii?Q?BaVFFreDKsjxHIbMdz3TsCcDd3uZqp+VJUai6oVBWVqV7oC0HY0wYXLG3Mrd?=
- =?us-ascii?Q?btOrg9/MChL1VnRLwxuImIt4qzL5GDwse0cwfM41h9XvZejD6VPXWCUlTWd4?=
- =?us-ascii?Q?ut2xyHY4FdNwq452U1Zxtw6os5wn1O1YRuuy1f9hMnTGEEiyiYL1C+dNjEHv?=
- =?us-ascii?Q?1zNJj1OB6Vp6PnhRol9wLb1I53WkAGl4SdNSE1DUhrMybQmnrdbiisVsgIN1?=
- =?us-ascii?Q?x6zoDFoJVajy8smvAcuAMb9gi0WKNimTaiISxGoq?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PDi5xTJFu1uLCSUNVgmKyz/zW1wqBcb0BUz9wkmK5AXGG1/6aCTbnp3aWQl+?=
+ =?us-ascii?Q?TRz17YqaUIvn9UEu22kJh506V+Ld4m7zVCgpaYPTGX55dEt7UA4r2RWuCqVn?=
+ =?us-ascii?Q?50G4/lF8bj5Dhqw53y6Ufg7nd1IQIPQixlxcgCN0JQ9P54CXxdxySDnTXOeG?=
+ =?us-ascii?Q?mWUMIUUVHVi6XouGfpDmBZ0dsOJFdnQYB8x4RxNxEoM4wt0inHzhYy0hJhCt?=
+ =?us-ascii?Q?QFZxPBXIzVdQDMG6YXWORPQZ7posBAO1f1HeGl7ms9jwhYyOvJdXqxvsCxIz?=
+ =?us-ascii?Q?nwv/SMjYDpyTQzVY+weolgvjZ/Jjs4PVoTC7DTGeO3hH5Il56E879jt84QD8?=
+ =?us-ascii?Q?AE8bbID/DkJZPiQBOa7km/WcDmfrUtIXx0JFN8WDhObXg/LR0kfW5XKUEXM0?=
+ =?us-ascii?Q?LAA6833UU5XgIW4U2Xcie7dCOaRJluxCF8QkVH1DzAb0eoc2CJzx6nwLIGhI?=
+ =?us-ascii?Q?eF+BY8orNHXWePNsrw8OWu3RSSgqubXi0WuAejZ1bSKhEFAH008OAm/IH7Vf?=
+ =?us-ascii?Q?Z/yPqAf98IvuMD9OVq7VALpslT8nRADd0fvQur3Tc3BPWRDf8w1t97fyYeBZ?=
+ =?us-ascii?Q?ARxDLPtMrB3djTa5JGp3ZpEpzrA+6/kY628We6qwwAfdBbdOgzgqOP7BepIk?=
+ =?us-ascii?Q?lt0+7f1OkGdqltDtWRIhO4W+wsGrQklg5CV3LFlhYJkxADifmG3DIgQAo0e4?=
+ =?us-ascii?Q?N6YEjsglbsNF5mNjn1KZ4F5Y8r/PRAtr56Hor5GLPxSY/mt1u9B6SbxCP0fZ?=
+ =?us-ascii?Q?yi/5jhkDttQTK9kuH/HvloYHLbGI/WqkBRFHb2t8VdGNntSJY/UoxjPOzGqi?=
+ =?us-ascii?Q?Tn6DPuZqVqNVnFPuscn+QNEKrSpLPt66BzWepMWvjSTbxqK+7LAAjN3gqAxb?=
+ =?us-ascii?Q?pK+LH7CWdTpyZ5khdjqV2moWwEbsdlA3zAwDZEYhwZU1p4a8cKX7smp5w5o1?=
+ =?us-ascii?Q?OhzHITmoOILYjSFuILXjhAiapQ7Jn2g6vm35CJlfNKi/aOL8J6yJuwFHU5/k?=
+ =?us-ascii?Q?Fo7AdbIeApgIMLbB/ffSAHNJt4AoO8A7ZCjYJN/PGZdZqo2rSOcIHpANonC4?=
+ =?us-ascii?Q?1wgecbFeHENAj24H2A48niDQWlncdrXgN82VOhm951zb058eSAzfe2ab3yQ5?=
+ =?us-ascii?Q?0VCo+sYCx7GvCWF8QTqKo0o5a3gVFw1rVpG1NvELNnz0KalbEGP7AXxEBomG?=
+ =?us-ascii?Q?3L2HD5QbtAdOREOu82RwpWkaNwTO6tW1b/D6ohmiIIexBy9rVps7WWE1NglA?=
+ =?us-ascii?Q?ykCOfZSMs4tIKAJtTOVZfVSmVU9h7aanSzBTGFWODpqo56abCMmGJdfwEuQz?=
+ =?us-ascii?Q?JAzBsV+p2F4CtM5MvM77DVFt/KDEOrexgzjGBlf5VeoyvhtuXFI+6sl7k0Pd?=
+ =?us-ascii?Q?WfarDukKg1KMilJxVanQQ3O7kF+K60C7hmr9kxsuz6F55BkW2+/VNKi7sMuI?=
+ =?us-ascii?Q?uKzTSbQfpJxRqJ2zlrIpGzJfzkGmYmGsh4FS8viU0ByrOUZdkB+1bsR4ElRw?=
+ =?us-ascii?Q?weC46k02E4cX4fmetmiMMgZRCWU7FBlv4lco4VOo9YbqkyPU1LKWSgOIWIku?=
+ =?us-ascii?Q?huNBsayyuGQxFji81OJsh5FK7qzvO6x6wt5gFP+P?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48f39b23-9d8e-4520-038f-08db4fb929a1
+X-MS-Exchange-CrossTenant-Network-Message-Id: d501ed7b-c641-496a-52ad-08db4fb9f0e0
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 11:41:29.0435
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 11:47:03.3104
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1WUozB95g+2dptlnGx+6IiLZzJgVmMXn24xhb2BxM4TGO2nzUlyChPFbk3xr6VxZ3ok1VPs2oN5L+/j6tS+aIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB1946
+X-MS-Exchange-CrossTenant-UserPrincipalName: O+0YtEdC9a+tzKpns0gq82H1TZAs73p3VjNlMa0Kwwby7blBtAvRegHlNKv+ULnwAKf/PFRSIoC+m9g7WAKK5w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6996
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed,  3 May 2023 14:10:16 +0000
+On Thu,  4 May 2023 06:48:54 +0000
 Alice Ryhl <aliceryhl@google.com> wrote:
 
-> These methods can be used to copy the data in a temporary c string into
-> a separate allocation, so that it can be accessed later even if the
-> original is deallocated.
-> 
-> The API in this change mirrors the standard library API for the `&str`
-> and `String` types. The `ToOwned` trait is not implemented because it
-> assumes that allocations are infallible.
+> This adds the error codes from `include/linux/errno.h` to the list of
+> Rust error constants. These errors were not included originally, because
+> they are not supposed to be visible from userspace. However, they are
+> still a perfectly valid error to use when writing a kernel driver. For
+> example, you might want to return ERESTARTSYS if you receive a signal
+> during a call to `schedule`.
 
-How about add a `TryToOwned` trait to the kernel crate and implement
-that trait for `CStr` instead?
-
-Best,
-Gary
+`include/linux/errno.h` also includes all of `asm/errno.h`,
+which defines EDEADLK - EHWPOISON, which is not included in this patch.
+I feel like these error codes should be added first?
 
 > 
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> This patch inserts an annotation to skip rustfmt on the list of error
+> codes. Without it, three of the error codes are split over several
+> lines, which looks terribly inconsistent.
+> 
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  rust/kernel/str.rs | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
+>  rust/kernel/error.rs | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
 > 
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index b771310fa4a4..f3dc5b24ea55 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -2,6 +2,7 @@
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index 5f4114b30b94..de4fa8640f29 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -14,6 +14,7 @@ use core::num::TryFromIntError;
+>  use core::str::Utf8Error;
 >  
->  //! String representations.
->  
-> +use alloc::alloc::AllocError;
->  use alloc::vec::Vec;
->  use core::fmt::{self, Write};
->  use core::ops::{self, Deref, Index};
-> @@ -199,6 +200,12 @@ impl CStr {
->      pub unsafe fn as_str_unchecked(&self) -> &str {
->          unsafe { core::str::from_utf8_unchecked(self.as_bytes()) }
->      }
-> +
-> +    /// Convert this [`CStr`] into a [`CString`] by allocating memory and
-> +    /// copying over the string data.
-> +    pub fn to_cstring(&self) -> Result<CString, AllocError> {
-> +        CString::try_from(self)
-> +    }
+>  /// Contains the C-compatible error codes.
+> +#[rustfmt::skip]
+>  pub mod code {
+>      macro_rules! declare_err {
+>          ($err:tt $(,)? $($doc:expr),+) => {
+> @@ -58,6 +59,25 @@ pub mod code {
+>      declare_err!(EPIPE, "Broken pipe.");
+>      declare_err!(EDOM, "Math argument out of domain of func.");
+>      declare_err!(ERANGE, "Math result not representable.");
+> +    declare_err!(ERESTARTSYS, "Restart the system call.");
+> +    declare_err!(ERESTARTNOINTR, "System call was interrupted by a signal and will be restarted.");
+> +    declare_err!(ERESTARTNOHAND, "Restart if no handler.");
+> +    declare_err!(ENOIOCTLCMD, "No ioctl command.");
+> +    declare_err!(ERESTART_RESTARTBLOCK, "Restart by calling sys_restart_syscall.");
+> +    declare_err!(EPROBE_DEFER, "Driver requests probe retry.");
+> +    declare_err!(EOPENSTALE, "Open found a stale dentry.");
+> +    declare_err!(ENOPARAM, "Parameter not supported.");
+> +    declare_err!(EBADHANDLE, "Illegal NFS file handle.");
+> +    declare_err!(ENOTSYNC, "Update synchronization mismatch.");
+> +    declare_err!(EBADCOOKIE, "Cookie is stale.");
+> +    declare_err!(ENOTSUPP, "Operation is not supported.");
+> +    declare_err!(ETOOSMALL, "Buffer or request is too small.");
+> +    declare_err!(ESERVERFAULT, "An untranslatable error occurred.");
+> +    declare_err!(EBADTYPE, "Type not supported by server.");
+> +    declare_err!(EJUKEBOX, "Request initiated, but will not complete before timeout.");
+> +    declare_err!(EIOCBQUEUED, "iocb queued, will get completion event.");
+> +    declare_err!(ERECALLCONFLICT, "Conflict with recalled state.");
+> +    declare_err!(ENOGRACE, "NFS file lock reclaim refused.");
 >  }
 >  
->  impl fmt::Display for CStr {
-> @@ -584,6 +591,21 @@ impl Deref for CString {
->      }
->  }
->  
-> +impl<'a> TryFrom<&'a CStr> for CString {
-> +    type Error = AllocError;
-> +
-> +    fn try_from(cstr: &'a CStr) -> Result<CString, AllocError> {
-> +        let mut buf = Vec::new();
-> +
-> +        buf.try_extend_from_slice(cstr.as_bytes_with_nul())
-> +            .map_err(|_| AllocError)?;
-> +
-> +        // INVARIANT: The `CStr` and `CString` types have the same invariants for
-> +        // the string data, and we copied it over without changes.
-> +        Ok(CString { buf })
-> +    }
-> +}
-> +
->  /// A convenience alias for [`core::format_args`].
->  #[macro_export]
->  macro_rules! fmt {
+>  /// Generic integer kernel error.
 > 
 > base-commit: ea76e08f4d901a450619831a255e9e0a4c0ed162
 
