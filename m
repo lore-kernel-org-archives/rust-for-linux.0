@@ -2,47 +2,47 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6940C7EE23
-	for <rust-for-linux@archiver.kernel.org>; Mon,  8 May 2023 11:40:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D0EAC77B75
+	for <rust-for-linux@archiver.kernel.org>; Mon,  8 May 2023 11:42:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236196AbjEHLkb (ORCPT
+        id S236262AbjEHLmo (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 8 May 2023 07:40:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58786 "EHLO
+        Mon, 8 May 2023 07:42:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236274AbjEHLkE (ORCPT
+        with ESMTP id S236168AbjEHLm1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 8 May 2023 07:40:04 -0400
-Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2095.outbound.protection.outlook.com [40.107.11.95])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D87C3F2D2;
-        Mon,  8 May 2023 04:40:00 -0700 (PDT)
+        Mon, 8 May 2023 07:42:27 -0400
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on0705.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe14::705])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4CDE423B0;
+        Mon,  8 May 2023 04:41:44 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d5+zVUrtmD+O9xvZh40zu87sIjByrclyovhustiSi7NV6GLQJPquMMisnovmZ0GqPQBeJXm1TAqVrkVEhaOl/DRizXyCCXQZ/nSqlSwzGEa+c4QaUDQOuqyi3vkSsEGsUeFU0456zcZJWXPnFwohFmSA9/Uv9TRUopsF4fjnQILgT+f0Gj5Rky9LvLx1M0CbR4l/PylfpNVN9gOhppQ26amGxSIz0cUUt1cRm6a6hWBcUSyWIKDEJXcUchDn2JJtu/YGOus+jpQuEZEDQ9m/M9cypjjPZXyZg23G8agEGLADIR5rq2s5PR1bJJJrY1vdl9A1W2P+evSbcuEl0+UMpg==
+ b=BdXzbmXgXYIcXa6i8vd9t5ldBrgDvUyYJxQFDUsX1jcB3og9V35PN6BlW7lDJ2G0VvTLqpNSgMqhInHibQ5ltu/Tm9KWcwJdtuY1d7Ry34xwm1YGOppyurMUtk7W2qmbk9zBL4IAOzB48Yo5+Tybi17lR5YTqrto+szXMn7fWcHFgydappC2uDLP1nkCgLlOnr0vHyPI/m2rW67tumuPazyScyyTyB7ArjsHLSHo/D8eX5GzpqpVu9bTBuX2pXh8jXiiheRCwBTGTqAEcU5/NSDcpFtfHVev2AHdFmWIohnBpCDn6YaTqkvIPCfGzMLllUqV1F5DK63xFnyTz687cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A0Vcc4x2w1XrcYRwslQCX1jrck2o36AlbrzUrJMTWs0=;
- b=Cdd5MKPVj1hKjCf14b1YrTDPbEoZjtfSfX1cz5KO/y5m6KobL01PdwvNSr8guSDmd80vdKG0rYNWI8B6lDe5/PA375boR4OMIgQIr6icHffakL2vul5eMz+xpQmOjM96AWhtozDPTA999/BUQX2w/FznXpRkdO9Sg3jUfLR9gvgzE2oewTQUrxznvt5k+e0QmOZUipqwWyHn3pN8u7OqXLCVp1iklJ/NHMJpoZUC0QyICTN2a7IM0KPMuHI/Liypno99BM5JRFUPwE9WS/PhArraRyKwuB1A53EbCHdAdI6gvfi2IDqndgPNQRJiOW805hwtjC8fUZR/92W8NxdP3Q==
+ bh=+a2xSRtgTt/BUBnFViuF9Gwr6iyfiwiFr4vZ2GGl8Jk=;
+ b=DzqD5I2oMr3TI19Jjk4ecA1ucVaUM3Mzdyv1mqeRrHnsq0ePCHG4HACFL5WXI67VNvh+t1Pk+D6YXk4dYZvYIevxZtmf6ulsgh32paSwPBMDHweanbeDg337iTSBTViAgdzCQ0cPSl7SX3XIwdway+6zFD1/ZbebHbgyJDVVsTCRIZy/AkK9mXczRhz1RxqhQJClx1cF9Rx/EyakumKKTxTpdcUrzHD4G9jF3iT2FiYMYZLgDNRtva6Fa/6ODN7dOYs/Dl3E6FKKCORWfNZZB94yZ3QJPv8/LkISVz2JWrKldvGPEn9Zlg4nLA2PDSMGsbxwQYvAtwSZIiDcdoYJcA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A0Vcc4x2w1XrcYRwslQCX1jrck2o36AlbrzUrJMTWs0=;
- b=omQgtNKcTomBWWV/y3xDhBW9WBZFy9qrwCkXDKoC5k+c+LGWiCGDWNzHKFVTe3AewfVXpqfqXp3F+vK5wQlfqnSLXoVxdhDnyk26igXTvOt59ykpLPo0hY6PXwwOjCKowhICaHct8OKgAmMH2D+p74UjLBPtTYnIZxVkoGy8Uxs=
+ bh=+a2xSRtgTt/BUBnFViuF9Gwr6iyfiwiFr4vZ2GGl8Jk=;
+ b=mkrw3/yiH8V4s0b+umBvmEj7iFpt/rdKpfAENTEfCEMGZAa6kAWBNQUNM9euiEFBtZ+y7+yNNNkIMa+90vCNBkb1+sMWjmbvOE0TQ8XN0eqP3Q1IyWz6xiIWEx083YbSWe9N8mWREZvElfCt2BY1xXSuyJ7SzdUw7YtoS/R+cbk=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
  by LO3P265MB1946.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:10b::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.17; Mon, 8 May
- 2023 11:39:58 +0000
+ 2023 11:41:29 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1d51:d482:270c:7daf]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1d51:d482:270c:7daf%4]) with mapi id 15.20.6387.017; Mon, 8 May 2023
- 11:39:58 +0000
-Date:   Mon, 8 May 2023 12:39:53 +0100
+ 11:41:29 +0000
+Date:   Mon, 8 May 2023 12:41:27 +0100
 From:   Gary Guo <gary@garyguo.net>
 To:     Alice Ryhl <aliceryhl@google.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
@@ -51,104 +51,142 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>,
         "=?UTF-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-Subject: Re: [PATCH] rust: error: allow specifying error type on `Result`
-Message-ID: <20230508123953.4ccb85e6.gary@garyguo.net>
-In-Reply-To: <20230502124015.356001-1-aliceryhl@google.com>
-References: <20230502124015.356001-1-aliceryhl@google.com>
+Subject: Re: [PATCH v2] rust: str: add conversion from `CStr` to `CString`
+Message-ID: <20230508124127.77a97c54.gary@garyguo.net>
+In-Reply-To: <20230503141016.683634-1-aliceryhl@google.com>
+References: <20230503141016.683634-1-aliceryhl@google.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0407.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:f::35) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P123CA0338.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18c::19) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO3P265MB1946:EE_
-X-MS-Office365-Filtering-Correlation-Id: f9293be1-030e-4f61-e071-08db4fb8f389
+X-MS-Office365-Filtering-Correlation-Id: 48f39b23-9d8e-4520-038f-08db4fb929a1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: UYvMpNBOzH8yNcSSeHB7VQx1DJoYRVg8Q8SFYOLKnZaLofUPUI/53KnDPFBP2enupoHGzZZnz7eoCYzSiOyfOvH+JlczHqbvx93h+jH6O61o0njUXmCKNZIMUfj8YQ0+3VNFKmmqaSTCJeSndfgO2rPkkAEhMo3ITB9L9Ha/MTIS8UI0SqunaFOQcbGtKqaD1SE1J1x4fyvUn4EfjDUo2Uaqjedn3/dzkWZOEz/zFuntTVejnzxOJa45Fod1iu2W9nfBOMw5TwCX5cNl+wXRGE9jl/qEiXJMhmJMMr8O9sVbLjlPy6NpB1muq7FZW2aVMoS+eNqW1p7B5KDV7je0tJxmknLdgvxTQMm6OOQAiUkV5shxGWS8MpDDqOyFc8PaXk/v6z+IrpNAfIxD/eFadCHLILdlM1UnEj+1DnCNeS7LrbPruMHs+pcV4U/Waa6bQQaowT3cBdzZ4QybophAACN6v42GO1s1C+G5oHE8zlJdv4UsleiTZAxatRJJsaLJTV+mgaasGkd+6caZaKjTJ9xwbxltl3zjKbZfdMtvDbp/eoaj/r9NE1EvpIeQILrRrMZfP7QRgFEgyVjtwU2sIw61pEiaDEmMzXqFUAbYqA4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(366004)(376002)(39830400003)(396003)(346002)(136003)(451199021)(26005)(6506007)(1076003)(6512007)(6486002)(83380400001)(36756003)(2616005)(38100700002)(86362001)(186003)(54906003)(2906002)(8936002)(8676002)(316002)(41300700001)(478600001)(7416002)(6916009)(4326008)(66476007)(66946007)(5660300002)(66556008)(6666004)(81973001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: vQYeF+901nNbFEA+4QpgDiKfxicrqy5xkMPqys+YWNkrtcZDrBveUcZwLKPsTiT1c3YKQdUG2rLRYpBhCp5jG3xHQmBmBY4GixAsjQUpapl/91a9FvoTLj/CMBSzSojnKGwHNbzudPr4nQZgE25R9LTjlyvN9bqJtGjhTmSySUB/jdbT4TZrD/uVqQYp6eq3IUrpEKAWod5Rp/1WAetul8oyUIVJcDsF1P89bMbxxjDLbYt4Zcges8eRROC+upeMPoMeBBu6+P+HJxMlLQKnIY/OvNvyCUKeEewuJj8afNrYmfIM7RK+os+a7ir95bSJYMPkeLJiH76URhQoTEOBikusJpi7ZtPbmmabYkoQnBL+5t/AMKqvc0x+208seVmdn4vv0isoMM68J4viTKTK32T5XbG0ANSXcIZk/jURRDnwkwQ24KN2ZixbmTPt5E2cnbm7/aKdRFBNEz1KzA+41qLMnGFiWQxzfVfjor4A/qokBJvcGfveM6HVI0ioqefvQh5EiqfmnShGRg0YoZ0NZ5Eki+R2fnyemy3EZgs+lB7dV9TW745f0PxMLscRN4LFxqxSl2qQpjC7pmU7gXMQqjFgNe+AEqml2Ck13yzxlyE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(366004)(376002)(39830400003)(396003)(346002)(136003)(451199021)(26005)(6506007)(1076003)(6512007)(6486002)(83380400001)(36756003)(2616005)(38100700002)(86362001)(186003)(54906003)(2906002)(8936002)(8676002)(316002)(41300700001)(478600001)(7416002)(6916009)(4326008)(66476007)(66946007)(5660300002)(66556008)(66899021)(81973001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?eKGCCnqIAI3+h1DPo+PlppJu0CVILdFr7HMHMDFISMSf8aYTu3AW9OQtvgjI?=
- =?us-ascii?Q?to4Q96Pd+C+5OZkPbe0IeTo1zlOEFO+h9CmAFVo3rn1LPYyxt7VfXb8ji2fn?=
- =?us-ascii?Q?hW9/OGPnYr8ahSVAbnlZ482OGFM0JQ5DoA/81H4LUt9PKMMJjNnIXlRXfq0/?=
- =?us-ascii?Q?z0kaPui65z+qCKpZB3lpHslQuQWprcxLA1LH2yfG/sruwoHjISLAnXMn5L/t?=
- =?us-ascii?Q?QOe0vYG+JhkMJNwH0jHKg9elp7EOC10rMttqJ2z8uChdiJ0znr4Ibd3OkHzs?=
- =?us-ascii?Q?saWi+sH/OyjyDGHakXlOYKG71TDWPZnTSwcKXYURYev30bJTPSIWbT7I/GD8?=
- =?us-ascii?Q?NA5oKHVweBc8gew08St+0KcXpfvME44cA8H+3yiGV+xTzi1UqfD2e9s5h6by?=
- =?us-ascii?Q?3s2rk6YL8LV2hIiqAbfAs+b/4LS4Ob9TUcWgRfXqIxUXr9Qv2rlg+56VL6SF?=
- =?us-ascii?Q?zsVZsSr+FR0dAL8ny1VkUJ6P6H5RjCEs2FpV99OyhuEu8/83A4gcAkt0W/jG?=
- =?us-ascii?Q?aQBo1ifxr/2gHB2505oh7ofzRPvSIarNJNXNsfErpwjPlO39m97ZJj78M1AP?=
- =?us-ascii?Q?bcPZla02fNkXw8CasWbcpTJWHArC9cS6x6V4ySrlVYvPW01+ofG2gyDka2Qd?=
- =?us-ascii?Q?djGwquQwRgf05wDpMhT52l95A9cY5GjBTFM1vbwPr4L2mBdjoIBWvhBHn2F2?=
- =?us-ascii?Q?RY1RhMoE4XZfEKik+mYr87qnoBa3ZSH5j+JntMhTEWGG3heSVARxCdtQE2Jt?=
- =?us-ascii?Q?7Jc909JqyeBaODUJd5S6n0IDACuzPDBkOFgCAoQudqngrlLC01pedC6CNo84?=
- =?us-ascii?Q?avTw/kSMc31zp8kqFHRzdUbtTCfbPYnUJ/FTcKoLp3LHt5KHKZAEHoqp8ce8?=
- =?us-ascii?Q?ZIZYHZVFR9vweSAAikgj/dN0TCZMYqQuW1bsuYkv66qSUKcMNo9voB/vZACl?=
- =?us-ascii?Q?NPS4PWseNAdezcS71pc+sswt5VvTjGifKsoTYFtDRCAgWN4wAMOuU1iP0V3G?=
- =?us-ascii?Q?zpJwtRzeWsc318xC0FXEkBCqtigZ8QIHtQxnVOQHtVlJZKFqOwtYI7IO/fcj?=
- =?us-ascii?Q?bsO91Xi6slehuUIhMkDtOKn9pGPvL+6oWpFhiYOBuHRiAl0TSxN1fk3iamrI?=
- =?us-ascii?Q?vdCENX908548NJGIfBWvtiIDlWpZgDTQ6Uyfrqn1/ywZwK3LmrxSGbUtFLn4?=
- =?us-ascii?Q?AGBk+s9/np9eeIjrgFOskEmZyqtERll/d/dCaB20AI1kU6JpJw2B7G3SQqPB?=
- =?us-ascii?Q?HqO+uydCGsanr0Bdq/mhGXUNygEqAi7+14meY6tjKw+u7ppYugJrXUdoHy91?=
- =?us-ascii?Q?vLMg05Dkz5s+Ij28XuxA4+OgtB4fDP5pBszhQJxt45Lkw2Ad4ZjVi+xD+3rP?=
- =?us-ascii?Q?H3XOi0BBFyVTS9gRiyrej4b6vEjYlluOX9QLD3ZNEM2HsQOosYDjnHF4PXQZ?=
- =?us-ascii?Q?I7y0F2V3xGIIo/eILeZdET6J/cyyOS6swyJi63jvbetaPKc9B8KEOMD3TVv/?=
- =?us-ascii?Q?l9fj1UY7gJ/IIHXwLdw8Y1IBMN2R+6Ti45ilc2ZXH/Zh48ZE1TqSSifwO1Tb?=
- =?us-ascii?Q?tKlbVfdqR1THwMF557M=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XRmzCCYAPJzsamQOzfCAoRCyarx8RxzdHMtCdGfFQDLGgBWDIPg2gzf2UIu8?=
+ =?us-ascii?Q?b9JKM4MIRgpcojLR+ljGQGX989igkpMa1Fi3VNkb2pIfsXx8Far9VkF1qkrz?=
+ =?us-ascii?Q?psg6H72RYLnZiQVkwcfukPGdT+nP76jXBV6ulSoOt1egHmtM8Qvim/ynBh0o?=
+ =?us-ascii?Q?ESQ9CWaagIoRhPMPExfp8EBXbKHsSJNI5BinQYsz/XwXNo18GdOWB7VHGZ6L?=
+ =?us-ascii?Q?zjk5w3BP1BroSRaMvaxGCpSJEgbamN+iI0SfoC9x7qA5Zh47OQH+NqSOeSgK?=
+ =?us-ascii?Q?ckVILY/tjgobwedCghJfach7KJ2Y+SJV8iDsbbdyuFNvkRlJ8hHLQh/60jjR?=
+ =?us-ascii?Q?cWCUgWBffc/s/VqacRU94MJXlU1SdZwOz7HrnnjnaZVmJTd4QbKSRszIL9O/?=
+ =?us-ascii?Q?r/xDKVbJnwoBGBABtcBIU0ejjZyRJzkO5BfrRMCgEWthO5mmQaG7Aql0d7+c?=
+ =?us-ascii?Q?UVFRHCiVOhTkhlZ850ztHrIZw8HwpWxndMP9fvE5huiT0j2aJ8MA6/LNxk6t?=
+ =?us-ascii?Q?NEyqC+r9KY2ng2tItpA2ytYS/oUX5dfoaoyuqHorIXUeUjgCZdki7F/WDOOf?=
+ =?us-ascii?Q?kKuSL6VDvMQgu6JMR5urQomSz6aW1NbVP7LdpIKSEnuyivwqqILQdqO4zmw0?=
+ =?us-ascii?Q?G9LIwxxKUa9PNWQJigLJYOgPGeTUJeAmU2u5tqB+ZTiMVRBVVbis4lOmexyb?=
+ =?us-ascii?Q?9uThfQlJflaQO1aeOmOipEQbffxTTIIC/CuzsQ0t2sN7kJ2JYLPiDMN3CuHV?=
+ =?us-ascii?Q?CLWsSAOL63kWFqeNkFCv4vEAr7Sec7aIQ4xIQI8cc8SJC1iCWaIF4dUuYGUT?=
+ =?us-ascii?Q?gQp385AmrAf8OECh/srGJ4O7JFqyfAFd3cxEqGv/44MK0HpUHvTWT397hevM?=
+ =?us-ascii?Q?dfqdDx2BYlvmtIpg8ldcOYuB/nQ1caScnijBDFxxFbTrzgKTKxHL6bLf5JVW?=
+ =?us-ascii?Q?ANxe5dD/P4Nbv/X+fxqNzsVDE4u/2iVaTPh0F8jdCzZgnoYGChPWDl2qxm/z?=
+ =?us-ascii?Q?5rgVDUuN7Yr5lvE0CQ5pDMMqQNJG/7PGzsnu7lzA39vyBG4lpBC/gHybo3BQ?=
+ =?us-ascii?Q?a+khlFJ+gJ0KEjM2Zxz3cxbQjARyzyiecrrTMgjStlDMv+wSmXM2ouJbW12L?=
+ =?us-ascii?Q?p4tvDJJlTAuX0Lc2kcJpK7iOms3KYhJNkAUFnIq9tiFP3cu5I8MRtFFLxkeV?=
+ =?us-ascii?Q?8wzRG6NKDyJygXcACKruUwDdjbkqY6rv164/nNrfRsYaca2FEeWFDR2Y8w5o?=
+ =?us-ascii?Q?MQ9wiy2PxmhtKwltiZ6QUn84kiFWK++IVrRLb+XxBFNZGPedcCMyMRCPj/Az?=
+ =?us-ascii?Q?BaVFFreDKsjxHIbMdz3TsCcDd3uZqp+VJUai6oVBWVqV7oC0HY0wYXLG3Mrd?=
+ =?us-ascii?Q?btOrg9/MChL1VnRLwxuImIt4qzL5GDwse0cwfM41h9XvZejD6VPXWCUlTWd4?=
+ =?us-ascii?Q?ut2xyHY4FdNwq452U1Zxtw6os5wn1O1YRuuy1f9hMnTGEEiyiYL1C+dNjEHv?=
+ =?us-ascii?Q?1zNJj1OB6Vp6PnhRol9wLb1I53WkAGl4SdNSE1DUhrMybQmnrdbiisVsgIN1?=
+ =?us-ascii?Q?x6zoDFoJVajy8smvAcuAMb9gi0WKNimTaiISxGoq?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9293be1-030e-4f61-e071-08db4fb8f389
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48f39b23-9d8e-4520-038f-08db4fb929a1
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 11:39:58.2987
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2023 11:41:29.0435
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wWJXt1Gbzh84zWMTfGP37uwZcyn1TmMvG7OBdcjd3qhslOnLqeCB2Q5ST5XeyA37v4rv4sPn5D0oAJv6ZJ6fsw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1WUozB95g+2dptlnGx+6IiLZzJgVmMXn24xhb2BxM4TGO2nzUlyChPFbk3xr6VxZ3ok1VPs2oN5L+/j6tS+aIQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB1946
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue,  2 May 2023 12:40:15 +0000
+On Wed,  3 May 2023 14:10:16 +0000
 Alice Ryhl <aliceryhl@google.com> wrote:
 
-> Currently, if the `kernel::error::Result` type is in scope (which is
-> often is, since it's in the kernel's prelude), you cannot write
-> `Result<T, SomeOtherErrorType>` when you want to use a different error
-> type than `kernel::error::Error`.
+> These methods can be used to copy the data in a temporary c string into
+> a separate allocation, so that it can be accessed later even if the
+> original is deallocated.
 > 
-> To solve this we change the error type from being hard-coded to just
-> being a default generic parameter. This still lets you write `Result<T>`
-> when you just want to use the `Error` error type, but also lets you
-> write `Result<T, SomeOtherErrorType>` when necessary.
+> The API in this change mirrors the standard library API for the `&str`
+> and `String` types. The `ToOwned` trait is not implemented because it
+> assumes that allocations are infallible.
+
+How about add a `TryToOwned` trait to the kernel crate and implement
+that trait for `CStr` instead?
+
+Best,
+Gary
+
 > 
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-
-Reviewed-by: Gary Guo <gary@garyguo.net>
-
 > ---
->  rust/kernel/error.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  rust/kernel/str.rs | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
 > 
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 5f4114b30b94..01dd4d2f63d2 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -177,7 +177,7 @@ impl From<core::convert::Infallible> for Error {
->  /// Note that even if a function does not return anything when it succeeds,
->  /// it should still be modeled as returning a `Result` rather than
->  /// just an [`Error`].
-> -pub type Result<T = ()> = core::result::Result<T, Error>;
-> +pub type Result<T = (), E = Error> = core::result::Result<T, E>;
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index b771310fa4a4..f3dc5b24ea55 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -2,6 +2,7 @@
 >  
->  /// Converts an integer as returned by a C kernel function to an error if it's negative, and
->  /// `Ok(())` otherwise.
+>  //! String representations.
+>  
+> +use alloc::alloc::AllocError;
+>  use alloc::vec::Vec;
+>  use core::fmt::{self, Write};
+>  use core::ops::{self, Deref, Index};
+> @@ -199,6 +200,12 @@ impl CStr {
+>      pub unsafe fn as_str_unchecked(&self) -> &str {
+>          unsafe { core::str::from_utf8_unchecked(self.as_bytes()) }
+>      }
+> +
+> +    /// Convert this [`CStr`] into a [`CString`] by allocating memory and
+> +    /// copying over the string data.
+> +    pub fn to_cstring(&self) -> Result<CString, AllocError> {
+> +        CString::try_from(self)
+> +    }
+>  }
+>  
+>  impl fmt::Display for CStr {
+> @@ -584,6 +591,21 @@ impl Deref for CString {
+>      }
+>  }
+>  
+> +impl<'a> TryFrom<&'a CStr> for CString {
+> +    type Error = AllocError;
+> +
+> +    fn try_from(cstr: &'a CStr) -> Result<CString, AllocError> {
+> +        let mut buf = Vec::new();
+> +
+> +        buf.try_extend_from_slice(cstr.as_bytes_with_nul())
+> +            .map_err(|_| AllocError)?;
+> +
+> +        // INVARIANT: The `CStr` and `CString` types have the same invariants for
+> +        // the string data, and we copied it over without changes.
+> +        Ok(CString { buf })
+> +    }
+> +}
+> +
+>  /// A convenience alias for [`core::format_args`].
+>  #[macro_export]
+>  macro_rules! fmt {
 > 
 > base-commit: ea76e08f4d901a450619831a255e9e0a4c0ed162
 
