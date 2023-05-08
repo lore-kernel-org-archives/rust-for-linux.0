@@ -2,93 +2,93 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37D0BC7EE22
-	for <rust-for-linux@archiver.kernel.org>; Mon,  8 May 2023 20:37:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80E58C7EE22
+	for <rust-for-linux@archiver.kernel.org>; Mon,  8 May 2023 20:55:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233565AbjEHUhp (ORCPT
+        id S233574AbjEHUzn (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 8 May 2023 16:37:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38520 "EHLO
+        Mon, 8 May 2023 16:55:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232941AbjEHUho (ORCPT
+        with ESMTP id S233491AbjEHUzl (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 8 May 2023 16:37:44 -0400
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76DBA5279;
-        Mon,  8 May 2023 13:37:43 -0700 (PDT)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-55a00da4e53so90072567b3.0;
-        Mon, 08 May 2023 13:37:43 -0700 (PDT)
+        Mon, 8 May 2023 16:55:41 -0400
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97C237ECB;
+        Mon,  8 May 2023 13:55:08 -0700 (PDT)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-55af4277904so77377507b3.1;
+        Mon, 08 May 2023 13:55:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683578262; x=1686170262;
+        d=gmail.com; s=20221208; t=1683579307; x=1686171307;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p6Lg2VPPD2mSZhjoYg9Er/+OKaBta41mbPF9BPFt4GI=;
-        b=goDtNCjnwplpmQKEVANMgBMTCZXR/i+jAtvoJV4i/o8S2WBRSzkWSsw5Aoyvzv1sj5
-         dxsrJJh7iNrBDfXoj+HZ2D9Vv7Ou1gAYEHyMw3uRCJRd8YdVGTsjDWueR4JX6/A2WCIO
-         NTRkCR3rjyQXrmVldAj3xgrc9VGlf4izHIwIyp81q526LkCkGS5GgrkczJphAbcbtCfi
-         ffVpqEROrYhHD2YD1mxHyI0V7I9fh1CWW3K89+9o8ub52+zzNZhxjg/mzlXus/08766N
-         pmelAOLJB2H/q84Os4Whiohzn5NZRiEOr2qtL9LCM13t8NJ4a427QXLDC4CKDYquC1+d
-         8USg==
+        bh=iUL6bZHXpoha3XMlj2IGdVI2usoQwo+74wheB9tvv7w=;
+        b=NlliaNkYAzvtQ631h2coCUi6YwPr6BgDKergqt2miNrENMvgTETrafDuEd4Wp3wn5y
+         EGHZ42cX+7gp4SLeB/x057XCb0PoZodZl8LcfSOImGCl6Z3dSQYqk2nHr0XHTHCFffZ2
+         IrK9KkTuweFGxKvZXPLPwLpxAxdCIFIzOg3KL4chY7rwXnMJqI3tHxZGi4RnHaS8fn8T
+         U85MVPueSBQCiu0M77nGmYNfIfe1Yh6hd1Ea/ztzJ0bhjjBufuemxNGltpmb+6wy7zwz
+         uEdbWS7d+9f+5E5EmboS0Y7OOnp2CijDodnjRLwNxW40LCK/0XS4Kxnfj+2FTO+eKeuc
+         2Jsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683578262; x=1686170262;
+        d=1e100.net; s=20221208; t=1683579307; x=1686171307;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=p6Lg2VPPD2mSZhjoYg9Er/+OKaBta41mbPF9BPFt4GI=;
-        b=WIvJlZTzd5KBznAeVALHeJl7ma3QnfwKhu79Vc3WLyk+bYUPGyRJqg8ribt8uNBzS1
-         WE+is7nveAt0YfOqbCjWcG2XHb4u4HGABxxEyPOxk4TqKws8mUTEIBcq6uazEFWRm4GR
-         12jsyHd7tTlj/VjQxhMv01Xg/j0zx6bh9Rzh0Jz11weuUkqJg3Hu6xkHb/obb9E1jd6H
-         xzZKASzhZxU4XZT8Rd1QHHgFVw9TlH2cvmAuj/Gv2riVUo/wJY99MfTPd5DScCbf5pMc
-         o/X+bft9RecmlBeN9aMqA8Nji7Uz7AMU4W+JrGuZocDdGLgc9pf0E+4OrSNuiwwgOfAH
-         0TDw==
-X-Gm-Message-State: AC+VfDxqNOHUvXB+hjb5oAtSLqHEPwRmLnZev1lyBDydtI+Zz2qMw+Lt
-        WuJx5dZ3Fhul3/2z1vKbK7ZCVrjWHwz9+f36Uug=
-X-Google-Smtp-Source: ACHHUZ5tNogejSSjGSUPPdkQ8/W5T8oN4OijJD51kbQ0j/MWUuFYWZc8WycNq504dPEnjAEPLR+fnbXW7m9wTu++GmU=
-X-Received: by 2002:a25:4cd:0:b0:b8f:54a4:9a55 with SMTP id
- 196-20020a2504cd000000b00b8f54a49a55mr10090313ybe.65.1683578262735; Mon, 08
- May 2023 13:37:42 -0700 (PDT)
+        bh=iUL6bZHXpoha3XMlj2IGdVI2usoQwo+74wheB9tvv7w=;
+        b=hNCiVQSnQz7D2i0OCs0Je1AgS4DDJVwnAYNRlKjdEn3eQuh6tphqNdDI9ky3+2jCij
+         Xsgq3lHql0kcZE7N6FVnpr8he3AFhnxnql6i0dyg1tqArpyg6c5Ef+08yMxB39dsUbmC
+         B441FsU+/lOaXMPnTmtThgaXN6RFvthSBm00KwJv+cvuPd//dkIQ6czgr6BlfOfSpcGy
+         5maM/zHF0tL979eFYM7Ic2wSrJwdK+cK/lYQbeRMksA7eV00I+ARAboc3QKAqSRuNqJG
+         L7W28afMDgNWk4yXK+ZC19QcH7Fe4/0EN6FdQ5t+KkwJfoPfcEqt4LHegp3YVzTTYx61
+         h6tQ==
+X-Gm-Message-State: AC+VfDyJBwIex0zzuIj5T0SOFLaX+PRRfmF6BUc2z+phj0LgMOab4m2n
+        0g65NqKHRAdBGYnG/qIh9spwZqMU1NbLLslc1lM=
+X-Google-Smtp-Source: ACHHUZ5VzkKyzg6GV5YIytOoHQpWRqSwfq7/A38Cw1mMHo3rs77+MNQv0FdyUumN60IDWDW97pc2OwebGtw/DU6kSJw=
+X-Received: by 2002:a81:6007:0:b0:55a:9303:1fb4 with SMTP id
+ u7-20020a816007000000b0055a93031fb4mr12043243ywb.32.1683579307639; Mon, 08
+ May 2023 13:55:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <7f464c01-d4ec-d632-fa40-0c3f18c2ffca@ryhl.io> <20230507162739.17392-1-ben.gooding.dev@gmail.com>
-In-Reply-To: <20230507162739.17392-1-ben.gooding.dev@gmail.com>
+References: <20230507152232.803-1-ben.gooding.dev@gmail.com>
+In-Reply-To: <20230507152232.803-1-ben.gooding.dev@gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 8 May 2023 22:37:31 +0200
-Message-ID: <CANiq72=0bbXtRpfYp+CT5tfwcsDi_A6_WV-23Bw44nD+Bbk9uA@mail.gmail.com>
-Subject: Re: [PATCH] rust: lock: Reflow long documentation line
+Date:   Mon, 8 May 2023 22:54:56 +0200
+Message-ID: <CANiq72n-swO1L1zsPNDz=ZMMm=Ox5MOJHzXBbxgX0f_vWFWDmg@mail.gmail.com>
+Subject: Re: [PATCH] rust: lock: Add intra-doc links to the Backend trait
 To:     Ben Gooding <ben.gooding.dev@gmail.com>
-Cc:     alice@ryhl.io, alex.gaynor@gmail.com, benno.lossin@proton.me,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-        linux-kernel@vger.kernel.org, ojeda@kernel.org,
-        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
-        yakoyoku@gmail.com
+Cc:     Benno Lossin <benno.lossin@proton.me>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Ben,
-
-On Sun, May 7, 2023 at 6:27=E2=80=AFPM Ben Gooding <ben.gooding.dev@gmail.c=
+On Sun, May 7, 2023 at 5:23=E2=80=AFPM Ben Gooding <ben.gooding.dev@gmail.c=
 om> wrote:
 >
-> Suggested-by: Alice Ryhl <alice@ryhl.io>
-> Signed-off-by: Ben Gooding <ben.gooding.dev@gmail.com>
+> Also fix a minor typo in one of the comments
 
-Thanks for the patch! Several notes:
+"iff" is not a typo. Even if it were, it is best to avoid mixing
+different types of changes in commits, to keep them as small as
+possible (though sometimes there are exceptions).
 
-  - Missing commit message -- in general, please check your patches
-with `scripts/checkpatch.pl` and please read
-https://docs.kernel.org/process/submitting-patches.html.
+> -/// Exposes one of the kernel locking primitives. Which one is exposed d=
+epends on the lock backend
+> +/// Exposes one of the kernel locking primitives. Which one is exposed d=
+epends on the lock [backend](Backend)
 
-  - This patch goes on top of the previous one you sent but, in the
-kernel workflow, what you are expected to do is send a v2 of your
-patch series instead. You can use `-v2` in `git format-patch` for
-that.
+What about simply:
 
-  - This patch is not just reflowing as the title implies, but it also
-changes the style of the link -- is there a reason for that? If yes,
-this should be explained.
+    [`Backend`]
+
+? (assuming it works).
 
 Cheers,
 Miguel
