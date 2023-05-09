@@ -2,98 +2,148 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30EB3C77B75
-	for <rust-for-linux@archiver.kernel.org>; Tue,  9 May 2023 11:11:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A97A8C77B7C
+	for <rust-for-linux@archiver.kernel.org>; Tue,  9 May 2023 17:56:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235330AbjEILLI (ORCPT
+        id S229539AbjEIR4j (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 9 May 2023 07:11:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60700 "EHLO
+        Tue, 9 May 2023 13:56:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233624AbjEILLH (ORCPT
+        with ESMTP id S229491AbjEIR4i (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 9 May 2023 07:11:07 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD1019AF;
-        Tue,  9 May 2023 04:11:06 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-b9e2b65d006so8677447276.3;
-        Tue, 09 May 2023 04:11:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683630665; x=1686222665;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vkk5DCy0z8eSEQJVhraU0gyt2AdUF96RHlpvGnmt4l8=;
-        b=jWHqrlv1baM2RFyMyWnFWvRvQzJwzy1tI//qEiBRlo7NtLAkNSSADCHP1qXq2HKOXw
-         4ylVczxZLkaVP5CHkls7q1hHxLD9XQlHp2eObYN2YwWNBhhumPVdMc60Fe0yZcD+TBKL
-         fATB2lmJZK+t/B+KdFaQ1eBX7oo6DrSMhiRAegBaPghSGt9y0PI8jusxxywFJA8/XEG0
-         UUD/6hRxCrT7bNkKCmwmb53CsaiENjSM4KedxejCfcAE3JmR3Ga7lj0MWT9W5Wsp89fr
-         AINQdsIMhgWTgeVny665E9o666cv3Fu3un2KgJ0M9BzavlnFZq2WM71Uxia4rsnaA1oA
-         QtEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683630665; x=1686222665;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vkk5DCy0z8eSEQJVhraU0gyt2AdUF96RHlpvGnmt4l8=;
-        b=TZUTYYTkmeQ7IuR7CL+XISk2Rx3ndu+FiZsCIi8m+s4CSiU1idriBwvMzKQeko3IRf
-         JQSS7TioZkl7wmXbHrJfvsfLmSNb8yrvOuEzovps7f96QQOspKQQwipa49p9dotJueEL
-         DspVKSJot78+kHjLG/1sgn8OLZ2bBzN0aJbxrSgkGga/FKrC2pistg+cV2Gpwfp4jG8o
-         jkJGHCG1BWFek356bbzUfbG7YDSosQrDZ8g4GdBwDwKzohsHadIzJCjRjDoHVPFn5u5k
-         ph0QNMOfMAr2fh8JKeNfecIL6VDhkBoAII7u5ytHYypDI7hpPfzDNWi2IE7TS8jrR7PH
-         A3nw==
-X-Gm-Message-State: AC+VfDzv55D7PF9YmuLnmYPwo/F6P4ptukUMrEA8HGSQb8dIGxl4kMgw
-        uWl3ILJEnZCIN6NrUXpl0gZe+BdGfGyvDCS/3j0=
-X-Google-Smtp-Source: ACHHUZ6F9VU8XtGo+n2aInAJWRWYS2JnkqgFQhs0oZ9WPnE+YhEjkUNoi+ZYf4bu9RXqyJMqktr3zZL0nifP5dHX+xo=
-X-Received: by 2002:a25:2d4:0:b0:b9e:7896:63a0 with SMTP id
- 203-20020a2502d4000000b00b9e789663a0mr14839271ybc.54.1683630665536; Tue, 09
- May 2023 04:11:05 -0700 (PDT)
+        Tue, 9 May 2023 13:56:38 -0400
+X-Greylist: delayed 563 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 09 May 2023 10:56:34 PDT
+Received: from out-10.mta0.migadu.com (out-10.mta0.migadu.com [91.218.175.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB5F040E4
+        for <rust-for-linux@vger.kernel.org>; Tue,  9 May 2023 10:56:34 -0700 (PDT)
+Date:   Tue, 9 May 2023 13:47:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1683654430;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Mh08PWWBwtwvRi6TJFXNKI1t8DH8lDAr2+Vm2o39U1Y=;
+        b=a8grNAsW3T1XeULI+4x4BDYLBGXbTk8kSH/NUtK8h6OAlE2gP1+EuNjgwlb6q/StskBqZr
+        MIJS6vYaox2TqCsNJLlU5HmWncKkuhYbk0HUTDJPQ6yGD2w7Y1pjNMf6WUWDiA1IA8EjXu
+        MR7YhJbwQaKLD/j4wmpH43Haf7nlVQo=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Kent Overstreet <kent.overstreet@linux.dev>
+To:     TruongSinh Tran-Nguyen <i@truongsinh.pro>
+Cc:     linux-bcachefs@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] chore(util): minimal Rust build example
+Message-ID: <ZFqHFTMqetbQKtah@moria.home.lan>
+References: <20230503065354.19071-1-i@truongsinh.pro>
 MIME-Version: 1.0
-References: <20230508124701.443ba331.gary@garyguo.net> <20230509080700.1608146-1-aliceryhl@google.com>
- <2023050937-scouring-truck-d7c0@gregkh>
-In-Reply-To: <2023050937-scouring-truck-d7c0@gregkh>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 9 May 2023 13:10:54 +0200
-Message-ID: <CANiq72=g=CnEQTkc50qozUdOBZECr7Jr2NCRfGFaKh751i6Sww@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: error: add missing error codes
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Alice Ryhl <aliceryhl@google.com>, gary@garyguo.net,
-        alex.gaynor@gmail.com, benno.lossin@proton.me,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
-        linux-kernel@vger.kernel.org, ojeda@kernel.org,
-        patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
-        wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230503065354.19071-1-i@truongsinh.pro>
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, May 9, 2023 at 10:46=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> It depends on which arch you are building for.  That's why we have
-> per-platform errno.h files, the values are different for different ones.
-> So you need to handle them all properly somehow.  How is rust going to
-> handle per-arch stuff like this?
+On Tue, May 02, 2023 at 11:53:54PM -0700, TruongSinh Tran-Nguyen wrote:
+> This is a minimal demonstration of how to use Rust in kernel side
+> of bcachefs. Kernel side rust does not have Rust `std`, thus
+> formating is a bit more challenging than doing from user space
 
-We can do conditional compilation in the same file, possibly with a
-Rust macro which takes a nice table that shows all arches at once.
+So if I'm following, it looks like everything is basically there. It
+looks like we can add Rust source files to fs/bcachefs/ and have them
+built as part of the bcachefs module, and calling back and forth just
+works as expected - nice.
 
-We can also split into files like C and move it to each `arch/`, there
-are a couple of approaches for this. This is best for `MAINTAINERS`,
-although these headers almost never change, so it is not a big
-advantage.
+The kbuild stuff looks nice and clean - congrats to those responsible :)
 
-We could also automatically do everything based on the C headers, too.
-Back then it felt to me like too much complexity for little gain,
-given those C headers almost never change, but now it may be worth it.
-Or, instead, having a test that verifies they are the same instead,
-and that way we don't introduce complexity for the build itself.
+We pretty heavily use to_text() functions kernel side; these output to
+printbufs, and in Rust they map nicely to the Display trait - do we have
+that available in the kernel or is that in std?
 
-Alice only needs `ERESTARTSYS` so far, as far as I understand, so
-perhaps it is simplest to only add the rest of the non-generic ones
-for the moment; and gather opinions on the approaches above meanwhile.
+> This minimal demo implement `uuid_le_cmp`, but eventually,
+> in Rust, we probably do not even need to use it, just simply
+> `u1.b != u2.b` is good enough. Furthermore, we might consider
+> (even in C code) to use uuid_t instead of uuid_le
 
-Cheers,
-Miguel
+Sounds like that would be a welcome cleanup :)
+
+> Signed-off-by: TruongSinh Tran-Nguyen <i@truongsinh.pro>
+> ---
+>  fs/bcachefs/Makefile              |  3 +++
+>  fs/bcachefs/util.h                |  8 ++++++++
+>  fs/bcachefs/util_rust.rs          | 17 +++++++++++++++++
+>  scripts/generate_rust_analyzer.py |  2 +-
+>  4 files changed, 29 insertions(+), 1 deletion(-)
+>  create mode 100644 fs/bcachefs/util_rust.rs
+> 
+> diff --git a/fs/bcachefs/Makefile b/fs/bcachefs/Makefile
+> index a71956048a027..972976aac6921 100644
+> --- a/fs/bcachefs/Makefile
+> +++ b/fs/bcachefs/Makefile
+> @@ -72,3 +72,6 @@ bcachefs-y		:=	\
+>  	xattr.o
+>  
+>  bcachefs-$(CONFIG_BCACHEFS_POSIX_ACL) += acl.o
+> +
+> +bcachefs-$(CONFIG_RUST) +=	\
+> +	util_rust.o	\
+> diff --git a/fs/bcachefs/util.h b/fs/bcachefs/util.h
+> index 9eb86c58e5509..6e87baee760a9 100644
+> --- a/fs/bcachefs/util.h
+> +++ b/fs/bcachefs/util.h
+> @@ -839,9 +839,17 @@ static inline int u8_cmp(u8 l, u8 r)
+>  
+>  #include <linux/uuid.h>
+>  
+> +#ifdef CONFIG_RUST
+> +int deprecated_uuid_le_cmp(const uuid_le *b1, const uuid_le *b2);
+> +#endif
+> +
+>  static inline int uuid_le_cmp(const uuid_le u1, const uuid_le u2)
+>  {
+> +	#ifdef CONFIG_RUST
+> +	return deprecated_uuid_le_cmp(&u1, &u2);
+> +	#else
+>  	return memcmp(&u1, &u2, sizeof(uuid_le));
+> +	#endif
+>  }
+>  
+>  #endif /* _BCACHEFS_UTIL_H */
+> diff --git a/fs/bcachefs/util_rust.rs b/fs/bcachefs/util_rust.rs
+> new file mode 100644
+> index 0000000000000..23338c29384c0
+> --- /dev/null
+> +++ b/fs/bcachefs/util_rust.rs
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: MIT */
+> +
+> +#[repr(C)]
+> +pub struct UuidLe {
+> +  b: [u8; 16],
+> +}
+> +
+> +// this function is prefixed `deprecated` because it uses
+> +// uuid_le from /usr/include/linux/uuid.h, which itself is
+> +// deprecated in favor of uuid_t from include/linux/uuid.h
+> +// it also does not exactly matches memcmp
+> +#[no_mangle]
+> +pub extern "C" fn deprecated_uuid_le_cmp( u1 : &UuidLe, u2 : &UuidLe) -> bool
+> +{
+> +  // pr_info!("using deprecated_uuid_le_cmp");
+> +  return u1.b != u2.b;
+> +}
+> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+> index 946e250c1b2a6..d258d10bb6e31 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -98,7 +98,7 @@ def generate_crates(srctree, objtree, sysroot_src):
+>      # Then, the rest outside of `rust/`.
+>      #
+>      # We explicitly mention the top-level folders we want to cover.
+> -    for folder in ("samples", "drivers"):
+> +    for folder in ("samples", "drivers", 'fs'):
+>          for path in (srctree / folder).rglob("*.rs"):
+>              logging.info("Checking %s", path)
+>              name = path.name.replace(".rs", "")
+> -- 
+> 2.30.2
+> 
