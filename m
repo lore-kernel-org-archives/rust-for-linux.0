@@ -2,100 +2,110 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BF3BC77B75
-	for <rust-for-linux@archiver.kernel.org>; Tue,  9 May 2023 18:42:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EAD2BC7EE22
+	for <rust-for-linux@archiver.kernel.org>; Tue,  9 May 2023 20:24:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234697AbjEISmG (ORCPT
+        id S234751AbjEIUYg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 9 May 2023 14:42:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59868 "EHLO
+        Tue, 9 May 2023 16:24:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234771AbjEISmF (ORCPT
+        with ESMTP id S229650AbjEIUYg (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 9 May 2023 14:42:05 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54A33C20;
-        Tue,  9 May 2023 11:42:02 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-b9d8730fe5aso8251543276.1;
-        Tue, 09 May 2023 11:42:02 -0700 (PDT)
+        Tue, 9 May 2023 16:24:36 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BF0340C2;
+        Tue,  9 May 2023 13:24:34 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-3078fa679a7so3134194f8f.3;
+        Tue, 09 May 2023 13:24:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683657722; x=1686249722;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8HastUPGLOFmtjkwswFSuxjmF1966hBsfmctid9rJhg=;
-        b=mhlHga3VYCMCEX1yT5aT3VdySL0YlQ0yKlmD9+c5ZWsMyKZGivcNlm4W2aJwSKt48B
-         mPW6X/bio69ojt83G96lWyYhF4Z1YX0B48tJUbJC8UOLXrkCLnB57EAbk7e8WeJy0cEo
-         oeMrPW+GjHJUjcGqWX+gy3qApO9veO2tChCWWQHNH/mD6b3zOeuS73Km2Gz+ec0Nc470
-         8hKjQ6RH6a+lXes6y/w7gAliS79BDwxK+K4Uc1ut6g8TrYc21zAK+wKvYBJgNmSJOHnX
-         j8fZsm1O2XrLfTm2RuWGiRCgjpMau862eldsoUzlXW03/4lDnoWJ05CazmimhYzMSUSt
-         zmkA==
+        d=gmail.com; s=20221208; t=1683663873; x=1686255873;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+fA8ozPK1R+gWSVuxj7Oooge25CINHzv42GXaEYpyEU=;
+        b=NxSi6yL1CDcUwPBB94+pd5DZhAra6avgmwN+C3k7c+U2jJfUkmL0b7hUufXqCK9Ywi
+         0aIqSEC8jKkZb2IHnaPkSrMcWJJ7/jnx+S2M44HNP7FJCj1cRggeLAO6ZMRO2WCX9Vc1
+         MmCH7YikUJcY/4gjomhr32NMY7DF3XLLEAFV8tbQjSP7vrnjr+0htuXOXr595E2Mu2RX
+         cUaDYaxwrAvVHg7OSjHYpsoTBpFoAhEApUekxSj9L/1y5M1oTOUs6EtlPmXrBKG+JxLb
+         CNOJlrnWLYQLR0MB9l1jf3D55mEBHZs3vDjTZovDczSIf5S9eSLb3xjZdesWWNdLDJU9
+         JOhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683657722; x=1686249722;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8HastUPGLOFmtjkwswFSuxjmF1966hBsfmctid9rJhg=;
-        b=Q90OS9MgsQAWYZ3EqjzDKyYhU/XO8YfTWlGLMFiwIDC2Bf9CkZpt2bzFpyfZ3MH4Vt
-         yKU77ZfSlF3psYh4oESW486Z6/EXKVdLDQN5RW11DrJaIjXxiF/8SfNa6JK+9qTXLsUS
-         LBh+IqkMaRNj1Lr2j0rJtEHVr0m4BNpgfl7O889zxoCOASV7CATgpmPrsrL98HKqgBGY
-         FtolueRh9idVlxywNqT8iTEMhJkeISZerjUe0iyHW1FNz/2pwzku6vJ8Ue+fJ6NFF+0T
-         6QeX0GQWeBUZzAOCE8QcB+U5l+/hMqgFlakd1nmu3uUAPn8dTTxEo5aFzrgM62IRrEtu
-         6a1w==
-X-Gm-Message-State: AC+VfDzmJrgzYfSuq7AevES7bHXLrGLuXoWpfPJBR2edkJGQ00YMuNRY
-        SpO0wlNPmgofwoxDuTYyxXNqvvw0hTWfWlo5mmnZyGBxRkK27g==
-X-Google-Smtp-Source: ACHHUZ4Uei0qK/cstulxbN5c8xxPvDRiF+z05PRnMCgiRVwXVB4C6nSqWz17fNdeW/7eHdhiiQIi/fSZ0D+NuhomKZA=
-X-Received: by 2002:a25:e602:0:b0:b9e:7589:62fc with SMTP id
- d2-20020a25e602000000b00b9e758962fcmr15000204ybh.28.1683657721802; Tue, 09
- May 2023 11:42:01 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683663873; x=1686255873;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+fA8ozPK1R+gWSVuxj7Oooge25CINHzv42GXaEYpyEU=;
+        b=QmQOOLHuyxgMrNtO/zjhGwng0kFi7HwyqbLn2QtvpT+NPe899x/LFhr/D2o9HcspLF
+         sdvDWbeu3Pvn+kxeD1GN6+yCBzp3VNqdWqTyof9VYUGlSExdt3lcsKAt9Jpt5xEo1nqw
+         69o6tKzmrWNx+hhRfkqcAnGLazpsfPM+RVbWWu36f2+teu5XeYuFZcoobeDMsf1G7pkn
+         BWoeQZ9EXqsPQSEaWtUea5Hz/jJUDbak4wxWa2Iz+SFyVqfdguX5EE30nFAMHthdoQiO
+         TNAanV+hA3JdcPRPs9vOOKhAnGCcBFKOaL9JSKi2BmHBsT38GIPaML9CnJyP3jrtgZtN
+         IR/A==
+X-Gm-Message-State: AC+VfDzo2n8Ame8PbJ/udTNBEQh1rJdFp0Tr+j/ycNbTh/e4/o53S1Tp
+        76/oNsnQWu/IPOhjpmdA758=
+X-Google-Smtp-Source: ACHHUZ7zw4C5PvKOGNFMk0W4TGh29ZhzgbZPSQDFCJmjuhxc6moBgDBqhkC3uyowg0x98zUWB04VrA==
+X-Received: by 2002:adf:ef4a:0:b0:306:44a9:76a0 with SMTP id c10-20020adfef4a000000b0030644a976a0mr11768165wrp.9.1683663872870;
+        Tue, 09 May 2023 13:24:32 -0700 (PDT)
+Received: from localhost.localdomain ([2.222.93.88])
+        by smtp.gmail.com with ESMTPSA id d18-20020adfe852000000b002fe13ec49fasm15196126wrn.98.2023.05.09.13.24.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 May 2023 13:24:32 -0700 (PDT)
+From:   Ben Gooding <ben.gooding.dev@gmail.com>
+To:     miguel.ojeda.sandonis@gmail.com
+Cc:     alex.gaynor@gmail.com, ben.gooding.dev@gmail.com,
+        benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+        boqun.feng@gmail.com, gary@garyguo.net,
+        linux-kernel@vger.kernel.org, ojeda@kernel.org,
+        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
+        yakoyoku@gmail.com
+Subject: [PATCH v2] rust: lock: Add intra-doc links to the Backend trait
+Date:   Tue,  9 May 2023 21:23:14 +0100
+Message-Id: <20230509202314.8248-1-ben.gooding.dev@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CANiq72n-swO1L1zsPNDz=ZMMm=Ox5MOJHzXBbxgX0f_vWFWDmg@mail.gmail.com>
+References: <CANiq72n-swO1L1zsPNDz=ZMMm=Ox5MOJHzXBbxgX0f_vWFWDmg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230503065354.19071-1-i@truongsinh.pro> <ZFqHFTMqetbQKtah@moria.home.lan>
- <CAMy36z75N9obj0WM+OFhhnzXAPxqhg8PVY7_x8X6JbQABFnMQw@mail.gmail.com> <ZFqM8HOvlVn61VXs@moria.home.lan>
-In-Reply-To: <ZFqM8HOvlVn61VXs@moria.home.lan>
-From:   Wedson Almeida Filho <wedsonaf@gmail.com>
-Date:   Tue, 9 May 2023 15:41:52 -0300
-Message-ID: <CANeycqq5xCUcjOeOfGAJCH1Tzd01-ALU3uqVJo-BvVX9HOK9wA@mail.gmail.com>
-Subject: Re: [PATCH] chore(util): minimal Rust build example
-To:     Kent Overstreet <kent.overstreet@linux.dev>
-Cc:     TruongSinh Tran-Nguyen <i@truongsinh.pro>,
-        linux-bcachefs@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, 9 May 2023 at 15:13, Kent Overstreet <kent.overstreet@linux.dev> wrote:
->
-> On Tue, May 09, 2023 at 10:57:18AM -0700, TruongSinh Tran-Nguyen wrote:
-> > On Tue, 9 May 2023 at 10:47, Kent Overstreet <kent.overstreet@linux.dev> wrote:
-> >
-> > > We pretty heavily use to_text() functions kernel side; these output to
-> > > printbufs, and in Rust they map nicely to the Display trait - do we have
-> > > that available in the kernel or is that in std?
-> > >
-> >
-> > https://doc.rust-lang.org/std/fmt/trait.Display.html Display trait is definitely
-> > in Rust `std`. As for the alternative from kernel, I am still searching.
-> > Worst case, there is nothing right now, Rust-for-linux folks would
-> > happy to take PR
-> > to include it.
->
-> I included them on the CC, maybe they'll have something to say.
+Add missing intra-doc links to the Backend trait to make navigating the
+documentation easier.
 
-`Display` is in core: https://doc.rust-lang.org/core/fmt/trait.Display.html
+Suggested-by: Benno Lossin <benno.lossin@proton.me>
+Link: https://lore.kernel.org/rust-for-linux/94625fe6-b87a-a8f0-5b2a-a8152d5f7436@proton.me/
+Link: https://github.com/Rust-for-Linux/linux/issues/1001
+Signed-off-by: Ben Gooding <ben.gooding.dev@gmail.com>
+---
+ rust/kernel/sync/lock.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Here's an example of it being implemented (and used) in the kernel:
-https://elixir.bootlin.com/linux/v6.4-rc1/source/rust/kernel/sync/arc.rs#L604
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index a2216325632d..05ac8107ff3c 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -72,8 +72,8 @@ pub unsafe trait Backend {
+ 
+ /// A mutual exclusion primitive.
+ ///
+-/// Exposes one of the kernel locking primitives. Which one is exposed depends on the lock backend
+-/// specified as the generic parameter `B`.
++/// Exposes one of the kernel locking primitives. Which one is exposed depends on the lock
++/// [`Backend`] specified as the generic parameter `B`.
+ #[pin_data]
+ pub struct Lock<T: ?Sized, B: Backend> {
+     /// The kernel lock object.
+@@ -126,7 +126,7 @@ impl<T: ?Sized, B: Backend> Lock<T, B> {
+ 
+ /// A lock guard.
+ ///
+-/// Allows mutual exclusion primitives that implement the `Backend` trait to automatically unlock
++/// Allows mutual exclusion primitives that implement the [`Backend`] trait to automatically unlock
+ /// when a guard goes out of scope. It also provides a safe and convenient way to access the data
+ /// protected by the lock.
+ #[must_use = "the lock unlocks immediately when the guard is unused"]
+-- 
+2.34.1
 
->
-> >
-> > > Sounds like that would be a welcome cleanup :)
-> >
-> > By clean up, do you mean moving from `uuid_le` to `uuid_t`?
-> >
-> > Also, I don't expect this PR to be merge, as it is for demonstration
-> > purposes only,
-> > however, what would be a minimum mergeable PR (related to Rust build)
-> > that you would consider?
->
-> First thing to look at is going to be moving all the code under
-> bch_bindgen in -tools into the kernel tree...
