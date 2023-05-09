@@ -2,105 +2,98 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E1C12C77B7C
-	for <rust-for-linux@archiver.kernel.org>; Tue,  9 May 2023 08:46:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30EB3C77B75
+	for <rust-for-linux@archiver.kernel.org>; Tue,  9 May 2023 11:11:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234523AbjEIIqp (ORCPT
+        id S235330AbjEILLI (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 9 May 2023 04:46:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52758 "EHLO
+        Tue, 9 May 2023 07:11:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234593AbjEIIqp (ORCPT
+        with ESMTP id S233624AbjEILLH (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 9 May 2023 04:46:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6CFE8A67;
-        Tue,  9 May 2023 01:46:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E081631D6;
-        Tue,  9 May 2023 08:46:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECEAC433D2;
-        Tue,  9 May 2023 08:46:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1683622000;
-        bh=Rosg6MIt+oWekqphy3JytZbJCDw525kHM44ZeRKAImo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=UpK6iwdYthvcjHN6+BKNYjrGU+DfDKrInQ+XVJ3y3LF2xzUsyz0f7cMpW0Z3+s0a6
-         RovtM+pwcK3eCbIQqgQaGmCcLA8md8hEEk79Sah39rXSCBXtA72kOindkgCAA7IQj+
-         wLTIVZFV1dJvJsaFby6YJtzwZHsyCI93l4bRPI5A=
-Date:   Tue, 9 May 2023 10:46:37 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Alice Ryhl <aliceryhl@google.com>
-Cc:     gary@garyguo.net, alex.gaynor@gmail.com, benno.lossin@proton.me,
+        Tue, 9 May 2023 07:11:07 -0400
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD1019AF;
+        Tue,  9 May 2023 04:11:06 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-b9e2b65d006so8677447276.3;
+        Tue, 09 May 2023 04:11:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683630665; x=1686222665;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Vkk5DCy0z8eSEQJVhraU0gyt2AdUF96RHlpvGnmt4l8=;
+        b=jWHqrlv1baM2RFyMyWnFWvRvQzJwzy1tI//qEiBRlo7NtLAkNSSADCHP1qXq2HKOXw
+         4ylVczxZLkaVP5CHkls7q1hHxLD9XQlHp2eObYN2YwWNBhhumPVdMc60Fe0yZcD+TBKL
+         fATB2lmJZK+t/B+KdFaQ1eBX7oo6DrSMhiRAegBaPghSGt9y0PI8jusxxywFJA8/XEG0
+         UUD/6hRxCrT7bNkKCmwmb53CsaiENjSM4KedxejCfcAE3JmR3Ga7lj0MWT9W5Wsp89fr
+         AINQdsIMhgWTgeVny665E9o666cv3Fu3un2KgJ0M9BzavlnFZq2WM71Uxia4rsnaA1oA
+         QtEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683630665; x=1686222665;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Vkk5DCy0z8eSEQJVhraU0gyt2AdUF96RHlpvGnmt4l8=;
+        b=TZUTYYTkmeQ7IuR7CL+XISk2Rx3ndu+FiZsCIi8m+s4CSiU1idriBwvMzKQeko3IRf
+         JQSS7TioZkl7wmXbHrJfvsfLmSNb8yrvOuEzovps7f96QQOspKQQwipa49p9dotJueEL
+         DspVKSJot78+kHjLG/1sgn8OLZ2bBzN0aJbxrSgkGga/FKrC2pistg+cV2Gpwfp4jG8o
+         jkJGHCG1BWFek356bbzUfbG7YDSosQrDZ8g4GdBwDwKzohsHadIzJCjRjDoHVPFn5u5k
+         ph0QNMOfMAr2fh8JKeNfecIL6VDhkBoAII7u5ytHYypDI7hpPfzDNWi2IE7TS8jrR7PH
+         A3nw==
+X-Gm-Message-State: AC+VfDzv55D7PF9YmuLnmYPwo/F6P4ptukUMrEA8HGSQb8dIGxl4kMgw
+        uWl3ILJEnZCIN6NrUXpl0gZe+BdGfGyvDCS/3j0=
+X-Google-Smtp-Source: ACHHUZ6F9VU8XtGo+n2aInAJWRWYS2JnkqgFQhs0oZ9WPnE+YhEjkUNoi+ZYf4bu9RXqyJMqktr3zZL0nifP5dHX+xo=
+X-Received: by 2002:a25:2d4:0:b0:b9e:7896:63a0 with SMTP id
+ 203-20020a2502d4000000b00b9e789663a0mr14839271ybc.54.1683630665536; Tue, 09
+ May 2023 04:11:05 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230508124701.443ba331.gary@garyguo.net> <20230509080700.1608146-1-aliceryhl@google.com>
+ <2023050937-scouring-truck-d7c0@gregkh>
+In-Reply-To: <2023050937-scouring-truck-d7c0@gregkh>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 9 May 2023 13:10:54 +0200
+Message-ID: <CANiq72=g=CnEQTkc50qozUdOBZECr7Jr2NCRfGFaKh751i6Sww@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: error: add missing error codes
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Alice Ryhl <aliceryhl@google.com>, gary@garyguo.net,
+        alex.gaynor@gmail.com, benno.lossin@proton.me,
         bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
         linux-kernel@vger.kernel.org, ojeda@kernel.org,
         patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
         wedsonaf@gmail.com
-Subject: Re: [PATCH v2] rust: error: add missing error codes
-Message-ID: <2023050937-scouring-truck-d7c0@gregkh>
-References: <20230508124701.443ba331.gary@garyguo.net>
- <20230509080700.1608146-1-aliceryhl@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230509080700.1608146-1-aliceryhl@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, May 09, 2023 at 08:07:00AM +0000, Alice Ryhl wrote:
-> On Mon, 8 May 2023 12:47:01 +0100
-> Gary Guo <gary@garyguo.net> wrote:
-> > On Thu,  4 May 2023 06:48:54 +0000
-> > Alice Ryhl <aliceryhl@google.com> wrote:
-> > > This adds the error codes from `include/linux/errno.h` to the list of
-> > > Rust error constants. These errors were not included originally, because
-> > > they are not supposed to be visible from userspace. However, they are
-> > > still a perfectly valid error to use when writing a kernel driver. For
-> > > example, you might want to return ERESTARTSYS if you receive a signal
-> > > during a call to `schedule`.
-> > 
-> > `include/linux/errno.h` also includes all of `asm/errno.h`,
-> > which defines EDEADLK - EHWPOISON, which is not included in this patch.
-> > I feel like these error codes should be added first?
-> 
-> It seems like there are a lot of asm/errno.h files:
-> 
-> $ find . -name errno.h
-> ./arch/powerpc/include/uapi/asm/errno.h
-> ./arch/mips/include/asm/errno.h
-> ./arch/mips/include/uapi/asm/errno.h
-> ./arch/alpha/include/uapi/asm/errno.h
-> ./arch/parisc/include/uapi/asm/errno.h
-> ./arch/sparc/include/uapi/asm/errno.h
-> ./arch/x86/include/generated/uapi/asm/errno.h
-> ./tools/arch/powerpc/include/uapi/asm/errno.h
-> ./tools/arch/mips/include/asm/errno.h
-> ./tools/arch/mips/include/uapi/asm/errno.h
-> ./tools/arch/alpha/include/uapi/asm/errno.h
-> ./tools/arch/parisc/include/uapi/asm/errno.h
-> ./tools/arch/sparc/include/uapi/asm/errno.h
-> ./tools/arch/x86/include/uapi/asm/errno.h
-> ./tools/include/nolibc/errno.h
-> ./tools/include/uapi/asm/errno.h
-> ./tools/include/uapi/asm-generic/errno.h
+On Tue, May 9, 2023 at 10:46=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> It depends on which arch you are building for.  That's why we have
+> per-platform errno.h files, the values are different for different ones.
+> So you need to handle them all properly somehow.  How is rust going to
+> handle per-arch stuff like this?
 
-You can ignore the tool ones.
+We can do conditional compilation in the same file, possibly with a
+Rust macro which takes a nice table that shows all arches at once.
 
-> ./include/uapi/asm-generic/errno.h
-> ./include/uapi/linux/errno.h
-> ./include/linux/errno.h
-> 
-> How should I proceed with this? You mention EDEADLK - EHWPOISON, but its
-> not clear to me which asm/errno.h file I should base this on.
+We can also split into files like C and move it to each `arch/`, there
+are a couple of approaches for this. This is best for `MAINTAINERS`,
+although these headers almost never change, so it is not a big
+advantage.
 
-It depends on which arch you are building for.  That's why we have
-per-platform errno.h files, the values are different for different ones.
-So you need to handle them all properly somehow.  How is rust going to
-handle per-arch stuff like this?
+We could also automatically do everything based on the C headers, too.
+Back then it felt to me like too much complexity for little gain,
+given those C headers almost never change, but now it may be worth it.
+Or, instead, having a test that verifies they are the same instead,
+and that way we don't introduce complexity for the build itself.
 
-thanks,
+Alice only needs `ERESTARTSYS` so far, as far as I understand, so
+perhaps it is simplest to only add the rest of the non-generic ones
+for the moment; and gather opinions on the approaches above meanwhile.
 
-greg k-h
+Cheers,
+Miguel
