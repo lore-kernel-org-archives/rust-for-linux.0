@@ -2,114 +2,104 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04A97C77B7C
-	for <rust-for-linux@archiver.kernel.org>; Tue,  9 May 2023 20:39:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 600ABC77B7C
+	for <rust-for-linux@archiver.kernel.org>; Tue,  9 May 2023 20:59:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229701AbjEIUjK (ORCPT
+        id S230147AbjEIU7A (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 9 May 2023 16:39:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35468 "EHLO
+        Tue, 9 May 2023 16:59:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbjEIUjJ (ORCPT
+        with ESMTP id S234829AbjEIU67 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 9 May 2023 16:39:09 -0400
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC857A0;
-        Tue,  9 May 2023 13:39:06 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id ffacd0b85a97d-3062c1e7df8so4201966f8f.1;
-        Tue, 09 May 2023 13:39:06 -0700 (PDT)
+        Tue, 9 May 2023 16:58:59 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94E785BA7
+        for <rust-for-linux@vger.kernel.org>; Tue,  9 May 2023 13:58:19 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-3f420618d5bso24456335e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 May 2023 13:58:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683664745; x=1686256745;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xzT2Qg7+gnTohAZR8U03MVTx3xSlsm1ApgjWGg/yeYo=;
-        b=qEHme8UZ/79GsnJuDa+hJvF24q+bvoWHIe4OGGF/RwMW9NPnWhSgdEkLCrisNYrwSK
-         l0uJTJinPPdpbhtmVhQjVmkw0PgCHRt9PN5HaJP3t2IAOAWBnXik99eannCuCrzVuROK
-         8Us4Uc06vcWW0A+COknpeEnuXt0+VB+wYNKKbiHYfh2aKDXuhf+2be7QJm4pdSSCBi/3
-         Wg1xP3tnF+tSHc4lrcgnjol8eIFkc5Q9Px/NCuyO3gwlsyLSL8E6LuDw4aQ4rG9nvF3I
-         zvLIQyTIFhjV1trdennbTuLHVnl4SnT7m1E3OCf1ZdgUNW95ivsJj59u4rM6hVcpVGS/
-         WyGw==
+        d=truongsinh.pro; s=google; t=1683665837; x=1686257837;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mb9So3otA4hLlWEMptdzwozlRrz9OeZFROhk8yc0hJM=;
+        b=N7zmgFZLgsUCSTkUBJESujfSh/mvDcVtPdy2C77WtIIIT7+w/nQuGkb6WgNUSnu57L
+         n9yEt6tJZ9Ahr/FC1ev/6tclfk6J7CtpS/1Z8UVuqnn5FShgzplRMGL+twwPRKwtV/Z9
+         urb9+Vel1tnT2TV+w2q9bTU8VSGEa1mrMVThc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683664745; x=1686256745;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xzT2Qg7+gnTohAZR8U03MVTx3xSlsm1ApgjWGg/yeYo=;
-        b=jDGcDmSy6w5Jf7uH9mapaX95M4ixKxl1bH9TZkkHX39lsNip963WPXEZAXSC7SK/Mg
-         2/tiAiUggjEP6CXNp171qV3pKVKBpGzil5/rH/GzzvStPZK2DyBajC4SBTeDxgf27+hA
-         AOfHjQkJ0QmEF78fTjwJ8cd6XSKKdFmXD89XR2QAB7tA2fZnkfLE99Z631z9trh61kj8
-         aeyibMfoE+4msQyrFDXc+354KalOo7lIr/WTsur3Ik7ilEsO9tU5f5YlEtGwvwNQaM7X
-         aYiCyvS5W6zz1C/OL1NB4+WmObsuS8BawdzOAuH4Jzvi0x4X1Y890XjjW3/s4uVPwfwL
-         o1zQ==
-X-Gm-Message-State: AC+VfDyv0wY5oGFunjCSNHyPoqESfFJW98+isbrKx7weJkUaARcK1JbK
-        8iMnoelXGajWpdCs1gDKh062h0cEB/hsWnOP
-X-Google-Smtp-Source: ACHHUZ4f1RVMO5EGx6nj8UpK4sD07mMfYHSd70dWGenO9CfbdCN4EaaokO8sbgvaIfU3Sig06Q+S3Q==
-X-Received: by 2002:adf:e48b:0:b0:2fb:7099:6070 with SMTP id i11-20020adfe48b000000b002fb70996070mr11889088wrm.47.1683664745349;
-        Tue, 09 May 2023 13:39:05 -0700 (PDT)
-Received: from [192.168.0.19] ([2.222.93.88])
-        by smtp.gmail.com with ESMTPSA id a14-20020a5d53ce000000b0030732d6e104sm15234707wrw.105.2023.05.09.13.39.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 May 2023 13:39:04 -0700 (PDT)
-Message-ID: <e1fd41eb-71e9-f8d9-2607-363c88fd9ab3@gmail.com>
-Date:   Tue, 9 May 2023 21:39:01 +0100
+        d=1e100.net; s=20221208; t=1683665837; x=1686257837;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mb9So3otA4hLlWEMptdzwozlRrz9OeZFROhk8yc0hJM=;
+        b=KdSlPeCHMw2nOFQccknn9BX+u/Jc7v+rIvWe3zYYtYB3Hz76utsh/nyt6h7fndJ+yz
+         Oqrq4jqduCJuqHI7NrgTWeEb5qZi+UOGiX9YhVRuBM1xOQHzDK31sSpE1XUa/tJ5LVxl
+         y7LucOIJCxfuy0sRiVv6e3iIgLeir5XGXZl+pHwSoLh7FG81wrkS31nLbfTkvEZ7Dcr8
+         wMDjAwNk6TToJ5t7CN3Sc0nQ04j+LeuPTO10rkUgPWhyYaRbPhUAPqecmY/yx2CpHwoM
+         0VeTO7ZqYQtjwjPghuZUkAbvx/f5E9Fl8jl0iEkMZUp3GHMY2lYBJN6IVNwln6c0ilq7
+         S3MA==
+X-Gm-Message-State: AC+VfDwyyTCNJkBDyqZlu3PASG3K5Z9UAYIyQQwI7hjq5cBb1VZ26o3c
+        d/nQeUiJIQpKIXJXECzhlrsi0Demrf+HkjdX0QuntQ==
+X-Google-Smtp-Source: ACHHUZ4SxaqWLv9nl6gkBuVDjaZRVBcnZTFhq/L9SzIsg0t0avy297VSPgyxD1/c2RbGavlUcGIireeBntf6dLRrODc=
+X-Received: by 2002:a5d:5286:0:b0:2cf:ee9d:ce2f with SMTP id
+ c6-20020a5d5286000000b002cfee9dce2fmr10821278wrv.19.1683665836764; Tue, 09
+ May 2023 13:57:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH] rust: lock: Reflow long documentation line
-Content-Language: en-US
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     alice@ryhl.io, alex.gaynor@gmail.com, benno.lossin@proton.me,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-        linux-kernel@vger.kernel.org, ojeda@kernel.org,
-        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
-        yakoyoku@gmail.com
-References: <7f464c01-d4ec-d632-fa40-0c3f18c2ffca@ryhl.io>
- <20230507162739.17392-1-ben.gooding.dev@gmail.com>
- <CANiq72=0bbXtRpfYp+CT5tfwcsDi_A6_WV-23Bw44nD+Bbk9uA@mail.gmail.com>
-From:   Ben Gooding <ben.gooding.dev@gmail.com>
-In-Reply-To: <CANiq72=0bbXtRpfYp+CT5tfwcsDi_A6_WV-23Bw44nD+Bbk9uA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Antivirus: AVG (VPS 230509-4, 9/5/2023), Outbound message
-X-Antivirus-Status: Clean
+References: <20230503065354.19071-1-i@truongsinh.pro> <ZFqHFTMqetbQKtah@moria.home.lan>
+ <CAMy36z75N9obj0WM+OFhhnzXAPxqhg8PVY7_x8X6JbQABFnMQw@mail.gmail.com>
+ <ZFqM8HOvlVn61VXs@moria.home.lan> <CANeycqq5xCUcjOeOfGAJCH1Tzd01-ALU3uqVJo-BvVX9HOK9wA@mail.gmail.com>
+In-Reply-To: <CANeycqq5xCUcjOeOfGAJCH1Tzd01-ALU3uqVJo-BvVX9HOK9wA@mail.gmail.com>
+From:   TruongSinh Tran-Nguyen <i@truongsinh.pro>
+Date:   Tue, 9 May 2023 13:57:04 -0700
+Message-ID: <CAMy36z5VP_6atrxdOyXSO6G+R36vA8SuaWCDAui3Om3viogPkQ@mail.gmail.com>
+Subject: Re: [PATCH] chore(util): minimal Rust build example
+To:     Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     Kent Overstreet <kent.overstreet@linux.dev>,
+        linux-bcachefs@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Miguel,
+Wonderful, thanks!
 
-On 08/05/2023 21:37, Miguel Ojeda wrote:
-> Hi Ben,
+
+
+On Tue, 9 May 2023 at 11:42, Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
 >
-> On Sun, May 7, 2023 at 6:27 PM Ben Gooding <ben.gooding.dev@gmail.com> wrote:
->> Suggested-by: Alice Ryhl <alice@ryhl.io>
->> Signed-off-by: Ben Gooding <ben.gooding.dev@gmail.com>
-> Thanks for the patch! Several notes:
+> On Tue, 9 May 2023 at 15:13, Kent Overstreet <kent.overstreet@linux.dev> wrote:
+> >
+> > On Tue, May 09, 2023 at 10:57:18AM -0700, TruongSinh Tran-Nguyen wrote:
+> > > On Tue, 9 May 2023 at 10:47, Kent Overstreet <kent.overstreet@linux.dev> wrote:
+> > >
+> > > > We pretty heavily use to_text() functions kernel side; these output to
+> > > > printbufs, and in Rust they map nicely to the Display trait - do we have
+> > > > that available in the kernel or is that in std?
+> > > >
+> > >
+> > > https://doc.rust-lang.org/std/fmt/trait.Display.html Display trait is definitely
+> > > in Rust `std`. As for the alternative from kernel, I am still searching.
+> > > Worst case, there is nothing right now, Rust-for-linux folks would
+> > > happy to take PR
+> > > to include it.
+> >
+> > I included them on the CC, maybe they'll have something to say.
 >
->    - Missing commit message -- in general, please check your patches
-> with `scripts/checkpatch.pl` and please read
-> https://docs.kernel.org/process/submitting-patches.html.
+> `Display` is in core: https://doc.rust-lang.org/core/fmt/trait.Display.html
 >
->    - This patch goes on top of the previous one you sent but, in the
-> kernel workflow, what you are expected to do is send a v2 of your
-> patch series instead. You can use `-v2` in `git format-patch` for
-> that.
+> Here's an example of it being implemented (and used) in the kernel:
+> https://elixir.bootlin.com/linux/v6.4-rc1/source/rust/kernel/sync/arc.rs#L604
 >
->    - This patch is not just reflowing as the title implies, but it also
-> changes the style of the link -- is there a reason for that? If yes,
-> this should be explained.
->
-> Cheers,
-> Miguel
-
-Thank you very much for your feedback, this is really helpful as I'm 
-learning the process.
-
-I've submitted a proper v2 of my patch based on your feedback which is 
-hopefully much more like what you would expect - please let me know.
-
-Many thanks,
-
-Ben
-
+> >
+> > >
+> > > > Sounds like that would be a welcome cleanup :)
+> > >
+> > > By clean up, do you mean moving from `uuid_le` to `uuid_t`?
+> > >
+> > > Also, I don't expect this PR to be merge, as it is for demonstration
+> > > purposes only,
+> > > however, what would be a minimum mergeable PR (related to Rust build)
+> > > that you would consider?
+> >
+> > First thing to look at is going to be moving all the code under
+> > bch_bindgen in -tools into the kernel tree...
