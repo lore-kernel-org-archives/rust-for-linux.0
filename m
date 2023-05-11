@@ -2,86 +2,84 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E1E7C77B7C
-	for <rust-for-linux@archiver.kernel.org>; Thu, 11 May 2023 06:52:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D42DC77B7F
+	for <rust-for-linux@archiver.kernel.org>; Thu, 11 May 2023 16:16:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbjEKGw4 (ORCPT
+        id S238755AbjEKQQr (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 11 May 2023 02:52:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54866 "EHLO
+        Thu, 11 May 2023 12:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjEKGwx (ORCPT
+        with ESMTP id S238446AbjEKQQn (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 11 May 2023 02:52:53 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AEAB4EF7;
-        Wed, 10 May 2023 23:52:52 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-50bd37ca954so76177351a12.0;
-        Wed, 10 May 2023 23:52:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683787971; x=1686379971;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uRe1w5FWeqoWKmR0bHUIMrdBbrMcG1q+nVCKm02YZco=;
-        b=Hv1WB+7EyzwgPCJZDduY7FX8yxPzQkS4A8oTWwnakgoABcYcR6I6e0b84zScp95khk
-         fKHtuNDTMSjY8prA5qFKatasF2JLd/VSxeIBScEqCNKOFMyoZ3GIfnEu9/1CMg/0PQfC
-         NjJpZKeJSZEGVdzGoCKvKS3CS4uj+W4ZWi5TwdS2OcS2JOs/4+l8FEzHjnTUO7tmp0XB
-         WALjQTj7VcDq2x5KPJxNrYxGOV1gHwJGcwELo/oiMcSDTtFPpikACwCtXXCt3BmJknmu
-         KhvbUpk5drWkq4uaqPLy18fjTNBnb6stCMa+w5r+StWCtSeKf56aHidtR6YES/Adxow3
-         izEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683787971; x=1686379971;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uRe1w5FWeqoWKmR0bHUIMrdBbrMcG1q+nVCKm02YZco=;
-        b=lYlUWv55ytpNPCMxvyZqU6QvZBsiFfP8371lwGWcBV5c7YXZvkyAl9+WuHThd5ztHV
-         7hECtO7wVtULvzbO72D6pqE4Uj6hbUBXDijNCDv79+cvuWYLKdOba2RLRczYiWg9qZ1u
-         yRb/6naJjW4awORHmdlaDkLNIuc5FU40/USYs1LHj8BEj1xYMUC/nC710aWimZ5dE/qB
-         FMeKbMpqbwt//FyvnRz9paT2/1zoo5S4bym2ouNgN8T+gSd7Ju01/r3tgQAbuK8SeCdM
-         Y2qyZgbyScapsw90r1rMNyRP2HKkWh3ALbGoaLrDqHul4/AR7pmDEno7zFLLr7tLfqdd
-         rgqw==
-X-Gm-Message-State: AC+VfDxgLyp9f10Jd1mrGV0OXxrzZHrLKoKj03KdPKdVGkFpYI9TKqM1
-        lLKxSa2cvMW/hYRxDIZ5T53yXE/6khhuideXC28=
-X-Google-Smtp-Source: ACHHUZ7PGE+Um8vm5gLFQjqAYmw+XEoUHkJYyiYsZK7SwIH25IV1XkshnicZkVyNT3LK0zug3M56wLn8vqD/UoIQE4M=
-X-Received: by 2002:a17:907:1c8c:b0:965:cac1:53ad with SMTP id
- nb12-20020a1709071c8c00b00965cac153admr20395001ejc.8.1683787968886; Wed, 10
- May 2023 23:52:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230503090708.2524310-1-nmi@metaspace.dk> <20230503090708.2524310-4-nmi@metaspace.dk>
- <iL2M45BoRlK6yS9y8uo0A5yUXcZWMkdk3vtH3LRFSWXfvPVagVZ-0YC7taIKOBFUcjJYA_2xNNFPoC4WL-_ulCHOLkbqvsZlIshE_LEeYtU=@proton.me>
-In-Reply-To: <iL2M45BoRlK6yS9y8uo0A5yUXcZWMkdk3vtH3LRFSWXfvPVagVZ-0YC7taIKOBFUcjJYA_2xNNFPoC4WL-_ulCHOLkbqvsZlIshE_LEeYtU=@proton.me>
-From:   =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
-Date:   Thu, 11 May 2023 08:52:12 +0200
-Message-ID: <CAA76j92c1e9E7ik_k_8gqfrAczdReKwH0ZvviFMv+7rr1_GoNA@mail.gmail.com>
-Subject: Re: [RFC PATCH 03/11] rust: block: introduce `kernel::block::mq` module
-To:     Benno Lossin <benno.lossin@proton.me>
-Cc:     Andreas Hindborg <nmi@metaspace.dk>, Jens Axboe <axboe@kernel.dk>,
-        Christoph Hellwig <hch@lst.de>,
-        Keith Busch <kbusch@kernel.org>,
-        Damien Le Moal <Damien.LeMoal@wdc.com>,
-        Hannes Reinecke <hare@suse.de>,
-        lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
-        linux-block@vger.kernel.org,
-        Andreas Hindborg <a.hindborg@samsung.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
+        Thu, 11 May 2023 12:16:43 -0400
+Received: from mail-40137.protonmail.ch (mail-40137.protonmail.ch [185.70.40.137])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D80B940C1
+        for <rust-for-linux@vger.kernel.org>; Thu, 11 May 2023 09:16:38 -0700 (PDT)
+Date:   Thu, 11 May 2023 16:16:20 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1683821795; x=1684080995;
+        bh=MN+F7xsDUKyihqmXNSYVmWW+TT1z5DRJGFbLAF5PwVQ=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=KV8fBoYpX4Lkt+5qNzplDpuBTX7ldL7fO7lOx6m+dCpkJHKoIFvJ7isy3lrY3LFp5
+         MI2mBRbfMfxeEM2UHqdqnf8ItOcKRPwKmVJUwVuFtggarc0DotwuPtS93qagVSpue3
+         Og8tP7BEUt6/XOrFNIDcu8xLgOzpgdbK4SfT5bltH18hOyxEROdE4gMzfXzXsLN4rh
+         PA08H8c9ErYGIEF8IrFARDthH1Lh36f6b4LzdH1WcNaMSiDqqQx8jp+0rW2Fq8qv+5
+         ynDtharyokExgveLioYXxzGyyAk0J4I6JUrVRQqehhp9ZoNTVV36qvFu+qGcrXjhY+
+         XziGUP3cTyeQg==
+To:     TruongSinh Tran-Nguyen <i@truongsinh.pro>
+From:   =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Cc:     rust-for-linux@vger.kernel.org,
+        Kent Overstreet <kent.overstreet@linux.dev>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org, gost.dev@samsung.com
-Content-Type: text/plain; charset="UTF-8"
+        linux-bcachefs@vger.kernel.org, Andreas Hindborg <nmi@metaspace.dk>
+Subject: Re: [PATCH] chore(util): minimal Rust build example
+Message-ID: <U4SpqY6MGcSaFOCHP-pTC2oqyrv7dh2BAlR9xubt3iymLknSafueqtUuhj0UzZUw8YGGNjrbti9_G4cUTatBMlbkOuErR5Uxw2pXpvZnZ_g=@protonmail.com>
+In-Reply-To: <CAMy36z6+RjgAfEYUxpOhS6vFmTter=cFa2CEorSnKR=qxkft=A@mail.gmail.com>
+References: <20230503065354.19071-1-i@truongsinh.pro> <ZFqHFTMqetbQKtah@moria.home.lan> <CAMy36z75N9obj0WM+OFhhnzXAPxqhg8PVY7_x8X6JbQABFnMQw@mail.gmail.com> <ZFqM8HOvlVn61VXs@moria.home.lan> <CANeycqq5xCUcjOeOfGAJCH1Tzd01-ALU3uqVJo-BvVX9HOK9wA@mail.gmail.com> <CAMy36z5VP_6atrxdOyXSO6G+R36vA8SuaWCDAui3Om3viogPkQ@mail.gmail.com> <CAMy36z6+RjgAfEYUxpOhS6vFmTter=cFa2CEorSnKR=qxkft=A@mail.gmail.com>
+Feedback-ID: 27884398:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-+    /// Call to tell the block layer the capcacity of the device
-+    pub fn set_capacity(&self, sectors: u64) {
-+        unsafe { bindings::set_capacity(self.gendisk, sectors) };
-+    }
+On Wednesday, May 10th, 2023 at 05:10, TruongSinh Tran-Nguyen <i@truongsinh=
+.pro> wrote:
 
-Nit in the comment: capcacity -> capacity
+> Hi Rust for Linux folks,
+>=20
+> I have another question. When working on user-space, I'm used to cargo
+> dependency management, but I assume it's not possible when doing
+> kernel development. Specifically, for the immediately next PR, I need
+> to use these 2 crates (and their artifacts)
+>=20
+> `use bitfield::bitfield; use byteorder::{LittleEndian, ReadBytesExt};`
+>=20
+> Is there something similar in Rust part of kernel already
+> (https://docs.kernel.org/core-api/packing.html# and
+> https://man7.org/linux/man-pages/man3/htons.3.html respectively, may
+> be) ? Or if not, is it normal to just copy-paste the needed code
+> together our code?
+>=20
+> Kind regards,
+> Sinh
+>=20
+
+For byteorder you can use the builtin {to,from}_{le,be,ne}_bytes and {from,=
+to}_{be,le} methods. The former return and accepts a [u8; N] array where N =
+is the size in bytes of the integer you called it on. The _be variants of t=
+he later are equivalent to the htons family.
+
+For bitfields if you have a struct definition with bitfields in a C header =
+already, bindgen should generate a type with getters and setters for the in=
+dividual fields as well as a constructor. See https://rust-lang.github.io/r=
+ust-bindgen/using-bitfields.html If the type isn't defined on the C side I =
+guess you could define it there as helper, but having a rust macro for this=
+ like the bitfield crate provides is of course nicer.
 
 Cheers,
- Sergio
+Bjorn
