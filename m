@@ -2,88 +2,102 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30952C7EE22
-	for <rust-for-linux@archiver.kernel.org>; Thu, 11 May 2023 23:10:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 012A1C7EE24
+	for <rust-for-linux@archiver.kernel.org>; Thu, 11 May 2023 23:37:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229601AbjEKXKp (ORCPT
+        id S239064AbjEKXhe (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 11 May 2023 19:10:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57524 "EHLO
+        Thu, 11 May 2023 19:37:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239214AbjEKXKo (ORCPT
+        with ESMTP id S239603AbjEKXhd (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 11 May 2023 19:10:44 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75FB43C1B
-        for <rust-for-linux@vger.kernel.org>; Thu, 11 May 2023 16:10:43 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-30771c68a9eso8448983f8f.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 11 May 2023 16:10:43 -0700 (PDT)
+        Thu, 11 May 2023 19:37:33 -0400
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5CA065A4;
+        Thu, 11 May 2023 16:37:17 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-b9e27684b53so8217058276.0;
+        Thu, 11 May 2023 16:37:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=truongsinh.pro; s=google; t=1683846642; x=1686438642;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WPG4a6X4h+5DWEWYShnnXPeem/HjObGPA6H/eKogG2M=;
-        b=BIOoBIEI149cdBcnCxZTmKR+LlC63ppi6ow1399WRIFRxnPRn8mTMw4vxL+q6QUrXw
-         2I/lWsHwD5xjD0BrDzgBkT37w2Qow3W8V0DqSnu6qTpsuSQff9uygcfoQHQbXSUDnJRL
-         b/4EILJYk0IMSHU9AyXuWzOqfENk9ldxsThM8=
+        d=gmail.com; s=20221208; t=1683848237; x=1686440237;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9H5YdbIWZFqJl3g2DhFPx7dOoR6U2lKiK0qlGLm9dxc=;
+        b=piQONAc8qKKNZvBv6XyMYM1NJPNojA+25xCA1vEacDO4ZRa0gop0djs6eCyMv/BtAo
+         RSauY9YIDGFMKahyB3NIUTWRL2yQI7IsNkG5ppcGHureNucB39EYWKYBE140jxpf6X1p
+         iLsvWiKobro90axLXz70BIMmFpDLq/d90N/pWgN/0NVMdXjsQrE97aPFLPgq7/oY6hV8
+         hBhy6PgY9cX8i8Ee8qBi26MZEWJ5hrVKt1QiytOBOSSlwH+3tvYWwNdQQnl8PPjXTeyc
+         R31N1/o5+C8Zr0BEPD7YpU6wwwVsoQSLOpf93xqzC6or082nLLdRZ0FZ4ofFf6E5uy7I
+         nO3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683846642; x=1686438642;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WPG4a6X4h+5DWEWYShnnXPeem/HjObGPA6H/eKogG2M=;
-        b=FgeVXYTs7/WC457ZT2oB62NTienUrkwzT/pegmsEA8deHMPnKDV8GJFkiG2l8mzdPo
-         RW0F0DJbBRoVrXdV/8Odd1s8Mm4TUB9si6g1kwDSYSNZI5bzRPEEiwiaJPvG6hoocngi
-         ANHETJPzZLUJYf8l9YbMtM870UWdRIhoXIQcKr6aAZZLpT02pjyr1HjkMw947fSrqa5F
-         4wsXu0+XwLb0BApDjkVv1j1eXS1OziXXqcBO3oy1Lj6la6H08XKF64pGAZxWOIE7fyEv
-         cU0DNQXdH0Zubg0d+IpSVpcB6z/5q87QLRc5KtYea6IrA+St+ZizKITS4+w53HjdVupZ
-         qWxQ==
-X-Gm-Message-State: AC+VfDyQ7arokC4SlzJDtHLF8Cja5OVfhj/56HJvLO6zPz2QSsPUnz1C
-        g6Lj11nn5ELudUbIzaEppwpp6lujzuP7Q0A3P5odxw==
-X-Google-Smtp-Source: ACHHUZ41RLvA9B+2b9D4/cmHDvx+72agJVX1IMB8cSApYesY6e6Vcll5jR06Zk1QTGpH+VFSa0FwWwC286l1X3VTG1Q=
-X-Received: by 2002:a5d:46c7:0:b0:307:a530:573e with SMTP id
- g7-20020a5d46c7000000b00307a530573emr7308710wrs.71.1683846641779; Thu, 11 May
- 2023 16:10:41 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683848237; x=1686440237;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9H5YdbIWZFqJl3g2DhFPx7dOoR6U2lKiK0qlGLm9dxc=;
+        b=dOCsYtYYgpscOBrYm9s3HjPu3Wq2lbaQzRUL136QmYK8nEpbMektR+kwQVxcd2VEsd
+         1T1Wx+whnc0NjU9OWONsK1ZnhEHxeIKrp1auQr0/+ApT4zWSuWxCqrTxRGbeIq+WhZgT
+         AS7J5D7um7eDC/W4TaeYdmkuEwpiRfrV4z6GmOqQMiB7ESopDLveiEmuJEesYgaSdO8x
+         YSua3coZaoo1QOYJ0JVrntCPqej+WbNyE6P7Nyl38UiSNNlLUDQEcfS4uUXGXXGjnDbw
+         KVTugNlUVXjst1Q+CSY/mWb48DyZ0JNChv6j9WxGclgwJe9O8EafsfurIbaKDCxI1MQm
+         FEQg==
+X-Gm-Message-State: AC+VfDxPTJE8O5TDfzjUFMlzbD9D3VaEr8AF6h4+KpXEOig8IJgqn/m6
+        chqyWAYQKMT2Ws5tFqZNqQLM05kahN0wqAaPz4I=
+X-Google-Smtp-Source: ACHHUZ44fq/Dd7mOX067Ofowd5nKlYvjVfBd1RVKhjZJhfuoUYHuilaBf9WYiq/ULoRuiKXrlSMIF5HXwJsBSE7UJoY=
+X-Received: by 2002:a25:ce42:0:b0:ba1:d0ca:9189 with SMTP id
+ x63-20020a25ce42000000b00ba1d0ca9189mr20421056ybe.53.1683848236731; Thu, 11
+ May 2023 16:37:16 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230503065354.19071-1-i@truongsinh.pro> <ZFqHFTMqetbQKtah@moria.home.lan>
  <CAMy36z75N9obj0WM+OFhhnzXAPxqhg8PVY7_x8X6JbQABFnMQw@mail.gmail.com>
  <ZFqM8HOvlVn61VXs@moria.home.lan> <CANeycqq5xCUcjOeOfGAJCH1Tzd01-ALU3uqVJo-BvVX9HOK9wA@mail.gmail.com>
  <CAMy36z5VP_6atrxdOyXSO6G+R36vA8SuaWCDAui3Om3viogPkQ@mail.gmail.com>
  <CAMy36z6+RjgAfEYUxpOhS6vFmTter=cFa2CEorSnKR=qxkft=A@mail.gmail.com>
- <U4SpqY6MGcSaFOCHP-pTC2oqyrv7dh2BAlR9xubt3iymLknSafueqtUuhj0UzZUw8YGGNjrbti9_G4cUTatBMlbkOuErR5Uxw2pXpvZnZ_g=@protonmail.com>
- <CAMy36z7_UVZT03svBPVQpQyYdhWqFFmVokY7K+iy7MkDtbvAww@mail.gmail.com> <2rQHLC94NzAwtKaPbGMnzol4xE6cJ5i4FUx_MoK417SYnui2nVsx3ijtx8okVD14AY3SkwF5CEsJuckE1ydZXyXCZBOTECT3osPjb3xAAaQ=@protonmail.com>
-In-Reply-To: <2rQHLC94NzAwtKaPbGMnzol4xE6cJ5i4FUx_MoK417SYnui2nVsx3ijtx8okVD14AY3SkwF5CEsJuckE1ydZXyXCZBOTECT3osPjb3xAAaQ=@protonmail.com>
-From:   TruongSinh Tran-Nguyen <i@truongsinh.pro>
-Date:   Thu, 11 May 2023 16:10:30 -0700
-Message-ID: <CAMy36z46EQYOGj8h0kHkEd8KYKnqZbUePe8JAk+a-0GJRQeK5w@mail.gmail.com>
+ <CANiq72nYq5vimbhvfyUj9ejOS487LCQBxkv+7Nt5yYJ2xW_U-A@mail.gmail.com> <CAMy36z7iofMAK4GkYaUjW27cSC4sg-QGooj93mTg8SOb0eXxfw@mail.gmail.com>
+In-Reply-To: <CAMy36z7iofMAK4GkYaUjW27cSC4sg-QGooj93mTg8SOb0eXxfw@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Fri, 12 May 2023 01:37:05 +0200
+Message-ID: <CANiq72kcVS=_07D-KDcb9cVByV886mf50ydqNsMvcrJ1myLOuA@mail.gmail.com>
 Subject: Re: [PATCH] chore(util): minimal Rust build example
-To:     =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+To:     TruongSinh Tran-Nguyen <i@truongsinh.pro>
 Cc:     rust-for-linux@vger.kernel.org,
         Kent Overstreet <kent.overstreet@linux.dev>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         linux-bcachefs@vger.kernel.org, Andreas Hindborg <nmi@metaspace.dk>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> I think you will have to vendor the bitfield crate into a separate file
-> and add an SPDX-License-Identifier header with the license of the crate
+On Wed, May 10, 2023 at 8:21=E2=80=AFPM TruongSinh Tran-Nguyen <i@truongsin=
+h.pro> wrote:
+>
+> So I assume there must be PR for these 2 first before I can move
+> forward, is that correct?
 
-I just send and patch to rust-for-linux@vger.kernel.org to include
-bitfield macro into kernel crate.
+I can look into adding those two to the experiment PR, so that you can
+move forward, and so that we can try them out in general (which is the
+purpose of the experiment).
 
-Kind regards,
-Sinh
+It is not a guarantee that they will land in mainline, but it is a
+first step to determine whether we want them, or whether we want
+something else.
 
-TruongSinh Tran-Nguyen, PMI-ACP, PSM III, PSPO III
+> One more question. Assuming that we have some Linux kernel API
+> exposing Rust interface (similar to `linux/*.h`), when writing
+> user-space tool, how do I `use`/`import` them? I have not been able to
+> find any answer or even good keywords to describe what I mean yet.
 
-Tech Visionary, Craftsman, Coach and Investor
+If you mean libraries in general that you want to reuse in both
+userspace and the kernel, then I think this is the case that Kent
+wanted (though as far as I remember from Kangrejos, he wanted to share
+the code in crates.io, rather than the kernel tree).
 
-+1-6127-TR-SINH (+1-6127-87-7464) | @truongsinhtn
+If you mean UAPI in "native" Rust, then we don't provide Rust ones
+yet. We may need to wait until Rust is not an experiment anymore
+within the kernel to do something like that.
 
-Find me on LinkedIn | Twitter | Github | StackOverflow
-
-IBAN: LT76 3250 0264 6898 1177 | BIC: REVOLT21
-
-Currently Reading
+Cheers,
+Miguel
