@@ -2,100 +2,109 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14B35C77B7F
-	for <rust-for-linux@archiver.kernel.org>; Fri, 12 May 2023 17:29:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75564C77B7D
+	for <rust-for-linux@archiver.kernel.org>; Sat, 13 May 2023 19:34:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236716AbjELR3s (ORCPT
+        id S232131AbjEMTeG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 12 May 2023 13:29:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37726 "EHLO
+        Sat, 13 May 2023 15:34:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235775AbjELR3s (ORCPT
+        with ESMTP id S229633AbjEMTeF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 12 May 2023 13:29:48 -0400
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02465E5D
-        for <rust-for-linux@vger.kernel.org>; Fri, 12 May 2023 10:29:47 -0700 (PDT)
-Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-51b661097bfso7183798a12.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 12 May 2023 10:29:46 -0700 (PDT)
+        Sat, 13 May 2023 15:34:05 -0400
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6827D1FD5;
+        Sat, 13 May 2023 12:34:04 -0700 (PDT)
+Received: by mail-qt1-x829.google.com with SMTP id d75a77b69052e-3f41b73104eso26081861cf.3;
+        Sat, 13 May 2023 12:34:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1683912586; x=1686504586;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=R1kCvuryMHsFO2mHpkYGGBtTve3Q7WEfvsZIrGLBy+M=;
-        b=XPkEbnEQrJcA9kBV44J3LUSsi2+josMPi43vuSB+cYYZgQCDURMBaKkKZrko5jNQTB
-         B6arjiJOAKw6WzD4phdJTPjlOFNEUWZ3n/eUopX4EpQ4diJQiXsiNW+Mo3ztQCHO0N2g
-         1/iq0KhOIKBVIe6ttcVZDceplziC639WKs9LoeaWSvFU7H0q6kY0KgRfp5mrJ5lBj6Za
-         jMNdHSxLyq06YLO7BnVBOodkM30w/SkOX+Ac09JpBEU189RDzg65iYT12H3fdJ7owyKW
-         /VIF/d4neXcZDkgXFapNwcg0UmP8O2EmQOoLoyMDsjPXCKlUs/U/OEjGx/kg6mGwklD2
-         XjVw==
+        d=gmail.com; s=20221208; t=1684006443; x=1686598443;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z/2Y0NnOA4rOyDN7e+HMDW4ZS3Xal4lAQgzHlbrtxb8=;
+        b=TKvU88cEw94xxNGVXdWVlGX4SELbGq5Tjssy8H3d8emcgndXTF68PDTb11pNKBVd+v
+         2pItfqbo5XJlLmB3N9FiVeR5pd3BbzyL9IaeeB7aOTyWr3EFWCOHZ4dR4K68KQcrnH6E
+         v0Fa7f8peU8H9jE2WMjcun/Guui6XuV0qitpGJmYcJoU3iwMMgi+g7S4JY9y3WPNpQpo
+         /5AHPXmHI1ijEJRG7vRrvgW6QX7FGR7yswHulAc0ZeGxEBRx39nctPVPUF/4zgQFna1t
+         5QzwPm+wLWXL7VSNm1nAI4SAP1u0yUkiQdyExEydkjqZ0tN0OfxSwWBWhQDtUjKzOAkr
+         CCuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683912586; x=1686504586;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R1kCvuryMHsFO2mHpkYGGBtTve3Q7WEfvsZIrGLBy+M=;
-        b=l+JNWBd3bu3Gs4cbQ74oPQ92C4UpfYJEVRGjL8zKubC4i3VGbq5ZbQpl4xhbbdm6mT
-         5rJvkiY3snylJfQmpdQe99zyuagv8UzzmSRsjgfPgaNJvaub67C5s+DkMr3AFTT4fyQr
-         F2QyuRRIJLDLLOkihWufinV7nT5DcnodEmZiRiw8xD/DYSULzEnkZp/4Y33XyMJvb+EX
-         pW6MY+FVKdEu29dwOLCUptTLUSIbVIj5Ae5lMBs35gNxAwiRJIve509p0cLN0EKQi5W4
-         FF3X/ybY9I1Vg1AuRDMhwhr9yEKxdr39doukb3vshTldRfGWnn0qdaF4SMiQo+jSf01d
-         5nhQ==
-X-Gm-Message-State: AC+VfDy1RI2MMkXUZxiAxbxPlBnZ8ZVX7otp4bGXJoWfKEoiObdYalPW
-        ktnDssd6gHd3Wv4xfNYvsrvmew==
-X-Google-Smtp-Source: ACHHUZ7LL3aC8Z/WvhcNzSO5r4cxusiD6K6cemOQ3vp56w6AvA7Ok9DuYgCX82voHO6j5IkaDpbrOw==
-X-Received: by 2002:a17:90a:7e90:b0:24e:272:2469 with SMTP id j16-20020a17090a7e9000b0024e02722469mr25665003pjl.18.1683912586345;
-        Fri, 12 May 2023 10:29:46 -0700 (PDT)
-Received: from localhost ([64.141.80.140])
-        by smtp.gmail.com with ESMTPSA id iq14-20020a17090afb4e00b0024df400a9e6sm21935527pjb.37.2023.05.12.10.29.45
+        d=1e100.net; s=20221208; t=1684006443; x=1686598443;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z/2Y0NnOA4rOyDN7e+HMDW4ZS3Xal4lAQgzHlbrtxb8=;
+        b=LakoN1p3X64trQuZEKlfUgopBOEIIPdI6N4bY4gqaiA4gmzmZUUpP3A3alm6EIvL4d
+         oFyvDaw7O7I6+JgjG3s54EYUvvVVA14MXK3JrE3yj7mot9M4t/VvvBCHTcOBXEg2sL3r
+         4nUEC5eeC//hDbGpA5mr8bfa/S0+N3FCRjGPxnjhipFbZkaKYFtq2+KHghMwFKzfZqRH
+         yQ6Hj3ZnqLRh8+5fr8ncs6zi8qeQ2iIf3358/44o6In/U7mYbZ5qLQLT0FKTtPurySAL
+         U+knfb1+Ai0n+lU037QVJeppKCrSEAdP7DyDGkhJmtRFSXc2fx/2yotj4Q74sNDPh7Rw
+         lVHg==
+X-Gm-Message-State: AC+VfDzK2y6BWnrk5zmv/YGKpvqqV3VlRnvZdQRMplQWnp9TEW9mxBPy
+        metj+NxVZwUS4vgsxyNOiGM=
+X-Google-Smtp-Source: ACHHUZ4e67Vm1wY0nJaNasVnetT4L1KyrgtLN+6+PVyfXg0nNvcoSJhF8DE502RICDRhxbWjSP0Tng==
+X-Received: by 2002:a05:622a:1309:b0:3ef:415f:188 with SMTP id v9-20020a05622a130900b003ef415f0188mr49337463qtk.61.1684006443437;
+        Sat, 13 May 2023 12:34:03 -0700 (PDT)
+Received: from localhost.localdomain (2603-6000-8100-7fd4-0000-0000-0000-0c33.res6.spectrum.com. [2603:6000:8100:7fd4::c33])
+        by smtp.gmail.com with ESMTPSA id s13-20020a05622a018d00b003f018e18c35sm4054115qtw.27.2023.05.13.12.34.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 May 2023 10:29:46 -0700 (PDT)
-References: <a68fca00-666a-bbf4-b4d3-acd409dd69d2@gmail.com>
-User-agent: mu4e 1.10.3; emacs 28.2.50
-From:   Andreas Hindborg <nmi@metaspace.dk>
-To:     Ryo Munakata <ryomnktml@gmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: Re: Rust ENC28J60 ethernet driver working on Raspberry Pi
-Date:   Fri, 12 May 2023 19:28:09 +0200
-In-reply-to: <a68fca00-666a-bbf4-b4d3-acd409dd69d2@gmail.com>
-Message-ID: <87mt29e9vb.fsf@metaspace.dk>
+        Sat, 13 May 2023 12:34:03 -0700 (PDT)
+From:   "Ethan D. Twardy" <ethan.twardy@gmail.com>
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        rust-for-linux@vger.kernel.org (open list:RUST),
+        linux-kernel@vger.kernel.org (open list),
+        llvm@lists.linux.dev (open list:CLANG/LLVM BUILD SUPPORT)
+Cc:     "Ethan D. Twardy" <ethan.twardy@gmail.com>
+Subject: [PATCH] Fix libclang version check for out-of-tree builds
+Date:   Sat, 13 May 2023 14:32:37 -0500
+Message-Id: <20230513193238.28208-1-ethan.twardy@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+During out-of-tree builds where the path to the kernel source tree
+contains a version string, scripts/rust_is_available.sh incorrectly
+parses the version string of libclang, resulting in
+CONFIG_RUST_IS_AVAILABLE erroneously set to 'n'.
 
-Ryo Munakata <ryomnktml@gmail.com> writes:
+To reproduce:
 
-> Hi all,
->
-> I've written an ethernet driver for ENC28J60, a stand-alone ethernet controller
-> with a SPI interface, in Rust.
-> It works fine on Raspberry Pi 4B with Raspbian AArch64.
-> You can connect to the internet and play some videos on YouTube with it
-> (10BASE-T though).
-> I hope it will be an example of real-world drivers in Rust.
->
-> * ENC28J60 ethernet driver in Rust
-> enc28j60rs: https://github.com/pfpacket/enc28j60rs
-> `impl Sync/Send`, mostly because of raw pointers, and the initialization of
-> `workqueue::Work` and `sync::Spinlock`
-> require a tiny bit of "unsafe" code, but otherwise no unsafe code used.
->
-> * The forked kernel with Rust support for SPI and netdev
-> https://github.com/pfpacket/linux-rpi-rust/tree/rust-netdev
-> Forked from the Raspberry Pi tree and merged Rust-for-Linux `rust` branch into
-> it.
-> (BTW are there any easier way to get Rust-for-Linux work on Raspberry Pi? If so
-> please let me know.)
-> Then I added the SPI support referencing rust/kernel/platform.rs and netdev
-> support.
-> The netdev support is based on the following GitHub PR from Fujita-san:
-> https://github.com/Rust-for-Linux/linux/pull/908
+    $ cd ~/build && make -C ~/linux-6.4.0-rc1 O=$PWD rustavailable
 
-This is cool, thanks! I will check it out at some point.
+Signed-off-by: Ethan D. Twardy <ethan.twardy@gmail.com>
+---
+ scripts/rust_is_available.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Best regards
-Andreas Hindborg
+diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
+index aebbf1913970..e8a1439be9f8 100755
+--- a/scripts/rust_is_available.sh
++++ b/scripts/rust_is_available.sh
+@@ -102,8 +102,8 @@ fi
+ # Check that the `libclang` used by the Rust bindings generator is suitable.
+ bindgen_libclang_version=$( \
+ 	LC_ALL=C "$BINDGEN" $(dirname $0)/rust_is_available_bindgen_libclang.h 2>&1 >/dev/null \
+-		| grep -F 'clang version ' \
+-		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
++		| grep -oE 'clang version [0-9]+\.[0-9]+\.[0-9]+' \
++		| cut -d' ' -f3 \
+ 		| head -n 1 \
+ )
+ bindgen_libclang_min_version=$($min_tool_version llvm)
+
+base-commit: ac9a78681b921877518763ba0e89202254349d1b
+-- 
+2.40.1
+
