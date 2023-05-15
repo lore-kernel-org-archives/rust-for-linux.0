@@ -2,60 +2,67 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70D7BC7EE22
-	for <rust-for-linux@archiver.kernel.org>; Mon, 15 May 2023 06:12:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD64CC77B75
+	for <rust-for-linux@archiver.kernel.org>; Mon, 15 May 2023 14:15:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229950AbjEOGM2 (ORCPT
+        id S239199AbjEOOPF (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 15 May 2023 02:12:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46040 "EHLO
+        Mon, 15 May 2023 10:15:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229985AbjEOGMX (ORCPT
+        with ESMTP id S240022AbjEOOPA (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 15 May 2023 02:12:23 -0400
-Received: from out-39.mta1.migadu.com (out-39.mta1.migadu.com [IPv6:2001:41d0:203:375::27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F09E1E6A
-        for <rust-for-linux@vger.kernel.org>; Sun, 14 May 2023 23:11:57 -0700 (PDT)
-Date:   Mon, 15 May 2023 02:11:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1684131116;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=gQtZtkYSr01iPUQ02O9EobNAKFbxisOovLBX2ZmpB7g=;
-        b=O9YpRD3DZPEXA9ewsr2sNqxtN7Vi/X8uluvLidZYd38LkD6FuRqZXWsgWVCxdOzOKNmXpD
-        yAsKazwRFfkvObwLb+W6n0yNVX2ydTWdRJoYQPnW74kG3grbMjFO/L+6AV5QsviCIf3jwS
-        JjU47Hg728g4OEulJNDfTCYZTiL6eek=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Kent Overstreet <kent.overstreet@linux.dev>
+        Mon, 15 May 2023 10:15:00 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F11AF19B0;
+        Mon, 15 May 2023 07:14:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=TJRlSPOnx9ii8Kt9hBjPHaiwxx3O1eu4ohGE4HeKKXc=; b=hdDoNo+TQguN63TdoZIaPhs9VJ
+        IGBOWWflrw4xhBeHcCrd02GIfGDiVRJOLI2cw7LSHbhW45tn7ikjqdQkGz5kXXNQD+gGXpytwWMkT
+        Lfl887HRTmMZI2kUGRahT9tiUlcJ+bwLKYke+MH2+loRsR0yoVvl7VEFjLeIPiL80FJs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1pyYyW-00CtoW-Nm; Mon, 15 May 2023 16:14:56 +0200
+Date:   Mon, 15 May 2023 16:14:56 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
 To:     FUJITA Tomonori <tomo@exabit.dev>
 Cc:     rust-for-linux@vger.kernel.org, netdev@vger.kernel.org,
         linux-crypto@vger.kernel.org,
         FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH 1/2] rust: add synchronous message digest support
-Message-ID: <ZGHNKCY/2C5buW7O@moria.home.lan>
+Subject: Re: [PATCH 2/2] rust: add socket support
+Message-ID: <f22b24f8-f599-4eec-9535-bcca71138057@lunn.ch>
 References: <20230515043353.2324288-1-tomo@exabit.dev>
- <010101881db037b4-c8c941a9-c482-4759-9c07-b8bf645d96ed-000000@us-west-2.amazonses.com>
+ <010101881db03866-754b644c-682c-44be-8d8e-8376d34c77b3-000000@us-west-2.amazonses.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <010101881db037b4-c8c941a9-c482-4759-9c07-b8bf645d96ed-000000@us-west-2.amazonses.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <010101881db03866-754b644c-682c-44be-8d8e-8376d34c77b3-000000@us-west-2.amazonses.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, May 15, 2023 at 04:34:27AM +0000, FUJITA Tomonori wrote:
+On Mon, May 15, 2023 at 04:34:28AM +0000, FUJITA Tomonori wrote:
 > From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 > 
-> Adds abstractions for crypto shash.
-> 
+> minimum abstraction for networking.
+
 > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 > ---
->  rust/bindings/bindings_helper.h |   1 +
->  rust/helpers.c                  |  24 +++++++
->  rust/kernel/crypto.rs           | 108 ++++++++++++++++++++++++++++++++
+>  rust/bindings/bindings_helper.h |   3 +
 >  rust/kernel/lib.rs              |   2 +
+>  rust/kernel/net.rs              | 174 ++++++++++++++++++++++++++++++++
 
-I think in the long run we're going to need Rust bindings located right
-next to the .c files they're wrapping. Certainly modules will.
+The full networking API is huge. So trying to put it all into net.rs
+is unlikely to work in the long run. Maybe it would be better to name
+this file based on the tiny little bit of the network API you are
+writing an abstraction for?
+
+If i'm reading the code correctly, you are abstracting the in kernel
+socket API for only TCP over IPv4. Probably with time that will get
+extended to IPv6, and then UDP. So maybe call this net-kern-socket.rs?
+
+	 Andrew
