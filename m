@@ -2,109 +2,250 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75564C77B7D
-	for <rust-for-linux@archiver.kernel.org>; Sat, 13 May 2023 19:34:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E5DFC77B7D
+	for <rust-for-linux@archiver.kernel.org>; Mon, 15 May 2023 04:54:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232131AbjEMTeG (ORCPT
+        id S234226AbjEOEyV (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 13 May 2023 15:34:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48226 "EHLO
+        Mon, 15 May 2023 00:54:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229633AbjEMTeF (ORCPT
+        with ESMTP id S229629AbjEOEyU (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 13 May 2023 15:34:05 -0400
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6827D1FD5;
-        Sat, 13 May 2023 12:34:04 -0700 (PDT)
-Received: by mail-qt1-x829.google.com with SMTP id d75a77b69052e-3f41b73104eso26081861cf.3;
-        Sat, 13 May 2023 12:34:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684006443; x=1686598443;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z/2Y0NnOA4rOyDN7e+HMDW4ZS3Xal4lAQgzHlbrtxb8=;
-        b=TKvU88cEw94xxNGVXdWVlGX4SELbGq5Tjssy8H3d8emcgndXTF68PDTb11pNKBVd+v
-         2pItfqbo5XJlLmB3N9FiVeR5pd3BbzyL9IaeeB7aOTyWr3EFWCOHZ4dR4K68KQcrnH6E
-         v0Fa7f8peU8H9jE2WMjcun/Guui6XuV0qitpGJmYcJoU3iwMMgi+g7S4JY9y3WPNpQpo
-         /5AHPXmHI1ijEJRG7vRrvgW6QX7FGR7yswHulAc0ZeGxEBRx39nctPVPUF/4zgQFna1t
-         5QzwPm+wLWXL7VSNm1nAI4SAP1u0yUkiQdyExEydkjqZ0tN0OfxSwWBWhQDtUjKzOAkr
-         CCuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684006443; x=1686598443;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Z/2Y0NnOA4rOyDN7e+HMDW4ZS3Xal4lAQgzHlbrtxb8=;
-        b=LakoN1p3X64trQuZEKlfUgopBOEIIPdI6N4bY4gqaiA4gmzmZUUpP3A3alm6EIvL4d
-         oFyvDaw7O7I6+JgjG3s54EYUvvVVA14MXK3JrE3yj7mot9M4t/VvvBCHTcOBXEg2sL3r
-         4nUEC5eeC//hDbGpA5mr8bfa/S0+N3FCRjGPxnjhipFbZkaKYFtq2+KHghMwFKzfZqRH
-         yQ6Hj3ZnqLRh8+5fr8ncs6zi8qeQ2iIf3358/44o6In/U7mYbZ5qLQLT0FKTtPurySAL
-         U+knfb1+Ai0n+lU037QVJeppKCrSEAdP7DyDGkhJmtRFSXc2fx/2yotj4Q74sNDPh7Rw
-         lVHg==
-X-Gm-Message-State: AC+VfDzK2y6BWnrk5zmv/YGKpvqqV3VlRnvZdQRMplQWnp9TEW9mxBPy
-        metj+NxVZwUS4vgsxyNOiGM=
-X-Google-Smtp-Source: ACHHUZ4e67Vm1wY0nJaNasVnetT4L1KyrgtLN+6+PVyfXg0nNvcoSJhF8DE502RICDRhxbWjSP0Tng==
-X-Received: by 2002:a05:622a:1309:b0:3ef:415f:188 with SMTP id v9-20020a05622a130900b003ef415f0188mr49337463qtk.61.1684006443437;
-        Sat, 13 May 2023 12:34:03 -0700 (PDT)
-Received: from localhost.localdomain (2603-6000-8100-7fd4-0000-0000-0000-0c33.res6.spectrum.com. [2603:6000:8100:7fd4::c33])
-        by smtp.gmail.com with ESMTPSA id s13-20020a05622a018d00b003f018e18c35sm4054115qtw.27.2023.05.13.12.34.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 May 2023 12:34:03 -0700 (PDT)
-From:   "Ethan D. Twardy" <ethan.twardy@gmail.com>
-To:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>,
-        rust-for-linux@vger.kernel.org (open list:RUST),
-        linux-kernel@vger.kernel.org (open list),
-        llvm@lists.linux.dev (open list:CLANG/LLVM BUILD SUPPORT)
-Cc:     "Ethan D. Twardy" <ethan.twardy@gmail.com>
-Subject: [PATCH] Fix libclang version check for out-of-tree builds
-Date:   Sat, 13 May 2023 14:32:37 -0500
-Message-Id: <20230513193238.28208-1-ethan.twardy@gmail.com>
-X-Mailer: git-send-email 2.40.1
+        Mon, 15 May 2023 00:54:20 -0400
+X-Greylist: delayed 775 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 14 May 2023 21:54:17 PDT
+Received: from a27-42.smtp-out.us-west-2.amazonses.com (a27-42.smtp-out.us-west-2.amazonses.com [54.240.27.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B04F9E73;
+        Sun, 14 May 2023 21:54:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=s25kmyuhzvo7troimxqpmtptpemzlc6l; d=exabit.dev; t=1684125268;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+        bh=SjA4EaCWPWL6OZBVB5Rud8Di4or9uoJm1afWFaPyX9c=;
+        b=iVLtFZGcy72XM77Ym4DWxlRmSWZ6CkOm7NEvChgbS8ui1BeqoGzqJeBjJlXSRUxc
+        /nAVxvtl7ALCDVCLb1S/pyfx6BKioFNjNcJqPQ4zoi+8bMzBD9rCyuXPwlgJE5kuSyF
+        YI1xS3j4NqdJcTeYDN8XLOq5rNWOi4ADaIIAXelOhamvh1TuU7G8ijDGBOSYGiLEvLn
+        YFbYw1qMERSm4wlpR0GK4mdBtHBjrrlOzrEDjrdPGDD+f0zB6nP2ZUbEMnq8oWY9/eY
+        zhMNk8kxaFQLvsmKnXvlsMBtokI0DUtDShX3NLiC1Ljl6rfM1uGAJlwiaGj3UtenZfy
+        Aova5BAOYA==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1684125268;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
+        bh=SjA4EaCWPWL6OZBVB5Rud8Di4or9uoJm1afWFaPyX9c=;
+        b=T3MRTQRSgzyzheEUU3gNXVNnJUm+6t41rYP6bGnf2jJl/q9I7I5Kfj0EDZAkdC5P
+        VH3QzbQ98eWQSsk6pLaPUTGno3VBtT9teOo/j5BpDHP0EUPOAoskUI9Knr5dfRh+8/P
+        uEocbii0brG0h9m32oPf1bbdNe3DH4TKTxNZ3EmE=
+From:   FUJITA Tomonori <tomo@exabit.dev>
+To:     rust-for-linux@vger.kernel.org, netdev@vger.kernel.org,
+        linux-crypto@vger.kernel.org
+Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH 1/2] rust: add synchronous message digest support
+Date:   Mon, 15 May 2023 04:34:27 +0000
+Message-ID: <010101881db037b4-c8c941a9-c482-4759-9c07-b8bf645d96ed-000000@us-west-2.amazonses.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230515043353.2324288-1-tomo@exabit.dev>
+References: <20230515043353.2324288-1-tomo@exabit.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Feedback-ID: 1.us-west-2.j0GTvY5MHQQ5Spu+i4ZGzzYI1gDE7m7iuMEacWMZbe8=:AmazonSES
+X-SES-Outgoing: 2023.05.15-54.240.27.42
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-During out-of-tree builds where the path to the kernel source tree
-contains a version string, scripts/rust_is_available.sh incorrectly
-parses the version string of libclang, resulting in
-CONFIG_RUST_IS_AVAILABLE erroneously set to 'n'.
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-To reproduce:
+Adds abstractions for crypto shash.
 
-    $ cd ~/build && make -C ~/linux-6.4.0-rc1 O=$PWD rustavailable
-
-Signed-off-by: Ethan D. Twardy <ethan.twardy@gmail.com>
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- scripts/rust_is_available.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers.c                  |  24 +++++++
+ rust/kernel/crypto.rs           | 108 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ 4 files changed, 135 insertions(+)
+ create mode 100644 rust/kernel/crypto.rs
 
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index aebbf1913970..e8a1439be9f8 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -102,8 +102,8 @@ fi
- # Check that the `libclang` used by the Rust bindings generator is suitable.
- bindgen_libclang_version=$( \
- 	LC_ALL=C "$BINDGEN" $(dirname $0)/rust_is_available_bindgen_libclang.h 2>&1 >/dev/null \
--		| grep -F 'clang version ' \
--		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
-+		| grep -oE 'clang version [0-9]+\.[0-9]+\.[0-9]+' \
-+		| cut -d' ' -f3 \
- 		| head -n 1 \
- )
- bindgen_libclang_min_version=$($min_tool_version llvm)
-
-base-commit: ac9a78681b921877518763ba0e89202254349d1b
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 50e7a76d5455..65683b9aa45d 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -6,6 +6,7 @@
+  * Sorted alphabetically.
+  */
+ 
++#include <crypto/hash.h>
+ #include <linux/slab.h>
+ #include <linux/refcount.h>
+ #include <linux/wait.h>
+diff --git a/rust/helpers.c b/rust/helpers.c
+index 81e80261d597..03c131b1ca38 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -18,6 +18,7 @@
+  * accidentally exposed.
+  */
+ 
++#include <crypto/hash.h>
+ #include <linux/bug.h>
+ #include <linux/build_bug.h>
+ #include <linux/err.h>
+@@ -27,6 +28,29 @@
+ #include <linux/sched/signal.h>
+ #include <linux/wait.h>
+ 
++void rust_helper_crypto_free_shash(struct crypto_shash *tfm)
++{
++	crypto_free_shash(tfm);
++}
++EXPORT_SYMBOL_GPL(rust_helper_crypto_free_shash);
++
++unsigned int rust_helper_crypto_shash_digestsize(struct crypto_shash *tfm)
++{
++    return crypto_shash_digestsize(tfm);
++}
++EXPORT_SYMBOL_GPL(rust_helper_crypto_shash_digestsize);
++
++unsigned int rust_helper_crypto_shash_descsize(struct crypto_shash *tfm)
++{
++    return crypto_shash_descsize(tfm);
++}
++EXPORT_SYMBOL_GPL(rust_helper_crypto_shash_descsize);
++
++int rust_helper_crypto_shash_init(struct shash_desc *desc) {
++	return crypto_shash_init(desc);
++}
++EXPORT_SYMBOL_GPL(rust_helper_crypto_shash_init);
++
+ __noreturn void rust_helper_BUG(void)
+ {
+ 	BUG();
+diff --git a/rust/kernel/crypto.rs b/rust/kernel/crypto.rs
+new file mode 100644
+index 000000000000..963487428525
+--- /dev/null
++++ b/rust/kernel/crypto.rs
+@@ -0,0 +1,108 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Cryptography.
++//!
++//! C headers: [`include/crypto/hash.h`](../../../../include/crypto/hash.h)
++
++use crate::{
++    error::{from_err_ptr, to_result, Result},
++    str::CStr,
++};
++use alloc::alloc::{alloc, dealloc};
++use core::alloc::Layout;
++
++/// Represents `struct crypto_shash *`.
++///
++/// # Invariants
++///
++/// The pointer is valid.
++pub struct Shash(*mut bindings::crypto_shash);
++
++impl Drop for Shash {
++    fn drop(&mut self) {
++        // SAFETY: The type invariant guarantees that the pointer is valid.
++        unsafe { bindings::crypto_free_shash(self.0) }
++    }
++}
++
++impl Shash {
++    /// Creates a [`Shash`] object for a message digest handle.
++    pub fn new(name: &'static CStr, t: u32, mask: u32) -> Result<Shash> {
++        // SAFETY: FFI call.
++        let ptr =
++            unsafe { from_err_ptr(bindings::crypto_alloc_shash(name.as_char_ptr(), t, mask)) }?;
++        Ok(Self(ptr))
++    }
++
++    /// Sets optional key used by the hashing algorithm.
++    pub fn setkey(&mut self, data: &[u8]) -> Result {
++        // SAFETY: The type invariant guarantees that the pointer is valid.
++        to_result(unsafe {
++            bindings::crypto_shash_setkey(self.0, data.as_ptr(), data.len() as u32)
++        })
++    }
++
++    /// Returns the size of the result of the transformation.
++    pub fn digestsize(&self) -> u32 {
++        // SAFETY: The type invariant guarantees that the pointer is valid.
++        unsafe { bindings::crypto_shash_digestsize(self.0) }
++    }
++}
++
++/// Represents `struct shash_desc *`.
++///
++/// # Invariants
++///
++/// The field `ptr` is non-null and valid for the lifetime of the object.
++pub struct ShashDesc<'a> {
++    ptr: *mut bindings::shash_desc,
++    tfm: &'a Shash,
++    size: usize,
++}
++
++impl Drop for ShashDesc<'_> {
++    fn drop(&mut self) {
++        // SAFETY: The type invariant guarantees that the pointer is valid.
++        unsafe {
++            dealloc(
++                self.ptr.cast(),
++                Layout::from_size_align(self.size, 2).unwrap(),
++            );
++        }
++    }
++}
++
++impl<'a> ShashDesc<'a> {
++    /// Creates a [`ShashDesc`] object for a request data structure for message digest.
++    pub fn new(tfm: &'a Shash) -> Result<Self> {
++        // SAFETY: The type invariant guarantees that the pointer is valid.
++        let size = core::mem::size_of::<bindings::shash_desc>()
++            + unsafe { bindings::crypto_shash_descsize(tfm.0) } as usize;
++        let layout = Layout::from_size_align(size, 2)?;
++        let ptr = unsafe { alloc(layout) } as *mut bindings::shash_desc;
++        let mut desc = ShashDesc { ptr, tfm, size };
++        // SAFETY: The `desc.tfm` is non-null and valid for the lifetime of this object.
++        unsafe { (*desc.ptr).tfm = desc.tfm.0 };
++        Ok(desc)
++    }
++
++    /// (Re)initializes message digest.
++    pub fn init(&mut self) -> Result {
++        // SAFETY: The type invariant guarantees that the pointer is valid.
++        to_result(unsafe { bindings::crypto_shash_init(self.ptr) })
++    }
++
++    /// Adds data to message digest for processing.
++    pub fn update(&mut self, data: &[u8]) -> Result {
++        // SAFETY: The type invariant guarantees that the pointer is valid.
++        to_result(unsafe {
++            bindings::crypto_shash_update(self.ptr, data.as_ptr(), data.len() as u32)
++        })
++    }
++
++    /// Calculates message digest.
++    pub fn finalize(&mut self, output: &mut [u8]) -> Result {
++        // SAFETY: The type invariant guarantees that the pointer is valid.
++        to_result(unsafe { bindings::crypto_shash_final(self.ptr, output.as_mut_ptr()) })
++    }
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 676995d4e460..753fd62b84f1 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -35,6 +35,8 @@ extern crate self as kernel;
+ #[cfg(not(testlib))]
+ mod allocator;
+ mod build_assert;
++#[cfg(CONFIG_CRYPTO)]
++pub mod crypto;
+ pub mod error;
+ pub mod init;
+ pub mod ioctl;
 -- 
-2.40.1
+2.34.1
 
