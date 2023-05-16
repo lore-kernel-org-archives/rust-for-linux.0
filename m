@@ -2,110 +2,118 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B35B5C7EE24
-	for <rust-for-linux@archiver.kernel.org>; Mon, 15 May 2023 19:09:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBB5CC7EE25
+	for <rust-for-linux@archiver.kernel.org>; Tue, 16 May 2023 05:52:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244245AbjEOTJy (ORCPT
+        id S229847AbjEPFwY (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 15 May 2023 15:09:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55354 "EHLO
+        Tue, 16 May 2023 01:52:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243377AbjEOTJw (ORCPT
+        with ESMTP id S229572AbjEPFwX (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 15 May 2023 15:09:52 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3886414E4A
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 May 2023 12:09:50 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-96b0235c10bso403052566b.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 May 2023 12:09:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1684177789; x=1686769789;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=eFN3riFsUX1aJRke3gkBwMCKuLwmmi07T3ndOLDE1rE=;
-        b=VOV8h1KkyY041gieBzFWVDYmm77Y0kEVHfmmBrRS94nWAjdcrIHJicpi5dpBL0RGtc
-         apvToY3T3UaYZl4IxZjJPnRrHyst5B2jLO7YkD1ZDpmRswVNsdcEdA6DfYmcWa412HRF
-         aIbxdqjMIQJ0Jtc7zWMywleKuM+kVXECqeNegXfkQML2Hk/gWA9qnxkXy8IxC1VFDFGh
-         8waZS49PIiJZ/5PWc/sqyFer0kTJiaBnZexS++5In6HGJcxoDoKLyzSWsNXGHeGN3Bzi
-         cUX1JL9Jwzg5sWMylB9MTpIMq+xOAPd4vvHGaMtmDIwia4ysgm10nCS3/5H526nMpzHa
-         PPjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684177789; x=1686769789;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eFN3riFsUX1aJRke3gkBwMCKuLwmmi07T3ndOLDE1rE=;
-        b=cngw4r0HbACNPdNN9OZiS83bNQ/fT1XJ2qg0z8TQnX0S3KAujURA2VPqvMmq3yuUEi
-         5fSOqEFIdlAnmYHM8/spuB6i+gYesCvAFUWg5WeCx5Jf2kQSzBe0AY5n9QCp6iyQU9/6
-         +k//slVrh+NUB2DYnHRDeXp3JYg8lzJEgWK1NvQ6Q7jXNTPj+F3RtD64cQtv14/vkXh9
-         zJvU/A8NqSejwceLldB3nKrjuyRb9WeiTfTi6SNZ2q7Udx/7xxsVbJfD/UnUfVKgNF4y
-         u2hKWXhfBlyrHjbeLlGlzF5OihbcP3GqnVmLXTdQLaK/Q6h96kYIO3pk55UYPTkqj8LL
-         Cjyw==
-X-Gm-Message-State: AC+VfDwWB+++LjiiFVH7WQbLXJLBvTG09vCWIABowejWveSkDoBBK1yJ
-        D+yOx2H9muwHUG14daTqMC30kg==
-X-Google-Smtp-Source: ACHHUZ6xoBq5iKbeuoQ9ODrTl6E57S/8BHMQ8gP6REFxuQcxS8sRjPcAEpK0ls47icDh8mQwvmJ1Pg==
-X-Received: by 2002:a17:906:eeca:b0:965:d17b:292 with SMTP id wu10-20020a170906eeca00b00965d17b0292mr29875482ejb.60.1684177788655;
-        Mon, 15 May 2023 12:09:48 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id v21-20020a1709060b5500b00965e68b8df5sm9898010ejg.76.2023.05.15.12.09.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 May 2023 12:09:48 -0700 (PDT)
-References: <20230502124015.356001-1-aliceryhl@google.com>
-User-agent: mu4e 1.10.3; emacs 28.2.50
-From:   Andreas Hindborg <nmi@metaspace.dk>
-To:     Alice Ryhl <aliceryhl@google.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: Re: [PATCH] rust: error: allow specifying error type on `Result`
-Date:   Mon, 15 May 2023 21:09:20 +0200
-In-reply-to: <20230502124015.356001-1-aliceryhl@google.com>
-Message-ID: <877ct9o1hh.fsf@metaspace.dk>
+        Tue, 16 May 2023 01:52:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6794740E1;
+        Mon, 15 May 2023 22:52:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 041ED62E86;
+        Tue, 16 May 2023 05:52:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A649C433EF;
+        Tue, 16 May 2023 05:52:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684216341;
+        bh=UnnfSoH2Sog9IytTw4FHR+TpDmR01YMPhEE6qSYNrPo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qRgroj2v2j30UkZE/IdvIx7y4qOvg4zGQutz4YlyomWWWtOTD+9jg5OLkKW4gBsdz
+         8CRaQByqbQQTsxSioc5ywuaDeXO+biQAPqJRokKoz3Lb44gykAM0l6f2N+ktTCpGB/
+         u1314ylalzvx9n1XCWv/pTrS9n81y0t/77U9nCIdo1t6zW1RJNP4UVe1S2sX+4U5Sb
+         JhrNTsreJV+HSjMwX2wG0++uPNyteN9Qqd+JL76R8EzSD4ko4DPyJbC70qgdFT5Y+R
+         hfgcxoERDQ5C5w1mbqD7jzGl+2POjJh4nB+f2lJaMbNk8+SKD+nzL5jw0FhWlJFzdB
+         qn2WrrvkGakxg==
+Date:   Mon, 15 May 2023 22:52:19 -0700
+From:   Eric Biggers <ebiggers@kernel.org>
+To:     FUJITA Tomonori <tomo@exabit.dev>
+Cc:     rust-for-linux@vger.kernel.org, netdev@vger.kernel.org,
+        linux-crypto@vger.kernel.org,
+        FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH 1/2] rust: add synchronous message digest support
+Message-ID: <20230516055219.GC2704@sol.localdomain>
+References: <20230515043353.2324288-1-tomo@exabit.dev>
+ <010101881db037b4-c8c941a9-c482-4759-9c07-b8bf645d96ed-000000@us-west-2.amazonses.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <010101881db037b4-c8c941a9-c482-4759-9c07-b8bf645d96ed-000000@us-west-2.amazonses.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+Hi Fujita,
 
-Alice Ryhl <aliceryhl@google.com> writes:
-
-> Currently, if the `kernel::error::Result` type is in scope (which is
-> often is, since it's in the kernel's prelude), you cannot write
-> `Result<T, SomeOtherErrorType>` when you want to use a different error
-> type than `kernel::error::Error`.
->
-> To solve this we change the error type from being hard-coded to just
-> being a default generic parameter. This still lets you write `Result<T>`
-> when you just want to use the `Error` error type, but also lets you
-> write `Result<T, SomeOtherErrorType>` when necessary.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
-
->  rust/kernel/error.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 5f4114b30b94..01dd4d2f63d2 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -177,7 +177,7 @@ impl From<core::convert::Infallible> for Error {
->  /// Note that even if a function does not return anything when it succeeds,
->  /// it should still be modeled as returning a `Result` rather than
->  /// just an [`Error`].
-> -pub type Result<T = ()> = core::result::Result<T, Error>;
-> +pub type Result<T = (), E = Error> = core::result::Result<T, E>;
+On Mon, May 15, 2023 at 04:34:27AM +0000, FUJITA Tomonori wrote:
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 81e80261d597..03c131b1ca38 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -18,6 +18,7 @@
+>   * accidentally exposed.
+>   */
 >  
->  /// Converts an integer as returned by a C kernel function to an error if it's negative, and
->  /// `Ok(())` otherwise.
->
-> base-commit: ea76e08f4d901a450619831a255e9e0a4c0ed162
+> +#include <crypto/hash.h>
+>  #include <linux/bug.h>
+>  #include <linux/build_bug.h>
+>  #include <linux/err.h>
+> @@ -27,6 +28,29 @@
+>  #include <linux/sched/signal.h>
+>  #include <linux/wait.h>
+>  
+> +void rust_helper_crypto_free_shash(struct crypto_shash *tfm)
+> +{
+> +	crypto_free_shash(tfm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_crypto_free_shash);
 
+Shouldn't this code be compiled only when the crypto API is available?
+
+> +impl<'a> ShashDesc<'a> {
+> +    /// Creates a [`ShashDesc`] object for a request data structure for message digest.
+> +    pub fn new(tfm: &'a Shash) -> Result<Self> {
+> +        // SAFETY: The type invariant guarantees that the pointer is valid.
+> +        let size = core::mem::size_of::<bindings::shash_desc>()
+> +            + unsafe { bindings::crypto_shash_descsize(tfm.0) } as usize;
+> +        let layout = Layout::from_size_align(size, 2)?;
+> +        let ptr = unsafe { alloc(layout) } as *mut bindings::shash_desc;
+> +        let mut desc = ShashDesc { ptr, tfm, size };
+> +        // SAFETY: The `desc.tfm` is non-null and valid for the lifetime of this object.
+> +        unsafe { (*desc.ptr).tfm = desc.tfm.0 };
+> +        Ok(desc)
+> +    }
+> +
+> +    /// (Re)initializes message digest.
+> +    pub fn init(&mut self) -> Result {
+> +        // SAFETY: The type invariant guarantees that the pointer is valid.
+> +        to_result(unsafe { bindings::crypto_shash_init(self.ptr) })
+> +    }
+> +
+> +    /// Adds data to message digest for processing.
+> +    pub fn update(&mut self, data: &[u8]) -> Result {
+> +        // SAFETY: The type invariant guarantees that the pointer is valid.
+> +        to_result(unsafe {
+> +            bindings::crypto_shash_update(self.ptr, data.as_ptr(), data.len() as u32)
+> +        })
+> +    }
+> +
+> +    /// Calculates message digest.
+> +    pub fn finalize(&mut self, output: &mut [u8]) -> Result {
+> +        // SAFETY: The type invariant guarantees that the pointer is valid.
+> +        to_result(unsafe { bindings::crypto_shash_final(self.ptr, output.as_mut_ptr()) })
+> +    }
+
+This doesn't enforce that init() is called before update() or finalize().  I
+think that needs to be checked in the Rust code, since the C code doesn't have
+defined behavior in that case.
+
+- Eric
