@@ -2,102 +2,57 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5FABC77B7F
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 May 2023 09:59:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0DA6C77B75
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 May 2023 11:36:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230206AbjEQJ7a (ORCPT
+        id S229486AbjEQLgJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 May 2023 05:59:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34736 "EHLO
+        Wed, 17 May 2023 07:36:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230242AbjEQJ7Z (ORCPT
+        with ESMTP id S231383AbjEQLgF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 May 2023 05:59:25 -0400
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D4E35BAB
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 02:59:18 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-560ee0df572so7567647b3.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 02:59:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684317557; x=1686909557;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J+riL/nvu1twHwHqCACNcwNJex8EunROGCv0pZTyq3c=;
-        b=3SFYtDlzFGF0m5RFD90h5jV9WZN4ZQwsCYqL/L/KzsZpuhNTLNtc4NH8KkUmRUjhHw
-         yU+/GY4lHVLt8d1eTEBvKc6iGCGTvz6I045YZE8Ng2XHGgSWo+1d0F2TwuhQuaeomJDH
-         i/6cV5XiGTYvBIxkfd7/+PUO2skxtNeaGRppfUZYo2OsYGRYf/AbtvCjVoszYi4K7rMv
-         NyCLauJl4qVfLHNz0jiJglxu5L01hZP5yijMYDdXMXBUcLgeVuKltS5XBDCm6fa/qfAn
-         Dbzm2INF6PUBvWIX8Q1PMEbamATl0vdm0foAco2RbUnHFx4WCbE6oar+BGe9b+EwsDiJ
-         KJ+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684317557; x=1686909557;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J+riL/nvu1twHwHqCACNcwNJex8EunROGCv0pZTyq3c=;
-        b=ai4jBIK+Mi5/c/hoDtM43YVP8iPt9HM3R0hrdUnDGw20LYALofYgJC0Kdb/XthuN3z
-         rVMT32FBGqL/T78L50mnQ9l2VrdCVTa+cU+WLRGGHraYLe//RQzy/ZJ8+PWDLJJ7tulF
-         JgSj1agOOEAleUf+3bXwwZDkUOuXSFDJpdNaU6iwQD4zVP0u5vgqysMeS7g2CWlkRlnI
-         UwSDYi55+TR2JG7VKV7Js1u5W+YlbEo1ltu9O2KJm7RzA6huqVAD9JVPSI6NWynC9dLb
-         rZBAMPHwgY5nlSB5sEiNg6Kbc0UWdhz57fh0vHuY6uDYzb9KXeqUGM2OcaVeV2NVPQCK
-         Mttg==
-X-Gm-Message-State: AC+VfDxvspGGzk7ZUlE/1NcjgJ49dWQfj61xzMzyAP5gdVv+u/pwC9R0
-        FlfwiwSoSWOBucCdX23QmewwdRjC5c3hpwY=
-X-Google-Smtp-Source: ACHHUZ60EDILvcrgq8I5bNFxfKYG43DpQ8rRj9CmpjDxgovsZUytRTZqwAp2m8+fTB4YrFpINFTOmK2/L+22Ghk=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a81:400c:0:b0:560:c30c:75f7 with SMTP id
- l12-20020a81400c000000b00560c30c75f7mr15720009ywn.2.1684317557527; Wed, 17
- May 2023 02:59:17 -0700 (PDT)
-Date:   Wed, 17 May 2023 09:59:05 +0000
-In-Reply-To: <20230517095905.3548100-1-aliceryhl@google.com>
-Mime-Version: 1.0
-References: <20230517095905.3548100-1-aliceryhl@google.com>
-X-Mailer: git-send-email 2.40.1.606.ga4b1b128d6-goog
-Message-ID: <20230517095905.3548100-2-aliceryhl@google.com>
-Subject: [PATCH v1 2/2] rust: task: add `Send` marker to `Task`
-From:   Alice Ryhl <aliceryhl@google.com>
-To:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        "=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
+        Wed, 17 May 2023 07:36:05 -0400
+Received: from mail.penmade.pl (mail.penmade.pl [94.177.230.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9955D4EF8
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 04:36:00 -0700 (PDT)
+Received: by mail.penmade.pl (Postfix, from userid 1001)
+        id A8A17852DE; Wed, 17 May 2023 12:35:54 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=penmade.pl; s=mail;
+        t=1684323357; bh=CSKXLMgcdpWkXuTgJn5+jsCVobtU9JEF4vCnS5z6McM=;
+        h=Date:From:To:Subject:From;
+        b=lUP5PLy4ZX053Ga4f0A3JdwiznH5F5THqcSH3rVglvlK/Sj+jcI5LdF/Zc9ODKCZn
+         B1T80+rDddg4j1Yv529sr6731y+g07ZDSJIgd4kOFSUKYrqSUFcNU0MnzSB0TI6aED
+         XUNyTfNlzMDADRnXW2iYUwxS3mGA31pRWSb1T4bi7/z88S0WRnYTyD5whKK1vLuOjG
+         cOCuBJK6OV3GPVEADpQNrVFvo53nGWP5nETq7lhwGcVOV6LI9WETtb+g141K0J3g6k
+         v5/BwnzqRkiKdWOor2GCXv08qJGoy/GfXdYg6+1b8UBZo5OGwXdQy6DpORL+s5BpQT
+         dtZSTaHBO70Ww==
+Received: by mail.penmade.pl for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 11:35:49 GMT
+Message-ID: <20230517115748-0.1.45.ky0g.0.9iybo11rdi@penmade.pl>
+Date:   Wed, 17 May 2023 11:35:49 GMT
+From:   "Wiktor Nurek" <wiktor.nurek@penmade.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
+X-Mailer: mail.penmade.pl
+MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-When a type also implements `Sync`, the meaning of `Send` is just "this
-type may be accessed mutably from threads other than the one it is
-created on". That's ok for this type.
+Dzie=C5=84 dobry,
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/task.rs | 5 +++++
- 1 file changed, 5 insertions(+)
+chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
+skania nowych zlece=C5=84 ze strony www.
 
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 526d29a0ae27..4f1fe9aa9f6e 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -64,6 +64,11 @@ macro_rules! current {
- #[repr(transparent)]
- pub struct Task(pub(crate) Opaque<bindings::task_struct>);
- 
-+// SAFETY: The only situation in which this can be accessed mutably is when the refcount drops to
-+// zero and the destructor runs. It is safe for that to happen on any thread, so it is ok for this
-+// type to be `Send`.
-+unsafe impl Send for Task {}
-+
- // SAFETY: It's OK to access `Task` through references from other threads because we're either
- // accessing properties that don't change (e.g., `pid`, `group_leader`) or that are properly
- // synchronised by C code (e.g., `signal_pending`).
--- 
-2.40.1.606.ga4b1b128d6-goog
+Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
+, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
+=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
+jonowania strony w Google.
 
+Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+
+
+Pozdrawiam serdecznie,
+Wiktor Nurek
