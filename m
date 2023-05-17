@@ -2,97 +2,95 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C334C77B7A
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 May 2023 20:40:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C077C7EE23
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 May 2023 20:42:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229521AbjEQUks (ORCPT
+        id S229544AbjEQUmc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 May 2023 16:40:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36400 "EHLO
+        Wed, 17 May 2023 16:42:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjEQUkr (ORCPT
+        with ESMTP id S229721AbjEQUmb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 May 2023 16:40:47 -0400
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CA4483;
-        Wed, 17 May 2023 13:40:44 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id 8BF705C01B9;
-        Wed, 17 May 2023 16:40:42 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Wed, 17 May 2023 16:40:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-        :content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
-        1684356042; x=1684442442; bh=ghk7mGsvuQGuVrjeRiTDYinTiiFkqaw9VUe
-        QsZ2qew8=; b=rkqF1pWbMBTeBx4H44JeGXZ4V4sev7qMDienTltUrQ/wbVIpMx5
-        lpyR8VEPGxcs6yizyn1BE5lXEjUIFjImSzP41ATpqCwz38owd5hZ/87LCXz9FgLG
-        /qEUnd5eMa9FUmtoDONmqgYJgEuUxyrp8xMYLeNNivKA2lptKAAKEtxaHFqnLNXS
-        qoSjN8CYLZ5crbZDulVL/ZHqCeeSc9Q0bIXeXzuBiYWt/R1wnGWvXAry669vdeRB
-        UPrf6VSTKKKDKegDWx0uDzipS3E7/h3hZNQ+EznVljoGyXTuvuXZLRkZ9ZkJQX6S
-        YxNdUzZskIKM29C7JfYUx1Gd9e/MIfax/VA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1684356042; x=1684442442; bh=ghk7mGsvuQGuVrjeRiTDYinTiiFkqaw9VUe
-        QsZ2qew8=; b=tv1dhMRYaY4wvGP3WdQW34d9yLhX6PzGXpvJaD3qjha0RL3Ew6R
-        fBmuYbesXTH1LCRh3JJim/saMJzYGWStsZeQTzIzMIsw5J+zCmtUlzfITOHYnFav
-        ucOb6mxNbGQuPcWXxPhzXNiLN4kPM1KOafRFWGjrpN034/ZgWegGG4HEGFnsvAFd
-        swP3qrviYiNgVUHegCMV/4xZ5WKNHDYC00RTxKpAIdanIpsKRvly1VhNtH5bT4eI
-        s6MYaczfXmw5Z8hJbAcV/p8+Ggg6SwFyBMO2aVNo5sDNH+xUCfxqz6pQjhKlDgef
-        CdoP/vLgsTG+f927I9sXXixWUoewOR8AhIw==
-X-ME-Sender: <xms:yTtlZBgoJackQwN4zJeCH7oYaek36RvPdKOTrXcW-iSaswORYqbwow>
-    <xme:yTtlZGC-7Zr4wg0WC7-vXHvxDs3nkR_2wpx1UX2leC_3uiIHa5yC2XSNmctwIA-dk
-    ZJQUBMQCPnKHrfWrQ>
-X-ME-Received: <xmr:yTtlZBGnJEhz4cv9V2bY1NHW9kuRDWc8ZEnJN2tHdIsXQu96imyRcYQ5Vmgvz2-Up9u76Kzf5C5LwhJ5isImvaF8Onw36cF7qMYnIQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeiuddgudehvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttdefjeenucfhrhhomheptehl
-    ihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnh
-    epheduuddvteekvdektdduledugfffhfdugeejgeeuvdevtdetveejheehiefffeegnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvg
-    esrhihhhhlrdhioh
-X-ME-Proxy: <xmx:yTtlZGTUQ6zxCsEaeFPoHk5uoejU72xydi14pkEbau10L6HilMpDyg>
-    <xmx:yTtlZOwKJwq_UA8OXQk1ROIp3fGDpjkhU6v8r9gfieYzO_eCRkOwEQ>
-    <xmx:yTtlZM5K5qDhv4qMQh24ufgG4Js_oiHL6P6cdsqFrkn0bR7w5HJKXg>
-    <xmx:yjtlZNl1_-V269yvRtAcu738AyLDPo87TKEIYL1Y6iHhln5kSc-kyA>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 17 May 2023 16:40:40 -0400 (EDT)
-Message-ID: <83744422-a332-5b3e-8269-73b2f2ce281e@ryhl.io>
-Date:   Wed, 17 May 2023 22:41:10 +0200
+        Wed, 17 May 2023 16:42:31 -0400
+Received: from mail-oo1-xc2c.google.com (mail-oo1-xc2c.google.com [IPv6:2607:f8b0:4864:20::c2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7320A30DE;
+        Wed, 17 May 2023 13:42:30 -0700 (PDT)
+Received: by mail-oo1-xc2c.google.com with SMTP id 006d021491bc7-54fd9c0e435so555396eaf.2;
+        Wed, 17 May 2023 13:42:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684356150; x=1686948150;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IKmc4/mY2T8M2vtBoa3KRIY5AIQ1sNsQWDEPH950Scs=;
+        b=eUGiJbnfLgkPtl6HyfdqGOEGxQmhF6+mgHDX4SBK74DqCsMAtewI0AtjeOiTs3oNqq
+         4DB7ue0e5qRJccB4bfIXxaZyaPoxol+uXIQfhHJf2LkbDwxCV9fMguKjOXpb4uQL3pPM
+         dIZKc1l6DfNpP4fum/8/L07J1kyQSb7rR03oaAfGT/fy2PpYT+WRXnIW8ODOgBYgOLhQ
+         MOpXPBwJ3D7sdNEXc0wsZlJ7/3dNQLaKOf68ifgkOjxwE0c1c8KECZ00ltgkejzykvx0
+         M0UXVwBqnwENbA8nfmusa/2ON7UtyaA6xxzfg87HGQX9qnEfLh9zntDfeFNqnAdiRyuO
+         ZNPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684356150; x=1686948150;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IKmc4/mY2T8M2vtBoa3KRIY5AIQ1sNsQWDEPH950Scs=;
+        b=GgjIbS09KIBwqH8m0HTB1l/UEirfdmpscNCTHpm5rLqKNh2k5kMh38exAopZG3xx9x
+         KM3GDjFtBqhgbfG+xEZ0q9Z3U9GwHJjjrtLJiY3XMe+PY+9khTujD90AbuG71vJpuiHN
+         XFPMfhQ8uCoS9Ga1lkzGeVniu7vsOEd4/vZkC1GPv26vBP8NXK9uj8fV2EsX08m5e1i7
+         RfIH2FbsDz49codA5gUm31/IpgFe+5aVRgWa+ehkvRCPOYdo7IkfIUh12SHToJxN6L6z
+         1OEerayqx+vqPeD5K3JvEffRN4y1Kqusd2zwcSYx9eKhE0YZ/sR9g2dtOptuDtCZbZ/C
+         69Hw==
+X-Gm-Message-State: AC+VfDwFUnu71BSl97ib/AyzX0BUUM2U2kn2e+luBtJoEoDsRY1KMQiw
+        /6KdK3fgtKBfLrXp3W/hLKk=
+X-Google-Smtp-Source: ACHHUZ41+outjsfJKy4Z+3zXxQQv9yrO3qwXSk9TUPgATnMrC9PcekqE5qHFLmEcRTICyBwlKGf1sA==
+X-Received: by 2002:a05:6808:99c:b0:395:7577:1533 with SMTP id a28-20020a056808099c00b0039575771533mr39910oic.37.1684356149776;
+        Wed, 17 May 2023 13:42:29 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id q66-20020acac045000000b0038c0cf168afsm10424955oif.7.2023.05.17.13.42.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 May 2023 13:42:29 -0700 (PDT)
+Message-ID: <6a8183b8-0e81-9f2f-f79f-74ca5beb3ef4@gmail.com>
+Date:   Wed, 17 May 2023 17:42:22 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH 1/4] rust: macros: fix usage of `#[allow]` in `quote!`
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v1 2/2] rust: sync: implement `AsRef<T>` for `Arc<T>`
 Content-Language: en-US
-To:     Benno Lossin <benno.lossin@proton.me>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
+To:     Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-References: <20230424081112.99890-1-benno.lossin@proton.me>
-From:   Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20230424081112.99890-1-benno.lossin@proton.me>
+        Alex Gaynor <alex.gaynor@gmail.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Will Deacon <will@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev,
+        Wedson Almeida Filho <walmeida@microsoft.com>
+References: <20230517200814.3157916-1-aliceryhl@google.com>
+ <20230517200814.3157916-2-aliceryhl@google.com>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230517200814.3157916-2-aliceryhl@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 4/24/23 10:11, Benno Lossin wrote:
-> When using `quote!` as part of an expression that was not the last one
-> in a function, the `#[allow(clippy::vec_init_then_push)]` attribute
-> would be present on an expression, which is not allowed.
-> This patch refactors that part of the macro to use a statement instead.
-> 
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+On 5/17/23 17:08, Alice Ryhl wrote:
+> [...]
+>   
+> +impl<T: ?Sized> AsRef<T> for Arc<T> {
+> +    fn as_ref(&self) -> &T {
+> +        self.deref()
+> +    }
+> +}
+> +
+>   impl<T: ?Sized> Clone for Arc<T> {
+>       fn clone(&self) -> Self {
+>           // INVARIANT: C `refcount_inc` saturates the refcount, so it cannot overflow to zero.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
