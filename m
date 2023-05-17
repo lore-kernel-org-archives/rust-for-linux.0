@@ -2,107 +2,118 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7D50C7EE22
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 May 2023 20:08:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A3D2C7EE22
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 May 2023 20:31:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229562AbjEQUIm (ORCPT
+        id S229477AbjEQUb2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 May 2023 16:08:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43948 "EHLO
+        Wed, 17 May 2023 16:31:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbjEQUIi (ORCPT
+        with ESMTP id S229497AbjEQUb1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 May 2023 16:08:38 -0400
-Received: from mail-ej1-x649.google.com (mail-ej1-x649.google.com [IPv6:2a00:1450:4864:20::649])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB4467D91
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 13:08:37 -0700 (PDT)
-Received: by mail-ej1-x649.google.com with SMTP id a640c23a62f3a-94a34a0b75eso131647266b.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 13:08:37 -0700 (PDT)
+        Wed, 17 May 2023 16:31:27 -0400
+Received: from mail-ed1-x54a.google.com (mail-ed1-x54a.google.com [IPv6:2a00:1450:4864:20::54a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E8C335AD
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 13:31:23 -0700 (PDT)
+Received: by mail-ed1-x54a.google.com with SMTP id 4fb4d7f45d1cf-510d1c71b8fso1157942a12.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 13:31:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684354116; x=1686946116;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8iJR0huTfHVTodkNfO2dbFSpbRb6U9pb/v/u0biFupw=;
-        b=bWzM94fINtOQiMgIeij8r/YgZ5x9bR/Dr9fiTQjsYbOEc/EG/KK3e24KYDbSbKNXFq
-         q0JETAcKy8aAdEveycELSQP0Ii/yRJnHVk4NKArscNFWSTQkCbq1VcORowwK/6Ou8Yb8
-         0s6z4qC2HG4wsDP+zgctkD2KNiocsj8sZviKvuD+KSI518NxZvqsWzw8HUxm1BcPU4eJ
-         S3tGklnk97V3591mhv9OhfHFl38eoUwDL0WA8VbW30AEVdqh1K736UaBB1EKE5aaAvRJ
-         RpxcN2gss1FGPI7JNDtmlPhXfX8KVUsqBfnaRMg0dauYa+JFHyIAHP4RRisrg0k+L8XF
-         1ugw==
+        d=google.com; s=20221208; t=1684355481; x=1686947481;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lH+GB88mGkyXoacAsII55I8gutXKBDvKTQDFdPjI6tA=;
+        b=iA2BlPMqXXvqmmp3XPbvS7PLetJ5ETCu6u7dP0UxkrlowV8oa2J3RE2PCj8b/Qpxxu
+         U6IF3gWzURzAG9NFlWH1u/zSdMyiL08wwcLJNrZKdYlzpVAGnlv8ndQrnJlPcD0SVME/
+         VChEVvPcEWnniohJDXcaCGfRWgicgKyXck88tVTYfzygqlSwkdfZCNMonNMrQ7tNjjhj
+         UTWPo7cs+3zWxknZ6ZtvRw8SC/fAIjuZiS54vc6APSnRpga9SKVmAhj+d0coqTkc5OLj
+         jXpU2I+e18A0d2/tTlASL7C9q0TrS9/sPTOMfsyPdttoIoKk1xl/KgkWH67RraMnNaNS
+         LDFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684354116; x=1686946116;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8iJR0huTfHVTodkNfO2dbFSpbRb6U9pb/v/u0biFupw=;
-        b=YevIuLRZZPrtZUY5nYFxJy58UMYvjW4WU7ZQOM8BF/0WbSGk7g1CZvWpRM4KWQOHvF
-         WmVmulUz/Ycd8rYmoEZt8l+OLZeUxyLRiNOV7GoXUWFzp2wUinl3go2bh4lXKRNTp7ct
-         NGj9IKeOYCA9K11Mh+WEKIHZjsPeRzv6PH0F/YqnO6RWNwBkai36Di7WhqT25Cy69YNK
-         Oze9ykBlILAU2DAc09VOGb13pQApHLex4fZ0sFGDVB5pmGWn2HIccjT9RqSiJ5VCkUc9
-         wclFVkNd/ZokeiUpYhnPDtBIUxQ7hytwcMUo5ikpn7F1cKF4G1qbus8DW9uZ1SXdk8ax
-         Z5aA==
-X-Gm-Message-State: AC+VfDyWb7Hwx/96Sb7KzpGOr76O+Ou1P6s6Q/9FZn8NcUnDPAyzYFIX
-        HRIfBWQ2zJTFQUkGSXQytwt0wnpvcG8mUP0=
-X-Google-Smtp-Source: ACHHUZ4YGLtjd/kuG8qRx/nnMKQbJbKmU6GNX6G9qK33HW2/6o/Jr8uWhpPLl4A/zXlgMGnERgXqzW6IE9wZdio=
+        d=1e100.net; s=20221208; t=1684355481; x=1686947481;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lH+GB88mGkyXoacAsII55I8gutXKBDvKTQDFdPjI6tA=;
+        b=jHvlV+gflvNOesbEek/zsjyrJPMrIE0JNI+QTVWCL1NiqSUJrH6zwvLclawSR+m0d6
+         cAJcusf83XvXXW1F4IUeHs5Sew26iXEEf2NTizNPI9Z1FeJbHgI82AuY8aPG3O/PPU0E
+         UMRLDhXtnNGSya3YdDCIyA67e/J+qkUjWlwQnw8Y9cDHVMa9HXIeDbjkmuN69eTll3+y
+         848gtx7IwDke3TcmTVZ9m7y88rulexk8EdgiSqPji1gvZVuWTZT9yfAEfmcpgBYxfpID
+         GZkIA9LajRLIQs1+2ACdfQ/prtF6g4A+SmzNd30wbfVaifgy6D+bhNKN8x4glH8sCctO
+         SerA==
+X-Gm-Message-State: AC+VfDw+403crj6bxVvVuHP8w27em6zbRDh3zOxqgGkluAImyXWNiUoD
+        fQ7CrpIXkm+alSoybUDiMHnDbmJa6K0lHuloHdnB4QY0JV1r5G78iE9bHAAO2uUitDOVAQuaYob
+        F0ltJPeeWyzHGgX9EDLOqA9LxGmnTxVh0mH00QCFak7a+10nSKlSLISS6FsIzCGRcrQB9ZK1qUy
+        SGb0OK
+X-Google-Smtp-Source: ACHHUZ5NQv9HGjuTBobENJHcvpXZZpSXuuO1c8KW0QDXzB22J46Eslk8NvD3T8PrLP+VbYTzkg6vTUpii/ZwK4M=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a17:906:847a:b0:969:fc90:bf94 with SMTP
- id hx26-20020a170906847a00b00969fc90bf94mr9978929ejc.8.1684354116437; Wed, 17
- May 2023 13:08:36 -0700 (PDT)
-Date:   Wed, 17 May 2023 20:08:14 +0000
-In-Reply-To: <20230517200814.3157916-1-aliceryhl@google.com>
+ (user=aliceryhl job=sendgmr) by 2002:a50:8d1b:0:b0:504:7684:a23c with SMTP id
+ s27-20020a508d1b000000b005047684a23cmr1511969eds.8.1684355481334; Wed, 17 May
+ 2023 13:31:21 -0700 (PDT)
+Date:   Wed, 17 May 2023 20:31:12 +0000
 Mime-Version: 1.0
-References: <20230517200814.3157916-1-aliceryhl@google.com>
 X-Mailer: git-send-email 2.40.1.606.ga4b1b128d6-goog
-Message-ID: <20230517200814.3157916-2-aliceryhl@google.com>
-Subject: [PATCH v1 2/2] rust: sync: implement `AsRef<T>` for `Arc<T>`
+Message-ID: <20230517203119.3160435-1-aliceryhl@google.com>
+Subject: [PATCH v1 0/7] Bindings for the workqueue
 From:   Alice Ryhl <aliceryhl@google.com>
-To:     Miguel Ojeda <ojeda@kernel.org>,
+To:     rust-for-linux@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Tejun Heo <tj@kernel.org>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         "=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Will Deacon <will@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
         Alice Ryhl <aliceryhl@google.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev,
-        Wedson Almeida Filho <walmeida@microsoft.com>
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This trait lets you use `Arc<T>` in code that is generic over smart
-pointer types.
+This patchset contains bindings for the kernel workqueue.
 
-The `AsRef` trait should be implemented on all smart pointers. The
-standard library also implements it on the ordinary `Arc`.
+One of the primary goals behind the design used in this patch is that we
+must support embedding the `work_struct` as a field in user-provided
+types, because this allows you to submit things to the workqueue without
+having to allocate, making the submission infallible. If we didn't have
+to support this, then the patch would be much simpler. One of the main
+things that make it complicated is that we must ensure that the function
+pointer in the `work_struct` is compatible with the struct it is
+contained within.
 
-Co-developed-by: Wedson Almeida Filho <walmeida@microsoft.com>
-Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/sync/arc.rs | 6 ++++++
- 1 file changed, 6 insertions(+)
+This patch could be significantly simplified if we already had the field
+projection bindings. However, we have decided to upstream the current
+version that does not depend on field projection first - the PR that
+introduces field projections will then include a commit that simplifies
+the workqueue implementation. (In particular, it would simplify the 5th
+patch in this series.)
 
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 274febe3bb06..9ec911e4a0c7 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -264,6 +264,12 @@ impl<T: ?Sized> Deref for Arc<T> {
-     }
- }
- 
-+impl<T: ?Sized> AsRef<T> for Arc<T> {
-+    fn as_ref(&self) -> &T {
-+        self.deref()
-+    }
-+}
-+
- impl<T: ?Sized> Clone for Arc<T> {
-     fn clone(&self) -> Self {
-         // INVARIANT: C `refcount_inc` saturates the refcount, so it cannot overflow to zero.
+The first version of the workqueue bindings was written by Wedson, but
+I have rewritten much of it so that it uses the pin-init infrastructure
+and can be used with containers other than `Arc`.
+
+Alice Ryhl (4):
+  rust: workqueue: add low-level workqueue bindings
+  rust: workqueue: add helper for defining work_struct fields
+  rust: workqueue: add safe API to workqueue
+  rust: workqueue: add `try_spawn` helper method
+
+Wedson Almeida Filho (3):
+  rust: add offset_of! macro
+  rust: sync: add `Arc::{from_raw, into_raw}`
+  rust: workqueue: define built-in queues
+
+ rust/helpers.c           |   8 +
+ rust/kernel/lib.rs       |  37 ++
+ rust/kernel/sync/arc.rs  |  44 +++
+ rust/kernel/workqueue.rs | 715 +++++++++++++++++++++++++++++++++++++++
+ scripts/Makefile.build   |   2 +-
+ 5 files changed, 805 insertions(+), 1 deletion(-)
+ create mode 100644 rust/kernel/workqueue.rs
+
+
+base-commit: ac9a78681b921877518763ba0e89202254349d1b
 -- 
 2.40.1.606.ga4b1b128d6-goog
 
