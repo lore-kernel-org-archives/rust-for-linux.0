@@ -2,60 +2,60 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C266C77B75
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 May 2023 20:31:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A667C7EE23
+	for <rust-for-linux@archiver.kernel.org>; Wed, 17 May 2023 20:31:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229738AbjEQUba (ORCPT
+        id S229746AbjEQUbc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 May 2023 16:31:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56168 "EHLO
+        Wed, 17 May 2023 16:31:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjEQUb3 (ORCPT
+        with ESMTP id S229743AbjEQUbb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 May 2023 16:31:29 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1748F30DE
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 13:31:27 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-ba8337a578dso1511927276.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 13:31:27 -0700 (PDT)
+        Wed, 17 May 2023 16:31:31 -0400
+Received: from mail-ed1-x54a.google.com (mail-ed1-x54a.google.com [IPv6:2a00:1450:4864:20::54a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 091777D89
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 13:31:25 -0700 (PDT)
+Received: by mail-ed1-x54a.google.com with SMTP id 4fb4d7f45d1cf-50bd07fbd97so1519570a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 13:31:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684355486; x=1686947486;
+        d=google.com; s=20221208; t=1684355483; x=1686947483;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=32ue7WltCbe1aj9V+bmg5YyP4ANtZIJoj0Bg0fkgpuM=;
-        b=RBwReH9ogtwVoE1XQ/ZI6UfWivhfBXI3WmrFbmj7DoEuSLsn8C1nmPiQsBycA+2F43
-         62buFxLbt/L8aBnfdSpk2jL6Nw7xsYt+5rZnyqeCudDzwy/Nx1sPcTQM0R/OoQOW+zsL
-         oGBOurlBS6d9N5xkh7hwEjNk77U0euEAONsRWMRySBg3+XH0WhdK9tms5MnFg9qttraz
-         HO1bLTR98+8tyOkgi9P84RD+c5JBS5CuIzVRZltEVWkxtTx3wZsdq03GOa6unp6OQ05q
-         QyLTOQyAnjJ+pdcGBsZLcPNnBcb0PPIAyGbWw0aiAQtLUU8KbW6DNenHPCUxrsxUtyi0
-         Hqwg==
+        bh=2Q2MUmGAiEMdaaQsAAxoPHDCIZoeH9n1n1GaPuiAfzA=;
+        b=zKAfePblS1nd8XT33ZnJ95+8xGVLMDUS4gyMSoEOyKiGtcCNCMO8kBMGgXG8J58EN5
+         HBlHGHGxQq2LEu9iNG+/RWs0ZqlG6Ek4QFwFjHg5+7YBUlFGo26Al3txqchhePqZn6Zl
+         uyUTm7AR2QS+S2vtY+gm2LUM+RnnPpXFmn816h8Qw3A4HKo5eNyn1aa9yq/G9Z4VoLGh
+         8AhujsdNZPagkjKj0YBFqoq+gvCPaAnE8YNM4V3kfXMge+g2bau9E8rXexTcirMqSBKo
+         rFb31MR76JCgHdloKxoYVbWL3y5K/8HEYE0Bzuc64gmIsw+AodoRLJQSWZslY7lWy0RG
+         VIDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684355486; x=1686947486;
+        d=1e100.net; s=20221208; t=1684355483; x=1686947483;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=32ue7WltCbe1aj9V+bmg5YyP4ANtZIJoj0Bg0fkgpuM=;
-        b=QoDpn+4xzaAi+BNaZiJ5jXlPdLAFB15Ud8bvhwET6mcpUln3mofevfQFL3uiHS9imh
-         mep+xctc77vwyaloNIBTDVhxv5khPwcyXv4ZNktc8FBJ2nZEPao/8bZ2qqhBg+SgPAPh
-         V64T4Qmk1HpY1iHQNg2aWxzPnxRRpn0metBuSWslYMvdw2cLqif44XQ+QLP2A93g7ZGL
-         xMWPIa3vnwL8R+q+loGYnKf+b11aKdgL8Rc93+Us7A+coWsAPFh9IdAxt/CG6PeCRD6E
-         qR1498EyFrbGURpJdPwRdAuD+RGQX+OTerx2u8a6z1N/MkYGW0DvSe5Qv0YtXRBlegef
-         NBTw==
-X-Gm-Message-State: AC+VfDxCav4Qpv0O1B+KTKtS0R5VIuCcdENUKP6V9x4/QCAKzzeoXQHO
-        k5evtN6spplydKhwIGLE8HP1+lM68yO7rW3Uu8ZBEDj0pqvsN+HJItl35LNINLHDcbY+ztIhN0k
-        gTJdVk3p7bN/ozBn3ej9K6q+Z8HELcTX+e3UMd3UVDQRBAf68yx97wfdirUzk5XCSkn4NeKuQI4
-        HIC/Og
-X-Google-Smtp-Source: ACHHUZ6RHxBeKrUroNjdZ2ZB+PTJF0LE4tcVfcVUy5jna3YNoBBT1semjmIoNvW2b6szsAHPU0ICmT8nNCDxk24=
+        bh=2Q2MUmGAiEMdaaQsAAxoPHDCIZoeH9n1n1GaPuiAfzA=;
+        b=DleJdixMY2L6PbekbGNuugI3LOwJK/b/ifyO8diOYvv4wwa4fVeisCTgdGFMxVY60p
+         YbXynTbgWSbp+5vPiMkiATWglCcqH2DsNvxvFZKQcFWLiextt+912Md5tmS0O6+GJJK+
+         zDvyIOnmDJwHQ7FYDn8NJ8A9/e3iTF8kIFybqnM9s6QimFooqaZ4nij/4K0OYn+dz35T
+         0GTv2Qyal0fxEmmPvxr4Ls5P+mKvZnXc4Pp4nnOoLk385AwfKWSp0YouRMn8UpATkaX9
+         qc7wapzhoObIBmPDOAVEuZBNJQc35ibkRetcF5qqdvHRhS1Hues4zNJtbbCnlnPgYv7o
+         h+uA==
+X-Gm-Message-State: AC+VfDwsuRZPfwnbBSAU496hb6I6ANxTe1M0YPCkfmTpVXWOeaICZjox
+        bPvVS4lbF0NCv5gQQdAiZZuNnYYxBmLNhff6RSpwTJsxR/GX/GM+xF9AfqDV78yN9ETt4tJqwtT
+        H+LemTG0bFAZ97yGiBlpKgfHR3YPLWExgk4b939/KOg0rOwme3O+gCmqbUvmGJvtWuU3p/lfjGy
+        baTJdN
+X-Google-Smtp-Source: ACHHUZ5HBFQWszLoGBLcaNy0DdhkYrWYan90ySkcSdsC2yKoTJ0iZRVUU36MhwoE+D7Z2+HOBM5F516rsgf3jlw=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a25:182:0:b0:ba8:58c8:38f7 with SMTP id
- 124-20020a250182000000b00ba858c838f7mr2038208ybb.11.1684355486248; Wed, 17
- May 2023 13:31:26 -0700 (PDT)
-Date:   Wed, 17 May 2023 20:31:14 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a50:cd4b:0:b0:504:e957:2926 with SMTP id
+ d11-20020a50cd4b000000b00504e9572926mr1473278edj.1.1684355483536; Wed, 17 May
+ 2023 13:31:23 -0700 (PDT)
+Date:   Wed, 17 May 2023 20:31:13 +0000
 In-Reply-To: <20230517203119.3160435-1-aliceryhl@google.com>
 Mime-Version: 1.0
 References: <20230517203119.3160435-1-aliceryhl@google.com>
 X-Mailer: git-send-email 2.40.1.606.ga4b1b128d6-goog
-Message-ID: <20230517203119.3160435-3-aliceryhl@google.com>
-Subject: [PATCH v1 2/7] rust: add offset_of! macro
+Message-ID: <20230517203119.3160435-2-aliceryhl@google.com>
+Subject: [PATCH v1 1/7] rust: workqueue: add low-level workqueue bindings
 From:   Alice Ryhl <aliceryhl@google.com>
 To:     rust-for-linux@vger.kernel.org
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
@@ -73,97 +73,134 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Wedson Almeida Filho <walmeida@microsoft.com>
+Define basic low-level bindings to a kernel workqueue. The API defined
+here can only be used unsafely. Later commits will provide safe
+wrappers.
 
-This macro is used to compute the offset of a field in a struct.
-
-This commit enables two unstable features that are necessary for using
-the macro in a constant. However, this is not a problem as the macro
-will become available from the Rust standard library soon [1]. The
-unstable features can be disabled again once that happens.
-
-The macro in this patch does not support sub-fields. That is, you cannot
-write `offset_of!(MyStruct, field.sub_field)` to get the offset of
-`sub_field` with `field`'s type being a struct with a field called
-`sub_field`. This is because `field` might be a `Box<SubStruct>`, which
-means that you would be trying to compute the offset to something in an
-entirely different allocation. There's no easy way to fix the current
-macro to support subfields, but the version being added to the standard
-library should support it, so the limitation is temporary and not a big
-deal.
-
-Link: https://github.com/rust-lang/rust/issues/106655 [1]
-Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-Co-developed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/lib.rs     | 35 +++++++++++++++++++++++++++++++++++
- scripts/Makefile.build |  2 +-
- 2 files changed, 36 insertions(+), 1 deletion(-)
+ rust/kernel/lib.rs       |  1 +
+ rust/kernel/workqueue.rs | 99 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 100 insertions(+)
+ create mode 100644 rust/kernel/workqueue.rs
 
 diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index c718524056a6..cdf9fe999328 100644
+index 676995d4e460..c718524056a6 100644
 --- a/rust/kernel/lib.rs
 +++ b/rust/kernel/lib.rs
-@@ -14,6 +14,8 @@
- #![no_std]
- #![feature(allocator_api)]
- #![feature(coerce_unsized)]
-+#![feature(const_ptr_offset_from)]
-+#![feature(const_refs_to_cell)]
- #![feature(core_ffi_c)]
- #![feature(dispatch_from_dyn)]
- #![feature(explicit_generic_args_with_impl_trait)]
-@@ -102,3 +104,36 @@ fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
-     // instead of `!`. See <https://github.com/rust-lang/rust-bindgen/issues/2094>.
-     loop {}
- }
+@@ -47,6 +47,7 @@ pub mod str;
+ pub mod sync;
+ pub mod task;
+ pub mod types;
++pub mod workqueue;
+ 
+ #[doc(hidden)]
+ pub use bindings;
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+new file mode 100644
+index 000000000000..e66b6b50dfae
+--- /dev/null
++++ b/rust/kernel/workqueue.rs
+@@ -0,0 +1,99 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+/// Calculates the offset of a field from the beginning of the struct it belongs to.
++//! Work queues.
++//!
++//! C header: [`include/linux/workqueue.h`](../../../../include/linux/workqueue.h)
++
++use crate::{bindings, types::Opaque};
++
++/// A kernel work queue.
 +///
-+/// # Examples
++/// Wraps the kernel's C `struct workqueue_struct`.
 +///
-+/// ```
-+/// #[repr(C)]
-+/// struct Test {
-+///     a: u64,
-+///     b: u32,
-+/// }
-+///
-+/// assert_eq!(kernel::offset_of!(Test, b), 8);
-+/// ```
-+#[macro_export]
-+macro_rules! offset_of {
-+    ($type:ty, $field:ident) => {{
-+        let tmp = ::core::mem::MaybeUninit::<$type>::uninit();
-+        let outer = tmp.as_ptr();
-+        // To avoid warnings when nesting `unsafe` blocks.
-+        #[allow(unused_unsafe)]
-+        // SAFETY: The pointer is valid and aligned, just not initialised; `addr_of` ensures that
-+        // we don't actually read from `outer` (which would be UB) nor create an intermediate
-+        // reference.
-+        let inner = unsafe { ::core::ptr::addr_of!((*outer).$field) } as *const u8;
-+        // To avoid warnings when nesting `unsafe` blocks.
-+        #[allow(unused_unsafe)]
-+        // SAFETY: The two pointers are within the same allocation block.
++/// It allows work items to be queued to run on thread pools managed by the kernel. Several are
++/// always available, for example, `system`, `system_highpri`, `system_long`, etc.
++#[repr(transparent)]
++pub struct Queue(Opaque<bindings::workqueue_struct>);
++
++// SAFETY: Kernel workqueues are usable from any thread.
++unsafe impl Send for Queue {}
++unsafe impl Sync for Queue {}
++
++impl Queue {
++    /// Use the provided `struct workqueue_struct` with Rust.
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure that the provided raw pointer is not dangling, that it points at a
++    /// valid workqueue, and that it remains valid until the end of 'a.
++    pub unsafe fn from_raw<'a>(ptr: *const bindings::workqueue_struct) -> &'a Queue {
++        // SAFETY: The `Queue` type is `#[repr(transparent)]`, so the pointer cast is valid. The
++        // caller promises that the pointer is not dangling.
++        unsafe { &*(ptr as *const Queue) }
++    }
++
++    /// Enqueues a work item.
++    ///
++    /// This may fail if the work item is already enqueued in a workqueue.
++    pub fn enqueue<T: WorkItem + Send + 'static>(&self, w: T) -> T::EnqueueOutput {
++        let queue_ptr = self.0.get();
++
++        // SAFETY: There are two cases.
++        //
++        //  1. If `queue_work_on` returns false, then we failed to push the work item to the queue.
++        //     In this case, we don't touch the work item again.
++        //
++        //  2. If `queue_work_on` returns true, then we pushed the work item to the queue. The work
++        //     queue will call the function pointer in the `work_struct` at some point in the
++        //     future. We require `T` to be static, so the type has no lifetimes annotated on it.
++        //     We require `T` to be send, so there are no thread-safety issues to take care of.
++        //
++        // In either case we follow the safety requirements of `__enqueue`.
 +        unsafe {
-+            inner.offset_from(outer as *const u8) as usize
++            w.__enqueue(move |work_ptr| {
++                bindings::queue_work_on(bindings::WORK_CPU_UNBOUND as _, queue_ptr, work_ptr)
++            })
 +        }
-+    }};
++    }
 +}
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 9f94fc83f086..ec583d13dde2 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -277,7 +277,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
- # Compile Rust sources (.rs)
- # ---------------------------------------------------------------------------
- 
--rust_allowed_features := core_ffi_c,explicit_generic_args_with_impl_trait,new_uninit,pin_macro
-+rust_allowed_features := const_ptr_offset_from,const_refs_to_cell,core_ffi_c,explicit_generic_args_with_impl_trait,new_uninit,pin_macro
- 
- rust_common_cmd = \
- 	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
++
++/// A work item.
++///
++/// This is the low-level trait that is designed for being as general as possible.
++///
++/// # Safety
++///
++/// Implementers must ensure that `__enqueue` behaves as documented.
++pub unsafe trait WorkItem {
++    /// The return type of [`Queue::enqueue`].
++    type EnqueueOutput;
++
++    /// Enqueues this work item on a queue using the provided `queue_work_on` method.
++    ///
++    /// # Safety
++    ///
++    /// Calling this method guarantees that the provided closure will be called with a raw pointer
++    /// to a `struct work_struct`. The closure should behave in the following way:
++    ///
++    ///  1. If the `struct work_struct` cannot be pushed to a workqueue because its already in one,
++    ///     then the closure should return `false`. It may not access the pointer after returning
++    ///     `false`.
++    ///  2. If the `struct work_struct` is successfully added to a workqueue, then the closure
++    ///     should return `true`. When the workqueue executes the work item, it will do so by
++    ///     calling the function pointer stored in the `struct work_struct`. The work item ensures
++    ///     that the raw pointer remains valid until that happens.
++    ///
++    /// This method may not have any other failure cases than the closure returning `false`. The
++    /// output type should reflect this, but it may also be an infallible type if the work item
++    /// statically ensures that pushing the `struct work_struct` will succeed.
++    ///
++    /// If the work item type is annotated with any lifetimes, then the workqueue must call the
++    /// function pointer before any such lifetime expires. (Or it may forget the work item and
++    /// never call the function pointer at all.)
++    ///
++    /// If the work item type is not [`Send`], then the work item must be executed on the same
++    /// thread as the call to `__enqueue`.
++    unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
++    where
++        F: FnOnce(*mut bindings::work_struct) -> bool;
++}
 -- 
 2.40.1.606.ga4b1b128d6-goog
 
