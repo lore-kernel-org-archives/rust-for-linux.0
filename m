@@ -2,142 +2,151 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A1D0C77B7A
-	for <rust-for-linux@archiver.kernel.org>; Wed, 17 May 2023 22:22:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E4B4CC77B7D
+	for <rust-for-linux@archiver.kernel.org>; Thu, 18 May 2023 21:24:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbjEQWWZ (ORCPT
+        id S229884AbjERVYi (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 17 May 2023 18:22:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59374 "EHLO
+        Thu, 18 May 2023 17:24:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbjEQWWY (ORCPT
+        with ESMTP id S229714AbjERVYh (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 17 May 2023 18:22:24 -0400
-Received: from mail-ed1-x54a.google.com (mail-ed1-x54a.google.com [IPv6:2a00:1450:4864:20::54a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08B725246
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 15:22:23 -0700 (PDT)
-Received: by mail-ed1-x54a.google.com with SMTP id 4fb4d7f45d1cf-50bc46a14e8so1313533a12.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 May 2023 15:22:22 -0700 (PDT)
+        Thu, 18 May 2023 17:24:37 -0400
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3812E45;
+        Thu, 18 May 2023 14:24:36 -0700 (PDT)
+Received: by mail-qk1-x733.google.com with SMTP id af79cd13be357-7577ef2fa31so8553285a.0;
+        Thu, 18 May 2023 14:24:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684362141; x=1686954141;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qCQ3NjxZoebSIAtGeHR5p1IA6stp8bUJIlG4AwU4skw=;
-        b=4vgsoY+5jg02OmnaPeEWdmac9MQv5QgavqYYTecATI2iI4NboNWkxSh2nzbpk0VLCQ
-         1P2DkeGOfUT2Qp1xK7LPXfGpmW0RrVlmiRL59/wUEXcyiBT/N/6NWTeQk+lyuGlbeKoc
-         P0Kt5+RNnAgHuUe8PxnnlnmAoSdBMcdFPEywkmBUKz61dRhfUK1efGsDLggM0K2E3sPw
-         5egtqGedMvFnjHxzdyzRXcKon5hhGc7ajk4WplTzQvh6KqLqmnPgShi/AU9TqabaWiUE
-         5TSBzXNr6sg8rs0q4jDdHXHYfA+lQ6I/aq25oRpOlqjYLO5UQJrgUEIrFSNBxA8nmTkN
-         tfzQ==
+        d=gmail.com; s=20221208; t=1684445076; x=1687037076;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fgw3h9rAgm44YkEHXCPBK7C8FU1OMPHOzKXIy/8Zym0=;
+        b=kph38xd19+bhLkS7PBNJQmjYiRXXbogSNSiH0Q5MEmL2DX8YmSJHAH0GgziFVvZn2y
+         nELH46i2vuIvVbCfpwZV4EAOP0j04cFX8eUZ4pjDhmu8cckVJgKsx72k6pkd2AXxCYKG
+         xh/t2rL50MrW8G7LR9K3CbM543nfvTW1dt4Y4j02Au+J392LYMiYjm6a5FjjmGNrB3QP
+         hYo6XtFmMqenQPqajZ8UZDrhbNQiySvVQ0SKviU8pE9siXJ0T/6KGlpE1HVuYlTdKmbU
+         Y09OVBXpsu9OWglqyM5PEERe+Ksq9amOE/6vkZPK3qDS+pGlZR56xArvN4pFdzI316i7
+         2JAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684362141; x=1686954141;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qCQ3NjxZoebSIAtGeHR5p1IA6stp8bUJIlG4AwU4skw=;
-        b=VJo+Nlj8j0giIv1dnJ4XJhBZ+E3BLtOVpB/rSLFsJlFS2GKvPpkIy7pSam6MiI5oM6
-         ktvpdNxO/4JGOPGX9DljaajcPC/IRy3U/kOvCgYb/RYUuYK+skglyg02zXc0gFHXS7Zv
-         PRcEwbmAEiYnXfHAUGuzMUg++2j3p1K5MkESc/8LaOXizJZgkqqhjrFNysBMpea45liS
-         fxkxnp8jMwJjdFiJrpdDx1QHrb2y00yKsYEq1EnBVgeF46NngY7qEdlP3v9x7zbaXnn3
-         kYiZRwPs0ljKtv7kvKzGxIBOf6I1XCXzxnz9QgOMBLxu9EoK7JcQpXbyuuFcFyCE6Uwq
-         5AoQ==
-X-Gm-Message-State: AC+VfDzbeJEHlMCH0avOruvdevi+14NAZKjmtJjQEvFbzFqcJefPCHg8
-        0sxYBNhJ3XqhU9Eza5GTo56D6RfmYLq2j5A=
-X-Google-Smtp-Source: ACHHUZ4ZH2KINwV3iFH0MzY+AxxyQSTIb3TM0RL+58yOgF2J8k82d22mDFv8B5Y8f2a6F3opNfUG8p8xYlA9gss=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a50:d09d:0:b0:504:8731:4ef2 with SMTP id
- v29-20020a50d09d000000b0050487314ef2mr1612484edd.7.1684362141496; Wed, 17 May
- 2023 15:22:21 -0700 (PDT)
-Date:   Wed, 17 May 2023 22:22:19 +0000
-In-Reply-To: <ZGVLo1V4kjx_lep5@slm.duckdns.org>
-Mime-Version: 1.0
-References: <ZGVLo1V4kjx_lep5@slm.duckdns.org>
-X-Mailer: git-send-email 2.40.1.606.ga4b1b128d6-goog
-Message-ID: <20230517222219.3191560-1-aliceryhl@google.com>
-Subject: Re: [PATCH v1 0/7] Bindings for the workqueue
-From:   Alice Ryhl <aliceryhl@google.com>
-To:     tj@kernel.org
-Cc:     alex.gaynor@gmail.com, aliceryhl@google.com,
-        benno.lossin@proton.me, bjorn3_gh@protonmail.com,
-        boqun.feng@gmail.com, gary@garyguo.net, jiangshanlai@gmail.com,
-        linux-kernel@vger.kernel.org, ojeda@kernel.org,
-        patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
-        wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+        d=1e100.net; s=20221208; t=1684445076; x=1687037076;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Fgw3h9rAgm44YkEHXCPBK7C8FU1OMPHOzKXIy/8Zym0=;
+        b=FaXnZvpKzw/k8YMNRdLOHIQO4Wqmf0oPqbT5gWbTYARAjl1C0jqb81ug6cinW/Jgbb
+         3/xSxWLm7LcS9nV4s9LnjYutkvyB4UOSWk5fHDZPDF1MuoywhHGpqQ34x9uy4Ub7NsHd
+         1mu8N532Rj0MC6vHGaH7lIbwez4YCt8xpdOnHZ6JMJ6aG0MgdRp2JV5THZOMi4Yp4djJ
+         gtwSeNHmyNWbL2sE2WHFlpTrfO3qBDI3VdQB6pYwiZ17tZszH21ef1E8wLsgDH+Q4Ma9
+         nYuosYstTDHQctyd2aNYNo7jPk/9aPEibUAfVgUCxcAz+JqfNj/auZp6YpCEb/P/35mN
+         vrNw==
+X-Gm-Message-State: AC+VfDyCn3nC0od0bZNhZN4LpOSyy/QMEsLTz41fdsE3oNvrMebPpccO
+        kc2eVDZN3LZnqHzXwHx6kro=
+X-Google-Smtp-Source: ACHHUZ6N+5BKXIb2VODVQypeLfhqjkNDqfCIAEWmLr3NN4P7PZLTE382xgQF5sekxjyf/s88BGo36Q==
+X-Received: by 2002:a05:6214:20ac:b0:623:5c93:77eb with SMTP id 12-20020a05621420ac00b006235c9377ebmr1779425qvd.13.1684445075710;
+        Thu, 18 May 2023 14:24:35 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id mm19-20020a0562145e9300b005dd8b934579sm818981qvb.17.2023.05.18.14.24.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 May 2023 14:24:34 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 263C227C0054;
+        Thu, 18 May 2023 17:24:33 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Thu, 18 May 2023 17:24:34 -0400
+X-ME-Sender: <xms:kZdmZDSneEX1kXbuwH7cu7l1r8M1HUt8db6Frkudpp0mNNfR9uTNxQ>
+    <xme:kZdmZEwFfn67VVXdPXYk9iY4PbjH88G-WHeRbhwStX90GaUJ-2Hjh1kZ4lCWaNEOh
+    Yrwg45M5Z2bjAKT2A>
+X-ME-Received: <xmr:kZdmZI3h2tWjU4IKiNpWg9LRsQ2tZSns2ehPUt1miEmNbB6I04IgUWVHDfU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeifedgudeiudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:kZdmZDAjti1gsxVBbTEMV74nhPH0kT1V0bQ3_kIBI4lTd0NiwFnwKw>
+    <xmx:kZdmZMjfrWb_MGtilHx2tN4iZEEFIE1OCUX8F7MOVCvRjMFFAUwJKA>
+    <xmx:kZdmZHqUXCzz0aBcio3S4JSUBLrNPXV78uFU-GHUny3NKGrtU_0SaA>
+    <xmx:kZdmZLRRJh0W1aTuHOVOpklEw9kgA_IB3epWENHTHjZFpk_MCIfFuA>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 18 May 2023 17:24:32 -0400 (EDT)
+Date:   Thu, 18 May 2023 14:24:05 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Alice Ryhl <aliceryhl@google.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev
+Subject: Re: [PATCH v1 1/2] rust: specify when `ARef` is thread safe
+Message-ID: <ZGaXdS+psZoEZBMr@boqun-archlinux>
+References: <20230517095905.3548100-1-aliceryhl@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230517095905.3548100-1-aliceryhl@google.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, 17 May 2023 11:48:19 -1000, Tejun Heo wrote:
-> I tried to read the patches but am too dumb to understand much.
+On Wed, May 17, 2023 at 09:59:04AM +0000, Alice Ryhl wrote:
+> An `ARef` behaves just like the `Arc` when it comes to thread safety, so
+> we can reuse the thread safety comments from `Arc` here.
+> 
+> This is necessary because without this change, the Rust compiler will
+> assume that things are not thread safe even though they are.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/types.rs | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 29db59d6119a..9c8d94c04deb 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -321,6 +321,17 @@ pub struct ARef<T: AlwaysRefCounted> {
+>      _p: PhantomData<T>,
+>  }
+>  
+> +// SAFETY: It is safe to send `ARef<T>` to another thread when the underlying `T` is `Sync` because
+> +// it effectively means sharing `&T` (which is safe because `T` is `Sync`); additionally, it needs
+> +// `T` to be `Send` because any thread that has an `ARef<T>` may ultimately access `T` directly, for
 
-The patch is more complicated than I would have liked, unfortunately.
-However, as I mentioned in the cover letter, simplifications should be
-on their way.
+Does the "ultimately access `T` directly" here imply mutably or
+exclusively? If so, it makes sense to me to call it out. I'm trying to
+make sure we can agree on some "common terminologies" ;-)
 
-Luckily, using the workqueue bindings is simpler than the bindings
-themselves.
+Regards,
+Boqun
 
-> Any chance you can provide some examples so that I can at least
-> imagine how workqueue would be used from rust side?
-
-Yes, of course!
-
-The simplest way to use the workqueue is to use the `try_spawn` method
-introduced by the last patch in the series. With this function, you just
-pass a function pointer to the `try_spawn` method, and it schedules the
-function for execution. Unfortunately this allocates memory, making it
-a fallible operation.
-
-To avoid allocation memory, we do something else. As an example, we can
-look at the Rust binder driver that I am currently working on. Here is
-how it will be used in the binder driver: First, the `Process` struct
-will be given a `work_struct` field:
-
-#[pin_data]
-pub(crate) struct Process {
-    // Work node for deferred work item.
-    #[pin]
-    defer_work: Work<Arc<Process>>,
-
-    // Other fields follow...
-}
-
-Here, we use the type `Work<Arc<Process>>` for our field. This type is
-the Rust wrapper for `work_struct`. The generic parameter to `Work`
-should be the pointer type used to access `Process`, and in this case it
-is `Arc<Process>`. The pointer type `Arc` is used for reference
-counting, and its a pointer type that owns a ref-count to the inner
-value. (So e.g., it decrements the ref-cout when the arc goes out of
-scope.) Arc is an abbreviation of "atomic reference count". This means
-that while it is enqueued in the workqueue, the workqueue owns a
-ref-count to the process.
-
-Next, binder will use the `impl_has_work!` macro to declare that it
-wants to use `defer_work` as its `work_struct` field. That looks like
-this:
-
-kernel::impl_has_work! {
-    impl HasWork<Arc<Process>> for Process { self.defer_work }
-}
-
-To define the code that should run when the work item is executed on the
-workqueue, binder does the following:
-
-impl workqueue::ArcWorkItem for Process {
-    fn run(self: Arc<Process>) {
-        // this runs when the work item is executed
-    }
-}
-
-Finally to schedule it to the system workqueue, it does the following:
-
-let _ = workqueue::system().enqueue(process);
-
-Here, the `enqueue` call is fallible, since it might fail if the process
-has already been enqueued to a work queue. However, binder just uses
-`let _ =` to ignore the failure, since it doesn't need to do anything
-special in that case.
-
-I hope that helps, and let me know if you have any further questions.
-
-Alice
+> +// example, when the reference count reaches zero and `T` is dropped.
+> +unsafe impl<T: AlwaysRefCounted + Sync + Send> Send for ARef<T> {}
+> +
+> +// SAFETY: It is safe to send `&ARef<T>` to another thread when the underlying `T` is `Sync` for the
+> +// same reason as above. `T` needs to be `Send` as well because a thread can clone an `&ARef<T>`
+> +// into an `ARef<T>`, which may lead to `T` being accessed by the same reasoning as above.
+> +unsafe impl<T: AlwaysRefCounted + Sync + Send> Sync for ARef<T> {}
+> +
+>  impl<T: AlwaysRefCounted> ARef<T> {
+>      /// Creates a new instance of [`ARef`].
+>      ///
+> 
+> base-commit: ac9a78681b921877518763ba0e89202254349d1b
+> -- 
+> 2.40.1.606.ga4b1b128d6-goog
+> 
