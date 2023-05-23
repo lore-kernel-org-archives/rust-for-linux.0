@@ -2,56 +2,55 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2824FC7EE23
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 May 2023 11:59:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F054C7EE23
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 May 2023 12:00:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236722AbjEWL7i (ORCPT
+        id S236723AbjEWMAH (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 23 May 2023 07:59:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39426 "EHLO
+        Tue, 23 May 2023 08:00:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229653AbjEWL7h (ORCPT
+        with ESMTP id S236724AbjEWMAG (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 23 May 2023 07:59:37 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54582118
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 04:59:33 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-96f850b32caso803820166b.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 04:59:33 -0700 (PDT)
+        Tue, 23 May 2023 08:00:06 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA47419B
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 04:59:59 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-510e90d785fso1210040a12.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 04:59:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1684843164; x=1687435164;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1684843198; x=1687435198;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=QR1MUsbPkF8iaQNWtY/LtUVVkhUDmli1/tIye2VFdbE=;
-        b=qvuLsz9FjN+Ow6wPHmpPN9sq2xFW9UaiuZI8/RpzQTI46zGMjP+7RZAHi5FzfnzJSS
-         hMlsWys/2phDu/pqehttwGb9aySSa8jbSxaTcbAPy7Mp1e5GuDioXy939L7T+V94S2ZA
-         WIqthatCBC4qzoA5rPWm2W5kSwpTqIzNnC4IxUnuv5tz5nNEmE4T+Xsbu7quBpCUWkUP
-         BOmC1G57K4/Jon8MuFyGFjeubHVzPCgyXDykRd00TrdEUnDvWXY5Zyy6A33txfd8Zfye
-         u206w72qGadaHLfEI64LE8stqTZ4PIiN+HpE1ShYEM2Wd2uGI0aTyxStrXta5mlf1Ckc
-         1isA==
+        bh=BtyIsC3fOFjgjr9w9nc1ft0SzM61Czn4H/P3GjzNfK0=;
+        b=bdm9uKxSj9wOh8IC4/CRZXk1vTYZPuOEBSXUGk5gfmyUqA04txmm/wMX2tbxYblfo/
+         VgGFH28rswMT6qcXru0NTDMd968EfXKd0RfJdqHc/niQ8AwLwed+fZaXNUznLagqZbwg
+         7tkhI27bpz4eiIwUfdiHFO7uQifd5MbaSz6e0ibXSTApTSa8NBTDHQJHgCUk2DVTyQI/
+         Bhwvb2prpfZ4YmRqKJmCGC0JRIo/MNzR+lj4ezo0xkoA8HG7md65l3yse6l799w04aVm
+         h2fzstPqo2J+mX+CjAoPnNAa3iTwdk9btrQ7CiKMUKWCHnTiA+7U7+ALOmn5KW3ty3Y2
+         3ZuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684843164; x=1687435164;
+        d=1e100.net; s=20221208; t=1684843198; x=1687435198;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QR1MUsbPkF8iaQNWtY/LtUVVkhUDmli1/tIye2VFdbE=;
-        b=lfAllOrFlla/50lCs60czehEdgFgd6D4WmmKsJQK+Wi572v9fMQUmGoMUImxSz+S8b
-         ICS1g3Qi8bU91B9386Zxo0E6VYzVGGGgvJc2ELTei6ULsz3PhPjpzj4+lbxbjnwB038c
-         73rGgy5HY39sPxGHXjPEqW39hmCz3k7WmU00K80qtK1JWFpeGKfD07pszGcOoq+FcUcp
-         G/tvaBW7tJYseUISRY4HuvDiDrIygsmSdDUDvct1/l0L+alVNkF7Q7/KCIbMlgZQOXhs
-         Rf0VzjQBEHdAvanQlcjY5AGxolSW8sy5/BFaWkhowFKu0GuHoxVrDa/UqoMTTJcXYnri
-         T1TQ==
-X-Gm-Message-State: AC+VfDzwB4SFEqEk8BSUG/dKERQruq1fZmj2Kcat82BWsqv1XM3xHxak
-        qhT8Hp+2iRIHAOHVMIt9HPLGo0EK9XDqsj32UAA=
-X-Google-Smtp-Source: ACHHUZ6mkY0TKM+w8HpDdJk16/geAD+v7LsqjoH7WywHI/OOlQ7m+A1qRTyVyO7jMKHN8tgQAS7z7g==
-X-Received: by 2002:a17:907:8a12:b0:93e:fa12:aa1a with SMTP id sc18-20020a1709078a1200b0093efa12aa1amr14084404ejc.1.1684843164632;
-        Tue, 23 May 2023 04:59:24 -0700 (PDT)
+        bh=BtyIsC3fOFjgjr9w9nc1ft0SzM61Czn4H/P3GjzNfK0=;
+        b=B8QAjnBbViy7IF3SepqHD9UMxi8tErreQ0lmogoQnaE1eWfkMmlQ7t5gw3zpE6WMon
+         vhS6HAkdwOgI5FUxXSzJkG1+pfezuxgBZgwbmLCY48LRy7k6yfZvVzGWRo3Ir2M3RIhs
+         PL2PUZINCwTgdwN81V43SszuKMf3UdVBlXQ85zbVwws6THyg6Tn1Vu2orji4rlvb7rYg
+         uPZusQHIDwIu5SWd3PZxEpII45FCOyhu8U2B0iz1ZTfJJKm5Pa4vSAX0Yk3DsLTGYpfX
+         YXJhpFI0Nhxoz9L5GRC8ToZHSDZgPVcskLYb+6L9xP5/bICi01aTBYlFGWUvBb/9Dm1o
+         u/WA==
+X-Gm-Message-State: AC+VfDwYl7VaMAPldYlwB1mGVvyl4xN347ESxcigypDdVlcYXkfllYS4
+        c0ORtVtghZU0EFe7eTZFQID8ZQ==
+X-Google-Smtp-Source: ACHHUZ78ha/V35x6+xkN2GHd8k3K5a4kK220qp3eEHQVCjxYr6dtznddiQJKp5S0VuxPspRGsy9W9A==
+X-Received: by 2002:a17:907:91cd:b0:96a:937c:5608 with SMTP id h13-20020a17090791cd00b0096a937c5608mr9052699ejz.53.1684843198168;
+        Tue, 23 May 2023 04:59:58 -0700 (PDT)
 Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id cf11-20020a170906b2cb00b0094ee700d8e4sm4321311ejb.44.2023.05.23.04.59.23
+        by smtp.gmail.com with ESMTPSA id h26-20020a17090634da00b0096f7e7d1566sm4318582ejb.224.2023.05.23.04.59.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 May 2023 04:59:24 -0700 (PDT)
+        Tue, 23 May 2023 04:59:57 -0700 (PDT)
 References: <20230517200814.3157916-1-aliceryhl@google.com>
- <20230517200814.3157916-2-aliceryhl@google.com>
 User-agent: mu4e 1.10.3; emacs 28.2.50
 From:   Andreas Hindborg <nmi@metaspace.dk>
 To:     Alice Ryhl <aliceryhl@google.com>
@@ -67,10 +66,10 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev,
         Wedson Almeida Filho <walmeida@microsoft.com>
-Subject: Re: [PATCH v1 2/2] rust: sync: implement `AsRef<T>` for `Arc<T>`
-Date:   Tue, 23 May 2023 13:59:00 +0200
-In-reply-to: <20230517200814.3157916-2-aliceryhl@google.com>
-Message-ID: <877cszfeck.fsf@metaspace.dk>
+Subject: Re: [PATCH v1 1/2] rust: sync: add `Arc::ptr_eq`
+Date:   Tue, 23 May 2023 13:54:19 +0200
+In-reply-to: <20230517200814.3157916-1-aliceryhl@google.com>
+Message-ID: <87353nfebm.fsf@metaspace.dk>
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
@@ -80,11 +79,20 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 Alice Ryhl <aliceryhl@google.com> writes:
 
-> This trait lets you use `Arc<T>` in code that is generic over smart
-> pointer types.
+> Add a method for comparing whether two `Arc` pointers reference the same
+> underlying object.
 >
-> The `AsRef` trait should be implemented on all smart pointers. The
-> standard library also implements it on the ordinary `Arc`.
+> This comparison can already be done by getting a reference to the inner
+> values and comparing whether the references have the same address.
+> However, writing `Arc::ptr_eq(a, b)` is generally less error-prone than
+> doing the same check on the references, since you might otherwise
+> accidentally compare the two `&Arc<T>` references instead, which wont
+> work because those are pointers to pointers to the inner value, when you
+> just want to compare the pointers to the inner value.
+>
+> Also, this method might optimize better because getting a reference to
+> the inner value involves offsetting the pointer, which this method does
+> not need to do.
 >
 > Co-developed-by: Wedson Almeida Filho <walmeida@microsoft.com>
 > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
@@ -93,24 +101,25 @@ Alice Ryhl <aliceryhl@google.com> writes:
 Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 
 > ---
->  rust/kernel/sync/arc.rs | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  rust/kernel/sync/arc.rs | 5 +++++
+>  1 file changed, 5 insertions(+)
 >
 > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 274febe3bb06..9ec911e4a0c7 100644
+> index e6d206242465..274febe3bb06 100644
 > --- a/rust/kernel/sync/arc.rs
 > +++ b/rust/kernel/sync/arc.rs
-> @@ -264,6 +264,12 @@ impl<T: ?Sized> Deref for Arc<T> {
+> @@ -221,6 +221,11 @@ impl<T: ?Sized> Arc<T> {
+>          // reference can be created.
+>          unsafe { ArcBorrow::new(self.ptr) }
 >      }
+> +
+> +    /// Compare whether two [`Arc`] pointers reference the same underlying object.
+> +    pub fn ptr_eq(this: &Self, other: &Self) -> bool {
+> +        core::ptr::eq(this.ptr.as_ptr(), other.ptr.as_ptr())
+> +    }
 >  }
 >  
-> +impl<T: ?Sized> AsRef<T> for Arc<T> {
-> +    fn as_ref(&self) -> &T {
-> +        self.deref()
-> +    }
-> +}
-> +
->  impl<T: ?Sized> Clone for Arc<T> {
->      fn clone(&self) -> Self {
->          // INVARIANT: C `refcount_inc` saturates the refcount, so it cannot overflow to zero.
+>  impl<T: 'static> ForeignOwnable for Arc<T> {
+>
+> base-commit: ac9a78681b921877518763ba0e89202254349d1b
 
