@@ -2,75 +2,68 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A675C77B75
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 May 2023 13:50:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 47C04C7EE23
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 May 2023 14:11:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237031AbjEWNuH (ORCPT
+        id S237237AbjEWOL1 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 23 May 2023 09:50:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36606 "EHLO
+        Tue, 23 May 2023 10:11:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237037AbjEWNuC (ORCPT
+        with ESMTP id S237195AbjEWOLN (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 23 May 2023 09:50:02 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71208109
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 06:49:59 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-96f683e8855so718590466b.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 06:49:59 -0700 (PDT)
+        Tue, 23 May 2023 10:11:13 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 859AD199E
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 07:10:18 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-510f3db1cd8so1768040a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 07:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1684849798; x=1687441798;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1684851016; x=1687443016;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=QKx8n//1tKFimftiMxA1MUqaSGZNSHWdUYwS7d1fEr8=;
-        b=ohL+xM5uW5h/Kc38R+R3Q+NWedDCe1F74+5M0k6VNn5qAFRaGimRlA5C3rQVITiDXI
-         4RbpmnHalgZc3TFGQU4mWfVn7JY4u1vrQCgHdgqY1hyFl2nPDZyIxyV+dQDTwK2w82z9
-         ucMZQjQQpXuC4TB6+M/UYs5k8iq5ds+Drr9PotqurYTdvgvBD6lAsfjVFMTOEghlXuTP
-         DF+iMuai1YlCNS/LU0qNKxbyGjj61PxCjTFpidHGEB1S/1irs5mEqFASaDS6xuRxpA2G
-         FSzkI3hz5BKIWWhRggtb+bQKVeA7jyKiUiFnayMKTCAO+g4l885rbauGfvxJC5br+LpS
-         DqAg==
+        bh=odrvmB6aW4j6WyrX5D9zci+31pxZ6H0l+pIfR4FXqCA=;
+        b=fX0B1I3mDg+racPxVnxeOqxxRwy6lp6PV/FCCoavnXihWp9UDWN7EoPie56ykAnZtt
+         VmEAzbp8dcpTCXc7NGSAKbD+eGoPP9hwt2lYcR9UNQthJUpWVbRobigDsUVEdNTnNAPt
+         bG7a9e+ZxNzUocpgq3GBtQQLjrCqwOdVTzUF/2tkCWfIh5fR5kSVySey7fpu0zep4x6Q
+         6AuLbKaiaJrkovHKqFCg2L5jY9zxfQWDGsDsS1tTNEdi2B245dKaQmGmnENc1aeYpQi4
+         o2uZVgqr5kO91R3hceNVJd/Vb5bj+94Gy8lK5Vp0J+p+JjtHM2VHgAN5ED3rnZT2Gj0F
+         shWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684849798; x=1687441798;
+        d=1e100.net; s=20221208; t=1684851016; x=1687443016;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QKx8n//1tKFimftiMxA1MUqaSGZNSHWdUYwS7d1fEr8=;
-        b=gRKi0D7S2ffYDbQy4DrhMHtcW0/vOq7xa+dzPGIh95DBimCr0Mda3+bIwK8iFL8Xeg
-         GXx/I0qvu3R2edSK9XxdEAX3OusG5Ad8Vp2DJGJf+PrLca+wA8B4c9YdidTjWjJYjgV9
-         2dm7fy0RfTPlfBraHH4ZBCQMGmU1gSfTA59GDMyqPb+AxdGn1mL8qE4srpa+X2NSogDy
-         jftpyvI9MkP0RDsdraDETkcm/gtnu5iMZsIFwf7R04M7WWHs26CFFzW4ngB7s+pq7tIb
-         ZtkT4/qSEE+rkVDhgzq/yD2LIcfUDZ2hJMrC7KNpPIEYTGCDQn4CUkbmbEWELZosGC/i
-         1T8A==
-X-Gm-Message-State: AC+VfDzofkonKac66muu2K4z6xLHg+rV7dJvfSxOso+zEejgSXC+5Q1D
-        YEUeWLY6maCqj/ps4ynO5GWkpFXTXn7KzFLPrdA=
-X-Google-Smtp-Source: ACHHUZ4iTNVTiX44mpW3K9dwzTRFp9mKM7RDFCxUm+4ZyyNdGA2kxXD/jMrQDq4vaqPQJGc1k9lHhQ==
-X-Received: by 2002:a17:907:7212:b0:96f:de0b:847a with SMTP id dr18-20020a170907721200b0096fde0b847amr6927791ejc.37.1684849797878;
-        Tue, 23 May 2023 06:49:57 -0700 (PDT)
+        bh=odrvmB6aW4j6WyrX5D9zci+31pxZ6H0l+pIfR4FXqCA=;
+        b=HE9Rax2wYsbXUzfJN5TVKszbu2LhIle1aKwERquS6gs+RvYscHEo6EBFCkirVmWGoZ
+         krHD8ASPnL9Cif7ksmK4rSNpMMeEl8yiwkaDHUHV/QcA4Ye7olRpnMVZ91AgBk2vZE6/
+         7k4BOcKgUZ/uuuqXESn2XmJ8gwpln5pcn1WrJlJ2NJrdHAfopNo9qHeEO+2h2GNYz84T
+         7hPv8fyUFn15n9bOb/01G2ZUtX44zaR1F/saPLB8iYFHCUV+6PKntjnbacKeRVxI3teg
+         /97+zH0wLcA+MA9W7qt6yaZSCRKJoV1xyxqTvcK6c6KTV3g0iDCR+2aIEuXdlf9JjRso
+         7/mg==
+X-Gm-Message-State: AC+VfDwAEdtQcjM/DP0tGUZCWXWgM5dcff48RJJ0nWAlG4yyoQGy7CjV
+        WL+rGJGGDwSOhJY+TqokfGJo6Q==
+X-Google-Smtp-Source: ACHHUZ7SM0VxVHLY8BYml2BOqyofBDB/Imz9MBd9cH0Y3XZmo86yfhM9UPtUBbWqshb2x8JogJRgkg==
+X-Received: by 2002:a17:907:8390:b0:953:37eb:7727 with SMTP id mv16-20020a170907839000b0095337eb7727mr11055069ejc.43.1684851015849;
+        Tue, 23 May 2023 07:10:15 -0700 (PDT)
 Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id z27-20020a17090674db00b0096efa536229sm4587344ejl.149.2023.05.23.06.49.57
+        by smtp.gmail.com with ESMTPSA id v3-20020a170906858300b0096a68648329sm4482396ejx.214.2023.05.23.07.10.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 May 2023 06:49:57 -0700 (PDT)
-References: <20230517095905.3548100-1-aliceryhl@google.com>
- <20230517095905.3548100-2-aliceryhl@google.com>
+        Tue, 23 May 2023 07:10:15 -0700 (PDT)
+References: <ZGVLo1V4kjx_lep5@slm.duckdns.org>
+ <20230517222219.3191560-1-aliceryhl@google.com>
 User-agent: mu4e 1.10.3; emacs 28.2.50
 From:   Andreas Hindborg <nmi@metaspace.dk>
 To:     Alice Ryhl <aliceryhl@google.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: Re: [PATCH v1 2/2] rust: task: add `Send` marker to `Task`
-Date:   Tue, 23 May 2023 15:27:14 +0200
-In-reply-to: <20230517095905.3548100-2-aliceryhl@google.com>
-Message-ID: <87r0r7dunu.fsf@metaspace.dk>
+Cc:     tj@kernel.org, alex.gaynor@gmail.com, benno.lossin@proton.me,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+        jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
+        ojeda@kernel.org, patches@lists.linux.dev,
+        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+Subject: Re: [PATCH v1 0/7] Bindings for the workqueue
+Date:   Tue, 23 May 2023 16:08:20 +0200
+In-reply-to: <20230517222219.3191560-1-aliceryhl@google.com>
+Message-ID: <87mt1vdtq1.fsf@metaspace.dk>
 MIME-Version: 1.0
 Content-Type: text/plain
 Precedence: bulk
@@ -80,35 +73,84 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 Alice Ryhl <aliceryhl@google.com> writes:
 
-> When a type also implements `Sync`, the meaning of `Send` is just "this
-> type may be accessed mutably from threads other than the one it is
-> created on". That's ok for this type.
+> On Wed, 17 May 2023 11:48:19 -1000, Tejun Heo wrote:
+>> I tried to read the patches but am too dumb to understand much.
 >
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/task.rs | 5 +++++
->  1 file changed, 5 insertions(+)
+> The patch is more complicated than I would have liked, unfortunately.
+> However, as I mentioned in the cover letter, simplifications should be
+> on their way.
 >
-> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-> index 526d29a0ae27..4f1fe9aa9f6e 100644
-> --- a/rust/kernel/task.rs
-> +++ b/rust/kernel/task.rs
-> @@ -64,6 +64,11 @@ macro_rules! current {
->  #[repr(transparent)]
->  pub struct Task(pub(crate) Opaque<bindings::task_struct>);
->  
-> +// SAFETY: The only situation in which this can be accessed mutably is when the refcount drops to
-> +// zero and the destructor runs. It is safe for that to happen on any thread, so it is ok for this
-> +// type to be `Send`.
-> +unsafe impl Send for Task {}
+> Luckily, using the workqueue bindings is simpler than the bindings
+> themselves.
+>
+>> Any chance you can provide some examples so that I can at least
+>> imagine how workqueue would be used from rust side?
+>
+> Yes, of course!
 
-To enhance clarity, could you elaborate _why_ `Task` can never be
-accessed mutably by Rust? Perhaps "By design, `Task` can only be
-accessed thorough `&Task` and `Task` can never be owned by the Rust
-side. Therefore the only situation ...".
+If you have bandwidth for it, it would be awesome to see some examples
+in the series as well (for /samples/rust).
 
-> +
->  // SAFETY: It's OK to access `Task` through references from other threads because we're either
->  // accessing properties that don't change (e.g., `pid`, `group_leader`) or that are properly
->  // synchronised by C code (e.g., `signal_pending`).
+BR Andreas
+
+>
+> The simplest way to use the workqueue is to use the `try_spawn` method
+> introduced by the last patch in the series. With this function, you just
+> pass a function pointer to the `try_spawn` method, and it schedules the
+> function for execution. Unfortunately this allocates memory, making it
+> a fallible operation.
+>
+> To avoid allocation memory, we do something else. As an example, we can
+> look at the Rust binder driver that I am currently working on. Here is
+> how it will be used in the binder driver: First, the `Process` struct
+> will be given a `work_struct` field:
+>
+> #[pin_data]
+> pub(crate) struct Process {
+>     // Work node for deferred work item.
+>     #[pin]
+>     defer_work: Work<Arc<Process>>,
+>
+>     // Other fields follow...
+> }
+>
+> Here, we use the type `Work<Arc<Process>>` for our field. This type is
+> the Rust wrapper for `work_struct`. The generic parameter to `Work`
+> should be the pointer type used to access `Process`, and in this case it
+> is `Arc<Process>`. The pointer type `Arc` is used for reference
+> counting, and its a pointer type that owns a ref-count to the inner
+> value. (So e.g., it decrements the ref-cout when the arc goes out of
+> scope.) Arc is an abbreviation of "atomic reference count". This means
+> that while it is enqueued in the workqueue, the workqueue owns a
+> ref-count to the process.
+>
+> Next, binder will use the `impl_has_work!` macro to declare that it
+> wants to use `defer_work` as its `work_struct` field. That looks like
+> this:
+>
+> kernel::impl_has_work! {
+>     impl HasWork<Arc<Process>> for Process { self.defer_work }
+> }
+>
+> To define the code that should run when the work item is executed on the
+> workqueue, binder does the following:
+>
+> impl workqueue::ArcWorkItem for Process {
+>     fn run(self: Arc<Process>) {
+>         // this runs when the work item is executed
+>     }
+> }
+>
+> Finally to schedule it to the system workqueue, it does the following:
+>
+> let _ = workqueue::system().enqueue(process);
+>
+> Here, the `enqueue` call is fallible, since it might fail if the process
+> has already been enqueued to a work queue. However, binder just uses
+> `let _ =` to ignore the failure, since it doesn't need to do anything
+> special in that case.
+>
+> I hope that helps, and let me know if you have any further questions.
+>
+> Alice
 
