@@ -2,126 +2,98 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5331FC77B7A
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 May 2023 14:15:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DA6BC7EE23
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 May 2023 14:44:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237048AbjEWOPm (ORCPT
+        id S237085AbjEWOo2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 23 May 2023 10:15:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53554 "EHLO
+        Tue, 23 May 2023 10:44:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237052AbjEWOPg (ORCPT
+        with ESMTP id S234888AbjEWOo1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 23 May 2023 10:15:36 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC71912B
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 07:15:30 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-510e419d701so1844054a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 07:15:30 -0700 (PDT)
+        Tue, 23 May 2023 10:44:27 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83100CD
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 07:44:26 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-ba8b0fc0d35so10649070276.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 07:44:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1684851328; x=1687443328;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=FebP/qFHl0Dl67q5FeEHc91aNblS1R2LhUrg1U/Isbo=;
-        b=uVErkesMioUpkrd/1Qe0cl8yRr3/q5pXG3LizEb+fAw1xGGKvxRlfAXannm+NYXVIv
-         tj5m5qgvO4xMFgQmlvarz48n3H+HNZpVVp3iJd6Flp4RLCXyiNKWnFC8UNR3eBPgfVaU
-         X+hBw0yPUQ9Vux563zSj23KxmXRQxlE1Khw2/qD3MPe534UOPkK1cP7n2Wq7z5tOpy5F
-         uBZ4WazFgOesOU2prwsUu3k495ea5HpCLD78qjF8Lzxdwtd2OXuCV/cKcnkdXpoohSLS
-         b662HLi87+xdh6nOpVc83zJjOkgO08TnlbUFy6tAR5YztkQGc3vPa1cvs+O6X15eBSpm
-         Pohg==
+        d=google.com; s=20221208; t=1684853065; x=1687445065;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yPN2BpzOKR7Rs0wxh0Zdg1UkwhhxDvNrZrq1CaLSSZQ=;
+        b=B7M4fxocDWncwNJOfecUOc8pS/sCVvN9OXU6KGy4jrD0ZzyajwUU2BDl1AikpLbEIh
+         KSyWuw2wF3Cp5ZRDPAOaiNnn80ftEkOCAg6a8n6b/cDc1+ruQaE7BFWieqx7Nfaxbl0P
+         rrLSe/jYHNRr2mRLZym1dcwVfPvD2kjh8n6g6t0mXyWe/MTU+l6gMqEr7LaZ0wzSSgAj
+         B+OSQ+yfQ3ugA56jl33nP5KbTNVE9BYVwjP3ma/9YBy3U9UnKSnGtW6OFJ7o3R5PZQVa
+         pCZJoHuoOremB/BNh1N8aKjD3J+eUzUl3Ki58VQbA2V7tURIp2lwdAWPe7HUBMUp1RI7
+         hJQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684851328; x=1687443328;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FebP/qFHl0Dl67q5FeEHc91aNblS1R2LhUrg1U/Isbo=;
-        b=RTJtmIlRMgjp01ebRce538Mp3G5c2+DTbYuX7xGVAh+vJX7YyVUgKZjzVZ3DeNn/66
-         aXS+gtXVdDFLwkJskkJ9jYe6gr61lgY9j5j6efix/YpQFdBpSU34zlaNZkrrBphCWPEX
-         iCd5fSnE5cPtYtXEEt/aA3SqgHKQYYJD4HyjG3jrJvY102ZwREEjbqPNS1NqfcgmO4O6
-         uQd0+iHASIYuchxFIEO2g9ERvHv97vNxSHvinI4oQnk43pW9X6eMDuf0Ex8Mf7g8Kvg6
-         pj7HUW8xi7j/U7JrDWaPUYSMdT3roMmU7gbE85BiYgV0CVNjPLM96RHBuEqXT5nl0bk6
-         XSWg==
-X-Gm-Message-State: AC+VfDwjcOLINtFbzpPxuelZbkPTdJX6W+/GdFmwbpEEtQgW0L6bR6zA
-        nZNO3fxw4Z9Sn2hcdSJGAKu1Cg==
-X-Google-Smtp-Source: ACHHUZ5qSPAcH861872AUO19Y6nXlt6YPQsMjbAHd3u7oOXwHcRCFReFB4UWevnWEwD06EKyPazqcQ==
-X-Received: by 2002:a17:907:1c8b:b0:94e:48ac:9a51 with SMTP id nb11-20020a1709071c8b00b0094e48ac9a51mr16656005ejc.4.1684851328355;
-        Tue, 23 May 2023 07:15:28 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id xa12-20020a170907b9cc00b0096637a19dccsm4510453ejc.210.2023.05.23.07.15.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 May 2023 07:15:27 -0700 (PDT)
-References: <20230517203119.3160435-1-aliceryhl@google.com>
-User-agent: mu4e 1.10.3; emacs 28.2.50
-From:   Andreas Hindborg <nmi@metaspace.dk>
-To:     Alice Ryhl <aliceryhl@google.com>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        d=1e100.net; s=20221208; t=1684853065; x=1687445065;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yPN2BpzOKR7Rs0wxh0Zdg1UkwhhxDvNrZrq1CaLSSZQ=;
+        b=Tp6Q0fz9VCPRc/CvOB2UWkqfVxRiyq9Jor0nsIyic+uryC3LxASn94EIVsiC/jiksU
+         96sbjtCwR39vP6dzcOb4bmZnpZMQmn9IxBbD4N8QmLg/V9d7Augz7Uxcys8rtohLt61v
+         4zn79fNcPA61E2ddsHGaQeyfC4sQ49UQ0bI9aqyvjPYPEQxXLn+9zwVDWNgYs6V9LvgT
+         xngU3vuD37Ac+ia0bQXmVmY1W+QV0mpFtIP7WyOyYWt2/bBuM0x+P0loZRONijlpTi4d
+         VCs3BH4/w0UCwhcLhZCIuwFnXmlATK8yROBlgdYXbKpEKLIPWEUND6lH5W7za5xLw1n+
+         tKgQ==
+X-Gm-Message-State: AC+VfDzZBu1qrCB1/Ik6f+0gtcrDoM6opr4tZa0B6C+8nBqnsOYuXQ4L
+        m/0uoOIjDHd02kdMQesOMwFcg2eN9wW61Bc=
+X-Google-Smtp-Source: ACHHUZ656OnC2srdDMtzUpWdENlFVaUBI5YJEFeGiZxbSyebkOl0dnFJTs2fWDoVRQLUxZB9CaeyTKcu1gllt+0=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:1895:b0:ba8:4ba3:5b54 with SMTP
+ id cj21-20020a056902189500b00ba84ba35b54mr6433268ybb.11.1684853065789; Tue,
+ 23 May 2023 07:44:25 -0700 (PDT)
+Date:   Tue, 23 May 2023 14:44:14 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.40.1.698.g37aff9b760-goog
+Message-ID: <20230523144418.1250547-1-aliceryhl@google.com>
+Subject: [PATCH v2 0/4] Update thread safety markers
+From:   Alice Ryhl <aliceryhl@google.com>
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Tejun Heo <tj@kernel.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        "=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 0/7] Bindings for the workqueue
-Date:   Tue, 23 May 2023 16:14:37 +0200
-In-reply-to: <20230517203119.3160435-1-aliceryhl@google.com>
-Message-ID: <87ilcjdthc.fsf@metaspace.dk>
-MIME-Version: 1.0
-Content-Type: text/plain
+        Alice Ryhl <aliceryhl@google.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+In Rust, the `Send` and `Sync` traits are used to mark in what ways a
+specific type is thread safe. In this patch series, I add some missing
+thread safety markers and improve the documentation related to them.
+This change will let you compile some code that would currently fail to
+compile even though it doesn't actually violate any thread safety rules.
 
-Alice Ryhl <aliceryhl@google.com> writes:
+You can find a definition of what these marker traits mean at [1].
 
-> This patchset contains bindings for the kernel workqueue.
->
-> One of the primary goals behind the design used in this patch is that we
-> must support embedding the `work_struct` as a field in user-provided
-> types, because this allows you to submit things to the workqueue without
-> having to allocate, making the submission infallible. If we didn't have
-> to support this, then the patch would be much simpler. One of the main
-> things that make it complicated is that we must ensure that the function
-> pointer in the `work_struct` is compatible with the struct it is
-> contained within.
->
-> This patch could be significantly simplified if we already had the field
-> projection bindings. However, we have decided to upstream the current
-> version that does not depend on field projection first - the PR that
-> introduces field projections will then include a commit that simplifies
-> the workqueue implementation. (In particular, it would simplify the 5th
-> patch in this series.)
->
-> The first version of the workqueue bindings was written by Wedson, but
-> I have rewritten much of it so that it uses the pin-init infrastructure
-> and can be used with containers other than `Arc`.
->
-> Alice Ryhl (4):
->   rust: workqueue: add low-level workqueue bindings
->   rust: workqueue: add helper for defining work_struct fields
->   rust: workqueue: add safe API to workqueue
->   rust: workqueue: add `try_spawn` helper method
->
-> Wedson Almeida Filho (3):
->   rust: add offset_of! macro
->   rust: sync: add `Arc::{from_raw, into_raw}`
->   rust: workqueue: define built-in queues
->
->  rust/helpers.c           |   8 +
->  rust/kernel/lib.rs       |  37 ++
->  rust/kernel/sync/arc.rs  |  44 +++
->  rust/kernel/workqueue.rs | 715 +++++++++++++++++++++++++++++++++++++++
->  scripts/Makefile.build   |   2 +-
->  5 files changed, 805 insertions(+), 1 deletion(-)
->  create mode 100644 rust/kernel/workqueue.rs
->
->
-> base-commit: ac9a78681b921877518763ba0e89202254349d1b
+[1]: https://stackoverflow.com/a/68708557/1704411
 
-This does not compile for me. Could you link dependencies to be applied
-first?
+Alice Ryhl (4):
+  rust: sync: reword the `Arc` safety comment for `Send`
+  rust: sync: reword the `Arc` safety comment for `Sync`
+  rust: specify when `ARef` is thread safe
+  rust: task: add `Send` marker to `Task`
 
-Best regards,
-Andreas
+ rust/kernel/sync/arc.rs | 12 +++++++-----
+ rust/kernel/task.rs     | 10 ++++++++--
+ rust/kernel/types.rs    | 13 +++++++++++++
+ 3 files changed, 28 insertions(+), 7 deletions(-)
+
+
+base-commit: ac9a78681b921877518763ba0e89202254349d1b
+-- 
+2.40.1.698.g37aff9b760-goog
+
