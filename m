@@ -2,62 +2,61 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82A14C7EE23
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 May 2023 16:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6C5FC77B75
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 May 2023 16:42:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229768AbjEWQmJ (ORCPT
+        id S237591AbjEWQmQ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 23 May 2023 12:42:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51990 "EHLO
+        Tue, 23 May 2023 12:42:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229775AbjEWQmG (ORCPT
+        with ESMTP id S229775AbjEWQmN (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 23 May 2023 12:42:06 -0400
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F8D8DD;
-        Tue, 23 May 2023 09:42:05 -0700 (PDT)
-Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6af93a6166fso394019a34.3;
-        Tue, 23 May 2023 09:42:05 -0700 (PDT)
+        Tue, 23 May 2023 12:42:13 -0400
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AEEBE9;
+        Tue, 23 May 2023 09:42:12 -0700 (PDT)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-19a16355c51so5416964fac.0;
+        Tue, 23 May 2023 09:42:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684860125; x=1687452125;
+        d=gmail.com; s=20221208; t=1684860131; x=1687452131;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=RLkW4IB8Lte2u6vuIxUUWaT7tLfO+b0+5hxrFkp7bhc=;
-        b=kUCgughpIJFzbxEq3AE8VPjotAe+3xTZO3xkUj0MrzsLSYwWZZPW9zcZrWxccfneBL
-         dftkAjIooDR8R+BPmyfjy/ASOUghqozY2399/dpOglToYplavPxrkWg1RXRL+LBkfv4A
-         URvpdv5cOxzh9MWWrbW0BIeGsIPKwXub2O73h8oMdM9BNWJNupCq2BPljuLmf+UAskhT
-         0Z0Z1Oho8EA4zX2eKGym2lPeIm9NXdkqRQ6VqvI5aOwGeuqaEk1EeZmnVEMd6HA82KA3
-         thoGkiVOC9+y2G8/Qfg6JynTBEYSbFqwsMKQyOCNK/ew5EM9d00V19Lm7X3OQHBZcENN
-         qPCg==
+        bh=7IhlLUomDZt1o19VFYJsKL4i2eF/CFk4flQyr7NsxSo=;
+        b=MMf0iQkrx/+n6tsEc26eBYnhu3NARXoUERX1UnQwbIQ/brBtPGyRi14+Ww7ncmk56v
+         D+4FY7rGBb7ICVjyt83Qw8g+HrBxu3/U19CA/sXBbwd1naCtU3ksx5DNOVt8jGCDNFOp
+         vOhQy3NH+1TLUNTiQsrsfq99uNFOkqlzTAEnbcGLsaqAe3Ww/GvRZMZVRfoDL2qjGngD
+         8T0p9vzjiP9VRUcB4LCk77GU8FJo/KfrXHGid3fzNHxXbRfbIHjzzaTe3SnLigrau3Qz
+         wP3S2hMDNPkJOKaox2IA8hBv7pw096sMawMVP3wXCYSM65tD3qgiqM67dTqitpM4yoh9
+         YE8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684860125; x=1687452125;
+        d=1e100.net; s=20221208; t=1684860131; x=1687452131;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RLkW4IB8Lte2u6vuIxUUWaT7tLfO+b0+5hxrFkp7bhc=;
-        b=ViJ1wzfNWO3eSckWE15YwcYEAJVRixcjtkzbtaDdrevkEiu0aYZszLG7zGJJ9rsFAv
-         j9nKbTks0YRUvqfVYxlk7KGl6veuce2VFsiwPkJGUo86J7ZSFroJUglDJOSYEgiV5QrC
-         3gC4zxoD+nKyc6ue+W/9BHHvEGtSiWtH+UA44CRWmoHFfrMOCqlzKltPDV9ybs6AzKCm
-         iL8/VXJZHprSoFoRv3LZK6TieanRq55aB66KC8yoCR+VMhT9PPluCkj8evFVDeWeXDAq
-         wPoAg4SHLcVeTSYoHenj4UyguqMKSu53n4zVVgJJT9M97mppGxJaGqu83ASGqDuBeWPY
-         NKPQ==
-X-Gm-Message-State: AC+VfDxTBOvGnnM5/ClP0gfI8/kd8M9Paxg1wGLRCM2aTVVNl3nYJADT
-        Rzja+AzT2MKM9Hu5QQujrFM=
-X-Google-Smtp-Source: ACHHUZ6w8XkkZxBlj/4xxBGGIKniA/JPAVm0WZh2gsHnL+x26jh1QiAcslF8qeug9KexGdRKJc+Ydw==
-X-Received: by 2002:a9d:6b8c:0:b0:6a4:19b2:d813 with SMTP id b12-20020a9d6b8c000000b006a419b2d813mr7614811otq.30.1684860124925;
-        Tue, 23 May 2023 09:42:04 -0700 (PDT)
+        bh=7IhlLUomDZt1o19VFYJsKL4i2eF/CFk4flQyr7NsxSo=;
+        b=ELREnjLE1vBSWqRBlwzOOL55Wk/QLkpTKsUVcoHYOohnM+dn9BHXa46CWJdndNC9q5
+         CaZGC7Fm+CfuHkTtGa3BwHSIC6Y/jQQkosovmvC/LdP3WcQd2T35gkiXcfK2QPLmjrLI
+         vQRwyvNnOzb2gHMyXsVERO1ziKZ5icXnUzF5zi1WyhKzzJrCpVub8mxmJQ9hwYeAMU5L
+         TRE1yRz0CDH4EKI4ri+C1Jm8sN2th3CrUUEuk+UiohxXFvbHs+Xu09UTPtEJsqslhc/G
+         wQVjJhroH7/CgMJ/eJW07YLBD8ZZWJVcAiwZveKiTLlNcCUMXHt/3NJmUh2cwd90hM+x
+         RIfQ==
+X-Gm-Message-State: AC+VfDy57DqZRGKngS1cOtYB0y3Jcbsz2dEhteSQKLaO/XDfUDXkMOIy
+        +o6f7tmxZ4PMQfTDEHRDA/c=
+X-Google-Smtp-Source: ACHHUZ54MIOmyW2xqymcK594+bszkCG9ijALhXQ1lqcxnkM1JXf9gC7QoEgV307dnZnEl+ggpJw/wg==
+X-Received: by 2002:a05:6871:585:b0:192:b3f7:9325 with SMTP id u5-20020a056871058500b00192b3f79325mr7074664oan.47.1684860131171;
+        Tue, 23 May 2023 09:42:11 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id j9-20020a9d7389000000b006a3bd777dfdsm3576008otk.12.2023.05.23.09.42.01
+        by smtp.gmail.com with ESMTPSA id y4-20020a056870a34400b0018b22156e84sm446680oak.38.2023.05.23.09.42.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 May 2023 09:42:04 -0700 (PDT)
-Message-ID: <c7c3c740-b534-6be1-aead-dc8dbba80882@gmail.com>
-Date:   Tue, 23 May 2023 13:29:07 -0300
+        Tue, 23 May 2023 09:42:10 -0700 (PDT)
+Message-ID: <0b52529c-5570-bfe8-eb53-f51ae00c2e05@gmail.com>
+Date:   Tue, 23 May 2023 13:31:12 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 2/4] rust: sync: reword the `Arc` safety comment for
- `Sync`
+Subject: Re: [PATCH v2 3/4] rust: specify when `ARef` is thread safe
 Content-Language: en-US
 To:     Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -72,9 +71,9 @@ Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev, Andreas Hindborg <a.hindborg@samsung.com>
 References: <20230523144418.1250547-1-aliceryhl@google.com>
- <20230523144418.1250547-3-aliceryhl@google.com>
+ <20230523144418.1250547-4-aliceryhl@google.com>
 From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230523144418.1250547-3-aliceryhl@google.com>
+In-Reply-To: <20230523144418.1250547-4-aliceryhl@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -82,27 +81,33 @@ List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On 5/23/23 11:44, Alice Ryhl wrote:
-> The safety comment on `impl Sync for Arc` references the Send safety
-> comment. This commit avoids that in case the two comments drift apart in
-> the future.
+> An `ARef` behaves just like the `Arc` when it comes to thread safety, so
+> we can reuse the thread safety comments from `Arc` here.
 > 
-> Suggested-by: Andreas Hindborg <a.hindborg@samsung.com>
+> This is necessary because without this change, the Rust compiler will
+> assume that things are not thread safe even though they are.
+> 
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 > ---
 > [...]
 >   
-> -// SAFETY: It is safe to send `&Arc<T>` to another thread when the underlying `T` is `Sync` for the
-> -// same reason as above. `T` needs to be `Send` as well because a thread can clone an `&Arc<T>`
-> -// into an `Arc<T>`, which may lead to `T` being accessed by the same reasoning as above.
-> +// SAFETY: It is safe to send `&Arc<T>` to another thread when the underlying `T` is `Sync`
+> +// SAFETY: It is safe to send `ARef<T>` to another thread when the underlying `T` is `Sync` because
+> +// it effectively means sharing `&T` (which is safe because `T` is `Sync`); additionally, it needs
+> +// `T` to be `Send` because any thread that has an `ARef<T>` may ultimately access `T` using a
+> +// mutable reference, for example, when the reference count reaches zero and `T` is dropped.
+> +unsafe impl<T: AlwaysRefCounted + Sync + Send> Send for ARef<T> {}
+> +
+> +// SAFETY: It is safe to send `&ARef<T>` to another thread when the underlying `T` is `Sync`
 > +// because it effectively means sharing `&T` (which is safe because `T` is `Sync`); additionally,
-> +// it needs `T` to be `Send` because any thread that has a `&Arc<T>` may clone it and get an
-> +// `Arc<T>` on that thread, so the thread may ultimately access `T` using a mutable reference, for
+> +// it needs `T` to be `Send` because any thread that has a `&ARef<T>` may clone it and get an
+> +// `ARef<T>` on that thread, so the thread may ultimately access `T` using a mutable reference, for
 > +// example, when the reference count reaches zero and `T` is dropped.
->   unsafe impl<T: ?Sized + Sync + Send> Sync for Arc<T> {}
->   
->   impl<T> Arc<T> {
+> +unsafe impl<T: AlwaysRefCounted + Sync + Send> Sync for ARef<T> {}
+> +
+>   impl<T: AlwaysRefCounted> ARef<T> {
+>       /// Creates a new instance of [`ARef`].
+>       ///
 
 Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
