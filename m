@@ -2,58 +2,58 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF5F0C7EE23
-	for <rust-for-linux@archiver.kernel.org>; Tue, 23 May 2023 10:04:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 343E2C7EE23
+	for <rust-for-linux@archiver.kernel.org>; Tue, 23 May 2023 11:07:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236432AbjEWKEJ (ORCPT
+        id S233208AbjEWLHO (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 23 May 2023 06:04:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44040 "EHLO
+        Tue, 23 May 2023 07:07:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236492AbjEWKDx (ORCPT
+        with ESMTP id S229525AbjEWLHN (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 23 May 2023 06:03:53 -0400
+        Tue, 23 May 2023 07:07:13 -0400
 Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4899B12B
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 03:03:34 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-ba81b24b878so16561081276.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 03:03:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1236FD
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 04:07:11 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-ba8a5cbb012so11179885276.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 May 2023 04:07:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1684836213; x=1687428213;
+        d=google.com; s=20221208; t=1684840031; x=1687432031;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lhbu9xWkX3wLR4lq6dHzqQfPPOyNOfH06YqwJA9yG9w=;
-        b=4dGLh+H8/haGhmxxd255Mz98LoY9lbqlzhvIM0z5TVaS8s7iiloqpEQFQ2qP1Jt9PE
-         zKpqTTulmUI/MWJQvFQXhUCnpdIaOpFNGdGvsPNhSJwihz3YaSDyHUCqKHELkhMuL8Hu
-         +nSXeD+NZLAvNBHsHokuZd+gTNoQggLV7wIWR3U68CYwaFDMTli0094VK1HT++cFNryg
-         zaBKyFBiBb7yJR1v0cAXkCSSTWoKOYUs8N6tfJ7RbJ2vk6ypbgOgDiANKcjZkoN2coRA
-         p+JGDbr97LlwKRbllnPDz4+36UKAESyhAXUJpaFwHvg62hN6Ea4uP0p2RkC8LvTnIsVw
-         m/1Q==
+        bh=2XgBvS7Dq5efKHkw7EY0MhJdVq0k/8wvd67gGiWjjGY=;
+        b=I2NuidGBI/ZeU95AgQL5cjDLDKnFCRQhwK80Fgf6TjZTKTEC8DC+X9iSKW1+OGmbCQ
+         tbEmvSculz37Vxh4nZ+cGSlHBgBO+BNMCsFePd5i1XJRDStdsKgK2UhycHnP+uIjq3W+
+         BGyXzdow/jD99f7ks6jbRs3YPyEn9XKtXB5BCAq7dsIV69FSVOllw9B/Z6WxozOHMNKv
+         t1K98BdYWNjYgpKjmlUphUPoSDarlKaAZqPfv1Cr5pG2PTQYcqrpkj/yspAUFjppThcr
+         dyxC630dpbZ2K0/yAlqfREb9rNAl58QGE6cRxvMiBJbtqW6UqM/Prd0ERjsPmpm5adrD
+         Queg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684836213; x=1687428213;
+        d=1e100.net; s=20221208; t=1684840031; x=1687432031;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lhbu9xWkX3wLR4lq6dHzqQfPPOyNOfH06YqwJA9yG9w=;
-        b=IrO//nPPA24lh/sOIF5kB3iIgQtaiMrjWwlRjqHlWlfpmnzJfwbQUw6pAuSOdUjmPl
-         L/a2gX3XRDgVQ6+YR5TWLbfqLuLS3y4oWXiXj3oXjoFqUYEyWibHCe80qyu3974iIeuw
-         7ulAThysTb4aKtyObQDaTZg88rOei/dRjubCcdywQDxcru3plqT2Ly9vbkOyNBity4cN
-         2ENRzV0YKbIGU27jp3TFY2uVWh/u3BN5c9RDU1LLwKbs3JqJ9krYY0tHPjRCb3Vv2yg1
-         mAheF2QgnbVpliDn50kk6f/6jCfP5jDFlM2aD2tZK+VD76JPOQtr2QF9sQVXHuT2Wxy6
-         waoQ==
-X-Gm-Message-State: AC+VfDzxzndpSuR1IZTv2D3vqjhkwuJI7HcedGmLuyG3xI4pd7tkGyIh
-        KuaSawkfGPZ0zcWCfgzqchZJO3BDGuPjALo=
-X-Google-Smtp-Source: ACHHUZ4NyfEHvy9cwuuqUdgnYfvSx3Y0xS9fHqMoUQEZs42xAAW/AgpB44Yzdmz7fLNz6YiTYLzDdVorZ13CiOU=
+        bh=2XgBvS7Dq5efKHkw7EY0MhJdVq0k/8wvd67gGiWjjGY=;
+        b=PkwAcMT+FCttuK9mzSV60HPTQQVU/RKTCXo9Xq3/f3fRQ2eIV1bqyvOOg8wBNO8ghx
+         nC7ncBW/EfohCoaJxrVFt2UNbvP22TBNB1FM3j1yuDCxFjIhI5duVWmVHqfDqU6Qzuoh
+         5VYHSgSMsX83v19vPbkotEB0XbYnyZfYcb1rBY9wHspNb0zIlrYQmxOFHwfM9oDZ0Q2D
+         W04SVvCaIhBhzBw1Lh9mrqMvkVWwiJ5cCGrItKQx2kKCsfuPafzr/oxnXxeFuhGE0NNC
+         e0xXybL+BswTCqs1nwYDsSDmBLTpBlQfI0O5WSYQuKIzx7xqwT5x/BQwZA9+bd9VnU6n
+         Zlzw==
+X-Gm-Message-State: AC+VfDxM9+UzAFC9nDQ4mFyCLKD+fHH6QPtcWxcFdXXxQzAlbquIpsdG
+        tFHORk/AIA/iUrgUNipd7vsg0NLK/MiBRp0=
+X-Google-Smtp-Source: ACHHUZ5fQNzXetN18AMOrqlYgjbM0rPXw1HVQJvrLv1Yjb1M1/QRmptg+hoYr/BXIrxgTx0GNavoIajsv9nwQ0I=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a25:d6c1:0:b0:ba8:17de:552f with SMTP id
- n184-20020a25d6c1000000b00ba817de552fmr5502594ybg.3.1684836213484; Tue, 23
- May 2023 03:03:33 -0700 (PDT)
-Date:   Tue, 23 May 2023 10:03:30 +0000
-In-Reply-To: <beb2932e-7f16-e368-9cb5-edbe115fcb67@gmail.com>
+ (user=aliceryhl job=sendgmr) by 2002:a25:d48e:0:b0:ba8:9653:c948 with SMTP id
+ m136-20020a25d48e000000b00ba89653c948mr5747400ybf.3.1684840031253; Tue, 23
+ May 2023 04:07:11 -0700 (PDT)
+Date:   Tue, 23 May 2023 11:07:09 +0000
+In-Reply-To: <b54801cd-1afb-2190-3b8a-4a095d04fdff@gmail.com>
 Mime-Version: 1.0
-References: <beb2932e-7f16-e368-9cb5-edbe115fcb67@gmail.com>
+References: <b54801cd-1afb-2190-3b8a-4a095d04fdff@gmail.com>
 X-Mailer: git-send-email 2.40.1.698.g37aff9b760-goog
-Message-ID: <20230523100331.4070035-1-aliceryhl@google.com>
-Subject: Re: [PATCH v1 1/7] rust: workqueue: add low-level workqueue bindings
+Message-ID: <20230523110709.4077557-1-aliceryhl@google.com>
+Subject: Re: [PATCH v1 6/7] rust: workqueue: add safe API to workqueue
 From:   Alice Ryhl <aliceryhl@google.com>
 To:     yakoyoku@gmail.com
 Cc:     alex.gaynor@gmail.com, aliceryhl@google.com,
@@ -67,34 +67,60 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 5/19/23 09:04, Martin Rodriguez Reboredo wrote:
-> On 5/19/23 06:40, Alice Ryhl wrote:
->> On 5/18/23 16:51, Martin Rodriguez Reboredo wrote:
->>> On 5/17/23 17:31, Alice Ryhl wrote:
->>>> +    /// Enqueues a work item.
->>>> +    ///
->>>> +    /// This may fail if the work item is already enqueued in a workqueue.
->>>
->>> Wouldn't be worth to mention that, if not implied, the item it's going
->>> to be worked on an unbound CPU?
->> 
->> I'm not really sure what you mean. Can you elaborate?
+On 5/18/23 21:17, Martin Rodriguez Reboredo wrote:
+> On 5/17/23 17:31, Alice Ryhl wrote:
+>> +unsafe impl<T> WorkItem for Arc<T>
+>> +where
+>> +    T: ArcWorkItem + HasWork<Self> + ?Sized,
+>> +{
+>> +    type EnqueueOutput = Result<(), Self>;
+>> +
+>> +    unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
+>> +    where
+>> +        F: FnOnce(*mut bindings::work_struct) -> bool,
+>> +    {
+>> +        let ptr = Arc::into_raw(self);
+>> +
+>> +        // Using `get_work_offset` here for object-safety.
+>> +        //
+>> +        // SAFETY: The pointer is valid since we just got it from `into_raw`.
+>> +        let off = unsafe { (&*ptr).get_work_offset() };
+>> +
+>> +        // SAFETY: The `HasWork` impl promises that this offset gives us a field of type
+>> +        // `Work<Self>` in the same allocation.
+>> +        let work_ptr = unsafe { (ptr as *const u8).add(off) as *const Work<Self> };
+>> +        // SAFETY: The pointer is not dangling.
+>> +        let work_ptr = unsafe { Work::raw_get(work_ptr) };
+>> +
+>> +        match (queue_work_on)(work_ptr) {
 > 
-> I've meant that if it's good to mention that `queue_work_on` is going
-> to be called with `WORK_CPU_UNBOUND` so that API users know about it.
+> Match for boolean is not a good pattern in my eyes, if-else should be
+> used instead.
 
-Ah, I misunderstood at first. I thought you were commenting on the "This
-may fail if ..." sentence. I'll go ahead and add that to the
-documentation. I will include it in the next patch set once I have
-looked at your other reviews.
+I think this is a question of style. For a comparison:
 
-This part of the next version will look like this:
+match (queue_work_on)(work_ptr) {
+    true => Ok(()),
+    // SAFETY: The work queue has not taken ownership of the pointer.
+    false => Err(unsafe { Arc::from_raw(ptr) }),
+}
 
-+    /// Enqueues a work item.
-+    ///
-+    /// This may fail if the work item is already enqueued in a workqueue.
-+    ///
-+    /// The work item will be submitted using `WORK_CPU_UNBOUND`.
-+    pub fn enqueue<T: WorkItem + Send + 'static>(&self, w: T) -> T::EnqueueOutput {
+vs
 
-Alice
+if (queue_work_on)(work_ptr) {
+    Ok(())
+} else {
+    // SAFETY: The work queue has not taken ownership of the pointer.
+    Err(unsafe { Arc::from_raw(ptr) }),
+}
+
+I'm happy to change it if others disagree, but when the branches
+evaluate to a short expression like they do here, I quite like the first
+version.
+
+> Also aren't the parens around the closure unnecessary?
+
+Hmm, parenthesises are often required around closures, but it's possible
+that it is only required for stuff like `self.closure(args)` to
+disambiguate between a `closure` field (of pointer type) and a `closure`
+method. I can check and remove them if they are not necessary.
