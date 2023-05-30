@@ -2,81 +2,104 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51197C77B73
-	for <rust-for-linux@archiver.kernel.org>; Tue, 30 May 2023 13:23:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CE725C7EE2F
+	for <rust-for-linux@archiver.kernel.org>; Tue, 30 May 2023 14:14:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230287AbjE3NX2 (ORCPT
+        id S233033AbjE3OOc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 30 May 2023 09:23:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49312 "EHLO
+        Tue, 30 May 2023 10:14:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232536AbjE3NXV (ORCPT
+        with ESMTP id S233029AbjE3OOa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 30 May 2023 09:23:21 -0400
-Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A43A411B;
-        Tue, 30 May 2023 06:23:14 -0700 (PDT)
-Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-19edebe85adso3897242fac.2;
-        Tue, 30 May 2023 06:23:14 -0700 (PDT)
+        Tue, 30 May 2023 10:14:30 -0400
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 203ACE44;
+        Tue, 30 May 2023 07:14:03 -0700 (PDT)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-568af2f6454so13351057b3.1;
+        Tue, 30 May 2023 07:14:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685452994; x=1688044994;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fMNSQewRslTTM3ryH1hSW9tsjlBjJbSYLIcYAPdfTm8=;
-        b=Ngm/jZ0C5Q+NbA+yGe/TmaSY8mt/WOmGrqzXtYoxvTUU8NZfrDFO1HwI5IJQdbHqhn
-         lowU4zLein+etGYsdpQWXsifP9hlwMeeiXGXNsZPi8ovnJnuWGrl9ijUEFHorVUdJRR5
-         h5uwfkdwJwNHKYMQCM+SpHKySNsDNYUTC8Q0N91QuO9nKOrQlOmSk1kGXWzVX2H2/zOW
-         Mlpb8jnAIU2omz2E5NZKtYPDuAg8DbznalgJHV7ZHSMpLSJKXe1ccuhDZdcWrN1oD6nv
-         Yv7viv/NWEsYhqqm+NMlDD0xFZBhnuNBXieb1kf+PmsFhzKmdpU1zrOdJQxl4xjcPuzq
-         9X9w==
+        d=gmail.com; s=20221208; t=1685456039; x=1688048039;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PTwLalb60PTMu/jAkQpXrnGqb2wva++F9Sq3eW5kYQw=;
+        b=qPUeDTcfr7OxXHtWHpcNb077XYd+nlwgobee3voPFCtgiNZZCdBM2G3Mhwr2tv/LRJ
+         jHmRt9KmlO/RUNoiqFwZSzGXMZaBSGflQGfKo+G6DDH+ielIX7hxTdc3rHYBPgRLOYX7
+         h8GQHgoSGNJ+0lf1kj6aZ8S8zbAByKRnQBhxbFrgOcciMBi3CGF9Ey9JXPNtqraKpXgc
+         Moy08rwTmdHh4+hZOS6DMcn5aohfMr+L/rSQcCnG2cCVx9nQ0hNv4qQNbCUcy0gB7FOi
+         VMfhyusYx46sN3ZYS3Y2vxo5SkU+Kgx4hTm41bvGnkgAgk4P/fKBHtiMCJWWNcLAvwjN
+         AIVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685452994; x=1688044994;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fMNSQewRslTTM3ryH1hSW9tsjlBjJbSYLIcYAPdfTm8=;
-        b=BJfKp2Mwe35KmW7JPjrOTcwBaOQFvoEJv++bIXfDp/L5tr5+wl1xuPxWmT0s+RRNjh
-         q/XXWZycJ2POkV8HJCIsNIbXBv95COqyVqGxANwq0H3dWdiXl+33gFAHKsfCRs6QMZW0
-         +SNIUt3k/YnbV3xWjrmxCFbxeR/56loelE1hW/X2LlqSNX/rltQqi/txGmQKKiuf92hg
-         8DF0XF8jqoypUXqbfrg9M+eqKOmB+JawhZj9B5QpTD/ZeegM+uTpVzoSTF9ehINA/CKk
-         o6/neWkyMDm0wnvZJYjFOGj634R5QCW2AlmOXNe35YZ8bJI0FF/LaSlXUEVTpS+3u0we
-         oURQ==
-X-Gm-Message-State: AC+VfDxg8X/kxFGEkPcB3U+c+SPr0f22JypN2sSVSH1DdKkB3Cdw0Ank
-        6DWJ97YgyRkL76XLP0du5uE=
-X-Google-Smtp-Source: ACHHUZ5fJ5/CZJU+0D+6o27bvrgi4iHhxfbFd9EVzO8mHxFNv8cO6H+JuweFU8OBq7zmgNQqBVYwmA==
-X-Received: by 2002:a05:6870:3c11:b0:19f:9dc5:c0b with SMTP id gk17-20020a0568703c1100b0019f9dc50c0bmr705762oab.12.1685452993776;
-        Tue, 30 May 2023 06:23:13 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id g7-20020a056870214700b0019edd086f33sm5692768oae.41.2023.05.30.06.23.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 May 2023 06:23:13 -0700 (PDT)
-Message-ID: <08508ddf-fda7-0a19-a8ce-b65c0e9a7903@gmail.com>
-Date:   Tue, 30 May 2023 10:23:08 -0300
+        d=1e100.net; s=20221208; t=1685456039; x=1688048039;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PTwLalb60PTMu/jAkQpXrnGqb2wva++F9Sq3eW5kYQw=;
+        b=Q8j1gaqtJrci+p3jn5VzVgi/iEcmHhO/8pyolxASgUiSwWegt7uLpKU3NUi2byARg7
+         TKzzAWxsioeGofIWZMEeg4kjLN92yufhMUeUmT5+huL/AD2upUNCnUH5XSXlAJOnfXDI
+         WiYYOYpWMRuvV53wkzXXjQRz+Pv37PI0uI4mbiUkg2YYfxs+6V1KJ+jN59EhGVo1H4et
+         eKaChUvspFXCosyiaP5jm6goGCRLEdqxqCi+c5xVcIi4V5Q/6gKvRbnS2iiq3UblqNgT
+         T7h7MJR9rziFfi3whddxRRLzeqO07dYGA//gmbQR6NNHS/dEdWu5jTLWv9PIrgy12pjQ
+         kepw==
+X-Gm-Message-State: AC+VfDxyZvqL4GfoyjhdWus5UwSUAWRUYT/ksW8VP2V4NDyRtz+jAZ8h
+        gRmKcSJ710i6jZ+MKbAN1TAQlexohAJ8R63Hjd8=
+X-Google-Smtp-Source: ACHHUZ6RCEc1+fd5Perd8QLWxHmkFspNj2sVjBhJt3SR1lXVmV9tboAd8bJTp6zA0EHcE71YBH9ngmMm6Ax3uTvHiJo=
+X-Received: by 2002:a81:a0d2:0:b0:565:6acc:2e56 with SMTP id
+ x201-20020a81a0d2000000b005656acc2e56mr2589958ywg.15.1685456039055; Tue, 30
+ May 2023 07:13:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
+References: <b54801cd-1afb-2190-3b8a-4a095d04fdff@gmail.com> <20230523110709.4077557-1-aliceryhl@google.com>
+In-Reply-To: <20230523110709.4077557-1-aliceryhl@google.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 30 May 2023 16:13:47 +0200
+Message-ID: <CANiq72kw-3usvn6JfD9Lp5KVrYyCVgOEehM7qXdpTvoDrX5TCw@mail.gmail.com>
 Subject: Re: [PATCH v1 6/7] rust: workqueue: add safe API to workqueue
-Content-Language: en-US
-To:     Andreas Hindborg <nmi@metaspace.dk>,
-        Alice Ryhl <aliceryhl@google.com>
-Cc:     alex.gaynor@gmail.com, benno.lossin@proton.me,
+To:     Alice Ryhl <aliceryhl@google.com>
+Cc:     yakoyoku@gmail.com, alex.gaynor@gmail.com, benno.lossin@proton.me,
         bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
         jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
         ojeda@kernel.org, patches@lists.linux.dev,
         rust-for-linux@vger.kernel.org, tj@kernel.org, wedsonaf@gmail.com
-References: <b54801cd-1afb-2190-3b8a-4a095d04fdff@gmail.com>
- <20230523110709.4077557-1-aliceryhl@google.com> <875y8ab7y0.fsf@metaspace.dk>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <875y8ab7y0.fsf@metaspace.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 5/30/23 04:19, Andreas Hindborg wrote:> I prefer the first one, but both look OK to me. Is one more idiomatic
-> than the other, or is it just a matter of personal preference?
+On Tue, May 23, 2023 at 1:07=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> I think this is a question of style. For a comparison:
+>
+> match (queue_work_on)(work_ptr) {
+>     true =3D> Ok(()),
+>     // SAFETY: The work queue has not taken ownership of the pointer.
+>     false =3D> Err(unsafe { Arc::from_raw(ptr) }),
+> }
+>
+> vs
+>
+> if (queue_work_on)(work_ptr) {
+>     Ok(())
+> } else {
+>     // SAFETY: The work queue has not taken ownership of the pointer.
+>     Err(unsafe { Arc::from_raw(ptr) }),
+> }
 
-Pedantic Clippy will deny a boolean match and I prefer if-else over it
-because the latter it's explicitly purposed for boolean control flow.
+There is also the possibility of using the early return style:
+
+    if ... {
+        return Err(...);
+    }
+
+    Ok(())
+
+This one makes it consistent with other early exits (i.e. whether at
+the end of the function or not) and closer to the C side.
+
+It is particularly nice when we are talking about errors, instead of
+two "equal", non-error outcomes.
+
+Cheers,
+Miguel
