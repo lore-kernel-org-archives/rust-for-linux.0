@@ -2,104 +2,94 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE725C7EE2F
-	for <rust-for-linux@archiver.kernel.org>; Tue, 30 May 2023 14:14:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 509C3C77B73
+	for <rust-for-linux@archiver.kernel.org>; Tue, 30 May 2023 14:23:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233033AbjE3OOc (ORCPT
+        id S231620AbjE3OXX (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 30 May 2023 10:14:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56478 "EHLO
+        Tue, 30 May 2023 10:23:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233029AbjE3OOa (ORCPT
+        with ESMTP id S232214AbjE3OXF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 30 May 2023 10:14:30 -0400
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 203ACE44;
-        Tue, 30 May 2023 07:14:03 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-568af2f6454so13351057b3.1;
-        Tue, 30 May 2023 07:14:03 -0700 (PDT)
+        Tue, 30 May 2023 10:23:05 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C89D10D1;
+        Tue, 30 May 2023 07:22:23 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-ba71cd7ce7fso6372545276.1;
+        Tue, 30 May 2023 07:22:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685456039; x=1688048039;
+        d=gmail.com; s=20221208; t=1685456525; x=1688048525;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PTwLalb60PTMu/jAkQpXrnGqb2wva++F9Sq3eW5kYQw=;
-        b=qPUeDTcfr7OxXHtWHpcNb077XYd+nlwgobee3voPFCtgiNZZCdBM2G3Mhwr2tv/LRJ
-         jHmRt9KmlO/RUNoiqFwZSzGXMZaBSGflQGfKo+G6DDH+ielIX7hxTdc3rHYBPgRLOYX7
-         h8GQHgoSGNJ+0lf1kj6aZ8S8zbAByKRnQBhxbFrgOcciMBi3CGF9Ey9JXPNtqraKpXgc
-         Moy08rwTmdHh4+hZOS6DMcn5aohfMr+L/rSQcCnG2cCVx9nQ0hNv4qQNbCUcy0gB7FOi
-         VMfhyusYx46sN3ZYS3Y2vxo5SkU+Kgx4hTm41bvGnkgAgk4P/fKBHtiMCJWWNcLAvwjN
-         AIVA==
+        bh=2Jh6LcDY7P7T8yfLhT0DmS4U1CqwRWBIBUieCoRWL0M=;
+        b=sgoKzqZfRp0hfI5s/9CKB1GdmFnm6Np7T/R/CIpwIt6KTVsWNn3xEp+h5XhvEwc/JB
+         wQGQeiMW9+IzNnQ36AdZMEWGFCk3ZFznd0+oFYXVti+kxGuH8qD0F4q5cP/rvh1RroLg
+         kNBwcqBMOuVsZYIQombYe9fxODb825w0ZVaOzMOu83J6ADvRI/l0qflb57jqf9VZMyCy
+         V2IQACKVZvN37C3PeXabtyW9Me89fR2kD7wywNLSMDAVhw/ujSMd9vEtBqOw46mh2gBA
+         rZG0y5tSfOm8MzGdsdYBJv0OgSbm21fXwRWrlV8QpVkSg9JHDio5Ruv2GHLPfZXidnb3
+         qFDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685456039; x=1688048039;
+        d=1e100.net; s=20221208; t=1685456525; x=1688048525;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PTwLalb60PTMu/jAkQpXrnGqb2wva++F9Sq3eW5kYQw=;
-        b=Q8j1gaqtJrci+p3jn5VzVgi/iEcmHhO/8pyolxASgUiSwWegt7uLpKU3NUi2byARg7
-         TKzzAWxsioeGofIWZMEeg4kjLN92yufhMUeUmT5+huL/AD2upUNCnUH5XSXlAJOnfXDI
-         WiYYOYpWMRuvV53wkzXXjQRz+Pv37PI0uI4mbiUkg2YYfxs+6V1KJ+jN59EhGVo1H4et
-         eKaChUvspFXCosyiaP5jm6goGCRLEdqxqCi+c5xVcIi4V5Q/6gKvRbnS2iiq3UblqNgT
-         T7h7MJR9rziFfi3whddxRRLzeqO07dYGA//gmbQR6NNHS/dEdWu5jTLWv9PIrgy12pjQ
-         kepw==
-X-Gm-Message-State: AC+VfDxyZvqL4GfoyjhdWus5UwSUAWRUYT/ksW8VP2V4NDyRtz+jAZ8h
-        gRmKcSJ710i6jZ+MKbAN1TAQlexohAJ8R63Hjd8=
-X-Google-Smtp-Source: ACHHUZ6RCEc1+fd5Perd8QLWxHmkFspNj2sVjBhJt3SR1lXVmV9tboAd8bJTp6zA0EHcE71YBH9ngmMm6Ax3uTvHiJo=
-X-Received: by 2002:a81:a0d2:0:b0:565:6acc:2e56 with SMTP id
- x201-20020a81a0d2000000b005656acc2e56mr2589958ywg.15.1685456039055; Tue, 30
- May 2023 07:13:59 -0700 (PDT)
+        bh=2Jh6LcDY7P7T8yfLhT0DmS4U1CqwRWBIBUieCoRWL0M=;
+        b=GlPpuQcLB4ly+xfbYk7R9MeT2ftJeKjDGtqiIxBlvcQbLTOcdhVE20FJ1EnP8+fXW0
+         6xt4VsG2zRualtjURE5KeWKxHc+i+7vZZTJilEQgF97XXNXTb9fBlVVEWwsyWvb74VP+
+         amBq7Ay26Yu7HfS5WVCpL9cz4xF8FG+T3nBEEP6S4erF6wiZca2xNW9sMfxCxCvPsZqZ
+         UWYLHqkiIfgyOpCdui7MKMMe4lbvqZMCeJ+z6F8pnW32hj22PtsM9/tgHAX3IIwNKztd
+         2zxHwmDmP5AVFYEVPupcFJVc3g9Igic65G+CQJdiidSskFj7+ZEw1D1+hHJsgERqtri+
+         PHrg==
+X-Gm-Message-State: AC+VfDzdxjQ9+nrbGDLUodEnh/flqrdvXA2JxyJL0z+jQ3UQRSa2fyOv
+        L1vMBDnxZBJtTCfNsVQkXFMMAXU8cvEsIF8wpUo=
+X-Google-Smtp-Source: ACHHUZ7GPn+dc6IDYTdATPz8zQ9VOnil9TacegtHgk83Qh3Un3O4GV5XOrrxJuPGFvUtBPi4+aQR46GGt/EhYJV7VH4=
+X-Received: by 2002:a25:d688:0:b0:ba6:9e94:ed26 with SMTP id
+ n130-20020a25d688000000b00ba69e94ed26mr3390464ybg.19.1685456525593; Tue, 30
+ May 2023 07:22:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <b54801cd-1afb-2190-3b8a-4a095d04fdff@gmail.com> <20230523110709.4077557-1-aliceryhl@google.com>
-In-Reply-To: <20230523110709.4077557-1-aliceryhl@google.com>
+References: <20230530064821.1222290-1-changxian.cqs@antgroup.com> <20230530064821.1222290-3-changxian.cqs@antgroup.com>
+In-Reply-To: <20230530064821.1222290-3-changxian.cqs@antgroup.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 30 May 2023 16:13:47 +0200
-Message-ID: <CANiq72kw-3usvn6JfD9Lp5KVrYyCVgOEehM7qXdpTvoDrX5TCw@mail.gmail.com>
-Subject: Re: [PATCH v1 6/7] rust: workqueue: add safe API to workqueue
-To:     Alice Ryhl <aliceryhl@google.com>
-Cc:     yakoyoku@gmail.com, alex.gaynor@gmail.com, benno.lossin@proton.me,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-        jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
-        ojeda@kernel.org, patches@lists.linux.dev,
-        rust-for-linux@vger.kernel.org, tj@kernel.org, wedsonaf@gmail.com
+Date:   Tue, 30 May 2023 16:21:54 +0200
+Message-ID: <CANiq72ntH+6nBHLpwbYbja189TX8WvOpD98=xNROPXPfmuwjtA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] samples: rust: add `SgTable` and `ScatterList` selftests
+To:     Qingsong Chen <changxian.cqs@antgroup.com>
+Cc:     linux-kernel@vger.kernel.org,
+        =?UTF-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Asahi Lina <lina@asahilina.net>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Viktor Garske <viktor@v-gar.de>, Finn Behrens <me@kloenk.dev>,
+        rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, May 23, 2023 at 1:07=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Tue, May 30, 2023 at 8:54=E2=80=AFAM Qingsong Chen
+<changxian.cqs@antgroup.com> wrote:
 >
-> I think this is a question of style. For a comparison:
->
-> match (queue_work_on)(work_ptr) {
->     true =3D> Ok(()),
->     // SAFETY: The work queue has not taken ownership of the pointer.
->     false =3D> Err(unsafe { Arc::from_raw(ptr) }),
-> }
->
-> vs
->
-> if (queue_work_on)(work_ptr) {
->     Ok(())
-> } else {
->     // SAFETY: The work queue has not taken ownership of the pointer.
->     Err(unsafe { Arc::from_raw(ptr) }),
-> }
+> Add a selftest module to provide a temporary place to put "pure tests"
+> for Rust funtionality and wrappers.
 
-There is also the possibility of using the early return style:
+Thanks for the patch series! Quick note on this: the `selftest` sample
+module was a temporary place we had in the `rust` branch to put some
+non-doctest tests until we had a better way to run them.
 
-    if ... {
-        return Err(...);
-    }
-
-    Ok(())
-
-This one makes it consistent with other early exits (i.e. whether at
-the end of the function or not) and closer to the C side.
-
-It is particularly nice when we are talking about errors, instead of
-two "equal", non-error outcomes.
+Even if we wanted to keep this approach for tests like this, this part
+should be in its own patch -- that way you can credit Boqun properly
+and avoid adding his SoB on code he did not write (which he may not
+agree with).
 
 Cheers,
 Miguel
