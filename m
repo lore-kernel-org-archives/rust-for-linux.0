@@ -2,58 +2,60 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F25F9C77B73
-	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 15:00:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AB5CC77B7A
+	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 15:00:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233090AbjEaPAN (ORCPT
+        id S233589AbjEaPAu (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 31 May 2023 11:00:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59970 "EHLO
+        Wed, 31 May 2023 11:00:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231640AbjEaPAM (ORCPT
+        with ESMTP id S233561AbjEaPAs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 31 May 2023 11:00:12 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D986A11D
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 08:00:10 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-568960f4596so59140607b3.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 08:00:10 -0700 (PDT)
+        Wed, 31 May 2023 11:00:48 -0400
+Received: from mail-ed1-x549.google.com (mail-ed1-x549.google.com [IPv6:2a00:1450:4864:20::549])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1246710E
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 08:00:42 -0700 (PDT)
+Received: by mail-ed1-x549.google.com with SMTP id 4fb4d7f45d1cf-514b8d2b21fso893090a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 08:00:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685545210; x=1688137210;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=kgt3lW2r0aoY0DDLcZTyq/QALzXXToKg0VwThNVsEZs=;
-        b=DxCZiH1EJ6GTCeR7M1xZCCD83a49cOiQ9TFOb2cpTE+xJykFniGsMxkSKaNxVhgrie
-         1ZUAUK64KCNds1oQP+SCgoYSGdYMWl4o7suvBgY/fiRhtcgkzNsNtzRN+NWwpIus8zx3
-         Vae/ZhynetGaQPIjblP8vLMJRXOMjpcH629xoRqz8t5E2fEZrJswrNEjr6nEe/aHzUTs
-         RF6bxBNTe+6jyJyimjvXZ6/h8o3aJ6JwIzR0C63FS93ayeG0tDJuGhpRYKeAhQSqums1
-         4tURIQ+m9vlVvRiXXfNzi4B2tWPJXtV8fwHUDZ2/v9rrUFsoB2tqZmw9E2ZE5l2J9MU8
-         roSQ==
+        d=google.com; s=20221208; t=1685545240; x=1688137240;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=v7AwI9/GAng9F6JU881/rPRp6iZXP9LwiNNuLduw3ys=;
+        b=OMfl8/Z1UwxPwIyaHYkJ8H7XXz53ExBje25D3fSggmAEgqJKexyNv/r05uILaNVDH3
+         T5pW/a/d7fWKUhDGhaJRx9W6nzSAhQEKxq4NCO9CY3nxTH5muUNEJCcdJEwE4FDKS5YE
+         mYtD4BXfm5MS0N3+F6W6wTY8BVSX/OtnsTIl/ym9yDrzKwkqbJuxky5teH0ZIc6hZGV+
+         4zu2xJq1E0BdirdqaHNQC6za3BZrmsP+frmwlo6ZL3kMQZ+wZwP9hNv7crfRZDRjX8oC
+         c0qI0l8MuhuhbctU5kMcULymtY0J4dWQT3OiUwRNBTlaEv30nTmYbag6K13T0WiAy6ga
+         xXMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685545210; x=1688137210;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kgt3lW2r0aoY0DDLcZTyq/QALzXXToKg0VwThNVsEZs=;
-        b=SBC/hvz5kEpYtNvcgSF7FimVPDjNA5ct4FeeahDN2Sqt9fEbNXzDlfCq1++9kuzWle
-         XkZ1sbw3m4GxAkDrwmeJIwDeU4Z1Fp8aJR15V1mr1XHDdIVXeh2qOQVtQewzBGbaz0+v
-         5MHjrCMRvW2E6Dxiy99iY3qQBuy2Vmg/2QcP4ENSIonbfDIZjG4dhR9XJR6i7QQ3ohcl
-         4xMPtQ4OWGV9wGtT5pwJ890YnnpuPBBILnBBWIoHOirQxOEe0yBb3+S6ZFwmEElZqf2R
-         GCs2UHFX6DWMD0Jrb4EdZ6X0FrzAB5ciI1PqQfRzh6HQdTtRFG9UA6cYoFIw82I/QTc6
-         43Hw==
-X-Gm-Message-State: AC+VfDzE5uxt9gvH/cvNgHPNMGOYnHTMK2uaiB2LT+oAwJ9qUK3vtF2Y
-        SP1uAyJgF0OpltfRksTEOWveC55Xjmv2/tYlUC74msNQvW3jk4J5tqUyQ9a8XllDQrwhsuBNxlY
-        TgbfsLWraaA1vpsU7MXetaK3oGJg81Mph8E5OabK8E2RRuoYz9OstKUoLO348VB+wva2BHmAIdn
-        iK4+Ah
-X-Google-Smtp-Source: ACHHUZ5PGbClUzmUIu5JqGN5ZZy5XtiWsjT/HcmZjSMbK2ZzZTMOkv46r/SbQAgSQWglSlAAgf/x7TZItrF2jmQ=
+        d=1e100.net; s=20221208; t=1685545240; x=1688137240;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=v7AwI9/GAng9F6JU881/rPRp6iZXP9LwiNNuLduw3ys=;
+        b=EVVRYq3eo08tIOvXBe4oRnFR1BW4VIzAWyXHnQ9ayPjO/HErlP/iKydO/zVN/DtHHP
+         MORIrzF1tzgZVFWtkwwhZ1iTJQ8eK6GXTPyqfKFGivPcprK/DpPfPaeUjyOHG4xjpTOO
+         CsShz1o+XWNlqY0/aisGYyuuaYVb9x4iGEBGty01d54QdviIaSu20d5JHza8jb/dc4mC
+         MOgqUHYBr6XTwdZkVUIZirvJ8d110lCKqUuZQY1m1ELF1xzR+9+/eTB/FvMkE7+jGuq+
+         mzSE0zrpJd+qn5XX32RZ4E+kUIaFEqjR6xRvoONn7KXRh+S0dMDFnGiug8iIVFZ3hFWJ
+         hTIw==
+X-Gm-Message-State: AC+VfDyyKJL+DAEFeH28k0+ar+Er8l41oQbwQP7n4ZdKR41QDAS+mpAc
+        dtCxUlXoSiaJQbS7hZNt+TIJqeSEcyC9KA//B7W/ymW4SbJsIl9ZiLgpoe4XNap7ojwcxmTG9EN
+        NHizRvVB7y1mgneN2lqJ1LB8PZvOweStD6DrE6A4HekgaPUhc1sOP2r7yCcx0sOWx198USqxboL
+        mMTH+E
+X-Google-Smtp-Source: ACHHUZ68XPwYHak3RB9bb2krSE7KWIbi6M9HKaemsTXiQeyDGltkWQmmatoHjKKHCoSRCi/az8D3w9Kajgq9dOk=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a81:ae05:0:b0:565:9f59:664f with SMTP id
- m5-20020a81ae05000000b005659f59664fmr3434986ywh.6.1685545210063; Wed, 31 May
- 2023 08:00:10 -0700 (PDT)
-Date:   Wed, 31 May 2023 14:59:35 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a50:cdc1:0:b0:504:fcf5:63ee with SMTP id
+ h1-20020a50cdc1000000b00504fcf563eemr1888238edj.0.1685545240591; Wed, 31 May
+ 2023 08:00:40 -0700 (PDT)
+Date:   Wed, 31 May 2023 14:59:36 +0000
+In-Reply-To: <20230531145939.3714886-1-aliceryhl@google.com>
 Mime-Version: 1.0
+References: <20230531145939.3714886-1-aliceryhl@google.com>
 X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-Message-ID: <20230531145939.3714886-1-aliceryhl@google.com>
-Subject: [PATCH v3 0/4] Update thread safety markers
+Message-ID: <20230531145939.3714886-2-aliceryhl@google.com>
+Subject: [PATCH v3 1/4] rust: sync: reword the `Arc` safety comment for `Send`
 From:   Alice Ryhl <aliceryhl@google.com>
 To:     rust-for-linux@vger.kernel.org
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
@@ -67,41 +69,44 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Will Deacon <will@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-In Rust, the `Send` and `Sync` traits are used to mark in what ways a
-specific type is thread safe. In this patch series, I add some missing
-thread safety markers and improve the documentation related to them.
-This change will let you compile some code that would currently fail to
-compile even though it doesn't actually violate any thread safety rules.
+The safety comment on `impl Send for Arc` talks about "directly"
+accessing the value, when it really means "accessing the value with a
+mutable reference". This commit clarifies that.
 
-You can find a definition of what these marker traits mean at [1].
+Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+---
+ rust/kernel/sync/arc.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Changes since v2:
-
- * Removed "for example" as suggested in [2].
- * Added Reviewed-by annotations from v2 review.
-
-[1]: https://stackoverflow.com/a/68708557/1704411
-[2]: https://lore.kernel.org/all/20230523165027.71600b4b.gary@garyguo.net/
-
-Alice Ryhl (4):
-  rust: sync: reword the `Arc` safety comment for `Send`
-  rust: sync: reword the `Arc` safety comment for `Sync`
-  rust: specify when `ARef` is thread safe
-  rust: task: add `Send` marker to `Task`
-
- rust/kernel/sync/arc.rs | 12 +++++++-----
- rust/kernel/task.rs     | 10 ++++++++--
- rust/kernel/types.rs    | 13 +++++++++++++
- 3 files changed, 28 insertions(+), 7 deletions(-)
-
-
-base-commit: ac9a78681b921877518763ba0e89202254349d1b
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index e6d206242465..3ad831603cf4 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -146,8 +146,8 @@ impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<Arc<U>> for Ar
+ 
+ // SAFETY: It is safe to send `Arc<T>` to another thread when the underlying `T` is `Sync` because
+ // it effectively means sharing `&T` (which is safe because `T` is `Sync`); additionally, it needs
+-// `T` to be `Send` because any thread that has an `Arc<T>` may ultimately access `T` directly, for
+-// example, when the reference count reaches zero and `T` is dropped.
++// `T` to be `Send` because any thread that has an `Arc<T>` may ultimately access `T` using a
++// mutable reference when the reference count reaches zero and `T` is dropped.
+ unsafe impl<T: ?Sized + Sync + Send> Send for Arc<T> {}
+ 
+ // SAFETY: It is safe to send `&Arc<T>` to another thread when the underlying `T` is `Sync` for the
 -- 
 2.41.0.rc0.172.g3f132b7071-goog
 
