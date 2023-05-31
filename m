@@ -2,59 +2,59 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BD5E4C77B7A
-	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 17:10:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 373DFC7EE2E
+	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 17:11:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229852AbjEaRKK (ORCPT
+        id S229720AbjEaRLr (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 31 May 2023 13:10:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48120 "EHLO
+        Wed, 31 May 2023 13:11:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230291AbjEaRKF (ORCPT
+        with ESMTP id S229890AbjEaRLo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 31 May 2023 13:10:05 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70112135;
-        Wed, 31 May 2023 10:10:04 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-ba8cd61ee2dso1815361276.1;
-        Wed, 31 May 2023 10:10:04 -0700 (PDT)
+        Wed, 31 May 2023 13:11:44 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDC49191;
+        Wed, 31 May 2023 10:11:42 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-ba81ded8d3eso8632007276.3;
+        Wed, 31 May 2023 10:11:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685553003; x=1688145003;
+        d=gmail.com; s=20221208; t=1685553102; x=1688145102;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=j5hNAeMykYH6m+pjlK4ZKQGtK0LDuyxxmWVTG0iy4gk=;
-        b=RgBb769DkAHCjoOyku0LjFwuuuVlYaimpuChbm/e6uqQonNgWj6Wkw86cPMdU6eXz3
-         IKYl4uH6w2nuanrD3CiroKb7ap7n18bm2RMoeLg/lKSqp/8MdBmzkuXUOIldyx2OkRT3
-         ZzxCY3GKi2PQtdVqYrIBrp+fD4+xUvumOR+8v200q+Pmz6dY7YhinaEm8VmIbSzMeb3H
-         S0ZI1aUrGebHJfqc29jWbkXjDdoLXBgdVvnvhT1Hd/QL3kg3qRFs8A5YuV4dpOsgxydk
-         6tsP9dzvIlUb7JwM8sIneb6X4//FQJ755f8Khi6Ktc4kjIQAgt/l6LC7qbc8+/mXs584
-         Hgaw==
+        bh=ebXJVsSOUn2ugmT4rghMz7fEudpo4P8yANA/KrthHSQ=;
+        b=rWOXBBOyOrBpuPMg0lDoyufRLZkgu0GznDnPFyWVtJFifHw7Tw6NjeMYjynx7qz/46
+         SbPowBCnn5Lk0cECatibpEFOHYw25O9dkF8KZTssbGCQvS2bETkGgaFsDoPaVQFCgFF8
+         1Ag+EMJveJF1qPYsr7gYEYsuMPnSYtYucxdk8ZEODhO03hSbn8SKM+wKE5ZTsAfKfoGz
+         TRKvv0kCsk4cQuTvEyzYhPpwcN13N2MsgYpBhyqaUG77IHqcoPNzESguACv0Xag1z7x+
+         2rNMIFLpeUGL9PyE50gUuhWvoXnhXrmkTinHm30tpSKqm/dDqJU2GcxhmqFSrmAG1rnM
+         xVJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685553003; x=1688145003;
+        d=1e100.net; s=20221208; t=1685553102; x=1688145102;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=j5hNAeMykYH6m+pjlK4ZKQGtK0LDuyxxmWVTG0iy4gk=;
-        b=R36eYezjeLlKLMvrBQGZQEMD+y/cSHl/5Cnoot47kI5bpa3QIxxOYbJTvyschm2XZK
-         vtPZBlINl3dhMhkLbQvlVVVsZHLLsxzisLzliDtokBLRPyhnnlz9LMlPWLfQqzS+iaQx
-         /qciYJAaDQWV7SmaItmNtQKzs98+ShBW5s7AsVWypxf2pJy7PQkNAG4kOmAoat5EflE3
-         ixPhaZC+aUT6Urc8DfxFgxKxJcE1oEPO4Is1aplbqDhcSm6gE3dMAH3W01+RGkguQDIE
-         yJEk2TQYTBizLOz78vlkYRS7iEfXLG7SglTEK3wJZkN54UA/xPYtWcZF1ybDMOp7JlTJ
-         Ph8A==
-X-Gm-Message-State: AC+VfDyTPRttT8shWm6cun4nBbTz1JU3U3oc68Q+fVnAuwjaUPUr2zTs
-        d3E2RQajyB86rycF6RddSRsmJMcZlCF0RVWvXvA=
-X-Google-Smtp-Source: ACHHUZ6gziPlD75sFBIWzYJKukeguq7CTPeNtKJWb7F/xT/sDpz2WsRUhNOlU+011ytGs8Qg/NrtXYae3YXJc9tUeRs=
-X-Received: by 2002:a25:e64f:0:b0:bac:fd8d:94b5 with SMTP id
- d76-20020a25e64f000000b00bacfd8d94b5mr18876773ybh.13.1685553003652; Wed, 31
- May 2023 10:10:03 -0700 (PDT)
+        bh=ebXJVsSOUn2ugmT4rghMz7fEudpo4P8yANA/KrthHSQ=;
+        b=ctrcaN9uy4H6uvOlk0huAfk96bxg2hDJSy6PGEMyPHEK0BkrKWuS1AHw++3n8Xqaik
+         wGXEfNCJ0IAPUalVjctSCXM/2cyTPOC/py2NvUO+o/pcclFaIp9Tv9dzYEkD6wxTI13Z
+         zGNLyNdRo9RjwOxiyL6LEt03a4Uoqe9Y+HgPSG+EYYlJXjzTw+J46BAGYepTOqTN/1km
+         yungQicd4WSU6FtW+0DduHJirWgE1k0khnY4C3Ltc4nW+3EanpJ36+zQC7NJZiZBIDG5
+         koW7cHgJ7r3F8+qytvm51sx8RCFzVCNNZkEVf+4kEsuspOGzAgLxlniCz5hZenU7Becw
+         KXQw==
+X-Gm-Message-State: AC+VfDzY0nm+JaSN3KcfuXCcVucFK7DHQlP4I6SO3nm6bp6Rf2+Y7evm
+        h8YHsDIRJ10tRpF1oBH8EaLKI3p/6UeZDOzR4gHYj9b4McAJTW0E6CM=
+X-Google-Smtp-Source: ACHHUZ70MMpnGtaiZiK8Wa0uRar/BTF3XWEcNJkZ9HluytIz1Q1g/E693M33BQVNFcwmkJ0i279u/zrdRM/51wlt1/8=
+X-Received: by 2002:a25:af54:0:b0:bad:13c4:3070 with SMTP id
+ c20-20020a25af54000000b00bad13c43070mr6775546ybj.47.1685553101927; Wed, 31
+ May 2023 10:11:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230503141016.683634-1-aliceryhl@google.com>
-In-Reply-To: <20230503141016.683634-1-aliceryhl@google.com>
+References: <20230504064854.774820-1-aliceryhl@google.com>
+In-Reply-To: <20230504064854.774820-1-aliceryhl@google.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 31 May 2023 19:09:52 +0200
-Message-ID: <CANiq72k6kSHPNjQr+PEB3KGO05M0mGet5un7jVeNeS_02uEzZQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: str: add conversion from `CStr` to `CString`
+Date:   Wed, 31 May 2023 19:11:31 +0200
+Message-ID: <CANiq72=S+gUXcsp1k1ZUnRbsecnP5KCKVW-tJoqZB_NsT-2K+A@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: error: add missing error codes
 To:     Alice Ryhl <aliceryhl@google.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -62,7 +62,6 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
@@ -71,18 +70,20 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, May 3, 2023 at 4:10=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+On Thu, May 4, 2023 at 8:49=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
 ote:
 >
-> These methods can be used to copy the data in a temporary c string into
-> a separate allocation, so that it can be accessed later even if the
-> original is deallocated.
+> This adds the error codes from `include/linux/errno.h` to the list of
+> Rust error constants. These errors were not included originally, because
+> they are not supposed to be visible from userspace. However, they are
+> still a perfectly valid error to use when writing a kernel driver. For
+> example, you might want to return ERESTARTSYS if you receive a signal
+> during a call to `schedule`.
 >
-> The API in this change mirrors the standard library API for the `&str`
-> and `String` types. The `ToOwned` trait is not implemented because it
-> assumes that allocations are infallible.
+> This patch inserts an annotation to skip rustfmt on the list of error
+> codes. Without it, three of the error codes are split over several
+> lines, which looks terribly inconsistent.
 >
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
 Applied to `rust-next` -- thanks everyone!
