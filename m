@@ -2,78 +2,80 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2307EC7EE23
-	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 14:09:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5E67C77B73
+	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 14:12:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237330AbjEaOJD (ORCPT
+        id S237529AbjEaOMM (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 31 May 2023 10:09:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52112 "EHLO
+        Wed, 31 May 2023 10:12:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236190AbjEaOIv (ORCPT
+        with ESMTP id S237531AbjEaOLy (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 31 May 2023 10:08:51 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4785359A
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 07:04:46 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-bacfa4eefd3so6843759276.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 07:04:46 -0700 (PDT)
+        Wed, 31 May 2023 10:11:54 -0400
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E13BE1711
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 07:08:38 -0700 (PDT)
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-5654242df11so102839697b3.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 07:08:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685541828; x=1688133828;
+        d=google.com; s=20221208; t=1685541756; x=1688133756;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zgZNa9EtHrAIwO3wPspMKG7VOPoKw+bLM8tIqIzljU4=;
-        b=73dq1vBSAi729Lilf8hsEKhqFYXzhRCBI6uMLZyuvErH5WN8nLHGymQsclfH1xkkds
-         +6qlOW1V0G/D72xBKfuy805DJKiqGU7jlVl9I4OHIcm2kJXPH0nINc3ZYotFu4YITGC8
-         2xTH5sY9WC25b/N2LfFTeCJAZSMhYGlOgQI1yfrwpRfCnNIqb+JBCt1Mx2N4U8vorlD0
-         FDY1w0Neh0xfk1ErY/wQC70kl5CmojKosloDEqjNLa6zSAPbiY5V63vnIPxsoCHGBSIt
-         rP66wSjY08cx2dXI60q6pBlD0u1cD4rKvT2s0DnC/vcelPtgnbW6H/dzVyqzMEPCrI1k
-         Qfpw==
+        bh=LkdmJU7MS1CA/Dj/0Gr76+y/wuVU2Ut+UYAk4XMq1Lg=;
+        b=Ul62Teod+ZCunAd2EaQQxKG83SZcds9E9ARf6Guo7N40whc2dZSgIbAE/efE5+07k3
+         6J8STcdoUa+bUIB5012q2gLmDiwH85tW8sZnC4zKBkPsfswcvG55+lsK8NU7nhTwjESI
+         y+XhYHIYN8tNQHohIYV427qwc0uyQXSz+F/vrpiroQ+0WX2t1IYKHoTOGDsmJpMdDtKl
+         M2XO1w/dieA+wC7EV+O7Pb1QnNcZPegV/y1rhq/zDznyxUsQPTRXAn2IOrEB9axqM6b3
+         osENZfZYT9q6lZTWEFOfHmGlHjB81v0DYFQQr2RzPVDB68XIFPbNjZnKTb9+icmY9Suk
+         lvjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685541828; x=1688133828;
+        d=1e100.net; s=20221208; t=1685541756; x=1688133756;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zgZNa9EtHrAIwO3wPspMKG7VOPoKw+bLM8tIqIzljU4=;
-        b=Tj9GD8bm+3pi4auW+YJaxC5+Ewhw6Vs5gIsCQ32fnSfxK3ckDY+JB/YeDYHM6+j2wI
-         k0G0/2kBbfgruElGFZRFC/X07d8UCfqC3YpwTF2KNcy0iEwIFvK8FuFViyfEeeamo0XU
-         Cj61CMARxPaIlNrGTcZICZlE5P9Sb6INPk0O/AzfKfumA7Iom4Td26GZfEU+z2/ibv6T
-         mmS3/FMX59flWXKrk3mMfaJ4EeFbh3rLDXEf9z7Qv1iOixDRSlpk08iPFQBValTf14gK
-         zAYAYaqontpJxe4mtbR7M8TUjGoRuAMeCxGDhqNKZf/yB358mL/NZD3TcV2z1i1vKgCa
-         kElw==
-X-Gm-Message-State: AC+VfDwYAjJFePTiF7oC9ZCgzFnXmwO5JXZOXy1Z4BkHHdHnCFRacZsj
-        n5PKeOGw5Z9/tEMoqQq/D53bWR1uLLLG/gY=
-X-Google-Smtp-Source: ACHHUZ6DEtgX4K6pdimvH3NmwoYvDCaDL753Abz2f/W5Qjy+z7CORXWoLXb2LvEYZj0nfLJnZLh7+T0qXaxZI94=
+        bh=LkdmJU7MS1CA/Dj/0Gr76+y/wuVU2Ut+UYAk4XMq1Lg=;
+        b=ib7ApU5giwHEg/HLjIY4r0h+PMpftJXw9swN6un8nn54VF6d0RQBLjzR6mEHbbKpfe
+         Tvyaz+WrP/tWfJnO6/8FQ0/z7osVnpVaaDz+gndDmPHUE51cUY1NurQjFS6XozO1NR/Z
+         SRbqczSG2tm9M7WM5pxhZAqg1yrT1r6CUYVgyxMpZbEcp6r0fWaWGZ4MO616VbR3gq7E
+         8lpNoV2DEY6aj1AVJMCf2j7MSPYXfN7aFMHFPKMeQNqBi2eCp9oKeAI5Tiwi3LfbDvrG
+         Y/xd+BZ7ozBYOTh1PgU3TWnC0l6l0bS0AQ+80x5dso+YMCwALrcVL2CwckWZrgB5ZljN
+         Th8Q==
+X-Gm-Message-State: AC+VfDzNyDbRGVC/S6O9nxU2HZw9ZRRkJqyRl6hCRUEFueJyVSJyT2bh
+        htLBA3hOfyTKEm3g33Gt3hPQ+lRiZprtMR0=
+X-Google-Smtp-Source: ACHHUZ50A+8qlR08pz8bSpq1xdjUBTlxwXtgKuxqeCBhz/sJHN7MEZ8M5JmPDryHbJli2rjh2e3mkYiU0zWrKlQ=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a25:3444:0:b0:ba8:37f6:a586 with SMTP id
- b65-20020a253444000000b00ba837f6a586mr3364248yba.3.1685541828239; Wed, 31 May
- 2023 07:03:48 -0700 (PDT)
-Date:   Wed, 31 May 2023 14:03:46 +0000
-In-Reply-To: <xAv635eVJdklAFBXcwxhVWRvgkMs37YDjANEArFkcOdoyH27NSHwbBGgJ6b9Q1EvX8gACiNqkaDYNvwdMWy6YHbeGM4qz1xW54-02UjzzZA=@proton.me>
+ (user=aliceryhl job=sendgmr) by 2002:a81:af15:0:b0:568:ee6d:3364 with SMTP id
+ n21-20020a81af15000000b00568ee6d3364mr1151085ywh.4.1685541756307; Wed, 31 May
+ 2023 07:02:36 -0700 (PDT)
+Date:   Wed, 31 May 2023 14:02:33 +0000
+In-Reply-To: <875y8geiye.fsf@metaspace.dk>
 Mime-Version: 1.0
-References: <xAv635eVJdklAFBXcwxhVWRvgkMs37YDjANEArFkcOdoyH27NSHwbBGgJ6b9Q1EvX8gACiNqkaDYNvwdMWy6YHbeGM4qz1xW54-02UjzzZA=@proton.me>
+References: <875y8geiye.fsf@metaspace.dk>
 X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-Message-ID: <20230531140346.3707802-1-aliceryhl@google.com>
-Subject: Re: [PATCH v1 7/7] rust: workqueue: add `try_spawn` helper method
+Message-ID: <20230531140233.3707302-1-aliceryhl@google.com>
+Subject: Re: [PATCH v1 4/7] rust: workqueue: define built-in queues
 From:   Alice Ryhl <aliceryhl@google.com>
-To:     benno.lossin@proton.me
+To:     nmi@metaspace.dk
 Cc:     alex.gaynor@gmail.com, aliceryhl@google.com,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-        jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
-        ojeda@kernel.org, patches@lists.linux.dev,
-        rust-for-linux@vger.kernel.org, tj@kernel.org, wedsonaf@gmail.com
+        benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+        boqun.feng@gmail.com, gary@garyguo.net, jiangshanlai@gmail.com,
+        linux-kernel@vger.kernel.org, ojeda@kernel.org,
+        patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
+        tj@kernel.org, wedsonaf@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Benno Lossin <benno.lossin@proton.me> writes:
->> +    /// Tries to spawn the given function or closure as a work item.
->> +    ///
->> +    /// This method can fail because it allocates memory to store the work item.
->> +    pub fn try_spawn<T: 'static + Send + Fn()>(&self, func: T) -> Result {
+Andreas Hindborg <nmi@metaspace.dk> writes:
+> Alice Ryhl <aliceryhl@google.com> writes:
+>> +/// Returns the system freezable work queue (`system_freezable_wq`).
+>> +///
+>> +/// It is equivalent to the one returned by [`system`] except that it's freezable.
 > 
-> Why is this `Fn()` instead of `FnOnce()`?
+> Can we add a short definition of what "freezable" means?
 
-That's a mistake. Good catch. It will be fixed in the next version.
+I don't know what it means, but I would be happy to add an explanation
+if you have one.
 
 Alice
