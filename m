@@ -2,65 +2,66 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE8A9C77B73
-	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 17:07:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 622CFC77B7A
+	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 17:09:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229517AbjEaRHw (ORCPT
+        id S230106AbjEaRJc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 31 May 2023 13:07:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
+        Wed, 31 May 2023 13:09:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229830AbjEaRHu (ORCPT
+        with ESMTP id S230158AbjEaRJ2 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 31 May 2023 13:07:50 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A00C91AD;
-        Wed, 31 May 2023 10:07:46 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-bad97da58adso6736455276.1;
-        Wed, 31 May 2023 10:07:46 -0700 (PDT)
+        Wed, 31 May 2023 13:09:28 -0400
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54AB213D;
+        Wed, 31 May 2023 10:09:25 -0700 (PDT)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-565aa2cc428so51898337b3.1;
+        Wed, 31 May 2023 10:09:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685552866; x=1688144866;
+        d=gmail.com; s=20221208; t=1685552964; x=1688144964;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=76vg60iW/EsEINmD+Bil9N8BO8s1pVlIY0spf2KHpnw=;
-        b=AqFFPdnWQgjfaEVYQJhTRCZLbnnoP1T/OuVLPkM82QjyaLFvqLZkQvnLuFiUKznvbg
-         5mnVnDzBYCxL/hKfAytTdiJQOLdEgoCvVB6AsWcKlQhmLeM+4GvfhyiTSKwYPOLeHCCr
-         tKsAHo6lumCftCJDl3h3MmoFksS2OV/aCzedbK+fKrjLdgkBktemgwYem72t/j5R6V2U
-         dXvny0xVl+mUZs5tJWBoYgmrvu6ydBZH+L8ohdlnNwHbsfpSkJkkjqZOpjXj7C1UA6It
-         YihUAZcK76QDC7mPDkjbTJd7R2xdv95bumAe3vbat6Ttu/5QCDTK70W5HCpqe9JAsNCm
-         BEUg==
+        bh=UqDH4yuf9riVSA5V9W66V8AzL16NatN+7DvngwJVYHQ=;
+        b=caLGCJsLWoGXEsdVIpGLUQt+zeJNOVI+LboWHPMIqBJWAnIgJ+242auCr4nUiBn5Mk
+         hBnHQEitvKnQqFL7tBD57Xzc92LoREi2W2dR4C9s13QGZFqO520W4FweLarNlIDsUoTM
+         p2zOOCZowyHijyUm0/VLa6QGp6JAMH8wfdoEKVdVVNMj42qxckZh/zr1oNhzYTXBn5cd
+         67OcyM5lpazmLs8sZawR0AQvVA2c+LPakLZ3RlpDosOT9Y1dNwB2rm4dI/2sxnRirlSX
+         MY5FdLAsdIEzXF38+2el4+6sXBSAQtN4Ojvd6vUtxr54YVSybND6VdspTprwDnNqvIqq
+         wZ3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685552866; x=1688144866;
+        d=1e100.net; s=20221208; t=1685552964; x=1688144964;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=76vg60iW/EsEINmD+Bil9N8BO8s1pVlIY0spf2KHpnw=;
-        b=lDdTVvoOEbB5VpsQbrhgGsqG2Cvqfj5KUOiDMdy01TjIMHVWvsjmTPmcElblPsuryX
-         XYw+nZ1qaxRTk8LIP6fCbF4lZnlIUS6lJZfl9JqNCulnI7xrTVr/tPE0txPaW7l6QYJO
-         XxNIY+eN6ZKnvZIg3i1TiAHf9WdALN7SCc3IqyXHu5cTtbQyPoH4BNEiQrwC9H65NdLS
-         5XGSjdny0YmP6RADE4fxyZ2wKFkGdyOdTaLQrx7EVu85pRNCZbHh1ye4y+cpy+6br/2j
-         ZwHWyweJ2trWvA9Yr0nkBNPtArqXqgjMRu/AtpzHFrAAvj9js0VM7Wh1EqSjn7NkQ9HP
-         ns7g==
-X-Gm-Message-State: AC+VfDx2/0d4F6ZfpaZbnp1FLV8M0aXATzUqCQa9ybhr/3l6x+YfF+uw
-        /pqux/K/4XP+c4ylx5X7dO7bDtJ9GSGwtixXbc4=
-X-Google-Smtp-Source: ACHHUZ4uqNma9e3+EYkNu8p5+bzGEjXLgfIeVC5PLIfPRxyx/cw9q8ArFbk7Z8GRYiv9JC2uWP48jpw4dudhtW6vhuA=
-X-Received: by 2002:a25:5087:0:b0:ba2:ca56:7206 with SMTP id
- e129-20020a255087000000b00ba2ca567206mr7209029ybb.17.1685552865848; Wed, 31
- May 2023 10:07:45 -0700 (PDT)
+        bh=UqDH4yuf9riVSA5V9W66V8AzL16NatN+7DvngwJVYHQ=;
+        b=ChtSxDu5hq48t9ruSB2/EgbNFGMteoHoiweVO1QRvtMybNvoc1Dy2l5Gwl1B8GE+QN
+         STvGYP6ebMKWOw+r+GUvo0NR5WgqTWSefY80LNBBpkDcMmj+sHq+Qnjg/lF2BdaSSkb4
+         xlEkZYWgrsSSRYAeiL3gY7QGRiW05ikSYKzARnV36IwwF2Mukl+cGt9ngXzQfG4ZNqGT
+         NwjM2Y8nK9GePNI0v6g6DSi5OOGl6RbDzoJ3rNS4hWB/4lSLfNfm8HE2MwnPJIiw75jr
+         Uu1OikCr44j8Vba+OLnNNCJu1M1FilyfiGqV0ibv7if69m1E7rKr3UyZIc0LEdUYivjw
+         DbfQ==
+X-Gm-Message-State: AC+VfDxG0kF9Rdq6Bok8eyLHKC0LlkqhkT3RuvlMf4SoAlASqa2p9ora
+        N9in12MIcS8/Rvl6PV8CihT8j6R24j/oyCnARtQ=
+X-Google-Smtp-Source: ACHHUZ6YRP+7GOjalS/xwoylUY0eFkX8MPFV32qCf9SvGRbSl26p2DWv6GCFWqaC5hFnT6ZojaI6Kh3uKPqGow4WfEI=
+X-Received: by 2002:a25:f80e:0:b0:bac:f582:eefd with SMTP id
+ u14-20020a25f80e000000b00bacf582eefdmr6912007ybd.35.1685552964512; Wed, 31
+ May 2023 10:09:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230424081112.99890-1-benno.lossin@proton.me>
-In-Reply-To: <20230424081112.99890-1-benno.lossin@proton.me>
+References: <20230502124015.356001-1-aliceryhl@google.com>
+In-Reply-To: <20230502124015.356001-1-aliceryhl@google.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 31 May 2023 19:07:34 +0200
-Message-ID: <CANiq72=OFioNTZiVR+vBkYs2Xum6Pv14x4kwNDqxJB0utB2dyA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] rust: macros: fix usage of `#[allow]` in `quote!`
-To:     Benno Lossin <benno.lossin@proton.me>
+Date:   Wed, 31 May 2023 19:09:13 +0200
+Message-ID: <CANiq72=zXOqvdttGjxGrbGoNvyz=QNb5sCE1FKROgKo5yEkfBQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: error: allow specifying error type on `Result`
+To:     Alice Ryhl <aliceryhl@google.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
@@ -69,17 +70,22 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Apr 24, 2023 at 10:11=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
-me> wrote:
+On Tue, May 2, 2023 at 2:40=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
 >
-> When using `quote!` as part of an expression that was not the last one
-> in a function, the `#[allow(clippy::vec_init_then_push)]` attribute
-> would be present on an expression, which is not allowed.
-> This patch refactors that part of the macro to use a statement instead.
+> Currently, if the `kernel::error::Result` type is in scope (which is
+> often is, since it's in the kernel's prelude), you cannot write
+> `Result<T, SomeOtherErrorType>` when you want to use a different error
+> type than `kernel::error::Error`.
 >
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> To solve this we change the error type from being hard-coded to just
+> being a default generic parameter. This still lets you write `Result<T>`
+> when you just want to use the `Error` error type, but also lets you
+> write `Result<T, SomeOtherErrorType>` when necessary.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Series applied to `rust-next` (with the newline added) -- thanks everyone!
+Applied to `rust-next` -- thanks everyone!
 
 Cheers,
 Miguel
