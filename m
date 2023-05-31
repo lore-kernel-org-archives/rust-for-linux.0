@@ -2,91 +2,99 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 373DFC7EE2E
-	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 17:11:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75991C77B7A
+	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 17:14:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbjEaRLr (ORCPT
+        id S229472AbjEaROg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 31 May 2023 13:11:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50202 "EHLO
+        Wed, 31 May 2023 13:14:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229890AbjEaRLo (ORCPT
+        with ESMTP id S229557AbjEaROd (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 31 May 2023 13:11:44 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDC49191;
-        Wed, 31 May 2023 10:11:42 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-ba81ded8d3eso8632007276.3;
-        Wed, 31 May 2023 10:11:42 -0700 (PDT)
+        Wed, 31 May 2023 13:14:33 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50345BE;
+        Wed, 31 May 2023 10:14:26 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-bab8f66d3a2so8315583276.3;
+        Wed, 31 May 2023 10:14:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685553102; x=1688145102;
+        d=gmail.com; s=20221208; t=1685553265; x=1688145265;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ebXJVsSOUn2ugmT4rghMz7fEudpo4P8yANA/KrthHSQ=;
-        b=rWOXBBOyOrBpuPMg0lDoyufRLZkgu0GznDnPFyWVtJFifHw7Tw6NjeMYjynx7qz/46
-         SbPowBCnn5Lk0cECatibpEFOHYw25O9dkF8KZTssbGCQvS2bETkGgaFsDoPaVQFCgFF8
-         1Ag+EMJveJF1qPYsr7gYEYsuMPnSYtYucxdk8ZEODhO03hSbn8SKM+wKE5ZTsAfKfoGz
-         TRKvv0kCsk4cQuTvEyzYhPpwcN13N2MsgYpBhyqaUG77IHqcoPNzESguACv0Xag1z7x+
-         2rNMIFLpeUGL9PyE50gUuhWvoXnhXrmkTinHm30tpSKqm/dDqJU2GcxhmqFSrmAG1rnM
-         xVJQ==
+        bh=4b+59wHppr/MAOrrv0BsVtn85WuHM6SCc3RDy+wBhi0=;
+        b=Y6cXHiWV3Gs9cuepa2WxnKaPjGCwbYQTMFoHjqK+g74plHZujuJpbPzESnkxOfiAPT
+         mZ4ULJ0H7/hZqKrfDdDERjEXYjqnn6kow0Ea1qjPOaDkOYyJd5ChnHTk1wMC48o3XLwv
+         jdywqbh5ECXqEBPUvwZSCMmDXGriQF25Ia+BLS1K1Rq7kAWvJFW2DkrE7VCgGl7UjlIQ
+         X7vvSMQNjdaSurpJN47xQ3RNHVWFqXprr+WTXzMxURNYskU+OtM2cKRkttznHOqCa4lO
+         1NOcIeTnd8sOr2NprileDC5s8qsQwc7QjNR7J6o2tT6yt/TyTNj9Fjc8ajPA3nktewk3
+         Gkzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685553102; x=1688145102;
+        d=1e100.net; s=20221208; t=1685553265; x=1688145265;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ebXJVsSOUn2ugmT4rghMz7fEudpo4P8yANA/KrthHSQ=;
-        b=ctrcaN9uy4H6uvOlk0huAfk96bxg2hDJSy6PGEMyPHEK0BkrKWuS1AHw++3n8Xqaik
-         wGXEfNCJ0IAPUalVjctSCXM/2cyTPOC/py2NvUO+o/pcclFaIp9Tv9dzYEkD6wxTI13Z
-         zGNLyNdRo9RjwOxiyL6LEt03a4Uoqe9Y+HgPSG+EYYlJXjzTw+J46BAGYepTOqTN/1km
-         yungQicd4WSU6FtW+0DduHJirWgE1k0khnY4C3Ltc4nW+3EanpJ36+zQC7NJZiZBIDG5
-         koW7cHgJ7r3F8+qytvm51sx8RCFzVCNNZkEVf+4kEsuspOGzAgLxlniCz5hZenU7Becw
-         KXQw==
-X-Gm-Message-State: AC+VfDzY0nm+JaSN3KcfuXCcVucFK7DHQlP4I6SO3nm6bp6Rf2+Y7evm
-        h8YHsDIRJ10tRpF1oBH8EaLKI3p/6UeZDOzR4gHYj9b4McAJTW0E6CM=
-X-Google-Smtp-Source: ACHHUZ70MMpnGtaiZiK8Wa0uRar/BTF3XWEcNJkZ9HluytIz1Q1g/E693M33BQVNFcwmkJ0i279u/zrdRM/51wlt1/8=
-X-Received: by 2002:a25:af54:0:b0:bad:13c4:3070 with SMTP id
- c20-20020a25af54000000b00bad13c43070mr6775546ybj.47.1685553101927; Wed, 31
- May 2023 10:11:41 -0700 (PDT)
+        bh=4b+59wHppr/MAOrrv0BsVtn85WuHM6SCc3RDy+wBhi0=;
+        b=Cu3Nw2p3QTwyrdUKbOdG2SCW0BsrhWdtC430y9B0ZBirVj/nyjy75ML10+T52nsei1
+         +ryA1x09cghZ0EKgMJXJO9f5J3RdLxZSTq3S8JYpY0P+ACvc05cEd11aIuz45rFIizCk
+         wZpzZ3ay09d64CJAm5KgVZK9FVFAA/ZQo9XwovlQ304EtgJyPjOYcD2CDHyAs074Sgah
+         E0crKQ265d5KOLpoU4NwYCDkf1fAGwi1i0lcyiKHLklQCOC+nbeThE9JDBtGYSF09Vaa
+         7xnCZw1IZTourmpBHf7dtydaeAv+mPo7sYpLdc96Ov85rAjnTlx/JlyjZMsL4LEgUYRl
+         Ke4Q==
+X-Gm-Message-State: AC+VfDyXzeoyJ7rHvzttYzwcji3JB4pAHvFbolHHL7Ovw/UiUoDYek2I
+        QePIOLC+uSYr8r6myAenRpm7Dqqa81V6HPgXUhc=
+X-Google-Smtp-Source: ACHHUZ7T4rgiA3BO0y3KMEaoS9f/bCxbQDFGFDD5kLRyYagdle/SOfcwNa33gkxYPqyovM3MESJfqFVeGKj4+GafDVc=
+X-Received: by 2002:a05:6902:102d:b0:ba8:6c1f:f5ad with SMTP id
+ x13-20020a056902102d00b00ba86c1ff5admr8001103ybt.29.1685553263977; Wed, 31
+ May 2023 10:14:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230504064854.774820-1-aliceryhl@google.com>
-In-Reply-To: <20230504064854.774820-1-aliceryhl@google.com>
+References: <20230531145939.3714886-1-aliceryhl@google.com>
+In-Reply-To: <20230531145939.3714886-1-aliceryhl@google.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 31 May 2023 19:11:31 +0200
-Message-ID: <CANiq72=S+gUXcsp1k1ZUnRbsecnP5KCKVW-tJoqZB_NsT-2K+A@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: error: add missing error codes
+Date:   Wed, 31 May 2023 19:14:13 +0200
+Message-ID: <CANiq72k6YKjPDqcT9g5BT5pYwypH5rLjwafcEEhddTfErcnNDA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/4] Update thread safety markers
 To:     Alice Ryhl <aliceryhl@google.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, May 4, 2023 at 8:49=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
+On Wed, May 31, 2023 at 5:00=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> This adds the error codes from `include/linux/errno.h` to the list of
-> Rust error constants. These errors were not included originally, because
-> they are not supposed to be visible from userspace. However, they are
-> still a perfectly valid error to use when writing a kernel driver. For
-> example, you might want to return ERESTARTSYS if you receive a signal
-> during a call to `schedule`.
+> In Rust, the `Send` and `Sync` traits are used to mark in what ways a
+> specific type is thread safe. In this patch series, I add some missing
+> thread safety markers and improve the documentation related to them.
+> This change will let you compile some code that would currently fail to
+> compile even though it doesn't actually violate any thread safety rules.
 >
-> This patch inserts an annotation to skip rustfmt on the list of error
-> codes. Without it, three of the error codes are split over several
-> lines, which looks terribly inconsistent.
+> You can find a definition of what these marker traits mean at [1].
 >
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Changes since v2:
+>
+>  * Removed "for example" as suggested in [2].
+>  * Added Reviewed-by annotations from v2 review.
+>
+> [1]: https://stackoverflow.com/a/68708557/1704411
+> [2]: https://lore.kernel.org/all/20230523165027.71600b4b.gary@garyguo.net=
+/
 
-Applied to `rust-next` -- thanks everyone!
+Applied to `rust-next` -- thanks everyone (and Alice for taking the
+effort to send this v3 even for the small change)!
 
 Cheers,
 Miguel
