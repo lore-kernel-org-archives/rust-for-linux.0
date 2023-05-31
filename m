@@ -2,115 +2,87 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A41AAC77B7A
-	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 15:03:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ECE4FC77B7A
+	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 17:02:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233824AbjEaPDP (ORCPT
+        id S229960AbjEaRCx (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 31 May 2023 11:03:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34110 "EHLO
+        Wed, 31 May 2023 13:02:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231215AbjEaPDO (ORCPT
+        with ESMTP id S229932AbjEaRCu (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 31 May 2023 11:03:14 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D69F193
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 08:03:00 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-bacfa4eefcbso2289457276.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 08:03:00 -0700 (PDT)
+        Wed, 31 May 2023 13:02:50 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B005713E;
+        Wed, 31 May 2023 10:02:47 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-bad010e1e50so8639739276.1;
+        Wed, 31 May 2023 10:02:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685545380; x=1688137380;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1lJ5Uf+EcwGNh0b/3i4Z2YdTIWfA6+IGf6dwAn0jzq8=;
-        b=5OgM51JSEe6PSOdk5CNCvcME9wVy09vhid7JxBNb7qJiDjF7E4J7ZYoqTcZXK7G/4Q
-         fBVGQRIPzqWJ4sY8Qc07prjIwDuUtokHF0Ed2I4HNciIkLqmXpEkND10y5X5aZpnha+V
-         JLsxaK5gm0+gDI/poxo2GLrXFxNVTsbSH75EjWelp+iT0fqpaAFlShM/OEEAy9Q/Z1oH
-         U4OocqQZEmuNGhc3RV03kZUW3fYLSdLdiSfHU6Vi4FDgN/sFLOHJKfa+8/E/hJkpUra5
-         Sjmd9/kBBv4MLQcWszMrplLIURaRI+p5FKBw8o4fAZ4CJcaOMFqdKw5U+Lr+aVFM4OvC
-         h9Og==
+        d=gmail.com; s=20221208; t=1685552567; x=1688144567;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FG1P2Nrcljeuk69DDeSeiYWvgO1FehBAcRPCmpA4UwQ=;
+        b=KlobxtPFR6Ysp6yLDDnsHdfCA0ZYPKNHo639LUMZ8h+NKMw0AsLGQl9DxnfOQw3e2t
+         TW2uqDVYIRr0NxB3TR0TLq4VHjzTZ0HR3uHJAGfjZExu4a5dorYiPmSUjUvuoFKU7z/J
+         t//fDhFcLuZPmABgOLGTQKaVsua0XCepxrlXFzi9hpozGaqft4xdSGZ6aNannGoClQAB
+         10vOsoWQAIYyMThwcBP4OrElZ1n05Ldic5W1Iih18/jNZlpIZAt0LTjSdhQyMZaapc4l
+         ceK3f8R6DEoIA0bK3GiIKjUikG7cJQPIsFdzVl6Ic8HEGO1DP6TatppQRwHS3uRnj7Qx
+         GLfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685545380; x=1688137380;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1lJ5Uf+EcwGNh0b/3i4Z2YdTIWfA6+IGf6dwAn0jzq8=;
-        b=gkhW25kXN1wm4tHnGK47SfiLAV/mAbJQ3fZypGzXfDBvRsWio2o8gqI95CxP7JEejD
-         nwA1xfITE3E5y1hsB/PODJcg68JWyqwKOvZSQKWV81GHjZOkyOBxiNIHdT/Xh88s4JbK
-         yszBUK/XhHMAoo3XPcZ0Y9ktM1eV6S8+E9bJqBknlVYGleTU7UPK23Uk45HDLHwPL0if
-         6i6sfMAsfKROx/Hga7xN/XSyi4eMZCCC46ZyK5D8LSly6i4EdIsBZZ4yRM3FC/PjEEh/
-         T7PvqL6So+BcW+myOs6sHkfybrgDZDK4nVS1WYy+981/CGUtoIAL9yxNA6d8xlcKZHFb
-         DFQw==
-X-Gm-Message-State: AC+VfDzCRkLLkxQSZpi7Yfap6T6qaH0YpihypH1sU0N8EddpELVbcxKZ
-        I3mTzp8g4ZNLktWF7d6XmSlZbsBl2ZOwgmYTN0WHZcFwcqJO3pr2rDsIQK9vgeMTojF0Fp4Xeop
-        yOK2yg2ZUf9z319NGrW8u64e8Ar9SDoGadt/jv9P3F6ZQwzzexDJSVScam4MVJxPczkw8ZtTrca
-        1P+RIM
-X-Google-Smtp-Source: ACHHUZ7jvbBEzbGMgkGfuh3So2mtf2RBfJvxuGuJkkzHzas325wMoQJCyO0TQgPDMkaiP/e7MDeDFu9c3SC1WFw=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a05:6902:100e:b0:bb1:569c:f381 with SMTP
- id w14-20020a056902100e00b00bb1569cf381mr1335253ybt.1.1685545379836; Wed, 31
- May 2023 08:02:59 -0700 (PDT)
-Date:   Wed, 31 May 2023 14:59:39 +0000
-In-Reply-To: <20230531145939.3714886-1-aliceryhl@google.com>
-Mime-Version: 1.0
-References: <20230531145939.3714886-1-aliceryhl@google.com>
-X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-Message-ID: <20230531145939.3714886-5-aliceryhl@google.com>
-Subject: [PATCH v3 4/4] rust: task: add `Send` marker to `Task`
-From:   Alice Ryhl <aliceryhl@google.com>
-To:     rust-for-linux@vger.kernel.org
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        "=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
+        d=1e100.net; s=20221208; t=1685552567; x=1688144567;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FG1P2Nrcljeuk69DDeSeiYWvgO1FehBAcRPCmpA4UwQ=;
+        b=fI6v2Uf8bCiXDU+oDXgmvUnoku31ny2VfjvA7cuUz0SqHatHPZoqJPq+5SGdwrdpEj
+         j1tEO+FOKVHJfd6fA9FDVARolWOVQjdEmzeC1iDm1qEcb5Hr4M084CGSgK/p6EvAmeYK
+         7WCD0+GFIdiDpaz6mylIQaRZvDsPfe08ffG0GuiGCxFjab38MnZydYuTSvwhZNO1VvBL
+         RRfJ2ytvGM/6zkgNdE8u18TuxTWhBTs4xe6E5Djb/tuzT+UXgz6Ed6qAA+XGR26iDhkx
+         R1kx4bSQtbg1NMyPiT9VVC55OZ4JPcO22KtqT4RTKQYnzvpCbNlPN9EFS7hMsuZj7khA
+         tcmg==
+X-Gm-Message-State: AC+VfDxduygTsdLtxjELsJgOCy7HBaFpBMdlgtFH1ZrlzNDwPRgQ+yet
+        wcHNQF2tF0k2pMrk4zYMprBpIdrjVtjFH3wJo4I=
+X-Google-Smtp-Source: ACHHUZ4wotzWkEI82wv2kvB1VEZ7nfcFE3vwSgsGw2wq4N9wemD12VZl2B9p3aWRiZZKlqFF5jUFl1vMDSV2L10Ic7Y=
+X-Received: by 2002:a25:1982:0:b0:ba8:313c:6bec with SMTP id
+ 124-20020a251982000000b00ba8313c6becmr6517049ybz.0.1685552566699; Wed, 31 May
+ 2023 10:02:46 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230418214347.324156-4-ojeda@kernel.org> <20230419030243.540348-1-yakoyoku@gmail.com>
+In-Reply-To: <20230419030243.540348-1-yakoyoku@gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 31 May 2023 19:02:35 +0200
+Message-ID: <CANiq72knVpyaKdT2iwrBNYorAt3Y5M-r6pXHc9JAZRCVmBYusQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] rust: upgrade to Rust 1.68.2
+To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc:     ojeda@kernel.org, alex.gaynor@gmail.com, benno.lossin@proton.me,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+        gyakovlev@gentoo.org, jan.steffens@gmail.com, jistone@redhat.com,
         linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Andreas Hindborg <a.hindborg@samsung.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com,
+        william.brown@suse.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-When a type also implements `Sync`, the meaning of `Send` is just "this
-type may be accessed mutably from threads other than the one it is
-created on". That's ok for this type.
+On Wed, Apr 19, 2023 at 5:02=E2=80=AFAM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
+>
+> Kinda bunch to review, although may I ask if each time the `alloc`
+> crate is updated is worth to mention the changes upon it [1], can be
+> skipped otherwise.
+>
+> Link: https://github.com/rust-lang/rust/commits/master/library/alloc [1]
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
----
- rust/kernel/task.rs | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+That could be nice if we could give a link similar to, say, what:
 
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 526d29a0ae27..7eda15e5f1b3 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -64,8 +64,14 @@ macro_rules! current {
- #[repr(transparent)]
- pub struct Task(pub(crate) Opaque<bindings::task_struct>);
- 
--// SAFETY: It's OK to access `Task` through references from other threads because we're either
--// accessing properties that don't change (e.g., `pid`, `group_leader`) or that are properly
-+// SAFETY: By design, the only way to access a `Task` is via the `current` function or via an
-+// `ARef<Task>` obtained through the `AlwaysRefCounted` impl. This means that the only situation in
-+// which a `Task` can be accessed mutably is when the refcount drops to zero and the destructor
-+// runs. It is safe for that to happen on any thread, so it is ok for this type to be `Send`.
-+unsafe impl Send for Task {}
-+
-+// SAFETY: It's OK to access `Task` through shared references from other threads because we're
-+// either accessing properties that don't change (e.g., `pid`, `group_leader`) or that are properly
- // synchronised by C code (e.g., `signal_pending`).
- unsafe impl Sync for Task {}
- 
--- 
-2.41.0.rc0.172.g3f132b7071-goog
+    git log 1.62.0..1.68.2 -- library/alloc/src/
 
+produces (or perhaps a list of PRs) -- is it possible to do so with a
+GitHub URL? If so, please let me know!
+
+Cheers,
+Miguel
