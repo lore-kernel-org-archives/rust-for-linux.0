@@ -2,92 +2,143 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5DE6C77B7C
-	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 10:17:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9550BC77B73
+	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 10:41:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234322AbjEaKR2 (ORCPT
+        id S231829AbjEaKlA (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 31 May 2023 06:17:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35838 "EHLO
+        Wed, 31 May 2023 06:41:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234649AbjEaKR0 (ORCPT
+        with ESMTP id S230470AbjEaKk7 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 31 May 2023 06:17:26 -0400
-Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02FD12B;
-        Wed, 31 May 2023 03:17:24 -0700 (PDT)
-Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-5659d85876dso71139207b3.2;
-        Wed, 31 May 2023 03:17:24 -0700 (PDT)
+        Wed, 31 May 2023 06:40:59 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37DE4BE
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 03:40:57 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-96f588bc322so814797666b.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 03:40:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685528244; x=1688120244;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1685529655; x=1688121655;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8aJTVJ6fsmZqPnk0Qc6OHM7P7yQlmbjh/uepd5OnvJw=;
-        b=DYjgBrL2nYR3qv6j2S/k3/jGlIvaW+DCGyO7AR+oQswHCG27NtkxuG93RejYRZ1FhV
-         fH1U9ecA2DIaXmxezNbkyrPr0UdrNH0/KOdT/qh24vXgKdEtelWjRf6K2GX5gvUXWnjL
-         08Yv4o2aN9v37axJSRw9fIE3sGDngNNivogwD+AUe8P79NfNxszoFh6PxJ8xYsUlRPAQ
-         pMabT2hdp5Sgs4PCJGU07mGnA2PHZJ5k6Bd14H+ffKlcXVML6s0QGF/h2p60bfWd3KWb
-         sty1BAWoiCIL+0EU+1HzP/NFrIIqdsJlNHscQcbHUAhReV6K/w+m9WDFV9B3SwDzV3Fs
-         2JIA==
+        bh=D9wK23t2sGNzjDkReOB3GT1QVBAdm3GmQJMkozq40P0=;
+        b=AIu+b8G09ha8tBpJpcXJQCPeq0ed4+ggJKcW4dwZrO08fXZdQ2tw23V6SU1enf/pLe
+         xz7/xU4WnxBkRiTFOQY9UCLBHxkOl1HE1FQp14w8Cb7OqtWtkqHxU47p2MWZTfI2rljF
+         +mWsRulFmiOLUXs3IAEPomaoUPhs2XbihXDKeq1AlPIa3OBboQjHMM190lvIxiLU+Mur
+         8q0igSTFZcpB+JYr1Jbrn+mKnOrrESw+GQZI21hx5lIF3gAFAk3QitJ81ceVFc+szrCF
+         iR6Sqn5FZHQDvrZJEEMh4BDAEHMTi3Sen5rp4moPXJwgg0MXry5YG4eBhHEnI2SFicW7
+         yCqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685528244; x=1688120244;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8aJTVJ6fsmZqPnk0Qc6OHM7P7yQlmbjh/uepd5OnvJw=;
-        b=aNr9IiQ8QYr6QbrRNwruD9uiOQEvKY5/MuMFxRW7J8lmnO0khFPF2Rk02yCOm4LLxN
-         arT/wnQIcEFy0f54xxy0/QBW1pvWOeDInk/Hdc1RkckXd4I52ypyfAazAKohkAQTvX96
-         gPwGNLBW0FWhGiONb3k9RijkiHJGl42feKGYnosrmPS0GBQynQyIj2rHDMLQwYyJiM7u
-         zvEshwbZLONFcogTpYowF7w/0qFHxlZWrZQ83WmgNAfQqkxKDmaOriQPj1jm9NoZVPDb
-         1s5qrRUZW4zB26lSOc+hIeiqtxfCgRjohwX86sY3S+Kc9pGoGoofc8HqLeYW0vLQDoLD
-         waUg==
-X-Gm-Message-State: AC+VfDy1uRZ/9iMf/kxgeqQhVgordZMOWO7CYagO2KLX+2rsfedmsSIg
-        rimZWkSeviCDRO1AvJ/br4AMQtAewwMxD5k54To=
-X-Google-Smtp-Source: ACHHUZ5zItvcup3RKZId4mS1Hz0hyLAha9VSHp0tlG73QaY4jil9Ir/LmdK4uzlEt3wPS//HG8R1Q3pAm0dVcCWRqJ0=
-X-Received: by 2002:a0d:dd82:0:b0:556:ceb2:c462 with SMTP id
- g124-20020a0ddd82000000b00556ceb2c462mr5406527ywe.2.1685528244054; Wed, 31
- May 2023 03:17:24 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1685529655; x=1688121655;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=D9wK23t2sGNzjDkReOB3GT1QVBAdm3GmQJMkozq40P0=;
+        b=j0N0yrJY3aqb+keDn56dprubrUg0lEZMdzIizZc1tdBHgZuYD2cD6yIO2CHZqLo6Yb
+         pQBerPLkw6YRIfdaKjB4kulaziTdlB7Hpx6PPdWL/xcSe/zCn0FDrO2nJJlcl3b1ToWt
+         p+gy5k5ctJuA+ZhUwtTM+nOsQjfLIVZ0eAeo8WSci/MXdh4n9OGXNMmpzQxaIuW5Bm+N
+         38OAICNYAa1x8GY/V4twDQ6Zy4bdG5aIfHIHkG0nsUIQ/mEHLIfeJtGm+s7BZbdgZd7R
+         XoFhy7B9sqUsCFO5IEQMk+ErAuep3vAaeXYWEnCNkIT6mUweWDgdDLort677RIdj47KA
+         wiWg==
+X-Gm-Message-State: AC+VfDxrsxe6AttCWom7r1aCDLcapywyQAmG/eqKumMXGciGKAcd9/6J
+        5C5wwj6ZX6GSW9Qd2YFliaV7WQWuf3jVRcIrNX67nQ==
+X-Google-Smtp-Source: ACHHUZ7gkn3xn/E4i2JfCKzoMtUX7uPofz9OD1IYCOir3fHI3gRcIYfxWM4KiKVknbBOQRkWmqzCmA==
+X-Received: by 2002:a17:907:ea1:b0:957:48c8:b081 with SMTP id ho33-20020a1709070ea100b0095748c8b081mr4688011ejc.24.1685529655648;
+        Wed, 31 May 2023 03:40:55 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id lh27-20020a170906f8db00b0096f03770be2sm8697953ejb.52.2023.05.31.03.40.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 May 2023 03:40:55 -0700 (PDT)
+References: <87leh69par.fsf@metaspace.dk>
+ <20230531090032.3667467-1-aliceryhl@google.com>
+User-agent: mu4e 1.10.3; emacs 28.2.50
+From:   Andreas Hindborg <nmi@metaspace.dk>
+To:     Alice Ryhl <aliceryhl@google.com>
+Cc:     alex.gaynor@gmail.com, benno.lossin@proton.me,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+        jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
+        ojeda@kernel.org, patches@lists.linux.dev,
+        rust-for-linux@vger.kernel.org, tj@kernel.org, wedsonaf@gmail.com
+Subject: Re: [PATCH v1 5/7] rust: workqueue: add helper for defining
+ work_struct fields
+Date:   Wed, 31 May 2023 12:18:47 +0200
+In-reply-to: <20230531090032.3667467-1-aliceryhl@google.com>
+Message-ID: <87zg5k3hs9.fsf@metaspace.dk>
 MIME-Version: 1.0
-References: <20230530064821.1222290-1-changxian.cqs@antgroup.com>
- <20230530064821.1222290-3-changxian.cqs@antgroup.com> <2023053003-antitoxic-popcorn-b1ab@gregkh>
- <ZHZBacreRpd0D/FV@boqun-archlinux> <170fa8d4-7851-cc1a-14ba-7213d0a5da0c@antgroup.com>
-In-Reply-To: <170fa8d4-7851-cc1a-14ba-7213d0a5da0c@antgroup.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 31 May 2023 12:17:13 +0200
-Message-ID: <CANiq72mghZMnDFcAgjxu0swMYEbpkWS5vLMpA4zThH0KbtLwxw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] samples: rust: add `SgTable` and `ScatterList` selftests
-To:     Qingsong Chen <changxian.cqs@antgroup.com>
-Cc:     Boqun Feng <boqun.feng@gmail.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org,
-        =?UTF-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Asahi Lina <lina@asahilina.net>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Viktor Garske <viktor@v-gar.de>, Finn Behrens <me@kloenk.dev>,
-        rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, May 31, 2023 at 7:35=E2=80=AFAM Qingsong Chen
-<changxian.cqs@antgroup.com> wrote:
+
+Alice Ryhl <aliceryhl@google.com> writes:
+
+> Andreas Hindborg <nmi@metaspace.dk> writes:
+>> Alice Ryhl <aliceryhl@google.com> writes:
+>>> +/// Used to safely implement the [`HasWork<T>`] trait.
+>>> +///
+>>> +/// # Examples
+>>> +///
+>>> +/// ```
+>>> +/// use kernel::sync::Arc;
+>>> +///
+>>> +/// struct MyStruct {
+>>> +///     work_field: Work<Arc<MyStruct>>,
+>>> +/// }
+>>> +///
+>>> +/// impl_has_work! {
+>>> +///     impl HasWork<Arc<MyStruct>> for MyStruct { self.work_field }
+>>> +/// }
+>>> +/// ```
+>>> +///
+>>> +/// [`HasWork<T>`]: HasWork
+>>> +#[macro_export]
+>>> +macro_rules! impl_has_work {
+>>> +    ($(impl$(<$($implarg:ident),*>)?
+>>> +       HasWork<$work_type:ty>
+>>> +       for $self:ident $(<$($selfarg:ident),*>)?
+>>> +       { self.$field:ident }
+>>> +    )*) =3D> {$(
+>>> +        // SAFETY: The implementation of `raw_get_work` only compiles =
+if the field has the right
+>>> +        // type.
+>>> +        unsafe impl$(<$($implarg),*>)? $crate::workqueue::HasWork<$wor=
+k_type> for $self $(<$($selfarg),*>)? {
+>>> +            const OFFSET: usize =3D $crate::offset_of!(Self, $field) a=
+s usize;
+>>> +
+>>> +            #[inline]
+>>> +            unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crate::wor=
+kqueue::Work<$work_type> {
+>>> +                // SAFETY: The caller promises that the pointer is not=
+ dangling.
+>>> +                unsafe {
+>>> +                    ::core::ptr::addr_of_mut!((*ptr).$field)
+>>> +                }
+>>> +            }
+>>=20
+>> What is the reason for overriding the default implementation of `raw_get=
+_work()`?
+>>=20
+>> BR Andreas
 >
-> Maybe I should place those use cases in the doc ( `Examples` section)
-> and remove this commit
+> That's how the macro checks that the field actually has the type you
+> claim it has. If you lie about the type, then `raw_get_work` will not
+> compile. (See the safety comment on the impl block.)
 
-If you think they would help readers of the docs, then that is
-definitely the best approach, because they double as tests and docs at
-the same time.
+Got it =F0=9F=91=8D
 
-Cheers,
-Miguel
+I was thinking we could do the type check without redefining the method,
+but that blows up complexity wise fast, since we need a trait to do it
+to support `Self` in `$work_type`. It strikes me as a bit of a hack to
+overwrite an otherwise fine implementation, but I guess it is the least
+complex way.
+
+Also I am a bit annoyed that we need to state the `$work_type` type at
+all, since it is available in `work_field`. But I can see no way around
+that.
+
+BR Andreas
