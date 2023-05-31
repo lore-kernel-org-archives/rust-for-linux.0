@@ -2,127 +2,82 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00A88C7EE2E
-	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 01:35:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09840C77B73
+	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 05:30:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233618AbjEaBfM (ORCPT
+        id S234161AbjEaFab (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 30 May 2023 21:35:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41526 "EHLO
+        Wed, 31 May 2023 01:30:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233909AbjEaBfL (ORCPT
+        with ESMTP id S231833AbjEaFa3 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 30 May 2023 21:35:11 -0400
-Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B17B1F9;
-        Tue, 30 May 2023 18:35:07 -0700 (PDT)
-Received: by mail-qv1-xf2f.google.com with SMTP id 6a1803df08f44-6261616efd2so18292996d6.2;
-        Tue, 30 May 2023 18:35:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685496907; x=1688088907;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hMSUAIzAABF4Dds+SMcyk4c0VPg+DkSfaML9RK0MaQU=;
-        b=o4yu9VXVx0+PhpGvAJBS9FUEuVLZQFg95Oapn4amLeSNcvo74e+hD9BKdJ3a5RQVFd
-         TQlVQ/1L3qVOOr0D6gus/8HtKg4UAKf3AJdPwkkf90ELERuTcfjahmZnecczwTCilgtU
-         UIt/Z+XGvtvuaix8kzC9NCVItKsk/E4/1/1DHGs9I3SFyzEBjGKz68exFauMKPLhbYuO
-         KyMvreiMVP5HwSZoIGhdvWAxpxwsmk4J0Uev4s/dU+XZDcQOR7d7Wm9X3QyEEmKOv16X
-         KQOPl7czev0Ew0E86EeI/kIPSC5rdz4Ex40bVl5mC165E+KanR9V/VGnmnDeCa/dQbld
-         4dig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685496907; x=1688088907;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hMSUAIzAABF4Dds+SMcyk4c0VPg+DkSfaML9RK0MaQU=;
-        b=K6DGR0fKhQLbgWxkEGMYfWTk36dpen2BOaDs8+uLOtPDu0tgNXmryIZL/Xyal1ZUC1
-         GTWD8LvPKfHTictrSScx9kXlG9yZ4Xj7gtiqeVsxxZbXEvX5E3YCTE9flNsUgVdrdSZZ
-         KG87VCvu8LWPTHIv032R+eCbRrKJhDn1n3P8EmT7ji4UB6WURrkU7zsqtZy3O9E17nR3
-         bNsW1ELH+nswFXEn4cOtsebyJK1P27Lkvhe1mhaJ+yhEINxfngcBqzgCxBrs3qYpftC1
-         C6AumMCBrSidBC0fTDESflU5thHwU2PZkisvfGge1VOwkO+YfOvrys4djD6q3gbAvvjl
-         Eglg==
-X-Gm-Message-State: AC+VfDwyg0YqzrSx6elwIuwNaQMiHGEv4T1h3KhySJZ0P3AfCM2O8mAb
-        qv2m5er7UWFBui/YAfnCSy4=
-X-Google-Smtp-Source: ACHHUZ5bYzXnvzzuInBywt/p/Waes6JQMdcwGCxFFldsnk74MWixpZZS8wyzVcftXv539hIdf3NvRQ==
-X-Received: by 2002:a05:6214:c6b:b0:614:da60:f44a with SMTP id t11-20020a0562140c6b00b00614da60f44amr3506501qvj.46.1685496906699;
-        Tue, 30 May 2023 18:35:06 -0700 (PDT)
-Received: from localhost.localdomain (2603-6000-8100-7fd4-0000-0000-0000-0619.res6.spectrum.com. [2603:6000:8100:7fd4::619])
-        by smtp.gmail.com with ESMTPSA id h19-20020a0cf213000000b0062383edece8sm4249123qvk.91.2023.05.30.18.35.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 18:35:06 -0700 (PDT)
-From:   "Ethan D. Twardy" <ethan.twardy@gmail.com>
-To:     Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, Miguel Cano <macanroj@gmail.com>,
-        Tiago Lam <tiagolam@gmail.com>, Finn Behrens <me@kloenk.de>,
-        Kees Cook <keescook@chromium.org>,
-        rust-for-linux@vger.kernel.org (open list:RUST),
-        linux-kernel@vger.kernel.org (open list),
-        llvm@lists.linux.dev (open list:CLANG/LLVM BUILD SUPPORT)
-Cc:     "Ethan D. Twardy" <ethan.twardy@gmail.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: [PATCH v3 1/1] scripts/rust_is_available: Fix clang version check
-Date:   Tue, 30 May 2023 20:32:11 -0500
-Message-Id: <20230531013211.27408-2-ethan.twardy@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230531013211.27408-1-ethan.twardy@gmail.com>
-References: <20230531013211.27408-1-ethan.twardy@gmail.com>
+        Wed, 31 May 2023 01:30:29 -0400
+Received: from out0-197.mail.aliyun.com (out0-197.mail.aliyun.com [140.205.0.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 573D911B;
+        Tue, 30 May 2023 22:30:27 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018047204;MF=changxian.cqs@antgroup.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---.THCuFeH_1685511019;
+Received: from 30.177.18.117(mailfrom:changxian.cqs@antgroup.com fp:SMTPD_---.THCuFeH_1685511019)
+          by smtp.aliyun-inc.com;
+          Wed, 31 May 2023 13:30:20 +0800
+Message-ID: <170fa8d4-7851-cc1a-14ba-7213d0a5da0c@antgroup.com>
+Date:   Wed, 31 May 2023 13:30:18 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH 2/2] samples: rust: add `SgTable` and `ScatterList`
+ selftests
+To:     Boqun Feng <boqun.feng@gmail.com>,
+        Greg KH <gregkh@linuxfoundation.org>
+Cc:     <linux-kernel@vger.kernel.org>,
+        "=?UTF-8?B?55Sw5rSq5Lqu?=" <tate.thl@antgroup.com>,
+        "Miguel Ojeda" <ojeda@kernel.org>,
+        "Alex Gaynor" <alex.gaynor@gmail.com>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        "Gary Guo" <gary@garyguo.net>,
+        "=?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>,
+        "Benno Lossin" <benno.lossin@proton.me>,
+        "Martin Rodriguez Reboredo" <yakoyoku@gmail.com>,
+        "Asahi Lina" <lina@asahilina.net>,
+        "Sven Van Asbroeck" <thesven73@gmail.com>,
+        "Viktor Garske" <viktor@v-gar.de>, "Finn Behrens" <me@kloenk.dev>,
+        <rust-for-linux@vger.kernel.org>
+References: <20230530064821.1222290-1-changxian.cqs@antgroup.com>
+ <20230530064821.1222290-3-changxian.cqs@antgroup.com>
+ <2023053003-antitoxic-popcorn-b1ab@gregkh> <ZHZBacreRpd0D/FV@boqun-archlinux>
+From:   "Qingsong Chen" <changxian.cqs@antgroup.com>
+In-Reply-To: <ZHZBacreRpd0D/FV@boqun-archlinux>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-During out-of-tree builds where the path to the kernel source tree
-contains a version string, scripts/rust_is_available.sh incorrectly
-identified the version string of libclang to be the version string in
-the kernel sources path, resulting in CONFIG_RUST_IS_AVAILABLE
-erroneously set to 'n'.
 
-This issue was previously affecting builds on distributions, such as
-Gentoo Linux, where the kernel source tree is under version control,
-and placed under a path containing the current kernel version string
-in /usr/src.
+On 5/31/23 2:33 AM, Boqun Feng wrote:
+> On Tue, May 30, 2023 at 08:31:26AM +0100, Greg KH wrote:
+>> On Tue, May 30, 2023 at 02:48:21PM +0800, Qingsong Chen wrote:
+>>> Add a selftest module to provide a temporary place to put "pure tests"
+>>> for Rust funtionality and wrappers.
+>> Is this for in-kernel tests, or userspace tests?  If userspace, you
+>> should follow the proper test reporting protocol the rest of the kernel
+>> uses.  If in-kernel, it should follow the format that the in-kernel test
+>> currently has to be consistent.  From what I could tell here, you aren't
+>> following either, but I might be totally wrong.
+>>
+> It is for in-kernel tests, and you're right, we should follow the other
+> in-kernel test format.
+>
+> Some explanation about the background: when I was working on this little
+> "test framework", the Github CI of Rust-for-Linux (ab)used sample/rust/
+> for testing, that's why it was put there.
+>
+> Now my understanding is that Rust KUnit support is coming, so we should
+> use kunit tests if possible.
 
-The fix is to take special care to match only the version string
-following the string 'clang version' in the output.
+Maybe I should place those use cases in the doc ( `Examples` section) 
+and remove this commit
 
-To reproduce:
+in next version. Thanks.
 
-  $ cd ~/build && make -C ~/linux-6.2.0 O=$PWD LLVM=1 rustavailable
-  [...]
-  *** libclang (used by the Rust bindings generator 'bindgen') is too old.
-  ***   Your version:    6.2.0
-  ***   Minimum version: 11.0.0
-  [...]
-
-Fixes: 78521f3399ab ("scripts: add `rust_is_available.sh`")
-Signed-off-by: Ethan D. Twardy <ethan.twardy@gmail.com>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index aebbf1913970..e8a1439be9f8 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -102,8 +102,8 @@ fi
- # Check that the `libclang` used by the Rust bindings generator is suitable.
- bindgen_libclang_version=$( \
- 	LC_ALL=C "$BINDGEN" $(dirname $0)/rust_is_available_bindgen_libclang.h 2>&1 >/dev/null \
--		| grep -F 'clang version ' \
--		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
-+		| grep -oE 'clang version [0-9]+\.[0-9]+\.[0-9]+' \
-+		| cut -d' ' -f3 \
- 		| head -n 1 \
- )
- bindgen_libclang_min_version=$($min_tool_version llvm)
--- 
-2.40.1
 
