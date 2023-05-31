@@ -2,101 +2,92 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCD63C77B73
-	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 09:08:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5DE6C77B7C
+	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 10:17:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232590AbjEaJIS (ORCPT
+        id S234322AbjEaKR2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 31 May 2023 05:08:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49334 "EHLO
+        Wed, 31 May 2023 06:17:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234573AbjEaJIJ (ORCPT
+        with ESMTP id S234649AbjEaKR0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 31 May 2023 05:08:09 -0400
-Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 101A3E4B
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 02:08:02 -0700 (PDT)
-Received: by mail-ej1-x64a.google.com with SMTP id a640c23a62f3a-96f5157aca5so576880966b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 May 2023 02:08:01 -0700 (PDT)
+        Wed, 31 May 2023 06:17:26 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02FD12B;
+        Wed, 31 May 2023 03:17:24 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-5659d85876dso71139207b3.2;
+        Wed, 31 May 2023 03:17:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685524080; x=1688116080;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=h4XB69pI7oS1KTwJ1Q82+CkziVn4Zul+krCxNc20lxY=;
-        b=hF5rhGXPOOd8eZdQQ3DNkBzapxJtKf68EiAo1a9IPWpXaz7OSTkyCGpwOoBmhtq444
-         Edz0OVUOK2gCHE/qi5uSIDR+CfACSpofs3x7IPacH+5ka1Re4i5bYKMFCatM9wFkNQCR
-         Kynv+nF73kgFpbzeZIT0fCY5WE7tXNEeMjTCQ2/oMNfLncKxNwr3tD+Rozz0gncc5H81
-         L5MJaSrp0rJcoKjbIO4eQ5ZASfjN/sj5umJekwonfsGtrcZ+B7OpWx53w20tpFUp2C9L
-         aWsG1eCu1roXKzUnkjDzPDLMcmI4nnBA7iBxTXLQ/oHhQvaExejAwggwLNG5S0tLKbJT
-         o0xw==
+        d=gmail.com; s=20221208; t=1685528244; x=1688120244;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8aJTVJ6fsmZqPnk0Qc6OHM7P7yQlmbjh/uepd5OnvJw=;
+        b=DYjgBrL2nYR3qv6j2S/k3/jGlIvaW+DCGyO7AR+oQswHCG27NtkxuG93RejYRZ1FhV
+         fH1U9ecA2DIaXmxezNbkyrPr0UdrNH0/KOdT/qh24vXgKdEtelWjRf6K2GX5gvUXWnjL
+         08Yv4o2aN9v37axJSRw9fIE3sGDngNNivogwD+AUe8P79NfNxszoFh6PxJ8xYsUlRPAQ
+         pMabT2hdp5Sgs4PCJGU07mGnA2PHZJ5k6Bd14H+ffKlcXVML6s0QGF/h2p60bfWd3KWb
+         sty1BAWoiCIL+0EU+1HzP/NFrIIqdsJlNHscQcbHUAhReV6K/w+m9WDFV9B3SwDzV3Fs
+         2JIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685524080; x=1688116080;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=h4XB69pI7oS1KTwJ1Q82+CkziVn4Zul+krCxNc20lxY=;
-        b=V70VMgm45qIeKBZRViRhTk4Gkubllf2gNKPI1YkoC3wlhIA7Xpj/HKxCKEQ8izwiu3
-         RqmCG2/HFLmRBVH0FAgJMhhvvv5NJVHbvEupub877a9G8Ti8POMYCFAKaNRgQuyjpWIL
-         2wEeccgH64lDXQjmRCIiJZrPg7xUVxpw16yMeQyMVI1l1JxYeeiTMz3buE6nAgAGiIst
-         FaKr0psvRRn/XOsvEADW+JwKIcupW70EFISaNA2ynMWnD92XuiFuRm+E6NCZQAgjVbGc
-         Iil+i35L2F4nBOwnAgfJAdYgngrINGZ0izm1pyjh2RuuW6sd3Urcumn5U1ffeW5QJhDi
-         u8Jg==
-X-Gm-Message-State: AC+VfDwfXgVyX4Y9DSK/Y7o1G8FtsxGiw4heuu46Hb2pU78s5HdbC0Fe
-        dP0tcJIvP1bSeBF+elSiRaOoIZeLmQ845yE=
-X-Google-Smtp-Source: ACHHUZ4jHWsOMdaL8fTbPxhKkMfcS5HXhNuYYha/28gUrN+9T6dw86HDPz24GnWXSS15B+jt4XcRCMsHnSQQxsk=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a17:907:75c6:b0:96f:4226:56d with SMTP
- id jl6-20020a17090775c600b0096f4226056dmr1253514ejc.6.1685524080625; Wed, 31
- May 2023 02:08:00 -0700 (PDT)
-Date:   Wed, 31 May 2023 09:07:58 +0000
-In-Reply-To: <ZWC2OS5uiRNgHMBBzQqt4FZXnOBeHw5IK5D7CAqfNC-z6nfYVLS9jXgvP2cMFvIMtVG22OGlmRGR9RkUJ53lip-SPiEkTHEiBoxMoL-K_38=@proton.me>
-Mime-Version: 1.0
-References: <ZWC2OS5uiRNgHMBBzQqt4FZXnOBeHw5IK5D7CAqfNC-z6nfYVLS9jXgvP2cMFvIMtVG22OGlmRGR9RkUJ53lip-SPiEkTHEiBoxMoL-K_38=@proton.me>
-X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-Message-ID: <20230531090758.3668499-1-aliceryhl@google.com>
-Subject: Re: [PATCH v1 6/7] rust: workqueue: add safe API to workqueue
-From:   Alice Ryhl <aliceryhl@google.com>
-To:     benno.lossin@proton.me
-Cc:     alex.gaynor@gmail.com, aliceryhl@google.com,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-        jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
-        ojeda@kernel.org, patches@lists.linux.dev,
-        rust-for-linux@vger.kernel.org, tj@kernel.org, wedsonaf@gmail.com
+        d=1e100.net; s=20221208; t=1685528244; x=1688120244;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8aJTVJ6fsmZqPnk0Qc6OHM7P7yQlmbjh/uepd5OnvJw=;
+        b=aNr9IiQ8QYr6QbrRNwruD9uiOQEvKY5/MuMFxRW7J8lmnO0khFPF2Rk02yCOm4LLxN
+         arT/wnQIcEFy0f54xxy0/QBW1pvWOeDInk/Hdc1RkckXd4I52ypyfAazAKohkAQTvX96
+         gPwGNLBW0FWhGiONb3k9RijkiHJGl42feKGYnosrmPS0GBQynQyIj2rHDMLQwYyJiM7u
+         zvEshwbZLONFcogTpYowF7w/0qFHxlZWrZQ83WmgNAfQqkxKDmaOriQPj1jm9NoZVPDb
+         1s5qrRUZW4zB26lSOc+hIeiqtxfCgRjohwX86sY3S+Kc9pGoGoofc8HqLeYW0vLQDoLD
+         waUg==
+X-Gm-Message-State: AC+VfDy1uRZ/9iMf/kxgeqQhVgordZMOWO7CYagO2KLX+2rsfedmsSIg
+        rimZWkSeviCDRO1AvJ/br4AMQtAewwMxD5k54To=
+X-Google-Smtp-Source: ACHHUZ5zItvcup3RKZId4mS1Hz0hyLAha9VSHp0tlG73QaY4jil9Ir/LmdK4uzlEt3wPS//HG8R1Q3pAm0dVcCWRqJ0=
+X-Received: by 2002:a0d:dd82:0:b0:556:ceb2:c462 with SMTP id
+ g124-20020a0ddd82000000b00556ceb2c462mr5406527ywe.2.1685528244054; Wed, 31
+ May 2023 03:17:24 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230530064821.1222290-1-changxian.cqs@antgroup.com>
+ <20230530064821.1222290-3-changxian.cqs@antgroup.com> <2023053003-antitoxic-popcorn-b1ab@gregkh>
+ <ZHZBacreRpd0D/FV@boqun-archlinux> <170fa8d4-7851-cc1a-14ba-7213d0a5da0c@antgroup.com>
+In-Reply-To: <170fa8d4-7851-cc1a-14ba-7213d0a5da0c@antgroup.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Wed, 31 May 2023 12:17:13 +0200
+Message-ID: <CANiq72mghZMnDFcAgjxu0swMYEbpkWS5vLMpA4zThH0KbtLwxw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] samples: rust: add `SgTable` and `ScatterList` selftests
+To:     Qingsong Chen <changxian.cqs@antgroup.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Asahi Lina <lina@asahilina.net>,
+        Sven Van Asbroeck <thesven73@gmail.com>,
+        Viktor Garske <viktor@v-gar.de>, Finn Behrens <me@kloenk.dev>,
+        rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Benno Lossin <benno.lossin@proton.me> writes:
-> On Wednesday, May 17th, 2023 at 22:31, Alice Ryhl <aliceryhl@google.com> wrote:
->> +macro_rules! define_work_adapter_newtype {
->> +    (
->> +        $(#[$outer:meta])*
->> +        $pub:vis struct $name:ident(
->> +            $(#[$innermeta:meta])*
->> +            $fpub:vis Arc<$inner:ty> $(,)?
->> +        );
->> +        $($rest:tt)*
->> +    ) => {
->> +        $(#[$outer])*
->> +        $pub struct $name($(#[$innermeta])* $fpub $crate::sync::Arc<$inner>);
-> 
-> I am a bit confused as to why these types *contain* a pointer. Shouldn't
-> these be exactly the same `Work<$inner>`, except they allow multiple `run`
-> functions? So IMO they should embed a `Work<$inner>` and the
-> manually defined `run` function would take a `$inner`.
+On Wed, May 31, 2023 at 7:35=E2=80=AFAM Qingsong Chen
+<changxian.cqs@antgroup.com> wrote:
+>
+> Maybe I should place those use cases in the doc ( `Examples` section)
+> and remove this commit
 
-No, that's not how this particular patch was designed. With the design I
-used, the way you tell `enqueue` which `work_struct` field you want to
-use is by using a different pointer type for each `work_struct` field.
-This macro defines those pointer types.
+If you think they would help readers of the docs, then that is
+definitely the best approach, because they double as tests and docs at
+the same time.
 
-So, for example, if you have only one `work_struct` field, then you just
-use `Arc<MyStruct>` as your pointer type, and the field has type
-`Work<Arc<MyStruct>>`.
-
-On the other hand, if you have two `work_struct` fields, then you
-instead use the macro to define `MyPointerType1` and `MyPoinerType2`
-that both wrap an `Arc<MyStruct>`, and the fields then have types
-`Work<MyPointerType1>` and `Work<MyPointerType2>`.
-
-Alice
+Cheers,
+Miguel
