@@ -2,97 +2,84 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8FB94C7EE2D
-	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 17:06:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE8A9C77B73
+	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 17:07:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230039AbjEaRGL (ORCPT
+        id S229517AbjEaRHw (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 31 May 2023 13:06:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44324 "EHLO
+        Wed, 31 May 2023 13:07:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230051AbjEaRGK (ORCPT
+        with ESMTP id S229830AbjEaRHu (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 31 May 2023 13:06:10 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EA01E41;
-        Wed, 31 May 2023 10:05:45 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-bad010e1e50so8643036276.1;
-        Wed, 31 May 2023 10:05:45 -0700 (PDT)
+        Wed, 31 May 2023 13:07:50 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A00C91AD;
+        Wed, 31 May 2023 10:07:46 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-bad97da58adso6736455276.1;
+        Wed, 31 May 2023 10:07:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685552742; x=1688144742;
+        d=gmail.com; s=20221208; t=1685552866; x=1688144866;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jLI3C77UUH8a7vo/UtwCwZu01ZTIS8d3sU+aRADHIYU=;
-        b=G4nllCdJCOjAFj8ZxauXRVVq7uw3y0OzOdsiezqKZ5DfFZNlEkLII7Hc7TJdeKh15W
-         eLLTQmortFLT8AesUuBvWfjQ4B8Ene6kWHDmTjfJ3PgG53lkEywPKBTOSQ7nEvVYc5N9
-         hqBGIrLP/kl+rwSgNz22YgWGan8dh0MG1T6q4N7Cuw8D59P6pTH0cIeQsCLSZE3vnVv0
-         sVM65wKdQI4y/thZgJoRv5TOWcSalI0Rmj+V7cdo0Ma/nr4etRXgjHTyt/TpOwjOXfyV
-         8XXrYhdlCvsQjWwrjIUpYSgrI+Djq9ea9+qe20Iq2aAfVOG25FogpBOjRa2bsnVtj8XC
-         C5/Q==
+        bh=76vg60iW/EsEINmD+Bil9N8BO8s1pVlIY0spf2KHpnw=;
+        b=AqFFPdnWQgjfaEVYQJhTRCZLbnnoP1T/OuVLPkM82QjyaLFvqLZkQvnLuFiUKznvbg
+         5mnVnDzBYCxL/hKfAytTdiJQOLdEgoCvVB6AsWcKlQhmLeM+4GvfhyiTSKwYPOLeHCCr
+         tKsAHo6lumCftCJDl3h3MmoFksS2OV/aCzedbK+fKrjLdgkBktemgwYem72t/j5R6V2U
+         dXvny0xVl+mUZs5tJWBoYgmrvu6ydBZH+L8ohdlnNwHbsfpSkJkkjqZOpjXj7C1UA6It
+         YihUAZcK76QDC7mPDkjbTJd7R2xdv95bumAe3vbat6Ttu/5QCDTK70W5HCpqe9JAsNCm
+         BEUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685552742; x=1688144742;
+        d=1e100.net; s=20221208; t=1685552866; x=1688144866;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jLI3C77UUH8a7vo/UtwCwZu01ZTIS8d3sU+aRADHIYU=;
-        b=K3JLsrEmrLsf6uEoiXSZOtfxw+SOL1FtsR2IjoPqEA7mrffFuSmCm4fOR+TH4l04kA
-         ODYQFVChUX4j14ePUoQ2JI+a0Kgvs0Pu9k1kfbWyurxTaLeAc6MFNdUcXjpuagE1SNK9
-         24+lzBRHnhbl6j3+bnvJYUQCjqQjWoZ//gFtnH5nczw19qq23mQ8mh3EHo0qNYHPmo25
-         GkWNoeVbop9cc6oOO+7Qddq/UqP0PimntFbW0FZOnpuskWxYyh+Rc5DH3Dr4AJEUPD7L
-         lLu/KvMIJE7j1j28KPbds1/IEOz/toWS1Sl8v6xQttefwISScdd2GrHq6NXY+SDeUnhn
-         ib3g==
-X-Gm-Message-State: AC+VfDyipWPVtPI4O9zV1HGPShPEldtqAJ3WCcprfCTR4wTKA92ZJgCl
-        etoOD/Ni2YNWa0JOW+PMpkY+Yn9jb6+N0BtqTQo=
-X-Google-Smtp-Source: ACHHUZ7T5FWtaCksEYIGCfBxBoHHCSoylR97os4Rjz45cR+S5pJnqL6TG4nigKhZP13Jl/iqOnTvmluSNUoNaVjYCL4=
-X-Received: by 2002:a25:242:0:b0:bad:c64:4e0d with SMTP id 63-20020a250242000000b00bad0c644e0dmr6780393ybc.35.1685552742397;
- Wed, 31 May 2023 10:05:42 -0700 (PDT)
+        bh=76vg60iW/EsEINmD+Bil9N8BO8s1pVlIY0spf2KHpnw=;
+        b=lDdTVvoOEbB5VpsQbrhgGsqG2Cvqfj5KUOiDMdy01TjIMHVWvsjmTPmcElblPsuryX
+         XYw+nZ1qaxRTk8LIP6fCbF4lZnlIUS6lJZfl9JqNCulnI7xrTVr/tPE0txPaW7l6QYJO
+         XxNIY+eN6ZKnvZIg3i1TiAHf9WdALN7SCc3IqyXHu5cTtbQyPoH4BNEiQrwC9H65NdLS
+         5XGSjdny0YmP6RADE4fxyZ2wKFkGdyOdTaLQrx7EVu85pRNCZbHh1ye4y+cpy+6br/2j
+         ZwHWyweJ2trWvA9Yr0nkBNPtArqXqgjMRu/AtpzHFrAAvj9js0VM7Wh1EqSjn7NkQ9HP
+         ns7g==
+X-Gm-Message-State: AC+VfDx2/0d4F6ZfpaZbnp1FLV8M0aXATzUqCQa9ybhr/3l6x+YfF+uw
+        /pqux/K/4XP+c4ylx5X7dO7bDtJ9GSGwtixXbc4=
+X-Google-Smtp-Source: ACHHUZ4uqNma9e3+EYkNu8p5+bzGEjXLgfIeVC5PLIfPRxyx/cw9q8ArFbk7Z8GRYiv9JC2uWP48jpw4dudhtW6vhuA=
+X-Received: by 2002:a25:5087:0:b0:ba2:ca56:7206 with SMTP id
+ e129-20020a255087000000b00ba2ca567206mr7209029ybb.17.1685552865848; Wed, 31
+ May 2023 10:07:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230306220959.240235-1-ojeda@kernel.org>
-In-Reply-To: <20230306220959.240235-1-ojeda@kernel.org>
+References: <20230424081112.99890-1-benno.lossin@proton.me>
+In-Reply-To: <20230424081112.99890-1-benno.lossin@proton.me>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 31 May 2023 19:05:31 +0200
-Message-ID: <CANiq72kun_ZLRBB_h3-Dtby3G0brDV+xWb-mda=3QC_oRyzMfQ@mail.gmail.com>
-Subject: Re: [PATCH] docs: rust: point directly to the standalone installers
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+Date:   Wed, 31 May 2023 19:07:34 +0200
+Message-ID: <CANiq72=OFioNTZiVR+vBkYs2Xum6Pv14x4kwNDqxJB0utB2dyA@mail.gmail.com>
+Subject: Re: [PATCH 1/4] rust: macros: fix usage of `#[allow]` in `quote!`
+To:     Benno Lossin <benno.lossin@proton.me>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Mar 6, 2023 at 11:10=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Mon, Apr 24, 2023 at 10:11=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
+me> wrote:
 >
-> The Quick Start guide points to the Rust programming language front
-> page when it mentions the possibility of using the standalone
-> installers instead of `rustup`.
+> When using `quote!` as part of an expression that was not the last one
+> in a function, the `#[allow(clippy::vec_init_then_push)]` attribute
+> would be present on an expression, which is not allowed.
+> This patch refactors that part of the macro to use a statement instead.
 >
-> This was done to have a hopefully stable link, but it is not too
-> helpful: readers need to figure out how to reach the standalone
-> installers from there.
->
-> Thus point directly to the page (and anchor) with the table that
-> contains the standalone installers (plus signing key etc.).
->
-> If the link breaks in the future, we can always update it as
-> needed. And anyway having the full link includes the domain and
-> gives more information about where the old docs were in such
-> a broken link case, which may help.
->
-> Link: https://lore.kernel.org/linux-doc/CANiq72=3DgpzQyh1ExGbBWWNdgH-mTAT=
-dG5F600jKD1=3DNLLCn7wg@mail.gmail.com/
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-Applied to `rust-next` (with Andreas' suggestion applied) -- thanks everyon=
-e!
+Series applied to `rust-next` (with the newline added) -- thanks everyone!
 
 Cheers,
 Miguel
