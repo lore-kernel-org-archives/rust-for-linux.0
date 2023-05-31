@@ -2,314 +2,104 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16339C77B7A
-	for <rust-for-linux@archiver.kernel.org>; Tue, 30 May 2023 20:15:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 357C0C7EE23
+	for <rust-for-linux@archiver.kernel.org>; Wed, 31 May 2023 01:35:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232196AbjE3UPf (ORCPT
+        id S233892AbjEaBfL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 30 May 2023 16:15:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49844 "EHLO
+        Tue, 30 May 2023 21:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231615AbjE3UP2 (ORCPT
+        with ESMTP id S233834AbjEaBfK (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 30 May 2023 16:15:28 -0400
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 415E19D;
-        Tue, 30 May 2023 13:15:23 -0700 (PDT)
-Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-399e9455e9fso1529501b6e.0;
-        Tue, 30 May 2023 13:15:23 -0700 (PDT)
+        Tue, 30 May 2023 21:35:10 -0400
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 273BD10B;
+        Tue, 30 May 2023 18:35:06 -0700 (PDT)
+Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-3f6b20ad49dso29413101cf.2;
+        Tue, 30 May 2023 18:35:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685477722; x=1688069722;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QXAybs3M1jd6+Bigy7bnSFaPmpOAVXQJa7fJ334Uuxo=;
-        b=EODtw8QI5x4Aan2NA2lhWfLoxgLgENaYuF4eUcRkrL3coQ0qZ9YdCt16+N9xeieRxA
-         1FL1+9TcRSjiynoR1GpxFoPpagSTk6DZX69WtWVb+u9Fjr0e6udLJNdWqKNVCKYGTRuX
-         c3eQIYyCgvQ5omPnIlcMOo+JvoCNGQJ+d4mALHp3LbktwgrfvCdMQQ8/fqfbUtTzZ30V
-         7zrNjzJc+McCYzmGbyEHcOeHou8QRtnz6gcIeYcguTRAMrNjsottxIbbDNGDOlt27AHP
-         VZ+TjFKGbwhZJ4Fhrtmut6y0TZTtc6Cv0JlEmsVSeKFgY3noc1NBNFdg7MZ2NM/y1vX5
-         BkQg==
+        d=gmail.com; s=20221208; t=1685496905; x=1688088905;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=p2/x4JOomTNoYK68TGeo1jbdWXKZOEcQ5s6x1ltkZ2s=;
+        b=gST+wZxaCix9hoL3YTUbKzF9UZTLP3WZExwHZQ9c5yg7/uIRQmf+7eS/AnsRf5rwbN
+         6ipTDdIl65s5NqSHG3NQ8gKl7fDv0dkfUPAkb/Opjs5k/lf6vo6DGF5JpS5188zhxTP/
+         bCytnHenP8lGxB34qffNlJIQcGaXNPh9w+zzpL1J0Pa1V2wzF/WRqxkNJNll9xe+Kj4v
+         wbGjc8O+uW6wBfKmi0UM7D+dDx0O8NJ28d92BJQiNAhlhFOEDwwJLzqCOoYPRrvJHhuK
+         MrY6GKl9jN+0mmZMxVnhyYKDipBqwyQSKy4DoBnFSIb2FnGX5Hb/SLmbuks9vNgePDJb
+         nbCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685477722; x=1688069722;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QXAybs3M1jd6+Bigy7bnSFaPmpOAVXQJa7fJ334Uuxo=;
-        b=DS25iH9RZPlWMNoUgTsTTUXoKwqfP+y18RM9WS1lSKLD4aFFBdn2wVXA741h4OuZTt
-         FEq4zlgihs3w7IxgedJWU1CkpgoMwqQ+FtNZ45ofemgGgV0ZUauAxE4oKRCPWBHelbxj
-         PsiYZ1v4a8yae2ndi8jkXmGmZoj6JthKbCbkPPO7sdXPPWCoAwiMbMYRg9DosReMXdfX
-         NiDVqKK0SOnr+m3WgUISJK1AWKA32/kPkm2qi8fv0vTqzJBWb2UgO+fdcDbSlu62Bwww
-         ta5Z177xDrwtBbDqdVYeIEcCk464WN0NB7mgikzxhyw/ja5LpeezyRFtaTO9rcko3Ghp
-         MuIw==
-X-Gm-Message-State: AC+VfDxX2B7Dn+UTJhPJk65cgrT4EljUYBtbIct+mOqzGQ9PBF34Bt+k
-        9ajj8xB3WhkKAsx5t5zSXjU=
-X-Google-Smtp-Source: ACHHUZ6ycO8RJMK28QDVMakl+n6fgRe2gt29wwYKvo6Zz01XTDAE7OzKoB+U+hEHr2DD3o4KyY77UQ==
-X-Received: by 2002:a05:6808:3942:b0:398:57fa:9b23 with SMTP id en2-20020a056808394200b0039857fa9b23mr1833675oib.0.1685477722063;
-        Tue, 30 May 2023 13:15:22 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id l1-20020a056870e90100b0019f44a07b35sm3453765oan.51.2023.05.30.13.15.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 May 2023 13:15:21 -0700 (PDT)
-Message-ID: <33ef6ea0-712b-25b6-6be9-c407ecbdb68f@gmail.com>
-Date:   Tue, 30 May 2023 17:15:17 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH 1/2] rust: kernel: add scatterlist wrapper
-Content-Language: en-US
-To:     Qingsong Chen <changxian.cqs@antgroup.com>,
-        linux-kernel@vger.kernel.org
-Cc:     =?UTF-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        d=1e100.net; s=20221208; t=1685496905; x=1688088905;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p2/x4JOomTNoYK68TGeo1jbdWXKZOEcQ5s6x1ltkZ2s=;
+        b=CUo5SXt9+YmGB461TcZ4ThISe9Svtk5p4MnLo92figPqoQNwVrpprmyD/7kEbWuR/0
+         wKmImpxZcayAVbdI4pqPL6v5NYuAQC+n4DCfUYLwKvQ9cjyCTRprvcObCFqD0Pq57tmd
+         oUN7b7VgiRPmUWwNBWiA7HGGctEoNT7Jx1IRpUiipV4IhbG02swL58O+8sCMmJqtio1f
+         8VAD+puPAPd1Xtc/vrABZ4yrWNy+U8OIOZOV/pVQlencHvKaMgCh1HU8CKBNL+dhnH7J
+         4x7JbXEogqVtPofbifUMvdfipQR84aA4RDKu6wUxvpEwxMZaYlcM9YS5uTASW13VBQfv
+         KZTw==
+X-Gm-Message-State: AC+VfDyEe8xj9OY6IR78yCkjJ/MZlpQys5/WfpJDaa5/dUczd3cdXvWc
+        jGDWtCGSKnME6nb8WyC/1hI6tvJ9Veoxndq6
+X-Google-Smtp-Source: ACHHUZ68LDwF97pTiFd+PZTyp94MfgdTWWbMyz0f1+uhbqIGGxI03MrrcAei9wCkNdSxx8u8qhdYgQ==
+X-Received: by 2002:a05:6214:1d0a:b0:626:37fe:218c with SMTP id e10-20020a0562141d0a00b0062637fe218cmr4735734qvd.24.1685496905230;
+        Tue, 30 May 2023 18:35:05 -0700 (PDT)
+Received: from localhost.localdomain (2603-6000-8100-7fd4-0000-0000-0000-0619.res6.spectrum.com. [2603:6000:8100:7fd4::619])
+        by smtp.gmail.com with ESMTPSA id h19-20020a0cf213000000b0062383edece8sm4249123qvk.91.2023.05.30.18.35.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 May 2023 18:35:04 -0700 (PDT)
+From:   "Ethan D. Twardy" <ethan.twardy@gmail.com>
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Asahi Lina <lina@asahilina.net>,
-        Niklas Mohrin <dev@niklasmohrin.de>,
-        rust-for-linux@vger.kernel.org
-References: <20230530064821.1222290-1-changxian.cqs@antgroup.com>
- <20230530064821.1222290-2-changxian.cqs@antgroup.com>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230530064821.1222290-2-changxian.cqs@antgroup.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, Kees Cook <keescook@chromium.org>,
+        Miguel Cano <macanroj@gmail.com>,
+        Tiago Lam <tiagolam@gmail.com>,
+        rust-for-linux@vger.kernel.org (open list:RUST),
+        linux-kernel@vger.kernel.org (open list),
+        llvm@lists.linux.dev (open list:CLANG/LLVM BUILD SUPPORT)
+Cc:     "Ethan D. Twardy" <ethan.twardy@gmail.com>
+Subject: [PATCH v3 0/1] Fix libclang version check for rustavailable
+Date:   Tue, 30 May 2023 20:32:10 -0500
+Message-Id: <20230531013211.27408-1-ethan.twardy@gmail.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 5/30/23 03:48, Qingsong Chen wrote:
-> Add abstractions for single `struct scatterlist` and chainable
-> `struct sg_table`.
-> 
-> Signed-off-by: Qingsong Chen <changxian.cqs@antgroup.com>
-> ---
->   rust/bindings/bindings_helper.h |   1 +
->   rust/helpers.c                  |  14 +
->   rust/kernel/lib.rs              |   1 +
->   rust/kernel/scatterlist.rs      | 478 ++++++++++++++++++++++++++++++++
+This series contains just one two-line patch, to fix a small issue
+in scripts/rust_is_available.sh. This issue is currently affecting
+kernel builds with Rust on Gentoo Linux (and potentially other
+distributions/workflows where the kernel source path contains a
+version string).
 
-I think that 478 line changes are a bit too much for a commit, I'd
-suggest to split this patch into smaller parts for easier reviews,
-like one for ScatterList, another for SgTable, one for iterator
-implementations, etc.
+Changes from v2:
+* Add tags from review and testing
 
->   4 files changed, 494 insertions(+)
->   create mode 100644 rust/kernel/scatterlist.rs
-> 
-> [...]
-> +
-> +/// A [`ScatterList`] table of fixed `N` entries.
-> +///
-> +/// According to the SG table design (form kernel ), the `page_link` field may contain
-> +/// a pointer to the next sg table list, so this struct should be pinned. If the table
-> +/// is chainable, the last entry will be reserved for chainning. The recommended way to
+Changes from v1:
+* Patch formatting. I believe there were some serious issues with the
+  formatting that caused it to be lost/ignored by the mailing list.
+  I sincerely hope that the formatting of this patch is acceptable,
+  this is my first contribution to the kernel so I haven't mastered
+  the patch workflow yet.
 
-This comment has some orthographic, coherence (like "SG table",
-"sg table") and grammatical, though, it's correct on its meaning.
+Ethan D. Twardy (1):
+  scripts/rust_is_available: Fix clang version check
 
-> +/// create such instances is with the [`pin_init`].
-This ([`pin_init`]) might point to nothing in `rustdoc`, though I'd
-recommend to test it with `make rustdoc` and opening it in a browser
-nonetheless.
+ scripts/rust_is_available.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> +///
-> +/// # Examples
-> +///
-> +/// The following is examples of creating [`SgTable<N>`] instances> +///
-> [...]> +
-> +impl<'a, const N: usize> SgTable<'a, N> {
-> [...]
 
-This `impl` block has the same definition as the one above it. And
-thus, wouldn't be worth to have the iter functions inside the same
-block?
+base-commit: ac9a78681b921877518763ba0e89202254349d1b
+-- 
+2.40.1
 
-> +}
-> +
-> +/// Wrap the kernel's `struct scatterlist`.
-> +///
-> +/// According to the SG table design (from kernel), the `page_link` field may contain
-> +/// a pointer to the next sg table list, so this struct should be pinned.
-> +///
-> +/// # Invirants
-> +///
-> +/// All instances are valid, either created by the `new` constructor (see [`pin_init`]),
-> +/// or transmuted from raw pointers by the `as_ref` or `as_mut` function (usually used
-> +/// to get an entry of [`SgTable`]).
-> +///
-> +/// # Examples
-> +///
-> +/// The following is examples of creating [`ScatterList`] instances.
-
-Same as `SgTable` above.
-
-> +///
-> +/// ```rust
-> +/// use core::pin::pin;
-> +/// # use kernel::error::Result;
-> +/// # use kernel::scatterlist::ScatterList;
-> +///
-> +/// // Prepare memory buffer.
-> +/// let buf: Pin<&mut [u8]> = pin!([0u8; 512]);
-> +///
-> +/// // Allocates an instance on stack.
-> +/// kernel::stack_pin_init!(let foo = ScatterList::new(&buf));
-> +/// let foo: Pin<&mut ScatterList<'_>> = foo;
-> +/// assert_eq!(foo.length(), 512);
-> +/// assert_eq!(foo.count(), 1);
-> +///
-> +/// // Alloccate an instance by Box::pin_init.
-> +/// let bar: Result<Pin<Box<ScatterList<'_>>>> = Box::pin_init(ScatterList::new(&buf));
-> +/// assert_eq!(bar.as_ref().unwrap().length(), 512);
-> +/// assert_eq!(bar.as_ref().unwrap().count(), 1);
-> +/// ```
-> +#[pin_data]
-> +pub struct ScatterList<'a> {
-> +    #[pin]
-> +    opaque: Opaque<bindings::scatterlist>,
-> +    _p: PhantomData<&'a mut bindings::scatterlist>,
-> +}
-> +
-> +impl<'a> ScatterList<'a> {
-> +    /// Construct a new initializer.
-> +    pub fn new(buf: &'a Pin<&mut [u8]>) -> impl PinInit<ScatterList<'a>> {
-> +        // SAFETY: `slot` is valid while the closure is called, the memory buffer is
-> +        // pinned and valid.
-> +        unsafe {
-> +            init::pin_init_from_closure(move |slot: *mut Self| {
-> +                (*slot).set_buf(buf);
-> +                (*slot).mark_end();
-> +                Ok(())
-> +            })
-> +        }
-> +    }
-> +
-> +    /// Obtain [`Pin<&ScatterList>`] from raw pointer.
-
-I'd rather say "Obtain a pinned reference to a scatter list from a raw
-pointer.
-
-> +    pub fn as_ref(entry: *mut bindings::scatterlist) -> Option<Pin<&'a Self>> {
-> +        match entry.is_null() {
-> +            true => None,
-> +            // SAFETY: `entry` is non-null and valid.
-> +            false => Some(Pin::new(unsafe { &*(entry as *const ScatterList<'_>) })),
-> +        }
-
-Another approach could be `NonNull::new` with `Option::map`, though if
-you don't use it, no problem.
-
-> +    }
-> +
-> +    /// Obtain [`Pin<&mut ScatterList>`] from raw pointer.
-
-Same as `ScatterList::as_mut`.
-
-> +    pub fn as_mut(entry: *mut bindings::scatterlist) -> Option<Pin<&'a mut Self>> {
-> +        match entry.is_null() {
-> +            true => None,
-> +            // SAFETY: `entry` is non-null and valid.
-> +            false => Some(Pin::new(unsafe { &mut *(entry as *mut ScatterList<'_>) })),
-> +        }
-> +    }
-> +}
-> +
-> +impl ScatterList<'_> {
-> [...]
-> +
-> +    /// Return the mapped DMA length.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// It is only valid after this scatterlist has been mapped to some bus address
-> +    /// and then called `set_dma` method to setup it.
-> +    #[cfg(CONFIG_NEED_SG_DMA_LENGTH)]
-> +    pub fn dma_length(&self) -> usize {
-> +        // SAFETY: By the type invariant, we know that `self.opaque` is valid.
-> +        unsafe { (*self.opaque.get()).dma_length as _ }
-> +    }
-> +
-> +    /// Return the mapped DMA length.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// It is only valid after this scatterlist has been mapped to some bus address
-> +    /// and then called `set_dma` method to setup it.
-> +    #[cfg(not(CONFIG_NEED_SG_DMA_LENGTH))]
-> +    pub fn dma_length(&self) -> usize {
-> +        // SAFETY: By the type invariant, we know that `self.opaque` is valid.
-> +        unsafe { (*self.opaque.get()).length as _ }
-> +    }
-> +
-> +    /// Setup the DMA address and length.
-> +    #[cfg(CONFIG_NEED_SG_DMA_LENGTH)]
-> +    pub fn set_dma(&mut self, addr: usize, len: usize) {
-> +        // SAFETY: By the type invariant, we know that `self.opaque` is valid.
-> +        unsafe {
-> +            (*self.opaque.get()).dma_address = addr as _;
-> +            (*self.opaque.get()).dma_length = len as _;
-> +        }
-> +        self.dma_mark_bus_address();
-> +    }
-> +
-> +    /// Setup the DMA address and length.
-> +    #[cfg(not(CONFIG_NEED_SG_DMA_LENGTH))]
-> +    pub fn set_dma(&mut self, addr: usize, len: usize) {
-> +        // SAFETY: By the type invariant, we know that `self.opaque` is valid.
-> +        unsafe {
-> +            (*self.opaque.get()).dma_address = addr as _;
-> +            (*self.opaque.get()).length = len as _;
-> +        }
-> +        self.dma_mark_bus_address();
-> +    }
-
-Please avoid boilerplate by putting those `cfgs` inside the function.
-For example you can turn this...
-
-     /// Setup the DMA address and length.
-     #[cfg(CONFIG_NEED_SG_DMA_LENGTH)]
-     pub fn set_dma(&mut self, addr: usize, len: usize) {
-         // SAFETY: By the type invariant, we know that `self.opaque` is valid.
-         unsafe {
-             (*self.opaque.get()).dma_address = addr as _;
-             (*self.opaque.get()).dma_length = len as _;
-         }
-         self.dma_mark_bus_address();
-     }
-
-     /// Setup the DMA address and length.
-     #[cfg(CONFIG_NEED_SG_DMA_LENGTH)]
-     pub fn set_dma(&mut self, addr: usize, len: usize) {
-         // SAFETY: By the type invariant, we know that `self.opaque` is valid.
-         unsafe {
-             (*self.opaque.get()).dma_address = addr as _;
-             (*self.opaque.get()).length = len as _;
-         }
-         self.dma_mark_bus_address();
-     }
-
-...into this...
-
-     /// Setup the DMA address and length.
-     pub fn set_dma(&mut self, addr: usize, len: usize) {
-         // SAFETY: By the type invariant, we know that `self.opaque` is valid.
-         #[cfg(CONFIG_NEED_SG_DMA_LENGTH)]
-         unsafe {
-             (*self.opaque.get()).dma_address = addr as _;
-             (*self.opaque.get()).dma_length = len as _;
-         }
-         #[cfg(not(CONFIG_NEED_SG_DMA_LENGTH))]
-         unsafe {
-             (*self.opaque.get()).dma_address = addr as _;
-             (*self.opaque.get()).length = len as _;
-         }
-         self.dma_mark_bus_address();
-     }
-
-> [...]
-> +}
-> [...]
