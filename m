@@ -2,62 +2,61 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCC50C7EE23
-	for <rust-for-linux@archiver.kernel.org>; Thu,  1 Jun 2023 14:59:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79094C7EE23
+	for <rust-for-linux@archiver.kernel.org>; Thu,  1 Jun 2023 14:59:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233287AbjFAO7B (ORCPT
+        id S234715AbjFAO7R (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 1 Jun 2023 10:59:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40742 "EHLO
+        Thu, 1 Jun 2023 10:59:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234261AbjFAO65 (ORCPT
+        with ESMTP id S233806AbjFAO7O (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 1 Jun 2023 10:58:57 -0400
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DED0DE64;
-        Thu,  1 Jun 2023 07:58:27 -0700 (PDT)
-Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-39a3f2668bdso764113b6e.2;
-        Thu, 01 Jun 2023 07:58:27 -0700 (PDT)
+        Thu, 1 Jun 2023 10:59:14 -0400
+Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F95B10C1;
+        Thu,  1 Jun 2023 07:58:36 -0700 (PDT)
+Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-1a1fa977667so1077066fac.1;
+        Thu, 01 Jun 2023 07:58:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685631506; x=1688223506;
+        d=gmail.com; s=20221208; t=1685631512; x=1688223512;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z5oZUj4BYKrYj6C7jgvhC/0+X5rQBbpEc43xWYXfb/U=;
-        b=XpocVGWaQaH7hZ1qQXktHst2OfMpF2MYFFtqMgh7rNtfKBftvJlk6Rak6hg+4uqwSS
-         +mNWfJJoFH7vJAUf+OGs4znG+e0xZpMKIADb0D0AUd3rCZj08qbc7cgmfnZAbMTEE1M8
-         Jv6S3oYSchdsPXEPz1+HrnJDp1o2Ls4BTRhDPdiCE5WX8LudSB/sJoZL7gdwSmjj0KM2
-         qaYLaBMnyNLlUr7/0qYyojcLFxFiLAabaxxueI3Q53dVaGOA6xNcAL0hvlaB0lvzTqRw
-         lsDeJ3T9gQ6tfmooUSTulkrUzxwX13sqOHuFc5zTfv/e5uM4W/vWhRoW4I9aD0MgAaav
-         +nRQ==
+        bh=Q1PzCp5p/rvf4kSiJkiDCK+IFfQHrtapNUn7i04+cHk=;
+        b=LfyI1grSwMs7fTAWnYBYdm8L198ljPsLAzS537iEvi7Nrp1L9VW/4QFOjBgbWeoZwE
+         WjfKFQ5eeANG9bwUCVE8Io2n+9CkiEs3mDHWeGVG1qPPzd7A6N1WXm3T45neKD/EZPhz
+         ie9f4ZzedU0H+qhn1kafyQjD1XQCHea76XPyoBbbONwtbXXnI8a4yLsdVeuGLzAHfM8d
+         IGv5Xp+KrDGRbo/yyaIuzs6eeT95k5tD8rfwGEYOc3iCaPf3oBUkN8MoYRZxZb3TyMo9
+         faDaxal3yot3T3pVx8X8lhPzDaUND1uYjNU/8qDFeq0cB+S6gfCatU/IqEcf4jRP3d9c
+         lzrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685631506; x=1688223506;
+        d=1e100.net; s=20221208; t=1685631512; x=1688223512;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z5oZUj4BYKrYj6C7jgvhC/0+X5rQBbpEc43xWYXfb/U=;
-        b=cDqDOtN/YmxWxj6UFPbOq6R1CZ1mVZQv+0PZ5nyj5qebiVt7kzwjaLqvCsc5ucU6XP
-         aGJFACVLKuJAO/8Zer1bDBjl7jjQQmRh/fnNeWyiD+L9XyuqVC0lliyjLbI4azzsfH3B
-         Bh2SbroJ1PXGS0pYovhQGPj1gUjWhGhFpfS6MjOhCSyvis0ygtndQhbbqzKBIK7HTBBj
-         5Q4oL5hBQYGSOtBHcHVvddZrd2PghHk0WLxZiIVivR8MMDNpTfZI9ILYjVI+PguYg6DR
-         ILvAhBzkCLKUW4OxPSCc4o91odr3VlWv7A6u78FhpTxCHlAa0No19vTAEK3NMXHBAatM
-         r3XA==
-X-Gm-Message-State: AC+VfDx5UFIy5a1AGeFkCHdmYnIo0Kk+WZ0974HXT5uIXunKud8wLdzs
-        ui8EOpfv6Tai2pwV2ETzeWY=
-X-Google-Smtp-Source: ACHHUZ7MUVW4BH/e/4fAJO7/o//9I5SsPNDyrMCqnuoPtnvdBnyUeYLgcNuBIidEY0gR6WFFd7JGsg==
-X-Received: by 2002:a05:6808:2a63:b0:398:4870:d2ed with SMTP id fu3-20020a0568082a6300b003984870d2edmr7739673oib.13.1685631506012;
-        Thu, 01 Jun 2023 07:58:26 -0700 (PDT)
+        bh=Q1PzCp5p/rvf4kSiJkiDCK+IFfQHrtapNUn7i04+cHk=;
+        b=h7vgBnoobZdGmWR9x8eFudGpE+hXVIOQLxSZ8FG2dQag8O5rlrqpc22SiL2WxOn6xk
+         0imcy4acWH5XiaQwdrP9nokNOcAw/7+RPtyb59uEvzLd3m4W7hfUs25yMw0jbTkkIZ/N
+         GivrhdDoD+QmIn0uwbJStKvlV/Wfmk+QCm3+7VMH1CUjurE8b9LG3mTqMCsO8eTUPnI9
+         TPBIesdG9YeQkNq7mOqM2fJY4ROi3RvYh+54JgaNgcsLRpBzJhagxYophd3RxU6rw7te
+         qmnNdRJINB5lEd3IJQsq9B6hTBKmreeJ16GUbJW/kPRVWWR75mlrMDnZrrHyvM5ugmZ8
+         3kWg==
+X-Gm-Message-State: AC+VfDz0LYhaAOMKI+YbLlmO5cM1rv8MP3ghoHa+O7IiBNCSDZtVp+jT
+        d6iOs49jAsjqqOAoaEcN7g8=
+X-Google-Smtp-Source: ACHHUZ6BaHH9bv8aUrjOFDl/HHR2HWNrtoBmIfI763T4M9M1LJO7w/KU0E9X7QBpUdvCil4MizBZZg==
+X-Received: by 2002:a05:6870:6287:b0:187:d229:2781 with SMTP id s7-20020a056870628700b00187d2292781mr7493236oan.6.1685631511579;
+        Thu, 01 Jun 2023 07:58:31 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id z13-20020a056808064d00b0039a4f37eaf4sm1705146oih.55.2023.06.01.07.58.22
+        by smtp.gmail.com with ESMTPSA id v7-20020a9d4e87000000b006a44338c8efsm1624177otk.44.2023.06.01.07.58.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Jun 2023 07:58:25 -0700 (PDT)
-Message-ID: <4f2915e9-270e-a2a8-d73e-32f8935d27a0@gmail.com>
-Date:   Thu, 1 Jun 2023 11:51:45 -0300
+        Thu, 01 Jun 2023 07:58:31 -0700 (PDT)
+Message-ID: <f9108f3b-3d2c-47d8-8ab6-d8896c27d9c0@gmail.com>
+Date:   Thu, 1 Jun 2023 11:53:49 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.2
-Subject: Re: [PATCH v2 6/8] rust: workqueue: implement `WorkItemPointer` for
- pointer types
+Subject: Re: [PATCH v2 7/8] rust: workqueue: add `try_spawn` helper method
 Content-Language: en-US
 To:     Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
@@ -70,9 +69,9 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Benno Lossin <benno.lossin@proton.me>,
         linux-kernel@vger.kernel.org, patches@lists.linux.dev
 References: <20230601134946.3887870-1-aliceryhl@google.com>
- <20230601134946.3887870-7-aliceryhl@google.com>
+ <20230601134946.3887870-8-aliceryhl@google.com>
 From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230601134946.3887870-7-aliceryhl@google.com>
+In-Reply-To: <20230601134946.3887870-8-aliceryhl@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -80,10 +79,9 @@ List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On 6/1/23 10:49, Alice Ryhl wrote:
-> This implements the `WorkItemPointer` trait for the pointer types that
-> you are likely to use the workqueue with. The `Arc` type is for
-> reference counted objects, and the `Pin<Box<T>>` type is for objects
-> where the caller has exclusive ownership of the object.
+> This adds a convenience method that lets you spawn a closure for
+> execution on a workqueue. This will be the most convenient way to use
+> workqueues, but it is fallible because it needs to allocate memory.
 > 
 > Co-developed-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: Gary Guo <gary@garyguo.net>
