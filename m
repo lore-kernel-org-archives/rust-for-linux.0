@@ -2,61 +2,61 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79094C7EE23
-	for <rust-for-linux@archiver.kernel.org>; Thu,  1 Jun 2023 14:59:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D32FC77B7E
+	for <rust-for-linux@archiver.kernel.org>; Thu,  1 Jun 2023 14:59:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234715AbjFAO7R (ORCPT
+        id S234689AbjFAO7V (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 1 Jun 2023 10:59:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40980 "EHLO
+        Thu, 1 Jun 2023 10:59:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233806AbjFAO7O (ORCPT
+        with ESMTP id S234710AbjFAO7Q (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 1 Jun 2023 10:59:14 -0400
-Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F95B10C1;
-        Thu,  1 Jun 2023 07:58:36 -0700 (PDT)
-Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-1a1fa977667so1077066fac.1;
-        Thu, 01 Jun 2023 07:58:36 -0700 (PDT)
+        Thu, 1 Jun 2023 10:59:16 -0400
+Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C7810CF;
+        Thu,  1 Jun 2023 07:58:44 -0700 (PDT)
+Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-1a1fa977667so1077158fac.1;
+        Thu, 01 Jun 2023 07:58:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685631512; x=1688223512;
+        d=gmail.com; s=20221208; t=1685631518; x=1688223518;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Q1PzCp5p/rvf4kSiJkiDCK+IFfQHrtapNUn7i04+cHk=;
-        b=LfyI1grSwMs7fTAWnYBYdm8L198ljPsLAzS537iEvi7Nrp1L9VW/4QFOjBgbWeoZwE
-         WjfKFQ5eeANG9bwUCVE8Io2n+9CkiEs3mDHWeGVG1qPPzd7A6N1WXm3T45neKD/EZPhz
-         ie9f4ZzedU0H+qhn1kafyQjD1XQCHea76XPyoBbbONwtbXXnI8a4yLsdVeuGLzAHfM8d
-         IGv5Xp+KrDGRbo/yyaIuzs6eeT95k5tD8rfwGEYOc3iCaPf3oBUkN8MoYRZxZb3TyMo9
-         faDaxal3yot3T3pVx8X8lhPzDaUND1uYjNU/8qDFeq0cB+S6gfCatU/IqEcf4jRP3d9c
-         lzrQ==
+        bh=kKA7bXeTxOFAGtKnHALKsnYjOqM8LI5Ovc7qv8nHXy4=;
+        b=VbnEgHTh9xF4ebL07QtrT7IKBEyHLCw0QVrUCnHaD6hD1lvRPslcpTX91zn3hAvWzx
+         ulibMwWZFHmSArR1Js46N5RKP2nJv9bdUpXM2WSng5LizAhofHiXTVQQfqca6v+jPXKe
+         HvtDu/CfmB1slVve+kXxvvQ0BgNQJ3XFLLqvuZMoYiQKb3LIzutxDOewUsQMmH2E5ZVa
+         nUHXWQZZVE+BdWPLsAQyGecmA2uHxI7IzhaUVupAxOYA0OiDDmvfeGiXAf73/Shha1Et
+         jaG3ST69YQfcksirDQfDNwj+0zv225EuOKqX49xfmOB8NdSNiTprBZaCstS6qLkW7u3s
+         Wowg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685631512; x=1688223512;
+        d=1e100.net; s=20221208; t=1685631518; x=1688223518;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q1PzCp5p/rvf4kSiJkiDCK+IFfQHrtapNUn7i04+cHk=;
-        b=h7vgBnoobZdGmWR9x8eFudGpE+hXVIOQLxSZ8FG2dQag8O5rlrqpc22SiL2WxOn6xk
-         0imcy4acWH5XiaQwdrP9nokNOcAw/7+RPtyb59uEvzLd3m4W7hfUs25yMw0jbTkkIZ/N
-         GivrhdDoD+QmIn0uwbJStKvlV/Wfmk+QCm3+7VMH1CUjurE8b9LG3mTqMCsO8eTUPnI9
-         TPBIesdG9YeQkNq7mOqM2fJY4ROi3RvYh+54JgaNgcsLRpBzJhagxYophd3RxU6rw7te
-         qmnNdRJINB5lEd3IJQsq9B6hTBKmreeJ16GUbJW/kPRVWWR75mlrMDnZrrHyvM5ugmZ8
-         3kWg==
-X-Gm-Message-State: AC+VfDz0LYhaAOMKI+YbLlmO5cM1rv8MP3ghoHa+O7IiBNCSDZtVp+jT
-        d6iOs49jAsjqqOAoaEcN7g8=
-X-Google-Smtp-Source: ACHHUZ6BaHH9bv8aUrjOFDl/HHR2HWNrtoBmIfI763T4M9M1LJO7w/KU0E9X7QBpUdvCil4MizBZZg==
-X-Received: by 2002:a05:6870:6287:b0:187:d229:2781 with SMTP id s7-20020a056870628700b00187d2292781mr7493236oan.6.1685631511579;
-        Thu, 01 Jun 2023 07:58:31 -0700 (PDT)
+        bh=kKA7bXeTxOFAGtKnHALKsnYjOqM8LI5Ovc7qv8nHXy4=;
+        b=To7cGyUqyYD69uxMBNDAekU8d+UxwlLmpaiZwJF5rPujpm9kfkdkoDy197IqfaeS3+
+         l9MUl4jZH3rN9mvXX+BQTO3cTkku6pMy6NyOlHVnb588Fwt+uYQi1xkBcRYMTVwL8iFX
+         x1BuXRSisQb43GMyPPZNs49fiL5UAxd44JuScZwLh4725RQzeiidnh2K0rn1PSV/yuGl
+         Pjj79XS3bz8j35V1iO//ul6Bb6SCgLcQ6zsVlqnXA+5qBSjYQJoT0fNle1BeGY/Pm9qu
+         OZwHb6wbYuxKNuOezQ4yQpLgH2X5eZnHt2CwPKf+nodL5PR3/GgWh+IPNx9vaH27o/r3
+         wQIQ==
+X-Gm-Message-State: AC+VfDxXsAw/3QOYiTQCQaeHsTYQfm9MeB/srGj7U3MQXWbyAWlDcEuf
+        C/ZhQ8ezxetBv8AxTCt0imU=
+X-Google-Smtp-Source: ACHHUZ6yE1Id0grKqywwZgmTdnr0O2dPuH6cit6vXBQMcYrvks7tA0S44ZEnYsykFDZRKmPXN90PAQ==
+X-Received: by 2002:a05:6871:6bb0:b0:19f:af14:9e60 with SMTP id zh48-20020a0568716bb000b0019faf149e60mr5853140oab.8.1685631518122;
+        Thu, 01 Jun 2023 07:58:38 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id v7-20020a9d4e87000000b006a44338c8efsm1624177otk.44.2023.06.01.07.58.28
+        by smtp.gmail.com with ESMTPSA id q7-20020a056870e60700b0019ea8771fb0sm1757100oag.13.2023.06.01.07.58.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Jun 2023 07:58:31 -0700 (PDT)
-Message-ID: <f9108f3b-3d2c-47d8-8ab6-d8896c27d9c0@gmail.com>
-Date:   Thu, 1 Jun 2023 11:53:49 -0300
+        Thu, 01 Jun 2023 07:58:37 -0700 (PDT)
+Message-ID: <5e5e1590-ad97-4590-1db8-8ce89840b9e3@gmail.com>
+Date:   Thu, 1 Jun 2023 11:58:01 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.2
-Subject: Re: [PATCH v2 7/8] rust: workqueue: add `try_spawn` helper method
+Subject: Re: [PATCH v2 8/8] rust: workqueue: add examples
 Content-Language: en-US
 To:     Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
@@ -69,9 +69,9 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Benno Lossin <benno.lossin@proton.me>,
         linux-kernel@vger.kernel.org, patches@lists.linux.dev
 References: <20230601134946.3887870-1-aliceryhl@google.com>
- <20230601134946.3887870-8-aliceryhl@google.com>
+ <20230601134946.3887870-9-aliceryhl@google.com>
 From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230601134946.3887870-8-aliceryhl@google.com>
+In-Reply-To: <20230601134946.3887870-9-aliceryhl@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -79,12 +79,11 @@ List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On 6/1/23 10:49, Alice Ryhl wrote:
-> This adds a convenience method that lets you spawn a closure for
-> execution on a workqueue. This will be the most convenient way to use
-> workqueues, but it is fallible because it needs to allocate memory.
+> This adds two examples of how to use the workqueue. The first example
+> shows how to use it when you only have one `work_struct` field, and the
+> second example shows how to use it when you have multiple `work_struct`
+> fields.
 > 
-> Co-developed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
 > [...]
