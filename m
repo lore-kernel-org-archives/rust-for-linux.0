@@ -2,257 +2,120 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48CCDC7EE23
-	for <rust-for-linux@archiver.kernel.org>; Thu,  1 Jun 2023 17:32:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BAE0CC77B7E
+	for <rust-for-linux@archiver.kernel.org>; Thu,  1 Jun 2023 17:52:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230434AbjFARcR (ORCPT
+        id S233136AbjFARwh (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 1 Jun 2023 13:32:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60882 "EHLO
+        Thu, 1 Jun 2023 13:52:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229880AbjFARcQ (ORCPT
+        with ESMTP id S232984AbjFARwe (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 1 Jun 2023 13:32:16 -0400
-Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2092.outbound.protection.outlook.com [40.107.10.92])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A634E4;
-        Thu,  1 Jun 2023 10:32:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CI2QuGcPVlUkSkqzWy39ykBXkeDsX9TQkmWm29NiGt/dlba3TQmp/QDV+q481h763qurdy+GdKZvlQTxtCJGJwpTZ1z2wnNNotGHXX46TUneHvQoxyNkaIofuRMG8aH/wMLDk/eVE3e8BwtXndCB1IyucClT5w1Phazz7b433FbVa/PNEmofsQ2E7zgLRNQleCIdNlGeIADNTZHL96TcWU5QCsBku9h7tcVIY11N6W6LrxeckVkx2tTyYKK1Oa/3xztDiPASuybjNiF742D+hP4RFKvjLJ1yIWTEpX3xW2bqUjtAph1EIcNyXAjFQfbH9JuqC+9hLv6Shh9xeYx5XQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oFbj3xbAxkuFVUlJS7R2ul3JZ+NTfOsPahmTvZnxJbg=;
- b=CRBe/K3SZnDW0nE2w8yWt1HqXfg0OSa1Ri6QqnmefCmWWN6spt52MakUYspyfdwrHKJ/IdYs9Rlw3fCqwYg7UsQu3B1N8KoxmjvJ7nuhcIHISla8rMYQLvkAadSyx9m6wJauBdsQhdR5CGxwiJ4PgcroG7t3uyhGCf/v9DhZk1F69Hl79HBip3Wfmq3qcUx9obzz+j7qAjWLEYUBGsQgHRPCdf2wyywKW33K+F0eMQmadUB4/rXZ446kzUq2MpQjTI8tZiKF3zlvM/L5yzsUugRqVHRhigD9EmMNeo+dyuZxZJSY2qPpRAqF2EiCoBuG694LcCkq57fvrxYgWI3AbQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oFbj3xbAxkuFVUlJS7R2ul3JZ+NTfOsPahmTvZnxJbg=;
- b=zyXzkP2ITyMqj1l+yNjAmWtVIhBSfvdgZ3GNfGvWIWyFEBwf4J6SnfRCxvng90ffJmzIo5iwxDitbPDXbvCVu1M9aH0q9KivT5zm00kDn6aoA82aE8HBzz8hRJDc5MqHPj0/zUPXaPxtslkDDX9dEJbcZLBbPHbEpTBCLx1Kg18=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO6P265MB6987.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:321::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.9; Thu, 1 Jun
- 2023 17:32:11 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::2e6d:c339:6006:9013]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::2e6d:c339:6006:9013%5]) with mapi id 15.20.6477.008; Thu, 1 Jun 2023
- 17:32:11 +0000
-Date:   Thu, 1 Jun 2023 18:32:09 +0100
-From:   Gary Guo <gary@garyguo.net>
-To:     Alice Ryhl <aliceryhl@google.com>
+        Thu, 1 Jun 2023 13:52:34 -0400
+Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BF978E;
+        Thu,  1 Jun 2023 10:52:33 -0700 (PDT)
+Received: by mail-oi1-x22d.google.com with SMTP id 5614622812f47-39a3f2668bdso963639b6e.2;
+        Thu, 01 Jun 2023 10:52:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685641952; x=1688233952;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YhHv7Mf1I0a9KUS70IwOalIiIIv8ejIDo/fZodYNL8k=;
+        b=HOB24OuDi1C/6DAQgZs817fnfsgBhxZkOLLDUCUziA3HXojfTukCfOBLXfnIcTXVCx
+         7eupU0HBaRu2rdHAlTXgf8fc9eFlbk5rRg6HPzcGvc4Kkk79laPcL7bI+L2TbIBXvpVa
+         9kru9imOxuIKT3RA66Fc4yKViGjmwaLDG2VMGLDtjaRqvkgJg9sHkpg5cQPzrQAnT0D+
+         fFbwpEmGJuH+4vGe7fepwT6UZ+I0Smt31npE+YO4hvFUERXtShvL9GyBJ7wIg9OY7jW3
+         Ds8xx6HF0h7XnTsVx8RItLTznRSrpivoQmZF9Qxu9eiEfYZH2huewBKvEDAUpHvAg9IE
+         l5bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685641952; x=1688233952;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YhHv7Mf1I0a9KUS70IwOalIiIIv8ejIDo/fZodYNL8k=;
+        b=kmCFWZqEPkN8tcEyne8jnhsZTbQQahmkTf2f0cfeAAzL+uWh3eGaK3rvwORRfW71Yv
+         zzW19Smv4hDuwR+Wy/WIdkF9zffJZNuJvpHAzy+ULVSQB0aAMw6QMdtVh7709z4gHKag
+         Xe4XQdseyR3IqSvBA8KFpMiAmUlGQcN31ZAO+bAr3rSmq/TdGlNpLgK7+F3VdtqT76S+
+         8njt3LnOOfWwnfbEthRh7lZiaO+F2B/rR6zEj2ljMaVnoMprEMSC3zKUTYtP3/yh8Yqv
+         TyX6UT7ucTJS4PViHzeVjUy4CxWo9+AwwNOkgZBgFzkmoz8ljUizS8bvO1w1UlvC3mSQ
+         XzAw==
+X-Gm-Message-State: AC+VfDzGo9gvVveFv5zyHda4AELZsmTqk/f1vi0IWCskGhNBcnGAVOFh
+        kYU4HnrHf8bnBMEffRYnMqc=
+X-Google-Smtp-Source: ACHHUZ6HwjjCbGWMwb0fPKqlW7kvU5qZZOlvGOlgsllBEHfiHIETvn6Y0pvj5+Z0kM1na1LsqU8OSQ==
+X-Received: by 2002:aca:1006:0:b0:39a:6895:66f5 with SMTP id 6-20020aca1006000000b0039a689566f5mr52330oiq.3.1685641952316;
+        Thu, 01 Jun 2023 10:52:32 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id c3-20020a544e83000000b0039a21e8c620sm1917130oiy.3.2023.06.01.10.52.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Jun 2023 10:52:31 -0700 (PDT)
+Message-ID: <54ab41a1-2982-aec3-bc03-454a2770aefd@gmail.com>
+Date:   Thu, 1 Jun 2023 14:52:27 -0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v2 4/8] rust: workqueue: define built-in queues
+Content-Language: en-US
+To:     Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Tejun Heo <tj@kernel.org>,
         Lai Jiangshan <jiangshanlai@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>,
-        "=?UTF-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v2 8/8] rust: workqueue: add examples
-Message-ID: <20230601183209.371fd898.gary@garyguo.net>
-In-Reply-To: <20230601134946.3887870-9-aliceryhl@google.com>
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Wedson Almeida Filho <walmeida@microsoft.com>
 References: <20230601134946.3887870-1-aliceryhl@google.com>
-        <20230601134946.3887870-9-aliceryhl@google.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
+ <20230601134946.3887870-5-aliceryhl@google.com>
+ <20230601183002.237a31fa.gary@garyguo.net>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230601183002.237a31fa.gary@garyguo.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P123CA0106.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:139::21) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO6P265MB6987:EE_
-X-MS-Office365-Filtering-Correlation-Id: 865f09ee-a4ea-46f4-9555-08db62c621d7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vaWdJOI/sU27OMgZGMU6Ykvh4MtttAmeA/OUfCScw89vV4mV6/adgQuSNUVI0a7jI8PBQuNNmfva4s+Wy0QKQc7IbG7nx0+1+mIf+mh6tHrdhoZEnXLAanHfq77g5ZfY1N/KkzTQ5ow6hsD0ZJ7DSZBLSmkjWE7qiFppYcDJcDyt9utikK9QCY4bP9BsnuNDwcIa5eIy4FQyTbFfV0tkbHfFg9O9n9R7jdkh0kY+HCDoIF8HI6eur8Ht2Dbv+++LCn4ZOz+yoW8pBVWzsMnC6gEPaN69xm08EtKOnxUdb9V3UfhrbN4AYQLb4XtG+jUTqdIgM5JuFb4ggfYnM36lnsrHDzKpxC7emJ8wf9cDjx1v8KZxsxkhxnSafSK7So/2YKRQyITQUayrITTgAd9AbukVnvPlDVKJ+zjI6zw5Kv1XrVOQDaHsrXmAM95qwuZdpC41uaXbEMoeH00aauGIFpIfALM3z08HVgcucEkOiJvhwCjU/VjytCTLa+sBYfotoB9iz2F0kIEyCcYKFh5NTqOpYuIprrCUzeQ+YyiOtf1Lcv3hrr+oIl8aSMvfRIe4
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(346002)(39830400003)(376002)(366004)(136003)(396003)(451199021)(38100700002)(7416002)(2906002)(41300700001)(316002)(8676002)(8936002)(83380400001)(5660300002)(6486002)(6916009)(66946007)(66556008)(4326008)(66476007)(2616005)(36756003)(86362001)(186003)(1076003)(54906003)(26005)(6512007)(478600001)(6506007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Vql5g18yLzlwT1NnvyKg39vjKwd75rxvg2p5PCKYXcXFt/QuyFPOs8pye2dd?=
- =?us-ascii?Q?qAwYJi/wnVDkn2wbP/g2SxfTI+iD+GP8GJJS2SKKod0RdipDylCsyzb1B1cz?=
- =?us-ascii?Q?bVeObPOPuPJ4RQ2VKL7YXiHU9wKvAiZXg+XKUN+qWw6b3IXOyUpgwC7lx/5k?=
- =?us-ascii?Q?h4pTNdNlP1IJq/i+w1iiE2ZXK0hl+JRc6Wt8Kn3LRwZC9GBmLrm5qqqL9hXp?=
- =?us-ascii?Q?W6Yek+Mz8hAeO5tpVAISc9kZN1uTGHGzlSGgxsutvVOGlaHXNibW/QzYcxiC?=
- =?us-ascii?Q?xEBCIIlRbh07KGqGw4NATiHo3g+jtcA/JHahFNYaA+7U1HUYCVB5Jks+anUa?=
- =?us-ascii?Q?+grgPbGhfaPOPUWSzbNo0/XAUDqUKCayR3ySF0HQVXQ2MbrgxvPX4vtJcB+l?=
- =?us-ascii?Q?UAHllB24KV4VyE0EKZdD6OTtTz8feFKf0dmI9oHh9xri4keoiJG2j7gjSQ+E?=
- =?us-ascii?Q?PBlGRUtxMbuvdJ0+pr6u7VENF129GyiOsDARQZe9ES1SezWjkXQ3PZ5x0mBl?=
- =?us-ascii?Q?gVvpTW10TZknWG9KEvI6L3JHZojmFMtMe3i5InUsYWGscalrcZujow/EM4Y5?=
- =?us-ascii?Q?NCAxlqzTKRv6ma7yu/m1AAFmEn77eh6BouY76OHJDqlgJyjOqOwtabf+LkhK?=
- =?us-ascii?Q?PfqtHFpz0GEK8baUO0JWbUalfpJ/k018RGI+qs0lhHnu0GnE//gxi4122RSp?=
- =?us-ascii?Q?MiKe899R5MOJtyaeOioaZukNBlfcAiktsn9QP1eepp7w6HuhdJ0iGsp8zCdt?=
- =?us-ascii?Q?f1RKHNkyKDqoxnMjHCpeGwacZdoQ9ltvSoXuUC7YP2E56Hamfvf4qRYQEo7e?=
- =?us-ascii?Q?cME7G2XF4mZJWhtqmIll9Q3UVxoWuCwtV5ZazSv4FOfjQNRrCmFbt8vFo6cR?=
- =?us-ascii?Q?flKlqWhttvgM5mSgUAD8CDRGWgLu8qs+e5LGK4/AbHLbGKzy+FbOPejXEJrB?=
- =?us-ascii?Q?XtPssoqEq4Qol9ipUVeDleMXcuJa1ZnUJ1hs288CNHXHlU+HfE3Pm3Pnw1YE?=
- =?us-ascii?Q?MzjKfXF5fMwDq2qU3RKu48bn9PZJ0pIdfefKHOIa5+2n9VhzQHFrZ+BMJdbx?=
- =?us-ascii?Q?4W9f+MQHneamLudccixZNlXdIhFW0nWrqcabkXPO+Ddfu05kzCuPKcp50814?=
- =?us-ascii?Q?SywqEiUqB18k4QMoQpUxhTLgcgeroB8jghZcWwIP/Z4hlIgiXg3RFfzGhJQX?=
- =?us-ascii?Q?exKc/KLT6v+1abDVDNojA82SwHmBbbhU97gU27tVlCgM337GHJAwB9+2tdWg?=
- =?us-ascii?Q?n+qHZL81T1BQqE7RycZs8UYOWpLlcefMOobpPW4CZrOqKnttY9piTh2PfCch?=
- =?us-ascii?Q?1yxVMngrkUgNaLXMCmf/zXDBxf1+hulmTfHGDRjyPzlpOey5DcKOAWiEP5bS?=
- =?us-ascii?Q?gDz/XVPjLv9eshYnmrCTLGkN9WDaVTqP1lmq+lT4Sfx4r08nU18wEg844ZAq?=
- =?us-ascii?Q?HNqHkinqqe8uzs8VFzwtQqlfD99X7RTtg3o2lZFmV+GNGRj07QTMu0WiwJHL?=
- =?us-ascii?Q?xk88l+kwXAMtrWrqlVvWZI5odMYz5bbsWRbZaYtsFUeLzHiqnFMkL10BczAR?=
- =?us-ascii?Q?fkIzhGkNsyuuTtttnWOzuWGnLmJy6bpEcxaS2uDN?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 865f09ee-a4ea-46f4-9555-08db62c621d7
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2023 17:32:11.5029
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J0e4Tq0uQzSFp2I8DOTwLaXB4veMBLLKBDWBrSo2Lzj6Hg1Xa+Hx2Y7JjcXjiu47MTj62VipT+unTVMYoFjoXw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6987
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu,  1 Jun 2023 13:49:46 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
-
-> This adds two examples of how to use the workqueue. The first example
-> shows how to use it when you only have one `work_struct` field, and the
-> second example shows how to use it when you have multiple `work_struct`
-> fields.
+On 6/1/23 14:30, Gary Guo wrote:
+> On Thu,  1 Jun 2023 13:49:42 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
 > 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/workqueue.rs | 104 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 104 insertions(+)
+>> From: Wedson Almeida Filho <walmeida@microsoft.com>
+>>
+>> We provide these methods because it lets us access these queues from
+>> Rust without using unsafe code.
+>>
+>> These methods return `&'static Queue`. References annotated with the
+>> 'static lifetime are used when the referent will stay alive forever.
+>> That is ok for these queues because they are global variables and cannot
+>> be destroyed.
+>>
+>> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+>> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 > 
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index c302e8b8624b..cefcf43ff40e 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -26,6 +26,110 @@
->  //!  * The `WorkItemPointer` trait is implemented for the pointer type that points at a something
->  //!    that implements `WorkItem`.
->  //!
-> +//! ## Example
-> +//!
-> +//! This example defines a struct that holds an integer and can be scheduled on the workqueue. When
-> +//! the struct is executed, it will print the integer. Since there is only one `work_struct` field,
-> +//! we do not need to specify ids for the fields.
-> +//!
-> +//! ```
-> +//! use kernel::prelude::*;
-> +//! use kernel::sync::Arc;
-> +//! use kernel::workqueue::{self, Work, WorkItem};
-> +//!
-> +//! #[pin_data]
-> +//! struct MyStruct {
-> +//!     value: i32,
-> +//!     #[pin]
-> +//!     work: Work<MyStruct>,
-> +//! }
-> +//!
-> +//! impl_has_work! {
-> +//!     impl HasWork<Self> for MyStruct { self.work }
-> +//! }
-> +//!
-> +//! impl MyStruct {
-> +//!     fn new(value: i32) -> Result<Arc<Self>> {
-> +//!         Arc::pin_init(pin_init!(MyStruct {
-> +//!             value,
-> +//!             work <- Work::new(),
-> +//!         }))
-> +//!     }
-> +//! }
-> +//!
-> +//! impl WorkItem for MyStruct {
-> +//!     type Pointer = Arc<MyStruct>;
-> +//!
-> +//!     fn run(this: Arc<MyStruct>) {
-> +//!         pr_info!("The value is: {}", this.value);
-> +//!     }
-> +//! }
-> +//!
-> +//! /// This method will enqueue the struct for execution on the system workqueue, where its value
-> +//! /// will be printed.
-> +//! fn print_later(val: Arc<MyStruct>) {
-> +//!     let _ = workqueue::system().enqueue(val);
-> +//! }
-> +//! ```
-> +//!
-> +//! The following example shows how multiple `work_struct` fields can be used:
-> +//!
-> +//! ```
-> +//! use kernel::prelude::*;
-> +//! use kernel::sync::Arc;
-> +//! use kernel::workqueue::{self, Work, WorkItem};
-> +//!
-> +//! #[pin_data]
-> +//! struct MyStruct {
-> +//!     value_1: i32,
-> +//!     value_2: i32,
-> +//!     #[pin]
-> +//!     work_1: Work<MyStruct, 1>,
-> +//!     #[pin]
-> +//!     work_2: Work<MyStruct, 2>,
-> +//! }
-> +//!
-> +//! impl_has_work! {
-> +//!     impl HasWork<Self, 1> for MyStruct { self.work_1 }
-> +//!     impl HasWork<Self, 2> for MyStruct { self.work_2 }
-> +//! }
-> +//!
-> +//! impl MyStruct {
-> +//!     fn new(value_1: i32, value_2: i32) -> Result<Arc<Self>> {
-> +//!         Arc::pin_init(pin_init!(MyStruct {
-> +//!             value_1,
-> +//!             value_2,
-> +//!             work_1 <- Work::new(),
-> +//!             work_2 <- Work::new(),
-> +//!         }))
-> +//!     }
-> +//! }
-> +//!
-> +//! impl WorkItem<1> for MyStruct {
-> +//!     type Pointer = Arc<MyStruct>;
-> +//!
-> +//!     fn run(this: Arc<MyStruct>) {
-> +//!         pr_info!("The value is: {}", this.value_1);
-> +//!     }
-> +//! }
-> +//!
-> +//! impl WorkItem<2> for MyStruct {
-> +//!     type Pointer = Arc<MyStruct>;
-> +//!
-> +//!     fn run(this: Arc<MyStruct>) {
-> +//!         pr_info!("The second value is: {}", this.value_2);
-> +//!     }
-> +//! }
-> +//!
-> +//! fn print_1_later(val: Arc<MyStruct>) {
-> +//!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 1>(val);
+> This looks fine to me, so:
+> 
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> 
+> Just one question about style: would people prefer:
+> 
+> 	kernel::workqueue::system().enqueue(...)
+> 
+> or
+> 
+> 	use kernel::workqueue::Queue;
+> 	Queue::system().enqueue(...)
+> 
+> ?
 
-Nothing bad about explicit, but I just want to confirm that you could
-write
+I can compare the first with `std::thread::spawn` and the second
+with enqueuing an executor with a future. Both makes sense to me so
+I can't decide.
 
-	let _ = workqueue::system().enqueue::<_, 1>(val);
-
-here, right?
-
-Reviewed-by: Gary Guo <gary@garyguo.net>
-
-> +//! }
-> +//!
-> +//! fn print_2_later(val: Arc<MyStruct>) {
-> +//!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 2>(val);
-> +//! }
-> +//! ```
-> +//!
->  //! C header: [`include/linux/workqueue.h`](../../../../include/linux/workqueue.h)
->  
->  use crate::{bindings, prelude::*, sync::Arc, types::Opaque};
-
+> [...]
