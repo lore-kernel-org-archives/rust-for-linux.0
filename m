@@ -2,82 +2,82 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7FD8C77B7E
-	for <rust-for-linux@archiver.kernel.org>; Thu,  1 Jun 2023 18:45:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 101CDC7EE23
+	for <rust-for-linux@archiver.kernel.org>; Thu,  1 Jun 2023 21:10:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231634AbjFASpo (ORCPT
+        id S231303AbjFAVKU (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 1 Jun 2023 14:45:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43994 "EHLO
+        Thu, 1 Jun 2023 17:10:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231615AbjFASpn (ORCPT
+        with ESMTP id S229497AbjFAVKT (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 1 Jun 2023 14:45:43 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 539A4E4;
-        Thu,  1 Jun 2023 11:45:41 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id af79cd13be357-75b01271ad4so104959185a.1;
-        Thu, 01 Jun 2023 11:45:41 -0700 (PDT)
+        Thu, 1 Jun 2023 17:10:19 -0400
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60F6B128;
+        Thu,  1 Jun 2023 14:10:16 -0700 (PDT)
+Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-75b2726f04cso113635685a.3;
+        Thu, 01 Jun 2023 14:10:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685645140; x=1688237140;
+        d=gmail.com; s=20221208; t=1685653815; x=1688245815;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ngvk5IPPgSTKYb25Y78dffZ6jYrWYZVXrundWDfDU5g=;
-        b=CIwytx2m1C7s992q5jJ+PmGwavTvXbPnLv6Pd8Yh3v9I8EbtB9knE+6asWrMLx01p2
-         tqPk0LZkWWKeckGCGn4q6E0g6NTjKlxeguouPLAC6WfQgRyV6r6x3QY/XYiFVVWGg2DH
-         pZo6gB96mrprnbTlZMctVsO83c2sQZw6NVWIBQnQs8WZpNn9leru9QdsiJ3PfzSwAh/B
-         a+doS4LLMzHimu+1COpJIWEFoI6hiPx0F7jROQH3DVNbyrNqlhN0x2O/n64Qy0qVovvw
-         Xgp97W3G2TqyhB80il/yXhf34xUWI4+jDNRwvMpSkcpsXzwA4+o/WTQyYz978IRMSn6k
-         l6kg==
+        bh=NRkLCtm/2t4nM1Hj+K53sJanop38MkOVUSZ+C5sKwdo=;
+        b=Rje78LDSW0Bo/k0B3xoKY/WFS56OY199KeIgpkWhxSi8Z2+D0ox+TWQ8mXNFQryVWj
+         TFxxHmG0mm+dFVipfOSfmEOzqxfzol2EH6g2MI3pd0yXhtguAbhmgCtjxN4H84xOKL8I
+         GKJjYeWqGoioHkP8L/6tkGuD+gVzaAFvCfWtptvPm+KwQ2iWIKen3ZW5WpmeKbBL0SY4
+         GeTkWwh6SZTb9zNafFzNMLONOhRZy+SGv9CtMyPsVAdH2DxZsJGQL01zp1hM6TEpq3dQ
+         98qgT2g5bNyoE5cMgAKzt48SPMWzcuTKY3PYFAqfISiiNlJGo+AcnMSGQLiRQ+EYJhrC
+         0UtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685645140; x=1688237140;
+        d=1e100.net; s=20221208; t=1685653815; x=1688245815;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Ngvk5IPPgSTKYb25Y78dffZ6jYrWYZVXrundWDfDU5g=;
-        b=Ty5xQY+72VfFw+WM1NWmxxxQBjZq2+yKg3jPVJOKZT4vbgAT2wnresRqPKimChlVcV
-         LywG5PHAtsKPs27lulOTQY+2kcYoJMOlVRps29ATtYR8f9Yx5HO4xDpNukQpDYf7s+c5
-         bbO77UcUdfZ/4id4/xj45Nezts2jZQE7/eHHA+lZfqvKSBH7LMPfh8fTLNaG20WKmyNs
-         zAxbXaHTtcEPn7Uu1FFPWT+0H8efGqD4pnw4oHdZQsc04JkDGk1hmfraNv0efz4w38OP
-         agdMW+4hM4QJFLCDWmQMheS8fTy98x0rkgi0lgdK9n3Lo2Mf66CQfUSiE0sEVAds7Y7l
-         XUvQ==
-X-Gm-Message-State: AC+VfDyYJBItNmdIiEOAdt8XB0RNI3b2g57JRYDbWGIFvE43xAyySgqi
-        6PbV6xe54YAQx/ZpvfAlNxs=
-X-Google-Smtp-Source: ACHHUZ44ZM5enLvvQYeRaCcb4zu2pdvElzAS/yl1haJ732uuzDhnUvlUCX+Xf2naeinWPIaMJOviCA==
-X-Received: by 2002:a05:620a:a0a:b0:75b:23a1:8314 with SMTP id i10-20020a05620a0a0a00b0075b23a18314mr9838190qka.15.1685645140173;
-        Thu, 01 Jun 2023 11:45:40 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id o26-20020a05620a111a00b00757888bbda2sm6994389qkk.112.2023.06.01.11.45.39
+        bh=NRkLCtm/2t4nM1Hj+K53sJanop38MkOVUSZ+C5sKwdo=;
+        b=iNYFI728KagHdJ7pEnja+d5ql7u4wSweqFkkDA5KmwUGyIKsBflg1zgr+ERw/16IFT
+         o1IjG3xTJRYr6NuG2fDGsb+b/tVJYXbgmi6jI3PaVYMUqZmuicUKJrQlToSuKourcUzz
+         1gyGP09LslNPOyZCFWlBaz6qFI8nlDtKEqMev74wRgJUv0xG0ZMQROD+gcHJ7ONY1r7g
+         26OGCCw0KM0vvLlXvL+Szk7yeq6K1VBx9J6sEXcjOCHy/YU4mASDbMueZIR9mm6fv7KS
+         zy298wl7jdBbQA0UxnMALttc6mw1gBNO76Fdr1ldrk7Q1AEe8VoRKQuIhFpM8b4eXgRR
+         G4fw==
+X-Gm-Message-State: AC+VfDxQXDmQe11oDV8vJJpmZsaus59JIVpukQTAqnyvwsOmjcIdbHWd
+        DIsjVTCGGjeUABQRhvebnQw=
+X-Google-Smtp-Source: ACHHUZ577G+41pMS3I4wB0LxPaprLCqY2T3fBfUJHve0czV3zJVK5jUMTK7xgadRibRENFjUT3JgZA==
+X-Received: by 2002:a05:620a:618d:b0:75b:23a1:8e7b with SMTP id or13-20020a05620a618d00b0075b23a18e7bmr11223900qkn.76.1685653815342;
+        Thu, 01 Jun 2023 14:10:15 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id e14-20020a05620a12ce00b00755951e48desm7006936qkl.135.2023.06.01.14.10.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Jun 2023 11:45:39 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 1336C27C0054;
-        Thu,  1 Jun 2023 14:45:38 -0400 (EDT)
+        Thu, 01 Jun 2023 14:10:14 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 65D1A27C0054;
+        Thu,  1 Jun 2023 17:10:14 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Thu, 01 Jun 2023 14:45:39 -0400
-X-ME-Sender: <xms:Uud4ZBx0h5swUJihe4qM4m9i4eo4jwPXbXpVTQLZWxStuaFoSmuSaQ>
-    <xme:Uud4ZBS0w4QQptHL7aPPGhr4p2D3j-coPj5vgqTt_XAP5nZNnorr7jg3QKkWJr1W_
-    SgQI2l4nXsmIvpcGA>
-X-ME-Received: <xmr:Uud4ZLX87azn3tNs1h7oq-IjmNyCuVn7hxkvtcbO9z8v_cyOpQ-20P4QDNs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeluddguddvkecutefuodetggdotefrod
+  by compute5.internal (MEProxy); Thu, 01 Jun 2023 17:10:14 -0400
+X-ME-Sender: <xms:Ngl5ZCCGYq4At35VdgFUh64sgVR6fN596EZ1MjCc1GkHJxh-aCnLhw>
+    <xme:Ngl5ZMj36XHOuxsmV2Q241msySSRatchFAr-C2mbS6Oz6KaQTHYtKTLID_emBDo3H
+    LCGR9EZ8pdL7FJdew>
+X-ME-Received: <xmr:Ngl5ZFmI_IhJnlx-ANJ9PXdpu8QQEH0jWpJKpCdTKubxBM-yN8I2PgFf-sA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeluddgudehkecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdortddttddvnecuhfhrohhmpeeuohhq
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
     uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepjeffgeeijedvtdfgkeekhfejgeejveeuudfgheeftdekffejtdelieeu
-    hfdvfeegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhht
-    hhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquh
-    hnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:Uud4ZDijHqRj3-2cWjdLCKv7N9XH7sU6ptMTOiDDKTMU0RVepp9JqA>
-    <xmx:Uud4ZDCTk6u_5YQUoktj4aT0I5p2vRL9DWnBo5tgHY37ppacO7sRUA>
-    <xmx:Uud4ZMJnOXUkeYSXstEr2iLUA0T5WWTbm1JB6wTQFWBEdkmYuFyOBw>
-    <xmx:Uud4ZALv4DhOxkgT7LI7Hft4aPZFKlwH5yMWRG07F_7m_mksYU07lw>
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:Ngl5ZAxw9VrRKye0M-ALKhRgMz8dTA4VzxekVjau4qWZTedg6CEghQ>
+    <xmx:Ngl5ZHRBfyyBTVoARrMBG9lYNU1_Yptxdd6gHFvQP6tc_sVCtTE35A>
+    <xmx:Ngl5ZLay07ZyBVvYHLwRcHJ7wCXiQQVUdzA02SHhJeaZ2LPuoZQo2Q>
+    <xmx:Ngl5ZPbeM4zjNQnPu7TAAxKsWd0EUDGy_oaOAHUgJP2TWMJw-AtRGQ>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Jun 2023 14:45:37 -0400 (EDT)
-Date:   Thu, 1 Jun 2023 11:44:28 -0700
+ 1 Jun 2023 17:10:13 -0400 (EDT)
+Date:   Thu, 1 Jun 2023 14:09:04 -0700
 From:   Boqun Feng <boqun.feng@gmail.com>
 To:     Alice Ryhl <aliceryhl@google.com>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
@@ -91,7 +91,7 @@ Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Subject: Re: [PATCH v2 5/8] rust: workqueue: add helper for defining
  work_struct fields
-Message-ID: <ZHjnDAEmimeETrNZ@boqun-archlinux>
+Message-ID: <ZHkI8LXrqUOJ7G5E@boqun-archlinux>
 References: <20230601134946.3887870-1-aliceryhl@google.com>
  <20230601134946.3887870-6-aliceryhl@google.com>
 MIME-Version: 1.0
@@ -180,48 +180,6 @@ On Thu, Jun 01, 2023 at 01:49:43PM +0000, Alice Ryhl wrote:
 > +			     bool on_stack)
 > +{
 > +	__INIT_WORK(work, func, on_stack);
-
-Note here all the work items in Rust will share the same lockdep class.
-That could be problematic: the lockdep classes for work are for
-detecting deadlocks in the following scenario:
-
-step 1: queue a work "foo", whose work function is:
-
-	mutex_lock(&bar);
-	do_something(...);
-	mutex_unlock(&bar);
-
-step 2: in another thread do:
-
-	mutex_lock(&bar);
-	flush_work(foo);	// wait until work "foo" is finished.
-
-if this case, if step 2 get the lock "bar" first, it's a deadlock.
-
-With the current implementation, all the work items share the same
-lockdep class, so the following will be treated as deadlock:
-
-	<in work "work1">
-	mutex_lock(&bar);
-	do_something(...);
-	mutex_unlock(&bar);
-
-	<in another thread>
-	mutex_lock(&bar);
-	flush_work(work2);	// flush work2 intead of work1.
-
-which is a false positive. We at least need some changes in C side to
-make it work:
-
-	https://lore.kernel.org/rust-for-linux/20220802015052.10452-7-ojeda@kernel.org/
-
-however, that still has the disadvantage that all Rust work items have
-the same name for the lockdep classes.. maybe we should extend that for
-an extra "name" parameter. And then it's not necessary to be a macro.
-	
-Regards,
-Boqun
-
 > +}
 > +EXPORT_SYMBOL_GPL(rust_helper___INIT_WORK);
 > +
@@ -304,6 +262,52 @@ Boqun
 > +    /// The pointer type that this struct is wrapped in. This will typically be `Arc<Self>` or
 > +    /// `Pin<Box<Self>>`.
 > +    type Pointer: WorkItemPointer<ID>;
+
+This being an associate type makes me wonder how do we want to support
+the following (totally made-up by me, but I think it makes sense)?:
+
+Say we have a struct
+
+	pub struct Foo {
+		work: Work<Foo>,
+		data: Data,
+	}
+
+	impl Foo {
+		pub fn do_sth(&self) {
+			...
+		}
+	}
+
+and we want to queue both Pin<Box<Foo>> and Arc<Foo> as work items, but
+the following doesn't work:
+
+	// Pin<Box<Foo>> can be queued.
+	impl WorkItem for Foo {
+		type Pointer = Pin<Box<Foo>>;
+		fn run(ptr: Self::Pointer) {
+			ptr.do_sth();
+		}
+	}
+
+	// Arc<Foo> can also be queued.
+	impl WorkItem for Foo {
+		type Pointer = Arc<Foo>;
+		fn run(ptr: Self::Pointer) {
+			ptr.do_sth();
+		}
+	}
+
+
+
+Of course, we can use new type idiom, but that's not really great, and
+we may have more smart pointer types in the future.
+
+Am I missing something here?
+
+Regards,
+Boqun
+
 > +
 > +    /// The method that should be called when this work item is executed.
 > +    fn run(this: Self::Pointer);
