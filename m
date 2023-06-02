@@ -2,166 +2,195 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0898EC7EE24
-	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Jun 2023 09:37:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 517C9C77B7A
+	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Jun 2023 09:39:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234591AbjFBJht (ORCPT
+        id S234563AbjFBJjf (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 2 Jun 2023 05:37:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51172 "EHLO
+        Fri, 2 Jun 2023 05:39:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234361AbjFBJhs (ORCPT
+        with ESMTP id S234767AbjFBJje (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 2 Jun 2023 05:37:48 -0400
-Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D5BBCE
-        for <rust-for-linux@vger.kernel.org>; Fri,  2 Jun 2023 02:37:45 -0700 (PDT)
-Received: by mail-ej1-x64a.google.com with SMTP id a640c23a62f3a-970e0152da7so139825866b.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jun 2023 02:37:44 -0700 (PDT)
+        Fri, 2 Jun 2023 05:39:34 -0400
+Received: from mail-ed1-x549.google.com (mail-ed1-x549.google.com [IPv6:2a00:1450:4864:20::549])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03F2CC0
+        for <rust-for-linux@vger.kernel.org>; Fri,  2 Jun 2023 02:39:29 -0700 (PDT)
+Received: by mail-ed1-x549.google.com with SMTP id 4fb4d7f45d1cf-5147d242f01so2389756a12.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jun 2023 02:39:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685698663; x=1688290663;
+        d=google.com; s=20221208; t=1685698767; x=1688290767;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=g6hKGnk7+yrdCqGxFZXtFZSCtr3Hs69nhywa4vN9dQk=;
-        b=k++9SNiv/OO3O33g9/9eTroGH9b5hGlPNSi00zMI+3lKBu4RkFuIC1EcEe7KD/jbaz
-         w7M2YFlWaueUEZ3ZBRhBGEljk4CX6XobHPYEr/cMV88eHC8OdecDaOMfZJuBeqInAwD+
-         AS49oX1gWO0jWTyaCmjdNL7X0Yk+k7i5creGBmVCLkabQjlsHTPe5sA28usbmDCXYCRJ
-         4ZptKGmHboTtMeV00P4JBm95Ws+ym2erT/xlVh4nZgISW78geGc+StYhiNHOeV4sSw4e
-         PAkVnBlceCInTUdm4jIK/4AJvO4dTSuhgWJSM/z4SZ2w33u+uzuwv+yyv44kgQKOdQGn
-         uWYQ==
+        bh=Olx8k/dMqft+QmN4YpoMce08+qwb537I3TMS0ysCxZA=;
+        b=ezjQZoRV8omv8Hob3qBLfYZbMOSH4dDn3kv5BKMrZuM3LgKvuFJYiI05O5kFVGvifx
+         a/fJ24Bk6+nmAgHXfawsb8+IvudoFoCX6sRZ27IZumaPDjhM05qi4p5jt9dEk8pVCqda
+         fqv6JLn+ipCNIueD0s8H40ZHhJxqleMFSY+obFVIIVpY8nCnt/dzABdbx4TYtB+v/Me3
+         R2MZwpNepVuSosWJPipPrnC8fgLsV9n7N+f0ly8oN1cnQrA+YXtsBvxdHuELy+x+871v
+         7l8pWy5OSmnrNyogS7dk6xpg5vlNuT8s5yCqR8Z3klAmJMBxTyMZLOBfNAnuS9sLFkpU
+         Y7pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685698663; x=1688290663;
+        d=1e100.net; s=20221208; t=1685698767; x=1688290767;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g6hKGnk7+yrdCqGxFZXtFZSCtr3Hs69nhywa4vN9dQk=;
-        b=J8lbhNUHwtU0lRheSWQIrU93w6/obXFsDsMs04kXVRVcu5hmwm+C+6JlOmNtJxOm8q
-         cJ23PbsYw6LjHKH35Hn4/Wgj+5XDNuWZ1KJd11Y3qO36JF9C/wPOj9aq3NG11D+x5XqC
-         f4CCEOKW51BUq7ec6g1qiXPNwme90ErPlW7SctS/e6wn9JAXsMF4fE+J5VzHMtbTpJjT
-         7FFRcACD2LVRt6nJKRidtf7TaAjmQ9riR/CVfeh0D7QcQfPpvJDf1pxYCkTrYX7dIg4m
-         GXeHi2uXrzEET5q+EF2VsXQwxUNZknD/wy6RaitKu48fOVjliH01Dz6ZROa5rcwiVFGg
-         6/OQ==
-X-Gm-Message-State: AC+VfDzTaitIsGiPmlqYrfkumetNiJJ9ga5WN2meQ9kCLyLjXhrQN4xs
-        mE3f3r2P0H+fQXdEWOG9QwNr6i6FD1/jFSY=
-X-Google-Smtp-Source: ACHHUZ6JmHF0O7xB25c4LZS3SBpbPu8gJ1LUrG2oig85p/mrkugigxAcAyjZYDiO5uEzwymT7yTtjwNZQO8JTzA=
+        bh=Olx8k/dMqft+QmN4YpoMce08+qwb537I3TMS0ysCxZA=;
+        b=FJmq8pb7HgYcA8Ig36Fi5xgMlGG2oQRwuMQrldJhtFiAIgDizZlhWz+7oukUSOp7sO
+         +CPUO8o5rj3v9XRkTetm9ZxfYfMp98t/P8LuvML5+wvAH6pHfD5fcHadcN6BU25U6RVt
+         isxu6eOjTN5R7vLWiM8UM75QizVCsj+pAIcSJou8MCle0oNQpictmNd/TVbgJnzgoRTY
+         eo6GOGCJvEOd6E21mUr0Xqm2Ky4r7Fbcbb3b0p/YWA5Nwjry5fzAT5jM3mOJelttBx42
+         Tve0+E4e8Qy9GDCjkrJi9gMy0US7zUB7XV1Rtx6hlkkgJpTnx02dnude9Qh/3OzloMp1
+         iJQQ==
+X-Gm-Message-State: AC+VfDz4GVlfN8WcyHfV6Qtl0XVV1yDtejdS7MnBCJYiy8mZjbjMe7S0
+        6rfn6ztIUYr8yPIK9Vy4RaGAayUU2MgoS8E=
+X-Google-Smtp-Source: ACHHUZ4BkdBlmKvR8oPJvyxyU0q0fuKrriPC+45+KeXvCSarssDYLV/Y8tkx3Lt+ry38EmRik4pnh+YD+DnbBaw=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a17:906:5a69:b0:974:5e62:2afc with SMTP
- id my41-20020a1709065a6900b009745e622afcmr502336ejc.13.1685698663640; Fri, 02
- Jun 2023 02:37:43 -0700 (PDT)
-Date:   Fri,  2 Jun 2023 09:37:41 +0000
-In-Reply-To: <ZHkI8LXrqUOJ7G5E@boqun-archlinux>
+ (user=aliceryhl job=sendgmr) by 2002:a50:9f28:0:b0:50c:749:b407 with SMTP id
+ b37-20020a509f28000000b0050c0749b407mr905313edf.0.1685698767529; Fri, 02 Jun
+ 2023 02:39:27 -0700 (PDT)
+Date:   Fri,  2 Jun 2023 09:39:25 +0000
+In-Reply-To: <20230601183209.371fd898.gary@garyguo.net>
 Mime-Version: 1.0
-References: <ZHkI8LXrqUOJ7G5E@boqun-archlinux>
+References: <20230601183209.371fd898.gary@garyguo.net>
 X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-Message-ID: <20230602093741.1040283-1-aliceryhl@google.com>
-Subject: Re: [PATCH v2 5/8] rust: workqueue: add helper for defining
- work_struct fields
+Message-ID: <20230602093925.1040727-1-aliceryhl@google.com>
+Subject: Re: [PATCH v2 8/8] rust: workqueue: add examples
 From:   Alice Ryhl <aliceryhl@google.com>
-To:     boqun.feng@gmail.com
+To:     gary@garyguo.net
 Cc:     alex.gaynor@gmail.com, aliceryhl@google.com,
-        benno.lossin@proton.me, bjorn3_gh@protonmail.com, gary@garyguo.net,
-        jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
-        ojeda@kernel.org, patches@lists.linux.dev,
-        rust-for-linux@vger.kernel.org, tj@kernel.org, wedsonaf@gmail.com
+        benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+        boqun.feng@gmail.com, jiangshanlai@gmail.com,
+        linux-kernel@vger.kernel.org, ojeda@kernel.org,
+        patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
+        tj@kernel.org, wedsonaf@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Boqun Feng <boqun.feng@gmail.com> writes:
-> On Thu, Jun 01, 2023 at 01:49:43PM +0000, Alice Ryhl wrote:
->> +/// Defines the method that should be called directly when a work item is executed.
->> +///
->> +/// Typically you would implement [`WorkItem`] instead. The `run` method on this trait will
->> +/// usually just perform the appropriate `container_of` translation and then call into the `run`
->> +/// method from the [`WorkItem`] trait.
->> +///
->> +/// This trait is used when the `work_struct` field is defined using the [`Work`] helper.
->> +///
->> +/// # Safety
->> +///
->> +/// Implementers must ensure that [`__enqueue`] uses a `work_struct` initialized with the [`run`]
->> +/// method of this trait as the function pointer.
->> +///
->> +/// [`__enqueue`]: RawWorkItem::__enqueue
->> +/// [`run`]: WorkItemPointer::run
->> +pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> {
->> +    /// Run this work item.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// The provided `work_struct` pointer must originate from a previous call to `__enqueue` where
->> +    /// the `queue_work_on` closure returned true, and the pointer must still be valid.
->> +    unsafe extern "C" fn run(ptr: *mut bindings::work_struct);
->> +}
->> +
->> +/// Defines the method that should be called when this work item is executed.
->> +///
->> +/// This trait is used when the `work_struct` field is defined using the [`Work`] helper.
->> +pub trait WorkItem<const ID: u64 = 0> {
->> +    /// The pointer type that this struct is wrapped in. This will typically be `Arc<Self>` or
->> +    /// `Pin<Box<Self>>`.
->> +    type Pointer: WorkItemPointer<ID>;
+Gary Guo <gary@garyguo.net> writes:
+> On Thu,  1 Jun 2023 13:49:46 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
+>> This adds two examples of how to use the workqueue. The first example
+>> shows how to use it when you only have one `work_struct` field, and the
+>> second example shows how to use it when you have multiple `work_struct`
+>> fields.
+>> 
+>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>> ---
+>>  rust/kernel/workqueue.rs | 104 +++++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 104 insertions(+)
+>> 
+>> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+>> index c302e8b8624b..cefcf43ff40e 100644
+>> --- a/rust/kernel/workqueue.rs
+>> +++ b/rust/kernel/workqueue.rs
+>> @@ -26,6 +26,110 @@
+>>  //!  * The `WorkItemPointer` trait is implemented for the pointer type that points at a something
+>>  //!    that implements `WorkItem`.
+>>  //!
+>> +//! ## Example
+>> +//!
+>> +//! This example defines a struct that holds an integer and can be scheduled on the workqueue. When
+>> +//! the struct is executed, it will print the integer. Since there is only one `work_struct` field,
+>> +//! we do not need to specify ids for the fields.
+>> +//!
+>> +//! ```
+>> +//! use kernel::prelude::*;
+>> +//! use kernel::sync::Arc;
+>> +//! use kernel::workqueue::{self, Work, WorkItem};
+>> +//!
+>> +//! #[pin_data]
+>> +//! struct MyStruct {
+>> +//!     value: i32,
+>> +//!     #[pin]
+>> +//!     work: Work<MyStruct>,
+>> +//! }
+>> +//!
+>> +//! impl_has_work! {
+>> +//!     impl HasWork<Self> for MyStruct { self.work }
+>> +//! }
+>> +//!
+>> +//! impl MyStruct {
+>> +//!     fn new(value: i32) -> Result<Arc<Self>> {
+>> +//!         Arc::pin_init(pin_init!(MyStruct {
+>> +//!             value,
+>> +//!             work <- Work::new(),
+>> +//!         }))
+>> +//!     }
+>> +//! }
+>> +//!
+>> +//! impl WorkItem for MyStruct {
+>> +//!     type Pointer = Arc<MyStruct>;
+>> +//!
+>> +//!     fn run(this: Arc<MyStruct>) {
+>> +//!         pr_info!("The value is: {}", this.value);
+>> +//!     }
+>> +//! }
+>> +//!
+>> +//! /// This method will enqueue the struct for execution on the system workqueue, where its value
+>> +//! /// will be printed.
+>> +//! fn print_later(val: Arc<MyStruct>) {
+>> +//!     let _ = workqueue::system().enqueue(val);
+>> +//! }
+>> +//! ```
+>> +//!
+>> +//! The following example shows how multiple `work_struct` fields can be used:
+>> +//!
+>> +//! ```
+>> +//! use kernel::prelude::*;
+>> +//! use kernel::sync::Arc;
+>> +//! use kernel::workqueue::{self, Work, WorkItem};
+>> +//!
+>> +//! #[pin_data]
+>> +//! struct MyStruct {
+>> +//!     value_1: i32,
+>> +//!     value_2: i32,
+>> +//!     #[pin]
+>> +//!     work_1: Work<MyStruct, 1>,
+>> +//!     #[pin]
+>> +//!     work_2: Work<MyStruct, 2>,
+>> +//! }
+>> +//!
+>> +//! impl_has_work! {
+>> +//!     impl HasWork<Self, 1> for MyStruct { self.work_1 }
+>> +//!     impl HasWork<Self, 2> for MyStruct { self.work_2 }
+>> +//! }
+>> +//!
+>> +//! impl MyStruct {
+>> +//!     fn new(value_1: i32, value_2: i32) -> Result<Arc<Self>> {
+>> +//!         Arc::pin_init(pin_init!(MyStruct {
+>> +//!             value_1,
+>> +//!             value_2,
+>> +//!             work_1 <- Work::new(),
+>> +//!             work_2 <- Work::new(),
+>> +//!         }))
+>> +//!     }
+>> +//! }
+>> +//!
+>> +//! impl WorkItem<1> for MyStruct {
+>> +//!     type Pointer = Arc<MyStruct>;
+>> +//!
+>> +//!     fn run(this: Arc<MyStruct>) {
+>> +//!         pr_info!("The value is: {}", this.value_1);
+>> +//!     }
+>> +//! }
+>> +//!
+>> +//! impl WorkItem<2> for MyStruct {
+>> +//!     type Pointer = Arc<MyStruct>;
+>> +//!
+>> +//!     fn run(this: Arc<MyStruct>) {
+>> +//!         pr_info!("The second value is: {}", this.value_2);
+>> +//!     }
+>> +//! }
+>> +//!
+>> +//! fn print_1_later(val: Arc<MyStruct>) {
+>> +//!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 1>(val);
 > 
-> This being an associate type makes me wonder how do we want to support
-> the following (totally made-up by me, but I think it makes sense)?:
+> Nothing bad about explicit, but I just want to confirm that you could
+> write
 > 
-> Say we have a struct
+> 	let _ = workqueue::system().enqueue::<_, 1>(val);
 > 
-> 	pub struct Foo {
-> 		work: Work<Foo>,
-> 		data: Data,
-> 	}
-> 
-> 	impl Foo {
-> 		pub fn do_sth(&self) {
-> 			...
-> 		}
-> 	}
-> 
-> and we want to queue both Pin<Box<Foo>> and Arc<Foo> as work items, but
-> the following doesn't work:
-> 
-> 	// Pin<Box<Foo>> can be queued.
-> 	impl WorkItem for Foo {
-> 		type Pointer = Pin<Box<Foo>>;
-> 		fn run(ptr: Self::Pointer) {
-> 			ptr.do_sth();
-> 		}
-> 	}
-> 
-> 	// Arc<Foo> can also be queued.
-> 	impl WorkItem for Foo {
-> 		type Pointer = Arc<Foo>;
-> 		fn run(ptr: Self::Pointer) {
-> 			ptr.do_sth();
-> 		}
-> 	}
-> 
-> Of course, we can use new type idiom, but that's not really great, and
-> we may have more smart pointer types in the future.
-> 
-> Am I missing something here?
+> here, right?
 
-Basically, you're asking "is it possible to use the same `work_struct`
-field for several different pointer types"?
-
-When creating the function pointer to store in the `work_struct`, the
-function pointer _must_ know what the pointer type is. Otherwise it
-cannot call the right `WorkItem::run` method or perform the correct
-`container_of` operation. (E.g. an `Arc` embeds a `refcount_t` before
-the struct, but a `Box` does not.)
-
-With an associated type there is no problem with that. Associated types
-force you to make a choice, which means that the `work_struct` knows
-what the pointer type is when you create it. Supporting what you suggest
-means that we must be able to change the function pointer stored in the
-`work_struct` after initializing it.
-
-This is rather tricky because you can call `enqueue` from several
-threads in parallel; just setting the function pointer before you call
-`queue_work_on` would be a data race. I suppose you could do it by
-implementing our own `queue_work_on` that sets the function pointer
-_after_ successfully setting the `WORK_STRUCT_PENDING_BIT`, but I don't
-think this patchset should do that.
-
-Alice
+Yes, you can also do that.
