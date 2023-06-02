@@ -2,207 +2,185 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 894F4C77B7A
-	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Jun 2023 14:48:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA59EC77B7A
+	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Jun 2023 16:34:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236216AbjFBOsq (ORCPT
+        id S236057AbjFBQeP (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 2 Jun 2023 10:48:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47118 "EHLO
+        Fri, 2 Jun 2023 12:34:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236212AbjFBOsp (ORCPT
+        with ESMTP id S235208AbjFBQeO (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 2 Jun 2023 10:48:45 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AA0C1BD
-        for <rust-for-linux@vger.kernel.org>; Fri,  2 Jun 2023 07:48:42 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-97458c97333so176124066b.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jun 2023 07:48:42 -0700 (PDT)
+        Fri, 2 Jun 2023 12:34:14 -0400
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C4FB6;
+        Fri,  2 Jun 2023 09:34:10 -0700 (PDT)
+Received: by mail-qv1-xf29.google.com with SMTP id 6a1803df08f44-62614a1dd47so18747716d6.2;
+        Fri, 02 Jun 2023 09:34:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1685717321; x=1688309321;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=hJ9vneQJ4b683G/HZn1+z6+HzvNcmHcX4U7xxt8CZQM=;
-        b=fod6LE95FV3APy5Pg6yBDbE1/Y+vFXNmAWLeCfz4L5JBk30TL+NMVnUCdzzyz1FmGA
-         tnAwb/pDxY6oxocRE7I92RpB1oMc4Ejd0AGm4RBYZmXgPLLbMDpQUSUJzxch0HcivYmH
-         eeKQiKDauWuzCFuGJoK41t9I8GBIIvnUtBY3PmVgVsQ0Gxq5tBLjiVkfrdXuV433zoPH
-         dsQNE3O+Rnb2IYR1p7VvhIGMcWM3DGsVhdqFVTwZqf2QmZZ1LKPrxOimSrdLO+ZMPKe0
-         LAZ+wOUz/ib1HVFZLCL609EZyw89w5tYV+UvpDTsdWHXTt1lKL2oaLhVA3CxTm5YuRBo
-         CtZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685717321; x=1688309321;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1685723650; x=1688315650;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hJ9vneQJ4b683G/HZn1+z6+HzvNcmHcX4U7xxt8CZQM=;
-        b=MZ8aB4VgG1kQOz7nNuE3X1SXuaJAoTtu2BsCDmxv1vE+HpTpXLf+PUDQfIPiqAZdBe
-         BkDoCrXZo43RaWNymDgbFjJ+8AewqcAP7cfIS+7/CF0dpZYTTP/prCbSdc0+yahdqX14
-         DIVOe2a0K1HuLD2jeM8fpiqjfC15qSNyVxkp8tXEfC6qY1xVnE9AWXavGRv3ji4feiAp
-         DEXGeLvQeVS3K0JL44unvYuOpJKqE3SWHTCi92phFDJjN8JLR06WRFBMOOpAv79JoTUc
-         4hNsv+JVbXjet+jTMdR5UGEUfhuY8+17rF1uocreOq0aRZ8ySwLGGY6h8PEl5VQcqki1
-         wCaQ==
-X-Gm-Message-State: AC+VfDxAyTxV24hJxaHeJuR3KTZxicRO45mB0Uo1/xxGrOys46nr/nS4
-        haE5aIiYN9hT9Q8YkvaggIEshA==
-X-Google-Smtp-Source: ACHHUZ7UZYmvfQCc3kWCaTEJZ/XKHlA07x9dA5pULrpWr6CJ5UxHiyb7LwJqRCvti/IzE2pGri8UQg==
-X-Received: by 2002:a17:907:160d:b0:974:1c91:a751 with SMTP id hb13-20020a170907160d00b009741c91a751mr12009627ejc.29.1685717321001;
-        Fri, 02 Jun 2023 07:48:41 -0700 (PDT)
-Received: from localhost ([194.62.217.2])
-        by smtp.gmail.com with ESMTPSA id cb2-20020a170906a44200b0097457363fc0sm851382ejb.33.2023.06.02.07.48.40
+        bh=LGApg1SSBEe11skXmvplXNx+M197fUVxt6voaPZdmOE=;
+        b=AK8tZnJIfmaLsBHYzDziIMFt513KMbEiaKprIhTtFuEgUeJPgD7mwsokNCEIRMCcK2
+         xpg7Z1meCvC91+NhJSpE/KkSs/u0TqUBN3ZlnuOHlhDY+HBq/QSE2ORKA2bzJKXNkLMm
+         4377w+EJE7gZf4EJlyHsG4E7rdFKcXNw+tCfgkucRU8rNJ3MRrI7wXmwLNbPDoCpOieC
+         RaT3BWcqZU8/IrDKcEib87DdzPdd5AxoMg7ZGj07efG5ik65vsp3QzQF0wBWW7S+AZ/x
+         SK1fKrvyaUENdKgwHbEsqhIf5uTrTGW6Pw8OZUi+X4dALsjhjUqgMaUhjbyMvlM5mDzE
+         fPWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685723650; x=1688315650;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LGApg1SSBEe11skXmvplXNx+M197fUVxt6voaPZdmOE=;
+        b=GffKkneyjdqhgCjQKNRkRU0YWeN01pGp07iekx1/Xi/wqqYPiPXIcr3G8EHYSx1wR7
+         qJwWpqHF/TYV9XS/f8EaIjImJxBKcDWi7uYFKoy9t20LBWiWp5ZXjgei3h+jX3jh+3q+
+         lvhDi8ve0QzM/rkF0ZKv0GeX5x3SgliMTbHjRvchWXBsO/CjpGSdG91J8Q1aGoJ3L4Xn
+         EEJsp7UvpkyWoFtWs+FCN6H9MQVGAZ7OQBJ9zGBNoSmRxgDbWAn3/6GVnL14ILVI6OL2
+         jpJjNkhcCZop4YcJkSAMXhAEnMp7MfH5G9RSrWjCX+7Gb0pSy+qn+H//SyF8dg/28ABU
+         FYAA==
+X-Gm-Message-State: AC+VfDx2Rfvmjfc+Txa8/7NnumEZayavRgbqsNs/WLcXYZ3IJ6FU+UpC
+        f5n99HaxtCrv+QdJAJNzozg=
+X-Google-Smtp-Source: ACHHUZ6wjf7ZdJgQtHUTohP3vL3ZskcmF2H3hNSOL8GJPvUGEz//YtOeDfJqRfF1E9CA+TjwQ0OM4w==
+X-Received: by 2002:a05:6214:628:b0:626:dae:db6c with SMTP id a8-20020a056214062800b006260daedb6cmr14164658qvx.21.1685723650041;
+        Fri, 02 Jun 2023 09:34:10 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id bu17-20020ad455f1000000b00623819de804sm995730qvb.127.2023.06.02.09.34.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jun 2023 07:48:40 -0700 (PDT)
-References: <20230601134946.3887870-1-aliceryhl@google.com>
- <20230601134946.3887870-9-aliceryhl@google.com>
-User-agent: mu4e 1.10.3; emacs 28.2.50
-From:   "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+        Fri, 02 Jun 2023 09:34:09 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailauth.nyi.internal (Postfix) with ESMTP id D6CD427C005B;
+        Fri,  2 Jun 2023 12:34:08 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Fri, 02 Jun 2023 12:34:08 -0400
+X-ME-Sender: <xms:ABp6ZFeuAC6oX6t3B2vvBPyTz1lXfyzyRgDJcyOZaC0sV1beTyfBHA>
+    <xme:ABp6ZDOBFqUO9ZYZjTTXNIJ_w3su1tl0Emssi9BXFG8G8DaaBFTrr-AT2qv7gp-uw
+    XNdFZbspmPm2B-qww>
+X-ME-Received: <xmr:ABp6ZOgsDc_TnifAId0a-dNecDxPuGwJeO_4Q2dFT1OD_fbotWk7DoLb7Vw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeelfedgleelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteehuddujedvkedtkeefgedv
+    vdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
+    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
+    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:ABp6ZO_6t9mp4JaQNXq7OjS91B9ZotNM1ry3C1H0-n1Ihk6XUgP9fw>
+    <xmx:ABp6ZBtWYNHcpSXIWOQOeFudRSVtJNrcgp6Aku3A2XWXpyYcHWbBQw>
+    <xmx:ABp6ZNGHK_9tS7FauKYe1pglkE0IS70VpQC0QXguzwWUjXZyuxLUGw>
+    <xmx:ABp6ZNEwZ0rCFEDAwtw98yYgCDMbuq6NYLlWhF1kz2Pm_lpsx5gpIA>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 2 Jun 2023 12:34:07 -0400 (EDT)
+Date:   Fri, 2 Jun 2023 09:32:56 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
 To:     Alice Ryhl <aliceryhl@google.com>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Tejun Heo <tj@kernel.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v2 8/8] rust: workqueue: add examples
-Date:   Fri, 02 Jun 2023 16:48:14 +0200
-In-reply-to: <20230601134946.3887870-9-aliceryhl@google.com>
-Message-ID: <87y1l1zzqw.fsf@metaspace.dk>
+Cc:     alex.gaynor@gmail.com, benno.lossin@proton.me,
+        bjorn3_gh@protonmail.com, gary@garyguo.net, jiangshanlai@gmail.com,
+        linux-kernel@vger.kernel.org, ojeda@kernel.org,
+        patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
+        tj@kernel.org, wedsonaf@gmail.com
+Subject: Re: [PATCH v2 5/8] rust: workqueue: add helper for defining
+ work_struct fields
+Message-ID: <ZHoZuIz97JN1VSBf@boqun-archlinux>
+References: <ZHjnDAEmimeETrNZ@boqun-archlinux>
+ <20230602083856.1035444-1-aliceryhl@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230602083856.1035444-1-aliceryhl@google.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
+On Fri, Jun 02, 2023 at 08:38:56AM +0000, Alice Ryhl wrote:
+> Boqun Feng <boqun.feng@gmail.com> writes:
+> > On Thu, Jun 01, 2023 at 01:49:43PM +0000, Alice Ryhl wrote:
+> >> diff --git a/rust/helpers.c b/rust/helpers.c
+> >> index 81e80261d597..7f0c2fe2fbeb 100644
+> >> --- a/rust/helpers.c
+> >> +++ b/rust/helpers.c
+> >> @@ -26,6 +26,7 @@
+> >>  #include <linux/spinlock.h>
+> >>  #include <linux/sched/signal.h>
+> >>  #include <linux/wait.h>
+> >> +#include <linux/workqueue.h>
+> >>  
+> >>  __noreturn void rust_helper_BUG(void)
+> >>  {
+> >> @@ -128,6 +129,13 @@ void rust_helper_put_task_struct(struct task_struct *t)
+> >>  }
+> >>  EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
+> >>  
+> >> +void rust_helper___INIT_WORK(struct work_struct *work, work_func_t func,
+> >> +			     bool on_stack)
+> >> +{
+> >> +	__INIT_WORK(work, func, on_stack);
+> > 
+> > Note here all the work items in Rust will share the same lockdep class.
+> > That could be problematic: the lockdep classes for work are for
+> > detecting deadlocks in the following scenario:
+> > 
+> > step 1: queue a work "foo", whose work function is:
+> > 
+> > 	mutex_lock(&bar);
+> > 	do_something(...);
+> > 	mutex_unlock(&bar);
+> > 
+> > step 2: in another thread do:
+> > 
+> > 	mutex_lock(&bar);
+> > 	flush_work(foo);	// wait until work "foo" is finished.
+> > 
+> > if this case, if step 2 get the lock "bar" first, it's a deadlock.
+> > 
+> > With the current implementation, all the work items share the same
+> > lockdep class, so the following will be treated as deadlock:
+> > 
+> > 	<in work "work1">
+> > 	mutex_lock(&bar);
+> > 	do_something(...);
+> > 	mutex_unlock(&bar);
+> > 
+> > 	<in another thread>
+> > 	mutex_lock(&bar);
+> > 	flush_work(work2);	// flush work2 intead of work1.
+> > 
+> > which is a false positive. We at least need some changes in C side to
+> > make it work:
+> > 
+> > 	https://lore.kernel.org/rust-for-linux/20220802015052.10452-7-ojeda@kernel.org/
+> > 
+> > however, that still has the disadvantage that all Rust work items have
+> > the same name for the lockdep classes.. maybe we should extend that for
+> > an extra "name" parameter. And then it's not necessary to be a macro.
+> 
+> Yeah, I did know about this issue, but I didn't know what the best way
+> to fix it is. What solution would you like me to use?
+> 
 
-Alice Ryhl <aliceryhl@google.com> writes:
+Having a init_work_with_key() function in C side:
 
-> This adds two examples of how to use the workqueue. The first example
-> shows how to use it when you only have one `work_struct` field, and the
-> second example shows how to use it when you have multiple `work_struct`
-> fields.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+void init_work_with_key(struct work_struct *work, bool onstack,
+			const char *name, struct lock_class_key *key)
+{
+	__init_work(work, onstack);				\
+	work->data = (atomic_long_t) WORK_DATA_INIT();	\
+	lockdep_init_map(&work->lockdep_map, name, key, 0); \
+	INIT_LIST_HEAD(&work->entry);			\
+	work->func = func;				\
+}
 
-Reviewed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+, and provide class key and name from Rust side.
 
-> ---
->  rust/kernel/workqueue.rs | 104 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 104 insertions(+)
->
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index c302e8b8624b..cefcf43ff40e 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -26,6 +26,110 @@
->  //!  * The `WorkItemPointer` trait is implemented for the pointer type that points at a something
->  //!    that implements `WorkItem`.
->  //!
-> +//! ## Example
-> +//!
-> +//! This example defines a struct that holds an integer and can be scheduled on the workqueue. When
-> +//! the struct is executed, it will print the integer. Since there is only one `work_struct` field,
-> +//! we do not need to specify ids for the fields.
-> +//!
-> +//! ```
-> +//! use kernel::prelude::*;
-> +//! use kernel::sync::Arc;
-> +//! use kernel::workqueue::{self, Work, WorkItem};
-> +//!
-> +//! #[pin_data]
-> +//! struct MyStruct {
-> +//!     value: i32,
-> +//!     #[pin]
-> +//!     work: Work<MyStruct>,
-> +//! }
-> +//!
-> +//! impl_has_work! {
-> +//!     impl HasWork<Self> for MyStruct { self.work }
-> +//! }
-> +//!
-> +//! impl MyStruct {
-> +//!     fn new(value: i32) -> Result<Arc<Self>> {
-> +//!         Arc::pin_init(pin_init!(MyStruct {
-> +//!             value,
-> +//!             work <- Work::new(),
-> +//!         }))
-> +//!     }
-> +//! }
-> +//!
-> +//! impl WorkItem for MyStruct {
-> +//!     type Pointer = Arc<MyStruct>;
-> +//!
-> +//!     fn run(this: Arc<MyStruct>) {
-> +//!         pr_info!("The value is: {}", this.value);
-> +//!     }
-> +//! }
-> +//!
-> +//! /// This method will enqueue the struct for execution on the system workqueue, where its value
-> +//! /// will be printed.
-> +//! fn print_later(val: Arc<MyStruct>) {
-> +//!     let _ = workqueue::system().enqueue(val);
-> +//! }
-> +//! ```
-> +//!
-> +//! The following example shows how multiple `work_struct` fields can be used:
-> +//!
-> +//! ```
-> +//! use kernel::prelude::*;
-> +//! use kernel::sync::Arc;
-> +//! use kernel::workqueue::{self, Work, WorkItem};
-> +//!
-> +//! #[pin_data]
-> +//! struct MyStruct {
-> +//!     value_1: i32,
-> +//!     value_2: i32,
-> +//!     #[pin]
-> +//!     work_1: Work<MyStruct, 1>,
-> +//!     #[pin]
-> +//!     work_2: Work<MyStruct, 2>,
-> +//! }
-> +//!
-> +//! impl_has_work! {
-> +//!     impl HasWork<Self, 1> for MyStruct { self.work_1 }
-> +//!     impl HasWork<Self, 2> for MyStruct { self.work_2 }
-> +//! }
-> +//!
-> +//! impl MyStruct {
-> +//!     fn new(value_1: i32, value_2: i32) -> Result<Arc<Self>> {
-> +//!         Arc::pin_init(pin_init!(MyStruct {
-> +//!             value_1,
-> +//!             value_2,
-> +//!             work_1 <- Work::new(),
-> +//!             work_2 <- Work::new(),
-> +//!         }))
-> +//!     }
-> +//! }
-> +//!
-> +//! impl WorkItem<1> for MyStruct {
-> +//!     type Pointer = Arc<MyStruct>;
-> +//!
-> +//!     fn run(this: Arc<MyStruct>) {
-> +//!         pr_info!("The value is: {}", this.value_1);
-> +//!     }
-> +//! }
-> +//!
-> +//! impl WorkItem<2> for MyStruct {
-> +//!     type Pointer = Arc<MyStruct>;
-> +//!
-> +//!     fn run(this: Arc<MyStruct>) {
-> +//!         pr_info!("The second value is: {}", this.value_2);
-> +//!     }
-> +//! }
-> +//!
-> +//! fn print_1_later(val: Arc<MyStruct>) {
-> +//!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 1>(val);
-> +//! }
-> +//!
-> +//! fn print_2_later(val: Arc<MyStruct>) {
-> +//!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 2>(val);
-> +//! }
-> +//! ```
-> +//!
->  //! C header: [`include/linux/workqueue.h`](../../../../include/linux/workqueue.h)
->  
->  use crate::{bindings, prelude::*, sync::Arc, types::Opaque};
+Thoughts?
 
+Regards,
+Boqun
+
+> Alice
