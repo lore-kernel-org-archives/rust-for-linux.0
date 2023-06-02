@@ -2,61 +2,61 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E28FC77B7A
-	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Jun 2023 20:47:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5132CC7EE29
+	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Jun 2023 20:47:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235481AbjFBUr2 (ORCPT
+        id S235912AbjFBUrg (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 2 Jun 2023 16:47:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58620 "EHLO
+        Fri, 2 Jun 2023 16:47:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233079AbjFBUr1 (ORCPT
+        with ESMTP id S236189AbjFBUrf (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 2 Jun 2023 16:47:27 -0400
-Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F1FA1A6;
-        Fri,  2 Jun 2023 13:47:26 -0700 (PDT)
-Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-19f675022d8so2397294fac.0;
-        Fri, 02 Jun 2023 13:47:26 -0700 (PDT)
+        Fri, 2 Jun 2023 16:47:35 -0400
+Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC15E43;
+        Fri,  2 Jun 2023 13:47:33 -0700 (PDT)
+Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-19f454bd2c8so2775472fac.3;
+        Fri, 02 Jun 2023 13:47:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685738846; x=1688330846;
+        d=gmail.com; s=20221208; t=1685738852; x=1688330852;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=6fpVxJlX5W3JW3Wms1UzwwveVMUvugM8mrsz7VvlhE8=;
-        b=sxxSItkuxRLKCKA6I/VuQKqtP7FG6Z4tmn5KgTMnZHHEEQh4c34xP4A7NtOAZfnu00
-         Jo5j8a0O+bOEM/p352a00xtwu/6ARmoAl9dW9kC6jxNClELOTZm16NHlgUVcVEaDl4us
-         u0maxRnnlBIxRKAoX0823a9ux2+UQyTSypXhYsJ5MBPT9GGG7Vvd18LdrnWLIJsouN+x
-         rDDdUAMcE/v4y0vy6LM2RDq6EvJf56AcQVdkhkWQEA7WWotXI9QaZt0vKf8LJjPQZYh9
-         TwJOny1ZYkNf5bmORxxPQu+Bk2ruL4LMJazlrAsihqo6OCybjpxtBP7KCkQDuqGhS8IG
-         SjbA==
+        bh=2+c2BilUm/fvWdview7xXjg65zJu3iciUS3T9hzkbg0=;
+        b=ASgnE86cFIMmWdXg0AtjqI3pw3YI6ieAqyhG0TS+KK4uMBet1oYMYV6h9cQcPAaBpR
+         8T1kMjPn/8suVGegK8JokDLXeoxm6aE76OdWOHkn3E6P3y4ylsjmfZ+p83Bm0IhTH/XJ
+         e8z1LcIr2wEU+Vt8Q1xSKO/xjaGa8SljW6z90eg6VDMaJPvvLKwuOpriS5jWJ1cgvKwQ
+         W0/MRf3HE7qhek/4uWPiqpQCyIzMrOMfW73besimU60VyJnkftR5Qlr1JDhlqgDdkD0Z
+         P92SmT1hbx4q4OOG4w8hJzrHg/wzF3FWIhDplQOBTGMHl1UmKF4WvG2oa3DOZxfH/b2/
+         VQFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685738846; x=1688330846;
+        d=1e100.net; s=20221208; t=1685738852; x=1688330852;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6fpVxJlX5W3JW3Wms1UzwwveVMUvugM8mrsz7VvlhE8=;
-        b=KGwxJHSdyCbVh1ON+orr6yHy/MU82QMyYSeR6HoKoT4PM2eCfm1fyxv+lySZdXwe6j
-         zo6BMn3zei8CAGHYgR+2YqXKW/uH1/3bRdCC6rSIdl9z/GiDFg2xapsxYhJK8O6qaABA
-         ncJ+G76q3SscD4PLY1IPnQC+wdFVgvyt2i8/uOXqUvZ7jWXoBxxDfaCAF8Ahbrafjq1w
-         CxN/a4tJI0OV/+ptguhJ05RZdkCP/jJIDRh19RHU4vL4ArxLs7geD2jk9fLxlMEgZcMd
-         PsQBc1uA7oJ+IbgeDjGe/T4se9xuFqGGm1Kl0EVOMpsF1t3zfEpkLqp2CoXIqiThSASM
-         XOnA==
-X-Gm-Message-State: AC+VfDy5UK9KK1KRshuCXm/MBHl1gRZtxr0xJRL/eNCX7+3WT3Mw9Xnc
-        tjlBSw/3gzJBeF2m4EVfy18=
-X-Google-Smtp-Source: ACHHUZ4tMi+Ade6psTARRj2HLO6wbYndQemQXCSJ3/GCDP1n/lFxfFPTcSWz9i5s8+RmpypeHzek0w==
-X-Received: by 2002:a05:6870:5aa5:b0:19d:767:9da2 with SMTP id dt37-20020a0568705aa500b0019d07679da2mr2617655oab.3.1685738845889;
-        Fri, 02 Jun 2023 13:47:25 -0700 (PDT)
+        bh=2+c2BilUm/fvWdview7xXjg65zJu3iciUS3T9hzkbg0=;
+        b=Sc+Q9Ib8GQl2saCQMr1M7sgn4fffXpBWBUXvpaL8XsA+Xn8OBVFzLlmC860lGDaYcZ
+         dTVB0jISxh3Xu02Bu/rI89R/My24mTD6kP0p6AnwHlXF6uePy24kWUuzeJm0HoZwUoip
+         AObKZomEYnGwW9Rl9+eCn4yjmV+5XOv0km2UJFUhMawl6zx7/sfPik68kclpAX5Tk6Pk
+         Sl+ktd2qG2yMv/2Wjfva0uuh9r0h89oW7odGJblToB70cO+57rFKQV7Mm7Q4yYgykXnk
+         G9EXCbBE7xGnvAodiLupK7yYJa+ce36WGExl9Vnr1EMfPK/HcOFUZKJcxC0fRHj0/2z/
+         H0OQ==
+X-Gm-Message-State: AC+VfDyXv/UufcX3mOdioGFD3E49R2/T2EPTmnsrmNPHXXCCVqnPxs0o
+        MQ47t9KyIdS46VDzHFCZZYaanoZ22fg=
+X-Google-Smtp-Source: ACHHUZ6AKO4H4ka7VuZByjFB71vAva0g7j+L6gasLyAf8EMFMc0uQV2A64T9j2vaXYK57VEwdl+gGg==
+X-Received: by 2002:a05:6871:6a82:b0:1a0:2fd1:8b1a with SMTP id zf2-20020a0568716a8200b001a02fd18b1amr3066802oab.14.1685738851948;
+        Fri, 02 Jun 2023 13:47:31 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id u21-20020a056871059500b0019e6f81740fsm1016298oan.30.2023.06.02.13.47.22
+        by smtp.gmail.com with ESMTPSA id ee16-20020a056870c81000b0019e59515a0bsm1015557oab.33.2023.06.02.13.47.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Jun 2023 13:47:25 -0700 (PDT)
-Message-ID: <5cbf5dcc-50e2-f6f6-262b-96ac1a8ebc52@gmail.com>
-Date:   Fri, 2 Jun 2023 16:54:08 -0300
+        Fri, 02 Jun 2023 13:47:31 -0700 (PDT)
+Message-ID: <b792c9d8-3250-4dd6-19ba-06bb7cb9bc51@gmail.com>
+Date:   Fri, 2 Jun 2023 16:59:47 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.2
-Subject: Re: [PATCH v2 1/3] rust: kernel: add ScatterList abstraction
+Subject: Re: [PATCH v2 2/3] rust: kernel: implement iterators for ScatterList
 Content-Language: en-US
 To:     Qingsong Chen <changxian.cqs@antgroup.com>,
         linux-kernel@vger.kernel.org
@@ -67,12 +67,11 @@ Cc:     =?UTF-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org
+        rust-for-linux@vger.kernel.org
 References: <20230602101819.2134194-1-changxian.cqs@antgroup.com>
- <20230602101819.2134194-2-changxian.cqs@antgroup.com>
+ <20230602101819.2134194-3-changxian.cqs@antgroup.com>
 From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230602101819.2134194-2-changxian.cqs@antgroup.com>
+In-Reply-To: <20230602101819.2134194-3-changxian.cqs@antgroup.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -80,96 +79,26 @@ List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On 6/2/23 07:18, Qingsong Chen wrote:
-> Add a wrapper for `struct scatterlist`.
+> ScatterList could be transmuted from raw pointers of a valid
+> `sg_table`. Then we can use those iterators to access the
+> following normal entries.
 > 
 > Signed-off-by: Qingsong Chen <changxian.cqs@antgroup.com>
 > ---
 > [...]
-> +/// Wrap the kernel's `struct scatterlist`.
-> +///
-> +/// According to the design of kernel's `struct sg_table`, the `page_link`
-> +/// field of one `scatterlist` may contain a pointer to another. That is,
-> +/// there could exist external pointers to it, making it necessary to pin
-> +/// this struct.
-> +///
-> +/// # Invirants
-> +///
-> +/// All instances should be valid, either created by the `new` constructor
-> +/// (see [`pin_init`]), or transmuted from raw pointers (which could be used
-> +/// to reference a valid entry of `sg_table`).
-> +///
-> +/// # Examples
-> +///
-> +/// The following is some use cases of [`ScatterList`].
-> +///
-> +/// ```rust
-> +/// use core::pin::pin;
-> +/// # use kernel::error::Result;
-> +/// # use kernel::scatterlist::ScatterList;
-> +///
-> +/// // Prepare memory buffers.
-> +/// let buf0: Pin<&mut [u8]> = pin!([0u8; 512]);
-> +/// let buf1: Pin<&mut [u8]> = pin!([1u8; 512]);
-> +///
-> +/// // Allocates an instance on stack.
-> +/// kernel::stack_pin_init!(let foo = ScatterList::new(&buf0));
-> +/// let mut foo: Pin<&mut ScatterList<'_>> = foo;
-> +/// assert_eq!(foo.length(), 512);
-> +///
-> +/// // Alloccate an instance by Box::pin_init.
-> +/// let bar: Pin<Box<ScatterList<'_>>> = Box::pin_init(ScatterList::new(&buf1))?;
-> +/// assert_eq!(bar.length(), 512);
-> +///
-> +/// // Assert other attributes of a instance.
-> +/// assert_eq!(foo.is_dma_bus_address(), false);
-> +/// assert_eq!(foo.is_chain(), false);
-> +/// assert_eq!(foo.is_last(), true);
-> +/// assert_eq!(foo.count(), 1);
-> +///
-> +/// // Get a immutable reference to memory buffer.
-> +/// assert_eq!(foo.get_buf(), [0u8; 512]);
-> +///
-> +/// // Reset the memory buffer.
-> +/// foo.set_buf(&buf1);
-> +/// assert_eq!(foo.get_buf(), [1u8; 512]);
-> +///
-> +/// // Get a mutable reference to memory buffer.
-> +/// foo.get_mut_buf().fill(2);
-> +/// assert_eq!(foo.get_buf(), [2u8; 512]);
-> +/// ```
-
-This comment has some typos, but luckily there's the `typos` tool [1]
-out there to help us.
-
-> +#[pin_data]
-> +pub struct ScatterList<'a> {
-> +    #[pin]
-> +    opaque: Opaque<bindings::scatterlist>,
-> +    _p: PhantomData<&'a mut bindings::scatterlist>,
-> +}
-> +
-> +impl<'a> ScatterList<'a> {
-> [...]
-> +
-> +    /// Obtain a pinned reference to an immutable scatterlist from a raw pointer.
-> +    pub fn as_ref(ptr: *mut bindings::scatterlist) -> Option<Pin<&'a Self>> {
-> +        // SAFETY: `sgl` is non-null and valid.
-> +        NonNull::new(ptr).map(|sgl| Pin::new(unsafe { &*(sgl.as_ptr() as *const ScatterList<'_>) }))
+> +    /// Get an iterator for immutable references.
+> +    pub fn iter(&self) -> Iter<'_> {
+> +        Iter(ScatterList::as_ref(self.opaque.get()))
 > +    }
 > +
-> +    /// Obtain a pinned reference to a mutable scatterlist from a raw pointer.
-> +    pub fn as_mut(ptr: *mut bindings::scatterlist) -> Option<Pin<&'a mut Self>> {
-> +        // SAFETY: `sgl` is non-null and valid.
-> +        NonNull::new(ptr)
-> +            .map(|sgl| Pin::new(unsafe { &mut *(sgl.as_ptr() as *mut ScatterList<'_>) }))
+> +    /// Get an iterator for mutable references.
+> +    pub fn iter_mut(&mut self) -> IterMut<'_> {
+> +        IterMut(ScatterList::as_mut(self.opaque.get()))
 > +    }
 
-Please mark both of these as `unsafe` as you can still pass an invalid
-pointer to them. Also, if there's no other user of those methods other
-than this module then I'd suggest to make them private.
+Per the previous commit, because both methods are unsafe you should put
+the `SAFETY` comment on them.
 
 > +}
 > +
 > [...]
-
-Link: https://github.com/crate-ci/typos [1]
