@@ -2,57 +2,57 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E4E2C7EE24
-	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Jun 2023 08:39:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0898EC7EE24
+	for <rust-for-linux@archiver.kernel.org>; Fri,  2 Jun 2023 09:37:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234331AbjFBIjJ (ORCPT
+        id S234591AbjFBJht (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 2 Jun 2023 04:39:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45178 "EHLO
+        Fri, 2 Jun 2023 05:37:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234602AbjFBIjB (ORCPT
+        with ESMTP id S234361AbjFBJhs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 2 Jun 2023 04:39:01 -0400
+        Fri, 2 Jun 2023 05:37:48 -0400
 Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A55C11A5
-        for <rust-for-linux@vger.kernel.org>; Fri,  2 Jun 2023 01:39:00 -0700 (PDT)
-Received: by mail-ej1-x64a.google.com with SMTP id a640c23a62f3a-94a34a0b75eso123970066b.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jun 2023 01:39:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D5BBCE
+        for <rust-for-linux@vger.kernel.org>; Fri,  2 Jun 2023 02:37:45 -0700 (PDT)
+Received: by mail-ej1-x64a.google.com with SMTP id a640c23a62f3a-970e0152da7so139825866b.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jun 2023 02:37:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685695139; x=1688287139;
+        d=google.com; s=20221208; t=1685698663; x=1688290663;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jda3uobQ4e/ZCA/aiprMO5o6cFc2zo/SCaAFYYc33tg=;
-        b=DFvkh47N53HAnKMaSELW4V5UCNV57afHZfDpHsQbNPQWG6vVmWUAMyY6VtEXz1YQiR
-         3Lu8UG9kFZRFFyB7VZynWl6GfzLf/9jfmOZzCopbdFVjW9mWsEnD5D4sTMlZu8abGq9S
-         95d1erpNNU62jVar/aq2xsolB5nR8c9G424Pu1mpSvMhhYLphXkcBe9vFcPYXTsglELv
-         RfFFxliEjuCBwqR0XXwlZ7n2k7vawot5a6B+4TrWtqV54/bqkwEaK+plPxtRgCkZo6P4
-         xGI1AxScgSkVR93gdRmYPvkXiil7QfLJA9bZBVk8Gcp26NbOAJcfT1CEbOWO+GElbUGu
-         Jl5A==
+        bh=g6hKGnk7+yrdCqGxFZXtFZSCtr3Hs69nhywa4vN9dQk=;
+        b=k++9SNiv/OO3O33g9/9eTroGH9b5hGlPNSi00zMI+3lKBu4RkFuIC1EcEe7KD/jbaz
+         w7M2YFlWaueUEZ3ZBRhBGEljk4CX6XobHPYEr/cMV88eHC8OdecDaOMfZJuBeqInAwD+
+         AS49oX1gWO0jWTyaCmjdNL7X0Yk+k7i5creGBmVCLkabQjlsHTPe5sA28usbmDCXYCRJ
+         4ZptKGmHboTtMeV00P4JBm95Ws+ym2erT/xlVh4nZgISW78geGc+StYhiNHOeV4sSw4e
+         PAkVnBlceCInTUdm4jIK/4AJvO4dTSuhgWJSM/z4SZ2w33u+uzuwv+yyv44kgQKOdQGn
+         uWYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685695139; x=1688287139;
+        d=1e100.net; s=20221208; t=1685698663; x=1688290663;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jda3uobQ4e/ZCA/aiprMO5o6cFc2zo/SCaAFYYc33tg=;
-        b=lqdGo/D4x8306G71fcXrqa37f1xckgbqxbU+/6RPE4TFHddx3teoSGSa26YWyuIAMg
-         P5DfVKgzcTrK/LY9FE0DLT2SV4lMyuWtOHA2tFMR43Fj3JH6Ef753MNNcNxT2UxTWjV/
-         hoFMkxsCEWGRVZ27bob96nTWED5/9/TQ53Ng/eSJkb72VQMgsj5pH4vpcZbeGbYPiDju
-         wrsUwg4/IqlS9Ip2ozORw5HzbHVKkHTy3W4CYPmrhv2S1tgBP2D85aaZM2OjDJN/DbDZ
-         PrEN9bUbJ/PBEVkv+tp8626hBE2/dtodJfmpB8qIK16fGIlfbsdDJ5NuFfnXKN9lgzT6
-         zfFg==
-X-Gm-Message-State: AC+VfDzPLFVf33pXGtGKgqjmNMzWOI8mR/77zimYYU9ATPG9rSefjdOQ
-        6jErAi3JFrcOt201NS+UwTLHXUixmarvXUo=
-X-Google-Smtp-Source: ACHHUZ6p0OA0St98mrnqz58Xij1YzPbb+WIUM8sQ8BLm3L74+H/j0k8sMNI8pjyEhPfjUu11IO+HfiJ8jyQsn+k=
+        bh=g6hKGnk7+yrdCqGxFZXtFZSCtr3Hs69nhywa4vN9dQk=;
+        b=J8lbhNUHwtU0lRheSWQIrU93w6/obXFsDsMs04kXVRVcu5hmwm+C+6JlOmNtJxOm8q
+         cJ23PbsYw6LjHKH35Hn4/Wgj+5XDNuWZ1KJd11Y3qO36JF9C/wPOj9aq3NG11D+x5XqC
+         f4CCEOKW51BUq7ec6g1qiXPNwme90ErPlW7SctS/e6wn9JAXsMF4fE+J5VzHMtbTpJjT
+         7FFRcACD2LVRt6nJKRidtf7TaAjmQ9riR/CVfeh0D7QcQfPpvJDf1pxYCkTrYX7dIg4m
+         GXeHi2uXrzEET5q+EF2VsXQwxUNZknD/wy6RaitKu48fOVjliH01Dz6ZROa5rcwiVFGg
+         6/OQ==
+X-Gm-Message-State: AC+VfDzTaitIsGiPmlqYrfkumetNiJJ9ga5WN2meQ9kCLyLjXhrQN4xs
+        mE3f3r2P0H+fQXdEWOG9QwNr6i6FD1/jFSY=
+X-Google-Smtp-Source: ACHHUZ6JmHF0O7xB25c4LZS3SBpbPu8gJ1LUrG2oig85p/mrkugigxAcAyjZYDiO5uEzwymT7yTtjwNZQO8JTzA=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a17:907:270c:b0:965:b935:91f6 with SMTP
- id w12-20020a170907270c00b00965b93591f6mr2890718ejk.14.1685695139208; Fri, 02
- Jun 2023 01:38:59 -0700 (PDT)
-Date:   Fri,  2 Jun 2023 08:38:56 +0000
-In-Reply-To: <ZHjnDAEmimeETrNZ@boqun-archlinux>
+ (user=aliceryhl job=sendgmr) by 2002:a17:906:5a69:b0:974:5e62:2afc with SMTP
+ id my41-20020a1709065a6900b009745e622afcmr502336ejc.13.1685698663640; Fri, 02
+ Jun 2023 02:37:43 -0700 (PDT)
+Date:   Fri,  2 Jun 2023 09:37:41 +0000
+In-Reply-To: <ZHkI8LXrqUOJ7G5E@boqun-archlinux>
 Mime-Version: 1.0
-References: <ZHjnDAEmimeETrNZ@boqun-archlinux>
+References: <ZHkI8LXrqUOJ7G5E@boqun-archlinux>
 X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
-Message-ID: <20230602083856.1035444-1-aliceryhl@google.com>
+Message-ID: <20230602093741.1040283-1-aliceryhl@google.com>
 Subject: Re: [PATCH v2 5/8] rust: workqueue: add helper for defining
  work_struct fields
 From:   Alice Ryhl <aliceryhl@google.com>
@@ -69,66 +69,99 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 Boqun Feng <boqun.feng@gmail.com> writes:
 > On Thu, Jun 01, 2023 at 01:49:43PM +0000, Alice Ryhl wrote:
->> diff --git a/rust/helpers.c b/rust/helpers.c
->> index 81e80261d597..7f0c2fe2fbeb 100644
->> --- a/rust/helpers.c
->> +++ b/rust/helpers.c
->> @@ -26,6 +26,7 @@
->>  #include <linux/spinlock.h>
->>  #include <linux/sched/signal.h>
->>  #include <linux/wait.h>
->> +#include <linux/workqueue.h>
->>  
->>  __noreturn void rust_helper_BUG(void)
->>  {
->> @@ -128,6 +129,13 @@ void rust_helper_put_task_struct(struct task_struct *t)
->>  }
->>  EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
->>  
->> +void rust_helper___INIT_WORK(struct work_struct *work, work_func_t func,
->> +			     bool on_stack)
->> +{
->> +	__INIT_WORK(work, func, on_stack);
+>> +/// Defines the method that should be called directly when a work item is executed.
+>> +///
+>> +/// Typically you would implement [`WorkItem`] instead. The `run` method on this trait will
+>> +/// usually just perform the appropriate `container_of` translation and then call into the `run`
+>> +/// method from the [`WorkItem`] trait.
+>> +///
+>> +/// This trait is used when the `work_struct` field is defined using the [`Work`] helper.
+>> +///
+>> +/// # Safety
+>> +///
+>> +/// Implementers must ensure that [`__enqueue`] uses a `work_struct` initialized with the [`run`]
+>> +/// method of this trait as the function pointer.
+>> +///
+>> +/// [`__enqueue`]: RawWorkItem::__enqueue
+>> +/// [`run`]: WorkItemPointer::run
+>> +pub unsafe trait WorkItemPointer<const ID: u64>: RawWorkItem<ID> {
+>> +    /// Run this work item.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// The provided `work_struct` pointer must originate from a previous call to `__enqueue` where
+>> +    /// the `queue_work_on` closure returned true, and the pointer must still be valid.
+>> +    unsafe extern "C" fn run(ptr: *mut bindings::work_struct);
+>> +}
+>> +
+>> +/// Defines the method that should be called when this work item is executed.
+>> +///
+>> +/// This trait is used when the `work_struct` field is defined using the [`Work`] helper.
+>> +pub trait WorkItem<const ID: u64 = 0> {
+>> +    /// The pointer type that this struct is wrapped in. This will typically be `Arc<Self>` or
+>> +    /// `Pin<Box<Self>>`.
+>> +    type Pointer: WorkItemPointer<ID>;
 > 
-> Note here all the work items in Rust will share the same lockdep class.
-> That could be problematic: the lockdep classes for work are for
-> detecting deadlocks in the following scenario:
+> This being an associate type makes me wonder how do we want to support
+> the following (totally made-up by me, but I think it makes sense)?:
 > 
-> step 1: queue a work "foo", whose work function is:
+> Say we have a struct
 > 
-> 	mutex_lock(&bar);
-> 	do_something(...);
-> 	mutex_unlock(&bar);
+> 	pub struct Foo {
+> 		work: Work<Foo>,
+> 		data: Data,
+> 	}
 > 
-> step 2: in another thread do:
+> 	impl Foo {
+> 		pub fn do_sth(&self) {
+> 			...
+> 		}
+> 	}
 > 
-> 	mutex_lock(&bar);
-> 	flush_work(foo);	// wait until work "foo" is finished.
+> and we want to queue both Pin<Box<Foo>> and Arc<Foo> as work items, but
+> the following doesn't work:
 > 
-> if this case, if step 2 get the lock "bar" first, it's a deadlock.
+> 	// Pin<Box<Foo>> can be queued.
+> 	impl WorkItem for Foo {
+> 		type Pointer = Pin<Box<Foo>>;
+> 		fn run(ptr: Self::Pointer) {
+> 			ptr.do_sth();
+> 		}
+> 	}
 > 
-> With the current implementation, all the work items share the same
-> lockdep class, so the following will be treated as deadlock:
+> 	// Arc<Foo> can also be queued.
+> 	impl WorkItem for Foo {
+> 		type Pointer = Arc<Foo>;
+> 		fn run(ptr: Self::Pointer) {
+> 			ptr.do_sth();
+> 		}
+> 	}
 > 
-> 	<in work "work1">
-> 	mutex_lock(&bar);
-> 	do_something(...);
-> 	mutex_unlock(&bar);
+> Of course, we can use new type idiom, but that's not really great, and
+> we may have more smart pointer types in the future.
 > 
-> 	<in another thread>
-> 	mutex_lock(&bar);
-> 	flush_work(work2);	// flush work2 intead of work1.
-> 
-> which is a false positive. We at least need some changes in C side to
-> make it work:
-> 
-> 	https://lore.kernel.org/rust-for-linux/20220802015052.10452-7-ojeda@kernel.org/
-> 
-> however, that still has the disadvantage that all Rust work items have
-> the same name for the lockdep classes.. maybe we should extend that for
-> an extra "name" parameter. And then it's not necessary to be a macro.
+> Am I missing something here?
 
-Yeah, I did know about this issue, but I didn't know what the best way
-to fix it is. What solution would you like me to use?
+Basically, you're asking "is it possible to use the same `work_struct`
+field for several different pointer types"?
+
+When creating the function pointer to store in the `work_struct`, the
+function pointer _must_ know what the pointer type is. Otherwise it
+cannot call the right `WorkItem::run` method or perform the correct
+`container_of` operation. (E.g. an `Arc` embeds a `refcount_t` before
+the struct, but a `Box` does not.)
+
+With an associated type there is no problem with that. Associated types
+force you to make a choice, which means that the `work_struct` knows
+what the pointer type is when you create it. Supporting what you suggest
+means that we must be able to change the function pointer stored in the
+`work_struct` after initializing it.
+
+This is rather tricky because you can call `enqueue` from several
+threads in parallel; just setting the function pointer before you call
+`queue_work_on` would be a data race. I suppose you could do it by
+implementing our own `queue_work_on` that sets the function pointer
+_after_ successfully setting the `WORK_STRUCT_PENDING_BIT`, but I don't
+think this patchset should do that.
 
 Alice
