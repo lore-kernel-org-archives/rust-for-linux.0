@@ -2,146 +2,121 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD22FC77B73
-	for <rust-for-linux@archiver.kernel.org>; Mon,  5 Jun 2023 15:26:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 65814C7EE24
+	for <rust-for-linux@archiver.kernel.org>; Mon,  5 Jun 2023 16:12:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233822AbjFEP0O (ORCPT
+        id S231881AbjFEQMk (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 5 Jun 2023 11:26:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35034 "EHLO
+        Mon, 5 Jun 2023 12:12:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233691AbjFEP0N (ORCPT
+        with ESMTP id S234747AbjFEQMj (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 5 Jun 2023 11:26:13 -0400
-Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 424DED2;
-        Mon,  5 Jun 2023 08:26:09 -0700 (PDT)
-Received: by mail-qv1-xf2f.google.com with SMTP id 6a1803df08f44-6261cb1208eso34291456d6.0;
-        Mon, 05 Jun 2023 08:26:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685978768; x=1688570768;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+eTZJaesQgEddfhUw6/wmzf8jeBxuOms7oai97sQq2k=;
-        b=NHZtSRQ5uU4okMdEGz/dEAMNO96gXzngsu05M1NcMhqGCbTngUE/ZJ958d1h1OJqv2
-         N6x/RSWGDm/fMJ86LJpVUB9GJ3jcK+V91MPWbMv3ciUgsk7O+ren3Wiwn0egy0a2kngu
-         zg6pPpIcTw1QdC+r8QIEsdG/lll2wY22o/Hj05VWQM50PSNZQsStuo+VwNVLLGPYCr+g
-         jjLfg9FZGJWiFOQyqtvK6qw2ooZT/3FGcLWKmVHRYU9SWZbBVHW6orxnfUT1tqPf0Mfq
-         +rh3ShbY4uPRLjueiK++Lwby7PwkiaFHA70sCo9eiWPiqMEQ0MMvRcyMP5SJRfM5C5MR
-         T2PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685978768; x=1688570768;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+eTZJaesQgEddfhUw6/wmzf8jeBxuOms7oai97sQq2k=;
-        b=bacFGcsuQaATwjWVsmH4TOLtSmObsUfZZvPO0G+1YXfRHb6emj5RsuALlfEaB0eXmq
-         4dLMXHWSKnjyQ6/leKvFvbIlek+IoIYrNVb0DsCp0RG1Kugl4CqAtclM9i89f56M4lsf
-         iQMKQislY2FE4zeWYL2pQeBlgR3AlE3IW7DgNwem0OMVM5qjc6VXFSob+GNBKon2vMF+
-         wyGZT+vxD48W1azU/lpJ+XJm3ZSf+HRtf397lpq9Ns0auYgswxkmlitoZU8uvuBkaWrm
-         8MG4uI0PO3xKH3GhEu0PvSrnqqmMzqAup34DN1jg7bCD8dTLeoFHt0dFDUXa5V5EZCrn
-         QN1g==
-X-Gm-Message-State: AC+VfDwo/UvuyGcv1bSmewxYMu9kGU/bm+5LtiJPPnw9tGi7+1Hj1VcB
-        1QvGurAA+GuyW5fIaGsFOc0=
-X-Google-Smtp-Source: ACHHUZ6wXMafXI1hTByfErDZvwWVy1ltulaWCZ8vTktcr6yFmoG+8whyg3dFFWFoM8U65OlC65dugA==
-X-Received: by 2002:a05:6214:5194:b0:61b:714f:73f8 with SMTP id kl20-20020a056214519400b0061b714f73f8mr7360816qvb.0.1685978768343;
-        Mon, 05 Jun 2023 08:26:08 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id n1-20020a0cec41000000b00619adb4b66asm4725098qvq.95.2023.06.05.08.26.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jun 2023 08:26:07 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 4D17C27C0054;
-        Mon,  5 Jun 2023 11:26:07 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Mon, 05 Jun 2023 11:26:07 -0400
-X-ME-Sender: <xms:jv59ZLDukSEPN4HOY4Bvcw79G0QLjGz3A8oAioooGi3L3K-3Joel0g>
-    <xme:jv59ZBjdylld1Q0grHd2JEHzP0gOt_fMX_3CpeRmkes1qiUQ0xTXHf-7yOyG9pdli
-    np_6_UIGo7DG23LfA>
-X-ME-Received: <xmr:jv59ZGkLhBdSfoWRoKAR-HB8ocHTOvvmZVDoxb5Xj4DTmDnfJrPux1Wgy9jdV7X6ASeisAp5ozOalks1iyGaOwv90AKYfzypfhE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeelledgkeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeejiefhtdeuvdegvddtudffgfegfeehgfdtiedvveevleevhfekhefftdek
-    ieehvdenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgr
-    uhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsoh
-    hquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:jv59ZNydKH2nuVH3HMIriWlJkvqR74dufyy5AiPfWHIu0yLrehDyhA>
-    <xmx:jv59ZASjMlN7yeZUHsKs9E1CPgylv8jJbVfycr2ssgNOMW_tyHK7RQ>
-    <xmx:jv59ZAadmys0NTauN4lwajZsToMJSpJeOsz7c2px4JQYAzvtcoCY6w>
-    <xmx:j_59ZHI-jcDWNdY24kEFN4PPBekHoqi9315am_Y6EdwwNeGaWJoVAQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 5 Jun 2023 11:26:05 -0400 (EDT)
-Date:   Mon, 5 Jun 2023 08:26:04 -0700
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Qingsong Chen <changxian.cqs@antgroup.com>
-Cc:     linux-kernel@vger.kernel.org,
-        =?utf-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] rust: kernel: add ScatterList abstraction
-Message-ID: <ZH3+jARBbn2iG1dW@Boquns-Mac-mini.local>
-References: <20230602101819.2134194-1-changxian.cqs@antgroup.com>
- <20230602101819.2134194-2-changxian.cqs@antgroup.com>
+        Mon, 5 Jun 2023 12:12:39 -0400
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01olkn2068.outbound.protection.outlook.com [40.92.64.68])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 797CDF7;
+        Mon,  5 Jun 2023 09:12:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Wx5WaknvSozbkKTuCwnKL/yZOqj8V3xBHRNWoiu7RHYLj3d1bFjV0lApI/BkBl3L5TGKDOTzICCLuPCz4M2rZiWbnpbkPq5IhMmoVTfkH+0Rm+cReX1GBzMMkwS1M79lwWdfV1H40obZkeMeCOWlvgq4pH5esfParXgAVVXvO3M2yW8vhW4SrfJ1mIuYyo9uIMyPuf3d2EqeSS2Q/n3arzi1tpVeR/H+g8S06qXsv9B9PTq3tzUu+a43SDtHczAr1GB5O7XkbglEFx7vLwCLzW1eihXQRhzeZZqNXCs+KZHY/2h5wQHv1PoIm8/oG0B0fR0GEZIW4e1vAohXaDZQ1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i6+oHIVonsmSNprk30DBRxfADmZiGHHbgnu7EaJI6WA=;
+ b=bpu653GlhE5b03sdF532r7T6e5dSOvwAW7cUfYhRne6aJH9ym5ptpPztWnlG2Jg26fDqooWZvE9JMGhrKZUItSVSET7PknelmebNjwEecUV+tpioMPSaQO1J5jaMb5V6rAK673ROB8WEX2BZRpFn6attTTWD5eOn+O3o16vClRns5b6xonBmZNLp9LeZjFfvtqzU1DbX/hv3IivCzm4HMUosAk+MEoWMLiQCzn+zo5OzKW+VTTy4v35PmQ+S3sNE/BYz2+k30PvmCF7oCu38w9vU8c9tJ+NwrEDZmzJRk6O3BMF3DqFTHx/TQwjgbwYrJRtAxJ658+fz24X6LRguXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from PAXP190MB1631.EURP190.PROD.OUTLOOK.COM (2603:10a6:102:1c0::8)
+ by PR3P190MB0938.EURP190.PROD.OUTLOOK.COM (2603:10a6:102:80::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.32; Mon, 5 Jun
+ 2023 16:12:35 +0000
+Received: from PAXP190MB1631.EURP190.PROD.OUTLOOK.COM
+ ([fe80::3519:4745:1283:abd3]) by PAXP190MB1631.EURP190.PROD.OUTLOOK.COM
+ ([fe80::3519:4745:1283:abd3%4]) with mapi id 15.20.6455.030; Mon, 5 Jun 2023
+ 16:12:35 +0000
+From:   timo.gr@hotmail.de
+To:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Timgrau <timo.gr@hotmail.de>, Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH] lib/Kconfig.debug: fix grammar in RUST_BUILD_ASSERT_ALLOW
+Date:   Mon,  5 Jun 2023 18:12:23 +0200
+Message-ID: <PAXP190MB1631B7C90A99FCEBB1594AAE8B4DA@PAXP190MB1631.EURP190.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.40.1
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-TMN:  [5kVxFmp9KVqaKUyCsNIKJuWTAeCF1oONG5RCUyMdD7t8Z5ECClGDea5cAn0LsLiQ]
+X-ClientProxiedBy: FR2P281CA0072.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9a::11) To PAXP190MB1631.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:102:1c0::8)
+X-Microsoft-Original-Message-ID: <20230605161223.52759-1-timo.gr@hotmail.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230602101819.2134194-2-changxian.cqs@antgroup.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXP190MB1631:EE_|PR3P190MB0938:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15cd20a3-720b-44e7-ff38-08db65dfacb4
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: QSDCo208MsgXISp+uJXJT8C0KW1LM3V9QrZ21QBg8tythxVTzxkcAPz/B5BjyUMQtjSmye5OroXimGgLPkS2651YQnsvp0bXUshewBOsjW9vDu5HzMne2picjzbD2tT+fm9bibLNm8gQXRtJN8feoG/Tt+7WCyEef2kjTfKECWrvDMb9lNjPBTeFYo1NiAzgNoiGwcULNQCGYhAH3PQsHSYgcD71OcqL5d84Ev1EB8tjBoa2S8sBG6NgtIMavT19P4dfrIhn/oMlb1C4j6nl4gC4iafbELjEqem+RI1zl6Zo5aHHeyk9fGnP1rMPkCY8IrPmeVaUGdYTiZsSAk4sjZtiB8Jy+VZCiqmyrazYUYEgPe7vP3mCQucqNVeoNhV4tbLJiBFMFZfRSfpt0jtxQlqLohHvNBajnL2C4bFhS47vy7z3N+lEngq+B5L7btH+c/b7LM02bXV8v8bi8FwTttr4GbSCjv9fR6d+a07gGWAWW5X2V5c7J/WTbTE16FJ1uTj4fLFCeO0+FdM4EH1IwFsmoKA5YwCM4q4bAY0bip2KQVwxcKPqcXd02JTncDx7mFuiJsDmzvvdtSxhcpcwX0r85AQBnIMERMyBQN+mCCA=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DPfNtR3X2TfmjTRBj/r0iZNNRfiA2ptnLXQgGJOnJ4ZSCw8U0uv4JZtckbyv?=
+ =?us-ascii?Q?rmocquTr7h8DdYZwxsVXW6z1JeEKwHHQt9bvTBNpS7yIEC7OWtNI1H3XjxpF?=
+ =?us-ascii?Q?OBbXsQU+v1s17WpXlvckHTHDivb725YIyD7guhDXHyHaQkc8fi9OA1/pImt7?=
+ =?us-ascii?Q?+s489sp11pGa8lPgUpv0IkUsWLfzozkZKM/K9MHUSM6t2TBhi0SIYR/nxrys?=
+ =?us-ascii?Q?D0I2jAB13juRAvvp2OLh3B9mQlfq0K+vTngVc2gwWOmbZyJ7WftCpYH4V7fb?=
+ =?us-ascii?Q?ldOQMUxyN0YUCeCctiLWdJ6gh/E0DYcvNtkiQr1KcdXV90RKfmmFQj18QIoV?=
+ =?us-ascii?Q?BaV941RSLScZvY0sdCF3ACsijVDnAMo4Loj7SkhC0kLI86l6Qm3l3nxIuN2l?=
+ =?us-ascii?Q?HiJQa9Mhyi0TqK2MC8wlMGd4cCN6UWZnATu0smaIkk2fMkaja4/0Oje8fGx8?=
+ =?us-ascii?Q?SMfbssXDNgmMk4n2eUIsOJOondZS+ofe7w3n0uQ8YUtHdDLGYmYqGJZEnGZg?=
+ =?us-ascii?Q?7tVnkouJH66Iqi+OFLZtTI+CDCi7GMCybm3DnPvSGerK5LV5tWvvpxATu03i?=
+ =?us-ascii?Q?GqXRkG7+q0LulxiJucAIrJYS7VL4PtEIS7UubjOQomlXDAqLEk4TNVdnrWoD?=
+ =?us-ascii?Q?IRuZ6H7axbnfR/3AXLtKKvSfcnbJykr+bEFPTfRzzce9TwQFJ+2BOp4d1U6w?=
+ =?us-ascii?Q?cTmL61ZcpiVUTsDYRSiAmUwqXOhItXNLzHxedDl5gvqTPzxDzffy0YR/YqvZ?=
+ =?us-ascii?Q?kgJLI8bezAfjj5RyqYT8T/I0u9bBdGcre1unSBqLmgbUZoHme1eyaPSV49JU?=
+ =?us-ascii?Q?GTrTqG44mFfugWfXZnyzgPujwpVcHu9fNT3DX4MAo1Lzzwm5CDtc+uWvRKbg?=
+ =?us-ascii?Q?t9ihAi3hlioyGUiALqTIWKDTHLoFmZ/WAl1rJ+fDKvtsaywjPMFAgiqeCqwq?=
+ =?us-ascii?Q?U7hlWTQu2w44VOd+C5Qcp5J/4B5SDhlfvIiNAqW6ZwCGnCW3qGIzFy+HyZFe?=
+ =?us-ascii?Q?OVnfJjLwmv6Qnl5QKcYh/CuUyf3canGeyzC6MyezfdER6gzxsntMuSR1QouF?=
+ =?us-ascii?Q?kFWvxvsIfCQm/7zOBVW0C3N2dBsWVBJ8THrPIVdv99hUhpM0gscnLuKSdxwW?=
+ =?us-ascii?Q?/WU0m8luDRhN58lKlqt5G56RO/XP0FpA1cN32Eq03ZyJqicvdTW8W/DOcsOh?=
+ =?us-ascii?Q?Cfsdrb3cCG9e8IcjBablL819QNLuyeCUIGpMx8paayFfhSrKFChmyWe8wgXd?=
+ =?us-ascii?Q?s8UXFXwssrjSpLT+mK6E6TaL0wDUjFgPGYrUYV4kRg=3D=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-91991.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15cd20a3-720b-44e7-ff38-08db65dfacb4
+X-MS-Exchange-CrossTenant-AuthSource: PAXP190MB1631.EURP190.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2023 16:12:35.5463
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3P190MB0938
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Jun 02, 2023 at 06:18:17PM +0800, Qingsong Chen wrote:
-[...]
-> +impl<'a> ScatterList<'a> {
-> +    /// Construct a new initializer.
-> +    pub fn new(buf: &'a Pin<&mut [u8]>) -> impl PinInit<ScatterList<'a>> {
-> +        // SAFETY: `slot` is valid while the closure is called, the memory
-> +        // buffer is pinned and valid.
-> +        unsafe {
-> +            init::pin_init_from_closure(move |slot: *mut Self| {
-> +                (*slot).set_buf(buf);
-> +                (*slot).mark_end();
+From: Timgrau <timo.gr@hotmail.de>
 
-Benno can provide more information, but you cannot dereference or create
-a reference to `*slot`, since `slot` points to an uninitialized object
-(see `try_pin_init` implementations), and referencing uninitialized
-objects is UB (or may cause UB).
+Just a grammar fix in lib/Kconfig.debug, under the config option RUST_BUILD_ASSERT_ALLOW.
 
-Note that you could do the following for `set_buf`:
+Signed-off-by: Timgrau <timo.gr@hotmail.de>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1006#issue-1696318406
+Closes: https://github.com/Rust-for-Linux/linux/issues/1006#issue-1696318406
+---
+ lib/Kconfig.debug | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	// `addr_of!`[1] is special since it won't create references
-	// (even temporary onces).
-	let opaque = addr_of!((*slot).opaque); // <- *const Opaque<bindings::scatterlist>
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index ce51d4dc6803..a56b9b368e78 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -2899,7 +2899,7 @@ config RUST_BUILD_ASSERT_ALLOW
+ 	bool "Allow unoptimized build-time assertions"
+ 	depends on RUST
+ 	help
+-	  Controls how are `build_error!` and `build_assert!` handled during build.
++	  Controls how `build_error!` and `build_assert!` are handled during build.
+ 
+ 	  If calls to them exist in the binary, it may indicate a violated invariant
+ 	  or that the optimizer failed to verify the invariant during compilation.
+-- 
+2.40.1
 
-	let ptr = Opaque::raw_get(opaque); // <- *mut bindings::scatterlist
-
-	// Maybe this can be wrapped as a Rust function with a
-	// parameter: *mut bindings::scatterlist.
-	unsafe {
-		bindings::sg_set_buf(ptr, buf.as_ptr(), buf.len());
-	}
-
-[1]: https://doc.rust-lang.org/core/ptr/macro.addr_of.html
-
-Regards,
-Boqun
-
-> +                Ok(())
-> +            })
-> +        }
-> +    }
-> +
-[...]
