@@ -2,106 +2,92 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3357AC7EE24
-	for <rust-for-linux@archiver.kernel.org>; Mon,  5 Jun 2023 08:12:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3976FC77B73
+	for <rust-for-linux@archiver.kernel.org>; Mon,  5 Jun 2023 11:37:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229652AbjFEIMk (ORCPT
+        id S232489AbjFELhE (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 5 Jun 2023 04:12:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53120 "EHLO
+        Mon, 5 Jun 2023 07:37:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbjFEIMj (ORCPT
+        with ESMTP id S232484AbjFELhD (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 5 Jun 2023 04:12:39 -0400
-Received: from out0-220.mail.aliyun.com (out0-220.mail.aliyun.com [140.205.0.220])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06CBAA1;
-        Mon,  5 Jun 2023 01:12:37 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018047194;MF=changxian.cqs@antgroup.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---.TLYS.ZU_1685952751;
-Received: from 30.177.18.239(mailfrom:changxian.cqs@antgroup.com fp:SMTPD_---.TLYS.ZU_1685952751)
-          by smtp.aliyun-inc.com;
-          Mon, 05 Jun 2023 16:12:32 +0800
-Message-ID: <9c3af5ce-b692-bfe2-4fef-06281d0813eb@antgroup.com>
-Date:   Mon, 05 Jun 2023 16:12:30 +0800
+        Mon, 5 Jun 2023 07:37:03 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 828A8E9;
+        Mon,  5 Jun 2023 04:37:00 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-b9e6ec482b3so5335270276.3;
+        Mon, 05 Jun 2023 04:37:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685965019; x=1688557019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DTbdt8ORnl1B8sC3y3KbFpUIsRJM7YqW2sLcDSkmXLA=;
+        b=RSRSthOlt6PQelpdb653+u9BcwAhAKhp0/+nPIUgfOkN1q9MGczP2bAid7XFUwr0bI
+         qqKEExl1+wDF6xDqJ9D6mM6sPJF0wdyCgz9s5utLTl4RCivebhiN3reZKzqXImJYN5zk
+         qWXTu4+gx4924dXVeZLS7gbEo+1EkJORAthSacDKR3SIq2RbPr6JJqsR6L3MEm4oxWed
+         iHYVTTuBWrRo3TUUZ6Svt5lI5Im8UVAEFO/xgyUymvWkS9kzbbv7auZnFUwLRXCfFMsg
+         2EA4g6tPmfgGds0wCDXATm/GXXN6Rx/28Ddk7UVpiDvTGlYSWObFwd+dQ3xfoZy4cJ4D
+         DyHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685965019; x=1688557019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DTbdt8ORnl1B8sC3y3KbFpUIsRJM7YqW2sLcDSkmXLA=;
+        b=f+k1yCt3A/DvSQ+FbahbMWM22y6sfFqJJREf5BB1wL84kRJntkCe5bvtvnegDdvgwH
+         RTLk/yIgCxd16uSLpd7UqHU6fqhCu2OnVzcszDcPRfbNe+sOJt+pJJnQi4pDkF43ezGs
+         IVFwoosg6tAFnXhhZdIi3LAm2dV3nWAcQZTnPk1yRlvmSdqGppDrD4uE53KXEgZ8C8Uy
+         6JsX8W5jkxy+idbIvhLnEiassNyfIFrY8/reGgaa9zbDIjYp6lvDjiYSbZ/j5FGsoOGf
+         6txNZyK8zeKRRC3xASO5Idl4XGBCLGPiBgKsJ63pVPVagGONPX4IJZde4pOYsp1Ua1rJ
+         2mAw==
+X-Gm-Message-State: AC+VfDyRYC77JAdAdV9QCfLY7BhJbRS6G6xcSkYbhiwNLb6OJTEmYzr4
+        96sAF7wrTWPmBjfeclZjrrX97PR7VJ1WP+BJk4g=
+X-Google-Smtp-Source: ACHHUZ5xPibmrkFS0SemXYrWTmceoht+d1JqfD+FxvGUN4R5p2/Q5Yc++3M4FkQsmc72rtjo2TvPFiIs7bXWUC0Y1As=
+X-Received: by 2002:a25:74c2:0:b0:ba1:dfba:1d12 with SMTP id
+ p185-20020a2574c2000000b00ba1dfba1d12mr13577515ybc.29.1685965019650; Mon, 05
+ Jun 2023 04:36:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH v2 1/3] rust: kernel: add ScatterList abstraction
-To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        linux-kernel@vger.kernel.org
-Cc:     "=?UTF-8?B?55Sw5rSq5Lqu?=" <tate.thl@antgroup.com>,
-        "Miguel Ojeda" <ojeda@kernel.org>,
-        "Alex Gaynor" <alex.gaynor@gmail.com>,
-        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
-        "=?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>,
-        "Benno Lossin" <benno.lossin@proton.me>,
-        "Alice Ryhl" <aliceryhl@google.com>,
-        "Asahi Lina" <lina@asahilina.net>, <rust-for-linux@vger.kernel.org>
 References: <20230602101819.2134194-1-changxian.cqs@antgroup.com>
- <20230602101819.2134194-2-changxian.cqs@antgroup.com>
- <5cbf5dcc-50e2-f6f6-262b-96ac1a8ebc52@gmail.com>
-From:   "Qingsong Chen" <changxian.cqs@antgroup.com>
+ <20230602101819.2134194-2-changxian.cqs@antgroup.com> <5cbf5dcc-50e2-f6f6-262b-96ac1a8ebc52@gmail.com>
 In-Reply-To: <5cbf5dcc-50e2-f6f6-262b-96ac1a8ebc52@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 5 Jun 2023 13:36:48 +0200
+Message-ID: <CANiq72namC6dtnDfY-AQXU-UNwsRU1K3sS6HWY-jU9myLR3SoA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] rust: kernel: add ScatterList abstraction
+To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc:     Qingsong Chen <changxian.cqs@antgroup.com>,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/3/23 3:54 AM, Martin Rodriguez Reboredo wrote:
-> On 6/2/23 07:18, Qingsong Chen wrote:
->> +/// # Invirants
->> +///
->> +/// All instances should be valid, either created by the `new` constructor
->> +/// (see [`pin_init`]), or transmuted from raw pointers (which could be used
->> +/// to reference a valid entry of `sg_table`).
->> +///
->> +/// # Examples
->> +///
->> +/// The following is some use cases of [`ScatterList`].
->> +///
->> +/// ```rust
->> +/// use core::pin::pin;
->> +/// # use kernel::error::Result;
->> +/// # use kernel::scatterlist::ScatterList;
->> +///
->> +/// // Prepare memory buffers.
->> +/// let buf0: Pin<&mut [u8]> = pin!([0u8; 512]);
->> +/// let buf1: Pin<&mut [u8]> = pin!([1u8; 512]);
->> +///
->> +/// // Allocates an instance on stack.
->> +/// kernel::stack_pin_init!(let foo = ScatterList::new(&buf0));
->> +/// let mut foo: Pin<&mut ScatterList<'_>> = foo;
->> +/// assert_eq!(foo.length(), 512);
->> +///
->> +/// // Alloccate an instance by Box::pin_init.
->> +/// let bar: Pin<Box<ScatterList<'_>>> = Box::pin_init(ScatterList::new(&buf1))?;
->> +/// assert_eq!(bar.length(), 512);
-> 
+On Fri, Jun 2, 2023 at 10:47=E2=80=AFPM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
+>
 > This comment has some typos, but luckily there's the `typos` tool [1]
 > out there to help us.
-> 
 
-I just tried the `typos` tool, but it didn't report any errors. Though, 
-I would try other spell checker, with more caution. Thanks.
+`scripts/checkpatch.pl` has `--codespell`, but the main dictionary
+does not have it, so I sent:
 
->> +    /// Obtain a pinned reference to an immutable scatterlist from a raw pointer.
->> +    pub fn as_ref(ptr: *mut bindings::scatterlist) -> Option<Pin<&'a Self>> {
->> +        // SAFETY: `sgl` is non-null and valid.
->> +        NonNull::new(ptr).map(|sgl| Pin::new(unsafe { &*(sgl.as_ptr() as *const ScatterList<'_>) }))
->> +    }
->> +
->> +    /// Obtain a pinned reference to a mutable scatterlist from a raw pointer.
->> +    pub fn as_mut(ptr: *mut bindings::scatterlist) -> Option<Pin<&'a mut Self>> {
->> +        // SAFETY: `sgl` is non-null and valid.
->> +        NonNull::new(ptr)
->> +            .map(|sgl| Pin::new(unsafe { &mut *(sgl.as_ptr() as *mut ScatterList<'_>) }))
->> +    }
-> 
-> Please mark both of these as `unsafe` as you can still pass an invalid
-> pointer to them. Also, if there's no other user of those methods other
-> than this module then I'd suggest to make them private.
-> 
+    https://github.com/codespell-project/codespell/pull/2869
+    https://github.com/codespell-project/codespell/pull/2870
 
-Those methods are only used by `SgTable` and the iterators by design. 
-And it would be better if they were private and marked as unsafe. Thanks.
+Since `typos` appears to import `codespell` main dictionary, I guess
+that will eventually help both tools.
+
+Cheers,
+Miguel
