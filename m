@@ -2,104 +2,127 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB7DFC7EE24
-	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jun 2023 15:26:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50484C77B73
+	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jun 2023 16:20:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237940AbjFFP0J (ORCPT
+        id S233463AbjFFQUZ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 6 Jun 2023 11:26:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48184 "EHLO
+        Tue, 6 Jun 2023 12:20:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237942AbjFFP0A (ORCPT
+        with ESMTP id S232450AbjFFQUY (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 6 Jun 2023 11:26:00 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A21A198D
-        for <rust-for-linux@vger.kernel.org>; Tue,  6 Jun 2023 08:25:47 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-bacfa9fa329so6549939276.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jun 2023 08:25:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686065146; x=1688657146;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JD+KQMthMZ3rJgGdK4c7DF2xuqYdLn7Y45h3Icr6TxA=;
-        b=XMyqN33NQUNvozPrKNFuIsX471klAEa2YF1gYGS8N6FOuvz61NbKXDs4sgdvvQX3gr
-         kssiJLKvN0j8Vxq8OMEmeY3LUCqYuo3vSX/uli+96zuZsuHjycQcSAbAgwCSWcGa4qFk
-         c9Y5QvpO60e8WIS8GpumxHXpar9D0AeHzIpkJs36zYYTl3XAfk3s7FGCeecEkPKQIYYZ
-         VLpOy3b0NeFP0dXwOqrYIwk2c7ha4ZRODwNX5XY7panhOVWW6SHQ86Em/tM10UVhDBy7
-         VKS00xsxNglhzRXtgZcXEkNQ+YLagEzWQlqSdLaRFyDvNTFcnzLdclYPz0RM7eMIdvS3
-         LXDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686065146; x=1688657146;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JD+KQMthMZ3rJgGdK4c7DF2xuqYdLn7Y45h3Icr6TxA=;
-        b=Ok157jvSSa3U8eTsYuunvKH/SfvUgEKlD3HSJZ7NjVjTIN5jkIVT3FMdbaYJEsfWOt
-         FF54bmN+OPmmf8+Yhn3GADAV47P4j0/GDzv+4CCPEquauQNMFTLPC66h7SdXPXOnO7Cu
-         hIoSgXdW8DHjf3Y+VnYNSCakBamtyZmawLolyCrH5PAhm2KD0Teos01kEKWth5UhSnkZ
-         OrLLgHsjduKT4nzR5ZuDXtvfzUzRlPzQUzWjOy/dc5GOfBH8P2LUlji4vcKaCyF6/qcj
-         WR5I0jaLARXVArRSrgQyRgtaP6iSu8DE707Eo4qrGxL4ESfgpWvZlvo39qzVlezUA1Ui
-         vT+g==
-X-Gm-Message-State: AC+VfDzklah97a+AdQJV7m0vT5fll+zLQNpLTHqDiWp4WqwEwBWfUwKe
-        gSDqkFEKAgHcYsY7I4B6bObWOxumpk7IoWaM0kE=
-X-Google-Smtp-Source: ACHHUZ7T6NVYCbB46cdO+JO2072QES55TqR6UQySc7srvuIDffOdzF047vHSQZnlPKVPHybK+/cfzLrY75Px3GpM3r0=
-X-Received: by 2002:a81:a190:0:b0:565:c4af:1a90 with SMTP id
- y138-20020a81a190000000b00565c4af1a90mr2412342ywg.40.1686065146190; Tue, 06
- Jun 2023 08:25:46 -0700 (PDT)
+        Tue, 6 Jun 2023 12:20:24 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B50683
+        for <rust-for-linux@vger.kernel.org>; Tue,  6 Jun 2023 09:20:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=C9FFx1qbJMT0O5K5sM9hZG/JsHLcbh3iFyqsKbUwNG8=; b=ebW6mrQREZPFXg84+HI7UxfjOF
+        T4MfS0d2McBJ9ZLMQ41ax4Lvm8Gb5pcI4iJsFyhrq1RpRepRFyCJMNsxvx3ne/jY2y/gfjzefEPx4
+        2wLXBzdxTCcS+Qw395hM+AE81aSey4LBrctAbtumsBj2LFhKauxBC33I/huwxVvsd0ZI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1q6ZPr-00F3AZ-3b; Tue, 06 Jun 2023 18:20:15 +0200
+Date:   Tue, 6 Jun 2023 18:20:15 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     FUJITA Tomonori <tomo@exabit.dev>
+Cc:     rust-for-linux@vger.kernel.org,
+        FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH 1/5] rust: core abstractions for network device drivers
+Message-ID: <dc024310-0445-4d1a-b55b-2537d4fca55a@lunn.ch>
+References: <20230604021736.3392963-1-tomo@exabit.dev>
+ <01010188843259bd-eaff4dc9-c029-4da4-8c5b-2489fd34ffdf-000000@us-west-2.amazonses.com>
 MIME-Version: 1.0
-References: <20230606145606.1153715-1-Jamie.Cunliffe@arm.com>
-In-Reply-To: <20230606145606.1153715-1-Jamie.Cunliffe@arm.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 6 Jun 2023 17:25:34 +0200
-Message-ID: <CANiq72kceCV1CDHpmDCq8QR0u+=71-DOYYkVQeGpYfMdSju8Gg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Rust enablement for AArch64
-To:     Jamie Cunliffe <Jamie.Cunliffe@arm.com>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, steve.capper@arm.com,
-        Asahi Lina <lina@asahilina.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <01010188843259bd-eaff4dc9-c029-4da4-8c5b-2489fd34ffdf-000000@us-west-2.amazonses.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Jun 6, 2023 at 4:56=E2=80=AFPM Jamie Cunliffe <Jamie.Cunliffe@arm.c=
-om> wrote:
->
-> The third patch disables Rust support when building for big
-> endian. Currently there is no `aarch64_be-unknown-none` target which
-> would allow this. Support for this can come at a later time either by
-> using the target.json approach, or upstreaming a new target definition
-> to rustc (preferred). We also might be able to use the
-> `aarch64_be-unknown-linux-gnu` target, however, this can be done at a
-> later time.  It's worth noting that in Makefile.clang, it's
-> recommended for arch/{arch}/Makefile to set the endianness based on
-> arguments rather than the target triple. It's currently not possible
-> to do this with rustc, a different target triple has to be used.
+> +/// The pointer to the `net_device` object is guaranteed to be valid until
+> +/// the registration object is dropped.
+> +pub struct Registration<T: DeviceOperations<D>, D: DriverData> {
+> +    dev: Device,
+> +    is_registered: bool,
+> +    _p: PhantomData<(D, T)>,
+> +}
 
-Thanks Jamie for this!
 
-It sounds like upstream `rustc` should support setting the endianness,
-but if they are OK with maintaining another target, so that we can
-start to get rid of `target.json`, that would be great.
+> +    pub fn register(&mut self) -> Result {
+> +        // SAFETY: `dev` was allocated during initialization and is guaranteed to be valid.
+> +        let ret = unsafe {
+> +            (*self.dev.0).netdev_ops = Self::build_device_ops();
+> +            bindings::register_netdev(self.dev.0)
+> +        };
+> +        if ret != 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            self.is_registered = true;
+> +            Ok(())
+> +        }
+> +    }
 
-By the way, should the patches be merged into one? i.e. the first
-patch applied alone would be "wrong" in that BE is not supported
-anyway, right? So why not put the constraint directly in the first
-patch? Or am I missing something?
+I knew ~0 about rust, but i do know the network stack.
 
-Similarly, for the second patch, I think it would be better to squash
-it into the first, especially if the build is not correct if those
-flags are not set.
+You need to be careful with the value of self.is_registered. The
+network stack will start using the interface during the call to
+register_netdev(). It can call any of the netdev ops or ethtool ops
+before register_netdev() has returned. You can see this in particular
+with NFS root, but there are other use cases as well.
 
-But maybe I am missing something, or perhaps the arm64 maintainers
-prefer otherwise.
+However, i do see value in self.is_registered. One of the common bugs
+in drivers caught at review time is not completely setting up the
+device before calling register_netdev(). The way you have added
+setters for the netdev ops and ethtool ops we want it to error out if
+these setters are called after the interface is registered.
 
-Lina's `Tested-by` for Asahi would be great here.
+> +    const DEVICE_OPS: bindings::net_device_ops = bindings::net_device_ops {
+> +        ndo_init: if <T>::HAS_INIT {
+> +            Some(Self::init_callback)
+> +        } else {
+> +            None
+> +        },
+> +        ndo_uninit: if <T>::HAS_UNINIT {
+> +            Some(Self::uninit_callback)
+> +        } else {
+> +            None
+> +        },
+> +        ndo_open: if <T>::HAS_OPEN {
+> +            Some(Self::open_callback)
+> +        } else {
+> +            None
+> +        },
+> +        ndo_stop: if <T>::HAS_STOP {
+> +            Some(Self::stop_callback)
+> +        } else {
+> +            None
+> +        },
+> +        ndo_start_xmit: if <T>::HAS_START_XMIT {
+> +            Some(Self::start_xmit_callback)
+> +        } else {
+> +            None
+> +        },
+> +        ndo_features_check: None,
+> +        ndo_select_queue: None,
+> +        ndo_change_rx_flags: None,
+> +        ndo_set_rx_mode: None,
+> +        ndo_set_mac_address: None,
+...
+> +        ndo_validate_addr: None,
+> +        ndo_fill_forward_path: None,
+> +        ndo_get_tstamp: None,
+> +    };
 
-Cheers,
-Miguel
+Is it necessary to list all these members, particularly those with
+None? New members do get added, so it would be nice if either the
+default would be None, or the compiler exited with an error if there
+is a new member and it is not listed here.
+
+The same is true for the ethtool ops.
+
+    Andrew
