@@ -2,111 +2,80 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96628C7EE2A
-	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jun 2023 14:47:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67D1EC77B7A
+	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jun 2023 14:57:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238233AbjFFOrj (ORCPT
+        id S238510AbjFFO5L (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 6 Jun 2023 10:47:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47348 "EHLO
+        Tue, 6 Jun 2023 10:57:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237799AbjFFOrU (ORCPT
+        with ESMTP id S238531AbjFFO44 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 6 Jun 2023 10:47:20 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70B0F268E;
-        Tue,  6 Jun 2023 07:46:17 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-ba829e17aacso7723462276.0;
-        Tue, 06 Jun 2023 07:46:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686062773; x=1688654773;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uxHl+ipU+ZDLZfzTOn/c27PgH2beIB/6BgFtv/UvuGs=;
-        b=Dh1PzSTUKHit9jeQYeJ2K2O09l0hxiYqBOueqmDoSZt/bG08R357RJyV6olMuQj7KM
-         ExSoMYeX6pozMxl8Xc0B2/As9/Pci9XZvfsrwJBjU5gvpC+aQJ8y7ZsfAOokw9va80Jq
-         fc3F6E6WaRStkX2UvOGUvjoDIOTX+Y431Vr9pt2A6qMzoulT8flLAk8gHfS5I3hm+D7F
-         CBWBCLE4lBUwgMPhxbqhlEZzf9zxlqbTok6unq60A8/f1/vgO+bkATJDz5Qe3GSht3bc
-         9cls+ydoZz6LYCNd4P+r/kb2Zfdqt8hkLmo6c7hmKJzUH2p3OgMqMGVm6PI5bqWhqnLp
-         AQ0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686062773; x=1688654773;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uxHl+ipU+ZDLZfzTOn/c27PgH2beIB/6BgFtv/UvuGs=;
-        b=aJCyvoUMnjD2lEH5U8uoRpUYCb98IfxByI8PHWQ+3ZtgizgsHyP6vRqxkA+zPR4yIb
-         UnKODxeuzTAIsPwI6N/QPbEq5P3bQHku0cwh3uRvVN2U0Gw96LK+dT9J32f35/+UEhOj
-         V6vtRjKhBfvlGGlE0XDG1Zi1jh1AcUhauUoPVO6xsuA7AdZSdRzsJaPzXEBv7PQfUJLM
-         EpSSiVTR3ZH9v3Pb8MxhwNQWoRfND2FcVgeHxr9tdmdOvxcmcV/jhHnWErpnb4Z541w6
-         j63pYgE9F9ZtIERZWsH/TIa2fmqC8eRxU5GJgiFBG5J1/Z2+YY7WJ5fZw9m8MIx1uuB/
-         yKnA==
-X-Gm-Message-State: AC+VfDwlkFE9fmEBxSkhSK+Mrl/Dtj+iE5CMNvV59EMNcwwKuoF1fXta
-        AFlp8HcSi29ZSO798QlbA5SoxqpPEJe+6QIDbI4=
-X-Google-Smtp-Source: ACHHUZ6r28OgpTb4skzaYajMiLnd9SU4e6H84abqyT5Y6x8WBSY+gkL9EdR/1lqQ6bZQtV5X2hnvyNQC46h4RtKHE6k=
-X-Received: by 2002:a81:6a87:0:b0:568:fe3a:46b3 with SMTP id
- f129-20020a816a87000000b00568fe3a46b3mr2547087ywc.28.1686062772654; Tue, 06
- Jun 2023 07:46:12 -0700 (PDT)
+        Tue, 6 Jun 2023 10:56:56 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D47901725
+        for <rust-for-linux@vger.kernel.org>; Tue,  6 Jun 2023 07:56:38 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2EAB32F4;
+        Tue,  6 Jun 2023 07:57:24 -0700 (PDT)
+Received: from capper-ampere.manchester.arm.com (capper-ampere.manchester.arm.com [10.32.100.23])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 966523F6C4;
+        Tue,  6 Jun 2023 07:56:37 -0700 (PDT)
+From:   Jamie Cunliffe <Jamie.Cunliffe@arm.com>
+To:     linux-arm-kernel@lists.infradead.org,
+        rust-for-linux@vger.kernel.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, steve.capper@arm.com,
+        Asahi Lina <lina@asahilina.net>
+Subject: [PATCH v2 0/3] Rust enablement for AArch64
+Date:   Tue,  6 Jun 2023 15:56:03 +0100
+Message-Id: <20230606145606.1153715-1-Jamie.Cunliffe@arm.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20230503090708.2524310-1-nmi@metaspace.dk> <da7b815d-3da8-38e5-9b25-b9cfb6878293@acm.org>
- <87jzxot0jk.fsf@metaspace.dk> <b9a1c1b2-3baa-2cad-31ae-8b14e4ee5709@acm.org>
- <ZFP+8apHunCCMmOZ@kbusch-mbp.dhcp.thefacebook.com> <e7bc2155-613b-8904-9942-2e9615b0dc63@kernel.dk>
- <87ttvkaevf.fsf@metaspace.dk>
-In-Reply-To: <87ttvkaevf.fsf@metaspace.dk>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 6 Jun 2023 16:46:01 +0200
-Message-ID: <CANiq72kMgh8qKzmLUokvRt=LbZY+vNVU481=-b-kKamupaxajw@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/11] Rust null block driver
-To:     "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-Cc:     Jens Axboe <axboe@kernel.dk>, Keith Busch <kbusch@kernel.org>,
-        Christoph Hellwig <hch@lst.de>, Ming Lei <ming.lei@redhat.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Damien Le Moal <Damien.LeMoal@wdc.com>,
-        Hannes Reinecke <hare@suse.de>, rust-for-linux@vger.kernel.org,
-        linux-block@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        open list <linux-kernel@vger.kernel.org>, gost.dev@samsung.com,
-        =?UTF-8?Q?Matias_Bj=C3=B8rling?= <Matias.Bjorling@wdc.com>,
-        Niklas Cassel <Niklas.Cassel@wdc.com>,
-        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
-        Guillaume Tucker <guillaume.tucker@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Jun 6, 2023 at 3:40=E2=80=AFPM Andreas Hindborg (Samsung)
-<nmi@metaspace.dk> wrote:
->
->    Samsung will provide resources to support this CI effort. Through this=
- effort
->    I will aim to minimize any inconvenience for maintainers.
+Enable Rust support for the AArch64 architecture.
 
-This is great.
+The first patch enables the basic building of Rust for AArch64. Since
+v1 this has been rewritten to avoid the use of a target.json file for
+AArch64 and use the upstream rustc target definition. x86-64 still
+uses the target.json approach though.
 
->    We also have Rust support in Intel 0-day CI, although only compile tes=
-ts for
->    now.
+The second patch enables the PAC ret and BTI options in the Rust build
+flags to match the options that are used when building C.
 
-In addition, we also have initial Rust support in KernelCI (including
-`linux-next` [1], `rust-next` and the old `rust` branch), which could
-be expanded upon, especially with more resources (Cc'ing Guillaume).
+The third patch disables Rust support when building for big
+endian. Currently there is no `aarch64_be-unknown-none` target which
+would allow this. Support for this can come at a later time either by
+using the target.json approach, or upstreaming a new target definition
+to rustc (preferred). We also might be able to use the
+`aarch64_be-unknown-linux-gnu` target, however, this can be done at a
+later time.  It's worth noting that in Makefile.clang, it's
+recommended for arch/{arch}/Makefile to set the endianness based on
+arguments rather than the target triple. It's currently not possible
+to do this with rustc, a different target triple has to be used.
 
-Moreover, our plan is to replicate the simple CI we originally had for
-the `rust` branch (which included QEMU boot tests under a matrix of
-several archs/configs/compilers) to our `rust-next`, `rust-fixes` and
-`rust-dev` branches, in order to complement the other CIs and to get
-some early smoke testing (especially for `rust-dev`).
 
-[1] https://github.com/kernelci/kernelci-core/blob/65b0900438e0ed20e7efe0ad=
-a681ab212dc8c774/config/core/build-configs.yaml#L1152-L1197
+Jamie Cunliffe (3):
+  arm64: rust: Enable Rust support for AArch64
+  arm64: rust: Enable PAC support for Rust.
+  arm64: Restrict Rust support to little endian only.
 
-Cheers,
-Miguel
+ Documentation/rust/arch-support.rst | 1 +
+ Makefile                            | 1 -
+ arch/arm64/Kconfig                  | 1 +
+ arch/arm64/Makefile                 | 4 ++++
+ arch/x86/Makefile                   | 1 +
+ rust/Makefile                       | 6 +++++-
+ scripts/Makefile                    | 5 +++--
+ scripts/generate_rust_target.rs     | 4 +++-
+ 8 files changed, 18 insertions(+), 5 deletions(-)
+
+-- 
+2.30.2
+
