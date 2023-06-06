@@ -2,103 +2,74 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A186C77B73
-	for <rust-for-linux@archiver.kernel.org>; Mon,  5 Jun 2023 23:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B192C77B7A
+	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jun 2023 07:01:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232106AbjFEXYd (ORCPT
+        id S235759AbjFFHBy (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 5 Jun 2023 19:24:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52728 "EHLO
+        Tue, 6 Jun 2023 03:01:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231466AbjFEXYc (ORCPT
+        with ESMTP id S235765AbjFFHBk (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 5 Jun 2023 19:24:32 -0400
-X-Greylist: delayed 372 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 05 Jun 2023 16:24:30 PDT
-Received: from a27-24.smtp-out.us-west-2.amazonses.com (a27-24.smtp-out.us-west-2.amazonses.com [54.240.27.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE79CEC
-        for <rust-for-linux@vger.kernel.org>; Mon,  5 Jun 2023 16:24:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=s25kmyuhzvo7troimxqpmtptpemzlc6l; d=exabit.dev; t=1686007097;
-        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding;
-        bh=8CixSjOSVX04cGSRKTIoC8vIGcnOJ8dLtNEJH7s18fA=;
-        b=Ke69hja5wuyXWq0x6khDLzTN1bndhlQj2EQiz7EBDSlqa7zK9ibFSZDDt/6hWC2j
-        jaSu1cIIgMi++Z/yrs6Hnowu0uGhyqoCaJM8aWEv8BYzkrP+T9gvyqsI9IB/Exh0KQy
-        578xmT6f37pfLXWb3r043Mi/htt5MqKCNyWz6TehWNgKJVWscw3cx7IZhWBQWP1UpvA
-        1/m/DFUoE0M//DPS+O3PTPAzcT6JblM509AY+SwgB2oJs7/zsQLMVCGhMvNWU4/mNBq
-        vqDEP8N4hLpGmqjAHMni4juiQQ2X1QDeqqDjnv/tWCmTHsU9yKVnOlxvN1FsoZrflK2
-        JbGD4LDUmA==
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1686007097;
-        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-        bh=8CixSjOSVX04cGSRKTIoC8vIGcnOJ8dLtNEJH7s18fA=;
-        b=VNnOCBvo9534c5+FrDEVYL4lQw9O4rUoHu0VX0dreImhyjUlRv2uz5hZiwj1wEgU
-        Y644+1Z8/aE5+tyWtp3jVxsjgFJHN5xybUKh0PKKZkRT8N3lsUkrHKr5OjleZRaCWba
-        MPC3s0Rjm0aSaOKzc8G3ID81ZRxiy7c6228QC7kM=
-Date:   Mon, 5 Jun 2023 23:18:17 +0000
-Message-ID: <010101888ddaa891-f8570171-be5e-420d-a3f4-e099335505ff-000000@us-west-2.amazonses.com>
-To:     aliceryhl@google.com
-Cc:     fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
-        fujita.tomonori@gmail.com
-Subject: Re: [PATCH 2/5] rust: add support for ethernet operations
-From:   FUJITA Tomonori <tomo@exabit.dev>
-In-Reply-To: <010101888bdd5c71-e67bfad1-163a-4168-a614-7ab40144ba3e-000000@us-west-2.amazonses.com>
-References: <0101018884325a5f-da4bd02e-aab8-40f5-8812-3fce5cff34ae-000000@us-west-2.amazonses.com>
-        <20230604124821.1380522-1-aliceryhl@google.com>
-        <010101888bdd5c71-e67bfad1-163a-4168-a614-7ab40144ba3e-000000@us-west-2.amazonses.com>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        Tue, 6 Jun 2023 03:01:40 -0400
+Received: from out0-211.mail.aliyun.com (out0-211.mail.aliyun.com [140.205.0.211])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73D86E53;
+        Tue,  6 Jun 2023 00:01:38 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018047187;MF=changxian.cqs@antgroup.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---.TMWy1uV_1686034891;
+Received: from 30.177.52.182(mailfrom:changxian.cqs@antgroup.com fp:SMTPD_---.TMWy1uV_1686034891)
+          by smtp.aliyun-inc.com;
+          Tue, 06 Jun 2023 15:01:32 +0800
+Message-ID: <fe4744bb-17db-6f60-4b8c-1453009ef11a@antgroup.com>
+Date:   Tue, 06 Jun 2023 15:01:30 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.0
+Subject: Re: [PATCH v2 1/3] rust: kernel: add ScatterList abstraction
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     <linux-kernel@vger.kernel.org>,
+        "=?UTF-8?B?55Sw5rSq5Lqu?=" <tate.thl@antgroup.com>,
+        "Miguel Ojeda" <ojeda@kernel.org>,
+        "Alex Gaynor" <alex.gaynor@gmail.com>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        "Gary Guo" <gary@garyguo.net>,
+        "=?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>,
+        "Benno Lossin" <benno.lossin@proton.me>,
+        "Martin Rodriguez Reboredo" <yakoyoku@gmail.com>,
+        "Alice Ryhl" <aliceryhl@google.com>,
+        "Asahi Lina" <lina@asahilina.net>, <rust-for-linux@vger.kernel.org>
+References: <20230602101819.2134194-1-changxian.cqs@antgroup.com>
+ <20230602101819.2134194-2-changxian.cqs@antgroup.com>
+ <ZH3+jARBbn2iG1dW@Boquns-Mac-mini.local>
+From:   "Qingsong Chen" <changxian.cqs@antgroup.com>
+In-Reply-To: <ZH3+jARBbn2iG1dW@Boquns-Mac-mini.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Feedback-ID: 1.us-west-2.j0GTvY5MHQQ5Spu+i4ZGzzYI1gDE7m7iuMEacWMZbe8=:AmazonSES
-X-SES-Outgoing: 2023.06.05-54.240.27.24
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, 5 Jun 2023 14:02:00 +0000
-FUJITA Tomonori <tomo@exabit.dev> wrote:
-
-> Hi,
+On 6/5/23 11:26 PM, Boqun Feng wrote:
+> On Fri, Jun 02, 2023 at 06:18:17PM +0800, Qingsong Chen wrote:
+> [...]
+>> +impl<'a> ScatterList<'a> {
+>> +    /// Construct a new initializer.
+>> +    pub fn new(buf: &'a Pin<&mut [u8]>) -> impl PinInit<ScatterList<'a>> {
+>> +        // SAFETY: `slot` is valid while the closure is called, the memory
+>> +        // buffer is pinned and valid.
+>> +        unsafe {
+>> +            init::pin_init_from_closure(move |slot: *mut Self| {
+>> +                (*slot).set_buf(buf);
+>> +                (*slot).mark_end();
 > 
-> On Sun,  4 Jun 2023 12:48:21 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
-> 
->> FUJITA Tomonori writes:
->>> +    /// Sets `ethtool_ops` of `net_device`.
->>> +    pub fn set_ether_operations<U>(&mut self, adapter: EtherOperationsAdapter<U, D>) -> Result
->>> +    where
->>> +        U: EtherOperations<D>,
->>> +    {
->>> +        if self.is_registered {
->>> +            Err(code::EINVAL)
->>> +        } else {
->>> +            adapter.set_ether_ops(&mut self.dev);
->>> +            Ok(())
->>> +        }
->>> +    }
->> 
->> The `EtherOperationsAdapter` struct seems unnecessary here. How about
->> using this signature instead?
->> 
->> pub fn set_ether_operations<U: EtherOperations<D>>(&mut self) -> Result
->> 
->> Or even
->> 
->> pub fn set_ether_operations(&mut self) -> Result
->> where
->>     D: EtherOperations
-> 
-> How can I get *const bindings::ethtool_ops with the above approach?
+> Benno can provide more information, but you cannot dereference or create
+> a reference to `*slot`, since `slot` points to an uninitialized object
+> (see `try_pin_init` implementations), and referencing uninitialized
+> objects is UB (or may cause UB).
 
-Sorry, I successfully get it without EtherOperationsAdapter arg in the following way.
-
-pub fn set_ether_operations<U>(&mut self) -> Result
-where
-    U: EtherOperations<D>,
-{
-    if self.is_registered {
-        Err(code::EINVAL)
-    } else {
-        EtherOperationsAdapter::<U, D>::new().set_ether_ops(&mut self.dev);
-        Ok(())
-    }
-}
+I understand that `reading` from uninitialized objects is UB, either
+via references or raw pointers. But in this unsafe closure, we just do
+the `writing` job to `slot` for initializing. This makes me a little
+confused, why is there a difference between reference and raw pointer?
+Is there any compiler magic on reference which may cause UB? Still, I
+would fix this by `addr_of`. Thanks.
