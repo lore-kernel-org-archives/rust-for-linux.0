@@ -2,157 +2,154 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14928C7EE2F
-	for <rust-for-linux@archiver.kernel.org>; Tue,  6 Jun 2023 23:38:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6782EC77B7A
+	for <rust-for-linux@archiver.kernel.org>; Wed,  7 Jun 2023 05:21:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239973AbjFFXh7 (ORCPT
+        id S234032AbjFGFVR (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 6 Jun 2023 19:37:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60132 "EHLO
+        Wed, 7 Jun 2023 01:21:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234511AbjFFXh7 (ORCPT
+        with ESMTP id S229880AbjFGFVP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 6 Jun 2023 19:37:59 -0400
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B2621711;
-        Tue,  6 Jun 2023 16:37:58 -0700 (PDT)
-Received: by mail-qk1-x72f.google.com with SMTP id af79cd13be357-75ec7e8e826so175384985a.0;
-        Tue, 06 Jun 2023 16:37:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686094677; x=1688686677;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HFhBhTIzREHG9mACtwO9tRyPWU+4u6gN6/PkdzEJpag=;
-        b=d77x79NsgBLTq06/VgrnLBA18mMJknfbUXrr8BhhI2XbWKK0dzqJBz6jeI7vB0upeP
-         sKwQNSh6Ps6CqjjxsGRgsfbkakooZs+V8GFZeNf+gQZoXksuHxbOAMllHpf3iHEl2IO/
-         v8CqEY99D46jjyyS/1VWxIVoy6EW71uRClKKED/q7v/oQW6RYgbvP5hSfO+QbCqKArzU
-         z0T7B4ArSaaqShjjCTPYTH/MNa07lYUkmSqhytjrsm1nCkwcuyH/u5Wd09149+JvnF94
-         iRrkB4GTqzmhX4P1k8KifMiD2Cg8sGLoaL3sUdX97vzG/IgtSCwGB0ZNa/MklTZaLICg
-         EbKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686094677; x=1688686677;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HFhBhTIzREHG9mACtwO9tRyPWU+4u6gN6/PkdzEJpag=;
-        b=EMe1Ugxs6QW16M6h26wUYQDRDR1JeHNUV7zodTo3TMcm3kjXJ3AOhH+4M7JS2vV4wL
-         Ank3qqZJo8IQ9uthBQyGJ+3gqtfo/LHv6iWRvWYuhxssPiFr5gvHZxP+SS3uZ1dWas+J
-         W09aKDCdAi6W5S+u0kigRRC4Y9TVfMHkE3HO9jb8Rw3tZJwDDcYCFEa5eEpT0q+gFnS2
-         UUFmE/AbsTG8N990AZMS9yxBjOMs7qdnXbeylTFApGa7N5q2ZG05JYbU0RlJqY75ZWvT
-         Xk62M++B+0MX9XbZcfrL0JEDBF8CUhiH9YyBNwdGgEW8UJIHdmFQs+RjQQv88RzZc2TN
-         YDlw==
-X-Gm-Message-State: AC+VfDzdfK4foN5H+lq+VeSejWM4/ySxB+hzKKid1c/jurp8f27vTfq8
-        qouGbR9k4CdStBxyd1mY8pI=
-X-Google-Smtp-Source: ACHHUZ4+Dpgv5vgO099EF2l/tWaCHrZtfxBMs8Ph0KvZ2JA0RvuUAModS84I6+1h0Uk6bj4bZOxRHA==
-X-Received: by 2002:a05:620a:2221:b0:75b:23a1:367f with SMTP id n1-20020a05620a222100b0075b23a1367fmr137834qkh.64.1686094677149;
-        Tue, 06 Jun 2023 16:37:57 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id m10-20020ae9f20a000000b0075772c756e0sm5237129qkg.101.2023.06.06.16.37.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jun 2023 16:37:56 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 1970A27C0054;
-        Tue,  6 Jun 2023 19:37:55 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Tue, 06 Jun 2023 19:37:56 -0400
-X-ME-Sender: <xms:UsN_ZOcGJeHlqVPcJvE7x1Nfow7WPPDeV70cAPzLSJVggrWyCqNiQw>
-    <xme:UsN_ZIOW4RetvFzgJmrpv6MUBSuQb81jbuQDRftBmsSZ-Ixv8xmJwOheHizp_aCOY
-    Df6PaxGdTDpCox5MA>
-X-ME-Received: <xmr:UsN_ZPgfayrHRKXbEeFo3F_nHGlmrc1sg6w-Cq0CnoVfePCX48CM2h18i-Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedtvddgvdefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:U8N_ZL_Y2Bu1QhknI37Sc89lkMnsHJDg6FOT76JiExlmhVXbwLK6Lg>
-    <xmx:U8N_ZKunZ1wEKQWhC3mFMoj0og0QMPI8OPKMXQAtDEmcZ1BtTFunLA>
-    <xmx:U8N_ZCGiUNXTHW5t_sLxfosfgwnO4sarjcrSrQj_AP-_Dr6v1tGP6Q>
-    <xmx:U8N_ZCF_R-BE9s0l0uTdkE3kMErg8abKaM9wpC6fB4X27XiBFvPbMA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 6 Jun 2023 19:37:54 -0400 (EDT)
-Date:   Tue, 6 Jun 2023 16:36:30 -0700
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Alice Ryhl <aliceryhl@google.com>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Tejun Heo <tj@kernel.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v2 1/8] rust: workqueue: add low-level workqueue bindings
-Message-ID: <ZH/C/lKeYxM7tbYA@boqun-archlinux>
-References: <20230601134946.3887870-1-aliceryhl@google.com>
- <20230601134946.3887870-2-aliceryhl@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230601134946.3887870-2-aliceryhl@google.com>
+        Wed, 7 Jun 2023 01:21:15 -0400
+X-Greylist: delayed 392 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 06 Jun 2023 22:21:12 PDT
+Received: from a27-50.smtp-out.us-west-2.amazonses.com (a27-50.smtp-out.us-west-2.amazonses.com [54.240.27.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42690173B
+        for <rust-for-linux@vger.kernel.org>; Tue,  6 Jun 2023 22:21:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=s25kmyuhzvo7troimxqpmtptpemzlc6l; d=exabit.dev; t=1686114879;
+        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding;
+        bh=f6twGNeFMF+FC3OWacTdubZ2FiEDu3ux7K+fF4pMkts=;
+        b=R3BRSbMPkEEbr5gh7zRUw4rRhQeDekxIp1L5q/rpZRZLNtIl0+U4ap5ab5YxDoi3
+        58vzvREEP1Dpu3iuNKLlk8m90nK7ctv0YH4WOJLx0oLsBmR/SOsBDQ/qaYYB0VuRIxm
+        vpsMs0pIMBri/XSvf0E0eQthzK7wYUpF6sZZHZh67+b3VVQZIV0+KwVrTolE+YJdHLz
+        PTf93ILSQ2UCNzmfbV2wjhFZu6NjCrVfyomWE2J2mrBrroIO7bD/1vzfSNx/0XDPnHr
+        TvDjhgC73lUlCZVIGjUqNrIm1v41qWyKsxhiVQs3gHUMC1veVMOvk5VWI1VUJHEkk+A
+        52JO2N041g==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1686114879;
+        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+        bh=f6twGNeFMF+FC3OWacTdubZ2FiEDu3ux7K+fF4pMkts=;
+        b=WiHFClAZOk5H1rgxveMwZoDoioyuUhZE9ys5IhXdzDzPQ8AFoarE2NRDMKNGpt1x
+        2qT3CeVuSuG0Qaa/Jy555Y6P3GRxLjY9JtvX+PGKJdzCN3CcUFAmjiEfLxKsrEny1y6
+        Q36u1cjLzSEJCggRV6ROF8KznXusqpH7tzm+0KO8=
+Date:   Wed, 7 Jun 2023 05:14:39 +0000
+Message-ID: <0101018894474873-ef8c957c-2064-404b-a94e-dabcd5c37ddc-000000@us-west-2.amazonses.com>
+To:     andrew@lunn.ch
+Cc:     tomo@exabit.dev, rust-for-linux@vger.kernel.org,
+        fujita.tomonori@gmail.com, fujita.tomonori@gmail.com
+Subject: Re: [PATCH 1/5] rust: core abstractions for network device drivers
+From:   FUJITA Tomonori <tomo@exabit.dev>
+In-Reply-To: <dc024310-0445-4d1a-b55b-2537d4fca55a@lunn.ch>
+References: <20230604021736.3392963-1-tomo@exabit.dev>
+        <01010188843259bd-eaff4dc9-c029-4da4-8c5b-2489fd34ffdf-000000@us-west-2.amazonses.com>
+        <dc024310-0445-4d1a-b55b-2537d4fca55a@lunn.ch>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Feedback-ID: 1.us-west-2.j0GTvY5MHQQ5Spu+i4ZGzzYI1gDE7m7iuMEacWMZbe8=:AmazonSES
+X-SES-Outgoing: 2023.06.07-54.240.27.50
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Jun 01, 2023 at 01:49:39PM +0000, Alice Ryhl wrote:
-[...]
-> +/// A raw work item.
-> +///
-> +/// This is the low-level trait that is designed for being as general as possible.
-> +///
-> +/// The `ID` parameter to this trait exists so that a single type can provide multiple
-> +/// implementations of this trait. For example, if a struct has multiple `work_struct` fields, then
-> +/// you will implement this trait once for each field, using a different id for each field. The
-> +/// actual value of the id is not important as long as you use different ids for different fields
-> +/// of the same struct. (Fields of different structs need not use different ids.)
-> +///
-> +/// Note that the id is used only to select the right method to call during compilation. It wont be
-> +/// part of the final executable.
-> +///
-> +/// # Safety
-> +///
-> +/// Implementers must ensure that any pointers passed to a `queue_work_on` closure by `__enqueue`
-> +/// remain valid for the duration specified in the documentation for `__enqueue`.
+Hi,
+Thanks a lot for reviewing!
 
-^ better to say "the #Guarantees section in the documentation for
-`__enqueue`"?
+On Tue, 6 Jun 2023 18:20:15 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-Regards,
-Boqun
-
-> +pub unsafe trait RawWorkItem<const ID: u64> {
-> +    /// The return type of [`Queue::enqueue`].
-> +    type EnqueueOutput;
-> +
-> +    /// Enqueues this work item on a queue using the provided `queue_work_on` method.
-> +    ///
-> +    /// # Guarantees
-> +    ///
-> +    /// If this method calls the provided closure, then the raw pointer is guaranteed to point at a
-> +    /// valid `work_struct` for the duration of the call to the closure. If the closure returns
-> +    /// true, then it is further guaranteed that the pointer remains valid until someone calls the
-> +    /// function pointer stored in the `work_struct`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The provided closure may only return `false` if the `work_struct` is already in a workqueue.
-> +    ///
-> +    /// If the work item type is annotated with any lifetimes, then you must not call the function
-> +    /// pointer after any such lifetime expires. (Never calling the function pointer is okay.)
-> +    ///
-> +    /// If the work item type is not [`Send`], then the function pointer must be called on the same
-> +    /// thread as the call to `__enqueue`.
-> +    unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
-> +    where
-> +        F: FnOnce(*mut bindings::work_struct) -> bool;
-> +}
-> -- 
-> 2.41.0.rc0.172.g3f132b7071-goog
+>> +/// The pointer to the `net_device` object is guaranteed to be valid until
+>> +/// the registration object is dropped.
+>> +pub struct Registration<T: DeviceOperations<D>, D: DriverData> {
+>> +    dev: Device,
+>> +    is_registered: bool,
+>> +    _p: PhantomData<(D, T)>,
+>> +}
 > 
+> 
+>> +    pub fn register(&mut self) -> Result {
+>> +        // SAFETY: `dev` was allocated during initialization and is guaranteed to be valid.
+>> +        let ret = unsafe {
+>> +            (*self.dev.0).netdev_ops = Self::build_device_ops();
+>> +            bindings::register_netdev(self.dev.0)
+>> +        };
+>> +        if ret != 0 {
+>> +            Err(Error::from_errno(ret))
+>> +        } else {
+>> +            self.is_registered = true;
+>> +            Ok(())
+>> +        }
+>> +    }
+> 
+> I knew ~0 about rust, but i do know the network stack.
+> 
+> You need to be careful with the value of self.is_registered. The
+> network stack will start using the interface during the call to
+> register_netdev(). It can call any of the netdev ops or ethtool ops
+> before register_netdev() has returned. You can see this in particular
+> with NFS root, but there are other use cases as well.
+> 
+> However, i do see value in self.is_registered. One of the common bugs
+> in drivers caught at review time is not completely setting up the
+> device before calling register_netdev(). The way you have added
+> setters for the netdev ops and ethtool ops we want it to error out if
+> these setters are called after the interface is registered.
+
+Yeah, the current API guarantees that netdev ops and ethtool ops are
+set up before calling register_netdev().
+
+However, register() could be misused, register_netdev() might called
+multiple times. It will be fixed in the next version.
+
+
+>> +    const DEVICE_OPS: bindings::net_device_ops = bindings::net_device_ops {
+>> +        ndo_init: if <T>::HAS_INIT {
+>> +            Some(Self::init_callback)
+>> +        } else {
+>> +            None
+>> +        },
+>> +        ndo_uninit: if <T>::HAS_UNINIT {
+>> +            Some(Self::uninit_callback)
+>> +        } else {
+>> +            None
+>> +        },
+>> +        ndo_open: if <T>::HAS_OPEN {
+>> +            Some(Self::open_callback)
+>> +        } else {
+>> +            None
+>> +        },
+>> +        ndo_stop: if <T>::HAS_STOP {
+>> +            Some(Self::stop_callback)
+>> +        } else {
+>> +            None
+>> +        },
+>> +        ndo_start_xmit: if <T>::HAS_START_XMIT {
+>> +            Some(Self::start_xmit_callback)
+>> +        } else {
+>> +            None
+>> +        },
+>> +        ndo_features_check: None,
+>> +        ndo_select_queue: None,
+>> +        ndo_change_rx_flags: None,
+>> +        ndo_set_rx_mode: None,
+>> +        ndo_set_mac_address: None,
+> ...
+>> +        ndo_validate_addr: None,
+>> +        ndo_fill_forward_path: None,
+>> +        ndo_get_tstamp: None,
+>> +    };
+> 
+> Is it necessary to list all these members, particularly those with
+> None? New members do get added, so it would be nice if either the
+> default would be None, or the compiler exited with an error if there
+> is a new member and it is not listed here.
+> 
+> The same is true for the ethtool ops.
+
+With the current code, the compiler exited with an error if there is a
+new member and it is not listed here.
+
+However, it would be nicer if the default would be set
+automatically. As far as I know, we can't do yet.
