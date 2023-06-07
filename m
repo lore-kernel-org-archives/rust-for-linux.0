@@ -2,154 +2,103 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6782EC77B7A
-	for <rust-for-linux@archiver.kernel.org>; Wed,  7 Jun 2023 05:21:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71EABC77B7A
+	for <rust-for-linux@archiver.kernel.org>; Wed,  7 Jun 2023 05:26:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234032AbjFGFVR (ORCPT
+        id S229880AbjFGF00 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 7 Jun 2023 01:21:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59782 "EHLO
+        Wed, 7 Jun 2023 01:26:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229880AbjFGFVP (ORCPT
+        with ESMTP id S231520AbjFGF00 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 7 Jun 2023 01:21:15 -0400
-X-Greylist: delayed 392 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 06 Jun 2023 22:21:12 PDT
-Received: from a27-50.smtp-out.us-west-2.amazonses.com (a27-50.smtp-out.us-west-2.amazonses.com [54.240.27.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42690173B
-        for <rust-for-linux@vger.kernel.org>; Tue,  6 Jun 2023 22:21:12 -0700 (PDT)
+        Wed, 7 Jun 2023 01:26:26 -0400
+X-Greylist: delayed 332 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 06 Jun 2023 22:26:25 PDT
+Received: from a27-42.smtp-out.us-west-2.amazonses.com (a27-42.smtp-out.us-west-2.amazonses.com [54.240.27.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AAD4198B
+        for <rust-for-linux@vger.kernel.org>; Tue,  6 Jun 2023 22:26:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=s25kmyuhzvo7troimxqpmtptpemzlc6l; d=exabit.dev; t=1686114879;
+        s=s25kmyuhzvo7troimxqpmtptpemzlc6l; d=exabit.dev; t=1686115252;
         h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding;
-        bh=f6twGNeFMF+FC3OWacTdubZ2FiEDu3ux7K+fF4pMkts=;
-        b=R3BRSbMPkEEbr5gh7zRUw4rRhQeDekxIp1L5q/rpZRZLNtIl0+U4ap5ab5YxDoi3
-        58vzvREEP1Dpu3iuNKLlk8m90nK7ctv0YH4WOJLx0oLsBmR/SOsBDQ/qaYYB0VuRIxm
-        vpsMs0pIMBri/XSvf0E0eQthzK7wYUpF6sZZHZh67+b3VVQZIV0+KwVrTolE+YJdHLz
-        PTf93ILSQ2UCNzmfbV2wjhFZu6NjCrVfyomWE2J2mrBrroIO7bD/1vzfSNx/0XDPnHr
-        TvDjhgC73lUlCZVIGjUqNrIm1v41qWyKsxhiVQs3gHUMC1veVMOvk5VWI1VUJHEkk+A
-        52JO2N041g==
+        bh=CsxbqDJkTURWjROIVRyud5EYhxRxP5AEqLA3f03DPiY=;
+        b=QaR7NM/yGVJcvovyRr5E4ns4LOwVS1+mVMGXIlCaJzTspMbhMmWR84gLQuN2+eL7
+        IptuqEirgrsQSvOodvUmeFTq4+dr8zBnhJLTtSvA71ZE72zI6PfaW4FPuPPeqJdC909
+        Pmve5Senkj4rF7cgoemROpSS8Awh8hSBkWOuPEwB5pMzYD5jPyVYYevZJVScCHoyI8B
+        Akvu17DATMSFNROZGn4lDwWijna1wC4JxoTYBZOMsKdJ5nJA2gCVEAMeHgv1J+F17eu
+        rmkvewzG7th6mbwDf9EAiAlesVh7UvPcYiKuFIyKSGOEQTKff85dWl37uRE3DCBRQY3
+        bPOaUy0aZg==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1686114879;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1686115252;
         h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-        bh=f6twGNeFMF+FC3OWacTdubZ2FiEDu3ux7K+fF4pMkts=;
-        b=WiHFClAZOk5H1rgxveMwZoDoioyuUhZE9ys5IhXdzDzPQ8AFoarE2NRDMKNGpt1x
-        2qT3CeVuSuG0Qaa/Jy555Y6P3GRxLjY9JtvX+PGKJdzCN3CcUFAmjiEfLxKsrEny1y6
-        Q36u1cjLzSEJCggRV6ROF8KznXusqpH7tzm+0KO8=
-Date:   Wed, 7 Jun 2023 05:14:39 +0000
-Message-ID: <0101018894474873-ef8c957c-2064-404b-a94e-dabcd5c37ddc-000000@us-west-2.amazonses.com>
+        bh=CsxbqDJkTURWjROIVRyud5EYhxRxP5AEqLA3f03DPiY=;
+        b=QO8R81wfeiLVwvBWzebxw4T4+T1AfWv9uwknqNTw7XXNFLB7so36rBBaxkpo7Jl6
+        TX/ptfl+M0WEtTwngCbqWPzwz8z0G2hbLG3SwAVlWkJraF/gNv7AZNQalZHAQOXZ0L0
+        SMrZ/jemY2C2wOg5DhN7cSmCcZB2SMMxs4wVsHlM=
+Date:   Wed, 7 Jun 2023 05:20:52 +0000
+Message-ID: <01010188944cf9dc-8e984766-ef9c-4744-aa8e-a859895e073a-000000@us-west-2.amazonses.com>
 To:     andrew@lunn.ch
 Cc:     tomo@exabit.dev, rust-for-linux@vger.kernel.org,
         fujita.tomonori@gmail.com, fujita.tomonori@gmail.com
-Subject: Re: [PATCH 1/5] rust: core abstractions for network device drivers
+Subject: Re: [PATCH 5/5] samples: rust: add dummy network driver sample
 From:   FUJITA Tomonori <tomo@exabit.dev>
-In-Reply-To: <dc024310-0445-4d1a-b55b-2537d4fca55a@lunn.ch>
+In-Reply-To: <5a1eb0a9-6242-4856-b33a-6afa9a7934b8@lunn.ch>
 References: <20230604021736.3392963-1-tomo@exabit.dev>
-        <01010188843259bd-eaff4dc9-c029-4da4-8c5b-2489fd34ffdf-000000@us-west-2.amazonses.com>
-        <dc024310-0445-4d1a-b55b-2537d4fca55a@lunn.ch>
+        <0101018884325c60-be28742a-0be9-4cad-b098-0d0a20d8a5b0-000000@us-west-2.amazonses.com>
+        <5a1eb0a9-6242-4856-b33a-6afa9a7934b8@lunn.ch>
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Feedback-ID: 1.us-west-2.j0GTvY5MHQQ5Spu+i4ZGzzYI1gDE7m7iuMEacWMZbe8=:AmazonSES
-X-SES-Outgoing: 2023.06.07-54.240.27.50
+X-SES-Outgoing: 2023.06.07-54.240.27.42
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 Hi,
-Thanks a lot for reviewing!
 
-On Tue, 6 Jun 2023 18:20:15 +0200
+On Tue, 6 Jun 2023 18:34:57 +0200
 Andrew Lunn <andrew@lunn.ch> wrote:
 
->> +/// The pointer to the `net_device` object is guaranteed to be valid until
->> +/// the registration object is dropped.
->> +pub struct Registration<T: DeviceOperations<D>, D: DriverData> {
->> +    dev: Device,
->> +    is_registered: bool,
->> +    _p: PhantomData<(D, T)>,
+>> +    fn start_xmit(_dev: &mut Device, data: &Stats, mut skb: SkBuff) -> TxCode {
+>> +        data.packets.fetch_add(1, Ordering::Relaxed);
+>> +        skb.tx_timestamp();
+>> +        TxCode::Ok
+>> +    }
+>> +
+>> +    fn get_stats64(_dev: &mut Device, data: &Stats, stats: &mut RtnlLinkStats64) {
+>> +        stats.set_tx_stats(data.packets.load(Ordering::Relaxed), 0, 0, 0);
+>> +    }
+>> +}
+>> +
+>> +#[allow(dead_code)]
+>> +struct Stats {
+>> +    packets: AtomicU64,
+>> +    bytes: AtomicU64,
 >> +}
 > 
+> start_xmit() and get_stats64() can be called in parallel. So
+> statistics needs some sort of synchronisation, particularly on 32 bit
+> systems with 64 bit counters. start_xmit() is on the hot path and used
+> very often, 10 million times a second, but get_stats64() is a cold
+> path, probably less than once per second. So the network stack tries
+> to push as much of the cost to get_stats64(). Atomic operations are
+> very expensive, and got more and more expensive as the number of CPUs
+> go up. So in general, you won't see atomics used in networking hot
+> path.
 > 
->> +    pub fn register(&mut self) -> Result {
->> +        // SAFETY: `dev` was allocated during initialization and is guaranteed to be valid.
->> +        let ret = unsafe {
->> +            (*self.dev.0).netdev_ops = Self::build_device_ops();
->> +            bindings::register_netdev(self.dev.0)
->> +        };
->> +        if ret != 0 {
->> +            Err(Error::from_errno(ret))
->> +        } else {
->> +            self.is_registered = true;
->> +            Ok(())
->> +        }
->> +    }
+> What we don't want is this code copied into a real driver. I see three
+> paths forward:
 > 
-> I knew ~0 about rust, but i do know the network stack.
-> 
-> You need to be careful with the value of self.is_registered. The
-> network stack will start using the interface during the call to
-> register_netdev(). It can call any of the netdev ops or ethtool ops
-> before register_netdev() has returned. You can see this in particular
-> with NFS root, but there are other use cases as well.
-> 
-> However, i do see value in self.is_registered. One of the common bugs
-> in drivers caught at review time is not completely setting up the
-> device before calling register_netdev(). The way you have added
-> setters for the netdev ops and ethtool ops we want it to error out if
-> these setters are called after the interface is registered.
+> 1) Remove statistics for the moment.
+> 2) Add a big comment that Atomics are inefficient and need replacing
+> 3) Wrap u64_stats_update_begin(), u64_stats_update_end() etc.
 
-Yeah, the current API guarantees that netdev ops and ethtool ops are
-set up before calling register_netdev().
+I'll go with the second becuase
 
-However, register() could be misused, register_netdev() might called
-multiple times. It will be fixed in the next version.
+- it would be nice to show a way to access to the private data of a
+driver in this example.
 
+- to keep this patchset simple, I prefer to avoid adding more
+  appropriate such as per_cpu, etc.
 
->> +    const DEVICE_OPS: bindings::net_device_ops = bindings::net_device_ops {
->> +        ndo_init: if <T>::HAS_INIT {
->> +            Some(Self::init_callback)
->> +        } else {
->> +            None
->> +        },
->> +        ndo_uninit: if <T>::HAS_UNINIT {
->> +            Some(Self::uninit_callback)
->> +        } else {
->> +            None
->> +        },
->> +        ndo_open: if <T>::HAS_OPEN {
->> +            Some(Self::open_callback)
->> +        } else {
->> +            None
->> +        },
->> +        ndo_stop: if <T>::HAS_STOP {
->> +            Some(Self::stop_callback)
->> +        } else {
->> +            None
->> +        },
->> +        ndo_start_xmit: if <T>::HAS_START_XMIT {
->> +            Some(Self::start_xmit_callback)
->> +        } else {
->> +            None
->> +        },
->> +        ndo_features_check: None,
->> +        ndo_select_queue: None,
->> +        ndo_change_rx_flags: None,
->> +        ndo_set_rx_mode: None,
->> +        ndo_set_mac_address: None,
-> ...
->> +        ndo_validate_addr: None,
->> +        ndo_fill_forward_path: None,
->> +        ndo_get_tstamp: None,
->> +    };
-> 
-> Is it necessary to list all these members, particularly those with
-> None? New members do get added, so it would be nice if either the
-> default would be None, or the compiler exited with an error if there
-> is a new member and it is not listed here.
-> 
-> The same is true for the ethtool ops.
-
-With the current code, the compiler exited with an error if there is a
-new member and it is not listed here.
-
-However, it would be nicer if the default would be set
-automatically. As far as I know, we can't do yet.
+Thanks!
