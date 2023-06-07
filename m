@@ -2,150 +2,170 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF6C4C7EE23
-	for <rust-for-linux@archiver.kernel.org>; Wed,  7 Jun 2023 17:20:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 452CDC7EE23
+	for <rust-for-linux@archiver.kernel.org>; Wed,  7 Jun 2023 18:42:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231517AbjFGRUG (ORCPT
+        id S232455AbjFGSmS (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 7 Jun 2023 13:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53878 "EHLO
+        Wed, 7 Jun 2023 14:42:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231734AbjFGRT6 (ORCPT
+        with ESMTP id S231392AbjFGSmR (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 7 Jun 2023 13:19:58 -0400
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 129AE1725;
-        Wed,  7 Jun 2023 10:19:57 -0700 (PDT)
-Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-3f9b1f43bd0so23579121cf.0;
-        Wed, 07 Jun 2023 10:19:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686158396; x=1688750396;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oH5f7Jv4iQPlTMfbAHE6RS0udww2Ru879vIYjDJbT6k=;
-        b=KaeC7xfEiotvSfP14IjbqKALm4pzt+sOY5LxGSvKV340X2pC+Uvi65yAyA3tbtPNgx
-         lTmBCmR/Isgs9msWDwav63X1YQtA63Vdn1X6K/iJoLynZhFF4PdV1Wylh/F+IGlomIHv
-         rO9m69N3ASYqZa3IDYy+NKzIYVFcCXAYpdHRz9BMh/83oLQxKzqX+8pyLVbGn3sdI2WS
-         XCby6EncINE1NktAmvOsBHU41ff6uUsnmQqr1PCOo+Ntit4TnEAg+F9Welo3cPCJ23/3
-         2XWdbiscWeTHsPXymsHMu1Kx4hymxZ4VzcWArlAZblm+ibSPUSbi5Tbqk5LybgWi6Cws
-         NkFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686158396; x=1688750396;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oH5f7Jv4iQPlTMfbAHE6RS0udww2Ru879vIYjDJbT6k=;
-        b=Eu30+kIFbF0NrAVjsPxcigKX57VrWNDXgb+uVAOruKyVw8lWK/4075ISrHmSG4FjJU
-         zWUUf4EC5jtIJH9judnKYZvrWzoNwNh1A/Jx5nMXAIUeT4zaSrdLfS9qDxGg78J5RtJF
-         Beq5NdTe2bnN7ms/yVrIVWpiRP1KtWpAZRzHcVAWDxP5CbVrYUQ2D1TN824buTiy9dXB
-         WUS9H3uIZWZJBfdEVxKBI4COEeTMczQUsQbozYdPx8AIrdcsgnjCYx7yFo0zVBW2gobC
-         iNEbFlnj3QjQwwh9uE4lhxv9+8mqconoy+1fbHWtJQR4JPRmLm56jFpdEl05fQx+UFlQ
-         h0uw==
-X-Gm-Message-State: AC+VfDx7TRr/1ILot6j+joot0Q8Bu2nVu28jxn4h/x1C4bAOwt9JYT2F
-        7dFNvf17t5R3Rh+wF3IzBNA=
-X-Google-Smtp-Source: ACHHUZ7QBsFQkmnN1qHD5DnM1JWPMxx2OuD7EZ/HmWXsKgjVYOhfWHqBAwdQM0JbS7gVhMUBFwyVpw==
-X-Received: by 2002:a05:622a:178e:b0:3ec:490b:ce6e with SMTP id s14-20020a05622a178e00b003ec490bce6emr5055623qtk.48.1686158395951;
-        Wed, 07 Jun 2023 10:19:55 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id cj22-20020a05622a259600b003f3937c16c4sm72933qtb.5.2023.06.07.10.19.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 10:19:55 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 83F0627C0054;
-        Wed,  7 Jun 2023 13:19:54 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Wed, 07 Jun 2023 13:19:54 -0400
-X-ME-Sender: <xms:ObyAZFZxbEAWWuKpXL6AqInOQtX_dF2xR0wmWgC4o0D2NbLr1j5zEg>
-    <xme:ObyAZMahPTMGffmB5TkLV0nyr87J0dh4YZPD4zkwyIfUKEA8qUx366GmtOUMoSHMN
-    nXTSEb3IH7LnE1asA>
-X-ME-Received: <xmr:ObyAZH8dfv5V1Y28F-OmM__UpvXwBF81eHx1r38XAwDeCXJpE4uYMjvh5Zg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedtgedgudduvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepjeeihfdtuedvgedvtddufffggeefhefgtdeivdevveelvefhkeehffdt
-    keeihedvnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgnecuvehluhhsthgvrh
-    fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhp
-    rghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsg
-    hoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:ObyAZDoVKkIVG33XXLk2iizFciTW0-cbG4iSqPFTwHZAEt5CrWc-hQ>
-    <xmx:ObyAZArquBRtlIgE6F34ECyQJKvpbbUe-AhWyIEO1VQnKnwQI-19iQ>
-    <xmx:ObyAZJQ-H-PgJSXmjXuy7K_4hm8rnIZp9SfzwUGMF9y5qnqPzQOFJg>
-    <xmx:OryAZGjlMEz41Bibcn1JqrsmgKtSM42oGgWnPAvPZgJhb-b0cGUfUA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 7 Jun 2023 13:19:52 -0400 (EDT)
-Date:   Wed, 7 Jun 2023 10:18:26 -0700
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Qingsong Chen <changxian.cqs@antgroup.com>
-Cc:     linux-kernel@vger.kernel.org,
-        =?utf-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
+        Wed, 7 Jun 2023 14:42:17 -0400
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on072c.outbound.protection.outlook.com [IPv6:2a01:111:f400:fe15::72c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 165C21712;
+        Wed,  7 Jun 2023 11:42:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RTFk361zutf40VAbXKqfgoedcZA5QCL44+PFnRW87fo0rlw/WAC3Bn9emOCqSw7wcS9pe0fWRAWCucQKoosZICLkAN1VcuCZOR2xrvLCyAzcdiHmoc8NTI7oTWQJqsdciHjmvr4CWLRhUXbxqeZmFMcAeYW4Q/xvoBjNMkA2skH5ig3S8qDoNGiYFu1vi0D6CimeuxRFU8BichHrA3vtGbHt5aGlQkzwR8HxO+NL9kXvpMWRO/8qsxaG7aY6HjxvTo4X3p3ANy/FE670hbsEN65HrNIVQK6okMAQrISOKBmdslL0aUZUfSC22qRV94GyyqXoyoZG7vV0G5TNzRG7nQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NzEieb2X/ZJYvG9nTBkldGZmyPCv6FKB37MD9a6NxwM=;
+ b=YChbtvD5DMHJGiVcUTsvStPb9um7Z3HgE8HO/YtF8uoneqVZ5C4d9eFqy80fJHmrgjE1QsZUGY+uxPk/mISO5bZ+TsXI1Og0oottZDX76/H6N779l86UHj1v0TZZZxwJFKsKGnsUaXTXfjxZRygmmzyTb7prhzS6UvIxtnL1eyGAgfwNNKNyFn62NcbECFp/oWnDcNS7sBFLqzv15PUCuUFTlrCQ8fxvUYwxwbyxt6qDpnPXjZfBERqsWyhhGENAe+14hs52+1GUO/T4QZuga+AHIcy1IKZLBUncStEf2SsNOUzjqs/zTQ8xY5DsrZhrICGNYL1b87yv4LPaHCuuCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NzEieb2X/ZJYvG9nTBkldGZmyPCv6FKB37MD9a6NxwM=;
+ b=OqC1diY9fByVgPeNGQ/dwCNWIwRVjZBsFMxwIGk6q/gc/ZYFbgg3I1b/7dx6Q5xvUxbBTXZ6/PEDe+mpINx4NgXpidLGn1VdzgiI2EVj6UHJ5mWLABg+2c0wibYllV5cxU0z57uiSsD2Sf21PSGtRfyJo6CE8GhYcZrTzvJtNqA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWLP265MB7005.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1ff::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.19; Wed, 7 Jun
+ 2023 18:42:12 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2e6d:c339:6006:9013]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::2e6d:c339:6006:9013%5]) with mapi id 15.20.6477.016; Wed, 7 Jun 2023
+ 18:42:12 +0000
+Date:   Wed, 7 Jun 2023 19:42:10 +0100
+From:   Gary Guo <gary@garyguo.net>
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     Qingsong Chen <changxian.cqs@antgroup.com>,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
         Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
         Alice Ryhl <aliceryhl@google.com>,
         Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH v2 1/3] rust: kernel: add ScatterList abstraction
-Message-ID: <ZIC74gLDC1pLIx+Z@boqun-archlinux>
+Message-ID: <20230607194210.380d195f.gary@garyguo.net>
+In-Reply-To: <ZH3+jARBbn2iG1dW@Boquns-Mac-mini.local>
 References: <20230602101819.2134194-1-changxian.cqs@antgroup.com>
- <20230602101819.2134194-2-changxian.cqs@antgroup.com>
- <ZH3+jARBbn2iG1dW@Boquns-Mac-mini.local>
- <fe4744bb-17db-6f60-4b8c-1453009ef11a@antgroup.com>
+        <20230602101819.2134194-2-changxian.cqs@antgroup.com>
+        <ZH3+jARBbn2iG1dW@Boquns-Mac-mini.local>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P123CA0043.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600::31)
+ To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fe4744bb-17db-6f60-4b8c-1453009ef11a@antgroup.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB7005:EE_
+X-MS-Office365-Filtering-Correlation-Id: b2abeb39-cbe9-4194-7b9d-08db6786e83b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: GsbTzEKZl5VpflsCIF545zbv7a2ThFBKlHm9ThWKBnDa9GHGrS7XmtMNSkmrsNylTmiKjWH4xjk97X/nWyT+uCcUherXVItEvRA2ovkVNKnRkRJFDTLK5JwLyhcGLB5sN/42atlyKqaQsF/9ASEO18ejP5GRe0ZDiV3M14btxJSaxy2wdDFgwy48qXB3AGKUDWFlZ2fYhiON38tT7YW0nsTAJTW0OFIxP/bBUTV1eLnj93LOYXmm22Ak06eTVWPKirWVe08Mz7SwcnWhCxlWzaKNDUnCS4w7BXWiYB1ZKrFxsXbUBhIJdWbzxe6Ly/FnzjvSCGrbnooL4DOTEHL1gLW1V6oKVJsiKX2ALr3Vx6ZjI9h2KbbfSVukHvQtDZ7m+7RSY9lUwOwHhezRK+evNl2G1jJ7aAIH9wp62ymI6b9gVu9qcxb7gm7UlLBHzohdyxQj9/X6Q+XE4VtQWBe9HEQnyDrKR8TX7HWC3C+lE/tUymMvDWnSNITxxA6kv//jqPnaTmg1bU2shZrhI8qPHfD1TBSuWynLeozBrW2r1vI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(396003)(136003)(366004)(346002)(39830400003)(376002)(451199021)(36756003)(1076003)(41300700001)(26005)(6512007)(186003)(6506007)(5660300002)(2616005)(83380400001)(8676002)(8936002)(54906003)(478600001)(66476007)(66946007)(66556008)(316002)(6486002)(4326008)(38100700002)(2906002)(966005)(86362001)(6916009)(7416002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?OBsAPFnDC7/XKZ/IofwvvOH8hItvK21MlM9ZHWJ7B8VapcvAqPmiltmapDhe?=
+ =?us-ascii?Q?wHLE4pXgmaK1/Depj5J3EKkU8g34+njEmeebAxTAgKkxhU641WbmHbVXpbDx?=
+ =?us-ascii?Q?yehu5eB/uAngTFX1zdA96NIAVS/Xoa5v3au4uiZi7WNyT5sUXCnMEACve7tS?=
+ =?us-ascii?Q?rx7wgrwG2YHE1rGP0wSuWizzB7NJqQfgLNsbJUIkUr+6zH6D0lzLOJ4/+sot?=
+ =?us-ascii?Q?/MbLHMriKar1GPEXsHLdQ3rju+yWQGQopvtqfPpXie1vfuYqZXedgNagjToh?=
+ =?us-ascii?Q?3RdpdER0Bp02grZulBmdWWsSHz6qSTz9vqqDbYOmXjzNyPQaUKyUheqMjA6w?=
+ =?us-ascii?Q?lVdOHcYr3VDqkGR9O4uAKFo3b8/82Pmb4GPUZwlQbFX9c7ASuMmxHIqU08SA?=
+ =?us-ascii?Q?hS6gOyJJRYApbH7oqC5QQJxsxaOabCr7c+/6nNXClIQIjt29xUdb28VK7kPg?=
+ =?us-ascii?Q?UVYeN1eI5yxzGk5WzrOnPqpMlnAvoWu7yDRySUEpbvIgttMg/sUKaNkUr5dL?=
+ =?us-ascii?Q?lMR9cNs7+gaMtUI0ubvpmGk/0OOMxD8CLr+Yut0h2tB9bwJTF8xOy7vL/dCU?=
+ =?us-ascii?Q?uWuBWpJQyD/9pQu+zimBU0CY/U8j8NYnGvnyHjIAcaAGsrAlijhCVtZzYmtD?=
+ =?us-ascii?Q?Wp7+AAvMniAmyKY0ynW7adIKvMmXOuPn+xUWsf7ZKV0m1gS4JE2B/dEx6vkn?=
+ =?us-ascii?Q?bDNKjN+Oh7S6THG88ctuA7iS3sK18wUmrf5QfcISxzQdYl93eI7N4CtcIMhQ?=
+ =?us-ascii?Q?1P9MNScgQtBXouar6T2ltl4KZLvv6MYXyRkOBPSVH9AEOBPgEXiZj8Up42Fo?=
+ =?us-ascii?Q?U4idyqqaYYnAW8WTwPhpDdw5vGNVO5hG8koGxxyiwuyXGN3A2OHAq9pgN2u7?=
+ =?us-ascii?Q?u7/ekmF8gpcRYh0T6XiKg9NsLT+20NeMyVxjEfLj/I4AG55NKuUmpQ8ovj+H?=
+ =?us-ascii?Q?waxtorP9h5ORpfXUatqsItrljgMz6slxn/Ww4/q1VYiL7PkUK5rvBD7dG4Xj?=
+ =?us-ascii?Q?/J20l8J4EDWB7g/xl4EfgQeTVEMBv+FpSrVL/MuwtcBZ8pVQmYb5GfyQIkyz?=
+ =?us-ascii?Q?pu64qBnAptGK0FdoGG/twDg3t8/0jqancf8e5yzxcQ+0S+lr5ys3RQIcwQLy?=
+ =?us-ascii?Q?oXX/vMnVZiIq3SIr+sK3SWMEHI051CRAlmJXAHI/UFYhxxy6F6l6OF7NcXgv?=
+ =?us-ascii?Q?5C57hqizEf6FRoY4csI0dKKGnZZL1BMrLzvQ1ri6MntM7CN2COBwuh4TBKLF?=
+ =?us-ascii?Q?V5iBL4925MFB84DwjnL6daMOcmL2LQCXPvzfvghgS4lIPlS6uWg9Wtxyv9DK?=
+ =?us-ascii?Q?3DydVGmVeOtLvyqDzRN8u50LdtkUdtRw6oybRdbrYU1nhxEr5TIigX6vi0Fk?=
+ =?us-ascii?Q?uErSE8hw8Xtc/PxS7zUjTC1/lB31THe11QIS+2yYzf87T8+B1UmpoxzyHdzT?=
+ =?us-ascii?Q?OnDeEYGIF3KXw/Z7KKE4gcQJ8oy2O7suimqHs9+JyjD2F+Trr/6HEbrB4xvR?=
+ =?us-ascii?Q?M8lLuF/9FrQE5ZHAZ8p0qWfGeO3kM3zcKNXxdRSLeRXMqC1S+43oQikMF0kE?=
+ =?us-ascii?Q?u19TZxPrJuzRbITtI9IfXtcsBLWyxHKcNR2BxctA?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2abeb39-cbe9-4194-7b9d-08db6786e83b
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 18:42:12.4581
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /FH2AMLJ4zFbCvTM6WiPOGY84NchLumrpT5Ma4UfhkI+2STKPBPdQjyIdDJCw1HGrHAwgu6YRAGeE4rtZUFnLw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7005
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Jun 06, 2023 at 03:01:30PM +0800, Qingsong Chen wrote:
-> On 6/5/23 11:26 PM, Boqun Feng wrote:
-> > On Fri, Jun 02, 2023 at 06:18:17PM +0800, Qingsong Chen wrote:
-> > [...]
-> > > +impl<'a> ScatterList<'a> {
-> > > +    /// Construct a new initializer.
-> > > +    pub fn new(buf: &'a Pin<&mut [u8]>) -> impl PinInit<ScatterList<'a>> {
-> > > +        // SAFETY: `slot` is valid while the closure is called, the memory
-> > > +        // buffer is pinned and valid.
-> > > +        unsafe {
-> > > +            init::pin_init_from_closure(move |slot: *mut Self| {
-> > > +                (*slot).set_buf(buf);
-> > > +                (*slot).mark_end();
-> > 
-> > Benno can provide more information, but you cannot dereference or create
-> > a reference to `*slot`, since `slot` points to an uninitialized object
-> > (see `try_pin_init` implementations), and referencing uninitialized
-> > objects is UB (or may cause UB).
+On Mon, 5 Jun 2023 08:26:04 -0700
+Boqun Feng <boqun.feng@gmail.com> wrote:
+
+> On Fri, Jun 02, 2023 at 06:18:17PM +0800, Qingsong Chen wrote:
+> [...]
+> > +impl<'a> ScatterList<'a> {
+> > +    /// Construct a new initializer.
+> > +    pub fn new(buf: &'a Pin<&mut [u8]>) -> impl PinInit<ScatterList<'a>> {
+> > +        // SAFETY: `slot` is valid while the closure is called, the memory
+> > +        // buffer is pinned and valid.
+> > +        unsafe {
+> > +            init::pin_init_from_closure(move |slot: *mut Self| {
+> > +                (*slot).set_buf(buf);
+> > +                (*slot).mark_end();  
 > 
-> I understand that `reading` from uninitialized objects is UB, either
-> via references or raw pointers. But in this unsafe closure, we just do
-> the `writing` job to `slot` for initializing. This makes me a little
-> confused, why is there a difference between reference and raw pointer?
+> Benno can provide more information, but you cannot dereference or create
+> a reference to `*slot`, since `slot` points to an uninitialized object
+> (see `try_pin_init` implementations), and referencing uninitialized
+> objects is UB (or may cause UB).
 
-References (or the existence of the references) mean the underlying
-objects are valid:
+This is fine for `Self`, because the only non-ZST field in there is
+`Opaque`, which can be uninitialised.
 
-	https://doc.rust-lang.org/std/primitive.reference.html
+> 
+> Note that you could do the following for `set_buf`:
+> 
+> 	// `addr_of!`[1] is special since it won't create references
+> 	// (even temporary onces).
+> 	let opaque = addr_of!((*slot).opaque); // <- *const Opaque<bindings::scatterlist>
+> 
+> 	let ptr = Opaque::raw_get(opaque); // <- *mut bindings::scatterlist
+> 
+> 	// Maybe this can be wrapped as a Rust function with a
+> 	// parameter: *mut bindings::scatterlist.
+> 	unsafe {
+> 		bindings::sg_set_buf(ptr, buf.as_ptr(), buf.len());
+> 	}
+> 
+> [1]: https://doc.rust-lang.org/core/ptr/macro.addr_of.html
+> 
+> Regards,
+> Boqun
+> 
+> > +                Ok(())
+> > +            })
+> > +        }
+> > +    }
+> > +  
+> [...]
 
-, so creating a reference (even a temporary one) to an uninitialized is
-an UB, that being said..
-
-> Is there any compiler magic on reference which may cause UB? Still, I
-
-I'm not creative enough to come up with a compiler optimization that
-will (ab)use this UB to do evil if you can be sure that set_buf() and
-mark_end() are purely writes. So your confusion looks reasonable to me
-;-) But still it's an UB. And I guess you don't want to be suprised by
-any future compiler optimization, right? ;-)
-
-Regards,
-Boqun
-
-> would fix this by `addr_of`. Thanks.
