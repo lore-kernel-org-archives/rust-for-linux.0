@@ -2,92 +2,111 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49C3BC7EE23
-	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Jun 2023 11:53:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14AD7C7EE29
+	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Jun 2023 12:28:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236342AbjFHLxB (ORCPT
+        id S235050AbjFHM2s (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 8 Jun 2023 07:53:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36768 "EHLO
+        Thu, 8 Jun 2023 08:28:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232417AbjFHLxA (ORCPT
+        with ESMTP id S232984AbjFHM2r (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 8 Jun 2023 07:53:00 -0400
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA9CD1FEB;
-        Thu,  8 Jun 2023 04:52:59 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-56ca07b34b1so4387067b3.0;
-        Thu, 08 Jun 2023 04:52:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686225179; x=1688817179;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zl1R25aFlMknfZ0TZaTg0XuHD/qftBgk3A9a/qrvBxE=;
-        b=JkWwFpUHXV9of/EMlxEglfiJIwG1whJEIcTeXTzj0r1UXBhS3QQTuzkkduG01/PtL+
-         Dc6zQvaguzzgwBx7WI0aYdeB7ZdtueyKcmvT7IKVzNRsqhuqwtYMPUyjy1gqCKi7EY23
-         SDoM2b1Qy5nIPOupVMsQuZokYSz/qFGraoOECWmgxh0wTrApXG7k5bt7SAB/kFmj9Ux4
-         H5IMMf5fkjKmupydwZm55ILHeDzk4y1Otqyjwmj34EZ6NbSwkuOhAZc6ig5rU70vV4i/
-         Y8Mwh64R+JCNUx3ml3+xihLvBqH1Ja3Dh1iA1tYZ2SdKKDpJQVjhW0iAhUfUpepA3d1x
-         UUKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686225179; x=1688817179;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zl1R25aFlMknfZ0TZaTg0XuHD/qftBgk3A9a/qrvBxE=;
-        b=DhlBh/6mCNcw8V8OMmn/ng8l0eb0wUuOEKbIMBYbXv9wLkue65tCJFZkI29/91rmQG
-         NDuxLdfTqWYwBCGxM6nVL2gMAwIhsksoTN60ErZrllYWnTXsYFfi3RWtt92qz2o3l4mk
-         IFDTP1jSHJ2sKhgKKfbROsZH6ErJ9iOq7oEolfZPbTzKG6MIzZXGbD7XgqSortxIB3lJ
-         XnWmy8ex6QxBT9qHGIt20ncjUofzi7Vs5e6uJOJFZs2DzKkwNTEuQNMd+aeWfOXwXaGY
-         lObg1sVZ+UK39QMfoLrkO6uN5ZyjQsO7y31NZ4MYBYsVh+zXP9+bqTtNDSJM3MUIBTbl
-         85ZQ==
-X-Gm-Message-State: AC+VfDwFc5HjTM2XjZWEhSQj/hqawcAtbpvj1gsPjjwY244ZCuI3gFQ+
-        7b/YgjjsIgOWjshyyYpqh7i95s2j9xMaEMKL+QI=
-X-Google-Smtp-Source: ACHHUZ6h6dDyv4SxutQEfzo1GDIGkQqE4VT4CGwB81++CdMgJ3EN0Xs26iS4UkX3+1xwEFlXbP9izWEIR2g4zFlOcTk=
-X-Received: by 2002:a0d:c584:0:b0:561:b246:77ca with SMTP id
- h126-20020a0dc584000000b00561b24677camr9370671ywd.28.1686225178967; Thu, 08
- Jun 2023 04:52:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230307102441.94417-1-conor.dooley@microchip.com> <20230608-dispatch-sneer-aa09bd7b2eb8@wendy>
-In-Reply-To: <20230608-dispatch-sneer-aa09bd7b2eb8@wendy>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 8 Jun 2023 13:52:47 +0200
-Message-ID: <CANiq72nnph7LS1fLRtHz8NJ91PWXPaUnm0EuoV3wrbvK398AnA@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
-To:     Conor Dooley <conor.dooley@microchip.com>
-Cc:     linux-riscv@lists.infradead.org, conor@kernel.org,
+        Thu, 8 Jun 2023 08:28:47 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2C2F26B0;
+        Thu,  8 Jun 2023 05:28:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1686227322; x=1717763322;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=D3eGuNa1+BoSZIrVhFPmuw0PAOKIN8uK8gmRTqHfLG4=;
+  b=esVpqYHHgx5kpOfYhZ9Mf2DbbVPU0TwLUQaqB68pCrEYa5aj9NJUppYj
+   SoR4pMDc989qcqcbvuJu20j+1kLMIVdOw867bP8VIIbMJpTuT3icTOf3w
+   Xk6kJdL9M19yZKrcEX7NwAZtECza5asr1sRg015OKO7YtGioZS4niq4jV
+   q1SZFOgu6MQPuO0hBvO24/2OqhOoqhH93ZqHg2a/ZWYP+EQeLA1ztZeAi
+   9hkByaA/KTt4sKrRyhe+91c4+D1kvo2usJCU9CXoPJWKazFenisEbmY1/
+   2OxWpn9hpdEUc7dnFUGqTXNuAXZYmN3GK4JivOEgeHYroA3qQocyxwZ3f
+   A==;
+X-IronPort-AV: E=Sophos;i="6.00,226,1681196400"; 
+   d="asc'?scan'208";a="219411820"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 08 Jun 2023 05:28:40 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Thu, 8 Jun 2023 05:28:33 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Thu, 8 Jun 2023 05:28:30 -0700
+Date:   Thu, 8 Jun 2023 13:28:06 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC:     <linux-riscv@lists.infradead.org>, <conor@kernel.org>,
         Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         Jonathan Corbet <corbet@lwn.net>,
         Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, rust-for-linux@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Tom Rix <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <llvm@lists.linux.dev>
+Subject: Re: [PATCH v1 0/2] RISC-V: enable rust
+Message-ID: <20230608-spiritism-gonad-5f5aff4c3a24@wendy>
+References: <20230307102441.94417-1-conor.dooley@microchip.com>
+ <20230608-dispatch-sneer-aa09bd7b2eb8@wendy>
+ <CANiq72nnph7LS1fLRtHz8NJ91PWXPaUnm0EuoV3wrbvK398AnA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="HEkduUF7a/Zaoz5V"
+Content-Disposition: inline
+In-Reply-To: <CANiq72nnph7LS1fLRtHz8NJ91PWXPaUnm0EuoV3wrbvK398AnA@mail.gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Jun 8, 2023 at 9:01=E2=80=AFAM Conor Dooley <conor.dooley@microchip=
-.com> wrote:
->
-> I do intend revisting this, probably after the min. version for rust
-> gets bumped, I've just been really busy with other work the last weeks.
+--HEkduUF7a/Zaoz5V
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks Conor! That would be great. We are increasing the minimum
-version after the merge window to Rust 1.70.0 (assuming no unexpected
-issues).
+On Thu, Jun 08, 2023 at 01:52:47PM +0200, Miguel Ojeda wrote:
+> On Thu, Jun 8, 2023 at 9:01=E2=80=AFAM Conor Dooley <conor.dooley@microch=
+ip.com> wrote:
+> >
+> > I do intend revisting this, probably after the min. version for rust
+> > gets bumped, I've just been really busy with other work the last weeks.
+>=20
+> Thanks Conor! That would be great. We are increasing the minimum
+> version after the merge window to Rust 1.70.0 (assuming no unexpected
+> issues).
 
-This is the branch I have in case you want to use it, I will submit it
-soon: https://github.com/ojeda/linux/tree/rust-1.70
+Right, so probably I won't resubmit anything until after v6.6 then,
+as it won't be in the RISC-V tree until then, by the sounds of your
+timeline.
+Gives me plenty of time to try and unravel the mess of libclang versions
+and what extensions are supported by each tool. Not like I am devoid of
+other things that need to be done!
 
-Cheers,
-Miguel
+
+--HEkduUF7a/Zaoz5V
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZIHJVgAKCRB4tDGHoIJi
+0ikSAP9vwx3IhwT2YQBx4VTPuAhBIV9NLradoYYCFXuEPhuj0QD/TlPI2RbulZ9K
+uWEHPxTMU46fCeYmbOUy5I7dtUUEwgg=
+=ram8
+-----END PGP SIGNATURE-----
+
+--HEkduUF7a/Zaoz5V--
