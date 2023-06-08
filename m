@@ -2,171 +2,125 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DF86C7EE23
-	for <rust-for-linux@archiver.kernel.org>; Wed,  7 Jun 2023 19:42:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15999C7EE2E
+	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Jun 2023 04:46:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230337AbjFGTmQ (ORCPT
+        id S234188AbjFHEqt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 7 Jun 2023 15:42:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53480 "EHLO
+        Thu, 8 Jun 2023 00:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230034AbjFGTmP (ORCPT
+        with ESMTP id S234175AbjFHEqs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 7 Jun 2023 15:42:15 -0400
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A3F71FE0;
-        Wed,  7 Jun 2023 12:42:14 -0700 (PDT)
-Received: by mail-qk1-x729.google.com with SMTP id af79cd13be357-75d5469c856so407238085a.2;
-        Wed, 07 Jun 2023 12:42:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686166933; x=1688758933;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/oF4AC5xHgg8LwfnEbJTH2/uVZSgF0m82b8cRGQMkBc=;
-        b=oWRkd82izCC3ALVh//TuRqme/kv6uihxU5NoL8EwK/jJsDDZvkqgKfzcQ4v9vgvdvu
-         2+J7jPIoUfmsNDkCgD9SOtXFAwiXxlCtwxuj3ocMcYHoIsDa7rm0B06MNcPY1zdp22VH
-         oXh3/fnqD18Yei+gJ6zokAJUkiiVYLl90hrs43Fir8vLSDW8pTFusQOWmMQHWM9gLXAe
-         lLnlhLsjKCWHDMGUVV7dRtD+kcm8j6cZP9LrLcMa7ttTgEYW+MPUs5/g08a+eYZp7lAF
-         AehFUKFdI+YrZ6sZdq+YRJVf7QxTvuck5ie0YXSGUU08jdzureZH3uETF0R4ppRmJioL
-         82yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686166933; x=1688758933;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/oF4AC5xHgg8LwfnEbJTH2/uVZSgF0m82b8cRGQMkBc=;
-        b=RtbhgsrB0sEsjvDv8WnTMkozfgJFUfkNheEhTDIp3Bqb2tl94qKKiH1g7LbuGLElwC
-         DF5zC98BosmFYeV/4+Yt3GTl05NcOO4MUWXr1Yry3pVv9UkcJpDvS6iJQIhJwvGh+1HS
-         HhME1WQYdmLgsUwuRLgCfWQ2JAz8hKMvz2WKSjVD7a7D/2gImQtwOBLsUpQBtxzmRf3a
-         9vqz0M0c8vYjLScVlxgUAs255DbyICk/Qi8CP1yDhxJEry0hz34A2tlAPF+nhBWLhxRL
-         SIPMobxesdQPiplGGE9dkTP1S1khQ7IuVoSUcPte5OSY8f4YuXBawgIqb0snG047hBY2
-         qBvw==
-X-Gm-Message-State: AC+VfDw4ijQdw6QeI7X29Lo1OOq7odGoUTzVFY408kyR/Ad4wZjFlbxJ
-        qEw/UgkwdJ9U8QAAcUuAy74=
-X-Google-Smtp-Source: ACHHUZ7g3ol6PzklOObpWHT/OFybWPGQBPGjbDvawlPrtKF37dXBJl30jomnYhGwHR754us4Nh4BdA==
-X-Received: by 2002:a05:620a:8a01:b0:75b:23a1:3670 with SMTP id qt1-20020a05620a8a0100b0075b23a13670mr2692621qkn.49.1686166933309;
-        Wed, 07 Jun 2023 12:42:13 -0700 (PDT)
-Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
-        by smtp.gmail.com with ESMTPSA id d7-20020a05620a158700b0075cc804ee88sm144730qkk.30.2023.06.07.12.42.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 12:42:12 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 27F2427C0054;
-        Wed,  7 Jun 2023 15:42:11 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Wed, 07 Jun 2023 15:42:12 -0400
-X-ME-Sender: <xms:k92AZDMoZk6mL2FjP4hhUBscoS6Yktqc7W0zw5XIsvDxo4aSA2fOQA>
-    <xme:k92AZN8Ll7oDmjZnSJsX0m3__byYQwuu70FurmuC265qlxHUNu2ZtOXViCDp351Q4
-    UXcONUHDpb2YajQzw>
-X-ME-Received: <xmr:k92AZCTA7nFuOwUhkVlESkbtMHgYlHjbIal2WqIeFCjMeMP9bw9jhL2C2gU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedtgedgudegtdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepjeeihfdtuedvgedvtddufffggeefhefgtdeivdevveelvefhkeehffdt
-    keeihedvnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgnecuvehluhhsthgvrh
-    fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhp
-    rghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsg
-    hoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:k92AZHuTW6Gqm73R-yfMjhTWCBHLNj2a-SOTWMgJ2_OMoTV_W8ZsEg>
-    <xmx:k92AZLcRJtZvxla5iZ44WhdUwtUIIIN7AdfvY6UcsizGWe4-z8fy2A>
-    <xmx:k92AZD2RuukR6LlyaEJ8T4ek7dVh36LxHsZXvhZcg96POImGHNfSUw>
-    <xmx:k92AZJ3U-NVFXgOFSLhyNDJAuRyFH919Y9zvlET2WVkDPv0a8JO2zQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 7 Jun 2023 15:42:10 -0400 (EDT)
-Date:   Wed, 7 Jun 2023 12:40:43 -0700
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Gary Guo <gary@garyguo.net>
-Cc:     Qingsong Chen <changxian.cqs@antgroup.com>,
-        linux-kernel@vger.kernel.org,
-        =?utf-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] rust: kernel: add ScatterList abstraction
-Message-ID: <ZIDdO7SPvZh8fD7z@boqun-archlinux>
-References: <20230602101819.2134194-1-changxian.cqs@antgroup.com>
- <20230602101819.2134194-2-changxian.cqs@antgroup.com>
- <ZH3+jARBbn2iG1dW@Boquns-Mac-mini.local>
- <20230607194210.380d195f.gary@garyguo.net>
+        Thu, 8 Jun 2023 00:46:48 -0400
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FF1126AC
+        for <rust-for-linux@vger.kernel.org>; Wed,  7 Jun 2023 21:46:43 -0700 (PDT)
+Received: from epcas1p1.samsung.com (unknown [182.195.41.45])
+        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20230608044640epoutp0293d613851032630fc614ce7cf408cfdf~mlZppy4za2024920249epoutp02Z
+        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 04:46:40 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20230608044640epoutp0293d613851032630fc614ce7cf408cfdf~mlZppy4za2024920249epoutp02Z
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1686199600;
+        bh=g35/Rmb5/3gDCUZbHMH5pOAyjsXeQj2q9TbNz8qFsdI=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=i4RNGYX1S7+qP4mHDlfmUwCrn+4NbOGAF+6W/BwvU/6WdKYoqXvtxOmHib7TtOhr7
+         Z/nccckS2QUo0GTme/bCWAHLKf/j4qr1Pyz6puai+cyIrgXuVfezz5fwB5djD8Mcmo
+         ZzVZg1FBFEmENeYHOgV5LWw+igl4p6ZIKvsmUsQw=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+        epcas1p4.samsung.com (KnoxPortal) with ESMTP id
+        20230608044640epcas1p4bfbb43e2739058e9247ba1860e53f7c8~mlZpT9Iw93072930729epcas1p4P;
+        Thu,  8 Jun 2023 04:46:40 +0000 (GMT)
+Received: from epsmges1p5.samsung.com (unknown [182.195.36.136]) by
+        epsnrtp3.localdomain (Postfix) with ESMTP id 4QcBWM4l1Rz4x9Q9; Thu,  8 Jun
+        2023 04:46:39 +0000 (GMT)
+Received: from epcas1p1.samsung.com ( [182.195.41.45]) by
+        epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
+        F4.AC.48553.D2D51846; Thu,  8 Jun 2023 13:46:37 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas1p4.samsung.com (KnoxPortal) with ESMTPA id
+        20230608044636epcas1p459afcb7fea358534476e817eb1952c10~mlZlu7QlV3072930729epcas1p4G;
+        Thu,  8 Jun 2023 04:46:36 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20230608044636epsmtrp19f88f97c73594cb84d570a8a9526e1e4~mlZluVPWX1603816038epsmtrp1v;
+        Thu,  8 Jun 2023 04:46:36 +0000 (GMT)
+X-AuditID: b6c32a39-36dff7000001bda9-a2-64815d2d3d65
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        BD.92.27706.C2D51846; Thu,  8 Jun 2023 13:46:36 +0900 (KST)
+Received: from kson001 (unknown [10.102.7.58]) by epsmtip1.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20230608044636epsmtip1c5435f2704ab4eb13b206c8966a7dc26~mlZlcI1SF2070120701epsmtip1J;
+        Thu,  8 Jun 2023 04:46:36 +0000 (GMT)
+From:   =?ks_c_5601-1987?B?vNWxpMjGL1RpemVuIFBsYXRmb3JtIExhYihTUikvu++8usD8wNo=?= 
+        <k.son@samsung.com>
+To:     "'Conor Dooley'" <conor.dooley@microchip.com>, <ojeda@kernel.org>
+Cc:     <linux-riscv@lists.infradead.org>, <rust-for-linux@vger.kernel.org>
+Subject: RISC-V: enable rust
+Date:   Thu, 8 Jun 2023 13:46:36 +0900
+Message-ID: <000001d999c4$34e9d640$9ebd82c0$@samsung.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230607194210.380d195f.gary@garyguo.net>
+Content-Type: text/plain; charset="ks_c_5601-1987"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AdmZxDKDUHXVIC6YQfizVx0vqjWB3g==
+Content-Language: ko
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpmk+LIzCtJLcpLzFFi42LZdlhTV1c3tjHFYPoREYspm3awW2z73MJm
+        sXL+ckaL9c8OMzuweGxa1cnmsXlJvcedH0sZPT5vkgtgicq2yUhNTEktUkjNS85PycxLt1Xy
+        Do53jjc1MzDUNbS0MFdSyEvMTbVVcvEJ0HXLzAHaqKRQlphTChQKSCwuVtK3synKLy1JVcjI
+        Ly6xVUotSMkpMC3QK07MLS7NS9fLSy2xMjQwMDIFKkzIzvh3Yg1bwRrmivbeiewNjDeYuhg5
+        OSQETCTajx5i7mLk4hAS2MEo8bz5IROE84lRYu/tKewQzjdGicknTrPBtPzY9YARIrGXUWLX
+        z41sEM5jRok/n36yg1SxCaRKTPy1Fcjm4BARcJXonMgDEmYWcJfY1TYFbJCwgIzEstUNYHew
+        CKhIbLhzkBnE5hWwlGjfuIoRwhaUODnzCQtEr5HEktXzmSBseYntb+cwQxykIPHz6TJWEFtE
+        QE/i2PZHUDUiErM728B+kxC4xS6x8sJtdogGF4lLW3dB2cISr45vgbKlJF72t0HZ2RJHP+6F
+        +rhE4vqsRawQtrHE/qWToYGnKLHz91xGiGV8Eu++9rCC/CshwCvR0SYEYcpL3Oosh6gWlTjz
+        9CPURA+Jz6fPsU9gVJyF5MtZSL6cheTLWUi+WcDIsopRLLWgODc9tdiwwBQe28n5uZsYwalR
+        y3IH4/S3H/QOMTJxMB5ilOBgVhLhzbKvTxHiTUmsrEotyo8vKs1JLT7EaAoM+InMUqLJ+cDk
+        nFcSb2hiaWBiZmRsYmFoZqgkzvvlqXaKkEB6YklqdmpqQWoRTB8TB6dUA1O+XpOE5/NmjXre
+        ++dfVNxwEp5X6b7a7yBjwtriRw4/jkccKSzSlC3Zbu5UvZ/x2p+DKtfnPvt8fcPtgLfRMpcn
+        TXk02f6J6KYnjk7c/Iv6zctt/k316fdrC/wQmLJa5s25nffb7j4q+brajkeuIiF07Ryvj/3G
+        Cku+PqlZ8DDY9vD5muUVGvs277Surfva93H795tzfl0U42H2EA1Zs3sTK8dZBpXfJm15tUGu
+        fPO3203ePklzUpHXL9WjDkuEQ67YWU3zdJihMG0Pm8epH7Nf12pw/jooO61PXO7eprVdvTVH
+        rUPK5rNt15/FHqMu0JPGeo/L3E7gwOF/EzXKr/v7fMnteHpEZ4OLRR0HT7ISS3FGoqEWc1Fx
+        IgCC34rNFgQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrMLMWRmVeSWpSXmKPExsWy7bCSnK5ObGOKQddZZYspm3awW2z73MJm
+        sXL+ckaL9c8OMzuweGxa1cnmsXlJvcedH0sZPT5vkgtgieKySUnNySxLLdK3S+DK+HdiDVvB
+        GuaK9t6J7A2MN5i6GDk5JARMJH7sesDYxcjFISSwm1Fi896/jBAJUYmOy41ANgeQLSxx+HAx
+        RM1DRomvT54yg9SwCSRL7Hw9iQ2kRkTAXeLxk1QQk1nAU2L6VD6QCmEBGYllqxvAVrEIqEhs
+        uHMQrJNXwFKifeMqRghbUOLkzCcsIDYz0DmNh7uhbHmJ7W/nMENcoyDx8+kyVhBbREBP4tj2
+        R0wQNSISszvbmCcwCs5CMmoWklGzkIyahaRlASPLKkbJ1ILi3PTcYsMCw7zUcr3ixNzi0rx0
+        veT83E2M4HDX0tzBuH3VB71DjEwcjIcYJTiYlUR4s+zrU4R4UxIrq1KL8uOLSnNSiw8xSnOw
+        KInzXug6GS8kkJ5YkpqdmlqQWgSTZeLglGpgYs9zKP0iv9ncabpJjwaPrNED3ocVX6dZvnJU
+        O1Fe3i+1r/SFv++WtSs5Q5ZGe3CWTgvonb9la4/NNjezF+c3luhMrnSP/9itxrG/b8v1vm26
+        3t/rs25x7y45+Fdv2cqv93Y52Myqtv6hwXhn1ubtOck6Pmmezhef1zt+LahMz3CWLprMqWvC
+        lic/UWUy6yTv/oLyV45MPnkbo4V1DzmurNa9fl0qdcNOk6N1faKxR46zrd5rbbpg8Y7waslX
+        f0x/Ze/6xfZFq7BA40B5vma/7/3gdQtebnHtY2z/Fd7xI7Bk9hH/ZpPqL3FJgesWO6ToTr76
+        rGqjzP6iqBO3300ONjE96Ljvkv7dp7GOmqFKLMUZiYZazEXFiQByE4mg5gIAAA==
+X-CMS-MailID: 20230608044636epcas1p459afcb7fea358534476e817eb1952c10
+X-Msg-Generator: CA
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20230608044636epcas1p459afcb7fea358534476e817eb1952c10
+References: <CGME20230608044636epcas1p459afcb7fea358534476e817eb1952c10@epcas1p4.samsung.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Jun 07, 2023 at 07:42:10PM +0100, Gary Guo wrote:
-> On Mon, 5 Jun 2023 08:26:04 -0700
-> Boqun Feng <boqun.feng@gmail.com> wrote:
-> 
-> > On Fri, Jun 02, 2023 at 06:18:17PM +0800, Qingsong Chen wrote:
-> > [...]
-> > > +impl<'a> ScatterList<'a> {
-> > > +    /// Construct a new initializer.
-> > > +    pub fn new(buf: &'a Pin<&mut [u8]>) -> impl PinInit<ScatterList<'a>> {
-> > > +        // SAFETY: `slot` is valid while the closure is called, the memory
-> > > +        // buffer is pinned and valid.
-> > > +        unsafe {
-> > > +            init::pin_init_from_closure(move |slot: *mut Self| {
-> > > +                (*slot).set_buf(buf);
-> > > +                (*slot).mark_end();  
-> > 
-> > Benno can provide more information, but you cannot dereference or create
-> > a reference to `*slot`, since `slot` points to an uninitialized object
-> > (see `try_pin_init` implementations), and referencing uninitialized
-> > objects is UB (or may cause UB).
-> 
-> This is fine for `Self`, because the only non-ZST field in there is
-> `Opaque`, which can be uninitialised.
-> 
+Hi,
+Recently I'm trying to put a rust patch on the risc-v board.
+I saw a patch [1] and looked through it roughly.
+Only if llvm(not gcc) is allowed, it looks good with no major problems.
 
-OK, but if you do a
+> I'll revisit this when my thoughts have settled down.
 
-	// this is OK
-	let slot_ref = unsafe { &(*slot) };
+If you let me know the problematic part, may I try the patch?
 
-	// reads uninitialised data.
-	let o = slot_ref.offset();
-
-here (before any `set_buf()` or `mark_end()`), isn't it an UB?
+[1] https://lore.kernel.org/linux-riscv/20230405-itinerary-handgrip-
+a5ffba368148@spud/
 
 Regards,
-Boqun
+Kwang.
 
-> > 
-> > Note that you could do the following for `set_buf`:
-> > 
-> > 	// `addr_of!`[1] is special since it won't create references
-> > 	// (even temporary onces).
-> > 	let opaque = addr_of!((*slot).opaque); // <- *const Opaque<bindings::scatterlist>
-> > 
-> > 	let ptr = Opaque::raw_get(opaque); // <- *mut bindings::scatterlist
-> > 
-> > 	// Maybe this can be wrapped as a Rust function with a
-> > 	// parameter: *mut bindings::scatterlist.
-> > 	unsafe {
-> > 		bindings::sg_set_buf(ptr, buf.as_ptr(), buf.len());
-> > 	}
-> > 
-> > [1]: https://doc.rust-lang.org/core/ptr/macro.addr_of.html
-> > 
-> > Regards,
-> > Boqun
-> > 
-> > > +                Ok(())
-> > > +            })
-> > > +        }
-> > > +    }
-> > > +  
-> > [...]
-> 
