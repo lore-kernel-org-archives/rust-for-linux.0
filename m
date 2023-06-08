@@ -2,164 +2,156 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7897BC7EE29
-	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Jun 2023 07:51:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 765A8C7EE29
+	for <rust-for-linux@archiver.kernel.org>; Thu,  8 Jun 2023 07:56:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232476AbjFHHvL (ORCPT
+        id S233755AbjFHH4u (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 8 Jun 2023 03:51:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44282 "EHLO
+        Thu, 8 Jun 2023 03:56:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233405AbjFHHvJ (ORCPT
+        with ESMTP id S233839AbjFHH4s (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 8 Jun 2023 03:51:09 -0400
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CE52210D
-        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 00:51:03 -0700 (PDT)
-Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
-        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20230608075059epoutp026c25f9739a23cd8a83eed3a7ff4d1639~mn6kSfqgm0884208842epoutp02c
-        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 07:50:59 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20230608075059epoutp026c25f9739a23cd8a83eed3a7ff4d1639~mn6kSfqgm0884208842epoutp02c
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1686210659;
-        bh=HJppTh4hNx/lcCe0c2zXtHzte8UoSXTnYqenZDXOec4=;
-        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-        b=i061bEF49zWI59T7QtPVQkQzYZL+ycj9MxtievDB4MXAR1ElG7V8vfYGGLfaPAm4F
-         UkRMZL273hIDgdvaS+CL8wGFYLRdkF7lSD2TtjDT3v1mD6Q/2NCK50p1YpgrOAWqUU
-         fY3NbMoHD3YU43z84db4iu8UkHKLC01Z2lHyEv2g=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
-        epcas1p2.samsung.com (KnoxPortal) with ESMTP id
-        20230608075058epcas1p208b63cbbb4dec4c9cf2a976c8643abd6~mn6jrHY981980819808epcas1p2n;
-        Thu,  8 Jun 2023 07:50:58 +0000 (GMT)
-Received: from epsmges1p5.samsung.com (unknown [182.195.38.236]) by
-        epsnrtp2.localdomain (Postfix) with ESMTP id 4QcGc11J1mz4x9Q9; Thu,  8 Jun
-        2023 07:50:57 +0000 (GMT)
-Received: from epcas1p2.samsung.com ( [182.195.41.46]) by
-        epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
-        21.FB.48553.16881846; Thu,  8 Jun 2023 16:50:57 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas1p4.samsung.com (KnoxPortal) with ESMTPA id
-        20230608075056epcas1p498e31886d0eb6243db5aec32603ae762~mn6h-Hvjh1909019090epcas1p47;
-        Thu,  8 Jun 2023 07:50:56 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20230608075056epsmtrp26e8294f529a4d25bf724b1bfa581fff3~mn6h7czUv3003730037epsmtrp2W;
-        Thu,  8 Jun 2023 07:50:56 +0000 (GMT)
-X-AuditID: b6c32a39-509937000001bda9-4e-64818861c066
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        61.8A.27706.06881846; Thu,  8 Jun 2023 16:50:56 +0900 (KST)
-Received: from kson001 (unknown [10.102.7.58]) by epsmtip1.samsung.com
-        (KnoxPortal) with ESMTPA id
-        20230608075056epsmtip1ad0ca5eaf3a865ba893b0cceb3a5da06~mn6hma8Tj0289902899epsmtip1R;
-        Thu,  8 Jun 2023 07:50:56 +0000 (GMT)
-From:   "Kwanghoon Son" <k.son@samsung.com>
-To:     "'Conor Dooley'" <conor.dooley@microchip.com>,
-        <linux-riscv@lists.infradead.org>
-Cc:     <conor@kernel.org>, "'Miguel Ojeda'" <ojeda@kernel.org>,
-        "'Alex Gaynor'" <alex.gaynor@gmail.com>,
-        "'Wedson Almeida Filho'" <wedsonaf@gmail.com>,
-        "'Boqun Feng'" <boqun.feng@gmail.com>,
-        "'Gary Guo'" <gary@garyguo.net>,
-        =?utf-8?Q?'Bj=C3=B6rn_Roy_Baron'?= <bjorn3_gh@protonmail.com>,
-        "'Jonathan Corbet'" <corbet@lwn.net>,
-        "'Paul Walmsley'" <paul.walmsley@sifive.com>,
-        "'Palmer Dabbelt'" <palmer@dabbelt.com>,
-        "'Nathan Chancellor'" <nathan@kernel.org>,
-        "'Nick Desaulniers'" <ndesaulniers@google.com>,
-        "'Tom Rix'" <trix@redhat.com>, <rust-for-linux@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <llvm@lists.linux.dev>
-In-Reply-To: <20230608-dispatch-sneer-aa09bd7b2eb8@wendy>
-Subject: RE: [PATCH v1 0/2] RISC-V: enable rust
-Date:   Thu, 8 Jun 2023 16:50:55 +0900
-Message-ID: <000001d999dd$f5166cd0$df434670$@samsung.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQFxm6qKyBFRC1seLjkBq1pGYFP2NAEpdoRnAm01MviwM83LIA==
-Content-Language: ko
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrBJsWRmVeSWpSXmKPExsWy7bCmnm5iR2OKwdwfLBZ/Z29nt7hxYT+z
-        xZotjUwWUzbtYLdYOXUVm8WTA+2MFhfPvGa0WNi2hMXi8q45bBbbPrcAJabsZ7NoX/mUzeLD
-        hP9MFivnL2e0eHm5h9mibRa/xfpnh5ktrn05zWKxYdlaRgdhjzcvX7J4LOn8xeSxc9Zddo8F
-        m0o9Nq3qZPPYvKTe48XmmYwei/sms3rc+bGU0aOnbROTx/t9V9k8LjVfZ/f4vEkugDcq2yYj
-        NTEltUghNS85PyUzL91WyTs43jne1MzAUNfQ0sJcSSEvMTfVVsnFJ0DXLTMH6E8lhbLEnFKg
-        UEBicbGSvp1NUX5pSapCRn5xia1SakFKToFpgV5xYm5xaV66Xl5qiZWhgYGRKVBhQnbGsq+d
-        LAVfOSq2v3rM3MD4m62LkZNDQsBE4tf0U8xdjFwcQgI7GCUaZkxgg3A+MUp07l3NAuF8Y5Q4
-        cfoQXMvnTR8ZIRJ7GSUmP5/BDuE8ZpSY8vsxM0gVm4CmxMJzvxlBbBGBMIlJvc/BljALzGKV
-        mPvyCStIglPAUqLn+X+wBmEBfYmbO/6ArWARUJE4c/ElWJwXqOZZ93o2CFtQ4uTMJywgNrOA
-        vMT2t3OYIU5SkPj5dBkrxDIniYVLdjJC1IhIzO5sg6qZzylxd2EkhO0i8WvVf6i4sMSr41vY
-        IWwpic/v9kK9mS1x9COMXSJxfdYiVgjbWGL/0slMXYwcQPM1Jdbv0ocIK0rs/D0Xai2fxLuv
-        PawgJRICvBIdbUIQprzErc5yiGpRiTNPP7JNYFSaheSvWUj+moXk/lkIuxYwsqxiFEstKM5N
-        Ty02LDCFR3Zyfu4mRnAW0LLcwTj97Qe9Q4xMHIyHGCU4mJVEeLPs61OEeFMSK6tSi/Lji0pz
-        UosPMZoCQ3ois5Rocj4wD+WVxBuaWBqYmBkZm1gYmhkqifN+eaqdIiSQnliSmp2aWpBaBNPH
-        xMEp1cDkN63p/vE5lvLC9n6M5xoz5Bq23Vb1++DzeFkwQxm7dfSyq5UsOXxT//30/tNZuO/m
-        u/63y3e8Ur7sI5J5c96c1fP4AxxfyZR0CS19wpbir3x2U8u2uFPiYkJcEdyL/TSzlou88jXY
-        97sypGKT9HMj35qrR5R0ewoP+bPzLLr3uodlD9N9L8Xfh+dGOIsmmwX6fNnArHru8aGCsAvP
-        unTVj7zYKp3Umbj+OHPwBpNnm6rYnPpdylqvtkx8UHGO31nFcGKvAQ/va7bPbzX7XoanPnu1
-        5HuxanlipVthQvRpz79MAZOM59qG3m6Rvm/W06E78dzBDPbp1a+5pR5wLHr/T41x0lerqS+S
-        tTOqspRYijMSDbWYi4oTAc9Ake2LBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrKIsWRmVeSWpSXmKPExsWy7bCSnG5CR2OKwdpj4hZ/Z29nt7hxYT+z
-        xZotjUwWUzbtYLdYOXUVm8WTA+2MFhfPvGa0WNi2hMXi8q45bBbbPrcAJabsZ7NoX/mUzeLD
-        hP9MFivnL2e0eHm5h9mibRa/xfpnh5ktrn05zWKxYdlaRgdhjzcvX7J4LOn8xeSxc9Zddo8F
-        m0o9Nq3qZPPYvKTe48XmmYwei/sms3rc+bGU0aOnbROTx/t9V9k8LjVfZ/f4vEkugDeKyyYl
-        NSezLLVI3y6BK2PZ106Wgq8cFdtfPWZuYPzN1sXIySEhYCLxedNHxi5GLg4hgd2MEvOapjJD
-        JEQlOi43AiU4gGxhicOHiyFqHjJKbJ86A6yZTUBTYuG534wgtohAmMSk3ufMIEXMAitYJe7P
-        O8oC0bGPUWLN7k9gHZwClhI9z/+DbRAW0Je4ueMPWJxFQEXizMWXYHFeoJpn3evZIGxBiZMz
-        n7CA2MwC2hJPbz6FsuUltr+dA3WpgsTPp8tYIa5wkli4ZCcjRI2IxOzONuYJjMKzkIyahWTU
-        LCSjZiFpWcDIsopRMrWgODc9t9iwwDAvtVyvODG3uDQvXS85P3cTIzglaGnuYNy+6oPeIUYm
-        DsZDjBIczEoivFn29SlCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeS90nYwXEkhPLEnNTk0tSC2C
-        yTJxcEo1MJ3bs+47m8h52QUPz7xcpJDifklJV17S3Xz2sXzHOLXM5px1HFVzrt+zz/4kZVWS
-        YWTXcTox0PKAs8tjJqN4xxXpVTF30/tLvExDXXcXz9kRabv6nbSZ3mbhX1v9Ch0eLBVbxb5u
-        +o36zv65q0PdJiXd/pVi27DoG9+52qrM9o+r8z6lZLafj5a+xpF/a4KqlF7/rYqNwr57ds97
-        8nSl7zFRr6zpE2L3Hnb1tfcos/3xxenxDsNaHp/fbwoZnzzSmTonNyx+p/OLgoXT+GZkXvOv
-        EXjy6OD0Ylm3r4z125jVrx7qMTPJeOphf3t/W3b6sgs/Xs8/ph2yVdU06fCls2q9V8srr/2Z
-        9FVhVctKGyWW4oxEQy3mouJEAFHOyo14AwAA
-X-CMS-MailID: 20230608075056epcas1p498e31886d0eb6243db5aec32603ae762
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20230608070229epcas1p1aeafe28fca0bd682585c4115670d7cc9
-References: <20230307102441.94417-1-conor.dooley@microchip.com>
-        <CGME20230608070229epcas1p1aeafe28fca0bd682585c4115670d7cc9@epcas1p1.samsung.com>
-        <20230608-dispatch-sneer-aa09bd7b2eb8@wendy>
+        Thu, 8 Jun 2023 03:56:48 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7261B1FCC
+        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 00:56:45 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-569fee67d9dso8777147b3.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jun 2023 00:56:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1686211004; x=1688803004;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zbtN0AUFe407eC+d5fxblBSb4UQr/n52GpnrUJew0v0=;
+        b=19VtV9M0bwIkPEjkE7st2aeds2q6Rj/c8CQavfKd8F4oMrXP/RmTfwbjmM5iKR33Ro
+         yYUe68WbeNgkf4J5Uw89cpUGEUKOu6n7b3ZdI3CDH6euzDyjRuEnZyUbGndNp1Xv1rIM
+         fImHwKLkz68U3nlc3+1oVmzTldqxZdlmMXD8jfTdLEScoONxqwFzc1nOdCTwaMkK8T5I
+         Uo7hZ3FTrVz1nXYuN/6W0x1KgzhHn2nd4skmBfQNKKrWXgwSTNYopATFAJ3VLoC9VUQc
+         d4ZA2WJGLN3GOgjOoeNNLGDKVCafZ5g78wMDSbB/t48d9V8WlwdxZhpkSocnp3TwzHpR
+         aTfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686211004; x=1688803004;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zbtN0AUFe407eC+d5fxblBSb4UQr/n52GpnrUJew0v0=;
+        b=NEjLg6vvB69SUXMr11HT/9QHh4PTrYP5xwz2TgwrqNMs9FJdOfyiHDhiMR55f+NKDj
+         9yN+p7a20k3bIvllvwE5vGDskGwAOrex/uOuE4CKtMgQJW/Gl/VQZ89uu7XFxy3cAOGO
+         7+DwkMS5h442XoxQ7BxT3n58DWxj0I6+qAxXMOf/B8bC7HwhvoaEpiTtCnidyPqDArpm
+         A9/2NGsPXjXzzF8VqaLAOlQt3OX/jF7fhCSzjDrPbOuO/sftQD9/c9eIhzZriytPTuPi
+         NQGw01S85FfPXF+tSEfnomFkz8gszw+7PxBZ75J5Btzg/xHBX9c9/tkTWWf+u+b27zhj
+         n0ag==
+X-Gm-Message-State: AC+VfDxR5MOHMcZ+Hh22GVDZcVGFUxWZ9XwWz6rDeMBe7J+guv3xThSl
+        IM6FPYvvUPwC3fnsjRK+p/Zod1q1jS9KiNg=
+X-Google-Smtp-Source: ACHHUZ5NiwDZg7GhMA3n1fgKQsAHZ1IzNZ84AR9+4LR+Q2XkkkOeHzwwpxkhO5QOua/7F3kTwoI4RrP4EPPD5po=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a81:af47:0:b0:568:c8f9:1d86 with SMTP id
+ x7-20020a81af47000000b00568c8f91d86mr836003ywj.2.1686211004668; Thu, 08 Jun
+ 2023 00:56:44 -0700 (PDT)
+Date:   Thu,  8 Jun 2023 07:56:42 +0000
+In-Reply-To: <010101888bd95727-14bd2f14-91f2-4bc2-bca9-e0912f256d21-000000@us-west-2.amazonses.com>
+Mime-Version: 1.0
+References: <010101888bd95727-14bd2f14-91f2-4bc2-bca9-e0912f256d21-000000@us-west-2.amazonses.com>
+X-Mailer: git-send-email 2.41.0.rc0.172.g3f132b7071-goog
+Message-ID: <20230608075642.1355797-1-aliceryhl@google.com>
+Subject: Re: [PATCH 3/5] rust: add support for get_stats64 in struct net_device_ops
+From:   Alice Ryhl <aliceryhl@google.com>
+To:     tomo@exabit.dev
+Cc:     aliceryhl@google.com, fujita.tomonori@gmail.com,
+        rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> Hey Kwang,
+FUJITA Tomonori writes:
+> Hi,
 > 
-> > Hi,
-> > Recently I'm trying to put a rust patch on the risc-v board.
-> > I saw a patch [1] and looked through it roughly.
-> > Only if llvm(not gcc) is allowed, it looks good with no major problems.
-> >
-> > > I'll revisit this when my thoughts have settled down.
-> >
-> > If you let me know the problematic part, may I try the patch?
-> >
-> > [1] https://lore.kernel.org/linux-riscv/20230405-itinerary-handgrip-
-> > a5ffba368148@spud/
+> On Sun,  4 Jun 2023 12:48:29 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
 > 
-> Yeah, you can definitely try this or the downstream rust-for-linux
-> project - both should work well on RISC-V.
-> The problematic part is figuring out what ISA extensions are supported
-> by the rust compiler being used (and by bindgen), and deciding what to
-> put in -march as a result.
+>> FUJITA Tomonori writes:
+>>> +/// Corresponds to the kernel's `struct rtnl_link_stats64`.
+>>> +pub struct RtnlLinkStats64(*mut bindings::rtnl_link_stats64);
+>>> +
+>>> +impl RtnlLinkStats64 {
+>>> +    /// Updates TX stats.
+>>> +    pub fn set_tx_stats(&mut self, packets: u64, bytes: u64, errors: u64, dropped: u64) {
+>>> +        // SAFETY: The safety requirement ensures that the pointer is valid.
+>>> +        unsafe {
+>>> +            (*self.0).tx_packets = packets;
+>>> +            (*self.0).tx_bytes = bytes;
+>>> +            (*self.0).tx_errors = errors;
+>>> +            (*self.0).tx_dropped = dropped;
+>>> +        }
+>>> +    }
+>>> +}
+>> 
+>> It seems like this type is always used behind a reference. Your current
+>> approach has the disadvantage that you're introducing an extra layer of
+>> indirection. You can avoid that like this:
+>> 
+>> ```
+>> /// Corresponds to the kernel's `struct rtnl_link_stats64`.
+>> #[repr(transparent)]
+>> pub struct RtnlLinkStats64(Opaque<bindings::rtnl_link_stats64>);
+>> 
+>> impl RtnlLinkStats64 {
+>>     /// # Safety
+>>     ///
+>>     /// For the duration of the lifetime 'a, the pointer must be valid for writing and nobody else
+>>     /// may read or write to the `rtnl_link_stats64` object.
+>>     pub unsafe fn from_raw<'a>(ptr: *mut bindings::rtnl_link_stats64) -> &'a mut Self {
+>>         unsafe { &mut *(ptr as *mut Self) }
+>>     }
 > 
-> I think it is unlikely to matter for you, unless you're aggressively
-> mixing versions for different parts of your toolchain.
+> I was wondering which I should use here, a pointer or Opaque. Can you
+> give guidelines on which to use?
 > 
-> I do intend revisting this, probably after the min. version for rust
-> gets bumped, I've just been really busy with other work the last weeks.
+> The condition in the above commment is met, Opaque should be used?
 
-No rush! I was just curious.
-Thank you for the explanation!
+An alternative to what you're doing here would be a type that wraps a
+raw pointer:
 
-> 
-> Cheers,
-> Conor.
+```
+pub struct RtnlLinkStats64Ptr<'a> {
+    ptr: *mut bindings::rtnl_link_stats64,
+    _lifetime: PhantomData<&'a mut bindings::rtnl_link_stats64>,
+}
 
+impl RtnlLinkStats64Ptr<'_> {
+    /// # Safety
+    ///
+    /// For the duration of the lifetime 'a, the pointer must be valid for writing and nobody else
+    /// may read or write to the `rtnl_link_stats64` object.
+    pub unsafe fn from_raw(ptr: *mut bindings::rtnl_link_stats64) -> Self {
+        Self {
+            ptr,
+            _lifetime: PhantomData,
+        }
+    }
+
+    /// Updates TX stats.
+    pub fn set_tx_stats(&mut self, packets: u64, bytes: u64, errors: u64, dropped: u64) {
+        // SAFETY: We have exclusive access to the `rtnl_link_stats64`, so writing to it is okay.
+        unsafe {
+            (*self.ptr).tx_packets = tx_packets;
+            (*self.ptr).tx_bytes = tx_bytes;
+            (*self.ptr).tx_errors = tx_errors;
+            (*self.ptr).tx_dropped = tx_dropped;
+        }
+    }
+}
+```
+
+With the above, you replace instances of `&mut RtnlLinkStats64` with
+`RtnlLinkStats64Ptr`. That is, the wrapper struct is itself a pointer,
+so it does not need to be behind a mutable reference.
+
+This approach also eliminates the double indirection, and I think both
+approaches are fine. The mutable reference is probably preferable
+because it is more convenient for the user, but there are some cases
+where you have to use the `RtnlLinkStats64Ptr` solution, e.g. if the
+value behind the pointer is dynamically sized (can happen with tagged
+unions).
+
+Alice
