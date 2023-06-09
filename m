@@ -2,83 +2,94 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C554AC7EE29
-	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 14:47:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4960CC7EE25
+	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 17:11:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241568AbjFIOr2 (ORCPT
+        id S230155AbjFIRLc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 9 Jun 2023 10:47:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34176 "EHLO
+        Fri, 9 Jun 2023 13:11:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232122AbjFIOr2 (ORCPT
+        with ESMTP id S230166AbjFIRLa (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 9 Jun 2023 10:47:28 -0400
-X-Greylist: delayed 361 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Jun 2023 07:47:26 PDT
-Received: from a27-52.smtp-out.us-west-2.amazonses.com (a27-52.smtp-out.us-west-2.amazonses.com [54.240.27.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04A19E4A
-        for <rust-for-linux@vger.kernel.org>; Fri,  9 Jun 2023 07:47:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=s25kmyuhzvo7troimxqpmtptpemzlc6l; d=exabit.dev; t=1686321683;
-        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding;
-        bh=hX7Oi2aAsL+tER7pan0FuBidAeNzi9AqKL1hVzc2BGU=;
-        b=AhuveFIP4I2PtVUeLwXoD0xfl6r2u7YaeMWARjlTK77l77UWkGbkH5bsjZTgthT6
-        WT58HRgZG4+HgalqDCEXUY+tHIsaLfcwGM26xCz/u7HmQWc2wok4m59TTsTC9uKZ/mD
-        dkEgnNE9r7mUGNZcmsfSGKZfL0bw9aMrwrTrG17V0spTEzqyU4xwWWtD0osNebBgBAN
-        /AnNbkCNZfKNUlIB2Q471jpAzVMrrS2b7aDsxekRf5p8eSgDnnm0Cepmg4/0RSHkAsv
-        V5GSXPtw9UQmvJAOUYMprrqnxt+84OA3JP8Gz9gq1EY7qQGpCOZQoEo6S33Wp7acAxu
-        xuMi6lb34w==
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1686321683;
-        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-        bh=hX7Oi2aAsL+tER7pan0FuBidAeNzi9AqKL1hVzc2BGU=;
-        b=nGWYLs+0y2ufcuB+wFJFlxJZu2lkF8IiRdP1B7hR9sgBI7bW9XiCZSxcN7p9U8Bp
-        hgF2ov+/Y+ctk8mwl7B38R7SyfyCxPPsXF+8Wg8eIv3laHSCwsCb1d23f39IQZVeIeC
-        eSZMgLAD1sItNAc5FvP5IK506ne1Q9+zPVTKeXRk=
-Date:   Fri, 9 Jun 2023 14:41:23 +0000
-Message-ID: <01010188a09adbab-f50e8f19-fad6-4dd6-b796-d8e4b0cbc162-000000@us-west-2.amazonses.com>
-To:     andrew@lunn.ch
-Cc:     tomo@exabit.dev, aliceryhl@google.com, fujita.tomonori@gmail.com,
-        rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Subject: Re: [PATCH 5/5] samples: rust: add dummy network driver sample
-From:   FUJITA Tomonori <tomo@exabit.dev>
-In-Reply-To: <a1e6359f-5e4d-4d01-b0e5-cb1dcaf0bd2f@lunn.ch>
-References: <20230608082225.1367048-1-aliceryhl@google.com>
-        <01010188a025632b-16a4fb69-5601-4f46-a170-52b5f2921ed2-000000@us-west-2.amazonses.com>
-        <a1e6359f-5e4d-4d01-b0e5-cb1dcaf0bd2f@lunn.ch>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        Fri, 9 Jun 2023 13:11:30 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E855F3C00;
+        Fri,  9 Jun 2023 10:10:58 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 359EdmFe014500;
+        Fri, 9 Jun 2023 17:10:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=g9ISEYrxyyYTdakhxSFjVMQzIi4jCvx7ogNRaXI4vL4=;
+ b=gQM9av+X7jJm2TWaxj5n9XWlMadY9I4Jn7dBCrS3iRgiCRix4j3GxrEagRBcsbxdNBxK
+ KUTvlsvyV+KFJ3jhBTfsZ32PyTfG0lFk0A9srcGmr02hZw3DYPtdBBxLVdQE7WwBQtS0
+ h1Oso/inrdNCqOycs79YiBEHxyCEZdQaX/CAXMZvbwkbENADnmXBbbpcorYqa2ML5QTS
+ a2Bdd0hTf2fHny9OugZj++eSupI0tmu//bte583BFcU+FWLr0BHmQx7LXiTz/zj5Bw5/
+ OSyUJ1qzm7HkpxLENoG0nhMYko2r1bJd2v7R5Aj0x78mqCv1mfIqhMwOODn+d3kZqT4N jg== 
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3r43d48nsh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 09 Jun 2023 17:10:49 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 359HAmSj000580
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 9 Jun 2023 17:10:48 GMT
+Received: from [10.110.16.202] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Fri, 9 Jun 2023
+ 10:10:47 -0700
+Message-ID: <d68eeeaf-17b7-77aa-cad5-2658e3ca2307@quicinc.com>
+Date:   Fri, 9 Jun 2023 10:10:47 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC PATCH 00/80] Rust PuzzleFS filesystem driver
+Content-Language: en-US
+To:     "Ariel Miculas (amiculas)" <amiculas@cisco.com>,
+        Colin Walters <walters@verbum.org>,
+        Christian Brauner <brauner@kernel.org>
+CC:     "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>
+References: <20230609063118.24852-1-amiculas@cisco.com>
+ <20230609-feldversuch-fixieren-fa141a2d9694@brauner>
+ <CH0PR11MB529981313ED5A1F815350E41CD51A@CH0PR11MB5299.namprd11.prod.outlook.com>
+ <20230609-nachrangig-handwagen-375405d3b9f1@brauner>
+ <6b90520e-c46b-4e0d-a1c5-fcbda42f8f87@betaapp.fastmail.com>
+ <CH0PR11MB5299117F8EF192CA19A361ADCD51A@CH0PR11MB5299.namprd11.prod.outlook.com>
+From:   Trilok Soni <quic_tsoni@quicinc.com>
+In-Reply-To: <CH0PR11MB5299117F8EF192CA19A361ADCD51A@CH0PR11MB5299.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Feedback-ID: 1.us-west-2.j0GTvY5MHQQ5Spu+i4ZGzzYI1gDE7m7iuMEacWMZbe8=:AmazonSES
-X-SES-Outgoing: 2023.06.09-54.240.27.52
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 9XP5T6n0uhbzqVr8Kcd2LHazx42UDCIO
+X-Proofpoint-GUID: 9XP5T6n0uhbzqVr8Kcd2LHazx42UDCIO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-09_12,2023-06-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 phishscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0
+ bulkscore=0 mlxlogscore=660 clxscore=1011 adultscore=0 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306090144
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi,
-
-On Fri, 9 Jun 2023 15:53:43 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
-
-> There is a lot of highly optimised code here. Either you need to
-> really understand it if you want to implement it in rust, or you just
-> wrap the high level interface.
+On 6/9/2023 6:45 AM, Ariel Miculas (amiculas) wrote:
+> A "puzzlefs vs composefs" document sounds like a good idea. The documentation in puzzlefs is a little outdated and could be improved.
+> Feel free to create a github issue and tag me in there.
 > 
-> If you look around at papers talking about high performance
-> networking, you often see that you have around 200 instructions to
-> handle a packet. You need to avoid any sort of contention with other
-> CPUs, you don't want cache lines bouncing between CPUs, you don't want
-> to be signalling between CPUs which atomics will do, take any locks
-> you really don't need. Everything should be local to the CPU.
+> PS: as soon as I figure out how to turn off the top-posting mode, I'll do it.
+> 
 
-Surely, understood.
+Let me know as well if you could do w/ Outlook :). Switch to other email 
+clients if possible.
 
-I'll remove the atomic counter stuff in the sample code in the next
-version. Even with big comments, it could be controversial under
-review of netdev ml, I guess.
-
-Likely per-CPU data can't be simply wrapped in Rust because of its way
-to use macros. Let me try to push the minimum abstractions for
-upstream first. Once it's done, I'll work on more Rust abstrations for
-real network drivers.
-
-Thanks,
+---Trilok Soni
