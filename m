@@ -2,45 +2,45 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4116FC7EE2F
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A3FBC7EE37
 	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 06:54:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238506AbjFIGyZ (ORCPT
+        id S238535AbjFIGyZ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
         Fri, 9 Jun 2023 02:54:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56602 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238431AbjFIGyP (ORCPT
+        with ESMTP id S238508AbjFIGyO (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 9 Jun 2023 02:54:15 -0400
-Received: from aer-iport-2.cisco.com (aer-iport-2.cisco.com [173.38.203.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0521530FA
-        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:54:11 -0700 (PDT)
+        Fri, 9 Jun 2023 02:54:14 -0400
+Received: from aer-iport-7.cisco.com (aer-iport-7.cisco.com [173.38.203.69])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F3D30ED
+        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:54:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=687; q=dns/txt; s=iport;
-  t=1686293652; x=1687503252;
+  d=cisco.com; i=@cisco.com; l=726; q=dns/txt; s=iport;
+  t=1686293651; x=1687503251;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=1ImNveVK/BOBzR2ikpPPqxF/SKv0Uh/+vs7RbXlpK6Y=;
-  b=h/GjysNI/zkufn656dokHQ3ZDidm4saCg7Aop3xKgKePU5O78RigoLKW
-   SxhvzSBkGSP/mNpOtNzTj2UBaz2ZKopi0bWSpv+gtr/cqJlr7Gm1P7cf+
-   VtTkem0ZvVWGLMW2+79aPb+vUYZc42YMNxoslITjjMAwq9MrQN4FWiB2n
-   k=;
+  bh=GMSLHqa/dU+WulxB8Y5q9/J1tQlxUn4h+TrrE64kcXU=;
+  b=kDGHg9P737PhqMnZvXjMPmRvKAYtMEj6GHHC1mVaFhewNfGZ+kvNjPCj
+   4hc+YZ1wQSx9indxH2FHMXSyMXmoDCggGtGlkqH6AYSUmZmX+Hrrc4bE2
+   KLEGwSvXaa1i0pLI0tzRgd2L7q0+deY8TY7K0fJPP7NjdUowhL4FcIb19
+   o=;
 X-IronPort-AV: E=Sophos;i="6.00,228,1681171200"; 
-   d="scan'208";a="7857697"
+   d="scan'208";a="8508926"
 Received: from aer-iport-nat.cisco.com (HELO aer-core-5.cisco.com) ([173.38.203.22])
-  by aer-iport-2.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:40 +0000
+  by aer-iport-7.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:41 +0000
 Received: from archlinux-cisco.cisco.com ([10.61.198.236])
         (authenticated bits=0)
-        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VID7055061
+        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VIDA055061
         (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
         Fri, 9 Jun 2023 06:31:40 GMT
 From:   Ariel Miculas <amiculas@cisco.com>
 To:     rust-for-linux@vger.kernel.org
 Cc:     Ariel Miculas <amiculas@cisco.com>
-Subject: [PATCH 13/80] rust: kernel: rename from_kernel_errno to from_errno
-Date:   Fri,  9 Jun 2023 09:30:11 +0300
-Message-Id: <20230609063118.24852-14-amiculas@cisco.com>
+Subject: [PATCH 16/80] rust: helpers: add missing rust helper 'alloc_pages'
+Date:   Fri,  9 Jun 2023 09:30:14 +0300
+Message-Id: <20230609063118.24852-17-amiculas@cisco.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609063118.24852-1-amiculas@cisco.com>
 References: <20230609063118.24852-1-amiculas@cisco.com>
@@ -55,22 +55,26 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 Signed-off-by: Ariel Miculas <amiculas@cisco.com>
 ---
- rust/kernel/file.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/helpers.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/rust/kernel/file.rs b/rust/kernel/file.rs
-index 1b5934838833..44086d398731 100644
---- a/rust/kernel/file.rs
-+++ b/rust/kernel/file.rs
-@@ -214,7 +214,7 @@ pub fn new(flags: u32) -> Result<Self> {
-         // SAFETY: FFI call, there are no safety requirements on `flags`.
-         let fd = unsafe { bindings::get_unused_fd_flags(flags) };
-         if fd < 0 {
--            return Err(Error::from_kernel_errno(fd));
-+            return Err(Error::from_errno(fd));
-         }
-         Ok(Self { fd: fd as _ })
-     }
+diff --git a/rust/helpers.c b/rust/helpers.c
+index efbe9d917a57..00a4c90c15e3 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -198,6 +198,12 @@ void *rust_helper_alloc_inode_sb(struct super_block *sb,
+ }
+ EXPORT_SYMBOL_GPL(rust_helper_alloc_inode_sb);
+ 
++struct page *rust_helper_alloc_pages(gfp_t gfp_mask, unsigned int order)
++{
++	return alloc_pages(gfp_mask, order);
++}
++EXPORT_SYMBOL_GPL(rust_helper_alloc_pages);
++
+ /*
+  * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
+  * as the Rust `usize` type, so we can use it in contexts where Rust
 -- 
 2.40.1
 
