@@ -2,45 +2,45 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4397C7EE29
-	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 06:56:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F902C7EE2F
+	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 06:56:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238572AbjFIG4Y (ORCPT
+        id S238577AbjFIG4Z (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 9 Jun 2023 02:56:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58348 "EHLO
+        Fri, 9 Jun 2023 02:56:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237974AbjFIG4I (ORCPT
+        with ESMTP id S237988AbjFIG4I (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
         Fri, 9 Jun 2023 02:56:08 -0400
-Received: from aer-iport-5.cisco.com (aer-iport-5.cisco.com [173.38.203.67])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48CCF3C12
+Received: from aer-iport-1.cisco.com (aer-iport-1.cisco.com [173.38.203.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E6FF3C11
         for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:55:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=1406; q=dns/txt; s=iport;
+  d=cisco.com; i=@cisco.com; l=4368; q=dns/txt; s=iport;
   t=1686293738; x=1687503338;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=BVAioZoebkUk4n3b9DlbBt8/kLmK7TeOBJnBjldfQ5g=;
-  b=PonIQtzBabN7h8TGN+FVoVhbtq7ng/w8Xy5s8Q9zYMyWYbWCfR9aBZKB
-   nhM57JlU3kCdZMN3KlUnGkK8+qLcH3FENcUcWNWEU4UcWFioiVnVckDma
-   W5aUtY88+JSwjAs4mclxOTpmTWvpYUQH5NIyuWahEfj8k6zmM0bxBWATT
-   A=;
+  bh=poZ4kSKXAE2r0kcUDCiQR7oBQTk6nDIgbo5KDmlHwaA=;
+  b=fjCSDzVZ1fhjTzLqUEK9cjPA6iM0ClZfgSSCW0oKblxIlyhHaiAaKct+
+   FiP+vY5q3wEYURW0tf9lbA98MEpMVrPaRkhGZv5UyS/c3T7wZ8oGKVAMD
+   PQh+8VOMGAQwEtJZks3TvQdqJEzjF1QNt5wghMmo26nJgiTFOhaALBxpk
+   w=;
 X-IronPort-AV: E=Sophos;i="6.00,228,1681171200"; 
-   d="scan'208";a="5279102"
+   d="scan'208";a="7857218"
 Received: from aer-iport-nat.cisco.com (HELO aer-core-5.cisco.com) ([173.38.203.22])
-  by aer-iport-5.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:56 +0000
+  by aer-iport-1.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:50 +0000
 Received: from archlinux-cisco.cisco.com ([10.61.198.236])
         (authenticated bits=0)
-        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VIDu055061
+        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VIDc055061
         (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Fri, 9 Jun 2023 06:31:55 GMT
+        Fri, 9 Jun 2023 06:31:49 GMT
 From:   Ariel Miculas <amiculas@cisco.com>
 To:     rust-for-linux@vger.kernel.org
 Cc:     Ariel Miculas <amiculas@cisco.com>
-Subject: [PATCH 62/80] rust: alloc: add try_clone for Vec<T>
-Date:   Fri,  9 Jun 2023 09:31:00 +0300
-Message-Id: <20230609063118.24852-63-amiculas@cisco.com>
+Subject: [PATCH 44/80] rust: serde: add support for deserializing Vec with kernel_alloc feature
+Date:   Fri,  9 Jun 2023 09:30:42 +0300
+Message-Id: <20230609063118.24852-45-amiculas@cisco.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609063118.24852-1-amiculas@cisco.com>
 References: <20230609063118.24852-1-amiculas@cisco.com>
@@ -55,44 +55,119 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 Signed-off-by: Ariel Miculas <amiculas@cisco.com>
 ---
- rust/alloc/vec/mod.rs | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ rust/Makefile                   |  4 +++-
+ rust/serde/de/impls.rs          | 19 +++++++++++++++++--
+ rust/serde/lib.rs               |  2 +-
+ rust/serde/private/size_hint.rs |  2 +-
+ 4 files changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/rust/alloc/vec/mod.rs b/rust/alloc/vec/mod.rs
-index 94995913566b..2ca945f7eb9b 100644
---- a/rust/alloc/vec/mod.rs
-+++ b/rust/alloc/vec/mod.rs
-@@ -2489,6 +2489,15 @@ unsafe fn split_at_spare_mut_with_len(
-     }
+diff --git a/rust/Makefile b/rust/Makefile
+index 0b67547d8007..c9feb8e1afe1 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -120,7 +120,9 @@ serde-skip_flags := \
+ 
+ serde-flags := \
+     -Amissing_docs \
+-    --cfg no_fp_fmt_parse
++    --cfg no_fp_fmt_parse \
++    --cfg 'feature="kernel_alloc"' \
++    --extern alloc
+ 
+ serde_cbor-skip_flags := \
+     --edition=2021 \
+diff --git a/rust/serde/de/impls.rs b/rust/serde/de/impls.rs
+index 9377f5eee650..6b860b2d9450 100644
+--- a/rust/serde/de/impls.rs
++++ b/rust/serde/de/impls.rs
+@@ -11,9 +11,12 @@
+ 
+ use seed::InPlaceSeed;
+ 
+-#[cfg(any(feature = "std", feature = "alloc"))]
++#[cfg(any(feature = "std", feature = "alloc", feature = "kernel_alloc"))]
+ use __private::size_hint;
+ 
++#[cfg(feature = "kernel_alloc")]
++use alloc::vec::Vec;
++
+ ////////////////////////////////////////////////////////////////////////////////
+ 
+ struct UnitVisitor;
+@@ -1012,7 +1015,7 @@ fn nop_reserve<T>(_seq: T, _n: usize) {}
+ 
+ ////////////////////////////////////////////////////////////////////////////////
+ 
+-#[cfg(any(feature = "std", feature = "alloc"))]
++#[cfg(any(feature = "std", feature = "alloc", feature = "kernel_alloc"))]
+ impl<'de, T> Deserialize<'de> for Vec<T>
+ where
+     T: Deserialize<'de>,
+@@ -1039,10 +1042,16 @@ fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
+             where
+                 A: SeqAccess<'de>,
+             {
++                #[cfg(not(feature = "kernel_alloc"))]
+                 let mut values = Vec::with_capacity(size_hint::cautious(seq.size_hint()));
++                #[cfg(feature = "kernel_alloc")]
++                let mut values = Vec::try_with_capacity(size_hint::cautious(seq.size_hint())).unwrap();
+ 
+                 while let Some(value) = try!(seq.next_element()) {
++                    #[cfg(not(feature = "kernel_alloc"))]
+                     values.push(value);
++                    #[cfg(feature = "kernel_alloc")]
++                    values.try_push(value).unwrap();
+                 }
+ 
+                 Ok(values)
+@@ -1077,7 +1086,10 @@ fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
+             {
+                 let hint = size_hint::cautious(seq.size_hint());
+                 if let Some(additional) = hint.checked_sub(self.0.len()) {
++                    #[cfg(not(feature = "kernel_alloc"))]
+                     self.0.reserve(additional);
++                    #[cfg(feature = "kernel_alloc")]
++                    self.0.try_reserve(additional).unwrap();
+                 }
+ 
+                 for i in 0..self.0.len() {
+@@ -1092,7 +1104,10 @@ fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
+                 }
+ 
+                 while let Some(value) = try!(seq.next_element()) {
++                    #[cfg(not(feature = "kernel_alloc"))]
+                     self.0.push(value);
++                    #[cfg(feature = "kernel_alloc")]
++                    self.0.try_push(value).unwrap();
+                 }
+ 
+                 Ok(())
+diff --git a/rust/serde/lib.rs b/rust/serde/lib.rs
+index c3694fef3321..bfc845e98075 100644
+--- a/rust/serde/lib.rs
++++ b/rust/serde/lib.rs
+@@ -156,7 +156,7 @@
+ 
+ ////////////////////////////////////////////////////////////////////////////////
+ 
+-#[cfg(feature = "alloc")]
++#[cfg(any(feature = "alloc", feature = "kernel_alloc"))]
+ extern crate alloc;
+ 
+ /// A facade around all the types we need from the `std`, `core`, and `alloc`
+diff --git a/rust/serde/private/size_hint.rs b/rust/serde/private/size_hint.rs
+index f050fca59deb..ac3c9394e7d3 100644
+--- a/rust/serde/private/size_hint.rs
++++ b/rust/serde/private/size_hint.rs
+@@ -9,7 +9,7 @@ pub fn from_bounds<I>(iter: &I) -> Option<usize>
+     helper(iter.size_hint())
  }
  
-+impl<T: Clone> Vec<T> {
-+    /// Try to clone the vector using the global allocator
-+    #[inline]
-+    #[stable(feature = "kernel", since = "1.0.0")]
-+    pub fn try_clone(&self) -> Result<Self, TryReserveError> {
-+        self.try_clone_in(Global)
-+    }
-+}
-+
- impl<T: Clone, A: Allocator> Vec<T, A> {
-     /// Resizes the `Vec` in-place so that `len` is equal to `new_len`.
-     ///
-@@ -2613,6 +2622,14 @@ pub fn try_extend_from_slice(&mut self, other: &[T]) -> Result<(), TryReserveErr
-         self.try_spec_extend(other.iter())
-     }
- 
-+    /// Tries to clone the vector using the given allocator
-+    #[stable(feature = "kernel", since = "1.0.0")]
-+    pub fn try_clone_in(&self, allocator: A) -> Result<Self, TryReserveError> {
-+        let mut new_vec = Vec::try_with_capacity_in(self.len(), allocator)?;
-+        new_vec.try_extend_from_slice(&self)?;
-+        Ok(new_vec)
-+    }
-+
-     /// Copies elements from `src` range to the end of the vector.
-     ///
-     /// # Panics
+-#[cfg(any(feature = "std", feature = "alloc"))]
++#[cfg(any(feature = "std", feature = "alloc", feature = "kernel_alloc"))]
+ #[inline]
+ pub fn cautious(hint: Option<usize>) -> usize {
+     cmp::min(hint.unwrap_or(0), 4096)
 -- 
 2.40.1
 
