@@ -2,45 +2,73 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D639C7EE37
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0CB9C7EE25
 	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 06:54:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238488AbjFIGyS (ORCPT
+        id S238554AbjFIGyT (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 9 Jun 2023 02:54:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56596 "EHLO
+        Fri, 9 Jun 2023 02:54:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230195AbjFIGyN (ORCPT
+        with ESMTP id S238493AbjFIGyL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 9 Jun 2023 02:54:13 -0400
-Received: from aer-iport-2.cisco.com (aer-iport-2.cisco.com [173.38.203.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89C32D71
+        Fri, 9 Jun 2023 02:54:11 -0400
+Received: from aer-iport-3.cisco.com (aer-iport-3.cisco.com [173.38.203.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB8A930C3
         for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:54:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=5438; q=dns/txt; s=iport;
-  t=1686293650; x=1687503250;
+  d=cisco.com; i=@cisco.com; l=7648; q=dns/txt; s=iport;
+  t=1686293649; x=1687503249;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hxuqVcwCjWUzUlwRYcONPA8gF0oGkUvuEJxwXgto1Dw=;
-  b=Wo2juIxMs/Ngb+o1tQHEBLOCgpWfmyRdNuuABCVwQ2RTGV3UzHyPMWLh
-   AUBNDoWK/fIFasDZi1LLt7uCL24B/LQ+xdG3XKJ9HZ9iTxBGUuizvpQtQ
-   LNasDaRwcdmxvlVm1m+gpDXlQvaWVZla5BkpE5XbceU4siy3OdIaA4HAN
-   k=;
+  bh=eF4y4Rt/didPRPrUHD2709Y5kpLzRij6ZqVylErBV/I=;
+  b=Hro/cn1J3iHOBxYGF0kNt5fVLlxH86f6qvm4S/jXJ5xAVCXEPR10pCYs
+   hsPlDRefHQcUzaJZtBqPM3NNIeAfXU+qfH0J9fSJJYd6tvKTlwiwj+bxy
+   7kmp9EOdmx/ndH4bK/LlLWz0B8XjF/PvK+oscHEnBnUQBD+6DYJXmE/uD
+   s=;
+X-CSE-ConnectionGUID: SY2KkLtmRaiGYDuP7G+TKQ==
+X-CSE-MsgGUID: oSESNd5ATxSwt5fogk4BIA==
+X-IPAS-Result: =?us-ascii?q?A0AlAAA2xoJk/xbLJq1aHAEBAQEBAQcBARIBAQQEAQGBe?=
+ =?us-ascii?q?wcBAQsBgkcBIDtVLhJHjG5fiFIDknyKb4ElA1YPAQEBDQEBLgMTBAEBhQYCh?=
+ =?us-ascii?q?XUmNAkOAQIEAQEBAQMCAwEBAQEBAQECAQEFAQEBAgEHBIEKE4VoDYYFBicLA?=
+ =?us-ascii?q?UYQIDFXGYJ+AYIYRAOtGYF5M4EBgmKCE5prgWiBQgGMFYVKQoFJRIEVgTyCL?=
+ =?us-ascii?q?YpkIgSJHYUSjyiBKW+BHjlpfwIJAhFngQoIXIFzQAINVAsLY4EdglUCAhE8F?=
+ =?us-ascii?q?FJiGR0DBwQCgQUQLwcEMigGCRgvJwZTBxcWJAkTFUIEg1kKgRBAFQ4RglwqA?=
+ =?us-ascii?q?gc2bwMJAwcFSUADCxgNSBEsNRQfBkOBBxdjgXwkJJ5Gglk0exMBCoE6Bw8rK?=
+ =?us-ascii?q?xsSGJJmCjKOU4IVoCqEEot8lQQaM4VXo36YFpZFjRiELwIEBgUCFoFjPDmBI?=
+ =?us-ascii?q?DMaCBsVgyIJSRkPkTaFL4FEiWdBMTsCBwsBAQMJi0YBAQ?=
+IronPort-Data: A9a23:xzkir6yhb+8RPIbqxBx6t+d2xyrEfRIJ4+MujC+fZmUNrF6WrkUBz
+ 2NKWj3VPq2PazehfYt0ao7g9UgB7JPQndJhTwU9/FhgHilAwSbn6Xt1DatR0we6dJCroJdPt
+ p1GAjX4BJlpCCea/lH1bOiJQUBUjcmgXqD7BPPPJhd/TAplTDZJoR94kobVuKYw6TSCK13L4
+ YuaT/H3Ygf/gGYqajNMscpvlTs21BjMkGJA1rABTagjUG/2zxE9EJ8ZLKetGHr0KqE88jmSH
+ rurIBmRpws1zj91Yj+Xuu+Tnn4iHtY+CTOzZk9+AMBOtPTtShsaic7XPNJEAateZq7gc9pZk
+ L2hvrToIesl0zGldOk1C3Fl/y9C0aJuw46dAnubrcmpxkzpQlfx+6pBT30VBNhNkgp3KTkmG
+ f0wIT0XKxuEne/znfSwS/JngYIoK8yD0IE34y47i2qJS6x+GtaZGc0m5vcAtNs0rslLHP3DY
+ 8MCQTFudx/HJRZIPz/7Dbphw7b52iSuG9FegFWuiJER7zX68BxKz6SwPt3aeYCgZOwAyy50o
+ UqDpQwVGCoyK9GT0j2D+3yEiejIkif2HokVEdWQ7ONxnBidwXZWDBwQSEuTv/a0kAi9VshZJ
+ khS/TAhxZXe72SiQ8O4XgW/umLBuBcAHdFRCOY9rgqKz8I4/jqkO4TNdRYZAPROiSP8bWVCO
+ oOh9z8xOQFSjQ==
+IronPort-HdrOrdr: A9a23:9n4oyayQfed2Wvs91PKCKrPwA71zdoMgy1knxilNoNJuHvBw8P
+ re+MjzuiWbtN98YhsdcJW7Scq9qBDnhPtICPcqXItKNTOO0ACVxcNZnOnfKlbbdBEWmNQx6Y
+ 5QN4BjFdz9CkV7h87m7AT9L8wt27C8gceVbJ/lr0uEiWpRGthdB8ATMHf8LnFL
+X-Talos-CUID: 9a23:puGo22Crw/ZP2Tr6ExJWrm0XPtwgSHTc40b8PnfnJiVVa4TAHA==
+X-Talos-MUID: 9a23:CQp3awrBy2+gBxZJkcgezzZZGfxO7/mHNFA2jolbtc6LNnBaGh7I2Q==
+X-IronPort-Anti-Spam-Filtered: true
 X-IronPort-AV: E=Sophos;i="6.00,228,1681171200"; 
-   d="scan'208";a="7857707"
+   d="scan'208";a="7799459"
 Received: from aer-iport-nat.cisco.com (HELO aer-core-5.cisco.com) ([173.38.203.22])
-  by aer-iport-2.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:58 +0000
+  by aer-iport-3.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2023 06:31:37 +0000
 Received: from archlinux-cisco.cisco.com ([10.61.198.236])
         (authenticated bits=0)
-        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VIE5055061
+        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VICu055061
         (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Fri, 9 Jun 2023 06:31:58 GMT
+        Fri, 9 Jun 2023 06:31:36 GMT
 From:   Ariel Miculas <amiculas@cisco.com>
 To:     rust-for-linux@vger.kernel.org
-Cc:     Ariel Miculas <amiculas@cisco.com>
-Subject: [PATCH 71/80] rust: hex: implement FromHex trait and hex::decode using a custom kernel_alloc feature
-Date:   Fri,  9 Jun 2023 09:31:09 +0300
-Message-Id: <20230609063118.24852-72-amiculas@cisco.com>
+Cc:     Wedson Almeida Filho <wedsonaf@google.com>
+Subject: [PATCH 02/80] rust: add ability to register a file system
+Date:   Fri,  9 Jun 2023 09:30:00 +0300
+Message-Id: <20230609063118.24852-3-amiculas@cisco.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609063118.24852-1-amiculas@cisco.com>
 References: <20230609063118.24852-1-amiculas@cisco.com>
@@ -53,168 +81,233 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This commit also adds a process_results function for Vec<Result<T,E>>
-which transforms it into a Result<Vec<T,E>>, collecting all the values
-inside the Result elements into a new vector which directly stores the
-elements.
-For this to work, the TryReserveError was added to the FromHexError
-enum.
-This is probably not the ideal design, but since collect cannot be used
-directly, it's a good substitute.
+From: Wedson Almeida Filho <wedsonaf@google.com>
 
-Signed-off-by: Ariel Miculas <amiculas@cisco.com>
+Also add sample that uses the new public API. The registered file system
+cannot be mounted yet, but can be seen in /proc/filesystems.
+
+More functionality will be added in subsequent commits.
+
+Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
 ---
- rust/Makefile         |  4 +++-
- rust/alloc/vec/mod.rs | 21 +++++++++++++++++++++
- rust/hex/error.rs     | 17 +++++++++++++++++
- rust/hex/lib.rs       | 19 +++++++++++++++----
- 4 files changed, 56 insertions(+), 5 deletions(-)
+ rust/kernel/fs.rs       | 116 +++++++++++++++++++++++++++++++++++++++-
+ samples/rust/Kconfig    |  10 ++++
+ samples/rust/Makefile   |   1 +
+ samples/rust/rust_fs.rs |  31 +++++++++++
+ scripts/Makefile.build  |   2 +-
+ 5 files changed, 157 insertions(+), 3 deletions(-)
+ create mode 100644 samples/rust/rust_fs.rs
 
-diff --git a/rust/Makefile b/rust/Makefile
-index ba7f911d6919..9b3488764d68 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -144,7 +144,9 @@ hex-skip_flags := \
+diff --git a/rust/kernel/fs.rs b/rust/kernel/fs.rs
+index 157fdb917ad1..b61e6f03e871 100644
+--- a/rust/kernel/fs.rs
++++ b/rust/kernel/fs.rs
+@@ -4,9 +4,121 @@
+ //!
+ //! C headers: [`include/linux/fs.h`](../../../../include/linux/fs.h)
  
- hex-flags := \
-     --edition=2018 \
--    -Amissing_docs
-+    -Amissing_docs \
-+    --cfg 'feature="kernel_alloc"' \
-+    --extern alloc
- 
- quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
-       cmd_rustdoc = \
-diff --git a/rust/alloc/vec/mod.rs b/rust/alloc/vec/mod.rs
-index b755cf0b936c..2761f8bf5a9e 100644
---- a/rust/alloc/vec/mod.rs
-+++ b/rust/alloc/vec/mod.rs
-@@ -661,6 +661,27 @@ pub fn from_iter_fallible(iter: impl Iterator<Item=T>) -> Result<Vec<T>, TryRese
-     }
- }
- 
-+impl<T,E: core::convert::From<TryReserveError>> Vec<Result<T,E>> {
-+    /// Iterates through the vector, consuming self, unwrapping the individual values in each
-+    /// Result and creating a new vector with them. If there's any error value, it returns it
-+    /// immediately
-+    #[stable(feature = "rust1", since = "1.0.0")]
-+    pub fn process_results(self) -> Result<Vec<T>,E> {
-+        let mut vec = Vec::new();
-+        for value in self {
-+            match value {
-+                Ok(v) => {
-+                    vec.try_push(v)?;
-+                },
-+                Err(e) => {
-+                    return Err(e);
-+                }
-+            }
+-use crate::{bindings};
++use crate::{bindings, error::code::*, str::CStr, ThisModule};
++use crate::error::{to_result, Result};
+ use crate::types::AlwaysRefCounted;
+-use core::{cell::UnsafeCell, ptr};
++use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin, ptr};
++
++/// A file system type.
++pub trait Type {
++    /// The name of the file system type.
++    const NAME: &'static CStr;
++
++    /// The flags of this file system type.
++    ///
++    /// It is a combination of the flags in the [`flags`] module.
++    const FLAGS: i32;
++}
++
++/// File system flags.
++pub mod flags {
++    use crate::bindings;
++
++    /// The file system requires a device.
++    pub const REQUIRES_DEV: i32 = bindings::FS_REQUIRES_DEV as _;
++
++    /// The options provided when mounting are in binary form.
++    pub const BINARY_MOUNTDATA: i32 = bindings::FS_BINARY_MOUNTDATA as _;
++
++    /// The file system has a subtype. It is extracted from the name and passed in as a parameter.
++    pub const HAS_SUBTYPE: i32 = bindings::FS_HAS_SUBTYPE as _;
++
++    /// The file system can be mounted by userns root.
++    pub const USERNS_MOUNT: i32 = bindings::FS_USERNS_MOUNT as _;
++
++    /// Disables fanotify permission events.
++    pub const DISALLOW_NOTIFY_PERM: i32 = bindings::FS_DISALLOW_NOTIFY_PERM as _;
++
++    /// The file system has been updated to handle vfs idmappings.
++    pub const ALLOW_IDMAP: i32 = bindings::FS_ALLOW_IDMAP as _;
++
++    /// The file systen will handle `d_move` during `rename` internally.
++    pub const RENAME_DOES_D_MOVE: i32 = bindings::FS_RENAME_DOES_D_MOVE as _;
++}
++
++/// A file system registration.
++#[derive(Default)]
++pub struct Registration {
++    is_registered: bool,
++    fs: UnsafeCell<bindings::file_system_type>,
++    _pin: PhantomPinned,
++}
++
++// SAFETY: `Registration` doesn't really provide any `&self` methods, so it is safe to pass
++// references to it around.
++unsafe impl Sync for Registration {}
++
++// SAFETY: Both registration and unregistration are implemented in C and safe to be performed from
++// any thread, so `Registration` is `Send`.
++unsafe impl Send for Registration {}
++
++impl Registration {
++    /// Creates a new file system registration.
++    ///
++    /// It is not visible or accessible yet. A successful call to [`Registration::register`] needs
++    /// to be made before users can mount it.
++    pub fn new() -> Self {
++        Self {
++            is_registered: false,
++            fs: UnsafeCell::new(bindings::file_system_type::default()),
++            _pin: PhantomPinned,
 +        }
-+        Ok(vec)
 +    }
++
++    /// Registers a file system so that it can be mounted by users.
++    ///
++    /// The file system is described by the [`Type`] argument.
++    ///
++    /// It is automatically unregistered when the registration is dropped.
++    pub fn register<T: Type>(self: Pin<&mut Self>, module: &'static ThisModule) -> Result {
++        // SAFETY: We never move out of `this`.
++        let this = unsafe { self.get_unchecked_mut() };
++
++        if this.is_registered {
++            return Err(EINVAL);
++        }
++
++        let mut fs = this.fs.get_mut();
++        fs.owner = module.0;
++        fs.name = T::NAME.as_char_ptr();
++        fs.fs_flags = T::FLAGS;
++        fs.init_fs_context = Some(Self::init_fs_context_callback::<T>);
++        fs.kill_sb = Some(Self::kill_sb_callback::<T>);
++        // SAFETY: Pointers stored in `fs` are either static so will live for as long as the
++        // registration is active (it is undone in `drop`).
++        to_result(unsafe { bindings::register_filesystem(this.fs.get()) })?;
++        this.is_registered = true;
++        Ok(())
++    }
++
++    unsafe extern "C" fn init_fs_context_callback<T: Type>(
++        _fc_ptr: *mut bindings::fs_context,
++    ) -> core::ffi::c_int {
++        EINVAL.to_errno()
++    }
++
++    unsafe extern "C" fn kill_sb_callback<T: Type>(_sb_ptr: *mut bindings::super_block) {}
 +}
 +
- impl<T, A: Allocator> Vec<T, A> {
-     /// Constructs a new, empty `Vec<T, A>`.
-     ///
-diff --git a/rust/hex/error.rs b/rust/hex/error.rs
-index e553a046c9ed..c0dc2f558c4d 100644
---- a/rust/hex/error.rs
-+++ b/rust/hex/error.rs
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: Apache-2.0 OR MIT
- 
-+#[cfg(feature = "kernel_alloc")]
-+use alloc::collections::TryReserveError;
- use core::fmt;
- 
- /// The error type for decoding a hex string into `Vec<u8>` or `[u8; N]`.
-@@ -17,6 +19,10 @@ pub enum FromHexError {
-     /// array, the hex string's length * 2 has to match the container's
-     /// length.
-     InvalidStringLength,
-+
-+    #[cfg(feature = "kernel_alloc")]
-+    /// If an allocation fails, useful in the kernel context
-+    TryReserveError,
- }
- 
- #[cfg(feature = "std")]
-@@ -30,10 +36,21 @@ fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-             }
-             FromHexError::OddLength => write!(f, "Odd number of digits"),
-             FromHexError::InvalidStringLength => write!(f, "Invalid string length"),
-+            #[cfg(feature = "kernel_alloc")]
-+            FromHexError::TryReserveError => write!(f, "TryReserveError"),
-         }
-     }
- }
- 
-+#[cfg(feature = "kernel_alloc")]
-+#[allow(unused_qualifications)]
-+impl core::convert::From<TryReserveError> for FromHexError {
-+    #[allow(deprecated)]
-+    fn from(_source: TryReserveError) -> Self {
-+        FromHexError::TryReserveError
++impl Drop for Registration {
++    fn drop(&mut self) {
++        if self.is_registered {
++            // SAFETY: When `is_registered` is `true`, a previous call to `register_filesystem` has
++            // succeeded, so it is safe to unregister here.
++            unsafe { bindings::unregister_filesystem(self.fs.get()) };
++        }
 +    }
 +}
+ 
+ /// Wraps the kernel's `struct inode`.
+ ///
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index b0f74a81c8f9..2bd736f99189 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -30,6 +30,16 @@ config SAMPLE_RUST_PRINT
+ 
+ 	  If unsure, say N.
+ 
++config SAMPLE_RUST_FS
++	tristate "File system"
++	help
++	  This option builds the Rust file system sample.
 +
- #[cfg(test)]
- // this feature flag is here to suppress unused
- // warnings of `super::*` and `pretty_assertions::assert_eq`
-diff --git a/rust/hex/lib.rs b/rust/hex/lib.rs
-index a23def3f80db..5cd90d622d16 100644
---- a/rust/hex/lib.rs
-+++ b/rust/hex/lib.rs
-@@ -41,6 +41,8 @@
++	  To compile this as a module, choose M here:
++	  the module will be called rust_fs.
++
++	  If unsure, say N.
++
+ config SAMPLE_RUST_HOSTPROGS
+ 	bool "Host programs"
+ 	help
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index 03086dabbea4..e5941037e673 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -2,5 +2,6 @@
  
- #[cfg(feature = "alloc")]
- extern crate alloc;
-+#[cfg(feature = "kernel_alloc")]
-+use alloc::vec::Vec;
- #[cfg(feature = "alloc")]
- use alloc::{string::String, vec::Vec};
+ obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
+ obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
++obj-$(CONFIG_SAMPLE_RUST_FS)			+= rust_fs.o
  
-@@ -186,7 +188,7 @@ fn val(c: u8, idx: usize) -> Result<u8, FromHexError> {
-     }
- }
+ subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
+diff --git a/samples/rust/rust_fs.rs b/samples/rust/rust_fs.rs
+new file mode 100644
+index 000000000000..2caacea50e73
+--- /dev/null
++++ b/samples/rust/rust_fs.rs
+@@ -0,0 +1,31 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Rust file system sample.
++
++use kernel::prelude::*;
++use kernel::{c_str, fs};
++
++module! {
++    type: FsModule,
++    name: "rust_fs",
++    author: "Rust for Linux Contributors",
++    license: "GPL",
++}
++
++struct RustFs;
++impl fs::Type for RustFs {
++    const NAME: &'static CStr = c_str!("rustfs");
++    const FLAGS: i32 = fs::flags::USERNS_MOUNT;
++}
++
++struct FsModule {
++    _fs: Pin<Box<fs::Registration>>,
++}
++
++impl kernel::Module for FsModule {
++    fn init(module: &'static ThisModule) -> Result<Self> {
++        let mut reg = Pin::from(Box::try_new(fs::Registration::new())?);
++        reg.as_mut().register::<RustFs>(module)?;
++        Ok(Self { _fs: reg })
++    }
++}
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 78175231c969..1404967e908e 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -277,7 +277,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
+ # Compile Rust sources (.rs)
+ # ---------------------------------------------------------------------------
  
--#[cfg(feature = "alloc")]
-+#[cfg(any(feature = "alloc", feature = "kernel_alloc"))]
- impl FromHex for Vec<u8> {
-     type Error = FromHexError;
+-rust_allowed_features := new_uninit
++rust_allowed_features := allocator_api,new_uninit
  
-@@ -196,10 +198,19 @@ fn from_hex<T: AsRef<[u8]>>(hex: T) -> Result<Self, Self::Error> {
-             return Err(FromHexError::OddLength);
-         }
- 
--        hex.chunks(2)
-+        #[cfg(not(feature = "kernel_alloc"))]
-+        return hex
-+            .chunks(2)
-             .enumerate()
-             .map(|(i, pair)| Ok(val(pair[0], 2 * i)? << 4 | val(pair[1], 2 * i + 1)?))
--            .collect()
-+            .collect();
-+        #[cfg(feature = "kernel_alloc")]
-+        return Vec::from_iter_fallible(
-+            hex.chunks(2)
-+                .enumerate()
-+                .map(|(i, pair)| Ok(val(pair[0], 2 * i)? << 4 | val(pair[1], 2 * i + 1)?)),
-+        )?
-+        .process_results();
-     }
- }
- 
-@@ -294,7 +305,7 @@ pub fn encode_upper<T: AsRef<[u8]>>(data: T) -> String {
- /// assert_eq!(hex::decode("123"), Err(hex::FromHexError::OddLength));
- /// assert!(hex::decode("foo").is_err());
- /// ```
--#[cfg(feature = "alloc")]
-+#[cfg(any(feature = "alloc", feature = "kernel_alloc"))]
- pub fn decode<T: AsRef<[u8]>>(data: T) -> Result<Vec<u8>, FromHexError> {
-     FromHex::from_hex(data)
- }
+ rust_common_cmd = \
+ 	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
 -- 
 2.40.1
 
