@@ -2,45 +2,45 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DD5FC7EE25
-	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 06:54:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52656C7EE37
+	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 06:54:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238512AbjFIGyf (ORCPT
+        id S237178AbjFIGyf (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
         Fri, 9 Jun 2023 02:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56594 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238555AbjFIGyU (ORCPT
+        with ESMTP id S238518AbjFIGyU (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
         Fri, 9 Jun 2023 02:54:20 -0400
 Received: from aer-iport-8.cisco.com (aer-iport-8.cisco.com [173.38.203.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 315B330C3
-        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:54:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F4B4271D
+        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:54:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=3897; q=dns/txt; s=iport;
-  t=1686293657; x=1687503257;
+  d=cisco.com; i=@cisco.com; l=3698; q=dns/txt; s=iport;
+  t=1686293656; x=1687503256;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=TDTcM5VU1l630M3KUp8WaBoYrvraqPr86yo4vpu3XO4=;
-  b=ROz7jCbFWNeQRBbF0L5djn542nNWmpkEUyWACXdOBGntbR/PmjZJTJ2X
-   xyj1/e6LYdQOqE4pmCnkyM5OqRD+gqmDw0nPC1uI9Re6djZ+xVqAgBfgk
-   t1VlyIAQsXf4QyObxoy4zlr6TPCfUmf3ExSRtADMAI0W5Nsv0+2aqN6+J
-   4=;
+  bh=XbUBkYNxE/m0UQR2D/EnVvjWini+4eNwMPeT2CDQeUU=;
+  b=JT8FY0pz8A8aLwFzB0H+FGwrRSQkQcP3dQgl058jeWp2v65v1ezG17NH
+   CDVIMl+obCteA0D9vt4MMnqrDZsEUMFDIiupJBkiGTfS2zis1meXET0JG
+   3ysq7T9p1GDDqnpFY24LC904d9b1Dg4kj2lew3K5m9la8/8kRn6/p1M1E
+   8=;
 X-IronPort-AV: E=Sophos;i="6.00,228,1681171200"; 
-   d="scan'208";a="5220566"
+   d="scan'208";a="5220565"
 Received: from aer-iport-nat.cisco.com (HELO aer-core-5.cisco.com) ([173.38.203.22])
-  by aer-iport-8.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:59 +0000
+  by aer-iport-8.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:57 +0000
 Received: from archlinux-cisco.cisco.com ([10.61.198.236])
         (authenticated bits=0)
-        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VIE9055061
+        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VIE0055061
         (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Fri, 9 Jun 2023 06:31:59 GMT
+        Fri, 9 Jun 2023 06:31:56 GMT
 From:   Ariel Miculas <amiculas@cisco.com>
 To:     rust-for-linux@vger.kernel.org
 Cc:     Ariel Miculas <amiculas@cisco.com>
-Subject: [PATCH 75/80] samples: puzzlefs: add Rootfs and Digest structs to types.rs
-Date:   Fri,  9 Jun 2023 09:31:13 +0300
-Message-Id: <20230609063118.24852-76-amiculas@cisco.com>
+Subject: [PATCH 66/80] samples: puzzlefs: add higher level inode related functionality
+Date:   Fri,  9 Jun 2023 09:31:04 +0300
+Message-Id: <20230609063118.24852-67-amiculas@cisco.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609063118.24852-1-amiculas@cisco.com>
 References: <20230609063118.24852-1-amiculas@cisco.com>
@@ -55,117 +55,109 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 Signed-off-by: Ariel Miculas <amiculas@cisco.com>
 ---
- samples/rust/puzzle/types.rs | 75 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 75 insertions(+)
+ samples/rust/puzzle.rs       |  3 +-
+ samples/rust/puzzle/inode.rs | 83 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 85 insertions(+), 1 deletion(-)
+ create mode 100644 samples/rust/puzzle/inode.rs
 
-diff --git a/samples/rust/puzzle/types.rs b/samples/rust/puzzle/types.rs
-index c6b69b94fa6d..69d4f5dfa12c 100644
---- a/samples/rust/puzzle/types.rs
-+++ b/samples/rust/puzzle/types.rs
-@@ -8,7 +8,10 @@
- mod cbor_helpers;
- use crate::puzzle::error::Result;
- pub(crate) use cbor_helpers::{cbor_get_array_size, cbor_size_of_list_header};
-+use core::fmt;
-+use hex::{encode_hex_iter, FromHexError};
- use kernel::file;
-+use kernel::str::CStr;
- 
- #[derive(Deserialize, Debug)]
- pub(crate) struct InodeAdditional {
-@@ -32,6 +35,8 @@ pub(crate) struct MetadataBlob {
-     pub(crate) inode_count: usize,
- }
- 
-+pub(crate) const SHA256_BLOCK_SIZE: usize = 32;
+diff --git a/samples/rust/puzzle.rs b/samples/rust/puzzle.rs
+index 4d558561974d..1b989a2579c4 100644
+--- a/samples/rust/puzzle.rs
++++ b/samples/rust/puzzle.rs
+@@ -1,2 +1,3 @@
+ pub(crate) mod error;
+-mod types;
++pub(crate) mod inode;
++pub(crate) mod types;
+diff --git a/samples/rust/puzzle/inode.rs b/samples/rust/puzzle/inode.rs
+new file mode 100644
+index 000000000000..980aac9c4fd3
+--- /dev/null
++++ b/samples/rust/puzzle/inode.rs
+@@ -0,0 +1,83 @@
++// This contents of this file is taken from puzzlefs.rs (the userspace implementation)
++// It is named inode.rs instead puzzlefs.rs since the root of this kernel module already has that name
 +
- fn read_one_from_slice<'a, T: Deserialize<'a>>(bytes: &'a [u8]) -> Result<T> {
-     // serde complains when we leave extra bytes on the wire, which we often want to do. as a
-     // hack, we create a streaming deserializer for the type we're about to read, and then only
-@@ -41,6 +46,23 @@ fn read_one_from_slice<'a, T: Deserialize<'a>>(bytes: &'a [u8]) -> Result<T> {
-     v.ok_or(WireFormatError::ValueMissing)
- }
- 
-+#[derive(Deserialize, Debug)]
-+pub(crate) struct Rootfs {
-+    pub(crate) metadatas: Vec<BlobRef>,
-+    // TODO: deserialize fs_verity_data, for the moment BTreeMap is not supported
++use crate::puzzle::error::Result;
++use crate::puzzle::error::WireFormatError;
++use crate::puzzle::types as format;
++use crate::puzzle::types::{FileChunk, Ino, InodeAdditional, MetadataBlob};
++use alloc::vec::Vec;
++use kernel::prelude::{ENOENT, ENOTDIR};
++
++#[derive(Debug)]
++pub(crate) struct Inode {
++    pub(crate) inode: format::Inode,
++    pub(crate) mode: InodeMode,
 +    #[allow(dead_code)]
-+    pub(crate) fs_verity_data: (),
-+    #[allow(dead_code)]
-+    pub(crate) manifest_version: u64,
++    pub(crate) additional: Option<InodeAdditional>,
 +}
 +
-+impl Rootfs {
-+    pub(crate) fn open(file: file::RegularFile) -> Result<Rootfs> {
-+        let buffer = file.read_to_end()?;
-+        read_one_from_slice(&buffer)
++pub(crate) struct PuzzleFS {
++    layers: Vec<format::MetadataBlob>,
++}
++
++impl PuzzleFS {
++    pub(crate) fn new(md: MetadataBlob) -> Result<Self> {
++        let mut v = Vec::new();
++        v.try_push(md)?;
++        Ok(PuzzleFS { layers: v })
 +    }
-+}
 +
- #[derive(Debug, Clone, Copy, PartialEq, Eq)]
- pub(crate) enum BlobRefKind {
-     Local,
-@@ -176,6 +198,59 @@ pub(crate) fn find_inode(&mut self, ino: Ino) -> Result<Option<Inode>> {
-     }
- }
- 
-+#[derive(Debug, Clone, PartialEq, Eq)]
-+pub(crate) struct Digest([u8; SHA256_BLOCK_SIZE]);
-+
-+impl Digest {
-+    pub(crate) fn underlying(&self) -> [u8; SHA256_BLOCK_SIZE] {
-+        let mut dest = [0_u8; SHA256_BLOCK_SIZE];
-+        dest.copy_from_slice(&self.0);
-+        dest
-+    }
-+}
-+
-+impl fmt::Display for Digest {
-+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-+        let mut hex_string =
-+            Vec::from_iter_fallible(encode_hex_iter(&self.underlying())).map_err(|_| fmt::Error)?;
-+        // append NUL character
-+        hex_string.try_push(0).map_err(|_| fmt::Error)?;
-+        let hex_string = CStr::from_bytes_with_nul(&hex_string).map_err(|_| fmt::Error)?;
-+        write!(f, "{}", hex_string)
-+    }
-+}
-+
-+impl TryFrom<&CStr> for Digest {
-+    type Error = FromHexError;
-+    fn try_from(s: &CStr) -> kernel::error::Result<Self, Self::Error> {
-+        let digest = hex::decode(s)?;
-+        let digest: [u8; SHA256_BLOCK_SIZE] = digest
-+            .try_into()
-+            .map_err(|_| FromHexError::InvalidStringLength)?;
-+        Ok(Digest(digest))
-+    }
-+}
-+
-+impl TryFrom<BlobRef> for Digest {
-+    type Error = WireFormatError;
-+    fn try_from(v: BlobRef) -> kernel::error::Result<Self, Self::Error> {
-+        match v.kind {
-+            BlobRefKind::Other { digest } => Ok(Digest(digest)),
-+            BlobRefKind::Local => Err(WireFormatError::LocalRefError),
++    // Temporary helper function used until PuzzleFs is integrated
++    pub(crate) fn find_inode(&mut self, ino: u64) -> Result<Inode> {
++        for layer in self.layers.iter_mut() {
++            if let Some(inode) = layer.find_inode(ino)? {
++                return Inode::new(layer, inode);
++            }
 +        }
++        Err(WireFormatError::from_errno(ENOENT))
 +    }
 +}
 +
-+impl TryFrom<&BlobRef> for Digest {
-+    type Error = WireFormatError;
-+    fn try_from(v: &BlobRef) -> kernel::error::Result<Self, Self::Error> {
-+        match v.kind {
-+            BlobRefKind::Other { digest } => Ok(Digest(digest)),
-+            BlobRefKind::Local => Err(WireFormatError::LocalRefError),
-+        }
++impl Inode {
++    fn new(layer: &mut MetadataBlob, inode: format::Inode) -> Result<Inode> {
++        let mode = match inode.mode {
++            format::InodeMode::Reg { offset } => {
++                let chunks = layer.read_file_chunks(offset)?;
++                InodeMode::File { chunks }
++            }
++            format::InodeMode::Dir { offset } => {
++                // TODO: implement something like collect_fallible (since try_collect already exists with another purpose)
++                let mut entries = Vec::from_iter_fallible(
++                    layer
++                        .read_dir_list(offset)?
++                        .entries
++                        .iter_mut()
++                        .map(|de| (de.name.try_clone().unwrap(), de.ino)),
++                )?;
++                // Unstable sort is used because it avoids memory allocation
++                // There should not be two directories with the same name, so stable sort doesn't have any advantage
++                entries.sort_unstable_by(|(a, _), (b, _)| a.cmp(b));
++                InodeMode::Dir { entries }
++            }
++            _ => InodeMode::Other,
++        };
++
++        let additional = inode
++            .additional
++            .map(|additional_ref| layer.read_inode_additional(&additional_ref))
++            .transpose()?;
++
++        Ok(Inode {
++            inode,
++            mode,
++            additional,
++        })
 +    }
 +}
 +
- #[derive(Deserialize, Debug)]
- pub(crate) struct DirEnt {
-     pub(crate) ino: Ino,
++#[derive(Debug)]
++pub(crate) enum InodeMode {
++    File { chunks: Vec<FileChunk> },
++    Dir { entries: Vec<(Vec<u8>, Ino)> },
++    Other,
++}
 -- 
 2.40.1
 
