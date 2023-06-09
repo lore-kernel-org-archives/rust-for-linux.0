@@ -2,75 +2,77 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 626A9C7EE25
-	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 06:56:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9937DC7EE37
+	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 06:56:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237825AbjFIG4w (ORCPT
+        id S238431AbjFIG4x (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 9 Jun 2023 02:56:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58786 "EHLO
+        Fri, 9 Jun 2023 02:56:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238171AbjFIG4a (ORCPT
+        with ESMTP id S238108AbjFIG4c (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 9 Jun 2023 02:56:30 -0400
-Received: from aer-iport-6.cisco.com (aer-iport-6.cisco.com [173.38.203.68])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE343AA7
-        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:56:18 -0700 (PDT)
+        Fri, 9 Jun 2023 02:56:32 -0400
+Received: from aer-iport-5.cisco.com (aer-iport-5.cisco.com [173.38.203.67])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3053B3588
+        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:56:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=1150; q=dns/txt; s=iport;
-  t=1686293778; x=1687503378;
+  d=cisco.com; i=@cisco.com; l=1110; q=dns/txt; s=iport;
+  t=1686293786; x=1687503386;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+Xqb8KBvktXNzD3OdGr0wKmDiZjlz7Tb+Xx4+ZL++Rk=;
-  b=UxxlasEH6yLCU0vh0/19mk97RgUGQMc66eQiwAnqjr/+bYI9Y8R30V3m
-   wNerJbWEV7D9fOy4QlkJ5uUQTvzA8w1OXJo5O8WXHw+VVGB+OTj4DCI4J
-   IB18i7G0TNI0rbSS0BM40fp2EOMCrOQ0prbggcCIe/e9xbRf899+l8EiQ
-   Q=;
-X-IPAS-Result: =?us-ascii?q?A0AQAQAWx4JklxbLJq1agliDJFUuEkeNTYhVnWuBfg8BA?=
+  bh=BWRqeE2lEMEu4/jVLAIrn3OWYjqMbsUMzSIgDQ0A+54=;
+  b=RfYYl3jYRo6Xe09hWKHt88MTv71ooKMIcEOwpmnK4iBEI4jvyxISnW4V
+   CuA6bQkF1I7Du3G+5FLO+x6kRlUId+Fg9YgZc+J7nTcxrJhJmL7rMtQjk
+   CtRjLHgtI19HMP5NYo7rbyGAOgB6rXqfSxogLsRgyhv8Q5qw7qKy8e5+l
+   w=;
+X-IPAS-Result: =?us-ascii?q?A0AQAQAixoJklxbLJq1agliDJFUuEkeNTYhVnWuBfg8BA?=
  =?us-ascii?q?QENAQExEwQBAYUGAoV1JjQJDgECBAEBAQEDAgMBAQEBAQEDAQEFAQEBAgEHB?=
- =?us-ascii?q?BQBAQEBAQEBATcFEDWFaA2GBQMDJwsBRhAgMVcZgn4BglwDrRiBeTOBAYR1m?=
- =?us-ascii?q?muBaIFCjBaFSkKBSUSECHaFEYV1BI4vjyiBKW+BHjlpfwIJAhFngQoIXIFzQ?=
- =?us-ascii?q?AINVAsLY4EdglUCAhE8FFJiGR0DBwQCgQUQLwcEMigGCRgvJwZTBxcWJAkTF?=
- =?us-ascii?q?UIEg1kKgRBAFQ4RglwqAgc2bwMJAwcFSUADCxgNSBEsNRQfBkOBBxdjgXwkJ?=
- =?us-ascii?q?J5Ggw0BgQ2CKaRXoCqEEot8lQQaM4VXo36YFqNdhC8CBAYFAhaBYzqBWzMaC?=
- =?us-ascii?q?BsVgyIJSRkPjjmJcIlnQTE7AgcLAQEDCYtGAQE?=
-IronPort-Data: A9a23:7q5CY6NbtWveZBDvrR3el8FynXyQoLVcMsEvi/4bfWQNrUoh0DICx
- jMZUW+AOqvcazCmeNokaYvi8hhV78PXnd5jTHM5pCpnJ55oRWUpJjg4wmPYZX76whjrFRo/h
- ykmQoCcaphyFBcwnz/1WlTbhSEUOZqgGPykUIYoBggrHVU/EHl52Uo48wIEqtcAbeaRUlvlV
- eza+6UzCHf9s9KjGjtJg04rgEoHUMXa4Fv0jHRnDRx4lAO2e00uMX4qDfrZw00U7WVjNrXSq
- +7rlNlV945ClvsnIovNfr3TKiXmTlNOVOSDoiI+ZkSsvvRNjik806JrH6Q3UgRGtWqxo4hj0
- M9njrXlHG/FPoWU8AgcexBVCWR1OrdLveKBKnmkusvVxErDG5fu66wxVwdtbctCor0xWzsmG
- f8wcFjhajiKguO93bayUcFnh98oK4/gO4Z3VnRIkG2EVqh5EfgvRY2bztpq+SgTr/pCNtvfe
- fYWYz9sXE35Nkgn1lA/UcJiw7jAamPEWzpapV6cjak6+W7eyEp2yreFGMDIYcDPS8JP20KZo
- H/W13r2DwtcN9GFzzeBtHW2iYfycTjTUY8IUbyg8eR2xVua2ioYCQYdUh2wpvzRZlOCt8x3L
- kIV/noF84MJt12VEeHBBw+gulS/l0tJMzZPKNES5AaIw6vSxg+WAGkYUzJMAODKUudrFVTGM
- XfUw7vU6SxTXK69FCjGqObExd+mEXVPdDVTDcMRZVFdi+QPtr3fmTrpar6P+oacitj4Azy4+
- CyDoEDSbJ1K1pdWv0lX1X7DjiyropHPQmYICuTrsoCNs1kRiG2NPtLABb3nARBod9/xor6p5
- iJspiRmxLpSZaxhbQTUKAn3IJmn5uyeLBrXikN1Ep8q+lyFoiDzI9oMsWkldBo4aK7onAMFh
- meN4mu9A7cObBOXgVNfOOpd9uxzl/G7TIS5PhwqRoMXMsMZmPC7ENFGPB7MgD+FfLkEmqAkM
- pDTate3EXsfEsxaIMmeGY8gPUsQ7nlmnwv7HMmjpzz+iOr2WZJgYepcWLd4Rrtit/3sTcS82
- 4s3CvZmPD0FC7SjOnSJqNFMRb3IRFBiba3LRwVsXrbrCmJb9KsJUZc9HZtJl1RZoplo
-IronPort-HdrOrdr: A9a23:38qTw6/gtgJwHfMUwm9uk+D3I+orL9Y04lQ7vn2ZhyY4TiX+rb
- HLoB1173HJYVoqMk3I3OrwW5VoIkmskKKdn7NxAV7KZmCP01dAbrsSj7cKqAeOJ8SRzINg/J
- YlW7RiCdH2EFhxhdv37U2FCdo6qeP3l5xA/d2/85+oJjsaEp2JKGxCe2CmLnE=
-X-Talos-CUID: 9a23:z6MAi2PpumO4t+5DXSdm8B4/ROseMWzjk0/se12gE0xSYejA
-X-Talos-MUID: 9a23:0fnI3AkUEDHI/2YZIbDIdnozH8JaxruNIXoBurgHpfWLPylzC26k2WE=
+ =?us-ascii?q?BQBAQEBAQEBATcFEDWFaA2GBQMDJwsBRhAgMVcZgn4BglwDrRmBeTOBAYR1m?=
+ =?us-ascii?q?muBaIFCjBaFSkKBSUSEfoURhXUEji+PKIEpb4EeOWl/AgkCEWeBCghcgXNAA?=
+ =?us-ascii?q?g1UCwtjgR2CVQICETwUUmIZHQMHBAKBBRAvBwQyKAYJGC8nBlMHFxYkCRMVQ?=
+ =?us-ascii?q?gSDWQqBEEAVDhGCXCoCBzZvAwkDBwVJQAMLGA1IESw1FB8GQ4EHF2OBfCQkn?=
+ =?us-ascii?q?kaDDQGBDYIppFegKoQSi3yVBBozhVejfi6XaKNdhC8CBAYFAhaBYzqBWzMaC?=
+ =?us-ascii?q?BsVgyIJSRkPjjmJcIlnQTE7AgcLAQEDCYhuLYIrAQE?=
+IronPort-Data: A9a23:mpw+ka6kdC1y8n7ArHs3iQxRtEPHchMFZxGqfqrLsTDasY5as4F+v
+ mpOWmyEOPqCYDCgL40iPI+xpxgD6sPWzoUxHgNorn89Zn8b8sCt6fZ1gavT04J+CuWZESqLO
+ u1HMoGowPgcFyOa/lH3WlTYhSEUOZugHtIQM8aafHgpLeNYYH1500k7xbZp2tUAbeWRWmthh
+ /uj+6UzB3f9s9JEGjp8B3Wr8U4HUFza4Vv0j3RmDRx5lAa2e0o9UPrzEZqMw07QGeG4KAIVq
+ 9Hrl9lV9kuBl/sk50jMfrzTKiXmSZaKVeSCZ+Y/t6WK2nB/SiIOPqkTMOISVlpoggm1nv971
+ +sUkoLzYyQ7F/iZ8Agde0Ew/yBWNKBcvbTAO3X67IqYzlbNdD3nxPAG4EMeZNJDvL0nRzsWr
+ rpCcljhbTjb7w6y6Lu+S+Jxgs04BMLqJ4gY/HpnyFk1CN57G8+SG/SXjTNe9C1g3JpDQ6nbX
+ OkQTRtlRwbrQEBDOW5CXfrSm8/x1iWgLFW0smm9oqg672H7zwFr1rXpdt3PdbSiX9hOggOWo
+ XiD+2X/HwEyKtOS03yG/2iqi+uJmjn0ML/+D5Wx++QvgUWU3HBWDhQKE1C6uvK+zEW5XrqzN
+ nD45AIqtaYN6XOicuX8cBenniejoF02eMh5RrhSBB629oLY5AOQB24hRzFHacA7uMJeedDM/
+ gLZ9z8OLWEz2IB5WU5x5Z/J92jsaHh9wXsqOHVdF1ptD8zL+tlbs/7Zcjp0OIiR5jEfMRj0x
+ j2QoWAFm7wf5SLg//zgpA2vb96EiJzEUAkx7wPbNl9JDz+Vhqb4PeRECnCCs56sybp1qHHa5
+ RDofODEtogz4WmlznDlfQn0NOjBCwy5GDPdm0VzOJIq6i6g/XWuFagJvmEgfhs4ap1UJG6zC
+ KM2he+3zMEIVJdNRfInC79d9+xxpUQdPY2/D6uNPoYmjmZZLVbXp0mCmnJ8L0i0wBRzzsnTy
+ L+QcN2nCj4BGL97wT+tL9rxIpd1rh3SMVj7HMihpzz+iOL2TCfMGd843K6mM7lRAFWs+16Or
+ b6y9qKiln1ibQEJSnOMqNNLcA5TcidT6FKfg5U/S9Nv6zFOQAkJY8I9C5t4E2C5t8y5Ttv1w
+ 0w=
+IronPort-HdrOrdr: A9a23:mzm2vqHmBbjZGOedpLqEx8eALOsnbusQ8zAXPo5KJSC9Ffbo8/
+ xG88506faZslwssTQb6LO90cq7MBbhHOBOgLX5VI3KNGLbUSmTXeNfBODZrAEIdReSysdtkY
+ 99bqlzD8DxB1Bmgcu/3BO1CL8bsb66GdiT5ds3CxxWPHhXg2YK1XYeNjqm
+X-Talos-CUID: =?us-ascii?q?9a23=3ASVhRP2rRTJEArVM3fbkwBc7mUcQ9fELA837sH06?=
+ =?us-ascii?q?XA3lXEZqLCnWz6ooxxg=3D=3D?=
+X-Talos-MUID: 9a23:Ja1CRwqRnjNpyEAU/dgezysybp1lvfurM2MEtbQMkNuvFnF8OA7I2Q==
 X-IronPort-Anti-Spam-Filtered: true
 X-IronPort-AV: E=Sophos;i="6.00,228,1681171200"; 
-   d="scan'208";a="5453678"
+   d="scan'208";a="5279095"
 Received: from aer-iport-nat.cisco.com (HELO aer-core-5.cisco.com) ([173.38.203.22])
-  by aer-iport-6.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:45 +0000
+  by aer-iport-5.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:43 +0000
 Received: from archlinux-cisco.cisco.com ([10.61.198.236])
         (authenticated bits=0)
-        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VIDM055061
+        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VIDH055061
         (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Fri, 9 Jun 2023 06:31:44 GMT
+        Fri, 9 Jun 2023 06:31:42 GMT
 From:   Ariel Miculas <amiculas@cisco.com>
 To:     rust-for-linux@vger.kernel.org
 Cc:     Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 28/80] rust: syn: remove `unicode-ident` dependency
-Date:   Fri,  9 Jun 2023 09:30:26 +0300
-Message-Id: <20230609063118.24852-29-amiculas@cisco.com>
+Subject: [PATCH 23/80] rust: proc-macro2: remove `unicode_ident` dependency
+Date:   Fri,  9 Jun 2023 09:30:21 +0300
+Message-Id: <20230609063118.24852-24-amiculas@cisco.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609063118.24852-1-amiculas@cisco.com>
 References: <20230609063118.24852-1-amiculas@cisco.com>
@@ -85,7 +87,7 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 From: Miguel Ojeda <ojeda@kernel.org>
 
-The `syn` crate depends on the `unicode-ident` crate
+The `proc-macro2` crate depends on the `unicode-ident` crate
 to determine whether characters have the XID_Start or XID_Continue
 properties according to Unicode Standard Annex #31.
 
@@ -94,27 +96,27 @@ simplify the check and remove completely that dependency.
 
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- rust/syn/ident.rs | 4 ++--
+ rust/proc-macro2/fallback.rs | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/syn/ident.rs b/rust/syn/ident.rs
-index 6292a05f59f7..9ae2f0cbd83e 100644
---- a/rust/syn/ident.rs
-+++ b/rust/syn/ident.rs
-@@ -91,11 +91,11 @@ fn from(token: Token![_]) -> Ident {
- pub fn xid_ok(symbol: &str) -> bool {
-     let mut chars = symbol.chars();
-     let first = chars.next().unwrap();
--    if !(first == '_' || unicode_ident::is_xid_start(first)) {
-+    if !(first == '_' || first.is_ascii_alphabetic()) {
-         return false;
-     }
-     for ch in chars {
--        if !unicode_ident::is_xid_continue(ch) {
-+        if !(ch == '_' || ch.is_ascii_alphanumeric()) {
-             return false;
-         }
-     }
+diff --git a/rust/proc-macro2/fallback.rs b/rust/proc-macro2/fallback.rs
+index f795c7618118..0d576c32162d 100644
+--- a/rust/proc-macro2/fallback.rs
++++ b/rust/proc-macro2/fallback.rs
+@@ -724,11 +724,11 @@ pub fn set_span(&mut self, span: Span) {
+ }
+ 
+ pub(crate) fn is_ident_start(c: char) -> bool {
+-    c == '_' || unicode_ident::is_xid_start(c)
++    c == '_' || c.is_ascii_alphabetic()
+ }
+ 
+ pub(crate) fn is_ident_continue(c: char) -> bool {
+-    unicode_ident::is_xid_continue(c)
++    c == '_' || c.is_ascii_alphanumeric()
+ }
+ 
+ fn validate_ident(string: &str, raw: bool) {
 -- 
 2.40.1
 
