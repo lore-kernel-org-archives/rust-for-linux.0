@@ -2,93 +2,81 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96C94C7EE29
-	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 20:01:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B91CC7EE2E
+	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 23:53:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229595AbjFIUBk (ORCPT
+        id S229822AbjFIXxA (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 9 Jun 2023 16:01:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53006 "EHLO
+        Fri, 9 Jun 2023 19:53:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229896AbjFIUBZ (ORCPT
+        with ESMTP id S229818AbjFIXw7 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 9 Jun 2023 16:01:25 -0400
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F6530EC;
-        Fri,  9 Jun 2023 13:01:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1686340883;
-        bh=mGI/A86R/RF5GlrZA0epjsAqAk3ttAuz/EDS3qzOt9k=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=wrcqnTT9p0S0TO9Tp7pFwyb7LtIgmzNdw+okfaSKiq9XapHNSfkSYS2EgtqPapc96
-         P8Z6X2mPeKEhgqNCdz/MNeDaa5FlZd+HKKklTTj9jQ0WMie7dIAXt3ZOC4CAaHwJtk
-         AoHZfHRxIRdpVLms6J3RIAMfjpNzI2b98s4bqLnY=
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 7915F1287024;
-        Fri,  9 Jun 2023 16:01:23 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id 0gz7BYspJIts; Fri,  9 Jun 2023 16:01:23 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1686340883;
-        bh=mGI/A86R/RF5GlrZA0epjsAqAk3ttAuz/EDS3qzOt9k=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=wrcqnTT9p0S0TO9Tp7pFwyb7LtIgmzNdw+okfaSKiq9XapHNSfkSYS2EgtqPapc96
-         P8Z6X2mPeKEhgqNCdz/MNeDaa5FlZd+HKKklTTj9jQ0WMie7dIAXt3ZOC4CAaHwJtk
-         AoHZfHRxIRdpVLms6J3RIAMfjpNzI2b98s4bqLnY=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 75D4B1286FB8;
-        Fri,  9 Jun 2023 16:01:22 -0400 (EDT)
-Message-ID: <85deb8241b61c07a2935996e85c410a5c1127513.camel@HansenPartnership.com>
+        Fri, 9 Jun 2023 19:52:59 -0400
+Received: from out-1.mta0.migadu.com (out-1.mta0.migadu.com [91.218.175.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18F0B35B0
+        for <rust-for-linux@vger.kernel.org>; Fri,  9 Jun 2023 16:52:57 -0700 (PDT)
+Date:   Fri, 9 Jun 2023 19:52:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1686354775;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=FCKPXNbfuXiLkTq+8ViGBVnBlfhzGJ+dmPtv6KeJLyU=;
+        b=q5Lowd7A0s9qPP8jzg8vr8fCvb8MAjYzkXWU/IngLXVc7DchIAX2RiPqlWPrRWHVuB4sjp
+        Xpaon3ZIOCKUGHq0vCojG48qgKluyMDhIxhJ7WKAr9+umblXsFISgywWXr3Joy7DLDx4Nk
+        LKv0l42RZQPJURcbW5Hrz/LInYL7yeE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Kent Overstreet <kent.overstreet@linux.dev>
+To:     Christian Brauner <brauner@kernel.org>
+Cc:     Ariel Miculas <amiculas@cisco.com>, linux-fsdevel@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, linux-mm@kvack.org
 Subject: Re: [RFC PATCH 00/80] Rust PuzzleFS filesystem driver
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Ariel Miculas <ariel.miculas@gmail.com>
-Cc:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        "Ariel Miculas (amiculas)" <amiculas@cisco.com>,
-        Trilok Soni <quic_tsoni@quicinc.com>,
-        Colin Walters <walters@verbum.org>,
-        Christian Brauner <brauner@kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>
-Date:   Fri, 09 Jun 2023 16:01:19 -0400
-In-Reply-To: <CAPDJoNutb3NwrzuDP=kkLi=kTwG0XZHbUG=F_Bg-zbinzzUcdw@mail.gmail.com>
+Message-ID: <ZIO7U4A1rkIXlDeO@moria.home.lan>
 References: <20230609063118.24852-1-amiculas@cisco.com>
-         <20230609-feldversuch-fixieren-fa141a2d9694@brauner>
-         <CH0PR11MB529981313ED5A1F815350E41CD51A@CH0PR11MB5299.namprd11.prod.outlook.com>
-         <20230609-nachrangig-handwagen-375405d3b9f1@brauner>
-         <6b90520e-c46b-4e0d-a1c5-fcbda42f8f87@betaapp.fastmail.com>
-         <CH0PR11MB5299117F8EF192CA19A361ADCD51A@CH0PR11MB5299.namprd11.prod.outlook.com>
-         <d68eeeaf-17b7-77aa-cad5-2658e3ca2307@quicinc.com>
-         <CH0PR11MB5299314EC8FB8645C90453B5CD51A@CH0PR11MB5299.namprd11.prod.outlook.com>
-         <CANiq72n2znRm-jeQYP6nd3fHYz5bLNH=iNg9x9Z9HDYmOGnYHQ@mail.gmail.com>
-         <aa7df191528b07150cd2cb73b450b942af886de7.camel@HansenPartnership.com>
-         <CAPDJoNutb3NwrzuDP=kkLi=kTwG0XZHbUG=F_Bg-zbinzzUcdw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+ <20230609-feldversuch-fixieren-fa141a2d9694@brauner>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230609-feldversuch-fixieren-fa141a2d9694@brauner>
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, 2023-06-09 at 22:11 +0300, Ariel Miculas wrote:
-> Yes, but then how can you be sure that amiculas@cisco.com is the real
-> author of the commit? I think that's why Miguel Ojeda asked me to
-> send them from my business email, otherwise some random gmail account
-> could claim that he is "Ariel Miculas", so he's entitled to sign-off
-> as amiculas@cisco.com.
+On Fri, Jun 09, 2023 at 12:36:29PM +0200, Christian Brauner wrote:
+> On Fri, Jun 09, 2023 at 09:29:58AM +0300, Ariel Miculas wrote:
+> > Hi all!
+> > 
+> > This is a proof of concept driver written for the PuzzleFS
+> 
+> Uhm, the PuzzleFS filesystem isn't actually sent to fsdevel? Yet I see
+> tons of patches in there that add wrappers to our core fs data
+> structures. I even see a ton of new files that all fall clearly into
+> fsdevel territory:
+> 
+> create mode 100644 rust/kernel/cred.rs
+> create mode 100644 rust/kernel/delay.rs
+> create mode 100644 rust/kernel/driver.rs
+> create mode 100644 rust/kernel/file.rs
+> create mode 100644 rust/kernel/fs.rs
+> create mode 100644 rust/kernel/fs/param.rs
+> create mode 100644 rust/kernel/io_buffer.rs
+> create mode 100644 rust/kernel/iov_iter.rs
+> create mode 100644 rust/kernel/mm.rs
+> create mode 100644 rust/kernel/mount.rs
+> create mode 100644 rust/kernel/pages.rs
+> 
+> There's also quite a lot of new mm/ in there, no?
+> 
+> Any wrappers and code for core fs should be maintained as part of fs.
+> Rust shouldn't become a way to avoid our reviews once you have a few
+> wrappers added somewhere.
 
-Because it's a public list and the real one would observe and repudiate
-...
+I'm of the opinion that Rust wrappers should generally live in the same
+directories as the code they're wrapping. The Rust wrappers are unsafe
+code that is intimately coupled with the C code they're creating safe
+interfaces for, and the organizational structure should reflect that.
 
-The DCO is an attestation which we basically believe absent any proof
-to the contrary.  It's also exhausting and an incredible amount of
-pointless admin not to believe anything until it's proved, which is why
-we don't.
-
-James
-
+This'll be particularly important when mixing Rust and C in the same
+module, as I intend to do in bcachefs in the not-too-distant future.
