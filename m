@@ -2,73 +2,84 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB0C6C7EE29
-	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 09:28:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25F47C7EE25
+	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 09:29:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241041AbjFIJ2L (ORCPT
+        id S241618AbjFIJ3i (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 9 Jun 2023 05:28:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52154 "EHLO
+        Fri, 9 Jun 2023 05:29:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241189AbjFIJ16 (ORCPT
+        with ESMTP id S241599AbjFIJ3W (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 9 Jun 2023 05:27:58 -0400
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD8CF5FE4
-        for <rust-for-linux@vger.kernel.org>; Fri,  9 Jun 2023 02:21:59 -0700 (PDT)
-Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-3f9b4a656deso14072631cf.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 Jun 2023 02:21:59 -0700 (PDT)
+        Fri, 9 Jun 2023 05:29:22 -0400
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64062211C
+        for <rust-for-linux@vger.kernel.org>; Fri,  9 Jun 2023 02:23:45 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-bad0c4f6f50so2296067276.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 Jun 2023 02:23:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686302517; x=1688894517;
+        d=gmail.com; s=20221208; t=1686302624; x=1688894624;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=K7dy/7UOZEnjbV804XS2gwrBymSYak5DV4xMX2e5tt4=;
-        b=P7tILOzSxaeHaDdxPMPLiq2+RCX4VpKboxCCbz4i1RkIweHD/bD0NCT6cZNDYgLVZq
-         s0bJFYhOVLfMYC4crHP+zrK8uOjCyKgy8mcYP10OEcCIYbhAjnM9W+g35FnIHMDyuFPa
-         mNbdUVsM3JjfQdxjXy7QAQ4h8+E+o+KLOFWtA2o/BjadFLM4lsxeoHWRqIdSKx+NUYeM
-         aRJnHOgG3mmtq+emRc0vzaszOrnoFBoXor4gnnMd0SDxNapS0Nqlkr9m3eTvwKhpOlp9
-         AkpAcYGHegQfLRsqTrPZrLhgpBZINV2PH9VI4I1jYoREAMTca/CAQtyvhx37wZyXBqVY
-         1F5g==
+        bh=3vqW5bumq/hRwLXRlpULW+ThTgFp9qFjgB2q/vtaKnU=;
+        b=GTLCz2X4EPw9Ybrhbgp+wgZ5t3OpMyiUFF+Bdcvwrn6HLkQdFjpf6L/wEE556r8jAw
+         XkMrPMJvDZLDaY8K4dhR7M65pLIJbWmAWLdvoi0zVwwbmTAe/Wt/bV6vERWFcDJSq3kO
+         xe1IjufPTeWg0Ar/d2fuXsPI6a2OkU2foGSSL8CsF4nzMHpcK5QZFv5kDhTi0q25KrRj
+         9W1pd2Iw0BGQogcIfTbFdNnU8sl1SacpvS5UvixpG4M4BXpN7c7+iYjIMMnRuguqB5wv
+         /etOxUHofpr/5z0HkF31UE6XMGZBkOEvJ4XAjHAcPbRboIJPm8kC7i5xLKADRpVuQWPI
+         c+EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686302517; x=1688894517;
+        d=1e100.net; s=20221208; t=1686302624; x=1688894624;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=K7dy/7UOZEnjbV804XS2gwrBymSYak5DV4xMX2e5tt4=;
-        b=j5wu3Xf0+CEVk5mvSIpLsUZjU37guwc9VWtqGc252dbINq8Acf/gEwi8V5+PSqfyCt
-         mUQ406OqOEQQzVGC7VzPO/Lmjoqx4icxtOB4Wb8M8B/fqpPtcRSia++p1g9RnVwaITfn
-         WAjqN5XceJyX6DO8gWBz6EXAqY4KOZ6FaO6d7aBQVzQwi3e6TO+i8AznvzwIMbzw8Mxo
-         37OMFUMmAZXldl9SEXVOZdMYQFMUL2C18tulL1jPMTJGngEbxJmqmkVkkH9PD5epH9u/
-         amtQqxQfuqI8SdOpXnvmR8++Gn2nVFOxOdzBtLrtbG+8TecbAruThfffKe4XeC5yQYwe
-         6rog==
-X-Gm-Message-State: AC+VfDwScnfF2BJGzcAZjG1dEgi7K9kWkKBniYQZutmRuyMmmfowcWCN
-        l13S+2HZFd3tXvzLGkqEznyYd2tUNrvsez1/obH9LC8N
-X-Google-Smtp-Source: ACHHUZ7bKpULAnsRZDpO4SRKy9s6akTonGNqnFR13X24AVE5EQMBeOviRQPrE36X/2vcBHATdOyhuL9vKWSEB3YJckY=
-X-Received: by 2002:a05:622a:4d3:b0:3f9:d671:ef09 with SMTP id
- q19-20020a05622a04d300b003f9d671ef09mr1060844qtx.9.1686302516762; Fri, 09 Jun
- 2023 02:21:56 -0700 (PDT)
+        bh=3vqW5bumq/hRwLXRlpULW+ThTgFp9qFjgB2q/vtaKnU=;
+        b=M43ZURw4wMHrs5n7m+z8MXMaqDVRHH2HdjPCbYVeSsQW+qGP/BVh6710cyJ00u/QTI
+         loq3FSwt2ZxV/xrGXKFuSPanKCJL6dzEUqtmTIf+BSXP3W5NsO55X51nTTnIZIJxZnKX
+         XAJ1S+GOBfmOyx4qG79+VFQmquWAfhnYwbVKBWFjPfiJRaY3uJSMyyXtIXlgBVGccLfS
+         eBFjORTOquGZKJariFWGYw0PfemRWiplaOzxGFwlfsL4Pw2YgY/m2Mj0x/5QYl3abhVU
+         q/hsouHP3ccMQDKiFGaYbz89dnsTMPJTEtxsjCs5KifvUUt9Su35/J8niE2JPNfwp9Jw
+         85FA==
+X-Gm-Message-State: AC+VfDzYQG1AzjKIsmHLO7TVIrXnAgKsCkyDNiIx0R/mcSqPR9w99GvG
+        pnjOWRw4nl6oxZ9fnVBnD6G5uOf6VfJtuGosA9SwMDTu
+X-Google-Smtp-Source: ACHHUZ4QFUhhPs/LYnJkuuIxBBxB0uHGuujfRUUiqgfT0hYuwh932WJvD3o81g5rhwf+HeT+pxKd/bfzRTEy2xakpYk=
+X-Received: by 2002:a25:6e05:0:b0:b94:bbf2:19a3 with SMTP id
+ j5-20020a256e05000000b00b94bbf219a3mr1346208ybc.18.1686302624483; Fri, 09 Jun
+ 2023 02:23:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230609063118.24852-1-amiculas@cisco.com> <20230609063118.24852-19-amiculas@cisco.com>
-In-Reply-To: <20230609063118.24852-19-amiculas@cisco.com>
+References: <20230609063118.24852-1-amiculas@cisco.com> <20230609063118.24852-3-amiculas@cisco.com>
+In-Reply-To: <20230609063118.24852-3-amiculas@cisco.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 9 Jun 2023 11:21:45 +0200
-Message-ID: <CANiq72kM7TmWZ4kkaUB6_kdn4Qz0YemvYMzN97WRouWEF2NPjw@mail.gmail.com>
-Subject: Re: [PATCH 18/80] rust: kernel: format the rust code
+Date:   Fri, 9 Jun 2023 11:23:33 +0200
+Message-ID: <CANiq72=nNRr4AGw2skuxUUC71ks8NTMh5TuyyT6vn_wOCgQjcQ@mail.gmail.com>
+Subject: Re: [PATCH 02/80] rust: add ability to register a file system
 To:     Ariel Miculas <amiculas@cisco.com>
-Cc:     rust-for-linux@vger.kernel.org
+Cc:     rust-for-linux@vger.kernel.org,
+        Wedson Almeida Filho <wedsonaf@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Jun 9, 2023 at 8:58=E2=80=AFAM Ariel Miculas <amiculas@cisco.com> w=
+On Fri, Jun 9, 2023 at 9:03=E2=80=AFAM Ariel Miculas <amiculas@cisco.com> w=
 rote:
 >
-> Signed-off-by: Ariel Miculas <amiculas@cisco.com>
+> From: Wedson Almeida Filho <wedsonaf@google.com>
+>
+> Also add sample that uses the new public API. The registered file system
+> cannot be mounted yet, but can be seen in /proc/filesystems.
+>
+> More functionality will be added in subsequent commits.
+>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
 
-This should be done by the commits that change the respective code.
+Note that you need to add your SoB too in cases where you forward a
+patch, even if you are just handling the patch; see
+https://docs.kernel.org/process/submitting-patches.html#sign-your-work-the-=
+developer-s-certificate-of-origin.
 
 Cheers,
 Miguel
