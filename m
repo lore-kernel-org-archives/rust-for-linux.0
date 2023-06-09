@@ -2,45 +2,45 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50030C87FDE
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36E88C7EE2F
 	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 06:54:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238164AbjFIGyb (ORCPT
+        id S229943AbjFIGyc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 9 Jun 2023 02:54:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56598 "EHLO
+        Fri, 9 Jun 2023 02:54:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238475AbjFIGyR (ORCPT
+        with ESMTP id S238549AbjFIGyR (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
         Fri, 9 Jun 2023 02:54:17 -0400
 Received: from aer-iport-7.cisco.com (aer-iport-7.cisco.com [173.38.203.69])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A477272A
-        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:54:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB0FF2718
+        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:54:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=5229; q=dns/txt; s=iport;
-  t=1686293656; x=1687503256;
+  d=cisco.com; i=@cisco.com; l=3631; q=dns/txt; s=iport;
+  t=1686293654; x=1687503254;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=3jIachZJVYD3asYx4tKwnabUeF/GKfQMDJUIjqP93LU=;
-  b=K9tZ+fvbmaI97My4z4RYVkjyV5jd+uLOKqSA6dfqBZ1OorbI6YaKJtBm
-   FPhcCCjecnZ34XeyIk7N7prfSgRMVW2vEBwbWTh2dkQk9wb8KgRj6odES
-   aSVzT5uqAyAFYgJ1gQ2OK2d8dVSG1IwJ3fJFB48i/NSERB99EZQIKngWw
-   I=;
+  bh=99VouR26BlBAwHzl036iVu18RJU2VEAH7jm78IPcSug=;
+  b=dJkcb8vaBofykwtrJGXyi8DFaeSMkDrOhcfSEu7tjp84DUNYuBnEH816
+   hmD7/E6w3d+C9C6Bx97eKZN8FJHZQST+bkV50P+orUGTC5eHIB5UexIFo
+   RRxrQoo2uujFOGCN00uePAMXYJ1EDbcD/fBZYUufj1G0X7WaeyHKmD3Dy
+   8=;
 X-IronPort-AV: E=Sophos;i="6.00,228,1681171200"; 
-   d="scan'208";a="8508932"
+   d="scan'208";a="8508930"
 Received: from aer-iport-nat.cisco.com (HELO aer-core-5.cisco.com) ([173.38.203.22])
-  by aer-iport-7.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:52 +0000
+  by aer-iport-7.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:48 +0000
 Received: from archlinux-cisco.cisco.com ([10.61.198.236])
         (authenticated bits=0)
-        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VIDh055061
+        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VIDX055061
         (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Fri, 9 Jun 2023 06:31:52 GMT
+        Fri, 9 Jun 2023 06:31:48 GMT
 From:   Ariel Miculas <amiculas@cisco.com>
 To:     rust-for-linux@vger.kernel.org
 Cc:     Ariel Miculas <amiculas@cisco.com>
-Subject: [PATCH 49/80] rust: file: present the filesystem context to the open function
-Date:   Fri,  9 Jun 2023 09:30:47 +0300
-Message-Id: <20230609063118.24852-50-amiculas@cisco.com>
+Subject: [PATCH 39/80] rust: serde_cbor: add SPDX License Identifiers
+Date:   Fri,  9 Jun 2023 09:30:37 +0300
+Message-Id: <20230609063118.24852-40-amiculas@cisco.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609063118.24852-1-amiculas@cisco.com>
 References: <20230609063118.24852-1-amiculas@cisco.com>
@@ -53,133 +53,120 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This is not a good implementation because it does not ensure that the
-type Operations::FSData in file.rs is the same as Type::Data in fs.rs.
-This means that we could store a Box in the field s_fs_info and retrieve
-an Arc from there, which is obviously wrong and it leads to UB.
-
 Signed-off-by: Ariel Miculas <amiculas@cisco.com>
 ---
- rust/kernel/file.rs      | 18 ++++++++++++++++--
- samples/rust/puzzlefs.rs | 21 ++++++++++++++++++---
- samples/rust/rust_fs.rs  |  2 +-
- 3 files changed, 35 insertions(+), 6 deletions(-)
+ rust/serde_cbor/de.rs        | 2 ++
+ rust/serde_cbor/error.rs     | 2 ++
+ rust/serde_cbor/lib.rs       | 2 ++
+ rust/serde_cbor/read.rs      | 2 ++
+ rust/serde_cbor/ser.rs       | 2 ++
+ rust/serde_cbor/tags.rs      | 2 ++
+ rust/serde_cbor/value/de.rs  | 2 ++
+ rust/serde_cbor/value/mod.rs | 2 ++
+ rust/serde_cbor/value/ser.rs | 2 ++
+ rust/serde_cbor/write.rs     | 2 ++
+ 10 files changed, 20 insertions(+)
 
-diff --git a/rust/kernel/file.rs b/rust/kernel/file.rs
-index 086c62000533..0062d8b17990 100644
---- a/rust/kernel/file.rs
-+++ b/rust/kernel/file.rs
-@@ -330,9 +330,14 @@ impl<A: OpenAdapter<T::OpenData>, T: Operations> OperationsVtable<A, T> {
-             // `fileref` never outlives this function, so it is guaranteed to be
-             // valid.
-             let fileref = unsafe { File::from_ptr(file) };
+diff --git a/rust/serde_cbor/de.rs b/rust/serde_cbor/de.rs
+index 170e0593cf44..1c9a9acc8eb5 100644
+--- a/rust/serde_cbor/de.rs
++++ b/rust/serde_cbor/de.rs
+@@ -1,3 +1,5 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
 +
-+            // SAFETY: into_foreign was called in fs::NewSuperBlock<..., NeedsInit>::init and
-+            // it is valid until from_foreign will be called in fs::Tables::free_callback
-+            let fs_info = unsafe { T::FSData::borrow((*(*inode).i_sb).s_fs_info) };
+ //! Deserialization.
+ 
+ use core::f32;
+diff --git a/rust/serde_cbor/error.rs b/rust/serde_cbor/error.rs
+index b1a6a459e540..0b4b5be8edcc 100644
+--- a/rust/serde_cbor/error.rs
++++ b/rust/serde_cbor/error.rs
+@@ -1,3 +1,5 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
 +
-             // SAFETY: `arg` was previously returned by `A::convert` and must
-             // be a valid non-null pointer.
--            let ptr = T::open(unsafe { &*arg }, fileref)?.into_foreign();
-+            let ptr = T::open(fs_info, unsafe { &*arg }, fileref)?.into_foreign();
-             // SAFETY: The C contract guarantees that `private_data` is available
-             // for implementers of the file operations (no other C code accesses
-             // it), so we know that there are no concurrent threads/CPUs accessing
-@@ -793,10 +798,19 @@ pub trait Operations {
-     /// The type of the context data passed to [`Operations::open`].
-     type OpenData: Sync = ();
- 
-+    /// Data associated with each file system instance.
-+    // SAFETY: this is not safe because we don't enforce the same type as fs::Type::Data, so it's
-+    // possible to store a Box in s_fs_info and retrieve an Arc when open is called, leading to UB
-+    type FSData: ForeignOwnable + Send + Sync = ();
+ //! When serializing or deserializing CBOR goes wrong.
+ use core::fmt;
+ use core::result;
+diff --git a/rust/serde_cbor/lib.rs b/rust/serde_cbor/lib.rs
+index 55668541539b..cf406a439340 100644
+--- a/rust/serde_cbor/lib.rs
++++ b/rust/serde_cbor/lib.rs
+@@ -1,3 +1,5 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
 +
-     /// Creates a new instance of this file.
-     ///
-     /// Corresponds to the `open` function pointer in `struct file_operations`.
--    fn open(context: &Self::OpenData, file: &File) -> Result<Self::Data>;
-+    fn open(
-+        fs_info: <Self::FSData as ForeignOwnable>::Borrowed<'_>,
-+        context: &Self::OpenData,
-+        file: &File,
-+    ) -> Result<Self::Data>;
- 
-     /// Cleans up after the last reference to the file goes away.
-     ///
-diff --git a/samples/rust/puzzlefs.rs b/samples/rust/puzzlefs.rs
-index b149af4e66ce..e454bce7dbc6 100644
---- a/samples/rust/puzzlefs.rs
-+++ b/samples/rust/puzzlefs.rs
-@@ -4,7 +4,7 @@
- 
- use kernel::module_fs;
- use kernel::prelude::*;
--use kernel::{c_str, file, fs, io_buffer::IoBufferWriter};
-+use kernel::{c_str, file, fs, io_buffer::IoBufferWriter, fmt, str::CString};
- 
- mod puzzle;
- 
-@@ -17,6 +17,11 @@
- 
- struct PuzzleFs;
- 
-+#[derive(Debug)]
-+struct PuzzlefsInfo {
-+    base_path: CString,
-+}
+ //! CBOR and serialization.
+ //!
+ //! # Usage
+diff --git a/rust/serde_cbor/read.rs b/rust/serde_cbor/read.rs
+index 1b53018df870..6c17282d2c5d 100644
+--- a/rust/serde_cbor/read.rs
++++ b/rust/serde_cbor/read.rs
+@@ -1,3 +1,5 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
 +
- #[vtable]
- impl fs::Context<Self> for PuzzleFs {
-     type Data = ();
-@@ -44,14 +49,17 @@ fn try_new() -> Result {
- impl fs::Type for PuzzleFs {
-     type Context = Self;
-     type INodeData = &'static [u8];
-+    type Data = Box<PuzzlefsInfo>;
-     const SUPER_TYPE: fs::Super = fs::Super::Independent;
-     const NAME: &'static CStr = c_str!("puzzlefs");
-     const FLAGS: i32 = fs::flags::USERNS_MOUNT;
-     const DCACHE_BASED: bool = true;
- 
-     fn fill_super(_data: (), sb: fs::NewSuperBlock<'_, Self>) -> Result<&fs::SuperBlock<Self>> {
-+        let base_path = CString::try_from_fmt(fmt!("hello world"))?;
-+        pr_info!("base_path {:?}\n", base_path);
-         let sb = sb.init(
--            (),
-+            Box::try_new(PuzzlefsInfo { base_path })?,
-             &fs::SuperParams {
-                 magic: 0x72757374,
-                 ..fs::SuperParams::DEFAULT
-@@ -87,8 +95,15 @@ fn fill_super(_data: (), sb: fs::NewSuperBlock<'_, Self>) -> Result<&fs::SuperBl
- #[vtable]
- impl file::Operations for FsFile {
-     type OpenData = &'static [u8];
-+    type FSData = Box<PuzzlefsInfo>;
+ #[cfg(feature = "alloc")]
+ use alloc::{vec, vec::Vec};
+ #[cfg(feature = "std")]
+diff --git a/rust/serde_cbor/ser.rs b/rust/serde_cbor/ser.rs
+index 7016dc340a84..9f5bb67f0479 100644
+--- a/rust/serde_cbor/ser.rs
++++ b/rust/serde_cbor/ser.rs
+@@ -1,3 +1,5 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
 +
-+    fn open(
-+        fs_info: &PuzzlefsInfo,
-+        _context: &Self::OpenData,
-+        _file: &file::File,
-+    ) -> Result<Self::Data> {
-+        pr_info!("got {:?}\n", fs_info);
+ //! Serialize a Rust data structure to CBOR data.
  
--    fn open(_context: &Self::OpenData, _file: &file::File) -> Result<Self::Data> {
-         Ok(())
-     }
+ #[cfg(feature = "alloc")]
+diff --git a/rust/serde_cbor/tags.rs b/rust/serde_cbor/tags.rs
+index 8adccb8ea8b5..057765b9d2f8 100644
+--- a/rust/serde_cbor/tags.rs
++++ b/rust/serde_cbor/tags.rs
+@@ -1,3 +1,5 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
++
+ //! Support for cbor tags
+ use core::fmt;
+ use core::marker::PhantomData;
+diff --git a/rust/serde_cbor/value/de.rs b/rust/serde_cbor/value/de.rs
+index f5bdbb74676c..366eda1e27ac 100644
+--- a/rust/serde_cbor/value/de.rs
++++ b/rust/serde_cbor/value/de.rs
+@@ -1,3 +1,5 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
++
+ use std::collections::BTreeMap;
+ use std::fmt;
  
-diff --git a/samples/rust/rust_fs.rs b/samples/rust/rust_fs.rs
-index 7527681ee024..36bca7da179f 100644
---- a/samples/rust/rust_fs.rs
-+++ b/samples/rust/rust_fs.rs
-@@ -86,7 +86,7 @@ fn fill_super(_data: (), sb: fs::NewSuperBlock<'_, Self>) -> Result<&fs::SuperBl
- impl file::Operations for FsFile {
-     type OpenData = &'static [u8];
+diff --git a/rust/serde_cbor/value/mod.rs b/rust/serde_cbor/value/mod.rs
+index 7bd2255314ca..cc93c2b40a52 100644
+--- a/rust/serde_cbor/value/mod.rs
++++ b/rust/serde_cbor/value/mod.rs
+@@ -1,3 +1,5 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
++
+ //! CBOR values, keys and serialization routines.
  
--    fn open(_context: &Self::OpenData, _file: &file::File) -> Result<Self::Data> {
-+    fn open(_fs_info: (), _context: &Self::OpenData, _file: &file::File) -> Result<Self::Data> {
-         Ok(())
-     }
- 
+ mod de;
+diff --git a/rust/serde_cbor/value/ser.rs b/rust/serde_cbor/value/ser.rs
+index 347aae9601fa..e52987778288 100644
+--- a/rust/serde_cbor/value/ser.rs
++++ b/rust/serde_cbor/value/ser.rs
+@@ -1,3 +1,5 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
++
+ // Copyright 2017 Serde Developers
+ //
+ // Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
+diff --git a/rust/serde_cbor/write.rs b/rust/serde_cbor/write.rs
+index 94c326ef96b0..21baf7de9711 100644
+--- a/rust/serde_cbor/write.rs
++++ b/rust/serde_cbor/write.rs
+@@ -1,3 +1,5 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
++
+ #[cfg(feature = "alloc")]
+ use alloc::vec::Vec;
+ #[cfg(not(feature = "std"))]
 -- 
 2.40.1
 
