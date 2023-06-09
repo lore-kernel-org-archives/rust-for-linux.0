@@ -2,1893 +2,1049 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9328AC7EE37
-	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 06:57:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24375C7EE2E
+	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 07:21:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229981AbjFIG5E (ORCPT
+        id S238380AbjFIHU5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 9 Jun 2023 02:57:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58690 "EHLO
+        Fri, 9 Jun 2023 03:20:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234257AbjFIG4j (ORCPT
+        with ESMTP id S238527AbjFIHUv (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 9 Jun 2023 02:56:39 -0400
-Received: from aer-iport-6.cisco.com (aer-iport-6.cisco.com [173.38.203.68])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC14D30FA
-        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:56:29 -0700 (PDT)
+        Fri, 9 Jun 2023 03:20:51 -0400
+X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Jun 2023 00:20:47 PDT
+Received: from rcdn-iport-8.cisco.com (rcdn-iport-8.cisco.com [173.37.86.79])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F0F6194
+        for <rust-for-linux@vger.kernel.org>; Fri,  9 Jun 2023 00:20:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=69598; q=dns/txt;
-  s=iport; t=1686293789; x=1687503389;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=U0cwih9PdEnku7LVbzA2s7TgvQaEpoV76vMT83iS2ic=;
-  b=Mx8QuN1tXZ+IG065Im96oZFk6rV8upE/ol3+9U9zEStY8UbCYvI251aO
-   QT8Ms/3/jxRBadaoxlWGRmvlgP+4eyrferjH6WgV2EnZHIV2YTL54uAGP
-   mH2J37pQYS8FkMl7zVrWvswlvXZy7wMLQC7DVLzaj5dP8pmOrDWaYPKAd
-   s=;
+  d=cisco.com; i=@cisco.com; l=41371; q=dns/txt;
+  s=iport; t=1686295247; x=1687504847;
+  h=from:to:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=gi39zM0zxJkGctGKdgMZ0I0+g2pE5QnXVFPKt2DJ2rk=;
+  b=hwGvlDR5zyW70gvSopxADqlntkoNXCYLadMH5rrH22hnRHfVoPMXGyJK
+   UznEDPVLs+LcrscqAbpLG0npJBIhyc6MdNEFJq/tOiVGCHY0MHg+KQHRG
+   s47jJKiPvvnGXY1kFPc2PYLmcErON/BKmbLbLg+oDXfzwG8TmUvczpLmc
+   Q=;
+X-IPAS-Result: =?us-ascii?q?A0A/AgCh0YJkmJRdJa1XA4EJJYEqgV0qKHMCWSoSR4gdA?=
+ =?us-ascii?q?4UtiFIDgROYU4QFgSUDVg8BAQENAQE7CQQBAYFTgzMChXQCJTQJDgECAgIBA?=
+ =?us-ascii?q?QEBAwIDAQEBAQEBAwEBBQEBAQIBBwQUAQEBAQEBAQEeGQUOECeFaAEMhgQBA?=
+ =?us-ascii?q?QIDEggmAQEsDBEBCBEEAQFhHQoEEwgaggRYAYJcAwEQBqEAAYE/AolVGjV4g?=
+ =?us-ascii?q?TSBAYIIAQEGBAWBTgMPL50XCYFCjS2EMycbgUlEgRVDgjA4PoJiAQEBARiBR?=
+ =?us-ascii?q?gIfERWDTYIMIos5DQuCYoMKgkqJVIEpb4EegSJ/AgkCEWeBCghcgXNAAg1UC?=
+ =?us-ascii?q?wtjgR2CVQICESkTFFJ7HQMHBAKBBRAvBwQyHwkGCRgYFycGUwctJAkTFUIEg?=
+ =?us-ascii?q?1kKgRBAFQ4RglwqAgc2ODcDRB1AAwttPTUUHwUEaoFXMECBDAJGnkYDgQSBE?=
+ =?us-ascii?q?wElRgcBMAYhCQIRBxMBByICBR0rAUMOAToGHQccBxQCCy8DkhImARofjlOBN?=
+ =?us-ascii?q?KELCoQIi3yVOheEAYFWkgKRfJgWIIRehGxTRoJXiGuMHiCFCQIEAgQFAg4BA?=
+ =?us-ascii?q?QaBYzqBW3AVO4IzAQEyCQkNMxkPjisOCYEGAQiBZV6CZIFtCDuBAYlkdQIBO?=
+ =?us-ascii?q?AIHCwEBAwmLRgEB?=
+IronPort-PHdr: A9a23:MmXMMR86vFJtS/9uWO3oyV9kXcBvk6//MghQ7YIolPcUNK+i5J/le
+ kfY4KYlgFzIWNDD4ulfw6rNsq/mUHAd+5vJrn0YcZJNWhNEwcUblgAtGoiEXGXwLeXhaGoxG
+ 8ERHER98SSDOFNOUN37e0WUp3Sz6TAIHRCqPA90LfnxE5X6hMWs3Of08JrWME1EgTOnauZqJ
+ Q6t5UXJ49ALiJFrLLowzBaBrnpTLuJRw24pbV7GlBfn7cD295lmmxk=
+IronPort-Data: A9a23:imU3i6ieY5BtUdly5lyOa8oYX161HxAKZh0ujC45NGQN5FlHY01je
+ htvXGmPM/jfYTamLYsjPIjkoBxSvZXTx4JrSlRq+CgwH3ljpJueD7x1DKtf0wB+jyHnZBg6h
+ ynLQoCYdKjYdleF+lH1dOKJQUBUjclkfJKkYAL/En43HVcMpBsJ00o5wLZn2t4w2rBVPivU0
+ T/Mi5yHULOa82Yc3lI8s8pvfzs24ZweEBtB1rAPTagjUG32zhH5P7pDTU2FFEYUd6EPdgKMq
+ 0kv+5nilo/R109F5tpICd8XeGVSKlLZFVDmZna7x8FOjzAazhHe3JrXO9IfcmptuR7XnOsti
+ 8lBt8SfExU5IYblzbF1vxlwS0mSPIVc87PBZHO4q8HWlheAeHr3yPIoB0YzVWEa0r8oWicVq
+ rpJc3ZUMkDra+GemNpXTsFlg8UoMc3iJ6sUu2prynfSCvNOrZXrHfybtIYBh2ZYasZmQ+/uW
+ +5IWydVVgnGUQd+AlUcGp81tbL97pX4W2QI9A3KzUYt2EDJ0RdtlbbqKp/Re9qXVe1LkUuC4
+ GHL5WL0BlcdLtP39Nae2miniumKliThVcdLTvuz9+VhhxuYwWl75AAquUWTouKUsHyVBdFkd
+ w8I9ih2gvIg5FOAZ4yoN/Gnm0KsshkZUttWNuQ17gCR16bZizp14EBZHlatj/R76KcLqSwWO
+ kyhxIy2WGQ+2FGBYTfMqefO9GLa1T09dDdaPUc5oR05D84PSbzfYzrVRdplVaWylNCwQGu2y
+ DGRpy94jLIW5SLq60lZ1Q6e695PjsGZJuLQ2ukxdj77hu+eTNX0D7FEEXCBsZ59wH+xFzFtR
+ kQslcmE9/wpBpqQjiGLS+hlNOj3t6jfbGyE2g4yTsNJG9GRF5iLI9s4DNZWeRcBDyr4UWSBj
+ LL74FkIv8YDYBNGk4cuOtLqYyjV8UQQPY21Cq+LBja/SpNwbwSAtDp/flKd2nuFraTfuf9XB
+ HtvSu71VSxyIf0+lFKeHr5BuZd1nXpW7T2IGvjGI+GPjOD2iIi9E+lVaTNjr4kRscu5neki2
+ 4wEbpbSlksGD7KWj+u+2dd7EG3m5EMTXPjeg8dWbeWEZAFhHQkc5zX5mNvNp6QNc3xpq9r1
+IronPort-HdrOrdr: A9a23:ulWPbKBerd/BSY3lHegQsceALOsnbusQ8zAXPh9KKCC9I/b3qy
+ nxppsmPEfP+UwssREb8+xoS5PwPE80kqQFq7X5XI3SFzUO3VHJEGgM1/qb/9SNIVyaygc/79
+ YsT0EdMqyKMbESt6+Ti2XIcKdD/DDtytHOuQ6q9QYVcegcUdAH0+4WMHf+LqRxfmR7LKt8MK
+ DZyttMpjKmd3hSRN+8HGM5U+/KoMCOvI76YDYdbiRXpzWmvHeN0vrXAhKY1hARX3dk2rE561
+ XIlAT/++GKr+y78BnBzGXehq4m1ucJi+EzRfBkuPJlaQkEuTzYJriJnIfy+QzdldvfqGrCVu
+ O85yvIcf4DrE85NVvF3ScFkzOQrwrGrUWShWNxRRDY0JXErPVQMbsGuWpUHyGplXYIrZVy1r
+ lG0HmesIcSBRTcnD7l79yNTB1ykFGoyEBS59L7okYvJbf2UoUh2rA37QdQCtMNDSj64IcoHK
+ 1nC9zd/u9fdRefY2rCtmdizdSwVjBrdy32CnQqq4iQyXxbjXp5x0wXyIgWmWoB7os0T91B6/
+ 7fOqplmblSRosdbL57Bu0GXcyrY1a9CC7kISaXOxDqBasHM3XCp9r+56g0/vijfNgSwJ47iP
+ 36ISZlXK4JCjDT4OG1re52G0r2MRSAtBzWu7Fj26Q=
+X-Talos-CUID: 9a23:DwKw7m3T+3Y+Wlg/KV3b07xfGdsISE/2knTrfwykBWQxZ+eHWUC70fYx
+X-Talos-MUID: 9a23:0a761gYk7dJTPOBT6SbcuBUzBtpS2bmoOlo8qZcNqcSPHHkl
+X-IronPort-Anti-Spam-Filtered: true
+Received: from rcdn-core-12.cisco.com ([173.37.93.148])
+  by rcdn-iport-8.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 07:19:43 +0000
+Received: from rcdn-opgw-2.cisco.com (rcdn-opgw-2.cisco.com [72.163.7.163])
+        by rcdn-core-12.cisco.com (8.15.2/8.15.2) with ESMTPS id 3597JhsU015749
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+        for <rust-for-linux@vger.kernel.org>; Fri, 9 Jun 2023 07:19:43 GMT
+Authentication-Results: rcdn-opgw-2.cisco.com; dkim=pass (signature verified) header.i=@cisco.com; spf=Pass smtp.mailfrom=amiculas@cisco.com; dmarc=pass (p=quarantine dis=none) d=cisco.com
 X-IronPort-AV: E=Sophos;i="6.00,228,1681171200"; 
-   d="scan'208";a="5453674"
-Received: from aer-iport-nat.cisco.com (HELO aer-core-5.cisco.com) ([173.38.203.22])
-  by aer-iport-6.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:38 +0000
-Received: from archlinux-cisco.cisco.com ([10.61.198.236])
-        (authenticated bits=0)
-        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VICx055061
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Fri, 9 Jun 2023 06:31:37 GMT
-From:   Ariel Miculas <amiculas@cisco.com>
-To:     rust-for-linux@vger.kernel.org
-Cc:     Ariel Miculas <amiculas@cisco.com>
-Subject: [PATCH 05/80] rust: kernel: add libraries required by the filesystem abstractions
-Date:   Fri,  9 Jun 2023 09:30:03 +0300
-Message-Id: <20230609063118.24852-6-amiculas@cisco.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230609063118.24852-1-amiculas@cisco.com>
-References: <20230609063118.24852-1-amiculas@cisco.com>
+   d="scan'208";a="2766088"
+Received: from mail-bn8nam11lp2169.outbound.protection.outlook.com (HELO NAM11-BN8-obe.outbound.protection.outlook.com) ([104.47.58.169])
+  by rcdn-opgw-2.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2023 07:19:43 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YG+xLvAeyDBWq/FSEaKYfpnkqdCqUNwzNY26/5XBL6zl//pLxzVl2e4CmtD0S9zn42Wa2qXuoBXFOiAwYZUN1Yr1WBiBD0H49UDsRQobtO1DMH3ByXk8n1XvLH0akSiOqmioUAiNu+Ck9C+Ox2/zqkz+fByr/h0myygZ8rt+fHxLawYeTq0I7S677TiUAUSBLUd6MusxdYbgLJwLQ4H4mf0lJx9eSiHRxSoAN9qO4W5J1z4lLVWD7Q8iMcW7pmBrvW2bKZIjkwNOkYdmqJt65QiaX9sFgh+0f1SsAYSJsRnXqxdZYuHThNEhq0pm62e5jkrDHvChYXOkbEpMunhUZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gi39zM0zxJkGctGKdgMZ0I0+g2pE5QnXVFPKt2DJ2rk=;
+ b=K80ZsMlvm+4uEMc36i/DWl/uEUGXS9En81qAvlLLEeJGFFGIRZvCkGeerJfZjXzqbhu1QI2744jnaBXAVYT9Z7nc74i555KTnHqtMTSG45spXrtAFQUpo2QIyXfUGecQywmNnQ04CU3JIxNAWINspoZr4LbWrHoLAl8s70f37cXUa5JB2CFmo3IeaDyiousvaNsEFOJn23TuU6o9mP7Nk7aCBAXLqtma6alROjjtZa6jAp2civzdVBAgQLSE1gKY/tP+j0RZ5yDzld+TzGoDhK/wkohSFqhVL9ZvBrOpZmT0GOgjQuRpRFgDEo6vVFrzC1v0hRRqQl/eU8RXBsAudw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cisco.com; dmarc=pass action=none header.from=cisco.com;
+ dkim=pass header.d=cisco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cisco.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gi39zM0zxJkGctGKdgMZ0I0+g2pE5QnXVFPKt2DJ2rk=;
+ b=UH8IKTfaDh+PNru9zPIjnqif/UstX63YBUFW7IWCYEkEyHzvrWJ1eXcLsORXrYVrJPCb8VFWM3R0KU5K/3Lgv0VOcARQmqS0ajoyuGmmdOAxhu274ymzxPVX9RIZ47W2kR30CdS2SPROhHQHL2IvY6YFguGHshPkZxv82i6jdrM=
+Received: from CH0PR11MB5299.namprd11.prod.outlook.com (2603:10b6:610:be::21)
+ by DS7PR11MB7906.namprd11.prod.outlook.com (2603:10b6:8:ec::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.19; Fri, 9 Jun
+ 2023 07:19:42 +0000
+Received: from CH0PR11MB5299.namprd11.prod.outlook.com
+ ([fe80::d6a3:51ad:f300:ebae]) by CH0PR11MB5299.namprd11.prod.outlook.com
+ ([fe80::d6a3:51ad:f300:ebae%6]) with mapi id 15.20.6455.030; Fri, 9 Jun 2023
+ 07:19:42 +0000
+From:   "Ariel Miculas (amiculas)" <amiculas@cisco.com>
+To:     "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Subject: Re: [RFC PATCH 00/80] Rust PuzzleFS filesystem driver
+Thread-Topic: [RFC PATCH 00/80] Rust PuzzleFS filesystem driver
+Thread-Index: AQHZmqLC7vAFQ7pnkkmqa4yjge9BGw==
+Date:   Fri, 9 Jun 2023 07:19:42 +0000
+Message-ID: <CH0PR11MB5299887C6922D739766FC7A5CD51A@CH0PR11MB5299.namprd11.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH0PR11MB5299:EE_|DS7PR11MB7906:EE_
+x-ms-office365-filtering-correlation-id: 320c4c0f-6cca-49d8-5542-08db68b9e501
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: AwLAVsSe3Bc3PrDmMWn1vOxiFzTrWhWt613pr6IefqavhJmCRvNzHJJfCkrSFnDyuIABLE6IzVnAw72QljP9YlEU5xP43xzuF8o/fo3YuEcE9lzgdrHpIKVdwf//lleV9YwFWTlmZddUp5pMtUhBdGeG49Bzni/h2v0uwlHDM0l5pq6zPR60ZmYwPbij3s9GcmWPbQh1Z+RRpipRPtrrThu5hSJ3FoNc8x6DSaOWlHkGYX/1XJTKGMpAzAd4ckm8QqjXl/lCnoFIOkuUhxtkZkPsauaHZV4A1ce9AaABpq2bgVq/agX4QLn+B9Xf450VrMXy2WFWoypZ2/TfGz046oam0Srth3Y/OqnZdaQRYSPJ3/OC15TVPW4d7gSFw9dk2L7csulUYZDl6P8mxIOH3McBiTTDN/pDvVJgDNk2s34uCSHZ3Bpoj6yd1ytYVQPGs2PJErtKLS6pMoHmNZKCDMvNkvie1Ttm2NXq3RsXv6Oqx9aLkDofipDtAxZpKaFq4TtpPQ6fyJeYcThbkqyMn8cZlluyD5LTixdbfUUtOKLqhAwLbE1ld5liwY2bGquqHiIVGfKKOWeUpBaJg0ZRPKZl1GjKVE/yInTJkWjEiP7D0CRc4i5MJ9XOmS/Jbn4H/aBfTUYbazdH/9dgFPeHwA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB5299.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(39860400002)(366004)(396003)(136003)(346002)(451199021)(186003)(38070700005)(2906002)(71200400001)(86362001)(66446008)(66556008)(76116006)(91956017)(64756008)(66476007)(66946007)(30864003)(6916009)(122000001)(9686003)(6506007)(53546011)(83380400001)(52536014)(8676002)(8936002)(33656002)(41300700001)(40140700001)(966005)(5660300002)(55016003)(478600001)(38100700002)(316002)(7696005)(579004)(559001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?Y0rSg8J/Ylj3n5IBq9z+fF04N6ajAr0qCVUBTgQWWSG5Gh2yxQUwUHz/U/?=
+ =?iso-8859-1?Q?jxe4uDRyWoF3LvEkv233dpfqYLTyDVt5cWEaikvzW05kczr1cNAMgTdvg1?=
+ =?iso-8859-1?Q?DEuirQ75Hu3exVlCGl7PjB1CYGJpf+PTpP9ZkLt72zhjZRlyp4sBGsx0Kk?=
+ =?iso-8859-1?Q?aCbLVWnOv3kzuvfiLBSjWx0r8v5Vn5elzcvyt3RUJeLNLAnZt4rddAdjkg?=
+ =?iso-8859-1?Q?nQw2oE77EdZ9OsLNTvuibO2T2kryrH4/AyfySp0wjF0M1AGFsgIUshydYc?=
+ =?iso-8859-1?Q?6fjnmBxpb34u/sCShana08CoSKSLuLBc8SSfMxvaBrSxR78UJ8QT8UcgXj?=
+ =?iso-8859-1?Q?HGTU8G0llcEkJfK/DyE2AjzN5owra/DUbXGkClcsLovbNPayBEf+FYpOVF?=
+ =?iso-8859-1?Q?3uOp/wrc3o+weNmqlrRjZPW6WH+Bb8S0+V03mBGhEReu9H67raiHkU7NdQ?=
+ =?iso-8859-1?Q?9oMJAzLrsa0kFiTIWlfen+KAmFqqGTvtQvfKtd+j0mN8mk0B+C+osptq/E?=
+ =?iso-8859-1?Q?5PwQr5XbN5IT61TrBhi1yGawgvmhfmP0iSZvb85H/Prjkm+NlF9xK5DZq0?=
+ =?iso-8859-1?Q?dHmw/GXtJbM5E+3OnkhQWhO4k8ZpglcMP4OxNNMd+wrUm8zmeP+5QyGHph?=
+ =?iso-8859-1?Q?F/DVZOcZDhbrx1M35C0p/hnSnHk9p942B17nspxj/rcwgo//VKW8xQbXDh?=
+ =?iso-8859-1?Q?dI9U3pze07dq9uaDPcdQt6iD39bqhHk8paX+bOlyh4D2Xee82sfhd4nOqe?=
+ =?iso-8859-1?Q?VJf1rytjufarMiLJqA5f63SjL5bOH7jfxOQcCtvZmtXqZo+MDXbAH6GI2F?=
+ =?iso-8859-1?Q?sFBWTYm0t45rh2+jKxKQjLk/jDbZTfE3riQBzKrc5Ph/TERzeg/Jrh5SOr?=
+ =?iso-8859-1?Q?AHwK2OXsBly7jx0Tr0WfRv+Y54+atuCFnP8Kbom0/d7eTJgWnxWR7vvl/U?=
+ =?iso-8859-1?Q?3QAB8b4HGil3dQf+y8R8AMZADGe3u4g/1Bg5HxNUh64bBQr2uFl5FwckPr?=
+ =?iso-8859-1?Q?LCwicl+fl2fGpeqkz9XB5Kc7OuaTpMMJV9FbsJbrUQcGvkvq7uvtOy2m8W?=
+ =?iso-8859-1?Q?jK3OSBWctMzTTG+wAVP7jVPR4Fy82egQs3f83OJ2GNE6TX0K0pBZaD7hU3?=
+ =?iso-8859-1?Q?vSHuck6TVjRGXRFtJkYDaTqC8PI8LqphUWWjSGOrP/kgeQIdAn+eflU3So?=
+ =?iso-8859-1?Q?u7np5IZ/Suio617CzXS1EG32xixskoYi0hCLG/4Hu0+8GzKGtRARIJiB72?=
+ =?iso-8859-1?Q?v5VLoROhiB55HsIA5PACJRUjfrtKhewtA/1GE9DZIVgVojiSqsyD/bVgmQ?=
+ =?iso-8859-1?Q?Gj2WEksayzKVIewiuJSL9yW/5mbFEC3WgsPiYe47NLHaBNbdwKNg75i3og?=
+ =?iso-8859-1?Q?5I8osx6Cu1+zc+rvKrEmbGRTnah7tdJg1QFRnVMWhqi8XNKo6b1lvCEeur?=
+ =?iso-8859-1?Q?+SVdIgRnjiwjM9mLswIWI/21VV6BmaIn2dh0O+N1QDxHGDeDgBytMI8wZf?=
+ =?iso-8859-1?Q?8fhWVpIOrCvPyY1huCj5o59rwrviHHJY1koLhSGPmwbU0+yEe9+jo3s+Sp?=
+ =?iso-8859-1?Q?CDV5Qhd8RkbGNvKVrmZK1spxvENGU5ZdbXbPMUMjvTslTt74ZtMEN1R/TN?=
+ =?iso-8859-1?Q?5NVwN1rCpOl0YUJQrk6/0fg9gWtX4W1hhK?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-User: amiculas
-X-Outbound-SMTP-Client: 10.61.198.236, [10.61.198.236]
-X-Outbound-Node: aer-core-5.cisco.com
+X-OriginatorOrg: cisco.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5299.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 320c4c0f-6cca-49d8-5542-08db68b9e501
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jun 2023 07:19:42.2997
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 5ae1af62-9505-4097-a69a-c1553ef7840e
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: v/O0tKukFHVd/juo4kp1o0nicgboAUSBlt1OFNspng6/5r+YYeayBFPwnXPBCg20gPE3R/x5ARtFlW5yLD4+nA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7906
+X-Outbound-SMTP-Client: 72.163.7.163, rcdn-opgw-2.cisco.com
+X-Outbound-Node: rcdn-core-12.cisco.com
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Add cred.rs, file.rs, io_buffer.rs, iov_iter.rs, mm.rs, pages.rs and
-user_ptr.rs from the rust branch.
-
-Signed-off-by: Ariel Miculas <amiculas@cisco.com>
----
- rust/bindings/bindings_helper.h |   4 +
- rust/helpers.c                  |  35 ++
- rust/kernel/cred.rs             |  46 ++
- rust/kernel/file.rs             | 913 ++++++++++++++++++++++++++++++++
- rust/kernel/io_buffer.rs        | 153 ++++++
- rust/kernel/iov_iter.rs         |  81 +++
- rust/kernel/lib.rs              |  11 +-
- rust/kernel/mm.rs               | 149 ++++++
- rust/kernel/pages.rs            | 144 +++++
- rust/kernel/user_ptr.rs         | 175 ++++++
- 10 files changed, 1710 insertions(+), 1 deletion(-)
- create mode 100644 rust/kernel/cred.rs
- create mode 100644 rust/kernel/file.rs
- create mode 100644 rust/kernel/io_buffer.rs
- create mode 100644 rust/kernel/iov_iter.rs
- create mode 100644 rust/kernel/mm.rs
- create mode 100644 rust/kernel/pages.rs
- create mode 100644 rust/kernel/user_ptr.rs
-
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 556f2e7c3ddb..b4297f6cb99f 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -12,6 +12,10 @@
- #include <linux/sched.h>
- #include <linux/fs.h>
- #include <linux/fs_parser.h>
-+#include <linux/cred.h>
-+#include <linux/poll.h>
-+#include <linux/uio.h>
-+#include <linux/uaccess.h>
- 
- /* `bindgen` gets confused at certain things. */
- const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
-diff --git a/rust/helpers.c b/rust/helpers.c
-index b042d496649f..ffe62af5ee20 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -27,6 +27,7 @@
- #include <linux/sched/signal.h>
- #include <linux/wait.h>
- #include <linux/fs_parser.h>
-+#include <linux/highmem.h>
- 
- __noreturn void rust_helper_BUG(void)
- {
-@@ -156,6 +157,40 @@ int rust_helper_fs_parse(struct fs_context *fc,
- }
- EXPORT_SYMBOL_GPL(rust_helper_fs_parse);
- 
-+const struct cred *rust_helper_get_cred(const struct cred *cred)
-+{
-+	return get_cred(cred);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_get_cred);
-+
-+void rust_helper_put_cred(const struct cred *cred) {
-+	put_cred(cred);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_put_cred);
-+
-+struct file *rust_helper_get_file(struct file *f)
-+{
-+	return get_file(f);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_get_file);
-+
-+unsigned long rust_helper_clear_user(void __user *to, unsigned long n)
-+{
-+	return clear_user(to, n);
-+}
-+
-+void *rust_helper_kmap(struct page *page)
-+{
-+	return kmap(page);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_kmap);
-+
-+void rust_helper_kunmap(struct page *page)
-+{
-+	return kunmap(page);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_kunmap);
-+
- /*
-  * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
-  * as the Rust `usize` type, so we can use it in contexts where Rust
-diff --git a/rust/kernel/cred.rs b/rust/kernel/cred.rs
-new file mode 100644
-index 000000000000..16bd883b5fb5
---- /dev/null
-+++ b/rust/kernel/cred.rs
-@@ -0,0 +1,46 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Credentials management.
-+//!
-+//! C header: [`include/linux/cred.h`](../../../../include/linux/cred.h)
-+//!
-+//! Reference: <https://www.kernel.org/doc/html/latest/security/credentials.html>
-+
-+use crate::{bindings, types::AlwaysRefCounted};
-+use core::cell::UnsafeCell;
-+
-+/// Wraps the kernel's `struct cred`.
-+///
-+/// # Invariants
-+///
-+/// Instances of this type are always ref-counted, that is, a call to `get_cred` ensures that the
-+/// allocation remains valid at least until the matching call to `put_cred`.
-+#[repr(transparent)]
-+pub struct Credential(pub(crate) UnsafeCell<bindings::cred>);
-+
-+impl Credential {
-+    /// Creates a reference to a [`Credential`] from a valid pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
-+    /// returned [`Credential`] reference.
-+    pub(crate) unsafe fn from_ptr<'a>(ptr: *const bindings::cred) -> &'a Self {
-+        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
-+        // `Credential` type being transparent makes the cast ok.
-+        unsafe { &*ptr.cast() }
-+    }
-+}
-+
-+// SAFETY: The type invariants guarantee that `Credential` is always ref-counted.
-+unsafe impl AlwaysRefCounted for Credential {
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
-+        unsafe { bindings::get_cred(self.0.get()) };
-+    }
-+
-+    unsafe fn dec_ref(obj: core::ptr::NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
-+        unsafe { bindings::put_cred(obj.cast().as_ptr()) };
-+    }
-+}
-diff --git a/rust/kernel/file.rs b/rust/kernel/file.rs
-new file mode 100644
-index 000000000000..1b5934838833
---- /dev/null
-+++ b/rust/kernel/file.rs
-@@ -0,0 +1,913 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Files and file descriptors.
-+//!
-+//! C headers: [`include/linux/fs.h`](../../../../include/linux/fs.h) and
-+//! [`include/linux/file.h`](../../../../include/linux/file.h)
-+
-+use crate::{
-+    bindings,
-+    cred::Credential,
-+    error::{code::*, from_kernel_result, Error, Result},
-+    fs,
-+    io_buffer::{IoBufferReader, IoBufferWriter},
-+    iov_iter::IovIter,
-+    mm,
-+    sync::CondVar,
-+    types::ForeignOwnable,
-+    user_ptr::{UserSlicePtr, UserSlicePtrReader, UserSlicePtrWriter},
-+    types::ARef, types::AlwaysRefCounted,
-+};
-+use core::convert::{TryFrom, TryInto};
-+use core::{cell::UnsafeCell, marker, mem, ptr};
-+use macros::vtable;
-+
-+/// Flags associated with a [`File`].
-+pub mod flags {
-+    /// File is opened in append mode.
-+    pub const O_APPEND: u32 = bindings::O_APPEND;
-+
-+    /// Signal-driven I/O is enabled.
-+    pub const O_ASYNC: u32 = bindings::FASYNC;
-+
-+    /// Close-on-exec flag is set.
-+    pub const O_CLOEXEC: u32 = bindings::O_CLOEXEC;
-+
-+    /// File was created if it didn't already exist.
-+    pub const O_CREAT: u32 = bindings::O_CREAT;
-+
-+    /// Direct I/O is enabled for this file.
-+    pub const O_DIRECT: u32 = bindings::O_DIRECT;
-+
-+    /// File must be a directory.
-+    pub const O_DIRECTORY: u32 = bindings::O_DIRECTORY;
-+
-+    /// Like [`O_SYNC`] except metadata is not synced.
-+    pub const O_DSYNC: u32 = bindings::O_DSYNC;
-+
-+    /// Ensure that this file is created with the `open(2)` call.
-+    pub const O_EXCL: u32 = bindings::O_EXCL;
-+
-+    /// Large file size enabled (`off64_t` over `off_t`)
-+    pub const O_LARGEFILE: u32 = bindings::O_LARGEFILE;
-+
-+    /// Do not update the file last access time.
-+    pub const O_NOATIME: u32 = bindings::O_NOATIME;
-+
-+    /// File should not be used as process's controlling terminal.
-+    pub const O_NOCTTY: u32 = bindings::O_NOCTTY;
-+
-+    /// If basename of path is a symbolic link, fail open.
-+    pub const O_NOFOLLOW: u32 = bindings::O_NOFOLLOW;
-+
-+    /// File is using nonblocking I/O.
-+    pub const O_NONBLOCK: u32 = bindings::O_NONBLOCK;
-+
-+    /// Also known as `O_NDELAY`.
-+    ///
-+    /// This is effectively the same flag as [`O_NONBLOCK`] on all architectures
-+    /// except SPARC64.
-+    pub const O_NDELAY: u32 = bindings::O_NDELAY;
-+
-+    /// Used to obtain a path file descriptor.
-+    pub const O_PATH: u32 = bindings::O_PATH;
-+
-+    /// Write operations on this file will flush data and metadata.
-+    pub const O_SYNC: u32 = bindings::O_SYNC;
-+
-+    /// This file is an unnamed temporary regular file.
-+    pub const O_TMPFILE: u32 = bindings::O_TMPFILE;
-+
-+    /// File should be truncated to length 0.
-+    pub const O_TRUNC: u32 = bindings::O_TRUNC;
-+
-+    /// Bitmask for access mode flags.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::file;
-+    /// # fn do_something() {}
-+    /// # let flags = 0;
-+    /// if (flags & file::flags::O_ACCMODE) == file::flags::O_RDONLY {
-+    ///     do_something();
-+    /// }
-+    /// ```
-+    pub const O_ACCMODE: u32 = bindings::O_ACCMODE;
-+
-+    /// File is read only.
-+    pub const O_RDONLY: u32 = bindings::O_RDONLY;
-+
-+    /// File is write only.
-+    pub const O_WRONLY: u32 = bindings::O_WRONLY;
-+
-+    /// File can be both read and written.
-+    pub const O_RDWR: u32 = bindings::O_RDWR;
-+}
-+
-+/// Wraps the kernel's `struct file`.
-+///
-+/// # Invariants
-+///
-+/// Instances of this type are always ref-counted, that is, a call to `get_file` ensures that the
-+/// allocation remains valid at least until the matching call to `fput`.
-+#[repr(transparent)]
-+pub struct File(pub(crate) UnsafeCell<bindings::file>);
-+
-+// TODO: Accessing fields of `struct file` through the pointer is UB because other threads may be
-+// writing to them. However, this is how the C code currently operates: naked reads and writes to
-+// fields. Even if we used relaxed atomics on the Rust side, we can't force this on the C side.
-+impl File {
-+    /// Constructs a new [`struct file`] wrapper from a file descriptor.
-+    ///
-+    /// The file descriptor belongs to the current process.
-+    pub fn from_fd(fd: u32) -> Result<ARef<Self>> {
-+        // SAFETY: FFI call, there are no requirements on `fd`.
-+        let ptr = ptr::NonNull::new(unsafe { bindings::fget(fd) }).ok_or(EBADF)?;
-+
-+        // SAFETY: `fget` increments the refcount before returning.
-+        Ok(unsafe { ARef::from_raw(ptr.cast()) })
-+    }
-+
-+    /// Creates a reference to a [`File`] from a valid pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
-+    /// returned [`File`] instance.
-+    pub(crate) unsafe fn from_ptr<'a>(ptr: *const bindings::file) -> &'a File {
-+        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
-+        // `File` type being transparent makes the cast ok.
-+        unsafe { &*ptr.cast() }
-+    }
-+
-+    /// Returns the current seek/cursor/pointer position (`struct file::f_pos`).
-+    pub fn pos(&self) -> u64 {
-+        // SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.
-+        unsafe { core::ptr::addr_of!((*self.0.get()).f_pos).read() as _ }
-+    }
-+
-+    /// Returns the credentials of the task that originally opened the file.
-+    pub fn cred(&self) -> &Credential {
-+        // SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.
-+        let ptr = unsafe { core::ptr::addr_of!((*self.0.get()).f_cred).read() };
-+        // SAFETY: The lifetimes of `self` and `Credential` are tied, so it is guaranteed that
-+        // the credential pointer remains valid (because the file is still alive, and it doesn't
-+        // change over the lifetime of a file).
-+        unsafe { Credential::from_ptr(ptr) }
-+    }
-+
-+    /// Returns the flags associated with the file.
-+    ///
-+    /// The flags are a combination of the constants in [`flags`].
-+    pub fn flags(&self) -> u32 {
-+        // SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.
-+        unsafe { core::ptr::addr_of!((*self.0.get()).f_flags).read() }
-+    }
-+
-+    /// Returns the inode associated with the file.
-+    ///
-+    /// It returns `None` is the type of the inode is not `T`.
-+    pub fn inode<T: fs::Type + ?Sized>(&self) -> Option<&fs::INode<T>> {
-+        // SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.
-+        let inode = unsafe { core::ptr::addr_of!((*self.0.get()).f_inode).read() };
-+
-+        // SAFETY: The inode and superblock are valid because the file as a reference to them.
-+        let sb_ops = unsafe { (*(*inode).i_sb).s_op };
-+
-+        if sb_ops == &fs::Tables::<T>::SUPER_BLOCK {
-+            // SAFETY: We checked that the super-block operations table is the one produced for
-+            // `T`, so it's safe to cast the inode. Additionally, the lifetime of the returned
-+            // inode is bound to the file object.
-+            Some(unsafe { &*inode.cast() })
-+        } else {
-+            None
-+        }
-+    }
-+}
-+
-+// SAFETY: The type invariants guarantee that `File` is always ref-counted.
-+unsafe impl AlwaysRefCounted for File {
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
-+        unsafe { bindings::get_file(self.0.get()) };
-+    }
-+
-+    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
-+        unsafe { bindings::fput(obj.cast().as_ptr()) }
-+    }
-+}
-+
-+/// A file descriptor reservation.
-+///
-+/// This allows the creation of a file descriptor in two steps: first, we reserve a slot for it,
-+/// then we commit or drop the reservation. The first step may fail (e.g., the current process ran
-+/// out of available slots), but commit and drop never fail (and are mutually exclusive).
-+pub struct FileDescriptorReservation {
-+    fd: u32,
-+}
-+
-+impl FileDescriptorReservation {
-+    /// Creates a new file descriptor reservation.
-+    pub fn new(flags: u32) -> Result<Self> {
-+        // SAFETY: FFI call, there are no safety requirements on `flags`.
-+        let fd = unsafe { bindings::get_unused_fd_flags(flags) };
-+        if fd < 0 {
-+            return Err(Error::from_kernel_errno(fd));
-+        }
-+        Ok(Self { fd: fd as _ })
-+    }
-+
-+    /// Returns the file descriptor number that was reserved.
-+    pub fn reserved_fd(&self) -> u32 {
-+        self.fd
-+    }
-+
-+    /// Commits the reservation.
-+    ///
-+    /// The previously reserved file descriptor is bound to `file`.
-+    pub fn commit(self, file: ARef<File>) {
-+        // SAFETY: `self.fd` was previously returned by `get_unused_fd_flags`, and `file.ptr` is
-+        // guaranteed to have an owned ref count by its type invariants.
-+        unsafe { bindings::fd_install(self.fd, file.0.get()) };
-+
-+        // `fd_install` consumes both the file descriptor and the file reference, so we cannot run
-+        // the destructors.
-+        core::mem::forget(self);
-+        core::mem::forget(file);
-+    }
-+}
-+
-+impl Drop for FileDescriptorReservation {
-+    fn drop(&mut self) {
-+        // SAFETY: `self.fd` was returned by a previous call to `get_unused_fd_flags`.
-+        unsafe { bindings::put_unused_fd(self.fd) };
-+    }
-+}
-+
-+/// Wraps the kernel's `struct poll_table_struct`.
-+///
-+/// # Invariants
-+///
-+/// The pointer `PollTable::ptr` is null or valid.
-+pub struct PollTable {
-+    ptr: *mut bindings::poll_table_struct,
-+}
-+
-+impl PollTable {
-+    /// Constructors a new `struct poll_table_struct` wrapper.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The pointer `ptr` must be either null or a valid pointer for the lifetime of the object.
-+    unsafe fn from_ptr(ptr: *mut bindings::poll_table_struct) -> Self {
-+        Self { ptr }
-+    }
-+
-+    /// Associates the given file and condition variable to this poll table. It means notifying the
-+    /// condition variable will notify the poll table as well; additionally, the association
-+    /// between the condition variable and the file will automatically be undone by the kernel when
-+    /// the file is destructed. To unilaterally remove the association before then, one can call
-+    /// [`CondVar::free_waiters`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// If the condition variable is destroyed before the file, then [`CondVar::free_waiters`] must
-+    /// be called to ensure that all waiters are flushed out.
-+    pub unsafe fn register_wait<'a>(&self, file: &'a File, cv: &'a CondVar) {
-+        if self.ptr.is_null() {
-+            return;
-+        }
-+
-+        // SAFETY: `PollTable::ptr` is guaranteed to be valid by the type invariants and the null
-+        // check above.
-+        let table = unsafe { &*self.ptr };
-+        if let Some(proc) = table._qproc {
-+            // SAFETY: All pointers are known to be valid.
-+            unsafe { proc(file.0.get() as _, cv.wait_list.get(), self.ptr) }
-+        }
-+    }
-+}
-+
-+/// Equivalent to [`std::io::SeekFrom`].
-+///
-+/// [`std::io::SeekFrom`]: https://doc.rust-lang.org/std/io/enum.SeekFrom.html
-+pub enum SeekFrom {
-+    /// Equivalent to C's `SEEK_SET`.
-+    Start(u64),
-+
-+    /// Equivalent to C's `SEEK_END`.
-+    End(i64),
-+
-+    /// Equivalent to C's `SEEK_CUR`.
-+    Current(i64),
-+}
-+
-+pub(crate) struct OperationsVtable<A, T>(marker::PhantomData<A>, marker::PhantomData<T>);
-+
-+impl<A: OpenAdapter<T::OpenData>, T: Operations> OperationsVtable<A, T> {
-+    /// Called by the VFS when an inode should be opened.
-+    ///
-+    /// Calls `T::open` on the returned value of `A::convert`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The returned value of `A::convert` must be a valid non-null pointer and
-+    /// `T:open` must return a valid non-null pointer on an `Ok` result.
-+    unsafe extern "C" fn open_callback(
-+        inode: *mut bindings::inode,
-+        file: *mut bindings::file,
-+    ) -> core::ffi::c_int {
-+        from_kernel_result! {
-+            // SAFETY: `A::convert` must return a valid non-null pointer that
-+            // should point to data in the inode or file that lives longer
-+            // than the following use of `T::open`.
-+            let arg = unsafe { A::convert(inode, file) };
-+            // SAFETY: The C contract guarantees that `file` is valid. Additionally,
-+            // `fileref` never outlives this function, so it is guaranteed to be
-+            // valid.
-+            let fileref = unsafe { File::from_ptr(file) };
-+            // SAFETY: `arg` was previously returned by `A::convert` and must
-+            // be a valid non-null pointer.
-+            let ptr = T::open(unsafe { &*arg }, fileref)?.into_pointer();
-+            // SAFETY: The C contract guarantees that `private_data` is available
-+            // for implementers of the file operations (no other C code accesses
-+            // it), so we know that there are no concurrent threads/CPUs accessing
-+            // it (it's not visible to any other Rust code).
-+            unsafe { (*file).private_data = ptr as *mut core::ffi::c_void };
-+            Ok(0)
-+        }
-+    }
-+
-+    unsafe extern "C" fn read_callback(
-+        file: *mut bindings::file,
-+        buf: *mut core::ffi::c_char,
-+        len: core::ffi::c_size_t,
-+        offset: *mut bindings::loff_t,
-+    ) -> core::ffi::c_ssize_t {
-+        from_kernel_result! {
-+            let mut data = unsafe { UserSlicePtr::new(buf as *mut core::ffi::c_void, len).writer() };
-+            // SAFETY: `private_data` was initialised by `open_callback` with a value returned by
-+            // `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the
-+            // `release` callback, which the C API guarantees that will be called only when all
-+            // references to `file` have been released, so we know it can't be called while this
-+            // function is running.
-+            let f = unsafe { T::Data::borrow((*file).private_data) };
-+            // No `FMODE_UNSIGNED_OFFSET` support, so `offset` must be in [0, 2^63).
-+            // See discussion in https://github.com/fishinabarrel/linux-kernel-module-rust/pull/113
-+            let read = T::read(
-+                f,
-+                unsafe { File::from_ptr(file) },
-+                &mut data,
-+                unsafe { *offset }.try_into()?,
-+            )?;
-+            unsafe { (*offset) += bindings::loff_t::try_from(read).unwrap() };
-+            Ok(read as _)
-+        }
-+    }
-+
-+    unsafe extern "C" fn read_iter_callback(
-+        iocb: *mut bindings::kiocb,
-+        raw_iter: *mut bindings::iov_iter,
-+    ) -> isize {
-+        from_kernel_result! {
-+            let mut iter = unsafe { IovIter::from_ptr(raw_iter) };
-+            let file = unsafe { (*iocb).ki_filp };
-+            let offset = unsafe { (*iocb).ki_pos };
-+            // SAFETY: `private_data` was initialised by `open_callback` with a value returned by
-+            // `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the
-+            // `release` callback, which the C API guarantees that will be called only when all
-+            // references to `file` have been released, so we know it can't be called while this
-+            // function is running.
-+            let f = unsafe { T::Data::borrow((*file).private_data) };
-+            let read =
-+                T::read(f, unsafe { File::from_ptr(file) }, &mut iter, offset.try_into()?)?;
-+            unsafe { (*iocb).ki_pos += bindings::loff_t::try_from(read).unwrap() };
-+            Ok(read as _)
-+        }
-+    }
-+
-+    unsafe extern "C" fn write_callback(
-+        file: *mut bindings::file,
-+        buf: *const core::ffi::c_char,
-+        len: core::ffi::c_size_t,
-+        offset: *mut bindings::loff_t,
-+    ) -> core::ffi::c_ssize_t {
-+        from_kernel_result! {
-+            let mut data = unsafe { UserSlicePtr::new(buf as *mut core::ffi::c_void, len).reader() };
-+            // SAFETY: `private_data` was initialised by `open_callback` with a value returned by
-+            // `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the
-+            // `release` callback, which the C API guarantees that will be called only when all
-+            // references to `file` have been released, so we know it can't be called while this
-+            // function is running.
-+            let f = unsafe { T::Data::borrow((*file).private_data) };
-+            // No `FMODE_UNSIGNED_OFFSET` support, so `offset` must be in [0, 2^63).
-+            // See discussion in https://github.com/fishinabarrel/linux-kernel-module-rust/pull/113
-+            let written = T::write(
-+                f,
-+                unsafe { File::from_ptr(file) },
-+                &mut data,
-+                unsafe { *offset }.try_into()?
-+            )?;
-+            unsafe { (*offset) += bindings::loff_t::try_from(written).unwrap() };
-+            Ok(written as _)
-+        }
-+    }
-+
-+    unsafe extern "C" fn write_iter_callback(
-+        iocb: *mut bindings::kiocb,
-+        raw_iter: *mut bindings::iov_iter,
-+    ) -> isize {
-+        from_kernel_result! {
-+            let mut iter = unsafe { IovIter::from_ptr(raw_iter) };
-+            let file = unsafe { (*iocb).ki_filp };
-+            let offset = unsafe { (*iocb).ki_pos };
-+            // SAFETY: `private_data` was initialised by `open_callback` with a value returned by
-+            // `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the
-+            // `release` callback, which the C API guarantees that will be called only when all
-+            // references to `file` have been released, so we know it can't be called while this
-+            // function is running.
-+            let f = unsafe { T::Data::borrow((*file).private_data) };
-+            let written =
-+                T::write(f, unsafe { File::from_ptr(file) }, &mut iter, offset.try_into()?)?;
-+            unsafe { (*iocb).ki_pos += bindings::loff_t::try_from(written).unwrap() };
-+            Ok(written as _)
-+        }
-+    }
-+
-+    unsafe extern "C" fn release_callback(
-+        _inode: *mut bindings::inode,
-+        file: *mut bindings::file,
-+    ) -> core::ffi::c_int {
-+        let ptr = mem::replace(unsafe { &mut (*file).private_data }, ptr::null_mut());
-+        T::release(unsafe { T::Data::from_pointer(ptr as _) }, unsafe {
-+            File::from_ptr(file)
-+        });
-+        0
-+    }
-+
-+    unsafe extern "C" fn llseek_callback(
-+        file: *mut bindings::file,
-+        offset: bindings::loff_t,
-+        whence: core::ffi::c_int,
-+    ) -> bindings::loff_t {
-+        from_kernel_result! {
-+            let off = match whence as u32 {
-+                bindings::SEEK_SET => SeekFrom::Start(offset.try_into()?),
-+                bindings::SEEK_CUR => SeekFrom::Current(offset),
-+                bindings::SEEK_END => SeekFrom::End(offset),
-+                _ => return Err(EINVAL),
-+            };
-+            // SAFETY: `private_data` was initialised by `open_callback` with a value returned by
-+            // `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the
-+            // `release` callback, which the C API guarantees that will be called only when all
-+            // references to `file` have been released, so we know it can't be called while this
-+            // function is running.
-+            let f = unsafe { T::Data::borrow((*file).private_data) };
-+            let off = T::seek(f, unsafe { File::from_ptr(file) }, off)?;
-+            Ok(off as bindings::loff_t)
-+        }
-+    }
-+
-+    unsafe extern "C" fn unlocked_ioctl_callback(
-+        file: *mut bindings::file,
-+        cmd: core::ffi::c_uint,
-+        arg: core::ffi::c_ulong,
-+    ) -> core::ffi::c_long {
-+        from_kernel_result! {
-+            // SAFETY: `private_data` was initialised by `open_callback` with a value returned by
-+            // `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the
-+            // `release` callback, which the C API guarantees that will be called only when all
-+            // references to `file` have been released, so we know it can't be called while this
-+            // function is running.
-+            let f = unsafe { T::Data::borrow((*file).private_data) };
-+            let mut cmd = IoctlCommand::new(cmd as _, arg as _);
-+            let ret = T::ioctl(f, unsafe { File::from_ptr(file) }, &mut cmd)?;
-+            Ok(ret as _)
-+        }
-+    }
-+
-+    unsafe extern "C" fn compat_ioctl_callback(
-+        file: *mut bindings::file,
-+        cmd: core::ffi::c_uint,
-+        arg: core::ffi::c_ulong,
-+    ) -> core::ffi::c_long {
-+        from_kernel_result! {
-+            // SAFETY: `private_data` was initialised by `open_callback` with a value returned by
-+            // `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the
-+            // `release` callback, which the C API guarantees that will be called only when all
-+            // references to `file` have been released, so we know it can't be called while this
-+            // function is running.
-+            let f = unsafe { T::Data::borrow((*file).private_data) };
-+            let mut cmd = IoctlCommand::new(cmd as _, arg as _);
-+            let ret = T::compat_ioctl(f, unsafe { File::from_ptr(file) }, &mut cmd)?;
-+            Ok(ret as _)
-+        }
-+    }
-+
-+    unsafe extern "C" fn mmap_callback(
-+        file: *mut bindings::file,
-+        vma: *mut bindings::vm_area_struct,
-+    ) -> core::ffi::c_int {
-+        from_kernel_result! {
-+            // SAFETY: `private_data` was initialised by `open_callback` with a value returned by
-+            // `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the
-+            // `release` callback, which the C API guarantees that will be called only when all
-+            // references to `file` have been released, so we know it can't be called while this
-+            // function is running.
-+            let f = unsafe { T::Data::borrow((*file).private_data) };
-+
-+            // SAFETY: The C API guarantees that `vma` is valid for the duration of this call.
-+            // `area` only lives within this call, so it is guaranteed to be valid.
-+            let mut area = unsafe { mm::virt::Area::from_ptr(vma) };
-+
-+            // SAFETY: The C API guarantees that `file` is valid for the duration of this call,
-+            // which is longer than the lifetime of the file reference.
-+            T::mmap(f, unsafe { File::from_ptr(file) }, &mut area)?;
-+            Ok(0)
-+        }
-+    }
-+
-+    unsafe extern "C" fn fsync_callback(
-+        file: *mut bindings::file,
-+        start: bindings::loff_t,
-+        end: bindings::loff_t,
-+        datasync: core::ffi::c_int,
-+    ) -> core::ffi::c_int {
-+        from_kernel_result! {
-+            let start = start.try_into()?;
-+            let end = end.try_into()?;
-+            let datasync = datasync != 0;
-+            // SAFETY: `private_data` was initialised by `open_callback` with a value returned by
-+            // `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the
-+            // `release` callback, which the C API guarantees that will be called only when all
-+            // references to `file` have been released, so we know it can't be called while this
-+            // function is running.
-+            let f = unsafe { T::Data::borrow((*file).private_data) };
-+            let res = T::fsync(f, unsafe { File::from_ptr(file) }, start, end, datasync)?;
-+            Ok(res.try_into().unwrap())
-+        }
-+    }
-+
-+    unsafe extern "C" fn poll_callback(
-+        file: *mut bindings::file,
-+        wait: *mut bindings::poll_table_struct,
-+    ) -> bindings::__poll_t {
-+        // SAFETY: `private_data` was initialised by `open_callback` with a value returned by
-+        // `T::Data::into_pointer`. `T::Data::from_pointer` is only called by the `release`
-+        // callback, which the C API guarantees that will be called only when all references to
-+        // `file` have been released, so we know it can't be called while this function is running.
-+        let f = unsafe { T::Data::borrow((*file).private_data) };
-+        match T::poll(f, unsafe { File::from_ptr(file) }, unsafe {
-+            &PollTable::from_ptr(wait)
-+        }) {
-+            Ok(v) => v,
-+            Err(_) => bindings::POLLERR,
-+        }
-+    }
-+
-+    const VTABLE: bindings::file_operations = bindings::file_operations {
-+        open: Some(Self::open_callback),
-+        release: Some(Self::release_callback),
-+        read: if T::HAS_READ {
-+            Some(Self::read_callback)
-+        } else {
-+            None
-+        },
-+        write: if T::HAS_WRITE {
-+            Some(Self::write_callback)
-+        } else {
-+            None
-+        },
-+        llseek: if T::HAS_SEEK {
-+            Some(Self::llseek_callback)
-+        } else {
-+            None
-+        },
-+
-+        check_flags: None,
-+        compat_ioctl: if T::HAS_COMPAT_IOCTL {
-+            Some(Self::compat_ioctl_callback)
-+        } else {
-+            None
-+        },
-+        copy_file_range: None,
-+        fallocate: None,
-+        fadvise: None,
-+        fasync: None,
-+        flock: None,
-+        flush: None,
-+        fsync: if T::HAS_FSYNC {
-+            Some(Self::fsync_callback)
-+        } else {
-+            None
-+        },
-+        get_unmapped_area: None,
-+        iterate: None,
-+        iterate_shared: None,
-+        iopoll: None,
-+        lock: None,
-+        mmap: if T::HAS_MMAP {
-+            Some(Self::mmap_callback)
-+        } else {
-+            None
-+        },
-+        mmap_supported_flags: 0,
-+        owner: ptr::null_mut(),
-+        poll: if T::HAS_POLL {
-+            Some(Self::poll_callback)
-+        } else {
-+            None
-+        },
-+        read_iter: if T::HAS_READ {
-+            Some(Self::read_iter_callback)
-+        } else {
-+            None
-+        },
-+        remap_file_range: None,
-+        sendpage: None,
-+        setlease: None,
-+        show_fdinfo: None,
-+        splice_read: None,
-+        splice_write: None,
-+        unlocked_ioctl: if T::HAS_IOCTL {
-+            Some(Self::unlocked_ioctl_callback)
-+        } else {
-+            None
-+        },
-+        uring_cmd: None,
-+        write_iter: if T::HAS_WRITE {
-+            Some(Self::write_iter_callback)
-+        } else {
-+            None
-+        },
-+    };
-+
-+    /// Builds an instance of [`struct file_operations`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that the adapter is compatible with the way the device is registered.
-+    pub(crate) const unsafe fn build() -> &'static bindings::file_operations {
-+        &Self::VTABLE
-+    }
-+}
-+
-+/// Allows the handling of ioctls defined with the `_IO`, `_IOR`, `_IOW`, and `_IOWR` macros.
-+///
-+/// For each macro, there is a handler function that takes the appropriate types as arguments.
-+pub trait IoctlHandler: Sync {
-+    /// The type of the first argument to each associated function.
-+    type Target<'a>;
-+
-+    /// Handles ioctls defined with the `_IO` macro, that is, with no buffer as argument.
-+    fn pure(_this: Self::Target<'_>, _file: &File, _cmd: u32, _arg: usize) -> Result<i32> {
-+        Err(EINVAL)
-+    }
-+
-+    /// Handles ioctls defined with the `_IOR` macro, that is, with an output buffer provided as
-+    /// argument.
-+    fn read(
-+        _this: Self::Target<'_>,
-+        _file: &File,
-+        _cmd: u32,
-+        _writer: &mut UserSlicePtrWriter,
-+    ) -> Result<i32> {
-+        Err(EINVAL)
-+    }
-+
-+    /// Handles ioctls defined with the `_IOW` macro, that is, with an input buffer provided as
-+    /// argument.
-+    fn write(
-+        _this: Self::Target<'_>,
-+        _file: &File,
-+        _cmd: u32,
-+        _reader: &mut UserSlicePtrReader,
-+    ) -> Result<i32> {
-+        Err(EINVAL)
-+    }
-+
-+    /// Handles ioctls defined with the `_IOWR` macro, that is, with a buffer for both input and
-+    /// output provided as argument.
-+    fn read_write(
-+        _this: Self::Target<'_>,
-+        _file: &File,
-+        _cmd: u32,
-+        _data: UserSlicePtr,
-+    ) -> Result<i32> {
-+        Err(EINVAL)
-+    }
-+}
-+
-+/// Represents an ioctl command.
-+///
-+/// It can use the components of an ioctl command to dispatch ioctls using
-+/// [`IoctlCommand::dispatch`].
-+pub struct IoctlCommand {
-+    cmd: u32,
-+    arg: usize,
-+    user_slice: Option<UserSlicePtr>,
-+}
-+
-+impl IoctlCommand {
-+    /// Constructs a new [`IoctlCommand`].
-+    fn new(cmd: u32, arg: usize) -> Self {
-+        let size = (cmd >> bindings::_IOC_SIZESHIFT) & bindings::_IOC_SIZEMASK;
-+
-+        // SAFETY: We only create one instance of the user slice per ioctl call, so TOCTOU issues
-+        // are not possible.
-+        let user_slice = Some(unsafe { UserSlicePtr::new(arg as _, size as _) });
-+        Self {
-+            cmd,
-+            arg,
-+            user_slice,
-+        }
-+    }
-+
-+    /// Dispatches the given ioctl to the appropriate handler based on the value of the command. It
-+    /// also creates a [`UserSlicePtr`], [`UserSlicePtrReader`], or [`UserSlicePtrWriter`]
-+    /// depending on the direction of the buffer of the command.
-+    ///
-+    /// It is meant to be used in implementations of [`Operations::ioctl`] and
-+    /// [`Operations::compat_ioctl`].
-+    pub fn dispatch<T: IoctlHandler>(
-+        &mut self,
-+        handler: T::Target<'_>,
-+        file: &File,
-+    ) -> Result<i32> {
-+        let dir = (self.cmd >> bindings::_IOC_DIRSHIFT) & bindings::_IOC_DIRMASK;
-+        if dir == bindings::_IOC_NONE {
-+            return T::pure(handler, file, self.cmd, self.arg);
-+        }
-+
-+        let data = self.user_slice.take().ok_or(EINVAL)?;
-+        const READ_WRITE: u32 = bindings::_IOC_READ | bindings::_IOC_WRITE;
-+        match dir {
-+            bindings::_IOC_WRITE => T::write(handler, file, self.cmd, &mut data.reader()),
-+            bindings::_IOC_READ => T::read(handler, file, self.cmd, &mut data.writer()),
-+            READ_WRITE => T::read_write(handler, file, self.cmd, data),
-+            _ => Err(EINVAL),
-+        }
-+    }
-+
-+    /// Returns the raw 32-bit value of the command and the ptr-sized argument.
-+    pub fn raw(&self) -> (u32, usize) {
-+        (self.cmd, self.arg)
-+    }
-+}
-+
-+/// Trait for extracting file open arguments from kernel data structures.
-+///
-+/// This is meant to be implemented by registration managers.
-+pub trait OpenAdapter<T: Sync> {
-+    /// Converts untyped data stored in [`struct inode`] and [`struct file`] (when [`struct
-+    /// file_operations::open`] is called) into the given type. For example, for `miscdev`
-+    /// devices, a pointer to the registered [`struct miscdev`] is stored in [`struct
-+    /// file::private_data`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// This function must be called only when [`struct file_operations::open`] is being called for
-+    /// a file that was registered by the implementer. The returned pointer must be valid and
-+    /// not-null.
-+    unsafe fn convert(_inode: *mut bindings::inode, _file: *mut bindings::file) -> *const T;
-+}
-+
-+/// Corresponds to the kernel's `struct file_operations`.
-+///
-+/// You implement this trait whenever you would create a `struct file_operations`.
-+///
-+/// File descriptors may be used from multiple threads/processes concurrently, so your type must be
-+/// [`Sync`]. It must also be [`Send`] because [`Operations::release`] will be called from the
-+/// thread that decrements that associated file's refcount to zero.
-+#[vtable]
-+pub trait Operations {
-+    /// The type of the context data returned by [`Operations::open`] and made available to
-+    /// other methods.
-+    type Data: ForeignOwnable + Send + Sync = ();
-+
-+    /// The type of the context data passed to [`Operations::open`].
-+    type OpenData: Sync = ();
-+
-+    /// Creates a new instance of this file.
-+    ///
-+    /// Corresponds to the `open` function pointer in `struct file_operations`.
-+    fn open(context: &Self::OpenData, file: &File) -> Result<Self::Data>;
-+
-+    /// Cleans up after the last reference to the file goes away.
-+    ///
-+    /// Note that context data is moved, so it will be freed automatically unless the
-+    /// implementation moves it elsewhere.
-+    ///
-+    /// Corresponds to the `release` function pointer in `struct file_operations`.
-+    fn release(_data: Self::Data, _file: &File) {}
-+
-+    /// Reads data from this file to the caller's buffer.
-+    ///
-+    /// Corresponds to the `read` and `read_iter` function pointers in `struct file_operations`.
-+    fn read(
-+        _data: <Self::Data as ForeignOwnable>::Borrowed<'_>,
-+        _file: &File,
-+        _writer: &mut impl IoBufferWriter,
-+        _offset: u64,
-+    ) -> Result<usize> {
-+        Err(EINVAL)
-+    }
-+
-+    /// Writes data from the caller's buffer to this file.
-+    ///
-+    /// Corresponds to the `write` and `write_iter` function pointers in `struct file_operations`.
-+    fn write(
-+        _data: <Self::Data as ForeignOwnable>::Borrowed<'_>,
-+        _file: &File,
-+        _reader: &mut impl IoBufferReader,
-+        _offset: u64,
-+    ) -> Result<usize> {
-+        Err(EINVAL)
-+    }
-+
-+    /// Changes the position of the file.
-+    ///
-+    /// Corresponds to the `llseek` function pointer in `struct file_operations`.
-+    fn seek(
-+        _data: <Self::Data as ForeignOwnable>::Borrowed<'_>,
-+        _file: &File,
-+        _offset: SeekFrom,
-+    ) -> Result<u64> {
-+        Err(EINVAL)
-+    }
-+
-+    /// Performs IO control operations that are specific to the file.
-+    ///
-+    /// Corresponds to the `unlocked_ioctl` function pointer in `struct file_operations`.
-+    fn ioctl(
-+        _data: <Self::Data as ForeignOwnable>::Borrowed<'_>,
-+        _file: &File,
-+        _cmd: &mut IoctlCommand,
-+    ) -> Result<i32> {
-+        Err(ENOTTY)
-+    }
-+
-+    /// Performs 32-bit IO control operations on that are specific to the file on 64-bit kernels.
-+    ///
-+    /// Corresponds to the `compat_ioctl` function pointer in `struct file_operations`.
-+    fn compat_ioctl(
-+        _data: <Self::Data as ForeignOwnable>::Borrowed<'_>,
-+        _file: &File,
-+        _cmd: &mut IoctlCommand,
-+    ) -> Result<i32> {
-+        Err(ENOTTY)
-+    }
-+
-+    /// Syncs pending changes to this file.
-+    ///
-+    /// Corresponds to the `fsync` function pointer in `struct file_operations`.
-+    fn fsync(
-+        _data: <Self::Data as ForeignOwnable>::Borrowed<'_>,
-+        _file: &File,
-+        _start: u64,
-+        _end: u64,
-+        _datasync: bool,
-+    ) -> Result<u32> {
-+        Err(EINVAL)
-+    }
-+
-+    /// Maps areas of the caller's virtual memory with device/file memory.
-+    ///
-+    /// Corresponds to the `mmap` function pointer in `struct file_operations`.
-+    fn mmap(
-+        _data: <Self::Data as ForeignOwnable>::Borrowed<'_>,
-+        _file: &File,
-+        _vma: &mut mm::virt::Area,
-+    ) -> Result {
-+        Err(EINVAL)
-+    }
-+
-+    /// Checks the state of the file and optionally registers for notification when the state
-+    /// changes.
-+    ///
-+    /// Corresponds to the `poll` function pointer in `struct file_operations`.
-+    fn poll(
-+        _data: <Self::Data as ForeignOwnable>::Borrowed<'_>,
-+        _file: &File,
-+        _table: &PollTable,
-+    ) -> Result<u32> {
-+        Ok(bindings::POLLIN | bindings::POLLOUT | bindings::POLLRDNORM | bindings::POLLWRNORM)
-+    }
-+}
-+
-+/// Writes the contents of a slice into a buffer writer.
-+///
-+/// This is used to help implement [`Operations::read`] when the contents are stored in a slice. It
-+/// takes into account the offset and lengths, and returns the amount of data written.
-+pub fn read_from_slice(s: &[u8], writer: &mut impl IoBufferWriter, offset: u64) -> Result<usize> {
-+    let offset = offset.try_into()?;
-+    if offset >= s.len() {
-+        return Ok(0);
-+    }
-+
-+    let len = core::cmp::min(s.len() - offset, writer.len());
-+    writer.write_slice(&s[offset..][..len])?;
-+    Ok(len)
-+}
-diff --git a/rust/kernel/io_buffer.rs b/rust/kernel/io_buffer.rs
-new file mode 100644
-index 000000000000..d5a258a5ff8f
---- /dev/null
-+++ b/rust/kernel/io_buffer.rs
-@@ -0,0 +1,153 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Buffers used in IO.
-+
-+use crate::error::Result;
-+use alloc::vec::Vec;
-+use core::mem::{size_of, MaybeUninit};
-+
-+/// Represents a buffer to be read from during IO.
-+pub trait IoBufferReader {
-+    /// Returns the number of bytes left to be read from the io buffer.
-+    ///
-+    /// Note that even reading less than this number of bytes may fail.
-+    fn len(&self) -> usize;
-+
-+    /// Returns `true` if no data is available in the io buffer.
-+    fn is_empty(&self) -> bool {
-+        self.len() == 0
-+    }
-+
-+    /// Reads raw data from the io buffer into a raw kernel buffer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The output buffer must be valid.
-+    unsafe fn read_raw(&mut self, out: *mut u8, len: usize) -> Result;
-+
-+    /// Reads all data remaining in the io buffer.
-+    ///
-+    /// Returns `EFAULT` if the address does not currently point to mapped, readable memory.
-+    fn read_all(&mut self) -> Result<Vec<u8>> {
-+        let mut data = Vec::<u8>::new();
-+        data.try_resize(self.len(), 0)?;
-+
-+        // SAFETY: The output buffer is valid as we just allocated it.
-+        unsafe { self.read_raw(data.as_mut_ptr(), data.len())? };
-+        Ok(data)
-+    }
-+
-+    /// Reads a byte slice from the io buffer.
-+    ///
-+    /// Returns `EFAULT` if the byte slice is bigger than the remaining size of the user slice or
-+    /// if the address does not currently point to mapped, readable memory.
-+    fn read_slice(&mut self, data: &mut [u8]) -> Result {
-+        // SAFETY: The output buffer is valid as it's coming from a live reference.
-+        unsafe { self.read_raw(data.as_mut_ptr(), data.len()) }
-+    }
-+
-+    /// Reads the contents of a plain old data (POD) type from the io buffer.
-+    fn read<T: ReadableFromBytes>(&mut self) -> Result<T> {
-+        let mut out = MaybeUninit::<T>::uninit();
-+        // SAFETY: The buffer is valid as it was just allocated.
-+        unsafe { self.read_raw(out.as_mut_ptr() as _, size_of::<T>()) }?;
-+        // SAFETY: We just initialised the data.
-+        Ok(unsafe { out.assume_init() })
-+    }
-+}
-+
-+/// Represents a buffer to be written to during IO.
-+pub trait IoBufferWriter {
-+    /// Returns the number of bytes left to be written into the io buffer.
-+    ///
-+    /// Note that even writing less than this number of bytes may fail.
-+    fn len(&self) -> usize;
-+
-+    /// Returns `true` if the io buffer cannot hold any additional data.
-+    fn is_empty(&self) -> bool {
-+        self.len() == 0
-+    }
-+
-+    /// Writes zeroes to the io buffer.
-+    ///
-+    /// Differently from the other write functions, `clear` will zero as much as it can and update
-+    /// the writer internal state to reflect this. It will, however, return an error if it cannot
-+    /// clear `len` bytes.
-+    ///
-+    /// For example, if a caller requests that 100 bytes be cleared but a segfault happens after
-+    /// 20 bytes, then EFAULT is returned and the writer is advanced by 20 bytes.
-+    fn clear(&mut self, len: usize) -> Result;
-+
-+    /// Writes a byte slice into the io buffer.
-+    ///
-+    /// Returns `EFAULT` if the byte slice is bigger than the remaining size of the io buffer or if
-+    /// the address does not currently point to mapped, writable memory.
-+    fn write_slice(&mut self, data: &[u8]) -> Result {
-+        // SAFETY: The input buffer is valid as it's coming from a live reference.
-+        unsafe { self.write_raw(data.as_ptr(), data.len()) }
-+    }
-+
-+    /// Writes raw data to the io buffer from a raw kernel buffer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The input buffer must be valid.
-+    unsafe fn write_raw(&mut self, data: *const u8, len: usize) -> Result;
-+
-+    /// Writes the contents of the given data into the io buffer.
-+    fn write<T: WritableToBytes>(&mut self, data: &T) -> Result {
-+        // SAFETY: The input buffer is valid as it's coming from a live
-+        // reference to a type that implements `WritableToBytes`.
-+        unsafe { self.write_raw(data as *const T as _, size_of::<T>()) }
-+    }
-+}
-+
-+/// Specifies that a type is safely readable from byte slices.
-+///
-+/// Not all types can be safely read from byte slices; examples from
-+/// <https://doc.rust-lang.org/reference/behavior-considered-undefined.html> include `bool`
-+/// that must be either `0` or `1`, and `char` that cannot be a surrogate or above `char::MAX`.
-+///
-+/// # Safety
-+///
-+/// Implementers must ensure that the type is made up only of types that can be safely read from
-+/// arbitrary byte sequences (e.g., `u32`, `u64`, etc.).
-+pub unsafe trait ReadableFromBytes {}
-+
-+// SAFETY: All bit patterns are acceptable values of the types below.
-+unsafe impl ReadableFromBytes for u8 {}
-+unsafe impl ReadableFromBytes for u16 {}
-+unsafe impl ReadableFromBytes for u32 {}
-+unsafe impl ReadableFromBytes for u64 {}
-+unsafe impl ReadableFromBytes for usize {}
-+unsafe impl ReadableFromBytes for i8 {}
-+unsafe impl ReadableFromBytes for i16 {}
-+unsafe impl ReadableFromBytes for i32 {}
-+unsafe impl ReadableFromBytes for i64 {}
-+unsafe impl ReadableFromBytes for isize {}
-+
-+/// Specifies that a type is safely writable to byte slices.
-+///
-+/// This means that we don't read undefined values (which leads to UB) in preparation for writing
-+/// to the byte slice. It also ensures that no potentially sensitive information is leaked into the
-+/// byte slices.
-+///
-+/// # Safety
-+///
-+/// A type must not include padding bytes and must be fully initialised to safely implement
-+/// [`WritableToBytes`] (i.e., it doesn't contain [`MaybeUninit`] fields). A composition of
-+/// writable types in a structure is not necessarily writable because it may result in padding
-+/// bytes.
-+pub unsafe trait WritableToBytes {}
-+
-+// SAFETY: Initialised instances of the following types have no uninitialised portions.
-+unsafe impl WritableToBytes for u8 {}
-+unsafe impl WritableToBytes for u16 {}
-+unsafe impl WritableToBytes for u32 {}
-+unsafe impl WritableToBytes for u64 {}
-+unsafe impl WritableToBytes for usize {}
-+unsafe impl WritableToBytes for i8 {}
-+unsafe impl WritableToBytes for i16 {}
-+unsafe impl WritableToBytes for i32 {}
-+unsafe impl WritableToBytes for i64 {}
-+unsafe impl WritableToBytes for isize {}
-diff --git a/rust/kernel/iov_iter.rs b/rust/kernel/iov_iter.rs
-new file mode 100644
-index 000000000000..01c7fa065dba
---- /dev/null
-+++ b/rust/kernel/iov_iter.rs
-@@ -0,0 +1,81 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! IO vector iterators.
-+//!
-+//! C header: [`include/linux/uio.h`](../../../../include/linux/uio.h)
-+
-+use crate::{
-+    bindings,
-+    error::code::*,
-+    io_buffer::{IoBufferReader, IoBufferWriter},
-+    error::Result,
-+};
-+
-+/// Wraps the kernel's `struct iov_iter`.
-+///
-+/// # Invariants
-+///
-+/// The pointer `IovIter::ptr` is non-null and valid.
-+pub struct IovIter {
-+    ptr: *mut bindings::iov_iter,
-+}
-+
-+impl IovIter {
-+    fn common_len(&self) -> usize {
-+        // SAFETY: `IovIter::ptr` is guaranteed to be valid by the type invariants.
-+        unsafe { (*self.ptr).count }
-+    }
-+
-+    /// Constructs a new [`struct iov_iter`] wrapper.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The pointer `ptr` must be non-null and valid for the lifetime of the object.
-+    pub(crate) unsafe fn from_ptr(ptr: *mut bindings::iov_iter) -> Self {
-+        // INVARIANTS: the safety contract ensures the type invariant will hold.
-+        Self { ptr }
-+    }
-+}
-+
-+impl IoBufferWriter for IovIter {
-+    fn len(&self) -> usize {
-+        self.common_len()
-+    }
-+
-+    fn clear(&mut self, mut len: usize) -> Result {
-+        while len > 0 {
-+            // SAFETY: `IovIter::ptr` is guaranteed to be valid by the type invariants.
-+            let written = unsafe { bindings::iov_iter_zero(len, self.ptr) };
-+            if written == 0 {
-+                return Err(EFAULT);
-+            }
-+
-+            len -= written;
-+        }
-+        Ok(())
-+    }
-+
-+    unsafe fn write_raw(&mut self, data: *const u8, len: usize) -> Result {
-+        let res = unsafe { bindings::_copy_to_iter(data as _, len, self.ptr) };
-+        if res != len {
-+            Err(EFAULT)
-+        } else {
-+            Ok(())
-+        }
-+    }
-+}
-+
-+impl IoBufferReader for IovIter {
-+    fn len(&self) -> usize {
-+        self.common_len()
-+    }
-+
-+    unsafe fn read_raw(&mut self, out: *mut u8, len: usize) -> Result {
-+        let res = unsafe { bindings::_copy_from_iter(out as _, len, self.ptr) };
-+        if res != len {
-+            Err(EFAULT)
-+        } else {
-+            Ok(())
-+        }
-+    }
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 6cf267119fda..dd9c39071391 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -13,7 +13,9 @@
- 
- #![no_std]
- #![feature(allocator_api)]
-+#![feature(associated_type_defaults)]
- #![feature(coerce_unsized)]
-+#![feature(c_size_t)]
- #![feature(dispatch_from_dyn)]
- #![feature(new_uninit)]
- #![feature(receiver_trait)]
-@@ -31,11 +33,17 @@
- #[cfg(not(test))]
- #[cfg(not(testlib))]
- mod allocator;
--pub mod fs;
- mod build_assert;
-+pub mod cred;
- pub mod error;
-+pub mod file;
-+pub mod fs;
- pub mod init;
-+pub mod io_buffer;
- pub mod ioctl;
-+pub mod iov_iter;
-+pub mod mm;
-+pub mod pages;
- pub mod prelude;
- pub mod print;
- mod static_assert;
-@@ -45,6 +53,7 @@
- pub mod sync;
- pub mod task;
- pub mod types;
-+pub mod user_ptr;
- 
- #[doc(hidden)]
- pub use bindings;
-diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-new file mode 100644
-index 000000000000..779359d0c5cf
---- /dev/null
-+++ b/rust/kernel/mm.rs
-@@ -0,0 +1,149 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Memory management.
-+//!
-+//! C header: [`include/linux/mm.h`](../../../../include/linux/mm.h)
-+
-+use crate::{bindings, pages, error::to_result, error::Result};
-+
-+/// Virtual memory.
-+pub mod virt {
-+    use super::*;
-+
-+    /// A wrapper for the kernel's `struct vm_area_struct`.
-+    ///
-+    /// It represents an area of virtual memory.
-+    ///
-+    /// # Invariants
-+    ///
-+    /// `vma` is always non-null and valid.
-+    pub struct Area {
-+        vma: *mut bindings::vm_area_struct,
-+    }
-+
-+    impl Area {
-+        /// Creates a new instance of a virtual memory area.
-+        ///
-+        /// # Safety
-+        ///
-+        /// Callers must ensure that `vma` is non-null and valid for the duration of the new area's
-+        /// lifetime.
-+        pub(crate) unsafe fn from_ptr(vma: *mut bindings::vm_area_struct) -> Self {
-+            // INVARIANTS: The safety requirements guarantee the invariants.
-+            Self { vma }
-+        }
-+
-+        /// Returns the flags associated with the virtual memory area.
-+        ///
-+        /// The possible flags are a combination of the constants in [`flags`].
-+        pub fn flags(&self) -> usize {
-+            // SAFETY: `self.vma` is valid by the type invariants.
-+            unsafe { (*self.vma).vm_flags as _ }
-+        }
-+
-+        /// Sets the flags associated with the virtual memory area.
-+        ///
-+        /// The possible flags are a combination of the constants in [`flags`].
-+        pub fn set_flags(&mut self, flags: usize) {
-+            // SAFETY: `self.vma` is valid by the type invariants.
-+            unsafe { (*self.vma).vm_flags = flags as _ };
-+        }
-+
-+        /// Returns the start address of the virtual memory area.
-+        pub fn start(&self) -> usize {
-+            // SAFETY: `self.vma` is valid by the type invariants.
-+            unsafe { (*self.vma).vm_start as _ }
-+        }
-+
-+        /// Returns the end address of the virtual memory area.
-+        pub fn end(&self) -> usize {
-+            // SAFETY: `self.vma` is valid by the type invariants.
-+            unsafe { (*self.vma).vm_end as _ }
-+        }
-+
-+        /// Maps a single page at the given address within the virtual memory area.
-+        pub fn insert_page(&mut self, address: usize, page: &pages::Pages<0>) -> Result {
-+            // SAFETY: The page is guaranteed to be order 0 by the type system. The range of
-+            // `address` is already checked by `vm_insert_page`. `self.vma` and `page.pages` are
-+            // guaranteed by their repective type invariants to be valid.
-+            to_result(unsafe { bindings::vm_insert_page(self.vma, address as _, page.pages) })
-+        }
-+    }
-+
-+    /// Container for [`Area`] flags.
-+    pub mod flags {
-+        use crate::bindings;
-+
-+        /// No flags are set.
-+        pub const NONE: usize = bindings::VM_NONE as _;
-+
-+        /// Mapping allows reads.
-+        pub const READ: usize = bindings::VM_READ as _;
-+
-+        /// Mapping allows writes.
-+        pub const WRITE: usize = bindings::VM_WRITE as _;
-+
-+        /// Mapping allows execution.
-+        pub const EXEC: usize = bindings::VM_EXEC as _;
-+
-+        /// Mapping is shared.
-+        pub const SHARED: usize = bindings::VM_SHARED as _;
-+
-+        /// Mapping may be updated to allow reads.
-+        pub const MAYREAD: usize = bindings::VM_MAYREAD as _;
-+
-+        /// Mapping may be updated to allow writes.
-+        pub const MAYWRITE: usize = bindings::VM_MAYWRITE as _;
-+
-+        /// Mapping may be updated to allow execution.
-+        pub const MAYEXEC: usize = bindings::VM_MAYEXEC as _;
-+
-+        /// Mapping may be updated to be shared.
-+        pub const MAYSHARE: usize = bindings::VM_MAYSHARE as _;
-+
-+        /// Do not copy this vma on fork.
-+        pub const DONTCOPY: usize = bindings::VM_DONTCOPY as _;
-+
-+        /// Cannot expand with mremap().
-+        pub const DONTEXPAND: usize = bindings::VM_DONTEXPAND as _;
-+
-+        /// Lock the pages covered when they are faulted in.
-+        pub const LOCKONFAULT: usize = bindings::VM_LOCKONFAULT as _;
-+
-+        /// Is a VM accounted object.
-+        pub const ACCOUNT: usize = bindings::VM_ACCOUNT as _;
-+
-+        /// should the VM suppress accounting.
-+        pub const NORESERVE: usize = bindings::VM_NORESERVE as _;
-+
-+        /// Huge TLB Page VM.
-+        pub const HUGETLB: usize = bindings::VM_HUGETLB as _;
-+
-+        /// Synchronous page faults.
-+        pub const SYNC: usize = bindings::VM_SYNC as _;
-+
-+        /// Architecture-specific flag.
-+        pub const ARCH_1: usize = bindings::VM_ARCH_1 as _;
-+
-+        /// Wipe VMA contents in child..
-+        pub const WIPEONFORK: usize = bindings::VM_WIPEONFORK as _;
-+
-+        /// Do not include in the core dump.
-+        pub const DONTDUMP: usize = bindings::VM_DONTDUMP as _;
-+
-+        /// Not soft dirty clean area.
-+        pub const SOFTDIRTY: usize = bindings::VM_SOFTDIRTY as _;
-+
-+        /// Can contain "struct page" and pure PFN pages.
-+        pub const MIXEDMAP: usize = bindings::VM_MIXEDMAP as _;
-+
-+        /// MADV_HUGEPAGE marked this vma.
-+        pub const HUGEPAGE: usize = bindings::VM_HUGEPAGE as _;
-+
-+        /// MADV_NOHUGEPAGE marked this vma.
-+        pub const NOHUGEPAGE: usize = bindings::VM_NOHUGEPAGE as _;
-+
-+        /// KSM may merge identical pages.
-+        pub const MERGEABLE: usize = bindings::VM_MERGEABLE as _;
-+    }
-+}
-diff --git a/rust/kernel/pages.rs b/rust/kernel/pages.rs
-new file mode 100644
-index 000000000000..c0c1f9fe03fc
---- /dev/null
-+++ b/rust/kernel/pages.rs
-@@ -0,0 +1,144 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Kernel page allocation and management.
-+//!
-+//! TODO: This module is a work in progress.
-+
-+use crate::{
-+    bindings, error::code::*, io_buffer::IoBufferReader, user_ptr::UserSlicePtrReader, error::Result,
-+    PAGE_SIZE,
-+};
-+use core::{marker::PhantomData, ptr};
-+
-+/// A set of physical pages.
-+///
-+/// `Pages` holds a reference to a set of pages of order `ORDER`. Having the order as a generic
-+/// const allows the struct to have the same size as a pointer.
-+///
-+/// # Invariants
-+///
-+/// The pointer `Pages::pages` is valid and points to 2^ORDER pages.
-+pub struct Pages<const ORDER: u32> {
-+    pub(crate) pages: *mut bindings::page,
-+}
-+
-+impl<const ORDER: u32> Pages<ORDER> {
-+    /// Allocates a new set of contiguous pages.
-+    pub fn new() -> Result<Self> {
-+        // TODO: Consider whether we want to allow callers to specify flags.
-+        // SAFETY: This only allocates pages. We check that it succeeds in the next statement.
-+        let pages = unsafe {
-+            bindings::alloc_pages(
-+                bindings::GFP_KERNEL | bindings::__GFP_ZERO | bindings::___GFP_HIGHMEM,
-+                ORDER,
-+            )
-+        };
-+        if pages.is_null() {
-+            return Err(ENOMEM);
-+        }
-+        // INVARIANTS: We checked that the allocation above succeeded>
-+        Ok(Self { pages })
-+    }
-+
-+    /// Copies data from the given [`UserSlicePtrReader`] into the pages.
-+    pub fn copy_into_page(
-+        &self,
-+        reader: &mut UserSlicePtrReader,
-+        offset: usize,
-+        len: usize,
-+    ) -> Result {
-+        // TODO: For now this only works on the first page.
-+        let end = offset.checked_add(len).ok_or(EINVAL)?;
-+        if end > PAGE_SIZE {
-+            return Err(EINVAL);
-+        }
-+
-+        let mapping = self.kmap(0).ok_or(EINVAL)?;
-+
-+        // SAFETY: We ensured that the buffer was valid with the check above.
-+        unsafe { reader.read_raw((mapping.ptr as usize + offset) as _, len) }?;
-+        Ok(())
-+    }
-+
-+    /// Maps the pages and reads from them into the given buffer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that the destination buffer is valid for the given length.
-+    /// Additionally, if the raw buffer is intended to be recast, they must ensure that the data
-+    /// can be safely cast; [`crate::io_buffer::ReadableFromBytes`] has more details about it.
-+    pub unsafe fn read(&self, dest: *mut u8, offset: usize, len: usize) -> Result {
-+        // TODO: For now this only works on the first page.
-+        let end = offset.checked_add(len).ok_or(EINVAL)?;
-+        if end > PAGE_SIZE {
-+            return Err(EINVAL);
-+        }
-+
-+        let mapping = self.kmap(0).ok_or(EINVAL)?;
-+        unsafe { ptr::copy((mapping.ptr as *mut u8).add(offset), dest, len) };
-+        Ok(())
-+    }
-+
-+    /// Maps the pages and writes into them from the given buffer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that the buffer is valid for the given length. Additionally, if the
-+    /// page is (or will be) mapped by userspace, they must ensure that no kernel data is leaked
-+    /// through padding if it was cast from another type; [`crate::io_buffer::WritableToBytes`] has
-+    /// more details about it.
-+    pub unsafe fn write(&self, src: *const u8, offset: usize, len: usize) -> Result {
-+        // TODO: For now this only works on the first page.
-+        let end = offset.checked_add(len).ok_or(EINVAL)?;
-+        if end > PAGE_SIZE {
-+            return Err(EINVAL);
-+        }
-+
-+        let mapping = self.kmap(0).ok_or(EINVAL)?;
-+        unsafe { ptr::copy(src, (mapping.ptr as *mut u8).add(offset), len) };
-+        Ok(())
-+    }
-+
-+    /// Maps the page at index `index`.
-+    fn kmap(&self, index: usize) -> Option<PageMapping<'_>> {
-+        if index >= 1usize << ORDER {
-+            return None;
-+        }
-+
-+        // SAFETY: We checked above that `index` is within range.
-+        let page = unsafe { self.pages.add(index) };
-+
-+        // SAFETY: `page` is valid based on the checks above.
-+        let ptr = unsafe { bindings::kmap(page) };
-+        if ptr.is_null() {
-+            return None;
-+        }
-+
-+        Some(PageMapping {
-+            page,
-+            ptr,
-+            _phantom: PhantomData,
-+        })
-+    }
-+}
-+
-+impl<const ORDER: u32> Drop for Pages<ORDER> {
-+    fn drop(&mut self) {
-+        // SAFETY: By the type invariants, we know the pages are allocated with the given order.
-+        unsafe { bindings::__free_pages(self.pages, ORDER) };
-+    }
-+}
-+
-+struct PageMapping<'a> {
-+    page: *mut bindings::page,
-+    ptr: *mut core::ffi::c_void,
-+    _phantom: PhantomData<&'a i32>,
-+}
-+
-+impl Drop for PageMapping<'_> {
-+    fn drop(&mut self) {
-+        // SAFETY: An instance of `PageMapping` is created only when `kmap` succeeded for the given
-+        // page, so it is safe to unmap it here.
-+        unsafe { bindings::kunmap(self.page) };
-+    }
-+}
-diff --git a/rust/kernel/user_ptr.rs b/rust/kernel/user_ptr.rs
-new file mode 100644
-index 000000000000..9fdacc2826ef
---- /dev/null
-+++ b/rust/kernel/user_ptr.rs
-@@ -0,0 +1,175 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! User pointers.
-+//!
-+//! C header: [`include/linux/uaccess.h`](../../../../include/linux/uaccess.h)
-+
-+use crate::{
-+    bindings,
-+    error::code::*,
-+    io_buffer::{IoBufferReader, IoBufferWriter},
-+    error::Result,
-+};
-+use alloc::vec::Vec;
-+
-+/// A reference to an area in userspace memory, which can be either
-+/// read-only or read-write.
-+///
-+/// All methods on this struct are safe: invalid pointers return
-+/// `EFAULT`. Concurrent access, *including data races to/from userspace
-+/// memory*, is permitted, because fundamentally another userspace
-+/// thread/process could always be modifying memory at the same time
-+/// (in the same way that userspace Rust's [`std::io`] permits data races
-+/// with the contents of files on disk). In the presence of a race, the
-+/// exact byte values read/written are unspecified but the operation is
-+/// well-defined. Kernelspace code should validate its copy of data
-+/// after completing a read, and not expect that multiple reads of the
-+/// same address will return the same value.
-+///
-+/// All APIs enforce the invariant that a given byte of memory from userspace
-+/// may only be read once. By preventing double-fetches we avoid TOCTOU
-+/// vulnerabilities. This is accomplished by taking `self` by value to prevent
-+/// obtaining multiple readers on a given [`UserSlicePtr`], and the readers
-+/// only permitting forward reads.
-+///
-+/// Constructing a [`UserSlicePtr`] performs no checks on the provided
-+/// address and length, it can safely be constructed inside a kernel thread
-+/// with no current userspace process. Reads and writes wrap the kernel APIs
-+/// `copy_from_user` and `copy_to_user`, which check the memory map of the
-+/// current process and enforce that the address range is within the user
-+/// range (no additional calls to `access_ok` are needed).
-+///
-+/// [`std::io`]: https://doc.rust-lang.org/std/io/index.html
-+pub struct UserSlicePtr(*mut core::ffi::c_void, usize);
-+
-+impl UserSlicePtr {
-+    /// Constructs a user slice from a raw pointer and a length in bytes.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must be careful to avoid time-of-check-time-of-use
-+    /// (TOCTOU) issues. The simplest way is to create a single instance of
-+    /// [`UserSlicePtr`] per user memory block as it reads each byte at
-+    /// most once.
-+    pub unsafe fn new(ptr: *mut core::ffi::c_void, length: usize) -> Self {
-+        UserSlicePtr(ptr, length)
-+    }
-+
-+    /// Reads the entirety of the user slice.
-+    ///
-+    /// Returns `EFAULT` if the address does not currently point to
-+    /// mapped, readable memory.
-+    pub fn read_all(self) -> Result<Vec<u8>> {
-+        self.reader().read_all()
-+    }
-+
-+    /// Constructs a [`UserSlicePtrReader`].
-+    pub fn reader(self) -> UserSlicePtrReader {
-+        UserSlicePtrReader(self.0, self.1)
-+    }
-+
-+    /// Writes the provided slice into the user slice.
-+    ///
-+    /// Returns `EFAULT` if the address does not currently point to
-+    /// mapped, writable memory (in which case some data from before the
-+    /// fault may be written), or `data` is larger than the user slice
-+    /// (in which case no data is written).
-+    pub fn write_all(self, data: &[u8]) -> Result {
-+        self.writer().write_slice(data)
-+    }
-+
-+    /// Constructs a [`UserSlicePtrWriter`].
-+    pub fn writer(self) -> UserSlicePtrWriter {
-+        UserSlicePtrWriter(self.0, self.1)
-+    }
-+
-+    /// Constructs both a [`UserSlicePtrReader`] and a [`UserSlicePtrWriter`].
-+    pub fn reader_writer(self) -> (UserSlicePtrReader, UserSlicePtrWriter) {
-+        (
-+            UserSlicePtrReader(self.0, self.1),
-+            UserSlicePtrWriter(self.0, self.1),
-+        )
-+    }
-+}
-+
-+/// A reader for [`UserSlicePtr`].
-+///
-+/// Used to incrementally read from the user slice.
-+pub struct UserSlicePtrReader(*mut core::ffi::c_void, usize);
-+
-+impl IoBufferReader for UserSlicePtrReader {
-+    /// Returns the number of bytes left to be read from this.
-+    ///
-+    /// Note that even reading less than this number of bytes may fail.
-+    fn len(&self) -> usize {
-+        self.1
-+    }
-+
-+    /// Reads raw data from the user slice into a raw kernel buffer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The output buffer must be valid.
-+    unsafe fn read_raw(&mut self, out: *mut u8, len: usize) -> Result {
-+        if len > self.1 || len > u32::MAX as usize {
-+            return Err(EFAULT);
-+        }
-+        let res = unsafe { bindings::_copy_from_user(out as _, self.0, len as _) };
-+        if res != 0 {
-+            return Err(EFAULT);
-+        }
-+        // Since this is not a pointer to a valid object in our program,
-+        // we cannot use `add`, which has C-style rules for defined
-+        // behavior.
-+        self.0 = self.0.wrapping_add(len);
-+        self.1 -= len;
-+        Ok(())
-+    }
-+}
-+
-+/// A writer for [`UserSlicePtr`].
-+///
-+/// Used to incrementally write into the user slice.
-+pub struct UserSlicePtrWriter(*mut core::ffi::c_void, usize);
-+
-+impl IoBufferWriter for UserSlicePtrWriter {
-+    fn len(&self) -> usize {
-+        self.1
-+    }
-+
-+    fn clear(&mut self, mut len: usize) -> Result {
-+        let mut ret = Ok(());
-+        if len > self.1 {
-+            ret = Err(EFAULT);
-+            len = self.1;
-+        }
-+
-+        // SAFETY: The buffer will be validated by `clear_user`. We ensure that `len` is within
-+        // bounds in the check above.
-+        let left = unsafe { bindings::clear_user(self.0, len as _) } as usize;
-+        if left != 0 {
-+            ret = Err(EFAULT);
-+            len -= left;
-+        }
-+
-+        self.0 = self.0.wrapping_add(len);
-+        self.1 -= len;
-+        ret
-+    }
-+
-+    unsafe fn write_raw(&mut self, data: *const u8, len: usize) -> Result {
-+        if len > self.1 || len > u32::MAX as usize {
-+            return Err(EFAULT);
-+        }
-+        let res = unsafe { bindings::_copy_to_user(self.0, data as _, len as _) };
-+        if res != 0 {
-+            return Err(EFAULT);
-+        }
-+        // Since this is not a pointer to a valid object in our program,
-+        // we cannot use `add`, which has C-style rules for defined
-+        // behavior.
-+        self.0 = self.0.wrapping_add(len);
-+        self.1 -= len;
-+        Ok(())
-+    }
-+}
--- 
-2.40.1
-
+Some of the patches were bounced by the rust-for-linux mailing list, you ca=
+n see all the commits here:=0A=
+https://github.com/Rust-for-Linux/linux/compare/rust-next...ariel-miculas:p=
+uzzlefs_rfc_v1=0A=
+=0A=
+Regards,=0A=
+Ariel=0A=
+=0A=
+=0A=
+From: Ariel Miculas <amiculas@cisco.com>=0A=
+Sent: Friday, June 9, 2023 9:29 AM=0A=
+To: rust-for-linux@vger.kernel.org <rust-for-linux@vger.kernel.org>=0A=
+Cc: Ariel Miculas (amiculas) <amiculas@cisco.com>=0A=
+Subject: [RFC PATCH 00/80] Rust PuzzleFS filesystem driver =0A=
+=A0=0A=
+Hi all!=0A=
+=0A=
+This is a proof of concept driver written for the PuzzleFS=0A=
+next-generation container filesystem [1]. I've included a short abstract=0A=
+about puzzlefs further below. This driver is based on the rust-next=0A=
+branch, on top of which I've backported the filesystem abstractions from=0A=
+Wedson Almeida Filho [2][3] and Miguel Ojeda's third-party crates=0A=
+support: proc-macro2, quote, syn, serde and serde_derive [4]. I've added=0A=
+the additional third-party crates serde_cbor[5] and hex [6]. Then I've=0A=
+adapted the user space puzzlefs code [1] so that the puzzlefs kernel=0A=
+module could present the directory hierarchy and implement the basic=0A=
+read functionality.=0A=
+For some additional context, puzzlefs was started by Tycho Andersen and=0A=
+it's the successor of atomfs. This FOSDEM presentation from 2019 [12]=0A=
+covers the rationale for a new oci image format and presents a higher=0A=
+level overview of our goals with puzzlefs.=0A=
+I've split the rest of the cover letter in following sections (using a=0A=
+markdown style):=0A=
+* Example: it describes a practical example of what was achieved=0A=
+* Limitations: it presents the existing limitations of this POC=0A=
+* Upstreaming steps: it describes the steps needed for upstreaming this=0A=
+=A0 driver=0A=
+* Setup: it shows how to setup the necessary environment for testing the=0A=
+=A0 puzzlefs driver=0A=
+* Puzzlefs abstract: it provides a short overview of puzzlefs=0A=
+=0A=
+# Example=0A=
+An example is provided below:=0A=
+=0A=
+```=0A=
+~ # cat /proc/filesystems | grep puzzlefs=0A=
+nodev=A0=A0 puzzlefs=0A=
+~ # mount -t puzzlefs -o oci_root_dir=3D"/home/puzzlefs_oci" -o image_manif=
+est=3D"2d=0A=
+6602d678140540dc7e96de652a76a8b16e8aca190bae141297bcffdcae901b" none /mnt=
+=0A=
+~ # ls -lR /mnt/=0A=
+/mnt/:=0A=
+total 0=0A=
+drwxr-xr-x=A0=A0=A0 2 0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 0 Jun=A0 8 12:26 dir-1=0A=
+drwxr-xr-x=A0=A0=A0 2 0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 0 Jun=A0 8 12:26 dir-2=0A=
+drwxr-xr-x=A0=A0=A0 2 0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 0 Jun=A0 8 12:26 dir-3=0A=
+drwxr-xr-x=A0=A0=A0 2 0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 0 Jun=A0 8 12:26 dir-4=0A=
+-rw-r--r--=A0=A0=A0 1 0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 0 Jun=A0 8 12:26 file1=0A=
+-rw-r--r--=A0=A0=A0 1 0=A0=A0=A0=A0=A0=A0=A0 0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 0 Jun=A0 8 12:26 file2=0A=
+=0A=
+/mnt/dir-1:=0A=
+total 0=0A=
+=0A=
+/mnt/dir-2:=0A=
+total 0=0A=
+=0A=
+/mnt/dir-3:=0A=
+total 0=0A=
+=0A=
+/mnt/dir-4:=0A=
+total 0=0A=
+~ # cat /mnt/file2=0A=
+ana are mere bla bla bla=0A=
+~ # wc /mnt/file1=0A=
+=A0=A0=A0=A0=A0 202=A0=A0=A0=A0=A0=A0 202=A0=A0=A0=A0=A0 5454 /mnt/file1=0A=
+```=0A=
+=0A=
+In this example, /home/puzzlefs_oci is the puzzlefs oci directory:=0A=
+```=0A=
+~ # ls -lR /home/puzzlefs_oci/=0A=
+/home/puzzlefs_oci/:=0A=
+total 8=0A=
+drwxr-xr-x=A0=A0=A0 3 1000=A0=A0=A0=A0 1000=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 0 Jun=A0 8 14:33 blobs=0A=
+-rw-r--r--=A0=A0=A0 1 1000=A0=A0=A0=A0 1000=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 2=
+66 Jun=A0 8 14:33 index.json=0A=
+-rw-r--r--=A0=A0=A0 1 1000=A0=A0=A0=A0 1000=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 37 Jun=A0 8 14:33 oci-layout=0A=
+=0A=
+/home/puzzlefs_oci/blobs:=0A=
+total 0=0A=
+drwxr-xr-x=A0=A0=A0 2 1000=A0=A0=A0=A0 1000=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 0 Jun=A0 8 14:33 sha256=0A=
+=0A=
+/home/puzzlefs_oci/blobs/sha256:=0A=
+total 16=0A=
+-rw-------=A0=A0=A0 1 1000=A0=A0=A0=A0 1000=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 89 Jun=A0 8 14:33 2d6602d678140540dc7e96de652a76a8b16eb=0A=
+-rw-------=A0=A0=A0 1 1000=A0=A0=A0=A0 1000=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 9=
+25 Jun=A0 8 14:33 4df03518eea406343dbb55046720f6a478881=0A=
+-rw-------=A0=A0=A0 1 1000=A0=A0=A0=A0 1000=A0=A0=A0=A0=A0=A0=A0=A0=A0 5479=
+ Jun=A0 8 14:33 d86a87b19bd9a2fec0d31687c1d669cdb59eb=0A=
+```=0A=
+=0A=
+`2d6602d678140540dc7e96de652a76a8b16eb` is the puzzlefs image manifest=0A=
+hash for the first_try tag:=0A=
+```=0A=
+$ cat /tmp/oci-simple/index.json | jq .=0A=
+{=0A=
+=A0 "schemaVersion": -1,=0A=
+=A0 "manifests": [=0A=
+=A0=A0=A0 {=0A=
+=A0=A0=A0=A0=A0 "digest": "sha256:2d6602d678140540dc7e96de652a76a8b16e8aca1=
+90bae141297bcffdcae901b",=0A=
+=A0=A0=A0=A0=A0 "size": 89,=0A=
+=A0=A0=A0=A0=A0 "media_type": "application/vnd.puzzlefs.image.rootfs.v1",=
+=0A=
+=A0=A0=A0=A0=A0 "annotations": {=0A=
+=A0=A0=A0=A0=A0=A0=A0 "org.opencontainers.image.ref.name": "first_try"=0A=
+=A0=A0=A0=A0=A0 }=0A=
+=A0=A0=A0 }=0A=
+=A0 ],=0A=
+=A0 "annotations": {}=0A=
+}=0A=
+```=0A=
+=0A=
+I will describe how to build a puzzlefs image in the `Setup` section, at=0A=
+step 5.=0A=
+=0A=
+# Limitations=0A=
+One limitation is that the puzzlefs driver doesn't implement any lookup=0A=
+functionality and instead it inserts every directory entry into the=0A=
+dcache during init (see the `DCACHE_BASED` constant). This is similar to=0A=
+how the sample `rust_fs` driver works, but the goal is to implement=0A=
+proper lookup functions.=A0 However, more filesystem abstractions need to=
+=0A=
+be implemented before this can be achieved.=0A=
+=0A=
+# Upstreaming steps=0A=
+Before the puzzlefs driver can be upstreamed, the following need to be=0A=
+merged:=0A=
+* Wedson's filesystem abstractions [3]=0A=
+* the necessary third-party crates [4] (with the preliminary discussion=0A=
+about whether this is desirable)=0A=
+=0A=
+# Setup=0A=
+My setup is based on Wedson's tutorial [8]. Next, I will describe the=0A=
+necessary steps to build an initrd and run a custom kernel under qemu.=0A=
+=0A=
+1. Get the linux rust-next branch [9] and apply this patchset=0A=
+=0A=
+2. Follow the rust quickstart guide [10]=0A=
+=0A=
+3. configure and build the kernel=0A=
+```=0A=
+$ make LLVM=3D1 allnoconfig qemu-busybox-min.config rust.config=0A=
+$ make LLVM=3D1 -j$(nproc)=0A=
+```=0A=
+=0A=
+4. setup busybox=0A=
+```=0A=
+git clone git://git.busybox.net/busybox=0A=
+cd busybox=0A=
+make menuconfig # enable 'Build static binary' config=0A=
+make=0A=
+make install=0A=
+```=0A=
+This will create the `_install` directory with the rootfs inside it.=0A=
+=0A=
+5. create a home directory in the rootfs and copy a puzzlefs oci=0A=
+directory in home/puzzlefs_oci=0A=
+To create a puzzlefs oci directory:=0A=
+* download this custom puzzlefs repository [11] (it's custom because we=0A=
+=A0 want to build an image without verity data)=0A=
+* run `make release`=0A=
+* create a simple filesystem structure with a few directories and files=0A=
+=A0 (I've created one at ../test-puzzlefs/simple_rootfs)=0A=
+* build a puzzlefs oci image at=0A=
+=A0 `~/work/busybox/_install/home/puzzlefs_oci` (replace this path with=0A=
+=A0 your busybox path) with the tag `first_try`:=0A=
+```=0A=
+$ target/release/puzzlefs build --omit-verity \=0A=
+../test-puzzlefs/simple_rootfs ~/work/busybox/_install/home/puzzlefs_oci \=
+=0A=
+first_try=0A=
+```=0A=
+* get first_try's image manifest from index.json (inside `puzzlefs_oci`)=0A=
+```=0A=
+$ cat index.json | jq . | grep digest=0A=
+=A0=A0=A0=A0=A0 "digest": "sha256:2d6602d678140540dc7e96de652a76a8b16e8aca1=
+90bae141297bcffdcae901b",=0A=
+```=0A=
+=0A=
+6. add the following 'init' script in the busybox rootfs (rootfs path=0A=
+defaults to `./_install'):=0A=
+```=0A=
+#!/bin/sh=0A=
+mount -t devtmpfs none /dev=0A=
+mkdir -p /proc=0A=
+mount -t proc none /proc=0A=
+=0A=
+ifconfig lo up=0A=
+udhcpc -i eth0=0A=
+=0A=
+mkdir /mnt=0A=
+mount -t puzzlefs -o oci_root_dir=3D"/home/puzzlefs_oci" -o \=0A=
+image_manifest=3D"2d6602d678140540dc7e96de652a76a8b16e8aca190bae141297bcffd=
+cae901b" \=0A=
+none /mnt=0A=
+=0A=
+setsid sh -c 'exec sh -l </dev/ttyS0 >/dev/ttyS0 2>&1'=0A=
+```=0A=
+=0A=
+Make sure to replace the `image_manifest` with your own digest. This=0A=
+init script will be passed to rdinit in the kernel command line.=0A=
+=0A=
+7. generate the initramfs=0A=
+=0A=
+Assuming busybox is in `~/work/busybox`:=0A=
+```=0A=
+cd ~/work/busybox/_install && find . | cpio -H newc -o | gzip > ../ramdisk.=
+img=0A=
+```=0A=
+This will generate a compressed ramdisk image in=0A=
+`~/work/busybox/ramdisk.img`.=0A=
+=0A=
+8. run with qemu (this assumes the linux tree is at '../linux' and busybox=
+=0A=
+is at '../busybox'):=0A=
+```=0A=
+qemu-system-x86_64 \=0A=
+=A0=A0=A0 -accel kvm \=0A=
+=A0=A0=A0 -cpu host \=0A=
+=A0=A0=A0 -m 4G \=0A=
+=A0=A0=A0 -initrd ../busybox/ramdisk.img \=0A=
+=A0=A0=A0 -kernel ../linux/arch/x86/boot/bzImage \=0A=
+=A0=A0=A0 -nographic \=0A=
+=A0=A0=A0 -append 'console=3DttyS0 nokaslr debug rdinit=3D/init' \=0A=
+=A0=A0=A0 -nic user,model=3Drtl8139 \=0A=
+=A0=A0=A0 -no-reboot=0A=
+```=0A=
+=0A=
+9. Check whether puzzlefs has been successfully mounted=0A=
+```=0A=
+~ # mount | grep puzzlefs=0A=
+none on /mnt type puzzlefs (rw,relatime)=0A=
+~ # ls /mnt/=0A=
+dir-1=A0 dir-2=A0 dir-3=A0 dir-4=A0 file1=A0 file2=0A=
+```=0A=
+=0A=
+=0A=
+# Puzzlefs abstract=0A=
+Puzzlefs [1] is a container filesystem designed to address the=0A=
+limitations of the existing OCI format. The main goals of the project=0A=
+are reduced duplication, reproducible image builds, direct mounting=0A=
+support and memory safety guarantees, some inspired by the OCIv2 design=0A=
+document [7].=0A=
+=0A=
+Reduced duplication is achieved using the content defined chunking=0A=
+algorithm FastCDC. This implementation allows chunks to be shared among=0A=
+layers. Building a new layer starting from an existing one allows=0A=
+reusing most of the chunks.=0A=
+=0A=
+Another goal of the project is reproducible image builds, which is=0A=
+achieved by defining a canonical representation of the image format.=0A=
+=0A=
+Direct mounting support is a key feature of puzzlefs and, together with=0A=
+fs-verity, it provides data integrity. Currently, puzzlefs is=0A=
+implemented as a userspace filesystem (FUSE). A read-only kernel=0A=
+filesystem driver is underway.=0A=
+=0A=
+Lastly, memory safety is critical to puzzlefs, leading to the decision=0A=
+to implement it in Rust. Another goal is to share the same code between=0A=
+user space and kernel space in order to provide one secure=0A=
+implementation.=0A=
+=0A=
+=0A=
+[1] https://github.com/anuvu/puzzlefs=0A=
+[2] https://github.com/wedsonaf/linux/tree/fs=0A=
+[3] https://github.com/Rust-for-Linux/linux/issues/1004=0A=
+[4] https://github.com/Rust-for-Linux/linux/pull/1007=0A=
+[5] https://docs.rs/serde_cbor/latest/serde_cbor/=0A=
+[6] https://docs.rs/hex/0.4.3/hex/=0A=
+[7] https://hackmd.io/@cyphar/ociv2-brainstorm=0A=
+[8] https://www.youtube.com/watch?v=3DtPs1uRqOnlk=0A=
+[9] https://github.com/Rust-for-Linux/linux/tree/rust-next=0A=
+[10] https://docs.kernel.org/rust/quick-start.html=0A=
+[11] https://github.com/ariel-miculas/puzzlefs/tree/support-no-verity-data=
+=0A=
+[12] https://archive.fosdem.org/2019/schedule/event/containers_atomfs/=0A=
+=0A=
+Ariel Miculas (58):=0A=
+=A0 rust: kernel: add libraries required by the filesystem abstractions=0A=
+=A0 rust: kernel: backport the delay module from the rust branch=0A=
+=A0 rust: kernel: add container_of macro=0A=
+=A0 rust: kernel: add offset_of macro=0A=
+=A0 drop: Add crate::pr_warn declaration=0A=
+=A0 rust: kernel: rename from_kernel_errno to from_errno=0A=
+=A0 rust: kernel: Rename from_pointer to from_foreing and into_pointer to=
+=0A=
+=A0=A0=A0 into_foreign=0A=
+=A0 rust: kernel: add count_paren_items macro, needed by define_fs_params=
+=0A=
+=A0=A0=A0 macro=0A=
+=A0 rust: helpers: add missing rust helper 'alloc_pages'=0A=
+=A0 kernel: configs: add qemu-busybox-min.config=0A=
+=A0 rust: kernel: format the rust code=0A=
+=A0 samples: puzzlefs: add initial puzzlefs sample, copied from rust_fs.rs=
+=0A=
+=A0 kernel: configs: enable rust samples in rust.config=0A=
+=A0 Add SAMPLE_RUST_SERDE in rust.config=0A=
+=A0 rust: kernel: fix compile errors after rebase to rust-next=0A=
+=A0 rust: serde_cbor: import crate=0A=
+=A0 rust: serde_cbor: add SPDX License Identifiers=0A=
+=A0 rust: serde_cbor: add no_fp_fmt_parse support=0A=
+=A0 rust: Kbuild: enable serde_cbor=0A=
+=A0 samples: rust: add cbor serialize/deserialize example=0A=
+=A0 rust: serde_cbor: add support for serde_cbor's from_slice method by=0A=
+=A0=A0=A0 using a custom alloc_kernel feature=0A=
+=A0 rust: serde: add support for deserializing Vec with kernel_alloc=0A=
+=A0=A0=A0 feature=0A=
+=A0 rust: file: Replace UnsafeCell with Opaque for File=0A=
+=A0 rust: kernel: implement fmt::Debug for CString=0A=
+=A0 samples: puzzlefs: rename RustFs to PuzzleFs=0A=
+=A0 samples: puzzlefs: add basic deserializing support for the puzzlefs=0A=
+=A0=A0=A0 metadata=0A=
+=A0 rust: file: present the filesystem context to the open function=0A=
+=A0 rust: kernel: add an abstraction over vfsmount to allow cloning a new=
+=0A=
+=A0=A0=A0 private mount=0A=
+=A0 rust: file: add from_path, from_path_in_root_mnt and read_with_offset=
+=0A=
+=A0=A0=A0 methods to File=0A=
+=A0 samples: puzzlefs: pass the Vfsmount structure from open to read and=0A=
+=A0=A0=A0 return the contents of the data file inside /home/puzzlefs_oci=0A=
+=A0 rust: file: move from_path, from_path_in_root_mnt and read_with_offset=
+=0A=
+=A0=A0=A0 methods to a RegularFile newtype=0A=
+=A0 rust: file: ensure RegularFile can only create regular files=0A=
+=A0 rust: file: add get_pos method to RegularFile=0A=
+=A0 rust: file: add methods read_to_end, get_file_size and update_pos to=0A=
+=A0=A0=A0 RegularFile=0A=
+=A0 rust: file: define a minimal Read trait and implement it for=0A=
+=A0=A0=A0 RegularFile=0A=
+=A0 samples: puzzlefs: add cbor_get_array_size method=0A=
+=A0 samples: puzzlefs: add KernelError to WireFormatError and implement=0A=
+=A0=A0=A0 From conversion=0A=
+=A0 samples: puzzlefs: implement new for MetadataBlob=0A=
+=A0 samples: puzzlefs: build puzzlefs into the kernel, thus avoiding the=0A=
+=A0=A0=A0 need to export rust symbols=0A=
+=A0 rust: alloc: add try_clone for Vec<T>=0A=
+=A0 rust: alloc: add from_iter_fallible for Vec<T>=0A=
+=A0 samples: puzzlefs: implement to_errno and from_errno for=0A=
+=A0=A0=A0 WireFormatError=0A=
+=A0 samples: puzzlefs: add TryReserveError (and from conversion) to=0A=
+=A0=A0=A0 WireFormatError=0A=
+=A0 samples: puzzlefs: add higher level inode related functionality=0A=
+=A0 samples: puzzlefs: populate the directory entries with the inodes from=
+=0A=
+=A0=A0=A0 the puzzlefs metadata file=0A=
+=A0 rust: hex: import crate=0A=
+=A0 rust: hex: add SPDX license identifiers=0A=
+=A0 rust: Kbuild: enable `hex`=0A=
+=A0 rust: hex: implement FromHex trait and hex::decode using a custom=0A=
+=A0=A0=A0 kernel_alloc feature=0A=
+=A0 rust: hex: add encode_hex_iter and encode_hex_upper_iter methods=0A=
+=A0 rust: puzzlefs: add HexError to WireFormatError and implement the From=
+=0A=
+=A0=A0=A0 conversion=0A=
+=A0 rust: puzzlefs: display the error value for=0A=
+=A0=A0=A0 WireFormatError::KernelError=0A=
+=A0 samples: puzzlefs: add Rootfs and Digest structs to types.rs=0A=
+=A0 samples: puzzlefs: implement the conversion from WireFormatError to=0A=
+=A0=A0=A0 kernel::error::Error=0A=
+=A0 rust: puzzlefs: read the puzzlefs image manifest instead of an=0A=
+=A0=A0=A0 individual metadata layer=0A=
+=A0 rust: puzzlefs: rename PuzzleFs to PuzzleFsModule to avoid confusion=0A=
+=A0=A0=A0 with the PuzzleFS struct=0A=
+=A0 rust: puzzlefs: add support for reading files=0A=
+=A0 rust: puzzlefs: add oci_root_dir and image_manifest filesystem=0A=
+=A0=A0=A0 parameters=0A=
+=0A=
+Miguel Ojeda (15):=0A=
+=A0 rust: proc-macro2: import crate=0A=
+=A0 rust: proc-macro2: add SPDX License Identifiers=0A=
+=A0 rust: proc-macro2: remove `unicode_ident` dependency=0A=
+=A0 rust: quote: import crate=0A=
+=A0 rust: quote: add SPDX License Identifiers=0A=
+=A0 rust: syn: import crate=0A=
+=A0 rust: syn: add SPDX License Identifiers=0A=
+=A0 rust: syn: remove `unicode-ident` dependency=0A=
+=A0 rust: serde: import crate=0A=
+=A0 rust: serde: add `no_fp_fmt_parse` support=0A=
+=A0 rust: serde: add SPDX License Identifiers=0A=
+=A0 rust: serde_derive: import crate=0A=
+=A0 rust: serde_derive: add SPDX License Identifiers=0A=
+=A0 rust: Kbuild: enable `proc-macro2`, `quote`, `syn`, `serde` and=0A=
+=A0=A0=A0 `serde_derive`=0A=
+=A0 rust: test `serde` support=0A=
+=0A=
+Wedson Almeida Filho (7):=0A=
+=A0 rust: add definitions for ref-counted inodes and dentries=0A=
+=A0 rust: add ability to register a file system=0A=
+=A0 rust: define fs context=0A=
+=A0 rust: add support for file system parameters=0A=
+=A0 rust: allow fs driver to initialise new superblocks=0A=
+=A0 rust: add `module_fs` macro=0A=
+=A0 WIP: rust: allow fs to be populated=0A=
+=0A=
+=A0Makefile=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=A0 14 +-=0A=
+=A0arch/x86/configs/qemu-busybox-min.config=A0 |=A0=A0 11 +=0A=
+=A0kernel/configs/qemu-busybox-min.config=A0=A0=A0 |=A0=A0 56 +=0A=
+=A0kernel/configs/rust.config=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 =
+|=A0=A0 11 +=0A=
+=A0rust/.gitignore=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 |=A0=A0=A0 1 +=0A=
+=A0rust/Makefile=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0 232 +-=0A=
+=A0rust/alloc/vec/mod.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0=A0 48 +=0A=
+=A0rust/bindings/bindings_helper.h=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=A0 14=
+ +=0A=
+=A0rust/bindings/lib.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 |=A0=A0=A0 5 +=0A=
+=A0rust/helpers.c=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=A0 76 +=0A=
+=A0rust/hex/error.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 |=A0=A0 78 +=0A=
+=A0rust/hex/lib.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 |=A0 506 +++=0A=
+=A0rust/hex/serde.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 |=A0 104 +=0A=
+=A0rust/kernel/cred.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 |=A0=A0 46 +=0A=
+=A0rust/kernel/delay.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 |=A0 104 +=0A=
+=A0rust/kernel/driver.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0=A0 28 +=0A=
+=A0rust/kernel/error.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 |=A0=A0 52 +-=0A=
+=A0rust/kernel/file.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 | 1117 ++++++=0A=
+=A0rust/kernel/fs.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 | 1478 ++++++++=0A=
+=A0rust/kernel/fs/param.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0 558 +++=0A=
+=A0rust/kernel/io_buffer.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0 153 +=0A=
+=A0rust/kernel/iov_iter.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0=A0 81 +=0A=
+=A0rust/kernel/lib.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 |=A0=A0 83 +=0A=
+=A0rust/kernel/mm.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 |=A0 149 +=0A=
+=A0rust/kernel/mount.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 |=A0=A0 66 +=0A=
+=A0rust/kernel/pages.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 |=A0 144 +=0A=
+=A0rust/kernel/str.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 |=A0=A0=A0 6 +=0A=
+=A0rust/kernel/test_serde.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0=A0 26 +=0A=
+=A0rust/kernel/test_serde/de.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+ 439 +++=0A=
+=A0rust/kernel/test_serde/error.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=A0 73=
+ +=0A=
+=A0rust/kernel/test_serde/ser.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0 4=
+66 +++=0A=
+=A0rust/kernel/user_ptr.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0 175 +=0A=
+=A0rust/proc-macro2/detection.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+=A0 77 +=0A=
+=A0rust/proc-macro2/fallback.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 | 10=
+04 ++++++=0A=
+=A0rust/proc-macro2/lib.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 | 1341 ++++++++=0A=
+=A0rust/proc-macro2/marker.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 =
+|=A0=A0 20 +=0A=
+=A0rust/proc-macro2/parse.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0 874 +++++=0A=
+=A0rust/proc-macro2/rcvec.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0 144 +=0A=
+=A0rust/proc-macro2/wrapper.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=
+=A0 996 ++++++=0A=
+=A0rust/quote/ext.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 |=A0 112 +=0A=
+=A0rust/quote/format.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 |=A0 170 +=0A=
+=A0rust/quote/ident_fragment.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+=A0 88 +=0A=
+=A0rust/quote/lib.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 | 1436 ++++++++=0A=
+=A0rust/quote/runtime.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0 440 +++=0A=
+=A0rust/quote/spanned.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0=A0 45 +=0A=
+=A0rust/quote/to_tokens.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0 211 ++=0A=
+=A0rust/serde/de/format.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0=A0 32 +=0A=
+=A0rust/serde/de/ignored_any.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+ 246 ++=0A=
+=A0rust/serde/de/impls.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 | 2755 +++++++++++++++=0A=
+=A0rust/serde/de/mod.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 | 2313 +++++++++++++=0A=
+=A0rust/serde/de/seed.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0=A0 21 +=0A=
+=A0rust/serde/de/utf8.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0=A0 48 +=0A=
+=A0rust/serde/de/value.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 | 1718 ++++++++++=0A=
+=A0rust/serde/integer128.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0=A0 84 +=0A=
+=A0rust/serde/lib.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 |=A0 351 ++=0A=
+=A0rust/serde/macros.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 |=A0 238 ++=0A=
+=A0rust/serde/private/de.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 | 2997 ++++++++++++++++=0A=
+=A0rust/serde/private/doc.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0 161 +=0A=
+=A0rust/serde/private/mod.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0=A0 52 +=0A=
+=A0rust/serde/private/ser.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 | 1316 +++++++=0A=
+=A0rust/serde/private/size_hint.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=A0 23=
+ +=0A=
+=A0rust/serde/ser/fmt.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0 180 +=0A=
+=A0rust/serde/ser/impls.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0 987 ++++++=0A=
+=A0rust/serde/ser/impossible.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+ 218 ++=0A=
+=A0rust/serde/ser/mod.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 | 1992 +++++++++++=0A=
+=A0rust/serde/std_error.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0=A0 50 +=0A=
+=A0rust/serde_cbor/de.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 | 1370 ++++++++=0A=
+=A0rust/serde_cbor/error.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0 320 ++=0A=
+=A0rust/serde_cbor/lib.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0 371 ++=0A=
+=A0rust/serde_cbor/read.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0 647 ++++=0A=
+=A0rust/serde_cbor/ser.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0 748 ++++=0A=
+=A0rust/serde_cbor/tags.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0 224 ++=0A=
+=A0rust/serde_cbor/value/de.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=
+=A0 168 +=0A=
+=A0rust/serde_cbor/value/mod.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+ 158 +=0A=
+=A0rust/serde_cbor/value/ser.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+ 447 +++=0A=
+=A0rust/serde_cbor/write.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0 177 +=0A=
+=A0rust/serde_derive/bound.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 =
+|=A0 408 +++=0A=
+=A0rust/serde_derive/de.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 | 3148 +++++++++++++++++=0A=
+=A0rust/serde_derive/dummy.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 =
+|=A0=A0 46 +=0A=
+=A0rust/serde_derive/fragment.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+=A0 76 +=0A=
+=A0rust/serde_derive/internals/ast.rs=A0=A0=A0=A0=A0=A0=A0 |=A0 204 ++=0A=
+=A0rust/serde_derive/internals/attr.rs=A0=A0=A0=A0=A0=A0 | 1908 +++++++++++=
+=0A=
+=A0rust/serde_derive/internals/case.rs=A0=A0=A0=A0=A0=A0 |=A0 199 ++=0A=
+=A0rust/serde_derive/internals/check.rs=A0=A0=A0=A0=A0 |=A0 445 +++=0A=
+=A0rust/serde_derive/internals/ctxt.rs=A0=A0=A0=A0=A0=A0 |=A0=A0 64 +=0A=
+=A0rust/serde_derive/internals/mod.rs=A0=A0=A0=A0=A0=A0=A0 |=A0=A0 30 +=0A=
+=A0rust/serde_derive/internals/receiver.rs=A0=A0 |=A0 287 ++=0A=
+=A0rust/serde_derive/internals/respan.rs=A0=A0=A0=A0 |=A0=A0 18 +=0A=
+=A0rust/serde_derive/internals/symbol.rs=A0=A0=A0=A0 |=A0=A0 71 +=0A=
+=A0rust/serde_derive/lib.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0 112 +=0A=
+=A0rust/serde_derive/pretend.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+ 203 ++=0A=
+=A0rust/serde_derive/ser.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 | 1342 ++++++++=0A=
+=A0rust/serde_derive/this.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0=A0 34 +=0A=
+=A0rust/serde_derive/try.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0=A0 26 +=0A=
+=A0rust/syn/attr.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 |=A0 664 ++++=0A=
+=A0rust/syn/await.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 |=A0=A0=A0 4 +=0A=
+=A0rust/syn/bigint.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 |=A0=A0 68 +=0A=
+=A0rust/syn/buffer.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 |=A0 400 +++=0A=
+=A0rust/syn/custom_keyword.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 =
+|=A0 255 ++=0A=
+=A0rust/syn/custom_punctuation.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0 302=
+ ++=0A=
+=A0rust/syn/data.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 |=A0 495 +++=0A=
+=A0rust/syn/derive.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 |=A0 276 ++=0A=
+=A0rust/syn/discouraged.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0 196 ++=0A=
+=A0rust/syn/error.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 |=A0 430 +++=0A=
+=A0rust/syn/export.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 |=A0=A0 41 +=0A=
+=A0rust/syn/expr.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 | 3560 +++++++++++++++++++=0A=
+=A0rust/syn/ext.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 |=A0 141 +=0A=
+=A0rust/syn/file.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 |=A0 127 +=0A=
+=A0rust/syn/gen/clone.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 | 2243 ++++++++++++=0A=
+=A0rust/syn/gen/debug.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 | 3044 +++++++++++++++++=0A=
+=A0rust/syn/gen/eq.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 | 2197 ++++++++++++=0A=
+=A0rust/syn/gen/fold.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 | 3343 ++++++++++++++++++=0A=
+=A0rust/syn/gen/hash.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 | 2871 ++++++++++++++++=0A=
+=A0rust/syn/gen/visit.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 | 3788 +++++++++++++++++++++=0A=
+=A0rust/syn/gen/visit_mut.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 | 3788 +++++++++++++++++++++=0A=
+=A0rust/syn/gen_helper.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0 156 +=0A=
+=A0rust/syn/generics.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 | 1339 ++++++++=0A=
+=A0rust/syn/group.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 |=A0 284 ++=0A=
+=A0rust/syn/ident.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 |=A0 103 +=0A=
+=A0rust/syn/item.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 | 3315 ++++++++++++++++++=0A=
+=A0rust/syn/lib.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 |=A0 985 ++++++=0A=
+=A0rust/syn/lifetime.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 |=A0 156 +=0A=
+=A0rust/syn/lit.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 | 1602 +++++++++=0A=
+=A0rust/syn/lookahead.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0 171 +=0A=
+=A0rust/syn/mac.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 |=A0 221 ++=0A=
+=A0rust/syn/macros.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 |=A0 179 +=0A=
+=A0rust/syn/op.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0 |=A0 236 ++=0A=
+=A0rust/syn/parse.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 | 1316 +++++++=0A=
+=A0rust/syn/parse_macro_input.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0 1=
+81 +=0A=
+=A0rust/syn/parse_quote.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0 169 +=0A=
+=A0rust/syn/pat.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 |=A0 929 +++++=0A=
+=A0rust/syn/path.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 |=A0 856 +++++=0A=
+=A0rust/syn/print.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 |=A0=A0 18 +=0A=
+=A0rust/syn/punctuated.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 | 1070 ++++++=0A=
+=A0rust/syn/reserved.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 |=A0=A0 46 +=0A=
+=A0rust/syn/sealed.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 |=A0=A0=A0 6 +=0A=
+=A0rust/syn/span.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 |=A0=A0 69 +=0A=
+=A0rust/syn/spanned.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 |=A0 116 +=0A=
+=A0rust/syn/stmt.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0 |=A0 351 ++=0A=
+=A0rust/syn/thread.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 |=A0=A0 43 +=0A=
+=A0rust/syn/token.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 | 1015 ++++++=0A=
+=A0rust/syn/tt.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0 |=A0 109 +=0A=
+=A0rust/syn/ty.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0 | 1288 +++++++=0A=
+=A0rust/syn/verbatim.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 |=A0=A0 35 +=0A=
+=A0rust/syn/whitespace.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0=A0 67 +=0A=
+=A0samples/rust/Kconfig=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0 |=A0=A0 28 +=0A=
+=A0samples/rust/Makefile=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0=A0=A0 3 +=0A=
+=A0samples/rust/local_data_format/de.rs=A0=A0=A0=A0=A0 |=A0 422 +++=0A=
+=A0samples/rust/local_data_format/error.rs=A0=A0 |=A0=A0 73 +=0A=
+=A0samples/rust/local_data_format/ser.rs=A0=A0=A0=A0 |=A0 443 +++=0A=
+=A0samples/rust/puzzle.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0=A0=A0 4 +=0A=
+=A0samples/rust/puzzle/error.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+=A0 91 +=0A=
+=A0samples/rust/puzzle/inode.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+ 150 +=0A=
+=A0samples/rust/puzzle/oci.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 =
+|=A0=A0 71 +=0A=
+=A0samples/rust/puzzle/types.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0=
+ 389 +++=0A=
+=A0samples/rust/puzzle/types/cbor_helpers.rs |=A0=A0 50 +=0A=
+=A0samples/rust/puzzlefs.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 |=A0 220 ++=0A=
+=A0samples/rust/rust_fs.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 |=A0 105 +=0A=
+=A0samples/rust/rust_serde.rs=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 =
+|=A0 125 +=0A=
+=A0scripts/Makefile.build=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 |=A0=A0=A0 4 +-=0A=
+=A0160 files changed, 89204 insertions(+), 29 deletions(-)=0A=
+=A0create mode 100644 arch/x86/configs/qemu-busybox-min.config=0A=
+=A0create mode 100644 kernel/configs/qemu-busybox-min.config=0A=
+=A0create mode 100644 rust/hex/error.rs=0A=
+=A0create mode 100644 rust/hex/lib.rs=0A=
+=A0create mode 100644 rust/hex/serde.rs=0A=
+=A0create mode 100644 rust/kernel/cred.rs=0A=
+=A0create mode 100644 rust/kernel/delay.rs=0A=
+=A0create mode 100644 rust/kernel/driver.rs=0A=
+=A0create mode 100644 rust/kernel/file.rs=0A=
+=A0create mode 100644 rust/kernel/fs.rs=0A=
+=A0create mode 100644 rust/kernel/fs/param.rs=0A=
+=A0create mode 100644 rust/kernel/io_buffer.rs=0A=
+=A0create mode 100644 rust/kernel/iov_iter.rs=0A=
+=A0create mode 100644 rust/kernel/mm.rs=0A=
+=A0create mode 100644 rust/kernel/mount.rs=0A=
+=A0create mode 100644 rust/kernel/pages.rs=0A=
+=A0create mode 100644 rust/kernel/test_serde.rs=0A=
+=A0create mode 100644 rust/kernel/test_serde/de.rs=0A=
+=A0create mode 100644 rust/kernel/test_serde/error.rs=0A=
+=A0create mode 100644 rust/kernel/test_serde/ser.rs=0A=
+=A0create mode 100644 rust/kernel/user_ptr.rs=0A=
+=A0create mode 100644 rust/proc-macro2/detection.rs=0A=
+=A0create mode 100644 rust/proc-macro2/fallback.rs=0A=
+=A0create mode 100644 rust/proc-macro2/lib.rs=0A=
+=A0create mode 100644 rust/proc-macro2/marker.rs=0A=
+=A0create mode 100644 rust/proc-macro2/parse.rs=0A=
+=A0create mode 100644 rust/proc-macro2/rcvec.rs=0A=
+=A0create mode 100644 rust/proc-macro2/wrapper.rs=0A=
+=A0create mode 100644 rust/quote/ext.rs=0A=
+=A0create mode 100644 rust/quote/format.rs=0A=
+=A0create mode 100644 rust/quote/ident_fragment.rs=0A=
+=A0create mode 100644 rust/quote/lib.rs=0A=
+=A0create mode 100644 rust/quote/runtime.rs=0A=
+=A0create mode 100644 rust/quote/spanned.rs=0A=
+=A0create mode 100644 rust/quote/to_tokens.rs=0A=
+=A0create mode 100644 rust/serde/de/format.rs=0A=
+=A0create mode 100644 rust/serde/de/ignored_any.rs=0A=
+=A0create mode 100644 rust/serde/de/impls.rs=0A=
+=A0create mode 100644 rust/serde/de/mod.rs=0A=
+=A0create mode 100644 rust/serde/de/seed.rs=0A=
+=A0create mode 100644 rust/serde/de/utf8.rs=0A=
+=A0create mode 100644 rust/serde/de/value.rs=0A=
+=A0create mode 100644 rust/serde/integer128.rs=0A=
+=A0create mode 100644 rust/serde/lib.rs=0A=
+=A0create mode 100644 rust/serde/macros.rs=0A=
+=A0create mode 100644 rust/serde/private/de.rs=0A=
+=A0create mode 100644 rust/serde/private/doc.rs=0A=
+=A0create mode 100644 rust/serde/private/mod.rs=0A=
+=A0create mode 100644 rust/serde/private/ser.rs=0A=
+=A0create mode 100644 rust/serde/private/size_hint.rs=0A=
+=A0create mode 100644 rust/serde/ser/fmt.rs=0A=
+=A0create mode 100644 rust/serde/ser/impls.rs=0A=
+=A0create mode 100644 rust/serde/ser/impossible.rs=0A=
+=A0create mode 100644 rust/serde/ser/mod.rs=0A=
+=A0create mode 100644 rust/serde/std_error.rs=0A=
+=A0create mode 100644 rust/serde_cbor/de.rs=0A=
+=A0create mode 100644 rust/serde_cbor/error.rs=0A=
+=A0create mode 100644 rust/serde_cbor/lib.rs=0A=
+=A0create mode 100644 rust/serde_cbor/read.rs=0A=
+=A0create mode 100644 rust/serde_cbor/ser.rs=0A=
+=A0create mode 100644 rust/serde_cbor/tags.rs=0A=
+=A0create mode 100644 rust/serde_cbor/value/de.rs=0A=
+=A0create mode 100644 rust/serde_cbor/value/mod.rs=0A=
+=A0create mode 100644 rust/serde_cbor/value/ser.rs=0A=
+=A0create mode 100644 rust/serde_cbor/write.rs=0A=
+=A0create mode 100644 rust/serde_derive/bound.rs=0A=
+=A0create mode 100644 rust/serde_derive/de.rs=0A=
+=A0create mode 100644 rust/serde_derive/dummy.rs=0A=
+=A0create mode 100644 rust/serde_derive/fragment.rs=0A=
+=A0create mode 100644 rust/serde_derive/internals/ast.rs=0A=
+=A0create mode 100644 rust/serde_derive/internals/attr.rs=0A=
+=A0create mode 100644 rust/serde_derive/internals/case.rs=0A=
+=A0create mode 100644 rust/serde_derive/internals/check.rs=0A=
+=A0create mode 100644 rust/serde_derive/internals/ctxt.rs=0A=
+=A0create mode 100644 rust/serde_derive/internals/mod.rs=0A=
+=A0create mode 100644 rust/serde_derive/internals/receiver.rs=0A=
+=A0create mode 100644 rust/serde_derive/internals/respan.rs=0A=
+=A0create mode 100644 rust/serde_derive/internals/symbol.rs=0A=
+=A0create mode 100644 rust/serde_derive/lib.rs=0A=
+=A0create mode 100644 rust/serde_derive/pretend.rs=0A=
+=A0create mode 100644 rust/serde_derive/ser.rs=0A=
+=A0create mode 100644 rust/serde_derive/this.rs=0A=
+=A0create mode 100644 rust/serde_derive/try.rs=0A=
+=A0create mode 100644 rust/syn/attr.rs=0A=
+=A0create mode 100644 rust/syn/await.rs=0A=
+=A0create mode 100644 rust/syn/bigint.rs=0A=
+=A0create mode 100644 rust/syn/buffer.rs=0A=
+=A0create mode 100644 rust/syn/custom_keyword.rs=0A=
+=A0create mode 100644 rust/syn/custom_punctuation.rs=0A=
+=A0create mode 100644 rust/syn/data.rs=0A=
+=A0create mode 100644 rust/syn/derive.rs=0A=
+=A0create mode 100644 rust/syn/discouraged.rs=0A=
+=A0create mode 100644 rust/syn/error.rs=0A=
+=A0create mode 100644 rust/syn/export.rs=0A=
+=A0create mode 100644 rust/syn/expr.rs=0A=
+=A0create mode 100644 rust/syn/ext.rs=0A=
+=A0create mode 100644 rust/syn/file.rs=0A=
+=A0create mode 100644 rust/syn/gen/clone.rs=0A=
+=A0create mode 100644 rust/syn/gen/debug.rs=0A=
+=A0create mode 100644 rust/syn/gen/eq.rs=0A=
+=A0create mode 100644 rust/syn/gen/fold.rs=0A=
+=A0create mode 100644 rust/syn/gen/hash.rs=0A=
+=A0create mode 100644 rust/syn/gen/visit.rs=0A=
+=A0create mode 100644 rust/syn/gen/visit_mut.rs=0A=
+=A0create mode 100644 rust/syn/gen_helper.rs=0A=
+=A0create mode 100644 rust/syn/generics.rs=0A=
+=A0create mode 100644 rust/syn/group.rs=0A=
+=A0create mode 100644 rust/syn/ident.rs=0A=
+=A0create mode 100644 rust/syn/item.rs=0A=
+=A0create mode 100644 rust/syn/lib.rs=0A=
+=A0create mode 100644 rust/syn/lifetime.rs=0A=
+=A0create mode 100644 rust/syn/lit.rs=0A=
+=A0create mode 100644 rust/syn/lookahead.rs=0A=
+=A0create mode 100644 rust/syn/mac.rs=0A=
+=A0create mode 100644 rust/syn/macros.rs=0A=
+=A0create mode 100644 rust/syn/op.rs=0A=
+=A0create mode 100644 rust/syn/parse.rs=0A=
+=A0create mode 100644 rust/syn/parse_macro_input.rs=0A=
+=A0create mode 100644 rust/syn/parse_quote.rs=0A=
+=A0create mode 100644 rust/syn/pat.rs=0A=
+=A0create mode 100644 rust/syn/path.rs=0A=
+=A0create mode 100644 rust/syn/print.rs=0A=
+=A0create mode 100644 rust/syn/punctuated.rs=0A=
+=A0create mode 100644 rust/syn/reserved.rs=0A=
+=A0create mode 100644 rust/syn/sealed.rs=0A=
+=A0create mode 100644 rust/syn/span.rs=0A=
+=A0create mode 100644 rust/syn/spanned.rs=0A=
+=A0create mode 100644 rust/syn/stmt.rs=0A=
+=A0create mode 100644 rust/syn/thread.rs=0A=
+=A0create mode 100644 rust/syn/token.rs=0A=
+=A0create mode 100644 rust/syn/tt.rs=0A=
+=A0create mode 100644 rust/syn/ty.rs=0A=
+=A0create mode 100644 rust/syn/verbatim.rs=0A=
+=A0create mode 100644 rust/syn/whitespace.rs=0A=
+=A0create mode 100644 samples/rust/local_data_format/de.rs=0A=
+=A0create mode 100644 samples/rust/local_data_format/error.rs=0A=
+=A0create mode 100644 samples/rust/local_data_format/ser.rs=0A=
+=A0create mode 100644 samples/rust/puzzle.rs=0A=
+=A0create mode 100644 samples/rust/puzzle/error.rs=0A=
+=A0create mode 100644 samples/rust/puzzle/inode.rs=0A=
+=A0create mode 100644 samples/rust/puzzle/oci.rs=0A=
+=A0create mode 100644 samples/rust/puzzle/types.rs=0A=
+=A0create mode 100644 samples/rust/puzzle/types/cbor_helpers.rs=0A=
+=A0create mode 100644 samples/rust/puzzlefs.rs=0A=
+=A0create mode 100644 samples/rust/rust_fs.rs=0A=
+=A0create mode 100644 samples/rust/rust_serde.rs=0A=
+=0A=
+-- =0A=
+2.40.1=0A=
