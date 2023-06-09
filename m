@@ -2,45 +2,45 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 52656C7EE37
-	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 06:54:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45C0FC7EE43
+	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 06:54:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237178AbjFIGyf (ORCPT
+        id S229796AbjFIGyh (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 9 Jun 2023 02:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56726 "EHLO
+        Fri, 9 Jun 2023 02:54:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238518AbjFIGyU (ORCPT
+        with ESMTP id S238568AbjFIGyV (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 9 Jun 2023 02:54:20 -0400
+        Fri, 9 Jun 2023 02:54:21 -0400
 Received: from aer-iport-8.cisco.com (aer-iport-8.cisco.com [173.38.203.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F4B4271D
-        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:54:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E7A930F9
+        for <rust-for-linux@vger.kernel.org>; Thu,  8 Jun 2023 23:54:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=3698; q=dns/txt; s=iport;
-  t=1686293656; x=1687503256;
+  d=cisco.com; i=@cisco.com; l=4943; q=dns/txt; s=iport;
+  t=1686293658; x=1687503258;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=XbUBkYNxE/m0UQR2D/EnVvjWini+4eNwMPeT2CDQeUU=;
-  b=JT8FY0pz8A8aLwFzB0H+FGwrRSQkQcP3dQgl058jeWp2v65v1ezG17NH
-   CDVIMl+obCteA0D9vt4MMnqrDZsEUMFDIiupJBkiGTfS2zis1meXET0JG
-   3ysq7T9p1GDDqnpFY24LC904d9b1Dg4kj2lew3K5m9la8/8kRn6/p1M1E
-   8=;
+  bh=pgRmeFAK+IKfdHZ8c7lK4GY/I3z0zva/9EkiPDh+X1Q=;
+  b=dahBm6xw9xOOZr//cG6BGKsIXM1L9tOjCelM9XI6wWo4aYLKA09EES6I
+   uja9jptiTfMIAKZSi/aSseSCZZC1lKVbnkw0Xv94qsmAjIBy80Pn1rmJb
+   rTikTvn2T20BjX4eJeRkDRexu4qItodbFxtauubhW/Q2Z37lNBg/sIrl+
+   w=;
 X-IronPort-AV: E=Sophos;i="6.00,228,1681171200"; 
-   d="scan'208";a="5220565"
+   d="scan'208";a="5220555"
 Received: from aer-iport-nat.cisco.com (HELO aer-core-5.cisco.com) ([173.38.203.22])
-  by aer-iport-8.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:57 +0000
+  by aer-iport-8.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 06:31:39 +0000
 Received: from archlinux-cisco.cisco.com ([10.61.198.236])
         (authenticated bits=0)
-        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VIE0055061
+        by aer-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 3596VID3055061
         (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Fri, 9 Jun 2023 06:31:56 GMT
+        Fri, 9 Jun 2023 06:31:38 GMT
 From:   Ariel Miculas <amiculas@cisco.com>
 To:     rust-for-linux@vger.kernel.org
 Cc:     Ariel Miculas <amiculas@cisco.com>
-Subject: [PATCH 66/80] samples: puzzlefs: add higher level inode related functionality
-Date:   Fri,  9 Jun 2023 09:31:04 +0300
-Message-Id: <20230609063118.24852-67-amiculas@cisco.com>
+Subject: [PATCH 09/80] rust: kernel: backport the delay module from the rust branch
+Date:   Fri,  9 Jun 2023 09:30:07 +0300
+Message-Id: <20230609063118.24852-10-amiculas@cisco.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230609063118.24852-1-amiculas@cisco.com>
 References: <20230609063118.24852-1-amiculas@cisco.com>
@@ -55,109 +55,133 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 
 Signed-off-by: Ariel Miculas <amiculas@cisco.com>
 ---
- samples/rust/puzzle.rs       |  3 +-
- samples/rust/puzzle/inode.rs | 83 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 85 insertions(+), 1 deletion(-)
- create mode 100644 samples/rust/puzzle/inode.rs
+ rust/kernel/delay.rs | 104 +++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs   |   1 +
+ 2 files changed, 105 insertions(+)
+ create mode 100644 rust/kernel/delay.rs
 
-diff --git a/samples/rust/puzzle.rs b/samples/rust/puzzle.rs
-index 4d558561974d..1b989a2579c4 100644
---- a/samples/rust/puzzle.rs
-+++ b/samples/rust/puzzle.rs
-@@ -1,2 +1,3 @@
- pub(crate) mod error;
--mod types;
-+pub(crate) mod inode;
-+pub(crate) mod types;
-diff --git a/samples/rust/puzzle/inode.rs b/samples/rust/puzzle/inode.rs
+diff --git a/rust/kernel/delay.rs b/rust/kernel/delay.rs
 new file mode 100644
-index 000000000000..980aac9c4fd3
+index 000000000000..d28d45ec2e57
 --- /dev/null
-+++ b/samples/rust/puzzle/inode.rs
-@@ -0,0 +1,83 @@
-+// This contents of this file is taken from puzzlefs.rs (the userspace implementation)
-+// It is named inode.rs instead puzzlefs.rs since the root of this kernel module already has that name
++++ b/rust/kernel/delay.rs
+@@ -0,0 +1,104 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+use crate::puzzle::error::Result;
-+use crate::puzzle::error::WireFormatError;
-+use crate::puzzle::types as format;
-+use crate::puzzle::types::{FileChunk, Ino, InodeAdditional, MetadataBlob};
-+use alloc::vec::Vec;
-+use kernel::prelude::{ENOENT, ENOTDIR};
++//! Delay functions for operations like sleeping.
++//!
++//! C header: [`include/linux/delay.h`](../../../../include/linux/delay.h)
 +
-+#[derive(Debug)]
-+pub(crate) struct Inode {
-+    pub(crate) inode: format::Inode,
-+    pub(crate) mode: InodeMode,
-+    #[allow(dead_code)]
-+    pub(crate) additional: Option<InodeAdditional>,
++use crate::bindings;
++use core::{cmp::min, time::Duration};
++
++const MILLIS_PER_SEC: u64 = 1_000;
++
++fn coarse_sleep_conversion(duration: Duration) -> core::ffi::c_uint {
++    let milli_as_nanos = Duration::MILLISECOND.subsec_nanos();
++
++    // Rounds the nanosecond component of `duration` up to the nearest millisecond.
++    let nanos_as_millis = duration.subsec_nanos().wrapping_add(milli_as_nanos - 1) / milli_as_nanos;
++
++    // Saturates the second component of `duration` to `c_uint::MAX`.
++    let seconds_as_millis = min(
++        duration.as_secs().saturating_mul(MILLIS_PER_SEC),
++        u64::from(core::ffi::c_uint::MAX),
++    ) as core::ffi::c_uint;
++
++    seconds_as_millis.saturating_add(nanos_as_millis)
 +}
 +
-+pub(crate) struct PuzzleFS {
-+    layers: Vec<format::MetadataBlob>,
++/// Sleeps safely even with waitqueue interruptions.
++///
++/// This function forwards the call to the C side `msleep` function. As a result,
++/// `duration` will be rounded up to the nearest millisecond if granularity less
++/// than a millisecond is provided. Any [`Duration`] that exceeds
++/// [`c_uint::MAX`][core::ffi::c_uint::MAX] in milliseconds is saturated.
++///
++/// # Examples
++///
++// Keep these in sync with `test_coarse_sleep_examples`.
++/// ```
++/// # use core::time::Duration;
++/// # use kernel::delay::coarse_sleep;
++/// coarse_sleep(Duration::ZERO);                   // Equivalent to `msleep(0)`.
++/// coarse_sleep(Duration::from_nanos(1));          // Equivalent to `msleep(1)`.
++///
++/// coarse_sleep(Duration::from_nanos(1_000_000));  // Equivalent to `msleep(1)`.
++/// coarse_sleep(Duration::from_nanos(1_000_001));  // Equivalent to `msleep(2)`.
++/// coarse_sleep(Duration::from_nanos(1_999_999));  // Equivalent to `msleep(2)`.
++///
++/// coarse_sleep(Duration::from_millis(1));         // Equivalent to `msleep(1)`.
++/// coarse_sleep(Duration::from_millis(2));         // Equivalent to `msleep(2)`.
++///
++/// coarse_sleep(Duration::from_secs(1));           // Equivalent to `msleep(1000)`.
++/// coarse_sleep(Duration::new(1, 1));              // Equivalent to `msleep(1001)`.
++/// coarse_sleep(Duration::new(1, 2));              // Equivalent to `msleep(1001)`.
++/// ```
++pub fn coarse_sleep(duration: Duration) {
++    // SAFETY: msleep is safe for all values of an `unsigned int`.
++    unsafe { bindings::msleep(coarse_sleep_conversion(duration)) }
 +}
 +
-+impl PuzzleFS {
-+    pub(crate) fn new(md: MetadataBlob) -> Result<Self> {
-+        let mut v = Vec::new();
-+        v.try_push(md)?;
-+        Ok(PuzzleFS { layers: v })
++#[cfg(test)]
++mod tests {
++    use super::{coarse_sleep_conversion, MILLIS_PER_SEC};
++    use core::time::Duration;
++
++    #[test]
++    fn test_coarse_sleep_examples() {
++        // Keep these in sync with `coarse_sleep`'s `# Examples` section.
++
++        assert_eq!(coarse_sleep_conversion(Duration::ZERO), 0);
++        assert_eq!(coarse_sleep_conversion(Duration::from_nanos(1)), 1);
++
++        assert_eq!(coarse_sleep_conversion(Duration::from_nanos(1_000_000)), 1);
++        assert_eq!(coarse_sleep_conversion(Duration::from_nanos(1_000_001)), 2);
++        assert_eq!(coarse_sleep_conversion(Duration::from_nanos(1_999_999)), 2);
++
++        assert_eq!(coarse_sleep_conversion(Duration::from_millis(1)), 1);
++        assert_eq!(coarse_sleep_conversion(Duration::from_millis(2)), 2);
++
++        assert_eq!(coarse_sleep_conversion(Duration::from_secs(1)), 1000);
++        assert_eq!(coarse_sleep_conversion(Duration::new(1, 1)), 1001);
++        assert_eq!(coarse_sleep_conversion(Duration::new(1, 2)), 1001);
 +    }
 +
-+    // Temporary helper function used until PuzzleFs is integrated
-+    pub(crate) fn find_inode(&mut self, ino: u64) -> Result<Inode> {
-+        for layer in self.layers.iter_mut() {
-+            if let Some(inode) = layer.find_inode(ino)? {
-+                return Inode::new(layer, inode);
-+            }
-+        }
-+        Err(WireFormatError::from_errno(ENOENT))
++    #[test]
++    fn test_coarse_sleep_saturation() {
++        assert!(
++            coarse_sleep_conversion(Duration::new(
++                core::ffi::c_uint::MAX as u64 / MILLIS_PER_SEC,
++                0
++            )) < core::ffi::c_uint::MAX
++        );
++        assert_eq!(
++            coarse_sleep_conversion(Duration::new(
++                core::ffi::c_uint::MAX as u64 / MILLIS_PER_SEC,
++                999_999_999
++            )),
++            core::ffi::c_uint::MAX
++        );
++
++        assert_eq!(
++            coarse_sleep_conversion(Duration::MAX),
++            core::ffi::c_uint::MAX
++        );
 +    }
 +}
-+
-+impl Inode {
-+    fn new(layer: &mut MetadataBlob, inode: format::Inode) -> Result<Inode> {
-+        let mode = match inode.mode {
-+            format::InodeMode::Reg { offset } => {
-+                let chunks = layer.read_file_chunks(offset)?;
-+                InodeMode::File { chunks }
-+            }
-+            format::InodeMode::Dir { offset } => {
-+                // TODO: implement something like collect_fallible (since try_collect already exists with another purpose)
-+                let mut entries = Vec::from_iter_fallible(
-+                    layer
-+                        .read_dir_list(offset)?
-+                        .entries
-+                        .iter_mut()
-+                        .map(|de| (de.name.try_clone().unwrap(), de.ino)),
-+                )?;
-+                // Unstable sort is used because it avoids memory allocation
-+                // There should not be two directories with the same name, so stable sort doesn't have any advantage
-+                entries.sort_unstable_by(|(a, _), (b, _)| a.cmp(b));
-+                InodeMode::Dir { entries }
-+            }
-+            _ => InodeMode::Other,
-+        };
-+
-+        let additional = inode
-+            .additional
-+            .map(|additional_ref| layer.read_inode_additional(&additional_ref))
-+            .transpose()?;
-+
-+        Ok(Inode {
-+            inode,
-+            mode,
-+            additional,
-+        })
-+    }
-+}
-+
-+#[derive(Debug)]
-+pub(crate) enum InodeMode {
-+    File { chunks: Vec<FileChunk> },
-+    Dir { entries: Vec<(Vec<u8>, Ino)> },
-+    Other,
-+}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index dd9c39071391..9dc9124a5bd7 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -35,6 +35,7 @@
+ mod allocator;
+ mod build_assert;
+ pub mod cred;
++pub mod delay;
+ pub mod error;
+ pub mod file;
+ pub mod fs;
 -- 
 2.40.1
 
