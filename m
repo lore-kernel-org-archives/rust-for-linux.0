@@ -2,754 +2,202 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CE5EC7EE37
-	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 10:38:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE233C7EE29
+	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 10:47:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239767AbjFIKiJ (ORCPT
+        id S237148AbjFIKrd (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 9 Jun 2023 06:38:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40880 "EHLO
+        Fri, 9 Jun 2023 06:47:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237792AbjFIKhc (ORCPT
+        with ESMTP id S237522AbjFIKrG (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 9 Jun 2023 06:37:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 396B21B9;
-        Fri,  9 Jun 2023 03:36:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64EB26567C;
-        Fri,  9 Jun 2023 10:36:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CFD3C433EF;
-        Fri,  9 Jun 2023 10:36:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686306993;
-        bh=+mpsFKCys+NrOZk8ve8jzCz1Wn07/Wg/eFllXH/9d2s=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NZ0VnLqV2yoYHrg/F2+XUbacbveWgkZXR/symgSHiV1Kbk1dUEBXr5eljWMEi3sWR
-         vuJVB/sJtqiEt4e4IGdBZy9rACY3sZATxQ6P7OfZzkYPx+83XjuJVgZhVx6ZJ3dTeH
-         rsTKYitpC+Bcv8dHva/wG4I1fTG8sX4UfLjMdpM3VmkmYxHn5YBU3V8TXqsyBCDUf9
-         ZKFS0d+DaKyjmHFGJpz94fMUB4DoUZ3qbZIQWcMNaa47iO1DN56uW5CyhH7gW/Wl4o
-         CBTS0TgWWNahUf11b3CmTaHE3bo54FlIWPb9T0Noce/QFCf+iIo6dolkuB/IunHfc4
-         68Cmz8274QlFg==
-Date:   Fri, 9 Jun 2023 12:36:29 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     Ariel Miculas <amiculas@cisco.com>, linux-fsdevel@vger.kernel.org
-Cc:     rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH 00/80] Rust PuzzleFS filesystem driver
-Message-ID: <20230609-feldversuch-fixieren-fa141a2d9694@brauner>
+        Fri, 9 Jun 2023 06:47:06 -0400
+Received: from rcdn-iport-1.cisco.com (rcdn-iport-1.cisco.com [173.37.86.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B35962121
+        for <rust-for-linux@vger.kernel.org>; Fri,  9 Jun 2023 03:46:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=cisco.com; i=@cisco.com; l=798; q=dns/txt; s=iport;
+  t=1686307565; x=1687517165;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=mheNBO9RYrGIfL5FYivl/UJOUrUIlLZM6g1Z6ZWNV7A=;
+  b=ZrnqN+xQIwJj6bsf1r06s5W7mZHm1OfOfkExUcDCD/c97sjlWPwG5H3W
+   tmWzxigJ1wMEBTKE3sKB/h83uRnlbIlt8XLBzFgoHBVm8G0R4s/2HW8f6
+   O3p4YZ9Vej3e/J0Xqaeq1yXbUsvx+8QmoXqBUJI34b8ewowBTVFR6WTOJ
+   A=;
+X-IPAS-Result: =?us-ascii?q?A0AfAABFAYNkmIkNJK1aHAEBAQEBAQcBARIBAQQEAQFAJ?=
+ =?us-ascii?q?YEWBwEBCwGBXFJzAlkqEkeEUYNMA4ROX4hVi1GSGoElA1YPAQEBDQEBMRMEA?=
+ =?us-ascii?q?QGBU4MzAhaFXgIlNAkOAQICAgEBAQEDAgMBAQEBAQEDAQEFAQEBAgEHBBQBA?=
+ =?us-ascii?q?QEBAQEBAR4ZBRAOJ4VoDYYEAQEBAQMSEREMAQE3AQ8CAQgRBAEBAQICJgICA?=
+ =?us-ascii?q?h8RFQgIAgQOBQgaglwBgigDMQMBoTMBgT8CiiR6gTKBAYIIAQEGBAWBUQ+ac?=
+ =?us-ascii?q?A2CSQmBFS0Bh1WBZIgmJxuBSUSBWIJoPoIgQgKBJzkCg1k5gi6OM48ogSlvg?=
+ =?us-ascii?q?R6BIn8CCQIRQSaBCghcgXNAAg1UCwtjgR2CVQICESkTFFJ7HQMHBAKBBRAvB?=
+ =?us-ascii?q?wQyHwkGCRgYFycGUwctJAkTFUIEg1kKgRBAFQ4RglwqAgc2ODcDRB1AAwttP?=
+ =?us-ascii?q?TUUHwUEPyuBVzBAgQwCIiSeRoMNgQ6ZQKx6cAqECIt8jxOGJxeDbqVnLpdok?=
+ =?us-ascii?q?U2EeJFHAgQCBAUCDgEBBoFjOoFbcBWDIglJGQ+OIBmDW4YViWR1AjkCBwEKA?=
+ =?us-ascii?q?QEDCYhsgloBAQ?=
+IronPort-PHdr: A9a23:ykdNQxO/ooMwjTrKAd0l6nfLWUAX0o4cdiYc7p4hzrVWfbvmptLpP
+ VfU4rNmi1qaFYnY6vcRk+PNqOigQm0P55+drWoPOIJBTR4LiMga3kQgDceJBFe9LavCZC0hF
+ 8MEX1hgrDmgKUYAIM/lfBXJp2GqqzsbGxHxLw1wc+3wG4XPi82s/+uz4JbUJQ5PgWn1bbZ7N
+ h7jtQzKrYFWmd57N68rwx3Vo31FM+hX3jZuIlSe3l7ws8yx55VktS9Xvpoc
+IronPort-Data: A9a23:ZpXfhqD364/q0RVW/yLjw5YqxClBgxIJ4kV8jS/XYbTApGxxhmZUz
+ zZNDGvQM/qDYTTxLYgkOozl9kMD7ZOHzdMxOVdlrnsFo1CmBibm6XV1Cm+qYkt+++WaFBoPA
+ /02M4WGdIZuJpPljk/F3oLJ9RGQ7onWAOKkYAL4EnopH1Q8Fn9w0UsLd9MR2+aEv/DoW2thh
+ vuqyyHvEAfNN+lcaz98Bwqr8XuDjdyq0N8qlgVWicNj4Dcyo0Io4Kc3fsldGZdXrr58RYZWT
+ 86bpF2wE/iwEx0FUrtJmZ6jGqEGryK70QWm0hJrt6aebhdqgR0b7PckGcslV1pNkzKRwfJ7z
+ N5rjMnlIespFvWkdOU1Wh1cFWR1OrdLveOBKnmkusvVxErDG5fu66wxVwdtY8tBoaAuWj4mG
+ f8wcFjhajiKguO93bayUcFnh98oK4/gO4Z3VnRIkmmFVKh7Ecurr6Pi/v5x4QUVoctyF9nfO
+ dJeMGRqUCnQWkgaUrsQIMtuwLj37pXlSBVCtUmJ4KQw+S3XzQpswJDzP9fPPN+HX8NYmgCfv
+ G2uwojiKhgeMNrawj2f/zfwwOTOhij8HokVEdVU68KGnnW090UtWQI7ZGKFvOOhjVbgedhbI
+ Gotr39GQbcJyGSnSdz0XhudqXGCvwIBV9c4LwHcwFzdokYzy1vFblXoXgKte/R97p9rGWBCO
+ kuh2oK3WG0+6NV5XFrArt+pQSWO1T/5xIPoTQANVw8M5dWLTGob0U+XEo0L/EJYcrTI9dzYy
+ jSOqm01gK8eyJJN3KSg9leBiDWpznQocuLXzliJNo5GxlomDGJAW2BOwQSBhRqnBN3GJmRtR
+ FBex6CjABkmVPlhbhClTuQXB62O7P2YKjDailMHN8B/p2r3py/7JtANsWsWyKJV3iAsJ2SBj
+ Kj75FM52XOvFCDCgVJfOtjoUJ16kcAM6/y8D6CPBjaxXnSBXFbXoH4xDaJh92vsi0Mr2bouI
+ ouWdN3EMJrpIfoP8dZCfM9EieVD7nlnnQv7HMmrpzz5iuD2TCDOFt843K6mM7pRAFWs+luFq
+ r6y9qKiln1ibQEJSnOHrNZKfAhbfSBT6FKfg5U/S9Nv6zFOQQkJI/TQ2rgmPYdimsxoei3gp
+ xlRhmcwJILDuED6
+IronPort-HdrOrdr: A9a23:GQRB4K89Ibeov1sEd7Vuk+F3db1zdoMgy1knxilNoENuE/Bwxv
+ rBoB1E73DJYW4qKQ4dcLC7UpVpQRvnhPlICPoqTMmftW7dySSVxeBZnMffKljbexEWmdQtrp
+ uIH5IObeEYSGIK8foSgzPIXerIouP3ipxA7N22pxwAPGIaCZ2IrT0JdzpzeXcGIjWucKBJbK
+ Z0kfA33gZIF05nCvhTAENpY8Hz4/nw0L72ax8PABAqrCOUiymz1bL8Gx+Emj8DTjJm294ZgC
+ j4uj28wp/mn+Cwyxfa2WOWxY9RgsHdxtxKA9HJotQJKw/rlh2jaO1aKv6/VXEO0aOSAWQR4Z
+ 3xSiQbToNOArTqDyeISC7WqkzdOfAVmibfIBGj8CPeSIfCNUMH4oJ69PJkm13imgsdVBUW6t
+ MQ44pf3KAnVi8pkEnGlqv1fgAvmUyurXU4l+kPy3RZTIsFcbdU6ZcS5UVPDf47bWnHAa0cYa
+ BT5fvnlb5rWELfa2qcsnhkwdSqUHh2FhCaQlIassjQ1zRNhnh2w0YR2cRaxx47hd8AYogB4/
+ 6BPrVjlblIQMNTZaVhBP0ZSc/yDmDWWxrDPG+bPFyiHqAaPHDGrYLx/dwOlauXUY1NyIF3lI
+ XKUVteu2J3c0XyCdeW1JkO6RzJSHXVZ0Wa9iif3ekPhlTRfsueDcTYciFdryKJmYRrPvHm
+X-Talos-CUID: =?us-ascii?q?9a23=3Ae/PsVmit4CZ/QOdbe25e2RB6aTJuVUz08ibPDn6?=
+ =?us-ascii?q?BN3tzULqNF32a/KhCqp87?=
+X-Talos-MUID: 9a23:cq0w+QYHKxS8quBTrB7FuQNHE8xU6YuvVlhKyMsDh/SUDHkl
+X-IronPort-Anti-Spam-Filtered: true
+Received: from alln-core-4.cisco.com ([173.36.13.137])
+  by rcdn-iport-1.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 09 Jun 2023 10:46:04 +0000
+Received: from alln-opgw-1.cisco.com (alln-opgw-1.cisco.com [173.37.147.229])
+        by alln-core-4.cisco.com (8.15.2/8.15.2) with ESMTPS id 359Ak4hK026905
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+        for <rust-for-linux@vger.kernel.org>; Fri, 9 Jun 2023 10:46:04 GMT
+Authentication-Results: alln-opgw-1.cisco.com; dkim=pass (signature verified) header.i=@cisco.com; spf=Pass smtp.mailfrom=amiculas@cisco.com; dmarc=pass (p=quarantine dis=none) d=cisco.com
+X-IronPort-AV: E=Sophos;i="6.00,229,1681171200"; 
+   d="scan'208";a="2802783"
+Received: from mail-mw2nam10lp2108.outbound.protection.outlook.com (HELO NAM10-MW2-obe.outbound.protection.outlook.com) ([104.47.55.108])
+  by alln-opgw-1.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2023 10:46:04 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=I1K2BsnSUyA/1tyscBHrQZThFBSD6XzhcjOYwr3Qihxid5VlhKdR3NKD4LPTyXreJMuQtK4FjyDhY/rXZnotATbAgS+CbUrTpJXq+LOUm/k9rQvLuFjChhn86FSp2t764v1qI1Xb5k7ZA7iLnEe7TVdUXaN9OJbXUVMr08RUWeyo/CfksI4VekmpE2KtErQlKZ20+OpyPXGUXjGD7Sda+VcM53w4g22B2FOUo0qM6usXgJ7Leod4lSbMlHx/3TPiSV10MKIis+H89fCcpwYFqLzUjHJx2eF8wWZJZgaNwj6xvCoTlflRVVbhjJAkTAhmqYNQiMf0Pm7ZoXt1X14Jkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mheNBO9RYrGIfL5FYivl/UJOUrUIlLZM6g1Z6ZWNV7A=;
+ b=cZafI/Mb6UzCL8w3M0siY+4lwqrKLq+zcpQEmAdR2OkfOz1bSC4Qx2YQWetmJVUJcGEo/HLB/Y9l/vjcsmoOZc+iP2QHpCMiBBd/EFfV0/PeOStgjmVKQwiijCqiJY6y9ZHy6TTKi45paZ14dRHJepfMHYgTgezr0QQW3PQrrUgkl5bTkje20ZrEkPD/rzrUB6aYk0g5tvUQiu8Uxg20ISx/l2TMHrGqCBWe6o2PtCHIIDTuwEqjEcU8iZvWgYITL3A9hMOzI/VOiDR4eynABBHq9WQOt+ktNazFl65sQx2RJcTHi2+TU88/7jV3EXZkAq3bTMa5emc7YK7PgGljwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cisco.com; dmarc=pass action=none header.from=cisco.com;
+ dkim=pass header.d=cisco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cisco.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mheNBO9RYrGIfL5FYivl/UJOUrUIlLZM6g1Z6ZWNV7A=;
+ b=fleFKdn6488KuBl35s+qBd1cxGHMOg0oMzPtt9HF7dNyE3295rjJ13YFSk3lqaFFPfHGeT7RTV15qQwst2RXiyqlqEIwd0NJum+NrUe7yoYqOG0D4ZNxYBkpDIiUUpE45Nwmb0KEdBDIO1jJiavx1KU7al6SenjbJo19yqwAWYI=
+Received: from CH0PR11MB5299.namprd11.prod.outlook.com (2603:10b6:610:be::21)
+ by PH7PR11MB6796.namprd11.prod.outlook.com (2603:10b6:510:1ba::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Fri, 9 Jun
+ 2023 10:46:03 +0000
+Received: from CH0PR11MB5299.namprd11.prod.outlook.com
+ ([fe80::d6a3:51ad:f300:ebae]) by CH0PR11MB5299.namprd11.prod.outlook.com
+ ([fe80::d6a3:51ad:f300:ebae%6]) with mapi id 15.20.6455.030; Fri, 9 Jun 2023
+ 10:46:03 +0000
+From:   "Ariel Miculas (amiculas)" <amiculas@cisco.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC:     "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 12/80] drop: Add crate::pr_warn declaration
+Thread-Topic: [PATCH 12/80] drop: Add crate::pr_warn declaration
+Thread-Index: AQHZmpwOnAkGnqWonEqOOmMKsawYLa+CNI+AgAAVJzs=
+Date:   Fri, 9 Jun 2023 10:46:03 +0000
+Message-ID: <CH0PR11MB5299F993211FC5AB87DA6AD1CD51A@CH0PR11MB5299.namprd11.prod.outlook.com>
 References: <20230609063118.24852-1-amiculas@cisco.com>
+ <20230609063118.24852-13-amiculas@cisco.com>
+ <CANiq72nUhVTUJKyfsPJshZ0hL40-GK=O4JuPyBCy_1cd_j1CtA@mail.gmail.com>
+In-Reply-To: <CANiq72nUhVTUJKyfsPJshZ0hL40-GK=O4JuPyBCy_1cd_j1CtA@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH0PR11MB5299:EE_|PH7PR11MB6796:EE_
+x-ms-office365-filtering-correlation-id: 66e25f09-3425-4285-dd60-08db68d6b8e7
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: ZayOiBsPT0TngCFMrjXDkgfkCnfuDn0SgB7gA4dq8LgShUGLDrO97cxgUC6CsXZomaOvygEsfChx82/WJ2SjH7zQIDG+6KzZHLQnRbEifg2v7ExAgO2PQxpsV7sPYrXqlf7d/Jp7hGKdszuoqKTsDW3vS/ZDjZPZ3xAKikhh8OCEbiM9rZylWRpyhEcachlixwkZg4wx0jkjQ7i3vqDj4G8pdgJ4urr1LAxiidZZv4btpuDvdjtkJhy9n/CBG5rptyGrMh83KNHeHg6lBwxY9/sgBF/yvmHVTRAKlrVnj/H+2Gl17VoJgz158nGu/oyhDSmMjSrELsahH7XuNnicLdOVaLs9ssRSbHN+H6SjIWYYYsCUlrrzybMwkS6Y2qcX4zYfzRNiMOsxSnsot86XiLgKnNpoo3ZVBMSvb7odg2Y1wuolZ3RlD80EyIw+Vl9AM18kXcwCZzpFLx+9bDu5aUyJO9JWDqKNmBwdBFIFnB+Co4btkonhRswJCxTOSj63jSSQtjSmIbLo4H91+TuXHFEyBtHFZT1t9WN2kH9tznPnJi7aHlO7z0IwVZsprumVM4F/xqcqwXetUkn5H8QY4op0zrsg9xb7LFvxpXRFKAoFOOD8J+sbjDg3qDRHkkKd
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB5299.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(39860400002)(396003)(136003)(376002)(366004)(346002)(451199021)(7696005)(71200400001)(83380400001)(38100700002)(86362001)(38070700005)(122000001)(33656002)(6506007)(9686003)(53546011)(55016003)(186003)(8676002)(2906002)(4744005)(8936002)(41300700001)(316002)(5660300002)(52536014)(6916009)(4326008)(66946007)(66556008)(66446008)(64756008)(66476007)(76116006)(91956017)(478600001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dFpnZXVpWExYTE0rWmdKY0pXeWF5T0RydXpucmp2WlRKVkNMNExNa215dXdQ?=
+ =?utf-8?B?NUdTY3ZndTN6VGNjbUVXQzAzZklwV0tISkw2WTBVMDJBRUhESE04OHlnTDJS?=
+ =?utf-8?B?RVcvbjBKV0hid05VVmlvN2QxSjFhR2JLc2l2ejg1alNoYytjb2lZK3llL1Az?=
+ =?utf-8?B?R0VSVFZ3WXpQZmE4RXRvc3lGcHhpbW1hVG1sc1NLbFAvYkFITUQ1MXg4TDB2?=
+ =?utf-8?B?bGZldDkyN2ZMY0JxRE81a3dqWVpITHdidzFjMHhXM3JEUndDcEVtL1R0Y0x0?=
+ =?utf-8?B?cWJHb1ppcW1tU2huVkJCc3MyWHJuVVJJWU9mU1lKUFBtOHQxM1hqRytoY1Vj?=
+ =?utf-8?B?QU5TOXFDWWZMTjZoSnp3T2JGNW9NQUIwWWlNa1FrWWtBU3BLUXV0d1pGeXFv?=
+ =?utf-8?B?M3Q1U1l3K3NhdnZGcld4bWk0Nk5mWnNheHQwL2syOWlTdllTdUJCbm5LRjg4?=
+ =?utf-8?B?UkhHSFFSRU8rVXpkdDgwYzdxN2RaOUpnWnlhS0xZK1pxdnd0WjUzYmdsdjdp?=
+ =?utf-8?B?dDBRUlBJcnZVRkwvNjFpTlBTVXdBME00dnl6Y3pOZnpPaVZpQVY5SWNwVWoy?=
+ =?utf-8?B?RXdVV1hFUXZRakFmeFBtaFZMcEpVeDdCb0NXVFVwZHhpR2oyU2F2eGR2OGkw?=
+ =?utf-8?B?VldTNStvakNRRHNqbGNxODYrMWJyTEl3OTdOc3kxU0h3RUdRempJcUd6RXZR?=
+ =?utf-8?B?YUR2cDFXSnhkaFBjRG0weEh4SnIvSTBHVmtYbFhPaEVQL1Y5Zkg3Ym9DTTZG?=
+ =?utf-8?B?L1NIUU5INGhINUgvQkNRa1BiQmNHRWZpSlNuQVJPQmpHMTFZOWwyVkpUV3VN?=
+ =?utf-8?B?bEc0emxMbmFGRmJGbXd6bHUxUEpwSHB4VnhGVk1POTZTamNKVHJWQ2dKQzZ4?=
+ =?utf-8?B?c3FqWDJ1aDNWUE1Fd29wQW9KNXBPelFlcjAzUDA3dzRxTERSdlFobTB5U29m?=
+ =?utf-8?B?K1QrUURFK0dEckJ4YS83YWtGV0pDS3V0YXloK0xEc01JaTNwYkk3c0M3czNy?=
+ =?utf-8?B?RDdvY2FyNjhlOEhEdlhkb0NRby9ncnFaVjE2UklPY3Q4eUVnMGV4cGxhSVM3?=
+ =?utf-8?B?bnQ3Z2I3a3NodDBScFRIY2pMVVdlUWdQVXdNakJWUnBkWFFOUHZ3cE1ESzlm?=
+ =?utf-8?B?NEsrRHJjdVFtYUgxc1NxSk1pU1h2bGIxQjZVZGlod0dmWW0wdlFudTNTUnd5?=
+ =?utf-8?B?V21qcTc2UWs5MVN3V0xqakdHZTZrUVhkNFB2SEVINjhPVDJORXhteDA2aHQ5?=
+ =?utf-8?B?Wi94VzRsWXMrcE5CODJnRlVETnZ5Wm1pNHY3bFZPYzN4ZGsvd1hQbzJoR2Zn?=
+ =?utf-8?B?THkvbU40Wm1HWVdVVmpxcVJKaTJoWDlyY3FQK3QrWlNRUFQzUDRYdHM2cnNO?=
+ =?utf-8?B?dlBBOHVLRGxSVnBhU3YrZmUwR3ZQV1FhNDFOeDNuZkphSlRhSm8xZnkzem0r?=
+ =?utf-8?B?c2htWDFoZ3h2VDBjZFdPQWRpazFzazg4SEk3Q2sxTlFjeTYvbTF2bHBjeUFw?=
+ =?utf-8?B?MHdwWGorVFA3SS9MczNPYkNmN0VxU2MvZ3Y3RjVqaXcvcmxDWFFLK0hpRFZw?=
+ =?utf-8?B?cm1MM1U2U1gxSHIrK21kbnpGem9OWFpnTHJkZ001L20wVkxCcURDQXdlZysv?=
+ =?utf-8?B?UWFMNXRIMkpGYmJUa3Iya3BIYW1oWlhwZU4wbzVQR084OTV2aTVXUHF6Tlgz?=
+ =?utf-8?B?bnlzU3oySW9SUWNod21Cc1ZlMU1LWHJEUXpITUt1WGVNdmV0WlpYZDN6TzBz?=
+ =?utf-8?B?djIxclZqQTkvTGNpQjdNSWhyTFNXVHJhMXdEcW1IQWhBYVMwMk0ySkdQV0Nq?=
+ =?utf-8?B?TVNIcGNVQ3AyOUNNV0NRVnlGTDVWbittYk94V29YK3lyK0MvOUFJNW9ZM3FQ?=
+ =?utf-8?B?cmZhMlFOZ3p4TUowVnppNmhPVG9ub1pMNWN0K3JhWDhJWWJxSldHQ2ttZnJY?=
+ =?utf-8?B?eUY1YWJzRUkwSzVYakVqRUQ5c2RsVEluK0JPRzg5Z1E4enFqNWhPTjBjbTMx?=
+ =?utf-8?B?MW5yd1J5dW1SOE4yL3hEK1J1cU1mWWI4cWRaZE5iRHJmVkw2VEVhb0V2cXps?=
+ =?utf-8?B?Mll3ZDdxWFJIV0VVSjZMYnlodkN0akJJN2xtNU5xUk9mRXo1VjRaNUtkS0VV?=
+ =?utf-8?B?QWdDQmhJU0h1Z0lTOTBGSmhoT3FUTmVGdnh4WkFXR2Y2NW0vYm9mTEZyZzVH?=
+ =?utf-8?B?Z3c9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230609063118.24852-1-amiculas@cisco.com>
+X-OriginatorOrg: cisco.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5299.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66e25f09-3425-4285-dd60-08db68d6b8e7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jun 2023 10:46:03.7108
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 5ae1af62-9505-4097-a69a-c1553ef7840e
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: HmsY6XIy1yMivrr5uIK4Hox76rLPdtkDlltRdsSBokTmqb6mIN9X+sHJ/OutZSnPsmb2hlTEmHHGlrjkWoRNng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6796
+X-Outbound-SMTP-Client: 173.37.147.229, alln-opgw-1.cisco.com
+X-Outbound-Node: alln-core-4.cisco.com
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Jun 09, 2023 at 09:29:58AM +0300, Ariel Miculas wrote:
-> Hi all!
-> 
-> This is a proof of concept driver written for the PuzzleFS
-
-Uhm, the PuzzleFS filesystem isn't actually sent to fsdevel? Yet I see
-tons of patches in there that add wrappers to our core fs data
-structures. I even see a ton of new files that all fall clearly into
-fsdevel territory:
-
-create mode 100644 rust/kernel/cred.rs
-create mode 100644 rust/kernel/delay.rs
-create mode 100644 rust/kernel/driver.rs
-create mode 100644 rust/kernel/file.rs
-create mode 100644 rust/kernel/fs.rs
-create mode 100644 rust/kernel/fs/param.rs
-create mode 100644 rust/kernel/io_buffer.rs
-create mode 100644 rust/kernel/iov_iter.rs
-create mode 100644 rust/kernel/mm.rs
-create mode 100644 rust/kernel/mount.rs
-create mode 100644 rust/kernel/pages.rs
-
-There's also quite a lot of new mm/ in there, no?
-
-Any wrappers and code for core fs should be maintained as part of fs.
-Rust shouldn't become a way to avoid our reviews once you have a few
-wrappers added somewhere.
-
-> next-generation container filesystem [1]. I've included a short abstract
-> about puzzlefs further below. This driver is based on the rust-next
-> branch, on top of which I've backported the filesystem abstractions from
-> Wedson Almeida Filho [2][3] and Miguel Ojeda's third-party crates
-> support: proc-macro2, quote, syn, serde and serde_derive [4]. I've added
-> the additional third-party crates serde_cbor[5] and hex [6]. Then I've
-> adapted the user space puzzlefs code [1] so that the puzzlefs kernel
-> module could present the directory hierarchy and implement the basic
-> read functionality.
-> For some additional context, puzzlefs was started by Tycho Andersen and
-> it's the successor of atomfs. This FOSDEM presentation from 2019 [12]
-> covers the rationale for a new oci image format and presents a higher
-> level overview of our goals with puzzlefs.
-> I've split the rest of the cover letter in following sections (using a
-> markdown style):
-> * Example: it describes a practical example of what was achieved
-> * Limitations: it presents the existing limitations of this POC
-> * Upstreaming steps: it describes the steps needed for upstreaming this
->   driver
-> * Setup: it shows how to setup the necessary environment for testing the
->   puzzlefs driver
-> * Puzzlefs abstract: it provides a short overview of puzzlefs
-> 
-> # Example
-> An example is provided below:
-> 
-> ```
-> ~ # cat /proc/filesystems | grep puzzlefs
-> nodev   puzzlefs
-> ~ # mount -t puzzlefs -o oci_root_dir="/home/puzzlefs_oci" -o image_manifest="2d
-> 6602d678140540dc7e96de652a76a8b16e8aca190bae141297bcffdcae901b" none /mnt
-> ~ # ls -lR /mnt/
-> /mnt/:
-> total 0
-> drwxr-xr-x    2 0        0                0 Jun  8 12:26 dir-1
-> drwxr-xr-x    2 0        0                0 Jun  8 12:26 dir-2
-> drwxr-xr-x    2 0        0                0 Jun  8 12:26 dir-3
-> drwxr-xr-x    2 0        0                0 Jun  8 12:26 dir-4
-> -rw-r--r--    1 0        0                0 Jun  8 12:26 file1
-> -rw-r--r--    1 0        0                0 Jun  8 12:26 file2
-> 
-> /mnt/dir-1:
-> total 0
-> 
-> /mnt/dir-2:
-> total 0
-> 
-> /mnt/dir-3:
-> total 0
-> 
-> /mnt/dir-4:
-> total 0
-> ~ # cat /mnt/file2
-> ana are mere bla bla bla
-> ~ # wc /mnt/file1
->       202       202      5454 /mnt/file1
-> ```
-> 
-> In this example, /home/puzzlefs_oci is the puzzlefs oci directory:
-> ```
-> ~ # ls -lR /home/puzzlefs_oci/
-> /home/puzzlefs_oci/:
-> total 8
-> drwxr-xr-x    3 1000     1000             0 Jun  8 14:33 blobs
-> -rw-r--r--    1 1000     1000           266 Jun  8 14:33 index.json
-> -rw-r--r--    1 1000     1000            37 Jun  8 14:33 oci-layout
-> 
-> /home/puzzlefs_oci/blobs:
-> total 0
-> drwxr-xr-x    2 1000     1000             0 Jun  8 14:33 sha256
-> 
-> /home/puzzlefs_oci/blobs/sha256:
-> total 16
-> -rw-------    1 1000     1000            89 Jun  8 14:33 2d6602d678140540dc7e96de652a76a8b16eb
-> -rw-------    1 1000     1000           925 Jun  8 14:33 4df03518eea406343dbb55046720f6a478881
-> -rw-------    1 1000     1000          5479 Jun  8 14:33 d86a87b19bd9a2fec0d31687c1d669cdb59eb
-> ```
-> 
-> `2d6602d678140540dc7e96de652a76a8b16eb` is the puzzlefs image manifest
-> hash for the first_try tag:
-> ```
-> $ cat /tmp/oci-simple/index.json | jq .
-> {
->   "schemaVersion": -1,
->   "manifests": [
->     {
->       "digest": "sha256:2d6602d678140540dc7e96de652a76a8b16e8aca190bae141297bcffdcae901b",
->       "size": 89,
->       "media_type": "application/vnd.puzzlefs.image.rootfs.v1",
->       "annotations": {
->         "org.opencontainers.image.ref.name": "first_try"
->       }
->     }
->   ],
->   "annotations": {}
-> }
-> ```
-> 
-> I will describe how to build a puzzlefs image in the `Setup` section, at
-> step 5.
-> 
-> # Limitations
-> One limitation is that the puzzlefs driver doesn't implement any lookup
-> functionality and instead it inserts every directory entry into the
-> dcache during init (see the `DCACHE_BASED` constant). This is similar to
-> how the sample `rust_fs` driver works, but the goal is to implement
-> proper lookup functions.  However, more filesystem abstractions need to
-> be implemented before this can be achieved.
-> 
-> # Upstreaming steps
-> Before the puzzlefs driver can be upstreamed, the following need to be
-> merged:
-> * Wedson's filesystem abstractions [3]
-> * the necessary third-party crates [4] (with the preliminary discussion
-> about whether this is desirable)
-> 
-> # Setup
-> My setup is based on Wedson's tutorial [8]. Next, I will describe the
-> necessary steps to build an initrd and run a custom kernel under qemu.
-> 
-> 1. Get the linux rust-next branch [9] and apply this patchset
-> 
-> 2. Follow the rust quickstart guide [10]
-> 
-> 3. configure and build the kernel
-> ```
-> $ make LLVM=1 allnoconfig qemu-busybox-min.config rust.config
-> $ make LLVM=1 -j$(nproc)
-> ```
-> 
-> 4. setup busybox
-> ```
-> git clone git://git.busybox.net/busybox
-> cd busybox
-> make menuconfig # enable 'Build static binary' config
-> make
-> make install
-> ```
-> This will create the `_install` directory with the rootfs inside it.
-> 
-> 5. create a home directory in the rootfs and copy a puzzlefs oci
-> directory in home/puzzlefs_oci
-> To create a puzzlefs oci directory:
-> * download this custom puzzlefs repository [11] (it's custom because we
->   want to build an image without verity data)
-> * run `make release`
-> * create a simple filesystem structure with a few directories and files
->   (I've created one at ../test-puzzlefs/simple_rootfs)
-> * build a puzzlefs oci image at
->   `~/work/busybox/_install/home/puzzlefs_oci` (replace this path with
->   your busybox path) with the tag `first_try`:
-> ```
-> $ target/release/puzzlefs build --omit-verity \
-> ../test-puzzlefs/simple_rootfs ~/work/busybox/_install/home/puzzlefs_oci \
-> first_try
-> ```
-> * get first_try's image manifest from index.json (inside `puzzlefs_oci`)
-> ```
-> $ cat index.json | jq . | grep digest
->       "digest": "sha256:2d6602d678140540dc7e96de652a76a8b16e8aca190bae141297bcffdcae901b",
-> ```
-> 
-> 6. add the following 'init' script in the busybox rootfs (rootfs path
-> defaults to `./_install'):
-> ```
-> #!/bin/sh
-> mount -t devtmpfs none /dev
-> mkdir -p /proc
-> mount -t proc none /proc
-> 
-> ifconfig lo up
-> udhcpc -i eth0
-> 
-> mkdir /mnt
-> mount -t puzzlefs -o oci_root_dir="/home/puzzlefs_oci" -o \
-> image_manifest="2d6602d678140540dc7e96de652a76a8b16e8aca190bae141297bcffdcae901b" \
-> none /mnt
-> 
-> setsid sh -c 'exec sh -l </dev/ttyS0 >/dev/ttyS0 2>&1'
-> ```
-> 
-> Make sure to replace the `image_manifest` with your own digest. This
-> init script will be passed to rdinit in the kernel command line.
-> 
-> 7. generate the initramfs
-> 
-> Assuming busybox is in `~/work/busybox`:
-> ```
-> cd ~/work/busybox/_install && find . | cpio -H newc -o | gzip > ../ramdisk.img
-> ```
-> This will generate a compressed ramdisk image in
-> `~/work/busybox/ramdisk.img`.
-> 
-> 8. run with qemu (this assumes the linux tree is at '../linux' and busybox
-> is at '../busybox'):
-> ```
-> qemu-system-x86_64 \
->     -accel kvm \
->     -cpu host \
->     -m 4G \
->     -initrd ../busybox/ramdisk.img \
->     -kernel ../linux/arch/x86/boot/bzImage \
->     -nographic \
->     -append 'console=ttyS0 nokaslr debug rdinit=/init' \
->     -nic user,model=rtl8139 \
->     -no-reboot
-> ```
-> 
-> 9. Check whether puzzlefs has been successfully mounted
-> ```
-> ~ # mount | grep puzzlefs
-> none on /mnt type puzzlefs (rw,relatime)
-> ~ # ls /mnt/
-> dir-1  dir-2  dir-3  dir-4  file1  file2
-> ```
-> 
-> 
-> # Puzzlefs abstract
-> Puzzlefs [1] is a container filesystem designed to address the
-> limitations of the existing OCI format. The main goals of the project
-> are reduced duplication, reproducible image builds, direct mounting
-> support and memory safety guarantees, some inspired by the OCIv2 design
-> document [7].
-> 
-> Reduced duplication is achieved using the content defined chunking
-> algorithm FastCDC. This implementation allows chunks to be shared among
-> layers. Building a new layer starting from an existing one allows
-> reusing most of the chunks.
-> 
-> Another goal of the project is reproducible image builds, which is
-> achieved by defining a canonical representation of the image format.
-> 
-> Direct mounting support is a key feature of puzzlefs and, together with
-> fs-verity, it provides data integrity. Currently, puzzlefs is
-> implemented as a userspace filesystem (FUSE). A read-only kernel
-> filesystem driver is underway.
-> 
-> Lastly, memory safety is critical to puzzlefs, leading to the decision
-> to implement it in Rust. Another goal is to share the same code between
-> user space and kernel space in order to provide one secure
-> implementation.
-> 
-> 
-> [1] https://github.com/anuvu/puzzlefs
-> [2] https://github.com/wedsonaf/linux/tree/fs
-> [3] https://github.com/Rust-for-Linux/linux/issues/1004
-> [4] https://github.com/Rust-for-Linux/linux/pull/1007
-> [5] https://docs.rs/serde_cbor/latest/serde_cbor/
-> [6] https://docs.rs/hex/0.4.3/hex/
-> [7] https://hackmd.io/@cyphar/ociv2-brainstorm
-> [8] https://www.youtube.com/watch?v=tPs1uRqOnlk
-> [9] https://github.com/Rust-for-Linux/linux/tree/rust-next
-> [10] https://docs.kernel.org/rust/quick-start.html
-> [11] https://github.com/ariel-miculas/puzzlefs/tree/support-no-verity-data
-> [12] https://archive.fosdem.org/2019/schedule/event/containers_atomfs/
-> 
-> Ariel Miculas (58):
->   rust: kernel: add libraries required by the filesystem abstractions
->   rust: kernel: backport the delay module from the rust branch
->   rust: kernel: add container_of macro
->   rust: kernel: add offset_of macro
->   drop: Add crate::pr_warn declaration
->   rust: kernel: rename from_kernel_errno to from_errno
->   rust: kernel: Rename from_pointer to from_foreing and into_pointer to
->     into_foreign
->   rust: kernel: add count_paren_items macro, needed by define_fs_params
->     macro
->   rust: helpers: add missing rust helper 'alloc_pages'
->   kernel: configs: add qemu-busybox-min.config
->   rust: kernel: format the rust code
->   samples: puzzlefs: add initial puzzlefs sample, copied from rust_fs.rs
->   kernel: configs: enable rust samples in rust.config
->   Add SAMPLE_RUST_SERDE in rust.config
->   rust: kernel: fix compile errors after rebase to rust-next
->   rust: serde_cbor: import crate
->   rust: serde_cbor: add SPDX License Identifiers
->   rust: serde_cbor: add no_fp_fmt_parse support
->   rust: Kbuild: enable serde_cbor
->   samples: rust: add cbor serialize/deserialize example
->   rust: serde_cbor: add support for serde_cbor's from_slice method by
->     using a custom alloc_kernel feature
->   rust: serde: add support for deserializing Vec with kernel_alloc
->     feature
->   rust: file: Replace UnsafeCell with Opaque for File
->   rust: kernel: implement fmt::Debug for CString
->   samples: puzzlefs: rename RustFs to PuzzleFs
->   samples: puzzlefs: add basic deserializing support for the puzzlefs
->     metadata
->   rust: file: present the filesystem context to the open function
->   rust: kernel: add an abstraction over vfsmount to allow cloning a new
->     private mount
->   rust: file: add from_path, from_path_in_root_mnt and read_with_offset
->     methods to File
->   samples: puzzlefs: pass the Vfsmount structure from open to read and
->     return the contents of the data file inside /home/puzzlefs_oci
->   rust: file: move from_path, from_path_in_root_mnt and read_with_offset
->     methods to a RegularFile newtype
->   rust: file: ensure RegularFile can only create regular files
->   rust: file: add get_pos method to RegularFile
->   rust: file: add methods read_to_end, get_file_size and update_pos to
->     RegularFile
->   rust: file: define a minimal Read trait and implement it for
->     RegularFile
->   samples: puzzlefs: add cbor_get_array_size method
->   samples: puzzlefs: add KernelError to WireFormatError and implement
->     From conversion
->   samples: puzzlefs: implement new for MetadataBlob
->   samples: puzzlefs: build puzzlefs into the kernel, thus avoiding the
->     need to export rust symbols
->   rust: alloc: add try_clone for Vec<T>
->   rust: alloc: add from_iter_fallible for Vec<T>
->   samples: puzzlefs: implement to_errno and from_errno for
->     WireFormatError
->   samples: puzzlefs: add TryReserveError (and from conversion) to
->     WireFormatError
->   samples: puzzlefs: add higher level inode related functionality
->   samples: puzzlefs: populate the directory entries with the inodes from
->     the puzzlefs metadata file
->   rust: hex: import crate
->   rust: hex: add SPDX license identifiers
->   rust: Kbuild: enable `hex`
->   rust: hex: implement FromHex trait and hex::decode using a custom
->     kernel_alloc feature
->   rust: hex: add encode_hex_iter and encode_hex_upper_iter methods
->   rust: puzzlefs: add HexError to WireFormatError and implement the From
->     conversion
->   rust: puzzlefs: display the error value for
->     WireFormatError::KernelError
->   samples: puzzlefs: add Rootfs and Digest structs to types.rs
->   samples: puzzlefs: implement the conversion from WireFormatError to
->     kernel::error::Error
->   rust: puzzlefs: read the puzzlefs image manifest instead of an
->     individual metadata layer
->   rust: puzzlefs: rename PuzzleFs to PuzzleFsModule to avoid confusion
->     with the PuzzleFS struct
->   rust: puzzlefs: add support for reading files
->   rust: puzzlefs: add oci_root_dir and image_manifest filesystem
->     parameters
-> 
-> Miguel Ojeda (15):
->   rust: proc-macro2: import crate
->   rust: proc-macro2: add SPDX License Identifiers
->   rust: proc-macro2: remove `unicode_ident` dependency
->   rust: quote: import crate
->   rust: quote: add SPDX License Identifiers
->   rust: syn: import crate
->   rust: syn: add SPDX License Identifiers
->   rust: syn: remove `unicode-ident` dependency
->   rust: serde: import crate
->   rust: serde: add `no_fp_fmt_parse` support
->   rust: serde: add SPDX License Identifiers
->   rust: serde_derive: import crate
->   rust: serde_derive: add SPDX License Identifiers
->   rust: Kbuild: enable `proc-macro2`, `quote`, `syn`, `serde` and
->     `serde_derive`
->   rust: test `serde` support
-> 
-> Wedson Almeida Filho (7):
->   rust: add definitions for ref-counted inodes and dentries
->   rust: add ability to register a file system
->   rust: define fs context
->   rust: add support for file system parameters
->   rust: allow fs driver to initialise new superblocks
->   rust: add `module_fs` macro
->   WIP: rust: allow fs to be populated
-> 
->  Makefile                                  |   14 +-
->  arch/x86/configs/qemu-busybox-min.config  |   11 +
->  kernel/configs/qemu-busybox-min.config    |   56 +
->  kernel/configs/rust.config                |   11 +
->  rust/.gitignore                           |    1 +
->  rust/Makefile                             |  232 +-
->  rust/alloc/vec/mod.rs                     |   48 +
->  rust/bindings/bindings_helper.h           |   14 +
->  rust/bindings/lib.rs                      |    5 +
->  rust/helpers.c                            |   76 +
->  rust/hex/error.rs                         |   78 +
->  rust/hex/lib.rs                           |  506 +++
->  rust/hex/serde.rs                         |  104 +
->  rust/kernel/cred.rs                       |   46 +
->  rust/kernel/delay.rs                      |  104 +
->  rust/kernel/driver.rs                     |   28 +
->  rust/kernel/error.rs                      |   52 +-
->  rust/kernel/file.rs                       | 1117 ++++++
->  rust/kernel/fs.rs                         | 1478 ++++++++
->  rust/kernel/fs/param.rs                   |  558 +++
->  rust/kernel/io_buffer.rs                  |  153 +
->  rust/kernel/iov_iter.rs                   |   81 +
->  rust/kernel/lib.rs                        |   83 +
->  rust/kernel/mm.rs                         |  149 +
->  rust/kernel/mount.rs                      |   66 +
->  rust/kernel/pages.rs                      |  144 +
->  rust/kernel/str.rs                        |    6 +
->  rust/kernel/test_serde.rs                 |   26 +
->  rust/kernel/test_serde/de.rs              |  439 +++
->  rust/kernel/test_serde/error.rs           |   73 +
->  rust/kernel/test_serde/ser.rs             |  466 +++
->  rust/kernel/user_ptr.rs                   |  175 +
->  rust/proc-macro2/detection.rs             |   77 +
->  rust/proc-macro2/fallback.rs              | 1004 ++++++
->  rust/proc-macro2/lib.rs                   | 1341 ++++++++
->  rust/proc-macro2/marker.rs                |   20 +
->  rust/proc-macro2/parse.rs                 |  874 +++++
->  rust/proc-macro2/rcvec.rs                 |  144 +
->  rust/proc-macro2/wrapper.rs               |  996 ++++++
->  rust/quote/ext.rs                         |  112 +
->  rust/quote/format.rs                      |  170 +
->  rust/quote/ident_fragment.rs              |   88 +
->  rust/quote/lib.rs                         | 1436 ++++++++
->  rust/quote/runtime.rs                     |  440 +++
->  rust/quote/spanned.rs                     |   45 +
->  rust/quote/to_tokens.rs                   |  211 ++
->  rust/serde/de/format.rs                   |   32 +
->  rust/serde/de/ignored_any.rs              |  246 ++
->  rust/serde/de/impls.rs                    | 2755 +++++++++++++++
->  rust/serde/de/mod.rs                      | 2313 +++++++++++++
->  rust/serde/de/seed.rs                     |   21 +
->  rust/serde/de/utf8.rs                     |   48 +
->  rust/serde/de/value.rs                    | 1718 ++++++++++
->  rust/serde/integer128.rs                  |   84 +
->  rust/serde/lib.rs                         |  351 ++
->  rust/serde/macros.rs                      |  238 ++
->  rust/serde/private/de.rs                  | 2997 ++++++++++++++++
->  rust/serde/private/doc.rs                 |  161 +
->  rust/serde/private/mod.rs                 |   52 +
->  rust/serde/private/ser.rs                 | 1316 +++++++
->  rust/serde/private/size_hint.rs           |   23 +
->  rust/serde/ser/fmt.rs                     |  180 +
->  rust/serde/ser/impls.rs                   |  987 ++++++
->  rust/serde/ser/impossible.rs              |  218 ++
->  rust/serde/ser/mod.rs                     | 1992 +++++++++++
->  rust/serde/std_error.rs                   |   50 +
->  rust/serde_cbor/de.rs                     | 1370 ++++++++
->  rust/serde_cbor/error.rs                  |  320 ++
->  rust/serde_cbor/lib.rs                    |  371 ++
->  rust/serde_cbor/read.rs                   |  647 ++++
->  rust/serde_cbor/ser.rs                    |  748 ++++
->  rust/serde_cbor/tags.rs                   |  224 ++
->  rust/serde_cbor/value/de.rs               |  168 +
->  rust/serde_cbor/value/mod.rs              |  158 +
->  rust/serde_cbor/value/ser.rs              |  447 +++
->  rust/serde_cbor/write.rs                  |  177 +
->  rust/serde_derive/bound.rs                |  408 +++
->  rust/serde_derive/de.rs                   | 3148 +++++++++++++++++
->  rust/serde_derive/dummy.rs                |   46 +
->  rust/serde_derive/fragment.rs             |   76 +
->  rust/serde_derive/internals/ast.rs        |  204 ++
->  rust/serde_derive/internals/attr.rs       | 1908 +++++++++++
->  rust/serde_derive/internals/case.rs       |  199 ++
->  rust/serde_derive/internals/check.rs      |  445 +++
->  rust/serde_derive/internals/ctxt.rs       |   64 +
->  rust/serde_derive/internals/mod.rs        |   30 +
->  rust/serde_derive/internals/receiver.rs   |  287 ++
->  rust/serde_derive/internals/respan.rs     |   18 +
->  rust/serde_derive/internals/symbol.rs     |   71 +
->  rust/serde_derive/lib.rs                  |  112 +
->  rust/serde_derive/pretend.rs              |  203 ++
->  rust/serde_derive/ser.rs                  | 1342 ++++++++
->  rust/serde_derive/this.rs                 |   34 +
->  rust/serde_derive/try.rs                  |   26 +
->  rust/syn/attr.rs                          |  664 ++++
->  rust/syn/await.rs                         |    4 +
->  rust/syn/bigint.rs                        |   68 +
->  rust/syn/buffer.rs                        |  400 +++
->  rust/syn/custom_keyword.rs                |  255 ++
->  rust/syn/custom_punctuation.rs            |  302 ++
->  rust/syn/data.rs                          |  495 +++
->  rust/syn/derive.rs                        |  276 ++
->  rust/syn/discouraged.rs                   |  196 ++
->  rust/syn/error.rs                         |  430 +++
->  rust/syn/export.rs                        |   41 +
->  rust/syn/expr.rs                          | 3560 +++++++++++++++++++
->  rust/syn/ext.rs                           |  141 +
->  rust/syn/file.rs                          |  127 +
->  rust/syn/gen/clone.rs                     | 2243 ++++++++++++
->  rust/syn/gen/debug.rs                     | 3044 +++++++++++++++++
->  rust/syn/gen/eq.rs                        | 2197 ++++++++++++
->  rust/syn/gen/fold.rs                      | 3343 ++++++++++++++++++
->  rust/syn/gen/hash.rs                      | 2871 ++++++++++++++++
->  rust/syn/gen/visit.rs                     | 3788 +++++++++++++++++++++
->  rust/syn/gen/visit_mut.rs                 | 3788 +++++++++++++++++++++
->  rust/syn/gen_helper.rs                    |  156 +
->  rust/syn/generics.rs                      | 1339 ++++++++
->  rust/syn/group.rs                         |  284 ++
->  rust/syn/ident.rs                         |  103 +
->  rust/syn/item.rs                          | 3315 ++++++++++++++++++
->  rust/syn/lib.rs                           |  985 ++++++
->  rust/syn/lifetime.rs                      |  156 +
->  rust/syn/lit.rs                           | 1602 +++++++++
->  rust/syn/lookahead.rs                     |  171 +
->  rust/syn/mac.rs                           |  221 ++
->  rust/syn/macros.rs                        |  179 +
->  rust/syn/op.rs                            |  236 ++
->  rust/syn/parse.rs                         | 1316 +++++++
->  rust/syn/parse_macro_input.rs             |  181 +
->  rust/syn/parse_quote.rs                   |  169 +
->  rust/syn/pat.rs                           |  929 +++++
->  rust/syn/path.rs                          |  856 +++++
->  rust/syn/print.rs                         |   18 +
->  rust/syn/punctuated.rs                    | 1070 ++++++
->  rust/syn/reserved.rs                      |   46 +
->  rust/syn/sealed.rs                        |    6 +
->  rust/syn/span.rs                          |   69 +
->  rust/syn/spanned.rs                       |  116 +
->  rust/syn/stmt.rs                          |  351 ++
->  rust/syn/thread.rs                        |   43 +
->  rust/syn/token.rs                         | 1015 ++++++
->  rust/syn/tt.rs                            |  109 +
->  rust/syn/ty.rs                            | 1288 +++++++
->  rust/syn/verbatim.rs                      |   35 +
->  rust/syn/whitespace.rs                    |   67 +
->  samples/rust/Kconfig                      |   28 +
->  samples/rust/Makefile                     |    3 +
->  samples/rust/local_data_format/de.rs      |  422 +++
->  samples/rust/local_data_format/error.rs   |   73 +
->  samples/rust/local_data_format/ser.rs     |  443 +++
->  samples/rust/puzzle.rs                    |    4 +
->  samples/rust/puzzle/error.rs              |   91 +
->  samples/rust/puzzle/inode.rs              |  150 +
->  samples/rust/puzzle/oci.rs                |   71 +
->  samples/rust/puzzle/types.rs              |  389 +++
->  samples/rust/puzzle/types/cbor_helpers.rs |   50 +
->  samples/rust/puzzlefs.rs                  |  220 ++
->  samples/rust/rust_fs.rs                   |  105 +
->  samples/rust/rust_serde.rs                |  125 +
->  scripts/Makefile.build                    |    4 +-
->  160 files changed, 89204 insertions(+), 29 deletions(-)
->  create mode 100644 arch/x86/configs/qemu-busybox-min.config
->  create mode 100644 kernel/configs/qemu-busybox-min.config
->  create mode 100644 rust/hex/error.rs
->  create mode 100644 rust/hex/lib.rs
->  create mode 100644 rust/hex/serde.rs
->  create mode 100644 rust/kernel/cred.rs
->  create mode 100644 rust/kernel/delay.rs
->  create mode 100644 rust/kernel/driver.rs
->  create mode 100644 rust/kernel/file.rs
->  create mode 100644 rust/kernel/fs.rs
->  create mode 100644 rust/kernel/fs/param.rs
->  create mode 100644 rust/kernel/io_buffer.rs
->  create mode 100644 rust/kernel/iov_iter.rs
->  create mode 100644 rust/kernel/mm.rs
->  create mode 100644 rust/kernel/mount.rs
->  create mode 100644 rust/kernel/pages.rs
->  create mode 100644 rust/kernel/test_serde.rs
->  create mode 100644 rust/kernel/test_serde/de.rs
->  create mode 100644 rust/kernel/test_serde/error.rs
->  create mode 100644 rust/kernel/test_serde/ser.rs
->  create mode 100644 rust/kernel/user_ptr.rs
->  create mode 100644 rust/proc-macro2/detection.rs
->  create mode 100644 rust/proc-macro2/fallback.rs
->  create mode 100644 rust/proc-macro2/lib.rs
->  create mode 100644 rust/proc-macro2/marker.rs
->  create mode 100644 rust/proc-macro2/parse.rs
->  create mode 100644 rust/proc-macro2/rcvec.rs
->  create mode 100644 rust/proc-macro2/wrapper.rs
->  create mode 100644 rust/quote/ext.rs
->  create mode 100644 rust/quote/format.rs
->  create mode 100644 rust/quote/ident_fragment.rs
->  create mode 100644 rust/quote/lib.rs
->  create mode 100644 rust/quote/runtime.rs
->  create mode 100644 rust/quote/spanned.rs
->  create mode 100644 rust/quote/to_tokens.rs
->  create mode 100644 rust/serde/de/format.rs
->  create mode 100644 rust/serde/de/ignored_any.rs
->  create mode 100644 rust/serde/de/impls.rs
->  create mode 100644 rust/serde/de/mod.rs
->  create mode 100644 rust/serde/de/seed.rs
->  create mode 100644 rust/serde/de/utf8.rs
->  create mode 100644 rust/serde/de/value.rs
->  create mode 100644 rust/serde/integer128.rs
->  create mode 100644 rust/serde/lib.rs
->  create mode 100644 rust/serde/macros.rs
->  create mode 100644 rust/serde/private/de.rs
->  create mode 100644 rust/serde/private/doc.rs
->  create mode 100644 rust/serde/private/mod.rs
->  create mode 100644 rust/serde/private/ser.rs
->  create mode 100644 rust/serde/private/size_hint.rs
->  create mode 100644 rust/serde/ser/fmt.rs
->  create mode 100644 rust/serde/ser/impls.rs
->  create mode 100644 rust/serde/ser/impossible.rs
->  create mode 100644 rust/serde/ser/mod.rs
->  create mode 100644 rust/serde/std_error.rs
->  create mode 100644 rust/serde_cbor/de.rs
->  create mode 100644 rust/serde_cbor/error.rs
->  create mode 100644 rust/serde_cbor/lib.rs
->  create mode 100644 rust/serde_cbor/read.rs
->  create mode 100644 rust/serde_cbor/ser.rs
->  create mode 100644 rust/serde_cbor/tags.rs
->  create mode 100644 rust/serde_cbor/value/de.rs
->  create mode 100644 rust/serde_cbor/value/mod.rs
->  create mode 100644 rust/serde_cbor/value/ser.rs
->  create mode 100644 rust/serde_cbor/write.rs
->  create mode 100644 rust/serde_derive/bound.rs
->  create mode 100644 rust/serde_derive/de.rs
->  create mode 100644 rust/serde_derive/dummy.rs
->  create mode 100644 rust/serde_derive/fragment.rs
->  create mode 100644 rust/serde_derive/internals/ast.rs
->  create mode 100644 rust/serde_derive/internals/attr.rs
->  create mode 100644 rust/serde_derive/internals/case.rs
->  create mode 100644 rust/serde_derive/internals/check.rs
->  create mode 100644 rust/serde_derive/internals/ctxt.rs
->  create mode 100644 rust/serde_derive/internals/mod.rs
->  create mode 100644 rust/serde_derive/internals/receiver.rs
->  create mode 100644 rust/serde_derive/internals/respan.rs
->  create mode 100644 rust/serde_derive/internals/symbol.rs
->  create mode 100644 rust/serde_derive/lib.rs
->  create mode 100644 rust/serde_derive/pretend.rs
->  create mode 100644 rust/serde_derive/ser.rs
->  create mode 100644 rust/serde_derive/this.rs
->  create mode 100644 rust/serde_derive/try.rs
->  create mode 100644 rust/syn/attr.rs
->  create mode 100644 rust/syn/await.rs
->  create mode 100644 rust/syn/bigint.rs
->  create mode 100644 rust/syn/buffer.rs
->  create mode 100644 rust/syn/custom_keyword.rs
->  create mode 100644 rust/syn/custom_punctuation.rs
->  create mode 100644 rust/syn/data.rs
->  create mode 100644 rust/syn/derive.rs
->  create mode 100644 rust/syn/discouraged.rs
->  create mode 100644 rust/syn/error.rs
->  create mode 100644 rust/syn/export.rs
->  create mode 100644 rust/syn/expr.rs
->  create mode 100644 rust/syn/ext.rs
->  create mode 100644 rust/syn/file.rs
->  create mode 100644 rust/syn/gen/clone.rs
->  create mode 100644 rust/syn/gen/debug.rs
->  create mode 100644 rust/syn/gen/eq.rs
->  create mode 100644 rust/syn/gen/fold.rs
->  create mode 100644 rust/syn/gen/hash.rs
->  create mode 100644 rust/syn/gen/visit.rs
->  create mode 100644 rust/syn/gen/visit_mut.rs
->  create mode 100644 rust/syn/gen_helper.rs
->  create mode 100644 rust/syn/generics.rs
->  create mode 100644 rust/syn/group.rs
->  create mode 100644 rust/syn/ident.rs
->  create mode 100644 rust/syn/item.rs
->  create mode 100644 rust/syn/lib.rs
->  create mode 100644 rust/syn/lifetime.rs
->  create mode 100644 rust/syn/lit.rs
->  create mode 100644 rust/syn/lookahead.rs
->  create mode 100644 rust/syn/mac.rs
->  create mode 100644 rust/syn/macros.rs
->  create mode 100644 rust/syn/op.rs
->  create mode 100644 rust/syn/parse.rs
->  create mode 100644 rust/syn/parse_macro_input.rs
->  create mode 100644 rust/syn/parse_quote.rs
->  create mode 100644 rust/syn/pat.rs
->  create mode 100644 rust/syn/path.rs
->  create mode 100644 rust/syn/print.rs
->  create mode 100644 rust/syn/punctuated.rs
->  create mode 100644 rust/syn/reserved.rs
->  create mode 100644 rust/syn/sealed.rs
->  create mode 100644 rust/syn/span.rs
->  create mode 100644 rust/syn/spanned.rs
->  create mode 100644 rust/syn/stmt.rs
->  create mode 100644 rust/syn/thread.rs
->  create mode 100644 rust/syn/token.rs
->  create mode 100644 rust/syn/tt.rs
->  create mode 100644 rust/syn/ty.rs
->  create mode 100644 rust/syn/verbatim.rs
->  create mode 100644 rust/syn/whitespace.rs
->  create mode 100644 samples/rust/local_data_format/de.rs
->  create mode 100644 samples/rust/local_data_format/error.rs
->  create mode 100644 samples/rust/local_data_format/ser.rs
->  create mode 100644 samples/rust/puzzle.rs
->  create mode 100644 samples/rust/puzzle/error.rs
->  create mode 100644 samples/rust/puzzle/inode.rs
->  create mode 100644 samples/rust/puzzle/oci.rs
->  create mode 100644 samples/rust/puzzle/types.rs
->  create mode 100644 samples/rust/puzzle/types/cbor_helpers.rs
->  create mode 100644 samples/rust/puzzlefs.rs
->  create mode 100644 samples/rust/rust_fs.rs
->  create mode 100644 samples/rust/rust_serde.rs
-> 
-> -- 
-> 2.40.1
-> 
+WWVzLCBJIHNob3VsZCBoYXZlIGRyb3BwZWQgdGhpcyBjb21taXQsIHRoYXQncyB3aHkgaXQgc2F5
+cyAiZHJvcCIgaW4gdGhlIG1lc3NhZ2UuCgpSZWdhcmRzLApBcmllbAoKRnJvbTogTWlndWVsIE9q
+ZWRhIDxtaWd1ZWwub2plZGEuc2FuZG9uaXNAZ21haWwuY29tPgpTZW50OiBGcmlkYXksIEp1bmUg
+OSwgMjAyMyAxMjoyOSBQTQpUbzogQXJpZWwgTWljdWxhcyAoYW1pY3VsYXMpIDxhbWljdWxhc0Bj
+aXNjby5jb20+CkNjOiBydXN0LWZvci1saW51eEB2Z2VyLmtlcm5lbC5vcmcgPHJ1c3QtZm9yLWxp
+bnV4QHZnZXIua2VybmVsLm9yZz4KU3ViamVjdDogUmU6IFtQQVRDSCAxMi84MF0gZHJvcDogQWRk
+IGNyYXRlOjpwcl93YXJuIGRlY2xhcmF0aW9uIArCoApPbiBGcmksIEp1biA5LCAyMDIzIGF0IDk6
+MDXigK9BTSBBcmllbCBNaWN1bGFzIDxhbWljdWxhc0BjaXNjby5jb20+IHdyb3RlOgo+Cj4gLS0t
+Cj7CoCBydXN0L2tlcm5lbC9mcy5ycyB8IDEgLQo+wqAgMSBmaWxlIGNoYW5nZWQsIDEgZGVsZXRp
+b24oLSkKCkVtcHR5IHBhdGNoLCBwcm9iYWJseSBkdWUgdG8gcmViYXNpbmcgZnVuPyA6KQoKQ2hl
+ZXJzLApNaWd1ZWw=
