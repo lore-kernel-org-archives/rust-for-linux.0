@@ -2,114 +2,88 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E9E48C7EE29
-	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 12:45:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CEB2C7EE29
+	for <rust-for-linux@archiver.kernel.org>; Fri,  9 Jun 2023 12:57:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240865AbjFIMpE (ORCPT
+        id S241198AbjFIM5J (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 9 Jun 2023 08:45:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49192 "EHLO
+        Fri, 9 Jun 2023 08:57:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240760AbjFIMo5 (ORCPT
+        with ESMTP id S241307AbjFIM5B (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 9 Jun 2023 08:44:57 -0400
-X-Greylist: delayed 301 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Jun 2023 05:44:56 PDT
-Received: from a27-42.smtp-out.us-west-2.amazonses.com (a27-42.smtp-out.us-west-2.amazonses.com [54.240.27.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29595270F
-        for <rust-for-linux@vger.kernel.org>; Fri,  9 Jun 2023 05:44:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=s25kmyuhzvo7troimxqpmtptpemzlc6l; d=exabit.dev; t=1686314395;
-        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding;
-        bh=LATgAXKqNE5T5+A1vixAEriobc5+5JwrUrwlwFHERZ8=;
-        b=bLkYEboWThriqqkDg911aQoJ4lxuwdirYiUQ8mBP/y0mw8RXVdZqm+YfP/uFCKkd
-        BRAj3+PbKVJPfhDLF546C4zC8keILbDiNRuilSytD4MULuTQwtntoF4QEH6yTZFTRz4
-        Ugv79itNjZ4efZNpnusijSHMqb9qb6NDOQA2ccUW7ejUthhieVkeioFyRg/Lq+ZXy3e
-        SrPsjVvk7NAocqF9mTNkiccJ6F3J4Fnp88gfRjFipn+0LuqQDqTZqFYvJmgrEnileXG
-        WwegnCWVJQHvb8BXV3K6rBw5kMR7qel2hhCfdDkpANwBA4fMT9aihgDWP4CooAaqIbB
-        9QWglR2/Og==
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1686314395;
-        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-        bh=LATgAXKqNE5T5+A1vixAEriobc5+5JwrUrwlwFHERZ8=;
-        b=YRWn1T4IZFMsqn36uQNkMqH6sBY0I7D95+J6+c1wEvFwm/YFr38s3eubl+jUg89j
-        D1dXGVeHqVozLCDHIfIC/e5ApxH+Fsv1Lqts/PQa1Slv8Loah3FZP3rlFr1fbRI8zuZ
-        zl8J33kETBNNEkufUHa39UqkfAJi+/bBHmvfWo9k=
-Date:   Fri, 9 Jun 2023 12:39:54 +0000
-Message-ID: <01010188a02ba4fb-a989d545-74b7-4e70-9d42-930043dbc9f0-000000@us-west-2.amazonses.com>
-To:     aliceryhl@google.com
-Cc:     tomo@exabit.dev, fujita.tomonori@gmail.com,
-        rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Subject: Re: [PATCH 1/5] rust: core abstractions for network device drivers
-From:   FUJITA Tomonori <tomo@exabit.dev>
-In-Reply-To: <20230608073807.1353371-1-aliceryhl@google.com>
-References: <010101888bc66fbb-3147ad0d-0c98-4f20-a277-949955e3b035-000000@us-west-2.amazonses.com>
-        <20230608073807.1353371-1-aliceryhl@google.com>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        Fri, 9 Jun 2023 08:57:01 -0400
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 610EF3C0F;
+        Fri,  9 Jun 2023 05:56:42 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R691e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0VkiB-Kj_1686315376;
+Received: from 192.168.3.7(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0VkiB-Kj_1686315376)
+          by smtp.aliyun-inc.com;
+          Fri, 09 Jun 2023 20:56:17 +0800
+Message-ID: <b9358e7c-8615-1b12-e35d-aae59bf6a467@linux.alibaba.com>
+Date:   Fri, 9 Jun 2023 20:56:15 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.0
+Subject: Re: [RFC PATCH 00/80] Rust PuzzleFS filesystem driver
+To:     "Ariel Miculas (amiculas)" <amiculas@cisco.com>,
+        Christian Brauner <brauner@kernel.org>
+Cc:     "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "Serge Hallyn (shallyn)" <shallyn@cisco.com>,
+        Colin Walters <walters@verbum.org>
+References: <20230609063118.24852-1-amiculas@cisco.com>
+ <20230609-feldversuch-fixieren-fa141a2d9694@brauner>
+ <CH0PR11MB529981313ED5A1F815350E41CD51A@CH0PR11MB5299.namprd11.prod.outlook.com>
+ <20230609-nachrangig-handwagen-375405d3b9f1@brauner>
+ <CH0PR11MB52997EFC3ECB27D338962536CD51A@CH0PR11MB5299.namprd11.prod.outlook.com>
+From:   Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <CH0PR11MB52997EFC3ECB27D338962536CD51A@CH0PR11MB5299.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Feedback-ID: 1.us-west-2.j0GTvY5MHQQ5Spu+i4ZGzzYI1gDE7m7iuMEacWMZbe8=:AmazonSES
-X-SES-Outgoing: 2023.06.09-54.240.27.42
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi,
 
-On Thu,  8 Jun 2023 07:38:07 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
 
->>>> +    const DEVICE_OPS: bindings::net_device_ops = bindings::net_device_ops {
->>>> +        ndo_init: if <T>::HAS_INIT {
->>>> +            Some(Self::init_callback)
->>>> +        } else {
->>>> +            None
->>>> +        },
->>>> +        ndo_uninit: if <T>::HAS_UNINIT {
->>>> +            Some(Self::uninit_callback)
->>>> +        } else {
->>>> +            None
->>>> +        },
->>>> +        ndo_open: if <T>::HAS_OPEN {
->>>> +            Some(Self::open_callback)
->>>> +        } else {
->>>> +            None
->>>> +        },
->>>> +        ndo_stop: if <T>::HAS_STOP {
->>>> +            Some(Self::stop_callback)
->>>> +        } else {
->>>> +            None
->>>> +        },
->>>> +        ndo_start_xmit: if <T>::HAS_START_XMIT {
->>>> +            Some(Self::start_xmit_callback)
->>>> +        } else {
->>>> +            None
->>>> +        },
->>>> +        ndo_features_check: None,
->>>> +        ndo_select_queue: None,
->>>> +        ndo_change_rx_flags: None,
->>>> +        ndo_set_rx_mode: None,
->>>> +        ndo_set_mac_address: None,
->>> 
->>> Bindgen is set up to generate `Default` implementations for these types,
->>> so you can do this to omit the remaining fields:
->> 
->> It can work with const?
+On 2023/6/9 20:03, Ariel Miculas (amiculas) wrote:
+
+...
+
 > 
-> Ah, no, good point.
+> But aside from the infrastructure discussion:
 > 
-> However, you could use `unsafe { mem::zeroed() }` instead.
+> This is yet another filesystem for solving the container image problem
+> in the kernel with the addition of yet another filesystem. We just went
+> through this excercise with another filesystem. So I'd expect some
+> reluctance here. Tbh, the container world keeps sending us filesystems
+> at an alarming rate. That's two within a few months and that leaves a
+> rather disorganized impression.
 
-I can't figure out a way to make mem::zeroed() with const but looks
-like the following similar way works.
+Just a head up.  Since Rust kernel infrastructure is too premature,
+it's impossible to handle page cache / iomap and many useful stuffs.
+In the long term, at least (someday) after Rust infrastructure is
+mature, I will implement EROFS ino Rust as a try as well.
 
-const DEVICE_OPS: bindings::net_device_ops = {
-    let mut ops = unsafe {
-        core::mem::MaybeUninit::<bindings::net_device_ops>::zeroed().assume_init() };
+As for chunk CDC, I don't see it's hard (since we already have some
+CDC approach since Linux v6.1) but as an effective disk filesystem
+for performance, EROFS on-disk data is all block-aligned to match
+storage and page cache alignment.  If it's really needed, I could
+update a more complete (but ineffective and slow) index version to
+implement unaligned extents (both for decoded and encoded sides).
+Yet I really think the main purpose of a kernel filesystem is to
+make full use of kernel infrastructure for performance (like page
+cache handling) otherwise a FUSE approach is enough.
 
-    if <T>::HAS_UNINIT {
-        ops.ndo_init = Some(Self::init_callback);
-    }
-    ops
-};
+Finally, as for OCI container image stuffs, I'd like to avoid
+saying this topic anymore on the list (too tired about this).  I've
+seen _three_ in-kernel approaches already before this one and I tend
+to avoid listing the complete names (including FUSE alternatives)
+here.  I really suggest if you guys could sit down and plan at least
+a complete OCI standard for the next image format (even you don't
+want to reuse any exist filesystem for whatever reasons).
 
-thanks,
+Thanks,
+Gao Xiang
