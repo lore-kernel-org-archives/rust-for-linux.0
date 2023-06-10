@@ -2,59 +2,59 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3AC63C77B7A
-	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 19:15:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86973C7EE29
+	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 19:50:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231270AbjFJTO7 (ORCPT
+        id S230061AbjFJTuE (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 10 Jun 2023 15:14:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58238 "EHLO
+        Sat, 10 Jun 2023 15:50:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229894AbjFJTOw (ORCPT
+        with ESMTP id S229436AbjFJTuD (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 10 Jun 2023 15:14:52 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 096D51FE9
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 12:14:49 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-bc4114d44a8so834971276.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 12:14:48 -0700 (PDT)
+        Sat, 10 Jun 2023 15:50:03 -0400
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B49430ED
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 12:50:02 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-bb3a77abd7bso3056978276.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 12:50:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686424488; x=1689016488;
+        d=gmail.com; s=20221208; t=1686426602; x=1689018602;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8nE3aWUZY1ezJM8rxFLQRCmTLp1Pf2OsKUvn0glu9Og=;
-        b=clTzWfq9H1PWUEEJfWmu2VTws0XbNj2jt7/nnwio7Y9HL4pkMwxSbTK7iGzmI1j4vK
-         QZPjWmVnJ8r7dDuNEIf/+jO9z1fNfT2Y6CDVRMr+Vd6InQQNF0vSl+OL3C9B7JrVhasa
-         BCkkoxnw5lMIobXVGaozn16oFZeGmGcp97syuFLMl02dkz8aH0t64/2+3I7iJOhi0QAs
-         TeOLpd2ZY+QYbU0C7WOKP2F74wlaSzg7KKn0XvwPNV8gOdq1hqLlE9VOWvAE9ARGkN03
-         3wYRR7sRHVNusmkZvkO30q1unbCuI3612PHmNB8sXEJKjGJ3ql5tT+rrWzLN/rTarUK8
-         rD+A==
+        bh=pqHKZjBd5k6OAWfvRZG0evE65WcCRM9zw16VIQMSwv0=;
+        b=Ui/pDzsnYqWhaQ3Ox2AaxdKrdzK8i3CkOxldksB+0FhwPhGCy98nUp8hvG1RXTdMQa
+         upWU+CGa8O9xf9ICKkn9V0xNww3elok8XoyeMww+IF1RHZohrIw3/6xrbTzD8r4Vt072
+         v+poXutOr/B0bpXR7+B0yJ+f8LZ/r1xyqAbz7ipCK+J09lW8cOGtMIuv3KcUabSg/w8S
+         YzLJ6FR9xGmwZJFXI5qG6yo5CCEKZ4MkyTbk79zHy/9+1DcZYjTUyIIi8zTKDi75ghxx
+         DWAPjHHZE3kLjA8D755u3FyHa9xv7YKA8GN2frxp8M4iOeOuUZNT2cXT6eM1blIXp1R7
+         fnCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686424488; x=1689016488;
+        d=1e100.net; s=20221208; t=1686426602; x=1689018602;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8nE3aWUZY1ezJM8rxFLQRCmTLp1Pf2OsKUvn0glu9Og=;
-        b=OwKv5X3LMQIyJMYN9EPzTlIYxyc/dkt32LrQ7UMAX5as9782G5s9fQx1eMAmwVKLkC
-         VkerKLqHfeFj0O7TupdYO6ef9WYFikbAyysn2zO98SwlG/T/VswOpk12CBwcd7h04IFr
-         vnIwCqQECGUoE0Hg3yDytpo8F/KyJIr0WRcnziq0XzmITIm3VMVtpcM8yTkIL/bP/nuI
-         dhBFH3cFv7g4tGi3u2C7oAyp1+JHa/fF0E9BJq82UTyJMPeA1nTeQ8n8/7nD5VOe06Mt
-         939BTLxYRTNdiOJo+xltxzHpWE+jmtr+9mIG8rfgPKIdLCgOnWv1/ygX3DglPC6A6el7
-         8krw==
-X-Gm-Message-State: AC+VfDwRA7KkI0e29x+KonX5IrJG5L9FYI4LahZ3QbTShuAc8ziBTP/E
-        6n6Ug1ydRHqxKiIAVuQK+oQycf3EuGjzb0I+Yigmfxpq
-X-Google-Smtp-Source: ACHHUZ4yRCpp2T6OjcBc5F25/xtKXJsdf5ngcKVCobwXusLojFKeoh6AbGLaQ+uUJgQtJry6pStMKdchG9Nm8f5RChA=
-X-Received: by 2002:a81:fd08:0:b0:568:d63e:dd2c with SMTP id
- g8-20020a81fd08000000b00568d63edd2cmr5270372ywn.11.1686424487944; Sat, 10 Jun
- 2023 12:14:47 -0700 (PDT)
+        bh=pqHKZjBd5k6OAWfvRZG0evE65WcCRM9zw16VIQMSwv0=;
+        b=a3E78N0sE1UMfjCGuPrwdHv3Tgv74h/YDFzqTsGnl95NDUJE7Hu8P9NtnbelDcL+P8
+         R2+lThXE/uinGWsANnjiDFZXXMhhAxkYy6hVaZttBis46T0icB9vbfCindY19la23dIx
+         pJiLrsa85umD3T4pgGM5wqQtlNzgqeipuhjSdhrgFn8Mn631BiNGMgQ6fGkq+dcDVAuK
+         5jU4nftWt5r6yT5PNTJrlV3H6tda+KDOV10OfMCpWg0FRgGaCPq5K1KJ8oXL6fdsm4ej
+         oqmm4sbz8TaeFcKu0RO79Sz6XxZw9mcB/9tvHIW+VSB5XI1ieyNl1akPWtSk2A71/7Ow
+         T2xA==
+X-Gm-Message-State: AC+VfDxSZJi+yoDkE/M/ZCgqnBFSLW3XkhVDGEH8nnL4HJO4hDrFo2Ds
+        jxLI24T3Uamw+94J5Rytqh/VE7NzhnGT74ZfnTM=
+X-Google-Smtp-Source: ACHHUZ4jNtpBZqMo1S+2WHl45WUinpQaN12gVAsnyk9dDQkTtq7vk3y8NQqmkZ5cH4tvY/GcV0HdHUSy1MonzunnV0o=
+X-Received: by 2002:a25:6cc1:0:b0:ba7:a909:a98b with SMTP id
+ h184-20020a256cc1000000b00ba7a909a98bmr4467309ybc.61.1686426601631; Sat, 10
+ Jun 2023 12:50:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230610071848.3722492-1-tomo@exabit.dev> <01010188a42d53e0-2d47cf6b-9c3a-4e94-9322-0935d0e5dcd4-000000@us-west-2.amazonses.com>
-In-Reply-To: <01010188a42d53e0-2d47cf6b-9c3a-4e94-9322-0935d0e5dcd4-000000@us-west-2.amazonses.com>
+References: <20230610071848.3722492-1-tomo@exabit.dev> <01010188a42d5319-9cd7b5ec-5b06-4d08-88cb-c2a82a8e3a0d-000000@us-west-2.amazonses.com>
+In-Reply-To: <01010188a42d5319-9cd7b5ec-5b06-4d08-88cb-c2a82a8e3a0d-000000@us-west-2.amazonses.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 10 Jun 2023 21:14:37 +0200
-Message-ID: <CANiq72n6yQa9nff+zdWizvjB4Z=Z1qjw9a2ZMny1E1uSA2A=qA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/5] rust: add support for ethernet operations
+Date:   Sat, 10 Jun 2023 21:49:50 +0200
+Message-ID: <CANiq72ki5CEY4QpOW63YTAU8_2OB8rS0FEuY-qXyncahkNUMFg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] rust: core abstractions for network device drivers
 To:     FUJITA Tomonori <tomo@exabit.dev>
 Cc:     rust-for-linux@vger.kernel.org, aliceryhl@google.com,
         andrew@lunn.ch, FUJITA Tomonori <fujita.tomonori@gmail.com>
@@ -64,60 +64,102 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jun 10, 2023 at 9:27=E2=80=AFAM FUJITA Tomonori <tomo@exabit.dev> w=
+On Sat, Jun 10, 2023 at 9:35=E2=80=AFAM FUJITA Tomonori <tomo@exabit.dev> w=
 rote:
 >
-> +    /// Sets `ethtool_ops` of `net_device`.
-> +    pub fn set_ether_operations<U>(&mut self) -> Result
-> +    where
-> +        U: EtherOperations<D>,
-> +    {
-> +        if self.is_registered {
-> +            Err(code::EINVAL)
-> +        } else {
-> +            EtherOperationsAdapter::<U, D>::new().set_ether_ops(&mut sel=
-f.dev);
-> +            Ok(())
-> +        }
+> +/// Corresponds to the kernel's `struct net_device`.
+> +///
+> +/// # Safety
+> +///
+> +/// The kernel uses a `net_device` object with various functions like `s=
+truct net_device_ops`.
+> +/// This object is passed to Rust callbacks while these functions are ru=
+nning.
+> +/// The C API guarantees that `net_device` isn't released while this fun=
+ction is running.
+> +pub struct Device(*mut bindings::net_device);
 
-You may want to use early return style, like in C, i.e. `return Err(...);`.
+This is not a function :) So "while this function is running" does not
+make too much sense here.
 
-> +            T::get_ts_info(&mut dev, data, &mut info)?;
-> +            Ok(0)
+Also, this is a `struct`, so we do not use `# Safety` sections.
+Instead, you may want to give this struct a  `# Invariants` section,
+and explain what is guaranteed by this type.
 
-Can this be simplified to:
+Similarly for `SkBuff` below.
 
-    T::get_ts_info(&mut dev, data, &mut info)
-
-?
-
-> +    fn set_ether_ops(&self, dev: &mut Device) {
+> +    fn priv_data_ptr(netdev: *mut bindings::net_device) -> *const c_void=
+ {
 > +        // SAFETY: The safety requirement ensures that the pointer is va=
 lid.
-> +        unsafe {
-> +            (*dev.0).ethtool_ops =3D Self::build_ether_ops();
-> +        }
+> +        unsafe { core::ptr::read(bindings::netdev_priv(&mut *netdev) as =
+*const *const c_void) }
 > +    }
 
-Which safety requirement? Normally when we say "safety requirement",
-we are referring to the `# Safety` section on the current function
-(i.e. which would be `unsafe`). But this one is a safe function.
+Like in the other patch, there is no safety requirement in this
+function, so you can't use that to justify it.
 
-If you are referring to `Device`'s, then that is a `struct`, so it
-would have invariants, not safety requirements (I will leave a quick
-note there too).
+Even if this is a private function, it would be best if this is
+`unsafe`, then you can require callers to pass you a valid pointer --
+you already have a `SAFETY` comment in the callers anyway, and those
+are the ones that can actually claim that the pointer is valid.
 
-> +/// Sets up the info for software timestamping.
+> +// SAFETY: `Device` exposes the state, `D::Data` object across threads
+> +// but that type is required to be Send and Sync.
+> +unsafe impl Send for Device {}
+> +unsafe impl Sync for Device {}
+
+Please provide a `SAFETY` comment for each. See e.g. the ones we have
+for `ARef`.
+
+In addition, what is `D::Data` here? I guess you are referring to
+`DriverData::Data` somehow, but it is unclear what is `D` here.
+
+Also, please use Markdown in comments, not just documentation, to be
+consistent, e.g.
+
+    ... to be `Send` and `Sync`.
+
+> +/// # Safety
 > +///
-> +/// This can be [`Device`] method, but there are non ethernet devices.
-> +pub fn ethtool_op_get_ts_info(dev: &mut Device, info: &mut EthtoolTsInfo=
-) -> Result {
-> +    // SAFETY: The safety requirement ensures that the pointer is valid.
-> +    unsafe {
-> +        bindings::ethtool_op_get_ts_info(dev.0, info.0);
-> +    }
+> +/// The pointer to the `net_device` object is guaranteed to be valid unt=
+il
+> +/// the registration object is dropped.
+> +pub struct Registration<T: DeviceOperations<D>, D: DriverData> {
+> +    dev: Device,
+> +    is_registered: bool,
+> +    _p: PhantomData<(D, T)>,
+> +}
 
-Ditto here: there are no safety requirements in this function.
+Ditto about this being a `struct` and `# Safety`.
+
+Also, if it is valid until dropped, then it is "always" valid (as far
+as someone having such an object is concerned), so there is no need to
+say so.
+
+> +    fn drop(&mut self) {
+> +        // SAFETY: `dev` was allocated during initialization and guarant=
+eed to be valid.
+
+Do you mean `dev.0`?
+
+> +        // SAFETY: the kernel allocated the space for a pointer.
+
+Please capitalize to be consistent.
+
+> +        unsafe {
+> +            let priv_ptr =3D bindings::netdev_priv(ptr) as *mut *const c=
+_void;
+> +            core::ptr::write(priv_ptr, data.into_foreign());
+> +        }
+
+> +        ..unsafe { core::mem::MaybeUninit::<bindings::net_device_ops>::z=
+eroed().assume_init() }
+
+A comment on this would be nice. Also, missing `SAFETY` comment, even
+if it is a `const`.
+
+Thanks!
 
 Cheers,
 Miguel
