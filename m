@@ -2,81 +2,78 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63675C7EE2F
-	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 09:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30595C7EE29
+	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 09:52:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229907AbjFJJlE (ORCPT
+        id S229983AbjFJJwY (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 10 Jun 2023 05:41:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39424 "EHLO
+        Sat, 10 Jun 2023 05:52:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbjFJJlE (ORCPT
+        with ESMTP id S229649AbjFJJwX (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 10 Jun 2023 05:41:04 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 595102717;
-        Sat, 10 Jun 2023 02:41:03 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-bc5402aaf13so233512276.2;
-        Sat, 10 Jun 2023 02:41:03 -0700 (PDT)
+        Sat, 10 Jun 2023 05:52:23 -0400
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9237530F4
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 02:52:22 -0700 (PDT)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-56cf6f4211aso1885907b3.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 02:52:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686390062; x=1688982062;
+        d=gmail.com; s=20221208; t=1686390741; x=1688982741;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9zIC5ZgEXgktuPZa4JBqKMZrDinNOfIFKdwiJnFXNSk=;
-        b=Y4tIp8Qcuc4q82Tr9F6BzYdgIKfNZhYUuWbtlj/lcTx0SqrJDYax/fzSi4Fkv3TgfK
-         jKIf0ycZiA7MVtz3czctLItYBdYA92Ehd/2jzE9Rh4xtjCZ7+PhY04uH9mWXJ8Ul1dhz
-         Qy/z0m0gjOF3IdfXipC24g4q3+ZZQE43VRVX0iF2j6GcBTLZLNbUDosALw5KRbU/d6+y
-         HFL/0Xa+REbMNUjqMjZMKk7+znajI3fVx2cRhyMkyn6nf3PhRr5ZoLTwsOnCUfuFNsTK
-         mG+0LuNAeshfFAGwMSkCwUSSEzdvcORPY8TF5U7mlau8yaRn4pSflFajk9Uo8jRQ4ZKg
-         grhw==
+        bh=DGoALet3JGLl9hfH2Ws6ANGCDUJ4OjpD24mfV04r9+I=;
+        b=UEGsGMfsNDHB0+rES1CU7kbI+CCxP/c51LBHFEVhFReWBK+Fu9qJCbwxlDaQbqz/tD
+         EV56CZVxnwNa/2kSALGqmkCKrvunQs5KZgvAORdwEliYZlX7/Ijea91MLE7upbldLFkT
+         4VX6aS54VtIO2NFdJh7au/lnzuTvk6NC+JWBPwnQmxTTlwEI0apFrThjMvUUOlDsH8uc
+         wLdP7KDej6nVEGCDvP+oke5yC8rwKQgnqYB9lx+W7E3/ORhAz/zSL14/u/LjDW1OeKDg
+         xA3nOlKqfUna0fbzkoAG44g/ZVADzWZyA4EFBMAR4+2MYxK1OKa0w+FHVdXjdGgGSLdh
+         iNGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686390062; x=1688982062;
+        d=1e100.net; s=20221208; t=1686390741; x=1688982741;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9zIC5ZgEXgktuPZa4JBqKMZrDinNOfIFKdwiJnFXNSk=;
-        b=G1qCgAjVC/L/s/dFWlte7wT2ROWqMfxBg8TETGforzRlYT/2kkpPB6lP0vsW3xcJC0
-         u080rTnRDmfk2LXvuahbQVeNqNWF8MK1tRADR+ytO1vtOCVJ+yImO57drr/CWUhpl1+i
-         Kb16o+RXZ6pQeQOSDo1lG8A9YyAy79FGIMxkkjHmhX6o6EapRajB4kgzjRFh1nLc0t3H
-         N8vjtoJWxPlXGTt8qxjQ7PO85dKzIghiU2xfB6mC5YgUwureHey6dgl66Xbn5AuIc5ij
-         ce4KA6HqKDwpUu0wAAMP8LrW373IkU9J2oD1gzEotz/Hr0Oh58wZOMmBh0WE0AxbyvDT
-         ap6A==
-X-Gm-Message-State: AC+VfDxxKe8aMMCoK6+QPmt5vY3sZr7z2n7C/oaCU5avh2Z+K1szekR2
-        1Vmch3KioOztvgXu8SZ+ypQCx3co4Np+MWhC30k=
-X-Google-Smtp-Source: ACHHUZ5JrT3axbrosB4UESa5IECBdUJIwlIgOGvDREtn8P03EG549DmqdGdWx0CRvKQ5+B1LqpSssVHJLliKT0fzxvQ=
-X-Received: by 2002:a25:8481:0:b0:bc6:3fbc:1180 with SMTP id
- v1-20020a258481000000b00bc63fbc1180mr208146ybk.41.1686390062528; Sat, 10 Jun
- 2023 02:41:02 -0700 (PDT)
+        bh=DGoALet3JGLl9hfH2Ws6ANGCDUJ4OjpD24mfV04r9+I=;
+        b=URLLAbsgZxvJ5kVtzeApLs2qbg2+NpYIsCqaPCZ7AfmzTPL9MmVilRf0QIPxgE4kXp
+         dbKrqoEfvOXo5SFR74G26CpEi81SokqbMMJWOeDm9cS2/hmeMnjyg4basSuivYKdmdYf
+         rSWTqY3mPvABnEU3b4RKNuhhAjlxThavCeK6FNn3ihyp/SPVPlHD8mMSq5Rvfn9s+nrK
+         mx822FR2G6HfQQU3SwYC59yRvK7sKz1vYDh9wbSn/JfSgflp+0j//5wuVMsrLLezZ/Gt
+         vydYGwyB6GBGJ5tfWPWOm06FPgzTgOYLlKMABh+wSdOwfKLFQQbu9HFeEbfR6d0KcXUu
+         fQ+Q==
+X-Gm-Message-State: AC+VfDy8+NfD72sxT7WoW/5EiMz4f7hQ0H66NnMUNF7h98UXivs6We9f
+        cKuYbkEBt7ZRW4JUWanMmLtTtMMum6jHRQdBej8=
+X-Google-Smtp-Source: ACHHUZ6Z8qA/dG890qIR33EvUgBMKUJkHKrGdnSKP7Wa3ctShFwMJ0vkYvp/4igiw09lbiWhW+CeD0dJrzTzPGnzPk0=
+X-Received: by 2002:a0d:e481:0:b0:56c:f090:36eb with SMTP id
+ n123-20020a0de481000000b0056cf09036ebmr1093215ywe.36.1686390741186; Sat, 10
+ Jun 2023 02:52:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230609063118.24852-1-amiculas@cisco.com> <20230609-feldversuch-fixieren-fa141a2d9694@brauner>
- <ZIO7U4A1rkIXlDeO@moria.home.lan>
-In-Reply-To: <ZIO7U4A1rkIXlDeO@moria.home.lan>
+References: <01010188a42d5244-fffbd047-446b-4cbf-8a62-9c036d177276-000000@us-west-2.amazonses.com>
+In-Reply-To: <01010188a42d5244-fffbd047-446b-4cbf-8a62-9c036d177276-000000@us-west-2.amazonses.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 10 Jun 2023 11:40:50 +0200
-Message-ID: <CANiq72mGmeuERPjJLE-=crpjrB3qav5fOJ_dxGe-oK_y6h+7-A@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/80] Rust PuzzleFS filesystem driver
-To:     Kent Overstreet <kent.overstreet@linux.dev>
-Cc:     Christian Brauner <brauner@kernel.org>,
-        Ariel Miculas <amiculas@cisco.com>,
-        linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-mm@kvack.org
+Date:   Sat, 10 Jun 2023 11:52:10 +0200
+Message-ID: <CANiq72k09iAEhevUUpUpM=Yg=5MFEb92PhgaM7FPAU3hs0+QeQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] add abstractions for network device drivers
+To:     FUJITA Tomonori <tomo@exabit.dev>
+Cc:     rust-for-linux@vger.kernel.org, aliceryhl@google.com,
+        andrew@lunn.ch, FUJITA Tomonori <fujita.tomonori@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jun 10, 2023 at 2:12=E2=80=AFAM Kent Overstreet
-<kent.overstreet@linux.dev> wrote:
+On Sat, Jun 10, 2023 at 9:40=E2=80=AFAM FUJITA Tomonori <tomo@exabit.dev> w=
+rote:
 >
-> I'm of the opinion that Rust wrappers should generally live in the same
-> directories as the code they're wrapping. The Rust wrappers are unsafe
-> code that is intimately coupled with the C code they're creating safe
-> interfaces for, and the organizational structure should reflect that.
+> This patchset adds minimum abstractions for network device drivers and
+> Rust dummy network device driver, a simpler version of drivers/net/dummy.=
+c.
 
-+1, that is the plan, which also means `MAINTAINERS` does not need
-extra `F` fields etc.
+If these are intended as non-RFC patches, then please send these to
+the relevant maintainers/MLs too (see
+https://rust-for-linux.com/contributing#the-rust-subsystem).
 
 Cheers,
 Miguel
