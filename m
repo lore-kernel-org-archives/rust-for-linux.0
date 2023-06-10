@@ -2,98 +2,92 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7463FC7EE2F
-	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 13:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06D9CC77B7A
+	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 14:11:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232419AbjFJNVD (ORCPT
+        id S232875AbjFJOLr (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 10 Jun 2023 09:21:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48656 "EHLO
+        Sat, 10 Jun 2023 10:11:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230311AbjFJNVC (ORCPT
+        with ESMTP id S229487AbjFJOLq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 10 Jun 2023 09:21:02 -0400
-Received: from out-7.mta0.migadu.com (out-7.mta0.migadu.com [91.218.175.7])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2FD830E8
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 06:20:58 -0700 (PDT)
-Date:   Sat, 10 Jun 2023 09:20:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1686403256;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=xdyhC18NXQSByJOWQtlrcE/QiMaQzcPWM2b6tk8RVXs=;
-        b=M+ZMsZCz4KA7pFQtwInDdS9qF6uFpBGMxvynkp9kOafcaj3Na2xzt4rwLXelFD3sNb1c1r
-        JGqIulXTd0rF2IbTHsUhyrnxntQhC8F6GnN14wJwCYvWI1N/CFbso++uuNx5kqPIoTKKiQ
-        y3zX5PfLbzPZ3nuJcS2UoNYRGv/DalA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Kent Overstreet <kent.overstreet@linux.dev>
-To:     "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-Cc:     Ariel Miculas <amiculas@cisco.com>, rust-for-linux@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 31/80] rust: serde: add SPDX License Identifiers
-Message-ID: <ZIR4tVA43Pen0ULQ@moria.home.lan>
-References: <20230609063118.24852-1-amiculas@cisco.com>
- <20230609063118.24852-32-amiculas@cisco.com>
- <ZIPDCGM9HbPhR2yW@moria.home.lan>
- <87v8fvit4m.fsf@metaspace.dk>
+        Sat, 10 Jun 2023 10:11:46 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C24FD3A97
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 07:11:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=/3PGUBT38nBW+uTh3xzm6oYfIwYo3wRysFUzvdQdrNE=; b=fu1dGOLQeCYq6V3ggYNeRgIQK8
+        5ubv/IeBANSpep555WwPtGLxWbrSRTkz4PABGX7sTVIjPt3LGCO0UPbMZbsmIe4Vhp91576lP941N
+        1dvQIptvcMXDhKvodrSfwlQuBbD8+AJnQL2RaOXOQ9N0ppkKQx/Ozay65esZqMSDJsaM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1q7zJd-00FRO0-Dl; Sat, 10 Jun 2023 16:11:41 +0200
+Date:   Sat, 10 Jun 2023 16:11:41 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     FUJITA Tomonori <tomo@exabit.dev>
+Cc:     rust-for-linux@vger.kernel.org, aliceryhl@google.com,
+        FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v2 1/5] rust: core abstractions for network device drivers
+Message-ID: <18368b79-f204-4bc2-b591-859d3ddb22f1@lunn.ch>
+References: <20230610071848.3722492-1-tomo@exabit.dev>
+ <01010188a42d5319-9cd7b5ec-5b06-4d08-88cb-c2a82a8e3a0d-000000@us-west-2.amazonses.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87v8fvit4m.fsf@metaspace.dk>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <01010188a42d5319-9cd7b5ec-5b06-4d08-88cb-c2a82a8e3a0d-000000@us-west-2.amazonses.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jun 10, 2023 at 11:04:24AM +0200, Andreas Hindborg (Samsung) wrote:
-> 
-> Kent Overstreet <kent.overstreet@linux.dev> writes:
-> 
-> > On Fri, Jun 09, 2023 at 09:30:29AM +0300, Ariel Miculas wrote:
-> >> From: Miguel Ojeda <ojeda@kernel.org>
-> >> 
-> >> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> >> ---
-> >>  rust/serde/de/format.rs         | 2 ++
-> >>  rust/serde/de/ignored_any.rs    | 2 ++
-> >>  rust/serde/de/impls.rs          | 2 ++
-> >>  rust/serde/de/mod.rs            | 2 ++
-> >>  rust/serde/de/seed.rs           | 2 ++
-> >>  rust/serde/de/utf8.rs           | 2 ++
-> >>  rust/serde/de/value.rs          | 2 ++
-> >>  rust/serde/integer128.rs        | 2 ++
-> >>  rust/serde/lib.rs               | 2 ++
-> >>  rust/serde/macros.rs            | 2 ++
-> >>  rust/serde/private/de.rs        | 2 ++
-> >>  rust/serde/private/doc.rs       | 2 ++
-> >>  rust/serde/private/mod.rs       | 2 ++
-> >>  rust/serde/private/ser.rs       | 2 ++
-> >>  rust/serde/private/size_hint.rs | 2 ++
-> >>  rust/serde/ser/fmt.rs           | 2 ++
-> >>  rust/serde/ser/impls.rs         | 2 ++
-> >>  rust/serde/ser/impossible.rs    | 2 ++
-> >>  rust/serde/ser/mod.rs           | 2 ++
-> >>  rust/serde/std_error.rs         | 2 ++
-> >>  20 files changed, 40 insertions(+)
-> >
-> > Separately from that - are we sure we want to be pulling Serde into the
-> > kernel?
-> >
-> > Don't get me wrong, Serde is amazing - it's highly ergonomic, and makes
-> > a lot of compatibility issues just completely go away. It's
-> > impresssively well done.
-> >
-> > But it's a full json parser (are you using it in json mode here? it
-> 
-> I think the json capability lives in serde_json, so this is actually not
-> a full json parser.
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 81e80261d597..a91d2a99035b 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -23,10 +23,26 @@
+>  #include <linux/err.h>
+>  #include <linux/refcount.h>
+>  #include <linux/mutex.h>
+> +#include <linux/netdevice.h>
+> +#include <linux/skbuff.h>
+>  #include <linux/spinlock.h>
+>  #include <linux/sched/signal.h>
+>  #include <linux/wait.h>
+>  
+> +#ifdef CONFIG_NET
+> +void *rust_helper_netdev_priv(const struct net_device *dev)
+> +{
+> +	return netdev_priv(dev);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_netdev_priv);
+> +
+> +void rust_helper_skb_tx_timestamp(struct sk_buff *skb)
+> +{
+> +	skb_tx_timestamp(skb);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_skb_tx_timestamp);
 
-Good to know
+This question is probably due to me not knowing about rust. Why have
+these helpers? They don't appear to don't do anything.
 
-I don't think I'm the only one who's curious though - what's serde being
-used for here? On disk data structures of some kind?
+> +impl<D: DriverData, T: DeviceOperations<D>> Registration<T, D> {
+> +    /// Creates new instance of registration.
+> +    pub fn try_new(tx_queue_size: u32, rx_queue_size: u32, data: D::Data) -> Result<Self> {
+> +        // SAFETY: FFI call.
+> +        let ptr = from_err_ptr(unsafe {
+> +            bindings::alloc_etherdev_mqs(
+> +                core::mem::size_of::<*const c_void>() as i32,
+> +                tx_queue_size,
+> +                rx_queue_size,
+> +            )
 
-I'm probably not the only filesystem author eagerly waiting for the day
-when I can stop using carefully packed C structs for this, with all the
-sharp edges that entails...
+In the future, there might be some naming issues there. Not every
+network device in Linux is an Ethernet network device. Some network
+drivers will call alloc_netdev, or some other specialised
+allocator. 
+
+	   Andrew
