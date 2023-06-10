@@ -2,78 +2,67 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30595C7EE29
-	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 09:52:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99F5DC7EE2E
+	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 10:09:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229983AbjFJJwY (ORCPT
+        id S229649AbjFJKJX (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 10 Jun 2023 05:52:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41086 "EHLO
+        Sat, 10 Jun 2023 06:09:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbjFJJwX (ORCPT
+        with ESMTP id S229483AbjFJKJW (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 10 Jun 2023 05:52:23 -0400
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9237530F4
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 02:52:22 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-56cf6f4211aso1885907b3.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 02:52:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686390741; x=1688982741;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DGoALet3JGLl9hfH2Ws6ANGCDUJ4OjpD24mfV04r9+I=;
-        b=UEGsGMfsNDHB0+rES1CU7kbI+CCxP/c51LBHFEVhFReWBK+Fu9qJCbwxlDaQbqz/tD
-         EV56CZVxnwNa/2kSALGqmkCKrvunQs5KZgvAORdwEliYZlX7/Ijea91MLE7upbldLFkT
-         4VX6aS54VtIO2NFdJh7au/lnzuTvk6NC+JWBPwnQmxTTlwEI0apFrThjMvUUOlDsH8uc
-         wLdP7KDej6nVEGCDvP+oke5yC8rwKQgnqYB9lx+W7E3/ORhAz/zSL14/u/LjDW1OeKDg
-         xA3nOlKqfUna0fbzkoAG44g/ZVADzWZyA4EFBMAR4+2MYxK1OKa0w+FHVdXjdGgGSLdh
-         iNGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686390741; x=1688982741;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DGoALet3JGLl9hfH2Ws6ANGCDUJ4OjpD24mfV04r9+I=;
-        b=URLLAbsgZxvJ5kVtzeApLs2qbg2+NpYIsCqaPCZ7AfmzTPL9MmVilRf0QIPxgE4kXp
-         dbKrqoEfvOXo5SFR74G26CpEi81SokqbMMJWOeDm9cS2/hmeMnjyg4basSuivYKdmdYf
-         rSWTqY3mPvABnEU3b4RKNuhhAjlxThavCeK6FNn3ihyp/SPVPlHD8mMSq5Rvfn9s+nrK
-         mx822FR2G6HfQQU3SwYC59yRvK7sKz1vYDh9wbSn/JfSgflp+0j//5wuVMsrLLezZ/Gt
-         vydYGwyB6GBGJ5tfWPWOm06FPgzTgOYLlKMABh+wSdOwfKLFQQbu9HFeEbfR6d0KcXUu
-         fQ+Q==
-X-Gm-Message-State: AC+VfDy8+NfD72sxT7WoW/5EiMz4f7hQ0H66NnMUNF7h98UXivs6We9f
-        cKuYbkEBt7ZRW4JUWanMmLtTtMMum6jHRQdBej8=
-X-Google-Smtp-Source: ACHHUZ6Z8qA/dG890qIR33EvUgBMKUJkHKrGdnSKP7Wa3ctShFwMJ0vkYvp/4igiw09lbiWhW+CeD0dJrzTzPGnzPk0=
-X-Received: by 2002:a0d:e481:0:b0:56c:f090:36eb with SMTP id
- n123-20020a0de481000000b0056cf09036ebmr1093215ywe.36.1686390741186; Sat, 10
- Jun 2023 02:52:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <01010188a42d5244-fffbd047-446b-4cbf-8a62-9c036d177276-000000@us-west-2.amazonses.com>
-In-Reply-To: <01010188a42d5244-fffbd047-446b-4cbf-8a62-9c036d177276-000000@us-west-2.amazonses.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 10 Jun 2023 11:52:10 +0200
-Message-ID: <CANiq72k09iAEhevUUpUpM=Yg=5MFEb92PhgaM7FPAU3hs0+QeQ@mail.gmail.com>
+        Sat, 10 Jun 2023 06:09:22 -0400
+Received: from a27-24.smtp-out.us-west-2.amazonses.com (a27-24.smtp-out.us-west-2.amazonses.com [54.240.27.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC6F530D7
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 03:09:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=s25kmyuhzvo7troimxqpmtptpemzlc6l; d=exabit.dev; t=1686391760;
+        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding;
+        bh=815zhhohGE1ypD4UVx8iMUgqM5YRs33QOC3aP4va8kU=;
+        b=cPbwoAPi48xlxfhNJAvDPmfpuySo/0BY/0PKWnNYGwRtlzdj7MDxGsAXpMtIdHeH
+        9416wuJvjW0aCToZdiW/4sMy1WuugatBtDuIz9sztk8UkZ/OOcpBfelruKhUMR7DNJt
+        9DwhvjVnSW9hjK+oZWTb68MiLs+VyUAuCf6YXH0KdLuAHg2+T44M7IFeivBlnpqkGnf
+        cXF3vSSvjqK4nvHh3UThCguujbUER9meHcbg2T5tmOPrHuFxm4z3lt3DVA+r2WCW6Ki
+        SkQOyHDXITN9tjuHAmU8FMo/h/2caQERqfK9dvLnUuhA9OB6dCNiqJoDLWJ+kea1UwZ
+        ZSVOGuaCWQ==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1686391760;
+        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+        bh=815zhhohGE1ypD4UVx8iMUgqM5YRs33QOC3aP4va8kU=;
+        b=PtPOGlAlB0673hOPEHf+xdoJMl9nBtOnTfrlOaC08HBh3a07oz1aTVE5x8kMiauk
+        A1XOtkCcLwobpNdG09iyrCrMdU6K1sNAiGq8+vOUSUwKaAHGaoMCL2l9gUi1uNNNlDG
+        eGiRBbPqSinLV1h9r0oEZ3oq7oFbndZXUmxo/OK0=
+Date:   Sat, 10 Jun 2023 10:09:20 +0000
+Message-ID: <01010188a4c8250d-fd7d7649-8aff-494c-bd9d-dc3a21fec9ae-000000@us-west-2.amazonses.com>
+To:     miguel.ojeda.sandonis@gmail.com
+Cc:     tomo@exabit.dev, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com, andrew@lunn.ch, fujita.tomonori@gmail.com,
+        fujita.tomonori@gmail.com
 Subject: Re: [PATCH v2 0/5] add abstractions for network device drivers
-To:     FUJITA Tomonori <tomo@exabit.dev>
-Cc:     rust-for-linux@vger.kernel.org, aliceryhl@google.com,
-        andrew@lunn.ch, FUJITA Tomonori <fujita.tomonori@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From:   FUJITA Tomonori <tomo@exabit.dev>
+In-Reply-To: <CANiq72k09iAEhevUUpUpM=Yg=5MFEb92PhgaM7FPAU3hs0+QeQ@mail.gmail.com>
+References: <01010188a42d5244-fffbd047-446b-4cbf-8a62-9c036d177276-000000@us-west-2.amazonses.com>
+        <CANiq72k09iAEhevUUpUpM=Yg=5MFEb92PhgaM7FPAU3hs0+QeQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
+Feedback-ID: 1.us-west-2.j0GTvY5MHQQ5Spu+i4ZGzzYI1gDE7m7iuMEacWMZbe8=:AmazonSES
+X-SES-Outgoing: 2023.06.10-54.240.27.24
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jun 10, 2023 at 9:40=E2=80=AFAM FUJITA Tomonori <tomo@exabit.dev> w=
-rote:
->
-> This patchset adds minimum abstractions for network device drivers and
-> Rust dummy network device driver, a simpler version of drivers/net/dummy.=
-c.
-
-If these are intended as non-RFC patches, then please send these to
-the relevant maintainers/MLs too (see
-https://rust-for-linux.com/contributing#the-rust-subsystem).
-
-Cheers,
-Miguel
+SGksDQoNCk9uIFNhdCwgMTAgSnVuIDIwMjMgMTE6NTI6MTAgKzAyMDANCk1pZ3VlbCBPamVkYSA8
+bWlndWVsLm9qZWRhLnNhbmRvbmlzQGdtYWlsLmNvbT4gd3JvdGU6DQoNCj4gT24gU2F0LCBKdW4g
+MTAsIDIwMjMgYXQgOTo0MOKAr0FNIEZVSklUQSBUb21vbm9yaSA8dG9tb0BleGFiaXQuZGV2PiB3
+cm90ZToNCj4+DQo+PiBUaGlzIHBhdGNoc2V0IGFkZHMgbWluaW11bSBhYnN0cmFjdGlvbnMgZm9y
+IG5ldHdvcmsgZGV2aWNlIGRyaXZlcnMgYW5kDQo+PiBSdXN0IGR1bW15IG5ldHdvcmsgZGV2aWNl
+IGRyaXZlciwgYSBzaW1wbGVyIHZlcnNpb24gb2YgZHJpdmVycy9uZXQvZHVtbXkuYy4NCj4gDQo+
+IElmIHRoZXNlIGFyZSBpbnRlbmRlZCBhcyBub24tUkZDIHBhdGNoZXMsIHRoZW4gcGxlYXNlIHNl
+bmQgdGhlc2UgdG8NCj4gdGhlIHJlbGV2YW50IG1haW50YWluZXJzL01McyB0b28gKHNlZQ0KPiBo
+dHRwczovL3J1c3QtZm9yLWxpbnV4LmNvbS9jb250cmlidXRpbmcjdGhlLXJ1c3Qtc3Vic3lzdGVt
+KS4NCg0KSSB0aGluayB0aGlzIHYyIGlzIHJlYWR5IGZvciBuZXRkZXYgYnV0IHNlbnQgdG8gaGVy
+ZSBqdXN0IHRvIG1ha2UNCnN1cmUuDQoNCklmIHRoaXMgbG9va3MgZmluZSwgSSdsbCBzdWJtaXQg
+dGhpcyB0byBuZXRkZXYgYW5kIHJ1c3QtZm9yLWxpbnV4DQphZ2Fpbi4gSSdkIGFwcHJlY2lhdGUg
+YW55IGZlZWRiYWNrLg0KDQp0aGFua3MsDQo=
