@@ -2,84 +2,82 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53978C77B7A
-	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 11:19:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 016BDC7EE2E
+	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 11:24:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229666AbjFJLTn (ORCPT
+        id S229714AbjFJLYi (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 10 Jun 2023 07:19:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54380 "EHLO
+        Sat, 10 Jun 2023 07:24:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbjFJLTm (ORCPT
+        with ESMTP id S229483AbjFJLYi (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 10 Jun 2023 07:19:42 -0400
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CFA53598
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 04:19:41 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-56cf6f4211aso2373147b3.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 04:19:41 -0700 (PDT)
+        Sat, 10 Jun 2023 07:24:38 -0400
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CF883598
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 04:24:37 -0700 (PDT)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-56ce96063bcso5325407b3.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 04:24:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686395980; x=1688987980;
+        d=gmail.com; s=20221208; t=1686396276; x=1688988276;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=85lnm7EpbfdyPMqUDDckXuNVmEOYXizFOsQzIv6KFak=;
-        b=WZVObSw3fcCCPcYJGfvVLutI5uFOh0jDRjFraUqORiFSDnQfEMk5Gy9z17rNG7/MFE
-         f/dKfyg8WKJS+idzX4Cgw1mQus1YXiDBb5tA3efHXBzyN1MCCevFpC5diCWmPwF6QSdi
-         s+owPRC0HNVd47/avA+frhaKYSJMh9rjme5LC9klSPB/3EN+b354UYRGBQZgm/2wA3XY
-         MpMCCEgv6KWChmvDSPj2hHmrQycFh+5CUQozCVi9NjBktmH1/nnw1wzPfxpCehNgiTlx
-         dnejar66Sa2EDOdoP2bkgIodXqNiz5XicWCvREC+aRtpaRDZ2RgdKm27IiKihm630DnH
-         C62Q==
+        bh=nn+vrSiz/JB0fDNiZjyRzQzmtLZqvEN1uJ7QKVYu+Hc=;
+        b=BJfJ/MIaoLG9wB/ookezVMaoPZOFrulzxVnS9zUa1jBp+vHBVkuqhey60MaLcMBG13
+         tdhdCHPCYakFQMGWwfbXclHbwqrFH0U8SdQK5WcXFjh02ZAyBURd2V+cvAYhySpvo85i
+         AiLpuZ5n8rDb56YGj5EhA6Bcmo4RSBOExp0eb5/hYjx1e/b6NTLGMnAuNXkcK/pS1l/m
+         Al7iV9qQ8FSIsF2uCu/ZG61ODGF7Zn7e1mTcQ6sKqX2NMGE+MBnqmoE5//GQ+eUAdbSs
+         /VqCPT6Cp+fCc4CbK/NUj28tu5BW7oQeSAos8sLb6KsYy4bvEdhSTQyyuMqtJ43bafB8
+         1v7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686395980; x=1688987980;
+        d=1e100.net; s=20221208; t=1686396276; x=1688988276;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=85lnm7EpbfdyPMqUDDckXuNVmEOYXizFOsQzIv6KFak=;
-        b=lYC1NHVxXFkXc7J2D4lLTZXCwM1w+mWqFYQE8DvJn8X06Ls5G41UYnEF5bpPVmavJ2
-         8DX35HckcCnmPm+V6Jl3mHfhS1qrMKu7PTuTZopi5XA9+EH/e7TSE+ost6KQQmNNlT7S
-         GicCVHTv35qZ2yj8qgy8Bq8lva38ysKp9hCM0vPkhM9FvoI0K7CwTvqT3pysJHQ1waNP
-         JvbTukpaM8HZlmanZP44n6uFsQku3wWzTJvtXj+xIkG3eghxMBAzh2x7juhYyqXDLlI4
-         IcTpu2ecZhgTARYPnZv65tu8gOsvvWNc7fLXc6ZBtvIF0yXhXQM88h/WITD/fq4zDqeU
-         W/iQ==
-X-Gm-Message-State: AC+VfDz9kp3I3xcr6l4rI35lg9zpzg1V12E3nkCkot4GFy80NeatVrB8
-        29GYyfNnV+AJ+3xdKrXZrLcvyhXK2izOdJtbi3A=
-X-Google-Smtp-Source: ACHHUZ56gLsWc0OSQiigyj3KnNeSObF1p8P3CcsCj11e5WmOzDUcwYnZj2VW+e9rZ80tIfvLi9lRTyFpcDdJ1skpzsM=
-X-Received: by 2002:a0d:e481:0:b0:56c:f090:36eb with SMTP id
- n123-20020a0de481000000b0056cf09036ebmr1285637ywe.36.1686395980275; Sat, 10
- Jun 2023 04:19:40 -0700 (PDT)
+        bh=nn+vrSiz/JB0fDNiZjyRzQzmtLZqvEN1uJ7QKVYu+Hc=;
+        b=ir/fL1EIxpnxq8yF9BbG0az+7WTAgAiST7WOIoRlNmKddn0AR1f4V5ABsQDv9X6fgM
+         v82Gqy6rW9Il2ftb7t4XIwMrntXX0NUxnbGUzq91qNtgfJTdwRrHAHqvTG+U3QpJjB3x
+         fkFhWkGeDAttM36lpCtotv0jhnLf97zcofh+R0MQh2NLYk97sTFLCJke78cd4VJ2eAj/
+         kr7hOn0RSWzIbfYmla9zk5NemQsl6+YjFmQWG/u9Sp+RTcI4oTF+zpq1SVtnclMlSvtt
+         ROpOJeZ7flFJExWJQ+jQWHUlo7PGXhJsl0zID9N0F9hR0sGUG+YVgl2TO4qCE3DIedL2
+         OAQQ==
+X-Gm-Message-State: AC+VfDxx0zxByUsCPvM3Zt0q8w81t6yO4reDAk5z+3wHVn6VL+A6uiZ8
+        0BrJz/qfUk/i7n9NcMHV/ihNyLLzCAkFwQg0ZZ0=
+X-Google-Smtp-Source: ACHHUZ4ffTTFt3DJC0OuRELh8/PCYREx5BbpbODubXlGqjv+MVVXFpiwKrV/1y2zJ5YmdCQEBYDNzLkrseZ5IeUgUK4=
+X-Received: by 2002:a0d:dbd3:0:b0:561:80b2:53d8 with SMTP id
+ d202-20020a0ddbd3000000b0056180b253d8mr4854490ywe.20.1686396276358; Sat, 10
+ Jun 2023 04:24:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <CH0PR11MB5299887C6922D739766FC7A5CD51A@CH0PR11MB5299.namprd11.prod.outlook.com>
- <87r0qjisrd.fsf@metaspace.dk> <CANiq72nrmZkTHgXSpeCeueSXeQ+oFfp89BZC0a_pRpMbb+txRw@mail.gmail.com>
- <87mt17ipd5.fsf@metaspace.dk>
-In-Reply-To: <87mt17ipd5.fsf@metaspace.dk>
+References: <01010188a42d5244-fffbd047-446b-4cbf-8a62-9c036d177276-000000@us-west-2.amazonses.com>
+ <CANiq72k09iAEhevUUpUpM=Yg=5MFEb92PhgaM7FPAU3hs0+QeQ@mail.gmail.com> <01010188a4c8250d-fd7d7649-8aff-494c-bd9d-dc3a21fec9ae-000000@us-west-2.amazonses.com>
+In-Reply-To: <01010188a4c8250d-fd7d7649-8aff-494c-bd9d-dc3a21fec9ae-000000@us-west-2.amazonses.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 10 Jun 2023 13:19:29 +0200
-Message-ID: <CANiq72kfc7rLR-zFQhontV8X6YXOascci2wRPzZYy2gVGzFFgg@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/80] Rust PuzzleFS filesystem driver
-To:     "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        "Ariel Miculas (amiculas)" <amiculas@cisco.com>,
-        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Date:   Sat, 10 Jun 2023 13:24:25 +0200
+Message-ID: <CANiq72kLt1uKKT3ZfxT9at7v2VeaACckMcGf1p+ni4vQmZM4xw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] add abstractions for network device drivers
+To:     FUJITA Tomonori <tomo@exabit.dev>
+Cc:     rust-for-linux@vger.kernel.org, aliceryhl@google.com,
+        andrew@lunn.ch, fujita.tomonori@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jun 10, 2023 at 12:27=E2=80=AFPM Andreas Hindborg (Samsung)
-<nmi@metaspace.dk> wrote:
+On Sat, Jun 10, 2023 at 12:09=E2=80=AFPM FUJITA Tomonori <tomo@exabit.dev> =
+wrote:
 >
-> I got it. What I was trying to get at is: can we fix the rust-for-linux
-> list? Why is there a size limit? Can we increase it? Better to fix the
-> issue at the source than to add a workaround that people are bound to
-> forget before it is too late.
+> I think this v2 is ready for netdev but sent to here just to make
+> sure.
 
-I have asked the admins about this. Back in August, the recommendation
-I got was to Cc all patches to patches@lists.linux.dev. Also, the vger
-services were planned to be transferred, which may have helped with
-the size limits (not sure), but I was told that effort appeared to
-have stalled.
+That is fine (and thanks!), but for the future, please explicitly
+mention this in the cover letter and mark them as RFC; otherwise other
+maintainers/lists may think they are actual patches (it happened
+before :).
+
+Even for Rust-subsystem-only patches, it is a good idea to do so, so
+that we know which ones are intended for review purposes only.
 
 Cheers,
 Miguel
