@@ -2,76 +2,57 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26973C77B7A
-	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 15:35:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D356AC77B7A
+	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 16:48:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233380AbjFJPf1 (ORCPT
+        id S229627AbjFJQsF (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 10 Jun 2023 11:35:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54826 "EHLO
+        Sat, 10 Jun 2023 12:48:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233128AbjFJPf1 (ORCPT
+        with ESMTP id S229620AbjFJQsF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 10 Jun 2023 11:35:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B5241FDE;
-        Sat, 10 Jun 2023 08:35:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26A9B60C5A;
-        Sat, 10 Jun 2023 15:35:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D158C433EF;
-        Sat, 10 Jun 2023 15:35:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686411325;
-        bh=SOMuFTGxbfhkKLDTX+IKvHvZ9WDdJT5FPXR+FGxWZx0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NHyXXmTi8i5XTZ7E8IBk/jsy+zx2iA2Vn+yGQTyV+qxfP9ED0U9TM1o/YKI28+sDs
-         S8gyTE/Z/kvuKxOqyWYI62H7DN1zNxptYHxNfDLCDY2866umNuL5TmwxkAMbkygcTf
-         zP2exY9NCFB3Sbn3gTzj0htWUzybqwMpdPItCEqw=
-Date:   Sat, 10 Jun 2023 17:35:22 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Qingsong Chen <changxian.cqs@antgroup.com>
-Cc:     linux-kernel@vger.kernel.org,
-        =?utf-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] Rust scatterlist abstractions
-Message-ID: <2023061001-immovable-mongoose-7546@gregkh>
-References: <20230610104909.3202958-1-changxian.cqs@antgroup.com>
- <2023061017-usable-bountiful-3f59@gregkh>
+        Sat, 10 Jun 2023 12:48:05 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B8EC4
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 09:48:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=3h/RI0rVNzrYAGcvj8vCeETmdvzgyEqRjg+pfQ8/XmI=; b=KzblFpRdV1slF1LbMFj3gmP5on
+        WwQgPA4pwGjevV1oMKPhjfbOFpkt0Nt8euZjrFNWeY5sZtOtkQvLtbJkJ4II7XWoAU0/CFZp4KvQO
+        EOeR2nn80dW8IWsW1UEdkYUzsFpyBdCT6ASTIEiH227ZyVFRx8FzC3db5REDeDIH0TJ8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1q81ku-00FRvZ-0i; Sat, 10 Jun 2023 18:48:00 +0200
+Date:   Sat, 10 Jun 2023 18:48:00 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     FUJITA Tomonori <tomo@exabit.dev>
+Cc:     rust-for-linux@vger.kernel.org, aliceryhl@google.com,
+        FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v2 2/5] rust: add support for ethernet operations
+Message-ID: <60618e7d-10ed-489d-a6cf-52005a2f918d@lunn.ch>
+References: <20230610071848.3722492-1-tomo@exabit.dev>
+ <01010188a42d53e0-2d47cf6b-9c3a-4e94-9322-0935d0e5dcd4-000000@us-west-2.amazonses.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2023061017-usable-bountiful-3f59@gregkh>
+In-Reply-To: <01010188a42d53e0-2d47cf6b-9c3a-4e94-9322-0935d0e5dcd4-000000@us-west-2.amazonses.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jun 10, 2023 at 05:33:47PM +0200, Greg KH wrote:
-> On Sat, Jun 10, 2023 at 06:49:06PM +0800, Qingsong Chen wrote:
-> > Hi All!
-> > 
-> > This is a version of scatterlist abstractions for Rust drivers.
-> > 
-> > Scatterlist is used for efficient management of memory buffers, which is
-> > essential for many kernel-level operations such as Direct Memory Access
-> > (DMA) transfers and crypto APIs.
-> > 
-> > This patch should be a good start to introduce the crypto APIs for Rust
-> > drivers and to develop cipher algorithms in Rust later.
-> 
-> I thought we were getting rid of the scatter list api for the crypto
-> drivers, so this shouldn't be needed going forward, right?  Why not just
-> use the direct apis instead?
+> +/// Corresponds to the kernel's `struct ethtool_ts_info`.
+> +pub struct EthtoolTsInfo(*mut bindings::ethtool_ts_info);
+> +
+> +/// Sets up the info for software timestamping.
+> +///
+> +/// This can be [`Device`] method, but there are non ethernet devices.
+> +pub fn ethtool_op_get_ts_info(dev: &mut Device, info: &mut EthtoolTsInfo) -> Result {
 
-See https://lore.kernel.org/r/ZH2hgrV6po9dkxi+@gondor.apana.org.au for
-the details of that (sorry I forgot the link first time...)
+Just an FYI: Despite it being called ethtool, it is not limited to
+ethernet devices. e.g. CAN devices make use of ethtool.
 
-greg k-h
+	 Andrew
