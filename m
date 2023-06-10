@@ -2,82 +2,68 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 016BDC7EE2E
-	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 11:24:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ACC97C7EE2F
+	for <rust-for-linux@archiver.kernel.org>; Sat, 10 Jun 2023 13:18:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbjFJLYi (ORCPT
+        id S233126AbjFJNSa (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 10 Jun 2023 07:24:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55314 "EHLO
+        Sat, 10 Jun 2023 09:18:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjFJLYi (ORCPT
+        with ESMTP id S230311AbjFJNS3 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 10 Jun 2023 07:24:38 -0400
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CF883598
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 04:24:37 -0700 (PDT)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-56ce96063bcso5325407b3.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 04:24:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686396276; x=1688988276;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nn+vrSiz/JB0fDNiZjyRzQzmtLZqvEN1uJ7QKVYu+Hc=;
-        b=BJfJ/MIaoLG9wB/ookezVMaoPZOFrulzxVnS9zUa1jBp+vHBVkuqhey60MaLcMBG13
-         tdhdCHPCYakFQMGWwfbXclHbwqrFH0U8SdQK5WcXFjh02ZAyBURd2V+cvAYhySpvo85i
-         AiLpuZ5n8rDb56YGj5EhA6Bcmo4RSBOExp0eb5/hYjx1e/b6NTLGMnAuNXkcK/pS1l/m
-         Al7iV9qQ8FSIsF2uCu/ZG61ODGF7Zn7e1mTcQ6sKqX2NMGE+MBnqmoE5//GQ+eUAdbSs
-         /VqCPT6Cp+fCc4CbK/NUj28tu5BW7oQeSAos8sLb6KsYy4bvEdhSTQyyuMqtJ43bafB8
-         1v7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686396276; x=1688988276;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nn+vrSiz/JB0fDNiZjyRzQzmtLZqvEN1uJ7QKVYu+Hc=;
-        b=ir/fL1EIxpnxq8yF9BbG0az+7WTAgAiST7WOIoRlNmKddn0AR1f4V5ABsQDv9X6fgM
-         v82Gqy6rW9Il2ftb7t4XIwMrntXX0NUxnbGUzq91qNtgfJTdwRrHAHqvTG+U3QpJjB3x
-         fkFhWkGeDAttM36lpCtotv0jhnLf97zcofh+R0MQh2NLYk97sTFLCJke78cd4VJ2eAj/
-         kr7hOn0RSWzIbfYmla9zk5NemQsl6+YjFmQWG/u9Sp+RTcI4oTF+zpq1SVtnclMlSvtt
-         ROpOJeZ7flFJExWJQ+jQWHUlo7PGXhJsl0zID9N0F9hR0sGUG+YVgl2TO4qCE3DIedL2
-         OAQQ==
-X-Gm-Message-State: AC+VfDxx0zxByUsCPvM3Zt0q8w81t6yO4reDAk5z+3wHVn6VL+A6uiZ8
-        0BrJz/qfUk/i7n9NcMHV/ihNyLLzCAkFwQg0ZZ0=
-X-Google-Smtp-Source: ACHHUZ4ffTTFt3DJC0OuRELh8/PCYREx5BbpbODubXlGqjv+MVVXFpiwKrV/1y2zJ5YmdCQEBYDNzLkrseZ5IeUgUK4=
-X-Received: by 2002:a0d:dbd3:0:b0:561:80b2:53d8 with SMTP id
- d202-20020a0ddbd3000000b0056180b253d8mr4854490ywe.20.1686396276358; Sat, 10
- Jun 2023 04:24:36 -0700 (PDT)
+        Sat, 10 Jun 2023 09:18:29 -0400
+Received: from out-28.mta1.migadu.com (out-28.mta1.migadu.com [IPv6:2001:41d0:203:375::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1012C30E4
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jun 2023 06:18:28 -0700 (PDT)
+Date:   Sat, 10 Jun 2023 09:18:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1686403105;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=z05A/9lvC4NdpvLtVloPqSA6Labr6OOGCW/+2DhrChw=;
+        b=ucSUWKkBWxbt2padhIdxlQWXSMQIvaHlufd56jh1GLYGCvQI3qRkeFuVIHgMfhpW5+Z9AX
+        vl9oZv1+ULx0g0M+LPuUQDFPKhlUxEtDXy8Mgzyv5VizhR0xWWYkRfYJFlc6xMG0y7gwO+
+        sv+H2w3pCX+fdK8HIjmMM18mg2+Gguk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Kent Overstreet <kent.overstreet@linux.dev>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Ariel Miculas <amiculas@cisco.com>, rust-for-linux@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>, jejb@linux.ibm.com
+Subject: Re: [PATCH 31/80] rust: serde: add SPDX License Identifiers
+Message-ID: <ZIR4HF/GygRNAhbv@moria.home.lan>
+References: <20230609063118.24852-1-amiculas@cisco.com>
+ <20230609063118.24852-32-amiculas@cisco.com>
+ <ZIPBrFkKosGVArBi@moria.home.lan>
+ <2023061014-candy-dedicator-d946@gregkh>
 MIME-Version: 1.0
-References: <01010188a42d5244-fffbd047-446b-4cbf-8a62-9c036d177276-000000@us-west-2.amazonses.com>
- <CANiq72k09iAEhevUUpUpM=Yg=5MFEb92PhgaM7FPAU3hs0+QeQ@mail.gmail.com> <01010188a4c8250d-fd7d7649-8aff-494c-bd9d-dc3a21fec9ae-000000@us-west-2.amazonses.com>
-In-Reply-To: <01010188a4c8250d-fd7d7649-8aff-494c-bd9d-dc3a21fec9ae-000000@us-west-2.amazonses.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Sat, 10 Jun 2023 13:24:25 +0200
-Message-ID: <CANiq72kLt1uKKT3ZfxT9at7v2VeaACckMcGf1p+ni4vQmZM4xw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] add abstractions for network device drivers
-To:     FUJITA Tomonori <tomo@exabit.dev>
-Cc:     rust-for-linux@vger.kernel.org, aliceryhl@google.com,
-        andrew@lunn.ch, fujita.tomonori@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2023061014-candy-dedicator-d946@gregkh>
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jun 10, 2023 at 12:09=E2=80=AFPM FUJITA Tomonori <tomo@exabit.dev> =
-wrote:
->
-> I think this v2 is ready for netdev but sent to here just to make
-> sure.
+On Sat, Jun 10, 2023 at 08:43:10AM +0200, Greg KH wrote:
+> On Fri, Jun 09, 2023 at 08:19:56PM -0400, Kent Overstreet wrote:
+> > Hang on, are we applying our own local modifications to code vendored
+> > from an outside repository?
+> 
+> For adding a single license line, I think it's going to be ok, those are
+> trivial to handle :)
 
-That is fine (and thanks!), but for the future, please explicitly
-mention this in the cover letter and mark them as RFC; otherwise other
-maintainers/lists may think they are actual patches (it happened
-before :).
+They'll still be lost when the package is updated from upstream. Just do
+a proper upstream patch - I see no reason why SPDX identifiers wouldn't
+be accepted by the host project.
 
-Even for Rust-subsystem-only patches, it is a good idea to do so, so
-that we know which ones are intended for review purposes only.
+> 
+> > We gotta stop doing this - this turns our version into an unsupported
+> > fork. What do we then do when we need to merge in security updates from
+> > the upstream repository?
+> 
+> Same as we do for other parts of the kernel that are copies of other
+> codebases, we merge them in as needed.
 
-Cheers,
-Miguel
+Yeah, and that workflow still leaves something to be desired...
