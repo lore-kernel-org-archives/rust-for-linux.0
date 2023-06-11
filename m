@@ -2,33 +2,33 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30B47C77B7A
-	for <rust-for-linux@archiver.kernel.org>; Sun, 11 Jun 2023 16:01:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1D88C7EE2E
+	for <rust-for-linux@archiver.kernel.org>; Sun, 11 Jun 2023 16:10:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233813AbjFKQB1 (ORCPT
+        id S229677AbjFKQKi (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 11 Jun 2023 12:01:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33548 "EHLO
+        Sun, 11 Jun 2023 12:10:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbjFKQBX (ORCPT
+        with ESMTP id S229477AbjFKQKh (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 11 Jun 2023 12:01:23 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78B22E9
-        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jun 2023 09:01:18 -0700 (PDT)
-Date:   Sun, 11 Jun 2023 16:01:05 +0000
+        Sun, 11 Jun 2023 12:10:37 -0400
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A95EDA
+        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jun 2023 09:10:33 -0700 (PDT)
+Date:   Sun, 11 Jun 2023 16:10:20 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1686499276; x=1686758476;
-        bh=kYAUFYLzaiAX52hQfJ1MUOd0KMtIuNz3QI77YeCuRe4=;
+        s=protonmail; t=1686499831; x=1686759031;
+        bh=zxyFrqdpRxMRW9fbF7nGynBR2bPyNahwL3W/ZczMeg8=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=Df1dBfWS+x56HZNpJC1DD90F2+NBfpRlehzNABiikAp5kvYzFP67yUtDPdVXQW0rw
-         e0axP3VrTTCwZoGEKOwGjCmUR/99oF/RenObRZEob935GlsGPsQnPvxyqB39Mw00fT
-         eGmUUCzHxd88VB8tbkyLDfNxweoCFLzicxsfjItwSlEZlUscDJ5/pjlPUTJ3WqQx54
-         n8vZ4nOlzViOhWac7cxOteuxnguSBzRh7JRlAeAYaKnZfoFl3y4/eBTxa4LwW7jh+T
-         W82aYRLp7DjjAhj0bCW7RGoxwAdM8HO7m6Z9G5m0EQYqgQxNYW8ADqKB5pun0tGCav
-         psKcGCwgoOcyw==
+        b=kMHtDsmLgAV7qBQf+NxbbuUW6ydtGPd5f0mNAVeBN62NXb/xcPqiNYh49/l4Pe0i3
+         ZxCGYQbbNfsLA/2eMwK/gitrJNdCrVXmLC2w/wqN/lamjlg/4YnHdNBQ9v40BIoWwH
+         KIl/jIlD59nvfw5gbgnY5EhHggU1NNxYYciKhuBCQ8kmHKwvzeVxfWc1350Y9yevuk
+         1m/vPkif3VwEIBueJ4FGuawkiTXmoRvmt0irKlVtRvwOhah6oLXviuffZWgkXVnWUU
+         kW6qkyWYYVglHTFouc6h+L3iCumW89f92Grb4qOApMmN/gPMtvu/t8ch47Tk8QGSzR
+         tCzvkUb4QceDg==
 To:     Alice Ryhl <aliceryhl@google.com>
 From:   Benno Lossin <benno.lossin@proton.me>
 Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
@@ -39,10 +39,10 @@ Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v2 6/8] rust: workqueue: implement `WorkItemPointer` for pointer types
-Message-ID: <E9xrq6_A6ATQnbV1U8f-DJTmDdXv2Xr_c0btYWfWA_eTBQnCzqJbI7DT1OG2FoHw8n71jUFqk014uJv06P1rx-179jMPJHrTSjf3Zj-HOuc=@proton.me>
-In-Reply-To: <20230601134946.3887870-7-aliceryhl@google.com>
-References: <20230601134946.3887870-1-aliceryhl@google.com> <20230601134946.3887870-7-aliceryhl@google.com>
+Subject: Re: [PATCH v2 7/8] rust: workqueue: add `try_spawn` helper method
+Message-ID: <vvA9i666LTf-ordh9xwNJ8sJY_rixVHDe7Lj0TNdrOovU5pLdlohCs26P4mtB5iw6PozHStl_rOnRPxbD6luPP60lvfAHW4Y_RhGEFMZpYU=@proton.me>
+In-Reply-To: <20230601134946.3887870-8-aliceryhl@google.com>
+References: <20230601134946.3887870-1-aliceryhl@google.com> <20230601134946.3887870-8-aliceryhl@google.com>
 Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -52,161 +52,97 @@ List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On 01.06.23 15:49, Alice Ryhl wrote:
-> This implements the `WorkItemPointer` trait for the pointer types that
-> you are likely to use the workqueue with. The `Arc` type is for
-> reference counted objects, and the `Pin<Box<T>>` type is for objects
-> where the caller has exclusive ownership of the object.
+> This adds a convenience method that lets you spawn a closure for
+> execution on a workqueue. This will be the most convenient way to use
+> workqueues, but it is fallible because it needs to allocate memory.
 >=20
 > Co-developed-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: Gary Guo <gary@garyguo.net>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-I have a small nit below.
-
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-> ---
->   rust/kernel/workqueue.rs | 97 +++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 96 insertions(+), 1 deletion(-)
->=20
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index dbf0aab29a85..f06a2f036d8b 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -28,8 +28,10 @@
->   //!
->   //! C header: [`include/linux/workqueue.h`](../../../../include/linux/w=
-orkqueue.h)
->=20
-> -use crate::{bindings, prelude::*, types::Opaque};
-> +use crate::{bindings, prelude::*, sync::Arc, types::Opaque};
-> +use alloc::boxed::Box;
->   use core::marker::{PhantomData, PhantomPinned};
-> +use core::pin::Pin;
->=20
->   /// A kernel work queue.
->   ///
-> @@ -323,6 +325,99 @@ unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crat=
-e::workqueue::Work<$work_typ
->       )*};
->   }
->=20
-> +unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Arc<T>
-> +where
-> +    T: WorkItem<ID, Pointer =3D Self>,
-> +    T: HasWork<T, ID>,
-> +{
-> +    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-> +        // SAFETY: The `__enqueue` method always uses a `work_struct` st=
-ored in a `Work<T, ID>`.
-> +        let ptr =3D ptr as *mut Work<T, ID>;
-> +        // SAFETY: This computes the pointer that `__enqueue` got from `=
-Arc::into_raw`.
-> +        let ptr =3D unsafe { T::work_container_of(ptr) };
-> +        // SAFETY: This pointer comes from `Arc::into_raw` and we've bee=
-n given back ownership.
-> +        let arc =3D unsafe { Arc::from_raw(ptr) };
-> +
-> +        T::run(arc)
-> +    }
-> +}
-> +
-> +unsafe impl<T, const ID: u64> RawWorkItem<ID> for Arc<T>
-> +where
-> +    T: WorkItem<ID, Pointer =3D Self>,
-> +    T: HasWork<T, ID>,
-> +{
-> +    type EnqueueOutput =3D Result<(), Self>;
-> +
-> +    unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutpu=
-t
-> +    where
-> +        F: FnOnce(*mut bindings::work_struct) -> bool,
-> +    {
-> +        // Casting between const and mut is not a problem as long as the=
- pointer is a raw pointer.
-> +        let ptr =3D Arc::into_raw(self) as *mut T;
-
-I personally would prefer `cast_mut()` here.
 
 --=20
 Cheers,
 Benno
 
+> ---
+>   rust/kernel/workqueue.rs | 43 ++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 43 insertions(+)
+>=20
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index f06a2f036d8b..c302e8b8624b 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -29,6 +29,7 @@
+>   //! C header: [`include/linux/workqueue.h`](../../../../include/linux/w=
+orkqueue.h)
+>=20
+>   use crate::{bindings, prelude::*, sync::Arc, types::Opaque};
+> +use alloc::alloc::AllocError;
+>   use alloc::boxed::Box;
+>   use core::marker::{PhantomData, PhantomPinned};
+>   use core::pin::Pin;
+> @@ -87,6 +88,44 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::En=
+queueOutput
+>               })
+>           }
+>       }
 > +
-> +        // SAFETY: Pointers into an `Arc` point at a valid value.
-> +        let work_ptr =3D unsafe { T::raw_get_work(ptr) };
-> +        // SAFETY: `raw_get_work` returns a pointer to a valid value.
-> +        let work_ptr =3D unsafe { Work::raw_get(work_ptr) };
+> +    /// Tries to spawn the given function or closure as a work item.
+> +    ///
+> +    /// This method can fail because it allocates memory to store the wo=
+rk item.
+> +    pub fn try_spawn<T: 'static + Send + FnOnce()>(&self, func: T) -> Re=
+sult<(), AllocError> {
+> +        let init =3D pin_init!(ClosureWork {
+> +            work <- Work::new(),
+> +            func: Some(func),
+> +        });
 > +
-> +        if queue_work_on(work_ptr) {
-> +            Ok(())
-> +        } else {
-> +            // SAFETY: The work queue has not taken ownership of the poi=
-nter.
-> +            Err(unsafe { Arc::from_raw(ptr) })
+> +        self.enqueue(Box::pin_init(init).map_err(|_| AllocError)?);
+> +        Ok(())
+> +    }
+> +}
+> +
+> +/// A helper type used in `try_spawn`.
+> +#[pin_data]
+> +struct ClosureWork<T> {
+> +    #[pin]
+> +    work: Work<ClosureWork<T>>,
+> +    func: Option<T>,
+> +}
+> +
+> +impl<T> ClosureWork<T> {
+> +    fn project(self: Pin<&mut Self>) -> &mut Option<T> {
+> +        // SAFETY: The `func` field is not structurally pinned.
+> +        unsafe { &mut self.get_unchecked_mut().func }
+> +    }
+> +}
+> +
+> +impl<T: FnOnce()> WorkItem for ClosureWork<T> {
+> +    type Pointer =3D Pin<Box<Self>>;
+> +
+> +    fn run(mut this: Pin<Box<Self>>) {
+> +        if let Some(func) =3D this.as_mut().project().take() {
+> +            (func)()
 > +        }
 > +    }
+>   }
+>=20
+>   /// A raw work item.
+> @@ -325,6 +364,10 @@ unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crat=
+e::workqueue::Work<$work_typ
+>       )*};
+>   }
+>=20
+> +impl_has_work! {
+> +    impl<T> HasWork<Self> for ClosureWork<T> { self.work }
 > +}
 > +
-> +unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<Box<T>>
-> +where
-> +    T: WorkItem<ID, Pointer =3D Self>,
-> +    T: HasWork<T, ID>,
-> +{
-> +    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-> +        // SAFETY: The `__enqueue` method always uses a `work_struct` st=
-ored in a `Work<T, ID>`.
-> +        let ptr =3D ptr as *mut Work<T, ID>;
-> +        // SAFETY: This computes the pointer that `__enqueue` got from `=
-Arc::into_raw`.
-> +        let ptr =3D unsafe { T::work_container_of(ptr) };
-> +        // SAFETY: This pointer comes from `Arc::into_raw` and we've bee=
-n given back ownership.
-> +        let boxed =3D unsafe { Box::from_raw(ptr) };
-> +        // SAFETY: The box was already pinned when it was enqueued.
-> +        let pinned =3D unsafe { Pin::new_unchecked(boxed) };
-> +
-> +        T::run(pinned)
-> +    }
-> +}
-> +
-> +unsafe impl<T, const ID: u64> RawWorkItem<ID> for Pin<Box<T>>
-> +where
-> +    T: WorkItem<ID, Pointer =3D Self>,
-> +    T: HasWork<T, ID>,
-> +{
-> +    type EnqueueOutput =3D ();
-> +
-> +    unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutpu=
-t
-> +    where
-> +        F: FnOnce(*mut bindings::work_struct) -> bool,
-> +    {
-> +        // SAFETY: We're not going to move `self` or any of its fields, =
-so its okay to temporarily
-> +        // remove the `Pin` wrapper.
-> +        let boxed =3D unsafe { Pin::into_inner_unchecked(self) };
-> +        let ptr =3D Box::into_raw(boxed);
-> +
-> +        // SAFETY: Pointers into a `Box` point at a valid value.
-> +        let work_ptr =3D unsafe { T::raw_get_work(ptr) };
-> +        // SAFETY: `raw_get_work` returns a pointer to a valid value.
-> +        let work_ptr =3D unsafe { Work::raw_get(work_ptr) };
-> +
-> +        if !queue_work_on(work_ptr) {
-> +            // SAFETY: This method requires exclusive ownership of the b=
-ox, so it cannot be in a
-> +            // workqueue.
-> +            unsafe { ::core::hint::unreachable_unchecked() }
-> +        }
-> +    }
-> +}
-> +
->   /// Returns the system work queue (`system_wq`).
->   ///
->   /// It is the one used by `schedule[_delayed]_work[_on]()`. Multi-CPU m=
-ulti-threaded. There are
+>   unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Arc<T>
+>   where
+>       T: WorkItem<ID, Pointer =3D Self>,
 > --
 > 2.41.0.rc0.172.g3f132b7071-goog
 >=20
