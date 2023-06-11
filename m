@@ -2,200 +2,92 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A032AC7EE23
-	for <rust-for-linux@archiver.kernel.org>; Sun, 11 Jun 2023 16:15:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BDFC7C7EE2E
+	for <rust-for-linux@archiver.kernel.org>; Sun, 11 Jun 2023 17:48:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231594AbjFKQPT (ORCPT
+        id S229530AbjFKRsS (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 11 Jun 2023 12:15:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36310 "EHLO
+        Sun, 11 Jun 2023 13:48:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229631AbjFKQPS (ORCPT
+        with ESMTP id S229511AbjFKRsR (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 11 Jun 2023 12:15:18 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A076D122;
-        Sun, 11 Jun 2023 09:15:14 -0700 (PDT)
-Date:   Sun, 11 Jun 2023 16:15:08 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1686500112; x=1686759312;
-        bh=YurAWGLNntc/9cNT1yr91zktO+CDzXDduvn70G9oHJk=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=eD9vhpBQFyrNxLvHBS+KjnkfsqlBaQtD6SYaN/FSQJeEF69cO7s1afaS0qwbKGcLU
-         nZmYRyYQoXCafeJnjVnyl7vImvupOgtg5n1xdIN2ZwHlYLJ6cZX09jGACKRRxIw7Fz
-         +E/vERafBFwkijur/6m5ueSUJww7wXAROsQW0MTQUeA9+ceTNamzPUc8gF/iDoBxBN
-         3vg6WaGmRjKk0YlAgHq8VAQ1xx8oqnJqWT3KQrPejPfhTxalqGM8FXyH5gfbdIgac4
-         em+C50eoEGDMcAe1gojAR6+9dMfL+BImcNeM128V8DmRuDSJg9RAVsBYZvs2b9ksYb
-         OGE3YxLYvixUw==
-To:     Alice Ryhl <aliceryhl@google.com>
-From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Tejun Heo <tj@kernel.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v2 8/8] rust: workqueue: add examples
-Message-ID: <kHwlRfK_EtV6I7xbaDgyCbR2Xz0cHmM4Sh_edMi-Wr0JaJNlvVEQH9ZOqWuSr5hBx6cu8nreQdIlWNrHLQ6ehUT4hWtgBalWeQpcVVlBOQ0=@proton.me>
-In-Reply-To: <20230601134946.3887870-9-aliceryhl@google.com>
-References: <20230601134946.3887870-1-aliceryhl@google.com> <20230601134946.3887870-9-aliceryhl@google.com>
-Feedback-ID: 71780778:user:proton
+        Sun, 11 Jun 2023 13:48:17 -0400
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2A3F187
+        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jun 2023 10:48:16 -0700 (PDT)
+Received: by mail-yb1-xb2e.google.com with SMTP id 3f1490d57ef6-bc4f89f0f2fso1618239276.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jun 2023 10:48:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686505696; x=1689097696;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1VzoGNa0EwDmFXGs+sD8CbxNLCfUp/FCTOi7J91TnjM=;
+        b=hbs7KyLoSjcSExIkY9NhYFAR3nSXuxisAOu/3hxouje3k1qtsh7MdkV5CEPDn8W7NY
+         V4gvvYssQN9Mwu2hRMBctbNN3am4Q0nhuoNzMbSlFbzyH9ODXlW1Lc75k/LvP8LM1Gtg
+         FIizBv09QKluVOmaPtaD4W+E/LmZfAWwBarin/AHUe10+H7A+FmKb+wE52pYzsnOncDq
+         +jTqydzeJgK793qzb2JC7/kigaE2sU+coxBKNBOXkjFgxjEuq+BH4FU+kMINYezP07bn
+         IF7uMxkUeicOL1ZlB9UVQuVVRGsfzhpFJYgZKXWuuQI8dI9rR/KNaHJQ/HFabH2PFn4a
+         Y1bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686505696; x=1689097696;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1VzoGNa0EwDmFXGs+sD8CbxNLCfUp/FCTOi7J91TnjM=;
+        b=WgXrTgEgg3Exh5wfXs61f5ZRR3AIxJc7NaeBEy5gZH5kvLza3B/J0L2i/M+Eq7Vgpc
+         i0F69aGQ4/j1s8xckrqz/YJXkvbZlQkMhX9Byq7dabiIhFy0VOGYpjmUMPwi2upk8MYF
+         SmBiVRW/kRf7EBmPdb7IXxQCSukJgBDVEKQKkW5d2ExGVVmqDLIgauh0JiEEGG0g/BZe
+         o+AM+PSK9iyMjF479ew4q8IOATrL6x67dyGlwkycFsJ/oi7Xup3xRRcofSkn4wkESyYb
+         FXElYRXJVeqfRHoRv0bDIUhj4jYlCSpC9NyYTIpUruRcspzco0rrE4v2iSqG+0S6Xlnf
+         6hOw==
+X-Gm-Message-State: AC+VfDwkMq1aCz5b+LF9fH0poJbR/Ke4J7ksmLXFTbNJuvlB63vasmX3
+        xHJuS4c2adwBx0mW4+icL8jSQRhr/ur7LwQAEY0=
+X-Google-Smtp-Source: ACHHUZ71EO5T44xBUaaDKnfEceldeOesu4t7HBG+eIvBO+vT7qaH97nK98XuN6qf6FvsgXFj0x8hVGynWnD6M49p4mo=
+X-Received: by 2002:a0d:ca46:0:b0:565:beb0:75b4 with SMTP id
+ m67-20020a0dca46000000b00565beb075b4mr7421436ywd.49.1686505695708; Sun, 11
+ Jun 2023 10:48:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20230610071848.3722492-1-tomo@exabit.dev> <01010188a42d5319-9cd7b5ec-5b06-4d08-88cb-c2a82a8e3a0d-000000@us-west-2.amazonses.com>
+ <18368b79-f204-4bc2-b591-859d3ddb22f1@lunn.ch> <964b5c9f-6eab-d7ff-1ce6-dc11f15898d4@ryhl.io>
+ <1d3ade6a-1333-4729-a8e1-13e2aceeeb12@lunn.ch>
+In-Reply-To: <1d3ade6a-1333-4729-a8e1-13e2aceeeb12@lunn.ch>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Sun, 11 Jun 2023 19:48:04 +0200
+Message-ID: <CANiq72kyUhvmG6KB32X1vuhNzOOJbs7R1JbK+vnPELX4tG73RA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] rust: core abstractions for network device drivers
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Alice Ryhl <alice@ryhl.io>, FUJITA Tomonori <tomo@exabit.dev>,
+        rust-for-linux@vger.kernel.org, aliceryhl@google.com,
+        FUJITA Tomonori <fujita.tomonori@gmail.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 01.06.23 15:49, Alice Ryhl wrote:
-> This adds two examples of how to use the workqueue. The first example
-> shows how to use it when you only have one `work_struct` field, and the
-> second example shows how to use it when you have multiple `work_struct`
-> fields.
->=20
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Sun, Jun 11, 2023 at 6:01=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> Ah, thanks for the explanation.
+>
+> This is going to be a problem for networking. The hot path has a lot
+> of inline functions, because a function call is expensive. So there
+> are going to be a lot of little wrappers like this. I don't want to
+> encourage early optimisation without proper profiling, but at some
+> point you might want to replace these wrappers with Rust, using
+> whatever its equivalent of inline is.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Yeah, other use cases will also need that solved, e.g. Andreas for his
+NVMe work.
 
-I really like that you added these examples!
-Is there some particular reason you decided to not use
-0 as the first index in the second example? (you can keep
-it this way)
+We discussed reimplementing performance-critical bits in Rust as you
+suggest, as well as cross-language LTO. We also talked about possible
+alternative approaches like "manual local LTO" for the helpers only
+via feeding their LLVM IR to `rustc`, which may recover most of the
+performance without having to go for full LTO and its associated
+kernel link times.
 
---=20
 Cheers,
-Benno
-
-> ---
->   rust/kernel/workqueue.rs | 104 +++++++++++++++++++++++++++++++++++++++
->   1 file changed, 104 insertions(+)
->=20
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index c302e8b8624b..cefcf43ff40e 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -26,6 +26,110 @@
->   //!  * The `WorkItemPointer` trait is implemented for the pointer type =
-that points at a something
->   //!    that implements `WorkItem`.
->   //!
-> +//! ## Example
-> +//!
-> +//! This example defines a struct that holds an integer and can be sched=
-uled on the workqueue. When
-> +//! the struct is executed, it will print the integer. Since there is on=
-ly one `work_struct` field,
-> +//! we do not need to specify ids for the fields.
-> +//!
-> +//! ```
-> +//! use kernel::prelude::*;
-> +//! use kernel::sync::Arc;
-> +//! use kernel::workqueue::{self, Work, WorkItem};
-> +//!
-> +//! #[pin_data]
-> +//! struct MyStruct {
-> +//!     value: i32,
-> +//!     #[pin]
-> +//!     work: Work<MyStruct>,
-> +//! }
-> +//!
-> +//! impl_has_work! {
-> +//!     impl HasWork<Self> for MyStruct { self.work }
-> +//! }
-> +//!
-> +//! impl MyStruct {
-> +//!     fn new(value: i32) -> Result<Arc<Self>> {
-> +//!         Arc::pin_init(pin_init!(MyStruct {
-> +//!             value,
-> +//!             work <- Work::new(),
-> +//!         }))
-> +//!     }
-> +//! }
-> +//!
-> +//! impl WorkItem for MyStruct {
-> +//!     type Pointer =3D Arc<MyStruct>;
-> +//!
-> +//!     fn run(this: Arc<MyStruct>) {
-> +//!         pr_info!("The value is: {}", this.value);
-> +//!     }
-> +//! }
-> +//!
-> +//! /// This method will enqueue the struct for execution on the system =
-workqueue, where its value
-> +//! /// will be printed.
-> +//! fn print_later(val: Arc<MyStruct>) {
-> +//!     let _ =3D workqueue::system().enqueue(val);
-> +//! }
-> +//! ```
-> +//!
-> +//! The following example shows how multiple `work_struct` fields can be=
- used:
-> +//!
-> +//! ```
-> +//! use kernel::prelude::*;
-> +//! use kernel::sync::Arc;
-> +//! use kernel::workqueue::{self, Work, WorkItem};
-> +//!
-> +//! #[pin_data]
-> +//! struct MyStruct {
-> +//!     value_1: i32,
-> +//!     value_2: i32,
-> +//!     #[pin]
-> +//!     work_1: Work<MyStruct, 1>,
-> +//!     #[pin]
-> +//!     work_2: Work<MyStruct, 2>,
-> +//! }
-> +//!
-> +//! impl_has_work! {
-> +//!     impl HasWork<Self, 1> for MyStruct { self.work_1 }
-> +//!     impl HasWork<Self, 2> for MyStruct { self.work_2 }
-> +//! }
-> +//!
-> +//! impl MyStruct {
-> +//!     fn new(value_1: i32, value_2: i32) -> Result<Arc<Self>> {
-> +//!         Arc::pin_init(pin_init!(MyStruct {
-> +//!             value_1,
-> +//!             value_2,
-> +//!             work_1 <- Work::new(),
-> +//!             work_2 <- Work::new(),
-> +//!         }))
-> +//!     }
-> +//! }
-> +//!
-> +//! impl WorkItem<1> for MyStruct {
-> +//!     type Pointer =3D Arc<MyStruct>;
-> +//!
-> +//!     fn run(this: Arc<MyStruct>) {
-> +//!         pr_info!("The value is: {}", this.value_1);
-> +//!     }
-> +//! }
-> +//!
-> +//! impl WorkItem<2> for MyStruct {
-> +//!     type Pointer =3D Arc<MyStruct>;
-> +//!
-> +//!     fn run(this: Arc<MyStruct>) {
-> +//!         pr_info!("The second value is: {}", this.value_2);
-> +//!     }
-> +//! }
-> +//!
-> +//! fn print_1_later(val: Arc<MyStruct>) {
-> +//!     let _ =3D workqueue::system().enqueue::<Arc<MyStruct>, 1>(val);
-> +//! }
-> +//!
-> +//! fn print_2_later(val: Arc<MyStruct>) {
-> +//!     let _ =3D workqueue::system().enqueue::<Arc<MyStruct>, 2>(val);
-> +//! }
-> +//! ```
-> +//!
->   //! C header: [`include/linux/workqueue.h`](../../../../include/linux/w=
-orkqueue.h)
->=20
->   use crate::{bindings, prelude::*, sync::Arc, types::Opaque};
-> --
-> 2.41.0.rc0.172.g3f132b7071-goog
->=20
-
+Miguel
