@@ -2,61 +2,61 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC81FC7EE2F
-	for <rust-for-linux@archiver.kernel.org>; Mon, 12 Jun 2023 16:13:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B04AC7EE2F
+	for <rust-for-linux@archiver.kernel.org>; Mon, 12 Jun 2023 16:14:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233898AbjFLQN4 (ORCPT
+        id S233523AbjFLQOK (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 12 Jun 2023 12:13:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52494 "EHLO
+        Mon, 12 Jun 2023 12:14:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234585AbjFLQNm (ORCPT
+        with ESMTP id S234295AbjFLQNv (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 12 Jun 2023 12:13:42 -0400
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB8732108;
-        Mon, 12 Jun 2023 09:13:26 -0700 (PDT)
-Received: by mail-ot1-x333.google.com with SMTP id 46e09a7af769-6b2b7ca1c5eso2912714a34.0;
-        Mon, 12 Jun 2023 09:13:26 -0700 (PDT)
+        Mon, 12 Jun 2023 12:13:51 -0400
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 027A210C9;
+        Mon, 12 Jun 2023 09:13:36 -0700 (PDT)
+Received: by mail-ot1-x330.google.com with SMTP id 46e09a7af769-6b13e2af122so2564076a34.2;
+        Mon, 12 Jun 2023 09:13:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686586406; x=1689178406;
+        d=gmail.com; s=20221208; t=1686586411; x=1689178411;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=xT+8NLEGzyzl+xXCJr5EVpOiH3QRwvba1OJtzK594kI=;
-        b=iVikyQ4ZrnCh5+QLc3Sfp/D/sf7kLl/NG0CPEYh4Nm6pipiQBAQfQgqwNO3tVq6rVM
-         zUV5BJMFkbOHyW3CfJJ0DFWDT/6di3Leha+nvhJGBVrrZHKOz/lLjhgJEeJ7Ajg0z/Hq
-         lFXF7S1KW3t4KomGDDSdPplQHzwApe2Ng8kdw1Wn/bLTz1ysdTN0T5+Wdm7m1Bo9DN0O
-         4ssu48lxeqUyUqNDX7385KJq+GpMaXGpBYE+Wv8yNq8LDCrSnWXnq8b9x4ORAssLuE4V
-         3I8ssuHbkUnRq05Uwtli1nO+KdclcilVuoa8i1Fdejq74tQW+/Wpl1bB5pu3wNBtWTCw
-         iJ+A==
+        bh=2E8I5KlscgLz/BhO77eZ+L4gqpBYzJDI1R3+cPj0I8s=;
+        b=Vp8j+xtvbtcr38c4i9kgY07aKi70cuRJoJ1r5fNcvaYJCecHElPDE9o5ZhigbxAYLe
+         7FiA11UeEjLbwfkoe82KpBi73huIeeO+PVNLPD09iLhLJT1zboDEbQI6AEoeLxE3B6wp
+         6D4X2Xl3HWtMf/xR+LYA8hJesP3DQ7g0rlJGJm9fNW8p9TcNFskp8QmBfmKj2WS1E7Zs
+         v03sEW1hKX+18aB8UO8Ef9wD9yZQ0cPuwF89GbsJqBVfxEIQKNS0HUK695QHNQYEBGhw
+         TZgLfZTYJHRn6rmoCMfiT4WTeeua66yXA1jdSM+3yJTA/eFJ9MeVz8a6dGq9XxW7kq1W
+         GYZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686586406; x=1689178406;
+        d=1e100.net; s=20221208; t=1686586411; x=1689178411;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xT+8NLEGzyzl+xXCJr5EVpOiH3QRwvba1OJtzK594kI=;
-        b=SEDNGpSFV+3TpxafOOIYx3ue/xIpPtejiTorSq6aWcUF1wv3uYmXp6R6hifLUm+oiA
-         4EwwBx3AyNPoB4JumaDpRsbm5f6BZngqxh7DB2pNVfRjNFUbdeI5lAp0H3CdcqLK4fMb
-         YncemdivZL5LoYIkl2uXaVmp3SEC3ugqsgjsZ/HWzzqmXmgTwK91viTUweD76m/Ia1WJ
-         zBHBzCxal1xL691nW2iYlO6/rJQw/Ri2yO+Vzv1jnQbou7ALH+DTSGILRpOTw4nm2ZvV
-         Szz+hWWVXk1/S1PCR9o7AgNgwgcY7MsRuVt43ZrThzG9PDLeS1rqekIGfiIfH4RQcWp8
-         gyjg==
-X-Gm-Message-State: AC+VfDwlLIlrOh28MF3n8OXHdhOhwJnyhqun6f7X8DEgs9G9LynDY6Cw
-        8GNgleLi0CKNLKkNWUZbuqo=
-X-Google-Smtp-Source: ACHHUZ4626NO/0JccShDWWMTVyJaq7sZ+f8plBCXtfLF3nzGesdT386Jnj2NbwYBM36f/QtVgLMbhQ==
-X-Received: by 2002:a05:6870:4c3:b0:177:dfdb:63 with SMTP id u3-20020a05687004c300b00177dfdb0063mr6390948oam.44.1686586406210;
-        Mon, 12 Jun 2023 09:13:26 -0700 (PDT)
+        bh=2E8I5KlscgLz/BhO77eZ+L4gqpBYzJDI1R3+cPj0I8s=;
+        b=HCEjLvcaI9rywmJP4+zfunVOcrvw9p9/gvAqQVX3z2qCOihYVnibzem7nzjbtVofzw
+         Xc06QqyLdLPPlEDJXbi7SsKYGkRcTB5x5PKKMeLA1NDBg+vGZC8E+Dm3k2jwnNH3LAvu
+         FAnir/udt8/mbtypYG4iW3Z3YwKuKKPrGNKLgYNnAHPTbItSMjjnL1YlWQCagNXOKKoC
+         Huz5c7cCVVoEdLAJk9gaskfeNa8mCdLy7s0aIVJMuJ9DBXSq00HUW5LSckpQni3PokZ8
+         XQIzaiCKdbj0h9YeWh5DqafhMK6KVrY04tnimiCbLBBmlEkCf/Y8njnCJ6YOkSpQ2DDp
+         MswQ==
+X-Gm-Message-State: AC+VfDwAl1lWTapLHBk/EjTYZ5im+HNpX48A5Jbs0ZXPTRJP2KtQVDgA
+        eRkwIi2V76SyB5YxOUyltxdQGNY5kFY=
+X-Google-Smtp-Source: ACHHUZ6p6vY/8R1Kw0CwyLEo1ZKr8GIYnv5lol3y1h97CHTAydEPo3R/INzFScpRVkxHnkJG+Em7GQ==
+X-Received: by 2002:a9d:6a09:0:b0:6ab:2fb1:92d8 with SMTP id g9-20020a9d6a09000000b006ab2fb192d8mr7845807otn.12.1686586411260;
+        Mon, 12 Jun 2023 09:13:31 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id l2-20020a056870f14200b0019e8deb387bsm6041572oac.53.2023.06.12.09.13.22
+        by smtp.gmail.com with ESMTPSA id c8-20020a9d4808000000b006b296562566sm3996663otf.79.2023.06.12.09.13.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jun 2023 09:13:25 -0700 (PDT)
-Message-ID: <3fff0908-5e77-812f-2037-1a65f6f8cc26@gmail.com>
-Date:   Mon, 12 Jun 2023 12:08:21 -0300
+        Mon, 12 Jun 2023 09:13:30 -0700 (PDT)
+Message-ID: <eac2d2bd-d9df-f463-8c33-af8e83d214d2@gmail.com>
+Date:   Mon, 12 Jun 2023 12:10:41 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v3 1/3] rust: kernel: add ScatterList abstraction
+Subject: Re: [PATCH v3 2/3] rust: kernel: implement iterators for ScatterList
 Content-Language: en-US
 To:     Qingsong Chen <changxian.cqs@antgroup.com>,
         linux-kernel@vger.kernel.org
@@ -67,14 +67,11 @@ Cc:     =?UTF-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Asahi Lina <lina@asahilina.net>,
-        Niklas Mohrin <dev@niklasmohrin.de>,
         rust-for-linux@vger.kernel.org
 References: <20230610104909.3202958-1-changxian.cqs@antgroup.com>
- <20230610104909.3202958-2-changxian.cqs@antgroup.com>
+ <20230610104909.3202958-3-changxian.cqs@antgroup.com>
 From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230610104909.3202958-2-changxian.cqs@antgroup.com>
+In-Reply-To: <20230610104909.3202958-3-changxian.cqs@antgroup.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -82,7 +79,9 @@ List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 On 6/10/23 07:49, Qingsong Chen wrote:
-> Add a wrapper for `struct scatterlist`.
+> ScatterList could be transmuted from raw pointers of a valid
+> `sg_table`. Then we can use those iterators to access the
+> following normal entries.
 > 
 > Signed-off-by: Qingsong Chen <changxian.cqs@antgroup.com>
 > ---
