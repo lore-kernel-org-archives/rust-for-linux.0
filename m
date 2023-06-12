@@ -2,79 +2,59 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 794FDC7EE2E
-	for <rust-for-linux@archiver.kernel.org>; Mon, 12 Jun 2023 08:20:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91B7BC7EE2E
+	for <rust-for-linux@archiver.kernel.org>; Mon, 12 Jun 2023 08:36:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230007AbjFLIUy (ORCPT
+        id S232825AbjFLIgS (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 12 Jun 2023 04:20:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54256 "EHLO
+        Mon, 12 Jun 2023 04:36:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233228AbjFLIUT (ORCPT
+        with ESMTP id S233003AbjFLIgP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 12 Jun 2023 04:20:19 -0400
-Received: from a27-22.smtp-out.us-west-2.amazonses.com (a27-22.smtp-out.us-west-2.amazonses.com [54.240.27.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 011E51717
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Jun 2023 01:19:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=s25kmyuhzvo7troimxqpmtptpemzlc6l; d=exabit.dev; t=1686553344;
-        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding;
-        bh=i4COiaCXyYDdsA53oeQqSbv0qkHwzvOoZppZsxovdiU=;
-        b=edej2erseNj8KQ9+zzbu0DZlC3dl1po+8T5gPHFozBTmvkcoskS+xQayGpzg2S2b
-        FaCRb6282YH+aHrwLPjuU0NGK/pHYJX95t5xuu6jQ81LMKS1hYb4po1ynkCgnctcge3
-        dBOhLyG2yaTwV428+EQl5LYu0nyt6Qf8Q58v1d21pmrLE0Ziw/XyBxZD8HIr/4ughhk
-        GSQ0eZQtSxinnY7DVM2oHVErbq1ykscJR54Ql0M98Lg2Eg4si3WMfkUInLGYWsQPkx4
-        WuwJqQ8s/3vwEipx/NblBSdiNQooEgZExeSdDuzeAxbz09qGTovx5o8CFWI9IrzL/b4
-        q+YfV5QBZg==
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1686553344;
-        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-        bh=i4COiaCXyYDdsA53oeQqSbv0qkHwzvOoZppZsxovdiU=;
-        b=SdRB6ahVScy2/c0lDIoC82eVQdDkessRdGqtV6lnKr3vvKJlb468Dun00RkcOUPI
-        i22SYz7LK6vUAqptcbhzPG9+PI8LnKxEXfWbCIcA9zNCkhPojKYkKc9TI9Ur0vcvDyH
-        WTgKFvrk3Bab8qRiU+DM1mZSNypvOXbwIW2b7Kus=
-Date:   Mon, 12 Jun 2023 07:02:23 +0000
-Message-ID: <01010188ae69b73c-78d7aaa2-262d-40a2-982f-75a9e203ca6b-000000@us-west-2.amazonses.com>
-To:     andrew@lunn.ch
-Cc:     tomo@exabit.dev, rust-for-linux@vger.kernel.org,
-        aliceryhl@google.com, fujita.tomonori@gmail.com,
-        fujita.tomonori@gmail.com
-Subject: Re: [PATCH v2 5/5] samples: rust: add dummy network driver
-From:   FUJITA Tomonori <tomo@exabit.dev>
-In-Reply-To: <d76261e6-5558-4e57-9e5f-d778f9ef3804@lunn.ch>
-References: <20230610071848.3722492-1-tomo@exabit.dev>
-        <01010188a42d5620-fdafc00a-8aad-4c5e-a0b7-1fb83da6ba03-000000@us-west-2.amazonses.com>
-        <d76261e6-5558-4e57-9e5f-d778f9ef3804@lunn.ch>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Feedback-ID: 1.us-west-2.j0GTvY5MHQQ5Spu+i4ZGzzYI1gDE7m7iuMEacWMZbe8=:AmazonSES
-X-SES-Outgoing: 2023.06.12-54.240.27.22
+        Mon, 12 Jun 2023 04:36:15 -0400
+X-Greylist: delayed 1681 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 12 Jun 2023 01:36:12 PDT
+Received: from mail.startuplaunchpadpro.pl (mail.startuplaunchpadpro.pl [217.61.112.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61B76E0
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Jun 2023 01:36:12 -0700 (PDT)
+Received: by mail.startuplaunchpadpro.pl (Postfix, from userid 1002)
+        id 01AC282CE2; Mon, 12 Jun 2023 09:40:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=startuplaunchpadpro.pl; s=mail; t=1686555725;
+        bh=oZTeICgx2X9EeHQQOCJSHYKJVJOCiOs1n/VaxwVhO9Y=;
+        h=Date:From:To:Subject:From;
+        b=cUi/OZkOLcghn77gx5mZQFrTtHF6SYdoWtH76PSGfnZBF9wBgbA0KtZWZehvtvqS9
+         Gv+Iy8+LL5gDZpGP8QeOKOJT+yruauAZZaXuLFDvPxH4J7I2CXnv0hCZIigP9F2B07
+         eQXwI1D2gpvTkv7OxqlucclFs5OmWYvHg1K8bKPs8krYZDapGjIRgPkTK0pQbmIbyN
+         0klpgbH2gXQYojJPnm02EaLzYn84+G25j+PY7w7JrfYFUKZgOb2VwdXiKcxmyFvQUJ
+         slUaXZVB8KxL/2GvAoumBe/UzBY0/J6p/URlg4HT30GjdMU4tIXZajrRg7YQwzMTRE
+         Hpju2wsXvuSrw==
+Received: by mail.startuplaunchpadpro.pl for <rust-for-linux@vger.kernel.org>; Mon, 12 Jun 2023 07:40:16 GMT
+Message-ID: <20230612084500-0.1.o.7cme.0.4bikkk20ia@startuplaunchpadpro.pl>
+Date:   Mon, 12 Jun 2023 07:40:16 GMT
+From:   "Marcin Wojciechowski" <marcin.wojciechowski@startuplaunchpadpro.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: =?UTF-8?Q?Prosz=C4=99_o_kontakt?=
+X-Mailer: mail.startuplaunchpadpro.pl
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi,
+Dzie=C5=84 dobry,
 
-On Sat, 10 Jun 2023 18:59:52 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
+Czy jest mo=C5=BCliwo=C5=9B=C4=87 nawi=C4=85zania wsp=C3=B3=C5=82pracy z =
+Pa=C5=84stwem?
 
->> +        pr_info!("Hello Rust dummy netdev!");
-> 
-> In general, we discourage the use of pr_info(). netdev_info(ndev, ...)
-> is what should be used, once the device is registered. The output then
-> includes which device is says "hello world", which can be useful when
-> you have more than one of them. netdev_info() can be called before the
-> device is registered, but since the name is not fixed at that point,
-> the output is a bit more ambiguous.
-> 
-> I would not say this is a blocked for this patchset, but i would add
-> wrapping netdev_{dbg|warn|info|error}() high on your todo list, they
-> are pretty fundamental to network drivers.
+Z ch=C4=99ci=C4=85 porozmawiam z osob=C4=85 zajmuj=C4=85c=C4=85 si=C4=99 =
+dzia=C5=82aniami zwi=C4=85zanymi ze sprzeda=C5=BC=C4=85.
 
-Sure, I'll add it to my after-initial-upstreaming TODO list with
-per_cpu stuff.
+Pomagamy skutecznie pozyskiwa=C4=87 nowych klient=C3=B3w.
 
-For now, I'll add 'TODO' comment in the next version.
+Zapraszam do kontaktu.
 
-thanks,
+
+Pozdrawiam
+Marcin Wojciechowski
