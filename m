@@ -2,59 +2,73 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91B7BC7EE2E
-	for <rust-for-linux@archiver.kernel.org>; Mon, 12 Jun 2023 08:36:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE747C7EE23
+	for <rust-for-linux@archiver.kernel.org>; Mon, 12 Jun 2023 08:59:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232825AbjFLIgS (ORCPT
+        id S231789AbjFLI7a (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 12 Jun 2023 04:36:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43080 "EHLO
+        Mon, 12 Jun 2023 04:59:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233003AbjFLIgP (ORCPT
+        with ESMTP id S231859AbjFLI65 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 12 Jun 2023 04:36:15 -0400
-X-Greylist: delayed 1681 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 12 Jun 2023 01:36:12 PDT
-Received: from mail.startuplaunchpadpro.pl (mail.startuplaunchpadpro.pl [217.61.112.231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61B76E0
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Jun 2023 01:36:12 -0700 (PDT)
-Received: by mail.startuplaunchpadpro.pl (Postfix, from userid 1002)
-        id 01AC282CE2; Mon, 12 Jun 2023 09:40:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=startuplaunchpadpro.pl; s=mail; t=1686555725;
-        bh=oZTeICgx2X9EeHQQOCJSHYKJVJOCiOs1n/VaxwVhO9Y=;
-        h=Date:From:To:Subject:From;
-        b=cUi/OZkOLcghn77gx5mZQFrTtHF6SYdoWtH76PSGfnZBF9wBgbA0KtZWZehvtvqS9
-         Gv+Iy8+LL5gDZpGP8QeOKOJT+yruauAZZaXuLFDvPxH4J7I2CXnv0hCZIigP9F2B07
-         eQXwI1D2gpvTkv7OxqlucclFs5OmWYvHg1K8bKPs8krYZDapGjIRgPkTK0pQbmIbyN
-         0klpgbH2gXQYojJPnm02EaLzYn84+G25j+PY7w7JrfYFUKZgOb2VwdXiKcxmyFvQUJ
-         slUaXZVB8KxL/2GvAoumBe/UzBY0/J6p/URlg4HT30GjdMU4tIXZajrRg7YQwzMTRE
-         Hpju2wsXvuSrw==
-Received: by mail.startuplaunchpadpro.pl for <rust-for-linux@vger.kernel.org>; Mon, 12 Jun 2023 07:40:16 GMT
-Message-ID: <20230612084500-0.1.o.7cme.0.4bikkk20ia@startuplaunchpadpro.pl>
-Date:   Mon, 12 Jun 2023 07:40:16 GMT
-From:   "Marcin Wojciechowski" <marcin.wojciechowski@startuplaunchpadpro.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: =?UTF-8?Q?Prosz=C4=99_o_kontakt?=
-X-Mailer: mail.startuplaunchpadpro.pl
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Mon, 12 Jun 2023 04:58:57 -0400
+X-Greylist: delayed 283 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 12 Jun 2023 01:56:23 PDT
+Received: from a27-50.smtp-out.us-west-2.amazonses.com (a27-50.smtp-out.us-west-2.amazonses.com [54.240.27.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF27930C0
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Jun 2023 01:56:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=s25kmyuhzvo7troimxqpmtptpemzlc6l; d=exabit.dev; t=1686559899;
+        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding;
+        bh=DDyGhBWcdDLpb9kAhkSwjTYTrAQ+i+FqCjwIuRNV9cY=;
+        b=FyNMxF0mLIeNl6K9wcGAT9QSImPiCeaGqrsZtb8EvK+TrUc8mdVBNxUGNwAu7Hhe
+        faNCeryxmAnhUbVlR5+/SWelF0KWHpP3aFJ2qanswVnHpB6I3PruTRErAin6nQtBzGv
+        1rozEwgmzxa0UFyYPDI334DKN4eMoV06YrSbW6J02IguqzSAvJtV4ykNkU5m5ELOdAR
+        QO9TcEvE56xwa4KJWkuq+D+VNZS+VB+wlAUFVW9z7h0Q2+QcNeU9Ghkp4hyHbw36KMN
+        UIw9/ONbqZ8Ba55Z9U4cyQhfVwy7u4DEXeLY9ZppwxBCAwZAb1jFwOjQFmWmb+J4eP/
+        XbKyCes1vw==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1686559899;
+        h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:Mime-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
+        bh=DDyGhBWcdDLpb9kAhkSwjTYTrAQ+i+FqCjwIuRNV9cY=;
+        b=qCMHvbPjj+vLGHwNfWa+chWLW5pyna6Lm4M925WgkzQSPlcio+lTj1umKFBlOJAJ
+        zPJjH3srag1lXzKk0YbpE8hokL+mDzGY8mSGc3Lyfy5/sKPySLFMJOumrn+uRXZbdBd
+        ucMs7Tm5STF58xpoU8wgSMNjdKvIYXbV8E0L6Ycc=
+Date:   Mon, 12 Jun 2023 08:51:39 +0000
+Message-ID: <01010188aecdbf82-4929a6f5-fd63-4da3-8a2e-c9e7cbbd2ee8-000000@us-west-2.amazonses.com>
+To:     miguel.ojeda.sandonis@gmail.com
+Cc:     tomo@exabit.dev, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com, andrew@lunn.ch, fujita.tomonori@gmail.com,
+        fujita.tomonori@gmail.com
+Subject: Re: [PATCH v2 2/5] rust: add support for ethernet operations
+From:   FUJITA Tomonori <tomo@exabit.dev>
+In-Reply-To: <CANiq72n6yQa9nff+zdWizvjB4Z=Z1qjw9a2ZMny1E1uSA2A=qA@mail.gmail.com>
+References: <20230610071848.3722492-1-tomo@exabit.dev>
+        <01010188a42d53e0-2d47cf6b-9c3a-4e94-9322-0935d0e5dcd4-000000@us-west-2.amazonses.com>
+        <CANiq72n6yQa9nff+zdWizvjB4Z=Z1qjw9a2ZMny1E1uSA2A=qA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
+Feedback-ID: 1.us-west-2.j0GTvY5MHQQ5Spu+i4ZGzzYI1gDE7m7iuMEacWMZbe8=:AmazonSES
+X-SES-Outgoing: 2023.06.12-54.240.27.50
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,
-
-Czy jest mo=C5=BCliwo=C5=9B=C4=87 nawi=C4=85zania wsp=C3=B3=C5=82pracy z =
-Pa=C5=84stwem?
-
-Z ch=C4=99ci=C4=85 porozmawiam z osob=C4=85 zajmuj=C4=85c=C4=85 si=C4=99 =
-dzia=C5=82aniami zwi=C4=85zanymi ze sprzeda=C5=BC=C4=85.
-
-Pomagamy skutecznie pozyskiwa=C4=87 nowych klient=C3=B3w.
-
-Zapraszam do kontaktu.
-
-
-Pozdrawiam
-Marcin Wojciechowski
+SGksDQoNCk9uIFNhdCwgMTAgSnVuIDIwMjMgMjE6MTQ6MzcgKzAyMDANCk1pZ3VlbCBPamVkYSA8
+bWlndWVsLm9qZWRhLnNhbmRvbmlzQGdtYWlsLmNvbT4gd3JvdGU6DQoNCj4gT24gU2F0LCBKdW4g
+MTAsIDIwMjMgYXQgOToyN+KAr0FNIEZVSklUQSBUb21vbm9yaSA8dG9tb0BleGFiaXQuZGV2PiB3
+cm90ZToNCj4+DQo+PiArICAgIC8vLyBTZXRzIGBldGh0b29sX29wc2Agb2YgYG5ldF9kZXZpY2Vg
+Lg0KPj4gKyAgICBwdWIgZm4gc2V0X2V0aGVyX29wZXJhdGlvbnM8VT4oJm11dCBzZWxmKSAtPiBS
+ZXN1bHQNCj4+ICsgICAgd2hlcmUNCj4+ICsgICAgICAgIFU6IEV0aGVyT3BlcmF0aW9uczxEPiwN
+Cj4+ICsgICAgew0KPj4gKyAgICAgICAgaWYgc2VsZi5pc19yZWdpc3RlcmVkIHsNCj4+ICsgICAg
+ICAgICAgICBFcnIoY29kZTo6RUlOVkFMKQ0KPj4gKyAgICAgICAgfSBlbHNlIHsNCj4+ICsgICAg
+ICAgICAgICBFdGhlck9wZXJhdGlvbnNBZGFwdGVyOjo8VSwgRD46Om5ldygpLnNldF9ldGhlcl9v
+cHMoJm11dCBzZWxmLmRldik7DQo+PiArICAgICAgICAgICAgT2soKCkpDQo+PiArICAgICAgICB9
+DQo+IA0KPiBZb3UgbWF5IHdhbnQgdG8gdXNlIGVhcmx5IHJldHVybiBzdHlsZSwgbGlrZSBpbiBD
+LCBpLmUuIGByZXR1cm4gRXJyKC4uLik7YC4NCg0KU3VyZSwgSSdsbCB1cGRhdGUgdGhlIGNvZGUg
+aW4gdGhhdCB3YXkuDQoNCj4+ICsgICAgICAgICAgICBUOjpnZXRfdHNfaW5mbygmbXV0IGRldiwg
+ZGF0YSwgJm11dCBpbmZvKT87DQo+PiArICAgICAgICAgICAgT2soMCkNCj4gDQo+IENhbiB0aGlz
+IGJlIHNpbXBsaWZpZWQgdG86DQo+IA0KPiAgICAgVDo6Z2V0X3RzX2luZm8oJm11dCBkZXYsIGRh
+dGEsICZtdXQgaW5mbykNCj4gDQo+ID8NCg0KV2UgY291bGQgZG86DQoNClQ6OmdldF90c19pbmZv
+KCZtdXQgZGV2LCBkYXRhLCAmbXV0IGluZm8pLm1hcCh8X3wgMCkNCg0KdGhhbmtzLA0K
