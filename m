@@ -2,62 +2,62 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78811C7EE29
-	for <rust-for-linux@archiver.kernel.org>; Tue, 13 Jun 2023 04:53:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0C29C7EE29
+	for <rust-for-linux@archiver.kernel.org>; Tue, 13 Jun 2023 04:53:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233430AbjFMExk (ORCPT
+        id S234485AbjFMExm (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 13 Jun 2023 00:53:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58170 "EHLO
+        Tue, 13 Jun 2023 00:53:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239550AbjFMExh (ORCPT
+        with ESMTP id S239550AbjFMExl (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 13 Jun 2023 00:53:37 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A1210DF;
-        Mon, 12 Jun 2023 21:53:36 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1b3ecb17721so385215ad.0;
-        Mon, 12 Jun 2023 21:53:36 -0700 (PDT)
+        Tue, 13 Jun 2023 00:53:41 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745211BC;
+        Mon, 12 Jun 2023 21:53:33 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1b3df438cf1so1760735ad.1;
+        Mon, 12 Jun 2023 21:53:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686632016; x=1689224016;
+        d=gmail.com; s=20221208; t=1686632012; x=1689224012;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7D7KD+4/hvSzq7CFXPABTFsWyQuluvzVlksOwlgt0j4=;
-        b=lBt7XkrWoWv4WtbnZEMyO+/Ha6V5eGYfdnP3Kzg2oJj0twC7C6ccryxk9+LyDemmPj
-         JOS3LdIiVUSdcl9LKXAuCvb79EjI/NbjqSpo6YoFZgCwBWxl6u1qT7Y/sT1SS+a7dO62
-         qQGkjvP+rtq3AMxWSEcfjbK5sRX0S5dgI9h8T9rQiOqQKUErPP52p4/ODLxz9p6wVUiy
-         9BOt2qp/F3F7ho3ecmxxZJbp965EtG0HIvR/zQ9s26bg+UCM45EMrDNJ5KBg33ObDA+3
-         mzpi4hwf/DNXWQlFWpwcE96dd2Y7LtYyFbILBul+sXmGNnXT9ixxFk/EmW2XS8Uq01Qk
-         Zufg==
+        bh=8WLrWgTq3lGZWH7CAbwlMcBDXHc2js7ZTMM+S02Ruag=;
+        b=m3N/cOnIaiwJ7cbH0olTlh0AF9FTdYhTV7bHJ7fH/JLKfcY7J0ZioI95mnImUSiIz/
+         9BB6qmlLckpYYiTs3/6uJghouLnJAq8ssaE+TuBUNhA4Gf03SPKSFPKd8CkG+0Unczus
+         Ny0ttRzdmu7mCngyuEvTKHZiSI37y8LM68MxI48VtPrTYBTDQ5PI5XJ0WWwdii6XNbam
+         qizPV7+YrGU07MBLoeMqzk4GcfdNPO3/l+HAUDF7Ue1rA9dptPEw7e+1gMpYmG9GJDNb
+         NVOfw/J3N7WOgucz1iXiWKrB+wKtTnlZKu6tGW/y8Cl1IhHQnMiq671234udZw7J2tMt
+         Vj5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686632016; x=1689224016;
+        d=1e100.net; s=20221208; t=1686632012; x=1689224012;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7D7KD+4/hvSzq7CFXPABTFsWyQuluvzVlksOwlgt0j4=;
-        b=CqjZi3UcjNpDXEgH7pNdcN+w1Btn7fvtJJug3opMGaMxHz7f8GTFBU7WbjHng1GY6S
-         aekJqCnFxn4k7MtvUCN3aQblmYnTvCJ8kEc5tlvCze3eyTfb2LeiGSlHYFZ6BG+9sW3s
-         5sr5L3pbYDs18MFYwVqp7lbszsAxKsevFKsaJoq01SbvOAWH/kW6N7X3oj+d2QhbG4s0
-         +5kSjYTE+P2Mq2HEFPNEEbh9/Z35fo9oyhJtPJG3Gcy6gv1NhMj5oIKIo4nvWICcmUa2
-         ynKwW1PQa6rdtoPHHubJhCIjiZxnu1Bz+WuXizwbqPi85gG33YUJdg+EV8hPMcxcm5g2
-         rN1g==
-X-Gm-Message-State: AC+VfDz8c3J+OXUtIZVl5rS70NL52iziQjB3o4Z7tEpP2DR7lxLOpSIy
-        h4MjWl0Yqhbjhbo1iJLVbXcyTt37NDO+bMZA
-X-Google-Smtp-Source: ACHHUZ44OEkRfiOJ41O+zs4PNyrhQqZG9RkIftnA1tvpJkvTqJBrVSk69FN0hR8Bu+rTPCzNesUPbg==
-X-Received: by 2002:a17:902:e844:b0:1b3:ebda:654e with SMTP id t4-20020a170902e84400b001b3ebda654emr1013355plg.5.1686632015580;
-        Mon, 12 Jun 2023 21:53:35 -0700 (PDT)
+        bh=8WLrWgTq3lGZWH7CAbwlMcBDXHc2js7ZTMM+S02Ruag=;
+        b=MaNkcuT4Bxn4B/5feCQWM4qoBoS0Nk4tYuiKu1vCr0S7vo4DGaURT6VUYd/68umJle
+         zV9aFlMluWRBnch8DgajBMiKfVbwKn9TJ0gPLGoWDXh+defauE0Jrb4gr0OQot+JuXns
+         9bXld7qcboYavhtJlqXpEiVUuf7fKavsoddaJ7uvWeI8hpUWzCNdAdYtqi1fAi69OnmX
+         bzKMKGiDUSeefifNnqNEX8AVdSPHpSTgPUlf735rS96R3KwkRPIj/4q1LbWCx89AXXHJ
+         Csy6Sm3TbIfrY8He+mEHLrGm/fgg4zonpJOLf44dOVdVp8k+UCgoKmallqxCqYwC5h/q
+         zTSg==
+X-Gm-Message-State: AC+VfDzXAplD6DTVe/b8drooM1Cy4oc8+LuEotw6YHXt0Og35ZdzGvpz
+        t5QGY3oHXSCZMg3UVubdXAnC/lcS8UVFSPQ6
+X-Google-Smtp-Source: ACHHUZ64rKFdC/O48vXNxgWgRahU9tU3oUYK32DI4dByxrLFNr0Bs71bIHEs8XwPLGUBHUtr6g3JxQ==
+X-Received: by 2002:a17:902:da8b:b0:1b0:3d54:358f with SMTP id j11-20020a170902da8b00b001b03d54358fmr12528132plx.0.1686632012572;
+        Mon, 12 Jun 2023 21:53:32 -0700 (PDT)
 Received: from ip-172-30-47-114.us-west-2.compute.internal (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id c5-20020a170902c1c500b001b027221393sm9095249plc.43.2023.06.12.21.53.34
+        by smtp.gmail.com with ESMTPSA id c5-20020a170902c1c500b001b027221393sm9095249plc.43.2023.06.12.21.53.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jun 2023 21:53:34 -0700 (PDT)
+        Mon, 12 Jun 2023 21:53:32 -0700 (PDT)
 From:   FUJITA Tomonori <fujita.tomonori@gmail.com>
 To:     netdev@vger.kernel.org
 Cc:     rust-for-linux@vger.kernel.org, aliceryhl@google.com,
         andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com
-Subject: [PATCH 5/5] samples: rust: add dummy network driver
-Date:   Tue, 13 Jun 2023 13:53:26 +0900
-Message-Id: <20230613045326.3938283-6-fujita.tomonori@gmail.com>
+Subject: [PATCH 2/5] rust: add support for ethernet operations
+Date:   Tue, 13 Jun 2023 13:53:23 +0900
+Message-Id: <20230613045326.3938283-3-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230613045326.3938283-1-fujita.tomonori@gmail.com>
 References: <20230613045326.3938283-1-fujita.tomonori@gmail.com>
@@ -67,155 +67,158 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This is a simpler version of drivers/net/dummy.c.
+This improves abstractions for network device drivers to implement
+struct ethtool_ops, the majority of ethernet device drivers need to
+do.
 
-This demonstrates the usage of abstractions for network device drivers.
+struct ethtool_ops also needs to access to device private data like
+struct net_devicve_ops.
 
-Allows allocator_api feature for Box::try_new();
+Currently, only get_ts_info operation is supported. The following
+patch adds the Rust version of the dummy network driver, which uses
+the operation.
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- samples/rust/Kconfig           | 12 +++++
- samples/rust/Makefile          |  1 +
- samples/rust/rust_net_dummy.rs | 81 ++++++++++++++++++++++++++++++++++
- scripts/Makefile.build         |  2 +-
- 4 files changed, 95 insertions(+), 1 deletion(-)
- create mode 100644 samples/rust/rust_net_dummy.rs
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/net/dev.rs          | 108 ++++++++++++++++++++++++++++++++
+ 2 files changed, 109 insertions(+)
 
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index b0f74a81c8f9..8b52ba620ae3 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -30,6 +30,18 @@ config SAMPLE_RUST_PRINT
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 468bf606f174..6446ff764980 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -8,6 +8,7 @@
  
- 	  If unsure, say N.
+ #include <linux/errname.h>
+ #include <linux/etherdevice.h>
++#include <linux/ethtool.h>
+ #include <linux/netdevice.h>
+ #include <linux/slab.h>
+ #include <linux/refcount.h>
+diff --git a/rust/kernel/net/dev.rs b/rust/kernel/net/dev.rs
+index d072c81f99ce..d6012b2eea33 100644
+--- a/rust/kernel/net/dev.rs
++++ b/rust/kernel/net/dev.rs
+@@ -141,6 +141,18 @@ pub fn register(&mut self) -> Result {
+         }
+     }
  
-+config SAMPLE_RUST_NET_DUMMY
-+	tristate "Dummy network driver"
-+	depends on NET
-+	help
-+	  This is the simpler version of drivers/net/dummy.c. No intention to replace it.
-+	  This provides educational information for Rust abstractions for network drivers.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_minimal.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_HOSTPROGS
- 	bool "Host programs"
- 	help
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 03086dabbea4..440dee2971ba 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -2,5 +2,6 @@
- 
- obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
- obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
-+obj-$(CONFIG_SAMPLE_RUST_NET_DUMMY)		+= rust_net_dummy.o
- 
- subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
-diff --git a/samples/rust/rust_net_dummy.rs b/samples/rust/rust_net_dummy.rs
-new file mode 100644
-index 000000000000..6c49a7ba7ba2
---- /dev/null
-+++ b/samples/rust/rust_net_dummy.rs
-@@ -0,0 +1,81 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+//! Rust dummy netdev.
-+
-+use kernel::{
-+    c_str,
-+    net::dev::{
-+        ethtool_op_get_ts_info, flags, priv_flags, Device, DeviceOperations, DriverData,
-+        EtherOperations, EthtoolTsInfo, Registration, RtnlLinkStats64, SkBuff, TxCode,
-+    },
-+    prelude::*,
-+};
-+
-+module! {
-+    type: DummyNetdev,
-+    name: "rust_net_dummy",
-+    author: "Rust for Linux Contributors",
-+    description: "Rust dummy netdev",
-+    license: "GPL v2",
-+}
-+
-+struct DevOps {}
-+
-+#[vtable]
-+impl<D: DriverData<Data = Box<Stats>>> DeviceOperations<D> for DevOps {
-+    fn init(_dev: &mut Device, _data: &Stats) -> Result {
++    /// Sets `ethtool_ops` of `net_device`.
++    pub fn set_ether_operations<U>(&mut self) -> Result
++    where
++        U: EtherOperations<D>,
++    {
++        if self.is_registered {
++            return Err(code::EINVAL);
++        }
++        EtherOperationsAdapter::<U, D>::new().set_ether_ops(&mut self.dev);
 +        Ok(())
 +    }
 +
-+    fn start_xmit(_dev: &mut Device, _data: &Stats, mut skb: SkBuff) -> TxCode {
-+        skb.tx_timestamp();
-+        TxCode::Ok
+     const DEVICE_OPS: bindings::net_device_ops = bindings::net_device_ops {
+         ndo_init: if <T>::HAS_INIT {
+             Some(Self::init_callback)
+@@ -342,3 +354,99 @@ fn drop(&mut self) {
+         }
+     }
+ }
++
++/// Builds the kernel's `struct ethtool_ops`.
++struct EtherOperationsAdapter<D, T> {
++    _p: PhantomData<(D, T)>,
++}
++
++impl<D, T> EtherOperationsAdapter<T, D>
++where
++    D: DriverData,
++    T: EtherOperations<D>,
++{
++    /// Creates a new instance.
++    fn new() -> Self {
++        EtherOperationsAdapter { _p: PhantomData }
 +    }
 +
-+    fn get_stats64(_dev: &mut Device, _data: &Stats, _stats: &mut RtnlLinkStats64) {}
++    unsafe extern "C" fn get_ts_info_callback(
++        netdev: *mut bindings::net_device,
++        info: *mut bindings::ethtool_ts_info,
++    ) -> core::ffi::c_int {
++        from_result(|| {
++            // SAFETY: The C API guarantees that `netdev` is valid while this function is running.
++            let mut dev = unsafe { Device::from_ptr(netdev) };
++            // SAFETY: The returned pointer was initialized by `D::Data::into_foreign` when
++            // `Registration` object was created.
++            // `D::Data::from_foreign` is only called by the object was released.
++            // So we know `data` is valid while this function is running.
++            let data = unsafe { D::Data::borrow(dev.priv_data_ptr()) };
++            // SAFETY: The C API guarantees that `info` is valid while this function is running.
++            let mut info = unsafe { EthtoolTsInfo::from_ptr(info) };
++            T::get_ts_info(&mut dev, data, &mut info)?;
++            Ok(0)
++        })
++    }
++
++    const ETHER_OPS: bindings::ethtool_ops = bindings::ethtool_ops {
++        get_ts_info: if <T>::HAS_GET_TS_INFO {
++            Some(Self::get_ts_info_callback)
++        } else {
++            None
++        },
++        ..unsafe { core::mem::MaybeUninit::<bindings::ethtool_ops>::zeroed().assume_init() }
++    };
++
++    const fn build_ether_ops() -> &'static bindings::ethtool_ops {
++        &Self::ETHER_OPS
++    }
++
++    fn set_ether_ops(&self, dev: &mut Device) {
++        // SAFETY: The type invariants guarantee that `dev.0` is valid.
++        unsafe {
++            (*dev.0).ethtool_ops = Self::build_ether_ops();
++        }
++    }
 +}
 +
-+/// For device driver specific information.
-+struct Stats {}
-+
-+impl DriverData for Stats {
-+    type Data = Box<Stats>;
-+}
-+
-+struct DummyNetdev {
-+    _r: Registration<DevOps, Stats>,
-+}
-+
-+struct EtherOps {}
-+
++/// Corresponds to the kernel's `struct ethtool_ops`.
 +#[vtable]
-+impl<D: DriverData<Data = Box<Stats>>> EtherOperations<D> for EtherOps {
-+    fn get_ts_info(dev: &mut Device, _data: &Stats, info: &mut EthtoolTsInfo) -> Result {
-+        ethtool_op_get_ts_info(dev, info)
++pub trait EtherOperations<D: DriverData> {
++    /// Corresponds to `get_ts_info` in `struct ethtool_ops`.
++    fn get_ts_info(
++        _dev: &mut Device,
++        _data: <D::Data as ForeignOwnable>::Borrowed<'_>,
++        _info: &mut EthtoolTsInfo,
++    ) -> Result {
++        Err(Error::from_errno(bindings::EOPNOTSUPP as i32))
 +    }
 +}
 +
-+impl kernel::Module for DummyNetdev {
-+    fn init(_module: &'static ThisModule) -> Result<Self> {
-+        let data = Box::try_new(Stats {})?;
-+        let mut r = Registration::<DevOps, Stats>::try_new_ether(1, 1, data)?;
-+        r.set_ether_operations::<EtherOps>()?;
++/// Corresponds to the kernel's `struct ethtool_ts_info`.
++///
++/// # Invariants
++///
++/// The pointer is valid.
++pub struct EthtoolTsInfo(*mut bindings::ethtool_ts_info);
 +
-+        let netdev = r.dev_get();
-+        netdev.set_name(c_str!("dummy%d"))?;
-+
-+        netdev.set_flags(netdev.get_flags() | flags::IFF_NOARP & !flags::IFF_MULTICAST);
-+        netdev.set_priv_flags(
-+            netdev.get_priv_flags() | priv_flags::IFF_LIVE_ADDR_CHANGE | priv_flags::IFF_NO_QUEUE,
-+        );
-+        netdev.set_random_eth_hw_addr();
-+        netdev.set_min_mtu(0);
-+        netdev.set_max_mtu(0);
-+
-+        r.register()?;
-+
-+        // TODO: Replaces pr_info with the wrapper of netdev_info().
-+        pr_info!("Hello Rust dummy netdev!");
-+        Ok(DummyNetdev { _r: r })
++impl EthtoolTsInfo {
++    /// Creates a new `EthtoolTsInfo' instance.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that `ptr` must be valid.
++    unsafe fn from_ptr(ptr: *mut bindings::ethtool_ts_info) -> Self {
++        // INVARIANT: The safety requirements ensure the invariant.
++        Self(ptr)
 +    }
 +}
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 78175231c969..1404967e908e 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -277,7 +277,7 @@ $(obj)/%.lst: $(src)/%.c FORCE
- # Compile Rust sources (.rs)
- # ---------------------------------------------------------------------------
- 
--rust_allowed_features := new_uninit
-+rust_allowed_features := allocator_api,new_uninit
- 
- rust_common_cmd = \
- 	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
++
++/// Sets up the info for software timestamping.
++pub fn ethtool_op_get_ts_info(dev: &mut Device, info: &mut EthtoolTsInfo) -> Result {
++    // SAFETY: The type invariants guarantee that `dev.0` and `info.0` are valid.
++    unsafe {
++        bindings::ethtool_op_get_ts_info(dev.0, info.0);
++    }
++    Ok(())
++}
 -- 
 2.34.1
 
