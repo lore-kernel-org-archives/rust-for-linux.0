@@ -2,161 +2,101 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C62AEEB64D8
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 14:33:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86630EB64D8
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 14:37:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245254AbjFNOdJ (ORCPT
+        id S236343AbjFNOhC (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Jun 2023 10:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56438 "EHLO
+        Wed, 14 Jun 2023 10:37:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245627AbjFNOdC (ORCPT
+        with ESMTP id S235506AbjFNOhC (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Jun 2023 10:33:02 -0400
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13CA9213F
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jun 2023 07:32:49 -0700 (PDT)
-Date:   Wed, 14 Jun 2023 14:32:40 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1686753167; x=1687012367;
-        bh=Eym4bt3G3yI5tzMrX6NSMGd1+ikTIMtBGpmezvReHMk=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=Xkh/eR8al1uA04ta5Bbi8OPlyK6TSpuMGojkCHFCB046PABXv7MtBc39nJrrqvDTy
-         Qepc9vvN4tO/+bij/nZwQLdueaT3SnPLRnP/FLD1I/HmrFALkd8uSB0rsVZrcCaiQw
-         1e2kcXYGlxMBuyWM6bgsXqpVMYtwsafhP6BZ2Dzp0LI+sPocaXK5wpFKF/2eLlKdqh
-         lhNUHeg2KsmbSZjuOmeFdM5NC2WxV2WomqYHs9RS04xpJQd7/HaIUOlDqUqb8U7FXD
-         G3wxciegsorkG8l3wVINiAGVclJnBjNmhz36eF5qwXF/aAEuvSGrDQ2lAsfwtDn4W2
-         T9b8t2d5pNruw==
-To:     Boqun Feng <boqun.feng@gmail.com>
-From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Fox Chen <foxhlchen@gmail.com>,
-        John Baublitz <john.m.baublitz@gmail.com>,
-        Christoph Lameter <cl@linux.com>,
-        Pekka Enberg <penberg@kernel.org>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        Kees Cook <keescook@chromium.org>,
-        Andreas Hindborg <nmi@metaspace.dk>, stable@vger.kernel.org
-Subject: Re: [PATCH] rust: allocator: Prevents mis-aligned allocation
-Message-ID: <91XpcluPyeKjsC8_uSh1yvgcz2BoRMeih76O5-wTwQgnNiLFdOCiO3HT9kXByzZIiK-6nForUTTeo-H9cR0CWemr7dJuMgMnC0wzGDIBmlQ=@proton.me>
-In-Reply-To: <20230613164258.3831917-1-boqun.feng@gmail.com>
-References: <20230613164258.3831917-1-boqun.feng@gmail.com>
-Feedback-ID: 71780778:user:proton
+        Wed, 14 Jun 2023 10:37:02 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D634BE4D;
+        Wed, 14 Jun 2023 07:37:00 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 51C635C010A;
+        Wed, 14 Jun 2023 10:37:00 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Wed, 14 Jun 2023 10:37:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
+        :content-transfer-encoding:content-type:content-type:date:date
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1686753420; x=1686839820; bh=jc9ujq43JBUFnTtaQ2eqgsCeobbT+I566SB
+        q26GvICE=; b=QzVkbKjILQuShB1JLrgex/3GM/yDLdIh98NXn4pSo+gmoz10912
+        igAKEkhRS442Xe3m4BFCKq6KXD5BtD1qcTTnkZrdAM++2/yu0org6DO6SLpXsfDm
+        l8Dcy1ASkv0gXpYtLhM4dFrEEYKU+/hOrNQjyCQwJ9kutO+eFPmL53kCB5nnoAS7
+        3NSwU05VEcs/wObXN/0sRaZ9SLpMlArGT0YqNuIhY4mvle9eKPUmwImsydQ4j8sO
+        rvsp+FD2hitG+rGtYAAmD4XHJUtHQEw1md4f10oM2MikBeV/6aeL1VjTghoLZQkR
+        as9k8Xj4TXSotiGEM0cafPEmaTr8zwHcjLw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1686753420; x=1686839820; bh=jc9ujq43JBUFnTtaQ2eqgsCeobbT+I566SB
+        q26GvICE=; b=qFOXJYQ0s/rWnRv08KppoLGlIiFqYXgRZAYDg+KGuvUxylX02oP
+        A7pr6kyHuG0OozAmQyre3IetLhkQh5iaFF2t0Z8JFTxV8Rqceyb0yF3ebzLeh4S6
+        GmRtAsCb42UY4F3+JTVon8a1YJ4H1qxuLQVB4/S63igz72ZgruI2tFAW6I2m0Kzc
+        Ob17ce5rkVGiC4DTmIvPAC6jwSWnWI0xmSy/7kFBVPrc4BvH+lG91tvbhKGTpUa1
+        iS0WsT4QE8lEcw+wz+QXJkCo2bXEP1vc8eNLCL3K3KyfS6WVQ2NzqkkPzOfSgxQV
+        xKC9mIlNLBMg39GpcpVq0KJR79fVWmm/htg==
+X-ME-Sender: <xms:jNCJZDnYOPCjnqjl8qTdnSITXgDmUnsb7W6ClqB9bNcuQQiplxcYOw>
+    <xme:jNCJZG1i-WSBuQ3Fpw0SDvli_TagKhg9drg0txPzka4ul-bxoZMm0NKs0lGNU6yye
+    vw2cxvVpEdunI33vg>
+X-ME-Received: <xmr:jNCJZJoueUZf9IBcxPAI-KM7kIo3K1G7SFNsg3bqxeDj-Vl5ndmHgjACfjQpsGtH4s7Li88CYIo0nX6E1okpabR7pNJRZBTB0LC7zFXHpaPm>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedvtddgjeelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpeetlhhi
+    tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
+    ehudduvdetkedvkedtudeludfgfffhudegjeeguedvvedtteevjeehheeiffefgeenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvse
+    hrhihhlhdrihho
+X-ME-Proxy: <xmx:jNCJZLmfUqh503BTJoVj1qAxksyYiXC_Ve5VzlmSuFrq1SZpYZj3-A>
+    <xmx:jNCJZB38fc8TP-ueT-S6fCqUeFm4ON7166_H6m1o9qWfB30JOGE3uA>
+    <xmx:jNCJZKsCyZqWmwhQ4nBg2yv2d6gQ-a9OUSWv-5DlRxKvxfZnmm2ZpA>
+    <xmx:jNCJZKLxmOwRp0qwsql8eh26RJwiHxav6aEl1FhvSQX9yIIu9C1QXQ>
+Feedback-ID: i56684263:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 14 Jun 2023 10:36:58 -0400 (EDT)
+Message-ID: <77089cc6-233c-9329-a994-95ae6d3d07e3@ryhl.io>
+Date:   Wed, 14 Jun 2023 16:37:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] rust: make `UnsafeCell` the outer type in `Opaque`
+Content-Language: en-US
+To:     Benno Lossin <benno.lossin@proton.me>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+References: <20230614115328.2825961-1-aliceryhl@google.com>
+ <zirWeKUZRqFhiN23v0pXHMmvuceI7EZyVvNUiREGf-UNbIbXLrHjbC8diUNg9v802jbX1978ezQLDCl--1M5S6K8l7CVWs8JGB-znEEMRNE=@proton.me>
+From:   Alice Ryhl <alice@ryhl.io>
+In-Reply-To: <zirWeKUZRqFhiN23v0pXHMmvuceI7EZyVvNUiREGf-UNbIbXLrHjbC8diUNg9v802jbX1978ezQLDCl--1M5S6K8l7CVWs8JGB-znEEMRNE=@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 13.06.23 18:42, Boqun Feng wrote:
-> Currently the KernelAllocator simply passes the size of the type Layout
-> to krealloc(), and in theory the alignment requirement from the type
-> Layout may be larger than the guarantee provided by SLAB, which means
-> the allocated object is mis-aligned.
->=20
-> Fixes this by adjusting the allocation size to the nearest power of two,
-> which SLAB always guarantees a size-aligned allocation. And because Rust
-> guarantees that original size must be a multiple of alignment and the
-> alignment must be a power of two, then the alignment requirement is
-> satisfied.
->=20
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Co-developed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
-> Signed-off-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Cc: stable@vger.kernel.org # v6.1+
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
---=20
-Cheers,
-Benno
-
-> ---
-> Some more explanation:
->=20
-> * Layout is a data structure describing a particular memory layout,
->    conceptionally it has two fields: align and size.
->=20
->    * align is guaranteed to be a power of two.
->    * size can be smaller than align (only when the Layout is created via
->      Layout::from_align_size())
->    * After pad_to_align(), the size is guaranteed to be a multiple of
->      align
->=20
-> For more information, please see:
->=20
-> =09https://doc.rust-lang.org/stable/std/alloc/struct.Layout.html
->=20
->   rust/bindings/bindings_helper.h |  1 +
->   rust/kernel/allocator.rs        | 17 ++++++++++++++++-
->   2 files changed, 17 insertions(+), 1 deletion(-)
->=20
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 3e601ce2548d..6619ce95dd37 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -15,3 +15,4 @@
->   /* `bindgen` gets confused at certain things. */
->   const gfp_t BINDINGS_GFP_KERNEL =3D GFP_KERNEL;
->   const gfp_t BINDINGS___GFP_ZERO =3D __GFP_ZERO;
-> +const size_t BINDINGS_ARCH_SLAB_MINALIGN =3D ARCH_SLAB_MINALIGN;
-> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
-> index 397a3dd57a9b..66575cf87ce2 100644
-> --- a/rust/kernel/allocator.rs
-> +++ b/rust/kernel/allocator.rs
-> @@ -11,9 +11,24 @@
->=20
->   unsafe impl GlobalAlloc for KernelAllocator {
->       unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-> +        // Customized layouts from `Layout::from_size_align()` can have =
-size < align, so pads first.
-> +        let layout =3D layout.pad_to_align();
-> +
-> +        let mut size =3D layout.size();
-> +
-> +        if layout.align() > bindings::BINDINGS_ARCH_SLAB_MINALIGN {
-> +            // The alignment requirement exceeds the slab guarantee, the=
-n tries to enlarges the size
-> +            // to use the "power-of-two" size/alignment guarantee (see c=
-omments in kmalloc() for
-> +            // more information).
-> +            //
-> +            // Note that `layout.size()` (after padding) is guaranteed t=
-o be muliples of
-> +            // `layout.align()`, so `next_power_of_two` gives enough ali=
-gnment guarantee.
-> +            size =3D size.next_power_of_two();
-> +        }
-> +
->           // `krealloc()` is used instead of `kmalloc()` because the latt=
-er is
->           // an inline function and cannot be bound to as a result.
-> -        unsafe { bindings::krealloc(ptr::null(), layout.size(), bindings=
-::GFP_KERNEL) as *mut u8 }
-> +        unsafe { bindings::krealloc(ptr::null(), size, bindings::GFP_KER=
-NEL) as *mut u8 }
->       }
->=20
->       unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
-> --
-> 2.39.2
+On 6/14/23 16:27, Benno Lossin wrote:>> @@ -258,7 +258,7 @@ pub fn 
+ffi_init(init_func: impl FnOnce(*mut T)) -> impl PinInit<Self> {
+>>
+>>        /// Returns a raw pointer to the opaque data.
+>>        pub fn get(&self) -> *mut T {
+>> -        UnsafeCell::raw_get(self.0.as_ptr())
+>> +        UnsafeCell::get(&self.0).cast::<T>()
 > 
+> Is there a reason you don't do `self.0.get().cast::<T>()`?
+> 
+
+Not really. I just modified what was already there.
