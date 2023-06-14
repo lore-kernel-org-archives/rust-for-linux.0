@@ -2,76 +2,131 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E03B3EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 12:27:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D90DCC001E0
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 14:28:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243263AbjFNM10 (ORCPT
+        id S235458AbjFNO2J (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Jun 2023 08:27:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60720 "EHLO
+        Wed, 14 Jun 2023 10:28:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244430AbjFNM1R (ORCPT
+        with ESMTP id S237035AbjFNO2I (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Jun 2023 08:27:17 -0400
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 416301FCC
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jun 2023 05:27:15 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id 3f1490d57ef6-bd744ffc263so549597276.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jun 2023 05:27:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686745634; x=1689337634;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=kwP53YTz46NOCudbBkIpxBeO9Za/GrhCWcFrSoN5PjM=;
-        b=oWLaI1mkQIrGMNHRf5v3jKrLdbUvlgod+mtP6uHJgOdo6OYGFJQyiAegjfeqHEEfH1
-         RNwBHbk9OgKh9q8Zgjk+ACgbkSLcAd6FWDf5Hpu2nGo22jy+79UvbggvpCuQr90TkAGj
-         SBg+n2CEA5oSvRz0to+VWFPTSaCaqaudCkuUTe1RjWypAduMggltEJHvtWosZ345L08r
-         Tjui5+I6QVrdGpZifnXU9egFwtPpo7jJlwLB3mYXm+gOHBSMTiYyIso/e/UI2Yhjgkze
-         EyzbIy9sS4zuDcpiyspp5xZbq0nvZ6Zc1B5vX6GRgLGYL0NWZiMT8oJSp71GogeQhe4F
-         riJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686745634; x=1689337634;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kwP53YTz46NOCudbBkIpxBeO9Za/GrhCWcFrSoN5PjM=;
-        b=ZM0SZJqFeXsF4TBxe7d5hu2OfUcY1Hm2Ldq7mPgDPIuVlCPNqZIbcSG8Uag+dXopEs
-         82Px9Vb7t0pCpQE2hFy0R4TFnHUETs2WkJeU5wX10A3qjrp7/Dm28sJAqfT90QoF2Mg/
-         pRsRc+FA9IFGufnK6j6DazhrY0ll7IdFGi8s4ke04NVjp3yvEtCHitdfoxa/3o8lLH8V
-         Q+OXA5lldOK3ojiPXhaVvHi1/CdK0JcTQpEUCHG+JToHkcvFFmjyRHlWvOEs6nXpZKEZ
-         S9DhhSgDr/jtVYu5gVTWCFvZxDOcggkimPB7tz0J5M04aj5b6IZSx276zPyKdWD2nMqQ
-         ef1Q==
-X-Gm-Message-State: AC+VfDzMhh++LX0Pt2SdPKGYmi/+NQHfp9mGcteswPmuFi9Z0oCJ6Dqu
-        fF10CaAx6NFeYTfo2POGidPCYyr/QyEhsv6PUApifdXqYWZ7HA==
-X-Google-Smtp-Source: ACHHUZ5ySsnOrn1wrBBfRC+0spRdDOQemkdKmJ6h9vzR6JwodxYgZCFdhXOsqTmK+h9B3jAVHDBAw3lEFY9GtG6n8Y8=
-X-Received: by 2002:a25:8012:0:b0:bc8:2158:63cf with SMTP id
- m18-20020a258012000000b00bc8215863cfmr1825840ybk.23.1686745634178; Wed, 14
- Jun 2023 05:27:14 -0700 (PDT)
+        Wed, 14 Jun 2023 10:28:08 -0400
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C61E51721;
+        Wed, 14 Jun 2023 07:28:03 -0700 (PDT)
+Date:   Wed, 14 Jun 2023 14:27:39 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=protonmail; t=1686752881; x=1687012081;
+        bh=TaKHoWoduEdf1ULAdjEPdONgcWDvL8WQUMVGK+EvA5E=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=dNFrt+3gbyPbkBUmkd/PWupNZXiTiwc8CpC/mJxXuxtsM5Q49KRif7rmIGlcwbcB3
+         0U2ua19QVjj1yxzMPXN+LqqjbHN/0c89FdHjyp1Jvdl7sxw7Y+SbGQ1lk6bvn7PwlN
+         cISM1qgJIJUgPaEGIru1Bazz+keA6jbgkpK+PZYREelA15aNRu2iRuXZWja+m+sWHU
+         G6hiPXz1csLlW4AUPJVxTqGFxs1Z1KpftAdsXHn+CcCzl2Q5nYN0nGIZUb1NUyfJVS
+         SWTVn5E89b5eYGVF49+OwV6QcFqJbvorAErbeGGW4hgHPS4eS7j+9T14GYSSWB053d
+         A+C0DhIgAU7mg==
+To:     Alice Ryhl <aliceryhl@google.com>
+From:   Benno Lossin <benno.lossin@proton.me>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH] rust: make `UnsafeCell` the outer type in `Opaque`
+Message-ID: <zirWeKUZRqFhiN23v0pXHMmvuceI7EZyVvNUiREGf-UNbIbXLrHjbC8diUNg9v802jbX1978ezQLDCl--1M5S6K8l7CVWs8JGB-znEEMRNE=@proton.me>
+In-Reply-To: <20230614115328.2825961-1-aliceryhl@google.com>
+References: <20230614115328.2825961-1-aliceryhl@google.com>
+Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 14 Jun 2023 14:27:03 +0200
-Message-ID: <CANiq72==dtWOe_XwE3_BhqzCs+jfywUGfK5s=u1iMzd+RuqDXg@mail.gmail.com>
-Subject: Rust MC at LPC 2023
-To:     rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi all,
+On 14.06.23 13:53, Alice Ryhl wrote:
+> When combining `UnsafeCell` with `MaybeUninit`, it is idiomatic to use
+> `UnsafeCell` as the outer type. Intuitively, this is because a
+> `MaybeUninit<T>` might not contain a `T`, but we always want the effect
+> of the `UnsafeCell`, even if the inner value is uninitialized.
+>=20
+> Now, strictly speaking, this doesn't really make a difference. The
+> compiler will always apply the `UnsafeCell` effect even if the inner
+> value is uninitialized. But I think we should follow the convention
+> here.
+>=20
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-The Rust Microconference for the Linux Plumbers Conference 2023 has
-been accepted!
+Small comment below, but I think it is fine the way it is.
 
-    https://lpc.events/event/17/sessions/170/
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-Proposals can be submitted now at:
+> ---
+>   rust/kernel/types.rs | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 1e5380b16ed5..fb41635f1e1f 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -224,17 +224,17 @@ fn drop(&mut self) {
+>   ///
+>   /// This is meant to be used with FFI objects that are never interprete=
+d by Rust code.
+>   #[repr(transparent)]
+> -pub struct Opaque<T>(MaybeUninit<UnsafeCell<T>>);
+> +pub struct Opaque<T>(UnsafeCell<MaybeUninit<T>>);
+>=20
+>   impl<T> Opaque<T> {
+>       /// Creates a new opaque value.
+>       pub const fn new(value: T) -> Self {
+> -        Self(MaybeUninit::new(UnsafeCell::new(value)))
+> +        Self(UnsafeCell::new(MaybeUninit::new(value)))
+>       }
+>=20
+>       /// Creates an uninitialised value.
+>       pub const fn uninit() -> Self {
+> -        Self(MaybeUninit::uninit())
+> +        Self(UnsafeCell::new(MaybeUninit::uninit()))
+>       }
+>=20
+>       /// Creates a pin-initializer from the given initializer closure.
+> @@ -258,7 +258,7 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) -> im=
+pl PinInit<Self> {
+>=20
+>       /// Returns a raw pointer to the opaque data.
+>       pub fn get(&self) -> *mut T {
+> -        UnsafeCell::raw_get(self.0.as_ptr())
+> +        UnsafeCell::get(&self.0).cast::<T>()
 
-    https://lpc.events/event/17/abstracts/
+Is there a reason you don't do `self.0.get().cast::<T>()`?
 
-For those of you that want to attend in person, please note that the
-registration is opening soon:
-
-    https://lpc.events/blog/current/index.php/2023/06/14/registration-for-lpc-2023-is-almost-here/
-
+--=20
 Cheers,
-Miguel
+Benno
+
+>       }
+>=20
+>       /// Gets the value behind `this`.
+> @@ -266,7 +266,7 @@ pub fn get(&self) -> *mut T {
+>       /// This function is useful to get access to the value without crea=
+ting intermediate
+>       /// references.
+>       pub const fn raw_get(this: *const Self) -> *mut T {
+> -        UnsafeCell::raw_get(this.cast::<UnsafeCell<T>>())
+> +        UnsafeCell::raw_get(this.cast::<UnsafeCell<MaybeUninit<T>>>()).c=
+ast::<T>()
+>       }
+>   }
+>=20
+>=20
+> base-commit: d2e3115d717197cb2bc020dd1f06b06538474ac3
+> --
+> 2.41.0.162.gfafddb0af9-goog
+>=20
+
