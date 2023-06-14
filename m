@@ -2,103 +2,158 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 418DDEB64D9
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 16:45:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7586EB64DB
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 18:10:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233985AbjFNQpP (ORCPT
+        id S239987AbjFNSKv (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Jun 2023 12:45:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55692 "EHLO
+        Wed, 14 Jun 2023 14:10:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236080AbjFNQoq (ORCPT
+        with ESMTP id S241941AbjFNSKi (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Jun 2023 12:44:46 -0400
-Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2654A2689;
-        Wed, 14 Jun 2023 09:44:36 -0700 (PDT)
-Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1a6960956d5so3274746fac.3;
-        Wed, 14 Jun 2023 09:44:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686761075; x=1689353075;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sGL7yKszvXa2cHQQt1GT6R3oKRDiN6LOViSYfGPWdZo=;
-        b=lBQX5SXd0WDA3PYTUq+DPijuVWmtojhq1FptFGztY9lgLFeSHQH/K4mxr6HYUbkwaV
-         Rxhv1T6U2qgxuGbubeXSajtOcHfgJdNPQyE8Wdej8d0HgHSdYreUERKq+39go1Gss04V
-         UgpbIQYsXgFRU31sfTPAXXoudV2mQppbgiiLSjGzhU4BSQIeEVf1OZPKvYNEHWPtWnsS
-         Y9t5+iX7fx8udI37abgmFnKIyte9AUsvjpbv4fyIYX56tSBWb5CGLlwhjoBbGB3vjyRK
-         F+UA14eBgKGYnr3jt8zWGEcDtpWMZFzjP4KKwoeXQgO0ECiGPy9pMrIhMnCHHE/SHkBv
-         Y7gQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686761075; x=1689353075;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sGL7yKszvXa2cHQQt1GT6R3oKRDiN6LOViSYfGPWdZo=;
-        b=Zu9dTzcQy3HZ9KyCOK+u2bh3WQVDPXupX3R17XvVtL33gSw2bnB3qutBK6KgkYYrl4
-         uz6zctr8Lf3Km5HPLakWFmFoGBz2qLt1kxm4ZrGkdfz5kpR/pRMivhOqqKireBtvomrd
-         OSsZsZnKMu0xkqPLW5kLpYnU1hDzHSxFaW30i2qhVsA9cpKrUiuz5n3Xal1ZBX0GLhbE
-         Bju/phhuW4PQ5YI47koTgEZixMb5rrfgFx+qbwtcQTMcBhbVZ71gDkGYRFFRRTjci8qK
-         NrxpSHSvyJ7/LwH8QrHMMvPJpyWMr8hgJbRhXOmDQakdej8BULXQQ2VwoPw3+NO+IBti
-         1z0g==
-X-Gm-Message-State: AC+VfDycl/ByvB7PV4+U2YSmwiNetEfKFS5nWoWF44wU9jeRbrYvHYdy
-        ApGOMnit96ODUU+WQVTH1T8=
-X-Google-Smtp-Source: ACHHUZ4r1WlTv/EKwLsLnrfaKpz6dKG+rQYC1+TpjBZJkEfor9XmpN+kRPszhoK90YWMTA4IbWSNDg==
-X-Received: by 2002:a05:6870:772d:b0:184:39e3:9c85 with SMTP id dw45-20020a056870772d00b0018439e39c85mr11651838oab.29.1686761075300;
-        Wed, 14 Jun 2023 09:44:35 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id el18-20020a056870f69200b001a6d15fc52fsm1501154oab.4.2023.06.14.09.44.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Jun 2023 09:44:34 -0700 (PDT)
-Message-ID: <4a1096e9-500e-d764-0a79-289e6559cfb1@gmail.com>
-Date:   Wed, 14 Jun 2023 13:44:30 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 1/1] scripts/rust_is_available: Fix clang version check
-Content-Language: en-US
-To:     "Ethan D. Twardy" <ethan.twardy@gmail.com>,
+        Wed, 14 Jun 2023 14:10:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14E9B26BE;
+        Wed, 14 Jun 2023 11:09:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93BE8643F8;
+        Wed, 14 Jun 2023 18:09:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C196C433C9;
+        Wed, 14 Jun 2023 18:09:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686766166;
+        bh=TfRlhBGxo3h+MgvwWv9kx22B1kJhHcF/Z0Gy3SwIz98=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=ORwQCmDp2rnw3G5HOz9fnVuS/GOwHPQcQFvCBFSNw9eDVvAkVQ1hMuIkmXUpt3pE2
+         8GGoIzE4tF32NriWHlgX5x3oVqabZRWwKlgT2OuXJqXqI1Zk1SKVNJEato34GLlHSa
+         r0JdF6XUfxHT0NiwzgBXbCz4uxHtkSTnTRqcYMqhukSp9PzDdYR/lmqJgeU6vfuBqo
+         JNVLwVhIL3JsXMGPqCQJilg/2BMF3Zy9Qc93/16RIgMSplZhwth4YnU4Kls+Tr/xg0
+         6KqyfPvEWmRxUh2dSypiNIeQLNRV7gJ5XtPO/dJ5BuE9oVPQjTcfDe6mJeqDdNDhAB
+         DcOEFtKNUrBPQ==
+From:   Miguel Ojeda <ojeda@kernel.org>
+To:     David Gow <davidgow@google.com>,
+        Brendan Higgins <brendan.higgins@linux.dev>,
         Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, Tiago Lam <tiagolam@gmail.com>,
-        Kees Cook <keescook@chromium.org>, Finn Behrens <me@kloenk.de>,
-        "open list:RUST" <rust-for-linux@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:CLANG/LLVM BUILD SUPPORT" <llvm@lists.linux.dev>
-References: <20230528131802.6390-1-ethan.twardy@gmail.com>
- <20230528131802.6390-2-ethan.twardy@gmail.com>
- <525fee98-c694-6a38-cd1e-dd7efd806620@gmail.com>
- <CTCD11G9NVTB.3SYR2GFA5VAB3@hackbook>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <CTCD11G9NVTB.3SYR2GFA5VAB3@hackbook>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <nmi@metaspace.dk>,
+        Philip Li <philip.li@intel.com>, kunit-dev@googlegroups.com,
+        linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: [PATCH 1/6] rust: init: make doctests compilable/testable
+Date:   Wed, 14 Jun 2023 20:08:25 +0200
+Message-ID: <20230614180837.630180-2-ojeda@kernel.org>
+In-Reply-To: <20230614180837.630180-1-ojeda@kernel.org>
+References: <20230614180837.630180-1-ojeda@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/14/23 09:08, Ethan D. Twardy wrote:
-> Greetings, Martin!
-> 
-> Thanks very much for your testing and review. Do I need to take any
-> further action to make this patch ready for review? I sent out a v3
-> version of the patch, where the only change was adding Reviewed-By and
-> Tested-By tags to my git commit--since this is my first time
-> contributing to this community, I wasn't sure whether I needed to do
-> that. Thanks!
-> 
-> Sincerely,
-> 
-> Ethan Twardy
+Rust documentation tests are going to be build/run-tested
+with the KUnit integration added in a future patch, thus
+update them to make them compilable/testable so that we
+may start enforcing it.
 
-Unless other reviewers requested changes, you have to rebase your
-work or you want to make a modification, it is not necessary to send a
-new version of the patch series, generally, maintainers will, and have
-to, add any Reviewed-bys or Tested-bys prior to merging.
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/kernel/init.rs | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index b4332a4ec1f4..1073515ed40e 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -120,14 +120,23 @@
+ //!   `slot` gets called.
+ //!
+ //! ```rust
+-//! use kernel::{prelude::*, init};
++//! # #![allow(unreachable_pub, clippy::disallowed_names)]
++//! use kernel::{prelude::*, init, types::Opaque};
+ //! use core::{ptr::addr_of_mut, marker::PhantomPinned, pin::Pin};
+ //! # mod bindings {
++//! #     #![allow(non_camel_case_types)]
+ //! #     pub struct foo;
+ //! #     pub unsafe fn init_foo(_ptr: *mut foo) {}
+ //! #     pub unsafe fn destroy_foo(_ptr: *mut foo) {}
+ //! #     pub unsafe fn enable_foo(_ptr: *mut foo, _flags: u32) -> i32 { 0 }
+ //! # }
++//! # trait FromErrno {
++//! #     fn from_errno(errno: core::ffi::c_int) -> Error {
++//! #         // Dummy error that can be constructed outside the `kernel` crate.
++//! #         Error::from(core::fmt::Error)
++//! #     }
++//! # }
++//! # impl FromErrno for Error {}
+ //! /// # Invariants
+ //! ///
+ //! /// `foo` is always initialized
+@@ -158,7 +167,7 @@
+ //!                 if err != 0 {
+ //!                     // Enabling has failed, first clean up the foo and then return the error.
+ //!                     bindings::destroy_foo(Opaque::raw_get(foo));
+-//!                     return Err(Error::from_kernel_errno(err));
++//!                     return Err(Error::from_errno(err));
+ //!                 }
+ //!
+ //!                 // All fields of `RawFoo` have been initialized, since `_p` is a ZST.
+@@ -226,8 +235,7 @@
+ ///
+ /// ```rust
+ /// # #![allow(clippy::disallowed_names, clippy::new_ret_no_self)]
+-/// # use kernel::{init, pin_init, stack_pin_init, init::*, sync::Mutex, new_mutex};
+-/// # use macros::pin_data;
++/// # use kernel::{init, macros::pin_data, pin_init, stack_pin_init, init::*, sync::Mutex, new_mutex};
+ /// # use core::pin::Pin;
+ /// #[pin_data]
+ /// struct Foo {
+@@ -277,7 +285,7 @@ macro_rules! stack_pin_init {
+ ///
+ /// # Examples
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// # #![allow(clippy::disallowed_names, clippy::new_ret_no_self)]
+ /// # use kernel::{init, pin_init, stack_try_pin_init, init::*, sync::Mutex, new_mutex};
+ /// # use macros::pin_data;
+@@ -303,7 +311,7 @@ macro_rules! stack_pin_init {
+ /// pr_info!("a: {}", &*foo.a.lock());
+ /// ```
+ ///
+-/// ```rust
++/// ```rust,ignore
+ /// # #![allow(clippy::disallowed_names, clippy::new_ret_no_self)]
+ /// # use kernel::{init, pin_init, stack_try_pin_init, init::*, sync::Mutex, new_mutex};
+ /// # use macros::pin_data;
+@@ -513,8 +521,7 @@ macro_rules! stack_try_pin_init {
+ /// For instance:
+ ///
+ /// ```rust
+-/// # use kernel::pin_init;
+-/// # use macros::pin_data;
++/// # use kernel::{macros::pin_data, pin_init};
+ /// # use core::{ptr::addr_of_mut, marker::PhantomPinned};
+ /// #[pin_data]
+ /// struct Buf {
+@@ -841,7 +848,7 @@ macro_rules! init {
+ /// # Examples
+ ///
+ /// ```rust
+-/// use kernel::{init::PinInit, error::Error, InPlaceInit};
++/// use kernel::{init::{PinInit, zeroed}, error::Error};
+ /// struct BigBuf {
+ ///     big: Box<[u8; 1024 * 1024 * 1024]>,
+ ///     small: [u8; 1024 * 1024],
+-- 
+2.41.0
+
