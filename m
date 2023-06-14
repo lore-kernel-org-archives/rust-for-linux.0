@@ -2,58 +2,58 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B023EB64D9
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AD55EB64DD
 	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 20:33:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229447AbjFNUct (ORCPT
+        id S234950AbjFNUcv (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Jun 2023 16:32:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52666 "EHLO
+        Wed, 14 Jun 2023 16:32:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230146AbjFNUcX (ORCPT
+        with ESMTP id S233041AbjFNUc3 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Jun 2023 16:32:23 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A2E22135
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jun 2023 13:32:22 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-bb2202e0108so1156609276.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jun 2023 13:32:22 -0700 (PDT)
+        Wed, 14 Jun 2023 16:32:29 -0400
+Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E61292133
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jun 2023 13:32:28 -0700 (PDT)
+Received: by mail-ej1-x64a.google.com with SMTP id a640c23a62f3a-9775f04de56so102752166b.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jun 2023 13:32:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686774742; x=1689366742;
+        d=google.com; s=20221208; t=1686774747; x=1689366747;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
         bh=czEjt+NjAyuH0cAt6yqFee89woVRFsyvQrYC+0eGV9Y=;
-        b=G7nM3HJOnTFO/r9nAs3VZ8ncUNpyRX/dBLh4cUcJcmbenazk6RT3d0BY4kl05VgC7M
-         hNG3l1eFIHZy0gEKps3DT5vySPcxIostlF906zTm9a6QCda+Q5I9tcCdRY8YWvhUYCUW
-         lsOxSdJQJNcHDnkCz4F10A5UyoXfstoJTMP4CDGufudVQ0bYtp3EOIDQWs1ea1W8e2lO
-         QIxDHcHSEKPBkMjJd96eewXi0JWcq53nWPUQ5+57RZZSBUkQyIVjvR1yEgLxFtsud9z1
-         bS9oAGiiTJRrGkQXaK5TaTs/QZsSEcsG9PMfGSVuk52YwGs5GnAvb4usttTNRyYt2s4Y
-         0hdQ==
+        b=xTtVN4Z1Q88g5rTsccodRHtuT93zYjcUCBrJT95LZIYNDADStxnQxZyTD2EJ2BW+EQ
+         gG9WCiqzycuFhB6BgXwWMlIppjT0CNI8UMkUsdxitpwlvLRaBXOIX+CaKxN3iL8IawY+
+         4esEjsAM7hRAtYvRzMgVmR9vSolLSnj+kPwM1wlEcomxT4tuscwRvYZ30cqXIjRZ7AFw
+         wpfkcDaqNEGH5bwnGlHbj6F5zl51FHU2M19UQIGZSAKRHHsbwNEwK/7ilANmFsnAOzJU
+         vDutlW9DFkMHsGVZF254iPq8SURQag7SygVMF8UeUTIN8cRHVAUiAvVUpGHKMl83Fcch
+         heGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686774742; x=1689366742;
+        d=1e100.net; s=20221208; t=1686774747; x=1689366747;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
         bh=czEjt+NjAyuH0cAt6yqFee89woVRFsyvQrYC+0eGV9Y=;
-        b=Cd7lPIq4Hmo2KVHVBDLf4CD8vWR09ogYPwgMdwOQPsLjT32h1fD3Ruf28qdte6GjpR
-         3rV33oaUFoV7RXSyu0l0bts+ZJEfpPUq4QVsE5pQOpjG8mwHL25DhBi16EdEapNjfqhy
-         E50Zy4zmH11802jV61TmSg7iWNLW7U/QkvoZ/cdyhpkESlk6NKNISaNRTy3ElJG4qZmd
-         sIRGBkPi5qL4cB7XYArEefvhI0hSBddDmtgTewth6g0dNmeM6zH61yfPkpK/KZk9xxpU
-         qt6WiJEP/J9BiXHTTXu/PdiXhtdzVtZAyAAETOFg0Un3hH1oiFMhEed2FkkvJVD9NypQ
-         ioUQ==
-X-Gm-Message-State: AC+VfDzb+vZm7K05RZNH/YhPd6+XKA1njuxScbyJUnmyyo5/kIhd0aX4
-        gWNEiARsb6Vy8zvSHqxT3B1pLCictuWVSLc=
-X-Google-Smtp-Source: ACHHUZ7nhMzTUUAXeFrCWZk+JOE1hhfH3uptvV1wMpqo0Q8CgtIthBnY4QgsVNVwEM46C0usmP5m88ATIWqIRW0=
+        b=iBr4N3XvavX4gUrHwRawQze2cjMvf6qaPnKDPhi3aTSh1JsnA10e/Lsxi3Mq3d1gnm
+         JAvXyOmGcOf1kYNNYWhnMkB4ABz9/hWIXt26TjZcY4cmsgG7MZkyRaR1PtUioZtWysj9
+         RtPSRgFlGu05f8MiTndF9m4aJewRD/MVZ4aKw+QUpwG+zSctOoshZoWspVg69/6JdiXZ
+         jex9R3yEUaoU5aBT8SRBqt7ogPkS8a2Db7It2W7X5qf4xsiZpQAnnI4yce2oPuWZBESs
+         7Q6L65b3hK8SwOs7eZ3pG7ZRbEO9C5roYoK8SVJ/UBQf5iE+FhThQV5aNUMHNvbTTO3B
+         sjHw==
+X-Gm-Message-State: AC+VfDwHEtGH56flosI/BcE86PicT0WOdnEwa8g6gH8qclXf6aVu7Xxh
+        hEkfruNIJkkZFI7OPc7+PYzzqKupYCHYges=
+X-Google-Smtp-Source: ACHHUZ6QRTP5WMGlZF6ouKyzQXFEVXAvPfgRaI2C78nvnu3bQtIOBOvXIr1gBV+MPRyzc5u+ThXTy0T5ROzw65g=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a5b:d42:0:b0:ba1:d0:7f7c with SMTP id
- f2-20020a5b0d42000000b00ba100d07f7cmr460247ybr.2.1686774741924; Wed, 14 Jun
- 2023 13:32:21 -0700 (PDT)
-Date:   Wed, 14 Jun 2023 20:32:19 +0000
-In-Reply-To: <20230614180837.630180-3-ojeda@kernel.org>
+ (user=aliceryhl job=sendgmr) by 2002:a17:907:2bf0:b0:982:9e1c:ddc5 with SMTP
+ id gv48-20020a1709072bf000b009829e1cddc5mr8045ejc.0.1686774747408; Wed, 14
+ Jun 2023 13:32:27 -0700 (PDT)
+Date:   Wed, 14 Jun 2023 20:32:25 +0000
+In-Reply-To: <20230614180837.630180-5-ojeda@kernel.org>
 Mime-Version: 1.0
-References: <20230614180837.630180-3-ojeda@kernel.org>
+References: <20230614180837.630180-5-ojeda@kernel.org>
 X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
-Message-ID: <20230614203219.2909087-1-aliceryhl@google.com>
-Subject: Re: [PATCH 2/6] rust: str: make doctests compilable/testable
+Message-ID: <20230614203225.2909756-1-aliceryhl@google.com>
+Subject: Re: [PATCH 4/6] rust: types: make doctests compilable/testable
 From:   Alice Ryhl <aliceryhl@google.com>
 To:     ojeda@kernel.org
 Cc:     alex.gaynor@gmail.com, aliceryhl@google.com,
