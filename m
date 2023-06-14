@@ -2,91 +2,111 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FDC5EB64D8
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 15:30:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2622EB64D8
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 16:35:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231331AbjFNPaj (ORCPT
+        id S234714AbjFNQfh (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Jun 2023 11:30:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36784 "EHLO
+        Wed, 14 Jun 2023 12:35:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237061AbjFNPae (ORCPT
+        with ESMTP id S234558AbjFNQf0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Jun 2023 11:30:34 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1BFC1FFB;
-        Wed, 14 Jun 2023 08:30:33 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id 46e09a7af769-6b2b7ca1c5eso4921802a34.0;
-        Wed, 14 Jun 2023 08:30:33 -0700 (PDT)
+        Wed, 14 Jun 2023 12:35:26 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 896622689;
+        Wed, 14 Jun 2023 09:34:55 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1a2c85ef3c2so5496753fac.0;
+        Wed, 14 Jun 2023 09:34:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686756633; x=1689348633;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20221208; t=1686760495; x=1689352495;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=AOA7Y2/g359kO/OUlQWs/60uYSwoJsQ+eNPsqyoLC6A=;
-        b=IHExyYknCYaNR++NT7KWQAcnorzZ/DTyWryslqKrhqzx45SLH+A8LegSKtd3EzgkVb
-         tW3J8S7+d3/pvpRchov+vmYHgtbiMVHn29z/umpYT47vj7CK/HzYW/cFAoxbL2vU3LRP
-         ZeiwVtBi6+gu8+kamPFjkjMdrHQcpnpHI5O9YBAzV6oEpwFi8a1XCtPhjzuxplxJjrNn
-         7eo7tVEd3ulkPJiC8e1ezn95zAaPHQvzylrdLKXTdcZa953ykg14xRkJihxaHXKtD2LH
-         LSu/K2jGI5Lq8rbUCyKaWSNQ/emRuguhY6Ix9f7rYeZhxp18xsZVh7d09gQYar+nt+1F
-         fOTA==
+        bh=P02UcLI2//J8LvUgRFLkUqu+ureKnlEB4HrY9Uc3j4k=;
+        b=J0jSJqDukYcfhA7sISg8YT5j2AJRPy7WWscY0Pmtmu1xD+4jgXykkAo2CVR7ZJbtH2
+         LxJMgSOX9Tg84S4auSG+Dq4bdv6+pfcoAoGw0s+Kk3HbW7J93Rt+B3bMKIPPwBykdcai
+         dUor7roPb9xBLCf2UMlIcU4vkKdW4qmSSnleDsM6wQxxBd/MhNTCJSUlnsOHyI73W7sb
+         QR3xW8HF6/YWt7RuA0xR79c2aH0UnKegkHc+zZyDEGgOgp02w6poDo5FYWyG0LTlDF3n
+         juTk/s3ZSRipEKSmANiG9qYT4AmNRq8DglCgqd8Imj5iR7qnG2im3Oa8eFSh/8ZmjGCl
+         ZNiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686756633; x=1689348633;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1686760495; x=1689352495;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOA7Y2/g359kO/OUlQWs/60uYSwoJsQ+eNPsqyoLC6A=;
-        b=k2SSSOG1mSy/o3z8/iOp0Z58GNQdpBBHTLAILXBLhyO2tr3wm62AGXixgSDXmqZaVj
-         KpedlE4kNnRufvYn0wZGFj6PafH7BwGjEYYunP6at0k5SjyCXmsRpRLgsNPFKK9FHVpb
-         l0rCLn583T/oOJnnaM9ttxc0vHhJ7/GVi96IKf/DhVlF1WM/XU4o+CDoLBt1OqY+qNMb
-         As3R17PFSBgNzHy3C+khZiXpj8DBFpDxf4QQmuAjoUkLaslrrMiGI93jeuDZz4EWiCEz
-         775poaPR1S+4VvuujbuFfS6E4FOo7jSGD281sp+p9bPOOOYwVnpCNfwpeFcxki2f0VXs
-         sLlA==
-X-Gm-Message-State: AC+VfDxu76X675KD5+IvJVrryA2OpNV6IKZRKbgpVvNa+e/xPRH7ZiBo
-        wLOIC4gwFl1K1I00edeaWEyVlyH8THc=
-X-Google-Smtp-Source: ACHHUZ6FakHIDN4yFpz0tDtI2ydPYV4hLaDjD7mRfadlZqUYSUOmebPcmNnoYLOzD1Zw1HQ8GyAjDA==
-X-Received: by 2002:a9d:754c:0:b0:6b1:c635:b0fd with SMTP id b12-20020a9d754c000000b006b1c635b0fdmr12677424otl.32.1686756633095;
-        Wed, 14 Jun 2023 08:30:33 -0700 (PDT)
+        bh=P02UcLI2//J8LvUgRFLkUqu+ureKnlEB4HrY9Uc3j4k=;
+        b=ZAymgT/AAYGAD5jTszhz9rbq1QwYn1ZFM9PkhCXK2JRY3dU/0yjyaO7Tpk/lzouxN7
+         Sd2nnf2EmOex3+nRzk1g2q92pE+aQEU37dOHneShFhK33eI7w99CLhLLUJlw1lY5IcBf
+         aJ8JIGj9bj8hNtOkwMhNqo3/18hAf9K7D6UmajjKSRH434eQ0GBw+6kynqwPuronxhKk
+         5Hd8Rf+UB9z5WyEz6tmOMnjSIQTnz1xSDHzJfxohio3Kwqrd2jW5km19LuNpWoJ58/uv
+         VYSy6d+2upohLpyvuSnRrnibKfAFX9WmZC7lomWYUrCK4oJCMoxxSXsvONFaOGZWYLrI
+         cc5Q==
+X-Gm-Message-State: AC+VfDzbc/V4AIsT9gt7HN7QWNbq+t7pMc+DW1pAm4MFvtXi3GPl57wm
+        6g5yWWBNTG0fEXUgGSbeeqA=
+X-Google-Smtp-Source: ACHHUZ6LPh/lBfJJZiZ/JXibWTrWDOw5+WfS7pNTIAJ13gUHKTNkU1bHLYeyD6Kf/khV7txSsY69SA==
+X-Received: by 2002:a05:6870:a695:b0:19e:475:9df1 with SMTP id i21-20020a056870a69500b0019e04759df1mr13490656oam.27.1686760494607;
+        Wed, 14 Jun 2023 09:34:54 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id y2-20020a056830108200b006b168e0a41fsm4739886oto.11.2023.06.14.08.30.30
+        by smtp.gmail.com with ESMTPSA id ld10-20020a0568702b0a00b001762ce27f9asm8848922oab.23.2023.06.14.09.34.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Jun 2023 08:30:32 -0700 (PDT)
-Message-ID: <7283dd30-79ac-b21b-3e99-2b8b0950879d@gmail.com>
-Date:   Wed, 14 Jun 2023 12:30:28 -0300
+        Wed, 14 Jun 2023 09:34:54 -0700 (PDT)
+Message-ID: <6e61f06f-2411-0bcb-926b-0a6927096f20@gmail.com>
+Date:   Wed, 14 Jun 2023 13:30:54 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] rust: make `UnsafeCell` the outer type in `Opaque`
-To:     Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: allocator: Prevents mis-aligned allocation
+Content-Language: en-US
+To:     Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-References: <20230614115328.2825961-1-aliceryhl@google.com>
-Content-Language: en-US
+        Alice Ryhl <aliceryhl@google.com>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Fox Chen <foxhlchen@gmail.com>,
+        John Baublitz <john.m.baublitz@gmail.com>,
+        Christoph Lameter <cl@linux.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Andreas Hindborg <nmi@metaspace.dk>, stable@vger.kernel.org
+References: <20230613164258.3831917-1-boqun.feng@gmail.com>
 From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230614115328.2825961-1-aliceryhl@google.com>
+In-Reply-To: <20230613164258.3831917-1-boqun.feng@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/14/23 08:53, Alice Ryhl wrote:
-> When combining `UnsafeCell` with `MaybeUninit`, it is idiomatic to use
-> `UnsafeCell` as the outer type. Intuitively, this is because a
-> `MaybeUninit<T>` might not contain a `T`, but we always want the effect
-> of the `UnsafeCell`, even if the inner value is uninitialized.
+On 6/13/23 13:42, Boqun Feng wrote:
+> Currently the KernelAllocator simply passes the size of the type Layout
+> to krealloc(), and in theory the alignment requirement from the type
+> Layout may be larger than the guarantee provided by SLAB, which means
+> the allocated object is mis-aligned.
 > 
-> Now, strictly speaking, this doesn't really make a difference. The
-> compiler will always apply the `UnsafeCell` effect even if the inner
-> value is uninitialized. But I think we should follow the convention
-> here.
+> Fixes this by adjusting the allocation size to the nearest power of two,
+> which SLAB always guarantees a size-aligned allocation. And because Rust
+> guarantees that original size must be a multiple of alignment and the
+> alignment must be a power of two, then the alignment requirement is
+> satisfied.
 > 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Co-developed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+> Signed-off-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Cc: stable@vger.kernel.org # v6.1+
 > ---
 > [...]
 
