@@ -2,112 +2,103 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2622EB64D8
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 16:35:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 418DDEB64D9
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 16:45:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234714AbjFNQfh (ORCPT
+        id S233985AbjFNQpP (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Jun 2023 12:35:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48734 "EHLO
+        Wed, 14 Jun 2023 12:45:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234558AbjFNQf0 (ORCPT
+        with ESMTP id S236080AbjFNQoq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Jun 2023 12:35:26 -0400
-Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 896622689;
-        Wed, 14 Jun 2023 09:34:55 -0700 (PDT)
-Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1a2c85ef3c2so5496753fac.0;
-        Wed, 14 Jun 2023 09:34:55 -0700 (PDT)
+        Wed, 14 Jun 2023 12:44:46 -0400
+Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2654A2689;
+        Wed, 14 Jun 2023 09:44:36 -0700 (PDT)
+Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1a6960956d5so3274746fac.3;
+        Wed, 14 Jun 2023 09:44:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686760495; x=1689352495;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+        d=gmail.com; s=20221208; t=1686761075; x=1689353075;
+        h=content-transfer-encoding:in-reply-to:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=P02UcLI2//J8LvUgRFLkUqu+ureKnlEB4HrY9Uc3j4k=;
-        b=J0jSJqDukYcfhA7sISg8YT5j2AJRPy7WWscY0Pmtmu1xD+4jgXykkAo2CVR7ZJbtH2
-         LxJMgSOX9Tg84S4auSG+Dq4bdv6+pfcoAoGw0s+Kk3HbW7J93Rt+B3bMKIPPwBykdcai
-         dUor7roPb9xBLCf2UMlIcU4vkKdW4qmSSnleDsM6wQxxBd/MhNTCJSUlnsOHyI73W7sb
-         QR3xW8HF6/YWt7RuA0xR79c2aH0UnKegkHc+zZyDEGgOgp02w6poDo5FYWyG0LTlDF3n
-         juTk/s3ZSRipEKSmANiG9qYT4AmNRq8DglCgqd8Imj5iR7qnG2im3Oa8eFSh/8ZmjGCl
-         ZNiA==
+        bh=sGL7yKszvXa2cHQQt1GT6R3oKRDiN6LOViSYfGPWdZo=;
+        b=lBQX5SXd0WDA3PYTUq+DPijuVWmtojhq1FptFGztY9lgLFeSHQH/K4mxr6HYUbkwaV
+         Rxhv1T6U2qgxuGbubeXSajtOcHfgJdNPQyE8Wdej8d0HgHSdYreUERKq+39go1Gss04V
+         UgpbIQYsXgFRU31sfTPAXXoudV2mQppbgiiLSjGzhU4BSQIeEVf1OZPKvYNEHWPtWnsS
+         Y9t5+iX7fx8udI37abgmFnKIyte9AUsvjpbv4fyIYX56tSBWb5CGLlwhjoBbGB3vjyRK
+         F+UA14eBgKGYnr3jt8zWGEcDtpWMZFzjP4KKwoeXQgO0ECiGPy9pMrIhMnCHHE/SHkBv
+         Y7gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686760495; x=1689352495;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+        d=1e100.net; s=20221208; t=1686761075; x=1689353075;
+        h=content-transfer-encoding:in-reply-to:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P02UcLI2//J8LvUgRFLkUqu+ureKnlEB4HrY9Uc3j4k=;
-        b=ZAymgT/AAYGAD5jTszhz9rbq1QwYn1ZFM9PkhCXK2JRY3dU/0yjyaO7Tpk/lzouxN7
-         Sd2nnf2EmOex3+nRzk1g2q92pE+aQEU37dOHneShFhK33eI7w99CLhLLUJlw1lY5IcBf
-         aJ8JIGj9bj8hNtOkwMhNqo3/18hAf9K7D6UmajjKSRH434eQ0GBw+6kynqwPuronxhKk
-         5Hd8Rf+UB9z5WyEz6tmOMnjSIQTnz1xSDHzJfxohio3Kwqrd2jW5km19LuNpWoJ58/uv
-         VYSy6d+2upohLpyvuSnRrnibKfAFX9WmZC7lomWYUrCK4oJCMoxxSXsvONFaOGZWYLrI
-         cc5Q==
-X-Gm-Message-State: AC+VfDzbc/V4AIsT9gt7HN7QWNbq+t7pMc+DW1pAm4MFvtXi3GPl57wm
-        6g5yWWBNTG0fEXUgGSbeeqA=
-X-Google-Smtp-Source: ACHHUZ6LPh/lBfJJZiZ/JXibWTrWDOw5+WfS7pNTIAJ13gUHKTNkU1bHLYeyD6Kf/khV7txSsY69SA==
-X-Received: by 2002:a05:6870:a695:b0:19e:475:9df1 with SMTP id i21-20020a056870a69500b0019e04759df1mr13490656oam.27.1686760494607;
-        Wed, 14 Jun 2023 09:34:54 -0700 (PDT)
+        bh=sGL7yKszvXa2cHQQt1GT6R3oKRDiN6LOViSYfGPWdZo=;
+        b=Zu9dTzcQy3HZ9KyCOK+u2bh3WQVDPXupX3R17XvVtL33gSw2bnB3qutBK6KgkYYrl4
+         uz6zctr8Lf3Km5HPLakWFmFoGBz2qLt1kxm4ZrGkdfz5kpR/pRMivhOqqKireBtvomrd
+         OSsZsZnKMu0xkqPLW5kLpYnU1hDzHSxFaW30i2qhVsA9cpKrUiuz5n3Xal1ZBX0GLhbE
+         Bju/phhuW4PQ5YI47koTgEZixMb5rrfgFx+qbwtcQTMcBhbVZ71gDkGYRFFRRTjci8qK
+         NrxpSHSvyJ7/LwH8QrHMMvPJpyWMr8hgJbRhXOmDQakdej8BULXQQ2VwoPw3+NO+IBti
+         1z0g==
+X-Gm-Message-State: AC+VfDycl/ByvB7PV4+U2YSmwiNetEfKFS5nWoWF44wU9jeRbrYvHYdy
+        ApGOMnit96ODUU+WQVTH1T8=
+X-Google-Smtp-Source: ACHHUZ4r1WlTv/EKwLsLnrfaKpz6dKG+rQYC1+TpjBZJkEfor9XmpN+kRPszhoK90YWMTA4IbWSNDg==
+X-Received: by 2002:a05:6870:772d:b0:184:39e3:9c85 with SMTP id dw45-20020a056870772d00b0018439e39c85mr11651838oab.29.1686761075300;
+        Wed, 14 Jun 2023 09:44:35 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id ld10-20020a0568702b0a00b001762ce27f9asm8848922oab.23.2023.06.14.09.34.49
+        by smtp.gmail.com with ESMTPSA id el18-20020a056870f69200b001a6d15fc52fsm1501154oab.4.2023.06.14.09.44.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Jun 2023 09:34:54 -0700 (PDT)
-Message-ID: <6e61f06f-2411-0bcb-926b-0a6927096f20@gmail.com>
-Date:   Wed, 14 Jun 2023 13:30:54 -0300
+        Wed, 14 Jun 2023 09:44:34 -0700 (PDT)
+Message-ID: <4a1096e9-500e-d764-0a79-289e6559cfb1@gmail.com>
+Date:   Wed, 14 Jun 2023 13:44:30 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] rust: allocator: Prevents mis-aligned allocation
+Subject: Re: [PATCH v2 1/1] scripts/rust_is_available: Fix clang version check
 Content-Language: en-US
-To:     Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+To:     "Ethan D. Twardy" <ethan.twardy@gmail.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Fox Chen <foxhlchen@gmail.com>,
-        John Baublitz <john.m.baublitz@gmail.com>,
-        Christoph Lameter <cl@linux.com>,
-        Pekka Enberg <penberg@kernel.org>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        Kees Cook <keescook@chromium.org>,
-        Andreas Hindborg <nmi@metaspace.dk>, stable@vger.kernel.org
-References: <20230613164258.3831917-1-boqun.feng@gmail.com>
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, Tiago Lam <tiagolam@gmail.com>,
+        Kees Cook <keescook@chromium.org>, Finn Behrens <me@kloenk.de>,
+        "open list:RUST" <rust-for-linux@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:CLANG/LLVM BUILD SUPPORT" <llvm@lists.linux.dev>
+References: <20230528131802.6390-1-ethan.twardy@gmail.com>
+ <20230528131802.6390-2-ethan.twardy@gmail.com>
+ <525fee98-c694-6a38-cd1e-dd7efd806620@gmail.com>
+ <CTCD11G9NVTB.3SYR2GFA5VAB3@hackbook>
 From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230613164258.3831917-1-boqun.feng@gmail.com>
+In-Reply-To: <CTCD11G9NVTB.3SYR2GFA5VAB3@hackbook>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/13/23 13:42, Boqun Feng wrote:
-> Currently the KernelAllocator simply passes the size of the type Layout
-> to krealloc(), and in theory the alignment requirement from the type
-> Layout may be larger than the guarantee provided by SLAB, which means
-> the allocated object is mis-aligned.
+On 6/14/23 09:08, Ethan D. Twardy wrote:
+> Greetings, Martin!
 > 
-> Fixes this by adjusting the allocation size to the nearest power of two,
-> which SLAB always guarantees a size-aligned allocation. And because Rust
-> guarantees that original size must be a multiple of alignment and the
-> alignment must be a power of two, then the alignment requirement is
-> satisfied.
+> Thanks very much for your testing and review. Do I need to take any
+> further action to make this patch ready for review? I sent out a v3
+> version of the patch, where the only change was adding Reviewed-By and
+> Tested-By tags to my git commit--since this is my first time
+> contributing to this community, I wasn't sure whether I needed to do
+> that. Thanks!
 > 
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Co-developed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
-> Signed-off-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Cc: stable@vger.kernel.org # v6.1+
-> ---
-> [...]
+> Sincerely,
+> 
+> Ethan Twardy
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Unless other reviewers requested changes, you have to rebase your
+work or you want to make a modification, it is not necessary to send a
+new version of the patch series, generally, maintainers will, and have
+to, add any Reviewed-bys or Tested-bys prior to merging.
