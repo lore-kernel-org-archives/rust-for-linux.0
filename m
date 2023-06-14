@@ -2,45 +2,61 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D90DCC001E0
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 14:28:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C62AEEB64D8
+	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 14:33:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235458AbjFNO2J (ORCPT
+        id S245254AbjFNOdJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Jun 2023 10:28:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51754 "EHLO
+        Wed, 14 Jun 2023 10:33:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237035AbjFNO2I (ORCPT
+        with ESMTP id S245627AbjFNOdC (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Jun 2023 10:28:08 -0400
+        Wed, 14 Jun 2023 10:33:02 -0400
 Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C61E51721;
-        Wed, 14 Jun 2023 07:28:03 -0700 (PDT)
-Date:   Wed, 14 Jun 2023 14:27:39 +0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13CA9213F
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jun 2023 07:32:49 -0700 (PDT)
+Date:   Wed, 14 Jun 2023 14:32:40 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1686752881; x=1687012081;
-        bh=TaKHoWoduEdf1ULAdjEPdONgcWDvL8WQUMVGK+EvA5E=;
+        s=protonmail; t=1686753167; x=1687012367;
+        bh=Eym4bt3G3yI5tzMrX6NSMGd1+ikTIMtBGpmezvReHMk=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=dNFrt+3gbyPbkBUmkd/PWupNZXiTiwc8CpC/mJxXuxtsM5Q49KRif7rmIGlcwbcB3
-         0U2ua19QVjj1yxzMPXN+LqqjbHN/0c89FdHjyp1Jvdl7sxw7Y+SbGQ1lk6bvn7PwlN
-         cISM1qgJIJUgPaEGIru1Bazz+keA6jbgkpK+PZYREelA15aNRu2iRuXZWja+m+sWHU
-         G6hiPXz1csLlW4AUPJVxTqGFxs1Z1KpftAdsXHn+CcCzl2Q5nYN0nGIZUb1NUyfJVS
-         SWTVn5E89b5eYGVF49+OwV6QcFqJbvorAErbeGGW4hgHPS4eS7j+9T14GYSSWB053d
-         A+C0DhIgAU7mg==
-To:     Alice Ryhl <aliceryhl@google.com>
+        b=Xkh/eR8al1uA04ta5Bbi8OPlyK6TSpuMGojkCHFCB046PABXv7MtBc39nJrrqvDTy
+         Qepc9vvN4tO/+bij/nZwQLdueaT3SnPLRnP/FLD1I/HmrFALkd8uSB0rsVZrcCaiQw
+         1e2kcXYGlxMBuyWM6bgsXqpVMYtwsafhP6BZ2Dzp0LI+sPocaXK5wpFKF/2eLlKdqh
+         lhNUHeg2KsmbSZjuOmeFdM5NC2WxV2WomqYHs9RS04xpJQd7/HaIUOlDqUqb8U7FXD
+         G3wxciegsorkG8l3wVINiAGVclJnBjNmhz36eF5qwXF/aAEuvSGrDQ2lAsfwtDn4W2
+         T9b8t2d5pNruw==
+To:     Boqun Feng <boqun.feng@gmail.com>
 From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
         =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH] rust: make `UnsafeCell` the outer type in `Opaque`
-Message-ID: <zirWeKUZRqFhiN23v0pXHMmvuceI7EZyVvNUiREGf-UNbIbXLrHjbC8diUNg9v802jbX1978ezQLDCl--1M5S6K8l7CVWs8JGB-znEEMRNE=@proton.me>
-In-Reply-To: <20230614115328.2825961-1-aliceryhl@google.com>
-References: <20230614115328.2825961-1-aliceryhl@google.com>
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Fox Chen <foxhlchen@gmail.com>,
+        John Baublitz <john.m.baublitz@gmail.com>,
+        Christoph Lameter <cl@linux.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Andreas Hindborg <nmi@metaspace.dk>, stable@vger.kernel.org
+Subject: Re: [PATCH] rust: allocator: Prevents mis-aligned allocation
+Message-ID: <91XpcluPyeKjsC8_uSh1yvgcz2BoRMeih76O5-wTwQgnNiLFdOCiO3HT9kXByzZIiK-6nForUTTeo-H9cR0CWemr7dJuMgMnC0wzGDIBmlQ=@proton.me>
+In-Reply-To: <20230613164258.3831917-1-boqun.feng@gmail.com>
+References: <20230613164258.3831917-1-boqun.feng@gmail.com>
 Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -49,84 +65,98 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 14.06.23 13:53, Alice Ryhl wrote:
-> When combining `UnsafeCell` with `MaybeUninit`, it is idiomatic to use
-> `UnsafeCell` as the outer type. Intuitively, this is because a
-> `MaybeUninit<T>` might not contain a `T`, but we always want the effect
-> of the `UnsafeCell`, even if the inner value is uninitialized.
+On 13.06.23 18:42, Boqun Feng wrote:
+> Currently the KernelAllocator simply passes the size of the type Layout
+> to krealloc(), and in theory the alignment requirement from the type
+> Layout may be larger than the guarantee provided by SLAB, which means
+> the allocated object is mis-aligned.
 >=20
-> Now, strictly speaking, this doesn't really make a difference. The
-> compiler will always apply the `UnsafeCell` effect even if the inner
-> value is uninitialized. But I think we should follow the convention
-> here.
+> Fixes this by adjusting the allocation size to the nearest power of two,
+> which SLAB always guarantees a size-aligned allocation. And because Rust
+> guarantees that original size must be a multiple of alignment and the
+> alignment must be a power of two, then the alignment requirement is
+> satisfied.
 >=20
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-
-Small comment below, but I think it is fine the way it is.
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Co-developed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+> Signed-off-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Cc: stable@vger.kernel.org # v6.1+
 
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-> ---
->   rust/kernel/types.rs | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
->=20
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 1e5380b16ed5..fb41635f1e1f 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -224,17 +224,17 @@ fn drop(&mut self) {
->   ///
->   /// This is meant to be used with FFI objects that are never interprete=
-d by Rust code.
->   #[repr(transparent)]
-> -pub struct Opaque<T>(MaybeUninit<UnsafeCell<T>>);
-> +pub struct Opaque<T>(UnsafeCell<MaybeUninit<T>>);
->=20
->   impl<T> Opaque<T> {
->       /// Creates a new opaque value.
->       pub const fn new(value: T) -> Self {
-> -        Self(MaybeUninit::new(UnsafeCell::new(value)))
-> +        Self(UnsafeCell::new(MaybeUninit::new(value)))
->       }
->=20
->       /// Creates an uninitialised value.
->       pub const fn uninit() -> Self {
-> -        Self(MaybeUninit::uninit())
-> +        Self(UnsafeCell::new(MaybeUninit::uninit()))
->       }
->=20
->       /// Creates a pin-initializer from the given initializer closure.
-> @@ -258,7 +258,7 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) -> im=
-pl PinInit<Self> {
->=20
->       /// Returns a raw pointer to the opaque data.
->       pub fn get(&self) -> *mut T {
-> -        UnsafeCell::raw_get(self.0.as_ptr())
-> +        UnsafeCell::get(&self.0).cast::<T>()
-
-Is there a reason you don't do `self.0.get().cast::<T>()`?
 
 --=20
 Cheers,
 Benno
 
+> ---
+> Some more explanation:
+>=20
+> * Layout is a data structure describing a particular memory layout,
+>    conceptionally it has two fields: align and size.
+>=20
+>    * align is guaranteed to be a power of two.
+>    * size can be smaller than align (only when the Layout is created via
+>      Layout::from_align_size())
+>    * After pad_to_align(), the size is guaranteed to be a multiple of
+>      align
+>=20
+> For more information, please see:
+>=20
+> =09https://doc.rust-lang.org/stable/std/alloc/struct.Layout.html
+>=20
+>   rust/bindings/bindings_helper.h |  1 +
+>   rust/kernel/allocator.rs        | 17 ++++++++++++++++-
+>   2 files changed, 17 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 3e601ce2548d..6619ce95dd37 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -15,3 +15,4 @@
+>   /* `bindgen` gets confused at certain things. */
+>   const gfp_t BINDINGS_GFP_KERNEL =3D GFP_KERNEL;
+>   const gfp_t BINDINGS___GFP_ZERO =3D __GFP_ZERO;
+> +const size_t BINDINGS_ARCH_SLAB_MINALIGN =3D ARCH_SLAB_MINALIGN;
+> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
+> index 397a3dd57a9b..66575cf87ce2 100644
+> --- a/rust/kernel/allocator.rs
+> +++ b/rust/kernel/allocator.rs
+> @@ -11,9 +11,24 @@
+>=20
+>   unsafe impl GlobalAlloc for KernelAllocator {
+>       unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+> +        // Customized layouts from `Layout::from_size_align()` can have =
+size < align, so pads first.
+> +        let layout =3D layout.pad_to_align();
+> +
+> +        let mut size =3D layout.size();
+> +
+> +        if layout.align() > bindings::BINDINGS_ARCH_SLAB_MINALIGN {
+> +            // The alignment requirement exceeds the slab guarantee, the=
+n tries to enlarges the size
+> +            // to use the "power-of-two" size/alignment guarantee (see c=
+omments in kmalloc() for
+> +            // more information).
+> +            //
+> +            // Note that `layout.size()` (after padding) is guaranteed t=
+o be muliples of
+> +            // `layout.align()`, so `next_power_of_two` gives enough ali=
+gnment guarantee.
+> +            size =3D size.next_power_of_two();
+> +        }
+> +
+>           // `krealloc()` is used instead of `kmalloc()` because the latt=
+er is
+>           // an inline function and cannot be bound to as a result.
+> -        unsafe { bindings::krealloc(ptr::null(), layout.size(), bindings=
+::GFP_KERNEL) as *mut u8 }
+> +        unsafe { bindings::krealloc(ptr::null(), size, bindings::GFP_KER=
+NEL) as *mut u8 }
 >       }
 >=20
->       /// Gets the value behind `this`.
-> @@ -266,7 +266,7 @@ pub fn get(&self) -> *mut T {
->       /// This function is useful to get access to the value without crea=
-ting intermediate
->       /// references.
->       pub const fn raw_get(this: *const Self) -> *mut T {
-> -        UnsafeCell::raw_get(this.cast::<UnsafeCell<T>>())
-> +        UnsafeCell::raw_get(this.cast::<UnsafeCell<MaybeUninit<T>>>()).c=
-ast::<T>()
->       }
->   }
->=20
->=20
-> base-commit: d2e3115d717197cb2bc020dd1f06b06538474ac3
+>       unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
 > --
-> 2.41.0.162.gfafddb0af9-goog
->=20
-
+> 2.39.2
+> 
