@@ -2,94 +2,87 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 66CBBEB64D9
-	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Jun 2023 03:53:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C3AAEB64DB
+	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Jun 2023 06:02:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241221AbjFODxO (ORCPT
+        id S243114AbjFOGCW (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Jun 2023 23:53:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53498 "EHLO
+        Thu, 15 Jun 2023 02:02:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241379AbjFODw4 (ORCPT
+        with ESMTP id S243170AbjFOGBd (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Jun 2023 23:52:56 -0400
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B968A294E;
-        Wed, 14 Jun 2023 20:52:38 -0700 (PDT)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-1a9a42edfc9so77179fac.0;
-        Wed, 14 Jun 2023 20:52:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686801157; x=1689393157;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=37lHv1ZqEN3KbKhtxEWcsRVwfI/2kLKmjExzPbh8ooc=;
-        b=dy51VvehrZ1fwzi0O7yTUQ0MfM2PAXwnBuvoanAgrqOZ0n8k11P9QxQ0ulItXcs+Ze
-         wj02CoUxXohWMARbvesT7zXzdP0o0JI6OyNfYL47uxDHmEoH2lRwLu5JYgP3nht6MhTo
-         ZTZv3Qjc6N8O5fyWTqt47NvhJXm/EwV2TIxIf5l4lLqSi3FM9jOBd+q2xxR8Ws9bxfnV
-         4GHb/limbu09Bj7BpTJfxqCgjgcQU58psWjxzhZ/+0bweOi6sbJe9fCN5KgtP3wvsnOX
-         4t+/BExGUTXOEqSwRiu7QeBgrf5ruQ4joUX1eVHDY5x/VYcxgRPurr8rMLIkYEeCRn5O
-         Y8fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686801157; x=1689393157;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=37lHv1ZqEN3KbKhtxEWcsRVwfI/2kLKmjExzPbh8ooc=;
-        b=TWVBcqRcMvohScfZvuocSpqwB2pqCsT2U7offWrVzEHfZfG+TirMPtj6iVJzlFGY+y
-         u1OMMiNrUr4TimfIB3X4ipPh2W7j+/axb4Lb6oAiT8fofNvqYwbILwZPn0BJo1urAzhQ
-         XY45aNX1QJSt2I56bE7DdaZ6ujRcLb5+Mbk/uffhtI9/qHQ8yF1XtYqD+2GjExPEonHE
-         8PBk+/ItRQxnmQiqSsiSDvNvjGVfuAocSfifk2b+8fJRIdxQ84ZlzUYeZWl04wKiQNGi
-         T9QZP6ikmxhcRuVu37DTh6QfNsQ0pqHkV5Nd/WYjJOr4sfhU+1Vpfvp7h+rNUkBQOnTi
-         OitQ==
-X-Gm-Message-State: AC+VfDzaTCKO8nqASsQo0aOJtjGuNZlSnF8map2s8giSIgG8yjw42mcT
-        41CioBrwI2HY1k21bmgQMwg=
-X-Google-Smtp-Source: ACHHUZ5PE1QRcro9YWkg0G4/ovm+qWCIn125P+6Wmq3YTj0Aum60A6KI/m55XZBYuS2chLsSXrwnng==
-X-Received: by 2002:a05:6870:e895:b0:18f:11c7:9404 with SMTP id q21-20020a056870e89500b0018f11c79404mr11255152oan.38.1686801157530;
-        Wed, 14 Jun 2023 20:52:37 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id z10-20020a9d62ca000000b006ab1ea1af9esm6353844otk.68.2023.06.14.20.52.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Jun 2023 20:52:37 -0700 (PDT)
-Message-ID: <5a81fbc4-ff8b-4ce8-d8a0-a87f6d76771c@gmail.com>
-Date:   Thu, 15 Jun 2023 00:49:54 -0300
+        Thu, 15 Jun 2023 02:01:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C415294D
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jun 2023 23:01:30 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2ACCF6217D
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jun 2023 06:01:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E34C433C0;
+        Thu, 15 Jun 2023 06:01:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686808889;
+        bh=BbLWfzMuToidV1olsCdEhXwJZyAe6DRdZKAiDQJ2H8E=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=APtdWpaKInSMXgvKpbNr2GFwNf4hAGNNFVD72sz11/9tReEpp71sDx3zppVs7Bt4h
+         4vd+AHHpgBYY5MRgHgaYqeqLZLFzdSDStRFZfqFXSpYdYLe87rYbTjQ8IwCZ3ZXJJW
+         YKnkrdzspLcK9qjrpRVZftxVIDgmYE3bxUVpKylXL0sUwILzAEoDS4QFK9BNIEcFBC
+         lZxnNeHK2yvRlptP6uck4YjqMJqnndPrserdSoVrFIsVI22xSAbHAztUGcUJycodaH
+         wxeVAfmF3AmS7OjMzZuL6ut114zeLo97s7MC4zdfH/IuuUVm0jq57LDPBz7Ca7nbqM
+         IqhFRwQ57owWg==
+Date:   Wed, 14 Jun 2023 23:01:28 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc:     netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com, andrew@lunn.ch,
+        miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
+Message-ID: <20230614230128.199724bd@kernel.org>
+In-Reply-To: <20230613045326.3938283-1-fujita.tomonori@gmail.com>
+References: <20230613045326.3938283-1-fujita.tomonori@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 6/6] MAINTAINERS: add Rust KUnit files to the KUnit entry
-Content-Language: en-US
-To:     Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        Philip Li <philip.li@intel.com>, kunit-dev@googlegroups.com,
-        linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-References: <20230614180837.630180-1-ojeda@kernel.org>
- <20230614180837.630180-7-ojeda@kernel.org>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230614180837.630180-7-ojeda@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/14/23 15:08, Miguel Ojeda wrote:
-> The KUnit maintainers would like to maintain these files on their
-> side too (thanks!), so add them to their entry.
+On Tue, 13 Jun 2023 13:53:21 +0900 FUJITA Tomonori wrote:
+> This patchset adds minimum Rust abstractions for network device
+> drivers and an example of a Rust network device driver, a simpler
+> version of drivers/net/dummy.c.
 > 
-> With this in place, `scripts/get_maintainer.pl` prints both sets
-> of maintainers/reviewers (i.e. KUnit and Rust) for those files,
-> which is the behavior we are looking for.
+> The dummy network device driver doesn't attach any bus such as PCI so
+> the dependency is minimum. Hopefully, it would make reviewing easier.
 > 
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> [...]
+> Thanks a lot for reviewing on RFC patchset at rust-for-linux ml.
+> Hopefully, I've addressed all the issues.
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+First things first, what are the current expectations for subsystems
+accepting rust code?
+
+I was hoping someone from the Rust side is going to review this.
+We try to review stuff within 48h at netdev, and there's no review :S
+
+My immediate instinct is that I'd rather not merge toy implementations
+unless someone within the netdev community can vouch for the code.
+
+>  rust/bindings/bindings_helper.h |   3 +
+>  rust/helpers.c                  |  23 ++
+>  rust/kernel/lib.rs              |   3 +
+>  rust/kernel/net.rs              |   5 +
+>  rust/kernel/net/dev.rs          | 697 ++++++++++++++++++++++++++++++++
+>  samples/rust/Kconfig            |  12 +
+>  samples/rust/Makefile           |   1 +
+>  samples/rust/rust_net_dummy.rs  |  81 ++++
+>  scripts/Makefile.build          |   2 +-
+
+You seem to create a rust/net/ directory without adding anything 
+to MAINTAINERS. Are we building a parallel directory structure?
+Are the maintainers also different?
+-- 
+pw-bot: defer
