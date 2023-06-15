@@ -2,114 +2,126 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C9E58EB64D9
-	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Jun 2023 08:21:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55CA1EB64D9
+	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Jun 2023 08:59:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243518AbjFOIVI (ORCPT
+        id S239250AbjFOI7F (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 15 Jun 2023 04:21:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50096 "EHLO
+        Thu, 15 Jun 2023 04:59:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244424AbjFOIUy (ORCPT
+        with ESMTP id S239192AbjFOI7E (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 15 Jun 2023 04:20:54 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7421213F;
-        Thu, 15 Jun 2023 01:20:43 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-bd744ffc263so1466018276.3;
-        Thu, 15 Jun 2023 01:20:43 -0700 (PDT)
+        Thu, 15 Jun 2023 04:59:04 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 635741720;
+        Thu, 15 Jun 2023 01:59:03 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-bacf685150cso1421122276.3;
+        Thu, 15 Jun 2023 01:59:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686817243; x=1689409243;
+        d=gmail.com; s=20221208; t=1686819542; x=1689411542;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Z+g1EITlpyKqSTNS66gSjpFolTiPe57pV55f5skYdlk=;
-        b=kPeNuOVaNVXIRJd9crDCP1FTb0Cs/gxo20VHoVU4zinJgQfhdUGCgvHLXIPjx1LkuZ
-         z+CfqoYGkCRbgxUN/NrL5KQJrFtiPy688H6ADOssoN/n2PJETlRRloSpDPBwiwMJC/6I
-         n+sYBQZVxD/d+cSSusltZZKQJAIFMi34CGp/7nl1oy0pkKZ9cgvXms2FipS/uiXuff0o
-         8DP5XrYfJdVnVQkNxwL0ATqkUF9qYv9HQ1zS704VUtL7OJoqcRiWpdkLacb7ozdwAQC7
-         jMdMhTtSWkbaxmuMQ0ki2G1meDzNUUBojElAgOpJa+pqDtGwWv81D68MJQkzRC4mSg8M
-         B8kg==
+        bh=WdSnvh3wJYO93aum1TupVccOH96iznS0gaHyZrrVRjg=;
+        b=fLj6HJ1FFh8tKrMhebE+8UxSgyHJFKfiz1q86xTWfSSty5XmfEjge8kpLIK+yGC3Tx
+         qPBYxas8xqjGnABfAYiYvPsFy87OtVrLetsVP3cnvtIaZRdl+daX9U0ykqd2o8j32xEG
+         zBIIa/vM5kAFKpNNXR6ikjSb63mjXHX4IMQqNbvxSs7I3Q/jDfBMvklWF/hgH49QkKCR
+         4f9sOM4rC+7swIc5O0Oi1djJ+uO/ZgirlH9uyBSIVFiWtQ1yac0a5+mPtKzglVFBu9z7
+         j2+0HGiiNdddheveUaOA309I/iCDtpNM4yB9K2IIH1vGFWQ7oWAFvmp4hqPK1Ok3IxPC
+         kq+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686817243; x=1689409243;
+        d=1e100.net; s=20221208; t=1686819542; x=1689411542;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Z+g1EITlpyKqSTNS66gSjpFolTiPe57pV55f5skYdlk=;
-        b=NTv/8U92Yn5eGtvLfQjURynS1yPjk97+BXtgh547fqMflS6PY4EEw+U1BtiKPprnNY
-         5g0Q6Z/kWopjtYfuSqpNLcOhK+pdqwFA1A4NEGMWQamqsR7rzbsMfmR+frQOoKvc+Fhi
-         0we4t7IELMXrdwcUUlFD6emsXMN+a+AFmosK9ELdhvqE1SCj8AHzthMeTm8q7uMPohp4
-         MneYQvN1wl+RtXzD/4LsxJUQ1yST/kVosb7X36DhDHfoyW+sYh822yQMlG6TBacnECQ8
-         awr0sWrlyWr3RMX4DPOJX2RoCV/Lw9bvGNDqyQnqA9KBzBntw3JbkIC6q8XHswoiziB9
-         jKjQ==
-X-Gm-Message-State: AC+VfDwGr3ORxY7xEupoD1j1SJi33mmNMrFLNuUH/CoS5FfBZaJ42Vb+
-        qDFlMxdkSXpLF5YdkszwkgB4Jxh9ZvO4nPDVAtQ=
-X-Google-Smtp-Source: ACHHUZ5wZcHqgLWPneYowEPyb/vMtXfLcl6iVcQDr0Pg9watznu/kRbkN+YQH+842S1lRXtj9sJTCQXadFTZxb4w2rE=
-X-Received: by 2002:a25:240d:0:b0:bd5:4e6d:9159 with SMTP id
- k13-20020a25240d000000b00bd54e6d9159mr4103388ybk.17.1686817242809; Thu, 15
- Jun 2023 01:20:42 -0700 (PDT)
+        bh=WdSnvh3wJYO93aum1TupVccOH96iznS0gaHyZrrVRjg=;
+        b=cMFBDLFumrWnjWtbx+NLTSoqD48Y46dshAkgsGeceIxT2U8gO7fiZK91iQO+TWIEJf
+         nshnriU4u0KKR9fbkM0k7tB/1TJUNFP6RCo6yfqM876GswC4md6B10bINPmW6AkunU/4
+         O5qyUMPIhTIUcWP93mFW9ztDjy2FefGvVL7PtW877B/dxfw9NfjXQi9z60sxUW0/NCVR
+         8VgB7aGzd2XmsUqytNr4JzjpboLvh66RTmJ7B74LkP1bxtuxSjjqwuZev9+CCM+aD/jT
+         QcrcDXQWL+POa4I6paqCvJKukoWNHgYcg5mcaQBq7TyC72BleJyKZMTK5/SguNcLdBs9
+         hwPQ==
+X-Gm-Message-State: AC+VfDycJ3ZoRG0Am7PplydSOnkaOJPXXkrvz5cCIROmCvtnxSNry7aF
+        dIgxwLBNXR3QMc/AsKQEJOpucvA5C8eGLyBG2Us=
+X-Google-Smtp-Source: ACHHUZ7J91wPbuq8ZOPg9yeAHWI5DdfRloytxD81Ctso0rAHVhBPmG2tddd8LVVsE/ZL6AV06U660CrvS17orfITOe0=
+X-Received: by 2002:a25:cb87:0:b0:bc4:5a65:1a4f with SMTP id
+ b129-20020a25cb87000000b00bc45a651a4fmr4472624ybg.5.1686819542602; Thu, 15
+ Jun 2023 01:59:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230614180837.630180-1-ojeda@kernel.org> <ZIps86MbJF/iGIzd@boqun-archlinux>
-In-Reply-To: <ZIps86MbJF/iGIzd@boqun-archlinux>
+References: <20230613045326.3938283-1-fujita.tomonori@gmail.com> <20230614230128.199724bd@kernel.org>
+In-Reply-To: <20230614230128.199724bd@kernel.org>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 15 Jun 2023 10:20:31 +0200
-Message-ID: <CANiq72kHEddR-D17Ykr3xtU20rDJn517fqHRUX+-kWHjYqu9PA@mail.gmail.com>
-Subject: Re: [PATCH 0/6] KUnit integration for Rust doctests
-To:     Boqun Feng <boqun.feng@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        Philip Li <philip.li@intel.com>, kunit-dev@googlegroups.com,
-        linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Date:   Thu, 15 Jun 2023 10:58:50 +0200
+Message-ID: <CANiq72nLV-BiXerGhhs+c6yeKk478vO_mKxMa=Za83=HbqQk-w@mail.gmail.com>
+Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>,
+        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com, andrew@lunn.ch
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, Jun 15, 2023 at 3:44=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Thu, Jun 15, 2023 at 8:01=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
 >
-> Great work! I've played this for a while, and it's really useful ;-)
+> First things first, what are the current expectations for subsystems
+> accepting rust code?
 
-Thanks!
+If you mean generally: it is up to each subsystem to decide whether to
+accept (or not) Rust code. Though we ask maintainers to make an effort
+to be flexible when things are so "core" that they could potentially
+block all other work, in order to conduct the Rust experiment and to
+try things out.
 
-> The assertion warning only says line 35 but which file? Yes, the
-> ".._sync_lock_spinlock_rs" name does provide the lead, however since we
-> generate the test code, so we actually know the line # for each real
-> test body, so I come up a way to give us the following:
->
->         [..] # rust_doctest_kernel_sync_lock_spinlock_rs_0: ASSERTION FAI=
-LED at rust/kernel/sync/lock/spinlock.rs:61
->         [..] Expected e.c =3D=3D 11 to be true, but is false
->         [..] [FAILED] rust_doctest_kernel_sync_lock_spinlock_rs_0
->
-> Thoughts?
+On our side, we have a few guidelines for contributors [1].
 
-Sounds good to me. However, David/Philip, is this OK or do you really
-need/use the actual/compiled source file there? If you don't need it,
-does it need to exist / be a real file at least? If the latter answer
-is a "yes", which I guess it may be likely, then:
+[1] https://rust-for-linux.com/contributing#the-rust-subsystem
 
-> +        let src_file =3D format!("rust/kernel/{}", file.replace("_rs", "=
-.rs").replace("_", "/"));
+> I was hoping someone from the Rust side is going to review this.
+> We try to review stuff within 48h at netdev, and there's no review :S
 
-This would not work for files with a `_` in their name, like
-`locked_by.rs`. I guess we could still find the real filename based on
-that information walking the dir, which is another hack I recall
-considering at some point.
+I think the version number got reset, but Tomonori had a couple
+versions on the rust-for-linux@vger list [2][3].
 
-Otherwise, if "fake" filenames in the line above are OK for
-David/Philip (I suspect they may want to open them for reporting?),
-then I guess the `file` one may be good enough and eventually we
-should get `rustdoc` to give us the proper metadata anyway.
+Andrew Lunn was taking a look, and there were some other comments going on,=
+ too.
+
+The email threading is broken in [2][3], though, so it may be easiest
+to use a query like "f:lunn" [4] to find those.
+
+[2] https://lore.kernel.org/rust-for-linux/01010188843258ec-552cca54-4849-4=
+424-b671-7a5bf9b8651a-000000@us-west-2.amazonses.com/
+[3] https://lore.kernel.org/rust-for-linux/01010188a42d5244-fffbd047-446b-4=
+cbf-8a62-9c036d177276-000000@us-west-2.amazonses.com/
+[4] https://lore.kernel.org/rust-for-linux/?q=3Df%3Alunn
+
+> My immediate instinct is that I'd rather not merge toy implementations
+> unless someone within the netdev community can vouch for the code.
+
+Yes, in general, the goal is that maintainers actually understand what
+is getting merged, get involved, etc. So patch submitters of Rust
+code, at this time, should be expected/ready to explain Rust if
+needed. We can also help from the Rust subsystem side on that.
+
+But, yeah, knowledgeable people should review the code.
+
+> You seem to create a rust/net/ directory without adding anything
+> to MAINTAINERS. Are we building a parallel directory structure?
+> Are the maintainers also different?
+
+The plan is to split the `kernel` crate and move the files to their
+proper subsystems if the experiment goes well.
+
+But, indeed, it is best if a `F:` entry is added wherever you think it
+is best. Some subsystems may just add it to their entry (e.g. KUnit
+wants to do that). Others may decide to split the Rust part into
+another entry, so that maintainers may be a subset (or a different set
+-- sometimes this could be done, for instance, if a new maintainer
+shows up that wants to take care of the Rust abstractions).
 
 Cheers,
 Miguel
