@@ -2,103 +2,73 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8722CEB64DB
-	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Jun 2023 13:34:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7C44EB64D9
+	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Jun 2023 13:44:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344219AbjFONeT (ORCPT
+        id S240656AbjFONoe (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 15 Jun 2023 09:34:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44764 "EHLO
+        Thu, 15 Jun 2023 09:44:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344127AbjFONd6 (ORCPT
+        with ESMTP id S239015AbjFONod (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 15 Jun 2023 09:33:58 -0400
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4740430F2;
-        Thu, 15 Jun 2023 06:33:41 -0700 (PDT)
-Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-39c84863e7cso4823623b6e.1;
-        Thu, 15 Jun 2023 06:33:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686836020; x=1689428020;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gXGICQ50G65MHvELHZmzGRAZEarhLjbzAG5FaOgvnLk=;
-        b=TVq8vXX7rBUuz1raSfavfMpyFMZdl/D0YFUzwlxrjAgFYRLapZtAol4AfXy8Sth7F/
-         KiuhbO6MEgfu0ptmk5jHIXTMISXJuPlan4DQAcq8el+1Eb2Ei6YxVwL8fCfdeZjcQe4b
-         tYwvEnxtu8tiuEtREuEFoq2OKfEk8+AFBB51Yt53KVEJP3jC575PEM1FS6LbPJm4cjXh
-         r5E6BbmOxPaXuOZOndJzNabzfnsHk22rwfpWH6eXtpizWq1tsPRxtIbna6Kj/ZlE22z1
-         7//effT7X6dAI8lr2ocinPekegaHt+31CT2WQ2saucHVUvbMGKgITT+BaxDWusf6j1w5
-         t17Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686836020; x=1689428020;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gXGICQ50G65MHvELHZmzGRAZEarhLjbzAG5FaOgvnLk=;
-        b=GE56rj8aGvfSzaWqFEp8el4wfGf3HRAC1Cq6rPlhGkNDhtbAN27KUE7RpvZhNeI9hz
-         H9COB3UmBNXLHTYMitkUNd6plWcw1pr0YX92soxYMnj9gD/LYiu/89BeaFHKjHFO2g/R
-         K5sB8LR+zpMdHqPIQZld+KiJgTTv9ViqWhb+4z2f0yt2RejnDoXzIfSvpCgnlreHJa4Z
-         0ilTv+Lz4sikFNEgdy4ZM072o9QzNHCgrTKm53+lraJS3pu/2Yj+GLaGxO+Mget9tV8j
-         5c7gLqHXDK/L4Y7DMHcyeCcFdeHcflffTciCuBdM54mOTg351jNgirb7/8/y0DfD6PZu
-         gKRw==
-X-Gm-Message-State: AC+VfDzoRwEA5FGRerYsdTGiKrPNYVSNnc4LD95XUfkQWSar0EIRv1h4
-        PXuLv4MPzTsSOtllfxGP1eWV275vGOg=
-X-Google-Smtp-Source: ACHHUZ7UWifzdJSDkHoWoiOZrjE+y0salSHzFZ9WHDKVYNMAp2o6swaqzv1eZus3VRfE/ZrQG22lKg==
-X-Received: by 2002:a05:6808:1782:b0:398:465e:ec68 with SMTP id bg2-20020a056808178200b00398465eec68mr14760468oib.4.1686836020404;
-        Thu, 15 Jun 2023 06:33:40 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id e19-20020a05680809b300b0039a531d9b92sm6850679oig.56.2023.06.15.06.33.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Jun 2023 06:33:39 -0700 (PDT)
-Message-ID: <5835c052-c101-ebc1-3609-88d6e12f13ac@gmail.com>
-Date:   Thu, 15 Jun 2023 10:33:34 -0300
+        Thu, 15 Jun 2023 09:44:33 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06A99129;
+        Thu, 15 Jun 2023 06:44:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=SsIYoQKvg5F33gUS1rii7FIH/8v6j9DwA2I0sd8z+E8=; b=U55QfBqIFXe9KXjC0Io6I8NY/f
+        O5QHIwCks/rs8Pz9xkidFS2C3jaIlJygMZ2T9XLDxvNLPO+xR1gcrL9dp4fuk8TQVZW2XlJL3COvZ
+        ZQXxZXZO7uiGByyyn9rB2sxUcev4RAhW3udj3/C0UYY2/NbzecBfP/lQgSXexq18xpL0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1q9nH5-00Gb2J-0P; Thu, 15 Jun 2023 15:44:31 +0200
+Date:   Thu, 15 Jun 2023 15:44:30 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Benno Lossin <benno.lossin@proton.me>
+Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>,
+        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH 2/5] rust: add support for ethernet operations
+Message-ID: <61eb0c9c-3de7-42da-bd88-f3e63c7d3687@lunn.ch>
+References: <20230613045326.3938283-1-fujita.tomonori@gmail.com>
+ <20230613045326.3938283-3-fujita.tomonori@gmail.com>
+ <QOy6Y8ZgaRA5ibTXnKAqNpMqJhlV49Jc75QaG-cgmF-MN0brxDFgMbCTIPO8lgZNjxbr3QQZMjTC-Fdl7KMmb6ppcN4Gqs9wvULPHroXWL8=@proton.me>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/6] rust: init: make doctests compilable/testable
-Content-Language: en-US
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        Philip Li <philip.li@intel.com>, kunit-dev@googlegroups.com,
-        linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-References: <20230614180837.630180-1-ojeda@kernel.org>
- <20230614180837.630180-2-ojeda@kernel.org>
- <2b4b23ce-316e-b998-7faf-e529b121a8b4@gmail.com>
- <CANiq72mApAXEtoWgkaLvZJu6gn=9CkyogRXVfbYxPsR5TeFUVQ@mail.gmail.com>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <CANiq72mApAXEtoWgkaLvZJu6gn=9CkyogRXVfbYxPsR5TeFUVQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <QOy6Y8ZgaRA5ibTXnKAqNpMqJhlV49Jc75QaG-cgmF-MN0brxDFgMbCTIPO8lgZNjxbr3QQZMjTC-Fdl7KMmb6ppcN4Gqs9wvULPHroXWL8=@proton.me>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/15/23 06:31, Miguel Ojeda wrote:
-> On Thu, Jun 15, 2023 at 5:52 AM Martin Rodriguez Reboredo
-> <yakoyoku@gmail.com> wrote:
->>
->> Little question, what's the purpose of `FromErrno` here?
+> > +    /// Sets `ethtool_ops` of `net_device`.
+> > +    pub fn set_ether_operations<U>(&mut self) -> Result
+> > +    where
+> > +        U: EtherOperations<D>,
+> > +    {
+> > +        if self.is_registered {
+> > +            return Err(code::EINVAL);
+> > +        }
+> > +        EtherOperationsAdapter::<U, D>::new().set_ether_ops(&mut self.dev);
+> > +        Ok(())
+> > +    }
 > 
-> It was because `Error::from_errno` is `pub(crate)` in the `kernel`
-> crate. I should have added a comment -- my bad! :)
-> 
-> If we decided to make it `pub` eventually, then this `FromErrno` hack
-> can be removed.
-> 
-> Cheers,
-> Miguel
+> Is it really necessary for a device to be able to have multiple different
+> `EtherOperations`? Couldnt you also just make `T` implement 
+> `EtherOperations<D>`?
 
-I think that `FromErrno` should be made public the moment when more
-doctests rely upon it, until then.
+For 99% of drivers, netdev->ethtool_ops is set once before
+register_netdev() is called and never changed.
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+There is one corner case i know of, and it is a hack:
+
+https://elixir.bootlin.com/linux/v6.4-rc6/source/net/dsa/master.c#L223
+
+Since this is a hack, you can probably skip it in rust. 
+
+      Andrew
