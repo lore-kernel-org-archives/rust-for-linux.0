@@ -2,121 +2,100 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E345EB64DB
-	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Jun 2023 13:50:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91947EB64D9
+	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Jun 2023 14:23:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344440AbjFONuy (ORCPT
+        id S1345054AbjFOOXt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 15 Jun 2023 09:50:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56786 "EHLO
+        Thu, 15 Jun 2023 10:23:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344074AbjFONux (ORCPT
+        with ESMTP id S1345037AbjFOOXd (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 15 Jun 2023 09:50:53 -0400
-Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACA83193;
-        Thu, 15 Jun 2023 06:50:52 -0700 (PDT)
-Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-1a994308bc6so965840fac.3;
-        Thu, 15 Jun 2023 06:50:52 -0700 (PDT)
+        Thu, 15 Jun 2023 10:23:33 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17391294A
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jun 2023 07:23:27 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1b5079b8cb3so3321165ad.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jun 2023 07:23:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686837052; x=1689429052;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DojIv4w46I2F3FeQItbDQQuCHIMIGT7OLbgfH+JlnwQ=;
-        b=N0XpOh5s++xYT1PbPTgq5mjgxoPU2+YVe7NxEp5HUoBbHK2MA+Kv2aVJ+WPbbIUI3R
-         5TWJJ4jOL4FlRKUCZ037736XNKUUXR4SY4IoGu/D0uysuncG5HFJOt9p+hfIM24sK47n
-         cz489yggWXEL4wUMrJEiLY/hAfu1G41MQhPYw1qk8YSVvmWZLM8Wl0pEaAIGiLHAaM7P
-         5YtztyAR+QKrYxYTv8YgA9+GuynMP1f7sOuBmegdbs6sXOH/Rzl54DsybpRaVxtfLKO/
-         9foNFgIfR+N8vHZnFO087fjJ6bnq44R3m2wyXqVSOhWMIm/rDw/TFngSqkDW8N28YSTi
-         eZDQ==
+        d=gmail.com; s=20221208; t=1686839006; x=1689431006;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=U3m3f2pGA4yw2miSC7wLIcV9xwMeClUAoyq8NzgreQg=;
+        b=sU/MszFVVMkfqGzm7AE9Rvgpk8aTZWEAlDKU583mqgXfPigzJDOxFn4GLk7/51tj6w
+         GrG+DGjNgfb5+avM2GAmImqIWqFRMar4EqDy64HUh+m5gFHxwFSmjuAApOoI7PnfPD1z
+         pBMEOGS//HihgZClOSnNXRYSfXmpqHeuSUKL8ooxxVIzQTpE6TcZgvj/1Q6hssjuRfSJ
+         2nUcWqxTZCBDNl3nunXYkV9WT9vI7NN4M5M6Jxd4rpskp5LcirDoffuKZ6HRs0i+cJEL
+         axCs39Z0z9LXi2dY/C92BtpBj5i4N25yk1WvsC1JHwC/j0RM2yMpK5B8hI81h64Z+ABy
+         sRVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686837052; x=1689429052;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DojIv4w46I2F3FeQItbDQQuCHIMIGT7OLbgfH+JlnwQ=;
-        b=S5qSGy3QuyrSWB7JLK455K/WR4VymYpH+eRnZq+D33pZdkvg3FbN7OCVFVyZQhRn7q
-         W1+3BZiQEhabNR2o0t08dnoLfi3GBa2PiE9sZ8bfWJiXX0Nx4I8NXyRpfnSLsULI7qwM
-         LzkWfzm2KgbIgf2mCZkIjgNTg8eIoAhxdvPJul9koaC2f7rUm4vTXtk7SW+lhpkpMRDt
-         2HavQ6Zf82hKbHVK/BP2bgRLw4TkRw5J9k6Nhwn036TZWqGkOxnMsUncSdUnYWcRE6PN
-         BzUEZ0ybV50pcV+GXrRKNv3/8/0A6H68VIEBblGtQ8MTnxKTc09PhOOA1Glga8Q88lKC
-         KT8g==
-X-Gm-Message-State: AC+VfDzjV7JP/cNwp+09lYtqp5yAsQPeepSSJEmTYsClGR85UQZQ0Mkp
-        5obBI8OHNcfinWBKXU2Yr44=
-X-Google-Smtp-Source: ACHHUZ4QA5CeMfItNvb6CUzhgyiSshhiQxO/S1j7j7mulYZ+gEs9Qgp4gDjmd0Bcx6LPRvCKV7QNaw==
-X-Received: by 2002:a05:6870:b791:b0:19e:fae6:c9ab with SMTP id ed17-20020a056870b79100b0019efae6c9abmr14852503oab.57.1686837051941;
-        Thu, 15 Jun 2023 06:50:51 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id t14-20020a4ad0ae000000b0054fd0b7af2bsm5988465oor.31.2023.06.15.06.50.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Jun 2023 06:50:51 -0700 (PDT)
-Message-ID: <0b7d1e30-52ea-c4cc-d0fd-f879cd67ef3b@gmail.com>
-Date:   Thu, 15 Jun 2023 10:50:46 -0300
+        d=1e100.net; s=20221208; t=1686839006; x=1689431006;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U3m3f2pGA4yw2miSC7wLIcV9xwMeClUAoyq8NzgreQg=;
+        b=bVU8FNjNUMOpqoaLyq39dexyA4IPy3VaXi9ehXiOjSsjpGPttpWdDWN/JQIJr8TVeY
+         8/voXxGoCoWiBN2eMfKK3J6LXAz+b9KFSVwIBwdRlAQugwqaCyiTUH7nE9+m6HC+QXyh
+         1jB/7GYJpKNdW6dkgz3HBBj1UWLn/vZD3WYAdEcmDBIKRI664si43Sjc+u9jdPrrZR/u
+         kuwsh0CHN4wNTgy5BpqE9BAON3hHQOP1EPcvZ9010KdjBXhZ80xdYAxyz9snXIFOJK/y
+         vm5ZtymRowSfIAEYt0QZBXOuURYotqhn5fFgyMYpUHAJiZhAnpGZhshrrFwpeR/KUk2V
+         zE7Q==
+X-Gm-Message-State: AC+VfDyFutcZChJnF+gH72FZO1WaTAsXUk/76rOVYzW9YQ6tXUR0o8hh
+        CVxPoBup03THcWJw3O76X5ussNnNW2oMRA==
+X-Google-Smtp-Source: ACHHUZ7S3nvbq1GFcB0t8C6/KnnMfNDO7R+7HH/YzxzOHm/aKxOZ0gCizRE7aWXVTFOxtdKNTt8asw==
+X-Received: by 2002:a17:902:db0e:b0:1ac:656f:a68d with SMTP id m14-20020a170902db0e00b001ac656fa68dmr20456143plx.4.1686839005827;
+        Thu, 15 Jun 2023 07:23:25 -0700 (PDT)
+Received: from ip-172-30-47-114.us-west-2.compute.internal (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id y13-20020a17090322cd00b001a69dfd918dsm14194616plg.187.2023.06.15.07.23.25
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jun 2023 07:23:25 -0700 (PDT)
+From:   FUJITA Tomonori <fujita.tomonori@gmail.com>
+To:     rust-for-linux@vger.kernel.org
+Subject: [RFC PATCH v2 0/2] Rust abstractions for Crypto API
+Date:   Thu, 15 Jun 2023 23:23:09 +0900
+Message-Id: <20230615142311.4055228-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 5/6] rust: support running Rust documentation tests as
- KUnit ones
-Content-Language: en-US
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        Philip Li <philip.li@intel.com>, kunit-dev@googlegroups.com,
-        linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-References: <20230614180837.630180-1-ojeda@kernel.org>
- <20230614180837.630180-6-ojeda@kernel.org>
- <49dad8fe-c509-6c43-559e-13a82563d3d0@gmail.com>
- <CANiq72mq4wYJ77qDKYWTO=FkA1AYat2rJd63Gps9aUrP82c9dQ@mail.gmail.com>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <CANiq72mq4wYJ77qDKYWTO=FkA1AYat2rJd63Gps9aUrP82c9dQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/15/23 06:23, Miguel Ojeda wrote:
-> On Thu, Jun 15, 2023 at 5:52 AM Martin Rodriguez Reboredo
-> <yakoyoku@gmail.com> wrote:
->>
->> I can't remember that if this panic it will mention the path on it.
->> Though if it does, then use something more explicit than
->> `.unwrap()`.
-> 
-> It doesn't print it, and I am happy to make things more explicit, but
-> in which case(s) do you see it failing?
-> 
->> Please do not use unwrap here, one can easily create a path that
->> it's not compliant under `rust/test/doctests/kernel` and get no
->> clue about where this script has failed. Use `.expect()` or
->> something else instead.
-> 
-> The folder is removed every time, so that should not happen I think.
-> Yes, you can still hack things and call the script manually, but I
-> wouldn't call that "easily".
+Hi,
 
-Ah, you are right, I've forgot that the folder was deleted and
-remade, and because of that an error is more likely to occur at that
-stage and not while `scripts/rustdoc_test_{builder,gen}.rs` is
-running. Thus.
+Before sending v2 of my crypto patch [1] to linux-crypto ml and
+checking the chance of Rust bindings for crypto being accepted, I'd
+like to iron out Rust issues. I'd appreciate any feedback.
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Once reviewing on rust-for-linux ml is done, I'll send only crypto
+support to linux-crypto (drops the socket support patch to netdev).
 
-> 
-> Nevertheless, I am happy to change it if we think there is a risk,
-> e.g. `rustdoc` changing the pattern (though we pin the version so
-> far).
-> 
-> Thanks for taking a look Martin!
-> 
-> Cheers,
-> Miguel
+Changes since v1:
+- addressed Eric's comments on hash support [2].
+- add rng support
+- split files
+
+[1] https://lore.kernel.org/netdev/010101881db036fb-2fb6981d-e0ef-4ad1-83c3-54d64b6d93b3-000000@us-west-2.amazonses.com/T/
+[2] https://www.spinics.net/lists/netdev/msg904380.html
+
+FUJITA Tomonori (2):
+  rust: add synchronous message digest support
+  rust: add Random Number Generator algorithms support
+
+ rust/bindings/bindings_helper.h |   2 +
+ rust/helpers.c                  |  38 ++++++++++
+ rust/kernel/crypto.rs           |   6 ++
+ rust/kernel/crypto/hash.rs      | 118 ++++++++++++++++++++++++++++++++
+ rust/kernel/crypto/rng.rs       |  72 +++++++++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ 6 files changed, 238 insertions(+)
+ create mode 100644 rust/kernel/crypto.rs
+ create mode 100644 rust/kernel/crypto/hash.rs
+ create mode 100644 rust/kernel/crypto/rng.rs
+
+
+base-commit: d2e3115d717197cb2bc020dd1f06b06538474ac3
+-- 
+2.34.1
+
