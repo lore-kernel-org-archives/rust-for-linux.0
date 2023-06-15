@@ -2,58 +2,57 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D89FEEB64D8
-	for <rust-for-linux@archiver.kernel.org>; Wed, 14 Jun 2023 22:09:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C257EB64DB
+	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Jun 2023 00:21:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231225AbjFNWJp (ORCPT
+        id S237171AbjFOAU7 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 14 Jun 2023 18:09:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54364 "EHLO
+        Wed, 14 Jun 2023 20:20:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbjFNWJo (ORCPT
+        with ESMTP id S237381AbjFOAUq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 14 Jun 2023 18:09:44 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94FEB1A1;
-        Wed, 14 Jun 2023 15:09:42 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-bc492cb6475so1132416276.2;
-        Wed, 14 Jun 2023 15:09:42 -0700 (PDT)
+        Wed, 14 Jun 2023 20:20:46 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8EA72973
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jun 2023 17:20:04 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-3f9e207f5f0so1215121cf.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jun 2023 17:20:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686780582; x=1689372582;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uxCYYqgD5haUCkeC5DXhN+uLq5/abXQjgXDwO+5hkwc=;
-        b=dT92Uk2SGyIBASdn2lfY84qqz+cSYS7DEvwolim1KJ8NqEiRlMaf1uBLM07S7UDzZ9
-         uk6HN3gXsTCujof6V+SQ1/Bl9SqtIB9ZpOiLjEGQSDaKbgB61qVRT2dwKZ9oXuiSWSjg
-         6xMvZNJuUxLs1vEaz33tbMB3hxiBKlS4jJ2jCVfSm8Jcj2+T++v1CSo6VtmQSo2y+yfu
-         lXnrSLtbB0dCwiw2twlcqaOJywLugz/d62mngkgHiJGB4WNogu5g8ZFV1e3D01bxUxrB
-         lGvak+5Ctw+fJY7TSslNIB20RU3R40WYKl4YxNjs+vwTheNvj8jmcMWPmMumtRbIFSO/
-         AnNA==
+        d=google.com; s=20221208; t=1686788389; x=1689380389;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=xG3BQaVfAInEtWzfz6GXM6niKI5YlCC6tXwHa1+aR1g=;
+        b=2ITOJAE/ABayc+Y2PogEH0Hjt6JukQ9FFLmtYDRk4okZw3JvlxVe2biDOgSJC25VyP
+         Zv1W45DbtWljd8SqUYNquUmQU8on9p3ONIobsum/xUFMZ0H7EquKO4/JKvXpY0KtcaSa
+         +h7/qfF3OxH0aeRmO/N4wosAXGZt4eNumz+U3OoNuxO4ETOzXhS3EIF30XS3itV8Lt/h
+         t356yx31sFMOcljjWpszAWIjy+ug1zp6vlntHxIj/UeNrmCMW41DcD7BS3i6gaoBKW43
+         S05KvcdMnZHV1shPPFOTEFGe04QDrYX6IrNo9iE1b/jxa9A28xfIVthbygGzPsp3lsGA
+         ufdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686780582; x=1689372582;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uxCYYqgD5haUCkeC5DXhN+uLq5/abXQjgXDwO+5hkwc=;
-        b=NFKO28xKfbl3Uf+P4LoE0BhQ6WgkvRx2N3B+6pP1Tio9TFe7CSpNNspCPuf51Vu8Kt
-         Um/MgXEifOJxLf0mNDBuNNY5119Fa3CHy+yqsWOPq7XqSmsY2ffWmMN8hKFC9A4VR+GY
-         HKNkv8zoz0ekNytN9A9rz6a6NE4SfMwmnq6Bz4zlyMl8SVvdD4k1OpyHOHR7qYnHaIEh
-         ZTnmUtggKc5qCSbSK8M8tir2z43mKbWOG/KUjI0Xxxw4CzBXkx8QFlwV9g9tctxjQVz7
-         TybPYrOI4Ugxw57Qqbp6WCBsBTEjfLtJ3TIzQ8FkX4khFYwXEZLgIOykXbmYM2B/1Buq
-         Ov8g==
-X-Gm-Message-State: AC+VfDy3GrEA9qF2Wo58T1hFDJiv+30hREp0oikE5ImNHdES4AJnl9jb
-        F6EYigZi4+WCfhHSW++AG2BEBvtAwccww5lADwc=
-X-Google-Smtp-Source: ACHHUZ5Ki7h45tEWuN2EE3YC5f6+IiHoRICcZpFhSuZgR2mQeCO1yeN+ZS7sLNMFWqW3qJyi2KZE+OGtbEesC1AoGK0=
-X-Received: by 2002:a25:9343:0:b0:bca:bc83:d315 with SMTP id
- g3-20020a259343000000b00bcabc83d315mr2765786ybo.48.1686780581786; Wed, 14 Jun
- 2023 15:09:41 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686788389; x=1689380389;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xG3BQaVfAInEtWzfz6GXM6niKI5YlCC6tXwHa1+aR1g=;
+        b=d2P0G15RqELviYjEiWbBEPUvIXXX/yDg3ukikRshA3ZCPD5wopD7+1evKIlSX9p8gb
+         4hmdwKgD9euyaj1ya44FqJJgxePMjNdQ55uTeDHA6AByhJAW0JDybgl0rFc2sQ850mj0
+         oAwZNuevzlXgVEIsp8pEThPAyrSF6/I7uFCcUCm0kGBYJhtdyFT0V+Mc55Agu1RPiQq9
+         1tiek4CsGzmLXIR7xfXLsXDnoyFDV4PndiNfH3uUSi/64tKsSr/MEzh3wle9pc6PA9sV
+         NwfqEfU6V0YA4D4hzSYctADM9giFVqKEPxjMaC6O0eWMP9ioI735YPTNrvKSjTCJx1an
+         bGTg==
+X-Gm-Message-State: AC+VfDyOh6WzUt2xq4X5kQfYLV34KBXka5BXJQsSs7GrNdaS5tJ4T8a1
+        L0Mp/nuvUjnOy1gdjOUUR+4Cn5Z4Mc7/mQzXqy+rAA==
+X-Google-Smtp-Source: ACHHUZ77T/z/r+sF+BnKA4y7X04c478y3LUwdhEcRCBhZC8/mj36lgn53z6yIHdRAN9zaDTaoUu+j6yVI9Jh5mICta8=
+X-Received: by 2002:ad4:5aa8:0:b0:62e:d9db:c788 with SMTP id
+ u8-20020ad45aa8000000b0062ed9dbc788mr3622770qvg.3.1686788388738; Wed, 14 Jun
+ 2023 17:19:48 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230614180837.630180-1-ojeda@kernel.org> <20230614180837.630180-6-ojeda@kernel.org>
 In-Reply-To: <20230614180837.630180-6-ojeda@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 15 Jun 2023 00:09:30 +0200
-Message-ID: <CANiq72mM+=XBWXBqrgkBcSwR2GtC=PX5WwTB8+-Tm0wVOMtgPg@mail.gmail.com>
+From:   Matt Gilbride <mattgilbride@google.com>
+Date:   Wed, 14 Jun 2023 20:19:37 -0400
+Message-ID: <CABVGRkcnKX3Sb=LgUHz+E0XPxvemkuO+StAq4xxDY2xSaAt0GQ@mail.gmail.com>
 Subject: Re: [PATCH 5/6] rust: support running Rust documentation tests as
  KUnit ones
 To:     Miguel Ojeda <ojeda@kernel.org>
@@ -70,21 +69,105 @@ Cc:     David Gow <davidgow@google.com>,
         linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Jun 14, 2023 at 8:09=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+> Rust has documentation tests: these are typically examples of
+> usage of any item (e.g. function, struct, module...).
 >
-> +/// Prints a KUnit error.
+> They are very convenient because they are just written
+> alongside the documentation. For instance:
+>
+>     /// Sums two numbers.
+>     ///
+>     /// ```
+>     /// assert_eq!(mymod::f(10, 20), 30);
+>     /// ```
+>     pub fn f(a: i32, b: i32) -> i32 {
+>         a + b
+>     }
+>
+> In userspace, the tests are collected and run via `rustdoc`.
+> Using the tool as-is would be useful already, since it allows
+> to compile-test most tests (thus enforcing they are kept
+> in sync with the code they document) and run those that do not
+> depend on in-kernel APIs.
+>
+> However, by transforming the tests into a KUnit test suite,
+> they can also be run inside the kernel. Moreover, the tests
+> get to be compiled as other Rust kernel objects instead of
+> targeting userspace.
+>
+> On top of that, the integration with KUnit means the Rust
+> support gets to reuse the existing testing facilities. For
+> instance, the kernel log would look like:
+>
+>     KTAP version 1
+>     1..1
+>         KTAP version 1
+>         # Subtest: rust_doctests_kernel
+>         1..59
+>         # Doctest from line 13
+>         ok 1 rust_doctest_kernel_build_assert_rs_0
+>         # Doctest from line 56
+>         ok 2 rust_doctest_kernel_build_assert_rs_1
+>         # Doctest from line 122
+>         ok 3 rust_doctest_kernel_init_rs_0
+>         ...
+>         # Doctest from line 150
+>         ok 59 rust_doctest_kernel_types_rs_2
+>     # rust_doctests_kernel: pass:59 fail:0 skip:0 total:59
+>     # Totals: pass:59 fail:0 skip:0 total:59
+>     ok 1 rust_doctests_kernel
+>
+> Therefore, add support for running Rust documentation tests
+> in KUnit. Some other notes about the current implementation
+> and support follow.
+>
+> The transformation is performed by a couple scripts written
+> as Rust hostprogs.
+>
+> Tests using the `?` operator are also supported as usual, e.g.:
+>
+>     /// ```
+>     /// # use kernel::{spawn_work_item, workqueue};
+>     /// spawn_work_item!(workqueue::system(), || pr_info!("x"))?;
+>     /// # Ok::<(), Error>(())
+>     /// ```
+>
+> The tests are also compiled with Clippy under `CLIPPY=1`, just like
+> normal code, thus also benefitting from extra linting.
+>
+> The names of the tests are currently automatically generated.
+> This allows to reduce the burden for documentation writers,
+> while keeping them fairly stable for bisection. This is an
+> improvement over the `rustdoc`-generated names, which include
+> the line number; but ideally we would like to get `rustdoc` to
+> provide the Rust item path and a number (for multiple examples
+> in a single documented Rust item).
+>
+> In order for developers to easily see from which original line
+> a failed doctests came from, a KTAP diagnostic line is printed
+> to the log. In the future, we may be able to use a proper KUnit
+> facility to append this sort of information instead.
+>
+> A notable difference from KUnit C tests is that the Rust tests
+> appear to assert using the usual `assert!` and `assert_eq!`
+> macros from the Rust standard library (`core`). We provide
+> a custom version that forwards the call to KUnit instead.
+> Importantly, these macros do not require passing context,
+> unlike the KUnit C ones (i.e. `struct kunit *`). This makes
+> them easier to use, and readers of the documentation do not need
+> to care about which testing framework is used. In addition, it
+> may allow us to test third-party code more easily in the future.
+>
+> However, a current limitation is that KUnit does not support
+> assertions in other tasks. Thus we presently simply print an
+> error to the kernel log if an assertion actually failed. This
+> should be revisited to properly fail the test, perhaps saving
+> the context somewhere else, or letting KUnit handle it.
+>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Nit: this should be "info" instead.
-
-By the way, we may want to have "raw" `pr_*!` macros without the
-module prefix for cases like this in the future, in `print.rs`. But,
-for the moment, I added these two ad-hoc ones here.
-
-Cheers,
-Miguel
+Tested-by: Matt Gilbride <mattgilbride@google.com>
