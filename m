@@ -2,61 +2,60 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8039DEB64DD
-	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Jun 2023 09:23:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37770EB64DB
+	for <rust-for-linux@archiver.kernel.org>; Thu, 15 Jun 2023 09:31:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240586AbjFOJXk (ORCPT
+        id S241065AbjFOJbw (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 15 Jun 2023 05:23:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56576 "EHLO
+        Thu, 15 Jun 2023 05:31:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238918AbjFOJXi (ORCPT
+        with ESMTP id S240097AbjFOJbv (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 15 Jun 2023 05:23:38 -0400
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6ED42130;
-        Thu, 15 Jun 2023 02:23:36 -0700 (PDT)
-Received: by mail-qk1-x734.google.com with SMTP id af79cd13be357-75d46c7cd6cso268304885a.3;
-        Thu, 15 Jun 2023 02:23:36 -0700 (PDT)
+        Thu, 15 Jun 2023 05:31:51 -0400
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 716801FE4;
+        Thu, 15 Jun 2023 02:31:50 -0700 (PDT)
+Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-bc43a73ab22so935970276.0;
+        Thu, 15 Jun 2023 02:31:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686821016; x=1689413016;
+        d=gmail.com; s=20221208; t=1686821509; x=1689413509;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oGOHFXjoBS2ub7744MFzAfGB3y1RlKfr94cgOk8utvg=;
-        b=bQPiUW2V/29fzHAWymvAuQKmj6vXfz5zArXjocuKNgdfoFxWwTMHtWWS1g/dPGmOk9
-         gdnCT1uCVb+1TPiOdR0qq9Xp55gm3Kw4HgkiENLdyJ7Em6K1KJ56gxXpvgsUQyLNq9hH
-         iRHuY2mIidQd/qDJsBLM0FfcS3GxlHfjBgvZa/zwYlokG3p8IZ9nGTQi/FWiMwiarjy3
-         rjXZVu71fjJjFrKCb9n7BsQc+43Pj4ZMEH0O1Kb23mLVDUQz36LbEcCldXeIWmrYPNp4
-         rNR5x2LPD5WKSr8vCsvMUGSl3NUds51A18JWFiHz6B0U1hBuYdtMcdL11Jg3SHP+d5SN
-         hUCg==
+        bh=di66cKm4TSNTvyJIxIEt8peXod16WLfPyBmGUqyjx8A=;
+        b=e02FzfAAe7TAzqPFI1NcUDpyeWS8RO+q/51tmwLU9bP2Ro8bCXmKckt2kbm2ZjdxCy
+         fm3Pq8acrGSYhTJgQHto02XStVs4+X5cV9PGaXc5+msESCBYpbGe15S9IQI/7XBPHVwD
+         Et5+5hXyrvQPTLNccgcN3v0KHj6OJrr6m910qVknvd6M1PsQ+viNQr5lzG39v3MJhpV+
+         Jk5Is0s1GXsPATCc/FDmcNqhY6QK+J+ADjZ39RCzK4j9Fzi3I6gdP8DKLx6Hawkw6Voo
+         7D+tt1yiS0+fP1ivNHykUxMZEcYv9lcgG8NSDc/OBAluZG/NvPPUlVzz58O3TgCAw9pE
+         +BZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686821016; x=1689413016;
+        d=1e100.net; s=20221208; t=1686821509; x=1689413509;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oGOHFXjoBS2ub7744MFzAfGB3y1RlKfr94cgOk8utvg=;
-        b=DfiI4ibTkC5j4MBf2+6Okb1E26d4j+sQcxQ16PZgg4i+9ZjDiRXu2gARnqpWl7gf7R
-         yl8rzMBcmoO9ZdoSgmGSCpM7EOSAY6ByAJ9ZukZQ+oV4NoyyPICynTsNWJLzMhLbrO3Z
-         FkRZgMVkU883nwe6LEoJAQFkBKOmV4jmV1n5GySs1YeTGF542euLkioNrmja6pYDy2ZD
-         YkxSJEdsW9MIxe8c6aob1+gigew9PVPiiVswg7uxj+0sDC7Y2xCCaGn4oZMHfuuM9X0n
-         SAtuqLcXfnKFKtb3xPNZsILyFjC8P3x4L+RIin4hClOSUvgFAjOPbbZjdBXQeXuBXfdv
-         0scQ==
-X-Gm-Message-State: AC+VfDxcpZ18cP534HkisP1HbHft0KUMQnq+eHOv0SERNRqdab+fQm3V
-        7AbZo0aIgruDjUF51mNszbt/KBnUEdNcTVmimyc=
-X-Google-Smtp-Source: ACHHUZ5Xi1q7Qr8BpQtJ7QY25OlQp8ICSTCgK7JFeKCy6nELV0YWKp8eHxludT1KOtcxg84RnehJIFUxL8ijvgsUqx8=
-X-Received: by 2002:a05:622a:589:b0:3f9:d70f:ff6b with SMTP id
- c9-20020a05622a058900b003f9d70fff6bmr5547763qtb.56.1686821015825; Thu, 15 Jun
- 2023 02:23:35 -0700 (PDT)
+        bh=di66cKm4TSNTvyJIxIEt8peXod16WLfPyBmGUqyjx8A=;
+        b=hLXr9lYrFf949tDJry5TGLoN3b7PKL2eXXUde6th7gJtO00G7E5bClJB1RBI3DkIND
+         3iGkWzBYuVrkKr2hpcrmwr0FGnfo7SEXb87KxJ7zePyjx4LfcL6PyGsk0phcCO3pWWwR
+         H2DHF1Hdd8yLoweqxCzIOFNpqzmQxzEj8112OLgWwLpvVprjUqTQSRDI6aclztquGw9k
+         OOC/4Y0JgEGU1UW36nH+Wcl+GsjrcOadCiHFaEjIj6Yt8kscyuvlmuFiv+h/xCo11XnZ
+         vDUaWNCNwwujXwE1BEw5eSKBQjWpC5lXgwB2rwyb59EO7utiG3YQ3geOJTjztq6/ykCf
+         Jokw==
+X-Gm-Message-State: AC+VfDwpXhdUORt4naWuPgnJRZiDjaIOVr6t6rRa9lEgC6yiEuY9ceBp
+        AYGnlovje28JL3bPFhq7Hi1LIkwef57GKOZcOlGiZRzIYmQ=
+X-Google-Smtp-Source: ACHHUZ6gTgwthX4La0xbY3vwt2dDYdqybB2xqWiZHioIDURaKg4OHiGOZ2lS1gUUCClyR9i4ST922OsezwVW9+gw8oU=
+X-Received: by 2002:a25:7316:0:b0:bc4:f2e5:5343 with SMTP id
+ o22-20020a257316000000b00bc4f2e55343mr4915969ybc.28.1686821509582; Thu, 15
+ Jun 2023 02:31:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230614180837.630180-1-ojeda@kernel.org> <20230614180837.630180-6-ojeda@kernel.org>
- <49dad8fe-c509-6c43-559e-13a82563d3d0@gmail.com>
-In-Reply-To: <49dad8fe-c509-6c43-559e-13a82563d3d0@gmail.com>
+References: <20230614180837.630180-1-ojeda@kernel.org> <20230614180837.630180-2-ojeda@kernel.org>
+ <2b4b23ce-316e-b998-7faf-e529b121a8b4@gmail.com>
+In-Reply-To: <2b4b23ce-316e-b998-7faf-e529b121a8b4@gmail.com>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 15 Jun 2023 11:23:24 +0200
-Message-ID: <CANiq72mq4wYJ77qDKYWTO=FkA1AYat2rJd63Gps9aUrP82c9dQ@mail.gmail.com>
-Subject: Re: [PATCH 5/6] rust: support running Rust documentation tests as
- KUnit ones
+Date:   Thu, 15 Jun 2023 11:31:38 +0200
+Message-ID: <CANiq72mApAXEtoWgkaLvZJu6gn=9CkyogRXVfbYxPsR5TeFUVQ@mail.gmail.com>
+Subject: Re: [PATCH 1/6] rust: init: make doctests compilable/testable
 To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>,
         Brendan Higgins <brendan.higgins@linux.dev>,
@@ -79,27 +78,13 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 On Thu, Jun 15, 2023 at 5:52=E2=80=AFAM Martin Rodriguez Reboredo
 <yakoyoku@gmail.com> wrote:
 >
-> I can't remember that if this panic it will mention the path on it.
-> Though if it does, then use something more explicit than
-> `.unwrap()`.
+> Little question, what's the purpose of `FromErrno` here?
 
-It doesn't print it, and I am happy to make things more explicit, but
-in which case(s) do you see it failing?
+It was because `Error::from_errno` is `pub(crate)` in the `kernel`
+crate. I should have added a comment -- my bad! :)
 
-> Please do not use unwrap here, one can easily create a path that
-> it's not compliant under `rust/test/doctests/kernel` and get no
-> clue about where this script has failed. Use `.expect()` or
-> something else instead.
-
-The folder is removed every time, so that should not happen I think.
-Yes, you can still hack things and call the script manually, but I
-wouldn't call that "easily".
-
-Nevertheless, I am happy to change it if we think there is a risk,
-e.g. `rustdoc` changing the pattern (though we pin the version so
-far).
-
-Thanks for taking a look Martin!
+If we decided to make it `pub` eventually, then this `FromErrno` hack
+can be removed.
 
 Cheers,
 Miguel
