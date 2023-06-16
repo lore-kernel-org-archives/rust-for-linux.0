@@ -2,79 +2,40 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E8011EB64D7
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 19:31:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 174ABEB64D7
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 20:04:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346182AbjFPTbW (ORCPT
+        id S231265AbjFPUEe (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Jun 2023 15:31:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57838 "EHLO
+        Fri, 16 Jun 2023 16:04:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjFPTbI (ORCPT
+        with ESMTP id S229696AbjFPUEd (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Jun 2023 15:31:08 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934C84205;
-        Fri, 16 Jun 2023 12:30:52 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id E37585C0158;
-        Fri, 16 Jun 2023 15:22:46 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Fri, 16 Jun 2023 15:22:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-        :content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1686943366; x=1687029766; bh=tC67s3TArG681IrT06ayhzAKnIwzDaM1R2x
-        lX6l2qEU=; b=kG9aj8zpcojl0S/OiVaoLG1+DEuCyq43YJjzkyjiUuC6ZNyWI7W
-        IvmF59432nURcamoGbh1IkmxNNpBOspIHxFgItq2zxV1B5hPpVb5oImZTEeMH9e3
-        kwR7s5jEyCXi9FevTUN4XgzR2kLwvwwxBgSl3ujEOQOXidqW3adjWbAV2WDpMmJC
-        Gr5lVbPix68MiUZX5MWe4ZgdhEaLOm2A2ocI2VeI9pEYttfTIrVRFgy3ArGQWQJp
-        J+rs9TkpqTD34zu0zW8NY2byZg+++CzAFAUAn2gYL/2ZUavA+RuTCWD4S6HArGX9
-        taO8hb/x0aFM2VwAw/MRPKs7NhVPcmrIU4Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1686943366; x=1687029766; bh=tC67s3TArG681IrT06ayhzAKnIwzDaM1R2x
-        lX6l2qEU=; b=CDZwLcwPvHqC2Q421TI1Ci/KV/vV6/wxGJYt4nXOp5x4NHYGEq3
-        k0KdL+UHAiJVaXSbDoZbN18S0ik88xPLzpFzTRvnZJj2TvExLIVQ8QkVjQFGz2JM
-        s/DBOGUnIVT833T8Lx57pTCnDovg2neDW0dzluXOFrL1ESFr65szuj8hOwfAHEou
-        By/CUPc1GiNF+G3lNhjfuTbXoWyOmkraH+H7gulkkZCg3MrqTnkMVZEIoXopVzar
-        BKbVxu2ZF28CrpLARTeRelHB+e1jM/964GZHSz+yss25tqvVZSTAmDC6vFHA9kPi
-        ifMNLWZLJrYKKGTtbPCfr33McXyKYfLAcCg==
-X-ME-Sender: <xms:hraMZClAqRvpFf2IGX8Nyxy0ITyi2d2UjpJxO_XvATF2vl_EuxQwrg>
-    <xme:hraMZJ1Dd9KOaOfh5GPC6NGUqgIjJqz1WIZYwDwGIvE1BWzQ66xpPB33lL6ml-q8f
-    OIBgUehoBQjkd_kHQ>
-X-ME-Received: <xmr:hraMZAowozXW6EPovGa5eWKmZF2ipWxY0Kb4yZtUZVE3u6o4kRJ41BxtInCqU14hLqxEu-LeITIW2y3eVMhTwF4bFgaPzlWUaAzYkg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedvgedgudefiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttdefjeenucfhrhhomheptehl
-    ihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnh
-    epheduuddvteekvdektdduledugfffhfdugeejgeeuvdevtdetveejheehiefffeegnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvg
-    esrhihhhhlrdhioh
-X-ME-Proxy: <xmx:hraMZGncv622zcEQKwGv474BV_scq76vBiikUm4eNcqTdcnUVhN97g>
-    <xmx:hraMZA3zxtUs_0QDYejlvdxsb_n23GreJhqRQFXPLAgBuXH3UA3XiQ>
-    <xmx:hraMZNvG9Zr8Qgq_n1TOjmejtyx3PEO7kSLW1RkDlLnNdrgeObksLw>
-    <xmx:hraMZE_xXU3bgbpbDh2jFlFDZN3lBy69GXfmdrHcudvt_V5kCxBV7Q>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 16 Jun 2023 15:22:45 -0400 (EDT)
-Message-ID: <053cb4c3-aab1-23b3-56e3-4f1741e69404@ryhl.io>
-Date:   Fri, 16 Jun 2023 21:23:28 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
-Content-Language: en-US, da
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>, andrew@lunn.ch,
+        Fri, 16 Jun 2023 16:04:33 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE70B1FF9;
+        Fri, 16 Jun 2023 13:04:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=LHiszXAb7nwBiKS/AoOvMPG11A0zfSSACYA75QNJtEg=; b=ULVCY8J+9KmD5c+TNRTqu5P9Ap
+        A65Wc/EppZRzl24ahuJHMfN/PRrqkkAbe+Uk0FFFWze2WJl9hmfsqFY85SHwHWAlyBuaSN507Olww
+        5YpsPN2E0wA9qUpIH87sDzYdD/GWedxWM+Paju6UyQQJsl7c2QxaoGkeNcHFA124y7k0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qAFgB-00GklU-Qt; Fri, 16 Jun 2023 22:04:19 +0200
+Date:   Fri, 16 Jun 2023 22:04:19 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Alice Ryhl <alice@ryhl.io>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        FUJITA Tomonori <fujita.tomonori@gmail.com>,
         netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
         aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
+Message-ID: <7dbf3c85-02ca-4c9b-b40d-adcdb85305dd@lunn.ch>
 References: <20230614230128.199724bd@kernel.org>
  <8e9e2908-c0da-49ec-86ef-b20fb3bd71c3@lunn.ch>
  <20230615190252.4e010230@kernel.org>
@@ -82,52 +43,62 @@ References: <20230614230128.199724bd@kernel.org>
  <20230616114006.3a2a09e5@kernel.org>
  <66dcc87e-e03f-1043-c91d-25d6fa7130a1@ryhl.io>
  <20230616121041.4010f51b@kernel.org>
-From:   Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20230616121041.4010f51b@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <053cb4c3-aab1-23b3-56e3-4f1741e69404@ryhl.io>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <053cb4c3-aab1-23b3-56e3-4f1741e69404@ryhl.io>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/16/23 21:10, Jakub Kicinski wrote:
-> On Fri, 16 Jun 2023 21:00:36 +0200 Alice Ryhl wrote:
->> A Rust method can be defined to take the struct "by value", which
->> consumes the struct and prevents you from using it again. This can let
->> you provide many different cleanup methods that each clean it up in
->> different ways.
->>
->> However, you cannot force the user to use one of those methods. They
->> always have the option of letting the value go out of scope, which calls
->> the destructor. And they can do this at any time.
->>
->> That said, the destructor of the value does not necessarily *have* to
->> translate to immediately freeing the value. If the value if refcounted,
->> the destructor could just drop the refcount. It would also be possible
->> for a destructor to schedule the cleanup operation to a workqueue. Or
->> you could do something more clever.
+> Yes, you can certainly put a WARN_ON in the destructor.
 > 
-> Can we put a WARN_ON() in the destructor and expect object to never be
-> implicitly freed?  skbs represent packets (most of the time) and for
-> tracking which part of the stack is dropping packets we try to provide
-> a drop reason along the freed skb. It'd be great if for Rust we could
-> from the get-go direct everyone towards the APIs with an explicit reason
-> code.
+> Another possibility is to use a scope to clean up. I don't know anything
+> about these skb objects are used, but you could have the user define a
+> "process this socket" function that you pass a pointer to the skb, then make
+> the return value be something that explains what should be done with the
+> packet. Since you must return a value of the right type, this forces you to
+> choose.
+> 
+> Of course, this requires that the processing of packets can be expressed as
+> a function call, where it only inspects the packet for the duration of that
+> function call. (Lifetimes can ensure that the skb pointer does not escape
+> the function.)
+> 
+> Would something like that work?
 
-Yes, you can certainly put a WARN_ON in the destructor.
+I don't think so, at least not in the contest of an Rust Ethernet
+driver.
 
-Another possibility is to use a scope to clean up. I don't know anything 
-about these skb objects are used, but you could have the user define a 
-"process this socket" function that you pass a pointer to the skb, then 
-make the return value be something that explains what should be done 
-with the packet. Since you must return a value of the right type, this 
-forces you to choose.
+There are two main flows.
 
-Of course, this requires that the processing of packets can be expressed 
-as a function call, where it only inspects the packet for the duration 
-of that function call. (Lifetimes can ensure that the skb pointer does 
-not escape the function.)
+A packet is received. An skb is allocated and the received packet is
+placed into the skb. The Ethernet driver then hands the packet over to
+the network stack. The network stack is free to do whatever it wants
+with the packet. Things can go wrong within the driver, so at times it
+needs to free the skb rather than pass it to the network stack, which
+would be a drop.
 
-Would something like that work?
+The second flow is that the network stack has a packet it wants sent
+out an Ethernet port, in the form of an skb. The skb gets passed to
+the Ethernet driver. The driver will do whatever it needs to do to
+pass the contents of the skb to the hardware. Once the hardware has
+it, the driver frees the skb. Again, things can go wrong and it needs
+to free the skb without sending it, which is a drop.
 
-Alice
+So the lifetime is not a simple function call.
+
+The drop reason indicates why the packet was dropped. It should give
+some indication of what problem occurred which caused the drop. So
+ideally we don't want an anonymous drop. The C code does not enforce
+that, but it would be nice if the rust wrapper to dispose of an skb
+did enforce it.
+
+I would also say that this dummy driver and the C dummy driver is
+actually wrong in 'dropping' the frame. Its whole purpose in life is to
+be a black hole. It should only drop the packet if for some reason it
+cannot throw the packet into the black hole.
+
+       Andrew
+
