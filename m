@@ -2,110 +2,95 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A982EB64D7
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 15:02:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E937DEB64DA
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 16:01:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345871AbjFPPCr (ORCPT
+        id S234696AbjFPQB4 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Jun 2023 11:02:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58084 "EHLO
+        Fri, 16 Jun 2023 12:01:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344623AbjFPPC0 (ORCPT
+        with ESMTP id S241493AbjFPQBj (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Jun 2023 11:02:26 -0400
-Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51EA73A86;
-        Fri, 16 Jun 2023 08:02:06 -0700 (PDT)
-Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-1a83bfe7ca0so766324fac.0;
-        Fri, 16 Jun 2023 08:02:06 -0700 (PDT)
+        Fri, 16 Jun 2023 12:01:39 -0400
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13C7F35A4;
+        Fri, 16 Jun 2023 09:01:24 -0700 (PDT)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-bc43a73ab22so1512003276.0;
+        Fri, 16 Jun 2023 09:01:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686927725; x=1689519725;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/TQ/NBF9u3IBn3xcHORueLNPUOIL2wwIG5fESfTCbFI=;
-        b=W5bZQhbvvf1ysouwrUosFRxybLDJEya2JAdz3G5mSSV8K/TGKTVSoWQzteqrGAuvck
-         sh8bAqtvFmu3uhOGCHY6V3wueOudvp1aQ9/XK/SlHyrYB7D086K7b+83VJlQG8bStXxC
-         ekf3U4rWSQPW8tFhKlno1I3zugyW9jAVCa2Gye+GinkIJIk9FLnPxKyrdRY4KdYGUbhE
-         V3jvTVfaTejNfc9Qs7OzjOdhw3rmTjSJz1glTZw+Jo2Ie8SsoNdTtUahLx7IdYXwPqXI
-         QgOZnjuyRL2+au0HdgzuXlAhgLwPGqZthrb/e+0VvHqSTH5KigwBe65//t5C32NvPIIk
-         rMOg==
+        d=gmail.com; s=20221208; t=1686931283; x=1689523283;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QFpbI4cV9Gd42NkceYFYj6cG9uu5I+URBfsC3J8xAYs=;
+        b=Je8n+1DxKqAWm/6RVTRghBh9VeSw/2TGZgtQB8n2YsrAn/ZnPVWOuEDL80HA1bPkqc
+         8MqwUZn94ILpCo5xKfHpLZYHDofFwlHcgZa9a7lMLNMTcb+LkgW/4qKYtnuGC3KfL5HJ
+         UzTzGw1VHNTEVKLNEReWAHp99EaqofgIsOTHiBPVluKBY1yUJ7OguVO5JWyhHUfH13H2
+         9s8m52aL7G38Gsww1Hwb028Ym7HWFnNKeK/1AJ5O1aQn6+M+Xtx0VIYS1hdDzWLUhF3K
+         8UwlAVF1fVLnOayV5qtB2eOhM7DTKmcwBI70DAj9XDyemfZq7o5nP0/kwXmpDcOAXLav
+         Eiag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686927725; x=1689519725;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/TQ/NBF9u3IBn3xcHORueLNPUOIL2wwIG5fESfTCbFI=;
-        b=AqSOWQBYdoQxeNWMcM0zgmsc2XcaD8vSBAoo4yqi31WML7TV5IeVgWIItJjrKLnJZv
-         t+LPhccuGECVcCO4NaMd8apiDd84N0t8uCE4FxcBleycRdiwDJWLy97I4Gl5jo/la1xO
-         FMjAXR4YdeizPb2HTqFBiU7fXW32SBGO/YZT6qb5ZPNuAqbdSOt9y8Pwssrb5tt1Rg/d
-         jsF1iSXCRl71ogjRh5B5VFYWJZFISFWQCM1Nlmc4KNSSD8jbf9fYxCX5fgnpjzQkWHZz
-         eIJDiE7Y8uB3p3jObGdVInkAmk+3mlrE0UYuvXXousX4DKGqBiO3jugR/rCByxbNNnMn
-         W6DA==
-X-Gm-Message-State: AC+VfDzE2Y4fUqD4ayguAu1LjSzbp4hs0xUHwaW95cHB7bkU0f3xIsev
-        hAhQjwtqom2Q9Cy06+Mq1xaVo0XbfF0=
-X-Google-Smtp-Source: ACHHUZ5Q45EQty3POoVZW3lQZ5/x8Yz3t9MLsAWheq87HRmCHM+FPkqxUwdt0Oo8jeVB6dXKPIAFuA==
-X-Received: by 2002:a05:6870:1a85:b0:1a3:100f:bf41 with SMTP id ef5-20020a0568701a8500b001a3100fbf41mr2136892oab.23.1686927725364;
-        Fri, 16 Jun 2023 08:02:05 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id le13-20020a0568700c0d00b001a8f6be7debsm3411187oab.28.2023.06.16.08.02.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Jun 2023 08:02:04 -0700 (PDT)
-Message-ID: <22d8e3b2-4759-2b82-cdd3-aca9bf9afd74@gmail.com>
-Date:   Fri, 16 Jun 2023 12:00:15 -0300
+        d=1e100.net; s=20221208; t=1686931283; x=1689523283;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QFpbI4cV9Gd42NkceYFYj6cG9uu5I+URBfsC3J8xAYs=;
+        b=SuwT5tRZTVxcBHlUB2HjcwZFjorDx7KONhZkJm9TQn9YxA1yL4sXM2RdR/BMBcpJ8B
+         O/9Xwob7nTMr52/zKnKu22Py0vhmqB7a9qvvaastOgESiARh4i16EwV429IbkTlDm6zO
+         F0PhpXhSB7cBuXc6cw+j+GW1uh5/EVAwvMC4wvJWVcga/40yJ/X2b2e3phNaJxBknEMn
+         IKJJT9+eLcYEye1gBgQCPlTZ0Sy+z/2A6Vu4scaLrsfd+aiZzLA7gQWyVtoLo4x2M1iL
+         PVzdQR/ULBbOgfMZJp9FeUdupd/qnx0JcWn4jwCxs8tB9kWT3uu4w5C8aWsq+b9CcYdv
+         Jy9Q==
+X-Gm-Message-State: AC+VfDwaUWdqxw25kreBUeeVrt1/OuR0KFEDbn6KNuKWYyu4vwUBCz8s
+        s06waqEV3i0z9jUh8K1e7D9Xcr32SlB05AhwZ9w=
+X-Google-Smtp-Source: ACHHUZ5jFFIflSyNlSISFwHqRA4xK4OES2dEIZGPNMLAhCvs2X3Lfdmmpow1RS60cgw+CDhXcKLYtspEeCo0fK4lE9o=
+X-Received: by 2002:a25:dd8:0:b0:bcf:2e49:4909 with SMTP id
+ 207-20020a250dd8000000b00bcf2e494909mr10802027ybn.10.1686931281668; Fri, 16
+ Jun 2023 09:01:21 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 11/11] kbuild: rust_is_available: add test suite
-Content-Language: en-US
-To:     Miguel Ojeda <ojeda@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-References: <20230616001631.463536-1-ojeda@kernel.org>
- <20230616001631.463536-12-ojeda@kernel.org>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230616001631.463536-12-ojeda@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20230614230128.199724bd@kernel.org> <8e9e2908-c0da-49ec-86ef-b20fb3bd71c3@lunn.ch>
+ <20230615190252.4e010230@kernel.org> <20230616.220220.1985070935510060172.ubuntu@gmail.com>
+ <f28d6403-d042-4ffb-9872-044388d0f9d9@lunn.ch> <CANiq72mMi=7P9OxSH0+ORYDEyxG3+n5uOv_ooxMJ72YRBRZ+PQ@mail.gmail.com>
+ <a4bc8847-c668-4cff-9892-663516cf8127@lunn.ch>
+In-Reply-To: <a4bc8847-c668-4cff-9892-663516cf8127@lunn.ch>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Fri, 16 Jun 2023 18:01:10 +0200
+Message-ID: <CANiq72=g0vw3fPh7ZHckqsdU+XgqHnnvbFPk+7YYmQZ6fYyz6Q@mail.gmail.com>
+Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>, kuba@kernel.org,
+        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/15/23 21:16, Miguel Ojeda wrote:
-> The `rust_is_available.sh` script runs for everybody compiling the
-> kernel, even if not using Rust. Therefore, it is important to ensure
-> that the script is correct to avoid breaking people's compilation.
-> 
-> In addition, the script needs to be able to handle a set of subtle
-> cases, including parsing version strings of different tools.
-> 
-> Therefore, maintenance of this script can be greatly eased with
-> a set of tests.
-> 
-> Thus add a test suite to cover hopefully most of the setups that
-> the script may encounter in the wild. Extra setups can be easily
-> added later on if missing.
-> 
-> The script currently covers all the branches of the shell script,
-> including several ways in which they may be entered.
-> 
-> Python is used for this script, since the script under test
-> does not depend on Rust, thus hopefully making it easier for others
-> to use if the need arises.
-> 
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> [...]
+On Fri, Jun 16, 2023 at 4:43=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> I said in another email, i don't want to suggest premature
+> optimisation, before profiling is done. But in C, these functions are
+> inline for a reason. We don't want the cost of a subroutine call. We
+> want the compiler to be able to inline the code, and the optimiser to
+> be able to see it and generate the best code it can.
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+See my reply in v2 to your message where I mentioned some of the
+options we are considering [1] -- not sure if you saw it:
+
+> Yeah, other use cases will also need that solved, e.g. Andreas for his
+> NVMe work.
+>
+> We discussed reimplementing performance-critical bits in Rust as you
+> suggest, as well as cross-language LTO. We also talked about possible
+> alternative approaches like "manual local LTO" for the helpers only
+> via feeding their LLVM IR to `rustc`, which may recover most of the
+> performance without having to go for full LTO and its associated
+> kernel link times.
+
+[1] https://lore.kernel.org/rust-for-linux/CANiq72kyUhvmG6KB32X1vuhNzOOJbs7=
+R1JbK+vnPELX4tG73RA@mail.gmail.com/
+
+Cheers,
+Miguel
