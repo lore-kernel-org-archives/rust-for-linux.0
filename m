@@ -2,137 +2,87 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B465EB64D9
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 02:19:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4074EB64D7
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 03:47:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240459AbjFPCTf (ORCPT
+        id S231232AbjFPDrs (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 15 Jun 2023 22:19:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42864 "EHLO
+        Thu, 15 Jun 2023 23:47:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240444AbjFPCTe (ORCPT
+        with ESMTP id S230158AbjFPDrr (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 15 Jun 2023 22:19:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9243C2683
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jun 2023 19:19:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 22E2760A49
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jun 2023 02:19:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A1DC433C8;
-        Fri, 16 Jun 2023 02:19:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686881972;
-        bh=C6BZkAdFImXa0obp4bUZcgWjLoHJ21TXKfNo+GFl8WA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=oTKCLIsnS2CCY4C+BfxmPEiDrPu2wnk3C3XrjP2PgTXg4/wTsFgzCTcOKnlLu4PbU
-         xAISmpmNl5YDLaQdP/ZtPzXGEbrta7Vdqw2p3m1TmUBGut4cUFLSzxZJQYDCT88vhl
-         Lqvh0aRJWor6cnl5R/BJM6ne7mqr/9obkcstkK/mpoQGghbdV0BrLKjuG+f2uqtphD
-         cbIRerLYjreCeLq0lHruAdOmT6IOuh3hlAroKwp9nvgV0TK/BC/WcZ1cTXtyn+HPO+
-         YCrjkhlTVmWtrVmrq1V9ikN4Li+bgRueuiRPQhOSbFsXmO5SuB0DCg2MCGUJ4iBkgG
-         8F/KXSMN5ajPA==
-Date:   Thu, 15 Jun 2023 19:19:31 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>,
+        Thu, 15 Jun 2023 23:47:47 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17EFC269D;
+        Thu, 15 Jun 2023 20:47:46 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1b3c5631476so559105ad.1;
+        Thu, 15 Jun 2023 20:47:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686887265; x=1689479265;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8GyQ85VgE5HFZ0QoRvTjedg0ikS7YWehL0KdgFuB0I4=;
+        b=DyQuM9eq/fT3r6JXe65o6F4iYy4txn1JUBibM4Ls+oGYEfhmA8ZDuUQ9dVL4eQtX3f
+         +OvnpYaIif7rhYStQoCQroDsvpgzlgT0z9CRnAC834S/4SX02w+QugWZDIu5aSQIRHYf
+         qPwJ8zEi0SXsIGJ+01v2GD2YOSQVWHFYtlVudTTle2F/sgUPEmdOMWJhQvvaXAP8R1Eq
+         sPbcbSBd01nKhRakY9RGem4EnhB6Zyy0P1RmpF/wlPCgx++hsTW7dRBZnEjwNhb2X+bl
+         pfTFFncJA4N2LTkKRe5PUrAedpu7ZQ8UfVDta1sNLuZH6F+MjbyEpD1gFWo7st/QnQ8q
+         5CQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686887265; x=1689479265;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8GyQ85VgE5HFZ0QoRvTjedg0ikS7YWehL0KdgFuB0I4=;
+        b=WDJtaO038pD25TClCGU8Xjn/j8XtLM9YFnpb9fU45Tf1gSlPicdpJ1iUlScOPKqHZS
+         w8THU41mqhjSqg17PHWNRWQ1IQ07K4x1IRkwfswylzZ2cLu4KDTeqk7RaOAYhU6DLTFw
+         LYh4lXw+b+UnORRKeSsZkuokRj9RZAIQljiw3ldfkpuU2JVW8P9LLKq4jcuhOlmVc22q
+         iceUlx7jqTSH0ELh+jQj6c1UPE5Vp+YDMVoKVU2UZFs6txdjvaNrtabDFy4d7GCys3Oc
+         Ja1QW8TYyTfjl1YL9r9drxIaOSmlOX12bZAc1JENuWdPDbcY3PER1tjU2T0AInLpNfQ5
+         kQ3A==
+X-Gm-Message-State: AC+VfDzbCba5oAlv9Kcb8wt6bqFhIsFs4CH/zUYQz+uUlb+2x9GBqSQw
+        cbEtl9iDr08WEeSJ3KywRwY=
+X-Google-Smtp-Source: ACHHUZ7B1nIw/BMdoGiOyxY/b5GiViNkkWLh1bTN/tjPjRux8dVj4z2dP6dXP9uIlV/qH1Dvo1h+aA==
+X-Received: by 2002:a17:903:2451:b0:1b0:34c6:3bf2 with SMTP id l17-20020a170903245100b001b034c63bf2mr989715pls.5.1686887265439;
+        Thu, 15 Jun 2023 20:47:45 -0700 (PDT)
+Received: from hoboy.vegasvil.org ([2601:640:8200:e:e2d5:5eff:fea5:802f])
+        by smtp.gmail.com with ESMTPSA id io21-20020a17090312d500b001a5fccab02dsm14736225plb.177.2023.06.15.20.47.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jun 2023 20:47:44 -0700 (PDT)
+Date:   Thu, 15 Jun 2023 20:47:43 -0700
+From:   Richard Cochran <richardcochran@gmail.com>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        FUJITA Tomonori <fujita.tomonori@gmail.com>,
         netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        aliceryhl@google.com, andrew@lunn.ch
+        aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com
 Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
-Message-ID: <20230615191931.4e4751ac@kernel.org>
-In-Reply-To: <CANiq72nLV-BiXerGhhs+c6yeKk478vO_mKxMa=Za83=HbqQk-w@mail.gmail.com>
+Message-ID: <ZIvbX+edJo3Rh9W6@hoboy.vegasvil.org>
 References: <20230613045326.3938283-1-fujita.tomonori@gmail.com>
-        <20230614230128.199724bd@kernel.org>
-        <CANiq72nLV-BiXerGhhs+c6yeKk478vO_mKxMa=Za83=HbqQk-w@mail.gmail.com>
+ <20230614230128.199724bd@kernel.org>
+ <8e9e2908-c0da-49ec-86ef-b20fb3bd71c3@lunn.ch>
+ <20230615190252.4e010230@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230615190252.4e010230@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu, 15 Jun 2023 10:58:50 +0200 Miguel Ojeda wrote:
-> On Thu, Jun 15, 2023 at 8:01=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> =
-wrote:
-> > I was hoping someone from the Rust side is going to review this.
-> > We try to review stuff within 48h at netdev, and there's no review :S =
-=20
->=20
-> I think the version number got reset, but Tomonori had a couple
-> versions on the rust-for-linux@vger list [2][3].
->=20
-> Andrew Lunn was taking a look, and there were some other comments going o=
-n, too.
->=20
-> The email threading is broken in [2][3], though, so it may be easiest
-> to use a query like "f:lunn" [4] to find those.
->=20
-> [2] https://lore.kernel.org/rust-for-linux/01010188843258ec-552cca54-4849=
--4424-b671-7a5bf9b8651a-000000@us-west-2.amazonses.com/
-> [3] https://lore.kernel.org/rust-for-linux/01010188a42d5244-fffbd047-446b=
--4cbf-8a62-9c036d177276-000000@us-west-2.amazonses.com/
-> [4] https://lore.kernel.org/rust-for-linux/?q=3Df%3Alunn
->=20
-> > My immediate instinct is that I'd rather not merge toy implementations
-> > unless someone within the netdev community can vouch for the code. =20
->=20
-> Yes, in general, the goal is that maintainers actually understand what
-> is getting merged, get involved, etc. So patch submitters of Rust
-> code, at this time, should be expected/ready to explain Rust if
-> needed. We can also help from the Rust subsystem side on that.
->=20
-> But, yeah, knowledgeable people should review the code.
+On Thu, Jun 15, 2023 at 07:02:52PM -0700, Jakub Kicinski wrote:
 
-All sounds pretty reasonable, thanks for the pointers.
+> IMO we have too much useless playground stuff in C already, don't get me
+> started. Let's get a real device prove that this thing can actually work
+> :( We can waste years implementing imaginary device drivers that nobody
+> ends up using.
 
-TBH I was hoping that the code will be more like reading "modern C++"
-for a C developer. I can't understand much of what's going on.
+Yes, the long standing policy seems to be not to merge "dummy"
+drivers.  The original PTP patch set had one, but at the time the
+reviews said firmly "No" to that.
 
-Taking an example of what I have randomly on the screen as I'm writing
-this email:
+Thanks,
+Richard
 
-+    /// Updates TX stats.
-+    pub fn set_tx_stats(&mut self, packets: u64, bytes: u64, errors: u64, =
-dropped: u64) {
-+        // SAFETY: We have exclusive access to the `rtnl_link_stats64`, so=
- writing to it is okay.
-+        unsafe {
-+            let inner =3D Opaque::get(&self.0);
-+            (*inner).tx_packets =3D packets;
-+            (*inner).tx_bytes =3D bytes;
-+            (*inner).tx_errors =3D errors;
-+            (*inner).tx_dropped =3D dropped;
-+        }
-+    }
 
-What is this supposed to be doing? Who needs to _set_ unrelated
-statistics from a function call? Yet no reviewer is complaining
-which either means I don't understand, or people aren't really=20
-paying attention :(
-
-> > You seem to create a rust/net/ directory without adding anything
-> > to MAINTAINERS. Are we building a parallel directory structure?
-> > Are the maintainers also different? =20
->=20
-> The plan is to split the `kernel` crate and move the files to their
-> proper subsystems if the experiment goes well.
-
-I see.
-
-> But, indeed, it is best if a `F:` entry is added wherever you think it
-> is best. Some subsystems may just add it to their entry (e.g. KUnit
-> wants to do that). Others may decide to split the Rust part into
-> another entry, so that maintainers may be a subset (or a different set
-> -- sometimes this could be done, for instance, if a new maintainer
-> shows up that wants to take care of the Rust abstractions).
-
-I think F: would work for us.
-
-Are there success stories in any subsystem for getting a driver for
-real HW supported? I think the best way to focus the effort would be=20
-to set a target on a relatively simple device.
-
-Actually Andrew is interested, and PHY drivers seem relatively simple..
-/me runs away
