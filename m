@@ -2,102 +2,104 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 750ABEB64D9
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 00:41:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA1E3EB64DA
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 01:17:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231167AbjFPAlr (ORCPT
+        id S230176AbjFPBRt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 15 Jun 2023 20:41:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47038 "EHLO
+        Thu, 15 Jun 2023 21:17:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbjFPAlq (ORCPT
+        with ESMTP id S229530AbjFPBRs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 15 Jun 2023 20:41:46 -0400
-Received: from mail-vk1-xa29.google.com (mail-vk1-xa29.google.com [IPv6:2607:f8b0:4864:20::a29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17C3E1BD4;
-        Thu, 15 Jun 2023 17:41:46 -0700 (PDT)
-Received: by mail-vk1-xa29.google.com with SMTP id 71dfb90a1353d-460eb67244eso43887e0c.1;
-        Thu, 15 Jun 2023 17:41:46 -0700 (PDT)
+        Thu, 15 Jun 2023 21:17:48 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEC55296E;
+        Thu, 15 Jun 2023 18:17:46 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-bc572dbef27so115289276.3;
+        Thu, 15 Jun 2023 18:17:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686876105; x=1689468105;
+        d=gmail.com; s=20221208; t=1686878266; x=1689470266;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Qol4pW950bVrPxMcx9m5G6bgEMEiZH+6L8x+VD8KC8A=;
-        b=hzT1SI9cDM7BqgPvmr2VaaxDdIxGT2vQ0D2KW1SseHaFxTrV/HGVivpT4WRGzJRlyh
-         4gDwz6Hul54N+HOohx0FuMXuMSfO+rfU8xq3HbMnhgkeCLZp3LzQHSofoCRfjeXxToH6
-         M41xOOerk71Y0CBKnCEELEUVkKGpizsfoW6JHSRgAwsTdz14dkWNBZDOzLGD75kf6JlT
-         jAlSYACo+rJO3d8VWNDbz0qd6l1lCqNFM7XMBhW9v7Kwrq1FpDFisEYoLsVovIdkqI+C
-         GruRNrp67pOlWemOlNK2PRpMVq9QZD/lnl29e8Xn7W8ngF6uquf1qH0fyExAjubvgUpn
-         8nJg==
+        bh=sdIy7jSOg3ethacnumUBPvWejcfHFalmOPOBjrVdXdQ=;
+        b=kBwZ05CBDLxjIrRYgqoIXWfL0UbeC7kwpuV8BFsmp7kcBqCA0tx46AUIxk1A1QXlxK
+         v02tcUfSLHzLv1pDLIomzv0KtAgca/cFvTGHytvEVkHAlX5h8D9kbhkO8ktRdEQuPVjq
+         HfwEsdIU1AMz8lBLQwJKJLZVQ7VVeU2vVP/JTo1zbOMJ4UpPjtvGOPvC2sQ9q/A2FnYh
+         d4EmhgZm6b2UY0D4v13UO7jvdE0eoTE24czmWVmEpQzwNeT+o5qkuj7gpVrDXHR6T+ON
+         nZ8plfxOibOeu0G5v972jINKgtMzd78Cs0rbUg1Zx4UdBl5hYMzcCxGK9fceUCktqfXb
+         RZbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686876105; x=1689468105;
+        d=1e100.net; s=20221208; t=1686878266; x=1689470266;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Qol4pW950bVrPxMcx9m5G6bgEMEiZH+6L8x+VD8KC8A=;
-        b=YcbjTSFhkPceNMjhSxnJojD04UWTd7Z1/fo+Tc68vyKiQcnyYPAblrB/GhKcB9aqLd
-         HfeOyCxtvn1JlWq8invSQ92wwLIzsyUj/fit1sC8SkGHmG16Q0Dsvge9V1Ko+xi9J+2a
-         LTiQXt3rzKFFXdCRVsgkvqIDvVnbs+ZOPLB1BwKoE4tte2Oj9s9JLk8fYqdphjKHf/ie
-         Ceu+nkN2Qt62i2XxvfIOiaSRZPZDX7hi8/O0KSCiajkaknwW0IRfuWh2KVPlANYogxDB
-         WKR27a4C7vJ+jx3LblRGU65j/bAgvGF35OsdX9ZHnKPg+KmmKaMxzFOA2a8AqBlHwKD+
-         OM9Q==
-X-Gm-Message-State: AC+VfDx4YwIzfV0V3VZN5x6cgZkbZ//JZ+RwqRR0ia3nx1X8TkUfFg4+
-        68Cd4RswERbH4pctBnQLI54XxIRZilIv1H+vzL8=
-X-Google-Smtp-Source: ACHHUZ4dpaBRKjiODf3+MZwId8nX7G6NUoJYnfE5Hq4PElCSsMM0Nqc+53GZ0BMXmjNyDcRXMeaeQFSmN0jJgsK2aus=
-X-Received: by 2002:a1f:5546:0:b0:443:6db9:24e with SMTP id
- j67-20020a1f5546000000b004436db9024emr707946vkb.15.1686876105146; Thu, 15 Jun
- 2023 17:41:45 -0700 (PDT)
+        bh=sdIy7jSOg3ethacnumUBPvWejcfHFalmOPOBjrVdXdQ=;
+        b=YKYzr4iX71FmcNze5gUbTmp4abTQuYluVudHzNH4owPcq/r0rMJao+rnUd6p9qgmLG
+         PQ+bGAqE+4aP2/9bOKbRsSe41CkCds8k5539N1GuvgCTgScxLqK6z0XBLUP+ZTC+6ORM
+         Y8KcZeMsQpS8YRnaYTbaTBZcrYURRHgXTkSN+KfTEyRNCZHNofh9hP/ueM/9gGeD36wp
+         F1xGANCXkzBbv6SVx59KDLCkeuPVhGf2Ib0lXAXroJvShzX9pZvmfZZ9iG7OSvJPh24n
+         C3ZONDyw44yThNPwuuf6EEh9yExJbyUalmbUgvEQhKwPzrjpFyzFJ/5BxLAI0xLmC+kq
+         pPIw==
+X-Gm-Message-State: AC+VfDwsSvyTcAeU7z2MpkqpEdd2r5MBExLbyGy3lITV+spo1n4DaTlu
+        5F0FzdVVoX/qlOQcA2y/15gZvz1uJiwGuPxTQ5k=
+X-Google-Smtp-Source: ACHHUZ5zSagMGyLza7Ji3+DO98qUCN5SyhfjlFbIS+MtpIjO9clCFc2uavdDu2fbokkcRYSOfIXXfN1/J2N/r2sEw14=
+X-Received: by 2002:a25:dd8:0:b0:bab:e88b:1dac with SMTP id
+ 207-20020a250dd8000000b00babe88b1dacmr207511ybn.46.1686878265936; Thu, 15 Jun
+ 2023 18:17:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230528131802.6390-1-ethan.twardy@gmail.com> <20230528131802.6390-2-ethan.twardy@gmail.com>
- <525fee98-c694-6a38-cd1e-dd7efd806620@gmail.com> <CTCD11G9NVTB.3SYR2GFA5VAB3@hackbook>
-In-Reply-To: <CTCD11G9NVTB.3SYR2GFA5VAB3@hackbook>
+References: <PAXP190MB1631B7C90A99FCEBB1594AAE8B4DA@PAXP190MB1631.EURP190.PROD.OUTLOOK.COM>
+In-Reply-To: <PAXP190MB1631B7C90A99FCEBB1594AAE8B4DA@PAXP190MB1631.EURP190.PROD.OUTLOOK.COM>
 From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 16 Jun 2023 02:41:34 +0200
-Message-ID: <CANiq72=YQyqtpXZ+Hp9oySwfmBS6OJ1ik-zxXx4mSF34hruqbQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] scripts/rust_is_available: Fix clang version check
-To:     "Ethan D. Twardy" <ethan.twardy@gmail.com>
-Cc:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, Tiago Lam <tiagolam@gmail.com>,
-        Kees Cook <keescook@chromium.org>, Finn Behrens <me@kloenk.de>,
-        "open list:RUST" <rust-for-linux@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:CLANG/LLVM BUILD SUPPORT" <llvm@lists.linux.dev>
+Date:   Fri, 16 Jun 2023 03:17:35 +0200
+Message-ID: <CANiq72kf=VktsDS6ctLxVt70EGtkSwfx+Z2=qNMdyQf81pQ3dA@mail.gmail.com>
+Subject: Re: [PATCH] lib/Kconfig.debug: fix grammar in RUST_BUILD_ASSERT_ALLOW
+To:     timo.gr@hotmail.de
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Jun 14, 2023 at 2:08=E2=80=AFPM Ethan D. Twardy <ethan.twardy@gmail=
-.com> wrote:
+On Mon, Jun 5, 2023 at 6:12=E2=80=AFPM <timo.gr@hotmail.de> wrote:
 >
-> Thanks very much for your testing and review. Do I need to take any
-> further action to make this patch ready for review? I sent out a v3
-> version of the patch, where the only change was adding Reviewed-By and
-> Tested-By tags to my git commit--since this is my first time
-> contributing to this community, I wasn't sure whether I needed to do
-> that. Thanks!
+> From: Timgrau <timo.gr@hotmail.de>
+>
+> Just a grammar fix in lib/Kconfig.debug, under the config option RUST_BUI=
+LD_ASSERT_ALLOW.
+>
+> Signed-off-by: Timgrau <timo.gr@hotmail.de>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1006#issue-169631840=
+6
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1006#issue-1696318=
+406
 
-You did everything well! The patch looked fine to me, and the commit
-message is detailed. The tags are all fine too. Thanks a lot for the
-effort!
+Thanks for the patch!
 
-I had v2 of the script improvement patch series in my backlog, which
-normalizes to `sed` (rather than use `grep`/`cut` etc.), adds a test
-suite, and a few other things; but otherwise we could have easily
-taken this one, because it is well done.
+A few notes:
 
-So, you did everything right, and you are more than welcome to send
-more patches like that :)
+  - From a quick look, I think "Timgrau" is not a known identity to
+the kernel, right? (e.g. I couldn't find any other commit on that
+name). Assuming I am not mistaken, could you please instead your real
+name?
+
+  - When I wrote the report, I wrongly suggested `Suggested-by` +
+`Link` because I didn't consider this a "bug". But you are probably
+right that should be considered a fix anyway, so instead we should use
+`Reported-by` and `Closes`. So could you please remove the `Link` and
+change the `Suggested` to `Reported`?
+
+  - Also, since this is now a fix, could you please also add the `Fixes:` t=
+ag?
+
+  - For the `Closes`, you can remove the URL fragment part, i.e.
+`#issue-1696318406`, since it is anyway the first comment.
+
+If you could change those bits and send a v2, that would be great. Thanks!
 
 Cheers,
 Miguel
