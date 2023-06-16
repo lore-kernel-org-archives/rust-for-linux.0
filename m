@@ -2,130 +2,111 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 045CAEB64D8
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 12:18:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BB0FAEB64D7
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 12:27:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245178AbjFPMS0 (ORCPT
+        id S245236AbjFPM1l (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Jun 2023 08:18:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57118 "EHLO
+        Fri, 16 Jun 2023 08:27:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245707AbjFPMSZ (ORCPT
+        with ESMTP id S230050AbjFPM1k (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Jun 2023 08:18:25 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10B1A30EA;
-        Fri, 16 Jun 2023 05:18:24 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1a2cc92f12aso219169fac.0;
-        Fri, 16 Jun 2023 05:18:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686917903; x=1689509903;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O0gZJoDrJidLXO2Qb8l8eH5TrmQul00F+sW1DnvksXw=;
-        b=dJHzVAsBBQg7Xz1f29BJyAiqZgl7yEhU7k6aWFKRfGzmnY5GspL8XFU2aMGsupteoB
-         btoPzN2OC8RlUO3zYUc3I/Ic6LTI0gO5ssDiA7ZUR3EMiMAVOcePe3ZLfSvNjUK1Tj11
-         UrAxLjCpc3JuwBBj+bVKmMbQjqr9Yj0qT0lJ/6E58U+Y5t/1xjXqGOr8ddNN6ZvLooJb
-         85+4MfSSmnKaBnywQAMaY7R+IBr44SKH+4/35iMyXA0E6Ldoegm8FNnn8heqeEJ3nS6f
-         IyFx3h/Gj5moiRKus8Y/SrEDW9erkEOtPEGjtBfDFHS7OHHP0iWiv0O0/oQWYFuHP3Z0
-         4raQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686917903; x=1689509903;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=O0gZJoDrJidLXO2Qb8l8eH5TrmQul00F+sW1DnvksXw=;
-        b=aCtWIAoqRs5P8+Ee/2iBkHRm7YV3JOPbq5jc2/Ku9VMg1Qo4HYLQb+a7cKCAh9tedB
-         Q6Uqcv6tjV+k25mmy6ZA0fjT1s3FoBbQaUFFyqe57ipD4kTGBWRqqxFFVfkRR86K1Axr
-         NZESl1Dr//9/0PmOo1I/QfCwVfnA+nxzcwf4M2h7GRT+9ETOezsVDC8wune4sJgN8A6x
-         qpkcMR8GLmm7lEhgnY4za5pZdiaw8w0H+jvQjaU0tgt7Oz36eL6ouMyHRUurUj2znz/F
-         C+ASWLH/XgxtFfQhdZFEqtJ7EDuJv/qz8mVrasDCOwJhVHnaUvV/InpY6orUZdg9K+nh
-         GxKw==
-X-Gm-Message-State: AC+VfDwhhPMEAu5Io/6lz5bGHQjr0VW761q/uFLjd/+iCybeUAf4bx1W
-        JAh+ptP0XaKI+YrFiFN25ZI=
-X-Google-Smtp-Source: ACHHUZ4H/lkY7gtIgRey0z8hby4FWP1G855PDxQLHjGpI/L4fpqjaiEx8whUEq0BofM2R9F/bt/BnA==
-X-Received: by 2002:a05:6870:1cb:b0:187:afcb:87ec with SMTP id n11-20020a05687001cb00b00187afcb87ecmr2341401oad.4.1686917903087;
-        Fri, 16 Jun 2023 05:18:23 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id n6-20020a17090a394600b0024df2b712a7sm1337469pjf.52.2023.06.16.05.18.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jun 2023 05:18:22 -0700 (PDT)
-Date:   Fri, 16 Jun 2023 21:18:21 +0900 (JST)
-Message-Id: <20230616.211821.1815408081024606989.ubuntu@gmail.com>
-To:     kuba@kernel.org
-Cc:     miguel.ojeda.sandonis@gmail.com, fujita.tomonori@gmail.com,
-        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        aliceryhl@google.com, andrew@lunn.ch
+        Fri, 16 Jun 2023 08:27:40 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C69030DF;
+        Fri, 16 Jun 2023 05:27:39 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id BEBFE5C00EE;
+        Fri, 16 Jun 2023 08:27:38 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Fri, 16 Jun 2023 08:27:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
+        :content-transfer-encoding:content-type:content-type:date:date
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1686918458; x=1687004858; bh=YkHzHOma5viGo58CK3A/aRgZKAfcV/MATp/
+        hYr8GsAA=; b=pyjh6G74mrObpB/UUhjsP4QiE9HqqPlO6A37HxvMlcHOs4boUJz
+        slHbBaCWPI6IUDhi8XPy6z8O66A5aIDlGEDrKy+ZwwXPRu9rVQiNUAwWrBt75skP
+        JhDD/6Uwh6CKdG/olHh1rIkebXwTMDzwaLRd71Yfq8zz5UgHkwnhr/baYiROwK8Z
+        SCz0cODZwMpsUN9O1Q6h5AIdGEevb89XA5aEL2IEKJsBfCXnEJBw1U/njBZkRMCa
+        6tzO1g/B8wu39Y1W/ElYcTUZQHOimL8PclsC0q7p32xzO2j6KovApkNWRAHnfqHs
+        fp84Lctw4r5HvwT6+NsJ6/Ma5d4SIbG8aIA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1686918458; x=1687004858; bh=YkHzHOma5viGo58CK3A/aRgZKAfcV/MATp/
+        hYr8GsAA=; b=eE3sJSBq7kMGLyXgxn4uWZnBlgIj29V9uecuMHXWn7+xEiAM4po
+        JBL4ol0ZA2AhdNd8n4x7C72RSecLrdjJF2DASGO2HQHqIEQj6vK18IPj6aD+627e
+        VXW2URdRcu4du/IdhEy8CSmcQT/E0Ojq43EEh/XDSs5vhwM3FQ+ZAK5SIHG/kO1r
+        vDygMiLo/3yRmgdJctng/dL4RBw2ZMJf1jCst5DhioRH0Szq17z2DrJ9hWh071i8
+        KWjnAdzjv8nV4BzOLph9hgYNJv/rbgfo7QvNQcFF9g3fHtBkSFfXhJw7wvUSAca7
+        Y7ZO+np6ooj0t8eeat0URmIbGKFaxWGeiVw==
+X-ME-Sender: <xms:OlWMZB99l-vnV8bqjV3-lTHeRtwfQFYC4Ml5Jy76iXM8bOvhsYbNwQ>
+    <xme:OlWMZFs8dOyjg1IoPx6J6Qt-oYubea428ARBwgrhLH-utygb556ohpxx98Lp5porq
+    cJC_q5mluZjikDMmg>
+X-ME-Received: <xmr:OlWMZPDM-6Bbt1Xe-7-yP386t_jslOBtM5NF6UOWJHvbTplpSMaiAgxSoaB-hm2O9GLz061E2jJz7bDZWFksIK-zybcuzaZBr1zmeg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedvgedghedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtfeejnecuhfhrohhmpeetlhhi
+    tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
+    efjeekhfffjeekveduieehgeejtdeghfejudekleevfeevudegffeiveejieevheenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvse
+    hrhihhlhdrihho
+X-ME-Proxy: <xmx:OlWMZFdOeRerERxTzhten-LddoRywwWDPxbcfQVfTP1ArSLfy_hgfg>
+    <xmx:OlWMZGNJgOE2jGUYmJX7yjyxPZNoeJ60AZCLXFveCeZkiwySk0M-3A>
+    <xmx:OlWMZHnNuEcLxjRBdu0sCVlE2-a216yl6CNC6yKPhaavHrXAWq-3oA>
+    <xmx:OlWMZN0ffjJBRoZ0-QWT3ZlgrgaPcilfLV9W254OZqbcuCtNbQ314g>
+Feedback-ID: i56684263:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 16 Jun 2023 08:27:36 -0400 (EDT)
+Message-ID: <0d0eba7d-ac43-d944-d105-008978f4402e@ryhl.io>
+Date:   Fri, 16 Jun 2023 14:28:19 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
 Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
-From:   FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20230615191931.4e4751ac@kernel.org>
-References: <20230614230128.199724bd@kernel.org>
-        <CANiq72nLV-BiXerGhhs+c6yeKk478vO_mKxMa=Za83=HbqQk-w@mail.gmail.com>
-        <20230615191931.4e4751ac@kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com, andrew@lunn.ch,
+        miguel.ojeda.sandonis@gmail.com,
+        FUJITA Tomonori <fujita.tomonori@gmail.com>
+References: <20230613045326.3938283-1-fujita.tomonori@gmail.com>
+ <20230614230128.199724bd@kernel.org>
+From:   Alice Ryhl <alice@ryhl.io>
+In-Reply-To: <20230614230128.199724bd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi,
+On 6/15/23 08:01, Jakub Kicinski wrote:> I was hoping someone from the 
+Rust side is going to review this.
+> We try to review stuff within 48h at netdev, and there's no review :S
 
-On Thu, 15 Jun 2023 19:19:31 -0700
-Jakub Kicinski <kuba@kernel.org> wrote:
+I'm from the Rust side, and I intend to review this, but I've taken this 
+week off, so it wont be until next week.
 
-> TBH I was hoping that the code will be more like reading "modern C++"
-> for a C developer. I can't understand much of what's going on.
-> 
-> Taking an example of what I have randomly on the screen as I'm writing
-> this email:
-> 
-> +    /// Updates TX stats.
-> +    pub fn set_tx_stats(&mut self, packets: u64, bytes: u64, errors: u64, dropped: u64) {
-> +        // SAFETY: We have exclusive access to the `rtnl_link_stats64`, so writing to it is okay.
-> +        unsafe {
-> +            let inner = Opaque::get(&self.0);
-> +            (*inner).tx_packets = packets;
-> +            (*inner).tx_bytes = bytes;
-> +            (*inner).tx_errors = errors;
-> +            (*inner).tx_dropped = dropped;
-> +        }
-> +    }
-> 
 > What is this supposed to be doing? Who needs to _set_ unrelated
 > statistics from a function call? Yet no reviewer is complaining
 > which either means I don't understand, or people aren't really 
-> paying attention :(
+> paying attention 🙁
 
-Sorry, this function was used in the dummy driver to implement
-net_device_ops->ndo_get_stats64:
+It can sometimes be necessary to wrap loads or stores in function calls 
+when working over the FFI boundary. However, Rust is very aggressive 
+about inlining this kind of thing, so it shouldn't have any actual 
+performance cost.
 
-https://lore.kernel.org/rust-for-linux/01010188a025632b-16a4fb69-5601-4f46-a170-52b5f2921ed2-000000@us-west-2.amazonses.com/T/#m518550baea9c76224524e44ab3ee5a0ecd01b1b9
+As for this being a single function rather than four functions, that's 
+definitely a debatable decision. You would only do that if it makes 
+sense to merge them together and if you would always assign all of them 
+together. I don't know enough about these fields to say whether it makes 
+sense here.
 
-The old version uses atomic types in xmit path to save tx stats for
-ndo_get_stats64. But Andrew said that using atomic types in xmit path
-isn't a good idea in even sample driver so I removed that code.
-
-
->> But, indeed, it is best if a `F:` entry is added wherever you think it
->> is best. Some subsystems may just add it to their entry (e.g. KUnit
->> wants to do that). Others may decide to split the Rust part into
->> another entry, so that maintainers may be a subset (or a different set
->> -- sometimes this could be done, for instance, if a new maintainer
->> shows up that wants to take care of the Rust abstractions).
-> 
-> I think F: would work for us.
-> 
-> Are there success stories in any subsystem for getting a driver for
-> real HW supported? I think the best way to focus the effort would be 
-> to set a target on a relatively simple device.
-
-As far as I know, no subsystem has accepted Rust bindings yet.
-
-Replacing the existing C driver for real HW with Rust new one doesn't
-make sense, right? So a necessary condition of getting Rust bindings
-for a subsystem accepted is that a HW verndor implements both a driver
-and bindings for their new HW?
-
-thanks,
+Alice
