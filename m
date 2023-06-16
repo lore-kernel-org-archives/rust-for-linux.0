@@ -2,104 +2,115 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA1E3EB64DA
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 01:17:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 542EFEB64D9
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 02:03:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230176AbjFPBRt (ORCPT
+        id S239971AbjFPCDD (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 15 Jun 2023 21:17:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52114 "EHLO
+        Thu, 15 Jun 2023 22:03:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbjFPBRs (ORCPT
+        with ESMTP id S239232AbjFPCDB (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 15 Jun 2023 21:17:48 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEC55296E;
-        Thu, 15 Jun 2023 18:17:46 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-bc572dbef27so115289276.3;
-        Thu, 15 Jun 2023 18:17:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686878266; x=1689470266;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sdIy7jSOg3ethacnumUBPvWejcfHFalmOPOBjrVdXdQ=;
-        b=kBwZ05CBDLxjIrRYgqoIXWfL0UbeC7kwpuV8BFsmp7kcBqCA0tx46AUIxk1A1QXlxK
-         v02tcUfSLHzLv1pDLIomzv0KtAgca/cFvTGHytvEVkHAlX5h8D9kbhkO8ktRdEQuPVjq
-         HfwEsdIU1AMz8lBLQwJKJLZVQ7VVeU2vVP/JTo1zbOMJ4UpPjtvGOPvC2sQ9q/A2FnYh
-         d4EmhgZm6b2UY0D4v13UO7jvdE0eoTE24czmWVmEpQzwNeT+o5qkuj7gpVrDXHR6T+ON
-         nZ8plfxOibOeu0G5v972jINKgtMzd78Cs0rbUg1Zx4UdBl5hYMzcCxGK9fceUCktqfXb
-         RZbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686878266; x=1689470266;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sdIy7jSOg3ethacnumUBPvWejcfHFalmOPOBjrVdXdQ=;
-        b=YKYzr4iX71FmcNze5gUbTmp4abTQuYluVudHzNH4owPcq/r0rMJao+rnUd6p9qgmLG
-         PQ+bGAqE+4aP2/9bOKbRsSe41CkCds8k5539N1GuvgCTgScxLqK6z0XBLUP+ZTC+6ORM
-         Y8KcZeMsQpS8YRnaYTbaTBZcrYURRHgXTkSN+KfTEyRNCZHNofh9hP/ueM/9gGeD36wp
-         F1xGANCXkzBbv6SVx59KDLCkeuPVhGf2Ib0lXAXroJvShzX9pZvmfZZ9iG7OSvJPh24n
-         C3ZONDyw44yThNPwuuf6EEh9yExJbyUalmbUgvEQhKwPzrjpFyzFJ/5BxLAI0xLmC+kq
-         pPIw==
-X-Gm-Message-State: AC+VfDwsSvyTcAeU7z2MpkqpEdd2r5MBExLbyGy3lITV+spo1n4DaTlu
-        5F0FzdVVoX/qlOQcA2y/15gZvz1uJiwGuPxTQ5k=
-X-Google-Smtp-Source: ACHHUZ5zSagMGyLza7Ji3+DO98qUCN5SyhfjlFbIS+MtpIjO9clCFc2uavdDu2fbokkcRYSOfIXXfN1/J2N/r2sEw14=
-X-Received: by 2002:a25:dd8:0:b0:bab:e88b:1dac with SMTP id
- 207-20020a250dd8000000b00babe88b1dacmr207511ybn.46.1686878265936; Thu, 15 Jun
- 2023 18:17:45 -0700 (PDT)
+        Thu, 15 Jun 2023 22:03:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38EE32D42
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jun 2023 19:02:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B98CD61F2C
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jun 2023 02:02:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E9BC433C8;
+        Fri, 16 Jun 2023 02:02:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686880974;
+        bh=lcf0TFVlPPOkQFWuWXCwI1kwRPZ8JdZc98xqsZTKaMg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=HMhlxCqNsLZHAzdy1HjUjzpMtYclLtOvWbHNzFxwMAoZZjpmcWoci71EWLwFscd6J
+         d4/f5h6wSmNOOIKHhHp8X7GjetJm0sJdMrcNmMqevqmOwUpZEl5c7BAl30w2qSzoFO
+         qpt+NMmFmJHWhB7r29qvwywOfI6NxadYLD2nqtIxO6EtG0SP1wlWBn7sVdADYJgfYu
+         LcMKVv4r0iVDOBrRGwuWR+oHr+rqRbr0yjy3+VWUfUulEUVeW3lzxEMs8L5y5aDkba
+         l9oDlenMkktNwe1yo8wR1yYPuWy3dxxnFD84iXRdsHSsjnnXW+sbnraeiMLOY2quK8
+         v3DQNtCpSMfcg==
+Date:   Thu, 15 Jun 2023 19:02:52 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>,
+        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
+Message-ID: <20230615190252.4e010230@kernel.org>
+In-Reply-To: <8e9e2908-c0da-49ec-86ef-b20fb3bd71c3@lunn.ch>
+References: <20230613045326.3938283-1-fujita.tomonori@gmail.com>
+        <20230614230128.199724bd@kernel.org>
+        <8e9e2908-c0da-49ec-86ef-b20fb3bd71c3@lunn.ch>
 MIME-Version: 1.0
-References: <PAXP190MB1631B7C90A99FCEBB1594AAE8B4DA@PAXP190MB1631.EURP190.PROD.OUTLOOK.COM>
-In-Reply-To: <PAXP190MB1631B7C90A99FCEBB1594AAE8B4DA@PAXP190MB1631.EURP190.PROD.OUTLOOK.COM>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 16 Jun 2023 03:17:35 +0200
-Message-ID: <CANiq72kf=VktsDS6ctLxVt70EGtkSwfx+Z2=qNMdyQf81pQ3dA@mail.gmail.com>
-Subject: Re: [PATCH] lib/Kconfig.debug: fix grammar in RUST_BUILD_ASSERT_ALLOW
-To:     timo.gr@hotmail.de
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Jun 5, 2023 at 6:12=E2=80=AFPM <timo.gr@hotmail.de> wrote:
->
-> From: Timgrau <timo.gr@hotmail.de>
->
-> Just a grammar fix in lib/Kconfig.debug, under the config option RUST_BUI=
-LD_ASSERT_ALLOW.
->
-> Signed-off-by: Timgrau <timo.gr@hotmail.de>
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1006#issue-169631840=
-6
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1006#issue-1696318=
-406
+On Thu, 15 Jun 2023 14:51:10 +0200 Andrew Lunn wrote:
+> On Wed, Jun 14, 2023 at 11:01:28PM -0700, Jakub Kicinski wrote:
+> > On Tue, 13 Jun 2023 13:53:21 +0900 FUJITA Tomonori wrote:  
+> > > This patchset adds minimum Rust abstractions for network device
+> > > drivers and an example of a Rust network device driver, a simpler
+> > > version of drivers/net/dummy.c.
+> > > 
+> > > The dummy network device driver doesn't attach any bus such as PCI so
+> > > the dependency is minimum. Hopefully, it would make reviewing easier.
+> > > 
+> > > Thanks a lot for reviewing on RFC patchset at rust-for-linux ml.
+> > > Hopefully, I've addressed all the issues.  
+> > 
+> > First things first, what are the current expectations for subsystems
+> > accepting rust code?
+> > 
+> > I was hoping someone from the Rust side is going to review this.
+> > We try to review stuff within 48h at netdev, and there's no review :S  
+> 
+> As pointed out elsewhere, i've looked the code over. I cannot say
+> anything about the rust, but i don't see anything too obviously wrong
+> with the way it use a few netdev API calls.
 
-Thanks for the patch!
+The skb freeing looks shady from functional perspective.
+I'm guessing some form of destructor frees the skb automatically
+in xmit handler(?), but (a) no reason support, (b) kfree_skb_reason()
+is most certainly not safe to call on all xmit paths...
 
-A few notes:
+> > My immediate instinct is that I'd rather not merge toy implementations
+> > unless someone within the netdev community can vouch for the code.  
+> 
+> It is definitely toy. But you have to start somewhere.
+> 
+> What might be useful is an idea of the roadmap. How does this go from
+> toy to something useful?
+> 
+> I see two different threads of work.
+> 
+> One is getting enough in place to find where rust is lacking. netdev
+> uses a lot of inline C functions, which don't seem to map too well to
+> Rust. And rust does not seem to have the concept of per CPU memory,
+> needed for statistics. So it would be good to be able to have some
+> code which can be profiled to see how bad this actually is, and then
+> provide a test bed for finding solutions for these problems.
+> 
+> The second is just wrapping more API calls to allow more capable
+> drivers to be written. Implementing the loopback driver seems like the
+> next obvious step. Then maybe a big jump to virtio_net?
 
-  - From a quick look, I think "Timgrau" is not a known identity to
-the kernel, right? (e.g. I couldn't find any other commit on that
-name). Assuming I am not mistaken, could you please instead your real
-name?
+I'd have thought that a simple SPI driver or some such would be 
+a better match.
 
-  - When I wrote the report, I wrongly suggested `Suggested-by` +
-`Link` because I didn't consider this a "bug". But you are probably
-right that should be considered a fix anyway, so instead we should use
-`Reported-by` and `Closes`. So could you please remove the `Link` and
-change the `Suggested` to `Reported`?
+> Like dummy and loopback, it is something which everybody can have, no
+> physical hardware needed. It also has a lot of netdev features, NAPI,
+> RSS, statistics, BPF & XDP. So it is a good playground, both for
+> features and to profiling and performance optimisation.
 
-  - Also, since this is now a fix, could you please also add the `Fixes:` t=
-ag?
-
-  - For the `Closes`, you can remove the URL fragment part, i.e.
-`#issue-1696318406`, since it is anyway the first comment.
-
-If you could change those bits and send a v2, that would be great. Thanks!
-
-Cheers,
-Miguel
+IMO we have too much useless playground stuff in C already, don't get me
+started. Let's get a real device prove that this thing can actually work
+:( We can waste years implementing imaginary device drivers that nobody
+ends up using.
