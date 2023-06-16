@@ -2,58 +2,58 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 144B0EB64D7
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 04:51:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67074EB64D7
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 04:52:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230145AbjFPEvv (ORCPT
+        id S231661AbjFPEwJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Jun 2023 00:51:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56164 "EHLO
+        Fri, 16 Jun 2023 00:52:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232829AbjFPEvt (ORCPT
+        with ESMTP id S232562AbjFPEwF (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Jun 2023 00:51:49 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D424E2D69
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jun 2023 21:51:47 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-514ad92d1e3so3494a12.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jun 2023 21:51:47 -0700 (PDT)
+        Fri, 16 Jun 2023 00:52:05 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0506430C3
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jun 2023 21:52:00 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-513ea2990b8so6011a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jun 2023 21:51:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686891106; x=1689483106;
+        d=google.com; s=20221208; t=1686891118; x=1689483118;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=XPyrkAwe/Aq9tHFz5mc831msWtL5z2h8SJpO4fu2ohg=;
-        b=4/vI7Vd4z8MgxHr3NlcmbD9UwfhYujOxSg31nTAGjeVwo/D2X5eDbAXuov2b9o40cY
-         c70rsBsMlYi165a1ABsc/v7t4VKLqmHDU00OAwLBr/VEtOxuP3+DZF+4UlD5z3rKq75w
-         sPTMVJbpziXjJ4Sn6YoaxbupGSK9rCuEgij/kECF2MGtZbJ1dA0Qj+IFcdZ5SUm4aDCh
-         2y2eYutF+2t0NAfQgimkmhIoEi3RETGgMpxiu7JGWTcmzrABWkioSzpNSgXPuLuKEKUu
-         GIpNwyfp3ckOpoelRPLWE53tsOUIlcaNL3WXDmOkukTka6uAwqNT2QZhpUI9IL2bNLc1
-         LekA==
+        bh=frTWAiV6bhj7ijGFXtP+FDioprWuimS2GIrTbN2xJwA=;
+        b=Zdb/yUwbADQurlrGfUDAnX0oKETPc0f2MV1LCabz6leneEzTDu9uQQ32J1ZovKeuDc
+         4rjUzfGS4JY7oyyXiXeXbEm/gKEVsru1JUH8ntxZHm3gbpUvZG5egdCT8+vatFNioO5n
+         oYNd+MNEUN9Hb7whbBu+ySW8tbUDq6QDWev25lrNqJpJ1Lbbkpzw8toPYWJko9UjtQV6
+         zWrIqBSVEUtjovgON8bpxpmfewzJnqNYqYFFE1Sj7STO+AtWco/miQ+UPDR9I7FNRJko
+         K0q8lMsTICqARWiTPIXSajXcLzt1wc/p+g3mK38lVkletPoLyfZTqSVsyjacyWc7rV8C
+         9wsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686891106; x=1689483106;
+        d=1e100.net; s=20221208; t=1686891118; x=1689483118;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XPyrkAwe/Aq9tHFz5mc831msWtL5z2h8SJpO4fu2ohg=;
-        b=MuVwBllOQBdeMBoomouIYvFyoMhZZS9bhiMErtl4RiRKPrhGbBmCzQwV8UwID/vUOy
-         E4WWRGwkU7ytTXRZVHZ0U2NiBX7t+XZY3Ak0tCtMfEw5NnI9+a9vr11WuKvX9BSS90Da
-         c6VcHjiMzspjoYB9XWdG4bN75t/lTOV1QF9PO54arb1KCQ8hl85Ra2+xyVlcENBYn+fO
-         75qNEj+RfiWekXOR+uEyZWLXLTU6j450DPYNBFdHeuxhEbaud9YmWcFdiv8YdtMmoLzC
-         0/zKG8BccvT+ty7GI7JFeKVXn8rMfEcu7solr1WL9PRLJOfllaKxmbzD+ltPRNqd9qs9
-         hU/Q==
-X-Gm-Message-State: AC+VfDxi4JvsBdqLO1NlfoNB11M9jw1GuXt1mkvRzBisgvQs56N+Nm6n
-        H18KkvJT3cS5kSl0Qr+1CpuQeaVlUM+ZtvwUGKDjVg==
-X-Google-Smtp-Source: ACHHUZ5B80Ex1qt23A2jQgzRzDCchhWoDdRwtGVYek2BtWVIORW0Bm2qbsm0ydaMj2EAYiov4LO8+JDTnRxAA0YJfps=
-X-Received: by 2002:a50:9e07:0:b0:50b:f6ce:2f3d with SMTP id
- z7-20020a509e07000000b0050bf6ce2f3dmr199397ede.0.1686891106375; Thu, 15 Jun
- 2023 21:51:46 -0700 (PDT)
+        bh=frTWAiV6bhj7ijGFXtP+FDioprWuimS2GIrTbN2xJwA=;
+        b=WcIU8hOpW4CPoyl85td/TQE2cDHFtawvLq9Veewz7wrlT+t8pVKl59CcwxTDwCz/uP
+         IgrdY5RVUyn72aM8/YtV9S3fTHZKQfeUAtEi0Vb+C46HmAAfyD93r81vnlBI6dapA0Gt
+         73TlaiBUHC/3yXiKYWFzKk/fChJSvz+Nrynu5qn/wNJF1iV6KOaywockTwQlg605LRmL
+         KZjP0DG3FTWUMQoRIAeTeAampbUdnRKIc78XgXr5KI4gYy0hBpkt7sR8SVRahImzEZiM
+         sDeQY2wRDvkzZLd0p663K3sDStczJnyAfMxZyfPy0F3vm9cw1Fw8nAi3NgW9U5Bc4LG8
+         cZgA==
+X-Gm-Message-State: AC+VfDznLMZpb/ALTajAgRHfWYyhG7g/2H8kskRJt9goq2GBIYWhHAZ6
+        L51eCt8+AH0smliGhEGPipimuLdm82e4t3qzTtuF2A==
+X-Google-Smtp-Source: ACHHUZ6JWBa85IlWLJvPlnOzrt+9MRvefm4pO1BHPoZcsgHo88qjT6jD2BCZgslnMBaDLnXvo7yeGRpZnbfi7ZhmAlQ=
+X-Received: by 2002:a50:9351:0:b0:518:7076:74bc with SMTP id
+ n17-20020a509351000000b00518707674bcmr198686eda.1.1686891118309; Thu, 15 Jun
+ 2023 21:51:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230614180837.630180-1-ojeda@kernel.org> <20230614180837.630180-2-ojeda@kernel.org>
-In-Reply-To: <20230614180837.630180-2-ojeda@kernel.org>
+References: <20230614180837.630180-1-ojeda@kernel.org> <20230614180837.630180-3-ojeda@kernel.org>
+In-Reply-To: <20230614180837.630180-3-ojeda@kernel.org>
 From:   David Gow <davidgow@google.com>
-Date:   Fri, 16 Jun 2023 12:51:34 +0800
-Message-ID: <CABVgOS=MH-FepkejyT25DMu2vo6wbyXUmNKJQ7odnHpuSJhgAA@mail.gmail.com>
-Subject: Re: [PATCH 1/6] rust: init: make doctests compilable/testable
+Date:   Fri, 16 Jun 2023 12:51:45 +0800
+Message-ID: <CABVgOS=-1gLk1w0cyKsLU+HufbWHpQ87-tFuW5yHh8Vx9ghfDg@mail.gmail.com>
+Subject: Re: [PATCH 2/6] rust: str: make doctests compilable/testable
 To:     Miguel Ojeda <ojeda@kernel.org>
 Cc:     Brendan Higgins <brendan.higgins@linux.dev>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
@@ -67,12 +67,12 @@ Cc:     Brendan Higgins <brendan.higgins@linux.dev>,
         linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000002f65a705fe37f16f"
+        boundary="000000000000e5fcd905fe37f10e"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
---0000000000002f65a705fe37f16f
+--000000000000e5fcd905fe37f10e
 Content-Type: text/plain; charset="UTF-8"
 
 On Thu, 15 Jun 2023 at 02:09, Miguel Ojeda <ojeda@kernel.org> wrote:
@@ -90,7 +90,7 @@ Reviewed-by: David Gow <davidgow@google.com>
 Cheers,
 -- David
 
---0000000000002f65a705fe37f16f
+--000000000000e5fcd905fe37f10e
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -159,12 +159,12 @@ FaN+8fXZhRhpv3bVbAWuPZXoMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
 R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
 MDIwAhABAz5xDls09r2CKyYRqnNbMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDV
 s+HrfvJPm73WGg9CXP5/AtP5KX2laG3hZRJy5reREzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
-MBwGCSqGSIb3DQEJBTEPFw0yMzA2MTYwNDUxNDZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
+MBwGCSqGSIb3DQEJBTEPFw0yMzA2MTYwNDUxNThaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
 BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
-CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAB4rnYh4oEXyJhuaTcC5P
-EGNjAYgv1CIkFXwJw6rKQ6RUuFcW82vlfP4tLAsJll3uuAeZn+wkkfHbwnQjKyN4RjoYNEL8IFlL
-dwuT+QzB9XwU7ZCfoCHUmZz9Lg4QyguvJfGrXHCOms4YoFeWUU5E6g5YY8r1/2OQlzd0D/xkN2vO
-w6Was+J3k9FscbHd/U5ePAt3W+BB/zWhZP9kbl4H/ngAlrrIfRv3+Zn3PgLgj5tg8vyHzJp+r/Cn
-1dTFLjJpGhqcq+9KU8VDClYudniGRxrMZmElskVd1kqkYcCXwrU90FOrcdRt2gf2uAQW7GYPKhdy
-o7EeiMBZl+SaG/KHfw==
---0000000000002f65a705fe37f16f--
+CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAb6fA13cfBUvDL0yt/y5i
+j5gn0LQf2Qd5pPhJ9o7KSXd6Vnf1Otdrp0Nz4vYYEyx//RtzKAH7+7kIn5HZiqFrGMtuFaNHbpJD
+u+rtAazmg2t8CiNS5pGEPCnAWuTGRYMXZxgleTyyqJfgmXP9m1fF4vKvXyJlHla1ooO1FzEOVFpN
+rPk9eWxf4FlN92WzGuvOj0FhlZb49TEz+K5OLs23pp4As+jgph5mnurG1XnmkXkTdp2D485HRUB9
+DQTXuZtw+Og+MI0gT2dGMlKBEqS3QwgDN0s6l6Oy6jQ3T7giA21c54DKh+zQCoQGEDzMBtQpZdR/
+Ihw3vhZ8hHogI7hkQA==
+--000000000000e5fcd905fe37f10e--
