@@ -2,112 +2,103 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00680EB64D7
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 14:43:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6433EB64D8
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 15:00:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbjFPOnx (ORCPT
+        id S1344957AbjFPPAy (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Jun 2023 10:43:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49128 "EHLO
+        Fri, 16 Jun 2023 11:00:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345570AbjFPOnx (ORCPT
+        with ESMTP id S1345172AbjFPPAx (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Jun 2023 10:43:53 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC2C330F4;
-        Fri, 16 Jun 2023 07:43:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-        Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-        In-Reply-To:References; bh=Ocn+mJlPMF+It8K/6Pf5Zoynuphzl6lqslhZgF0QlQU=; b=2M
-        uEk1etJt21QtE+AC+pdWsf3pKhvZn4aRW5y+5+XJkIUM2qBxF4DvGojVk7ZFfBSfxkkOrYr9Xj3Zb
-        Z63yOQhf+qFmTjdfmIWEn6NRclh0hgGiB34LHolM+KoX72/tYkqPowQz5jnOkQfWsEzLOdMvEYmY9
-        WPNfSn2efVz/5x8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qAAg1-00GjFt-5s; Fri, 16 Jun 2023 16:43:49 +0200
-Date:   Fri, 16 Jun 2023 16:43:49 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>, kuba@kernel.org,
-        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        aliceryhl@google.com
-Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
-Message-ID: <a4bc8847-c668-4cff-9892-663516cf8127@lunn.ch>
-References: <20230614230128.199724bd@kernel.org>
- <8e9e2908-c0da-49ec-86ef-b20fb3bd71c3@lunn.ch>
- <20230615190252.4e010230@kernel.org>
- <20230616.220220.1985070935510060172.ubuntu@gmail.com>
- <f28d6403-d042-4ffb-9872-044388d0f9d9@lunn.ch>
- <CANiq72mMi=7P9OxSH0+ORYDEyxG3+n5uOv_ooxMJ72YRBRZ+PQ@mail.gmail.com>
+        Fri, 16 Jun 2023 11:00:53 -0400
+Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E61330F4;
+        Fri, 16 Jun 2023 08:00:52 -0700 (PDT)
+Received: by mail-ot1-x32c.google.com with SMTP id 46e09a7af769-6b2e1023f30so757627a34.1;
+        Fri, 16 Jun 2023 08:00:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686927651; x=1689519651;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gbcAX6a1eicu6d3jk33i1zAfmDcjTd2pa8lrf0SUGvQ=;
+        b=oAot7/Zp5mILgXcqyrtRgc6bTBbIhbsoKJj73kFHgJuD4WrzbiBkBme2A6CQZsaNtT
+         rVcwh87oTEq+kXIpqLgMQ2MbuWIEAY3DcSuYM28gcKaIj7JX5K3c1Km9HZvHCY/qw4dW
+         jk3Xl4iYIhAm/typevshEm9jvZOBddkT3JYk1qAqxhUjfiWLSCJLoeytOl74B8Po3Zpt
+         1xSt+NXAJPiE2qHtHWwwibfvK26ffcFPpOi5b+YU3SzJV+FD8oM3zd0738qFeO8U/OEf
+         rNB8kTD73ZQQR5EI3ubXI9cbisd8Ukl+xoiwOX3V4r8rfMx4Mlqtw7U9mxC2DSMBCSQj
+         ItUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686927651; x=1689519651;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gbcAX6a1eicu6d3jk33i1zAfmDcjTd2pa8lrf0SUGvQ=;
+        b=QP1AFWvV26UKpJfDdkK0utyLyXac+22MoHBYpdcn4cCTabGe+rcAJ257PABRy3xZGU
+         21fyFYwY26liD6gvwwb1cYXNtnlmoi1kE7jc1S/f8dLWy0q3esMiHZlfj5LpcUckd06t
+         48R/RIIZRBxmETVevl7sEzSuVFYtF0702f8ERxfxnx0s1l4q3zda18z/CfnNB5WhnXUr
+         gLkaV6zpmjRvHWhM2O/EslqcuFl4ZPt0lq/qSCjvsyQrGjIjsO/VQbJUKFr7zdL+Oc2H
+         S7ge90mrVt9gDP/jlCJ8SvNNCqAqAxlw52UoIAr2v/kXhHqNLwds6kdq/Uzn6cJtQmgX
+         BcyQ==
+X-Gm-Message-State: AC+VfDwTZ4rSgiw5uSSZrdAvHr4TWD2olwOTr9o1siuWaBvbvHNZpQmS
+        7anbTI6kZVRARIMXLMk6278=
+X-Google-Smtp-Source: ACHHUZ466j1P5f7zSgTKQ27WFq3EVgQ+S7RfZBJhvqWaa4/+rm+bKYxB4YpejS+9SlXqCVx5d0hrtQ==
+X-Received: by 2002:a05:6870:5b28:b0:1a6:4eb9:d10b with SMTP id ds40-20020a0568705b2800b001a64eb9d10bmr2147868oab.16.1686927651338;
+        Fri, 16 Jun 2023 08:00:51 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id ve17-20020a0568710c1100b001a6a3f99691sm6211975oab.27.2023.06.16.08.00.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Jun 2023 08:00:50 -0700 (PDT)
+Message-ID: <022fc9e1-692f-754c-061a-0e4e7c380731@gmail.com>
+Date:   Fri, 16 Jun 2023 10:56:21 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mMi=7P9OxSH0+ORYDEyxG3+n5uOv_ooxMJ72YRBRZ+PQ@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 01/11] kbuild: rust_is_available: remove -v option
+Content-Language: en-US
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>
+Cc:     Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <nmi@metaspace.dk>,
+        linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+References: <20230616001631.463536-1-ojeda@kernel.org>
+ <20230616001631.463536-2-ojeda@kernel.org>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230616001631.463536-2-ojeda@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Jun 16, 2023 at 03:48:31PM +0200, Miguel Ojeda wrote:
-> On Fri, Jun 16, 2023 at 3:14 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > I think this is something you need to get addressed at a language
-> > level very soon. Lots of netdev API calls will be to macros. The API
-> > to manipulate skbs is pretty much always used on the hot path, so i
-> > expect that it will have a large number of macros. It is unclear to me
-> > how well it will scale if you need to warp them all?
-> >
-> > ~/linux/include/linux$ grep inline skbuff.h  | wc
-> >     349    2487   23010
-> >
-> > Do you really want to write 300+ wrappers?
+On 6/15/23 21:16, Miguel Ojeda wrote:
+> From: Masahiro Yamada <masahiroy@kernel.org>
 > 
-> It would be very nice if at least `bindgen` (or even the Rust
-> compiler... :) could cover many of these one-liners. We have discussed
-> and asked for this in the past, and messages like this reinforce the
-> need/request for this clearly, so thanks for this.
+> The -v option is passed when this script is invoked from Makefile,
+> but not when invoked from Kconfig.
 > 
-> Since `bindgen` 0.64.0 earlier this year [1] there is an experimental
-> feature for this (`--wrap-static-fns`), so that is nice -- though we
-> need to see how well it works. We are upgrading `bindgen` to the
-> latest version after the merge window, so we can play with this soon.
+> As you can see in scripts/Kconfig.include, the 'success' macro suppresses
+> stdout and stderr anyway, so this script does not need to be quiet.
 > 
-> In particular, given:
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+> Tested-by: Miguel Ojeda <ojeda@kernel.org>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> Link: https://lore.kernel.org/r/20230109061436.3146442-1-masahiroy@kernel.org
+> [ Reworded prefix to match the others in the patch series. ]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
 > 
->     static inline int foo(int a, int b) {
->         return a + b;
->     }
-> 
-> It generates a C file with e.g.:
-> 
->     #include "a.h"
-> 
->     // Static wrappers
-> 
->     int foo__extern(int a, int b) { return foo(a, b); }
-> 
-> And then in the usual Rust bindings:
-> 
->     extern "C" {
->         #[link_name = "foo__extern"]
->         pub fn foo(a: ::std::os::raw::c_int, b: ::std::os::raw::c_int)
-> -> ::std::os::raw::c_int;
->     }
 
-I said in another email, i don't want to suggest premature
-optimisation, before profiling is done. But in C, these functions are
-inline for a reason. We don't want the cost of a subroutine call. We
-want the compiler to be able to inline the code, and the optimiser to
-be able to see it and generate the best code it can.
-
-Can the rust compile inline the binding including the FFI call?
-
-skb are used on the hot path.  For a 10G Ethernet, it is dealing with
-nearly 1 million packets per second for big Ethernet frames, or worst
-case 14Mpps for small frames. Subroutine calls add up when you only
-have around 200 instructions to deal with a Ethernet frame.
-
-     Andrew
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
