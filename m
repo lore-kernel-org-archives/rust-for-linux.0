@@ -2,132 +2,79 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A6CF7EB64D7
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 19:00:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25D80EB64D7
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 19:10:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345397AbjFPTA0 (ORCPT
+        id S229542AbjFPTKp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Jun 2023 15:00:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39758 "EHLO
+        Fri, 16 Jun 2023 15:10:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230122AbjFPTAU (ORCPT
+        with ESMTP id S229561AbjFPTKo (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Jun 2023 15:00:20 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEC823A9F;
-        Fri, 16 Jun 2023 12:00:02 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id B668C5C0289;
-        Fri, 16 Jun 2023 14:59:55 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Fri, 16 Jun 2023 14:59:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-        :content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1686941995; x=1687028395; bh=V+c6CBDNkCbYKeSq99iOXAk5iH1MqkXVSh1
-        tyFCMAZQ=; b=Bi1sqZyD0uQP1JIngGrZN/D0mTqyfOoRP+FoOSyw9luhImApcqR
-        enK2AiUb5LqLY9Dw6BbQE/nya3OOx9JYMARR+RA/23yF0Vz/x2rfKLPfl6Tcaw02
-        ECZcBj/Ccypb/iVkZCd4z6i435tA7BVPiO7Ch6pVuBjTTSUHPh5vi+n8Lz0ERPSl
-        nfWpxGnbWLo2yUqn0OHzrgj2oR1QhhlgBnKstmp6GEdck2gSRTcQIc/q0QT7tzLd
-        +ZyYhVXmDkdwCbT6/na2RNu7c5MPnyqEnNE56tw1JuySYAZbC1/6Iyv7K7cv+LfI
-        IijofY+lqOj80iczKXT8fQ01n/ieXA143AQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1686941995; x=1687028395; bh=V+c6CBDNkCbYKeSq99iOXAk5iH1MqkXVSh1
-        tyFCMAZQ=; b=Zfe/h1p/LhktE7ivkmmzCDjIq3XG7NO65P86SeR2fwVI4jFzNYp
-        XHyuyNPRjfvh2oHZL9J/iE4fE2ggo6eOYOYLTaCB/0gZNYt+I5B5+iomPqLUsVj6
-        HcbiOURquW9CyxWsqUOX5zGiUc8WZW2H0LcfjDwVA+FLgVFKD9NNA8MGRO68tYSp
-        quFTJ0ANnsGGRs9Hv1v9tUsSKoeGWqtw6WgIN0CVCSkFSWLYgEXvxYkx/Lqf+lpH
-        wbe7LTIY2+f/S91Nbzi2J4DZfBl377CFQaw9+TQm7hTpg/s8w6BIQb2rcaEVG97P
-        SoFy9YtA0w5YnZ/QVpcPQNI3K0SzPPVeyRQ==
-X-ME-Sender: <xms:K7GMZBRgI-_AY5oXSYVoMnXnbYi0x-mIrcSoYbjqOrtpckSDEkTMYA>
-    <xme:K7GMZKz8x8zsr3WupxoI5bOW1rfYON8BJk59Vw7bIsEGKm6iuRZmdL67UfuhRa0h5
-    5MGAQ1ZwRTYkkCuyw>
-X-ME-Received: <xmr:K7GMZG11GezR5FPnMoUQJnX_xAM7sj9_D7E9whWMiYgMOgRRttH0xH78cunRfT6CWmm6uJVHGI2aUAjqntLfWSCS2ir1gg759onPZw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedvgedgudefudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttdefjeenucfhrhhomheptehl
-    ihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnh
-    epheduuddvteekvdektdduledugfffhfdugeejgeeuvdevtdetveejheehiefffeegnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvg
-    esrhihhhhlrdhioh
-X-ME-Proxy: <xmx:K7GMZJBZtnERINeX5uu2Ep_jVzUYwN2cNSaM2vo4FecWmKboxlcb1g>
-    <xmx:K7GMZKhGH-wudRTcl45seU8X-r57dpvjT-e926-jhPHmTnP-Jgi94A>
-    <xmx:K7GMZNqhkvY_PhPbYHzcZhYNRwcrawfAdcZz1UleFeNUsGRU5dwZoQ>
-    <xmx:K7GMZMaVw_1mWLuSERh8Uja_8SMb4S1KOLAek7qXxos82pH3SaHIpQ>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 16 Jun 2023 14:59:53 -0400 (EDT)
-Message-ID: <66dcc87e-e03f-1043-c91d-25d6fa7130a1@ryhl.io>
-Date:   Fri, 16 Jun 2023 21:00:36 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
+        Fri, 16 Jun 2023 15:10:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC6E230D3
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jun 2023 12:10:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7068161CC7
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jun 2023 19:10:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B1CC433C0;
+        Fri, 16 Jun 2023 19:10:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686942642;
+        bh=vQP8RpU0TBh50UzUbBTbdS49nrwA/MnxyXUEhhLwNbg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=AKQoc7AXdc/EFusTGnAlBCUfHAdkKR7enXuFMx6h6aQ+chzS4gQHK9Whg0vVWmZlK
+         9wFshMjL8VnU/KzadHlpqWE0ETUSHWFxEdlwzbJZZbeORmEhjwEgHnt/nCGWeLLJJ2
+         7pYg+0ccfRUYIW7QF1M5PyS7OVPrgh+9uwMlA9l2PYYHJfLD5hZKLbFHdoUcs6J4lF
+         8++ZjJmdE1r/b+v6uqTNyZ6TZTrG1rNe4bOj+Fs1kpeazOWtQiIsr1Z3gQNsL8ab0n
+         o5AiGcw/eX4/LaVtxOSYJ+SWhKnN/e4/VDv9ycqDGBBCRDeC3gFo6HKzKJby4XTiHz
+         M/0NL+NyAO7Gg==
+Date:   Fri, 16 Jun 2023 12:10:41 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Alice Ryhl <alice@ryhl.io>
+Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>, andrew@lunn.ch,
+        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com
 Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
-Content-Language: en-US
-To:     Jakub Kicinski <kuba@kernel.org>,
-        FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc:     andrew@lunn.ch, netdev@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, aliceryhl@google.com,
-        miguel.ojeda.sandonis@gmail.com
+Message-ID: <20230616121041.4010f51b@kernel.org>
+In-Reply-To: <66dcc87e-e03f-1043-c91d-25d6fa7130a1@ryhl.io>
 References: <20230614230128.199724bd@kernel.org>
- <8e9e2908-c0da-49ec-86ef-b20fb3bd71c3@lunn.ch>
- <20230615190252.4e010230@kernel.org>
- <20230616.220220.1985070935510060172.ubuntu@gmail.com>
- <20230616114006.3a2a09e5@kernel.org>
-From:   Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20230616114006.3a2a09e5@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        <8e9e2908-c0da-49ec-86ef-b20fb3bd71c3@lunn.ch>
+        <20230615190252.4e010230@kernel.org>
+        <20230616.220220.1985070935510060172.ubuntu@gmail.com>
+        <20230616114006.3a2a09e5@kernel.org>
+        <66dcc87e-e03f-1043-c91d-25d6fa7130a1@ryhl.io>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/16/23 20:40, Jakub Kicinski wrote:
-> On Fri, 16 Jun 2023 22:02:20 +0900 (JST) FUJITA Tomonori wrote:
->>> The skb freeing looks shady from functional perspective.
->>> I'm guessing some form of destructor frees the skb automatically
->>> in xmit handler(?), but (a) no reason support, (b) kfree_skb_reason()
->>> is most certainly not safe to call on all xmit paths...
->>
->> Yeah, I assume that a driver keeps a skb in private data structure
->> (such as tx ring) then removes the skb from it after the completion of
->> tx; automatically the drop() method runs (where we need to free the
->> skb).
->>
->> I thought that calling dev_kfree_skb() is fine but no? We also need
->> something different for drivers that use other ways to free the skb
->> though.
->>
->> I use kfree_skb_reason() because dev_kfree_skb() is a macro so it
->> can't be called directly from Rust. But I should have used
->> dev_kfree_skb() with a helper function.
+On Fri, 16 Jun 2023 21:00:36 +0200 Alice Ryhl wrote:
+> A Rust method can be defined to take the struct "by value", which 
+> consumes the struct and prevents you from using it again. This can let 
+> you provide many different cleanup methods that each clean it up in 
+> different ways.
 > 
-> skbs (generally) can't be freed in an interrupt context.
-> dev_kfree_skb_any_reason() is probably the most general implementation.
-> But then we also have a set of functions used in known contexts for fast
-> object recycling like napi_consume_skb().
-> How would complex object destruction rules fit in in the Rust world?
+> However, you cannot force the user to use one of those methods. They 
+> always have the option of letting the value go out of scope, which calls 
+> the destructor. And they can do this at any time.
+> 
+> That said, the destructor of the value does not necessarily *have* to 
+> translate to immediately freeing the value. If the value if refcounted, 
+> the destructor could just drop the refcount. It would also be possible 
+> for a destructor to schedule the cleanup operation to a workqueue. Or 
+> you could do something more clever.
 
-A Rust method can be defined to take the struct "by value", which 
-consumes the struct and prevents you from using it again. This can let 
-you provide many different cleanup methods that each clean it up in 
-different ways.
-
-However, you cannot force the user to use one of those methods. They 
-always have the option of letting the value go out of scope, which calls 
-the destructor. And they can do this at any time.
-
-That said, the destructor of the value does not necessarily *have* to 
-translate to immediately freeing the value. If the value if refcounted, 
-the destructor could just drop the refcount. It would also be possible 
-for a destructor to schedule the cleanup operation to a workqueue. Or 
-you could do something more clever.
-
-Alice
+Can we put a WARN_ON() in the destructor and expect object to never be
+implicitly freed?  skbs represent packets (most of the time) and for
+tracking which part of the stack is dropping packets we try to provide
+a drop reason along the freed skb. It'd be great if for Rust we could
+from the get-go direct everyone towards the APIs with an explicit reason
+code.
