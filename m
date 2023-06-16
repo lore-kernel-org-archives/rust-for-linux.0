@@ -2,113 +2,130 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B008EB64DA
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 11:15:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 045CAEB64D8
+	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 12:18:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345332AbjFPLPP (ORCPT
+        id S245178AbjFPMS0 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Jun 2023 07:15:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37892 "EHLO
+        Fri, 16 Jun 2023 08:18:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345266AbjFPLPM (ORCPT
+        with ESMTP id S245707AbjFPMSZ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Jun 2023 07:15:12 -0400
-Received: from mail-4027.protonmail.ch (mail-4027.protonmail.ch [185.70.40.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65CB5137;
-        Fri, 16 Jun 2023 04:15:11 -0700 (PDT)
-Date:   Fri, 16 Jun 2023 11:14:56 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1686914109; x=1687173309;
-        bh=Xlt+L2igKBybmuk4k08Rh12Cc6jOODhbLzjmeZ+ig8k=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=KcI4N9qEs7ur1mLLG7PX0Z5G5NKrd7FGM3FZApAwyxEPJzfL+z1SH8QDD8zbmB3Bn
-         FvVXJAc4jUDI5Ek6CrRJUQCrUTsRtLtB8ODqgE3UjY6dA0BdjXaw2shF09JJG97iJf
-         DoUeANvRgexUVTnLfi+lWvDaX9vB0BZVvx0b6ca9NuJCQehAIprYRymcNvKxrkPgdO
-         LkHdBr24xCrIr+3XVKxKGa2qUrU050J13PJ9n+7WKT8Q6fGEIZFy5MXZ+dNLXbl6eu
-         G64CSURZ1yDFov2MB4bu6DskPn9CzPdEUJMBYoU2Em9Lro36at86IjVTCnqOIKWcs3
-         btmPgBcxKxwXg==
-To:     Miguel Ojeda <ojeda@kernel.org>
-From:   =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc:     David Gow <davidgow@google.com>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        Philip Li <philip.li@intel.com>, kunit-dev@googlegroups.com,
-        linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH 4/6] rust: types: make doctests compilable/testable
-Message-ID: <8G95KEldmnhs6iOWt4K2Qpb6_TNvLTj36k5DT1ydKnJqcmp4FY44KP6rr8aqNGZE3EirT8v2Ak14r5keNM8kf-BBC8Yobi6W2eLaiu1AFq4=@protonmail.com>
-In-Reply-To: <20230614180837.630180-5-ojeda@kernel.org>
-References: <20230614180837.630180-1-ojeda@kernel.org> <20230614180837.630180-5-ojeda@kernel.org>
-Feedback-ID: 27884398:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+        Fri, 16 Jun 2023 08:18:25 -0400
+Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10B1A30EA;
+        Fri, 16 Jun 2023 05:18:24 -0700 (PDT)
+Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1a2cc92f12aso219169fac.0;
+        Fri, 16 Jun 2023 05:18:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686917903; x=1689509903;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=O0gZJoDrJidLXO2Qb8l8eH5TrmQul00F+sW1DnvksXw=;
+        b=dJHzVAsBBQg7Xz1f29BJyAiqZgl7yEhU7k6aWFKRfGzmnY5GspL8XFU2aMGsupteoB
+         btoPzN2OC8RlUO3zYUc3I/Ic6LTI0gO5ssDiA7ZUR3EMiMAVOcePe3ZLfSvNjUK1Tj11
+         UrAxLjCpc3JuwBBj+bVKmMbQjqr9Yj0qT0lJ/6E58U+Y5t/1xjXqGOr8ddNN6ZvLooJb
+         85+4MfSSmnKaBnywQAMaY7R+IBr44SKH+4/35iMyXA0E6Ldoegm8FNnn8heqeEJ3nS6f
+         IyFx3h/Gj5moiRKus8Y/SrEDW9erkEOtPEGjtBfDFHS7OHHP0iWiv0O0/oQWYFuHP3Z0
+         4raQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686917903; x=1689509903;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=O0gZJoDrJidLXO2Qb8l8eH5TrmQul00F+sW1DnvksXw=;
+        b=aCtWIAoqRs5P8+Ee/2iBkHRm7YV3JOPbq5jc2/Ku9VMg1Qo4HYLQb+a7cKCAh9tedB
+         Q6Uqcv6tjV+k25mmy6ZA0fjT1s3FoBbQaUFFyqe57ipD4kTGBWRqqxFFVfkRR86K1Axr
+         NZESl1Dr//9/0PmOo1I/QfCwVfnA+nxzcwf4M2h7GRT+9ETOezsVDC8wune4sJgN8A6x
+         qpkcMR8GLmm7lEhgnY4za5pZdiaw8w0H+jvQjaU0tgt7Oz36eL6ouMyHRUurUj2znz/F
+         C+ASWLH/XgxtFfQhdZFEqtJ7EDuJv/qz8mVrasDCOwJhVHnaUvV/InpY6orUZdg9K+nh
+         GxKw==
+X-Gm-Message-State: AC+VfDwhhPMEAu5Io/6lz5bGHQjr0VW761q/uFLjd/+iCybeUAf4bx1W
+        JAh+ptP0XaKI+YrFiFN25ZI=
+X-Google-Smtp-Source: ACHHUZ4H/lkY7gtIgRey0z8hby4FWP1G855PDxQLHjGpI/L4fpqjaiEx8whUEq0BofM2R9F/bt/BnA==
+X-Received: by 2002:a05:6870:1cb:b0:187:afcb:87ec with SMTP id n11-20020a05687001cb00b00187afcb87ecmr2341401oad.4.1686917903087;
+        Fri, 16 Jun 2023 05:18:23 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id n6-20020a17090a394600b0024df2b712a7sm1337469pjf.52.2023.06.16.05.18.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Jun 2023 05:18:22 -0700 (PDT)
+Date:   Fri, 16 Jun 2023 21:18:21 +0900 (JST)
+Message-Id: <20230616.211821.1815408081024606989.ubuntu@gmail.com>
+To:     kuba@kernel.org
+Cc:     miguel.ojeda.sandonis@gmail.com, fujita.tomonori@gmail.com,
+        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com, andrew@lunn.ch
+Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
+From:   FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20230615191931.4e4751ac@kernel.org>
+References: <20230614230128.199724bd@kernel.org>
+        <CANiq72nLV-BiXerGhhs+c6yeKk478vO_mKxMa=Za83=HbqQk-w@mail.gmail.com>
+        <20230615191931.4e4751ac@kernel.org>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-------- Original Message -------
-On Wednesday, June 14th, 2023 at 20:08, Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+Hi,
 
-> Rust documentation tests are going to be build/run-tested
-> with the KUnit integration added in a future patch, thus
-> update them to make them compilable/testable so that we
-> may start enforcing it.
->=20
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  rust/kernel/types.rs | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 1e5380b16ed5..696d6c5a3b9d 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -109,7 +109,7 @@ unsafe fn from_foreign(_: *const core::ffi::c_void) -=
-> Self {}
->  /// In the example below, we have multiple exit paths and we want to log=
- regardless of which one is
->  /// taken:
->  /// ```
-> -/// # use kernel::ScopeGuard;
-> +/// # use kernel::types::ScopeGuard;
->  /// fn example1(arg: bool) {
->  ///     let _log =3D ScopeGuard::new(|| pr_info!("example1 completed\n")=
-);
->  ///
-> @@ -127,7 +127,7 @@ unsafe fn from_foreign(_: *const core::ffi::c_void) -=
-> Self {}
->  /// In the example below, we want to log the same message on all early e=
-xits but a different one on
->  /// the main exit path:
->  /// ```
-> -/// # use kernel::ScopeGuard;
-> +/// # use kernel::types::ScopeGuard;
->  /// fn example2(arg: bool) {
->  ///     let log =3D ScopeGuard::new(|| pr_info!("example2 returned early=
-\n"));
->  ///
-> @@ -148,7 +148,7 @@ unsafe fn from_foreign(_: *const core::ffi::c_void) -=
-> Self {}
->  /// In the example below, we need a mutable object (the vector) to be ac=
-cessible within the log
->  /// function, so we wrap it in the [`ScopeGuard`]:
->  /// ```
-> -/// # use kernel::ScopeGuard;
-> +/// # use kernel::types::ScopeGuard;
->  /// fn example3(arg: bool) -> Result {
->  ///     let mut vec =3D
->  ///         ScopeGuard::new_with_data(Vec::new(), |v| pr_info!("vec had =
-{} elements\n", v.len()));
-> --=20
-> 2.41.0
+On Thu, 15 Jun 2023 19:19:31 -0700
+Jakub Kicinski <kuba@kernel.org> wrote:
 
-Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+> TBH I was hoping that the code will be more like reading "modern C++"
+> for a C developer. I can't understand much of what's going on.
+> 
+> Taking an example of what I have randomly on the screen as I'm writing
+> this email:
+> 
+> +    /// Updates TX stats.
+> +    pub fn set_tx_stats(&mut self, packets: u64, bytes: u64, errors: u64, dropped: u64) {
+> +        // SAFETY: We have exclusive access to the `rtnl_link_stats64`, so writing to it is okay.
+> +        unsafe {
+> +            let inner = Opaque::get(&self.0);
+> +            (*inner).tx_packets = packets;
+> +            (*inner).tx_bytes = bytes;
+> +            (*inner).tx_errors = errors;
+> +            (*inner).tx_dropped = dropped;
+> +        }
+> +    }
+> 
+> What is this supposed to be doing? Who needs to _set_ unrelated
+> statistics from a function call? Yet no reviewer is complaining
+> which either means I don't understand, or people aren't really 
+> paying attention :(
+
+Sorry, this function was used in the dummy driver to implement
+net_device_ops->ndo_get_stats64:
+
+https://lore.kernel.org/rust-for-linux/01010188a025632b-16a4fb69-5601-4f46-a170-52b5f2921ed2-000000@us-west-2.amazonses.com/T/#m518550baea9c76224524e44ab3ee5a0ecd01b1b9
+
+The old version uses atomic types in xmit path to save tx stats for
+ndo_get_stats64. But Andrew said that using atomic types in xmit path
+isn't a good idea in even sample driver so I removed that code.
+
+
+>> But, indeed, it is best if a `F:` entry is added wherever you think it
+>> is best. Some subsystems may just add it to their entry (e.g. KUnit
+>> wants to do that). Others may decide to split the Rust part into
+>> another entry, so that maintainers may be a subset (or a different set
+>> -- sometimes this could be done, for instance, if a new maintainer
+>> shows up that wants to take care of the Rust abstractions).
+> 
+> I think F: would work for us.
+> 
+> Are there success stories in any subsystem for getting a driver for
+> real HW supported? I think the best way to focus the effort would be 
+> to set a target on a relatively simple device.
+
+As far as I know, no subsystem has accepted Rust bindings yet.
+
+Replacing the existing C driver for real HW with Rust new one doesn't
+make sense, right? So a necessary condition of getting Rust bindings
+for a subsystem accepted is that a HW verndor implements both a driver
+and bindings for their new HW?
+
+thanks,
