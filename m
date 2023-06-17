@@ -2,113 +2,155 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 08592EB64D8
-	for <rust-for-linux@archiver.kernel.org>; Fri, 16 Jun 2023 20:05:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3307EB64D9
+	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Jun 2023 10:07:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229696AbjFPUFV (ORCPT
+        id S233754AbjFQKHz (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 16 Jun 2023 16:05:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45448 "EHLO
+        Sat, 17 Jun 2023 06:07:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231744AbjFPUFU (ORCPT
+        with ESMTP id S231894AbjFQKHy (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 16 Jun 2023 16:05:20 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD9DA35A3;
-        Fri, 16 Jun 2023 13:05:18 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-bad0c4f6f50so1846351276.1;
-        Fri, 16 Jun 2023 13:05:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686945918; x=1689537918;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7hganKCZoZrwfRfCw52dCzqGAY7Ust8nvA0jKBdgWxU=;
-        b=MyqY0ARx8Krf4EndKExz1PEsdoT01Sb9tUhBOE0+xhWJxSU2ApLkBfM6Tr8+Z3LheG
-         Tfk/ImQFzoAr+8QOCISkpenjX8yV+UBDFzG5Ewc9WpzXck+mKFdQuyjV7BIg3hI2iIsz
-         UEfhZ4vYbNR/3E4dY64yNw7fZ9v1EIK+zB7kmKm0/mR3jCSbTMLqXMZyn/CC4lMuvVaM
-         dpjlBSVyixJzOG05gkWrMEE2bSL9mp/tmZdIKca8yT3b2aHxWBy3Aqbv7cEGTxwbzALD
-         LH5Vd9q2PHXsE7388/25HsGUXbNE6+dW/SgRkdU1bH8mbeLQkhbO1aKBTr2QpF/2IPYU
-         movw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686945918; x=1689537918;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7hganKCZoZrwfRfCw52dCzqGAY7Ust8nvA0jKBdgWxU=;
-        b=W5cBSCsZr01D1YeFmWiMcdQU9tqxGjPIvn54Cut+QlTo0oCM9nDbOX4GOFwrxv4mB+
-         vSUHexSuL40KQ0dio3P/++bR7RiwX28rQnjDiHqHC/UDn8j36pqgVkr7lUnb2WpBDuEq
-         re8tAYaH6DMcIC4XMjNA0JvTMoU9YHMse54nfUncmV5OqesW7Dih47xWNmjbfNkVOL8H
-         YIb0B5RB/U8ZBRaLCHrlLh1wDqNPuQZLQUMtXJwvLvM2tVsyqsjQS5+eV9IvehzM5Xic
-         OiKEFq/maAsnhxXZv11UidzCq8PDOODrcrTfQq9u6THwHUhrgGPhyG5zeK7d9L1acsNy
-         FbYQ==
-X-Gm-Message-State: AC+VfDy/QAnqybQwYkwloOaXCASzwjMiRShI0+brWRWcqsouK9aNjrF7
-        UN6gvx8se4+J61l5JHsOlyMYcLb3XGefr5KeWFY=
-X-Google-Smtp-Source: ACHHUZ7LWyzqz+SNs9JXo0WmSwAW7npDcXANJCLpOLIcJ7DMOHGvrGhGsQp/M7eKycSCDiCPzeta6ypqibe/SkfTFaY=
-X-Received: by 2002:a05:6902:92:b0:ba7:a55f:9091 with SMTP id
- h18-20020a056902009200b00ba7a55f9091mr165618ybs.6.1686945917818; Fri, 16 Jun
- 2023 13:05:17 -0700 (PDT)
+        Sat, 17 Jun 2023 06:07:54 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACE93115;
+        Sat, 17 Jun 2023 03:07:52 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.west.internal (Postfix) with ESMTP id 794F7320090D;
+        Sat, 17 Jun 2023 06:07:47 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Sat, 17 Jun 2023 06:07:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
+        :content-transfer-encoding:content-type:content-type:date:date
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1686996467; x=1687082867; bh=fdy8Nxxcv9L88NlcC7koLpID+PVBjheubRG
+        k1mIhVzY=; b=V01hnXjrgd04zMLD4LNpCeRUjyc52LRH7GxqnPAKOggf5bSezyH
+        0c8Dea3wGx7qe7KCaaDoM0C2FZaA33gBRpk3CB2IXXEwfewoIlB1mgoC/2Pn+P9m
+        5CmRr4ek1J271ifosX5yDo2Zio0PQi856r61ojaLFX35SsZpqfvgbitZHyv952A8
+        xdGFRs3Z5XSp6sxSUc0YAOvJsuYPoVZAZe1w8J1pbFSU4Q2ihJ15g6dgoL2CDnGx
+        6ixXl2KtWU9KzT40hmV+6vNejY6NNQwuLe/rRP01BFoEUNtX8UU6lOxLQtC8mgJr
+        AXjyTls+txLWynd0DgavOrFK1czTEPEwz2g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1686996467; x=1687082867; bh=fdy8Nxxcv9L88NlcC7koLpID+PVBjheubRG
+        k1mIhVzY=; b=qQc0zIfLW9diIyGid+kpBRXWblJ+0nMMO3ak256cRkuCu18Gl4x
+        7m1Fz6b5c1kE7FmYtLb5KNLLSyggkT6J5KGOe2+dm9SGp4uMcoLhSy01z/cnxBYP
+        gmD4NLti2e14YDmFKC+2Yjuv+CW6IfDI+Bfoh7x2gVyBw688UqLZ39cGbJ/5MKNr
+        aVEa8Q8xgw+vMJSl775XH7ROoaykgosBWh4E2I5+km9vjNDlksaUOXA7SGesQX/q
+        bJvRP+1Bv8KaK9Rob8hKbAe4O1mcZ94PHLrN747dXVDHBvRix/o5nrnhrzgIDZ0o
+        jh0+W5GruyZyX733RDSq2filcLPJqRxaamw==
+X-ME-Sender: <xms:8oWNZENgvmAkRo8xhBHdwbUkDOZxfI38vh6UlQzFCne7Xabe3yUzrw>
+    <xme:8oWNZK9KRVtpxW7YUAuXToaHsd_WKwdtZ_x82srH0kkgt2vBv-l8PWm6j4UbLwEOX
+    u-Ouw2n-6CELkNOOA>
+X-ME-Received: <xmr:8oWNZLReTrAty37bqNLG19JW3-Lu5V9DR8xziXo5zB0gtVCaVj8mAUoR9Gv9_kn7pnhPZLigtgqPDBXy9gceqmO-8qhJ2twajuvmpQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedvjedgvdefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkfffgggfhffuvfevfhgjtgfgsehtjeertddtfeejnecuhfhrohhmpeetlhhi
+    tggvucfthihhlhcuoegrlhhitggvsehrhihhlhdrihhoqeenucggtffrrghtthgvrhhnpe
+    fhheeuieelveejfeektedvffevffduuefhgfetvdeugfeigfeivdejgedvjeeljeenucev
+    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhhitggvse
+    hrhihhlhdrihho
+X-ME-Proxy: <xmx:8oWNZMt2RyV78peCLlIRmdZdPTtOhIyGOb9asWV9O92JYmI-s8tFPg>
+    <xmx:8oWNZMe6j919nxeCZGg8-jy364MSvJX84ewmSsBeaLmE231eHKuXlw>
+    <xmx:8oWNZA3tW7qSymdnwx10aFZeIUZ66qfeFJ0n_yvuItQQwI3QSU1N4w>
+    <xmx:84WNZBEeMpF2-LXl-bCXx2_7WNvK9cY9DjVW3ivll0lxZ9UAOtpybQ>
+Feedback-ID: i56684263:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 17 Jun 2023 06:07:44 -0400 (EDT)
+Message-ID: <c1b23f21-d161-6241-26fb-7a2cbc4c059c@ryhl.io>
+Date:   Sat, 17 Jun 2023 12:08:26 +0200
 MIME-Version: 1.0
-References: <20230614230128.199724bd@kernel.org> <CANiq72nLV-BiXerGhhs+c6yeKk478vO_mKxMa=Za83=HbqQk-w@mail.gmail.com>
- <20230615191931.4e4751ac@kernel.org> <20230616.211821.1815408081024606989.ubuntu@gmail.com>
- <CANiq72mAHv8ozBsZ9-ax9kY8OfESFAc462CxrKNv0gC3r0=Xmg@mail.gmail.com> <20230616112636.5b216a78@kernel.org>
-In-Reply-To: <20230616112636.5b216a78@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 16 Jun 2023 22:05:06 +0200
-Message-ID: <CANiq72n4sr7wYoiB8rv9CLpjkQ=DqWj+WqfHN0QkkLzXeWEJQw@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+From:   Alice Ryhl <alice@ryhl.io>
 Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
-To:     Jakub Kicinski <kuba@kernel.org>
-Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>,
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        FUJITA Tomonori <fujita.tomonori@gmail.com>,
         netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        aliceryhl@google.com, andrew@lunn.ch
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com
+References: <20230614230128.199724bd@kernel.org>
+ <8e9e2908-c0da-49ec-86ef-b20fb3bd71c3@lunn.ch>
+ <20230615190252.4e010230@kernel.org>
+ <20230616.220220.1985070935510060172.ubuntu@gmail.com>
+ <20230616114006.3a2a09e5@kernel.org>
+ <66dcc87e-e03f-1043-c91d-25d6fa7130a1@ryhl.io>
+ <20230616121041.4010f51b@kernel.org>
+ <053cb4c3-aab1-23b3-56e3-4f1741e69404@ryhl.io>
+ <7dbf3c85-02ca-4c9b-b40d-adcdb85305dd@lunn.ch>
+Content-Language: en-US, da
+In-Reply-To: <7dbf3c85-02ca-4c9b-b40d-adcdb85305dd@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, Jun 16, 2023 at 8:26=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> Duplicated driver in a new language means nobody has a real incentive
-> to use it in production. That really mutes the signal we get out of the
-> experiment.
+On 6/16/23 22:04, Andrew Lunn wrote:
+>> Yes, you can certainly put a WARN_ON in the destructor.
+>>
+>> Another possibility is to use a scope to clean up. I don't know anything
+>> about these skb objects are used, but you could have the user define a
+>> "process this socket" function that you pass a pointer to the skb, then make
+>> the return value be something that explains what should be done with the
+>> packet. Since you must return a value of the right type, this forces you to
+>> choose.
+>>
+>> Of course, this requires that the processing of packets can be expressed as
+>> a function call, where it only inspects the packet for the duration of that
+>> function call. (Lifetimes can ensure that the skb pointer does not escape
+>> the function.)
+>>
+>> Would something like that work?
+> 
+> I don't think so, at least not in the contest of an Rust Ethernet
+> driver.
+> 
+> There are two main flows.
+> 
+> A packet is received. An skb is allocated and the received packet is
+> placed into the skb. The Ethernet driver then hands the packet over to
+> the network stack. The network stack is free to do whatever it wants
+> with the packet. Things can go wrong within the driver, so at times it
+> needs to free the skb rather than pass it to the network stack, which
+> would be a drop.
+> 
+> The second flow is that the network stack has a packet it wants sent
+> out an Ethernet port, in the form of an skb. The skb gets passed to
+> the Ethernet driver. The driver will do whatever it needs to do to
+> pass the contents of the skb to the hardware. Once the hardware has
+> it, the driver frees the skb. Again, things can go wrong and it needs
+> to free the skb without sending it, which is a drop.
+> 
+> So the lifetime is not a simple function call.
+> 
+> The drop reason indicates why the packet was dropped. It should give
+> some indication of what problem occurred which caused the drop. So
+> ideally we don't want an anonymous drop. The C code does not enforce
+> that, but it would be nice if the rust wrapper to dispose of an skb
+> did enforce it.
 
-What I was trying to say is that there may be other incentives for
-using the new one, like the ones I gave in the list.
+It sounds like a destructor with WARN_ON is the best approach right now.
 
-Even if there is no incentive for using it right now, one may still
-want to build/design it in order to evaluate Rust and/or prepare
-abstractions for future drivers. This was the reason for the NVMe
-driver request we got back then, for instance.
+Unfortunately, I don't think we can enforce that the destructor is not 
+used today. That said, in the future it may be possible to implement a 
+linter that detects it - I know that there have already been experiments 
+with other custom lints for the kernel (e.g., enforcing that you don't 
+sleep while holding a spinlock).
 
-> At the same time IIUC building the Rust code is not trivial,
-> so IDK if we're ready to force people to use it. Ugh.
+> I would also say that this dummy driver and the C dummy driver is
+> actually wrong in 'dropping' the frame. Its whole purpose in life is to
+> be a black hole. It should only drop the packet if for some reason it
+> cannot throw the packet into the black hole.
 
-I am not sure what you mean -- building works the same way as you have
-done now, i.e. your usual build commands with `make`.
+Ah, I suppose that we would also need a "by value" cleanup method for 
+that case.
 
-If you mean installing the toolchain, then we have a Quick Start guide
-[1], and a script that checks for the requirements.
-
-[1] https://docs.kernel.org/rust/quick-start.html
-
-> Do you have any idea how long it will take until one can
->  dnf install $rust
-> and have that be enough to be build a kernel (for the two major arches)?
-
-You may do it today if the version matches, which for Fedora it should
-e.g. next week or so when we merge the upgrade to 1.70, since Fedora
-has now 1.70 [2].
-
-But since they may not always align, I would recommend using `rustup`
-(or the standalone installers) until we can establish a minimum
-version. Please see the Quick Start guide for details [1].
-
-Other distributions may provide a custom package with the required
-dependencies for building Rust kernel code, like Ubuntu does.
-
-[2] https://packages.fedoraproject.org/pkgs/rust/rust/
-
-Cheers,
-Miguel
+Alice
