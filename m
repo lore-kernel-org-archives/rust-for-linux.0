@@ -2,122 +2,108 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB31EEB64D9
-	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Jun 2023 10:15:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF23CEB64DB
+	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Jun 2023 15:33:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234056AbjFQKPU (ORCPT
+        id S234077AbjFQPd5 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 17 Jun 2023 06:15:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52610 "EHLO
+        Sat, 17 Jun 2023 11:33:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233241AbjFQKPU (ORCPT
+        with ESMTP id S229782AbjFQPd4 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 17 Jun 2023 06:15:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFD511BCF
-        for <rust-for-linux@vger.kernel.org>; Sat, 17 Jun 2023 03:15:18 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 83A5260E9E
-        for <rust-for-linux@vger.kernel.org>; Sat, 17 Jun 2023 10:15:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F83EC433C9;
-        Sat, 17 Jun 2023 10:15:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686996917;
-        bh=wmiarHLZGvZh4nRHX8waapvF4RGqM14UH7gyOSP6LOI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HnI4tTPFT/OEvorQ1DLtz2Ot9cHWY55D5w7VKvqa/soXuWO46ROLyf6spePLdM9NX
-         S6PQllylUJ7b1usqcYG+clqGW/BorEhHTvsy5JUKiET+74LLgrwm1/AUYIZqBDb8q7
-         TLoqyQnvXqWBKIjOQRk0fSbLSfwPiSJNT67loZOM=
-Date:   Sat, 17 Jun 2023 12:15:14 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Alice Ryhl <alice@ryhl.io>
-Cc:     Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
-        FUJITA Tomonori <fujita.tomonori@gmail.com>,
-        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com
-Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
-Message-ID: <2023061743-reverb-movie-969e@gregkh>
-References: <20230614230128.199724bd@kernel.org>
- <8e9e2908-c0da-49ec-86ef-b20fb3bd71c3@lunn.ch>
- <20230615190252.4e010230@kernel.org>
- <20230616.220220.1985070935510060172.ubuntu@gmail.com>
- <20230616114006.3a2a09e5@kernel.org>
- <66dcc87e-e03f-1043-c91d-25d6fa7130a1@ryhl.io>
- <20230616121041.4010f51b@kernel.org>
- <053cb4c3-aab1-23b3-56e3-4f1741e69404@ryhl.io>
- <7dbf3c85-02ca-4c9b-b40d-adcdb85305dd@lunn.ch>
- <c1b23f21-d161-6241-26fb-7a2cbc4c059c@ryhl.io>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c1b23f21-d161-6241-26fb-7a2cbc4c059c@ryhl.io>
+        Sat, 17 Jun 2023 11:33:56 -0400
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80C20173A;
+        Sat, 17 Jun 2023 08:33:55 -0700 (PDT)
+Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6b162127472so1673684a34.0;
+        Sat, 17 Jun 2023 08:33:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687016035; x=1689608035;
+        h=in-reply-to:references:message-id:to:from:subject:cc:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eIrXu2yfb9Pam+bpdsMdAx2WWEzIapMDlsAs1QsbBws=;
+        b=RBZwfxwyvUmlx7gfaQja0EIyLztHe3BBUZtCltHvzg1JOEml2iTtCdo/pr3V/Dnua9
+         qGM2FmKPCVsX2/2Fjbs60I8YYyMvq7C5o4kKo+/q3YpC3GveuIiQeGTD/FMg6w+RKqFV
+         0ebDTbFibZEMMgur9SAVFAvLlQ26gZaWVfFMPHY9BW8SA+G8spyrFul4hiZpMBAzVI65
+         o1FXpATjrIN6T0ClfgpDB5AO4pZ8kZSoKTTvazBlFmmtG5JLQs02am/UbfWrr/jFgAt5
+         kTGr2pRP76Z2JCS31DazLoSsJK+EpcNhxhSSSY4v5EssrtM6dvZx6LYGOIgGCYLwF1qE
+         RAaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687016035; x=1689608035;
+        h=in-reply-to:references:message-id:to:from:subject:cc:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=eIrXu2yfb9Pam+bpdsMdAx2WWEzIapMDlsAs1QsbBws=;
+        b=NwFNtfcs0DjFU+KEYnVvaoL//pptuIVnnR3+rj8P626huU83wE5aoPlcI1a+kNfQ2P
+         dasrgSrl9Em4xzsNH/Fe4rDK/WoZD2hvhmQ9R/QqI8qs4wdIiwKPZcY6DRjeffnPwIRI
+         of3N/dKj5WvQHHSsseX9RdyDOJ+/38HY0gl+mbetccze2c9Mx8NGiOcCVAGHO8LXYcgA
+         DAuab3BvdcNpOmqyOW26yzS13LojQT0GKQ3gyddBXGVGBxcifziNQz3uGergvMZsSgp3
+         RCEi5iJ1pVBgxdGsjvb04U3U6yrDzcXzV+iTQRZ94bwvEALHqS9LggGkR6rfRDeab7n5
+         /tSg==
+X-Gm-Message-State: AC+VfDyZvHeFgL51EjkcyMaZ45QPZxzZOZMFRXaIsPDKspMJ1/EI7kxw
+        cY6ND+2WOgjCAgNR1ruEN4I=
+X-Google-Smtp-Source: ACHHUZ4cTukZlbOT2Rzej4qrlx/YeNZFj5PqAaaj504WWtITW+WCdZ/wmMf5sdoXCfsGaSEUg7HjFw==
+X-Received: by 2002:a05:6830:43:b0:6ac:86bf:f621 with SMTP id d3-20020a056830004300b006ac86bff621mr2754731otp.7.1687016034741;
+        Sat, 17 Jun 2023 08:33:54 -0700 (PDT)
+Received: from localhost ([2600:1700:f3b0:64c0::35])
+        by smtp.gmail.com with ESMTPSA id k1-20020a056830168100b006addf2a4110sm8614459otr.55.2023.06.17.08.33.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 17 Jun 2023 08:33:54 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Sat, 17 Jun 2023 10:33:51 -0500
+Cc:     "Nathan Chancellor" <nathan@kernel.org>,
+        "Nick Desaulniers" <ndesaulniers@google.com>,
+        "Nicolas Schier" <nicolas@fjasle.eu>,
+        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        "Benno Lossin" <benno.lossin@proton.me>,
+        "Alice Ryhl" <aliceryhl@google.com>,
+        "Andreas Hindborg" <nmi@metaspace.dk>,
+        <linux-kbuild@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>,
+        "Jordan Isaacs" <mail@jdisaacs.com>,
+        "Tiago Lam" <tiagolam@gmail.com>
+Subject: Re: [PATCH v2 07/11] kbuild: rust_is_available: fix confusion when
+ a version appears in the path
+From:   "Ethan D. Twardy" <ethan.twardy@gmail.com>
+To:     "Miguel Ojeda" <ojeda@kernel.org>,
+        "Masahiro Yamada" <masahiroy@kernel.org>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        "Alex Gaynor" <alex.gaynor@gmail.com>
+Message-Id: <CTF19P8FLNUZ.3OA1ANA7IUG87@hackbook>
+X-Mailer: aerc 9999
+References: <20230616001631.463536-1-ojeda@kernel.org>
+ <20230616001631.463536-8-ojeda@kernel.org>
+In-Reply-To: <20230616001631.463536-8-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jun 17, 2023 at 12:08:26PM +0200, Alice Ryhl wrote:
-> On 6/16/23 22:04, Andrew Lunn wrote:
-> > > Yes, you can certainly put a WARN_ON in the destructor.
-> > > 
-> > > Another possibility is to use a scope to clean up. I don't know anything
-> > > about these skb objects are used, but you could have the user define a
-> > > "process this socket" function that you pass a pointer to the skb, then make
-> > > the return value be something that explains what should be done with the
-> > > packet. Since you must return a value of the right type, this forces you to
-> > > choose.
-> > > 
-> > > Of course, this requires that the processing of packets can be expressed as
-> > > a function call, where it only inspects the packet for the duration of that
-> > > function call. (Lifetimes can ensure that the skb pointer does not escape
-> > > the function.)
-> > > 
-> > > Would something like that work?
-> > 
-> > I don't think so, at least not in the contest of an Rust Ethernet
-> > driver.
-> > 
-> > There are two main flows.
-> > 
-> > A packet is received. An skb is allocated and the received packet is
-> > placed into the skb. The Ethernet driver then hands the packet over to
-> > the network stack. The network stack is free to do whatever it wants
-> > with the packet. Things can go wrong within the driver, so at times it
-> > needs to free the skb rather than pass it to the network stack, which
-> > would be a drop.
-> > 
-> > The second flow is that the network stack has a packet it wants sent
-> > out an Ethernet port, in the form of an skb. The skb gets passed to
-> > the Ethernet driver. The driver will do whatever it needs to do to
-> > pass the contents of the skb to the hardware. Once the hardware has
-> > it, the driver frees the skb. Again, things can go wrong and it needs
-> > to free the skb without sending it, which is a drop.
-> > 
-> > So the lifetime is not a simple function call.
-> > 
-> > The drop reason indicates why the packet was dropped. It should give
-> > some indication of what problem occurred which caused the drop. So
-> > ideally we don't want an anonymous drop. The C code does not enforce
-> > that, but it would be nice if the rust wrapper to dispose of an skb
-> > did enforce it.
-> 
-> It sounds like a destructor with WARN_ON is the best approach right now.
+On Thu Jun 15, 2023 at 7:16 PM CDT, Miguel Ojeda wrote:
+> ---
+>  scripts/rust_is_available.sh | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
+> index 7e0368babe64..810691af66eb 100755
+> --- a/scripts/rust_is_available.sh
+> +++ b/scripts/rust_is_available.sh
+> @@ -157,9 +157,7 @@ fi
+>  # of the `libclang` found by the Rust bindings generator is suitable.
+>  bindgen_libclang_version=3D$( \
+>  	echo "$bindgen_libclang_output" \
+> -		| grep -F 'clang version ' \
+> -		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
+> -		| head -n 1 \
+> +		| sed -nE 's:.*clang version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
+>  )
+>  bindgen_libclang_min_version=3D$($min_tool_version llvm)
+>  bindgen_libclang_cversion=3D$(get_canonical_version $bindgen_libclang_ve=
+rsion)
 
-Note, if that WARN_ON fires, you just rebooted the machine as the huge
-majority of all Linux systems in the world run with "panic on warn"
-enabled :(
-
-So almost NEVER do a WARN* call if at all possible, unless there is no
-way back, and you can not recover from the mess, and crashing the system
-is your only recourse (instead of locking it up.)
-
-So please, don't do that, recover and report an error to the caller if
-possible and let them handle it properly.  Yes, in a descructor that's
-almost impossible, but then perhaps if this is a real problem, something
-needs to be changed somewhere else in the callpath.
-
-thanks,
-
-greg k-h
+Reviewed-By: Ethan Twardy <ethan.twardy@gmail.com>
+Tested-By: Ethan Twardy <ethan.twardy@gmail.com>
