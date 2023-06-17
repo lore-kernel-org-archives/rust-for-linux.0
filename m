@@ -2,108 +2,141 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF23CEB64DB
-	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Jun 2023 15:33:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08BEDEB64D9
+	for <rust-for-linux@archiver.kernel.org>; Sat, 17 Jun 2023 16:04:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234077AbjFQPd5 (ORCPT
+        id S229686AbjFQQE6 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 17 Jun 2023 11:33:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34752 "EHLO
+        Sat, 17 Jun 2023 12:04:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229782AbjFQPd4 (ORCPT
+        with ESMTP id S229675AbjFQQE5 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 17 Jun 2023 11:33:56 -0400
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80C20173A;
-        Sat, 17 Jun 2023 08:33:55 -0700 (PDT)
-Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6b162127472so1673684a34.0;
-        Sat, 17 Jun 2023 08:33:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687016035; x=1689608035;
-        h=in-reply-to:references:message-id:to:from:subject:cc:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eIrXu2yfb9Pam+bpdsMdAx2WWEzIapMDlsAs1QsbBws=;
-        b=RBZwfxwyvUmlx7gfaQja0EIyLztHe3BBUZtCltHvzg1JOEml2iTtCdo/pr3V/Dnua9
-         qGM2FmKPCVsX2/2Fjbs60I8YYyMvq7C5o4kKo+/q3YpC3GveuIiQeGTD/FMg6w+RKqFV
-         0ebDTbFibZEMMgur9SAVFAvLlQ26gZaWVfFMPHY9BW8SA+G8spyrFul4hiZpMBAzVI65
-         o1FXpATjrIN6T0ClfgpDB5AO4pZ8kZSoKTTvazBlFmmtG5JLQs02am/UbfWrr/jFgAt5
-         kTGr2pRP76Z2JCS31DazLoSsJK+EpcNhxhSSSY4v5EssrtM6dvZx6LYGOIgGCYLwF1qE
-         RAaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687016035; x=1689608035;
-        h=in-reply-to:references:message-id:to:from:subject:cc:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eIrXu2yfb9Pam+bpdsMdAx2WWEzIapMDlsAs1QsbBws=;
-        b=NwFNtfcs0DjFU+KEYnVvaoL//pptuIVnnR3+rj8P626huU83wE5aoPlcI1a+kNfQ2P
-         dasrgSrl9Em4xzsNH/Fe4rDK/WoZD2hvhmQ9R/QqI8qs4wdIiwKPZcY6DRjeffnPwIRI
-         of3N/dKj5WvQHHSsseX9RdyDOJ+/38HY0gl+mbetccze2c9Mx8NGiOcCVAGHO8LXYcgA
-         DAuab3BvdcNpOmqyOW26yzS13LojQT0GKQ3gyddBXGVGBxcifziNQz3uGergvMZsSgp3
-         RCEi5iJ1pVBgxdGsjvb04U3U6yrDzcXzV+iTQRZ94bwvEALHqS9LggGkR6rfRDeab7n5
-         /tSg==
-X-Gm-Message-State: AC+VfDyZvHeFgL51EjkcyMaZ45QPZxzZOZMFRXaIsPDKspMJ1/EI7kxw
-        cY6ND+2WOgjCAgNR1ruEN4I=
-X-Google-Smtp-Source: ACHHUZ4cTukZlbOT2Rzej4qrlx/YeNZFj5PqAaaj504WWtITW+WCdZ/wmMf5sdoXCfsGaSEUg7HjFw==
-X-Received: by 2002:a05:6830:43:b0:6ac:86bf:f621 with SMTP id d3-20020a056830004300b006ac86bff621mr2754731otp.7.1687016034741;
-        Sat, 17 Jun 2023 08:33:54 -0700 (PDT)
-Received: from localhost ([2600:1700:f3b0:64c0::35])
-        by smtp.gmail.com with ESMTPSA id k1-20020a056830168100b006addf2a4110sm8614459otr.55.2023.06.17.08.33.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Jun 2023 08:33:54 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Sat, 17 Jun 2023 10:33:51 -0500
-Cc:     "Nathan Chancellor" <nathan@kernel.org>,
-        "Nick Desaulniers" <ndesaulniers@google.com>,
-        "Nicolas Schier" <nicolas@fjasle.eu>,
-        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        "Benno Lossin" <benno.lossin@proton.me>,
-        "Alice Ryhl" <aliceryhl@google.com>,
-        "Andreas Hindborg" <nmi@metaspace.dk>,
-        <linux-kbuild@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>,
-        "Jordan Isaacs" <mail@jdisaacs.com>,
-        "Tiago Lam" <tiagolam@gmail.com>
-Subject: Re: [PATCH v2 07/11] kbuild: rust_is_available: fix confusion when
- a version appears in the path
-From:   "Ethan D. Twardy" <ethan.twardy@gmail.com>
-To:     "Miguel Ojeda" <ojeda@kernel.org>,
-        "Masahiro Yamada" <masahiroy@kernel.org>,
-        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        "Alex Gaynor" <alex.gaynor@gmail.com>
-Message-Id: <CTF19P8FLNUZ.3OA1ANA7IUG87@hackbook>
-X-Mailer: aerc 9999
-References: <20230616001631.463536-1-ojeda@kernel.org>
- <20230616001631.463536-8-ojeda@kernel.org>
-In-Reply-To: <20230616001631.463536-8-ojeda@kernel.org>
+        Sat, 17 Jun 2023 12:04:57 -0400
+Received: from out-8.mta1.migadu.com (out-8.mta1.migadu.com [IPv6:2001:41d0:203:375::8])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6169610E0
+        for <rust-for-linux@vger.kernel.org>; Sat, 17 Jun 2023 09:04:55 -0700 (PDT)
+Date:   Sat, 17 Jun 2023 12:04:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1687017891;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=SztXBdkQlbXnmsEaFravD4BBS1Lb+CEReDCBmvg66lk=;
+        b=xul8r4n3tOMBjg2b397tAYQGd6ZlYsPtVKfOHZYxL0bxetqNhM4ak5O/x4hUOwekdcKK7j
+        PMXnTBcZ6XSLoUi0Ol+ZRlIluQp06I0J4VdYRyVVybMX+BRhIZn/gepDXbTfH9UQWMC2za
+        ANkh6zijHLmFtl5EiMzMcAkI+8XrFg8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Kent Overstreet <kent.overstreet@linux.dev>
+To:     Ariel Miculas <ariel.miculas@gmail.com>
+Cc:     Ariel Miculas <amiculas@cisco.com>, rust-for-linux@vger.kernel.org,
+        Miguel Ojeda <ojeda@kernel.org>, sviatoslavpestov@gmail.com,
+        dwrenshaw@gmail.com, temporal@gmail.com
+Subject: Re: [PATCH 31/80] rust: serde: add SPDX License Identifiers
+Message-ID: <ZI3ZnFk2uELYFX0R@moria.home.lan>
+References: <20230609063118.24852-1-amiculas@cisco.com>
+ <20230609063118.24852-32-amiculas@cisco.com>
+ <ZIPDCGM9HbPhR2yW@moria.home.lan>
+ <CAPDJoNuLfNWBqem7cD+vppfgg-3uBDQ9hnqJfAJEHev8fHnHyA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPDJoNuLfNWBqem7cD+vppfgg-3uBDQ9hnqJfAJEHev8fHnHyA@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Thu Jun 15, 2023 at 7:16 PM CDT, Miguel Ojeda wrote:
-> ---
->  scripts/rust_is_available.sh | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-> index 7e0368babe64..810691af66eb 100755
-> --- a/scripts/rust_is_available.sh
-> +++ b/scripts/rust_is_available.sh
-> @@ -157,9 +157,7 @@ fi
->  # of the `libclang` found by the Rust bindings generator is suitable.
->  bindgen_libclang_version=3D$( \
->  	echo "$bindgen_libclang_output" \
-> -		| grep -F 'clang version ' \
-> -		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
-> -		| head -n 1 \
-> +		| sed -nE 's:.*clang version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
->  )
->  bindgen_libclang_min_version=3D$($min_tool_version llvm)
->  bindgen_libclang_cversion=3D$(get_canonical_version $bindgen_libclang_ve=
-rsion)
+On Thu, Jun 15, 2023 at 06:05:47PM +0300, Ariel Miculas wrote:
+> On Sat, Jun 10, 2023 at 3:29 AM Kent Overstreet
+> <kent.overstreet@linux.dev> wrote:
+> >
+> > On Fri, Jun 09, 2023 at 09:30:29AM +0300, Ariel Miculas wrote:
+> > > From: Miguel Ojeda <ojeda@kernel.org>
+> > >
+> > > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> > > ---
+> > >  rust/serde/de/format.rs         | 2 ++
+> > >  rust/serde/de/ignored_any.rs    | 2 ++
+> > >  rust/serde/de/impls.rs          | 2 ++
+> > >  rust/serde/de/mod.rs            | 2 ++
+> > >  rust/serde/de/seed.rs           | 2 ++
+> > >  rust/serde/de/utf8.rs           | 2 ++
+> > >  rust/serde/de/value.rs          | 2 ++
+> > >  rust/serde/integer128.rs        | 2 ++
+> > >  rust/serde/lib.rs               | 2 ++
+> > >  rust/serde/macros.rs            | 2 ++
+> > >  rust/serde/private/de.rs        | 2 ++
+> > >  rust/serde/private/doc.rs       | 2 ++
+> > >  rust/serde/private/mod.rs       | 2 ++
+> > >  rust/serde/private/ser.rs       | 2 ++
+> > >  rust/serde/private/size_hint.rs | 2 ++
+> > >  rust/serde/ser/fmt.rs           | 2 ++
+> > >  rust/serde/ser/impls.rs         | 2 ++
+> > >  rust/serde/ser/impossible.rs    | 2 ++
+> > >  rust/serde/ser/mod.rs           | 2 ++
+> > >  rust/serde/std_error.rs         | 2 ++
+> > >  20 files changed, 40 insertions(+)
+> >
+> > Separately from that - are we sure we want to be pulling Serde into the
+> > kernel?
+> >
+> > Don't get me wrong, Serde is amazing - it's highly ergonomic, and makes
+> > a lot of compatibility issues just completely go away. It's
+> > impresssively well done.
+> >
+> > But it's a full json parser (are you using it in json mode here? it
+> > supports multiple formats), and object size is going to be a
+> > consideration. In particular, the way it works is by generating (via
+> > procedural macros) encode/decode functions for every type you use
+> > #[derive] an encoder/decoder for, so depending on how that was
+> > implemented that's going to add up.
+> >
+> > I would need to see text size numbers - the bloaty tool might be
+> > useful here: https://github.com/google/bloaty
+> >
+> > I'd give serious consideration to Cap'n proto instead, it's not as
+> > ergonomic as Serde (the get/set interface is not ideal, ask me for more
+> > details on how this could be fixed) but it's lower overhead than Serde.
+> I've been checking out Cap'n proto and indeed that get/set interface
+> seems cumbersome, so how do you fix it?
 
-Reviewed-By: Ethan Twardy <ethan.twardy@gmail.com>
-Tested-By: Ethan Twardy <ethan.twardy@gmail.com>
+One thing that makes it cumbersome is that any get can return an error:
+a straightforward change would be to add a method that does all
+validation/bounds checking up front, and returns a new type with methods
+that can't return errors.
+
+Kenton did it that way to avoid any O(n) parsing overhead up front;
+with messages that can be arbitrarily sized it's definitely an option
+that you want to have, especially when you won't necessarily be reading
+the entire thing. But in my experience most messages are short, and
+there's a reading-off-the-disk step or reading-from-the-network step,
+and you probably want to do other validation, so doing all validation up
+front simplifies error handling.
+
+For the next step, what we really what we'd want is for cap'n proto to
+generate normal Rust types but with a #[repr] that matches the cap'n
+proto type layout.
+
+Having the cap'n proto compiler emit #[repr(c)] types with the
+appropriate padding isn't enough because:
+ - integers are stored little endian, and need byte swabbing to access
+ - booleans are stored as bitfields, and Rust doesn't have native
+   bitfields
+
+Doing this right would require importing computed properties from Swift:
+a computed property is something that looks like a struct field but
+requires get/set calls to access it, the compiler just knows how to emit
+them.
+
+Miguel might be able to point us towards rustc people to talk to about
+this :) Having native language-level types which are directly
+serializable is amazing, as we've already seen with Serde. If we could
+skip the encode/decode step and just mmap a file and start walking
+objects - this could really change how we write and design filesystems,
+databases - even compilers. Debug info (e.g. dwarf) is all about
+serializing compiler internals, and a lot of the problems compiler
+people are tackling right now basically require doing this in a more
+principled way.
