@@ -2,182 +2,163 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22082EB64D9
-	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Jun 2023 11:15:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 12A59EB64D9
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Jun 2023 11:27:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230026AbjFSLPC (ORCPT
+        id S230079AbjFSL1L (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 19 Jun 2023 07:15:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42626 "EHLO
+        Mon, 19 Jun 2023 07:27:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229559AbjFSLOv (ORCPT
+        with ESMTP id S230046AbjFSL1K (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 19 Jun 2023 07:14:51 -0400
+        Mon, 19 Jun 2023 07:27:10 -0400
 Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F95E94;
-        Mon, 19 Jun 2023 04:14:50 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id 38F385C0273;
-        Mon, 19 Jun 2023 07:14:46 -0400 (EDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3054DB1;
+        Mon, 19 Jun 2023 04:27:09 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id 9CEA95C0226;
+        Mon, 19 Jun 2023 07:27:08 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Mon, 19 Jun 2023 07:14:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1687173286; x=1687259686; bh=oi
-        jxXR5PNPp5nmjwjO50BTIW1T7lI9DdXO0k2ZBn404=; b=yqrsAHe2b39hCHkWAf
-        Y5Rw1e6V7JOHKbBKrxjK2mxPr1Cc9iR8jp4ZG8AHfgBE3DIwEzoAXn7LUbtzvSIn
-        /ZtyhxJsrX53P/0GeuBvH2wYOjNBiddQUpJZC9rpJE0su415Wld9gVw79DJQcw6E
-        /jjHMG0FNb2xUiSYT/XgPgNgXvcF5AgzkyhwJI+mSIMq/2dOpvOA5JL5eVg33v81
-        R2VuQv3f+9hJuLzSzNuUAQEqKy1qeLMDKO5vY5kZbE2Za6oebgTHWOvRfH1hXKDi
-        GeDsG5BrLguFnK8QbeFsm4+9izwbsXmGniwMiv36OHFx+xsBLo6NCYA/d2tHtNRL
-        Ot3A==
+  by compute3.internal (MEProxy); Mon, 19 Jun 2023 07:27:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crisal.io; h=cc
+        :cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1687174028; x=1687260428; bh=3sVGVSE5umY9tDjmVgyBReGwhLjic+x53BQ
+        ZNOSbzwY=; b=L7x3MR20u2dIWRGgX7E5CmenYhU3ZxV6sESBgbnq08n3f1kWg2Q
+        YauJiWVWqms5DKbWEf6PfXOuKEOCeVX56McVFsV3lxJbK5zdS8D1UqVmu8yCP4Dw
+        rlSsKilVGTnJEoeNqi6sf10Izs7afz61b/eILm+AJ7KoF6h2tDaHf689ncZWAg+Z
+        RTTX51HJOvrYD57OhkXEgig+T6BRi6WaX/he99cDTUozJhL1NgbYoNPyeZsP9+UA
+        aanm5nPez0CoOoY8ZWd4az5MzgdXlWRNCjAB3bJaeR+u6ORON950y92vdLG7cOkP
+        GQoX+tWa7yWJV0EVBae4YVeq5KoOmYjL6GQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1687173286; x=1687259686; bh=oijxXR5PNPp5n
-        mjwjO50BTIW1T7lI9DdXO0k2ZBn404=; b=mYffinqf8xdotv2iURcxvb3x72a+W
-        GdqMfR57JgL5YYpG3MxYZ7Hijii5EVjUvEXS9aFFRPBiBQX6rW15QXwSyC9pWGfD
-        2IUPY2NaHaTAQcU1Btcbh8q2p3MV64C/pWz9ejslsGuFjvw5sB/123ywr8qvZnu6
-        ppX1otM1V2cxDNWmoonJzfzcGeWqRhp2hY53oQ9ojzQ3TlAzf7WcRGu6j2NH19fX
-        2Z75oQdEl/UJvviahPuJ9l9RAw53VWMKgrFsYCZp+ED8mqtnK1yphztXU7L7o0ar
-        vAaDoxJ4UMnRgMrSYBDHuhZ0E7zqQyQXLmUdllw/x2s8SP/jIDR4cAlFg==
-X-ME-Sender: <xms:pTiQZEDr8QiOKUa-YMv1w9FTBMaq3sWKbcEKYlZCQ2bF-EY6vJ_d_g>
-    <xme:pTiQZGjGUs8ytv3uWSWnssYDsO9zRJWEzi7hcysV5_XpNsLRqpxyzPFXdx5k_Pf59
-    hhXwAr8TLFR_w>
-X-ME-Received: <xmr:pTiQZHlCwLOYWjSx8ZYgnehAH3XTzbml_1A7Wuq3BmimALMceVH4pTNpF81bTEIo-nFnogsvKqH0qWaYvKU5d7DS36tHmIzKrk6OaC-vqqg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeefvddgfeehucetufdoteggodetrfdotf
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1687174028; x=1687260428; bh=3sVGVSE5umY9tDjmVgyBReGwhLjic+x53BQ
+        ZNOSbzwY=; b=oSn55Y7MgyEJ76pymBr9QYRu2qdWeoJm9WT1SXgFu78nLtHWbiB
+        DwXjOouWmJXdfAaGks9e4thjDBj4VuPSK+BPXGTNP36wQB3KnTnwZTXlv+UPDQk9
+        D9+wpCDW+Dnn7xs8Y0wyidDpY/mKuTzpjLBQKi1yHQ7hnWS6o8ws4MOpD06kqEpp
+        YcrRK0tjO7N9TYE4j9A6s8qBmkxWGfrZaELHwSloNxif5ofm9uxqHYMfOBlFCgog
+        gitH9w1sCrrn0nLpjm+87Njf84mvEjSZ00gCW6twMck5JvdaH0dAZqRAkNHLs0SK
+        7ARqHvepbY+ykgQLfVI5BSucn7q4iOxYPSQ==
+X-ME-Sender: <xms:jDuQZBHlxu3jS8z1-wQwiIgOmW1qPX8IHODZik5GO_hh5LD5IaLZHw>
+    <xme:jDuQZGXqHiGzz0HDXtZtD2dewul6bDW3mBpMk1L_NRXHU0kVGyyS1NrjXvpfOCoyO
+    eFZDcBaLeCrVqTFLFk>
+X-ME-Received: <xmr:jDuQZDLjPIMP60RvMKxEE3Ppg3NZgMce_4xt4mDGQT-49oKrP9EPb8RTeMvYaGF-0ONhkF6loHx7RVRskEFPoIaW_GQP>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeefvddgfeekucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
-    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
-    hhrdgtohhm
-X-ME-Proxy: <xmx:pTiQZKxvBL_ZySKrDRF_ogO1SOmpSQ8xerJSQmfm_6oEITh1jm9xMw>
-    <xmx:pTiQZJTYC6gm_kBFm5JMbENj45Lh4RXmDzu15lZ1To6b-wak03nhrw>
-    <xmx:pTiQZFbL9rJLbALGsVNPSw9RFp1hkjd-lcReMLnMv1FQ9pPhTwbS8w>
-    <xmx:pjiQZFq3DFeHFbXfjMq1ZrKNnLEb_RVTINj7-PmEEcLk5m-LbaC9tg>
-Feedback-ID: i787e41f1:Fastmail
+    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtudejnecuhfhrohhmpefgmhhi
+    lhhiohcuvehosghoshculmhlvhgrrhgviicuoegvmhhilhhiohestghrihhsrghlrdhioh
+    eqnecuggftrfgrthhtvghrnhepkeeggeeghfdtvdegueekueejvdekgffgtdeljeeuhedv
+    tdeludekfeetleefheeinecuffhomhgrihhnpehllhhvmhdrohhrghenucevlhhushhtvg
+    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegvmhhilhhiohestghrihhs
+    rghlrdhioh
+X-ME-Proxy: <xmx:jDuQZHEUB6iNqenKsc_74jcFkzvzAAlnYOkGnoFRbvMuPGp9thUIzw>
+    <xmx:jDuQZHX-0Pnl_PuDvR3znuTX00GPcVa9L9K69xMtCEpWPVbESu_Fuw>
+    <xmx:jDuQZCMSXK2mW6_ow8Q9WzTXb49b4_NqnDG6xwjEtPzODa-BKAl_xw>
+    <xmx:jDuQZNcqRhQDH-tahtqR6YuYByt74y0BPC4GYcc0t96zk0cGedVCZQ>
+Feedback-ID: i2e3c46c1:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 19 Jun 2023 07:14:45 -0400 (EDT)
-Date:   Mon, 19 Jun 2023 13:14:42 +0200
-From:   Greg KH <greg@kroah.com>
-To:     FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc:     alice@ryhl.io, andrew@lunn.ch, kuba@kernel.org,
-        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com
-Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
-Message-ID: <2023061940-kindling-lagoon-3054@gregkh>
-References: <c1b23f21-d161-6241-26fb-7a2cbc4c059c@ryhl.io>
- <20230619.175003.876496330266041709.ubuntu@gmail.com>
- <2023061940-rotting-frequency-765f@gregkh>
- <20230619.200559.1405325531450768221.ubuntu@gmail.com>
+ 19 Jun 2023 07:27:07 -0400 (EDT)
+Message-ID: <48a98d0c-bfd1-68a9-5d1f-65c942b7c0ef@crisal.io>
+Date:   Mon, 19 Jun 2023 13:27:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230619.200559.1405325531450768221.ubuntu@gmail.com>
+User-Agent: Thunderbird Daily
+Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>, kuba@kernel.org,
+        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com
+References: <20230614230128.199724bd@kernel.org>
+ <8e9e2908-c0da-49ec-86ef-b20fb3bd71c3@lunn.ch>
+ <20230615190252.4e010230@kernel.org>
+ <20230616.220220.1985070935510060172.ubuntu@gmail.com>
+ <f28d6403-d042-4ffb-9872-044388d0f9d9@lunn.ch>
+ <CANiq72mMi=7P9OxSH0+ORYDEyxG3+n5uOv_ooxMJ72YRBRZ+PQ@mail.gmail.com>
+ <a4bc8847-c668-4cff-9892-663516cf8127@lunn.ch>
+Content-Language: en-US
+From:   =?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>
+Autocrypt: addr=emilio@crisal.io;
+ keydata= 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
+In-Reply-To: <a4bc8847-c668-4cff-9892-663516cf8127@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Jun 19, 2023 at 08:05:59PM +0900, FUJITA Tomonori wrote:
-> On Mon, 19 Jun 2023 11:46:38 +0200
-> Greg KH <greg@kroah.com> wrote:
+Hi Andrew, Miguel,
+
+On 6/16/23 16:43, Andrew Lunn wrote:
+> I said in another email, i don't want to suggest premature
+> optimisation, before profiling is done. But in C, these functions are
+> inline for a reason. We don't want the cost of a subroutine call. We
+> want the compiler to be able to inline the code, and the optimiser to
+> be able to see it and generate the best code it can.
 > 
-> > On Mon, Jun 19, 2023 at 05:50:03PM +0900, FUJITA Tomonori wrote:
-> >> Hi,
-> >> 
-> >> On Sat, 17 Jun 2023 12:08:26 +0200
-> >> Alice Ryhl <alice@ryhl.io> wrote:
-> >> 
-> >> > On 6/16/23 22:04, Andrew Lunn wrote:
-> >> >>> Yes, you can certainly put a WARN_ON in the destructor.
-> >> >>>
-> >> >>> Another possibility is to use a scope to clean up. I don't know
-> >> >>> anything
-> >> >>> about these skb objects are used, but you could have the user define a
-> >> >>> "process this socket" function that you pass a pointer to the skb,
-> >> >>> then make
-> >> >>> the return value be something that explains what should be done with
-> >> >>> the
-> >> >>> packet. Since you must return a value of the right type, this forces
-> >> >>> you to
-> >> >>> choose.
-> >> >>>
-> >> >>> Of course, this requires that the processing of packets can be
-> >> >>> expressed as
-> >> >>> a function call, where it only inspects the packet for the duration of
-> >> >>> that
-> >> >>> function call. (Lifetimes can ensure that the skb pointer does not
-> >> >>> escape
-> >> >>> the function.)
-> >> >>>
-> >> >>> Would something like that work?
-> >> >> I don't think so, at least not in the contest of an Rust Ethernet
-> >> >> driver.
-> >> >> There are two main flows.
-> >> >> A packet is received. An skb is allocated and the received packet is
-> >> >> placed into the skb. The Ethernet driver then hands the packet over to
-> >> >> the network stack. The network stack is free to do whatever it wants
-> >> >> with the packet. Things can go wrong within the driver, so at times it
-> >> >> needs to free the skb rather than pass it to the network stack, which
-> >> >> would be a drop.
-> >> >> The second flow is that the network stack has a packet it wants sent
-> >> >> out an Ethernet port, in the form of an skb. The skb gets passed to
-> >> >> the Ethernet driver. The driver will do whatever it needs to do to
-> >> >> pass the contents of the skb to the hardware. Once the hardware has
-> >> >> it, the driver frees the skb. Again, things can go wrong and it needs
-> >> >> to free the skb without sending it, which is a drop.
-> >> >> So the lifetime is not a simple function call.
-> >> >> The drop reason indicates why the packet was dropped. It should give
-> >> >> some indication of what problem occurred which caused the drop. So
-> >> >> ideally we don't want an anonymous drop. The C code does not enforce
-> >> >> that, but it would be nice if the rust wrapper to dispose of an skb
-> >> >> did enforce it.
-> >> > 
-> >> > It sounds like a destructor with WARN_ON is the best approach right
-> >> > now.
-> >> 
-> >> Better to simply BUG()? We want to make sure that a device driver
-> >> explicity calls a function that consumes a skb object (on tx path,
-> >> e.g., napi_consume_skb()). If a device driver doesn't call such, it's
-> >> a bug that should be found easily and fixed during the development. It
-> >> would be even better if the compiler could find such though.
-> > 
-> > No, BUG() means "I have given up all hope here because the hardware is
-> > broken and beyond repair so the machine will now crash and take all of
-> > your data with it because I don't know how to properly recover".  That
-> > should NEVER happen in a device driver, as that's very presumptious of
-> > it, and means the driver itself is broken.
-> > 
-> > Report the error back up the chain and handle it properly, that's the
-> > correct thing to do.
-> 
-> I see. Then netdev_warn() should be used instead.
+> Can the rust compile inline the binding including the FFI call?
 
-Yes.
+This is possible, with cross-language LTO, see:
 
-> Is it possible to handle the case where a device driver wrongly
-> doesn't consume a skb object?
+   https://blog.llvm.org/2019/09/closing-gap-cross-language-lto-between.html
 
-I have no idea as I do not know the network driver stack, sorry.
+There are some requirements that need to happen for that to work 
+(mainly, I believe, that the LLVM version used by rustc and clang agree).
 
-> >> If Rust bindings for netdev could help device developpers in such way,
-> >> it's worth an experiments? because looks like netdev subsystem accepts
-> >> more drivers for new hardware than other subsystems.
-> > 
-> > Have you looked at the IIO subsystem?  :)
-> 
-> No, I've not. Are there possible drivers that Rust could be useful
-> for?
+But in general it is possible. We use it extensively on Firefox. Of 
+course the requirements of Firefox and the kernel might be different.
 
-Who knows, you said you were looking for subsystems with lots and lots
-of new drivers, and the IIO subsystem has over a thousand of them, all
-just added in the past few years.
+I think we rely heavily on PGO instrumentation to make the linker inline 
+ffi functions, but there might be other ways of forcing the linker to 
+inline particular calls that bindgen could generate or what not.
 
-good luck!
+Cheers,
 
-greg k-h
+  -- Emilio
