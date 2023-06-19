@@ -2,210 +2,135 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2E0BEB64D8
-	for <rust-for-linux@archiver.kernel.org>; Sun, 18 Jun 2023 16:18:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48C31EB64D9
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Jun 2023 08:51:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229464AbjFRQQS (ORCPT
+        id S230432AbjFSIvm (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 18 Jun 2023 12:16:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
+        Mon, 19 Jun 2023 04:51:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjFRQQS (ORCPT
+        with ESMTP id S230429AbjFSIvY (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 18 Jun 2023 12:16:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4711E1AB;
-        Sun, 18 Jun 2023 09:16:13 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D6E60612A5;
-        Sun, 18 Jun 2023 16:16:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD367C433C8;
-        Sun, 18 Jun 2023 16:16:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687104972;
-        bh=LheThdeDVN84aRUG/RORjdWuXRzKBo9kbyrfOkt+tMk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ZX3N1MkkwdJZq8Wm4ycvLs9rPgdBZKHnZDDx2C/TMM2epMMKCZjAz+52Nw3IOvGs1
-         pwSEIQJjwTaBy/f7G6QvXzHc1xIBsqPZe04ubxXJOzWbempR0F/0msCiT0XbLRVt0U
-         86M7G5i6gHe8CCK+Osug2+I/r5hFeFsJKGoDSFFUYS9iXQrbEzEIwZ6eRhGPttnZ7y
-         GTMoTNOvho9+nzMdG9i1lWHQV4xzJGX3AFuNKysy4gECevIuiICA6c0J25OvmqoebE
-         pONhzECIprzeTjwVDibfwPAl6xkA+py/fNFEokmNn8mSldyIb192x8tTiavJK/xwf0
-         f8Yo+ylcgcpTA==
-From:   Miguel Ojeda <ojeda@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust for 6.5
-Date:   Sun, 18 Jun 2023 18:15:58 +0200
-Message-ID: <20230618161558.1051269-1-ojeda@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Mon, 19 Jun 2023 04:51:24 -0400
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E71981B4;
+        Mon, 19 Jun 2023 01:50:05 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6668b13c7daso1002959b3a.1;
+        Mon, 19 Jun 2023 01:50:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687164605; x=1689756605;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dX39+CU4/5ysVNF0CJKPL8tEIKfEU4/6ptS92TtYaX4=;
+        b=mnDveZCTFK9TMCYyl5PfZUF+C560poHcX5m+5IU2+TxXKYyymKG0gXvQmyKACX7bER
+         vNqrRKT7P2zcQ3GlU6Yf6+j9ipccdmWuG8wgqIle74sXVTLOY0laZBUhQCcYDiI0Sb/6
+         AYw1eb+Wk9upCJ8h4QJrJW7e40pJWd71AEL03DhGGJnd3xuCXlraPT3pvIzfRyPZaa4q
+         sMRrAuHv4pATcWIJvqYORuF//IwS/mhmf36AC4hT5UihdrTZqda+Vd7ZqkXnLzN5tIRa
+         IZukMUqay8PZDM5TdTdXlxdr6ZG4c0gK/6IsMHjQ3ClMk7ukuMW3kieQXSviRNk2M1U8
+         XBzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687164605; x=1689756605;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dX39+CU4/5ysVNF0CJKPL8tEIKfEU4/6ptS92TtYaX4=;
+        b=lKmQoFHB0N6V8MVhANKCMvgve0/IfOD6skjc5WQWm5UG2itstXmVEJkGHdlwh1FDcG
+         lnmuj2Ns8vchInB/weh7a41A7E/I9YnjWUTBhCeldpjEjRUw/tofSg1SFmCyb+bapxpU
+         3iP1FAhKPfKLNKX5P9p/8NRm8RV9pZaHDIHScQxDzP8V0nmx4QvNFJX2BPzI3zuvOezH
+         VQI23Plzul0WMVBaIQU9J8VjZnkGY4Ss9t984VOJWxK8aU7/XXq4y5dXEhm9IeE4mUZC
+         Egr2O7fEXzlXz5eX2Rsn2uwsbMzGSZOW/tzERnr12BKTEltmMqsO9SUvfu52lNJOUCkH
+         jL9Q==
+X-Gm-Message-State: AC+VfDx9Ox80v4LahDw4boIigd6XUbqg2ZdPAu8e7snRZvUI8Ip6f2Jg
+        +0nBeLw8gqLVmqiIM3s8Gtg=
+X-Google-Smtp-Source: ACHHUZ5y/SFB8Chp3NOXvZe01fLhPfztc5niTNZEV+vka1rlmFTXw8P0fP35NbM+i07k3BpIgErQRw==
+X-Received: by 2002:a05:6a00:1d95:b0:666:efc7:2463 with SMTP id z21-20020a056a001d9500b00666efc72463mr7533007pfw.2.1687164605056;
+        Mon, 19 Jun 2023 01:50:05 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id q18-20020a62e112000000b0064ccfb73cb8sm2000796pfh.46.2023.06.19.01.50.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jun 2023 01:50:03 -0700 (PDT)
+Date:   Mon, 19 Jun 2023 17:50:03 +0900 (JST)
+Message-Id: <20230619.175003.876496330266041709.ubuntu@gmail.com>
+To:     alice@ryhl.io
+Cc:     andrew@lunn.ch, kuba@kernel.org, fujita.tomonori@gmail.com,
+        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
+From:   FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <c1b23f21-d161-6241-26fb-7a2cbc4c059c@ryhl.io>
+References: <053cb4c3-aab1-23b3-56e3-4f1741e69404@ryhl.io>
+        <7dbf3c85-02ca-4c9b-b40d-adcdb85305dd@lunn.ch>
+        <c1b23f21-d161-6241-26fb-7a2cbc4c059c@ryhl.io>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Linus,
+Hi,
 
-This is the next round of the Rust support.
+On Sat, 17 Jun 2023 12:08:26 +0200
+Alice Ryhl <alice@ryhl.io> wrote:
 
-All commits have been in linux-next for more than 2 weeks, except the
-last which has been there for 4 days.
+> On 6/16/23 22:04, Andrew Lunn wrote:
+>>> Yes, you can certainly put a WARN_ON in the destructor.
+>>>
+>>> Another possibility is to use a scope to clean up. I don't know
+>>> anything
+>>> about these skb objects are used, but you could have the user define a
+>>> "process this socket" function that you pass a pointer to the skb,
+>>> then make
+>>> the return value be something that explains what should be done with
+>>> the
+>>> packet. Since you must return a value of the right type, this forces
+>>> you to
+>>> choose.
+>>>
+>>> Of course, this requires that the processing of packets can be
+>>> expressed as
+>>> a function call, where it only inspects the packet for the duration of
+>>> that
+>>> function call. (Lifetimes can ensure that the skb pointer does not
+>>> escape
+>>> the function.)
+>>>
+>>> Would something like that work?
+>> I don't think so, at least not in the contest of an Rust Ethernet
+>> driver.
+>> There are two main flows.
+>> A packet is received. An skb is allocated and the received packet is
+>> placed into the skb. The Ethernet driver then hands the packet over to
+>> the network stack. The network stack is free to do whatever it wants
+>> with the packet. Things can go wrong within the driver, so at times it
+>> needs to free the skb rather than pass it to the network stack, which
+>> would be a drop.
+>> The second flow is that the network stack has a packet it wants sent
+>> out an Ethernet port, in the form of an skb. The skb gets passed to
+>> the Ethernet driver. The driver will do whatever it needs to do to
+>> pass the contents of the skb to the hardware. Once the hardware has
+>> it, the driver frees the skb. Again, things can go wrong and it needs
+>> to free the skb without sending it, which is a drop.
+>> So the lifetime is not a simple function call.
+>> The drop reason indicates why the packet was dropped. It should give
+>> some indication of what problem occurred which caused the drop. So
+>> ideally we don't want an anonymous drop. The C code does not enforce
+>> that, but it would be nice if the rust wrapper to dispose of an skb
+>> did enforce it.
+> 
+> It sounds like a destructor with WARN_ON is the best approach right
+> now.
 
-No conflicts expected. No changes to the C side.
+Better to simply BUG()? We want to make sure that a device driver
+explicity calls a function that consumes a skb object (on tx path,
+e.g., napi_consume_skb()). If a device driver doesn't call such, it's
+a bug that should be found easily and fixed during the development. It
+would be even better if the compiler could find such though.
 
-Please pull for v6.5 -- thanks!
+If Rust bindings for netdev could help device developpers in such way,
+it's worth an experiments? because looks like netdev subsystem accepts
+more drivers for new hardware than other subsystems.
 
-Cheers,
-Miguel
-
-
-The following changes since commit 7877cb91f1081754a1487c144d85dc0d2e2e7fc4:
-
-  Linux 6.4-rc4 (2023-05-28 07:49:00 -0400)
-
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux.git tags/rust-6.5
-
-for you to fetch changes up to d2e3115d717197cb2bc020dd1f06b06538474ac3:
-
-  rust: error: `impl Debug` for `Error` with `errname()` integration (2023-06-13 01:24:42 +0200)
-
-----------------------------------------------------------------
-Rust changes for v6.5
-
-A fairly small one in terms of feature additions. Most of the changes in
-terms of lines come from the upgrade to the new version of the toolchain
-(which in turn is big due to the vendored 'alloc' crate).
-
- - Upgrade to Rust 1.68.2:
-
-   This is the first such upgrade, and we will try to update it often
-   from now on, in order to remain close to the latest release, until
-   a minimum version (which is "in the future") can be established.
-
-   The upgrade brings the stabilization of 4 features we used (and 2
-   more that we used in our old 'rust' branch).
-
-   Commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2") contains the
-   details and rationale.
-
- - pin-init API:
-
-   Several internal improvements and fixes to the pin-init API, e.g.
-   allowing to use 'Self' in a struct definition with '#[pin_data]'.
-
- - 'error'  module:
-
-   New 'name()' method for the 'Error' type (with 'errname()'
-   integration), used to implement the 'Debug' trait for 'Error'.
-
-   Add error codes from 'include/linux/errno.h' to the list of Rust
-   'Error' constants.
-
-   Allow specifying error type on the 'Result' type (with the default
-   still being our usual 'Error' type).
-
- - 'str' module:
-
-   'TryFrom' implementation for 'CStr', and new 'to_cstring()' method
-   based on it.
-
- - 'sync' module:
-
-   Implement 'AsRef' trait for 'Arc', allowing to use 'Arc' in code that
-   is generic over smart pointer types.
-
-   Add 'ptr_eq' method to 'Arc' for easier, less error prone comparison
-   between two 'Arc' pointers.
-
-   Reword the 'Send' safety comment for 'Arc', and avoid referencing it
-   from the 'Sync' one.
-
- - 'task' module:
-
-   Implement 'Send' marker for 'Task'.
-
- - 'types' module:
-
-   Implement 'Send' and 'Sync' markers for 'ARef<T>' when 'T' is
-   'AlwaysRefCounted', 'Send' and 'Sync'.
-
- - Other changes:
-
-   Documentation improvements and '.gitattributes' change to start
-   using the Rust diff driver.
-
-----------------------------------------------------------------
-Alice Ryhl (9):
-      rust: error: allow specifying error type on `Result`
-      rust: str: add conversion from `CStr` to `CString`
-      rust: error: add missing error codes
-      rust: sync: add `Arc::ptr_eq`
-      rust: sync: implement `AsRef<T>` for `Arc<T>`
-      rust: sync: reword the `Arc` safety comment for `Send`
-      rust: sync: reword the `Arc` safety comment for `Sync`
-      rust: specify when `ARef` is thread safe
-      rust: task: add `Send` marker to `Task`
-
-Benno Lossin (4):
-      rust: macros: fix usage of `#[allow]` in `quote!`
-      rust: macros: refactor generics parsing of `#[pin_data]` into its own function
-      rust: macros: replace Self with the concrete type in #[pin_data]
-      rust: init: update macro expansion example in docs
-
-Gary Guo (1):
-      rust: error: `impl Debug` for `Error` with `errname()` integration
-
-Miguel Ojeda (5):
-      rust: alloc: clarify what is the upstream version
-      rust: arc: fix intra-doc link in `Arc<T>::init`
-      rust: upgrade to Rust 1.68.2
-      .gitattributes: set diff driver for Rust source code files
-      docs: rust: point directly to the standalone installers
-
- .gitattributes                     |   1 +
- Documentation/process/changes.rst  |   2 +-
- Documentation/rust/quick-start.rst |   4 +-
- rust/alloc/README.md               |   3 +
- rust/alloc/alloc.rs                |  55 +++--
- rust/alloc/boxed.rs                | 446 +++++++++++++++++++++++++++++++++--
- rust/alloc/collections/mod.rs      |   5 +-
- rust/alloc/lib.rs                  |  71 ++++--
- rust/alloc/raw_vec.rs              |  16 +-
- rust/alloc/slice.rs                | 447 +++++------------------------------
- rust/alloc/vec/drain.rs            |  81 ++++++-
- rust/alloc/vec/drain_filter.rs     |  60 ++++-
- rust/alloc/vec/into_iter.rs        | 125 +++++++---
- rust/alloc/vec/is_zero.rs          |  96 +++++++-
- rust/alloc/vec/mod.rs              | 464 ++++++++++++++++++++++++++++---------
- rust/alloc/vec/set_len_on_drop.rs  |   5 +
- rust/alloc/vec/spec_extend.rs      |  63 +----
- rust/bindings/bindings_helper.h    |   1 +
- rust/bindings/lib.rs               |   1 -
- rust/helpers.c                     |   7 +
- rust/kernel/build_assert.rs        |   2 +
- rust/kernel/error.rs               |  61 ++++-
- rust/kernel/init.rs                |   5 +
- rust/kernel/init/macros.rs         |  85 ++++---
- rust/kernel/lib.rs                 |   4 -
- rust/kernel/std_vendor.rs          |   2 +
- rust/kernel/str.rs                 |  22 ++
- rust/kernel/sync/arc.rs            |  25 +-
- rust/kernel/task.rs                |  10 +-
- rust/kernel/types.rs               |  13 ++
- rust/macros/helpers.rs             |  86 ++++++-
- rust/macros/pin_data.rs            | 168 +++++++++-----
- rust/macros/quote.rs               |  14 +-
- rust/uapi/lib.rs                   |   1 -
- scripts/Makefile.build             |   2 +-
- scripts/min-tool-version.sh        |   2 +-
- 36 files changed, 1659 insertions(+), 796 deletions(-)
+thanks,
