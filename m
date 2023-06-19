@@ -2,163 +2,317 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12A59EB64D9
-	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Jun 2023 11:27:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21B2EEB64D9
+	for <rust-for-linux@archiver.kernel.org>; Mon, 19 Jun 2023 11:41:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230079AbjFSL1L (ORCPT
+        id S229559AbjFSLlY (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 19 Jun 2023 07:27:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46530 "EHLO
+        Mon, 19 Jun 2023 07:41:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230046AbjFSL1K (ORCPT
+        with ESMTP id S229730AbjFSLlX (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 19 Jun 2023 07:27:10 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3054DB1;
-        Mon, 19 Jun 2023 04:27:09 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 9CEA95C0226;
-        Mon, 19 Jun 2023 07:27:08 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Mon, 19 Jun 2023 07:27:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crisal.io; h=cc
-        :cc:content-transfer-encoding:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1687174028; x=1687260428; bh=3sVGVSE5umY9tDjmVgyBReGwhLjic+x53BQ
-        ZNOSbzwY=; b=L7x3MR20u2dIWRGgX7E5CmenYhU3ZxV6sESBgbnq08n3f1kWg2Q
-        YauJiWVWqms5DKbWEf6PfXOuKEOCeVX56McVFsV3lxJbK5zdS8D1UqVmu8yCP4Dw
-        rlSsKilVGTnJEoeNqi6sf10Izs7afz61b/eILm+AJ7KoF6h2tDaHf689ncZWAg+Z
-        RTTX51HJOvrYD57OhkXEgig+T6BRi6WaX/he99cDTUozJhL1NgbYoNPyeZsP9+UA
-        aanm5nPez0CoOoY8ZWd4az5MzgdXlWRNCjAB3bJaeR+u6ORON950y92vdLG7cOkP
-        GQoX+tWa7yWJV0EVBae4YVeq5KoOmYjL6GQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1687174028; x=1687260428; bh=3sVGVSE5umY9tDjmVgyBReGwhLjic+x53BQ
-        ZNOSbzwY=; b=oSn55Y7MgyEJ76pymBr9QYRu2qdWeoJm9WT1SXgFu78nLtHWbiB
-        DwXjOouWmJXdfAaGks9e4thjDBj4VuPSK+BPXGTNP36wQB3KnTnwZTXlv+UPDQk9
-        D9+wpCDW+Dnn7xs8Y0wyidDpY/mKuTzpjLBQKi1yHQ7hnWS6o8ws4MOpD06kqEpp
-        YcrRK0tjO7N9TYE4j9A6s8qBmkxWGfrZaELHwSloNxif5ofm9uxqHYMfOBlFCgog
-        gitH9w1sCrrn0nLpjm+87Njf84mvEjSZ00gCW6twMck5JvdaH0dAZqRAkNHLs0SK
-        7ARqHvepbY+ykgQLfVI5BSucn7q4iOxYPSQ==
-X-ME-Sender: <xms:jDuQZBHlxu3jS8z1-wQwiIgOmW1qPX8IHODZik5GO_hh5LD5IaLZHw>
-    <xme:jDuQZGXqHiGzz0HDXtZtD2dewul6bDW3mBpMk1L_NRXHU0kVGyyS1NrjXvpfOCoyO
-    eFZDcBaLeCrVqTFLFk>
-X-ME-Received: <xmr:jDuQZDLjPIMP60RvMKxEE3Ppg3NZgMce_4xt4mDGQT-49oKrP9EPb8RTeMvYaGF-0ONhkF6loHx7RVRskEFPoIaW_GQP>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeefvddgfeekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtudejnecuhfhrohhmpefgmhhi
-    lhhiohcuvehosghoshculmhlvhgrrhgviicuoegvmhhilhhiohestghrihhsrghlrdhioh
-    eqnecuggftrfgrthhtvghrnhepkeeggeeghfdtvdegueekueejvdekgffgtdeljeeuhedv
-    tdeludekfeetleefheeinecuffhomhgrihhnpehllhhvmhdrohhrghenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegvmhhilhhiohestghrihhs
-    rghlrdhioh
-X-ME-Proxy: <xmx:jDuQZHEUB6iNqenKsc_74jcFkzvzAAlnYOkGnoFRbvMuPGp9thUIzw>
-    <xmx:jDuQZHX-0Pnl_PuDvR3znuTX00GPcVa9L9K69xMtCEpWPVbESu_Fuw>
-    <xmx:jDuQZCMSXK2mW6_ow8Q9WzTXb49b4_NqnDG6xwjEtPzODa-BKAl_xw>
-    <xmx:jDuQZNcqRhQDH-tahtqR6YuYByt74y0BPC4GYcc0t96zk0cGedVCZQ>
-Feedback-ID: i2e3c46c1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 19 Jun 2023 07:27:07 -0400 (EDT)
-Message-ID: <48a98d0c-bfd1-68a9-5d1f-65c942b7c0ef@crisal.io>
-Date:   Mon, 19 Jun 2023 13:27:05 +0200
+        Mon, 19 Jun 2023 07:41:23 -0400
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B7A2E4F
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Jun 2023 04:40:50 -0700 (PDT)
+Date:   Mon, 19 Jun 2023 11:40:40 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=nnq7fg4d7jgndoqwst53jetwki.protonmail; t=1687174847; x=1687434047;
+        bh=iiuc7llfs/NlViGXxR+9ZxxI6eQe+Ru4NPQ0iDdMoHg=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=lipxjjbHMsgFTwMMd6hNaR33oe/f/PqOCl8GWaeL+D9sYjRDpHlRSEj5kGZqheeR0
+         U6QbcVgoCd6duW2GUByrcHLroQhMr9SjGBzzmlHK4638AGlukoSqUc2JbDxrhfUkR5
+         xmKCqhJcDp7fyItBtlyf0mcLFRAVKcPEjMIuYI5fusmQ8Fneyz6TcjCNjPm43Kryij
+         SFRrDC7oXFmQZKb0Bq3Wk7knZs1w4tMIaFTUoDOUEyJPqhZGCtUVUl6jEAVwDWO63G
+         nA/5LOJDvpE8PNxThLe4XxoUwjmifR/lJ91C0FMKSOSahIJJQp50/YeElJiAO9WKzy
+         gfw4hKH5MMfoA==
+To:     FUJITA Tomonori <fujita.tomonori@gmail.com>
+From:   Benno Lossin <benno.lossin@proton.me>
+Cc:     rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH v2 1/2] rust: add synchronous message digest support
+Message-ID: <udHI3v-OLUqHQt3fwnH71QuRJjzGxexw2rkIYEfnsChCmrLoJTIL_GL1wLCARf-UotY51jkPT6tC8nVDvjf8LkY2zvddpgeRQ5owysZwJos=@proton.me>
+In-Reply-To: <20230615142311.4055228-2-fujita.tomonori@gmail.com>
+References: <20230615142311.4055228-1-fujita.tomonori@gmail.com> <20230615142311.4055228-2-fujita.tomonori@gmail.com>
+Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [PATCH 0/5] Rust abstractions for network device drivers
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>, kuba@kernel.org,
-        netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        aliceryhl@google.com
-References: <20230614230128.199724bd@kernel.org>
- <8e9e2908-c0da-49ec-86ef-b20fb3bd71c3@lunn.ch>
- <20230615190252.4e010230@kernel.org>
- <20230616.220220.1985070935510060172.ubuntu@gmail.com>
- <f28d6403-d042-4ffb-9872-044388d0f9d9@lunn.ch>
- <CANiq72mMi=7P9OxSH0+ORYDEyxG3+n5uOv_ooxMJ72YRBRZ+PQ@mail.gmail.com>
- <a4bc8847-c668-4cff-9892-663516cf8127@lunn.ch>
-Content-Language: en-US
-From:   =?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>
-Autocrypt: addr=emilio@crisal.io;
- keydata= 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
-In-Reply-To: <a4bc8847-c668-4cff-9892-663516cf8127@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Andrew, Miguel,
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers.c                  |  26 +++++++
+>  rust/kernel/crypto.rs           |   5 ++
+>  rust/kernel/crypto/hash.rs      | 118 ++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   2 +
+>  5 files changed, 152 insertions(+)
+>  create mode 100644 rust/kernel/crypto.rs
+>  create mode 100644 rust/kernel/crypto/hash.rs
+>=20
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 3e601ce2548d..2f198c6d5de5 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -6,6 +6,7 @@
+>   * Sorted alphabetically.
+>   */
+>=20
+> +#include <crypto/hash.h>
+>  #include <linux/errname.h>
+>  #include <linux/slab.h>
+>  #include <linux/refcount.h>
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index bb594da56137..7966902ed8eb 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -18,6 +18,7 @@
+>   * accidentally exposed.
+>   */
+>=20
+> +#include <crypto/hash.h>
+>  #include <linux/bug.h>
+>  #include <linux/build_bug.h>
+>  #include <linux/err.h>
+> @@ -28,6 +29,31 @@
+>  #include <linux/sched/signal.h>
+>  #include <linux/wait.h>
+>=20
+> +#ifdef CONFIG_CRYPTO
+> +void rust_helper_crypto_free_shash(struct crypto_shash *tfm)
+> +{
+> +=09crypto_free_shash(tfm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_crypto_free_shash);
+> +
+> +unsigned int rust_helper_crypto_shash_digestsize(struct crypto_shash *tf=
+m)
+> +{
+> +    return crypto_shash_digestsize(tfm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_crypto_shash_digestsize);
+> +
+> +unsigned int rust_helper_crypto_shash_descsize(struct crypto_shash *tfm)
+> +{
+> +    return crypto_shash_descsize(tfm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_crypto_shash_descsize);
+> +
+> +int rust_helper_crypto_shash_init(struct shash_desc *desc) {
+> +=09return crypto_shash_init(desc);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_crypto_shash_init);
+> +#endif
+> +
+>  __noreturn void rust_helper_BUG(void)
+>  {
+>  =09BUG();
+> diff --git a/rust/kernel/crypto.rs b/rust/kernel/crypto.rs
+> new file mode 100644
+> index 000000000000..f80dd7bd3381
+> --- /dev/null
+> +++ b/rust/kernel/crypto.rs
+> @@ -0,0 +1,5 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Cryptography.
+> +
+> +pub mod hash;
+> diff --git a/rust/kernel/crypto/hash.rs b/rust/kernel/crypto/hash.rs
+> new file mode 100644
+> index 000000000000..53f4a311b3b2
+> --- /dev/null
+> +++ b/rust/kernel/crypto/hash.rs
+> @@ -0,0 +1,118 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Cryptographic Hash operations.
+> +//!
+> +//! C headers: [`include/crypto/hash.h`](../../../../include/crypto/hash=
+.h)
+> +
+> +use crate::{
+> +    error::{code::ENOMEM, from_err_ptr, to_result, Result},
+> +    str::CStr,
+> +};
+> +use alloc::alloc::{alloc, dealloc};
+> +use core::alloc::Layout;
+> +
+> +/// Corresponds to the kernel's `struct crypto_shash`.
+> +///
+> +/// # Invariants
+> +///
+> +/// The pointer is valid.
+> +pub struct Shash(*mut bindings::crypto_shash);
+> +
+> +impl Drop for Shash {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        unsafe { bindings::crypto_free_shash(self.0) }
+> +    }
+> +}
+> +
+> +impl Shash {
+> +    /// Creates a [`Shash`] object for a message digest handle.
+> +    pub fn new(name: &CStr, t: u32, mask: u32) -> Result<Shash> {
+> +        // SAFETY: FFI call.
 
-On 6/16/23 16:43, Andrew Lunn wrote:
-> I said in another email, i don't want to suggest premature
-> optimisation, before profiling is done. But in C, these functions are
-> inline for a reason. We don't want the cost of a subroutine call. We
-> want the compiler to be able to inline the code, and the optimiser to
-> be able to see it and generate the best code it can.
-> 
-> Can the rust compile inline the binding including the FFI call?
+If there are no requirements then say so.
 
-This is possible, with cross-language LTO, see:
+> +        let ptr =3D
+> +            unsafe { from_err_ptr(bindings::crypto_alloc_shash(name.as_c=
+har_ptr(), t, mask)) }?;
+> +        // INVARIANT: `ptr` is valid and non-null since `crypto_alloc_sh=
+ash`
+> +        // returned a valid pointer which was null-checked.
+> +        Ok(Self(ptr))
+> +    }
+> +
+> +    /// Sets optional key used by the hashing algorithm.
+> +    pub fn setkey(&mut self, data: &[u8]) -> Result {
 
-   https://blog.llvm.org/2019/09/closing-gap-cross-language-lto-between.html
+This should be called `set_key`.
 
-There are some requirements that need to happen for that to work 
-(mainly, I believe, that the LLVM version used by rustc and clang agree).
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        to_result(unsafe {
+> +            bindings::crypto_shash_setkey(self.0, data.as_ptr(), data.le=
+n() as u32)
+> +        })
+> +    }
+> +
+> +    /// Returns the size of the result of the transformation.
+> +    pub fn digestsize(&self) -> u32 {
 
-But in general it is possible. We use it extensively on Firefox. Of 
-course the requirements of Firefox and the kernel might be different.
+This should be called `digest_size`.
 
-I think we rely heavily on PGO instrumentation to make the linker inline 
-ffi functions, but there might be other ways of forcing the linker to 
-inline particular calls that bindgen could generate or what not.
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        unsafe { bindings::crypto_shash_digestsize(self.0) }
+> +    }
+> +}
+> +
+> +/// Corresponds to the kernel's `struct shash_desc`.
+> +///
+> +/// # Invariants
+> +///
+> +/// The field `ptr` is valid.
+> +pub struct ShashDesc<'a> {
+> +    ptr: *mut bindings::shash_desc,
+> +    tfm: &'a Shash,
+> +    size: usize,
+> +}
+> +
+> +impl Drop for ShashDesc<'_> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        unsafe {
+> +            dealloc(
+> +                self.ptr.cast(),
+> +                Layout::from_size_align(self.size, 2).unwrap(),
+> +            );
 
+Why do we own the pointer (i.e. why can we deallocate the memory)? Add as
+a TI (type invariant). Why are you using `dealloc`? Is there no C
+function that allocates a `struct shash_desc`? Why is the alignment 2?
+
+> +        }
+> +    }
+> +}
+> +
+> +impl<'a> ShashDesc<'a> {
+> +    /// Creates a [`ShashDesc`] object for a request data structure for =
+message digest.
+> +    pub fn new(tfm: &'a Shash) -> Result<Self> {
+> +        // SAFETY: The type invariant guarantees that `tfm.0` pointer is=
+ valid.
+> +        let size =3D core::mem::size_of::<bindings::shash_desc>()
+> +            + unsafe { bindings::crypto_shash_descsize(tfm.0) } as usize=
+;
+> +        let layout =3D Layout::from_size_align(size, 2)?;
+> +        let ptr =3D unsafe { alloc(layout) } as *mut bindings::shash_des=
+c;
+
+Several things:
+- The `SAFETY` comment for `crypto_shash_descsize` should be directly above
+  the `unsafe` block,maybe factor that out into its own variable.
+- Why is 2 the right alignment?
+- Missing `SAFETY` comment for `alloc`.
+- Why are you manually creating this layout from size and alignment? Is it
+  not possible to do it via the `Layout` API?
+
+> +        if ptr.is_null() {
+> +            return Err(ENOMEM);
+> +        }
+> +        // INVARIANT: `ptr` is valid and non-null since `alloc`
+> +        // returned a valid pointer which was null-checked.
+> +        let mut desc =3D ShashDesc { ptr, tfm, size };
+> +        // SAFETY: `desc.ptr` is valid and non-null since `alloc`
+> +        // returned a valid pointer which was null-checked.
+> +        // Additionally, The type invariant guarantees that `tfm.0` is v=
+alid.
+> +        unsafe { (*desc.ptr).tfm =3D desc.tfm.0 };
+> +        desc.reset()?;
+> +        Ok(desc)
+> +    }
+> +
+> +    /// Re-initializes message digest.
+> +    pub fn reset(&mut self) -> Result {
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        to_result(unsafe { bindings::crypto_shash_init(self.ptr) })
+> +    }
+> +
+> +    /// Adds data to message digest for processing.
+> +    pub fn update(&mut self, data: &[u8]) -> Result {
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        to_result(unsafe {
+> +            bindings::crypto_shash_update(self.ptr, data.as_ptr(), data.=
+len() as u32)
+> +        })
+
+What if `data.len() > u32::MAX`?
+
+> +    }
+> +
+> +    /// Calculates message digest.
+> +    pub fn finalize(&mut self, output: &mut [u8]) -> Result {
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        to_result(unsafe { bindings::crypto_shash_final(self.ptr, output=
+.as_mut_ptr()) })
+
+As already mentioned by Alex, this needs a size check.
+
+--
 Cheers,
+Benno
 
-  -- Emilio
+> +    }
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 85b261209977..3cb8bd8a17d9 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -31,6 +31,8 @@
+>  #[cfg(not(testlib))]
+>  mod allocator;
+>  mod build_assert;
+> +#[cfg(CONFIG_CRYPTO)]
+> +pub mod crypto;
+>  pub mod error;
+>  pub mod init;
+>  pub mod ioctl;
+> --
+> 2.34.1
+>=20
+
