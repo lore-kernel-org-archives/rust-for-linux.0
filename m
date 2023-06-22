@@ -2,323 +2,100 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E41B9EB64D7
-	for <rust-for-linux@archiver.kernel.org>; Wed, 21 Jun 2023 22:44:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41FDAEB64D7
+	for <rust-for-linux@archiver.kernel.org>; Thu, 22 Jun 2023 00:20:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbjFUWoy (ORCPT
+        id S229677AbjFVAUP (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 21 Jun 2023 18:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46324 "EHLO
+        Wed, 21 Jun 2023 20:20:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230072AbjFUWox (ORCPT
+        with ESMTP id S229628AbjFVAUO (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 21 Jun 2023 18:44:53 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95DC2F1;
-        Wed, 21 Jun 2023 15:44:48 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-9881b9d8cbdso6822466b.1;
-        Wed, 21 Jun 2023 15:44:48 -0700 (PDT)
+        Wed, 21 Jun 2023 20:20:14 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D02EA1;
+        Wed, 21 Jun 2023 17:20:13 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b5585e84b4so6498715ad.0;
+        Wed, 21 Jun 2023 17:20:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687387487; x=1689979487;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jiBkzKD4+Su3tr2BJS0cAfgeUNS9/ckaM/WXuVXykKo=;
-        b=F1JfcXoU9/9711vo3eLY+RYvMAMEO3Ts+8N3YhMIDgaVCi8o1vEPJWen8CRcpu8WvB
-         HoQHb1ArlZcFDYpYtH2cnKIOZ/5giuC5nUsei7NwojuR/Jt0tLchQd6T5y3iltwuqSVa
-         qHoCtQn1AUK0Y4w6g+zt8lWhbLiYYb00Paz3emh+K8UKGukNfDKKn5mse+Igw5XTlyWV
-         IjAD0r6w0VbSqf5z+WUFPWnhrvyW+ou3UHMnXt93bia2RQRRl7zX1DsbHvG6qvBwl+Z+
-         tUhaO1Hx03Uffp1MIQsKyPRtsdiLPLGqv6o8h6+4KcsNwBAT1e59TexS3fDhpiyfeyve
-         1SlQ==
+        d=gmail.com; s=20221208; t=1687393213; x=1689985213;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nIb6cEzl3Y1Hw+pztaSYaT1plChZ0U0JrqZCF4CrGkk=;
+        b=h/m6AEKBQ/3phkcCVbiyRXUdVGHNumugdDl5c9PQMI8fyvvR2fZJUSF5TVurU5PoAN
+         YarS5+TuIHuVHldFdwVzZ5MMOPRYv9+lRIMP95EdZHIqkIXfYQiq3Jjx5syvQZl1LURG
+         E+hCPNJ1BMoYFGbzW5l0D/sZ06SNZmPMSNIRiZnTGLB8Ron5ba6G+VWaSeliJNjRaDbV
+         XVYET/4uPnhlq4lpANB0B8+es0d+KVhck4cG+Ag3DgBY2mWGRor/4kfeYvSrclRVERH7
+         pWBXB840QshD3eU2+UlSdcEi9iiuXbcQbJXfRIHevHV+lp+8JsdYVPTNfudL4caNg1Wa
+         rVrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687387487; x=1689979487;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jiBkzKD4+Su3tr2BJS0cAfgeUNS9/ckaM/WXuVXykKo=;
-        b=dZfUtryDLll4SFsgVMoqA6a7r+LAhcxvzHDboIzAEsD5gjxxnrOACyASAPE5J2BEu1
-         aMFDXyzrJ4A5ucu/51C/RdIfpWq66cQ2AcHFQD0MkRY1VT+VA0TWlVVUAU5yVTgd79Wz
-         e022TXGKDzg0q40jsGFBvATNZIBhVNJlW/0rFAO91wAY9frJQmPt2VP7TRYGLy7CZJbT
-         vjXf6I/eLZ8psXi4V7aB6s7ee6yJx4BP2aMsT26c/WpU3+4Midf5QVSYy/rpjMbELsLi
-         T/9JvTaQlVDZ88y/msZmX+Td19GzZwsZ64t4PnutWTkBW8FIYbqlyoGFLe89IQRvpQVg
-         Wm8A==
-X-Gm-Message-State: AC+VfDxuxuR/qPO6a1QHgMCHdxWTOX/FT+0Ek6vF1Rt2XP3+GUtjDTEu
-        c1FSmoRTkoMrQW3UWWKj8ntejitx20A=
-X-Google-Smtp-Source: ACHHUZ7BTWbvFLqvMl5gWS+eTIM9S4BsHgcYH42Sjv+qw1ovwJO4QmSiVOUGqa9kNSwFPXIsFDujGA==
-X-Received: by 2002:a17:907:7e96:b0:989:21e4:6c6d with SMTP id qb22-20020a1709077e9600b0098921e46c6dmr5461822ejc.28.1687387486715;
-        Wed, 21 Jun 2023 15:44:46 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id v7-20020aa7d647000000b005153b12c9f7sm3178825edr.32.2023.06.21.15.44.45
+        d=1e100.net; s=20221208; t=1687393213; x=1689985213;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nIb6cEzl3Y1Hw+pztaSYaT1plChZ0U0JrqZCF4CrGkk=;
+        b=YyeundaEaxByu5DebZbGUVirzhTjuUSaVO+JGEzOuflSyQ4q+CXXvcB98wVXoz9VRi
+         fRF87QdQUytH7D9mDGkBeIYC2CUab90A3LibzIaDpkgek4RpGZidDgyxDfazka28y5KH
+         TGm9UlDI9eWMdNgzyBD74nxNKrylunZAxWzp7pKoDEYQQZZsGqZTg5H8LIL/3sAs5RNI
+         UzT+ViqQCVmuoP5p1z73+sp35TjClMqLU8pIZ+ISzXb7+PjYgbCq9ZoVAHL7i7Hij9od
+         /xZy2ZhUvoUFzbM9Lg8W7KJhe3wAPS0hOxBThtOAETxur+1mNSmuOWdMHdVc9o3KFAr1
+         fS3g==
+X-Gm-Message-State: AC+VfDzuFHU22tXziVmbw9hFGKYrWMqnzir6Ciweu1TE0JkgKad5pvZE
+        RPeZoTxQVFaaLhw9Ab/wqpdyjL20N887Flf0
+X-Google-Smtp-Source: ACHHUZ5z9DFcqqXzERMCWQGwJJzp5ZHEP7Ee9CVWGFB12soS+1F/zk6H8ruZDa0UAXPh887GBCX8yQ==
+X-Received: by 2002:a17:903:2451:b0:1b0:34c6:3bf2 with SMTP id l17-20020a170903245100b001b034c63bf2mr20442335pls.5.1687393212615;
+        Wed, 21 Jun 2023 17:20:12 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id jn9-20020a170903050900b001b3d44788f4sm4080728plb.9.2023.06.21.17.20.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jun 2023 15:44:46 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 89B4B27C0054;
-        Wed, 21 Jun 2023 18:44:44 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Wed, 21 Jun 2023 18:44:44 -0400
-X-ME-Sender: <xms:W32TZLhTkVVJgu-VAZ28lcMEL-qbx42uyPRFXXUl5zbQUSLGt37Jug>
-    <xme:W32TZIARrgXmNzgbLfYI4GBoebOoZfhdoX6i795frQzgfgVE6mYmGMa_GMRiK3i6a
-    FacO2UX2BUOOiUdAQ>
-X-ME-Received: <xmr:W32TZLHLNuhXrvwjtl3WM15khKh9mQ5mzlFwp68Lt2cdZUSfzoZqvI2hTYk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeegtddguddtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:W32TZIQsZaRnL1QXmIc0_evFLTrnHgQtfnqtoyB3zjhUPwGC_cq7-g>
-    <xmx:W32TZIxQBqM-ok-N1bO5AIGu_0kMGKzswVswEZu8smQYdxwDWzOhUQ>
-    <xmx:W32TZO6vBEDwjmoHmjlYS1Xx49YTPfRv9YKtb71MfaF7DyHbDEL8qQ>
-    <xmx:XH2TZHo2AEIm1159L5CW5e9MfSoBU_ZQqG4YdtQydgqlC0DrjM21Fw>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 21 Jun 2023 18:44:43 -0400 (EDT)
-Date:   Wed, 21 Jun 2023 15:44:42 -0700
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc:     netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        aliceryhl@google.com, andrew@lunn.ch,
-        miguel.ojeda.sandonis@gmail.com
+        Wed, 21 Jun 2023 17:20:12 -0700 (PDT)
+Date:   Thu, 22 Jun 2023 09:19:46 +0900 (JST)
+Message-Id: <20230622.091946.732732192250039677.ubuntu@gmail.com>
+To:     boqun.feng@gmail.com
+Cc:     fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+        rust-for-linux@vger.kernel.org, aliceryhl@google.com,
+        andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com
 Subject: Re: [PATCH 1/5] rust: core abstractions for network device drivers
-Message-ID: <ZJN9WmRCJU8nN9jE@boqun-archlinux>
+From:   FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <ZJN9WmRCJU8nN9jE@boqun-archlinux>
 References: <20230613045326.3938283-1-fujita.tomonori@gmail.com>
- <20230613045326.3938283-2-fujita.tomonori@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230613045326.3938283-2-fujita.tomonori@gmail.com>
+        <20230613045326.3938283-2-fujita.tomonori@gmail.com>
+        <ZJN9WmRCJU8nN9jE@boqun-archlinux>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Jun 13, 2023 at 01:53:22PM +0900, FUJITA Tomonori wrote:
-> This patch adds very basic abstractions to implement network device
-> drivers, corresponds to the kernel's net_device and net_device_ops
-> structs with support for register_netdev/unregister_netdev functions.
-> 
-> allows the const_maybe_uninit_zeroed feature for
-> core::mem::MaybeUinit::<T>::zeroed() in const function.
-> 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/bindings/bindings_helper.h |   2 +
->  rust/helpers.c                  |  16 ++
->  rust/kernel/lib.rs              |   3 +
->  rust/kernel/net.rs              |   5 +
->  rust/kernel/net/dev.rs          | 344 ++++++++++++++++++++++++++++++++
->  5 files changed, 370 insertions(+)
->  create mode 100644 rust/kernel/net.rs
->  create mode 100644 rust/kernel/net/dev.rs
-> 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 3e601ce2548d..468bf606f174 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -7,6 +7,8 @@
->   */
->  
->  #include <linux/errname.h>
-> +#include <linux/etherdevice.h>
-> +#include <linux/netdevice.h>
->  #include <linux/slab.h>
->  #include <linux/refcount.h>
->  #include <linux/wait.h>
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index bb594da56137..70d50767ff4e 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -24,10 +24,26 @@
->  #include <linux/errname.h>
->  #include <linux/refcount.h>
->  #include <linux/mutex.h>
-> +#include <linux/netdevice.h>
-> +#include <linux/skbuff.h>
->  #include <linux/spinlock.h>
->  #include <linux/sched/signal.h>
->  #include <linux/wait.h>
->  
-> +#ifdef CONFIG_NET
-> +void *rust_helper_netdev_priv(const struct net_device *dev)
-> +{
-> +	return netdev_priv(dev);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_netdev_priv);
-> +
-> +void rust_helper_skb_tx_timestamp(struct sk_buff *skb)
-> +{
-> +	skb_tx_timestamp(skb);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_skb_tx_timestamp);
-> +#endif
-> +
->  __noreturn void rust_helper_BUG(void)
->  {
->  	BUG();
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 85b261209977..fc7d048d359d 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -13,6 +13,7 @@
->  
->  #![no_std]
->  #![feature(allocator_api)]
-> +#![feature(const_maybe_uninit_zeroed)]
->  #![feature(coerce_unsized)]
->  #![feature(dispatch_from_dyn)]
->  #![feature(new_uninit)]
-> @@ -34,6 +35,8 @@
->  pub mod error;
->  pub mod init;
->  pub mod ioctl;
-> +#[cfg(CONFIG_NET)]
-> +pub mod net;
->  pub mod prelude;
->  pub mod print;
->  mod static_assert;
-> diff --git a/rust/kernel/net.rs b/rust/kernel/net.rs
-> new file mode 100644
-> index 000000000000..28fe8f398463
-> --- /dev/null
-> +++ b/rust/kernel/net.rs
-> @@ -0,0 +1,5 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Networking core.
-> +
-> +pub mod dev;
-> diff --git a/rust/kernel/net/dev.rs b/rust/kernel/net/dev.rs
-> new file mode 100644
-> index 000000000000..d072c81f99ce
-> --- /dev/null
-> +++ b/rust/kernel/net/dev.rs
-> @@ -0,0 +1,344 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Network device.
-> +//!
-> +//! C headers: [`include/linux/etherdevice.h`](../../../../include/linux/etherdevice.h),
-> +//! [`include/linux/ethtool.h`](../../../../include/linux/ethtool.h),
-> +//! [`include/linux/netdevice.h`](../../../../include/linux/netdevice.h),
-> +//! [`include/linux/skbuff.h`](../../../../include/linux/skbuff.h),
-> +//! [`include/uapi/linux/if_link.h`](../../../../include/uapi/linux/if_link.h).
-> +
-> +use crate::{bindings, error::*, prelude::vtable, types::ForeignOwnable};
-> +use {core::ffi::c_void, core::marker::PhantomData};
-> +
-> +/// Corresponds to the kernel's `struct net_device`.
-> +///
-> +/// # Invariants
-> +///
-> +/// The pointer is valid.
-> +pub struct Device(*mut bindings::net_device);
-> +
-> +impl Device {
-> +    /// Creates a new [`Device`] instance.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `ptr` must be valid.
-> +    unsafe fn from_ptr(ptr: *mut bindings::net_device) -> Self {
-> +        // INVARIANT: The safety requirements ensure the invariant.
-> +        Self(ptr)
-> +    }
-> +
-> +    /// Gets a pointer to network device private data.
-> +    fn priv_data_ptr(&self) -> *const c_void {
-> +        // SAFETY: The type invariants guarantee that `self.0` is valid.
-> +        // During the initialization of `Registration` instance, the kernel allocates
-> +        // contiguous memory for `struct net_device` and a pointer to its private data.
-> +        // So it's safe to read an address from the returned address from `netdev_priv()`.
-> +        unsafe { core::ptr::read(bindings::netdev_priv(self.0) as *const *const c_void) }
-> +    }
-> +}
-> +
-> +// SAFETY: `Device` is just a wrapper for the kernel`s `struct net_device`, which can be used
-> +// from any thread. `struct net_device` stores a pointer to `DriverData::Data`, which is `Sync`
-> +// so it's safe to sharing its pointer.
-> +unsafe impl Send for Device {}
-> +// SAFETY: `Device` is just a wrapper for the kernel`s `struct net_device`, which can be used
-> +// from any thread. `struct net_device` stores a pointer to `DriverData::Data`, which is `Sync`,
-> +// can be used from any thread too.
-> +unsafe impl Sync for Device {}
-> +
-> +/// Trait for device driver specific information.
-> +///
-> +/// This data structure is passed to a driver with the operations for `struct net_device`
-> +/// like `struct net_device_ops`, `struct ethtool_ops`, `struct rtnl_link_ops`, etc.
-> +pub trait DriverData {
-> +    /// The object are stored in C object, `struct net_device`.
-> +    type Data: ForeignOwnable + Send + Sync;
-> +}
-> +
-> +/// Registration structure for a network device driver.
-> +///
-> +/// This allocates and owns a `struct net_device` object.
-> +/// Once the `net_device` object is registered via `register_netdev` function,
-> +/// the kernel calls various functions such as `struct net_device_ops` operations with
-> +/// the `net_device` object.
-> +///
-> +/// A driver must implement `struct net_device_ops` so the trait for it is tied.
-> +/// Other operations like `struct ethtool_ops` are optional.
-> +pub struct Registration<T: DeviceOperations<D>, D: DriverData> {
-> +    dev: Device,
-> +    is_registered: bool,
-> +    _p: PhantomData<(D, T)>,
-> +}
-> +
-> +impl<D: DriverData, T: DeviceOperations<D>> Drop for Registration<T, D> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: The type invariants guarantee that `self.dev.0` is valid.
-> +        unsafe {
-> +            let _ = D::Data::from_foreign(self.dev.priv_data_ptr());
-> +            if self.is_registered {
-> +                bindings::unregister_netdev(self.dev.0);
-> +            }
-> +            bindings::free_netdev(self.dev.0);
-> +        }
-> +    }
-> +}
-> +
-> +impl<D: DriverData, T: DeviceOperations<D>> Registration<T, D> {
-> +    /// Creates a new [`Registration`] instance for ethernet device.
-> +    ///
-> +    /// A device driver can pass private data.
-> +    pub fn try_new_ether(tx_queue_size: u32, rx_queue_size: u32, data: D::Data) -> Result<Self> {
-> +        // SAFETY: FFI call.
-> +        let ptr = from_err_ptr(unsafe {
-> +            bindings::alloc_etherdev_mqs(
-> +                core::mem::size_of::<*const c_void>() as i32,
-> +                tx_queue_size,
-> +                rx_queue_size,
-> +            )
-> +        })?;
-> +
-> +        // SAFETY: `ptr` is valid and non-null since `alloc_etherdev_mqs()`
-> +        // returned a valid pointer which was null-checked.
+Hi,
 
-Hmm.. neither alloc_etherdev_mqs() nor `from_err_ptr` would do the
-null-check IIUC, so you may get a `ptr` whose values is null here.
+On Wed, 21 Jun 2023 15:44:42 -0700
+Boqun Feng <boqun.feng@gmail.com> wrote:
 
-Regards,
-Boqun
+> On Tue, Jun 13, 2023 at 01:53:22PM +0900, FUJITA Tomonori wrote:
+>> +impl<D: DriverData, T: DeviceOperations<D>> Registration<T, D> {
+>> +    /// Creates a new [`Registration`] instance for ethernet device.
+>> +    ///
+>> +    /// A device driver can pass private data.
+>> +    pub fn try_new_ether(tx_queue_size: u32, rx_queue_size: u32, data: D::Data) -> Result<Self> {
+>> +        // SAFETY: FFI call.
+>> +        let ptr = from_err_ptr(unsafe {
+>> +            bindings::alloc_etherdev_mqs(
+>> +                core::mem::size_of::<*const c_void>() as i32,
+>> +                tx_queue_size,
+>> +                rx_queue_size,
+>> +            )
+>> +        })?;
+>> +
+>> +        // SAFETY: `ptr` is valid and non-null since `alloc_etherdev_mqs()`
+>> +        // returned a valid pointer which was null-checked.
+> 
+> Hmm.. neither alloc_etherdev_mqs() nor `from_err_ptr` would do the
+> null-check IIUC, so you may get a `ptr` whose values is null here.
 
-> +        let dev = unsafe { Device::from_ptr(ptr) };
-> +        // SAFETY: It's safe to write an address to the returned pointer
-> +        // from `netdev_priv()` because `alloc_etherdev_mqs()` allocates
-> +        // contiguous memory for `struct net_device` and a pointer.
-> +        unsafe {
-> +            let priv_ptr = bindings::netdev_priv(ptr) as *mut *const c_void;
-> +            core::ptr::write(priv_ptr, data.into_foreign());
-> +        }
-> +        Ok(Registration {
-> +            dev,
-> +            is_registered: false,
-> +            _p: PhantomData,
-> +        })
-> +    }
-> +
-[...]
+Oops, `ptr.is_null()` should be used here instead.
+
+Thanks a lot!
