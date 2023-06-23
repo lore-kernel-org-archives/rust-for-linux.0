@@ -2,77 +2,264 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D197EB64D7
-	for <rust-for-linux@archiver.kernel.org>; Fri, 23 Jun 2023 17:20:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7679EB64DD
+	for <rust-for-linux@archiver.kernel.org>; Fri, 23 Jun 2023 17:35:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232511AbjFWRUK (ORCPT
+        id S232579AbjFWRfh (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 23 Jun 2023 13:20:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48352 "EHLO
+        Fri, 23 Jun 2023 13:35:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232455AbjFWRUJ (ORCPT
+        with ESMTP id S232263AbjFWRfV (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 23 Jun 2023 13:20:09 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D10EE1981
-        for <rust-for-linux@vger.kernel.org>; Fri, 23 Jun 2023 10:20:07 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-bf179fcc200so1245323276.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 23 Jun 2023 10:20:07 -0700 (PDT)
+        Fri, 23 Jun 2023 13:35:21 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A46162964;
+        Fri, 23 Jun 2023 10:35:12 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-9883123260fso96793566b.0;
+        Fri, 23 Jun 2023 10:35:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1687540807; x=1690132807;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BiBfjxCccTZov20BHaxSn4dvBGrOpxH5Zg2fttHLmAo=;
-        b=vUzaOM/RwOe0xTyvCYmg4F3fM36X8xQ+vBoknwuOrceehnrO+IAoECNY3QF0zL15Pm
-         wjBaOjnRslplk2hdm41mQGiaKx/c78xfFrG2eWwxSkiYlVNgvPmTCC9h1V0o+vHxSkBV
-         QkSFBASDYPTHBjvH7P1cc6AUJa7EvzBoRqlhmloDYh6ogDcpwW4yJaNpI0xVT0MONGAx
-         Ms+lSmz9khKYdLg0O/jY0VJqNChW8WEskqxcqnUBVZZ9vilOt6Pt71UfFtVDTzq/JmeJ
-         9jJL1Aepkk4ls9rRE1FB/oSeMG6u9a2wpNzQF4LJ0g9/5igrxuIiQK46Z4FwmOts+2yr
-         9A+w==
+        d=gmail.com; s=20221208; t=1687541711; x=1690133711;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=l2mdnTcfARxptEAZsYOiOXtYWpRMgFe68mLKP2pFSjc=;
+        b=mB3M5RPGWfTuJdIz06XHp7ifKX3tjs/cpyyPxmrxWst5xGq7jO6gWTLjkaU6M3Qr5c
+         b5WrPx9V1t6S8loihdoY5drv+OYNCMexCwAxWENNi58SoEJcUOzPIegwoBF+FXRhZtj5
+         MPxypkwy1OgTIa9wh1Lxt/xJg+Pwtugf1eiayh68iqZswSOwkJIb+vewB5zKQaFJ3Wjn
+         bYteTZPBqh7CdHjsJH+9WNFeja6jWzosoEopJSuk/8Vmyyee+qL//TMeJd8moI5I6btF
+         jEoaFIQKX81D0Mu3ZcaUIJdf2mqyjf2r3Fa4KaO7NLrXxK8QtzuKoXgBq4mm7WZlnd30
+         HcnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687540807; x=1690132807;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BiBfjxCccTZov20BHaxSn4dvBGrOpxH5Zg2fttHLmAo=;
-        b=PVRhbhuutxrVMgmE4Id0dZht8qAksH1PAZ3eNWxK5Rf/XVjCCVtXA3dp4tMCms90pM
-         m+sHqLuh9tWNTf+gnwDj6KAqkNRHMzRdmWuoa6+xUkx6nimSEKAr1D6t+9DQhd5eV+0E
-         pDoEJQBU+jD/OeqzR/01RG+Baq0h+jpmjKEZr3K6LIo66GYf251hl9q6SeKd3xZhCFYb
-         JGec9Teb8CWTNK6V89gYxlxqIdjsdA21aXJMwsows7lHfR8X5aaHyFgwVZeAmBbFq3II
-         L8iAeqyPgpbPFLcT7mowfrGnIqU8t8L9qFRqeav21t/zcaWV6/LnQ5aAl6T9yEmxCgEL
-         5IYg==
-X-Gm-Message-State: AC+VfDzKhmi3IBfqjVoZrxp3WoFwRQf7vl9sDLnena43s80vaqdxuBO6
-        qNbyc+wFTzevWeXwyLChFFl5nCBZ+oiimHFAos0=
-X-Google-Smtp-Source: ACHHUZ6cx2qgz7NSb63VxtrtMtA+DX4GBzGLbc+XFKkQCOYrP1gWt/nU7fhRzAZr+PjlLvWSt+azGJTAyzUvIUmGB90=
-X-Received: from mattgilbride.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:2ac5])
- (user=mattgilbride job=sendgmr) by 2002:a25:e78a:0:b0:bc4:ef98:681c with SMTP
- id e132-20020a25e78a000000b00bc4ef98681cmr3959400ybh.13.1687540806990; Fri,
- 23 Jun 2023 10:20:06 -0700 (PDT)
-Date:   Fri, 23 Jun 2023 17:20:05 +0000
-In-Reply-To: <20230224-rust-xarray-v3-1-04305b1173a5@asahilina.net>
-Mime-Version: 1.0
-References: <20230224-rust-xarray-v3-1-04305b1173a5@asahilina.net>
-X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
-Message-ID: <20230623172005.2432028-1-mattgilbride@google.com>
-Subject: Re: [PATCH v3] rust: xarray: Add an abstraction for XArray
-From:   Matt Gilbride <mattgilbride@google.com>
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     Asahi Lina <lina@asahilina.net>,
-        Alex Gaynor <alex.gaynor@gmail.com>, asahi@lists.linux.dev,
-        "=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        linux-kernel@vger.kernel.org, neal@gompa.dev,
-        Miguel Ojeda <ojeda@kernel.org>,
-        rust-for-linux@vger.kernel.org,
-        Wedson Almeida Filho <wedsonaf@gmail.com>, yakoyoku@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+        d=1e100.net; s=20221208; t=1687541711; x=1690133711;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l2mdnTcfARxptEAZsYOiOXtYWpRMgFe68mLKP2pFSjc=;
+        b=IwM2Xq2qwslLdsF1OmHnoIxEsJWG/ZCXedbvDZD/YdKezww+MeFSHBSr8zFVT2m7cd
+         +K0+tZj/g4F7RfVdPHGMzmyK9bTIE06s2hsGYlMB7OFgYF68JQSMRrSAgAcIeOg66pvQ
+         XPQjKbF0X9H6Oz/qvvvlokyoW9YxB+mtRz/fl+ZMii7J4YVCCENk3Lxc6/4WkoblkhR9
+         iFD8IrjjP4czRkWA28YGL1d35hveyuMSfLEQf2E2JLkj5kTTuM/Rz6gg6vdiYRYj/+QV
+         z9jtHuzyytIFW2HtdqjEPG7K+CaEzt3AftA+794NLXgR8/QN1SKYcB59wr/o039fj18A
+         P7YA==
+X-Gm-Message-State: AC+VfDxHBuRipSNtSfbDACNve8PtFaCPKeAyh8SWSMuCOgodzhoQosKp
+        I7Hs0Lr5ZQT8oyIp4py43nE=
+X-Google-Smtp-Source: ACHHUZ4tpHOmjcnG78ldUVZZUaR0kFIiLvlHDIdbH8fFU6ZI3JEILmRXghFVQmevSDB3yxiR3tsOxQ==
+X-Received: by 2002:a17:906:ef0b:b0:967:21:5887 with SMTP id f11-20020a170906ef0b00b0096700215887mr18000721ejs.40.1687541710659;
+        Fri, 23 Jun 2023 10:35:10 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id f12-20020a17090624cc00b0098d2261d189sm2654529ejb.19.2023.06.23.10.35.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Jun 2023 10:35:10 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 50DD827C0054;
+        Fri, 23 Jun 2023 13:35:07 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Fri, 23 Jun 2023 13:35:08 -0400
+X-ME-Sender: <xms:y9eVZP-9HW4SlYeEnUMmZCtfC2uR3LdlS-YUX0JIpgW1vPFXmvn3fg>
+    <xme:y9eVZLsbZyz0knGYLft7pap9fhtY-r1opcQrSVcQ65M0BlJtaQrN-sdyWUl0QEDW7
+    jUOkt-zY5H3i33CLg>
+X-ME-Received: <xmr:y9eVZNAolTyEBby62KJMbpMbEm8SPsYv70hOYRa7EmdMEaq_paX4knNC9FA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeeggedguddufecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepueho
+    qhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeetueegiefhieeftdfhgeffteejvdejheefueegtdehheduledvueei
+    veefveevtdenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhkvghrnhgvlhdrohhrgh
+    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhq
+    uhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqud
+    ejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgv
+    rdhnrghmvg
+X-ME-Proxy: <xmx:y9eVZLes0BJuV4Lyd8GrVbQ_awhoX0PD-HwVFmHebZ4m2hEpXtKzaQ>
+    <xmx:y9eVZEO4_aTVY6uhb6IpWHTwUxYHUa3sXgpjBKyfvu9V3lccLTRKiA>
+    <xmx:y9eVZNlCPqzo0X9T1HVnacfqdlGRVMQpemUp__05vKJCrc6mMr9dCw>
+    <xmx:y9eVZLcKi7feDYjL4XPvjobB8eaRH7YNh72hVZUQT_AwuKEmFwFbXw>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 23 Jun 2023 13:35:07 -0400 (EDT)
+Date:   Fri, 23 Jun 2023 10:35:00 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     bjorn3_gh@protonmail.com
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        Benno Lossin <benno.lossin@proton.me>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: alloc: Add realloc and alloc_zeroed to the
+ GlobalAlloc impl
+Message-ID: <ZJXXxEfzVza5Jzxj@boqun-archlinux>
+References: <20230622-global_alloc_methods-v1-1-3d3561593e23@protonmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230622-global_alloc_methods-v1-1-3d3561593e23@protonmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hello Matthew,
+On Thu, Jun 22, 2023 at 09:24:40PM +0200, Björn Roy Baron via B4 Relay wrote:
+> From: Björn Roy Baron <bjorn3_gh@protonmail.com>
+> 
+> While there are default impls for these methods, using the respective C
+> api's is faster. Currently neither the existing nor these new
+> GlobalAlloc method implementations are actually called. Instead the
+> __rust_* function defined below the GlobalAlloc impl are used. With
+> rustc 1.71 these functions will be gone and all allocation calls will go
+> through the GlobalAlloc implementation.
+> 
+> Link: https://github.com/Rust-for-Linux/linux/issues/68
 
-Could you please take a look at this patch? We also need `XArray` for ongoing work in Android's binder driver.
+Nice! Although I think we need to do the simialr size adjustment as:
 
-Thanks very much,
+	https://lore.kernel.org/rust-for-linux/20230613164258.3831917-1-boqun.feng@gmail.com/
 
-Matt
+so I applied your patch onto my patch and came up with the following:
+
+--------------------------------->8
+diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
+index ce7a06bf7589..af723c2924dc 100644
+--- a/rust/kernel/allocator.rs
++++ b/rust/kernel/allocator.rs
+@@ -9,8 +9,17 @@
+ 
+ struct KernelAllocator;
+ 
+-unsafe impl GlobalAlloc for KernelAllocator {
+-    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
++impl KernelAllocator {
++    /// # Safety
++    ///
++    /// * `ptr` can be either null or a pointer which has been allocated by this allocator.
++    /// * `layout` must have a non-zero size.
++    unsafe fn krealloc_with_flags(
++        &self,
++        ptr: *mut u8,
++        layout: Layout,
++        flags: bindings::gfp_t,
++    ) -> *mut u8 {
+         // Customized layouts from `Layout::from_size_align()` can have size < align, so pads first.
+         let layout = layout.pad_to_align();
+ 
+@@ -26,9 +35,22 @@ unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+             size = size.next_power_of_two();
+         }
+ 
+-        // `krealloc()` is used instead of `kmalloc()` because the latter is
+-        // an inline function and cannot be bound to as a result.
+-        unsafe { bindings::krealloc(ptr::null(), size, bindings::GFP_KERNEL) as *mut u8 }
++        // SAFETY:
++        //
++        // * `ptr` is either null or a pointer returned from a previous k{re}alloc() by the function
++        //   safety requirement.
++        //
++        // * `size` is greater than 0 since it's either a `layout.size()` (which cannot be zero
++        //    according to the function safety requirement) or a result from `next_power_of_two()`.
++        unsafe { bindings::krealloc(ptr as *const core::ffi::c_void, size, flags) as *mut u8 }
++    }
++}
++
++unsafe impl GlobalAlloc for KernelAllocator {
++    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
++        // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero size by the function safety
++        // requirement.
++        unsafe { self.krealloc_with_flags(ptr::null_mut(), layout, bindings::GFP_KERNEL) }
+     }
+ 
+     unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
+@@ -37,23 +59,30 @@ unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
+         }
+     }
+ 
+-    unsafe fn realloc(&self, ptr: *mut u8, _layout: Layout, new_size: usize) -> *mut u8 {
+-        unsafe {
+-            bindings::krealloc(
+-                ptr as *const core::ffi::c_void,
+-                new_size,
+-                bindings::GFP_KERNEL,
+-            ) as *mut u8
+-        }
++    unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8 {
++        // SAFETY:
++        // * `new_size` when rounded up to the nearest multiple of `layout.align()`, will not
++        //   overflow `isize` by the function safety requirement.
++        // * `layout.align()` is a proper alignment (i.e. not zero and must be a power of two).
++        let layout = unsafe { Layout::from_size_align_unchecked(new_size, layout.align()) };
++
++        // SAFETY:
++        // * `ptr` is either null or a pointer allocated by this allocator by function safety
++        //   requirement.
++        // * the size of `layout` is not zero because `new_size` is not zero by function safety
++        //   requirement.
++        unsafe { self.krealloc_with_flags(ptr, layout, bindings::GFP_KERNEL) }
+     }
+ 
+     unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
++        // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero size by the function safety
++        // requirement.
+         unsafe {
+-            bindings::krealloc(
+-                core::ptr::null(),
+-                layout.size(),
++            self.krealloc_with_flags(
++                ptr::null_mut(),
++                layout,
+                 bindings::GFP_KERNEL | bindings::__GFP_ZERO,
+-            ) as *mut u8
++            )
+         }
+     }
+ }
+
+
+Regards,
+Boqun
+
+> Signed-off-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
+> ---
+>  rust/kernel/allocator.rs | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
+> index 397a3dd57a9b..e0a27b1326b5 100644
+> --- a/rust/kernel/allocator.rs
+> +++ b/rust/kernel/allocator.rs
+> @@ -21,6 +21,26 @@ unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
+>              bindings::kfree(ptr as *const core::ffi::c_void);
+>          }
+>      }
+> +
+> +    unsafe fn realloc(&self, ptr: *mut u8, _layout: Layout, new_size: usize) -> *mut u8 {
+> +        unsafe {
+> +            bindings::krealloc(
+> +                ptr as *const core::ffi::c_void,
+> +                new_size,
+> +                bindings::GFP_KERNEL,
+> +            ) as *mut u8
+> +        }
+> +    }
+> +
+> +    unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
+> +        unsafe {
+> +            bindings::krealloc(
+> +                core::ptr::null(),
+> +                layout.size(),
+> +                bindings::GFP_KERNEL | bindings::__GFP_ZERO,
+> +            ) as *mut u8
+> +        }
+> +    }
+>  }
+>  
+>  #[global_allocator]
+> 
+> ---
+> base-commit: d2e3115d717197cb2bc020dd1f06b06538474ac3
+> change-id: 20230622-global_alloc_methods-abf5b5e38dba
+> 
+> Best regards,
+> -- 
+> Björn Roy Baron <bjorn3_gh@protonmail.com>
+> 
