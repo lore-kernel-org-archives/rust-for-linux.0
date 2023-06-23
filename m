@@ -2,127 +2,91 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B70C3EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Thu, 22 Jun 2023 19:25:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF45CEB64DA
+	for <rust-for-linux@archiver.kernel.org>; Fri, 23 Jun 2023 01:07:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbjFVTZ0 (ORCPT
+        id S230519AbjFWBHj (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Thu, 22 Jun 2023 15:25:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52940 "EHLO
+        Thu, 22 Jun 2023 21:07:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229647AbjFVTZZ (ORCPT
+        with ESMTP id S230186AbjFWBH2 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Thu, 22 Jun 2023 15:25:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58D8B1A3;
-        Thu, 22 Jun 2023 12:25:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E2A7A618CA;
-        Thu, 22 Jun 2023 19:25:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 43D05C433C0;
-        Thu, 22 Jun 2023 19:25:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687461923;
-        bh=DpV1m3VEHFOes2TUjDBtDPABaVhpRNU+dlU1LJCoRtM=;
-        h=From:Date:Subject:To:Cc:Reply-To:From;
-        b=fX6kG/ogkrN4lylzbfksV9G6PagfGjGR/PgOqXmNGI/wjKhp541ST0Jtt/v2c85zo
-         kbzu+9aap0O5bQ7WEEeC9uo7zzMSOnoZpbMjUFkLdGj0rVY6LsVZJHeQo8PjrW6YDu
-         mXCHk5ghmDkBJgitaGjnkcR7MJh2bry8FNvFCiTZn9jgCFgFYk+Bbf/qImhxggrtWB
-         HsR5LoNC5hYjJMYc8pK6oTnFGI0PAvlPildX6Xia0X4yCCcfIY0jm0x7rJF0gDygAV
-         gXJCR6vKTgiQqYvSP0vHk9jOtHOAMQBFRtCNBIrMPE+5UNnkeQA+RnWQ9yl+OuAK2g
-         74W/ATqeCEOrQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.lore.kernel.org (Postfix) with ESMTP id 249BDEB64DA;
-        Thu, 22 Jun 2023 19:25:23 +0000 (UTC)
-From:   =?utf-8?q?Bj=C3=B6rn?= Roy Baron via B4 Relay 
-        <devnull+bjorn3_gh.protonmail.com@kernel.org>
-Date:   Thu, 22 Jun 2023 21:24:40 +0200
-Subject: [PATCH] rust: alloc: Add realloc and alloc_zeroed to the
- GlobalAlloc impl
+        Thu, 22 Jun 2023 21:07:28 -0400
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F171FC0;
+        Thu, 22 Jun 2023 18:07:25 -0700 (PDT)
+Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6b711c3ad1fso176310a34.0;
+        Thu, 22 Jun 2023 18:07:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687482444; x=1690074444;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oi3Ygn7d9QROh9zMnyn6jfDGTwHuWZ7Z7xzWKiYlV6M=;
+        b=kj1FmKF5cz50gAMtmLchpYc2n11yD731qNme+0UN1w7H04oQnfD6xji4WzoIMj1foM
+         9LvewmX4OHwVg8KlMp3XbHjH5BvOr5/PizhoVJU51JAFNFeQn+Cf1zgMIN5RbkMAF1a0
+         nPzNdncE1IcZA66oDgNjq7SYgeUpCrf7VEuLRWv0nVFRBc6UjjTwSc0l+D3PoebUXAVs
+         2tOvgS7lQ1pu2XVExTvEPdJayor71/l00wy3g+4fgscwi7ZAfLQMQxZimrZYgk4DbbWv
+         g7kYgH699onLDnA5S4MLQ00tLk+CNK5ZeJhPqGfeNmoNi6RtVsl3hI+XKWiKBKJ7UuNg
+         eiFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687482444; x=1690074444;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oi3Ygn7d9QROh9zMnyn6jfDGTwHuWZ7Z7xzWKiYlV6M=;
+        b=HDcVitDpJ+W66fWdQ1Fs3hduoat8aVHVQQbsFLZhHhIyRDTYrHbE8P0uatYNCxSli1
+         bYwj4VtYpr+5kzGxXygkAfqSfSGYql7Y33CV1UBVS/UsGq/fkb1RAdbbC2Ccm3AzcXhV
+         fXoxoJqerpFD7Z/zhFt+SMSsFVNN5FvOmYfM2bXWSizGH2kKWC4SkVbLOZbbLMCfoOPX
+         ri2i0cPZo8yxEPd6qgxTUtkwn+kvH/A5HKpCDugXRLdt9Ai+ppNe6LPHT0P+BzP62qON
+         +CiFu3kaXrOReLumRe3Y6oHLck3ufTCPEl5iAc5IaYkEipwAmDybdxbD9Bt25OREiNdj
+         dNpg==
+X-Gm-Message-State: AC+VfDx84Rmof4/VDNhgvk6s/FuxynX89x5zFUkHzNTLImzZlRNC4iET
+        p8dCOvdZZMDHj6pHS/v+FlVxD5UWDgs=
+X-Google-Smtp-Source: ACHHUZ5TbrdHjQ+eK1AQUR6esk5HFcpPiWK/6oDwJrQIPvFHdDACffCi+qs3rBkKOCBb4t4693ATqg==
+X-Received: by 2002:a05:6870:3845:b0:1a2:7786:9406 with SMTP id z5-20020a056870384500b001a277869406mr16114620oal.4.1687482444480;
+        Thu, 22 Jun 2023 18:07:24 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id g19-20020a9d6b13000000b006af78565d64sm3413913otp.46.2023.06.22.18.07.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Jun 2023 18:07:24 -0700 (PDT)
+Message-ID: <2e24fc18-c118-59b9-d205-4759329273e0@gmail.com>
+Date:   Thu, 22 Jun 2023 22:07:20 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20230622-global_alloc_methods-v1-1-3d3561593e23@protonmail.com>
-X-B4-Tracking: v=1; b=H4sIAPeflGQC/x2N0QqDMAwAf0XyvICrOMZ+ZQxJ2mgLXTuaOgTx3
- 1f3eBzH7aBSgig8uh2KfIOGnBpcLx1YT2kRDK4xmN4M/c0YXGJmihPFmO30luqzUySeRx5luDs
- maCmTCnKhZP0Zl1UrJtnq6T5F5rD9l8/XcfwAwBIEP4IAAAA=
-To:     Miguel Ojeda <ojeda@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] rust: alloc: Add realloc and alloc_zeroed to the
+ GlobalAlloc impl
+To:     bjorn3_gh@protonmail.com, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         Benno Lossin <benno.lossin@proton.me>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1687461921; l=1764;
- i=bjorn3_gh@protonmail.com; s=20230622; h=from:subject:message-id;
- bh=M9xHvSYYCEDVh9+hr5YwUYJxj2f5jgjrI/bZdGQDX+8=;
- b=Uc+YPwcRyWhLPWVXHVbl9sDKW/vsIauXT/uasYNYN/UJvZyOEGqrkYHZeuUTIFQQr3HioDaU7
- z60y8bv6qypAXeUx+ukjus+tQp2WW0xph9OU58grNqnqpQtUCukuqDY
-X-Developer-Key: i=bjorn3_gh@protonmail.com; a=ed25519;
- pk=tXjaafs1PnnuO6sr/Z6Wl6BuT7c22k9Rf9fpX863CJs=
-X-Endpoint-Received: by B4 Relay for bjorn3_gh@protonmail.com/20230622 with auth_id=55
-X-Original-From: =?utf-8?q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>
-Reply-To: <bjorn3_gh@protonmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230622-global_alloc_methods-v1-1-3d3561593e23@protonmail.com>
+Content-Language: en-US
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230622-global_alloc_methods-v1-1-3d3561593e23@protonmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-From: Björn Roy Baron <bjorn3_gh@protonmail.com>
+On 6/22/23 16:24, Björn Roy Baron via B4 Relay wrote:
+> From: Björn Roy Baron <bjorn3_gh@protonmail.com>
+> 
+> While there are default impls for these methods, using the respective C
+> api's is faster. Currently neither the existing nor these new
+> GlobalAlloc method implementations are actually called. Instead the
+> __rust_* function defined below the GlobalAlloc impl are used. With
+> rustc 1.71 these functions will be gone and all allocation calls will go
+> through the GlobalAlloc implementation.
+> 
+> Link: https://github.com/Rust-for-Linux/linux/issues/68
+> Signed-off-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
+> ---
+> [...]
 
-While there are default impls for these methods, using the respective C
-api's is faster. Currently neither the existing nor these new
-GlobalAlloc method implementations are actually called. Instead the
-__rust_* function defined below the GlobalAlloc impl are used. With
-rustc 1.71 these functions will be gone and all allocation calls will go
-through the GlobalAlloc implementation.
-
-Link: https://github.com/Rust-for-Linux/linux/issues/68
-Signed-off-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
----
- rust/kernel/allocator.rs | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
-
-diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
-index 397a3dd57a9b..e0a27b1326b5 100644
---- a/rust/kernel/allocator.rs
-+++ b/rust/kernel/allocator.rs
-@@ -21,6 +21,26 @@ unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
-             bindings::kfree(ptr as *const core::ffi::c_void);
-         }
-     }
-+
-+    unsafe fn realloc(&self, ptr: *mut u8, _layout: Layout, new_size: usize) -> *mut u8 {
-+        unsafe {
-+            bindings::krealloc(
-+                ptr as *const core::ffi::c_void,
-+                new_size,
-+                bindings::GFP_KERNEL,
-+            ) as *mut u8
-+        }
-+    }
-+
-+    unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
-+        unsafe {
-+            bindings::krealloc(
-+                core::ptr::null(),
-+                layout.size(),
-+                bindings::GFP_KERNEL | bindings::__GFP_ZERO,
-+            ) as *mut u8
-+        }
-+    }
- }
- 
- #[global_allocator]
-
----
-base-commit: d2e3115d717197cb2bc020dd1f06b06538474ac3
-change-id: 20230622-global_alloc_methods-abf5b5e38dba
-
-Best regards,
--- 
-Björn Roy Baron <bjorn3_gh@protonmail.com>
-
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
