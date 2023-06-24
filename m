@@ -2,33 +2,33 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59B11EB64DA
-	for <rust-for-linux@archiver.kernel.org>; Sat, 24 Jun 2023 09:25:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76898EB64DA
+	for <rust-for-linux@archiver.kernel.org>; Sat, 24 Jun 2023 09:26:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233044AbjFXJZo (ORCPT
+        id S233113AbjFXJ0R (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 24 Jun 2023 05:25:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52586 "EHLO
+        Sat, 24 Jun 2023 05:26:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233009AbjFXJZj (ORCPT
+        with ESMTP id S233046AbjFXJ0H (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 24 Jun 2023 05:25:39 -0400
+        Sat, 24 Jun 2023 05:26:07 -0400
 Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E16D2130
-        for <rust-for-linux@vger.kernel.org>; Sat, 24 Jun 2023 02:25:28 -0700 (PDT)
-Date:   Sat, 24 Jun 2023 09:25:16 +0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BCA82727
+        for <rust-for-linux@vger.kernel.org>; Sat, 24 Jun 2023 02:25:41 -0700 (PDT)
+Date:   Sat, 24 Jun 2023 09:25:34 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=xkiqz2ubxjcrjarzt6h2fs2eda.protonmail; t=1687598726; x=1687857926;
-        bh=MwlsAZeth2fh5s/kKCjOwcaQoR9NfdiNJqcnIsJP+QU=;
+        s=protonmail; t=1687598739; x=1687857939;
+        bh=gLSKxHqYjJDu1EPRJrKPDpLlPpYDJtCGZbauNM8TqoI=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=RX1QAFc2D7lJnNB8YIGMjffGX2FEKkrq6fmEfZflSEwkkwMLXzhsXN8ZLqMJFL9oW
-         eaHYEK9ECgnIrEKj2hNjevL6+hEB1EsPWMmOxWnQQQE6XF/MEg/tpFrFaAMHfdB3ST
-         YJhWTH9QJVe7q8dh8ykOd37SmZ6Za20e/jR7O8ztupEyl9TvSTMWqWr5+w7pB4Rd4h
-         8shd5T+lOMdD3IVD+VzW+zQ18TluwVoBqC8G9mZq4EtC2pMhy6AueT+OcOFRd04TW9
-         fpMkLLW3wmqrHR0wVHlpFOxMqX0pnYLjz0S0aR4lf7FsUsMOFju/QgLG68H3psY5b6
-         MVGAuvLNTqwuw==
+        b=PzF6EJxG1JQsX9+/c2QvRBGF5Cbkpnue8an6zQc9ZiqUYDUbqRR6uVPFTdYoxa/Bm
+         XHmJxP2+dwnwyHf3xCVMBvycPXyKDfrpaN8Bj5tmkrE7wWjqNdcgT0DqgpmPB6vDEW
+         OGo9gZ1pYvS64q4AwSnH2I155EI8c4TqhNeZjHkl+FjUKDJtx/S5blWgJzPDYobl3p
+         kcKJ6g3/OTVZOVXUBEFG84CoFPxfj3wPjJYttS6dDdVYjlT29F0Ggd9yxgSjmoIx7G
+         s37c8geiKJZtxmImSKsQ7OZ8+PKwY5V37EkLz4u2s8DNqh6gwCSt8tlyZ/9iSIZknp
+         dohrYK9kH30KA==
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>
@@ -39,9 +39,9 @@ Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         Alice Ryhl <aliceryhl@google.com>,
         Andreas Hindborg <nmi@metaspace.dk>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev
-Subject: [PATCH 4/7] rust: init: wrap type checking struct initializers in a closure
-Message-ID: <20230624092330.157338-4-benno.lossin@proton.me>
+        patches@lists.linux.dev, Asahi Lina <lina@asahilina.net>
+Subject: [PATCH 6/7] rust: init: Add functions to create array initializers
+Message-ID: <20230624092330.157338-6-benno.lossin@proton.me>
 In-Reply-To: <20230624092330.157338-1-benno.lossin@proton.me>
 References: <20230624092330.157338-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
@@ -52,53 +52,134 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-In the implementation of the init macros there is a `if false` statement
-that type checks the initializer to ensure every field is initialized.
-Since the next patch has a stack variable to store the struct, the
-function might allocate too much memory on debug builds. Putting the
-struct into a closure ensures that even in debug builds no stack
-overflow error is caused. In release builds this was not a problem since
-the code was optimized away due to the `if false`.
+Add two functions `pin_init_array_from_fn` and `init_array_from_fn` that
+take a function that generates initializers for `T` from usize, the added
+functions then return an initializer for `[T; N]` where every element is
+initialized by an element returned from the generator function.
 
+Suggested-by: Asahi Lina <lina@asahilina.net>
 Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 ---
- rust/kernel/init/macros.rs | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ rust/kernel/init.rs | 90 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 90 insertions(+)
 
-diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
-index df4281743175..1e0c4aca055a 100644
---- a/rust/kernel/init/macros.rs
-+++ b/rust/kernel/init/macros.rs
-@@ -1037,14 +1037,18 @@ macro_rules! __init_internal {
-                     // We use unreachable code to ensure that all fields h=
-ave been mentioned exactly
-                     // once, this struct initializer will still be type-ch=
-ecked and complain with a
-                     // very natural error message if a field is forgotten/=
-mentioned more than once.
--                    #[allow(unreachable_code, clippy::diverging_sub_expres=
-sion)]
-+                    #[allow(unreachable_code,
-+                            clippy::diverging_sub_expression,
-+                            clippy::redundant_closure_call)]
-                     if false {
--                        $crate::__init_internal!(make_initializer:
--                            @slot(slot),
--                            @type_name($t),
--                            @munch_fields($($fields)*,),
--                            @acc(),
--                        );
-+                        (|| {
-+                            $crate::__init_internal!(make_initializer:
-+                                @slot(slot),
-+                                @type_name($t),
-+                                @munch_fields($($fields)*,),
-+                                @acc(),
-+                            );
-+                        })();
-                     }
-                 }
-                 Ok(__InitOk)
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 44bc3e77419a..c9ea4bf71987 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -867,6 +867,96 @@ pub fn uninit<T, E>() -> impl Init<MaybeUninit<T>, E> =
+{
+     unsafe { init_from_closure(|_| Ok(())) }
+ }
+
++/// Initializes an array by initializing each element via the provided ini=
+tializer.
++///
++/// # Examples
++///
++/// ```rust
++/// let array: Box<[usize; 1000_000_000]>=3D Box::init(init_array_from_fn(=
+|i| i)).unwrap();
++/// println!("{array:?}");
++/// ```
++pub fn init_array_from_fn<I, const N: usize, T, E>(
++    mut make_init: impl FnMut(usize) -> I,
++) -> impl Init<[T; N], E>
++where
++    I: Init<T, E>,
++{
++    let init =3D move |slot: *mut [T; N]| {
++        let slot =3D slot.cast::<T>();
++        for i in 0..N {
++            let init =3D make_init(i);
++            // SAFETY: since 0 <=3D `i` < N, it is still in bounds of `[T;=
+ N]`.
++            let ptr =3D unsafe { slot.add(i) };
++            // SAFETY: The pointer is derived from `slot` and thus satisfi=
+es the `__init`
++            // requirements.
++            match unsafe { init.__init(ptr) } {
++                Ok(()) =3D> {}
++                Err(e) =3D> {
++                    // We now free every element that has been initialized=
+ before:
++                    for j in 0..i {
++                        let ptr =3D unsafe { slot.add(j) };
++                        // SAFETY: The value was initialized in a previous=
+ iteration of the loop
++                        // and since we return `Err` below, the caller wil=
+l consider the memory at
++                        // `slot` as uninitialized.
++                        unsafe { ptr::drop_in_place(ptr) };
++                    }
++                    return Err(e);
++                }
++            }
++        }
++        Ok(())
++    };
++    // SAFETY: The initializer above initializes every element of the arra=
+y. On failure it drops
++    // any initialized elements and returns `Err`.
++    unsafe { init_from_closure(init) }
++}
++
++/// Initializes an array by initializing each element via the provided ini=
+tializer.
++///
++/// # Examples
++///
++/// ```rust
++/// let array: Arc<[Mutex<usize>; 1000_000_000]>=3D
++///     Arc::pin_init(init_array_from_fn(|i| new_mutex!(i))).unwrap();
++/// println!("{array:?}");
++/// ```
++pub fn pin_init_array_from_fn<I, const N: usize, T, E>(
++    mut make_init: impl FnMut(usize) -> I,
++) -> impl PinInit<[T; N], E>
++where
++    I: PinInit<T, E>,
++{
++    let init =3D move |slot: *mut [T; N]| {
++        let slot =3D slot.cast::<T>();
++        for i in 0..N {
++            let init =3D make_init(i);
++            // SAFETY: since 0 <=3D `i` < N, it is still in bounds of `[T;=
+ N]`.
++            let ptr =3D unsafe { slot.add(i) };
++            // SAFETY: The pointer is derived from `slot` and thus satisfi=
+es the `__pinned_init`
++            // requirements.
++            match unsafe { init.__pinned_init(ptr) } {
++                Ok(()) =3D> {}
++                Err(e) =3D> {
++                    // We now have to free every element that has been ini=
+tialized before, since we
++                    // have to abide by the drop guarantee.
++                    for j in 0..i {
++                        let ptr =3D unsafe { slot.add(j) };
++                        // SAFETY: The value was initialized in a previous=
+ iteration of the loop
++                        // and since we return `Err` below, the caller wil=
+l consider the memory at
++                        // `slot` as uninitialized.
++                        unsafe { ptr::drop_in_place(ptr) };
++                    }
++                    return Err(e);
++                }
++            }
++        }
++        Ok(())
++    };
++    // SAFETY: The initializer above initializes every element of the arra=
+y. On failure it drops
++    // any initialized elements and returns `Err`.
++    unsafe { pin_init_from_closure(init) }
++}
++
+ // SAFETY: Every type can be initialized by-value.
+ unsafe impl<T, E> Init<T, E> for T {
+     unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
 --
 2.41.0
 
