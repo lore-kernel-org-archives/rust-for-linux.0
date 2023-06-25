@@ -2,570 +2,164 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3583DEB64DC
-	for <rust-for-linux@archiver.kernel.org>; Sun, 25 Jun 2023 14:27:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1BC4EB64DD
+	for <rust-for-linux@archiver.kernel.org>; Sun, 25 Jun 2023 16:46:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229706AbjFYO1o (ORCPT
+        id S229786AbjFYQq3 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 25 Jun 2023 10:27:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54938 "EHLO
+        Sun, 25 Jun 2023 12:46:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbjFYO1n (ORCPT
+        with ESMTP id S229519AbjFYQq2 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 25 Jun 2023 10:27:43 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 374EEC6;
-        Sun, 25 Jun 2023 07:27:38 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-54f85f968a0so248887a12.1;
-        Sun, 25 Jun 2023 07:27:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687703257; x=1690295257;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aULwL/LJJ4eU0UOAddS927hL1AwSCDydj7bd2EhU7vc=;
-        b=HetoUZJKJS4mfVnq+3aOsCiarqqbyfUAlEncYvSxzHLKlPYbmgopL1H2Q8J87/VX7u
-         mIAJQF020jcwSEjCGyqRK83xiiG16bCXLcKKktjnO61tr1krBwApyUCOXycuNKBe/9bd
-         OknEa3+x7DEhwjTzZtoT4/Jg0fTB/CEfMnlzIHaOdtGANhCyXsmkhm7cgB7Y8/IvsOAs
-         z0USHaooa8NvnQECpjW4j2PRE1lHOR64Abj5/0blrOY4vy+fnjzVXBXF+6SjeIJ7rcjv
-         Cyqcur3GePoG16c+aXLUDMM8HYem9SJvkCzIMuBMzOzdyUWINLpc6rrcI+pECKOgtHlq
-         yhPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687703257; x=1690295257;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=aULwL/LJJ4eU0UOAddS927hL1AwSCDydj7bd2EhU7vc=;
-        b=WxaFZjBmUPu5uExdhzhK4ZWonWD0Sy7Sp/g8XMK4IBUKxOJL8CvpvS1Wy+XPj7Mkxt
-         wlI6kE1k/NItHjNkAIYAOvwqGptNh/+/ZwtrzHySUoloiV8PsksE1Ul8Z/JKGE4e0SmW
-         CH9ZoevibkhxesNRN2GaUROjdmKwXS8Aq32wZAeqCcc9hvgMBrXv/XNQDCrnysI5kBU6
-         ifVYbkAEcZrUYA1s1RZp5jBAAwrDR8Ecz38beoSZBwYQ2JR3ihYHG4cOnV0RcFU0I7Se
-         Ne5liLTf91yXneUEIo0obneEYTczrnaMWYxa2YnCEJ/rnq1kAdSLzjaPmKo3DslDds5c
-         yVtw==
-X-Gm-Message-State: AC+VfDwHNixUgmp95zySDP2qyIwz75tIoRcArBhKsvqEW/4yFqamtJJQ
-        UpHawiripCxbCwB9eMdJ6LY=
-X-Google-Smtp-Source: ACHHUZ4FJ1goYXuIvZYHIiNvTCuIwseo8NGm9hCwGagKemaUJm2NoXSDi1x8LBjLlGIEoHYSGBDaHA==
-X-Received: by 2002:a17:902:c945:b0:1ae:3ff8:7fa7 with SMTP id i5-20020a170902c94500b001ae3ff87fa7mr33034660pla.4.1687703257322;
-        Sun, 25 Jun 2023 07:27:37 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id r4-20020a170902be0400b001b02713a301sm2521978pls.181.2023.06.25.07.27.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jun 2023 07:27:36 -0700 (PDT)
-Date:   Sun, 25 Jun 2023 23:27:36 +0900 (JST)
-Message-Id: <20230625.232736.235121744769257487.ubuntu@gmail.com>
-To:     benno.lossin@proton.me
-Cc:     fujita.tomonori@gmail.com, netdev@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, aliceryhl@google.com,
-        andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com
-Subject: Re: [PATCH 1/5] rust: core abstractions for network device drivers
-From:   FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <3ff6edec-c083-9294-d2df-01be983cd293@proton.me>
-References: <_kID50ojyLurmrpIpn_kNxCRqo5MAaqm9pE47mhFcLops8yDhSqmbkhJiUuHlAFSdgqX1dHdZGxUa95ZSHAPHesIKLci1J21cu6nmdQ3ZGg=@proton.me>
-        <20230621.221349.1237576739913195911.ubuntu@gmail.com>
-        <3ff6edec-c083-9294-d2df-01be983cd293@proton.me>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+        Sun, 25 Jun 2023 12:46:28 -0400
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8048519A
+        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jun 2023 09:46:24 -0700 (PDT)
+Date:   Sun, 25 Jun 2023 16:46:19 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=protonmail; t=1687711582; x=1687970782;
+        bh=UiwcovPu5D6YP531Fs0Dmh7sLnagRakiziEoNif0OK0=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=GfpbcRsSZQ7svs4/PAthoEJAPODQtFPWvBA/VHFU+AmCuQnZndEAtEzddlpKmj2cn
+         /DK6pw2KjJDqrIvjy94GyslatfJP7AxKXCJeyReJ9k+iaVCsrUPS4Gx1JEeTtdoZVY
+         agnrNQ2R+4ENodKJp641s9srz/zEnt27LvzYGfitSz6ziI5TFmBFAUXPZi4bBajRPB
+         Ass6krGGpP685vfHvH2UyTgnLN5bMi+IR6OjieDxgbljJL/xAmBl5Z/pM8cWoBIqKU
+         aOrrr5jsZY1PMznSp2rqTo9y6/Rnv/2y+ELnbuwD1MAbsAoF7W63qD6ouK8EmU2Pcu
+         dKz5x7xXZxrgg==
+To:     =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+From:   Benno Lossin <benno.lossin@proton.me>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <nmi@metaspace.dk>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, Asahi Lina <lina@asahilina.net>
+Subject: Re: [PATCH 5/7] rust: init: add `..Zeroable::zeroed()` syntax for zeroing all missing fields
+Message-ID: <0f99bc49-5280-c300-719f-86c138f48eaf@proton.me>
+In-Reply-To: <8lCE3SyChVVb2HphigkwKsxv7etgmS0N3AzcDyYtCEoqcFEKvY-5ILkOrWUr_vnWrvsWrAHXVfwcWARfsiMHC8Yc03sND-PuuK-2z9j4z6I=@protonmail.com>
+References: <20230624092330.157338-1-benno.lossin@proton.me> <20230624092330.157338-5-benno.lossin@proton.me> <W1fY0aa_v9j7lJNWXk_WNaxY2qruJo1R6k7u0g-X5L5Rxuod-VMBMmByICDwjF_fFGvNJTV41QapW0WeVduNYqxgo9S243gnNGXbexq6P3Q=@protonmail.com> <f4bcd952-1ad9-42b7-6e0b-72a115dcbe8e@proton.me> <we7PHkrpBV6kIgFZojiBFerqlXtSJB9HWkj129OGUWUVyVFwtuoirr3gVybgLzW2hmpUqqSAAQUPsdfL9QC2JyNKOLRNX0mSTfgD8llSJKE=@protonmail.com> <6f4e1d68-f828-8990-4859-8ab24907fa46@proton.me> <8lCE3SyChVVb2HphigkwKsxv7etgmS0N3AzcDyYtCEoqcFEKvY-5ILkOrWUr_vnWrvsWrAHXVfwcWARfsiMHC8Yc03sND-PuuK-2z9j4z6I=@protonmail.com>
+Feedback-ID: 71780778:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi,
-
-On Sun, 25 Jun 2023 09:52:53 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
-
-> On 6/21/23 15:13, FUJITA Tomonori wrote:
->> Hi,
->> Thanks for reviewing.
->> 
->> On Thu, 15 Jun 2023 13:01:50 +0000
->> Benno Lossin <benno.lossin@proton.me> wrote:
->> 
->>> On 6/13/23 06:53, FUJITA Tomonori wrote:
->>>> This patch adds very basic abstractions to implement network device
->>>> drivers, corresponds to the kernel's net_device and net_device_ops
->>>> structs with support for register_netdev/unregister_netdev functions.
+On 6/25/23 16:17, Bj=C3=B6rn Roy Baron wrote:
+> On Sunday, June 25th, 2023 at 15:07, Benno Lossin <benno.lossin@proton.me=
+> wrote:
+>> On 25.06.23 14:56, Bj=C3=B6rn Roy Baron wrote:
+>>> On Saturday, June 24th, 2023 at 23:14, Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>>
+>>>>>> +                        // Ensure that the struct is indeed `Zeroab=
+le`.
+>>>>>> +                        is_zeroable(slot);
+>>>>>> +                        // SAFETY:  The type implements `Zeroable` =
+by the check above.
+>>>>>> +                        unsafe { ::core::ptr::write_bytes(slot, 0, =
+1) };
+>>>>>> +                        $init_zeroed // this will be `()` if set.
+>>>>>
+>>>>> How does this work? Shouldn't there be a ; after $init_zeroed to cons=
+ume the () value?
 >>>>
->>>> allows the const_maybe_uninit_zeroed feature for
->>>> core::mem::MaybeUinit::<T>::zeroed() in const function.
->>>>
->>>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>>> ---
->>>>   rust/bindings/bindings_helper.h |   2 +
->>>>   rust/helpers.c                  |  16 ++
->>>>   rust/kernel/lib.rs              |   3 +
->>>>   rust/kernel/net.rs              |   5 +
->>>>   rust/kernel/net/dev.rs          | 344 ++++++++++++++++++++++++++++++++
->>>>   5 files changed, 370 insertions(+)
->>>>   create mode 100644 rust/kernel/net.rs
->>>>   create mode 100644 rust/kernel/net/dev.rs
->>>>
->>>> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
->>>> index 3e601ce2548d..468bf606f174 100644
->>>> --- a/rust/bindings/bindings_helper.h
->>>> +++ b/rust/bindings/bindings_helper.h
->>>> @@ -7,6 +7,8 @@
->>>>    */
->>>>
->>>>   #include <linux/errname.h>
->>>> +#include <linux/etherdevice.h>
->>>> +#include <linux/netdevice.h>
->>>>   #include <linux/slab.h>
->>>>   #include <linux/refcount.h>
->>>>   #include <linux/wait.h>
->>>> diff --git a/rust/helpers.c b/rust/helpers.c
->>>> index bb594da56137..70d50767ff4e 100644
->>>> --- a/rust/helpers.c
->>>> +++ b/rust/helpers.c
->>>> @@ -24,10 +24,26 @@
->>>>   #include <linux/errname.h>
->>>>   #include <linux/refcount.h>
->>>>   #include <linux/mutex.h>
->>>> +#include <linux/netdevice.h>
->>>> +#include <linux/skbuff.h>
->>>>   #include <linux/spinlock.h>
->>>>   #include <linux/sched/signal.h>
->>>>   #include <linux/wait.h>
->>>>
->>>> +#ifdef CONFIG_NET
->>>> +void *rust_helper_netdev_priv(const struct net_device *dev)
->>>> +{
->>>> +	return netdev_priv(dev);
->>>> +}
->>>> +EXPORT_SYMBOL_GPL(rust_helper_netdev_priv);
->>>> +
->>>> +void rust_helper_skb_tx_timestamp(struct sk_buff *skb)
->>>> +{
->>>> +	skb_tx_timestamp(skb);
->>>> +}
->>>> +EXPORT_SYMBOL_GPL(rust_helper_skb_tx_timestamp);
->>>> +#endif
->>>> +
->>>>   __noreturn void rust_helper_BUG(void)
->>>>   {
->>>>   	BUG();
->>>> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
->>>> index 85b261209977..fc7d048d359d 100644
->>>> --- a/rust/kernel/lib.rs
->>>> +++ b/rust/kernel/lib.rs
->>>> @@ -13,6 +13,7 @@
->>>>
->>>>   #![no_std]
->>>>   #![feature(allocator_api)]
->>>> +#![feature(const_maybe_uninit_zeroed)]
->>>>   #![feature(coerce_unsized)]
->>>>   #![feature(dispatch_from_dyn)]
->>>>   #![feature(new_uninit)]
->>>> @@ -34,6 +35,8 @@
->>>>   pub mod error;
->>>>   pub mod init;
->>>>   pub mod ioctl;
->>>> +#[cfg(CONFIG_NET)]
->>>> +pub mod net;
->>>>   pub mod prelude;
->>>>   pub mod print;
->>>>   mod static_assert;
->>>> diff --git a/rust/kernel/net.rs b/rust/kernel/net.rs
->>>> new file mode 100644
->>>> index 000000000000..28fe8f398463
->>>> --- /dev/null
->>>> +++ b/rust/kernel/net.rs
->>>> @@ -0,0 +1,5 @@
->>>> +// SPDX-License-Identifier: GPL-2.0
->>>> +
->>>> +//! Networking core.
->>>> +
->>>> +pub mod dev;
->>>> diff --git a/rust/kernel/net/dev.rs b/rust/kernel/net/dev.rs
->>>> new file mode 100644
->>>> index 000000000000..d072c81f99ce
->>>> --- /dev/null
->>>> +++ b/rust/kernel/net/dev.rs
->>>> @@ -0,0 +1,344 @@
->>>> +// SPDX-License-Identifier: GPL-2.0
->>>> +
->>>> +//! Network device.
->>>> +//!
->>>> +//! C headers: [`include/linux/etherdevice.h`](../../../../include/linux/etherdevice.h),
->>>> +//! [`include/linux/ethtool.h`](../../../../include/linux/ethtool.h),
->>>> +//! [`include/linux/netdevice.h`](../../../../include/linux/netdevice.h),
->>>> +//! [`include/linux/skbuff.h`](../../../../include/linux/skbuff.h),
->>>> +//! [`include/uapi/linux/if_link.h`](../../../../include/uapi/linux/if_link.h).
->>>> +
->>>> +use crate::{bindings, error::*, prelude::vtable, types::ForeignOwnable};
->>>> +use {core::ffi::c_void, core::marker::PhantomData};
->>>> +
->>>> +/// Corresponds to the kernel's `struct net_device`.
->>>> +///
->>>> +/// # Invariants
->>>> +///
->>>> +/// The pointer is valid.
->>>> +pub struct Device(*mut bindings::net_device);
->>>> +
->>>> +impl Device {
->>>> +    /// Creates a new [`Device`] instance.
->>>> +    ///
->>>> +    /// # Safety
->>>> +    ///
->>>> +    /// Callers must ensure that `ptr` must be valid.
->>>> +    unsafe fn from_ptr(ptr: *mut bindings::net_device) -> Self {
->>>> +        // INVARIANT: The safety requirements ensure the invariant.
->>>> +        Self(ptr)
->>>> +    }
->>>> +
->>>> +    /// Gets a pointer to network device private data.
->>>> +    fn priv_data_ptr(&self) -> *const c_void {
->>>> +        // SAFETY: The type invariants guarantee that `self.0` is valid.
->>>> +        // During the initialization of `Registration` instance, the kernel allocates
->>>> +        // contiguous memory for `struct net_device` and a pointer to its private data.
->>>> +        // So it's safe to read an address from the returned address from `netdev_priv()`.
->>>> +        unsafe { core::ptr::read(bindings::netdev_priv(self.0) as *const *const c_void) }
+>>>> It is the last expression of a block and since it is `()` it is ok
+>>>> (adding a ; would also be ok, but it is not necessary).
 >>>
->>> Why are at least `size_of::<*const c_void>` bytes allocated? Why is it a
->>> `*const c_void` pointer? This function does not give any guarantees about
->>> this pointer, is it valid?
->> 
->> The reason is a device driver needs its data structure. It needs to
->> access to it via a pointer to bindings::net_device struct. The space
->> for the pointer is allocated during initialization of Registration and
->> it's valid until the Registration object is dropped.
-> 
-> I think this should be encoded in the type invariants of `Device`. 
-> Because the safety comment needs some justification.
-> 
->> 
->>> I know that you are allocating exactly this amount in `Registration`, but
->>> `Device` does not know about that. Should this be a type invariant?
->>> It might be a good idea to make `Driver` generic over `D`, the data that is
->>> stored behind this pointer. You could then return `D::Borrowed` instead.
->> 
->> We could do:
->> 
->> impl<D: DriverData> Device<D> {
->> ...
->>      /// Gets the private data of a device driver.
->>      pub fn drv_priv_data(&self) -> <D::Data as ForeignOwnable>::Borrowed<'_> {
->>          unsafe {
->>              D::Data::borrow(core::ptr::read(
->>                  bindings::netdev_priv(self.ptr) as *const *const c_void
->>              ))
->>          }
->>      }
+>>> I'm surprised it is considered the last expression of a block. Unlike w=
+ith {} using $()? will still
+>>> allow variables defined inside this as if they were outside of it. Also=
+ I can't reproduce this
+>>> behavior with:
+>>>
+>>>       macro_rules! foo {
+>>>           ($($a:expr)?) =3D> {
+>>>               $($a)?
+>>>               bar();
+>>>           }
+>>>       }
+>>>
+>>>       fn main() {
+>>>           foo!(());
+>>>       }
+>>>
+>>> Is there something I'm missing?
+>>>
+>>> Cheers,
+>>> Bj=C3=B6rn
+>>
+>> Not sure what you mean with "allow variables defined inside this
+>> as if they were outside of it". But note that in the macro `$init_zeroed=
+`
+>> is the last expression of a block. Here is a small example:
+>=20
+> $(let $this =3D unsafe { ::core::ptr::NonNull::new_unchecked(slot) };)? c=
+omes after
+> this code in the same block that contains struct __InitOk;. And after tha=
+t another
+> $crate::__init_internal!() invocation. That is why I don't get that this =
+is allowed
+> at all.
+>=20
+
+Oh I see the issue now, I thought I wrote
+```
+$({
+     fn assert_zeroable<T: Zeroable>(ptr: *mut T) {}
+     // Ensure that the struct is indeed `Zeroable`.
+     assert_zeroable(slot);
+     // SAFETY:  The type implements `Zeroable` by the check above.
+     unsafe { ::core::ptr::write_bytes(slot, 0, 1) };
+     $init_zeroed // this will be `()` if set.
+})?
+```
+
+But I forgot the inner `{}`. Good catch!
+
+--
+Cheers,
+Benno
+
+>>
+>> ```
+>> macro_rules! foo {
+>>       ($($a:expr)?) =3D> {{
+>>           $(
+>>               bar();
+>>               $a
+>>           )?
+>>       }};
 >> }
-> 
-> LGTM (+ adding a Safety comment).
-> 
->> 
->> 
->>>> +// SAFETY: `Device` is just a wrapper for the kernel`s `struct net_device`, which can be used
->>>> +// from any thread. `struct net_device` stores a pointer to `DriverData::Data`, which is `Sync`
->>>> +// so it's safe to sharing its pointer.
->>>> +unsafe impl Send for Device {}
->>>> +// SAFETY: `Device` is just a wrapper for the kernel`s `struct net_device`, which can be used
->>>> +// from any thread. `struct net_device` stores a pointer to `DriverData::Data`, which is `Sync`,
->>>> +// can be used from any thread too.
->>>> +unsafe impl Sync for Device {}
->>>> +
->>>> +/// Trait for device driver specific information.
->>>> +///
->>>> +/// This data structure is passed to a driver with the operations for `struct net_device`
->>>> +/// like `struct net_device_ops`, `struct ethtool_ops`, `struct rtnl_link_ops`, etc.
->>>> +pub trait DriverData {
->>>> +    /// The object are stored in C object, `struct net_device`.
->>>> +    type Data: ForeignOwnable + Send + Sync;
->>>
->>> Why is this an associated type? Could you not use
->>> `D: ForeignOwnable + Send + Sync` everywhere instead?
->>> I think this should be possible, since `DriverData` does not define
->>> anything else.
->> 
->> With that approach, is it possible to allow a device driver to define
->> own data structure and functions taking the structure as aurgument
->> (like DevOps structutre in the 5th patch)
->> 
-> 
-> In the example both structs are empty so I am not really sure why it has 
-> to be two types. Can't we do this:
-> ```
-> pub struct MyDriver {
->      // Just some random fields...
->      pub access_count: Cell<usize>,
-> }
-> 
-> 
-> impl DriverData for Box<MyDriver> {}
-> 
-> // And then we could make `DeviceOperations: DriverData`.
-> // Users would then do this:
-> 
-> #[vtable]
-> impl DeviceOperations for Box<MyDriver> {
->      fn init(_dev: Device, data: &MyDriver) -> Result {
->          data.access_count.set(0);
->          Ok(())
->      }
-> 
->      fn open(_dev: Device, data: &MyDriver) -> Result {
->          data.access_count.set(data.access_count.get() + 1);
->          Ok(())
->      }
-> }
-> ```
-> 
-> I think this would simplify things, because you do not have to carry the 
-> extra associated type around (and have to spell out
-> `<D::Data as ForeignOwnable>` everywhere).
-
-I'm still not sure if I correctly understand what you try to do.
-
-If I define DeviceOperations in dev.rs like the following:
-
-#[vtable]
-pub trait DeviceOperations<D: ForeignOwnable + Send + Sync> {
-    /// Corresponds to `ndo_init` in `struct net_device_ops`.
-        fn init(_dev: &mut Device, _data: D::Borrowed<'_>) -> Result {
-	        Ok(())
-        }
-}
-
-And the driver implmeents DeviceOperations like the folloing: 
-
-#[vtable]
-impl<D: ForeignOwnable + Send + Sync> DeviceOperations<D> for Box<DriverData> {
-    fn init(_dev: &mut Device, _data: &DriverData) -> Result {
-            Ok(())
-    }
-}
-
-I got the following error:
-
-error[E0053]: method `init` has an incompatible type for trait
-  --> samples/rust/rust_net_dummy.rs:24:39
-   |
-24 |     fn init(_dev: &mut Device, _data: &DriverData) -> Result {
-   |                                       ^^^^^^^^^^^
-   |                                       |
-   |                                       expected associated type, found `&DriverData`
-   |                                       help: change the parameter type to match the trait: `<D as ForeignOwnable>::Borrowed<'_>`
-   |
-   = note: expected signature `fn(&mut Device, <D as ForeignOwnable>::Borrowed<'_>) -> core::result::Result<_, _>`
-              found signature `fn(&mut Device, &DriverData) -> core::result::Result<_, _>`
+>>
+>> fn bar() {}
+>>
+>> fn main() {
+>>       foo!(());
+>>       foo!();
+>> }
+>> ```
+>>
+>> it expands to this:
+>> ```
+>> fn main() {
+>>       {
+>>           bar();
+>>           ()
+>>       };
+>>       {};
+>> }
+>> ```
+>>
+>> --
+>> Cheers,
+>> Benno
+>>
 
 
->>>> +/// Registration structure for a network device driver.
->>>> +///
->>>> +/// This allocates and owns a `struct net_device` object.
->>>> +/// Once the `net_device` object is registered via `register_netdev` function,
->>>> +/// the kernel calls various functions such as `struct net_device_ops` operations with
->>>> +/// the `net_device` object.
->>>> +///
->>>> +/// A driver must implement `struct net_device_ops` so the trait for it is tied.
->>>> +/// Other operations like `struct ethtool_ops` are optional.
->>>> +pub struct Registration<T: DeviceOperations<D>, D: DriverData> {
->>>> +    dev: Device,
->>>> +    is_registered: bool,
->>>> +    _p: PhantomData<(D, T)>,
->>>> +}
->>>> +
->>>> +impl<D: DriverData, T: DeviceOperations<D>> Drop for Registration<T, D> {
->>>> +    fn drop(&mut self) {
->>>> +        // SAFETY: The type invariants guarantee that `self.dev.0` is valid.
->>>> +        unsafe {
->>>> +            let _ = D::Data::from_foreign(self.dev.priv_data_ptr());
->>>
->>> Why is `self.dev.priv_data_ptr()` a valid pointer?
->>> This `unsafe` block should be split to better explain the different safety
->>> requirements.
->> 
->> Explained above.
->> 
->>>> +            if self.is_registered {
->>>> +                bindings::unregister_netdev(self.dev.0);
->>>> +            }
->>>> +            bindings::free_netdev(self.dev.0);
->>>> +        }
->>>> +    }
->>>> +}
->>>> +
->>>> +impl<D: DriverData, T: DeviceOperations<D>> Registration<T, D> {
->>>> +    /// Creates a new [`Registration`] instance for ethernet device.
->>>> +    ///
->>>> +    /// A device driver can pass private data.
->>>> +    pub fn try_new_ether(tx_queue_size: u32, rx_queue_size: u32, data: D::Data) -> Result<Self> {
->>>> +        // SAFETY: FFI call.
->>>
->>> If this FFI call has no safety requirements then say so.
->> 
->> SAFETY: FFI call has no safety requirements.
->> 
->> ?
-> 
-> Yes you should just write that.
-> 
->> 
->>>> +    const DEVICE_OPS: bindings::net_device_ops = bindings::net_device_ops {
->>>> +        ndo_init: if <T>::HAS_INIT {
->>>> +            Some(Self::init_callback)
->>>> +        } else {
->>>> +            None
->>>> +        },
->>>> +        ndo_uninit: if <T>::HAS_UNINIT {
->>>> +            Some(Self::uninit_callback)
->>>> +        } else {
->>>> +            None
->>>> +        },
->>>> +        ndo_open: if <T>::HAS_OPEN {
->>>> +            Some(Self::open_callback)
->>>> +        } else {
->>>> +            None
->>>> +        },
->>>> +        ndo_stop: if <T>::HAS_STOP {
->>>> +            Some(Self::stop_callback)
->>>> +        } else {
->>>> +            None
->>>> +        },
->>>> +        ndo_start_xmit: if <T>::HAS_START_XMIT {
->>>> +            Some(Self::start_xmit_callback)
->>>> +        } else {
->>>> +            None
->>>> +        },
->>>> +        // SAFETY: The rest is zeroed out to initialize `struct net_device_ops`,
->>>> +        // set `Option<&F>` to be `None`.
->>>> +        ..unsafe { core::mem::MaybeUninit::<bindings::net_device_ops>::zeroed().assume_init() }
->>>> +    };
->>>> +
->>>> +    const fn build_device_ops() -> &'static bindings::net_device_ops {
->>>> +        &Self::DEVICE_OPS
->>>> +    }
->>>
->>> Why does this function exist?
->> 
->> To get const struct net_device_ops *netdev_ops.
-> 
-> Can't you just use `&Self::DEVICE_OPS`?
-
-I think that it didn't work in the past but seems that it works
-now. I'll fix.
-
-
->>>> +
->>>> +    unsafe extern "C" fn init_callback(netdev: *mut bindings::net_device) -> core::ffi::c_int {
->>>> +        from_result(|| {
->>>
->>> Since you are the first user of `from_result`, you can remove the
->>> `#[allow(dead_code)]` attribute.
->>>
->>> @Reviewers/Maintainers: Or would we prefer to make that change ourselves?
->> 
->> Ah, either is fine by me.
->> 
->>>> +            // SAFETY: The C API guarantees that `netdev` is valid while this function is running.
->>>> +            let mut dev = unsafe { Device::from_ptr(netdev) };
->>>> +            // SAFETY: The returned pointer was initialized by `D::Data::into_foreign` when
->>>> +            // `Registration` object was created.
->>>> +            // `D::Data::from_foreign` is only called by the object was released.
->>>> +            // So we know `data` is valid while this function is running.
->>>
->>> This should be a type invariant of `Registration`.
->> 
->> Understood.
->> 
->>>> +            let data = unsafe { D::Data::borrow(dev.priv_data_ptr()) };
->>>> +            T::init(&mut dev, data)?;
->>>> +            Ok(0)
->>>> +        })
->>>> +    }
->>>> +
->>>> +    unsafe extern "C" fn uninit_callback(netdev: *mut bindings::net_device) {
->>>> +        // SAFETY: The C API guarantees that `netdev` is valid while this function is running.
->>>> +        let mut dev = unsafe { Device::from_ptr(netdev) };
->>>> +        // SAFETY: The returned pointer was initialized by `D::Data::into_foreign` when
->>>> +        // `Registration` object was created.
->>>> +        // `D::Data::from_foreign` is only called by the object was released.
->>>> +        // So we know `data` is valid while this function is running.
->>>> +        let data = unsafe { D::Data::borrow(dev.priv_data_ptr()) };
->>>> +        T::uninit(&mut dev, data);
->>>> +    }
->>>> +
->>>> +    unsafe extern "C" fn open_callback(netdev: *mut bindings::net_device) -> core::ffi::c_int {
->>>> +        from_result(|| {
->>>> +            // SAFETY: The C API guarantees that `netdev` is valid while this function is running.
->>>> +            let mut dev = unsafe { Device::from_ptr(netdev) };
->>>> +            // SAFETY: The returned pointer was initialized by `D::Data::into_foreign` when
->>>> +            // `Registration` object was created.
->>>> +            // `D::Data::from_foreign` is only called by the object was released.
->>>> +            // So we know `data` is valid while this function is running.
->>>> +            let data = unsafe { D::Data::borrow(dev.priv_data_ptr()) };
->>>> +            T::open(&mut dev, data)?;
->>>> +            Ok(0)
->>>> +        })
->>>> +    }
->>>> +
->>>> +    unsafe extern "C" fn stop_callback(netdev: *mut bindings::net_device) -> core::ffi::c_int {
->>>> +        from_result(|| {
->>>> +            // SAFETY: The C API guarantees that `netdev` is valid while this function is running.
->>>> +            let mut dev = unsafe { Device::from_ptr(netdev) };
->>>> +            // SAFETY: The returned pointer was initialized by `D::Data::into_foreign` when
->>>> +            // `Registration` object was created.
->>>> +            // `D::Data::from_foreign` is only called by the object was released.
->>>> +            // So we know `data` is valid while this function is running.
->>>> +            let data = unsafe { D::Data::borrow(dev.priv_data_ptr()) };
->>>> +            T::stop(&mut dev, data)?;
->>>> +            Ok(0)
->>>> +        })
->>>> +    }
->>>> +
->>>> +    unsafe extern "C" fn start_xmit_callback(
->>>> +        skb: *mut bindings::sk_buff,
->>>> +        netdev: *mut bindings::net_device,
->>>> +    ) -> bindings::netdev_tx_t {
->>>> +        // SAFETY: The C API guarantees that `netdev` is valid while this function is running.
->>>> +        let mut dev = unsafe { Device::from_ptr(netdev) };
->>>> +        // SAFETY: The returned pointer was initialized by `D::Data::into_foreign` when
->>>> +        // `Registration` object was created.
->>>> +        // `D::Data::from_foreign` is only called by the object was released.
->>>> +        // So we know `data` is valid while this function is running.
->>>> +        let data = unsafe { D::Data::borrow(dev.priv_data_ptr()) };
->>>> +        // SAFETY: The C API guarantees that `skb` is valid while this function is running.
->>>> +        let skb = unsafe { SkBuff::from_ptr(skb) };
->>>> +        T::start_xmit(&mut dev, data, skb) as bindings::netdev_tx_t
->>>> +    }
->>>> +}
->>>> +
->>>> +// SAFETY: `Registration` exposes only `Device` object which can be used from
->>>> +// any thread.
->>>> +unsafe impl<D: DriverData, T: DeviceOperations<D>> Send for Registration<T, D> {}
->>>> +// SAFETY: `Registration` exposes only `Device` object which can be used from
->>>> +// any thread.
->>>> +unsafe impl<D: DriverData, T: DeviceOperations<D>> Sync for Registration<T, D> {}
->>>> +
->>>> +/// Corresponds to the kernel's `enum netdev_tx`.
->>>> +#[repr(i32)]
->>>> +pub enum TxCode {
->>>> +    /// Driver took care of packet.
->>>> +    Ok = bindings::netdev_tx_NETDEV_TX_OK,
->>>> +    /// Driver tx path was busy.
->>>> +    Busy = bindings::netdev_tx_NETDEV_TX_BUSY,
->>>> +}
->>>> +
->>>> +/// Corresponds to the kernel's `struct net_device_ops`.
->>>> +///
->>>> +/// A device driver must implement this. Only very basic operations are supported for now.
->>>> +#[vtable]
->>>> +pub trait DeviceOperations<D: DriverData> {
->>>
->>> Why is this trait generic over `D`? Why is this not `Self` or an associated
->>> type?
->> 
->> DriverData also used in EtherOperationsAdapter (the second patch) and
->> there are other operations that uses DriverData (not in this patchset).
-> 
-> Could you point me to those other things that use `DriverData`?
-
-net_device struct has some like tlsdev_ops, rtnl_link_ops.. A device
-driver might need to access to the private data via net_device in
-these operations.
-
-
-thanks,
