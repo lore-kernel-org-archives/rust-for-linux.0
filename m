@@ -2,150 +2,308 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81327EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Sun, 25 Jun 2023 10:05:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9FF5EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Sun, 25 Jun 2023 10:08:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230405AbjFYKFo convert rfc822-to-8bit (ORCPT
+        id S230086AbjFYKIq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 25 Jun 2023 06:05:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52984 "EHLO
+        Sun, 25 Jun 2023 06:08:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231356AbjFYKFm (ORCPT
+        with ESMTP id S230058AbjFYKIq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 25 Jun 2023 06:05:42 -0400
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-he1eur01olkn2022.outbound.protection.outlook.com [40.92.65.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D14441A1;
-        Sun, 25 Jun 2023 03:05:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kiCKR67K9f98W4Si0FBt4Yf0E9oeT7A7gL+bDGzV1xgQ9J1txaYZaJdGGcJcM7vPq8BBH3o0puCGAwxUYFc2vRrFEpdYBVyoQcEWKLhhnpt9Gwu7S97KMBwxSDOU7DkC3TeJPN9RvyFlQff0ITLbOKXAaI0TWNT6yM9c8YoHz4hH2q3SbT9JDF36kk9QZiwns6a3oQzHJvbQGKzolfK+Eu4Y6m9NKpy2clDL4gniyFLLqD1CX7txdllFbj4q0Xhmbqv7FtQujbPsl2dFrqrTkdo9ZGfhXw6D8wT3GWa+/l1f25EdTIocmByo8mzzAvMuSVMs8xIWS2dGLsCBNd9FhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fJCw8ZWp+a89C1GmoYjFKGwBEv6w+605BFJW1FD7Asc=;
- b=H46/pOp9jY/TbGVooIeVT+blv1VW1bqO6Y8WvE1pVtFbfNYDAbXY1cfn+894BLWSPiX2FvkWGO4EbQRVIqWQlRjQBCqQqAdMHhK+eS4e7kPbL+kvncDCxXPPHHEh/YTx+uTf8yTvoip1tqYtOX3+dH9t93/3eEGs1xB0oIlnFzjp0jxOJx6tOOYOhADfGf7IX08f0iykwjNh7D1GVYCTjH4pyXvFDsmBPAayGzx6WdtuL9xb8ykQA9INOPSlGp5NxP52yJG/5WTtiWBRTPs0rHCOoUijbLc3gi5ilcYtTCz7x1shP0vyR2R20DMzecbI2znqY23MhTfIwD7dbBH2Uw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-Received: from PAXP190MB1631.EURP190.PROD.OUTLOOK.COM (2603:10a6:102:1c0::8)
- by PAXP190MB1791.EURP190.PROD.OUTLOOK.COM (2603:10a6:102:28d::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Sun, 25 Jun
- 2023 10:05:38 +0000
-Received: from PAXP190MB1631.EURP190.PROD.OUTLOOK.COM
- ([fe80::b5b:4a3:830b:7a0e]) by PAXP190MB1631.EURP190.PROD.OUTLOOK.COM
- ([fe80::b5b:4a3:830b:7a0e%7]) with mapi id 15.20.6521.026; Sun, 25 Jun 2023
- 10:05:38 +0000
-From:   =?utf-8?Q?Timo_Grautst=C3=BCck?= <timo.gr@hotmail.de>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH] lib/Kconfig.debug: fix grammar in RUST_BUILD_ASSERT_ALLOW
-References: <PAXP190MB1631B7C90A99FCEBB1594AAE8B4DA@PAXP190MB1631.EURP190.PROD.OUTLOOK.COM>
-        <CANiq72kf=VktsDS6ctLxVt70EGtkSwfx+Z2=qNMdyQf81pQ3dA@mail.gmail.com>
-Date:   Sun, 25 Jun 2023 12:05:32 +0200
-In-Reply-To: <CANiq72kf=VktsDS6ctLxVt70EGtkSwfx+Z2=qNMdyQf81pQ3dA@mail.gmail.com>
-        (Miguel Ojeda's message of "Fri, 16 Jun 2023 03:17:35 +0200")
-Message-ID: <PAXP190MB16316300F2E89EC06A4E3AF78B21A@PAXP190MB1631.EURP190.PROD.OUTLOOK.COM>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-TMN:  [DcT+g6/UxAYYQ/feOCwW+qlODaWBXO+JW5ZYN0KwkrBiJ/dH1E+OApD9+/rfGpD6]
-X-ClientProxiedBy: AS4P189CA0029.EURP189.PROD.OUTLOOK.COM
- (2603:10a6:20b:5db::20) To PAXP190MB1631.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:102:1c0::8)
-X-Microsoft-Original-Message-ID: <874jmvrh5f.fsf@fedora.fritz.box>
+        Sun, 25 Jun 2023 06:08:46 -0400
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 796851A3
+        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jun 2023 03:08:41 -0700 (PDT)
+Date:   Sun, 25 Jun 2023 10:08:29 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=protonmail; t=1687687719; x=1687946919;
+        bh=1etZM8d5syDDU+STzo3wQ1CLFhxgHkWioQJB57fK+k8=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=Ui4vxBLUnmNmvkXMSgiSUtvRfHT2EjxOllDc1yfB/MAGJnhL+ZSWfUZG8MyE6oIAH
+         ITkR78sLsG6ZAI0lvcZhQZ66miIHMSS3aTXk8WdXCj7BJ88ejWPGiz7I/mXmGKrn1Q
+         UGIxQZLG14OsE4dixdbriQq4pPtXUhWMVgbvfXMoO22XYIRhuPiWn5a6DwmkMIdF3C
+         X+fesRQ5wCgC4DxRqjYGsAYdOoGZF+/mXvj4rOg56C/WAt53bLIfGs7M3UgrbsQ8w7
+         6jhFjFG0gCGdVZtToT90/qnbPUQlVgpHCA4c5di6NGjJYaNWr1s9X2T3boU1RJGmrI
+         45fXaWr9nO48Q==
+To:     FUJITA Tomonori <fujita.tomonori@gmail.com>
+From:   Benno Lossin <benno.lossin@proton.me>
+Cc:     rust-for-linux@vger.kernel.org, Gary Guo <gary@garyguo.net>
+Subject: Re: [RFC PATCH v2 1/2] rust: add synchronous message digest support
+Message-ID: <0a9af5fa-4df2-11da-b3cb-0a6b1d27fdc2@proton.me>
+In-Reply-To: <20230622.111419.241422502377572827.ubuntu@gmail.com>
+References: <20230615142311.4055228-1-fujita.tomonori@gmail.com> <20230615142311.4055228-2-fujita.tomonori@gmail.com> <udHI3v-OLUqHQt3fwnH71QuRJjzGxexw2rkIYEfnsChCmrLoJTIL_GL1wLCARf-UotY51jkPT6tC8nVDvjf8LkY2zvddpgeRQ5owysZwJos=@proton.me> <20230622.111419.241422502377572827.ubuntu@gmail.com>
+Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXP190MB1631:EE_|PAXP190MB1791:EE_
-X-MS-Office365-Filtering-Correlation-Id: 864e74f0-a335-4eb0-fd21-08db7563b9ea
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: fPvQs+7YN5xYL5tnoLc0aCv9oNUDnr0iX74Fu9QPi6CaBpy9r87dUJoVpf1ZBOLXQryRXyO0bemFyZSvqOaCdKPtR7l8n6fkGLsDGrMuTbeTee66J+EqX7v0OgbZoAIQchI1Fot6WuWrCo8i+6TmDHcAy90No0vAxA/Thn9bNW83DGz/VfvHaH1Bq/KdWcCO0aHGJ+48S7I4PxpiVJJP2W1VxZmMIXMyrxulGPQmwDvpu0GhAWmnI4c/nwkXrFNvVIqbNeDnA4FWqNxDAfbgPO2VN8viyPiQnSw5JhzFHR/KnsjUQjEq8zbhykWDVOHSKO4XT4ncmTT44O60PRflSFnALRHRpB/84SbWAodJddfPwriv6KIeB5BJ+m/5Tfx3LuaG+fwETfHIE7M0NA5Q67MEE/frcktAPFK2yMkRn0lVFU5HZFT/jMaJ9S9y8xKVc7eT5aOPMzlG8UmwmwMRoAx2fG9j57EkAEuABGBTAzHfkTlPnfe2jkNHnx9HjOmnV1n4UC0K/GZoZfSSoR54mB3vIUocNFbFztEyLV/vK+E=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZzhiTnRXa2dBYUUzVEdZT2xPbG1VL3NVaG9WVUp0ZEdTYUNXeCtzdGxxL0RR?=
- =?utf-8?B?Zlo4L01OODhUNGt1MzZHaXBQQUQvMjlwKytWV0s0TWM0eDNxckt6UG1ERkhP?=
- =?utf-8?B?RytoRGF4c3VKWnIwOE9MRWU3MFh3VzY5TEFBMTlGRW02VFcxNUJCS3MyOXd1?=
- =?utf-8?B?TjJ5YmJFaE1aTWpWV3pIUDgyZXRZMXdmM1RZa2dXSStPckJ6b0tMaTYweDV1?=
- =?utf-8?B?ZVlRVm11NDQ5U2x2emVPMzZoYTRna0JDUzl5QzdRMVhlandFT25LRTBLQkFy?=
- =?utf-8?B?b3hMWVhWQUk0UTAvZVU0NWF6RkNQQkZLazRPMHFwaXc0QktDODJzbUVrVGM3?=
- =?utf-8?B?R3MzMU9CWGpvN0ZKY0p0UGtkT21MZThuMWk1WVlzMThUeHpVSmVuQnV4c2dy?=
- =?utf-8?B?UkJDazM4cEhBNDU5RFlsT2FBTWZzSDBSZ0syalg3REViRFZmQkxkZnZlMVUr?=
- =?utf-8?B?S2J5SjZvVzZqRDZnUU5VV1pmNnUvZThWZVhrQ3NWdEpFd0FNcnJxZU82M0tt?=
- =?utf-8?B?dVRFMnVkVjB5YmZxY21YY0svV1dyOElxL1lYOHlkcGE2L0FqOUlsTXNWY29j?=
- =?utf-8?B?NlJsVC9jcW8yNWhJSG1oRUVqalkybFZmT0hScTR5Z3RXZzMwMkxRVHo5TmEy?=
- =?utf-8?B?aGkyRHZKWlBSU2p1NkhsZnVpUk1wdi9WSS9zM1BCSlQwWEo2cC9iN0s3OWNn?=
- =?utf-8?B?ZVlDMkppYU9EUEpTazB6QVZFQzlvUndoOXZKWFdFV3VmYWhqZ0kzdzlybytD?=
- =?utf-8?B?eEk2Qk9QS0FVUmJxUTFlei8yT3RzL2E5MU9BTi9qaTN0SXU2WUd5RDY5UHVy?=
- =?utf-8?B?WUxaUXpRMG0zbmp4NGFWUWM1cDFvMlQ1aVE0V2dNODRtUjVRbTZCcW13cWxG?=
- =?utf-8?B?cUFYZFJLVmxtSHVMTHMyVkxoM0V4YXlFUUlCS09QNTdBZ1hlYkNFTzNQaG80?=
- =?utf-8?B?Tm5BOGZTL1Mvc2d0U0x1UEtGeVU1MVlPaW11ME9IUkhHK0lmRU5zZXVyNU9Y?=
- =?utf-8?B?QzVBcE8ramM5QXdEOS9yZGxtb3dmd1hQb0xKT0tDU2FyMkk5U1ZHZngzL3dn?=
- =?utf-8?B?czNPblBuMVNubHVkRUFTeFJhUHVzZEl5bEZGNkk4eEN5Vlk3ZUFPSDdUZWFC?=
- =?utf-8?B?TnJZY2FZZ2FuNnRJQ0J4eUluQnJNZmNWVldnSUxYVUdpNlI0OW1JTktBTEVZ?=
- =?utf-8?B?WFdYSHFxSUJuYXRUVlJab1l6MWZGV0dlem84eW83dmhRNUVrM2IvM0pHMGE4?=
- =?utf-8?B?aVJiRG5jeHUrbjhDbDAzOFVpQXFVTk1VZkRVZEIwdUdvdmszQXdvQzFoQ2hF?=
- =?utf-8?B?Nk5Lcjg0VEwwUUNLZXhhbW1aNFlrc0FhQU1xZXlxaVdQUEhWdEhQRkhjWnY0?=
- =?utf-8?B?Ris1ejVPZ0pkdWNWMCt0eW4ya3hWUmpFU0ppcmROazBRd3ZpQTlBNmhIT1Y4?=
- =?utf-8?B?MEJUMHJBWm4zYWQ1Rmx2R1ptOXV2U0l6UjhkeDI1dlJpUC9qbzdYbWM4ZEZ1?=
- =?utf-8?B?QUxEYk96dVV1SW8rRHE2aVArQk83NnEweE95aERncjFPcUwyaHhocHc2L1k2?=
- =?utf-8?B?Zlc4WkQ5ZDlOOVdnTTZKcFc5SXNRUTVaWFl5bTUzdHRiaDgxamdjQWI0YXBr?=
- =?utf-8?B?L0JBbDBPREl3TS8xMFNzTWliQis1N0psMXZLQWlYOEltMkVjRlFJZ1hhNTdK?=
- =?utf-8?B?UzBQWSsyQ0VMd2o0a2NxcjdXKzd6MlFtMlZramlCaktJbWpjOGI3emxRPT0=?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-91991.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 864e74f0-a335-4eb0-fd21-08db7563b9ea
-X-MS-Exchange-CrossTenant-AuthSource: PAXP190MB1631.EURP190.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2023 10:05:38.6856
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXP190MB1791
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
-
-> On Mon, Jun 5, 2023 at 6:12 PM <timo.gr@hotmail.de> wrote:
+On 6/22/23 04:14, FUJITA Tomonori wrote:
+> Hi, thanks a lot for reviewing!
+>=20
+> On Mon, 19 Jun 2023 11:40:40 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
+>=20
+>>> diff --git a/rust/kernel/crypto/hash.rs b/rust/kernel/crypto/hash.rs
+>>> new file mode 100644
+>>> index 000000000000..53f4a311b3b2
+>>> --- /dev/null
+>>> +++ b/rust/kernel/crypto/hash.rs
+>>> @@ -0,0 +1,118 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +//! Cryptographic Hash operations.
+>>> +//!
+>>> +//! C headers: [`include/crypto/hash.h`](../../../../include/crypto/ha=
+sh.h)
+>>> +
+>>> +use crate::{
+>>> +    error::{code::ENOMEM, from_err_ptr, to_result, Result},
+>>> +    str::CStr,
+>>> +};
+>>> +use alloc::alloc::{alloc, dealloc};
+>>> +use core::alloc::Layout;
+>>> +
+>>> +/// Corresponds to the kernel's `struct crypto_shash`.
+>>> +///
+>>> +/// # Invariants
+>>> +///
+>>> +/// The pointer is valid.
+>>> +pub struct Shash(*mut bindings::crypto_shash);
+>>> +
+>>> +impl Drop for Shash {
+>>> +    fn drop(&mut self) {
+>>> +        // SAFETY: The type invariant guarantees that the pointer is v=
+alid.
+>>> +        unsafe { bindings::crypto_free_shash(self.0) }
+>>> +    }
+>>> +}
+>>> +
+>>> +impl Shash {
+>>> +    /// Creates a [`Shash`] object for a message digest handle.
+>>> +    pub fn new(name: &CStr, t: u32, mask: u32) -> Result<Shash> {
+>>> +        // SAFETY: FFI call.
 >>
->> From: Timgrau <timo.gr@hotmail.de>
+>> If there are no requirements then say so.
+>=20
+> Understood. Looks like we have variation. Might be better to add the
+> standard to Documentation/rust/coding-guidelines.rst or such?
+>=20
+> ubuntu@ip-172-30-47-114:~/git/linux$ grep -r FFI rust/kernel|grep SAFE
+> rust/kernel/task.rs:        // SAFETY: Just an FFI call with no additiona=
+l safety requirements.
+> rust/kernel/lib.rs:    // SAFETY: FFI call.
+> rust/kernel/sync/arc.rs:            // SAFETY: There are no safety requir=
+ements for this FFI call.
+> rust/kernel/sync/arc.rs:            // SAFETY: There are no safety requir=
+ements for this FFI call.
+> rust/kernel/error.rs:        // SAFETY: Just an FFI call, there are no ex=
+tra safety requirements.
+> rust/kernel/error.rs:///     // SAFETY: FFI call.
+> rust/kernel/error.rs:    // SAFETY: The FFI function does not deref the p=
+ointer.
+> rust/kernel/error.rs:        // SAFETY: The FFI function does not deref t=
+he pointer.
+
+I am currently working on more standardized safety comments. Until we=20
+agree on how it should be, you can just choose a wording that you think=20
+is OK.
+
+>=20
+>>> +        let ptr =3D
+>>> +            unsafe { from_err_ptr(bindings::crypto_alloc_shash(name.as=
+_char_ptr(), t, mask)) }?;
+>>> +        // INVARIANT: `ptr` is valid and non-null since `crypto_alloc_=
+shash`
+>>> +        // returned a valid pointer which was null-checked.
+>>> +        Ok(Self(ptr))
+>>> +    }
+>>> +
+>>> +    /// Sets optional key used by the hashing algorithm.
+>>> +    pub fn setkey(&mut self, data: &[u8]) -> Result {
 >>
->> Just a grammar fix in lib/Kconfig.debug, under the config option RUST_BUILD_ASSERT_ALLOW.
+>> This should be called `set_key`.
+>=20
+> I thought that using C function names is a recommended way because
+> it's easier for subsystem maintainers to review.
+
+IMO having a `_` that separates words helps a lot with readability.=20
+Especially with `digestsize`. I also think that adding an `_` will not=20
+confuse the subsystem maintainers, so we should just do it.
+
+>=20
+>=20
+>>> +        // SAFETY: The type invariant guarantees that the pointer is v=
+alid.
+>>> +        to_result(unsafe {
+>>> +            bindings::crypto_shash_setkey(self.0, data.as_ptr(), data.=
+len() as u32)
+>>> +        })
+>>> +    }
+>>> +
+>>> +    /// Returns the size of the result of the transformation.
+>>> +    pub fn digestsize(&self) -> u32 {
 >>
->> Signed-off-by: Timgrau <timo.gr@hotmail.de>
->> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
->> Link: https://github.com/Rust-for-Linux/linux/issues/1006#issue-1696318406
->> Closes: https://github.com/Rust-for-Linux/linux/issues/1006#issue-1696318406
->
-> Thanks for the patch!
->
-> A few notes:
->
->   - From a quick look, I think "Timgrau" is not a known identity to
-> the kernel, right? (e.g. I couldn't find any other commit on that
-> name). Assuming I am not mistaken, could you please instead your real
-> name?
+>> This should be called `digest_size`.
+>=20
+> Ditto.
+>=20
+>>> +        // SAFETY: The type invariant guarantees that the pointer is v=
+alid.
+>>> +        unsafe { bindings::crypto_shash_digestsize(self.0) }
+>>> +    }
+>>> +}
+>>> +
+>>> +/// Corresponds to the kernel's `struct shash_desc`.
+>>> +///
+>>> +/// # Invariants
+>>> +///
+>>> +/// The field `ptr` is valid.
+>>> +pub struct ShashDesc<'a> {
+>>> +    ptr: *mut bindings::shash_desc,
+>>> +    tfm: &'a Shash,
+>>> +    size: usize,
+>>> +}
+>>> +
+>>> +impl Drop for ShashDesc<'_> {
+>>> +    fn drop(&mut self) {
+>>> +        // SAFETY: The type invariant guarantees that the pointer is v=
+alid.
+>>> +        unsafe {
+>>> +            dealloc(
+>>> +                self.ptr.cast(),
+>>> +                Layout::from_size_align(self.size, 2).unwrap(),
+>>> +            );
+>>
+>> Why do we own the pointer (i.e. why can we deallocate the memory)? Add a=
+s
+>> a TI (type invariant). Why are you using `dealloc`? Is there no C
+>> function that allocates a `struct shash_desc`? Why is the alignment 2?
+>=20
+> No C function that allocates `struct shash_desc`. kmalloc() family is
+> used in the C side (or stack is used).
+>=20
+> IIUC, the alignment isn't used in the kernel but dealloc() still
+> requires, right? I'm not sure what number should be used here.
 
-Right, I already thought so. My bad, will change it.
->
->   - When I wrote the report, I wrongly suggested `Suggested-by` +
-> `Link` because I didn't consider this a "bug". But you are probably
-> right that should be considered a fix anyway, so instead we should use
-> `Reported-by` and `Closes`. So could you please remove the `Link` and
-> change the `Suggested` to `Reported`?
+CC'ing Gary, since I am not familiar with `dealloc` in the kernel.
+I think the value of the alignment should still be correct if at some=20
+point in the future `dealloc` starts to use it again.
 
-Ahh ok, i also dont think you can call it a "bug". Is it not possible to
-simply remove the `Closes:` tag from the patch and not categorize the
-whole thing as a "bug"?
->
->   - Also, since this is now a fix, could you please also add the `Fixes:` tag?
->
->   - For the `Closes`, you can remove the URL fragment part, i.e.
-> `#issue-1696318406`, since it is anyway the first comment.
+>=20
+>>> +        }
+>>> +    }
+>>> +}
+>>> +
+>>> +impl<'a> ShashDesc<'a> {
+>>> +    /// Creates a [`ShashDesc`] object for a request data structure fo=
+r message digest.
+>>> +    pub fn new(tfm: &'a Shash) -> Result<Self> {
+>>> +        // SAFETY: The type invariant guarantees that `tfm.0` pointer =
+is valid.
+>>> +        let size =3D core::mem::size_of::<bindings::shash_desc>()
+>>> +            + unsafe { bindings::crypto_shash_descsize(tfm.0) } as usi=
+ze;
+>>> +        let layout =3D Layout::from_size_align(size, 2)?;
+>>> +        let ptr =3D unsafe { alloc(layout) } as *mut bindings::shash_d=
+esc;
+>>
+>> Several things:
+>> - The `SAFETY` comment for `crypto_shash_descsize` should be directly ab=
+ove
+>>    the `unsafe` block,maybe factor that out into its own variable.
+>=20
+> Ok.
+>=20
+>> - Why is 2 the right alignment?
+>=20
+> As long as the size is larger than alignment, alignment arugment is
+> meaningless. Like dealloc, not sure what should be used.
+>=20
+>=20
+>> - Missing `SAFETY` comment for `alloc`.
+>=20
+> Will be fixed.
+>=20
+>> - Why are you manually creating this layout from size and alignment? Is =
+it
+>>    not possible to do it via the `Layout` API?
+>=20
+> What function should be used?
 
-In that case, these two points/notes above are not needet right?
->
-> If you could change those bits and send a v2, that would be great. Thanks!
->
-> Cheers,
-> Miguel
+Maybe `Layout::new()`, `Layout::extend` and `Layout::repeat` might be=20
+enough?
+
+>=20
+>>> +        if ptr.is_null() {
+>>> +            return Err(ENOMEM);
+>>> +        }
+>>> +        // INVARIANT: `ptr` is valid and non-null since `alloc`
+>>> +        // returned a valid pointer which was null-checked.
+>>> +        let mut desc =3D ShashDesc { ptr, tfm, size };
+>>> +        // SAFETY: `desc.ptr` is valid and non-null since `alloc`
+>>> +        // returned a valid pointer which was null-checked.
+>>> +        // Additionally, The type invariant guarantees that `tfm.0` is=
+ valid.
+>>> +        unsafe { (*desc.ptr).tfm =3D desc.tfm.0 };
+>>> +        desc.reset()?;
+>>> +        Ok(desc)
+>>> +    }
+>>> +
+>>> +    /// Re-initializes message digest.
+>>> +    pub fn reset(&mut self) -> Result {
+>>> +        // SAFETY: The type invariant guarantees that the pointer is v=
+alid.
+>>> +        to_result(unsafe { bindings::crypto_shash_init(self.ptr) })
+>>> +    }
+>>> +
+>>> +    /// Adds data to message digest for processing.
+>>> +    pub fn update(&mut self, data: &[u8]) -> Result {
+>>> +        // SAFETY: The type invariant guarantees that the pointer is v=
+alid.
+>>> +        to_result(unsafe {
+>>> +            bindings::crypto_shash_update(self.ptr, data.as_ptr(), dat=
+a.len() as u32)
+>>> +        })
+>>
+>> What if `data.len() > u32::MAX`?
+>=20
+> The buffer might not be updated properly, I guess. Should check the case?
+
+Not sure what we should do in that case, will bring it up at the next=20
+team meeting. In Rust, `write` and `read` functions often output the=20
+number of bytes that were actually read/written. So maybe we should also=20
+do that here? Then you could just return `u32::MAX` and the user would=20
+have to call again. We could also call the C side multiple times until=20
+the entire buffer has been processed. But as the C side only supports=20
+u32 anyway, I think it would be a rare occurrence for `data` to be large.
+
+--=20
+Cheers,
+Benno
+
+>=20
+>>> +    }
+>>> +
+>>> +    /// Calculates message digest.
+>>> +    pub fn finalize(&mut self, output: &mut [u8]) -> Result {
+>>> +        // SAFETY: The type invariant guarantees that the pointer is v=
+alid.
+>>> +        to_result(unsafe { bindings::crypto_shash_final(self.ptr, outp=
+ut.as_mut_ptr()) })
+>>
+>> As already mentioned by Alex, this needs a size check.
+>=20
+> Will be fixed.
+>=20
+>=20
+> thanks,
+
+
+
