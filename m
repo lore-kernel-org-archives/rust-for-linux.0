@@ -2,47 +2,42 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1BC4EB64DD
-	for <rust-for-linux@archiver.kernel.org>; Sun, 25 Jun 2023 16:46:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82634EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Sun, 25 Jun 2023 17:07:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229786AbjFYQq3 (ORCPT
+        id S229471AbjFYRHO (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 25 Jun 2023 12:46:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42336 "EHLO
+        Sun, 25 Jun 2023 13:07:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjFYQq2 (ORCPT
+        with ESMTP id S229448AbjFYRHN (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 25 Jun 2023 12:46:28 -0400
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8048519A
-        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jun 2023 09:46:24 -0700 (PDT)
-Date:   Sun, 25 Jun 2023 16:46:19 +0000
+        Sun, 25 Jun 2023 13:07:13 -0400
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D10110D
+        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jun 2023 10:07:09 -0700 (PDT)
+Date:   Sun, 25 Jun 2023 17:06:59 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1687711582; x=1687970782;
-        bh=UiwcovPu5D6YP531Fs0Dmh7sLnagRakiziEoNif0OK0=;
+        s=protonmail; t=1687712827; x=1687972027;
+        bh=QExAZN0viDBP6uZhV+EBlZi29OCdmxjxCPTr3yF6zNY=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=GfpbcRsSZQ7svs4/PAthoEJAPODQtFPWvBA/VHFU+AmCuQnZndEAtEzddlpKmj2cn
-         /DK6pw2KjJDqrIvjy94GyslatfJP7AxKXCJeyReJ9k+iaVCsrUPS4Gx1JEeTtdoZVY
-         agnrNQ2R+4ENodKJp641s9srz/zEnt27LvzYGfitSz6ziI5TFmBFAUXPZi4bBajRPB
-         Ass6krGGpP685vfHvH2UyTgnLN5bMi+IR6OjieDxgbljJL/xAmBl5Z/pM8cWoBIqKU
-         aOrrr5jsZY1PMznSp2rqTo9y6/Rnv/2y+ELnbuwD1MAbsAoF7W63qD6ouK8EmU2Pcu
-         dKz5x7xXZxrgg==
-To:     =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+        b=dp/renVTAb5fLw0sRwnrbDWzoNPhOBIBNC00aJtvLkUt25C3YSOg2RHh4VjK5hV/O
+         em0IVoalOH7hUYSuzvGHbV8D0OuZYbOjey78cebH+JQfg+2hNNXZNqVxe5F8E3SFGf
+         fGCyLefQmxOcqWbjM1bgjN5x1DsFzvbjL8PTVNag0bIL2eUKD3k7DX1kNR0grqlPKi
+         aA7nYDH8VZEADG712yCkdPW1Vhn9FP+XbdZ3uzpwmoEgXcunnG0+QoUYPHakuz4JTK
+         kyaZHjPSV0CH4XzenanXnmmlOUTCtYhmWC4bhSDW+4yc0/N5hvZ5xr/zwM5A/WptfZ
+         BtKBl9uSeBICA==
+To:     FUJITA Tomonori <fujita.tomonori@gmail.com>
 From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 5/7] rust: init: add `..Zeroable::zeroed()` syntax for zeroing all missing fields
-Message-ID: <0f99bc49-5280-c300-719f-86c138f48eaf@proton.me>
-In-Reply-To: <8lCE3SyChVVb2HphigkwKsxv7etgmS0N3AzcDyYtCEoqcFEKvY-5ILkOrWUr_vnWrvsWrAHXVfwcWARfsiMHC8Yc03sND-PuuK-2z9j4z6I=@protonmail.com>
-References: <20230624092330.157338-1-benno.lossin@proton.me> <20230624092330.157338-5-benno.lossin@proton.me> <W1fY0aa_v9j7lJNWXk_WNaxY2qruJo1R6k7u0g-X5L5Rxuod-VMBMmByICDwjF_fFGvNJTV41QapW0WeVduNYqxgo9S243gnNGXbexq6P3Q=@protonmail.com> <f4bcd952-1ad9-42b7-6e0b-72a115dcbe8e@proton.me> <we7PHkrpBV6kIgFZojiBFerqlXtSJB9HWkj129OGUWUVyVFwtuoirr3gVybgLzW2hmpUqqSAAQUPsdfL9QC2JyNKOLRNX0mSTfgD8llSJKE=@protonmail.com> <6f4e1d68-f828-8990-4859-8ab24907fa46@proton.me> <8lCE3SyChVVb2HphigkwKsxv7etgmS0N3AzcDyYtCEoqcFEKvY-5ILkOrWUr_vnWrvsWrAHXVfwcWARfsiMHC8Yc03sND-PuuK-2z9j4z6I=@protonmail.com>
+Cc:     netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com, andrew@lunn.ch,
+        miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH 1/5] rust: core abstractions for network device drivers
+Message-ID: <69144cf1-6c07-868c-9577-e41db4c0cc75@proton.me>
+In-Reply-To: <20230625.232736.235121744769257487.ubuntu@gmail.com>
+References: <_kID50ojyLurmrpIpn_kNxCRqo5MAaqm9pE47mhFcLops8yDhSqmbkhJiUuHlAFSdgqX1dHdZGxUa95ZSHAPHesIKLci1J21cu6nmdQ3ZGg=@proton.me> <20230621.221349.1237576739913195911.ubuntu@gmail.com> <3ff6edec-c083-9294-d2df-01be983cd293@proton.me> <20230625.232736.235121744769257487.ubuntu@gmail.com>
 Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -51,115 +46,169 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/25/23 16:17, Bj=C3=B6rn Roy Baron wrote:
-> On Sunday, June 25th, 2023 at 15:07, Benno Lossin <benno.lossin@proton.me=
-> wrote:
->> On 25.06.23 14:56, Bj=C3=B6rn Roy Baron wrote:
->>> On Saturday, June 24th, 2023 at 23:14, Benno Lossin <benno.lossin@proto=
-n.me> wrote:
->>
->>>>>> +                        // Ensure that the struct is indeed `Zeroab=
-le`.
->>>>>> +                        is_zeroable(slot);
->>>>>> +                        // SAFETY:  The type implements `Zeroable` =
-by the check above.
->>>>>> +                        unsafe { ::core::ptr::write_bytes(slot, 0, =
-1) };
->>>>>> +                        $init_zeroed // this will be `()` if set.
->>>>>
->>>>> How does this work? Shouldn't there be a ; after $init_zeroed to cons=
-ume the () value?
+On 25.06.23 16:27, FUJITA Tomonori wrote:
+> Hi,
+>
+> On Sun, 25 Jun 2023 09:52:53 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
+>
+>>>>> +/// Trait for device driver specific information.
+>>>>> +///
+>>>>> +/// This data structure is passed to a driver with the operations fo=
+r `struct net_device`
+>>>>> +/// like `struct net_device_ops`, `struct ethtool_ops`, `struct rtnl=
+_link_ops`, etc.
+>>>>> +pub trait DriverData {
+>>>>> +    /// The object are stored in C object, `struct net_device`.
+>>>>> +    type Data: ForeignOwnable + Send + Sync;
 >>>>
->>>> It is the last expression of a block and since it is `()` it is ok
->>>> (adding a ; would also be ok, but it is not necessary).
+>>>> Why is this an associated type? Could you not use
+>>>> `D: ForeignOwnable + Send + Sync` everywhere instead?
+>>>> I think this should be possible, since `DriverData` does not define
+>>>> anything else.
 >>>
->>> I'm surprised it is considered the last expression of a block. Unlike w=
-ith {} using $()? will still
->>> allow variables defined inside this as if they were outside of it. Also=
- I can't reproduce this
->>> behavior with:
+>>> With that approach, is it possible to allow a device driver to define
+>>> own data structure and functions taking the structure as aurgument
+>>> (like DevOps structutre in the 5th patch)
 >>>
->>>       macro_rules! foo {
->>>           ($($a:expr)?) =3D> {
->>>               $($a)?
->>>               bar();
->>>           }
->>>       }
->>>
->>>       fn main() {
->>>           foo!(());
->>>       }
->>>
->>> Is there something I'm missing?
->>>
->>> Cheers,
->>> Bj=C3=B6rn
 >>
->> Not sure what you mean with "allow variables defined inside this
->> as if they were outside of it". But note that in the macro `$init_zeroed=
-`
->> is the last expression of a block. Here is a small example:
->=20
-> $(let $this =3D unsafe { ::core::ptr::NonNull::new_unchecked(slot) };)? c=
-omes after
-> this code in the same block that contains struct __InitOk;. And after tha=
-t another
-> $crate::__init_internal!() invocation. That is why I don't get that this =
-is allowed
-> at all.
->=20
+>> In the example both structs are empty so I am not really sure why it has
+>> to be two types. Can't we do this:
+>> ```
+>> pub struct MyDriver {
+>>       // Just some random fields...
+>>       pub access_count: Cell<usize>,
+>> }
+>>
+>>
+>> impl DriverData for Box<MyDriver> {}
+>>
+>> // And then we could make `DeviceOperations: DriverData`.
+>> // Users would then do this:
+>>
+>> #[vtable]
+>> impl DeviceOperations for Box<MyDriver> {
+>>       fn init(_dev: Device, data: &MyDriver) -> Result {
+>>           data.access_count.set(0);
+>>           Ok(())
+>>       }
+>>
+>>       fn open(_dev: Device, data: &MyDriver) -> Result {
+>>           data.access_count.set(data.access_count.get() + 1);
+>>           Ok(())
+>>       }
+>> }
+>> ```
+>>
+>> I think this would simplify things, because you do not have to carry the
+>> extra associated type around (and have to spell out
+>> `<D::Data as ForeignOwnable>` everywhere).
+>
+> I'm still not sure if I correctly understand what you try to do.
+>
+> If I define DeviceOperations in dev.rs like the following:
+>
+> #[vtable]
+> pub trait DeviceOperations<D: ForeignOwnable + Send + Sync> {
+>      /// Corresponds to `ndo_init` in `struct net_device_ops`.
+>          fn init(_dev: &mut Device, _data: D::Borrowed<'_>) -> Result {
+> =09        Ok(())
+>          }
+> }
+>
+> And the driver implmeents DeviceOperations like the folloing:
+>
+> #[vtable]
+> impl<D: ForeignOwnable + Send + Sync> DeviceOperations<D> for Box<DriverD=
+ata> {
+>      fn init(_dev: &mut Device, _data: &DriverData) -> Result {
+>              Ok(())
+>      }
+> }
+>
+> I got the following error:
+>
+> error[E0053]: method `init` has an incompatible type for trait
+>    --> samples/rust/rust_net_dummy.rs:24:39
+>     |
+> 24 |     fn init(_dev: &mut Device, _data: &DriverData) -> Result {
+>     |                                       ^^^^^^^^^^^
+>     |                                       |
+>     |                                       expected associated type, fou=
+nd `&DriverData`
+>     |                                       help: change the parameter ty=
+pe to match the trait: `<D as ForeignOwnable>::Borrowed<'_>`
+>     |
+>     =3D note: expected signature `fn(&mut Device, <D as ForeignOwnable>::=
+Borrowed<'_>) -> core::result::Result<_, _>`
+>                found signature `fn(&mut Device, &DriverData) -> core::res=
+ult::Result<_, _>`
+>
 
-Oh I see the issue now, I thought I wrote
+I thought you could do this:
 ```
-$({
-     fn assert_zeroable<T: Zeroable>(ptr: *mut T) {}
-     // Ensure that the struct is indeed `Zeroable`.
-     assert_zeroable(slot);
-     // SAFETY:  The type implements `Zeroable` by the check above.
-     unsafe { ::core::ptr::write_bytes(slot, 0, 1) };
-     $init_zeroed // this will be `()` if set.
-})?
+#[vtable]
+pub trait DeviceOperations: ForeignOwnable + Send + Sync {
+     /// Corresponds to `ndo_init` in `struct net_device_ops`.
+     fn init(_dev: &mut Device, _data: Self::Borrowed<'_>) -> Result {
+         Ok(())
+     }
+}
+
+#[vtable]
+impl DeviceOperations<D> for Box<DriverData> {
+     fn init(_dev: &mut Device, _data: &DriverData) -> Result {
+         Ok(())
+     }
+}
 ```
 
-But I forgot the inner `{}`. Good catch!
+>>>>> +    const fn build_device_ops() -> &'static bindings::net_device_ops=
+ {
+>>>>> +        &Self::DEVICE_OPS
+>>>>> +    }
+>>>>
+>>>> Why does this function exist?
+>>>
+>>> To get const struct net_device_ops *netdev_ops.
+>>
+>> Can't you just use `&Self::DEVICE_OPS`?
+>
+> I think that it didn't work in the past but seems that it works
+> now. I'll fix.
+>
+>
+>>>>> +/// Corresponds to the kernel's `struct net_device_ops`.
+>>>>> +///
+>>>>> +/// A device driver must implement this. Only very basic operations =
+are supported for now.
+>>>>> +#[vtable]
+>>>>> +pub trait DeviceOperations<D: DriverData> {
+>>>>
+>>>> Why is this trait generic over `D`? Why is this not `Self` or an assoc=
+iated
+>>>> type?
+>>>
+>>> DriverData also used in EtherOperationsAdapter (the second patch) and
+>>> there are other operations that uses DriverData (not in this patchset).
+>>
+>> Could you point me to those other things that use `DriverData`?
+>
+> net_device struct has some like tlsdev_ops, rtnl_link_ops.. A device
+> driver might need to access to the private data via net_device in
+> these operations.
+
+In my mental model you can just implement the `TLSOperations` trait
+alongside the `DeviceOperations` trait. But I would have to see the
+API that will be used for that to be sure. I do not think that you need
+to have different private data for each of those operations traits.
 
 --
 Cheers,
 Benno
 
->>
->> ```
->> macro_rules! foo {
->>       ($($a:expr)?) =3D> {{
->>           $(
->>               bar();
->>               $a
->>           )?
->>       }};
->> }
->>
->> fn bar() {}
->>
->> fn main() {
->>       foo!(());
->>       foo!();
->> }
->> ```
->>
->> it expands to this:
->> ```
->> fn main() {
->>       {
->>           bar();
->>           ()
->>       };
->>       {};
->> }
->> ```
->>
->> --
->> Cheers,
->> Benno
->>
+>
+>
+> thanks,
 
 
