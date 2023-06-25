@@ -2,47 +2,42 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0E3BEB64DA
-	for <rust-for-linux@archiver.kernel.org>; Sat, 24 Jun 2023 21:15:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6F1AEB64DC
+	for <rust-for-linux@archiver.kernel.org>; Sun, 25 Jun 2023 09:53:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbjFXVPF (ORCPT
+        id S231821AbjFYJxQ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 24 Jun 2023 17:15:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37048 "EHLO
+        Sun, 25 Jun 2023 05:53:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjFXVPE (ORCPT
+        with ESMTP id S230029AbjFYJxP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 24 Jun 2023 17:15:04 -0400
+        Sun, 25 Jun 2023 05:53:15 -0400
 Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 330DA1715
-        for <rust-for-linux@vger.kernel.org>; Sat, 24 Jun 2023 14:14:59 -0700 (PDT)
-Date:   Sat, 24 Jun 2023 21:14:47 +0000
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F7AA122
+        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jun 2023 02:53:08 -0700 (PDT)
+Date:   Sun, 25 Jun 2023 09:52:53 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1687641297; x=1687900497;
-        bh=aoe3KwxLysOwOT7903nCZgkzBRK8jEN40ti2Wl0T0nc=;
+        s=protonmail; t=1687686786; x=1687945986;
+        bh=jalKIQoCAzNn/VzvjQDV+gYnbBoAqNrKXWXKPAQVeco=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=ifMSKZeW/oZyLlgZyE2HbdA3LNa/pSs3EX43kJs9SD15u1zoOTU2dB589IoilvzgE
-         cRpeBZgyz43ev2wHd3JtWd0h41t68MP1HF3zw53jffGwx7MrpuphoaDUoJxcYNcN4F
-         +3BsNHe//WOS5qAEv5oOqDk6PaDyVzlNsOhxprtSySXnZ2akueNSFQ0uvFyrFshsQT
-         m4980/cgu5zIvi6vEjrckV6pm+CWLdE1I8rhZhy10z3j229UoCt0tlmc8XpqylsWCB
-         GmlRz0Fwpru7BK/aTO6hx1mdWAerjEGU+xn+PWDv78Mw3yK0k0ZbB3kCGJz8QLIiaG
-         Z89oq/Gz4AAFw==
-To:     =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+        b=fA/+M70wYZtfAMVOFqsLmtFY/mOVWGlYKtx8cj3I9FDb+E5xw2FACc0BqsqTSxJcY
+         2ZH249pI2aDueR0VN4vA1shtxdpcuBafW603e4T0zzkJfxF5kb4gETheuTCLQ1zI1m
+         jVQWdCVoZniQp0acWEf0Fd4rBCR+NYBM2JoXpADds6t8zWz/zcmyzNTI7L/KmkYGNp
+         T6aPmvVMjS5q8wI8inl9MaSGHhUdKidJOcyaxBmKHkfIN2L6nCBqgB+ADyKCor4QYh
+         7BhtauwyDIxQyRdSa7DaOmGjWBQtedSw7ftRIdTxc/uIBBuCM+dfPJ36YWvliIYmQ8
+         xbDVhhfOZrVbw==
+To:     FUJITA Tomonori <fujita.tomonori@gmail.com>
 From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 5/7] rust: init: add `..Zeroable::zeroed()` syntax for zeroing all missing fields
-Message-ID: <f4bcd952-1ad9-42b7-6e0b-72a115dcbe8e@proton.me>
-In-Reply-To: <W1fY0aa_v9j7lJNWXk_WNaxY2qruJo1R6k7u0g-X5L5Rxuod-VMBMmByICDwjF_fFGvNJTV41QapW0WeVduNYqxgo9S243gnNGXbexq6P3Q=@protonmail.com>
-References: <20230624092330.157338-1-benno.lossin@proton.me> <20230624092330.157338-5-benno.lossin@proton.me> <W1fY0aa_v9j7lJNWXk_WNaxY2qruJo1R6k7u0g-X5L5Rxuod-VMBMmByICDwjF_fFGvNJTV41QapW0WeVduNYqxgo9S243gnNGXbexq6P3Q=@protonmail.com>
+Cc:     netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        aliceryhl@google.com, andrew@lunn.ch,
+        miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH 1/5] rust: core abstractions for network device drivers
+Message-ID: <3ff6edec-c083-9294-d2df-01be983cd293@proton.me>
+In-Reply-To: <20230621.221349.1237576739913195911.ubuntu@gmail.com>
+References: <20230613045326.3938283-1-fujita.tomonori@gmail.com> <20230613045326.3938283-2-fujita.tomonori@gmail.com> <_kID50ojyLurmrpIpn_kNxCRqo5MAaqm9pE47mhFcLops8yDhSqmbkhJiUuHlAFSdgqX1dHdZGxUa95ZSHAPHesIKLci1J21cu6nmdQ3ZGg=@proton.me> <20230621.221349.1237576739913195911.ubuntu@gmail.com>
 Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -51,319 +46,609 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/24/23 17:11, Bj=C3=B6rn Roy Baron wrote:
-> On Saturday, June 24th, 2023 at 11:25, Benno Lossin <benno.lossin@proton.=
-me> wrote:
+On 6/21/23 15:13, FUJITA Tomonori wrote:
+> Hi,
+> Thanks for reviewing.
 >=20
->> Add the struct update syntax to the init macros, but only for
->> `..Zeroable::zeroed()`. Adding this at the end of the struct initializer
->> allows one to omit fields from the initializer, these fields will be
->> initialized with 0x00 set to every byte. Only types that implement the
->> `Zeroable` trait can utilize this.
+> On Thu, 15 Jun 2023 13:01:50 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
+>=20
+>> On 6/13/23 06:53, FUJITA Tomonori wrote:
+>>> This patch adds very basic abstractions to implement network device
+>>> drivers, corresponds to the kernel's net_device and net_device_ops
+>>> structs with support for register_netdev/unregister_netdev functions.
+>>>
+>>> allows the const_maybe_uninit_zeroed feature for
+>>> core::mem::MaybeUinit::<T>::zeroed() in const function.
+>>>
+>>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>>> ---
+>>>   rust/bindings/bindings_helper.h |   2 +
+>>>   rust/helpers.c                  |  16 ++
+>>>   rust/kernel/lib.rs              |   3 +
+>>>   rust/kernel/net.rs              |   5 +
+>>>   rust/kernel/net/dev.rs          | 344 +++++++++++++++++++++++++++++++=
++
+>>>   5 files changed, 370 insertions(+)
+>>>   create mode 100644 rust/kernel/net.rs
+>>>   create mode 100644 rust/kernel/net/dev.rs
+>>>
+>>> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_h=
+elper.h
+>>> index 3e601ce2548d..468bf606f174 100644
+>>> --- a/rust/bindings/bindings_helper.h
+>>> +++ b/rust/bindings/bindings_helper.h
+>>> @@ -7,6 +7,8 @@
+>>>    */
+>>>
+>>>   #include <linux/errname.h>
+>>> +#include <linux/etherdevice.h>
+>>> +#include <linux/netdevice.h>
+>>>   #include <linux/slab.h>
+>>>   #include <linux/refcount.h>
+>>>   #include <linux/wait.h>
+>>> diff --git a/rust/helpers.c b/rust/helpers.c
+>>> index bb594da56137..70d50767ff4e 100644
+>>> --- a/rust/helpers.c
+>>> +++ b/rust/helpers.c
+>>> @@ -24,10 +24,26 @@
+>>>   #include <linux/errname.h>
+>>>   #include <linux/refcount.h>
+>>>   #include <linux/mutex.h>
+>>> +#include <linux/netdevice.h>
+>>> +#include <linux/skbuff.h>
+>>>   #include <linux/spinlock.h>
+>>>   #include <linux/sched/signal.h>
+>>>   #include <linux/wait.h>
+>>>
+>>> +#ifdef CONFIG_NET
+>>> +void *rust_helper_netdev_priv(const struct net_device *dev)
+>>> +{
+>>> +=09return netdev_priv(dev);
+>>> +}
+>>> +EXPORT_SYMBOL_GPL(rust_helper_netdev_priv);
+>>> +
+>>> +void rust_helper_skb_tx_timestamp(struct sk_buff *skb)
+>>> +{
+>>> +=09skb_tx_timestamp(skb);
+>>> +}
+>>> +EXPORT_SYMBOL_GPL(rust_helper_skb_tx_timestamp);
+>>> +#endif
+>>> +
+>>>   __noreturn void rust_helper_BUG(void)
+>>>   {
+>>>   =09BUG();
+>>> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+>>> index 85b261209977..fc7d048d359d 100644
+>>> --- a/rust/kernel/lib.rs
+>>> +++ b/rust/kernel/lib.rs
+>>> @@ -13,6 +13,7 @@
+>>>
+>>>   #![no_std]
+>>>   #![feature(allocator_api)]
+>>> +#![feature(const_maybe_uninit_zeroed)]
+>>>   #![feature(coerce_unsized)]
+>>>   #![feature(dispatch_from_dyn)]
+>>>   #![feature(new_uninit)]
+>>> @@ -34,6 +35,8 @@
+>>>   pub mod error;
+>>>   pub mod init;
+>>>   pub mod ioctl;
+>>> +#[cfg(CONFIG_NET)]
+>>> +pub mod net;
+>>>   pub mod prelude;
+>>>   pub mod print;
+>>>   mod static_assert;
+>>> diff --git a/rust/kernel/net.rs b/rust/kernel/net.rs
+>>> new file mode 100644
+>>> index 000000000000..28fe8f398463
+>>> --- /dev/null
+>>> +++ b/rust/kernel/net.rs
+>>> @@ -0,0 +1,5 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +//! Networking core.
+>>> +
+>>> +pub mod dev;
+>>> diff --git a/rust/kernel/net/dev.rs b/rust/kernel/net/dev.rs
+>>> new file mode 100644
+>>> index 000000000000..d072c81f99ce
+>>> --- /dev/null
+>>> +++ b/rust/kernel/net/dev.rs
+>>> @@ -0,0 +1,344 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +//! Network device.
+>>> +//!
+>>> +//! C headers: [`include/linux/etherdevice.h`](../../../../include/lin=
+ux/etherdevice.h),
+>>> +//! [`include/linux/ethtool.h`](../../../../include/linux/ethtool.h),
+>>> +//! [`include/linux/netdevice.h`](../../../../include/linux/netdevice.=
+h),
+>>> +//! [`include/linux/skbuff.h`](../../../../include/linux/skbuff.h),
+>>> +//! [`include/uapi/linux/if_link.h`](../../../../include/uapi/linux/if=
+_link.h).
+>>> +
+>>> +use crate::{bindings, error::*, prelude::vtable, types::ForeignOwnable=
+};
+>>> +use {core::ffi::c_void, core::marker::PhantomData};
+>>> +
+>>> +/// Corresponds to the kernel's `struct net_device`.
+>>> +///
+>>> +/// # Invariants
+>>> +///
+>>> +/// The pointer is valid.
+>>> +pub struct Device(*mut bindings::net_device);
+>>> +
+>>> +impl Device {
+>>> +    /// Creates a new [`Device`] instance.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// Callers must ensure that `ptr` must be valid.
+>>> +    unsafe fn from_ptr(ptr: *mut bindings::net_device) -> Self {
+>>> +        // INVARIANT: The safety requirements ensure the invariant.
+>>> +        Self(ptr)
+>>> +    }
+>>> +
+>>> +    /// Gets a pointer to network device private data.
+>>> +    fn priv_data_ptr(&self) -> *const c_void {
+>>> +        // SAFETY: The type invariants guarantee that `self.0` is vali=
+d.
+>>> +        // During the initialization of `Registration` instance, the k=
+ernel allocates
+>>> +        // contiguous memory for `struct net_device` and a pointer to =
+its private data.
+>>> +        // So it's safe to read an address from the returned address f=
+rom `netdev_priv()`.
+>>> +        unsafe { core::ptr::read(bindings::netdev_priv(self.0) as *con=
+st *const c_void) }
 >>
->> Suggested-by: Asahi Lina <lina@asahilina.net>
->> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->> ---
->>   rust/kernel/init.rs        |  16 +++++-
->>   rust/kernel/init/macros.rs | 114 ++++++++++++++++++++++++++++++++++++-
->>   2 files changed, 128 insertions(+), 2 deletions(-)
+>> Why are at least `size_of::<*const c_void>` bytes allocated? Why is it a
+>> `*const c_void` pointer? This function does not give any guarantees abou=
+t
+>> this pointer, is it valid?
+>=20
+> The reason is a device driver needs its data structure. It needs to
+> access to it via a pointer to bindings::net_device struct. The space
+> for the pointer is allocated during initialization of Registration and
+> it's valid until the Registration object is dropped.
+
+I think this should be encoded in the type invariants of `Device`.=20
+Because the safety comment needs some justification.
+
+>=20
+>> I know that you are allocating exactly this amount in `Registration`, bu=
+t
+>> `Device` does not know about that. Should this be a type invariant?
+>> It might be a good idea to make `Driver` generic over `D`, the data that=
+ is
+>> stored behind this pointer. You could then return `D::Borrowed` instead.
+>=20
+> We could do:
+>=20
+> impl<D: DriverData> Device<D> {
+> ...
+>      /// Gets the private data of a device driver.
+>      pub fn drv_priv_data(&self) -> <D::Data as ForeignOwnable>::Borrowed=
+<'_> {
+>          unsafe {
+>              D::Data::borrow(core::ptr::read(
+>                  bindings::netdev_priv(self.ptr) as *const *const c_void
+>              ))
+>          }
+>      }
+> }
+
+LGTM (+ adding a Safety comment).
+
+>=20
+>=20
+>>> +// SAFETY: `Device` is just a wrapper for the kernel`s `struct net_dev=
+ice`, which can be used
+>>> +// from any thread. `struct net_device` stores a pointer to `DriverDat=
+a::Data`, which is `Sync`
+>>> +// so it's safe to sharing its pointer.
+>>> +unsafe impl Send for Device {}
+>>> +// SAFETY: `Device` is just a wrapper for the kernel`s `struct net_dev=
+ice`, which can be used
+>>> +// from any thread. `struct net_device` stores a pointer to `DriverDat=
+a::Data`, which is `Sync`,
+>>> +// can be used from any thread too.
+>>> +unsafe impl Sync for Device {}
+>>> +
+>>> +/// Trait for device driver specific information.
+>>> +///
+>>> +/// This data structure is passed to a driver with the operations for =
+`struct net_device`
+>>> +/// like `struct net_device_ops`, `struct ethtool_ops`, `struct rtnl_l=
+ink_ops`, etc.
+>>> +pub trait DriverData {
+>>> +    /// The object are stored in C object, `struct net_device`.
+>>> +    type Data: ForeignOwnable + Send + Sync;
 >>
->> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
->> index ecf6a4bd0ce4..44bc3e77419a 100644
->> --- a/rust/kernel/init.rs
->> +++ b/rust/kernel/init.rs
->> @@ -508,14 +508,18 @@ macro_rules! stack_try_pin_init {
->>   /// - Fields that you want to initialize in-place have to use `<-` ins=
-tead of `:`.
->>   /// - In front of the initializer you can write `&this in` to have acc=
-ess to a [`NonNull<Self>`]
->>   ///   pointer named `this` inside of the initializer.
->> +/// - Using struct update syntax one can place `..Zeroable::zeroed()` a=
-t the very end of the
->> +///   struct, this initializes every field with 0 and then runs all ini=
-tializers specified in the
->> +///   body. This can only be done if [`Zeroable`] is implemented for th=
-e struct.
->>   ///
->>   /// For instance:
->>   ///
->>   /// ```rust
->>   /// # use kernel::pin_init;
->> -/// # use macros::pin_data;
->> +/// # use macros::{pin_data, Zeroable};
->>   /// # use core::{ptr::addr_of_mut, marker::PhantomPinned};
->>   /// #[pin_data]
->> +/// #[derive(Zeroable)]
->>   /// struct Buf {
->>   ///     // `ptr` points into `buf`.
->>   ///     ptr: *mut u8,
->> @@ -528,6 +532,10 @@ macro_rules! stack_try_pin_init {
->>   ///     ptr: unsafe { addr_of_mut!((*this.as_ptr()).buf).cast() },
->>   ///     pin: PhantomPinned,
->>   /// });
->> +/// pin_init!(Buf {
->> +///     buf: [1; 64],
->> +///     ..Zeroable::zeroed(),
->> +/// });
->>   /// ```
->>   ///
->>   /// [`try_pin_init!`]: kernel::try_pin_init
->> @@ -547,6 +555,7 @@ macro_rules! pin_init {
->>               @data(PinData, use_data),
->>               @has_data(HasPinData, __pin_data),
->>               @construct_closure(pin_init_from_closure),
->> +            @munch_fields($($fields)*),
->>           )
->>       };
->>   }
->> @@ -603,6 +612,7 @@ macro_rules! try_pin_init {
->>               @data(PinData, use_data),
->>               @has_data(HasPinData, __pin_data),
->>               @construct_closure(pin_init_from_closure),
->> +            @munch_fields($($fields)*),
->>           )
->>       };
->>       ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
->> @@ -616,6 +626,7 @@ macro_rules! try_pin_init {
->>               @data(PinData, use_data),
->>               @has_data(HasPinData, __pin_data),
->>               @construct_closure(pin_init_from_closure),
->> +            @munch_fields($($fields)*),
->>           )
->>       };
->>   }
->> @@ -650,6 +661,7 @@ macro_rules! init {
->>               @data(InitData, /*no use_data*/),
->>               @has_data(HasInitData, __init_data),
->>               @construct_closure(init_from_closure),
->> +            @munch_fields($($fields)*),
->>           )
->>       }
->>   }
->> @@ -700,6 +712,7 @@ macro_rules! try_init {
->>               @data(InitData, /*no use_data*/),
->>               @has_data(HasInitData, __init_data),
->>               @construct_closure(init_from_closure),
->> +            @munch_fields($($fields)*),
->>           )
->>       };
->>       ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
->> @@ -713,6 +726,7 @@ macro_rules! try_init {
->>               @data(InitData, /*no use_data*/),
->>               @has_data(HasInitData, __init_data),
->>               @construct_closure(init_from_closure),
->> +            @munch_fields($($fields)*),
->>           )
->>       };
->>   }
->> diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
->> index 1e0c4aca055a..5dcb2e513f26 100644
->> --- a/rust/kernel/init/macros.rs
->> +++ b/rust/kernel/init/macros.rs
->> @@ -989,6 +989,7 @@ impl<$($impl_generics)*> $pin_data<$($ty_generics)*>
->>   ///
->>   /// This macro has multiple internal call configurations, these are al=
-ways the very first ident:
->>   /// - nothing: this is the base case and called by the `{try_}{pin_}in=
-it!` macros.
->> +/// - `with_update_parsed`: when the `..Zeroable::zeroed()` syntax has =
-been handled.
->>   /// - `init_slot`: recursively creates the code that initializes all f=
-ields in `slot`.
->>   /// - `make_initializer`: recursively create the struct initializer th=
-at guarantees that every
->>   ///   field has been initialized exactly once.
->> @@ -1007,6 +1008,82 @@ macro_rules! __init_internal {
->>           @has_data($has_data:ident, $get_data:ident),
->>           // `pin_init_from_closure` or `init_from_closure`.
->>           @construct_closure($construct_closure:ident),
->> +        @munch_fields(),
->> +    ) =3D> {
->> +        $crate::__init_internal!(with_update_parsed:
->> +            @this($($this)?),
->> +            @typ($t $(::<$($generics),*>)? ),
->> +            @fields($($fields)*),
->> +            @error($err),
->> +            @data($data, $($use_data)?),
->> +            @has_data($has_data, $get_data),
->> +            @construct_closure($construct_closure),
->> +            @zeroed(), // nothing means default behavior.
->> +        )
->> +    };
->> +    (
->> +        @this($($this:ident)?),
->> +        @typ($t:ident $(::<$($generics:ty),*>)?),
->> +        @fields($($fields:tt)*),
->> +        @error($err:ty),
->> +        // Either `PinData` or `InitData`, `$use_data` should only be p=
-resent in the `PinData`
->> +        // case.
->> +        @data($data:ident, $($use_data:ident)?),
->> +        // `HasPinData` or `HasInitData`.
->> +        @has_data($has_data:ident, $get_data:ident),
->> +        // `pin_init_from_closure` or `init_from_closure`.
->> +        @construct_closure($construct_closure:ident),
->> +        @munch_fields(..Zeroable::zeroed()),
->> +    ) =3D> {
->> +        $crate::__init_internal!(with_update_parsed:
->> +            @this($($this)?),
->> +            @typ($t $(::<$($generics),*>)? ),
->> +            @fields($($fields)*),
->> +            @error($err),
->> +            @data($data, $($use_data)?),
->> +            @has_data($has_data, $get_data),
->> +            @construct_closure($construct_closure),
->> +            @zeroed(()), // `()` means zero all fields not mentioned.
->> +        )
->> +    };
->> +    (
->> +        @this($($this:ident)?),
->> +        @typ($t:ident $(::<$($generics:ty),*>)?),
->> +        @fields($($fields:tt)*),
->> +        @error($err:ty),
->> +        // Either `PinData` or `InitData`, `$use_data` should only be p=
-resent in the `PinData`
->> +        // case.
->> +        @data($data:ident, $($use_data:ident)?),
->> +        // `HasPinData` or `HasInitData`.
->> +        @has_data($has_data:ident, $get_data:ident),
->> +        // `pin_init_from_closure` or `init_from_closure`.
->> +        @construct_closure($construct_closure:ident),
->> +        @munch_fields($ignore:tt $($rest:tt)*),
->> +    ) =3D> {
->> +        $crate::__init_internal!(
->> +            @this($($this)?),
->> +            @typ($t $(::<$($generics),*>)? ),
->> +            @fields($($fields)*),
->> +            @error($err),
->> +            @data($data, $($use_data)?),
->> +            @has_data($has_data, $get_data),
->> +            @construct_closure($construct_closure),
->> +            @munch_fields($($rest)*),
->> +        )
->> +    };
->> +    (with_update_parsed:
->> +        @this($($this:ident)?),
->> +        @typ($t:ident $(::<$($generics:ty),*>)?),
->> +        @fields($($fields:tt)*),
->> +        @error($err:ty),
->> +        // Either `PinData` or `InitData`, `$use_data` should only be p=
-resent in the `PinData`
->> +        // case.
->> +        @data($data:ident, $($use_data:ident)?),
->> +        // `HasPinData` or `HasInitData`.
->> +        @has_data($has_data:ident, $get_data:ident),
->> +        // `pin_init_from_closure` or `init_from_closure`.
->> +        @construct_closure($construct_closure:ident),
->> +        @zeroed($($init_zeroed:expr)?),
->>       ) =3D> {{
->>           // We do not want to allow arbitrary returns, so we declare th=
-is type as the `Ok` return
->>           // type and shadow it later when we insert the arbitrary user =
-code. That way there will be
->> @@ -1024,6 +1101,17 @@ macro_rules! __init_internal {
->>                   {
->>                       // Shadow the structure so it cannot be used to re=
-turn early.
->>                       struct __InitOk;
->> +                    // If `$init_zeroed` is present we should zero the =
-slot now and not emit an
->> +                    // error when fields are missing (since they will b=
-e zeroed). We also have to
->> +                    // check that the type actually implements `Zeroabl=
-e`.
->> +                    $(
->> +                        fn is_zeroable<T: Zeroable>(ptr: *mut T) {}
+>> Why is this an associated type? Could you not use
+>> `D: ForeignOwnable + Send + Sync` everywhere instead?
+>> I think this should be possible, since `DriverData` does not define
+>> anything else.
 >=20
-> Maybe call this assert_zeroable?
+> With that approach, is it possible to allow a device driver to define
+> own data structure and functions taking the structure as aurgument
+> (like DevOps structutre in the 5th patch)
+>=20
 
-Sure.
+In the example both structs are empty so I am not really sure why it has=20
+to be two types. Can't we do this:
+```
+pub struct MyDriver {
+     // Just some random fields...
+     pub access_count: Cell<usize>,
+}
+
+
+impl DriverData for Box<MyDriver> {}
+
+// And then we could make `DeviceOperations: DriverData`.
+// Users would then do this:
+
+#[vtable]
+impl DeviceOperations for Box<MyDriver> {
+     fn init(_dev: Device, data: &MyDriver) -> Result {
+         data.access_count.set(0);
+         Ok(())
+     }
+
+     fn open(_dev: Device, data: &MyDriver) -> Result {
+         data.access_count.set(data.access_count.get() + 1);
+         Ok(())
+     }
+}
+```
+
+I think this would simplify things, because you do not have to carry the=20
+extra associated type around (and have to spell out
+`<D::Data as ForeignOwnable>` everywhere).
 
 >=20
->> +                        // Ensure that the struct is indeed `Zeroable`.
->> +                        is_zeroable(slot);
->> +                        // SAFETY:  The type implements `Zeroable` by t=
-he check above.
->> +                        unsafe { ::core::ptr::write_bytes(slot, 0, 1) }=
-;
->> +                        $init_zeroed // this will be `()` if set.
+>>> +/// Registration structure for a network device driver.
+>>> +///
+>>> +/// This allocates and owns a `struct net_device` object.
+>>> +/// Once the `net_device` object is registered via `register_netdev` f=
+unction,
+>>> +/// the kernel calls various functions such as `struct net_device_ops`=
+ operations with
+>>> +/// the `net_device` object.
+>>> +///
+>>> +/// A driver must implement `struct net_device_ops` so the trait for i=
+t is tied.
+>>> +/// Other operations like `struct ethtool_ops` are optional.
+>>> +pub struct Registration<T: DeviceOperations<D>, D: DriverData> {
+>>> +    dev: Device,
+>>> +    is_registered: bool,
+>>> +    _p: PhantomData<(D, T)>,
+>>> +}
+>>> +
+>>> +impl<D: DriverData, T: DeviceOperations<D>> Drop for Registration<T, D=
+> {
+>>> +    fn drop(&mut self) {
+>>> +        // SAFETY: The type invariants guarantee that `self.dev.0` is =
+valid.
+>>> +        unsafe {
+>>> +            let _ =3D D::Data::from_foreign(self.dev.priv_data_ptr());
+>>
+>> Why is `self.dev.priv_data_ptr()` a valid pointer?
+>> This `unsafe` block should be split to better explain the different safe=
+ty
+>> requirements.
 >=20
-> How does this work? Shouldn't there be a ; after $init_zeroed to consume =
-the () value?
+> Explained above.
+>=20
+>>> +            if self.is_registered {
+>>> +                bindings::unregister_netdev(self.dev.0);
+>>> +            }
+>>> +            bindings::free_netdev(self.dev.0);
+>>> +        }
+>>> +    }
+>>> +}
+>>> +
+>>> +impl<D: DriverData, T: DeviceOperations<D>> Registration<T, D> {
+>>> +    /// Creates a new [`Registration`] instance for ethernet device.
+>>> +    ///
+>>> +    /// A device driver can pass private data.
+>>> +    pub fn try_new_ether(tx_queue_size: u32, rx_queue_size: u32, data:=
+ D::Data) -> Result<Self> {
+>>> +        // SAFETY: FFI call.
+>>
+>> If this FFI call has no safety requirements then say so.
+>=20
+> SAFETY: FFI call has no safety requirements.
+>=20
+> ?
 
-It is the last expression of a block and since it is `()` it is ok=20
-(adding a ; would also be ok, but it is not necessary).
+Yes you should just write that.
 
 >=20
->> +                    )?
->>                       // Create the `this` so it can be referenced by th=
-e user inside of the
->>                       // expressions creating the individual fields.
->>                       $(let $this =3D unsafe { ::core::ptr::NonNull::new=
-_unchecked(slot) };)?
->> @@ -1064,7 +1152,7 @@ macro_rules! __init_internal {
->>           @data($data:ident),
->>           @slot($slot:ident),
->>           @guards($($guards:ident,)*),
->> -        @munch_fields($(,)?),
->> +        @munch_fields($(..Zeroable::zeroed())? $(,)?),
->>       ) =3D> {
->>           // Endpoint of munching, no fields are left. If execution reac=
-hes this point, all fields
->>           // have been initialized. Therefore we can now dismiss the gua=
-rds by forgetting them.
->> @@ -1157,6 +1245,30 @@ macro_rules! __init_internal {
->>               @munch_fields($($rest)*),
->>           );
->>       };
->> +    (make_initializer:
->> +        @slot($slot:ident),
->> +        @type_name($t:ident),
->> +        @munch_fields(..Zeroable::zeroed() $(,)?),
->> +        @acc($($acc:tt)*),
->> +    ) =3D> {
->> +        // Endpoint, nothing more to munch, create the initializer. Sin=
-ce the users specified
->> +        // `..Zeroable::zeroed()`, the slot will already have been zero=
-ed and all field that have
->> +        // not been overwritten are thus zero and initialized. We still=
- check that all fields are
->> +        // actually accessible by using the struct update syntax oursel=
-ves.
->> +        // Since we are in the `if false` branch, this will never get e=
-xecuted. We abuse `slot` to
->> +        // get the correct type inference here:
->> +        unsafe {
->> +            let mut zeroed =3D ::core::mem::zeroed();
->> +            // We have to use type inference her to make zeroed have th=
-e correct type. This does
+>>> +    const DEVICE_OPS: bindings::net_device_ops =3D bindings::net_devic=
+e_ops {
+>>> +        ndo_init: if <T>::HAS_INIT {
+>>> +            Some(Self::init_callback)
+>>> +        } else {
+>>> +            None
+>>> +        },
+>>> +        ndo_uninit: if <T>::HAS_UNINIT {
+>>> +            Some(Self::uninit_callback)
+>>> +        } else {
+>>> +            None
+>>> +        },
+>>> +        ndo_open: if <T>::HAS_OPEN {
+>>> +            Some(Self::open_callback)
+>>> +        } else {
+>>> +            None
+>>> +        },
+>>> +        ndo_stop: if <T>::HAS_STOP {
+>>> +            Some(Self::stop_callback)
+>>> +        } else {
+>>> +            None
+>>> +        },
+>>> +        ndo_start_xmit: if <T>::HAS_START_XMIT {
+>>> +            Some(Self::start_xmit_callback)
+>>> +        } else {
+>>> +            None
+>>> +        },
+>>> +        // SAFETY: The rest is zeroed out to initialize `struct net_de=
+vice_ops`,
+>>> +        // set `Option<&F>` to be `None`.
+>>> +        ..unsafe { core::mem::MaybeUninit::<bindings::net_device_ops>:=
+:zeroed().assume_init() }
+>>> +    };
+>>> +
+>>> +    const fn build_device_ops() -> &'static bindings::net_device_ops {
+>>> +        &Self::DEVICE_OPS
+>>> +    }
+>>
+>> Why does this function exist?
 >=20
-> *here
+> To get const struct net_device_ops *netdev_ops.
 
-Will fix.
+Can't you just use `&Self::DEVICE_OPS`?
+
+>=20
+>>> +
+>>> +    unsafe extern "C" fn init_callback(netdev: *mut bindings::net_devi=
+ce) -> core::ffi::c_int {
+>>> +        from_result(|| {
+>>
+>> Since you are the first user of `from_result`, you can remove the
+>> `#[allow(dead_code)]` attribute.
+>>
+>> @Reviewers/Maintainers: Or would we prefer to make that change ourselves=
+?
+>=20
+> Ah, either is fine by me.
+>=20
+>>> +            // SAFETY: The C API guarantees that `netdev` is valid whi=
+le this function is running.
+>>> +            let mut dev =3D unsafe { Device::from_ptr(netdev) };
+>>> +            // SAFETY: The returned pointer was initialized by `D::Dat=
+a::into_foreign` when
+>>> +            // `Registration` object was created.
+>>> +            // `D::Data::from_foreign` is only called by the object wa=
+s released.
+>>> +            // So we know `data` is valid while this function is runni=
+ng.
+>>
+>> This should be a type invariant of `Registration`.
+>=20
+> Understood.
+>=20
+>>> +            let data =3D unsafe { D::Data::borrow(dev.priv_data_ptr())=
+ };
+>>> +            T::init(&mut dev, data)?;
+>>> +            Ok(0)
+>>> +        })
+>>> +    }
+>>> +
+>>> +    unsafe extern "C" fn uninit_callback(netdev: *mut bindings::net_de=
+vice) {
+>>> +        // SAFETY: The C API guarantees that `netdev` is valid while t=
+his function is running.
+>>> +        let mut dev =3D unsafe { Device::from_ptr(netdev) };
+>>> +        // SAFETY: The returned pointer was initialized by `D::Data::i=
+nto_foreign` when
+>>> +        // `Registration` object was created.
+>>> +        // `D::Data::from_foreign` is only called by the object was re=
+leased.
+>>> +        // So we know `data` is valid while this function is running.
+>>> +        let data =3D unsafe { D::Data::borrow(dev.priv_data_ptr()) };
+>>> +        T::uninit(&mut dev, data);
+>>> +    }
+>>> +
+>>> +    unsafe extern "C" fn open_callback(netdev: *mut bindings::net_devi=
+ce) -> core::ffi::c_int {
+>>> +        from_result(|| {
+>>> +            // SAFETY: The C API guarantees that `netdev` is valid whi=
+le this function is running.
+>>> +            let mut dev =3D unsafe { Device::from_ptr(netdev) };
+>>> +            // SAFETY: The returned pointer was initialized by `D::Dat=
+a::into_foreign` when
+>>> +            // `Registration` object was created.
+>>> +            // `D::Data::from_foreign` is only called by the object wa=
+s released.
+>>> +            // So we know `data` is valid while this function is runni=
+ng.
+>>> +            let data =3D unsafe { D::Data::borrow(dev.priv_data_ptr())=
+ };
+>>> +            T::open(&mut dev, data)?;
+>>> +            Ok(0)
+>>> +        })
+>>> +    }
+>>> +
+>>> +    unsafe extern "C" fn stop_callback(netdev: *mut bindings::net_devi=
+ce) -> core::ffi::c_int {
+>>> +        from_result(|| {
+>>> +            // SAFETY: The C API guarantees that `netdev` is valid whi=
+le this function is running.
+>>> +            let mut dev =3D unsafe { Device::from_ptr(netdev) };
+>>> +            // SAFETY: The returned pointer was initialized by `D::Dat=
+a::into_foreign` when
+>>> +            // `Registration` object was created.
+>>> +            // `D::Data::from_foreign` is only called by the object wa=
+s released.
+>>> +            // So we know `data` is valid while this function is runni=
+ng.
+>>> +            let data =3D unsafe { D::Data::borrow(dev.priv_data_ptr())=
+ };
+>>> +            T::stop(&mut dev, data)?;
+>>> +            Ok(0)
+>>> +        })
+>>> +    }
+>>> +
+>>> +    unsafe extern "C" fn start_xmit_callback(
+>>> +        skb: *mut bindings::sk_buff,
+>>> +        netdev: *mut bindings::net_device,
+>>> +    ) -> bindings::netdev_tx_t {
+>>> +        // SAFETY: The C API guarantees that `netdev` is valid while t=
+his function is running.
+>>> +        let mut dev =3D unsafe { Device::from_ptr(netdev) };
+>>> +        // SAFETY: The returned pointer was initialized by `D::Data::i=
+nto_foreign` when
+>>> +        // `Registration` object was created.
+>>> +        // `D::Data::from_foreign` is only called by the object was re=
+leased.
+>>> +        // So we know `data` is valid while this function is running.
+>>> +        let data =3D unsafe { D::Data::borrow(dev.priv_data_ptr()) };
+>>> +        // SAFETY: The C API guarantees that `skb` is valid while this=
+ function is running.
+>>> +        let skb =3D unsafe { SkBuff::from_ptr(skb) };
+>>> +        T::start_xmit(&mut dev, data, skb) as bindings::netdev_tx_t
+>>> +    }
+>>> +}
+>>> +
+>>> +// SAFETY: `Registration` exposes only `Device` object which can be us=
+ed from
+>>> +// any thread.
+>>> +unsafe impl<D: DriverData, T: DeviceOperations<D>> Send for Registrati=
+on<T, D> {}
+>>> +// SAFETY: `Registration` exposes only `Device` object which can be us=
+ed from
+>>> +// any thread.
+>>> +unsafe impl<D: DriverData, T: DeviceOperations<D>> Sync for Registrati=
+on<T, D> {}
+>>> +
+>>> +/// Corresponds to the kernel's `enum netdev_tx`.
+>>> +#[repr(i32)]
+>>> +pub enum TxCode {
+>>> +    /// Driver took care of packet.
+>>> +    Ok =3D bindings::netdev_tx_NETDEV_TX_OK,
+>>> +    /// Driver tx path was busy.
+>>> +    Busy =3D bindings::netdev_tx_NETDEV_TX_BUSY,
+>>> +}
+>>> +
+>>> +/// Corresponds to the kernel's `struct net_device_ops`.
+>>> +///
+>>> +/// A device driver must implement this. Only very basic operations ar=
+e supported for now.
+>>> +#[vtable]
+>>> +pub trait DeviceOperations<D: DriverData> {
+>>
+>> Why is this trait generic over `D`? Why is this not `Self` or an associa=
+ted
+>> type?
+>=20
+> DriverData also used in EtherOperationsAdapter (the second patch) and
+> there are other operations that uses DriverData (not in this patchset).
+
+Could you point me to those other things that use `DriverData`?
+
+>=20
+>=20
+>>> +    /// Corresponds to `ndo_init` in `struct net_device_ops`.
+>>> +    fn init(_dev: &mut Device, _data: <D::Data as ForeignOwnable>::Bor=
+rowed<'_>) -> Result {
+>>
+>> Why do all of these functions take a `&mut Device`? `Device` already is =
+a
+>> pointer, so why the double indirection?
+>=20
+> I guess that I follow the existing code like
+>=20
+> https://github.com/Rust-for-Linux/linux/blob/rust/rust/kernel/amba.rs
+
+I do not really see a reason why it should be `&mut Device` over just=20
+`Device`.
 
 --=20
 Cheers,
 Benno
 
 >=20
->> +            // not get executed, so it has no effect.
->> +            ::core::ptr::write($slot, zeroed);
->> +            zeroed =3D ::core::mem::zeroed();
->> +            ::core::ptr::write($slot, $t {
->> +                $($acc)*
->> +                ..zeroed
->> +            });
->> +        }
->> +    };
->>       (make_initializer:
->>           @slot($slot:ident),
->>           @type_name($t:ident),
->> --
->> 2.41.0
+>>> +/// Corresponds to the kernel's `struct sk_buff`.
+>>> +///
+>>> +/// A driver manages `struct sk_buff` in two ways. In both ways, the o=
+wnership is transferred
+>>> +/// between C and Rust. The allocation and release are done asymmetric=
+ally.
+>>> +///
+>>> +/// On the tx side (`ndo_start_xmit` operation in `struct net_device_o=
+ps`), the kernel allocates
+>>> +/// a `sk_buff' object and passes it to the driver. The driver is resp=
+onsible for the release
+>>> +/// after transmission.
+>>> +/// On the rx side, the driver allocates a `sk_buff` object then passe=
+s it to the kernel
+>>> +/// after receiving data.
+>>> +///
+>>> +/// # Invariants
+>>> +///
+>>> +/// The pointer is valid.
+>>> +pub struct SkBuff(*mut bindings::sk_buff);
+>>> +
+>>> +impl SkBuff {
+>>> +    /// Creates a new [`SkBuff`] instance.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// Callers must ensure that `ptr` must be valid.
+>>> +    unsafe fn from_ptr(ptr: *mut bindings::sk_buff) -> Self {
+>>> +        // INVARIANT: The safety requirements ensure the invariant.
+>>> +        Self(ptr)
+>>> +    }
+>>> +
+>>> +    /// Provides a time stamp.
+>>> +    pub fn tx_timestamp(&mut self) {
+>>> +        // SAFETY: The type invariants guarantee that `self.0` is vali=
+d.
+>>> +        unsafe {
+>>> +            bindings::skb_tx_timestamp(self.0);
+>>> +        }
+>>> +    }
+>>> +}
+>>> +
+>>> +impl Drop for SkBuff {
+>>> +    fn drop(&mut self) {
+>>> +        // SAFETY: The type invariants guarantee that `self.0` is vali=
+d.
+>>> +        unsafe {
+>>> +            bindings::kfree_skb_reason(
+>>> +                self.0,
+>>> +                bindings::skb_drop_reason_SKB_DROP_REASON_NOT_SPECIFIE=
+D,
+>>> +            )
+>>
+>> AFAICT this function frees the `struct sk_buff`, why is this safe? This
+>> function also has as a requirement that all other pointers to this struc=
+t
+>> are never used again. How do you guarantee this?
+>> You mentioned above that there are two us cases for an SkBuff, in one ca=
+se
+>> the kernel frees it and in another the driver. How do we know that we ca=
+n
+>> free it here?
 >=20
-> Cheers,
-> Bj=C3=B6rn
-
+> This can handle only the tx case.
+>=20
+> As you can see, we had a good discussion on this and seems that found
+> a solution. It'll be fixed.
+>=20
 
 
