@@ -2,170 +2,243 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E480C0015E
-	for <rust-for-linux@archiver.kernel.org>; Sun, 25 Jun 2023 10:14:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 552ABEB64DD
+	for <rust-for-linux@archiver.kernel.org>; Sun, 25 Jun 2023 11:55:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231854AbjFYKOE (ORCPT
+        id S232109AbjFYLzy (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 25 Jun 2023 06:14:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54096 "EHLO
+        Sun, 25 Jun 2023 07:55:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230058AbjFYKOD (ORCPT
+        with ESMTP id S232035AbjFYLzr (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 25 Jun 2023 06:14:03 -0400
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 016FD1B8;
-        Sun, 25 Jun 2023 03:13:57 -0700 (PDT)
-Date:   Sun, 25 Jun 2023 10:13:48 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1687688036; x=1687947236;
-        bh=k39oL5YOXLn4GMRTwjuG9qX93XSq1AYvlF1Zp8zdaRY=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=D5FjEe4xr7pKYA7BZBeOjWYeIlznYW4dAI8fpszRrITkSkiPQMQhb86TEFSaAUw/w
-         r1YWkTRg6DvGDikuWlcBUx36fTL3plzCPuYlmLJKYrn1eptMiAmyB0MbkNRJQS2XDb
-         AIz1UyOWHUarQ2vMLuSPvRlgQqcXRKtVVWbXfHAvytZ0z13K/zfTD+FSwKlIjvt2NO
-         hznwHDGto7i6u6oU3Mm+vkS2QmsKm7OJtxKjQtQS7Ag3FO0796Z2lcg2lb5C0XPWtQ
-         Q3PoBK9sveUIIO6HxwSd0mOVxGPEwoXEKPSbs9Y7xGo+Hui62BnGxbqvYQsQQpEWog
-         BYDOlK0Ug/krQ==
-To:     Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>
-From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        Philip Li <philip.li@intel.com>, kunit-dev@googlegroups.com,
-        linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH 1/6] rust: init: make doctests compilable/testable
-Message-ID: <4bf1311c-6a13-736c-7de5-d5027e950977@proton.me>
-In-Reply-To: <20230614180837.630180-2-ojeda@kernel.org>
-References: <20230614180837.630180-1-ojeda@kernel.org> <20230614180837.630180-2-ojeda@kernel.org>
-Feedback-ID: 71780778:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+        Sun, 25 Jun 2023 07:55:47 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A170410D9
+        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jun 2023 04:55:09 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6748a616e17so148284b3a.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 25 Jun 2023 04:55:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687694109; x=1690286109;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G+0rY9dcanWVxR6sRIymJgjiZmejUXF7IWUozqAb9is=;
+        b=dNodgk9B75aALRlJDMDJ7yJpTL6VCmHXeDHcnu+1LA9bnZ8z0qHkom6odM/AbLaj39
+         fczWbEEeFH27JXKNTo1Wxo4p+uJJ8yCdR0aIbTWySH2HUFdWT1AX09hXm9/5tJp/eCbU
+         09p+IEVExvM4C1aziYoVmOCOmu+FKCUYso+9LxXyvY6BM/Y0grLuA8gK6PNCwwezRr4q
+         V/TCI/oAg/yvnxDetITUFULtK3Qm4rimGTB1vajn9/G2jL6s99tY/BqDtpRqr7mg7Phy
+         UMliRdQuJkUWn3C0zjJOMlLvEBfm5ELvJkr3LdTQByKl9Fu1KNyMakUKT9qU30FIKOOw
+         s1EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687694109; x=1690286109;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=G+0rY9dcanWVxR6sRIymJgjiZmejUXF7IWUozqAb9is=;
+        b=gj7wFRMoo/7RzyW8cNqLQY2woci0F6YlAtjgRgP3dQQ83U82KRvX+hFqeg0uIuU2Ad
+         2+In87AGLzBH7xPpGkz4AH7tEfK0dfV1Li/O69U5JFiiiLlAaju8BknFZXq+W/UKAlL7
+         HNLdQGXknUZtIlP3fjwD0CaZwECO8ipPbSs1GymNJtgBOTQ0DtzU29yEbC2nUCGMxFw+
+         e3cbgn/APikyD6HSZxYj6d5YSbRQvnUrEBgITnDUWdWz9NwkRs/s1Kmr+lQEmnZsgtf1
+         uAuihTsfbyxaDikTlTkbS/l2XldaIj1CsFYIi2yRSCkxKb/n4Ol2m3Q4b+ZtTufTqYc+
+         g0qg==
+X-Gm-Message-State: AC+VfDx5Dh4JTTPd/jTLpZBWzYmB82jK6dmERNATm1+7LjpO5drNZ1CD
+        OPKAO+VEYIx1xvTQtPJHhKA=
+X-Google-Smtp-Source: ACHHUZ44IAvMRFWGx4hjq0kA4hS6eMs0m4Bnj0LlijsGv2hsprTOLX1t3hc0dT3etS02fD250HMokw==
+X-Received: by 2002:a17:902:d489:b0:1ae:4567:2737 with SMTP id c9-20020a170902d48900b001ae45672737mr32852640plg.2.1687694108653;
+        Sun, 25 Jun 2023 04:55:08 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id bg6-20020a1709028e8600b001b3d0aff88fsm2377974plb.109.2023.06.25.04.55.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Jun 2023 04:55:08 -0700 (PDT)
+Date:   Sun, 25 Jun 2023 20:55:07 +0900 (JST)
+Message-Id: <20230625.205507.24200574349942230.ubuntu@gmail.com>
+To:     benno.lossin@proton.me
+Cc:     fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
+        gary@garyguo.net
+Subject: Re: [RFC PATCH v2 1/2] rust: add synchronous message digest support
+From:   FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <0a9af5fa-4df2-11da-b3cb-0a6b1d27fdc2@proton.me>
+References: <udHI3v-OLUqHQt3fwnH71QuRJjzGxexw2rkIYEfnsChCmrLoJTIL_GL1wLCARf-UotY51jkPT6tC8nVDvjf8LkY2zvddpgeRQ5owysZwJos=@proton.me>
+        <20230622.111419.241422502377572827.ubuntu@gmail.com>
+        <0a9af5fa-4df2-11da-b3cb-0a6b1d27fdc2@proton.me>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/14/23 20:08, Miguel Ojeda wrote:
-> Rust documentation tests are going to be build/run-tested
-> with the KUnit integration added in a future patch, thus
-> update them to make them compilable/testable so that we
-> may start enforcing it.
->=20
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Hi,
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+On Sun, 25 Jun 2023 10:08:29 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
 
---=20
-Cheers,
-Benno
+(snip)
 
-> ---
->   rust/kernel/init.rs | 25 ++++++++++++++++---------
->   1 file changed, 16 insertions(+), 9 deletions(-)
->=20
-> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-> index b4332a4ec1f4..1073515ed40e 100644
-> --- a/rust/kernel/init.rs
-> +++ b/rust/kernel/init.rs
-> @@ -120,14 +120,23 @@
->   //!   `slot` gets called.
->   //!
->   //! ```rust
-> -//! use kernel::{prelude::*, init};
-> +//! # #![allow(unreachable_pub, clippy::disallowed_names)]
-> +//! use kernel::{prelude::*, init, types::Opaque};
->   //! use core::{ptr::addr_of_mut, marker::PhantomPinned, pin::Pin};
->   //! # mod bindings {
-> +//! #     #![allow(non_camel_case_types)]
->   //! #     pub struct foo;
->   //! #     pub unsafe fn init_foo(_ptr: *mut foo) {}
->   //! #     pub unsafe fn destroy_foo(_ptr: *mut foo) {}
->   //! #     pub unsafe fn enable_foo(_ptr: *mut foo, _flags: u32) -> i32 =
-{ 0 }
->   //! # }
-> +//! # trait FromErrno {
-> +//! #     fn from_errno(errno: core::ffi::c_int) -> Error {
-> +//! #         // Dummy error that can be constructed outside the `kernel=
-` crate.
-> +//! #         Error::from(core::fmt::Error)
-> +//! #     }
-> +//! # }
-> +//! # impl FromErrno for Error {}
->   //! /// # Invariants
->   //! ///
->   //! /// `foo` is always initialized
-> @@ -158,7 +167,7 @@
->   //!                 if err !=3D 0 {
->   //!                     // Enabling has failed, first clean up the foo =
-and then return the error.
->   //!                     bindings::destroy_foo(Opaque::raw_get(foo));
-> -//!                     return Err(Error::from_kernel_errno(err));
-> +//!                     return Err(Error::from_errno(err));
->   //!                 }
->   //!
->   //!                 // All fields of `RawFoo` have been initialized, si=
-nce `_p` is a ZST.
-> @@ -226,8 +235,7 @@
->   ///
->   /// ```rust
->   /// # #![allow(clippy::disallowed_names, clippy::new_ret_no_self)]
-> -/// # use kernel::{init, pin_init, stack_pin_init, init::*, sync::Mutex,=
- new_mutex};
-> -/// # use macros::pin_data;
-> +/// # use kernel::{init, macros::pin_data, pin_init, stack_pin_init, ini=
-t::*, sync::Mutex, new_mutex};
->   /// # use core::pin::Pin;
->   /// #[pin_data]
->   /// struct Foo {
-> @@ -277,7 +285,7 @@ macro_rules! stack_pin_init {
->   ///
->   /// # Examples
->   ///
-> -/// ```rust
-> +/// ```rust,ignore
->   /// # #![allow(clippy::disallowed_names, clippy::new_ret_no_self)]
->   /// # use kernel::{init, pin_init, stack_try_pin_init, init::*, sync::M=
-utex, new_mutex};
->   /// # use macros::pin_data;
-> @@ -303,7 +311,7 @@ macro_rules! stack_pin_init {
->   /// pr_info!("a: {}", &*foo.a.lock());
->   /// ```
->   ///
-> -/// ```rust
-> +/// ```rust,ignore
->   /// # #![allow(clippy::disallowed_names, clippy::new_ret_no_self)]
->   /// # use kernel::{init, pin_init, stack_try_pin_init, init::*, sync::M=
-utex, new_mutex};
->   /// # use macros::pin_data;
-> @@ -513,8 +521,7 @@ macro_rules! stack_try_pin_init {
->   /// For instance:
->   ///
->   /// ```rust
-> -/// # use kernel::pin_init;
-> -/// # use macros::pin_data;
-> +/// # use kernel::{macros::pin_data, pin_init};
->   /// # use core::{ptr::addr_of_mut, marker::PhantomPinned};
->   /// #[pin_data]
->   /// struct Buf {
-> @@ -841,7 +848,7 @@ macro_rules! init {
->   /// # Examples
->   ///
->   /// ```rust
-> -/// use kernel::{init::PinInit, error::Error, InPlaceInit};
-> +/// use kernel::{init::{PinInit, zeroed}, error::Error};
->   /// struct BigBuf {
->   ///     big: Box<[u8; 1024 * 1024 * 1024]>,
->   ///     small: [u8; 1024 * 1024],
-> --
-> 2.41.0
->=20
+>>>> +        let ptr =
+>>>> +            unsafe { from_err_ptr(bindings::crypto_alloc_shash(name.as_char_ptr(), t, mask)) }?;
+>>>> +        // INVARIANT: `ptr` is valid and non-null since `crypto_alloc_shash`
+>>>> +        // returned a valid pointer which was null-checked.
+>>>> +        Ok(Self(ptr))
+>>>> +    }
+>>>> +
+>>>> +    /// Sets optional key used by the hashing algorithm.
+>>>> +    pub fn setkey(&mut self, data: &[u8]) -> Result {
+>>>
+>>> This should be called `set_key`.
+>> 
+>> I thought that using C function names is a recommended way because
+>> it's easier for subsystem maintainers to review.
+> 
+> IMO having a `_` that separates words helps a lot with readability. 
+> Especially with `digestsize`. I also think that adding an `_` will not 
+> confuse the subsystem maintainers, so we should just do it.
+
+Looks like `digestsize` is more popular in the tree so let's wait for
+reviewing from the crypto maintainers:
+
+ubuntu@ip-172-30-47-114:~/git/linux$ grep -or digestsize crypto/|wc -l
+112
+ubuntu@ip-172-30-47-114:~/git/linux$ grep -or digest_size crypto/|wc -l
+37
+
+>>>> +        // SAFETY: The type invariant guarantees that the pointer is valid.
+>>>> +        to_result(unsafe {
+>>>> +            bindings::crypto_shash_setkey(self.0, data.as_ptr(), data.len() as u32)
+>>>> +        })
+>>>> +    }
+>>>> +
+>>>> +    /// Returns the size of the result of the transformation.
+>>>> +    pub fn digestsize(&self) -> u32 {
+>>>
+>>> This should be called `digest_size`.
+>> 
+>> Ditto.
+>> 
+>>>> +        // SAFETY: The type invariant guarantees that the pointer is valid.
+>>>> +        unsafe { bindings::crypto_shash_digestsize(self.0) }
+>>>> +    }
+>>>> +}
+>>>> +
+>>>> +/// Corresponds to the kernel's `struct shash_desc`.
+>>>> +///
+>>>> +/// # Invariants
+>>>> +///
+>>>> +/// The field `ptr` is valid.
+>>>> +pub struct ShashDesc<'a> {
+>>>> +    ptr: *mut bindings::shash_desc,
+>>>> +    tfm: &'a Shash,
+>>>> +    size: usize,
+>>>> +}
+>>>> +
+>>>> +impl Drop for ShashDesc<'_> {
+>>>> +    fn drop(&mut self) {
+>>>> +        // SAFETY: The type invariant guarantees that the pointer is valid.
+>>>> +        unsafe {
+>>>> +            dealloc(
+>>>> +                self.ptr.cast(),
+>>>> +                Layout::from_size_align(self.size, 2).unwrap(),
+>>>> +            );
+>>>
+>>> Why do we own the pointer (i.e. why can we deallocate the memory)? Add as
+>>> a TI (type invariant). Why are you using `dealloc`? Is there no C
+>>> function that allocates a `struct shash_desc`? Why is the alignment 2?
+>> 
+>> No C function that allocates `struct shash_desc`. kmalloc() family is
+>> used in the C side (or stack is used).
+>> 
+>> IIUC, the alignment isn't used in the kernel but dealloc() still
+>> requires, right? I'm not sure what number should be used here.
+> 
+> CC'ing Gary, since I am not familiar with `dealloc` in the kernel.
+> I think the value of the alignment should still be correct if at some 
+> point in the future `dealloc` starts to use it again.
+> 
+>> 
+>>>> +        }
+>>>> +    }
+>>>> +}
+>>>> +
+>>>> +impl<'a> ShashDesc<'a> {
+>>>> +    /// Creates a [`ShashDesc`] object for a request data structure for message digest.
+>>>> +    pub fn new(tfm: &'a Shash) -> Result<Self> {
+>>>> +        // SAFETY: The type invariant guarantees that `tfm.0` pointer is valid.
+>>>> +        let size = core::mem::size_of::<bindings::shash_desc>()
+>>>> +            + unsafe { bindings::crypto_shash_descsize(tfm.0) } as usize;
+>>>> +        let layout = Layout::from_size_align(size, 2)?;
+>>>> +        let ptr = unsafe { alloc(layout) } as *mut bindings::shash_desc;
+>>>
+>>> Several things:
+>>> - The `SAFETY` comment for `crypto_shash_descsize` should be directly above
+>>>    the `unsafe` block,maybe factor that out into its own variable.
+>> 
+>> Ok.
+>> 
+>>> - Why is 2 the right alignment?
+>> 
+>> As long as the size is larger than alignment, alignment arugment is
+>> meaningless. Like dealloc, not sure what should be used.
+>> 
+>> 
+>>> - Missing `SAFETY` comment for `alloc`.
+>> 
+>> Will be fixed.
+>> 
+>>> - Why are you manually creating this layout from size and alignment? Is it
+>>>    not possible to do it via the `Layout` API?
+>> 
+>> What function should be used?
+> 
+> Maybe `Layout::new()`, `Layout::extend` and `Layout::repeat` might be 
+> enough?
+
+new() needs type and extend() and repeat() need self; both is
+irrelevant here.
+
+>>>> +        if ptr.is_null() {
+>>>> +            return Err(ENOMEM);
+>>>> +        }
+>>>> +        // INVARIANT: `ptr` is valid and non-null since `alloc`
+>>>> +        // returned a valid pointer which was null-checked.
+>>>> +        let mut desc = ShashDesc { ptr, tfm, size };
+>>>> +        // SAFETY: `desc.ptr` is valid and non-null since `alloc`
+>>>> +        // returned a valid pointer which was null-checked.
+>>>> +        // Additionally, The type invariant guarantees that `tfm.0` is valid.
+>>>> +        unsafe { (*desc.ptr).tfm = desc.tfm.0 };
+>>>> +        desc.reset()?;
+>>>> +        Ok(desc)
+>>>> +    }
+>>>> +
+>>>> +    /// Re-initializes message digest.
+>>>> +    pub fn reset(&mut self) -> Result {
+>>>> +        // SAFETY: The type invariant guarantees that the pointer is valid.
+>>>> +        to_result(unsafe { bindings::crypto_shash_init(self.ptr) })
+>>>> +    }
+>>>> +
+>>>> +    /// Adds data to message digest for processing.
+>>>> +    pub fn update(&mut self, data: &[u8]) -> Result {
+>>>> +        // SAFETY: The type invariant guarantees that the pointer is valid.
+>>>> +        to_result(unsafe {
+>>>> +            bindings::crypto_shash_update(self.ptr, data.as_ptr(), data.len() as u32)
+>>>> +        })
+>>>
+>>> What if `data.len() > u32::MAX`?
+>> 
+>> The buffer might not be updated properly, I guess. Should check the case?
+> 
+> Not sure what we should do in that case, will bring it up at the next 
+> team meeting. In Rust, `write` and `read` functions often output the 
+> number of bytes that were actually read/written. So maybe we should also 
+> do that here? Then you could just return `u32::MAX` and the user would 
+> have to call again. We could also call the C side multiple times until 
+> the entire buffer has been processed. But as the C side only supports 
+> u32 anyway, I think it would be a rare occurrence for `data` to be large.
+
+I'll change the code to return an error in this case. I prefer not to
+extend C logic (like calling a C function multiple times) but if there
+is an official policy for Rust bindings, I'll change the code to
+follow the policy.
 
 
+thanks,
