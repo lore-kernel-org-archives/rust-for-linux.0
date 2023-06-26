@@ -2,93 +2,107 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC71AEB64D7
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Jun 2023 09:40:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1566EEB64D7
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Jun 2023 13:11:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbjFZJkv (ORCPT
+        id S230411AbjFZNLt (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 26 Jun 2023 05:40:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43800 "EHLO
+        Mon, 26 Jun 2023 09:11:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbjFZJkq (ORCPT
+        with ESMTP id S230363AbjFZNLs (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 26 Jun 2023 05:40:46 -0400
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C3ADC;
-        Mon, 26 Jun 2023 02:40:45 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-bd729434fa0so3406805276.1;
-        Mon, 26 Jun 2023 02:40:44 -0700 (PDT)
+        Mon, 26 Jun 2023 09:11:48 -0400
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6026D125;
+        Mon, 26 Jun 2023 06:11:45 -0700 (PDT)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-1aa32d08f7bso2736553fac.1;
+        Mon, 26 Jun 2023 06:11:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687772444; x=1690364444;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rkfbd+mjNe8bYAliUp48UHONMltNteP2PilREF950C0=;
-        b=aWdnVxIX9AMIXDoeSX0DZZNbyDBZ5SOrIICrTxz3TkgvZk9DurtkLA+RCKOOXqEyiX
-         iYbrDEvea6k8aMkIfl9g/oeaWZhvFKotA1gccu3aXbK0Hmn+Rl6gI+0/+6Gp9LA8J2te
-         TWgVB/MM06FqE5S7p/mxD2DHog01Yk0P+vFdWBvGJAyQR3hOvITUbKs2MLoOMse+ph8l
-         uTsl05GirF5DVCZ1gz6sLmAYdzcxKPkQWojPFXq82nGwiEJKxhv1+gKa9dGP5/DmLdC/
-         l7TgJSmQLVupDg0joVMHWvKGUs2WLirPIS0nRRl1K7b0fGAw+SQ3JUJktdBUOaGKhf4/
-         dOsQ==
+        d=gmail.com; s=20221208; t=1687785104; x=1690377104;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GStg2GtkdOaT4hAtzhyiCQGhzyZSRaJuQj99Ahe45uU=;
+        b=MJwBHnG/8c2OF9nxlktWJODDGkmebHuAY89PEHujeEklkDdxYsbc7xbOkBozdO8Tna
+         p+q6knuq6O/WUxeYOGVL8pRx9sE5KICZH5EU9iVYsaQxOd87y+/3yRm8Dgn02tMIxfzu
+         KHP+6X0pHZfZTr362MWBhO/iVCBDu4fgaRn2C1DiikYZOde3xEDus4/y6agXoa0ZMprC
+         gBQuCprSMFxNhc35LBltx+AJQNipFeX45DEVAAqUIiyicPvnzUWdd2ORi0nhs3TSW1vb
+         Q5CHcHDq/Cs96q/SugweI+caqvkvgcf7FTkUY72TZd3Fv7O0FlA/HHYe+HJVb2AGUNzW
+         J7+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687772444; x=1690364444;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rkfbd+mjNe8bYAliUp48UHONMltNteP2PilREF950C0=;
-        b=f8GZo91sSf3Dr16+Pg/enycN+adXp4HgzI0qE5Lm0EsLoYZkJBVsVAjEePWV8J/KXu
-         Jode4nVkTmgsc5hQylp2aSLIj6OvaW8UpB/U4MZ6883/IIjWwFAj83a0z0sy/NDnvYMN
-         XEyq8zvn/Hm/RU5mTu+iw+C9f6qUM6Wx0ST8fhop3f2qE5FkqUPE5tm6z8QHaX9mqZzy
-         k1Gsr5KH5sOhfBD0MBNXjeCfC4ynR03Q113ajYF7KRH/V6WfkqZMYMPdNHgC0a0Daf++
-         rYwWvgquG2lu7dazgUYk5lu8FgSzSCvynu909cgOcamRjl98jyaUwp8PJVZrpJ3DaZcV
-         vY9A==
-X-Gm-Message-State: AC+VfDxVfTVKvfoJXM2oJMLSjuoN8gqgWCaQwQcNNvZSx2fPdiBU9MCY
-        rIRaY294SRD2WvkexmKY4H0H2CDvMZFKhS2YNMvEeesZ
-X-Google-Smtp-Source: ACHHUZ6TWMgGAy4/efXJ77Q26EdA0AgX8OxNUeLvDcH6OmvDK1ajBKzXHbUP9w0zeDEP4iwrSlVrTzahI8yoHcUYtLU=
-X-Received: by 2002:a5b:c8:0:b0:ba8:3613:76a8 with SMTP id d8-20020a5b00c8000000b00ba8361376a8mr27531316ybp.41.1687772444135;
- Mon, 26 Jun 2023 02:40:44 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687785104; x=1690377104;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GStg2GtkdOaT4hAtzhyiCQGhzyZSRaJuQj99Ahe45uU=;
+        b=M8u+B8XbKSv0wzahhdnA7i4AfNKo8SPqKdGofkXV2pVcEzH61VuX+VhceELmV8vAbi
+         gTM7XEZ/pSSmELbNeeGkDZSNEeG15q0/npr8DTWWj561y2ewx8k/KLBeXm2RgfkdvOOr
+         dCI36+5+D4Gh0X6uViRXNA2/xBD0FCn8ADKjO+RL6tmqZcvEctKwYrKIkOE32QLj7FPZ
+         kHmyoRoh1xx1cHp506iljt+MRBkxp/S9YZgx/AapO/d1x4+2c8X60frxI6d7H/Ydwrcm
+         LDd1dJU5yUzlJjYYTpFnqfO+N39mh9NPVbG2d84Y5WY/n6hbtB+GCnl4DsfpmcD9G2cM
+         YGqw==
+X-Gm-Message-State: AC+VfDx5vGpvdnSRUUS/6NFMiGalXpxLi4NGHIYWIWhiCdC9a7X7P2Yr
+        N2uQwyqgzCY9lXUz4YolYOo=
+X-Google-Smtp-Source: ACHHUZ7lPa1QhQLG0tY32m7EgvUcArsqi1nc6B9WTGf0egKpzSlEMB9nww5Irj0XMmF5bPdl38IUWg==
+X-Received: by 2002:a05:6870:5b04:b0:1b0:a99:b4ae with SMTP id ds4-20020a0568705b0400b001b00a99b4aemr4324762oab.31.1687785104345;
+        Mon, 26 Jun 2023 06:11:44 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id y8-20020a4ae708000000b0056360466d3esm321096oou.48.2023.06.26.06.11.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Jun 2023 06:11:43 -0700 (PDT)
+Message-ID: <b6a3bb29-ea6f-cdec-3f0f-4db51f385ec8@gmail.com>
+Date:   Mon, 26 Jun 2023 10:11:40 -0300
 MIME-Version: 1.0
-References: <20230625232528.89306-1-boqun.feng@gmail.com> <a79002ec-aa2d-1eec-58be-372c3b2a0efa@gmail.com>
-In-Reply-To: <a79002ec-aa2d-1eec-58be-372c3b2a0efa@gmail.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Mon, 26 Jun 2023 11:40:33 +0200
-Message-ID: <CANiq72kVUv4djvhLxz5tRYn-U2kXZMs0N1M=CZxdznnN0jY47Q@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
 Subject: Re: [PATCH v2] rust: alloc: Add realloc and alloc_zeroed to the
  GlobalAlloc impl
-To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Content-Language: en-US
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc:     Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
         linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+References: <20230625232528.89306-1-boqun.feng@gmail.com>
+ <a79002ec-aa2d-1eec-58be-372c3b2a0efa@gmail.com>
+ <CANiq72kVUv4djvhLxz5tRYn-U2kXZMs0N1M=CZxdznnN0jY47Q@mail.gmail.com>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <CANiq72kVUv4djvhLxz5tRYn-U2kXZMs0N1M=CZxdznnN0jY47Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Mon, Jun 26, 2023 at 5:34=E2=80=AFAM Martin Rodriguez Reboredo
-<yakoyoku@gmail.com> wrote:
->
-> I think that this should go above Link and Signed-off-bys, although I'm
-> not sure if maintainers do it when is merged.
+On 6/26/23 06:40, Miguel Ojeda wrote:
+> On Mon, Jun 26, 2023 at 5:34 AM Martin Rodriguez Reboredo
+> <yakoyoku@gmail.com> wrote:
+>>
+>> I think that this should go above Link and Signed-off-bys, although I'm
+>> not sure if maintainers do it when is merged.
+> 
+> Both styles are used, it is fine either way. Personally, I pick one or
+> the other depending on the kind of comment.
+> 
+> Having said that, there seems to be a missing `From:`, but I can fix
+> that on my side if Björn is the intended author.
+> 
+>> Newbie question, aren't tabs in the commit message verboten?
+> 
+> I am not aware of such a rule, and there are commits in the kernel
+> with tabs, e.g. commit 9828ed3f695a ("module: error out early on
+> concurrent load of the same module file").
+> 
+> In any case, that text doesn't go into the commit message, because it
+> is after the `---` line.
+> 
+> Cheers,
+> Miguel
 
-Both styles are used, it is fine either way. Personally, I pick one or
-the other depending on the kind of comment.
+Alrighty, both make sense to me, thanks for the explanations!
 
-Having said that, there seems to be a missing `From:`, but I can fix
-that on my side if Bj=C3=B6rn is the intended author.
-
-> Newbie question, aren't tabs in the commit message verboten?
-
-I am not aware of such a rule, and there are commits in the kernel
-with tabs, e.g. commit 9828ed3f695a ("module: error out early on
-concurrent load of the same module file").
-
-In any case, that text doesn't go into the commit message, because it
-is after the `---` line.
-
-Cheers,
-Miguel
+-> Martin
