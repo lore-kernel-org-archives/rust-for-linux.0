@@ -2,107 +2,133 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1566EEB64D7
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Jun 2023 13:11:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2E82EB64D7
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Jun 2023 16:40:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230411AbjFZNLt (ORCPT
+        id S229571AbjFZQju (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 26 Jun 2023 09:11:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58380 "EHLO
+        Mon, 26 Jun 2023 12:39:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230363AbjFZNLs (ORCPT
+        with ESMTP id S229780AbjFZQjY (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 26 Jun 2023 09:11:48 -0400
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6026D125;
-        Mon, 26 Jun 2023 06:11:45 -0700 (PDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-1aa32d08f7bso2736553fac.1;
-        Mon, 26 Jun 2023 06:11:45 -0700 (PDT)
+        Mon, 26 Jun 2023 12:39:24 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 758A412B;
+        Mon, 26 Jun 2023 09:39:23 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-514ab6cb529so8225667a12.1;
+        Mon, 26 Jun 2023 09:39:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687785104; x=1690377104;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GStg2GtkdOaT4hAtzhyiCQGhzyZSRaJuQj99Ahe45uU=;
-        b=MJwBHnG/8c2OF9nxlktWJODDGkmebHuAY89PEHujeEklkDdxYsbc7xbOkBozdO8Tna
-         p+q6knuq6O/WUxeYOGVL8pRx9sE5KICZH5EU9iVYsaQxOd87y+/3yRm8Dgn02tMIxfzu
-         KHP+6X0pHZfZTr362MWBhO/iVCBDu4fgaRn2C1DiikYZOde3xEDus4/y6agXoa0ZMprC
-         gBQuCprSMFxNhc35LBltx+AJQNipFeX45DEVAAqUIiyicPvnzUWdd2ORi0nhs3TSW1vb
-         Q5CHcHDq/Cs96q/SugweI+caqvkvgcf7FTkUY72TZd3Fv7O0FlA/HHYe+HJVb2AGUNzW
-         J7+g==
+        d=gmail.com; s=20221208; t=1687797562; x=1690389562;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A0YJn0nHiYyufMIyUTdFjE9mnzWA8s9uE9k4SjNMK5s=;
+        b=GZeizG6Y4PaChSHpvyiDYh3iTPUXokimKII0T07Fur1zyhiQSfhWhHxMh5ivPLEXyh
+         sxXLs62NU1jalfM3KweVDlbLrD/BdGsrn9juk0+DKDKwZJZbXY4cYprCIbRgq8VI3knM
+         lMRNTD6R8+j8aOUmhrqtIPNGxRDKqbQtGsMWvHYRZNIEXg2FUXH6ijYQW91JZIDE89QJ
+         Ca9fFrCarTkJwPKS7iYHcC0F0rgNu/Dsz5RYyU78ocmeDeHksxI5Uq0KAqhQAt/c8/dk
+         lD+Ckkx8M7UilUv0LxdbReBAqLioQAXP9V/8gO3EqkUJ4VfTbGFxPPeeBvHdXe76JpdA
+         r9pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687785104; x=1690377104;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GStg2GtkdOaT4hAtzhyiCQGhzyZSRaJuQj99Ahe45uU=;
-        b=M8u+B8XbKSv0wzahhdnA7i4AfNKo8SPqKdGofkXV2pVcEzH61VuX+VhceELmV8vAbi
-         gTM7XEZ/pSSmELbNeeGkDZSNEeG15q0/npr8DTWWj561y2ewx8k/KLBeXm2RgfkdvOOr
-         dCI36+5+D4Gh0X6uViRXNA2/xBD0FCn8ADKjO+RL6tmqZcvEctKwYrKIkOE32QLj7FPZ
-         kHmyoRoh1xx1cHp506iljt+MRBkxp/S9YZgx/AapO/d1x4+2c8X60frxI6d7H/Ydwrcm
-         LDd1dJU5yUzlJjYYTpFnqfO+N39mh9NPVbG2d84Y5WY/n6hbtB+GCnl4DsfpmcD9G2cM
-         YGqw==
-X-Gm-Message-State: AC+VfDx5vGpvdnSRUUS/6NFMiGalXpxLi4NGHIYWIWhiCdC9a7X7P2Yr
-        N2uQwyqgzCY9lXUz4YolYOo=
-X-Google-Smtp-Source: ACHHUZ7lPa1QhQLG0tY32m7EgvUcArsqi1nc6B9WTGf0egKpzSlEMB9nww5Irj0XMmF5bPdl38IUWg==
-X-Received: by 2002:a05:6870:5b04:b0:1b0:a99:b4ae with SMTP id ds4-20020a0568705b0400b001b00a99b4aemr4324762oab.31.1687785104345;
-        Mon, 26 Jun 2023 06:11:44 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id y8-20020a4ae708000000b0056360466d3esm321096oou.48.2023.06.26.06.11.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Jun 2023 06:11:43 -0700 (PDT)
-Message-ID: <b6a3bb29-ea6f-cdec-3f0f-4db51f385ec8@gmail.com>
-Date:   Mon, 26 Jun 2023 10:11:40 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2] rust: alloc: Add realloc and alloc_zeroed to the
- GlobalAlloc impl
-Content-Language: en-US
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        d=1e100.net; s=20221208; t=1687797562; x=1690389562;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A0YJn0nHiYyufMIyUTdFjE9mnzWA8s9uE9k4SjNMK5s=;
+        b=FlqpCbfdkJK8jyS81nQPjKQmwwECH3yhIlbTZ6j5ImKT6vXoFdfr+fqEhpVbzbC1nt
+         Paqm4kUCi2lNvjJs9q5VPjpocwyc7mq7/ykeKHOtAZEty9VDn8LjF7wYmeL/ST9QkqR8
+         qxZTXwYi4b6/a6LOoa1sM2UXLPDcIPhuIku/8f6KN7qLVgIjZ6JDNWljGbQhzBdqg0VR
+         15aDrB0EN8rWRFb5OpB7XUedZWZ9CESC/o10suGoOc6PAwXHiEogCso44qmj66tyN5qh
+         rsvf4cliLPz2tCIJ7wHnODIY8plnPKZInv78jxhQR7AHqfd91lWJKu2Ak6V2kv+RoVIs
+         VdWA==
+X-Gm-Message-State: AC+VfDx7XJLEwj6ta9jmdup+KqiFqi5Lkr3LeT9XdjLXotHReFDdAUES
+        5SkpBQCLC0Q2nGb5macuqQ0=
+X-Google-Smtp-Source: ACHHUZ65FFaYZOMnb2NYEdhtimMGXfw91PZindVZLIjmgybiR9JefPGCDY+RV9uFwfDZqd3ZieDw0g==
+X-Received: by 2002:a05:6402:270d:b0:51a:4451:564d with SMTP id y13-20020a056402270d00b0051a4451564dmr25044141edd.18.1687797561651;
+        Mon, 26 Jun 2023 09:39:21 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id ba30-20020a0564021ade00b0050a276e7ba8sm2953327edb.36.2023.06.26.09.39.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jun 2023 09:39:20 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 5FE7627C005A;
+        Mon, 26 Jun 2023 12:39:17 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Mon, 26 Jun 2023 12:39:18 -0400
+X-ME-Sender: <xms:Nb-ZZL4cxwuLPB28WdMRhXyN53-nCpzZfdLhy0_FVECm2cpmlrLCNA>
+    <xme:Nb-ZZA4NuHJKkJsaKGnZzZiIxxT_GyrMsfMFrjaQNfbgYthKe3sn_qPP_SXKyJdp0
+    Yh8_ow9BkqjlSvRhA>
+X-ME-Received: <xmr:Nb-ZZCd7YFh9b9NXR7HdhnBF_SbCg5u4pDb5mSIFOAB_M5EEntf_RPWrnrY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeehfedgleelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteehuddujedvkedtkeefgedv
+    vdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
+    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
+    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:Nb-ZZMLlkO7Lvey32xt8ybJLJygn0khKdROc9886KocXLOvjB1jmnw>
+    <xmx:Nb-ZZPLjOQnGQR-0lu88oGXvVXYsY8yUFKTJEc-xcowStd3v6xg5_g>
+    <xmx:Nb-ZZFwWcHC04-RFR2BsVJgV7zj0dMSWrlXNARJIciBzcWWmL1lfhw>
+    <xmx:Nb-ZZBimgrgAUW4qmT5bB5__sto9yvkt54t70oe6zr76EF_qDC3Z_Q>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 26 Jun 2023 12:39:16 -0400 (EDT)
+Date:   Mon, 26 Jun 2023 09:39:01 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Qingsong Chen <changxian.cqs@antgroup.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+        =?utf-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>
-References: <20230625232528.89306-1-boqun.feng@gmail.com>
- <a79002ec-aa2d-1eec-58be-372c3b2a0efa@gmail.com>
- <CANiq72kVUv4djvhLxz5tRYn-U2kXZMs0N1M=CZxdznnN0jY47Q@mail.gmail.com>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <CANiq72kVUv4djvhLxz5tRYn-U2kXZMs0N1M=CZxdznnN0jY47Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+        Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH 1/8] rust: kernel: add basic abstractions for
+ device-mapper
+Message-ID: <ZJm/JfIPMrgXkYpp@boqun-archlinux>
+References: <20230625121657.3631109-1-changxian.cqs@antgroup.com>
+ <20230625121657.3631109-2-changxian.cqs@antgroup.com>
+ <2023062544-speech-impish-9308@gregkh>
+ <c720663e-8743-956d-2ece-c9ca23f94d3a@antgroup.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c720663e-8743-956d-2ece-c9ca23f94d3a@antgroup.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 6/26/23 06:40, Miguel Ojeda wrote:
-> On Mon, Jun 26, 2023 at 5:34 AM Martin Rodriguez Reboredo
-> <yakoyoku@gmail.com> wrote:
->>
->> I think that this should go above Link and Signed-off-bys, although I'm
->> not sure if maintainers do it when is merged.
+On Mon, Jun 26, 2023 at 11:26:12AM +0800, Qingsong Chen wrote:
+> On 6/25/23 8:25 PM, Greg KH wrote:
+> > Shouldn't this be all different commits, and different files?  A bio
+> > shouldn't be defined in the device_mapper.rs file, as that would prevent
+> > anyone else from accessing it.
 > 
-> Both styles are used, it is fine either way. Personally, I pick one or
-> the other depending on the kind of comment.
+> Yes, you're right. Since we noticed that some block layer patches[1]
+> are under review, we don't put much effort into that. Actually, we
+> don't want to include all the `bio` implementation in this patchset,
+> so it just some dummy codes.
 > 
-> Having said that, there seems to be a missing `From:`, but I can fix
-> that on my side if Björn is the intended author.
+> If necessary, a seperate commit could be splited, including things
+> that do not belong to the device mapper.
 > 
->> Newbie question, aren't tabs in the commit message verboten?
-> 
-> I am not aware of such a rule, and there are commits in the kernel
-> with tabs, e.g. commit 9828ed3f695a ("module: error out early on
-> concurrent load of the same module file").
-> 
-> In any case, that text doesn't go into the commit message, because it
-> is after the `---` line.
-> 
-> Cheers,
-> Miguel
 
-Alrighty, both make sense to me, thanks for the explanations!
+Maybe you can just base on one or all the patches from Andreas' series
+(and mention the dependency in the cover letter)?
 
--> Martin
+Regards,
+Boqun
+
+> [1]: https://lore.kernel.org/rust-for-linux/20230503090708.2524310-5-nmi@metaspace.dk/
+> 
+> Thanks,
+> Qingsong Chen
