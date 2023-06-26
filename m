@@ -2,62 +2,93 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 95186EB64D7
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Jun 2023 08:08:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DC71AEB64D7
+	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Jun 2023 09:40:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229772AbjFZIIT (ORCPT
+        id S229720AbjFZJkv (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 26 Jun 2023 04:08:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49220 "EHLO
+        Mon, 26 Jun 2023 05:40:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230026AbjFZIIS (ORCPT
+        with ESMTP id S229529AbjFZJkq (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 26 Jun 2023 04:08:18 -0400
-Received: from mail.socialglobal.pl (mail.socialglobal.pl [51.195.90.253])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB4611B6
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Jun 2023 01:08:16 -0700 (PDT)
-Received: by mail.socialglobal.pl (Postfix, from userid 1002)
-        id 0FEA523872; Mon, 26 Jun 2023 08:05:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=socialglobal.pl;
-        s=mail; t=1687766719;
-        bh=XwhyqI/moZPDJ7KCfcA6Gip8fA7ZKcg5SWsKuF/26zk=;
-        h=Date:From:To:Subject:From;
-        b=EtCHk/TiU6W+zF6LL7t0CDqqDksE+hIXe+jA0TYhqpXH6gzdJkmj+Ki/pCwnZ7MhE
-         4LWGh0YTSqk/IW0cOe7iv+L0dw6Y3YzWgRlP0BQtcYCJN1txqE9d9hMLWx5/ZiGnAD
-         mqjsX2ac4TQ+wY1tgpb1/a8F1kYWHVJOewmvyUr+cy2F8XRZxRKPtddZfYTMmfM7De
-         DYNBYeFUBeHgcwH9Fex8PERC3K2Ws6NNP8b9BkGQqzQkN6qdW/E9hPhVKbPldOTTty
-         gwwiLNpvrxIyClI6wCtWKtGY0RY4VmKNnVoprs/n89n10YJpJ2mRCJt9ZU9c1LnhM7
-         eZJwdngDmBivQ==
-Received: by mail.socialglobal.pl for <rust-for-linux@vger.kernel.org>; Mon, 26 Jun 2023 08:05:11 GMT
-Message-ID: <20230626064500-0.1.6s.23yqo.0.6xre7ulb7c@socialglobal.pl>
-Date:   Mon, 26 Jun 2023 08:05:11 GMT
-From:   "Dominik Perkowski" <dominik.perkowski@socialglobal.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: Pozycjonowanie- informacja
-X-Mailer: mail.socialglobal.pl
+        Mon, 26 Jun 2023 05:40:46 -0400
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C3ADC;
+        Mon, 26 Jun 2023 02:40:45 -0700 (PDT)
+Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-bd729434fa0so3406805276.1;
+        Mon, 26 Jun 2023 02:40:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687772444; x=1690364444;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rkfbd+mjNe8bYAliUp48UHONMltNteP2PilREF950C0=;
+        b=aWdnVxIX9AMIXDoeSX0DZZNbyDBZ5SOrIICrTxz3TkgvZk9DurtkLA+RCKOOXqEyiX
+         iYbrDEvea6k8aMkIfl9g/oeaWZhvFKotA1gccu3aXbK0Hmn+Rl6gI+0/+6Gp9LA8J2te
+         TWgVB/MM06FqE5S7p/mxD2DHog01Yk0P+vFdWBvGJAyQR3hOvITUbKs2MLoOMse+ph8l
+         uTsl05GirF5DVCZ1gz6sLmAYdzcxKPkQWojPFXq82nGwiEJKxhv1+gKa9dGP5/DmLdC/
+         l7TgJSmQLVupDg0joVMHWvKGUs2WLirPIS0nRRl1K7b0fGAw+SQ3JUJktdBUOaGKhf4/
+         dOsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687772444; x=1690364444;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rkfbd+mjNe8bYAliUp48UHONMltNteP2PilREF950C0=;
+        b=f8GZo91sSf3Dr16+Pg/enycN+adXp4HgzI0qE5Lm0EsLoYZkJBVsVAjEePWV8J/KXu
+         Jode4nVkTmgsc5hQylp2aSLIj6OvaW8UpB/U4MZ6883/IIjWwFAj83a0z0sy/NDnvYMN
+         XEyq8zvn/Hm/RU5mTu+iw+C9f6qUM6Wx0ST8fhop3f2qE5FkqUPE5tm6z8QHaX9mqZzy
+         k1Gsr5KH5sOhfBD0MBNXjeCfC4ynR03Q113ajYF7KRH/V6WfkqZMYMPdNHgC0a0Daf++
+         rYwWvgquG2lu7dazgUYk5lu8FgSzSCvynu909cgOcamRjl98jyaUwp8PJVZrpJ3DaZcV
+         vY9A==
+X-Gm-Message-State: AC+VfDxVfTVKvfoJXM2oJMLSjuoN8gqgWCaQwQcNNvZSx2fPdiBU9MCY
+        rIRaY294SRD2WvkexmKY4H0H2CDvMZFKhS2YNMvEeesZ
+X-Google-Smtp-Source: ACHHUZ6TWMgGAy4/efXJ77Q26EdA0AgX8OxNUeLvDcH6OmvDK1ajBKzXHbUP9w0zeDEP4iwrSlVrTzahI8yoHcUYtLU=
+X-Received: by 2002:a5b:c8:0:b0:ba8:3613:76a8 with SMTP id d8-20020a5b00c8000000b00ba8361376a8mr27531316ybp.41.1687772444135;
+ Mon, 26 Jun 2023 02:40:44 -0700 (PDT)
 MIME-Version: 1.0
+References: <20230625232528.89306-1-boqun.feng@gmail.com> <a79002ec-aa2d-1eec-58be-372c3b2a0efa@gmail.com>
+In-Reply-To: <a79002ec-aa2d-1eec-58be-372c3b2a0efa@gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Mon, 26 Jun 2023 11:40:33 +0200
+Message-ID: <CANiq72kVUv4djvhLxz5tRYn-U2kXZMs0N1M=CZxdznnN0jY47Q@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: alloc: Add realloc and alloc_zeroed to the
+ GlobalAlloc impl
+To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,=20
+On Mon, Jun 26, 2023 at 5:34=E2=80=AFAM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
+>
+> I think that this should go above Link and Signed-off-bys, although I'm
+> not sure if maintainers do it when is merged.
 
-jaki=C5=9B czas temu zg=C5=82osi=C5=82a si=C4=99 do nas firma, kt=C3=B3re=
-j strona internetowa nie pozycjonowa=C5=82a si=C4=99 wysoko w wyszukiwarc=
-e Google.=20
+Both styles are used, it is fine either way. Personally, I pick one or
+the other depending on the kind of comment.
 
-Na podstawie wykonanego przez nas audytu SEO zoptymalizowali=C5=9Bmy tre=C5=
-=9Bci na stronie pod k=C4=85tem wcze=C5=9Bniej opracowanych s=C5=82=C3=B3=
-w kluczowych. Nasz wewn=C4=99trzny system codziennie analizuje prawid=C5=82=
-owe dzia=C5=82anie witryny.  Dzi=C4=99ki indywidualnej strategii, firma z=
-dobywa coraz wi=C4=99cej Klient=C3=B3w. =20
+Having said that, there seems to be a missing `From:`, but I can fix
+that on my side if Bj=C3=B6rn is the intended author.
 
-Czy chcieliby Pa=C5=84stwo zwi=C4=99kszy=C4=87 liczb=C4=99 os=C3=B3b odwi=
-edzaj=C4=85cych stron=C4=99 internetow=C4=85 firmy? M=C3=B3g=C5=82bym prz=
-edstawi=C4=87 ofert=C4=99?=20
+> Newbie question, aren't tabs in the commit message verboten?
 
+I am not aware of such a rule, and there are commits in the kernel
+with tabs, e.g. commit 9828ed3f695a ("module: error out early on
+concurrent load of the same module file").
 
-Pozdrawiam serdecznie,
-Dominik Perkowski
+In any case, that text doesn't go into the commit message, because it
+is after the `---` line.
+
+Cheers,
+Miguel
