@@ -2,76 +2,89 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DBA6DEB64DC
-	for <rust-for-linux@archiver.kernel.org>; Mon, 26 Jun 2023 17:34:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 818F5EB64D9
+	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Jun 2023 08:39:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231287AbjFZReM (ORCPT
+        id S230249AbjF0IjL (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 26 Jun 2023 13:34:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35156 "EHLO
+        Tue, 27 Jun 2023 04:39:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231222AbjFZReJ (ORCPT
+        with ESMTP id S231873AbjF0Iiv (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 26 Jun 2023 13:34:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5164D1702;
-        Mon, 26 Jun 2023 10:34:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B722F60F14;
-        Mon, 26 Jun 2023 17:34:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1DF43C433C9;
-        Mon, 26 Jun 2023 17:34:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687800842;
-        bh=PvaQpWcCeaSa01iNPCGqUlHMStH4ZZDULeQ+gGbRdYk=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=d0nSFyMnDcJNlCAnsv7kWAFcCev7fJ2FhJM7YfhZY7Z1jSdallr6fDwISc1mlNXmd
-         iEMbih7eLnyNIizVlB07O5KUN/AnJP4N/VWOetX+qDtuqapTLU2JhwH2ShY0oILZcF
-         zvdgJogi/ZyedmhR6l1C8rshSVBkiFhs9h5xiGtW9qOe9n5lE6CYnoWcnXIgoWExfF
-         /1UCgH16biO5wit/HfL0hn+v3I+ywp/gysI3jeUww4z0jkfTUFSTlK5ChDF37hgOAn
-         zT97JFXxbD+r5rOKHV3hzwwdxsAXgKkBZUtkyg6hpv+yVkfKHPAbnadknTnPO34FYW
-         XELtoSJSyTsBg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0A09FC43170;
-        Mon, 26 Jun 2023 17:34:02 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust for 6.5
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20230618161558.1051269-1-ojeda@kernel.org>
-References: <20230618161558.1051269-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20230618161558.1051269-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux.git tags/rust-6.5
-X-PR-Tracked-Commit-Id: d2e3115d717197cb2bc020dd1f06b06538474ac3
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: a1257b5e3b7f8a21faf462d0118067fe31e71ffb
-Message-Id: <168780084202.11860.14342370139192013385.pr-tracker-bot@kernel.org>
-Date:   Mon, 26 Jun 2023 17:34:02 +0000
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+        Tue, 27 Jun 2023 04:38:51 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C50335AC
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Jun 2023 01:38:05 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-bd6df68105cso6015765276.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Jun 2023 01:38:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1687855084; x=1690447084;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZX1lTnuqVI3xAbN0fkRezsoOIB0K6fV+WnbtqyeDXzY=;
+        b=NKcD/UfQpGef7fdG3Tncm/U34Ba3BIuBrO0YDK445gyZQVjIL/6eUBqRmFl8t0vS/s
+         c+Lkpdamq7kXAJasvS1boxlS4oEC4i8uvpZ3+Iee1hyKcQmLXyAIWDKmOfUHJLieaYsa
+         o7Rsc1rnc/8w3lXhV9mMCOiS5gNBgSEEDcoNMTlXcP2d1ILVJXZbXRmkv8a7/HXV0PFX
+         uqnuARTlCnK4ui11KrIKZhbF3bM92C+b/D/D6PX6dz1P19awu1TUX8O+5vXX8vtD0U/S
+         wovBmhW7jVUbVYX88X/dtseKjkz6PUxwBB0bvVR+Se/V/MFWahX7DB88KGYdy4A1uMye
+         IY3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687855084; x=1690447084;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZX1lTnuqVI3xAbN0fkRezsoOIB0K6fV+WnbtqyeDXzY=;
+        b=X3v5HoGtLrdlqvJcENV8+XfkgEzaWMRsI4YfN/+c+2CzTUsC0UcyQAIGfysO/qLKS9
+         JBW05Zxn8n2j5IH9CxIauA/7klqO5/WwkKK0O7kQnpt+SixyeYSIk+a250G7BvoyEDCM
+         2aqg/VmjXPIr2IUlPbz8nxNLVkOnm3GVewRDoZ1u5a3YXmUlqyNkTNsYlf6mfGV8hvPB
+         C9N6FIL1ffBKjTa11qpHjsDdXVqJg+ZCe9w3EcN0LFPdsHDoOfn1kKHdOdU+4c2+/0+t
+         2sLHRZIvYxdZd9eJSFiQzqgnhNQvQzJA7nT6mJOc66DNroMdVh0NWsKsyr/TBm/i5dbn
+         nD5w==
+X-Gm-Message-State: AC+VfDyPRChlst332RInB2RPfOyyntnoXWqSUw7C2PiKupjxwHXFIm9t
+        AWblsKvX09aceIyqGq67LTFtXAShAJzPtpM=
+X-Google-Smtp-Source: ACHHUZ7sJFtiw5uGwhdVMFxKYmXzmNFpEiedpDpJFFo2lYQOaQ0104CTQKmue7tZvryVzKj88m1TeFAxt/7aCus=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a25:d886:0:b0:bc4:5077:f59e with SMTP id
+ p128-20020a25d886000000b00bc45077f59emr14311498ybg.13.1687855084298; Tue, 27
+ Jun 2023 01:38:04 -0700 (PDT)
+Date:   Tue, 27 Jun 2023 08:38:01 +0000
+In-Reply-To: <kHwlRfK_EtV6I7xbaDgyCbR2Xz0cHmM4Sh_edMi-Wr0JaJNlvVEQH9ZOqWuSr5hBx6cu8nreQdIlWNrHLQ6ehUT4hWtgBalWeQpcVVlBOQ0=@proton.me>
+Mime-Version: 1.0
+References: <kHwlRfK_EtV6I7xbaDgyCbR2Xz0cHmM4Sh_edMi-Wr0JaJNlvVEQH9ZOqWuSr5hBx6cu8nreQdIlWNrHLQ6ehUT4hWtgBalWeQpcVVlBOQ0=@proton.me>
+X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
+Message-ID: <20230627083801.1737103-1-aliceryhl@google.com>
+Subject: Re: [PATCH v2 8/8] rust: workqueue: add examples
+From:   Alice Ryhl <aliceryhl@google.com>
+To:     benno.lossin@proton.me
+Cc:     alex.gaynor@gmail.com, aliceryhl@google.com,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+        jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
+        ojeda@kernel.org, patches@lists.linux.dev,
+        rust-for-linux@vger.kernel.org, tj@kernel.org, wedsonaf@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-The pull request you sent on Sun, 18 Jun 2023 18:15:58 +0200:
+Benno Lossin <benno.lossin@proton.me> writes:
+> On 01.06.23 15:49, Alice Ryhl wrote:
+>> This adds two examples of how to use the workqueue. The first example
+>> shows how to use it when you only have one `work_struct` field, and the
+>> second example shows how to use it when you have multiple `work_struct`
+>> fields.
+>> 
+>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> 
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> 
+> I really like that you added these examples!
+> Is there some particular reason you decided to not use
+> 0 as the first index in the second example? (you can keep
+> it this way)
 
-> https://github.com/Rust-for-Linux/linux.git tags/rust-6.5
+In my head, it felt more natural for the first field to be called 1 and
+the second field to be called 2. But it doesn't really matter which
+numbers you use.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/a1257b5e3b7f8a21faf462d0118067fe31e71ffb
+Alice
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
