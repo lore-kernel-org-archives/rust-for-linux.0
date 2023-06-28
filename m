@@ -2,45 +2,45 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15595EB64D7
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Jun 2023 19:02:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70D84EB64D7
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Jun 2023 19:04:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230401AbjF1TCN (ORCPT
+        id S229823AbjF1TDu (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Jun 2023 15:02:13 -0400
-Received: from mail-4316.protonmail.ch ([185.70.43.16]:21641 "EHLO
-        mail-4316.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232042AbjF1TA6 (ORCPT
+        Wed, 28 Jun 2023 15:03:50 -0400
+Received: from mail-4325.protonmail.ch ([185.70.43.25]:53709 "EHLO
+        mail-4325.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231500AbjF1TDe (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Jun 2023 15:00:58 -0400
-Date:   Wed, 28 Jun 2023 19:00:46 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1687978855; x=1688238055;
-        bh=Za+v7N4cBqD4xxc37Tzs7XY1PVNK9jmrJ+NyYokOKUg=;
+        Wed, 28 Jun 2023 15:03:34 -0400
+Date:   Wed, 28 Jun 2023 19:03:24 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+        s=protonmail3; t=1687979012; x=1688238212;
+        bh=WcCvBL0cCw/IzHFfDMhfCJ7DTv31iVJ5flVSHLyA5Go=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=V6RYFnQrkuwj1lDs02GLn+yIXhknt1CzN0z9Js/x/pUI55bayC5opiKXh/Bis7/mt
-         1YJNJH43qUJCjLunnIjjy/CkjmOqxKzHH57uDEPZLuXxUUI9t5zePc1EBTxMWzJoY5
-         srBOc516XI2227TgXG0tK/ZiCPo+msJtkvWf9+F3djAfmR6Df+tEj6OokP7VZiqmbw
-         R4o9Sbqw9beeYgxljbMJQvKuBjDp+dia9ZQ1SDLZcgaw3CIE3VEsHtHciuEatNEMyV
-         iXMZ5EKz5pTJpGrt9QqpjPisy4uOP4QELSOXexygyOsxdxZwtGukykGnBx1hebuJP9
-         ldHDBXvpgLxKA==
+        b=f0jM94fePW4sDpxRlGXG1qseYnLEuB4Mj+IlVBZk0VHR7bJ3ytdt0YiTIQQSQ3p3M
+         86d5QsQEIVDpgFwa7s+NqyPN1EPeJjq70qhPMg9abhnHIWw8YUjwpFR1MCSYgAdLg8
+         iC7tz7YV3M/RJASvconVYU1vwQMYdtIKaJdtZ9x5rgMdgZkvVMOwKyYgKU9pwJTs9h
+         xrJ7Ym2OOxM+hO/yXEmGMfFQ3btyXY1J6m09/qIWkFKikdhKIERalgbYzUMn3DaFCk
+         qogkoC918sgCWSpd1wSsXzRbA0nzVD/f8CazHmbyv22Vsu01rWTW+KLuLdlHASE7tD
+         kAQHVgCv4onqQ==
 To:     Gary Guo <gary@garyguo.net>
-From:   Benno Lossin <benno.lossin@proton.me>
+From:   =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
         Andreas Hindborg <a.hindborg@samsung.com>,
         Alice Ryhl <aliceryhl@google.com>,
         linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH] rust: macros: add `paste!` proc macro
-Message-ID: <l3B61PMqabOJFPE9BJk8TX_tAyxJ4NKHrcqvr2v3_Xpbim-xjRV-G3Mfph6HlI_FoOpPIJjWXqo4ilAZVUmNhG-L8OcsEizvneVtXj2-mRg=@proton.me>
+Message-ID: <K0T5KNPT6EKzSy_VRokavbT2bTKLQ51nTRV9gRcKSwyLApxIWKYoRbw1WihNZC98eARwVpQDPAS-S5w6Rw_CnlivYrBQsKAJ-A2frwCoflw=@protonmail.com>
 In-Reply-To: <20230628171108.1150742-1-gary@garyguo.net>
 References: <20230628171108.1150742-1-gary@garyguo.net>
-Feedback-ID: 71780778:user:proton
+Feedback-ID: 27884398:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -48,7 +48,8 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 28.06.23 19:11, Gary Guo wrote:
+On Wednesday, June 28th, 2023 at 19:11, Gary Guo <gary@garyguo.net> wrote:
+
 > This macro provides a flexible way to concatenated identifiers together
 > and it allows the resulting identifier to be used to declare new items,
 > which `concat_idents!` does not allow. It also allows identifiers to be
@@ -56,22 +57,22 @@ On 28.06.23 19:11, Gary Guo wrote:
 >=20
 > The `concat_idents!` example
 >=20
->      let x_1 =3D 42;
->      let x_2 =3D concat_idents!(x, _1);
->      assert!(x_1 =3D=3D x_2);
+>     let x_1 =3D 42;
+>     let x_2 =3D concat_idents!(x, _1);
+>     assert!(x_1 =3D=3D x_2);
 >=20
 > can be written with `paste!` macro like this:
 >=20
->      let x_1 =3D 42;
->      let x_2 =3D paste!([<x _1>]);
->      assert!(x_1 =3D=3D x_2);
+>     let x_1 =3D 42;
+>     let x_2 =3D paste!([<x _1>]);
+>     assert!(x_1 =3D=3D x_2);
 >=20
 > However `paste!` macro is more flexible because it can be used to create
 > a new variable:
 >=20
->      let x_1 =3D 42;
->      paste!(let [<x _2>] =3D [<x _1>];);
->      assert!(x_1 =3D=3D x_2);
+>     let x_1 =3D 42;
+>     paste!(let [<x _2>] =3D [<x _1>];);
+>     assert!(x_1 =3D=3D x_2);
 >=20
 > While this is not possible with `concat_idents!`.
 >=20
@@ -83,58 +84,65 @@ On 28.06.23 19:11, Gary Guo wrote:
 > For example, this code is broken because the variable is declared inside
 > the macro, so Rust macro hygiene rules prevents access from the outside:
 >=20
->      macro_rules! m {
->          ($id: ident) =3D> {
->              // The resulting token has hygiene of the macro.
->              paste!(let [<$id>] =3D 1;)
->          }
->      }
+>     macro_rules! m {
+>         ($id: ident) =3D> {
+>             // The resulting token has hygiene of the macro.
+>             paste!(let [<$id>] =3D 1;)
+>         }
+>     }
 >=20
->      m!(a);
->      let _ =3D a;
+>     m!(a);
+>     let _ =3D a;
 >=20
 > In this versionn of `paste!` macro I added a `span` modifier to allow
+
+*version
+
 > this:
 >=20
->      macro_rules! m {
->          ($id: ident) =3D> {
->              // The resulting token has hygiene of `$id`.
->              paste!(let [<$id:span>] =3D 1;)
->          }
->      }
+>     macro_rules! m {
+>         ($id: ident) =3D> {
+>             // The resulting token has hygiene of `$id`.
+>             paste!(let [<$id:span>] =3D 1;)
+>         }
+>     }
 >=20
->      m!(a);
->      let _ =3D a;
+>     m!(a);
+>     let _ =3D a;
 >=20
 > Link: http://docs.rs/paste/ [1]
 > Signed-off-by: Gary Guo <gary@garyguo.net>
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+With the typo above fixed:
+
+Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+
+I have also got a minor suggestion below, but I'm ok with keeping it as is.
 
 > ---
->   rust/macros/lib.rs   | 97 ++++++++++++++++++++++++++++++++++++++++++++
->   rust/macros/paste.rs | 94 ++++++++++++++++++++++++++++++++++++++++++
->   2 files changed, 191 insertions(+)
->   create mode 100644 rust/macros/paste.rs
+>  rust/macros/lib.rs   | 97 ++++++++++++++++++++++++++++++++++++++++++++
+>  rust/macros/paste.rs | 94 ++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 191 insertions(+)
+>  create mode 100644 rust/macros/paste.rs
 >=20
 > diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
 > index 3fc74cb4ea19..b4bc44c27bd4 100644
 > --- a/rust/macros/lib.rs
 > +++ b/rust/macros/lib.rs
 > @@ -7,6 +7,7 @@
->   mod concat_idents;
->   mod helpers;
->   mod module;
+>  mod concat_idents;
+>  mod helpers;
+>  mod module;
 > +mod paste;
->   mod pin_data;
->   mod pinned_drop;
->   mod vtable;
+>  mod pin_data;
+>  mod pinned_drop;
+>  mod vtable;
 > @@ -246,3 +247,99 @@ pub fn pin_data(inner: TokenStream, item: TokenStrea=
 m) -> TokenStream {
->   pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStrea=
-m {
->       pinned_drop::pinned_drop(args, input)
->   }
+>  pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStream=
+ {
+>      pinned_drop::pinned_drop(args, input)
+>  }
 > +
 > +/// Paste identifiers together.
 > +///
@@ -205,6 +213,11 @@ the specified token. By
 > +///         kernel::macros::paste! {
 > +///             $(pub(crate) const fn [<$newname:lower:span>]: u32 =3D [=
 <$prefix $newname:span>];)+
+
+Having multiple : when using multiple flags feels a bit weird to me. Maybe
+use $newname:lower+span, $newname:lower,span or something like that? If you
+prefer the current syntax that is fine with me too though.
+
 > +///         }
 > +///     };
 > +/// }
@@ -351,6 +364,5 @@ miter::None =3D> {
 > +        }
 > +    }
 > +}
-> --
+> --=20
 > 2.34.1
-> 
