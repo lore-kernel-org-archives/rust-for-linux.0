@@ -2,105 +2,48 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D15CFEB64D7
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Jun 2023 11:42:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 756E5EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Jun 2023 12:04:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231345AbjF1LmM (ORCPT
+        id S231238AbjF1ME1 convert rfc822-to-8bit (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Jun 2023 07:42:12 -0400
-Received: from mail-4316.protonmail.ch ([185.70.43.16]:58023 "EHLO
-        mail-4316.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229748AbjF1LmK (ORCPT
-        <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Jun 2023 07:42:10 -0400
-Date:   Wed, 28 Jun 2023 11:41:59 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1687952529; x=1688211729;
-        bh=1XmJXLB2uklIrAaKv9O0vIo0TRiOWO1X6CWSa661Mfg=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=UlBERZzlcMySexpywP/qfwbhkcuGUTK/3+eki529LjK1ujWoEHEDLIGJhR8G+ofo2
-         HJ96vvG49aHx/tDb+30C3Cl4gVcd2UPpiQPc8mbZMEWBzojtWtIaLoT+NPnvI27t3I
-         dcsWKLEczhj4NeRxGDcuK6QlC4g/TGLF5erWdd0b//47PyfwUYVIX+2LS8n6++LVWx
-         tXM1cTk0Cz5qPn+7rKokJTd2Yf9LVVjjDEjbSO9XVK8Qt5tob1alGLuGlE1RKFuPnI
-         6uAqN2CQA66+U8jLcfXAaFqVoi5x4vIL/7kY9K9RZtxsZlH5ArVPIjZ7cyoxjsnnyz
-         aEzhhUSlftGqA==
-To:     Gary Guo <gary@garyguo.net>
-From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 3/7] rust: init: make guards in the init macros hygienic
-Message-ID: <w4kyaXwWZEyoBoCCFmVtRmkUS6d0m_DJYTs7OVWLkbBX7PFwjj_wemi1mtvSemjUyhZwSDCA2l-5fXn4sxO4C3DT_8wGyZebpea-wQseOmA=@proton.me>
-In-Reply-To: <20230625215453.25aa38a0.gary@garyguo.net>
-References: <20230624092330.157338-1-benno.lossin@proton.me> <20230624092330.157338-3-benno.lossin@proton.me> <20230625215453.25aa38a0.gary@garyguo.net>
-Feedback-ID: 71780778:user:proton
+        Wed, 28 Jun 2023 08:04:27 -0400
+Received: from [95.214.27.62] ([95.214.27.62]:63127 "EHLO ta.com"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S229456AbjF1MEY (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Wed, 28 Jun 2023 08:04:24 -0400
+Reply-To: smlkalidi@gmail.com
+From:   smssmlka@ta.com
+To:     rust-for-linux@vger.kernel.org
+Subject: Hello Dear
+Date:   28 Jun 2023 05:03:34 -0700
+Message-ID: <20230628050334.D9E623BD354CF4FA@ta.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 25.06.23 22:54, Gary Guo wrote:
-> On Sat, 24 Jun 2023 09:25:10 +0000
-> Benno Lossin <benno.lossin@proton.me> wrote:
->=20
->> Use hygienic identifiers for the guards instead of the field names. This
->> makes the init macros feel more like normal struct initializers, since
->> assigning identifiers with the name of a field does not create
->> conflicts.
->> Also change the internals of the guards, no need to make the `forget`
->> function `unsafe`, since users cannot access the guards anyways. Now the
->> guards are carried directly on the stack and have no extra `Cell<bool>`
->> field that marks if they have been forgotten or not, instead they are
->> just forgotten via `mem::forget`.
->=20
-> The code LGTM, so:
->=20
-> Reviewed-by: Gary Guo <gary@garyguo.net>
->=20
-> Although this will cause the new expansion we have to be no longer
-> compatible with a totally-proc-macro impl, if we want to do everything
-> in proc macro in the future.
->=20
-> If we have the paste macro upstream (
-> https://github.com/nbdd0121/linux/commit/fff00461b0be7fd3ec218dcc428f2588=
-6b5ec04a
-> ) then we can replace the `guard` with `paste!([<$field>])` and keep
-> the expansion identical.
->=20
+Greetings,
 
-I tried it and it seems to work, but I am not sure why the hygiene is
-set correctly. Could you maybe explain why this works?
-```
-        $crate::__internal::paste!{
-            let [<$field>] =3D unsafe {
-                $crate::__internal::DropGuard::new(::core::ptr::addr_of_mut=
-!((*$slot).$field))
-            };
-            $crate::__init_internal!(init_slot($use_data):
-                @data($data),
-                @slot($slot),
-                @guards([<$field>], $($guards,)*),
-                @munch_fields($($rest)*),
-            );
-        }
-```
+We are brokers affiliated to Al Raffah Investment L.L.C from the 
+Gulf who are interested and willing to fund your company in any 
+current project you are undergoing, Al Raffah Investment LLC is 
+privately seeking means of expanding their investment portfolio.
 
-i.e. why can't a user access the guard? I think it is because the hygiene o=
-f the `[<>]`
-is used, but not sure why that works.
+To this end, we seek to know the possibility of going into 
+partnership discussion with your company within your present 
+scope of business.
 
---=20
-Cheers,
-Benno
+Should you be interested in engaging us for a more detailed 
+discussion on the proposal, we would be happy to do so in 
+whatever medium you find much more appropriate for this 
+engagement
 
+Yours sincerely,
 
+Ismail Tarkan 
+
+Email: smlkalidi@gmail.com
