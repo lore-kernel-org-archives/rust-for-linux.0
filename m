@@ -2,172 +2,391 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02D19EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Jun 2023 16:49:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EF1EEB64D7
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Jun 2023 17:12:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230387AbjF1Qsc (ORCPT
+        id S229591AbjF1RMT (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 28 Jun 2023 12:48:32 -0400
-Received: from mail-lo2gbr01on2091.outbound.protection.outlook.com ([40.107.10.91]:45661
-        "EHLO GBR01-LO2-obe.outbound.protection.outlook.com"
+        Wed, 28 Jun 2023 13:12:19 -0400
+Received: from mail-cwlgbr01on2123.outbound.protection.outlook.com ([40.107.11.123]:48032
+        "EHLO GBR01-CWL-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S230425AbjF1QsM (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 28 Jun 2023 12:48:12 -0400
+        id S229541AbjF1RMS (ORCPT <rfc822;rust-for-linux@vger.kernel.org>);
+        Wed, 28 Jun 2023 13:12:18 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SSwYUavF4Hk6MS8SK2AVfd3qPMZpRhjpC4mPoGW7skrUfIgt7fNiv0ky+jInQVmvthyi8f/xEur4PBbeBj070u9IbH+omz2np6OMTo82z2+ojredJ90FB3hffC2SiB20iT80bKrrk7VX1AWm9hxVDLgUVqwsT1+I675SU1n+kMuDGi25q6APwBOpXGLXu4vn32CG9Jw2jSl3jHtrW20ozBqNknF8AE9qjgSS57viyryag0ZPGX6aRVII8tQ8krELzuerI0mf04+pGKLN3pWowklx8emDlu9eo6PGMeVJhGFO6O+DB/zZf+Ga3X9KFZhbZS+nv6jH76JOBdvYr2L4cQ==
+ b=Ajd19HRAIIid7JNfqlrT9OELNwXBxm1P4WD0gssKCSrvylWUNZQYBZMYaAFn4qccgq+y72oROdapJ45Jy1as0z4XJbyqjQ5K/Dr15u0CNajah0Yt04ufCe+lBxIiGIHbHY+97EHdFWt20DlmB0eC70KotVT91pteXVYoWop1zWs6nrzh82l6wQNnkR3eiIw589zl8H/PwaXxgRPHDe/BPcHx7Eks5RkqUzD3h6MvFfvSyNyJ5GWA1dCJ9+4LE/ixhX/ZGm1UyiQZMYvAdrWBzEX+zylhty/zCJarhQx3imegKUf3jb1JPZ5zzKi+5HnKtiujUzR0w+M2OVXy2jdtbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cEi4K2QCaUHAazkJLv4svf0VlHj8+5T4vSwDWYvoAQ4=;
- b=YVOCs65cO5dFSw0soXaigT53zSukKkniRfz/bQxjmtdMuRf1zNfswYjv/M5pKA1aWc1/LLodsgRDHTI4H2GRha7rkYoNzhapjN+Np4IPWSDhxXnEQZY6uEFoATLl7EGHPgWn++JDRdvA73TuUXqyHSzPhQ818I6ecLhoOzAc+TchhjVJY5I2cFNerRTM+lFcO8RHUbCHVjnL3IkRFQo4TQr5kZ3EjawQAxKUe8MsMML0LHEWhiEvshYw6awJIBS/emyo0RN0WotIsEvtl/N0J2oDMPAGVOB5ZbMIZFnXAUhQdB6K6lTCzc+Qg8cLbtYXYgMYYGTCCtEyfAeB4Ea0GQ==
+ bh=0aE5/ZG94DBIhy8DPmDlvV2z15lYlwyL0XjRAHvJeOs=;
+ b=HV06QivX4qgvsHsIqNM9RGb2GFeQI9A/q+gt1K3VkGiEJwOSki5CCQq6yvM8bZmDGH0F7P5NNta+3yG0WJxCQgFaglbEeZ07Al+S/F+sqFSLPaUFjb24afg83zDAuHifWezW1s3i6hpU1WkjXNKxDVjF2lKEsDVoWSsWKNYfOHQQDnkhNFYzVRSzz2dUly8NWC2r809ec8LqPJCR9wuheuOVoaEU0ujxQb1UDiM3zoCuDUpseJONxRE0tWIM5TgCjkrCUDFGvBWUvmrskoh9I6a/HENYLAjADOOYt8/bieyBMsfiJIL8W1WTsX1EWRqBWyuoxrYwBAF27mEOrkxT0g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cEi4K2QCaUHAazkJLv4svf0VlHj8+5T4vSwDWYvoAQ4=;
- b=dTqHBF71CetZVy9RslWjXBK5AXUWLYQEqv2EpcxhBE5tHlTVo7ekszEpu9xAxp90eOyH7LKBQQB2/x87e5jtGJ65BRBstCyvnNJRIjf42gbe1gFQ9KNx9irDz47MnBvF/q580fYsnczCemuz2IqJ7zVckMWYCEG0/Xu5ni/iWMI=
+ bh=0aE5/ZG94DBIhy8DPmDlvV2z15lYlwyL0XjRAHvJeOs=;
+ b=t6pxnffOqVajwQtqylBiiBrWhgQWFmo+LdfMynubE+C65OZoXRwszF/WYhLUKXwcjI2A0soS2U3uzy3aTfq0h61g76HHUGU7b7Wu7PSsHj4ebFiexsogqUUswaPZtl9ofTzkDRVja9M+71B6G84X2HtKmeYp4TdYDyZwnS3jbaw=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWLP265MB5404.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1b8::7) with
+ by LO0P265MB6130.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:247::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.26; Wed, 28 Jun
- 2023 16:48:10 +0000
+ 2023 17:12:15 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::25e2:a08b:cd9c:c3c9]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::25e2:a08b:cd9c:c3c9%3]) with mapi id 15.20.6521.026; Wed, 28 Jun 2023
- 16:48:10 +0000
-Date:   Wed, 28 Jun 2023 17:48:07 +0100
+ 17:12:15 +0000
 From:   Gary Guo <gary@garyguo.net>
-To:     Benno Lossin <benno.lossin@proton.me>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
+To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH 3/7] rust: init: make guards in the init macros hygienic
-Message-ID: <20230628174807.5eabf3bd.gary@garyguo.net>
-In-Reply-To: <w4kyaXwWZEyoBoCCFmVtRmkUS6d0m_DJYTs7OVWLkbBX7PFwjj_wemi1mtvSemjUyhZwSDCA2l-5fXn4sxO4C3DT_8wGyZebpea-wQseOmA=@proton.me>
-References: <20230624092330.157338-1-benno.lossin@proton.me>
-        <20230624092330.157338-3-benno.lossin@proton.me>
-        <20230625215453.25aa38a0.gary@garyguo.net>
-        <w4kyaXwWZEyoBoCCFmVtRmkUS6d0m_DJYTs7OVWLkbBX7PFwjj_wemi1mtvSemjUyhZwSDCA2l-5fXn4sxO4C3DT_8wGyZebpea-wQseOmA=@proton.me>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0045.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:61::33) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Alice Ryhl <aliceryhl@google.com>
+Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: [PATCH] rust: macros: add `paste!` proc macro
+Date:   Wed, 28 Jun 2023 18:11:01 +0100
+Message-Id: <20230628171108.1150742-1-gary@garyguo.net>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LNXP265CA0047.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:5c::35) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB5404:EE_
-X-MS-Office365-Filtering-Correlation-Id: d2ae3721-c6c3-4d67-4187-08db77f77483
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB6130:EE_
+X-MS-Office365-Filtering-Correlation-Id: d0975356-1419-42a9-6831-08db77fad254
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bGH/ZPsuMS3RmpoGA16TCKfJsw+P8LP6aDmVhPNAYWPcUml79KkIRmJt2MYDF6HJ9yjo0OyK+POfYItyZZSPr1yvxz3ZguRUIJ1T9j6vs+u9GfYlJ1re+1Qpmo/8o6DrrOFt8fFDPQwqfu4NQDmDcid//rgPc5aECu/pUKltyuve1h0yjDUmv5F1+vjnEPMW5rAc+L57M+i9U62ZYMlXz1lGIA6VpEDi6E7NYXOnAA+Nnc6vUFg9XNOMAcWYnSTeqZzhw82L6YHf9Wd75p1Til+tiuCftcs3M0mekRPnedutqSpJCsmqyepTSftPAwuZ7GDI/Q1IHWYu5JuWqY3GeucvjGMcYAelCm6rx2KbDY4YL9ICXifcdZRMW6QTbESzHO4sWnnrUAh0KYV12U1lyfTFcDPOClIToQnDzjdL5cH2mX6WGEJwWD/3zYyYS0KUp6MmqbVhBeXujZZ1LqUd0iUFjQxF6rnLQ0h53tqtBYeT8fs84jKMCRglad2lv5+G8r4Ej/VdoWV4efm4dEbeC8KTrylVYj7j0dmBQp3OtAM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(366004)(376002)(396003)(136003)(39830400003)(346002)(451199021)(6506007)(86362001)(53546011)(478600001)(966005)(2616005)(6486002)(6512007)(6666004)(83380400001)(1076003)(186003)(54906003)(26005)(5660300002)(2906002)(36756003)(7416002)(66946007)(66476007)(6916009)(4326008)(38100700002)(41300700001)(316002)(8676002)(66556008)(8936002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: 8HiKXXRAQe+Fin4iLHaFJocA8UoUlhqEyFGOxEboxgluhZSix9ZwJEFcWL7qpkdwC915WpK0FDXXZCYWvUCcLKQ4EN44ta7Bz5pfh3nooaBSNklob2HgU31VuoFLO0uP3YYXObaQpeug/RbL4z1SZR6ZPeqNc0Y9MNbCsOdM5U2hHZreFMaIdj45m0VV1aNSuo3AYw/j6Vf7WKtMwyByS0gNfWjso3u4TfoAnf52rmfgn+lJ0tzCHfLNWyGWyoL48WzmwSKGZerx2i5dCClUej5EEiA5fbPd8Vk4lRKurFWE6oQIDhm6CFHB8I5gpsJqUpBHRHK3jV/anipHqRn+YeHmN+0t5ClXWbPcrwJWrO4JjYh1Ojhq4jrMn8EApisDfUNKPWRmip3NqUUVVRP7EtU+irZYGf1Mkw9n2Tc5gaimtdf+L5yoyiPy/6N/0CIrAqCRw1iVqnhaKeN/r+bODbLxcm0L1PMUfEKXTZN4EHtO3ivyMbPoV0UrgRH/NIfMGTrkt1yIf+J2gtuSjuTM90x8Q2GVpxst6+aPrHD5zgfxgeN9WPtaAB8Bq38L4Mct8zvqsF6fnXLgste4WocgFQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(376002)(136003)(39830400003)(366004)(346002)(396003)(451199021)(1076003)(7416002)(4326008)(66556008)(316002)(66476007)(36756003)(66946007)(8936002)(8676002)(5660300002)(478600001)(110136005)(2906002)(6506007)(26005)(966005)(86362001)(41300700001)(6486002)(6666004)(186003)(38100700002)(6512007)(2616005)(83380400001)(81973001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?W4W+DiNMEzf0N2Gx4Zzk6L9eNMU1irUSpholttpaXZ6VlGYpIHOHf6++87K/?=
- =?us-ascii?Q?lFfup1dy5TQHCJzvIrjOpv0bYxta+vgoUjszVN3n/7jpgy2scRv6K5Lf3fak?=
- =?us-ascii?Q?kyWFI9mMEG1Ni28DknUJOQoGwnDrVxWw8isdFCIVA1osscjVpiw39dl/wDcK?=
- =?us-ascii?Q?xBLhzgks+lOX3/NnqPtW2PhFbwA0Qwe6W4A8ymQPzk0anpmZiOgKrZ41Hyaj?=
- =?us-ascii?Q?9yLuuoVtDK/cOT12pcy9SuuGLXRgsVqAYKJbGYmjTTIkDpYI+fHHou96CGob?=
- =?us-ascii?Q?OgenFxf8cTaqx83QIxyJCv95hKYLjV4NaUb37WlANwauQX9FGQlwO/srs/wt?=
- =?us-ascii?Q?mZquUutl253vBsghkp1PXfo0mSzx3ZhHqHiUSx4YFlYiqHguPm8m+zziIV31?=
- =?us-ascii?Q?iQbom86foPebsoKA2meMCCc5ZYggWEIW9ReZV7jZeJuQNLFf2W0xKL23KMT0?=
- =?us-ascii?Q?CENTpbP18hS9qzaD/Sjx6tNMlOjmsYKFl4cpp/LIbmiSBIF76evSv4GaNHMe?=
- =?us-ascii?Q?ouTBb6MFqRiwyc5rnLkG7Z9CxjWXRuBiXyPaHNgcShhL2tCcYi+zIFoPEU4o?=
- =?us-ascii?Q?8vFt8vT1Ts8nf7yZlzrC0Mh+ZKB4UvxI2N53a52+xtSCkP0gAllt7gScwroJ?=
- =?us-ascii?Q?1gn226w29mLmPzoWbheXJSzVdvcE3EaRUuGz4R/W9LgYI9YK5khL1vCM6ZyL?=
- =?us-ascii?Q?O7wY4EIwmfJOWsPGSKLcUbejO6ruKsE6OG0vpYDpBcVwJ5H0JoDeMYNC87GS?=
- =?us-ascii?Q?Lgtpn75aT2qLOF5am0HHWMcdy+twzspoD9G+QZFViaOE1vXrtE1XCzboUuaJ?=
- =?us-ascii?Q?vkb/31K+CfQzd19wUZ2WUeKvKLg9yFpbpN68M1Wru/wZ56FpF2dr98YalZfJ?=
- =?us-ascii?Q?WywSuOFy5w8U4CkdaN6t3zdXZZUef7bmdLFKhmMbxEj3WTwDwD8JIBru9sJ5?=
- =?us-ascii?Q?Jnhx+Xxk9UisY01n6H0tPLppISBZYAXOTKDD0fjLdZ/lJm6dLzDEkjof1h7n?=
- =?us-ascii?Q?dSLgBRcpFDzrIoL/YFY1HAQoZsrw/lQGJCZhCgKD8RB6XykqduKQd4JtbRkc?=
- =?us-ascii?Q?2ScO4BfxwKQP/3sddvfoTpmS4ZmE3SlHjtmPpFO95YQFM5KZ/5ifMtJ+Sg8K?=
- =?us-ascii?Q?TlZEVeNcRxT5anTO4pefxxgXHzxPZH1boHq3nOjAuMpw5V3WOim+oX9OJH4D?=
- =?us-ascii?Q?/9qHDL+6Pj7e5e0tgJuKCq0lxrEboRQemHsOtWI2ANWwpdpR+ryb4bFXFHrL?=
- =?us-ascii?Q?kCBQwDm0YQS/Xd+hYdkMf96WyYFVU8HQRlTU4ai9DcRG7U1Xd6TzEvlmjZ0x?=
- =?us-ascii?Q?cufCyJ9110gAfHnLGQMZRIbVWZwQN9Xgc0EIOjEhklvbuqkpRPg7tMRklXeT?=
- =?us-ascii?Q?yUD7RmVFRKvHWQdlt5/I0LdtEXvZjKfcbtIfoI/f361DUONBWcI+4ilidT7u?=
- =?us-ascii?Q?a7sWmclvfm3okSE072uhGgSbvN+3cyPGmgmEx8RVRUxHK8vP7pUN+fGJ6R9u?=
- =?us-ascii?Q?Nctji6ClIGhdJn1z9eNm0nLa0O86w+JQHSvBcbHl+nGwoysF8NAkZbnGLvg0?=
- =?us-ascii?Q?82xH8kUDW6yxRXNzlwFQWKKFcIjSRVohJaWtW2uq?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3eSN0oy32QMD66sQuj9TC7+VgCLfzTSq+ZaSGV/BUZMxnK7ZHGeTxhMe43w+?=
+ =?us-ascii?Q?IY6fxGA4Tq0LjRsAZZEMVa/jNYLhObc0pGCI8/yNUvc8n3zy9Ekz+r0+rl4U?=
+ =?us-ascii?Q?fO4PVJxOAtVTdvpLsR+OjmMRgaNQygEj+v7JuIrvJUk/VQvzqGeLrcX3dctx?=
+ =?us-ascii?Q?a8pSayiodhRphy717JWCNkkdtDoKxJaj6ugNtPcDDcsNgIxuIqUzTuLswDeD?=
+ =?us-ascii?Q?4CgN2eBZA2W9Iy2HKB+ebFu9Ad/VmYVVuRXCpAMxuBNTqMT01VGvy8fdq5MM?=
+ =?us-ascii?Q?Wj6tG/RguKGV8tE0mf+6IE+rhYrU3p5vm4W4/bTjU8dE/4oqWEAdqUlgKu89?=
+ =?us-ascii?Q?6Fq37JarQ57eivv4SFLyZQbbAI6Ioctc8AbXLbQacbr+mzLBV9Zyw3UQL9RO?=
+ =?us-ascii?Q?EZ3xd8Z5Ch7NXwnQC2q7g61zrobepTBXlonfDDpUlns5niNrssY2SaZR1vxU?=
+ =?us-ascii?Q?+JWc95gNzoUHA1+XCnsD0PPBb3CfNJmGaI9XuEUpGcHExdVD9wyEQxWPi+oO?=
+ =?us-ascii?Q?MQIbgdY7kn6sl2nwZiJQCE5klSvTX3fcBsHfhNGkb+m0QT3wyiDTYdOfJCFO?=
+ =?us-ascii?Q?8jiZTBI1MsbXLCHNX/S+xKBM6dyUtJtQVaSbzhAt/k2pxjWzTJj5/oRYEsTn?=
+ =?us-ascii?Q?Zm3GX2+O9GbcWh1Zz5fx7o4atODU7G74098agI0wP+xFy5PDLb1+rrRonKAC?=
+ =?us-ascii?Q?k2AelZjXkOm/uyljnOE+nwQQg39i1RZLIVwzBb+1r40N7UuDpuBTrrCZkpq3?=
+ =?us-ascii?Q?AVanvLMMkdt3A+GSn3WDBioVVTTYGCyf2Ig+51fET5NdpXqpS0G21xdlYeYU?=
+ =?us-ascii?Q?SOM0sUGCpy5HH7nhTTSneZtHD+2Q0V4dMRbwGIZQCMyLza9rTBsxsdldI/If?=
+ =?us-ascii?Q?1QeuRdVfl8r5s0dss22A1VcHd7hsqfjkv7JL5QZGmaXPP02Cu7S4Ckgmd5b0?=
+ =?us-ascii?Q?tHj1ac7nixAPVnqKNN6fSjXmqV+87RCF04dZ8TIBVj2Q6ll1a5Ha8dPmAn/Y?=
+ =?us-ascii?Q?CWTVmP+B2eJrR5f2N3fVueY1yNUUrrU5bhoRG3w3w6zCecbkTHLL1Kp5PHiL?=
+ =?us-ascii?Q?cPuYSa0Nsx9opM622ehI2a8eES7zJ/MTY31ztJsi0RRN+UX6paFLg+IKsBP5?=
+ =?us-ascii?Q?aI5TxPfRD0/RjXON/zOGvSQuHecB4zqajltDfjnXU4M5I9D5qFGajg00TYiU?=
+ =?us-ascii?Q?c8kKJZy0Wa4GnLZw1nD26Hys9ZWVb5luBYvRRGrULpBJ3qg0iYDKd7Q5cWCA?=
+ =?us-ascii?Q?3U6CzzdtsYqVSXjh/AXNO+dISfTk1E5VWM892Yey+w44WUED3SKxb5+qyvB+?=
+ =?us-ascii?Q?4qWHU90ySX4kek7lHyWdXuk3WCzM+slKiuIhGsX4qHnk4NG11U+JQ1/ZzH/6?=
+ =?us-ascii?Q?tz0RHfAz0NWxlkRvxdDyuyRNcdp2HHyvPnN+i352Wn5yO9E27Z5wKgrMb+qr?=
+ =?us-ascii?Q?XccT+f4jMlLCWe4PndpotE8NMs4fVRx7T+5LkLGw6DpiGBLSWMr5Q4jrEELD?=
+ =?us-ascii?Q?jgfx/G1tM/CBy4suB2KrUtM/HqlLJqOGtUMxyvK/wSasWx1YhXrfPoVBPLrj?=
+ =?us-ascii?Q?P2OZ6/Cu2cNdt77s63ar3Ml2jvWENvxzVCUZjYWC?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2ae3721-c6c3-4d67-4187-08db77f77483
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0975356-1419-42a9-6831-08db77fad254
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2023 16:48:09.9770
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2023 17:12:15.8731
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 82XRRMvJiOfOF1JAn90ln4BojWhjDfojOlzlPHkiUVqTlFiG6J64yHqg7Lg/b7d0UPSoIX7/NprEfq7+JBo+ZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5404
+X-MS-Exchange-CrossTenant-UserPrincipalName: XxnrJzQj3x9nvkq/fsruuKhy6Tl0WOOYzQlLxSpV4t+TK0pVeQ0xFzzISVGPFW9BqA4HEm3R3763zWbrRrmbsg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6130
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, 28 Jun 2023 11:41:59 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
+This macro provides a flexible way to concatenated identifiers together
+and it allows the resulting identifier to be used to declare new items,
+which `concat_idents!` does not allow. It also allows identifiers to be
+transformed before concatenated.
 
-> On 25.06.23 22:54, Gary Guo wrote:
-> > On Sat, 24 Jun 2023 09:25:10 +0000
-> > Benno Lossin <benno.lossin@proton.me> wrote:
-> >   
-> >> Use hygienic identifiers for the guards instead of the field names. This
-> >> makes the init macros feel more like normal struct initializers, since
-> >> assigning identifiers with the name of a field does not create
-> >> conflicts.
-> >> Also change the internals of the guards, no need to make the `forget`
-> >> function `unsafe`, since users cannot access the guards anyways. Now the
-> >> guards are carried directly on the stack and have no extra `Cell<bool>`
-> >> field that marks if they have been forgotten or not, instead they are
-> >> just forgotten via `mem::forget`.  
-> > 
-> > The code LGTM, so:
-> > 
-> > Reviewed-by: Gary Guo <gary@garyguo.net>
-> > 
-> > Although this will cause the new expansion we have to be no longer
-> > compatible with a totally-proc-macro impl, if we want to do everything
-> > in proc macro in the future.
-> > 
-> > If we have the paste macro upstream (
-> > https://github.com/nbdd0121/linux/commit/fff00461b0be7fd3ec218dcc428f25886b5ec04a
-> > ) then we can replace the `guard` with `paste!([<$field>])` and keep
-> > the expansion identical.
-> >   
-> 
-> I tried it and it seems to work, but I am not sure why the hygiene is
-> set correctly. Could you maybe explain why this works?
-> ```
->         $crate::__internal::paste!{
->             let [<$field>] = unsafe {
->                 $crate::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
->             };
->             $crate::__init_internal!(init_slot($use_data):
->                 @data($data),
->                 @slot($slot),
->                 @guards([<$field>], $($guards,)*),
->                 @munch_fields($($rest)*),
->             );
->         }
-> ```
-> 
-> i.e. why can't a user access the guard? I think it is because the hygiene of the `[<>]`
-> is used, but not sure why that works.
+The `concat_idents!` example
 
-Yes, by default the hygiene of pasted macro is that of the group,
-unless explicitly overriden.
+    let x_1 = 42;
+    let x_2 = concat_idents!(x, _1);
+    assert!(x_1 == x_2);
 
-Best,
-Gary
+can be written with `paste!` macro like this:
+
+    let x_1 = 42;
+    let x_2 = paste!([<x _1>]);
+    assert!(x_1 == x_2);
+
+However `paste!` macro is more flexible because it can be used to create
+a new variable:
+
+    let x_1 = 42;
+    paste!(let [<x _2>] = [<x _1>];);
+    assert!(x_1 == x_2);
+
+While this is not possible with `concat_idents!`.
+
+This macro is similar to the `paste!` crate [1], but this is a fresh
+implementation to avoid vendoring large amount of code directly. Also, I
+have augmented it to provide a way to specify span of the resulting
+token, allowing precise control.
+
+For example, this code is broken because the variable is declared inside
+the macro, so Rust macro hygiene rules prevents access from the outside:
+
+    macro_rules! m {
+        ($id: ident) => {
+            // The resulting token has hygiene of the macro.
+            paste!(let [<$id>] = 1;)
+        }
+    }
+
+    m!(a);
+    let _ = a;
+
+In this versionn of `paste!` macro I added a `span` modifier to allow
+this:
+
+    macro_rules! m {
+        ($id: ident) => {
+            // The resulting token has hygiene of `$id`.
+            paste!(let [<$id:span>] = 1;)
+        }
+    }
+
+    m!(a);
+    let _ = a;
+
+Link: http://docs.rs/paste/ [1]
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ rust/macros/lib.rs   | 97 ++++++++++++++++++++++++++++++++++++++++++++
+ rust/macros/paste.rs | 94 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 191 insertions(+)
+ create mode 100644 rust/macros/paste.rs
+
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 3fc74cb4ea19..b4bc44c27bd4 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -7,6 +7,7 @@
+ mod concat_idents;
+ mod helpers;
+ mod module;
++mod paste;
+ mod pin_data;
+ mod pinned_drop;
+ mod vtable;
+@@ -246,3 +247,99 @@ pub fn pin_data(inner: TokenStream, item: TokenStream) -> TokenStream {
+ pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStream {
+     pinned_drop::pinned_drop(args, input)
+ }
++
++/// Paste identifiers together.
++///
++/// Within the `paste!` macro, identifiers inside `[<` and `>]` are concatenated together to form a
++/// single identifier.
++///
++/// This is similar to the [`paste`] crate, but with pasting feature limited to identifiers
++/// (literals, lifetimes and documentation strings are not supported). There is a difference in
++/// supported modifiers as well.
++///
++/// # Example
++///
++/// ```ignore
++/// use kernel::macro::paste;
++///
++/// macro_rules! pub_no_prefix {
++///     ($prefix:ident, $($newname:ident),+) => {
++///         paste! {
++///             $(pub(crate) const $newname: u32 = [<$prefix $newname>];)+
++///         }
++///     };
++/// }
++///
++/// pub_no_prefix!(
++///     binder_driver_return_protocol_,
++///     BR_OK,
++///     BR_ERROR,
++///     BR_TRANSACTION,
++///     BR_REPLY,
++///     BR_DEAD_REPLY,
++///     BR_TRANSACTION_COMPLETE,
++///     BR_INCREFS,
++///     BR_ACQUIRE,
++///     BR_RELEASE,
++///     BR_DECREFS,
++///     BR_NOOP,
++///     BR_SPAWN_LOOPER,
++///     BR_DEAD_BINDER,
++///     BR_CLEAR_DEATH_NOTIFICATION_DONE,
++///     BR_FAILED_REPLY
++/// );
++///
++/// assert_eq!(BR_OK, binder_driver_return_protocol_BR_OK);
++/// ```
++///
++/// # Modifiers
++///
++/// For each identifier, it is possible to attach one or multiple modifiers to
++/// it.
++///
++/// Currently supported modifiers are:
++/// * `span`: change the span of concatenated identifier to the span of the specified token. By
++/// default the span of the `[< >]` group is used.
++/// * `lower`: change the identifier to lower case.
++/// * `upper`: change the identifier to upper case.
++///
++/// ```ignore
++/// use kernel::macro::paste;
++///
++/// macro_rules! pub_no_prefix {
++///     ($prefix:ident, $($newname:ident),+) => {
++///         kernel::macros::paste! {
++///             $(pub(crate) const fn [<$newname:lower:span>]: u32 = [<$prefix $newname:span>];)+
++///         }
++///     };
++/// }
++///
++/// pub_no_prefix!(
++///     binder_driver_return_protocol_,
++///     BR_OK,
++///     BR_ERROR,
++///     BR_TRANSACTION,
++///     BR_REPLY,
++///     BR_DEAD_REPLY,
++///     BR_TRANSACTION_COMPLETE,
++///     BR_INCREFS,
++///     BR_ACQUIRE,
++///     BR_RELEASE,
++///     BR_DECREFS,
++///     BR_NOOP,
++///     BR_SPAWN_LOOPER,
++///     BR_DEAD_BINDER,
++///     BR_CLEAR_DEATH_NOTIFICATION_DONE,
++///     BR_FAILED_REPLY
++/// );
++///
++/// assert_eq!(br_ok(), binder_driver_return_protocol_BR_OK);
++/// ```
++///
++/// [`paste`]: https://docs.rs/paste/
++#[proc_macro]
++pub fn paste(input: TokenStream) -> TokenStream {
++    let mut tokens = input.into_iter().collect();
++    paste::expand(&mut tokens);
++    tokens.into_iter().collect()
++}
+diff --git a/rust/macros/paste.rs b/rust/macros/paste.rs
+new file mode 100644
+index 000000000000..42fde0930b05
+--- /dev/null
++++ b/rust/macros/paste.rs
+@@ -0,0 +1,94 @@
++use proc_macro::{Delimiter, Group, Ident, Spacing, Span, TokenTree};
++
++fn concat(tokens: &[TokenTree], group_span: Span) -> TokenTree {
++    let mut tokens = tokens.iter();
++    let mut segments = Vec::new();
++    let mut span = None;
++    loop {
++        match tokens.next() {
++            None => break,
++            Some(TokenTree::Literal(lit)) => segments.push((lit.to_string(), lit.span())),
++            Some(TokenTree::Ident(ident)) => {
++                let mut value = ident.to_string();
++                if value.starts_with("r#") {
++                    value.replace_range(0..2, "");
++                }
++                segments.push((value, ident.span()));
++            }
++            Some(TokenTree::Punct(p)) if p.as_char() == ':' => {
++                let Some(TokenTree::Ident(ident)) = tokens.next() else {
++                    panic!("expected identifier as modifier");
++                };
++
++                let (mut value, sp) = segments.pop().expect("expected identifier before modifier");
++                match ident.to_string().as_str() {
++                    // Set the overall span of concatenated token as current span
++                    "span" => {
++                        assert!(
++                            span.is_none(),
++                            "span modifier should only appear at most once"
++                        );
++                        span = Some(sp);
++                    }
++                    "lower" => value = value.to_lowercase(),
++                    "upper" => value = value.to_uppercase(),
++                    v => panic!("unknown modifier `{v}`"),
++                };
++                segments.push((value, sp));
++            }
++            _ => panic!("unexpected token in paste segments"),
++        };
++    }
++
++    let pasted: String = segments.into_iter().map(|x| x.0).collect();
++    TokenTree::Ident(Ident::new(&pasted, span.unwrap_or(group_span)))
++}
++
++pub(crate) fn expand(tokens: &mut Vec<TokenTree>) {
++    for token in tokens.iter_mut() {
++        if let TokenTree::Group(group) = token {
++            let delimiter = group.delimiter();
++            let span = group.span();
++            let mut stream: Vec<_> = group.stream().into_iter().collect();
++            // Find groups that looks like `[< A B C D >]`
++            if delimiter == Delimiter::Bracket
++                && stream.len() >= 3
++                && matches!(&stream[0], TokenTree::Punct(p) if p.as_char() == '<')
++                && matches!(&stream[stream.len() - 1], TokenTree::Punct(p) if p.as_char() == '>')
++            {
++                // Replace the group with concatenated token
++                *token = concat(&stream[1..stream.len() - 1], span);
++            } else {
++                // Recursively expand tokens inside the group
++                expand(&mut stream);
++                let mut group = Group::new(delimiter, stream.into_iter().collect());
++                group.set_span(span);
++                *token = TokenTree::Group(group);
++            }
++        }
++    }
++
++    // Path segments cannot contain invisible delimiter group, so remove them if any.
++    for i in (0..tokens.len().saturating_sub(3)).rev() {
++        // Looking for a double colon
++        if matches!(
++            (&tokens[i + 1], &tokens[i + 2]),
++            (TokenTree::Punct(a), TokenTree::Punct(b))
++                if a.as_char() == ':' && a.spacing() == Spacing::Joint && b.as_char() == ':'
++        ) {
++            match &tokens[i + 3] {
++                TokenTree::Group(group) if group.delimiter() == Delimiter::None => {
++                    tokens.splice(i + 3..i + 4, group.stream());
++                }
++                _ => (),
++            }
++
++            match &tokens[i] {
++                TokenTree::Group(group) if group.delimiter() == Delimiter::None => {
++                    tokens.splice(i..i + 1, group.stream());
++                }
++                _ => (),
++            }
++        }
++    }
++}
+-- 
+2.34.1
+
