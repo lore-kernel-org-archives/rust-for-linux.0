@@ -2,108 +2,102 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61E93EB64D9
-	for <rust-for-linux@archiver.kernel.org>; Tue, 27 Jun 2023 12:15:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3AB48EB64DD
+	for <rust-for-linux@archiver.kernel.org>; Wed, 28 Jun 2023 10:06:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229931AbjF0MPV (ORCPT
+        id S231464AbjF1KG1 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 27 Jun 2023 08:15:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38318 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbjF0MPU (ORCPT
+        Wed, 28 Jun 2023 06:06:27 -0400
+Received: from mail-4316.protonmail.ch ([185.70.43.16]:50913 "EHLO
+        mail-4316.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234900AbjF1J7c (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 27 Jun 2023 08:15:20 -0400
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3973819A8;
-        Tue, 27 Jun 2023 05:15:17 -0700 (PDT)
-Received: from loongson.cn (unknown [117.81.87.34])
-        by gateway (Coremail) with SMTP id _____8CxpMTT0ppk8BYDAA--.4879S3;
-        Tue, 27 Jun 2023 20:15:15 +0800 (CST)
-Received: from localhost.localdomain (unknown [117.81.87.34])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8Bx3yO60ppkXxIMAA--.8320S2;
-        Tue, 27 Jun 2023 20:15:14 +0800 (CST)
-From:   WANG Rui <wangrui@loongson.cn>
-To:     Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 28 Jun 2023 05:59:32 -0400
+Date:   Wed, 28 Jun 2023 09:59:22 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=protonmail; t=1687946370; x=1688205570;
+        bh=xre7AR6dyMRE6Z/GQMstLM6DJEOLT2mAAHNybbT1ScI=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=eswIO/t0iPgLkux0PKMOQGjp9hJEXHjvsb3Vmj7imNRmF+VAQi0wjq5DssEXPsPKs
+         sGU6i/s9vPqr4YqNE4345RQHEnX6fIlR884+0g/+pKQ30B16p8KbTTudUpVig1l8Ml
+         Ur89BeNlSqujAYvWIGcUkAn1rAchN9iBwEyqOuRNBvhS+mevtJpgHI8FclvKI1oRT8
+         j47CawYJRNUGHCkJ+PzTxiUn2Eq7VZMFNLiJvToKbaDnskZ/25b6X8ORQWx8VrqkfK
+         qTctCVvNixQSYayR9An+LiHWfwOVXOO4an/5uIvRqyzMBLOEewWj+06FcG1fDMl4QS
+         DwMbM9KCrPWkA==
+To:     Qingsong Chen <changxian.cqs@antgroup.com>
+From:   Benno Lossin <benno.lossin@proton.me>
+Cc:     linux-kernel@vger.kernel.org,
+        =?utf-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, WANG Rui <wangrui@loongson.cn>
-Subject: [PATCH] rust: build: Define MODULE macro iif the CONFIG_MODULES is enabled
-Date:   Tue, 27 Jun 2023 20:14:22 +0800
-Message-ID: <20230627121422.112246-1-wangrui@loongson.cn>
-X-Mailer: git-send-email 2.41.0
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
+        rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/1] rust: macros: fix redefine const_name in `vtable`
+Message-ID: <-tQGhW-nja4JfdjHgbQgLqvDMc8gxJRsUFsk-cA9n7Q7w5g93rowJacyTT9G1T1_92g1DW1Y7OxjyndTEOYr32vp25DL--rX3W_56M1I8hY=@proton.me>
+In-Reply-To: <20230626074242.3945398-2-changxian.cqs@antgroup.com>
+References: <20230626074242.3945398-1-changxian.cqs@antgroup.com> <20230626074242.3945398-2-changxian.cqs@antgroup.com>
+Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bx3yO60ppkXxIMAA--.8320S2
-X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7tFWDKFyfuw1xtF13Ww4DAwc_yoW8Gw1fpF
-        97W3W8Ka15GF4DtFW8Ary5WF12q34UJ34Dua1DX3y2qFZxJ3sxK3yftFZagrW7ZF4xX34F
-        qFs7uayaga4UCwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
-        sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-        0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-        IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-        e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-        0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-        xVW8Jr0_Cr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-        AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-        AVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
-        AKI48JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
-        6r1j6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
-        xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xII
-        jxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw2
-        0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
-        67AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU2txhDUUUU
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-The LoongArch does not currently support modules when built with clang.
-A pre-processor error is expected on building modules, that's caused by:
+On 26.06.23 09:42, Qingsong Chen wrote:
+> If the trait has same function name, the `vtable` macro
+> will redefine its `gen_const_name`, e.g.:
+> ```rust
+>      #[vtable]
+>      pub trait Foo {
+>          #[cfg(CONFIG_X)]
+>          fn bar();
+>=20
+>          #[cfg(not(CONFIG_X))]
+>          fn bar(x: usize);
+>      }
+> ```
+> Use `HashSet` to avoid this.
+>=20
+> Signed-off-by: Qingsong Chen <changxian.cqs@antgroup.com>
 
- #if defined(MODULE) && defined(CONFIG_AS_HAS_EXPLICIT_RELOCS)
- # if __has_attribute(model)
- #  define PER_CPU_ATTRIBUTES __attribute__((model("extreme")))
- # else
- #  error compiler support for the model attribute is necessary when a recent assembler is used
- # endif
- #endif
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-This also happens with bindgen too, so it would be better to define
-MODULE macro if and only if the CONFIG_MODULES is enabled.
-
-Signed-off-by: WANG Rui <wangrui@loongson.cn>
----
- rust/Makefile | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/rust/Makefile b/rust/Makefile
-index fc8cdcfcc9e5..d31d9fa27ef0 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -295,12 +295,16 @@ endif
- 
- bindgen_c_flags_final = $(bindgen_c_flags_lto) -D__BINDGEN__
- 
-+ifdef CONFIG_MODULES
-+bindgen_c_flags_final += -DMODULE
-+endif
-+
- quiet_cmd_bindgen = BINDGEN $@
-       cmd_bindgen = \
- 	$(BINDGEN) $< $(bindgen_target_flags) \
- 		--use-core --with-derive-default --ctypes-prefix core::ffi --no-layout-tests \
- 		--no-debug '.*' \
--		-o $@ -- $(bindgen_c_flags_final) -DMODULE \
-+		-o $@ -- $(bindgen_c_flags_final) \
- 		$(bindgen_target_cflags) $(bindgen_target_extra)
- 
- $(obj)/bindings/bindings_generated.rs: private bindgen_target_flags = \
--- 
-2.41.0
-
+> ---
+>   rust/macros/vtable.rs | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/rust/macros/vtable.rs b/rust/macros/vtable.rs
+> index 34d5e7fb5768..08eb0355f99b 100644
+> --- a/rust/macros/vtable.rs
+> +++ b/rust/macros/vtable.rs
+> @@ -27,7 +27,7 @@ pub(crate) fn vtable(_attr: TokenStream, ts: TokenStrea=
+m) -> TokenStream {
+>       };
+>=20
+>       let mut body_it =3D body.stream().into_iter();
+> -    let mut functions =3D Vec::new();
+> +    let mut functions =3D HashSet::new();
+>       let mut consts =3D HashSet::new();
+>       while let Some(token) =3D body_it.next() {
+>           match token {
+> @@ -37,7 +37,7 @@ pub(crate) fn vtable(_attr: TokenStream, ts: TokenStrea=
+m) -> TokenStream {
+>                       // Possibly we've encountered a fn pointer type ins=
+tead.
+>                       _ =3D> continue,
+>                   };
+> -                functions.push(fn_name);
+> +                functions.insert(fn_name);
+>               }
+>               TokenTree::Ident(ident) if ident.to_string() =3D=3D "const"=
+ =3D> {
+>                   let const_name =3D match body_it.next() {
+> --
+> 2.40.1
+> 
