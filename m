@@ -2,160 +2,67 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 918F9EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Fri, 30 Jun 2023 18:18:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B45DEB64DC
+	for <rust-for-linux@archiver.kernel.org>; Fri, 30 Jun 2023 19:50:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232996AbjF3SSF (ORCPT
+        id S232235AbjF3TuO (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 30 Jun 2023 14:18:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35326 "EHLO
+        Fri, 30 Jun 2023 15:50:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232361AbjF3SSE (ORCPT
+        with ESMTP id S230364AbjF3TuN (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 30 Jun 2023 14:18:04 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA0AE3AA7;
-        Fri, 30 Jun 2023 11:18:02 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-9926623e367so253298466b.0;
-        Fri, 30 Jun 2023 11:18:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688149081; x=1690741081;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UqvAUyb2tsPBhVSd0pIEgVQNyRCdhhmwRegA/E/fvz0=;
-        b=duN6wGf0bxxTJFbCNwVHPjr7piWFkTJPQZgv1afCEzKQwDw2lMrEF4OAbr2HfhaUYO
-         jh1l0QSgxaxHS98eIs1HPD6HdKQIHWxS+07MIZxUX/1iFNd9QHrzRh2dAeD6EGhY48/a
-         lDu1N5z37d2hHaPoFA9FAzXklnk7gw/2jVeZKpiHZ/UsT8NYih5egxqa1LM46oK2CRn2
-         0yquiQaU1DnmIP6JZXLb1G6mjm7s/1amNXQGGLuWXC+75LdLsQFlwtUbJfV2X3Qnoo1d
-         fogyq6pGmOxyC3U8EdekDn4KS7hP0zlhLulQVu1kqHoExtNaH+fbsskVmMt+BExs4div
-         KoLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688149081; x=1690741081;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UqvAUyb2tsPBhVSd0pIEgVQNyRCdhhmwRegA/E/fvz0=;
-        b=fdkjAAs4J6U3yq9k/8nv67NlOpMY7rTDK+qgvyNupqgNl1KcJCL/Oybk0my5DfCO3g
-         8/Pvm72guToAcdqVSa80UIGYaeW6WFHCSNNiQUAR5gs8mRhLqFWmmpfbxxu20lppEsux
-         xHTSR2+4P8GM2bkEKxL48LxECupDpqrJRVBpNRz1+aHjtqFRLrYCedXvOXQqV39ERFz0
-         b7D42V7bLzCg0oE70s7oISWF7PpuicE/sIkGUM+BT1hII2NozsRsBPB9Gy2mDN+zyYm+
-         q2zWYVOV8au0Ep2gEYA7ICo7a59/PFrj+GxYHBbAXPJvUhofGUeEUSqCRYehfsFa6oVk
-         x+Jg==
-X-Gm-Message-State: ABy/qLZdTuT+F7hHcai98N52+5ArHDgfTIBthAV9teEXTlMGhz4rjyLi
-        FWgq6K0Le4JxeKvJS4h6pn4=
-X-Google-Smtp-Source: APBJJlGtB9G3yRkfYsVLgiguvw7i3+UIzHgYg4xyjSXgx8V5csjh4PZAF8vuBRPuGUQixHBPlWhhBw==
-X-Received: by 2002:a17:906:4e52:b0:992:9a5e:3172 with SMTP id g18-20020a1709064e5200b009929a5e3172mr2089125ejw.59.1688149080879;
-        Fri, 30 Jun 2023 11:18:00 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id qp7-20020a170907206700b0098d0c01d9aasm8319773ejb.87.2023.06.30.11.17.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jun 2023 11:18:00 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailauth.nyi.internal (Postfix) with ESMTP id 86A5827C0071;
-        Fri, 30 Jun 2023 14:17:57 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Fri, 30 Jun 2023 14:17:57 -0400
-X-ME-Sender: <xms:UhyfZPpQEaPpLULou0AlaB4w_kc4Q7a46gTT5jxcRJL35CRGbSfX8g>
-    <xme:UhyfZJoyjreAsALv6A2JpNpR_k8e-9_TTRzs-VxgVK6vKLq47Mcygqlp6yITzf4cQ
-    S1nuiAR__7Tsg9wPw>
-X-ME-Received: <xmr:UhyfZMM_WhLpbSVNgrmF8VPFBle0Ke85DhZgCeB4hOzXVUSMXKrCYp95unU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdeigdduvdduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:UhyfZC7EXQzf2J3GAyTRcHrj79MN_2U5H9y4l00GrjaFJYmWjmdgkw>
-    <xmx:UhyfZO6f2XwVe1s6RCy-O24q5gpuG9Rr7dpuyl8ocrgN3OmSC5sI2w>
-    <xmx:UhyfZKiIpwLmYeD3v-UymYYio3cXox6chlW8RfnExEa2jCzS8blciw>
-    <xmx:VRyfZBr4Luyc2-jW86YWefXHSznNUKPv1jnDUt6VTJq0d02fDbD1Ug>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 Jun 2023 14:17:53 -0400 (EDT)
-Date:   Fri, 30 Jun 2023 11:17:25 -0700
-From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     David Gow <davidgow@google.com>,
-        Brendan Higgins <brendan.higgins@linux.dev>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <nmi@metaspace.dk>,
-        Philip Li <philip.li@intel.com>, kunit-dev@googlegroups.com,
-        linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH 5/6] rust: support running Rust documentation tests as
- KUnit ones
-Message-ID: <ZJ8cNUW3oR2p+gL1@boqun-archlinux>
-References: <20230614180837.630180-1-ojeda@kernel.org>
- <20230614180837.630180-6-ojeda@kernel.org>
+        Fri, 30 Jun 2023 15:50:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB47F19A9;
+        Fri, 30 Jun 2023 12:50:12 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 78B286179C;
+        Fri, 30 Jun 2023 19:50:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8295EC433C0;
+        Fri, 30 Jun 2023 19:50:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1688154611;
+        bh=RjHGfeGug/am7KllmZcNTHDBJHShpxNwhkWbu6BH2v0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=JYevyD02g6Ftcod4VsIaeKkyzHK3p5fB47QQEQo+KavRrD04fHATBcrvo1SGTpJ2+
+         3FFCi1tF6ENa7og7CwQO/imnFT/ZARBAU4/I7zbDGN13yFCrB2V+jTftgvZaMBVUCJ
+         3Nx8d5zHbmnNDkiw5dZxiEqgoC6X9lh7/HgdcBHM=
+Date:   Fri, 30 Jun 2023 21:50:09 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Benno Lossin <benno.lossin@proton.me>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        FUJITA Tomonori <fujita.tomonori@gmail.com>,
+        rust-for-linux@vger.kernel.org, Gary Guo <gary@garyguo.net>,
+        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>
+Subject: Re: [RFC PATCH v2 1/2] rust: add synchronous message digest support
+Message-ID: <2023063045-slightly-scribe-6d09@gregkh>
+References: <20230615142311.4055228-1-fujita.tomonori@gmail.com>
+ <20230615142311.4055228-2-fujita.tomonori@gmail.com>
+ <udHI3v-OLUqHQt3fwnH71QuRJjzGxexw2rkIYEfnsChCmrLoJTIL_GL1wLCARf-UotY51jkPT6tC8nVDvjf8LkY2zvddpgeRQ5owysZwJos=@proton.me>
+ <20230622.111419.241422502377572827.ubuntu@gmail.com>
+ <0a9af5fa-4df2-11da-b3cb-0a6b1d27fdc2@proton.me>
+ <o6lMzg30KAx1IKuGUzjTWb8ciTkkb_vbseDHu2u5nqLeijQ0vX1QgDOij0HGjQkW4NhJcOMoXHvMCstcByEzjq_CjMuN61l1rUo9DaIf97Y=@proton.me>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230614180837.630180-6-ojeda@kernel.org>
+In-Reply-To: <o6lMzg30KAx1IKuGUzjTWb8ciTkkb_vbseDHu2u5nqLeijQ0vX1QgDOij0HGjQkW4NhJcOMoXHvMCstcByEzjq_CjMuN61l1rUo9DaIf97Y=@proton.me>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Jun 14, 2023 at 08:08:29PM +0200, Miguel Ojeda wrote:
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index bb594da56137..49a5e1a4f0ae 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -18,6 +18,7 @@
->   * accidentally exposed.
->   */
->  
-> +#include <kunit/test-bug.h>
+On Fri, Jun 30, 2023 at 02:48:37PM +0000, Benno Lossin wrote:
+> We came up with the following solutions, but could not come to a consensus on any
+> particular one, could you please assist us in making this decision?
+> 
+> 2. panic
 
-When CONFIG_KUNIT=n, the above file is mostly just a function that
-returns "NULL", however, since "NULL" is not defined: kunit/test-bug.h
-includes nothing if CONFIG_KUNIT=n, bindgen is not happy about it:
+Never an option in kernel code, sorry, please don't even suggest it.
 
-  ./include/kunit/test-bug.h:63:67: error: use of undeclared identifier 'NULL'
+thanks,
 
-, we can fix this in Rust side by adding linux/stddef.h before
-kunit/test-bug.h as below, but maybe it's better fixed inside
-kunit/test-bug.h?
-
-Regards,
-Boqun
-
--------------------------------->8
-diff --git a/rust/helpers.c b/rust/helpers.c
-index 49a5e1a4f0ae..048d11c7d796 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -18,6 +18,7 @@
-  * accidentally exposed.
-  */
- 
-+#include <linux/stddef.h>
- #include <kunit/test-bug.h>
- #include <linux/bug.h>
- #include <linux/build_bug.h>
-
->  #include <linux/bug.h>
->  #include <linux/build_bug.h>
->  #include <linux/err.h>
-> @@ -135,6 +136,12 @@ void rust_helper_put_task_struct(struct task_struct *t)
->  }
->  EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
->  
-> +struct kunit *rust_helper_kunit_get_current_test(void)
-> +{
-> +	return kunit_get_current_test();
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_kunit_get_current_test);
-> +
->  /*
->   * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
->   * as the Rust `usize` type, so we can use it in contexts where Rust
+greg k-h
