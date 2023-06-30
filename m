@@ -2,43 +2,45 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AEFB5EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Fri, 30 Jun 2023 14:48:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59EA3EB64D7
+	for <rust-for-linux@archiver.kernel.org>; Fri, 30 Jun 2023 15:03:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232176AbjF3Osx (ORCPT
+        id S232888AbjF3PDl (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 30 Jun 2023 10:48:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49266 "EHLO
+        Fri, 30 Jun 2023 11:03:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231633AbjF3Osw (ORCPT
+        with ESMTP id S229560AbjF3PDk (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 30 Jun 2023 10:48:52 -0400
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 523D31996;
-        Fri, 30 Jun 2023 07:48:48 -0700 (PDT)
-Date:   Fri, 30 Jun 2023 14:48:37 +0000
+        Fri, 30 Jun 2023 11:03:40 -0400
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4622B1FF9
+        for <rust-for-linux@vger.kernel.org>; Fri, 30 Jun 2023 08:03:36 -0700 (PDT)
+Date:   Fri, 30 Jun 2023 15:03:23 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1688136523; x=1688395723;
-        bh=WsdGP+L2oYDp+SU/yqBwbM06vYtzjPM1iocWewyvaz8=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=TtnmgdyyDxXoJBsWTR6ylN09DdXsbbIu0EdsFOhvsHepp4TCYsBt6DCeXj7NwLzrA
-         zQ7qeJh3OUDkfoqIEv4RzpGIgkuHLOZfeeWUZjNLzqUp1J9oO+2ST0BR43U1/Llaev
-         /r+aMFmpkgL3nBfLsPjaELxxNLkaktGPNqZkgclV4nguHctzJfi1RrB4C66AgKA5zi
-         o96vbq7vRNpJtfL8LvPDEzJqusSB1fim7p9gBwUQAD6xmabMSN7nU2vhkIgmOUhYaY
-         wTdjeQe77bEO05LBTwdAlbo2K/vc8cv9ilYu3qtDSxiNLVApRQJYmGfQCerLtqPQhj
-         DUputDl/JDgBg==
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
+        s=protonmail; t=1688137413; x=1688396613;
+        bh=GOuPFgT87znF0ebWMyLwXo4ofXzgfLkd6vzl1Y3CfqA=;
+        h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+        b=NrF664B6Yj0S5v0K2a8SBUlj4tguRpmjCqdIi0VDecC5Af+oGs8Jow/Z7UlUxgpU6
+         sr/lRkn5WLpKUuwrJ28b9xhWvtVm92iXjHoqHgWwALy5WJK8wMWigXQKzq1J9YbtoY
+         uVH5+0WMMG8zV1uDUJTmaUnY8YJ+2i+atSwnmEPX3gyffdh+XdnG+oPAq8RegM1QH+
+         oayFkKeYdKuzUUuBX30Zi8Cq1uFdEhbv/o0k0GnPqXGRIPHirt2o3vNMtQIAcGGof+
+         trOWTeMVgrocDBf+d+8C2bakHzV+avyR/N5Pe+Zj8MW4uCaACwlW5L00vXRO8abiIz
+         EQVCjKMpULetA==
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>
 From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     FUJITA Tomonori <fujita.tomonori@gmail.com>,
-        rust-for-linux@vger.kernel.org, Gary Guo <gary@garyguo.net>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>
-Subject: Re: [RFC PATCH v2 1/2] rust: add synchronous message digest support
-Message-ID: <o6lMzg30KAx1IKuGUzjTWb8ciTkkb_vbseDHu2u5nqLeijQ0vX1QgDOij0HGjQkW4NhJcOMoXHvMCstcByEzjq_CjMuN61l1rUo9DaIf97Y=@proton.me>
-In-Reply-To: <0a9af5fa-4df2-11da-b3cb-0a6b1d27fdc2@proton.me>
-References: <20230615142311.4055228-1-fujita.tomonori@gmail.com> <20230615142311.4055228-2-fujita.tomonori@gmail.com> <udHI3v-OLUqHQt3fwnH71QuRJjzGxexw2rkIYEfnsChCmrLoJTIL_GL1wLCARf-UotY51jkPT6tC8nVDvjf8LkY2zvddpgeRQ5owysZwJos=@proton.me> <20230622.111419.241422502377572827.ubuntu@gmail.com> <0a9af5fa-4df2-11da-b3cb-0a6b1d27fdc2@proton.me>
+Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <nmi@metaspace.dk>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev
+Subject: [PATCH] rust: types: make `Opaque` be `!Unpin`
+Message-ID: <20230630150216.109789-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -47,55 +49,79 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dear crypto maintainers,
+Adds a `PhantomPinned` field to `Opaque<T>`. This removes the last Rust
+guarantee: the assumption that the type `T` can be freely moved. This is
+not the case for many types from the C side (e.g. if they contain a
+`struct list_head`). This change removes the need to add a
+`PhantomPinned` field manually to Rust structs that contain C structs
+which must not be moved.
 
-Fujita Tomonori has created some Rust bindings for the crypto API seen in
-this thread. Here is a fragment of my review of said code:
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+---
+This patch depends on the patch that swaps `UnsafeCell` with
+`MaybeUninit` inside `Opaque` [1].
 
-On 25.06.23 12:08, Benno Lossin wrote:
->>>> +    /// Adds data to message digest for processing.
->>>> +    pub fn update(&mut self, data: &[u8]) -> Result {
->>>> +        // SAFETY: The type invariant guarantees that the pointer is =
-valid.
->>>> +        to_result(unsafe {
->>>> +            bindings::crypto_shash_update(self.ptr, data.as_ptr(), da=
-ta.len() as u32)
->>>> +        })
->>>
->>> What if `data.len() > u32::MAX`?
->>
->> The buffer might not be updated properly, I guess. Should check the case=
-?
->=20
-> Not sure what we should do in that case, will bring it up at the next
-> team meeting. In Rust, `write` and `read` functions often output the
-> number of bytes that were actually read/written. So maybe we should also
-> do that here? Then you could just return `u32::MAX` and the user would
-> have to call again. We could also call the C side multiple times until
-> the entire buffer has been processed. But as the C side only supports
-> u32 anyway, I think it would be a rare occurrence for `data` to be large.
+[1]: https://lore.kernel.org/rust-for-linux/20230614115328.2825961-1-alicer=
+yhl@google.com/
+---
+ rust/kernel/types.rs | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-I noted that in the code segment above that the length of the data
-that is to be hashed is cast from a `usize` to a `u32`. Since
-`usize =3D uintptr_t` this might be a problem for very large arguments.
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index fb41635f1e1f..e664a2beef30 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -6,7 +6,7 @@
+ use alloc::boxed::Box;
+ use core::{
+     cell::UnsafeCell,
+-    marker::PhantomData,
++    marker::{PhantomData, PhantomPinned},
+     mem::MaybeUninit,
+     ops::{Deref, DerefMut},
+     ptr::NonNull,
+@@ -224,17 +224,26 @@ fn drop(&mut self) {
+ ///
+ /// This is meant to be used with FFI objects that are never interpreted b=
+y Rust code.
+ #[repr(transparent)]
+-pub struct Opaque<T>(UnsafeCell<MaybeUninit<T>>);
++pub struct Opaque<T> {
++    value: UnsafeCell<MaybeUninit<T>>,
++    _pin: PhantomPinned,
++}
+=20
+ impl<T> Opaque<T> {
+     /// Creates a new opaque value.
+     pub const fn new(value: T) -> Self {
+-        Self(UnsafeCell::new(MaybeUninit::new(value)))
++        Self {
++            value: UnsafeCell::new(MaybeUninit::new(value)),
++            _pin: PhantomPinned,
++        }
+     }
+=20
+     /// Creates an uninitialised value.
+     pub const fn uninit() -> Self {
+-        Self(UnsafeCell::new(MaybeUninit::uninit()))
++        Self {
++            value: UnsafeCell::new(MaybeUninit::uninit()),
++            _pin: PhantomPinned,
++        }
+     }
+=20
+     /// Creates a pin-initializer from the given initializer closure.
+@@ -258,7 +267,7 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) -> impl=
+ PinInit<Self> {
+=20
+     /// Returns a raw pointer to the opaque data.
+     pub fn get(&self) -> *mut T {
+-        UnsafeCell::get(&self.0).cast::<T>()
++        UnsafeCell::get(&self.value).cast::<T>()
+     }
+=20
+     /// Gets the value behind `this`.
+--=20
+2.41.0
 
-Since the C side only accepts an `unsigned int`, it seems as if large input=
-s
-are never the case. On the Rust side we are forced to use `usize`, since th=
-at
-is the length of slices (the input type `&[u8]`).
 
-We came up with the following solutions, but could not come to a consensus =
-on any
-particular one, could you please assist us in making this decision?
-
-1. create a loop that calls the C API multiple times if the input is large
-2. panic
-3. truncate
-4. return an error
-
-Thanks a lot!
-
---
-Cheers,
-Benno
