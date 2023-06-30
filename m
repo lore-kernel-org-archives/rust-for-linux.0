@@ -2,126 +2,102 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59EA3EB64D7
-	for <rust-for-linux@archiver.kernel.org>; Fri, 30 Jun 2023 15:03:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DDF0BEB64D7
+	for <rust-for-linux@archiver.kernel.org>; Fri, 30 Jun 2023 15:35:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232888AbjF3PDl (ORCPT
+        id S232269AbjF3Pfc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 30 Jun 2023 11:03:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57664 "EHLO
+        Fri, 30 Jun 2023 11:35:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229560AbjF3PDk (ORCPT
+        with ESMTP id S233159AbjF3PfI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 30 Jun 2023 11:03:40 -0400
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4622B1FF9
-        for <rust-for-linux@vger.kernel.org>; Fri, 30 Jun 2023 08:03:36 -0700 (PDT)
-Date:   Fri, 30 Jun 2023 15:03:23 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1688137413; x=1688396613;
-        bh=GOuPFgT87znF0ebWMyLwXo4ofXzgfLkd6vzl1Y3CfqA=;
-        h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-        b=NrF664B6Yj0S5v0K2a8SBUlj4tguRpmjCqdIi0VDecC5Af+oGs8Jow/Z7UlUxgpU6
-         sr/lRkn5WLpKUuwrJ28b9xhWvtVm92iXjHoqHgWwALy5WJK8wMWigXQKzq1J9YbtoY
-         uVH5+0WMMG8zV1uDUJTmaUnY8YJ+2i+atSwnmEPX3gyffdh+XdnG+oPAq8RegM1QH+
-         oayFkKeYdKuzUUuBX30Zi8Cq1uFdEhbv/o0k0GnPqXGRIPHirt2o3vNMtQIAcGGof+
-         trOWTeMVgrocDBf+d+8C2bakHzV+avyR/N5Pe+Zj8MW4uCaACwlW5L00vXRO8abiIz
-         EQVCjKMpULetA==
-To:     Miguel Ojeda <ojeda@kernel.org>,
+        Fri, 30 Jun 2023 11:35:08 -0400
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20DD41B1;
+        Fri, 30 Jun 2023 08:35:07 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id ECDEE5C1D56;
+        Fri, 30 Jun 2023 11:32:58 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Fri, 30 Jun 2023 11:32:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
+        :content-transfer-encoding:content-type:content-type:date:date
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1688139178; x=1688225578; bh=hhBomBeAlOmsPL3qCHSlVfZmdBVSngojM0t
+        0AkUf/oY=; b=X9J310eeZDjBWSv3x9bGvUYm6RSBDvVnQkm3AgoaiNmTSjazQ+0
+        u61SPv8b4QmmmaDu3cLHR0QF7UkLBfShoRTMXdwy36uQelIYu22ou6Lqtru6o1zz
+        eNqjI1CRa9eqlsJI67t3+bUV2zaZnZ91aRsDcppoKgb3aRooAG+yT8cgCU0RHUmx
+        C8INgfwLw4qEfTyiZCNP3OlkJ8y+4YAiglAkbRPi3BWSkuDvGVBUCPb0ykSmDxWr
+        ErmKFHkF6sxxHoIncH3RBC0SxIAsNgfjUUEUkQ2OmPPwJF2m3jJrEXciuC4iVTMK
+        PdDqYymKPdIMFYIQX7Kqcm09vpKOqOIvpXw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+        1688139178; x=1688225578; bh=hhBomBeAlOmsPL3qCHSlVfZmdBVSngojM0t
+        0AkUf/oY=; b=gM5/CB7KkpABu1vzt1euSdFBywQmG+sEehJNJgFbgIOXbN+gJ1s
+        sm04k4BvgGLiQF88ElgjNzufy4RuRYNZxT6S/NzKIsMdcnbJqPKoaoqUaRSe776T
+        zZ2i1OPul+ACzlGTwpni08oMCZ/UMyro6h56a5lyCVSQSD18tEAK2NO7xOMQxWPf
+        +VVTsEOuz7+VBIip3gIq5oA/tyPAZt2hvUbyHw78SfWCrF53+CJwDmTdBSqcOTiG
+        d3+Qdq9Tb3KscXiRoa0Z9c8iOTxN0g09n2M9EA24LO41JsVV3tjHse6LwO8hd4u1
+        A2oGBSUEtmEOdvrk0XP1w2l+YvypeEH9JcA==
+X-ME-Sender: <xms:qfWeZEaUgFvq51TlJudLsDT-lveGksLn10qW1G6w_F7WM0C8dCacsg>
+    <xme:qfWeZPYhdCeGF2uRXPXz5l1LJ-RnR5xfwumjjsOuFW4_fRAQEB3qwadym8p51aYku
+    LpExwKzhznvPIO6fw>
+X-ME-Received: <xmr:qfWeZO_RHb2aD9-hXkmgGv7a2Nm1XXHKDjmiDNJ2Gmd18vMf-L-c-DzikHqQXk3KgOjU5M3U8yRvuc5QIBVziQlBQTuWqNWeo3kuoA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrtdeigdekkecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefkffggfgfuvfevfhfhjggtgfesthejredttdefjeenucfhrhhomheptehlihgt
+    vgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnhephe
+    duuddvteekvdektdduledugfffhfdugeejgeeuvdevtdetveejheehiefffeegnecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvgesrh
+    ihhhhlrdhioh
+X-ME-Proxy: <xmx:qfWeZOqIhl_hAvqV0HfBPttWtTCg5gwNK2hBOjAC87EpoRwmXXoZpg>
+    <xmx:qfWeZPpLRuvwyezFe0Jgxxlr8v0oZ0BcpukP2NKKli2LvcoWFttmMA>
+    <xmx:qfWeZMSRj6zmdKKH48lRBDyY-KgLdTtoHiehvHbsS-pSQqfUmisWLA>
+    <xmx:qvWeZMjQHwcwyl_16HSKdFe4C3UbLudv-WE0H3U0OvqnqeCVlgzQ5Q>
+Feedback-ID: i56684263:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 30 Jun 2023 11:32:55 -0400 (EDT)
+Message-ID: <11c59308-1842-13ba-0945-a68e79d079b8@ryhl.io>
+Date:   Fri, 30 Jun 2023 17:32:53 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH] rust: types: make `Opaque` be `!Unpin`
+Content-Language: en-US-large
+To:     Benno Lossin <benno.lossin@proton.me>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>
-From:   Benno Lossin <benno.lossin@proton.me>
 Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Alice Ryhl <aliceryhl@google.com>,
         Andreas Hindborg <nmi@metaspace.dk>,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
         patches@lists.linux.dev
-Subject: [PATCH] rust: types: make `Opaque` be `!Unpin`
-Message-ID: <20230630150216.109789-1-benno.lossin@proton.me>
-Feedback-ID: 71780778:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20230630150216.109789-1-benno.lossin@proton.me>
+From:   Alice Ryhl <alice@ryhl.io>
+In-Reply-To: <20230630150216.109789-1-benno.lossin@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Adds a `PhantomPinned` field to `Opaque<T>`. This removes the last Rust
-guarantee: the assumption that the type `T` can be freely moved. This is
-not the case for many types from the C side (e.g. if they contain a
-`struct list_head`). This change removes the need to add a
-`PhantomPinned` field manually to Rust structs that contain C structs
-which must not be moved.
+On 6/30/23 17:03, Benno Lossin wrote:
+> Adds a `PhantomPinned` field to `Opaque<T>`. This removes the last Rust
+> guarantee: the assumption that the type `T` can be freely moved. This is
+> not the case for many types from the C side (e.g. if they contain a
+> `struct list_head`). This change removes the need to add a
+> `PhantomPinned` field manually to Rust structs that contain C structs
+> which must not be moved.
+> 
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
----
-This patch depends on the patch that swaps `UnsafeCell` with
-`MaybeUninit` inside `Opaque` [1].
-
-[1]: https://lore.kernel.org/rust-for-linux/20230614115328.2825961-1-alicer=
-yhl@google.com/
----
- rust/kernel/types.rs | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
-
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index fb41635f1e1f..e664a2beef30 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -6,7 +6,7 @@
- use alloc::boxed::Box;
- use core::{
-     cell::UnsafeCell,
--    marker::PhantomData,
-+    marker::{PhantomData, PhantomPinned},
-     mem::MaybeUninit,
-     ops::{Deref, DerefMut},
-     ptr::NonNull,
-@@ -224,17 +224,26 @@ fn drop(&mut self) {
- ///
- /// This is meant to be used with FFI objects that are never interpreted b=
-y Rust code.
- #[repr(transparent)]
--pub struct Opaque<T>(UnsafeCell<MaybeUninit<T>>);
-+pub struct Opaque<T> {
-+    value: UnsafeCell<MaybeUninit<T>>,
-+    _pin: PhantomPinned,
-+}
-=20
- impl<T> Opaque<T> {
-     /// Creates a new opaque value.
-     pub const fn new(value: T) -> Self {
--        Self(UnsafeCell::new(MaybeUninit::new(value)))
-+        Self {
-+            value: UnsafeCell::new(MaybeUninit::new(value)),
-+            _pin: PhantomPinned,
-+        }
-     }
-=20
-     /// Creates an uninitialised value.
-     pub const fn uninit() -> Self {
--        Self(UnsafeCell::new(MaybeUninit::uninit()))
-+        Self {
-+            value: UnsafeCell::new(MaybeUninit::uninit()),
-+            _pin: PhantomPinned,
-+        }
-     }
-=20
-     /// Creates a pin-initializer from the given initializer closure.
-@@ -258,7 +267,7 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) -> impl=
- PinInit<Self> {
-=20
-     /// Returns a raw pointer to the opaque data.
-     pub fn get(&self) -> *mut T {
--        UnsafeCell::get(&self.0).cast::<T>()
-+        UnsafeCell::get(&self.value).cast::<T>()
-     }
-=20
-     /// Gets the value behind `this`.
---=20
-2.41.0
-
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
