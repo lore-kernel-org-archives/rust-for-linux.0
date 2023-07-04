@@ -2,89 +2,105 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CEC84EB64DA
-	for <rust-for-linux@archiver.kernel.org>; Tue,  4 Jul 2023 09:06:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 28AE8EB64DD
+	for <rust-for-linux@archiver.kernel.org>; Tue,  4 Jul 2023 13:29:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231854AbjGDJGh (ORCPT
+        id S231281AbjGDN3i (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 4 Jul 2023 05:06:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38752 "EHLO
+        Tue, 4 Jul 2023 09:29:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231423AbjGDJGe (ORCPT
+        with ESMTP id S229779AbjGDN3h (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 4 Jul 2023 05:06:34 -0400
-X-Greylist: delayed 497 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 04 Jul 2023 02:06:25 PDT
-Received: from mail.lineo.co.jp (mail.lineo.co.jp [203.141.200.203])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A8E4E6B;
-        Tue,  4 Jul 2023 02:06:25 -0700 (PDT)
-Received: from [172.31.7.30] (vpn1.lineo.co.jp [203.141.200.204])
-        by mail.lineo.co.jp (Postfix) with ESMTPSA id AA81780ACB788;
-        Tue,  4 Jul 2023 17:58:06 +0900 (JST)
-Message-ID: <327e5e5a-5aec-316f-c4b1-b1dfcbb4c44c@lineo.co.jp>
-Date:   Tue, 4 Jul 2023 17:58:06 +0900
+        Tue, 4 Jul 2023 09:29:37 -0400
+Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52DAE99;
+        Tue,  4 Jul 2023 06:29:36 -0700 (PDT)
+Received: by mail-vs1-xe34.google.com with SMTP id ada2fe7eead31-440c5960b58so1708419137.3;
+        Tue, 04 Jul 2023 06:29:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688477375; x=1691069375;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XmB7Lt1kdBVFrZQRN7GBaRqYcNVkYfgU/8oYqlFezt4=;
+        b=ajJ4UiuFndj1QghyWQgPkL/JxKC3j1CBoSonKOyfUJJL7j07mh4qPoGIsk56/chegt
+         xpzBz4hA+2qF8Iyg+suTKjFLkDI9hiAyA43m8+N0/78KMweoPyissSbRCxDPlEZlbe9B
+         QQq2iQaIM63wFhEmEq36Es23XFItAVroZiyNHk0nsjNxChQS4gcw5rx0S+jPQJsKNUDF
+         qgt/yD4FKjpTxS/+okX250KkIfpcfwON3oS8NF1OyVkfF/+c6WS0nNI/C+dSZIpBKbWs
+         v+0j+vAEGllmImrMMhN+l6gMWa+85tjTmTlkC8lX6fitTHJJ5jx3Q8ckwwVni/moruf8
+         7wBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688477375; x=1691069375;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XmB7Lt1kdBVFrZQRN7GBaRqYcNVkYfgU/8oYqlFezt4=;
+        b=e+Koq5aAylfI7xnJ926pmdLcIdmzAJSjU4xzn7pr7q1l+Epx1cHbeWCO+C5BFcQQkm
+         F4n2PfUrcgBhXBXbpa1IhSIbuaKqZWMtuNJ7EbEIpElATRrWJWNNt3AxyU73B65lftVa
+         nSGfpx/kVFewdX+1DimJPJ2+83JIFC4KA6eietr8dTof8aflqckPhKaOJA1I/zt0ATGm
+         8I46Yvlfm6EwBHint1mIGWUDVV87UlayCl4Lwr/EyhKoQ+NzSBHQSBGNWZxl9sa56iNU
+         rv/1ekCYnfabx/uSev+nKCZSoDcxToynaepV7LoefeWJ3G0++vI7FA9OwJCIsTxITCRk
+         Kw9A==
+X-Gm-Message-State: ABy/qLaRKz+3vMgrZgtwIvMAN/F3etnBz24wKOmZ1m8rI1BYCiDJbPMH
+        b+mD/BA40cSJLSvC5LdmcDA=
+X-Google-Smtp-Source: APBJJlG6UXeTK7QCoVEmWgU5r0gDS1LYzy0V2HuWLufr6jmxSy6vhodnImbYXmBhc6oWC5DcwYECTg==
+X-Received: by 2002:a05:6102:50d:b0:443:92af:a851 with SMTP id l13-20020a056102050d00b0044392afa851mr5784886vsa.32.1688477375412;
+        Tue, 04 Jul 2023 06:29:35 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id v13-20020a67ac0d000000b00440978082a6sm3673732vse.8.2023.07.04.06.29.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Jul 2023 06:29:34 -0700 (PDT)
+Message-ID: <5164d21e-1ceb-35cf-1d1d-6c32fcdcc4c5@gmail.com>
+Date:   Tue, 4 Jul 2023 10:29:29 -0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
+Subject: Re: [PATCH] btf, scripts: rust: drop is_rust_module.sh
+To:     Andrea Righi <andrea.righi@canonical.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
+        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+References: <20230704052136.155445-1-andrea.righi@canonical.com>
 Content-Language: en-US
-From:   Yuta Hayama <hayama@lineo.co.jp>
-To:     rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Cc:     linux-kernel@vger.kernel.org, Yuta Hayama <hayama@lineo.co.jp>
-Subject: Rust for linux build error due to Clang (bindgen) version
-Content-Type: text/plain; charset=UTF-8
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230704052136.155445-1-andrea.righi@canonical.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi,
+On 7/4/23 02:21, Andrea Righi wrote:
+> With commit c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
+> we are now able to use pahole directly to identify Rust compilation
+> units (CUs) and exclude them from generating BTF debugging information
+> (when DEBUG_INFO_BTF is enabled).
+> 
+> And if pahole doesn't support the --lang-exclude flag, we can't enable
+> both RUST and DEBUG_INFO_BTF at the same time.
+> 
+> So, in any case, the script is_rust_module.sh is just redundant and we
+> can drop it.
+> 
+> NOTE: we may also be able to drop the "Rust loadable module" mark
+> inside Rust modules, but it seems safer to keep it for now to make sure
+> we are not breaking any external tool that may potentially rely on it.
 
-I am a beginner in Rust and LLVM, so sorry if this is a rudimentary question.
-I tried to build with CONFIG_RUST=y on the torvalds/linux kernel and got the
-following error:
+Keep it, I think it can be useful with tooling like kmod.
 
-$ LANG=C make O=../build_6.5rc_pre LLVM=1
+> 
+> Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
+> ---
+> [...]
 
-... (snip)
-
-  RUSTC L rust/core.o
-  EXPORTS rust/exports_core_generated.h
-  RUSTC P rust/libmacros.so
-  BINDGEN rust/bindings/bindings_generated.rs
-thread 'main' panicked at '"ftrace_branch_data_union_(anonymous_at_/home/lineo/kernel/git_kernel_org/torvalds_linux/linux/include/linux/compiler_types_h_146_2)" is not a valid Ident', /home/lineo/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.24/src/fallback.rs:693:9
-note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-make[2]: *** [/home/lineo/kernel/git.kernel.org/torvalds.linux/linux/rust/Makefile:310: rust/bindings/bindings_generated.rs] Error 1
-make[2]: *** Deleting file 'rust/bindings/bindings_generated.rs'
-make[1]: *** [/home/lineo/kernel/git.kernel.org/torvalds.linux/linux/Makefile:1293: prepare] Error 2
-make[1]: Leaving directory '/home/lineo/kernel/git.kernel.org/torvalds.linux/build_6.5rc_pre'
-make: *** [Makefile:226: __sub-make] Error 2
-
-The versions of the tools and other items used are as follows:
-
-kernel:  torvalds/linux a1257b5e3b7f8a21faf462d0118067fe31e71ffb
-rustc:   1.68.2
-bindgen: 0.56.0
-clang:   17.0.0
-
-
-This issue seems similar to what is described at the following URL.
-https://stackoverflow.com/questions/76443280/rust-bindgen-causes-a-is-not-a-valid-ident-error-on-build
-
-If this explanation is correct, then a Clang earlier than 16 or bindgen 0.62.0
-or later is needed to avoid this issue. And I searched the ML and found that
-a patch to fix it already exists.
-https://lore.kernel.org/rust-for-linux/20230612194311.24826-1-aakashsensharma@gmail.com/
-
-But I think this patch is still in the rust-dev branch of the rust-for-linux
-tree and has not been merged into the mainline. The current mainline kernel
-seems to have a issue where if the Clang is too new (16 or later), the build
-fails even though `make rustavailable` passes.
-
-Does this mean we need something like max-tool-version.sh? But that might be
-a bit silly... If such "error occurs because the tool is too new" is repeated
-in the future, I feel that it is necessary to check not only the lower limit of
-the tool version, but also the upper limit.
-
-
-Regards,
-
-Yuta Hayama
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
