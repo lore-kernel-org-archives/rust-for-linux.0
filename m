@@ -2,140 +2,72 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8ADB8C001B0
-	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Jul 2023 06:41:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BBCAC0015E
+	for <rust-for-linux@archiver.kernel.org>; Wed,  5 Jul 2023 08:06:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231154AbjGEGlI (ORCPT
+        id S232391AbjGEIGC (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 5 Jul 2023 02:41:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48470 "EHLO
+        Wed, 5 Jul 2023 04:06:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbjGEGlI (ORCPT
+        with ESMTP id S232388AbjGEIF6 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 5 Jul 2023 02:41:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7115B1700;
-        Tue,  4 Jul 2023 23:41:03 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F08B36144E;
-        Wed,  5 Jul 2023 06:41:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3662C433C8;
-        Wed,  5 Jul 2023 06:41:00 +0000 (UTC)
-Message-ID: <d0ae9e77-cd3a-6ed1-1f99-104d10de9fba@xs4all.nl>
-Date:   Wed, 5 Jul 2023 08:40:59 +0200
+        Wed, 5 Jul 2023 04:05:58 -0400
+Received: from mail.lineo.co.jp (mail.lineo.co.jp [203.141.200.203])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64AAA12A;
+        Wed,  5 Jul 2023 01:05:56 -0700 (PDT)
+Received: from [172.31.7.30] (vpn1.lineo.co.jp [203.141.200.204])
+        by mail.lineo.co.jp (Postfix) with ESMTPSA id 23F9B80354A98;
+        Wed,  5 Jul 2023 17:05:55 +0900 (JST)
+Message-ID: <3b6a61b6-1bb7-187b-481b-22d551bb8dc3@lineo.co.jp>
+Date:   Wed, 5 Jul 2023 17:05:54 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 0/6] Initial Rust V4L2 support
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: Rust for linux build error due to Clang (bindgen) version
 Content-Language: en-US
-To:     Daniel Almeida <daniel.almeida@collabora.com>, wedsonaf@gmail.com,
-        ojeda@kernel.org, mchehab@kernel.org
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, kernel@collabora.com
-References: <20230406215615.122099-1-daniel.almeida@collabora.com>
-From:   Hans Verkuil <hverkuil@xs4all.nl>
-In-Reply-To: <20230406215615.122099-1-daniel.almeida@collabora.com>
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
+        linux-kernel@vger.kernel.org, Yuta Hayama <hayama@lineo.co.jp>
+References: <327e5e5a-5aec-316f-c4b1-b1dfcbb4c44c@lineo.co.jp>
+ <CANiq72kZeLs1oWbUeZtx3CkGQxMa3Qnn3neV_yEfC+T_D-xtww@mail.gmail.com>
+From:   Yuta Hayama <hayama@lineo.co.jp>
+In-Reply-To: <CANiq72kZeLs1oWbUeZtx3CkGQxMa3Qnn3neV_yEfC+T_D-xtww@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hi Daniel,
+Hi,
 
-On 06/04/2023 23:56, Daniel Almeida wrote:
-> Hi all, this is my first attempt at adding Rust support to the
-> media subsystem.
-> 
-> It adds just enough support to write a clone of the virtio-camera
-> prototype written by my colleague, Dmitry Osipenko, available at [0].
-> 
-> Basically, there's support for video_device_register,
-> v4l2_device_register and for some ioctls in v4l2_ioctl_ops. There is
-> also some initial vb2 support, alongside some wrappers for some types
-> found in videodev2.h.
-> 
-> I wrote a sample Rust driver just to prove that this probes, and
-> that you get a message on dmesg whenever an ioctl is called.
-> 
-> As there is no actual implementation for any of the ioctls, this module
-> can misbehave with some programs. I can work around this in a future
-> submission.
-> 
-> Note that this is based on the rust branch, as opposed to rust-next. The
-> reasoning is simple: I expect this series to just kickstart some
-> discussion around the subject. Actual upstreaming can come up much
-> later, at which point I can rebase on the rust branch.
-> 
-> Lastly, the origins of this series trace back to a v4l2 virtIO driver I
-> was writing in Rust. As the project was eventually shelved for other
-> reasons, I picked both the virtIO and the v4l2 bindings into their own
-> patches which I am now in the process of submitting. This is to say that
-> I tested this code with said driver and CrosVM in the past, and it
-> worked ok.
-> 
-> Please let me know your thoughts.
+Thank you for your response!
 
-Based on our discussions during the Media Summit I am going to mark this
-series as RFC in patchwork.
+On 2023/07/05 3:28, Miguel Ojeda wrote:
+> On Tue, Jul 4, 2023 at 11:06 AM Yuta Hayama <hayama@lineo.co.jp> wrote:
 
-Once we have a new maintenance process up and running and things have
-stabilized on that front, then this can be revisited, but by that time
-it is better to post a v2, rebased and updated.
+>> Does this mean we need something like max-tool-version.sh? But that might be
+>> a bit silly... If such "error occurs because the tool is too new" is repeated
+>> in the future, I feel that it is necessary to check not only the lower limit of
+>> the tool version, but also the upper limit.
+> 
+> `make rustavailable` already warns for "too new" versions for `rustc`
+> and `bindgen`.
+
+Yes, I checked this. What I was noticed is that these tools have the same
+lower and upper limits for the required version. (so min-tool-version.sh
+was sufficient.) Since there is a range between the lower and upper limits
+for Clang, I thought that if we are going to do version checking, we need
+to extend min-tool-version.sh or something related to it.
+
+> We could add something like that (as error or warning)
+> for `libclang` too, but that particular issue goes away with the
+> upgrade in place, so (at least for mainline) it is OK.
+
+I understand that at least this issue will be fixed in the near future (v6.6?).
+I will wait and see for a while...
+
 
 Regards,
 
-	Hans
-
-> 
-> [0]: https://gitlab.collabora.com/dmitry.osipenko/linux-kernel-rd/-/commit/055a2c322e931a8b388f864f1db81bbdfd525602
-> 
-> Daniel Almeida (6):
->   rust: media: add the media module
->   rust: media: add initial videodev2.h abstractions
->   rust: sync: introduce FfiMutex
->   rust: media: videobuf2: add a videobuf2 abstraction
->   rust: media: add {video|v4l2}_device_register support
->   rust: media: add v4l2 rust sample
-> 
->  rust/bindings/bindings_helper.h        |   8 +
->  rust/kernel/lib.rs                     |   2 +
->  rust/kernel/media/mod.rs               |   6 +
->  rust/kernel/media/v4l2/capabilities.rs |  80 ++++
->  rust/kernel/media/v4l2/dev.rs          | 369 +++++++++++++++
->  rust/kernel/media/v4l2/device.rs       | 115 +++++
->  rust/kernel/media/v4l2/enums.rs        | 135 ++++++
->  rust/kernel/media/v4l2/format.rs       | 178 ++++++++
->  rust/kernel/media/v4l2/framesize.rs    | 176 +++++++
->  rust/kernel/media/v4l2/inputs.rs       | 104 +++++
->  rust/kernel/media/v4l2/ioctls.rs       | 608 +++++++++++++++++++++++++
->  rust/kernel/media/v4l2/mmap.rs         |  81 ++++
->  rust/kernel/media/v4l2/mod.rs          |  13 +
->  rust/kernel/media/videobuf2/core.rs    | 552 ++++++++++++++++++++++
->  rust/kernel/media/videobuf2/mod.rs     |   5 +
->  rust/kernel/sync.rs                    |   1 +
->  rust/kernel/sync/ffi_mutex.rs          |  70 +++
->  samples/rust/Kconfig                   |  11 +
->  samples/rust/Makefile                  |   1 +
->  samples/rust/rust_v4l2.rs              | 403 ++++++++++++++++
->  20 files changed, 2918 insertions(+)
->  create mode 100644 rust/kernel/media/mod.rs
->  create mode 100644 rust/kernel/media/v4l2/capabilities.rs
->  create mode 100644 rust/kernel/media/v4l2/dev.rs
->  create mode 100644 rust/kernel/media/v4l2/device.rs
->  create mode 100644 rust/kernel/media/v4l2/enums.rs
->  create mode 100644 rust/kernel/media/v4l2/format.rs
->  create mode 100644 rust/kernel/media/v4l2/framesize.rs
->  create mode 100644 rust/kernel/media/v4l2/inputs.rs
->  create mode 100644 rust/kernel/media/v4l2/ioctls.rs
->  create mode 100644 rust/kernel/media/v4l2/mmap.rs
->  create mode 100644 rust/kernel/media/v4l2/mod.rs
->  create mode 100644 rust/kernel/media/videobuf2/core.rs
->  create mode 100644 rust/kernel/media/videobuf2/mod.rs
->  create mode 100644 rust/kernel/sync/ffi_mutex.rs
->  create mode 100644 samples/rust/rust_v4l2.rs
-> 
-
+Yuta Hayama
