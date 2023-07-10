@@ -2,62 +2,102 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D433EB64D9
-	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Jul 2023 08:08:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48D2EEB64DC
+	for <rust-for-linux@archiver.kernel.org>; Mon, 10 Jul 2023 10:23:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229848AbjGJIIa (ORCPT
+        id S230310AbjGJKX1 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 10 Jul 2023 04:08:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36778 "EHLO
+        Mon, 10 Jul 2023 06:23:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjGJII3 (ORCPT
+        with ESMTP id S230064AbjGJKX1 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 10 Jul 2023 04:08:29 -0400
-Received: from mail.socialglobal.pl (mail.socialglobal.pl [51.195.90.253])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51429EB
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Jul 2023 01:08:28 -0700 (PDT)
-Received: by mail.socialglobal.pl (Postfix, from userid 1002)
-        id F12982306C; Mon, 10 Jul 2023 08:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=socialglobal.pl;
-        s=mail; t=1688976359;
-        bh=XwhyqI/moZPDJ7KCfcA6Gip8fA7ZKcg5SWsKuF/26zk=;
-        h=Date:From:To:Subject:From;
-        b=jlCx4b9CsIjiGm4MDrgr6KNXNx01Vm1kJL/ZOJQluhG+BC52FSr8XClpbAgPKAp8r
-         uLUWTe9H6Ul8qYPgfu7NbnnVYedGHKFBDg1cBYKO8hQqhsFQaguXnGozu+a/w2VxWB
-         LR7OKmmEfYwJ1TADmQzqzMDDtSGeWsNI5kvdCMa3cGPOgreFIQsqWisL+J2l7o715K
-         1NKfwRzKw7vo9teNyssnCqAEXeI1g2d+gSlt91b+6Ego/dahQ1aVZo3WXHjVgW36Hy
-         RRaHLieH49yRMkjG+EDv5WtnRwPht5pCz6wCHRW5hD1YjD9BqyTLZl21SzlbqDgEom
-         FYWj7mCDB4DjQ==
-Received: by mail.socialglobal.pl for <rust-for-linux@vger.kernel.org>; Mon, 10 Jul 2023 08:05:53 GMT
-Message-ID: <20230710064500-0.1.72.28raz.0.el4sajaumd@socialglobal.pl>
-Date:   Mon, 10 Jul 2023 08:05:53 GMT
-From:   "Dominik Perkowski" <dominik.perkowski@socialglobal.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: Pozycjonowanie- informacja
-X-Mailer: mail.socialglobal.pl
+        Mon, 10 Jul 2023 06:23:27 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E493594;
+        Mon, 10 Jul 2023 03:23:22 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1b9d9cbcc70so1918275ad.0;
+        Mon, 10 Jul 2023 03:23:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1688984601; x=1689589401;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gYP2oWKwpGOXF3gV9wx85l1HhBMYJx0BpeXr6oBux0s=;
+        b=EJYUqlWTVoCvlErini+i5t+RO+70VyZYNmqjGO2hkLVg3c419s6BVBkuZVfDDtOo/M
+         IQERf7ZynzFsIzRLurkjcBsmQoVGTyjNXFGso5tnGMXF0LPE8neLGAyXDQPoNQTLNR0J
+         ndktOzuBYrAYeEOiXkmBCaB33yXNr4wPOCzxn0hDBIXqZ46E1qze+HeI06+zjzUs9tu3
+         e7V2LMF6uS6h5pUcT3IwtbvNEKtMEO0od9qvIKUy9EtNt1PnPtfwPGPTuKwrdf+gzSBp
+         cHCbA+rp5weNWFS4A0/XQI+et1QbuRVFaH5MbKP8WwWoVL/jooVJYYi4qU0l9Qf6AJnp
+         nYmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688984601; x=1689589401;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gYP2oWKwpGOXF3gV9wx85l1HhBMYJx0BpeXr6oBux0s=;
+        b=Jro+tF+vHdu7WFM2PGpnf7blqB1M6sA3aHjYwriEMXez3pgJWYPdNSCeAt0COdhicH
+         dJAQf929ZbEBQ3pIMIWMN6yygwMA6LE5C2mK7TYtAVvSVdgmTxy+Q8eFmfXAQTFY1WKO
+         KfXkdHFai3xAe9ALzDK/1F2lqtrArMl3gEjF5l3pjBgzdEppqjyhLlk16tJxSGSkJ5uQ
+         J/bOfBYxf4Vusd/pFEu75n9q0RUOedEEfbhzNUPEmQtKgmLIQE59FxpPQI9teH125qOX
+         Ov1cao/0R1VsKnHjsGQeqzJEX1jsZqOgyEyrNlvmSb/tBJRmZO5Ij8zQ78EiFktAd0K/
+         jMfg==
+X-Gm-Message-State: ABy/qLYdBzVlL5D3KxqOK1jnNSzZW70Y6uelg6x5Rfbtsa/4K4PRAJ64
+        AiR36mzKE5/cTVO+F06VZTfjsvlMkc3yaUfn
+X-Google-Smtp-Source: APBJJlFEhjGCfMce/+E/qYSulVNW83uVugXINUUBvPGoo4EsWajDf6oelw7kh6WYg7ou6pZVxafa8A==
+X-Received: by 2002:a17:902:da92:b0:1b3:d8ac:8db3 with SMTP id j18-20020a170902da9200b001b3d8ac8db3mr15565140plx.6.1688984601091;
+        Mon, 10 Jul 2023 03:23:21 -0700 (PDT)
+Received: from ip-172-30-47-114.us-west-2.compute.internal (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id d5-20020a170902cec500b001b5656b0bf9sm7901984plg.286.2023.07.10.03.23.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jul 2023 03:23:20 -0700 (PDT)
+From:   FUJITA Tomonori <fujita.tomonori@gmail.com>
+To:     rust-for-linux@vger.kernel.org, linux-crypto@vger.kernel.org
+Cc:     alex.gaynor@gmail.com, herbert@gondor.apana.org.au,
+        ebiggers@kernel.org, benno.lossin@proton.me
+Subject: [PATCH v2 0/3] Rust abstractions for Crypto API
+Date:   Mon, 10 Jul 2023 19:22:22 +0900
+Message-Id: <20230710102225.155019-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,=20
+This patchset adds minimum Rust abstractions for Crypto API; message
+digest and random number generator.
 
-jaki=C5=9B czas temu zg=C5=82osi=C5=82a si=C4=99 do nas firma, kt=C3=B3re=
-j strona internetowa nie pozycjonowa=C5=82a si=C4=99 wysoko w wyszukiwarc=
-e Google.=20
+I'm trying to upstream network and crypto abstractions separately so
+v2 has only crypto stuff.
 
-Na podstawie wykonanego przez nas audytu SEO zoptymalizowali=C5=9Bmy tre=C5=
-=9Bci na stronie pod k=C4=85tem wcze=C5=9Bniej opracowanych s=C5=82=C3=B3=
-w kluczowych. Nasz wewn=C4=99trzny system codziennie analizuje prawid=C5=82=
-owe dzia=C5=82anie witryny.  Dzi=C4=99ki indywidualnej strategii, firma z=
-dobywa coraz wi=C4=99cej Klient=C3=B3w. =20
+Changes since v1 [1]:
+- ShashDesc::new() returns the initialized object.
+- checks the length of buffer.
+- fix a compile error without CONFIG_CRYPTO.
+- adds RNG support.
+- drops network code.
+- updates the CRYPTO API entry.
 
-Czy chcieliby Pa=C5=84stwo zwi=C4=99kszy=C4=87 liczb=C4=99 os=C3=B3b odwi=
-edzaj=C4=85cych stron=C4=99 internetow=C4=85 firmy? M=C3=B3g=C5=82bym prz=
-edstawi=C4=87 ofert=C4=99?=20
+[1] https://lore.kernel.org/netdev/010101881db036fb-2fb6981d-e0ef-4ad1-83c3-54d64b6d93b3-000000@us-west-2.amazonses.com/T/
 
+FUJITA Tomonori (3):
+  rust: crypto abstractions for synchronous message digest API
+  rust: crypto abstractions for random number generator API
+  MAINTAINERS: add Rust crypto abstractions files to the CRYPTO API
+    entry
 
-Pozdrawiam serdecznie,
-Dominik Perkowski
+ MAINTAINERS                     |   2 +
+ rust/bindings/bindings_helper.h |   2 +
+ rust/helpers.c                  |  38 ++++++++++
+ rust/kernel/crypto.rs           |   6 ++
+ rust/kernel/crypto/hash.rs      | 128 ++++++++++++++++++++++++++++++++
+ rust/kernel/crypto/rng.rs       | 101 +++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ 7 files changed, 279 insertions(+)
+ create mode 100644 rust/kernel/crypto.rs
+ create mode 100644 rust/kernel/crypto/hash.rs
+ create mode 100644 rust/kernel/crypto/rng.rs
+
+-- 
+2.34.1
+
