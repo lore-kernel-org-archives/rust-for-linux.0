@@ -2,60 +2,60 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A8F1EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Jul 2023 09:51:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C075EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Jul 2023 09:56:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231299AbjGKJvp (ORCPT
+        id S230215AbjGKJ4w (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Jul 2023 05:51:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39982 "EHLO
+        Tue, 11 Jul 2023 05:56:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231558AbjGKJvo (ORCPT
+        with ESMTP id S230021AbjGKJ4u (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Jul 2023 05:51:44 -0400
-Received: from mail-ed1-x549.google.com (mail-ed1-x549.google.com [IPv6:2a00:1450:4864:20::549])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B4A7B7
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jul 2023 02:51:42 -0700 (PDT)
-Received: by mail-ed1-x549.google.com with SMTP id 4fb4d7f45d1cf-51e2497eeefso3588522a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jul 2023 02:51:42 -0700 (PDT)
+        Tue, 11 Jul 2023 05:56:50 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30520A8
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jul 2023 02:56:49 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-57320c10635so61215697b3.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jul 2023 02:56:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689069101; x=1691661101;
+        d=google.com; s=20221208; t=1689069408; x=1691661408;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zbG7B9nIgqjfOv4qsNLCa5ebcFdm5P+XcawO//zctYU=;
-        b=7Xc/ddVUS0wM3GZO2B4AprynVg9zdVzLcyIeszTINkZEhMbnLLiUtLRsb31FPVbX+v
-         reQxDAqLJm+3phY6MBudaf4zuQd3YTfi3efTF+dNuZZPIMi/HvDNP4c9t15xV+K4FS8g
-         bPzRHP1jHv7jqqPKvzwHsdoUsaCbRef/eh2j0FzqjsqyDcUO58KAGbPPrzd6DCPoqkZq
-         L96g8upUP6Gt22M0M29/DcrWSC4naOOb1Png3Bexwc5Jat8/ZKWqUtvKMqIktDrjeDB7
-         3pMGuxOJDNc9X/dC13LsiOoPu86DyMohr6aEJhuJwhn+ud67Cv5yGn7RgjgL3hmjY1NS
-         dCVA==
+        bh=WVqEtgaoR84mlWb1xo2bD1CrEq4VPJW4ZXsIrXT2SxY=;
+        b=JiS7r4oSjpoYeZAQokPiDZbRIRNXbzoWPZL7NF+5rzbH6mH2Rcy5+beBc9ND3C54Cz
+         Aus5Cg913qXuDxwKJCGdRWmHr05KJU0rJAHeg88AZD7kauK/bKXdTeDKY4hHqsiAXQQL
+         giwWgikoRtreQUO/DBn4FxwrAoqmcTXpHQalZUi4p2Udagcl0C2V8fzJ4YAZqbRHjs39
+         J4t57iEQpS8/MHp0zwe9jwefzUlWJejQ8XzKTLzsg3oq45gSz8Ajf7nQvIF4XLItT28/
+         qIgL6zZDPEwioH0kLhbOCQCI7+NjZMZFYtDBdbaMW78mZpZzOwkCwthKHdajV8J2epzt
+         5zxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689069101; x=1691661101;
+        d=1e100.net; s=20221208; t=1689069408; x=1691661408;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zbG7B9nIgqjfOv4qsNLCa5ebcFdm5P+XcawO//zctYU=;
-        b=TGd1cmpS/rTTFwq5JdFN5cb7ikW2J+DyZTymXa83T6HoETcOhSL+ypHqR5bNE3wAn3
-         6Rv2FTIu6S1rB08gJotjUWBCjg9Ai4HvmSYiHDS9hENPUDK+DtARPWW/PG0itOp8aXsr
-         0R5BtmBvEbx9vhBsL1WT5gd5doZ3wszEJjVzRarXyaEE6GPPiRQM3YOMLxSEUdK/NreJ
-         +a4tTp9NfhMC3ct2V5x3QxIJWBdYR1vGGvDpIvu3GpZ2tMvfQc5DzBRArg7Esy9zNTkB
-         S5v9Ul8HlxZOPV5r/V4OHWvbY126gB5Al538za+X30NiMttOkIdJy+/Q7hjqhUoJpqqG
-         C6pg==
-X-Gm-Message-State: ABy/qLYcryK+o8bO/E+QGG88hlgXqNMcnFyekWO1jWGg4gS133H+/Yu1
-        c6WssUxDZEewqMmGiiKv8a5C3BSKTo4799I4Yis5Rq7NCXZOaEo4FyU6ixaXLm7Cl7oswIHLCYk
-        ZUvQxsnEYIdnieSYip+UI76pN7FGdQAqdGSKBJZSWS4paSgzP1ow9piHMvOxumX5TFpr7Gugl16
-        /Vj6wN
-X-Google-Smtp-Source: APBJJlE4smX4x/n67nbfyh8iudWSD9Gcs4zDhbXl2mIlHlCvPXFVOvfDZHgJiam+NfqpPVdh/Liaa42mYVELhI4=
+        bh=WVqEtgaoR84mlWb1xo2bD1CrEq4VPJW4ZXsIrXT2SxY=;
+        b=GtGLbSrXoRbSFjaLmpqOzs3P6z0ibVIgtOhj5a8qgdsGlyVQ13a1y75g3ZOVkT7x7D
+         rTyaOkYPGgpPjBfx+t9U9qxPGAye9MzKEVJ7gy+DM1XlhHTrG0JOMDESytBAos2mie4+
+         9ONbV4BpZqhLsA1cdXJKJJEz/zO+nTe8ie3awYVIOdesMcCC6QSUqXcNgo3BTFIKuSUI
+         eXOg22wJoEBT9Nl7rJL6JlflLaald68CZQnXQrjKO7Hc2Oodcl7na2lP3LeGpvJ2qXTT
+         m3dzxzLbuhv8xcZVRQKF4YH31AzdkH8GIUhbHzKIZ8HV6g3AIUOZCLMmMpF9yUCvUz7l
+         3WFQ==
+X-Gm-Message-State: ABy/qLYY+u0v8ZbQd1/+SS1QE71bEkCH69nOTELTmIzY8IDlcVuNkLwY
+        b0MnosdF5X1ugZs0BCyuPqGJhSylhZB5b43jXCDz5HeowKWxT7pNf8Nm8Jtyx/eep4D6Fy/2q1D
+        /cKgAvqQ/ZaJNnQDZxUvlkWMc1y7/xcqFUHmKEg0LLdGRokDlZU+AtAh7USjBPtfEwh8h7n/Nio
+        5fyVcl
+X-Google-Smtp-Source: APBJJlFwdJ2E18U3JX8SbmAFB8eni9sLplKZ6ovLgHTWvsced2a62emZj0SesAoyMkw4Bdoxegyik2qJMVn43mc=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a50:cd0f:0:b0:51b:e4c5:547c with SMTP id
- z15-20020a50cd0f000000b0051be4c5547cmr79456edi.4.1689069100681; Tue, 11 Jul
- 2023 02:51:40 -0700 (PDT)
-Date:   Tue, 11 Jul 2023 09:33:02 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a81:764f:0:b0:57a:141f:b4f5 with SMTP id
+ j15-20020a81764f000000b0057a141fb4f5mr139132ywk.7.1689069408101; Tue, 11 Jul
+ 2023 02:56:48 -0700 (PDT)
+Date:   Tue, 11 Jul 2023 09:33:03 +0000
 In-Reply-To: <20230711093303.1433770-1-aliceryhl@google.com>
 Mime-Version: 1.0
 References: <20230711093303.1433770-1-aliceryhl@google.com>
 X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
-Message-ID: <20230711093303.1433770-9-aliceryhl@google.com>
-Subject: [PATCH v3 8/9] rust: workqueue: add `try_spawn` helper method
+Message-ID: <20230711093303.1433770-10-aliceryhl@google.com>
+Subject: [PATCH v3 9/9] rust: workqueue: add examples
 From:   Alice Ryhl <aliceryhl@google.com>
 To:     rust-for-linux@vger.kernel.org, Tejun Heo <tj@kernel.org>,
         Miguel Ojeda <ojeda@kernel.org>
@@ -74,92 +74,139 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This adds a convenience method that lets you spawn a closure for
-execution on a workqueue. This will be the most convenient way to use
-workqueues, but it is fallible because it needs to allocate memory.
+This adds two examples of how to use the workqueue. The first example
+shows how to use it when you only have one `work_struct` field, and the
+second example shows how to use it when you have multiple `work_struct`
+fields.
 
-Co-developed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 Reviewed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 ---
 v2 -> v3:
- * Use a LockClassKey when constructing `ClosureWork`.
- * Add Reviewed-by from Martin, Andreas, Benno.
+ * Use LockClassKey in constructors in examples.
+ * Add Reviewed-by from Martin, Gary, Andreas, Benno.
 
- rust/kernel/workqueue.rs | 43 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ rust/kernel/workqueue.rs | 104 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
 
 diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index e760040762bd..3a3a8b52bfd9 100644
+index 3a3a8b52bfd9..482d3eeae7d8 100644
 --- a/rust/kernel/workqueue.rs
 +++ b/rust/kernel/workqueue.rs
-@@ -29,6 +29,7 @@
+@@ -26,6 +26,110 @@
+ //!  * The `WorkItemPointer` trait is implemented for the pointer type that points at a something
+ //!    that implements `WorkItem`.
+ //!
++//! ## Example
++//!
++//! This example defines a struct that holds an integer and can be scheduled on the workqueue. When
++//! the struct is executed, it will print the integer. Since there is only one `work_struct` field,
++//! we do not need to specify ids for the fields.
++//!
++//! ```
++//! use kernel::prelude::*;
++//! use kernel::sync::Arc;
++//! use kernel::workqueue::{self, Work, WorkItem};
++//!
++//! #[pin_data]
++//! struct MyStruct {
++//!     value: i32,
++//!     #[pin]
++//!     work: Work<MyStruct>,
++//! }
++//!
++//! impl_has_work! {
++//!     impl HasWork<Self> for MyStruct { self.work }
++//! }
++//!
++//! impl MyStruct {
++//!     fn new(value: i32) -> Result<Arc<Self>> {
++//!         Arc::pin_init(pin_init!(MyStruct {
++//!             value,
++//!             work <- Work::new(kernel::static_lock_class!()),
++//!         }))
++//!     }
++//! }
++//!
++//! impl WorkItem for MyStruct {
++//!     type Pointer = Arc<MyStruct>;
++//!
++//!     fn run(this: Arc<MyStruct>) {
++//!         pr_info!("The value is: {}", this.value);
++//!     }
++//! }
++//!
++//! /// This method will enqueue the struct for execution on the system workqueue, where its value
++//! /// will be printed.
++//! fn print_later(val: Arc<MyStruct>) {
++//!     let _ = workqueue::system().enqueue(val);
++//! }
++//! ```
++//!
++//! The following example shows how multiple `work_struct` fields can be used:
++//!
++//! ```
++//! use kernel::prelude::*;
++//! use kernel::sync::Arc;
++//! use kernel::workqueue::{self, Work, WorkItem};
++//!
++//! #[pin_data]
++//! struct MyStruct {
++//!     value_1: i32,
++//!     value_2: i32,
++//!     #[pin]
++//!     work_1: Work<MyStruct, 1>,
++//!     #[pin]
++//!     work_2: Work<MyStruct, 2>,
++//! }
++//!
++//! impl_has_work! {
++//!     impl HasWork<Self, 1> for MyStruct { self.work_1 }
++//!     impl HasWork<Self, 2> for MyStruct { self.work_2 }
++//! }
++//!
++//! impl MyStruct {
++//!     fn new(value_1: i32, value_2: i32) -> Result<Arc<Self>> {
++//!         Arc::pin_init(pin_init!(MyStruct {
++//!             value_1,
++//!             value_2,
++//!             work_1 <- Work::new(kernel::static_lock_class!()),
++//!             work_2 <- Work::new(kernel::static_lock_class!()),
++//!         }))
++//!     }
++//! }
++//!
++//! impl WorkItem<1> for MyStruct {
++//!     type Pointer = Arc<MyStruct>;
++//!
++//!     fn run(this: Arc<MyStruct>) {
++//!         pr_info!("The value is: {}", this.value_1);
++//!     }
++//! }
++//!
++//! impl WorkItem<2> for MyStruct {
++//!     type Pointer = Arc<MyStruct>;
++//!
++//!     fn run(this: Arc<MyStruct>) {
++//!         pr_info!("The second value is: {}", this.value_2);
++//!     }
++//! }
++//!
++//! fn print_1_later(val: Arc<MyStruct>) {
++//!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 1>(val);
++//! }
++//!
++//! fn print_2_later(val: Arc<MyStruct>) {
++//!     let _ = workqueue::system().enqueue::<Arc<MyStruct>, 2>(val);
++//! }
++//! ```
++//!
  //! C header: [`include/linux/workqueue.h`](../../../../include/linux/workqueue.h)
  
  use crate::{bindings, prelude::*, sync::Arc, sync::LockClassKey, types::Opaque};
-+use alloc::alloc::AllocError;
- use alloc::boxed::Box;
- use core::marker::PhantomData;
- use core::pin::Pin;
-@@ -87,6 +88,44 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
-             })
-         }
-     }
-+
-+    /// Tries to spawn the given function or closure as a work item.
-+    ///
-+    /// This method can fail because it allocates memory to store the work item.
-+    pub fn try_spawn<T: 'static + Send + FnOnce()>(&self, func: T) -> Result<(), AllocError> {
-+        let init = pin_init!(ClosureWork {
-+            work <- Work::new(kernel::static_lock_class!()),
-+            func: Some(func),
-+        });
-+
-+        self.enqueue(Box::pin_init(init).map_err(|_| AllocError)?);
-+        Ok(())
-+    }
-+}
-+
-+/// A helper type used in `try_spawn`.
-+#[pin_data]
-+struct ClosureWork<T> {
-+    #[pin]
-+    work: Work<ClosureWork<T>>,
-+    func: Option<T>,
-+}
-+
-+impl<T> ClosureWork<T> {
-+    fn project(self: Pin<&mut Self>) -> &mut Option<T> {
-+        // SAFETY: The `func` field is not structurally pinned.
-+        unsafe { &mut self.get_unchecked_mut().func }
-+    }
-+}
-+
-+impl<T: FnOnce()> WorkItem for ClosureWork<T> {
-+    type Pointer = Pin<Box<Self>>;
-+
-+    fn run(mut this: Pin<Box<Self>>) {
-+        if let Some(func) = this.as_mut().project().take() {
-+            (func)()
-+        }
-+    }
- }
- 
- /// A raw work item.
-@@ -347,6 +386,10 @@ unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crate::workqueue::Work<$work_typ
-     )*};
- }
- 
-+impl_has_work! {
-+    impl<T> HasWork<Self> for ClosureWork<T> { self.work }
-+}
-+
- unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Arc<T>
- where
-     T: WorkItem<ID, Pointer = Self>,
 -- 
 2.41.0.255.g8b1d071c50-goog
 
