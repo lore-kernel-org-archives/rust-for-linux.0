@@ -2,116 +2,69 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75BE3EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Jul 2023 10:49:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76BE9EB64DD
+	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Jul 2023 13:17:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230103AbjGKKtn (ORCPT
+        id S229714AbjGKNRq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Jul 2023 06:49:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33848 "EHLO
+        Tue, 11 Jul 2023 09:17:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229903AbjGKKtk (ORCPT
+        with ESMTP id S229491AbjGKNRp (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Jul 2023 06:49:40 -0400
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 147B2E74;
-        Tue, 11 Jul 2023 03:49:39 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.west.internal (Postfix) with ESMTP id AA47632004E7;
-        Tue, 11 Jul 2023 06:49:34 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Tue, 11 Jul 2023 06:49:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-        :content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1689072574; x=1689158974; bh=Tbdbrnoaq3VxVhi4rC7fx0v2ZGZtfQdGNuw
-        gKYtKHTo=; b=agWsRevIiibR93q6r0c+IXVCCE2GFofcH8b+LFKIvEJQxDIGohI
-        ew79TpR46j3c1OaRo8L/nqv71uDu5s3MFVsqZvA6H1Oe8Ynk5AeDI2UBY2uWnOaV
-        5hQYFrDy0T2dBFZST8gP6VfnbMYR5LKR2z+vGSzpXI9BrAj9mWxYb9xvgoMSgOu4
-        Iz75YSmERt/9hD1i+V5xlc8bjOsocfiEgGngbuzRd8z3AeZmeERRizOXDX0n0b7j
-        ltHhVHfJtD83tePEry05rtSNZmdvlXibz05H/EFpl9JaKbo7zjFKeqftPSJkQZ0Z
-        CNqHrw2vcA4q/wrzfls4hg8S8kKd+SpPFuA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-        1689072574; x=1689158974; bh=Tbdbrnoaq3VxVhi4rC7fx0v2ZGZtfQdGNuw
-        gKYtKHTo=; b=cxXF9LJlXkyaVZi+mtMmAwydoPuWxySPAfvvx/eZvo590ry9SKl
-        QSSTWkbiz8/Prtt7LuhOb+RgQfLbh1tAY/Yy1tqwEWE88VXijF+k+UiuCJYEo81f
-        wZ2HPU2TH0KPDuWJK01mthZhclaSrvRDzO2EQgwA0/zIrF/L7thoC+flOQXf8Rlu
-        WUCkAoaUDJ5/BpejIQ2J/NiFa3xY94ycHoVJhywh60WKWQV/7Cwn9DnGQOaee7Cy
-        0Nze6il6gpBPfe8PCrENA37GmWbZx1VgdKSiz6cbxrYoYuz8AQTD4maCbErEMeYO
-        XHdXd+P9AEJQJPaNE6rO9T8jl6O+pEFwlmQ==
-X-ME-Sender: <xms:vjOtZO34J2QyYumRzTTFRqT6U42OMSlE6rsbXiqaNzhsSDP3KuBBww>
-    <xme:vjOtZBEHHNdibQKf09VMI9kFJvmRjFMNvr2DO1Es5DV_O_jQMaKbqeft7wxUW_cri
-    CKGxZBIM7Tu3xWmgg>
-X-ME-Received: <xmr:vjOtZG6gVP7qxCerByNGuOiqtjpfp6nZ3b6x9BTN_6cbiWX1DRNZBi5KbXZhE1leJH3yMtA3fAKCBMY5U8btEplctviiAwWj5E_WHA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrfedtgdefvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefkffggfgfuvfevfhfhjggtgfesthejredttdefjeenucfhrhhomheptehlihgt
-    vgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnhephe
-    duuddvteekvdektdduledugfffhfdugeejgeeuvdevtdetveejheehiefffeegnecuvehl
-    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvgesrh
-    ihhhhlrdhioh
-X-ME-Proxy: <xmx:vjOtZP2OduDpFtI4G3B3gQSzAIgQKgtem8Kz57y7A7HyFIcZlDdw4A>
-    <xmx:vjOtZBH0cYrrhew50MnUN0dMcj_FeCpsg6_dYX_3mgt3C0DvqjxtHw>
-    <xmx:vjOtZI_NXpIAxa6ErEeoz2S87RHq5Vc2SIO8vDF1jWPSl2WNRLlNQQ>
-    <xmx:vjOtZAe-RDjrs1tERWO_0JCD3mZA4lEssxaAZz1_uyBI1Ax4Iv2lAg>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 11 Jul 2023 06:49:31 -0400 (EDT)
-Message-ID: <9c46542e-e756-839a-0bbb-9348cb00658a@ryhl.io>
-Date:   Tue, 11 Jul 2023 12:49:29 +0200
+        Tue, 11 Jul 2023 09:17:45 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6F8F12F;
+        Tue, 11 Jul 2023 06:17:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=cmot2SFBpdbwPrKTco6MWhWJdMWMoNQ1PwTIAFCIClQ=; b=2FrDpfjXbS3nxZWccXVouAZGtn
+        cGfq1BaJMZN/Yy7bfXZNmN8ZqDyb/36C0XuPtpvlnQGHyKBlEPsRJXPI5i740BLIdFV36YWBHMZy+
+        oZVjHB3ayQF46XYSuAWaOWtKpCJPoeGDQ033feHQaUD8WLXyXxVamfD1TC9HUXki66Yc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qJDFF-0012IW-U7; Tue, 11 Jul 2023 15:17:33 +0200
+Date:   Tue, 11 Jul 2023 15:17:33 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc:     kuba@kernel.org, rust-for-linux@vger.kernel.org,
+        netdev@vger.kernel.org, aliceryhl@google.com,
+        miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me
+Subject: Re: [PATCH v2 0/5] Rust abstractions for network device drivers
+Message-ID: <657b43a4-6645-4afe-b60e-269624c1b9ae@lunn.ch>
+References: <20230710073703.147351-1-fujita.tomonori@gmail.com>
+ <20230710112952.6f3c45dd@kernel.org>
+ <20230711.191650.2195478119125867730.ubuntu@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH 3/9] workqueue: introduce `__INIT_WORK_WITH_KEY`
-Content-Language: en-US-large
-To:     rust-for-linux@vger.kernel.org
-Cc:     Lai Jiangshan <jiangshanlai@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Wedson Almeida Filho <walmeida@microsoft.com>,
-        Alice Ryhl <aliceryhl@google.com>, Tejun Heo <tj@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>
-References: <20230711093303.1433770-1-aliceryhl@google.com>
- <20230711093303.1433770-4-aliceryhl@google.com>
-From:   Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20230711093303.1433770-4-aliceryhl@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230711.191650.2195478119125867730.ubuntu@gmail.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 7/11/23 11:32, Alice Ryhl wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
-> 
-> A Rust helper (introduced in a later patch) needs to call
-> `__INIT_WORK` with a passed key, rather than define one in place.
-> 
-> In order to do that, this moves the initialization code from
-> the `__INIT_WORK` macro into a new `__INIT_WORK_WITH_KEY` macro
-> which takes the key as an extra parameter.
-> 
-> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
-> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Acked-by: Tejun Heo <tj@kernel.org>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
+> Or you think that PHY drivers (and probably the abstractions) are
+> relatively simple so merging the abstractions for them is acceptable
+> without a real driver (we could put a real drivers under
+> samples/rust/)?
 
-Oops, I messed up the subject of this one. It was supposed to say
-[PATCH v3 3/9].
+PHY drivers are much simpler than Ethernet drivers. But more
+importantly, the API to the rest of network stack is much much
+smaller. So a binding for a sample driver is going to cover a large
+part of that API, unlike your sample Ethernet driver binding which
+covers a tiny part of the API. The PHY binding is then actually
+useful, unlike the binding for Ethernet.
 
-Sorry about that.
+As for reimplementing an existing driver, vs a new driver for hardware
+which is currently unsupported, that would depend on you. You could
+reach out to some vendors and see if they have devices which are
+missing mainline drivers. See if they will donate an RDK and the
+datasheet in return for a free driver written in Rust. Whole new
+drivers do come along reasonably frequently, so there is probably
+scope for a new driver. Automotive is a big source of new code and
+devices at the moment.
+
+	Andrew
