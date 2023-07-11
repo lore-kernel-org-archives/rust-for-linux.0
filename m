@@ -2,111 +2,130 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70E24EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Jul 2023 07:19:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D85BEB64DC
+	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Jul 2023 09:34:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbjGKHTf (ORCPT
+        id S229581AbjGKJeA (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Jul 2023 03:19:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41552 "EHLO
+        Tue, 11 Jul 2023 05:34:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbjGKHTe (ORCPT
+        with ESMTP id S229491AbjGKJd7 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Jul 2023 03:19:34 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55FC6CE
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jul 2023 00:19:33 -0700 (PDT)
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id F37FC3F730
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jul 2023 07:19:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1689059967;
-        bh=xRON641Prwmt7A4t6EJBbCJmTtEWBykCSOV9am7HjQc=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=WdKwM6xsxFi9H5rh6ZyY2kDVdPTj6u6njS3PSC84kHE38UIt4dWwJ9zyzKKXz1sfL
-         wCySuZh4zxr9d2EdxSt8LCySNZ1Xv2Fo/IKjMqhu1KiRlyhPtTWb1MKHNQORsTvAZO
-         wfYZKPJyYrigZIZvinQkSHXfoT4hOarqFYo6MyuOBDmt/9hBmzhiKr5LifwgqkwTZg
-         4/g/o54zhcb39e9qJ2kRbc5THpH8axlDo50NSEWJwz0gz7m4P1NvkobgHue8lobgs3
-         5e5DE2V1REIxAOhfXmC2pipVURT4yNUSpYhhw1YPfcx2MClWfK2N1HTVmHzfni280k
-         65bvV/VKcVzlQ==
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-98df34aa83aso750111766b.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jul 2023 00:19:27 -0700 (PDT)
+        Tue, 11 Jul 2023 05:33:59 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A864F92
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jul 2023 02:33:58 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-c4e0342c50dso6470519276.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jul 2023 02:33:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1689068038; x=1691660038;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=i+zDEU10wYnr89r/fFOaqQkCw/zLk+nePTObPe5KGak=;
+        b=1/0toChTWWBAndjOWOH9RFI8ug3gqZRQwEc1/yzk+oja/PSEbqdChv9Kry6ZVjdZ92
+         Eng3IzHLuqtXuAdURFSrHtjDEy9A6JmLUL14Nq/Poo7qX8i5Ln2Ku0kFtNudzONYodDd
+         pTaM7lsyVVzcl7E/Tyf9sTbYnC0SDB5oRRMloI2bg5XIVuSfk1yBAVPBXxD0TaWYLWoo
+         a0fFQWYcCygUCnIqelFEujJ+DegjhdOy63yNjndYGKFToh2oOI7u4LJc0QI5vNPQPd90
+         c5WLoT8fa0L1f9BFWCGiOX50YKPbVVMX50NrOHASLiGSzGUEEiza6hcHQzlnrMXOlVEl
+         so8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689059967; x=1691651967;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xRON641Prwmt7A4t6EJBbCJmTtEWBykCSOV9am7HjQc=;
-        b=bJ958Q1DMHS21PYeWd/cBQ5zMevPr4pa6x4PsMoRT7TwvdBeLaSuWjslq8FP1RkR/P
-         VH1azc7Y5LWsH6k8Me4fwh418zGpOZUvcTbysmPQcujALONiwQHgp9oD78kiCMGpOQ2I
-         3sJNZEKlJ7vSvG/JkMqzLSYDKO7njcNTPjaGgThKri7m96HDEWtLu0hreTYe3u2HTX9o
-         v2mLPl5akxgH6yP1qq4nx3yrZp8w3E3W/a82pJ0YUfY1p5MVCQApCdGpmBrG3bTMniQ6
-         9d4bZlwroXEurtfLdnHsqELPuVHnVFx16oX7T+LNvTm5DMCdJiTN++Kd1kEdn2YHgrRG
-         QGLA==
-X-Gm-Message-State: ABy/qLY+CTEHF2ErwZ++0m68KqgX5TRvuapooiyjpZelNIJjfFzeWpOP
-        D5ZCw1gfW31FeNZyTEAgZY2zXkr5atRGn0+o2+bxGgVfKPx1ZyTkRgFeGyNFzhkW0wV4RFn8F+h
-        u3lM+ExALnhHj0MMNzQidH3WzfPS2Vq+wJmakyh2Hv6jyLf6xWO9jBhc=
-X-Received: by 2002:a17:906:d9:b0:98e:2413:952f with SMTP id 25-20020a17090600d900b0098e2413952fmr19698189eji.18.1689059967618;
-        Tue, 11 Jul 2023 00:19:27 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEli/fbeO4KxeIb+IfmtYxn8L0PBBNzCKXxRW4pUu5B2IKJhDL6R2vAN22+FLEOOlntd+n4IQ==
-X-Received: by 2002:a17:906:d9:b0:98e:2413:952f with SMTP id 25-20020a17090600d900b0098e2413952fmr19698159eji.18.1689059967069;
-        Tue, 11 Jul 2023 00:19:27 -0700 (PDT)
-Received: from localhost.localdomain (host-95-234-206-203.retail.telecomitalia.it. [95.234.206.203])
-        by smtp.gmail.com with ESMTPSA id a25-20020a1709062b1900b00992ae4cf3c1sm740573ejg.186.2023.07.11.00.19.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jul 2023 00:19:26 -0700 (PDT)
-From:   Andrea Righi <andrea.righi@canonical.com>
-To:     Miguel Ojeda <ojeda@kernel.org>,
+        d=1e100.net; s=20221208; t=1689068038; x=1691660038;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=i+zDEU10wYnr89r/fFOaqQkCw/zLk+nePTObPe5KGak=;
+        b=b/sNymkuWImcQsgpzy9+3o+kMxizqGCBjPuQOQAAEGi84blujetC+IlDFrPAM7XQNI
+         FfYqBmewmAYervlMgva1ci9yi6OMb6P2B5sNA9L5j6/w3m/RgyHNaMpsekuTcxIPUuJ+
+         uUHJI/ovZhvu2TaPW0lS9b9q2ognV71api8JHkm+76sdO6wT5mFcJDl9ASfhoczm3V44
+         GwcLZY9xWxrJ6WBmsQp+OasO1lh0g4Uobttelnqo0ji5X1Ea0X5erQHAPdsscEClAc+7
+         /mXO10gI4DO4feYvYwDx/iS01QI4MwDGHt7YAp4nzTMUKhTvalvBrqhZTwD+i3l5QVpq
+         s5xQ==
+X-Gm-Message-State: ABy/qLaTjm9SBQnMco9RERo7b9Vjl9XD1xbqVuQ6G9/zakm0Ez2a8+1/
+        U5VF4HJX5FmFRkYTeWBTacO2q7j/NOmcMUlGCOTY/jJfYqIBaKWyjftuNGx2IyzP4InMdvu0BaC
+        EVXuUQuFJ1JkB82ApkYWzNfoRkRjhDE7URZnhM4jWMYl4bmBNdi+gvzjcNZ73hXU6NIIMsViWUA
+        /9jYb4
+X-Google-Smtp-Source: APBJJlG7CVg8ZIjiHugsIIAwsKz38An7XLFFQ67zguULn2KMYeTniDrNRdInRiElbolNDz0ZuyBpq8JoTzIBmpc=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a25:ad54:0:b0:c1a:dc07:1d74 with SMTP id
+ l20-20020a25ad54000000b00c1adc071d74mr135384ybe.0.1689068037722; Tue, 11 Jul
+ 2023 02:33:57 -0700 (PDT)
+Date:   Tue, 11 Jul 2023 09:32:54 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+Message-ID: <20230711093303.1433770-1-aliceryhl@google.com>
+Subject: [PATCH v3 0/9] rust: workqueue: add bindings for the workqueue
+From:   Alice Ryhl <aliceryhl@google.com>
+To:     rust-for-linux@vger.kernel.org, Tejun Heo <tj@kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>
+Cc:     Lai Jiangshan <jiangshanlai@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc:     Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        "=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        Kees Cook <keescook@chromium.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: fix bindgen build error with UBSAN_BOUNDS_STRICT
-Date:   Tue, 11 Jul 2023 09:19:14 +0200
-Message-Id: <20230711071914.133946-1-andrea.righi@canonical.com>
-X-Mailer: git-send-email 2.40.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Alice Ryhl <aliceryhl@google.com>,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-With commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC") if
-CONFIG_UBSAN is enabled and gcc supports -fsanitize=bounds-strict, we
-can trigger the following build error due to bindgen lacking support for
-this additional build option:
+This patchset contains Rust bindings for the kernel workqueue.
 
-   BINDGEN rust/bindings/bindings_generated.rs
- error: unsupported argument 'bounds-strict' to option '-fsanitize='
+One of the primary goals behind the design used in this patch is that we
+must support embedding the `work_struct` as a field in user-provided
+types, because this allows you to submit things to the workqueue without
+having to allocate, making the submission infallible. If we didn't have
+to support this, then the patch would be much simpler. One of the main
+things that make it complicated is that we must ensure that the function
+pointer in the `work_struct` is compatible with the struct it is
+contained within.
 
-Fix by adding -fsanitize=bounds-strict to the list of skipped gcc flags
-for bindgen.
+The original version of the workqueue bindings was written by Wedson,
+but I have rewritten much of it so that it uses the pin-init
+infrastructure and can be used with containers other than `Arc`.
 
-Fixes: 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC")
-Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
----
- rust/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes v2 -> v3:
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 7c9d9f11aec5..4124bfa01798 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -257,7 +257,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
- 	-fno-partial-inlining -fplugin-arg-arm_ssp_per_task_plugin-% \
- 	-fno-reorder-blocks -fno-allow-store-data-races -fasan-shadow-offset=% \
- 	-fzero-call-used-regs=% -fno-stack-clash-protection \
--	-fno-inline-functions-called-once \
-+	-fno-inline-functions-called-once -fsanitize=bounds-strict \
- 	--param=% --param asan-%
- 
- # Derived from `scripts/Makefile.clang`.
+ * Moved dependency patches so they are first.
+ * Various documentation and comment improvements.
+ * Changed implementation of `Arc::from_raw`.
+ * Use __INIT_WORK_WITH_KEY instead of __INIT_WORK and use `LockClassKey`
+   where appropriate.
+ * Removed PhantomPinned from Work. This depends on [1] for correctness.
+
+More detailed changelogs can be found on the individual patches.
+
+v1: https://lore.kernel.org/all/20230517203119.3160435-1-aliceryhl@google.com/
+v2: https://lore.kernel.org/all/20230601134946.3887870-1-aliceryhl@google.com/
+
+[1]: https://lore.kernel.org/all/20230630150216.109789-1-benno.lossin@proton.me/
+
+Alice Ryhl (5):
+  rust: workqueue: add low-level workqueue bindings
+  rust: workqueue: add helper for defining work_struct fields
+  rust: workqueue: implement `WorkItemPointer` for pointer types
+  rust: workqueue: add `try_spawn` helper method
+  rust: workqueue: add examples
+
+Wedson Almeida Filho (4):
+  rust: add offset_of! macro
+  rust: sync: add `Arc::{from_raw, into_raw}`
+  workqueue: introduce `__INIT_WORK_WITH_KEY`
+  rust: workqueue: define built-in queues
+
+ include/linux/workqueue.h       |  17 +-
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers.c                  |   8 +
+ rust/kernel/lib.rs              |  39 ++
+ rust/kernel/sync/arc.rs         |  49 ++-
+ rust/kernel/workqueue.rs        | 659 ++++++++++++++++++++++++++++++++
+ scripts/Makefile.build          |   2 +-
+ 7 files changed, 767 insertions(+), 8 deletions(-)
+ create mode 100644 rust/kernel/workqueue.rs
+
+
+base-commit: d2e3115d717197cb2bc020dd1f06b06538474ac3
 -- 
-2.40.1
+2.41.0.255.g8b1d071c50-goog
 
