@@ -2,69 +2,124 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76BE9EB64DD
-	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Jul 2023 13:17:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F465C0015E
+	for <rust-for-linux@archiver.kernel.org>; Tue, 11 Jul 2023 14:39:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbjGKNRq (ORCPT
+        id S230048AbjGKOjm (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Jul 2023 09:17:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43696 "EHLO
+        Tue, 11 Jul 2023 10:39:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbjGKNRp (ORCPT
+        with ESMTP id S229742AbjGKOjk (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Jul 2023 09:17:45 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6F8F12F;
-        Tue, 11 Jul 2023 06:17:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=cmot2SFBpdbwPrKTco6MWhWJdMWMoNQ1PwTIAFCIClQ=; b=2FrDpfjXbS3nxZWccXVouAZGtn
-        cGfq1BaJMZN/Yy7bfXZNmN8ZqDyb/36C0XuPtpvlnQGHyKBlEPsRJXPI5i740BLIdFV36YWBHMZy+
-        oZVjHB3ayQF46XYSuAWaOWtKpCJPoeGDQ033feHQaUD8WLXyXxVamfD1TC9HUXki66Yc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qJDFF-0012IW-U7; Tue, 11 Jul 2023 15:17:33 +0200
-Date:   Tue, 11 Jul 2023 15:17:33 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc:     kuba@kernel.org, rust-for-linux@vger.kernel.org,
-        netdev@vger.kernel.org, aliceryhl@google.com,
-        miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me
-Subject: Re: [PATCH v2 0/5] Rust abstractions for network device drivers
-Message-ID: <657b43a4-6645-4afe-b60e-269624c1b9ae@lunn.ch>
-References: <20230710073703.147351-1-fujita.tomonori@gmail.com>
- <20230710112952.6f3c45dd@kernel.org>
- <20230711.191650.2195478119125867730.ubuntu@gmail.com>
+        Tue, 11 Jul 2023 10:39:40 -0400
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ADFB9C;
+        Tue, 11 Jul 2023 07:39:40 -0700 (PDT)
+Received: by mail-yb1-xb2e.google.com with SMTP id 3f1490d57ef6-c2cf4e61bc6so6926405276.3;
+        Tue, 11 Jul 2023 07:39:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689086379; x=1691678379;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KtTSHdQg0YCAtxJ0hEuqKRNYfw6pZc0XMvsle82y98s=;
+        b=TLY7AgKRbyH6OnSPJ9DlYOyb0tY23mdMyNZyMPVQJwFRFxmkYyuycEFFv+r/0Cvlfb
+         cXnx3pUDbdhdB7JFCxLw/wc6DL1DOGuRiVXpgQnfv4YwuUYgXrKKu7bP/wCEWApMmnKP
+         363lfl8o7ZY/Kuwm48ioU2u57auUY5mW0De/lS9s7niiohlZMXlpdHCiMJjD3Ap5VleT
+         eOeLUp6uGt9gg36d7ytKY/RoctpWa4iTtqdAY8AW2AOin6OdgNJYcg85NLtjI7XwOcG8
+         MEsChbAT2uHZoPFSIR9QSVpHTXER9HL7JpuF7BEMOXCxmsASFZwQY4L9YnZlomyeRaQx
+         8K0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689086379; x=1691678379;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KtTSHdQg0YCAtxJ0hEuqKRNYfw6pZc0XMvsle82y98s=;
+        b=W2cPojTkSNbduliA6dsOUVSgAockwugoWP5RWndjEqL07DSbFK09dmooqVk1JDrXZu
+         08tMQLQkBc+724eQPM0MzSyBIvfyfpJcQ8P8NpJXQ28bwpJ3hj/oKjMdvwP8fzKi3DRt
+         oNd3M5wQWhfUhKAZ7xDJRXYWVtmFYNbwUESVkaj/LLBcBKBFMTnECQqr8qE0PqqrsjNb
+         EAtKGg9ak9ivxHMqjMXPUapVh2s6lTP13CV7NHHjnRRWKJb0mXIygaEzYpCjs+Fvndz/
+         mlc9HVjqPj9fvNZHZe7YIstnf+UUSMJ7/XWii9CbIb/B+7dKbxq7VQNefVw0flkh4TqR
+         ugiQ==
+X-Gm-Message-State: ABy/qLbvxJ2aOHdmRfU5r94RCBrpQg2o6THlttsWlBTFUe3q1Vh6sjYa
+        PZQCyyzEYxMU2zYM8lrNu3wks3J1PQlGNppb04p7jTn0pcM=
+X-Google-Smtp-Source: APBJJlHt7LkksBX4dKb9ZjFQYZ4KsGxHurwvB30A58g+4iZVeHoPPXjmuXGg/AHzUHUgF9d+bkWo55Sr+FzdfGbqS+g=
+X-Received: by 2002:a0d:fb03:0:b0:565:cf47:7331 with SMTP id
+ l3-20020a0dfb03000000b00565cf477331mr19036939ywf.2.1689086379216; Tue, 11 Jul
+ 2023 07:39:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230711.191650.2195478119125867730.ubuntu@gmail.com>
+References: <20230704052136.155445-1-andrea.righi@canonical.com>
+In-Reply-To: <20230704052136.155445-1-andrea.righi@canonical.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 11 Jul 2023 16:39:27 +0200
+Message-ID: <CANiq72k6um58AAydgkzhkmAdd8t1quzeGaPsR7-pS_ZXYf0-YQ@mail.gmail.com>
+Subject: Re: [PATCH] btf, scripts: rust: drop is_rust_module.sh
+To:     Andrea Righi <andrea.righi@canonical.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
+        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kbuild@vger.kernel.org, llvm@lists.linux.dev,
+        bpf <bpf@vger.kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> Or you think that PHY drivers (and probably the abstractions) are
-> relatively simple so merging the abstractions for them is acceptable
-> without a real driver (we could put a real drivers under
-> samples/rust/)?
+On Tue, Jul 4, 2023 at 7:21=E2=80=AFAM Andrea Righi <andrea.righi@canonical=
+.com> wrote:
+>
+> With commit c1177979af9c ("btf, scripts: Exclude Rust CUs with pahole")
+> we are now able to use pahole directly to identify Rust compilation
+> units (CUs) and exclude them from generating BTF debugging information
+> (when DEBUG_INFO_BTF is enabled).
+>
+> And if pahole doesn't support the --lang-exclude flag, we can't enable
+> both RUST and DEBUG_INFO_BTF at the same time.
+>
+> So, in any case, the script is_rust_module.sh is just redundant and we
+> can drop it.
+>
+> NOTE: we may also be able to drop the "Rust loadable module" mark
+> inside Rust modules, but it seems safer to keep it for now to make sure
+> we are not breaking any external tool that may potentially rely on it.
 
-PHY drivers are much simpler than Ethernet drivers. But more
-importantly, the API to the rest of network stack is much much
-smaller. So a binding for a sample driver is going to cover a large
-part of that API, unlike your sample Ethernet driver binding which
-covers a tiny part of the API. The PHY binding is then actually
-useful, unlike the binding for Ethernet.
+Just to recall the history of these changes:
 
-As for reimplementing an existing driver, vs a new driver for hardware
-which is currently unsupported, that would depend on you. You could
-reach out to some vendors and see if they have devices which are
-missing mainline drivers. See if they will donate an RDK and the
-datasheet in return for a free driver written in Rust. Whole new
-drivers do come along reasonably frequently, so there is probably
-scope for a new driver. Automotive is a big source of new code and
-devices at the moment.
+  - The script got added in order to skip the BTF generation in the
+`BTF [M]` step (under `DEBUG_INFO_BTF_MODULES`, which depends on
+`DEBUG_INFO_BTF`).
 
-	Andrew
+  - A few months later, it was noticed that C modules couldn't be
+loaded if Rust was enabled, due to the base BTF info in `vmlinux`.
+That triggered the eventual addition of `--lang_exclude=3D` to `pahole`,
+but meanwhile, we made `DEBUG_INFO_BTF` and `RUST` exclusive.
+
+  - Now, this patch removes the script because having a newer `pahole`
+also correctly skips the Rust CUs in the `BTF [M]` steps (i.e. and not
+just the `vmlinux` one), since we pass `--lang_exclude=3D` to both cases
+(`link-vmlinux.sh` and `Makefile.modfinal`), if I understand correctly
+(the script could, in principle, have been removed even before
+`pahole` got the new feature, given the exclusivity of the options).
+
+If this is all correct, then the patch looks good to me. I am Cc'ing
+Arnaldo, Martin and the BPF list.
+
+If this goes through the Rust tree, I will also pick the older `Reviewed-by=
+`s.
+
+Thanks!
+
+Cheers,
+Miguel
