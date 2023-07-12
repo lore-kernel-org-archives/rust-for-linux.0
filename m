@@ -2,99 +2,198 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F1D5EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Jul 2023 00:28:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 727E8EB64D9
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Jul 2023 06:36:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229521AbjGLA2E (ORCPT
+        id S232196AbjGLGgq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 11 Jul 2023 20:28:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59886 "EHLO
+        Wed, 12 Jul 2023 02:36:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229512AbjGLA2D (ORCPT
+        with ESMTP id S231641AbjGLGgW (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 11 Jul 2023 20:28:03 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5DBDDC;
-        Tue, 11 Jul 2023 17:28:02 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1b8c81e36c0so31703625ad.0;
-        Tue, 11 Jul 2023 17:28:02 -0700 (PDT)
+        Wed, 12 Jul 2023 02:36:22 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7912D2704;
+        Tue, 11 Jul 2023 23:34:16 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-98e39784a85so85573166b.1;
+        Tue, 11 Jul 2023 23:34:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689121682; x=1691713682;
+        d=gmail.com; s=20221208; t=1689143629; x=1691735629;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2pyRQfW5DbXcPYwgx/o8m7UZH6m6LX8pSrhSqkuWjO8=;
-        b=aWCWG4qSdsaivaMi9gCytkAWE93sAreOfi+lQ4zwRqmBtdpKr2BVh4dmDjEARSvQqy
-         yhv8D+FCnaDTJ2T1hgnZVknaHQhe+FRBcj6qtnpSESRWcyPWMm/RdkdD5te52AoFHvQS
-         S4VUIv0SQYrFAUGNOPCdOrfIkupwIltkgEBt6OUVpInSx7gLMJhYZrf8K9/pmlHVJU9Z
-         8Jh4KE9KaDhnBTMUd6TWl+Bn9nuFas74pti+BQWmiVliWMG200g+qkA2FGTv3+p8P/4c
-         uIWhtvQ0L9APJnM2RZ+EH9ei1LnEj6dc6VB6t5lBeJCLOOox/X5G5yRYYNmtGqWUBmUI
-         vvig==
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=56MvB/3J+JBad1W9kmthsh6h04x3MOa3xhholvgYzw0=;
+        b=kz0Icblc2nOJf9B6GXFsVTBSIi4xIXs1OfAGvyjNu6s3gUpwbZmbRCF7OZVFq9ZGwm
+         4xBrIC8eYWetaUj9dS7qC1kEfFeG9/M5rFR7h6aUjkDunzPBBn3hWhH8nncb6iodBKE1
+         f9wIwa7zddZsQTfQe0S2yQ1vHtAarEENPTdzQhZnBnHP+mi0Md6jEzNWbRbociSCW/Mc
+         KXcAHhDfmueBCzh52I2MlG/K9Tqym047xSCQr2T4nYMr7KSCfZam0W3CT3zKNP/gPjlI
+         amnf+BqIVUd7g1AeyYgRMSljANqYd1KEb+6ZM1BjIH8G2ud5oOsi3cAG0OvGGMJ33FRR
+         pLVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689121682; x=1691713682;
+        d=1e100.net; s=20221208; t=1689143629; x=1691735629;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2pyRQfW5DbXcPYwgx/o8m7UZH6m6LX8pSrhSqkuWjO8=;
-        b=H4EzmMvRV0FjtdLpuuK7xBYdBueBrmZIbKBZny9KqGPudcE0H35NHUpxIBFu+thr59
-         Aw05p12n6Gmz5tc6wDzRcJYMvtt8jpOgKAC49LyfptnQFGAazGctczA3NpPh1r2yTnHX
-         zOksAU1HfQeaG9KtHxUX9Rh/zEpTxG+TCLXsDhB5taFQ4alWyVsEQ3rzITYhIEpQJ4X2
-         RFwgP6bbgEnepBxrix6HY3Qo6RAUaLSCIywcIMnY/8zv/i5kO2aWD57ih7H9jMmFBjNY
-         URwliHoQq1ApzJzmVnFmibUcoxmSGWzYnpCMSQ4DRDFGcjLLRxYGHBOSXGoBilRDHxqO
-         S5Mw==
-X-Gm-Message-State: ABy/qLY+G3F8Z7xjJMTHbMoLfPbAE42RMMOQ3/YR7ZbG6YzhDHssxXqV
-        VYWTekkZyYG14UaAh+4JDxQ=
-X-Google-Smtp-Source: APBJJlEeIQp9RZX1tZsYqnDkzgQVsemzMc1ww2QpkTmRGQTLSOAegaw44Fi0YF210vQOK/OY77GS5A==
-X-Received: by 2002:a17:902:b7c1:b0:1b9:e8d9:7e42 with SMTP id v1-20020a170902b7c100b001b9e8d97e42mr3985454plz.69.1689121682211;
-        Tue, 11 Jul 2023 17:28:02 -0700 (PDT)
-Received: from localhost ([2620:10d:c090:400::5:9374])
-        by smtp.gmail.com with ESMTPSA id c16-20020a170902c2d000b001b89612dc7dsm2535444pla.142.2023.07.11.17.28.01
+        bh=56MvB/3J+JBad1W9kmthsh6h04x3MOa3xhholvgYzw0=;
+        b=crG1YDlF8AmV6AldEw8j1gkA75yltgvM1QhtW9PXNcF8Btk+A+YsgOGlyx+ex1JvVY
+         rbpUuj82NZusZTSKqH7UoRGtfDnK1+hx5bFDxXP5qdGD5ufU/w4xaAEiDcun67aMOUll
+         cy+2Jk51hljJn49wr3jl8CvQYIf6SDsB7RzhNcbzRhYggyeZlKGyjK1h1/XPPDmn0tiG
+         gL3w+YPSR3IEEso/00ZHzxiGzO8LWqpwpEbNHe+CNheW7WcY4mOngA+t/SmnRBvhy+Bl
+         ewA4EmwknVOvluqtotKVPwQZ5Ecx+24y+VBSmftQkq6LmVrnf/vaZ5T8EiY1W338WdcB
+         v3Jg==
+X-Gm-Message-State: ABy/qLbzXSVl5LFm1Rx2mcgKH2pfte4hrm9ke/Yguex3tv1RAGzjb6TY
+        5Vr5aULT4B0s8j1aeB8wbYw=
+X-Google-Smtp-Source: APBJJlHT05ZQoF6ZT6j4+rJSGyHdyiBTHn+vCRN6hsRI1moTFmRe6AdNpPaWo4xB4RhTr9H53qu+6A==
+X-Received: by 2002:a17:906:11e:b0:988:15f4:fdba with SMTP id 30-20020a170906011e00b0098815f4fdbamr1360656eje.14.1689143628737;
+        Tue, 11 Jul 2023 23:33:48 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id qw5-20020a170906fca500b00992ed412c74sm2080021ejb.88.2023.07.11.23.33.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jul 2023 17:28:01 -0700 (PDT)
-Sender: Tejun Heo <htejun@gmail.com>
-Date:   Tue, 11 Jul 2023 14:27:59 -1000
-From:   Tejun Heo <tj@kernel.org>
-To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc:     Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+        Tue, 11 Jul 2023 23:33:48 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailauth.nyi.internal (Postfix) with ESMTP id D86C527C0054;
+        Wed, 12 Jul 2023 02:33:45 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Wed, 12 Jul 2023 02:33:45 -0400
+X-ME-Sender: <xms:SUmuZKdRNrlikRoDL6d4xzhJPu2aBW0sjgx-UKpTil8dXeAFVpqYtw>
+    <xme:SUmuZEPqZgn_lKhliYAHjYphQGWslgFVikemg2ivHYjP0_87siAwanTta5iU3CA-_
+    wEtFwEKkMgKl_n6zA>
+X-ME-Received: <xmr:SUmuZLhIbn7SkpR_RaRAtLPaZiNQynUZfZkj3VtMcajPgmKITMEukXxhNjM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrfedugddutdejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteehuddujedvkedtkeefgedv
+    vdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
+    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
+    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:SUmuZH-yzci95aWcFY3r11zLGVkKuBRj7UxDmNO7weaHddrtQquyIg>
+    <xmx:SUmuZGveSjnSs5n85ud5xfcE9k2hgtXxfP8I00kzL6dwAZ-kwgSlTw>
+    <xmx:SUmuZOFxP_5KMekgJCIKmjKfoxXFKVNE2q8x6staJ0WIflHfn9fY9g>
+    <xmx:SUmuZHHvWlvbEMvwcL_uTy_sA4Odrd62iCoSB4X4tQ1TQmjPPadvEQ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 12 Jul 2023 02:33:44 -0400 (EDT)
+Date:   Tue, 11 Jul 2023 23:33:42 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Alice Ryhl <aliceryhl@google.com>
+Cc:     rust-for-linux@vger.kernel.org, Tejun Heo <tj@kernel.org>,
         Miguel Ojeda <ojeda@kernel.org>,
         Lai Jiangshan <jiangshanlai@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Gary Guo <gary@garyguo.net>,
         =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v3 0/9] rust: workqueue: add bindings for the workqueue
-Message-ID: <ZK3zj4xPBD0NfaxM@slm.duckdns.org>
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH 3/9] workqueue: introduce `__INIT_WORK_WITH_KEY`
+Message-ID: <ZK5JRhXsV7RHey9V@Boquns-Mac-mini.home>
 References: <20230711093303.1433770-1-aliceryhl@google.com>
- <ZK3VEPeBEyErmerR@slm.duckdns.org>
- <CANiq72nktgf_j-+S7snysQgwqeqB12sfjc-vrLsnOUKiZZ5WJw@mail.gmail.com>
+ <20230711093303.1433770-4-aliceryhl@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANiq72nktgf_j-+S7snysQgwqeqB12sfjc-vrLsnOUKiZZ5WJw@mail.gmail.com>
+In-Reply-To: <20230711093303.1433770-4-aliceryhl@google.com>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Hello, Miguel.
-
-On Wed, Jul 12, 2023 at 01:44:47AM +0200, Miguel Ojeda wrote:
-> > Please feel free to route the patches through the rust tree. If you want
-> > them to go through the workqueue tree, please let me know.
+On Tue, Jul 11, 2023 at 09:32:57AM +0000, Alice Ryhl wrote:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
 > 
-> As you prefer -- if you are willing to take them and/or maintain or
-> co-maintain patches to it, and it is not a lot of work for you, then
-> it would be great to get you involved, of course. Otherwise, we can
-> apply them to the Rust tree too.
+> A Rust helper (introduced in a later patch) needs to call
+> `__INIT_WORK` with a passed key, rather than define one in place.
+> 
+> In order to do that, this moves the initialization code from
+> the `__INIT_WORK` macro into a new `__INIT_WORK_WITH_KEY` macro
+> which takes the key as an extra parameter.
+> 
+> Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Acked-by: Tejun Heo <tj@kernel.org>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Taken from [1]. Wedson's email updated at Wedson's request. Tejun's
+> Acked-by taken from [2].
+> 
+> [1]: https://lore.kernel.org/rust-for-linux/20220802015052.10452-7-ojeda@kernel.org/
+> [2]: https://lore.kernel.org/rust-for-linux/Yvq3IfK4+C94AeE2@slm.duckdns.org/
+> 
+>  include/linux/workqueue.h | 31 +++++++++++++++++++------------
+>  1 file changed, 19 insertions(+), 12 deletions(-)
+> 
+> diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
+> index 3992c994787f..c91a84a4723d 100644
+> --- a/include/linux/workqueue.h
+> +++ b/include/linux/workqueue.h
+> @@ -221,24 +221,31 @@ static inline unsigned int work_static(struct work_struct *work) { return 0; }
+>   * to generate better code.
+>   */
+>  #ifdef CONFIG_LOCKDEP
+> +#define __INIT_WORK_WITH_KEY(_work, _func, _onstack, _key)		\
+> +	do {								\
+> +		__init_work((_work), _onstack);				\
+> +		(_work)->data = (atomic_long_t) WORK_DATA_INIT();	\
+> +		lockdep_init_map(&(_work)->lockdep_map, "(work_completion)"#_work, _key, 0); \
 
-It's not a lot of overhead for me but I'm also not sure whether I can be
-actually useful. Once folks are happy with it, I can create a separate
-branch for this series in the wq tree so that others can easily pull from
-it. Let's see how that goes and if my involvement turns out to be pointless
-we can route future changes through the rust tree.
+The lock class name is generated as static string via C macro
+"(work_completion)"#_work, and since Rust side helper will wrap it as
+a function, so all work items in Rust will have the same lock class name
+i.e. "(work_completion)work". ;-) 
 
-Thanks.
+Those names are for lockdep report readers to locate which lock class
+cause the problem, so it make senses to have different names for
+different work item types. Maybe change the C side function as what I
+suggested[1], and use `core::any::typename::<Self>()` as the name? (Self
+is `Work` since it's called in `Work::new`).
 
--- 
-tejun
+[1]: https://lore.kernel.org/rust-for-linux/ZHoZuIz97JN1VSBf@boqun-archlinux/
+
+Regards,
+Boqun
+
+> +		INIT_LIST_HEAD(&(_work)->entry);			\
+> +		(_work)->func = (_func);				\
+> +	} while (0)
+> +
+>  #define __INIT_WORK(_work, _func, _onstack)				\
+>  	do {								\
+>  		static struct lock_class_key __key;			\
+> -									\
+> -		__init_work((_work), _onstack);				\
+> -		(_work)->data = (atomic_long_t) WORK_DATA_INIT();	\
+> -		lockdep_init_map(&(_work)->lockdep_map, "(work_completion)"#_work, &__key, 0); \
+> -		INIT_LIST_HEAD(&(_work)->entry);			\
+> -		(_work)->func = (_func);				\
+> +		__INIT_WORK_WITH_KEY(_work, _func, _onstack, &__key);	\
+>  	} while (0)
+>  #else
+> +#define __INIT_WORK_WITH_KEY(_work, _func, _onstack, _key)		\
+> +	do {								\
+> +		__init_work((_work), _onstack);				\
+> +		(_work)->data = (atomic_long_t) WORK_DATA_INIT();	\
+> +		INIT_LIST_HEAD(&(_work)->entry);			\
+> +		(_work)->func = (_func);				\
+> +	} while (0)
+> +
+>  #define __INIT_WORK(_work, _func, _onstack)				\
+> -	do {								\
+> -		__init_work((_work), _onstack);				\
+> -		(_work)->data = (atomic_long_t) WORK_DATA_INIT();	\
+> -		INIT_LIST_HEAD(&(_work)->entry);			\
+> -		(_work)->func = (_func);				\
+> -	} while (0)
+> +	__INIT_WORK_WITH_KEY(_work, _func, _onstack, NULL)
+>  #endif
+>  
+>  #define INIT_WORK(_work, _func)						\
+> -- 
+> 2.41.0.255.g8b1d071c50-goog
+> 
