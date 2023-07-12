@@ -2,88 +2,100 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F6E1EB64DA
-	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Jul 2023 16:37:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB0F2EB64DA
+	for <rust-for-linux@archiver.kernel.org>; Wed, 12 Jul 2023 20:46:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230048AbjGLQhW (ORCPT
+        id S232014AbjGLUqc (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Jul 2023 12:37:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40650 "EHLO
+        Wed, 12 Jul 2023 16:46:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232124AbjGLQhV (ORCPT
+        with ESMTP id S231580AbjGLUqb (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Jul 2023 12:37:21 -0400
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 734E01BF2;
-        Wed, 12 Jul 2023 09:37:09 -0700 (PDT)
-Received: by mail-ot1-x334.google.com with SMTP id 46e09a7af769-6b8b6f7399aso6177024a34.1;
-        Wed, 12 Jul 2023 09:37:09 -0700 (PDT)
+        Wed, 12 Jul 2023 16:46:31 -0400
+Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFEF4A2;
+        Wed, 12 Jul 2023 13:46:30 -0700 (PDT)
+Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-1b06a46e1a9so5903664fac.2;
+        Wed, 12 Jul 2023 13:46:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689179828; x=1691771828;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kmKyOnNmUTgEJLuCWcdcYvSh4JHTJkDxRam3/lA8n28=;
-        b=sq9fjSOdWsLlfQWyRmcEifnlqGQn9TpJbxNtbNHmAgHbMAEvEy9Zxfc84ukbvefysE
-         Sg+7pFP5xIeg1me6sGQEx0SSFScQc85gl2kLGOqKCEkch3sZnfuR9rWwxvQ/mSuDZMmt
-         1vBfSU2Tk1ttFA8Vgvs3NAaZa0itPPJXiwkiDupi76msNB/rBE5ozMXbr/tJDYu0ajo2
-         OPw5O9KMZLY0EPnmV+a7J2dMPeVWnlw0gR5baIyR8vpthW3yzHTtbjJtprZD6Iq7MJLU
-         9HDUfGDWrj0zX5vcQzFQyJCG5Z2AAf8ITRMC/cpqc6i6dTWq0nbwxcxlsrv5EFAZDzzR
-         TdXw==
+        d=gmail.com; s=20221208; t=1689194790; x=1691786790;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hjYp/GGGt1suSt9XKydx09ugNwhwrtHkiMgpJkM/lOc=;
+        b=ncfNislj9zkZDbzfooNQKCoi3fZ/tNoj/jW86RpRgvnL/xWidIpWcLH6ayF7AetyXO
+         qAHUWsEqwvY/NGG3fsTp3T5S1FjT/PNbxOToVwEQ82BTZcQAerhxx85WCv+6o+sVl5oF
+         XmOVP70uv/1ZWlrvgrOlOXDPHUprmR+TjTvWD8V9/i5t9gafRdk/jZI6bg0k1+FuwnIr
+         KDe5lzQr+yOdL9AFvjfJwOFbG9AxD/BxnV7lqt9o4cpBP1ytub13wm+8xwY46e7QiBIF
+         FJcf4gGhW5HVpz9WAXW8y74oeWD0SGnqtQNxrrbAWkLXZPuzgApTeQiyIVeFFzaghT2V
+         I36Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689179828; x=1691771828;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kmKyOnNmUTgEJLuCWcdcYvSh4JHTJkDxRam3/lA8n28=;
-        b=eLGCb5uubLkOnEDaWgdYCTGtOIHqI0qU8JyVvWQw6AX4dkk8u6c2cNWn2wmogKtN8i
-         YMv0tO5EoTcLb4vczxZoVetUdt4NJeR24clWj5LYk3B6onqq9qQ4b4gUqGD+/kyUYPtF
-         9exTrgfo4VPMDnuM0tRIC0NJD+ztsqAT5DU9uO6X1sM78+YTYR3DN6pZAYl+uDXJ9ggH
-         /r2e3YFlucCVZkFPFSQVGlqYIUR53D/3pu106l5sQWNPWgFqpwi88iW0XjBjQwfFRTu6
-         3WoxMhFZ1d4QfG7yQuwLE+xgh1RKqC4a9fkM7LVCGRA/8AK8MBHOHTXTDotv1I6FXeUi
-         1+Hg==
-X-Gm-Message-State: ABy/qLbITUBjptZXP2tXxGkRFpCUG6wnRsfc1fBm895LUfaC3ku4hid+
-        dYCVwNaSKZAV9NmQma5Q/LFVL0ZRt+G/43j1mYU=
-X-Google-Smtp-Source: APBJJlEX/fKsBhslCfhWuK6jrdf/dbfJerv3ymjaUsU9DvA6tIoxIM2iPjeZ42d/Pudpe5i/v77731CUHtnc3RNt8WY=
-X-Received: by 2002:a9d:7445:0:b0:6b9:a399:85b3 with SMTP id
- p5-20020a9d7445000000b006b9a39985b3mr1764729otk.34.1689179828673; Wed, 12 Jul
- 2023 09:37:08 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1689194790; x=1691786790;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hjYp/GGGt1suSt9XKydx09ugNwhwrtHkiMgpJkM/lOc=;
+        b=SEvN85z8Nv2N0O/UDfShCwl3KMfGOaODmaeWHNs9vlF9Zw2Ys+90yGB2Vt3ME48/o/
+         NbjqiqM9okdfYrtVW590iFeHx7xHCPaYzcf4npmA6YSZKanomHmaBxhEmLtLVFUH+LdT
+         rKTvli+xYBp3Jfx5iYjg2yllAxLwmWs9rczyyLpZz63pJPlHH2m5Y9rwsg77NK/Ffh8H
+         7uUpNOwEnzj0AQhRMdP3y7Z9IBJGdX9I56rPevbCiJbQjaMwHMepHh2e844fhsGQ/uro
+         lMiHN7qUT1m0G5YbsBLYItq811XOH7OhVCJif0TJXNwoJhCGI8nXsJDMI60ylKl305YY
+         fk9g==
+X-Gm-Message-State: ABy/qLYG996LjYsYng+LR+OmonI9bDvfLFK3wIEGAVTZGhbWoIvFlqd1
+        7ODE6pvx65a/IIwkJsavG6Y=
+X-Google-Smtp-Source: APBJJlGB8IZyS5AEyRlG5pMJgxfMJIQfz18Bl/ywWLjb12fdCb0ahZIw7N3RXMtz/5OOeQxQTXct2g==
+X-Received: by 2002:a05:6870:e313:b0:1b7:8950:f583 with SMTP id z19-20020a056870e31300b001b78950f583mr297915oad.33.1689194789797;
+        Wed, 12 Jul 2023 13:46:29 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id ds53-20020a0568705b3500b001a6d15fc52fsm2397384oab.4.2023.07.12.13.46.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Jul 2023 13:46:29 -0700 (PDT)
+Message-ID: <4b92e8be-32c8-0ac4-723f-59f2fc42e6b3@gmail.com>
+Date:   Wed, 12 Jul 2023 17:33:12 -0300
 MIME-Version: 1.0
-References: <20230711093303.1433770-1-aliceryhl@google.com>
- <ZK3VEPeBEyErmerR@slm.duckdns.org> <CANiq72nktgf_j-+S7snysQgwqeqB12sfjc-vrLsnOUKiZZ5WJw@mail.gmail.com>
- <ZK3zj4xPBD0NfaxM@slm.duckdns.org>
-In-Reply-To: <ZK3zj4xPBD0NfaxM@slm.duckdns.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Wed, 12 Jul 2023 18:36:57 +0200
-Message-ID: <CANiq72mBNS7Vswn+3oLEB_Lj_TrWLY2HK2z9va-OBDpztywjeQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/9] rust: workqueue: add bindings for the workqueue
-To:     Tejun Heo <tj@kernel.org>
-Cc:     Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 2/9] rust: sync: add `Arc::{from_raw, into_raw}`
+Content-Language: en-US
+To:     Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+        Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
+Cc:     Lai Jiangshan <jiangshanlai@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Benno Lossin <benno.lossin@proton.me>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Wedson Almeida Filho <walmeida@microsoft.com>
+References: <20230711093303.1433770-1-aliceryhl@google.com>
+ <20230711093303.1433770-3-aliceryhl@google.com>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230711093303.1433770-3-aliceryhl@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Wed, Jul 12, 2023 at 2:28=E2=80=AFAM Tejun Heo <tj@kernel.org> wrote:
->
-> It's not a lot of overhead for me but I'm also not sure whether I can be
-> actually useful. Once folks are happy with it, I can create a separate
-> branch for this series in the wq tree so that others can easily pull from
-> it. Let's see how that goes and if my involvement turns out to be pointle=
-ss
-> we can route future changes through the rust tree.
+On 7/11/23 06:32, Alice Ryhl wrote:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
+> 
+> These methods can be used to turn an `Arc` into a raw pointer and back,
+> in a way that preserves the metadata for fat pointers.
+> 
+> This is done using the unstable ptr_metadata feature [1]. However, it
+> could also be done using the unstable pointer_byte_offsets feature [2],
+> which is likely to have a shorter path to stabilization than
+> ptr_metadata.
+> 
+> Link: https://github.com/rust-lang/rust/issues/81513 [1]
+> Link: https://github.com/rust-lang/rust/issues/96283 [2]
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> ---
+> [...]
 
-Sounds good, thanks! (and the branch would indeed be very good, in
-case we/someone need it in the Rust tree this cycle too).
-
-Cheers,
-Miguel
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
