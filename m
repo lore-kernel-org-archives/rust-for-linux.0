@@ -2,98 +2,101 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF71CEB64DA
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 13:47:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55718EB64DA
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 13:58:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235081AbjGNNrD (ORCPT
+        id S235656AbjGNN62 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Jul 2023 09:47:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44980 "EHLO
+        Fri, 14 Jul 2023 09:58:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235586AbjGNNrD (ORCPT
+        with ESMTP id S232113AbjGNN61 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Jul 2023 09:47:03 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E53A5271C;
-        Fri, 14 Jul 2023 06:47:01 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3a04e5baffcso1552013b6e.3;
-        Fri, 14 Jul 2023 06:47:01 -0700 (PDT)
+        Fri, 14 Jul 2023 09:58:27 -0400
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B395726B5;
+        Fri, 14 Jul 2023 06:58:26 -0700 (PDT)
+Received: by mail-oi1-x236.google.com with SMTP id 5614622812f47-3a3e1152c23so1522390b6e.2;
+        Fri, 14 Jul 2023 06:58:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689342421; x=1691934421;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20221208; t=1689343106; x=1691935106;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=HD6EwZbQJu1bCBY+rcg6mXiAoH8uR23NwA33Iv9SafM=;
-        b=pT1kVQ6XLLU5dt5E+AFNY9QhZuRBQIYTjp1J6S5jlO6nFuZZudojXsRjSdMSjylMAd
-         gAJPOW/iRlTqdkc9XggqD53ZtMYT0mYuFAUAM/8xqFCGDYtJlGFwWp0BrdgKdjQpphLz
-         Mb1XpiicBDqWgVKV2WUgc9Wz9kheJJyuN+u48GVQhxNanlycVjmAZwXs4LGt75+sLLYe
-         HrMEVVTzUMDhL8xsPik+gmHICkO8sjbXy54hda1q7/0yUzfMTXYXCVba1lS7ECUHyybJ
-         pKBTfsfnqzmSGza4TQaUCkLGUrHDqfCgGZDyWMjZApQ8KOlnmg74P++ZGxT3Srg1uMty
-         iM3Q==
+        bh=ZfFtZs44m8Zo9MX+jI8UvKsAHjyMfdzKjYmKjQfTOeg=;
+        b=SOMD47bUKBvnNMJxuo/Qqj7JmiLOY4XuCjCV7OA4NqC9jEPK/YBH9lguUT0Oj6V+Y0
+         RLvhlP/QahZguVu7MiQ2n+nFhiiCGdnWJptntNF1dcLU7d9X8A1DMVpM6AXP2ACkPWf4
+         /UG6tXSI3U9YII4hNk2in+CHaHdUU0RDiiCFcDsGcIwVk0tYEgNHxVgaGb9Kfpc0P0mi
+         wxSHf6BeQFqLqAIZlaxFHD3dCqpXzWQ+eR9FH0R9tFo/LRDJpNRJyXdHwhkykqOzgqJN
+         GYrrH0PfSIhTBxSc7OAig1DcEFl9ROCApXCSxK9z8km57x9l74Y/zBrP5oqdtZjyFc+1
+         QsAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689342421; x=1691934421;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1689343106; x=1691935106;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HD6EwZbQJu1bCBY+rcg6mXiAoH8uR23NwA33Iv9SafM=;
-        b=d3SeFEL9QHSR+SslOGwvE1xZUK8hQHn+inNOZHtBWLZaN0BK7/FvZpI0eKmtijaWbq
-         KXOwNZ7Y+X8Eujdetynw8jozu7VZPLhjvzjfw9C45CR6mu882jRiOf4l5Vq+3OKQg356
-         bObyqqMUiCOgRAX3eCheO66kKZvI7bGzUvLyhRfEx2V87d5Y4yKyX6Gpfl+POE/MCfV8
-         +psr7JpYA1AVt7BjboTX/AOC9noIhXQh8Eee8SlOK/LwjFwR0tTKAe45MKMQ2fHGMht4
-         z9vqbAz+kNXa/alE0okMOEVIEdNfIG1W1/2vJX0G5TKtqtAfSMpPWSz26632VZYEcqtO
-         v4Bg==
-X-Gm-Message-State: ABy/qLZbxvjjHTvBiJtbLeXnVW0gESLid38C6ASnduEorQilby9bBi9H
-        t+grkYR0XGcoLSVm3ZPJeCo=
-X-Google-Smtp-Source: APBJJlFbbN9VExbGP8hKwyPAcp1eD3AMx0mXuJb5JT/bX58FKmMu7OuwcKqRfpZi3NBQCmLvHP2opw==
-X-Received: by 2002:a05:6808:573:b0:3a3:6536:dd89 with SMTP id j19-20020a056808057300b003a36536dd89mr5292957oig.49.1689342421072;
-        Fri, 14 Jul 2023 06:47:01 -0700 (PDT)
+        bh=ZfFtZs44m8Zo9MX+jI8UvKsAHjyMfdzKjYmKjQfTOeg=;
+        b=O2lZ+6/1xwPxB4z+HtMwrrw34/pEu1sUN9EP5k6ECwSTByaU8qSWmTMdZh+JDWlD6d
+         mP3amzlyXqG2qIvqLR1hBLDRuMqHKDPJS5DstrohS5tVlND3LlW27gY6FOYnkSCE3KIh
+         DAH69/sebLI50QaqL47n13I3DjdEYFvMO4xPGqCzFIH2k8DTC4JN80aKf9OjTCecQog9
+         lOZTfNxPpeeFCS2BrnLV4IyHGVrDrgy29p1f8XzLbPL+SBFOgm3kxZKNWP2+I84Rmj/j
+         WsicAYpgw8AksNAYk/ncF0fWOo1ue1sy1LAXUkMzM7f/Zx7O8XUgXt2EwZYe1OxjOAai
+         oMMg==
+X-Gm-Message-State: ABy/qLaaLa0AUKXDDAF0iPt2soYSC03D67q7tPDbLdjavhQt+zH5YJLe
+        W8R50aYf0fCLL3Hjtc+kfa0=
+X-Google-Smtp-Source: APBJJlHP70TqG1swKvKXkahgek85etZ9fjwVf9HrNOpgCunvCDPnEnX1u4cZGMd0PKCFkhRHSHUn5g==
+X-Received: by 2002:a05:6808:f11:b0:3a4:31da:34c5 with SMTP id m17-20020a0568080f1100b003a431da34c5mr6280192oiw.39.1689343105983;
+        Fri, 14 Jul 2023 06:58:25 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id k11-20020a54440b000000b003a1ec14d8c6sm3834259oiw.23.2023.07.14.06.46.57
+        by smtp.gmail.com with ESMTPSA id dz25-20020a056808439900b003a3600182f8sm3883960oib.57.2023.07.14.06.58.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Jul 2023 06:47:00 -0700 (PDT)
-Message-ID: <abab244f-afdb-f646-ce82-c5296fe74ce6@gmail.com>
-Date:   Fri, 14 Jul 2023 10:46:56 -0300
+        Fri, 14 Jul 2023 06:58:25 -0700 (PDT)
+Message-ID: <213cc5ce-9d4a-eb51-7259-50dfae4665f0@gmail.com>
+Date:   Fri, 14 Jul 2023 10:58:21 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] rust: kernel: str: Implement Debug for CString
-To:     Asahi Lina <lina@asahilina.net>, Alice Ryhl <aliceryhl@google.com>
-Cc:     alex.gaynor@gmail.com, asahi@lists.linux.dev,
-        benno.lossin@proton.me, bjorn3_gh@protonmail.com,
-        boqun.feng@gmail.com, gary@garyguo.net,
-        linux-kernel@vger.kernel.org, ojeda@kernel.org,
-        rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-References: <20230714-cstring-debug-v1-1-4e7c3018dd4f@asahilina.net>
- <20230714094844.2189906-1-aliceryhl@google.com>
- <15a21f18-485d-37d8-0a5e-417702787204@asahilina.net>
+Subject: Re: [PATCH v2] rust: time: New module for timekeeping functions
 Content-Language: en-US
+To:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        John Stultz <jstultz@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Josh Stone <jistone@redhat.com>,
+        Gaelan Steele <gbs@canishe.com>,
+        Heghedus Razvan <heghedus.razvan@protonmail.com>
+Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        asahi@lists.linux.dev
+References: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
 From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <15a21f18-485d-37d8-0a5e-417702787204@asahilina.net>
+In-Reply-To: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 7/14/23 09:21, Asahi Lina wrote:
-> On 14/07/2023 18.48, Alice Ryhl wrote:
->> Asahi Lina <lina@asahilina.net> writes:
->>> Trivial implementation.
->>>
->>> Signed-off-by: Asahi Lina <lina@asahilina.net>
->>
->> The commit message is a bit short, but the change itself looks fine.
->>
->> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+On 7/14/23 04:55, Asahi Lina wrote:
+> This module is intended to contain functions related to kernel
+> timekeeping and time.
 > 
-> It's so trivial I just didn't know what else to write... suggestions
-> welcome (for this or next time I have a patch like this) ^^
+> Initially, this implements an abstraction for a time Instant (analogous
+> to the Rust std::time::Instant) that represents an opaque instant in
+> time. Unlike the std Instant, this is a generic type that is bound to a
+> specific clock source, so that only Instants from the same clock source
+> can be subtracted/compared.
 > 
-> ~~ Lina
+> Then we implement the relevant clocks available to the kernel:
+> KernelTime (CLOCK_MONOTONIC), BootTime (CLOCK_BOOTTIME),
+> RealTime (CLOCK_REALTIME), and TaiTime.
 > 
-
-Just describe what it does, like "cast the `CStr` to an `&str` and call
-`fmt::Debug::fmt` with it". I'll add my Reviewed-by, so retain it in
-case it's asked to change the commit message.
+> Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> ---
+> [...]
 
 Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
