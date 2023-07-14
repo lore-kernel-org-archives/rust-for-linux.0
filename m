@@ -2,101 +2,161 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55718EB64DA
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 13:58:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF0BAC001B0
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 13:59:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235656AbjGNN62 (ORCPT
+        id S235849AbjGNN7f (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Jul 2023 09:58:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52546 "EHLO
+        Fri, 14 Jul 2023 09:59:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232113AbjGNN61 (ORCPT
+        with ESMTP id S235923AbjGNN7e (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Jul 2023 09:58:27 -0400
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B395726B5;
-        Fri, 14 Jul 2023 06:58:26 -0700 (PDT)
-Received: by mail-oi1-x236.google.com with SMTP id 5614622812f47-3a3e1152c23so1522390b6e.2;
-        Fri, 14 Jul 2023 06:58:26 -0700 (PDT)
+        Fri, 14 Jul 2023 09:59:34 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 352C83599
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 06:59:30 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-ca48836fec5so1630680276.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 06:59:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689343106; x=1691935106;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZfFtZs44m8Zo9MX+jI8UvKsAHjyMfdzKjYmKjQfTOeg=;
-        b=SOMD47bUKBvnNMJxuo/Qqj7JmiLOY4XuCjCV7OA4NqC9jEPK/YBH9lguUT0Oj6V+Y0
-         RLvhlP/QahZguVu7MiQ2n+nFhiiCGdnWJptntNF1dcLU7d9X8A1DMVpM6AXP2ACkPWf4
-         /UG6tXSI3U9YII4hNk2in+CHaHdUU0RDiiCFcDsGcIwVk0tYEgNHxVgaGb9Kfpc0P0mi
-         wxSHf6BeQFqLqAIZlaxFHD3dCqpXzWQ+eR9FH0R9tFo/LRDJpNRJyXdHwhkykqOzgqJN
-         GYrrH0PfSIhTBxSc7OAig1DcEFl9ROCApXCSxK9z8km57x9l74Y/zBrP5oqdtZjyFc+1
-         QsAw==
+        d=google.com; s=20221208; t=1689343169; x=1691935169;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=f3VLhyez7S8Fxr0ERu9RhgaoTPXwLJ8e9ss5xTgd/5U=;
+        b=tTXXO37YV5oOkkCaZ5ruVLZvB1BwunC+5QG9IjqXfPk2ekddHPXHpr54pHFwYZN5F0
+         WKlDOfm65SOnOOOG8dFDaNLOvVB1gIrypNJtOHHr7AWfDN3aFtGncM1dsfwIIjlfrhxP
+         spvsoJYCZkB196gFxY9sGWnE/R4BtCIjupP6Z3oTmZE3Q3SzzJSrC9nIurmQnYCf8Ceo
+         qpmVKouRgVRtfVTaJI0F5vMwUOYs5TD7B87+TOqGjoC1WDl+2rSP7R/i6kkNM8HDUoDy
+         jK/eFcxwux46y3o+/DfdGwHoGtp21Pmy03qEw0Jx392W/hOJXvVyEhjMaul45Tf35dV1
+         TtsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689343106; x=1691935106;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZfFtZs44m8Zo9MX+jI8UvKsAHjyMfdzKjYmKjQfTOeg=;
-        b=O2lZ+6/1xwPxB4z+HtMwrrw34/pEu1sUN9EP5k6ECwSTByaU8qSWmTMdZh+JDWlD6d
-         mP3amzlyXqG2qIvqLR1hBLDRuMqHKDPJS5DstrohS5tVlND3LlW27gY6FOYnkSCE3KIh
-         DAH69/sebLI50QaqL47n13I3DjdEYFvMO4xPGqCzFIH2k8DTC4JN80aKf9OjTCecQog9
-         lOZTfNxPpeeFCS2BrnLV4IyHGVrDrgy29p1f8XzLbPL+SBFOgm3kxZKNWP2+I84Rmj/j
-         WsicAYpgw8AksNAYk/ncF0fWOo1ue1sy1LAXUkMzM7f/Zx7O8XUgXt2EwZYe1OxjOAai
-         oMMg==
-X-Gm-Message-State: ABy/qLaaLa0AUKXDDAF0iPt2soYSC03D67q7tPDbLdjavhQt+zH5YJLe
-        W8R50aYf0fCLL3Hjtc+kfa0=
-X-Google-Smtp-Source: APBJJlHP70TqG1swKvKXkahgek85etZ9fjwVf9HrNOpgCunvCDPnEnX1u4cZGMd0PKCFkhRHSHUn5g==
-X-Received: by 2002:a05:6808:f11:b0:3a4:31da:34c5 with SMTP id m17-20020a0568080f1100b003a431da34c5mr6280192oiw.39.1689343105983;
-        Fri, 14 Jul 2023 06:58:25 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id dz25-20020a056808439900b003a3600182f8sm3883960oib.57.2023.07.14.06.58.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Jul 2023 06:58:25 -0700 (PDT)
-Message-ID: <213cc5ce-9d4a-eb51-7259-50dfae4665f0@gmail.com>
-Date:   Fri, 14 Jul 2023 10:58:21 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] rust: time: New module for timekeeping functions
-Content-Language: en-US
-To:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        John Stultz <jstultz@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Josh Stone <jistone@redhat.com>,
-        Gaelan Steele <gbs@canishe.com>,
-        Heghedus Razvan <heghedus.razvan@protonmail.com>
-Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        asahi@lists.linux.dev
-References: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        d=1e100.net; s=20221208; t=1689343169; x=1691935169;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f3VLhyez7S8Fxr0ERu9RhgaoTPXwLJ8e9ss5xTgd/5U=;
+        b=hRx/VPYWfU+Ev793Zv6Z/IqRDphgecCt7ibRpi3WvAVXq2Zs4KXTMk7S13nDvmHnrf
+         bAglCDWsPH34lCsAW2WKyDUT3LZrw+udYUJOxzFMANc1vIVMLrDCU8VaYn0s1+4O6ikB
+         GKRTS+ZFbmA7y4V7E0ESfHnQqBWeSAJ014z0dAwQrlBUwThVWwNX4T72asvgs3c2d6aC
+         2nLpTT63XtFlVdtqeurCuaXq5nK+E/Ks4MBz25QNUOpYk0/ikAd6P5JntDhEZWRigGUa
+         7cYk1rqPcGHdne2IvR+ZcrYugszmrbtz6go33s5OtAL3mR+DLbDoWaInsUFfaxgyIfm3
+         Kn5A==
+X-Gm-Message-State: ABy/qLZyZhNGAUeNO++86c4tpQBbDwhSL0Mrxr3ezUC9WXOxOzM+M1Lm
+        35aRgBx5atwtFD48/ngz3FPcI7Wz8NS6/Ys=
+X-Google-Smtp-Source: APBJJlFY2TUbKqfNgWUbCaHnI40Hy7nUOoN90khfXB8t0UYtJOdB7SfJmtYKrqPge3WsT7kBkeGohfUbpMkLeN8=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:1817:b0:c5d:5b6f:f5c5 with SMTP
+ id cf23-20020a056902181700b00c5d5b6ff5c5mr28360ybb.4.1689343169351; Fri, 14
+ Jul 2023 06:59:29 -0700 (PDT)
+Date:   Fri, 14 Jul 2023 13:59:26 +0000
+In-Reply-To: <f974e5a4-1211-5ad7-4864-f3e210499e5e@asahilina.net>
+Mime-Version: 1.0
+References: <f974e5a4-1211-5ad7-4864-f3e210499e5e@asahilina.net>
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+Message-ID: <20230714135926.382695-1-aliceryhl@google.com>
+Subject: Re: [PATCH RFC 00/11] rust: Implicit lock class creation & Arc
+ Lockdep integration
+From:   Alice Ryhl <aliceryhl@google.com>
+To:     lina@asahilina.net
+Cc:     alex.gaynor@gmail.com, aliceryhl@google.com, alyssa@rosenzweig.io,
+        asahi@lists.linux.dev, benno.lossin@proton.me,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, daniel@ffwll.ch,
+        gary@garyguo.net, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+        marcan@marcan.st, masahiroy@kernel.org, nathan@kernel.org,
+        ndesaulniers@google.com, nicolas@fjasle.eu, ojeda@kernel.org,
+        rust-for-linux@vger.kernel.org, sven@svenpeter.dev,
+        trix@redhat.com, wedsonaf@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 7/14/23 04:55, Asahi Lina wrote:
-> This module is intended to contain functions related to kernel
-> timekeeping and time.
+Asahi Lina <lina@asahilina.net> writes:
+> On 14/07/2023 19.13, Alice Ryhl wrote:
+> > Asahi Lina <lina@asahilina.net> writes:
+> >> Begone, lock classes!
+> >>
+> >> As discussed in meetings/etc, we would really like to support implicit
+> >> lock class creation for Rust code. Right now, lock classes are created
+> >> using macros and passed around (similar to C). Unfortunately, Rust
+> >> macros don't look like Rust functions, which means adding lockdep to a
+> >> type is a breaking API change. This makes Rust mutex creation rather
+> >> ugly, with the new_mutex!() macro and friends.
+> >>
+> >> Implicit lock classes have to be unique per instantiation code site.
+> >> Notably, with Rust generics and monomorphization, this is not the same
+> >> as unique per generated code instance. If this weren't the case, we
+> >> could use inline functions and asm!() magic to try to create lock
+> >> classes that have the right uniqueness semantics. But that doesn't work,
+> >> since it would create too many lock classes for the same actual lock
+> >> creation in the source code.
+> >>
+> >> But Rust does have one trick we can use: it can track the caller
+> >> location (as file:line:column), across multiple functions. This works
+> >> using an implicit argument that gets passed around, which is exactly the
+> >> thing we do for lock classes. The tricky bit is that, while the value of
+> >> these Location objects has the semantics we want (unique value per
+> >> source code location), there is no guarantee that they are deduplicated
+> >> in memory.
+> >>
+> >> So we use a hash table, and map Location values to lock classes. Et
+> >> voila, implicit lock class support!
+> >>
+> >> This lets us clean up the Mutex & co APIs and make them look a lot more
+> >> Rust-like, but it also means we can now throw Lockdep into more APIs
+> >> without breaking the API. And so we can pull a neat trick: adding
+> >> Lockdep support into Arc<T>. This catches cases where the Arc Drop
+> >> implementation could create a locking correctness violation only when
+> >> the reference count drops to 0 at that particular drop site, which is
+> >> otherwise not detectable unless that condition actually happens at
+> >> runtime. Since Drop is "magic" in Rust and Drop codepaths very difficult
+> >> to audit, this helps a lot.
+> >>
+> >> For the initial RFC, this implements the new API only for Mutex. If this
+> >> looks good, I can extend it to CondVar & friends in the next version.
+> >> This series also folds in a few related minor dependencies / changes
+> >> (like the pin_init mutex stuff).
+> > 
+> > I'm not convinced that this is the right compromise. Moving lockdep
+> > class creation to runtime sounds unfortunate, especially since this
+> > makes them fallible due to memory allocations (I think?).
+> > 
+> > I would be inclined to keep using macros for this.
 > 
-> Initially, this implements an abstraction for a time Instant (analogous
-> to the Rust std::time::Instant) that represents an opaque instant in
-> time. Unlike the std Instant, this is a generic type that is bound to a
-> specific clock source, so that only Instants from the same clock source
-> can be subtracted/compared.
-> 
-> Then we implement the relevant clocks available to the kernel:
-> KernelTime (CLOCK_MONOTONIC), BootTime (CLOCK_BOOTTIME),
-> RealTime (CLOCK_REALTIME), and TaiTime.
-> 
-> Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> ---
-> [...]
+> Most people were very enthusiastic about this change in the meetings... 
+> it wasn't even my own idea ^^
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+I don't think I was in that meeting. Anyway,
+ 
+> I don't think the fallibility is an issue. Lockdep is a debugging tool, 
+> and it doesn't have to handle all possible circumstances perfectly. If 
+> you are debugging normal lock issues you probably shouldn't be running 
+> out of RAM, and if you are debugging OOM situations the lock keys would 
+> normally have been created long before you reach an OOM situation, since 
+> they would be created the first time a relevant lock class is used. More 
+> objects of the same class don't cause any more allocations. And the code 
+> has a fallback for the OOM case, where it just uses the Location object 
+> as a static lock class. That's not ideal and degrades the quality of the 
+> lockdep results, but it shouldn't completely break anything.
+
+If you have a fallback when the allocation fails, that helps ...
+
+You say that Location objects are not necessarily unique per file
+location. In practice, how often are they not unique? Always just using
+the Location object as a static lock class seems like it would
+significantly simplify this proposal.
+
+> The advantages of being able to throw lockdep checking into arbitrary 
+> types, like the Arc<T> thing, are pretty significant. It closes a major 
+> correctness checking issue we have with Rust and its automagic Drop 
+> implementations that are almost impossible to properly audit for 
+> potential locking issues. I think that alone makes this worth it, even 
+> if you don't use it for normal mutex creation...
+
+I do agree that there is value in being able to more easily detect
+potential deadlocks involving destructors of ref-counted values. I once
+had a case of that myself, though lockdep was able to catch it without
+this change because it saw the refcount hit zero in the right place.
+
+Alice
+
