@@ -2,105 +2,332 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55FB2EB64DA
-	for <rust-for-linux@archiver.kernel.org>; Thu, 13 Jul 2023 03:28:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2677AEB64DA
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 08:21:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233612AbjGMD2Z (ORCPT
+        id S232566AbjGNIVM (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Wed, 12 Jul 2023 23:28:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45532 "EHLO
+        Fri, 14 Jul 2023 04:21:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232486AbjGMD2Y (ORCPT
+        with ESMTP id S234619AbjGNIVL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Wed, 12 Jul 2023 23:28:24 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC321FEE;
-        Wed, 12 Jul 2023 20:28:23 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-3a3df1ee4a3so165240b6e.3;
-        Wed, 12 Jul 2023 20:28:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689218902; x=1691810902;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Zvirk6pjSknQr9tE7lIyyVFEofnm4Z/T4cBm4mnN6Y8=;
-        b=gIz652vjtJC/nOm3PVSiJBlsH7VWoagbkHDCCZGsoeQATzPCxoU3faaKZR3ttw9AXr
-         ZSng/90RoY6GR3mtwy165KAK0oQLYXJhqC7FiuTBOKU3e2zkmigmHHPlAqRi3kdRPeZ9
-         w2vlvNZ3dB0awXh928rz7qmTq8V2yhCj91Cdfxt0y4ajvV3QOO6ohVh2mn5NkSAzEToa
-         5zKIn2S2ZLBu5SOU5kCMpd7pigp41p2AV8cfZSNntEkByzMa3zg4bll94K0JlVLc2mBG
-         dvMSbrmeY0y7cPU1b/tgKlDedkGUvB0IN4/UQsSwIxdLDbqtVb/DT3JmWLV8lu0NBu7p
-         bG+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689218902; x=1691810902;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zvirk6pjSknQr9tE7lIyyVFEofnm4Z/T4cBm4mnN6Y8=;
-        b=g9x8zmkHVN5aT0NviGAk/NvT3WzvTryjj4zstBiuVgQCqwlB0I5izTYlg52vUw7JkF
-         eVtHPAFylYQ4Rs8aa858OdYUwJRD1ZGYSSJQBq+L5KaVV/OeosWBxKsL9TGM/5xmtvK/
-         9hCIvau94M8pKBok954POO7cHnyLgiRKqlx1GBLpYYNZTwN4GvAMHaKM/Soe/41dH8b+
-         i6irIyTJpiPDrgQwD2qUtHiCKgzHCBVukFT2F1B+OwjgjFl8U19Be7ztgdJy7Dve8yuw
-         MNNgqctv/jpa4vt7/zM7dsELlDR7qvM/MukiK1bembmZkj9NRhoUZmJRarL0un+hzHVI
-         S3PQ==
-X-Gm-Message-State: ABy/qLYyFC7zbYY3Roh8ilDvmPE/GI4ElT0Qkz0EcIjFLW5ebsiKjkf7
-        sT6zD9Y6no6XS9O0QUPqAYxOeFXpfHo=
-X-Google-Smtp-Source: APBJJlEpeHadsi/VLTXuFGmF4NjyzX+wDoDGJ/NCrwia1SnCybpmTZuUX57s3FV2Tm2tcdWP2IcChQ==
-X-Received: by 2002:a05:6808:23d2:b0:3a0:5a6b:25c with SMTP id bq18-20020a05680823d200b003a05a6b025cmr352810oib.33.1689218902241;
-        Wed, 12 Jul 2023 20:28:22 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id b12-20020aca1b0c000000b003a3645e9ebbsm2511684oib.40.2023.07.12.20.28.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Jul 2023 20:28:21 -0700 (PDT)
-Message-ID: <3c917bbd-7d53-23e2-d067-7ce8fce95307@gmail.com>
-Date:   Thu, 13 Jul 2023 00:28:17 -0300
+        Fri, 14 Jul 2023 04:21:11 -0400
+X-Greylist: delayed 900 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 14 Jul 2023 01:21:08 PDT
+Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 903539B;
+        Fri, 14 Jul 2023 01:21:08 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: linasend@asahilina.net)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 269E95BAE8;
+        Fri, 14 Jul 2023 07:55:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+        s=default; t=1689321319;
+        bh=7J6No4Uq+18pRNDNsxGUwdq6k7ZetFTxJmVCqu0gelc=;
+        h=From:Date:Subject:To:Cc;
+        b=0XXctXa8kAUwqUR/n14lJzAp1QSwB4QVYeTBiOsv07KBbD6NvF6XF73BDiRjxaldA
+         L2A7a62Y5JE8n4pAqEf4GGzbkejs/EuMTKpOIlxO6oMAxZ7d4mpT2x7jOZJXCxFb2S
+         iIHDs92fj0sV4K48baDpfQdTTWaTKcLuQU7JwUN4uo34nWeLtCMMVxxOQeh0aouLg6
+         zlaXXK8eVEREW+a1ZIF7LE93+fo/vVZa0iR367TjUSSOpeisKx5Y+gq7AD0m9d5Irj
+         WExg0duPuLNEP3ehs0DOUCo890NEr5Ql1OsX7Q0Sk5uM1btsArfvz9I/Zafk2K5uNq
+         c7tnSZxM5TxXA==
+From:   Asahi Lina <lina@asahilina.net>
+Date:   Fri, 14 Jul 2023 16:55:01 +0900
+Subject: [PATCH v2] rust: time: New module for timekeeping functions
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1] rust: add improved version of
- `ForeignOwnable::borrow_mut`
-Content-Language: en-US
-To:     Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev
-References: <20230710074642.683831-1-aliceryhl@google.com>
-From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230710074642.683831-1-aliceryhl@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
+X-B4-Tracking: v=1; b=H4sIAFT/sGQC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDI2MDc0MT3aLS4hLdkszcVF1Dg5QUy9QUI1NjY2MloPqCotS0zAqwWdGxtbU
+ AYS2TUFsAAAA=
+To:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        John Stultz <jstultz@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Josh Stone <jistone@redhat.com>,
+        Gaelan Steele <gbs@canishe.com>,
+        Heghedus Razvan <heghedus.razvan@protonmail.com>
+Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1689321314; l=8468;
+ i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
+ bh=7J6No4Uq+18pRNDNsxGUwdq6k7ZetFTxJmVCqu0gelc=;
+ b=HpiQKFG0rAdsT7ooEpKBQ1fhz3+0ARMyc8DgriWfRofBJbVXrK3y3rBG0HRIM0Ja4hnOFqG8e
+ O6Bd+SjWBAZB2M8WGX8ZawAVdoKqD+hx6KCJhJjK/5HojC5Vm5BNgDD
+X-Developer-Key: i=lina@asahilina.net; a=ed25519;
+ pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 7/10/23 04:46, Alice Ryhl wrote:
-> Previously, the `ForeignOwnable` trait had a method called `borrow_mut`
-> that was intended to provide mutable access to the inner value. However,
-> the method accidentally made it possible to change the address of the
-> object being modified, which usually isn't what we want. (And when we
-> want that, it can be done by calling `from_foreign` and `into_foreign`,
-> like how the old `borrow_mut` was implemented.)
-> 
-> In this patch, we introduce an alternate definition of `borrow_mut` that
-> solves the previous problem. Conceptually, given a pointer type `P` that
-> implements `ForeignOwnable`, the `borrow_mut` method gives you the same
-> kind of access as an `&mut P` would, except that it does not let you
-> change the pointer `P` itself.
-> 
-> This is analogous to how the existing `borrow` method provides the same
-> kind of access to the inner value as an `&P`.
-> 
-> Note that for types like `Arc`, having an `&mut Arc<T>` only gives you
-> immutable access to the inner `T`. This is because mutable references
-> assume exclusive access, but there might be other handles to the same
-> reference counted value, so the access isn't exclusive. The `Arc` type
-> implements this by making `borrow_mut` return the same type as `borrow`.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> [...]
+This module is intended to contain functions related to kernel
+timekeeping and time.
 
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Initially, this implements an abstraction for a time Instant (analogous
+to the Rust std::time::Instant) that represents an opaque instant in
+time. Unlike the std Instant, this is a generic type that is bound to a
+specific clock source, so that only Instants from the same clock source
+can be subtracted/compared.
+
+Then we implement the relevant clocks available to the kernel:
+KernelTime (CLOCK_MONOTONIC), BootTime (CLOCK_BOOTTIME),
+RealTime (CLOCK_REALTIME), and TaiTime.
+
+Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+---
+
+Based on the feedback to v1, now we have proper type checking for kernel
+time. I decided to implement marker traits for monotonic vs. wallclock
+time sources, since it's useful to be able to safely implement different
+semantics conditional on that, but that left me with a name conflict of
+the Monotonic trait with the CLOCK_MONOTONIC / "default ktime" clock
+source. I ended up calling it KernelTime since it's the most fundamental
+kernel timesource, but suggestions welcome!
+
+Heghedus: I think I need a signoff on this since this is based on the
+playground demo you wrote in the feedback to v1. Can you provide that? I
+can fold it into v3 (if there is one, otherwise Miguel can probably just
+add it when he applies it). Thanks!
+---
+ rust/bindings/bindings_helper.h |   2 +
+ rust/helpers.c                  |  16 +++++
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/time.rs             | 150 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 169 insertions(+)
+
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 3e601ce2548d..eddfdf887364 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -8,9 +8,11 @@
+ 
+ #include <linux/errname.h>
+ #include <linux/slab.h>
++#include <linux/ktime.h>
+ #include <linux/refcount.h>
+ #include <linux/wait.h>
+ #include <linux/sched.h>
++#include <linux/timekeeping.h>
+ 
+ /* `bindgen` gets confused at certain things. */
+ const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
+diff --git a/rust/helpers.c b/rust/helpers.c
+index bb594da56137..eff092302e23 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -26,6 +26,7 @@
+ #include <linux/mutex.h>
+ #include <linux/spinlock.h>
+ #include <linux/sched/signal.h>
++#include <linux/timekeeping.h>
+ #include <linux/wait.h>
+ 
+ __noreturn void rust_helper_BUG(void)
+@@ -135,6 +136,21 @@ void rust_helper_put_task_struct(struct task_struct *t)
+ }
+ EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
+ 
++ktime_t rust_helper_ktime_get_real(void) {
++	return ktime_get_real();
++}
++EXPORT_SYMBOL_GPL(rust_helper_ktime_get_real);
++
++ktime_t rust_helper_ktime_get_boottime(void) {
++	return ktime_get_boottime();
++}
++EXPORT_SYMBOL_GPL(rust_helper_ktime_get_boottime);
++
++ktime_t rust_helper_ktime_get_clocktai(void) {
++	return ktime_get_clocktai();
++}
++EXPORT_SYMBOL_GPL(rust_helper_ktime_get_clocktai);
++
+ /*
+  * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
+  * as the Rust `usize` type, so we can use it in contexts where Rust
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 85b261209977..52c91484c5d8 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -42,6 +42,7 @@
+ pub mod str;
+ pub mod sync;
+ pub mod task;
++pub mod time;
+ pub mod types;
+ 
+ #[doc(hidden)]
+diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+new file mode 100644
+index 000000000000..f3bfeed20145
+--- /dev/null
++++ b/rust/kernel/time.rs
+@@ -0,0 +1,150 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Timekeeping functions.
++//!
++//! C header: [`include/linux/ktime.h`](../../../../include/linux/ktime.h)
++//! C header: [`include/linux/timekeeping.h`](../../../../include/linux/timekeeping.h)
++
++use crate::{bindings, pr_err};
++use core::marker::PhantomData;
++use core::time::Duration;
++
++/// Represents a clock, that is, a unique time source.
++pub trait Clock: Sized {}
++
++/// A time source that can be queried for the current time.
++pub trait Now: Clock {
++    /// Returns the current time for this clock.
++    fn now() -> Instant<Self>;
++}
++
++/// Marker trait for clock sources that are guaranteed to be monotonic.
++pub trait Monotonic {}
++
++/// Marker trait for clock sources that represent a calendar (wall clock)
++/// relative to the UNIX epoch.
++pub trait WallTime {}
++
++/// An instant in time associated with a given clock source.
++#[derive(Debug)]
++pub struct Instant<T: Clock> {
++    nanoseconds: i64,
++    _type: PhantomData<T>,
++}
++
++impl<T: Clock> Clone for Instant<T> {
++    fn clone(&self) -> Self {
++        *self
++    }
++}
++
++impl<T: Clock> Copy for Instant<T> {}
++
++impl<T: Clock> Instant<T> {
++    fn new(nanoseconds: i64) -> Self {
++        Instant {
++            nanoseconds,
++            _type: PhantomData,
++        }
++    }
++
++    /// Returns the time elapsed since an earlier Instant<t>, or
++    /// None if the argument is a later Instant.
++    pub fn since(&self, earlier: Instant<T>) -> Option<Duration> {
++        if earlier.nanoseconds > self.nanoseconds {
++            None
++        } else {
++            // Casting to u64 and subtracting is guaranteed to give the right
++            // result for all inputs, as long as the condition we checked above
++            // holds.
++            Some(Duration::from_nanos(
++                self.nanoseconds as u64 - earlier.nanoseconds as u64,
++            ))
++        }
++    }
++}
++
++impl<T: Clock + Now + Monotonic> Instant<T> {
++    /// Returns the time elapsed since this Instant<T>.
++    ///
++    /// This is guaranteed to return a positive result, since
++    /// it is only implemented for monotonic clocks.
++    pub fn elapsed(&self) -> Duration {
++        T::now().since(*self).unwrap_or_else(|| {
++            pr_err!(
++                "Monotonic clock {} went backwards!",
++                core::any::type_name::<T>()
++            );
++            Duration::ZERO
++        })
++    }
++}
++
++/// Contains the various clock source types available to the kernel.
++pub mod clock {
++    use super::*;
++
++    /// A clock representing the default kernel time source.
++    ///
++    /// This is `CLOCK_MONOTONIC` (though it is not the only
++    /// monotonic clock) and also the default clock used by
++    /// `ktime_get()` in the C API.
++    ///
++    /// This is like `BootTime`, but does not include time
++    /// spent sleeping.
++
++    pub struct KernelTime;
++
++    impl Clock for KernelTime {}
++    impl Monotonic for KernelTime {}
++    impl Now for KernelTime {
++        fn now() -> Instant<Self> {
++            Instant::<Self>::new(unsafe { bindings::ktime_get() })
++        }
++    }
++
++    /// A clock representing the time elapsed since boot.
++    ///
++    /// This is `CLOCK_MONOTONIC` (though it is not the only
++    /// monotonic clock) and also the default clock used by
++    /// `ktime_get()` in the C API.
++    ///
++    /// This is like `KernelTime`, but does include time
++    /// spent sleeping.
++    pub struct BootTime;
++
++    impl Clock for BootTime {}
++    impl Monotonic for BootTime {}
++    impl Now for BootTime {
++        fn now() -> Instant<Self> {
++            Instant::<Self>::new(unsafe { bindings::ktime_get_boottime() })
++        }
++    }
++
++    /// A clock representing TAI time.
++    ///
++    /// This clock is not monotonic and can be changed from userspace.
++    /// However, it is not affected by leap seconds.
++    pub struct TaiTime;
++
++    impl Clock for TaiTime {}
++    impl WallTime for TaiTime {}
++    impl Now for TaiTime {
++        fn now() -> Instant<Self> {
++            Instant::<Self>::new(unsafe { bindings::ktime_get_clocktai() })
++        }
++    }
++
++    /// A clock representing wall clock time.
++    ///
++    /// This clock is not monotonic and can be changed from userspace.
++    pub struct RealTime;
++
++    impl Clock for RealTime {}
++    impl WallTime for RealTime {}
++    impl Now for RealTime {
++        fn now() -> Instant<Self> {
++            Instant::<Self>::new(unsafe { bindings::ktime_get_real() })
++        }
++    }
++}
+
+---
+base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+change-id: 20230714-rust-time-10dd9ed25333
+
+Thank you,
+~~ Lina
+
