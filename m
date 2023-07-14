@@ -2,128 +2,116 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74A85EB64DA
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 10:05:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62577EB64DA
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 10:06:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235100AbjGNKFx (ORCPT
+        id S236002AbjGNKGA (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Jul 2023 06:05:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52206 "EHLO
+        Fri, 14 Jul 2023 06:06:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235811AbjGNKFw (ORCPT
+        with ESMTP id S235800AbjGNKFz (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Jul 2023 06:05:52 -0400
-Received: from mail-ed1-x549.google.com (mail-ed1-x549.google.com [IPv6:2a00:1450:4864:20::549])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E61AE3A88
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 03:05:28 -0700 (PDT)
-Received: by mail-ed1-x549.google.com with SMTP id 4fb4d7f45d1cf-51e0d7c6293so1036517a12.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 03:05:28 -0700 (PDT)
+        Fri, 14 Jul 2023 06:05:55 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30F3B3595;
+        Fri, 14 Jul 2023 03:05:39 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4fb7373dd35so3658398e87.1;
+        Fri, 14 Jul 2023 03:05:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689329127; x=1691921127;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q5MF44XQzouX2FbGdHpxAthvfg7u3iO2oNPh/cM8NKE=;
-        b=apJ81VA8GA3jTnw53j82PIZMpXO2K7A7oa/aWR/pG0xVkTrMRoSr2WO7woWzhaKgks
-         Qiu5Ef2OtOLcCCthMBik8jre5JgKbOQ296jPDHO+0XBtbeQZ3GCV++0K6RdSFg4RJLtx
-         HI5xt3Zx+SZVy5n98a+5XUHMB8tMTj6+uvbS9OppSt9LaXPRTaCyk7dj/0vpRi483Q/w
-         mMeuWWvg9oj5KISbLCA6AXRIem3Ndp1x+G4RQ0XIlDX39FHUS6Q4CERdEKP9pZtXSvxP
-         St538WJiTpZgiaPMGVu8ypTZGB9xPR5JNHSI92L2DHBK2iYWCB6Zt6EOsYaik2bKgOu7
-         3ZHQ==
+        d=gmail.com; s=20221208; t=1689329137; x=1691921137;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lC3KL2hS1JnlkqIBEqFx8ev38o43ew/IXaL/ADvToRw=;
+        b=sGq92oZlq8xUWpYsUnoMDFKic+NBh+UNK7O9CoNl+52dqL38MkpJFDAzdpQNMEsTzc
+         AhV7BaJ45jlODMxnOnKjBtPTlSeVjTFMV7D5GGPhuLJua0YMtq1NGIqU5VAc5wjPlaTH
+         67kRS0OTicF3/F0ssY5LAV0WbGGSqDAP22oRYJ6qAvR4xDE+2n6W4fjOvxvt4HPd2gVR
+         8gMy8tCyhhD8GHlp+wQUJzi7j/TpV27YIRleAD39vyREteCWNLB0RoF2Ihj2oCOuyI+a
+         jtWOFfbqk3qgGIlp0HdEwApXPpaMNT8d4PV6AGFQgb91NwntynOdvoheAUEYQ3SZqcQF
+         PoPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689329127; x=1691921127;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q5MF44XQzouX2FbGdHpxAthvfg7u3iO2oNPh/cM8NKE=;
-        b=Xu6RgaGxFl7WepUsejZEjYE/WkvBM02r0J8oldjmJtM5/g8iRpC6DPO3cyUZdKNxK2
-         NEhSKqbcMkFJGfH4j0TiQH4gb19i6xxe5az5MmBEDnyBILEVmMhHLpZ68XVhyQjtGgrA
-         GQ+YiS+zJ2CF43GvQvP3rrjcR3ISvaSDGMJh/pvqaIzREUsA5pO3kSh8NkmWy6++CIOP
-         KfkOQaSj5MmjjXiHvEGC8xQs4ALlTy5ESMbZaeGQrs1C8bo74sFAqVR9U8MDhXkigwEZ
-         eOjbR9HpPo8DvSi2h/jGRv5kaAXlmnLF42gZsyVQeN7kcoo9jiGEo4N91KDMw6L2ZGcN
-         8dwg==
-X-Gm-Message-State: ABy/qLaOyqU4xUsIf+kG9eWzclQ41eqvCdzhz4USrKGqDFOoCh1saxOJ
-        aO0VizvncV/rCyzvaZ0QxqLnBw0Qgbt7E9U=
-X-Google-Smtp-Source: APBJJlHwVKX/eQQLU8nLjAGvJpMaB1Jw8Jm+qhCHiVH05w5ZGIxlbFTKtQ7Ig8Do+3M/gB90uk1NNJRpAEM9C74=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a50:9f07:0:b0:510:dd95:da5d with SMTP id
- b7-20020a509f07000000b00510dd95da5dmr19412edf.4.1689329127461; Fri, 14 Jul
- 2023 03:05:27 -0700 (PDT)
-Date:   Fri, 14 Jul 2023 10:05:25 +0000
-In-Reply-To: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
-Mime-Version: 1.0
-References: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
-X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
-Message-ID: <20230714100525.2192448-1-aliceryhl@google.com>
-Subject: Re: [PATCH v2] rust: time: New module for timekeeping functions
-From:   Alice Ryhl <aliceryhl@google.com>
-To:     lina@asahilina.net
-Cc:     alex.gaynor@gmail.com, asahi@lists.linux.dev,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-        gbs@canishe.com, heghedus.razvan@protonmail.com,
-        jistone@redhat.com, jstultz@google.com,
-        linux-kernel@vger.kernel.org, ojeda@kernel.org,
-        rust-for-linux@vger.kernel.org, sboyd@kernel.org,
-        tglx@linutronix.de, wedsonaf@gmail.com
+        d=1e100.net; s=20221208; t=1689329137; x=1691921137;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lC3KL2hS1JnlkqIBEqFx8ev38o43ew/IXaL/ADvToRw=;
+        b=W8NHFoSzfWY9RW2Ovs0opHe653zh7WpWu3aHm7ebzEZmEj4zomOi7mK1FStFtzTdSf
+         wVZCMLDsrs1F/kNWhfHabm8cvqqKdlUsKidrACCmsI9QHnKYsjy35KoS+alGvDe8Q0Iz
+         anwe7JAji+e1kpNaM+1GFBEiJdInvLj5je4s3+8bRZN4LbyWDlFKnlcP3etEnCZK33hE
+         26B4LYBV5JjihxVZ1COKr84BExwsBDhIy7uReptxmrUV5tgcOnUDDKkqwai9wgEYhEON
+         QW+ibj+gsyec8uEDkY/TrJHguP59HjvvVMVBoK2fBwu/pZvR4TpmTMJGtXMuAmZDjvF0
+         wg8A==
+X-Gm-Message-State: ABy/qLbSYrKrkaQU3lTs1JrVhWI5soUaeEKjSoJkCnIim4cMFMk4+Qav
+        uYIWdbGiTJ42qgq71qwPGBXdLC0VlKtMCqn0Fd8=
+X-Google-Smtp-Source: APBJJlGpmaod1q6JB0TeZZQvgjcZdV+jjuUg364ZTYvjCugWGsS7U7OSkLwyObWN1itUElPRsGJvSzIZ7ZKSPFpf2OE=
+X-Received: by 2002:a05:6512:31ca:b0:4f6:e06:50bb with SMTP id
+ j10-20020a05651231ca00b004f60e0650bbmr834325lfe.30.1689329137011; Fri, 14 Jul
+ 2023 03:05:37 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230714-cstring-debug-v1-1-4e7c3018dd4f@asahilina.net>
+In-Reply-To: <20230714-cstring-debug-v1-1-4e7c3018dd4f@asahilina.net>
+From:   Ariel Miculas <ariel.miculas@gmail.com>
+Date:   Fri, 14 Jul 2023 13:05:25 +0300
+Message-ID: <CAPDJoNv1HW-5uCj21PX3t23rJ+sbTL4Gm5pDis8HGJ-VTr4dug@mail.gmail.com>
+Subject: Re: [PATCH] rust: kernel: str: Implement Debug for CString
+To:     Asahi Lina <lina@asahilina.net>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        asahi@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Asahi Lina <lina@asahilina.net> writes:
-> +/// Marker trait for clock sources that represent a calendar (wall clock)
-> +/// relative to the UNIX epoch.
-> +pub trait WallTime {}
-
-What's the purpose of this trait? Perhaps it should have a method to get
-the UNIX epoch as an Instant?
-
-> +    /// Returns the time elapsed since an earlier Instant<t>, or
-> +    /// None if the argument is a later Instant.
-> +    pub fn since(&self, earlier: Instant<T>) -> Option<Duration> {
-> +        if earlier.nanoseconds > self.nanoseconds {
-> +            None
-> +        } else {
-> +            // Casting to u64 and subtracting is guaranteed to give the right
-> +            // result for all inputs, as long as the condition we checked above
-> +            // holds.
-> +            Some(Duration::from_nanos(
-> +                self.nanoseconds as u64 - earlier.nanoseconds as u64,
-> +            ))
-
-It looks like you intend to use wrapping semantics for this subtraction
-so that self=1,earlier=-1 results in a difference of two.
-
-In that case, you should explicitly use `.wrapping_sub` instead to
-convey your intent.
-
-I guess you could also use `abs_diff`, which takes two i64s and returns
-an u64.
-
-> +/// Contains the various clock source types available to the kernel.
-> +pub mod clock {
-> +    use super::*;
-> +
-> +    /// A clock representing the default kernel time source.
-> +    ///
-> +    /// This is `CLOCK_MONOTONIC` (though it is not the only
-> +    /// monotonic clock) and also the default clock used by
-> +    /// `ktime_get()` in the C API.
-> +    ///
-> +    /// This is like `BootTime`, but does not include time
-> +    /// spent sleeping.
-> +
-> +    pub struct KernelTime;
-> +
-> +    impl Clock for KernelTime {}
-> +    impl Monotonic for KernelTime {}
-> +    impl Now for KernelTime {
-> +        fn now() -> Instant<Self> {
-> +            Instant::<Self>::new(unsafe { bindings::ktime_get() })
-> +        }
+On Fri, Jul 14, 2023 at 12:39=E2=80=AFPM Asahi Lina <lina@asahilina.net> wr=
+ote:
+>
+> Trivial implementation.
+>
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> ---
+>  rust/kernel/str.rs | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index c9dd3bf59e34..a94e396d39e1 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -606,6 +606,12 @@ fn try_from(cstr: &'a CStr) -> Result<CString, Alloc=
+Error> {
+>      }
+>  }
+>
+> +impl fmt::Debug for CString {
+> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> +        fmt::Debug::fmt(&**self, f)
 > +    }
+> +}
+> +
+>  /// A convenience alias for [`core::format_args`].
+>  #[macro_export]
+>  macro_rules! fmt {
+>
+> ---
+> base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+> change-id: 20230714-cstring-debug-ca021fe0ad78
+>
+> Thank you,
+> ~~ Lina
+>
 
-We usually add a SAFETY comment even if it is trivial.
+Glad I wasn't the only one missing this, now I don't have to write the
+awkard `&*` anymore, as in:
+```
+pr_debug!("trying to open {:?}\n", &*filename);
+```
 
-// SAFETY: Just an FFI call without any safety requirements.
-
-Alice
-
+Cheers,
+Ariel
