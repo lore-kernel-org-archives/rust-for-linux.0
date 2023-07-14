@@ -2,96 +2,92 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51492EB64DA
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 14:02:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89229EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 15:02:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235500AbjGNOCG (ORCPT
+        id S235526AbjGNPC1 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Jul 2023 10:02:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55202 "EHLO
+        Fri, 14 Jul 2023 11:02:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234757AbjGNOCF (ORCPT
+        with ESMTP id S236281AbjGNPC0 (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Jul 2023 10:02:05 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F3EF269D
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 07:02:04 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-cb6f1b3e826so1193286276.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 07:02:04 -0700 (PDT)
+        Fri, 14 Jul 2023 11:02:26 -0400
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E80F3AB1;
+        Fri, 14 Jul 2023 08:02:06 -0700 (PDT)
+Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-c7a5600d04dso1932730276.3;
+        Fri, 14 Jul 2023 08:02:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689343323; x=1691935323;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2RX/r2ODC8fCu29Ed3cujFRc453JSyfT5sPImsob4JU=;
-        b=BwbXGxAdGDSa8Hh7hYoUt1tjxNITodRy4Ie5C9Ve5VjqA6Jp+nyRz/A8pfmVILcQ64
-         waqrj3jD33fIlouxPLj8xVZ7jMJXPFpzZZfFIhJRa14Ko7B0PJ9XRY1ZTwTG/bpqLs6Y
-         BruFqcKyT0EUFnXIdp0TIxtA3LQR0nYcxTlVMiwkz4IRgvYemxzWVSA3T8g404mRVp3+
-         3dri6WPbfsCB8AwLXDoA9muP0F2W+o/cAaLBQOFQLs1sYckvS7fBVKqH65bEOBGc7dsw
-         FK3QzCp5BfBLk4FUwZ4FZA1gNaX3R8wrbNX3RrAAV2tNGAFQZlGdMBItHrESM9ihMcph
-         sZHQ==
+        d=gmail.com; s=20221208; t=1689346925; x=1691938925;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WZZ9EOh8YDl35VB0YBYDo9hjgSAIvlerdtM+lWHSm5g=;
+        b=JTzzYDbIAeBHNT3Mk2cmNycCC3b97HGw6Wa6P0kp0mxr2C0KJFDPLSxJq8Pd6EzUUh
+         bIjQvzVXcsD1bkZFQ3umgFq9TqY3tY8Vprh3ciL/qkwidOnt0es1ZnABBhViELmcW8yE
+         7hdoifxju13ojhAoxCW+wwfWHB4F/2wrVUxW2PJQxG+IMSqKaI+ydKOWklkKQA4Wto5C
+         rogJtvx1NQYCG44jC1GrVj0i//rc8q1aYevxx9mKh/QMzrQE31PClFfhAFpn5qJoA6/B
+         PFHvMyG72+PLz7aLqg3R3/vCyN/mdmHx0ftxLv9lQP4Bawm7+5d8f4tAFt0fKL0pnrXL
+         xAwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689343323; x=1691935323;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2RX/r2ODC8fCu29Ed3cujFRc453JSyfT5sPImsob4JU=;
-        b=hzAjuSm7U4z/TaVjJ0bw0v2BKdLH0C5cIB9EZ9yv+oz+6FYilGjYoY4ZZs1U3B3TpC
-         P42AIepcJ6NFHCHBiPufz3o6a5l0OM0PQJL/ixj2yJ5doCeeTLZq4jLSuM5t2+AcOf8b
-         UIpNq+R8DTThalg5qOpZvz92tvgDx8r0JWmjOJADgTHskM2eJEWPVjInrDyZ88Yo2dGC
-         84M75DJbVP5y3UTGIst6R9KdaTvjb5cSQN/xNkzF7k3PvEImQJm97xD6uKR836lXxhQP
-         bnnkzVeqO9QNC/7jCcuaqPX3nw1BwsEXQr9z00fYrBHWpRGkhXs7bV0ZC54Te+NnaOZM
-         JC3Q==
-X-Gm-Message-State: ABy/qLZ20rk1+zy7WfNXaW+1pwqxR7nxpfDuI4qrJa6fN5uHEslbmiXU
-        +DInlsnZ3qDhxo30bX/iNtBQmHcE7BlhOPs=
-X-Google-Smtp-Source: APBJJlGzu1LO19CXBMx8FKjaV6KIVSfUtdfZqayTOkYrzFmODQN5OrWCNNNYNkUzckjgrty4qCCNo3lYvl3ikgU=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a25:d8d6:0:b0:c62:d787:3acc with SMTP id
- p205-20020a25d8d6000000b00c62d7873accmr25193ybg.2.1689343323690; Fri, 14 Jul
- 2023 07:02:03 -0700 (PDT)
-Date:   Fri, 14 Jul 2023 14:02:01 +0000
-In-Reply-To: <CAPDJoNv1HW-5uCj21PX3t23rJ+sbTL4Gm5pDis8HGJ-VTr4dug@mail.gmail.com>
-Mime-Version: 1.0
+        d=1e100.net; s=20221208; t=1689346925; x=1691938925;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WZZ9EOh8YDl35VB0YBYDo9hjgSAIvlerdtM+lWHSm5g=;
+        b=PxMj2tMt/UKeITmp5r8EnLseSb+7IYXMhiRmeRfDW0actOv8WF30os3MmwCSyZeIv3
+         fFQyetMZ+tNYWD+v/AGnq0CEgBpQ7cRGMFhuLOt126IOhX9TP1rN/sH4eD07W5IoGR9y
+         e1MVGd44f70IgqQsXRXniyjnpuZ3XFKMRxGvnl0S1z4LDRsDgeVqjTeabfvmkemN/jel
+         3bJ4UAoSZRzH3nvPtAKxxZ6CrZZDouyKGB6if/4Rx/qOzqoBCSYGsTyFJxdQIjxns6a+
+         1npIPfO0oj8LjfXzrW3N+CNIXsgtdaMs3qFiHF9J6jQPPUy/Nsvm4LBA4ndpSr0i6+Ya
+         FCQw==
+X-Gm-Message-State: ABy/qLa08wVdTttKyRLBSHOVuVcX+KRANvU2t/o/OWEcCLK6SbHV6NV2
+        diMDIzhiYzDp/Lv8ZKgRewN+7/kXZft643SQfLE=
+X-Google-Smtp-Source: APBJJlERpcU28hgT0T3bIglk0iGT0bmn1uOnaSOpkfR/IyTnKpYwVO97D+A/LlLF6zHeeOjIm0fNWn+04UB37NV0GbY=
+X-Received: by 2002:a25:c0c8:0:b0:c4f:43d7:7daf with SMTP id
+ c191-20020a25c0c8000000b00c4f43d77dafmr4055869ybf.1.1689346925288; Fri, 14
+ Jul 2023 08:02:05 -0700 (PDT)
+MIME-Version: 1.0
 References: <CAPDJoNv1HW-5uCj21PX3t23rJ+sbTL4Gm5pDis8HGJ-VTr4dug@mail.gmail.com>
-X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
-Message-ID: <20230714140201.383439-1-aliceryhl@google.com>
+ <20230714140201.383439-1-aliceryhl@google.com>
+In-Reply-To: <20230714140201.383439-1-aliceryhl@google.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Fri, 14 Jul 2023 17:01:53 +0200
+Message-ID: <CANiq72n8-b992D4RbwUtuEUxXfJYQLNwfibgWSyspx-HYJ8+8A@mail.gmail.com>
 Subject: Re: [PATCH] rust: kernel: str: Implement Debug for CString
-From:   Alice Ryhl <aliceryhl@google.com>
-To:     ariel.miculas@gmail.com
-Cc:     alex.gaynor@gmail.com, asahi@lists.linux.dev,
-        benno.lossin@proton.me, bjorn3_gh@protonmail.com,
-        boqun.feng@gmail.com, gary@garyguo.net, lina@asahilina.net,
-        linux-kernel@vger.kernel.org, ojeda@kernel.org,
+To:     Alice Ryhl <aliceryhl@google.com>
+Cc:     ariel.miculas@gmail.com, alex.gaynor@gmail.com,
+        asahi@lists.linux.dev, benno.lossin@proton.me,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+        lina@asahilina.net, linux-kernel@vger.kernel.org, ojeda@kernel.org,
         rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Asahi Lina <lina@asahilina.net> writes:
-> On 14/07/2023 18.48, Alice Ryhl wrote:
->> Asahi Lina <lina@asahilina.net> writes:
->>> Trivial implementation.
->>>
->>> Signed-off-by: Asahi Lina <lina@asahilina.net>
->> 
->> The commit message is a bit short, but the change itself looks fine.
->> 
->> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> 
-> It's so trivial I just didn't know what else to write... suggestions 
-> welcome (for this or next time I have a patch like this) ^^
-> 
-> ~ Lina
+On Fri, Jul 14, 2023 at 4:02=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> Adding some sort of motivation usually works quite well, e.g.:
+>
+> Make it possible to use a CString with the `pr_*` macros directly, that
+> is, instead of
+>
+>         pr_debug!("trying to open {:?}\n", &*filename);
+>
+> we can now write
+>
+>         pr_debug!("trying to open {:?}\n", filename);
 
-Adding some sort of motivation usually works quite well, e.g.:
+Indeed, this would be the most important bit, i.e. answering the "why?".
 
-Make it possible to use a CString with the `pr_*` macros directly, that
-is, instead of
+The "what?" and the "how?" are pretty much explained by the title, but
+it is also fine giving more details (but if the implementation
+requires an explanation, then it is usually best to write an actual
+source code comment instead).
 
-	pr_debug!("trying to open {:?}\n", &*filename);
-
-we can now write
-
-	pr_debug!("trying to open {:?}\n", filename);
-
-Alice
-
+Cheers,
+Miguel
