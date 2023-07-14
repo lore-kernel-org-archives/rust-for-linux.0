@@ -2,357 +2,120 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09F30EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 19:01:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E4C0EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 20:37:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236557AbjGNTBg (ORCPT
+        id S236262AbjGNUhj (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Jul 2023 15:01:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58970 "EHLO
+        Fri, 14 Jul 2023 16:37:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235873AbjGNTBg (ORCPT
+        with ESMTP id S236254AbjGNUhi (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Jul 2023 15:01:36 -0400
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46C3130FC;
-        Fri, 14 Jul 2023 12:01:34 -0700 (PDT)
-Date:   Fri, 14 Jul 2023 19:01:22 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1689361292; x=1689620492;
-        bh=yZQo0MuHqDNzAW9h8sDYmp2IN6XPjC4GWuy1oTAEskE=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=krZTEOW65mCeDzOdqP7m6Lq5BQbbF88xOb90mdtTVNmR0OZ1ZXDnzHdLj+A2yqgff
-         qzP64OXkVknXBMedB2SVRMe2JaSYjuoFkpnS+Qm1mMA+PHfHGfXGdwWWmC6HoBkgC8
-         k6U2UaQExtANoXoo7yIkFWy3WLUU/2TCKfWb7pI+RbBuuf4sfBV364wMbapNe0/RdB
-         Kiviv6bh2VI5OXQKTTREKvY4AwEepf0pGmdcp0BL20Dqa0bHPvrxIemaZibFZyktvc
-         EKWeH78zvt7873Tjlpp9r//xX47nSGulllKOy6Md/E/8wILxI42tGIUd9UZG12K6wk
-         5Tf+DNagDY5lw==
-To:     FUJITA Tomonori <fujita.tomonori@gmail.com>
-From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     rust-for-linux@vger.kernel.org, netdev@vger.kernel.org,
-        kuba@kernel.org, andrew@lunn.ch, aliceryhl@google.com,
-        miguel.ojeda.sandonis@gmail.com
-Subject: Re: [PATCH v2 3/5] rust: add methods for configure net_device
-Message-ID: <zkyndoXSg5QT0cWHTUkVMke-xxt9EJkT6kORiLdZKklWgWHhz_FWW1zoBImxsRg6Wg7eolhE5enkj32BKIr-rSE-6UOnEoz7jwNHTZ9w3XE=@proton.me>
-In-Reply-To: <20230710073703.147351-4-fujita.tomonori@gmail.com>
-References: <20230710073703.147351-1-fujita.tomonori@gmail.com> <20230710073703.147351-4-fujita.tomonori@gmail.com>
-Feedback-ID: 71780778:user:proton
+        Fri, 14 Jul 2023 16:37:38 -0400
+Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9747035B0;
+        Fri, 14 Jul 2023 13:37:37 -0700 (PDT)
+Received: by mail-oi1-x22d.google.com with SMTP id 5614622812f47-3a36b30aa7bso1796383b6e.3;
+        Fri, 14 Jul 2023 13:37:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689367057; x=1691959057;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mY5r74EsToyg15WyPiWjX1ZroHWYpVw9giMGrKp5JHA=;
+        b=AJN5/qxg8i0gT7b4C7JV8YxHIbBH13eMOg2DhSZgcyeTwVmINt+uIR1UC7cffKvHa3
+         3/bfbVb6OaoeS+/kSx4ONT1rQ/JADd8D03xutMFZu50rbkjCAOBm3ChncdDakkAjvCFR
+         ZTMcUD0KglBQXRLgl0tkuw3bitTlQsJPYbqMNdxy5iNvBK2Lj1VgPfzPX4jgEu5V0fhN
+         TbV2oVtYFJfwHCp9DGcH6P7H8JzVT5Q4lnmDf7b6cnveNHDh+oOz/kVQ4T61RQyMn+WY
+         f7JBbUX7nXRprPIfE5Y1dCdU39NH5n5LQ18IzlSkyVG6yThBm+YX6MPtt9t+zXi3amdh
+         a0bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689367057; x=1691959057;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mY5r74EsToyg15WyPiWjX1ZroHWYpVw9giMGrKp5JHA=;
+        b=H7x2884KuYQ1AtyKgnGxhCW7BPHq0LSSSstIq3Kp/Kyj5duI807B/RnUuHSvXswsRE
+         r6Ti69Fp9EG0BeEYrVQVbbxDSCVv9R+L7E/n2dwoqnffPZbxgMLlEDv+TC1QKSCd5VIu
+         kbbBzSQ9pL9rcfWre89GOHhj009iFLALvdk+Xcf6lQECASXgGjpJuem9QslaLnvu73XQ
+         ZSNimcfRCgh7O3YZA1MBNoxEg+NNvSPAfywuuYiso/w0dWHtUoupOXGvj/nr2dpgQqSg
+         wwXDj8psWd5OLS5ArpGwO0OhVXcVgH568S5gAU5ys6mmaVIttXXH7R6xDmKyj4yFLoIU
+         ZPFQ==
+X-Gm-Message-State: ABy/qLZdv69vWES69S3hknf8LK06A9FzSgLN5lyiMA6y+KxwhycXR5e5
+        6rAq0/h7n4OmPjHWwBFhqtI=
+X-Google-Smtp-Source: APBJJlFBrF1UdrLk9k1UzyB21a0BPI2S3IPzkt81x9e58ufSqkaA21DfyAMl9+w9uwHwKMk7wMrhDA==
+X-Received: by 2002:a05:6808:d47:b0:396:e3a:9f2f with SMTP id w7-20020a0568080d4700b003960e3a9f2fmr6910430oik.5.1689367056789;
+        Fri, 14 Jul 2023 13:37:36 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id bk12-20020a0568081a0c00b003a44b425c18sm293034oib.43.2023.07.14.13.37.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Jul 2023 13:37:36 -0700 (PDT)
+Message-ID: <72aca706-c2ff-b363-717c-323ea24d3908@gmail.com>
+Date:   Fri, 14 Jul 2023 11:28:37 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH RFC 04/11] rust: siphash: Add a simple siphash abstraction
+Content-Language: en-US
+To:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
+        Daniel Vetter <daniel@ffwll.ch>
+Cc:     Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        asahi@lists.linux.dev, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        llvm@lists.linux.dev
+References: <20230714-classless_lockdep-v1-0-229b9671ce31@asahilina.net>
+ <20230714-classless_lockdep-v1-4-229b9671ce31@asahilina.net>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230714-classless_lockdep-v1-4-229b9671ce31@asahilina.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> adds methods to net::Device for the basic configurations of
-> net_device.
->=20
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On 7/14/23 06:13, Asahi Lina wrote:
+> This simple wrapper allows Rust code to use the Hasher interface with
+> the kernel siphash implementation. No fancy features supported for now,
+> just basic bag-of-bytes hashing. No guarantee that hash outputs will
+> remain stable in the future either.
+> 
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
 > ---
->  rust/helpers.c         |   7 ++
->  rust/kernel/net/dev.rs | 185 ++++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 191 insertions(+), 1 deletion(-)
->=20
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index 70d50767ff4e..6c51deb18dc1 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -22,6 +22,7 @@
->  #include <linux/build_bug.h>
->  #include <linux/err.h>
->  #include <linux/errname.h>
-> +#include <linux/etherdevice.h>
->  #include <linux/refcount.h>
->  #include <linux/mutex.h>
->  #include <linux/netdevice.h>
-> @@ -31,6 +32,12 @@
->  #include <linux/wait.h>
->=20
->  #ifdef CONFIG_NET
-> +void rust_helper_eth_hw_addr_random(struct net_device *dev)
-> +{
-> +=09eth_hw_addr_random(dev);
+> [...]
+> --- /dev/null
+> +++ b/rust/kernel/siphash.rs
+> @@ -0,0 +1,39 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! A core::hash::Hasher wrapper for the kernel siphash implementation.
+> +//!
+> +//! This module allows Rust code to use the kernel's siphash implementation
+> +//! to hash Rust objects.
+> +
+> +use core::hash::Hasher;
+> +
+> +/// A Hasher implementation that uses the kernel siphash implementation.
+> +#[derive(Default)]
+> +pub struct SipHasher {
+> +    // SipHash state is 4xu64, but the Linux implementation
+> +    // doesn't expose incremental hashing so let's just chain
+> +    // individual SipHash calls for now, which return a u64
+> +    // hash.
+
+Isn't this detail relevant to mention in the doc comment? At least to
+explain the difference between them.
+
+> +    state: u64,
 > +}
-> +EXPORT_SYMBOL_GPL(rust_helper_eth_hw_addr_random);
-> +
->  void *rust_helper_netdev_priv(const struct net_device *dev)
->  {
->  =09return netdev_priv(dev);
-> diff --git a/rust/kernel/net/dev.rs b/rust/kernel/net/dev.rs
-> index ff00616e4fef..e4d8d8260c10 100644
-> --- a/rust/kernel/net/dev.rs
-> +++ b/rust/kernel/net/dev.rs
-> @@ -8,9 +8,116 @@
->  //! [`include/linux/skbuff.h`](../../../../include/linux/skbuff.h),
->  //! [`include/uapi/linux/if_link.h`](../../../../include/uapi/linux/if_l=
-ink.h).
->=20
-> -use crate::{bindings, build_error, error::*, prelude::vtable, types::For=
-eignOwnable};
-> +use crate::{bindings, build_error, error::*, prelude::vtable, str::CStr,=
- types::ForeignOwnable};
->  use {core::ffi::c_void, core::marker::PhantomData};
->=20
-> +/// Flags associated with a [`Device`].
-> +pub mod flags {
-> +    /// Interface is up.
-> +    pub const IFF_UP: u32 =3D bindings::net_device_flags_IFF_UP;
-> +    /// Broadcast address valid.
-> +    pub const IFF_BROADCAST: u32 =3D bindings::net_device_flags_IFF_BROA=
-DCAST;
-> +    /// Device on debugging.
-> +    pub const IFF_DEBUG: u32 =3D bindings::net_device_flags_IFF_DEBUG;
-> +    /// Loopback device.
-> +    pub const IFF_LOOPBACK: u32 =3D bindings::net_device_flags_IFF_LOOPB=
-ACK;
-> +    /// Has p-p link.
-> +    pub const IFF_POINTOPOINT: u32 =3D bindings::net_device_flags_IFF_PO=
-INTOPOINT;
-> +    /// Avoids use of trailers.
-> +    pub const IFF_NOTRAILERS: u32 =3D bindings::net_device_flags_IFF_NOT=
-RAILERS;
-> +    /// Interface RFC2863 OPER_UP.
-> +    pub const IFF_RUNNING: u32 =3D bindings::net_device_flags_IFF_RUNNIN=
-G;
-> +    /// No ARP protocol.
-> +    pub const IFF_NOARP: u32 =3D bindings::net_device_flags_IFF_NOARP;
-> +    /// Receives all packets.
-> +    pub const IFF_PROMISC: u32 =3D bindings::net_device_flags_IFF_PROMIS=
-C;
-> +    /// Receive all multicast packets.
-> +    pub const IFF_ALLMULTI: u32 =3D bindings::net_device_flags_IFF_ALLMU=
-LTI;
-> +    /// Master of a load balancer.
-> +    pub const IFF_MASTER: u32 =3D bindings::net_device_flags_IFF_MASTER;
-> +    /// Slave of a load balancer.
-> +    pub const IFF_SLAVE: u32 =3D bindings::net_device_flags_IFF_SLAVE;
-> +    /// Supports multicast.
-> +    pub const IFF_MULTICAST: u32 =3D bindings::net_device_flags_IFF_MULT=
-ICAST;
-> +    /// Capable of setting media type.
-> +    pub const IFF_PORTSEL: u32 =3D bindings::net_device_flags_IFF_PORTSE=
-L;
-> +    /// Auto media select active.
-> +    pub const IFF_AUTOMEDIA: u32 =3D bindings::net_device_flags_IFF_AUTO=
-MEDIA;
-> +    /// Dialup device with changing addresses.
-> +    pub const IFF_DYNAMIC: u32 =3D bindings::net_device_flags_IFF_DYNAMI=
-C;
-> +}
-> +
-> +/// Private flags associated with a [`Device`].
-> +pub mod priv_flags {
-> +    /// 802.1Q VLAN device.
-> +    pub const IFF_802_1Q_VLAN: u64 =3D bindings::netdev_priv_flags_IFF_8=
-02_1Q_VLAN;
-> +    /// Ethernet bridging device.
-> +    pub const IFF_EBRIDGE: u64 =3D bindings::netdev_priv_flags_IFF_EBRID=
-GE;
-> +    /// Bonding master or slave device.
-> +    pub const IFF_BONDING: u64 =3D bindings::netdev_priv_flags_IFF_BONDI=
-NG;
-> +    /// ISATAP interface (RFC4214).
-> +    pub const IFF_ISATAP: u64 =3D bindings::netdev_priv_flags_IFF_ISATAP=
-;
-> +    /// WAN HDLC device.
-> +    pub const IFF_WAN_HDLC: u64 =3D bindings::netdev_priv_flags_IFF_WAN_=
-HDLC;
-> +    /// dev_hard_start_xmit() is allowed to release skb->dst.
-> +    pub const IFF_XMIT_DST_RELEASE: u64 =3D bindings::netdev_priv_flags_=
-IFF_XMIT_DST_RELEASE;
-> +    /// Disallows bridging this ether device.
-> +    pub const IFF_DONT_BRIDGE: u64 =3D bindings::netdev_priv_flags_IFF_D=
-ONT_BRIDGE;
-> +    /// Disables netpoll at run-time.
-> +    pub const IFF_DISABLE_NETPOLL: u64 =3D bindings::netdev_priv_flags_I=
-FF_DISABLE_NETPOLL;
-> +    /// Device used as macvlan port.
-> +    pub const IFF_MACVLAN_PORT: u64 =3D bindings::netdev_priv_flags_IFF_=
-MACVLAN_PORT;
-> +    /// Device used as bridge port.
-> +    pub const IFF_BRIDGE_PORT: u64 =3D bindings::netdev_priv_flags_IFF_B=
-RIDGE_PORT;
-> +    /// Device used as Open vSwitch datapath port.
-> +    pub const IFF_OVS_DATAPATH: u64 =3D bindings::netdev_priv_flags_IFF_=
-OVS_DATAPATH;
-> +    /// The interface supports sharing skbs on transmit.
-> +    pub const IFF_TX_SKB_SHARING: u64 =3D bindings::netdev_priv_flags_IF=
-F_TX_SKB_SHARING;
-> +    /// Supports unicast filtering.
-> +    pub const IFF_UNICAST_FLT: u64 =3D bindings::netdev_priv_flags_IFF_U=
-NICAST_FLT;
-> +    /// Device used as team port.
-> +    pub const IFF_TEAM_PORT: u64 =3D bindings::netdev_priv_flags_IFF_TEA=
-M_PORT;
-> +    /// Device supports sending custom FCS.
-> +    pub const IFF_SUPP_NOFCS: u64 =3D bindings::netdev_priv_flags_IFF_SU=
-PP_NOFCS;
-> +    /// Device supports hardware address change when it's running.
-> +    pub const IFF_LIVE_ADDR_CHANGE: u64 =3D bindings::netdev_priv_flags_=
-IFF_LIVE_ADDR_CHANGE;
-> +    /// Macvlan device.
-> +    pub const IFF_MACVLAN: u64 =3D bindings::netdev_priv_flags_IFF_MACVL=
-AN;
-> +    /// IFF_XMIT_DST_RELEASE not taking into account underlying stacked =
-devices.
-> +    pub const IFF_XMIT_DST_RELEASE_PERM: u64 =3D
-> +        bindings::netdev_priv_flags_IFF_XMIT_DST_RELEASE_PERM;
-> +    /// L3 master device.
-> +    pub const IFF_L3MDEV_MASTER: u64 =3D bindings::netdev_priv_flags_IFF=
-_L3MDEV_MASTER;
-> +    /// Device can run without qdisc attached.
-> +    pub const IFF_NO_QUEUE: u64 =3D bindings::netdev_priv_flags_IFF_NO_Q=
-UEUE;
-> +    /// Device is a Open vSwitch master.
-> +    pub const IFF_OPENVSWITCH: u64 =3D bindings::netdev_priv_flags_IFF_O=
-PENVSWITCH;
-> +    /// Device is enslaved to an L3 master.
-> +    pub const IFF_L3MDEV_SLAVE: u64 =3D bindings::netdev_priv_flags_IFF_=
-L3MDEV_SLAVE;
-> +    /// Team device.
-> +    pub const IFF_TEAM: u64 =3D bindings::netdev_priv_flags_IFF_TEAM;
-> +    /// Device has had Rx Flow indirection table configured.
-> +    pub const IFF_RXFH_CONFIGURED: u64 =3D bindings::netdev_priv_flags_I=
-FF_RXFH_CONFIGURED;
-> +    /// The headroom value is controlled by an external entity.
-> +    pub const IFF_PHONY_HEADROOM: u64 =3D bindings::netdev_priv_flags_IF=
-F_PHONY_HEADROOM;
-> +    /// MACsec device.
-> +    pub const IFF_MACSEC: u64 =3D bindings::netdev_priv_flags_IFF_MACSEC=
-;
-> +    /// Device doesn't support the rx_handler hook.
-> +    pub const IFF_NO_RX_HANDLER: u64 =3D bindings::netdev_priv_flags_IFF=
-_NO_RX_HANDLER;
-> +    /// Failover master device.
-> +    pub const IFF_FAILOVER: u64 =3D bindings::netdev_priv_flags_IFF_FAIL=
-OVER;
-> +    /// Lower device of a failover master device.
-> +    pub const IFF_FAILOVER_SLAVE: u64 =3D bindings::netdev_priv_flags_IF=
-F_FAILOVER_SLAVE;
-> +    /// Only invokes the rx handler of L3 master device.
-> +    pub const IFF_L3MDEV_RX_HANDLER: u64 =3D bindings::netdev_priv_flags=
-_IFF_L3MDEV_RX_HANDLER;
-> +    /// Prevents ipv6 addrconf.
-> +    pub const IFF_NO_ADDRCONF: u64 =3D bindings::netdev_priv_flags_IFF_N=
-O_ADDRCONF;
-> +    /// Capable of xmitting frames with skb_headlen(skb) =3D=3D 0.
-> +    pub const IFF_TX_SKB_NO_LINEAR: u64 =3D bindings::netdev_priv_flags_=
-IFF_TX_SKB_NO_LINEAR;
-> +    /// Supports setting carrier via IFLA_PROTO_DOWN.
-> +    pub const IFF_CHANGE_PROTO_DOWN: u64 =3D bindings::netdev_priv_flags=
-_IFF_CHANGE_PROTO_DOWN;
-> +}
-> +
->  /// Corresponds to the kernel's `struct net_device`.
->  ///
->  /// # Invariants
-> @@ -49,6 +156,82 @@ pub fn drv_priv_data(&self) -> D::Borrowed<'_> {
->              ))
->          }
->      }
-> +
-> +    /// Sets the name of a device.
-> +    pub fn set_name(&mut self, name: &CStr) -> Result {
-> +        // SAFETY: The type invariants guarantee that `self.ptr` is vali=
-d.
-> +        unsafe {
-> +            if name.len() > (*self.ptr).name.len() {
-> +                return Err(code::EINVAL);
-> +            }
-> +            (*self.ptr)
-> +                .name
-> +                .as_mut_ptr()
-> +                .copy_from_nonoverlapping(name.as_char_ptr(), name.len()=
-);
-> +        }
-
-Just to make sure, the `name` field in `net_device` does not need to
-be nul-terminated, right?
-
---
-Cheers,
-Benno
-
-> +        Ok(())
-> +    }
-> +
-> +    /// Sets carrier.
-> +    pub fn netif_carrier_on(&mut self) {
-> +        // SAFETY: The type invariants guarantee that `self.ptr` is vali=
-d.
-> +        unsafe { bindings::netif_carrier_on(self.ptr) }
-> +    }
-> +
-> +    /// Clears carrier.
-> +    pub fn netif_carrier_off(&mut self) {
-> +        // SAFETY: The type invariants guarantee that `self.ptr` is vali=
-d.
-> +        unsafe { bindings::netif_carrier_off(self.ptr) }
-> +    }
-> +
-> +    /// Sets the max mtu of the device.
-> +    pub fn set_max_mtu(&mut self, max_mtu: u32) {
-> +        // SAFETY: The type invariants guarantee that `self.ptr` is vali=
-d.
-> +        unsafe {
-> +            (*self.ptr).max_mtu =3D max_mtu;
-> +        }
-> +    }
-> +
-> +    /// Sets the minimum mtu of the device.
-> +    pub fn set_min_mtu(&mut self, min_mtu: u32) {
-> +        // SAFETY: The type invariants guarantee that `self.ptr` is vali=
-d.
-> +        unsafe {
-> +            (*self.ptr).min_mtu =3D min_mtu;
-> +        }
-> +    }
-> +
-> +    /// Returns the flags of the device.
-> +    pub fn get_flags(&self) -> u32 {
-> +        // SAFETY: The type invariants guarantee that `self.ptr` is vali=
-d.
-> +        unsafe { (*self.ptr).flags }
-> +    }
-> +
-> +    /// Sets the flags of the device.
-> +    pub fn set_flags(&mut self, flags: u32) {
-> +        // SAFETY: The type invariants guarantee that `self.ptr` is vali=
-d.
-> +        unsafe {
-> +            (*self.ptr).flags =3D flags;
-> +        }
-> +    }
-> +
-> +    /// Returns the priv_flags of the device.
-> +    pub fn get_priv_flags(&self) -> u64 {
-> +        // SAFETY: The type invariants guarantee that `self.ptr` is vali=
-d.
-> +        unsafe { (*self.ptr).priv_flags }
-> +    }
-> +
-> +    /// Sets the priv_flags of the device.
-> +    pub fn set_priv_flags(&mut self, flags: u64) {
-> +        // SAFETY: The type invariants guarantee that `self.ptr` is vali=
-d.
-> +        unsafe { (*self.ptr).priv_flags =3D flags }
-> +    }
-> +
-> +    /// Generate a random Ethernet address (MAC) to be used by a net dev=
-ice
-> +    /// and set addr_assign_type.
-> +    pub fn set_random_eth_hw_addr(&mut self) {
-> +        // SAFETY: The type invariants guarantee that `self.ptr` is vali=
-d.
-> +        unsafe { bindings::eth_hw_addr_random(self.ptr) }
-> +    }
->  }
->=20
->  // SAFETY: `Device` is just a wrapper for the kernel`s `struct net_devic=
-e`, which can be used
-> --
-> 2.34.1
->=20
-
+> [...]
