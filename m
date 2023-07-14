@@ -2,332 +2,200 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2677AEB64DA
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 08:21:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A5E0EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 09:31:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232566AbjGNIVM (ORCPT
+        id S235258AbjGNJbl (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Jul 2023 04:21:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41018 "EHLO
+        Fri, 14 Jul 2023 05:31:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234619AbjGNIVL (ORCPT
+        with ESMTP id S234417AbjGNJbk (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Jul 2023 04:21:11 -0400
-X-Greylist: delayed 900 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 14 Jul 2023 01:21:08 PDT
-Received: from mail.marcansoft.com (marcansoft.com [IPv6:2a01:298:fe:f::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 903539B;
-        Fri, 14 Jul 2023 01:21:08 -0700 (PDT)
+        Fri, 14 Jul 2023 05:31:40 -0400
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ACC53594;
+        Fri, 14 Jul 2023 02:31:14 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: linasend@asahilina.net)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 269E95BAE8;
-        Fri, 14 Jul 2023 07:55:14 +0000 (UTC)
+        by mail.marcansoft.com (Postfix) with ESMTPSA id 94E585BC46;
+        Fri, 14 Jul 2023 09:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-        s=default; t=1689321319;
-        bh=7J6No4Uq+18pRNDNsxGUwdq6k7ZetFTxJmVCqu0gelc=;
-        h=From:Date:Subject:To:Cc;
-        b=0XXctXa8kAUwqUR/n14lJzAp1QSwB4QVYeTBiOsv07KBbD6NvF6XF73BDiRjxaldA
-         L2A7a62Y5JE8n4pAqEf4GGzbkejs/EuMTKpOIlxO6oMAxZ7d4mpT2x7jOZJXCxFb2S
-         iIHDs92fj0sV4K48baDpfQdTTWaTKcLuQU7JwUN4uo34nWeLtCMMVxxOQeh0aouLg6
-         zlaXXK8eVEREW+a1ZIF7LE93+fo/vVZa0iR367TjUSSOpeisKx5Y+gq7AD0m9d5Irj
-         WExg0duPuLNEP3ehs0DOUCo890NEr5Ql1OsX7Q0Sk5uM1btsArfvz9I/Zafk2K5uNq
-         c7tnSZxM5TxXA==
+        s=default; t=1689326077;
+        bh=gnMMY1x9qq2PPTNUzBdxhYi7ww499CWLccQC4OWzTx0=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=mOUxHiDwZefAGEFyddpSP0C3sc+AGebB1164Sp4/WwaCwg0cMeyRLTWVxHoyF0dMy
+         6+N56AQcfNwJoKzhJCuzDLTiVI1RMbCJsdEvhr8iV6JKWgYsI+boZ8p+fKDP0PuGJh
+         tsYRCK3HQwJ12DomTTeRBaj0nYgsJiqMzWaiMR0dHldiGmR/Rr2/qTq47LgkBuG3EH
+         Swzgk/2goIh/JslYbAOJeaZQnIIZQuXaYcw1wZ+mTM0pPv76jTMnK26cnAbJUFfQ5L
+         mZjStDi/cxIswFfO9cWkjCnGUFXm9X0adKBYPRYOyMaZKOCl8t/i/qnWDN3Gz/4woW
+         BvLg/oOhqISKA==
 From:   Asahi Lina <lina@asahilina.net>
-Date:   Fri, 14 Jul 2023 16:55:01 +0900
-Subject: [PATCH v2] rust: time: New module for timekeeping functions
+Date:   Fri, 14 Jul 2023 18:13:57 +0900
+Subject: [PATCH RFC 05/11] rust: sync: Add dummy LockClassKey
+ implementation for !CONFIG_LOCKDEP
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
-X-B4-Tracking: v=1; b=H4sIAFT/sGQC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
- vPSU3UzU4B8JSMDI2MDc0MT3aLS4hLdkszcVF1Dg5QUy9QUI1NjY2MloPqCotS0zAqwWdGxtbU
- AYS2TUFsAAAA=
+Message-Id: <20230714-classless_lockdep-v1-5-229b9671ce31@asahilina.net>
+References: <20230714-classless_lockdep-v1-0-229b9671ce31@asahilina.net>
+In-Reply-To: <20230714-classless_lockdep-v1-0-229b9671ce31@asahilina.net>
 To:     Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
         =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        John Stultz <jstultz@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Josh Stone <jistone@redhat.com>,
-        Gaelan Steele <gbs@canishe.com>,
-        Heghedus Razvan <heghedus.razvan@protonmail.com>
-Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>
+        Benno Lossin <benno.lossin@proton.me>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
+        Daniel Vetter <daniel@ffwll.ch>
+Cc:     Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        asahi@lists.linux.dev, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        llvm@lists.linux.dev, Asahi Lina <lina@asahilina.net>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1689321314; l=8468;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1689326040; l=3940;
  i=lina@asahilina.net; s=20230221; h=from:subject:message-id;
- bh=7J6No4Uq+18pRNDNsxGUwdq6k7ZetFTxJmVCqu0gelc=;
- b=HpiQKFG0rAdsT7ooEpKBQ1fhz3+0ARMyc8DgriWfRofBJbVXrK3y3rBG0HRIM0Ja4hnOFqG8e
- O6Bd+SjWBAZB2M8WGX8ZawAVdoKqD+hx6KCJhJjK/5HojC5Vm5BNgDD
+ bh=gnMMY1x9qq2PPTNUzBdxhYi7ww499CWLccQC4OWzTx0=;
+ b=bUWCrMNd7kHfIgvXiwbCtuSH/byuJpb+njsl0PfbHBCQxpRL9xMxqT8cQPBr35CdPxPspIQkK
+ dII2uF6hA+OBRhfkDQOkW33pZImPKdLb45I4COXTwZnB1UFS/mveMtP
 X-Developer-Key: i=lina@asahilina.net; a=ed25519;
  pk=Qn8jZuOtR1m5GaiDfTrAoQ4NE1XoYVZ/wmt5YtXWFC4=
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-This module is intended to contain functions related to kernel
-timekeeping and time.
+Lock classes aren't used without lockdep. The C side declares the key
+as an empty struct in that case, but let's make it an explicit ZST in
+Rust, implemented in a separate module. This allows us to more easily
+guarantee that the lockdep code will be trivially optimized out without
+CONFIG_LOCKDEP, including LockClassKey arguments that are passed around.
 
-Initially, this implements an abstraction for a time Instant (analogous
-to the Rust std::time::Instant) that represents an opaque instant in
-time. Unlike the std Instant, this is a generic type that is bound to a
-specific clock source, so that only Instants from the same clock source
-can be subtracted/compared.
+Depending on whether CONFIG_LOCKDEP is enabled or not, we then import
+the real lockdep implementation or the dummy one.
 
-Then we implement the relevant clocks available to the kernel:
-KernelTime (CLOCK_MONOTONIC), BootTime (CLOCK_BOOTTIME),
-RealTime (CLOCK_REALTIME), and TaiTime.
-
-Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
 Signed-off-by: Asahi Lina <lina@asahilina.net>
 ---
+ rust/kernel/sync.rs            | 29 ++++++++---------------------
+ rust/kernel/sync/lockdep.rs    | 27 +++++++++++++++++++++++++++
+ rust/kernel/sync/no_lockdep.rs | 19 +++++++++++++++++++
+ 3 files changed, 54 insertions(+), 21 deletions(-)
 
-Based on the feedback to v1, now we have proper type checking for kernel
-time. I decided to implement marker traits for monotonic vs. wallclock
-time sources, since it's useful to be able to safely implement different
-semantics conditional on that, but that left me with a name conflict of
-the Monotonic trait with the CLOCK_MONOTONIC / "default ktime" clock
-source. I ended up calling it KernelTime since it's the most fundamental
-kernel timesource, but suggestions welcome!
-
-Heghedus: I think I need a signoff on this since this is based on the
-playground demo you wrote in the feedback to v1. Can you provide that? I
-can fold it into v3 (if there is one, otherwise Miguel can probably just
-add it when he applies it). Thanks!
----
- rust/bindings/bindings_helper.h |   2 +
- rust/helpers.c                  |  16 +++++
- rust/kernel/lib.rs              |   1 +
- rust/kernel/time.rs             | 150 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 169 insertions(+)
-
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 3e601ce2548d..eddfdf887364 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -8,9 +8,11 @@
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index d219ee518eff..352472c6b77a 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -5,37 +5,24 @@
+ //! This module contains the kernel APIs related to synchronisation that have been ported or
+ //! wrapped for usage by Rust code in the kernel.
  
- #include <linux/errname.h>
- #include <linux/slab.h>
-+#include <linux/ktime.h>
- #include <linux/refcount.h>
- #include <linux/wait.h>
- #include <linux/sched.h>
-+#include <linux/timekeeping.h>
+-use crate::types::Opaque;
+-
+ mod arc;
+ mod condvar;
+ pub mod lock;
+ mod locked_by;
  
- /* `bindgen` gets confused at certain things. */
- const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
-diff --git a/rust/helpers.c b/rust/helpers.c
-index bb594da56137..eff092302e23 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -26,6 +26,7 @@
- #include <linux/mutex.h>
- #include <linux/spinlock.h>
- #include <linux/sched/signal.h>
-+#include <linux/timekeeping.h>
- #include <linux/wait.h>
- 
- __noreturn void rust_helper_BUG(void)
-@@ -135,6 +136,21 @@ void rust_helper_put_task_struct(struct task_struct *t)
- }
- EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
- 
-+ktime_t rust_helper_ktime_get_real(void) {
-+	return ktime_get_real();
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_ktime_get_real);
++#[cfg(CONFIG_LOCKDEP)]
++mod lockdep;
++#[cfg(not(CONFIG_LOCKDEP))]
++mod no_lockdep;
++#[cfg(not(CONFIG_LOCKDEP))]
++use no_lockdep as lockdep;
 +
-+ktime_t rust_helper_ktime_get_boottime(void) {
-+	return ktime_get_boottime();
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_ktime_get_boottime);
-+
-+ktime_t rust_helper_ktime_get_clocktai(void) {
-+	return ktime_get_clocktai();
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_ktime_get_clocktai);
-+
- /*
-  * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
-  * as the Rust `usize` type, so we can use it in contexts where Rust
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 85b261209977..52c91484c5d8 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -42,6 +42,7 @@
- pub mod str;
- pub mod sync;
- pub mod task;
-+pub mod time;
- pub mod types;
+ pub use arc::{Arc, ArcBorrow, UniqueArc};
+ pub use condvar::CondVar;
+ pub use lock::{mutex::Mutex, spinlock::SpinLock};
++pub use lockdep::LockClassKey;
+ pub use locked_by::LockedBy;
  
+-/// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
+-#[repr(transparent)]
+-pub struct LockClassKey(Opaque<bindings::lock_class_key>);
+-
+-// SAFETY: `bindings::lock_class_key` is designed to be used concurrently from multiple threads and
+-// provides its own synchronization.
+-unsafe impl Sync for LockClassKey {}
+-
+-impl LockClassKey {
+-    /// Creates a new lock class key.
+-    pub const fn new() -> Self {
+-        Self(Opaque::uninit())
+-    }
+-
+-    pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+-        self.0.get()
+-    }
+-}
+-
+ /// Defines a new static lock class and returns a pointer to it.
  #[doc(hidden)]
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+ #[macro_export]
+diff --git a/rust/kernel/sync/lockdep.rs b/rust/kernel/sync/lockdep.rs
 new file mode 100644
-index 000000000000..f3bfeed20145
+index 000000000000..cb68b18dc0ad
 --- /dev/null
-+++ b/rust/kernel/time.rs
-@@ -0,0 +1,150 @@
++++ b/rust/kernel/sync/lockdep.rs
+@@ -0,0 +1,27 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! Timekeeping functions.
++//! Lockdep utilities.
 +//!
-+//! C header: [`include/linux/ktime.h`](../../../../include/linux/ktime.h)
-+//! C header: [`include/linux/timekeeping.h`](../../../../include/linux/timekeeping.h)
++//! This module abstracts the parts of the kernel lockdep API relevant to Rust
++//! modules, including lock classes.
 +
-+use crate::{bindings, pr_err};
-+use core::marker::PhantomData;
-+use core::time::Duration;
++use crate::types::Opaque;
 +
-+/// Represents a clock, that is, a unique time source.
-+pub trait Clock: Sized {}
++/// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
++#[repr(transparent)]
++pub struct LockClassKey(Opaque<bindings::lock_class_key>);
 +
-+/// A time source that can be queried for the current time.
-+pub trait Now: Clock {
-+    /// Returns the current time for this clock.
-+    fn now() -> Instant<Self>;
-+}
++impl LockClassKey {
++    /// Creates a new lock class key.
++    pub const fn new() -> Self {
++        Self(Opaque::uninit())
++    }
 +
-+/// Marker trait for clock sources that are guaranteed to be monotonic.
-+pub trait Monotonic {}
-+
-+/// Marker trait for clock sources that represent a calendar (wall clock)
-+/// relative to the UNIX epoch.
-+pub trait WallTime {}
-+
-+/// An instant in time associated with a given clock source.
-+#[derive(Debug)]
-+pub struct Instant<T: Clock> {
-+    nanoseconds: i64,
-+    _type: PhantomData<T>,
-+}
-+
-+impl<T: Clock> Clone for Instant<T> {
-+    fn clone(&self) -> Self {
-+        *self
++    pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
++        self.0.get()
 +    }
 +}
 +
-+impl<T: Clock> Copy for Instant<T> {}
++// SAFETY: `bindings::lock_class_key` is designed to be used concurrently from multiple threads and
++// provides its own synchronization.
++unsafe impl Sync for LockClassKey {}
+diff --git a/rust/kernel/sync/no_lockdep.rs b/rust/kernel/sync/no_lockdep.rs
+new file mode 100644
+index 000000000000..69d42e8d9801
+--- /dev/null
++++ b/rust/kernel/sync/no_lockdep.rs
+@@ -0,0 +1,19 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+impl<T: Clock> Instant<T> {
-+    fn new(nanoseconds: i64) -> Self {
-+        Instant {
-+            nanoseconds,
-+            _type: PhantomData,
-+        }
++//! Dummy lockdep utilities.
++//!
++//! Takes the place of the `lockdep` module when lockdep is disabled.
++
++/// A dummy, zero-sized lock class.
++pub struct LockClassKey();
++
++impl LockClassKey {
++    /// Creates a new dummy lock class key.
++    pub const fn new() -> Self {
++        Self()
 +    }
 +
-+    /// Returns the time elapsed since an earlier Instant<t>, or
-+    /// None if the argument is a later Instant.
-+    pub fn since(&self, earlier: Instant<T>) -> Option<Duration> {
-+        if earlier.nanoseconds > self.nanoseconds {
-+            None
-+        } else {
-+            // Casting to u64 and subtracting is guaranteed to give the right
-+            // result for all inputs, as long as the condition we checked above
-+            // holds.
-+            Some(Duration::from_nanos(
-+                self.nanoseconds as u64 - earlier.nanoseconds as u64,
-+            ))
-+        }
-+    }
-+}
-+
-+impl<T: Clock + Now + Monotonic> Instant<T> {
-+    /// Returns the time elapsed since this Instant<T>.
-+    ///
-+    /// This is guaranteed to return a positive result, since
-+    /// it is only implemented for monotonic clocks.
-+    pub fn elapsed(&self) -> Duration {
-+        T::now().since(*self).unwrap_or_else(|| {
-+            pr_err!(
-+                "Monotonic clock {} went backwards!",
-+                core::any::type_name::<T>()
-+            );
-+            Duration::ZERO
-+        })
-+    }
-+}
-+
-+/// Contains the various clock source types available to the kernel.
-+pub mod clock {
-+    use super::*;
-+
-+    /// A clock representing the default kernel time source.
-+    ///
-+    /// This is `CLOCK_MONOTONIC` (though it is not the only
-+    /// monotonic clock) and also the default clock used by
-+    /// `ktime_get()` in the C API.
-+    ///
-+    /// This is like `BootTime`, but does not include time
-+    /// spent sleeping.
-+
-+    pub struct KernelTime;
-+
-+    impl Clock for KernelTime {}
-+    impl Monotonic for KernelTime {}
-+    impl Now for KernelTime {
-+        fn now() -> Instant<Self> {
-+            Instant::<Self>::new(unsafe { bindings::ktime_get() })
-+        }
-+    }
-+
-+    /// A clock representing the time elapsed since boot.
-+    ///
-+    /// This is `CLOCK_MONOTONIC` (though it is not the only
-+    /// monotonic clock) and also the default clock used by
-+    /// `ktime_get()` in the C API.
-+    ///
-+    /// This is like `KernelTime`, but does include time
-+    /// spent sleeping.
-+    pub struct BootTime;
-+
-+    impl Clock for BootTime {}
-+    impl Monotonic for BootTime {}
-+    impl Now for BootTime {
-+        fn now() -> Instant<Self> {
-+            Instant::<Self>::new(unsafe { bindings::ktime_get_boottime() })
-+        }
-+    }
-+
-+    /// A clock representing TAI time.
-+    ///
-+    /// This clock is not monotonic and can be changed from userspace.
-+    /// However, it is not affected by leap seconds.
-+    pub struct TaiTime;
-+
-+    impl Clock for TaiTime {}
-+    impl WallTime for TaiTime {}
-+    impl Now for TaiTime {
-+        fn now() -> Instant<Self> {
-+            Instant::<Self>::new(unsafe { bindings::ktime_get_clocktai() })
-+        }
-+    }
-+
-+    /// A clock representing wall clock time.
-+    ///
-+    /// This clock is not monotonic and can be changed from userspace.
-+    pub struct RealTime;
-+
-+    impl Clock for RealTime {}
-+    impl WallTime for RealTime {}
-+    impl Now for RealTime {
-+        fn now() -> Instant<Self> {
-+            Instant::<Self>::new(unsafe { bindings::ktime_get_real() })
-+        }
++    pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
++        core::ptr::null_mut()
 +    }
 +}
 
----
-base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
-change-id: 20230714-rust-time-10dd9ed25333
-
-Thank you,
-~~ Lina
+-- 
+2.40.1
 
