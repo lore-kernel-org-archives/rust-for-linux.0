@@ -2,47 +2,42 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61051C001DC
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 15:56:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20087C001DE
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 16:20:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236218AbjGNP4F (ORCPT
+        id S235733AbjGNQUR (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Jul 2023 11:56:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37662 "EHLO
+        Fri, 14 Jul 2023 12:20:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236201AbjGNP4E (ORCPT
+        with ESMTP id S229706AbjGNQUQ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Jul 2023 11:56:04 -0400
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 028D635A0
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 08:56:01 -0700 (PDT)
-Date:   Fri, 14 Jul 2023 15:55:48 +0000
+        Fri, 14 Jul 2023 12:20:16 -0400
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA1422115
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 09:20:12 -0700 (PDT)
+Date:   Fri, 14 Jul 2023 16:19:59 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1689350160; x=1689609360;
-        bh=+lfAu7VehWmb/sypc51klkDAwZxgntdzllO6FE/sTJI=;
+        s=wzv2u5qanffsboo7w52ekd5hsq.protonmail; t=1689351609; x=1689610809;
+        bh=/yhQ5h8Y6Wx7uVirBAiqkZnzC9Cwt6EWBQxKLZ+LIa0=;
         h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
          Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
          Message-ID:BIMI-Selector;
-        b=MmSIGoUGR7ervr1C1lzbE6cJNOLmgL6btTqbE5NxLPXwIuJ6GzLF4uwA/aoEmB792
-         m/ts3op4I0rDYIcv0NgDafVYe/XivsJaM2bETGyO6C1BJy+B/REfyWu/QYL4bAPgif
-         kStSzpnzEDsLjsr1YCG5jPi8dTfdDVUZ8+v/Qyv0c5r9uJYahUE97Xu7BJ51GTOY3k
-         lIGgHmI4atWKqfo05DzL76NePSGZC91W8+dXyAdDAxEi073zR+cnCaJwdlmtoeJk3t
-         R8L9ymgpITqCHn2YCudih6tL5BwedY/plyaPrIOeKDbLkSsRwiBNq8HzRqIopgTDEc
-         88zKYGX5GIxuw==
-To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+        b=cFrZY0Ad/LwkfgiMtCmiVASkLE8UM7V8yR2fXPsH3E+qRUioXjEZcJGtfdCCz+yX8
+         gI+dCMt+1RQkpKwZWo6Wg3rljR7REhAXxe7g8yWyt+bPiDmoiv4dokoAcXW11VDtt7
+         5CP06/Tk6Tj/gGHN8rEUKnxmyMnZ0b8gIZBN2rEJptNKUqZpiYX5PTDlc0AhfALQfr
+         9ZPs+Qdoc52jcUlYxwIKBTI+rgG9i3PkcQZmbOih3dtRaSvRcLjKowj53wHLraZCQW
+         fmMwOsAjoCjUKqWB3mhT0tbRs37T43fPxdbhx6nXIY59mZ/6N2OUZGifqbpr+E0rAt
+         RSMVGE1e02sQQ==
+To:     FUJITA Tomonori <fujita.tomonori@gmail.com>
 From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>
-Subject: Re: [PATCH v2] scripts: read cfgs from Makefile for rust-analyzer
-Message-ID: <diYQuBM2vYke0twpM2m8npuzVA2tHeJ2y52qN25pwSUmgBG0wxwaEQjBVg8eZnxu2kqcBf8wqNiu0aqgAGR3mlmtT2wPuO_HbVxAyhxR3X0=@proton.me>
-In-Reply-To: <20230520231701.46008-1-yakoyoku@gmail.com>
-References: <20230520231701.46008-1-yakoyoku@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-crypto@vger.kernel.org,
+        alex.gaynor@gmail.com, herbert@gondor.apana.org.au,
+        ebiggers@kernel.org
+Subject: Re: [PATCH v2 1/3] rust: crypto abstractions for synchronous message digest API
+Message-ID: <kGKeFd4FklmCgr8eKZ_r5y0rTj66RHZCBoyJrd8wktnjGsdulyotH3j47GIxNqdNOteosNrCU4NxLbq1FTTBxGMZ3wrWIoxGOq8k-mDz1kE=@proton.me>
+In-Reply-To: <20230710102225.155019-2-fujita.tomonori@gmail.com>
+References: <20230710102225.155019-1-fujita.tomonori@gmail.com> <20230710102225.155019-2-fujita.tomonori@gmail.com>
 Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -51,127 +46,265 @@ Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> Both `core` and `alloc` had their `cfgs` missing in `rust-project.json`,
-> to remedy this `generate_rust_analyzer.py` scans the Makefile from
-> inside the `rust` directory for them to be added to a dictionary that
-> each key corresponds to a crate and each value, to an array of `cfgs`.
+> This patch adds basic abstractions for synchronous message digest API,
+> wrapping crypto_shash and shash_desc structures.
 >=20
-> Signed-off-by: Martin Rodriguez Reboredo yakoyoku@gmail.com
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers.c                  |  26 +++++++
+>  rust/kernel/crypto.rs           |   5 ++
+>  rust/kernel/crypto/hash.rs      | 128 ++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   2 +
+>  5 files changed, 162 insertions(+)
+>  create mode 100644 rust/kernel/crypto.rs
+>  create mode 100644 rust/kernel/crypto/hash.rs
+>=20
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 3e601ce2548d..2f198c6d5de5 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -6,6 +6,7 @@
+>   * Sorted alphabetically.
+>   */
+>=20
+> +#include <crypto/hash.h>
+>  #include <linux/errname.h>
+>  #include <linux/slab.h>
+>  #include <linux/refcount.h>
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index bb594da56137..7966902ed8eb 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -18,6 +18,7 @@
+>   * accidentally exposed.
+>   */
+>=20
+> +#include <crypto/hash.h>
+>  #include <linux/bug.h>
+>  #include <linux/build_bug.h>
+>  #include <linux/err.h>
+> @@ -28,6 +29,31 @@
+>  #include <linux/sched/signal.h>
+>  #include <linux/wait.h>
+>=20
+> +#ifdef CONFIG_CRYPTO
+> +void rust_helper_crypto_free_shash(struct crypto_shash *tfm)
+> +{
+> +=09crypto_free_shash(tfm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_crypto_free_shash);
+> +
+> +unsigned int rust_helper_crypto_shash_digestsize(struct crypto_shash *tf=
+m)
+> +{
+> +    return crypto_shash_digestsize(tfm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_crypto_shash_digestsize);
+> +
+> +unsigned int rust_helper_crypto_shash_descsize(struct crypto_shash *tfm)
+> +{
+> +    return crypto_shash_descsize(tfm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_crypto_shash_descsize);
+> +
+> +int rust_helper_crypto_shash_init(struct shash_desc *desc) {
+> +=09return crypto_shash_init(desc);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_crypto_shash_init);
+> +#endif
+> +
+>  __noreturn void rust_helper_BUG(void)
+>  {
+>  =09BUG();
+> diff --git a/rust/kernel/crypto.rs b/rust/kernel/crypto.rs
+> new file mode 100644
+> index 000000000000..f80dd7bd3381
+> --- /dev/null
+> +++ b/rust/kernel/crypto.rs
+> @@ -0,0 +1,5 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Cryptography.
+> +
+> +pub mod hash;
+> diff --git a/rust/kernel/crypto/hash.rs b/rust/kernel/crypto/hash.rs
+> new file mode 100644
+> index 000000000000..cdbc8e70e8f5
+> --- /dev/null
+> +++ b/rust/kernel/crypto/hash.rs
+> @@ -0,0 +1,128 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Cryptographic Hash operations.
+> +//!
+> +//! C headers: [`include/crypto/hash.h`](../../../../include/crypto/hash=
+.h)
+> +
+> +use crate::{
+> +    error::{
+> +        code::{EINVAL, ENOMEM},
+> +        from_err_ptr, to_result, Result,
+> +    },
+> +    str::CStr,
+> +};
+> +use alloc::alloc::{alloc, dealloc};
+> +use core::alloc::Layout;
+> +
+> +/// Corresponds to the kernel's `struct crypto_shash`.
+> +///
+> +/// # Invariants
+> +///
+> +/// The pointer is valid.
+> +pub struct Shash(*mut bindings::crypto_shash);
+> +
+> +impl Drop for Shash {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        unsafe { bindings::crypto_free_shash(self.0) }
+> +    }
+> +}
+> +
+> +impl Shash {
+> +    /// Creates a [`Shash`] object for a message digest handle.
+> +    pub fn new(name: &CStr, t: u32, mask: u32) -> Result<Shash> {
+> +        // SAFETY: There are no safety requirements for this FFI call.
+> +        let ptr =3D
+> +            unsafe { from_err_ptr(bindings::crypto_alloc_shash(name.as_c=
+har_ptr(), t, mask)) }?;
+> +        // INVARIANT: `ptr` is valid and non-null since `crypto_alloc_sh=
+ash`
+> +        // returned a valid pointer which was null-checked.
+> +        Ok(Self(ptr))
+> +    }
+> +
+> +    /// Sets optional key used by the hashing algorithm.
+> +    pub fn setkey(&mut self, data: &[u8]) -> Result {
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        to_result(unsafe {
+> +            bindings::crypto_shash_setkey(self.0, data.as_ptr(), data.le=
+n() as u32)
+> +        })
+> +    }
+> +
+> +    /// Returns the size of the result of the transformation.
+> +    pub fn digestsize(&self) -> u32 {
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        unsafe { bindings::crypto_shash_digestsize(self.0) }
+> +    }
+> +}
+> +
+> +/// Corresponds to the kernel's `struct shash_desc`.
+> +///
+> +/// # Invariants
+> +///
+> +/// The field `ptr` is valid.
+> +pub struct ShashDesc<'a> {
+> +    ptr: *mut bindings::shash_desc,
+> +    tfm: &'a Shash,
+> +    size: usize,
+> +}
+> +
+> +impl Drop for ShashDesc<'_> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        unsafe {
+> +            dealloc(
+> +                self.ptr.cast(),
+> +                Layout::from_size_align(self.size, 2).unwrap(),
+> +            );
+> +        }
+> +    }
+> +}
+> +
+> +impl<'a> ShashDesc<'a> {
+> +    /// Creates a [`ShashDesc`] object for a request data structure for =
+message digest.
+> +    pub fn new(tfm: &'a Shash) -> Result<Self> {
+> +        // SAFETY: The type invariant guarantees that `tfm.0` pointer is=
+ valid.
+> +        let size =3D core::mem::size_of::<bindings::shash_desc>()
+> +            + unsafe { bindings::crypto_shash_descsize(tfm.0) } as usize=
+;
+> +        let layout =3D Layout::from_size_align(size, 2)?;
 
-When I try this patch *all* configuration options are input into the `cfg`
-field of the `core` crate (others are also affected):
-```json
-            "cfg": [
-                "CONFIG_RING_BUFFER",
-                "CONFIG_RING_BUFFER=3D\"y\"",
-                "CONFIG_HAVE_ARCH_SECCOMP_FILTER",
-                "CONFIG_HAVE_ARCH_SECCOMP_FILTER=3D\"y\"",
-                "CONFIG_KERNEL_GZIP",
-                "CONFIG_KERNEL_GZIP=3D\"y\"",
-                "CONFIG_CC_HAS_SANCOV_TRACE_PC",
-                "CONFIG_CC_HAS_SANCOV_TRACE_PC=3D\"y\"",
-                "CONFIG_ARCH_WANT_OPTIMIZE_VMEMMAP",
-```
-The snippet would continue on for about 1000 lines.
-I think this is wrong and not intended.
+I still do not like this arbitrary `2` constant as the alignment. Why is
+this correct? It should be explained in the code. Otherwise use a
+different way to compute the layout via `Layout::new()` and/or
+`Layout::repeat`/`Layout::extend` etc.
 
 --
 Cheers,
 Benno
 
->=20
-> ---
-> v1 -> v2:
->=20
-> - Read values from command line arguments
->=20
-> rust/Makefile | 4 +++-
-> scripts/generate_rust_analyzer.py | 16 ++++++++++++++--
-> 2 files changed, 17 insertions(+), 3 deletions(-)
->=20
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 7c9d9f11aec5..6234f5b70aee 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -373,7 +373,9 @@ quiet_cmd_rustc_library =3D $(if $(skip_clippy),RUSTC=
-,$(RUSTC_OR_CLIPPY_QUIET)) L
-> $(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@)
->=20
-> rust-analyzer:
-> - $(Q)$(srctree)/scripts/generate_rust_analyzer.py $(srctree) $(objtree) =
-\
-> + $(Q)$(srctree)/scripts/generate_rust_analyzer.py \
-> + --cfgs=3D'core=3D$(core-cfgs)' --cfgs=3D'alloc=3D$(alloc-cfgs)' \
-> + $(srctree) $(objtree) \
-> $(RUST_LIB_SRC) > $(objtree)/rust-project.json
->=20
->=20
-> redirect-intrinsics =3D \
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
-alyzer.py
-> index 946e250c1b2a..5a850f055609 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -9,7 +9,15 @@ import logging
-> import pathlib
-> import sys
->=20
-> -def generate_crates(srctree, objtree, sysroot_src):
-> +def args_crates_cfgs(cfgs):
-> + crates_cfgs =3D {}
-> + for cfg in cfgs:
-> + crate, vals =3D cfg.split("=3D", 1)
-> + crates_cfgs[crate] =3D vals.replace("--cfg", "").split()
+> +        // SAFETY: It's safe because layout has non-zero size.
+> +        let ptr =3D unsafe { alloc(layout) } as *mut bindings::shash_des=
+c;
+> +        if ptr.is_null() {
+> +            return Err(ENOMEM);
+> +        }
+> +        // INVARIANT: `ptr` is valid and non-null since `alloc`
+> +        // returned a valid pointer which was null-checked.
+> +        let mut desc =3D ShashDesc { ptr, tfm, size };
+> +        // SAFETY: `desc.ptr` is valid and non-null since `alloc`
+> +        // returned a valid pointer which was null-checked.
+> +        // Additionally, The type invariant guarantees that `tfm.0` is v=
+alid.
+> +        unsafe { (*desc.ptr).tfm =3D desc.tfm.0 };
+> +        desc.reset()?;
+> +        Ok(desc)
+> +    }
 > +
-> + return crates_cfgs
+> +    /// Re-initializes message digest.
+> +    pub fn reset(&mut self) -> Result {
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        to_result(unsafe { bindings::crypto_shash_init(self.ptr) })
+> +    }
 > +
-> +def generate_crates(srctree, objtree, sysroot_src, cfgs):
-> # Generate the configuration list.
-> cfg =3D []
-> with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
-> @@ -23,6 +31,7 @@ def generate_crates(srctree, objtree, sysroot_src):
-> # Avoid O(n^2) iterations by keeping a map of indexes.
-> crates =3D []
-> crates_indexes =3D {}
-> + crates_cfgs =3D args_crates_cfgs(cfgs)
->=20
-> def append_crate(display_name, root_module, deps, cfg=3D[], is_workspace_=
-member=3DTrue, is_proc_macro=3DFalse):
-> crates_indexes[display_name] =3D len(crates)
-> @@ -44,6 +53,7 @@ def generate_crates(srctree, objtree, sysroot_src):
-> "core",
-> sysroot_src / "core" / "src" / "lib.rs",
-> [],
-> + cfg=3Dcrates_cfgs.get("core", []),
-> is_workspace_member=3DFalse,
-> )
->=20
-> @@ -57,6 +67,7 @@ def generate_crates(srctree, objtree, sysroot_src):
-> "alloc",
-> srctree / "rust" / "alloc" / "lib.rs",
-> ["core", "compiler_builtins"],
-> + cfg=3Dcrates_cfgs.get("alloc", []),
-> )
->=20
-> append_crate(
-> @@ -123,6 +134,7 @@ def generate_crates(srctree, objtree, sysroot_src):
-> def main():
-> parser =3D argparse.ArgumentParser()
-> parser.add_argument('--verbose', '-v', action=3D'store_true')
-> + parser.add_argument('--cfgs', action=3D'append', default=3D[])
-> parser.add_argument("srctree", type=3Dpathlib.Path)
-> parser.add_argument("objtree", type=3Dpathlib.Path)
-> parser.add_argument("sysroot_src", type=3Dpathlib.Path)
-> @@ -134,7 +146,7 @@ def main():
-> )
->=20
-> rust_project =3D {
-> - "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src)=
-,
-> + "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src,=
- args.cfgs),
-> "sysroot_src": str(args.sysroot_src),
-> }
->=20
+> +    /// Adds data to message digest for processing.
+> +    pub fn update(&mut self, data: &[u8]) -> Result {
+> +        if data.len() > u32::MAX as usize {
+> +            return Err(EINVAL);
+> +        }
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        to_result(unsafe {
+> +            bindings::crypto_shash_update(self.ptr, data.as_ptr(), data.=
+len() as u32)
+> +        })
+> +    }
+> +
+> +    /// Calculates message digest.
+> +    pub fn finalize(&mut self, output: &mut [u8]) -> Result {
+> +        if self.tfm.digestsize() as usize > output.len() {
+> +            return Err(EINVAL);
+> +        }
+> +        // SAFETY: The type invariant guarantees that the pointer is val=
+id.
+> +        to_result(unsafe { bindings::crypto_shash_final(self.ptr, output=
+.as_mut_ptr()) })
+> +    }
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 85b261209977..3cb8bd8a17d9 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -31,6 +31,8 @@
+>  #[cfg(not(testlib))]
+>  mod allocator;
+>  mod build_assert;
+> +#[cfg(CONFIG_CRYPTO)]
+> +pub mod crypto;
+>  pub mod error;
+>  pub mod init;
+>  pub mod ioctl;
 > --
-> 2.40.1
+> 2.34.1
+>=20
+
