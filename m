@@ -2,263 +2,393 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61156EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 16:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 895EFC001B0
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 17:16:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235997AbjGNQVH (ORCPT
+        id S235826AbjGNRQM (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Jul 2023 12:21:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50652 "EHLO
+        Fri, 14 Jul 2023 13:16:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235737AbjGNQVG (ORCPT
+        with ESMTP id S235576AbjGNRQL (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Jul 2023 12:21:06 -0400
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBDF71FD4
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 09:21:01 -0700 (PDT)
-Date:   Fri, 14 Jul 2023 16:20:42 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1689351660; x=1689610860;
-        bh=nWFlQxK6fdwpZ4SKRRwd1SlVW4M/ZwGH2Jr4TZigQNk=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=RZajsvAphS2ioNsn2ZLBZ7zfarFiycw9FHp3oEJfDHgSp6GB8CjgT9gSN9p0dJG31
-         kVdQQlcusLURUsKJNyZe+WxHs3fAUkaBXMhDyo8+ifcuI0I/dGo+uJpzu4xZs2a5xH
-         UREDn4PxTX7za/n9xeQjLo9+BZw+A1SnyjoScDrtbWlObkoD543dpua76HeLDhzmiC
-         KbySJWsGTK9cOdybtqe/MyMfUG+n5zrsEIIIT5ql8WYEN0vD7i6EtMZP0cTFRSaky5
-         bjOtH58wsZVcgMwqAUBgC7lR2t/PiPF3YbXwn0XlqbVs0jBJ3AostbXTyY41bQrwj+
-         vrCmkyUrmfGgQ==
-To:     FUJITA Tomonori <fujita.tomonori@gmail.com>
-From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     rust-for-linux@vger.kernel.org, linux-crypto@vger.kernel.org,
-        alex.gaynor@gmail.com, herbert@gondor.apana.org.au,
-        ebiggers@kernel.org
-Subject: Re: [PATCH v2 2/3] rust: crypto abstractions for random number generator API
-Message-ID: <-xQIPlnP549kG6X754m3g70WVVQE7-ihc6XyZfhT7wxHDQiQZ2fr8JorXfRoNvK2-5pGlYWVPqBbkXXLSPRCjtLtMnoPCfau5n8P8AVqqi8=@proton.me>
-In-Reply-To: <20230710102225.155019-3-fujita.tomonori@gmail.com>
-References: <20230710102225.155019-1-fujita.tomonori@gmail.com> <20230710102225.155019-3-fujita.tomonori@gmail.com>
-Feedback-ID: 71780778:user:proton
+        Fri, 14 Jul 2023 13:16:11 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCD63213F;
+        Fri, 14 Jul 2023 10:16:09 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-991fe70f21bso292900566b.3;
+        Fri, 14 Jul 2023 10:16:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689354968; x=1691946968;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r2RXNekYfM5171RgGB71xpzycQCjffPM2bUadpzvdYM=;
+        b=kY/0v+8unNJQcfq5G4tka0qTrueA3NR7SZbTQflBgHhr9g09QpGjiK78+3Uhb6BqHU
+         ckweVFmcxBY8DVkL0GNCuQ9XyFWGKAo4c+2bHPGyLAT1m5xe5uQyAJH0nTYYyQ2I/a1O
+         EvNaBkvoHnY5VyoNjDswB3Ba+yjnrQDQLVi+foHbDEmUevCPnJMMZ6mupxdhxpDqu+jP
+         bA4+DE7TbJAxLRtbo7qfS7J1mRsaXE5vJ1fZ4GQxPCCqnwUxUx372QY9BpffHLNYZZwP
+         3u75uiHJ7cxfjxHBg3n7bgyyC4WTNr0PgSlaynoEZPLhMfAFOUBmJ/KhKtxzsO8BJiK5
+         a41g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689354968; x=1691946968;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=r2RXNekYfM5171RgGB71xpzycQCjffPM2bUadpzvdYM=;
+        b=FvW4JZvb2kXmsPjRKCq+6x7S5i10w3yHPBrgyVhnoCmn0AQhoFILDnvdiIrVc6ZOAI
+         F1WkXIABI7z2BNyuDcxsaJELvb1RNy/x918cwk5nAqaUXQ7c8CkiYwYuFMW076VO7+Gs
+         Ndb9szdCRgMagP7av2gtNLw+14fGo1kiQxUrvXlUh5oU1Yi/4UnM7+MSKdwmiuwZl1jC
+         EhCeVWO1dD3fjrcPtF7p43LTl12Bc6QmCAEIypVoqdkshwAOgzCfvCg9EnERktW8WW3w
+         DojzYswImsRICVZU1e1QkSqGJLSufjw1JLc6RnozP/1K+8D4nMvfdbRRV3eM9UpwZux/
+         cx9A==
+X-Gm-Message-State: ABy/qLawWs3REmeeu5AYDyE1PlYYkzpXaSBeUgFDBbr+ZZ4aRTPSDLR7
+        e0XKXLycwbzFUPRY48TtKaw=
+X-Google-Smtp-Source: APBJJlFLC6kFNEtpH6puqR796JdKyi+W0W5hMTNHayoZCKJ9vd9Ezy1JD4td+bxuWPimRwVkekS7HA==
+X-Received: by 2002:a17:906:841:b0:991:cfce:7a09 with SMTP id f1-20020a170906084100b00991cfce7a09mr3864728ejd.67.1689354967936;
+        Fri, 14 Jul 2023 10:16:07 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id cw13-20020a170906c78d00b0098748422178sm5630042ejb.56.2023.07.14.10.16.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jul 2023 10:16:07 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 1746A27C005C;
+        Fri, 14 Jul 2023 13:16:04 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Fri, 14 Jul 2023 13:16:05 -0400
+X-ME-Sender: <xms:04KxZCID6QkDcWQn3gkVwhjFPTnoHp-GxQ-gHjQwlQRcx4zoWwZRZA>
+    <xme:04KxZKL9VDjmrijoIe3HccSHl6Uw7hApzH3bCkRx2CHQYN_3M75Of5YcC6lCg8XWn
+    qoashTWVDmDHehhwA>
+X-ME-Received: <xmr:04KxZCvix5wArhaXEF8Si9GdacDSr0pgIB5bAqJwnoJG-5_uMYCJibUoIHc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrfeeigdduudduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeffleejleehveelteeltedugffhhedvkefgvdehfeeiffeihfeigfdvtdeu
+    hfdtteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhgihhthhhusgdrtghomhenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
+    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
+    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
+    rghmvg
+X-ME-Proxy: <xmx:04KxZHZa1WQpui9cc9r6sV0JMYXPjXV5dWe5_oOYe7pjHcutNhe4fQ>
+    <xmx:04KxZJZMKZO27ZRC_VLeBpVMPPyM5o5A_vvRzA97TPYYDPMro_ydKQ>
+    <xmx:04KxZDD8kvJAhSMI91zO2atGV8Enx4_ZRqyvy-hg7H-9qQDNLxeJZQ>
+    <xmx:1IKxZPz1DkENhY7hLVEGBMW5WHAbFRZx5PLQOE7LQFfZzdiPe8EJ7g>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 14 Jul 2023 13:16:03 -0400 (EDT)
+Date:   Fri, 14 Jul 2023 10:15:59 -0700
+From:   Boqun Feng <boqun.feng@gmail.com>
+To:     Asahi Lina <lina@asahilina.net>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        John Stultz <jstultz@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Josh Stone <jistone@redhat.com>,
+        Gaelan Steele <gbs@canishe.com>,
+        Heghedus Razvan <heghedus.razvan@protonmail.com>,
+        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        asahi@lists.linux.dev
+Subject: Re: [PATCH v2] rust: time: New module for timekeeping functions
+Message-ID: <ZLGCz00r9T0LfEbC@boqun-archlinux>
+References: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-> This patch adds basic abstractions for random number generator API,
-> wrapping crypto_rng structure.
->=20
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Fri, Jul 14, 2023 at 04:55:01PM +0900, Asahi Lina wrote:
+> This module is intended to contain functions related to kernel
+> timekeeping and time.
+> 
+> Initially, this implements an abstraction for a time Instant (analogous
+> to the Rust std::time::Instant) that represents an opaque instant in
+> time. Unlike the std Instant, this is a generic type that is bound to a
+> specific clock source, so that only Instants from the same clock source
+> can be subtracted/compared.
+> 
+> Then we implement the relevant clocks available to the kernel:
+> KernelTime (CLOCK_MONOTONIC), BootTime (CLOCK_BOOTTIME),
+> RealTime (CLOCK_REALTIME), and TaiTime.
+> 
+> Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
 > ---
->  rust/bindings/bindings_helper.h |   1 +
->  rust/helpers.c                  |  12 ++++
->  rust/kernel/crypto.rs           |   1 +
->  rust/kernel/crypto/rng.rs       | 101 ++++++++++++++++++++++++++++++++
->  4 files changed, 115 insertions(+)
->  create mode 100644 rust/kernel/crypto/rng.rs
->=20
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 2f198c6d5de5..089ac38c6461 100644
+> 
+> Based on the feedback to v1, now we have proper type checking for kernel
+> time. I decided to implement marker traits for monotonic vs. wallclock
+> time sources, since it's useful to be able to safely implement different
+> semantics conditional on that, but that left me with a name conflict of
+> the Monotonic trait with the CLOCK_MONOTONIC / "default ktime" clock
+> source. I ended up calling it KernelTime since it's the most fundamental
+> kernel timesource, but suggestions welcome!
+> 
+> Heghedus: I think I need a signoff on this since this is based on the
+> playground demo you wrote in the feedback to v1. Can you provide that? I
+> can fold it into v3 (if there is one, otherwise Miguel can probably just
+> add it when he applies it). Thanks!
+> ---
+>  rust/bindings/bindings_helper.h |   2 +
+>  rust/helpers.c                  |  16 +++++
+>  rust/kernel/lib.rs              |   1 +
+>  rust/kernel/time.rs             | 150 ++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 169 insertions(+)
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 3e601ce2548d..eddfdf887364 100644
 > --- a/rust/bindings/bindings_helper.h
 > +++ b/rust/bindings/bindings_helper.h
-> @@ -7,6 +7,7 @@
->   */
->=20
->  #include <crypto/hash.h>
-> +#include <crypto/rng.h>
+> @@ -8,9 +8,11 @@
+>  
 >  #include <linux/errname.h>
 >  #include <linux/slab.h>
+> +#include <linux/ktime.h>
 >  #include <linux/refcount.h>
+>  #include <linux/wait.h>
+>  #include <linux/sched.h>
+> +#include <linux/timekeeping.h>
+>  
+>  /* `bindgen` gets confused at certain things. */
+>  const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
 > diff --git a/rust/helpers.c b/rust/helpers.c
-> index 7966902ed8eb..e4dcd611738f 100644
+> index bb594da56137..eff092302e23 100644
 > --- a/rust/helpers.c
 > +++ b/rust/helpers.c
-> @@ -19,6 +19,7 @@
->   */
->=20
->  #include <crypto/hash.h>
-> +#include <crypto/rng.h>
->  #include <linux/bug.h>
->  #include <linux/build_bug.h>
->  #include <linux/err.h>
-> @@ -52,6 +53,17 @@ int rust_helper_crypto_shash_init(struct shash_desc *d=
-esc) {
->  =09return crypto_shash_init(desc);
->  }
->  EXPORT_SYMBOL_GPL(rust_helper_crypto_shash_init);
-> +
-> +void rust_helper_crypto_free_rng(struct crypto_rng *tfm) {
-> +=09crypto_free_rng(tfm);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_crypto_free_rng);
-> +
-> +int rust_helper_crypto_rng_generate(struct crypto_rng *tfm, const u8 *sr=
-c,
-> +=09unsigned int slen, u8 *dst, unsigned int dlen) {
-> +=09return crypto_rng_generate(tfm, src, slen, dst, dlen);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_crypto_rng_generate);
->  #endif
->=20
+> @@ -26,6 +26,7 @@
+>  #include <linux/mutex.h>
+>  #include <linux/spinlock.h>
+>  #include <linux/sched/signal.h>
+> +#include <linux/timekeeping.h>
+>  #include <linux/wait.h>
+>  
 >  __noreturn void rust_helper_BUG(void)
-> diff --git a/rust/kernel/crypto.rs b/rust/kernel/crypto.rs
-> index f80dd7bd3381..a1995e6c85d4 100644
-> --- a/rust/kernel/crypto.rs
-> +++ b/rust/kernel/crypto.rs
-> @@ -3,3 +3,4 @@
->  //! Cryptography.
->=20
->  pub mod hash;
-> +pub mod rng;
-> diff --git a/rust/kernel/crypto/rng.rs b/rust/kernel/crypto/rng.rs
+> @@ -135,6 +136,21 @@ void rust_helper_put_task_struct(struct task_struct *t)
+>  }
+>  EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
+>  
+> +ktime_t rust_helper_ktime_get_real(void) {
+> +	return ktime_get_real();
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_ktime_get_real);
+> +
+> +ktime_t rust_helper_ktime_get_boottime(void) {
+> +	return ktime_get_boottime();
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_ktime_get_boottime);
+> +
+> +ktime_t rust_helper_ktime_get_clocktai(void) {
+> +	return ktime_get_clocktai();
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_ktime_get_clocktai);
+> +
+>  /*
+>   * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
+>   * as the Rust `usize` type, so we can use it in contexts where Rust
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 85b261209977..52c91484c5d8 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -42,6 +42,7 @@
+>  pub mod str;
+>  pub mod sync;
+>  pub mod task;
+> +pub mod time;
+>  pub mod types;
+>  
+>  #[doc(hidden)]
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
 > new file mode 100644
-> index 000000000000..683f5ee464ce
+> index 000000000000..f3bfeed20145
 > --- /dev/null
-> +++ b/rust/kernel/crypto/rng.rs
-> @@ -0,0 +1,101 @@
+> +++ b/rust/kernel/time.rs
+> @@ -0,0 +1,150 @@
 > +// SPDX-License-Identifier: GPL-2.0
 > +
-> +//! Random number generator.
+> +//! Timekeeping functions.
 > +//!
-> +//! C headers: [`include/crypto/rng.h`](../../../../include/crypto/rng.h=
-)
+> +//! C header: [`include/linux/ktime.h`](../../../../include/linux/ktime.h)
+> +//! C header: [`include/linux/timekeeping.h`](../../../../include/linux/timekeeping.h)
 > +
-> +use crate::{
-> +    error::{code::EINVAL, from_err_ptr, to_result, Result},
-> +    str::CStr,
-> +};
+> +use crate::{bindings, pr_err};
+> +use core::marker::PhantomData;
+> +use core::time::Duration;
 > +
-> +/// Type of Random number generator.
-> +///
-> +/// # Invariants
-> +///
-> +/// The pointer is valid.
-> +enum RngType {
-> +    /// Uses `crypto_default_rng`
-> +    // We don't need to keep an pointer for the default but simpler.
-> +    Default(*mut bindings::crypto_rng),
+> +/// Represents a clock, that is, a unique time source.
+> +pub trait Clock: Sized {}
 > +
-> +    /// Allocated via `crypto_alloc_rng.
-> +    Allocated(*mut bindings::crypto_rng),
+> +/// A time source that can be queried for the current time.
+> +pub trait Now: Clock {
+
+Is there a `Clock` that we cannot get the current time? ;-)
+
+> +    /// Returns the current time for this clock.
+> +    fn now() -> Instant<Self>;
 > +}
-
-You could also do this:
-```
-enum RngType {
-    Default,
-    Allocated(NonNull<bindings::crypto_rng>),
-}
-```
-
-Assuming that `crypto_alloc_rng` never returns null.
-Then this definition will the same size as a plain pointer.
-
 > +
-> +/// Corresponds to the kernel's `struct crypto_rng`.
-> +pub struct Rng(RngType);
+> +/// Marker trait for clock sources that are guaranteed to be monotonic.
+> +pub trait Monotonic {}
 > +
-> +impl Drop for Rng {
-> +    fn drop(&mut self) {
-> +        match self.0 {
-> +            RngType::Default(_) =3D> {
-> +                // SAFETY: it's safe because `crypto_get_default_rng()` =
-was called during
-> +                // the initialization.
-> +                unsafe {
-> +                    bindings::crypto_put_default_rng();
-> +                }
-> +            }
-> +            RngType::Allocated(ptr) =3D> {
-> +                // SAFETY: The type invariants of `RngType` guarantees t=
-hat the pointer is valid.
-> +                unsafe { bindings::crypto_free_rng(ptr) };
-> +            }
+> +/// Marker trait for clock sources that represent a calendar (wall clock)
+> +/// relative to the UNIX epoch.
+> +pub trait WallTime {}
+> +
+> +/// An instant in time associated with a given clock source.
+> +#[derive(Debug)]
+> +pub struct Instant<T: Clock> {
+> +    nanoseconds: i64,
+> +    _type: PhantomData<T>,
+> +}
+> +
+> +impl<T: Clock> Clone for Instant<T> {
+> +    fn clone(&self) -> Self {
+> +        *self
+> +    }
+> +}
+> +
+> +impl<T: Clock> Copy for Instant<T> {}
+> +
+> +impl<T: Clock> Instant<T> {
+> +    fn new(nanoseconds: i64) -> Self {
+> +        Instant {
+> +            nanoseconds,
+> +            _type: PhantomData,
+> +        }
+> +    }
+> +
+> +    /// Returns the time elapsed since an earlier Instant<t>, or
+> +    /// None if the argument is a later Instant.
+> +    pub fn since(&self, earlier: Instant<T>) -> Option<Duration> {
+> +        if earlier.nanoseconds > self.nanoseconds {
+> +            None
+> +        } else {
+> +            // Casting to u64 and subtracting is guaranteed to give the right
+> +            // result for all inputs, as long as the condition we checked above
+> +            // holds.
+> +            Some(Duration::from_nanos(
+> +                self.nanoseconds as u64 - earlier.nanoseconds as u64,
+> +            ))
 > +        }
 > +    }
 > +}
 > +
-> +impl Rng {
-> +    /// Creates a [`Rng`] instance.
-> +    pub fn new(name: &CStr, t: u32, mask: u32) -> Result<Self> {
-> +        // SAFETY: There are no safety requirements for this FFI call.
-> +        let ptr =3D unsafe { from_err_ptr(bindings::crypto_alloc_rng(nam=
-e.as_char_ptr(), t, mask)) }?;
-> +        // INVARIANT: `ptr` is valid and non-null since `crypto_alloc_rn=
-g`
-> +        // returned a valid pointer which was null-checked.
-> +        Ok(Self(RngType::Allocated(ptr)))
-> +    }
-> +
-> +    /// Creates a [`Rng`] instance with a default algorithm.
-> +    pub fn new_with_default() -> Result<Self> {
-> +        // SAFETY: There are no safety requirements for this FFI call.
-> +        to_result(unsafe { bindings::crypto_get_default_rng() })?;
-> +        // INVARIANT: The C API guarantees that `crypto_default_rng` is =
-valid until
-> +        // `crypto_put_default_rng` is called.
-> +        Ok(Self(RngType::Default(unsafe {
-> +            bindings::crypto_default_rng
-
-You are accessing a `mut static`, this is `unsafe` (hence the need
-for an `unsafe` block) and needs a safety comment, why is it safe to
-access this mutable static? What synchronizes the access (is it not needed)=
-?
-
-> +        })))
-> +    }
-> +
-> +    /// Get a random number.
-> +    pub fn generate(&mut self, src: &[u8], dst: &mut [u8]) -> Result {
-> +        if src.len() > u32::MAX as usize || dst.len() > u32::MAX as usiz=
-e {
-> +            return Err(EINVAL);
-> +        }
-> +        let ptr =3D match self.0 {
-> +            RngType::Default(ptr) =3D> ptr,
-> +            RngType::Allocated(ptr) =3D> ptr,
-> +        };
-> +        // SAFETY: The type invariants of `RngType' guarantees that the =
-pointer is valid.
-> +        to_result(unsafe {
-> +            bindings::crypto_rng_generate(
-> +                ptr,
-> +                src.as_ptr(),
-> +                src.len() as u32,
-> +                dst.as_mut_ptr(),
-> +                dst.len() as u32,
-> +            )
+> +impl<T: Clock + Now + Monotonic> Instant<T> {
+> +    /// Returns the time elapsed since this Instant<T>.
+> +    ///
+> +    /// This is guaranteed to return a positive result, since
+> +    /// it is only implemented for monotonic clocks.
+> +    pub fn elapsed(&self) -> Duration {
+> +        T::now().since(*self).unwrap_or_else(|| {
+> +            pr_err!(
+> +                "Monotonic clock {} went backwards!",
+> +                core::any::type_name::<T>()
+> +            );
+> +            Duration::ZERO
 > +        })
 > +    }
+> +}
 > +
-> +    /// Re-initializes the [`Rng`] instance.
-> +    pub fn reset(&mut self, seed: &[u8]) -> Result {
-> +        if seed.len() > u32::MAX as usize {
-> +            return Err(EINVAL);
+> +/// Contains the various clock source types available to the kernel.
+> +pub mod clock {
+> +    use super::*;
+> +
+> +    /// A clock representing the default kernel time source.
+> +    ///
+> +    /// This is `CLOCK_MONOTONIC` (though it is not the only
+> +    /// monotonic clock) and also the default clock used by
+> +    /// `ktime_get()` in the C API.
+> +    ///
+> +    /// This is like `BootTime`, but does not include time
+> +    /// spent sleeping.
+> +
+
+Could you add one example for each `*Time` type? Not only they can show
+people how to use the API, but also we can use them to generate unit
+tests:
+
+	https://lore.kernel.org/rust-for-linux/20230614180837.630180-1-ojeda@kernel.orge 
+
+If you want to test your examples, you can either apply that patchset or
+use the rust-dev branch:
+
+	https://github.com/Rust-for-Linux/linux.git rust-dev
+
+I use the following command to run tests:
+
+	./tools/testing/kunit/kunit.py run --make_options LLVM=1 --arch x86_64 --kconfig_add CONFIG_RUST=y
+
+Thanks!
+
+Regards,
+Boqun
+
+> +    pub struct KernelTime;
+> +
+> +    impl Clock for KernelTime {}
+> +    impl Monotonic for KernelTime {}
+> +    impl Now for KernelTime {
+> +        fn now() -> Instant<Self> {
+> +            Instant::<Self>::new(unsafe { bindings::ktime_get() })
 > +        }
-> +        let ptr =3D match self.0 {
-> +            RngType::Default(ptr) =3D> ptr,
-> +            RngType::Allocated(ptr) =3D> ptr,
-> +        };
-> +        // SAFETY: The type invariants of `RngType' guarantees that the =
-pointer is valid.
-> +        to_result(unsafe { bindings::crypto_rng_reset(ptr, seed.as_ptr()=
-, seed.len() as u32) })
-
-If I read this correctly, then if I have to threads each with a `Default`
-crypto rng, then one could be reset as the other is concurrently
-generating some random numbers, right? This *should* be fine, but does
-it make sense to do it? Or should there only be one thread accessing
-the default crypto rng?
-
---
-Cheers,
-Benno
-
+> +    }
+> +
+> +    /// A clock representing the time elapsed since boot.
+> +    ///
+> +    /// This is `CLOCK_MONOTONIC` (though it is not the only
+> +    /// monotonic clock) and also the default clock used by
+> +    /// `ktime_get()` in the C API.
+> +    ///
+> +    /// This is like `KernelTime`, but does include time
+> +    /// spent sleeping.
+> +    pub struct BootTime;
+> +
+> +    impl Clock for BootTime {}
+> +    impl Monotonic for BootTime {}
+> +    impl Now for BootTime {
+> +        fn now() -> Instant<Self> {
+> +            Instant::<Self>::new(unsafe { bindings::ktime_get_boottime() })
+> +        }
+> +    }
+> +
+> +    /// A clock representing TAI time.
+> +    ///
+> +    /// This clock is not monotonic and can be changed from userspace.
+> +    /// However, it is not affected by leap seconds.
+> +    pub struct TaiTime;
+> +
+> +    impl Clock for TaiTime {}
+> +    impl WallTime for TaiTime {}
+> +    impl Now for TaiTime {
+> +        fn now() -> Instant<Self> {
+> +            Instant::<Self>::new(unsafe { bindings::ktime_get_clocktai() })
+> +        }
+> +    }
+> +
+> +    /// A clock representing wall clock time.
+> +    ///
+> +    /// This clock is not monotonic and can be changed from userspace.
+> +    pub struct RealTime;
+> +
+> +    impl Clock for RealTime {}
+> +    impl WallTime for RealTime {}
+> +    impl Now for RealTime {
+> +        fn now() -> Instant<Self> {
+> +            Instant::<Self>::new(unsafe { bindings::ktime_get_real() })
+> +        }
 > +    }
 > +}
-> --
-> 2.34.1
->=20
-
+> 
+> ---
+> base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+> change-id: 20230714-rust-time-10dd9ed25333
+> 
+> Thank you,
+> ~~ Lina
+> 
