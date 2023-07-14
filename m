@@ -2,59 +2,58 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B70F3EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 10:13:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 671D5EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Fri, 14 Jul 2023 10:21:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236054AbjGNKNm (ORCPT
+        id S236033AbjGNKVA (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Jul 2023 06:13:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57754 "EHLO
+        Fri, 14 Jul 2023 06:21:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236051AbjGNKNl (ORCPT
+        with ESMTP id S235467AbjGNKVA (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Jul 2023 06:13:41 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57C58198A
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 03:13:40 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-c5a479bc2d4so1454665276.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 03:13:40 -0700 (PDT)
+        Fri, 14 Jul 2023 06:21:00 -0400
+Received: from mail-ej1-x649.google.com (mail-ej1-x649.google.com [IPv6:2a00:1450:4864:20::649])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CC421989
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 03:20:59 -0700 (PDT)
+Received: by mail-ej1-x649.google.com with SMTP id a640c23a62f3a-94a355c9028so96362066b.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 03:20:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689329619; x=1691921619;
+        d=google.com; s=20221208; t=1689330058; x=1691922058;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wxNp02bNCTAVyLPRZ82mLPkwbAN62CIGC9HHKgWokDk=;
-        b=2F4xNUdVveqN+R5EKr8RvDc7bTWM+gLKOemIBdfkq0xCOm+Cr4UcTnXi7Ex+Z93qzm
-         0Jr5cpq2w11H+0Cg6FN9ZTSvdb5obWOs5j0cgJ0bcrvXiE2RRrlmIoxST4HoWSBwgOK2
-         8JD3CugG730wX57wEfvKkXfRliM7CBRRje7zXW9Eh8XpC3vlQcb8g9lC3f7RU2/c+xih
-         zeerj13DLEEgAOKU8aDV2UeFmV+9cbL73eRaQL//xH4DpiXrl7+msaF7IidwNkSYAvxL
-         rZh7VEifal0tY7Lt6YJ1DvF9fWQNWkiFiAlRb1vLaDscgIZXzMzIrbT3QjcbJLDqu6o/
-         RHvQ==
+        bh=ake/2lNPSYG4Kup6Znr90jxcuDjnCQa+kK9QxHmxIwE=;
+        b=FdFgSbE9EX08KPCV3DFRa0KauNWmUSSKQuD9KCfK4mOB1MOb00hUTblNSomfgkxhXE
+         lktUE68J2GJstAUj/3c+jsVLoFGKsyNmD+spCDoSEq9pliOoU/eTeGKuECVOQJrW96JW
+         0DVOb7zMv+7uYhP2k11Kxl4mudnbg+7chPKt8ON/beLgn35QBKRpxoMgV1d5B1uNfFG3
+         AgxMMV52IQLUcoM3lpUr88qrhOm889EDxsbpie2PXgMV/VEPfl+Rvtil+sLok6f8e1nb
+         hqEwDY8sB3TJuxoDWtQB6lvtOAXTfuQNn+0jvX40UPp1Eoy/88cODPzkhRG3lBSO3Q1c
+         ul/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689329619; x=1691921619;
+        d=1e100.net; s=20221208; t=1689330058; x=1691922058;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wxNp02bNCTAVyLPRZ82mLPkwbAN62CIGC9HHKgWokDk=;
-        b=WXpk5ZdoMpvrPxKMTUjOzcAWdOazcB35pCi/g7LKWwxBaPygFYgQPAqq0ZBZGJai/d
-         pJ+aXlo3B83X3BQGCavSSZSHXDOzGL5YCrdLwcGzVaR8dTFCbPw237wIeWpxdbGk9QMd
-         ZvWPQwWF6BN6BenSLQ18m8F2LqgmBU4TXPARDmhZ+s78Cv2uzV42XBbUL1wwg1Ys3EE7
-         JsNhPa7kf5KvTX0JsRokmcF06ilt0IQPBzB0k9mVmorG+pZwtsei1hh6qFJ5PIFpuA1b
-         5Wry7y1yFgh31cRQPwgjwowfsJ89zq/vV7hWDmXrTArP0jnFbYmutbtEd1Nc0CcX5bgO
-         4UEw==
-X-Gm-Message-State: ABy/qLaePbZ5nxZxoL/AATYGZW9gJpVpkjxU1o+Zhjem67PMsQ+9uoOZ
-        cHtux8XQE/sW/jf0n0xDpATXx4tUZ9JgY3E=
-X-Google-Smtp-Source: APBJJlFQrE4sbqNmMgiT0tYYLjApKeHUUY+9Z7jWQry23roqS1du7n+Bvn1DHckLfj2QgRK2ut1rlpfSA3O9848=
+        bh=ake/2lNPSYG4Kup6Znr90jxcuDjnCQa+kK9QxHmxIwE=;
+        b=Hw3RxqfiV5TGs54dSBYN5JJ3MvH7USMA1fiI3WFUKasoCjCJaPYb15bXlywj39vHRs
+         y8r5NWKRredLCTvFJ9gPJsHVzcYPwB8hnXgDaWEYc1wPr/ehiKuT3YNMhYrMc9cIpG8D
+         2TocG3/kzeLHUKqQWhF/EAvXlMbC1KyuFDfy2mNRh08Mtq4sscB7gA08q4DvpP69CEU/
+         nL/NBw0/O5C+0VrjOk0a60tVn44zWYKX91Ia0a8r8WLpe0EK66vMUmlchGdMMbQuPDC4
+         nXBhIjGLaoppcuHCBqf4hfphMrJuqrbLHxfxZ6As0GCc8lFF5V7gRrJettcjQXm7snbB
+         w1aw==
+X-Gm-Message-State: ABy/qLaJUhVNNmdX8O6YP5jwbBW6avM0kXB/ivgVu8fOnCZ9xZukjgsc
+        P+GPl59gGcezavu7173Z7xtMPR1NidTZBvs=
+X-Google-Smtp-Source: APBJJlFUTjwiYHQXGcSMMNCtJzQc7XCp95jN1C2fnAoH9M2eakhZaTVLYzm8MTgye2tlwRUOsp8FX+gnfVMrb1M=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a25:9cc8:0:b0:bac:5d2c:844b with SMTP id
- z8-20020a259cc8000000b00bac5d2c844bmr22156ybo.8.1689329619648; Fri, 14 Jul
- 2023 03:13:39 -0700 (PDT)
-Date:   Fri, 14 Jul 2023 10:13:37 +0000
-In-Reply-To: <20230714-classless_lockdep-v1-0-229b9671ce31@asahilina.net>
+ (user=aliceryhl job=sendgmr) by 2002:a17:906:8a62:b0:978:67a2:f503 with SMTP
+ id hy2-20020a1709068a6200b0097867a2f503mr8783ejc.12.1689330057916; Fri, 14
+ Jul 2023 03:20:57 -0700 (PDT)
+Date:   Fri, 14 Jul 2023 10:15:01 +0000
+In-Reply-To: <20230714-classless_lockdep-v1-1-229b9671ce31@asahilina.net>
 Mime-Version: 1.0
-References: <20230714-classless_lockdep-v1-0-229b9671ce31@asahilina.net>
+References: <20230714-classless_lockdep-v1-1-229b9671ce31@asahilina.net>
 X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
-Message-ID: <20230714101337.2193665-1-aliceryhl@google.com>
-Subject: Re: [PATCH RFC 00/11] rust: Implicit lock class creation & Arc
- Lockdep integration
+Message-ID: <20230714101501.2194205-1-aliceryhl@google.com>
+Subject: Re: [PATCH RFC 01/11] rust: types: Add Opaque::zeroed()
 From:   Alice Ryhl <aliceryhl@google.com>
 To:     lina@asahilina.net
 Cc:     alex.gaynor@gmail.com, alyssa@rosenzweig.io, asahi@lists.linux.dev,
@@ -64,61 +63,22 @@ Cc:     alex.gaynor@gmail.com, alyssa@rosenzweig.io, asahi@lists.linux.dev,
         llvm@lists.linux.dev, marcan@marcan.st, masahiroy@kernel.org,
         nathan@kernel.org, ndesaulniers@google.com, nicolas@fjasle.eu,
         ojeda@kernel.org, rust-for-linux@vger.kernel.org,
-        sven@svenpeter.dev, trix@redhat.com, wedsonaf@gmail.com
+        sven@svenpeter.dev, trix@redhat.com, wedsonaf@gmail.com,
+        Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
 Asahi Lina <lina@asahilina.net> writes:
-> Begone, lock classes!
+> Opaque types are internally MaybeUninit, so it's safe to actually
+> zero-initialize them as long as we don't claim they are initialized.
+> This is useful for many FFI types that are expected to be zero-inited by
+> the user.
 > 
-> As discussed in meetings/etc, we would really like to support implicit
-> lock class creation for Rust code. Right now, lock classes are created
-> using macros and passed around (similar to C). Unfortunately, Rust
-> macros don't look like Rust functions, which means adding lockdep to a
-> type is a breaking API change. This makes Rust mutex creation rather
-> ugly, with the new_mutex!() macro and friends.
-> 
-> Implicit lock classes have to be unique per instantiation code site.
-> Notably, with Rust generics and monomorphization, this is not the same
-> as unique per generated code instance. If this weren't the case, we
-> could use inline functions and asm!() magic to try to create lock
-> classes that have the right uniqueness semantics. But that doesn't work,
-> since it would create too many lock classes for the same actual lock
-> creation in the source code.
-> 
-> But Rust does have one trick we can use: it can track the caller
-> location (as file:line:column), across multiple functions. This works
-> using an implicit argument that gets passed around, which is exactly the
-> thing we do for lock classes. The tricky bit is that, while the value of
-> these Location objects has the semantics we want (unique value per
-> source code location), there is no guarantee that they are deduplicated
-> in memory.
-> 
-> So we use a hash table, and map Location values to lock classes. Et
-> voila, implicit lock class support!
->
-> This lets us clean up the Mutex & co APIs and make them look a lot more
-> Rust-like, but it also means we can now throw Lockdep into more APIs
-> without breaking the API. And so we can pull a neat trick: adding
-> Lockdep support into Arc<T>. This catches cases where the Arc Drop
-> implementation could create a locking correctness violation only when
-> the reference count drops to 0 at that particular drop site, which is
-> otherwise not detectable unless that condition actually happens at
-> runtime. Since Drop is "magic" in Rust and Drop codepaths very difficult
-> to audit, this helps a lot.
-> 
-> For the initial RFC, this implements the new API only for Mutex. If this
-> looks good, I can extend it to CondVar & friends in the next version.
-> This series also folds in a few related minor dependencies / changes
-> (like the pin_init mutex stuff).
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
 
-I'm not convinced that this is the right compromise. Moving lockdep
-class creation to runtime sounds unfortunate, especially since this
-makes them fallible due to memory allocations (I think?).
+LGTM. This is useful on its own.
 
-I would be inclined to keep using macros for this.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
