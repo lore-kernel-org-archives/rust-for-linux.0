@@ -2,47 +2,47 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 597DBC0015E
-	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Jul 2023 15:33:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 839B5C001DF
+	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Jul 2023 15:47:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229817AbjGOPdc (ORCPT
+        id S230092AbjGOPry (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 15 Jul 2023 11:33:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35068 "EHLO
+        Sat, 15 Jul 2023 11:47:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbjGOPdb (ORCPT
+        with ESMTP id S229441AbjGOPrx (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 15 Jul 2023 11:33:31 -0400
-Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2114.outbound.protection.outlook.com [40.107.10.114])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 555B92D7B;
-        Sat, 15 Jul 2023 08:33:29 -0700 (PDT)
+        Sat, 15 Jul 2023 11:47:53 -0400
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2109.outbound.protection.outlook.com [40.107.11.109])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C14902691;
+        Sat, 15 Jul 2023 08:47:51 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mcP8H/ROzS4NpdrDvaBv31jFV1rmSrPIuDUhdbWq6vZYLNz3eDJOgzC2c1NYzHRbD/WLfDR64ULRBvcE2qDRVbDAAyBi/AZjoX+/4tZI+OU59MYlYwHWNTa4UT4FavaiC+tqn+T7rF15vLSUj0FVi+rLsq2+Rk8KMH3FyYvs7FoYRthtSSJ270ssnrt25JWQNR5xwPZ1bcuLpoH0XH1N6h0HSg72tsRGGqUUuPn41MQ4uwId/F5GRV2HzglRT2YJmRgdK5e0CKo/24+OS7Y9E01ZFXS6HnubDJ69sHkLzCseRAT3QjqnohY39A1WlsZnA+pT0zI/bcRbIpjjE6p2aw==
+ b=cHPswnRb9tuAUBLULj5rrTID2UbevJ6v8pAEk0creS8jIYvKheRMXY+wv/mEvCm4Rzcb/wqQcvxJJh8YFxJrqshAs1aHGdQyi+K38xdKY4D/rowtbnV9JDTWIv3M1VGWv/4X40VICQwhblQa0eH69cUQtFtaOu+vcz2JONhqYk42I+GOxrnkn4SbUneXCJhLNG3AEOAnB2yIeRqHXHl7lpnTVrxLulF/dFutU0mP8oxGSOvjchLxzf8D3W0zqwgUA+hF8Fk8kswSSMI/3gN1GtWszHj2JVNEDXIaeYCGnyyB+dR++Fe0y/kew1SmH3V+7pDDTkwo4imj24tjvyxVjA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=awJzxiqI7DffwN51fCYaXyH9+qrvpBxlYteVmOZ3fwg=;
- b=eDoeNnaDdPp17MYP0uCQMBmotzc01NxC9kzKjrXIywkifu3EvoEIQDpC1vfWqsHNvUwtV3yCRiFLkPuzKE53cV2TKa7EM0t9RWBycQPAtDo5+EpuV4v/nLcbDMOHNBZPA7NDaR7qK9FyXP1M8rm4IPLaqxrM9CqoGaWcQsvpZXLO5ZH3JjD7y5cbJY9eO22AC0AGUajGwxGRgZJYtNUmsGEfsQmlSUtMSnxxfIsXSz+fEpfD6yEYG76JwlIPu9ig5AKMjivMEg5GP1V7Bp4tvnyoAvS1WdLW4RxpnHkg1/346fahxHrKjWZ0dQlM7UjEQH6uTViNgY3hLsc64AeaYg==
+ bh=vd092fvSDWydGFLfQuY9jxv3QRB3jCUMnL7OD944cnI=;
+ b=ndFBkiIpjUHiDHrNjNAgHpnGbZzgyak161SwSca6KrYOm6nH3iKRLlaAwunvW+s7rmSTGhUjIKLXKo/NT3sYXXhmW2tv3AK55SgGeRjhXg7ere4ig06ekimzM4Q8fQyD4yu+4SMdF6guamLnNQ7q5qrkjSGw4xSsx0blUydhAh+I2iSfXTXthxrDVpkHD3UUJGSnz4e5VjijufduS9cEv9FgO9OuUAq4extMhOHjVO7D/oMXoccmy5gd7atE9Tc7Yab+E2CBLUD01XJD5valJ5EUSUli6USmOF4ZLoOhtjtjA1QNOKEMqIMuImMSJRC4NCpvxmBI8WFxL2nxIz8MGg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=awJzxiqI7DffwN51fCYaXyH9+qrvpBxlYteVmOZ3fwg=;
- b=BVnYhmgVq+R986sdx3Eo2yOlLYFVHWmLiJEYw3isHpuj4ig1Lo8NgB+ELbn2SfKqXjZKcjdKKokn4HIHJAIzwqRxrpIzUG/0E21CUTGJmnVmgAcktjClZgAOk6kUxOq6cHuIZ8N8qLCk/7pJsnSvSKss7PriADygy17rQ41lV4M=
+ bh=vd092fvSDWydGFLfQuY9jxv3QRB3jCUMnL7OD944cnI=;
+ b=jMrA9dCNdCkNHfQAdrC7XYwVJ26Eywx8ATi0ToWlL73njN/EZOpcZljcaElj/Pcswj5GKCzG3eMxBWNgheE5PMs7rN0RpOIYQn8Vy/uYwIEnDysJ5CBcj1QKIYXKt1ziYRHJD7vmJW3AtH6KKL4lMJ9R+VYTAFsGtXKssdnXTR0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWLP265MB7163.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1f3::8) with
+ by LO4P265MB7284.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2f0::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Sat, 15 Jul
- 2023 15:33:26 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.28; Sat, 15 Jul
+ 2023 15:47:49 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::25e2:a08b:cd9c:c3c9]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::25e2:a08b:cd9c:c3c9%3]) with mapi id 15.20.6588.028; Sat, 15 Jul 2023
- 15:33:26 +0000
-Date:   Sat, 15 Jul 2023 16:33:24 +0100
+ 15:47:49 +0000
+Date:   Sat, 15 Jul 2023 16:47:47 +0100
 From:   Gary Guo <gary@garyguo.net>
 To:     Asahi Lina <lina@asahilina.net>
 Cc:     Miguel Ojeda <ojeda@kernel.org>,
@@ -50,360 +50,295 @@ Cc:     Miguel Ojeda <ojeda@kernel.org>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>,
         =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        John Stultz <jstultz@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Josh Stone <jistone@redhat.com>,
-        Gaelan Steele <gbs@canishe.com>,
-        Heghedus Razvan <heghedus.razvan@protonmail.com>,
-        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        asahi@lists.linux.dev
-Subject: Re: [PATCH v2] rust: time: New module for timekeeping functions
-Message-ID: <20230715163324.348dfc0b.gary@garyguo.net>
-In-Reply-To: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
-References: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
+        Benno Lossin <benno.lossin@proton.me>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Hector Martin <marcan@marcan.st>,
+        Sven Peter <sven@svenpeter.dev>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        asahi@lists.linux.dev, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: Re: [PATCH RFC 07/11] rust: sync: Implement dynamic lockdep class
+ creation
+Message-ID: <20230715164747.7ba23b36.gary@garyguo.net>
+In-Reply-To: <20230714-classless_lockdep-v1-7-229b9671ce31@asahilina.net>
+References: <20230714-classless_lockdep-v1-0-229b9671ce31@asahilina.net>
+        <20230714-classless_lockdep-v1-7-229b9671ce31@asahilina.net>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0475.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a8::12) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P123CA0052.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:152::21) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB7163:EE_
-X-MS-Office365-Filtering-Correlation-Id: d5b9e0db-7907-4334-d02b-08db8548d533
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB7284:EE_
+X-MS-Office365-Filtering-Correlation-Id: d9ed79ed-77ba-4d4c-1b22-08db854ad77a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: oCwAaIWrqMF+sLzVIbux9XMNwVyxV93F+B1IGt0+5lobKa1zUQXQwsAvVBrtuwz9B3xqt5npp58INQj1ayfQWacGejOlEHp+KN6EfsL9fOs5LTQll5FJbGYtAbwnrKmxbcwZeMWOUyPqjdENhC3svDwXpj1Ql1rpivOx56r4MCSYOKbuoOToJDzhehbpp3mlYXN0PVr6HaOX4XdUflyJUsv126fWsb3GiVreUWxIPU/nJ1Ra3XKPbgxcWybUEENeyPQLe1xH2GyeVi2tig+wY5prTaIC3LbkhQfSRsarCOCJ/ftzmKlMc5hByD1mGQt1THcN0aXxXVAzwDaznNSDFifdq/UoRyAo8IHuF3p3KfEn1JNGdbTsVlvH5PlawI+W6kTZIveHMXL5nDZL0KNQZtBtmJPOWNSsblSrboec/v1+XKdfu8PvQd36zcu8+/cXT7O+uOSSvLkNO/r1LgDoXUM9g6yKnWpEjrJcKRskys/Ll0DzBB3xMj28ip5193+kwAcrqQaP4YM6WnwO5aHl1dYWX+n2N4iNsQzQbAFLnb/Tqw0cM8K3n5JuE1nvW5A4
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(376002)(346002)(366004)(39840400004)(396003)(136003)(451199021)(41300700001)(8936002)(8676002)(26005)(1076003)(6506007)(66899021)(54906003)(478600001)(66946007)(66556008)(66476007)(6916009)(4326008)(316002)(6512007)(36756003)(6486002)(38100700002)(86362001)(83380400001)(2906002)(2616005)(5660300002)(7416002)(186003);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: kSjYL7ByM2X4MniQJujwm+ArcgKZl/zuuN7BXtKr5yFds4t6jcSw6KRHzZ9CmzaJ/8QGdRU+YTopSiOMyXeRH8rwUhhOwK9QBEnVTp33TaJVs0R3yuygV7VjZdimwyFFwU8zXAZD30yTy8MncAk/+QIMpUjJm0T5CRIK+8ILiPl9lUxr/jCdLKAJe/LK07ZGRSZp9y+kr5xz4t023SFdOhCqYcyRM6qx1IMa2KUZx7ESlh+uSy1Y0xAtg9ucvOMm6sjPxHrns5iZefGxdTPcy3v3HeZPWzyNdGxc46WlDz10HWHZZBqP9L+STaFpWA5lihBwtz6IqfjQhpEzRXgw+YzX7YorulBwL4Ioe1NPs20FEOMMrT5AyFDXh7Y7MB/X3+1KjDEO14UXqBNir8uP97HPiwa7Y50HoDiFXZsXNCiHuRboQCoIHUhQ82Ay+eSQcMlA8oOGLP/2J7yNZSkCG8uzCLKjB5gwdfsoq4f7Sfe9CR7zw8rui98R8ESzzKA+DLV+381pYner2HF0Z+Ae78oh0m79eEoB+rhRBxCvScjuUIAYHaqm/oQCmwsxMV1L
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(376002)(346002)(396003)(136003)(366004)(39840400004)(451199021)(1076003)(38100700002)(26005)(6506007)(186003)(2616005)(83380400001)(2906002)(36756003)(5660300002)(7416002)(478600001)(54906003)(86362001)(316002)(41300700001)(6486002)(8676002)(6512007)(4326008)(66946007)(66556008)(66476007)(6916009)(8936002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?eZ1gLry9EsYaE/8vQy5SV4ZtrYG83vOcxr4XmK8u1m7GrrqEHctxXlIqACEa?=
- =?us-ascii?Q?nnfmO/grkP0l/mfdx5Sv4FZHxQzZqoYZgnSdRYgBGPQUoJq0Sg7Jstcc+5tx?=
- =?us-ascii?Q?/9K0S1+XCltUsT+xvZMor2nMhvfDKoq7tj2FJVvXEaZ8dySvz2aRbZHVEhWG?=
- =?us-ascii?Q?jH/svu6eCeHJ9kZZ8b3AtENoV/HWlc3xgK7cvi2R2UKpja+nPY5Tg9IThQj9?=
- =?us-ascii?Q?YHTFnpRKj4TbZsK+2jLFDCCdjIQjE1WbCwvAQECmdQ/wCFnHpumhNRkp4i/F?=
- =?us-ascii?Q?DznZZlEN6uMEQ/Pz8WfQPQS7C2zEXVWUl0HfTP1CNy3rRCduS9CPFiDDf6lL?=
- =?us-ascii?Q?hfpVOmxCzss7ZPKeO+MMsG126SGNfU5QjTeMAFYIOJmQVEvWO+wcbpi8O7Ph?=
- =?us-ascii?Q?EnuLptQ9YVemwIKwWu2DZ/9nrXJNlsAkF1WJf/oOtv1fhOWgFXPHhsXEN/W4?=
- =?us-ascii?Q?a+LxCqvVW12VK5IXudTZ73oFf5RY2XFvZgZNZU8aKwHhhZ1pQaUwAQZk0Wwc?=
- =?us-ascii?Q?U47p+i7dpGY3NoPE7Hdg9amb2IQzoo1EyxNWe7w11ufuSbm90Vh4et+for3Z?=
- =?us-ascii?Q?/8wvoSFyVxYGDiQD6XpEyLDxvhXcjFWdmzwkhlt/FHb16jfgdCChCX+k4u0M?=
- =?us-ascii?Q?2+qdSOPS/qK7WaRp5c4ZinSKDuBUuv0PdTWYb9m49aZqt8h/QtaRj8OYjHc2?=
- =?us-ascii?Q?Yg/peQMq9HCP+tuW0etxx+29i8Eywsa4x8fyOSsCaS9leLDLEgpyBaosnIFR?=
- =?us-ascii?Q?eJdUCl8Cdw8+roqPjxtbxeqUpTcjyN+JDklWMHOdu2NW4Pw6BJy/66ApV94r?=
- =?us-ascii?Q?RyWPDlJ/BCecpZ5JT1rzLVVNbAUTt2YrPE+FoDNrPl9CYsyHi0hps228MkOZ?=
- =?us-ascii?Q?uUOi48YRb9LlMHYTI9E7MOSWW7O/uA7rYb5WQrxZqOjvdz8l9ct5EVis/w91?=
- =?us-ascii?Q?R1VbY+Wzq1FZiqmTvLsZJ+OKAvImarovh6L6/E3XUz4H9tTB9P6qN5Rhztyd?=
- =?us-ascii?Q?jg5SPID9VeoRIqajqNiQ84dkutHUUJFBNrPedia9hXRRlMsFVYZK97NOhqR2?=
- =?us-ascii?Q?cuteHmREEiC9eRiR9CZ90JFXtqKCzB0eX+0uD9UL4WNgskEUXrU5lXjrBDAm?=
- =?us-ascii?Q?qGfqRejSnnueskbVmPbx18Vf3cDUfwogamPMxU4ZlRNNp5tIfzvbY3JtLxnt?=
- =?us-ascii?Q?3/3j6LeA1yDG/MA0tz356C1E9xE9baXoUZHFxp0UIeSANGU4Ap8Dz4LYV5To?=
- =?us-ascii?Q?vhtuV5FY+XBIp7xb5r41xyFTMdv5j2VUhbG0QJ31pziYg5jIPAI0RaMhYiT2?=
- =?us-ascii?Q?YFKKgkx/V+Y3GSxchde97Bn6ioq8cJwXPQ+noRihkr32WQnp1QiuM+0X48aW?=
- =?us-ascii?Q?BSC0QlnFIJ0ZzBuWujdy5kJlVTJ/5g/WYRJyTGjY47oUNYSZg7eaCoN0sms8?=
- =?us-ascii?Q?DdDmtNAydkROtmJJBhch6bxBmEgnqojzTENt/B5AvxFZcUn+Ep9XBqVQV7RT?=
- =?us-ascii?Q?eKuXYaeeEOeEKY6GxIAutPQkHrSe2GTfcCofwv43PxJl8IlVmOgOjtPirNm8?=
- =?us-ascii?Q?qtW7sNhvP4JCnJBKJv1FDyB9xwFqy3N+xTjzgVln?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?atS8ngO67Ev7qhqaCRkzo6/ZnsMn70wmkWZ0Wc5SOVGeANAxeUJ+XCPCzHhL?=
+ =?us-ascii?Q?bEHFX2XN4MyjiZcY3UY8q+B+eQzXDT/kYx8JMLpoiKXhqPi4AXJopgtLtk6x?=
+ =?us-ascii?Q?ug7oIV3MIySGbvHzOePMztXI025KfizOyMUaeAHRZL1u9SbyHwt9wyEaC9tU?=
+ =?us-ascii?Q?Q/I56O7cU1/q40JXqkyfH5L48/0D6LcZMvEsEPYuWDtdIWJ66WvhWjjB38gT?=
+ =?us-ascii?Q?nKmxv35wPr5v7srUwQ2hCcTg3I0XrXBkpEcNzTXZrWEd9XqHimbu59aKgU+C?=
+ =?us-ascii?Q?vYuxGaVpXmw9fgiSL1fLg6VPTKle+jREl+RZ/Pt91unPY7Vbp780q5lW2E3S?=
+ =?us-ascii?Q?BnXh9mExElLnsI+CAg8x+zqcsC6YscwVkGCnoo5lvEZCA5j6+O+4RMparHLb?=
+ =?us-ascii?Q?kli3nVSqMAkFY2eqCtNM9g7esWIDJWnVRAzkKwwgGppbtI2qq2YKzis1UyAv?=
+ =?us-ascii?Q?hkpcHxki6DoYOy+LjjEDq5vHcRau+4THxDSeGVLW1yX9MQh70hgTGd0dnpeY?=
+ =?us-ascii?Q?ItDgBqw93PQPn4vu7VVM9cwHF3sW3b+edlQoFFwa1pxToinRfTcX3F1wbgmJ?=
+ =?us-ascii?Q?0NNILgxNt/tu9Xne27baHxJFIx9pbMFHJ/ORqRTt+8besOFrMWK7rfnvDFXe?=
+ =?us-ascii?Q?czRWl/xI9Qugb18LKtvGYVJzXbkZrhg4VWtHfD+II6Nxom9EQPgYPCqSZy3p?=
+ =?us-ascii?Q?crYbRAnieQIKVlDOScx2Q7420QD/jD2p0HTkiQ6qWgx0NckuuF3Cuq7JS5TH?=
+ =?us-ascii?Q?Lnd+aljP1KEouikfW/8Wu/Qx/iSjW2XxxAWl44e+ac7g294BBprslwwVkMiL?=
+ =?us-ascii?Q?nhhsp91bO0ygePJYP2dtNz4i3t5W6A5B8PPSF6ZOs0xqXt5FvO5UIPJm+X7x?=
+ =?us-ascii?Q?Xh2Z0PrWYg0YZMlUVF5w1wFwBKsgXDj4XzeT27MJI5YROrCsQBuTlQK177R5?=
+ =?us-ascii?Q?yuADlNBqhUY2lNq+RZ/zB+o5wfXSKG0WJnAczhGUYxwd7uIJcia/ZFTxxISm?=
+ =?us-ascii?Q?wi4MXZz8P+JH146SG4+3jtDSbOoJKz77G8MkxVvr7XSuvBl5BHe98wikjd2Q?=
+ =?us-ascii?Q?KhMAgYZVhXavujEXM2OtnU5icln5wn0Nb1mDgMjNb/PZQnwIip/ckp7kyoq3?=
+ =?us-ascii?Q?XOb95BayxolL7ePw90tmespcbK58Io1vgygUxeTEgFiBP0M7v9Khtl1o0PUa?=
+ =?us-ascii?Q?qrfUB4hsRgwEYeffOrbG5jfmFG50nfjzbHRRDUEIeN/yvfk2C1RDkXkBm0To?=
+ =?us-ascii?Q?XwwucqIITKEyie5h/Lj+nqT8Dy+lH9Ievqi4B8CZ4Pm1/J5SYyEpUIctNtnL?=
+ =?us-ascii?Q?JbkMOADIzx7Bp+OKlB8rdvbJXdB5jfkXj86hoAXbJVX+2T2NPpXidye5AGYr?=
+ =?us-ascii?Q?MA2ZMfdpgqAcHjigBy+EGQz3XSeXw94NytjP4qTEJGGdYQIn4gB7vOTOFBJi?=
+ =?us-ascii?Q?83C/tW+eB/6IISQf6SUu1p7WOzsWuoET/UNVVojOP9uSLqWqLR0i+4ly86OM?=
+ =?us-ascii?Q?Pm9TpdfmK9zvNTSggljJuQPm6nht4E4CsvM+/mrMKEjarnQCS7Jk6d3/PhM2?=
+ =?us-ascii?Q?LVQ6huG4a/7OCFOn8h38x6z2ljuE0Xzl7mAbKpsQ?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5b9e0db-7907-4334-d02b-08db8548d533
+X-MS-Exchange-CrossTenant-Network-Message-Id: d9ed79ed-77ba-4d4c-1b22-08db854ad77a
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2023 15:33:26.5855
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2023 15:47:49.3616
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TXVK033wUua+HySwwqkWHRU2QoCV0JoDqC0TO6G0WA2hn/P9by4jXnjVKY3sbWe2MMThe/5qr3gpM7Bui/x24g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7163
+X-MS-Exchange-CrossTenant-UserPrincipalName: V6AWZCfaN0Ea7Hez9RNuVmwM26UuitHpwyonwJLpZ3/aaCTMmgBHsfQnQ4yq7ZF1gATbfeUyVceVe5+SBDjzgQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB7284
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, 14 Jul 2023 16:55:01 +0900
+On Fri, 14 Jul 2023 18:13:59 +0900
 Asahi Lina <lina@asahilina.net> wrote:
 
-> This module is intended to contain functions related to kernel
-> timekeeping and time.
+> Using macros to create lock classes all over the place is unergonomic,
+> and makes it impossible to add new features that require lock classes to
+> code such as Arc<> without changing all callers.
 > 
-> Initially, this implements an abstraction for a time Instant (analogous
-> to the Rust std::time::Instant) that represents an opaque instant in
-> time. Unlike the std Instant, this is a generic type that is bound to a
-> specific clock source, so that only Instants from the same clock source
-> can be subtracted/compared.
+> Rust has the ability to track the caller's identity by file/line/column
+> number, and we can use that to dynamically generate lock classes
+> instead.
 > 
-> Then we implement the relevant clocks available to the kernel:
-> KernelTime (CLOCK_MONOTONIC), BootTime (CLOCK_BOOTTIME),
-> RealTime (CLOCK_REALTIME), and TaiTime.
-> 
-> Co-developed-by: Heghedus Razvan <heghedus.razvan@protonmail.com>
 > Signed-off-by: Asahi Lina <lina@asahilina.net>
-
-The API seems much nicer. Comments inline below.
-
 > ---
+>  rust/kernel/sync/lockdep.rs    | 147 ++++++++++++++++++++++++++++++++++++++++-
+>  rust/kernel/sync/no_lockdep.rs |   8 +++
+>  2 files changed, 154 insertions(+), 1 deletion(-)
 > 
-> Based on the feedback to v1, now we have proper type checking for kernel
-> time. I decided to implement marker traits for monotonic vs. wallclock
-> time sources, since it's useful to be able to safely implement different
-> semantics conditional on that, but that left me with a name conflict of
-> the Monotonic trait with the CLOCK_MONOTONIC / "default ktime" clock
-> source. I ended up calling it KernelTime since it's the most fundamental
-> kernel timesource, but suggestions welcome!
-> 
-> Heghedus: I think I need a signoff on this since this is based on the
-> playground demo you wrote in the feedback to v1. Can you provide that? I
-> can fold it into v3 (if there is one, otherwise Miguel can probably just
-> add it when he applies it). Thanks!
-> ---
->  rust/bindings/bindings_helper.h |   2 +
->  rust/helpers.c                  |  16 +++++
->  rust/kernel/lib.rs              |   1 +
->  rust/kernel/time.rs             | 150 ++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 169 insertions(+)
-> 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 3e601ce2548d..eddfdf887364 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -8,9 +8,11 @@
+> diff --git a/rust/kernel/sync/lockdep.rs b/rust/kernel/sync/lockdep.rs
+> index d8328f4275fb..fbf9f6ed403d 100644
+> --- a/rust/kernel/sync/lockdep.rs
+> +++ b/rust/kernel/sync/lockdep.rs
+> @@ -5,7 +5,19 @@
+>  //! This module abstracts the parts of the kernel lockdep API relevant to Rust
+>  //! modules, including lock classes.
 >  
->  #include <linux/errname.h>
->  #include <linux/slab.h>
-> +#include <linux/ktime.h>
->  #include <linux/refcount.h>
->  #include <linux/wait.h>
->  #include <linux/sched.h>
-> +#include <linux/timekeeping.h>
+> -use crate::types::Opaque;
+> +use crate::{
+> +    c_str, fmt,
+> +    init::InPlaceInit,
+> +    new_mutex,
+> +    prelude::{Box, Result, Vec},
+> +    str::{CStr, CString},
+> +    sync::Mutex,
+> +    types::Opaque,
+> +};
+> +
+> +use core::hash::{Hash, Hasher};
+> +use core::pin::Pin;
+> +use core::sync::atomic::{AtomicPtr, Ordering};
 >  
->  /* `bindgen` gets confused at certain things. */
->  const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index bb594da56137..eff092302e23 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -26,6 +26,7 @@
->  #include <linux/mutex.h>
->  #include <linux/spinlock.h>
->  #include <linux/sched/signal.h>
-> +#include <linux/timekeeping.h>
->  #include <linux/wait.h>
->  
->  __noreturn void rust_helper_BUG(void)
-> @@ -135,6 +136,21 @@ void rust_helper_put_task_struct(struct task_struct *t)
->  }
->  EXPORT_SYMBOL_GPL(rust_helper_put_task_struct);
->  
-> +ktime_t rust_helper_ktime_get_real(void) {
-> +	return ktime_get_real();
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_ktime_get_real);
+>  /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
+>  #[repr(transparent)]
+> @@ -42,3 +54,136 @@ pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+>  // actually dereferenced.
+>  unsafe impl Send for LockClassKey {}
+>  unsafe impl Sync for LockClassKey {}
 > +
-> +ktime_t rust_helper_ktime_get_boottime(void) {
-> +	return ktime_get_boottime();
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_ktime_get_boottime);
-> +
-> +ktime_t rust_helper_ktime_get_clocktai(void) {
-> +	return ktime_get_clocktai();
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_ktime_get_clocktai);
-> +
->  /*
->   * We use `bindgen`'s `--size_t-is-usize` option to bind the C `size_t` type
->   * as the Rust `usize` type, so we can use it in contexts where Rust
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 85b261209977..52c91484c5d8 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -42,6 +42,7 @@
->  pub mod str;
->  pub mod sync;
->  pub mod task;
-> +pub mod time;
->  pub mod types;
->  
->  #[doc(hidden)]
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> new file mode 100644
-> index 000000000000..f3bfeed20145
-> --- /dev/null
-> +++ b/rust/kernel/time.rs
-> @@ -0,0 +1,150 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Timekeeping functions.
-> +//!
-> +//! C header: [`include/linux/ktime.h`](../../../../include/linux/ktime.h)
-> +//! C header: [`include/linux/timekeeping.h`](../../../../include/linux/timekeeping.h)
-> +
-> +use crate::{bindings, pr_err};
-> +use core::marker::PhantomData;
-> +use core::time::Duration;
-> +
-> +/// Represents a clock, that is, a unique time source.
-> +pub trait Clock: Sized {}
-> +
-> +/// A time source that can be queried for the current time.
-> +pub trait Now: Clock {
-> +    /// Returns the current time for this clock.
-> +    fn now() -> Instant<Self>;
+> +// Location is 'static but not really, since module unloads will
+> +// invalidate existing static Locations within that module.
+> +// To avoid breakage, we maintain our own location struct which is
+> +// dynamically allocated on first reference. We store a hash of the
+> +// whole location (including the filename string), as well as the
+> +// line and column separately. The assumption is that this whole
+> +// struct is highly unlikely to ever collide with a reasonable
+> +// hash (this saves us from having to check the filename string
+> +// itself).
+> +#[derive(PartialEq, Debug)]
+> +struct LocationKey {
+> +    hash: u64,
+> +    line: u32,
+> +    column: u32,
 > +}
 > +
-> +/// Marker trait for clock sources that are guaranteed to be monotonic.
-> +pub trait Monotonic {}
-> +
-> +/// Marker trait for clock sources that represent a calendar (wall clock)
-> +/// relative to the UNIX epoch.
-> +pub trait WallTime {}
-> +
-> +/// An instant in time associated with a given clock source.
-> +#[derive(Debug)]
-
-We probably want a manual Debug impl, but that could be left to a
-future patch.
-
-> +pub struct Instant<T: Clock> {
-> +    nanoseconds: i64,
-> +    _type: PhantomData<T>,
-> +}
-
-Do we want to pick a default type parameter? The `KernelTime` could be
-a good default, given that it's `ktime_get`.
-
-> +
-> +impl<T: Clock> Clone for Instant<T> {
-> +    fn clone(&self) -> Self {
-> +        *self
-> +    }
+> +struct DynLockClassKey {
+> +    key: Opaque<bindings::lock_class_key>,
+> +    loc: LocationKey,
+> +    name: CString,
 > +}
 > +
-> +impl<T: Clock> Copy for Instant<T> {}
+> +impl LocationKey {
+> +    fn new(loc: &'static core::panic::Location<'static>) -> Self {
+> +        let mut hasher = crate::siphash::SipHasher::new();
+> +        loc.hash(&mut hasher);
 > +
-> +impl<T: Clock> Instant<T> {
-> +    fn new(nanoseconds: i64) -> Self {
-> +        Instant {
-> +            nanoseconds,
-> +            _type: PhantomData,
-> +        }
-> +    }
-> +
-> +    /// Returns the time elapsed since an earlier Instant<t>, or
-> +    /// None if the argument is a later Instant.
-> +    pub fn since(&self, earlier: Instant<T>) -> Option<Duration> {
-> +        if earlier.nanoseconds > self.nanoseconds {
-> +            None
-> +        } else {
-> +            // Casting to u64 and subtracting is guaranteed to give the right
-> +            // result for all inputs, as long as the condition we checked above
-> +            // holds.
-> +            Some(Duration::from_nanos(
-> +                self.nanoseconds as u64 - earlier.nanoseconds as u64,
-
-`wrapping_sub` as other people have already point out.
-
-> +            ))
+> +        LocationKey {
+> +            hash: hasher.finish(),
+> +            line: loc.line(),
+> +            column: loc.column(),
 > +        }
 > +    }
 > +}
 > +
-> +impl<T: Clock + Now + Monotonic> Instant<T> {
-> +    /// Returns the time elapsed since this Instant<T>.
-> +    ///
-> +    /// This is guaranteed to return a positive result, since
-> +    /// it is only implemented for monotonic clocks.
-> +    pub fn elapsed(&self) -> Duration {
-> +        T::now().since(*self).unwrap_or_else(|| {
-> +            pr_err!(
-> +                "Monotonic clock {} went backwards!",
-> +                core::any::type_name::<T>()
+> +impl DynLockClassKey {
+> +    fn key(&'static self) -> LockClassKey {
+> +        LockClassKey(self.key.get())
+> +    }
+
+I don't understand why PATCH 06 is needed. If we keep the current
+`LockClassKey` definition this could just be returning `'static
+LockClassKey`, which is a simple `&self.key`.
+
+> +
+> +    fn name(&'static self) -> &CStr {
+> +        &self.name
+> +    }
+> +}
+> +
+> +const LOCK_CLASS_BUCKETS: usize = 1024;
+> +
+> +#[track_caller]
+> +fn caller_lock_class_inner() -> Result<&'static DynLockClassKey> {
+> +    // This is just a hack to make the below static array initialization work.
+> +    #[allow(clippy::declare_interior_mutable_const)]
+> +    const ATOMIC_PTR: AtomicPtr<Mutex<Vec<&'static DynLockClassKey>>> =
+> +        AtomicPtr::new(core::ptr::null_mut());
+> +
+> +    #[allow(clippy::complexity)]
+> +    static LOCK_CLASSES: [AtomicPtr<Mutex<Vec<&'static DynLockClassKey>>>; LOCK_CLASS_BUCKETS] =
+> +        [ATOMIC_PTR; LOCK_CLASS_BUCKETS];
+> +
+> +    let loc = core::panic::Location::caller();
+> +    let loc_key = LocationKey::new(loc);
+> +
+> +    let index = (loc_key.hash % (LOCK_CLASS_BUCKETS as u64)) as usize;
+> +    let slot = &LOCK_CLASSES[index];
+> +
+> +    let mut ptr = slot.load(Ordering::Relaxed);
+> +    if ptr.is_null() {
+> +        let new_element = Box::pin_init(new_mutex!(Vec::new()))?;
+> +
+> +        if let Err(e) = slot.compare_exchange(
+> +            core::ptr::null_mut(),
+> +            // SAFETY: We never move out of this Box
+> +            Box::into_raw(unsafe { Pin::into_inner_unchecked(new_element) }),
+> +            Ordering::Relaxed,
+> +            Ordering::Relaxed,
+> +        ) {
+> +            // SAFETY: We just got this pointer from `into_raw()`
+> +            unsafe { Box::from_raw(e) };
+> +        }
+> +
+> +        ptr = slot.load(Ordering::Relaxed);
+> +        assert!(!ptr.is_null());
+> +    }
+> +
+> +    // SAFETY: This mutex was either just created above or previously allocated,
+> +    // and we never free these objects so the pointer is guaranteed to be valid.
+> +    let mut guard = unsafe { (*ptr).lock() };
+> +
+> +    for i in guard.iter() {
+> +        if i.loc == loc_key {
+> +            return Ok(i);
+> +        }
+> +    }
+> +
+> +    // We immediately leak the class, so it becomes 'static
+> +    let new_class = Box::leak(Box::try_new(DynLockClassKey {
+> +        key: Opaque::zeroed(),
+> +        loc: loc_key,
+> +        name: CString::try_from_fmt(fmt!("{}:{}:{}", loc.file(), loc.line(), loc.column()))?,
+> +    })?);
+> +
+> +    // SAFETY: This is safe to call with a pointer to a dynamically allocated lockdep key,
+> +    // and we never free the objects so it is safe to never unregister the key.
+> +    unsafe { bindings::lockdep_register_key(new_class.key.get()) };
+> +
+> +    guard.try_push(new_class)?;
+> +
+> +    Ok(new_class)
+> +}
+> +
+> +#[track_caller]
+> +pub(crate) fn caller_lock_class() -> (LockClassKey, &'static CStr) {
+> +    match caller_lock_class_inner() {
+> +        Ok(a) => (a.key(), a.name()),
+> +        Err(_) => {
+> +            crate::pr_err!(
+> +                "Failed to dynamically allocate lock class, lockdep may be unreliable.\n"
 > +            );
-> +            Duration::ZERO
-> +        })
-> +    }
-> +}
 > +
-> +/// Contains the various clock source types available to the kernel.
-> +pub mod clock {
-> +    use super::*;
-> +
-> +    /// A clock representing the default kernel time source.
-> +    ///
-> +    /// This is `CLOCK_MONOTONIC` (though it is not the only
-> +    /// monotonic clock) and also the default clock used by
-> +    /// `ktime_get()` in the C API.
-> +    ///
-> +    /// This is like `BootTime`, but does not include time
-> +    /// spent sleeping.
-> +
+> +            let loc = core::panic::Location::caller();
+> +            // SAFETY: LockClassKey is opaque and the lockdep implementation only needs
+> +            // unique addresses for statically allocated keys, so it is safe to just cast
+> +            // the Location reference directly into a LockClassKey. However, this will
+> +            // result in multiple keys for the same callsite due to monomorphization,
+> +            // as well as spuriously destroyed keys when the static key is allocated in
+> +            // the wrong module, which is what makes this unreliable.
 
-Extra line
+If the only purpose of introducing `StaticLockClassKey` and change
+`LockClassKey` is to make this fallback path work, then I don't think
+that change is worth it. I don't really see an issue with forging a
+`'static LockClassKey' from a `'static Location`, especially since you
+can't really do any memory access with `LockClassKey`.
 
-> +    pub struct KernelTime;
-
-I feel that the struct names are a bit awkward, but couldn't think of
-any better suggestions...
-
-> +
-> +    impl Clock for KernelTime {}
-> +    impl Monotonic for KernelTime {}
-> +    impl Now for KernelTime {
-> +        fn now() -> Instant<Self> {
-> +            Instant::<Self>::new(unsafe { bindings::ktime_get() })
-> +        }
-> +    }
-> +
-> +    /// A clock representing the time elapsed since boot.
-> +    ///
-> +    /// This is `CLOCK_MONOTONIC` (though it is not the only
-> +    /// monotonic clock) and also the default clock used by
-> +    /// `ktime_get()` in the C API.
-> +    ///
-> +    /// This is like `KernelTime`, but does include time
-> +    /// spent sleeping.
-> +    pub struct BootTime;
-> +
-> +    impl Clock for BootTime {}
-> +    impl Monotonic for BootTime {}
-> +    impl Now for BootTime {
-> +        fn now() -> Instant<Self> {
-> +            Instant::<Self>::new(unsafe { bindings::ktime_get_boottime() })
-> +        }
-> +    }
-> +
-> +    /// A clock representing TAI time.
-> +    ///
-> +    /// This clock is not monotonic and can be changed from userspace.
-> +    /// However, it is not affected by leap seconds.
-> +    pub struct TaiTime;
-> +
-> +    impl Clock for TaiTime {}
-> +    impl WallTime for TaiTime {}
-> +    impl Now for TaiTime {
-> +        fn now() -> Instant<Self> {
-> +            Instant::<Self>::new(unsafe { bindings::ktime_get_clocktai() })
-> +        }
-> +    }
-> +
-> +    /// A clock representing wall clock time.
-> +    ///
-> +    /// This clock is not monotonic and can be changed from userspace.
-> +    pub struct RealTime;
-> +
-> +    impl Clock for RealTime {}
-> +    impl WallTime for RealTime {}
-> +    impl Now for RealTime {
-> +        fn now() -> Instant<Self> {
-> +            Instant::<Self>::new(unsafe { bindings::ktime_get_real() })
+> +            (
+> +                LockClassKey(loc as *const _ as *mut _),
+> +                c_str!("fallback_lock_class"),
+> +            )
 > +        }
 > +    }
 > +}
-> 
-> ---
-> base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
-> change-id: 20230714-rust-time-10dd9ed25333
-> 
-> Thank you,
-> ~~ Lina
+> diff --git a/rust/kernel/sync/no_lockdep.rs b/rust/kernel/sync/no_lockdep.rs
+> index 518ec0bf9a7d..de53c4de7fbe 100644
+> --- a/rust/kernel/sync/no_lockdep.rs
+> +++ b/rust/kernel/sync/no_lockdep.rs
+> @@ -4,6 +4,8 @@
+>  //!
+>  //! Takes the place of the `lockdep` module when lockdep is disabled.
+>  
+> +use crate::{c_str, str::CStr};
+> +
+>  /// A dummy, zero-sized lock class.
+>  pub struct StaticLockClassKey();
+>  
+> @@ -28,3 +30,9 @@ pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+>          core::ptr::null_mut()
+>      }
+>  }
+> +
+> +pub(crate) fn caller_lock_class() -> (LockClassKey, &'static CStr) {
+> +    static DUMMY_LOCK_CLASS: StaticLockClassKey = StaticLockClassKey::new();
+> +
+> +    (DUMMY_LOCK_CLASS.key(), c_str!("dummy"))
+> +}
 > 
 
