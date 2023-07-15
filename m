@@ -2,117 +2,201 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1705AEB64DC
-	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Jul 2023 08:14:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9625EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Jul 2023 09:42:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229549AbjGOIOR (ORCPT
+        id S229593AbjGOJmq (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 15 Jul 2023 04:14:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41360 "EHLO
+        Sat, 15 Jul 2023 05:42:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjGOIOQ (ORCPT
+        with ESMTP id S229490AbjGOJmp (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 15 Jul 2023 04:14:16 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2371835AE;
-        Sat, 15 Jul 2023 01:14:14 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id F41985C0100;
-        Sat, 15 Jul 2023 04:14:09 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Sat, 15 Jul 2023 04:14:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-        :content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-        1689408849; x=1689495249; bh=Xoj9Xm8/Xd98EhXuvKJw7gbcAWTuMt5qlTz
-        hZaCUcZA=; b=czFIb1Ix5sBw+Rqrc0P3Peeqt0KeEURhXqDTthtOOBeUl9DvOuy
-        bEWb4uA2Bh6Pm37J7v7HCYowYHWxa0c1Y7OGzJGRh0IBk1NlTfGijlbNnp/noqmY
-        8dCtQJrn17wgj1qK0cLdwwW4b51NGP7SsxODD8o4dzlkXcdsz2H1E1/8WyXBVVq4
-        cRxd74RBWVkRQaIzefTOZcxf50OFDfLs/F7JyGyLB4wSe/ci0daNyJjdz7LHS+sj
-        /yblcF8x6vlAHH18XiyjY6RsMIzj8BYKdMImX/4BkoknrSTXIpHIkpfWGL/4Vec0
-        GFZlB/BpiJnieWC2YCw/5t9LkC42Pdpo5Qw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-        1689408849; x=1689495249; bh=Xoj9Xm8/Xd98EhXuvKJw7gbcAWTuMt5qlTz
-        hZaCUcZA=; b=gmeQg4/7x7VYZZrbBBgR60o0iPUsDUGHvlK3EnRnOp5kd5k6Evn
-        vyMM/w4/4/p4FkwBheuRofnr1p9aoRPizjlQMUjH7LxxmDxhk6QpDtZ4RQNXTJzT
-        nncO6Qor3DtZ2HOnKUljXNOroJoLDDA3qZfkUCyexBW+JEaf946uWn04I+iahg2f
-        EtJGYw+AA+N3GIXBcapXfGFiIf84ajxGq441FJ/3XShLT08lUnRg5asIanG6jE1X
-        o2+nwvlo0H6uxaryfSxdxzzWC0gwA+ZTBxwi5n489QZ6zGvv6THIXzBgQblB14zc
-        qzlvRQRfXGrWwFJI3hmomiBHkYqjjqgcvmA==
-X-ME-Sender: <xms:UVWyZJ_OJ7KSi3hE3G8ZZdKuyTLj3YLGXkOi8NWHpjPiEoS0gDps2A>
-    <xme:UVWyZNvvH0NEy3xVF2tNYbxszi5xgJ_MHL0lEn-mdaSVxRRfzAOz_mgxL5-V277su
-    0dwQzndOd7gB4pAuw>
-X-ME-Received: <xmr:UVWyZHA6XEUVhkAh_PhYMvw1OFLDJNfDGQs5z1NCZxxtEee1fgbl5snm8s4BLKdAcQJSxji4bbsWHnjAYDb16A6WaGbctVuUtJlAcw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrfeekgddtvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefkffggfgfuvfevfhfhjggtgfesthejredttdefjeenucfhrhhomheptehlihgt
-    vgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnhephe
-    duuddvteekvdektdduledugfffhfdugeejgeeuvdevtdetveejheehiefffeegnecuvehl
-    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvgesrh
-    ihhhhlrdhioh
-X-ME-Proxy: <xmx:UVWyZNft6Kic2apmVeAQTXD0roaE2Mgf-5apK0gRIZjvxlibVqwHjQ>
-    <xmx:UVWyZOMyVCEvfnUZecWmGTzX_cO3rCZRrz8BcwDwozoACLPpcMmwhw>
-    <xmx:UVWyZPk4vBrz0V-dp46IibsEqSjKOu-OI3WnvqwxIhwD8dvzKnTscQ>
-    <xmx:UVWyZFmVcr17fcBSgNQSE2YVSlB6pZGryGBHIh-rmPS90n5yK5LaCA>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 15 Jul 2023 04:14:06 -0400 (EDT)
-Message-ID: <37795dc7-a121-b30b-76de-1ba6dd705c5e@ryhl.io>
-Date:   Sat, 15 Jul 2023 10:14:57 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] rust: time: New module for timekeeping functions
-Content-Language: en-US, da
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>,
+        Sat, 15 Jul 2023 05:42:45 -0400
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92DF235A2
+        for <rust-for-linux@vger.kernel.org>; Sat, 15 Jul 2023 02:42:43 -0700 (PDT)
+Date:   Sat, 15 Jul 2023 09:42:33 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=protonmail; t=1689414160; x=1689673360;
+        bh=9DRWXTeWnC2fmfaUVbe8ysGGNq1WoLrTeIlaoIY6o2I=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=cf1XNQPdH0pWvSSWVwyK/G4iQhP7MORE9YH0Vf13uMgHoaxddm5t2Yo/0+G3BRmJA
+         90ETS0sduZHJKFyjQn45viGDVclOZ55u7e4YLtQ2/COY0SMTin5AHUQzY2mifbydzH
+         vZ0ZXfOfBoAtEfLlBo1TGQNiieIC7AJkeZR3S3FuMs5I0mLUhrSvS7PSf4vbNjaqjj
+         Q+eQJorFmrD/wswEmmPajg2q9GMemC7xYU+a2uiihLwj4AvWOawveMwx7DKlELh4fs
+         7og6GghY7b3UW/ANvV5ewp+4sCi66d+SvAVjTvNn4RDcKC+cQCxqvzV9LVKnrB4uoZ
+         jTUkxKV5OJqCg==
+To:     Alice Ryhl <aliceryhl@google.com>
+From:   Benno Lossin <benno.lossin@proton.me>
+Cc:     rust-for-linux@vger.kernel.org, Tejun Heo <tj@kernel.org>,
         Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        John Stultz <jstultz@google.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Josh Stone <jistone@redhat.com>,
-        Gaelan Steele <gbs@canishe.com>,
-        Heghedus Razvan <heghedus.razvan@protonmail.com>
-References: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
- <87r0pax9a6.ffs@tglx>
-From:   Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <87r0pax9a6.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH v3 2/9] rust: sync: add `Arc::{from_raw, into_raw}`
+Message-ID: <CUqkSCKfZbSOwonbc1HECGB3ah_8k404uGJFaebLi2oD8GScDzqRxZ350YdmljslxqUC4mqdvqpbBhD1wFSmCvpA4MhklUGnN6RB0Y8YlFo=@proton.me>
+In-Reply-To: <20230711093303.1433770-3-aliceryhl@google.com>
+References: <20230711093303.1433770-1-aliceryhl@google.com> <20230711093303.1433770-3-aliceryhl@google.com>
+Feedback-ID: 71780778:user:proton
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 7/15/23 03:17, Thomas Gleixner wrote:
-> On Fri, Jul 14 2023 at 16:55, Asahi Lina wrote:
->> +ktime_t rust_helper_ktime_get_real(void) {
->> +	return ktime_get_real();
->> +}
->> +EXPORT_SYMBOL_GPL(rust_helper_ktime_get_real);
-> 
-> Colour me confused. But why does this need another export?
-> 
-> This just creates yet another layer of duct tape. If it's unsafe from
-> the rust perspective then wrapping it into rust_"unsafe_function" does not
-> make it any better.
-> 
-> Why on earth can't you use the actual C interfaces diretly which are
-> already exported?
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
+>=20
+> These methods can be used to turn an `Arc` into a raw pointer and back,
+> in a way that preserves the metadata for fat pointers.
+>=20
+> This is done using the unstable ptr_metadata feature [1]. However, it
+> could also be done using the unstable pointer_byte_offsets feature [2],
+> which is likely to have a shorter path to stabilization than
+> ptr_metadata.
+>=20
+> Link: https://github.com/rust-lang/rust/issues/81513 [1]
+> Link: https://github.com/rust-lang/rust/issues/96283 [2]
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
 
-Currently, you can't call inline C functions directly from Rust. So we 
-wrap them in non-inline functions for now.
+LGTM, two small documentation nits below, with them fixed you can add:
 
-It's something we definitely want to fix, but it hasn't been fixed yet.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-Alice
+> ---
+> v2 -> v3:
+>  * Use `transmute_copy` to convert metadata.
+>  * Use `add` instead of `wrapping_add`.
+>  * Dropped Reviewed-by from Martin and Benno due to changes.
+>=20
+>  rust/kernel/lib.rs      |  1 +
+>  rust/kernel/sync/arc.rs | 49 +++++++++++++++++++++++++++++++++++++++--
+>  2 files changed, 48 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 788914fd935f..6963d11092c4 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -17,6 +17,7 @@
+>  #![feature(const_refs_to_cell)]
+>  #![feature(dispatch_from_dyn)]
+>  #![feature(new_uninit)]
+> +#![feature(ptr_metadata)]
+>  #![feature(receiver_trait)]
+>  #![feature(unsize)]
+>=20
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index a89843cacaad..4046b534e53b 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -24,13 +24,13 @@
+>  };
+>  use alloc::boxed::Box;
+>  use core::{
+> -    alloc::AllocError,
+> +    alloc::{AllocError, Layout},
+>      fmt,
+>      marker::{PhantomData, Unsize},
+>      mem::{ManuallyDrop, MaybeUninit},
+>      ops::{Deref, DerefMut},
+>      pin::Pin,
+> -    ptr::NonNull,
+> +    ptr::{NonNull, Pointee},
+>  };
+>  use macros::pin_data;
+>=20
+> @@ -212,6 +212,51 @@ unsafe fn from_inner(inner: NonNull<ArcInner<T>>) ->=
+ Self {
+>          }
+>      }
+>=20
+> +    /// Convert the [`Arc`] into a raw pointer.
+> +    ///
+> +    /// The raw pointer has ownership of the refcount that this Arc obje=
+ct owned.
+> +    pub fn into_raw(self) -> *const T {
+> +        let ptr =3D self.ptr.as_ptr();
+> +        core::mem::forget(self);
+> +        // SAFETY: The pointer is valid.
+> +        unsafe { core::ptr::addr_of!((*ptr).data) }
+> +    }
+> +
+> +    /// Recreates an [`Arc`] instance previously deconstructed via [`Arc=
+::into_raw`].
+> +    ///
+> +    /// This code relies on the `repr(C)` layout of structs as described=
+ in
+> +    /// <https://doc.rust-lang.org/reference/type-layout.html#reprc-stru=
+cts>.
+
+Why is this in the documentation? I feel like it should be a normal code
+comment at the very start of the function.
+
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must have been returned by a previous call to [`Arc::into_=
+raw`]. Additionally, it
+> +    /// can only be called once for each previous call to [`Arc::into_ra=
+w`].
+
+"it can only" -> "it must only"
+
+--
+Cheers,
+Benno
+
+> +    pub unsafe fn from_raw(ptr: *const T) -> Self {
+> +        let refcount_layout =3D Layout::new::<bindings::refcount_t>();
+> +        // SAFETY: The caller guarantees that the pointer is valid.
+> +        let val_layout =3D Layout::for_value(unsafe { &*ptr });
+> +        // SAFETY: We're computing the layout of a real struct that exis=
+ted when compiling this
+> +        // binary, so its layout is not so large that it can trigger ari=
+thmetic overflow.
+> +        let val_offset =3D unsafe { refcount_layout.extend(val_layout).u=
+nwrap_unchecked().1 };
+> +
+> +        let metadata: <T as Pointee>::Metadata =3D core::ptr::metadata(p=
+tr);
+> +        // SAFETY: The metadata of `T` and `ArcInner<T>` is the same bec=
+ause `ArcInner` is a struct
+> +        // with `T` as its last field.
+> +        //
+> +        // This is documented at:
+> +        // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
+> +        let metadata: <ArcInner<T> as Pointee>::Metadata =3D
+> +            unsafe { core::mem::transmute_copy(&metadata) };
+> +        // SAFETY: The pointer is in-bounds of an allocation both before=
+ and after offsetting the
+> +        // pointer, since it originates from a previous call to `Arc::in=
+to_raw` and is still valid.
+> +        let ptr =3D unsafe { (ptr as *mut u8).sub(val_offset) as *mut ()=
+ };
+> +        let ptr =3D core::ptr::from_raw_parts_mut(ptr, metadata);
+> +
+> +        // SAFETY: By the safety requirements we know that `ptr` came fr=
+om `Arc::into_raw`, so the
+> +        // reference count held then will be owned by the new `Arc` obje=
+ct.
+> +        unsafe { Self::from_inner(NonNull::new_unchecked(ptr)) }
+> +    }
+> +
+>      /// Returns an [`ArcBorrow`] from the given [`Arc`].
+>      ///
+>      /// This is useful when the argument of a function call is an [`ArcB=
+orrow`] (e.g., in a method
+> --
+> 2.41.0.255.g8b1d071c50-goog
+>=20
+
