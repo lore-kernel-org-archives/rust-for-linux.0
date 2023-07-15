@@ -2,111 +2,117 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 17A22C001B0
-	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Jul 2023 08:07:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1705AEB64DC
+	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Jul 2023 08:14:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbjGOIHn (ORCPT
+        id S229549AbjGOIOR (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 15 Jul 2023 04:07:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41022 "EHLO
+        Sat, 15 Jul 2023 04:14:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjGOIHn (ORCPT
+        with ESMTP id S229436AbjGOIOQ (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 15 Jul 2023 04:07:43 -0400
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B71F1B6
-        for <rust-for-linux@vger.kernel.org>; Sat, 15 Jul 2023 01:07:41 -0700 (PDT)
-Date:   Sat, 15 Jul 2023 08:07:30 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1689408457; x=1689667657;
-        bh=s/0tYO5qmt276h4IQn5dGAY7Mf7gP5cdcTvShCpZbv8=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=h10VdabBrbclLGzI1nFAZMkUnYs8GpHBlzSnBrfbM815hiyIhC/n/T81OoYOUxroS
-         vzy9HU3zeYzCxJSjYFDVu6I0Xh6rRUSb6mBWafat/8dK3z7QY8QgCJc8i46VUc8YBd
-         kvmKLr+Vom6fwgUwMav4AuTzX6vQROGO/JzM3q1MiFK/Nslr+JjWPLee52dc0lURa+
-         phE7HmUytygSnlMkK5YwnmO14LGTMZlJg4NyBiN13JT0dkBebsB0X5KBWJiekPm82c
-         kb6eL5NP5+B0kGP2cP60ZXftZYgQ5xgGMwNFEjCWZtxBFPcRSK7UGGLBo48vBpTWaP
-         uIGRvqmXZIqnQ==
-To:     Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Sat, 15 Jul 2023 04:14:16 -0400
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2371835AE;
+        Sat, 15 Jul 2023 01:14:14 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id F41985C0100;
+        Sat, 15 Jul 2023 04:14:09 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Sat, 15 Jul 2023 04:14:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
+        :content-transfer-encoding:content-type:content-type:date:date
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1689408849; x=1689495249; bh=Xoj9Xm8/Xd98EhXuvKJw7gbcAWTuMt5qlTz
+        hZaCUcZA=; b=czFIb1Ix5sBw+Rqrc0P3Peeqt0KeEURhXqDTthtOOBeUl9DvOuy
+        bEWb4uA2Bh6Pm37J7v7HCYowYHWxa0c1Y7OGzJGRh0IBk1NlTfGijlbNnp/noqmY
+        8dCtQJrn17wgj1qK0cLdwwW4b51NGP7SsxODD8o4dzlkXcdsz2H1E1/8WyXBVVq4
+        cRxd74RBWVkRQaIzefTOZcxf50OFDfLs/F7JyGyLB4wSe/ci0daNyJjdz7LHS+sj
+        /yblcF8x6vlAHH18XiyjY6RsMIzj8BYKdMImX/4BkoknrSTXIpHIkpfWGL/4Vec0
+        GFZlB/BpiJnieWC2YCw/5t9LkC42Pdpo5Qw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+        1689408849; x=1689495249; bh=Xoj9Xm8/Xd98EhXuvKJw7gbcAWTuMt5qlTz
+        hZaCUcZA=; b=gmeQg4/7x7VYZZrbBBgR60o0iPUsDUGHvlK3EnRnOp5kd5k6Evn
+        vyMM/w4/4/p4FkwBheuRofnr1p9aoRPizjlQMUjH7LxxmDxhk6QpDtZ4RQNXTJzT
+        nncO6Qor3DtZ2HOnKUljXNOroJoLDDA3qZfkUCyexBW+JEaf946uWn04I+iahg2f
+        EtJGYw+AA+N3GIXBcapXfGFiIf84ajxGq441FJ/3XShLT08lUnRg5asIanG6jE1X
+        o2+nwvlo0H6uxaryfSxdxzzWC0gwA+ZTBxwi5n489QZ6zGvv6THIXzBgQblB14zc
+        qzlvRQRfXGrWwFJI3hmomiBHkYqjjqgcvmA==
+X-ME-Sender: <xms:UVWyZJ_OJ7KSi3hE3G8ZZdKuyTLj3YLGXkOi8NWHpjPiEoS0gDps2A>
+    <xme:UVWyZNvvH0NEy3xVF2tNYbxszi5xgJ_MHL0lEn-mdaSVxRRfzAOz_mgxL5-V277su
+    0dwQzndOd7gB4pAuw>
+X-ME-Received: <xmr:UVWyZHA6XEUVhkAh_PhYMvw1OFLDJNfDGQs5z1NCZxxtEee1fgbl5snm8s4BLKdAcQJSxji4bbsWHnjAYDb16A6WaGbctVuUtJlAcw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrfeekgddtvdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefkffggfgfuvfevfhfhjggtgfesthejredttdefjeenucfhrhhomheptehlihgt
+    vgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqnecuggftrfgrthhtvghrnhephe
+    duuddvteekvdektdduledugfffhfdugeejgeeuvdevtdetveejheehiefffeegnecuvehl
+    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghlihgtvgesrh
+    ihhhhlrdhioh
+X-ME-Proxy: <xmx:UVWyZNft6Kic2apmVeAQTXD0roaE2Mgf-5apK0gRIZjvxlibVqwHjQ>
+    <xmx:UVWyZOMyVCEvfnUZecWmGTzX_cO3rCZRrz8BcwDwozoACLPpcMmwhw>
+    <xmx:UVWyZPk4vBrz0V-dp46IibsEqSjKOu-OI3WnvqwxIhwD8dvzKnTscQ>
+    <xmx:UVWyZFmVcr17fcBSgNQSE2YVSlB6pZGryGBHIh-rmPS90n5yK5LaCA>
+Feedback-ID: i56684263:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 15 Jul 2023 04:14:06 -0400 (EDT)
+Message-ID: <37795dc7-a121-b30b-76de-1ba6dd705c5e@ryhl.io>
+Date:   Sat, 15 Jul 2023 10:14:57 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] rust: time: New module for timekeeping functions
+Content-Language: en-US, da
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>,
+        Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>
-Subject: Re: [PATCH v2] scripts: read cfgs from Makefile for rust-analyzer
-Message-ID: <fW_Nn96x2phVy1b0wgVr6-xSGl3YXXhw5r-3XmAbDz_vsYWr3OmRu-b8pQnVlf0OcAbXRa9BnJXc_tsqVPijmkQtHTAzoZlbt8Gl-4f423w=@proton.me>
-In-Reply-To: <1326c1e8-1707-9275-c1b4-4b4870912158@gmail.com>
-References: <20230520231701.46008-1-yakoyoku@gmail.com> <diYQuBM2vYke0twpM2m8npuzVA2tHeJ2y52qN25pwSUmgBG0wxwaEQjBVg8eZnxu2kqcBf8wqNiu0aqgAGR3mlmtT2wPuO_HbVxAyhxR3X0=@proton.me> <1326c1e8-1707-9275-c1b4-4b4870912158@gmail.com>
-Feedback-ID: 71780778:user:proton
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Josh Stone <jistone@redhat.com>,
+        Gaelan Steele <gbs@canishe.com>,
+        Heghedus Razvan <heghedus.razvan@protonmail.com>
+References: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
+ <87r0pax9a6.ffs@tglx>
+From:   Alice Ryhl <alice@ryhl.io>
+In-Reply-To: <87r0pax9a6.ffs@tglx>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 15.07.23 05:33, Martin Rodriguez Reboredo wrote:
-> On 7/14/23 12:55, Benno Lossin wrote:
->>> Both `core` and `alloc` had their `cfgs` missing in `rust-project.json`=
-,
->>> to remedy this `generate_rust_analyzer.py` scans the Makefile from
->>> inside the `rust` directory for them to be added to a dictionary that
->>> each key corresponds to a crate and each value, to an array of `cfgs`.
->>>
->>> Signed-off-by: Martin Rodriguez Reboredo yakoyoku@gmail.com
->>
->> When I try this patch *all* configuration options are input into the `cf=
-g`
->> field of the `core` crate (others are also affected):
->> ```json
->>               "cfg": [
->>                   "CONFIG_RING_BUFFER",
->>                   "CONFIG_RING_BUFFER=3D\"y\"",
->>                   "CONFIG_HAVE_ARCH_SECCOMP_FILTER",
->>                   "CONFIG_HAVE_ARCH_SECCOMP_FILTER=3D\"y\"",
->>                   "CONFIG_KERNEL_GZIP",
->>                   "CONFIG_KERNEL_GZIP=3D\"y\"",
->>                   "CONFIG_CC_HAS_SANCOV_TRACE_PC",
->>                   "CONFIG_CC_HAS_SANCOV_TRACE_PC=3D\"y\"",
->>                   "CONFIG_ARCH_WANT_OPTIMIZE_VMEMMAP",
->> ```
->> The snippet would continue on for about 1000 lines.
->> I think this is wrong and not intended.
->>
->> --
->> Cheers,
->> Benno
->>
->=20
-> Wait, can you tell me which branch are you on? As it works on
-> `rust-dev` and `rust-next` with `make rust-analyzer`. Also, do you
-> have any other details?
+On 7/15/23 03:17, Thomas Gleixner wrote:
+> On Fri, Jul 14 2023 at 16:55, Asahi Lina wrote:
+>> +ktime_t rust_helper_ktime_get_real(void) {
+>> +	return ktime_get_real();
+>> +}
+>> +EXPORT_SYMBOL_GPL(rust_helper_ktime_get_real);
+> 
+> Colour me confused. But why does this need another export?
+> 
+> This just creates yet another layer of duct tape. If it's unsafe from
+> the rust perspective then wrapping it into rust_"unsafe_function" does not
+> make it any better.
+> 
+> Why on earth can't you use the actual C interfaces diretly which are
+> already exported?
 
-I tried it on both `rust-dev` and on `rust-next` and on both I have
-this problem. Here is what I executed:
+Currently, you can't call inline C functions directly from Rust. So we 
+wrap them in non-inline functions for now.
 
-```sh
-git checkout $branch
-make clean
-make mrproper
-make menuconfig
-make LLVM=3D1 rust-analyzer
-```
+It's something we definitely want to fix, but it hasn't been fixed yet.
 
-In the `make menuconfig` step I disabled `DEBUG_INFO_BTF` and enabled
-`RUST`.
-
-If you want, I can upload the `rust-project.json` file to GH, since
-it is 55k lines long.
-
---=20
-Cheers,
-Benno
-
-
+Alice
