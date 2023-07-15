@@ -2,375 +2,119 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C025C001DF
-	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Jul 2023 16:00:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80AB6C001B0
+	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Jul 2023 16:13:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229866AbjGOQAZ (ORCPT
+        id S229953AbjGOQNV (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 15 Jul 2023 12:00:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41474 "EHLO
+        Sat, 15 Jul 2023 12:13:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229502AbjGOQAY (ORCPT
+        with ESMTP id S229918AbjGOQNV (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 15 Jul 2023 12:00:24 -0400
-Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2107.outbound.protection.outlook.com [40.107.11.107])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6206B2729;
-        Sat, 15 Jul 2023 09:00:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aegxS62Lg7pxfwCmx8xWGJF9mRFciQWf2gGBd9mTEwWMtfmS80uksn171cc8Tqxf5FlNpIZFBLBMee7VB8eyv/2+rG1dz3TrkmG/wTSNLpl55HJrmSna/FTWU4eKFi8cm5szV1sgPFMt+yLQx38UVFcdhQPowv5MMyUM5Diyl5K0fHKh+cWpKHFrakzrX6x9Xfr03QU1REmKLKmYj4cUSLz66TW8CemPhTlTuhY/4GvM3xLDctmOnbiUSoNj2j4U0/U2lQMgNa9v864eu5yaktujDeaD21sy6zbSaibMzU2hLvVW5fow8e8O5iqggwhmBOF8wcy27F7po4Mfp0TkXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eXYCgRWFE+ouQ9u5azI7i4FWpw16uegd4+p2bQXtBkg=;
- b=ffAt9M+NbAmoGawMwTHgVIhvziZca6o8qS96i3ZqO22IODTxuCphbPyjh+LweaVkXOvf7IMFaL0FQ2pdmWthC6stuiKBpAkM87wtW6xKyr4lQJlJ6M87RP+bgzCswUEAfevDvADLxPXj16xgQ9hoiMRBWAkL9SqfyZMUInTk9/xDzx7w1qKnaVQJJYQcKzuHIAFa5wUKzM2iWnmVsQ3ga3T5YuHpZc3F/2q44oeIG0ULokRky6C8Q5/E97if3hNCtl+uvyDruBJB95vpMKccB6mJzcTMjlDS3v34xvjuFYnzfeAlLzP7hwdgEtOj5xb862noep1d32HD763z5tRJIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eXYCgRWFE+ouQ9u5azI7i4FWpw16uegd4+p2bQXtBkg=;
- b=iwQOvRbLPxMsgWPGPCgg/jIGm32fDeg8F6APskHYFR8td0zjN6KlK1FmvP3FZefeVZZkz2ty9iNk8RrqqDt5cEwVrXYVoeMmFgvJDMK0ooGgGs1o643V1OlWsCdmfZp9d6cR6+IeHq7pwqe21OL6rYzrKxa6fEXZq/mbgfcqDuo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO4P265MB6635.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2f6::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.28; Sat, 15 Jul
- 2023 16:00:20 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::25e2:a08b:cd9c:c3c9]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::25e2:a08b:cd9c:c3c9%3]) with mapi id 15.20.6588.028; Sat, 15 Jul 2023
- 16:00:19 +0000
-Date:   Sat, 15 Jul 2023 17:00:18 +0100
-From:   Gary Guo <gary@garyguo.net>
-To:     Asahi Lina <lina@asahilina.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Sat, 15 Jul 2023 12:13:21 -0400
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5E3730E5
+        for <rust-for-linux@vger.kernel.org>; Sat, 15 Jul 2023 09:13:19 -0700 (PDT)
+Received: by mail-oi1-x231.google.com with SMTP id 5614622812f47-3a337ddff16so2357891b6e.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 15 Jul 2023 09:13:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689437599; x=1692029599;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fSkUwZwWgpEg7E1AfGnY0xHC2ivhpIX/9oHdlp8xhDA=;
+        b=PQbauBDDY+u5+Xxzouzbx+UqspIEZOl7pWaZ6DP5aR5enRk67+mWBi6hMhhfHiDFLp
+         SRz7Ck8HKJcwjV0xdrqVjPEc3By/370McG3o1kfAuFUOqA+wAJrSmEhJKafm/KTywg7F
+         j7yVnzRbPjpJyMuOreabs6CRw2R5CkBq6dSlrcPKOD9E7x/U4Du8WQubJKcb1DL741+m
+         qUPO12yv7QPpbdcUnwcFrfeSLTTiZZYTx0BkOI4Q6CYLIjCibcTeo07D1c/AoWnaIM4w
+         HgahMlmX01t/0EgO0c9sVM5KgfLeIrfhHLnXerAtD1efz6G6Eqo8NjvQWpO5X0xllqUp
+         S8sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689437599; x=1692029599;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fSkUwZwWgpEg7E1AfGnY0xHC2ivhpIX/9oHdlp8xhDA=;
+        b=W95nHToIm/90q5Wsqqljdh0oKKXI56+kBNb0IJo15YutR29aG5A8eVgfmdosJV1xro
+         jcEPSxJirdKW4+VudhxQaSf0vs/yJHzZMAiJwiuWWNoF7o0NJyM1FLiRHBNbTVg6N54k
+         +3XzbqJQotObh1+0AtXW34efSJkDpQspnPmXDsSwaDPyvotU+Bl045lt2439rVAu5M16
+         pH0wCwzlvLdzQXovPZGCvJzzSswh46aE85Wzd2BvChdwgUc3X4H/9DdhXOySe28pPyut
+         k66olJG6RzrzHVtWKVdbc0DyZTR6pdWGI8afk9q4vJFDb3nW8DgkJSraiMRd8hATXlba
+         agMQ==
+X-Gm-Message-State: ABy/qLZnyCivZ/9GfBeBYGFxcSNlRsuMjnOJBAMFdw/iT1q0iZyeBPau
+        HamQfH/J89o3QyZxw4TqWhDVGOI3p2Y=
+X-Google-Smtp-Source: APBJJlF/0laXihkzCPE8p3iIAnvKhPr/WZg5/uzhkR4d8XqJDA0k+saY+jPMgE9AZoEYmaUVIRwazg==
+X-Received: by 2002:a05:6808:171c:b0:3a3:63f2:eff with SMTP id bc28-20020a056808171c00b003a363f20effmr9939999oib.4.1689437598956;
+        Sat, 15 Jul 2023 09:13:18 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id bx17-20020a0568081b1100b003a0619d78ebsm4988795oib.55.2023.07.15.09.13.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 15 Jul 2023 09:13:18 -0700 (PDT)
+Message-ID: <0f7645a2-a4dd-6e5c-25fd-4543f7c4bd13@gmail.com>
+Date:   Sat, 15 Jul 2023 13:13:14 -0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] scripts: read cfgs from Makefile for rust-analyzer
+Content-Language: en-US
+To:     Benno Lossin <benno.lossin@proton.me>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Masahiro Yamada <masahiroy@kernel.org>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Hector Martin <marcan@marcan.st>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        asahi@lists.linux.dev, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        llvm@lists.linux.dev
-Subject: Re: [PATCH RFC 11/11] rust: sync: arc: Add lockdep integration
-Message-ID: <20230715170018.4c58d854.gary@garyguo.net>
-In-Reply-To: <20230714-classless_lockdep-v1-11-229b9671ce31@asahilina.net>
-References: <20230714-classless_lockdep-v1-0-229b9671ce31@asahilina.net>
-        <20230714-classless_lockdep-v1-11-229b9671ce31@asahilina.net>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
+        Tom Rix <trix@redhat.com>
+References: <20230520231701.46008-1-yakoyoku@gmail.com>
+ <diYQuBM2vYke0twpM2m8npuzVA2tHeJ2y52qN25pwSUmgBG0wxwaEQjBVg8eZnxu2kqcBf8wqNiu0aqgAGR3mlmtT2wPuO_HbVxAyhxR3X0=@proton.me>
+ <1326c1e8-1707-9275-c1b4-4b4870912158@gmail.com>
+ <fW_Nn96x2phVy1b0wgVr6-xSGl3YXXhw5r-3XmAbDz_vsYWr3OmRu-b8pQnVlf0OcAbXRa9BnJXc_tsqVPijmkQtHTAzoZlbt8Gl-4f423w=@proton.me>
+ <a961984e-9837-1534-6b23-87eaaed3d9a9@gmail.com>
+ <UNNYZPvSjkF1LFhX3VpAPSscY-z09oyuMXMW5f43bXBI0GeOYpcVk79sC9dFS12mNMtRZIYPwa6txmDAa4ewPmJb8SaaWrMnvYvaYJ-IeqA=@proton.me>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <UNNYZPvSjkF1LFhX3VpAPSscY-z09oyuMXMW5f43bXBI0GeOYpcVk79sC9dFS12mNMtRZIYPwa6txmDAa4ewPmJb8SaaWrMnvYvaYJ-IeqA=@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0316.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:390::20) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB6635:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e9c38a2-d6ee-46ed-5103-08db854c96cd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: uxuT7ZiILzBsn80hY7go4j0mmdgqKV2jAEAo5uiygPDH3kA9cFbEJptf2nrvEeHjFZZB1PdtXFoCnlVqUT+eUsRdQphmyRBOC8jyXHxWQjrMu/nToxHOundalnsu0JHmsLD82fnCSgW0/6Dv6oXWiiDu9bniaAJP+wFgFYOGDV8MSp7iX+avZJ3yQR11lBQu7NKM4gRT7zPrRzjqWM0dTmRe660N6jfqFZqCBtrOksPhTYhu7pgTi9q9pemeIrKQ+gCQyESOP6wXhH10egWdw0HYPSNH2cF5s6wULjJDV6yggkRTHYQPcj7kbGbXZjI3HlK8lc3oU1HWYzpsjQDBz9oAizg9zFZv/Cq5IQK9v6zbDMHreQVBkJSX/KNgVGyxvGMUTlPDJueTmWQ/dGTfXdkECbdvXdUvu2wjWie1nk/jyWs1YaS892szg7v+EusQ6MGX6rVsXm/O60gGEylLEMCWYz2v4CTkOD42CHw8RPt4NZm83EeeTA6IggVa7AaHpehR4XrurEzV2SC5pJxDalPOMtXVDIN0elbUY/NO3AyeMHifruS9ks4shVcM/H22
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(376002)(346002)(396003)(136003)(366004)(39840400004)(451199021)(1076003)(38100700002)(26005)(6506007)(186003)(2616005)(83380400001)(2906002)(36756003)(5660300002)(7416002)(478600001)(54906003)(86362001)(316002)(41300700001)(6486002)(8676002)(6512007)(4326008)(66946007)(66556008)(66476007)(6916009)(8936002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CnlsEnfyAitMFRh1RIaKbsIWJ33786nRdXTdJfc9zKBFLs2GTKbzPIsATXET?=
- =?us-ascii?Q?a0efEpcvxh97qxJBtVTwRAgbgXxA3KcUT1iCQs7A3Hk7BJXpoBjT0VBqqalk?=
- =?us-ascii?Q?f6yEl/2E9TFikRshML5LMAyq4IxXDrGigcz6LvEKIIHF/8gBDyrcmR1PgIp0?=
- =?us-ascii?Q?CVmNqy2oVh/D6GvCgp+1KgHE3jcqA9B5iCfgB+GDS4ynMXkfasGeObsbrTbL?=
- =?us-ascii?Q?pq1WEX7dZDflzJP8KlvQiTBH+taYaMAcnmgkSDm5hBfBNe1koWujpJ0rkF1N?=
- =?us-ascii?Q?lx8K5H5sliSGk+rFpjf6IXmtlYB5odkmbqNW3Blzs4UVKMF7wMLr3XxqEOor?=
- =?us-ascii?Q?prvVnOvswz/ANPR5Rx7S7cUtaTE9nHTH1FevhH3Rp3kkD8eCTqs0aKNOwo36?=
- =?us-ascii?Q?37ZYZBJItbf3+miENapW1GP1F8wjZ9q6qvfR29e0izG0fk0OvcFJZDq7ukya?=
- =?us-ascii?Q?wXv+OWcBlRUuKrF6C46rj7QwVThRs8gKFEZs9To4KSxvoP3nn+hq+pdZIkAY?=
- =?us-ascii?Q?pUiZi/u5ApXeWUDJto9WAoUpVVAIC4GeRAfBF2Cc4bYPlwKE3CwwhDINZeb4?=
- =?us-ascii?Q?1vCT1BIryFu/CLuq4n6IO+dLvtgVGsvcclA044R3DlqM5Vq8o1K4MCEzYwFu?=
- =?us-ascii?Q?WwecgB7+tuBx4BdxAtoAH3lHrmBPrD5zLKCiARtcDh6FuV3anwNLHERgtdDo?=
- =?us-ascii?Q?yP6n+308ELSEZBbHHR30+W919X4jd5LvFpk+s8DunC1bXic3A3Ulv4u6q1la?=
- =?us-ascii?Q?gBNIrUuGYsODnHZhKLhFPVzFtAqGtoqp9DcN8QCeM6QxD2iq9WQ4kqs+PH5Z?=
- =?us-ascii?Q?qwI4LAw6dbnT+KTtUiQIVnC2Wwd8hN/CIulCj2zWg1IhgBL4qTSuI9LYTiSZ?=
- =?us-ascii?Q?4hqePlAerxiM+DPf/STWRWuZSJ58vj3PH/aB6KJnBeox7wzGyHdZjhxgOIEF?=
- =?us-ascii?Q?raHTxi4cO/BBhai0SZWrZZHNhn/LQf6qnGBJFT3znVoXQt+X3wWko+X/6SWq?=
- =?us-ascii?Q?CxQ7rTy6i6kkUxp4bWzZAJ1s9VaNGBbPY1xo0OInTpzcLJPRaV4qtU7Tvsq7?=
- =?us-ascii?Q?7i/yw/BD/fWuba74sk2vcJUYjeIMDjCyDcGo65rXUZrVamZuvKJo3y5Z47G2?=
- =?us-ascii?Q?az/GfqIhgZaUXESeTOvgKB2gB20P8EZy83XnfIWma1QD5aWGjwwFtHJkMZVk?=
- =?us-ascii?Q?kDzYvPHiQqIt5T5mwNJ6FDcDtV3TtyT0Xlv5fbeoOnGeJdfb5WtcaIOI54Xh?=
- =?us-ascii?Q?0tQj9xBjpoGASol8tnfYN/tZMaag2NlrLf6QOGMiwCmxLBYW7zaOlDQQ4CFt?=
- =?us-ascii?Q?rG8FtyoW3Idw75M3G02hs5FgTZHE0AdmOgy4DalTd8EyWI2DJjEw4560+Gqr?=
- =?us-ascii?Q?yqCrfpPz1/tQ+awQ0mtHHx6l8YteDiwsnSl5jk/EsB8rea+50TiOoaXUv4Ek?=
- =?us-ascii?Q?KclB1mSOYj1ickReyJE0T9LzLY72H8v4PsmCdlfpe5ATQaHBqcnSSHAG/xJi?=
- =?us-ascii?Q?GK3BX81jeNmz55VdzJWAiSQhsvOJKAp8hVmpZdLkH74VsY0RS6VkvAFBP8Gr?=
- =?us-ascii?Q?DWc4TPEtuWixhquGIeVNQ0Tw4AfX83DYolwAraBV?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e9c38a2-d6ee-46ed-5103-08db854c96cd
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2023 16:00:19.8549
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KCqUeH/VuldLzWkkZCjctlDieN6tPlORrvXKUiTuFzysHjyJXT2nTc1k8MWgYGjjy5uIJD8NILMdkLJHfjJ2nw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6635
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, 14 Jul 2023 18:14:03 +0900
-Asahi Lina <lina@asahilina.net> wrote:
-
-> Now that we have magic lock class support and a LockdepMap that can be
-> hooked up into arbitrary Rust types, we can integrate lockdep support
-> directly into the Rust Arc<T> type. This means we can catch potential
-> Drop codepaths that could result in a locking error, even if those
-> codepaths never actually execute due to the reference count being
-> nonzero at that point.
+On 7/15/23 12:10, Benno Lossin wrote:
+> On 15.07.23 16:40, Martin Rodriguez Reboredo wrote:
+>>> If you want, I can upload the `rust-project.json` file to GH, since
+>>> it is 55k lines long.
+>>>
+>>
+>> I'm thinking that you may be looking at the wrong side.
 > 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> ---
->  lib/Kconfig.debug       |  8 ++++++
->  rust/kernel/init.rs     |  6 +++++
->  rust/kernel/sync/arc.rs | 71 ++++++++++++++++++++++++++++++++++++++++++++++---
->  3 files changed, 82 insertions(+), 3 deletions(-)
+> Seems so, I looked at `bindings` and `kernel`, but got confused by deps.
+> I also verified that without your patch all of those configs are present.
 > 
-> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> index fbc89baf7de6..ff4f06df88ee 100644
-> --- a/lib/Kconfig.debug
-> +++ b/lib/Kconfig.debug
-> @@ -3010,6 +3010,14 @@ config RUST_BUILD_ASSERT_ALLOW
->  
->  	  If unsure, say N.
->  
-> +config RUST_EXTRA_LOCKDEP
-> +	bool "Extra lockdep checking"
-> +	depends on RUST && PROVE_LOCKING
-> +	help
-> +	  Enabled additional lockdep integration with certain Rust types.
-> +
-> +	  If unsure, say N.
-> +
->  endmenu # "Rust"
->  
->  endmenu # Kernel hacking
-> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-> index f190bbd0bab1..b64a507f0a34 100644
-> --- a/rust/kernel/init.rs
-> +++ b/rust/kernel/init.rs
-> @@ -1208,6 +1208,7 @@ pub trait InPlaceInit<T>: Sized {
->      /// type.
->      ///
->      /// If `T: !Unpin` it will not be able to move afterwards.
-> +    #[track_caller]
->      fn try_pin_init<E>(init: impl PinInit<T, E>) -> Result<Pin<Self>, E>
->      where
->          E: From<AllocError>;
-> @@ -1216,6 +1217,7 @@ fn try_pin_init<E>(init: impl PinInit<T, E>) -> Result<Pin<Self>, E>
->      /// type.
->      ///
->      /// If `T: !Unpin` it will not be able to move afterwards.
-> +    #[track_caller]
->      fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Pin<Self>>
->      where
->          Error: From<E>,
-> @@ -1228,11 +1230,13 @@ fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Pin<Self>>
->      }
->  
->      /// Use the given initializer to in-place initialize a `T`.
-> +    #[track_caller]
->      fn try_init<E>(init: impl Init<T, E>) -> Result<Self, E>
->      where
->          E: From<AllocError>;
->  
->      /// Use the given initializer to in-place initialize a `T`.
-> +    #[track_caller]
->      fn init<E>(init: impl Init<T, E>) -> error::Result<Self>
->      where
->          Error: From<E>,
-> @@ -1277,6 +1281,7 @@ fn try_init<E>(init: impl Init<T, E>) -> Result<Self, E>
->  
->  impl<T> InPlaceInit<T> for UniqueArc<T> {
->      #[inline]
-> +    #[track_caller]
->      fn try_pin_init<E>(init: impl PinInit<T, E>) -> Result<Pin<Self>, E>
->      where
->          E: From<AllocError>,
-> @@ -1291,6 +1296,7 @@ fn try_pin_init<E>(init: impl PinInit<T, E>) -> Result<Pin<Self>, E>
->      }
->  
->      #[inline]
-> +    #[track_caller]
->      fn try_init<E>(init: impl Init<T, E>) -> Result<Self, E>
->      where
->          E: From<AllocError>,
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index a89843cacaad..3bb73b614fd1 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -34,6 +34,9 @@
->  };
->  use macros::pin_data;
->  
-> +#[cfg(CONFIG_RUST_EXTRA_LOCKDEP)]
-> +use crate::sync::lockdep::LockdepMap;
-> +
->  mod std_vendor;
->  
->  /// A reference-counted pointer to an instance of `T`.
-> @@ -127,6 +130,17 @@ pub struct Arc<T: ?Sized> {
->      _p: PhantomData<ArcInner<T>>,
->  }
->  
-> +#[cfg(CONFIG_RUST_EXTRA_LOCKDEP)]
-> +#[pin_data]
-> +#[repr(C)]
-> +struct ArcInner<T: ?Sized> {
-> +    refcount: Opaque<bindings::refcount_t>,
-> +    lockdep_map: LockdepMap,
-> +    data: T,
-> +}
-> +
-> +// FIXME: pin_data does not work well with cfg attributes within the struct definition.
-> +#[cfg(not(CONFIG_RUST_EXTRA_LOCKDEP))]
->  #[pin_data]
->  #[repr(C)]
->  struct ArcInner<T: ?Sized> {
-> @@ -159,11 +173,14 @@ unsafe impl<T: ?Sized + Sync + Send> Sync for Arc<T> {}
->  
->  impl<T> Arc<T> {
->      /// Constructs a new reference counted instance of `T`.
-> +    #[track_caller]
->      pub fn try_new(contents: T) -> Result<Self, AllocError> {
->          // INVARIANT: The refcount is initialised to a non-zero value.
->          let value = ArcInner {
->              // SAFETY: There are no safety requirements for this FFI call.
->              refcount: Opaque::new(unsafe { bindings::REFCOUNT_INIT(1) }),
-> +            #[cfg(CONFIG_RUST_EXTRA_LOCKDEP)]
-> +            lockdep_map: LockdepMap::new(),
->              data: contents,
->          };
->  
-> @@ -178,6 +195,7 @@ pub fn try_new(contents: T) -> Result<Self, AllocError> {
->      ///
->      /// If `T: !Unpin` it will not be able to move afterwards.
->      #[inline]
-> +    #[track_caller]
->      pub fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Self>
->      where
->          Error: From<E>,
-> @@ -189,6 +207,7 @@ pub fn pin_init<E>(init: impl PinInit<T, E>) -> error::Result<Self>
->      ///
->      /// This is equivalent to [`Arc<T>::pin_init`], since an [`Arc`] is always pinned.
->      #[inline]
-> +    #[track_caller]
->      pub fn init<E>(init: impl Init<T, E>) -> error::Result<Self>
->      where
->          Error: From<E>,
-> @@ -292,15 +311,46 @@ fn drop(&mut self) {
->          // freed/invalid memory as long as it is never dereferenced.
->          let refcount = unsafe { self.ptr.as_ref() }.refcount.get();
->  
-> +        // SAFETY: By the type invariant, there is necessarily a reference to the object.
-> +        // We cannot hold the map lock across the reference decrement, as we might race
-> +        // another thread. Therefore, we lock and immediately drop the guard here. This
-> +        // only serves to inform lockdep of the dependency up the call stack.
-> +        #[cfg(CONFIG_RUST_EXTRA_LOCKDEP)]
-> +        unsafe { self.ptr.as_ref() }.lockdep_map.lock();
+> Still I find it a bit confusing that all of these configs are present
+> there. How does rust-analyzer use those?
 
-Make the intention explicit by
+`rust-analyzer` sees those configs so when you type code it'll show you
+suggestions based upon them in your IDE. For example, if you have
+`CONFIG_NET` enabled then when you type "kernel::net::" your IDE will
+suggest you completions from that module, otherwise it will not.
 
-	drop(unsafe { self.ptr.as_ref() }.lockdep_map.lock());
+> Also sorry for the noise.
 
-and make `lock` function `must_use`.
+No problem, you'll easily get confused if you look upon that massive file.
+Happened to me.
 
-> +
->          // INVARIANT: If the refcount reaches zero, there are no other instances of `Arc`, and
->          // this instance is being dropped, so the broken invariant is not observable.
->          // SAFETY: Also by the type invariant, we are allowed to decrement the refcount.
->          let is_zero = unsafe { bindings::refcount_dec_and_test(refcount) };
-> +
->          if is_zero {
->              // The count reached zero, we must free the memory.
-> -            //
-> -            // SAFETY: The pointer was initialised from the result of `Box::leak`.
-> -            unsafe { Box::from_raw(self.ptr.as_ptr()) };
-> +
-> +            // SAFETY: If we get this far, we had the last reference to the object.
-> +            // That means we are responsible for freeing it, so we can safely lock
-> +            // the fake lock again. This wraps dropping the inner object, which
-> +            // informs lockdep of the dependencies down the call stack.
-> +            #[cfg(CONFIG_RUST_EXTRA_LOCKDEP)]
-> +            let guard = unsafe { self.ptr.as_ref() }.lockdep_map.lock();
-> +
-> +            // SAFETY: The pointer was initialised from the result of `Box::leak`,
-> +            // and the value is valid.
-> +            unsafe { core::ptr::drop_in_place(&mut self.ptr.as_mut().data) };
-> +
-> +            // We need to drop the lock guard before freeing the LockdepMap itself
-> +            #[cfg(CONFIG_RUST_EXTRA_LOCKDEP)]
-> +            core::mem::drop(guard);
-> +
-> +            // SAFETY: The pointer was initialised from the result of `Box::leak`,
-> +            // and the lockdep map is valid.
-> +            #[cfg(CONFIG_RUST_EXTRA_LOCKDEP)]
-> +            unsafe {
-> +                core::ptr::drop_in_place(&mut self.ptr.as_mut().lockdep_map)
-> +            };
-> +
-> +            // SAFETY: The pointer was initialised from the result of `Box::leak`, and
-> +            // a ManuallyDrop<T> is compatible. We already dropped the contents above.
-> +            unsafe { Box::from_raw(self.ptr.as_ptr() as *mut ManuallyDrop<ArcInner<T>>) };
-
-I feel there are a lot more `as_ref/as_mut` calls than it could be.
-Could you refactor the code to make a single `as_ref()` call for the
-non-zero path and a single `as_mut()` call for the zero path?
-
->          }
->      }
->  }
-> @@ -512,6 +562,7 @@ pub struct UniqueArc<T: ?Sized> {
->  
->  impl<T> UniqueArc<T> {
->      /// Tries to allocate a new [`UniqueArc`] instance.
-> +    #[track_caller]
->      pub fn try_new(value: T) -> Result<Self, AllocError> {
->          Ok(Self {
->              // INVARIANT: The newly-created object has a ref-count of 1.
-> @@ -520,13 +571,27 @@ pub fn try_new(value: T) -> Result<Self, AllocError> {
->      }
->  
->      /// Tries to allocate a new [`UniqueArc`] instance whose contents are not initialised yet.
-> +    #[track_caller]
->      pub fn try_new_uninit() -> Result<UniqueArc<MaybeUninit<T>>, AllocError> {
->          // INVARIANT: The refcount is initialised to a non-zero value.
-> +        #[cfg(CONFIG_RUST_EXTRA_LOCKDEP)]
-> +        let inner = {
-> +            let map = LockdepMap::new();
-> +            Box::try_init::<AllocError>(try_init!(ArcInner {
-> +                // SAFETY: There are no safety requirements for this FFI call.
-> +                refcount: Opaque::new(unsafe { bindings::REFCOUNT_INIT(1) }),
-> +                lockdep_map: map,
-> +                data <- init::uninit::<T, AllocError>(),
-> +            }? AllocError))?
-> +        };
-> +        // FIXME: try_init!() does not work with cfg attributes.
-> +        #[cfg(not(CONFIG_RUST_EXTRA_LOCKDEP))]
->          let inner = Box::try_init::<AllocError>(try_init!(ArcInner {
->              // SAFETY: There are no safety requirements for this FFI call.
->              refcount: Opaque::new(unsafe { bindings::REFCOUNT_INIT(1) }),
->              data <- init::uninit::<T, AllocError>(),
->          }? AllocError))?;
-> +
->          Ok(UniqueArc {
->              // INVARIANT: The newly-created object has a ref-count of 1.
->              // SAFETY: The pointer from the `Box` is valid.
+>> So, can you show me the output of these `jq` commands?
+>>
+>> ```sh
+>> jq '.crates[] | select(.display_name == "core")' rust-project.json
+>> jq '.crates[] | select(.display_name == "alloc")' rust-project.json
+>> ```
 > 
+> [...]
 
+Output looks as it was expected, so if in your IDE you go to the
+definition of a function or type from either `core` or `alloc` then it's
+going to show you the correct result, otherwise it might get confused or
+throw you an error.
