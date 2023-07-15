@@ -2,216 +2,111 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A9E5CEB64DC
-	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Jul 2023 01:18:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36AD0EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Jul 2023 03:34:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229473AbjGOBR7 (ORCPT
+        id S229632AbjGODe0 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Fri, 14 Jul 2023 21:17:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43968 "EHLO
+        Fri, 14 Jul 2023 23:34:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjGOBR6 (ORCPT
+        with ESMTP id S230509AbjGODeI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Fri, 14 Jul 2023 21:17:58 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB59F30F2;
-        Fri, 14 Jul 2023 18:17:56 -0700 (PDT)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1689383874;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=eHk2tOCqQMTJhAv0OhLX1AImQflejUiinIzgDnEw15o=;
-        b=4FfZzhpgC69m4IIl+wXu19M/lJvDJ2/smwPCfc9uu2TrAfng9K9zKXo8YDVCPUfKG6pjn6
-        W0nuuS8sXuXGR5mmsDKiXhv90LkpZ9PltSc4qUT58Y1IyksSP/ofwrrAcqTsJ6AW9s/dh7
-        ND2f+FwR3HteWdsfTidwRBO7zxuSQ2Z7nD1LRgVVL+Rj2eXqVd6wxxiJj4Sdq8EK3WJ9N6
-        Opn0wa2B1b90aVAs7vMeyBRlDriY6zzpeBevexoPfHkFr60PlFS9QsSaTOM0CSNHokmMT7
-        aUYrCSAVaGkwjqlTfLzmLsxOa8P1Sitmj0KVqLCa51+d5QmgMm9Dy5Dp+0YWZg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1689383874;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=eHk2tOCqQMTJhAv0OhLX1AImQflejUiinIzgDnEw15o=;
-        b=Mvu8OEbiZ2tqFwZjYX93HcfO5oGZFo+VN91sd5JBlc2gjlhA7jjCtowATAKIw2w7OIvM4F
-        PPg1FFjo8aphc0Ag==
-To:     Asahi Lina <lina@asahilina.net>, Miguel Ojeda <ojeda@kernel.org>,
+        Fri, 14 Jul 2023 23:34:08 -0400
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CE9E3C15
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 20:33:48 -0700 (PDT)
+Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6b87d505e28so2072686a34.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jul 2023 20:33:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689392027; x=1691984027;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XrmbFM4tG/DMmaef1eDfS+w/+cLsMTxrQqI00uvYFcA=;
+        b=GSYXP0e/WYQPuOUz2SRm+6kz+iaFHjN/lUA3/3XrmEvV9cLQBnt4XnyY4RxLZMYRxP
+         QZ41yo5ZwoPLY2tz39/bi0syMjNXyZLOgiO2PVF+BDY4EFUdIUMFgDOsZ/VSszKmAiZV
+         XFs7lltdVSTZdW44SCWaDPGW+khOzRiJ5tOOfEohmU7X5R9/rDXfJl2lVJL5fwvfJs9x
+         AauzpX8Q95bDZili13yqh/dxoBkI23emdAATorUax7rYrrdc3tsbDBF55GVxLAgFeqHB
+         mTaitZoo09wEZ0O+YXN+lMpAKy52nI60YHj5qB7b+kStKTFOPyROXEQLaCafQdBSz4fU
+         KxnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689392027; x=1691984027;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XrmbFM4tG/DMmaef1eDfS+w/+cLsMTxrQqI00uvYFcA=;
+        b=EO27zhUFuQrkkzUvZzQmKDAtHfsyuqG/lF/SmRISpeB8v1+V2cMmsZ2+kizlLl1/Bt
+         hONZaFqZh1OQPFIsTHqIBEDm3txNGPKG8oNs4NRw0ICchyU5jKkcGm2uJQ5txWge73Q5
+         Bl9TDkQtFkH4VEJQx6nAO9Wqpa1cSIIbAKNhT0ibPvgK+r21R6Gc2e0rNjQq5/qgoU+0
+         Xb4QLpvuNUr1pwXuPWKyS9IvP1C6tLpKrIzMDUCDL3lsS8RsmBFboASDGkItVd7ABfrl
+         w8Q8fXnjQTJsO12LR6lNjwA3pnU6ipTRmvpp8lA1IeaSRWCLGISGDWjS//GjtQ5mhoLP
+         OVVg==
+X-Gm-Message-State: ABy/qLY3/3j48nY26j/QbZ7VeiIJ+ptOmilM1Ky2aUK7KPXLnEC3fSF9
+        mCUzEw10LM6+GZcpTlG2AsA=
+X-Google-Smtp-Source: APBJJlHLDI6SXNXsR9MBkD6qCAE2sEp9CuoGRvr4V3JclMYj2UVTxXTzI7G4U4JePorla+LJcuOQGA==
+X-Received: by 2002:a05:6830:1003:b0:6b1:c635:b10d with SMTP id a3-20020a056830100300b006b1c635b10dmr6351875otp.13.1689392027323;
+        Fri, 14 Jul 2023 20:33:47 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id m15-20020a9d6acf000000b006b8b55297b5sm4570514otq.42.2023.07.14.20.33.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Jul 2023 20:33:46 -0700 (PDT)
+Message-ID: <1326c1e8-1707-9275-c1b4-4b4870912158@gmail.com>
+Date:   Sat, 15 Jul 2023 00:33:43 -0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] scripts: read cfgs from Makefile for rust-analyzer
+Content-Language: en-US
+To:     Benno Lossin <benno.lossin@proton.me>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-        John Stultz <jstultz@google.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Josh Stone <jistone@redhat.com>,
-        Gaelan Steele <gbs@canishe.com>,
-        Heghedus Razvan <heghedus.razvan@protonmail.com>
-Cc:     linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        asahi@lists.linux.dev, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH v2] rust: time: New module for timekeeping functions
-In-Reply-To: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
-References: <20230714-rust-time-v2-1-f5aed84218c4@asahilina.net>
-Date:   Sat, 15 Jul 2023 03:17:53 +0200
-Message-ID: <87r0pax9a6.ffs@tglx>
-MIME-Version: 1.0
-Content-Type: text/plain
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>
+References: <20230520231701.46008-1-yakoyoku@gmail.com>
+ <diYQuBM2vYke0twpM2m8npuzVA2tHeJ2y52qN25pwSUmgBG0wxwaEQjBVg8eZnxu2kqcBf8wqNiu0aqgAGR3mlmtT2wPuO_HbVxAyhxR3X0=@proton.me>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <diYQuBM2vYke0twpM2m8npuzVA2tHeJ2y52qN25pwSUmgBG0wxwaEQjBVg8eZnxu2kqcBf8wqNiu0aqgAGR3mlmtT2wPuO_HbVxAyhxR3X0=@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Lina!
+On 7/14/23 12:55, Benno Lossin wrote:
+>> Both `core` and `alloc` had their `cfgs` missing in `rust-project.json`,
+>> to remedy this `generate_rust_analyzer.py` scans the Makefile from
+>> inside the `rust` directory for them to be added to a dictionary that
+>> each key corresponds to a crate and each value, to an array of `cfgs`.
+>>
+>> Signed-off-by: Martin Rodriguez Reboredo yakoyoku@gmail.com
+> 
+> When I try this patch *all* configuration options are input into the `cfg`
+> field of the `core` crate (others are also affected):
+> ```json
+>              "cfg": [
+>                  "CONFIG_RING_BUFFER",
+>                  "CONFIG_RING_BUFFER=\"y\"",
+>                  "CONFIG_HAVE_ARCH_SECCOMP_FILTER",
+>                  "CONFIG_HAVE_ARCH_SECCOMP_FILTER=\"y\"",
+>                  "CONFIG_KERNEL_GZIP",
+>                  "CONFIG_KERNEL_GZIP=\"y\"",
+>                  "CONFIG_CC_HAS_SANCOV_TRACE_PC",
+>                  "CONFIG_CC_HAS_SANCOV_TRACE_PC=\"y\"",
+>                  "CONFIG_ARCH_WANT_OPTIMIZE_VMEMMAP",
+> ```
+> The snippet would continue on for about 1000 lines.
+> I think this is wrong and not intended.
+> 
+> --
+> Cheers,
+> Benno
+> 
 
-On Fri, Jul 14 2023 at 16:55, Asahi Lina wrote:
-> +ktime_t rust_helper_ktime_get_real(void) {
-> +	return ktime_get_real();
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_ktime_get_real);
-
-Colour me confused. But why does this need another export?
-
-This just creates yet another layer of duct tape. If it's unsafe from
-the rust perspective then wrapping it into rust_"unsafe_function" does not
-make it any better.
-
-Why on earth can't you use the actual C interfaces diretly which are
-already exported?
-
-> +use crate::{bindings, pr_err};
-> +use core::marker::PhantomData;
-> +use core::time::Duration;
-> +
-> +/// Represents a clock, that is, a unique time source.
-> +pub trait Clock: Sized {}
-> +
-> +/// A time source that can be queried for the current time.
-
-I doubt you can read anything else than current time from a time
-source. At least the C side does not provide time traveling interfaces
-unless the underlying hardware goes south.
-
-> +pub trait Now: Clock {
-> +impl<T: Clock> Instant<T> {
-> +    fn new(nanoseconds: i64) -> Self {
-> +        Instant {
-> +            nanoseconds,
-> +            _type: PhantomData,
-> +        }
-> +    }
-> +
-> +    /// Returns the time elapsed since an earlier Instant<t>, or
-> +    /// None if the argument is a later Instant.
-> +    pub fn since(&self, earlier: Instant<T>) -> Option<Duration> {
-> +        if earlier.nanoseconds > self.nanoseconds {
-> +            None
-> +        } else {
-> +            // Casting to u64 and subtracting is guaranteed to give the right
-> +            // result for all inputs, as long as the condition we checked above
-> +            // holds.
-> +            Some(Duration::from_nanos(
-> +                self.nanoseconds as u64 - earlier.nanoseconds as u64,
-
-Clever, but any timestamp greater than KTIME_MAX or less than 0 for such
-a comparison is invalid. I'm too lazy to do the math for you..
-
-> +            ))
-> +        }
-> +    }
-> +}
-> +
-> +impl<T: Clock + Now + Monotonic> Instant<T> {
-> +    /// Returns the time elapsed since this Instant<T>.
-> +    ///
-> +    /// This is guaranteed to return a positive result, since
-> +    /// it is only implemented for monotonic clocks.
-> +    pub fn elapsed(&self) -> Duration {
-> +        T::now().since(*self).unwrap_or_else(|| {
-> +            pr_err!(
-> +                "Monotonic clock {} went backwards!",
-> +                core::any::type_name::<T>()
-
-Can you please write this in one line?
-
- +            pr_err!("Monotonic clock {} went backwards!", core::any::type_name::<T>()
-
-The above is unreadable gunk for no reason.
-
-> +/// Contains the various clock source types available to the kernel.
-> +pub mod clock {
-> +    use super::*;
-> +
-> +    /// A clock representing the default kernel time source.
-> +    ///
-> +    /// This is `CLOCK_MONOTONIC` (though it is not the only
-> +    /// monotonic clock) and also the default clock used by
-> +    /// `ktime_get()` in the C API.
-
-This "(though it is not the only monotonic clock)" phrase is irritating
-at best. CLOCK_MONOTONIC is well defined as the other CLOCK_* variants.
-
-> +    ///
-> +    /// This is like `BootTime`, but does not include time
-> +    /// spent sleeping.
-> +
-> +    pub struct KernelTime;
-> +
-> +    impl Clock for KernelTime {}
-> +    impl Monotonic for KernelTime {}
-> +    impl Now for KernelTime {
-> +        fn now() -> Instant<Self> {
-> +            Instant::<Self>::new(unsafe { bindings::ktime_get() })
-> +        }
-> +    }
-> +
-> +    /// A clock representing the time elapsed since boot.
-> +    ///
-> +    /// This is `CLOCK_MONOTONIC` (though it is not the only
-> +    /// monotonic clock) and also the default clock used by
-> +    /// `ktime_get()` in the C API.
-
-The wonders of copy and pasta...
-
-> +    ///
-> +    /// This is like `KernelTime`, but does include time
-> +    /// spent sleeping.
-
-Can you please expand your editors line wrap limit to the year 2023
-standards? This looks like a IBM 2260 terminal.
-
-> +    /// A clock representing TAI time.
-> +    ///
-> +    /// This clock is not monotonic and can be changed from userspace.
-> +    /// However, it is not affected by leap seconds.
-
-I'm not impressed by this at all.
-
-Lots of copy and pasta with zero content. I don't see how this is an
-improvement over the admittedly lousy or non-existant kernel interface
-documentations.
-
-I thought Rust is set out to be better, but obviously it's just another
-variant of copy & pasta and sloppy wrappers with useless documentation
-around some admittedly not well documented, but well understood C
-interfaces.
-
-So the right approach to this is:
-
- 1) Extend the kernel C-API documentations first if required
-
- 2) Build your wrapper so that it can refer to the documentation which
-    was either there already or got refined/added in #1
-
- 3) Add one clock per patch with a proper changelog and not some
-    wholesale drop it all.
-
-It's well documented in Documentation/process/*, no?
-
-Thanks,
-
-        tglx
-
-
-
-
-
-
-
+Wait, can you tell me which branch are you on? As it works on
+`rust-dev` and `rust-next` with `make rust-analyzer`. Also, do you
+have any other details?
