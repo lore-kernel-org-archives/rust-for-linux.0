@@ -2,201 +2,141 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7095EC001DF
-	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Jul 2023 14:35:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DA53EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Sat, 15 Jul 2023 14:41:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229879AbjGOOfR (ORCPT
+        id S229530AbjGOOlF (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sat, 15 Jul 2023 10:35:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47568 "EHLO
+        Sat, 15 Jul 2023 10:41:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbjGOOfP (ORCPT
+        with ESMTP id S229490AbjGOOlE (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sat, 15 Jul 2023 10:35:15 -0400
-Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2135.outbound.protection.outlook.com [40.107.10.135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA2530D8;
-        Sat, 15 Jul 2023 07:35:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Z7iM0mlmyfYI1s9XvQgWQOwDoaor3edQcgW9nAppX5oP9BEGslsxNvGwthv6fznBi9IdTMhzKjMKBaOx2qlqpE3+ol8QVcNmUnhGPmIE45mVs71gjQmUuk8MPhMa1l5BHmfdj9pQP1MHngcPx2+ccVFwc4DtKC/zrtm7K1TvhQFycgkg6rb659sjCTWuU3h+UWs1tJhbqK9xqwWml2uY70WDwoipr7Vq0sFxr4MfZtzMu09N3uq2R6n1gqBjGVo7BgdqamR+cMS6cCXufn0JzRqZB042JCUHu0RA0MK2MOF+JWN4KbMlvkmbkNM2xq5SLhP1fUIc4C0BZZUs59bfiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P/YU58dVboyHe/jGXIbLrQut4hMLj8oZ6yTH3zIOtXw=;
- b=I2sTVLGlHDesuDQs72mNoz/1qfTapoW7pLvZPEzf8HyK/20L/czlar2ie0tWotxxJqnuLUqQHCYg+QMgIRX442SFyfOlp9rDDIb+ql9RXpBgAS6p/iXS+qWal6MHrx0gLIzFSKReUywQ7nGwhKrIrOTgmsiWj65h3NuARauNR5wdWnGxjDmttdVovE42AWkPDcGQHzGYtnyID1cXDcgsJB+u2OgBBlfFM/zxxznrr7FlQZjq+5e2fqCuyC1aWfGEzyg4NnZ0s1E95rKHjXoK9zaiTac4Odq1lT2rQQDpVz8PEw5kzhpUGp6s2ySLuI/ZgkxBunfXrlX5+PydvOdE9A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P/YU58dVboyHe/jGXIbLrQut4hMLj8oZ6yTH3zIOtXw=;
- b=UBPi3rC7EUYZQvju5VBpLVtYE+8VghpvXlc6cT0aE+ZfVfLt5mDRGPNRvYHrrVBt9WXPSjcwaHEp6lUtYjH8GgxLMJMEgxpqC1GWaDUoAP72KQK3cVy38ihdD6QE6JjZNrKc0dbm0qd//MG6M2WiUNewLOO6DShMAEgnLe8jhl4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB5842.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:1fe::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.28; Sat, 15 Jul
- 2023 14:35:11 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::25e2:a08b:cd9c:c3c9]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::25e2:a08b:cd9c:c3c9%3]) with mapi id 15.20.6588.028; Sat, 15 Jul 2023
- 14:35:11 +0000
-Date:   Sat, 15 Jul 2023 15:35:09 +0100
-From:   Gary Guo <gary@garyguo.net>
-To:     Asahi Lina <lina@asahilina.net>
-Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Sat, 15 Jul 2023 10:41:04 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB1FD18F
+        for <rust-for-linux@vger.kernel.org>; Sat, 15 Jul 2023 07:41:03 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3a43cbb4343so1083187b6e.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 15 Jul 2023 07:41:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689432063; x=1692024063;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NjK3GVVDNR7DSonWLyYWNCew6vYgvAvN82YW6gtFy2g=;
+        b=H4yOBRWASwmqKysIAQwidE6MSjFMNGlzLVCD3e07YcgNaJ0kZA0g4TioH68vAoitId
+         LNSrlxK3ho2bD28PjDCX55dsn5jAkqa9gAVU5TAAGwn0R0zBe6MDmTC1nOm7hg1RXpvp
+         t8faTXhIpJizpup2XbSWSSoX2EZRxLkrN5fNVAyNCNBRuewFgPOupG0kEeckFSdb0uUd
+         t/dX5ahm5dKyphn14tyQxxVDOm6KTvqQKV5LMRJTntKbhlV2xVFWeiboVVWIA/4C3RtP
+         Hc0a+I3EuVZLr7S/dqUGW/C9Rate2tcknUwUO5NCmVYkImU2UTeEDBJ/3fw9LX/ic8qX
+         QKlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689432063; x=1692024063;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NjK3GVVDNR7DSonWLyYWNCew6vYgvAvN82YW6gtFy2g=;
+        b=BANXaTDQxlIdZv1wqlscUn1x3algbMfsB1bGGibSe15jfOHfnJp/Fzt9/c495cBvfA
+         P2aB8NU50qOlToguATvmeNM8PnHvlTWup/SHhxEDD6MHbKorREGgYGKY3ByD2Pu6dF9o
+         DtavD2AbwmOrCEGM+F7npCtHDDw2mn57mmOKjM728pCKBTgks7eG+xS/pccdaVGv/MVt
+         /QykDXBMwBI/s7d6f8Kh8H3pMx7hYm5S15HZracJy9D2MzhMOGsCOaYHeoukwtDGD3Jw
+         xMssWSIr3dOuXqq03P0TmGSuT5zvA9Gy+nGapSXHqZ6SRQxJdu6MVxM1lbxAb6TPX7WP
+         ojZA==
+X-Gm-Message-State: ABy/qLaWPDb9LrMQABDBV5W0fuyexsHD+6B3W9fI7wBIt/+xRtcxb2Bt
+        ZG7gQegiW3TRFGa2/Q3UYPg=
+X-Google-Smtp-Source: APBJJlE9mqofXzDuvZxhbwERYbVx2pNiGRvGPPa6H5Aix6h7TRRArIEVs8wjo39GJhOrp0UI9TEqqQ==
+X-Received: by 2002:aca:f0d4:0:b0:3a3:7e6f:d5f5 with SMTP id o203-20020acaf0d4000000b003a37e6fd5f5mr6181326oih.25.1689432062967;
+        Sat, 15 Jul 2023 07:41:02 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id v18-20020a056808005200b003a3ff661368sm4932764oic.54.2023.07.15.07.41.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 15 Jul 2023 07:41:02 -0700 (PDT)
+Message-ID: <a961984e-9837-1534-6b23-87eaaed3d9a9@gmail.com>
+Date:   Sat, 15 Jul 2023 11:40:57 -0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] scripts: read cfgs from Makefile for rust-analyzer
+Content-Language: en-US
+To:     Benno Lossin <benno.lossin@proton.me>
+Cc:     rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Masahiro Yamada <masahiroy@kernel.org>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>, Tom Rix <trix@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Hector Martin <marcan@marcan.st>,
-        Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        asahi@lists.linux.dev, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-        llvm@lists.linux.dev
-Subject: Re: [PATCH RFC 03/11] rust: Use absolute paths to build Rust
- objects
-Message-ID: <20230715153509.64a7ac38.gary@garyguo.net>
-In-Reply-To: <20230714-classless_lockdep-v1-3-229b9671ce31@asahilina.net>
-References: <20230714-classless_lockdep-v1-0-229b9671ce31@asahilina.net>
-        <20230714-classless_lockdep-v1-3-229b9671ce31@asahilina.net>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
+        Tom Rix <trix@redhat.com>
+References: <20230520231701.46008-1-yakoyoku@gmail.com>
+ <diYQuBM2vYke0twpM2m8npuzVA2tHeJ2y52qN25pwSUmgBG0wxwaEQjBVg8eZnxu2kqcBf8wqNiu0aqgAGR3mlmtT2wPuO_HbVxAyhxR3X0=@proton.me>
+ <1326c1e8-1707-9275-c1b4-4b4870912158@gmail.com>
+ <fW_Nn96x2phVy1b0wgVr6-xSGl3YXXhw5r-3XmAbDz_vsYWr3OmRu-b8pQnVlf0OcAbXRa9BnJXc_tsqVPijmkQtHTAzoZlbt8Gl-4f423w=@proton.me>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <fW_Nn96x2phVy1b0wgVr6-xSGl3YXXhw5r-3XmAbDz_vsYWr3OmRu-b8pQnVlf0OcAbXRa9BnJXc_tsqVPijmkQtHTAzoZlbt8Gl-4f423w=@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0171.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a::15) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB5842:EE_
-X-MS-Office365-Filtering-Correlation-Id: f53e94cc-63fe-4d0a-8343-08db8540b1e4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: iTJZDqSaN9yX2sU6PXHA8BqywBBp0YoPZq0Re6GpUS1AJAAAQy++UYrkVwkUMhT3IeP2tO8Hi7XG+2jZRbQBHt6W/b/Qt+AKhDAbPk4IivnNMLXx5Su0pPQB2g7leHwpCnFK7AvrZHqb/m7fYcoTkUI+zkGPt59pGbC9jyQkLVW/HaWvhpfL77jVHvPh19x6TQAFeYtsGouu/jwSa3h+QEzIJ+D8CfLRBGUxiawaTYc7kmo9K0R84zmnEI6ifJ4ONrzHjKuduj0Ka1DiA0Ts4Ah23GBp2QVWwS2gGYZXReZXGIdGNUrZvOw6Egr7KtfhO4znDrzgJgFm751vny0hITR5oZadrvRkHlCy5VP3VlvmxJcejslRhmk4SBzGg+VbOELUBVUQeYbC0Bq9268iQ6N69g5GXjZ3H38haMrHhwIULjjKncUeJDE3TGbdayxJMQ1CbAJZgLScXg6hbEdvZdBeRszAfZQCZ0Z8y9ywRZh85JigHOySpNugkznfDWx9Mbc0YHkao2TKHAIuwmpQe/vPJp/SigAvwR1lwAOomn/jmkB3Rn2nnSRw/WLRFBmM
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(366004)(136003)(376002)(396003)(39830400003)(346002)(451199021)(26005)(6506007)(38100700002)(1076003)(54906003)(478600001)(7416002)(5660300002)(8676002)(8936002)(4326008)(66946007)(66476007)(6916009)(66556008)(6486002)(6512007)(86362001)(41300700001)(316002)(2616005)(186003)(36756003)(2906002)(83380400001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?t+NJB46rFLuZ/TPxksnVNgs1DL6DXOCKdc5XrxNFjmdSL+LWgZlZdpYFSDEg?=
- =?us-ascii?Q?7C/BOGo8hSzkTXMeCptunTDH9AZgUB2w7mk0cDHkwkW9x3ip9h+vWBWEBuzd?=
- =?us-ascii?Q?fzr2P5o0b8A7IZZARPzHs3OoitWeQtJo/da0nfZDjmBXP4Pa8T2F6wFkFXq0?=
- =?us-ascii?Q?pEDgWDnftJZfX6UdxdFM+Xl9qR239PZ9P3vgdgGyEeFlA1Th359whiZo5Yf5?=
- =?us-ascii?Q?mENJZkLiZPi/3tBaRs7rYykbHl6Ar5EVb27HOm8sQ35O8mPceMThOgFBiNmB?=
- =?us-ascii?Q?XUr2ssfbBlYr+TsXJFY/gfUubweLAr/fVpZnA7J3Q2v2DbZ7hPQ8XJR8TqX+?=
- =?us-ascii?Q?eqYO5nD2/zlAE18uAdkX89DzIoMbW5dzwIBB9C/rqaHLk++m3GkjXLlTaPVD?=
- =?us-ascii?Q?aTSdvs8pFQxL6GTP+tThbnKK2EetLZ29hxqhxD4keHunVsbBTITbjj+e29jE?=
- =?us-ascii?Q?593vdgmyMvE+bQAExgFzek4gITMiDLFXw4JlXWtKuDpbUf9PGW8JNXE1KZz3?=
- =?us-ascii?Q?wkKJYxNwNl9PEV02MPjhgQ6ygxeDshKTNLyXreSmUE/JLokQGuEmtN4gjyOi?=
- =?us-ascii?Q?YVheH7dGcnmgT0Qg7QTGckyy1Qxug0SvhCBMyZt1Or5bN8wx2oYmsoh/W+FM?=
- =?us-ascii?Q?Q+TMq6JWk1Bm/YtNYNlzR10qLdYmooOjREUrnDmddxthYMngr8Iqjl2K5bIw?=
- =?us-ascii?Q?/nFL9yct/qrRQKdDcpnGdrIEmzbD6ZcW9mHxm+qFhCtisOSBVllwT57bjcQx?=
- =?us-ascii?Q?Ab4ccdugXcKrmz9uJsdpZ9VaaDqsWEsctHNmA157Ycw4V245Na05oWGKTHzZ?=
- =?us-ascii?Q?jZKVQ8C5LZsFN+wXni5ylVKrobj0K5smmEWHsquLFUDF1dxPsHC+qV8fq/AN?=
- =?us-ascii?Q?8t4D1HPWJFNKEC6UcjFXQcs9E9zfJYdvwqusK+qKpcOBX1DX9ixCT+v/VNy6?=
- =?us-ascii?Q?vTiDKE1wpjJhzYCxOCmxpynr9cTdjs2TegiDdRKXpIHvCzNePnmwter5QIBE?=
- =?us-ascii?Q?If0eFWjB9xOdhyIAf23fEFPC5+pwynbr8WaC3FiaeXh4T914Dqa5VYbBll7J?=
- =?us-ascii?Q?kTpfsvZlvqn18V4F3cFSWaxxWaOoANfi/L5bxQxCJG9c1iMfdtj+TbYnshIr?=
- =?us-ascii?Q?bqUGpR25AWgJx6T0L67EsKUSVKjaqY0FUCrgQOYIT/Xx1sCxdWhDajJqkX+x?=
- =?us-ascii?Q?sPJAIkrgPiFvTeO0TXr/ywDz7r6OjaBw51rJ67HgQ9E+XOk6PV5PzE9YhbMF?=
- =?us-ascii?Q?cuSNiLa35kfWRZjdJvh9F+HsPojsvsXhDXuSSoD7zp1f6OHZSsGariGVTi5g?=
- =?us-ascii?Q?JjogQL8OR5WKUQSrGiboiQ+4YxGSk6/xsHbYU0N8mxguNG6kxPA4tt5h6bHa?=
- =?us-ascii?Q?qf1yU8Bpw8igCWYZIEdEmrej8ht3ZpeiaqHdKu9wgju8v0bgtD48vg9nM+Od?=
- =?us-ascii?Q?C0ujE04LtBv+clHI3i98289CUXEtyoiHaG/61GOxtGiDPVO38gIc4QgpVZ3V?=
- =?us-ascii?Q?a0a8/PXpC1lMxYE9Gt04bDcs087yeNArS+PznA7GQHF3q6JWad2X6WWKIK1L?=
- =?us-ascii?Q?EbczJNB9BW2el+pWje5eRHuI2LsQZYr1wKyf58Nj?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f53e94cc-63fe-4d0a-8343-08db8540b1e4
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2023 14:35:11.3205
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y01ISNgsZ2JbwHNKsu7OEflRkBejkGY2FXy12/xDwpz1Dnj2fOWiz3QiZlTWixeEWSqYkZLyrQRiiFrEF4EWzg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5842
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Fri, 14 Jul 2023 18:13:55 +0900
-Asahi Lina <lina@asahilina.net> wrote:
-
-> We want to use caller_location to uniquely identify callsites, to
-> automatically create lockdep classes without macros. The location
-> filename in local code uses the relative path passed to the compiler,
-> but if that code is generic and instantiated from another crate, the
-> path becomes absolute.
+On 7/15/23 05:07, Benno Lossin wrote:
+> On 15.07.23 05:33, Martin Rodriguez Reboredo wrote:
+>> On 7/14/23 12:55, Benno Lossin wrote:
+>>>> Both `core` and `alloc` had their `cfgs` missing in `rust-project.json`,
+>>>> to remedy this `generate_rust_analyzer.py` scans the Makefile from
+>>>> inside the `rust` directory for them to be added to a dictionary that
+>>>> each key corresponds to a crate and each value, to an array of `cfgs`.
+>>>>
+>>>> Signed-off-by: Martin Rodriguez Reboredo yakoyoku@gmail.com
+>>>
+>>> When I try this patch *all* configuration options are input into the `cfg`
+>>> field of the `core` crate (others are also affected):
+>>> ```json
+>>>                "cfg": [
+>>>                    "CONFIG_RING_BUFFER",
+>>>                    "CONFIG_RING_BUFFER=\"y\"",
+>>>                    "CONFIG_HAVE_ARCH_SECCOMP_FILTER",
+>>>                    "CONFIG_HAVE_ARCH_SECCOMP_FILTER=\"y\"",
+>>>                    "CONFIG_KERNEL_GZIP",
+>>>                    "CONFIG_KERNEL_GZIP=\"y\"",
+>>>                    "CONFIG_CC_HAS_SANCOV_TRACE_PC",
+>>>                    "CONFIG_CC_HAS_SANCOV_TRACE_PC=\"y\"",
+>>>                    "CONFIG_ARCH_WANT_OPTIMIZE_VMEMMAP",
+>>> ```
+>>> The snippet would continue on for about 1000 lines.
+>>> I think this is wrong and not intended.
+>>>
+>>> --
+>>> Cheers,
+>>> Benno
+>>>
+>>
+>> Wait, can you tell me which branch are you on? As it works on
+>> `rust-dev` and `rust-next` with `make rust-analyzer`. Also, do you
+>> have any other details?
 > 
-> To make this work and keep the paths consistent, always pass an absolute
-> path to the compiler. Then the Location path is always identical
-> regardless of how the code is being compiled.
-
-I wonder if this can have some reproducible build implications. We
-probably also need to use remap-path-prefix?
-
+> I tried it on both `rust-dev` and on `rust-next` and on both I have
+> this problem. Here is what I executed:
 > 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> ---
->  rust/Makefile          | 2 +-
->  scripts/Makefile.build | 8 ++++----
->  2 files changed, 5 insertions(+), 5 deletions(-)
+> ```sh
+> git checkout $branch
+> make clean
+> make mrproper
+> make menuconfig
+> make LLVM=1 rust-analyzer
+> ```
 > 
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 7c9d9f11aec5..552f023099c8 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -369,7 +369,7 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
->  		--emit=dep-info=$(depfile) --emit=obj=$@ \
->  		--emit=metadata=$(dir $@)$(patsubst %.o,lib%.rmeta,$(notdir $@)) \
->  		--crate-type rlib -L$(objtree)/$(obj) \
-> -		--crate-name $(patsubst %.o,%,$(notdir $@)) $< \
-> +		--crate-name $(patsubst %.o,%,$(notdir $@)) $(abspath $<) \
->  	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@)
->  
->  rust-analyzer:
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index 6413342a03f4..c925b90ebd80 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -283,27 +283,27 @@ rust_common_cmd = \
->  # would not match each other.
->  
->  quiet_cmd_rustc_o_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-> -      cmd_rustc_o_rs = $(rust_common_cmd) --emit=obj=$@ $<
-> +      cmd_rustc_o_rs = $(rust_common_cmd) --emit=obj=$@ $(abspath $<)
->  
->  $(obj)/%.o: $(src)/%.rs FORCE
->  	$(call if_changed_dep,rustc_o_rs)
->  
->  quiet_cmd_rustc_rsi_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
->        cmd_rustc_rsi_rs = \
-> -	$(rust_common_cmd) -Zunpretty=expanded $< >$@; \
-> +	$(rust_common_cmd) -Zunpretty=expanded $(abspath $<) >$@; \
->  	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) $@
->  
->  $(obj)/%.rsi: $(src)/%.rs FORCE
->  	$(call if_changed_dep,rustc_rsi_rs)
->  
->  quiet_cmd_rustc_s_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-> -      cmd_rustc_s_rs = $(rust_common_cmd) --emit=asm=$@ $<
-> +      cmd_rustc_s_rs = $(rust_common_cmd) --emit=asm=$@ $(abspath $<)
->  
->  $(obj)/%.s: $(src)/%.rs FORCE
->  	$(call if_changed_dep,rustc_s_rs)
->  
->  quiet_cmd_rustc_ll_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-> -      cmd_rustc_ll_rs = $(rust_common_cmd) --emit=llvm-ir=$@ $<
-> +      cmd_rustc_ll_rs = $(rust_common_cmd) --emit=llvm-ir=$@ $(abspath $<)
->  
->  $(obj)/%.ll: $(src)/%.rs FORCE
->  	$(call if_changed_dep,rustc_ll_rs)
+> In the `make menuconfig` step I disabled `DEBUG_INFO_BTF` and enabled
+> `RUST`.
+> 
+> If you want, I can upload the `rust-project.json` file to GH, since
+> it is 55k lines long.
 > 
 
+I'm thinking that you may be looking at the wrong side. So, can you
+show me the output of these `jq` commands?
+
+```sh
+jq '.crates[] | select(.display_name == "core")' rust-project.json
+jq '.crates[] | select(.display_name == "alloc")' rust-project.json
+```
