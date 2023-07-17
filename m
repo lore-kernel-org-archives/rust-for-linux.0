@@ -2,96 +2,88 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54FF4EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Mon, 17 Jul 2023 13:48:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50A85EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Mon, 17 Jul 2023 13:53:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbjGQNsG (ORCPT
+        id S231732AbjGQNxU (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 17 Jul 2023 09:48:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54142 "EHLO
+        Mon, 17 Jul 2023 09:53:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229579AbjGQNru (ORCPT
+        with ESMTP id S231874AbjGQNxP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 17 Jul 2023 09:47:50 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCB381722
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Jul 2023 06:47:43 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-573d70da2afso40048327b3.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Jul 2023 06:47:43 -0700 (PDT)
+        Mon, 17 Jul 2023 09:53:15 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2DA3D1
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Jul 2023 06:53:14 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-c6db61f7f64so4525187276.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Jul 2023 06:53:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689601663; x=1690206463;
+        d=google.com; s=20221208; t=1689601994; x=1690206794;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j3SxyETf8ddszKx/ZhEs13N7fJ1p21U4RjlqamH3wRM=;
-        b=Ps+rAGyMV9qWxjfyp3bnC4WvVcq8X5T25dqQ025faVPUbZWlN2fAoDNDfXAcv0qXQO
-         2rVh/F+CEbd9tCHAujfRsQGuKMmSyiBZjs2eOW67e3+9f8kDZtdM0UP/nRbGDOfC8bXs
-         17XAdkMOpYNQtBfbzsnCgX9mGrtMoO6Ou2sMGzQtb3EsgH06Xpaq6QVx4+eIMb+N/843
-         gPnkEHOnUVw6yoiaH8h0F3c8OwlT5WkmTQDkb9f7s3mPN7IWIFg75VFKueOM6dFG5j+J
-         gv/odE6hDve5rsonG898yH44kzvxYYypt00MA0hqgIFkexFHlypO+5r2oufxg9SMk6+U
-         ydMQ==
+        bh=7a5j4gvhnG5mrdZ/F4z3dJKPADNbpn8JJt+6WIEe8sU=;
+        b=lK2MzwZAd8EF2hJ82Wrids5Yon9GdRQhhNLfZ2ksqHpFJYE6J0xTMaiMwll8uAghz1
+         Q62+KB6AQNgPBSOKx8vtCAfk+h9fYbT/aJZn/4nhnPfduu7vlXDMKEg4WyZZ2FFixDoq
+         oDgqbcwo0gIXZODKkk4NXKi3u+mZG5rGW28+W2IGOYejqkl9UHoT9i6jCSgrXCkd4SPQ
+         i6d91L8Htl5aAkcJmprFUFouxpSIdoRyLSnLuX0qBZr0vhnT4QEuUyzkpgeOOV2dHqBb
+         5gTDJFFnbQho1EeFjkMi82uQfx7G3caOKn/DQAw/gzC/yuy69GoBodepUdF460PeP/1Z
+         CrYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689601663; x=1690206463;
+        d=1e100.net; s=20221208; t=1689601994; x=1690206794;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=j3SxyETf8ddszKx/ZhEs13N7fJ1p21U4RjlqamH3wRM=;
-        b=XHK2iiYPMPH7rB5LQoJaeeveD4TqCmZiDvh7DyBU4t3miiiCtJNk7djrlZvNElSa7N
-         QTIlP2eTbuqHqGEft6ukBXL3WoTBSMsplNWEzFU9Divlc33ZT7CHFwHecmG+GahTsoAr
-         Fl4CAarK1XXzQ8N6CeXIfvr9AnnLC7WxjBBsvYk7gjq88oFNg1MDMVtnd2A4ujhptdLp
-         8C/Di3E3TpcfEKJStC6CCTT29GxyHrI4QzDRo8XF3ZstH3NX5DLic+iR3MihUgyVtTnF
-         rms4agjKCmwyX20xXgELsSZHFvHjH5l39vfkRQBr4k0aVAiMOgbR6qNRqkQDIXcmKQFj
-         FgrA==
-X-Gm-Message-State: ABy/qLYQ+mOJhsWd9dhHvZUYshdII18bG55R31fwXJMHL1+p2NuWHdI3
-        P5OhOjLqisBUBX5wwBX9bAYGKiGx3UZfpNE=
-X-Google-Smtp-Source: APBJJlEwhdE5N/SzORH8cVNDBC2/w2CMWD9t0WmrCmMaq52fjxnqtqHEqHMehOn8c5v5sI2WIAd0lhlO7YkmMnA=
+        bh=7a5j4gvhnG5mrdZ/F4z3dJKPADNbpn8JJt+6WIEe8sU=;
+        b=mAl9wI3HdDRAHS203+yMZWX+P4IZlibteuCt/RVx2oFMaAjKSGDsQz8iu3YNfFH5hE
+         keHJc1sbNa/G13KR4F57rpBLuqNxdIZYbMxAZnSLi27AoiVuNh9qy8aKYb1On2wU4I1O
+         c3kcdXHsXjDZFEUI575Tict4GynrgNpPlHsOs8snVOsci1cfTmK90UYLrv9MBAX/0WOZ
+         RNzVHiLr+YRf2PRU6QmXwzB6fdh+tawwVWKfF82xDwFrXomXJ/+iIpeK6Qw/aJ1VtC+U
+         NnzfSI0w6c8cYNXbVd3QYD6uQWkvck1cUpe7LHtzxcbN4ErQXi3fj6o15dOH0UWNO0TE
+         RkHw==
+X-Gm-Message-State: ABy/qLb4FywmJThSj/THpNjPdlIQ+qQ+UGJVR/wa1SjgXVNJDGbyPpNY
+        qgn7hoHEmyTZ4R7d0fnAnFWKwq/pTgYzBnw=
+X-Google-Smtp-Source: APBJJlFqfJxS9tr9kwuqTLxh56qQM4RllSCU5YzQj4nW0duV/3DgusRHSW5nZK7P7bx+oV8x7DiAddAcyBASxqQ=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a81:bc14:0:b0:565:9e73:f937 with SMTP id
- a20-20020a81bc14000000b005659e73f937mr153880ywi.4.1689601662979; Mon, 17 Jul
- 2023 06:47:42 -0700 (PDT)
-Date:   Mon, 17 Jul 2023 13:47:40 +0000
-In-Reply-To: <CUqkSCKfZbSOwonbc1HECGB3ah_8k404uGJFaebLi2oD8GScDzqRxZ350YdmljslxqUC4mqdvqpbBhD1wFSmCvpA4MhklUGnN6RB0Y8YlFo=@proton.me>
+ (user=aliceryhl job=sendgmr) by 2002:a25:2556:0:b0:c22:38c2:43de with SMTP id
+ l83-20020a252556000000b00c2238c243demr96482ybl.11.1689601993768; Mon, 17 Jul
+ 2023 06:53:13 -0700 (PDT)
+Date:   Mon, 17 Jul 2023 13:53:11 +0000
+In-Reply-To: <ZK3WUBTb1dHfjnh8@boqun-archlinux>
 Mime-Version: 1.0
-References: <CUqkSCKfZbSOwonbc1HECGB3ah_8k404uGJFaebLi2oD8GScDzqRxZ350YdmljslxqUC4mqdvqpbBhD1wFSmCvpA4MhklUGnN6RB0Y8YlFo=@proton.me>
+References: <ZK3WUBTb1dHfjnh8@boqun-archlinux>
 X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
-Message-ID: <20230717134740.1840206-1-aliceryhl@google.com>
-Subject: Re: [PATCH v3 2/9] rust: sync: add `Arc::{from_raw, into_raw}`
+Message-ID: <20230717135311.1841165-1-aliceryhl@google.com>
+Subject: Re: [PATCH v3 4/9] rust: workqueue: add low-level workqueue bindings
 From:   Alice Ryhl <aliceryhl@google.com>
-To:     benno.lossin@proton.me
+To:     boqun.feng@gmail.com
 Cc:     alex.gaynor@gmail.com, aliceryhl@google.com,
-        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+        benno.lossin@proton.me, bjorn3_gh@protonmail.com, gary@garyguo.net,
         jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
-        ojeda@kernel.org, patches@lists.linux.dev,
-        rust-for-linux@vger.kernel.org, tj@kernel.org,
-        walmeida@microsoft.com, wedsonaf@gmail.com
+        nmi@metaspace.dk, ojeda@kernel.org, patches@lists.linux.dev,
+        rust-for-linux@vger.kernel.org, tj@kernel.org, wedsonaf@gmail.com,
+        yakoyoku@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Benno Lossin <benno.lossin@proton.me> writes:
->> +    /// This code relies on the `repr(C)` layout of structs as described in
->> +    /// <https://doc.rust-lang.org/reference/type-layout.html#reprc-structs>.
+Boqun Feng <boqun.feng@gmail.com> writes:
+>> +// SAFETY: Kernel workqueues are usable from any thread.
+>> +unsafe impl Send for Queue {}
+>> +unsafe impl Sync for Queue {}
 > 
-> Why is this in the documentation? I feel like it should be a normal code
-> comment at the very start of the function.
-
-In fact, I think we can drop this comment entirely. The motivation
-behind using `Layout::extend` for computing `val_offset` is that its
-correctness does not rely on how the repr(C) layout algorithm works.
-
-(As opposed to how the previous implementation's correctness *does*
-depend on knowing the repr(C) layout algorithm:
-    Layout::new::<ArcInner<()>>().align_to(align).unwrap().pad_to_align().size()
-)
-
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// `ptr` must have been returned by a previous call to [`Arc::into_raw`]. Additionally, it
->> +    /// can only be called once for each previous call to [`Arc::into_raw`].
+> I don't think "usable from any thread" is the accurate wording here, it
+> sounds to me that there are types that cannot be used for a particular
+> type of threads ;-)
 > 
-> "it can only" -> "it must only"
+> Maybe
+> 
+> 	// SAFETY: Accesses to workqueues used by [`Queue`] are
+> 	// thread-safe.
+> 
+> ?
 
-Sounds good. I'll change it to use "must" in the next version.
+Sure, I'll make that change in the next version.
 
 Alice
 
