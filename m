@@ -2,56 +2,96 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB80DEB64DC
-	for <rust-for-linux@archiver.kernel.org>; Mon, 17 Jul 2023 07:57:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54FF4EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Mon, 17 Jul 2023 13:48:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230063AbjGQH5U (ORCPT
+        id S229621AbjGQNsG (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Mon, 17 Jul 2023 03:57:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56510 "EHLO
+        Mon, 17 Jul 2023 09:48:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229637AbjGQH5T (ORCPT
+        with ESMTP id S229579AbjGQNru (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Mon, 17 Jul 2023 03:57:19 -0400
-X-Greylist: delayed 573 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 17 Jul 2023 00:57:17 PDT
-Received: from mail.thrivehub.pl (mail.thrivehub.pl [164.132.48.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CB1DB8
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Jul 2023 00:57:17 -0700 (PDT)
-Received: by mail.thrivehub.pl (Postfix, from userid 1002)
-        id 4760F24227; Mon, 17 Jul 2023 07:46:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=thrivehub.pl; s=mail;
-        t=1689579990; bh=m3ZUCTPRVLoDFM+cXi7VhHW+xNF3eUdGHrj1eDbLwQI=;
-        h=Date:From:To:Subject:From;
-        b=WbRyeyXBUe9cWruKBDXBr4EDS5p/fNhFKfKibRy17LMCBgGyQsXEpf1KkoEUDZaLZ
-         DSvgAfwSieGewVTzargjcixw7huvocuoxtr+DOq/5qVkwDn1K827KnjfsCbw4zGohb
-         M5Qv9qRaANnoSw9LF99o608lmCEhpbH726n3KarbwccSP6Njhr3JW3okC05wy1kc00
-         oFXwdHbZAum4V4sgGCi+hvS1lTJjUyOhR/i5jB7Iklj66IQdV/SnxhCGInLmALbinv
-         iBYCWpEiowjnH4MPAqKHbnRLbuknKh9zcW4L6YBLeEBHEOuB3KcYcqCYXAMdroX9hv
-         QgkQkDfR0Kwvw==
-Received: by mail.thrivehub.pl for <rust-for-linux@vger.kernel.org>; Mon, 17 Jul 2023 07:45:59 GMT
-Message-ID: <20230717064500-0.1.d.3p3d.0.rk9nh4bkjl@thrivehub.pl>
-Date:   Mon, 17 Jul 2023 07:45:59 GMT
-From:   "Szymon Jankowski" <szymon.jankowski@thrivehub.pl>
-To:     <rust-for-linux@vger.kernel.org>
-Subject: Zapytanie ofertowe 
-X-Mailer: mail.thrivehub.pl
-MIME-Version: 1.0
+        Mon, 17 Jul 2023 09:47:50 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCB381722
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Jul 2023 06:47:43 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-573d70da2afso40048327b3.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Jul 2023 06:47:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1689601663; x=1690206463;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=j3SxyETf8ddszKx/ZhEs13N7fJ1p21U4RjlqamH3wRM=;
+        b=Ps+rAGyMV9qWxjfyp3bnC4WvVcq8X5T25dqQ025faVPUbZWlN2fAoDNDfXAcv0qXQO
+         2rVh/F+CEbd9tCHAujfRsQGuKMmSyiBZjs2eOW67e3+9f8kDZtdM0UP/nRbGDOfC8bXs
+         17XAdkMOpYNQtBfbzsnCgX9mGrtMoO6Ou2sMGzQtb3EsgH06Xpaq6QVx4+eIMb+N/843
+         gPnkEHOnUVw6yoiaH8h0F3c8OwlT5WkmTQDkb9f7s3mPN7IWIFg75VFKueOM6dFG5j+J
+         gv/odE6hDve5rsonG898yH44kzvxYYypt00MA0hqgIFkexFHlypO+5r2oufxg9SMk6+U
+         ydMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689601663; x=1690206463;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=j3SxyETf8ddszKx/ZhEs13N7fJ1p21U4RjlqamH3wRM=;
+        b=XHK2iiYPMPH7rB5LQoJaeeveD4TqCmZiDvh7DyBU4t3miiiCtJNk7djrlZvNElSa7N
+         QTIlP2eTbuqHqGEft6ukBXL3WoTBSMsplNWEzFU9Divlc33ZT7CHFwHecmG+GahTsoAr
+         Fl4CAarK1XXzQ8N6CeXIfvr9AnnLC7WxjBBsvYk7gjq88oFNg1MDMVtnd2A4ujhptdLp
+         8C/Di3E3TpcfEKJStC6CCTT29GxyHrI4QzDRo8XF3ZstH3NX5DLic+iR3MihUgyVtTnF
+         rms4agjKCmwyX20xXgELsSZHFvHjH5l39vfkRQBr4k0aVAiMOgbR6qNRqkQDIXcmKQFj
+         FgrA==
+X-Gm-Message-State: ABy/qLYQ+mOJhsWd9dhHvZUYshdII18bG55R31fwXJMHL1+p2NuWHdI3
+        P5OhOjLqisBUBX5wwBX9bAYGKiGx3UZfpNE=
+X-Google-Smtp-Source: APBJJlEwhdE5N/SzORH8cVNDBC2/w2CMWD9t0WmrCmMaq52fjxnqtqHEqHMehOn8c5v5sI2WIAd0lhlO7YkmMnA=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a81:bc14:0:b0:565:9e73:f937 with SMTP id
+ a20-20020a81bc14000000b005659e73f937mr153880ywi.4.1689601662979; Mon, 17 Jul
+ 2023 06:47:42 -0700 (PDT)
+Date:   Mon, 17 Jul 2023 13:47:40 +0000
+In-Reply-To: <CUqkSCKfZbSOwonbc1HECGB3ah_8k404uGJFaebLi2oD8GScDzqRxZ350YdmljslxqUC4mqdvqpbBhD1wFSmCvpA4MhklUGnN6RB0Y8YlFo=@proton.me>
+Mime-Version: 1.0
+References: <CUqkSCKfZbSOwonbc1HECGB3ah_8k404uGJFaebLi2oD8GScDzqRxZ350YdmljslxqUC4mqdvqpbBhD1wFSmCvpA4MhklUGnN6RB0Y8YlFo=@proton.me>
+X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
+Message-ID: <20230717134740.1840206-1-aliceryhl@google.com>
+Subject: Re: [PATCH v3 2/9] rust: sync: add `Arc::{from_raw, into_raw}`
+From:   Alice Ryhl <aliceryhl@google.com>
+To:     benno.lossin@proton.me
+Cc:     alex.gaynor@gmail.com, aliceryhl@google.com,
+        bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+        jiangshanlai@gmail.com, linux-kernel@vger.kernel.org,
+        ojeda@kernel.org, patches@lists.linux.dev,
+        rust-for-linux@vger.kernel.org, tj@kernel.org,
+        walmeida@microsoft.com, wedsonaf@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Benno Lossin <benno.lossin@proton.me> writes:
+>> +    /// This code relies on the `repr(C)` layout of structs as described in
+>> +    /// <https://doc.rust-lang.org/reference/type-layout.html#reprc-structs>.
+> 
+> Why is this in the documentation? I feel like it should be a normal code
+> comment at the very start of the function.
 
-Pozwoli=C5=82em sobie na kontakt, poniewa=C5=BC jestem zainteresowany wer=
-yfikacj=C4=85 mo=C5=BCliwo=C5=9Bci nawi=C4=85zania wsp=C3=B3=C5=82pracy.
+In fact, I think we can drop this comment entirely. The motivation
+behind using `Layout::extend` for computing `val_offset` is that its
+correctness does not rely on how the repr(C) layout algorithm works.
 
-Wspieramy firmy w pozyskiwaniu nowych klient=C3=B3w biznesowych.
+(As opposed to how the previous implementation's correctness *does*
+depend on knowing the repr(C) layout algorithm:
+    Layout::new::<ArcInner<()>>().align_to(align).unwrap().pad_to_align().size()
+)
 
-Czy mo=C5=BCemy porozmawia=C4=87 w celu przedstawienia szczeg=C3=B3=C5=82=
-owych informacji?=20
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// `ptr` must have been returned by a previous call to [`Arc::into_raw`]. Additionally, it
+>> +    /// can only be called once for each previous call to [`Arc::into_raw`].
+> 
+> "it can only" -> "it must only"
 
+Sounds good. I'll change it to use "must" in the next version.
 
-Pozdrawiam
-Szymon Jankowski
+Alice
+
