@@ -2,79 +2,56 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BBC6EB64DA
-	for <rust-for-linux@archiver.kernel.org>; Mon, 17 Jul 2023 03:42:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB80DEB64DC
+	for <rust-for-linux@archiver.kernel.org>; Mon, 17 Jul 2023 07:57:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230252AbjGQDmo (ORCPT
+        id S230063AbjGQH5U (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Sun, 16 Jul 2023 23:42:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46190 "EHLO
+        Mon, 17 Jul 2023 03:57:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbjGQDmn (ORCPT
+        with ESMTP id S229637AbjGQH5T (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Sun, 16 Jul 2023 23:42:43 -0400
-Received: from out0-216.mail.aliyun.com (out0-216.mail.aliyun.com [140.205.0.216])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 428C5134;
-        Sun, 16 Jul 2023 20:42:42 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018047190;MF=changxian.cqs@antgroup.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---.TvN3zt8_1689565354;
-Received: from 30.177.49.54(mailfrom:changxian.cqs@antgroup.com fp:SMTPD_---.TvN3zt8_1689565354)
-          by smtp.aliyun-inc.com;
-          Mon, 17 Jul 2023 11:42:35 +0800
-Message-ID: <081f7e9b-a769-b4cf-4df4-b0bb5c9a1594@antgroup.com>
-Date:   Mon, 17 Jul 2023 11:42:34 +0800
+        Mon, 17 Jul 2023 03:57:19 -0400
+X-Greylist: delayed 573 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 17 Jul 2023 00:57:17 PDT
+Received: from mail.thrivehub.pl (mail.thrivehub.pl [164.132.48.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CB1DB8
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Jul 2023 00:57:17 -0700 (PDT)
+Received: by mail.thrivehub.pl (Postfix, from userid 1002)
+        id 4760F24227; Mon, 17 Jul 2023 07:46:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=thrivehub.pl; s=mail;
+        t=1689579990; bh=m3ZUCTPRVLoDFM+cXi7VhHW+xNF3eUdGHrj1eDbLwQI=;
+        h=Date:From:To:Subject:From;
+        b=WbRyeyXBUe9cWruKBDXBr4EDS5p/fNhFKfKibRy17LMCBgGyQsXEpf1KkoEUDZaLZ
+         DSvgAfwSieGewVTzargjcixw7huvocuoxtr+DOq/5qVkwDn1K827KnjfsCbw4zGohb
+         M5Qv9qRaANnoSw9LF99o608lmCEhpbH726n3KarbwccSP6Njhr3JW3okC05wy1kc00
+         oFXwdHbZAum4V4sgGCi+hvS1lTJjUyOhR/i5jB7Iklj66IQdV/SnxhCGInLmALbinv
+         iBYCWpEiowjnH4MPAqKHbnRLbuknKh9zcW4L6YBLeEBHEOuB3KcYcqCYXAMdroX9hv
+         QgkQkDfR0Kwvw==
+Received: by mail.thrivehub.pl for <rust-for-linux@vger.kernel.org>; Mon, 17 Jul 2023 07:45:59 GMT
+Message-ID: <20230717064500-0.1.d.3p3d.0.rk9nh4bkjl@thrivehub.pl>
+Date:   Mon, 17 Jul 2023 07:45:59 GMT
+From:   "Szymon Jankowski" <szymon.jankowski@thrivehub.pl>
+To:     <rust-for-linux@vger.kernel.org>
+Subject: Zapytanie ofertowe 
+X-Mailer: mail.thrivehub.pl
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [RFC PATCH 2/8] rust: kernel: add `request` related
- TargetOperations
-To:     Benno Lossin <benno.lossin@proton.me>
-Cc:     <linux-kernel@vger.kernel.org>,
-        "=?UTF-8?B?55Sw5rSq5Lqu?=" <tate.thl@antgroup.com>,
-        "Miguel Ojeda" <ojeda@kernel.org>,
-        "Alex Gaynor" <alex.gaynor@gmail.com>,
-        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
-        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
-        "=?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>,
-        <rust-for-linux@vger.kernel.org>
-References: <20230625121657.3631109-1-changxian.cqs@antgroup.com>
- <20230625121657.3631109-3-changxian.cqs@antgroup.com>
- <-IRG_a-qIx3Io5P-2p2t7mTbhsaV-Jizcvu0frlx6Pfj5mrnYL92vL5ZGfhY5lXdfAP-g3B02SpBAKWgPwpfxVpWBjMMWmTnhF9DLdU9808=@proton.me>
-From:   "Qingsong Chen" <changxian.cqs@antgroup.com>
-In-Reply-To: <-IRG_a-qIx3Io5P-2p2t7mTbhsaV-Jizcvu0frlx6Pfj5mrnYL92vL5ZGfhY5lXdfAP-g3B02SpBAKWgPwpfxVpWBjMMWmTnhF9DLdU9808=@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On 7/14/23 11:49 PM, Benno Lossin wrote:
->> @@ -31,6 +31,39 @@ pub trait TargetOperations: Sized {
->>      /// Map block IOs. Return [`MapState`] to indicate how to handle the `bio`
->>      /// later (end or resubmit).
->>      fn map(t: &mut Target<Self>, bio: Pin<&mut Bio>) -> MapState;
->> +
->> +    /// Map `request`. Return [`MapState`] and the optional cloned `request`.
->> +    #[allow(unused)]
->> +    fn clone_and_map_rq<'a>(
->> +        t: &mut Target<Self>,
->> +        rq: Pin<&mut Request>,
->> +        map_ctx: &mut MapInfo,
->> +    ) -> (MapState, Option<Pin<&'a mut Request>>) {
->> +        unimplemented!()
-> 
-> Note that these should be implemented when you submit this as an actual
-> patch. (Not sure what you would do in this case, but throwing a panic is
-> not a good idea.) This also applies to all subsequent patches.
-> I think you might have done this, because you want the C side to choose
-> the default implementation. But it should also be possible to call these
-> from the Rust side.
+Dzie=C5=84 dobry,
 
-In fact, we don't want users to call these callbacks manually. The 
-normal call-chain would be like this: `map_request`(c) ->
-`dm_clone_and_map_rq_fn`(unsafe rust) -> `clone_and_map_rq`(rust).
-If users don't implement `clone_and_map_rq`, we would check the
-corresponding field of `TargetType`, using the `check_target_operations`
-macro. So it won't call the default implementation generally.
+Pozwoli=C5=82em sobie na kontakt, poniewa=C5=BC jestem zainteresowany wer=
+yfikacj=C4=85 mo=C5=BCliwo=C5=9Bci nawi=C4=85zania wsp=C3=B3=C5=82pracy.
 
-Regards,
-Qingsong
+Wspieramy firmy w pozyskiwaniu nowych klient=C3=B3w biznesowych.
+
+Czy mo=C5=BCemy porozmawia=C4=87 w celu przedstawienia szczeg=C3=B3=C5=82=
+owych informacji?=20
+
+
+Pozdrawiam
+Szymon Jankowski
