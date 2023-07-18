@@ -2,148 +2,146 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1297EB64DC
-	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Jul 2023 15:15:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B17ACEB64DD
+	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Jul 2023 15:15:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232298AbjGRPPo (ORCPT
+        id S233280AbjGRPPp (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 18 Jul 2023 11:15:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50146 "EHLO
+        Tue, 18 Jul 2023 11:15:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231384AbjGRPPn (ORCPT
+        with ESMTP id S230313AbjGRPPn (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
         Tue, 18 Jul 2023 11:15:43 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2087.outbound.protection.outlook.com [40.107.243.87])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F313E170C;
-        Tue, 18 Jul 2023 08:15:41 -0700 (PDT)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7026B1711;
+        Tue, 18 Jul 2023 08:15:42 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=U+h8qqLhBhAiAumRPi/1LthlaoPq7Sn7Yib1Dg7HWgC9YIWde7khvNk0l3jLEpIpJvGGARnk4QLw2r8fYbLOksr3d9Xg7pKttGxKua4CGHfneUrGewLMty0MMtowTBDNLoCnMDdYVaWVnyqxXq3UjXshsNyKIYSo1U32Zqb8s8fbMfMMRBaE13kV3Lk5FxRtoUBMIoAZ52YOTmaSdFtEvnMgPNTodrHTWrvpL1XoWorSQvfBTOnTUxHk9beUJtK1dSBhOXAykYgr1UymFANiuZS9wMax4BWS/giUKZUdlqZYk72U8vu+krvj73E7ZIcKjSQMgMlSIkfKefAoxTdigA==
+ b=ERjfGXwCACr+JbA2ZAWuul7vM/nEnrP+waaAb5MAWtkhzCa2+gNfozqtOlG6Z+eSEMyI3ewgfoy3Iij8QfOk3GAUryXHloHpm2mt/uZ+TzV+Y0eZmbFkUgIgJr890GSpQJ8omoYO3J/iK1QmY1h1SDY3ICdv/KV2OnebIcYdeTKjVdLRzUoeMkkTaZbg12pHBtwW2Lm0eBWllRV6+qjJeZOhUGq8G6UOORIS1r6ROHIHG620kwthsZbSOv3hBmFnJKgB3DNrlieRxIKw6RLySXOvfLcJ0HLrl+AWCRkJXdofVXDWmA+5dy1GtHBzRq06m+m+uclrNCrVFMyhY08bgw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H8rMpB1V6eQ29/v+a8uQ8ImD0gWgEqhzmdnyEnER2mE=;
- b=mrGc/+vmCXmt3dtPQGF9bJJ2NesKZ5/7y89IIfzuPJCSUz9G/XqX6W3OpKYYk5F/wvb4az6TjiIIC6p7+VGfuXp7NFfkIo73M2p2M9vpVPlX9gpHaUIyCQGrFu/+cQQu7uVPnJPztb97irJ5kGxNXEhXYSyzat/nzDL5JxK2I15l7gp8yvOtWm3C8JB+nDPvltGRB2Q+dUf3ps/ixpJPIRv5TgFFBBoH9/E25emey/qmPHz8M31/dd6aKzSA04MoudAx91Y4vzqpBIv4ldc5ohjyuc1gSiAkJ2b6skHkDzJK9ylIRaToBYaEIkbNZRJ6aioofgoXWECQ1enaplFZSg==
+ bh=bWX9MsSHsjjjJVU4J9iB/jNe5RF9dAvoOinWs+RGHNY=;
+ b=JpusonQzFP4JTsWvWeLpfgbQFK30lZtW7b5TT9Pi4fGSrnLsV2sSY0HDKvHmolrJOJDQgYV4AVV9bc8B1wztNxwvs9VCxlB8gLcm5GQCFrqnG+LdInYycgffRhB9qWptkRgxq2ytx/BZIUGRnQAoUQz+Q+JxbnDYwRK8OMS9Hx++h3h+fOe03D+JGFWPb+hzs+gXW40MenyrdbhpJ18FnmYuFkOFQ36fGnM9ubirWCL48usL4x+M8Omi+qBLeVw4kj3O2/2cBjCiuHJzqJm9vGf3NNzJjHgtAv/DNLJF54X0cwUqm2v+o3/l/vnie7yb2eQcJw7Q7Cxm7u2RbYdMZg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lwn.net smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H8rMpB1V6eQ29/v+a8uQ8ImD0gWgEqhzmdnyEnER2mE=;
- b=lKopU1aZSUNI5MS9Dlec174jfd+Vfe3uIUq2NJyOCRum/qXwL6CQUOm8y3BxavpYcahV4Cx0kY2E+0Uy3+8GK2YmlNrAYRXlBLcY+xvv3BLNmZ9AnkH9aLbwGb8vzSnokeU885KD6GFOHiQKIJHvsz1TIRxxmQP+cDHnG22mKHI=
-Received: from MW4P222CA0014.NAMP222.PROD.OUTLOOK.COM (2603:10b6:303:114::19)
- by IA0PR12MB8930.namprd12.prod.outlook.com (2603:10b6:208:481::22) with
+ bh=bWX9MsSHsjjjJVU4J9iB/jNe5RF9dAvoOinWs+RGHNY=;
+ b=ZNZJf88au8SMlXmT0Qed/UPu4PV8wiThAcxA2+wKXUJ0LfUhvc4u4O0QDF3OyUXwpP19lT36IHhoZlRjVIy956Hm2yDSVe+kMKi+LG/99GZ65z77/IYtMEcBVeoX1LK1OhrBA4nUaf3HK+Fz/rSxJR/5zL90v6kG9xgj2IJjUS8=
+Received: from MW4PR03CA0029.namprd03.prod.outlook.com (2603:10b6:303:8f::34)
+ by BN9PR12MB5099.namprd12.prod.outlook.com (2603:10b6:408:118::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.26; Tue, 18 Jul
- 2023 15:15:38 +0000
-Received: from CO1NAM11FT106.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:114:cafe::73) by MW4P222CA0014.outlook.office365.com
- (2603:10b6:303:114::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.33; Tue, 18 Jul
+ 2023 15:15:39 +0000
+Received: from CO1NAM11FT104.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:8f:cafe::49) by MW4PR03CA0029.outlook.office365.com
+ (2603:10b6:303:8f::34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.33 via Frontend
- Transport; Tue, 18 Jul 2023 15:15:38 +0000
+ Transport; Tue, 18 Jul 2023 15:15:37 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CO1NAM11FT106.mail.protection.outlook.com (10.13.175.44) with Microsoft SMTP
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT104.mail.protection.outlook.com (10.13.174.220) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6588.33 via Frontend Transport; Tue, 18 Jul 2023 15:15:37 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.6588.33 via Frontend Transport; Tue, 18 Jul 2023 15:15:36 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 18 Jul
- 2023 10:15:37 -0500
+ 2023 10:15:35 -0500
 Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
  (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 18 Jul
- 2023 10:15:36 -0500
+ 2023 10:15:35 -0500
 Received: from iron-maiden.amd.com (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.23 via Frontend
- Transport; Tue, 18 Jul 2023 10:15:36 -0500
+ Transport; Tue, 18 Jul 2023 10:15:35 -0500
 From:   Carlos Bilbao <carlos.bilbao@amd.com>
 To:     <corbet@lwn.net>, <ojeda@kernel.org>
 CC:     <jani.nikula@linux.intel.com>, <rdunlap@infradead.org>,
         <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <konstantin@linuxfoundation.org>, <rust-for-linux@vger.kernel.org>,
-        "Carlos Bilbao" <carlos.bilbao@amd.com>,
-        Akira Yokosawa <akiyks@gmail.com>
-Subject: [PATCH v8 2/2] docs: Integrate rustdoc generation into htmldocs
-Date:   Tue, 18 Jul 2023 10:15:34 -0500
-Message-ID: <20230718151534.4067460-3-carlos.bilbao@amd.com>
+        "Carlos Bilbao" <carlos.bilbao@amd.com>
+Subject: [PATCH v8 0/2] docs: Integrate rustdoc into Rust documentation
+Date:   Tue, 18 Jul 2023 10:15:32 -0500
+Message-ID: <20230718151534.4067460-1-carlos.bilbao@amd.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230718151534.4067460-1-carlos.bilbao@amd.com>
-References: <20230718151534.4067460-1-carlos.bilbao@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT106:EE_|IA0PR12MB8930:EE_
-X-MS-Office365-Filtering-Correlation-Id: b484d83b-4111-400a-38fc-08db87a1d7aa
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT104:EE_|BN9PR12MB5099:EE_
+X-MS-Office365-Filtering-Correlation-Id: 92d4ee4d-0af3-455b-066c-08db87a1d6f1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: cXzMG13AivBd30obCJ9ztmT1oOHuwo2hfvC9OmcT8dTPQVgi7OLwkt4VXGsEe+rSUnNHJnnl5+BQY2TM306httumlC8euUykEYgFptemgLy+m8l6L0V/XvR5MMwW+ootiY84Pd7lK7d5R19elDebGf7tIbrsHwm7jKmNYwtEbxb41EsD/Xt0uoVg1pIj6eFwB1PxuVoFnulCXUAB2/D88dHPigjsK74ZHyyEHmgsZL2Z7LJzsL+w6phXIiq1/Y9MqQJ9MdNZtyZmkGFcWqQ4Ogd8FHDph9FdWC2JFFEc8EewH+vlYgCUeyMxRKo3PMP1xvwRdr/tvCgnXtnYq32IyuWsoNSAMXee/WjhMD3sn3PzmprDRngudSUcC+Ku1gKUs4IzkI5ILUl4Z6540WbhQVSr67+yNn45bNU3iLg8t9bVE+OsWuPGwStr1tKb1j1jgkU7lEsdk3AoM5TgvNIuQjzIXmeLe5iayFHMrQF5uux2qxQMIDANPNuGaNMXYleGeKHPeP4MEjwwPxyJ1UU04ahTdzEVZ014glCvalqQyfxtAvvvKI/h9ItEaMa22ZU4UFNg8qAAjCjEp5+ZdzMdpK2UbubYDPQWrwdkMYcYGq2auJAM40yF48W3ZORVm2z3s8tHa34ykp31oPUQtFzuPctZ3ALnjbHcHq1b75fQqvoyjp/u0u2ApPQ+3sU88P4cTUwRsn2PzgJ2Fr91TnpKmv1CviGRKXKR4AcMG+8u4QYqXTA6GfmcyHZvt4G7V65NI9NBk6OFhSvJTdq+ROTCLQ==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(136003)(396003)(346002)(39860400002)(376002)(451199021)(82310400008)(40470700004)(46966006)(36840700001)(70206006)(70586007)(44832011)(316002)(8676002)(4326008)(8936002)(40460700003)(5660300002)(41300700001)(86362001)(36756003)(2906002)(40480700001)(7696005)(478600001)(426003)(336012)(82740400003)(186003)(26005)(1076003)(2616005)(110136005)(54906003)(36860700001)(356005)(81166007)(47076005)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: RfMkzBdXWlLDQ97aXwjiDBqC+M7EY5/yrexRspEMDZrdvCmpWt1EkDqlafJNEF3DA3n/fJEnvf7QyXcmVVR/95XI3LLEkGZJVSY1E9+3qaO/NkXmbUcVX1gz8X4yfPOZRYZO7bqHfhOGNaa23o3xpCHCj2L3iCSUwnR41B97ksGN7HAZjMiUaPEc0gLg78l9QcpIbsHVx1uq+UAdAV0L8QzdpBj8U+VZyBqpF+1EbdaclVZEHt2AP3I8yTBW7ygNZufJbpGUs657+CmtqpUxri277E/A839nfgDRqcI3R5IZ0magDjgyKolD6LOvtr9HfzwNZ0qt91AcLF1AwkU/en9Q3PwInJ9tlHS3JlQLRZB048tw53x3QE5PheSaz1LeGEEedST4ZVTr0WlnPP+MyiFkxrRDPn4jY0xxVO1eZSpYjXuNnO9MHjYcpaVUCMeE4zRJjMKRogXR2qsOY7GTzRHXw+m8T98hqCVYgIApZEj2iXe9veUzHVWqxNkS5QJCa8h28RK5afBuHlhGflDTXIr6Zra5aBl3XShBGOqyQwwjLEik2Q7uaYE1eBoJJbg2stemePL6hK2R1RtQTQ1IXEZt79CdlT/Kka2qt0mYtmvfgpx4NlDnDTeccH6f9KSw2WJUwQFNsCQ5X0fj3CG3arWNJHU2vuh65KI4T/R9qTqQ2BhMenW5EK28g/q733W6HgL2vuogAp2oIf4IpHQBNpOeMpslNtVBaZzI3QEXBlMMwijVJk/VYtgwADZjCbiSOi1vUvsZalFY3qV272Jfbcgo1Rs1ZeZ/fokMEBDKqik=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(396003)(346002)(39860400002)(376002)(136003)(451199021)(82310400008)(36840700001)(46966006)(40470700004)(478600001)(7696005)(6666004)(110136005)(54906003)(83380400001)(426003)(2616005)(336012)(47076005)(40460700003)(36756003)(86362001)(36860700001)(40480700001)(356005)(186003)(26005)(44832011)(966005)(1076003)(2906002)(316002)(70206006)(81166007)(70586007)(4326008)(41300700001)(8936002)(82740400003)(8676002)(5660300002)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2023 15:15:37.9236
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2023 15:15:36.6943
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b484d83b-4111-400a-38fc-08db87a1d7aa
+X-MS-Exchange-CrossTenant-Network-Message-Id: 92d4ee4d-0af3-455b-066c-08db87a1d6f1
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT106.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT104.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8930
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5099
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-Change target `make htmldocs` to combine RST Sphinx and the generation of
-Rust documentation, when support is available and .config exists.
+Include HTML output generated with rustdoc into the Linux kernel
+documentation on Rust.
 
-Reviewed-by: Akira Yokosawa <akiyks@gmail.com>
-Signed-off-by: Carlos Bilbao <carlos.bilbao@amd.com>
+Carlos Bilbao:
+ docs: Move rustdoc output, cross-reference it
+ docs: Integrate rustdoc generation into htmldocs
+
 ---
- Documentation/Makefile | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+V7 is https://lore.kernel.org/lkml/20230717151624.3470714-1-carlos.bilbao@amd.com/T/#m5dcab9c7775e85331c0d067d411fe246ed39af1e
+Changes since V7:
+ - Use lowercase for rustdoc_output and define it with `:=`.
+ - Remove messages that would be printed when skipping Rust documentation.
 
-diff --git a/Documentation/Makefile b/Documentation/Makefile
-index 023fa658a0a8..2f35793acd2a 100644
---- a/Documentation/Makefile
-+++ b/Documentation/Makefile
-@@ -59,6 +59,12 @@ PAPEROPT_letter = -D latex_paper_size=letter
- KERNELDOC       = $(srctree)/scripts/kernel-doc
- KERNELDOC_CONF  = -D kerneldoc_srctree=$(srctree) -D kerneldoc_bin=$(KERNELDOC)
- ALLSPHINXOPTS   =  $(KERNELDOC_CONF) $(PAPEROPT_$(PAPER)) $(SPHINXOPTS)
-+ifneq ($(wildcard $(srctree)/.config),)
-+ifeq ($(CONFIG_RUST),y)
-+	# Let Sphinx know we will include rustdoc
-+	ALLSPHINXOPTS   +=  -t rustdoc
-+endif
-+endif
- # the i18n builder cannot share the environment and doctrees with the others
- I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
- 
-@@ -95,6 +101,16 @@ htmldocs:
- 	@$(srctree)/scripts/sphinx-pre-install --version-check
- 	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,html,$(var),,$(var)))
- 
-+# If Rust support is available and .config exists, add rustdoc generated contents.
-+# If there are any, the errors from this make rustdoc will be displayed but
-+# won't stop the execution of htmldocs
-+
-+ifneq ($(wildcard $(srctree)/.config),)
-+ifeq ($(CONFIG_RUST),y)
-+	$(Q)$(MAKE) rustdoc || true
-+endif
-+endif
-+
- texinfodocs:
- 	@$(srctree)/scripts/sphinx-pre-install --version-check
- 	@+$(foreach var,$(SPHINXDIRS),$(call loop_cmd,sphinx,texinfo,$(var),texinfo,$(var)))
--- 
-2.34.1
+V6 is https://lore.kernel.org/lkml/20230127165728.119507-1-carl...
+Changes since V6:
+ - Skip Rust document generation entirely if .config doesn't exist.
+
+Changes since V5:
+ - Continue executing htmldocs even if rustdoc fails.
+
+Changes since V4:
+ - Limit rustdoc note only to html outputs.
+
+Changes since V3:
+ - Added Reviewed-Bys from Akira Yokosawa.
+ - PATCH 1/2: Avoid error 404 adding tag `rustdoc` for Sphinx.
+ - PATCH 1/2: Don't use "here" as link text, describe destination instead.
+ - PATCH 2/2: Check CONFIG_RUST in a way that allows us to skip generation.
+ - PATCH 2/2: Reoder Sphinx runs so they complete even if rustdoc fails.
+
+Changes since V2:
+ - Split v2 into two-patch series.
+ - Add "only:: html" directive in Documentation/rust/index.rst reference
+
+Changes since V1:
+ - Work on top of v6.1-rc1.
+ - Don't use rustdoc.rst, instead add link to Documentation/rust/index.rst.
+ - In Documentation/Makefile, replace @make rustdoc for $(Q)$(MAKE) rustdoc.
+ - Don't do LLVM=1 for all rustdoc generation within `make htmldocs`.
+ - Add spaces on definition of RUSTDOC_OUTPUT, for consistency.
+
+---
+ Documentation/Makefile       | 16 ++++++++++++++++
+ Documentation/rust/index.rst |  8 ++++++++
+ rust/Makefile                | 15 +++++++++------
+ 3 files changed, 33 insertions(+), 6 deletions(-)
 
