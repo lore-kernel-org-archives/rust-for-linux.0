@@ -2,112 +2,69 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 05CFEEB64DC
-	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Jul 2023 05:53:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AA08EB64DA
+	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Jul 2023 06:01:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230136AbjGRFxE (ORCPT
+        id S230311AbjGRGBk (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 18 Jul 2023 01:53:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46520 "EHLO
+        Tue, 18 Jul 2023 02:01:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230496AbjGRFw7 (ORCPT
+        with ESMTP id S230095AbjGRGBi (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 18 Jul 2023 01:52:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E64ADE56;
-        Mon, 17 Jul 2023 22:52:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 84EB96145F;
-        Tue, 18 Jul 2023 05:52:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40276C433C7;
-        Tue, 18 Jul 2023 05:52:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689659577;
-        bh=PlSlsqHDqw67L6N41kdBC8ML9MQoqYiPEiBjjydxhOg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=bKhQPfEDuI1pDq4l9wyUuymLSoTsnxo1GvrG/Es/WawS5X4hE9bWy9pTJh4yA3Nj3
-         MxlVo6XX6Gj8/xnDHz2Y1Ci9vcWiEF6yrrf7zj0A/O6vSRnU+YUfpuxxTV4cyWbiO2
-         J7Vnz71dErFpjiDiYSwddt5vEsl5o/pyV/pJO6s5SYBb5VVZymmk4LTXqMHo4d8mCt
-         5qPlnoKxOUTnr9/2jYQsbrXI+BnP8M7CBgaucPTRkZlw80JmvS5k7fODlR4/RXA331
-         iFxBLNeqLscvckubTDjfnFkDez1N1FU+N5cnW/t/jOTILQgUsENboSXYOozQDoo1cx
-         Z5Uqa6u1j1Ktg==
-From:   Miguel Ojeda <ojeda@kernel.org>
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Alex Gaynor <alex.gaynor@gmail.com>
-Cc:     Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Andreas Hindborg <a.hindborg@samsung.com>,
-        linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Raphael Nestler <raphael.nestler@gmail.com>,
-        Andrea Righi <andrea.righi@canonical.com>,
-        stable@vger.kernel.org
-Subject: [PATCH] kbuild: rust: avoid creating temporary files
-Date:   Tue, 18 Jul 2023 07:52:35 +0200
-Message-ID: <20230718055235.1050223-1-ojeda@kernel.org>
+        Tue, 18 Jul 2023 02:01:38 -0400
+X-Greylist: delayed 806 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 17 Jul 2023 23:01:37 PDT
+Received: from germane-culhwch.relay-egress.a.mail.umich.edu (relay-egress-host.us-east-2.a.mail.umich.edu [18.217.159.240])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A86D1;
+        Mon, 17 Jul 2023 23:01:37 -0700 (PDT)
+Received: from jacinth-ogre.authn-relay.a.mail.umich.edu (ip-10-0-74-216.us-east-2.compute.internal [10.0.74.216])
+        by germane-culhwch.relay-egress.a.mail.umich.edu with ESMTPS
+        id 64B62710.358527D2.3204439.1115262;
+        Tue, 18 Jul 2023 01:45:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=umich.edu;
+        s=relay-2018-08-29; t=1689659147;
+        bh=2WcBa6hvCUyIKLeQ3dqyKpup6xZvM3u4Au4ese4aI+A=;
+        h=From:To:Cc:Subject:Date;
+        b=DvK9+w97ouHhFh0Lp3TMcQyJqjlrG+0wg7cC3kCDsgCUUfEcS3m1JRJGivZ+mTb55
+         fiXPY+7yG9eX2o81OhnZ1procAQKujr8tdVYCC5fTsLDqWGK2qHfYg1Au0Kw5Th7bk
+         h88fBEt/QTNy25mCYaMXAgjuzKO+HMFgtv2JUIg73wj9Zq5lGfNFi6XYK1swB9L6l1
+         oNIyMMDfFLn4vpUpOy5FEF9iWcGLT7DupLd5TQ/JKUlJDG/ugwTYiPVVAMv5ObcKlr
+         qmNlVeq7bHGY8VXKMb/fi1XjmND+v8AY0+uqx8bJKPenO0XboxXAjSXmo/7ZVMSH5v
+         XzwMFkVhLaIPw==
+Authentication-Results: jacinth-ogre.authn-relay.a.mail.umich.edu; 
+        iprev=permerror policy.iprev=68.32.216.219 (unknown);
+        auth=pass smtp.auth=tmgross
+Received: from localhost.localdomain (unknown [68.32.216.219])
+        by jacinth-ogre.authn-relay.a.mail.umich.edu with ESMTPSA
+        id 64B6270A.2B56E19C.5B587AC6.46279;
+        Tue, 18 Jul 2023 01:45:47 -0400
+From:   Trevor Gross <tmgross@umich.edu>
+To:     ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+        boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+        benno.lossin@proton.me, corbet@lwn.net
+Cc:     linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Trevor Gross <tmgross@umich.edu>
+Subject: [PATCH 0/2] docs: rust: update instructions on obtaining 'core' source
+Date:   Tue, 18 Jul 2023 01:44:14 -0400
+Message-Id: <20230718054416.861412-1-tmgross@umich.edu>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-`rustc` outputs by default the temporary files (i.e. the ones saved
-by `-Csave-temps`, such as `*.rcgu*` files) in the current working
-directory when `-o` and `--out-dir` are not given (even if
-`--emit=x=path` is given, i.e. it does not use those for temporaries).
+This changes the suggested method of obtaining Rust's source to using the
+tarball rather than a full clone, and adds a clarification about 'rustup
+override'.
 
-Since out-of-tree modules are compiled from the `linux` tree,
-`rustc` then tries to create them there, which may not be accessible.
+Trevor Gross (2):
+  docs: rust: update instructions for obtaining 'core' source
+  docs: rust: clarify what 'rustup override' does
 
-Thus pass `--out-dir` explicitly, even if it is just for the temporary
-files.
+ Documentation/rust/quick-start.rst | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-Reported-by: Raphael Nestler <raphael.nestler@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1015
-Reported-by: Andrea Righi <andrea.righi@canonical.com>
-Tested-by: Raphael Nestler <raphael.nestler@gmail.com>
-Tested-by: Andrea Righi <andrea.righi@canonical.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- scripts/Makefile.build | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 6413342a03f4..82e3fb19fdaf 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -264,6 +264,9 @@ $(obj)/%.lst: $(src)/%.c FORCE
- 
- rust_allowed_features := new_uninit
- 
-+# `--out-dir` is required to avoid temporaries being created by `rustc` in the
-+# current working directory, which may be not accessible in the out-of-tree
-+# modules case.
- rust_common_cmd = \
- 	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
- 	-Zallow-features=$(rust_allowed_features) \
-@@ -272,7 +275,7 @@ rust_common_cmd = \
- 	--extern alloc --extern kernel \
- 	--crate-type rlib -L $(objtree)/rust/ \
- 	--crate-name $(basename $(notdir $@)) \
--	--emit=dep-info=$(depfile)
-+	--out-dir $(dir $@) --emit=dep-info=$(depfile)
- 
- # `--emit=obj`, `--emit=asm` and `--emit=llvm-ir` imply a single codegen unit
- # will be used. We explicitly request `-Ccodegen-units=1` in any case, and
-
-base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
 -- 
-2.41.0
+2.34.1
 
