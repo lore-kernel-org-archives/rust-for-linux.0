@@ -2,60 +2,64 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C622BEB64DA
-	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Jul 2023 08:38:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E8C5EB64DC
+	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Jul 2023 10:50:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231908AbjGRIit (ORCPT
+        id S230239AbjGRKul (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 18 Jul 2023 04:38:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56296 "EHLO
+        Tue, 18 Jul 2023 06:50:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231899AbjGRIir (ORCPT
+        with ESMTP id S229872AbjGRKuk (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 18 Jul 2023 04:38:47 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D6A0E6C
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jul 2023 01:38:43 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-51e55517de3so6690a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jul 2023 01:38:43 -0700 (PDT)
+        Tue, 18 Jul 2023 06:50:40 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B36294;
+        Tue, 18 Jul 2023 03:50:39 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-bff89873d34so4219213276.2;
+        Tue, 18 Jul 2023 03:50:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689669521; x=1692261521;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gsU6TWuKdYIlCvgVmbVSci4J6N6397ksoJ2ukg2zhYc=;
-        b=RoB3dmpj7e8nZ5kq+wpevK9zA82jRVt6CuI+Qt2//ICvDo+W5EsEQZ2s5RNUGA3ovE
-         hvdfgAK4CyQ3ctFgO/qPyMNozGsSat7IP156rCJrnvqmu0UvEyI3q5UAtmGOVUanPa7q
-         Uu2lwafed77U9KZ14qk+uZaRQT7jRMY6SOESTpNzcIuQxXb5IE1wHa2L75O1ke5KiAP0
-         0gBGJ9m0NfmYJSM/kkc6MGUSeakOnsFCGM4CEdDOdGbuv4v/e6DWEKSwELQiMNS8P4CU
-         Fg4nORjPDgyHPWI6bsWygxt5RR1qCLXfKMQ0KG396UNwH0F/nndmPQHSfcdavrvVY/aP
-         HKng==
+        d=gmail.com; s=20221208; t=1689677438; x=1692269438;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sTu0pAKim/A7bk9vOOQJzSwY4RU25mujed63Z040/Wc=;
+        b=M5N/eMDG1/kcW3eSG03fAOT6edP/BE9g4cI4JE49bCv1y57yRaoC68wX4AyPNN7x5h
+         Ys1FUc72GHCNLVGQgsM0T75veXDpw8SFoi2C9z+BhOLD0+whFqCWE7/D/IN446FyuNRf
+         sV6+rhj+XJ+cf8bkYuSqvTC8o09vR/llHnqUTGCJE+JMYxmkVwBYTGBcli9aL6pZukzk
+         wt1VnsRfDzBXVvIgccrUNLasqjlOjwknb3C+3UzBRm43Z5LGnrWY2l/LUSEYVUDn/iBx
+         NbXNZimTB7Ng71gyXAzE8SVGSAjraxBtDkKhTlxhk6frz5QHC+kRPnt3l8XOUa8xMm6t
+         5GhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689669521; x=1692261521;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gsU6TWuKdYIlCvgVmbVSci4J6N6397ksoJ2ukg2zhYc=;
-        b=SjrEd8k71CQct3mUtgZzAcdDMDyhCEyYO4obnzhBeZkukEcFnNr/RmBExyVVyCu/K5
-         UVjkHi82svSOEH8XBrN6EUsQzl6p6L3VJ1OlMJYSTLFf80CEw7ZStt4cfRYDg3IWk7dS
-         Da1T78dzgdXv/pqXF0Pccm8mKaHqq0fU8Qa3fkENF1+2NL0fRlQZYWfPvF+2eKu0I9ll
-         n1qSF7csLlJyBcpkKq/kewXQFUklKW1yDtpRHuY0FXcJT8lCE1OxFH3pVpEvfKNywibL
-         luuq0nbZxYaYyxqAPU7P1RJ0AdFtXl7llKBI0ya2VRMljJaFYVOujIak7dO/QeEmLre1
-         YUQg==
-X-Gm-Message-State: ABy/qLaR+AMZpFRqTd2fIZLgH6ZR81IvGvnceEpege9Kzi90jc8Efhhe
-        27TwAcAGzwqBVBm8NeBW9eegmtcA2QdhyHXskxaNQg==
-X-Google-Smtp-Source: APBJJlELxqy4p6FfNJYs0goPKVXBJfIsLgM+mD9tNuIBZTJs/qI2calR4cQTqLiotqBf9FqHEHRFKqoKNgY1LQvUBpA=
-X-Received: by 2002:a50:8e02:0:b0:51e:5773:891d with SMTP id
- 2-20020a508e02000000b0051e5773891dmr83977edw.4.1689669521576; Tue, 18 Jul
- 2023 01:38:41 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1689677438; x=1692269438;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sTu0pAKim/A7bk9vOOQJzSwY4RU25mujed63Z040/Wc=;
+        b=YNuB49feZqXfdBdVVhVbGSm+H1toyP/IbG7XoD1M95MVpRaT4LRMQUJG0zX0BojuLr
+         uhve7MhA2n+OHtYQvCBDdAt7OOO1gFohrpdE8G8eNLuNLkm1r8fKd24+YqAd1R+/wLsc
+         DJ1ODZv2x5Vks1dzPfMKduHvb+vmhuwFeiJCLudC5kTUy3ad4R4ta0ZlXe+bxfDbmcjt
+         4tznaBqPiB2wgy3o3ZEmE/4t+9/chWrChcEdrzzDg2h83vjQXlpngyIAm//AJi9vn15P
+         UJduiSws/FbNAGa6VwuVD1D39bHbNSi2R1nxExiYRw1F64L49mrZ2WEVpL+XnTQg+yQk
+         rBDQ==
+X-Gm-Message-State: ABy/qLbLuGpiii1mGGsIifyt2IFplIqHxMdQrwobZB6iu8icybURFDM1
+        UQSM1HfjYqpVJJeBCjABRWa8fBmbD1WPXR3mNdg=
+X-Google-Smtp-Source: APBJJlGNcgDopzSyU763xeq2Rqhv/iipQR9HeEhrKycYfBFUkhb9gOIE0XtXjI2boC04P9ttrOhZdAw7klVYgvj9JGY=
+X-Received: by 2002:a25:a4c4:0:b0:ce4:5f48:a24d with SMTP id
+ g62-20020a25a4c4000000b00ce45f48a24dmr2543364ybi.5.1689677438709; Tue, 18 Jul
+ 2023 03:50:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230718052752.1045248-1-ojeda@kernel.org>
-In-Reply-To: <20230718052752.1045248-1-ojeda@kernel.org>
-From:   David Gow <davidgow@google.com>
-Date:   Tue, 18 Jul 2023 16:38:28 +0800
-Message-ID: <CABVgOSk+YOdmpnBpLcx2sC3NN7amdpLf-C35EpvYmzq3SWHAqA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/7] KUnit integration for Rust doctests
-To:     Miguel Ojeda <ojeda@kernel.org>
-Cc:     Brendan Higgins <brendan.higgins@linux.dev>,
+References: <20230718052752.1045248-1-ojeda@kernel.org> <20230718052752.1045248-7-ojeda@kernel.org>
+ <CABVgOSnCY66C5wza-ZXb8c8UHg8ydbFv4U_7A14UU_gXeESKZg@mail.gmail.com>
+In-Reply-To: <CABVgOSnCY66C5wza-ZXb8c8UHg8ydbFv4U_7A14UU_gXeESKZg@mail.gmail.com>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Tue, 18 Jul 2023 12:50:27 +0200
+Message-ID: <CANiq72m08qGAa7k37A0rQNf7vvBc1o8JjSY8jNd+m2XzVOT9rw@mail.gmail.com>
+Subject: Re: [PATCH v2 6/7] rust: support running Rust documentation tests as
+ KUnit ones
+To:     David Gow <davidgow@google.com>
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Brendan Higgins <brendan.higgins@linux.dev>,
         Wedson Almeida Filho <wedsonaf@gmail.com>,
         Alex Gaynor <alex.gaynor@gmail.com>,
         Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
@@ -65,255 +69,25 @@ Cc:     Brendan Higgins <brendan.higgins@linux.dev>,
         Andreas Hindborg <nmi@metaspace.dk>,
         kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org,
         rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        patches@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="000000000000a543a40600bed734"
+        patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
---000000000000a543a40600bed734
-Content-Type: text/plain; charset="UTF-8"
+On Tue, Jul 18, 2023 at 10:17=E2=80=AFAM David Gow <davidgow@google.com> wr=
+ote:
+>
+> This is looking good and working well here.
+>
+> One super-minor thought below (the generated C file seems to be using
+> 4-space indentation, not tabs), but it's not something that worries me
+> enough to hold the patch up if there are no other issues.
 
-On Tue, 18 Jul 2023 at 13:28, Miguel Ojeda <ojeda@kernel.org> wrote:
->
-> v1: https://lore.kernel.org/rust-for-linux/20230614180837.630180-1-ojeda@kernel.org/
-> v2:
->
->   - Rebased on top of v6.5-rc1, which requires a change from
->     `kunit_do_failed_assertion` to `__kunit_do_failed_assertion` (since
->     the former became a macro) and the addition of a call to
->     `__kunit_abort` (since previously the call was done by the old
->     function which we cannot use anymore since it is a macro). (David)
->
->   - Added prerequisite patch to KUnit header to include `stddef.h` to
->     support the `KUNIT=y` case. (Reported by Boqun)
->
->   - Added comment on the purpose of `trait FromErrno`. (Martin asked
->     about it)
->
->   - Simplify code to use `std::fs::write` instead of `write!`, which
->     improves code size too. (Suggested by Alice)
->
->   - Fix copy-paste type in docs from "error" to "info" and, to make it
->     proper English, copy the `printk` docs style, i.e. from "info"
->     to "info-level message" -- and same for the "error" one. (Miguel)
->
->   - Swap `FILE` and `LINE` `static`s to keep the same order as done
->     elsewhere. (Miguel)
->
->   - Rename config option from `RUST_KERNEL_KUNIT_TEST` to
->     `RUST_KERNEL_DOCTESTS` (and update its title), so that we can use
->     the former for the "normal" (i.e. non-doctests, e.g. `#[test]` ones)
->     tests in the future. (David)
->
->   - Follow the syntax proposed for declaring test metadata in the KTAP
->     v2 spec, which may also get used for the KUnit test attributes API.
->
->     Thus, instead of "# Doctest from line {line}", use
->     "# {test_name}.location: {file}.{line}", which ideally will allow to
->     migrate to a KUnit attribute later.
->
->     This is done in all cases, i.e. when the tests succeeds, because
->     it may be useful for users running KUnit manually, or when passing
->     `--raw_output` to `kunit.py`. (David)
->
->     David: I used "location" instead of your suggested "line" alone, in
->     order to have both in a single line, which looked nice and closer to
->     the "ASSERTION FAILURE" case/line, since now we do have the original
->     file (please see below).
-
-I like "location" better, personally. The attributes work is still
-ongoing, and while there's some benefit to having "file" and "line"
-separate (it could potentially simplify some implementation on the C
-side), we'll cross that bridge when we come to it.
-
->
->   - Figure out the original line. This is done by deploying an anchor
->     so that the difference in lines between the beginning of the test
->     and the assert, in the generated file, can be computed. Then, we
->     offset the line number of the original test, which is given by
->     `rustdoc`. (developed by Boqun)
->
->   - Figure out the original file. This is done by walking the
->     filesystem, checking directory prefixes to reduce the amount of
->     combinations to check, and it is only done once per file (rather
->     than per test).
->
->     Ambiguities are detected and reported. It does limit the filenames
->     (module names) we can use, but it is unlikely we will hit it soon
->     and this should be temporary anyway until `rustdoc` provides us
->     with the real path. (Miguel)
->
->     Tested with both in-tree and `O=` builds, but I would appreciate
->     extra testing on this one, including via the `kunit.py` script.
->
-
-This seems to be working well on the existing cases under kunit.py
-here. I'll continue to play with it, but no worries on my end thus
-far.
-
->   - The three last items combined means that we now see this output even
->     for successful cases:
->
->         # rust_doctest_kernel_sync_locked_by_rs_0.location: rust/kernel/sync/locked_by.rs:28
->         ok 53 rust_doctest_kernel_sync_locked_by_rs_0
->
->     Which basically gives the user all the information they need to go
->     back to the source code of the doctest, while keeping them fairly
->     stable for bisection, and while avoiding to require users to write
->     test names manually. (David + Boqun + Miguel)
->
->     David: from what I saw in v2 of the RFC for the test attributes API,
->     the syntax still contains the test name when it is not a suite, so
->     I followed that, but if you prefer to omit it, please feel free to
->     do so (for me either way it is fine, and if this is the expected
->     attribute syntax, I guess it is worth to follow it to make migration
->     easier later on):
->
->         # location: rust/kernel/sync/locked_by.rs:28
->         ok 53 rust_doctest_kernel_sync_locked_by_rs_0
-
-Thanks: while we're still arguing a bit about exactly what the format
-of these will look like in the KUnit/KTAP attributes spec/patches,
-what you've used matches what we've been proposing so far.
-
-Let's stick with <test name>.location for now, and change it if needed
-when the attributes spec is finalised.
-
->
->   - Collected `Reviewed-by`s and `Tested-by`s, except for the main
->     commit due to the substantial changes.
->
-> Miguel Ojeda (7):
->   kunit: test-bug.h: include `stddef.h` for `NULL`
->   rust: init: make doctests compilable/testable
->   rust: str: make doctests compilable/testable
->   rust: sync: make doctests compilable/testable
->   rust: types: make doctests compilable/testable
->   rust: support running Rust documentation tests as KUnit ones
->   MAINTAINERS: add Rust KUnit files to the KUnit entry
-
-These are all (still) looking pretty good to me. If there are no
-objections, I'd like to take these into kselftest/kunit as-is and if
-we need to change anything (e.g. for consistency with attributes when
-they land), do that as a follow-up.
-
-Thanks again, Miguel, for all the work getting this going!
+Good eye! Of course, please feel free to change it when applying
+(though from a quick grep I don't see "[ ... ]" comments in commits in
+the KUnit tree). I am also happy to send a v3.
 
 Cheers,
--- David
-
->
->  MAINTAINERS                       |   2 +
->  include/kunit/test-bug.h          |   2 +
->  lib/Kconfig.debug                 |  13 ++
->  rust/.gitignore                   |   2 +
->  rust/Makefile                     |  29 ++++
->  rust/bindings/bindings_helper.h   |   1 +
->  rust/helpers.c                    |   7 +
->  rust/kernel/init.rs               |  26 +--
->  rust/kernel/kunit.rs              | 163 +++++++++++++++++++
->  rust/kernel/lib.rs                |   2 +
->  rust/kernel/str.rs                |   4 +-
->  rust/kernel/sync/arc.rs           |   9 +-
->  rust/kernel/sync/lock/mutex.rs    |   1 +
->  rust/kernel/sync/lock/spinlock.rs |   1 +
->  rust/kernel/types.rs              |   6 +-
->  scripts/.gitignore                |   2 +
->  scripts/Makefile                  |   4 +
->  scripts/rustdoc_test_builder.rs   |  72 +++++++++
->  scripts/rustdoc_test_gen.rs       | 260 ++++++++++++++++++++++++++++++
->  19 files changed, 591 insertions(+), 15 deletions(-)
->  create mode 100644 rust/kernel/kunit.rs
->  create mode 100644 scripts/rustdoc_test_builder.rs
->  create mode 100644 scripts/rustdoc_test_gen.rs
->
->
-> base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
-> --
-> 2.41.0
->
-> --
-> You received this message because you are subscribed to the Google Groups "KUnit Development" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to kunit-dev+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/kunit-dev/20230718052752.1045248-1-ojeda%40kernel.org.
-
---000000000000a543a40600bed734
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-MIIPnwYJKoZIhvcNAQcCoIIPkDCCD4wCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-ggz5MIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
-IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
-dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
-6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
-c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
-I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
-AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
-BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
-CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
-AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
-MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
-My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
-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
-9IGQSBx2i4m+hGXJpET+MEwGA1UdIARFMEMwQQYJKwYBBAGgMgEoMDQwMgYIKwYBBQUHAgEWJmh0
-dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQCMAAwgZoGCCsG
-AQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9jYS9n
-c2F0bGFzcjNzbWltZWNhMjAyMDBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
-LmNvbS9jYWNlcnQvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3J0MB8GA1UdIwQYMBaAFHzMCmjXouse
-LHIb0c1dlW+N+/JjMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20v
-Y2EvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3JsMA0GCSqGSIb3DQEBCwUAA4IBAQCRI3Z4cAidgFcv
-Usqdz765x6KMZSfg/WtFrYg8ewsP2NpCxVM2+EhPyyEQ0k0DhtzdtGoI/Ug+jdFDyCKB9P2+EPLh
-iMjMnFILp7Zs4r18ECHlvZuDZfH9m0BchXIxu5jLIuQyKUWrCRDZZEDNr510ZhhVfYSFPA8ms1nk
-jyzYFOHYQyv5IfML/3IBFKlON5OZa+V8EZYULYcNkp03DdWglafj7SXZ1/XgAbVYrC381UvrsYN8
-jndVvoa1GWwe+NVlIIK7Q3uAjV3qLEDQpaNPg1rr0oAn6YmvTccjVMqj2YNwN+RHhKNzgRGxY5ct
-FaN+8fXZhRhpv3bVbAWuPZXoMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
-R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
-MDIwAhABAz5xDls09r2CKyYRqnNbMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBU
-/Kej+GuGGXDnTLvxu6bkGrQf8lVKtiJd9KuXLwDAojAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
-MBwGCSqGSIb3DQEJBTEPFw0yMzA3MTgwODM4NDFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
-BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
-CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAJ5c6jb0s8I3r06IUNeQ5
-I/wB6k01s0I31LMAicaCzEYxjwDfkSQF9MralDbv2q8kZvvV6RQhyk6Hy024W5aaXftu/VoBbPY6
-7qG1/T93Lp3l4qYGkiwuWOahbOaJUDbA1TWl87/7NjL9ewM6Mnyg+XDXk81C4hX8ZrpzyRL6+12X
-VS20pMNSAKN3pA9KjSrGR2KmXRxC9QrZICS2ijVUcopk8HNzjMZyL9Ugc7xaEtd6k9XHoHt5eGY9
-itIviYiypuXU/1k6A8WW7HaUkktaX4D9Spl+WQTlnrvHGlptKbE1ADPbfP+8mClzxZljKBSCM8MD
-ZjIlv5LuZCBT6ecpvQ==
---000000000000a543a40600bed734--
+Miguel
