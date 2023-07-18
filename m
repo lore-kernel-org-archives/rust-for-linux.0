@@ -2,132 +2,150 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9200EC001DC
-	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Jul 2023 16:48:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 588CFEB64DC
+	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Jul 2023 17:00:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231911AbjGRQsN (ORCPT
+        id S233779AbjGRRA2 (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 18 Jul 2023 12:48:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55050 "EHLO
+        Tue, 18 Jul 2023 13:00:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230397AbjGRQsM (ORCPT
+        with ESMTP id S229481AbjGRRAP (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 18 Jul 2023 12:48:12 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AABB010CB;
-        Tue, 18 Jul 2023 09:48:11 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99313a34b2dso719702566b.1;
-        Tue, 18 Jul 2023 09:48:11 -0700 (PDT)
+        Tue, 18 Jul 2023 13:00:15 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8984E3AA9;
+        Tue, 18 Jul 2023 09:59:00 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2b700e85950so87808401fa.3;
+        Tue, 18 Jul 2023 09:59:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689698890; x=1692290890;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MxgES3BpLxLkuAQSfF376O2dgB3POpxIXa9v11XKlt8=;
-        b=GSB/0slICBQXXeMd+NGpsRB5c+0ByDReXKw+orYgYQq2RJdstoprKFbPLEkKciBdsp
-         rmEC282mW/pYkBzlUIIDtgNGg0F9kWgx4I+YNpijp55k4iIAt1eZKIsocpYsPxqg1fyh
-         Q3R/w7Ldp09ABfQD3kKSAmvKS4aXXpru4Y7lzQWl23X0Lo0rA1h7fSLxlpcb7jwHCCSD
-         Brv9LoM+swz+Q5OYqvmI6zwffricGmOIAu69PNSRun4FR0++xLrOCmoXORzQkmzenIjR
-         tNQj7yE0ewDp9mPOCOP3wmnbxNdryAMHuiHvOYh6gsTa4t8CZ/gZUb9d1X32s+9XX4I4
-         JjLg==
+        d=gmail.com; s=20221208; t=1689699489; x=1692291489;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=piv6yKOZr5H8L6Z/MbrhVqXE/T2un3gN3bixhhcUgIQ=;
+        b=sLfjoWtxXgfmoCM5uzN+QiAV7s5rvyuzl0uF1pmtgPoTK3sCb2Lg4bDEZBGyqBlmpE
+         arbksOOJ6sSphZBdsJqH9NBXCDYADqXDtveYunhtiv2SYLJ5dAZINEEco98eiY3kqqLU
+         11PLXOgsJwCPx2/Bn4Q2molGMAH1Z2YdiLXWUyNfAP+MFKRXp5oopBaboPTFTLuryl7z
+         9kAjnHQww6CHF/rP5Wte/mtC9466XO7FoJlg6qzgt5GLrE4wlwQsSmRqUBCljeL/dzoq
+         q4gP7MITlAp84eNr8F/ZzvO3iciZhmTSFJqaVEaZVDZv3/qCJwb+B3vdhU4bVTir96Mh
+         WvYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689698890; x=1692290890;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MxgES3BpLxLkuAQSfF376O2dgB3POpxIXa9v11XKlt8=;
-        b=IYRrtG7BBj24mVdlQLut4TqyprVTogp6VkCzKmiCbrBBNXAEA6jK+exj4ftV7phJXW
-         sPIsy+R/a43R0ImAtNKp4xp6mqcq+Wx2GCXWYvgJ0/KtVEMb0l7xJlCn1m0EvjUXFQWK
-         55IBbszleZIhjQBhbv2zSAZ9yrSA8opCxzEN6feGOnNKI05ysfY2grSxB7zFUJLd4Z/6
-         q7QRXit2dc9IxkR0+VkmViVdHQ5cM//w7GIkgl60sa9w7eyfUz0U2S55Mc1L5DK94Ny0
-         OO4CNaZ4iTHS2aznwSoxgaBuvpm1h7VDRePTh3wxA/5Q3tj8bmSdla12OMwbVkb/hy19
-         7niQ==
-X-Gm-Message-State: ABy/qLZR0RB8SrK8Rv5dm8anRx/xeIt76i9nMqy3LM/nK0TOfln7vARo
-        wcJkjF/fM30/MKKIfwNQRUQ=
-X-Google-Smtp-Source: APBJJlHVfpT7oRxHjFxKYYht0qM12l1bj5Q1nOdH5tkOxNUCra5xKYA87e6QCCsNRylAXwWgakq7zQ==
-X-Received: by 2002:a17:906:fe4a:b0:982:cfe2:32fe with SMTP id wz10-20020a170906fe4a00b00982cfe232femr443653ejb.63.1689698889889;
-        Tue, 18 Jul 2023 09:48:09 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1689699489; x=1692291489;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=piv6yKOZr5H8L6Z/MbrhVqXE/T2un3gN3bixhhcUgIQ=;
+        b=b53J3fpbpUx80ngCbZifNrpBlNCG1kDsAr9kftNcEwtJ9vDuI6/3tjKNqCTn4p8vDN
+         2iH2HOGljNQesqZvPkWp8FkIEAVEN04P9sWQNkcF6cnTzjfyi+3754KqcMaPS1jqOAXP
+         pBahdtm70ner/VkkOMJ6xGB1Wkp+iz3FmzUkHog4w3+XKC+5QXp6aywbeiwXPmkv1WdK
+         q1rvmaF6inPkabi611jHpglAA7S81y/E7F0kokfNLFhSxvxkEnQx4UFYyyJNbiEqgWjL
+         /xGM3UGFLIdcKWNoM7JgtHQ1ZHoh+4qSMwkn4fSBnNS03twRUncjHZhwxk8J0PC30+5j
+         q7kA==
+X-Gm-Message-State: ABy/qLaT1PdxeEkppnqwwoKO89ubZ90QRa62pcE6PzrtQ/gTE+coFbVR
+        vTO10y4PYyO7WXBArXdHQ3c=
+X-Google-Smtp-Source: APBJJlG5yyD8I8l6zeLQe93Zg8PVfJF/JTKVcMdHGj6BJR9ybouT9eDKpFSOEWA1LVLrxTx7lbfEdA==
+X-Received: by 2002:a2e:9643:0:b0:2b6:bb08:91c4 with SMTP id z3-20020a2e9643000000b002b6bb0891c4mr2392746ljh.42.1689699488508;
+        Tue, 18 Jul 2023 09:58:08 -0700 (PDT)
 Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id bn14-20020a170906c0ce00b009925cbafeaasm1228257ejb.100.2023.07.18.09.48.07
+        by smtp.gmail.com with ESMTPSA id rp25-20020a170906d97900b009786ae9ed50sm1224355ejb.194.2023.07.18.09.58.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jul 2023 09:48:09 -0700 (PDT)
+        Tue, 18 Jul 2023 09:58:07 -0700 (PDT)
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailauth.nyi.internal (Postfix) with ESMTP id ADB8D27C0054;
-        Tue, 18 Jul 2023 12:48:06 -0400 (EDT)
+        by mailauth.nyi.internal (Postfix) with ESMTP id 0F75427C0054;
+        Tue, 18 Jul 2023 12:58:06 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Tue, 18 Jul 2023 12:48:06 -0400
-X-ME-Sender: <xms:RcK2ZEQB5oiRym1RKTc6LFHCm7v0Gxlt_FbRdocm5iPe2wZ6qf-gUw>
-    <xme:RcK2ZBy-t1kWHjOtlpaCfJipx_3zXKlcA9TBrRN24IagcFHfwa7oz8l8HnZw42uMP
-    HpnHhAbOBeU68CweQ>
-X-ME-Received: <xmr:RcK2ZB1yOcnDJFoirqM9KE377ZmM7BHe31H-ZaI_LY-YvJhqzWj3QrFHR8g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgeeggddutdduucetufdoteggodetrfdotf
+  by compute6.internal (MEProxy); Tue, 18 Jul 2023 12:58:06 -0400
+X-ME-Sender: <xms:ncS2ZOoddD4MhECzZzMmALo3k_mSuMVLeqj8Iw6m9j9ofRCLZVDQ-g>
+    <xme:ncS2ZMoU_7FqoUBAZNS_Wa2ZBOItFbr7PmJYvyZmpoVQqJRCVcG_RQCZEgXmndIbS
+    Ph_cRRLjHjUkemqvg>
+X-ME-Received: <xmr:ncS2ZDOu4UPtZkmTvGLPwQd-2pY4aVidryZbJeIY1a2xxMwxlwJjNo9zGuw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgeeggddutdefucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
-    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
-    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
-    igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:RcK2ZIAQm-dJWH5olI7z0f3vA6BqIffn9i86VDFjCNl8lT230ty2UA>
-    <xmx:RcK2ZNjKHGBgrDcIimePN4BiPJXhkD3afhI2WhPJNli2kJUKhGpnag>
-    <xmx:RcK2ZEoKh5oX7uSvujEEOzPxajdj7w0wOfW-QQuiR1ZyXp4x2ZrDfQ>
-    <xmx:RsK2ZOYF2dFP5IZWCzcCuYhAvbbkpgh5-ICuEizrWA4RnTa5TF1EaQ>
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeortddttddunecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhepvdekueeuleeigfejffeiieefudejjeekkeejjefgfedvtdekfffgvdfh
+    uefghfetnecuffhomhgrihhnpehruhhsthdqfhhorhdqlhhinhhugidrtghomhdplhhptg
+    drvghvvghnthhspdihohhuthhusggvrdgtohhmpdhkrghnghhrvghjohhsrdgtohhmpdhk
+    vghrnhgvlhdrohhrghdpghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
+    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:ncS2ZN5pgL-baAFhBQB5R8_BurpKGxSLmCpsqOUmx8kEkKIfIU14RA>
+    <xmx:ncS2ZN5LtkFr5RKnMGhGo7COHTaJO288OW1pDa-DF3rGYBdAYFe4pQ>
+    <xmx:ncS2ZNhdVrgVyU4fat3nOrD9zint1eAcL4fuFfqI9QRWfbRg5ch58w>
+    <xmx:nsS2ZKyR30zW5LJwXpSeJKWjkwySGO7ZRewaiemCvjrXrkAUTIbqgw>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 18 Jul 2023 12:48:04 -0400 (EDT)
-Date:   Tue, 18 Jul 2023 09:48:01 -0700
+ 18 Jul 2023 12:58:04 -0400 (EDT)
+Date:   Tue, 18 Jul 2023 09:58:01 -0700
 From:   Boqun Feng <boqun.feng@gmail.com>
-To:     Gary Guo <gary@garyguo.net>
-Cc:     Alice Ryhl <aliceryhl@google.com>, lina@asahilina.net,
-        alex.gaynor@gmail.com, alyssa@rosenzweig.io, asahi@lists.linux.dev,
-        benno.lossin@proton.me, bjorn3_gh@protonmail.com, daniel@ffwll.ch,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, marcan@marcan.st, masahiroy@kernel.org,
-        nathan@kernel.org, ndesaulniers@google.com, nicolas@fjasle.eu,
-        ojeda@kernel.org, rust-for-linux@vger.kernel.org,
-        sven@svenpeter.dev, trix@redhat.com, wedsonaf@gmail.com
-Subject: Re: [PATCH RFC 00/11] rust: Implicit lock class creation & Arc
- Lockdep integration
-Message-ID: <ZLbCQX4uS5kk8U1q@boqun-archlinux>
-References: <f974e5a4-1211-5ad7-4864-f3e210499e5e@asahilina.net>
- <20230714135926.382695-1-aliceryhl@google.com>
- <20230715152554.5b585d22.gary@garyguo.net>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev
+Subject: Re: [PATCH] MAINTAINERS: add Andreas Hindborg as Rust reviewer
+Message-ID: <ZLbEmdMcAjQUmOFF@boqun-archlinux>
+References: <20230718054426.1048583-1-ojeda@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20230715152554.5b585d22.gary@garyguo.net>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230718054426.1048583-1-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Sat, Jul 15, 2023 at 03:25:54PM +0100, Gary Guo wrote:
-[...]
-> > > I don't think the fallibility is an issue. Lockdep is a debugging tool, 
-> > > and it doesn't have to handle all possible circumstances perfectly. If 
-> > > you are debugging normal lock issues you probably shouldn't be running 
-> > > out of RAM, and if you are debugging OOM situations the lock keys would 
-> > > normally have been created long before you reach an OOM situation, since 
-> > > they would be created the first time a relevant lock class is used. More 
-> > > objects of the same class don't cause any more allocations. And the code 
-> > > has a fallback for the OOM case, where it just uses the Location object 
-> > > as a static lock class. That's not ideal and degrades the quality of the 
-> > > lockdep results, but it shouldn't completely break anything.  
-> > 
-> > If you have a fallback when the allocation fails, that helps ...
+On Tue, Jul 18, 2023 at 07:44:25AM +0200, Miguel Ojeda wrote:
+> Andreas has been involved with the Rust for Linux project for more than
+> a year now. He has been primarily working on the Rust NVMe driver [1],
+> presenting it in several places (such as LPC [2][3] and Kangrejos [4]).
 > 
-> I am pretty sure lockdep needs to do some internal allocation anyway
-> because only address matters for lock class keys. So some extra
-> allocation probably is fine...
+> In addition, he recently submitted the Rust null block driver [5] and
+> has been reviewing patches in the mailing list for some months.
 > 
+> Thus add him to the `RUST` entry as reviewer.
+> 
+> Link: https://rust-for-linux.com/nvme-driver [1]
+> Link: https://lpc.events/event/16/contributions/1180/attachments/1017/1961/deck.pdf [2]
+> Link: https://www.youtube.com/watch?v=BwywU1MqW38 [3]
+> Link: https://kangrejos.com/A%20Linux%20(PCI)%20NVMe%20Driver%20in%20Rust.pdf [4]
+> Link: https://lore.kernel.org/rust-for-linux/20230503090708.2524310-1-nmi@metaspace.dk/ [5]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Lockdep uses a few static arrays for its own allocation, but doesn't use
-"external" allocatin (i.e. kalloc() and its friends. IIUC, originally
-this has to do in this way to avoid recursive calls like:
-lockdep->slab->lockdep, but now lockdep has a recursion counter, that's
-not a problem any more. However, it's still better that lockdep can work
-on its own without relying on other components.
+Acked-by: Boqun Feng <boqun.feng@gmail.com>
+
+Welcome!
 
 Regards,
 Boqun
+
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 3be1bdfe8ecc..f2f0426258f3 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18542,6 +18542,7 @@ R:	Boqun Feng <boqun.feng@gmail.com>
+>  R:	Gary Guo <gary@garyguo.net>
+>  R:	Björn Roy Baron <bjorn3_gh@protonmail.com>
+>  R:	Benno Lossin <benno.lossin@proton.me>
+> +R:	Andreas Hindborg <a.hindborg@samsung.com>
+>  L:	rust-for-linux@vger.kernel.org
+>  S:	Supported
+>  W:	https://github.com/Rust-for-Linux/linux
+> 
+> base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+> -- 
+> 2.41.0
+> 
