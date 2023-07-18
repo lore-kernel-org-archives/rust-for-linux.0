@@ -2,87 +2,120 @@ Return-Path: <rust-for-linux-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 596FBEB64DA
-	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Jul 2023 15:33:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 755AFC001DC
+	for <rust-for-linux@archiver.kernel.org>; Tue, 18 Jul 2023 16:43:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231855AbjGRPdZ (ORCPT
+        id S230367AbjGRQnJ (ORCPT
         <rfc822;rust-for-linux@archiver.kernel.org>);
-        Tue, 18 Jul 2023 11:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33158 "EHLO
+        Tue, 18 Jul 2023 12:43:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231582AbjGRPdY (ORCPT
+        with ESMTP id S230167AbjGRQnI (ORCPT
         <rfc822;rust-for-linux@vger.kernel.org>);
-        Tue, 18 Jul 2023 11:33:24 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 321651BC9;
-        Tue, 18 Jul 2023 08:32:58 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-cc7863e7b82so3812211276.0;
-        Tue, 18 Jul 2023 08:32:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689694361; x=1692286361;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v0Ew4xDSq7MPi86/w9VZGABdvX7HcWbeJ7xpN4f/T0Q=;
-        b=FmqGVJCml02/ilNevpUFn/TQWqjlykL92VfRnD+cKehmvmOsbBdpW2grMoNXm2reHp
-         1EjtfCmx1n5HLtCIRw+z6znkwfps/sMFwItmDxxO+5ZUiyTiMRQKGAhC6pfxpm/Bs7mZ
-         fG896h10jrFADrHG9duWLAljqr7LMuZfMKlj1HBq3+kqupzZ50UFG185bzDknuxDa/lj
-         tbAxLimD/oVh4LgCeRKhRcqDYU0cLIHVw/jRsK5+iN4uYcPrLA1KXGHQ5Tkb5fm0qRUf
-         naWAXSMJYYiffHZ6tRo1+6JBtN75MN0Sw8ag83GAGEk6MSNcAeG1zRb0l3bepoW0fNPZ
-         7maw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689694361; x=1692286361;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v0Ew4xDSq7MPi86/w9VZGABdvX7HcWbeJ7xpN4f/T0Q=;
-        b=ji9FnvnBjmavb8FCQwBNypAyx/jF5O/fHoda65tH29Z2pG4SjpLw/E/mhCPOJaVZul
-         1RofyDSb5TncmtZgMSrX6gCPaApSH/NP+AxFN32n+wC8qDpZiYZkqx1fILEb2KhverME
-         UQQNL8mMSmJ1xe4Le1olUvrwgDozxT3pSNggprmkzPsCFCSdaAtWNxRtR/8TLubrtCw0
-         3GgqOsFu+s830SzHZdcrxJwwsKzZvEIP8hj44O+LW0oCjdiwj+qqow5S+FAzZU/+7eeI
-         0mZRVW4VQ9i5I9iNEzLk+HCXfwP5i6id9bGp/APQRRJzdFGTodL0EwUqF81/r+FEA5Ew
-         y94g==
-X-Gm-Message-State: ABy/qLb9bvEpQXpYVgdDkp0pRGaAg6rLEVUERI2bexGL+/NSAeYS09E3
-        gh1ZZo56yy8aVEG2kpWEIqxBGPvAwzhenOGyowM=
-X-Google-Smtp-Source: APBJJlH0ne69dDk1mq0QwkUUsLJPBFfYY2V3/WGOX0if93HKy07/Z0XGrjiTXhKPcqu08pWmPMdFFF2957u984MsT60=
-X-Received: by 2002:a25:aba1:0:b0:c6f:db67:cbf7 with SMTP id
- v30-20020a25aba1000000b00c6fdb67cbf7mr95826ybi.16.1689694361102; Tue, 18 Jul
- 2023 08:32:41 -0700 (PDT)
+        Tue, 18 Jul 2023 12:43:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5398610C;
+        Tue, 18 Jul 2023 09:43:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5DB16167A;
+        Tue, 18 Jul 2023 16:43:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D878C433C8;
+        Tue, 18 Jul 2023 16:43:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689698586;
+        bh=6GmurqX2i9JM34BQa9X30FmQHtnrur89oQ3WxbydzJo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PM2FYJSNOlfl7ajifO/Zb7gliIo6DLh1mRbpPrgh3TRoUhoZ6rlj70Lej34Ftn+AG
+         NytoIB0ziTr1RxHoweF9CvObomaiakj6hnRjYm3NUbcmMWRfNJ7HtyDClA2v5P8XZm
+         X4xajyR8KQeor6hPjr+IlvLImDEm6Hm3N4frcSeBH5QhHXH95p6YgWrjfyUqkej+RE
+         21SNU0aMQWNo+K01+12GvN0Up50PZYIR9v23LinCvoOrGh8w916WIZ3kQjRQbix0Ou
+         ld8g8iYvORM3N/IGSc0R/KuItkXyIpRuoiEhI1S6Q8VaNrBIBdYw2tqjia3OBybawT
+         R4nsCEcyw1haA==
+Date:   Tue, 18 Jul 2023 09:43:03 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        Raphael Nestler <raphael.nestler@gmail.com>,
+        Andrea Righi <andrea.righi@canonical.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] kbuild: rust: avoid creating temporary files
+Message-ID: <20230718164303.GB1279879@dev-arch.thelio-3990X>
+References: <20230718055235.1050223-1-ojeda@kernel.org>
 MIME-Version: 1.0
-References: <20230717151624.3470714-1-carlos.bilbao@amd.com>
- <20230717151624.3470714-3-carlos.bilbao@amd.com> <CANiq72=jiEqYfEvcRAxXsm1BCODnpxmWZOmbGB_YwM=pUGYEeA@mail.gmail.com>
- <88eefdcf-5398-97bc-161c-78f056c682a0@amd.com>
-In-Reply-To: <88eefdcf-5398-97bc-161c-78f056c682a0@amd.com>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 18 Jul 2023 17:32:30 +0200
-Message-ID: <CANiq72nTYGrHCCGmhavHU=qTs4XJoXsgTf3KgdrjEnuLjy4W9A@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] docs: Integrate rustdoc generation into htmldocs
-To:     Carlos Bilbao <carlos.bilbao@amd.com>
-Cc:     corbet@lwn.net, ojeda@kernel.org, jani.nikula@linux.intel.com,
-        rdunlap@infradead.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, konstantin@linuxfoundation.org,
-        Akira Yokosawa <akiyks@gmail.com>,
-        rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230718055235.1050223-1-ojeda@kernel.org>
 Precedence: bulk
 List-ID: <rust-for-linux.vger.kernel.org>
 X-Mailing-List: rust-for-linux@vger.kernel.org
 
-On Tue, Jul 18, 2023 at 3:54=E2=80=AFPM Carlos Bilbao <carlos.bilbao@amd.co=
-m> wrote:
->
-> The previous patch works without this, the generated HTML will show in th=
-e
-> Rust index:
->
->   This documentation does not include rustdoc generated information.
+On Tue, Jul 18, 2023 at 07:52:35AM +0200, Miguel Ojeda wrote:
+> `rustc` outputs by default the temporary files (i.e. the ones saved
+> by `-Csave-temps`, such as `*.rcgu*` files) in the current working
+> directory when `-o` and `--out-dir` are not given (even if
+> `--emit=x=path` is given, i.e. it does not use those for temporaries).
+> 
+> Since out-of-tree modules are compiled from the `linux` tree,
+> `rustc` then tries to create them there, which may not be accessible.
+> 
+> Thus pass `--out-dir` explicitly, even if it is just for the temporary
+> files.
+> 
+> Reported-by: Raphael Nestler <raphael.nestler@gmail.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1015
+> Reported-by: Andrea Righi <andrea.righi@canonical.com>
+> Tested-by: Raphael Nestler <raphael.nestler@gmail.com>
+> Tested-by: Andrea Righi <andrea.righi@canonical.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-I see, thanks, then it does not matter much. I guess you put it in the
-first commit because the docs were moved to the URL the docs talk
-about, but it still means we are using a tag that does not yet exist,
-so I would have put the "link/URL feature" as a separate commit
-(together with the creation of the tag).
+Seems reasonable to me.
 
-Cheers,
-Miguel
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+
+> ---
+>  scripts/Makefile.build | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 6413342a03f4..82e3fb19fdaf 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -264,6 +264,9 @@ $(obj)/%.lst: $(src)/%.c FORCE
+>  
+>  rust_allowed_features := new_uninit
+>  
+> +# `--out-dir` is required to avoid temporaries being created by `rustc` in the
+> +# current working directory, which may be not accessible in the out-of-tree
+> +# modules case.
+>  rust_common_cmd = \
+>  	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
+>  	-Zallow-features=$(rust_allowed_features) \
+> @@ -272,7 +275,7 @@ rust_common_cmd = \
+>  	--extern alloc --extern kernel \
+>  	--crate-type rlib -L $(objtree)/rust/ \
+>  	--crate-name $(basename $(notdir $@)) \
+> -	--emit=dep-info=$(depfile)
+> +	--out-dir $(dir $@) --emit=dep-info=$(depfile)
+>  
+>  # `--emit=obj`, `--emit=asm` and `--emit=llvm-ir` imply a single codegen unit
+>  # will be used. We explicitly request `-Ccodegen-units=1` in any case, and
+> 
+> base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+> -- 
+> 2.41.0
+> 
