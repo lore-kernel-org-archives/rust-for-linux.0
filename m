@@ -1,28 +1,31 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D89125AD
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 14:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35874125AD
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 14:20:34 +0000 (UTC)
 Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 614031726
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 07:20:24 -0700 (PDT)
-Date: Wed, 19 Jul 2023 14:20:09 +0000
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DECE31723
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 07:20:29 -0700 (PDT)
+Date: Wed, 19 Jul 2023 14:20:23 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1689776421; x=1690035621;
-	bh=5SJbhv9m6kCeMleleWVbb/UYtgrGWulTiGHG+cg8WBA=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=kmhDij1pQxsoRyCm1+cSe+7Q+VQOSCyh9ffpcou+mSBIgZGC9goGmf41pthvwTrIS
-	 rqx2BAUhQGUYlxKM/ThHc8crn7GiKVaY3Nry2seX6cXum3uH38bDEOUDsCdjuVyibK
-	 MFg4fMLVSc5cg3WkLKqxMNdMiTrHV+YfY4JT8GCsEvFZokXW+iFN2vidrcTR/7e2GZ
-	 ozbHJCXxc7VNKDjXApk1MTKRexz3JGxKcG6ysoJ0If6Krg5UWWi2nYRf/I/5aX1Q14
-	 O/W87QFHNXQPVSEtICNhLIskDXcdP75P7by+5rNZ/XgBk+ByB6z1GPebrZkyxmcHOW
-	 UhJagI3r77Olg==
+	s=protonmail; t=1689776427; x=1690035627;
+	bh=183b5PAZnhFCxp/oOLo9nlLEFrHHHEv1Gt8/V3juWA8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=ZkWznvewtTc2Zfd3W9Yvv2Bupu9uWWK5mPAieCwdpT0tqsvRT3KXVvtCpyLAO7ZR+
+	 6+UWtIFCcjsAAzWicXpOaGb8xE7Ww6gFXFeiXYLopba2JdIeb3LaAjUwGGb/8835ch
+	 6039ckKVp4EyDHKBC+SEf1q6NqCfQ3YqjbPgWmKiTZ2iVthcxecakVZVYeuROeqMqW
+	 NXeKiDd+fYLKUYoVx45rnH8MGjtNkAVI3Q7yU6XYN/r+pRQocdATKzA1rJk11mTsbc
+	 v2WAlt0bzKpD3urZQ+ZW/vDPQJpYLYAXZQGOTUxXpvd+2adqcMjSku2ZJwL3zR5VZu
+	 yj4vsYo9NjI1A==
 To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 00/12] Quality of life improvements for pin-init
-Message-ID: <20230719141918.543938-1-benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Asahi Lina <lina@asahilina.net>
+Subject: [PATCH v2 02/12] rust: add derive macro for `Zeroable`
+Message-ID: <20230719141918.543938-3-benno.lossin@proton.me>
+In-Reply-To: <20230719141918.543938-1-benno.lossin@proton.me>
+References: <20230719141918.543938-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -40,54 +43,168 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-This patch series adds several improvements to the pin-init api:
-- a derive macro for the `Zeroable` trait,
-- makes hygiene of fields in initializers behave like normal struct
-  initializers would behave,
-- prevent stackoverflow without optimizations
-- add `..Zeroable::zeroed()` syntax to zero missing fields.
-- support arbitrary paths in initializer macros
+Add a derive proc-macro for the `Zeroable` trait. The macro supports
+structs where every field implements the `Zeroable` trait. This way
+`unsafe` implementations can be avoided.
 
-This is the second version of this patch series.
-* v1: https://lore.kernel.org/rust-for-linux/20230624092330.157338-1-benno.=
-lossin@proton.me/
+The macro is split into two parts:
+- a proc-macro to parse generics into impl and ty generics,
+- a declarative macro that expands to the impl block.
 
-Changes not present on modified commits:
+Suggested-by: Asahi Lina <lina@asahilina.net>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+---
 v1 -> v2:
-- implement `Zeroable` for `Opaque`,
-- remove blanket impl of `PinInit` for `Init` and make it a supertrait
-  instead,
-- add `{pin_}chain` functions to execute code after initialization,
-- update the example macro expansion
+* fix Zeroable path
+* add Reviewed-by from Gary and Bj=C3=B6rn
 
-Benno Lossin (12):
-  rust: init: consolidate init macros
-  rust: add derive macro for `Zeroable`
-  rust: init: make guards in the init macros hygienic
-  rust: init: wrap type checking struct initializers in a closure
-  rust: init: make initializer values inaccessible after initializing
-  rust: init: add `..Zeroable::zeroed()` syntax for zeroing all missing
-    fields
-  rust: init: Add functions to create array initializers
-  rust: init: add support for arbitrary paths in init macros
-  rust: init: implement Zeroable for Opaque<T>
-  rust: init: make `PinInit<T, E>` a supertrait of `Init<T, E>`
-  rust: init: add `{pin_}chain` functions to `{Pin}Init<T, E>`
-  rust: init: update expanded macro explanation
-
- rust/kernel/init.rs            | 633 ++++++++++++++-------------------
- rust/kernel/init/__internal.rs |  39 +-
- rust/kernel/init/macros.rs     | 510 +++++++++++++++++++++++---
- rust/kernel/prelude.rs         |   2 +-
- rust/kernel/types.rs           |   2 +
- rust/macros/lib.rs             |  20 ++
- rust/macros/quote.rs           |   6 +
- rust/macros/zeroable.rs        |  25 ++
- 8 files changed, 784 insertions(+), 453 deletions(-)
+ rust/kernel/init/macros.rs | 28 ++++++++++++++++++++++++++++
+ rust/kernel/prelude.rs     |  2 +-
+ rust/macros/lib.rs         | 20 ++++++++++++++++++++
+ rust/macros/quote.rs       |  6 ++++++
+ rust/macros/zeroable.rs    | 25 +++++++++++++++++++++++++
+ 5 files changed, 80 insertions(+), 1 deletion(-)
  create mode 100644 rust/macros/zeroable.rs
 
-
-base-commit: 6946437838b0ec7c976252f5d1872d4d8b679515
+diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
+index fbaebd34f218..c50429173fc7 100644
+--- a/rust/kernel/init/macros.rs
++++ b/rust/kernel/init/macros.rs
+@@ -1213,3 +1213,31 @@ macro_rules! __init_internal {
+         );
+     };
+ }
++
++#[doc(hidden)]
++#[macro_export]
++macro_rules! __derive_zeroable {
++    (parse_input:
++        @sig(
++            $(#[$($struct_attr:tt)*])*
++            $vis:vis struct $name:ident
++            $(where $($whr:tt)*)?
++        ),
++        @impl_generics($($impl_generics:tt)*),
++        @ty_generics($($ty_generics:tt)*),
++        @body({
++            $(
++                $(#[$($field_attr:tt)*])*
++                $field:ident : $field_ty:ty
++            ),* $(,)?
++        }),
++    ) =3D> {
++        // SAFETY: every field type implements `Zeroable` and padding byte=
+s may be zero.
++        #[automatically_derived]
++        unsafe impl<$($impl_generics)*> $crate::init::Zeroable for $name<$=
+($ty_generics)*>
++        where
++            $($field_ty: $crate::init::Zeroable,)*
++            $($($whr)*)?
++        {}
++    };
++}
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index c28587d68ebc..ae21600970b3 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -18,7 +18,7 @@
+ pub use alloc::{boxed::Box, vec::Vec};
+=20
+ #[doc(no_inline)]
+-pub use macros::{module, pin_data, pinned_drop, vtable};
++pub use macros::{module, pin_data, pinned_drop, vtable, Zeroable};
+=20
+ pub use super::build_assert;
+=20
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index b4bc44c27bd4..fd7a815e68a8 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -11,6 +11,7 @@
+ mod pin_data;
+ mod pinned_drop;
+ mod vtable;
++mod zeroable;
+=20
+ use proc_macro::TokenStream;
+=20
+@@ -343,3 +344,22 @@ pub fn paste(input: TokenStream) -> TokenStream {
+     paste::expand(&mut tokens);
+     tokens.into_iter().collect()
+ }
++
++/// Derives the [`Zeroable`] trait for the given struct.
++///
++/// This can only be used for structs where every field implements the [`Z=
+eroable`] trait.
++///
++/// # Examples
++///
++/// ```rust
++/// #[derive(Zeroable)]
++/// pub struct DriverData {
++///     id: i64,
++///     buf_ptr: *mut u8,
++///     len: usize,
++/// }
++/// ```
++#[proc_macro_derive(Zeroable)]
++pub fn derive_zeroable(input: TokenStream) -> TokenStream {
++    zeroable::derive(input)
++}
+diff --git a/rust/macros/quote.rs b/rust/macros/quote.rs
+index dddbb4e6f4cb..b76c198a4ed5 100644
+--- a/rust/macros/quote.rs
++++ b/rust/macros/quote.rs
+@@ -124,6 +124,12 @@ macro_rules! quote_spanned {
+         ));
+         quote_spanned!(@proc $v $span $($tt)*);
+     };
++    (@proc $v:ident $span:ident ; $($tt:tt)*) =3D> {
++        $v.push(::proc_macro::TokenTree::Punct(
++                ::proc_macro::Punct::new(';', ::proc_macro::Spacing::Alone=
+)
++        ));
++        quote_spanned!(@proc $v $span $($tt)*);
++    };
+     (@proc $v:ident $span:ident $id:ident $($tt:tt)*) =3D> {
+         $v.push(::proc_macro::TokenTree::Ident(::proc_macro::Ident::new(st=
+ringify!($id), $span)));
+         quote_spanned!(@proc $v $span $($tt)*);
+diff --git a/rust/macros/zeroable.rs b/rust/macros/zeroable.rs
+new file mode 100644
+index 000000000000..cddb866c44ef
+--- /dev/null
++++ b/rust/macros/zeroable.rs
+@@ -0,0 +1,25 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use crate::helpers::{parse_generics, Generics};
++use proc_macro::TokenStream;
++
++pub(crate) fn derive(input: TokenStream) -> TokenStream {
++    let (
++        Generics {
++            impl_generics,
++            ty_generics,
++        },
++        mut rest,
++    ) =3D parse_generics(input);
++    // This should be the body of the struct `{...}`.
++    let last =3D rest.pop();
++    quote! {
++        ::kernel::__derive_zeroable!(
++            parse_input:
++                @sig(#(#rest)*),
++                @impl_generics(#(#impl_generics)*),
++                @ty_generics(#(#ty_generics)*),
++                @body(#last),
++        );
++    }
++}
 --=20
 2.41.0
 
