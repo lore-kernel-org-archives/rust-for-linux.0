@@ -1,75 +1,89 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2476B14011
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 22:47:03 +0000 (UTC)
-Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762ABE65;
-	Thu, 20 Jul 2023 15:47:00 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id D7842733;
-	Thu, 20 Jul 2023 22:46:59 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net D7842733
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1689893220; bh=tFdI7CTQuCic0jHrfVESxCPoArF8aqckP43aHZq4XRw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=fy1XrfyRidnLQ/BIZvEKZPSlS2qvjsnFuWVdcmAUTlJ73zRlVXvkC2/GGT0qIlb8A
-	 BO0mcvJ1Cm7GEJd7D+CGh75PDlC1j5W+QK3/rq3wbjZXILsU3uCHOoYxKisR8pYwwO
-	 w1tjk27BYl9lzMU23BRUAEWvIfTeQUIlN49kspM42fCbqV2iebDnkpapQy6kvqcRB3
-	 cSwRJnpyE3uYsI9w2mHSebP0N0hHnOEzUoPufRUAPseBiVKecruxVzPQ3PU1pJBRtl
-	 11SlVMj6a2924ZkpGxTpciyRc0/3gDC1A5f1mEfBr1h2KLZTuvNFXIHxETyhnLH+hs
-	 EvlYgDcFjV2kw==
-From: Jonathan Corbet <corbet@lwn.net>
-To: Carlos Bilbao <carlos.bilbao@amd.com>, ojeda@kernel.org
-Cc: jani.nikula@linux.intel.com, rdunlap@infradead.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- konstantin@linuxfoundation.org, rust-for-linux@vger.kernel.org, Carlos
- Bilbao <carlos.bilbao@amd.com>
-Subject: Re: [PATCH v8 0/2] docs: Integrate rustdoc into Rust documentation
-In-Reply-To: <20230718151534.4067460-1-carlos.bilbao@amd.com>
-References: <20230718151534.4067460-1-carlos.bilbao@amd.com>
-Date: Thu, 20 Jul 2023 16:46:59 -0600
-Message-ID: <87mszqfbfg.fsf@meer.lwn.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD3A182
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Jul 2023 00:25:04 +0000 (UTC)
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD33F270D;
+	Thu, 20 Jul 2023 17:25:00 -0700 (PDT)
+Received: by mail-oi1-x236.google.com with SMTP id 5614622812f47-3a36b52b4a4so896903b6e.1;
+        Thu, 20 Jul 2023 17:25:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689899100; x=1690503900;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1aGnwCQHIk14nq04vsYycTNcRKlcwdnAMCYE+vJJxd8=;
+        b=gua5P85x7N8S9ZuzM9iGv8p0L5I3/NhFhu5rIC57RTd2OaA7Ligtz8ochAqwtiqMR5
+         5SDwMiYItyx+rpF1wAAw1LXxc+FFA9TKsF7wxqgEa27gkZ4S2d/f5q452vFjrpiel5ln
+         /ubzrw6JRbek925oi+GOG/IIVAOtbqN2t8mlqwcM9q72lPMzvac9l6eQPelK4j5POaFl
+         n5vWBUewRBrcqJutcxBWwXufq7KI2uhPU8L5AWawfEbd6w6kiyyu5ynUD70q/SYwb/hu
+         fFRedKF5XeMGq8ZJPcq8qhG3rsMw0gdQQG7iQ6S/9NibiFU95fnSX41fSdBNL31EZhBU
+         A5vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689899100; x=1690503900;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1aGnwCQHIk14nq04vsYycTNcRKlcwdnAMCYE+vJJxd8=;
+        b=SyP7MAVgmdtc0W5OsV+PelxQmGrinkhuOxFSPRs8XMcAyQHgf6LZrNBB4tQZN8o3TC
+         LDZx7j70XAFmNEP7VKo5By6LgcPGqXrtCEJgu071nr9kFVfsGM1m/zEU2IjtUvxCXQ6t
+         KYGIPmXzlLlw0MGlV3kFSccG4PBg8vlZK+hxjp8OtIQo/AOFFOMdKLg5O6p6YwAN2tnV
+         UawCDAqFs6ot6SQP0G0t5SPjkstixl6JScQ/phY4oY/CgENH3VQjo0CpS+XJHG5ocNS+
+         YsDq5hlXONUxjKMWCr8070IL3omydSE4dLYCxrnwM5esnDVrBSmJgdI99y07qkxcLx4D
+         nxRw==
+X-Gm-Message-State: ABy/qLZE0PoZ2csYofcw7QdJbl+kJpoxAwQ+ec1JtycUdUijp6ZaLyoO
+	0XyQm3gYSlz432Cc5SQHD1w=
+X-Google-Smtp-Source: APBJJlEh9c/kQzxPjHbVrfQNHrqIxhlrxv3iPueOhYyz/CIbuUHkL6qmzkTMXEscczBc5Lw+NF7SMg==
+X-Received: by 2002:a05:6808:4d2:b0:3a4:1531:70b4 with SMTP id a18-20020a05680804d200b003a4153170b4mr303821oie.15.1689899100081;
+        Thu, 20 Jul 2023 17:25:00 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id t25-20020a056808159900b0039ee1de4e6esm928210oiw.38.2023.07.20.17.24.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Jul 2023 17:24:59 -0700 (PDT)
+Message-ID: <f9b06056-ea24-c19b-def7-c84c3c089732@gmail.com>
+Date: Wed, 19 Jul 2023 15:37:38 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/12] rust: init: consolidate init macros
+Content-Language: en-US
+To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230719141918.543938-1-benno.lossin@proton.me>
+ <20230719141918.543938-2-benno.lossin@proton.me>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230719141918.543938-2-benno.lossin@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_24_48,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+	autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Carlos Bilbao <carlos.bilbao@amd.com> writes:
+On 7/19/23 11:20, Benno Lossin wrote:
+> Merges the implementations of `try_init!` and `try_pin_init!`. These two
+> macros are very similar, but use different traits. The new macro
+> `__init_internal!` that is now the implementation for both takes these
+> traits as parameters.
+> 
+> This change does not affect any users, as no public API has been
+> changed, but it should simplify maintaining the init macros.
+> 
+> Reviewed-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> ---
+> [...]
 
-> Include HTML output generated with rustdoc into the Linux kernel
-> documentation on Rust.
->
-> Carlos Bilbao:
->  docs: Move rustdoc output, cross-reference it
->  docs: Integrate rustdoc generation into htmldocs
-
-So I've been messing with this a bit, trying the various combinations.
-
-- With no .config file, it behaves as it always did - thanks.
-
-- With CONFIG_RUST=y I get the rustdocs, as expected.  There is a time
-  penalty of about 5%, which is unfortunate, but that's the cost of
-  progress, I guess.
-
-- Setting CONFIG_RUST=n led to a crash with make complaining:
-  "No rule to make target 'rustdoc'".  That isn't something I have been
-  able to reproduce, though, so I have no idea what happened there; have
-  you ever seen this?
-
-Other than that one bit of strangeness, I think this is about ready to
-be applied.
-
-Thanks,
-
-jon
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
