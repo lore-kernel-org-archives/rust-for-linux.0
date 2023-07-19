@@ -1,83 +1,73 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F04C138
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 20:01:37 +0000 (UTC)
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45E9292;
-	Wed, 19 Jul 2023 13:01:35 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-cb4de3bd997so1795129276.1;
-        Wed, 19 Jul 2023 13:01:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7265E7F2
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 21:07:35 +0000 (UTC)
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 952FD1FCD
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 14:07:32 -0700 (PDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id 6a1803df08f44-635eb5b0320so719556d6.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 14:07:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689796894; x=1690401694;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=stu+6/j3HbnPj0KRDFW+4OZ7RsJiQvUoKxDl73j6SMY=;
-        b=cY5xHQ7xgHbVGZF6SIYA44/9ljfF0XdAsQA/RJujiVeWYdI9LdiiQGqhJiwRyHLNCl
-         HE/tZn8c1YNS50/ZxnW9EUBjhznIuwFxFeEDD/cNsRKzKxSfVO9+N+J7GRkleuij0FP7
-         mfMbsqJe5YNxup7OzbRysbg7/O3P85ErksLhD+68yquOIg+3QTagsbdukzI39R1DDfZ1
-         v14cXn10OpAdbgX6W6m/7QWfVT7fbBrBoqlfigUFGCXSLhg2e/PH8FRMySp0dlG0mKUL
-         9wHgS5HdT200ELRgeGcuAmc8Ahi57LBvOlClPmMZlh0x194ibBPktQqbI5FIqes0/qGV
-         9ZrQ==
+        d=linuxfoundation.org; s=google; t=1689800851; x=1690405651;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zSlqE3bh3FO1VpHUNUmPePyMS/en0oYUpW8AkSfg6pg=;
+        b=FZhT0HKJARNdb/dWvTW63CykdIIuwhphOcyO5OHU4WeH2H7tLrqZebyPeZWWc8+2ve
+         qGyEVnC1P8bm4X2Xisg4xBsGFkDFuclUUKXU3yNaK99peC8u5YeKEvCyc8vCu2wtXV2x
+         Km3svFyrWxDhzld1DR6KI0wKoQuQUAelyD+PQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689796894; x=1690401694;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=stu+6/j3HbnPj0KRDFW+4OZ7RsJiQvUoKxDl73j6SMY=;
-        b=fFVH6Y59EUMIiBD6p9HjhBOFcZYC4twdUBA+uf2YJH92W6i3D1wMQoL8mhbNi7ci4j
-         1D7mMYkXXUMM7bXcSFU/wfQEwL65sAXPyd4Pd6WHmHpeKPi7gOv1mWYZ3HJITw1aLopz
-         6sTza0qRunZ2JixbyeYNQDyt9Q1XWxPgOBcPkk91DGzxzYNm2B1VbEih5M7Rtb3MeM9R
-         oA52QQxbPz/6DSPlcguNMWCSvGuT2QW2GK8afQ8Xk7LHMejLmEJGGPhJJlljtp/LHXGO
-         Iwoil0NpoFf3my4Vk8dda75bgfsdexTH9I/8Zl/L3iewkif0YXMlrmF2WLMqlce52Lis
-         Htig==
-X-Gm-Message-State: ABy/qLZ0xmVIN8tvD0X/ui6o3c9UoPEXYxNlP+Y9GjA2Gvs/UkSlVx4N
-	cO8deSpnxTwYzQ9EuW58r7l8OgocNTnzxlyCW7sNCc4/MKg=
-X-Google-Smtp-Source: APBJJlGOXTxMetMf8KW+6Eh/OrQPukURd838S4EXYF6N5QJWweVDtUowyEnHyPNBLXwUTHha/gJGbaD+AsCzL6p3rYY=
-X-Received: by 2002:a25:ff19:0:b0:cfc:d478:be7e with SMTP id
- c25-20020a25ff19000000b00cfcd478be7emr289348ybe.10.1689796894314; Wed, 19 Jul
- 2023 13:01:34 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1689800851; x=1690405651;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zSlqE3bh3FO1VpHUNUmPePyMS/en0oYUpW8AkSfg6pg=;
+        b=duLs1FS20rQMyFYjFZPBEwdoyyW4TyQybi92t5W7TND+OcZhdh84sUHEPkNGxbll5R
+         yrMWSPwSZsH6hTFa8k1FNw548Idb6e+mJJIJ5EODWRq84noBmpIyi+WekQ2PebjCU1zk
+         RiNu5PRR59ERr8n+9G0CdLR9TLyZH59wVk97kL3ndDaNogA3PYWEeQsAejcVavAfAqvL
+         9xKzFqbzJlSWUWbkQSzOnJIzoQoSoYO8JSFZfHr+R09dppfnj4DJ7orVkwurSGBwWO5X
+         K44ew73O0SdP2Iy9G/hIApMR3fuVTke7f8wPPq96kClbCnxal6dX9ItN1sbXSbnumJSh
+         Emow==
+X-Gm-Message-State: ABy/qLYNuFfrDi5nM/ALLAMXbm+GtfeGk/GDiqZ6hVP2XoG1HJDq38Fx
+	Ij5pf6v2uqvSbA4ZaXv1Oi5SJw==
+X-Google-Smtp-Source: APBJJlFE+XbC7i2PLAa2MNSFVULNmS/gWOtab5JbI/bfIwcN+P4yQL1OgTqQl07/Zxc6xHW6KgN+sg==
+X-Received: by 2002:a0c:fb02:0:b0:632:27c1:23fc with SMTP id c2-20020a0cfb02000000b0063227c123fcmr19561032qvp.39.1689800851374;
+        Wed, 19 Jul 2023 14:07:31 -0700 (PDT)
+Received: from nitro.local ([204.48.93.123])
+        by smtp.gmail.com with ESMTPSA id mm1-20020a0562145e8100b006362d4eeb6esm1683424qvb.144.2023.07.19.14.07.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Jul 2023 14:07:30 -0700 (PDT)
+Date: Wed, 19 Jul 2023 17:07:29 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: rust-for-linux@vger.kernel.org
+Subject: Re: Test delivery and archive propagation
+Message-ID: <20230719-toll-spoil-cobalt-d95121@meerkat>
+References: <20230718-refinance-levitator-cf0be1@meerkat>
+ <CANiq72mdQmV0MJUhGCtj1MON4+Tb2bbKSkyjmM_ayeEBgc1HgA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72nm-tWGPHMaNF11baVRDFpk8ruvTAVDEWKfraEzADWqQQ@mail.gmail.com>
- <20230426204923.16195-1-amiculas@cisco.com>
-In-Reply-To: <20230426204923.16195-1-amiculas@cisco.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 19 Jul 2023 22:01:23 +0200
-Message-ID: <CANiq72npkGJ0=_C4JacaEBvujaT34TO6vqM1UzYVKH0+b+cjzQ@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: helpers: sort includes alphabetically in rust/helpers.c
-To: Ariel Miculas <amiculas@cisco.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-	autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CANiq72mdQmV0MJUhGCtj1MON4+Tb2bbKSkyjmM_ayeEBgc1HgA@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Apr 26, 2023 at 10:50=E2=80=AFPM Ariel Miculas <amiculas@cisco.com>=
- wrote:
->
-> Sort the #include directives of rust/helpers.c alphabetically and add a
-> comment specifying this. The reason for this is to improve readability
-> and to be consistent with the other files with a similar approach within
-> 'rust/'.
->
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1003
-> Signed-off-by: Ariel Miculas <amiculas@cisco.com>
+On Tue, Jul 18, 2023 at 09:56:23PM +0200, Miguel Ojeda wrote:
+> Trevor asked in Zulip if this fixes the patch limit: yes, it should,
+> from what I understand, so the need to Cc patches@lists.linux.dev
+> becomes obsolete now, which is great.
 
-Applied to `rust-next`, thanks!
+Let me know if that proves true in real life. Mail sent to this list still
+takes a different route than direct delivery to lists.linux.dev (at least,
+until all the rest of vger lists are migrated over).
 
-Cheers,
-Miguel
+-K
