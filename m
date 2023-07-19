@@ -1,29 +1,29 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C083156D3
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 14:21:34 +0000 (UTC)
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6093D270E
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 07:21:05 -0700 (PDT)
-Date: Wed, 19 Jul 2023 14:20:57 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B941156D3
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 14:21:47 +0000 (UTC)
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CEF519A3;
+	Wed, 19 Jul 2023 07:21:22 -0700 (PDT)
+Date: Wed, 19 Jul 2023 14:21:06 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1689776463; x=1690035663;
-	bh=ocaw+Jg23eMbqrHzK2iWdBrvi4VvFs/SPBCP4KfLQJI=;
+	s=protonmail; t=1689776469; x=1690035669;
+	bh=ycSUa09BWmPYG+p0T3v8MXq1UGIxA3oXkswxIya2goA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=gK1ISIfeWnjFtMpoaYRH7GnrQ1vT8LMld6UrLQmh9V7bcBAA6Bn2dtmYxpZrTSclX
-	 oT7nEDYzQXAJMcvgCJ3c1GPr5LVwaiYcvuZeAPgbWWlXEyZNTQNK1t632sK8JtBm89
-	 AsPMCN4Z3uN/lJR9oDe9RYcluSFZy696clmyjDdgfHZX7AExnKP5pqooI2+zDO9iLY
-	 oZG0w0GZ48nKTfoo8BKV/2dvfMsZx7Z3SngYAydmsNQ7Rmzf8woa3OP2f9BwUMxI2q
-	 Dt0v5ZK1F11b7pL5nf9sFhV5e61Y7Ub0HeMpTKtPnpY6Lr93AoDDwYBegH2d/MJGJZ
-	 IbVZL2LIyggnQ==
+	b=Hp0gqBpu5Kg0lTyFWlOUxr4CFlT3YRUF3s6qV9d9wWK/qCU6Myt8GwZT33ypBSzwr
+	 ObLAaGrCb5pyVC4sZP4dDzVQ2xDgRuV8aoiFTfnNYJtdyTpUxUlK092JCDkZaprUCQ
+	 SfkSLTY8juIJkd6chETk2t54ejpvmenxydWJKtB+8DWFcUBG7MS1eZ2YV2UzcoehUJ
+	 Iwu2LD9ZycYtUouWT6KEvAhhdB8SHfjRQmVJa4rw3qmThKvHfBk4P8zPdPmF/58OJ4
+	 eDQ+7Fv5minHxoZPSKEOohDsQ/sncyXOewAsZ1xjPXw86/64mGl/Fobzesg8qiWvSq
+	 ++0ATtS+WotfQ==
 To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Asahi Lina <lina@asahilina.net>
-Subject: [PATCH v2 07/12] rust: init: Add functions to create array initializers
-Message-ID: <20230719141918.543938-8-benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 09/12] rust: init: implement Zeroable for Opaque<T>
+Message-ID: <20230719141918.543938-10-benno.lossin@proton.me>
 In-Reply-To: <20230719141918.543938-1-benno.lossin@proton.me>
 References: <20230719141918.543938-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
@@ -43,139 +43,35 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Add two functions `pin_init_array_from_fn` and `init_array_from_fn` that
-take a function that generates initializers for `T` from usize, the added
-functions then return an initializer for `[T; N]` where every element is
-initialized by an element returned from the generator function.
+Since `Opaque<T>` contains a `MaybeUninit<T>`, all bytes zero is a valid
+bit pattern for that type.
 
-Suggested-by: Asahi Lina <lina@asahilina.net>
-Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
 Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 ---
-v1 -> v2:
-* fix warnings and errors in doctests
-* replace dropping loop with `drop_in_place` and `slice_from_raw_parts_mut`
-  inside of `{pin_}init_array_from_fn` functions
+ rust/kernel/types.rs | 2 ++
+ 1 file changed, 2 insertions(+)
 
- rust/kernel/init.rs | 86 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 86 insertions(+)
-
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 460f808ebf84..fa1ebdbf5f4b 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -875,6 +875,92 @@ pub fn uninit<T, E>() -> impl Init<MaybeUninit<T>, E> =
-{
-     unsafe { init_from_closure(|_| Ok(())) }
- }
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index d849e1979ac7..f0f540578d0f 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -11,6 +11,7 @@
+     ops::{Deref, DerefMut},
+     ptr::NonNull,
+ };
++use macros::Zeroable;
 =20
-+/// Initializes an array by initializing each element via the provided ini=
-tializer.
-+///
-+/// # Examples
-+///
-+/// ```rust
-+/// use kernel::{error::Error, init::init_array_from_fn};
-+/// let array: Box<[usize; 1_000_000_000]>=3D Box::init::<Error>(init_arra=
-y_from_fn(|i| i)).unwrap();
-+/// pr_info!("{array:?}");
-+/// ```
-+pub fn init_array_from_fn<I, const N: usize, T, E>(
-+    mut make_init: impl FnMut(usize) -> I,
-+) -> impl Init<[T; N], E>
-+where
-+    I: Init<T, E>,
-+{
-+    let init =3D move |slot: *mut [T; N]| {
-+        let slot =3D slot.cast::<T>();
-+        for i in 0..N {
-+            let init =3D make_init(i);
-+            // SAFETY: since 0 <=3D `i` < N, it is still in bounds of `[T;=
- N]`.
-+            let ptr =3D unsafe { slot.add(i) };
-+            // SAFETY: The pointer is derived from `slot` and thus satisfi=
-es the `__init`
-+            // requirements.
-+            match unsafe { init.__init(ptr) } {
-+                Ok(()) =3D> {}
-+                Err(e) =3D> {
-+                    // We now free every element that has been initialized=
- before:
-+                    // SAFETY: The loop initialized exactly the values fro=
-m 0..i and since we
-+                    // return `Err` below, the caller will consider the me=
-mory at `slot` as
-+                    // uninitialized.
-+                    unsafe { ptr::drop_in_place(ptr::slice_from_raw_parts_=
-mut(slot, i)) };
-+                    return Err(e);
-+                }
-+            }
-+        }
-+        Ok(())
-+    };
-+    // SAFETY: The initializer above initializes every element of the arra=
-y. On failure it drops
-+    // any initialized elements and returns `Err`.
-+    unsafe { init_from_closure(init) }
-+}
-+
-+/// Initializes an array by initializing each element via the provided ini=
-tializer.
-+///
-+/// # Examples
-+///
-+/// ```rust
-+/// use kernel::{sync::{Arc, Mutex}, init::pin_init_array_from_fn, new_mut=
-ex};
-+/// let array: Arc<[Mutex<usize>; 1_000_000_000]>=3D
-+///     Arc::pin_init(pin_init_array_from_fn(|i| new_mutex!(i))).unwrap();
-+/// pr_info!("{}", array.len());
-+/// ```
-+pub fn pin_init_array_from_fn<I, const N: usize, T, E>(
-+    mut make_init: impl FnMut(usize) -> I,
-+) -> impl PinInit<[T; N], E>
-+where
-+    I: PinInit<T, E>,
-+{
-+    let init =3D move |slot: *mut [T; N]| {
-+        let slot =3D slot.cast::<T>();
-+        for i in 0..N {
-+            let init =3D make_init(i);
-+            // SAFETY: since 0 <=3D `i` < N, it is still in bounds of `[T;=
- N]`.
-+            let ptr =3D unsafe { slot.add(i) };
-+            // SAFETY: The pointer is derived from `slot` and thus satisfi=
-es the `__pinned_init`
-+            // requirements.
-+            match unsafe { init.__pinned_init(ptr) } {
-+                Ok(()) =3D> {}
-+                Err(e) =3D> {
-+                    // We now have to free every element that has been ini=
-tialized before, since we
-+                    // have to abide by the drop guarantee.
-+                    // SAFETY: The loop initialized exactly the values fro=
-m 0..i and since we
-+                    // return `Err` below, the caller will consider the me=
-mory at `slot` as
-+                    // uninitialized.
-+                    unsafe { ptr::drop_in_place(ptr::slice_from_raw_parts_=
-mut(slot, i)) };
-+                    return Err(e);
-+                }
-+            }
-+        }
-+        Ok(())
-+    };
-+    // SAFETY: The initializer above initializes every element of the arra=
-y. On failure it drops
-+    // any initialized elements and returns `Err`.
-+    unsafe { pin_init_from_closure(init) }
-+}
-+
- // SAFETY: Every type can be initialized by-value.
- unsafe impl<T, E> Init<T, E> for T {
-     unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
+ /// Used to transfer ownership to and from foreign (non-Rust) languages.
+ ///
+@@ -251,6 +252,7 @@ fn drop(&mut self) {
+ ///
+ /// This is meant to be used with FFI objects that are never interpreted b=
+y Rust code.
+ #[repr(transparent)]
++#[derive(Zeroable)]
+ pub struct Opaque<T> {
+     value: UnsafeCell<MaybeUninit<T>>,
+     _pin: PhantomPinned,
 --=20
 2.41.0
 
