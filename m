@@ -1,61 +1,61 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AEAC138
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 19:59:54 +0000 (UTC)
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FDE492;
-	Wed, 19 Jul 2023 12:59:53 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-c5e76dfcc36so20131276.2;
-        Wed, 19 Jul 2023 12:59:53 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F04C138
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 20:01:37 +0000 (UTC)
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45E9292;
+	Wed, 19 Jul 2023 13:01:35 -0700 (PDT)
+Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-cb4de3bd997so1795129276.1;
+        Wed, 19 Jul 2023 13:01:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689796792; x=1690401592;
+        d=gmail.com; s=20221208; t=1689796894; x=1690401694;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JhGkLnb0BHzR8ifaS0iX+zOZwyIqP+vtxrbbFoMqW0Q=;
-        b=JKNSYXI1/54IBNNsNlecAisVFUPbQNj7KIHpnOriDx4zEwls2e1hEUeHIgWHU8IMf4
-         uoz+y0jxyh69tAJGsYAVSaIjBm5ySEi5HFvHKe9jLvygu8tDS35IP8AMt9quMma0VPsA
-         /LodK2D7LhqdG+KJgi4Epi+3sm2FVQCtkfjfd0/H+iT3Jn9tJ6VWiSCyShCSkoFIsQ8T
-         Au2DNNyQ2Av42cuJD7LyHqcOSNra3OVzAhiFEQ/+X5oFz3y5zBMzI0aQm5dXJAW7atuT
-         eP3UCeQ4hwDy1S4NrReQsppcySf8Kkl+yIC3Ods2I5TxXwMKBkNs1Yr4r8N6pQX+L5US
-         /Qxw==
+        bh=stu+6/j3HbnPj0KRDFW+4OZ7RsJiQvUoKxDl73j6SMY=;
+        b=cY5xHQ7xgHbVGZF6SIYA44/9ljfF0XdAsQA/RJujiVeWYdI9LdiiQGqhJiwRyHLNCl
+         HE/tZn8c1YNS50/ZxnW9EUBjhznIuwFxFeEDD/cNsRKzKxSfVO9+N+J7GRkleuij0FP7
+         mfMbsqJe5YNxup7OzbRysbg7/O3P85ErksLhD+68yquOIg+3QTagsbdukzI39R1DDfZ1
+         v14cXn10OpAdbgX6W6m/7QWfVT7fbBrBoqlfigUFGCXSLhg2e/PH8FRMySp0dlG0mKUL
+         9wHgS5HdT200ELRgeGcuAmc8Ahi57LBvOlClPmMZlh0x194ibBPktQqbI5FIqes0/qGV
+         9ZrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689796792; x=1690401592;
+        d=1e100.net; s=20221208; t=1689796894; x=1690401694;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JhGkLnb0BHzR8ifaS0iX+zOZwyIqP+vtxrbbFoMqW0Q=;
-        b=RwTe6gWB2gMFxhos1KLj6allos1jcKMsn4v8mqSYeKvyNQ9i/+k6KOFJztLdfKQQcj
-         fQXSIn8flDNG0yfyo19pPSkxZS2Lf4F7icIshPgCopBJCawAinUjiBJpM0fOilCe3MTU
-         f39uw6cMQvJJlU0q4/CiZDQwki1E+iBN378s6/gOWibbp8FouwAsroIdzUNZ5ggUzxFm
-         DCpnHFShhjRgIusv8rcx5uIn/u3tT9NjtXgkzVdnMrTwxP4W/9mc3TR4Xs7WVwVjbJ9w
-         VUTLa8mBEH+QqpX/fcHjGzyjUQ9vmbVuCvnKiptya+Y6Gry6xRdPHG1ny+Zx+3qaGiL2
-         y+LQ==
-X-Gm-Message-State: ABy/qLYZTs2DbzZ+BFVQWEAZmOl/1yOjQN0RVRicQ7N58I/M+QbFPJS6
-	vzKo4l9kMVK8iGeTK3dL97Oii8LDAgKWmeDQzn8=
-X-Google-Smtp-Source: APBJJlFOmtt+UYtMLCKHck2hcCmEs584GfZZQ772aqCwtf6V0ROgYZ4W6k8zkNiMCSHIQN2IP08Z/Ar01WRDgTXL7Zo=
-X-Received: by 2002:a25:694f:0:b0:bfe:a882:c8ce with SMTP id
- e76-20020a25694f000000b00bfea882c8cemr3340740ybc.5.1689796792566; Wed, 19 Jul
- 2023 12:59:52 -0700 (PDT)
+        bh=stu+6/j3HbnPj0KRDFW+4OZ7RsJiQvUoKxDl73j6SMY=;
+        b=fFVH6Y59EUMIiBD6p9HjhBOFcZYC4twdUBA+uf2YJH92W6i3D1wMQoL8mhbNi7ci4j
+         1D7mMYkXXUMM7bXcSFU/wfQEwL65sAXPyd4Pd6WHmHpeKPi7gOv1mWYZ3HJITw1aLopz
+         6sTza0qRunZ2JixbyeYNQDyt9Q1XWxPgOBcPkk91DGzxzYNm2B1VbEih5M7Rtb3MeM9R
+         oA52QQxbPz/6DSPlcguNMWCSvGuT2QW2GK8afQ8Xk7LHMejLmEJGGPhJJlljtp/LHXGO
+         Iwoil0NpoFf3my4Vk8dda75bgfsdexTH9I/8Zl/L3iewkif0YXMlrmF2WLMqlce52Lis
+         Htig==
+X-Gm-Message-State: ABy/qLZ0xmVIN8tvD0X/ui6o3c9UoPEXYxNlP+Y9GjA2Gvs/UkSlVx4N
+	cO8deSpnxTwYzQ9EuW58r7l8OgocNTnzxlyCW7sNCc4/MKg=
+X-Google-Smtp-Source: APBJJlGOXTxMetMf8KW+6Eh/OrQPukURd838S4EXYF6N5QJWweVDtUowyEnHyPNBLXwUTHha/gJGbaD+AsCzL6p3rYY=
+X-Received: by 2002:a25:ff19:0:b0:cfc:d478:be7e with SMTP id
+ c25-20020a25ff19000000b00cfcd478be7emr289348ybe.10.1689796894314; Wed, 19 Jul
+ 2023 13:01:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72n-swO1L1zsPNDz=ZMMm=Ox5MOJHzXBbxgX0f_vWFWDmg@mail.gmail.com>
- <20230509202314.8248-1-ben.gooding.dev@gmail.com>
-In-Reply-To: <20230509202314.8248-1-ben.gooding.dev@gmail.com>
+References: <CANiq72nm-tWGPHMaNF11baVRDFpk8ruvTAVDEWKfraEzADWqQQ@mail.gmail.com>
+ <20230426204923.16195-1-amiculas@cisco.com>
+In-Reply-To: <20230426204923.16195-1-amiculas@cisco.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 19 Jul 2023 21:59:41 +0200
-Message-ID: <CANiq72n=xpvTd-mxN30hb36WXyQJ=dRkKk7-LrM_Htsvpr-59A@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: lock: Add intra-doc links to the Backend trait
-To: Ben Gooding <ben.gooding.dev@gmail.com>
-Cc: alex.gaynor@gmail.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org, 
-	ojeda@kernel.org, rust-for-linux@vger.kernel.org, wedsonaf@gmail.com, 
-	yakoyoku@gmail.com
+Date: Wed, 19 Jul 2023 22:01:23 +0200
+Message-ID: <CANiq72npkGJ0=_C4JacaEBvujaT34TO6vqM1UzYVKH0+b+cjzQ@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: helpers: sort includes alphabetically in rust/helpers.c
+To: Ariel Miculas <amiculas@cisco.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -65,19 +65,19 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, May 9, 2023 at 10:24=E2=80=AFPM Ben Gooding <ben.gooding.dev@gmail.=
-com> wrote:
+On Wed, Apr 26, 2023 at 10:50=E2=80=AFPM Ariel Miculas <amiculas@cisco.com>=
+ wrote:
 >
-> Add missing intra-doc links to the Backend trait to make navigating the
-> documentation easier.
+> Sort the #include directives of rust/helpers.c alphabetically and add a
+> comment specifying this. The reason for this is to improve readability
+> and to be consistent with the other files with a similar approach within
+> 'rust/'.
 >
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://lore.kernel.org/rust-for-linux/94625fe6-b87a-a8f0-5b2a-a815=
-2d5f7436@proton.me/
-> Link: https://github.com/Rust-for-Linux/linux/issues/1001
-> Signed-off-by: Ben Gooding <ben.gooding.dev@gmail.com>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1003
+> Signed-off-by: Ariel Miculas <amiculas@cisco.com>
 
-Applied to `rust-next` -- thanks!
+Applied to `rust-next`, thanks!
 
 Cheers,
 Miguel
