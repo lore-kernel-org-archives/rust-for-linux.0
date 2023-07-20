@@ -1,91 +1,75 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C911BE60
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 19:28:33 +0000 (UTC)
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2C89171D;
-	Thu, 20 Jul 2023 12:28:31 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-ccc462deca6so1088066276.0;
-        Thu, 20 Jul 2023 12:28:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689881311; x=1690486111;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kdN8o7AJTx4ZATKNIUy6cq4O3obHD+O4FpBvaPeeNBs=;
-        b=Gw9eQqRzINgLnQlR1OAcLm0s4xv3PRM9IQQTuTOs3vfoDQti8YZaQybqCpUz9PZyLJ
-         YKzaf6cxIPayhBM9MYu5OL2eNNzIVOIfkDY76CwVV7G6sOgH37XBvSbKs+cEcQIvm1Jb
-         UvF+52jNxhfdkAyfwFGGlDm0N2laruZFfOeBFXJUXgbRq9nVPshzAPCTXAoOtA9CZkwy
-         vyJH+bpbtVblvu43x3YNXH8CCGF9iGwkBV9jSKi72nacUOz4cPzAm6vBDeIo0lfI/L7l
-         1suntjO3PBXS+bPoa5gYCjW+w5osQt8tcuDtme++Ujb5t5oSaLkLpyeBDoFalts8pR1D
-         cx9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689881311; x=1690486111;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kdN8o7AJTx4ZATKNIUy6cq4O3obHD+O4FpBvaPeeNBs=;
-        b=YWtuTfeS4hx/wzJYU/HTYt6M1aS34RzrqeeKFyMcxxMgDhHtJQ182I+pFIaCe6ms7R
-         m7QMcGyeFN0eUmXE/UXrM7y/KWhs8rqHeDbwJOfXGNSINRm7HlCAde4aXPvN07TyTFXa
-         bLJb99Ukht5PVBf1xgOp+WcwMwlyqlK/yINt+ctaPsjUe5+glHK1EL+qiu8O9LQpAyX8
-         E+gLEwZgAVb/4uNfjMUJeKR2SsRahx3g3UydMVqPwfQW0wDh4USFso5Sr01ayZmnbgil
-         8Cer7cNO1xI3NmFc7E6z7lINJJohB8iukQ9A6HAFRdNIZ7BjcBIfjuJJXOr2ftENVLXV
-         ruyQ==
-X-Gm-Message-State: ABy/qLaj3KZNfotwEha58oaqXp+jLlz0Kl8KFdFwppcUq+5b/Bgc9Kab
-	x5WDLK2ZUo0w9Ynyq32cpe/TVZ+JQ3dWSv+BgmE=
-X-Google-Smtp-Source: APBJJlHGQI9NwyazTFrofqytPGXoMkCuinDMKCYH6DzuorpDpZgCO6qQGnkNna3kmYEdn+EHW9YFBkfnAyUjoTpPxkM=
-X-Received: by 2002:a25:4052:0:b0:cfd:58aa:b36e with SMTP id
- n79-20020a254052000000b00cfd58aab36emr2782026yba.9.1689881311057; Thu, 20 Jul
- 2023 12:28:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2476B14011
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 22:47:03 +0000 (UTC)
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762ABE65;
+	Thu, 20 Jul 2023 15:47:00 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id D7842733;
+	Thu, 20 Jul 2023 22:46:59 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net D7842733
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1689893220; bh=tFdI7CTQuCic0jHrfVESxCPoArF8aqckP43aHZq4XRw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=fy1XrfyRidnLQ/BIZvEKZPSlS2qvjsnFuWVdcmAUTlJ73zRlVXvkC2/GGT0qIlb8A
+	 BO0mcvJ1Cm7GEJd7D+CGh75PDlC1j5W+QK3/rq3wbjZXILsU3uCHOoYxKisR8pYwwO
+	 w1tjk27BYl9lzMU23BRUAEWvIfTeQUIlN49kspM42fCbqV2iebDnkpapQy6kvqcRB3
+	 cSwRJnpyE3uYsI9w2mHSebP0N0hHnOEzUoPufRUAPseBiVKecruxVzPQ3PU1pJBRtl
+	 11SlVMj6a2924ZkpGxTpciyRc0/3gDC1A5f1mEfBr1h2KLZTuvNFXIHxETyhnLH+hs
+	 EvlYgDcFjV2kw==
+From: Jonathan Corbet <corbet@lwn.net>
+To: Carlos Bilbao <carlos.bilbao@amd.com>, ojeda@kernel.org
+Cc: jani.nikula@linux.intel.com, rdunlap@infradead.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ konstantin@linuxfoundation.org, rust-for-linux@vger.kernel.org, Carlos
+ Bilbao <carlos.bilbao@amd.com>
+Subject: Re: [PATCH v8 0/2] docs: Integrate rustdoc into Rust documentation
+In-Reply-To: <20230718151534.4067460-1-carlos.bilbao@amd.com>
+References: <20230718151534.4067460-1-carlos.bilbao@amd.com>
+Date: Thu, 20 Jul 2023 16:46:59 -0600
+Message-ID: <87mszqfbfg.fsf@meer.lwn.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230718052752.1045248-1-ojeda@kernel.org> <ZLbTRZMjcFNAamit@boqun-archlinux>
-In-Reply-To: <ZLbTRZMjcFNAamit@boqun-archlinux>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 20 Jul 2023 21:28:20 +0200
-Message-ID: <CANiq72n5NOVxP37QFXDkOBZTzhGt6EREBruqUyhiqxGUrrC_CQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/7] KUnit integration for Rust doctests
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Andreas Hindborg <nmi@metaspace.dk>, kunit-dev@googlegroups.com, 
-	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-	autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, Jul 18, 2023 at 8:00=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> I've applied the series and run the following command:
->
->         ./tools/testing/kunit/kunit.py run --make_options LLVM=3D1 --arch=
- x86_64 --kconfig_add CONFIG_RUST=3Dy
->
-> everything works as expected, and I also tried modifying one of the
-> `assert!` to trigger it, all looks good to me. Feel free to add:
->
-> Tested-by: Boqun Feng <boqun.feng@gmail.com>
+Carlos Bilbao <carlos.bilbao@amd.com> writes:
 
-Thanks a lot for trying it, Boqun!
+> Include HTML output generated with rustdoc into the Linux kernel
+> documentation on Rust.
+>
+> Carlos Bilbao:
+>  docs: Move rustdoc output, cross-reference it
+>  docs: Integrate rustdoc generation into htmldocs
 
-David/Shuah: I noticed this "Tested-by" tag is not in the applied
-commits. If you happen to rebase, it would be nice to pick it up.
-Thanks!
+So I've been messing with this a bit, trying the various combinations.
 
-Cheers,
-Miguel
+- With no .config file, it behaves as it always did - thanks.
+
+- With CONFIG_RUST=y I get the rustdocs, as expected.  There is a time
+  penalty of about 5%, which is unfortunate, but that's the cost of
+  progress, I guess.
+
+- Setting CONFIG_RUST=n led to a crash with make complaining:
+  "No rule to make target 'rustdoc'".  That isn't something I have been
+  able to reproduce, though, so I have no idea what happened there; have
+  you ever seen this?
+
+Other than that one bit of strangeness, I think this is about ready to
+be applied.
+
+Thanks,
+
+jon
