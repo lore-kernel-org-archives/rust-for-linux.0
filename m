@@ -1,62 +1,62 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4D317FE6
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 13:18:00 +0000 (UTC)
-Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BFFCE60
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 06:17:59 -0700 (PDT)
-Received: by mail-ej1-x64a.google.com with SMTP id a640c23a62f3a-98e40d91fdfso63062066b.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 06:17:59 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5F917FE6
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 13:19:41 +0000 (UTC)
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B4E110F5
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 06:19:40 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-57704aa6c69so7804367b3.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 06:19:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689859078; x=1690463878;
+        d=google.com; s=20221208; t=1689859179; x=1690463979;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VqC/0JpDhyXercql+gb+A9vFQQTl07+8TE4AdNDBMOY=;
-        b=Ae7PRYJlYnD1+4pmKb+x5JftBt4GemKLNPzxWPe/uMdE5jNm0J4SP1TiGIljtQl+Gv
-         5qKA5HG9kJjVVKDx2SSnjz8mxwZw93jyQaXf3PpG0KiY6vNKbUs3PTlhW8nFrFzf6Vfo
-         iUDh5FTFv/ADr3M2PYhuTCcL3Em55rqDV1UFAcgh5mKeCTtQgwfVR6rjxIDIUjocR5cT
-         Pzkcc7SsPPIdCNHkR3WDOZ4aH4BNug7YXnvz6kjJYsOv3/p8sznAWrM+mN85FxLUg3gu
-         OiGnY0LNKVIlvUTz1iecN1s/hoGLmqWm1qzSjICL8JSBMiJBwVRRZLLPdNIh6Z1RIJFn
-         eZVQ==
+        bh=SgZ9ooT3DeE5RLk0xNDZM8mZvor4qfJnspj3DvnmXwY=;
+        b=DQ7IEpOnPYiHUaa+8JjGvD1NOOcrlYTeDHN/Kjveazs6pBW+LEE6G25+hhR2lzY5N4
+         kAe8FDtMHmBH/3LsVQOghfDYy9WAol/nMK8le4LYeVPm6oefDze+MntUDRNWpqeapqke
+         GLPoqDe+INYSLntdzYeo5oy3zH/Ei7qSLugfmFlFHYDVwHF0cYoBDmw/ne+S9VLaeiG8
+         0SFAt75IFx6g0sgVXCCXwP42xeiaDc0i52GK0S5CdfW7dNoNnODPDknlctUxMdcm2pH0
+         zRgqGkBh6CUL7NOyvbwVIjXrCQaUGz3Hr/4uTcE3zm9ep2JEuWnfdI09C7IXxOgsuX0v
+         Nq9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689859078; x=1690463878;
+        d=1e100.net; s=20221208; t=1689859179; x=1690463979;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VqC/0JpDhyXercql+gb+A9vFQQTl07+8TE4AdNDBMOY=;
-        b=C3zfnLe9We5DMINLiUYhC1cF0wga0plCqpMcrzosX0+/nhKnBN7J5LU5y72pM7CL+E
-         W4LI3E4mdhFYX/y30JefUllmJtm1afmX5nR5owv/Ox0SqbRuxrMsdkFYTaJ3Vtb9KA/o
-         R3RSGMunIwNjH9XwGfxsjxWIuhuqBNcKek6b+h4QM8+awNJhioJhjlYDHf61WqJHR4E8
-         HQOuC8CG0sycAF+zrzEiKY3l53YRWBiaE84gck3Bb/zyHQLnwEGKmJR2FVnle8z+AQ43
-         MJE8DXmH/rXD3vXDXqHAPiAAewtX3mWDE9AWuEruswnT+RlApjG2gmcadoEJnM9dD6V1
-         bgqw==
-X-Gm-Message-State: ABy/qLb8+cMUyohmqvXndPbP1dWr/zCea/Kj+WSfKfyBbuWbENBFoBr1
-	Bws0MGY0fzA/LaWscAQIhHTp/BsmkAE3jfc=
-X-Google-Smtp-Source: APBJJlHeJaf7B0zoQ7KZXQTNw/JnIXKLzxfjIc+cswd1g/hDjonIcYSCpq6kHkA17ALUgwWYE5Ro3oLOzyFslaQ=
+        bh=SgZ9ooT3DeE5RLk0xNDZM8mZvor4qfJnspj3DvnmXwY=;
+        b=Hj2i8BXT18YWnN2/jkmPJYytbtGX6u+UOjt+JCGlK8v3oc+tI80k3X/DanKZ72ahoN
+         0rHHMu3uVJ5C0Cf9e3rJ3nwpLFFTNT7r03BUy0SB6JU1B1i6h+B3apNoaFBU6H+Lk63k
+         WkzY7EOEN2iSRxGbN8D4sBrpCmFKracHnURrnJCXA8gIMS4x6gLdyp2VuGyw/k9PliUq
+         hhkvom57UAJptmB0N8RIQYjmssPwuCg5y5AsdWXaU6Px3hzhp7YlOtxx026zJIRPz1sw
+         gOvmSoLM51PxAmGQSSJbvoV17b3vAr/cvPBEVRkRhBCOTaaipq+cLPCDbY/luYBCfF1K
+         fizA==
+X-Gm-Message-State: ABy/qLZT4HrdG+UC3zQcChYjWX5pItQmXOl9MOnv9ZKYrqXrEUFkmk4o
+	wsKouMt/sHvsIb9p+zzJ8Mo8aMAyCw168Z4=
+X-Google-Smtp-Source: APBJJlEMchiHRAUU4IO9gxpJzGtYZzkACtFDgPV6hRWNzaIn3ajz9EJPnHsiDD25WWzLGV2F7AofIcFTPhEL4WY=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a17:906:5a71:b0:997:e8c9:6f61 with SMTP
- id my49-20020a1709065a7100b00997e8c96f61mr15503ejc.2.1689859078009; Thu, 20
- Jul 2023 06:17:58 -0700 (PDT)
-Date: Thu, 20 Jul 2023 13:17:51 +0000
-In-Reply-To: <20230719141918.543938-5-benno.lossin@proton.me>
+ (user=aliceryhl job=sendgmr) by 2002:a25:2054:0:b0:c85:934:7ad2 with SMTP id
+ g81-20020a252054000000b00c8509347ad2mr14890ybg.8.1689859179232; Thu, 20 Jul
+ 2023 06:19:39 -0700 (PDT)
+Date: Thu, 20 Jul 2023 13:19:35 +0000
+In-Reply-To: <20230719141918.543938-6-benno.lossin@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20230719141918.543938-5-benno.lossin@proton.me>
+References: <20230719141918.543938-6-benno.lossin@proton.me>
 X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
-Message-ID: <20230720131751.3542420-1-aliceryhl@google.com>
-Subject: Re: [PATCH v2 04/12] rust: init: wrap type checking struct
- initializers in a closure
+Message-ID: <20230720131935.3542850-1-aliceryhl@google.com>
+Subject: Re: [PATCH v2 05/12] rust: init: make initializer values inaccessible
+ after initializing
 From: Alice Ryhl <aliceryhl@google.com>
 To: benno.lossin@proton.me
 Cc: alex.gaynor@gmail.com, aliceryhl@google.com, bjorn3_gh@protonmail.com, 
 	boqun.feng@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org, 
 	nmi@metaspace.dk, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
 	wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
@@ -65,13 +65,26 @@ X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> In the implementation of the init macros there is a `if false` statement
-> that type checks the initializer to ensure every field is initialized.
-> Since the next patch has a stack variable to store the struct, the
-> function might allocate too much memory on debug builds. Putting the
-> struct into a closure that is never executed ensures that even in debug
-> builds no stack overflow error is caused. In release builds this was not
-> a problem since the code was optimized away due to the `if false`.
+> Previously the init macros would create a local variable with the name
+> and hygiene of the field that is being initialized to store the value of
+> the field. This would override any user defined variables. For example:
+> ```
+> struct Foo {
+>     a: usize,
+>     b: usize,
+> }
+> let a = 10;
+> let foo = init!(Foo{
+>     a: a + 1, // This creates a local variable named `a`.
+>     b: a, // This refers to that variable!
+> });
+> let foo = Box::init!(foo)?;
+> assert_eq!(foo.a, 11);
+> assert_eq!(foo.b, 11);
+> ```
+> 
+> This patch changes this behavior, so the above code would panic at the
+> last assertion, since `b` would have value 10.
 > 
 > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
  
