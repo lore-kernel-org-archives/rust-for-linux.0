@@ -1,106 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5777B2FA53
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 18:35:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC4EC433C7;
-	Thu, 20 Jul 2023 18:35:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1689878106;
-	bh=81m5ZIcvfNL0FEFJ3Nuqam7BZthequgHa1BosBTrhVw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eR20BcHuZY0XWxQd8OtfDbxHXKUyGrqY6D71W9u8tdWPnfELSbHVV1tBRaP9lmxDg
-	 tiMLZnjMzSW4HatYlHq00xWkjjIi73SBzYbDiDfowPta/b1gLCTzwbAJ3u+wrD+ZlG
-	 Riuzp/GE5I3Bejkjezf/ewhZgeugbFtAT97csbHzTUTEFuHdRzCdutM5oUYK2IdTPH
-	 4tDocR27uLB7HJjf7h1N1XMsTDpmH9d/DosiRegxbZdcndZnVQfMX32uAu6jSMInkt
-	 lzuf3gvPWO8EnAdnWODZdOy9UK9ERf23QSDC8KbK54VPBqtojTS9xeMFOAJRK3wNd7
-	 WC8KATBqWYxog==
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3a425ef874dso809230b6e.0;
-        Thu, 20 Jul 2023 11:35:06 -0700 (PDT)
-X-Gm-Message-State: ABy/qLZgN20ek2KKvxx8qisxsOTh8m9oQrsFN2x+Kia567AcssBjyh0F
-	6EtSU9H7S04rbU+plIOi1vJ7YXP3MxRT+Xvh06A=
-X-Google-Smtp-Source: APBJJlHKVWn9kDYcjOUOHIW70le7sgGdHBkr9p1Ep42APR+8uWupNFlwMZpme2w+wFD7onPJrRcdfhAUjJJ/+Q0LkTw=
-X-Received: by 2002:a05:6808:19a9:b0:3a3:baf8:5b8a with SMTP id
- bj41-20020a05680819a900b003a3baf85b8amr450324oib.13.1689878106023; Thu, 20
- Jul 2023 11:35:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B08A2FA47
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 19:07:28 +0000 (UTC)
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C09D1995;
+	Thu, 20 Jul 2023 12:07:26 -0700 (PDT)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-5835388d632so12403497b3.3;
+        Thu, 20 Jul 2023 12:07:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1689880045; x=1690484845;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lFGZ0mwXTeUqARUMUq3sQSk0x6e1HExlGw80JssPQUw=;
+        b=Z7hnhUdsWEFTGhk1OsUf9G8QQkdXeKfIRYnEaf91NwQKZe8jZJ2CfbMY5U66Xouz5y
+         EBGbEkS8/tPQGyv+feI64Rb2oHNV5zWis2Bj26Fi+Imsb0eZhn0uKtCCvVE2fgyps9Vi
+         pJoabEJxbHPyEKhIOODWd3/FkofjsI4P7pFWl79TJmsFx7cTNKKcgq3NQnD1FA8ZXGba
+         dX61CdR5o6CryzTyVKYvWczrOzTdeg9HMP0XCIKYOd8mVVqCHh6QrJEfIAMf053V747Q
+         ikzfGEHbBXoLne/VjZDTrFgvPiDq6l0L8+QBuFnp2CgNR7eL31eLcU5wUhAnw4IX9wRj
+         UWhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689880045; x=1690484845;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lFGZ0mwXTeUqARUMUq3sQSk0x6e1HExlGw80JssPQUw=;
+        b=jSQbskUmLLZ/Y/wR+vFjOqI0VXZsmBkc2wdeztHa2PWyXsuPRsJ5KZYfX9QqA8V/AC
+         Cq6WrV0vV3Oxhs9mP2HK8m4WtgaZzjXBJRAq8LNkyD3LpA8mo2rNR1kGYpzwsgmlSoJb
+         bqILLdKrtxU5G3bdCei7TPUY1m+Q7nu9a+7cgbXG87kf2eXIcrZYwrFHrThaVmXPR6ft
+         eeaibeiC15ol5vOgD05gonDnu35oM9h53yFPQXYmvjbIsycC/PZUE0mlyQKV3FL3XG+3
+         raApso3m6OqzMkkosMEpVf6dW/rmTsMVO6urvd3P9Lo3KwAA9MER+uQKrNx0d+rutlMg
+         5ayQ==
+X-Gm-Message-State: ABy/qLZ3TbnJf3SD/AXPDDeLrL6UHwZMTy5AxjGahx1SD1WsOGCZk+Qe
+	SEQPX/lIHNGglPlxIdRb4t91fjWM/hPJ6bsJWCV/1e0P+38=
+X-Google-Smtp-Source: APBJJlF9ppbPX2AeRPFxmzKndNSuspJ/IuHls/gQr5dwwf+h7v/ZafMhblxWP8TLYBBGq1qBNuMHCmHSrG4v/yGJTNs=
+X-Received: by 2002:a25:13c8:0:b0:c84:3aa2:f0e7 with SMTP id
+ 191-20020a2513c8000000b00c843aa2f0e7mr2646480ybt.27.1689880045703; Thu, 20
+ Jul 2023 12:07:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230718055235.1050223-1-ojeda@kernel.org> <CAK7LNAQ-hjW_19fjA+E-bQCrXcVPdN4-GvzAnEnYzna5KRVXew@mail.gmail.com>
- <CANiq72kZjOGvRKoRxtgG=2DhJnMJK9TCQtTmeef_B=nLcLQD6g@mail.gmail.com>
-In-Reply-To: <CANiq72kZjOGvRKoRxtgG=2DhJnMJK9TCQtTmeef_B=nLcLQD6g@mail.gmail.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Fri, 21 Jul 2023 03:34:29 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASqumGb0xvSa8n4Heasz9BKxgk4mvzNXsfFhZE1G+Bxbg@mail.gmail.com>
-Message-ID: <CAK7LNASqumGb0xvSa8n4Heasz9BKxgk4mvzNXsfFhZE1G+Bxbg@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust: avoid creating temporary files
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, linux-kbuild@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, Raphael Nestler <raphael.nestler@gmail.com>, 
-	Andrea Righi <andrea.righi@canonical.com>, stable@vger.kernel.org
+References: <20230718151534.4067460-1-carlos.bilbao@amd.com> <20230718151534.4067460-2-carlos.bilbao@amd.com>
+In-Reply-To: <20230718151534.4067460-2-carlos.bilbao@amd.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 20 Jul 2023 21:07:12 +0200
+Message-ID: <CANiq72nqTnao=Xm=vA_OWb7sss02WhwTsj37HpKSz2bSF+4pdA@mail.gmail.com>
+Subject: Re: [PATCH v8 1/2] docs: Move rustdoc output, cross-reference it
+To: Carlos Bilbao <carlos.bilbao@amd.com>
+Cc: corbet@lwn.net, ojeda@kernel.org, jani.nikula@linux.intel.com, 
+	rdunlap@infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, konstantin@linuxfoundation.org, 
+	rust-for-linux@vger.kernel.org, Akira Yokosawa <akiyks@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+	autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-On Fri, Jul 21, 2023 at 2:30=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Tue, Jul 18, 2023 at 5:15=E2=80=AFPM Carlos Bilbao <carlos.bilbao@amd.co=
+m> wrote:
 >
-> On Thu, Jul 20, 2023 at 7:18=E2=80=AFPM Masahiro Yamada <masahiroy@kernel=
-.org> wrote:
-> >
-> > Applied to linux-kbuild/fixes. Thanks.
-> >
-> > I believe this is a fix, so I will include it
-> > in my next pull request.
->
-> Thanks Masahiro! Yeah, it can be considered a fix. By the way, in case yo=
-u want:
->
->     Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+> Reviewed-by: Akira Yokosawa <akiyks@gmail.com>
 
+Just in case: does this Reviewed-by still apply? (and the one in the
+other commit)
 
-Maybe, the following was a breakage.
+> +.. only:: rustdoc and html
+> +
+> +       You can also browse `rustdoc documentation <rustdoc/kernel/index.=
+html>`_.
+> +
+> +.. only:: not rustdoc and html
+> +
+> +       This documentation does not include rustdoc generated information=
+.
+> +
 
+(I will move here a couple notes from v7 to avoid losing them, since
+we were discussing there and then v8 was sent.)
 
-commit 295d8398c67e314d99bb070f38883f83fe94a97a
-Author: Masahiro Yamada <masahiroy@kernel.org>
-Date:   Sat Jan 7 18:18:15 2023 +0900
+I would move this to its own commit or to where the variable is
+defined, but it is not critical since Carlos confirmed it does not
+break the build.
 
-    kbuild: specify output names separately for each emission type from rus=
-tc
+> +# Where to place rustdoc generated documentation
+> +rustdoc_output :=3D $(objtree)/Documentation/output/rust/rustdoc
 
+(From v7 too) Should this take into account `BUILDDIR`?
 
-
-
-Before that, rust_common_cmd had --out-dir.
-
-
-BTW, do we also need to fix scripts/Makefile.host
-in case the external module Makefile creates host programs?
-
-
-
-
-
-
-
-> I guess it can be also considered a feature (e.g. "supporting more
-> setups"), but having the temporaries created where they were was
-> unintentional.
-
-
-
-
-
---=20
-Best Regards
-Masahiro Yamada
+Cheers,
+Miguel
