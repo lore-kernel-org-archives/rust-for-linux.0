@@ -1,100 +1,181 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5913D70
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 06:32:13 +0000 (UTC)
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CA482D64
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 23:31:48 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5704995f964so5083187b3.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 23:31:48 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AE7383
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 06:37:34 +0000 (UTC)
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5017526A0
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 23:37:07 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fbb07e7155so57295e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 23:37:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689834620; x=1690439420;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XJUwQzbRztLLTSTi35hLHWvFJlOvZKlmG5YMI9kdOKM=;
-        b=exzMRciz6q57iZ3LnCISvUalCcqN+3UGW0dNiMEU6Ux+IUuc78gOhlVYUkJBW2O0V5
-         ej5vDC2rgGJhAdjVu26+fOkYdw5ptSu2dD6vQOgndW5uTqXTMg+MdWzZgt5jcDSvP4zA
-         FSMCRNvOtH9sE9JDwS+96mV+vQyPUcAZs2SnNkOFZNqalPWZ6NwHXxQW/jt03bBjRL88
-         SZL1IEnTHd9I+3F0BkHkh60a04LAf6ZKKJdXG3/qtlAWJipsHM7nNq/Z7GA+dSEzree9
-         PzrQ16O/PhOSKgEvbVEghQg84fQXQN1cHCZW6PQjs4Omr5MUE3noZpyRCv82OvBbctsd
-         52tA==
+        d=google.com; s=20221208; t=1689835023; x=1690439823;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=GQ5qtEng9nilqcTYC5DbJWKIA9o4CNQ0CTtSTw9iUOk=;
+        b=nAUmk1REhQiWFTWN0fdyn5iYCdqporyicI5Hd52fPpKLqqj3uJ+nXuKgKpkxJws4X0
+         mP8z8JQ/eGQrkCaQ/g4JM9rFbbokl/WHIlu+6ovcHqwcFlDrwUwM/0Lj0NKDl5HfPxyx
+         uoWvbRRFyn3otNKT+Awy5H4XJlykVfB7rmGPIQDKoe9V0jwKn2RLYVaG/kGF4ZA+kzvx
+         byOJlG4pwSJRgGfRE3Tv3Kxs8hRIM8WqhIMgTFgRGt5yncZ864u9P4XmWK5KQ1x429sJ
+         tchWri3+lSxP1e90OZsIQHgAywnaEpF4G1207uaKYSzN1jhF3+hvbIDbsqzltRbDwXF9
+         sppA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689834620; x=1690439420;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XJUwQzbRztLLTSTi35hLHWvFJlOvZKlmG5YMI9kdOKM=;
-        b=MWGxiWcsr45IV8PjeduLe588A6iXfg/125KVR9a5IuhdX679hnHHsxu5Bk9V18naj2
-         MA5th6fbn2Xz89ltR9W1svVTjxe98Zk1KMcTHxzAd4IqL44H7TjHCMDIOBfOiAq5GecK
-         D4qKLkDSFiXUoaKLL+DRLoKgo/2t3gHDaXu/CEsP8BJdB/qMz04uOv/B63SZQu9RUgn+
-         HeOvALT3w1LJkMWAWMZjCj2JjcLaTn55+11ggqPYvDZFwR0LLe2WIKuIy/xdwp5H6SCE
-         WiaPMA1nuDAfYmzYrl1RzldiZOPKcxU9miNMXLjncMvd3KtDyoJi7ai2sw7QeYsv/6HP
-         tDFw==
-X-Gm-Message-State: ABy/qLa7ytopHi6BuRqApF62yiUNrEHKeFd7oYdKygGTrxWxrB2FRXpN
-	LC1ccGNUqyyFabUkkVmRh9NEcSn7pDJjug==
-X-Google-Smtp-Source: APBJJlE9Or/WvU1LyYLL5e7PUIkswIIqACTJZXRrrefvubcmzh9/DrI2y+dUq4RV8PFzuza7opwPGWPwyrD8Ww==
-X-Received: from slicestar.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:20a1])
- (user=davidgow job=sendgmr) by 2002:a81:4423:0:b0:57a:118a:f31 with SMTP id
- r35-20020a814423000000b0057a118a0f31mr56270ywa.7.1689834619846; Wed, 19 Jul
- 2023 23:30:19 -0700 (PDT)
-Date: Thu, 20 Jul 2023 14:29:37 +0800
+        d=1e100.net; s=20221208; t=1689835023; x=1690439823;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GQ5qtEng9nilqcTYC5DbJWKIA9o4CNQ0CTtSTw9iUOk=;
+        b=bjKpWPRpn4ziqwwgJOzmEEYBxoQR4+ENSp9pZFTk56fqTeU89ofapLviR4mqAi+pbs
+         M9SoT/1K+j9WJ94Qh3266Zs8mcDoJ4eedUIYsN+Rcr3b01BkTCqs0BUTpUd2BD59XO5e
+         SldBx3IANUKtQ3zN3VC4R0rgr/GggdlYkPTFQJVO96Vgzw13bgHxDy6cLmy3qVrj8Gve
+         xpBYb4yGF7RZCGYrqI+ZRS5zyKtYjmTeMF6q1q9+c/evczT9aPgVODuLJnZYbuFU2+HE
+         IqvxdkZNCBC3i3zIoTSOi4Ob9/Hi0AvN4yprmi025jgcOWHbKW8gwleDJSkgSHW6Ty3f
+         Mkrg==
+X-Gm-Message-State: ABy/qLZgQgeZkZGnBzLavZ9EBJ55jzBpf0T0jsVpUJZt3IQozd393mJ4
+	9yl6skhQepr3+ODnPM/FpOTmwToHtvThz7kv34Bp8A==
+X-Google-Smtp-Source: APBJJlGTSlrVE/gr4KIeqT8QyWmS6kcLOxDmjU1gJUjWwYFvKHdcIx19nsRmNeikpsxPHUazNuv96IyS/yfHvwFMVe0=
+X-Received: by 2002:a05:600c:3d9b:b0:3f1:6fe9:4a95 with SMTP id
+ bi27-20020a05600c3d9b00b003f16fe94a95mr79110wmb.4.1689835023143; Wed, 19 Jul
+ 2023 23:37:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
-Message-ID: <20230720062939.2411889-1-davidgow@google.com>
-Subject: [PATCH] rust: doctests: Use tabs for indentation in generated C code
+MIME-Version: 1.0
+References: <20230718052752.1045248-1-ojeda@kernel.org> <20230718052752.1045248-7-ojeda@kernel.org>
+ <CABVgOSnCY66C5wza-ZXb8c8UHg8ydbFv4U_7A14UU_gXeESKZg@mail.gmail.com> <CANiq72m08qGAa7k37A0rQNf7vvBc1o8JjSY8jNd+m2XzVOT9rw@mail.gmail.com>
+In-Reply-To: <CANiq72m08qGAa7k37A0rQNf7vvBc1o8JjSY8jNd+m2XzVOT9rw@mail.gmail.com>
 From: David Gow <davidgow@google.com>
-To: Brendan Higgins <brendan.higgins@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+Date: Thu, 20 Jul 2023 14:36:50 +0800
+Message-ID: <CABVgOSnL0Kiv1Mo6feCLYVq6bGUjxN3gUVrW4ZKD4Fh1wUhWrQ@mail.gmail.com>
+Subject: Re: [PATCH v2 6/7] rust: support running Rust documentation tests as
+ KUnit ones
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Andreas Hindborg <nmi@metaspace.dk>, kunit-dev@googlegroups.com, 
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000004ebb7b0600e56044"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-	USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
-	version=3.4.6
+	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+	T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-While Rust uses 4 spaces for indentation, we should use tabs in the
-generated C code. This does result in some scary-looking tab characters
-in a .rs file, but they're in a string literal, so shouldn't make
-anything complain too much.
+--0000000000004ebb7b0600e56044
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: a66d733da801 ("rust: support running Rust documentation tests as KUnit ones")
-Signed-off-by: David Gow <davidgow@google.com>
----
- scripts/rustdoc_test_gen.rs | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+On Tue, 18 Jul 2023 at 18:50, Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Tue, Jul 18, 2023 at 10:17=E2=80=AFAM David Gow <davidgow@google.com> =
+wrote:
+> >
+> > This is looking good and working well here.
+> >
+> > One super-minor thought below (the generated C file seems to be using
+> > 4-space indentation, not tabs), but it's not something that worries me
+> > enough to hold the patch up if there are no other issues.
+>
+> Good eye! Of course, please feel free to change it when applying
+> (though from a quick grep I don't see "[ ... ]" comments in commits in
+> the KUnit tree). I am also happy to send a v3.
 
-diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
-index 5ebd42ae4a3f..a625cf3517c0 100644
---- a/scripts/rustdoc_test_gen.rs
-+++ b/scripts/rustdoc_test_gen.rs
-@@ -242,13 +242,13 @@ macro_rules! assert_eq {{
- {c_test_declarations}
- 
- static struct kunit_case test_cases[] = {{
--    {c_test_cases}
--    {{ }}
-+	{c_test_cases}
-+	{{ }}
- }};
- 
- static struct kunit_suite test_suite = {{
--    .name = "rust_doctests_kernel",
--    .test_cases = test_cases,
-+	.name = "rust_doctests_kernel",
-+	.test_cases = test_cases,
- }};
- 
- kunit_test_suite(test_suite);
--- 
-2.41.0.255.g8b1d071c50-goog
+We merged this as-is, and I've sent out a fixup patch here:
+https://lore.kernel.org/linux-kselftest/20230720062939.2411889-1-davidgow@g=
+oogle.com/T/#u
 
+I wasn't able to find any issues with changing the indentation, but
+let me know if there's some tool which complains about seeing tabs in
+.rs files we need to worry about.
+
+Cheers,
+-- David
+
+--0000000000004ebb7b0600e56044
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIIPnwYJKoZIhvcNAQcCoIIPkDCCD4wCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ggz5MIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
+dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
+6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
+c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
+I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
+AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
+BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
+CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
+AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
+MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
+My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
+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
+9IGQSBx2i4m+hGXJpET+MEwGA1UdIARFMEMwQQYJKwYBBAGgMgEoMDQwMgYIKwYBBQUHAgEWJmh0
+dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQCMAAwgZoGCCsG
+AQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9jYS9n
+c2F0bGFzcjNzbWltZWNhMjAyMDBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5nbG9iYWxzaWdu
+LmNvbS9jYWNlcnQvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3J0MB8GA1UdIwQYMBaAFHzMCmjXouse
+LHIb0c1dlW+N+/JjMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20v
+Y2EvZ3NhdGxhc3Izc21pbWVjYTIwMjAuY3JsMA0GCSqGSIb3DQEBCwUAA4IBAQCRI3Z4cAidgFcv
+Usqdz765x6KMZSfg/WtFrYg8ewsP2NpCxVM2+EhPyyEQ0k0DhtzdtGoI/Ug+jdFDyCKB9P2+EPLh
+iMjMnFILp7Zs4r18ECHlvZuDZfH9m0BchXIxu5jLIuQyKUWrCRDZZEDNr510ZhhVfYSFPA8ms1nk
+jyzYFOHYQyv5IfML/3IBFKlON5OZa+V8EZYULYcNkp03DdWglafj7SXZ1/XgAbVYrC381UvrsYN8
+jndVvoa1GWwe+NVlIIK7Q3uAjV3qLEDQpaNPg1rr0oAn6YmvTccjVMqj2YNwN+RHhKNzgRGxY5ct
+FaN+8fXZhRhpv3bVbAWuPZXoMYICajCCAmYCAQEwaDBUMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQ
+R2xvYmFsU2lnbiBudi1zYTEqMCgGA1UEAxMhR2xvYmFsU2lnbiBBdGxhcyBSMyBTTUlNRSBDQSAy
+MDIwAhABAz5xDls09r2CKyYRqnNbMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBR
+7uxK72Kly/LkbPNm+uVlj5zKQpD9oTbd6JQvXW4szzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
+MBwGCSqGSIb3DQEJBTEPFw0yMzA3MjAwNjM3MDNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUD
+BAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsG
+CSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAYwiXcRd97k90mE4qwyjv
+EAxYBFkYQ3iHMxzLCbzKvpjW8QIndJKZ+qfOrrykuzETHxY1OzOZcjIKsLuufuJ5y1csB+91pSx0
+IMGYzEg/r8NywQMt/z+6WEcYXMHSxZpdFEqmtkiB8RpgPQ5yOUiAmBpMuWsfKMUn6cwqig9fnBG+
+8wENO5PIRxpXEO+bTu8knG9hSzB6bTysEzIcliHbrxoXNwLHqH/GyeoSToHRtTZK7zw6/CoRIwSF
+3vB0r6dvDtWiLuy/Pcy+bru3el/jTSH4dKwziU1E9h+7f72sfgRHWEBqarlZqforcNmBZqYDzU9a
+prQooET206aFHCGMig==
+--0000000000004ebb7b0600e56044--
