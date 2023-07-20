@@ -1,210 +1,109 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C94154B9
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 06:40:42 +0000 (UTC)
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B1835A3
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 23:40:22 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-bd69bb4507eso440810276.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Jul 2023 23:40:22 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B1E199E7
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 09:55:56 +0000 (UTC)
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58CD5ED;
+	Thu, 20 Jul 2023 02:55:48 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-c5cf26e9669so523958276.0;
+        Thu, 20 Jul 2023 02:55:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689835209; x=1690440009;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i3Gim78LlW0ImU8Nf7KfkXlFKv0mM0hU/1p3btyr4nM=;
-        b=5f9C5eFXQp0hGJsDoxGCFRckc7Px3DcrknxoAjktifh5StDa+zVV6XWxRyWl4wpUPD
-         2biiL+iilf0AgDI5sxpf7W8VW2o0Ux3ZuggzoLmM7PLy8Z3I7GtxySWk8m0rZZelUNRE
-         b5/PlSp8f59mHceQUG85M8pnRcVcV4A8ywL9iY1GwLH8GJZ7rvmTDJSt7644yc1aLCaA
-         ZhyM3Rj69OEIFlI4947vSLvC36fFxWnjkMCqrdbw/aScWuf6p3TgnB15frSw0eE8uYlm
-         /9lOVmJGVLAqX/jHl5ozL85NB1xCDQNkvCsYR2J83zbZ+G9ODeeKJ8pYFrPrxCvliuaF
-         uocQ==
+        d=gmail.com; s=20221208; t=1689846947; x=1690451747;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2FLg5w4lDWIr9h+nDTSVvwZ06StSjnLpOQ138ZfnB4g=;
+        b=Fz/oPal1Dl3Txwaou60rukURA8B4NOHCTsLz6Ep0RmTRV6bQ7LNaeYtsW7rynq4i5l
+         vZ5nheF4yqXKoNDNnm9UA1JLJponL7SkxVbbo2vgfyQ9DBjBoux6FqalvRGwWkEORCif
+         cJ+NRCaoiRBIb67hJ+4zLdBpDGer1yIC2DHbd5Z3K7lb1sIZrE4HN6RRc9YRcWzzgq1j
+         Dz8U6aiNzFsXr7XyNjeTU8/OafX3/xm4dhUMuxibjd6A+wLbzwnTKRLW2pi67FMxLC0j
+         k95S9iKdUYvb2P3QfnEqZWUrZ+xCuzjtf8C/Cub37+faIF5PAnzy2WH7PeUwFqfc2dqI
+         j8uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689835209; x=1690440009;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=i3Gim78LlW0ImU8Nf7KfkXlFKv0mM0hU/1p3btyr4nM=;
-        b=ZOrjwyHnVJMWsi2EiO68huN6qqFSjgGqGCUtO/2SgfR4HUKRpXqMdc/FnAL3Gqe6kJ
-         VoTfA5+nP7oPF8ywCJeL2hhg/ouu6LfyrAIjM9wQhbgkky1d+cwdS5hs1Ywm5Fiq/Ssh
-         bDnn92e2ycEpcDNGzho2mlPUJxF6Q5o4JrxNGKKiN/K0zab47MADiSX3nZtRlV+BYHwQ
-         +filevNXTuzAPwWhqtr2RmmnKpHl2XoXJdawIpw2Thc5PPbNlyi6ZuzHtsNL4o3C02yy
-         UfpFRRsue9zqsckH4GNXwSHBiCJfQ5u11AgY9m+lGDNxDNBNeJzJuYzd9AKp5mxVzdem
-         Dqfg==
-X-Gm-Message-State: ABy/qLYTaYa3jjFicUxexukD96M+y47qIEASRD/cw34rLGBicf3s+0vX
-	aBt+5TVkj+BPeNfiICYxUfxPBn4ERgvnKw==
-X-Google-Smtp-Source: APBJJlHksrDL5l4lPhnUlz0GtDMHq3IdfMTmcbYys5NVadOWYhr90nEPMgb/oWaI2BQLgYCE4qQc7zXkQFJhtw==
-X-Received: from slicestar.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:20a1])
- (user=davidgow job=sendgmr) by 2002:a05:6902:1709:b0:ccf:6bfa:2a03 with SMTP
- id by9-20020a056902170900b00ccf6bfa2a03mr37240ybb.7.1689835209388; Wed, 19
- Jul 2023 23:40:09 -0700 (PDT)
-Date: Thu, 20 Jul 2023 14:38:54 +0800
-In-Reply-To: <20230720-rustbind-v1-0-c80db349e3b5@google.com>
+        d=1e100.net; s=20221208; t=1689846947; x=1690451747;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2FLg5w4lDWIr9h+nDTSVvwZ06StSjnLpOQ138ZfnB4g=;
+        b=K4d3nlSPdtZs4J3bVeSfxJ++MSBfXUJUkIsnyoQCvb+6b3MKcLPmc9P3gaEqKZpVoU
+         sNHY3Fi9g+IogtnO5h3REybaODztp0NjMRRnVZw/8O2W2cQ/7h3nxBxY/Y6ilsz1fHrz
+         ggrnVMkCDluRfIYsjGd2T1dgw7Dk0q3HMOi+Rd1cTAnLsC7oXYkImfRq7pxprH1oa3eb
+         tekNSzIOxbo0CAq6n/Ho5VVKb+FA4mdXl/1YgJHDl3NVdbpXKawSYz8ZbtFo+gv+3YKW
+         TYMs9qSKFSmMA6AdRVaAelfi1dxemDZkiC96XbVq/US0V+69ze2gxA1XAxRmcmyALc0T
+         Fwgw==
+X-Gm-Message-State: ABy/qLbB3NwKn2uW6QaH21JldogdHcoEgM59+ew8rLokenp+SzWoQsms
+	zqYDNA7vzsAnmjH1OzBEegTCL4SKC05lxwDsWz4=
+X-Google-Smtp-Source: APBJJlGp5JsBSpSIG7GjjwdK0yzHG9WT2MLhM6tTWhnc6zgjiFpZs4TfhGAum7vV1O8n63oXkYMpIz2EU+WaUkTC2Xs=
+X-Received: by 2002:a05:6902:18d5:b0:c12:29ac:1d3b with SMTP id
+ ck21-20020a05690218d500b00c1229ac1d3bmr7003409ybb.11.1689846947439; Thu, 20
+ Jul 2023 02:55:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20230720-rustbind-v1-0-c80db349e3b5@google.com>
-X-Mailer: b4 0.13-dev-099c9
-Message-ID: <20230720-rustbind-v1-3-c80db349e3b5@google.com>
-Subject: [PATCH 3/3] rust: kunit: allow to know if we are in a test
-From: David Gow <davidgow@google.com>
-To: Brendan Higgins <brendan.higgins@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Benno Lossin <benno.lossin@proton.me>
-Cc: David Gow <davidgow@google.com>, 
-	"=?utf-8?q?Jos=C3=A9_Exp=C3=B3sito?=" <jose.exposito89@gmail.com>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, linux-kselftest@vger.kernel.org, 
+MIME-Version: 1.0
+References: <20230720062939.2411889-1-davidgow@google.com>
+In-Reply-To: <20230720062939.2411889-1-davidgow@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 20 Jul 2023 11:55:35 +0200
+Message-ID: <CANiq72k5mJDP8L2Mx8xWxts++kwiJXPTk88MTJQOvCiEKRMvYw@mail.gmail.com>
+Subject: Re: [PATCH] rust: doctests: Use tabs for indentation in generated C code
+To: David Gow <davidgow@google.com>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, linux-kselftest@vger.kernel.org, 
 	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
 	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-From: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
+On Thu, Jul 20, 2023 at 8:30=E2=80=AFAM David Gow <davidgow@google.com> wro=
+te:
+>
+> While Rust uses 4 spaces for indentation, we should use tabs in the
+> generated C code. This does result in some scary-looking tab characters
+> in a .rs file, but they're in a string literal, so shouldn't make
+> anything complain too much.
+>
+> Fixes: a66d733da801 ("rust: support running Rust documentation tests as K=
+Unit ones")
+> Signed-off-by: David Gow <davidgow@google.com>
 
-In some cases, you need to call test-only code from outside the test
-case, for example, to mock a function or a module.
+The indentation for the `KUNIT_CASE()` lines should be changed too:
 
-In order to check whether we are in a test or not, we need to test if
-`CONFIG_KUNIT` is set.
-Unfortunately, we cannot rely only on this condition because some
-distros compile KUnit in production kernels, so checking at runtime
-that `current->kunit_test !=3D NULL` is required.
+diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
+index 5ebd42ae4a3f..9623e2e6313d 100644
+--- a/scripts/rustdoc_test_gen.rs
++++ b/scripts/rustdoc_test_gen.rs
+@@ -213,7 +213,7 @@ macro_rules! assert_eq {{
+         .unwrap();
 
-Note that the C function `kunit_get_current_test()` can not be used
-because it is not present in the current Rust tree yet. Once it is
-available we might want to change our Rust wrapper to use it.
-
-This patch adds a function to know whether we are in a KUnit test or
-not and examples showing how to mock a function and a module.
-
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.com>
----
- rust/kernel/kunit.rs | 78 ++++++++++++++++++++++++++++++++++++++++++++++++=
-++++
- 1 file changed, 78 insertions(+)
-
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 44ea67028316..dcaac19bb108 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -40,6 +40,8 @@ pub fn info(args: fmt::Arguments<'_>) {
+         write!(c_test_declarations, "void {kunit_name}(struct kunit
+*);\n").unwrap();
+-        write!(c_test_cases, "    KUNIT_CASE({kunit_name}),\n").unwrap();
++        write!(c_test_cases, "    KUNIT_CASE({kunit_name}),\n").unwrap();
      }
- }
-=20
-+use crate::task::Task;
-+use core::ops::Deref;
- use macros::kunit_tests;
-=20
- /// Asserts that a boolean expression is `true` at runtime.
-@@ -256,11 +258,87 @@ macro_rules! kunit_unsafe_test_suite {
-     };
- }
-=20
-+/// In some cases, you need to call test-only code from outside the test c=
-ase, for example, to
-+/// create a function mock. This function can be invoked to know whether w=
-e are currently running a
-+/// KUnit test or not.
-+///
-+/// # Examples
-+///
-+/// This example shows how a function can be mocked to return a well-known=
- value while testing:
-+///
-+/// ```
-+/// # use kernel::kunit::in_kunit_test;
-+/// #
-+/// fn fn_mock_example(n: i32) -> i32 {
-+///     if in_kunit_test() {
-+///         100
-+///     } else {
-+///         n + 1
-+///     }
-+/// }
-+///
-+/// let mock_res =3D fn_mock_example(5);
-+/// assert_eq!(mock_res, 100);
-+/// ```
-+///
-+/// Sometimes, you don't control the code that needs to be mocked. This ex=
-ample shows how the
-+/// `bindings` module can be mocked:
-+///
-+/// ```
-+/// // Import our mock naming it as the real module.
-+/// #[cfg(CONFIG_KUNIT)]
-+/// use bindings_mock_example as bindings;
-+///
-+/// // This module mocks `bindings`.
-+/// mod bindings_mock_example {
-+///     use kernel::kunit::in_kunit_test;
-+///     use kernel::bindings::u64_;
-+///
-+///     // Make the other binding functions available.
-+///     pub(crate) use kernel::bindings::*;
-+///
-+///     // Mock `ktime_get_boot_fast_ns` to return a well-known value when=
- running a KUnit test.
-+///     pub(crate) unsafe fn ktime_get_boot_fast_ns() -> u64_ {
-+///         if in_kunit_test() {
-+///             1234
-+///         } else {
-+///             unsafe { kernel::bindings::ktime_get_boot_fast_ns() }
-+///         }
-+///     }
-+/// }
-+///
-+/// // This is the function we want to test. Since `bindings` has been moc=
-ked, we can use its
-+/// // functions seamlessly.
-+/// fn get_boot_ns() -> u64 {
-+///     unsafe { bindings::ktime_get_boot_fast_ns() }
-+/// }
-+///
-+/// let time =3D get_boot_ns();
-+/// assert_eq!(time, 1234);
-+/// ```
-+pub fn in_kunit_test() -> bool {
-+    if cfg!(CONFIG_KUNIT) {
-+        // SAFETY: By the type invariant, we know that `*Task::current().d=
-eref().0` is valid.
-+        let test =3D unsafe { (*Task::current().deref().0.get()).kunit_tes=
-t };
-+        !test.is_null()
-+    } else {
-+        false
-+    }
-+}
-+
- #[kunit_tests(rust_kernel_kunit)]
- mod tests {
-+    use super::*;
-+
-     #[test]
-     fn rust_test_kunit_kunit_tests() {
-         let running =3D true;
-         assert_eq!(running, true);
-     }
-+
-+    #[test]
-+    fn rust_test_kunit_in_kunit_test() {
-+        let in_kunit =3D in_kunit_test();
-+        assert_eq!(in_kunit, true);
-+    }
- }
 
---=20
-2.41.0.255.g8b1d071c50-goog
+     let rust_tests =3D rust_tests.trim();
 
+With that:
+
+    Acked-by: Miguel Ojeda <ojeda@kernel.org>
+
+Since the changes are within string literals, I don't expect issues,
+but I just in case I ran it through `checkpatch.pl`, `rustfmt` and
+`CLIPPY=3D1`:
+
+    Tested-by: Miguel Ojeda <ojeda@kernel.org>
+
+Thanks!
+
+Cheers,
+Miguel
