@@ -1,54 +1,54 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FA417FE6
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 13:44:38 +0000 (UTC)
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAE6A19B3
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 06:44:36 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-cbcffb18afeso726403276.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 06:44:36 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F306117FE6
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 13:45:25 +0000 (UTC)
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FD751989
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 06:45:24 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-573d70da2dcso7607887b3.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Jul 2023 06:45:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689860676; x=1690465476;
+        d=google.com; s=20221208; t=1689860723; x=1690465523;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RtUw718EqiyOItgwLRoWHschTDUolZNtcEeIulMXRuU=;
-        b=Qe45Vgea9Eb6lR7WQMdTwnmQf8IRCSuAHhjorIGTWlHBqhWfzeyijpT5OgAiHcw5Hs
-         PgcZM9ydmUS6rhORROj0FX3dxg7fHYAoo2UDvzSY9uSu4wja7RsRQA93RxTJ24pg9wpB
-         LpnigSLz0auuL+KRAHJfFOjWkgH+AZKNeAcs6NMxAYiaR5D+Gq6nTdMwTvogm6bwNjbq
-         OKXP2852kXFEg6DO51hM1sinDG8/mr5mYx94iv2TlC1Jl9bdaEzUiWN/+prDhRi4erZV
-         HgakPHRBd+0MVwsC+HaBPJ838OSffS7i0ukpCHgu+aOvZV05NjwzI0GTpl6P/PbJ+PV6
-         Fbdw==
+        bh=knRbu80OJ8CLJhnQO5wWqGTxy3faZAYp+dQGDLVzoX4=;
+        b=zxZpchrshqL9I6eRR0BSKpc4nlBOwFpJNgyzgAgyo8mdlxp4vOYkBJ4BXuZc9IRmq1
+         axPzkYA2cII3XkAGh5UNoEuQtecPd46bK/AI5xTCpC6gyiYWR3HqJuyq0MB9qrMb8SzU
+         9LA80ZPYiDXt/qzAOphsh0rEzLM1fVaqk0lHNc+8tjmcO2GNPKZ/sSFKzypfD6bmqmwD
+         05qWWPNMy7fWLXeLSFKPsNDTLIj05DIcCYhgJDfslWBWgPBs1QXdafRPpoRimlViandm
+         ul4P5w7SHX3ExnXrAXJv2pMqND95cC0LNFTU3u7Uog5PUKlg1PovZU6EKvs/Il6Ehkw0
+         qTow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689860676; x=1690465476;
+        d=1e100.net; s=20221208; t=1689860723; x=1690465523;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RtUw718EqiyOItgwLRoWHschTDUolZNtcEeIulMXRuU=;
-        b=V9ufr3cFXucmLIHTtvqnM2KIGvU+NQd6Q60+kpiYsIpJ37KJOkx+O4POtMhB78qKkH
-         ekyFq8iyleBgsopWABCidZ4xmUTaoLQA1//kZES/XI19tKKCYFOYIP9z7BwrEgvsj3ut
-         v4Dgc3e5F2YJY2xj8UkJQOl4E82esLR9mwhtfw6KOzG4VrtUSFdiIM7ZC0Q/J2XfIiIS
-         /hpZv6J79MPB+X0HDmaiU3ncYcuhskE4Oxp0xPEP8YdIENoDRfMXG3ehIatdYMEjV4Qu
-         8iQt8vzY3b1q0nJaO2LDkzk32y/WVVr8geCqWW5MWChSW9jlcVEC5fuLB4qkx+hr4mft
-         56dA==
-X-Gm-Message-State: ABy/qLYBYQVuN0wH7iBhcaLjWvT2EAHox0Q+vFQXw6U3hofI4lFAK9AQ
-	HZOQ+5iVKRCurChy8V5dTQ5BnTao8QKZ4Mc=
-X-Google-Smtp-Source: APBJJlFtGDZZbmerF2xp0urcimT532Xxqp7VKULGWvIydvDQxihP8tafHJbfMTat9HbGQhQ6KJ2SC2jq2gjZKmg=
+        bh=knRbu80OJ8CLJhnQO5wWqGTxy3faZAYp+dQGDLVzoX4=;
+        b=eGZwgJPgC3a8w7muHnfjFB0mJYxpC5lyzBA76pJOG1Fz48Ah31ft0i6oUuBeRPt4Av
+         fRUnMXpJopTPfUGY216Ns4IXxb7ujmCPm1ak9zkQsi7YYBolNvTumJPilFz+anlphnJb
+         l19w6I1C8mHCUO0DosYsZ87OEgZ13Bq9Snmf4pYywibiWgChiTXAitPv/dr0kl/VwH8T
+         q14jty9EyVp6NM97v/dl9dwFbuEa7ku7RN4WWTaFSfq0phlVLHHCRMv/mV6xGX4DFIAs
+         fJprQq5CJqvBbYYTCXdvMLqNQnhYsZtXIt0jxAMuCbw53KZ3UWzvTYyNq49DUzWo/9LG
+         8Txg==
+X-Gm-Message-State: ABy/qLZEDr/PZB7J0lC83kt+3frZq/MYdYkx9L5aLAwrhsqfphWoIs+l
+	mqoBiXeBpVprfKUGB0dO2Fui1k2+/eUo43Y=
+X-Google-Smtp-Source: APBJJlGplpoVryvURkn9ZSMo+zrTMcglju2HavshLybsiFTib7Swl5mhM9Plg6FME4ZvmaeT9vcCZhCdLZ5Du9Q=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a05:6902:1709:b0:cab:e42c:876b with SMTP
- id by9-20020a056902170900b00cabe42c876bmr44853ybb.3.1689860675977; Thu, 20
- Jul 2023 06:44:35 -0700 (PDT)
-Date: Thu, 20 Jul 2023 13:44:28 +0000
-In-Reply-To: <20230718054416.861412-2-tmgross@umich.edu>
+ (user=aliceryhl job=sendgmr) by 2002:a81:b70d:0:b0:581:7b58:5e70 with SMTP id
+ v13-20020a81b70d000000b005817b585e70mr59909ywh.5.1689860723759; Thu, 20 Jul
+ 2023 06:45:23 -0700 (PDT)
+Date: Thu, 20 Jul 2023 13:45:19 +0000
+In-Reply-To: <20230718054416.861412-3-tmgross@umich.edu>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20230718054416.861412-2-tmgross@umich.edu>
+References: <20230718054416.861412-3-tmgross@umich.edu>
 X-Mailer: git-send-email 2.41.0.255.g8b1d071c50-goog
-Message-ID: <20230720134428.3547917-1-aliceryhl@google.com>
-Subject: Re: [PATCH 1/2] docs: rust: update instructions for obtaining 'core' source
+Message-ID: <20230720134519.3548499-1-aliceryhl@google.com>
+Subject: Re: [PATCH 2/2] docs: rust: clarify what 'rustup override' does
 From: Alice Ryhl <aliceryhl@google.com>
 To: tmgross@umich.edu
 Cc: alex.gaynor@gmail.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
@@ -60,21 +60,17 @@ Content-Type: text/plain; charset="utf-8"
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.6
+	USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Trevor Gross <tmgross@umich.edu> writes:
-> +	curl -L https://static.rust-lang.org/dist/rust-src-$(scripts/min-tool-version.sh rustc).tar.gz |
-> +		tar -xzf - -C $(rustc --print sysroot)/lib \
-> +		rust-src-$(scripts/min-tool-version.sh rustc)/rust-src/lib/ \
-> +		--strip-components=3
+> The behavior of 'rustup override' is not very well known. This patch is
+> a small edit that adds details about what it does, so users have a better
+> understanding of how it affects their system toolchain (i.e., it does
+> not affect system toolchain and only sets a directory-specific
+> override).
+> 
+> Signed-off-by: Trevor Gross <tmgross@umich.edu>
 
-I think this assumes that the sysroot path has no spaces. I would add
-some quotes.
-
-With that fixed, you may add
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-Alice
-
