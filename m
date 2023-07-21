@@ -1,91 +1,58 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9561ED25
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Jul 2023 16:10:50 +0000 (UTC)
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B86F030F2;
-	Fri, 21 Jul 2023 09:10:47 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-5703cb4bcb4so24898247b3.3;
-        Fri, 21 Jul 2023 09:10:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689955847; x=1690560647;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cw+Jy1w/Rjf6qsPkl6FP5i8cv3/KZj4rUJ/QrJgsoJ4=;
-        b=aArCFIgo+wz5cxrqIRSfqq0Vs+MH1lxuC0ozjckkyIGQXkDKLHv0DSAMDYeXQOIj/0
-         rhziUz+GHpJ0Hx8vfTKF3fGrIpsEdDUA5qpXb6OykqASGHvDyw9+I8XX+be8KPgT5zPl
-         mglSYzcWkW+epT3B9WR38hEBaVFK2RtgdLJNwPPfoifhXCV+cHukUSGr36XHJWQ82qJP
-         WMiHa+Hlj8NjhsBkCCNUQjycMgQ80C49nA6rrTSeG73bCVf6FneRmkLVPMKVGSZEUMbU
-         1aBTZBCKCU3fPiNev0Q44dTq7He/lsq8vyhr86sh/zBQ038GX0WnDCVLRVDXMgR2UyFQ
-         /tMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689955847; x=1690560647;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cw+Jy1w/Rjf6qsPkl6FP5i8cv3/KZj4rUJ/QrJgsoJ4=;
-        b=iXFgz6M9jiaOoL9etFoCS0SGfQzQtAPbQiM5DsGF7DeYRXcRQPJIDXYfX4IMl24F6f
-         Dll7wMv2KlsJeSy/4ET6jtboCUHtcrq8KqFUekwV+3kBsRI+ut+Z5whek3qXEXxlqMRG
-         8mixhMNx6ZXNhDQjPpQMtZi2MAZ06jD4GtSxZdjdhd1UKK5XtanuEIkfvd7oMO5PCrjJ
-         /n98GJVDvUTLJseDLwWvHUsxT8ppoJx7HrRAaI5XfwNlOQb3ARqRavwo6d6nyY7Lirmt
-         py7YsabQOSQVio2yirA6tGoYNAFgtzpcSYRPdlMFC59zNT4ejG0Ln7RoUjJPrYO3Ogl6
-         lmyw==
-X-Gm-Message-State: ABy/qLaCMqvOmJ1aRCBxbi58dHzLlBapUg87ypDN8lkQx46wsVqw9Hnd
-	Qkt8wYnS5Yovp1tXEMZwjZOIXoLGs/Wgd110WSk=
-X-Google-Smtp-Source: APBJJlEPoqqc9mWISEofrA+wSZKVD6nGVs2rA5lmOJxKWBjepzXM4MuTOb+OfihNTVxxL71cjm0dEGTT0e47RWZx898=
-X-Received: by 2002:a25:4dc4:0:b0:c4e:e8b9:1d1b with SMTP id
- a187-20020a254dc4000000b00c4ee8b91d1bmr1842354ybb.29.1689955846797; Fri, 21
- Jul 2023 09:10:46 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5A1F9E4
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Jul 2023 21:43:05 +0000 (UTC)
+Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FBB22D7E;
+	Fri, 21 Jul 2023 14:43:04 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id E92C7733;
+	Fri, 21 Jul 2023 21:43:02 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net E92C7733
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1689975783; bh=SNG0zXp+EBUeGzjNMD43Y/EOQIkrzPIn9fZTujaSg8I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=FB2NkZC9/T9a1V6o7j6wJvmT7l/v2QuYAttIMkvp8mspnSX/86EWl9dCLqq+ubVf6
+	 qWnvusYrTc2PvFziP4FY2SNViWSWP0wI0NdGzxtIwXr0m3yn/3IyrVmjJ7aGPwh9AV
+	 5YpQpo9qIxxwt5AwOIW/Ma9pXq6mr/RVVRE1YmN3WCoNyjR9UDB2XUmEhuRlgHBXI1
+	 i8E43wk46C/iPPaEnJnxugZAEx2pnZb2tvGHg5TJb2+tpu632p9VpExz6amF+wc3Di
+	 vF1u5rEwys6UxxVPg7djNObFiG8uexjEZVT/YB0hazt7YfC8YelSifYGYkV+f4ySDW
+	 mCYHnx0BKEDlA==
+From: Jonathan Corbet <corbet@lwn.net>
+To: Carlos Bilbao <carlos.bilbao@amd.com>, ojeda@kernel.org
+Cc: jani.nikula@linux.intel.com, rdunlap@infradead.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ konstantin@linuxfoundation.org, rust-for-linux@vger.kernel.org, Carlos
+ Bilbao <carlos.bilbao@amd.com>
+Subject: Re: [PATCH v8 0/2] docs: Integrate rustdoc into Rust documentation
+In-Reply-To: <87mszqfbfg.fsf@meer.lwn.net>
+References: <20230718151534.4067460-1-carlos.bilbao@amd.com>
+ <87mszqfbfg.fsf@meer.lwn.net>
+Date: Fri, 21 Jul 2023 15:43:02 -0600
+Message-ID: <87jzutaql5.fsf@meer.lwn.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230720062939.2411889-1-davidgow@google.com> <d3aa8c48-9f47-cead-aaa7-3ea796b91810@gmail.com>
-In-Reply-To: <d3aa8c48-9f47-cead-aaa7-3ea796b91810@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 21 Jul 2023 18:10:35 +0200
-Message-ID: <CANiq72m-nd6vgH9XROMTC_Xf8__e26uPceFALu-_fAhnPnDYBg@mail.gmail.com>
-Subject: Re: [PATCH] rust: doctests: Use tabs for indentation in generated C code
-To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc: David Gow <davidgow@google.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	Miguel Ojeda <ojeda@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-	autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Jul 21, 2023 at 2:27=E2=80=AFAM Martin Rodriguez Reboredo
-<yakoyoku@gmail.com> wrote:
->
-> I find it weird to mix indentations in one file, but if it leaves a
-> good result then I'll hold my tongue.
+Jonathan Corbet <corbet@lwn.net> writes:
 
-In general I would agree, but I guess we can consider these as "data"
-since they are part of a literal, and thus we could consider it is not
-mixing indentations in that sense (for the Rust code).
+> Other than that one bit of strangeness, I think this is about ready to
+> be applied.
 
-It could potentially confuse a script or tool that does not know about
-the language and make it report an inconsistency. But there is always
-going to be a corner case or similar that you need to skip/ignore in a
-tool like that. And, in other cases, like the analysis that was done
-for the potential `.editorconfig` file, it would just be noise since
-we don't do this kind of generation often within `.rs` files.
+...and I've just gone ahead and done that - thanks for doing this and
+sticking with it!
 
-Either way is fine for me: I don't mind the status quo, because it is
-just a generated file, so I don't expect many readers; and I don't
-mind the file having the proper tabs for its file extension either,
-and I guess perhaps having those tabs helps avoid some other tool
-complaining about the file if it is run when the file exists.
-
-Cheers,
-Miguel
+jon
