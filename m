@@ -1,58 +1,123 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5A1F9E4
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Jul 2023 21:43:05 +0000 (UTC)
-Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FBB22D7E;
-	Fri, 21 Jul 2023 14:43:04 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id E92C7733;
-	Fri, 21 Jul 2023 21:43:02 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net E92C7733
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1689975783; bh=SNG0zXp+EBUeGzjNMD43Y/EOQIkrzPIn9fZTujaSg8I=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FB2NkZC9/T9a1V6o7j6wJvmT7l/v2QuYAttIMkvp8mspnSX/86EWl9dCLqq+ubVf6
-	 qWnvusYrTc2PvFziP4FY2SNViWSWP0wI0NdGzxtIwXr0m3yn/3IyrVmjJ7aGPwh9AV
-	 5YpQpo9qIxxwt5AwOIW/Ma9pXq6mr/RVVRE1YmN3WCoNyjR9UDB2XUmEhuRlgHBXI1
-	 i8E43wk46C/iPPaEnJnxugZAEx2pnZb2tvGHg5TJb2+tpu632p9VpExz6amF+wc3Di
-	 vF1u5rEwys6UxxVPg7djNObFiG8uexjEZVT/YB0hazt7YfC8YelSifYGYkV+f4ySDW
-	 mCYHnx0BKEDlA==
-From: Jonathan Corbet <corbet@lwn.net>
-To: Carlos Bilbao <carlos.bilbao@amd.com>, ojeda@kernel.org
-Cc: jani.nikula@linux.intel.com, rdunlap@infradead.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- konstantin@linuxfoundation.org, rust-for-linux@vger.kernel.org, Carlos
- Bilbao <carlos.bilbao@amd.com>
-Subject: Re: [PATCH v8 0/2] docs: Integrate rustdoc into Rust documentation
-In-Reply-To: <87mszqfbfg.fsf@meer.lwn.net>
-References: <20230718151534.4067460-1-carlos.bilbao@amd.com>
- <87mszqfbfg.fsf@meer.lwn.net>
-Date: Fri, 21 Jul 2023 15:43:02 -0600
-Message-ID: <87jzutaql5.fsf@meer.lwn.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5581EA94
+	for <rust-for-linux@vger.kernel.org>; Sat, 22 Jul 2023 15:51:59 +0000 (UTC)
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B84DE1A7;
+	Sat, 22 Jul 2023 08:51:58 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-bd61dd9a346so2925351276.2;
+        Sat, 22 Jul 2023 08:51:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690041118; x=1690645918;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GCi1Uz5o7zeVrFMLJ/4tgvXXXKZHZ4kvnCTkqRPWjWA=;
+        b=AOL3KXHdbXZMFcjTHwc6CCED5VEqhzTh4nbizMd7FgDA1zALz3PvEWgSwMKoaAhg/E
+         8ea5/DnMTu1CBpSXbBpUmA6MNnky/bPsaD/vE6Nh6vRNgYta0atW/N18fR4rv6iXVvWY
+         6HrgBGEwSZdbtBmz3NbYCuUfORAJ4sPIXkXcPlGIxNSV5na4JdOImlrzv0R/a8woaWqb
+         ZCeT14KmIN6MYia0WVSbjYApmeCuiXUYDb8qLs5ALA0dhC69NAQDqODLoaMI59sLfW5v
+         9Dfm67dXjr0G9pbEhEataEP3nCRxDNxYeEuUGxg3KGjVT1YKa0t/2bKwCQUqhz5XiQPB
+         6OKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690041118; x=1690645918;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GCi1Uz5o7zeVrFMLJ/4tgvXXXKZHZ4kvnCTkqRPWjWA=;
+        b=c/G+loJXo5+QIYl6t3Xc1PvUKE4849/qxmctbzUiJZTaBxSqBiea1c1dKdlHMwpNq7
+         tWvBeZDRJDjdgz76AP7VjKk+B9q+71M6+GQlaBN0Sz+xi950FyFDkUf6fvsR1E8nxCik
+         87+y0YZXsBMmIEPe+OKn+g7IytXdCNNQevDJqT8awlXqpK+R7fYmCgyHLSKvKGN0oM8O
+         W7XP+2odf7J+4+jabhi+pOKrNQRwQswVGXPmS3R8H2EeVhvK/NNVCC1l5gs8hDtJp3P9
+         otcBXU8seMAwMRzJTbLSP2ygRdueLb+kgmSeaDOleguDkc/quN2E1KPymgP3EJEh9GuQ
+         hE+w==
+X-Gm-Message-State: ABy/qLZd1ReP3JFI5RdHHvpGBSfDdX+6CWGlRlvlcRm6UE7N91ZJEM+Q
+	o0+iG967CYIINex+xVPa00esYoMLMqVN2u1hwRI=
+X-Google-Smtp-Source: APBJJlFGtjGwoVBX6T4RZLs+O9K/oMEKrvNEmTfDepBNpMwxth6UkVuiRcQi79TO2WtMS7kRWnjdz58tBZhbRYxqTWo=
+X-Received: by 2002:a25:fc05:0:b0:c41:a05d:5da7 with SMTP id
+ v5-20020a25fc05000000b00c41a05d5da7mr4021208ybd.5.1690041117961; Sat, 22 Jul
+ 2023 08:51:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20230718055235.1050223-1-ojeda@kernel.org> <CAK7LNAQ-hjW_19fjA+E-bQCrXcVPdN4-GvzAnEnYzna5KRVXew@mail.gmail.com>
+ <CANiq72kZjOGvRKoRxtgG=2DhJnMJK9TCQtTmeef_B=nLcLQD6g@mail.gmail.com> <CAK7LNASqumGb0xvSa8n4Heasz9BKxgk4mvzNXsfFhZE1G+Bxbg@mail.gmail.com>
+In-Reply-To: <CAK7LNASqumGb0xvSa8n4Heasz9BKxgk4mvzNXsfFhZE1G+Bxbg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 22 Jul 2023 17:51:46 +0200
+Message-ID: <CANiq72kD2wxXy2ri8sBhVJ4y-JJiq+kYt_MRZwuwB9uGkX-_jQ@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: rust: avoid creating temporary files
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, linux-kbuild@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev, Raphael Nestler <raphael.nestler@gmail.com>, 
+	Andrea Righi <andrea.righi@canonical.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Jonathan Corbet <corbet@lwn.net> writes:
+On Thu, Jul 20, 2023 at 8:35=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
+rg> wrote:
+>
+> Maybe, the following was a breakage.
+>
+> commit 295d8398c67e314d99bb070f38883f83fe94a97a
+> Author: Masahiro Yamada <masahiroy@kernel.org>
+> Date:   Sat Jan 7 18:18:15 2023 +0900
+>
+>     kbuild: specify output names separately for each emission type from r=
+ustc
+>
+> Before that, rust_common_cmd had --out-dir.
 
-> Other than that one bit of strangeness, I think this is about ready to
-> be applied.
+That's right, good catch!
 
-...and I've just gone ahead and done that - thanks for doing this and
-sticking with it!
+> BTW, do we also need to fix scripts/Makefile.host
+> in case the external module Makefile creates host programs?
 
-jon
+Indeed, we need it too. [1] would fix it (tested it with a trivial
+out-of-tree Rust hostprog).
+
+Do you want me to send it separately? i.e. to avoid losing the
+`Tested-by`s etc. that we already got for this one, which is the
+important one since that actually has users.
+
+The hostprogs fix is not really critical for stable, since it is
+unlikely there are users at all (we just got the first in-tree real
+user in the Rust+KUnit integration coming into 6.6), but I guess it
+does not hurt for the same reason.
+
+Thanks!
+
+Cheers,
+Miguel
+
+[1]
+
+diff --git a/scripts/Makefile.host b/scripts/Makefile.host
+index 7aea9005e497..54adf2e2ec51 100644
+--- a/scripts/Makefile.host
++++ b/scripts/Makefile.host
+@@ -86,7 +86,7 @@ hostc_flags    =3D -Wp,-MMD,$(depfile) \
+ hostcxx_flags  =3D -Wp,-MMD,$(depfile) \
+                  $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
+                  $(HOSTCXXFLAGS_$(target-stem).o)
+-hostrust_flags =3D --emit=3Ddep-info=3D$(depfile) \
++hostrust_flags =3D --out-dir $(dir $@) --emit=3Ddep-info=3D$(depfile) \
+                  $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
+                  $(HOSTRUSTFLAGS_$(target-stem))
