@@ -1,92 +1,77 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF594107B7
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Jul 2023 21:21:46 +0000 (UTC)
-Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D57AB1737;
-	Mon, 24 Jul 2023 14:21:40 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 1603A733;
-	Mon, 24 Jul 2023 21:21:40 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 1603A733
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1690233700; bh=gaNKVqyvP22L4mM+8WXVkl4QkXFivhR0y8i1kXszzPQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Imyn4jnOBa86K/OaOKITI/KBfz9yvh0y9ALfYriy5qxu4LN+yV24qqe3iRsQWGXet
-	 Z0x30JO9siMaPYMDEly+xc1qoNp45ZaUQ1D85j9tUoC6C5NVbGLODqkfajJaPYXs0N
-	 KFT7VVC9eI8oduNvf/yvbgOi9hQ5JCJuSm9uDzMiQMhkAigNV1uBCRBERqqny9mtXY
-	 VcQdMGxkwxZcXHjLPVM7yP2kJyq7AqvEX51t1e0q6hb47Ba7f6fiodQUqvxe7mcXT2
-	 a/TsUs0wUQQIY8VUy/Uurzj1/RQMIhvRoz77GY4o2+QyPG0ySzzrSOxjoLuOcPIxdP
-	 3iGu6Y+qoYdXw==
-From: Jonathan Corbet <corbet@lwn.net>
-To: Costa Shulyupin <costa.shul@redhat.com>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida
- Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <benno.lossin@proton.me>, "open list:DOCUMENTATION"
- <linux-doc@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- "open list:DOCUMENTATION PROCESS" <workflows@vger.kernel.org>, "open
- list:RUST" <rust-for-linux@vger.kernel.org>
-Cc: Costa Shulyupin <costa.shul@redhat.com>
-Subject: Re: [RFC PATCH] rework top page and organize toc on the sidebar
-In-Reply-To: <20230724193118.2204673-1-costa.shul@redhat.com>
-References: <20230724193118.2204673-1-costa.shul@redhat.com>
-Date: Mon, 24 Jul 2023 15:21:39 -0600
-Message-ID: <87ila9atuk.fsf@meer.lwn.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF411094E
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Jul 2023 21:55:17 +0000 (UTC)
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65DA6118;
+	Mon, 24 Jul 2023 14:55:15 -0700 (PDT)
+Date: Mon, 24 Jul 2023 21:55:07 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1690235712; x=1690494912;
+	bh=mQ0wVbJZR6Qqo1f6a7btQ5EY0YN+6oKaQQ8JxSOeS/w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=gB22Eo3q0kUmG8e6tgL+f8mLMNn6WdDfiToEXTVAgaHbWsVdYEeVX6n9+kZTxqXHZ
+	 kgPc+e0ujGzBYji5jP3IZ9YITKZhKbQBHHE3KVS8mIkPFgJrqHUo5J2wYgz81IM1h1
+	 GBEYfSMhymndkTxv6iG2TE5fBWDJbTX6C6IDG/CH/y4eQg34mztVIoWoPQt9rAuRH9
+	 B/RJYJkjhHGqSlWJo77J9kEBVSG+Zzl5a3Pdw5s3J7Fh6HI9yB/xlbCjepqEsPM+bl
+	 n4dRgL90afLOBXkEMlaSNd5JrDze2btqR2lEarQt12rh4XW20E3ucIjxuOC0jEEtOd
+	 mPjkmb/7+U6YQ==
+To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Asahi Lina <lina@asahilina.net>
+Subject: Re: [PATCH v2 11/12] rust: init: add `{pin_}chain` functions to `{Pin}Init<T, E>`
+Message-ID: <e02b8645-4284-7573-966a-6b6654d4a772@proton.me>
+In-Reply-To: <ebdf2635-6003-fc62-310f-5b9071473415@gmail.com>
+References: <20230719141918.543938-1-benno.lossin@proton.me> <20230719141918.543938-12-benno.lossin@proton.me> <0b818707-4762-c12d-8624-7d3c4f6841da@gmail.com> <5f22b25d-132d-7cbc-8bca-8333516c1663@proton.me> <ebdf2635-6003-fc62-310f-5b9071473415@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-	autolearn_force=no version=3.4.6
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Costa Shulyupin <costa.shul@redhat.com> writes:
+On 7/24/23 18:07, Martin Rodriguez Reboredo wrote:
+> On 7/24/23 11:08, Benno Lossin wrote:
+>> This is a bit confusing to me, because dropping the value on returning `=
+Err`
+>> is a safety requirement of `PinInit`. Could you elaborate why this is
+>> surprising? I can of course add it to the documentation, but I do not se=
+e
+>> how it could be implemented differently. Since if you do not drop the va=
+lue
+>> here, nobody would know that it is still initialized.
+>=20
+> I knew about the requirement of dropping on `Err`, but what has caught my
+> attention is that `{pin_}chain` might not abide with it per the doc
+> comment as it says that `self` is initialized before calling `f`...
+>=20
+>       /// First initializes the value using `self` then calls the functio=
+n
+>       /// `f` with the initialized value.
+>=20
+> But one can not know what would happen when `f` fails, specially if
+> such failure can be ignored or it's only temporarily.
+>=20
+> So then, the best course IMO is to mention that in some way the value is
+> still being initialized, kinda setting it up, and that it will be dropped
+> when an error is returned. WDYT?
 
-> Template {{ toctree(maxdepth=3) }} in
-> Documentation/sphinx/templates/kernel-toc.html
-> uses directives toctree and doesn't use sections on the top page
-> Documentation/index.rst
-> to generate expandable toc on the sidebar.
->
-> BTW, other template {{ toc }} uses only sections, and doesn't
-> use directives toctree.
->
-> Summary of changes:
-> - split top page index.rst to several pages
-> - convert sections of Documentation/index.rst to hierarchical toctree
-> - vertical bars '|' add empty lines
->
-> Benefits:
-> - collapsed toc is just seven short lines length
-> - toc is expandable
->
-> References:
-> - https://www.sphinx-doc.org/en/master/development/templating.html#toctree
-> - https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree
-> - https://www.sphinx-doc.org/en/master/development/templating.html#toc
-> - https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#sections
-> - https://sphinx-rtd-theme.readthedocs.io/
+I see, then I will just expand the documentation.
 
-What is the purpose of all these links in a patch changelog?
+--=20
+Cheers,
+Benno
 
-This patch is somewhat difficult to apply, as a result of:
 
-> Content-Type: text/plain; charset=true
-
-But the real problem is that you seem to have ignored my last message.
-The purpose of the front page isn't to create a nice-looking sidebar, it
-is the entry point to our documentation as a whole.  I am all for a
-better sidebar, but this is not the way to do it.
-
-jon
