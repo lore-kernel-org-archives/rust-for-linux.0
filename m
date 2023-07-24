@@ -1,104 +1,92 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D8B1850
-	for <rust-for-linux@vger.kernel.org>; Sun, 23 Jul 2023 14:35:03 +0000 (UTC)
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71C4610F4;
-	Sun, 23 Jul 2023 07:35:01 -0700 (PDT)
-Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-3a4062577c0so2959337b6e.0;
-        Sun, 23 Jul 2023 07:35:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690122900; x=1690727700;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6hVbV6PPK4bQ78C5FPPLzZso3da8dxH89LJc/QzUTSs=;
-        b=JWkEpKntYVBuB6E1XatdkZtXVt73rBdbJGE0d5xAPFTEdSwmf1jYbPKEAkJ5idN9vp
-         rOMBT5zkC+hVmjV9TjJgbwKTmp7UDHFUI9lUvYfO8lUVBuSiayofy8aYl37TXi8X0EKL
-         WLVmd+C8Vq99HWrh5qX7sEBbThTiQQLhrJ8fOvojX0WBR9DtDnHa4oNpR8oEphZg0/eL
-         7TrkmgyrCmaPcgunASu/NKKyV12TUOHmbv+BsHvMg04fCAFCuO8TwyeDa+6nlZwYsQ5s
-         zIXUVVwuEAAdsfPyuHZgq/A6XSg6O9ht63J+4nZY0QH6J+Lz3kbDsbecxAbpRXECwaxR
-         8sgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690122900; x=1690727700;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6hVbV6PPK4bQ78C5FPPLzZso3da8dxH89LJc/QzUTSs=;
-        b=LlMt0f8h5m0M5N9x2FO0ltG9CDdK55AMIZz9sWCJjD8+LwQmleBD/3YZ48jWuo7DfE
-         xMH9NKdaTj8lE24Ln/Dw37C83iLZguh+UnTxEmOOokGKH0zWs/V3glp8+9vIPLKi2hFx
-         3SNZecBcL4eagBXtUs57t5QLb7jIPaM6ITLX/jNZdzv+pbQfZ4vdqnWnM6LHrI5el18P
-         hTb435xUkyWkKbFr1qwSRjf4YImWRAG9blcE181Z4wfiFwGTxqfYsiDDVuSAJg5VenWl
-         4p1FQFtzHr3z8mNMiqDjp0qPTcmSB+cq/fq+RdZKtQGWoRPX6FTtGSD82q7CA6FO1ppF
-         K4qg==
-X-Gm-Message-State: ABy/qLZLpprOVOP6BzbOkhEjzmtK6DWkwDPgt+DZGCP1+AmXm16YDwzx
-	hGTRRbcDTuwVhP0Qo83D7RQ=
-X-Google-Smtp-Source: APBJJlG0yD0GorNtcgbwNsnxx1O75lYChESB8+iiUX9xQbMDeKstYsQPW1OQLn7V8L5A70F1wbfuAg==
-X-Received: by 2002:a05:6808:1310:b0:3a1:f18d:2fe8 with SMTP id y16-20020a056808131000b003a1f18d2fe8mr6198281oiv.10.1690122900514;
-        Sun, 23 Jul 2023 07:35:00 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id o204-20020a4a2cd5000000b0055e3dd89c12sm3508157ooo.1.2023.07.23.07.34.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 23 Jul 2023 07:35:00 -0700 (PDT)
-Message-ID: <01d23a2c-1e30-b660-7997-6d9c29b9dcf1@gmail.com>
-Date: Sun, 23 Jul 2023 11:34:54 -0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D160C847B
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Jul 2023 14:09:16 +0000 (UTC)
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EA3D19B7
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Jul 2023 07:08:56 -0700 (PDT)
+Date: Mon, 24 Jul 2023 14:08:44 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1690207733; x=1690466933;
+	bh=XXVZV7WpwLqPGV9+1SqbGHmQOm+9jzkRBGlCOUg3R8M=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Ky0TBB4HkU3B8mnsIO5FuBQiZv+iALHhGlhLZwZ2YxUHsDyJjbaPVbmCSVpeXfl68
+	 2BBTdhhD/mLt+JIEArag4Xs1B23K2Omu9CPEjA6x/bzWitViBu9LB1bnA5L/PNjS7P
+	 +gkRq6HMNV3YaiFVSKn0JJSTdnmdghyPwzNyNvJoBwJzjn2rEWIpsUg4ktYY7543qS
+	 /wBQzwxg7FQgYVDkAoiiXoqabIkwb2nyrUVCqJStvrt3rfzPyjxmfFG7E5iZTtroJG
+	 SN+5xXNID+k2W+SztqDFqRn5UWrdtQo2p/kUEUROS7CHJcnUVIaJRjQIk9IzYBxOmk
+	 U4ekxrKfM5+Fg==
+To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Asahi Lina <lina@asahilina.net>
+Subject: Re: [PATCH v2 11/12] rust: init: add `{pin_}chain` functions to `{Pin}Init<T, E>`
+Message-ID: <5f22b25d-132d-7cbc-8bca-8333516c1663@proton.me>
+In-Reply-To: <0b818707-4762-c12d-8624-7d3c4f6841da@gmail.com>
+References: <20230719141918.543938-1-benno.lossin@proton.me> <20230719141918.543938-12-benno.lossin@proton.me> <0b818707-4762-c12d-8624-7d3c4f6841da@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] kbuild: rust: avoid creating temporary files
-Content-Language: en-US
-To: Miguel Ojeda <ojeda@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg
- <a.hindborg@samsung.com>, linux-kbuild@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- patches@lists.linux.dev, Raphael Nestler <raphael.nestler@gmail.com>,
- Andrea Righi <andrea.righi@canonical.com>, stable@vger.kernel.org
-References: <20230723142128.194339-1-ojeda@kernel.org>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230723142128.194339-1-ojeda@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
 	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 7/23/23 11:21, Miguel Ojeda wrote:
-> `rustc` outputs by default the temporary files (i.e. the ones saved
-> by `-Csave-temps`, such as `*.rcgu*` files) in the current working
-> directory when `-o` and `--out-dir` are not given (even if
-> `--emit=x=path` is given, i.e. it does not use those for temporaries).
-> 
-> Since out-of-tree modules are compiled from the `linux` tree,
-> `rustc` then tries to create them there, which may not be accessible.
-> 
-> Thus pass `--out-dir` explicitly, even if it is just for the temporary
-> files.
-> 
-> Similarly, do so for Rust host programs too.
-> 
-> Reported-by: Raphael Nestler <raphael.nestler@gmail.com>
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1015
-> Reported-by: Andrea Righi <andrea.righi@canonical.com>
-> Tested-by: Raphael Nestler <raphael.nestler@gmail.com> # non-hostprogs
-> Tested-by: Andrea Righi <andrea.righi@canonical.com> # non-hostprogs
-> Fixes: 295d8398c67e ("kbuild: specify output names separately for each emission type from rustc")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> [...]
-Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+On 21.07.23 02:23, Martin Rodriguez Reboredo wrote:
+> On 7/19/23 11:21, Benno Lossin wrote:
+>> +/// An initializer returned by [`PinInit::pin_chain`].
+>> +pub struct ChainPinInit<I, F, T: ?Sized, E>(I, F, __internal::Invariant=
+<(E, Box<T>)>);
+>> +
+>> +// SAFETY: the `__pinned_init` function is implemented such that it
+>> +// - returns `Ok(())` on successful initialization,
+>> +// - returns `Err(err)` on error and in this case `slot` will be droppe=
+d.
+>> +// - considers `slot` pinned.
+>> +unsafe impl<T: ?Sized, E, I, F> PinInit<T, E> for ChainPinInit<I, F, T,=
+ E>
+>> +where
+>> +    I: PinInit<T, E>,
+>> +    F: FnOnce(Pin<&mut T>) -> Result<(), E>,
+>> +{
+>> +    unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+>> +        // SAFETY: all requirements fulfilled since this function is `_=
+_pinned_init`.
+>> +        unsafe { self.0.__pinned_init(slot)? };
+>> +        // SAFETY: The above call initialized `slot` and we still have =
+unique access.
+>> +        let val =3D unsafe { &mut *slot };
+>> +        // SAFETY: `slot` is considered pinned
+>> +        let val =3D unsafe { Pin::new_unchecked(val) };
+>> +        (self.1)(val).map_err(|e| {
+>> +            // SAFETY: `slot` was initialized above.
+>> +            unsafe { core::ptr::drop_in_place(slot) };
+>> +            e
+>=20
+> I might stumble upon an error like EAGAIN if I call `pin_chain` but that
+> means `slot` will be dropped. So my recommendation is to either not drop
+> the value or detail in `pin_chain`'s doc comment that the closure will
+> drop on error.
+
+This is a bit confusing to me, because dropping the value on returning `Err=
+`
+is a safety requirement of `PinInit`. Could you elaborate why this is
+surprising? I can of course add it to the documentation, but I do not see
+how it could be implemented differently. Since if you do not drop the value
+here, nobody would know that it is still initialized.
+
+--=20
+Cheers,
+Benno
+
+
