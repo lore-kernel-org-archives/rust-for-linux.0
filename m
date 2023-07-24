@@ -1,129 +1,348 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859F9E549
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Jul 2023 16:07:11 +0000 (UTC)
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D73CD10FF;
-	Mon, 24 Jul 2023 09:07:09 -0700 (PDT)
-Received: by mail-ot1-x334.google.com with SMTP id 46e09a7af769-6b9aadde448so4066664a34.0;
-        Mon, 24 Jul 2023 09:07:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690214829; x=1690819629;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sNi5vVMCJWfHjXXkqvqwnxz9gP61j7y0zdFiLD2AOm4=;
-        b=b1cbmfyKHmtLdjno0V/bvAf32VvNFJpzM2VD9rlw08X9zpd1njJBjfqc/4AQ++uSbl
-         Dm2JllG46Lyxx3hPZ9KJMj6B0UPhnnC9OROEcysatpXE5tJ2x9QTbp+z9nmC7mFdGArS
-         SJoRedyiX6G/HPiW5OJcoE0H0fpz7CIZdKJ08//8arjk2akZHVkrHM+AO9qzmYp5x9bI
-         4/U+gAoQwOoq4u3ki7jpL0BHB6uu69D8nGrch3zYWUQA0eAmx2Ze4G6iydhata5WgXrR
-         wP+jMiuUv9E4Ch6BJVUaYYyvoskSeTxRoSmXPvuRCnLNKCchY2UU+RAiWA8Pkoey9Z8k
-         Z/cg==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC7A101CB
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Jul 2023 19:32:27 +0000 (UTC)
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4ECD10E4;
+	Mon, 24 Jul 2023 12:32:25 -0700 (PDT)
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7653bd3ff2fso509104385a.3;
+        Mon, 24 Jul 2023 12:32:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690214829; x=1690819629;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sNi5vVMCJWfHjXXkqvqwnxz9gP61j7y0zdFiLD2AOm4=;
-        b=fmWoXkQhxKWuWds8plPew+uUHCaTgEzFOojR6ypd9su91NwhToioPhgP2w+kBQvayb
-         ER699vBOorEOxyLxTTzWfE0hkDes7vKKbyeDf1daYKVU8cVqubvtgiU1b6n55HPp7lsg
-         8j/0OJwL6q03BBBBiagoPDx51jIqeK48cMeMXv6XiocqE/Oryy5Jf91CvVFp37lQ95KE
-         J1Sj0NNILoKrQnGDFI1KgMvXQP3rp6XWaY6PT8KDA1MysC/Q+Yo4+3pqvLiMWAZevYwd
-         pn+hvGE6o+XpSX9EpreU9e4S8yttRG3ykxW7XMW4PsAFE/JD7WEiN4lPGHSQcgTDbVMF
-         TAew==
-X-Gm-Message-State: ABy/qLZUGN4qteK9s7FgjeEpGyVWF2D9bT/XQffykXQMvXTpnK1HczfN
-	RoIqCls6ArMvGH1kAPbkyAQ=
-X-Google-Smtp-Source: APBJJlH3usIPW2PVHeDvPhTMcX6b5v/xPdx3CCRtBadftST/7fWKXnmZp3nVJH0zxKDL4ioZx54VIw==
-X-Received: by 2002:a05:6830:11da:b0:6b9:99fe:4747 with SMTP id v26-20020a05683011da00b006b999fe4747mr9267660otq.29.1690214829009;
-        Mon, 24 Jul 2023 09:07:09 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id p3-20020a9d6943000000b006b9734b9fafsm4024904oto.13.2023.07.24.09.07.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 09:07:08 -0700 (PDT)
-Message-ID: <ebdf2635-6003-fc62-310f-5b9071473415@gmail.com>
-Date: Mon, 24 Jul 2023 13:07:04 -0300
+        d=1e100.net; s=20221208; t=1690227145; x=1690831945;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=snIuRlpqRdn7Uzqe0GJNOw+a8Zw/s3ZtXUk/2L64uAA=;
+        b=XS3En4NWsbn2269FsI0rV4mQu0mpvsZqv1sHFbxOZ8qE7B2ebcEVMm64pQ210AFFJ7
+         we9MVpX7s0bZrbJKAszufkjlHTibLPnpho+EReW9ly/ZbbDGF9OV5Bp3412bDxD+AW/m
+         JtohP8jw1frt4OZrI9ERfTTmhj8E4KFQ34FWx+R9LA58c0ImWffIjuY+n7AyMEhI3JaX
+         6iILO/Bf2cmlUQEm3EhdcA15gEQ/i6q43DnrMnAuct7KB2Gxv9bzmVjMpp/ocgY+ibhu
+         psV6jyhh4is0xrHXEDyj+4JCXLenF3Zfefs8B2Iiyg4pusXY9KBBLdfuZPJmK+G8MFI0
+         g2Sw==
+X-Gm-Message-State: ABy/qLYeghk3k4iYojCDCC2m6c26gPnQXgmG4/iuxvNZcOPnzLZt9CFO
+	MgWpXGq6z4GUAEihXpvfI/Q=
+X-Google-Smtp-Source: APBJJlGX6E7tIF2IevxuDF8AY7Ip2Kl11BPrppogixZjAKcFqjVa5GBZSecZ4Os5uhXP2ETzOwU9HQ==
+X-Received: by 2002:a05:620a:248c:b0:76c:4d4c:7942 with SMTP id i12-20020a05620a248c00b0076c4d4c7942mr919919qkn.21.1690227144448;
+        Mon, 24 Jul 2023 12:32:24 -0700 (PDT)
+Received: from costa-tp.bos2.lab ([2a00:a040:199:8930:2c90:cb9e:b154:73dc])
+        by smtp.gmail.com with ESMTPSA id u11-20020a0cdd0b000000b00636d2482dd4sm3749283qvk.17.2023.07.24.12.32.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jul 2023 12:32:24 -0700 (PDT)
+From: Costa Shulyupin <costa.shul@redhat.com>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	linux-doc@vger.kernel.org (open list:DOCUMENTATION),
+	linux-kernel@vger.kernel.org (open list),
+	workflows@vger.kernel.org (open list:DOCUMENTATION PROCESS),
+	rust-for-linux@vger.kernel.org (open list:RUST)
+Cc: Costa Shulyupin <costa.shul@redhat.com>
+Subject: [RFC PATCH] rework top page and organize toc on the sidebar
+Date: Mon, 24 Jul 2023 22:31:16 +0300
+Message-ID: <20230724193118.2204673-1-costa.shul@redhat.com>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/12] rust: init: add `{pin_}chain` functions to
- `{Pin}Init<T, E>`
-Content-Language: en-US
-To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- Asahi Lina <lina@asahilina.net>
-References: <20230719141918.543938-1-benno.lossin@proton.me>
- <20230719141918.543938-12-benno.lossin@proton.me>
- <0b818707-4762-c12d-8624-7d3c4f6841da@gmail.com>
- <5f22b25d-132d-7cbc-8bca-8333516c1663@proton.me>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <5f22b25d-132d-7cbc-8bca-8333516c1663@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-	autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=true
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+	T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 7/24/23 11:08, Benno Lossin wrote:
-> On 21.07.23 02:23, Martin Rodriguez Reboredo wrote:
->> On 7/19/23 11:21, Benno Lossin wrote:
->>> +/// An initializer returned by [`PinInit::pin_chain`].
->>> +pub struct ChainPinInit<I, F, T: ?Sized, E>(I, F, __internal::Invariant<(E, Box<T>)>);
->>> +
->>> +// SAFETY: the `__pinned_init` function is implemented such that it
->>> +// - returns `Ok(())` on successful initialization,
->>> +// - returns `Err(err)` on error and in this case `slot` will be dropped.
->>> +// - considers `slot` pinned.
->>> +unsafe impl<T: ?Sized, E, I, F> PinInit<T, E> for ChainPinInit<I, F, T, E>
->>> +where
->>> +    I: PinInit<T, E>,
->>> +    F: FnOnce(Pin<&mut T>) -> Result<(), E>,
->>> +{
->>> +    unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
->>> +        // SAFETY: all requirements fulfilled since this function is `__pinned_init`.
->>> +        unsafe { self.0.__pinned_init(slot)? };
->>> +        // SAFETY: The above call initialized `slot` and we still have unique access.
->>> +        let val = unsafe { &mut *slot };
->>> +        // SAFETY: `slot` is considered pinned
->>> +        let val = unsafe { Pin::new_unchecked(val) };
->>> +        (self.1)(val).map_err(|e| {
->>> +            // SAFETY: `slot` was initialized above.
->>> +            unsafe { core::ptr::drop_in_place(slot) };
->>> +            e
->>
->> I might stumble upon an error like EAGAIN if I call `pin_chain` but that
->> means `slot` will be dropped. So my recommendation is to either not drop
->> the value or detail in `pin_chain`'s doc comment that the closure will
->> drop on error.
-> 
-> This is a bit confusing to me, because dropping the value on returning `Err`
-> is a safety requirement of `PinInit`. Could you elaborate why this is
-> surprising? I can of course add it to the documentation, but I do not see
-> how it could be implemented differently. Since if you do not drop the value
-> here, nobody would know that it is still initialized.
+Template {{ toctree(maxdepth=3) }} in
+Documentation/sphinx/templates/kernel-toc.html
+uses directives toctree and doesn't use sections on the top page
+Documentation/index.rst
+to generate expandable toc on the sidebar.
 
-I knew about the requirement of dropping on `Err`, but what has caught my
-attention is that `{pin_}chain` might not abide with it per the doc
-comment as it says that `self` is initialized before calling `f`...
+BTW, other template {{ toc }} uses only sections, and doesn't
+use directives toctree.
 
-     /// First initializes the value using `self` then calls the function
-     /// `f` with the initialized value.
+Summary of changes:
+- split top page index.rst to several pages
+- convert sections of Documentation/index.rst to hierarchical toctree
+- vertical bars '|' add empty lines
 
-But one can not know what would happen when `f` fails, specially if
-such failure can be ignored or it's only temporarily.
+Benefits:
+- collapsed toc is just seven short lines length
+- toc is expandable
 
-So then, the best course IMO is to mention that in some way the value is
-still being initialized, kinda setting it up, and that it will be dropped
-when an error is returned. WDYT?
+References:
+- https://www.sphinx-doc.org/en/master/development/templating.html#toctree
+- https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree
+- https://www.sphinx-doc.org/en/master/development/templating.html#toc
+- https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#sections
+- https://sphinx-rtd-theme.readthedocs.io/
+
+Signed-off-by: Costa Shulyupin <costa.shul@redhat.com>
+---
+ Documentation/development.rst  | 19 +++++++++
+ Documentation/index.rst        | 78 +++++++++-------------------------
+ Documentation/internal-api.rst | 12 ++++++
+ Documentation/low-level.rst    | 24 +++++++++++
+ Documentation/process/main.rst | 16 +++++++
+ Documentation/user.rst         | 21 +++++++++
+ 6 files changed, 112 insertions(+), 58 deletions(-)
+ create mode 100644 Documentation/development.rst
+ create mode 100644 Documentation/internal-api.rst
+ create mode 100644 Documentation/low-level.rst
+ create mode 100644 Documentation/process/main.rst
+ create mode 100644 Documentation/user.rst
+
+diff --git a/Documentation/development.rst b/Documentation/development.rst
+new file mode 100644
+index 000000000000..8d8eea6d4491
+--- /dev/null
++++ b/Documentation/development.rst
+@@ -0,0 +1,19 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++Development processes
++=====================
++
++Various other manuals with useful information for all kernel developers.
++
++.. toctree::
++   :maxdepth: 1
++
++   process/license-rules
++   doc-guide/index
++   dev-tools/index
++   dev-tools/testing-overview
++   kernel-hacking/index
++   trace/index
++   fault-injection/index
++   livepatch/index
++   rust/index
+diff --git a/Documentation/index.rst b/Documentation/index.rst
+index 9dfdc826618c..3c0efebba9e9 100644
+--- a/Documentation/index.rst
++++ b/Documentation/index.rst
+@@ -13,94 +13,56 @@ documents into a coherent whole.  Please note that improvements to the
+ documentation are welcome; join the linux-doc list at vger.kernel.org if
+ you want to help out.
+ 
+-Working with the development community
+-======================================
++|
+ 
+ The essential guides for interacting with the kernel's development
+-community and getting your work upstream.
++community and getting your work upstream:
+ 
+ .. toctree::
+-   :maxdepth: 1
+-
+-   process/development-process
+-   process/submitting-patches
+-   Code of conduct <process/code-of-conduct>
+-   maintainer/index
+-   All development-process docs <process/index>
++   :maxdepth: 2
+ 
++   process/main
+ 
+-Internal API manuals
+-====================
++|
+ 
+ Manuals for use by developers working to interface with the rest of the
+-kernel.
++kernel:
+ 
+ .. toctree::
+-   :maxdepth: 1
++   :maxdepth: 2
+ 
+-   core-api/index
+-   driver-api/index
+-   subsystem-apis
+-   Locking in the kernel <locking/index>
++   internal-api
+ 
+-Development tools and processes
+-===============================
++|
+ 
+-Various other manuals with useful information for all kernel developers.
++Various other manuals with useful information for all kernel developers:
+ 
+ .. toctree::
+-   :maxdepth: 1
+-
+-   process/license-rules
+-   doc-guide/index
+-   dev-tools/index
+-   dev-tools/testing-overview
+-   kernel-hacking/index
+-   trace/index
+-   fault-injection/index
+-   livepatch/index
+-   rust/index
++   :maxdepth: 2
+ 
++   development
+ 
+-User-oriented documentation
+-===========================
++|
+ 
+ The following manuals are written for *users* of the kernel — those who are
+ trying to get it to work optimally on a given system and application
+-developers seeking information on the kernel's user-space APIs.
++developers seeking information on the kernel's user-space APIs:
+ 
+ .. toctree::
+-   :maxdepth: 1
+-
+-   admin-guide/index
+-   The kernel build system <kbuild/index>
+-   admin-guide/reporting-issues.rst
+-   User-space tools <tools/index>
+-   userspace-api/index
+-
+-See also: the `Linux man pages <https://www.kernel.org/doc/man-pages/>`_,
+-which are kept separately from the kernel's own documentation.
+-
+-Firmware-related documentation
+-==============================
+-The following holds information on the kernel's expectations regarding the
+-platform firmwares.
+-
+-.. toctree::
+-   :maxdepth: 1
++   :maxdepth: 2
+ 
+-   firmware-guide/index
+-   devicetree/index
++   user
+ 
++|
+ 
+-Architecture-specific documentation
+-===================================
++Low level heardware depended documentation:
+ 
+ .. toctree::
+    :maxdepth: 2
+ 
+-   arch/index
++   low-level
+ 
++|
+ 
+ Other documentation
+ ===================
+diff --git a/Documentation/internal-api.rst b/Documentation/internal-api.rst
+new file mode 100644
+index 000000000000..c4aa757cbca7
+--- /dev/null
++++ b/Documentation/internal-api.rst
+@@ -0,0 +1,12 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++Internal API manuals
++====================
++
++.. toctree::
++   :maxdepth: 1
++
++   core-api/index
++   driver-api/index
++   subsystem-apis
++   Locking in the kernel <locking/index>
+diff --git a/Documentation/low-level.rst b/Documentation/low-level.rst
+new file mode 100644
+index 000000000000..4288633b37af
+--- /dev/null
++++ b/Documentation/low-level.rst
+@@ -0,0 +1,24 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++Low level
++=========
++
++Firmware-related documentation
++------------------------------
++The following holds information on the kernel's expectations regarding the
++platform firmwares.
++
++.. toctree::
++   :maxdepth: 1
++
++   firmware-guide/index
++   devicetree/index
++
++
++Architecture-specific documentation
++-----------------------------------
++
++.. toctree::
++   :maxdepth: 2
++
++   arch/index
+diff --git a/Documentation/process/main.rst b/Documentation/process/main.rst
+new file mode 100644
+index 000000000000..732dab311d6d
+--- /dev/null
++++ b/Documentation/process/main.rst
+@@ -0,0 +1,16 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++Community
++=========
++
++Working with the development community
++
++
++.. toctree::
++   :maxdepth: 1
++
++   development-process
++   submitting-patches
++   Code of conduct <code-of-conduct>
++   ../maintainer/index
++   All development-process docs <../process/index>
+diff --git a/Documentation/user.rst b/Documentation/user.rst
+new file mode 100644
+index 000000000000..22151edc5bcc
+--- /dev/null
++++ b/Documentation/user.rst
+@@ -0,0 +1,21 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++User-oriented documentation
++===========================
++
++The following manuals are written for *users* of the kernel — those who are
++trying to get it to work optimally on a given system and application
++developers seeking information on the kernel's user-space APIs.
++
++.. toctree::
++   :maxdepth: 1
++
++   admin-guide/index
++   The kernel build system <kbuild/index>
++   admin-guide/reporting-issues.rst
++   User-space tools <tools/index>
++   userspace-api/index
++
++See also: the `Linux man pages <https://www.kernel.org/doc/man-pages/>`_,
++which are kept separately from the kernel's own documentation.
++
+-- 
+2.41.0
+
