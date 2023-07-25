@@ -1,150 +1,253 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ACB15AD0
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Jul 2023 11:58:41 +0000 (UTC)
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B57801FF7
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Jul 2023 04:58:03 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-573cacf4804so68653577b3.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Jul 2023 04:58:03 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B206E23BF5
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Jul 2023 18:07:39 +0000 (UTC)
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62E172122;
+	Tue, 25 Jul 2023 11:07:35 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99b78fda9a8so654021966b.1;
+        Tue, 25 Jul 2023 11:07:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690286283; x=1690891083;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1VPOZThFJv0JHnA6Avw8TCcPUHE62XLzLeg/XcbHXkE=;
-        b=5tXnrBdCveXXrzYmqLZ1P2TeCsTuXDBPcVAxBik99PdwIIaCnKOQ0o3W2dJBX22QCB
-         lJUZFdhNrHpsBhPchNHK4cbzfV3bQWfX3FdfYs/OofZewWZ9rYEAjqDdrInhybQ8ML8x
-         ddmDpmbBoHDqd3ndTwKxLV/jy4bu0yXDr7gg7uLu70CsMRHe000a6GzH9QotuIx1VCZ9
-         iyM2gFIYapePiJc+W2cPeNMy7okUEk+iCV/DobjQf4Umhk/JWC/cBYvnoL79e1kw+4+D
-         sImJ8rYQu3m0/+L/fidMEBVVrziwD56GAaZX1K9XyTiNNeSk/04m3awxawmUJMLptZfO
-         oMTA==
+        d=gmail.com; s=20221208; t=1690308454; x=1690913254;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=6P6nInJaW7G7gJCJpOM64PYpwfKrcIGKm7+sHoKzLBM=;
+        b=o0hUV0twM1c86PgBwH8TT3CNnElIybifN4P2oZW9MOLAwQ/UltCSOKmcmQ5aJ2PKyU
+         Us5KD3EBFY1du0cMSlHXPHdiHHYknP1TCPx6lz6HP+qayRY1IBEzVcaJJOywrOxDVw84
+         2LY76BTywpkUcda9EPxH1+r9Aafm4eEM2xNPnFzjBNmSuKWcB1ta1hdTlIEkXal+mfVa
+         zWPXv2MMRhKzC7Z2gt7WzOAYeJljVR2VQBdD4CmmHpgp8l/7+Ugq/KC0zbx6jurRWCl3
+         OW9aaxtveSNSHWrBxmDEAhoJTHQ9Xgv4xajJxqXT4gAzWqH6+uPMrZtPh294HGUzNGvC
+         YzNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690286283; x=1690891083;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1VPOZThFJv0JHnA6Avw8TCcPUHE62XLzLeg/XcbHXkE=;
-        b=djkpmX7eISDk6Col6kGRHhUPMdRaRvFTP6v49KSCo8ahwf6uPRxjQYI7+ThhzDtFNh
-         69xXMXCbyMpvRJNXB7BKQOE2vf0Vj75lyvPL0MZ4kzmGWdpSXGQ4VqZBrp1T1vvaknaQ
-         Dbm9jpnnroxZq9fwTfpAEhvguUbaDaOPM2RAgpXTlcHs9ATIg4+V6j91qhGlsPz/C+7w
-         lOqlMcVL7/WXDpIB/Tc1DOWS5JEOSvhM+WjIjO9773PFDmijG4CKy1qahnvKCpmBUblZ
-         RINUCpBfvR1Tkk2ZZXjQgEtE2LUuPnhkGvVYIvz0ssi+3CR1xmOJOe6+pL9L7uU9QTej
-         gENg==
-X-Gm-Message-State: ABy/qLa1ATLpOMnWB5Af02TggHNYvVtjP2VSJSxzxZE6dKhGZjZIaDrx
-	ia2LWRwZFj72CqO+uQIAnJUjagUv/6tKXwA=
-X-Google-Smtp-Source: APBJJlHGSHNCFMtiM27C/TIFHTgwQEAjSMl35nON1bWo4KcF0K6HUmOjyrPq5jt2EXoF14KZN1gEEEL9/6p6lsU=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a81:af21:0:b0:579:fa4c:1f25 with SMTP id
- n33-20020a81af21000000b00579fa4c1f25mr90464ywh.7.1690286282821; Tue, 25 Jul
- 2023 04:58:02 -0700 (PDT)
-Date: Tue, 25 Jul 2023 11:57:59 +0000
-In-Reply-To: <16fb9977-2efc-2412-e906-3d320e37c45c@proton.me>
+        d=1e100.net; s=20221208; t=1690308454; x=1690913254;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6P6nInJaW7G7gJCJpOM64PYpwfKrcIGKm7+sHoKzLBM=;
+        b=PR6Jf8I+zaiNUAtLSDCTG0gTlTKXCjHXud5apu885mwrYyU8U0Ek5O+V/KUSd0tYoY
+         LfMbPrfZwMNWDsd8otSeC/3dBsLSikF3wlhZ0RjuIrAJtC/x2DsWsTVCQddu2LH/zy3H
+         jGVgbigFDQd2jkjQwR6a0I3Rh4XdhWcAhgCTMb8/Dxv6sqj5xM64AmRnx29XroOxLuCw
+         FiX6RjT/wnZVdnwCF5RVBLPvJH2cPigN26gPgtYFOWCmLleo/XVW2q5mEk+Xiij/SNaP
+         UpcjDp9NfTy6l+lHlBH6ljNFW0MM2qK9hJyNNGcx6lYIXeMbsUeDrZdYV2VK+uTeWDCT
+         nbnA==
+X-Gm-Message-State: ABy/qLZzYeWDE0TX9oTFlPV4UbGQHzRVe+B1+Cct4hfRrDIAAa12Rloi
+	cEj9a0FJuDezVK4uUAb0L9A=
+X-Google-Smtp-Source: APBJJlExLR8jaPuaX780epX99381rLSkyjeh8Ha8M3N5UIXQ14qEb8M3XahPikZ6LkwvahSVlMiqEA==
+X-Received: by 2002:a17:906:31d4:b0:993:e2ba:55a2 with SMTP id f20-20020a17090631d400b00993e2ba55a2mr12119913ejf.19.1690308453541;
+        Tue, 25 Jul 2023 11:07:33 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id z6-20020a170906814600b00993cc1242d4sm8473747ejw.151.2023.07.25.11.07.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Jul 2023 11:07:32 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailauth.nyi.internal (Postfix) with ESMTP id B9C0427C005A;
+	Tue, 25 Jul 2023 14:07:30 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Tue, 25 Jul 2023 14:07:30 -0400
+X-ME-Sender: <xms:Yg_AZG5hVtAL4Mgvrlx0MSLxw1en2Nwk10x5zOixwODm9ECNBUNZlg>
+    <xme:Yg_AZP5rrs0HoQXaQm5OHlWZWPz2qKoUeW7fZBgRhVgKMdwuUN8r9SWyj8X9ZK36Y
+    J5J4qHkacEVDjS-YQ>
+X-ME-Received: <xmr:Yg_AZFeH0hESD9YUCvD3ER5B9-AYO0IGXVWh5VLbM8EajuhJgriO5byNuPHUwg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedriedtgdduudelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnheptdegheelveffudejffegvdelgffhhfelkeeiieefgeevteejvdegveeu
+    ffeihefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:Yg_AZDI2Uzd1M5m0QGTnCjYb63WwShmsoY3JIZLMCSRSSIUq6fl3ng>
+    <xmx:Yg_AZKLDet_ROuO94cl0a2SFyXb_d8eL6VWtuQ8eVSlxyiL1dExFUg>
+    <xmx:Yg_AZEx0R8nH4wZs3hX6WlvGVZgJBajXs4-6r3N4UMzAa04JUaglzA>
+    <xmx:Yg_AZMCa_TlnAd6VIMX1Fu_QsLhoVvcNLP8ZeAD6hYo7nziJIlN62w>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 25 Jul 2023 14:07:29 -0400 (EDT)
+Date: Tue, 25 Jul 2023 11:07:04 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: David Gow <davidgow@google.com>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>,
+	=?iso-8859-1?Q?Jos=E9_Exp=F3sito?= <jose.exposito89@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] rust: kunit: add KUnit case and suite macros
+Message-ID: <ZMAPSHyswu1Kgd1U@boqun-archlinux>
+References: <20230720-rustbind-v1-0-c80db349e3b5@google.com>
+ <20230720-rustbind-v1-1-c80db349e3b5@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <16fb9977-2efc-2412-e906-3d320e37c45c@proton.me>
-X-Mailer: git-send-email 2.41.0.487.g6d72f3e995-goog
-Message-ID: <20230725115759.424300-1-aliceryhl@google.com>
-Subject: Re: [PATCH v2 09/12] rust: init: implement Zeroable for Opaque<T>
-From: Alice Ryhl <aliceryhl@google.com>
-To: benno.lossin@proton.me
-Cc: alex.gaynor@gmail.com, aliceryhl@google.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org, 
-	nmi@metaspace.dk, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	wedsonaf@gmail.com
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230720-rustbind-v1-1-c80db349e3b5@google.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Benno Lossin <benno.lossin@proton.me> writes:
-> On 20.07.23 15:34, Alice Ryhl wrote:
->> Benno Lossin <benno.lossin@proton.me> writes:
->>> Since `Opaque<T>` contains a `MaybeUninit<T>`, all bytes zero is a valid
->>> bit pattern for that type.
->>>
->>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->>> ---
->>>   ///
->>>   /// This is meant to be used with FFI objects that are never interpreted by Rust code.
->>>   #[repr(transparent)]
->>> +#[derive(Zeroable)]
->>>   pub struct Opaque<T> {
->>>       value: UnsafeCell<MaybeUninit<T>>,
->>>       _pin: PhantomPinned,
->>>   }
->> 
->> Does this actually work? I don't think we implement Zeroable for
->> UnsafeCell.
+On Thu, Jul 20, 2023 at 02:38:52PM +0800, David Gow wrote:
+> From: José Expósito <jose.exposito89@gmail.com>
 > 
-> Good catch, this does compile, but only because the current
-> implementation of the derive expands to (modulo correct paths):
-> ```
-> impl<T> Zeroable for Opaque<T>
-> where
->      UnsafeCell<MaybeUninit<T>>: Zeroable,
->      PhantomPinned: Zeroable,
-> {}
-> ```
-> This implementation is of course useless, since `UnsafeCell` is never
-> `Zeroable` at the moment. We could of course implement that and then this
-> should work, but the question is if this is actually the desired output in
-> general. I thought before that this would be a good idea, but I forgot that
-> if the bounds are never satisfied it would silently compile.
+> Add a couple of Rust macros to allow to develop KUnit tests without
+> relying on generated C code:
 > 
-> Do you think that we should have this expanded output instead?
-> ```
-> impl<T: Zeroable> Zeroable for Foo<T> {}
-> const _: () = {
->      fn assert_zeroable<T: Zeroable>() {}
->      fn ensure_zeroable<T: Zeroable>() {
->          assert_zeroable::<Field1>();
->          assert_zeroable::<Field2>();
->      }
-> };
-> ```
-> If the input was
-> ```
-> #[derive(Zeroable)]
-> struct Foo<T> {
->      field1: Field1,
->      field2: Field2,
-> }
-> ```
- 
-Yeah. The way that these macros usually expand is by adding `where T:
-Zeroable` to the impl for each generic parameter, and failing
-compilation if that is not enough to ensure that all of the fields are
-`Zeroable`.
-
-You might want to consider this expansion instead:
-```
-impl<T: Zeroable> Zeroable for Foo<T> {}
-const _: () = {
-     fn assert_zeroable<T: Zeroable>(arg: &T) {}
-     fn ensure_zeroable<T: Zeroable>(arg: &Foo<T>) {
-         assert_zeroable(&arg.field1);
-         assert_zeroable(&arg.field2);
-     }
-};
-```
-
->> I suggest you instead add Opaque to the `impl_zeroable!` macro in
->> `rust/kernel/init.rs`.
+>  - The `kunit_unsafe_test_suite!` Rust macro is similar to the
+>    `kunit_test_suite` C macro.
+>  - The `kunit_case!` Rust macro is similar to the `KUNIT_CASE` C macro.
+>    It can be used with parameters to generate a test case or without
+>    parameters to be used as delimiter in `kunit_test_suite!`.
 > 
-> We would have to do this when using the alternative approach from
-> above, since we do not want the `Zeroable` bound on `T` for `Opaque`.
-> I wanted to avoid the `SAFETY` comment, since that is needed for the
-> `impl_zeroable` macro (as it has an unsafe block inside).
+> While these macros can be used on their own, a future patch will
+> introduce another macro to create KUnit tests using a user-space like
+> syntax.
+> 
+> Co-developed-by: David Gow <davidgow@google.com>
+> Signed-off-by: David Gow <davidgow@google.com>
+> Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+> ---
+>  rust/kernel/kunit.rs | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs   |  1 +
+>  2 files changed, 93 insertions(+)
+> 
+> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+> index 722655b2d62d..4cffc71e463b 100644
+> --- a/rust/kernel/kunit.rs
+> +++ b/rust/kernel/kunit.rs
+> @@ -161,3 +161,95 @@ macro_rules! kunit_assert_eq {
+>          $crate::kunit_assert!($name, $file, $diff, $left == $right);
+>      }};
+>  }
+> +
+> +/// Represents an individual test case.
+> +///
+> +/// The test case should have the signature
+> +/// `unsafe extern "C" fn test_case(test: *mut crate::bindings::kunit)`.
+> +///
+> +/// The `kunit_unsafe_test_suite!` macro expects a NULL-terminated list of test cases. This macro
+> +/// can be invoked without parameters to generate the delimiter.
+> +#[macro_export]
+> +macro_rules! kunit_case {
 
-Indeed, if we expand the derive macro in the standard way, then it
-doesn't work for `Opaque` due to the extra unnecessary bound.
+kunit_case doesn't need to be a macro, right? We can define it as a
+const fn. Maybe one `kunit_case_null` and one `kunit_case`. Macros
+should be avoided whenever possible.
 
-Alice
+Thoughts?
 
+Regards,
+Boqun
+
+> +    () => {
+> +        $crate::bindings::kunit_case {
+> +            run_case: None,
+> +            name: core::ptr::null_mut(),
+> +            generate_params: None,
+> +            status: $crate::bindings::kunit_status_KUNIT_SUCCESS,
+> +            log: core::ptr::null_mut(),
+> +        }
+> +    };
+> +    ($name:ident, $run_case:ident) => {
+> +        $crate::bindings::kunit_case {
+> +            run_case: Some($run_case),
+> +            name: $crate::c_str!(core::stringify!($name)).as_char_ptr(),
+> +            generate_params: None,
+> +            status: $crate::bindings::kunit_status_KUNIT_SUCCESS,
+> +            log: core::ptr::null_mut(),
+> +        }
+> +    };
+> +}
+> +
+> +/// Registers a KUnit test suite.
+> +///
+> +/// # Safety
+> +///
+> +/// `test_cases` must be a NULL terminated array of test cases.
+> +///
+> +/// # Examples
+> +///
+> +/// ```ignore
+> +/// unsafe extern "C" fn test_fn(_test: *mut crate::bindings::kunit) {
+> +///     let actual = 1 + 1;
+> +///     let expected = 2;
+> +///     assert_eq!(actual, expected);
+> +/// }
+> +///
+> +/// static mut KUNIT_TEST_CASE: crate::bindings::kunit_case = crate::kunit_case!(name, test_fn);
+> +/// static mut KUNIT_NULL_CASE: crate::bindings::kunit_case = crate::kunit_case!();
+> +/// static mut KUNIT_TEST_CASES: &mut[crate::bindings::kunit_case] = unsafe {
+> +///     &mut[KUNIT_TEST_CASE, KUNIT_NULL_CASE]
+> +/// };
+> +/// crate::kunit_unsafe_test_suite!(suite_name, KUNIT_TEST_CASES);
+> +/// ```
+> +#[macro_export]
+> +macro_rules! kunit_unsafe_test_suite {
+> +    ($name:ident, $test_cases:ident) => {
+> +        const _: () = {
+> +            static KUNIT_TEST_SUITE_NAME: [i8; 256] = {
+> +                let name_u8 = core::stringify!($name).as_bytes();
+> +                let mut ret = [0; 256];
+> +
+> +                let mut i = 0;
+> +                while i < name_u8.len() {
+> +                    ret[i] = name_u8[i] as i8;
+> +                    i += 1;
+> +                }
+> +
+> +                ret
+> +            };
+> +
+> +            // SAFETY: `test_cases` is valid as it should be static.
+> +            static mut KUNIT_TEST_SUITE: core::cell::UnsafeCell<$crate::bindings::kunit_suite> =
+> +                core::cell::UnsafeCell::new($crate::bindings::kunit_suite {
+> +                    name: KUNIT_TEST_SUITE_NAME,
+> +                    test_cases: unsafe { $test_cases.as_mut_ptr() },
+> +                    suite_init: None,
+> +                    suite_exit: None,
+> +                    init: None,
+> +                    exit: None,
+> +                    status_comment: [0; 256usize],
+> +                    debugfs: core::ptr::null_mut(),
+> +                    log: core::ptr::null_mut(),
+> +                    suite_init_err: 0,
+> +                });
+> +
+> +            // SAFETY: `KUNIT_TEST_SUITE` is static.
+> +            #[used]
+> +            #[link_section = ".kunit_test_suites"]
+> +            static mut KUNIT_TEST_SUITE_ENTRY: *const $crate::bindings::kunit_suite =
+> +                unsafe { KUNIT_TEST_SUITE.get() };
+> +        };
+> +    };
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 3642cadc34b1..ec81fd28d71a 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -18,6 +18,7 @@
+>  #![feature(new_uninit)]
+>  #![feature(receiver_trait)]
+>  #![feature(unsize)]
+> +#![feature(const_mut_refs)]
+>  
+>  // Ensure conditional compilation based on the kernel configuration works;
+>  // otherwise we may silently break things like initcall handling.
+> 
+> -- 
+> 2.41.0.255.g8b1d071c50-goog
+> 
