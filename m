@@ -1,106 +1,93 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF111FB7
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Jul 2023 03:05:11 +0000 (UTC)
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4305210C3;
-	Mon, 24 Jul 2023 20:05:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Cc:Content-ID:Content-Description;
-	bh=oa+so10xLETAgc5pdBX8v/zloJHSFamiykfxB9L3iNQ=; b=pqw9oioaugNc/2kx9y0xlJ9NId
-	jyWlek+X1AoKk0llItmIC3Bf3mzcoWu0ZTlj6G2sYvsHiO6+UHsis4MxPhQujAYnQ0Z42oQw3MOUm
-	aT1/QNOaq2uLaY9aJkIkqTjTvcxMB7aL12fQ/Vc3M2yGTqobvXOkxeikSUdxkM1cr1WxiIOdyE7ny
-	+Gqkh6ljwnDBIToS47UTxIXHDk8B9zX34r2/93tHSoD4aLc9GQOhHrL10cFO7Dxj7xxU3c6KCEofm
-	0GPJb3RuDytDWvYT1xQclal3ZH3bsRt6VE4SnFbBhLygs70kHMgmJ+w7zzOo3Q/2D610I+JeyZFt3
-	roNC6HaA==;
-Received: from [2601:1c2:980:9ec0::2764]
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1qO8M8-005zR5-1M;
-	Tue, 25 Jul 2023 03:05:00 +0000
-Message-ID: <9fa8e67e-e46b-074d-8406-bfd11303e95f@infradead.org>
-Date: Mon, 24 Jul 2023 20:04:59 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F289A4C9F
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Jul 2023 05:01:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E770C433CD;
+	Tue, 25 Jul 2023 05:01:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1690261286;
+	bh=+FyEzIHHHu86QHrIoXwjeeWi+fV/oC+M1YZ91MsjQXQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BnI66cA59lweu/0a+Q3u7Ol/c21g7OcL6K6YkWORXYvQrvrj4qh94ARo/HvjORaMe
+	 qTvOs1yXe/Pdpia5RAMtcbWVHN+tOdW39vwGAp775rngcIf+JpNfIN0/VpOUHyon2O
+	 CMzMrsFzfNc7Tpmsab8Sy2MM5ufE3IOjmHSUBUcCO/Bq97fwVFpkqFpYx+DDEuVZ1P
+	 2ac4U8pBgan/zJ/OGRzjsI3dlcgGMSPPhR++d4+CAb/GAqMxFcwZG3numGUbjCaQUq
+	 +sUwSJqOpwNCnmIrYRgRoaRfAdc+cEAKSnm0EMb6kknpf08EpNdbEsGW/QKOZzSX7h
+	 kkuLgyreoWyuw==
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-56597d949b1so3147964eaf.1;
+        Mon, 24 Jul 2023 22:01:26 -0700 (PDT)
+X-Gm-Message-State: ABy/qLbj+Xl0xHHFuX9A6LVIALec8H7W5N/t+NOFMhW0hT7mv8nakfLI
+	hrbGgdLQodnt+TeIhL/sbZYXXmOk20s2cIXb9vY=
+X-Google-Smtp-Source: APBJJlHNMewixjluZirFDxPtZ/xyBhT/i9rV3VOmKVpLXySF76A/9PjhZyiOUBiUZa72yxWxXdde6eDqTDRyg9svjDM=
+X-Received: by 2002:a4a:91d0:0:b0:566:fa3f:82af with SMTP id
+ e16-20020a4a91d0000000b00566fa3f82afmr9199256ooh.5.1690261285620; Mon, 24 Jul
+ 2023 22:01:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH] rework top page and organize toc on the sidebar
-Content-Language: en-US
-To: Jonathan Corbet <corbet@lwn.net>, Costa Shulyupin
- <costa.shul@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:DOCUMENTATION PROCESS" <workflows@vger.kernel.org>,
- "open list:RUST" <rust-for-linux@vger.kernel.org>
-References: <20230724193118.2204673-1-costa.shul@redhat.com>
- <87ila9atuk.fsf@meer.lwn.net>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <87ila9atuk.fsf@meer.lwn.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+References: <20230723142128.194339-1-ojeda@kernel.org>
+In-Reply-To: <20230723142128.194339-1-ojeda@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 25 Jul 2023 14:00:49 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAR_CaZ8fJ+fOm9-X83MOtwDa9aavZ5JM6DFOAA00GgULw@mail.gmail.com>
+Message-ID: <CAK7LNAR_CaZ8fJ+fOm9-X83MOtwDa9aavZ5JM6DFOAA00GgULw@mail.gmail.com>
+Subject: Re: [PATCH v2] kbuild: rust: avoid creating temporary files
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, linux-kbuild@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev, Raphael Nestler <raphael.nestler@gmail.com>, 
+	Andrea Righi <andrea.righi@canonical.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Sun, Jul 23, 2023 at 11:21=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
+>
+> `rustc` outputs by default the temporary files (i.e. the ones saved
+> by `-Csave-temps`, such as `*.rcgu*` files) in the current working
+> directory when `-o` and `--out-dir` are not given (even if
+> `--emit=3Dx=3Dpath` is given, i.e. it does not use those for temporaries)=
+.
+>
+> Since out-of-tree modules are compiled from the `linux` tree,
+> `rustc` then tries to create them there, which may not be accessible.
+>
+> Thus pass `--out-dir` explicitly, even if it is just for the temporary
+> files.
+>
+> Similarly, do so for Rust host programs too.
+>
+> Reported-by: Raphael Nestler <raphael.nestler@gmail.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1015
+> Reported-by: Andrea Righi <andrea.righi@canonical.com>
+> Tested-by: Raphael Nestler <raphael.nestler@gmail.com> # non-hostprogs
+> Tested-by: Andrea Righi <andrea.righi@canonical.com> # non-hostprogs
+> Fixes: 295d8398c67e ("kbuild: specify output names separately for each em=
+ission type from rustc")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> v2:
+>   - Add fix for host programs too (Masahiro).
+
+
+This is now available in the mainline.
+
+df01b7cfcef08bf3fdcac2909d0e1910781d6bfd
 
 
 
-On 7/24/23 14:21, Jonathan Corbet wrote:
-> Costa Shulyupin <costa.shul@redhat.com> writes:
-> 
->> Template {{ toctree(maxdepth=3) }} in
->> Documentation/sphinx/templates/kernel-toc.html
->> uses directives toctree and doesn't use sections on the top page
->> Documentation/index.rst
->> to generate expandable toc on the sidebar.
->>
->> BTW, other template {{ toc }} uses only sections, and doesn't
->> use directives toctree.
->>
->> Summary of changes:
->> - split top page index.rst to several pages
->> - convert sections of Documentation/index.rst to hierarchical toctree
->> - vertical bars '|' add empty lines
->>
->> Benefits:
->> - collapsed toc is just seven short lines length
->> - toc is expandable
->>
->> References:
->> - https://www.sphinx-doc.org/en/master/development/templating.html#toctree
->> - https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#directive-toctree
->> - https://www.sphinx-doc.org/en/master/development/templating.html#toc
->> - https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#sections
->> - https://sphinx-rtd-theme.readthedocs.io/
-> 
-> What is the purpose of all these links in a patch changelog?
-> 
-> This patch is somewhat difficult to apply, as a result of:
-> 
->> Content-Type: text/plain; charset=true
 
-I didn't have any problem applying and testing it.
 
-> But the real problem is that you seem to have ignored my last message.
-> The purpose of the front page isn't to create a nice-looking sidebar, it
-> is the entry point to our documentation as a whole.  I am all for a
-> better sidebar, but this is not the way to do it.
-
-Regardless of what the purpose of the front page is, I prefer this one
-from Costa.  The other one is a huge mess.
-
--- 
-~Randy
+--=20
+Best Regards
+Masahiro Yamada
