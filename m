@@ -1,93 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F289A4C9F
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Jul 2023 05:01:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E770C433CD;
-	Tue, 25 Jul 2023 05:01:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1690261286;
-	bh=+FyEzIHHHu86QHrIoXwjeeWi+fV/oC+M1YZ91MsjQXQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BnI66cA59lweu/0a+Q3u7Ol/c21g7OcL6K6YkWORXYvQrvrj4qh94ARo/HvjORaMe
-	 qTvOs1yXe/Pdpia5RAMtcbWVHN+tOdW39vwGAp775rngcIf+JpNfIN0/VpOUHyon2O
-	 CMzMrsFzfNc7Tpmsab8Sy2MM5ufE3IOjmHSUBUcCO/Bq97fwVFpkqFpYx+DDEuVZ1P
-	 2ac4U8pBgan/zJ/OGRzjsI3dlcgGMSPPhR++d4+CAb/GAqMxFcwZG3numGUbjCaQUq
-	 +sUwSJqOpwNCnmIrYRgRoaRfAdc+cEAKSnm0EMb6kknpf08EpNdbEsGW/QKOZzSX7h
-	 kkuLgyreoWyuw==
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-56597d949b1so3147964eaf.1;
-        Mon, 24 Jul 2023 22:01:26 -0700 (PDT)
-X-Gm-Message-State: ABy/qLbj+Xl0xHHFuX9A6LVIALec8H7W5N/t+NOFMhW0hT7mv8nakfLI
-	hrbGgdLQodnt+TeIhL/sbZYXXmOk20s2cIXb9vY=
-X-Google-Smtp-Source: APBJJlHNMewixjluZirFDxPtZ/xyBhT/i9rV3VOmKVpLXySF76A/9PjhZyiOUBiUZa72yxWxXdde6eDqTDRyg9svjDM=
-X-Received: by 2002:a4a:91d0:0:b0:566:fa3f:82af with SMTP id
- e16-20020a4a91d0000000b00566fa3f82afmr9199256ooh.5.1690261285620; Mon, 24 Jul
- 2023 22:01:25 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ACB15AD0
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Jul 2023 11:58:41 +0000 (UTC)
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B57801FF7
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Jul 2023 04:58:03 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-573cacf4804so68653577b3.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Jul 2023 04:58:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1690286283; x=1690891083;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1VPOZThFJv0JHnA6Avw8TCcPUHE62XLzLeg/XcbHXkE=;
+        b=5tXnrBdCveXXrzYmqLZ1P2TeCsTuXDBPcVAxBik99PdwIIaCnKOQ0o3W2dJBX22QCB
+         lJUZFdhNrHpsBhPchNHK4cbzfV3bQWfX3FdfYs/OofZewWZ9rYEAjqDdrInhybQ8ML8x
+         ddmDpmbBoHDqd3ndTwKxLV/jy4bu0yXDr7gg7uLu70CsMRHe000a6GzH9QotuIx1VCZ9
+         iyM2gFIYapePiJc+W2cPeNMy7okUEk+iCV/DobjQf4Umhk/JWC/cBYvnoL79e1kw+4+D
+         sImJ8rYQu3m0/+L/fidMEBVVrziwD56GAaZX1K9XyTiNNeSk/04m3awxawmUJMLptZfO
+         oMTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690286283; x=1690891083;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1VPOZThFJv0JHnA6Avw8TCcPUHE62XLzLeg/XcbHXkE=;
+        b=djkpmX7eISDk6Col6kGRHhUPMdRaRvFTP6v49KSCo8ahwf6uPRxjQYI7+ThhzDtFNh
+         69xXMXCbyMpvRJNXB7BKQOE2vf0Vj75lyvPL0MZ4kzmGWdpSXGQ4VqZBrp1T1vvaknaQ
+         Dbm9jpnnroxZq9fwTfpAEhvguUbaDaOPM2RAgpXTlcHs9ATIg4+V6j91qhGlsPz/C+7w
+         lOqlMcVL7/WXDpIB/Tc1DOWS5JEOSvhM+WjIjO9773PFDmijG4CKy1qahnvKCpmBUblZ
+         RINUCpBfvR1Tkk2ZZXjQgEtE2LUuPnhkGvVYIvz0ssi+3CR1xmOJOe6+pL9L7uU9QTej
+         gENg==
+X-Gm-Message-State: ABy/qLa1ATLpOMnWB5Af02TggHNYvVtjP2VSJSxzxZE6dKhGZjZIaDrx
+	ia2LWRwZFj72CqO+uQIAnJUjagUv/6tKXwA=
+X-Google-Smtp-Source: APBJJlHGSHNCFMtiM27C/TIFHTgwQEAjSMl35nON1bWo4KcF0K6HUmOjyrPq5jt2EXoF14KZN1gEEEL9/6p6lsU=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a81:af21:0:b0:579:fa4c:1f25 with SMTP id
+ n33-20020a81af21000000b00579fa4c1f25mr90464ywh.7.1690286282821; Tue, 25 Jul
+ 2023 04:58:02 -0700 (PDT)
+Date: Tue, 25 Jul 2023 11:57:59 +0000
+In-Reply-To: <16fb9977-2efc-2412-e906-3d320e37c45c@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20230723142128.194339-1-ojeda@kernel.org>
-In-Reply-To: <20230723142128.194339-1-ojeda@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 25 Jul 2023 14:00:49 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAR_CaZ8fJ+fOm9-X83MOtwDa9aavZ5JM6DFOAA00GgULw@mail.gmail.com>
-Message-ID: <CAK7LNAR_CaZ8fJ+fOm9-X83MOtwDa9aavZ5JM6DFOAA00GgULw@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: rust: avoid creating temporary files
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, linux-kbuild@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, Raphael Nestler <raphael.nestler@gmail.com>, 
-	Andrea Righi <andrea.righi@canonical.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <16fb9977-2efc-2412-e906-3d320e37c45c@proton.me>
+X-Mailer: git-send-email 2.41.0.487.g6d72f3e995-goog
+Message-ID: <20230725115759.424300-1-aliceryhl@google.com>
+Subject: Re: [PATCH v2 09/12] rust: init: implement Zeroable for Opaque<T>
+From: Alice Ryhl <aliceryhl@google.com>
+To: benno.lossin@proton.me
+Cc: alex.gaynor@gmail.com, aliceryhl@google.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org, 
+	nmi@metaspace.dk, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
+	wedsonaf@gmail.com
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+	lindbergh.monkeyblade.net
 
-On Sun, Jul 23, 2023 at 11:21=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
->
-> `rustc` outputs by default the temporary files (i.e. the ones saved
-> by `-Csave-temps`, such as `*.rcgu*` files) in the current working
-> directory when `-o` and `--out-dir` are not given (even if
-> `--emit=3Dx=3Dpath` is given, i.e. it does not use those for temporaries)=
-.
->
-> Since out-of-tree modules are compiled from the `linux` tree,
-> `rustc` then tries to create them there, which may not be accessible.
->
-> Thus pass `--out-dir` explicitly, even if it is just for the temporary
-> files.
->
-> Similarly, do so for Rust host programs too.
->
-> Reported-by: Raphael Nestler <raphael.nestler@gmail.com>
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1015
-> Reported-by: Andrea Righi <andrea.righi@canonical.com>
-> Tested-by: Raphael Nestler <raphael.nestler@gmail.com> # non-hostprogs
-> Tested-by: Andrea Righi <andrea.righi@canonical.com> # non-hostprogs
-> Fixes: 295d8398c67e ("kbuild: specify output names separately for each em=
-ission type from rustc")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> v2:
->   - Add fix for host programs too (Masahiro).
+Benno Lossin <benno.lossin@proton.me> writes:
+> On 20.07.23 15:34, Alice Ryhl wrote:
+>> Benno Lossin <benno.lossin@proton.me> writes:
+>>> Since `Opaque<T>` contains a `MaybeUninit<T>`, all bytes zero is a valid
+>>> bit pattern for that type.
+>>>
+>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>>> ---
+>>>   ///
+>>>   /// This is meant to be used with FFI objects that are never interpreted by Rust code.
+>>>   #[repr(transparent)]
+>>> +#[derive(Zeroable)]
+>>>   pub struct Opaque<T> {
+>>>       value: UnsafeCell<MaybeUninit<T>>,
+>>>       _pin: PhantomPinned,
+>>>   }
+>> 
+>> Does this actually work? I don't think we implement Zeroable for
+>> UnsafeCell.
+> 
+> Good catch, this does compile, but only because the current
+> implementation of the derive expands to (modulo correct paths):
+> ```
+> impl<T> Zeroable for Opaque<T>
+> where
+>      UnsafeCell<MaybeUninit<T>>: Zeroable,
+>      PhantomPinned: Zeroable,
+> {}
+> ```
+> This implementation is of course useless, since `UnsafeCell` is never
+> `Zeroable` at the moment. We could of course implement that and then this
+> should work, but the question is if this is actually the desired output in
+> general. I thought before that this would be a good idea, but I forgot that
+> if the bounds are never satisfied it would silently compile.
+> 
+> Do you think that we should have this expanded output instead?
+> ```
+> impl<T: Zeroable> Zeroable for Foo<T> {}
+> const _: () = {
+>      fn assert_zeroable<T: Zeroable>() {}
+>      fn ensure_zeroable<T: Zeroable>() {
+>          assert_zeroable::<Field1>();
+>          assert_zeroable::<Field2>();
+>      }
+> };
+> ```
+> If the input was
+> ```
+> #[derive(Zeroable)]
+> struct Foo<T> {
+>      field1: Field1,
+>      field2: Field2,
+> }
+> ```
+ 
+Yeah. The way that these macros usually expand is by adding `where T:
+Zeroable` to the impl for each generic parameter, and failing
+compilation if that is not enough to ensure that all of the fields are
+`Zeroable`.
 
+You might want to consider this expansion instead:
+```
+impl<T: Zeroable> Zeroable for Foo<T> {}
+const _: () = {
+     fn assert_zeroable<T: Zeroable>(arg: &T) {}
+     fn ensure_zeroable<T: Zeroable>(arg: &Foo<T>) {
+         assert_zeroable(&arg.field1);
+         assert_zeroable(&arg.field2);
+     }
+};
+```
 
-This is now available in the mainline.
+>> I suggest you instead add Opaque to the `impl_zeroable!` macro in
+>> `rust/kernel/init.rs`.
+> 
+> We would have to do this when using the alternative approach from
+> above, since we do not want the `Zeroable` bound on `T` for `Opaque`.
+> I wanted to avoid the `SAFETY` comment, since that is needed for the
+> `impl_zeroable` macro (as it has an unsafe block inside).
 
-df01b7cfcef08bf3fdcac2909d0e1910781d6bfd
+Indeed, if we expand the derive macro in the standard way, then it
+doesn't work for `Opaque` due to the extra unnecessary bound.
 
+Alice
 
-
-
-
---=20
-Best Regards
-Masahiro Yamada
