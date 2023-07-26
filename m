@@ -1,39 +1,39 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C535CA63
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 16:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE6018026
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 16:57:55 +0000 (UTC)
 Received: from aer-iport-4.cisco.com (aer-iport-4.cisco.com [173.38.203.54])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60DEF13D
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 09:57:51 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 479E013D
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 09:57:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=5818; q=dns/txt; s=iport;
-  t=1690390671; x=1691600271;
+  d=cisco.com; i=@cisco.com; l=6458; q=dns/txt; s=iport;
+  t=1690390674; x=1691600274;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UiFHWKZZEisCHqVroCxAGB1BlMOgs6ZoyHjOZIT/iNs=;
-  b=CamGc5mP8s44id+QLeOUH0V7/xg4lf99qvOI9AzKFVsPSwLLFGrHw2n/
-   3o7JhopMLv4QJnRJNMj3J0mt7UmfRWUM/nmhJTW/ojKvJhMWiVKGJ66VB
-   NkYwWNbNCWy5FeH/VaSDo5e2C9K7jdvXeEQIEYlAiA9QGhSmv7qEjhRZ6
-   c=;
+  bh=cIBpQFptALxQEDeNXQIlMjNYdYD99mepAG1JGqIXFp8=;
+  b=ZykBJOOMzIVz2XJ5c9whMouSE1JiorggVnbVYQUnX7Ex1zqTjCUDKLmf
+   cdiPQVa63zqeEbxL9qx5PJUFG4vxtYHjtSRBo3azfRc8pWJB/d6LTXOMt
+   mwxOxlbrk/ZSwvztnhhAM6adrQSsSvDTVh5tRh7EIvPjEco8SHCwlMkUK
+   g=;
 X-IronPort-AV: E=Sophos;i="6.01,232,1684800000"; 
-   d="scan'208";a="8416073"
+   d="scan'208";a="8416074"
 Received: from aer-iport-nat.cisco.com (HELO aer-core-7.cisco.com) ([173.38.203.22])
-  by aer-iport-4.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2023 16:46:21 +0000
+  by aer-iport-4.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2023 16:46:24 +0000
 Received: from archlinux-cisco.cisco.com (dhcp-10-61-98-211.cisco.com [10.61.98.211])
 	(authenticated bits=0)
-	by aer-core-7.cisco.com (8.15.2/8.15.2) with ESMTPSA id 36QGjqTw022602
+	by aer-core-7.cisco.com (8.15.2/8.15.2) with ESMTPSA id 36QGjqU0022602
 	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 26 Jul 2023 16:46:21 GMT
+	Wed, 26 Jul 2023 16:46:24 GMT
 From: Ariel Miculas <amiculas@cisco.com>
 To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
         tycho@tycho.pizza, brauner@kernel.org, viro@zeniv.linux.org.uk,
         ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
         Ariel Miculas <amiculas@cisco.com>
-Subject: [RFC PATCH v2 06/10] rust: file: pass the filesystem context to the open function
-Date: Wed, 26 Jul 2023 19:45:30 +0300
-Message-ID: <20230726164535.230515-7-amiculas@cisco.com>
+Subject: [RFC PATCH v2 08/10] rust: puzzlefs: read the puzzlefs image manifest instead of an individual metadata layer
+Date: Wed, 26 Jul 2023 19:45:32 +0300
+Message-ID: <20230726164535.230515-9-amiculas@cisco.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230726164535.230515-1-amiculas@cisco.com>
 References: <20230726164535.230515-1-amiculas@cisco.com>
@@ -55,156 +55,183 @@ X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-This allows us to create a Vfsmount structure and pass it to the read
-callback.
+The puzzlefs image manifest is the file referenced by index.json and it
+contains the array of metadata layers that describe the puzzlefs image.
+This file represents the root of the puzzlefs filesystem since we can't
+parse json files. When this filesystem is mounted, usermode will need to
+read the tag from index.json, find the corresponding puzzlefs image
+manifest and pass it to the kernel module.
+
+Due to the lack of BTreeMap in the kernel, only image manifests without
+fs verity information are supported for now.
 
 Signed-off-by: Ariel Miculas <amiculas@cisco.com>
 ---
- rust/kernel/file.rs      | 17 +++++++++++++++--
- samples/rust/puzzlefs.rs | 40 +++++++++++++++++++++++++++++++++++-----
- samples/rust/rust_fs.rs  |  3 ++-
- 3 files changed, 52 insertions(+), 8 deletions(-)
+ samples/rust/puzzle.rs       |  1 +
+ samples/rust/puzzle/inode.rs | 22 ++++++++++++----
+ samples/rust/puzzle/oci.rs   | 51 ++++++++++++++++++++++++++++++++++++
+ samples/rust/puzzlefs.rs     | 23 ++++++++--------
+ 4 files changed, 80 insertions(+), 17 deletions(-)
+ create mode 100644 samples/rust/puzzle/oci.rs
 
-diff --git a/rust/kernel/file.rs b/rust/kernel/file.rs
-index a3002c416dbb..af1eb1ee9267 100644
---- a/rust/kernel/file.rs
-+++ b/rust/kernel/file.rs
-@@ -457,9 +457,15 @@ impl<A: OpenAdapter<T::OpenData>, T: Operations> OperationsVtable<A, T> {
-             // `fileref` never outlives this function, so it is guaranteed to be
-             // valid.
-             let fileref = unsafe { File::from_ptr(file) };
-+
-+            // SAFETY: into_foreign was called in fs::NewSuperBlock<..., NeedsInit>::init and
-+            // it is valid until from_foreign will be called in fs::Tables::free_callback
-+            let fs_info =
-+                unsafe { <T::Filesystem as fs::Type>::Data::borrow((*(*inode).i_sb).s_fs_info) };
-+
-             // SAFETY: `arg` was previously returned by `A::convert` and must
-             // be a valid non-null pointer.
--            let ptr = T::open(unsafe { &*arg }, fileref)?.into_foreign();
-+            let ptr = T::open(fs_info, unsafe { &*arg }, fileref)?.into_foreign();
-             // SAFETY: The C contract guarantees that `private_data` is available
-             // for implementers of the file operations (no other C code accesses
-             // it), so we know that there are no concurrent threads/CPUs accessing
-@@ -930,10 +936,17 @@ pub trait Operations {
-     /// The type of the context data passed to [`Operations::open`].
-     type OpenData: Sync = ();
+diff --git a/samples/rust/puzzle.rs b/samples/rust/puzzle.rs
+index a809cddfb817..e74a248c39ff 100644
+--- a/samples/rust/puzzle.rs
++++ b/samples/rust/puzzle.rs
+@@ -2,3 +2,4 @@
+ pub(crate) mod types;
+ pub(crate) use types::{manifest_capnp, metadata_capnp};
+ pub(crate) mod inode;
++pub(crate) mod oci;
+diff --git a/samples/rust/puzzle/inode.rs b/samples/rust/puzzle/inode.rs
+index d792f661aa00..f63cdbc1eac4 100644
+--- a/samples/rust/puzzle/inode.rs
++++ b/samples/rust/puzzle/inode.rs
+@@ -3,20 +3,32 @@
  
-+    /// Data associated with each file system instance.
-+    type Filesystem: fs::Type;
-+
-     /// Creates a new instance of this file.
-     ///
-     /// Corresponds to the `open` function pointer in `struct file_operations`.
--    fn open(context: &Self::OpenData, file: &File) -> Result<Self::Data>;
-+    fn open(
-+        fs_info: <<Self::Filesystem as fs::Type>::Data as ForeignOwnable>::Borrowed<'_>,
-+        context: &Self::OpenData,
-+        file: &File,
-+    ) -> Result<Self::Data>;
- 
-     /// Cleans up after the last reference to the file goes away.
-     ///
-diff --git a/samples/rust/puzzlefs.rs b/samples/rust/puzzlefs.rs
-index 9afd82745b64..8a64e0bd437d 100644
---- a/samples/rust/puzzlefs.rs
-+++ b/samples/rust/puzzlefs.rs
-@@ -3,8 +3,14 @@
- //! Rust file system sample.
- 
- use kernel::module_fs;
+ use crate::puzzle::error::Result;
+ use crate::puzzle::error::WireFormatError;
++use crate::puzzle::oci::Image;
+ use crate::puzzle::types as format;
+-use crate::puzzle::types::{Inode, InodeMode, MetadataBlob};
++use crate::puzzle::types::{Digest, Inode, InodeMode};
+ use alloc::vec::Vec;
 +use kernel::mount::Vfsmount;
- use kernel::prelude::*;
--use kernel::{c_str, file, fs, io_buffer::IoBufferWriter};
-+use kernel::{
-+    c_str, file, fmt, fs,
-+    io_buffer::IoBufferWriter,
-+    str::CString,
-+    sync::{Arc, ArcBorrow},
-+};
+ use kernel::prelude::ENOENT;
++use kernel::str::CStr;
++use kernel::sync::Arc;
  
- mod puzzle;
- // Required by the autogenerated '_capnp.rs' files
-@@ -19,6 +25,12 @@
+ pub(crate) struct PuzzleFS {
++    pub(crate) oci: Image,
+     layers: Vec<format::MetadataBlob>,
+ }
  
- struct PuzzleFsModule;
+ impl PuzzleFS {
+-    pub(crate) fn new(md: MetadataBlob) -> Result<Self> {
+-        let mut v = Vec::new();
+-        v.try_push(md)?;
+-        Ok(PuzzleFS { layers: v })
++    pub(crate) fn open(vfsmount: Arc<Vfsmount>, rootfs_path: &CStr) -> Result<PuzzleFS> {
++        let oci = Image::open(vfsmount)?;
++        let rootfs = oci.open_rootfs_blob(rootfs_path)?;
++
++        let mut layers = Vec::new();
++        for md in rootfs.metadatas.iter() {
++            let digest = Digest::try_from(md)?;
++            layers.try_push(oci.open_metadata_blob(&digest)?)?;
++        }
++
++        Ok(PuzzleFS { oci, layers })
+     }
  
-+#[derive(Debug)]
-+struct PuzzlefsInfo {
-+    base_path: CString,
+     pub(crate) fn find_inode(&self, ino: u64) -> Result<Inode> {
+diff --git a/samples/rust/puzzle/oci.rs b/samples/rust/puzzle/oci.rs
+new file mode 100644
+index 000000000000..becb2b868450
+--- /dev/null
++++ b/samples/rust/puzzle/oci.rs
+@@ -0,0 +1,51 @@
++use crate::puzzle::error::Result;
++use crate::puzzle::types::{Digest, MetadataBlob, Rootfs};
++use kernel::c_str;
++use kernel::file;
++use kernel::file::RegularFile;
++use kernel::mount::Vfsmount;
++use kernel::pr_info;
++use kernel::str::{CStr, CString};
++use kernel::sync::Arc;
++
++pub(crate) struct Image {
 +    vfs_mount: Arc<Vfsmount>,
 +}
 +
- #[vtable]
- impl fs::Context<Self> for PuzzleFsModule {
-     type Data = ();
-@@ -46,14 +58,23 @@ fn try_new() -> Result {
- impl fs::Type for PuzzleFsModule {
-     type Context = Self;
-     type INodeData = &'static [u8];
-+    type Data = Box<PuzzlefsInfo>;
-     const SUPER_TYPE: fs::Super = fs::Super::Independent;
-     const NAME: &'static CStr = c_str!("puzzlefs");
-     const FLAGS: i32 = fs::flags::USERNS_MOUNT;
-     const DCACHE_BASED: bool = true;
- 
-     fn fill_super(_data: (), sb: fs::NewSuperBlock<'_, Self>) -> Result<&fs::SuperBlock<Self>> {
-+        let base_path = CString::try_from_fmt(fmt!("hello world"))?;
-+        pr_info!("base_path {:?}\n", base_path);
-+        let vfs_mount = Vfsmount::new_private_mount(c_str!("/home/puzzlefs_oci"))?;
-+        pr_info!("vfs_mount {:?}\n", vfs_mount);
++impl Image {
++    pub(crate) fn open(vfsmount: Arc<Vfsmount>) -> Result<Self> {
++        Ok(Image {
++            vfs_mount: vfsmount,
++        })
++    }
 +
-         let sb = sb.init(
--            (),
-+            Box::try_new(PuzzlefsInfo {
-+                base_path,
-+                vfs_mount: Arc::try_new(vfs_mount)?,
-+            })?,
-             &fs::SuperParams {
-                 magic: 0x72757374,
-                 ..fs::SuperParams::DEFAULT
-@@ -88,14 +109,23 @@ fn fill_super(_data: (), sb: fs::NewSuperBlock<'_, Self>) -> Result<&fs::SuperBl
++    pub(crate) fn blob_path_relative(&self) -> &CStr {
++        c_str!("blobs/sha256")
++    }
++
++    fn open_raw_blob(&self, digest: &Digest) -> Result<RegularFile> {
++        let filename =
++            CString::try_from_fmt(format_args!("{}/{digest}", self.blob_path_relative()))?;
++        pr_info!("trying to open {:?}\n", &filename);
++
++        let file = RegularFile::from_path_in_root_mnt(
++            &self.vfs_mount,
++            &filename,
++            file::flags::O_RDONLY.try_into().unwrap(),
++            0,
++        )?;
++
++        Ok(file)
++    }
++
++    pub(crate) fn open_metadata_blob(&self, digest: &Digest) -> Result<MetadataBlob> {
++        let f = self.open_raw_blob(digest)?;
++        MetadataBlob::new(f)
++    }
++
++    pub(crate) fn open_rootfs_blob(&self, path: &CStr) -> Result<Rootfs> {
++        let digest = Digest::try_from(path)?;
++        let rootfs = Rootfs::open(self.open_raw_blob(&digest)?)?;
++        Ok(rootfs)
++    }
++}
+diff --git a/samples/rust/puzzlefs.rs b/samples/rust/puzzlefs.rs
+index 1f0073716d91..76dc59403db3 100644
+--- a/samples/rust/puzzlefs.rs
++++ b/samples/rust/puzzlefs.rs
+@@ -14,7 +14,7 @@
+ mod puzzle;
+ // Required by the autogenerated '_capnp.rs' files
+ use puzzle::inode::PuzzleFS;
+-use puzzle::types::{Inode, InodeMode, MetadataBlob};
++use puzzle::types::{Inode, InodeMode};
+ use puzzle::{manifest_capnp, metadata_capnp};
  
- #[vtable]
- impl file::Operations for FsFile {
-+    // must be the same as INodeData
-     type OpenData = &'static [u8];
-+    type Filesystem = PuzzleFsModule;
-+    // this is an Arc because Data must be ForeignOwnable and the only implementors of it are Box,
-+    // Arc and (); we cannot pass a reference to read, so we share Vfsmount using and Arc
-+    type Data = Arc<Vfsmount>;
- 
--    fn open(_context: &Self::OpenData, _file: &file::File) -> Result<Self::Data> {
--        Ok(())
-+    fn open(
-+        fs_info: &PuzzlefsInfo,
-+        _context: &Self::OpenData,
-+        _file: &file::File,
-+    ) -> Result<Self::Data> {
-+        Ok(fs_info.vfs_mount.clone())
+ use kernel::fs::{DEntry, INodeParams, NeedsRoot, NewSuperBlock, RootDEntry};
+@@ -69,7 +69,7 @@ fn puzzlefs_populate_dir(
+         return Err(E2BIG);
      }
  
-     fn read(
--        _data: (),
-+        data: ArcBorrow<'_, Vfsmount>,
-         file: &file::File,
-         writer: &mut impl IoBufferWriter,
-         offset: u64,
-diff --git a/samples/rust/rust_fs.rs b/samples/rust/rust_fs.rs
-index 7527681ee024..c58ed1560e06 100644
---- a/samples/rust/rust_fs.rs
-+++ b/samples/rust/rust_fs.rs
-@@ -85,8 +85,9 @@ fn fill_super(_data: (), sb: fs::NewSuperBlock<'_, Self>) -> Result<&fs::SuperBl
- #[vtable]
- impl file::Operations for FsFile {
-     type OpenData = &'static [u8];
-+    type Filesystem = RustFs;
+-    let inode = Arc::try_new(pfs.find_inode(ino).map_err(|_| EINVAL)?)?;
++    let inode = Arc::try_new(pfs.find_inode(ino)?)?;
+     match &inode.mode {
+         InodeMode::File { chunks: _ } => {
+             let params = INodeParams {
+@@ -154,18 +154,17 @@ fn fill_super(_data: (), sb: fs::NewSuperBlock<'_, Self>) -> Result<&fs::SuperBl
+             },
+         )?;
  
--    fn open(_context: &Self::OpenData, _file: &file::File) -> Result<Self::Data> {
-+    fn open(_fs_info: (), _context: &Self::OpenData, _file: &file::File) -> Result<Self::Data> {
-         Ok(())
-     }
+-        let file = file::RegularFile::from_path_in_root_mnt(
+-            &arc_vfs_mount,
+-            c_str!("997eed138af30d187e87d682dd2ae9f240fae78f668907a0519460b397c82467"),
+-            file::flags::O_RDONLY.try_into().unwrap(),
+-            0,
+-        )?;
++        let puzzlefs = PuzzleFS::open(
++            arc_vfs_mount,
++            c_str!("2d6602d678140540dc7e96de652a76a8b16e8aca190bae141297bcffdcae901b"),
++        );
  
+-        // TODO: figure out how to go from WireFormatError to kernel::error::Error
+-        let metadata = MetadataBlob::new(file).map_err(|_| EINVAL)?;
++        if let Err(ref e) = puzzlefs {
++            pr_info!("error opening puzzlefs {e}\n");
++        }
+ 
+-        let mut puzzlefs = PuzzleFS::new(metadata).map_err(|_| EINVAL)?;
+-        let root_inode = Arc::try_new(puzzlefs.find_inode(1).map_err(|_| EINVAL)?)?;
++        let mut puzzlefs = puzzlefs?;
++        let root_inode = Arc::try_new(puzzlefs.find_inode(1)?)?;
+ 
+         let root = try_new_populated_root_puzzlefs_dentry(&sb, &mut puzzlefs, root_inode)?;
+         let sb = sb.init_root(root)?;
 -- 
 2.41.0
 
