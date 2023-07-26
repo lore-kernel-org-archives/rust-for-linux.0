@@ -1,56 +1,56 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF2D18045
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 21:08:55 +0000 (UTC)
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C5521BFB
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 14:08:53 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-992e22c09edso18864666b.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 14:08:53 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF4EA930
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 22:34:28 +0000 (UTC)
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047B72680
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 15:34:23 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-991ef0b464cso336133466b.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 15:34:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1690405732; x=1691010532;
+        d=umich.edu; s=google-2016-06-03; t=1690410861; x=1691015661;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vjkLXak8d+/QRW6V4ufp25mmvem0zi/hCFrifSGngFs=;
-        b=ZuSNoM2neGgmzJ1HDcF0VbUgodiwml7GqlGB44XNU8z5ksD6ZgMFqxzRPQ/SOCjj4c
-         ARW7u1YMSMc1qazZhCR8R7yOPL7bOd/vH43fz1I2RCkJzEm95afcsIadPOIYU/QIdQfr
-         Tla/Ks/rrhbE94krRIMf/jrGJbH3Ww5d5rLLy+EQ0WGCoRgWGznST2uHoLjGiMp0uocQ
-         QnXb6vmTvRegB76hyRWSgc14aNXqn1Uv+hBAIt4puE5lpAIwJqRZnKIM5UAazLI20hLC
-         JdpL4f5XboVywAr0dntT3KVk9t04zLbwt77q8P8VWPJ+RN7t4OjXlNEadTBgDe8q8XG/
-         9gIw==
+        bh=hH9OKNlsUJnLecjnnm5rLrXsBLC5HG39SrjraGbl7j0=;
+        b=sCgmxZx76eT4E3BbLe31K9ttu6lswKBfK4Lt4HtvqWhtW8GpPIfr3uXKEHBtQAqPZO
+         O3IKJSUtu2WLOLk+B/hMOk0ghNXGHnc0ty/oNdOv66s8u1ArklIQb0NAg6pjERmyDGQr
+         DfMYZBV2bFIrKKXoFZGt6rUJg2bFMpoFB4cjqm8/IapWidGI77bz5msYcRHGHJ9X9y79
+         EwguMeqr9ucNlUHrduI0r/nIuHOsXy8vOjXFap7UC90co5F54KaOQOd7fLov/EnDOVgZ
+         xa4vnrVOLugtcwQnlwH06D8zUu0YFKfz7jIybz1xubBfFEjE+2CRRNgLI0eTfK68lObD
+         AgAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690405732; x=1691010532;
+        d=1e100.net; s=20221208; t=1690410861; x=1691015661;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vjkLXak8d+/QRW6V4ufp25mmvem0zi/hCFrifSGngFs=;
-        b=iBK2UyTZVCFIqPecibJsxYa8SNmS5OfTJJUkoyqA7i/6gkLSv/PkddF2yA99ExziQy
-         bnladIC6TnPZpue10hR6AQdXwv0H6vuk/j364+g35HG34zqcCXk4fKX9xVntHiaaO312
-         fE2Ypm3GEkqM7iNLuJgJD1heygWxPGCJHV7rh42Xcnm08sy2RgbV2ai5V+ap4pxZic/i
-         AM9GW9vCiO5GgRWJ3sJBiSxMc/ezC0jXGM7fwj58g+BjQx1yQcNmkVY9a61TTgiifo7B
-         ra5JdmJYB/Osnj3c/2shg6t5tAKYGQMF6c14kjYd8dWiliNrS63o5XwS3LrS8KCX+6o3
-         wEkg==
-X-Gm-Message-State: ABy/qLakwimbG/hs2lsIS+xPOg0hdCnfn7P39Vu6NtkqHDsVCFuAc09v
-	Ne3QSSKKwECRsov2halq3ltWzFhI/OBXTe0wqfMBYg==
-X-Google-Smtp-Source: APBJJlFQX7UzDW/k/kYtWDvZK568AeNZukeBl2pXtyjIMni9uWicDax9fIk3Xw0AO67YAsFOv9YnJHcBKz+EEJqcJyI=
-X-Received: by 2002:a17:906:7391:b0:994:54af:e282 with SMTP id
- f17-20020a170906739100b0099454afe282mr213636ejl.10.1690405732051; Wed, 26 Jul
- 2023 14:08:52 -0700 (PDT)
+        bh=hH9OKNlsUJnLecjnnm5rLrXsBLC5HG39SrjraGbl7j0=;
+        b=XCr2beg86KGKVaracyeouxfdHdPEhEkRQF02WKDBwqk6y46cY/OU0/zxrz8jeuR/zG
+         s+03dCPYJ0x1iQ2LEZTS6o6uYyXqPO1K5hyBBd0+P8yDSqD4Z74GHuSRXQXkI7xWn1G7
+         rBRPgcAwTmG2Zqmdo7SSumErXpg7hpo04rw3c2CnYvOXMgYr5hpRg2483/WkD9E9ojWb
+         eL7+MsHGpFC6afxz1gd1z5p7SGQlFxdHsfjdWIwHQxW44wIX0tJy35lz/f0+ofaBa1QA
+         sw6IJcmfFcQDZstdPqV/cTx32OttXo9/HdKtIFgylBrX/mEzgOIBoWmw7JZ4cXHf9NsY
+         OouQ==
+X-Gm-Message-State: ABy/qLYVx6sUuP5/abWU/XQ+hR09bktJLvj/1wMdBTyIb4oz0tOEx6dO
+	pprWPQOpucJn7Dx/8kfiaMyvYEdm2DnTD5JtqM1aqQ==
+X-Google-Smtp-Source: APBJJlEzuu6Dndx36AHnJ64J6fp+ywPKu3tOxvp4LfcHvSCc3JxKqHtozBdlJFnt634jzj4yDt9gZnCsNl9RHQKEfoY=
+X-Received: by 2002:a17:906:5a4a:b0:99b:cb59:79b3 with SMTP id
+ my10-20020a1709065a4a00b0099bcb5979b3mr412703ejc.1.1690410861473; Wed, 26 Jul
+ 2023 15:34:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230726164535.230515-1-amiculas@cisco.com> <20230726164535.230515-11-amiculas@cisco.com>
-In-Reply-To: <20230726164535.230515-11-amiculas@cisco.com>
+References: <20230726164535.230515-1-amiculas@cisco.com> <20230726164535.230515-4-amiculas@cisco.com>
+In-Reply-To: <20230726164535.230515-4-amiculas@cisco.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Wed, 26 Jul 2023 17:08:40 -0400
-Message-ID: <CALNs47ss3kV3mTx4ksYTWaHWdRG48=97DTi3OEnPom2nFcYhHw@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 10/10] rust: puzzlefs: add oci_root_dir and
- image_manifest filesystem parameters
+Date: Wed, 26 Jul 2023 18:34:09 -0400
+Message-ID: <CALNs47tkc2vWYW13LQq17Qcy0UFBJXan+7S_JVsPBXwTTJn3bQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 03/10] rust: kernel: add an abstraction over
+ vfsmount to allow cloning a new private mount
 To: Ariel Miculas <amiculas@cisco.com>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, tycho@tycho.pizza, brauner@kernel.org, 
@@ -65,149 +65,83 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Jul 26, 2023 at 12:55=E2=80=AFPM Ariel Miculas <amiculas@cisco.com>=
+On Wed, Jul 26, 2023 at 12:54=E2=80=AFPM Ariel Miculas <amiculas@cisco.com>=
  wrote:
->
-> These parameters are passed when mounting puzzlefs using '-o' option of
-> mount:
-> -o oci_root_dir=3D"/path/to/oci/dir"
-> -o image_manifest=3D"root_hash_of_image_manifest"
->
-> For a particular manifest in the manifests array in index.json (located
-> in the oci_root_dir), the root hash of the image manifest is found in
-> the digest field.
->
-> It would be nicer if we could pass the tag, but we don't support json
-> deserialization.
->
-> Example of mount:
-> mount -t puzzlefs -o oci_root_dir=3D"/home/puzzlefs_oci" -o \
-> image_manifest=3D"2d6602d678140540dc7e96de652a76a8b16e8aca190bae141297bcf=
-fdcae901b" \
-> none /mnt
->
-> Signed-off-by: Ariel Miculas <amiculas@cisco.com>
-> ---
->  samples/rust/puzzlefs.rs | 63 ++++++++++++++++++++++++++--------------
->  1 file changed, 41 insertions(+), 22 deletions(-)
->
-> diff --git a/samples/rust/puzzlefs.rs b/samples/rust/puzzlefs.rs
-> index dad7ecc76eca..4e9a8aedf0c1 100644
-> --- a/samples/rust/puzzlefs.rs
-> +++ b/samples/rust/puzzlefs.rs
-> @@ -7,6 +7,7 @@
->  use kernel::{
->      c_str, file, fs,
->      io_buffer::IoBufferWriter,
-> +    str::CString,
->      sync::{Arc, ArcBorrow},
->  };
->
-> @@ -31,27 +32,29 @@ struct PuzzlefsInfo {
->      puzzlefs: Arc<PuzzleFS>,
->  }
->
-> +#[derive(Default)]
-> +struct PuzzleFsParams {
-> +    oci_root_dir: Option<CString>,
-> +    image_manifest: Option<CString>,
+> [...]
+> +++ b/rust/kernel/mount.rs
+> @@ -0,0 +1,71 @@
+> [...]
+> +impl Vfsmount {
+> +    /// Create a new private mount clone based on a path name
+> +    pub fn new_private_mount(path_name: &CStr) -> Result<Self> {
+> +        let path: Path =3D Path(Opaque::uninit());
+> +        // SAFETY: path_name is a &CStr, so it's a valid string pointer;=
+ path is an uninitialized
+> +        // struct stored on the stack and it's ok because kern_path expe=
+cts an out parameter
+> +        let err =3D unsafe {
+> +            bindings::kern_path(
+> +                path_name.as_ptr() as *const i8,
+> +                bindings::LOOKUP_FOLLOW | bindings::LOOKUP_DIRECTORY,
+> +                path.0.get(),
+> +            )
+> +        };
+
+Nit: I believe that `.cast::<i8>()` is preferred over `as *const T`
+because it makes it harder to
+accidentally change constness or indirection level. This isn't always
+followed in kernel, but
+good practice.
+
+> +        if err !=3D 0 {
+> +            pr_err!("failed to resolve '{}': {}\n", path_name, err);
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        // SAFETY: path is a struct stored on the stack and it is  initi=
+alized because the call to
+> +        // kern_path succeeded
+> +        let vfsmount =3D unsafe { from_err_ptr(bindings::clone_private_m=
+ount(path.0.get()))? };
+> +
+> +        // Don't inherit atime flags
+> +        // SAFETY: we called from_err_ptr so it's safe to dereference th=
+is pointer
+> +        unsafe {
+> +            (*vfsmount).mnt_flags &=3D
+> +                !(bindings::MNT_NOATIME | bindings::MNT_NODIRATIME | bin=
+dings::MNT_RELATIME) as i32;
+> +        }
+
+Nit: it looks a bit cleaner to OR the flags outside of the unsafe
+block, which is also nice because then
+the unsafe block only contains the unsafe ops (could do this above
+too). Also - I think maybe style
+might encourage `// CAST:` where `as` is used?
+
+    let new_flags =3D
+        !(bindings::MNT_NOATIME | bindings::MNT_NODIRATIME |
+bindings::MNT_RELATIME) as i32;
+
+    // SAFETY: we called from_err_ptr so it's safe to dereference this poin=
+ter
+    unsafe { (*vfsmount).mnt_flags &=3D new_flags }
+
+> +        Ok(Self { vfsmount })
+> +    }
+> +
+> +    /// Returns a raw pointer to vfsmount
+> +    pub fn get(&self) -> *mut bindings::vfsmount {
+> +        self.vfsmount
+> +    }
 > +}
 > +
->  #[vtable]
->  impl fs::Context<Self> for PuzzleFsModule {
-> -    type Data =3D ();
-> -
-> -    kernel::define_fs_params! {(),
-> -        {flag, "flag", |_, v| { pr_info!("flag passed-in: {v}\n"); Ok(()=
-) } },
-> -        {flag_no, "flagno", |_, v| { pr_info!("flagno passed-in: {v}\n")=
-; Ok(()) } },
-> -        {bool, "bool", |_, v| { pr_info!("bool passed-in: {v}\n"); Ok(()=
-) } },
-> -        {u32, "u32", |_, v| { pr_info!("u32 passed-in: {v}\n"); Ok(()) }=
- },
-> -        {u32oct, "u32oct", |_, v| { pr_info!("u32oct passed-in: {v}\n");=
- Ok(()) } },
-> -        {u32hex, "u32hex", |_, v| { pr_info!("u32hex passed-in: {v}\n");=
- Ok(()) } },
-> -        {s32, "s32", |_, v| { pr_info!("s32 passed-in: {v}\n"); Ok(()) }=
- },
-> -        {u64, "u64", |_, v| { pr_info!("u64 passed-in: {v}\n"); Ok(()) }=
- },
-> -        {string, "string", |_, v| { pr_info!("string passed-in: {v}\n");=
- Ok(()) } },
-> -        {enum, "enum", [("first", 10), ("second", 20)], |_, v| {
-> -            pr_info!("enum passed-in: {v}\n"); Ok(()) }
-> -        },
-> +    type Data =3D Box<PuzzleFsParams>;
-> +
-> +    kernel::define_fs_params! {Box<PuzzleFsParams>,
-> +        {string, "oci_root_dir", |s, v| {
-> +                                      s.oci_root_dir =3D Some(CString::t=
-ry_from_fmt(format_args!("{v}"))?);
-> +                                      Ok(())
-> +                                  }},
-> +        {string, "image_manifest", |s, v| {
-> +                                      s.image_manifest =3D Some(CString:=
-:try_from_fmt(format_args!("{v}"))?);
-> +                                      Ok(())
-> +                                  }},
->      }
->
-> -    fn try_new() -> Result {
-> -        Ok(())
-> +    fn try_new() -> Result<Self::Data> {
-> +        Ok(Box::try_new(PuzzleFsParams::default())?)
->      }
->  }
->
-> @@ -136,11 +139,27 @@ impl fs::Type for PuzzleFsModule {
->      const FLAGS: i32 =3D fs::flags::USERNS_MOUNT;
->      const DCACHE_BASED: bool =3D true;
->
-> -    fn fill_super(_data: (), sb: fs::NewSuperBlock<'_, Self>) -> Result<=
-&fs::SuperBlock<Self>> {
-> -        let puzzlefs =3D PuzzleFS::open(
-> -            c_str!("/home/puzzlefs_oci"),
-> -            c_str!("2d6602d678140540dc7e96de652a76a8b16e8aca190bae141297=
-bcffdcae901b"),
-> -        );
-> +    fn fill_super(
-> +        data: Box<PuzzleFsParams>,
-> +        sb: fs::NewSuperBlock<'_, Self>,
-> +    ) -> Result<&fs::SuperBlock<Self>> {
-> +        let oci_root_dir =3D match data.oci_root_dir {
-> +            Some(val) =3D> val,
-> +            None =3D> {
-> +                pr_err!("missing oci_root_dir parameter!\n");
-> +                return Err(ENOTSUPP);
-> +            }
-> +        };
-> +
-> +        let image_manifest =3D match data.image_manifest {
-> +            Some(val) =3D> val,
-> +            None =3D> {
-> +                pr_err!("missing image_manifest parameter!\n");
-> +                return Err(ENOTSUPP);
-> +            }
-> +        };
-> +
-
-The guard syntax (available since 1.65) can make these kinds of match state=
-ments
-cleaner:
-
-    let Some(oci_root_dir) =3D data.oci_root_dir else {
-        pr_err!("missing oci_root_dir parameter!\n");
-        return Err(ENOTSUPP);
-    }
-
-    let Some(image_manifest) ...
-
-> +        let puzzlefs =3D PuzzleFS::open(&oci_root_dir, &image_manifest);
->
->          if let Err(ref e) =3D puzzlefs {
->              pr_info!("error opening puzzlefs {e}\n");
+> +impl Drop for Vfsmount {
+> +    fn drop(&mut self) {
+> +        // SAFETY new_private_mount makes sure to return a valid pointer
+> +        unsafe { bindings::kern_unmount(self.vfsmount) };
+> +    }
+> +}
 > --
 > 2.41.0
 >
