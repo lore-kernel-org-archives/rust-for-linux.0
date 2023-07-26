@@ -1,40 +1,39 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E221802C
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 16:53:56 +0000 (UTC)
-X-Greylist: delayed 243 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 26 Jul 2023 09:53:53 PDT
-Received: from aer-iport-6.cisco.com (aer-iport-6.cisco.com [173.38.203.68])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC62026AE
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 09:53:53 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B051AA61
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 16:53:59 +0000 (UTC)
+Received: from aer-iport-1.cisco.com (aer-iport-1.cisco.com [173.38.203.51])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9612701
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 09:53:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=576; q=dns/txt; s=iport;
-  t=1690390434; x=1691600034;
+  d=cisco.com; i=@cisco.com; l=3780; q=dns/txt; s=iport;
+  t=1690390436; x=1691600036;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UnLNYfFO6tQLV/Mk+1rvunpJiCcagHvFt3GyP/A8BGs=;
-  b=H0HFBsV98omRArzsAXscHSFQ9Q53LpZS2GfuYhcfa158Ex/BpHHQrE3F
-   LMLxzJ9Bi2hXkWV7YuMM4gCCZaETK4pbrkHXFXfRAjDYcm0AlgokLP0J8
-   1WR4kcIp5bPcnukIMF/OS0/O2b8BRWAQESBTPHE1OyBIaUz1K6+mkQFK1
-   8=;
+  bh=oseE7dVa4mchfbI4MxCXhpXz3QIa6pI8ihSwsEe0lxw=;
+  b=YMncGcYSXSHi4cY8sevG+HG5cRWbtQYutIJR/+coG7sOdijDKdXt2u2G
+   kJVcuLVKRZ3VfX0MidKVSOOHvTFw1MpxAWuBh+A+qqnjdzoeLeOG2cjmS
+   okN8p0HMSDa/Y5K4MkWsYB2MDHpxnpk9N6JqyGhijU+XVqAGwP2tgboNP
+   A=;
 X-IronPort-AV: E=Sophos;i="6.01,232,1684800000"; 
-   d="scan'208";a="6049462"
+   d="scan'208";a="8452801"
 Received: from aer-iport-nat.cisco.com (HELO aer-core-7.cisco.com) ([173.38.203.22])
-  by aer-iport-6.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2023 16:46:11 +0000
+  by aer-iport-1.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2023 16:46:12 +0000
 Received: from archlinux-cisco.cisco.com (dhcp-10-61-98-211.cisco.com [10.61.98.211])
 	(authenticated bits=0)
-	by aer-core-7.cisco.com (8.15.2/8.15.2) with ESMTPSA id 36QGjqTs022602
+	by aer-core-7.cisco.com (8.15.2/8.15.2) with ESMTPSA id 36QGjqTt022602
 	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 26 Jul 2023 16:46:10 GMT
+	Wed, 26 Jul 2023 16:46:12 GMT
 From: Ariel Miculas <amiculas@cisco.com>
 To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
         tycho@tycho.pizza, brauner@kernel.org, viro@zeniv.linux.org.uk,
         ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
         Ariel Miculas <amiculas@cisco.com>
-Subject: [RFC PATCH v2 02/10] kernel: configs: enable rust samples in rust.config
-Date: Wed, 26 Jul 2023 19:45:26 +0300
-Message-ID: <20230726164535.230515-3-amiculas@cisco.com>
+Subject: [RFC PATCH v2 03/10] rust: kernel: add an abstraction over vfsmount to allow cloning a new private mount
+Date: Wed, 26 Jul 2023 19:45:27 +0300
+Message-ID: <20230726164535.230515-4-amiculas@cisco.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230726164535.230515-1-amiculas@cisco.com>
 References: <20230726164535.230515-1-amiculas@cisco.com>
@@ -50,7 +49,7 @@ X-Outbound-SMTP-Client: 10.61.98.211, dhcp-10-61-98-211.cisco.com
 X-Outbound-Node: aer-core-7.cisco.com
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIMWL_WL_MED,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,
+	SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,
 	USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
 	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,25 +57,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 
 Signed-off-by: Ariel Miculas <amiculas@cisco.com>
 ---
- kernel/configs/rust.config | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/lib.rs              |  1 +
+ rust/kernel/mount.rs            | 71 +++++++++++++++++++++++++++++++++
+ 3 files changed, 73 insertions(+)
+ create mode 100644 rust/kernel/mount.rs
 
-diff --git a/kernel/configs/rust.config b/kernel/configs/rust.config
-index 38a7c5362c9c..63798ae5f3a5 100644
---- a/kernel/configs/rust.config
-+++ b/kernel/configs/rust.config
-@@ -1 +1,11 @@
- CONFIG_RUST=y
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index e5fc3b1d408d..205ef50dfd4c 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -18,6 +18,7 @@
+ #include <linux/uio.h>
+ #include <linux/uaccess.h>
+ #include <linux/delay.h>
++#include <linux/namei.h>
+ 
+ /* `bindgen` gets confused at certain things. */
+ const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 08f67833afcf..7dc07bdb5d55 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -46,6 +46,7 @@
+ pub mod ioctl;
+ pub mod iov_iter;
+ pub mod mm;
++pub mod mount;
+ pub mod pages;
+ pub mod prelude;
+ pub mod print;
+diff --git a/rust/kernel/mount.rs b/rust/kernel/mount.rs
+new file mode 100644
+index 000000000000..d08830b27571
+--- /dev/null
++++ b/rust/kernel/mount.rs
+@@ -0,0 +1,71 @@
++//! Mount interface
++//!
++//! C headers: [`include/linux/mount.h`](../../../../include/linux/mount.h)
 +
-+CONFIG_MODULES=y
-+CONFIG_SAMPLES=y
-+CONFIG_SAMPLES_RUST=y
-+CONFIG_SAMPLE_RUST_MINIMAL=m
-+CONFIG_SAMPLE_RUST_PRINT=m
-+CONFIG_SAMPLE_RUST_FS=m
-+CONFIG_SAMPLE_PUZZLEFS=y
-+CONFIG_SAMPLE_RUST_HOSTPROGS=y
++use kernel::bindings;
++use kernel::error::from_err_ptr;
++use kernel::pr_err;
++use kernel::prelude::*;
++use kernel::str::CStr;
++use kernel::types::Opaque;
 +
++/// Wraps the kernel's `struct path`.
++#[repr(transparent)]
++pub struct Path(pub(crate) Opaque<bindings::path>);
++
++/// Wraps the kernel's `struct vfsmount`.
++#[repr(transparent)]
++#[derive(Debug)]
++pub struct Vfsmount {
++    vfsmount: *mut bindings::vfsmount,
++}
++
++// SAFETY: No one besides us has the raw pointer, so we can safely transfer Vfsmount to another thread
++unsafe impl Send for Vfsmount {}
++// SAFETY: It's OK to access `Vfsmount` through references from other threads because we're not
++// accessing any properties from the underlying raw pointer
++unsafe impl Sync for Vfsmount {}
++
++impl Vfsmount {
++    /// Create a new private mount clone based on a path name
++    pub fn new_private_mount(path_name: &CStr) -> Result<Self> {
++        let path: Path = Path(Opaque::uninit());
++        // SAFETY: path_name is a &CStr, so it's a valid string pointer; path is an uninitialized
++        // struct stored on the stack and it's ok because kern_path expects an out parameter
++        let err = unsafe {
++            bindings::kern_path(
++                path_name.as_ptr() as *const i8,
++                bindings::LOOKUP_FOLLOW | bindings::LOOKUP_DIRECTORY,
++                path.0.get(),
++            )
++        };
++        if err != 0 {
++            pr_err!("failed to resolve '{}': {}\n", path_name, err);
++            return Err(EINVAL);
++        }
++
++        // SAFETY: path is a struct stored on the stack and it is  initialized because the call to
++        // kern_path succeeded
++        let vfsmount = unsafe { from_err_ptr(bindings::clone_private_mount(path.0.get()))? };
++
++        // Don't inherit atime flags
++        // SAFETY: we called from_err_ptr so it's safe to dereference this pointer
++        unsafe {
++            (*vfsmount).mnt_flags &=
++                !(bindings::MNT_NOATIME | bindings::MNT_NODIRATIME | bindings::MNT_RELATIME) as i32;
++        }
++        Ok(Self { vfsmount })
++    }
++
++    /// Returns a raw pointer to vfsmount
++    pub fn get(&self) -> *mut bindings::vfsmount {
++        self.vfsmount
++    }
++}
++
++impl Drop for Vfsmount {
++    fn drop(&mut self) {
++        // SAFETY new_private_mount makes sure to return a valid pointer
++        unsafe { bindings::kern_unmount(self.vfsmount) };
++    }
++}
 -- 
 2.41.0
 
