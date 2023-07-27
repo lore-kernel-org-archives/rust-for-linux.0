@@ -1,93 +1,94 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20E119C
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Jul 2023 00:02:25 +0000 (UTC)
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6FEC1B9
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 17:02:23 -0700 (PDT)
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-3fb4146e8deso3649545e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Jul 2023 17:02:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1690416142; x=1691020942;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sY3QJeaMISaIKdDxKtJKohJ2GJoWkJJcs9mJ7frhIvA=;
-        b=JMeYciZ6extbWy42C5yfWoIXWWCjILjf+vkioU3vFAhPr3DXf5HAt8QftPHoxB9O8e
-         rM7uQXiGVx/Tl7WL29bpf3iyd1apIRCrbcfoXONu/DnbRkY9L8QYnxl6eK2oADbVEBmQ
-         071Ebtfv3y7ucNEMI8yKpXwMvapTrFBTWmmto1Atz0SWlrzFdueDMJyHzjCFUqu+gYzb
-         s+ADi7TBqxb830QY+YhLKTIbTAwv0O3lsy9bG8h2IppqoeQ/2/23RuZO1rplTAfPCKdL
-         1kznMyoVGksodV9iTmWhsXZp/8SSXt+Vku0f7/KCkQO46qwONmSCLpav5StP6gxBYelG
-         9ONA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690416142; x=1691020942;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sY3QJeaMISaIKdDxKtJKohJ2GJoWkJJcs9mJ7frhIvA=;
-        b=REb3WVBQsaXkLHaTcLyTwA7DI7nSyWeoykF0MJ9OT3R3KK/11ZZRRf19Mn1ta34hdq
-         rUnVQfne7gkikUmukjh13Zh91qRIrRBQwDPSdHZmIcdF2U5YwAQ2mom+i/rF3ba5Zsnt
-         pzl+C+d9gPK0q/bbQMHNGAIm/HPFTmkfbURrlnQEn/stsSCCQZcD1RxpECcOxz+YkHjA
-         DweXdbHiEB/d6NSoJ7b61B4xTyunQ0av+Pi5/gBHYxGT+x0QYJ916VNwYzUI0ki7nnni
-         m7N3uYRIb8ivrOtSSSe23OtmMQyiG3ozyg/cVgOuuR0PZtbi+UVccPdYg8w/HUngPPhU
-         8i0g==
-X-Gm-Message-State: ABy/qLZlYaBkgVRgnoMKziSQO2rdxqdKZGQI8fk6WpY7NiX46rAY4jIU
-	cgClZechTixY2nbZprmmIRDqk7vfN1zIzLHTdvH0SA==
-X-Google-Smtp-Source: APBJJlHXG8MNDeIKShy9xDvHXtfx9gRvwJvCEX2mLcwSYS3qbHbn1nBhhAONPEPTijBgStQmhz/+PlyPRAUGpob8HfU=
-X-Received: by 2002:a05:6000:1146:b0:314:2d71:1f7a with SMTP id
- d6-20020a056000114600b003142d711f7amr408985wrx.32.1690416142177; Wed, 26 Jul
- 2023 17:02:22 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DDD1BEE4
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Jul 2023 03:47:32 +0000 (UTC)
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70EEF10FC;
+	Wed, 26 Jul 2023 20:47:29 -0700 (PDT)
+X-QQ-mid: bizesmtp88t1690429519t1gg7p26
+Received: from localhost ( [36.112.29.116])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 27 Jul 2023 11:45:18 +0800 (CST)
+X-QQ-SSF: 0140000000000070B000000A0000000
+X-QQ-FEAT: +ZNNzgakf5KJJr6Nqak+JhV6UYRkmNdPtIbKCUHFwkxCW92IIKw4jY8hr7Mah
+	fDBcrkgnsUJkkT6VQiiGFY1zCk/QIwokEUE1+9laEeO3R09iUEH+23R2o5CTtkeKaIHJGHE
+	JIJy7L5dq0MMfHannho7PtskN8HRDZGpW4AVT5dzwfsT1wMsovcTrtvjlg0cl8U6LNOwzY5
+	Shy8h89/DMDxKOXQd7JEkiUbsRsNoSkx4yoqHsBfVpNcPuhGogHjykD/oiIKb5ONS0Dchxn
+	OTAQNn+2B2+uO1erXQtCqSVtno+AkVsn+rNzx+p1zdHr/Lguk3NFdysh4CIRJRRruuVqq5H
+	gdVq4l6VScxnhq9iE3Vy/fvhhtO952llUafKGea2oN7a/02o5jmQ+V8LAtx4gw98wUpLghH
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 11825006884825481710
+Date: Thu, 27 Jul 2023 11:45:17 +0800
+From: Yexuan Yang <1182282462@bupt.edu.cn>
+To: 1182282462@bupt.edu.cn
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Damien Le Moal <Damien.LeMoal@wdc.com>,
+	Hannes Reinecke <hare@suse.de>, lsf-pc@lists.linux-foundation.org,
+	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Bj??rn Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	open list <linux-kernel@vger.kernel.org>, gost.dev@samsung.com
+Subject: Re: [RFC PATCH 00/11] Rust null block driver
+Message-ID: <2B3CA5F1CCCFEAB2+20230727034517.GB126117@1182282462@bupt.edu.cn>
+References: <20230503090708.2524310-1-nmi@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230726164535.230515-1-amiculas@cisco.com> <20230726164535.230515-11-amiculas@cisco.com>
- <CALNs47ss3kV3mTx4ksYTWaHWdRG48=97DTi3OEnPom2nFcYhHw@mail.gmail.com> <CANeycqqTdL9vr=JF+Fij5EY0TW_+_FY1p2qGdvGhYcyH9=9J9w@mail.gmail.com>
-In-Reply-To: <CANeycqqTdL9vr=JF+Fij5EY0TW_+_FY1p2qGdvGhYcyH9=9J9w@mail.gmail.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Wed, 26 Jul 2023 20:02:10 -0400
-Message-ID: <CALNs47s=eXJ-=s7WiVSBoqgcKSqkuZemm_Lx_Ts7yoaOp_e13A@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 10/10] rust: puzzlefs: add oci_root_dir and
- image_manifest filesystem parameters
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Ariel Miculas <amiculas@cisco.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	tycho@tycho.pizza, brauner@kernel.org, viro@zeniv.linux.org.uk, 
-	ojeda@kernel.org, alex.gaynor@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230503090708.2524310-1-nmi@metaspace.dk>
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:bupt.edu.cn:qybglogicsvrgz:qybglogicsvrgz7a-1
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MSGID_MULTIPLE_AT,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Jul 26, 2023 at 7:48=E2=80=AFPM Wedson Almeida Filho <wedsonaf@gmai=
-l.com> wrote:
->
-> On Wed, 26 Jul 2023 at 18:08, Trevor Gross <tmgross@umich.edu> wrote:
-> >
-> [...]
-> > The guard syntax (available since 1.65) can make these kinds of match s=
-tatements
-> > cleaner:
->
-> This is unstable though.
->
-> We try to stay away from unstable features unless we really need them,
-> which I feel is not the case here.
->
+> Over the 432 benchmark configurations, the relative performance of the Rust
+> driver to the C driver (in terms of IOPS) is between 6.8 and -11.8 percent with
+> an average of 0.2 percent better for reads. For writes the span is 16.8 to -4.5
+> percent with an average of 0.9 percent better.
+> 
+> For each measurement the drivers are loaded, a drive is configured with memory
+> backing and a size of 4 GiB. C null_blk is configured to match the implemented
+> modes of the Rust driver: `blocksize` is set to 4 KiB, `completion_nsec` to 0,
+> `irqmode` to 0 (IRQ_NONE), `queue_mode` to 2 (MQ), `hw_queue_depth` to 256 and
+> `memory_backed` to 1. For both the drivers, the queue scheduler is set to
+> `none`. These measurements are made using 30 second runs of `fio` with the
+> `PSYNC` IO engine with workers pinned to separate CPU cores. The measurements
+> are done inside a virtual machine (qemu/kvm) on an Intel Alder Lake workstation
+> (i5-12600).
 
-Let/else has been stable since 1.65 and is in pretty heavy use, the
-kernel is on 1.68.2 correct? Could you be thinking of let chains
-(multiple matches joined with `&&`/`||`)?
+Hi All!
+I have some problems about your benchmark test.
+In Ubuntu 22.02, I compiled an RFL kernel with both C null_blk driver and Rust null_blk_driver as modules. For the C null_blk driver, I used the `modprobe` command to set relevant parameters, while for the Rust null_blk_driver, I simply started it. I used the following two commands to start the drivers:
 
->     let Some(oci_root_dir) =3D data.oci_root_dir else {
->         pr_err!("missing oci_root_dir parameter!\n");
->         return Err(ENOTSUPP);
->     }
-> [...]
+```bash
+sudo modprobe null_blk \
+    queue_mode=2 irqmode=0 hw_queue_depth=256 \
+    memory_backed=1 bs=4096 completion_nsec=0 \
+    no_sched=1 gb=4;
+sudo modprobe rnull_mod
+```
+
+After that, I tested their performance in `randread` with the fio command, specifying the first parameter as 4 and the second parameter as 1:
+
+```bash
+fio --filename=/dev/nullb0 --iodepth=64 --ioengine=psync --direct=1 --rw=randread --bs=$1k --numjobs=$2 --runtime=30 --group_reporting --name=test-rand-read --output=test_c_randread.log
+fio --filename=/dev/rnullb0 --iodepth=64 --ioengine=psync --direct=1 --rw=randread --bs=$1k --numjobs=$2 --runtime=30 --group_reporting --name=test-rand-read --output=test_rust_randread.log
+```
+
+The test results showed a significant performance difference between the two drivers, which was drastically different from the data you tested in the community. Specifically, for `randread`, the C driver had a bandwidth of 487MiB/s and IOPS of 124.7k, while the Rust driver had a bandwidth of 264MiB/s and IOPS of 67.7k. However, for other I/O types, the performance of the C and Rust drivers was more similar. Could you please provide more information about the actual bandwidth and IOPS data from your tests, rather than just the performance difference between the C and Rust drivers? Additionally, if you could offer possible reasons for this abnormality, I would greatly appreciate it!
