@@ -1,101 +1,104 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F961BEE4
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Jul 2023 03:49:44 +0000 (UTC)
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A17D22717;
-	Wed, 26 Jul 2023 20:49:41 -0700 (PDT)
-X-QQ-mid: bizesmtp86t1690429674t89ohq9g
-Received: from localhost ( [36.112.29.116])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 27 Jul 2023 11:47:53 +0800 (CST)
-X-QQ-SSF: 0140000000000070B000000A0000000
-X-QQ-FEAT: FwowAM4HOqDZruotoPzeO+QLjb03UEpWGO/53HxQDSc45H3N9XHDnkim8MGUr
-	zRjK7cokUuKOWGRjAw43YSE2cVik19IlrSGj/QMWLLUqzqV1/wtP3Qh8rO8qhq/eAzaxigw
-	nQNIApn9MGse6BpEWMXT7krcpzTlDxKqgrbBlDXiAU2eCEW2Ys4w1DIBFncuEYRLvyvEK0V
-	fEJQ/Tcm7sFr1rDjGAug852yWanPZmHQJIq/bblcWJLnMdQ32jQdW77Ua78rcXSM/dsGUpE
-	eVO/f0b7qqnT88MrWoW8h7VPq+bBO5p/j4sYQWG5z6meeszIzvQ4Lv+GnQUfd+F6anJ2Rx3
-	GHgHJ7sexc/sVsv5GDE9F2e0HvtPy8Reqd2+RiWBJW8czqRPv6GP1X5+7AHLOZDxUkIG5Ys
-	qixa0sa+AmY=
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 1166713513653518391
-Date: Thu, 27 Jul 2023 11:47:53 +0800
-From: Yexuan Yang <1182282462@bupt.edu.cn>
-To: Andreas Hindborg <nmi@metaspace.dk>
-Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Damien Le Moal <Damien.LeMoal@wdc.com>,
-	Hannes Reinecke <hare@suse.de>, lsf-pc@lists.linux-foundation.org,
-	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Bj??rn Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	open list <linux-kernel@vger.kernel.org>, gost.dev@samsung.com,
-	1182282462@bupt.edu.cn
-Subject: Re: [RFC PATCH 00/11] Rust null block driver
-Message-ID: <A1C2E8E5A8153BD1+20230727034753.GA146053@1182282462@bupt.edu.cn>
-References: <20230503090708.2524310-1-nmi@metaspace.dk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21724D2E3
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Jul 2023 08:07:57 +0000 (UTC)
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B89B2704;
+	Thu, 27 Jul 2023 01:07:31 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-577ddda6ab1so9160567b3.0;
+        Thu, 27 Jul 2023 01:07:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690445202; x=1691050002;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SnWFpt95Q3j8e7MLb3EqSgHRbu05nFOkNwUSTleai7E=;
+        b=aXUsQ8/fEEeIVnty+3bsScnD48iuOFMA/lXYFJu+8jVcSjQE8dJcEzmSz7pleCnnEp
+         ebkIz4M9tSzUmHN1+2XUD3THlcodhxXPL5j2Jb5ICm69QHCov6hY9SSAbREl64gdPqR6
+         V4Gye1UgSbbeWo0y9pOVAh9OSCP23Sh6skCaY7vr+dmNXcj5b9vHP/+VWwTTdlgzk5V9
+         P0OGfQ3b/YcMjrFOvTwm0ho5ZNSQA7F97ALlpfmm/pyly8KFpcF+L0vp9uAOtOOFaCWl
+         LoKel1Vw8lc4QqgbCFEhznoG4SoDFC5cQI9M28jAGnuSfTQMTsQExGXOLB0WkiAIb6im
+         IsNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690445202; x=1691050002;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SnWFpt95Q3j8e7MLb3EqSgHRbu05nFOkNwUSTleai7E=;
+        b=b1mZv83AQ9QJkS1zjp5GHjlxBMn/aQlSOFWOQ087eU431v4BQS52Epgd6JC4WwJKnL
+         lAvgDWnWIqvXkIL1zPvAsEngp+1HDa2H5OjUQxGH+utHTAQUZVRCJWeQMNw8VF+EpR1+
+         YKtR0ibwqxR2aR5RB4KLLo2ROR3pc3mEgv5/zq2uSSg2OoePZs+SFB29ax2g/wcECE2k
+         q/ev6OdsSjVAvPEc+FcOZ4QAlXtf/7FNgQ/WaPIzOSMLgNANtFkh7mKPhKn9EKcTMtpM
+         JnuYfShI8Jv1ytTYwt5PJdGbe7JnPgcHYUJWGIC6rAMTF4hbjv5PsHNsfeSHWzvtGbna
+         d+Vg==
+X-Gm-Message-State: ABy/qLbkE6ukbDFU0Bg1Wik0FIHjy/K8fJPaXlpIocSMFvFrNKsbMgHe
+	YeR8K38kagymKGYr5ewPyFOaWp19y5KWsSOD8iA=
+X-Google-Smtp-Source: APBJJlH30/jlnH5SmnxS+zKhKs/V7g/mAPXehe2n3RR59HUyByZM1u+swtqS9Rtjc3ZTfOwHpuXxA5rXobngfkYHhT8=
+X-Received: by 2002:a0d:dbcd:0:b0:56f:fd0a:588d with SMTP id
+ d196-20020a0ddbcd000000b0056ffd0a588dmr2448456ywe.8.1690445201803; Thu, 27
+ Jul 2023 01:06:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230503090708.2524310-1-nmi@metaspace.dk>
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:bupt.edu.cn:qybglogicsvrgz:qybglogicsvrgz7a-1
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,MSGID_MULTIPLE_AT,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
-	SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-	version=3.4.6
+References: <20230726164535.230515-1-amiculas@cisco.com> <20230726164535.230515-11-amiculas@cisco.com>
+ <CALNs47ss3kV3mTx4ksYTWaHWdRG48=97DTi3OEnPom2nFcYhHw@mail.gmail.com>
+ <CANeycqqTdL9vr=JF+Fij5EY0TW_+_FY1p2qGdvGhYcyH9=9J9w@mail.gmail.com> <CALNs47s=eXJ-=s7WiVSBoqgcKSqkuZemm_Lx_Ts7yoaOp_e13A@mail.gmail.com>
+In-Reply-To: <CALNs47s=eXJ-=s7WiVSBoqgcKSqkuZemm_Lx_Ts7yoaOp_e13A@mail.gmail.com>
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
+Date: Thu, 27 Jul 2023 05:06:32 -0300
+Message-ID: <CANeycqrGTB3Pd1JBoYHgLHU=ckBQjdv1oZt+no31aZ5UXHW8uA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 10/10] rust: puzzlefs: add oci_root_dir and
+ image_manifest filesystem parameters
+To: Trevor Gross <tmgross@umich.edu>
+Cc: Ariel Miculas <amiculas@cisco.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	tycho@tycho.pizza, brauner@kernel.org, viro@zeniv.linux.org.uk, 
+	ojeda@kernel.org, alex.gaynor@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> In this table each cell shows the relative performance of the Rust
-> driver to the C driver with the throughput of the C driver in parenthesis:
-> `rel_read rel_write (read_miops write_miops)`. Ex: the Rust driver performs 4.74
-> percent better than the C driver for fio randread with 2 jobs at 16 KiB
-> block size.
-> 
-> Over the 432 benchmark configurations, the relative performance of the Rust
-> driver to the C driver (in terms of IOPS) is between 6.8 and -11.8 percent with
-> an average of 0.2 percent better for reads. For writes the span is 16.8 to -4.5
-> percent with an average of 0.9 percent better.
-> 
-> For each measurement the drivers are loaded, a drive is configured with memory
-> backing and a size of 4 GiB. C null_blk is configured to match the implemented
-> modes of the Rust driver: `blocksize` is set to 4 KiB, `completion_nsec` to 0,
-> `irqmode` to 0 (IRQ_NONE), `queue_mode` to 2 (MQ), `hw_queue_depth` to 256 and
-> `memory_backed` to 1. For both the drivers, the queue scheduler is set to
-> `none`. These measurements are made using 30 second runs of `fio` with the
-> `PSYNC` IO engine with workers pinned to separate CPU cores. The measurements
-> are done inside a virtual machine (qemu/kvm) on an Intel Alder Lake workstation
-> (i5-12600).
-Hi All!
-I have some problems about your benchmark test.
-In Ubuntu 22.02, I compiled an RFL kernel with both C null_blk driver and Rust null_blk_driver as modules. For the C null_blk driver, I used the `modprobe` command to set relevant parameters, while for the Rust null_blk_driver, I simply started it. I used the following two commands to start the drivers:
+On Wed, 26 Jul 2023 at 21:02, Trevor Gross <tmgross@umich.edu> wrote:
+>
+> On Wed, Jul 26, 2023 at 7:48=E2=80=AFPM Wedson Almeida Filho <wedsonaf@gm=
+ail.com> wrote:
+> >
+> > On Wed, 26 Jul 2023 at 18:08, Trevor Gross <tmgross@umich.edu> wrote:
+> > >
+> > [...]
+> > > The guard syntax (available since 1.65) can make these kinds of match=
+ statements
+> > > cleaner:
+> >
+> > This is unstable though.
+> >
+> > We try to stay away from unstable features unless we really need them,
+> > which I feel is not the case here.
+> >
+>
+> Let/else has been stable since 1.65 and is in pretty heavy use, the
+> kernel is on 1.68.2 correct? Could you be thinking of let chains
+> (multiple matches joined with `&&`/`||`)?
 
-```bash
-sudo modprobe null_blk \
-    queue_mode=2 irqmode=0 hw_queue_depth=256 \
-    memory_backed=1 bs=4096 completion_nsec=0 \
-    no_sched=1 gb=4;
-sudo modprobe rnull_mod
-```
+Oh, my bad. I got it mixed with "if let guard" (issue 51114).
 
-After that, I tested their performance in `randread` with the fio command, specifying the first parameter as 4 and the second parameter as 1:
+And yeah, we're on 1.68.2, so this code can benefit from this simplificatio=
+n.
 
-```bash
-fio --filename=/dev/nullb0 --iodepth=64 --ioengine=psync --direct=1 --rw=randread --bs=$1k --numjobs=$2 --runtime=30 --group_reporting --name=test-rand-read --output=test_c_randread.log
-fio --filename=/dev/rnullb0 --iodepth=64 --ioengine=psync --direct=1 --rw=randread --bs=$1k --numjobs=$2 --runtime=30 --group_reporting --name=test-rand-read --output=test_rust_randread.log
-```
+Thanks!
 
-The test results showed a significant performance difference between the two drivers, which was drastically different from the data you tested in the community. Specifically, for `randread`, the C driver had a bandwidth of 487MiB/s and IOPS of 124.7k, while the Rust driver had a bandwidth of 264MiB/s and IOPS of 67.7k. However, for other I/O types, the performance of the C and Rust drivers was more similar. Could you please provide more information about the actual bandwidth and IOPS data from your tests, rather than just the performance difference between the C and Rust drivers? Additionally, if you could offer possible reasons for this abnormality, I would greatly appreciate it!
+>
+> >     let Some(oci_root_dir) =3D data.oci_root_dir else {
+> >         pr_err!("missing oci_root_dir parameter!\n");
+> >         return Err(ENOTSUPP);
+> >     }
+> > [...]
