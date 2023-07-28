@@ -1,255 +1,134 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9879A171B5
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Jul 2023 13:33:03 +0000 (UTC)
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CD8A272D;
-	Thu, 27 Jul 2023 06:33:01 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4fe1489ced6so1708442e87.0;
-        Thu, 27 Jul 2023 06:33:01 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA5F1FAF
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Jul 2023 06:54:38 +0000 (UTC)
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B79BA
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Jul 2023 23:54:35 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-51e429e1eabso2259386a12.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Jul 2023 23:54:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690464780; x=1691069580;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fNVKS520fpom9zikP7GGO5Kqp+pwk56e852uQYR5BkU=;
-        b=gf7mfFC/0wfbZM46ODlqyIyv7XknlmYmjPR9vw7W5BQFPqJU4Dvn9yg6veiQ6fM+pF
-         nXMnhG+yw5I01J267ZuyGzRO+SBrZT5Ef7m0FLLGY9NKG0RlwXGjD+1LMmc3UAC9NNHr
-         5MZ9vcBrJBzR5IPUFe8K4GI2jvTKyLZbhCpJqQ6KOhz7oMxf7TApXZhC35oHvSEKuiTV
-         0JPds7aR9qmkiwwpjA8m8S8lhBB7gmQiAHH1osDN3JVV+9Wsr1PBsUnme1rLbEHHVLWh
-         jf5nnPwwXx0EbPQTKmCDOaIDuQc3ep2i+cyOCkN+ou+PX1360JxiRMWouq3mX2m3+Zf9
-         QyDQ==
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1690527274; x=1691132074;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=jbLVZA6GLdYVOmzJTJTIy97G+xSErqL2fwBMteHvG6U=;
+        b=ME8bUHPXmCp2WyNtI7fWv/WvfvPz6H8bKBcPDxs24TfyA0qZz3pUF+5UYfdseXt9bJ
+         PS5Am3gaf3WY+164knk9n4DiWAoAuJQSdfn9ZdhlrGVuwd5BWxQljCw1qO3qtYwkFhcb
+         0qgPfc0BvWgHPwxIFToLSnVNKC7yQYzcyYvh6aC8E4Iha+bCR/kBZi3Gp5UVGhAU4H1R
+         SVHsxCZqDE6VblfdrtN4ZgYspiQqYOYYguxYNvuczbskl0sdsf3tQ0VLkin/PqHVL+jW
+         MsQsd9ZwdDwgVz8c0MzuoLTx2jJ2cAzUYMATkGHWnrqTqFTjVfSJHGjik4/xmlie+Uov
+         YlCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690464780; x=1691069580;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fNVKS520fpom9zikP7GGO5Kqp+pwk56e852uQYR5BkU=;
-        b=GmWrAG0/uVonbj9ngt9PNNYcqqHMjZW33OAHl6duy5LetTIm6b2EER71cu2sgLnS4+
-         P3XKj3lBEeoT2y/caVMuM9oBoOzKbLXjt5iAr8p77vKMbBpceWU1SVeQHMaYPqa8fapU
-         6rDORcfDJdYZbrDWkw8jAEaYILfd9Lo6+Twwm7GMp1ua3+nBoigVn5NuttbFgzpUX7HU
-         k86quOO9EhbZ5RJHIz4j89R3FS6TN95jTEWGgVxZGDyqIW6T4t2cFuY6S+Zish+Ss9Db
-         jDIU4UYjCVBBW8Ke73fLPCXEOk1qgYbSaOaYI2xbpgbh+/17JCwvgV0RzPvUIdsrCdOn
-         5yjA==
-X-Gm-Message-State: ABy/qLbPFAgT0HPkjbdqIYU0Ng7Kx99byc7KSl2qmbLG4QwShLWE7QKU
-	721ryxot7/NSDgkWRN77tqwxd1AjtKr7J5/VmCs=
-X-Google-Smtp-Source: APBJJlEoaBon0qIf+o3H5ybsdyY2J571wEx/HePSoiAhvwnMkjCJxjZ1SwZXzaOy8H1h8XAtUs9aG/a95vBooddqtpQ=
-X-Received: by 2002:a2e:b015:0:b0:2b6:d326:156d with SMTP id
- y21-20020a2eb015000000b002b6d326156dmr1776436ljk.19.1690464779581; Thu, 27
- Jul 2023 06:32:59 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690527274; x=1691132074;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jbLVZA6GLdYVOmzJTJTIy97G+xSErqL2fwBMteHvG6U=;
+        b=h1GscLq1ry9V8GngaUe+L6TaexbDXGCmwEqJd1QFWG29TOuU41PQx7hUN5WKDH83nL
+         iV5P09vYiOdjxsPwUxvpVoWScZssQJrQqSx9AxaX6xesaWbs2MHpa2s/fdcTv1cq2luJ
+         Wh1fkaNn/NV0uJVae1h9XpUAuFuUFlfLzsjRGAsaSY/WV8aUcMmpdboCQrjnox+vHNkn
+         HeOeIZN3tQs8iDPThmpSvz9PctYi5t47joOPtLlkieWBHXO+H6jozVVmzZKWDS0FQx11
+         ZZULQwLyo0dNs3/T5dpsvbdVabvz01zKdQAhUaU/4ANFP3k+wUtYlpSAHU1YOvtbSuNG
+         JUtw==
+X-Gm-Message-State: ABy/qLZTSpGxOsEgfpjzDkuB0hkfnIsaE+HRMQiXgfe0g2nXJnFaiIvW
+	45NnOVBbf9/XF7sKr7JLs05oAA==
+X-Google-Smtp-Source: APBJJlFwFT1CYbfHt9QePH98wDjc7kgS385mF3cKczDnQtT19F22NlsjwvcOxEyT3VqGtVnHNorAAg==
+X-Received: by 2002:aa7:d311:0:b0:522:30d5:6065 with SMTP id p17-20020aa7d311000000b0052230d56065mr953242edq.21.1690527274073;
+        Thu, 27 Jul 2023 23:54:34 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id d15-20020a056402516f00b00521f4ee396fsm1448246ede.12.2023.07.27.23.54.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Jul 2023 23:54:33 -0700 (PDT)
+References: <20230503090708.2524310-1-nmi@metaspace.dk>
+ <2B3CA5F1CCCFEAB2+20230727034517.GB126117@1182282462>
+User-agent: mu4e 1.10.5; emacs 28.2.50
+From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+To: Yexuan Yang <1182282462@bupt.edu.cn>
+Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith
+ Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Hannes
+ Reinecke <hare@suse.de>, lsf-pc@lists.linux-foundation.org,
+ rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, Matthew
+ Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun
+ Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Bj??rn Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, open
+ list <linux-kernel@vger.kernel.org>, gost.dev@samsung.com
+Subject: Re: [RFC PATCH 00/11] Rust null block driver
+Date: Fri, 28 Jul 2023 08:49:53 +0200
+In-reply-to: <2B3CA5F1CCCFEAB2+20230727034517.GB126117@1182282462>
+Message-ID: <87bkfwr0ew.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230726164535.230515-1-amiculas@cisco.com> <20230726164535.230515-7-amiculas@cisco.com>
-In-Reply-To: <20230726164535.230515-7-amiculas@cisco.com>
-From: Ariel Miculas <ariel.miculas@gmail.com>
-Date: Thu, 27 Jul 2023 16:32:48 +0300
-Message-ID: <CAPDJoNs_VTnVATXr4AFs5D8unOihrpYXLDn69fjT0OshrYADXA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 06/10] rust: file: pass the filesystem context to
- the open function
-To: Ariel Miculas <amiculas@cisco.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, tycho@tycho.pizza, brauner@kernel.org, 
-	viro@zeniv.linux.org.uk, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-	autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Jul 26, 2023 at 7:58=E2=80=AFPM Ariel Miculas <amiculas@cisco.com> =
-wrote:
->
-> This allows us to create a Vfsmount structure and pass it to the read
-> callback.
->
-> Signed-off-by: Ariel Miculas <amiculas@cisco.com>
-> ---
->  rust/kernel/file.rs      | 17 +++++++++++++++--
->  samples/rust/puzzlefs.rs | 40 +++++++++++++++++++++++++++++++++++-----
->  samples/rust/rust_fs.rs  |  3 ++-
->  3 files changed, 52 insertions(+), 8 deletions(-)
->
-> diff --git a/rust/kernel/file.rs b/rust/kernel/file.rs
-> index a3002c416dbb..af1eb1ee9267 100644
-> --- a/rust/kernel/file.rs
-> +++ b/rust/kernel/file.rs
-> @@ -457,9 +457,15 @@ impl<A: OpenAdapter<T::OpenData>, T: Operations> Ope=
-rationsVtable<A, T> {
->              // `fileref` never outlives this function, so it is guarante=
-ed to be
->              // valid.
->              let fileref =3D unsafe { File::from_ptr(file) };
-> +
-> +            // SAFETY: into_foreign was called in fs::NewSuperBlock<...,=
- NeedsInit>::init and
-> +            // it is valid until from_foreign will be called in fs::Tabl=
-es::free_callback
-> +            let fs_info =3D
-> +                unsafe { <T::Filesystem as fs::Type>::Data::borrow((*(*i=
-node).i_sb).s_fs_info) };
-> +
->              // SAFETY: `arg` was previously returned by `A::convert` and=
- must
->              // be a valid non-null pointer.
-> -            let ptr =3D T::open(unsafe { &*arg }, fileref)?.into_foreign=
-();
-> +            let ptr =3D T::open(fs_info, unsafe { &*arg }, fileref)?.int=
-o_foreign();
->              // SAFETY: The C contract guarantees that `private_data` is =
-available
->              // for implementers of the file operations (no other C code =
-accesses
->              // it), so we know that there are no concurrent threads/CPUs=
- accessing
-> @@ -930,10 +936,17 @@ pub trait Operations {
->      /// The type of the context data passed to [`Operations::open`].
->      type OpenData: Sync =3D ();
->
-> +    /// Data associated with each file system instance.
-> +    type Filesystem: fs::Type;
-> +
->      /// Creates a new instance of this file.
->      ///
->      /// Corresponds to the `open` function pointer in `struct file_opera=
-tions`.
-> -    fn open(context: &Self::OpenData, file: &File) -> Result<Self::Data>=
-;
-> +    fn open(
-> +        fs_info: <<Self::Filesystem as fs::Type>::Data as ForeignOwnable=
->::Borrowed<'_>,
-> +        context: &Self::OpenData,
-> +        file: &File,
-> +    ) -> Result<Self::Data>;
->
->      /// Cleans up after the last reference to the file goes away.
->      ///
-> diff --git a/samples/rust/puzzlefs.rs b/samples/rust/puzzlefs.rs
-> index 9afd82745b64..8a64e0bd437d 100644
-> --- a/samples/rust/puzzlefs.rs
-> +++ b/samples/rust/puzzlefs.rs
-> @@ -3,8 +3,14 @@
->  //! Rust file system sample.
->
->  use kernel::module_fs;
-> +use kernel::mount::Vfsmount;
->  use kernel::prelude::*;
-> -use kernel::{c_str, file, fs, io_buffer::IoBufferWriter};
-> +use kernel::{
-> +    c_str, file, fmt, fs,
-> +    io_buffer::IoBufferWriter,
-> +    str::CString,
-> +    sync::{Arc, ArcBorrow},
-> +};
->
->  mod puzzle;
->  // Required by the autogenerated '_capnp.rs' files
-> @@ -19,6 +25,12 @@
->
->  struct PuzzleFsModule;
->
-> +#[derive(Debug)]
-> +struct PuzzlefsInfo {
-> +    base_path: CString,
-> +    vfs_mount: Arc<Vfsmount>,
-> +}
-> +
->  #[vtable]
->  impl fs::Context<Self> for PuzzleFsModule {
->      type Data =3D ();
-> @@ -46,14 +58,23 @@ fn try_new() -> Result {
->  impl fs::Type for PuzzleFsModule {
->      type Context =3D Self;
->      type INodeData =3D &'static [u8];
-> +    type Data =3D Box<PuzzlefsInfo>;
->      const SUPER_TYPE: fs::Super =3D fs::Super::Independent;
->      const NAME: &'static CStr =3D c_str!("puzzlefs");
->      const FLAGS: i32 =3D fs::flags::USERNS_MOUNT;
->      const DCACHE_BASED: bool =3D true;
->
->      fn fill_super(_data: (), sb: fs::NewSuperBlock<'_, Self>) -> Result<=
-&fs::SuperBlock<Self>> {
-> +        let base_path =3D CString::try_from_fmt(fmt!("hello world"))?;
-> +        pr_info!("base_path {:?}\n", base_path);
-> +        let vfs_mount =3D Vfsmount::new_private_mount(c_str!("/home/puzz=
-lefs_oci"))?;
-> +        pr_info!("vfs_mount {:?}\n", vfs_mount);
-> +
->          let sb =3D sb.init(
-> -            (),
-> +            Box::try_new(PuzzlefsInfo {
-> +                base_path,
-> +                vfs_mount: Arc::try_new(vfs_mount)?,
-> +            })?,
->              &fs::SuperParams {
->                  magic: 0x72757374,
->                  ..fs::SuperParams::DEFAULT
-> @@ -88,14 +109,23 @@ fn fill_super(_data: (), sb: fs::NewSuperBlock<'_, S=
-elf>) -> Result<&fs::SuperBl
->
->  #[vtable]
->  impl file::Operations for FsFile {
-> +    // must be the same as INodeData
->      type OpenData =3D &'static [u8];
-> +    type Filesystem =3D PuzzleFsModule;
-> +    // this is an Arc because Data must be ForeignOwnable and the only i=
-mplementors of it are Box,
-> +    // Arc and (); we cannot pass a reference to read, so we share Vfsmo=
-unt using and Arc
-> +    type Data =3D Arc<Vfsmount>;
->
-> -    fn open(_context: &Self::OpenData, _file: &file::File) -> Result<Sel=
-f::Data> {
-> -        Ok(())
-> +    fn open(
-> +        fs_info: &PuzzlefsInfo,
-> +        _context: &Self::OpenData,
-> +        _file: &file::File,
-> +    ) -> Result<Self::Data> {
-> +        Ok(fs_info.vfs_mount.clone())
->      }
->
->      fn read(
-> -        _data: (),
-> +        data: ArcBorrow<'_, Vfsmount>,
->          file: &file::File,
->          writer: &mut impl IoBufferWriter,
->          offset: u64,
-> diff --git a/samples/rust/rust_fs.rs b/samples/rust/rust_fs.rs
-> index 7527681ee024..c58ed1560e06 100644
-> --- a/samples/rust/rust_fs.rs
-> +++ b/samples/rust/rust_fs.rs
-> @@ -85,8 +85,9 @@ fn fill_super(_data: (), sb: fs::NewSuperBlock<'_, Self=
->) -> Result<&fs::SuperBl
->  #[vtable]
->  impl file::Operations for FsFile {
->      type OpenData =3D &'static [u8];
-> +    type Filesystem =3D RustFs;
->
-> -    fn open(_context: &Self::OpenData, _file: &file::File) -> Result<Sel=
-f::Data> {
-> +    fn open(_fs_info: (), _context: &Self::OpenData, _file: &file::File)=
- -> Result<Self::Data> {
->          Ok(())
->      }
->
-> --
-> 2.41.0
->
->
-Hey Wedson,
 
-Is it ok to couple file::Operations with fs::Type? I didn't find a
-better way to implement this.
-I'm asking because I've seen you've gone to great lengths to decouple them.
+Hi,
 
-Cheers,
-Ariel
+Yexuan Yang <1182282462@bupt.edu.cn> writes:
+
+>> Over the 432 benchmark configurations, the relative performance of the Rust
+>> driver to the C driver (in terms of IOPS) is between 6.8 and -11.8 percent with
+>> an average of 0.2 percent better for reads. For writes the span is 16.8 to -4.5
+>> percent with an average of 0.9 percent better.
+>> 
+>> For each measurement the drivers are loaded, a drive is configured with memory
+>> backing and a size of 4 GiB. C null_blk is configured to match the implemented
+>> modes of the Rust driver: `blocksize` is set to 4 KiB, `completion_nsec` to 0,
+>> `irqmode` to 0 (IRQ_NONE), `queue_mode` to 2 (MQ), `hw_queue_depth` to 256 and
+>> `memory_backed` to 1. For both the drivers, the queue scheduler is set to
+>> `none`. These measurements are made using 30 second runs of `fio` with the
+>> `PSYNC` IO engine with workers pinned to separate CPU cores. The measurements
+>> are done inside a virtual machine (qemu/kvm) on an Intel Alder Lake workstation
+>> (i5-12600).
+>
+> Hi All!
+> I have some problems about your benchmark test.
+> In Ubuntu 22.02, I compiled an RFL kernel with both C null_blk driver and Rust
+> null_blk_driver as modules. For the C null_blk driver, I used the `modprobe`
+> command to set relevant parameters, while for the Rust null_blk_driver, I simply
+> started it. I used the following two commands to start the drivers:
+>
+> ```bash
+> sudo modprobe null_blk \
+>     queue_mode=2 irqmode=0 hw_queue_depth=256 \
+>     memory_backed=1 bs=4096 completion_nsec=0 \
+>     no_sched=1 gb=4;
+> sudo modprobe rnull_mod
+> ```
+>
+> After that, I tested their performance in `randread` with the fio command, specifying the first parameter as 4 and the second parameter as 1:
+>
+> ```bash
+> fio --filename=/dev/nullb0 --iodepth=64 --ioengine=psync --direct=1 --rw=randread --bs=$1k --numjobs=$2 --runtime=30 --group_reporting --name=test-rand-read --output=test_c_randread.log
+> fio --filename=/dev/rnullb0 --iodepth=64 --ioengine=psync --direct=1 --rw=randread --bs=$1k --numjobs=$2 --runtime=30 --group_reporting --name=test-rand-read --output=test_rust_randread.log
+> ```
+>
+> The test results showed a significant performance difference between the two
+> drivers, which was drastically different from the data you tested in the
+> community. Specifically, for `randread`, the C driver had a bandwidth of
+> 487MiB/s and IOPS of 124.7k, while the Rust driver had a bandwidth of 264MiB/s
+> and IOPS of 67.7k. However, for other I/O types, the performance of the C and
+> Rust drivers was more similar. Could you please provide more information about
+> the actual bandwidth and IOPS data from your tests, rather than just the
+> performance difference between the C and Rust drivers? Additionally, if you
+> could offer possible reasons for this abnormality, I would greatly appreciate
+> it!
+
+Thanks for trying out the code! I am not sure why you get these numbers.
+I am currently out of office, but I will rerun the benchmarks next week
+when I get back in. Maybe I can provide you with some scripts and my
+kernel configuration. Hopefully we can figure out the difference in our
+setups.
+
+Best regards,
+Andreas
