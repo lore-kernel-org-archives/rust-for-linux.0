@@ -1,134 +1,131 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA5F1FAF
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Jul 2023 06:54:38 +0000 (UTC)
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B79BA
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Jul 2023 23:54:35 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-51e429e1eabso2259386a12.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 27 Jul 2023 23:54:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1690527274; x=1691132074;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=jbLVZA6GLdYVOmzJTJTIy97G+xSErqL2fwBMteHvG6U=;
-        b=ME8bUHPXmCp2WyNtI7fWv/WvfvPz6H8bKBcPDxs24TfyA0qZz3pUF+5UYfdseXt9bJ
-         PS5Am3gaf3WY+164knk9n4DiWAoAuJQSdfn9ZdhlrGVuwd5BWxQljCw1qO3qtYwkFhcb
-         0qgPfc0BvWgHPwxIFToLSnVNKC7yQYzcyYvh6aC8E4Iha+bCR/kBZi3Gp5UVGhAU4H1R
-         SVHsxCZqDE6VblfdrtN4ZgYspiQqYOYYguxYNvuczbskl0sdsf3tQ0VLkin/PqHVL+jW
-         MsQsd9ZwdDwgVz8c0MzuoLTx2jJ2cAzUYMATkGHWnrqTqFTjVfSJHGjik4/xmlie+Uov
-         YlCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690527274; x=1691132074;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jbLVZA6GLdYVOmzJTJTIy97G+xSErqL2fwBMteHvG6U=;
-        b=h1GscLq1ry9V8GngaUe+L6TaexbDXGCmwEqJd1QFWG29TOuU41PQx7hUN5WKDH83nL
-         iV5P09vYiOdjxsPwUxvpVoWScZssQJrQqSx9AxaX6xesaWbs2MHpa2s/fdcTv1cq2luJ
-         Wh1fkaNn/NV0uJVae1h9XpUAuFuUFlfLzsjRGAsaSY/WV8aUcMmpdboCQrjnox+vHNkn
-         HeOeIZN3tQs8iDPThmpSvz9PctYi5t47joOPtLlkieWBHXO+H6jozVVmzZKWDS0FQx11
-         ZZULQwLyo0dNs3/T5dpsvbdVabvz01zKdQAhUaU/4ANFP3k+wUtYlpSAHU1YOvtbSuNG
-         JUtw==
-X-Gm-Message-State: ABy/qLZTSpGxOsEgfpjzDkuB0hkfnIsaE+HRMQiXgfe0g2nXJnFaiIvW
-	45NnOVBbf9/XF7sKr7JLs05oAA==
-X-Google-Smtp-Source: APBJJlFwFT1CYbfHt9QePH98wDjc7kgS385mF3cKczDnQtT19F22NlsjwvcOxEyT3VqGtVnHNorAAg==
-X-Received: by 2002:aa7:d311:0:b0:522:30d5:6065 with SMTP id p17-20020aa7d311000000b0052230d56065mr953242edq.21.1690527274073;
-        Thu, 27 Jul 2023 23:54:34 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id d15-20020a056402516f00b00521f4ee396fsm1448246ede.12.2023.07.27.23.54.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jul 2023 23:54:33 -0700 (PDT)
-References: <20230503090708.2524310-1-nmi@metaspace.dk>
- <2B3CA5F1CCCFEAB2+20230727034517.GB126117@1182282462>
-User-agent: mu4e 1.10.5; emacs 28.2.50
-From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-To: Yexuan Yang <1182282462@bupt.edu.cn>
-Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith
- Busch <kbusch@kernel.org>, Damien Le Moal <Damien.LeMoal@wdc.com>, Hannes
- Reinecke <hare@suse.de>, lsf-pc@lists.linux-foundation.org,
- rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, Matthew
- Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun
- Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Bj??rn Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, open
- list <linux-kernel@vger.kernel.org>, gost.dev@samsung.com
-Subject: Re: [RFC PATCH 00/11] Rust null block driver
-Date: Fri, 28 Jul 2023 08:49:53 +0200
-In-reply-to: <2B3CA5F1CCCFEAB2+20230727034517.GB126117@1182282462>
-Message-ID: <87bkfwr0ew.fsf@metaspace.dk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9CD138E
+	for <rust-for-linux@vger.kernel.org>; Sat, 29 Jul 2023 04:11:26 +0000 (UTC)
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C248949D5;
+	Fri, 28 Jul 2023 21:11:23 -0700 (PDT)
+Date: Sat, 29 Jul 2023 04:11:14 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1690603880; x=1690863080;
+	bh=EBpMQWlTo21HVtOIF3xmBwvt2Rt/ADgtf1OJ1f2tpVg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=N3MrYlJz9wYFE7YG5NrpA58ljxcqa6gggTj2YGlG5y5Mr4EqZsyKYo8O3BLvYDQOC
+	 WRtkAeDjZfNJ6zWrryreYnWkawFLJRh/KCZ5S6j9Pj7kqYvf2U5LF7x0bDnUmL29F/
+	 7nRktJM4/jfo+fwBIO9itbZEcLTgWTJF+jRzwrybfoP4uuzPbUUtPK/Tmbba4celtH
+	 Ve77EnvLlgAu7i7gbhPbhUBlcl51keh5qVKDkKe1gQIVhspbfBEBJHbQcYmz/l57pN
+	 xTFgvatFdaxPHp845uXSsnbIe04gT8OEfzOGyMynAsNb1G69Z5h8/Ow9b1GpiVTYru
+	 v2WCYWea+mTVg==
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: alex.gaynor@gmail.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org, nmi@metaspace.dk, ojeda@kernel.org, rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+Subject: Re: [PATCH v2 09/12] rust: init: implement Zeroable for Opaque<T>
+Message-ID: <18653bf6-c177-ab14-d026-2d2b5c2bbac3@proton.me>
+In-Reply-To: <20230725115759.424300-1-aliceryhl@google.com>
+References: <16fb9977-2efc-2412-e906-3d320e37c45c@proton.me> <20230725115759.424300-1-aliceryhl@google.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-
-Hi,
-
-Yexuan Yang <1182282462@bupt.edu.cn> writes:
-
->> Over the 432 benchmark configurations, the relative performance of the Rust
->> driver to the C driver (in terms of IOPS) is between 6.8 and -11.8 percent with
->> an average of 0.2 percent better for reads. For writes the span is 16.8 to -4.5
->> percent with an average of 0.9 percent better.
->> 
->> For each measurement the drivers are loaded, a drive is configured with memory
->> backing and a size of 4 GiB. C null_blk is configured to match the implemented
->> modes of the Rust driver: `blocksize` is set to 4 KiB, `completion_nsec` to 0,
->> `irqmode` to 0 (IRQ_NONE), `queue_mode` to 2 (MQ), `hw_queue_depth` to 256 and
->> `memory_backed` to 1. For both the drivers, the queue scheduler is set to
->> `none`. These measurements are made using 30 second runs of `fio` with the
->> `PSYNC` IO engine with workers pinned to separate CPU cores. The measurements
->> are done inside a virtual machine (qemu/kvm) on an Intel Alder Lake workstation
->> (i5-12600).
->
-> Hi All!
-> I have some problems about your benchmark test.
-> In Ubuntu 22.02, I compiled an RFL kernel with both C null_blk driver and Rust
-> null_blk_driver as modules. For the C null_blk driver, I used the `modprobe`
-> command to set relevant parameters, while for the Rust null_blk_driver, I simply
-> started it. I used the following two commands to start the drivers:
->
-> ```bash
-> sudo modprobe null_blk \
->     queue_mode=2 irqmode=0 hw_queue_depth=256 \
->     memory_backed=1 bs=4096 completion_nsec=0 \
->     no_sched=1 gb=4;
-> sudo modprobe rnull_mod
+On 25.07.23 13:57, Alice Ryhl wrote:
+> Benno Lossin <benno.lossin@proton.me> writes:
+>> On 20.07.23 15:34, Alice Ryhl wrote:
+>>> Benno Lossin <benno.lossin@proton.me> writes:
+>>>> Since `Opaque<T>` contains a `MaybeUninit<T>`, all bytes zero is a val=
+id
+>>>> bit pattern for that type.
+>>>>
+>>>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>>>> ---
+>>>>    ///
+>>>>    /// This is meant to be used with FFI objects that are never interp=
+reted by Rust code.
+>>>>    #[repr(transparent)]
+>>>> +#[derive(Zeroable)]
+>>>>    pub struct Opaque<T> {
+>>>>        value: UnsafeCell<MaybeUninit<T>>,
+>>>>        _pin: PhantomPinned,
+>>>>    }
+>>>
+>>> Does this actually work? I don't think we implement Zeroable for
+>>> UnsafeCell.
+>>
+>> Good catch, this does compile, but only because the current
+>> implementation of the derive expands to (modulo correct paths):
+>> ```
+>> impl<T> Zeroable for Opaque<T>
+>> where
+>>       UnsafeCell<MaybeUninit<T>>: Zeroable,
+>>       PhantomPinned: Zeroable,
+>> {}
+>> ```
+>> This implementation is of course useless, since `UnsafeCell` is never
+>> `Zeroable` at the moment. We could of course implement that and then thi=
+s
+>> should work, but the question is if this is actually the desired output =
+in
+>> general. I thought before that this would be a good idea, but I forgot t=
+hat
+>> if the bounds are never satisfied it would silently compile.
+>>
+>> Do you think that we should have this expanded output instead?
+>> ```
+>> impl<T: Zeroable> Zeroable for Foo<T> {}
+>> const _: () =3D {
+>>       fn assert_zeroable<T: Zeroable>() {}
+>>       fn ensure_zeroable<T: Zeroable>() {
+>>           assert_zeroable::<Field1>();
+>>           assert_zeroable::<Field2>();
+>>       }
+>> };
+>> ```
+>> If the input was
+>> ```
+>> #[derive(Zeroable)]
+>> struct Foo<T> {
+>>       field1: Field1,
+>>       field2: Field2,
+>> }
+>> ```
+>=20
+> Yeah. The way that these macros usually expand is by adding `where T:
+> Zeroable` to the impl for each generic parameter, and failing
+> compilation if that is not enough to ensure that all of the fields are
+> `Zeroable`.
+>=20
+> You might want to consider this expansion instead:
 > ```
->
-> After that, I tested their performance in `randread` with the fio command, specifying the first parameter as 4 and the second parameter as 1:
->
-> ```bash
-> fio --filename=/dev/nullb0 --iodepth=64 --ioengine=psync --direct=1 --rw=randread --bs=$1k --numjobs=$2 --runtime=30 --group_reporting --name=test-rand-read --output=test_c_randread.log
-> fio --filename=/dev/rnullb0 --iodepth=64 --ioengine=psync --direct=1 --rw=randread --bs=$1k --numjobs=$2 --runtime=30 --group_reporting --name=test-rand-read --output=test_rust_randread.log
+> impl<T: Zeroable> Zeroable for Foo<T> {}
+> const _: () =3D {
+>       fn assert_zeroable<T: Zeroable>(arg: &T) {}
+>       fn ensure_zeroable<T: Zeroable>(arg: &Foo<T>) {
+>           assert_zeroable(&arg.field1);
+>           assert_zeroable(&arg.field2);
+>       }
+> };
 > ```
->
-> The test results showed a significant performance difference between the two
-> drivers, which was drastically different from the data you tested in the
-> community. Specifically, for `randread`, the C driver had a bandwidth of
-> 487MiB/s and IOPS of 124.7k, while the Rust driver had a bandwidth of 264MiB/s
-> and IOPS of 67.7k. However, for other I/O types, the performance of the C and
-> Rust drivers was more similar. Could you please provide more information about
-> the actual bandwidth and IOPS data from your tests, rather than just the
-> performance difference between the C and Rust drivers? Additionally, if you
-> could offer possible reasons for this abnormality, I would greatly appreciate
-> it!
 
-Thanks for trying out the code! I am not sure why you get these numbers.
-I am currently out of office, but I will rerun the benchmarks next week
-when I get back in. Maybe I can provide you with some scripts and my
-kernel configuration. Hopefully we can figure out the difference in our
-setups.
+Is there a specific reason you think that I should us references here
+instead of the expansion from above (where I just use the types and
+not the fields themselves)?
 
-Best regards,
-Andreas
+--=20
+Cheers,
+Benno
+
