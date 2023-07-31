@@ -1,56 +1,56 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5384363
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 02:51:55 +0000 (UTC)
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F8B5E46;
-	Sun, 30 Jul 2023 19:51:50 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4fe0d5f719dso6548029e87.2;
-        Sun, 30 Jul 2023 19:51:50 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A240362D
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 03:01:20 +0000 (UTC)
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F493E54;
+	Sun, 30 Jul 2023 20:01:19 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99bf91956cdso256570466b.3;
+        Sun, 30 Jul 2023 20:01:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690771908; x=1691376708;
+        d=gmail.com; s=20221208; t=1690772477; x=1691377277;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NxOncAZZSwxSjo1ZI50mqwsE79qvN7QLICaEDitUUas=;
-        b=nNZJEIaSCRJz5iHti1x4T0EYR5v/n7v2Kbtac5bnLQH2YsieD3zd5LM73/QXxJ3Tm5
-         A2lm9vWNASv5GFI8q85J0neaAbLGQN49hSwF/9Rx8UfRjd2rfxEg5dAOqOSBGv48aoMU
-         uzkEkRtvyuvm9qaMAbJTbd9uq6WT6UC5TN/PzUJ+ZxXUgeKVjRWD1FxdRyOGrOEVCgjX
-         K3N6RJVhiaTvTRftW3FPnFEK9W0ktKZDAQx1IGPMEu0znngoky7tChbVBc+QewqMZKRQ
-         VOvLUsKaJQ3mFqsbSVCCXuNc7P1bQSgkYI+XEemGSjp0/7oZBRVPEf+yhSupGp6QfTfA
-         7YaA==
+        bh=ecUeirOJHielqU2V2QVVlEgRhDgcv2ltG9OUNcEijcA=;
+        b=nX0e097CSjr22VDhuIDIPeIgbVAIX7YH0gJQP2A8blXy9F7xn5KBxQEPuE9+Fu45LY
+         ODMVDuVEfhL2Scjm7EpqDwGICiM4WUi7Zdcs0UhNKc8+wJ4RmyO1VBXfyBj1vTDgvWp0
+         Z2wgpBN8g4pnkwqgNf+5mXk/pxk9/xSH4jR2SzVkKBO3SmMRYXuvCddZS7phDlXDn1yG
+         04X0DlzOWQWc9DXrREXThstgiHgGH3K5D1kppiJqqwMzrZzJRzfl/44HcnrFwb51x2um
+         xZf20gYYCbuM0UZGkEFYYXNbQt4HZ5fRl/NlcANSqD3zfzyT28skJmiHjjBmmYt/O8jD
+         UyuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690771908; x=1691376708;
+        d=1e100.net; s=20221208; t=1690772477; x=1691377277;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NxOncAZZSwxSjo1ZI50mqwsE79qvN7QLICaEDitUUas=;
-        b=UfhOH6tTUD7BuPTKtxoNNtPyARK0Y7XLsGSrvlqccOUNt4ydrnI+Zk/shW40xN/vr+
-         f0I8vJ8yfRyi7+ef7hedEx2gpEwzoYqU8rzPaRnXYtv/Md4UFZr2ES74uBliVwBzoZ4i
-         le4SGAnI6fP6l9Ty98OsrP9PVOzDbpkVGqzrVrZ1mrL8EBvma87QZnZbYJyHB9LbcXYl
-         wBWGDoztAv3uznKxvP9LucDnF65K0XoeVGMyTd6wfxqvcX9br+X2pHV6xKkLrkDXN7sO
-         /yIn+Z44MU7utFSm1YNpGgaVA4kSrxctpf/n+eoaObqltVEQG8XbIbz8kbIvL+cpM1qU
-         yDdw==
-X-Gm-Message-State: ABy/qLaPawF++6XgnE60s/TXaFoJ6KQUKQSkngU9tZj2uKFLVcGmgPS8
-	EWnNUO4OyInAAlmjiROIkaY=
-X-Google-Smtp-Source: APBJJlEoCvbJIRltUf4SYSVno+HB2sozy4IBOku2TXrVh+XLRqREYRz2QR12zk0uSFre6olJZdBCyg==
-X-Received: by 2002:a19:ca16:0:b0:4fb:89cd:9616 with SMTP id a22-20020a19ca16000000b004fb89cd9616mr4537549lfg.0.1690771908164;
-        Sun, 30 Jul 2023 19:51:48 -0700 (PDT)
+        bh=ecUeirOJHielqU2V2QVVlEgRhDgcv2ltG9OUNcEijcA=;
+        b=Y/S/kiM+G8QO/3KcqM98pfFoPvxSg9X+ltJi4jMpotmjSl5BExOzk5VRlngTzoEmKd
+         abPafLY6JEN9x5lf02uIWzmNUCGpGpDfVNux/kvrJXkjdCZXMtHIn2CM9Km5ilPMHXHF
+         Apy3Cdf0trr8ZleMCM/VKaQGSe3qVhKvYm2ujyWtyaHi+0jW68l8OaHNLeCTYTPaTxFS
+         JIUYXHQAriqdg2UqpPbqDx+jrDVA/0zMLp2JIWlz9NmCh2peapKWWHhr+932iLxtlsmz
+         m/rURThU67/+PBbpfsRZNLyDrICUUYP8QxXBT3WVoLpxt5bT6LiNvjiQ2z6W2EmbYHIi
+         gPaQ==
+X-Gm-Message-State: ABy/qLbBMBcHHoFcpfwrpL568iwJ1jP7R9yR6UiB+2Ry394DbYptctPf
+	AFN9C2Tiv85ZmwNqb8TGvM4=
+X-Google-Smtp-Source: APBJJlEM6I/lSlKGXZQNa4yMbGUH/reP8m1tygmzdl+8XpVkEnwdqvfxsZZFN8QbbZqBxg1jMF+CRQ==
+X-Received: by 2002:a17:907:7817:b0:99b:627f:9c0d with SMTP id la23-20020a170907781700b0099b627f9c0dmr4835252ejc.27.1690772477455;
+        Sun, 30 Jul 2023 20:01:17 -0700 (PDT)
 Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id n10-20020aa7c44a000000b0052238bc70ccsm4843753edr.89.2023.07.30.19.51.46
+        by smtp.gmail.com with ESMTPSA id v25-20020a17090606d900b00992e265a22dsm5500004ejb.136.2023.07.30.20.01.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Jul 2023 19:51:47 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id C214F27C0054;
-	Sun, 30 Jul 2023 22:51:45 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Sun, 30 Jul 2023 22:51:45 -0400
-X-ME-Sender: <xms:wCHHZCWFecp3VQAV4446EDqpg10rtVHctlhYGVGA0aZNL33n86uinw>
-    <xme:wCHHZOkKb3_ljUtnoJHZ2redVYfsOMx7r5yCH8qKunmy8ZhaN0FE_K6GGt73zjXvf
-    tckkXbm4dxB1nz2EA>
-X-ME-Received: <xmr:wCHHZGZTQRqx_gODK--i1NnTmekKP2gqC-VlHNPscm08ZQluwVVgbrmSFYaE4w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrjedvgdeigecutefuodetggdotefrodftvf
+        Sun, 30 Jul 2023 20:01:16 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 1309727C0054;
+	Sun, 30 Jul 2023 23:01:15 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Sun, 30 Jul 2023 23:01:15 -0400
+X-ME-Sender: <xms:-iPHZNeKPJdM5RYXr36b7F9wTaxdAPi-tIdd5S1lQAu_v_m3ipS_pQ>
+    <xme:-iPHZLNjroExiln0MvVR1zH-LI1UnDkkxybu_5Fly89L7O7L-JWte6uLS4pucqAxR
+    NWV2IvWLldvytJAew>
+X-ME-Received: <xmr:-iPHZGidN_9kjyY47ntasgX3wkPLaetLB3rFI7KPOqXcJLBwfboj3GwmZXA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrjedvgdeiiecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
     fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
@@ -60,14 +60,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrjedvgdeigecutefuodetggdote
     hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
     qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
     hmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:wCHHZJWSqXmIqkjdSEmzADsvJvqYtd1bUDXM1EZ0oCGlgAljxLI2eA>
-    <xmx:wCHHZMkLhbo1J6XpxpzWGuWGJAsvUXJ9qoYlGBfqGAWtRYgeuxiHpQ>
-    <xmx:wCHHZOc2b583DzvJFiG0dWmz7414aAVkKGflGM1B3IyOK_Ib2bgBqw>
-    <xmx:wSHHZFciWq12aapXLKurGBXx67PI8LA3xcrp_LOAkQnwO0JuU1CY9w>
+X-ME-Proxy: <xmx:-iPHZG_h3DJ28HVkmVU4xt8O5frYly_iCXN5KkwwiRp8aK59mz04Lw>
+    <xmx:-iPHZJt6LWt0DLOWai32HJfrH0oCDeNgkZ_WuepiPiCkX9Whuu0KJA>
+    <xmx:-iPHZFEST3C9a8ZDb7FlxAJycDRkBtSAO-QhTUqFf0m9-bs0RLy-LA>
+    <xmx:-yPHZKnpI9DMQjnLdnCtA3Ldfy0KNmbTOn6oUzfiCIZfJXmNys87xg>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 30 Jul 2023 22:51:44 -0400 (EDT)
-Date: Sun, 30 Jul 2023 19:51:03 -0700
+ 30 Jul 2023 23:01:14 -0400 (EDT)
+Date: Sun, 30 Jul 2023 20:00:33 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>,
@@ -77,10 +77,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH v3 03/13] rust: add derive macro for `Zeroable`
-Message-ID: <ZMchl359xrEdPPNn@boqun-archlinux>
+Subject: Re: [PATCH v3 08/13] rust: init: Add functions to create array
+ initializers
+Message-ID: <ZMcj0TswxyCu5hpd@boqun-archlinux>
 References: <20230729090838.225225-1-benno.lossin@proton.me>
- <20230729090838.225225-4-benno.lossin@proton.me>
+ <20230729090838.225225-9-benno.lossin@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -89,7 +90,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230729090838.225225-4-benno.lossin@proton.me>
+In-Reply-To: <20230729090838.225225-9-benno.lossin@proton.me>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -97,72 +98,25 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, Jul 29, 2023 at 09:09:35AM +0000, Benno Lossin wrote:
+On Sat, Jul 29, 2023 at 09:10:02AM +0000, Benno Lossin wrote:
 [...]
-> diff --git a/rust/macros/quote.rs b/rust/macros/quote.rs
-> index dddbb4e6f4cb..b76c198a4ed5 100644
-> --- a/rust/macros/quote.rs
-> +++ b/rust/macros/quote.rs
-> @@ -124,6 +124,12 @@ macro_rules! quote_spanned {
->          ));
->          quote_spanned!(@proc $v $span $($tt)*);
->      };
-> +    (@proc $v:ident $span:ident ; $($tt:tt)*) => {
-> +        $v.push(::proc_macro::TokenTree::Punct(
-> +                ::proc_macro::Punct::new(';', ::proc_macro::Spacing::Alone)
-> +        ));
-> +        quote_spanned!(@proc $v $span $($tt)*);
-> +    };
->      (@proc $v:ident $span:ident $id:ident $($tt:tt)*) => {
->          $v.push(::proc_macro::TokenTree::Ident(::proc_macro::Ident::new(stringify!($id), $span)));
->          quote_spanned!(@proc $v $span $($tt)*);
-> diff --git a/rust/macros/zeroable.rs b/rust/macros/zeroable.rs
-> new file mode 100644
-> index 000000000000..0d605c46ab3b
-> --- /dev/null
-> +++ b/rust/macros/zeroable.rs
-> @@ -0,0 +1,72 @@
-[...]
-> +            TokenTree::Punct(p) if nested == 0 && p.as_char() == ':' => {
-> +                new_impl_generics.push(tt);
-> +                if in_generic {
-> +                    new_impl_generics.extend(quote! { ::kernel::init::Zeroable + });
+> +/// Initializes an array by initializing each element via the provided initializer.
+> +///
+> +/// # Examples
+> +///
+> +/// ```rust
+> +/// use kernel::{sync::{Arc, Mutex}, init::pin_init_array_from_fn, new_mutex};
+> +/// let array: Arc<[Mutex<usize>; 1_000_000_000]>=
 
-Looks like the support of '+' in `quote!` is missing ;-)
+This is nice, but (if I got my math correct) it requires ~30G memory on
+a 64bit machine, and when this example got generated as a kunit test,
+my poor VM took forever to finish it ;-) ;-) ;-) Maybe descrease it to,
+say, 1000?
 
 Regards,
 Boqun
 
-> +                    inserted = true;
-> +                }
-> +            }
-> +            TokenTree::Punct(p) if p.as_char() == '<' => {
-> +                nested += 1;
-> +                new_impl_generics.push(tt);
-> +            }
-> +            TokenTree::Punct(p) if p.as_char() == '>' => {
-> +                assert!(nested > 0);
-> +                nested -= 1;
-> +                new_impl_generics.push(tt);
-> +            }
-> +            _ => new_impl_generics.push(tt),
-> +        }
-> +    }
-> +    assert_eq!(nested, 0);
-> +    if in_generic && !inserted {
-> +        new_impl_generics.extend(quote! { : ::kernel::init::Zeroable });
-> +    }
-> +    quote! {
-> +        ::kernel::__derive_zeroable!(
-> +            parse_input:
-> +                @sig(#(#rest)*),
-> +                @impl_generics(#(#new_impl_generics)*),
-> +                @ty_generics(#(#ty_generics)*),
-> +                @body(#last),
-> +        );
-> +    }
-> +}
-> -- 
-> 2.41.0
-> 
-> 
+> +///     Arc::pin_init(pin_init_array_from_fn(|i| new_mutex!(i))).unwrap();
+> +/// assert_eq!(array.len(), 1_000_000_000);
+> +/// ```
+[...]
