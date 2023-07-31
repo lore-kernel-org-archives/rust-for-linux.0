@@ -1,60 +1,70 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21B911C98
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 08:22:42 +0000 (UTC)
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1549DD7
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 01:17:12 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-31792ac0fefso1446200f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 01:17:12 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8139981B
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 08:49:37 +0000 (UTC)
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D1C249DF
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 01:49:32 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2b962535808so64018001fa.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 01:49:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1690791430; x=1691396230;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1690793371; x=1691398171;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=tXBhRdUtHPrrcaPCjbweWbD8AMIQH0b5ap+ZgbPohPI=;
-        b=ILtKjJzDWLauNQNKqeZ9L8laJBDSpcEnpFzZw2345aQVHXBXjLv8naR51ob/R/fkrx
-         LZQ9pLNzYOC9T0sKxztD+JEJkuEY0hpTLMAysqz7B9t110z9zYv8l/noosXBA7hkvgnM
-         R3BBSfm03rZ5fIcCvkWZjjghUGA3/PuWfvlSJh49sw+d2lzAKf3M8w0+Jc2Wg/vsadt6
-         7e2rX1FYzM2iz6ku2aEiXRartgWUjhcMWfA6ivOUjTyBy+Z92IgtpVVRpUrmqiFHskS3
-         KE7PJrUIxLGNtTaNrskjbeAHBV2rubibWPoffK0u0IsEn3Ys7JW/MibRhejTuc6j20VB
-         hCcg==
+        bh=AEpQPsL8CKvgd9jCnKauvgppTMsvJVGBjZ9X1QDN9oE=;
+        b=4CsLTWSrXtKZeou89ehTdDcI35pXhzam4Gf+T2BNZK/F9IAwoXnSZdoCJhiuzuWEob
+         v+FHWghCDcj3bHalbjjF+ZQpieuLc22Up7FE1aLSBkKUodTfIVMGIuVzXjati/lwr9gN
+         XAU30D5Zh4A4gcTRNx85Pq1gBYV9VweZylbeWjn8M8U2ijFQBPYl1taHlJn3CxMF0CVh
+         GA8hHanjU1vc9LC8TTV0LsX0+xlRcpJ6WxpwyzrK8ioLE8hEH0VzN2K8ePI9xuHXUvtL
+         e1Inx4wkGuVdOmVskj2bNxagSFMJU2veOk4Xv/8H35PxkMBvvSD7cWsft78kMFPaGKOK
+         WNIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690791430; x=1691396230;
+        d=1e100.net; s=20221208; t=1690793371; x=1691398171;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tXBhRdUtHPrrcaPCjbweWbD8AMIQH0b5ap+ZgbPohPI=;
-        b=AtEBobxkcIyEhFF4t6kv4+GpRsyur4IU/pKyY82CgILhNxAopL+zNwuX8yB1zhp4n4
-         OGVmjx5mTxmDzrkx6p/sMf/zLIPQWDGSOd0RLghp8RE6XaUEK/Xh73aAC1rIeKoSB1Rp
-         QHyweNSZNTMWgq2T6wBRq8BYCyzAaQWH6JtZJzqsWqNYoGAYfyjlBIRs3g0I4t4Fdf2z
-         uyER8HjbRQ5gU0zk9I3/Nu9Z4Qa4muGFka9C+6VMOYxGcSjw+C378S/TEVOs0EZQMLHd
-         XaAvTp0i8QYEqoIe37EteiaKUyPwDwmNLPYGcVHgj+6eg4IAtffiz4QrKwrRukQWxtnU
-         ayPg==
-X-Gm-Message-State: ABy/qLb0nO1fpjmPcOzWYtGO/OktJah8S94gbAWNe6+2FT9i7In2oWmw
-	Q2c/3nz96ijp2elaouKrkGaO1w==
-X-Google-Smtp-Source: APBJJlGlRoVcspGECVffVhhAtcYYUfteqIvOr8ABivvTLEiMG8/BQmr8aW3Ttv6CWtvng4xkn8QPow==
-X-Received: by 2002:a5d:452d:0:b0:314:133a:f04 with SMTP id j13-20020a5d452d000000b00314133a0f04mr4535091wra.49.1690791429647;
-        Mon, 31 Jul 2023 01:17:09 -0700 (PDT)
-Received: from localhost ([165.225.194.190])
-        by smtp.gmail.com with ESMTPSA id z14-20020a5d4d0e000000b003143bb5ecd5sm12241583wrt.69.2023.07.31.01.17.08
+        bh=AEpQPsL8CKvgd9jCnKauvgppTMsvJVGBjZ9X1QDN9oE=;
+        b=kq5Hx+sAS4CnROokTjLaDDWnCxssRfuzVEGohnL9CJ1tqpi+i9WZ7mjGf/bNorlOxC
+         n9f58dsTNx5FRV9cdtrxQLkOArShtVAtwTrZIna5f3i6MiOYTwN05RlLLAQQmkPoGHow
+         mbaXVU8/C5c74BaohVbGPiP3UN258GCwpNqtQcQ1SB7coYC//wunHU+wpopGupFc7P8/
+         hDON7KhYVbCme22A4yShEcF31XTfjTkiTMh3vgdKewOYpef3hQvc1aTfAUjVCZEQeYLb
+         lmF2Zt2hfgRZh7Vqhuf7KGZzBPeKrgY5g8edAloUGPF0w8KOdFVW+i4ll5mreuPw11k9
+         rCAA==
+X-Gm-Message-State: ABy/qLaac72hcKqRX3mdkV4uASgeFr2UOtPmI5Q6ujfxtos8uXN2iVGU
+	RrWmwryYRydUJ43qf01qNCDmRA==
+X-Google-Smtp-Source: APBJJlGFJ70YghXLG/YDeubPbpWWwMiyEaj0546fMRnCHGzwMbMfwcMsEuKBc1tsdJm+7ssl+pZkYQ==
+X-Received: by 2002:a2e:2c19:0:b0:2b7:3b73:2589 with SMTP id s25-20020a2e2c19000000b002b73b732589mr5498532ljs.32.1690793370676;
+        Mon, 31 Jul 2023 01:49:30 -0700 (PDT)
+Received: from localhost ([165.225.194.221])
+        by smtp.gmail.com with ESMTPSA id w3-20020a1cf603000000b003fa973e6612sm13350468wmc.44.2023.07.31.01.49.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jul 2023 01:17:09 -0700 (PDT)
-References: <20230718054426.1048583-1-ojeda@kernel.org>
+        Mon, 31 Jul 2023 01:49:29 -0700 (PDT)
+References: <20230730012905.643822-1-boqun.feng@gmail.com>
+ <20230730012905.643822-3-boqun.feng@gmail.com>
 User-agent: mu4e 1.10.5; emacs 28.2.50
 From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor
- <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary
+ Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
  <bjorn3_gh@protonmail.com>, Benno
- Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- patches@lists.linux.dev, Andreas Hindborg <a.hindborg@samsung.com>
-Subject: Re: [PATCH] MAINTAINERS: add Andreas Hindborg as Rust reviewer
-Date: Mon, 31 Jul 2023 10:16:10 +0200
-In-reply-to: <20230718054426.1048583-1-ojeda@kernel.org>
-Message-ID: <877cqgqyuz.fsf@metaspace.dk>
+ Lossin <benno.lossin@proton.me>, Martin Rodriguez Reboredo
+ <yakoyoku@gmail.com>, Alice Ryhl <aliceryhl@google.com>, Dariusz Sosnowski
+ <dsosnowski@dsosnowski.pl>, Geoffrey Thomas <geofft@ldpreload.com>, Fox
+ Chen <foxhlchen@gmail.com>, John Baublitz <john.m.baublitz@gmail.com>,
+ Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>, David
+ Rientjes <rientjes@google.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
+ <vbabka@suse.cz>, Roman Gushchin <roman.gushchin@linux.dev>, Hyeonggon Yoo
+ <42.hyeyoo@gmail.com>, Kees Cook <keescook@chromium.org>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 2/3] rust: allocator: Use krealloc_aligned() in
+ KernelAllocator::alloc
+Date: Mon, 31 Jul 2023 10:48:57 +0200
+In-reply-to: <20230730012905.643822-3-boqun.feng@gmail.com>
+Message-ID: <873514qxd2.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,30 +73,39 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.6
+	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
 
-Miguel Ojeda <ojeda@kernel.org> writes:
+Boqun Feng <boqun.feng@gmail.com> writes:
 
-> Andreas has been involved with the Rust for Linux project for more than
-> a year now. He has been primarily working on the Rust NVMe driver [1],
-> presenting it in several places (such as LPC [2][3] and Kangrejos [4]).
+> This fixes the potential issue that when KernelAllocator is used, the
+> allocation may be mis-aligned due to SLAB's alignment guarantee.
 >
-> In addition, he recently submitted the Rust null block driver [5] and
-> has been reviewing patches in the mailing list for some months.
->
-> Thus add him to the `RUST` entry as reviewer.
->
-> Link: https://rust-for-linux.com/nvme-driver [1]
-> Link: https://lpc.events/event/16/contributions/1180/attachments/1017/1961/deck.pdf [2]
-> Link: https://www.youtube.com/watch?v=BwywU1MqW38 [3]
-> Link: https://kangrejos.com/A%20Linux%20(PCI)%20NVMe%20Driver%20in%20Rust.pdf [4]
-> Link: https://lore.kernel.org/rust-for-linux/20230503090708.2524310-1-nmi@metaspace.dk/ [5]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 > ---
+>  rust/kernel/allocator.rs | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
+> index fae11d1fdba7..1aec688cf0e0 100644
+> --- a/rust/kernel/allocator.rs
+> +++ b/rust/kernel/allocator.rs
+> @@ -41,9 +41,9 @@ unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, flags: bindings::gf
+>  
+>  unsafe impl GlobalAlloc for KernelAllocator {
+>      unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+> -        // `krealloc()` is used instead of `kmalloc()` because the latter is
+> -        // an inline function and cannot be bound to as a result.
+> -        unsafe { bindings::krealloc(ptr::null(), layout.size(), bindings::GFP_KERNEL) as *mut u8 }
+> +        // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero size by the function safety
+> +        // requirement.
+> +        unsafe { krealloc_aligned(ptr::null_mut(), layout, bindings::GFP_KERNEL) }
+>      }
+>  
+>      unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
 
-Acked-by: Andreas Hindborg <a.hindborg@samsung.com>
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+
