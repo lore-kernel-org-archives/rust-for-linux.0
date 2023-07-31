@@ -1,122 +1,104 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A240362D
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 03:01:20 +0000 (UTC)
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F493E54;
-	Sun, 30 Jul 2023 20:01:19 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99bf91956cdso256570466b.3;
-        Sun, 30 Jul 2023 20:01:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690772477; x=1691377277;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ecUeirOJHielqU2V2QVVlEgRhDgcv2ltG9OUNcEijcA=;
-        b=nX0e097CSjr22VDhuIDIPeIgbVAIX7YH0gJQP2A8blXy9F7xn5KBxQEPuE9+Fu45LY
-         ODMVDuVEfhL2Scjm7EpqDwGICiM4WUi7Zdcs0UhNKc8+wJ4RmyO1VBXfyBj1vTDgvWp0
-         Z2wgpBN8g4pnkwqgNf+5mXk/pxk9/xSH4jR2SzVkKBO3SmMRYXuvCddZS7phDlXDn1yG
-         04X0DlzOWQWc9DXrREXThstgiHgGH3K5D1kppiJqqwMzrZzJRzfl/44HcnrFwb51x2um
-         xZf20gYYCbuM0UZGkEFYYXNbQt4HZ5fRl/NlcANSqD3zfzyT28skJmiHjjBmmYt/O8jD
-         UyuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690772477; x=1691377277;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ecUeirOJHielqU2V2QVVlEgRhDgcv2ltG9OUNcEijcA=;
-        b=Y/S/kiM+G8QO/3KcqM98pfFoPvxSg9X+ltJi4jMpotmjSl5BExOzk5VRlngTzoEmKd
-         abPafLY6JEN9x5lf02uIWzmNUCGpGpDfVNux/kvrJXkjdCZXMtHIn2CM9Km5ilPMHXHF
-         Apy3Cdf0trr8ZleMCM/VKaQGSe3qVhKvYm2ujyWtyaHi+0jW68l8OaHNLeCTYTPaTxFS
-         JIUYXHQAriqdg2UqpPbqDx+jrDVA/0zMLp2JIWlz9NmCh2peapKWWHhr+932iLxtlsmz
-         m/rURThU67/+PBbpfsRZNLyDrICUUYP8QxXBT3WVoLpxt5bT6LiNvjiQ2z6W2EmbYHIi
-         gPaQ==
-X-Gm-Message-State: ABy/qLbBMBcHHoFcpfwrpL568iwJ1jP7R9yR6UiB+2Ry394DbYptctPf
-	AFN9C2Tiv85ZmwNqb8TGvM4=
-X-Google-Smtp-Source: APBJJlEM6I/lSlKGXZQNa4yMbGUH/reP8m1tygmzdl+8XpVkEnwdqvfxsZZFN8QbbZqBxg1jMF+CRQ==
-X-Received: by 2002:a17:907:7817:b0:99b:627f:9c0d with SMTP id la23-20020a170907781700b0099b627f9c0dmr4835252ejc.27.1690772477455;
-        Sun, 30 Jul 2023 20:01:17 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id v25-20020a17090606d900b00992e265a22dsm5500004ejb.136.2023.07.30.20.01.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Jul 2023 20:01:16 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 1309727C0054;
-	Sun, 30 Jul 2023 23:01:15 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Sun, 30 Jul 2023 23:01:15 -0400
-X-ME-Sender: <xms:-iPHZNeKPJdM5RYXr36b7F9wTaxdAPi-tIdd5S1lQAu_v_m3ipS_pQ>
-    <xme:-iPHZLNjroExiln0MvVR1zH-LI1UnDkkxybu_5Fly89L7O7L-JWte6uLS4pucqAxR
-    NWV2IvWLldvytJAew>
-X-ME-Received: <xmr:-iPHZGidN_9kjyY47ntasgX3wkPLaetLB3rFI7KPOqXcJLBwfboj3GwmZXA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrjedvgdeiiecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudff
-    iedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
-    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
-    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
-    hmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:-iPHZG_h3DJ28HVkmVU4xt8O5frYly_iCXN5KkwwiRp8aK59mz04Lw>
-    <xmx:-iPHZJt6LWt0DLOWai32HJfrH0oCDeNgkZ_WuepiPiCkX9Whuu0KJA>
-    <xmx:-iPHZFEST3C9a8ZDb7FlxAJycDRkBtSAO-QhTUqFf0m9-bs0RLy-LA>
-    <xmx:-yPHZKnpI9DMQjnLdnCtA3Ldfy0KNmbTOn6oUzfiCIZfJXmNys87xg>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 30 Jul 2023 23:01:14 -0400 (EDT)
-Date: Sun, 30 Jul 2023 20:00:33 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH v3 08/13] rust: init: Add functions to create array
- initializers
-Message-ID: <ZMcj0TswxyCu5hpd@boqun-archlinux>
-References: <20230729090838.225225-1-benno.lossin@proton.me>
- <20230729090838.225225-9-benno.lossin@proton.me>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568EC63A7
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 07:56:23 +0000 (UTC)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3F44199;
+	Mon, 31 Jul 2023 00:56:22 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4E4071F74C;
+	Mon, 31 Jul 2023 07:56:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1690790181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pIov8vVMxRXk3LyFbp2uD7LCYfJdh0gTq4UHYD1FInU=;
+	b=IHnIUQZ9tVD/LASVC7rY1vGfrWL9+ec7o+rPfms6OJLNDzTNPC7aHi2M1nuiRuDQBze+ae
+	O6dfZ19xVe75ZjC34nC+0+XdIcwq2HDvK2VBrnkVsPk9667dBBwoStRKrxzy5OgV8bSNNv
+	3q/hDsaIvRA3ATqfO4tWSmdMITxBmUE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1690790181;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pIov8vVMxRXk3LyFbp2uD7LCYfJdh0gTq4UHYD1FInU=;
+	b=eztUAdxg5V1WceeZeOx6eIIrl61kMJVZKqLNYceVCOHCR0LVSeE9S4r4QUicyJF3kjz1K5
+	P0bcigSCk9jJCFAg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E45F1133F7;
+	Mon, 31 Jul 2023 07:56:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id MQfqNiRpx2RNEAAAMHmgww
+	(envelope-from <vbabka@suse.cz>); Mon, 31 Jul 2023 07:56:20 +0000
+Message-ID: <e4f7ae0c-5397-4b20-80e8-6c0baece3e8c@suse.cz>
+Date: Mon, 31 Jul 2023 09:56:20 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230729090838.225225-9-benno.lossin@proton.me>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-	autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/3] rust: allocator: Prevent mis-aligned allocation
+To: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+ Geoffrey Thomas <geofft@ldpreload.com>, Fox Chen <foxhlchen@gmail.com>,
+ John Baublitz <john.m.baublitz@gmail.com>, Christoph Lameter <cl@linux.com>,
+ Pekka Enberg <penberg@kernel.org>, David Rientjes <rientjes@google.com>,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Hyeonggon Yoo <42.hyeyoo@gmail.com>, Kees Cook <keescook@chromium.org>,
+ stable@vger.kernel.org, Andreas Hindborg <nmi@metaspace.dk>
+References: <20230730012905.643822-1-boqun.feng@gmail.com>
+ <20230730012905.643822-2-boqun.feng@gmail.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20230730012905.643822-2-boqun.feng@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, Jul 29, 2023 at 09:10:02AM +0000, Benno Lossin wrote:
-[...]
-> +/// Initializes an array by initializing each element via the provided initializer.
-> +///
-> +/// # Examples
-> +///
-> +/// ```rust
-> +/// use kernel::{sync::{Arc, Mutex}, init::pin_init_array_from_fn, new_mutex};
-> +/// let array: Arc<[Mutex<usize>; 1_000_000_000]>=
+On 7/30/23 03:29, Boqun Feng wrote:
+> Currently the rust allocator simply passes the size of the type Layout
+> to krealloc(), and in theory the alignment requirement from the type
+> Layout may be larger than the guarantee provided by SLAB, which means
+> the allocated object is mis-aligned.
+> 
+> Fix this by adjusting the allocation size to the nearest power of two,
+> which SLAB always guarantees a size-aligned allocation. And because Rust
+> guarantees that the original size must be a multiple of alignment and
+> the alignment must be a power of two, then the alignment requirement is
+> satisfied.
+> 
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Co-developed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+> Signed-off-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Cc: stable@vger.kernel.org # v6.1+
 
-This is nice, but (if I got my math correct) it requires ~30G memory on
-a 64bit machine, and when this example got generated as a kunit test,
-my poor VM took forever to finish it ;-) ;-) ;-) Maybe descrease it to,
-say, 1000?
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-Regards,
-Boqun
-
-> +///     Arc::pin_init(pin_init_array_from_fn(|i| new_mutex!(i))).unwrap();
-> +/// assert_eq!(array.len(), 1_000_000_000);
-> +/// ```
-[...]
