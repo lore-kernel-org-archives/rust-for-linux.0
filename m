@@ -1,160 +1,216 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9999814F92
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 14:15:51 +0000 (UTC)
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2048.outbound.protection.outlook.com [40.107.101.48])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FD30AF;
-	Mon, 31 Jul 2023 07:15:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aldz4V3Pf4PztOikIKlvsMVv64fHDWVnTALqCASB140vb6KL51L8Je1UnKleP0Uh35c4gMABCGuZGtbMDi5TfyfSelDkG5oelCCgY/k6pIEhTwEQwUcy9KKAKZIrYlkHDyZmth4k1yc10UCUKcsw1XzTAEC4CtOkgN5tMkxnTxzDyHB9xG8vlyjUodU/bVjsp3aoW3OljkFJJU2rYKJoanBTVfVoKg0oKBVTdox/JujQbNWZENeNg7OWoSSsrKketdoLwOP9GAfYk8cRMzUyGiltH5T8L4Ocw8BY9OuTOkPF9MP5ifQhMAd7XojBZgN0ZWq1qNpb7a/fGIf3CeyftQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eVR9sE2uTVS+RojtnOnFij+ped3SJvsDEE9JfFS9AC0=;
- b=bw2UsFJcQ6Al9LybgwPlZ7nBtZeSxPGVYcG8riCVSsVXr0unKuUQ/IbCR5rd0kEntmJGDI4FzboJdcavhHmTvyQ9gcA6upRanFGmitqdaCStPuPTRN/qaL8wkX3LvEP/PtlHasdQucHKye5JICg+oedjME0Eez+W793i7TUV+w7an7NZOgkcZzZFGJyu0+XuHSnzhvly5b7CXt41muCiq9veOE0EC1koE7D9X630fYxMji/Z9s9vazK22W6O11NaXqtzRxQ9Vd9MHMhjNoX/mLbEenVXohOTDs4/Vdcq/sw6vuucyZ5gLoikvE5gkkRkuuNkUdIX/4ZHgGjZgIja0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eVR9sE2uTVS+RojtnOnFij+ped3SJvsDEE9JfFS9AC0=;
- b=QNqZZ2p3O/GokTKGUiBj6NExMzcq6een6965B+QBCBWi2J7nOkp23Gg1y09QyhwinihW0OFXZchCOgI9O9L/nkzTEGSC1CQZM5AsP2SYU2O4NzCl850nqCLBUjm6Exo6H4Dt3X7PwGfge9jWxDM3pBxXywsuX+fw20dV742HFPE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5874.namprd12.prod.outlook.com (2603:10b6:208:396::17)
- by DS7PR12MB6238.namprd12.prod.outlook.com (2603:10b6:8:96::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.43; Mon, 31 Jul
- 2023 14:15:47 +0000
-Received: from BL1PR12MB5874.namprd12.prod.outlook.com
- ([fe80::1352:c7fd:4b4b:cc18]) by BL1PR12MB5874.namprd12.prod.outlook.com
- ([fe80::1352:c7fd:4b4b:cc18%7]) with mapi id 15.20.6631.042; Mon, 31 Jul 2023
- 14:15:47 +0000
-Message-ID: <51b43b27-42f6-9b23-4175-6f9b17870524@amd.com>
-Date: Mon, 31 Jul 2023 09:15:44 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v8 0/2] docs: Integrate rustdoc into Rust documentation
-Content-Language: en-US
-To: Jonathan Corbet <corbet@lwn.net>, ojeda@kernel.org
-Cc: jani.nikula@linux.intel.com, rdunlap@infradead.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- konstantin@linuxfoundation.org, rust-for-linux@vger.kernel.org
-References: <20230718151534.4067460-1-carlos.bilbao@amd.com>
- <87mszqfbfg.fsf@meer.lwn.net>
-From: Carlos Bilbao <carlos.bilbao@amd.com>
-In-Reply-To: <87mszqfbfg.fsf@meer.lwn.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DM6PR06CA0094.namprd06.prod.outlook.com
- (2603:10b6:5:336::27) To BL1PR12MB5874.namprd12.prod.outlook.com
- (2603:10b6:208:396::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3291818C14
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 15:09:53 +0000 (UTC)
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD061FDD
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 08:09:36 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-317716a4622so4285277f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 08:09:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1690816175; x=1691420975;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=I4vO2/48289ncfyl74yVzbi9SJ+8aO99Q+q42Y/o7iA=;
+        b=KMLLwvWuQB0v34U5jA7W9JWyQty3m1XLZgxxm6zAAlpRBSuBq+TxbhJrjsRfyJ9FBA
+         A3kld0jeBNojm9Q2LUrMBnzh5VhG8/8GAA0kdl9YzxoDI4Cwot0BF57j4TDBZe4DPE7/
+         QOUiAf+l21FB6iFaXvE7FvG0GoZU+f4EopdppzBmqQo4CwO/XDUqqTQQ68xI77Ss9f/t
+         /GF/U0+S1pEa2ll1G8muN9uiChw0x14+HwD3++CdFj+n6WPzhNx3VxiCmvqmX1BJIpJa
+         bMl0b5aY+q9VFP/iTaDDBQPukddst1nHdV3dvKn9ynL4uUSAgdq1JpMVs4w2mjiNFPZn
+         1kyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690816175; x=1691420975;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I4vO2/48289ncfyl74yVzbi9SJ+8aO99Q+q42Y/o7iA=;
+        b=IlM8IjtNeJ3LF6rFDB/7Ey/Th+hiJt3wv3ppyYBLSgQwF9SzOngLm1eGjPiCI9VdLy
+         Ej9OX3rJ+qmWvZziRibGBt9p9k6VGz8pXcEnBEYCjq29MyY9j2Ba8hIScH66qEXMB4Ck
+         YVN20zMO6FhO+GJWW/Jzdggb3ZUeU76gp9pu6khiVEhlxs1Bf6/QDuNH4hW3LJyQbvEa
+         iUhUS8Idad3e6AnFkNrLuccQWG5PwEJ3OJq5TJbZeqIChGr735VTSvyVbdPEO+JqAB+b
+         TiSyVT8SIvQzKwLL6RbvPOk+fVG7e7XZE00A74BNMmRUn6hw1ZNPX+Zkz2bmiQB10pnM
+         iEMg==
+X-Gm-Message-State: ABy/qLYg/FWDk6z0kqnR7zc3aeC9O1XZw/tspBqPQQNgO97pgBk8LWeZ
+	HoD9tbhOawF0wYKWEr4RztezPA==
+X-Google-Smtp-Source: APBJJlFA0nobe7wROd+ljsHGw7HOxtq4QXUAvZeba2N7YHxBdfwAOGihboymyObrWDI04pCCbRXzdQ==
+X-Received: by 2002:a05:6000:108b:b0:314:1560:cc68 with SMTP id y11-20020a056000108b00b003141560cc68mr71125wrw.56.1690816174663;
+        Mon, 31 Jul 2023 08:09:34 -0700 (PDT)
+Received: from localhost ([165.225.194.195])
+        by smtp.gmail.com with ESMTPSA id r8-20020adfe688000000b0031434c08bb7sm13289600wrm.105.2023.07.31.08.09.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Jul 2023 08:09:34 -0700 (PDT)
+References: <20230503090708.2524310-1-nmi@metaspace.dk>
+ <2B3CA5F1CCCFEAB2+20230727034517.GB126117@1182282462>
+ <87bkfwr0ew.fsf@metaspace.dk>
+User-agent: mu4e 1.10.5; emacs 28.2.50
+From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+To: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+Cc: Yexuan Yang <1182282462@bupt.edu.cn>, Jens Axboe <axboe@kernel.dk>,
+ Christoph Hellwig <hch@lst.de>, Keith  Busch <kbusch@kernel.org>, Damien
+ Le Moal <Damien.LeMoal@wdc.com>, Hannes  Reinecke <hare@suse.de>,
+ lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
+ linux-block@vger.kernel.org, Matthew  Wilcox <willy@infradead.org>, Miguel
+ Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson
+ Almeida Filho <wedsonaf@gmail.com>, Boqun  Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, Bj??rn Roy Baron <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>, open  list
+ <linux-kernel@vger.kernel.org>, gost.dev@samsung.com
+Subject: Re: [RFC PATCH 00/11] Rust null block driver
+Date: Mon, 31 Jul 2023 16:14:38 +0200
+In-reply-to: <87bkfwr0ew.fsf@metaspace.dk>
+Message-ID: <87r0oop176.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5874:EE_|DS7PR12MB6238:EE_
-X-MS-Office365-Filtering-Correlation-Id: 359a6950-741c-4768-3bc0-08db91d0a287
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	GjMwc+HeEyy8Y/OZdhBjJLLR935JcgQNqlW2Ym6h+wGNYxDo5g3drYXmTNHI1286bKZ/9h7Qno47E8eD7eoSRfaHczHI1g+PwjkiSowtFI4UIqE5Xm6FP10iIG7kCjCBAyxEc4p0AMS7jmXLcUKZR6retvzmo5LCh0wt47jABYswZ1dlBQsj7ewH6/nbRhnc4B9IvAcdZ5OA5RAJ0Ofev4ulVz+FAdQVDDdfR/tpzbbHcGIBc3Gv4E7Pq5oEiulP/MXoAfBkJdzhxA54FWOetBMSeBjKZ+O9rdN9uAYGvGzqIyMcuEnAspXCWAGP2LoCFDtV4g9gNlbRvoWR6TOoS3Di6j7QMpQZtZCJnQTfX1Bbgg/aB6wx/ilBO8vwaRiayEdjy36KhfHPzJ3cTcbJNzlbUDjLTkG1HI219IZJw4vNdE6S+wGQtAD0UpQQCzENFzke2/BMERMU7Z0P8c74eEmOzLuba4KYXnXXXbWZGsRLdLBEPxnHqm6dcfE0hjYcJO5bZ1rroDLLdw0RCVylVearYhAQnAarojo2I4sbabyO1FqypLYFls1g14QC4AZnLWkc2bvtp+v1VMgq2Q98zMvw+mUmzYuYqSNv97m4hU2745jd2Yvs2wGCseHqcvHhEwPUJp8bsE5TkNPvZ/ax3A==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5874.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(396003)(366004)(136003)(39860400002)(451199021)(86362001)(66476007)(31696002)(41300700001)(8936002)(31686004)(8676002)(316002)(5660300002)(4326008)(66946007)(66556008)(478600001)(2906002)(38100700002)(6666004)(36756003)(44832011)(6512007)(6486002)(186003)(26005)(6506007)(53546011)(2616005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TU13dHBxeGRNVXMvNkpjQWdaVVN5b1lHbzJVZzFWNFQxWkZKT1R2OGdOckVM?=
- =?utf-8?B?VWdRMm1SZVFEdTRJT3lMekxWTk5menM3cEJISkNndlFqaUxKVFpjeTdNR2ZP?=
- =?utf-8?B?ZFJXUThqcHhQSkJ2NTFuY3VCRzEvczljZ3hhRGVrdWlqakJ2M2M3aW5RTHhr?=
- =?utf-8?B?YWoxbDgySUp1SFc5WUtic2E4UjZOamwxdDJHU1JaYno4bkxscnVFUWMwWEJL?=
- =?utf-8?B?SWFEQmI5dkx1dzRGSU9JR3VyUzJ0eFlCWTdRVmU4WEg5RnVYc2trVnhpK2Nh?=
- =?utf-8?B?SFVqdFQxYm9MZjlSckxMQ0FsRHFNUlZUOXBvVDNhSWJyS2wxZHFQZytjNjho?=
- =?utf-8?B?RHBWV25WbGpETVVzR2tLcGtkVjZqOWU1ZldRUTBIb21oTXhucDU4eXlIYldV?=
- =?utf-8?B?TjVyZEdpNDJnZjROV0ZqR2RTMmVXblZKaU1CSWdteWpiTktwWGtzcy8wUnl5?=
- =?utf-8?B?L2JlQ1k4NEpRajFld3hsT3lCK3Vxb0d2SmdPVGhMSVk3R213V3dLUURrVkRE?=
- =?utf-8?B?My8xZmNCeW0xS0ZIS1d0WVVnbndDMWo2RHJ4NHloK01ORmlwaVdBYmFzTVVh?=
- =?utf-8?B?NHNxQ096Q1lTYXVkaWdsaGNVV0RnNDJidTNFOWQ3cXJndE1qQ1FKTzMyT3dx?=
- =?utf-8?B?djdQSDQ4QjNFa2J4ZTMxc3JDSmJVSy9rUUcvcUtWK3dTZFUvMzBqeTRWbkc2?=
- =?utf-8?B?NmFrbEZnbWZrMXBMbDBYWVB4cWlpUlQ4SlprclZEbmg3M2pMY2JXOHJmQjkz?=
- =?utf-8?B?NEs1MXY4aXNqbUtaTGJqRm1BRXc0M2FZR0pXd3ErQXBrWnpQUzdUSjU3MXVM?=
- =?utf-8?B?aWxKVDVhSEZpL09jby9vemM2cVhGMkVxczVyUzZ0aE5RM3k3eUJtQkZwSVNU?=
- =?utf-8?B?NnRSd1JqejNFUm9EOE1XdjRVYXdJOW9XaEEvaWptUXpIbVA5QmFuMDhZUlhF?=
- =?utf-8?B?TDBrSjFaUDdhSk8vS3YwYW9DWkxvU1BUSURzWGpZSnh1dVI3cTRrTG4yNzNp?=
- =?utf-8?B?Sm5Ba1BZRk8wbnB0MjFqSk8yVXlyblc3Ujg2cXpYTm9sR01SQnN5cTRkMWMw?=
- =?utf-8?B?ekpLbHRpVDVwUjJhK0kyb2RRc2hEc3pURW00RCsrdnlHdkhlSmVpNmhLenFY?=
- =?utf-8?B?emdDSVhLU0xtTmpyWXlkRkV2VEhyanlPWis2ZlUreEc2d1ArbG1md3NrMW9S?=
- =?utf-8?B?MVVIdk0zd0pUK3dydTVtOVdVNHZCbW9tcTI3RGJqYUZqSGtqUStsZWpRallv?=
- =?utf-8?B?UTQyYi8vR1VYYmdPalNUZGdMM3RHOFVPYTRRblh0SUQ3NThIeExzZVNDK3hh?=
- =?utf-8?B?T1Nva1BIcDRmRFlLZkNkQ29pYzhkcVNGMUtoTnRqSnlFTWNKZXVNWk8vWm5I?=
- =?utf-8?B?KzBkUlNGZFpSb1YxSDV5aVBVQmJJWW84TllMTVplVGhnV0dzQWgrbTJtRDZ4?=
- =?utf-8?B?bUszd0EzdVJRM2VFL0VuTUx0cVc5NTNJWTRTbCtoUytxTjJJM2JweWdrVGl2?=
- =?utf-8?B?MnBUcC90S3laQllPWWlHdktPcDcvalZYcmhaaGdURFVHSnV6L0NMcmVyS0dp?=
- =?utf-8?B?SG9YN0xPWG5MekxLUTdHdHRoZkt1Y2FtUVJ1OThtN0taQUNsc2I1VzF2ZVJH?=
- =?utf-8?B?bDhTWnZxcFhQdFp6Y0lISmJrK0QrNCtNaEtoc0VrR2RidEpCNHpsREZmZEEw?=
- =?utf-8?B?NnlZRkRadGViT2cvVkhlK2Z5eXlwa0k4VFFxajB4SG82c0tHMmdKVC9CRFZq?=
- =?utf-8?B?bUV4WjhaL1JPNk10bmF6SHVWZmpJOWFtN3dIc0dhSW0xekJrM2IvRXF0V2ZD?=
- =?utf-8?B?WHkwRTdaWjRyN1dtYkdsQ0pBN0d3TWRqYzZIdmlnZUJaZWQ5TCtwdExJR0Nm?=
- =?utf-8?B?MUt4bjJjVXR5QVNUMGpJVXBEOUVseGZjdE5pTGU2cTRyZ1FuWVczQjhWbXBU?=
- =?utf-8?B?c2xkZVF3THR4Z3VkdzZiRzhHUVRBclhUYXhOeGFDZUJkZmlGM0E2aDVzb1pB?=
- =?utf-8?B?UkhkM0poZStPcFMycFFlaW0rZThBc0Y3WWtCNlRqM2hhd3JmbU1yVTJrUFV1?=
- =?utf-8?B?K2xpejBmRkV4Slk2NXRwTGc2RkdXY05tWHFaTmpKbkg3Y0R2MWJJcjlyWFM3?=
- =?utf-8?Q?PSozvrvy2RYE7n16jay4FgqI+?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 359a6950-741c-4768-3bc0-08db91d0a287
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5874.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2023 14:15:47.4466
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zap+6G/utATprA9FfH/9cu6yCZeCB3+PYd7u+mjVfKNLkLFdPsb7/JUSeMbz0ttdZXquBM9gM43rd6vQfWEF+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6238
-X-Spam-Status: No, score=-0.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,NICE_REPLY_A,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 7/20/23 17:46, Jonathan Corbet wrote:
-> Carlos Bilbao <carlos.bilbao@amd.com> writes:
-> 
->> Include HTML output generated with rustdoc into the Linux kernel
->> documentation on Rust.
+
+Hi,
+
+"Andreas Hindborg (Samsung)" <nmi@metaspace.dk> writes:
+
+> Hi,
+>
+> Yexuan Yang <1182282462@bupt.edu.cn> writes:
+>
+>>> Over the 432 benchmark configurations, the relative performance of the Rust
+>>> driver to the C driver (in terms of IOPS) is between 6.8 and -11.8 percent with
+>>> an average of 0.2 percent better for reads. For writes the span is 16.8 to -4.5
+>>> percent with an average of 0.9 percent better.
+>>> 
+>>> For each measurement the drivers are loaded, a drive is configured with memory
+>>> backing and a size of 4 GiB. C null_blk is configured to match the implemented
+>>> modes of the Rust driver: `blocksize` is set to 4 KiB, `completion_nsec` to 0,
+>>> `irqmode` to 0 (IRQ_NONE), `queue_mode` to 2 (MQ), `hw_queue_depth` to 256 and
+>>> `memory_backed` to 1. For both the drivers, the queue scheduler is set to
+>>> `none`. These measurements are made using 30 second runs of `fio` with the
+>>> `PSYNC` IO engine with workers pinned to separate CPU cores. The measurements
+>>> are done inside a virtual machine (qemu/kvm) on an Intel Alder Lake workstation
+>>> (i5-12600).
 >>
->> Carlos Bilbao:
->>   docs: Move rustdoc output, cross-reference it
->>   docs: Integrate rustdoc generation into htmldocs
-> 
-> So I've been messing with this a bit, trying the various combinations.
-> 
-> - With no .config file, it behaves as it always did - thanks.
-> 
-> - With CONFIG_RUST=y I get the rustdocs, as expected.  There is a time
->    penalty of about 5%, which is unfortunate, but that's the cost of
->    progress, I guess.
-> 
-> - Setting CONFIG_RUST=n led to a crash with make complaining:
->    "No rule to make target 'rustdoc'".  That isn't something I have been
->    able to reproduce, though, so I have no idea what happened there; have
->    you ever seen this?
+>> Hi All!
+>> I have some problems about your benchmark test.
+>> In Ubuntu 22.02, I compiled an RFL kernel with both C null_blk driver and Rust
+>> null_blk_driver as modules. For the C null_blk driver, I used the `modprobe`
+>> command to set relevant parameters, while for the Rust null_blk_driver, I simply
+>> started it. I used the following two commands to start the drivers:
+>>
+>> ```bash
+>> sudo modprobe null_blk \
+>>     queue_mode=2 irqmode=0 hw_queue_depth=256 \
+>>     memory_backed=1 bs=4096 completion_nsec=0 \
+>>     no_sched=1 gb=4;
+>> sudo modprobe rnull_mod
+>> ```
+>>
+>> After that, I tested their performance in `randread` with the fio command, specifying the first parameter as 4 and the second parameter as 1:
+>>
+>> ```bash
+>> fio --filename=/dev/nullb0 --iodepth=64 --ioengine=psync --direct=1 --rw=randread --bs=$1k --numjobs=$2 --runtime=30 --group_reporting --name=test-rand-read --output=test_c_randread.log
+>> fio --filename=/dev/rnullb0 --iodepth=64 --ioengine=psync --direct=1 --rw=randread --bs=$1k --numjobs=$2 --runtime=30 --group_reporting --name=test-rand-read --output=test_rust_randread.log
+>> ```
+>>
+>> The test results showed a significant performance difference between the two
+>> drivers, which was drastically different from the data you tested in the
+>> community. Specifically, for `randread`, the C driver had a bandwidth of
+>> 487MiB/s and IOPS of 124.7k, while the Rust driver had a bandwidth of 264MiB/s
+>> and IOPS of 67.7k. However, for other I/O types, the performance of the C and
+>> Rust drivers was more similar. Could you please provide more information about
+>> the actual bandwidth and IOPS data from your tests, rather than just the
+>> performance difference between the C and Rust drivers? Additionally, if you
+>> could offer possible reasons for this abnormality, I would greatly appreciate
+>> it!
+>
+> Thanks for trying out the code! I am not sure why you get these numbers.
+> I am currently out of office, but I will rerun the benchmarks next week
+> when I get back in. Maybe I can provide you with some scripts and my
+> kernel configuration. Hopefully we can figure out the difference in our
+> setups.
+>
 
-I have not been able to reproduce this error either. If anyone comes across
-this error in the future, please reach out to the list.
+I just ran the benchmarks for that configuration again. My setup is an
+Intel Alder Lake CPU (i5-12600) with Debian Bullseye user space running
+a 6.2.12 host kernel with a kernel config based on the stock Debian
+Bullseye (debian config + make olddefconfig). 32 GB of DDR5 4800MHz
+memory. The benchmarks (and patched kernel) run inside QEMU KVM (from
+Debian repos Debian 1:5.2+dfsg-11+deb11u2). I use the following qemu
+command to boot (edited a bit for clarity):
 
-> 
-> Other than that one bit of strangeness, I think this is about ready to
-> be applied.
-> 
-> Thanks,
-> 
-> jon
+"qemu-system-x86_64" "-nographic" "-enable-kvm" "-m" "16G" "-cpu" "host"
+"-M" "q35" "-smp" "6" "-kernel" "vmlinux" "-append" "console=ttyS0
+nokaslr rdinit=/sbin/init root=/dev/vda1 null_blk.nr_devices=0"
 
-Thanks,
-Carlos
+I use a Debian Bullseye user space inside the virtual machine.
+
+I think I used the stock Bullseye kernel for the host when I did the
+numbers for the cover letter, so that is different for this run.
+
+Here are the results:
+
++---------+----------+------+---------------------+
+| jobs/bs | workload | prep |          4          |
++---------+----------+------+---------------------+
+|    4    | randread |  1   | 0.28 0.00 (1.7,0.0) |
+|    4    | randread |  0   | 5.75 0.00 (6.8,0.0) |
++---------+----------+------+---------------------+
+
+I used the following parameters for both tests:
+
+Block size: 4k
+Run time: 120s
+Workload: randread
+Jobs: 4
+
+This is the `fio` command I used:
+
+['fio', '--group_reporting', '--name=default', '--filename=/dev/<snip>', '--time_based=1', '--runtime=120', '--rw=randread', '--output=<snip>', '--output-format=json', '--numjobs=4', '--cpus_allowed=0-3', '--cpus_allowed_policy=split', '--ioengine=psync', '--bs=4k', '--direct=1', '--norandommap', '--random_generator=lfsr']
+
+For the line in the table where `prep` is 1 I filled up the target
+device with data before running the benchmark. I use the following `fio`
+job to do that:
+
+['fio', '--name=prep', '--rw=write', '--filename=/dev/None', '--bs=4k', '--direct=1']
+
+Did you prepare the volumes with data in your experiment?
+
+How to read the data in the table: For the benchmark where the drive is
+prepared, Rust null_blk perform 0.28 percent better than C null_block.
+For the case where the drive is empty Rust null_block performs 5.75
+percent better than C null_block. I calculated the relative performance
+as "(r_iops - c_iops) / c_iops * 100".
+
+The IOPS info you request is present in the tables from the cover
+letter. As mentioned in the cover letter, the numbers in parenthesis in
+each cell is throughput in 1,000,000 IOPS for read and
+write for the C null_blk driver. For the table above, C null_blk did
+1,700,000 read IOPS in the case when the drive is prepared and 5,750,000
+IOPS in the case where the drive is not prepared.
+
+You can obtain bandwidth by multiplying IOPS by block size. I can also
+provide the raw json output of `fio` if you want to have a look.
+
+One last note is that I unload the module between each run and I do not
+have both modules loaded at the same time. If you are exhausting you
+memory pool this could maybe impact performance?
+
+So things to check:
+ - Do you prepare the drive?
+ - Do you release drive memory after test (you can unload the module)
+ - Use the lfsr random number generator
+ - Do not use the randommap
+
+I am not sure what hardware you are running on, but the throughput
+numbers you obtain seem _really_ low.
+
+Best regards
+Andreas Hindborg
