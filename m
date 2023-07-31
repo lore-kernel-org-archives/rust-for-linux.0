@@ -1,47 +1,48 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8139981B
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 08:49:37 +0000 (UTC)
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D1C249DF
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 01:49:32 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2b962535808so64018001fa.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 01:49:32 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5968BF0
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 11:14:14 +0000 (UTC)
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45F96E7A
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 04:14:11 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-3175d5ca8dbso3868307f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 04:14:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1690793371; x=1691398171;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=AEpQPsL8CKvgd9jCnKauvgppTMsvJVGBjZ9X1QDN9oE=;
-        b=4CsLTWSrXtKZeou89ehTdDcI35pXhzam4Gf+T2BNZK/F9IAwoXnSZdoCJhiuzuWEob
-         v+FHWghCDcj3bHalbjjF+ZQpieuLc22Up7FE1aLSBkKUodTfIVMGIuVzXjati/lwr9gN
-         XAU30D5Zh4A4gcTRNx85Pq1gBYV9VweZylbeWjn8M8U2ijFQBPYl1taHlJn3CxMF0CVh
-         GA8hHanjU1vc9LC8TTV0LsX0+xlRcpJ6WxpwyzrK8ioLE8hEH0VzN2K8ePI9xuHXUvtL
-         e1Inx4wkGuVdOmVskj2bNxagSFMJU2veOk4Xv/8H35PxkMBvvSD7cWsft78kMFPaGKOK
-         WNIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690793371; x=1691398171;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1690802050; x=1691406850;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AEpQPsL8CKvgd9jCnKauvgppTMsvJVGBjZ9X1QDN9oE=;
-        b=kq5Hx+sAS4CnROokTjLaDDWnCxssRfuzVEGohnL9CJ1tqpi+i9WZ7mjGf/bNorlOxC
-         n9f58dsTNx5FRV9cdtrxQLkOArShtVAtwTrZIna5f3i6MiOYTwN05RlLLAQQmkPoGHow
-         mbaXVU8/C5c74BaohVbGPiP3UN258GCwpNqtQcQ1SB7coYC//wunHU+wpopGupFc7P8/
-         hDON7KhYVbCme22A4yShEcF31XTfjTkiTMh3vgdKewOYpef3hQvc1aTfAUjVCZEQeYLb
-         lmF2Zt2hfgRZh7Vqhuf7KGZzBPeKrgY5g8edAloUGPF0w8KOdFVW+i4ll5mreuPw11k9
-         rCAA==
-X-Gm-Message-State: ABy/qLaac72hcKqRX3mdkV4uASgeFr2UOtPmI5Q6ujfxtos8uXN2iVGU
-	RrWmwryYRydUJ43qf01qNCDmRA==
-X-Google-Smtp-Source: APBJJlGFJ70YghXLG/YDeubPbpWWwMiyEaj0546fMRnCHGzwMbMfwcMsEuKBc1tsdJm+7ssl+pZkYQ==
-X-Received: by 2002:a2e:2c19:0:b0:2b7:3b73:2589 with SMTP id s25-20020a2e2c19000000b002b73b732589mr5498532ljs.32.1690793370676;
-        Mon, 31 Jul 2023 01:49:30 -0700 (PDT)
-Received: from localhost ([165.225.194.221])
-        by smtp.gmail.com with ESMTPSA id w3-20020a1cf603000000b003fa973e6612sm13350468wmc.44.2023.07.31.01.49.29
+        bh=a+yXtCYwJ1vp4lh1G4+6nAEpCQWF+yOkcXs9SOROqGU=;
+        b=eTpl40ucewCsFMrQBu0kMJ/J9h7WUG8ZwDVthoX9ympKu1DDdzDGoSO4pfrbo1q4lT
+         VMS2+6v5e4TcA1hj9UFwPgxEyUDPkKJEwzZkpfIo8iP9o7XCUCImbYbPBqW+q7CnRKst
+         Lj1gL/d0bPyzvYAqpNII4QDo1S+u14uH2I56NxuYK2EgrlVefWuAwtT8+se6XUkAHXYJ
+         tlimaNnYJp3U8U6ab+VBF2UNMFetpuFVB2TrTC8EDnljcFGNBjnMKHzgPOo/Mf1BCnDm
+         +tC8P4rab6qd/cVIyFbr+CMqsXXpHpuHX2mC8ZCH/+uygP6vpGdG4zxh4axf/DGg1Sz0
+         LYJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690802050; x=1691406850;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=a+yXtCYwJ1vp4lh1G4+6nAEpCQWF+yOkcXs9SOROqGU=;
+        b=YkT5dz8MajfH5OiS97B5Zai0usaq9Akg2BQUZBJgmRyXECX9OWuWlNLKS1CAsTnLAJ
+         atmExWkifQwQ3QexzQ0WDA2AKAgJIHNsEm+bQ2HR4VfMEtIwG5n9HL3kIOm8i/XXUAGk
+         gxHrpJSK0EYNkWjO7z/TgW8rxX4AB2UTfHreYkQv3jDfx1Xe5NvGFjAjnA0NSj8ErvvT
+         rsOuCa5NMXIMULmMHxnuUUAsJAciRkPA5XVGLHKgkYy7l1zXMBzNyzk5iZ0MQFuAHfB4
+         kqa7GuPgl/j38upie0wfgYX2FrynRSvfkxUGrE1SBmgGjR91GukDC4WkbOGYUMsM85FU
+         G7hw==
+X-Gm-Message-State: ABy/qLYgPmI/x7sL9V7PL3pXyxRc4aads+e0d+5AYQ3DUoqRok9gZtFa
+	SEq0+gkzOplBVyLiAbY4Ugt4gg==
+X-Google-Smtp-Source: APBJJlF6tBQNOBgzMGTKGd+XwA4tKDou2MjpSwYuH4U0eRW22f6ni/4ZHQfT3TJzV5b6WDQPTzegYA==
+X-Received: by 2002:a5d:452f:0:b0:317:6262:87af with SMTP id j15-20020a5d452f000000b00317626287afmr5251217wra.16.1690802049408;
+        Mon, 31 Jul 2023 04:14:09 -0700 (PDT)
+Received: from localhost ([165.225.194.195])
+        by smtp.gmail.com with ESMTPSA id z7-20020a5d4407000000b0031766e99429sm12713940wrq.115.2023.07.31.04.14.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jul 2023 01:49:29 -0700 (PDT)
+        Mon, 31 Jul 2023 04:14:09 -0700 (PDT)
 References: <20230730012905.643822-1-boqun.feng@gmail.com>
- <20230730012905.643822-3-boqun.feng@gmail.com>
+ <20230730012905.643822-4-boqun.feng@gmail.com>
 User-agent: mu4e 1.10.5; emacs 28.2.50
 From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
 To: Boqun Feng <boqun.feng@gmail.com>
@@ -60,52 +61,93 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  <vbabka@suse.cz>, Roman Gushchin <roman.gushchin@linux.dev>, Hyeonggon Yoo
  <42.hyeyoo@gmail.com>, Kees Cook <keescook@chromium.org>,
  stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] rust: allocator: Use krealloc_aligned() in
- KernelAllocator::alloc
-Date: Mon, 31 Jul 2023 10:48:57 +0200
-In-reply-to: <20230730012905.643822-3-boqun.feng@gmail.com>
-Message-ID: <873514qxd2.fsf@metaspace.dk>
+Subject: Re: [PATCH 3/3] rust: alloc: Add realloc and alloc_zeroed to the
+ GlobalAlloc impl
+Date: Mon, 31 Jul 2023 13:12:17 +0200
+In-reply-to: <20230730012905.643822-4-boqun.feng@gmail.com>
+Message-ID: <87y1iwpc3j.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
 
 Boqun Feng <boqun.feng@gmail.com> writes:
 
-> This fixes the potential issue that when KernelAllocator is used, the
-> allocation may be mis-aligned due to SLAB's alignment guarantee.
+> From: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
 >
+> While there are default impls for these methods, using the respective C
+> api's is faster. Currently neither the existing nor these new
+> GlobalAlloc method implementations are actually called. Instead the
+> __rust_* function defined below the GlobalAlloc impl are used. With
+> rustc 1.71 these functions will be gone and all allocation calls will go
+> through the GlobalAlloc implementation.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/68
+> Signed-off-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+> [boqun: add size adjustment for alignment requirement]
 > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 > ---
->  rust/kernel/allocator.rs | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
-> index fae11d1fdba7..1aec688cf0e0 100644
-> --- a/rust/kernel/allocator.rs
-> +++ b/rust/kernel/allocator.rs
-> @@ -41,9 +41,9 @@ unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, flags: bindings::gf
->  
->  unsafe impl GlobalAlloc for KernelAllocator {
->      unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-> -        // `krealloc()` is used instead of `kmalloc()` because the latter is
-> -        // an inline function and cannot be bound to as a result.
-> -        unsafe { bindings::krealloc(ptr::null(), layout.size(), bindings::GFP_KERNEL) as *mut u8 }
-> +        // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero size by the function safety
-> +        // requirement.
-> +        unsafe { krealloc_aligned(ptr::null_mut(), layout, bindings::GFP_KERNEL) }
->      }
->  
->      unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
 
 Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+
+>  rust/kernel/allocator.rs | 27 +++++++++++++++++++++++++++
+>  1 file changed, 27 insertions(+)
+>
+> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
+> index 1aec688cf0e0..6f1f50465ab3 100644
+> --- a/rust/kernel/allocator.rs
+> +++ b/rust/kernel/allocator.rs
+> @@ -51,6 +51,33 @@ unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout=
+) {
+>              bindings::kfree(ptr as *const core::ffi::c_void);
+>          }
+>      }
+> +
+> +    unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, new_size: usi=
+ze) -> *mut u8 {
+> +        // SAFETY:
+> +        // - `new_size`, when rounded up to the nearest multiple of `lay=
+out.align()`, will not
+> +        //   overflow `isize` by the function safety requirement.
+> +        // - `layout.align()` is a proper alignment (i.e. not zero and m=
+ust be a power of two).
+> +        let layout =3D unsafe { Layout::from_size_align_unchecked(new_si=
+ze, layout.align()) };
+> +
+> +        // SAFETY:
+> +        // - `ptr` is either null or a pointer allocated by this allocat=
+or by the function safety
+> +        //   requirement.
+> +        // - the size of `layout` is not zero because `new_size` is not =
+zero by the function safety
+> +        //   requirement.
+> +        unsafe { krealloc_aligned(ptr, layout, bindings::GFP_KERNEL) }
+> +    }
+> +
+> +    unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
+> +        // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero=
+ size by the function safety
+> +        // requirement.
+> +        unsafe {
+> +            krealloc_aligned(
+> +                ptr::null_mut(),
+> +                layout,
+> +                bindings::GFP_KERNEL | bindings::__GFP_ZERO,
+> +            )
+> +        }
+> +    }
+>  }
+>=20=20
+>  #[global_allocator]
 
