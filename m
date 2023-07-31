@@ -1,104 +1,92 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568EC63A7
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 07:56:23 +0000 (UTC)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3F44199;
-	Mon, 31 Jul 2023 00:56:22 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4E4071F74C;
-	Mon, 31 Jul 2023 07:56:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1690790181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pIov8vVMxRXk3LyFbp2uD7LCYfJdh0gTq4UHYD1FInU=;
-	b=IHnIUQZ9tVD/LASVC7rY1vGfrWL9+ec7o+rPfms6OJLNDzTNPC7aHi2M1nuiRuDQBze+ae
-	O6dfZ19xVe75ZjC34nC+0+XdIcwq2HDvK2VBrnkVsPk9667dBBwoStRKrxzy5OgV8bSNNv
-	3q/hDsaIvRA3ATqfO4tWSmdMITxBmUE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1690790181;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pIov8vVMxRXk3LyFbp2uD7LCYfJdh0gTq4UHYD1FInU=;
-	b=eztUAdxg5V1WceeZeOx6eIIrl61kMJVZKqLNYceVCOHCR0LVSeE9S4r4QUicyJF3kjz1K5
-	P0bcigSCk9jJCFAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E45F1133F7;
-	Mon, 31 Jul 2023 07:56:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id MQfqNiRpx2RNEAAAMHmgww
-	(envelope-from <vbabka@suse.cz>); Mon, 31 Jul 2023 07:56:20 +0000
-Message-ID: <e4f7ae0c-5397-4b20-80e8-6c0baece3e8c@suse.cz>
-Date: Mon, 31 Jul 2023 09:56:20 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21B911C98
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 08:22:42 +0000 (UTC)
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1549DD7
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 01:17:12 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-31792ac0fefso1446200f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 01:17:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1690791430; x=1691396230;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=tXBhRdUtHPrrcaPCjbweWbD8AMIQH0b5ap+ZgbPohPI=;
+        b=ILtKjJzDWLauNQNKqeZ9L8laJBDSpcEnpFzZw2345aQVHXBXjLv8naR51ob/R/fkrx
+         LZQ9pLNzYOC9T0sKxztD+JEJkuEY0hpTLMAysqz7B9t110z9zYv8l/noosXBA7hkvgnM
+         R3BBSfm03rZ5fIcCvkWZjjghUGA3/PuWfvlSJh49sw+d2lzAKf3M8w0+Jc2Wg/vsadt6
+         7e2rX1FYzM2iz6ku2aEiXRartgWUjhcMWfA6ivOUjTyBy+Z92IgtpVVRpUrmqiFHskS3
+         KE7PJrUIxLGNtTaNrskjbeAHBV2rubibWPoffK0u0IsEn3Ys7JW/MibRhejTuc6j20VB
+         hCcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690791430; x=1691396230;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tXBhRdUtHPrrcaPCjbweWbD8AMIQH0b5ap+ZgbPohPI=;
+        b=AtEBobxkcIyEhFF4t6kv4+GpRsyur4IU/pKyY82CgILhNxAopL+zNwuX8yB1zhp4n4
+         OGVmjx5mTxmDzrkx6p/sMf/zLIPQWDGSOd0RLghp8RE6XaUEK/Xh73aAC1rIeKoSB1Rp
+         QHyweNSZNTMWgq2T6wBRq8BYCyzAaQWH6JtZJzqsWqNYoGAYfyjlBIRs3g0I4t4Fdf2z
+         uyER8HjbRQ5gU0zk9I3/Nu9Z4Qa4muGFka9C+6VMOYxGcSjw+C378S/TEVOs0EZQMLHd
+         XaAvTp0i8QYEqoIe37EteiaKUyPwDwmNLPYGcVHgj+6eg4IAtffiz4QrKwrRukQWxtnU
+         ayPg==
+X-Gm-Message-State: ABy/qLb0nO1fpjmPcOzWYtGO/OktJah8S94gbAWNe6+2FT9i7In2oWmw
+	Q2c/3nz96ijp2elaouKrkGaO1w==
+X-Google-Smtp-Source: APBJJlGlRoVcspGECVffVhhAtcYYUfteqIvOr8ABivvTLEiMG8/BQmr8aW3Ttv6CWtvng4xkn8QPow==
+X-Received: by 2002:a5d:452d:0:b0:314:133a:f04 with SMTP id j13-20020a5d452d000000b00314133a0f04mr4535091wra.49.1690791429647;
+        Mon, 31 Jul 2023 01:17:09 -0700 (PDT)
+Received: from localhost ([165.225.194.190])
+        by smtp.gmail.com with ESMTPSA id z14-20020a5d4d0e000000b003143bb5ecd5sm12241583wrt.69.2023.07.31.01.17.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Jul 2023 01:17:09 -0700 (PDT)
+References: <20230718054426.1048583-1-ojeda@kernel.org>
+User-agent: mu4e 1.10.5; emacs 28.2.50
+From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ patches@lists.linux.dev, Andreas Hindborg <a.hindborg@samsung.com>
+Subject: Re: [PATCH] MAINTAINERS: add Andreas Hindborg as Rust reviewer
+Date: Mon, 31 Jul 2023 10:16:10 +0200
+In-reply-to: <20230718054426.1048583-1-ojeda@kernel.org>
+Message-ID: <877cqgqyuz.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/3] rust: allocator: Prevent mis-aligned allocation
-To: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
- Geoffrey Thomas <geofft@ldpreload.com>, Fox Chen <foxhlchen@gmail.com>,
- John Baublitz <john.m.baublitz@gmail.com>, Christoph Lameter <cl@linux.com>,
- Pekka Enberg <penberg@kernel.org>, David Rientjes <rientjes@google.com>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Hyeonggon Yoo <42.hyeyoo@gmail.com>, Kees Cook <keescook@chromium.org>,
- stable@vger.kernel.org, Andreas Hindborg <nmi@metaspace.dk>
-References: <20230730012905.643822-1-boqun.feng@gmail.com>
- <20230730012905.643822-2-boqun.feng@gmail.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20230730012905.643822-2-boqun.feng@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=ham
-	autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 7/30/23 03:29, Boqun Feng wrote:
-> Currently the rust allocator simply passes the size of the type Layout
-> to krealloc(), and in theory the alignment requirement from the type
-> Layout may be larger than the guarantee provided by SLAB, which means
-> the allocated object is mis-aligned.
-> 
-> Fix this by adjusting the allocation size to the nearest power of two,
-> which SLAB always guarantees a size-aligned allocation. And because Rust
-> guarantees that the original size must be a multiple of alignment and
-> the alignment must be a power of two, then the alignment requirement is
-> satisfied.
-> 
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Co-developed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
-> Signed-off-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Cc: stable@vger.kernel.org # v6.1+
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Miguel Ojeda <ojeda@kernel.org> writes:
 
+> Andreas has been involved with the Rust for Linux project for more than
+> a year now. He has been primarily working on the Rust NVMe driver [1],
+> presenting it in several places (such as LPC [2][3] and Kangrejos [4]).
+>
+> In addition, he recently submitted the Rust null block driver [5] and
+> has been reviewing patches in the mailing list for some months.
+>
+> Thus add him to the `RUST` entry as reviewer.
+>
+> Link: https://rust-for-linux.com/nvme-driver [1]
+> Link: https://lpc.events/event/16/contributions/1180/attachments/1017/1961/deck.pdf [2]
+> Link: https://www.youtube.com/watch?v=BwywU1MqW38 [3]
+> Link: https://kangrejos.com/A%20Linux%20(PCI)%20NVMe%20Driver%20in%20Rust.pdf [4]
+> Link: https://lore.kernel.org/rust-for-linux/20230503090708.2524310-1-nmi@metaspace.dk/ [5]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+
+Acked-by: Andreas Hindborg <a.hindborg@samsung.com>
