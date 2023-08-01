@@ -1,216 +1,83 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3291818C14
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 15:09:53 +0000 (UTC)
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD061FDD
-	for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 08:09:36 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-317716a4622so4285277f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 31 Jul 2023 08:09:36 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C356E46A0
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Aug 2023 10:51:21 +0000 (UTC)
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58FDD5FED
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Aug 2023 03:51:01 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-c8f360a07a2so4371063276.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Aug 2023 03:51:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1690816175; x=1691420975;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=I4vO2/48289ncfyl74yVzbi9SJ+8aO99Q+q42Y/o7iA=;
-        b=KMLLwvWuQB0v34U5jA7W9JWyQty3m1XLZgxxm6zAAlpRBSuBq+TxbhJrjsRfyJ9FBA
-         A3kld0jeBNojm9Q2LUrMBnzh5VhG8/8GAA0kdl9YzxoDI4Cwot0BF57j4TDBZe4DPE7/
-         QOUiAf+l21FB6iFaXvE7FvG0GoZU+f4EopdppzBmqQo4CwO/XDUqqTQQ68xI77Ss9f/t
-         /GF/U0+S1pEa2ll1G8muN9uiChw0x14+HwD3++CdFj+n6WPzhNx3VxiCmvqmX1BJIpJa
-         bMl0b5aY+q9VFP/iTaDDBQPukddst1nHdV3dvKn9ynL4uUSAgdq1JpMVs4w2mjiNFPZn
-         1kyA==
+        d=google.com; s=20221208; t=1690887014; x=1691491814;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kHcvSmUD5NQH7dlSs1RiodhXk7N/adTKqbnc+6BUbAs=;
+        b=neb8lEFM29+M7oIq4ba6eT4rvS9wzWOAOU/MmG2LdtfU5Ka5nYxrYi0MLMR1ZYb/rF
+         cqNNxHfKhH2JxQiw20PyUN7toyx8ezotWhIQ6Mk9KA7V+xJUV06wn74CAv/Bqf/6+JmI
+         DRrPHZL3zqrUjqgH+yQv9gKFqQChWeu0Uk6dzwZTl9CYfOHKv6pmUb4w0ETQDvG3qWgD
+         mNvF4vnhhXoYtMe9OLX0v6x69UnQXWvCK83u7R1Zg7uq12jqVLgbiKjvm8xoqlzjf6bs
+         lF9OKiTvbE4FVmaxloHhdi63gZ3ENtnSr+U9mvbtxIiOYlGXqVojorc1L8noznc0XxbD
+         I2ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690816175; x=1691420975;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I4vO2/48289ncfyl74yVzbi9SJ+8aO99Q+q42Y/o7iA=;
-        b=IlM8IjtNeJ3LF6rFDB/7Ey/Th+hiJt3wv3ppyYBLSgQwF9SzOngLm1eGjPiCI9VdLy
-         Ej9OX3rJ+qmWvZziRibGBt9p9k6VGz8pXcEnBEYCjq29MyY9j2Ba8hIScH66qEXMB4Ck
-         YVN20zMO6FhO+GJWW/Jzdggb3ZUeU76gp9pu6khiVEhlxs1Bf6/QDuNH4hW3LJyQbvEa
-         iUhUS8Idad3e6AnFkNrLuccQWG5PwEJ3OJq5TJbZeqIChGr735VTSvyVbdPEO+JqAB+b
-         TiSyVT8SIvQzKwLL6RbvPOk+fVG7e7XZE00A74BNMmRUn6hw1ZNPX+Zkz2bmiQB10pnM
-         iEMg==
-X-Gm-Message-State: ABy/qLYg/FWDk6z0kqnR7zc3aeC9O1XZw/tspBqPQQNgO97pgBk8LWeZ
-	HoD9tbhOawF0wYKWEr4RztezPA==
-X-Google-Smtp-Source: APBJJlFA0nobe7wROd+ljsHGw7HOxtq4QXUAvZeba2N7YHxBdfwAOGihboymyObrWDI04pCCbRXzdQ==
-X-Received: by 2002:a05:6000:108b:b0:314:1560:cc68 with SMTP id y11-20020a056000108b00b003141560cc68mr71125wrw.56.1690816174663;
-        Mon, 31 Jul 2023 08:09:34 -0700 (PDT)
-Received: from localhost ([165.225.194.195])
-        by smtp.gmail.com with ESMTPSA id r8-20020adfe688000000b0031434c08bb7sm13289600wrm.105.2023.07.31.08.09.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Jul 2023 08:09:34 -0700 (PDT)
-References: <20230503090708.2524310-1-nmi@metaspace.dk>
- <2B3CA5F1CCCFEAB2+20230727034517.GB126117@1182282462>
- <87bkfwr0ew.fsf@metaspace.dk>
-User-agent: mu4e 1.10.5; emacs 28.2.50
-From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-To: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-Cc: Yexuan Yang <1182282462@bupt.edu.cn>, Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@lst.de>, Keith  Busch <kbusch@kernel.org>, Damien
- Le Moal <Damien.LeMoal@wdc.com>, Hannes  Reinecke <hare@suse.de>,
- lsf-pc@lists.linux-foundation.org, rust-for-linux@vger.kernel.org,
- linux-block@vger.kernel.org, Matthew  Wilcox <willy@infradead.org>, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson
- Almeida Filho <wedsonaf@gmail.com>, Boqun  Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, Bj??rn Roy Baron <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>, open  list
- <linux-kernel@vger.kernel.org>, gost.dev@samsung.com
-Subject: Re: [RFC PATCH 00/11] Rust null block driver
-Date: Mon, 31 Jul 2023 16:14:38 +0200
-In-reply-to: <87bkfwr0ew.fsf@metaspace.dk>
-Message-ID: <87r0oop176.fsf@metaspace.dk>
+        d=1e100.net; s=20221208; t=1690887014; x=1691491814;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kHcvSmUD5NQH7dlSs1RiodhXk7N/adTKqbnc+6BUbAs=;
+        b=GyT/5fRBvb17jlVzbgXZ3rWle8wqdJKngMXUHw+vpNmtTWFwoAbBV30M0rJnPTbxL/
+         UvYw7GBLQIL8mk+SpzHp4edpMl1chMaODErcmiBNZI09THn/2TO2fiGR5wkSWM4Y6Otn
+         0oJU1Wx/S/QNA2NuwWSapWBuuo2RhNhT5TJodPPDeeCr9HJi6y1GI1ai8pjFSlf4VPM8
+         XJj8VTOTW3ne+efwvCBkjeHF49BxAKmNwYGAqzC7ymfiX1NoYGemUSGsBHCCNpvgMGFu
+         P6ghACOe8udTsxv2JZ3Pe5czq+cf5A661UoSVZ7iOKOEKCR+Q7wZlXh92Z2uLDvfdP9U
+         dH9g==
+X-Gm-Message-State: ABy/qLYJJl6akokMpcQDhztjTrn/7r0GIdDp3Uoz4Z4rTRiQq7G+7ayW
+	coilS0467TQGvOfZ8newJ2nhM+l/bngH0Dw=
+X-Google-Smtp-Source: APBJJlHzNb6bXB8ltHqQTkoGZq1RSBdB0hBEpZ4BPR57T3IYwV2Hmn/x7LKYrNjzdYQ6tJ5J8b6Zb4tKK4Bs3gc=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:11ca:b0:d09:b19:fe2c with SMTP
+ id n10-20020a05690211ca00b00d090b19fe2cmr78470ybu.12.1690887013886; Tue, 01
+ Aug 2023 03:50:13 -0700 (PDT)
+Date: Tue,  1 Aug 2023 10:50:08 +0000
+In-Reply-To: <20230729090838.225225-3-benno.lossin@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.6
+Mime-Version: 1.0
+References: <20230729090838.225225-3-benno.lossin@proton.me>
+X-Mailer: git-send-email 2.41.0.585.gd2178a4bd4-goog
+Message-ID: <20230801105008.1585062-1-aliceryhl@google.com>
+Subject: Re: [PATCH v3 02/13] rust: init: make `#[pin_data]` compatible with
+ conditional compilation of fields
+From: Alice Ryhl <aliceryhl@google.com>
+To: benno.lossin@proton.me
+Cc: alex.gaynor@gmail.com, aliceryhl@google.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org, 
+	nmi@metaspace.dk, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
+	wedsonaf@gmail.com
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
+Benno Lossin <benno.lossin@proton.me> writes:
+> This patch allows one to write
+> ```
+> #[pin_data]
+> pub struct Foo {
+>     #[cfg(CONFIG_BAR)]
+>     a: Bar,
+>     #[cfg(not(CONFIG_BAR))]
+>     a: Baz,
+> }
+> ```
+> Before, this would result in a compile error, because `#[pin_data]`
+> would generate two functions named `a` for both fields unconditionally.
+> 
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-Hi,
-
-"Andreas Hindborg (Samsung)" <nmi@metaspace.dk> writes:
-
-> Hi,
->
-> Yexuan Yang <1182282462@bupt.edu.cn> writes:
->
->>> Over the 432 benchmark configurations, the relative performance of the Rust
->>> driver to the C driver (in terms of IOPS) is between 6.8 and -11.8 percent with
->>> an average of 0.2 percent better for reads. For writes the span is 16.8 to -4.5
->>> percent with an average of 0.9 percent better.
->>> 
->>> For each measurement the drivers are loaded, a drive is configured with memory
->>> backing and a size of 4 GiB. C null_blk is configured to match the implemented
->>> modes of the Rust driver: `blocksize` is set to 4 KiB, `completion_nsec` to 0,
->>> `irqmode` to 0 (IRQ_NONE), `queue_mode` to 2 (MQ), `hw_queue_depth` to 256 and
->>> `memory_backed` to 1. For both the drivers, the queue scheduler is set to
->>> `none`. These measurements are made using 30 second runs of `fio` with the
->>> `PSYNC` IO engine with workers pinned to separate CPU cores. The measurements
->>> are done inside a virtual machine (qemu/kvm) on an Intel Alder Lake workstation
->>> (i5-12600).
->>
->> Hi All!
->> I have some problems about your benchmark test.
->> In Ubuntu 22.02, I compiled an RFL kernel with both C null_blk driver and Rust
->> null_blk_driver as modules. For the C null_blk driver, I used the `modprobe`
->> command to set relevant parameters, while for the Rust null_blk_driver, I simply
->> started it. I used the following two commands to start the drivers:
->>
->> ```bash
->> sudo modprobe null_blk \
->>     queue_mode=2 irqmode=0 hw_queue_depth=256 \
->>     memory_backed=1 bs=4096 completion_nsec=0 \
->>     no_sched=1 gb=4;
->> sudo modprobe rnull_mod
->> ```
->>
->> After that, I tested their performance in `randread` with the fio command, specifying the first parameter as 4 and the second parameter as 1:
->>
->> ```bash
->> fio --filename=/dev/nullb0 --iodepth=64 --ioengine=psync --direct=1 --rw=randread --bs=$1k --numjobs=$2 --runtime=30 --group_reporting --name=test-rand-read --output=test_c_randread.log
->> fio --filename=/dev/rnullb0 --iodepth=64 --ioengine=psync --direct=1 --rw=randread --bs=$1k --numjobs=$2 --runtime=30 --group_reporting --name=test-rand-read --output=test_rust_randread.log
->> ```
->>
->> The test results showed a significant performance difference between the two
->> drivers, which was drastically different from the data you tested in the
->> community. Specifically, for `randread`, the C driver had a bandwidth of
->> 487MiB/s and IOPS of 124.7k, while the Rust driver had a bandwidth of 264MiB/s
->> and IOPS of 67.7k. However, for other I/O types, the performance of the C and
->> Rust drivers was more similar. Could you please provide more information about
->> the actual bandwidth and IOPS data from your tests, rather than just the
->> performance difference between the C and Rust drivers? Additionally, if you
->> could offer possible reasons for this abnormality, I would greatly appreciate
->> it!
->
-> Thanks for trying out the code! I am not sure why you get these numbers.
-> I am currently out of office, but I will rerun the benchmarks next week
-> when I get back in. Maybe I can provide you with some scripts and my
-> kernel configuration. Hopefully we can figure out the difference in our
-> setups.
->
-
-I just ran the benchmarks for that configuration again. My setup is an
-Intel Alder Lake CPU (i5-12600) with Debian Bullseye user space running
-a 6.2.12 host kernel with a kernel config based on the stock Debian
-Bullseye (debian config + make olddefconfig). 32 GB of DDR5 4800MHz
-memory. The benchmarks (and patched kernel) run inside QEMU KVM (from
-Debian repos Debian 1:5.2+dfsg-11+deb11u2). I use the following qemu
-command to boot (edited a bit for clarity):
-
-"qemu-system-x86_64" "-nographic" "-enable-kvm" "-m" "16G" "-cpu" "host"
-"-M" "q35" "-smp" "6" "-kernel" "vmlinux" "-append" "console=ttyS0
-nokaslr rdinit=/sbin/init root=/dev/vda1 null_blk.nr_devices=0"
-
-I use a Debian Bullseye user space inside the virtual machine.
-
-I think I used the stock Bullseye kernel for the host when I did the
-numbers for the cover letter, so that is different for this run.
-
-Here are the results:
-
-+---------+----------+------+---------------------+
-| jobs/bs | workload | prep |          4          |
-+---------+----------+------+---------------------+
-|    4    | randread |  1   | 0.28 0.00 (1.7,0.0) |
-|    4    | randread |  0   | 5.75 0.00 (6.8,0.0) |
-+---------+----------+------+---------------------+
-
-I used the following parameters for both tests:
-
-Block size: 4k
-Run time: 120s
-Workload: randread
-Jobs: 4
-
-This is the `fio` command I used:
-
-['fio', '--group_reporting', '--name=default', '--filename=/dev/<snip>', '--time_based=1', '--runtime=120', '--rw=randread', '--output=<snip>', '--output-format=json', '--numjobs=4', '--cpus_allowed=0-3', '--cpus_allowed_policy=split', '--ioengine=psync', '--bs=4k', '--direct=1', '--norandommap', '--random_generator=lfsr']
-
-For the line in the table where `prep` is 1 I filled up the target
-device with data before running the benchmark. I use the following `fio`
-job to do that:
-
-['fio', '--name=prep', '--rw=write', '--filename=/dev/None', '--bs=4k', '--direct=1']
-
-Did you prepare the volumes with data in your experiment?
-
-How to read the data in the table: For the benchmark where the drive is
-prepared, Rust null_blk perform 0.28 percent better than C null_block.
-For the case where the drive is empty Rust null_block performs 5.75
-percent better than C null_block. I calculated the relative performance
-as "(r_iops - c_iops) / c_iops * 100".
-
-The IOPS info you request is present in the tables from the cover
-letter. As mentioned in the cover letter, the numbers in parenthesis in
-each cell is throughput in 1,000,000 IOPS for read and
-write for the C null_blk driver. For the table above, C null_blk did
-1,700,000 read IOPS in the case when the drive is prepared and 5,750,000
-IOPS in the case where the drive is not prepared.
-
-You can obtain bandwidth by multiplying IOPS by block size. I can also
-provide the raw json output of `fio` if you want to have a look.
-
-One last note is that I unload the module between each run and I do not
-have both modules loaded at the same time. If you are exhausting you
-memory pool this could maybe impact performance?
-
-So things to check:
- - Do you prepare the drive?
- - Do you release drive memory after test (you can unload the module)
- - Use the lfsr random number generator
- - Do not use the randommap
-
-I am not sure what hardware you are running on, but the throughput
-numbers you obtain seem _really_ low.
-
-Best regards
-Andreas Hindborg
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
