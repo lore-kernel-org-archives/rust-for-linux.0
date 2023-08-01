@@ -1,83 +1,115 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C356E46A0
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Aug 2023 10:51:21 +0000 (UTC)
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58FDD5FED
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Aug 2023 03:51:01 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-c8f360a07a2so4371063276.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 01 Aug 2023 03:51:01 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F26815
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Aug 2023 14:44:46 +0000 (UTC)
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B08B1BC3;
+	Tue,  1 Aug 2023 07:44:45 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-c5f98fc4237so4687844276.2;
+        Tue, 01 Aug 2023 07:44:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690887014; x=1691491814;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kHcvSmUD5NQH7dlSs1RiodhXk7N/adTKqbnc+6BUbAs=;
-        b=neb8lEFM29+M7oIq4ba6eT4rvS9wzWOAOU/MmG2LdtfU5Ka5nYxrYi0MLMR1ZYb/rF
-         cqNNxHfKhH2JxQiw20PyUN7toyx8ezotWhIQ6Mk9KA7V+xJUV06wn74CAv/Bqf/6+JmI
-         DRrPHZL3zqrUjqgH+yQv9gKFqQChWeu0Uk6dzwZTl9CYfOHKv6pmUb4w0ETQDvG3qWgD
-         mNvF4vnhhXoYtMe9OLX0v6x69UnQXWvCK83u7R1Zg7uq12jqVLgbiKjvm8xoqlzjf6bs
-         lF9OKiTvbE4FVmaxloHhdi63gZ3ENtnSr+U9mvbtxIiOYlGXqVojorc1L8noznc0XxbD
-         I2ww==
+        d=gmail.com; s=20221208; t=1690901084; x=1691505884;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dXgNoIC2PvO/RdQx7w9iCucEs/VxyEwm+OaXP/sJCPQ=;
+        b=VFMh5LS5z3t+hG68vt3INAW1bmqD8uEWGh7LMqvkYjF7v6fZ/vZkLNxUe9mYT6pjMm
+         65JazsVmxiH3X6IUyXQFHXLVz1mH5F9dIW1GbdgUBwb00JFth2efdOU1NR0w5eWdYAbk
+         8ObzV3Kxly5ZAa4OdMnlE63neLzSJNFjgC2BEhwZ+VvaplEEoAq9BndXYlcuCt02GY2O
+         dIA1d7QrDoL+fMV2YirfEhivh/yO2ytwgD9bMR+qpktysNaz9wuFliMgI2WtaFFTvffP
+         so94wlh17sCKXLmDLTg085cPWzJwdjluHA9d4clhAb0ERK26knfENhZXdyArYbUvkQoT
+         2dcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690887014; x=1691491814;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kHcvSmUD5NQH7dlSs1RiodhXk7N/adTKqbnc+6BUbAs=;
-        b=GyT/5fRBvb17jlVzbgXZ3rWle8wqdJKngMXUHw+vpNmtTWFwoAbBV30M0rJnPTbxL/
-         UvYw7GBLQIL8mk+SpzHp4edpMl1chMaODErcmiBNZI09THn/2TO2fiGR5wkSWM4Y6Otn
-         0oJU1Wx/S/QNA2NuwWSapWBuuo2RhNhT5TJodPPDeeCr9HJi6y1GI1ai8pjFSlf4VPM8
-         XJj8VTOTW3ne+efwvCBkjeHF49BxAKmNwYGAqzC7ymfiX1NoYGemUSGsBHCCNpvgMGFu
-         P6ghACOe8udTsxv2JZ3Pe5czq+cf5A661UoSVZ7iOKOEKCR+Q7wZlXh92Z2uLDvfdP9U
-         dH9g==
-X-Gm-Message-State: ABy/qLYJJl6akokMpcQDhztjTrn/7r0GIdDp3Uoz4Z4rTRiQq7G+7ayW
-	coilS0467TQGvOfZ8newJ2nhM+l/bngH0Dw=
-X-Google-Smtp-Source: APBJJlHzNb6bXB8ltHqQTkoGZq1RSBdB0hBEpZ4BPR57T3IYwV2Hmn/x7LKYrNjzdYQ6tJ5J8b6Zb4tKK4Bs3gc=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a05:6902:11ca:b0:d09:b19:fe2c with SMTP
- id n10-20020a05690211ca00b00d090b19fe2cmr78470ybu.12.1690887013886; Tue, 01
- Aug 2023 03:50:13 -0700 (PDT)
-Date: Tue,  1 Aug 2023 10:50:08 +0000
-In-Reply-To: <20230729090838.225225-3-benno.lossin@proton.me>
+        d=1e100.net; s=20221208; t=1690901084; x=1691505884;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dXgNoIC2PvO/RdQx7w9iCucEs/VxyEwm+OaXP/sJCPQ=;
+        b=EswM2fgvEh/JA3eAaUC1r/Etp1zki3Q0/MiUV5FiWBRerFch+oG/Ma8v8P9Y4Q2G7S
+         kkvW2pvYpym8ZFMUVlWz1QLjLhW2zo+GAOXuv6CTYrQNTZnk3OgqmUQFS1XImJ3zcGty
+         +HBLdToCZjw8ttRLuSjigTo4Y1fQ4c7rcAU2wCDfVqEXoWFOtdWprFgx7T8zD1VK8mEt
+         rF7tGLjKas8wpKXryrJnwTvYiqOpXtJ8Zf1tJE+s462r9YPyszZZrzsnLHQuelCFnaja
+         VZoNLpAZJY2AvG7Mvbl5jUVQ9ecTbCu7G8ddh3gYDEKqdtGm8vJB9o/m+BCp8kZXtldp
+         L8rg==
+X-Gm-Message-State: ABy/qLa47cDlQiEqL1OKN2KvlzQFXqM30Pt93RwMeTVwoxBkjqrIRUyW
+	cJH6UZDcXcTa9XOSI3G039AmHVGwT6lVVOqlqqA=
+X-Google-Smtp-Source: APBJJlExxDX5gr6eVov8kBtquPdrHK2sGfm+MVVQv8plpRunt/LlfvnCesz2qwdIPlnPHM7oEiSeFP7KKO48sgLUTNE=
+X-Received: by 2002:a25:ac9b:0:b0:d15:bd9f:cac0 with SMTP id
+ x27-20020a25ac9b000000b00d15bd9fcac0mr9856536ybi.39.1690901084347; Tue, 01
+ Aug 2023 07:44:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20230729090838.225225-3-benno.lossin@proton.me>
-X-Mailer: git-send-email 2.41.0.585.gd2178a4bd4-goog
-Message-ID: <20230801105008.1585062-1-aliceryhl@google.com>
-Subject: Re: [PATCH v3 02/13] rust: init: make `#[pin_data]` compatible with
- conditional compilation of fields
-From: Alice Ryhl <aliceryhl@google.com>
-To: benno.lossin@proton.me
-Cc: alex.gaynor@gmail.com, aliceryhl@google.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org, 
-	nmi@metaspace.dk, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	wedsonaf@gmail.com
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+References: <20230720-rustbind-v1-0-c80db349e3b5@google.com> <20230720-rustbind-v1-2-c80db349e3b5@google.com>
+In-Reply-To: <20230720-rustbind-v1-2-c80db349e3b5@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 1 Aug 2023 16:44:32 +0200
+Message-ID: <CANiq72mJjB_ubHx-y316o7b0KNjdHOrA9Wz0ievRvoTi1jVR5A@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust: macros: add macro to easily run KUnit tests
+To: David Gow <davidgow@google.com>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Benno Lossin <benno.lossin@proton.me> writes:
-> This patch allows one to write
-> ```
-> #[pin_data]
-> pub struct Foo {
->     #[cfg(CONFIG_BAR)]
->     a: Bar,
->     #[cfg(not(CONFIG_BAR))]
->     a: Baz,
-> }
-> ```
-> Before, this would result in a compile error, because `#[pin_data]`
-> would generate two functions named `a` for both fields unconditionally.
-> 
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+On Thu, Jul 20, 2023 at 8:40=E2=80=AFAM David Gow <davidgow@google.com> wro=
+te:
+>
+> The only difference with user-space tests is that instead of using
+> `#[cfg(test)]`, `#[kunit_tests(kunit_test_suit_name)]` is used.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+I may be missing something, but this does not appear to map the
+`assert*!`s to the KUnit APIs, is that correct? (i.e. like we do for
+`rustdoc`-tests).
+
+I made an assertion fail, and it seems to use the standard library
+macros, thus panicking and ending up in `BUG()` (rather than a failed
+test):
+
+    rust_kernel: panicked at 'assertion failed: `(left =3D=3D right)`
+      left: `true`,
+     right: `false`', rust/kernel/kunit.rs:329:1
+    ------------[ cut here ]------------
+    kernel BUG at rust/helpers.c:34!
+
+Then the test times out eventually and things break:
+
+        # rust_test_kunit_kunit_tests: try timed out
+    ------------[ cut here ]------------
+    refcount_t: addition on 0; use-after-free.
+
+> +    // Add `#[cfg(CONFIG_KUNIT)]` before the module declaration.
+> +    let config_kunit =3D "#[cfg(CONFIG_KUNIT)]".to_owned().parse().unwra=
+p();
+> +    tokens.insert(
+> +        0,
+> +        TokenTree::Group(Group::new(Delimiter::None, config_kunit)),
+> +    );
+
+I wonder about compile-time here with this approach. As far as I
+understand, having the `cfg` explicitly outside the proc macro would
+avoid invoking it.
+
+Do we know the potential compile-time impact, especially when we will
+have many tests?
+ventually it would be ideal to have an approach closer to the
+`rustdoc` one, where the compiler finds the tests for us and we
+generate the needed code in the build system, i.e. outside a proc
+macro.
+
+Cheers,
+Miguel
