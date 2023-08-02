@@ -1,59 +1,64 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14DF79FF
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 15:29:38 +0000 (UTC)
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 720C730EB;
-	Wed,  2 Aug 2023 08:29:35 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id 3f1490d57ef6-d0e009433c4so7353649276.2;
-        Wed, 02 Aug 2023 08:29:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09976FD9
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 17:37:52 +0000 (UTC)
+Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB39468C;
+	Wed,  2 Aug 2023 10:37:22 -0700 (PDT)
+Received: by mail-yb1-xb2e.google.com with SMTP id 3f1490d57ef6-d3522283441so69561276.0;
+        Wed, 02 Aug 2023 10:37:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690990174; x=1691594974;
+        d=gmail.com; s=20221208; t=1690997838; x=1691602638;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gjGT5MZT/KYoCShCvWCNxWhackCgYzrKJaoLfxrA8WM=;
-        b=AavCHvHgpveeOS1jtZ+eY0zxkOUyhsiJ+vG3mGbV0jq54pSnMoPVZZRYZPvfh0T2U1
-         vapRXvqAtoeps28Hgg30XpttrCdtI+BTDgs/wtpfpeME9etK8MTf+IRVE6dxz/RzecCy
-         BFko1Cr5ACJ5KLTzFf88rczBiGlcs+lQHtSvqyKzcauZUmV5ahTx+HpfqXYEV9pWPDM1
-         mbqedIY/GxdX/LdcE55u0MXO6vKeklLRBQTg3WvTgL+rXAkKt0R8fAiMaMLttZrY8Rf3
-         sm/MLctwYHTjPCaGNILHihcUPcdRT5pc21gqvGogK1iFhRK4cYwc+weK+oXVEEnSLNEZ
-         d3Tw==
+        bh=djWM5i9lKuUVTLXZbqtDmTQwu3LeHQksxQd/wmHnh5o=;
+        b=d+ZqYhUfDUN7p9LdY3RpuIzJMd7/pk4utBEwCUvys8aVbnL08kEqjn6rYYsrihOB2X
+         caUoVRK/F6TxJhWMBbla21BzgwTrx7fmAGlpNIzC9UD95KvtSmBtRSpAwTfeEWT8lddM
+         54kOAl06sRsi57LMujdMT8CbIQHYCF6JF2XGlzVFE3tVL6NmQodJnuYwl5AdcvVoXcRB
+         KScVP3TdV+HTFwfPM1ZAGV93wtGfMynKS7Horqh9HUqdEbmV9UV0JFYMi93UCji4u2EV
+         19g5NDzQP14KJhpcSek45Va/jxNUPc79QY1b6VqnQxqklMW3FLcYzCKTdCLruVQRJhXL
+         j/xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690990174; x=1691594974;
+        d=1e100.net; s=20221208; t=1690997838; x=1691602638;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gjGT5MZT/KYoCShCvWCNxWhackCgYzrKJaoLfxrA8WM=;
-        b=Sy7J/X1KOMs4BaB9eBglptzbgn84D8W4kWoiGMYJcP315pO4rc/XiGhYlNhpxUVerz
-         J8EjwAGnaBh1qmmustO1agOc535rZoC6H1WOnp7bZX3YjdE483GQSE5143179VT1kZye
-         CozWon6+TsKJ7BQJV6aytVG9wNgUsKLwaX5hUV2mPLgdIKNsVdzN5JTpIiC2kF4kJwDX
-         sWOAs05pwZJjrZsfj/mK8pzOEY1gzwwWJsibhOTuVMVizUPy9p3GW13vabPunny/stom
-         8MkiR4FXMDMH5Y1YL+Ga/yDMNNnlCloPWya+0xmXoGZrHnhz0hQ2U7cZXc5yY7Fg6lJk
-         cImA==
-X-Gm-Message-State: ABy/qLa3BJL/hwuaM5glVLbahD2q4Nz3ZjnK1kllhHX/UAjP7pK3gAWd
-	32h6eVNgmZa/jc71w2LOpPBH/ud4LXbWuZtUoJU4fDvYhIQ=
-X-Google-Smtp-Source: APBJJlFuMzGv/XwV3IrY7F8nutri3KEFsZXE4bOMmdK7tUwp8EMiB+ykS3db03UhfC5+cuWcLSIJZXuXvni/5NiUuW4=
-X-Received: by 2002:a25:844f:0:b0:d19:6a42:9271 with SMTP id
- r15-20020a25844f000000b00d196a429271mr15363400ybm.23.1690990174469; Wed, 02
- Aug 2023 08:29:34 -0700 (PDT)
+        bh=djWM5i9lKuUVTLXZbqtDmTQwu3LeHQksxQd/wmHnh5o=;
+        b=Yr7f7Fo7taSooThiRaS+0xaZ2ogTxLtGHAaHtR7PkM9Rcxw9301JvguerF7dneZOKE
+         Y/rxIC1Px6tZm+0cIAR7j/kuHL9GdiJds+Dx0Fow6GKZRzO+mBMMlTf7GrsystjqrB2Y
+         pq+47cngEDPDPmz/OOwOzkCn69ybSfkkmyBapHFhFa2m/vuPgWPzsBsWIv7DMIdU8JTl
+         gMRsgZ0JHJy2qdy4rBl7naxB9pyalGaqohtdzYiHeIXdzyV07WW+ZB8d0n7rJM5W/Ck3
+         0ka81m6J6ZzxhOn5aspYl9xg6IZTCJ8kmVvZm5x9cKS0cPHwfdGsBpAUB3k3HrQJdzi6
+         bz3g==
+X-Gm-Message-State: ABy/qLbxsf7nQaEYQvPCJaAsrFKok9i3CesJ+zWD9s8tcMDx+9FqPJb8
+	V5NycAbk6HmUl1z3+z/AyNqeMU+311zwoYtTi4s=
+X-Google-Smtp-Source: APBJJlFflbXVYJnnaINl6W4YHAywrJSCmKBN9jOSruqUIJFmxeDQ9FIdYHqotl8nB4n+IvqYUGTpzE9KuUhP157xeYk=
+X-Received: by 2002:a25:74d6:0:b0:d0b:5a37:1a9e with SMTP id
+ p205-20020a2574d6000000b00d0b5a371a9emr14316092ybc.34.1690997838098; Wed, 02
+ Aug 2023 10:37:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <PAXP190MB1631B7C90A99FCEBB1594AAE8B4DA@PAXP190MB1631.EURP190.PROD.OUTLOOK.COM>
- <CANiq72kf=VktsDS6ctLxVt70EGtkSwfx+Z2=qNMdyQf81pQ3dA@mail.gmail.com> <PAXP190MB16316300F2E89EC06A4E3AF78B21A@PAXP190MB1631.EURP190.PROD.OUTLOOK.COM>
-In-Reply-To: <PAXP190MB16316300F2E89EC06A4E3AF78B21A@PAXP190MB1631.EURP190.PROD.OUTLOOK.COM>
+References: <CANiq72kD_ESDSh-gVmUS18HtVmkY=bgxkR7Wo=OiwfMyyD8EFw@mail.gmail.com>
+ <20230411091714.130525-1-varmavinaym@gmail.com>
+In-Reply-To: <20230411091714.130525-1-varmavinaym@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 2 Aug 2023 17:29:23 +0200
-Message-ID: <CANiq72kxOEt2Kb_rxY0+WD6uu=NXy+6PGMvGjTHfNFVXucgH7w@mail.gmail.com>
-Subject: Re: [PATCH] lib/Kconfig.debug: fix grammar in RUST_BUILD_ASSERT_ALLOW
-To: =?UTF-8?Q?Timo_Grautst=C3=BCck?= <timo.gr@hotmail.de>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>
+Date: Wed, 2 Aug 2023 19:37:06 +0200
+Message-ID: <CANiq72=UK_VK23yVWy1A4GyfSKduEn5qLD5EXPxEaX=bYjJNqw@mail.gmail.com>
+Subject: Re: [PATCH v5] scripts: `make rust-analyzer` for out-of-tree modules
+To: Vinay Varma <varmavinaym@gmail.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -63,24 +68,29 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sun, Jun 25, 2023 at 12:05=E2=80=AFPM Timo Grautst=C3=BCck <timo.gr@hotm=
-ail.de> wrote:
+On Tue, Apr 11, 2023 at 11:19=E2=80=AFAM Vinay Varma <varmavinaym@gmail.com=
+> wrote:
 >
-> Ahh ok, i also dont think you can call it a "bug". Is it not possible to
-> simply remove the `Closes:` tag from the patch and not categorize the
-> whole thing as a "bug"?
+> Adds support for out-of-tree rust modules to use the `rust-analyzer`
+> make target to generate the rust-project.json file.
+>
+> The change involves adding an optional parameter `external_src` to the
+> `generate_rust_analyzer.py` which expects the path to the out-of-tree
+> module's source directory. When this parameter is passed, I have chosen
+> not to add the non-core modules (samples and drivers) into the result
+> since these are not expected to be used in third party modules. Related
+> changes are also made to the Makefile and rust/Makefile allowing the
+> `rust-analyzer` target to be used for out-of-tree modules as well.
+>
+> Link: https://github.com/Rust-for-Linux/linux/pull/914
+> Link: https://github.com/Rust-for-Linux/rust-out-of-tree-module/pull/2
+>
+> Signed-off-by: Vinay Varma <varmavinaym@gmail.com>
 
-I think either way is fine. Since we have an issue in the tracker and
-it is a fix, even if trivial, let's go with something like:
-
-    Reported-by: Miguel Ojeda <ojeda@kernel.org>
-    Closes: https://github.com/Rust-for-Linux/linux/issues/1006
-    Fixes: <hash> ("<description>")
-    Signed-off-by: <fixed real name> <timo.gr@hotmail.de>
-
-For the formatting of the `Fixes:` tag, I recommend using the git
-`--pretty=3D` config shown in
-https://docs.kernel.org/process/submitting-patches.html.
+Applied to `rust-next`, thanks! I tested it and the generation of the
+file seems to work on the sample out-of-tree module. We can do the
+other improvements later on. I removed the newline above your SoB, by
+the way.
 
 Cheers,
 Miguel
