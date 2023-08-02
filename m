@@ -1,115 +1,169 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F26815
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Aug 2023 14:44:46 +0000 (UTC)
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B08B1BC3;
-	Tue,  1 Aug 2023 07:44:45 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-c5f98fc4237so4687844276.2;
-        Tue, 01 Aug 2023 07:44:45 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20C24C8F
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 07:43:35 +0000 (UTC)
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC06E44B1
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 00:43:29 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-99bf8e5ab39so666389066b.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 02 Aug 2023 00:43:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690901084; x=1691505884;
+        d=umich.edu; s=google-2016-06-03; t=1690962208; x=1691567008;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dXgNoIC2PvO/RdQx7w9iCucEs/VxyEwm+OaXP/sJCPQ=;
-        b=VFMh5LS5z3t+hG68vt3INAW1bmqD8uEWGh7LMqvkYjF7v6fZ/vZkLNxUe9mYT6pjMm
-         65JazsVmxiH3X6IUyXQFHXLVz1mH5F9dIW1GbdgUBwb00JFth2efdOU1NR0w5eWdYAbk
-         8ObzV3Kxly5ZAa4OdMnlE63neLzSJNFjgC2BEhwZ+VvaplEEoAq9BndXYlcuCt02GY2O
-         dIA1d7QrDoL+fMV2YirfEhivh/yO2ytwgD9bMR+qpktysNaz9wuFliMgI2WtaFFTvffP
-         so94wlh17sCKXLmDLTg085cPWzJwdjluHA9d4clhAb0ERK26knfENhZXdyArYbUvkQoT
-         2dcg==
+        bh=hTlYTUXYUY0uT5dVegExxW34rudjU0yRbAqg9Bg5Z/A=;
+        b=jt1i3UyGg5T8VU7eoMf85nHf6pgJoeHFxp53BuGY+DiO76l/fHQrsYT4K/fJuRnm8S
+         dVrV+pGSUvLjAqkp3PYAwaLppgWCK35UNVv/OPwqrcST2L5PLWvqp1OODp/KoipUp82s
+         uZz82tOu/a1sIslbBKKYqVERgHoB4bXvh+LzeySCN45nzw2PoFcfx5mxgug/LDd9e52Y
+         ZHgmGKpJNcQyHY3eddpYCexB8rEhuNvI+ula63l8RraTy1lcP2qhtPEVcgIwTuPSlbcN
+         B42wWafgVMfjIK/+22+omr2Qn2GQI6MuK4qBSBPIvIrmK4tUQS4C+AYDh8mGKztFeBd5
+         qcPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690901084; x=1691505884;
+        d=1e100.net; s=20221208; t=1690962208; x=1691567008;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dXgNoIC2PvO/RdQx7w9iCucEs/VxyEwm+OaXP/sJCPQ=;
-        b=EswM2fgvEh/JA3eAaUC1r/Etp1zki3Q0/MiUV5FiWBRerFch+oG/Ma8v8P9Y4Q2G7S
-         kkvW2pvYpym8ZFMUVlWz1QLjLhW2zo+GAOXuv6CTYrQNTZnk3OgqmUQFS1XImJ3zcGty
-         +HBLdToCZjw8ttRLuSjigTo4Y1fQ4c7rcAU2wCDfVqEXoWFOtdWprFgx7T8zD1VK8mEt
-         rF7tGLjKas8wpKXryrJnwTvYiqOpXtJ8Zf1tJE+s462r9YPyszZZrzsnLHQuelCFnaja
-         VZoNLpAZJY2AvG7Mvbl5jUVQ9ecTbCu7G8ddh3gYDEKqdtGm8vJB9o/m+BCp8kZXtldp
-         L8rg==
-X-Gm-Message-State: ABy/qLa47cDlQiEqL1OKN2KvlzQFXqM30Pt93RwMeTVwoxBkjqrIRUyW
-	cJH6UZDcXcTa9XOSI3G039AmHVGwT6lVVOqlqqA=
-X-Google-Smtp-Source: APBJJlExxDX5gr6eVov8kBtquPdrHK2sGfm+MVVQv8plpRunt/LlfvnCesz2qwdIPlnPHM7oEiSeFP7KKO48sgLUTNE=
-X-Received: by 2002:a25:ac9b:0:b0:d15:bd9f:cac0 with SMTP id
- x27-20020a25ac9b000000b00d15bd9fcac0mr9856536ybi.39.1690901084347; Tue, 01
- Aug 2023 07:44:44 -0700 (PDT)
+        bh=hTlYTUXYUY0uT5dVegExxW34rudjU0yRbAqg9Bg5Z/A=;
+        b=VWzzD7ztEZoRicDvFipJaSpKdATmmcnvgi6NkD9Q2AKQUkkTFRpEtc3reFM4b84VLy
+         MQ/rNOaB5prKoSg+HexrwXhcT/EFVBLgik8W5Z15XHPxSmrTHUW+4AyXjT5ZiDmMM20u
+         h7TB5760O0jtORBeenABW+BfCa/Lnh+GTjSB8IgBKk+igJR/Xwi1mFfhKvF7vEXygntI
+         w/3BmuP7BDRKPV0n88MDpKieCmCpcpAcOESTrD5LrjWb4qUK2zWfMHXwcuKyRNU+F8xp
+         wUSq9GZk8/kzaB/Ub7wo7VAEzGVV1+lCo/oRuvCHmC+0ZXUdRzZE/ewrMIaxx/a0yqsn
+         t+PA==
+X-Gm-Message-State: ABy/qLZi7im29yk9OZKTViahFIGV176eme9pHdJUzC208YMPENy0L+RJ
+	ZSlseTcQ3wNW7DUEdW6dqM2V2Cy5AHFcvKmxlsB/2w==
+X-Google-Smtp-Source: APBJJlGC3J+LrdYwhV48JZyyOU8Gidc+5NZEilh6J5EIEUFvOvEAHlb2kX02GozZtGR1CKxVU4GRFeOHUPskjTJKe/Q=
+X-Received: by 2002:a17:907:77ce:b0:992:a9c3:244f with SMTP id
+ kz14-20020a17090777ce00b00992a9c3244fmr3991552ejc.4.1690962207821; Wed, 02
+ Aug 2023 00:43:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230720-rustbind-v1-0-c80db349e3b5@google.com> <20230720-rustbind-v1-2-c80db349e3b5@google.com>
-In-Reply-To: <20230720-rustbind-v1-2-c80db349e3b5@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 1 Aug 2023 16:44:32 +0200
-Message-ID: <CANiq72mJjB_ubHx-y316o7b0KNjdHOrA9Wz0ievRvoTi1jVR5A@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust: macros: add macro to easily run KUnit tests
-To: David Gow <davidgow@google.com>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+References: <20230729220317.416771-1-ojeda@kernel.org>
+In-Reply-To: <20230729220317.416771-1-ojeda@kernel.org>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Wed, 2 Aug 2023 03:43:16 -0400
+Message-ID: <CALNs47t8cuySRf0nTG2ipn7QSESgd44Z0LwCu6dRSU9kHzsJ8g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: upgrade to Rust 1.71.0
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
 	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, Jul 20, 2023 at 8:40=E2=80=AFAM David Gow <davidgow@google.com> wro=
+On Sat, Jul 29, 2023 at 6:05=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
 te:
 >
-> The only difference with user-space tests is that instead of using
-> `#[cfg(test)]`, `#[kunit_tests(kunit_test_suit_name)]` is used.
+> This is the second upgrade to the Rust toolchain, from 1.68.2 to 1.71.0
+> (i.e. the latest).
+>
+> See the upgrade policy [1] and the comments on the first upgrade in
+> commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
+>
+> # Unstable features
+>
+> No unstable features (that we use) were stabilized.
+>
+> Therefore, the only unstable feature allowed to be used outside
+> the `kernel` crate is still `new_uninit`, though other code to be
+> upstreamed may increase the list.
+>
+> Please see [2] for details.
+>
+> # Required changes
+>
+> For the upgrade, this patch requires the following changes:
+>
+>   - Removal of the `__rust_*` allocator functions, together with
+>     the addition of the `__rust_no_alloc_shim_is_unstable` static.
+>     See [3] for details.
+>
+>   - Some more compiler builtins added due to `<f{32,64}>::midpoint()`
+>     that got added in Rust 1.71 [4].
+>
+> # `alloc` upgrade and reviewing
+>
+> The vast majority of changes are due to our `alloc` fork being upgraded
+> at once.
+>
+> There are two kinds of changes to be aware of: the ones coming from
+> upstream, which we should follow as closely as possible, and the updates
+> needed in our added fallible APIs to keep them matching the newer
+> infallible APIs coming from upstream.
+>
+> Instead of taking a look at the diff of this patch, an alternative
+> approach is reviewing a diff of the changes between upstream `alloc` and
+> the kernel's. This allows to easily inspect the kernel additions only,
+> especially to check if the fallible methods we already have still match
+> the infallible ones in the new version coming from upstream.
+>
+> Another approach is reviewing the changes introduced in the additions in
+> the kernel fork between the two versions. This is useful to spot
+> potentially unintended changes to our additions.
+>
+> To apply these approaches, one may follow steps similar to the following
+> to generate a pair of patches that show the differences between upstream
+> Rust and the kernel (for the subset of `alloc` we use) before and after
+> applying this patch:
+>
+>     # Get the difference with respect to the old version.
+>     git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
+>     git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
+>         cut -d/ -f3- |
+>         grep -Fv README.md |
+>         xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
+>     git -C linux diff --patch-with-stat --summary -R > old.patch
+>     git -C linux restore rust/alloc
+>
+>     # Apply this patch.
+>     git -C linux am rust-upgrade.patch
+>
+>     # Get the difference with respect to the new version.
+>     git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
+>     git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
+>         cut -d/ -f3- |
+>         grep -Fv README.md |
+>         xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
+>     git -C linux diff --patch-with-stat --summary -R > new.patch
+>     git -C linux restore rust/alloc
+>
+> Now one may check the `new.patch` to take a look at the additions (first
+> approach) or at the difference between those two patches (second
+> approach). For the latter, a side-by-side tool is recommended.
+>
+> Link: https://rust-for-linux.com/rust-version-policy [1]
+> Link: https://github.com/Rust-for-Linux/linux/issues/2 [2]
+> Link: https://github.com/rust-lang/rust/pull/86844 [3]
+> Link: https://github.com/rust-lang/rust/pull/92048 [4]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> [...]
 
-I may be missing something, but this does not appear to map the
-`assert*!`s to the KUnit APIs, is that correct? (i.e. like we do for
-`rustdoc`-tests).
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
 
-I made an assertion fail, and it seems to use the standard library
-macros, thus panicking and ending up in `BUG()` (rather than a failed
-test):
+A few highlights since 1.68.2 that may eventually be of use:
 
-    rust_kernel: panicked at 'assertion failed: `(left =3D=3D right)`
-      left: `true`,
-     right: `false`', rust/kernel/kunit.rs:329:1
-    ------------[ cut here ]------------
-    kernel BUG at rust/helpers.c:34!
-
-Then the test times out eventually and things break:
-
-        # rust_test_kunit_kunit_tests: try timed out
-    ------------[ cut here ]------------
-    refcount_t: addition on 0; use-after-free.
-
-> +    // Add `#[cfg(CONFIG_KUNIT)]` before the module declaration.
-> +    let config_kunit =3D "#[cfg(CONFIG_KUNIT)]".to_owned().parse().unwra=
-p();
-> +    tokens.insert(
-> +        0,
-> +        TokenTree::Group(Group::new(Delimiter::None, config_kunit)),
-> +    );
-
-I wonder about compile-time here with this approach. As far as I
-understand, having the `cfg` explicitly outside the proc macro would
-avoid invoking it.
-
-Do we know the potential compile-time impact, especially when we will
-have many tests?
-ventually it would be ideal to have an approach closer to the
-`rustdoc` one, where the compiler finds the tests for us and we
-generate the needed code in the build system, i.e. outside a proc
-macro.
-
-Cheers,
-Miguel
+- `CStr::is_empty` and `CStr::from_bytes_until_nul` help smooth FFI a bit
+- `NonNull::slice_from_raw_parts` for slice pointers
+- `AtomicX::as_ptr` makes interop with C more clear (doesn't seem like we
+  use these types anywhere yet)
+- const `ptr::read` and `ptr::read_unaligned`
+- `{Option, Result}::is_some_and`
+- `core::cell::OnceCell` one-time initialization
+- `repr(C)` enums now use `c_int` rather than always `i32` (no difference f=
+or
+  currently supported targets)
