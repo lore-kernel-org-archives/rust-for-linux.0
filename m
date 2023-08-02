@@ -1,63 +1,62 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EB1DF58
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 17:40:16 +0000 (UTC)
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D372D65;
-	Wed,  2 Aug 2023 10:39:49 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-d0a8ae5f8a6so78235276.0;
-        Wed, 02 Aug 2023 10:39:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85517FBE6
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 17:43:08 +0000 (UTC)
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB646DC
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 10:43:06 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d07c535377fso68922276.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 02 Aug 2023 10:43:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690997988; x=1691602788;
+        d=gmail.com; s=20221208; t=1690998186; x=1691602986;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sxP//0HpOMlKg6ktr694XCDTCBcPEyH/NZFFfkxgwPk=;
-        b=HTi55FN5M2RPOu7bifbsWU1/2zQ4QtfERt/4y3deSTiDPrJ5FT+rEQMk0sPYPNrZvs
-         1pUJJ2ZwbH+zicLXJ9xvYdrCf3AM0MI7vQ6mqnJE0z7YVRUT9ccqCbES+W/hhg2ab7ap
-         wUcfZusbOop1N1CyL4S7an4mq7gDNxTEpZxhFUG9MV17/ReH2o18y3Lm97ZskkZTOshH
-         fljuVDibqZX/XUhqNd+hVWGrSkdW0RWYD7XVqt5/BV41K+uEndcBlb4CIty3++WhfRXa
-         tgKHog4qPN/tAy482stauUw8m77vcjM9GB8BD4gQIGOKOGfaK44Jh3hGnUD1P2szs3J1
-         gqBw==
+        bh=QKdroMZKuJwSirWZ0alYPdk59SG5zcptY3Oe4J1YBsA=;
+        b=O9VA1c6GfmNAHlYktLzdGQyr9dQOOnMBB43QOhMWuxR1EZ1oxelf2ryydvqp3ISxe6
+         c36qfX2RFAfWz1rb/AFtUgrmfE/coDu6HUlkPxT9/XF7pzY260gSQLpa7fgnnxMCPIZS
+         /P41Og3Vqz54NLVsJUftSJptdeRcDeY3684xVHRP5RtbixP4wu5BTBhQ8uFxLGnTqb8H
+         uKW628MBrgJd6+ZL1L7VjOVUsUiLMIfeYHc+0LlEnoDbDcZvhSL8a+Cq4wfBO1phn9JA
+         L2snuf2T7qanAmBmAvAgXSnyUl/2UOX/UUlIRjh1znbyRt4Gsn+V2vQoXvNLwNqUfIYX
+         JYdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690997988; x=1691602788;
+        d=1e100.net; s=20221208; t=1690998186; x=1691602986;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sxP//0HpOMlKg6ktr694XCDTCBcPEyH/NZFFfkxgwPk=;
-        b=UarRrlTdyJkjEv16XLzt1hMA9/SYFUCqg+6fSdDhY1fj0ul4e4PrF2vrOJHTJCWHDU
-         hP8OOCCN+eowJ6ncvHqWKVVIYaKx/V2JpHu5mFL34ZikLll1Km9upgPqMFm6RCYu4i80
-         6R6RMOna71Q8i4Bl1EJrqn6HxMMAD1tSI66A9HtQQ+BdOw0iDkKWcBd0LZ/iwJbHFsh2
-         so2WEMDAlFDBEdhZlfQbqkThHESe6IbPve/ZlvGqrjYi2XJ2NcP+3DfRcDsSe9As4piR
-         SyX079O7PZz8L1/uK8JEUbIvyNh7+C/pZFCn4B/F+toSFHre7IDgrKo9N+JSjBb+131A
-         RE6w==
-X-Gm-Message-State: ABy/qLbuCV+hTAbDijwiBSULNImcbiwQqa2wsvdiTb6gC136hpFuwmfU
-	fkaHDU58QMxJ6wDn2DbY265Hf6PB4SuDEG4/eOQ=
-X-Google-Smtp-Source: APBJJlGXdX/trGZcV6zPG7z0PQ2EmAwNi23ZNhngp7RP6lx2r4Und01wwQQnjB6LzY4ojk7rO6ereEUvu//sqnhxiPk=
-X-Received: by 2002:a25:ab09:0:b0:d06:f3e8:e6d2 with SMTP id
- u9-20020a25ab09000000b00d06f3e8e6d2mr15691045ybi.40.1690997988410; Wed, 02
- Aug 2023 10:39:48 -0700 (PDT)
+        bh=QKdroMZKuJwSirWZ0alYPdk59SG5zcptY3Oe4J1YBsA=;
+        b=RcHAwkxlwtxlGI5GFOMi/WuEtSiOS1rbWuvfFrEr0YYaueLWVuoXQskeLGjphEwYnj
+         +3uR6gklQmuXCY3Z/0wrLbO/vA3Yg/0aiBg3de37ZkmDcX8rjmFnJHsFVMNxoR214fjS
+         orvIINZQuKmGuC1dOYAWOBqZXNOVsVNAYAbYk1zioUOK1E6nMhpa3OEyeKf3GA65I44x
+         rL7TogkIZeuyIM7HGssu4JJb80kZgp0Ofu1fTndXLEfNaG1MekNkOLyXyeFN7mCRnAsU
+         15rufR0Z3RFNd/eM1LC1tDwxAcomVLrE6KruOEZzW7qysmy1fN0aUeP8yozDM5hROp32
+         mxDA==
+X-Gm-Message-State: ABy/qLadQ6bANM7obfMzRwRUB4RaXRmMtWaBclkk72Ju/yv/I0HxuaVL
+	QGxGb3Z/4zkr0+zypBkpagHF2cFz/Q2tPmH/YLI=
+X-Google-Smtp-Source: APBJJlH3J76lZsDW2jZ9W3dwKrIRKUUf+s18Ex9612ejS8DOQ+Y0840eiWbD6tinSwlyWMY+SlWcl20+0Nf4tVxtgG4=
+X-Received: by 2002:a25:4d0b:0:b0:d09:34f4:6693 with SMTP id
+ a11-20020a254d0b000000b00d0934f46693mr12422385ybb.25.1690998185838; Wed, 02
+ Aug 2023 10:43:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230626074242.3945398-1-changxian.cqs@antgroup.com> <20230626074242.3945398-2-changxian.cqs@antgroup.com>
-In-Reply-To: <20230626074242.3945398-2-changxian.cqs@antgroup.com>
+References: <20230520231701.46008-1-yakoyoku@gmail.com>
+In-Reply-To: <20230520231701.46008-1-yakoyoku@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 2 Aug 2023 19:39:37 +0200
-Message-ID: <CANiq72muJwPHuJF++BYptO4_WVA=mU68nn=GWgqYo7pMdxC=pA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] rust: macros: fix redefine const_name in `vtable`
-To: Qingsong Chen <changxian.cqs@antgroup.com>
-Cc: linux-kernel@vger.kernel.org, =?UTF-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Wed, 2 Aug 2023 19:42:54 +0200
+Message-ID: <CANiq72n=O2ED-8+nJD-f=eBjn_3EFx2oESzGrucuxU1tF81RjA@mail.gmail.com>
+Subject: Re: [PATCH v2] scripts: read cfgs from Makefile for rust-analyzer
+To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, 
-	=?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, 
-	rust-for-linux@vger.kernel.org
+	Benno Lossin <benno.lossin@proton.me>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -67,33 +66,38 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Jun 26, 2023 at 9:48=E2=80=AFAM Qingsong Chen
-<changxian.cqs@antgroup.com> wrote:
+On Sun, May 21, 2023 at 1:17=E2=80=AFAM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
 >
-> If the trait has same function name, the `vtable` macro
-> will redefine its `gen_const_name`, e.g.:
-> ```rust
->     #[vtable]
->     pub trait Foo {
->         #[cfg(CONFIG_X)]
->         fn bar();
+> Both `core` and `alloc` had their `cfgs` missing in `rust-project.json`,
+> to remedy this `generate_rust_analyzer.py` scans the Makefile from
+> inside the `rust` directory for them to be added to a dictionary that
+> each key corresponds to a crate and each value, to an array of `cfgs`.
 >
->         #[cfg(not(CONFIG_X))]
->         fn bar(x: usize);
->     }
-> ```
-> Use `HashSet` to avoid this.
->
-> Signed-off-by: Qingsong Chen <changxian.cqs@antgroup.com>
+> Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 
-Applied to `rust-fixes`, thanks! I have reworded it with content from
-the cover letter to make it more clear. Please double-check if it is
-OK.
+This is a much better approach than reading the `Makefile`, thanks! It
+works on my side.
 
-By the way, for single-patches, you don't need the cover letter,
-especially if both have the same information like here (in fact, in
-this case the cover letter was more clear, so it should have been part
-of the commit message ideally).
+The commit message is outdated, though: we are not reading from the
+`Makefile` anymore in v2. What about something like...
+
+    scripts: generate_rust_analyzer: provide `cfg`s for `core` and `alloc`
+
+    Both `core` and `alloc` have their `cfgs` (such as `no_rc`) missing
+    in `rust-project.json`.
+
+    To remedy this, pass the flags to `generate_rust_analyzer.py` for
+    them to be added to a dictionary where each key corresponds to
+    a crate and each value to a list of `cfg`s. The dictionary is then
+    used to pass the `cfg`s to each crate in the generated file (for
+    `core` and `alloc` only).
+
+Also we have Vinay's patch on `rust-next`, which conflicts a bit, so
+if you can please send a quick v3 with the commit message fixed and
+rebase on top of it, it would be great.
+
+Thanks!
 
 Cheers,
 Miguel
