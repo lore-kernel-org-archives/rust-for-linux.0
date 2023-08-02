@@ -1,55 +1,55 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20C24C8F
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 07:43:35 +0000 (UTC)
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC06E44B1
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 00:43:29 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-99bf8e5ab39so666389066b.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 02 Aug 2023 00:43:29 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A1A5224
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 07:49:58 +0000 (UTC)
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90A811FEE
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 00:49:56 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-99c353a395cso201448666b.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 02 Aug 2023 00:49:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1690962208; x=1691567008;
+        d=umich.edu; s=google-2016-06-03; t=1690962595; x=1691567395;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hTlYTUXYUY0uT5dVegExxW34rudjU0yRbAqg9Bg5Z/A=;
-        b=jt1i3UyGg5T8VU7eoMf85nHf6pgJoeHFxp53BuGY+DiO76l/fHQrsYT4K/fJuRnm8S
-         dVrV+pGSUvLjAqkp3PYAwaLppgWCK35UNVv/OPwqrcST2L5PLWvqp1OODp/KoipUp82s
-         uZz82tOu/a1sIslbBKKYqVERgHoB4bXvh+LzeySCN45nzw2PoFcfx5mxgug/LDd9e52Y
-         ZHgmGKpJNcQyHY3eddpYCexB8rEhuNvI+ula63l8RraTy1lcP2qhtPEVcgIwTuPSlbcN
-         B42wWafgVMfjIK/+22+omr2Qn2GQI6MuK4qBSBPIvIrmK4tUQS4C+AYDh8mGKztFeBd5
-         qcPw==
+        bh=c0VJhH2Z756QKOs3JZdHMzRvuHXC7tOpXij3aANtcuY=;
+        b=Og7ZHsEohQK5gYKe0PKPpZmtqnSLba+zO0Hc3g1vhp26ob/YEsPA/vYuYs3R2k9vAH
+         bDjXL+l1tDQUffpFsyketbLsigIqcppC3CsVb/lPXoq+T1stMompu09UbE9sQg6paLTy
+         asWZ3r0Dx1vkonGTGf+z7UEV0L8sqaj/BKZRvLudBnQstzPyRpwJ8wBlwwHWTjb9D/td
+         X/6rDTbf/Lc3eZpatSdk9916uZHmyk4Ht2zNBjx7LzoHAy8dcSV03yo+1aFyqOFkGzFY
+         ybuwytlo28jNOrXG7Qi6duJuU/ZL6cW87OKXS8/4JsFbTdbwnDwnPzCgBIV4mMgjd1bu
+         m+gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690962208; x=1691567008;
+        d=1e100.net; s=20221208; t=1690962595; x=1691567395;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hTlYTUXYUY0uT5dVegExxW34rudjU0yRbAqg9Bg5Z/A=;
-        b=VWzzD7ztEZoRicDvFipJaSpKdATmmcnvgi6NkD9Q2AKQUkkTFRpEtc3reFM4b84VLy
-         MQ/rNOaB5prKoSg+HexrwXhcT/EFVBLgik8W5Z15XHPxSmrTHUW+4AyXjT5ZiDmMM20u
-         h7TB5760O0jtORBeenABW+BfCa/Lnh+GTjSB8IgBKk+igJR/Xwi1mFfhKvF7vEXygntI
-         w/3BmuP7BDRKPV0n88MDpKieCmCpcpAcOESTrD5LrjWb4qUK2zWfMHXwcuKyRNU+F8xp
-         wUSq9GZk8/kzaB/Ub7wo7VAEzGVV1+lCo/oRuvCHmC+0ZXUdRzZE/ewrMIaxx/a0yqsn
-         t+PA==
-X-Gm-Message-State: ABy/qLZi7im29yk9OZKTViahFIGV176eme9pHdJUzC208YMPENy0L+RJ
-	ZSlseTcQ3wNW7DUEdW6dqM2V2Cy5AHFcvKmxlsB/2w==
-X-Google-Smtp-Source: APBJJlGC3J+LrdYwhV48JZyyOU8Gidc+5NZEilh6J5EIEUFvOvEAHlb2kX02GozZtGR1CKxVU4GRFeOHUPskjTJKe/Q=
-X-Received: by 2002:a17:907:77ce:b0:992:a9c3:244f with SMTP id
- kz14-20020a17090777ce00b00992a9c3244fmr3991552ejc.4.1690962207821; Wed, 02
- Aug 2023 00:43:27 -0700 (PDT)
+        bh=c0VJhH2Z756QKOs3JZdHMzRvuHXC7tOpXij3aANtcuY=;
+        b=P8NzQmRcS/5omn2eySy8iJBMwcDA6hPc68PRQC7hsJg9MkKZhZVUafJZEKbq1cgdgO
+         yCKelcFOqJYhk9f0mUcxti9oUkL8gRTiuVBd39CMHQj2x/B9XNQIukbm3BQ+9l1mmrnU
+         SoZgSRoMShpLtEe6mSEP2ulisQ2BeiRsbhltnY0m4OfQLFWq3zPXjbe2iZzozgSFjK5L
+         Wj6I4u84x/yhNeVo2xJY4h5RuFyOA3s47yn8c1nmEn8WW4B4cdLgGYK3t6afHbIJ53ty
+         UwEPpfZH+AO6BGj6Bum4zEgbJGXHnMwBXmaekTk3srwf1xCk9iklEEYHqtayWBFIDCuy
+         KjFw==
+X-Gm-Message-State: ABy/qLblVr3kFBofWrC8G/g+F2ITuHk/ol2R7/FCHu1GrietwhTevhyo
+	CBDSlzwtiIfGsRrz7Q573K3k4bo4jmTx0mqd6RN5Hg==
+X-Google-Smtp-Source: APBJJlH2YkiZGbYVtxer1W7isty1PVaWaBz7UcC5TW/uFSLk6MRTNTLb52mcEMYXUbNlQNO8Fpo6SQSvROqt/6IYpCQ=
+X-Received: by 2002:a17:907:a070:b0:99b:ed18:7a10 with SMTP id
+ ia16-20020a170907a07000b0099bed187a10mr3803171ejc.36.1690962595084; Wed, 02
+ Aug 2023 00:49:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230729220317.416771-1-ojeda@kernel.org>
-In-Reply-To: <20230729220317.416771-1-ojeda@kernel.org>
+References: <20230729220317.416771-1-ojeda@kernel.org> <20230729220317.416771-2-ojeda@kernel.org>
+In-Reply-To: <20230729220317.416771-2-ojeda@kernel.org>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Wed, 2 Aug 2023 03:43:16 -0400
-Message-ID: <CALNs47t8cuySRf0nTG2ipn7QSESgd44Z0LwCu6dRSU9kHzsJ8g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: upgrade to Rust 1.71.0
+Date: Wed, 2 Aug 2023 03:49:43 -0400
+Message-ID: <CALNs47sn5GT9_VKn-SGb+STFwpbUipoNyU_+ZbpDwzLXUknUUQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: enable `no_mangle_with_rust_abi` Clippy lint
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -69,101 +69,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 On Sat, Jul 29, 2023 at 6:05=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
 te:
 >
-> This is the second upgrade to the Rust toolchain, from 1.68.2 to 1.71.0
-> (i.e. the latest).
+> Introduced in Rust 1.69.0 [1], this lint prevents forgetting to set
+> the C ABI when using `#[no_mangle]` (or thinking it is implied).
 >
-> See the upgrade policy [1] and the comments on the first upgrade in
-> commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
+> For instance, it would have prevented the issue [2] fixed by commit
+> c682e4c37d2b ("rust: kernel: Mark rust_fmt_argument as extern "C"").
 >
-> # Unstable features
+>     error: `#[no_mangle]` set on a function with the default (`Rust`) ABI
+>       --> rust/kernel/print.rs:21:1
+>        |
+>     21 | / unsafe fn rust_fmt_argument(
+>     22 | |     buf: *mut c_char,
+>     23 | |     end: *mut c_char,
+>     24 | |     ptr: *const c_void,
+>     25 | | ) -> *mut c_char {
+>        | |________________^
+>        |
+>        =3D help: for further information visit https://rust-lang.github.i=
+o/rust-clippy/master/index.html#no_mangle_with_rust_abi
+>        =3D note: requested on the command line with `-D clippy::no-mangle=
+-with-rust-abi`
+>     help: set an ABI
+>        |
+>     21 | unsafe extern "C" fn rust_fmt_argument(
+>        |        ++++++++++
+>     help: or explicitly set the default
+>        |
+>     21 | unsafe extern "Rust" fn rust_fmt_argument(
+>        |        +++++++++++++
 >
-> No unstable features (that we use) were stabilized.
+> Thus enable it.
 >
-> Therefore, the only unstable feature allowed to be used outside
-> the `kernel` crate is still `new_uninit`, though other code to be
-> upstreamed may increase the list.
+> In rare cases, we may need to use the Rust ABI even with `#[no_mangle]`
+> (e.g. one case, before 1.71.0, would have been the `__rust_*`
+> functions). In those cases, we would need to `#[allow(...)]` the lint,
+> since using `extern "Rust"` explicitly (as the compiler suggests)
+> currently gets overwritten by `rustfmt` [3].
 >
-> Please see [2] for details.
->
-> # Required changes
->
-> For the upgrade, this patch requires the following changes:
->
->   - Removal of the `__rust_*` allocator functions, together with
->     the addition of the `__rust_no_alloc_shim_is_unstable` static.
->     See [3] for details.
->
->   - Some more compiler builtins added due to `<f{32,64}>::midpoint()`
->     that got added in Rust 1.71 [4].
->
-> # `alloc` upgrade and reviewing
->
-> The vast majority of changes are due to our `alloc` fork being upgraded
-> at once.
->
-> There are two kinds of changes to be aware of: the ones coming from
-> upstream, which we should follow as closely as possible, and the updates
-> needed in our added fallible APIs to keep them matching the newer
-> infallible APIs coming from upstream.
->
-> Instead of taking a look at the diff of this patch, an alternative
-> approach is reviewing a diff of the changes between upstream `alloc` and
-> the kernel's. This allows to easily inspect the kernel additions only,
-> especially to check if the fallible methods we already have still match
-> the infallible ones in the new version coming from upstream.
->
-> Another approach is reviewing the changes introduced in the additions in
-> the kernel fork between the two versions. This is useful to spot
-> potentially unintended changes to our additions.
->
-> To apply these approaches, one may follow steps similar to the following
-> to generate a pair of patches that show the differences between upstream
-> Rust and the kernel (for the subset of `alloc` we use) before and after
-> applying this patch:
->
->     # Get the difference with respect to the old version.
->     git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
->     git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
->         cut -d/ -f3- |
->         grep -Fv README.md |
->         xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
->     git -C linux diff --patch-with-stat --summary -R > old.patch
->     git -C linux restore rust/alloc
->
->     # Apply this patch.
->     git -C linux am rust-upgrade.patch
->
->     # Get the difference with respect to the new version.
->     git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
->     git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
->         cut -d/ -f3- |
->         grep -Fv README.md |
->         xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
->     git -C linux diff --patch-with-stat --summary -R > new.patch
->     git -C linux restore rust/alloc
->
-> Now one may check the `new.patch` to take a look at the additions (first
-> approach) or at the difference between those two patches (second
-> approach). For the latter, a side-by-side tool is recommended.
->
-> Link: https://rust-for-linux.com/rust-version-policy [1]
-> Link: https://github.com/Rust-for-Linux/linux/issues/2 [2]
-> Link: https://github.com/rust-lang/rust/pull/86844 [3]
-> Link: https://github.com/rust-lang/rust/pull/92048 [4]
+> Link: https://github.com/rust-lang/rust-clippy/issues/10347 [1]
+> Link: https://github.com/Rust-for-Linux/linux/pull/967 [2]
+> Link: https://github.com/rust-lang/rustfmt/issues/5701 [3]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
 > [...]
 
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
-
-A few highlights since 1.68.2 that may eventually be of use:
-
-- `CStr::is_empty` and `CStr::from_bytes_until_nul` help smooth FFI a bit
-- `NonNull::slice_from_raw_parts` for slice pointers
-- `AtomicX::as_ptr` makes interop with C more clear (doesn't seem like we
-  use these types anywhere yet)
-- const `ptr::read` and `ptr::read_unaligned`
-- `{Option, Result}::is_some_and`
-- `core::cell::OnceCell` one-time initialization
-- `repr(C)` enums now use `c_int` rather than always `i32` (no difference f=
-or
-  currently supported targets)
