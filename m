@@ -1,62 +1,61 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C66FBFF
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 17:38:04 +0000 (UTC)
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3738B1727;
-	Wed,  2 Aug 2023 10:37:34 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-d35a9d7a5bdso66575276.0;
-        Wed, 02 Aug 2023 10:37:34 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A10F100A2
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 17:38:38 +0000 (UTC)
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB02D3AA7;
+	Wed,  2 Aug 2023 10:38:10 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-c5f98fc4237so50473276.2;
+        Wed, 02 Aug 2023 10:38:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690997852; x=1691602652;
+        d=gmail.com; s=20221208; t=1690997889; x=1691602689;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cWhqiuP44YcPPmHT2vtf0tx+jxKs6e8QElNN/SdMb8g=;
-        b=d8YUDFp4xGGHKlKo4qxm10TFjBfG5za+jCOGSSZfc4uigmwcE7fawwWjhKPlAddKjl
-         kxyqnjhCXDS5WrHv9b8Vwk8g0k82CLk/p3rIYxAktSX5QpV2YVLCqQFw3SZIezG03R3h
-         gufN0IDwJlaDaSYToXk5wZHGVgkDOJ/BMss+kP069FWUiyQkSO9BT9oMFLkEVTsJuTGz
-         6KIrCAiSMtSG6Xs+5b247hYTuFsjUwfoMXe7GLosBZXp/9b7UrB7scEPca4B/xqfNhRn
-         186/kPTqAVq+JeJwJ0ERGkOVYBazGmg143nD8//bPjg6Pe1wQVUCt10OuBxu2eW6cLDL
-         dayA==
+        bh=L9YfTqlBHpdCjHZ8wcsFDAVRi8zJlQcGYS2MHuel3HQ=;
+        b=mf16aTuPZqATKHCUrtSvP4xUiX9Azz39k2ssx1Astt9oW85AIfLG4PNYDi9103QJZT
+         jNy0JYluuRLBQrimKFUn1h9TtBlkj5bf0KLQDjwL0PNa7zLo/R/7CYSFNIc1t4lLUJs5
+         ME7RhmaT56if8m/wmr8PEYIY9dELR25GaZAgFAAa4YGjOL/LrQmQS2ekNIqgUGW4QjXk
+         AAQVKIp//QJxomSmBLl76J4Iv0feJWWLlA5Q3rku5S/Bspdu4v7Xq3f8O5NXEDFIvqvF
+         KFqghhudqJXsJh35x/2O7OpxcpeBuyguYTF4DMIqtA2MxNIheNX0VaaFSuXwDallilDS
+         /0vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690997852; x=1691602652;
+        d=1e100.net; s=20221208; t=1690997889; x=1691602689;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cWhqiuP44YcPPmHT2vtf0tx+jxKs6e8QElNN/SdMb8g=;
-        b=OIzxhbZdrU46dsRnse70Ge+6By6IRJ96iJ7cct6tuPgI3ZgfqtaOCjEtd/Y/ATa4h/
-         +2zLNHNL4wKLUd3uK6fNKPEQQdRUXd3cgchZDK3jSnjwc4d4v4xkOlxa9ojdNqbHoIy7
-         XezWtI4VN27KcmYIgSlWv/5z9T00kSjOiWi7jBSIFQBdfAWJpu7+uNx0+MvFRJk0/wJU
-         aDrUqpv/s367FJTYAORSDT4kS8putfHVoCfU24ReEsAfqe+rpIb+JR2AREmdQ3TsWVWC
-         IdAlSuXFIwgup1O3BjqyDApqZ9ohXJK+UgcgFojCbOd0Qw0ily3r2Tjo8f/piAccbZkH
-         nGTg==
-X-Gm-Message-State: ABy/qLZ2qusm4ia683JCO2oG3OgAiSXXEgrDs0DRvlrlm62Za2ChuTDh
-	/86QNEbzNi1hXba0Onfdp0jWfT0AnGWRPIju3sSrE2k5
-X-Google-Smtp-Source: APBJJlFG7pGYvNOa2exsr6kzC1NMZtwy3KV9/KAnI0deA9i0OtvGsSvpUpgk4SkO4gsMReHE0IEf7vnukdCNIwdMqoA=
-X-Received: by 2002:a25:ac2:0:b0:d0a:353b:b939 with SMTP id
- 185-20020a250ac2000000b00d0a353bb939mr12886281ybk.52.1690997852583; Wed, 02
- Aug 2023 10:37:32 -0700 (PDT)
+        bh=L9YfTqlBHpdCjHZ8wcsFDAVRi8zJlQcGYS2MHuel3HQ=;
+        b=ZDZtlBROZILZDT+vWvGXiGEXC0S3Lxse5uQaJ7DgqOFCeod1IdrDrWEzEwdWJmrWiL
+         MRNW1w3JNVqLUTEtj4wgmROIHyPWxp0/G+jhBfDjjzzi0/xQlp40jJBIWKmD2dEVLc1r
+         CY5nBDmMqikBZISXP4/cvzZ7vv85W4wY+mwNKI7yQRr+DYfpNeLNqJWECe6pOLz/lUYe
+         B+RD9jJ5W8JhLgzKzVYA/UmqZNEF8y2OW7ePy17Dq76Nh2woni3QWonNZvZFqKHIpKkU
+         o3+aGbqnFpA/SZISiIXqjJIOzQnxTRGKijxfN3KOYd1BJR9jI1cpe3XbWuvfnYQSJ1u2
+         vtIQ==
+X-Gm-Message-State: ABy/qLaWcfWhzXLMa+Yv1P4tbEB2QOJ9KAVuADFN7T11c+Pky2+0fni3
+	a1zbmjzA36A8eOnkwTDCQzlbtfpc5wVQFaWBfeE=
+X-Google-Smtp-Source: APBJJlFQcS8fOH78Kd1/UgYO/uQiTqIgVOFoL07oZo0Zc47rA3sesXasVd5SN+5Bh1YVfAWkgwRxt+ODq5CL589ZlfA=
+X-Received: by 2002:a25:874a:0:b0:d36:3e15:c7cd with SMTP id
+ e10-20020a25874a000000b00d363e15c7cdmr6299818ybn.47.1690997889493; Wed, 02
+ Aug 2023 10:38:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230706094615.3080784-1-aliceryhl@google.com>
-In-Reply-To: <20230706094615.3080784-1-aliceryhl@google.com>
+References: <20230711071914.133946-1-andrea.righi@canonical.com>
+In-Reply-To: <20230711071914.133946-1-andrea.righi@canonical.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 2 Aug 2023 19:37:21 +0200
-Message-ID: <CANiq72=cT_f90GJkaRq_rBKYMnruSf87UVKSX0TBbNWETYya_g@mail.gmail.com>
-Subject: Re: [PATCH] rust: delete `ForeignOwnable::borrow_mut`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Wed, 2 Aug 2023 19:37:58 +0200
+Message-ID: <CANiq72n3NMU5UgnGNB5B=y9QjpiHzw1turEbKCy5AEKccEUE0A@mail.gmail.com>
+Subject: Re: [PATCH] rust: fix bindgen build error with UBSAN_BOUNDS_STRICT
+To: Andrea Righi <andrea.righi@canonical.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
+	Benno Lossin <benno.lossin@proton.me>, Kees Cook <keescook@chromium.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -66,20 +65,24 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, Jul 6, 2023 at 11:46=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Tue, Jul 11, 2023 at 9:19=E2=80=AFAM Andrea Righi <andrea.righi@canonica=
+l.com> wrote:
 >
-> We discovered that the current design of `borrow_mut` is problematic.
-> This patch removes it until a better solution can be found.
+> With commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC") if
+> CONFIG_UBSAN is enabled and gcc supports -fsanitize=3Dbounds-strict, we
+> can trigger the following build error due to bindgen lacking support for
+> this additional build option:
 >
-> Specifically, the current design gives you access to a `&mut T`, which
-> lets you change where the `ForeignOwnable` points (e.g., with
-> `core::mem::swap`). No upcoming user of this API intended to make that
-> possible, making all of them unsound.
+>    BINDGEN rust/bindings/bindings_generated.rs
+>  error: unsupported argument 'bounds-strict' to option '-fsanitize=3D'
 >
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Fix by adding -fsanitize=3Dbounds-strict to the list of skipped gcc flags
+> for bindgen.
+>
+> Fixes: 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC")
+> Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
 
-Applied to `rust-fixes`, thanks! I added a `Fixes` tag.
+Applied to `rust-fixes`, thanks!
 
 Cheers,
 Miguel
