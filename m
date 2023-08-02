@@ -1,58 +1,56 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDF56D22
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 18:05:32 +0000 (UTC)
-Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2094.outbound.protection.outlook.com [40.107.122.94])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D537A1FEF;
-	Wed,  2 Aug 2023 11:05:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB46CF9F2
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Aug 2023 18:26:15 +0000 (UTC)
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2129.outbound.protection.outlook.com [40.107.10.129])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18C1219AD;
+	Wed,  2 Aug 2023 11:26:10 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CL2SsUAVfUtSlYmXN7Tlp/3DGOpdvH+SX86E/Tol3xfVy2Lyll/rYNTs28QYw6V57L05QdOR5tW4GzRB+tsAEV7Q2skhooJV2uBiqQIbDn6OyuxNvbeX8obiB8wmP6EkR5CoqDU7t6FWKgjlv7uPAk0HrWohcHtOyE89Z7why/f34yrRC224sE++UqRmPb99zn5MaxMUYXJtfNpEvOwe/5a0CX0wA5+ISaPfN4VpY7ritg0wgfzas/eOJ7DwL2E9JH1CV5Odgl+08mRhj1DEU+btj34iDadvkKJobEaK3su7HQ96LZ+dNbkoHm5zPDKuLgPg0mdDkGe69z33u/xAhA==
+ b=eiQ2hNfBZoKn4NLUJ3q4jFAJgzA/nDyZzpK3kNDL3ALh2q9fmC3jb6QIC7YoKPh2TRs9UnjBY7Cuif1n4koqJMjgle+1+jemya/LkVijTEqSvsBHiB6K2ruaNCGOjYeGyTq4iJHdlYGlvIWT5FwYhra+za8NO5yoXa690CZvfN+aXHYR0v73FbeW+XoFeE9Hkh2E2o1i/o0TCCcZh1NPBuILrD1iDDLwsG1d6kgI1/+xv77adglNHXOJisG/7+yvuajUlmMlBi0zXNQFjnO6rfMCNyH9rEs0faPVp/ypJzKjIdYplWYAKQUkBGrAbjS6QFLIJeYP7Wra3d52V/WB6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YvFcgb3BLvVr78R08i4ax83zOtcs++NzCS7E2ch/fkU=;
- b=BUWXB/23gCMM0IiDrm4rKHODh/4Iiw1mI3W1yJKMvZlqs3+w6Ii21XsJgIVDrv8dYgrZnekTf0FGPCfVSXGHFTAUvFxPvxlfNhsTblzg7x1UqnFGwucxlJ2C1WJAsy5mR5zlUDC+pzY+9+s5Ew1aJE+PfAXsE8jJ4UQaC0HORZ42UaDSLkoFPnqtM3qPEDc0+8Rtq0yZ8f5i1yinWLsaRcTLZF4U3WMbsp1npWdyAH/uBd1Hz5cFMRrgmL+ylhxGIhurPNwOfojHTRhIrECL28jfJdwzUh/WsQKm5K2pvDt4Z0Gt5MuLsSyoxYwV25VQ+TNcDmsJNxLMqH7Dt1g6JA==
+ bh=kH2T2B+dV6pPNISct94v5SjSvoWjRuUL9KBf5TNY+6Y=;
+ b=H5mOUcgsfa3PdNqiz6iP29KNKWYqQzEHgiXraZeOYKuTSEA8A3mKsZy/DDt2eu8ukws8v74f3C9G0Of3Y8+mMugESlH+B8YWc6P5Y6ZZLNhtpurVogcZgmxlHQUvRLnwYeFHY/wBoSj0sxJbuRp4GCAm1wlHRlLDXiY9kE2YiK0hOJqU9V+fx262gy17j8pwpzA2SHdFZKFWRg+f8nE2e4vnn7t005FktaESS2z4r1JeTvK6rdWejZ2NgfCprfiWscdI33CuAHe9NO1dBn8xdwrUrdXpErhFH7G3wunMTnXdCI7hqt6o72oGPa+w98yldCaryNJHjTns4EYHpoBb7w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YvFcgb3BLvVr78R08i4ax83zOtcs++NzCS7E2ch/fkU=;
- b=vlP70YLelmIQbefEoZRuVpZVv0t39FpvNlHiIIqPP6pUgrppNJEOFLD2wY1uGMeoUx2VjEcp11jpiUGOgskGE1Zt9iNQ2MIdytHq0XS4nkrj62SWIlFs9D+P923Sn0UI3I+qgDSxc1gCsvqstKC8vSS/WVg/rcS2g1atSImx9jU=
+ bh=kH2T2B+dV6pPNISct94v5SjSvoWjRuUL9KBf5TNY+6Y=;
+ b=XDmWhMmTCeVF3gpsYW+1e37R6xvcB5f15Wc5KDWfoHwnFXmjNvqZml4iVXpZ39gyKdJ6O7/7Ec8z9q20jQHSD7SHVetYJZm3k9iiyfa+2G2j6uXtq4eXrRdWE3x4nvnd1zcUfBM3JZF34AfYk6QxaeuNZtPth4hW+p3pI/jX0Oo=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LOYP265MB2080.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:122::7) with
+ by LO0P265MB6632.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:30a::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.45; Wed, 2 Aug
- 2023 18:05:17 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.47; Wed, 2 Aug
+ 2023 18:26:07 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::6d3e:8fe2:6cdb:6d3f]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::6d3e:8fe2:6cdb:6d3f%5]) with mapi id 15.20.6631.045; Wed, 2 Aug 2023
- 18:05:17 +0000
-Date: Wed, 2 Aug 2023 19:05:14 +0100
+ 18:26:07 +0000
+Date: Wed, 2 Aug 2023 19:26:05 +0100
 From: Gary Guo <gary@garyguo.net>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho
- <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Andreas
- Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Asahi Lina <lina@asahilina.net>, Martin
- Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH v3 07/13] rust: init: add `..Zeroable::zeroed()` syntax
- for zeroing all missing fields
-Message-ID: <20230802190514.24a5bdcf.gary@garyguo.net>
-In-Reply-To: <20230729090838.225225-8-benno.lossin@proton.me>
-References: <20230729090838.225225-1-benno.lossin@proton.me>
-	<20230729090838.225225-8-benno.lossin@proton.me>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Andreas
+ Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH 2/2] rust: enable `no_mangle_with_rust_abi` Clippy lint
+Message-ID: <20230802192605.5ddb32bb.gary@garyguo.net>
+In-Reply-To: <20230729220317.416771-2-ojeda@kernel.org>
+References: <20230729220317.416771-1-ojeda@kernel.org>
+	<20230729220317.416771-2-ojeda@kernel.org>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0093.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2bc::18) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO2P265CA0330.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a4::30) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -61,55 +59,55 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LOYP265MB2080:EE_
-X-MS-Office365-Filtering-Correlation-Id: e3f2da4b-858f-4bbb-9606-08db9383074d
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB6632:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed1249da-2129-4928-801d-08db9385f066
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	RtffPzDzaqWq2CFTxB2lCIg3Of5V/++savTg+Qt8yZ0oOEcumn76moUVRo4bpXoW9U8K9lCjL7Nb2vQBoPXCCgmJmKcDEihqk77FYbBlv0qzm06w7AjrMH+d5fl5HrYPGI8PrWUn95Vl+8jxbBtA7PXnNfrQQhIqA1v9BpvWpb+RGlQW+CQgSDw+lZPQuEoIWBkUgV+vWWOb2LRwvD/F25GAlolpe5Bb825vt72yspf3w0wxYR13ro9/5qSM2vZWIxSvGxFRnzNjDNORmnfsoGVatz8d056z0tA/Gs9w+p3jb1tbhZMa8IFzNErfelRW6Ua/jelo6t2u4ugCfKcsC5XxC+hl3MSOt0x+bSNqu8CtpEixma5aVQWS0vsU9QSrcuPQgTtGQQX6FnZ+yLpQf8YLstNmMewYw5HQJS2s4ah3Kxqlhs+zy8S55IBHtKCB/RwV7qNy/0byiDp9BPLqX6iAGwBS6eMhuB/kaKPPyT7BXL2M7IxtjFIzkheWgjPtQV8mdz357yyST1+K2kyG02rqcHSdxR/5m/GGgBgPW0PbaQbf/n+CoXevPfWhbt9u
+	dBGcBp+sRgjqaLfFWg4IeoUPEd4mzcwv0aV56H6k7pHjWukUXO3BgDHFsWRYiHen6SCXEKDDGf/ea8zBmR6varE6x8GfBq042Rj5GM13O8DxudvQSCjVCwdpWGyocCz7FgmxJnzYRK8rgSEpPp5zut4ggk4j11np1udAPf3W2gTUYyeyTgMBn+8Z/OvGMIjbxjAoJHKJ4NotW5pR02v9RdpbUWUdAp/JuQD2xnzXpu0SA0a9Nfxh/yChS0N1+nz7783IitMMbK19n/dWqOIU8u9NUJz7Cgh4OpOi5I6LeIrofMvGNrK5PN2Fx0IvSHmEowWNA26ULRXlOP3bR4XJIvH6tbMgBdwH6ruMadU+i/eknZZ/EnSyawIj/nGzpYpN8FXzCIe07D79scdXD6ZkR1UEreyei4f/w3pFWla09hRp/GOTrjUt6Ywx8jKgcI1r8X0sx4JQs7j6nyPKx5JYDANLGgGhl1gygD8r4ZecQES1/bwHLRi7octkfwUR/uFwHF3ditt+bidWV95iAYuYiqMaMKF1PqbCNhurOBR5sE155Cq2coS+9F9Uih7Fk7ELw3F5eqQRH2A2k1nE5/qVPradHqRg8hWAmdhixhh/h+k=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(346002)(396003)(39830400003)(366004)(136003)(376002)(451199021)(2616005)(186003)(6512007)(316002)(86362001)(478600001)(54906003)(38100700002)(66476007)(66556008)(6666004)(6486002)(66946007)(4326008)(6916009)(6506007)(36756003)(41300700001)(26005)(8676002)(5660300002)(8936002)(1076003)(30864003)(2906002)(7416002)(83380400001);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(346002)(376002)(136003)(396003)(366004)(39830400003)(451199021)(2616005)(6506007)(1076003)(26005)(186003)(83380400001)(316002)(2906002)(66946007)(4326008)(6916009)(66476007)(66556008)(5660300002)(7416002)(41300700001)(8676002)(8936002)(6486002)(966005)(6512007)(478600001)(54906003)(38100700002)(86362001)(36756003)(81973001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6f1Lrw9AnGen2TpoSD7+vBdCTYXfJuRMNgurPIukCnnJ9yv62paXJUkdYrJd?=
- =?us-ascii?Q?kbkh986xJJWe82Xf5bsUh6hirGXloUNmHCiqA4TldPVmwaxVNGMXoldl39jz?=
- =?us-ascii?Q?c1QmPCC4WCkxGtckjtYWiHFGTFlQ8NWqIqHZu7MysICZqJev56Ek79QIKc5F?=
- =?us-ascii?Q?O2XlvHTSPSAsD87l+g0HPeIeWveveu868OCw/DvAjf87xEUkzuobo0HsAJ0u?=
- =?us-ascii?Q?E6FbJTG6aVA+c4I373eudWiEBGQIzysWO9MSEQiAwbNxaSOLAKldgaxkuu/2?=
- =?us-ascii?Q?vNx9LXYWYiZmpm5OuLFA7mxzil57lhSbdabrHN6AXdXVNIdIy/QI/oU5C/ZA?=
- =?us-ascii?Q?xzrn6n7CjL2BvfuRctHf8EiQe6+sMEW1KUdo4zEk4vzRPAyOKnqnZflzdKHY?=
- =?us-ascii?Q?VSzg6kAliiPpSuibQZHz9pDmcchAwWBTTqvT490xsn4MjKLndAv7m8Rvb4Nw?=
- =?us-ascii?Q?+idZGEAomXhcel7lIzy7bg2gNp/6+mIlgwqI+CeF9zD9UU1dqAOUjDGEEiX9?=
- =?us-ascii?Q?MlJLlXRsQ2ScnhKh6/a0HrE8+s5BUJRY9baiUH/CCzh2K+N/I9TlqYQ37+qc?=
- =?us-ascii?Q?acfy54ga8a7Mj7PIFFKdwRHVuHLSJQJytCnE8jxUfh9hOHCkx4RARY5+OUvn?=
- =?us-ascii?Q?623yHfJwk82ma1e+WDkjbM6ctRVuk75QKcXlv6Q+Q6enSwlPoHsKMzV73h6x?=
- =?us-ascii?Q?pQZXsugvyr0rjPyNcsfXQNtlMsJrtBZR8GCDUE2ExNslcaqEEAmJX1Am33fY?=
- =?us-ascii?Q?q/O+qgZsLVihku8rgIHLosc/QwLeYmT91kKV7i/NEU/QLiRyq+c4+6C2Oqez?=
- =?us-ascii?Q?fWGXHB0+HHRWCxbxrOR6F2nYHgtfQn1nj8Nsmwd0Hba5teHU2er4qhe/iPM6?=
- =?us-ascii?Q?d1o22Hd8hQ8EWCMFOjogeffvIxz7LUUd4qzBKLpSdDx/3pplKI1GThUJzIM0?=
- =?us-ascii?Q?88qSNEZmwh1wM7BA6MuYQ7cKG4cRQTjrvGSfh5vUs4WxLFs0DtN2lk0MXntT?=
- =?us-ascii?Q?u3IEJUlHMl3Tbu353l46ytGyQHWRDqPgsWca16C1Lg1kb8vmJgk9f4ETpQ/j?=
- =?us-ascii?Q?NBzeHFAnw9gyBfZAo0U8pRU9CX/iMWN9mAU2WOhLi+y2HgAyaN7kwiL73W08?=
- =?us-ascii?Q?bUyIvn9eiO4I+RbWhjxzXpZkewj7QpVia3eANCMmHm2bnbHrhJ2fDqxV27hN?=
- =?us-ascii?Q?lG0NeUmMzY/lSNHnJveG5bhakPdVDwMk+Z2a23yDPkI/eUx2gJJeSLYdqM1m?=
- =?us-ascii?Q?GGS0pFQ/zfDXLN/I2BS7cVBLAJcRt4tJM7GER7FsaM3Ogs4kAHExLC/MKiXA?=
- =?us-ascii?Q?P8leQAGFCJjkzp28RZiVcFRRY1xjiEObxrBQsr3es+3rRzL0jkYrea8NdWUn?=
- =?us-ascii?Q?GKR0ZK9UWtcWV6/teHVmKgS/zdS3L1v7o6ZNrjEyPsFNrFi5XVh+M+qQV6eJ?=
- =?us-ascii?Q?h3T3zuKXg1DtGwM+roFsXUGv8Wgb6Qx2vygUbUHn2DaiByT3wbGl/0aoLecv?=
- =?us-ascii?Q?38sYk9WARb1doDBNCGmUQ2vuR8Lgz6GFOmZJFuSkPbeH5YN18tIC7nsvoZgP?=
- =?us-ascii?Q?V/WgMp35su3qfYLx1bPzOveXnIIvxD8yzQxXc0Iq?=
+	=?us-ascii?Q?ZAoKiVR6GyDgj99u8NTQ1DZA6awC4x9qSejkN92z78rNJHdIDSffu332qv7S?=
+ =?us-ascii?Q?2vzMGsllgqZakjoOvnyFHlrhhLWp1sAfcOJ7rbNNwiwRnKshVAJZCwfmUgpE?=
+ =?us-ascii?Q?a/jewVAMHdJfsg7kyIls+GjecrwAOCEw25rl0h85VM+sOdw/mW+Uvd4FWCGV?=
+ =?us-ascii?Q?TpdT+UpW2w4gYjs2+Mbj6cWWfgLvrJrK5BJVfmuQV82EnQgFuvanY+kKjeIQ?=
+ =?us-ascii?Q?YhHKyRm91MjxkToi5NEqiA4PbzpjUbG831pAI2uOrJJ+zKhhgLE2iSaUOKbe?=
+ =?us-ascii?Q?o4UXbi1A2SAhvZRW7PZMu80LrtudOAhupXUvRZQXUWArNc0i08sVtUg7kyCQ?=
+ =?us-ascii?Q?LgwWGmvVWbCUO2BEhGcPD36kVaYayeZESNcUBJGDug70JflVM942G+pMigiQ?=
+ =?us-ascii?Q?giVnfT/YofgEIdtclVGuCEohufJsxEsPKQvcR+jeoL/GiN4x6aAszALERg6b?=
+ =?us-ascii?Q?Vx6Jh22ZcHX4r9eS/6DE74r5HRdPtCX1oiuQs4AAvsVOCO3ozuZyaLK1kPyQ?=
+ =?us-ascii?Q?j4l2cMnGsbHNNkvAVEQkA9IAHnqqBlO7LJT0B7Jc9AxnNXbovmTsoSc4dj/W?=
+ =?us-ascii?Q?lEgHSJIq/J3vXZvFRvWV0zYzMoGMuXcSU6laJ0s88xoW0isP5pg8teKHJUVY?=
+ =?us-ascii?Q?7oqAmm45Q/kbAUEjtN1SgYmn4iYcqoRxCFAZP1Afkw5y2+FmeNhmIWLT2UpY?=
+ =?us-ascii?Q?GTG/1ibaJJeiHjJ+46g4ETUqIWZrnX+T5rjktEmaY+uvNVG7iaxqPRKrvjer?=
+ =?us-ascii?Q?doGpiz2XeUbI4h3Wn4p0VXEFM40q1H/mTk3TB/RNW233tNiZaB+p9izI7D5A?=
+ =?us-ascii?Q?xPclJGu/IJRm7e3CwwSA2GTTujGipyGL+sVAlrfbpCVbHrH3Q2vKjUIlqQUR?=
+ =?us-ascii?Q?y4xZBcIIi+Z1jucnBz/Y243yfSR8mQTMnaIOuSWG1H3VG5574enRsxiWwT4b?=
+ =?us-ascii?Q?jdnoEs+V6a0t6UwKOlZcqV58VMjiZhKPa9zYA4tAlgo4kMl8SMx7zyhGjHtd?=
+ =?us-ascii?Q?1syreZWC2NXV85cVhWNi9D916vaUe0xdqFsD1vlOxKSHpjzCz+gZiAR/GJqR?=
+ =?us-ascii?Q?xHar6rtQrGy/eGcNh0//8iFbgr75l9Wox6GLyahwdh1/ynfhah2Yl5RkMHiT?=
+ =?us-ascii?Q?dmYxEa+xPOLHwUSTSTS688onrMuENoB3+MxalqVomveHQ39qvUskFrGTha6c?=
+ =?us-ascii?Q?cqpWycYvAF7RMtRFoxS5JmEuMCqJATBJKjSCcQOGZI/FP72tryCVRH3kcHl0?=
+ =?us-ascii?Q?MoUtof2Kd/VayKzSkzhEby6E2sWGyt4DR8FH2np4vEQJkrnNMsPRCo3zm8na?=
+ =?us-ascii?Q?QprgymqGAnTVlLjhB7itG6Pm7a3e1HtMozc/fzYSHzRSDqne5EECc7wEjdvn?=
+ =?us-ascii?Q?8u/YQKXbm+gmwecwGn2au6Z0HmQ4i8bbD/r029pmkSVVdPNQg36icciromD9?=
+ =?us-ascii?Q?fXjyM6QMT0uxgHEcQCsoPAob75ldkDWsO/lg7wn1SG0f9bIvKSKHOyAOa2yF?=
+ =?us-ascii?Q?gl4aOevCegl0yWutUGcnIBtmfW+0S/4uWcTwESxmQLDskmiFntUw5pyCBBt5?=
+ =?us-ascii?Q?mwvigi9AdN/RDeMjREHSHcjXbJj9lmpCJhxpcMx1?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3f2da4b-858f-4bbb-9606-08db9383074d
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed1249da-2129-4928-801d-08db9385f066
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2023 18:05:17.7040
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Aug 2023 18:26:07.7693
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ch3ois9WIoNs1oHJGCHPDvlS1KAsT67TiEusKoNQJTVlEasSTSgz601GZlf9K3PaoQyB7sOliS9X7N6O5iGOUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOYP265MB2080
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7cJlHA/uMqgzvATnUUMii02/ESZSM/REMTp4wr11A/khN0CgJmlp+KutjX1oEOnVoLlTWRPaRScnvx8pU/XPLw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6632
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
 	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
@@ -117,274 +115,65 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, 29 Jul 2023 09:09:59 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
+On Sun, 30 Jul 2023 00:03:17 +0200
+Miguel Ojeda <ojeda@kernel.org> wrote:
 
-> Add the struct update syntax to the init macros, but only for
-> `..Zeroable::zeroed()`. Adding this at the end of the struct initializer
-> allows one to omit fields from the initializer, these fields will be
-> initialized with 0x00 set to every byte. Only types that implement the
-> `Zeroable` trait can utilize this.
+> Introduced in Rust 1.69.0 [1], this lint prevents forgetting to set
+> the C ABI when using `#[no_mangle]` (or thinking it is implied).
 > 
-> Suggested-by: Asahi Lina <lina@asahilina.net>
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> For instance, it would have prevented the issue [2] fixed by commit
+> c682e4c37d2b ("rust: kernel: Mark rust_fmt_argument as extern "C"").
+> 
+>     error: `#[no_mangle]` set on a function with the default (`Rust`) ABI
+>       --> rust/kernel/print.rs:21:1  
+>        |
+>     21 | / unsafe fn rust_fmt_argument(
+>     22 | |     buf: *mut c_char,
+>     23 | |     end: *mut c_char,
+>     24 | |     ptr: *const c_void,
+>     25 | | ) -> *mut c_char {
+>        | |________________^
+>        |
+>        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#no_mangle_with_rust_abi
+>        = note: requested on the command line with `-D clippy::no-mangle-with-rust-abi`
+>     help: set an ABI
+>        |
+>     21 | unsafe extern "C" fn rust_fmt_argument(
+>        |        ++++++++++
+>     help: or explicitly set the default
+>        |
+>     21 | unsafe extern "Rust" fn rust_fmt_argument(
+>        |        +++++++++++++
+> 
+> Thus enable it.
+> 
+> In rare cases, we may need to use the Rust ABI even with `#[no_mangle]`
+> (e.g. one case, before 1.71.0, would have been the `__rust_*`
+> functions). In those cases, we would need to `#[allow(...)]` the lint,
+> since using `extern "Rust"` explicitly (as the compiler suggests)
+> currently gets overwritten by `rustfmt` [3].
+> 
+> Link: https://github.com/rust-lang/rust-clippy/issues/10347 [1]
+> Link: https://github.com/Rust-for-Linux/linux/pull/967 [2]
+> Link: https://github.com/rust-lang/rustfmt/issues/5701 [3]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Reviewed-by: Gary Guo <gary@garyguo.net>
 
 > ---
-> v2 -> v3:
-> - changed `if false` argument to use `never executed closure`,
-> - added Reviewed-by's from Martin and Alice.
+>  Makefile | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> v1 -> v2:
-> - fix doctest imports,
-> - fix doctest examples,
-> - fix `Zeroable` path in the `__init_internal` macro,
-> - rename `is_zeroable` -> `assert_zeroable`,
-> - add missing `{}` to the case when `..Zeroable::zeroed()` is present,
-> - add `allow(unused_assignments)` in the type-checked struct
->   initializer.
-> 
->  rust/kernel/init.rs        |  16 +++++-
->  rust/kernel/init/macros.rs | 115 ++++++++++++++++++++++++++++++++++++-
->  2 files changed, 129 insertions(+), 2 deletions(-)
-> 
-> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-> index 0120674b451e..460f808ebf84 100644
-> --- a/rust/kernel/init.rs
-> +++ b/rust/kernel/init.rs
-> @@ -517,13 +517,17 @@ macro_rules! stack_try_pin_init {
->  /// - Fields that you want to initialize in-place have to use `<-` instead of `:`.
->  /// - In front of the initializer you can write `&this in` to have access to a [`NonNull<Self>`]
->  ///   pointer named `this` inside of the initializer.
-> +/// - Using struct update syntax one can place `..Zeroable::zeroed()` at the very end of the
-> +///   struct, this initializes every field with 0 and then runs all initializers specified in the
-> +///   body. This can only be done if [`Zeroable`] is implemented for the struct.
->  ///
->  /// For instance:
->  ///
->  /// ```rust
-> -/// # use kernel::{macros::pin_data, pin_init};
-> +/// # use kernel::{macros::{Zeroable, pin_data}, pin_init};
->  /// # use core::{ptr::addr_of_mut, marker::PhantomPinned};
->  /// #[pin_data]
-> +/// #[derive(Zeroable)]
->  /// struct Buf {
->  ///     // `ptr` points into `buf`.
->  ///     ptr: *mut u8,
-> @@ -536,6 +540,10 @@ macro_rules! stack_try_pin_init {
->  ///     ptr: unsafe { addr_of_mut!((*this.as_ptr()).buf).cast() },
->  ///     pin: PhantomPinned,
->  /// });
-> +/// pin_init!(Buf {
-> +///     buf: [1; 64],
-> +///     ..Zeroable::zeroed()
-> +/// });
->  /// ```
->  ///
->  /// [`try_pin_init!`]: kernel::try_pin_init
-> @@ -555,6 +563,7 @@ macro_rules! pin_init {
->              @data(PinData, use_data),
->              @has_data(HasPinData, __pin_data),
->              @construct_closure(pin_init_from_closure),
-> +            @munch_fields($($fields)*),
->          )
->      };
->  }
-> @@ -611,6 +620,7 @@ macro_rules! try_pin_init {
->              @data(PinData, use_data),
->              @has_data(HasPinData, __pin_data),
->              @construct_closure(pin_init_from_closure),
-> +            @munch_fields($($fields)*),
->          )
->      };
->      ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-> @@ -624,6 +634,7 @@ macro_rules! try_pin_init {
->              @data(PinData, use_data),
->              @has_data(HasPinData, __pin_data),
->              @construct_closure(pin_init_from_closure),
-> +            @munch_fields($($fields)*),
->          )
->      };
->  }
-> @@ -658,6 +669,7 @@ macro_rules! init {
->              @data(InitData, /*no use_data*/),
->              @has_data(HasInitData, __init_data),
->              @construct_closure(init_from_closure),
-> +            @munch_fields($($fields)*),
->          )
->      }
->  }
-> @@ -708,6 +720,7 @@ macro_rules! try_init {
->              @data(InitData, /*no use_data*/),
->              @has_data(HasInitData, __init_data),
->              @construct_closure(init_from_closure),
-> +            @munch_fields($($fields)*),
->          )
->      };
->      ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-> @@ -721,6 +734,7 @@ macro_rules! try_init {
->              @data(InitData, /*no use_data*/),
->              @has_data(HasInitData, __init_data),
->              @construct_closure(init_from_closure),
-> +            @munch_fields($($fields)*),
->          )
->      };
->  }
-> diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
-> index cfeacc4b3f7d..4c86281301d8 100644
-> --- a/rust/kernel/init/macros.rs
-> +++ b/rust/kernel/init/macros.rs
-> @@ -991,6 +991,7 @@ impl<$($impl_generics)*> $pin_data<$($ty_generics)*>
->  ///
->  /// This macro has multiple internal call configurations, these are always the very first ident:
->  /// - nothing: this is the base case and called by the `{try_}{pin_}init!` macros.
-> +/// - `with_update_parsed`: when the `..Zeroable::zeroed()` syntax has been handled.
->  /// - `init_slot`: recursively creates the code that initializes all fields in `slot`.
->  /// - `make_initializer`: recursively create the struct initializer that guarantees that every
->  ///   field has been initialized exactly once.
-> @@ -1009,6 +1010,82 @@ macro_rules! __init_internal {
->          @has_data($has_data:ident, $get_data:ident),
->          // `pin_init_from_closure` or `init_from_closure`.
->          @construct_closure($construct_closure:ident),
-> +        @munch_fields(),
-> +    ) => {
-> +        $crate::__init_internal!(with_update_parsed:
-> +            @this($($this)?),
-> +            @typ($t $(::<$($generics),*>)? ),
-> +            @fields($($fields)*),
-> +            @error($err),
-> +            @data($data, $($use_data)?),
-> +            @has_data($has_data, $get_data),
-> +            @construct_closure($construct_closure),
-> +            @zeroed(), // nothing means default behavior.
-> +        )
-> +    };
-> +    (
-> +        @this($($this:ident)?),
-> +        @typ($t:ident $(::<$($generics:ty),*>)?),
-> +        @fields($($fields:tt)*),
-> +        @error($err:ty),
-> +        // Either `PinData` or `InitData`, `$use_data` should only be present in the `PinData`
-> +        // case.
-> +        @data($data:ident, $($use_data:ident)?),
-> +        // `HasPinData` or `HasInitData`.
-> +        @has_data($has_data:ident, $get_data:ident),
-> +        // `pin_init_from_closure` or `init_from_closure`.
-> +        @construct_closure($construct_closure:ident),
-> +        @munch_fields(..Zeroable::zeroed()),
-> +    ) => {
-> +        $crate::__init_internal!(with_update_parsed:
-> +            @this($($this)?),
-> +            @typ($t $(::<$($generics),*>)? ),
-> +            @fields($($fields)*),
-> +            @error($err),
-> +            @data($data, $($use_data)?),
-> +            @has_data($has_data, $get_data),
-> +            @construct_closure($construct_closure),
-> +            @zeroed(()), // `()` means zero all fields not mentioned.
-> +        )
-> +    };
-> +    (
-> +        @this($($this:ident)?),
-> +        @typ($t:ident $(::<$($generics:ty),*>)?),
-> +        @fields($($fields:tt)*),
-> +        @error($err:ty),
-> +        // Either `PinData` or `InitData`, `$use_data` should only be present in the `PinData`
-> +        // case.
-> +        @data($data:ident, $($use_data:ident)?),
-> +        // `HasPinData` or `HasInitData`.
-> +        @has_data($has_data:ident, $get_data:ident),
-> +        // `pin_init_from_closure` or `init_from_closure`.
-> +        @construct_closure($construct_closure:ident),
-> +        @munch_fields($ignore:tt $($rest:tt)*),
-> +    ) => {
-> +        $crate::__init_internal!(
-> +            @this($($this)?),
-> +            @typ($t $(::<$($generics),*>)? ),
-> +            @fields($($fields)*),
-> +            @error($err),
-> +            @data($data, $($use_data)?),
-> +            @has_data($has_data, $get_data),
-> +            @construct_closure($construct_closure),
-> +            @munch_fields($($rest)*),
-> +        )
-> +    };
-> +    (with_update_parsed:
-> +        @this($($this:ident)?),
-> +        @typ($t:ident $(::<$($generics:ty),*>)?),
-> +        @fields($($fields:tt)*),
-> +        @error($err:ty),
-> +        // Either `PinData` or `InitData`, `$use_data` should only be present in the `PinData`
-> +        // case.
-> +        @data($data:ident, $($use_data:ident)?),
-> +        // `HasPinData` or `HasInitData`.
-> +        @has_data($has_data:ident, $get_data:ident),
-> +        // `pin_init_from_closure` or `init_from_closure`.
-> +        @construct_closure($construct_closure:ident),
-> +        @zeroed($($init_zeroed:expr)?),
->      ) => {{
->          // We do not want to allow arbitrary returns, so we declare this type as the `Ok` return
->          // type and shadow it later when we insert the arbitrary user code. That way there will be
-> @@ -1026,6 +1103,17 @@ macro_rules! __init_internal {
->                  {
->                      // Shadow the structure so it cannot be used to return early.
->                      struct __InitOk;
-> +                    // If `$init_zeroed` is present we should zero the slot now and not emit an
-> +                    // error when fields are missing (since they will be zeroed). We also have to
-> +                    // check that the type actually implements `Zeroable`.
-> +                    $({
-> +                        fn assert_zeroable<T: $crate::init::Zeroable>(_: *mut T) {}
-> +                        // Ensure that the struct is indeed `Zeroable`.
-> +                        assert_zeroable(slot);
-> +                        // SAFETY:  The type implements `Zeroable` by the check above.
-> +                        unsafe { ::core::ptr::write_bytes(slot, 0, 1) };
-> +                        $init_zeroed // this will be `()` if set.
-> +                    })?
->                      // Create the `this` so it can be referenced by the user inside of the
->                      // expressions creating the individual fields.
->                      $(let $this = unsafe { ::core::ptr::NonNull::new_unchecked(slot) };)?
-> @@ -1062,7 +1150,7 @@ macro_rules! __init_internal {
->          @data($data:ident),
->          @slot($slot:ident),
->          @guards($($guards:ident,)*),
-> -        @munch_fields($(,)?),
-> +        @munch_fields($(..Zeroable::zeroed())? $(,)?),
->      ) => {
->          // Endpoint of munching, no fields are left. If execution reaches this point, all fields
->          // have been initialized. Therefore we can now dismiss the guards by forgetting them.
-> @@ -1163,6 +1251,31 @@ macro_rules! __init_internal {
->              );
->          }
->      };
-> +    (make_initializer:
-> +        @slot($slot:ident),
-> +        @type_name($t:ident),
-> +        @munch_fields(..Zeroable::zeroed() $(,)?),
-> +        @acc($($acc:tt)*),
-> +    ) => {
-> +        // Endpoint, nothing more to munch, create the initializer. Since the users specified
-> +        // `..Zeroable::zeroed()`, the slot will already have been zeroed and all field that have
-> +        // not been overwritten are thus zero and initialized. We still check that all fields are
-> +        // actually accessible by using the struct update syntax ourselves.
-> +        // We are inside of a closure that is never executed and thus we can abuse `slot` to
-> +        // get the correct type inference here:
-> +        #[allow(unused_assignments)]
-> +        unsafe {
-> +            let mut zeroed = ::core::mem::zeroed();
-> +            // We have to use type inference here to make zeroed have the correct type. This does
-> +            // not get executed, so it has no effect.
-> +            ::core::ptr::write($slot, zeroed);
-> +            zeroed = ::core::mem::zeroed();
-> +            ::core::ptr::write($slot, $t {
-> +                $($acc)*
-> +                ..zeroed
-> +            });
-> +        }
-> +    };
->      (make_initializer:
->          @slot($slot:ident),
->          @type_name($t:ident),
+> diff --git a/Makefile b/Makefile
+> index 658ec2b8aa74..93bf3eca3ead 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -467,6 +467,7 @@ export rust_common_flags := --edition=2021 \
+>  			    -Dclippy::let_unit_value -Dclippy::mut_mut \
+>  			    -Dclippy::needless_bitwise_bool \
+>  			    -Dclippy::needless_continue \
+> +			    -Dclippy::no_mangle_with_rust_abi \
+>  			    -Wclippy::dbg_macro
+>  
+>  KBUILD_HOSTCFLAGS   := $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
 
