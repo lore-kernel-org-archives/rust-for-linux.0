@@ -1,107 +1,152 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5B418B0D
-	for <rust-for-linux@vger.kernel.org>; Thu,  3 Aug 2023 14:21:04 +0000 (UTC)
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE8B01FED;
-	Thu,  3 Aug 2023 07:20:48 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-d1fb9107036so1169164276.0;
-        Thu, 03 Aug 2023 07:20:48 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811F06FA2
+	for <rust-for-linux@vger.kernel.org>; Thu,  3 Aug 2023 15:35:25 +0000 (UTC)
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B864A3582
+	for <rust-for-linux@vger.kernel.org>; Thu,  3 Aug 2023 08:35:22 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2b703a0453fso17363831fa.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 03 Aug 2023 08:35:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691072448; x=1691677248;
+        d=umich.edu; s=google-2016-06-03; t=1691076921; x=1691681721;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oiEbRwyP1tR0wrByY60w56se8HslR4yyLy7pAwEV4iM=;
-        b=ivJdcWKQ/0yXqwLoZqJ43+Jsc/9M7Ko2molswXhNAs6VRI2u3kqNp9o8iSO9G1koPY
-         wI6EXIhwUM5zN+n1tVKduNZZAoqzWdkv72FOlTH8V9V8oqoT1hjpaID49l+c/m42Fi7v
-         dgW5O0b1GNiGPcjvvQPjzRk9FdW3hGIIMrSzCGjfG6DwbOEtJgJBOrciiYhPPO6CY67/
-         v4BokpyqGHX9wGsDruT+innqTBW1k0AETD7h0ZYh78vLAACEvi0A38c6ZDUSB2PwzFrA
-         4A6SyKJoRQn3SGjTl46eZsgBoMW0qBUHvgkfPjOd3HjKq5cod4RXORgEMqBH/c69FzYx
-         QB5A==
+        bh=+oypXlWJh1usCB/TTGcantnU/B7Uqzl56Nf26cP4N8s=;
+        b=OK1VuHd3EGGmJr0c72gzI4bUbGLQX/zaO7kzw0oeYvMGZjAYwVTDZxOpXEBAp3cT32
+         XWXoAtkwgC1kAmdnvuxCfhsPzX+tc+Q0VDXmtMOe1iBbs/l+1u6dlILAMlmQ5NVQX+Yb
+         u3Y+wb1SzLbptfcMbIh49YJkEXOu31DLnuIR+P4FycBrD387mzhqR0hmnVmQfsqaJZJ2
+         BJV54K2VxJtvjjRuiidNUpUak3vlA5Suz5TytjSj5qoT3F2Ms1KhzvRIHHH72oSbl3G2
+         pdpxzs4yN8SenTS6HqDMoqkBTZWYKa4cbiEflYsG5AeprWMUX2gOlKFI592WlPeFtuDm
+         qd0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691072448; x=1691677248;
+        d=1e100.net; s=20221208; t=1691076921; x=1691681721;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oiEbRwyP1tR0wrByY60w56se8HslR4yyLy7pAwEV4iM=;
-        b=iQZfb9g9nggDN/ZRV0yqNbdPZlGAQwBSKUjWWAu8qG5eZU13EYKJyIC5pxtLEQFMhL
-         EhgQSeFwK89pHsaqgqKGl5lQAjbpnwWo/qnrDNJRiqtlT1ABiffjySB9pI85bDmxGal+
-         zAtvWkxPIM61KgfV2TU0gGwUibtCM9rD27EfPfpHTrOUz3cwwX1hSbtlvqW8JBzvD1Pt
-         IdNHMLASq9BxHZOkZO5MAvj/fB7H6bRT8bbDMdJW2S2n7blF1nY5M6Fwqjxaks3cKjZT
-         VrDYOlFfrcYZDWBlceE+IHvix8wqt2MxgXB+DIWcCSlYNjrPzjSoNvgbuMvshrO0NAin
-         hvGQ==
-X-Gm-Message-State: ABy/qLbbvDp/TF28W4rpeg4SrQ9MHXbp7+6YL3/GKJ8vtxXvQa5P9ZGT
-	PPYKtYgJtlrpB+dm3kzMlkXz3nFpTfLZUdWgFvI=
-X-Google-Smtp-Source: APBJJlGWhJELvy0wK0ntAUH+eQukqY1V0H0MwKCevOZfLrSbqznIdyBI6v/cB0IegSGb94STk4usjuYWZsPnfU+Dwx4=
-X-Received: by 2002:a25:6b42:0:b0:d1a:65c9:d98f with SMTP id
- o2-20020a256b42000000b00d1a65c9d98fmr18859603ybm.56.1691072447822; Thu, 03
- Aug 2023 07:20:47 -0700 (PDT)
+        bh=+oypXlWJh1usCB/TTGcantnU/B7Uqzl56Nf26cP4N8s=;
+        b=WYERpkyOEHjp9s1G4X2HZCJ3jQ6hFvoSsjUVGV4pRsttHfe+ZYuSYjC/616hgRzCe0
+         GjGLvk8uDUFEJmZAB3baYMrKDjd2FXaPzzCNFIcHOuSP2RbqJ8ylKjjVwoypako0lc3y
+         n2ECvlfxnYKZcD7/9mjSF3Q1Ur+miFAX4C4Um3u6vJCqEHE/coMRF2jQ2iBM5dIyTFqh
+         q6333F8WWPClIWQ0nKRglpVSWeCPlGz/yWEFAZDxwAb/sKaE1fZJgGQDJzWWot4KNeLl
+         QZFFSqE5ikv73D4NiEvsGgUoMDXy0CuTBYPGTqWng1ZGNRHkUdgpN2BXtbW0e9Fd1rVF
+         zFCQ==
+X-Gm-Message-State: ABy/qLZSy+TyJqLgt15WlqcnTg8ejYYjEV+mFQ9C3fUj9+bFWMR+wQ4K
+	cr6IpPIaRNfD/H/No/uOpOXjrK0RuTO5YoR0lcw5jl8TSn9j7dE6AQgqG2Mu
+X-Google-Smtp-Source: APBJJlFz7X3QQCzZ4sS5qgWNz0sG56PeYqCF3hekjBGrBXE+ulfD04T5qgJZYLBZ4lwtoyZuYBx1P7XFD4RLFwOz9JI=
+X-Received: by 2002:a2e:b70e:0:b0:2b6:df71:cff1 with SMTP id
+ j14-20020a2eb70e000000b002b6df71cff1mr7872137ljo.52.1691076920952; Thu, 03
+ Aug 2023 08:35:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230803140926.205974-1-changxian.cqs@antgroup.com>
-In-Reply-To: <20230803140926.205974-1-changxian.cqs@antgroup.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 3 Aug 2023 16:20:36 +0200
-Message-ID: <CANiq72nqy_WNY4LbyZw9p=Yk8K1HT7fjdyP2DvVKxOEw3SUv0w@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: macros: vtable: fix `HAS_*` redefinition (`gen_const_name`)
-To: Qingsong Chen <changxian.cqs@antgroup.com>
-Cc: linux-kernel@vger.kernel.org, =?UTF-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+References: <20230803093418.51872-1-tmgross@umich.edu> <CANiq72nhsqWsxHKmyNWLtV8AwdA1hAq5ooyJ0WNVrnzRnpjAFA@mail.gmail.com>
+In-Reply-To: <CANiq72nhsqWsxHKmyNWLtV8AwdA1hAq5ooyJ0WNVrnzRnpjAFA@mail.gmail.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Thu, 3 Aug 2023 11:35:09 -0400
+Message-ID: <CALNs47tYsLq8wo3aiqU5Kmi8OFJgf6cugiRLJNiXZGUYdaVojQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/2] Generate API documentation for 'bindings' crate
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, 
-	=?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, 
-	rust-for-linux@vger.kernel.org
+	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-	autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, Aug 3, 2023 at 4:10=E2=80=AFPM Qingsong Chen <changxian.cqs@antgrou=
-p.com> wrote:
+On Thu, Aug 3, 2023 at 10:08=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+> I think the first question to answer would be whether we want to
+> expose `bindings`, i.e. what are the advantages/disadvantages?
 >
-> ```rust
->     #[vtable]
->     pub trait Foo {
->         #[cfg(CONFIG_X)]
->         fn bar();
+> If `kernel` were a "normal library", then I would say we shouldn't,
+> because users should not need to care; and, in addition, the goal is
+> that leaf modules do not need to access them directly.
 >
->         #[cfg(not(CONFIG_X))]
->         fn bar(x: usize);
->     }
-> ```
+> But, as sometimes happen, it may still be quite useful for some
+> developers nevertheless (the same way documenting the internal/private
+> details could be).
+>
+> So, it would be nice to have an overview from your point of view on
+> why it should be done (or not).
 
-I forgot to mention this in v1: the code does not need to be indented,
-since it is in a ``` block. Or you could remove the block, and keep
-the indentation. Both ways are fine.
+I do understand that dilemma, but am not sure what the happy medium is
+between rendering them and hiding them. Where I see value is:
 
-> Changelog:
-> ----------
-> v1 -> v2:
-> - Use `BTreeSet` and existing `consts` as suggested by Alice and Gary.
-> - Reword commit messages as suggested by Miguel.
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+1. For anyone reading/writing abstractions, it's useful to quickly see
+how exactly bindgen did the C -> Rust mapping
+2. Abstractions may want to link to the C side somehow, linking the
+bindings is an easier first step than linking to sphinx (in the future
+we may be able to do a bindings -> sphinx link)
 
-The changelog for a patch should be placed after the `---` line below
-the Signed-off-by. That means it will not be part of the commit
-message that will land in Git. See e.g. how Martin did it here:
-https://lore.kernel.org/rust-for-linux/20230520231701.46008-1-yakoyoku@gmai=
-l.com/
+Maybe a stronger "prefer abstractions over bindings" message would
+suffice to discourage use outside of reference?
 
-No need to send a v3 for these two nits: I can fix it on my side when
-I apply it if others are happy with this version of the patch.
+In any case, I will put this behind a flag so it is not enabled by
+default. While I'm at it - is there value in adding a config option to
+pass `--document-private-items` to the kernel crate, or supporting
+`RUSTDOCFLAGS` like Cargo does?
+
+> > 1. Do we want to make this the default, or a separate target/
+> >    configuration? I don't think there is much downside to always
+> >    generating.
+>
+> One downside of doing it by default would be going against the "avoid
+> `bindings`" guideline (ideally rule).
+>
+> Another one is render time (the C side is trying to reduce it), I
+> guess, especially if we keep adding headers over time.
+
+That makes sense, I will add the flag option.
+
+> > 2. The entire '.config' file could be included in the doc output, to
+> >    make it easy to tell what settings the documentation was generated
+> >    with. Would this be desired? Maybe with a '--cfg
+> >    include-dotcfg=3D".config"' flag so published docs would have the
+> >    option (unsure whether it may ever have sensitive information).
+>
+> This may be useful orthogonally to rendering `bindings` or not.
+>
+
+I will add this in a separate patch.
+
+> > Bindgen is currently invoked with '--no-doc-comments', I think this may
+> > be because some blocks were mistakenly interpreted as doctests. Once we
+> > upgrade our bindgen version we might be able to remove this.
+>
+> Yes, that is https://github.com/Rust-for-Linux/linux/issues/323 and
+> https://github.com/rust-lang/rust-bindgen/issues/2057, which led to
+> the addition of `process_comments` to `bindgen` in v0.63.0.
+
+How would switching to the library work? Since that seems like a more
+involved discussion, would postprocesing `generated_bindings.rs` be
+acceptable instead? I have been playing around with a python script
+that extracts the `#[doc ...]` blocks and (1) fixes the escaping and
+(2) formats parameters and fixes their spacing, I could extract this
+to a separate patch if it may be a while before we can use the
+library.
+
+> > Side note, 'rust/Makefile' seems to have a mix of tabs and spaces - is
+> > this intentional?
+>
+> Yes, it is intentional. For instance, the command definitions use
+> spaces like the vast majority of the kernel `Makefile`s.
+
+Ah thanks, it just looks a bit weird in the diff.
+
+> Cheers,
+> Miguel
 
 Thanks!
-
-Cheers,
-Miguel
+Trevor
