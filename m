@@ -1,106 +1,92 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86567E
-	for <rust-for-linux@vger.kernel.org>; Thu,  3 Aug 2023 09:20:33 +0000 (UTC)
-Received: from out0-217.mail.aliyun.com (out0-217.mail.aliyun.com [140.205.0.217])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E70F2D43;
-	Thu,  3 Aug 2023 02:20:20 -0700 (PDT)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R661e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018047211;MF=changxian.cqs@antgroup.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---.U7ZWN6a_1691054412;
-Received: from 30.177.49.237(mailfrom:changxian.cqs@antgroup.com fp:SMTPD_---.U7ZWN6a_1691054412)
-          by smtp.aliyun-inc.com;
-          Thu, 03 Aug 2023 17:20:13 +0800
-Message-ID: <e7c4a61b-19dd-1bb5-e0a5-7cb55286c994@antgroup.com>
-Date: Thu, 03 Aug 2023 17:20:11 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3627E
+	for <rust-for-linux@vger.kernel.org>; Thu,  3 Aug 2023 09:35:43 +0000 (UTC)
+Received: from keen-gwydion.relay-egress.a.mail.umich.edu (relay-egress-host.us-east-2.a.mail.umich.edu [18.217.159.240])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EB2F422D;
+	Thu,  3 Aug 2023 02:35:34 -0700 (PDT)
+Received: from malleable-ellyllon.authn-relay.a.mail.umich.edu (ip-10-0-72-197.us-east-2.compute.internal [10.0.72.197])
+	by keen-gwydion.relay-egress.a.mail.umich.edu with ESMTPS
+	id 64CB74E5.130B4C7C.1A239A93.70545;
+	Thu, 03 Aug 2023 05:35:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=umich.edu;
+	s=relay-2018-08-29; t=1691055327;
+	bh=Xc/AH5l4Iyyp7OtLp1W+ayvZ64gdQJXoJlypwl+ahyA=;
+	h=From:To:Cc:Subject:Date;
+	b=DeWNFKCo8ElkOM9/673Zdqcd1BdgDA3AL++FK0+eUh/m2OHm7jnaiHet1/zV2lSmy
+	 xGc1Ttaoz7RYr0OM3etjwtW3D2tKmoVLUdhBcDGZyR3GQbpE813ZjX260sysIeZ95h
+	 rB/XUybT4aGPfDstPiT8SRJBB41oNZvwhh6PVV5y2LmNGuBzI8KG4BAQYo7GrW+he/
+	 lMGb/gMhA0DNXhYwnaY4bW5xnRCSHc/cq6KobDha+R8MxGYIvS40BIl+TEIpp+6EkU
+	 EIYp/OL/KB6iArLHGGAo6JIYQIwZr9lBcjAQBZ12wmlFYyNpAjpEjr8yqqnsig4XAD
+	 zmpRQah2Or7Zg==
+Authentication-Results: malleable-ellyllon.authn-relay.a.mail.umich.edu; 
+	iprev=permerror policy.iprev=68.32.216.219 (unknown);
+	auth=pass smtp.auth=tmgross
+Received: from localhost.localdomain (unknown [68.32.216.219])
+	by malleable-ellyllon.authn-relay.a.mail.umich.edu with ESMTPSA
+	id 64CB74DF.146D9BAD.63148A9A.1340056;
+	Thu, 03 Aug 2023 05:35:27 -0400
+From: Trevor Gross <tmgross@umich.edu>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Trevor Gross <tmgross@umich.edu>
+Subject: [RFC PATCH 0/2] Generate API documentation for 'bindings' crate
+Date: Thu,  3 Aug 2023 05:34:16 -0400
+Message-Id: <20230803093418.51872-1-tmgross@umich.edu>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.11.0
-Subject: Re: [PATCH 1/1] rust: macros: fix redefine const_name in `vtable`
-To: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
- Miguel Ojeda <ojeda@kernel.org>
-Cc:  <alex.gaynor@gmail.com>,
-   <benno.lossin@proton.me>,
-   <bjorn3_gh@protonmail.com>,
-   <boqun.feng@gmail.com>,
-   <linux-kernel@vger.kernel.org>,
-   <ojeda@kernel.org>,
-   <rust-for-linux@vger.kernel.org>,
-   <sergio.collado@gmail.com>,
-  "=?UTF-8?B?55Sw5rSq5Lqu?=" <tate.thl@antgroup.com>,
-   <wedsonaf@gmail.com>
-References: <20230626074242.3945398-2-changxian.cqs@antgroup.com>
- <20230802195020.3062950-1-aliceryhl@google.com>
- <20230802210208.4dce7501.gary@garyguo.net>
-From: "Qingsong Chen" <changxian.cqs@antgroup.com>
-In-Reply-To: <20230802210208.4dce7501.gary@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-	UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 8/3/23 4:02 AM, Gary Guo wrote:
-> On Wed,  2 Aug 2023 19:50:20 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
-> 
->> Qingsong Chen <changxian.cqs@antgroup.com> writes:
->>>      let mut body_it = body.stream().into_iter();
->>> -    let mut functions = Vec::new();
->>> +    let mut functions = HashSet::new();
->>
->> Please use a `BTreeSet` instead of a `HashSet`. A `HashSet` has
->> non-deterministic iteration order, so this will make the macro output
->> different things each time you run it.
->>
->> Alice
->>
-> 
-> Good point.
-> 
-> Another way is to just use the existing `consts` HashSet to avoid
-> duplication. Something like
-> 
-> 	consts.insert(gen_const_name);
-> 
-> after emitting the const item would probably be sufficient.
+The 'bindings' crate currently doesn't have API documentation available.
+With this change, it will be generated as part of the output of 'make
+rustdoc' (similar to the 'kernel' crate's docs,
+https://rust-for-linux.github.io/docs/kernel/).
 
-According to the suggestions of Alice and Gary, we could do the fix
-like this:
+This patch is a RFC because there are a few questions:
 
---- a/rust/macros/vtable.rs
-+++ b/rust/macros/vtable.rs
-@@ -1,7 +1,7 @@
-  // SPDX-License-Identifier: GPL-2.0
+1. Do we want to make this the default, or a separate target/
+   configuration? I don't think there is much downside to always
+   generating.
+2. The entire '.config' file could be included in the doc output, to
+   make it easy to tell what settings the documentation was generated
+   with. Would this be desired? Maybe with a '--cfg
+   include-dotcfg=".config"' flag so published docs would have the
+   option (unsure whether it may ever have sensitive information).
 
-  use proc_macro::{Delimiter, Group, TokenStream, TokenTree};
--use std::collections::HashSet;
-+use std::collections::BTreeSet;
-  use std::fmt::Write;
+Bindgen is currently invoked with '--no-doc-comments', I think this may
+be because some blocks were mistakenly interpreted as doctests. Once we
+upgrade our bindgen version we might be able to remove this.
 
-  pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStream {
-@@ -28,7 +28,7 @@ pub(crate) fn vtable(_attr: TokenStream, ts: 
-TokenStream) -> TokenStream {
+Side note, 'rust/Makefile' seems to have a mix of tabs and spaces - is
+this intentional?
 
-      let mut body_it = body.stream().into_iter();
-      let mut functions = Vec::new();
--    let mut consts = HashSet::new();
-+    let mut consts = BTreeSet::new();
-      while let Some(token) = body_it.next() {
-          match token {
-              TokenTree::Ident(ident) if ident.to_string() == "fn" => {
-@@ -74,6 +74,7 @@ pub(crate) fn vtable(_attr: TokenStream, ts: 
-TokenStream) -> TokenStream {
-                  const {gen_const_name}: bool = false;",
-              )
-              .unwrap();
-+            consts.insert(gen_const_name);
-          }
-      } else {
-          const_items = "const USE_VTABLE_ATTR: () = ();".to_owned();
+Trevor Gross (2):
+  rust: bindings: generate API documentation for the 'bindings' crate
+  rust: bindings: add warning about configuration dependence
+
+ rust/Makefile        | 14 +++++++++++---
+ rust/bindings/lib.rs |  3 +++
+ 2 files changed, 14 insertions(+), 3 deletions(-)
+
+-- 
+2.34.1
