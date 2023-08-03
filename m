@@ -1,125 +1,103 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF733D8E
-	for <rust-for-linux@vger.kernel.org>; Thu,  3 Aug 2023 14:08:26 +0000 (UTC)
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E696F1FF0;
-	Thu,  3 Aug 2023 07:08:02 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-bcb6dbc477eso991813276.1;
-        Thu, 03 Aug 2023 07:08:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691071681; x=1691676481;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Jb1aZWQnbifz16U2517ArsPdHyVT8qzE12vInUcoAt4=;
-        b=ebrpSM4TGU27+eZrt6b46SfKawasjkJFKbmFSZK0BT7hOZ1tKOjkMoC0vR5vTBCjSu
-         Z48JOOq1FGgVBtJhlzjzODuTpmRqPddr8H8ETzZYNXfvzcmXBC701acfC+9fqxZxsDKX
-         YF2APnmkmaaZy1wPZJjjzVnzTgu5j/4z+FfTZmmEu/GxJ+0dYUF+b2PSl7I7csWgATvy
-         8W/FGuPfvDLJidU98qIviLCud51nDEpZ+4YKPBzkySqHwG86DBRi47UAa5utMuas8guY
-         5HzUSN4aWVz/Y2nQ6RmuJo/GYIuEblRJG7IxfZeYjNICgLOkF/3X9nc++hwxO04L4x3A
-         8Wig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691071681; x=1691676481;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Jb1aZWQnbifz16U2517ArsPdHyVT8qzE12vInUcoAt4=;
-        b=hWnZ/x4TAX+M0HgHQ7xqEVUU6VbdIKPMnzAffQDFWZCYZjuuLy8BgikF4t7W7O89wi
-         sp6tNpVHN8CIzhV5oGFmgmOaRM/cPkwlS5Q2L69FhCp3ILsA6ujpnmgJ05ZJ+pSJKek+
-         B+L4lC3nqehftiYWjh1hbZbr6ETn26yUfkS94yaClbqnstccID8ckI5OPcH33FtiMlYp
-         umetiEO+6GVUu/PQ3E87wxUWHm6rrGyK2OfsZ8H0z+uGNciN5kkALrA+vFkYdvmtCCgL
-         5CPzFTlKitv4BmmUCR0CQ8Bfq9VKLZtAznULRNF02Mh5GcCr74xfnKaSRAg2bbLwS6en
-         e8Gg==
-X-Gm-Message-State: ABy/qLa+jxRS2p7d6goQ3UrOplAt3rKbralQFGm6lVs3vwF6BremFtsk
-	krk5ZgpK+5KdIBkLNP2lotI7P3comEmVrG7FWTI=
-X-Google-Smtp-Source: APBJJlFXP4Sa4yNhuW2mCuFdlEBTS9oAsUrp0FEp+qHxyfLa85hSCjyn/scAvmXIqvXDvZyBlOyHUWNeE8G42dmTcn8=
-X-Received: by 2002:a25:3757:0:b0:bcc:c347:81de with SMTP id
- e84-20020a253757000000b00bccc34781demr15061592yba.36.1691071678851; Thu, 03
- Aug 2023 07:07:58 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBB515482
+	for <rust-for-linux@vger.kernel.org>; Thu,  3 Aug 2023 14:11:06 +0000 (UTC)
+Received: from out0-221.mail.aliyun.com (out0-221.mail.aliyun.com [140.205.0.221])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A2EC49D6;
+	Thu,  3 Aug 2023 07:10:41 -0700 (PDT)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018047204;MF=changxian.cqs@antgroup.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---.U7iJE1X_1691071805;
+Received: from localhost(mailfrom:changxian.cqs@antgroup.com fp:SMTPD_---.U7iJE1X_1691071805)
+          by smtp.aliyun-inc.com;
+          Thu, 03 Aug 2023 22:10:06 +0800
+From: "Qingsong Chen" <changxian.cqs@antgroup.com>
+To: linux-kernel@vger.kernel.org
+Cc: "=?UTF-8?B?55Sw5rSq5Lqu?=" <tate.thl@antgroup.com>,
+  "Qingsong Chen" <changxian.cqs@antgroup.com>,
+  "Miguel Ojeda" <ojeda@kernel.org>,
+  "Alex Gaynor" <alex.gaynor@gmail.com>,
+  "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+  "Boqun Feng" <boqun.feng@gmail.com>,
+  "Gary Guo" <gary@garyguo.net>,
+  "=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>,
+  "Benno Lossin" <benno.lossin@proton.me>,
+  "=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?=" <sergio.collado@gmail.com>,
+   <rust-for-linux@vger.kernel.org>
+Subject: [PATCH v2] rust: macros: vtable: fix `HAS_*` redefinition (`gen_const_name`)
+Date: Thu, 03 Aug 2023 22:09:23 +0800
+Message-Id: <20230803140926.205974-1-changxian.cqs@antgroup.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230803093418.51872-1-tmgross@umich.edu>
-In-Reply-To: <20230803093418.51872-1-tmgross@umich.edu>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 3 Aug 2023 16:07:47 +0200
-Message-ID: <CANiq72nhsqWsxHKmyNWLtV8AwdA1hAq5ooyJ0WNVrnzRnpjAFA@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] Generate API documentation for 'bindings' crate
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-	autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+	UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Thu, Aug 3, 2023 at 11:36=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
-ote:
->
-> The 'bindings' crate currently doesn't have API documentation available.
-> With this change, it will be generated as part of the output of 'make
-> rustdoc' (similar to the 'kernel' crate's docs,
-> https://rust-for-linux.github.io/docs/kernel/).
->
-> This patch is a RFC because there are a few questions:
+If we define the same function name twice in a trait (using `#[cfg]`),
+the `vtable` macro will redefine its `gen_const_name`, e.g. this will
+define `HAS_BAR` twice:
 
-I think the first question to answer would be whether we want to
-expose `bindings`, i.e. what are the advantages/disadvantages?
+```rust
+    #[vtable]
+    pub trait Foo {
+        #[cfg(CONFIG_X)]
+        fn bar();
 
-If `kernel` were a "normal library", then I would say we shouldn't,
-because users should not need to care; and, in addition, the goal is
-that leaf modules do not need to access them directly.
+        #[cfg(not(CONFIG_X))]
+        fn bar(x: usize);
+    }
+```
 
-But, as sometimes happen, it may still be quite useful for some
-developers nevertheless (the same way documenting the internal/private
-details could be).
+Changelog:
+----------
+v1 -> v2:
+- Use `BTreeSet` and existing `consts` as suggested by Alice and Gary.
+- Reword commit messages as suggested by Miguel.
+====================
 
-So, it would be nice to have an overview from your point of view on
-why it should be done (or not).
+Fixes: b44becc5ee80 ("rust: macros: add `#[vtable]` proc macro")
+Signed-off-by: Qingsong Chen <changxian.cqs@antgroup.com>
+---
+ rust/macros/vtable.rs | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-> 1. Do we want to make this the default, or a separate target/
->    configuration? I don't think there is much downside to always
->    generating.
+diff --git a/rust/macros/vtable.rs b/rust/macros/vtable.rs
+index 34d5e7fb5768..8a1baedcc280 100644
+--- a/rust/macros/vtable.rs
++++ b/rust/macros/vtable.rs
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+ use proc_macro::{Delimiter, Group, TokenStream, TokenTree};
+-use std::collections::HashSet;
++use std::collections::BTreeSet;
+ use std::fmt::Write;
+ 
+ pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStream {
+@@ -28,7 +28,7 @@ pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStream {
+ 
+     let mut body_it = body.stream().into_iter();
+     let mut functions = Vec::new();
+-    let mut consts = HashSet::new();
++    let mut consts = BTreeSet::new();
+     while let Some(token) = body_it.next() {
+         match token {
+             TokenTree::Ident(ident) if ident.to_string() == "fn" => {
+@@ -74,6 +74,7 @@ pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStream {
+                 const {gen_const_name}: bool = false;",
+             )
+             .unwrap();
++            consts.insert(gen_const_name);
+         }
+     } else {
+         const_items = "const USE_VTABLE_ATTR: () = ();".to_owned();
+-- 
+2.40.1
 
-One downside of doing it by default would be going against the "avoid
-`bindings`" guideline (ideally rule).
-
-Another one is render time (the C side is trying to reduce it), I
-guess, especially if we keep adding headers over time.
-
-> 2. The entire '.config' file could be included in the doc output, to
->    make it easy to tell what settings the documentation was generated
->    with. Would this be desired? Maybe with a '--cfg
->    include-dotcfg=3D".config"' flag so published docs would have the
->    option (unsure whether it may ever have sensitive information).
-
-This may be useful orthogonally to rendering `bindings` or not.
-
-> Bindgen is currently invoked with '--no-doc-comments', I think this may
-> be because some blocks were mistakenly interpreted as doctests. Once we
-> upgrade our bindgen version we might be able to remove this.
-
-Yes, that is https://github.com/Rust-for-Linux/linux/issues/323 and
-https://github.com/rust-lang/rust-bindgen/issues/2057, which led to
-the addition of `process_comments` to `bindgen` in v0.63.0.
-
-> Side note, 'rust/Makefile' seems to have a mix of tabs and spaces - is
-> this intentional?
-
-Yes, it is intentional. For instance, the command definitions use
-spaces like the vast majority of the kernel `Makefile`s.
-
-Cheers,
-Miguel
