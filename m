@@ -1,45 +1,45 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DD21988A
-	for <rust-for-linux@vger.kernel.org>; Fri,  4 Aug 2023 17:15:01 +0000 (UTC)
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0C0A198B;
-	Fri,  4 Aug 2023 10:14:55 -0700 (PDT)
-Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6bcd51b8253so735079a34.3;
-        Fri, 04 Aug 2023 10:14:55 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465AD1988A
+	for <rust-for-linux@vger.kernel.org>; Fri,  4 Aug 2023 17:15:23 +0000 (UTC)
+Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FD87469C;
+	Fri,  4 Aug 2023 10:15:21 -0700 (PDT)
+Received: by mail-oi1-x236.google.com with SMTP id 5614622812f47-3a1ebb85f99so1862285b6e.2;
+        Fri, 04 Aug 2023 10:15:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691169295; x=1691774095;
+        d=gmail.com; s=20221208; t=1691169320; x=1691774120;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
         bh=x14eTXjE9ESJ3W86KNB02DEBmvHBG2F1228ijKBbEgI=;
-        b=QcSAPpLpCr3RWCP7y8P4OwSPQjpwzqXibIMa0bFEpOpflHTDOihv5mjd3banm3Xkbg
-         8VsonjJA+6s80799dz6n/occoZFnHOsk85JUr3uA5ukspFqG0p3Q/G+FKSRjInRny6j8
-         +yHtHmVQ/JBA2EZquNoiuIRCvBs+Dk5n3Tmu0fshPu7RTFXxoqE2nIugDYgivj/905cg
-         0+GiapAr5PkKWZ/iZ1JZv1PEKt2jSnFlJDIuAbzdVTdiHga4F/Kjqr0ySz7pXTZybVbW
-         7zv89Gog5Jmu2HinH4IARSYS9sWcHCyvAtrSKF8klOQQ1/hp4niIwpc0EviLrJHf8h9R
-         JAnQ==
+        b=AmAAVvzJY2ryyLXEcu8EfJbuSoJj312gZuM0yrAAjJYgH4BGEvTkqPw9/2ZL+7xOWU
+         zYn4EQegMx1mopLXNah/jU/uKsK5oc3u43c/s2bXL1rSo4tCbjLfJ1rSgkeQaAFvZgOX
+         0SXmWL13MoKmH65W9GVkzZVbkiZk8L0q8iCZM3icmGk2k9Qfk2OU/BaYWJ+Rug20IQ+h
+         fgGCwJnbtvr8P8Q49impoq1KOCkOPTmvW+dE2SWnArBCj/Xxq8Zu3SPeREsjETwqzCUW
+         Kf5+omXqQLpoIszdhbm85vXZGhZYrEVShirRC8b7oKDD86t6MubUZFhes9W3KPXc8olM
+         Ay/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691169295; x=1691774095;
+        d=1e100.net; s=20221208; t=1691169320; x=1691774120;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
         bh=x14eTXjE9ESJ3W86KNB02DEBmvHBG2F1228ijKBbEgI=;
-        b=cFsEWYCd4Ru7AvnyDps6BSdYoHGYKlPRYyN/zpVK9+GYhf2oP8U5Q2NkYh8ZpmRsbv
-         sun7cJPfKnamyaVe4pJ706YkoRcN/PkojJi2TnsBfz3JaFQIBRPOpT5BgMfVLvEotXQv
-         UG1AxqxF6xfRBfWUSZTB3CZ7t1632NQ1iy0Fe9mj4RmWCH7DFzo1I1nKZKkVUbFs981U
-         hDBmTH9F8fCcUTqObNkmixKVI/QUJXn3+bW8Gb1qOenYmy+8ECUhpMt89Ir6aaiYa/px
-         bcIxS51LwVXUt6xbPgjqrIZkV93VuDYn3Qc0UhBNRhPD6dHhouv2JPMbjT4NXly0Q56m
-         KEjA==
-X-Gm-Message-State: AOJu0YycvzrifzDwoc7/GDsZmPSwAfM5EUzmQ6WJK2uoVjLSmQ88Deb1
-	1XrtmJG50DfcK4hP1RJJ+K0=
-X-Google-Smtp-Source: AGHT+IGBL51DeYpgL+magEgmgYlhAJgIVl/dxnxpMVavBn0gVCBQUOsJsxhHan5HC4O+ZgtrVM3t2g==
-X-Received: by 2002:a9d:7a5a:0:b0:6b7:5112:bc1a with SMTP id z26-20020a9d7a5a000000b006b75112bc1amr2375361otm.24.1691169294850;
-        Fri, 04 Aug 2023 10:14:54 -0700 (PDT)
+        b=ZjhfSNltzFCyR63AJJsJKLTOd/PbXxjXgeomIpHY2D5YkxsGmr+EUgB6+sK+J7EgTo
+         LoUe/OX7hcfUgXbCkMSIjdBLzu98AJXN3rCoy5q0PT3bLT+uxBT+vQ9GOwf8XXCGmNsp
+         N1aibKEGhULd/qnMd+CyrZce5V1VZOIu54o3F3WNhHi3SXxkJ1LprTZYgTCsbsS2Q9GT
+         61wA3dMOcv3BH4RJWJ/gUUnZgZOF/OG/ok3zuzvJEQ+v58xzefvES1jnrq5NCdj//pG8
+         l1yClYWa9xlswoNMLAfnC3XxUYAP5HmllMYbqDMsMIJUIR3GNz1p6BWtPUVqlAtn5w+N
+         tXng==
+X-Gm-Message-State: AOJu0Yw6R1i4ztuELxR23NWt1kxX3GmCdDAKiVFd9Kc/vCw4WlBkBuRA
+	wO7n0ox/jS0+bnVTrMppr9w=
+X-Google-Smtp-Source: AGHT+IE28wNxh0Jvg039yaSdSejSrsyKYG9t0gMkmUlxzt12y4vrFOjLOiQeD3sDvJdPsjtp6Hc4yw==
+X-Received: by 2002:a05:6808:248:b0:3a3:6244:2b0a with SMTP id m8-20020a056808024800b003a362442b0amr2944200oie.23.1691169320236;
+        Fri, 04 Aug 2023 10:15:20 -0700 (PDT)
 Received: from tx3000mach.io (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id z26-20020a05683020da00b006b92c078d05sm1354942otq.31.2023.08.04.10.14.52
+        by smtp.gmail.com with ESMTPSA id u37-20020a056808152500b003a77b3979b2sm856539oiw.26.2023.08.04.10.15.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Aug 2023 10:14:54 -0700 (PDT)
+        Fri, 04 Aug 2023 10:15:19 -0700 (PDT)
 From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 To: 
 Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
@@ -53,8 +53,8 @@ Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Subject: [PATCH v3] scripts: generate_rust_analyzer: provide `cfg`s for `core` and `alloc`
-Date: Fri,  4 Aug 2023 14:14:39 -0300
-Message-ID: <20230804171448.54976-1-yakoyoku@gmail.com>
+Date: Fri,  4 Aug 2023 14:15:08 -0300
+Message-ID: <20230804171515.55052-1-yakoyoku@gmail.com>
 X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
