@@ -1,48 +1,48 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E272C523E
-	for <rust-for-linux@vger.kernel.org>; Sat,  5 Aug 2023 13:00:03 +0000 (UTC)
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FA9421E;
-	Sat,  5 Aug 2023 06:00:01 -0700 (PDT)
-Received: by mail-oi1-x22d.google.com with SMTP id 5614622812f47-3a5ad6087a1so1786120b6e.2;
-        Sat, 05 Aug 2023 06:00:01 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C0310F2
+	for <rust-for-linux@vger.kernel.org>; Sat,  5 Aug 2023 17:02:43 +0000 (UTC)
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41CDCE4A;
+	Sat,  5 Aug 2023 10:02:42 -0700 (PDT)
+Received: by mail-ot1-x333.google.com with SMTP id 46e09a7af769-6b9a2416b1cso2806944a34.2;
+        Sat, 05 Aug 2023 10:02:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691240401; x=1691845201;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20221208; t=1691254961; x=1691859761;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=h5NfH9OsC44kYN2FyhNKjch8VH/C5i+QaDG1Xkj193U=;
-        b=BEgNq80EFNCy0dfB/L4SoAJmJyM6fAhm/nvKaSzSoY3hnR+WLgt+oEcpqDRDxgCFSZ
-         /wGwgKKyAPStPWCZzRAf4oS05oDQNXGAb5gSWYmQmgv/4MlQYPixH59QwOgN9NnlfX1N
-         jY9lL6zTcY0ThGyjg+pee/cx3OKIeyMBJ6Gd8z8KsCrfUYFU3SKtV+i5bKspNhTyqVzv
-         J1hd8Y4G93hm9xbgdBKGnd/UPn+UL9h0FSzJ/oGTwBG3ZqhfEjZvjRCzivxD6u2SLA5C
-         AlrGODRenM9nYD9h3CZTnz6pukajQoSFHhBvLuq98J93nwB5vCm7B/lXBa4eCZB0cHmu
-         6sEg==
+        bh=KMnejlW7wDowKm1T1ZpctakA9PoGnkwqsUF9BdHi/CA=;
+        b=Zq6FOXJxC/YKO2IoXPEbM4Au8H7KPpMToMonCZKrYrLCdDdjvxwnrMDVzedz2ZZp3T
+         5x9YbDcls9ZGBUj2mFNV0N6NY4OFGFgLnGbFWMAVgTVtvrKLUUgC0B90m34K04TdcBzr
+         CHlsq/GuVSEjJByuTBMIYkg/GUG36NkyjtvfI6dPXJa66+MCzIlPlLSnvtOVC4f5o7Xg
+         J0+cE3g2+EETMKlxtSCOvWnKS0v8W9ILxaffKqSZT+t9Hx5H9rdKEXTDaDWj9H3ugRLa
+         NcxzFFSDm57SbmUYV1m2VhGVZtyqQ5dOUNDxbxhnpE7qhGmnL4YhEux59lAhmALLlCq5
+         QERw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691240401; x=1691845201;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1691254961; x=1691859761;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=h5NfH9OsC44kYN2FyhNKjch8VH/C5i+QaDG1Xkj193U=;
-        b=cdl1SYYeS3R+07moLQU3NSRj5JkGabC0OIWnXQ0LZSeaKbXuuGuQdsMmdlGvlFYItg
-         7iOSdhlmiPTXG//SBLWtqjX59HxDHizP/v+UL68uffsBTOP9aRt2+p6mPhOwlOannRCR
-         qs3eHiLxBja+X+BnE49OzNjultIIoPuOqkfO6QSsuuMBvMlVf5loLKodLk1y5Ee769EY
-         qYKea+2Y9xEPCUDxNjwHsXvXj0hnvbj9eXzBJ6B3kNVDJVFl53lpPDbeo9FyzoX4s7te
-         Oaeg7LbLvrM6Q2Nl+2Ao05R570VjhmJd+MmJsq6stIGGq3/MtpdoH85Aw9Wm2mH6dRRc
-         pCrw==
-X-Gm-Message-State: AOJu0YyDXHDF1B1cjAtVc7C8z+nt1yMKubC9HmD5oW4WvolvV+dITNkV
-	uOPwYER96W99Bfba7FukurM=
-X-Google-Smtp-Source: AGHT+IHmjQPNyAOzwgDZrOxNpeFJAPSGNldzuoUTCBTUhlzH2RWSvaEiMGzrbkKYqwwar7ghnqlhDQ==
-X-Received: by 2002:aca:1012:0:b0:3a4:8a41:c69c with SMTP id 18-20020aca1012000000b003a48a41c69cmr4244750oiq.13.1691240400971;
-        Sat, 05 Aug 2023 06:00:00 -0700 (PDT)
+        bh=KMnejlW7wDowKm1T1ZpctakA9PoGnkwqsUF9BdHi/CA=;
+        b=eRJP7Tk3+/tWI12CnA8n7jm8JadS8TtTfZG1zfk/G/JFczSzsszJXTiBrs+KE7jwb7
+         7d4CXl7l2xBk+estyFrekz2uMdCJAeJ9FRUs1tyXXJOpY3Qx88P3Y7fL+3xBHiT1EVZc
+         S/Qvt96wI7GkAvYq/QNqb5mKT28oFbSslHdWrXPUPEvye/vPr3PsOojUl27m1O92+n0e
+         49h5CZYrg3aX4INeL6dD5DqrpKSzb1c5Mn/oIMSX/pA+lUz/K2PS8QQpHV5Dq15D5LoU
+         SY1YJUnB1DrozWbqRAmDHEv9V6+bDA58SaFlt1NZFttgwYzq3OwkU+Um54msk6ns8LYL
+         OY9g==
+X-Gm-Message-State: AOJu0YzZr4DlnJLBVu+FDbhbXLWI+aQs47MGFyDGuPj0+4rqvH7EcH27
+	Cut/xYIK3YzypJJEDaxgs9I=
+X-Google-Smtp-Source: AGHT+IFUFXI9hsEQXGyCxFKnzP19EUTqD3CRPgGffIqegI0gQjmFjfmUG5okKsZxVCdLAmtUx+TpaQ==
+X-Received: by 2002:a9d:7345:0:b0:6bc:a054:c569 with SMTP id l5-20020a9d7345000000b006bca054c569mr4934463otk.38.1691254961298;
+        Sat, 05 Aug 2023 10:02:41 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id y14-20020a4ad64e000000b00541fbbbcd31sm2149169oos.5.2023.08.05.05.59.57
+        by smtp.gmail.com with ESMTPSA id p6-20020a9d7446000000b006b99f66444bsm2692977otk.71.2023.08.05.10.02.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 05 Aug 2023 06:00:00 -0700 (PDT)
-Message-ID: <32944cb3-5c0c-4ca0-97a9-841114c9adc9@gmail.com>
-Date: Sat, 5 Aug 2023 09:59:56 -0300
+        Sat, 05 Aug 2023 10:02:40 -0700 (PDT)
+Message-ID: <9e2a0dc5-815a-4d11-ab3a-5a60a9946d47@gmail.com>
+Date: Sat, 5 Aug 2023 14:02:36 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,22 +50,23 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] scripts: generate_rust_analyzer: provide `cfg`s for
- `core` and `alloc`
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+Subject: Re: [PATCH v2] rust: macros: vtable: fix `HAS_*` redefinition
+ (`gen_const_name`)
+Content-Language: en-US
+To: Qingsong Chen <changxian.cqs@antgroup.com>, linux-kernel@vger.kernel.org
+Cc: =?UTF-8?B?55Sw5rSq5Lqu?= <tate.thl@antgroup.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
  <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20230804171448.54976-1-yakoyoku@gmail.com>
- <CANiq72mkmTRzuYSGveP2xxPbDJELHXoVWVbKF2eyK0DhJ+y7bw@mail.gmail.com>
-Content-Language: en-US
+ Benno Lossin <benno.lossin@proton.me>,
+ =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
+ rust-for-linux@vger.kernel.org
+References: <20230803140926.205974-1-changxian.cqs@antgroup.com>
 From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <CANiq72mkmTRzuYSGveP2xxPbDJELHXoVWVbKF2eyK0DhJ+y7bw@mail.gmail.com>
+In-Reply-To: <20230803140926.205974-1-changxian.cqs@antgroup.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -73,34 +74,31 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 8/5/23 07:46, Miguel Ojeda wrote:
-> On Fri, Aug 4, 2023 at 7:14 PM Martin Rodriguez Reboredo
-> <yakoyoku@gmail.com> wrote:
->>
->> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+On 8/3/23 11:09, Qingsong Chen wrote:
+> If we define the same function name twice in a trait (using `#[cfg]`),
+> the `vtable` macro will redefine its `gen_const_name`, e.g. this will
+> define `HAS_BAR` twice:
 > 
-> Thanks Martin!
+> ```rust
+>      #[vtable]
+>      pub trait Foo {
+>          #[cfg(CONFIG_X)]
+>          fn bar();
 > 
-> I am a bit confused about the Suggested-by -- did you add it due to
-> the suggestion from v1 of passing variables via command-line
-> arguments? If so, I appreciate the gesture, but the main idea/report
-> (passing the missing `cfg`s for `core` and `alloc`) is yours! :)
-
-Ah, it was because you suggested the commit's text, should have been
-more clear about it, I thought that the "Suggested-by" was for any
-suggestions in reviews, and in reality it was for suggestions for
-the kernel itself. In this case I've got confused. So, because I saw
-the issue with the `rust-project.json` I'd like to rescind that
-"Suggested-by", though, FWIW you still get credit in the end when you
-do the sign-off at merge. 😇
-
-> The patch seems fine, I will test & apply it soon. If someone wants to
-> give it a Tested-by with rust-analyzer, that would be great too,
-> thanks! (note: it applies on top of `rust-next`).
+>          #[cfg(not(CONFIG_X))]
+>          fn bar(x: usize);
+>      }
+> ```
 > 
-> Cheers,
-> Miguel
-
-If someone wants to test it, just try in your IDE to go into the
-definition of some member of `core` and `alloc`, e.g. `Pin` or
-`Vector`.
+> Changelog:
+> ----------
+> v1 -> v2:
+> - Use `BTreeSet` and existing `consts` as suggested by Alice and Gary.
+> - Reword commit messages as suggested by Miguel.
+> ====================
+> 
+> Fixes: b44becc5ee80 ("rust: macros: add `#[vtable]` proc macro")
+> Signed-off-by: Qingsong Chen <changxian.cqs@antgroup.com>
+> ---
+> [...]
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
