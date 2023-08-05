@@ -1,64 +1,71 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3203423A2
-	for <rust-for-linux@vger.kernel.org>; Sat,  5 Aug 2023 10:46:31 +0000 (UTC)
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E174D468A;
-	Sat,  5 Aug 2023 03:46:30 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d3522283441so2823299276.0;
-        Sat, 05 Aug 2023 03:46:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E272C523E
+	for <rust-for-linux@vger.kernel.org>; Sat,  5 Aug 2023 13:00:03 +0000 (UTC)
+Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FA9421E;
+	Sat,  5 Aug 2023 06:00:01 -0700 (PDT)
+Received: by mail-oi1-x22d.google.com with SMTP id 5614622812f47-3a5ad6087a1so1786120b6e.2;
+        Sat, 05 Aug 2023 06:00:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691232390; x=1691837190;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z0kaSQGFOdpyORL5u0e6rSfhKvQMmZDt9DGOVV3I7H8=;
-        b=TUeRwPSGD3Bru6owOtuDNpxWEbME/SK+QukxuHM/mD9cH7bc2Lqv5dpRiAjFDnelD6
-         WDYe3trLoFmaVvWm4qzESo+hZXodlshdhFIR5ZN5TlB4Yr7eo+hqE5Ma+s7l2MpWqQ+J
-         JWjEOfiQk6s4eoI7lqp2haiWu3SSZpB6VV50rDKixz4UvovCIWoUDFMhKwG4RO6fr7pM
-         6pdrGu0MrPdWlwXiPCw+/Lw44PxYicv1OGN9xTGIki0Hx/jGVGIbunw7w7pwwmVeH0vY
-         CICtq7rJk+ZogRUNklYCnZrG3bLnDdAxxwBX4392olj1iBDUwkuu/RQEy3K7PouY3fXq
-         LiWw==
+        d=gmail.com; s=20221208; t=1691240401; x=1691845201;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=h5NfH9OsC44kYN2FyhNKjch8VH/C5i+QaDG1Xkj193U=;
+        b=BEgNq80EFNCy0dfB/L4SoAJmJyM6fAhm/nvKaSzSoY3hnR+WLgt+oEcpqDRDxgCFSZ
+         /wGwgKKyAPStPWCZzRAf4oS05oDQNXGAb5gSWYmQmgv/4MlQYPixH59QwOgN9NnlfX1N
+         jY9lL6zTcY0ThGyjg+pee/cx3OKIeyMBJ6Gd8z8KsCrfUYFU3SKtV+i5bKspNhTyqVzv
+         J1hd8Y4G93hm9xbgdBKGnd/UPn+UL9h0FSzJ/oGTwBG3ZqhfEjZvjRCzivxD6u2SLA5C
+         AlrGODRenM9nYD9h3CZTnz6pukajQoSFHhBvLuq98J93nwB5vCm7B/lXBa4eCZB0cHmu
+         6sEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691232390; x=1691837190;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Z0kaSQGFOdpyORL5u0e6rSfhKvQMmZDt9DGOVV3I7H8=;
-        b=Wo6BQgZm/ojqd9LCuKdeBFkQwPUho1/aeZJ0P6ac8ZBiMSU973+HieGHs6bp7QQWUl
-         wiLGdjynAot5Bf+/3t8PRxEDY6PYpvoVq8DjNS8VEVIwxSpR2EMC3793vpKhnQ8Wvvts
-         KJwkBO63nF9rfVdh7URpJSv2J+rVHSwKGkp8TOacXi0SYCAPQBlnETQCqhPHnkamlhyA
-         H8E8Iy4OZcFvMKGq+eJ9v3vOMIGqgBAGfG3QkgjZUHl6/7LwAEZ4niJBhBw/+CZBl181
-         wHnAJmWlnnc1UxpsGE4aWUMkivj3iXFRyB0fBw5dFJMHEIiKaZz555yuIESGeeItGymU
-         Ykvg==
-X-Gm-Message-State: AOJu0Yx37iXkNeMnnhk4rMaERu2dV44MH+/ynqgjJy9tyJTg5CeK04KX
-	tNS4VzFAsl9OLWPNkIYR9qIJwCGe+vhJVI1Hdu4=
-X-Google-Smtp-Source: AGHT+IETSwfpTjPiBS07opK6v7s1fpfurQwcxwFAL6GRRgG52fk2srlqQMJilNeshqrrU7ivSVLOe7dtD5CeqJcfw0Q=
-X-Received: by 2002:a25:cc47:0:b0:d18:1fbf:c11d with SMTP id
- l68-20020a25cc47000000b00d181fbfc11dmr3937017ybf.47.1691232390115; Sat, 05
- Aug 2023 03:46:30 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691240401; x=1691845201;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=h5NfH9OsC44kYN2FyhNKjch8VH/C5i+QaDG1Xkj193U=;
+        b=cdl1SYYeS3R+07moLQU3NSRj5JkGabC0OIWnXQ0LZSeaKbXuuGuQdsMmdlGvlFYItg
+         7iOSdhlmiPTXG//SBLWtqjX59HxDHizP/v+UL68uffsBTOP9aRt2+p6mPhOwlOannRCR
+         qs3eHiLxBja+X+BnE49OzNjultIIoPuOqkfO6QSsuuMBvMlVf5loLKodLk1y5Ee769EY
+         qYKea+2Y9xEPCUDxNjwHsXvXj0hnvbj9eXzBJ6B3kNVDJVFl53lpPDbeo9FyzoX4s7te
+         Oaeg7LbLvrM6Q2Nl+2Ao05R570VjhmJd+MmJsq6stIGGq3/MtpdoH85Aw9Wm2mH6dRRc
+         pCrw==
+X-Gm-Message-State: AOJu0YyDXHDF1B1cjAtVc7C8z+nt1yMKubC9HmD5oW4WvolvV+dITNkV
+	uOPwYER96W99Bfba7FukurM=
+X-Google-Smtp-Source: AGHT+IHmjQPNyAOzwgDZrOxNpeFJAPSGNldzuoUTCBTUhlzH2RWSvaEiMGzrbkKYqwwar7ghnqlhDQ==
+X-Received: by 2002:aca:1012:0:b0:3a4:8a41:c69c with SMTP id 18-20020aca1012000000b003a48a41c69cmr4244750oiq.13.1691240400971;
+        Sat, 05 Aug 2023 06:00:00 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id y14-20020a4ad64e000000b00541fbbbcd31sm2149169oos.5.2023.08.05.05.59.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 05 Aug 2023 06:00:00 -0700 (PDT)
+Message-ID: <32944cb3-5c0c-4ca0-97a9-841114c9adc9@gmail.com>
+Date: Sat, 5 Aug 2023 09:59:56 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230804171448.54976-1-yakoyoku@gmail.com>
-In-Reply-To: <20230804171448.54976-1-yakoyoku@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 5 Aug 2023 12:46:18 +0200
-Message-ID: <CANiq72mkmTRzuYSGveP2xxPbDJELHXoVWVbKF2eyK0DhJ+y7bw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3] scripts: generate_rust_analyzer: provide `cfg`s for
  `core` and `alloc`
-To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20230804171448.54976-1-yakoyoku@gmail.com>
+ <CANiq72mkmTRzuYSGveP2xxPbDJELHXoVWVbKF2eyK0DhJ+y7bw@mail.gmail.com>
+Content-Language: en-US
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <CANiq72mkmTRzuYSGveP2xxPbDJELHXoVWVbKF2eyK0DhJ+y7bw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -66,21 +73,34 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Aug 4, 2023 at 7:14=E2=80=AFPM Martin Rodriguez Reboredo
-<yakoyoku@gmail.com> wrote:
->
-> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+On 8/5/23 07:46, Miguel Ojeda wrote:
+> On Fri, Aug 4, 2023 at 7:14 PM Martin Rodriguez Reboredo
+> <yakoyoku@gmail.com> wrote:
+>>
+>> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+> 
+> Thanks Martin!
+> 
+> I am a bit confused about the Suggested-by -- did you add it due to
+> the suggestion from v1 of passing variables via command-line
+> arguments? If so, I appreciate the gesture, but the main idea/report
+> (passing the missing `cfg`s for `core` and `alloc`) is yours! :)
 
-Thanks Martin!
+Ah, it was because you suggested the commit's text, should have been
+more clear about it, I thought that the "Suggested-by" was for any
+suggestions in reviews, and in reality it was for suggestions for
+the kernel itself. In this case I've got confused. So, because I saw
+the issue with the `rust-project.json` I'd like to rescind that
+"Suggested-by", though, FWIW you still get credit in the end when you
+do the sign-off at merge. 😇
 
-I am a bit confused about the Suggested-by -- did you add it due to
-the suggestion from v1 of passing variables via command-line
-arguments? If so, I appreciate the gesture, but the main idea/report
-(passing the missing `cfg`s for `core` and `alloc`) is yours! :)
+> The patch seems fine, I will test & apply it soon. If someone wants to
+> give it a Tested-by with rust-analyzer, that would be great too,
+> thanks! (note: it applies on top of `rust-next`).
+> 
+> Cheers,
+> Miguel
 
-The patch seems fine, I will test & apply it soon. If someone wants to
-give it a Tested-by with rust-analyzer, that would be great too,
-thanks! (note: it applies on top of `rust-next`).
-
-Cheers,
-Miguel
+If someone wants to test it, just try in your IDE to go into the
+definition of some member of `core` and `alloc`, e.g. `Pin` or
+`Vector`.
