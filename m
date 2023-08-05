@@ -1,72 +1,65 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D48C2C8
-	for <rust-for-linux@vger.kernel.org>; Sat,  5 Aug 2023 17:16:53 +0000 (UTC)
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22A65421F;
-	Sat,  5 Aug 2023 10:16:44 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id 46e09a7af769-6bca38a6618so2783857a34.3;
-        Sat, 05 Aug 2023 10:16:44 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D6B10EA
+	for <rust-for-linux@vger.kernel.org>; Sat,  5 Aug 2023 22:44:52 +0000 (UTC)
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F542128;
+	Sat,  5 Aug 2023 15:44:51 -0700 (PDT)
+Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-40fee14093dso17033601cf.1;
+        Sat, 05 Aug 2023 15:44:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691255803; x=1691860603;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tlgFUrfwkd93DPT5NqDrRN88RXNQ2a4I+m8qQ9rvrKI=;
-        b=hYeZOHpPQK8RFulsfbHf9ZUwDgKyabavdliujDu/PuWcIboLBC2FoFYtS0qDrTkfJg
-         hLZRe/I6ZVs2HrNMdsXXQy/b2Zi4Hd76AtDzgKY7mBhDCWO3kfA5lMDq3rgeztZzg9RS
-         y0ueH0bVqXuFzLJv8K7B9tE2F79N/yza0YpXYWUTmqAzfJjXjtUJ+yWMnxoLWNgadUvh
-         EJjv4jI2yEB0WJnUKTdJqNVGWcuzD1f7Wd0RVctg5vTTI8Py2i+cFDGJ60JbxEnBS/Rr
-         afpi15g8dYKnTimlVRCLmOh852V7Wq92v4yZKOrTptTQy1C8rFt5lg5+9BZMS3ee1Rp9
-         1mMQ==
+        d=gmail.com; s=20221208; t=1691275490; x=1691880290;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5UkhP9GBkLs5jbzdYUWU0vcmVISF8c2SiX6lEIeJeNw=;
+        b=LnXCpXklo+jHY1vnaFgU/J8XRYU8U/0SXhiyAUguawbPw4OHXgnlvzmp4b/0nbByxq
+         KuQg7CEwMBqLxnD9C/TpDhdLV/RRBpZpxvF08XV4wUyEKtjKD7OcTMCONRlOPG5/Tt79
+         /F5J88zijJlhrXSgsnSFjZfK94Gbh64i6OzkK1piDAfFe515QxngyfMn44FtdydSWp82
+         SeaBVleTFY/6J04b0/L3R/xR84LJRIKr1OO4ghdRRvmga5CjJqE5or+a/7BJgF5+6DBy
+         /+8Gb6560KRcyx8Cgvn6bU078rWvOZGJo2PSW4N+jDZmLpBWewW79ZJPq9CgEdYTcqpr
+         x2xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691255803; x=1691860603;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tlgFUrfwkd93DPT5NqDrRN88RXNQ2a4I+m8qQ9rvrKI=;
-        b=NXMcqW3EgHXvaJ3sujNE94n2l8FLvx9G/LRpp6FlLRqsdV2cr6pW/+WaRcGHkWsovN
-         MypTBSV1P16dTQ77HDIah98rku/A7gfIRwSvOVT5V00hJ8RUSXcE2TAz7X3HtghfHrwT
-         VumPT7dpg1LdSIwNm3TjIC9m0GhtgWEd3LmiBugXKU+54dB+HJsD9juq6+akBxDMEKEe
-         SQiVaqS2ejuhZhct/2nDPq3IYA+p5Z2hvdEKN6A0Z7TihleNF0GVsgtjAV2IkfAVGJge
-         mdTIyWjga0t5IN+4pdoOOCPv+TF3ExOnpjdpc74/h+EEZHQx+NZhBxNvAweFV2jK8fHL
-         Umrg==
-X-Gm-Message-State: AOJu0YzQlJlqlnqDv1PdekHxcsx+FKEFC+r6wrvagAG4b1kjHHbvVaXL
-	4di/YnE2ZwmVQTV0hUSm8Ag=
-X-Google-Smtp-Source: AGHT+IEwuhbnxdDEaD8ad87vIkEfQKmcnCCy0VrglOlkjtE77TBzFGrDJWAPiqRl3y0N3K2sR3kRTw==
-X-Received: by 2002:a9d:4813:0:b0:6b9:b1a7:1f92 with SMTP id c19-20020a9d4813000000b006b9b1a71f92mr5283946otf.8.1691255803327;
-        Sat, 05 Aug 2023 10:16:43 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id r7-20020a056830134700b006af9d8af435sm2702963otq.50.2023.08.05.10.16.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 05 Aug 2023 10:16:42 -0700 (PDT)
-Message-ID: <a481246e-a3d5-4b63-8acd-6da5e2636645@gmail.com>
-Date: Sat, 5 Aug 2023 14:15:04 -0300
+        d=1e100.net; s=20221208; t=1691275490; x=1691880290;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5UkhP9GBkLs5jbzdYUWU0vcmVISF8c2SiX6lEIeJeNw=;
+        b=D4gdsKylD79Wdy5ce+g7koOq4WAOozfbP01f3fEawmx85llrlV6UOJcCUZR7eJ2I50
+         awDB9SOIZkSfSbRSc6QUPEC0I9E+jBKSVrWxoYQ4AAI3/zax3ATInt+enqthjznLfwth
+         x7XCjhPlXmfiIWbaFudmaxhpVeYQLVrDE/ycVSeBqMNsC3u9PXphwHUn9qgBpbR8GBby
+         58V4t6mf+PR1QDvwly2OVyROG9ReXfJaexX2vEj1ytpNeb6aRgUqktfKOhdImJ3IIJeP
+         d+7RAgsvBTRTloHqua3hb9oEnQirbx3JdqSNIE6K0tfGjKMSYquSjYr52aSDwd4w5aPJ
+         BAXA==
+X-Gm-Message-State: AOJu0YxPBGRUiX+vbPntx3vdPqtTzK/OnY2m0iFMkJ8Wvxub1sRblUki
+	vIFEdUZplA6Ml8fXMriWK0FGxolBdpji4POupTg=
+X-Google-Smtp-Source: AGHT+IFY9fJMWGrI3cCstWnoq1yFck1hRFTZVTg/gL48UzBii5wiFSCuHiI2DYmEh/4belLJLfjMO7dLp7a0Y7hRTQk=
+X-Received: by 2002:a05:622a:1b86:b0:403:c51e:f038 with SMTP id
+ bp6-20020a05622a1b8600b00403c51ef038mr5546007qtb.17.1691275490448; Sat, 05
+ Aug 2023 15:44:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/13] rust: init: add `{pin_}chain` functions to
- `{Pin}Init<T, E>`
-Content-Language: en-US
-To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- Asahi Lina <lina@asahilina.net>
-References: <20230729090838.225225-1-benno.lossin@proton.me>
- <20230729090838.225225-13-benno.lossin@proton.me>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230729090838.225225-13-benno.lossin@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20230804171448.54976-1-yakoyoku@gmail.com> <CANiq72mkmTRzuYSGveP2xxPbDJELHXoVWVbKF2eyK0DhJ+y7bw@mail.gmail.com>
+ <32944cb3-5c0c-4ca0-97a9-841114c9adc9@gmail.com>
+In-Reply-To: <32944cb3-5c0c-4ca0-97a9-841114c9adc9@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 6 Aug 2023 00:44:39 +0200
+Message-ID: <CANiq72kYTLUMPa8_A03A8G6GzF7mXb4pL0sncadv+hcb9_BYWA@mail.gmail.com>
+Subject: Re: [PATCH v3] scripts: generate_rust_analyzer: provide `cfg`s for
+ `core` and `alloc`
+To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -74,22 +67,19 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 7/29/23 06:10, Benno Lossin wrote:
-> The `{pin_}chain` functions extend an initializer: it not only
-> initializes the value, but also executes a closure taking a reference to
-> the initialized value. This allows to do something with a value directly
-> after initialization.
-> 
-> Suggested-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> ---
-> [...]
-> +    /// First initializes the value using `self` then calls the function `f` with the initialized
-> +    /// value.
-> +    ///
-> +    /// If `f` returns an error the value is dropped and the initializer will forward the error.
+On Sat, Aug 5, 2023 at 3:00=E2=80=AFPM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
+>
+> Ah, it was because you suggested the commit's text, should have been
+> more clear about it, I thought that the "Suggested-by" was for any
+> suggestions in reviews, and in reality it was for suggestions for
+> the kernel itself. In this case I've got confused. So, because I saw
 
-It's way more clear now... Thanks!
+If it was for the commit message suggestion from v2, then it should
+not be there. In most cases you would credit those in the changelog
+(in the cover letter or after the `---` line).
 
-> [...]
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+I will remove it when I apply it then, thanks!
+
+Cheers,
+Miguel
