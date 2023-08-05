@@ -1,85 +1,94 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D6B10EA
-	for <rust-for-linux@vger.kernel.org>; Sat,  5 Aug 2023 22:44:52 +0000 (UTC)
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F542128;
-	Sat,  5 Aug 2023 15:44:51 -0700 (PDT)
-Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-40fee14093dso17033601cf.1;
-        Sat, 05 Aug 2023 15:44:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691275490; x=1691880290;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5UkhP9GBkLs5jbzdYUWU0vcmVISF8c2SiX6lEIeJeNw=;
-        b=LnXCpXklo+jHY1vnaFgU/J8XRYU8U/0SXhiyAUguawbPw4OHXgnlvzmp4b/0nbByxq
-         KuQg7CEwMBqLxnD9C/TpDhdLV/RRBpZpxvF08XV4wUyEKtjKD7OcTMCONRlOPG5/Tt79
-         /F5J88zijJlhrXSgsnSFjZfK94Gbh64i6OzkK1piDAfFe515QxngyfMn44FtdydSWp82
-         SeaBVleTFY/6J04b0/L3R/xR84LJRIKr1OO4ghdRRvmga5CjJqE5or+a/7BJgF5+6DBy
-         /+8Gb6560KRcyx8Cgvn6bU078rWvOZGJo2PSW4N+jDZmLpBWewW79ZJPq9CgEdYTcqpr
-         x2xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691275490; x=1691880290;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5UkhP9GBkLs5jbzdYUWU0vcmVISF8c2SiX6lEIeJeNw=;
-        b=D4gdsKylD79Wdy5ce+g7koOq4WAOozfbP01f3fEawmx85llrlV6UOJcCUZR7eJ2I50
-         awDB9SOIZkSfSbRSc6QUPEC0I9E+jBKSVrWxoYQ4AAI3/zax3ATInt+enqthjznLfwth
-         x7XCjhPlXmfiIWbaFudmaxhpVeYQLVrDE/ycVSeBqMNsC3u9PXphwHUn9qgBpbR8GBby
-         58V4t6mf+PR1QDvwly2OVyROG9ReXfJaexX2vEj1ytpNeb6aRgUqktfKOhdImJ3IIJeP
-         d+7RAgsvBTRTloHqua3hb9oEnQirbx3JdqSNIE6K0tfGjKMSYquSjYr52aSDwd4w5aPJ
-         BAXA==
-X-Gm-Message-State: AOJu0YxPBGRUiX+vbPntx3vdPqtTzK/OnY2m0iFMkJ8Wvxub1sRblUki
-	vIFEdUZplA6Ml8fXMriWK0FGxolBdpji4POupTg=
-X-Google-Smtp-Source: AGHT+IFY9fJMWGrI3cCstWnoq1yFck1hRFTZVTg/gL48UzBii5wiFSCuHiI2DYmEh/4belLJLfjMO7dLp7a0Y7hRTQk=
-X-Received: by 2002:a05:622a:1b86:b0:403:c51e:f038 with SMTP id
- bp6-20020a05622a1b8600b00403c51ef038mr5546007qtb.17.1691275490448; Sat, 05
- Aug 2023 15:44:50 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C68B10EA
+	for <rust-for-linux@vger.kernel.org>; Sat,  5 Aug 2023 23:58:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF8FC433C7;
+	Sat,  5 Aug 2023 23:58:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1691279887;
+	bh=fs4x6PeHwicN8FTsqkY06qC8SCDDAnU0rMG7AHf+rjw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Yn7s93IO+w2baPotkwDuOiqsj9MbRC11d10rg62BYBreUuDHhNWdQhcX3R6LscCbs
+	 c92PEplaUEGIv3VjAInEY7ihjcmShP/e09QkVMvLGsHOJZ+6RCxSQ+kh/UWMU7gxsj
+	 UZWXIs+t+/PwdYmoqtb7BmCNmKKN4uUmZO3fGXeyYspOGG562UsS4oYvon1Af+8/Pt
+	 1eFkTkB437NVcAurn2lJfb2Ett+B/u3C3pTo4cw2WZrxPAkXXR9j5LcnTByw4yr53C
+	 yrhQPrbG8/5bM8VUu1M1klMwrw5TeUQoq5mNhqQiiZUL/PRTvzO9/K41MWlFf+cVfp
+	 LLwm4SpcAHEsA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.5-rc5
+Date: Sun,  6 Aug 2023 01:57:50 +0200
+Message-ID: <20230805235750.54075-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230804171448.54976-1-yakoyoku@gmail.com> <CANiq72mkmTRzuYSGveP2xxPbDJELHXoVWVbKF2eyK0DhJ+y7bw@mail.gmail.com>
- <32944cb3-5c0c-4ca0-97a9-841114c9adc9@gmail.com>
-In-Reply-To: <32944cb3-5c0c-4ca0-97a9-841114c9adc9@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 6 Aug 2023 00:44:39 +0200
-Message-ID: <CANiq72kYTLUMPa8_A03A8G6GzF7mXb4pL0sncadv+hcb9_BYWA@mail.gmail.com>
-Subject: Re: [PATCH v3] scripts: generate_rust_analyzer: provide `cfg`s for
- `core` and `alloc`
-To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+Content-Transfer-Encoding: 8bit
 
-On Sat, Aug 5, 2023 at 3:00=E2=80=AFPM Martin Rodriguez Reboredo
-<yakoyoku@gmail.com> wrote:
->
-> Ah, it was because you suggested the commit's text, should have been
-> more clear about it, I thought that the "Suggested-by" was for any
-> suggestions in reviews, and in reality it was for suggestions for
-> the kernel itself. In this case I've got confused. So, because I saw
+Hi Linus,
 
-If it was for the commit message suggestion from v2, then it should
-not be there. In most cases you would credit those in the changelog
-(in the cover letter or after the `---` line).
+Please pull these fixes for Rust.
 
-I will remove it when I apply it then, thanks!
+The oldest is a bit involved, and the other two are straightforward.
+The complex one has been in linux-next for 4 days and the others for
+2 days, but I reworded yesterday the complex one to add a couple tags
+(no changes otherwise -- you can find the previous version of e.g. the
+oldest in linux-next at cf222ce8477c).
+
+No conflicts expected. No changes to the C side.
 
 Cheers,
 Miguel
+
+The following changes since commit 6eaae198076080886b9e7d57f4ae06fa782f90ef:
+
+  Linux 6.5-rc3 (2023-07-23 15:24:10 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.5-rc5
+
+for you to fetch changes up to b05544884300e98512964103b33f8f87650ce887:
+
+  rust: fix bindgen build error with UBSAN_BOUNDS_STRICT (2023-08-04 17:10:50 +0200)
+
+----------------------------------------------------------------
+Rust fixes for 6.5-rc5
+
+ - Allocator: prevent mis-aligned allocation.
+
+ - Types: delete 'ForeignOwnable::borrow_mut'. A sound replacement is
+   planned for the merge window.
+
+ - Build: fix bindgen error with UBSAN_BOUNDS_STRICT.
+
+----------------------------------------------------------------
+Alice Ryhl (1):
+      rust: delete `ForeignOwnable::borrow_mut`
+
+Andrea Righi (1):
+      rust: fix bindgen build error with UBSAN_BOUNDS_STRICT
+
+Boqun Feng (1):
+      rust: allocator: Prevent mis-aligned allocation
+
+ rust/Makefile                   |  2 +-
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/allocator.rs        | 74 ++++++++++++++++++++++++++++++++---------
+ rust/kernel/sync/arc.rs         |  3 +-
+ rust/kernel/types.rs            | 22 ++----------
+ 5 files changed, 64 insertions(+), 38 deletions(-)
