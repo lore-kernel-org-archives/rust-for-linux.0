@@ -1,83 +1,135 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABC31E50C
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 23:22:02 +0000 (UTC)
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA0C21BCF;
-	Wed,  9 Aug 2023 16:22:00 -0700 (PDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-583c48a9aa1so4983797b3.1;
-        Wed, 09 Aug 2023 16:22:00 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202F61E507
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 23:22:27 +0000 (UTC)
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBD89E7F;
+	Wed,  9 Aug 2023 16:22:26 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-d44c2ca78ceso2137190276.0;
+        Wed, 09 Aug 2023 16:22:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691623320; x=1692228120;
+        d=gmail.com; s=20221208; t=1691623346; x=1692228146;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HAUCVB9hbx+bm1gCJWJ7NI0D5vTP4KeLZCLHymhDXao=;
-        b=V+ixzXp8y9iFryPiBEr/0UAIfaBTWtRqcmV3Epr223t+BlW+bs9j0UopmLWuAPAjyG
-         qmzAhFYhpoB61/7wMfMHbFx70tFVDNx08ZNekOT8/GE1rKkP2DP+kD3YZlfSP+aUuKqg
-         WTNKlKQmkthTgwEYq6GJNNcoq2gB44mMAJcORwhIWNJXgikdGjUgwaXGLVo4zukDt+zj
-         EjTgO0Dl4Q2drNMKkYtcHmLwVk6UolBPC2g6qumyQKELnmYuHoR58EVEHCiEKXekqzCF
-         d8Vpgh4ueyHv2A0iOYH2PWCnq6UK6RQnzSt1jdOIoRgrHfhW0/+EiMjnGsyzuSHZsQbp
-         Csqg==
+        bh=BIUl3FxuenbYgegtww4zsQx4goyBh2oZ6RD1qE04nf0=;
+        b=YOX5rrcHgZWY2PAuT84zdMK5Yo/XpX16IfVAZhlkaZrKsZXwKG64Js58zCjXWXaTIH
+         PZrdehNDUIQ4TQguPx1elh2OcQF+y315TIYCyNzgJ3NHUh2+xPmCsPrvLd2BVxdP9sGR
+         5oRCEf+xHeM0b0kFaftTOX8s+ou0dNYRWqMkiXMw5LjZN1cJ3H5wnuZQkTlgxSiPjVSN
+         0VyJvWLNwsGL6SXH0ieyGbucyBUrrFT6WKlpqXZxTfYh3fe+VbKuc4mCm3shUwWkMRH3
+         CBNPQ28F+3l/osELuaK8AWaq4pogM48Xuur+/+o/mYykeXjNCjtS/mfBIfyy3NyaN2eL
+         7SIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691623320; x=1692228120;
+        d=1e100.net; s=20221208; t=1691623346; x=1692228146;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HAUCVB9hbx+bm1gCJWJ7NI0D5vTP4KeLZCLHymhDXao=;
-        b=U/hFRAUar4KQhLlNLtF8sVgfPU8qZT8CPrrY2v/JD+43sA7iF/9fu6ODF+o3P330yy
-         zmNNjzoRrv3Ku5f4RwVJ8hnDNyW2V94hSsXsFU9Va0K6DgS9YFlOo+vrk156Qk6hFkRS
-         9O3SZHN4+vobsZGilNyk3Y7KyRC2GpCpMPRTMsBrqQHNoKpFbYcCseUGTswhpvGUl+17
-         0D8wzwwTvwcghxjcBpURLDeKzIRlEQrBSGY4fY/MtNsrRii+Da9EkYkM9tI5T9GfUID7
-         Cv7wOf7mqQ9BPnR7IE+JzTdx2lPRy0NTVNBBdqsL373UN6hX6yunnxIjuzG3zVZaANJT
-         1LdA==
-X-Gm-Message-State: AOJu0YyEfwNBvzvQZ0n39Rfxpb9FdxWEzUKm2ABMSADPz7CmZmFZYfUL
-	+twsovHq47xEQqL3MXFrSMPpKx8l0EZwgWmO7SU=
-X-Google-Smtp-Source: AGHT+IGplt7IN6NKg9sHyqvgrj1hGD6mus/KNdcOnf0yuldHarmJPd1+ib/dTzvV6O2KSekEQIs3TdDPlbLJu7pVKd4=
-X-Received: by 2002:a25:ad20:0:b0:d19:d73d:7950 with SMTP id
- y32-20020a25ad20000000b00d19d73d7950mr903429ybi.27.1691623320133; Wed, 09 Aug
- 2023 16:22:00 -0700 (PDT)
+        bh=BIUl3FxuenbYgegtww4zsQx4goyBh2oZ6RD1qE04nf0=;
+        b=j2FSn8LfvfVrS4QTmTD1Aqh8JKQPggYx+1GkZPbssp+pflOHHVPuyF/fQdgJGacjd0
+         jMEDTNlXIMpecGbEqVFsCUzQD0vCphlY76SZxd0oerAuzX37QSvUTWV7untVCjIOF0Ux
+         EiuJXEJjedJwBESXF9nA1Si+UrnGTEZ3M14cPRCXJKBNUvif9dXNB9Hsqjt4hIkxTqqu
+         ZD6lGb/dB5MIH7/WfH58YCBE1mRpgtqcmV4kjgJ7N2YTp5L0Jtzr7R2guB/ju1WAINmp
+         kWCp+FYjMwWU7L1qH/aAZ4KmsbL3uwmvTsu9bWHZzMtln4Yjqk14pedTddYpIQNzQizV
+         lacA==
+X-Gm-Message-State: AOJu0YxMlxs+xAZrWNpU08CGr4bJ1eFlqzBSk8+vJ3nZjIyHzb9TCm9g
+	5OeV+B2V0f0B8P7mvNrZDOWh9Ta9IAwQZhNRDQs=
+X-Google-Smtp-Source: AGHT+IGLgG6fnTW8GY0KR28FUGaZr8piFyex7tKSH8C5xVXqQcVCymCcPeoxd043VzbV1SnRMfbD3/5O6YjG/WOweuI=
+X-Received: by 2002:a25:adc6:0:b0:cb2:7e6:191c with SMTP id
+ d6-20020a25adc6000000b00cb207e6191cmr499022ybe.20.1691623346002; Wed, 09 Aug
+ 2023 16:22:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230630150216.109789-1-benno.lossin@proton.me>
-In-Reply-To: <20230630150216.109789-1-benno.lossin@proton.me>
+References: <20230628171108.1150742-1-gary@garyguo.net>
+In-Reply-To: <20230628171108.1150742-1-gary@garyguo.net>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 10 Aug 2023 01:21:49 +0200
-Message-ID: <CANiq72kUFSc-iX7r0EQMXAh36Bc-4rWPdLnYO0CYbSCRyzpvXQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: types: make `Opaque` be `!Unpin`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Date: Thu, 10 Aug 2023 01:22:15 +0200
+Message-ID: <CANiq72nm3ZHqzAWr-8q894_TbOayEx0xmDeeMPpqQz9b-jGU6Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: macros: add `paste!` proc macro
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Fri, Jun 30, 2023 at 5:03=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
+On Wed, Jun 28, 2023 at 7:12=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> Adds a `PhantomPinned` field to `Opaque<T>`. This removes the last Rust
-> guarantee: the assumption that the type `T` can be freely moved. This is
-> not the case for many types from the C side (e.g. if they contain a
-> `struct list_head`). This change removes the need to add a
-> `PhantomPinned` field manually to Rust structs that contain C structs
-> which must not be moved.
+> This macro provides a flexible way to concatenated identifiers together
+> and it allows the resulting identifier to be used to declare new items,
+> which `concat_idents!` does not allow. It also allows identifiers to be
+> transformed before concatenated.
 >
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> The `concat_idents!` example
+>
+>     let x_1 =3D 42;
+>     let x_2 =3D concat_idents!(x, _1);
+>     assert!(x_1 =3D=3D x_2);
+>
+> can be written with `paste!` macro like this:
+>
+>     let x_1 =3D 42;
+>     let x_2 =3D paste!([<x _1>]);
+>     assert!(x_1 =3D=3D x_2);
+>
+> However `paste!` macro is more flexible because it can be used to create
+> a new variable:
+>
+>     let x_1 =3D 42;
+>     paste!(let [<x _2>] =3D [<x _1>];);
+>     assert!(x_1 =3D=3D x_2);
+>
+> While this is not possible with `concat_idents!`.
+>
+> This macro is similar to the `paste!` crate [1], but this is a fresh
+> implementation to avoid vendoring large amount of code directly. Also, I
+> have augmented it to provide a way to specify span of the resulting
+> token, allowing precise control.
+>
+> For example, this code is broken because the variable is declared inside
+> the macro, so Rust macro hygiene rules prevents access from the outside:
+>
+>     macro_rules! m {
+>         ($id: ident) =3D> {
+>             // The resulting token has hygiene of the macro.
+>             paste!(let [<$id>] =3D 1;)
+>         }
+>     }
+>
+>     m!(a);
+>     let _ =3D a;
+>
+> In this versionn of `paste!` macro I added a `span` modifier to allow
+> this:
+>
+>     macro_rules! m {
+>         ($id: ident) =3D> {
+>             // The resulting token has hygiene of `$id`.
+>             paste!(let [<$id:span>] =3D 1;)
+>         }
+>     }
+>
+>     m!(a);
+>     let _ =3D a;
+>
+> Link: http://docs.rs/paste/ [1]
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-Applied to `rust-next` -- thanks everyone!
+Applied to `rust-next` with the SPDX license identifier added as
+discussed and the typo fixed -- thanks everyone!
 
 Cheers,
 Miguel
