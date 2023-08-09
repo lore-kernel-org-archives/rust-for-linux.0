@@ -1,48 +1,48 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9C41FA4
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 04:34:52 +0000 (UTC)
-Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E11BD1BC3;
-	Tue,  8 Aug 2023 21:34:49 -0700 (PDT)
-Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6bcac140aaaso5008149a34.2;
-        Tue, 08 Aug 2023 21:34:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B036B3D7F
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 04:34:56 +0000 (UTC)
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 418151BF3;
+	Tue,  8 Aug 2023 21:34:55 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1bb782974f4so4946612fac.3;
+        Tue, 08 Aug 2023 21:34:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691555689; x=1692160489;
+        d=gmail.com; s=20221208; t=1691555694; x=1692160494;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=LrIFCxoQFLt3rBqRXdHfgV9VxVhBqDIM5mI2fCXfaF4=;
-        b=c/2Uh2cWsZ7udAAfauq/GjzvN/3uMjvvnG9YOb9MmutQUaDQs5RhLLz42RGuQBduAt
-         J+UaHCVD0LKJOubierM1goQOJ+TMPsEPV6DcZXJEvQcA25G+1G5SgDd/qHm0wSYBwGn1
-         3sSdJa1BAT2kibEjGrZ8hVse4/5K/YtcSf0z4MOTcJ7f8//W5mL2iBzeT6R2YGyYPhjt
-         3zQ2U8BQ1UI/fgPxN7B4cgVpue3F6kVPAYvy+Rs/L9AIxR0YhH+Ua8dsyGm4QyRcpSOI
-         MKO1dDVNbeUfuTGBQRUBbVUHMejzqzhpfAcU4BB/5A1aDTf0ASEesepBnYue3S+AUeIL
-         vO3Q==
+        bh=aNuO8maW3k3biYUipfRcSFSTTKrtXD3lVQL4G6LBK5w=;
+        b=HMNhAZoCzWrw2LiU0SnsgmGnnq7sUGxddlTDeiaWnkPApFKIO1YsxIGzTmlbQ1nhxU
+         d/1CUW2Hk88KQp5/6dsDIEqn1WplnEkG7ZCQ8hkHdOFOjwZvo9wvt4oWupSY1ynhANFY
+         HpW/pC4icZP7XTSTeUGIM53yvMMBLBW9EherLgpsT8QJQ89pqok75dXaHXE+mRLiwub4
+         pulu6FSvp7M0ndW0C2brOfYHRtFw+yk3UW6XX+Ce59ZgbxS9lIAAZurwJ8fEuTaIAU5k
+         VCl0n7RAeP8fYe8dhdKzpS1a13EZ4zstAUzcKum1zvHaDWoJosDlFjUB0RUuEKAMw+Yv
+         o99g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691555689; x=1692160489;
+        d=1e100.net; s=20221208; t=1691555694; x=1692160494;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LrIFCxoQFLt3rBqRXdHfgV9VxVhBqDIM5mI2fCXfaF4=;
-        b=boZUHxqdr1IxoJMVKSHBrWdTdl92PMpPcJuNaqwWdQ8QOo5wd/PCKt+3EVkKvUXfYr
-         mr2fnFK0WmCNT2ETNts1fScv01HkUDlMBz6AErhikerR7LbKUMWmNDRRbudDAH7KUllJ
-         gaSsMZEJBK/O1pVULzn1OKAQGyvx7y26yb7lmxosTYaPzjVPgC28dbvxwGBM5myv673U
-         vIWEDJk5GEkjAUWYDVFXOpSk3TrzWGZnPZVSZFUbOxD49wRauaMoHKZnatrblBH48E3/
-         Zk6m7/qc16wp9YwueBK22SwWAiYUxybPh2KBtb0MfCXXbBRLxSyX92vd4vUxw2uX7V2q
-         Dq0Q==
-X-Gm-Message-State: AOJu0YzLmcNx97UYNeuKQm6fzc/yAlLIa4YCEc4l544xRPNJhhsNbR1i
-	JlltBqt+s8/MWs86U3Gqp38=
-X-Google-Smtp-Source: AGHT+IGD64zPGlC3vs1oKuT2FH/1je1GCjZMX1il7yzIo+Ecc7zLHE/qDNQ9lQHRx+wy6SimoQSdbg==
-X-Received: by 2002:a9d:6c49:0:b0:6bd:a82:8edb with SMTP id g9-20020a9d6c49000000b006bd0a828edbmr1523277otq.10.1691555689218;
-        Tue, 08 Aug 2023 21:34:49 -0700 (PDT)
+        bh=aNuO8maW3k3biYUipfRcSFSTTKrtXD3lVQL4G6LBK5w=;
+        b=BgRLw+PlAspGOU0Ov1kwXeOz12dTkUcJAQraZQBK4umfU8ijxEPyGToAuvHgm0GOaj
+         5Mag+UhMTCFGKLI+vT7lsQVI4L1zXbmcyTNh2RKz4RXmr/bPlThS+y6AyMHjebTnzoYm
+         Ao5mpYD+UMSaDcWpfcJ76vueWouh6EKt+r09Ovmc3RYzW/jYX4W9Anerz1iuLFcmDQXs
+         RsatIhWIKRJ9ZnX5n0OdrxF3CG9GVVgaMOPTOcdvub/L3EyMjF0l9lmgMOeNldKX6a56
+         lIN5hTnsqrC5HN7AMp8Zx/PboVZPDvS1RuKGodGudxp749CVUrT7DRgBTHhJZ26CFbDd
+         a4Iw==
+X-Gm-Message-State: AOJu0YzMTDpPYP1l+apjkSMGda7lD1utW3SOydCIumwR4gsiK0g/SQJF
+	b5/so5taFGX6M/YMuk6oBtE=
+X-Google-Smtp-Source: AGHT+IGWK0eChk1cvzdf8ALQcYWZ6DdPYFNWw7+Hs82Xlsp8oPp+UkPF+d/rvirOwA0Ro9ksVQ0YxA==
+X-Received: by 2002:a05:6871:1c6:b0:1bb:8483:a807 with SMTP id q6-20020a05687101c600b001bb8483a807mr1893306oad.44.1691555694018;
+        Tue, 08 Aug 2023 21:34:54 -0700 (PDT)
 Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id n26-20020a9d741a000000b006b87f593877sm6552031otk.37.2023.08.08.21.34.45
+        by smtp.gmail.com with ESMTPSA id n26-20020a9d741a000000b006b87f593877sm6552031otk.37.2023.08.08.21.34.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Aug 2023 21:34:48 -0700 (PDT)
-Message-ID: <4478c068-9e7a-482a-aee6-bbe3d151202f@gmail.com>
-Date: Wed, 9 Aug 2023 01:02:20 -0300
+        Tue, 08 Aug 2023 21:34:53 -0700 (PDT)
+Message-ID: <bee24ff5-444c-44f9-81c8-88ff310b401a@gmail.com>
+Date: Wed, 9 Aug 2023 01:33:29 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 3/5] rust: file: add `FileDescriptorReservation`
+Subject: Re: [RFC PATCH v1 5/5] rust: file: add `DeferredFdCloser`
 Content-Language: en-US
 To: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
@@ -60,12 +60,11 @@ Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
  Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev,
- Wedson Almeida Filho <walmeida@microsoft.com>
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev
 References: <20230720152820.3566078-1-aliceryhl@google.com>
- <20230720152820.3566078-4-aliceryhl@google.com>
+ <20230720152820.3566078-6-aliceryhl@google.com>
 From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230720152820.3566078-4-aliceryhl@google.com>
+In-Reply-To: <20230720152820.3566078-6-aliceryhl@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -76,40 +75,32 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
 On 7/20/23 12:28, Alice Ryhl wrote:
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
+> This adds a new type called `DeferredFdCloser` that can be used to close
+> files by their fd in a way that is safe even if the file is currently
+> held using `fdget`.
 > 
-> This allows the creation of a file descriptor in two steps: first, we
-> reserve a slot for it, then we commit or drop the reservation. The first
-> step may fail (e.g., the current process ran out of available slots),
-> but commit and drop never fail (and are mutually exclusive).
+> This is done by grabbing an extra refcount to the file and dropping it
+> in a task work once we return to userspace.
 > 
-> Co-Developed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> See comments on `binder_do_fd_close` and commit `80cd795630d65` for
+> motivation.
+
+Please provide links, at least for the doc comment.
+
+> 
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
 > [...]
-> +/// A file descriptor reservation.
+>   
+> +/// Helper used for closing file descriptors in a way that is safe even if the file is currently
+> +/// held using `fdget`.
 > +///
-> +/// This allows the creation of a file descriptor in two steps: first, we reserve a slot for it,
-> +/// then we commit or drop the reservation. The first step may fail (e.g., the current process ran
-> +/// out of available slots), but commit and drop never fail (and are mutually exclusive).
+> +/// See comments on `binder_do_fd_close` and commit `80cd795630d65`.
 
-This "drop" suggests to me that there was a method that it does said
-action, and indeed it is `Drop::drop`. But if I look at the doc comment
-of `commit` then it doesn't look that these two are mutex.
+Ditto.
 
-     /// Commits the reservation.
-     ///
-     /// The previously reserved file descriptor is bound to `file`.
-
-I'd put a mention that `FileDescriptorReservation` gets forgotten when
-`commit` is called so then it clears up that it's mutex with drop.
-
-> +///
-> +/// # Invariants
-> +///
-> +/// The fd stored in this struct must correspond to a reserved file descriptor of the current task.
-> +pub struct FileDescriptorReservation {
-> [...]
+> +pub struct DeferredFdCloser {
+> +    inner: Box<DeferredFdCloserInner>,
 > +}
+> +
 > [...]
