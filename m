@@ -1,170 +1,104 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7132C1DA50
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 22:02:54 +0000 (UTC)
-Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2125.outbound.protection.outlook.com [40.107.11.125])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02BFAFE;
-	Wed,  9 Aug 2023 15:02:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=C8C/6HIlkbzT+ymgLhzZzx+FW/dbUEO9Pch0kHCxMpMDU16NOuumbqjDtBkBiQ2mvy1Ep3PXM2PUvnhvD7xAIyxeQFHRh3ICGZuaCwknTNz6UALcdn23AsgbgPZQeFmFXNDdkI+WkMOxBKwB66UDZG8BRIZBDsFkEpwdIoJFC94hRGfHJN16NvZDlBhSpjAJG3XfG6klhRZpGmuvlFnvKPu8vQ30HwdhUAoj6ETnMAz991fP4X5BEQBXOQi0CuQwjBpbEBJWdbDFKLXsB9UQLkpGHUV461bKofySPYkI84aS00ZAL4075v9iUf8LkWFH4gc/Xmpg78RwkxOgPF7vOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TTg1RTDFHy3fuVeSPJ8LctbELBpurJXrMysi709HN4U=;
- b=Bc5XaSSMaJ9RLtvqEPpl99j2S6ZrrF8NLIDh40747Zs5OP5dXJzHwxoHPDSQxD2JI1xzPUYbM+MODOliXgxeDlDI2cmCo/q9QLehld2gaxgvGyf5Bv02htk9nXOCXzs5Ksl1QeX19WK6DQzoGg2ZieFfafMRfWlqVNaIGDhNAK9U0t7wGpAqYwGMU+CPVy0yUOZE0zd+Mwy5M/sdtsr3Dd/R4yf09XVRe3eCxGXIE3mTDLlaBElgQ3SmC8lj8m72kkxtXLdMH7MQCmw0YULkXuPRDWVXQVTrEUVdbSVVCoolCsaKJQZbU3wHNPrE4tMyxvy+ttPMLZrF24+Fy9aYPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TTg1RTDFHy3fuVeSPJ8LctbELBpurJXrMysi709HN4U=;
- b=N0jrKbCiq4560VXTz4CvsMRusf6GPvcezVQZJjCU6jHwtQdBRxjzo+NnbCmQpOc7y9ADILyLC1EV5G/conuB6cvgNWeTKeXXIMEE1jXUxRS/PZ93vKRU+Pp+tNj8qxnNgUouiqMniehp+nTOob09yn0wMXd7yePnOw4TJoC9iDo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB7313.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2ee::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.30; Wed, 9 Aug
- 2023 22:02:50 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6d3e:8fe2:6cdb:6d3f]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6d3e:8fe2:6cdb:6d3f%5]) with mapi id 15.20.6652.029; Wed, 9 Aug 2023
- 22:02:50 +0000
-Date: Wed, 9 Aug 2023 23:02:49 +0100
-From: Gary Guo <gary@garyguo.net>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: macros: add `paste!` proc macro
-Message-ID: <20230809230249.01ffc009.gary@garyguo.net>
-In-Reply-To: <CANiq72miVic=P+qSobuUqXoCuKW30_tT_buD8MyEsyVb_uoj6w@mail.gmail.com>
-References: <20230628171108.1150742-1-gary@garyguo.net>
-	<CANiq72miVic=P+qSobuUqXoCuKW30_tT_buD8MyEsyVb_uoj6w@mail.gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: LO2P265CA0437.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:e::17) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC24C1C9E1
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 22:29:19 +0000 (UTC)
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1904DA;
+	Wed,  9 Aug 2023 15:29:18 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-bcb6dbc477eso272328276.1;
+        Wed, 09 Aug 2023 15:29:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691620158; x=1692224958;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=md0QMIXJf01edhbs+yGhhB4W0Bd2+ymbTe85aAF+L0g=;
+        b=i+QACLOkeS4nZ3g4o2ZoxhnSh4XeW2x5x1TnffvXS4FKlD0oRvNuRY8J1tn9v4CUPD
+         Jge8jsRgj3IuO/u3RSQqruD6g4hi+QjWJ59CvRpUEaiXtKRjGRqeQcsx0fGzl15vKN/L
+         QdvsTXiUlUF3xdoArCdL+NO6QiSh+od8guo1T53zHZe4qazVAg+L5r+9HoNzf3PTy92g
+         KbxdZ3TQiCToA2DISz6qkYsGjElojMpvZKayjdJjfb/M10LBpclAXAVXwqgfN1v4/bf5
+         jW6t/+vAHTaiXk3XK3Ebkw1ayFmfVHf2TkXeUu97iYv0siM4wuVq2Igg/mbcdtiTMIDc
+         c6mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691620158; x=1692224958;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=md0QMIXJf01edhbs+yGhhB4W0Bd2+ymbTe85aAF+L0g=;
+        b=a2wfzkWgq6eZoBOZw397Md+eThwuhx9P+zgIV8frQIgf+7Yto9BtI3CKLXp/L+22gH
+         PvT4zXzi1SL2c7ve8v/p5gdWo4goOJdkS9i8OJ4N9pfO2zwYqmeA1dKB5Sw94ECv24TS
+         y0iPJaNrxt0zMsNJom3tukQGCafyqwhDIuXxy7quvWoUwjO1ZbQcZH19fD/1dlHAzeiR
+         6VIH5QAwltNKmzJl+KYUrXcSIhkJ0hkxd265O0JFlOcF2FSGCczonnSPdaabnGEC8rQR
+         ktdLMSNuxSvEPBpajsphu4kqktq/GbVtHxlDjvZD7Ks4AEL1HN4ld7fcIgMrWVnU9KEF
+         xoww==
+X-Gm-Message-State: AOJu0YxXI/YH6RfmHn99t3pKHOEdy1i8t6QvjDlhP27dsBmnvZGdVN9s
+	QJA2cYYkeH+XUKOYqaoZv3n724z3A/tVBP57PqI=
+X-Google-Smtp-Source: AGHT+IHeVcjwRnGNxnabot0Y+GQyHu71bqtKVVmW+MicH8CJo+8BQ9/VfazrvSFuVWPoYegCMnUH3al+rUetvt90wjo=
+X-Received: by 2002:a25:ab61:0:b0:ce8:4567:a382 with SMTP id
+ u88-20020a25ab61000000b00ce84567a382mr886673ybi.1.1691620157888; Wed, 09 Aug
+ 2023 15:29:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB7313:EE_
-X-MS-Office365-Filtering-Correlation-Id: 354de098-8216-4901-b198-08db99245fa1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	tbfbLHJyIZd+9mpm3TDoWgUTKi6X57WAZryjUmtDeOLHdMIhKAU/YjuO2ajhYYtq206RGLNWN+ElVhGonkSgabftrklmWEXlx36cAbJZ8Itv7AebgLWctGhYq+gneO7nN3Hkvilv44F9bEo9i+CUiwTzG9rAYQ0JCc9GEIrBvfSiTdCfkXOFKVI61ec1ByrYsWcbXwsnBO1LjmXL9ePwI80Cdji11W8JZv9MV2euQEeOUmIwEEX14+2WbGdi40DxoIbjJIfiG0NN/xqnrUnZZ+wfT/1pdO7J3AA1Kob60MY05RhM9bKePZ/kfvBKJA75tNq1xocwn8Yu9dia5yL0X50tGmeHMIZaKHXBuSqqJjs/thb0T+9EcrahNm+yHI6lj2tokWTWXZ1LL+8GUKBWTFIDKsqcbo1kP42D2npvwjsIL0gafdB6yxc/t/weGhYuYinwrlDI+ul/vOHp+sXF45pWwu/5Dsc5XzCjDvP3/ZBDYvm5kT3PKoBu2M+rMGDnr2Jwdj5bIVgZjo2Tu54+oiYLWgtVTi2eqoZ9NFIyLAyyB6ipT855wAERQ1iIwrDkXHO9xeIST1m02jZkM8uHOM8SvA7c0JIIYTSQ6M9r0oI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(376002)(346002)(396003)(39830400003)(366004)(136003)(451199021)(186006)(1800799006)(6486002)(54906003)(66946007)(6916009)(26005)(66476007)(66556008)(53546011)(1076003)(6506007)(478600001)(36756003)(83380400001)(2616005)(41300700001)(7416002)(316002)(4326008)(6512007)(2906002)(8676002)(86362001)(5660300002)(38100700002)(8936002)(81973001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aTFxcHc0VUNjN0hqa3FUdDNlQmY1cndpUzRIc1BnSnljYmtPRjk4bmozM3Fa?=
- =?utf-8?B?eDVQTVdKSWJENXdCVVphZlpCcTlGK3MxMmttU3F3VnJIR1UxNGpzWVdVdWJQ?=
- =?utf-8?B?NjVFLzVDa00vdXBKZ3ArOGF2V01QdHJ0R0R0bEpqR1JBOVhtTFBJb2dVTGYz?=
- =?utf-8?B?Sk4wN1ZwMmNWOE1hTzlCeGljY2haMWxac21XOFBOeTNBa0RrR3QwSXI3RkZ2?=
- =?utf-8?B?L1liQmZLalF5NFlXQVBsNjFCQWNxSjJWd2swTlRPb3VMRXdqYUEyTjdhaFUw?=
- =?utf-8?B?eXo4OXlHay9xekxiYkNvb2VLMlN0c1crYUJwWDJvN2J3aFM4bmhKQnFrdmRL?=
- =?utf-8?B?OHdlVDRRRDRickFrT2hWS25EbVI5ajBQYXYyY01Lb1E4NVpiUHpNMC9FZW5L?=
- =?utf-8?B?MXZjd0VHeVk1TkdNak1qMlNXZ2hCbGU3NENieUdqb2RnK2tUbU93dDBLVHdK?=
- =?utf-8?B?QlBodzNUUUdrV3l3bURtNkd3VWJEbExISjZLMTRObGhQR0JUQS9LMnRuZzRt?=
- =?utf-8?B?RjMrcTRDa1F3djh4TjZVekhmUTVQTGpUanc2bnBaYUpRamFnQ3AwbXJMZWJJ?=
- =?utf-8?B?OGI2NFd2cHBFUkNtcXhnbXNKTkVxSUZuUGRMVmhvLy94VEV2TXpSYkh5b0NJ?=
- =?utf-8?B?d21nNGNCM0JWcVYrSld1OTJnR3Rjd0ZOVmdJblF6YTRpeGlzdTNtT1ZMVUlm?=
- =?utf-8?B?VEgrTTVaWGtDcnV3OTNBcDMvNlgvOXNBdVRkUGw5dXc4TkpJTVhmNU8xUUwx?=
- =?utf-8?B?VitIWE9PYzlNK0hwRy85UFVQdGVNRWdGTDBPZW04WFkrZHgzc2xwYWV2U1V3?=
- =?utf-8?B?N2t6QWhDbHo3bXBiV01wRzhnbkV3dnM2RjZ2Q29IMzJLa0hKbVBkSkE1aUFi?=
- =?utf-8?B?V1pPWk5RSVlQa0VkMXIzSk1ZOFFqT2hmWUVCRldKMHZsTVQ1SFF1SXBuVjZl?=
- =?utf-8?B?K0E4L1pkQ2gxSVFMd0tKTit2MG1mZ2NPYUtVZTNzYjhQNXFCVFFacGdwcmJs?=
- =?utf-8?B?UmNnOEZPVU85NmcvNVJZdlZRcGJ3ZVRlWlpBTjV1SUI1ekJtQ0pRY0lzcFdn?=
- =?utf-8?B?TFBXbVlaSGRDZStoSUF3bWJ2b2hnVnBGNnViNldqMGFRRllCdGV0Z29vN1VX?=
- =?utf-8?B?ZjhPRU44blZ0VDdtYmJ0dDlFdHFUdFpmbXVFZEthR3pCN1ZydkhqZGliUTh2?=
- =?utf-8?B?YlpFVUlCQ0RWejBEaXNINzNWellBcW5WL1ZQSlZPVm9CU1FjUjlYOEQ2dkRs?=
- =?utf-8?B?dFVaM1RjNkdDMk5rNFdZZ0NicWcyRUtTNlZ5c2xRZUpkTWxFYVo2SnJZQzYr?=
- =?utf-8?B?VUlici9hYTZSYkhmaWE2SWNxdmw0U25naGIydU1HSzErTGFVS2xnMmx6cFov?=
- =?utf-8?B?b3VZd3ZtNWszcy9BbHlqUXpqQ29NbFpqSitXS0c1OE8xQ01rRndzSllPUHJP?=
- =?utf-8?B?YjRvTkxGNHM4UTRqWnJ2SVFFdzBkcW9FZ2Q3K1ZscW1JS2RoaGVKTEgvWDls?=
- =?utf-8?B?c3pxSjhtT1E2azRzMTBkbE1yN3kySm4vMW5lU3VzY2xDNitXZnMrQ3hBUUVU?=
- =?utf-8?B?anV2V05wakdhcy9WcUNycm9LVEc0UHFCQ0s1NmFKdFFKS1d6SUUrMVd5bXAv?=
- =?utf-8?B?eTVBVTNnVnhDZDRVUWFxcGZSQjh6aTU1VVpnRnpuUUR5b1Y1NG1JQlEraDJH?=
- =?utf-8?B?aVVuaWRxQ3Njd3p2OSt1MWRhS3N0cmhwcmVMbEtGNDZDVmZPdms2Q1NSUGFT?=
- =?utf-8?B?Rk9RWlZkN08xWTBIOEFsS0o0WHlkdzVjNUw5b3d4QWQvaVl5ZGZvZEJDS21G?=
- =?utf-8?B?dHNNVW5GWGc4MHc4NGhGQXNsOXc1V0xQait6YTVkTE4zMHllQmthOEV1eVBC?=
- =?utf-8?B?STlyUVllREs4Q3JLRmRUNTFyUzFpOGgvOXlHMEtUMTVpeVdWakVjMFRqUmN5?=
- =?utf-8?B?aEcxbHlzbkJQRmtVQUprWTU0ZklQOFk0ZEJOcG9oTGFPemhQaXUxemxtcjB2?=
- =?utf-8?B?aUtnZWUzU29Pam0yOVVtSS9CK3QvWkNKRUFEZ1VCalNDeC9TUVg3ck9DVWVl?=
- =?utf-8?B?WXRBbnFuN2JiSmNicmU4YVhHOXEyTm40RmdpMDVidE1hcS9YdHUxRlM4MHJq?=
- =?utf-8?Q?XYLQVQw4PiCf7ytWBGNrFcOS9?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 354de098-8216-4901-b198-08db99245fa1
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2023 22:02:50.7188
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xzvR1lBFUuFrKUeoYnGZ2n3lcSJwnlveMWb8tdBzVfbTQecShp58pUCQir+EU6rjag0OuTVD8+OGjapzSV8IEQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB7313
+References: <20230628171108.1150742-1-gary@garyguo.net> <CANiq72miVic=P+qSobuUqXoCuKW30_tT_buD8MyEsyVb_uoj6w@mail.gmail.com>
+ <20230809230249.01ffc009.gary@garyguo.net>
+In-Reply-To: <20230809230249.01ffc009.gary@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 10 Aug 2023 00:29:06 +0200
+Message-ID: <CANiq72nWArGsvWVVknPdAVYUbWqJKfwOAVCRUmLnuAHAHP+rSQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: macros: add `paste!` proc macro
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, 9 Aug 2023 23:45:34 +0200
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+On Thu, Aug 10, 2023 at 12:02=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
+>
+> Sorry I forgot to add license comments!
 
-> On Wed, Jun 28, 2023 at 7:12=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote=
-:
-> >
-> > diff --git a/rust/macros/paste.rs b/rust/macros/paste.rs
-> > new file mode 100644
-> > index 000000000000..42fde0930b05
-> > --- /dev/null
-> > +++ b/rust/macros/paste.rs
-> > @@ -0,0 +1,94 @@
-> > +use proc_macro::{Delimiter, Group, Ident, Spacing, Span, TokenTree}; =
-=20
->=20
-> We need the license identifier to apply this -- is it our usual one?
->=20
->     // SPDX-License-Identifier: GPL-2.0
->=20
-> If so, for the record, could you please confirm it is? Then I will add
-> it on my side and apply it -- thanks!
->=20
-> Cheers,
-> Miguel
+No problem at all :)
 
-Hi Miguel,
+> All my kernel contributions are permissively licensed if possible, so I
+> am fine with this being either MIT or GPL-2.0 (I think GPL-2.0 is
+> deprecated in as a SPDX license identifier and it should be
+> GPL-2.0-only going forward, though).
 
-Sorry I forgot to add license comments!
+Yeah, the 3.0 version of the SPDX license list deprecated `GPL-2.0`,
+but the kernel still allows `GPL-2.0` and lists it first. I recall
+thinking about this before the initial merge, and I think I went with
+the original form because the main `COPYING` file still uses that.
+After that I am just keeping it consistent, though I am not sure when
+the kernel will migrate.
 
-All my kernel contributions are permissively licensed if possible, so I
-am fine with this being either MIT or GPL-2.0 (I think GPL-2.0 is
-deprecated in as a SPDX license identifier and it should be
-GPL-2.0-only going forward, though).
+> Given this is non-kernel specific generic code, I think it might worth
+> following the convention of the paste and pin-init code and make it
+> `Apache-2.0 OR MIT`? This would also make it the same license as the
+> `paste` crate (although we don't have to keep the same license as this
+> is a different implementation).
+>
+> I'll leave the final decision to you.
 
-Given this is non-kernel specific generic code, I think it might worth
-following the convention of the paste and pin-init code and make it
-`Apache-2.0 OR MIT`? This would also make it the same license as the
-`paste` crate (although we don't have to keep the same license as this
-is a different implementation).
+Since you prefer it and it makes sense that someone may want to use it
+(`concat` and `expand`) elsewhere, let's go with that. I will add:
 
-I'll leave the final decision to you.
+    // SPDX-License-Identifier: Apache-2.0 OR MIT
 
-Best,
-Gary
+then. Thanks for the very quick reply!
+
+Cheers,
+Miguel
