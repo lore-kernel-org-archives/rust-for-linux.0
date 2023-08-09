@@ -1,314 +1,163 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F980612D
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 14:27:25 +0000 (UTC)
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 977DA1FCC
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 07:27:22 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-99bdf08860dso212064866b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Aug 2023 07:27:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1691591241; x=1692196041;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=g0tf3b81o/i4i891zt2ZuwmEYtGObIVT0rQr20cIgmM=;
-        b=ka2t9rwhuAQFn95vz4kMDFZ3Q0eynbfttN8bDW66C67GMafoIikGXJ/U6LIv/FqASv
-         8x76Ej9IXjNbiueHSKNX/n9CkGxHbuHmOydy//zzt6B2nHcfLaEXwrFZ7z/AGGxnyXj8
-         d41x/u4f3HPrDeYk/ZcDzJQwSFFbBUyUb8OKOqVCShZ/j3I/+rZW0LIEsiyc2Z8U19Gz
-         Qcuu4ta9WCYEJqaKhLAkax4wXHiRX4QJkr5LYmAfp/t3h2Ur5oe3dyGWKHQTYZYHj3nu
-         JsV2FzwTRfcN8gu3BI9Q6KG3x82+AaGVKxWCu02OjnrF0AHTc9c7g1KjXUmM0ufeDmb2
-         Ui6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691591241; x=1692196041;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g0tf3b81o/i4i891zt2ZuwmEYtGObIVT0rQr20cIgmM=;
-        b=SHHWbk8uLow/eQiqrVeW3yrxk/8XONLQtFiJ1Y9pgooH6aqr4sxFW5BM4twYlGVJAg
-         gqN50IMrX5OmGLCfcW6fYbgnhv+VK22GhHaEmvE7l/+W0UBDJF3/3He4hjot94rniY5S
-         JB+jQO7sABTS43YVBtMGC6jdafYQozUpMF0aoaY8ROAeqqQanUrvmCHWH9A+AFPbjhb/
-         B/7CPjfcLkjrUHl9wlb0Ig46TbJ1xJBCJtZTKuuLqYrNYZ62OEOwAesMfO2dubGYoqy/
-         CwiuE3JVAfpNLVfyA+DP5dPlFgq0oKteZ0PHMeLAjFm0SqB5W0b8v2CxscL6THEeCJKZ
-         jcBQ==
-X-Gm-Message-State: AOJu0Yz1pCyVbkOxXFBjL/D7Z2WUNmxQ0tOaIOe/1tLalBOeM3WKX3Ff
-	wYvmiJGXjRqqxt1uYogMifAysA==
-X-Google-Smtp-Source: AGHT+IGtEaU2vZG7J/NZdgzh5skjfNjX0nguXNiqv05n6QVi+LMT+9D9Pw3d6uTPTxMnIXT31iEWaQ==
-X-Received: by 2002:a17:906:d54a:b0:978:8979:c66c with SMTP id cr10-20020a170906d54a00b009788979c66cmr13470340ejc.18.1691591240937;
-        Wed, 09 Aug 2023 07:27:20 -0700 (PDT)
-Received: from localhost ([194.62.217.2])
-        by smtp.gmail.com with ESMTPSA id h4-20020aa7c944000000b0052369aa9956sm733683edt.26.2023.08.09.07.27.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 07:27:20 -0700 (PDT)
-References: <20230710074642.683831-1-aliceryhl@google.com>
-User-agent: mu4e 1.10.5; emacs 28.2.50
-From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Wedson
- Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1] rust: add improved version of
- `ForeignOwnable::borrow_mut`
-Date: Wed, 09 Aug 2023 16:09:12 +0200
-In-reply-to: <20230710074642.683831-1-aliceryhl@google.com>
-Message-ID: <87r0octho8.fsf@metaspace.dk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF8F24505
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 18:48:08 +0000 (UTC)
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2104.outbound.protection.outlook.com [40.107.10.104])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77053E51;
+	Wed,  9 Aug 2023 11:48:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CwYhJlAfbz6Xajf9sLjAjt8yieLlKFS29SRSCuANM6K55+7sa2tUcm2Rgq2GrgfdbQ1kvEvIBjPP8zieIFkT5C336IbwtB0nK0eVlXJrf9XYdhaw5sSMjwwpgZ8sks05FDZ8yfyUHOXI+a0MPSngIGz6sGgDaZSMl61/g/IfBrPtRkZ+/KVGXX0FCco+14rBOBVhh6mYbHsZaXzvCAt70kkn+SyCFiq3bQ/Mg54QNYryB8Cd6vcv4/x/Ql8/9+4lsJxW9n6bZQSz0EJdrgp3ILULrDSx9ly4x42SDSqCoEbgMbt86PC5im578fyxj9uM0zL48YjTPaKelbNHTxTXlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vIyASTRaFUHUbajpWsGAbfmrMpWnSKrkqkE9qEHxbt4=;
+ b=EGBtYwoMy8Orb6t5gZJd79KyEecdXFn4lD6+k60+3LMJJTuf/pdRIJiQ2TklRll0v1eNxcwa2ZsuOaQ2yHELvdRCUyNM+jBLyfiNWSG8VyG6ck4LHHpLyrem6LQafYqvRAc3m3Gt5d6ox/vE5u9Ycowk5z/nlZILEtRtERV++VK3tkfD/5ZVSRr9YP7MtUtoOXuu5/qJZdbz33SbPMaeHpxXv3U3j6ncRJn5e73fZElob5M4G+Phi+6QmdRJTdaHv9raKWTylrnwRz6WBPspu/zU6wS3omiWuTcC43gjeAMVSe3saOtveQmR0YzllG9ldOpocvzyOnN51bpAV6N/+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vIyASTRaFUHUbajpWsGAbfmrMpWnSKrkqkE9qEHxbt4=;
+ b=QmVwk30qxgRks3edvSd01M0IXoUE1zVZSAJcEvIrznwqF4/gWBXnR2F5/T/gJlFfNsz4r7PM0ycJcWrwDqr5wQLe9PUL4tBrQrb52i4PBTPXFORz+1eack1yvUQBuPDgKCLzDsbMduvMKXSAOSuJM/SqArEAdL6yus0xnxwmKOA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO6P265MB6047.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2a6::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6652.28; Wed, 9 Aug
+ 2023 18:48:05 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6d3e:8fe2:6cdb:6d3f]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6d3e:8fe2:6cdb:6d3f%5]) with mapi id 15.20.6652.028; Wed, 9 Aug 2023
+ 18:48:05 +0000
+Date: Wed, 9 Aug 2023 19:48:02 +0100
+From: Gary Guo <gary@garyguo.net>
+To: "Qingsong Chen" <changxian.cqs@antgroup.com>
+Cc: linux-kernel@vger.kernel.org, "=?UTF-8?B?55Sw5rSq5Lqu?="
+ <tate.thl@antgroup.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
+ "Sergio =?UTF-8?B?R29uesOhbGV6?= Collado" <sergio.collado@gmail.com>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v3] rust: macros: vtable: fix `HAS_*` redefinition
+ (`gen_const_name`)
+Message-ID: <20230809194802.46aa18d0.gary@garyguo.net>
+In-Reply-To: <20230808025404.2053471-1-changxian.cqs@antgroup.com>
+References: <20230808025404.2053471-1-changxian.cqs@antgroup.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0114.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:192::11) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO6P265MB6047:EE_
+X-MS-Office365-Filtering-Correlation-Id: df179480-d294-4b12-8428-08db99092a72
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	2MTMon6cZ+5fGnBGmLiknbejBJpOx0VXlSJQDFKTU19JE7oFhivdGi66/Me8JoRzB9qOmMgGBbjJFtf2TyxlY3p8V1p0j1DxRhiU7M9BcxsTn0SwmQj27D53u48rl17U39EDgd2jJ+R0PfvLA8Gc5PSBJObOkuRwGegroO0VoR/B4H4cwB9fnuWp634eR8gq43RTUzWw2TfJ66j5qK1BpOrvAh0MWMBFqrDLDehliOdW/3UMqTiz4OeYYwE1gYQrp0wltGoJqxBiSsKXspG1SsKbwMFTERBx40QCSleAV2DIbBh9i5PEvxkKVK6Z6NteeF6bzMp/PxqtXtNnNn8gqPjlpdqR9PsLUdIGlIudWFBXxVOQRfbr4g1FOiwcKE0e+EEx/oHRUpmy4v28qGIkgGpnO5W0SbYVuChLigM7/+IdC9oNMIuSKoCMnOH/fDOBhKMrqx6VcGTZHv3VKBH/330FxSLMFkwSW2w76IJZLkdpmaHWMgeTkXMIQNn3d4QagSY37uuv2IhC0nNGfTqgkvlKHyQ2+oMrN7Oc/Y31d/Jb9YVydYu6/EhOMMOedJkHY5lkzB4/hT656nhsiSHI1TnKG3gnfwJy4nUDR68j/mA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(136003)(39830400003)(396003)(346002)(376002)(366004)(451199021)(186006)(1800799006)(6512007)(1076003)(26005)(6506007)(54906003)(38100700002)(36756003)(86362001)(7416002)(5660300002)(6916009)(2906002)(4326008)(66556008)(66476007)(8676002)(41300700001)(316002)(66946007)(8936002)(6666004)(6486002)(478600001)(83380400001)(2616005)(81973001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?8mzR3+Ax2VsP9GU5us6plOFb8SlEWTNKVoASWewKWAWuTQkrH/VauyDFULIV?=
+ =?us-ascii?Q?KM4lRl60LTu7++osFE80bO2/p33xmdQTZ6ZZgwIDtpfov3ied2c8hinUqxd0?=
+ =?us-ascii?Q?dcrZ0kl1uamSNrmzWH2d8mcS4EaYq+V8dMUvlpDvLx+vfdNJBt6I7lhvEVqN?=
+ =?us-ascii?Q?FrHIPxrXLe/qj9X6a9BB6FCO3b5WsMfZ0PioTP+/E+bf06mRfJ4f1EkFZW8x?=
+ =?us-ascii?Q?2eQLE0VpBgnrlUc1WYjLX6CsBjJUdM19S+GlPP5oMTQ7Bg/fb7VGMM2QOiK8?=
+ =?us-ascii?Q?5suurWb8PsXlir0O3X55hArMn8/koP9hoYleMNZzGKlWC5XdksuCgVCuwCFB?=
+ =?us-ascii?Q?JSBy/MCNFOcuoQyW1pIX4J/70CfoFID3eQMJUA4lEOFqryX2uuppQMUWuGnO?=
+ =?us-ascii?Q?YP/wni1ZMGIyPfYTlXomOBw4wZDXe6UVS6JbVxT3I9MnE3Z9iWxVDbt/518Z?=
+ =?us-ascii?Q?+SveD3FRuAGzDp4kj5WuOGOY0Ba+NH+CAo6ul5nHicqZO+mOCHeNASMbhm0e?=
+ =?us-ascii?Q?/NDXXhX6d1PdzOVFU/wPxOeWwDW0mzUt8bdqNITmaJrALfvSJyv3YGU9f8yO?=
+ =?us-ascii?Q?VCtrMdwGHYpItpfx4r+C98GmwXmXSJQrcGMGbG+Jyf9C67f+1aOmW34qqmb2?=
+ =?us-ascii?Q?zOGVIc3c5psUJdHr4WHDJZd2g9jhvodIPNIw2lfd1GMneBOFkCxY17FD5qGq?=
+ =?us-ascii?Q?mOL6r3g7tzGHjSlpnL21ybhlKCc6Z/ZL4WE2CEk1APlCLzVNgpNTyckR5SXo?=
+ =?us-ascii?Q?oti9Is/NK+aOWL32s4pkCvjikcvz4MUW/jsAO1evJFD/1l04DqKQc8ipLgkk?=
+ =?us-ascii?Q?2cwCvF7lBLyVstF5RN63HsNNzCiByKt/pdEHuvl6WxDDj83EcuGfGx/K9uZ+?=
+ =?us-ascii?Q?jels+bUdU6QUkwVXKDE+yXmL0hQaAv7Y1xWS2FXJDICLGYG+N6/9bxHQ6Ntg?=
+ =?us-ascii?Q?HkIo6BapoEqvSRwzaInwGxylu/SOJkgcri1eFH2iaf79Wd8wsb/6H3nWlLCc?=
+ =?us-ascii?Q?xrRn8ZxjHC8OMAhm1+eDNuQm/QzYfbGP4WHTOd1wG7tS95B9hMW0IWqGYsqJ?=
+ =?us-ascii?Q?XP0qRnBGGNkdl1fO1ALeRtMTGPCM2De2HircTOb8yntE4eA6JzF6aMbhcW05?=
+ =?us-ascii?Q?MJXnZyXJI0Mu2q6HGU8NhwGl9K8lTp+qG1SHSHBFjIPB+2o3r8Uz4Kp3dlz5?=
+ =?us-ascii?Q?NXM2GoMdhYid1D6x1p84HaT94dP5pLyYflohC6uF/EuhXXD/gBSrZbazsnRo?=
+ =?us-ascii?Q?PIp4DPokqrxO/3vRbs2aEhXtKmlwIU5xcTcKj807WQUA44YkUEFUZN4Gs0r6?=
+ =?us-ascii?Q?bQaCh+zvGjbiDLs0VBEnNj7vb05N7bsVfA8vQoz5Ue4hYnDCpTPqHTREKu0p?=
+ =?us-ascii?Q?ZZULmuhHOla0WS9E6lUwwPAmS4tJ5gJlxEVnJQjNY4uVnXtcGvucHBPbi+hf?=
+ =?us-ascii?Q?b/KfajsUKjGzTYHIEC6bFDzrssP2TgsdsH9b3FqTUrs4nD8VdflNItXa27/b?=
+ =?us-ascii?Q?HTZ8B5DMcDy8lPbQbdkvpdyXd0leXycXw3eEQM2szhPFarCA6cLZspQZco0o?=
+ =?us-ascii?Q?iwUm1O3sVLGmI0t9xgx19dqzuL0yD4FP0YCNwS3d?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: df179480-d294-4b12-8428-08db99092a72
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2023 18:48:05.0423
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Qe4mvQOuy3Yn9GuYwC6en4WmZRbePwIuZDiYG6UpMUUGqAc3er9I9+IhqCgqUkcF51qItuSv5d2PnnYmrxp8qw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6047
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
+On Tue, 08 Aug 2023 10:54:01 +0800
+"Qingsong Chen" <changxian.cqs@antgroup.com> wrote:
 
-Alice Ryhl <aliceryhl@google.com> writes:
+> If we define the same function name twice in a trait (using `#[cfg]`),
+> the `vtable` macro will redefine its `gen_const_name`, e.g. this will
+> define `HAS_BAR` twice:
+> 
+>     #[vtable]
+>     pub trait Foo {
+>         #[cfg(CONFIG_X)]
+>         fn bar();
+> 
+>         #[cfg(not(CONFIG_X))]
+>         fn bar(x: usize);
+>     }
+> 
+> Fixes: b44becc5ee80 ("rust: macros: add `#[vtable]` proc macro")
+> Signed-off-by: Qingsong Chen <changxian.cqs@antgroup.com>
 
-> Previously, the `ForeignOwnable` trait had a method called `borrow_mut`
-> that was intended to provide mutable access to the inner value. However,
-> the method accidentally made it possible to change the address of the
-> object being modified, which usually isn't what we want. (And when we
-> want that, it can be done by calling `from_foreign` and `into_foreign`,
-> like how the old `borrow_mut` was implemented.)
->
-> In this patch, we introduce an alternate definition of `borrow_mut` that
-> solves the previous problem. Conceptually, given a pointer type `P` that
-> implements `ForeignOwnable`, the `borrow_mut` method gives you the same
-> kind of access as an `&mut P` would, except that it does not let you
-> change the pointer `P` itself.
->
-> This is analogous to how the existing `borrow` method provides the same
-> kind of access to the inner value as an `&P`.
->
-> Note that for types like `Arc`, having an `&mut Arc<T>` only gives you
-> immutable access to the inner `T`. This is because mutable references
-> assume exclusive access, but there might be other handles to the same
-> reference counted value, so the access isn't exclusive. The `Arc` type
-> implements this by making `borrow_mut` return the same type as `borrow`.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
 > ---
->
-> This patch depends on https://lore.kernel.org/all/20230706094615.3080784-1-aliceryhl@google.com/
->
->  rust/kernel/sync/arc.rs | 31 +++++++++-----
->  rust/kernel/types.rs    | 93 ++++++++++++++++++++++++++++++-----------
->  2 files changed, 89 insertions(+), 35 deletions(-)
->  
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index d479f8da8f38..1c2fb36906b6 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -20,66 +20,111 @@
->  /// This trait is meant to be used in cases when Rust objects are stored in C objects and
->  /// eventually "freed" back to Rust.
->  pub trait ForeignOwnable: Sized {
-> -    /// Type of values borrowed between calls to [`ForeignOwnable::into_foreign`] and
-> -    /// [`ForeignOwnable::from_foreign`].
-> +    /// Type used to immutably borrow a value that is currently foreign-owned.
->      type Borrowed<'a>;
->  
-> +    /// Type used to mutably borrow a value that is currently foreign-owned.
-> +    type BorrowedMut<'a>;
-> +
->      /// Converts a Rust-owned object to a foreign-owned one.
->      ///
->      /// The foreign representation is a pointer to void.
->      fn into_foreign(self) -> *const core::ffi::c_void;
->  
-> -    /// Borrows a foreign-owned object.
-> -    ///
-> -    /// # Safety
-> -    ///
-> -    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
-> -    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-> -    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> Self::Borrowed<'a>;
-> -
->      /// Converts a foreign-owned object back to a Rust-owned one.
->      ///
->      /// # Safety
->      ///
-> -    /// `ptr` must have been returned by a previous call to [`ForeignOwnable::into_foreign`] for
-> -    /// which a previous matching [`ForeignOwnable::from_foreign`] hasn't been called yet.
-> -    /// Additionally, all instances (if any) of values returned by [`ForeignOwnable::borrow`] for
-> -    /// this object must have been dropped.
-> +    /// The provided pointer must have been returned by a previous call to [`into_foreign`], and it
-> +    /// must not be passed to `from_foreign` more than once.
-> +    ///
-> +    /// [`into_foreign`]: Self::into_foreign
->      unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self;
-> +
-> +    /// Borrows a foreign-owned object immutably.
-> +    ///
-> +    /// This method provides a way to access a foreign-owned value from Rust immutably. It provides
-> +    /// you with exactly the same abilities as an `&Self` when the value is Rust-owned.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The provided pointer must have been returned by a previous call to [`into_foreign`], and if
-> +    /// the pointer is ever passed to [`from_foreign`], then that call must happen after the end of
-> +    /// the lifetime 'a.
-> +    ///
-> +    /// [`into_foreign`]: Self::into_foreign
-> +    /// [`from_foreign`]: Self::from_foreign
-> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> Self::Borrowed<'a>;
-> +
-> +    /// Borrows a foreign-owned object mutably.
-> +    ///
-> +    /// This method provides a way to access a foreign-owned value from Rust mutably. It provides
-> +    /// you with exactly the same abilities as an `&mut Self` when the value is Rust-owned, except
-> +    /// that this method does not let you swap the foreign-owned object for another. (That is, it
-> +    /// does not let you change the address of the void pointer that the foreign code is storing.)
-
-How about this:
-
-"For a smart pointer P<T> this method provides mutable access to T if
-&mut P<T> would allow mutable access to T. Otherwise it provides
-immutable access to T."
-
-The point is that the method provides access to the pointee, not the
-smart pointer itself. In fact it is perfectly fine to do a mem::swawp()
-for the pointee in the case of Box and depending on interpretation the
-sentence "does not let you swap the foreign-owned object for another" is
-confusing.
-
-> +    ///
-> +    /// Note that for types like [`Arc`], an `&mut Arc<T>` only gives you immutable access to the
-> +    /// inner value, so this method also only provides immutable access in that case.
-> +    ///
-> +    /// In the case of `Box<T>`, this method gives you the ability to modify the inner `T`, but it
-> +    /// does not let you change the box itself. That is, you cannot change which allocation the box
-> +    /// points at.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The provided pointer must have been returned by a previous call to [`into_foreign`], and if
-> +    /// the pointer is ever passed to [`from_foreign`], then that call must happen after the end of
-> +    /// the lifetime 'a.
-> +    ///
-> +    /// The lifetime 'a must not overlap with the lifetime of any other call to [`borrow`] or
-> +    /// `borrow_mut` on the same object.
-> +    ///
-> +    /// [`into_foreign`]: Self::into_foreign
-> +    /// [`from_foreign`]: Self::from_foreign
-> +    /// [`borrow`]: Self::borrow
-> +    /// [`Arc`]: crate::sync::Arc
-> +    unsafe fn borrow_mut<'a>(ptr: *const core::ffi::c_void) -> Self::BorrowedMut<'a>;
->  }
->  
->  impl<T: 'static> ForeignOwnable for Box<T> {
->      type Borrowed<'a> = &'a T;
-> +    type BorrowedMut<'a> = &'a mut T;
->  
->      fn into_foreign(self) -> *const core::ffi::c_void {
->          Box::into_raw(self) as _
->      }
->  
-> -    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> &'a T {
-> -        // SAFETY: The safety requirements for this function ensure that the object is still alive,
-> -        // so it is safe to dereference the raw pointer.
-> -        // The safety requirements of `from_foreign` also ensure that the object remains alive for
-> -        // the lifetime of the returned value.
-> -        unsafe { &*ptr.cast() }
-> -    }
-> -
->      unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
->          // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
->          // call to `Self::into_foreign`.
->          unsafe { Box::from_raw(ptr as _) }
->      }
-> +
-> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> &'a T {
-> +        // SAFETY: The safety requirements of this method ensure that the object remains alive and
-> +        // immutable for the duration of 'a.
-> +        unsafe { &*ptr.cast() }
-> +    }
-> +
-> +    unsafe fn borrow_mut<'a>(ptr: *const core::ffi::c_void) -> &'a mut T {
-> +        // SAFETY: The safety requirements of this method ensure that the pointer is valid and that
-> +        // nothing else will access the value for the duration of 'a.
-> +        unsafe { &mut *ptr.cast_mut().cast() }
-> +    }
->  }
->  
->  impl ForeignOwnable for () {
->      type Borrowed<'a> = ();
-> +    type BorrowedMut<'a> = ();
->  
->      fn into_foreign(self) -> *const core::ffi::c_void {
->          core::ptr::NonNull::dangling().as_ptr()
->      }
->  
-> -    unsafe fn borrow<'a>(_: *const core::ffi::c_void) -> Self::Borrowed<'a> {}
-> -
->      unsafe fn from_foreign(_: *const core::ffi::c_void) -> Self {}
-> +
-> +    unsafe fn borrow<'a>(_: *const core::ffi::c_void) -> Self::Borrowed<'a> {}
-> +    unsafe fn borrow_mut<'a>(_: *const core::ffi::c_void) -> Self::BorrowedMut<'a> {}
->  }
->  
->  /// Runs a cleanup function/closure when dropped.
->
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 172f563976a9..f152a562c9c3 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -232,26 +232,35 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
->  
->  impl<T: 'static> ForeignOwnable for Arc<T> {
->      type Borrowed<'a> = ArcBorrow<'a, T>;
-> +    // Mutable access to the `Arc` does not give any extra abilities over
-> +    // immutable access.
-> +    type BorrowedMut<'a> = ArcBorrow<'a, T>;
->  
->      fn into_foreign(self) -> *const core::ffi::c_void {
->          ManuallyDrop::new(self).ptr.as_ptr() as _
->      }
->  
-> -    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'a, T> {
-> -        // SAFETY: By the safety requirement of this function, we know that `ptr` came from
-> -        // a previous call to `Arc::into_foreign`.
-> -        let inner = NonNull::new(ptr as *mut ArcInner<T>).unwrap();
-> -
-> -        // SAFETY: The safety requirements of `from_foreign` ensure that the object remains alive
-> -        // for the lifetime of the returned value.
-> -        unsafe { ArcBorrow::new(inner) }
-> -    }
-> -
->      unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
->          // SAFETY: By the safety requirement of this function, we know that `ptr` came from
->          // a previous call to `Arc::into_foreign`, which guarantees that `ptr` is valid and
->          // holds a reference count increment that is transferrable to us.
-> -        unsafe { Self::from_inner(NonNull::new(ptr as _).unwrap()) }
-> +        unsafe { Self::from_inner(NonNull::new_unchecked(ptr as _)) }
->      }
-> +
-> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'a, T> {
-> +        // SAFETY: By the safety requirement of this function, we know that `ptr` came from
-> +        // a previous call to `Arc::into_foreign`.
-> +        let inner = unsafe { NonNull::new_unchecked(ptr as *mut ArcInner<T>) };
-> +
-> +        // SAFETY: The safety requirements ensure that we will not give up our
-> +        // foreign-owned refcount while the `ArcBorrow` is still live.
-> +        unsafe { ArcBorrow::new(inner) }
-> +    }
-> +
-> +    unsafe fn borrow_mut<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'a, T> {
-> +        // SAFETY: The safety requirements for `borrow_mut` are a superset of the safety
-> +        // requirements for `borrow`.
-> +        unsafe { Self::borrow(ptr) }
-> +    }
-
-I am not sure this makes sense. How about splitting the trait in two,
-immutable and mutable and only implementing the immutable one or Arc?
-
-Best regards,
-Andreas
+> v1 -> v2:
+> - Use `BTreeSet` and existing `consts` as suggested by Alice and Gary.
+> - Reword commit messages as suggested by Miguel.
+> v2 -> v3:
+> - No need to replace `HashSet` with `BTreeSet`, since `consts` is never
+>   iterated on.
+> 
+>  rust/macros/vtable.rs | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/rust/macros/vtable.rs b/rust/macros/vtable.rs
+> index 34d5e7fb5768..ee06044fcd4f 100644
+> --- a/rust/macros/vtable.rs
+> +++ b/rust/macros/vtable.rs
+> @@ -74,6 +74,7 @@ pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStream {
+>                  const {gen_const_name}: bool = false;",
+>              )
+>              .unwrap();
+> +            consts.insert(gen_const_name);
+>          }
+>      } else {
+>          const_items = "const USE_VTABLE_ATTR: () = ();".to_owned();
 
