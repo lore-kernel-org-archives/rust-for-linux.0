@@ -1,98 +1,87 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAB824536
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 20:15:36 +0000 (UTC)
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44CF810CF;
-	Wed,  9 Aug 2023 13:15:35 -0700 (PDT)
-Received: by mail-ot1-x32d.google.com with SMTP id 46e09a7af769-6bd066b0fd4so174110a34.2;
-        Wed, 09 Aug 2023 13:15:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8B424510
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 21:45:48 +0000 (UTC)
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0FB2E7F;
+	Wed,  9 Aug 2023 14:45:46 -0700 (PDT)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-5841be7d15eso4189497b3.2;
+        Wed, 09 Aug 2023 14:45:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691612134; x=1692216934;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mD3lZ+cedaC3uh75ynu2ZL3JyVWBLEXJVSbA+C3K0LU=;
-        b=eu8uD+QFcUZ38jGEmySOr/1VMtkfXYu9r93sNp/ePwPq83li5VR93dBVyNgY9L7Cfc
-         WgNqkoL2GSmDl/o/6yYY5DTr9hxcezCRzpgSytKFBXwe0lQMnp1kwkQc8p+YxAuz9z1Y
-         hxU8EDW8bvGyNjEY3YfY5B3FXr8r/SEmwN49H4G3Kp9VduX3saJOq4wPFF4qBiujEJ2g
-         Qh9y2oIUFP/RdFF7M6bQusB5GMBvU1wh0tppVi1KD+Nz5b6/9jq5TM1L1cGsexin5fW+
-         tvTXov1jyvcbGi6L7uLvxc9oT7wAnHxa4w1CRCCvU8x+oMNeHHbYfVDO/4gUdiHRuwoG
-         wLig==
+        d=gmail.com; s=20221208; t=1691617546; x=1692222346;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gsRnz7jVORsZvX+PwahsUqWKNeWTR7k0593BA2MOHsQ=;
+        b=Z3uTZ75DkNUA9rN35JY6ca3I99SOlBwXvat3dufkEBM38EsBFae4QkeggxVGHkBnQR
+         BNNcBztanLjClYQlL6uBHbSqt9AuSDX5Dj412uMGFVKimhDNz6IybWBIPENnNPMo9Ske
+         BoRTnvJshONgVnVj61RIfu1LxNEmd7Pv3PBAxfRQ0o9qV6NuPUxkuSTnCqtoXe1ZNrHq
+         a8bjEg06ME6gu7pFOs/njZXQ58TtyIathOqwPPX2eIHRGIXEv8qEuF2Hf70/7ryfsJBg
+         SV3iqPmCOdimFCc8xiic9L35z3EYHg07uMAgJ8YpkENY5qbbUv2NJT5vFqQ+4UP+qEg3
+         GtDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691612134; x=1692216934;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mD3lZ+cedaC3uh75ynu2ZL3JyVWBLEXJVSbA+C3K0LU=;
-        b=NHA5px8sTsoIQ4C+/O51lo8h4JPgwyeR2X/vvPLC0CmSlgdWDGsrUMi+42Lunsiw47
-         gldv5EXZoreGP1vasJefhJen0/haxcgX53tZy7LJMLcetJAvCo4nuzv6kp2GBWhq2K2l
-         +5sz8o9xVZUyikU1AvXqpw5JRSSvUKPmlqLP/UhwFnDQmUIeJN6QzDES3bFqgoBij9G1
-         mIBCWIHuP94BCzM0PTjp20BneZ3FJ6Gk4n4iTXovIEZwP+trTiXFgihzsbEiG2rGWpYB
-         BvMSu4H7np6ooJ3wHsF/yGiUbaC1l5tL+kE56Tssc5V1Zk0HcWGxvh5s9WQx47Dk+Wun
-         tWrw==
-X-Gm-Message-State: AOJu0Yx7yPXrIhyvv9PuoWoZWF0DYN4aD/MxLCB/KE4dwMH2lN0ByiZ2
-	eNUanveaoJ/dqPWWpJd9tf4=
-X-Google-Smtp-Source: AGHT+IGmy/YEk0/6tf7GbIdqdSbviX+FQ1mwJv6DoHjtUIF0cXpMUJL6SRyWRhjyQR8256ApJQZ9WQ==
-X-Received: by 2002:a9d:798b:0:b0:6bd:bcd:43f8 with SMTP id h11-20020a9d798b000000b006bd0bcd43f8mr118188otm.21.1691612134452;
-        Wed, 09 Aug 2023 13:15:34 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id z21-20020a9d7a55000000b006b8ad42654csm14147otm.0.2023.08.09.13.15.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Aug 2023 13:15:34 -0700 (PDT)
-Message-ID: <8313fb24-5fbb-4408-825d-974da33a4353@gmail.com>
-Date: Wed, 9 Aug 2023 17:15:29 -0300
+        d=1e100.net; s=20221208; t=1691617546; x=1692222346;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gsRnz7jVORsZvX+PwahsUqWKNeWTR7k0593BA2MOHsQ=;
+        b=RiINut21hmIwIJsC2nvIVQYyhALkRLrSvAftxs0LFG6/2q+v/HeU9yfkyuL4SpwsBq
+         X3lBu26mlVCZBU8sdqgFqkqi7iBGZhaCVTCQQOt0JtSq4Au/8W5jr4pOsXx0NHAQAT2f
+         cE5/V928zA8hF7PL4wG4AjMzFx8W534owPb7v9PgITLKwNh1BnRmM0I+VDDqTRyLAi0k
+         Y6v+R7B3opz81uuGXxInl1U7G/Yd2AMp6L4GOYqFDRcyNzjSLU28APKV4HxczkIJyZsp
+         0wZd3kuxI9pl+BmJQ13f3CN19+4CPLfq3kr1RcpFvuO2jOcnL5C42kxK+cz+/xn/6/6o
+         azpA==
+X-Gm-Message-State: AOJu0YzRRO2QkYoH523YVD78bXv1VTUJtDVXX9pk82rsMLLW3pRapGN3
+	cFFB+zIogNSM2Z0jLmCAMZN2jBT30ZyzzPsHPx0=
+X-Google-Smtp-Source: AGHT+IEi1aQHkjwQ1KcNESt+dCxO4vUrQOr3z/zX0f4Fmo4/LhX1MbtMT6tl+TJx5LvM4sko0YnNZkGCDRYHhVMfCFM=
+X-Received: by 2002:a25:dad7:0:b0:d08:7ffc:c0eb with SMTP id
+ n206-20020a25dad7000000b00d087ffcc0ebmr830623ybf.19.1691617546054; Wed, 09
+ Aug 2023 14:45:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 5/5] rust: file: add `DeferredFdCloser`
-Content-Language: en-US
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev
-References: <20230720152820.3566078-1-aliceryhl@google.com>
- <20230720152820.3566078-6-aliceryhl@google.com>
- <bee24ff5-444c-44f9-81c8-88ff310b401a@gmail.com>
- <CANiq72mHU7n2jTPFsO=tjfqucrbe2ABSUYPUG6ctEerh4J+U_g@mail.gmail.com>
- <CANiq72m5tbj2_N_s371d5N_4H1xpE2ahTHOUvFtUd+N0Y=0tsA@mail.gmail.com>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <CANiq72m5tbj2_N_s371d5N_4H1xpE2ahTHOUvFtUd+N0Y=0tsA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20230628171108.1150742-1-gary@garyguo.net>
+In-Reply-To: <20230628171108.1150742-1-gary@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 9 Aug 2023 23:45:34 +0200
+Message-ID: <CANiq72miVic=P+qSobuUqXoCuKW30_tT_buD8MyEsyVb_uoj6w@mail.gmail.com>
+Subject: Re: [PATCH] rust: macros: add `paste!` proc macro
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 8/9/23 06:09, Miguel Ojeda wrote:
-> On Wed, Aug 9, 2023 at 11:00 AM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
->>
->> If you mean for the commit, then we should follow the kernel
->> convention instead. Please see my reply to Alice above.
-> 
-> One extra note: if it is a external repository, then yes, I would
-> definitely recommend adding a `Link` because readers may not be able
-> to easily `git show` the hash. But if it is the kernel tree, then it
-> is not needed.
-> 
-> Cheers,
-> Miguel
+On Wed, Jun 28, 2023 at 7:12=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+> diff --git a/rust/macros/paste.rs b/rust/macros/paste.rs
+> new file mode 100644
+> index 000000000000..42fde0930b05
+> --- /dev/null
+> +++ b/rust/macros/paste.rs
+> @@ -0,0 +1,94 @@
+> +use proc_macro::{Delimiter, Group, Ident, Spacing, Span, TokenTree};
 
-Gotcha
+We need the license identifier to apply this -- is it our usual one?
 
--> Martin
+    // SPDX-License-Identifier: GPL-2.0
+
+If so, for the record, could you please confirm it is? Then I will add
+it on my side and apply it -- thanks!
+
+Cheers,
+Miguel
