@@ -1,106 +1,85 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B036B3D7F
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 04:34:56 +0000 (UTC)
-Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 418151BF3;
-	Tue,  8 Aug 2023 21:34:55 -0700 (PDT)
-Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1bb782974f4so4946612fac.3;
-        Tue, 08 Aug 2023 21:34:55 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EEDEACE
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Aug 2023 09:01:08 +0000 (UTC)
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 138211BD9;
+	Wed,  9 Aug 2023 02:01:07 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-d61b6fc3015so272847276.1;
+        Wed, 09 Aug 2023 02:01:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691555694; x=1692160494;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aNuO8maW3k3biYUipfRcSFSTTKrtXD3lVQL4G6LBK5w=;
-        b=HMNhAZoCzWrw2LiU0SnsgmGnnq7sUGxddlTDeiaWnkPApFKIO1YsxIGzTmlbQ1nhxU
-         d/1CUW2Hk88KQp5/6dsDIEqn1WplnEkG7ZCQ8hkHdOFOjwZvo9wvt4oWupSY1ynhANFY
-         HpW/pC4icZP7XTSTeUGIM53yvMMBLBW9EherLgpsT8QJQ89pqok75dXaHXE+mRLiwub4
-         pulu6FSvp7M0ndW0C2brOfYHRtFw+yk3UW6XX+Ce59ZgbxS9lIAAZurwJ8fEuTaIAU5k
-         VCl0n7RAeP8fYe8dhdKzpS1a13EZ4zstAUzcKum1zvHaDWoJosDlFjUB0RUuEKAMw+Yv
-         o99g==
+        d=gmail.com; s=20221208; t=1691571666; x=1692176466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X8p6/0KX3fVxDGykNsAB8y9ONKtikHgYp/M2932Yhtg=;
+        b=a+Zu8NL83uIaY2kPK/hzZzHyi7vS7ZDBxBzBas0D7lsWImIDv7Qwd1BiEcv6FKTPP1
+         BdMSYMPzdND5JC7oC8v9M124xkp5LnmnJE5/klfgAzt2xAFxC8Ix/ATgHA73sGHIq6M5
+         8OrafZcJ9GdZPgCALz/hIhLavsI9b/Dr6TdEQlqt8LZqcG0yWZaerqRjYwnLJH58K7vt
+         JQ3+FbcofYPvCtDrlcpkILNmTu7Hd19Y/cUYPc+r6qC4noDNhfIpgilb6dDWBQ7jRR1L
+         /D8Jy5DP8f/9nxAZ93mmMJwTgohGO38fsuD20oMAYUxgObu8MmDLJJ/dTzqsykEe/tu+
+         mlnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691555694; x=1692160494;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aNuO8maW3k3biYUipfRcSFSTTKrtXD3lVQL4G6LBK5w=;
-        b=BgRLw+PlAspGOU0Ov1kwXeOz12dTkUcJAQraZQBK4umfU8ijxEPyGToAuvHgm0GOaj
-         5Mag+UhMTCFGKLI+vT7lsQVI4L1zXbmcyTNh2RKz4RXmr/bPlThS+y6AyMHjebTnzoYm
-         Ao5mpYD+UMSaDcWpfcJ76vueWouh6EKt+r09Ovmc3RYzW/jYX4W9Anerz1iuLFcmDQXs
-         RsatIhWIKRJ9ZnX5n0OdrxF3CG9GVVgaMOPTOcdvub/L3EyMjF0l9lmgMOeNldKX6a56
-         lIN5hTnsqrC5HN7AMp8Zx/PboVZPDvS1RuKGodGudxp749CVUrT7DRgBTHhJZ26CFbDd
-         a4Iw==
-X-Gm-Message-State: AOJu0YzMTDpPYP1l+apjkSMGda7lD1utW3SOydCIumwR4gsiK0g/SQJF
-	b5/so5taFGX6M/YMuk6oBtE=
-X-Google-Smtp-Source: AGHT+IGWK0eChk1cvzdf8ALQcYWZ6DdPYFNWw7+Hs82Xlsp8oPp+UkPF+d/rvirOwA0Ro9ksVQ0YxA==
-X-Received: by 2002:a05:6871:1c6:b0:1bb:8483:a807 with SMTP id q6-20020a05687101c600b001bb8483a807mr1893306oad.44.1691555694018;
-        Tue, 08 Aug 2023 21:34:54 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id n26-20020a9d741a000000b006b87f593877sm6552031otk.37.2023.08.08.21.34.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Aug 2023 21:34:53 -0700 (PDT)
-Message-ID: <bee24ff5-444c-44f9-81c8-88ff310b401a@gmail.com>
-Date: Wed, 9 Aug 2023 01:33:29 -0300
+        d=1e100.net; s=20221208; t=1691571666; x=1692176466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X8p6/0KX3fVxDGykNsAB8y9ONKtikHgYp/M2932Yhtg=;
+        b=HJXhGOmI3l5QXFh6t7Ih1dvpLbJ13nGf8XVSbVJo9j3qQjyaVtryzhMZFzlOgllCr0
+         mne7FtunRTNTIb79gHFTXnj4C+x2FasA8iIp5iSnDEBkUdiv9PKVAlK3tlqSWJ9tF/FP
+         ezUaFpdQKRYJjjeYhXPp0wx3Mq/EfL2JA+fyYXlyT82fNQMjsIREdC9fkrEuqqYDIU+X
+         v0PJjFdrw12Ft5C41BpwEqb6FyVZBy6VgxXrMVGismkRh6gMyRlNM0jNT0i3t8ZpPTiq
+         vNNiMN2T3PaG5+75Nud0qltQinACazoWhJY6gHL6aEK0dlBhnn1wGvcrBjMdV1e4kPnE
+         aG7Q==
+X-Gm-Message-State: AOJu0YyOLEhc/9qn+6qeVV/o1HaAJC4em/cDfQj7NF5gEUVzI3r4+DhA
+	iZ/JS2/EpRElFPp+RBoPFvQduHwoj4CQFhmpPn4=
+X-Google-Smtp-Source: AGHT+IHuTiTRTDu7yLIKac8kPi++wFPcYqkZyXa6gABjSHv6p2rSzxLSrZKIX6NfdlXPlBCmD9m9fopnnqjOidvHgH4=
+X-Received: by 2002:a25:e704:0:b0:cad:347e:2c8f with SMTP id
+ e4-20020a25e704000000b00cad347e2c8fmr1661550ybh.39.1691571666128; Wed, 09 Aug
+ 2023 02:01:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 5/5] rust: file: add `DeferredFdCloser`
-Content-Language: en-US
-To: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev
 References: <20230720152820.3566078-1-aliceryhl@google.com>
- <20230720152820.3566078-6-aliceryhl@google.com>
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <20230720152820.3566078-6-aliceryhl@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <20230720152820.3566078-6-aliceryhl@google.com> <bee24ff5-444c-44f9-81c8-88ff310b401a@gmail.com>
+In-Reply-To: <bee24ff5-444c-44f9-81c8-88ff310b401a@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 9 Aug 2023 11:00:54 +0200
+Message-ID: <CANiq72mHU7n2jTPFsO=tjfqucrbe2ABSUYPUG6ctEerh4J+U_g@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 5/5] rust: file: add `DeferredFdCloser`
+To: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 7/20/23 12:28, Alice Ryhl wrote:
-> This adds a new type called `DeferredFdCloser` that can be used to close
-> files by their fd in a way that is safe even if the file is currently
-> held using `fdget`.
-> 
-> This is done by grabbing an extra refcount to the file and dropping it
-> in a task work once we return to userspace.
-> 
-> See comments on `binder_do_fd_close` and commit `80cd795630d65` for
-> motivation.
+On Wed, Aug 9, 2023 at 6:34=E2=80=AFAM Martin Rodriguez Reboredo
+<yakoyoku@gmail.com> wrote:
+>
+> Please provide links, at least for the doc comment.
 
-Please provide links, at least for the doc comment.
+If you mean for the commit, then we should follow the kernel
+convention instead. Please see my reply to Alice above.
 
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> [...]
->   
-> +/// Helper used for closing file descriptors in a way that is safe even if the file is currently
-> +/// held using `fdget`.
-> +///
-> +/// See comments on `binder_do_fd_close` and commit `80cd795630d65`.
+> Ditto.
 
-Ditto.
+For code, we are also using the same convention.
 
-> +pub struct DeferredFdCloser {
-> +    inner: Box<DeferredFdCloserInner>,
-> +}
-> +
-> [...]
+Cheers,
+Miguel
