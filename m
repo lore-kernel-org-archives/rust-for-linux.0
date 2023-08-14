@@ -1,46 +1,46 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19B7A953;
-	Mon, 14 Aug 2023 09:24:28 +0000 (UTC)
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66136113;
-	Mon, 14 Aug 2023 02:24:26 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4fe9f226cdbso2387495e87.0;
-        Mon, 14 Aug 2023 02:24:26 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9553DAD24;
+	Mon, 14 Aug 2023 09:24:31 +0000 (UTC)
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222EF113;
+	Mon, 14 Aug 2023 02:24:29 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4fe8c16c1b4so6202757e87.2;
+        Mon, 14 Aug 2023 02:24:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692005065; x=1692609865;
+        d=gmail.com; s=20221208; t=1692005067; x=1692609867;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mKwBqPEgaF7GGJd1uZ0G836C9Z+tCMwn3BXMzLPwzdM=;
-        b=EPCmrUAqbNfcwXjEIIWR5/2CJFasKFl4syMWkPF3FZuE8cWFVzU7C2keep9qhC1Gm3
-         LEIYXayrlLTjmhmk7BUMYah7XOt02nQSYMzr0mzubOW3lBNpnCPFcc44Px0hDcyZg9I9
-         ca5Cg1Wa5cqdV+DWu/EZmV3GeAZ5Yz9VUyRHAD4ovB1NwMt+XkhcRR9/7Jr5K9dztGbg
-         OdUnE6lk7/XlfLauNU1Ot8Ij6yIyc+VnZ5uI7EIGbu0LvVCKkX8UY0pugl7iYhFOWtiE
-         ef0LolAiUJaYasQD+zkbM8IxlNdqGnnte2XIKh/xVq2AamAtP0Uxn655GZH8c+UJc6mf
-         syMw==
+        bh=A2m3J5YuXv3z/VvSeyWTquGoeXd8RIuDyRxPA7kzxTo=;
+        b=IY0ohCBws1qO/0dWq5lbWz8IJakewuiiPV3XgvHOJOmIRxUW8XhHARQggnhkrm4g+E
+         2baMLNKzAo1uudnt/Vxsu1r3fFvlqhuNQvaTlPgDb+oo7YIg0s4X4Wzu/DHPDpjYlMjx
+         bZVWon88ywi6UdespsG+KuzmmlkHKs7GnrsufzLuAt1P2vjrQpAxzGbcxwN5/F4Ycjoe
+         SSRaY7PHZAmz8cJ31HcOxJzT7SBj7FMaVTXrKzhTppmpmZ0O4Iq//avOXIWrQDMT3UKR
+         gN6GnssguIW8HXRp7UtPvhw3uNcfbRmC3JSrsB/atzN/MnfAjErwHDEOoTzXoi2vyHEv
+         1bFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692005065; x=1692609865;
+        d=1e100.net; s=20221208; t=1692005067; x=1692609867;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mKwBqPEgaF7GGJd1uZ0G836C9Z+tCMwn3BXMzLPwzdM=;
-        b=U7hp2znHnealmQuK5q2lJuhEUTEp8ZQuQoAwMn81SseSK7Qn1eklUkkRPBJCcTDJxI
-         GDvl4ji6kXcyhoijZ+0NUki+HmOSbTFdyPKhIHKTSmfT+Go0dTPj9XYwh6EUBDF4cAJt
-         FO3sKP7dCGr4O3XpLagAmpeAwKEgtAA9NfU6SRw4rUYE0vIPUQZNTYlUgXwQWEl4BzGQ
-         rwLf96XAjLeItnJDWO5xvCCGW86UxykwpPGWoqSTaH2p1aD7ImA1UE/PfBG9oPiUjtJK
-         Jq9K67AEdDJ+4tJ8daPqyyZVr/WsStFjFpynx8GFyop2B6o0cMNdjBLxiEADo8JEOemF
-         sOJQ==
-X-Gm-Message-State: AOJu0Ywf+GHEBH6P9ciI6rHN4NtnY1puobq6oBUUqsmfAOORVHnguJd7
-	9VXa35h8xHlcfKMQjw1wseM=
-X-Google-Smtp-Source: AGHT+IGpwp+ZyqfMY5B/+RRrjUgb101LBbd5850Ez4yGUlneGmQzeFNZbbwE46GHa/FFBh0DpJtlUA==
-X-Received: by 2002:a05:6512:48da:b0:4fe:61f:3025 with SMTP id er26-20020a05651248da00b004fe061f3025mr5557600lfb.61.1692005064559;
-        Mon, 14 Aug 2023 02:24:24 -0700 (PDT)
+        bh=A2m3J5YuXv3z/VvSeyWTquGoeXd8RIuDyRxPA7kzxTo=;
+        b=AHZEz2apILJ+4bX8wv5Q03Bq59a2Ilby51UhFlBaT+OObOChywv0yDRLeqN9N4RQcW
+         86Fme/VdMi8hif9gRPM8ere9TcB/Dcz4MMZbhVnHOtKsgaaM8JjYN9QCLzYUn9EP3NTF
+         CPmhleZDoXkoSqneBDeoJ0O2ga77XeCrrP2dLgq9g6LKvfXTJJ60JnB67+8+CItY4B6f
+         uxM3Vry0//Hf/9yLL68mVTABPsry4MwIP8B19kTChaPNWNivxfULDefaxZkb5xIhQ7Xb
+         QODBB0OSnsWv+1gFHq0jl2RgOVpKmw44IoPcGFOuKrOX0ZHeoM2LHlkju90k94MKiNH4
+         uZ1w==
+X-Gm-Message-State: AOJu0Yz/7SdtZ1XQdjDKug1xZDggr+YuTxycnk5EEuThE48O1XsuXBcm
+	McLk2mHCvMPYl0SuRzlC8Uk=
+X-Google-Smtp-Source: AGHT+IHMaHmrq3gyGiJvzqu2VUdj1mHeSLKz1xAh6HxtD/w3kror0wHO5eRjKZQp5IB5tf7U3RHLIw==
+X-Received: by 2002:a05:6512:3090:b0:4fd:fadb:e6e4 with SMTP id z16-20020a056512309000b004fdfadbe6e4mr6890880lfd.69.1692005067116;
+        Mon, 14 Aug 2023 02:24:27 -0700 (PDT)
 Received: from micheledallerive.home ([2a02:1210:6051:ec00:61e9:3767:83a6:9bd9])
-        by smtp.gmail.com with ESMTPSA id b5-20020aa7c6c5000000b005224d960e66sm5314879eds.96.2023.08.14.02.24.23
+        by smtp.gmail.com with ESMTPSA id b5-20020aa7c6c5000000b005224d960e66sm5314879eds.96.2023.08.14.02.24.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Aug 2023 02:24:24 -0700 (PDT)
+        Mon, 14 Aug 2023 02:24:26 -0700 (PDT)
 From: Michele Dalle Rive <dallerivemichele@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -60,9 +60,9 @@ Cc: Eric Dumazet <edumazet@google.com>,
 	linux-kernel@vger.kernel.org,
 	patches@lists.linux.dev,
 	Michele Dalle Rive <dallerivemichele@gmail.com>
-Subject: [RFC PATCH 1/7] rust: net: add net module files and shared enums.
-Date: Mon, 14 Aug 2023 11:22:56 +0200
-Message-ID: <20230814092302.1903203-2-dallerivemichele@gmail.com>
+Subject: [RFC PATCH 3/7] rust: net: add socket-related flags and flagset.
+Date: Mon, 14 Aug 2023 11:22:58 +0200
+Message-ID: <20230814092302.1903203-4-dallerivemichele@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230814092302.1903203-1-dallerivemichele@gmail.com>
 References: <20230814092302.1903203-1-dallerivemichele@gmail.com>
@@ -80,317 +80,508 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Create `net` module files and network headers in `bindings_helper.h`.
-Add `IpProtocol`, `AddressFamily` and `Namespace`.
+Add enums representing flags related to sockets:
+- `ReceiveFlag` to modify the behaviour of the socket receive operation.
+- `SendFlag` to modify the behaviour of the socket send operation.
+- `MessageFlag` to represent the flags in a `msghdr`.
+- `SocketFlag` to represent the flags in the `socket` struct.
 
-The wrappers added with this patch are shared across the whole network
-subsystem. For this reason, they are placed in the `net.rs` module file.
-
-The enum `IpProtocol`, however, is placed in an individual `ip.rs`
-submodule, allowing to place together all the ip-related structures,
-such as wrappers for `iphdr`, `ip_auth_hdr`, etc.
+Introduce a `FlagSet` structure to offer a convenient way to handle the
+flags.
+Having an abstraction over the "raw" numerical value of the flags offers
+many advantages:
+- A `FlagSet` can be created in different ways: from an `IntoIterator`,
+  a value, a single flag or using the defined macro `flag_set!(...)`.
+- Custom operations can be defined, such as the bitwise or.
+- Flags in the set can be set, tested, unset through functions instead
+  of using bitwise operations.
+- FlagSet implements the IntoIterator trait, allowing for iteration over
+  the flags contained.
 
 Signed-off-by: Michele Dalle Rive <dallerivemichele@gmail.com>
 ---
- rust/bindings/bindings_helper.h |   3 +
- rust/kernel/lib.rs              |   2 +
- rust/kernel/net.rs              | 180 ++++++++++++++++++++++++++++++++
- rust/kernel/net/ip.rs           |  73 +++++++++++++
- 4 files changed, 258 insertions(+)
- create mode 100644 rust/kernel/net.rs
- create mode 100644 rust/kernel/net/ip.rs
+Opinions on FlagSet? I think it might be a convenient structure, for any
+kind of "bitmask flag", not necessarily limited to the socket ones,
+since it provides methods to easily create and access the flags.
+However, it might be cumbersome to use to just obtain the same result of
+a simple bitwise OR.
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 058954961bfc..7cc1bd73c77a 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -7,6 +7,9 @@
-  */
- 
- #include <linux/errname.h>
-+#include <linux/netfilter.h>
-+#include <linux/inet.h>
-+#include <linux/tcp.h>
- #include <linux/slab.h>
- #include <linux/refcount.h>
- #include <linux/wait.h>
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 85b261209977..8e6926d965e1 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -34,6 +34,8 @@
- pub mod error;
- pub mod init;
- pub mod ioctl;
-+#[cfg(CONFIG_NET)]
-+pub mod net;
- pub mod prelude;
- pub mod print;
- mod static_assert;
-diff --git a/rust/kernel/net.rs b/rust/kernel/net.rs
+ rust/kernel/net/socket/flags.rs | 467 ++++++++++++++++++++++++++++++++
+ 1 file changed, 467 insertions(+)
+ create mode 100644 rust/kernel/net/socket/flags.rs
+
+diff --git a/rust/kernel/net/socket/flags.rs b/rust/kernel/net/socket/flags.rs
 new file mode 100644
-index 000000000000..1eda336b48e4
+index 000000000000..fe98e09a8d46
 --- /dev/null
-+++ b/rust/kernel/net.rs
-@@ -0,0 +1,180 @@
++++ b/rust/kernel/net/socket/flags.rs
+@@ -0,0 +1,467 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! Network subsystem.
-+//!
-+//! This module contains the kernel APIs related to networking that have been ported or wrapped for
-+//! usage by Rust code in the kernel.
-+//!
-+//! C header: [`include/linux/net.h`](../../../../include/linux/net.h) and related
++//! Socket-related flags and utilities.
++use crate::bindings;
++use core::fmt::Debug;
++use core::ops::{BitOr, BitOrAssign};
 +
-+use crate::error::{code, Error};
-+use core::cell::UnsafeCell;
-+pub mod ip;
-+
-+/// The address family.
++/// Generic socket flag trait.
 +///
-+/// See [`man 7 address families`](https://man7.org/linux/man-pages/man7/address_families.7.html) for more information.
-+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-+pub enum AddressFamily {
-+    /// Unspecified address family.
-+    Unspec = bindings::AF_UNSPEC as isize,
-+    /// Local to host (pipes and file-domain).
-+    Unix = bindings::AF_UNIX as isize,
-+    /// Internetwork: UDP, TCP, etc.
-+    Inet = bindings::AF_INET as isize,
-+    /// Amateur radio AX.25.
-+    Ax25 = bindings::AF_AX25 as isize,
-+    /// IPX.
-+    Ipx = bindings::AF_IPX as isize,
-+    /// Appletalk DDP.
-+    Appletalk = bindings::AF_APPLETALK as isize,
-+    /// AX.25 packet layer protocol.
-+    Netrom = bindings::AF_NETROM as isize,
-+    /// Bridge link.
-+    Bridge = bindings::AF_BRIDGE as isize,
-+    /// ATM PVCs.
-+    Atmpvc = bindings::AF_ATMPVC as isize,
-+    /// X.25 (ISO-8208).
-+    X25 = bindings::AF_X25 as isize,
-+    /// IPv6.
-+    Inet6 = bindings::AF_INET6 as isize,
-+    /// ROSE protocol.
-+    Rose = bindings::AF_ROSE as isize,
-+    /// DECnet protocol.
-+    Decnet = bindings::AF_DECnet as isize,
-+    /// 802.2LLC project.
-+    Netbeui = bindings::AF_NETBEUI as isize,
-+    /// Firewall hooks.
-+    Security = bindings::AF_SECURITY as isize,
-+    /// Key management protocol.
-+    Key = bindings::AF_KEY as isize,
-+    /// Netlink.
-+    Netlink = bindings::AF_NETLINK as isize,
-+    /// Low-level packet interface.
-+    Packet = bindings::AF_PACKET as isize,
-+    /// Acorn Econet protocol.
-+    Econet = bindings::AF_ECONET as isize,
-+    /// ATM SVCs.
-+    Atmsvc = bindings::AF_ATMSVC as isize,
-+    /// RDS sockets.
-+    Rds = bindings::AF_RDS as isize,
-+    /// IRDA sockets.
-+    Irda = bindings::AF_IRDA as isize,
-+    /// Generic PPP.
-+    Pppox = bindings::AF_PPPOX as isize,
-+    /// Legacy WAN networks protocol.
-+    Wanpipe = bindings::AF_WANPIPE as isize,
-+    /// LLC protocol.
-+    Llc = bindings::AF_LLC as isize,
-+    /// Infiniband.
-+    Ib = bindings::AF_IB as isize,
-+    /// Multiprotocol label switching.
-+    Mpls = bindings::AF_MPLS as isize,
-+    /// Controller Area Network.
-+    Can = bindings::AF_CAN as isize,
-+    /// TIPC sockets.
-+    Tipc = bindings::AF_TIPC as isize,
-+    /// Bluetooth sockets.
-+    Bluetooth = bindings::AF_BLUETOOTH as isize,
-+    /// IUCV sockets.
-+    Iucv = bindings::AF_IUCV as isize,
-+    /// RxRPC sockets.
-+    Rxrpc = bindings::AF_RXRPC as isize,
-+    /// Modular ISDN protocol.
-+    Isdn = bindings::AF_ISDN as isize,
-+    /// Nokia cellular modem interface.
-+    Phonet = bindings::AF_PHONET as isize,
-+    /// IEEE 802.15.4 sockets.
-+    Ieee802154 = bindings::AF_IEEE802154 as isize,
-+    /// CAIF sockets.
-+    Caif = bindings::AF_CAIF as isize,
-+    /// Kernel crypto API
-+    Alg = bindings::AF_ALG as isize,
-+    /// VMware VSockets.
-+    Vsock = bindings::AF_VSOCK as isize,
-+    /// KCM sockets.
-+    Kcm = bindings::AF_KCM as isize,
-+    /// Qualcomm IPC router protocol.
-+    Qipcrtr = bindings::AF_QIPCRTR as isize,
-+    /// SMC sockets.
-+    Smc = bindings::AF_SMC as isize,
-+    /// Express Data Path sockets.
-+    Xdp = bindings::AF_XDP as isize,
++/// This trait represents any kind of flag with "bitmask" values (i.e. 0x1, 0x2, 0x4, 0x8, etc.)
++pub trait Flag:
++    Into<isize> + TryFrom<isize> + Debug + Copy + Clone + Send + Sync + 'static
++{
 +}
 +
-+impl From<AddressFamily> for isize {
-+    fn from(family: AddressFamily) -> Self {
-+        family as isize
++/// Socket send operation flags.
++///
++/// See <https://linux.die.net/man/2/sendmsg> for more.
++#[derive(Debug, Copy, Clone)]
++pub enum SendFlag {
++    /// Got a successful reply.
++    ///
++    /// Only valid for datagram and raw sockets.
++    /// Only valid for IPv4 and IPv6.
++    Confirm = bindings::MSG_CONFIRM as isize,
++
++    /// Don't use a gateway to send out the packet.
++    DontRoute = bindings::MSG_DONTROUTE as isize,
++
++    /// Enables nonblocking operation.
++    ///
++    /// If the operation would block, return immediately with an error.
++    DontWait = bindings::MSG_DONTWAIT as isize,
++
++    /// Terminates a record.
++    EOR = bindings::MSG_EOR as isize,
++
++    /// More data will be sent.
++    ///
++    /// Only valid for TCP and UDP sockets.
++    More = bindings::MSG_MORE as isize,
++
++    /// Don't send SIGPIPE error if the socket is shut down.
++    NoSignal = bindings::MSG_NOSIGNAL as isize,
++
++    /// Send out-of-band data on supported sockets.
++    OOB = bindings::MSG_OOB as isize,
++}
++
++impl From<SendFlag> for isize {
++    fn from(value: SendFlag) -> Self {
++        value as isize
 +    }
 +}
 +
-+impl TryFrom<isize> for AddressFamily {
-+    type Error = Error;
++impl TryFrom<isize> for SendFlag {
++    type Error = ();
 +
-+    fn try_from(value: isize) -> Result<Self, Self::Error> {
++    fn try_from(value: isize) -> Result<SendFlag, Self::Error> {
 +        let val = value as u32;
 +        match val {
-+            bindings::AF_UNSPEC => Ok(Self::Unspec),
-+            bindings::AF_UNIX => Ok(Self::Unix),
-+            bindings::AF_INET => Ok(Self::Inet),
-+            bindings::AF_AX25 => Ok(Self::Ax25),
-+            bindings::AF_IPX => Ok(Self::Ipx),
-+            bindings::AF_APPLETALK => Ok(Self::Appletalk),
-+            bindings::AF_NETROM => Ok(Self::Netrom),
-+            bindings::AF_BRIDGE => Ok(Self::Bridge),
-+            bindings::AF_ATMPVC => Ok(Self::Atmpvc),
-+            bindings::AF_X25 => Ok(Self::X25),
-+            bindings::AF_INET6 => Ok(Self::Inet6),
-+            bindings::AF_ROSE => Ok(Self::Rose),
-+            bindings::AF_DECnet => Ok(Self::Decnet),
-+            bindings::AF_NETBEUI => Ok(Self::Netbeui),
-+            bindings::AF_SECURITY => Ok(Self::Security),
-+            bindings::AF_KEY => Ok(Self::Key),
-+            bindings::AF_NETLINK => Ok(Self::Netlink),
-+            bindings::AF_PACKET => Ok(Self::Packet),
-+            bindings::AF_ECONET => Ok(Self::Econet),
-+            bindings::AF_ATMSVC => Ok(Self::Atmsvc),
-+            bindings::AF_RDS => Ok(Self::Rds),
-+            bindings::AF_IRDA => Ok(Self::Irda),
-+            bindings::AF_PPPOX => Ok(Self::Pppox),
-+            bindings::AF_WANPIPE => Ok(Self::Wanpipe),
-+            bindings::AF_LLC => Ok(Self::Llc),
-+            bindings::AF_IB => Ok(Self::Ib),
-+            bindings::AF_MPLS => Ok(Self::Mpls),
-+            bindings::AF_CAN => Ok(Self::Can),
-+            bindings::AF_TIPC => Ok(Self::Tipc),
-+            bindings::AF_BLUETOOTH => Ok(Self::Bluetooth),
-+            bindings::AF_IUCV => Ok(Self::Iucv),
-+            bindings::AF_RXRPC => Ok(Self::Rxrpc),
-+            bindings::AF_ISDN => Ok(Self::Isdn),
-+            bindings::AF_PHONET => Ok(Self::Phonet),
-+            bindings::AF_IEEE802154 => Ok(Self::Ieee802154),
-+            bindings::AF_CAIF => Ok(Self::Caif),
-+            bindings::AF_ALG => Ok(Self::Alg),
-+            bindings::AF_VSOCK => Ok(Self::Vsock),
-+            bindings::AF_KCM => Ok(Self::Kcm),
-+            bindings::AF_QIPCRTR => Ok(Self::Qipcrtr),
-+            bindings::AF_SMC => Ok(Self::Smc),
-+            bindings::AF_XDP => Ok(Self::Xdp),
-+            _ => Err(code::EINVAL),
++            bindings::MSG_CONFIRM => Ok(SendFlag::Confirm),
++            bindings::MSG_DONTROUTE => Ok(SendFlag::DontRoute),
++            bindings::MSG_DONTWAIT => Ok(SendFlag::DontWait),
++            bindings::MSG_EOR => Ok(SendFlag::EOR),
++            bindings::MSG_MORE => Ok(SendFlag::More),
++            bindings::MSG_NOSIGNAL => Ok(SendFlag::NoSignal),
++            bindings::MSG_OOB => Ok(SendFlag::OOB),
++            _ => Err(()),
 +        }
 +    }
 +}
 +
-+/// Network namespace.
-+///
-+/// Wraps the `net` struct.
-+#[repr(transparent)]
-+pub struct Namespace(UnsafeCell<bindings::net>);
++impl Flag for SendFlag {}
 +
-+/// The global network namespace.
++/// Socket receive operation flags.
 +///
-+/// This is the default and initial namespace.
-+/// This function replaces the C `init_net` global variable.
-+pub fn init_net() -> &'static Namespace {
-+    // SAFETY: `init_net` is a global variable and is always valid.
-+    let ptr = unsafe { core::ptr::addr_of!(bindings::init_net) };
-+    // SAFETY: the address of `init_net` is always valid, always points to initialized memory,
-+    // and is always aligned.
-+    unsafe { &*(ptr.cast()) }
++/// See <https://linux.die.net/man/2/recvmsg> for more.
++#[derive(Debug, Copy, Clone)]
++pub enum ReceiveFlag {
++    /// Enables nonblocking operation.
++    ///
++    /// If the operation would block, return immediately with an error.
++    DontWait = bindings::MSG_DONTWAIT as isize,
++
++    /// Specifies that queued errors should be received from the socket error queue.
++    ErrQueue = bindings::MSG_ERRQUEUE as isize,
++
++    /// Enables out-of-band reception.
++    OOB = bindings::MSG_OOB as isize,
++
++    /// Peeks at an incoming message.
++    ///
++    /// The data is treated as unread and the next recv() or similar function shall still return this data.
++    Peek = bindings::MSG_PEEK as isize,
++
++    /// Returns the real length of the packet, even when it was longer than the passed buffer.
++    ///
++    /// Only valid for raw, datagram, netlink and UNIX datagram sockets.
++    Trunc = bindings::MSG_TRUNC as isize,
++
++    /// Waits for the full request to be satisfied.
++    WaitAll = bindings::MSG_WAITALL as isize,
 +}
-diff --git a/rust/kernel/net/ip.rs b/rust/kernel/net/ip.rs
-new file mode 100644
-index 000000000000..84f98d356137
---- /dev/null
-+++ b/rust/kernel/net/ip.rs
-@@ -0,0 +1,73 @@
-+// SPDX-License-Identifier: GPL-2.0
 +
-+//! IP protocol definitions.
-+//!
-+//! This module contains the kernel structures and functions related to IP protocols.
-+//!
-+//! C headers:
-+//! - [`include/linux/in.h`](../../../../include/linux/in.h)
-+//! - [`include/linux/ip.h`](../../../../include/linux/ip.h)
-+//! - [`include/uapi/linux/ip.h`](../../../../include/uapi/linux/ip.h)
++impl From<ReceiveFlag> for isize {
++    fn from(value: ReceiveFlag) -> Self {
++        value as isize
++    }
++}
 +
-+/// The Ip protocol.
++impl TryFrom<isize> for ReceiveFlag {
++    type Error = ();
++
++    fn try_from(value: isize) -> Result<Self, Self::Error> {
++        let val = value as u32;
++        match val {
++            bindings::MSG_DONTWAIT => Ok(ReceiveFlag::DontWait),
++            bindings::MSG_ERRQUEUE => Ok(ReceiveFlag::ErrQueue),
++            bindings::MSG_OOB => Ok(ReceiveFlag::OOB),
++            bindings::MSG_PEEK => Ok(ReceiveFlag::Peek),
++            bindings::MSG_TRUNC => Ok(ReceiveFlag::Trunc),
++            bindings::MSG_WAITALL => Ok(ReceiveFlag::WaitAll),
++            _ => Err(()),
++        }
++    }
++}
++
++impl Flag for ReceiveFlag {}
++
++/// Socket `flags` field flags.
 +///
-+/// See [`tools/include/uapi/linux/in.h`](../../../../tools/include/uapi/linux/in.h)
-+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
-+pub enum IpProtocol {
-+    /// Dummy protocol for TCP
-+    Ip = bindings::IPPROTO_IP as isize,
-+    /// Internet Control Message Protocol
-+    Icmp = bindings::IPPROTO_ICMP as isize,
-+    /// Internet Group Management Protocol
-+    Igmp = bindings::IPPROTO_IGMP as isize,
-+    /// IPIP tunnels (older KA9Q tunnels use 94)
-+    IpIp = bindings::IPPROTO_IPIP as isize,
-+    /// Transmission Control Protocol
-+    Tcp = bindings::IPPROTO_TCP as isize,
-+    /// Exterior Gateway Protocol
-+    Egp = bindings::IPPROTO_EGP as isize,
-+    /// PUP protocol
-+    Pup = bindings::IPPROTO_PUP as isize,
-+    /// User Datagram Protocol
-+    Udp = bindings::IPPROTO_UDP as isize,
-+    /// XNS Idp protocol
-+    Idp = bindings::IPPROTO_IDP as isize,
-+    /// SO Transport Protocol Class 4
-+    Tp = bindings::IPPROTO_TP as isize,
-+    /// Datagram Congestion Control Protocol
-+    Dccp = bindings::IPPROTO_DCCP as isize,
-+    /// Ipv6-in-Ipv4 tunnelling
-+    Ipv6 = bindings::IPPROTO_IPV6 as isize,
-+    /// Rsvp Protocol
-+    Rsvp = bindings::IPPROTO_RSVP as isize,
-+    /// Cisco GRE tunnels (rfc 1701,1702)
-+    Gre = bindings::IPPROTO_GRE as isize,
-+    /// Encapsulation Security Payload protocol
-+    Esp = bindings::IPPROTO_ESP as isize,
-+    /// Authentication Header protocol
-+    Ah = bindings::IPPROTO_AH as isize,
-+    /// Multicast Transport Protocol
-+    Mtp = bindings::IPPROTO_MTP as isize,
-+    /// Ip option pseudo header for BEET
-+    Beetph = bindings::IPPROTO_BEETPH as isize,
-+    /// Encapsulation Header
-+    Encap = bindings::IPPROTO_ENCAP as isize,
-+    /// Protocol Independent Multicast
-+    Pim = bindings::IPPROTO_PIM as isize,
-+    /// Compression Header Protocol
-+    Comp = bindings::IPPROTO_COMP as isize,
-+    /// Layer 2 Tunnelling Protocol
-+    L2Tp = bindings::IPPROTO_L2TP as isize,
-+    /// Stream Control Transport Protocol
-+    Sctp = bindings::IPPROTO_SCTP as isize,
-+    /// Udp-Lite (Rfc 3828)
-+    UdpLite = bindings::IPPROTO_UDPLITE as isize,
-+    /// Mpls in Ip (Rfc 4023)
-+    Mpls = bindings::IPPROTO_MPLS as isize,
-+    /// Ethernet-within-Ipv6 Encapsulation
-+    Ethernet = bindings::IPPROTO_ETHERNET as isize,
-+    /// Raw Ip packets
-+    Raw = bindings::IPPROTO_RAW as isize,
-+    /// Multipath Tcp connection
-+    Mptcp = bindings::IPPROTO_MPTCP as isize,
++/// These flags are used internally by the kernel.
++/// However, they are exposed here for completeness.
++///
++/// This enum does not implement the `Flag` trait, since it is not actually a flag.
++/// Flags are often defined as a mask that can be used to retrieve the flag value; the socket flags,
++/// instead, are defined as the index of the bit that they occupy in the `flags` field.
++/// This means that they cannot be used as a mask, just like all the other flags that implement `Flag` do.
++///
++/// For example, SOCK_PASSCRED has value 3, meaning that it is represented by the 3rd bit of the `flags` field;
++/// a normal flag would represent it as a mask, i.e. 1 << 3 = 0b1000.
++///
++/// See [include/linux/net.h](../../../../include/linux/net.h) for more.
++pub enum SocketFlag {
++    /// Undocumented.
++    NoSpace = bindings::SOCK_NOSPACE as isize,
++    /// Undocumented.
++    PassCred = bindings::SOCK_PASSCRED as isize,
++    /// Undocumented.
++    PassSecurity = bindings::SOCK_PASSSEC as isize,
++    /// Undocumented.
++    SupportZeroCopy = bindings::SOCK_SUPPORT_ZC as isize,
++    /// Undocumented.
++    CustomSockOpt = bindings::SOCK_CUSTOM_SOCKOPT as isize,
++    /// Undocumented.
++    PassPidFd = bindings::SOCK_PASSPIDFD as isize,
++}
++
++impl From<SocketFlag> for isize {
++    fn from(value: SocketFlag) -> Self {
++        value as isize
++    }
++}
++
++impl TryFrom<isize> for SocketFlag {
++    type Error = ();
++
++    fn try_from(value: isize) -> Result<Self, Self::Error> {
++        let val = value as u32;
++        match val {
++            bindings::SOCK_NOSPACE => Ok(SocketFlag::NoSpace),
++            bindings::SOCK_PASSCRED => Ok(SocketFlag::PassCred),
++            bindings::SOCK_PASSSEC => Ok(SocketFlag::PassSecurity),
++            bindings::SOCK_SUPPORT_ZC => Ok(SocketFlag::SupportZeroCopy),
++            bindings::SOCK_CUSTOM_SOCKOPT => Ok(SocketFlag::CustomSockOpt),
++            bindings::SOCK_PASSPIDFD => Ok(SocketFlag::PassPidFd),
++            _ => Err(()),
++        }
++    }
++}
++
++/// Flags associated with a received message.
++///
++/// Represents the flag contained in the `msg_flags` field of a `msghdr` struct.
++#[derive(Debug, Copy, Clone)]
++pub enum MessageFlag {
++    /// End of record.
++    Eor = bindings::MSG_EOR as isize,
++    /// Trailing portion of the message is discarded.
++    Trunc = bindings::MSG_TRUNC as isize,
++    /// Control data was discarded due to lack of space.
++    Ctrunc = bindings::MSG_CTRUNC as isize,
++    /// Out-of-band data was received.
++    Oob = bindings::MSG_OOB as isize,
++    /// An error was received instead of data.
++    ErrQueue = bindings::MSG_ERRQUEUE as isize,
++}
++
++impl From<MessageFlag> for isize {
++    fn from(value: MessageFlag) -> Self {
++        value as isize
++    }
++}
++
++impl TryFrom<isize> for MessageFlag {
++    type Error = ();
++
++    fn try_from(value: isize) -> Result<Self, Self::Error> {
++        let val = value as u32;
++        match val {
++            bindings::MSG_EOR => Ok(MessageFlag::Eor),
++            bindings::MSG_TRUNC => Ok(MessageFlag::Trunc),
++            bindings::MSG_CTRUNC => Ok(MessageFlag::Ctrunc),
++            bindings::MSG_OOB => Ok(MessageFlag::Oob),
++            bindings::MSG_ERRQUEUE => Ok(MessageFlag::ErrQueue),
++            _ => Err(()),
++        }
++    }
++}
++
++impl Flag for MessageFlag {}
++
++/// Structure representing a set of flags.
++///
++/// This structure is used to represent a set of flags, such as the flags passed to `send` or `recv`.
++/// It is generic over the type of flag that it contains.
++///
++/// # Invariants
++/// The value of the flags must be a valid combination of the flags that it contains.
++///
++/// This means that the value must be the bitwise OR of the values of the flags, and that it
++/// must be possible to retrieve the value of the flags from the value.
++///
++/// # Example
++/// ```
++/// use kernel::net::socket::flags::{SendFlag, FlagSet};
++///
++/// let mut flags = FlagSet::<SendFlag>::empty();
++/// flags.insert(SendFlag::DontWait);
++/// flags.insert(SendFlag::More);
++/// assert!(flags.contains(SendFlag::DontWait));
++/// assert!(flags.contains(SendFlag::More));
++/// flags.clear();
++/// assert_eq!(flags.value(), 0);
++///
++/// flags = FlagSet::<SendFlag>::from(SendFlag::More);
++/// flags |= SendFlag::DontWait;
++/// assert!(flags.contains(SendFlag::DontWait));
++/// ```
++#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
++pub struct FlagSet<T: Flag> {
++    value: isize,
++    _phantom: core::marker::PhantomData<T>,
++}
++
++impl<T: Flag> FlagSet<T> {
++    /// Create a new empty set of flags.
++    ///
++    /// # Example
++    /// ```
++    /// use kernel::net::socket::flags::{SendFlag, FlagSet};
++    ///
++    /// let flags = FlagSet::<SendFlag>::empty();
++    /// assert_eq!(flags.value(), 0);
++    /// ```
++    pub fn empty() -> Self {
++        FlagSet {
++            value: 0,
++            _phantom: core::marker::PhantomData,
++        }
++    }
++
++    /// Clear all the flags set.
++    ///
++    /// # Example
++    /// ```
++    /// use kernel::net::socket::flags::{SendFlag, FlagSet};
++    ///
++    /// let mut flags = FlagSet::<SendFlag>::from(SendFlag::More);
++    /// assert!(flags.contains(SendFlag::More));
++    /// flags.clear();
++    /// assert_eq!(flags.value(), 0);
++    /// ```
++    pub fn clear(&mut self) {
++        self.value = 0;
++    }
++
++    /// Add a flag to the set.
++    ///
++    /// # Example
++    /// ```
++    /// use kernel::net::socket::flags::{SendFlag, FlagSet};
++    ///
++    /// let mut flags = FlagSet::<SendFlag>::empty();
++    /// assert!(!flags.contains(SendFlag::DontWait));
++    /// flags.insert(SendFlag::DontWait);
++    /// assert!(flags.contains(SendFlag::DontWait));
++    /// ```
++    pub fn insert(&mut self, flag: T) {
++        self.value |= flag.into();
++    }
++
++    /// Remove a flag from the set.
++    ///
++    /// # Example
++    /// ```
++    /// use kernel::net::socket::flags::{SendFlag, FlagSet};
++    ///
++    /// let mut flags = FlagSet::<SendFlag>::from(SendFlag::DontWait);
++    /// assert!(flags.contains(SendFlag::DontWait));
++    /// flags.remove(SendFlag::DontWait);
++    /// assert!(!flags.contains(SendFlag::DontWait));
++    /// ```
++    pub fn remove(&mut self, flag: T) {
++        self.value &= !flag.into();
++    }
++
++    /// Check if a flag is set.
++    ///
++    /// # Example
++    /// ```
++    /// use kernel::net::socket::flags::{SendFlag, FlagSet};
++    ///
++    /// let mut flags = FlagSet::<SendFlag>::from(SendFlag::DontWait);
++    /// assert!(flags.contains(SendFlag::DontWait));
++    /// ```
++    pub fn contains(&self, flag: T) -> bool {
++        self.value & flag.into() != 0
++    }
++
++    /// Get the integer value of the flags set.
++    ///
++    /// # Example
++    /// ```
++    /// use kernel::net::socket::flags::{SendFlag, FlagSet};
++    ///
++    /// let flags = FlagSet::<SendFlag>::from(SendFlag::DontWait);
++    /// assert_eq!(flags.value(), SendFlag::DontWait as isize);
++    /// ```
++    pub fn value(&self) -> isize {
++        self.value
++    }
++}
++
++impl<T: Flag> BitOr<T> for FlagSet<T> {
++    type Output = FlagSet<T>;
++
++    fn bitor(self, rhs: T) -> Self::Output {
++        FlagSet {
++            value: self.value | rhs.into(),
++            _phantom: core::marker::PhantomData,
++        }
++    }
++}
++
++impl<T: Flag> BitOrAssign<T> for FlagSet<T> {
++    fn bitor_assign(&mut self, rhs: T) {
++        self.value |= rhs.into();
++    }
++}
++
++// impl from isize for any flags<T>
++impl<T: Flag> From<isize> for FlagSet<T> {
++    fn from(value: isize) -> Self {
++        FlagSet {
++            value,
++            _phantom: core::marker::PhantomData,
++        }
++    }
++}
++
++impl<T: Flag> From<T> for FlagSet<T> {
++    fn from(value: T) -> Self {
++        Self::from(value.into())
++    }
++}
++
++impl<T: Flag> FromIterator<T> for FlagSet<T> {
++    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
++        let mut flags = FlagSet::empty();
++        for flag in iter {
++            flags.insert(flag);
++        }
++        flags
++    }
++}
++
++impl<T: Flag> From<FlagSet<T>> for isize {
++    fn from(value: FlagSet<T>) -> Self {
++        value.value
++    }
++}
++
++impl<T: Flag> IntoIterator for FlagSet<T> {
++    type Item = T;
++    type IntoIter = FlagSetIterator<T>;
++
++    fn into_iter(self) -> Self::IntoIter {
++        FlagSetIterator {
++            flags: self,
++            current: 0,
++        }
++    }
++}
++
++/// Iterator over the flags in a set.
++///
++/// This iterator iterates over the flags in a set, in order of increasing value.
++///
++/// # Example
++/// ```
++/// use kernel::net::socket::flags::{SendFlag, FlagSet};
++///
++/// let mut flags = FlagSet::from_iter([SendFlag::DontWait, SendFlag::More]);
++/// for flag in flags.into_iter() {
++///    println!("Flag: {:?}", flag);
++/// }
++/// ```
++pub struct FlagSetIterator<T: Flag> {
++    flags: FlagSet<T>,
++    current: usize,
++}
++
++impl<T: Flag> Iterator for FlagSetIterator<T> {
++    type Item = T;
++
++    fn next(&mut self) -> Option<Self::Item> {
++        let mut value = 1 << self.current;
++        while value <= self.flags.value {
++            self.current += 1;
++            if self.flags.value & value != 0 {
++                if let Ok(flag) = T::try_from(value) {
++                    return Some(flag);
++                }
++            }
++            value = 1 << self.current;
++        }
++        None
++    }
++}
++
++/// Create a set of flags from a list of flags.
++///
++/// This macro provides a compact way to create empty sets and sets from a list of flags.
++///
++/// # Example
++/// ```
++/// use kernel::net::socket::flags::SendFlag;
++/// use kernel::flag_set;
++///
++/// let mut flags = flag_set!(SendFlag::DontWait, SendFlag::More);
++/// assert!(flags.contains(SendFlag::DontWait));
++/// assert!(flags.contains(SendFlag::More));
++///
++/// let mut empty_flags = flag_set!();
++/// assert_eq!(empty_flags.value(), 0);
++/// ```
++#[macro_export]
++macro_rules! flag_set {
++    () => {
++        $crate::net::socket::flags::FlagSet::empty()
++    };
++    ($($flag:expr),+) => {
++        $crate::net::socket::flags::FlagSet::from_iter([$($flag),+])
++    };
 +}
 -- 
 2.41.0
