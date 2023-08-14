@@ -1,68 +1,72 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC15C152
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Aug 2023 15:07:33 +0000 (UTC)
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C468318F;
-	Mon, 14 Aug 2023 08:07:32 -0700 (PDT)
-Date: Mon, 14 Aug 2023 15:07:22 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1692025650; x=1692284850;
-	bh=HoMC/ECPi5raJhZdb34zXKXfNRYIpxuprBesklog08A=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=DGydsyuqiAytgJpZmTNq7xfIDb7CzW4N+L9QxyjAJglW3taMY84Vs47QWqfQYWAv6
-	 /lhbmET9QCKNgr74ORfEFkiwVnQMrDyNDI4HVexbs3f6TvbYhgPnRI0DfsD49N1c0n
-	 iPXnSnooGclpgxgnHDvR7NtTPxwcvXY9zk7MIHqb0oG5EIOu4LxPiaQ4oUA7esgpfv
-	 5rkP1PrE5MDrmmbUvxooLbeqjpuvpdK3ptakKmzZs804xJAgmDEhUoqerS6V7M1cik
-	 INhw5RR6spQ3iBytA0At1lDNPHX8QQfXtDs6ebbTMs7ygwz4uaEnrfkUdOIA4JfeAI
-	 6HFy9xwJqUyVQ==
-To: "ojeda@kernel.org" <ojeda@kernel.org>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, "wedsonaf@gmail.com" <wedsonaf@gmail.com>
-From: Guillaume Plourde <gplourde@protonmail.com>
-Cc: "boqun.feng@gmail.com" <boqun.feng@gmail.com>, "gary@garyguo.net" <gary@garyguo.net>, "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "nathan@kernel.org" <nathan@kernel.org>, "ndesaulniers@google.com" <ndesaulniers@google.com>, "trix@redhat.com" <trix@redhat.com>, "trix@redhat.co" <trix@redhat.co>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "llvm@lists.linux.dev" <llvm@lists.linux.dev>
-Subject: [PATCH] docs: add command line to rust-analyzer section.
-Message-ID: <y4jBalhfESeCZDShmVaGwrdlIRoIHroqNVUUYLck6qGNwB5e7wbIJO5DoiLBTPpTNYtdneWRODjhXwlIl9VzokqxffdNU7y__1wIa7BBl94=@protonmail.com>
-Feedback-ID: 3402736:user:proton
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0D4C154;
+	Mon, 14 Aug 2023 15:25:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2E6C433C7;
+	Mon, 14 Aug 2023 15:25:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1692026751;
+	bh=FO5zCQ9Aaqj1NS7OYkS2u8nCHSNUw8PdooF5SOw4v+E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i4tkYcxc+OPe6SWSa8P9ZhQtHCLm7sboRNJ7foxlBmZ2WcwsyPwVLCnH3nqGkLkDW
+	 B9c7nzOJBnW7q6t/ZV+WHiKHW3n6VC2hAXBHlPbuYkqrR0fEakVFpAzDBjLHeD9NTJ
+	 AiXUSkUOjkEuD6zI/fhLPaQg37APlAaOqcbvux4I=
+Date: Mon, 14 Aug 2023 17:25:49 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Michele Dalle Rive <dallerivemichele@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Davide Rovelli <davide.rovelli@usi.ch>,
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [RFC PATCH 0/7] Rust Socket abstractions
+Message-ID: <2023081411-apache-tubeless-7bb3@gregkh>
+References: <20230814092302.1903203-1-dallerivemichele@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230814092302.1903203-1-dallerivemichele@gmail.com>
 
-Add command line to rust-analyzer section for convenience purposes.
+On Mon, Aug 14, 2023 at 11:22:55AM +0200, Michele Dalle Rive wrote:
+> This patch series is intended to create Rust abstractions for Sockets
+> and other fundamental network entities. 
+> 
+> Specifically, it was added:
+> - Ip address and Socket address wrappers (for `in_addr`, `in6_addr`,
+>   `sockaddr_in`, `sockaddr_in6`, `sockaddr_storage`).
+> - Socket wrapper.
+> - Socket flags and options enums.
+> - TCP and UDP specific abstractions over the Rust Socket structure.
+> 
+> This series is a RFC because I would appreciate some feedback about:
+> - The structure of the module: is the division of the files and modules
+>   appropriate or should it be more or less fine-grained?
+>   Also, should the `net` module export all the structures of its
+>   submodules? I noticed that it is done in the standard library.
+> - Whether the documentation is comprehensive enough.
+> - A few other specific questions, written in the individual patches.
+> 
+> I would greatly appreciate any kind of feedback or opinion. 
+> I am pretty new to the patch/mailing list world, so please point out any
+> mistake I might make.
 
-Signed-off-by: Guillaume Plourde <gplourde@protonmail.com>
----
- Documentation/rust/quick-start.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+The best feedback is "who will use these new interfaces?"  Without that,
+it's really hard to review a patchset as it's difficult to see how the
+bindings will be used, right?
 
-diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-=
-start.rst
-index 4bd32ce0f..169053e51 100644
---- a/Documentation/rust/quick-start.rst
-+++ b/Documentation/rust/quick-start.rst
-@@ -183,7 +183,9 @@ be used with many editors to enable syntax highlighting=
-, completion, go to
- definition, and other features.
-=20
- ``rust-analyzer`` needs a configuration file, ``rust-project.json``, which
--can be generated by the ``rust-analyzer`` Make target.
-+can be generated by the ``rust-analyzer`` Make target::
-+
-+        make LLVM=3D1 rust-analyzer
-=20
-=20
- Configuration
---=20
-2.41.0
+thanks,
 
+greg k-h
