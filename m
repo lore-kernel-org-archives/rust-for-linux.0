@@ -1,62 +1,63 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A58A7E
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Aug 2023 22:40:55 +0000 (UTC)
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD15EAB;
-	Mon, 14 Aug 2023 15:40:52 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-d6b1025fc7aso1433888276.3;
-        Mon, 14 Aug 2023 15:40:52 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BF08BEB
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Aug 2023 22:43:15 +0000 (UTC)
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E21FB3;
+	Mon, 14 Aug 2023 15:43:14 -0700 (PDT)
+Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-d3d729a08e4so4753419276.3;
+        Mon, 14 Aug 2023 15:43:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692052852; x=1692657652;
+        d=gmail.com; s=20221208; t=1692052994; x=1692657794;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ST9EDbMOZFXnqi0vd0YF7UvQtOruYHigj9crRoWalvM=;
-        b=D7mNCMah/yau6g6kumYNQvMPHpBreLI/ewr1wb8zCKLZASymha+E57jdh0RvNUFNhn
-         jCVbDnpGmsO72u42u4H50tSbbuEprScRweO+JhyWz25t9l5lY2uVbj8vGjJCYS6fLClq
-         UdWT6ShQfn1DDmkbjfQCqE90OEczjdNvjufEk7KwoMOjqZGp055QnUQbgL3ofEqh3re+
-         a6IFwge0eZN3JM3wxKPh2M59Crnio9UM21RmQu85xegsj9wX6v5jdv9Ew8niPypYs0BN
-         MIA9a16gxYEBRM4RUTFbt52sj+jImGKpE33SM7zYWQwNhyTNVWoi8eKk72VQR/+At7ll
-         6lPg==
+        bh=mhP5hF7gsV/m6mRR8ob32YvEhTw2xPeRNUv47TvhXGs=;
+        b=jFQc46cJTRErw+hng9tAokPjEOHl5jJIUhAjcuox1Slixjuhcu1DIUGSAs1PWoZrLE
+         hiiIqXMEagsfhNWwOLggpXHYZ6rveONq5vpWW53M1urIa+/Iyg0RE3ROaMpkg5MuiRhE
+         KhYQEI2TL4wc+ahPZbS0kzDzDC2ICyI9xIvs+1lOJUdVbNLk/LZiiLk+DJso6fdYtvUn
+         Iy3FY70rsN2Ed9FCS6u6Ne33Nmz1jCwOk8RhdG6ofReL11UtsNlJAg4QWNxCbl2SG48u
+         UIM2vEwhMgRn/KtNrFVtSQeBziX2jH+NF6pQ29w1yBZN55rFi7uneB1kg8fRB83uHJzR
+         RNLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692052852; x=1692657652;
+        d=1e100.net; s=20221208; t=1692052994; x=1692657794;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ST9EDbMOZFXnqi0vd0YF7UvQtOruYHigj9crRoWalvM=;
-        b=k/25ulfFDGELds4dJh7UB5jbABXyRNq3D+SS/BQmnCJivYPSeRhgXmb+sOkeJY0tCU
-         TdCUMtLgMeE3PZnrxowtgKGMYqJbWN9o/OQM/5FNdnx9ya6phVaJblphr4Rsom0VsUzB
-         +zCLYbhvItvB2Dd/zYw/wntUjQ3OukQ2Q1MsPGf7wbLyi2ltsDBG6HULyjXOIv65slku
-         2PnYiXRXwP6ptZdIXgvUBPZnZXDm3JcWs0Ev3ciK/n2eukP0XpNFnQSAMMhqunb18aZG
-         kgdiJgr+mIqfBNImlxagBHbHkcFXl1fV/hZVxnmRNIYMrTSLjZNVmgH9vyHn4JmK13ph
-         wIPg==
-X-Gm-Message-State: AOJu0Yz+KuBl8rEP8x+CYcq24VZBdQ4AK0kziZNpa9y6C7fcjqg9W2LR
-	ik9xC3KOk+QTF4/I/RwkY4egoYncbZbuW/1SoA0=
-X-Google-Smtp-Source: AGHT+IFBu2vNjExAtBSX0HHSL9CHjFV7NRbjoamH5RTWuOApwfEkFSQnkFsv7Ky9xYSdSsFW0Da05PSwTr9sCVQugVs=
-X-Received: by 2002:a5b:24e:0:b0:d0a:353b:b939 with SMTP id
- g14-20020a5b024e000000b00d0a353bb939mr11876763ybp.52.1692052851891; Mon, 14
- Aug 2023 15:40:51 -0700 (PDT)
+        bh=mhP5hF7gsV/m6mRR8ob32YvEhTw2xPeRNUv47TvhXGs=;
+        b=ACikICOp7GlzR1cGskpXlylShxcz/o0EBG4eckPqk4M9Q7kxR04lluEe5DIbvDu+o6
+         yiMNNi6nPDghs7QIIjZwnQVwEeZEoEkHxfzDE7vsf9n6Bwm6RrCwjF75R3tQX9M2ag/0
+         QfIjlE3Sju70hnMlmJUhqjL9RX+sK5sa0Hol0GjkORg48jSs0hn/smNK9xiuMfEpfgZ1
+         7T+GLzVBKmLq7o9a32W5Er7IEIKjXhEp8esiGoVEWIUyYJKuOcB7Sgew0vxThxY81Y9h
+         4uDES/FHg/BmgTOhnM8gmO6n27KIYGMps7NAUbrlrc/DhYIcO2dRbwlCYPR77V9G5ft6
+         arZg==
+X-Gm-Message-State: AOJu0YwrPN2jstgQDwTk7AlS/YHqChloNvyNcJ4AoRfBAM9FC2YMZxLN
+	JLhYi0+L2JOZpKytkr84CLU/7FSOpQkuKO7DS18=
+X-Google-Smtp-Source: AGHT+IFpuYEJ/0nuvpgDua6ryUMqdgSSiGqdAodGAyLQ574FbDaMTr2TGX40TqotWWwvWMfuPrxQaWSx7DG1U9ivXLM=
+X-Received: by 2002:a05:6902:4cf:b0:d43:e64f:bdcf with SMTP id
+ v15-20020a05690204cf00b00d43e64fbdcfmr10448281ybs.0.1692052993673; Mon, 14
+ Aug 2023 15:43:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230729220317.416771-1-ojeda@kernel.org>
-In-Reply-To: <20230729220317.416771-1-ojeda@kernel.org>
+References: <20230612194311.24826-1-aakashsensharma@gmail.com>
+In-Reply-To: <20230612194311.24826-1-aakashsensharma@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 15 Aug 2023 00:40:40 +0200
-Message-ID: <CANiq72mrzALO3J2VvDntscXwt7Z9KzT4+S8sc_HGc8u8izjyLw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: upgrade to Rust 1.71.0
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Date: Tue, 15 Aug 2023 00:43:02 +0200
+Message-ID: <CANiq72mq34Locyu4EZ7WRmGdTHkSP77sNZt3Xfo0ZWx_bMLMcA@mail.gmail.com>
+Subject: Re: [PATCH] rust: bindgen: upgrade to 0.65.1
+To: Aakash Sen Sharma <aakashsensharma@gmail.com>
+Cc: corbet@lwn.net, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, nathan@kernel.org, ndesaulniers@google.com, 
+	trix@redhat.com, masahiroy@kernel.org, me@kloenk.de, aliceryhl@google.com, 
+	benno.lossin@proton.me, dev@niklasmohrin.de, lina@asahilina.net, 
+	hca@linux.ibm.com, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -66,98 +67,149 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sun, Jul 30, 2023 at 12:04=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
+On Mon, Jun 12, 2023 at 9:45=E2=80=AFPM Aakash Sen Sharma
+<aakashsensharma@gmail.com> wrote:
 >
-> This is the second upgrade to the Rust toolchain, from 1.68.2 to 1.71.0
-> (i.e. the latest).
+> * Rationale:
 >
-> See the upgrade policy [1] and the comments on the first upgrade in
-> commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
+> Upgrades bindgen to code-generation for anonymous unions, structs, and en=
+ums [7]
+> for LLVM-16 based toolchains.
 >
-> # Unstable features
+> The following upgrade also incorporates `noreturn` support from bindgen
+> allowing us to remove useless `loop` calls which was placed as a
+> workaround.
 >
-> No unstable features (that we use) were stabilized.
+> * Truncated build logs on using bindgen `v0.56.0` prior to LLVM-16 toolch=
+ain:
 >
-> Therefore, the only unstable feature allowed to be used outside
-> the `kernel` crate is still `new_uninit`, though other code to be
-> upstreamed may increase the list.
+> ```
+> $ make rustdoc LLVM=3D1 CLIPPY=3D1 -j$(nproc)
+>   RUSTC L rust/core.o
+>   BINDGEN rust/bindings/bindings_generated.rs
+>   BINDGEN rust/bindings/bindings_helpers_generated.rs
+>   BINDGEN rust/uapi/uapi_generated.rs
+> thread 'main' panicked at '"ftrace_branch_data_union_(anonymous_at__/_/in=
+clude/linux/compiler_types_h_146_2)" is not a valid Ident', .../proc-macro2=
+-1.0.24/src/fallback.rs:693:9
+> ...
+> thread 'main' panicked at '"ftrace_branch_data_union_(anonymous_at__/_/in=
+clude/linux/compiler_types_h_146_2)" is not a valid Ident', .../proc-macro2=
+-1.0.24/src/fallback.rs:693:9
+> ...
+> ```
 >
-> Please see [2] for details.
+> * LLVM-16 Changes:
 >
-> # Required changes
+> API changes [1] were introduced such that libclang would emit names like
+> "(unnamed union at compiler_types.h:146:2)" for unnamed unions, structs, =
+and
+> enums whereas it previously returned an empty string.
 >
-> For the upgrade, this patch requires the following changes:
+> * Bindgen Changes:
 >
->   - Removal of the `__rust_*` allocator functions, together with
->     the addition of the `__rust_no_alloc_shim_is_unstable` static.
->     See [3] for details.
+> Bindgen `v0.56.0` on LLVM-16 based toolchains hence was unable to process=
+ the
+> anonymous union in `include/linux/compiler_types` `struct ftrace_branch_d=
+ata`
+> and caused subsequent panics as the new `libclang` API emitted name was n=
+ot
+> being handled. The following issue was fixed in Bindgen `v0.62.0` [2].
 >
->   - Some more compiler builtins added due to `<f{32,64}>::midpoint()`
->     that got added in Rust 1.71 [4].
+> Bindgen `v0.58.0` changed the flags `--whitelist-*` and `--blacklist-*`
+> to `--allowlist-*` and `--blocklist-*` respectively [3].
 >
-> # `alloc` upgrade and reviewing
+> Bindgen `v0.61.0` added support for `_Noreturn`, `[[noreturn]]`, `__attri=
+bute__((noreturn))` [4],
+> hence the empty `loop`s used to circumvent bindgen returning `!` in place=
+ of `()`
+> for noreturn attributes have been removed completely.
 >
-> The vast majority of changes are due to our `alloc` fork being upgraded
-> at once.
+> Bindgen `v0.61.0` also changed default functionality to bind `size_t` to =
+`usize` [5] and
+> added the `--no-size_t-is-usize` [5] flag to not bind `size_t` as `usize`=
+.
 >
-> There are two kinds of changes to be aware of: the ones coming from
-> upstream, which we should follow as closely as possible, and the updates
-> needed in our added fallible APIs to keep them matching the newer
-> infallible APIs coming from upstream.
+> Bindgen `v0.65.0` removed `--size_t-is-usize` flag [6].
 >
-> Instead of taking a look at the diff of this patch, an alternative
-> approach is reviewing a diff of the changes between upstream `alloc` and
-> the kernel's. This allows to easily inspect the kernel additions only,
-> especially to check if the fallible methods we already have still match
-> the infallible ones in the new version coming from upstream.
->
-> Another approach is reviewing the changes introduced in the additions in
-> the kernel fork between the two versions. This is useful to spot
-> potentially unintended changes to our additions.
->
-> To apply these approaches, one may follow steps similar to the following
-> to generate a pair of patches that show the differences between upstream
-> Rust and the kernel (for the subset of `alloc` we use) before and after
-> applying this patch:
->
->     # Get the difference with respect to the old version.
->     git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
->     git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
->         cut -d/ -f3- |
->         grep -Fv README.md |
->         xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
->     git -C linux diff --patch-with-stat --summary -R > old.patch
->     git -C linux restore rust/alloc
->
->     # Apply this patch.
->     git -C linux am rust-upgrade.patch
->
->     # Get the difference with respect to the new version.
->     git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
->     git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
->         cut -d/ -f3- |
->         grep -Fv README.md |
->         xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
->     git -C linux diff --patch-with-stat --summary -R > new.patch
->     git -C linux restore rust/alloc
->
-> Now one may check the `new.patch` to take a look at the additions (first
-> approach) or at the difference between those two patches (second
-> approach). For the latter, a side-by-side tool is recommended.
->
-> Link: https://rust-for-linux.com/rust-version-policy [1]
-> Link: https://github.com/Rust-for-Linux/linux/issues/2 [2]
-> Link: https://github.com/rust-lang/rust/pull/86844 [3]
-> Link: https://github.com/rust-lang/rust/pull/92048 [4]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://github.com/llvm/llvm-project/commit/19e984ef8f49bc3ccced156=
+21989fa9703b2cd5b [1]
+> Link: https://github.com/rust-lang/rust-bindgen/pull/2319 [2]
+> Link: https://github.com/rust-lang/rust-bindgen/pull/1990 [3]
+> Link: https://github.com/rust-lang/rust-bindgen/issues/2094 [4]
+> Link: https://github.com/rust-lang/rust-bindgen/commit/cc78b6fdb6e829e5fb=
+8fa1639f2182cb49333569 [5]
+> Link: https://github.com/rust-lang/rust-bindgen/pull/2408 [6]
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1013 [7]
+> Signed-off-by: Aakash Sen Sharma <aakashsensharma@gmail.com>
 
-Applied to `rust-next` -- thanks everyone!
+Applied to `rust-next`, thanks everyone!
 
-As mentioned earlier, I have moved to 1.71.1 instead that got released
-meanwhile, since it does not require any changes w.r.t. this one
-except the obvious ones and it is likely the one that people would
-like to use/have (so less warnings).
+I also did these extra changes:
+
+    [ Reworded commit message. Mentioned the `bindgen-cli` binary crate
+      change, linked to it and updated the Quick Start guide. Re-added a
+      deleted "as" word in a code comment and reflowed comment to respect
+      the maximum length. ]
+
+In particular, I have reworded the commit message a fair bit:
+
+    In LLVM 16, anonymous items may return names like `(unnamed union at ..=
+)`
+    rather than empty names [1], which breaks Rust-enabled builds because
+    bindgen assumed an empty name instead of detecting them via
+    `clang_Cursor_isAnonymous` [2]:
+
+        $ make rustdoc LLVM=3D1 CLIPPY=3D1 -j$(nproc)
+          RUSTC L rust/core.o
+          BINDGEN rust/bindings/bindings_generated.rs
+          BINDGEN rust/bindings/bindings_helpers_generated.rs
+          BINDGEN rust/uapi/uapi_generated.rs
+        thread 'main' panicked at
+'"ftrace_branch_data_union_(anonymous_at__/_/include/linux/compiler_types_h=
+_146_2)"
+is not a valid Ident', .../proc-macro2-1.0.24/src/fallback.rs:693:9
+        ...
+        thread 'main' panicked at
+'"ftrace_branch_data_union_(anonymous_at__/_/include/linux/compiler_types_h=
+_146_2)"
+is not a valid Ident', .../proc-macro2-1.0.24/src/fallback.rs:693:9
+        ...
+
+    This was fixed in bindgen 0.62.0. Therefore, upgrade bindgen to
+    a more recent version, 0.65.1, to support LLVM 16.
+
+    Since bindgen 0.58.0 changed the `--{white,black}list-*` flags to
+    `--{allow,block}list-*` [3], update them on our side too.
+
+    In addition, bindgen 0.61.0 moved its CLI utility into a binary crate
+    called `bindgen-cli` [4]. Thus update the installation command in the
+    Quick Start guide.
+
+    Moreover, bindgen 0.61.0 changed the default functionality to bind
+    `size_t` to `usize` [5] and added the `--no-size_t-is-usize` flag
+    to not bind `size_t` as `usize`. Then bindgen 0.65.0 removed
+    the `--size_t-is-usize` flag [6]. Thus stop passing the flag to bindgen=
+.
+
+    Finally, bindgen 0.61.0 added support for the `noreturn` attribute (in
+    its different forms) [7]. Thus remove the infinite loop in our Rust
+    panic handler after calling `BUG()`, since bindgen now correctly
+    generates a `BUG()` binding that returns `!` instead of `()`.
+
+    Link: https://github.com/llvm/llvm-project/commit/19e984ef8f49bc3ccced1=
+5621989fa9703b2cd5b
+[1]
+    Link: https://github.com/rust-lang/rust-bindgen/pull/2319 [2]
+    Link: https://github.com/rust-lang/rust-bindgen/pull/1990 [3]
+    Link: https://github.com/rust-lang/rust-bindgen/pull/2284 [4]
+    Link: https://github.com/rust-lang/rust-bindgen/commit/cc78b6fdb6e829e5=
+fb8fa1639f2182cb49333569
+[5]
+    Link: https://github.com/rust-lang/rust-bindgen/pull/2408 [6]
+    Link: https://github.com/rust-lang/rust-bindgen/issues/2094 [7]
+
+Aakash: please let me know if that is not OK!
 
 Cheers,
 Miguel
