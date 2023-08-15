@@ -1,93 +1,160 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A448B6FA9
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Aug 2023 12:50:24 +0000 (UTC)
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 883C8199B;
-	Tue, 15 Aug 2023 05:49:56 -0700 (PDT)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-586bacac98aso49789427b3.2;
-        Tue, 15 Aug 2023 05:49:56 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51937156D9
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Aug 2023 18:00:23 +0000 (UTC)
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B09B8138
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Aug 2023 11:00:21 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-5254f9eda36so4049986a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Aug 2023 11:00:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692103796; x=1692708596;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1692122420; x=1692727220;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AX2xNsuS+KPLpPndR9waoObgf7HJ35Xx+VqDYH3unJs=;
-        b=dDi5Jav1DqjKd5+B0Td7WZ8HDlYH/vscPvN0YQTIPnV2ArLFhm6QP4b2bwlDlSscqN
-         futPjTMYK3gF/yFIB9cCqpC9jw34OQAVJcX60gbwRs57F1VNrYaSdug6V2fBpEO/YJWR
-         EgA4IqXaRgD98VfYskd1ix07y6zT67dv5bllUpzGwwQNtj7z48LO9vBsYSWJvltzx+0a
-         NqsxTf1WcRDYx6280xfp+ECRWDA7SYxtDXverAaesFnFWDhIohO5KWh00JkCklrGlMQo
-         FaVhjH5oQQZ+fXgg9dW9gACGsRISGzBxX01Jm0xqDy/3pawEVnPdB99+CUafkngqXqMm
-         YEbQ==
+        bh=GJHoZ8X1h4xQ7tm8+zzTZx4Mu33LU7nB2/qAWxhLsrU=;
+        b=DvNY5E7BXWahcqxJMVztS4K3eYUTrBJEE84kuaVw/OPWAPesxw2sXnROHQVfuWMqd2
+         Me1LmCRSLPjppo2fKyjsf/So+ub41pam9MQEhJAgVxkThAfI5zjHxGIys8u2O+zbhkLr
+         SXxbyezvZy9gsU7nZHjZdbi4aoKc+jSE7rRDLN39AIRwo2q35Cl0lwXqFKPMnHqMXIYy
+         6WF4ocCllgYm6OyhW7iRi6JxT7Ifxys/uu1pYVwK84iTJIKpbpZa/ZM2Ri6qb9BCtcHR
+         ArINKVMlSHKCcOPp1xRQirgO9i4DR9vA9Ynj+UYzJ4QGrJmaXdiO9dSOD4Oho6hzEDgL
+         ymDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692103796; x=1692708596;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1692122420; x=1692727220;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AX2xNsuS+KPLpPndR9waoObgf7HJ35Xx+VqDYH3unJs=;
-        b=SphBwQI6dyUCo/CIQJ4FXaRF4+qLlySYdDTCpiN/Q9rrjYFNmitWVoqKo/Dic3/kOp
-         MNrRMIIVnV4hB0K4ChA8ENlMXBXG/YAK9h7aNwNSjRWm6r/5r278D4QSGIXge9GZhVmC
-         rzCz46Lp0cKqWbko3Ug3AhCojAa/xFQqWlFr4POyGJIoWU5HyMCz+UyBEnMqSyhWTVfu
-         EzFv2VvJC5WLOAniZExPsVUhpDHGJQN2niaOt2c3zbD2kIPhkCyKi9yygx3YyXpX/FYM
-         S7NPN2F0w9ck93YO4aEj+U4rUyDJflPxZ48LvA1MVc/M1SYq1CjET0c/6w1tLSGSqfaJ
-         Y/rQ==
-X-Gm-Message-State: AOJu0YxknRUDbI9ylFbykrvW+rCjMXr8vtY9mYrU+vymSw42Ok/J3P7K
-	8K30ooPEcu99G7Ar2kX2VEDaqdg/YQO9V06rvso=
-X-Google-Smtp-Source: AGHT+IH7JtZ2nRYV3FlM97/h/LBuoVEUpr4U8RbSfIVVfO49DTLkQSEOnfX3OklASaOXrNzewFLnOzuIvy5xq4QfUZk=
-X-Received: by 2002:a25:2683:0:b0:d62:b8f5:d745 with SMTP id
- m125-20020a252683000000b00d62b8f5d745mr11676467ybm.52.1692103795729; Tue, 15
- Aug 2023 05:49:55 -0700 (PDT)
+        bh=GJHoZ8X1h4xQ7tm8+zzTZx4Mu33LU7nB2/qAWxhLsrU=;
+        b=dqK9mDCDuHn9RWiqLV8ZrS3L+CpChQIcjTiFVmPMHduvrS9nZz0dND63ZMqfpZvWhR
+         QGuNJ37+jpg3h3gXlCf41JNF7Gw4x0wHbOY8ZJ/dFjmzhpJxTg9uznFkWk5D5+wrjCdx
+         TmHjqTV0j0bMmb03tZWALmxYkTYX2BnCumFRR0qEqjGXdbREQCz8UVafZ7N1F0m8yhHu
+         jkb4RKVndJEbpfMx1QHY9adfAJcCmS64JzM08kSGPEZ86aDApEqGM6qgkAUSJ2yxV8tj
+         76QeFXfqrxPLDR51etBA+kA6qpixBsLKwIkjjfUNoPJM9JAwXTOqbKE4qQZ1n+ocgzkP
+         Y/MQ==
+X-Gm-Message-State: AOJu0Yx5M9g7IFmFtSG1+DhuJ/A4XdJyauOBPEReBVzwomWaFKwhRe9Y
+	ofn3/PbOOay5NbNJyoDWZykpAs8a0q8=
+X-Google-Smtp-Source: AGHT+IHZzOIaP6b1JU7Kcdr9eMRGF33o608qyiE4X2mzVGN+HH+e0rUfhCMANfTYOR0Zf/ncr0vovw==
+X-Received: by 2002:a05:6402:326:b0:522:2af1:1ffe with SMTP id q6-20020a056402032600b005222af11ffemr10000623edw.9.1692122419926;
+        Tue, 15 Aug 2023 11:00:19 -0700 (PDT)
+Received: from auth1-smtp.messagingengine.com (auth1-smtp.messagingengine.com. [66.111.4.227])
+        by smtp.gmail.com with ESMTPSA id l15-20020a056402124f00b005227ead61d0sm7132357edw.83.2023.08.15.11.00.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Aug 2023 11:00:19 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 5A99927C0054;
+	Tue, 15 Aug 2023 14:00:16 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Tue, 15 Aug 2023 14:00:17 -0400
+X-ME-Sender: <xms:L73bZMUHXeI-qs9MeFOZSrtHb4nZuW_vE1kGnFo-rylkKyFdOaHIiA>
+    <xme:L73bZAlpKT4OZM_n39AQRzNIh59ouFCodOHLF5AUgyeLyQRhcw8-4Te1V9rSG9aK1
+    JDqmFMCZdb8fJWxzA>
+X-ME-Received: <xmr:L73bZAYnrEUaAWBMSwiGagyIEo2Lb10xiJ5qAyyO-bmzEUPLVzMFvxtNfWCM3A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedruddtjedguddulecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhepveekffduvddtieegveegheelkeetudelieeuvdekledvtefgleeuhefg
+    gfffgedvnecuffhomhgrihhnpehgihhthhhusgdrtghomhdpkhgvrhhnvghlrdhorhhgpd
+    hgihhthhhusghushgvrhgtohhnthgvnhhtrdgtohhmpdgrrghrtghhieeguhhnkhhnohif
+    nhhnohhnvgdrrhhsnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+    hfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieel
+    vdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtg
+    homhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:L73bZLVtx8ff1ny454WVWBMAMOYzxuOygPQ35KlQIBKZnP-G44kDSA>
+    <xmx:L73bZGkYmpFfXGiHVUihydFpu_n0UjIeVl-Mx8RuiI7gytu2y7iuyg>
+    <xmx:L73bZAdXPYAQKhReInjUnwZArm68THDuJSxaiOOq5xchF6Calvlfzg>
+    <xmx:ML3bZIVH0wUflBbD5ehRioYjmgDL8Z_fzaGWyCwBaMpWJLwaTmq4aQ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 15 Aug 2023 14:00:15 -0400 (EDT)
+Date: Tue, 15 Aug 2023 11:00:06 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Jamie Cunliffe <Jamie.Cunliffe@arm.com>
+Cc: catalin.marinas@arm.com, lina@asahilina.net,
+	linux-arm-kernel@lists.infradead.org, ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org, steve.capper@arm.com,
+	will@kernel.org
+Subject: Re: [PATCH v2 1/3] arm64: rust: Enable Rust support for AArch64
+Message-ID: <ZNu9JhYlsFWmliQE@boqun-archlinux>
+References: <ZINlqb3XHmz+dyLr@boqun-archlinux>
+ <20230612152639.1446766-1-Jamie.Cunliffe@arm.com>
+ <ZJ3fhb8QYdXhGl1r@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230815065346.131387-1-andrea.righi@canonical.com>
- <CANiq72kv4DwGLSGTwXYh3-b9h08Erd2RH7wXvVAUAEx2x+q_BA@mail.gmail.com> <ZNtzG3Yy1US+dpP4@righiandr-XPS-13-7390>
-In-Reply-To: <ZNtzG3Yy1US+dpP4@righiandr-XPS-13-7390>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 15 Aug 2023 14:49:44 +0200
-Message-ID: <CANiq72nGurz9dJjy2p8q347vfsbaoAm8Jb5L4WAW0W2+5KZHOw@mail.gmail.com>
-Subject: Re: [PATCH] rust: fix bindgen build error with fstrict-flex-arrays
-To: Andrea Righi <andrea.righi@canonical.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
-	Kees Cook <keescook@chromium.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>, 
-	Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZJ3fhb8QYdXhGl1r@boqun-archlinux>
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	RCVD_IN_DNSWL_BLOCKED,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, Aug 15, 2023 at 2:44=E2=80=AFPM Andrea Righi <andrea.righi@canonica=
-l.com> wrote:
->
-> Oh yes, indeed! I'm using clang/libclang-14 with gcc-13, if I switch to
-> clang-15 everything seems fine, so I can simply move to this version.
+On Thu, Jun 29, 2023 at 12:46:13PM -0700, Boqun Feng wrote:
+> On Mon, Jun 12, 2023 at 04:26:39PM +0100, Jamie Cunliffe wrote:
+> > > I don't think you need "-fp-armv8" here, because "aarch64-unknown-none"
+> > > target doesn't have the target-feature "fp-arm64":
+> > > 
+> > > 	rustc +1.68.2 --print cfg --target aarch64-unknown-none | grep target_feature
+> > > 
+> > > 	target_feature="neon"
+> > > 
+> > > , and having the "-fp-armv8" gave me a warning at compile time:
+> > > 
+> > > 	  RUSTC L rust/core.o warning: unknown feature specified for `-Ctarget-feature`: `fp-armv8`
+> > > 	  |
+> > > 	  = note: it is still passed through to the codegen backend
+> > > 	  = help: consider filing a feature request
+> > 
+> > Rust removed the fp feature for arm64 and tied it with Neon. However
+> > this initially had a bug that meant it couldn't be disabled. This has
+> > now been fixed in https://github.com/rust-lang/rust/pull/107294 so
+> > once we can update rustc we can fix that warning by removing the
+> > `-fp-armv8`. Until we do that we still need the `-fp-armv8` otherwise
+> > we will get some floating point usage. This can be seen by doing an
+> > objdump of core.o if you build after removing the `-fp-armv8`.
+> > 
+> 
+> Thanks for the information (and the fix)! That's good to know. Looks
+> like the fix will be in 1.71, then agree, we should keep `-fp-armv8`
+> until we update to 1.71 or later.
+> 
 
-Thanks for confirming!
+Just FYI, rustc has been bumped to 1.71:
 
-> The combo gcc-13 + libclang-15 seems to work in my case, instead with
-> libclang-16 I get this:
->
->   BINDGEN rust/bindings/bindings_generated.rs
->   thread 'main' panicked at '"ftrace_branch_data_union_(anonymous_at__/_/=
-include/linux/compiler_types_h_146_2)" is not a valid Ident', /build/rust-b=
-indgen-0.56-DgAMvF/rust-bindgen-0.56-0.56.0/debian/vendor/proc-macro2-1.0.2=
-4/src/fallback.rs:693:9
+	https://lore.kernel.org/rust-for-linux/CANiq72mrzALO3J2VvDntscXwt7Z9KzT4+S8sc_HGc8u8izjyLw@mail.gmail.com/
 
-Yeah, this is fixed in `bindgen` 0.62.0. We have upgraded in
-`rust-next`, commit 08ab786556ff ("rust: bindgen: upgrade to 0.65.1").
+BTW, recently I learned that ARCH is set as "x86" by default even on
+x86_64 host, so things like:
 
-Cheers,
-Miguel
+	+ifeq ($(ARCH),x86_64)
+	+$(obj)/core.o: scripts/target.json
+	+endif
+
+"ifeq .." will return false if compiled with "make LLVM=1" even on a
+x86_64 host. Maybe use
+
+	ifdef CONFIG_X86_64
+
+?
+
+Regards,
+Boqun
+
+> Regards,
+> Boqun
+> 
+> > 
+> > You can also see that fp-armv8 is enabled in the aarch64-unknown-none target
+> > here: https://raw.githubusercontent.com/rust-lang/rust/master/compiler/rustc_target/src/spec/aarch64_unknown_none.rs
+> > 
+> > 
+> > Thanks,
+> > Jamie.
