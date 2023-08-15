@@ -1,215 +1,102 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BF08BEB
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Aug 2023 22:43:15 +0000 (UTC)
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E21FB3;
-	Mon, 14 Aug 2023 15:43:14 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-d3d729a08e4so4753419276.3;
-        Mon, 14 Aug 2023 15:43:14 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AB215B7
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Aug 2023 01:04:08 +0000 (UTC)
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99525E65;
+	Mon, 14 Aug 2023 18:04:07 -0700 (PDT)
+Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-6bd0911c95dso4458570a34.3;
+        Mon, 14 Aug 2023 18:04:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692052994; x=1692657794;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mhP5hF7gsV/m6mRR8ob32YvEhTw2xPeRNUv47TvhXGs=;
-        b=jFQc46cJTRErw+hng9tAokPjEOHl5jJIUhAjcuox1Slixjuhcu1DIUGSAs1PWoZrLE
-         hiiIqXMEagsfhNWwOLggpXHYZ6rveONq5vpWW53M1urIa+/Iyg0RE3ROaMpkg5MuiRhE
-         KhYQEI2TL4wc+ahPZbS0kzDzDC2ICyI9xIvs+1lOJUdVbNLk/LZiiLk+DJso6fdYtvUn
-         Iy3FY70rsN2Ed9FCS6u6Ne33Nmz1jCwOk8RhdG6ofReL11UtsNlJAg4QWNxCbl2SG48u
-         UIM2vEwhMgRn/KtNrFVtSQeBziX2jH+NF6pQ29w1yBZN55rFi7uneB1kg8fRB83uHJzR
-         RNLg==
+        d=gmail.com; s=20221208; t=1692061447; x=1692666247;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9HOC4ki6E5bzT2JuiqqGPDcSiKjjcSrTtPrdwQPQGz8=;
+        b=jbYOJKt2HrwiG9nGKVPbLLAqsekGwWN9YHjlnysZeAn2YmLpkr8tMF9tD1JZvAKYGJ
+         vbEmimNdaUYAI0wPBlwg4EMnrLuofS4DS0D8o7hf+znUu75sSQ5XpvQCmRgxPeRg6EUg
+         dTb2llVelhI+k/aUayXYMyyMaxMMhaqDXsllbybpIoP8Z2kOQM1pnG0EFkNljIo0AlvG
+         zT9IbYZ1FsCTBa5gCuIXOnY1PEn61nTlmxGp0N9IrTsg1i0xQvHmdjYKYv8whU2MBhrc
+         NWQa7kVLuzZviA4ZV6Ywt4xsfC1yruywlS26IRrZDXBKph1PuY4RTBY/DkL9Ir8Rtqq4
+         GqTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692052994; x=1692657794;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mhP5hF7gsV/m6mRR8ob32YvEhTw2xPeRNUv47TvhXGs=;
-        b=ACikICOp7GlzR1cGskpXlylShxcz/o0EBG4eckPqk4M9Q7kxR04lluEe5DIbvDu+o6
-         yiMNNi6nPDghs7QIIjZwnQVwEeZEoEkHxfzDE7vsf9n6Bwm6RrCwjF75R3tQX9M2ag/0
-         QfIjlE3Sju70hnMlmJUhqjL9RX+sK5sa0Hol0GjkORg48jSs0hn/smNK9xiuMfEpfgZ1
-         7T+GLzVBKmLq7o9a32W5Er7IEIKjXhEp8esiGoVEWIUyYJKuOcB7Sgew0vxThxY81Y9h
-         4uDES/FHg/BmgTOhnM8gmO6n27KIYGMps7NAUbrlrc/DhYIcO2dRbwlCYPR77V9G5ft6
-         arZg==
-X-Gm-Message-State: AOJu0YwrPN2jstgQDwTk7AlS/YHqChloNvyNcJ4AoRfBAM9FC2YMZxLN
-	JLhYi0+L2JOZpKytkr84CLU/7FSOpQkuKO7DS18=
-X-Google-Smtp-Source: AGHT+IFpuYEJ/0nuvpgDua6ryUMqdgSSiGqdAodGAyLQ574FbDaMTr2TGX40TqotWWwvWMfuPrxQaWSx7DG1U9ivXLM=
-X-Received: by 2002:a05:6902:4cf:b0:d43:e64f:bdcf with SMTP id
- v15-20020a05690204cf00b00d43e64fbdcfmr10448281ybs.0.1692052993673; Mon, 14
- Aug 2023 15:43:13 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1692061447; x=1692666247;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9HOC4ki6E5bzT2JuiqqGPDcSiKjjcSrTtPrdwQPQGz8=;
+        b=eYAwVRhmnWQOPeYaXSQXllUC1HgXnSKB3DlDwxCTzI3MG7dtZ1hk8G0rU0RTzXmelM
+         mWeTnJs/bN+SIIBBClVuCgzieuegWOP2tmWyZQHbarbZz7RahwMUyzqq7W7thm1fS7WP
+         KqK6Z93XXanb7ICDoI4wrlotYYQw0xGuBiTLsy0o36FQgJ2Biadp88ItIzaAM17V51Hu
+         92/DWiUVTyr3VEsgak1j+SRckEj7HKWM/KBaJ3sciEU0vGHtdji/ZuIhXFJgxDUJl+Zb
+         RlyhGh8aCLhPDMZgIcOn+CODJye5TVyaXB/U5ItBauitxzRKHy4k1DnFCPZE9IL4/EFK
+         DTKA==
+X-Gm-Message-State: AOJu0YyJHMdDS6VQq47rCsCS9hFbB1W9/dL/ja3xqHzXTxfzQCVjaY5c
+	l0bxQypuGsA/CnYCzHDX1mU=
+X-Google-Smtp-Source: AGHT+IFjL4ZIFRI3nxNAgw+fCZpcg4FoDRRJtnLZcUwYFTqwnD757hfZPvlq7Ph81yECYktr9ladPA==
+X-Received: by 2002:a9d:6c5a:0:b0:6b9:2e88:79cc with SMTP id g26-20020a9d6c5a000000b006b92e8879ccmr9978004otq.19.1692061446767;
+        Mon, 14 Aug 2023 18:04:06 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id v10-20020a9d7d0a000000b006b87f593877sm4781985otn.37.2023.08.14.18.04.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Aug 2023 18:04:06 -0700 (PDT)
+Message-ID: <ff20038d-8b42-471d-b625-8cf0e343a915@gmail.com>
+Date: Mon, 14 Aug 2023 22:04:01 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230612194311.24826-1-aakashsensharma@gmail.com>
-In-Reply-To: <20230612194311.24826-1-aakashsensharma@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 15 Aug 2023 00:43:02 +0200
-Message-ID: <CANiq72mq34Locyu4EZ7WRmGdTHkSP77sNZt3Xfo0ZWx_bMLMcA@mail.gmail.com>
-Subject: Re: [PATCH] rust: bindgen: upgrade to 0.65.1
-To: Aakash Sen Sharma <aakashsensharma@gmail.com>
-Cc: corbet@lwn.net, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, nathan@kernel.org, ndesaulniers@google.com, 
-	trix@redhat.com, masahiroy@kernel.org, me@kloenk.de, aliceryhl@google.com, 
-	benno.lossin@proton.me, dev@niklasmohrin.de, lina@asahilina.net, 
-	hca@linux.ibm.com, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 03/13] rust: add derive macro for `Zeroable`
+To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ patches@lists.linux.dev, Asahi Lina <lina@asahilina.net>
+References: <20230814084602.25699-1-benno.lossin@proton.me>
+ <20230814084602.25699-4-benno.lossin@proton.me>
+Content-Language: en-US
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230814084602.25699-4-benno.lossin@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Mon, Jun 12, 2023 at 9:45=E2=80=AFPM Aakash Sen Sharma
-<aakashsensharma@gmail.com> wrote:
->
-> * Rationale:
->
-> Upgrades bindgen to code-generation for anonymous unions, structs, and en=
-ums [7]
-> for LLVM-16 based toolchains.
->
-> The following upgrade also incorporates `noreturn` support from bindgen
-> allowing us to remove useless `loop` calls which was placed as a
-> workaround.
->
-> * Truncated build logs on using bindgen `v0.56.0` prior to LLVM-16 toolch=
-ain:
->
-> ```
-> $ make rustdoc LLVM=3D1 CLIPPY=3D1 -j$(nproc)
->   RUSTC L rust/core.o
->   BINDGEN rust/bindings/bindings_generated.rs
->   BINDGEN rust/bindings/bindings_helpers_generated.rs
->   BINDGEN rust/uapi/uapi_generated.rs
-> thread 'main' panicked at '"ftrace_branch_data_union_(anonymous_at__/_/in=
-clude/linux/compiler_types_h_146_2)" is not a valid Ident', .../proc-macro2=
--1.0.24/src/fallback.rs:693:9
-> ...
-> thread 'main' panicked at '"ftrace_branch_data_union_(anonymous_at__/_/in=
-clude/linux/compiler_types_h_146_2)" is not a valid Ident', .../proc-macro2=
--1.0.24/src/fallback.rs:693:9
-> ...
-> ```
->
-> * LLVM-16 Changes:
->
-> API changes [1] were introduced such that libclang would emit names like
-> "(unnamed union at compiler_types.h:146:2)" for unnamed unions, structs, =
-and
-> enums whereas it previously returned an empty string.
->
-> * Bindgen Changes:
->
-> Bindgen `v0.56.0` on LLVM-16 based toolchains hence was unable to process=
- the
-> anonymous union in `include/linux/compiler_types` `struct ftrace_branch_d=
-ata`
-> and caused subsequent panics as the new `libclang` API emitted name was n=
-ot
-> being handled. The following issue was fixed in Bindgen `v0.62.0` [2].
->
-> Bindgen `v0.58.0` changed the flags `--whitelist-*` and `--blacklist-*`
-> to `--allowlist-*` and `--blocklist-*` respectively [3].
->
-> Bindgen `v0.61.0` added support for `_Noreturn`, `[[noreturn]]`, `__attri=
-bute__((noreturn))` [4],
-> hence the empty `loop`s used to circumvent bindgen returning `!` in place=
- of `()`
-> for noreturn attributes have been removed completely.
->
-> Bindgen `v0.61.0` also changed default functionality to bind `size_t` to =
-`usize` [5] and
-> added the `--no-size_t-is-usize` [5] flag to not bind `size_t` as `usize`=
-.
->
-> Bindgen `v0.65.0` removed `--size_t-is-usize` flag [6].
->
-> Link: https://github.com/llvm/llvm-project/commit/19e984ef8f49bc3ccced156=
-21989fa9703b2cd5b [1]
-> Link: https://github.com/rust-lang/rust-bindgen/pull/2319 [2]
-> Link: https://github.com/rust-lang/rust-bindgen/pull/1990 [3]
-> Link: https://github.com/rust-lang/rust-bindgen/issues/2094 [4]
-> Link: https://github.com/rust-lang/rust-bindgen/commit/cc78b6fdb6e829e5fb=
-8fa1639f2182cb49333569 [5]
-> Link: https://github.com/rust-lang/rust-bindgen/pull/2408 [6]
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1013 [7]
-> Signed-off-by: Aakash Sen Sharma <aakashsensharma@gmail.com>
-
-Applied to `rust-next`, thanks everyone!
-
-I also did these extra changes:
-
-    [ Reworded commit message. Mentioned the `bindgen-cli` binary crate
-      change, linked to it and updated the Quick Start guide. Re-added a
-      deleted "as" word in a code comment and reflowed comment to respect
-      the maximum length. ]
-
-In particular, I have reworded the commit message a fair bit:
-
-    In LLVM 16, anonymous items may return names like `(unnamed union at ..=
-)`
-    rather than empty names [1], which breaks Rust-enabled builds because
-    bindgen assumed an empty name instead of detecting them via
-    `clang_Cursor_isAnonymous` [2]:
-
-        $ make rustdoc LLVM=3D1 CLIPPY=3D1 -j$(nproc)
-          RUSTC L rust/core.o
-          BINDGEN rust/bindings/bindings_generated.rs
-          BINDGEN rust/bindings/bindings_helpers_generated.rs
-          BINDGEN rust/uapi/uapi_generated.rs
-        thread 'main' panicked at
-'"ftrace_branch_data_union_(anonymous_at__/_/include/linux/compiler_types_h=
-_146_2)"
-is not a valid Ident', .../proc-macro2-1.0.24/src/fallback.rs:693:9
-        ...
-        thread 'main' panicked at
-'"ftrace_branch_data_union_(anonymous_at__/_/include/linux/compiler_types_h=
-_146_2)"
-is not a valid Ident', .../proc-macro2-1.0.24/src/fallback.rs:693:9
-        ...
-
-    This was fixed in bindgen 0.62.0. Therefore, upgrade bindgen to
-    a more recent version, 0.65.1, to support LLVM 16.
-
-    Since bindgen 0.58.0 changed the `--{white,black}list-*` flags to
-    `--{allow,block}list-*` [3], update them on our side too.
-
-    In addition, bindgen 0.61.0 moved its CLI utility into a binary crate
-    called `bindgen-cli` [4]. Thus update the installation command in the
-    Quick Start guide.
-
-    Moreover, bindgen 0.61.0 changed the default functionality to bind
-    `size_t` to `usize` [5] and added the `--no-size_t-is-usize` flag
-    to not bind `size_t` as `usize`. Then bindgen 0.65.0 removed
-    the `--size_t-is-usize` flag [6]. Thus stop passing the flag to bindgen=
-.
-
-    Finally, bindgen 0.61.0 added support for the `noreturn` attribute (in
-    its different forms) [7]. Thus remove the infinite loop in our Rust
-    panic handler after calling `BUG()`, since bindgen now correctly
-    generates a `BUG()` binding that returns `!` instead of `()`.
-
-    Link: https://github.com/llvm/llvm-project/commit/19e984ef8f49bc3ccced1=
-5621989fa9703b2cd5b
-[1]
-    Link: https://github.com/rust-lang/rust-bindgen/pull/2319 [2]
-    Link: https://github.com/rust-lang/rust-bindgen/pull/1990 [3]
-    Link: https://github.com/rust-lang/rust-bindgen/pull/2284 [4]
-    Link: https://github.com/rust-lang/rust-bindgen/commit/cc78b6fdb6e829e5=
-fb8fa1639f2182cb49333569
-[5]
-    Link: https://github.com/rust-lang/rust-bindgen/pull/2408 [6]
-    Link: https://github.com/rust-lang/rust-bindgen/issues/2094 [7]
-
-Aakash: please let me know if that is not OK!
-
-Cheers,
-Miguel
+On 8/14/23 05:46, Benno Lossin wrote:
+> Add a derive proc-macro for the `Zeroable` trait. The macro supports
+> structs where every field implements the `Zeroable` trait. This way
+> `unsafe` implementations can be avoided.
+> 
+> The macro is split into two parts:
+> - a proc-macro to parse generics into impl and ty generics,
+> - a declarative macro that expands to the impl block.
+> 
+> Suggested-by: Asahi Lina <lina@asahilina.net>
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> ---
+> v3 -> v4:
+> - add support for `+` in `quote!`.
+> 
+> v2 -> v3:
+> - change derive behavior, instead of adding `Zeroable` bounds for every
+>    field, add them only for generic type parameters,
+> - still check that every field implements `Zeroable`,
+> - removed Reviewed-by's due to changes.
+> 
+> v1 -> v2:
+> - fix Zeroable path,
+> - add Reviewed-by from Gary and Björn.
+> 
+> [...]
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
