@@ -1,85 +1,122 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2631119F
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Aug 2023 12:10:25 +0000 (UTC)
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93C9C173F;
-	Tue, 15 Aug 2023 05:10:24 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-d4364cf8be3so5374280276.1;
-        Tue, 15 Aug 2023 05:10:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692101423; x=1692706223;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cHvKp/Ntb2IbR8H/HtEVaiWwAh0UlzB39M1mc57UxB8=;
-        b=iZR2nRgyvebmsWdjaynHkQjYCuWd5o1VBuOTvo2H0xc1Hl4hKcSx4Y0n22HxBRHhqg
-         uXxZrj/TNq/LRdyiwGde4Y2IU2Q3ZKDhpaGvyCyeYI6IfWLwhl37HwhEVBWcBuSyeL3+
-         GlCKD3XRFkGalJsdGSI+p6W/GBddfF9HhB2AGMFDa0SkQwZmfxhJwcybkvnl6pr/R8A9
-         2gr2euPG8/pwRjv8PR6bQSq6tdrqrm0taTngWJoV8YczhJU6Do4vbUo79cSA34ISGJJi
-         O7mXfwpcHQ8BAJfKyhljx3+mpVH18unMtJ/+BnOh+Trvw0nmk8qqbsjEB2vrdC4Y7fko
-         hJug==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DAF6CA5B
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Aug 2023 12:44:17 +0000 (UTC)
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30254172A
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Aug 2023 05:44:15 -0700 (PDT)
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id C09603F128
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Aug 2023 12:44:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1692103453;
+	bh=aKXkgUDnJHg2N5PCGlfRG9EGkT+Cy8Mp+msAUINj40A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To;
+	b=B+S7i8DYXGwb6+iW/46a1mzPMQWhwfXjd+y9MfDphNdOkbM3UWXRVVWO9NVVh7nsE
+	 Cs2h4w1lFR1UxwoE3N9yC8tcKGWVGFL8qyXpDJO/TuxWa3cERLgOFRxJz4ZXITbPa0
+	 rQahQ/hiJXOci+X1IkJP08ySoPmtP6fXy2w0Bsx87GCSReFFfe558nVBTcpUtFT8v6
+	 kkDML26CcjdhPc6UdjR+utVAke2dKg8Zlb39p4H6EYALN/6ZI1bPhfVA72ZXGcs6Q9
+	 RbratRxPYsa63wBEMFdvBn0/GXHis1MHxoC85EHx8ZWK+B+wRFx0Mea8iMSS9M+WzP
+	 dM8Yg7SRyDodA==
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5218b9647a8so3244415a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Aug 2023 05:44:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692101423; x=1692706223;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cHvKp/Ntb2IbR8H/HtEVaiWwAh0UlzB39M1mc57UxB8=;
-        b=VSxR2ezc9V9QLhQFR88vVhEFhk5Lv3r3fS/CsoNG0R7V3Argh0WkRYeH22JvhFvoE1
-         Uvdl8YdbMV86Spzhn4MpY6/M5ghTFTlKilk7zaltwduht5ZKwmop4B+2e7QNeTSjcB/C
-         Sx58a5Rs/GMMRrpXbYX76mvTMmiGM9QiNgnuNb/OZJKnxA4PlziC6MtNAl6Av3+3lnve
-         syZwkezKUyTStVEMejWE8hrDWxW9MJodFU1Up85xpkKIgV4XNesWig7+YJbWTV0xCWyv
-         hQGKsvKzHjBwPKqoaSSKVBkPD437A+xjcA2OdIsTwMX67QkPUny6fwj6b0cca7IINOec
-         WHxA==
-X-Gm-Message-State: AOJu0Yx2ijVIt4xM6g5EUBHZ0zMFbLWwjkdDEMptN8CxAK1GpTVuCtH6
-	kKYewszm0kbrqFePy65cdp5aYiPv39dSf2uEp0I=
-X-Google-Smtp-Source: AGHT+IEuRW1UZIjVahCtg71WtvpEfMj20fiN1t4gAXGytbwu90fBowWuExOKrWmJflJTOSH4toD3fff5V2aexR+hSRM=
-X-Received: by 2002:a25:103:0:b0:d67:7aec:54fd with SMTP id
- 3-20020a250103000000b00d677aec54fdmr11728829ybb.62.1692101423200; Tue, 15 Aug
- 2023 05:10:23 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1692103453; x=1692708253;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aKXkgUDnJHg2N5PCGlfRG9EGkT+Cy8Mp+msAUINj40A=;
+        b=Mr5eDX4Rt3MiQylMYxG/LVnHppJt7Giqiu95xYStQcqigEDOcThxMvy5zrQY4PglUE
+         MepaYH0vPjbSLPAAQbbI4ZruxArShANyVkH78o7fH1IEDB8mYRvcJ6zD0bkuz98JfS18
+         ZDHUD6Om4Z38LmmISfgxVxC5cZce4t8AEM592pi8RR0XEtJfxf5KBDFxPt7NmICIuMvR
+         wARiDhGFGt8uyA2d4VjnvFBbHAL9y40drOJVdkCB2v/vkVjS94LeszDmf4sRhYnW0uyP
+         rlPpNjXFlLgvkggfO7njxcZnBxMcmCLf0LXJXClAQjioQO6RyQgkgdfxYDXspNsE+ha6
+         AoEQ==
+X-Gm-Message-State: AOJu0YxIjzonX8NaO0voWjqNERyXVA5lLmMidSWoMJc/ec/p+5wX4sA/
+	lgA72VHJFzBcUmot6/FJHIMojqAUg+dSA/Vy1vGPvNMMLhOtYTJUAqFyzNaZbGvULt7MWskUorS
+	SiKpSuU2BNDxunOSLEmTik27Y+My5lBR1CsUy45qnbxln
+X-Received: by 2002:aa7:c417:0:b0:523:37ff:1170 with SMTP id j23-20020aa7c417000000b0052337ff1170mr9409102edq.16.1692103453509;
+        Tue, 15 Aug 2023 05:44:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFs/E8V2NDX2XcJZXAbneao9RjH0N0K37FNbOeFzjvaaz6pGskl/cJoC5Rjc2K/AfZKmz/mkw==
+X-Received: by 2002:aa7:c417:0:b0:523:37ff:1170 with SMTP id j23-20020aa7c417000000b0052337ff1170mr9409084edq.16.1692103453179;
+        Tue, 15 Aug 2023 05:44:13 -0700 (PDT)
+Received: from localhost (host-79-33-195-131.retail.telecomitalia.it. [79.33.195.131])
+        by smtp.gmail.com with ESMTPSA id z11-20020aa7d40b000000b00525683f9b2fsm2320484edq.5.2023.08.15.05.44.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Aug 2023 05:44:12 -0700 (PDT)
+Date: Tue, 15 Aug 2023 14:44:11 +0200
+From: Andrea Righi <andrea.righi@canonical.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH] rust: fix bindgen build error with fstrict-flex-arrays
+Message-ID: <ZNtzG3Yy1US+dpP4@righiandr-XPS-13-7390>
+References: <20230815065346.131387-1-andrea.righi@canonical.com>
+ <CANiq72kv4DwGLSGTwXYh3-b9h08Erd2RH7wXvVAUAEx2x+q_BA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230815065346.131387-1-andrea.righi@canonical.com> <CANiq72kv4DwGLSGTwXYh3-b9h08Erd2RH7wXvVAUAEx2x+q_BA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <CANiq72kv4DwGLSGTwXYh3-b9h08Erd2RH7wXvVAUAEx2x+q_BA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 15 Aug 2023 14:10:12 +0200
-Message-ID: <CANiq72nqTfJJb9oQZGpAn2KZwDXwp6StVKKETWF-m3fLpnsiPQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: fix bindgen build error with fstrict-flex-arrays
-To: Andrea Righi <andrea.righi@canonical.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
-	Kees Cook <keescook@chromium.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>, 
-	Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, Aug 15, 2023 at 2:06=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> to make GCC and Clang (as well as Clang `=3D3` vs. Clang without the
-> flag) to compile but disagree on the size:
+On Tue, Aug 15, 2023 at 02:06:36PM +0200, Miguel Ojeda wrote:
+> On Tue, Aug 15, 2023 at 8:54 AM Andrea Righi <andrea.righi@canonical.com> wrote:
+> >
+> > Commit df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3") enabled
+> > '-fstrict-flex-arrays=3' globally, but bindgen does not recognized this
+> 
+> It may be more accurate to say libclang here (bindgen forwards the options).
+> 
+> Also, df8fc4e934c1 did it so only conditionally (if the C compiler
+> supports it). This explains what you are seeing: if I am right, you
+> are compiling with a modern enough GCC, which enables the option, but
+> with an old enough Clang.
 
-To be clear: Clang `=3D3` vs. Clang without the flag should not be a
-problem for us because under `CC_IS_CLANG` we pass the flags unaltered
-to bindgen.
+Oh yes, indeed! I'm using clang/libclang-14 with gcc-13, if I switch to
+clang-15 everything seems fine, so I can simply move to this version.
 
-But for GCC-built kernels with Rust enabled, the disagreement above
-could be a problem.
+> 
+> > compiler option, triggering the following build error:
+> >
+> >  error: unknown argument: '-fstrict-flex-arrays=3', err: true
+> 
+> This should only be true with libclang < 16, since Clang 16
+> implemented the option, right?
+> 
+> In fact, Clang 15 seems to work too -- it seems the compiler does not
+> error if the option is not within [0,3] (unlike GCC).
 
-Cheers,
-Miguel
+The combo gcc-13 + libclang-15 seems to work in my case, instead with
+libclang-16 I get this:
+
+  BINDGEN rust/bindings/bindings_generated.rs
+  thread 'main' panicked at '"ftrace_branch_data_union_(anonymous_at__/_/include/linux/compiler_types_h_146_2)" is not a valid Ident', /build/rust-bindgen-0.56-DgAMvF/rust-bindgen-0.56-0.56.0/debian/vendor/proc-macro2-1.0.24/src/fallback.rs:693:9
+
+Thanks,
+-Andrea
