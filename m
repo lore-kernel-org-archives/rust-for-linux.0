@@ -1,72 +1,89 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6A7E56C;
-	Fri, 18 Aug 2023 07:50:55 +0000 (UTC)
-Received: from CHE01-ZR0-obe.outbound.protection.outlook.com (mail-zr0che01on2080.outbound.protection.outlook.com [40.107.24.80])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9C0E3A91;
-	Fri, 18 Aug 2023 00:50:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0231548A;
+	Fri, 18 Aug 2023 10:38:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 707EE1AE;
+	Fri, 18 Aug 2023 03:38:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692355084; x=1723891084;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=yHAC6pvwMj4NCUqEfE8gT6nKZ2jTKB4XVmMBaxeIiGc=;
+  b=ExfMar/Q/6z7XHH6uVBh2L3olwyGm7yQC1LPed8jY/kFCvaUx0cWqdAI
+   91kGIvxFmcg32DNuWlQH3t3BZj335Qp7Me2+eZ1WExh6gXWrGXR17sGCz
+   fZDmqBacW6TXLqe2/oP+5+GlxHvQRKKOm0e6zFwTYCe197Pb1OKI089N+
+   YKEl0aSyNSIj2Pb6L896A6Ga7nAo7AXM9DIBFnr57NVPgchhzVmim84VS
+   geEBb2ApQdyP2Ezf3jJvRol34lRYFvpmOps62jeCH6WJ5lCfvOFLUNqVl
+   Bfxy/swiwzdM7qkgh/XWMY6acCAqBU3YQmvF0Ntf/pJGqVvm/1xVpvYsU
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="353374630"
+X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
+   d="scan'208";a="353374630"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2023 03:38:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10805"; a="858633656"
+X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; 
+   d="scan'208";a="858633656"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orsmga004.jf.intel.com with ESMTP; 18 Aug 2023 03:38:03 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Fri, 18 Aug 2023 03:38:03 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Fri, 18 Aug 2023 03:38:03 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.177)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Fri, 18 Aug 2023 03:38:03 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NVxconXEQ+CX7XVrpOcMcQa/GY8R27lh0wFG0lM1QhN6geyfzbvtuM4kM2JURKN6X7ftXFLjQsDqO6aDDfDuY8e504xWKXQaaEhN+zWI+Htap55SWBxggHHGKQtALCglyYBpqrGiU0cx+Yxwaui2ym18Ao/kOV5h/JJa7K+o5XjnEVxE0Hz2p0VNKWxi6haUj0g4SELQiiANV2a4nkZqBLRLnWyzTow/8ddUnge1aY+5yXcblDwuCybJhRZA2aAibFXkhqMGvp/2f51iqUTtAlN8o4Oezv+hG16rmxrxTUv0lQx+nvlAsgBhMjHBXcTJ1YM1FZT2DY7BleKI3J8H4Q==
+ b=VQtaZ28rRuBGwoMbxCfQEl9uo9Z76w49RsnF6YRG7z+vk149Ur3PfFUz5FcZB9DW1vAW1wUJaJmILILCySgfJ13ZFX5OST1jpgDkVR8Cor3sCpKyHPEQH+c5ehJn3Rh8inui+8Dzj557mBv89oiYUaNGyFet0yk4gjH+JUnmP8r4cwIsSYiBw7jIDIsi0bv37lFn3JDflVfNygO+OMmMqAJQCWTNvFm8dMV+4X9QJRm7o//p1CLWlgHct6L95Xv9axITBLjV78MH8Ae1Qbdtt/TCoITHEnx2x3HQwmFM0KCpQypeQd/7DmwGYnoCk6S6Ub2ZKRXYjwbb0uuilGzL9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zHzsSrOHg6tGi0pDMYwD+JitKlo/D/pMCy+pBVi4FdI=;
- b=nRpjafZsirHPs/tDpCnDFvsfShvzb0k7VwN1CJeAw8blAMwf75fHk4qwnEwK4NsK1wGhjc05NS4RgBwI+otcl8qMx7P9/ZNoBp3Xw2K9e7jB9Ys+5ZEvhAUYr4/gl04lISKFfReA/KMQZIdKpyn4ee3XaG0wrk6gBTGIVVFh85z2eumKNaXmPxg3z2ri0k5ZRgTOGCiE2jXnkj6OP1w/KJwWRm8FsdTaSN1FsfuI4MjUWjVt433EI++c11wnC7KLN6Nv+y1dlgr+GVkXby4osq5veGc9gd+N2zyJhnody7icyxc2lYSg2ib3ARRA/ycUHGugBq1ONELXeP435K/EzA==
+ bh=465Tokb5BP6KgVWWpzwQxhxOlv4uMS7IrpHmh9qj9As=;
+ b=mxGRJ+4G27Z7amxiMktbUKoElCblMosbsL+f/Ly/Elgzg2L1H6OT1jd7fS/N7AIMRtkNhVx386G93QbrwlfsBywVvlh1UizsbrHXrV7U86BsdSiGkm6lpiwXigM9AQspbT2CWnaA/7RXEXxDQ156DbAZM9EYm87LDUxsfjb2FdMVdlFrSC3TgKmhM62CTobA1dTRQDomwP7gz5f5977n8b/S99IY13SAsS2N5gbMaeZ1LbBeYAM6OARWTQ8n7vjE+SWx0u+bFd8uLeXCZgxbPMRr980yEFmW+vznOxt9SkY84kIPaN5rT1Ilcv/ZaYNuNYIYxmv+x98va79WXNMs6g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=usi.ch; dmarc=pass action=none header.from=usi.ch; dkim=pass
- header.d=usi.ch; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=usi365.onmicrosoft.com; s=selector2-usi365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zHzsSrOHg6tGi0pDMYwD+JitKlo/D/pMCy+pBVi4FdI=;
- b=ETuGR0mWeO0Vg4UJGzLDztyb+i56ZoGGQxtPJVd68P/zy/uGvt0SD6LJo5Pumxcy4gdyh0HulQQWx/ZdK5kmMRPjm6zrUI4yd7CH5mMB4rPZkYpQ/EhVwVYleZ2mmft5TmQy/cxnxb5wctp4sWh5XW3t3iwgjPY4b/mA60lYDi4=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=usi.ch;
-Received: from GV0P278MB0163.CHEP278.PROD.OUTLOOK.COM (2603:10a6:710:2f::10)
- by ZR2P278MB1130.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:5f::12) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BYAPR11MB3672.namprd11.prod.outlook.com (2603:10b6:a03:fa::30)
+ by SJ2PR11MB7619.namprd11.prod.outlook.com (2603:10b6:a03:4d1::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.20; Fri, 18 Aug
- 2023 07:50:47 +0000
-Received: from GV0P278MB0163.CHEP278.PROD.OUTLOOK.COM
- ([fe80::9057:82cc:fc98:1f5]) by GV0P278MB0163.CHEP278.PROD.OUTLOOK.COM
- ([fe80::9057:82cc:fc98:1f5%7]) with mapi id 15.20.6699.020; Fri, 18 Aug 2023
- 07:50:47 +0000
-Message-ID: <c9c63da7-bc8a-7307-63f1-1f393b017da2@usi.ch>
-Date: Fri, 18 Aug 2023 09:50:45 +0200
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.29; Fri, 18 Aug
+ 2023 10:38:01 +0000
+Received: from BYAPR11MB3672.namprd11.prod.outlook.com
+ ([fe80::c45d:d61e:8d13:cb29]) by BYAPR11MB3672.namprd11.prod.outlook.com
+ ([fe80::c45d:d61e:8d13:cb29%3]) with mapi id 15.20.6678.031; Fri, 18 Aug 2023
+ 10:38:00 +0000
+Message-ID: <cfc29063-9e20-5101-d70b-62b5423d2d10@intel.com>
+Date: Fri, 18 Aug 2023 12:37:51 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [RFC PATCH 0/7] Rust Socket abstractions
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Michele Dalle Rive <dallerivemichele@gmail.com>,
- Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
- Davide Rovelli <davide.rovelli@usi.ch>, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
-References: <20230814092302.1903203-1-dallerivemichele@gmail.com>
- <2023081411-apache-tubeless-7bb3@gregkh>
- <0e91e3be-abbb-4bf7-be05-ba75c7522736@lunn.ch>
- <CACETy0=V9B8UOCi+BKfyrX06ca=WvC0Gvo_ouR=DjX=_-jhAwg@mail.gmail.com>
- <e3b4164a-5392-4209-99e5-560bf96df1df@lunn.ch>
- <CACETy0n0217=JOnHUWvxM_npDrdg4U=nzGYKqYbGFsvspjP6gg@mail.gmail.com>
- <CANiq72=3z+FcyYGV0upsezGAkh2J4EmzbJ=5s374gf=10AYnUQ@mail.gmail.com>
- <bddea099-4468-4f96-2e06-2b207b608485@usi.ch>
- <0ba551eb-480e-4327-b62f-fc105d280821@lunn.ch>
+ Thunderbird/102.3.1
+Subject: Re: [PATCH net-next v3 1/7] overflow: add DEFINE_FLEX() for on-stack
+ allocs
 Content-Language: en-US
-From: Davide Rovelli <roveld@usi.ch>
-In-Reply-To: <0ba551eb-480e-4327-b62f-fc105d280821@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: kernel test robot <lkp@intel.com>, <rust-for-linux@vger.kernel.org>
+CC: <llvm@lists.linux.dev>, <oe-kbuild-all@lists.linux.dev>, Jacob Keller
+	<jacob.e.keller@intel.com>, <intel-wired-lan@lists.osuosl.org>, "Alexander
+ Lobakin" <aleksander.lobakin@intel.com>, <linux-hardening@vger.kernel.org>,
+	Kees Cook <keescook@chromium.org>, <netdev@vger.kernel.org>
+References: <20230816140623.452869-2-przemyslaw.kitszel@intel.com>
+ <202308170000.YqabIR9D-lkp@intel.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+In-Reply-To: <202308170000.YqabIR9D-lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ZR2P278CA0065.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:52::6) To GV0P278MB0163.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:710:2f::10)
+X-ClientProxiedBy: FR3P281CA0154.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a2::7) To BYAPR11MB3672.namprd11.prod.outlook.com
+ (2603:10b6:a03:fa::30)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -74,103 +91,153 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV0P278MB0163:EE_|ZR2P278MB1130:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee0aa2f1-0e32-4be9-f2fa-08db9fbfd58c
-X-MS-Exchange-AtpMessageProperties: SA
+X-MS-TrafficTypeDiagnostic: BYAPR11MB3672:EE_|SJ2PR11MB7619:EE_
+X-MS-Office365-Filtering-Correlation-Id: 36e1886d-ecbc-413e-4ccd-08db9fd731c7
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	E900Go6dsA3zzNSq1UO42M6CN0Rf3S3zRiDCr+itCC3m4N2+XtSSMKcs3DrlIJks2PXjmT2BU9gvLFgyEAck63UTSuW5jQ9n7b44T+qzIsuLEltda2yw+ii1v8h0BxjAyEWc7n0SX/rqgidW0+adXFqxTmL+dO5wJijwYcP5icOUqP9BCUp1dDfn6ey7sDT1sqCdk/X3vVypaF6DasdhZ5R0I+IOoXXNpQxzZhoDSGYwAiillVBMAZI3iaiNS6Gl+vRilBqf46poLZxlvjjPJ3VttQjo7esD5bLdA2L6JJdMaEQDIe/+dTTrq/7In/OTS7FAyG66KByn1qHIDbJzuriGlIMhwzuCju8dZUHVAzGmqTuc638xsWUY85J2YzZhPyv7FYQhsLEAcUyfjJe1nB0nbYZPE0sLjH5cgXKmckIAyvF9HiwnBjs+ejRCuTdoCJ4lqkKiD8jyQYE4FHzv8l0QfoBbUE/IqtEHZFdnYRHAqR/4Mwr7dQGl8szWEHV+OnGGnLW5wiJS7JLwumfs4c5vWd/hcBSukfS+HFtVXcFWJJB8gBH5K/GfeICv4b8rG37RNRqzhzpLjjMCV9jfgkM6xYl7uJtSeVzQLkgesdJMgfoB9cYdjj9Jo+d8bpO+2ZlU5il5h9WOQuHvA6TShg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV0P278MB0163.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(39850400004)(366004)(346002)(376002)(451199024)(1800799009)(186009)(8676002)(6486002)(41300700001)(66899024)(6506007)(53546011)(8936002)(478600001)(2906002)(66946007)(66476007)(66556008)(6916009)(54906003)(31696002)(316002)(786003)(36756003)(38100700002)(2616005)(5660300002)(7416002)(31686004)(83380400001)(4326008)(6512007)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: UKC7Y3giFsSw/POkBK4zqQqcxs3R04Dgwe7e63TQhrgdSgoRQ8dOTyEZPqUnydg9CUdOO3H86MjxAuvKFWdOyyrBKwQO30qe/vw5YvpXkoosIqbMc7/zdh3BOD5qTRD/vbFbiyKP1ofuf2GW9qK+Qnuo58hI6WKpIXp3loaT/5WqEI8jE8LymmObvGSO2A2aVgchPgnIg6OwSot6cqpTLjkBi0e2KcQxExDxArafckpp+mYUHrNI+jf2OR4Masp2sn4GFbzwYJL5jQ5fydJlROgsOLbX0fDwyJDxiM2kfzhfJqjLGy1lm5F67R6C2kuFOHB3Gn7BlN9sdOgWZHJhezUzM8ZgVPc+1LT8ARtKhe46QdZl6UXhyFmwGUKGxD3jiNbG85hZueIiesfPNHuqg6efuYlngEnl92RfC/dkxIhqfqBpiB1atmEwyoi0cqs8oWhkWitKrL7h4seKZPMSB4UGHXlzRfLUH3tFzrGwa6TlfcIL5mMm/lG5vgq1LmbblsuixcGSAPWY9Fq/FeAvEEudwRoInLVeafyS5hK61xx+hBaq9CrEOP9UjvP2XNId8Q6Qt6ksl6+sjHi/AGLf/QGGB13ztQ9NmwpZX1FO5U2v4HF3KwlMWmLotL9GB7/3Y0QgqiuVIwd83eNeU2yDA6bKxjTLw+tiMASPG8C526o=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3672.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(136003)(376002)(346002)(39860400002)(396003)(186009)(451199024)(1800799009)(31696002)(2906002)(83380400001)(26005)(86362001)(478600001)(6506007)(6666004)(6486002)(2616005)(6512007)(53546011)(36756003)(966005)(5660300002)(41300700001)(54906003)(66476007)(66946007)(66556008)(316002)(31686004)(4326008)(8936002)(8676002)(82960400001)(38100700002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Mm01QW1WVjBKNi9mWXJOWXdDTVkxZGRERS9EOHR0bmpVNStQN0hCT0QwVmZh?=
- =?utf-8?B?SHowTVdaQmZkeFpSemFXejRya1V0RWJOSGdEa0wrbEloQmk0WUM3Y1N0N2NX?=
- =?utf-8?B?VGJBcmIySWw0U2lEbFc2bmZRUk8yMXdONitjZDF6OEllUDNQOE5jVGhEY3pZ?=
- =?utf-8?B?SnBGN2NycUNiRVZLZEhPVDRxVVJqYTZERWQ0YVFUNEtQeU5VUElsVkdVVkl1?=
- =?utf-8?B?SlFmUi9Fa2MydTJlY3hSRlZFMkd5bUtLaVM3cktMeUNmNm1JZE9oMm9XSFNT?=
- =?utf-8?B?LzUrYmhlQ3hXc0h1eDJkLzZpbndBbzc0VlpvSzdWSUJUYldJZnRDZDczSVBv?=
- =?utf-8?B?eHZMcGlUUkR2a2NGbFVpQ0tOSUpmRmFCOTBZVmlVeG1DSENudzN5STlDMFU1?=
- =?utf-8?B?bTRPMXJkeVN5M2xqaFVNTWVnb1ZKdlMvK1l1cENIQkJQRnAxOWNETmxOaVIv?=
- =?utf-8?B?cG9aTFdsa0xMMC8zQVdzL2x0YXFvb1hla282ek1zZktrbkFsaUVUbXdlK2hr?=
- =?utf-8?B?RWFYQk8wVXBGN0ZIWUlyY3lzQkNZbWZ0ZG94MGRXeHJsd1crQ1YwdG4xbkJY?=
- =?utf-8?B?ZXRvL2xNVUlQSUdSVUw3cVJtRWR2NUFtV09oLzltaXB6bURubU5CbFBpY2dG?=
- =?utf-8?B?N2FmRE02S09xZzU3UFoyK1VGYSs2UWFFMHR2YW1aQjI4VlZjcEJwczhQb3dM?=
- =?utf-8?B?M0oxUGFLTXFiZ2dNQ3pYbGZ4eWI3ZHZiblM4ZWVHYzBMWXplUnVKMjk0VnlQ?=
- =?utf-8?B?bTR2NnVrVFhicjZKVDRwRDVCTFplcmIvZ2lndkdDalFvVnhicWozVW90V0s2?=
- =?utf-8?B?NFBUTFAwK0F1clNPb3l4Q3lrNDA2YmFpa24yQlFQQUhZa0NKR3ZYRHRadTVt?=
- =?utf-8?B?cEI5anVBUnYzaWxvZnpKYVc3RENsN0syWWdleDBUa25ISVNiYVdWS3ZmSVpi?=
- =?utf-8?B?bVZHVXVNWEEzYUVwR2t0aVdzbjhBWVhQNi9jdTRCWFBuOXFFSEo2VFk2RmMx?=
- =?utf-8?B?QWR4UWs0bEV2SzVVb1M3ajI0amN2NGtWK241dVluL3RiKytqODRoN3o0M1ln?=
- =?utf-8?B?UUs4bUhmelM4TEVndzFRSSttdUpqcnlRMml1NFlEejIwdXg0RU9pU3UzMEFM?=
- =?utf-8?B?dVFOWlFqODU2TVpPaFJIamE1Rm9QdDFzYzZFU1drdmxTbVRtUWU5SEZ6QkVN?=
- =?utf-8?B?N2lVUjc3em90V2Fiekl2R3Q4M1ZoRkZEUG42dVl5VGVFSEl0Um91azRpcGJo?=
- =?utf-8?B?Z2MxdWpPdSszaTRwbXljeWJXM3RDQjlXZ0RuOVZXVW5JbGUweDJ2K283YUoz?=
- =?utf-8?B?VytIeHBsa0NXNHdYdzZvQVN0OFhOK3ljOHFxN21EWWFvbCsvRWkxMittK3JN?=
- =?utf-8?B?ZC9TMEU5UkNGMGR2SGlKL25oZEZJd3I4Q2FtUTBOaWVTZEFKUlM1R1dkNnZD?=
- =?utf-8?B?Q3l1VWJydURBTkR3MDlWOVM3bnZBUW92eXRLb2Q5UDhRbERhVkFCYnRmclpS?=
- =?utf-8?B?WGN2UEExTUgvd0RVOEJnZVhKK2kzN01BVnNlYXVsSmlJaFQyWjNYZE1MSlVi?=
- =?utf-8?B?NGtFbGc1T2hwZ2oxY3JENTJGcXJna0RqVXpQQ1JycmR0N3FvMjVWSDhaUFVm?=
- =?utf-8?B?NFNjeEhOVFcvMXV3SkwyYkNJaXQ5Rkd5MEt4K1RCazZwc2ZlUFJoK2dqNU45?=
- =?utf-8?B?Y2loUjhaUDk4V0pkeWVkaGJQN2ovb3RzVkhtNkNBTStmM1l1a2JQVEphVmJW?=
- =?utf-8?B?MVlXTVA4R25LalphYzFrVE1hV00rckxvRWlwdE9IMW0wL0tkci9uLzJRYTBG?=
- =?utf-8?B?RlpMSXNpNGcrTTlTY1JxNE5lVzJvSmF3UjVvdkhiVG9wU0FSYmNTT04yVFFB?=
- =?utf-8?B?OHRVN3BOdjRFdGEvWE9vV1VjTzF1K2o4UnN0OHAwOXBOZEloRkMvbnFwdmhu?=
- =?utf-8?B?cFU3aDdYZUdRN0ZublZ4aGF1R04zaGtJR29lZlVmc3BpUGRPSXV6YlUydVhm?=
- =?utf-8?B?eXFKOWZ4YkJISzdEM0pvK1BOYjlMSGt0VGd3NkRPV0NvbXNHMTh4NEg3ZVgy?=
- =?utf-8?B?bm96aDhyb2Z4VDRGQzhpNDBmSlJNZWRla1plaXNqWncrVmM3dmRwc1pmTy90?=
- =?utf-8?B?WjhHQjBZMW9iMk1FRTgxV1plcmhtZXdESkZ4YjRaU0hxYmxiNmRQRTFYclBx?=
- =?utf-8?Q?4ynYIbz/lGOS2m9GOsjiXlquMGcD3aELiwyoIOSB/slD?=
-X-OriginatorOrg: usi.ch
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee0aa2f1-0e32-4be9-f2fa-08db9fbfd58c
-X-MS-Exchange-CrossTenant-AuthSource: GV0P278MB0163.CHEP278.PROD.OUTLOOK.COM
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WElxYzJ1RXRWZWhNNkM4U1AvU0NjV0FTbld1YUxMMWRLR1BzZ1JPY3pQamhi?=
+ =?utf-8?B?ekQyWTA2a2xmRmR5enkrZEpMaHkzM1FWL3FWOXArOEp2WkdYTjF0UXA1UjJi?=
+ =?utf-8?B?emJkWGdSenRFWXlDUXFvY3ZaQ0h0L3FITitWbUd3T1JDUytqckxraDVUZi9l?=
+ =?utf-8?B?R2w5V0NuZTBJQ0FFYWlNWEJlNlhHL3FMaTJMNURQK0paakxpSWJZYXBRemVl?=
+ =?utf-8?B?S1BZcU1oWndrR1lrU005dFRTL2VqZDk3ZEFYVC91eDQwdXBwL3VGcGtPVitk?=
+ =?utf-8?B?S0VBZmdRUmZjd1g1SXZXRHRtWkpCQ3VzZXJadzh6YWY2ZkxWY0hjSnlhSWE2?=
+ =?utf-8?B?L1dQMjRoZmovVnNlNmx3TU04MEZONUdmTTdERVpYZnRCcDBYeDQyZG11WDN5?=
+ =?utf-8?B?NEEzK2FicHZVRXdVRFc4L1E2WHZyUXVoTjAwOHpna0w2aTloY0gzL1NpMkRp?=
+ =?utf-8?B?eW1jUWR5MmpmdHZuK3hzM25icUM2cEFlcTN6ZVZPMHJ4QVNwbmNFY01lMGdp?=
+ =?utf-8?B?UlBiUGhDR1hUR0x2T3FzcjBUaDNTS2M2cTZvVFlrc0dlTWxRazZLQVU1eW05?=
+ =?utf-8?B?L0trNTcwWmxDK09KMGZlaU9OQ1VkMjhwOXR1dVArZ3Q2alNJUUxVSlp0bC95?=
+ =?utf-8?B?OXRBTHlpYXMwR3dnajhnNzJZdk9lTkNEUWsxRVUzUk8yeEl1ZzN0dmRqRzZw?=
+ =?utf-8?B?SDNtSndpRWtYNzVqL1dReHpQOTRNd0ppeHZLN0QrK3Fmdit3QVRBMXQzaFdL?=
+ =?utf-8?B?S2ZWeHR6bmZjeVgzTk5STlFacTFaYklNYlByVkE3OFExRE84TnhGQ29tWWpE?=
+ =?utf-8?B?WjlPY2JrdzVQeUMzZnNKRVBjaVkvcm15MzFWOUJXSCthZzRXenB5ZkN5YUtS?=
+ =?utf-8?B?cy9xMGFHd2dYTEFKaG5ZZ1NTSzlJYW9SamxpSVYwdzJPVnhwNGtDMDVSVmVM?=
+ =?utf-8?B?VnNHN1ZnbEFLVVVBRGU4NVQ3MnFNS1o4TVE4ZEpsWjh5VERMR3RaZEtZTWE1?=
+ =?utf-8?B?ZSt6NkIvYWtOZENwcUxPRzlieWIyNXpCdFVWQ0h1V0FiLzdZakNaWWJaa0pa?=
+ =?utf-8?B?RnUxSklOUmdjSHNXQzBUUmJzTmNGdDd5Q0k2QklEcGp5OVNSMnBBTFVQb1Y1?=
+ =?utf-8?B?a1ovakJCOVU1NFpRZE4zZmRLT3J5aXZhM0RLd29xb0g5eHk1SVNaaStuVXBr?=
+ =?utf-8?B?cmhEVlVPd1RuS3hFakpKK2x5VDJNUjdFYkFBVzJ0ekt0ZVZETGtNL2xtTVlG?=
+ =?utf-8?B?N0VyT1RCYStuNmpvNUc2MFNJd09vR2FPVzlQbWE2eGlQMnoxVmU3MVl1S25l?=
+ =?utf-8?B?N3o0cHZSWmR2b0VBbmhBWEJlUXJjbjZ1N2JDYkd3OCtuWGxTTDB5YTBPUWNZ?=
+ =?utf-8?B?SDk1UWl1VWU4b01PeGxndVZ0WVpwanQvd3h4c05JOU14Q1dBU0hHaHZQVUdi?=
+ =?utf-8?B?d2pNU0FrdE9GR05XVjJKY3pWRy9OY2NEeFo3aExHbFcwUUNJSmQydnRlcUNB?=
+ =?utf-8?B?Q2hocjVweEowYStJTk1UdzF4WFJhaHNscSsrY1oyaHh3alV1RHZkeDNpeG9i?=
+ =?utf-8?B?NXNuMDIrd1FuRTFRVXBEWkZaL3RxUTlFUGcyUWE3R2VlbUt6VGFZeE9WZzNr?=
+ =?utf-8?B?VmhKdkVreGE1cGVYYVZZY3E5NExka1VRZUdQeVdQVk8rVE5lWTM2c3FaVjB2?=
+ =?utf-8?B?cmZhM3p0OVYweXJpOWR0Y2lYZkc2ZU5RQjdadUMzcnJXS25XU2x1MWY2czBC?=
+ =?utf-8?B?Si9WWEVQaGRZMlViZkZXL0hFQTdVRmh1TzgyVVpxR1loejhJTEZvbVVkcmhk?=
+ =?utf-8?B?WThncVJDOGRmeXcrSEd1MzRNTytEdFJ4STJ4dFZpUkF2NDdYeVJyZjBTa3NL?=
+ =?utf-8?B?MVFWTG4rYnZ1b29pQ0RxbGlCcWR6ZTB2QWU0UUQ4TzNvVTJSWTJNV1VSd29a?=
+ =?utf-8?B?bWVZRGFTMk1XeDBJekVoa1NzdnJrREI4Qk0zNmtxQ0VvbGR2VVhGZlpqMlRV?=
+ =?utf-8?B?bWpsUjZrS2loajBxR2dzYzNPMzdhc1hvd3lXWWxkemtjMGFqNUQxS2Z5VWtm?=
+ =?utf-8?B?Vlc2WGFCR2F6Y2ZqZ0RnZXUwMHo4dXBjKzRKbG5hbTNrek5DMWo2QkF4RzBW?=
+ =?utf-8?B?S2pLbldWMmZVaUtMNFUrQmg2QW9xaXhzZk01cDJvWDZ3S3E5UVlqZnpFMFYv?=
+ =?utf-8?B?blE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 36e1886d-ecbc-413e-4ccd-08db9fd731c7
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3672.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2023 07:50:47.4903
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2023 10:38:00.8403
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 95bdc5ac-afb5-4881-801b-3874f365cd6f
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rRM7QUSneEOx/4S9JFGpu7MtROvVZEZtWTNKMY2niWvOIIU90nCCR5Kbt2ct+zUT
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR2P278MB1130
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: VKX7ABV1fPhwEZa2SXlIuKCiNAPHTkyFWe/IZY8qcS55JLdqic0/RFm6NqgNM3gxJubV01XTNOwq5HMPIHV7sHANdNRN2rAlbaxbld9wU4g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7619
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-
-
-On 8/18/23 03:30, Andrew Lunn wrote:
-
-> So you have an application in user space wanting to use this
-> protocol. I assume it is using BSD sockets to communicate with the
-> kernel and the protocol. 
-
-No, at the moment it uses procfs or a shared mmap'd chardev buffer.
-
-> So you need an API below sockets to get this
-> traffic, i assume a whole new protocol family? But you have an API on
-> top of sockets for TCP/UDP. So i guess your protocol somehow
-> encapsulate the traffic and then uses the API your are proposing to
-> send over TCP or UDP?
-
-Yes, we take a message/value from a user space app and send it to
-other nodes via UDP according to the chosen protocol. Mind that
-the term "protocol" might be misleading here as it can be confused
-with classic network protocols. Our API offers distributed services
-such as failure detectors, consensus etc.
-
-> Which makes me think:
+On 8/16/23 18:35, kernel test robot wrote:
+> Hi Przemek,
 > 
-> Why go through sockets twice for a low jitter networking protocol?
+> kernel test robot noticed the following build errors:
+> 
+> [auto build test ERROR on 479b322ee6feaff612285a0e7f22c022e8cd84eb]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Przemek-Kitszel/overflow-add-DEFINE_FLEX-for-on-stack-allocs/20230816-221402
+> base:   479b322ee6feaff612285a0e7f22c022e8cd84eb
+> patch link:    https://lore.kernel.org/r/20230816140623.452869-2-przemyslaw.kitszel%40intel.com
+> patch subject: [PATCH net-next v3 1/7] overflow: add DEFINE_FLEX() for on-stack allocs
+> config: x86_64-rhel-8.3-rust (https://download.01.org/0day-ci/archive/20230817/202308170000.YqabIR9D-lkp@intel.com/config)
 
-The idea behind the system is to be split: user space apps are
-normal apps that can present arbitrary jitter, kernel space services
-are isolated to provide low jitter. The same applies in the network
-via a SDN based protocol which prioritises our traffic. By having
-end-to-end timely communication and processing, we can achieve
-new efficient distributed services.
+Rust folks, could you please tell me if this is something I should fix, 
+or I just uncovered some existing bug in "unstable" thing?
 
+Perhaps it is worth to mention, diff of v3 vs v2 is:
+move dummy implementation of __has_builtin() macro to the top of 
+compiler_types.h, just before `#ifndef ASSEMBLY`
+
+Przemek
+
+> compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+> reproduce: (https://download.01.org/0day-ci/archive/20230817/202308170000.YqabIR9D-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202308170000.YqabIR9D-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+>>> thread 'main' panicked at '"ftrace_branch_data_union_(anonymous_at_include/linux/compiler_types_h_144_2)" is not a valid Ident', /opt/cross/rustc-1.68.2-bindgen-0.56.0/cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.24/src/fallback.rs:693:9
+>     stack backtrace:
+>        0: rust_begin_unwind
+>                  at /rustc/9eb3afe9ebe9c7d2b84b71002d44f4a0edac95e0/library/std/src/panicking.rs:575:5
+>        1: core::panicking::panic_fmt
+>                  at /rustc/9eb3afe9ebe9c7d2b84b71002d44f4a0edac95e0/library/core/src/panicking.rs:64:14
+>        2: proc_macro2::fallback::Ident::_new
+>        3: proc_macro2::Ident::new
+>        4: bindgen::ir::context::BindgenContext::rust_ident
+>        5: <bindgen::ir::comp::CompInfo as bindgen::codegen::CodeGenerator>::codegen
+>        6: <bindgen::ir::ty::Type as bindgen::codegen::CodeGenerator>::codegen
+>        7: <bindgen::ir::item::Item as bindgen::codegen::CodeGenerator>::codegen
+>        8: <bindgen::ir::comp::CompInfo as bindgen::codegen::CodeGenerator>::codegen
+>        9: <bindgen::ir::ty::Type as bindgen::codegen::CodeGenerator>::codegen
+>       10: <bindgen::ir::item::Item as bindgen::codegen::CodeGenerator>::codegen
+>       11: <bindgen::ir::module::Module as bindgen::codegen::CodeGenerator>::codegen
+>       12: <bindgen::ir::item::Item as bindgen::codegen::CodeGenerator>::codegen
+>       13: bindgen::ir::context::BindgenContext::gen
+>       14: bindgen::Builder::generate
+>       15: bindgen::main
+>     note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+>     make[3]: *** [rust/Makefile:316: rust/uapi/uapi_generated.rs] Error 1
+>     make[3]: *** Deleting file 'rust/uapi/uapi_generated.rs'
+>>> thread 'main' panicked at '"ftrace_branch_data_union_(anonymous_at_include/linux/compiler_types_h_144_2)" is not a valid Ident', /opt/cross/rustc-1.68.2-bindgen-0.56.0/cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.24/src/fallback.rs:693:9
+>     stack backtrace:
+>        0: rust_begin_unwind
+>                  at /rustc/9eb3afe9ebe9c7d2b84b71002d44f4a0edac95e0/library/std/src/panicking.rs:575:5
+>        1: core::panicking::panic_fmt
+>                  at /rustc/9eb3afe9ebe9c7d2b84b71002d44f4a0edac95e0/library/core/src/panicking.rs:64:14
+>        2: proc_macro2::fallback::Ident::_new
+>        3: proc_macro2::Ident::new
+>        4: bindgen::ir::context::BindgenContext::rust_ident
+>        5: <bindgen::ir::comp::CompInfo as bindgen::codegen::CodeGenerator>::codegen
+>        6: <bindgen::ir::ty::Type as bindgen::codegen::CodeGenerator>::codegen
+>        7: <bindgen::ir::item::Item as bindgen::codegen::CodeGenerator>::codegen
+>        8: <bindgen::ir::comp::CompInfo as bindgen::codegen::CodeGenerator>::codegen
+>        9: <bindgen::ir::ty::Type as bindgen::codegen::CodeGenerator>::codegen
+>       10: <bindgen::ir::item::Item as bindgen::codegen::CodeGenerator>::codegen
+>       11: <bindgen::ir::module::Module as bindgen::codegen::CodeGenerator>::codegen
+>       12: <bindgen::ir::item::Item as bindgen::codegen::CodeGenerator>::codegen
+>       13: bindgen::ir::context::BindgenContext::gen
+>       14: bindgen::Builder::generate
+>       15: bindgen::main
+>     note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+>     make[3]: *** [rust/Makefile:310: rust/bindings/bindings_generated.rs] Error 1
+>     make[3]: *** Deleting file 'rust/bindings/bindings_generated.rs'
+>     make[3]: Target 'rust/' not remade because of errors.
+>     make[2]: *** [Makefile:1293: prepare] Error 2
+>     make[1]: *** [Makefile:234: __sub-make] Error 2
+>     make[1]: Target 'prepare' not remade because of errors.
+>     make: *** [Makefile:234: __sub-make] Error 2
+>     make: Target 'prepare' not remade because of errors.
+> 
 
