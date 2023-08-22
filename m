@@ -1,100 +1,101 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2088E4A10
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Aug 2023 18:57:30 +0000 (UTC)
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21C222B4D
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Aug 2023 11:55:37 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-99bcfe28909so464209466b.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 21 Aug 2023 11:55:37 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5318F8F5A
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Aug 2023 09:31:55 +0000 (UTC)
+Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BDEECC9
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Aug 2023 02:31:53 -0700 (PDT)
+Received: by mail-ej1-x64a.google.com with SMTP id a640c23a62f3a-94a355c9028so294130466b.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 22 Aug 2023 02:31:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1692644113; x=1693248913;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=J1bPOG4b+YloUifqT7Rk+dQEUBL9OO+h1q+JajXVUOs=;
-        b=gO+ySJZQvHoGjzmlV9IPCqXRevhrfXNHPe6MA3P1hH9xZxOHLSxnfOvsflXz1XlHks
-         tMLbSxSDxFcgbtE7GtT4eNcWw9EOJozEdSVsjQqA5Drlsk/utGXkzgQyho39oU+e2hYw
-         wkJvrIGjEE9cSRvFMVRbwmDKhgJ6k44fMAgnzzi1SK3h4uZWQh3plH8M13qzGhSoFPv9
-         /GaG4sGukwDJeCVIb/USlGGEbIfq7JAU/zggAljo7A27e/V5AaSKChKH5DzNO91htni2
-         ZtKK7mz747oSQ1AYUw0X+AlYTD4I8erEz0e8X813Hzbl1ZUUfAgLB14a5Ce2GBg8JNKQ
-         R2vA==
+        d=google.com; s=20221208; t=1692696712; x=1693301512;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vf+urCuo+i/PGdGVpq57Y5tRY0x9kDJ3rrqszJUUwro=;
+        b=NX33VQFT1swrupwKm7gCk0QP/aKbrrRVR6vV8NelDdC7bkFRVvmsbaL75lSpQ+ba0S
+         BBvoYWXA4c6DekkcFQQvwpGKHtR37hVcpPF859hxDRelIRj9gn68mg9NnOWM3+Ofui/u
+         hcmhLCUbbHEYY9vsy/S0nDfrnleUNd0Y6YDW88cQcKX2r7puHl/DLbIJcJq5liPMArQx
+         B9UXZVbrtTKJ+Elvp8lRhIa3fKWhySQxI8d0mhcL5A88vw54lnskKLBQWgnqj4B/S4GX
+         aDUQ1KiLsthK7YA5BIxjvpEVVpQC4uy1ZgFpgOnpnh/nvkRzq8FPxhwpNqDy/BdpZzZP
+         LEOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692644113; x=1693248913;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J1bPOG4b+YloUifqT7Rk+dQEUBL9OO+h1q+JajXVUOs=;
-        b=Oe3boCei0Nk7ekOhUHfnnYK20PdsE9aCPQQfTMzK1P7PI4PJ02FRhxBnX3ci66HXMh
-         bK1UvqM4nbp1SQzBnUYCgXev5tZydOIyISZuYnBYMxzyW9tnDvFFLlrSEiVRGzWWeCy4
-         FAN6jl2lj9EpNqibQNpLJREPNiiTOY7mGu+chLmAkC77FY7K2EAZQVgRnHHpgcvMCTLr
-         wGsL2so+vYJWitKhQd2Swm6qWyW5QOehydkzFyXhkqIDgrJQe6YgFMlE437593+qQZkK
-         ZYjC0e18kp/1s7Yjs+5jRGGjb/K9Rc+UOoH1kDsP2aIKG2u52y7p+Cumn1kQLNuPPh0+
-         lz4Q==
-X-Gm-Message-State: AOJu0YzZHoai7jby24bBlzaJS6qbaZHKCgDcnQmnWNnrB4cgHIQIJgDR
-	jtZaxDVO4IhJTG0/Nor/QeXPMK1RJFyIhRzQDoQ=
-X-Google-Smtp-Source: AGHT+IEthwuxN1Toa5Mr0lSr2fZ63x5sTSrzhhPevyvctTWOgtn884Tztzzip0ASVSL9Vn9A2tb2hg==
-X-Received: by 2002:a05:6402:2025:b0:521:ae63:ee63 with SMTP id ay5-20020a056402202500b00521ae63ee63mr5925942edb.16.1692643611060;
-        Mon, 21 Aug 2023 11:46:51 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id ca3-20020aa7cd63000000b00529fa63ef6fsm4815116edb.57.2023.08.21.11.46.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Aug 2023 11:46:50 -0700 (PDT)
-References: <20230711093303.1433770-1-aliceryhl@google.com>
- <20230711093303.1433770-2-aliceryhl@google.com>
-User-agent: mu4e 1.10.5; emacs 28.2.50
-From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, Tejun Heo <tj@kernel.org>, Miguel Ojeda
- <ojeda@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, Wedson Almeida
- Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun
- Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev, Wedson Almeida
- Filho <walmeida@microsoft.com>, Martin Rodriguez Reboredo
- <yakoyoku@gmail.com>
-Subject: Re: [PATCH v3 1/9] rust: add offset_of! macro
-Date: Mon, 21 Aug 2023 20:43:08 +0200
-In-reply-to: <20230711093303.1433770-2-aliceryhl@google.com>
-Message-ID: <874jksp71i.fsf@metaspace.dk>
+        d=1e100.net; s=20221208; t=1692696712; x=1693301512;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vf+urCuo+i/PGdGVpq57Y5tRY0x9kDJ3rrqszJUUwro=;
+        b=EzmKHWkCUqbBw8Zae27Jw3LFWIDWem0rnzfYR9Isclu4A43IldcFbA2Vt00zayltVF
+         UcwDYH+KWEVhM80L9A8UK/5ZAvk0uplKLNLRsVasoo1mFqwf67GPZJSWGeJPGubordeb
+         JWsE/4ZqeG/0hhRVSBtNyt51Aw+BTSlIt8R17MrOgOX47pZCdHbMTJiNU3DgymcHls81
+         DGZS+nGx1tAUC4IUz2yQB2VA0MzptVCYS1XLQvljkBnQ0IYo/l+ar7RfNtZQ6zinndCm
+         LJkxvl5kA0Jv2Crz0FZduMb4TBzZMA9k+mzsW/wjX2sWEgpN3ifSXgQDONs2jtrQ/RNx
+         ILvw==
+X-Gm-Message-State: AOJu0YxkD2cXB1WzrIrDFKLq1F0izSraicC9j2BE28dI8bDWSYyMkv8O
+	bdAF8/noCqxVUT++3ZvB1DbPOuHe8OnvGs0=
+X-Google-Smtp-Source: AGHT+IH7jfczo1ag7cPwrHC5eR3B4Cg6Z+4gTxcX+oGFl3qww4kgIT0tUDCiQT3rTAsmf3QNu+i9aP8coHB96vA=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
+ (user=aliceryhl job=sendgmr) by 2002:a17:907:a1a3:b0:9a1:bce1:e8f7 with SMTP
+ id om35-20020a170907a1a300b009a1bce1e8f7mr3999ejc.5.1692696711766; Tue, 22
+ Aug 2023 02:31:51 -0700 (PDT)
+Date: Tue, 22 Aug 2023 09:31:48 +0000
+In-Reply-To: <87r0octho8.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
+Mime-Version: 1.0
+References: <87r0octho8.fsf@metaspace.dk>
+X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
+Message-ID: <20230822093148.3478340-1-aliceryhl@google.com>
+Subject: Re: [PATCH v1] rust: add improved version of `ForeignOwnable::borrow_mut`
+From: Alice Ryhl <aliceryhl@google.com>
+To: nmi@metaspace.dk
+Cc: alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, patches@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
 	autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
+Andreas Hindborg <nmi@metaspace.dk> writes:
+>> +    /// Borrows a foreign-owned object mutably.
+>> +    ///
+>> +    /// This method provides a way to access a foreign-owned value from Rust mutably. It provides
+>> +    /// you with exactly the same abilities as an `&mut Self` when the value is Rust-owned, except
+>> +    /// that this method does not let you swap the foreign-owned object for another. (That is, it
+>> +    /// does not let you change the address of the void pointer that the foreign code is storing.)
+> 
+> How about this:
+> 
+> "For a smart pointer P<T> this method provides mutable access to T if
+> &mut P<T> would allow mutable access to T. Otherwise it provides
+> immutable access to T."
+> 
+> The point is that the method provides access to the pointee, not the
+> smart pointer itself. In fact it is perfectly fine to do a mem::swawp()
+> for the pointee in the case of Box and depending on interpretation the
+> sentence "does not let you swap the foreign-owned object for another" is
+> confusing.
 
-Hi Alice,
+Yeah, I agree that the phrasing is somewhat confusing.
 
-Alice Ryhl <aliceryhl@google.com> writes:
+How about this:
 
-> From: Wedson Almeida Filho <walmeida@microsoft.com>
->
-> This macro is used to compute the offset of a field in a struct.
->
-> This commit enables an unstable feature that is necessary for using
-> the macro in a constant. However, this is not a problem as the macro
-> will become available from the Rust standard library soon [1]. The
-> unstable feature can be disabled again once that happens.
->
-> The macro in this patch does not support sub-fields. That is, you cannot
-> write `offset_of!(MyStruct, field.sub_field)` to get the offset of
-> `sub_field` with `field`'s type being a struct with a field called
-> `sub_field`. This is because `field` might be a `Box<SubStruct>`, which
-> means that you would be trying to compute the offset to something in an
-> entirely different allocation. There's no easy way to fix the current
-> macro to support subfields, but the version being added to the standard
-> library should support it, so the limitation is temporary and not a big
-> deal.
+/// This method provides a way to access a foreign-owned value from Rust mutably. It provides
+/// you with exactly the same abilities as an `&mut Self` when the value is Rust-owned, except
+/// that the address of the object must not be changed.
+///
+/// Note that for types like [`Arc`], an `&mut Arc<T>` only gives you immutable access to the
+/// inner value, so this method also only provides immutable access in that case.
+///
+/// In the case of `Box<T>`, this method gives you the ability to modify the inner `T`, but it
+/// does not let you change the box itself. That is, you cannot change which allocation the box
+/// points at.
 
-I think `#![feature(offset_of)]` is available in 1.71.0, can we use that directly?
-
-BR Andreas
+Alice
