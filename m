@@ -1,139 +1,95 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC2A8F5B
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Aug 2023 09:32:00 +0000 (UTC)
-Received: from mail-ed1-x54a.google.com (mail-ed1-x54a.google.com [IPv6:2a00:1450:4864:20::54a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B0E3CCA
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Aug 2023 02:31:58 -0700 (PDT)
-Received: by mail-ed1-x54a.google.com with SMTP id 4fb4d7f45d1cf-52559f33b07so2785433a12.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Aug 2023 02:31:58 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2849C8F78
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Aug 2023 11:48:31 +0000 (UTC)
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D5610C8
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Aug 2023 04:48:07 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4fe8c16c1b4so6666029e87.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 22 Aug 2023 04:48:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692696716; x=1693301516;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=u/W6jtJXaUE/gh/n+1FodWgnqTe/idj5hBc66GJX2bo=;
-        b=Fd/2xyqlDK8ctp+IphjXZfkwLM3vpM3cfpY5hhlTJ6PcnNjQz2e0EFZLcmmWlL0155
-         g7HjV35Qm7PeAa//XiJE6Mgd4FHd4HSSDmNgNIjtqJerMRqcjtYEYP3y67QaZfMAv0dl
-         GdU0Vm7U7ahsDeeayRohyZE8DyzXdcHnfe1VTTgkbSeCzEsMlnQ/3BQSNuELCVdmyXOr
-         vBhOCuLCAH8yQR+ucvwyHyTR/Mx4fH0k+S6bx3V6KRMODn1984frfmoj0y9FpTwzl7dA
-         H8offrTWZ4xwq1KDOYCV9Yu4ulRUy+BbeaRsZdQtvvYpCllK92eB/IPtopx37Uq5FGD+
-         nydg==
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1692704849; x=1693309649;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
+        bh=uhIrFon087E3iYfZNnOqwEsuA1QGwXh+7swXilo4wNE=;
+        b=MYo+yKWLa81z+XWwwjzVYCoI07QUk84F37CFOstTIT0Olw3mmnSPMI2BwhGVAuQeib
+         IqXlcYHpUDLDUko026HKd4AcSIeqtPooSaGhK2A88c0S2uw3UTdvlTIB+kO13CRZtB5P
+         Mt1g72j1MQ5ircxEomxpjmSKXlbFRrvKTnEipwqfc4LN+oCJNQqGD0Dp6COdIJYhWna8
+         xMHA7oSXMJco9TrwMuOlyqiAN76cwHuRfol0uGnMVUI5OhpaWc6H901blMfKJtbMMK76
+         8uCmpeBYJBZdWhDEFgtuYEyG7LaGxEVK1rLNh6lduuwPisotDTc8aga/MzfxGGG3EWO2
+         uzlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692696716; x=1693301516;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=u/W6jtJXaUE/gh/n+1FodWgnqTe/idj5hBc66GJX2bo=;
-        b=bIl//jNQ3qPiJOG1xEb+itHkMZhrrU6MiApidCRcEF2VUdchAAivkLlaWyWKS7uNbp
-         Md380Sdfyz1GmAcTy6N+G3NixEL3Q1Ee4TPCg+UOB/iEhvWVDIbLDDVJRC6Tkt8pdWuV
-         HX+POZLUaMH79WzLrKIYe2Rng8mWIlmXWNn7QGr9SygdRRX9tRmcVif47wi05WUk0Kmv
-         gKPR3zzhFgIPKKF2TSYeLwpSCRC9hwZ8eI3O6KwWIbSby7PGtWYpf9ELu2p0I748TL+1
-         bLRgoYyRYf353X1YElXw3DFBiRtjnG14Xws1eIaZFBgBQyis79ixXPMffvCbLBkp3rEG
-         p1Jw==
-X-Gm-Message-State: AOJu0YxFs54otRUuF8hpRK0QA4rhX8lbIsMmvjst2SuI732HsttnDVs6
-	tFCXcJCF6txL1bizAKeniWQFhCyej0izjMo=
-X-Google-Smtp-Source: AGHT+IHU5+U+7RFLKURa2jqbhBEn2o6/mkJMJNhOerO0L9z5FZBO9RapI/AMbpvltVZlSY10g5zOZyZifzbKvKU=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a50:ab4f:0:b0:527:251d:f2ea with SMTP id
- t15-20020a50ab4f000000b00527251df2eamr54769edc.5.1692696716598; Tue, 22 Aug
- 2023 02:31:56 -0700 (PDT)
-Date: Tue, 22 Aug 2023 09:31:54 +0000
-In-Reply-To: <87r0octho8.fsf@metaspace.dk>
+        d=1e100.net; s=20221208; t=1692704849; x=1693309649;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uhIrFon087E3iYfZNnOqwEsuA1QGwXh+7swXilo4wNE=;
+        b=YEDv+2UEyYljn4N9NH63FleySurffBTO6GZM739whssaeiTsPf1NlmGsEsSKZnucw4
+         SRUyBunr+ZSGfiI8YPI1q5+rtT78+H7nTPf2A1dpbn1leMpLsdqL9NYcWxXmtutuNhwN
+         abhQbx6DYjvIJJXlWz/VXdmA5dfv0yI1MFL7Rp1z9UdPFNV4/Vl7ssPCmiS0+oFaOas9
+         JWCbAsq7vGd+Vx1NhfNEGKVT5zt0GxPblsMXqf727UW/TT36h2Ni43+3vStbZJxS1aiu
+         r9wKdPas5yFSe3xrA5HBRJ8UWL6Xv8aKEsJEtxNSFoKxJ/Z9Cph5CLx/jmqkiO0NNmNh
+         08DQ==
+X-Gm-Message-State: AOJu0YwUshCxNG4w/SVegKTpG0qAXc33yb41xYymfw9iqEDto2tw/hUr
+	JFwXxRmANto6jk6yuuPqsudOrQ==
+X-Google-Smtp-Source: AGHT+IHuAzW/pPPxCGL04jOEgbZm7KqKnU9xn7BXSLzQzVo0ZR2moNYaGphImjz9x3L1vE52LMDqRw==
+X-Received: by 2002:a05:6512:3b2b:b0:4fe:1bca:d921 with SMTP id f43-20020a0565123b2b00b004fe1bcad921mr8573241lfv.21.1692704848653;
+        Tue, 22 Aug 2023 04:47:28 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id o4-20020aa7d3c4000000b005255991c576sm7424753edr.66.2023.08.22.04.47.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Aug 2023 04:47:28 -0700 (PDT)
+References: <20230711093303.1433770-1-aliceryhl@google.com>
+ <20230711093303.1433770-3-aliceryhl@google.com>
+User-agent: mu4e 1.10.5; emacs 28.2.50
+From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, Tejun Heo <tj@kernel.org>, Miguel Ojeda
+ <ojeda@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, Wedson Almeida
+ Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun
+ Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev, Wedson Almeida
+ Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH v3 2/9] rust: sync: add `Arc::{from_raw, into_raw}`
+Date: Tue, 22 Aug 2023 13:46:56 +0200
+In-reply-to: <20230711093303.1433770-3-aliceryhl@google.com>
+Message-ID: <87r0nvs3hu.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <87r0octho8.fsf@metaspace.dk>
-X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
-Message-ID: <20230822093154.3478754-1-aliceryhl@google.com>
-Subject: Re: [PATCH v1] rust: add improved version of `ForeignOwnable::borrow_mut`
-From: Alice Ryhl <aliceryhl@google.com>
-To: nmi@metaspace.dk
-Cc: alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	linux-kernel@vger.kernel.org, ojeda@kernel.org, patches@lists.linux.dev, 
-	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Andreas Hindborg <nmi@metaspace.dk> writes:
->> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
->> index 172f563976a9..f152a562c9c3 100644
->> --- a/rust/kernel/sync/arc.rs
->> +++ b/rust/kernel/sync/arc.rs
->> @@ -232,26 +232,35 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
->>  
->>  impl<T: 'static> ForeignOwnable for Arc<T> {
->>      type Borrowed<'a> = ArcBorrow<'a, T>;
->> +    // Mutable access to the `Arc` does not give any extra abilities over
->> +    // immutable access.
->> +    type BorrowedMut<'a> = ArcBorrow<'a, T>;
->>  
->>      fn into_foreign(self) -> *const core::ffi::c_void {
->>          ManuallyDrop::new(self).ptr.as_ptr() as _
->>      }
->>  
->> -    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'a, T> {
->> -        // SAFETY: By the safety requirement of this function, we know that `ptr` came from
->> -        // a previous call to `Arc::into_foreign`.
->> -        let inner = NonNull::new(ptr as *mut ArcInner<T>).unwrap();
->> -
->> -        // SAFETY: The safety requirements of `from_foreign` ensure that the object remains alive
->> -        // for the lifetime of the returned value.
->> -        unsafe { ArcBorrow::new(inner) }
->> -    }
->> -
->>      unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
->>          // SAFETY: By the safety requirement of this function, we know that `ptr` came from
->>          // a previous call to `Arc::into_foreign`, which guarantees that `ptr` is valid and
->>          // holds a reference count increment that is transferrable to us.
->> -        unsafe { Self::from_inner(NonNull::new(ptr as _).unwrap()) }
->> +        unsafe { Self::from_inner(NonNull::new_unchecked(ptr as _)) }
->>      }
->> +
->> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'a, T> {
->> +        // SAFETY: By the safety requirement of this function, we know that `ptr` came from
->> +        // a previous call to `Arc::into_foreign`.
->> +        let inner = unsafe { NonNull::new_unchecked(ptr as *mut ArcInner<T>) };
->> +
->> +        // SAFETY: The safety requirements ensure that we will not give up our
->> +        // foreign-owned refcount while the `ArcBorrow` is still live.
->> +        unsafe { ArcBorrow::new(inner) }
->> +    }
->> +
->> +    unsafe fn borrow_mut<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'a, T> {
->> +        // SAFETY: The safety requirements for `borrow_mut` are a superset of the safety
->> +        // requirements for `borrow`.
->> +        unsafe { Self::borrow(ptr) }
->> +    }
+
+Alice Ryhl <aliceryhl@google.com> writes:
+
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
 >
-> I am not sure this makes sense. How about splitting the trait in two,
-> immutable and mutable and only implementing the immutable one or Arc?
+> These methods can be used to turn an `Arc` into a raw pointer and back,
+> in a way that preserves the metadata for fat pointers.
+>
+> This is done using the unstable ptr_metadata feature [1]. However, it
+> could also be done using the unstable pointer_byte_offsets feature [2],
+> which is likely to have a shorter path to stabilization than
+> ptr_metadata.
+>
+> Link: https://github.com/rust-lang/rust/issues/81513 [1]
+> Link: https://github.com/rust-lang/rust/issues/96283 [2]
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> ---
 
-I used this design based on what would make sense for a linked list. The
-idea is that we can have two different types of cursors for a linked
-list: immutable and mutable. The immutable cursor lets you:
-
- * move around the linked list
- * access the values using `borrow`
-
-The mutable cursor lets you:
-
- * move around the linked list
- * delete or add items to the list
- * access the values using `borrow_mut`
-
-The mutable cursor gives you extra abilities beyond the `borrow` vs
-`borrow_mut` distinction, so we want to provide both types of cursors
-even if the pointer type is Arc. To do that, we need a trait that
-defines what it means to have mutable access to an Arc.
-
-Alice
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 
