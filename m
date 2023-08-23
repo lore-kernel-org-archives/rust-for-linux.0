@@ -1,59 +1,64 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E5C8487
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 08:45:03 +0000 (UTC)
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 185A5268F
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 01:45:00 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-3fef56f7222so21184095e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 01:45:00 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310FCA934
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 09:14:59 +0000 (UTC)
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 489892680
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 02:14:55 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3fed963273cso27255625e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 02:14:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1692780299; x=1693385099;
+        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1692782094; x=1693386894;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=q2cgmL0Oxi/Ka+T0qRkNIQGy3DlLEIQoGhbZx1wxXXg=;
-        b=LonQ0vsOr7GJ73NzxO39Rbo6xOcF//DSk5ReABLOrEGbN2SFKmP7QBQ3Ds70B7+HH2
-         vitmIRgQeu+cIR3Orv/AtwdGik94Po1BMx7mkzP7N/Dv2Rjpeo/Qp6+l/ABU0oO1WARc
-         pxTAYpdnShdK8D803xL7MlB75J2uVsQdUeIT2tdR8lTgRk1VZ1GfPlmQJjs29YXm/1L1
-         05VQ9rzA5MBCGPXA7ZYPQRunb8JkSD/STinlo/0a19Pvv8bvPzHHutMnEOZVomTEQS5a
-         EVJpfwqiixoiRJ33Q0t5h39VHlf3gdSVMPiNpb2sKsWhfv43cXU5c3zEK5ePMtiRHjzy
-         Fr5Q==
+        bh=qiZlM8QEOpDTpRFMe/2/zEZ6wsyKpsV1KUA2VGwkVqc=;
+        b=TZmuqPNeD3vmbShzj7gSb9+WRe+VS3qWdT9gRNdlIP9KZZgdfonNFTcwLwx5mRJt4q
+         ZN6MwyNgTnqxerFqVS838PDSa9SZahDI+0GrYqHbmOOI0lS1z9cmYY8xV/NJtu+8RZJo
+         6tQuut33WKBdRXsVpKVyM69X8LCHU2KjK3uJqfZjXbMlenzYj+FYyfvMDqZA33cydqgy
+         XTmSgGZeHwVcHBM5nX+9NbJetLEwqVrJOHnKcl3ZIwQavAH4RDuNakYzvfwbxEhH8/ET
+         ebPNY+1w72xFkKQFbxQILYIPWjBdxqGfbMHKXsQ+VYtIjpovbaEVa3H62hZEtJ8g71KQ
+         g0PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692780299; x=1693385099;
+        d=1e100.net; s=20221208; t=1692782094; x=1693386894;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=q2cgmL0Oxi/Ka+T0qRkNIQGy3DlLEIQoGhbZx1wxXXg=;
-        b=cSzx+xwsYiyuDEx8VX1HfaSvFAZL2ikQZ3nJH8NUAAe6fGzQY1IeuP0n/fAFSPX6wC
-         Vd+GSuIt4a9Z2RSMCu8o8RDYP5VV4kEAMmJMtLoB546Y5XOlV+Mp/4Kg59gK5w7aKKf3
-         n7VaAcosBxHjziCR+EpXnkY3tU+9NjJ9gC/YbbTCRDeKQ0eNCcsZnMRd3c41LqrhbYYL
-         dAGJB0d7wOlkFMT+TS2aZNjiUURLaEIWlsAal6LN8jWZkYgUXL1hpE6F5dZZm34BP6SZ
-         Zm5XQY1W3Bz8VKg2LZEKgnYbWhA2N+9ksp9L9x9NcIy7y4G0KljGvm9rBYkh/UZpYSHP
-         ff0A==
-X-Gm-Message-State: AOJu0YxreWPpQVUF9MUjmlFePRl+Ptub1WusmtZ4SOWbyqB9e0LJODl/
-	eQTcWmGb00zHJassa8DPyOSG1Q==
-X-Google-Smtp-Source: AGHT+IHK4M5cW+ii2QsY9thF0YAboNVSBb0QymA/D8MSrbEEeJganwycbU58f5qGLuLuVPD1BN12nw==
-X-Received: by 2002:a7b:c3d0:0:b0:3f9:c0f2:e1a4 with SMTP id t16-20020a7bc3d0000000b003f9c0f2e1a4mr8835302wmj.34.1692780298570;
-        Wed, 23 Aug 2023 01:44:58 -0700 (PDT)
-Received: from localhost ([165.225.194.193])
-        by smtp.gmail.com with ESMTPSA id l11-20020a1c790b000000b003fbca942499sm21185071wme.14.2023.08.23.01.44.58
+        bh=qiZlM8QEOpDTpRFMe/2/zEZ6wsyKpsV1KUA2VGwkVqc=;
+        b=at01E/RknOmNJd6SbGC6HPS0vKZ/YoZDof6NPYxHC0yV3GtUruGDctLhNfpxo3RW23
+         UqJ1ROw8JoRdbNv3CDSKFic31p+HnBZMIkTelQeeZft6LDW0mhoeneMbx7iA0ATHdUli
+         NjpVDgYTnZZmeTRxcm8KVny27UbHsyTB/yFa0fgqMV8cHdfpMg/T4gxSzmPNapqzcKep
+         JP/U5WgR4GuxA1DjQCnRUZ+O6lyv5PSP2m7m4MNoS7xUr333nn5y/3kEC+bm2llk1y9r
+         8upd+q90yYTewH5X7b9tpr6DcGRWDXRwCUYSi17q1z6hxCHPOemFAcgNzhz6DZCCXo4H
+         REBQ==
+X-Gm-Message-State: AOJu0Yxcthr0hlC76+zBQNyPB5Jz5io4GI20PLbYkHU20ChurrKzm0n3
+	dLfVaPlj7vyoFIeE2Nlz/zWp4w==
+X-Google-Smtp-Source: AGHT+IGmx49TcZyNIesZ0Y8hEQR3pLmQeKegxY8NL7lzkFIt1BTGvLiiowVfWMRULj4No2sYruY+WA==
+X-Received: by 2002:a05:600c:3007:b0:3fa:91d0:8ddb with SMTP id j7-20020a05600c300700b003fa91d08ddbmr9556489wmh.14.1692782093753;
+        Wed, 23 Aug 2023 02:14:53 -0700 (PDT)
+Received: from localhost ([165.225.194.205])
+        by smtp.gmail.com with ESMTPSA id n22-20020a1c7216000000b003fefe70ec9csm2536983wmc.10.2023.08.23.02.14.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Aug 2023 01:44:58 -0700 (PDT)
-References: <87r0octho8.fsf@metaspace.dk>
- <20230822093154.3478754-1-aliceryhl@google.com>
+        Wed, 23 Aug 2023 02:14:53 -0700 (PDT)
+References: <20230711093303.1433770-1-aliceryhl@google.com>
+ <20230711093303.1433770-7-aliceryhl@google.com>
+ <vyrVN334oIXneb9VWievGpPTOCy0irxvoG-mDR0sQX5-xN-TL2Hngl0cl_XrVUwjDB3rXkXfR9Mdjy_no6fzhe4yIf_c7xpKa5OURt43k9c=@proton.me>
+ <87msyisvmi.fsf@metaspace.dk>
 User-agent: mu4e 1.10.5; emacs 28.2.50
 From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: alex.gaynor@gmail.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org,
- ojeda@kernel.org, patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
- wedsonaf@gmail.com
-Subject: Re: [PATCH v1] rust: add improved version of
- `ForeignOwnable::borrow_mut`
-Date: Wed, 23 Aug 2023 10:43:18 +0200
-In-reply-to: <20230822093154.3478754-1-aliceryhl@google.com>
-Message-ID: <87msyi406u.fsf@metaspace.dk>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, Tejun
+  Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Lai Jiangshan
+ <jiangshanlai@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex
+  Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary
+  Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v3 6/9] rust: workqueue: add helper for defining
+ work_struct fields
+Date: Wed, 23 Aug 2023 11:06:37 +0200
+In-reply-to: <87msyisvmi.fsf@metaspace.dk>
+Message-ID: <87il963ysz.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,81 +73,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
 
-Alice Ryhl <aliceryhl@google.com> writes:
+"Andreas Hindborg (Samsung)" <nmi@metaspace.dk> writes:
 
-> Andreas Hindborg <nmi@metaspace.dk> writes:
->>> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
->>> index 172f563976a9..f152a562c9c3 100644
->>> --- a/rust/kernel/sync/arc.rs
->>> +++ b/rust/kernel/sync/arc.rs
->>> @@ -232,26 +232,35 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
->>>  
->>>  impl<T: 'static> ForeignOwnable for Arc<T> {
->>>      type Borrowed<'a> = ArcBorrow<'a, T>;
->>> +    // Mutable access to the `Arc` does not give any extra abilities over
->>> +    // immutable access.
->>> +    type BorrowedMut<'a> = ArcBorrow<'a, T>;
->>>  
->>>      fn into_foreign(self) -> *const core::ffi::c_void {
->>>          ManuallyDrop::new(self).ptr.as_ptr() as _
->>>      }
->>>  
->>> -    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'a, T> {
->>> -        // SAFETY: By the safety requirement of this function, we know that `ptr` came from
->>> -        // a previous call to `Arc::into_foreign`.
->>> -        let inner = NonNull::new(ptr as *mut ArcInner<T>).unwrap();
->>> -
->>> -        // SAFETY: The safety requirements of `from_foreign` ensure that the object remains alive
->>> -        // for the lifetime of the returned value.
->>> -        unsafe { ArcBorrow::new(inner) }
->>> -    }
->>> -
->>>      unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
->>>          // SAFETY: By the safety requirement of this function, we know that `ptr` came from
->>>          // a previous call to `Arc::into_foreign`, which guarantees that `ptr` is valid and
->>>          // holds a reference count increment that is transferrable to us.
->>> -        unsafe { Self::from_inner(NonNull::new(ptr as _).unwrap()) }
->>> +        unsafe { Self::from_inner(NonNull::new_unchecked(ptr as _)) }
->>>      }
->>> +
->>> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'a, T> {
->>> +        // SAFETY: By the safety requirement of this function, we know that `ptr` came from
->>> +        // a previous call to `Arc::into_foreign`.
->>> +        let inner = unsafe { NonNull::new_unchecked(ptr as *mut ArcInner<T>) };
->>> +
->>> +        // SAFETY: The safety requirements ensure that we will not give up our
->>> +        // foreign-owned refcount while the `ArcBorrow` is still live.
->>> +        unsafe { ArcBorrow::new(inner) }
->>> +    }
->>> +
->>> +    unsafe fn borrow_mut<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'a, T> {
->>> +        // SAFETY: The safety requirements for `borrow_mut` are a superset of the safety
->>> +        // requirements for `borrow`.
->>> +        unsafe { Self::borrow(ptr) }
->>> +    }
+> Hi Benno,
+>
+> Benno Lossin <benno.lossin@proton.me> writes:
+>
+> ...
+>
+>>> +/// Links for a work item.
+>>> +///
+>>> +/// This struct contains a function pointer to the `run` function from the [`WorkItemPointer`]
+>>> +/// trait, and defines the linked list pointers necessary to enqueue a work item in a workqueue.
+>>> +///
+>>> +/// Wraps the kernel's C `struct work_struct`.
+>>> +///
+>>> +/// This is a helper type used to associate a `work_struct` with the [`WorkItem`] that uses it.
+>>> +#[repr(transparent)]
+>>> +pub struct Work<T: ?Sized, const ID: u64 = 0> {
+>>> +    work: Opaque<bindings::work_struct>,
+>>> +    _inner: PhantomData<T>,
 >>
->> I am not sure this makes sense. How about splitting the trait in two,
->> immutable and mutable and only implementing the immutable one or Arc?
+>> Should this really be `PhantomData<T>`? Are you dropping `T`s in the 
+>> destructor of `Work<T>`? I do not think so `PhantomData<fn() -> Box<T>>`
+>> should do the trick.
+>>
 >
-> I used this design based on what would make sense for a linked list. The
-> idea is that we can have two different types of cursors for a linked
-> list: immutable and mutable. The immutable cursor lets you:
->
->  * move around the linked list
->  * access the values using `borrow`
->
-> The mutable cursor lets you:
->
->  * move around the linked list
->  * delete or add items to the list
->  * access the values using `borrow_mut`
->
-> The mutable cursor gives you extra abilities beyond the `borrow` vs
-> `borrow_mut` distinction, so we want to provide both types of cursors
-> even if the pointer type is Arc. To do that, we need a trait that
-> defines what it means to have mutable access to an Arc.
+> Could you elaborate what is the issue in having `PhantomData<T>`?
 
-I don't see how that prevents this trait from being split in two?
+I played around with this and as far as I can tell, using
+`PhantomData<fn() -> Box<T>>` does not disable dropck for T. Thus,
+`PhantomData<T>` has the same effect as `PhantomData<fn() -> Box<T>`,
+which is covariance over T and dropck:
 
-BR Andreas
+```rust
+use std::marker::PhantomData;
 
+struct A<T> {
+    _marker: PhantomData<fn() -> Box<T>>,
+}
+
+//#[cfg(disable)]
+impl<T> Drop for A<T> {
+    fn drop(&mut self) {
+        todo!()
+    }
+}
+
+struct B {}
+
+fn main() {
+    let (_a, b);
+    b = B {};
+    _a = foo(&b);
+}
+
+fn foo<'a>(_b: &'a B) -> A<&'a B> {
+    let a: A<&'a B> = A {
+        _marker: PhantomData,
+    };
+    a
+}
+```
+
+This is a little surprising to me since nomicon [1] explicitly marks
+`PhantomData<T>` as "covariant (with drop check)" but only "covariant"
+for `PhantomData<fn() -> T>`.
+
+Not sure why you wanted the box?
+
+Best regards,
+Andreas
+
+
+[1] https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns
