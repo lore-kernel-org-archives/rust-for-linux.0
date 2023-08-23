@@ -1,97 +1,72 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5FB1FDE
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 10:35:03 +0000 (UTC)
-Received: from mail-ej1-x649.google.com (mail-ej1-x649.google.com [IPv6:2a00:1450:4864:20::649])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82BE9E40
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 03:35:02 -0700 (PDT)
-Received: by mail-ej1-x649.google.com with SMTP id a640c23a62f3a-99388334de6so382848566b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 03:35:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692786901; x=1693391701;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OBSXO6qqgmHuKqh6bzP0tT7XEbpao57yrY6B+MWzUYg=;
-        b=imZbjfBgPXvWMOgaH+hUcStjhZBiu6fzZipiqROt6F+8KEpdtPXQIWs+WEqdH3+aTI
-         BgRDsVt5CQmUVGFWV3IER7szc7NKjgWyw1WfVZxefRjcONdn+t4XFHg3GUKTvwPqg9jd
-         I94I7/tGXnqD5NTi2d5dIo72eDBJ59N+aG3KNcWnOq3SxT36VLOFObWUXdhOO+OX8UnV
-         DFCvoBfq8MS+HCWsPjeOhmaB5TPtiv4YhjJBMyCKJFzUjE25STn0KfvfeG+uPJ2wcVFD
-         uJHRg+hOquSGFE1DHd5ku0rjl3GCuDnpUNtu/BDpV152II0xibXMeyp5OfiUzaQk0JE3
-         3Gaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692786901; x=1693391701;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OBSXO6qqgmHuKqh6bzP0tT7XEbpao57yrY6B+MWzUYg=;
-        b=Su1O40lU6cZIrD2c8YRp/Qc4+mzX+zW1EltCbOgj4uFCZyRS4+UFE8eDYIFQit5exr
-         U4HFzbNAa6wi05T0eUN2mrvxAgCiDG89w8NbpzwB8XJgBW50EW16rvvudYy8ADd+BmlH
-         ePOBE5t9ojL6QyuMVfLad6xbBf4O3ctusJGQGu9P1aDnmDBhPLzQIST7x4Wx7Pffxi+C
-         hY1ObdFvtgWiN1qlWRERRI94/iWyt0M6RM/SFh+j7pn6+lHUsQ1X1bVt5PD7GKgT3uzq
-         rjzQGtNXjUnWd4Rpy1cncNP5nKu4qRLUNibnURRfz0aIj+C4gKMRm6gjrvBLPeNXuooP
-         x/AQ==
-X-Gm-Message-State: AOJu0YyT3Ysfiu82Ojj03fjx/8o41+501AkMlhqwwIK9OKPxa+AKBk7q
-	3ivLYy36t/AzxM+X+2hQTQNeeVyifYBNf5s=
-X-Google-Smtp-Source: AGHT+IHl5FcW1ZIDTb421nTXT/COFWJ7T+NTcJyQsV3MlUrkt79HVnSpJOzK3M/a4awKmbc1LYiRMFB3GGHK4Rs=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a17:907:cb11:b0:9a1:cbc2:e442 with SMTP
- id um17-20020a170907cb1100b009a1cbc2e442mr17162ejc.10.1692786901028; Wed, 23
- Aug 2023 03:35:01 -0700 (PDT)
-Date: Wed, 23 Aug 2023 10:34:58 +0000
-In-Reply-To: <87msyi406u.fsf@metaspace.dk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B513AD42;
+	Wed, 23 Aug 2023 16:02:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFB7C433C8;
+	Wed, 23 Aug 2023 16:02:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1692806578;
+	bh=0nMVgMfKCQ86W6q1+R6vMRrHNacAhbvlPwG6j1rqB4M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tjqh6EsDE3XpVEaxkkjfQsXeaEAxMSK8vGd2BcyuBnFu/NXxy05h4yxVHmik3m8aT
+	 4KdCNVz4sGEJ0eIIZR6Ur3A37ZXKBCj4+J0RM4dopcp7hl+BS37MYuT+F2MEzyBLbM
+	 oPqD6BAE2+kcPYN69oTRxCpytyuXxVM86Z507avpPk7rX92f67rBGTcC14xFntB6hp
+	 FzrTI68dHRg2b+TvhzDfxr4pSkIA4Yy8aRUPn9yI/cQjcZYvpZWBGDjRIjikqWSKGo
+	 9vsBMtI/t2DUZ/TaJU19YotCYPOwrJIReAWB+VQKvuC2tObHmQluSiHMGzKt/no4fe
+	 kHjyqU5yKwvaw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH 0/2] Rust 1.72.0 upgrade
+Date: Wed, 23 Aug 2023 18:02:41 +0200
+Message-ID: <20230823160244.188033-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <87msyi406u.fsf@metaspace.dk>
-X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
-Message-ID: <20230823103458.243871-1-aliceryhl@google.com>
-Subject: Re: [PATCH v1] rust: add improved version of `ForeignOwnable::borrow_mut`
-From: Alice Ryhl <aliceryhl@google.com>
-To: nmi@metaspace.dk
-Cc: alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	linux-kernel@vger.kernel.org, ojeda@kernel.org, patches@lists.linux.dev, 
-	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Andreas Hindborg <nmi@metaspace.dk> writes:
->>> I am not sure this makes sense. How about splitting the trait in two,
->>> immutable and mutable and only implementing the immutable one or Arc?
->>
->> I used this design based on what would make sense for a linked list. The
->> idea is that we can have two different types of cursors for a linked
->> list: immutable and mutable. The immutable cursor lets you:
->>
->>  * move around the linked list
->>  * access the values using `borrow`
->>
->> The mutable cursor lets you:
->>
->>  * move around the linked list
->>  * delete or add items to the list
->>  * access the values using `borrow_mut`
->>
->> The mutable cursor gives you extra abilities beyond the `borrow` vs
->> `borrow_mut` distinction, so we want to provide both types of cursors
->> even if the pointer type is Arc. To do that, we need a trait that
->> defines what it means to have mutable access to an Arc.
-> 
-> I don't see how that prevents this trait from being split in two?
+This is the third upgrade to the Rust toolchain since the initial Rust
+merge, from 1.71.1 to 1.72.0 (i.e. the latest, to be released tomorrow).
 
-Well, you could split the trait, but if you make the mutable iterator
-require the `borrow_mut` trait, then you have to implement the mutable
-trait for `Arc` too if you want the mutable iterator to work with `Arc`.
+Please see the main patch message for a long explanation of the upgrade,
+the policy for future upgrades and some indications on how to easily
+review this.
 
-And if you're always going to implement both traits, then maybe it
-makes more sense to not split the traits?
+The series is based on `rust-next`.
 
-Alice
+Miguel Ojeda (2):
+  rust: arc: add explicit `drop()` around `Box::from_raw()`
+  rust: upgrade to Rust 1.72.0
+
+ Documentation/process/changes.rst |   2 +-
+ rust/alloc/alloc.rs               |   9 +-
+ rust/alloc/boxed.rs               |  10 +-
+ rust/alloc/lib.rs                 |  10 +-
+ rust/alloc/vec/drain_filter.rs    | 199 ------------------------------
+ rust/alloc/vec/extract_if.rs      | 115 +++++++++++++++++
+ rust/alloc/vec/mod.rs             | 106 ++++++++--------
+ rust/kernel/sync/arc.rs           |   2 +-
+ scripts/min-tool-version.sh       |   2 +-
+ 9 files changed, 188 insertions(+), 267 deletions(-)
+ delete mode 100644 rust/alloc/vec/drain_filter.rs
+ create mode 100644 rust/alloc/vec/extract_if.rs
+
+
+base-commit: 4af84c6a85c63bec24611e46bb3de2c0a6602a51
+-- 
+2.42.0
+
