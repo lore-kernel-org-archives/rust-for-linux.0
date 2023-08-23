@@ -1,954 +1,179 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EECCC2CB
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 16:24:58 +0000 (UTC)
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A74EE7E
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 09:24:54 -0700 (PDT)
-Date: Wed, 23 Aug 2023 16:24:41 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1692807889; x=1693067089;
-	bh=IQkqRnUFdHJAKg0nFmHf7vUWL5/jTur9byu6/zcJT8E=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=QXKcfoGynRzA8veCg/6jnGeOIqxgdjha2FRjEvpjX1b0oKv0216Yl3rpf6SmJMQii
-	 gUkuzDgUDudGsBTLx+kXMzgqAR9uOHvJ5owSx/aSXsxjCZ7znAfqHCkK/FBwx++h8R
-	 STM043My4FWoIPeVCLMsH8yHzG+xUK0/0bu+Zg26+c828/k09f6mJM7D9Sd7clPXI4
-	 7HG0ooOu0rKSt/OHUBA/kRi5gotXLGjmsEYSIMcPUE21UeX7MTz7PCHO40xBrydW7t
-	 eeytp62HEHvvxk5+GIdMS28+T9JoiVRn0wEs784iL3zOppgAT1OJP0vvKezkhYPxfF
-	 lw7hjR8La040w==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0DF1F17F
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 17:35:28 +0000 (UTC)
+Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2132.outbound.protection.outlook.com [40.107.10.132])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEC27CC;
+	Wed, 23 Aug 2023 10:35:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=eOGjbSSOIQkgYetRvP7+7NKEkdDsy7xIz23UAHOwlZnoa5G+qZG//YKHefztEC9P1xTpMz/jaQDz1XdWzCG9oQ+Zm6msBifK2vHvIx4VrslMx0EeOV5L5nkuMJ4mQtHoNOL4wwW6s/sit/2msf8+a5ScwfPLDvKk/rMWK6kcetu0yyjWjaA0PlqNhLXCzC3a9qVZwqxqUyT8xKcZIKigU6ld39vlqu4JRsIdynR3Qd1vI1tqg5fhRImHs1kif6/0HOeIzmexlyvrcly4tm/9VbSu3Mn/hrjgimY+tbOryN6GYEemqhiJFpcfW3VwphhvUOJYC6yHpPNdtIYVs8v4wA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a4cl1WwQdylGkkkKiKL9R6z3n3ImSJe6bjwzqA7wtig=;
+ b=YhFVDg2SplUslDQTAX9C8lBrxlU1WTGPkzGy2SngRk1bNqiDYsyWDAzvMmZcv9PIreHigOlUJksd807FaKa+0idptv+d+oFUSajTsre2tAXdeuOuRYh13aorpu68yymTIh0BejhVkTReGQzdZzBMMgIrjLZps0e3w5m1YvvC4XjnNA98zzfoU3uVDyBPioyGb2jFsNYu0PZrSF4MGPHDvNeAjoNrdHJt0sCU6LQv3KDffBOkKWXO/XY2IezsCcU2P19DKRBcuakUvCSOUSV6siN7bnvaAowmIqhp9cX1LcKWHN+5yYRp26gugQNsxDqgR+OJS6lRJNIZVITd5PKroQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a4cl1WwQdylGkkkKiKL9R6z3n3ImSJe6bjwzqA7wtig=;
+ b=Lt1LzxKpnNTn/BLwaL2Q3AOtnlXfGbF09daA+CNsQdT4/djHkBtz2Q/MJmsTEX4zmVxK9/h6PqehL9BB+Txz4uRgbOGXKHC9L5ax1jjXzVKx+4WK8ioOzhX3193MI6/WbLCx7x74bKVsvlV70SSiWYPOubPOEq3K8Ri/JXcFJCE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO3P265MB1977.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:107::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.26; Wed, 23 Aug
+ 2023 17:35:25 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6d3e:8fe2:6cdb:6d3f]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6d3e:8fe2:6cdb:6d3f%5]) with mapi id 15.20.6699.026; Wed, 23 Aug 2023
+ 17:35:25 +0000
+Date: Wed, 23 Aug 2023 18:35:19 +0100
+From: Gary Guo <gary@garyguo.net>
 To: Miguel Ojeda <ojeda@kernel.org>
-From: =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev, Jonathan Corbet <corbet@lwn.net>, workflows@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: upgrade to Rust 1.72.0
-Message-ID: <a8imb609sUbFikyNzvAo8DYYyOp_vxc1kKdXLg1VndoU21T-ZJwA7w4rmMcxykhThe5t_qReQBIwDkcZsCaSxYvr_GvglO03qt0wC5eg4eQ=@protonmail.com>
-In-Reply-To: <20230823160244.188033-3-ojeda@kernel.org>
-References: <20230823160244.188033-1-ojeda@kernel.org> <20230823160244.188033-3-ojeda@kernel.org>
-Feedback-ID: 27884398:user:proton
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice
+ Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH 1/2] rust: arc: add explicit `drop()` around
+ `Box::from_raw()`
+Message-ID: <20230823183519.1549cff1.gary@garyguo.net>
+In-Reply-To: <20230823160244.188033-2-ojeda@kernel.org>
+References: <20230823160244.188033-1-ojeda@kernel.org>
+	<20230823160244.188033-2-ojeda@kernel.org>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0400.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:189::9) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO3P265MB1977:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d302485-4413-48ac-b6e8-08dba3ff55bb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	lXe6/Hj0MOhA7DEFfv3G2Q8I3qwp5yPzb52nZfIiQolP1fGEHhCvyYko9Cpfl+oDA+pr1zdmsa66D5XsNdDqNHxFIJ0ARw4jM3hqcvyEexhmsmUdIdsobQWZIOWEGy4h/gyKrEvB0iZZ/TpaFqftbeMhYFthuz5seG6QtqCHuEwK/nCV8Mc3epqzAi46wMC26KtIHvvcwhrtDKxiyhynwygJbTy4PlNuvfzj+SVx/YLFFs/MSyuRIuWs7bz4jw83LlHttpDKBMNvhY3nJFqhje88K9Y4xfIRLC/wk+X/2efA5u2fVoCXgzHhuk5NR1Wz9/40/VH3a6uoSVydSayOCOYnGaLV3i0FlKSNOgPL/NOkW6Ape3P6w0MVRrCGzaJL6mAs0M9YgpKN2us3pBNJrjFd0WP4lQO+50kD/DjTbIsLlR1QOWA2jIPmU7mjbMLXT9+2oN+aGPEx1M9SYh46ofeIO5T62M7PQZVxWP537he3YSoGjIBoA6j+WuvWA6kr9i6UxQzvTi6S5XgBHn693bEck+GaPUlm2b9PKQPuSQdKjtNSgBCAtnVW7GSYPt+iniLpCbEedhTSSu4LriN6qrJyCKjpcZZ2bsohF6wIEXp34xEExkek3kxpfnZDX337fWTLY/knMSoR1f77W8OytLkm7RBVJLb4RnZjd46Mc/U=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(136003)(39830400003)(376002)(396003)(451199024)(1800799009)(186009)(36756003)(478600001)(966005)(86362001)(6506007)(6486002)(54906003)(66476007)(66556008)(316002)(6916009)(66946007)(6666004)(41300700001)(6512007)(38100700002)(8676002)(4326008)(8936002)(5660300002)(1076003)(26005)(2616005)(7416002)(83380400001)(2906002)(30290500001)(81973001)(54580400013);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?CqJGPERxjm1oxZTKVMGadf4D+/uw4L+mN2nqUzvpVnz3I0GSCcap1nETfK/B?=
+ =?us-ascii?Q?AzLERv+GwdXt8K8eOYlyHYI96tJiZjvzt1NIn10T45falW3PjLaQGP24XETw?=
+ =?us-ascii?Q?3nSeXc20+UvIRox3kwjwyGSTXW6GO4wtbXfsYdQb1kopIuKe7r0QYXUVVKvL?=
+ =?us-ascii?Q?fcWYzAe78xqqNJm11aqzBS4opzhZi5cTeX7e2pk987cHS4fj5by36zci7U/r?=
+ =?us-ascii?Q?YgPojUSdzI7Is7GpDJMfX99QE1h4MAdGXkFBUM44umXh+9+MGFASL3CAF5vj?=
+ =?us-ascii?Q?Tktge62whpBxYK/b4/9ikMA3/E6fO0YQNIU95NK6EiQWi0j8NXP4EfPoGEYa?=
+ =?us-ascii?Q?H8noSVBC3c4tw5eDr8uaVr7zqahmsCDD50lEZR7bDdHjZXhuwMr2Bx/5/Qv9?=
+ =?us-ascii?Q?66CyNLyKESrGiFxzCFBcMBOGs+2YChTqI4N0VxjLXPi82I7+jbM+JvcotiXN?=
+ =?us-ascii?Q?N6mcT4+vdxeJmH67ei9QNlBHunphYa/2QC/EmKF2g+RJsL4h6r1NbWCprGBb?=
+ =?us-ascii?Q?jddqr42S9dnIUgfsL+IjB3UQEJAz+99ugRDihn+Wfp42D463mRmeejhSvmL3?=
+ =?us-ascii?Q?ukoxHdQuvbNQdMXLdMIrMpOwFIFA/DT31uU/CJlPqAGEe3fYRgGg6suB8L50?=
+ =?us-ascii?Q?wlVxItpfyR7sjJZDG7eVF8blrjTuefTlsSBLubKW8MEnrpUd00i0WURPeu95?=
+ =?us-ascii?Q?pn5S5zwPV37TXGcQhu2aCQDOZJtvbFhwiNw2hnsrp/zdW7NP+XrHdkQc/sJg?=
+ =?us-ascii?Q?D5Yzw+CQ6k3NFsea+Lxvlgm44hd3/dzKsbxh5hTMiO0A4d8Ls3kzx7HOtGu3?=
+ =?us-ascii?Q?I0rtdpSVuyul1ySwQYHjkIABQp3J/Zi+Lkn2OoDsY/XpC6Qs3PCOAb9v2F73?=
+ =?us-ascii?Q?UG6IHfDFe/wZ255UeCEGrUvebSjVmrRIoFrxSdkSm61NzAaAI33SCElVjdMI?=
+ =?us-ascii?Q?BXkcKhcoorP0hWN+8RnsSskAhT3Awhf14DPAjOZ+Avf7EG0fMRAzaOC2a+ZF?=
+ =?us-ascii?Q?/5ay3uUMbBnCI2aHqbPjGqLHjgHmojKddZbi5XMKXdaHk2DXpCkyQKYc5Ljp?=
+ =?us-ascii?Q?Pkyn+9b9H3Tbx76eGK4Rbag46oJ0yyshRyCTGhKZ9EUUX1cAVAqfslbOZhBh?=
+ =?us-ascii?Q?zKG6otc64GVF08kgD4Pjip9WtXzdnJqYb7uXtC/qkuPLQcDJe4tUgBQ5lsN8?=
+ =?us-ascii?Q?YXHMaChmd0DJZbiiHzlCrpZiYq4URE4KitlPbrPKsBynTrLu63OoBjUZkphG?=
+ =?us-ascii?Q?VLnXlB7A+m8+N4NHXKAe9zZbD+2H82fw2wkyz5UNoOWAfqVFm4WxxMH5yt6b?=
+ =?us-ascii?Q?sflprdC/MlhPkQXYtVkmSazJU033znp4RGDcssPk/xPzGI/B9h2p8Mja6Ghe?=
+ =?us-ascii?Q?+P8V8x+0/wc3gqk5doadBV9GVjUPhoop/smmpsB+biqZp3UuORNKmPRP3tG/?=
+ =?us-ascii?Q?jhlCRWeHsAvJFJry86cBCu0ZJnv34TQ/Qc3qNn2mDXXYTuoNnrUSI+VIeWoN?=
+ =?us-ascii?Q?WIZzvhzY/DIZrLbk+h88CQBG4lsYFcQGKyoJhcutbPFEJ6KHjZf1+I9t2frf?=
+ =?us-ascii?Q?qm7xQknZYaLMTEb+6qlZnrTzb50roY/9mJ9kZE+L?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d302485-4413-48ac-b6e8-08dba3ff55bb
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2023 17:35:25.5315
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Xzvh6A6wf8jDqnn+hb7nzoQXVCMTZXNfo3yUE5CROiwUqkTRo406trPfWBQKksXxXxpvcmatN2pk0Ndr9A2sPQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB1977
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=unavailable autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wednesday, August 23rd, 2023 at 18:02, Miguel Ojeda <ojeda@kernel.org> w=
-rote:
+On Wed, 23 Aug 2023 18:02:42 +0200
+Miguel Ojeda <ojeda@kernel.org> wrote:
 
-> This is the second upgrade to the Rust toolchain, from 1.71.1 to 1.72.0
-> (i.e. the latest) [1].
->=20
-> See the upgrade policy [2] and the comments on the first upgrade in
-> commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
->=20
-> # Unstable features
->=20
-> No unstable features (that we use) were stabilized.
->=20
-> Therefore, the only unstable feature allowed to be used outside
-> the `kernel` crate is still `new_uninit`, though other code to be
-> upstreamed may increase the list.
->=20
-> Please see [3] for details.
->=20
-> # Other improvements
->=20
-> Previously, the compiler could incorrectly generate a `.eh_frame`
-> section under `-Cpanic=3Dabort`. We were hitting this bug in our
-> old `rust` branch [4]. Gary fixed the issue in Rust 1.72.0 [5].
->=20
-> # Required changes
->=20
-> For the upgrade, the following changes are required:
->=20
->   - A call to `Box::from_raw` in `rust/kernel/sync/arc.rs` now requires
->     an explicit `drop()` call. See previous patch for details.
->=20
-> # `alloc` upgrade and reviewing
->=20
-> The vast majority of changes are due to our `alloc` fork being upgraded
-> at once.
->=20
-> There are two kinds of changes to be aware of: the ones coming from
-> upstream, which we should follow as closely as possible, and the updates
-> needed in our added fallible APIs to keep them matching the newer
-> infallible APIs coming from upstream.
->=20
-> Instead of taking a look at the diff of this patch, an alternative
-> approach is reviewing a diff of the changes between upstream `alloc` and
-> the kernel's. This allows to easily inspect the kernel additions only,
-> especially to check if the fallible methods we already have still match
-> the infallible ones in the new version coming from upstream.
->=20
-> Another approach is reviewing the changes introduced in the additions in
-> the kernel fork between the two versions. This is useful to spot
-> potentially unintended changes to our additions.
->=20
-> To apply these approaches, one may follow steps similar to the following
-> to generate a pair of patches that show the differences between upstream
-> Rust and the kernel (for the subset of `alloc` we use) before and after
-> applying this patch:
->=20
->     # Get the difference with respect to the old version.
->     git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
->     git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
->         cut -d/ -f3- |
->         grep -Fv README.md |
->         xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
->     git -C linux diff --patch-with-stat --summary -R > old.patch
->     git -C linux restore rust/alloc
->=20
->     # Apply this patch.
->     git -C linux am rust-upgrade.patch
->=20
->     # Get the difference with respect to the new version.
->     git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
->     git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
->         cut -d/ -f3- |
->         grep -Fv README.md |
->         xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
->     git -C linux diff --patch-with-stat --summary -R > new.patch
->     git -C linux restore rust/alloc
->=20
-> Now one may check the `new.patch` to take a look at the additions (first
-> approach) or at the difference between those two patches (second
-> approach). For the latter, a side-by-side tool is recommended.
->=20
-> Link: https://github.com/rust-lang/rust/blob/stable/RELEASES.md#version-1=
-720-2023-08-24 [1]
-> Link: https://rust-for-linux.com/rust-version-policy [2]
-> Link: https://github.com/Rust-for-Linux/linux/issues/2 [3]
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1012 [4]
-> Link: https://github.com/rust-lang/rust/pull/112403 [5]
+> `Box::from_raw()` is `#[must_use]`, which means the result cannot
+> go unused.
+> 
+> In Rust 1.71.0, this was not detected because the block expression
+> swallows the diagnostic [1]:
+> 
+>     unsafe { Box::from_raw(self.ptr.as_ptr()) };
+> 
+> It would have been detected, however, if the line had been instead:
+> 
+>     unsafe { Box::from_raw(self.ptr.as_ptr()); }
+> 
+> i.e. the semicolon being inside the `unsafe` block, rather than
+> outside.
+> 
+> In Rust 1.72.0, the compiler started warning about this [2], so
+> without this patch we will get:
+> 
+>         error: unused return value of `alloc::boxed::Box::<T>::from_raw` that must be used
+>         --> rust/kernel/sync/arc.rs:302:22  
+>         |
+>     302 |             unsafe { Box::from_raw(self.ptr.as_ptr()) };
+>         |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>         |
+>         = note: call `drop(Box::from_raw(ptr))` if you intend to drop the `Box`
+>         = note: `-D unused-must-use` implied by `-D warnings`
+>     help: use `let _ = ...` to ignore the resulting value
+>         |
+>     302 |             unsafe { let _ = Box::from_raw(self.ptr.as_ptr()); };
+>         |                      +++++++                                 +
+> 
+> Thus add an add an explicit `drop()` as the `#[must_use]`'s
+> annotation suggests (instead of the more general help line).
+> 
+> Link: https://github.com/rust-lang/rust/issues/104253 [1]
+> Link: https://github.com/rust-lang/rust/pull/112529 [2]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
 > ---
->  Documentation/process/changes.rst |   2 +-
->  rust/alloc/alloc.rs               |   9 +-
->  rust/alloc/boxed.rs               |  10 +-
->  rust/alloc/lib.rs                 |  10 +-
->  rust/alloc/vec/drain_filter.rs    | 199 ------------------------------
->  rust/alloc/vec/extract_if.rs      | 115 +++++++++++++++++
->  rust/alloc/vec/mod.rs             | 106 ++++++++--------
->  scripts/min-tool-version.sh       |   2 +-
->  8 files changed, 187 insertions(+), 266 deletions(-)
->  delete mode 100644 rust/alloc/vec/drain_filter.rs
->  create mode 100644 rust/alloc/vec/extract_if.rs
->=20
-> diff --git a/Documentation/process/changes.rst b/Documentation/process/ch=
-anges.rst
-> index 0bbd040f6a55..1ea95fb5af62 100644
-> --- a/Documentation/process/changes.rst
-> +++ b/Documentation/process/changes.rst
-> @@ -31,7 +31,7 @@ you probably needn't concern yourself with pcmciautils.
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
->  GNU C                  5.1              gcc --version
->  Clang/LLVM (optional)  11.0.0           clang --version
-> -Rust (optional)        1.71.1           rustc --version
-> +Rust (optional)        1.72.0           rustc --version
->  bindgen (optional)     0.65.1           bindgen --version
->  GNU make               3.82             make --version
->  bash                   4.2              bash --version
-> diff --git a/rust/alloc/alloc.rs b/rust/alloc/alloc.rs
-> index 0b6bf5b6da43..51821feb20b1 100644
-> --- a/rust/alloc/alloc.rs
-> +++ b/rust/alloc/alloc.rs
-> @@ -6,8 +6,10 @@
->=20
->  #[cfg(not(test))]
->  use core::intrinsics;
-> +#[cfg(all(bootstrap, not(test)))]
->  use core::intrinsics::{min_align_of_val, size_of_val};
->=20
-> +#[cfg(all(bootstrap, not(test)))]
->  use core::ptr::Unique;
->  #[cfg(not(test))]
->  use core::ptr::{self, NonNull};
-> @@ -40,7 +42,6 @@
->      #[rustc_nounwind]
->      fn __rust_alloc_zeroed(size: usize, align: usize) -> *mut u8;
->=20
-> -    #[cfg(not(bootstrap))]
->      static __rust_no_alloc_shim_is_unstable: u8;
->  }
->=20
-> @@ -98,7 +99,6 @@ pub unsafe fn alloc(layout: Layout) -> *mut u8 {
->      unsafe {
->          // Make sure we don't accidentally allow omitting the allocator =
-shim in
->          // stable code until it is actually stabilized.
-> -        #[cfg(not(bootstrap))]
->          core::ptr::read_volatile(&__rust_no_alloc_shim_is_unstable);
->=20
->          __rust_alloc(layout.size(), layout.align())
-> @@ -339,14 +339,15 @@ unsafe fn exchange_malloc(size: usize, align: usize=
-) -> *mut u8 {
->      }
->  }
->=20
-> -#[cfg_attr(not(test), lang =3D "box_free")]
-> +#[cfg(all(bootstrap, not(test)))]
-> +#[lang =3D "box_free"]
->  #[inline]
->  // This signature has to be the same as `Box`, otherwise an ICE will hap=
-pen.
->  // When an additional parameter to `Box` is added (like `A: Allocator`),=
- this has to be added here as
->  // well.
->  // For example if `Box` is changed to  `struct Box<T: ?Sized, A: Allocat=
-or>(Unique<T>, A)`,
->  // this function has to be changed to `fn box_free<T: ?Sized, A: Allocat=
-or>(Unique<T>, A)` as well.
-> -pub(crate) unsafe fn box_free<T: ?Sized, A: Allocator>(ptr: Unique<T>, a=
-lloc: A) {
-> +unsafe fn box_free<T: ?Sized, A: Allocator>(ptr: Unique<T>, alloc: A) {
->      unsafe {
->          let size =3D size_of_val(ptr.as_ref());
->          let align =3D min_align_of_val(ptr.as_ref());
-> diff --git a/rust/alloc/boxed.rs b/rust/alloc/boxed.rs
-> index c8173cea8317..bdab710f7737 100644
-> --- a/rust/alloc/boxed.rs
-> +++ b/rust/alloc/boxed.rs
-> @@ -1215,8 +1215,16 @@ pub const fn into_pin(boxed: Self) -> Pin<Self>
->=20
->  #[stable(feature =3D "rust1", since =3D "1.0.0")]
->  unsafe impl<#[may_dangle] T: ?Sized, A: Allocator> Drop for Box<T, A> {
-> +    #[inline]
->      fn drop(&mut self) {
-> -        // FIXME: Do nothing, drop is currently performed by compiler.
-> +        // the T in the Box is dropped by the compiler before the destru=
-ctor is run
-> +
-> +        let ptr =3D self.0;
-> +
-> +        unsafe {
-> +            let layout =3D Layout::for_value_raw(ptr.as_ptr());
-> +            self.1.deallocate(From::from(ptr.cast()), layout)
-> +        }
->      }
->  }
->=20
-> diff --git a/rust/alloc/lib.rs b/rust/alloc/lib.rs
-> index 85e91356ecb3..115fcb053e73 100644
-> --- a/rust/alloc/lib.rs
-> +++ b/rust/alloc/lib.rs
-> @@ -58,6 +58,11 @@
->  //! [`Rc`]: rc
->  //! [`RefCell`]: core::cell
->=20
-> +// To run alloc tests without x.py without ending up with two copies of =
-alloc, Miri needs to be
-> +// able to "empty" this crate. See <https://github.com/rust-lang/miri-te=
-st-libstd/issues/4>.
-> +// rustc itself never sets the feature, so this line has no affect there=
-.
-> +#![cfg(any(not(feature =3D "miri-test-libstd"), test, doctest))]
-> +//
->  #![allow(unused_attributes)]
->  #![stable(feature =3D "alloc", since =3D "1.36.0")]
->  #![doc(
-> @@ -77,11 +82,6 @@
->  ))]
->  #![no_std]
->  #![needs_allocator]
-> -// To run alloc tests without x.py without ending up with two copies of =
-alloc, Miri needs to be
-> -// able to "empty" this crate. See <https://github.com/rust-lang/miri-te=
-st-libstd/issues/4>.
-> -// rustc itself never sets the feature, so this line has no affect there=
-.
-> -#![cfg(any(not(feature =3D "miri-test-libstd"), test, doctest))]
-> -//
->  // Lints:
->  #![deny(unsafe_op_in_unsafe_fn)]
->  #![deny(fuzzy_provenance_casts)]
-> diff --git a/rust/alloc/vec/drain_filter.rs b/rust/alloc/vec/drain_filter=
-.rs
-> deleted file mode 100644
-> index 09efff090e42..000000000000
-> --- a/rust/alloc/vec/drain_filter.rs
-> +++ /dev/null
-> @@ -1,199 +0,0 @@
-> -// SPDX-License-Identifier: Apache-2.0 OR MIT
-> -
-> -use crate::alloc::{Allocator, Global};
-> -use core::mem::{ManuallyDrop, SizedTypeProperties};
-> -use core::ptr;
-> -use core::slice;
-> -
-> -use super::Vec;
-> -
-> -/// An iterator which uses a closure to determine if an element should b=
-e removed.
-> -///
-> -/// This struct is created by [`Vec::drain_filter`].
-> -/// See its documentation for more.
-> -///
-> -/// # Example
-> -///
-> -/// ```
-> -/// #![feature(drain_filter)]
-> -///
-> -/// let mut v =3D vec![0, 1, 2];
-> -/// let iter: std::vec::DrainFilter<'_, _, _> =3D v.drain_filter(|x| *x =
-% 2 =3D=3D 0);
-> -/// ```
-> -#[unstable(feature =3D "drain_filter", reason =3D "recently added", issu=
-e =3D "43244")]
-> -#[derive(Debug)]
-> -pub struct DrainFilter<
-> -    'a,
-> -    T,
-> -    F,
-> -    #[unstable(feature =3D "allocator_api", issue =3D "32838")] A: Alloc=
-ator =3D Global,
-> -> where
-> -    F: FnMut(&mut T) -> bool,
-> -{
-> -    pub(super) vec: &'a mut Vec<T, A>,
-> -    /// The index of the item that will be inspected by the next call to=
- `next`.
-> -    pub(super) idx: usize,
-> -    /// The number of items that have been drained (removed) thus far.
-> -    pub(super) del: usize,
-> -    /// The original length of `vec` prior to draining.
-> -    pub(super) old_len: usize,
-> -    /// The filter test predicate.
-> -    pub(super) pred: F,
-> -    /// A flag that indicates a panic has occurred in the filter test pr=
-edicate.
-> -    /// This is used as a hint in the drop implementation to prevent con=
-sumption
-> -    /// of the remainder of the `DrainFilter`. Any unprocessed items wil=
-l be
-> -    /// backshifted in the `vec`, but no further items will be dropped o=
-r
-> -    /// tested by the filter predicate.
-> -    pub(super) panic_flag: bool,
-> -}
-> -
-> -impl<T, F, A: Allocator> DrainFilter<'_, T, F, A>
-> -where
-> -    F: FnMut(&mut T) -> bool,
-> -{
-> -    /// Returns a reference to the underlying allocator.
-> -    #[unstable(feature =3D "allocator_api", issue =3D "32838")]
-> -    #[inline]
-> -    pub fn allocator(&self) -> &A {
-> -        self.vec.allocator()
-> -    }
-> -
-> -    /// Keep unyielded elements in the source `Vec`.
-> -    ///
-> -    /// # Examples
-> -    ///
-> -    /// ```
-> -    /// #![feature(drain_filter)]
-> -    /// #![feature(drain_keep_rest)]
-> -    ///
-> -    /// let mut vec =3D vec!['a', 'b', 'c'];
-> -    /// let mut drain =3D vec.drain_filter(|_| true);
-> -    ///
-> -    /// assert_eq!(drain.next().unwrap(), 'a');
-> -    ///
-> -    /// // This call keeps 'b' and 'c' in the vec.
-> -    /// drain.keep_rest();
-> -    ///
-> -    /// // If we wouldn't call `keep_rest()`,
-> -    /// // `vec` would be empty.
-> -    /// assert_eq!(vec, ['b', 'c']);
-> -    /// ```
-> -    #[unstable(feature =3D "drain_keep_rest", issue =3D "101122")]
-> -    pub fn keep_rest(self) {
-> -        // At this moment layout looks like this:
-> -        //
-> -        //  _____________________/-- old_len
-> -        // /                     \
-> -        // [kept] [yielded] [tail]
-> -        //        \_______/ ^-- idx
-> -        //                \-- del
-> -        //
-> -        // Normally `Drop` impl would drop [tail] (via .for_each(drop), =
-ie still calling `pred`)
-> -        //
-> -        // 1. Move [tail] after [kept]
-> -        // 2. Update length of the original vec to `old_len - del`
-> -        //    a. In case of ZST, this is the only thing we want to do
-> -        // 3. Do *not* drop self, as everything is put in a consistent s=
-tate already, there is nothing to do
-> -        let mut this =3D ManuallyDrop::new(self);
-> -
-> -        unsafe {
-> -            // ZSTs have no identity, so we don't need to move them arou=
-nd.
-> -            if !T::IS_ZST && this.idx < this.old_len && this.del > 0 {
-> -                let ptr =3D this.vec.as_mut_ptr();
-> -                let src =3D ptr.add(this.idx);
-> -                let dst =3D src.sub(this.del);
-> -                let tail_len =3D this.old_len - this.idx;
-> -                src.copy_to(dst, tail_len);
-> -            }
-> -
-> -            let new_len =3D this.old_len - this.del;
-> -            this.vec.set_len(new_len);
-> -        }
-> -    }
-> -}
-> -
-> -#[unstable(feature =3D "drain_filter", reason =3D "recently added", issu=
-e =3D "43244")]
-> -impl<T, F, A: Allocator> Iterator for DrainFilter<'_, T, F, A>
-> -where
-> -    F: FnMut(&mut T) -> bool,
-> -{
-> -    type Item =3D T;
-> -
-> -    fn next(&mut self) -> Option<T> {
-> -        unsafe {
-> -            while self.idx < self.old_len {
-> -                let i =3D self.idx;
-> -                let v =3D slice::from_raw_parts_mut(self.vec.as_mut_ptr(=
-), self.old_len);
-> -                self.panic_flag =3D true;
-> -                let drained =3D (self.pred)(&mut v[i]);
-> -                self.panic_flag =3D false;
-> -                // Update the index *after* the predicate is called. If =
-the index
-> -                // is updated prior and the predicate panics, the elemen=
-t at this
-> -                // index would be leaked.
-> -                self.idx +=3D 1;
-> -                if drained {
-> -                    self.del +=3D 1;
-> -                    return Some(ptr::read(&v[i]));
-> -                } else if self.del > 0 {
-> -                    let del =3D self.del;
-> -                    let src: *const T =3D &v[i];
-> -                    let dst: *mut T =3D &mut v[i - del];
-> -                    ptr::copy_nonoverlapping(src, dst, 1);
-> -                }
-> -            }
-> -            None
-> -        }
-> -    }
-> -
-> -    fn size_hint(&self) -> (usize, Option<usize>) {
-> -        (0, Some(self.old_len - self.idx))
-> -    }
-> -}
-> -
-> -#[unstable(feature =3D "drain_filter", reason =3D "recently added", issu=
-e =3D "43244")]
-> -impl<T, F, A: Allocator> Drop for DrainFilter<'_, T, F, A>
-> -where
-> -    F: FnMut(&mut T) -> bool,
-> -{
-> -    fn drop(&mut self) {
-> -        struct BackshiftOnDrop<'a, 'b, T, F, A: Allocator>
-> -        where
-> -            F: FnMut(&mut T) -> bool,
-> -        {
-> -            drain: &'b mut DrainFilter<'a, T, F, A>,
-> -        }
-> -
-> -        impl<'a, 'b, T, F, A: Allocator> Drop for BackshiftOnDrop<'a, 'b=
-, T, F, A>
-> -        where
-> -            F: FnMut(&mut T) -> bool,
-> -        {
-> -            fn drop(&mut self) {
-> -                unsafe {
-> -                    if self.drain.idx < self.drain.old_len && self.drain=
-.del > 0 {
-> -                        // This is a pretty messed up state, and there i=
-sn't really an
-> -                        // obviously right thing to do. We don't want to=
- keep trying
-> -                        // to execute `pred`, so we just backshift all t=
-he unprocessed
-> -                        // elements and tell the vec that they still exi=
-st. The backshift
-> -                        // is required to prevent a double-drop of the l=
-ast successfully
-> -                        // drained item prior to a panic in the predicat=
-e.
-> -                        let ptr =3D self.drain.vec.as_mut_ptr();
-> -                        let src =3D ptr.add(self.drain.idx);
-> -                        let dst =3D src.sub(self.drain.del);
-> -                        let tail_len =3D self.drain.old_len - self.drain=
-.idx;
-> -                        src.copy_to(dst, tail_len);
-> -                    }
-> -                    self.drain.vec.set_len(self.drain.old_len - self.dra=
-in.del);
-> -                }
-> -            }
-> -        }
-> -
-> -        let backshift =3D BackshiftOnDrop { drain: self };
-> -
-> -        // Attempt to consume any remaining elements if the filter predi=
-cate
-> -        // has not yet panicked. We'll backshift any remaining elements
-> -        // whether we've already panicked or if the consumption here pan=
-ics.
-> -        if !backshift.drain.panic_flag {
-> -            backshift.drain.for_each(drop);
-> -        }
-> -    }
-> -}
-> diff --git a/rust/alloc/vec/extract_if.rs b/rust/alloc/vec/extract_if.rs
-> new file mode 100644
-> index 000000000000..f314a51d4d3d
-> --- /dev/null
-> +++ b/rust/alloc/vec/extract_if.rs
-> @@ -0,0 +1,115 @@
-> +// SPDX-License-Identifier: Apache-2.0 OR MIT
-> +
-> +use crate::alloc::{Allocator, Global};
-> +use core::ptr;
-> +use core::slice;
-> +
-> +use super::Vec;
-> +
-> +/// An iterator which uses a closure to determine if an element should b=
-e removed.
-> +///
-> +/// This struct is created by [`Vec::extract_if`].
-> +/// See its documentation for more.
-> +///
-> +/// # Example
-> +///
-> +/// ```
-> +/// #![feature(extract_if)]
-> +///
-> +/// let mut v =3D vec![0, 1, 2];
-> +/// let iter: std::vec::ExtractIf<'_, _, _> =3D v.extract_if(|x| *x % 2 =
-=3D=3D 0);
-> +/// ```
-> +#[unstable(feature =3D "extract_if", reason =3D "recently added", issue =
-=3D "43244")]
-> +#[derive(Debug)]
-> +#[must_use =3D "iterators are lazy and do nothing unless consumed"]
-> +pub struct ExtractIf<
-> +    'a,
-> +    T,
-> +    F,
-> +    #[unstable(feature =3D "allocator_api", issue =3D "32838")] A: Alloc=
-ator =3D Global,
-> +> where
-> +    F: FnMut(&mut T) -> bool,
-> +{
-> +    pub(super) vec: &'a mut Vec<T, A>,
-> +    /// The index of the item that will be inspected by the next call to=
- `next`.
-> +    pub(super) idx: usize,
-> +    /// The number of items that have been drained (removed) thus far.
-> +    pub(super) del: usize,
-> +    /// The original length of `vec` prior to draining.
-> +    pub(super) old_len: usize,
-> +    /// The filter test predicate.
-> +    pub(super) pred: F,
-> +}
-> +
-> +impl<T, F, A: Allocator> ExtractIf<'_, T, F, A>
-> +where
-> +    F: FnMut(&mut T) -> bool,
-> +{
-> +    /// Returns a reference to the underlying allocator.
-> +    #[unstable(feature =3D "allocator_api", issue =3D "32838")]
-> +    #[inline]
-> +    pub fn allocator(&self) -> &A {
-> +        self.vec.allocator()
-> +    }
-> +}
-> +
-> +#[unstable(feature =3D "extract_if", reason =3D "recently added", issue =
-=3D "43244")]
-> +impl<T, F, A: Allocator> Iterator for ExtractIf<'_, T, F, A>
-> +where
-> +    F: FnMut(&mut T) -> bool,
-> +{
-> +    type Item =3D T;
-> +
-> +    fn next(&mut self) -> Option<T> {
-> +        unsafe {
-> +            while self.idx < self.old_len {
-> +                let i =3D self.idx;
-> +                let v =3D slice::from_raw_parts_mut(self.vec.as_mut_ptr(=
-), self.old_len);
-> +                let drained =3D (self.pred)(&mut v[i]);
-> +                // Update the index *after* the predicate is called. If =
-the index
-> +                // is updated prior and the predicate panics, the elemen=
-t at this
-> +                // index would be leaked.
-> +                self.idx +=3D 1;
-> +                if drained {
-> +                    self.del +=3D 1;
-> +                    return Some(ptr::read(&v[i]));
-> +                } else if self.del > 0 {
-> +                    let del =3D self.del;
-> +                    let src: *const T =3D &v[i];
-> +                    let dst: *mut T =3D &mut v[i - del];
-> +                    ptr::copy_nonoverlapping(src, dst, 1);
-> +                }
-> +            }
-> +            None
-> +        }
-> +    }
-> +
-> +    fn size_hint(&self) -> (usize, Option<usize>) {
-> +        (0, Some(self.old_len - self.idx))
-> +    }
-> +}
-> +
-> +#[unstable(feature =3D "extract_if", reason =3D "recently added", issue =
-=3D "43244")]
-> +impl<T, F, A: Allocator> Drop for ExtractIf<'_, T, F, A>
-> +where
-> +    F: FnMut(&mut T) -> bool,
-> +{
-> +    fn drop(&mut self) {
-> +        unsafe {
-> +            if self.idx < self.old_len && self.del > 0 {
-> +                // This is a pretty messed up state, and there isn't rea=
-lly an
-> +                // obviously right thing to do. We don't want to keep tr=
-ying
-> +                // to execute `pred`, so we just backshift all the unpro=
-cessed
-> +                // elements and tell the vec that they still exist. The =
-backshift
-> +                // is required to prevent a double-drop of the last succ=
-essfully
-> +                // drained item prior to a panic in the predicate.
-> +                let ptr =3D self.vec.as_mut_ptr();
-> +                let src =3D ptr.add(self.idx);
-> +                let dst =3D src.sub(self.del);
-> +                let tail_len =3D self.old_len - self.idx;
-> +                src.copy_to(dst, tail_len);
-> +            }
-> +            self.vec.set_len(self.old_len - self.del);
-> +        }
-> +    }
-> +}
-> diff --git a/rust/alloc/vec/mod.rs b/rust/alloc/vec/mod.rs
-> index 05c70de0227e..a4e9a5002a6d 100644
-> --- a/rust/alloc/vec/mod.rs
-> +++ b/rust/alloc/vec/mod.rs
-> @@ -74,10 +74,10 @@
->  use crate::collections::{TryReserveError, TryReserveErrorKind};
->  use crate::raw_vec::RawVec;
->=20
-> -#[unstable(feature =3D "drain_filter", reason =3D "recently added", issu=
-e =3D "43244")]
-> -pub use self::drain_filter::DrainFilter;
-> +#[unstable(feature =3D "extract_if", reason =3D "recently added", issue =
-=3D "43244")]
-> +pub use self::extract_if::ExtractIf;
->=20
-> -mod drain_filter;
-> +mod extract_if;
->=20
->  #[cfg(not(no_global_oom_handling))]
->  #[stable(feature =3D "vec_splice", since =3D "1.21.0")]
-> @@ -618,22 +618,20 @@ pub fn try_with_capacity(capacity: usize) -> Result=
-<Self, TryReserveError> {
->      /// Using memory that was allocated elsewhere:
->      ///
->      /// ```rust
-> -    /// #![feature(allocator_api)]
-> -    ///
-> -    /// use std::alloc::{AllocError, Allocator, Global, Layout};
-> +    /// use std::alloc::{alloc, Layout};
->      ///
->      /// fn main() {
->      ///     let layout =3D Layout::array::<u32>(16).expect("overflow can=
-not happen");
->      ///
->      ///     let vec =3D unsafe {
-> -    ///         let mem =3D match Global.allocate(layout) {
-> -    ///             Ok(mem) =3D> mem.cast::<u32>().as_ptr(),
-> -    ///             Err(AllocError) =3D> return,
-> -    ///         };
-> +    ///         let mem =3D alloc(layout).cast::<u32>();
-> +    ///         if mem.is_null() {
-> +    ///             return;
-> +    ///         }
->      ///
->      ///         mem.write(1_000_000);
->      ///
-> -    ///         Vec::from_raw_parts_in(mem, 1, 16, Global)
-> +    ///         Vec::from_raw_parts(mem, 1, 16)
->      ///     };
->      ///
->      ///     assert_eq!(vec, &[1_000_000]);
-> @@ -876,19 +874,22 @@ pub fn try_with_capacity_in(capacity: usize, alloc:=
- A) -> Result<Self, TryReserv
->      /// Using memory that was allocated elsewhere:
->      ///
->      /// ```rust
-> -    /// use std::alloc::{alloc, Layout};
-> +    /// #![feature(allocator_api)]
-> +    ///
-> +    /// use std::alloc::{AllocError, Allocator, Global, Layout};
->      ///
->      /// fn main() {
->      ///     let layout =3D Layout::array::<u32>(16).expect("overflow can=
-not happen");
-> +    ///
->      ///     let vec =3D unsafe {
-> -    ///         let mem =3D alloc(layout).cast::<u32>();
-> -    ///         if mem.is_null() {
-> -    ///             return;
-> -    ///         }
-> +    ///         let mem =3D match Global.allocate(layout) {
-> +    ///             Ok(mem) =3D> mem.cast::<u32>().as_ptr(),
-> +    ///             Err(AllocError) =3D> return,
-> +    ///         };
->      ///
->      ///         mem.write(1_000_000);
->      ///
-> -    ///         Vec::from_raw_parts(mem, 1, 16)
-> +    ///         Vec::from_raw_parts_in(mem, 1, 16, Global)
->      ///     };
->      ///
->      ///     assert_eq!(vec, &[1_000_000]);
-> @@ -2507,7 +2508,7 @@ pub fn resize(&mut self, new_len: usize, value: T) =
-{
->          let len =3D self.len();
->=20
->          if new_len > len {
-> -            self.extend_with(new_len - len, ExtendElement(value))
-> +            self.extend_with(new_len - len, value)
->          } else {
->              self.truncate(new_len);
->          }
-> @@ -2545,7 +2546,7 @@ pub fn try_resize(&mut self, new_len: usize, value:=
- T) -> Result<(), TryReserveE
->          let len =3D self.len();
->=20
->          if new_len > len {
-> -            self.try_extend_with(new_len - len, ExtendElement(value))
-> +            self.try_extend_with(new_len - len, value)
->          } else {
->              self.truncate(new_len);
->              Ok(())
-> @@ -2684,26 +2685,10 @@ pub fn into_flattened(self) -> Vec<T, A> {
->      }
->  }
->=20
-> -// This code generalizes `extend_with_{element,default}`.
-> -trait ExtendWith<T> {
-> -    fn next(&mut self) -> T;
-> -    fn last(self) -> T;
-> -}
-> -
-> -struct ExtendElement<T>(T);
-> -impl<T: Clone> ExtendWith<T> for ExtendElement<T> {
-> -    fn next(&mut self) -> T {
-> -        self.0.clone()
-> -    }
-> -    fn last(self) -> T {
-> -        self.0
-> -    }
-> -}
-> -
-> -impl<T, A: Allocator> Vec<T, A> {
-> +impl<T: Clone, A: Allocator> Vec<T, A> {
->      #[cfg(not(no_global_oom_handling))]
-> -    /// Extend the vector by `n` values, using the given generator.
-> -    fn extend_with<E: ExtendWith<T>>(&mut self, n: usize, mut value: E) =
-{
-> +    /// Extend the vector by `n` clones of value.
-> +    fn extend_with(&mut self, n: usize, value: T) {
->          self.reserve(n);
->=20
->          unsafe {
-> @@ -2715,15 +2700,15 @@ fn extend_with<E: ExtendWith<T>>(&mut self, n: us=
-ize, mut value: E) {
->=20
->              // Write all elements except the last one
->              for _ in 1..n {
-> -                ptr::write(ptr, value.next());
-> +                ptr::write(ptr, value.clone());
->                  ptr =3D ptr.add(1);
-> -                // Increment the length in every step in case next() pan=
-ics
-> +                // Increment the length in every step in case clone() pa=
-nics
->                  local_len.increment_len(1);
->              }
->=20
->              if n > 0 {
->                  // We can write the last element directly without clonin=
-g needlessly
-> -                ptr::write(ptr, value.last());
-> +                ptr::write(ptr, value);
->                  local_len.increment_len(1);
->              }
->=20
-> @@ -2731,8 +2716,8 @@ fn extend_with<E: ExtendWith<T>>(&mut self, n: usiz=
-e, mut value: E) {
+>  rust/kernel/sync/arc.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index 172f563976a9..4c14d540a581 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -299,7 +299,7 @@ fn drop(&mut self) {
+>              // The count reached zero, we must free the memory.
+>              //
+>              // SAFETY: The pointer was initialised from the result of `Box::leak`.
+> -            unsafe { Box::from_raw(self.ptr.as_ptr()) };
+> +            unsafe { drop(Box::from_raw(self.ptr.as_ptr())) };
 >          }
 >      }
->=20
-> -    /// Try to extend the vector by `n` values, using the given generato=
-r.
-> -    fn try_extend_with<E: ExtendWith<T>>(&mut self, n: usize, mut value:=
- E) -> Result<(), TryReserveError> {
-> +    /// Try to extend the vector by `n` clones of value.
-> +    fn try_extend_with(&mut self, n: usize, value: T) -> Result<(), TryR=
-eserveError> {
->          self.try_reserve(n)?;
->=20
->          unsafe {
-> @@ -2744,15 +2729,15 @@ fn try_extend_with<E: ExtendWith<T>>(&mut self, n=
-: usize, mut value: E) -> Resul
->=20
->              // Write all elements except the last one
->              for _ in 1..n {
-> -                ptr::write(ptr, value.next());
-> +                ptr::write(ptr, value.clone());
->                  ptr =3D ptr.add(1);
-> -                // Increment the length in every step in case next() pan=
-ics
-> +                // Increment the length in every step in case clone() pa=
-nics
->                  local_len.increment_len(1);
->              }
->=20
->              if n > 0 {
->                  // We can write the last element directly without clonin=
-g needlessly
-> -                ptr::write(ptr, value.last());
-> +                ptr::write(ptr, value);
->                  local_len.increment_len(1);
->              }
->=20
-> @@ -3210,6 +3195,12 @@ pub fn splice<R, I>(&mut self, range: R, replace_w=
-ith: I) -> Splice<'_, I::IntoI
->      /// If the closure returns false, the element will remain in the vec=
-tor and will not be yielded
->      /// by the iterator.
->      ///
-> +    /// If the returned `ExtractIf` is not exhausted, e.g. because it is=
- dropped without iterating
-> +    /// or the iteration short-circuits, then the remaining elements wil=
-l be retained.
-> +    /// Use [`retain`] with a negated predicate if you do not need the r=
-eturned iterator.
-> +    ///
-> +    /// [`retain`]: Vec::retain
-> +    ///
->      /// Using this method is equivalent to the following code:
->      ///
->      /// ```
-> @@ -3228,10 +3219,10 @@ pub fn splice<R, I>(&mut self, range: R, replace_=
-with: I) -> Splice<'_, I::IntoI
->      /// # assert_eq!(vec, vec![1, 4, 5]);
->      /// ```
->      ///
-> -    /// But `drain_filter` is easier to use. `drain_filter` is also more=
- efficient,
-> +    /// But `extract_if` is easier to use. `extract_if` is also more eff=
-icient,
->      /// because it can backshift the elements of the array in bulk.
->      ///
-> -    /// Note that `drain_filter` also lets you mutate every element in t=
-he filter closure,
-> +    /// Note that `extract_if` also lets you mutate every element in the=
- filter closure,
->      /// regardless of whether you choose to keep or remove it.
->      ///
->      /// # Examples
-> @@ -3239,17 +3230,17 @@ pub fn splice<R, I>(&mut self, range: R, replace_=
-with: I) -> Splice<'_, I::IntoI
->      /// Splitting an array into evens and odds, reusing the original all=
-ocation:
->      ///
->      /// ```
-> -    /// #![feature(drain_filter)]
-> +    /// #![feature(extract_if)]
->      /// let mut numbers =3D vec![1, 2, 3, 4, 5, 6, 8, 9, 11, 13, 14, 15]=
-;
->      ///
-> -    /// let evens =3D numbers.drain_filter(|x| *x % 2 =3D=3D 0).collect:=
-:<Vec<_>>();
-> +    /// let evens =3D numbers.extract_if(|x| *x % 2 =3D=3D 0).collect::<=
-Vec<_>>();
->      /// let odds =3D numbers;
->      ///
->      /// assert_eq!(evens, vec![2, 4, 6, 8, 14]);
->      /// assert_eq!(odds, vec![1, 3, 5, 9, 11, 13, 15]);
->      /// ```
-> -    #[unstable(feature =3D "drain_filter", reason =3D "recently added", =
-issue =3D "43244")]
-> -    pub fn drain_filter<F>(&mut self, filter: F) -> DrainFilter<'_, T, F=
-, A>
-> +    #[unstable(feature =3D "extract_if", reason =3D "recently added", is=
-sue =3D "43244")]
-> +    pub fn extract_if<F>(&mut self, filter: F) -> ExtractIf<'_, T, F, A>
->      where
->          F: FnMut(&mut T) -> bool,
->      {
-> @@ -3260,7 +3251,7 @@ pub fn drain_filter<F>(&mut self, filter: F) -> Dra=
-inFilter<'_, T, F, A>
->              self.set_len(0);
->          }
->=20
-> -        DrainFilter { vec: self, idx: 0, del: 0, old_len, pred: filter, =
-panic_flag: false }
-> +        ExtractIf { vec: self, idx: 0, del: 0, old_len, pred: filter }
->      }
 >  }
->=20
-> @@ -3290,9 +3281,14 @@ fn extend_reserve(&mut self, additional: usize) {
->=20
->  /// Implements comparison of vectors, [lexicographically](Ord#lexicograp=
-hical-comparison).
->  #[stable(feature =3D "rust1", since =3D "1.0.0")]
-> -impl<T: PartialOrd, A: Allocator> PartialOrd for Vec<T, A> {
-> +impl<T, A1, A2> PartialOrd<Vec<T, A2>> for Vec<T, A1>
-> +where
-> +    T: PartialOrd,
-> +    A1: Allocator,
-> +    A2: Allocator,
-> +{
->      #[inline]
-> -    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-> +    fn partial_cmp(&self, other: &Vec<T, A2>) -> Option<Ordering> {
->          PartialOrd::partial_cmp(&**self, &**other)
->      }
->  }
-> diff --git a/scripts/min-tool-version.sh b/scripts/min-tool-version.sh
-> index d65ab8bfeaf4..9520612dd398 100755
-> --- a/scripts/min-tool-version.sh
-> +++ b/scripts/min-tool-version.sh
-> @@ -31,7 +31,7 @@ llvm)
->  =09fi
->  =09;;
->  rustc)
-> -=09echo 1.71.1
-> +=09echo 1.72.0
->  =09;;
->  bindgen)
->  =09echo 0.65.1
-> --
-> 2.42.0
+
