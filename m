@@ -1,107 +1,110 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568C1C8ED
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 16:10:07 +0000 (UTC)
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6981EE6E
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 09:10:05 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-9a1681fa868so704002666b.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 09:10:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20221208.gappssmtp.com; s=20221208; t=1692807004; x=1693411804;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=AvCyDnox4fbKDW7rNSjZG6/gL/syisPTe8ALd97uo+Q=;
-        b=AMRCA5jQetEgbNYV7zkyPQEYLYr+i8pUdYZUEF4QON89eMWTb4UdIdYtj3uoFKba67
-         LZXYSU0+KedMQZ5+JpEvVjTZsFdPlHKtnDeg26ENh2AvkV9sfqbuU+BPxfFxmx/kUdSH
-         naknCJY4MAYa0aqSG74R4dvx6iHvj7VSUVgUpO2t/kuCwmxhLdcVLLL6k7xWHIDiI8im
-         aqWBaOrsQ1k0QsvOYK7DjYvrkr7j3FS4zjb7rhXjJpVIbxKA+ahm9kgFjUbe8l1etZn4
-         DaYsdfX/zC2jJLvApnGKQCAdgIqJ67AbybH9iIdjl8kC0gXT+ZCDJIhHKS8KDlH7uoPL
-         mHZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692807004; x=1693411804;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AvCyDnox4fbKDW7rNSjZG6/gL/syisPTe8ALd97uo+Q=;
-        b=ar6kDQDwauD1FQqybQASh6huMGYvkd11i0/jXFiypSNmFnD25IU0wXpDtgaOZWnGZd
-         bGu0nhj/ktqy5WEvaRLpvsHAD49j+joQPl7YjYz3583k9zhzZmWNtaomRvQDw9JkCh7p
-         NJyYQdvzbrp+i27505oI4wnasIZTrr7h2tjs1c90iPe9OkqC7MR/SzvDXqCChDBoF8r9
-         aWSRmJbZawwgmM2B/1l/k3bMIzCD9jWnVXOx3rQJHHzX6ew/ILxNp6I5W4bVCLJHd/yI
-         7n1SdBrjSdiKzFcPZh3fdW+FdCG91g+9ZG4rm7ndTIN31AtGNrnJ/+05TEBv95shg7lx
-         TqAQ==
-X-Gm-Message-State: AOJu0Yw2WAYrdmAG2YdHzsRY1FmFkoNy0jgu4CkLibZ+wPcnEYH0SSTS
-	NcG+XnDT8IQMATVGsf3b4FzBAA==
-X-Google-Smtp-Source: AGHT+IHqKjdbXppHqxgenNeZYES7RnrdB3Ff8k7iiNuK7kgXftXUykFdhh/FJBhTWdlI5gR+XbKyNA==
-X-Received: by 2002:a17:906:2d1:b0:991:d5ad:f1b1 with SMTP id 17-20020a17090602d100b00991d5adf1b1mr11989340ejk.47.1692807003799;
-        Wed, 23 Aug 2023 09:10:03 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id o5-20020a1709064f8500b0099d45ed589csm9938111eju.125.2023.08.23.09.10.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Aug 2023 09:10:03 -0700 (PDT)
-References: <87msyi406u.fsf@metaspace.dk>
- <20230823103458.243871-1-aliceryhl@google.com>
-User-agent: mu4e 1.10.5; emacs 28.2.50
-From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: alex.gaynor@gmail.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org,
- ojeda@kernel.org, patches@lists.linux.dev, rust-for-linux@vger.kernel.org,
- wedsonaf@gmail.com
-Subject: Re: [PATCH v1] rust: add improved version of
- `ForeignOwnable::borrow_mut`
-Date: Wed, 23 Aug 2023 18:09:15 +0200
-In-reply-to: <20230823103458.243871-1-aliceryhl@google.com>
-Message-ID: <87a5uh4u5h.fsf@metaspace.dk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FF6C8EC
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Aug 2023 16:19:06 +0000 (UTC)
+Received: from mail-4319.protonmail.ch (mail-4319.protonmail.ch [185.70.43.19])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AEF210C1;
+	Wed, 23 Aug 2023 09:19:04 -0700 (PDT)
+Date: Wed, 23 Aug 2023 16:18:39 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1692807540; x=1693066740;
+	bh=x+ih6c7WHhuGLWj+NKR9PNQotRoT6LuY26VzJlqilQI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=jg6sJdO+wYfiN0CZyNbSGsqjc0kJkj+61U/RuzVBMg2AxPn32enN0K6C+YdWLxyU3
+	 GuTu6akhfV+GFprFWj/p15cJ1EVVWqdCY67mme62pA7MXtip9ZYHpIUPmWZo+OixiE
+	 eA5/AzIntIRie646SvMAHroA3ozy7SKjsXF+N5l1eF63gv9Z5LogDPdihwFZNAnsxN
+	 VFd5jRyqkoT8K02tGax+efa8Z0EzU5VGGUdGpLiWCru5tJLfzGJlYTC2kabgGpXA0Y
+	 T2r4p5uEBNOJNYVEPXC6KaUnJnv1t7tRB7YSAOuW8gyCDPd1o0xKUBx3drtKKAM19x
+	 0CFNA7ElsgUdw==
+To: Miguel Ojeda <ojeda@kernel.org>
+From: =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH 1/2] rust: arc: add explicit `drop()` around `Box::from_raw()`
+Message-ID: <pNr7-0EyO6weJkSEeU770VmDkk25LV2u1CAbyHuS2XwPdFpYPmgBxqWLjLZLjOCW9p1At09QxciCyE_e9QdfnXO0SikhaJVZAU6GPAjA8aU=@protonmail.com>
+In-Reply-To: <20230823160244.188033-2-ojeda@kernel.org>
+References: <20230823160244.188033-1-ojeda@kernel.org> <20230823160244.188033-2-ojeda@kernel.org>
+Feedback-ID: 27884398:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-	autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
+On Wednesday, August 23rd, 2023 at 18:02, Miguel Ojeda <ojeda@kernel.org> w=
+rote:
 
-Alice Ryhl <aliceryhl@google.com> writes:
+> `Box::from_raw()` is `#[must_use]`, which means the result cannot
+> go unused.
+>=20
+> In Rust 1.71.0, this was not detected because the block expression
+> swallows the diagnostic [1]:
+>=20
+>     unsafe { Box::from_raw(self.ptr.as_ptr()) };
+>=20
+> It would have been detected, however, if the line had been instead:
+>=20
+>     unsafe { Box::from_raw(self.ptr.as_ptr()); }
+>=20
+> i.e. the semicolon being inside the `unsafe` block, rather than
+> outside.
+>=20
+> In Rust 1.72.0, the compiler started warning about this [2], so
+> without this patch we will get:
+>=20
+>         error: unused return value of `alloc::boxed::Box::<T>::from_raw` =
+that must be used
+>         --> rust/kernel/sync/arc.rs:302:22
+>         |
+>     302 |             unsafe { Box::from_raw(self.ptr.as_ptr()) };
+>         |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>         |
+>         =3D note: call `drop(Box::from_raw(ptr))` if you intend to drop t=
+he `Box`
+>         =3D note: `-D unused-must-use` implied by `-D warnings`
+>     help: use `let _ =3D ...` to ignore the resulting value
+>         |
+>     302 |             unsafe { let _ =3D Box::from_raw(self.ptr.as_ptr())=
+; };
+>         |                      +++++++                                 +
+>=20
+> Thus add an add an explicit `drop()` as the `#[must_use]`'s
+> annotation suggests (instead of the more general help line).
+>=20
+> Link: https://github.com/rust-lang/rust/issues/104253 [1]
+> Link: https://github.com/rust-lang/rust/pull/112529 [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-> Andreas Hindborg <nmi@metaspace.dk> writes:
->>>> I am not sure this makes sense. How about splitting the trait in two,
->>>> immutable and mutable and only implementing the immutable one or Arc?
->>>
->>> I used this design based on what would make sense for a linked list. The
->>> idea is that we can have two different types of cursors for a linked
->>> list: immutable and mutable. The immutable cursor lets you:
->>>
->>>  * move around the linked list
->>>  * access the values using `borrow`
->>>
->>> The mutable cursor lets you:
->>>
->>>  * move around the linked list
->>>  * delete or add items to the list
->>>  * access the values using `borrow_mut`
->>>
->>> The mutable cursor gives you extra abilities beyond the `borrow` vs
->>> `borrow_mut` distinction, so we want to provide both types of cursors
->>> even if the pointer type is Arc. To do that, we need a trait that
->>> defines what it means to have mutable access to an Arc.
->> 
->> I don't see how that prevents this trait from being split in two?
->
-> Well, you could split the trait, but if you make the mutable iterator
-> require the `borrow_mut` trait, then you have to implement the mutable
-> trait for `Arc` too if you want the mutable iterator to work with `Arc`.
->
-> And if you're always going to implement both traits, then maybe it
-> makes more sense to not split the traits?
+Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
 
-Maybe. Do you have a prototype for the list cursor available?
-
-BR Andreas
-
+> ---
+>  rust/kernel/sync/arc.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index 172f563976a9..4c14d540a581 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -299,7 +299,7 @@ fn drop(&mut self) {
+>              // The count reached zero, we must free the memory.
+>              //
+>              // SAFETY: The pointer was initialised from the result of `B=
+ox::leak`.
+> -            unsafe { Box::from_raw(self.ptr.as_ptr()) };
+> +            unsafe { drop(Box::from_raw(self.ptr.as_ptr())) };
+>          }
+>      }
+>  }
+> --
+> 2.42.0
