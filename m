@@ -1,54 +1,56 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2072611C83
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 10:48:36 +0000 (UTC)
-Received: from mail-ed1-x549.google.com (mail-ed1-x549.google.com [IPv6:2a00:1450:4864:20::549])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E132BE
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 03:48:25 -0700 (PDT)
-Received: by mail-ed1-x549.google.com with SMTP id 4fb4d7f45d1cf-529fa33ac99so2388309a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 03:48:25 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D2B11C83
+	for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 10:49:31 +0000 (UTC)
+Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79D2C12F
+	for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 03:49:12 -0700 (PDT)
+Received: by mail-ej1-x64a.google.com with SMTP id a640c23a62f3a-99388334de6so231547866b.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 03:49:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693219703; x=1693824503;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=phn8WusQ/2+glt4bRRsEQXCtZZReUGFgblYyJRKf5Po=;
-        b=GFuup1MGJRUkG1P8N469gD0uIyioKkpXXdaHIwLBn9zp4jpZHnPCabTNzKIMkvngCE
-         efLqMtK+bsODFnTy8pPYa96/vr/acZ9NQZ1rXsv8U1pDSWiWnlTLtWlexDJF+JMB50LN
-         jNfjeIPqg8zYTlpklUuVXpb19Cre6aXEqlUlOtPvkuZy0JebKEbRNHG8Lo5yJi0nZ7ql
-         Vdb57T8pe+vusaWx70f1LRYSIokFStQOCqLHkiafzqaG1xFoQBw/muwgUkNrxZtKqpnE
-         2jEWfut/08tKpnpi+gpb3YRo9b1ooTFdz1gKZrI+TgynH1ape5TvDPTJ8/jvPODypjU2
-         wqhg==
+        d=google.com; s=20221208; t=1693219745; x=1693824545;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pDP42zhivXOqcs6bhwO68yvQPwPyC5hRmGTeBYgZbjo=;
+        b=SYVXPWup/0Ks6nXMQH+6J2EtHyABPdkhXEFLtjkJc4WrjinWO3O4DLXXavo+jfZHDN
+         INnhDkT1UT/hU3EysH7zORu7nGbRfewp9BHn5X0SoJ4vQ/W+zinqE3wNMlbhkuWFMn0b
+         m/zV2DZSBJZSz70HSvf+NXM6XPHwK3T+dB99fvAUDzXov74YWnJHIZ8cSFuXCZXy38Jw
+         7M1tfbDiZ+NPI0Uv0TARka+LjGcmAWDDDMJQPjFyrTL9L9AF3T/W5l1r76gQe187Yvuk
+         y9rCKcTjhKuozR8oPg+A8Vd+gEfQm3FALggEScLhA0kYD2ySB395Wh+AVgvYYPaaBqrJ
+         rexw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693219703; x=1693824503;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=phn8WusQ/2+glt4bRRsEQXCtZZReUGFgblYyJRKf5Po=;
-        b=kb2S7Oo9ya1ECjHj3dKmyyd5eA+/DeK2eWbunCI2g8pxo6UIe6iOSVL1qSN53SPTbH
-         ny8bkaF+zJGIN+YYcwmep3RG4dPceTsrnB7flttaeWmhmLXmUxQLyiM3RJZ0rEDQw/qW
-         uhHXn8DjLhYB6DhCvJ9ZI3fdlSyFWibFgkSf0k2b2lgGc7GVCygSxAVGsVfYV2ruFzKu
-         n42NImtc1rsnD74E3iUCNLRUOrKtTUv8zuDr35b/JiVeN1wJND9n2RMbB+Kb0uDvaEw/
-         MODfp3rt0V98qErzqDDQBXZvGxuoPnWy+ZA8dDg5ND90GumC7S51lxfnhYaWYpWBipqU
-         i3xw==
-X-Gm-Message-State: AOJu0YwU4/cVmHD5GICfU+joWLrmlF7H+CeHc3GqXULytdYPpMzI6wgC
-	lWaT9vsKt+n3LEj8nR7Ev2OSTvKQpclrUDlMTb4dGFvA5HFNbahxF4ZNLvXhmQ1wWeOkMfiYGFz
-	L3TwEi0FHJUAW0331Y0/m19241usgDVbw/MwfQb8ivd2GrhvhpZOWV75rYnJcFONA9rrJiZASOy
-	uhG0pp
-X-Google-Smtp-Source: AGHT+IFlKbd+StOuT2cwBajLbBRIWvpPRXWrwlNiRZgLn+CYc2DdKicVqK6mw+3HktcA5RJUAHtt8hdAMRRzYJw=
+        d=1e100.net; s=20221208; t=1693219745; x=1693824545;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pDP42zhivXOqcs6bhwO68yvQPwPyC5hRmGTeBYgZbjo=;
+        b=RE5U5aDPNYf3Xt/BRqaWvaK0U7pOsD8OikgsRQGXoHPU+Zw4mirPuBrz/ZT9lLpNmq
+         QMpW2MncWvrPZJEFHxiTTpJRXy827KDN5NLvbtjrZmFBlYcmLVGBK4EClp/oSkNyy4VZ
+         qGPKH3GaMtZ0UPrVQ00ILSxdfzCbL5c4P+XLFxOSaRMso4pp0TMXHCEPONZdFiAylAuN
+         yVpB7vUDFoR3+TC88QOFkV46jStF9XAExHXiWVIX1Ol0Npq/Ic0nCcHry53ssQrC0iKJ
+         VLJDsUuO6wkfXt3LS02nPh4JEmjir/+YWSnnstb/Iy8rvHrcbVxtq7PVIyuRKrwynFU3
+         IVcg==
+X-Gm-Message-State: AOJu0YwHkyQ9Dj3p01OX9+039pkANT+XoOxtF8Z2tHYUAMV6jplJvzX/
+	+iWrOwAkm+2PwlpP6+GFHA1fbKlMgU+TalGasHkPx2PsgXbRm99tjlTQAOLm0q81v2EMYZwlLWT
+	b4H1CDmb86NKadTAcwy/CtccDFXd4i4HSeILbuyFW85yqMJI9zYoyJHBr8sFHn9edqaS1WfUzxy
+	srDXpd
+X-Google-Smtp-Source: AGHT+IEdOjPh0Uew8IdWm/tyy/0oO+3TUd+SIs77H1knmFnd3hNZemCnPFGJq1OlHiFl5RLAX9VYSyKw8p7K1Ew=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a50:cd5e:0:b0:527:247d:8a03 with SMTP id
- d30-20020a50cd5e000000b00527247d8a03mr456270edj.3.1693219703413; Mon, 28 Aug
- 2023 03:48:23 -0700 (PDT)
-Date: Mon, 28 Aug 2023 10:48:00 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a17:907:3546:b0:9a1:c474:8e5f with SMTP
+ id aa6-20020a170907354600b009a1c4748e5fmr352725ejc.8.1693219744499; Mon, 28
+ Aug 2023 03:49:04 -0700 (PDT)
+Date: Mon, 28 Aug 2023 10:48:01 +0000
+In-Reply-To: <20230828104807.1581592-1-aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20230828104807.1581592-1-aliceryhl@google.com>
 X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
-Message-ID: <20230828104807.1581592-1-aliceryhl@google.com>
-Subject: [PATCH v4 0/7] rust: workqueue: add bindings for the workqueue
+Message-ID: <20230828104807.1581592-2-aliceryhl@google.com>
+Subject: [PATCH v4 1/7] rust: sync: add `Arc::{from_raw, into_raw}`
 From: Alice Ryhl <aliceryhl@google.com>
 To: rust-for-linux@vger.kernel.org, Tejun Heo <tj@kernel.org>, 
 	Miguel Ojeda <ojeda@kernel.org>
@@ -57,72 +59,125 @@ Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail
 	Gary Guo <gary@garyguo.net>, 
 	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
 	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
+	patches@lists.linux.dev, Wedson Almeida Filho <walmeida@microsoft.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Andreas Hindborg <a.hindborg@samsung.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=unavailable autolearn_force=no version=3.4.6
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-This patchset contains bindings for the kernel workqueue.
+From: Wedson Almeida Filho <walmeida@microsoft.com>
 
-One of the primary goals behind the design used in this patch is that we
-must support embedding the `work_struct` as a field in user-provided
-types, because this allows you to submit things to the workqueue without
-having to allocate, making the submission infallible. If we didn't have
-to support this, then the patch would be much simpler. One of the main
-things that make it complicated is that we must ensure that the function
-pointer in the `work_struct` is compatible with the struct it is
-contained within.
+These methods can be used to turn an `Arc` into a raw pointer and back,
+in a way that preserves the metadata for fat pointers.
 
-The original version of the workqueue bindings was written by Wedson,
-but I have rewritten much of it so that it uses the pin-init
-infrastructure and can be used with containers other than `Arc`.
+This is done using the unstable ptr_metadata feature [1]. However, it
+could also be done using the unstable pointer_byte_offsets feature [2],
+which is likely to have a shorter path to stabilization than
+ptr_metadata.
 
-This patchset depends on the patch [1] that changes `Opaque` to be
-`!Unpin` for correctness. The patchset is based on the rust-6.6 tag,
-since that tag includes that patch.
+Link: https://github.com/rust-lang/rust/issues/81513 [1]
+Link: https://github.com/rust-lang/rust/issues/96283 [2]
+Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
+Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+---
+v3 -> v4:
+ * Update doc comment for `Arc::from_raw`.
+ * Add Reviewed-by for Martin, Benno, and Andreas.
 
-Changes v3 -> v4:
+ rust/kernel/lib.rs      |  1 +
+ rust/kernel/sync/arc.rs | 46 +++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 45 insertions(+), 2 deletions(-)
 
- * Use `offset_of!` macro from standard library, and drop patch with
-   custom implementation.
- * Add name parameter to `work_struct` constructor, and drop patch with
-   __INIT_WORK_WITH_KEY.
- * Various improvements to documentation and comments.
-
-More detailed changelogs can be found on the individual patches.
-
-Previous versions:
-v1: https://lore.kernel.org/all/20230517203119.3160435-1-aliceryhl@google.com/
-v2: https://lore.kernel.org/all/20230601134946.3887870-1-aliceryhl@google.com/
-v3: https://lore.kernel.org/all/20230711093303.1433770-1-aliceryhl@google.com/
-
-[1]: https://lore.kernel.org/all/20230630150216.109789-1-benno.lossin@proton.me/
-
-Alice Ryhl (5):
-  rust: workqueue: add low-level workqueue bindings
-  rust: workqueue: add helper for defining work_struct fields
-  rust: workqueue: implement `WorkItemPointer` for pointer types
-  rust: workqueue: add `try_spawn` helper method
-  rust: workqueue: add examples
-
-Wedson Almeida Filho (2):
-  rust: sync: add `Arc::{from_raw, into_raw}`
-  rust: workqueue: define built-in queues
-
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers.c                  |  13 +
- rust/kernel/lib.rs              |   3 +
- rust/kernel/sync/arc.rs         |  46 ++-
- rust/kernel/workqueue.rs        | 679 ++++++++++++++++++++++++++++++++
- scripts/Makefile.build          |   2 +-
- 6 files changed, 741 insertions(+), 3 deletions(-)
- create mode 100644 rust/kernel/workqueue.rs
-
-base-commit: 4af84c6a85c63bec24611e46bb3de2c0a6602a51
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index d59041ff5ff2..abeef423d3a8 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -16,6 +16,7 @@
+ #![feature(coerce_unsized)]
+ #![feature(dispatch_from_dyn)]
+ #![feature(new_uninit)]
++#![feature(ptr_metadata)]
+ #![feature(receiver_trait)]
+ #![feature(unsize)]
+ 
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 172f563976a9..cae2ff44920b 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -24,13 +24,13 @@
+ };
+ use alloc::boxed::Box;
+ use core::{
+-    alloc::AllocError,
++    alloc::{AllocError, Layout},
+     fmt,
+     marker::{PhantomData, Unsize},
+     mem::{ManuallyDrop, MaybeUninit},
+     ops::{Deref, DerefMut},
+     pin::Pin,
+-    ptr::NonNull,
++    ptr::{NonNull, Pointee},
+ };
+ use macros::pin_data;
+ 
+@@ -212,6 +212,48 @@ unsafe fn from_inner(inner: NonNull<ArcInner<T>>) -> Self {
+         }
+     }
+ 
++    /// Convert the [`Arc`] into a raw pointer.
++    ///
++    /// The raw pointer has ownership of the refcount that this Arc object owned.
++    pub fn into_raw(self) -> *const T {
++        let ptr = self.ptr.as_ptr();
++        core::mem::forget(self);
++        // SAFETY: The pointer is valid.
++        unsafe { core::ptr::addr_of!((*ptr).data) }
++    }
++
++    /// Recreates an [`Arc`] instance previously deconstructed via [`Arc::into_raw`].
++    ///
++    /// # Safety
++    ///
++    /// `ptr` must have been returned by a previous call to [`Arc::into_raw`]. Additionally, it
++    /// must not be called more than once for each previous call to [`Arc::into_raw`].
++    pub unsafe fn from_raw(ptr: *const T) -> Self {
++        let refcount_layout = Layout::new::<bindings::refcount_t>();
++        // SAFETY: The caller guarantees that the pointer is valid.
++        let val_layout = Layout::for_value(unsafe { &*ptr });
++        // SAFETY: We're computing the layout of a real struct that existed when compiling this
++        // binary, so its layout is not so large that it can trigger arithmetic overflow.
++        let val_offset = unsafe { refcount_layout.extend(val_layout).unwrap_unchecked().1 };
++
++        let metadata: <T as Pointee>::Metadata = core::ptr::metadata(ptr);
++        // SAFETY: The metadata of `T` and `ArcInner<T>` is the same because `ArcInner` is a struct
++        // with `T` as its last field.
++        //
++        // This is documented at:
++        // <https://doc.rust-lang.org/std/ptr/trait.Pointee.html>.
++        let metadata: <ArcInner<T> as Pointee>::Metadata =
++            unsafe { core::mem::transmute_copy(&metadata) };
++        // SAFETY: The pointer is in-bounds of an allocation both before and after offsetting the
++        // pointer, since it originates from a previous call to `Arc::into_raw` and is still valid.
++        let ptr = unsafe { (ptr as *mut u8).sub(val_offset) as *mut () };
++        let ptr = core::ptr::from_raw_parts_mut(ptr, metadata);
++
++        // SAFETY: By the safety requirements we know that `ptr` came from `Arc::into_raw`, so the
++        // reference count held then will be owned by the new `Arc` object.
++        unsafe { Self::from_inner(NonNull::new_unchecked(ptr)) }
++    }
++
+     /// Returns an [`ArcBorrow`] from the given [`Arc`].
+     ///
+     /// This is useful when the argument of a function call is an [`ArcBorrow`] (e.g., in a method
 -- 
 2.42.0.rc1.204.g551eb34607-goog
 
