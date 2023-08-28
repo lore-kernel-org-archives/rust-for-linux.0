@@ -1,189 +1,113 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2571D6125
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 11:21:57 +0000 (UTC)
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1CE2BF
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 04:21:54 -0700 (PDT)
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20230828112152euoutp011ed971ca8aff4e382ded877f3ec11b14~-iC0diRRU1864718647euoutp01w
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 11:21:52 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20230828112152euoutp011ed971ca8aff4e382ded877f3ec11b14~-iC0diRRU1864718647euoutp01w
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1693221712;
-	bh=VQPiQZ6BlJOv7UycB/t5qmClTXP5K+iValXtnswktQs=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=bKTesSLcdSWCtAEzPYbMrEhtIxPldXOJH0WLtyGV/KWxOfa6ZVrzFmcvzkTOdT3GI
-	 g8HTvhpfcEQ1hFqv+XFa8NEE+xlKMwLH1VBIDx5QYx76awPko89pL4d5zX6nUoTrdA
-	 WGKmhK6SxKcVWuUZIZMft5UxlIlC/eB8BVO2Wz3Y=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20230828112151eucas1p2211c1c044945d76975c5cee44f3be17b~-iC0Exmga2794827948eucas1p2N;
-	Mon, 28 Aug 2023 11:21:51 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges3new.samsung.com (EUCPMTA) with SMTP id CC.B3.37758.F438CE46; Mon, 28
-	Aug 2023 12:21:51 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20230828112151eucas1p2371f4cf778e6265e8ac5baf8ea91be4d~-iCzrf_N92792827928eucas1p2O;
-	Mon, 28 Aug 2023 11:21:51 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20230828112151eusmtrp255b7d9d3f203c26a979f5e6e1dfaefa5~-iCzqwsBN0113301133eusmtrp2i;
-	Mon, 28 Aug 2023 11:21:51 +0000 (GMT)
-X-AuditID: cbfec7f5-7ffff7000002937e-d5-64ec834ff7df
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-	eusmgms2.samsung.com (EUCPMTA) with SMTP id 26.7C.14344.F438CE46; Mon, 28
-	Aug 2023 12:21:51 +0100 (BST)
-Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20230828112151eusmtip22b02f52c7432cc1694d03f92cc5371d9~-iCzf-P-23182131821eusmtip2p;
-	Mon, 28 Aug 2023 11:21:51 +0000 (GMT)
-Received: from CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348) by
-	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348) with Microsoft SMTP
-	Server (TLS) id 15.0.1497.2; Mon, 28 Aug 2023 12:21:50 +0100
-Received: from CAMSVWEXC02.scsc.local ([::1]) by CAMSVWEXC02.scsc.local
-	([fe80::3c08:6c51:fa0a:6384%13]) with mapi id 15.00.1497.012; Mon, 28 Aug
-	2023 12:21:50 +0100
-From: Andreas Hindborg <a.hindborg@samsung.com>
-To: Alice Ryhl <aliceryhl@google.com>
-CC: "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"Tejun Heo" <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Lai Jiangshan
-	<jiangshanlai@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
-	<gary@garyguo.net>, =?iso-8859-1?Q?Bj=F6rn_Roy_Baron?=
-	<bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>
-Subject: Re: [PATCH v4 4/7] rust: workqueue: add helper for defining
- work_struct fields
-Thread-Topic: [PATCH v4 4/7] rust: workqueue: add helper for defining
-	work_struct fields
-Thread-Index: AQHZ2aHWyjhGrDdcWUuOhpl6ciq6/A==
-Date: Mon, 28 Aug 2023 11:21:50 +0000
-Message-ID: <87y1hvtnsi.fsf@samsung.com>
-In-Reply-To: <20230828104807.1581592-5-aliceryhl@google.com>
-Accept-Language: en-US, en-GB
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [106.110.32.64]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3DB125AD
+	for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 13:15:25 +0000 (UTC)
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3C4311C
+	for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 06:15:20 -0700 (PDT)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-58fc4d319d2so37514487b3.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 06:15:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1693228520; x=1693833320;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CEMWlLjO4ma0k7EwHVIyg1u7C9yprMEwyDZO+iulDM8=;
+        b=V6+h4vwrMOMu03ltsnbkQ0zC/AkN7nV9NZ0AqhY1LFP5v6jGwCllqln6omhYPVWEue
+         o6xUFtSRW6KX+7UfEgOJfZERl/kZHyTgyfTZJ9TXwY8EJmJbDJB61ejNTCvuPTuX/UUk
+         y2cRJqAtmUpCuuy2s/I3QeLmyRNlZXuvroD1a8pu0nm87iUKbb+oQ5t5aEIMkQrTnXAt
+         GUhwHD7H9NiU+Q/dXzuRZOgGY1ZprBJtD1ent0Sz12en2jY+j3479biI1NAUjk6eOZVq
+         kOgd03dmIqJLwGXSxEpoB18TIngrd5D29G9XCqaukXHN9b4G9yW+PlKopx18SzdEAC4t
+         OINw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693228520; x=1693833320;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CEMWlLjO4ma0k7EwHVIyg1u7C9yprMEwyDZO+iulDM8=;
+        b=f320KC5t7UnaxHsYHHpCL35XWzeQmDDyIi0f2Y7+vVxgkOXEwbzS/1G+JbJqq7CYxs
+         WtvK+ZR6heuUWWSWTw3kV4IRcj4p2OF/FB8y8HMqn45ME901H1h5RHGn7E5l7oM1RPGe
+         Z/POGlwIDE80XkvBHLejIVLxfwduf1NhWJvfviz6lb7fgIPGHlEaAmk1iTSNR9madUZ7
+         bRtP6sC5Dblr6v2/4eqnEf2dv1BCdC2grvwKY2Z8Xz/dlPl9yaHE1igrV3HSx83rPE/9
+         UoZcCDdmYRhKSJnltA/eHbU2UkP1s9Z/8XsoN9LsdOy4bzZH2hTP46gM4SWfmqg9ZHLd
+         keaw==
+X-Gm-Message-State: AOJu0YzsU5x6aLfTtMyeVt6QzbnrISCaOG8y8M4YP5VVXE+1MnOMdOcZ
+	//3R2H3uhn8fBaQBa2nslLTrfS1xGcHpwBE6arfksw==
+X-Google-Smtp-Source: AGHT+IGWFL9C23hjo7ugSaRQgcoYQlrrlRRD2Om8y9giiAsrv1ninAUIrU/JT1hEg6Os1gAbNBmQm8Ubw8m1A/3B17Y=
+X-Received: by 2002:a25:e7c9:0:b0:d1c:bb1d:238a with SMTP id
+ e192-20020a25e7c9000000b00d1cbb1d238amr24088739ybh.52.1693228519427; Mon, 28
+ Aug 2023 06:15:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrDKsWRmVeSWpSXmKPExsWy7djP87r+zW9SDI5d07H4O3s7u8WJ600s
-	Fh+uNbFa3Liwn9lizZZGJouLZ14zWkxdu5vJ4vKuOWwWK+cvZ7S4fOISo8X6Z4eZLX4tP8po
-	sWHZWkYHXo8lnb+YPHbOusvusWBTqcemVZ1sHi82z2T0+N6+h82jp20Tk8fnTXIBHFFcNimp
-	OZllqUX6dglcGb3LdzAVHBWpeHl7LnMD4zaBLkZODgkBE4nD16eydzFycQgJrGCUeLn+KwtI
-	QkjgC6PEqnk1EInPjBJLPjcxwnRM+bCHHaJoOaPE+TZ/uKJjv1dDJc4wSqyYqgyRWMkoMe1G
-	O1g3m4C+xLU115hBbBEBVYkztxrYQGxmgaUsEjcuyIDYwgKREo8e7GWFqImSmNl4iRHC1pP4
-	MbERzGYB6t049wDYMl4BDYmWWdfB4pwCNhJbGheDvcAoICvxaOUvdoj54hK3nsxngvhAUGLR
-	7D3MELaYxL9dD9kgbB2Js9efQH1pILF16T4WCFtR4lrPTUaIOXoSN6ZOgbpZW2LZwtfMEDcI
-	Spyc+YQF5GEJgTYuidf7pkENdZFoW98EtVhY4tXxLewQtozE/53zmSYwas9Cct8sJDtmIdkx
-	C8mOBYwsqxjFU0uLc9NTi43zUsv1ihNzi0vz0vWS83M3MQIT3Ol/x7/uYFzx6qPeIUYmDsZD
-	jBIczEoivJccX6UI8aYkVlalFuXHF5XmpBYfYpTmYFES59W2PZksJJCeWJKanZpakFoEk2Xi
-	4JRqYFL+vv7yBEcu1eKmw3e+LYi6Lx8a+V+v/1J2W6nI1EcvHkSsmSAf6f5DzkbAUnRBza3N
-	RY1rNa9stFom/Jlvmi6zQvSFha/2t4U18Jc15Jbf28BWmxomrv79VdKsj/GXJRKYf7t9dkjP
-	mHQ5aJ+O07Vpkv7rpqveWfD5wn5965oi97Y5KxYp7vIW/Vp1RHbHrVlnY+WfOy5zrWx4JG4q
-	GyB4eIqV+9rUPzwLFR6F1Qo3TW658ERANP7P1gqfxWcn/J97/oqJQcH2f7oPl5b9dgzduGAt
-	z5bdNjnlj15xrH3j/2vdAf3XXYL8755vejlp7uQp780V5zc16lmF9Ol7XVbun2lYJpm1Yfup
-	JWJCt4qVWIozEg21mIuKEwFqsNfV3wMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrJKsWRmVeSWpSXmKPExsVy+t/xe7r+zW9SDJ48F7X4O3s7u8WJ600s
-	Fh+uNbFa3Liwn9lizZZGJouLZ14zWkxdu5vJ4vKuOWwWK+cvZ7S4fOISo8X6Z4eZLX4tP8po
-	sWHZWkYHXo8lnb+YPHbOusvusWBTqcemVZ1sHi82z2T0+N6+h82jp20Tk8fnTXIBHFF6NkX5
-	pSWpChn5xSW2StGGFkZ6hpYWekYmlnqGxuaxVkamSvp2NimpOZllqUX6dgl6Gb3LdzAVHBWp
-	eHl7LnMD4zaBLkZODgkBE4kpH/awdzFycQgJLGWUWHNzKhNEQkZi45errBC2sMSfa11sILaQ
-	wEdGibZlARD2GUaJj6+ZIJpXMkp8unifGSTBJqAvcW3NNTBbREBV4sytBjaQImaBpSwSv17e
-	YwFJCAtESjx6sJcVoihKYsvMXSwQtp7Ej4mNjCA2C1DzxrkH2EFsXgENiZZZ1xkhNudK7J72
-	G+wiTgEbiS2Ni8F6GQVkJR6t/AVWzywgLnHryXyobwQkluw5zwxhi0q8fPwP6jMdibPXnzBC
-	2AYSW5fuY4GwFSWu9dxkhJijJ3Fj6hQ2CFtbYtnC18wQ9whKnJz5hGUCo/QsJOtmIWmZhaRl
-	FpKWBYwsqxhFUkuLc9Nzi430ihNzi0vz0vWS83M3MQLT1LZjP7fsYFz56qPeIUYmDsZDjBIc
-	zEoivJccX6UI8aYkVlalFuXHF5XmpBYfYjQFhtFEZinR5HxgoswriTc0MzA1NDGzNDC1NDNW
-	Euf1LOhIFBJITyxJzU5NLUgtgulj4uCUamBSX//gbenzF7xmJx5/jjt/Ob+r6M2tfdobsndx
-	W6hJ2LE+D8l6v/2ywbXNt6NP8E+36LsSLLM0bkmgUJ3AA8HafVNmyO5qMDMP+BTol1RatP/2
-	MuG3kedXhnfwbP5gtWZCljJPvn7qi6kBOuFOUjG3lN4//b4wde4yP+VtTzdf+6Tf4uq4Romx
-	Y12MlW5IdMbuZsk6Bf9rO24pOE4/dLC39ErJ1kVFTBNOhfm7pH2Sn3vq5peKWbdWTwiqPr1x
-	MkPYrYtiNXO+XZ8QsfrKovPHdvTFLT6gmX29gEOKZ7LEpFX5osXdWu9y3s9ZsX/yiqRtu3pW
-	8eyS+WTl63zW2/i+5YeMOG6By9od92573zqUoMRSnJFoqMVcVJwIAHH6aoDcAwAA
-X-CMS-MailID: 20230828112151eucas1p2371f4cf778e6265e8ac5baf8ea91be4d
-X-Msg-Generator: CA
-X-RootMTR: 20230828112151eucas1p2371f4cf778e6265e8ac5baf8ea91be4d
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20230828112151eucas1p2371f4cf778e6265e8ac5baf8ea91be4d
-References: <20230828104807.1581592-1-aliceryhl@google.com>
-	<20230828104807.1581592-5-aliceryhl@google.com>
-	<CGME20230828112151eucas1p2371f4cf778e6265e8ac5baf8ea91be4d@eucas1p2.samsung.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+References: <20230823160244.188033-1-ojeda@kernel.org> <20230823160244.188033-2-ojeda@kernel.org>
+In-Reply-To: <20230823160244.188033-2-ojeda@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 28 Aug 2023 15:15:08 +0200
+Message-ID: <CAH5fLggn1fPjZXMg4mmizvO-B-GgRSG6vwjF+eg-sohs=yYYhw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: arc: add explicit `drop()` around `Box::from_raw()`
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
+On Wed, Aug 23, 2023 at 6:03=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+> `Box::from_raw()` is `#[must_use]`, which means the result cannot
+> go unused.
+>
+> In Rust 1.71.0, this was not detected because the block expression
+> swallows the diagnostic [1]:
+>
+>     unsafe { Box::from_raw(self.ptr.as_ptr()) };
+>
+> It would have been detected, however, if the line had been instead:
+>
+>     unsafe { Box::from_raw(self.ptr.as_ptr()); }
+>
+> i.e. the semicolon being inside the `unsafe` block, rather than
+> outside.
+>
+> In Rust 1.72.0, the compiler started warning about this [2], so
+> without this patch we will get:
+>
+>         error: unused return value of `alloc::boxed::Box::<T>::from_raw` =
+that must be used
+>         --> rust/kernel/sync/arc.rs:302:22
+>         |
+>     302 |             unsafe { Box::from_raw(self.ptr.as_ptr()) };
+>         |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>         |
+>         =3D note: call `drop(Box::from_raw(ptr))` if you intend to drop t=
+he `Box`
+>         =3D note: `-D unused-must-use` implied by `-D warnings`
+>     help: use `let _ =3D ...` to ignore the resulting value
+>         |
+>     302 |             unsafe { let _ =3D Box::from_raw(self.ptr.as_ptr())=
+; };
+>         |                      +++++++                                 +
+>
+> Thus add an add an explicit `drop()` as the `#[must_use]`'s
+> annotation suggests (instead of the more general help line).
+>
+> Link: https://github.com/rust-lang/rust/issues/104253 [1]
+> Link: https://github.com/rust-lang/rust/pull/112529 [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Alice Ryhl <aliceryhl@google.com> writes:
-
-> The main challenge with defining `work_struct` fields is making sure
-> that the function pointer stored in the `work_struct` is appropriate for
-> the work item type it is embedded in. It needs to know the offset of the
-> `work_struct` field being used (even if there are several!) so that it
-> can do a `container_of`, and it needs to know the type of the work item
-> so that it can call into the right user-provided code. All of this needs
-> to happen in a way that provides a safe API to the user, so that users
-> of the workqueue cannot mix up the function pointers.
->
-> There are three important pieces that are relevant when doing this:
->
->  * The pointer type.
->  * The work item struct. This is what the pointer points at.
->  * The `work_struct` field. This is a field of the work item struct.
->
-> This patch introduces a separate trait for each piece. The pointer type
-> is given a `WorkItemPointer` trait, which pointer types need to
-> implement to be usable with the workqueue. This trait will be
-> implemented for `Arc` and `Box` in a later patch in this patchset.
-> Implementing this trait is unsafe because this is where the
-> `container_of` operation happens, but user-code will not need to
-> implement it themselves.
->
-> The work item struct should then implement the `WorkItem` trait. This
-> trait is where user-code specifies what they want to happen when a work
-> item is executed. It also specifies what the correct pointer type is.
->
-> Finally, to make the work item struct know the offset of its
-> `work_struct` field, we use a trait called `HasWork<T, ID>`. If a type
-> implements this trait, then the type declares that, at the given offset,
-> there is a field of type `Work<T, ID>`. The trait is marked unsafe
-> because the OFFSET constant must be correct, but we provide an
-> `impl_has_work!` macro that can safely implement `HasWork<T>` on a type.
-> The macro expands to something that only compiles if the specified field
-> really has the type `Work<T>`. It is used like this:
->
-> ```
-> struct MyWorkItem {
->     work_field: Work<MyWorkItem, 1>,
-> }
->
-> impl_has_work! {
->     impl HasWork<MyWorkItem, 1> for MyWorkItem { self.work_field }
-> }
-> ```
->
-> Note that since the `Work` type is annotated with an id, you can have
-> several `work_struct` fields by using a different id for each one.
->
-> Co-developed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
