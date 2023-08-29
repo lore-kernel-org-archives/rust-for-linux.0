@@ -1,89 +1,53 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7735E125D8
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 13:17:22 +0000 (UTC)
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDB9F125
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 06:17:20 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d74a012e613so4393485276.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 28 Aug 2023 06:17:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693228640; x=1693833440;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MGYTgGJyz9hK6P1W5cYWJ37ojkoun6scwiaYLpf40GM=;
-        b=PDCzEuB4+vOFbmlh9WJaVjW8tsiEFTj81FSUQotQQVuJyuddJBEM6FCZABer6pd7gz
-         qZP9Jjhj7qU+ei9c6IIh1aVkpKKiXLZxr1qnGL9qczFSYStHkCYvpRv8JTnM7UF/705j
-         gOpAC2ZDoVUm2R4RV/xkBw/VcwedpwWOiBS6k37BLE3C9ihOwrn0uCEGaiGE2ug+0LKa
-         uO5mhSGt4DE13AGsazbGDfCsya1jdMG5KrKt+5b5Am4HsMtGpn5A+/YztZfQo+gBQzJE
-         lVP0EqmMGzwE9nyUKvlROzTt1GMY0rNpAs8fTnre9C8bq5H19nk0OZBW1ZfKwSK74dkO
-         g8BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693228640; x=1693833440;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MGYTgGJyz9hK6P1W5cYWJ37ojkoun6scwiaYLpf40GM=;
-        b=YmVIG6eQoLNH6IO7B4RdImWgPyEIfCC7Yy5VV6TP5sjac7+PwNndRuAMWFAqWc3o8t
-         XX7hlK0pdeyALqRIW8RdSET87pfUnrE7eIf4Jc+ld+H23oLLUdPnE/3dxmLvYPP6rHDp
-         WTDrCPP+WBcRR4KeTX6pBLVA01VGv1xIY9peuHb04UibebQJjE0RCnb0B+JDH6Mhbauc
-         Uwi/34c9KInYwMXaEliQlRym74vxALLhj3fGzsUP63ceRGQjDbKcynwPywYd3ZUab4i4
-         Vj9B7x3NrdWu/NinCO+kbDOyhy5rrDTKk8Y/oFHBaGBkdki7u+as7rIIB0bturDvDD8N
-         KneQ==
-X-Gm-Message-State: AOJu0YzUllIR3sLZP+wKUWZ4xqMReW+TJp92azFIK5LbXbj090YHzLSf
-	BipSHZA5BBo8iJ56I5wJN2ZW6k1m0/mZO9OGI4eIDw==
-X-Google-Smtp-Source: AGHT+IF472zwt+zJU5bvh6KBEPeZ/osWrL9kS5Td1S0IJH6vipNayQJ/MzpTXVzXkB4GiGqUispoj9X4m11CdMwjvSY=
-X-Received: by 2002:a25:27c5:0:b0:d66:9fcb:1fc1 with SMTP id
- n188-20020a2527c5000000b00d669fcb1fc1mr22835256ybn.24.1693228639796; Mon, 28
- Aug 2023 06:17:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913601643E
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Aug 2023 18:08:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 20811C433C9;
+	Tue, 29 Aug 2023 18:08:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1693332485;
+	bh=lbo/eAw3tvZy/TMTDTUOLtW0n7eKg0rYb7Jr1Qal9d0=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=aoPk8/9kaBkSnOnMXEIb4xJHZkZKuvF1EFajpWbM1X/DxsLpufdzBtKYZJZj6bnvF
+	 RdpkBds7fUQzlPKVpofRVvN5FYsjmKXQV0MorwK3nczdadUqThCDWfBXR9gJ4lXM3C
+	 7lQhPss4C7Wubn4dvSWbMATxIOQPNZ/eAk9Bqaj/I9rBkZDcppWdTZntm0ydagkSSt
+	 bb+XAqq4uaqK2N2mAc8HYrAjUB4Zd1ssqp7VreKGIpjTYc8/5VlleOCaRXacjwxcgV
+	 NOpY9tfC52GDn/+keIDUS4DrcSjFPdx7c3w3JCS4DRKxSju8bqdmllwvEjtHYQmfgR
+	 eTYGyMA9Ob40A==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0D52BC3959E;
+	Tue, 29 Aug 2023 18:08:05 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust for 6.6
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20230824214024.608618-1-ojeda@kernel.org>
+References: <20230824214024.608618-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20230824214024.608618-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux.git tags/rust-6.6
+X-PR-Tracked-Commit-Id: 4af84c6a85c63bec24611e46bb3de2c0a6602a51
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: a031fe8d1d32898582e36ccbffa9847d16f67aa2
+Message-Id: <169333248504.16601.3296363879442058002.pr-tracker-bot@kernel.org>
+Date: Tue, 29 Aug 2023 18:08:05 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20230823160244.188033-1-ojeda@kernel.org> <20230823160244.188033-3-ojeda@kernel.org>
-In-Reply-To: <20230823160244.188033-3-ojeda@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 28 Aug 2023 15:17:08 +0200
-Message-ID: <CAH5fLgjDf9VP4BWp9zX1iv9KiUhA6y+p2Cp2L6-3mR=KS_ExDQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: upgrade to Rust 1.72.0
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, Jonathan Corbet <corbet@lwn.net>, workflows@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-	autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
 
-On Wed, Aug 23, 2023 at 6:03=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
-> This is the second upgrade to the Rust toolchain, from 1.71.1 to 1.72.0
-> (i.e. the latest) [1].
->
-> See the upgrade policy [2] and the comments on the first upgrade in
-> commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
->
-> [...]
->
-> Link: https://github.com/rust-lang/rust/blob/stable/RELEASES.md#version-1=
-720-2023-08-24 [1]
-> Link: https://rust-for-linux.com/rust-version-policy [2]
-> Link: https://github.com/Rust-for-Linux/linux/issues/2 [3]
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1012 [4]
-> Link: https://github.com/rust-lang/rust/pull/112403 [5]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+The pull request you sent on Thu, 24 Aug 2023 23:40:22 +0200:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> https://github.com/Rust-for-Linux/linux.git tags/rust-6.6
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/a031fe8d1d32898582e36ccbffa9847d16f67aa2
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
