@@ -1,30 +1,85 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375626FCE
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Aug 2023 18:03:10 +0000 (UTC)
-X-Greylist: delayed 594 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 30 Aug 2023 11:03:07 PDT
-Received: from hop.stappers.nl (hop.stappers.nl [141.105.120.46])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9338A193;
-	Wed, 30 Aug 2023 11:03:07 -0700 (PDT)
-Received: from gpm.stappers.nl (gpm.stappers.nl [82.168.249.201])
-	by hop.stappers.nl (Postfix) with ESMTP id B300D20167;
-	Wed, 30 Aug 2023 17:53:10 +0000 (UTC)
-Received: by gpm.stappers.nl (Postfix, from userid 1000)
-	id 471A430417C; Wed, 30 Aug 2023 19:53:10 +0200 (CEST)
-Date: Wed, 30 Aug 2023 19:53:09 +0200
-From: Geert Stappers <stappers@stappers.nl>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63503C1E
+	for <rust-for-linux@vger.kernel.org>; Sat,  2 Sep 2023 18:58:36 +0000 (UTC)
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34C0ED;
+	Sat,  2 Sep 2023 11:58:30 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-99c4923195dso27116066b.2;
+        Sat, 02 Sep 2023 11:58:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693681109; x=1694285909; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gl4SU+iR0aYjorFAnHIvqmzFYuhuur+i3elwAKbseyI=;
+        b=JRVrF6I6Gqhv1eWDDaz7Ks3fBRLV4evdavSwovClwXF3zhzzBtn4oi2bTlx/uXcaML
+         rGQTA5hJ0wRX5BLuY8kkPdEkXKqNW40+hH8Dw213lkuBVmaIrJpEAD44AcC+s8aN2z4P
+         JGj+n3UCfJiID5Za82bQqMB8J1ULqDqVifioS15WoUbvMRISepPd8o+lKuZKuLxfmgt5
+         XFht2Uo2UjWBNCUR/3Om3BtGvHt7u2vhqWQPPbgrQyDSX1vGJTRwpw4gWz2X5vFiG/Ac
+         lURyzIhylCMP6hNleJQ+kEMY1gk9PgFBQ3/hwnmZouzIxkrNxQRS88EIqaIu2LLqFbAT
+         KNRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693681109; x=1694285909;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gl4SU+iR0aYjorFAnHIvqmzFYuhuur+i3elwAKbseyI=;
+        b=DTv5J/qXqRYaEmE6WO1pFg2YKbQU+QkO/PE6cM+u5oqTcZu3qjfbkbJy2fIn/JKFhk
+         EZi2qYG1aQy7LVaxhnymfyfY2pXsehc1SWi12QWfvemueffvBc2QAMj/Lb+/T/KXCQxu
+         ka5CoTMYbKLdU+XlCeoDesCX+quQrgLZfyRSMT/FX3Tv/QTTgXWhbZIXa++BeI1RSO3J
+         eVR6KkBIP/4RELv3uq/YzWE7icoygM9MbNFNTdHcOlDjP828SzriOGt5Wi5kaUpriVhG
+         mYeJS9+3AOlSTzBXDJyaVD1BPa+5IvHAlZbrx6u6XE0gMd3s7h3ih98IL2kg7Zb/GBeQ
+         M2sw==
+X-Gm-Message-State: AOJu0YwfQ4pJuQ/EovY5TrAkgHb1+7n15BcshOdfHabs+JoDAjzwntL/
+	snS6as9igQsOmyd44fz35H8=
+X-Google-Smtp-Source: AGHT+IFODLtoLsf48req917bK98NAE1I+S0Yvh0IcbImIFKunEHUw0bS/eMKsPkoBwjtjAKUsC9jbQ==
+X-Received: by 2002:a17:906:3291:b0:9a1:bd1d:61b2 with SMTP id 17-20020a170906329100b009a1bd1d61b2mr3846170ejw.56.1693681108930;
+        Sat, 02 Sep 2023 11:58:28 -0700 (PDT)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id dt22-20020a170906b79600b0099d959f9536sm3809066ejb.12.2023.09.02.11.58.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Sep 2023 11:58:28 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 3262227C0054;
+	Sat,  2 Sep 2023 14:58:26 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Sat, 02 Sep 2023 14:58:26 -0400
+X-ME-Sender: <xms:0YXzZKjOM7vXfm3HVkUDU0HZFNGkQUgqEExdD0KbIS6uXmG_kIdn7g>
+    <xme:0YXzZLAJkLst6hOrR-rTk-s7jVxV8KIIk2Qv2yn-PfjE46KhZt7LSuu5JRyrDauJ6
+    2X7bQ6K7CoGvb4V_A>
+X-ME-Received: <xmr:0YXzZCGYqMoJhEAtHxHkRKYJgir7PO31NRvXt0peBiDgs-ksSY9lKZNpLwAFDQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeggedgudeffecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhepueeutdetheelkedvieekjeefveekjedufeefkeduueduffejueegfffh
+    hfffkefhnecuffhomhgrihhnpehruhhsthdqfhhorhdqlhhinhhugidrtghomhdpghhith
+    hhuhgsrdgtohhmpdiiuhhlihhptghhrghtrdgtohhmnecuvehluhhsthgvrhfuihiivgep
+    tdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhph
+    gvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdr
+    fhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:0YXzZDTYxeOmU8jO2ij9xWNjbmq99qNm1HytDpYGvMerrqxShTtQQA>
+    <xmx:0YXzZHyKr18TrP9pLU2296aXWyW1QYWcgnRGV2Gt3dYYR9Ovd5o5GQ>
+    <xmx:0YXzZB77Xyc7WAlj5_6vZAvBakPp3QpGhEAOUVBgKk4ehLBaI6j7Zg>
+    <xmx:0oXzZMqzPXuIdezaISsZkoUXCNcxUR0KUr4fJg13HQz5t57kHdgcmA>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 2 Sep 2023 14:58:25 -0400 (EDT)
+Date: Sat, 2 Sep 2023 11:57:22 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Subject: Re: [PATCH 1/2] MAINTAINERS: update Rust webpage
-Message-ID: <ZO+CBdxxuDBrdDR8@gpm.stappers.nl>
+Message-ID: <ZPOFkpue7MX28bE7@boqun-archlinux>
 References: <20230830165949.127475-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -35,7 +90,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20230830165949.127475-1-ojeda@kernel.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,21 +106,19 @@ On Wed, Aug 30, 2023 at 06:59:48PM +0200, Miguel Ojeda wrote:
 > file that got rendered by GitHub when visiting that URL.
 > 
 > That information was moved into the webpage and got expanded.
-
-It looks like "mdbook" and "webbrowser view-source" confirms it is.
-
-
 > The webpage is also nowadays the entry point to the project,
 > and we pointed the "Website" GitHub metadata field to it.
 > 
 > Thus update the `W:` field to point to the actual webpage.
 > 
 > Link: https://rust-for-linux.com [1]
-
-Where to find the source for the MarkDownBook?
-
-
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+
+Regards,
+Boqun
+
 > ---
 >  MAINTAINERS | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -86,11 +140,4 @@ Where to find the source for the MarkDownBook?
 > base-commit: 4af84c6a85c63bec24611e46bb3de2c0a6602a51
 > -- 
 > 2.42.0
-
-Reviewed-by: Geert Stappers <stappers@stappers.nl>
-
-
-Groeten
-Geert Stappers
--- 
-Silence is hard to parse
+> 
