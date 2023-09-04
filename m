@@ -1,93 +1,98 @@
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6422310F5
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 Sep 2023 07:48:44 +0000 (UTC)
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E756F0
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 Sep 2023 00:48:42 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2bccda76fb1so17799421fa.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 04 Sep 2023 00:48:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1693813720; x=1694418520; darn=vger.kernel.org;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=rYrT/OBD2Zjx+XkX7u24UqYymx1MH3uTPX/Eopb7uUY=;
-        b=zl0uKz0nZsKSAygGoCvYFwKtWZTI14UOOALL5Cy6N/wGWz4LlEa/kfWMc4tWYDrWzz
-         KQ9+lOZVpY0ia6+Ry6AHVZefrdaL+5+hSystYBRrYzd9/A/Dmc6PidbQ6I3aW3LlJ/EW
-         xlhjJgjQtusbkusBCAoBsR+Ir7z8OeQwrzttGdzqQmc7/S9DzNYN8m/EE7UzHhy8MZaS
-         oQgZOMCNQMkY6Rks62B8OOL3/xNneq4yqtiI0UJlT9XGvxmFsAcJ8GEcImie1MvcO1EB
-         gAhPhcYPld/gsYMtsC/+8xpM2Ft08QAyLdQl3JRiWElEfx8e6THHtJ8COmD09cgw1OYx
-         Q4TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693813720; x=1694418520;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rYrT/OBD2Zjx+XkX7u24UqYymx1MH3uTPX/Eopb7uUY=;
-        b=gMdhb5rSvU/8d9yJJ5ys6Kwlf/uvF+M7hK0Z7VxMBGtHSN/CgPnHGY1EEVrky2ho6d
-         mlYJ40Q3Bb0tJc4vRP00N2u2axwT1pf2iXfic2Za73mYsFp67leWQfSuLs+Kn0J/blgs
-         AnTD8oJXTjlaUqXPTX2tGaH8nq5ZRRVRCD3KtnzQ7ku6tbuY2EvLeWqkp8b6CnxOTLhc
-         h/P/wzZHC4wILYUpj9iz2o7F3AT7obMz5NAo828jIO9H2r6EnMGEb7tkYNIC0OJFihnL
-         /6zo2cgF8c2G0h3DBCKteC0J3wXamAcca8uEXVsC0DMd9cOBSMIePYmc7xMJO529Yim3
-         Q/Nw==
-X-Gm-Message-State: AOJu0Yz4myadx+BfL40qJ1dYF+odLvWp/8jArfGznn6v2hh8wftkDJTU
-	3DBwF1+8Yyskfuri+ugHEF9Qww==
-X-Google-Smtp-Source: AGHT+IHIoedgWTzQVLwkmmr1H6x7PvoQzeRB9iDwXkD31dT6UvjTDDGRznVwz5aXCithFb0S9liFBQ==
-X-Received: by 2002:a2e:8898:0:b0:2bc:c11c:4471 with SMTP id k24-20020a2e8898000000b002bcc11c4471mr6624856lji.21.1693813720447;
-        Mon, 04 Sep 2023 00:48:40 -0700 (PDT)
-Received: from localhost ([165.225.194.194])
-        by smtp.gmail.com with ESMTPSA id u7-20020a05600c210700b003fe4ca8decdsm16341300wml.31.2023.09.04.00.48.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Sep 2023 00:48:40 -0700 (PDT)
-References: <20230830165949.127475-1-ojeda@kernel.org>
- <20230830165949.127475-2-ojeda@kernel.org>
-User-agent: mu4e 1.10.5; emacs 28.2.50
-From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor
- <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- patches@lists.linux.dev
-Subject: Re: [PATCH 2/2] MAINTAINERS: add Maintainer Entry Profile field for
- Rust
-Date: Mon, 04 Sep 2023 09:48:21 +0200
-In-reply-to: <20230830165949.127475-2-ojeda@kernel.org>
-Message-ID: <87ledmtm3s.fsf@metaspace.dk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754533D99;
+	Mon,  4 Sep 2023 14:46:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2FFC433C8;
+	Mon,  4 Sep 2023 14:46:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1693838762;
+	bh=029F1XvwKET4UQUq4RcX4JZMFjGbvc0hdM2e/KGwQD4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MQzqrnFhWzY62iac3g3ghcAroDs6vyeWLI8nHebRKtq9fSeBuoCL9vWyK3fKZNKB1
+	 wsGy/ZZ3pwan/uFrE+K2zZHbaj0rby8X57uCuELHJ9FFoBLtgvn1d2QmqAwPZnV9+c
+	 T1VOl3/Qy8x1ldAzGIY7pS0clUGkA+ybcozv2zzs=
+Date: Mon, 4 Sep 2023 15:45:59 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Andreas Hindborg <a.hindborg@samsung.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>
+Subject: Re: [PATCH 1/2] MAINTAINERS: update Rust webpage
+Message-ID: <2023090425-steep-imperfect-1bd2@gregkh>
+References: <CGME20230830170041eucas1p139eda9d21701ab726a9b36751b819ada@eucas1p1.samsung.com>
+ <20230830165949.127475-1-ojeda@kernel.org>
+ <87ttsatmi6.fsf@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-	lindbergh.monkeyblade.net
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ttsatmi6.fsf@samsung.com>
 
+On Mon, Sep 04, 2023 at 07:40:01AM +0000, Andreas Hindborg wrote:
+> 
+> Miguel Ojeda <ojeda@kernel.org> writes:
+> 
+> > A few months ago we started a webpage for the Rust subsystem and
+> > the overall Rust for Linux project [1].
+> >
+> > The current `W:` field of the Rust entry points to the GitHub
+> > repository, since originally we kept information in a `README.md`
+> > file that got rendered by GitHub when visiting that URL.
+> >
+> > That information was moved into the webpage and got expanded.
+> > The webpage is also nowadays the entry point to the project,
+> > and we pointed the "Website" GitHub metadata field to it.
+> >
+> > Thus update the `W:` field to point to the actual webpage.
+> >
+> > Link: https://protect2.fireeye.com/v1/url?k=f6de0e95-97551ba3-f6df85da-74fe485fffe0-40da65c741bc6c5c&q=1&e=b1890d46-d9fd-4c52-9067-813223d79978&u=https%3A%2F%2Frust-for-linux.com%2F [1]
+> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> > ---
+> >  MAINTAINERS | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 12601a47c839..7c8088e9a11b 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -18558,7 +18558,7 @@ R:	Andreas Hindborg <a.hindborg@samsung.com>
+> >  R:	Alice Ryhl <aliceryhl@google.com>
+> >  L:	rust-for-linux@vger.kernel.org
+> >  S:	Supported
+> > -W:	https://protect2.fireeye.com/v1/url?k=562fa4e0-37a4b1d6-562e2faf-74fe485fffe0-41ef9448fbcb2236&q=1&e=b1890d46-d9fd-4c52-9067-813223d79978&u=https%3A%2F%2Fgithub.com%2FRust-for-Linux%2Flinux
+> > +W:	https://protect2.fireeye.com/v1/url?k=9d6f1261-fce40757-9d6e992e-74fe485fffe0-96ce3590ad5e7466&q=1&e=b1890d46-d9fd-4c52-9067-813223d79978&u=https%3A%2F%2Frust-for-linux.com%2F
+> >  B:	https://protect2.fireeye.com/v1/url?k=bce0bede-dd6babe8-bce13591-74fe485fffe0-1eb20aae852614aa&q=1&e=b1890d46-d9fd-4c52-9067-813223d79978&u=https%3A%2F%2Fgithub.com%2FRust-for-Linux%2Flinux%2Fissues
+> >  C:	zulip://rust-for-linux.zulipchat.com
+> >  T: git
+> > https://protect2.fireeye.com/v1/url?k=db2bb7f4-baa0a2c2-db2a3cbb-74fe485fffe0-2d91ea432710b07e&q=1&e=b1890d46-d9fd-4c52-9067-813223d79978&u=https%3A%2F%2Fgithub.com%2FRust-for-Linux%2Flinux.git
+> > rust-next
+> >
+> > base-commit: 4af84c6a85c63bec24611e46bb3de2c0a6602a51
+> 
+> I was about to complain about the strange link you put. It took me a few
+> seconds to realize what was going on.
+> 
+> Perhaps we should start signing the patches?
 
-Miguel Ojeda <ojeda@kernel.org> writes:
+You can do that, many of us do, please use patatt for this.  My
+.git/hooks/sendemail-validate file contains just one line:
+	patatt sign --hook "${1}"
 
-> The `P:` field allows a URI, and we have been adding information
-> on how to contribute to the Rust subsystem to our webpage for a
-> while now (and other relevant topics, e.g. branches, third-party
-> crates, Rust unstable features...).
->
-> The webpage/document does not currently follow the headings of
-> the Maintainer Entry Profile, but it does nevertheless answer
-> some of the questions we have got so far from contributors and
-> it covers partially some of the topics there.
->
-> Thus link to our "Contributing" document [1].
->
-> Link: https://rust-for-linux.com/contributing [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
+b4 then checks this when applying patches, so it's good to get in the
+habit of using it.
 
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+thanks,
 
+greg k-h
