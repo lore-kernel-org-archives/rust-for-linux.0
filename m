@@ -1,46 +1,47 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438091371
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 Sep 2023 07:43:57 +0000 (UTC)
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5517DDF
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 Sep 2023 00:43:56 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-401d2e11dacso11160135e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 04 Sep 2023 00:43:56 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6422310F5
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Sep 2023 07:48:44 +0000 (UTC)
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E756F0
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Sep 2023 00:48:42 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2bccda76fb1so17799421fa.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 04 Sep 2023 00:48:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1693813435; x=1694418235; darn=vger.kernel.org;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1693813720; x=1694418520; darn=vger.kernel.org;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=ifvCGzYZ8dSBZT/icGjJJZKmlvecnEtAo9NWhhlJprI=;
-        b=RabA6zB5XWUowHX1AjzAjs540jWwnl4p4lOjBVrQMlJ8zwFCvogTdDDJU3yRMd0KBc
-         51GDkir9qjszlZdx99wMIs7soG9jSUM8npo5KebAeFSYVxUs07saSag/+L4Q99Q1Iz8b
-         GEVn1l8q1mYgQK0ZqOl8J262GgSG8VJl1Qknyz0vcvOZUYl880inS+dHn2ZtFx3GoQz7
-         GEUYjv0/yH+2QKU3uRI9EI+9do+kF/w4RG5lu+aWaYmbOBbSx7qtcjeFlogjbapXx1P2
-         1mmiUlmr+4p/IirA5BSlW4TD4A0TJjCzjK+JoEzyKTmQdSkbTh2C5N28XNcylxIzWiI/
-         XCRg==
+        bh=rYrT/OBD2Zjx+XkX7u24UqYymx1MH3uTPX/Eopb7uUY=;
+        b=zl0uKz0nZsKSAygGoCvYFwKtWZTI14UOOALL5Cy6N/wGWz4LlEa/kfWMc4tWYDrWzz
+         KQ9+lOZVpY0ia6+Ry6AHVZefrdaL+5+hSystYBRrYzd9/A/Dmc6PidbQ6I3aW3LlJ/EW
+         xlhjJgjQtusbkusBCAoBsR+Ir7z8OeQwrzttGdzqQmc7/S9DzNYN8m/EE7UzHhy8MZaS
+         oQgZOMCNQMkY6Rks62B8OOL3/xNneq4yqtiI0UJlT9XGvxmFsAcJ8GEcImie1MvcO1EB
+         gAhPhcYPld/gsYMtsC/+8xpM2Ft08QAyLdQl3JRiWElEfx8e6THHtJ8COmD09cgw1OYx
+         Q4TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693813435; x=1694418235;
+        d=1e100.net; s=20221208; t=1693813720; x=1694418520;
         h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
          :user-agent:references:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ifvCGzYZ8dSBZT/icGjJJZKmlvecnEtAo9NWhhlJprI=;
-        b=VeVWXuX+WGST+es5w4NdOJ4nBtHwJ+SayrfBCgyEMr5XkO6Qx7clxa3+qNd3/YR52o
-         4pwz7NPps9w524AhjPtGykXRAgQ40E0TvU8S68/m/NMhr15im4BLtyMAIqqHcXrQwnkU
-         weON9lCSr+S7Aohavv6+pyFDA953xaQB96QayeVyBe6/BgxIq2N0QjoiGMHJPFkKyk6t
-         39SomUml/VYi96kYDzjz9Bi229UDz20WL2gSs76mB0e2GyoWbidipxh6mDcZoYKErbBO
-         FlkzD4zASHU3gtcsOM60w9yd2Jdcf2S8ppTs+OH6KqzvtY2iU9WJTqSl5rmcscFOPjfg
-         wc/w==
-X-Gm-Message-State: AOJu0YyF4O/jXV4PFEAN/fpPbQN0cbpv9OCIjzccsa33mtMqHkC/nTqa
-	isrrJOt3ph+7ETAudDyE1ZhVhw==
-X-Google-Smtp-Source: AGHT+IF/VhmH8vxSF24dGvyU92yKMeU6tMOo/g5hatDiNDqzAh+m4v5n+Mvz8VKgYQUMhVlad5G9Gw==
-X-Received: by 2002:adf:f291:0:b0:313:e88d:e6d3 with SMTP id k17-20020adff291000000b00313e88de6d3mr8760640wro.14.1693813434681;
-        Mon, 04 Sep 2023 00:43:54 -0700 (PDT)
-Received: from localhost ([147.161.155.99])
-        by smtp.gmail.com with ESMTPSA id f9-20020adff989000000b00319756d5b80sm13912160wrr.29.2023.09.04.00.43.54
+        bh=rYrT/OBD2Zjx+XkX7u24UqYymx1MH3uTPX/Eopb7uUY=;
+        b=gMdhb5rSvU/8d9yJJ5ys6Kwlf/uvF+M7hK0Z7VxMBGtHSN/CgPnHGY1EEVrky2ho6d
+         mlYJ40Q3Bb0tJc4vRP00N2u2axwT1pf2iXfic2Za73mYsFp67leWQfSuLs+Kn0J/blgs
+         AnTD8oJXTjlaUqXPTX2tGaH8nq5ZRRVRCD3KtnzQ7ku6tbuY2EvLeWqkp8b6CnxOTLhc
+         h/P/wzZHC4wILYUpj9iz2o7F3AT7obMz5NAo828jIO9H2r6EnMGEb7tkYNIC0OJFihnL
+         /6zo2cgF8c2G0h3DBCKteC0J3wXamAcca8uEXVsC0DMd9cOBSMIePYmc7xMJO529Yim3
+         Q/Nw==
+X-Gm-Message-State: AOJu0Yz4myadx+BfL40qJ1dYF+odLvWp/8jArfGznn6v2hh8wftkDJTU
+	3DBwF1+8Yyskfuri+ugHEF9Qww==
+X-Google-Smtp-Source: AGHT+IHIoedgWTzQVLwkmmr1H6x7PvoQzeRB9iDwXkD31dT6UvjTDDGRznVwz5aXCithFb0S9liFBQ==
+X-Received: by 2002:a2e:8898:0:b0:2bc:c11c:4471 with SMTP id k24-20020a2e8898000000b002bcc11c4471mr6624856lji.21.1693813720447;
+        Mon, 04 Sep 2023 00:48:40 -0700 (PDT)
+Received: from localhost ([165.225.194.194])
+        by smtp.gmail.com with ESMTPSA id u7-20020a05600c210700b003fe4ca8decdsm16341300wml.31.2023.09.04.00.48.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Sep 2023 00:43:54 -0700 (PDT)
+        Mon, 04 Sep 2023 00:48:40 -0700 (PDT)
 References: <20230830165949.127475-1-ojeda@kernel.org>
+ <20230830165949.127475-2-ojeda@kernel.org>
 User-agent: mu4e 1.10.5; emacs 28.2.50
 From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
 To: Miguel Ojeda <ojeda@kernel.org>
@@ -51,10 +52,11 @@ Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor
  Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  patches@lists.linux.dev
-Subject: Re: [PATCH 1/2] MAINTAINERS: update Rust webpage
-Date: Mon, 04 Sep 2023 09:43:37 +0200
-In-reply-to: <20230830165949.127475-1-ojeda@kernel.org>
-Message-ID: <87pm2ytmbq.fsf@metaspace.dk>
+Subject: Re: [PATCH 2/2] MAINTAINERS: add Maintainer Entry Profile field for
+ Rust
+Date: Mon, 04 Sep 2023 09:48:21 +0200
+In-reply-to: <20230830165949.127475-2-ojeda@kernel.org>
+Message-ID: <87ledmtm3s.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,28 +65,27 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
 
 Miguel Ojeda <ojeda@kernel.org> writes:
 
-> A few months ago we started a webpage for the Rust subsystem and
-> the overall Rust for Linux project [1].
+> The `P:` field allows a URI, and we have been adding information
+> on how to contribute to the Rust subsystem to our webpage for a
+> while now (and other relevant topics, e.g. branches, third-party
+> crates, Rust unstable features...).
 >
-> The current `W:` field of the Rust entry points to the GitHub
-> repository, since originally we kept information in a `README.md`
-> file that got rendered by GitHub when visiting that URL.
+> The webpage/document does not currently follow the headings of
+> the Maintainer Entry Profile, but it does nevertheless answer
+> some of the questions we have got so far from contributors and
+> it covers partially some of the topics there.
 >
-> That information was moved into the webpage and got expanded.
-> The webpage is also nowadays the entry point to the project,
-> and we pointed the "Website" GitHub metadata field to it.
+> Thus link to our "Contributing" document [1].
 >
-> Thus update the `W:` field to point to the actual webpage.
->
-> Link: https://rust-for-linux.com [1]
+> Link: https://rust-for-linux.com/contributing [1]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 > ---
 
