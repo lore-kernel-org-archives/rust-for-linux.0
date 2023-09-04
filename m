@@ -1,143 +1,132 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63503C1E
-	for <rust-for-linux@vger.kernel.org>; Sat,  2 Sep 2023 18:58:36 +0000 (UTC)
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34C0ED;
-	Sat,  2 Sep 2023 11:58:30 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-99c4923195dso27116066b.2;
-        Sat, 02 Sep 2023 11:58:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD2318E
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Sep 2023 00:29:29 +0000 (UTC)
+Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E91CFB;
+	Sun,  3 Sep 2023 17:29:28 -0700 (PDT)
+Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1d4db7959f6so350520fac.0;
+        Sun, 03 Sep 2023 17:29:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693681109; x=1694285909; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gl4SU+iR0aYjorFAnHIvqmzFYuhuur+i3elwAKbseyI=;
-        b=JRVrF6I6Gqhv1eWDDaz7Ks3fBRLV4evdavSwovClwXF3zhzzBtn4oi2bTlx/uXcaML
-         rGQTA5hJ0wRX5BLuY8kkPdEkXKqNW40+hH8Dw213lkuBVmaIrJpEAD44AcC+s8aN2z4P
-         JGj+n3UCfJiID5Za82bQqMB8J1ULqDqVifioS15WoUbvMRISepPd8o+lKuZKuLxfmgt5
-         XFht2Uo2UjWBNCUR/3Om3BtGvHt7u2vhqWQPPbgrQyDSX1vGJTRwpw4gWz2X5vFiG/Ac
-         lURyzIhylCMP6hNleJQ+kEMY1gk9PgFBQ3/hwnmZouzIxkrNxQRS88EIqaIu2LLqFbAT
-         KNRQ==
+        d=gmail.com; s=20221208; t=1693787367; x=1694392167; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gy5Sjqdfk2V0r51PCTu3C9haVoBFcraAmneb4UVU19U=;
+        b=U2HgYdZ92FaSWhJWYup3XY7Dr3uZ8GLsGiq2+pnX4m0cAVoWtVusgRTp04SD0MzD6j
+         xjARBm4YwA7C9GatwHz52TBjmREPhI44obDeT+YIxqLWjG4K3gbxdVwEj1u/U9CzOBTn
+         2lU6w437kxjowR82iCZLI6nDxyx4KJDQDmAugLpmZv4CRbhmyWtBZ2kkPUtAxwTKuHxs
+         q6V1SS9dwtbERMoDbR0wcneC3pm2vOfEqAf5w2N9RVdNhXAg3c8Xb6vlCfsWjrVNElF5
+         K2PDyTaJPDL9lEw4Sd3qgnMOGmxIAmPJIw0DS06kfuImYD5NQt7CXDMuATTc6ZP9qAK4
+         C2EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693681109; x=1694285909;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gl4SU+iR0aYjorFAnHIvqmzFYuhuur+i3elwAKbseyI=;
-        b=DTv5J/qXqRYaEmE6WO1pFg2YKbQU+QkO/PE6cM+u5oqTcZu3qjfbkbJy2fIn/JKFhk
-         EZi2qYG1aQy7LVaxhnymfyfY2pXsehc1SWi12QWfvemueffvBc2QAMj/Lb+/T/KXCQxu
-         ka5CoTMYbKLdU+XlCeoDesCX+quQrgLZfyRSMT/FX3Tv/QTTgXWhbZIXa++BeI1RSO3J
-         eVR6KkBIP/4RELv3uq/YzWE7icoygM9MbNFNTdHcOlDjP828SzriOGt5Wi5kaUpriVhG
-         mYeJS9+3AOlSTzBXDJyaVD1BPa+5IvHAlZbrx6u6XE0gMd3s7h3ih98IL2kg7Zb/GBeQ
-         M2sw==
-X-Gm-Message-State: AOJu0YwfQ4pJuQ/EovY5TrAkgHb1+7n15BcshOdfHabs+JoDAjzwntL/
-	snS6as9igQsOmyd44fz35H8=
-X-Google-Smtp-Source: AGHT+IFODLtoLsf48req917bK98NAE1I+S0Yvh0IcbImIFKunEHUw0bS/eMKsPkoBwjtjAKUsC9jbQ==
-X-Received: by 2002:a17:906:3291:b0:9a1:bd1d:61b2 with SMTP id 17-20020a170906329100b009a1bd1d61b2mr3846170ejw.56.1693681108930;
-        Sat, 02 Sep 2023 11:58:28 -0700 (PDT)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id dt22-20020a170906b79600b0099d959f9536sm3809066ejb.12.2023.09.02.11.58.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Sep 2023 11:58:28 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 3262227C0054;
-	Sat,  2 Sep 2023 14:58:26 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Sat, 02 Sep 2023 14:58:26 -0400
-X-ME-Sender: <xms:0YXzZKjOM7vXfm3HVkUDU0HZFNGkQUgqEExdD0KbIS6uXmG_kIdn7g>
-    <xme:0YXzZLAJkLst6hOrR-rTk-s7jVxV8KIIk2Qv2yn-PfjE46KhZt7LSuu5JRyrDauJ6
-    2X7bQ6K7CoGvb4V_A>
-X-ME-Received: <xmr:0YXzZCGYqMoJhEAtHxHkRKYJgir7PO31NRvXt0peBiDgs-ksSY9lKZNpLwAFDQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeggedgudeffecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepueeutdetheelkedvieekjeefveekjedufeefkeduueduffejueegfffh
-    hfffkefhnecuffhomhgrihhnpehruhhsthdqfhhorhdqlhhinhhugidrtghomhdpghhith
-    hhuhgsrdgtohhmpdiiuhhlihhptghhrghtrdgtohhmnecuvehluhhsthgvrhfuihiivgep
-    tdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhph
-    gvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdr
-    fhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:0YXzZDTYxeOmU8jO2ij9xWNjbmq99qNm1HytDpYGvMerrqxShTtQQA>
-    <xmx:0YXzZHyKr18TrP9pLU2296aXWyW1QYWcgnRGV2Gt3dYYR9Ovd5o5GQ>
-    <xmx:0YXzZB77Xyc7WAlj5_6vZAvBakPp3QpGhEAOUVBgKk4ehLBaI6j7Zg>
-    <xmx:0oXzZMqzPXuIdezaISsZkoUXCNcxUR0KUr4fJg13HQz5t57kHdgcmA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 2 Sep 2023 14:58:25 -0400 (EDT)
-Date: Sat, 2 Sep 2023 11:57:22 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH 1/2] MAINTAINERS: update Rust webpage
-Message-ID: <ZPOFkpue7MX28bE7@boqun-archlinux>
-References: <20230830165949.127475-1-ojeda@kernel.org>
+        d=1e100.net; s=20221208; t=1693787367; x=1694392167;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gy5Sjqdfk2V0r51PCTu3C9haVoBFcraAmneb4UVU19U=;
+        b=OKMNVbRI2KsUdqLlzSsaAfPz4BXOyNxgTnfgTP4m7knS6KADPCufd+OpJuMjQOMp/X
+         Dq5zL8MsbwrU41aDFnoqpuKGmertMJT4THE4bzW8MzLZsQV4OFvITJVuxwaUgx67DRuB
+         jNJgxUdjPDHQ6jzG/SQ01NwXy5iUCnVN+anxjJpBTEq8Ph6uKPOoxPfmGkrHIfb1DqtY
+         mKdQofvCazX2ulIi3CisMMzxb4a7qDrPD036PSWiZK5XvmIZhWENnBYhNoBNMrpgXFTI
+         YvcK/8sKBu4OEWErfZLrb2/lAhhPyHMLsqGCL5Wrvva1NZa1wFCdhJaz+/xzh1VkZtJ3
+         nejw==
+X-Gm-Message-State: AOJu0YymmeAhmNcAgSeBZ+1LbqfWlqmIwvz40QmEwcVjYJhlTUPwTNVO
+	ccvLVfjMcinYYnD6844CvZ4=
+X-Google-Smtp-Source: AGHT+IGCDuOU6ZKDHAMJN3qwCQh0SSLDaW3mcfd+gdvDCLJaKZCieOBaxDqBhoVMKwSfvXgOteXNeQ==
+X-Received: by 2002:a05:6871:720:b0:1b3:9e41:de07 with SMTP id f32-20020a056871072000b001b39e41de07mr11773582oap.36.1693787367366;
+        Sun, 03 Sep 2023 17:29:27 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id eb49-20020a056870a8b100b001c4d922b4fasm4860255oab.8.2023.09.03.17.29.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 03 Sep 2023 17:29:26 -0700 (PDT)
+Message-ID: <8de45c09-cb53-4a18-a6f3-56a16553ae32@gmail.com>
+Date: Sun, 3 Sep 2023 21:29:21 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230830165949.127475-1-ojeda@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/7] rust: workqueue: add helper for defining
+ work_struct fields
+To: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+ Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev
+References: <20230828104807.1581592-1-aliceryhl@google.com>
+ <20230828104807.1581592-5-aliceryhl@google.com>
+Content-Language: en-US
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230828104807.1581592-5-aliceryhl@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Wed, Aug 30, 2023 at 06:59:48PM +0200, Miguel Ojeda wrote:
-> A few months ago we started a webpage for the Rust subsystem and
-> the overall Rust for Linux project [1].
+On 8/28/23 07:48, Alice Ryhl wrote:
+> The main challenge with defining `work_struct` fields is making sure
+> that the function pointer stored in the `work_struct` is appropriate for
+> the work item type it is embedded in. It needs to know the offset of the
+> `work_struct` field being used (even if there are several!) so that it
+> can do a `container_of`, and it needs to know the type of the work item
+> so that it can call into the right user-provided code. All of this needs
+> to happen in a way that provides a safe API to the user, so that users
+> of the workqueue cannot mix up the function pointers.
 > 
-> The current `W:` field of the Rust entry points to the GitHub
-> repository, since originally we kept information in a `README.md`
-> file that got rendered by GitHub when visiting that URL.
+> There are three important pieces that are relevant when doing this:
 > 
-> That information was moved into the webpage and got expanded.
-> The webpage is also nowadays the entry point to the project,
-> and we pointed the "Website" GitHub metadata field to it.
+>   * The pointer type.
+>   * The work item struct. This is what the pointer points at.
+>   * The `work_struct` field. This is a field of the work item struct.
 > 
-> Thus update the `W:` field to point to the actual webpage.
+> This patch introduces a separate trait for each piece. The pointer type
+> is given a `WorkItemPointer` trait, which pointer types need to
+> implement to be usable with the workqueue. This trait will be
+> implemented for `Arc` and `Box` in a later patch in this patchset.
+> Implementing this trait is unsafe because this is where the
+> `container_of` operation happens, but user-code will not need to
+> implement it themselves.
 > 
-> Link: https://rust-for-linux.com [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-
-Regards,
-Boqun
-
+> The work item struct should then implement the `WorkItem` trait. This
+> trait is where user-code specifies what they want to happen when a work
+> item is executed. It also specifies what the correct pointer type is.
+> 
+> Finally, to make the work item struct know the offset of its
+> `work_struct` field, we use a trait called `HasWork<T, ID>`. If a type
+> implements this trait, then the type declares that, at the given offset,
+> there is a field of type `Work<T, ID>`. The trait is marked unsafe
+> because the OFFSET constant must be correct, but we provide an
+> `impl_has_work!` macro that can safely implement `HasWork<T>` on a type.
+> The macro expands to something that only compiles if the specified field
+> really has the type `Work<T>`. It is used like this:
+> 
+> ```
+> struct MyWorkItem {
+>      work_field: Work<MyWorkItem, 1>,
+> }
+> 
+> impl_has_work! {
+>      impl HasWork<MyWorkItem, 1> for MyWorkItem { self.work_field }
+> }
+> ```
+> 
+> Note that since the `Work` type is annotated with an id, you can have
+> several `work_struct` fields by using a different id for each one.
+> 
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 12601a47c839..7c8088e9a11b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -18558,7 +18558,7 @@ R:	Andreas Hindborg <a.hindborg@samsung.com>
->  R:	Alice Ryhl <aliceryhl@google.com>
->  L:	rust-for-linux@vger.kernel.org
->  S:	Supported
-> -W:	https://github.com/Rust-for-Linux/linux
-> +W:	https://rust-for-linux.com
->  B:	https://github.com/Rust-for-Linux/linux/issues
->  C:	zulip://rust-for-linux.zulipchat.com
->  T:	git https://github.com/Rust-for-Linux/linux.git rust-next
-> 
-> base-commit: 4af84c6a85c63bec24611e46bb3de2c0a6602a51
-> -- 
-> 2.42.0
-> 
+> [...]
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
