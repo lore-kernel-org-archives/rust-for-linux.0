@@ -1,86 +1,56 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5FB6ADB
-	for <rust-for-linux@vger.kernel.org>; Wed,  6 Sep 2023 20:51:02 +0000 (UTC)
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E14B199F;
-	Wed,  6 Sep 2023 13:50:58 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1c336f5b1ffso1970775ad.2;
-        Wed, 06 Sep 2023 13:50:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694033457; x=1694638257; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ntkeD2GzDhcOIlti0nenV0eqBlUuQFPFxpxBV7T54Yo=;
-        b=cGhHv2M6LMXYbGWgWwmudzIOD7IgGusmvzykBKwUziZ4LeYc2EgWsNdjEtaA99FnNg
-         dzi+FGmrW89nVRqMHcCBz8L97hY9La42aBJGzoX8e2sywl/bzHRL7V9kUkd8DgeYtlwv
-         nONIWROlkwxmTmqkxs7nPsrj9DZYI71u0r6217Kg+PL+Qv2IMUjtSqTazJSkwEsuglyW
-         nEN45oNWSm+5b1+s3cVlWzSRWAMN5ke+cmTYau8utcoCX9karh6ZW0lRHVLkp32ly4/E
-         u5IRCL4u+JGZYOWH7iRQ2RIcTOV6wRqs4OxjzfKEqWfijUMiM8q33Vgp7W2wBf+goW7r
-         tvhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694033457; x=1694638257;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ntkeD2GzDhcOIlti0nenV0eqBlUuQFPFxpxBV7T54Yo=;
-        b=WuZyU/8uulhZR5mPlNjs5/wm12TqjZyzMsZWxA7oXHROaEX5h3KDi+T6u4baLiILPR
-         ssgdgYqlmRs+6pqcM9VdZkJR2qDU+ONj8CfdKK8rj2lz3GlD2ILALsXdhfLzrRSrTOvw
-         2uPq1kY14LysRvZyqep04SR3g3UHjYOS5vEiqnk86rV170dGCYAoaWzVuN9v93z4VMlO
-         Heu5iJJX7qejLIj4EJQgIGp24dU/OYmlmqM+mi3cOWwOy8zwkeUJl41TvFpFfZRzdzDq
-         7d1baxXSIPOW4skyFVvdT8W7xb6bLNU09na2Lpkcao6Fp0UxUM7n0sVZ3LT5JbDo4JsA
-         KtkA==
-X-Gm-Message-State: AOJu0Yws7u3uuB4Axr/XVi0T2Fr556AT6c+IozLub9imI5FnS0YxufPY
-	pQ28nz/9URmw4089wiq109xkOGQKvp4=
-X-Google-Smtp-Source: AGHT+IEWWvBi4fya5NjGYF87fcuug7M4Cz6Bvv60hgETrRATd3dF7O3XQ7p+k1MEZzyNgG/YOhkEMA==
-X-Received: by 2002:a17:902:c404:b0:1c3:3682:f83f with SMTP id k4-20020a170902c40400b001c33682f83fmr13572339plk.30.1694033457342;
-        Wed, 06 Sep 2023 13:50:57 -0700 (PDT)
-Received: from pop-os.. ([2401:4900:1c23:3930:f482:ec7e:9b42:eaeb])
-        by smtp.gmail.com with ESMTPSA id jb15-20020a170903258f00b001c322a41188sm8443979plb.117.2023.09.06.13.50.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Sep 2023 13:50:56 -0700 (PDT)
-From: Manmohan Shukla <manmshuk@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Manmohan Shukla <manmshuk@gmail.com>
-Subject: [PATCH] rust: error: Markdown style nit
-Date: Thu,  7 Sep 2023 02:18:57 +0530
-Message-Id: <20230906204857.85619-1-manmshuk@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E0D187A
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 Sep 2023 08:02:45 +0000 (UTC)
+X-Greylist: delayed 395 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 08 Sep 2023 01:02:42 PDT
+Received: from mail.slitrig.pl (mail.slitrig.pl [51.38.127.96])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB82E19A6
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 Sep 2023 01:02:42 -0700 (PDT)
+Received: by mail.slitrig.pl (Postfix, from userid 1002)
+	id CA40DA9E03; Fri,  8 Sep 2023 07:55:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=slitrig.pl; s=mail;
+	t=1694159764; bh=q6g+ObtCV61LlnEBi7yLnSiOU+IF64224rZgvBJLEss=;
+	h=Date:From:To:Subject:From;
+	b=hp+0I0BvqBxoLxvdrbYPt6T9cD+G8Su7lBwSaToVCsDwXJc8M0Od/08HxlGfro4kS
+	 BBds2tPf4Xh+t3Q6lUa7FSZJiaBWizDb385IuvhrGr8Zt+dVIevBpaB/0lI/Y0UN0E
+	 9DnUKVykZAQQIIxWoBY/yhOVjo4ovmdLZaUcO5pBElLs6DW63oHiLsf+Q33gj7qUeJ
+	 ejk0nBeotFM0jUwBLaJljqLbOARKgVDx8vtlkeczq8xlpGm/f6kl5jUTLKNlMch2Us
+	 z/a5VOQgXvKsIHqmjI1dzzAGEXWDlfcttI8Re2Is7DEfk06TDnfJb5SOan57jQ9ftk
+	 uStVSpHyklo7A==
+Received: by mail.slitrig.pl for <rust-for-linux@vger.kernel.org>; Fri,  8 Sep 2023 07:55:44 GMT
+Message-ID: <20230908064500-0.1.bx.15u0w.0.3llyvee60m@slitrig.pl>
+Date: Fri,  8 Sep 2023 07:55:44 GMT
+From: "Wiktor Nurek" <wiktor.nurek@slitrig.pl>
+To: <rust-for-linux@vger.kernel.org>
+Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
+X-Mailer: mail.slitrig.pl
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_20,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-This patch fixes a trivial markdown style nit in the `SAFETY` comment.
+Dzie=C5=84 dobry,
 
-Signed-off-by: Manmohan Shukla <manmshuk@gmail.com>
----
- rust/kernel/error.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
+skania nowych zlece=C5=84 ze strony www.
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 05fcab6abfe6..6233021daa8a 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -133,7 +133,7 @@ pub fn to_errno(self) -> core::ffi::c_int {
-     /// Returns the error encoded as a pointer.
-     #[allow(dead_code)]
-     pub(crate) fn to_ptr<T>(self) -> *mut T {
--        // SAFETY: self.0 is a valid error due to its invariant.
-+        // SAFETY: `self.0` is a valid error due to its invariant.
-         unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
-     }
- 
--- 
-2.34.1
+Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
+, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
+=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
+jonowania strony w Google.
+
+Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+
+
+Pozdrawiam serdecznie
+Wiktor Nurek
