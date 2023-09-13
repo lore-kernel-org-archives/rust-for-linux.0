@@ -1,29 +1,30 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D3520EF
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 18:59:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E00C433C8;
-	Wed, 13 Sep 2023 18:59:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1694631576;
-	bh=eCNZCjO/qiV/fAe/r/C+RACjiL+AIzl7FqrZWsAnHAs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gBCNpcEaMugl1MUAm2p2K4KsQN2CNXA/fxziL94nV281UBnEaOKH49XPgbe0w6/oy
-	 lnSVT5HqaJvbCcbZ5gy8o3QXEGUl3425eYTi/ABd50u/GubLhBW8JQj0NW0VF1oXRC
-	 UdNPv7mYVmboXxv30aW2HnoCHvgcTK8g/URQ+DKM=
-Date: Wed, 13 Sep 2023 20:59:32 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	rust-for-linux@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6234E558
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 19:15:56 +0000 (UTC)
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9224170F
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 12:15:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=NP6uj/DpN3vnaNBnBkEQ7uyPm6NC8qxLBpkSBPUG/gk=; b=d4cqdByutqXGlzy3DlvS8sYpaQ
+	kzKEWTya6SZV7ny3JgSh6UsQOknrn5xj4c7Hh/ziMqe/lYMnI8/8zEErUDU7Y9XEbwvALDBYn/qvB
+	ZCIngOybA2enGpzpAlkytRm8qIm8va5rwVA9VHOXaazuTUvY2OoGZ9NF4uLZotRNo3A8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qgVL7-006Ktg-KD; Wed, 13 Sep 2023 21:15:53 +0200
+Date: Wed, 13 Sep 2023 21:15:53 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: rust-for-linux@vger.kernel.org
 Subject: Re: [RFC PATCH v1 4/4] sample: rust: add Asix PHY driver
-Message-ID: <2023091349-hazelnut-espionage-4f2b@gregkh>
+Message-ID: <52517bd0-66fe-4275-bef1-afabc906e836@lunn.ch>
 References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
  <20230913133609.1668758-5-fujita.tomonori@gmail.com>
- <894554e5-fed7-456a-a214-efd01f43958b@lunn.ch>
- <2023091353-handclasp-charter-e30a@gregkh>
- <3e858fa9-c498-48b6-8376-99e4db10d846@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -32,33 +33,71 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3e858fa9-c498-48b6-8376-99e4db10d846@lunn.ch>
+In-Reply-To: <20230913133609.1668758-5-fujita.tomonori@gmail.com>
 
-On Wed, Sep 13, 2023 at 08:50:18PM +0200, Andrew Lunn wrote:
-> On Wed, Sep 13, 2023 at 06:53:33PM +0200, Greg KH wrote:
-> > On Wed, Sep 13, 2023 at 04:11:00PM +0200, Andrew Lunn wrote:
-> > > On Wed, Sep 13, 2023 at 10:36:09PM +0900, FUJITA Tomonori wrote:
-> > > > This is the simpler version of drivers/net/phy/ax88796b.c. The C
-> > > > driver implements three PHY drivers but this implements only one,
-> > > > AX88772A PHY. This provides educational information for Rust
-> > > > abstractions for network PHY drivers.
-> > > 
-> > > Rather than being a sample, please make it a real driver. Place it in
-> > > drivers/net/phy, add a Kconfig option to select it. Maybe drop the
-> > > rust_ prefix, since the .rs makes it clear what sort of file it is.
-> > 
-> > But note, we can not have duplicate drivers for the same hardware, so
-> > the .c file needs to have the support for this device removed from it,
-> > OR you need to add support for the other devices to this driver and then
-> > the .c file can be removed.
-> 
-> I would suggest these Rust drivers support all the devices the C
-> driver does, and there is some kconfig logic to make them mutually
-> exclusive.
+> +module! {
+> +    type: RustAsixPhy,
+> +    name: "rust_asix_phy",
+> +    author: "Rust for Linux Contributors",
 
-No, don't do that, it's horrid and we have been down that road in the
-past and we don't want to do it again.  One driver per device please.
+You probably want your name here. You are going to be maintaining this
+driver.
 
-thanks,
+> +    fn match_phy_device(dev: &mut phy::Device) -> bool {
+> +        dev.id() == Self::PHY_ID_ASIX_AX88772A
+> +    }
 
-greg k-h
+What is this doing? The phy core will match the driver to the device,
+based on the phy_id and phy_id_mask in the phy_driver structure. A
+match function is only needed when the vendor made a mess of the IDs,
+and has two different PHYs with the same ID. I don't see anything in
+ax88796b.c to suggest it has this problem.
+
+> +
+> +    fn read_status(dev: &mut phy::Device) -> Result {
+> +        dev.update_link()?;
+> +        if !dev.link() {
+> +            return Ok(());
+> +        }
+> +        let ret = dev.read(MII_BMCR)?;
+> +
+> +        if ret as u32 & BMCR_SPEED100 != 0 {
+
+PHY registers are u16. phy_read() returns an int, so it can have
+negative return codes. But if it is not negative, the positive values
+are in the range of 0 to 65535.
+
+> +    fn suspend(dev: &mut phy::Device) -> Result {
+> +        dev.suspend()
+> +    }
+> +
+> +    fn resume(dev: &mut phy::Device) -> Result {
+> +        dev.resume()
+> +    }
+
+Can we avoid this boilerplate? A lot of phy drivers will make use of
+genphy_foo calls in their struct phy_driver. It would be annoying if
+each driver needs silly little wrappers like this.
+
+> +
+> +    fn soft_reset(dev: &mut phy::Device) -> Result {
+> +        dev.write(MII_BMCR, 0)?;
+> +        dev.soft_reset()
+> +    }
+
+You are missing the comment why genphy_soft_reset() is not
+enough. This device appears to break 802.3, so you really should
+document how it is FUBAR.
+
+> +
+> +    fn link_change_notify(dev: &mut phy::Device) {
+> +        if dev.state() == phy::DeviceState::NoLink {
+> +            let _ = dev.init_hw();
+> +            let _ = dev.start_aneg();
+> +        }
+> +    }
+
+Again, this is bad behaviour of the PHY, so it should be documented
+why it is needed.
+
+    Andrew
