@@ -1,33 +1,31 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B79337F
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 18:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518C7A45
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 18:57:43 +0000 (UTC)
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5A60170B
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 11:50:20 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD8061989
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 11:57:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Qcn1cPRABrCw/rrro4Y76kzV0lC7/TOM+JqX0407c60=; b=OADqHQ+dHN7jBflG4ubF6LcHf1
-	6u9nYiMegiaLyHQaz0d5NWfU+LEfzJDdLGJUNHKHoJrSVBxeLlAnOcLj5qm+oXTsLMZahBuA1HaOk
-	i4iusb8r8bq/JVLhVo1Nr3dkOorV2oXC4JkVeunh9LMqiPxEK9TPXqpgDU4p8TJosGBY=;
+	bh=Vl0eKXyxYAtAEQq9ytHijqMxiKe3tcF4Sg0LogK0Cq8=; b=10dnCRWhF5jBoaOA1k9Hb2t3hc
+	uUhyDCfbSfh1tykNqFLvdKIgwuYVaUIwWOKrRgpcJ8EiWonh87CiMqpm9UFKCh8nWA/GUt93LbfBL
+	TsrjLHkRTgby+Qb8uONqgnHtBWeOKGr0h5On8hwJvve0Xi8y9xVxzKSloTCIj4qpmukQ=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1qgUwM-006KoD-69; Wed, 13 Sep 2023 20:50:18 +0200
-Date: Wed, 13 Sep 2023 20:50:18 +0200
+	id 1qgV3U-006KrQ-PZ; Wed, 13 Sep 2023 20:57:40 +0200
+Date: Wed, 13 Sep 2023 20:57:40 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v1 4/4] sample: rust: add Asix PHY driver
-Message-ID: <3e858fa9-c498-48b6-8376-99e4db10d846@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH v1 3/4] MAINTAINERS: add Rust PHY abstractions file
+ to the ETHERNET PHY LIBRARY
+Message-ID: <dd12e8b8-16a0-4cc2-8b0c-78386ce2dabc@lunn.ch>
 References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
- <20230913133609.1668758-5-fujita.tomonori@gmail.com>
- <894554e5-fed7-456a-a214-efd01f43958b@lunn.ch>
- <2023091353-handclasp-charter-e30a@gregkh>
+ <20230913133609.1668758-4-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,28 +34,33 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2023091353-handclasp-charter-e30a@gregkh>
+In-Reply-To: <20230913133609.1668758-4-fujita.tomonori@gmail.com>
 
-On Wed, Sep 13, 2023 at 06:53:33PM +0200, Greg KH wrote:
-> On Wed, Sep 13, 2023 at 04:11:00PM +0200, Andrew Lunn wrote:
-> > On Wed, Sep 13, 2023 at 10:36:09PM +0900, FUJITA Tomonori wrote:
-> > > This is the simpler version of drivers/net/phy/ax88796b.c. The C
-> > > driver implements three PHY drivers but this implements only one,
-> > > AX88772A PHY. This provides educational information for Rust
-> > > abstractions for network PHY drivers.
-> > 
-> > Rather than being a sample, please make it a real driver. Place it in
-> > drivers/net/phy, add a Kconfig option to select it. Maybe drop the
-> > rust_ prefix, since the .rs makes it clear what sort of file it is.
+On Wed, Sep 13, 2023 at 10:36:08PM +0900, FUJITA Tomonori wrote:
+> The files are placed at rust/kernel/ directory for now but the files
+> are likely to be moved to net/ directory if things go well.
 > 
-> But note, we can not have duplicate drivers for the same hardware, so
-> the .c file needs to have the support for this device removed from it,
-> OR you need to add support for the other devices to this driver and then
-> the .c file can be removed.
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 90f13281d297..95ecf96b911a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -7797,6 +7797,7 @@ F:	include/trace/events/mdio.h
+>  F:	include/uapi/linux/mdio.h
+>  F:	include/uapi/linux/mii.h
+>  F:	net/core/of_net.c
+> +F:	rust/kernel/net/phy.rs
 
-I would suggest these Rust drivers support all the devices the C
-driver does, and there is some kconfig logic to make them mutually
-exclusive.  And to keep the build bots happy, kconfig to disable the
-driver on architectures Rust does not support yet.
+I would suggest you add yourself as a Maintainer as well. You are
+basically stepping up to forever maintaining these files, at least
+until Russell, Heiner and I learn Rust.
 
-       Andrew
+And to make that maintenance work simpler, you might want to move
+phy.rs to drivers/net/phy, so it is alongside phy_device.c,
+phy-core.c, and phy.c, the files it needs to track.
+
+	Andrew
