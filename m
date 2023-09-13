@@ -1,52 +1,52 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC6D3D6C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16041A73A
 	for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 13:36:16 +0000 (UTC)
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB72919B6
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 06:36:15 -0700 (PDT)
-Received: by mail-il1-x134.google.com with SMTP id e9e14a558f8ab-34f69780037so2771785ab.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 06:36:15 -0700 (PDT)
+Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AF6419B1
+	for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 06:36:16 -0700 (PDT)
+Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1a2dd615ddcso1939066fac.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 06:36:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694612175; x=1695216975; darn=vger.kernel.org;
+        d=gmail.com; s=20221208; t=1694612174; x=1695216974; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SDlHZqYz6jPY5MbuaB5gDK5fWeIyxSLUrNQngZbBBlk=;
-        b=YDR7oMVmN3bKuLkzrcbPnJvIIvtsJKVcP8rNyFrchop/8qCPOOEMiJ9+Eu4XDN85zF
-         DCve+dxQ9UzQqvyhdjmnORynIc8tpCPfcabmhgQee0DS0uPMxlS86g4vw2S4Ffs9VWw7
-         1mPopfAMc5V/Q11V8Vi4RV1p6QERqD3cV4vs7sQ8hlFX8WzgLTqLB0yjs6Mi0aIHvyI1
-         6Pfa8BAJtVYfUKNAfY7jm7LXGQGwzszKlcFlyxV6M4RsgZrlZNGFdH9LJsm3QyNYyrQi
-         j/Nlx7nTj4oyootxHxVOog3iFNZB0/Fh+jg3w050+4c7MjIno5QmtG+k0dx+Z9cUMDTG
-         Ix7g==
+        bh=NHmpsxwyhM99Uz1u8Z6BhVJsL5KICU9pkVjoa/Sc5Kk=;
+        b=npqoT0p0Mldv6l/qhcZTrf68J1ds3gE5RrG4cjZhfCZxtcw5rcQ6gbDUwy2Lthr+Dw
+         GG5pPcRUUu/gUpcuOeMq27WWwPBoJC99Wjn/w37bxpL4Cg3j1YrbMQnMojyHidHY3Qvl
+         Fx/M5Sg5xzUPV50jdDgNfIR3uIWGCy7dahMooXyJSdgQAUDGEw5oVt+V5ERPpBZW6ARG
+         Y74J5vVqAqMlV/ajUmyBt6akumRx3TIuv004jffX597Wfdrl9BH3NMOE+ZN3cQxtyNTe
+         cnh4BUh1dkaKPyam8fHEP2D1+CJdaft8JQzY9HNHBWgXVBZhdHrYonNpwJHjVWNGHbFr
+         UMCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694612175; x=1695216975;
+        d=1e100.net; s=20230601; t=1694612174; x=1695216974;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SDlHZqYz6jPY5MbuaB5gDK5fWeIyxSLUrNQngZbBBlk=;
-        b=XSfRryJFqjobXjHUUy4z3C5Xcp2vAPsS/h+W3ufnYTVehArNmcXEYBoUnsNvDDaAlM
-         QtM9kPL/tIhGS/s7akQCxfc2vmXbLiYRfC3lsAzt/b2Y3o6oqdzKb/j1/IUAQblID8qS
-         L1FD7u3AkfqtIjtq6PGqRC3llelseI3sXKFfu2w4IiYLPcBXuZFtilcivvQcUc1xdaei
-         9tGSYdOfOxuT0wICiMbiXMli7RDLFQwAlfGOmQReuzfr7xAb19/8Vz5kMLWAbAkZbr0n
-         0GhnkpP08ouJtOwXhMYu0vFTD5npjpzB8S5SNu4IYEnOKMPhYutO01XuKawnvLPQuHez
-         H8jA==
-X-Gm-Message-State: AOJu0YxqVlbFO2M92v/dh+S01hrxnJLSpLDabTMVfIc08Y+RrM6AM5eS
-	QnYxI/O5OaMvHF7P7du7tijTHCNASCA=
-X-Google-Smtp-Source: AGHT+IHvcZFYTlacPc0WiPMFnsYIxGdiZkGdcVgl/ZP3pEOkJINNKurqe2HwL2l3btSk6JsTWJA1XQ==
-X-Received: by 2002:a05:6e02:1a48:b0:34f:9f4a:c64d with SMTP id u8-20020a056e021a4800b0034f9f4ac64dmr1684881ilv.0.1694612174752;
+        bh=NHmpsxwyhM99Uz1u8Z6BhVJsL5KICU9pkVjoa/Sc5Kk=;
+        b=X1Re0SCsV2QRVJotSzkDAAcg/ONBHEnQm8sLouCY9MPPEw8r84p1CA3XxbLnF+fEXZ
+         DdsX8v+p2sYG3h4VOpQH6d7rvy7oRDASonhAJFNy8wPbv5pryvkL3a2kVIfP3sT7IG6j
+         kKSVhTWsUZV+y8NwWpevPyfOeDatYYKWbCHdVcsQEj3ppIzO1TLy4ZnWByG8F+ra0lrA
+         SvUOoZxQoXAw+4h8RTSFQIPe4mPL8VipxBt2jxRBWm4eqVtPcmPsdu/nSGZ3zxZmKbjI
+         AtldrrdNue1A5jL0Duknx2z4YP66Dp8P5Vyzg8iMfGOT+xfSDq4lekZ3LE57Nb3FCg4/
+         u3kw==
+X-Gm-Message-State: AOJu0Yyo6mf+83k9Pvp0bkEervRXZJ6vZOa3FbybGwxfJOA6I2j8apjS
+	AQwwaJ6ZzC9e0MM1GRLOXcurDy3hjVwPtw==
+X-Google-Smtp-Source: AGHT+IEvmXGb52mwdAIPjJGUYXXyb4ehY7fBYgZmTuX+a1fbEThT3TWZ4qtL3T4F+X9VWRqD2hrxiw==
+X-Received: by 2002:a05:6870:d58b:b0:1b7:5e47:5b75 with SMTP id u11-20020a056870d58b00b001b75e475b75mr3004932oao.4.1694612174020;
         Wed, 13 Sep 2023 06:36:14 -0700 (PDT)
 Received: from ip-172-30-47-114.us-west-2.compute.internal (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id l14-20020a63700e000000b00573f82bb00esm8866602pgc.2.2023.09.13.06.36.14
+        by smtp.gmail.com with ESMTPSA id l14-20020a63700e000000b00573f82bb00esm8866602pgc.2.2023.09.13.06.36.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Sep 2023 06:36:14 -0700 (PDT)
+        Wed, 13 Sep 2023 06:36:13 -0700 (PDT)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 To: rust-for-linux@vger.kernel.org
 Cc: andrew@lunn.ch
-Subject: [RFC PATCH v1 2/4] rust: phy: add module device table support
-Date: Wed, 13 Sep 2023 22:36:07 +0900
-Message-Id: <20230913133609.1668758-3-fujita.tomonori@gmail.com>
+Subject: [RFC PATCH v1 1/4] rust: core abstractions for network PHY drivers
+Date: Wed, 13 Sep 2023 22:36:06 +0900
+Message-Id: <20230913133609.1668758-2-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
 References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
@@ -58,60 +58,716 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This macro corresponds to the kernel's MODULE_DEVICE_TABLE macro,
-which embeds the information for module loading into the module binary
-file.
-
+This patch adds abstractions to implement network PHY drivers; the
+driver registration and bindings for some of callback functions in
+struct phy_driver and many genphy_ functions.
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- rust/kernel/net/phy.rs | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ rust/bindings/bindings_helper.h |   3 +
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/net.rs              |   6 +
+ rust/kernel/net/phy.rs          | 651 ++++++++++++++++++++++++++++++++
+ 4 files changed, 662 insertions(+)
+ create mode 100644 rust/kernel/net.rs
+ create mode 100644 rust/kernel/net/phy.rs
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 2c5ac5e3213a..ffe1a609a7b2 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -649,3 +649,39 @@ unsafe impl<const N: usize> Send for Registration<{ N }> {}
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index c91a3c24f607..ec4ee09a34ad 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -8,6 +8,9 @@
  
- // SAFETY: `Registration` does not expose any of its state across threads.
- unsafe impl<const N: usize> Sync for Registration<{ N }> {}
+ #include <kunit/test.h>
+ #include <linux/errname.h>
++#include <linux/ethtool.h>
++#include <linux/mdio.h>
++#include <linux/phy.h>
+ #include <linux/slab.h>
+ #include <linux/refcount.h>
+ #include <linux/wait.h>
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index e8811700239a..e84fa513dfda 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -36,6 +36,8 @@
+ pub mod ioctl;
+ #[cfg(CONFIG_KUNIT)]
+ pub mod kunit;
++#[cfg(CONFIG_NET)]
++pub mod net;
+ pub mod prelude;
+ pub mod print;
+ mod static_assert;
+diff --git a/rust/kernel/net.rs b/rust/kernel/net.rs
+new file mode 100644
+index 000000000000..b49b052969e5
+--- /dev/null
++++ b/rust/kernel/net.rs
+@@ -0,0 +1,6 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! replace_expr {
-+    ($_t:tt $sub:expr) => {
-+        $sub
-+    };
++//! Networking.
++
++#[cfg(CONFIG_PHYLIB)]
++pub mod phy;
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+new file mode 100644
+index 000000000000..2c5ac5e3213a
+--- /dev/null
++++ b/rust/kernel/net/phy.rs
+@@ -0,0 +1,651 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Network PHY device.
++//!
++//! C headers: [`include/linux/phy.h`](../../../../include/linux/phy.h).
++
++use crate::{bindings, error::*, prelude::vtable, prelude::Box, str::CStr, types::Opaque};
++use core::marker::PhantomData;
++
++/// Corresponds to the kernel's `enum phy_state`.
++#[derive(PartialEq)]
++pub enum DeviceState {
++    /// PHY device and driver are not ready for anything.
++    Down,
++    /// PHY is ready to send and receive packets.
++    Ready,
++    /// PHY is up, but no polling or interrupts are done.
++    Halted,
++    /// PHY is up, but is in an error state.
++    Error,
++    /// PHY and attached device are ready to do work.
++    Up,
++    /// PHY is currently running.
++    Running,
++    /// PHY is up, but not currently plugged in.
++    NoLink,
++    /// PHY is performing a cable test.
++    CableTest,
++    /// Unknown, not defined in the kernel.
++    Unknown,
 +}
 +
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! count_drivers {
-+    ( $(($x:expr, $_y:expr)),* ) => {
-+        0usize $(+ $crate::replace_expr!($x 1usize))*
-+    };
-+}
++/// Wraps the kernel's `struct phy_device`.
++#[repr(transparent)]
++pub struct Device(Opaque<bindings::phy_device>);
 +
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! mdio_device_id_table {
-+    ($(($x:expr, $y:expr)),*) => {
-+        [$(kernel::bindings::mdio_device_id {phy_id: $x, phy_id_mask:$y}),*, kernel::bindings::mdio_device_id {phy_id:0, phy_id_mask:0}]
++impl Device {
++    /// Creates a new [`Device`] instance from a raw pointer.
++    ///
++    /// # Safety
++    ///
++    /// For the duration of the lifetime 'a, the pointer must be valid for writing and nobody else
++    /// may read or write to the `phy_device` object.
++    pub unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
++        unsafe { &mut *(ptr as *mut Self) }
++    }
++
++    /// Gets the id of the PHY.
++    pub fn id(&mut self) -> u32 {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
++        unsafe { (*phydev).phy_id }
++    }
++
++    /// Returns true if the PHY has no link.
++    pub fn link(&mut self) -> bool {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
++        unsafe { (*phydev).link() != 0 }
++    }
++
++    /// Gets the state of the PHY.
++    pub fn state(&mut self) -> DeviceState {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
++        let state = unsafe { (*phydev).state };
++        match state {
++            0 => DeviceState::Down,
++            1 => DeviceState::Ready,
++            2 => DeviceState::Halted,
++            3 => DeviceState::Error,
++            4 => DeviceState::Up,
++            5 => DeviceState::Running,
++            6 => DeviceState::NoLink,
++            7 => DeviceState::CableTest,
++            _ => DeviceState::Unknown,
++        }
++    }
++
++    /// Returns true if auto-negotiation is enabled.
++    pub fn is_autoneg_enabled(&mut self) -> bool {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
++        unsafe { (*phydev).autoneg() == bindings::AUTONEG_ENABLE }
++    }
++
++    /// Returns true if auto-negotiation is completed.
++    pub fn is_autoneg_completed(&mut self) -> bool {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
++        unsafe { (*phydev).autoneg_complete() != 0 }
++    }
++
++    /// Sets the speed of the PHY.
++    pub fn set_speed(&mut self, speed: i32) {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
++        unsafe {
++            (*phydev).speed = speed;
++        }
++    }
++
++    /// Sets duplex mode.
++    pub fn set_duplex(&mut self, is_full: bool) {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
++        unsafe {
++            if is_full {
++                (*phydev).duplex = bindings::DUPLEX_FULL as i32;
++            } else {
++                (*phydev).duplex = bindings::DUPLEX_HALF as i32;
++            }
++        }
++    }
++
++    /// Executes software reset the PHY via BMCR_RESET bit.
++    pub fn soft_reset(&mut self) -> Result {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret = unsafe { bindings::genphy_soft_reset(phydev) };
++        if ret < 0 {
++            Err(Error::from_errno(ret))
++        } else {
++            Ok(())
++        }
++    }
++
++    /// Reads a given PHY register.
++    pub fn read(&mut self, regnum: u32) -> Result<i32> {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret =
++            unsafe { bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, regnum) };
++        if ret < 0 {
++            Err(Error::from_errno(ret))
++        } else {
++            Ok(ret)
++        }
++    }
++
++    /// Writes a given PHY register.
++    pub fn write(&mut self, regnum: u32, val: u16) -> Result {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret = unsafe {
++            bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.addr, regnum, val)
++        };
++        if ret < 0 {
++            Err(Error::from_errno(ret))
++        } else {
++            Ok(())
++        }
++    }
++
++    /// Reads a given PHY register without the MDIO bus lock taken.
++    pub fn lockless_read(&mut self, regnum: u32) -> Result<i32> {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret =
++            unsafe { bindings::__mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, regnum) };
++        if ret < 0 {
++            Err(Error::from_errno(ret))
++        } else {
++            Ok(ret)
++        }
++    }
++
++    /// Writes a given PHY register without the MDIO bus lock taken.
++    pub fn lockless_write(&mut self, regnum: u32, val: u16) -> Result {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret = unsafe {
++            bindings::__mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.addr, regnum, val)
++        };
++        if ret < 0 {
++            Err(Error::from_errno(ret))
++        } else {
++            Ok(())
++        }
++    }
++
++    /// Resumes the PHY via BMCR_PDOWN bit.
++    pub fn resume(&mut self) -> Result {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret = unsafe { bindings::genphy_resume(phydev) };
++        if ret != 0 {
++            Err(Error::from_errno(ret))
++        } else {
++            Ok(())
++        }
++    }
++
++    /// Suspends the PHY via BMCR_PDOWN bit.
++    pub fn suspend(&mut self) -> Result {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret = unsafe { bindings::genphy_suspend(phydev) };
++        if ret != 0 {
++            Err(Error::from_errno(ret))
++        } else {
++            Ok(())
++        }
++    }
++
++    /// Checks the link status and updates current link state.
++    pub fn read_status(&mut self) -> Result {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret = unsafe { bindings::genphy_read_status(phydev) };
++        if ret != 0 {
++            Err(Error::from_errno(ret))
++        } else {
++            Ok(())
++        }
++    }
++
++    /// Reads a paged register.
++    pub fn read_paged(&mut self, page: i32, regnum: u32) -> Result<i32> {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret = unsafe { bindings::phy_read_paged(phydev, page, regnum) };
++        if ret < 0 {
++            return Err(Error::from_errno(ret));
++        } else {
++            Ok(ret)
++        }
++    }
++
++    /// Updates the link status.
++    pub fn update_link(&mut self) -> Result {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret = unsafe { bindings::genphy_update_link(phydev) };
++        if ret < 0 {
++            return Err(Error::from_errno(ret));
++        } else {
++            Ok(())
++        }
++    }
++
++    /// Reads Link partner ability.
++    pub fn read_lpa(&mut self) -> Result {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret = unsafe { bindings::genphy_read_lpa(phydev) };
++        if ret < 0 {
++            return Err(Error::from_errno(ret));
++        } else {
++            Ok(())
++        }
++    }
++
++    /// Resolves the advertisements into PHY settings.
++    pub fn resolve_aneg_linkmode(&mut self) {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        unsafe {
++            bindings::phy_resolve_aneg_linkmode(phydev);
++        }
++    }
++
++    /// Initializes the PHY.
++    pub fn init_hw(&mut self) -> Result {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret = unsafe { bindings::phy_init_hw(phydev) };
++        if ret != 0 {
++            return Err(Error::from_errno(ret));
++        } else {
++            Ok(())
++        }
++    }
++
++    /// Starts auto-negotiation.
++    pub fn start_aneg(&mut self) -> Result {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret = unsafe { bindings::phy_start_aneg(phydev) };
++        if ret != 0 {
++            return Err(Error::from_errno(ret));
++        } else {
++            Ok(())
++        }
++    }
++
++    /// Reads PHY abilities from Clause 22 registers.
++    pub fn read_abilities(&mut self) -> Result {
++        let phydev = Opaque::get(&self.0);
++        // SAFETY: This object is initialized by the `from_raw` constructor,
++        // so an FFI call with a valid pointer.
++        let ret = unsafe { bindings::genphy_read_abilities(phydev) };
++        if ret != 0 {
++            return Err(Error::from_errno(ret));
++        } else {
++            Ok(())
++        }
 +    }
 +}
 +
-+/// Defines module device table.
++/// PHY is internal.
++pub const PHY_IS_INTERNAL: u32 = 0x00000001;
++/// PHY needs to be reset after the refclk is enabled.
++pub const PHY_RST_AFTER_CLK_EN: u32 = 0x00000002;
++/// Polling is used to detect PHY status changes.
++pub const PHY_POLL_CABLE_TEST: u32 = 0x00000004;
++/// Don't suspend.
++pub const PHY_ALWAYS_CALL_SUSPEND: u32 = 0x00000008;
++
++/// An adapter for the registration of a PHY driver.
++pub struct Adapter<T: Driver> {
++    name: &'static CStr,
++    _p: PhantomData<T>,
++}
++
++impl<T: Driver> Adapter<T> {
++    /// Creates a new `Adapter` instance.
++    pub const fn new(name: &'static CStr) -> Adapter<T> {
++        Self {
++            name,
++            _p: PhantomData,
++        }
++    }
++
++    unsafe extern "C" fn soft_reset_callback(
++        phydev: *mut bindings::phy_device,
++    ) -> core::ffi::c_int {
++        from_result(|| {
++            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
++            let dev = unsafe { Device::from_raw(phydev) };
++            T::soft_reset(dev)?;
++            Ok(0)
++        })
++    }
++
++    unsafe extern "C" fn get_features_callback(
++        phydev: *mut bindings::phy_device,
++    ) -> core::ffi::c_int {
++        from_result(|| {
++            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
++            let dev = unsafe { Device::from_raw(phydev) };
++            T::get_features(dev)?;
++            Ok(0)
++        })
++    }
++
++    unsafe extern "C" fn suspend_callback(phydev: *mut bindings::phy_device) -> core::ffi::c_int {
++        from_result(|| {
++            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
++            let dev = unsafe { Device::from_raw(phydev) };
++            T::suspend(dev)?;
++            Ok(0)
++        })
++    }
++
++    unsafe extern "C" fn resume_callback(phydev: *mut bindings::phy_device) -> core::ffi::c_int {
++        from_result(|| {
++            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
++            let dev = unsafe { Device::from_raw(phydev) };
++            T::resume(dev)?;
++            Ok(0)
++        })
++    }
++
++    unsafe extern "C" fn config_aneg_callback(
++        phydev: *mut bindings::phy_device,
++    ) -> core::ffi::c_int {
++        from_result(|| {
++            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
++            let dev = unsafe { Device::from_raw(phydev) };
++            T::config_aneg(dev)?;
++            Ok(0)
++        })
++    }
++
++    unsafe extern "C" fn read_page_callback(phydev: *mut bindings::phy_device) -> core::ffi::c_int {
++        from_result(|| {
++            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
++            let dev = unsafe { Device::from_raw(phydev) };
++            let ret = T::read_page(dev)?;
++            Ok(ret)
++        })
++    }
++
++    unsafe extern "C" fn write_page_callback(
++        phydev: *mut bindings::phy_device,
++        page: i32,
++    ) -> core::ffi::c_int {
++        from_result(|| {
++            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
++            let dev = unsafe { Device::from_raw(phydev) };
++            T::write_page(dev, page)?;
++            Ok(0)
++        })
++    }
++
++    unsafe extern "C" fn read_status_callback(
++        phydev: *mut bindings::phy_device,
++    ) -> core::ffi::c_int {
++        from_result(|| {
++            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
++            let dev = unsafe { Device::from_raw(phydev) };
++            T::read_status(dev)?;
++            Ok(0)
++        })
++    }
++
++    unsafe extern "C" fn match_phy_device_callback(
++        phydev: *mut bindings::phy_device,
++    ) -> core::ffi::c_int {
++        // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
++        let dev = unsafe { Device::from_raw(phydev) };
++        T::match_phy_device(dev) as i32
++    }
++
++    unsafe extern "C" fn read_mmd_callback(
++        phydev: *mut bindings::phy_device,
++        devnum: i32,
++        regnum: u16,
++    ) -> i32 {
++        from_result(|| {
++            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
++            let dev = unsafe { Device::from_raw(phydev) };
++            let ret = T::read_mmd(dev, devnum, regnum)?;
++            Ok(ret)
++        })
++    }
++
++    unsafe extern "C" fn write_mmd_callback(
++        phydev: *mut bindings::phy_device,
++        devnum: i32,
++        regnum: u16,
++        val: u16,
++    ) -> i32 {
++        from_result(|| {
++            // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
++            let dev = unsafe { Device::from_raw(phydev) };
++            T::write_mmd(dev, devnum, regnum, val)?;
++            Ok(0)
++        })
++    }
++
++    unsafe extern "C" fn link_change_notify_callback(phydev: *mut bindings::phy_device) {
++        // SAFETY: The C API guarantees that `phydev` is valid while this function is running.
++        let dev = unsafe { Device::from_raw(phydev) };
++        T::link_change_notify(dev);
++    }
++
++    fn driver(&self) -> bindings::phy_driver {
++        bindings::phy_driver {
++            name: self.name.as_char_ptr() as *mut i8,
++            flags: <T>::FLAGS,
++            soft_reset: if <T>::HAS_SOFT_RESET {
++                Some(Self::soft_reset_callback)
++            } else {
++                None
++            },
++            get_features: if <T>::HAS_GET_FEATURES {
++                Some(Self::get_features_callback)
++            } else {
++                None
++            },
++            match_phy_device: if <T>::HAS_MATCH_PHY_DEVICE {
++                Some(Self::match_phy_device_callback)
++            } else {
++                None
++            },
++            suspend: if <T>::HAS_SUSPEND {
++                Some(Self::suspend_callback)
++            } else {
++                None
++            },
++            resume: if <T>::HAS_RESUME {
++                Some(Self::resume_callback)
++            } else {
++                None
++            },
++            config_aneg: if <T>::HAS_CONFIG_ANEG {
++                Some(Self::config_aneg_callback)
++            } else {
++                None
++            },
++            read_status: if <T>::HAS_READ_STATUS {
++                Some(Self::read_status_callback)
++            } else {
++                None
++            },
++            read_page: if <T>::HAS_READ_PAGE {
++                Some(Self::read_page_callback)
++            } else {
++                None
++            },
++            write_page: if <T>::HAS_WRITE_PAGE {
++                Some(Self::write_page_callback)
++            } else {
++                None
++            },
++            read_mmd: if <T>::HAS_READ_MMD {
++                Some(Self::read_mmd_callback)
++            } else {
++                None
++            },
++            write_mmd: if <T>::HAS_WRITE_MMD {
++                Some(Self::write_mmd_callback)
++            } else {
++                None
++            },
++            link_change_notify: if <T>::HAS_LINK_CHANGE_NOTIFY {
++                Some(Self::link_change_notify_callback)
++            } else {
++                None
++            },
++            ..unsafe { core::mem::MaybeUninit::<bindings::phy_driver>::zeroed().assume_init() }
++        }
++    }
++}
++
++/// Corresponds to functions in `struct phy_driver`.
++#[vtable]
++pub trait Driver {
++    /// Corresponds to `flags` in `struct phy_driver`.
++    const FLAGS: u32 = 0;
++
++    /// Corresponds to `soft_reset` in `struct phy_driver`.
++    fn soft_reset(_dev: &mut Device) -> Result {
++        Err(code::ENOTSUPP)
++    }
++
++    /// Corresponds to `get_features` in `struct phy_driver`.
++    fn get_features(_dev: &mut Device) -> Result {
++        Err(code::ENOTSUPP)
++    }
++
++    /// Corresponds to `match_phy_device` in `struct phy_driver`.
++    fn match_phy_device(_dev: &mut Device) -> bool;
++
++    /// Corresponds to `config_aneg` in `struct phy_driver`.
++    fn config_aneg(_dev: &mut Device) -> Result {
++        Err(code::ENOTSUPP)
++    }
++
++    /// Corresponds to `read_page` in `struct phy_driver`.
++    fn read_page(_dev: &mut Device) -> Result<i32> {
++        Err(code::ENOTSUPP)
++    }
++
++    /// Corresponds to `write_page` in `struct phy_driver`.
++    fn write_page(_dev: &mut Device, _page: i32) -> Result {
++        Err(code::ENOTSUPP)
++    }
++
++    /// Corresponds to `read_status` in `struct phy_driver`.
++    fn read_status(_dev: &mut Device) -> Result {
++        Err(code::ENOTSUPP)
++    }
++
++    /// Corresponds to `suspend` in `struct phy_driver`.
++    fn suspend(_dev: &mut Device) -> Result {
++        Err(code::ENOTSUPP)
++    }
++
++    /// Corresponds to `resume` in `struct phy_driver`.
++    fn resume(_dev: &mut Device) -> Result {
++        Err(code::ENOTSUPP)
++    }
++
++    /// Corresponds to `read_mmd` in `struct phy_driver`.
++    fn read_mmd(_dev: &mut Device, _devnum: i32, _regnum: u16) -> Result<i32> {
++        Err(code::ENOTSUPP)
++    }
++
++    /// Corresponds to `write_mmd` in `struct phy_driver`.
++    fn write_mmd(_dev: &mut Device, _devnum: i32, _regnum: u16, _val: u16) -> Result {
++        Err(code::ENOTSUPP)
++    }
++
++    /// Corresponds to `link_change_notify` in `struct phy_driver`.
++    fn link_change_notify(_dev: &mut Device) {}
++}
++
++/// Registration structure for a PHY driver.
 +///
-+/// This corresponds to the kernel's MODULE_DEVICE_TABLE macro, which embeds the information
-+/// for module loading into the module binary file.
-+#[macro_export]
-+macro_rules! phy_module_device_table {
-+    ($name:ident, [$($t:tt)*]) => {
-+        #[no_mangle]
-+        static $name: [kernel::bindings::mdio_device_id; $crate::count_drivers!($($t)*)+1] = $crate::mdio_device_id_table!($($t)*);
++/// `Registration` can keep multiple `phy_drivers` object because
++/// commonly one module implements multiple PHYs drivers.
++pub struct Registration<const N: usize> {
++    module: &'static crate::ThisModule,
++    drivers: [Option<Box<bindings::phy_driver>>; N],
++}
++
++impl<const N: usize> Registration<{ N }> {
++    /// Creates a new `Registration` instance.
++    pub fn new(module: &'static crate::ThisModule) -> Self {
++        const NONE: Option<Box<bindings::phy_driver>> = None;
++        Registration {
++            module,
++            drivers: [NONE; N],
++        }
++    }
++
++    /// Registers a PHY driver.
++    pub fn register<T: Driver>(&mut self, adapter: &Adapter<T>) -> Result {
++        for i in 0..N {
++            if self.drivers[i].is_none() {
++                let mut drv = Box::try_new(adapter.driver())?;
++                // SAFETY: Just an FFI call.
++                let ret = unsafe { bindings::phy_driver_register(drv.as_mut(), self.module.0) };
++                if ret != 0 {
++                    return Err(Error::from_errno(ret));
++                }
++                self.drivers[i] = Some(drv);
++                return Ok(());
++            }
++        }
++        Err(code::EINVAL)
 +    }
 +}
++
++impl<const N: usize> Drop for Registration<{ N }> {
++    fn drop(&mut self) {
++        for i in 0..N {
++            if let Some(mut drv) = self.drivers[i].take() {
++                unsafe {
++                    // SAFETY: Just an FFI call.
++                    bindings::phy_driver_unregister(drv.as_mut());
++                }
++            } else {
++                break;
++            }
++        }
++    }
++}
++
++// SAFETY: `Registration` does not expose any of its state across threads.
++unsafe impl<const N: usize> Send for Registration<{ N }> {}
++
++// SAFETY: `Registration` does not expose any of its state across threads.
++unsafe impl<const N: usize> Sync for Registration<{ N }> {}
 -- 
 2.34.1
 
