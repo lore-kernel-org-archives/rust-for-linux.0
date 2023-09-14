@@ -1,150 +1,98 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D8420F2
-	for <rust-for-linux@vger.kernel.org>; Thu, 14 Sep 2023 06:26:30 +0000 (UTC)
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55FD110E
-	for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 23:26:30 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-530199bca8eso374339a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 13 Sep 2023 23:26:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0893328F8
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Sep 2023 07:24:10 +0000 (UTC)
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7283CE5
+	for <rust-for-linux@vger.kernel.org>; Thu, 14 Sep 2023 00:24:09 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-9a64619d8fbso85525966b.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 14 Sep 2023 00:24:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1694672788; x=1695277588; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fOR8rbLo41OLz/VvTiYdmWMpE6D+3BTIwaoiC8ByNO0=;
-        b=a8Z4Y3q5TkON2a+ooSDT59o0QcUZ3tKfBSClPPcsKEAJRYpiPoy65C415JRyy157Eh
-         swVL/6LugZdiMZvu96zPUg1lkHnDANZavHx2V2fl61ruCrKIk8MXNlJIr4CTqI90nWu2
-         kiny5yZVtgj97049CPMZazl0sZs3h1hLEbhPNQHTOfDSEJk8PCgpAAx2eW66Txc+h8lT
-         2gGGDmX37dinaeTWnlrwj6K/XBwxX1iBJHTCp1jB4iaDg2qwQ9rdI1X590DAoA1qaHQM
-         SIdU1e0a38WQrC4HuGoiqX8YgQPzqbIihaI1J57p6sOJlsKPV+HHSIGJqZx/EsYVQtKj
-         vJYw==
+        d=umich.edu; s=google-2016-06-03; t=1694676248; x=1695281048; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/aW4p/echy5uNxBf3hcbTDq4XUM3Pe4PT2VZDFpV3EA=;
+        b=QX17V6+G7Ea0tZk8mSdDba5NbUsRTL0hCa7AzNzAg554Ffog8XdZw0OjgDFqOfGUQN
+         yEa4CXuECM4vJ3/Gyygj0lniXYj3rJd9Fv6/HDQubLJ1jo7eDXPA1+z85JOGP8sgjuhm
+         5/aLzGAI8yowLw/rLpQw58y63PaWvzR+U2IjpJ47yPoFazwcs9sqO3HT/ffCSJfn0ozd
+         bDAGDPKDlLosn+fYDrKgHrZ5lBkEcr8LXHGQBGNV0imJT/LhGKq40vsde+Pv6rRRIZ1d
+         TbTxWCxgDFB26YXANYVokkV/wFyNYgr1eMvp0ARAmKfWKBIFiT9Ul9zW81zNuZAH8ap+
+         vrwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694672788; x=1695277588;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fOR8rbLo41OLz/VvTiYdmWMpE6D+3BTIwaoiC8ByNO0=;
-        b=DHfvSYSv4VJ65Gm2syBgTjOKlYynrn67YaiIfvjbr+Ml43wqOpTq22zDxFcCpjNTIf
-         hasDYBDL2rdxL8xFYE0nHNS5wBh9vImyilrXQRnYM9RCkhPjIFZd5FOCtDUMny66rA8x
-         vdhFbFlZL/J+QuTWTO4KSkRBHEHcIz/tmmpJntnbbWk0KZymefE8W68tKLdEya7TpzUo
-         sdCy4I5M1aBGEbteQLQCFR6E8yn7giZMO0262vS7B2cdnK6MnT5wRgLahD6JfAugz0bD
-         /bJ90gtnnN54Fh71D11obLDIKWAf9XDXavOrc+ju9aQguWwFF1q1n09HV9Ssvb4uMlbQ
-         VmDA==
-X-Gm-Message-State: AOJu0YyGpLrd2TZ2+r5/QvuJN3cGhq8/D5rmIMDPZX5JQyKBxqO9fhr4
-	Y+Pv2HYc5UP9qfjUDCe4l4lhnEKm1MlL7v7p0jD++rIQ9msb3JMGC9g=
-X-Google-Smtp-Source: AGHT+IHRkCIGg/w859uKDoz68YoSTVvYlVTzVOySrqsnNmKj/GEgb4zXUoQP211tVXaUfsjh+0/RKHdV4opAI672GSc=
-X-Received: by 2002:a17:907:7fab:b0:9ad:7cbc:ea5b with SMTP id
- qk43-20020a1709077fab00b009ad7cbcea5bmr1351027ejc.10.1694672788630; Wed, 13
- Sep 2023 23:26:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1694676248; x=1695281048;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/aW4p/echy5uNxBf3hcbTDq4XUM3Pe4PT2VZDFpV3EA=;
+        b=K43xu6kSrZEFhdto91LpvHdNHMQ0EiVHcgpGt3Zgx0o/Q5Fx5a5k2qjGIWn8U7svK3
+         YzZj1gCgdGgb0lw+ClgTrmxMuAnE0hujMSKMEJFfnuXlKT6FzvS2AQjP1ALr59NY/kOH
+         7lX9NkVDw/+o/HV1XpfQThF0SGDOyfqG+CD0nSJRmoCl3HYCylBXgY2iBpkLlHKK2s87
+         smqooyoBGSZPTJVwhLouuzDDECmbomgV8ZCky/cNwposZE9CHdc9FkXpGjObxffvY0FO
+         YGu8wBH6Exi4IiCB29JrcWfxlh5d5fYcteWDHzdxCoC5/iFbgvh0nF6WjErJFaivxyD0
+         uCYw==
+X-Gm-Message-State: AOJu0Yzib4MTX24xzP9+OinsXhSK3Qm+AD0pNs4fvmezqdBKNRxOB4N7
+	Bmj9iQiieiP1SCmk7778MmHZRpy55/VJFQ+KtC0uQfoItHaI5kpRI2A=
+X-Google-Smtp-Source: AGHT+IFOhxWMwkY7UDEKiky63zOhuFp9HTYzwbpe0trobbwhb0RKQT5qfW1GSIE9+K80FSBM7WmjbuZfshuDWwY6NPI=
+X-Received: by 2002:a17:906:81c7:b0:9ad:b80c:c19d with SMTP id
+ e7-20020a17090681c700b009adb80cc19dmr972772ejx.56.1694676248282; Thu, 14 Sep
+ 2023 00:24:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230913133609.1668758-1-fujita.tomonori@gmail.com> <20230913133609.1668758-3-fujita.tomonori@gmail.com>
-In-Reply-To: <20230913133609.1668758-3-fujita.tomonori@gmail.com>
+References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
+ <20230913133609.1668758-3-fujita.tomonori@gmail.com> <CALNs47s7wH8yFU-jbcQxVRiHta_pEdueSGo9mFOdYriT=o0SOQ@mail.gmail.com>
+In-Reply-To: <CALNs47s7wH8yFU-jbcQxVRiHta_pEdueSGo9mFOdYriT=o0SOQ@mail.gmail.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Thu, 14 Sep 2023 02:26:16 -0400
-Message-ID: <CALNs47s7wH8yFU-jbcQxVRiHta_pEdueSGo9mFOdYriT=o0SOQ@mail.gmail.com>
+Date: Thu, 14 Sep 2023 03:23:56 -0400
+Message-ID: <CALNs47u3s1gyDLksk5M=7HwTK=-vjadWKbhZQDm6OpDXqcDUbg@mail.gmail.com>
 Subject: Re: [RFC PATCH v1 2/4] rust: phy: add module device table support
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 13, 2023 at 9:37=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> This macro corresponds to the kernel's MODULE_DEVICE_TABLE macro,
-> which embeds the information for module loading into the module binary
-> file.
->
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/kernel/net/phy.rs | 36 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
->
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index 2c5ac5e3213a..ffe1a609a7b2 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -649,3 +649,39 @@ unsafe impl<const N: usize> Send for Registration<{ =
-N }> {}
->
->  // SAFETY: `Registration` does not expose any of its state across thread=
-s.
->  unsafe impl<const N: usize> Sync for Registration<{ N }> {}
-> +
-> +#[doc(hidden)]
-> +#[macro_export]
-> +macro_rules! replace_expr {
-> +    ($_t:tt $sub:expr) =3D> {
-> +        $sub
-> +    };
-> +}
-> +
-> +#[doc(hidden)]
-> +#[macro_export]
-> +macro_rules! count_drivers {
-> +    ( $(($x:expr, $_y:expr)),* ) =3D> {
-> +        0usize $(+ $crate::replace_expr!($x 1usize))*
-> +    };
-> +}
-> +#[doc(hidden)]
-> +#[macro_export]
-> +macro_rules! mdio_device_id_table {
-> +    ($(($x:expr, $y:expr)),*) =3D> {
-> +        [$(kernel::bindings::mdio_device_id {phy_id: $x, phy_id_mask:$y}=
-),*, kernel::bindings::mdio_device_id {phy_id:0, phy_id_mask:0}]
+Actually, looking closer at the use of this macro
 
-Some formatting like
-    [
-        $(kernel::bindings::mdio_device_id {
-            phy_id: $x,
-            phy_id_mask:$y
-          }),*,
-        kernel::bindings::mdio_device_id {
-            phy_id: 0,
-            phy_id_mask: 0
++kernel::phy_module_device_table!(
++    __mod_mdio__asix_tbl_device_table,
++    [(PhyAx88772A::PHY_ID_ASIX_AX88772A, 0xffffffff)]
++);
+
+Since the `paste!` macro is in kernel now this could be refactored
+more like `MODULE_DEVICE_TABLE`, i.e. just take "asix" rather than the
+clunky name.
+
+Maybe it would be good to have a trait for a MDIO device as well
+
+    enum PhyIdMask {
+        Exact,
+        Model,
+        Vendor,
+        Custom(u32)
+    }
+
+    impl PhyIdMask {
+        const fn as_int(self) -> u32 { /* ... */ }
+    }
+
+    trait MdioDevice {
+        const PHY_ID: u32;
+        const PHY_ID_MASK: PhyIdMask;
+    }
+
+Then the macro just becomes
+
+    kernel::register_mdio_device!(asix: PhyAx88772A, PhyAx88772C, PhyAx88796B);
+
+And expands as
+
+    static __mod_mdio__asix_tbl_device_table: [mdio_device_id; 3] = [
+        mdio_device_id {
+            phy_id: PhyAx88772A::PHY_ID,
+            phy_id_mask: PhyAx88772A::PHY_ID_MASK.as_int()
         }
-    ]
-
-I think `),*,` expands the same as `),*`
-
-> +    }
-> +}
-> +/// Defines module device table.
-> +///
-> +/// This corresponds to the kernel's MODULE_DEVICE_TABLE macro, which em=
-beds the information
-> +/// for module loading into the module binary file.
-> +#[macro_export]
-> +macro_rules! phy_module_device_table {
-> +    ($name:ident, [$($t:tt)*]) =3D> {
-> +        #[no_mangle]
-> +        static $name: [kernel::bindings::mdio_device_id; $crate::count_d=
-rivers!($($t)*)+1] =3D $crate::mdio_device_id_table!($($t)*);
-> +    }
-> +}
-> --
-> 2.34.1
-
-Is there a reason that the mdio_device_id_table is separate from
-phy_module_device_table? You could use one match pattern
-
-    ($name:ident, [ $( ($x:expr, $y:expr) ),*  $(,)?])
-
-Also added the optional trailing comma matcher `$(,)?` there.
-
-Actually, since there is only one public macro, all three hidden
-macros could actually all be internal patterns within
-phy_module_device_table. E.g. `(@replace_expr $_from:tt, $sub:expr)`,
-just helps reduce what is in macro scope.
-
-Could you also give the capture vars more descriptive names? This one
-isn't all that bad but macros generally aren't the easiest thing to
-understand by reading...
+        // ...
+    ];
