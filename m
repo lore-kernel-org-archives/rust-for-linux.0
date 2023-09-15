@@ -1,71 +1,107 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF0ADF40
-	for <rust-for-linux@vger.kernel.org>; Fri, 15 Sep 2023 09:53:55 +0000 (UTC)
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E49812728;
-	Fri, 15 Sep 2023 02:52:35 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-5007616b756so3103988e87.3;
-        Fri, 15 Sep 2023 02:52:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F8D125A1
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Sep 2023 17:29:06 +0000 (UTC)
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A1F2210A
+	for <rust-for-linux@vger.kernel.org>; Fri, 15 Sep 2023 10:29:05 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-58c8b2d6784so30173897b3.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 15 Sep 2023 10:29:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694771554; x=1695376354; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gbdBrDek2QYvPDQBlPiROzdzjCQXwx5rfR5eDq4xQRM=;
-        b=GTq+wHzM8GoJPq09bkHdf9FPE44FuMYZsCssG4DMEh1GhE3hooJLOU/hNzzKPZyWgQ
-         NqobS7A2rQtGFc8JevApvQhrbiC0i4t31H8KZo+Rr+JIddBTTi7DxvM+Q6SEcQsSzJ7B
-         DEMyVYPKrwwtBIxYqQwOFBt+28WIuzdtrpdGVKTN/li2jEk3t9pPCFa/KJ9ybmX1GLWM
-         jbL4DpKhMzThjSdLpJCSBZwXrvZk0I+O6vrky1nBAXVWaZUjs39hmMZZNW+z1FxC1ogk
-         yoVWQbJDkOdUwGdisjy/oN+oTGNIiW3FXKx9pzIl2KzWvFy9MkiRRK8vrBWL/zxMfk4J
-         QcEQ==
+        d=google.com; s=20230601; t=1694798944; x=1695403744; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ugRbSrKZTgJSxFp7tilsZX/7onhJCvgcZOqxi5h8ayg=;
+        b=CCEyGmuhfPYEztnD5W2Nu2CDNu97X+FKzI8WTKQFUhrwtK8CfaGC5kgapgQpJNOSpa
+         mR5p9TLH+ZXpJT9LSNhYQH88anpMZNSmxZisvSX7Hee8bJuwyo5gCZ6THUg+T1tyaq7W
+         e/ll9z1VM5VlLBgb40xi7fAHfsPCIOzF2YX6K9S/7dbDU5w+boDeClGXq4noOa6NzdWN
+         yoVHKPxAURerr/j8P+0XrEe+DwaOgcJzbkVRHz4wzN4NqyxgxqMqN1cM0Tt4kAGGzmId
+         SoTsulKiEiSQ+3lt7uljupkkyeE/mnRhpNqu6NevQGpkrCNDnpQYEic8LJ012guITvuy
+         JAng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694771554; x=1695376354;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gbdBrDek2QYvPDQBlPiROzdzjCQXwx5rfR5eDq4xQRM=;
-        b=Z4i6IlETpPoND4sLPaNk2NCTuQ/O8bfSW2QDm1McVdPQMuLnjFjIfu3JkF8smnQMXE
-         PF5wlQGiuFHhhDPs3U4x1y1UZHoUDru3qT5GXE8X6/FbNaNMDfWUWF2EQKY1UQLw9CU4
-         PFw8WfpPp5s00SjbCBwP4G6Yktb9T/1pFpv73nWgSLsiy3n2OuwgToEtT5rxkZykSSOF
-         cMYcbHmn/VAczWwrICnvIqR3j2Dl9a9U1SUMUR6ay37Ziikwm9e1zqjSJYjDmfUIEOew
-         22vsaWrQZ4RgU7jgHb3hIugXZhAyjG6RLFlnw7rJC15MiojRddJH5+E1r+Tu3aS1WRYD
-         tNpg==
-X-Gm-Message-State: AOJu0YxNnr2AzQVljt+u2hcaUwJ4Lrv4E0MUdGAXCpzVneQVOFJo6Poz
-	u3mwugpRfCdGjiCsGgZ/Zto=
-X-Google-Smtp-Source: AGHT+IFLeDW3AX96+g3WQOiD1VYBFJpFmLIsq9GViNo9PKi5X/7tXQGK1PkeGfIY+AqBzlcc0tTtZQ==
-X-Received: by 2002:ac2:5390:0:b0:4ff:834b:e01b with SMTP id g16-20020ac25390000000b004ff834be01bmr899268lfh.19.1694771553823;
-        Fri, 15 Sep 2023 02:52:33 -0700 (PDT)
-Received: from localhost ([89.40.182.212])
-        by smtp.gmail.com with ESMTPSA id 18-20020a05600c235200b003fe61c33df5sm7089180wmq.3.2023.09.15.02.52.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Sep 2023 02:52:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1694798944; x=1695403744;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ugRbSrKZTgJSxFp7tilsZX/7onhJCvgcZOqxi5h8ayg=;
+        b=a4/Irx/LmsE9m12Oy3hpn/dLlZ8PN2yyTkaUquD/4q3VmKt3iKvwFOdMzLZXhWPs3H
+         pItFEeJyfT/IOR/1QWX+ymXEqfuTpmsYuWc62qbM3wtsV5yafxCc1fbjA3DHAzPchHX9
+         Yr07fRq8urub0rcGyQ/p56sIFMIOZHVn3Xq6QKJQHP7QJ0wRIzGjW694u8VBDiokZ/7V
+         fEjC5LC3HeX+pAEsX+S6oiNX+WEGKlEuvuZBrCFobDl64aMOmTQshqxOs77p+vLGi+o4
+         WRNakLZK0Bw09vf3NHUhLlfS21TnuE3sAmqbemMOdMkHbQCuGNLPA4AS1Ka2FT7H4E7X
+         Wbgg==
+X-Gm-Message-State: AOJu0Yw4FmVuzSuOq85k5TCNZ9DwBIYxcZafjfUxpcj7ljx/cX9ppmWF
+	Y3ZY02ebyx0sLtbc4JCXswsDzTq7KPaq
+X-Google-Smtp-Source: AGHT+IF/ismO4z/8vBmeX9a5PQcfgQTGIyLLkxJs4DngaZx/W2K0t+TvRATwzNEsoN8WtCTXhMPHHrLFM79O
+X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
+ (user=mmaurer job=sendgmr) by 2002:a81:a78a:0:b0:583:4f82:b9d9 with SMTP id
+ e132-20020a81a78a000000b005834f82b9d9mr73272ywh.5.1694798944470; Fri, 15 Sep
+ 2023 10:29:04 -0700 (PDT)
+Date: Fri, 15 Sep 2023 17:28:59 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 15 Sep 2023 11:52:30 +0200
-Message-Id: <CVJEDI913FDZ.1LVK59USWA4O8@vincent-arch>
-From: "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
-To: "Manmohan Shukla" <manmshuk@gmail.com>, <rust-for-linux@vger.kernel.org>
-Cc: <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: error: Markdown style nit
-References: <20230906204857.85619-1-manmshuk@gmail.com>
-In-Reply-To: <20230906204857.85619-1-manmshuk@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+X-Mailer: git-send-email 2.42.0.459.ge4e396fd5e-goog
+Message-ID: <20230915172900.3784163-1-mmaurer@google.com>
+Subject: [PATCH] rust: Respect HOSTCC when linking for host
+From: Matthew Maurer <mmaurer@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>
+Cc: Matthew Maurer <mmaurer@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> This patch fixes a trivial markdown style nit in the `SAFETY` comment.
->
-> Signed-off-by: Manmohan Shukla <manmshuk@gmail.com>
+Currently, rustc defaults to invoking `cc`, even if `HOSTCC` is defined,
+resulting in build failures in hermetic environments where `cc` does not
+exist. This includes both hostprogs and proc-macros.
 
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Since we are setting the linker to `HOSTCC`, we set the linker flavor to
+`gcc` explicitly.
+
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+---
+ rust/Makefile         | 1 +
+ scripts/Makefile.host | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/rust/Makefile b/rust/Makefile
+index 87958e864be0..2a2352638f11 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -383,6 +383,7 @@ $(obj)/exports_kernel_generated.h: $(obj)/kernel.o FORCE
+ quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
+       cmd_rustc_procmacro = \
+ 	$(RUSTC_OR_CLIPPY) $(rust_common_flags) \
++		-C linker-flavor=gcc -C linker=$(HOSTCC) \
+ 		--emit=dep-info=$(depfile) --emit=link=$@ --extern proc_macro \
+ 		--crate-type proc-macro \
+ 		--crate-name $(patsubst lib%.so,%,$(notdir $@)) $<
+diff --git a/scripts/Makefile.host b/scripts/Makefile.host
+index 8f7f842b54f9..0aa95a3af1c4 100644
+--- a/scripts/Makefile.host
++++ b/scripts/Makefile.host
+@@ -91,6 +91,7 @@ hostcxx_flags  = -Wp,-MMD,$(depfile) \
+ # current working directory, which may be not accessible in the out-of-tree
+ # modules case.
+ hostrust_flags = --out-dir $(dir $@) --emit=dep-info=$(depfile) \
++		 -C linker-flavor=gcc -C linker=$(HOSTCC) \
+                  $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
+                  $(HOSTRUSTFLAGS_$(target-stem))
+ 
+-- 
+2.42.0.459.ge4e396fd5e-goog
+
