@@ -1,164 +1,147 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A6C1BDF1
-	for <rust-for-linux@vger.kernel.org>; Sat, 16 Sep 2023 19:54:41 +0000 (UTC)
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45D4BCF4
-	for <rust-for-linux@vger.kernel.org>; Sat, 16 Sep 2023 12:54:38 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-4047c6ec21dso45275e9.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 16 Sep 2023 12:54:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1694894077; x=1695498877; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qwF0z0sGJK73NGlJoe3kcNluf3kBAAGGr/xGcr61rDM=;
-        b=TW/pV6JSebWuk0msCi2aQYsepwj06mMKV7RC+P6R0qkPs2Jvy/bernRcTB+ywp2eQa
-         8wykJwnkG6X+Y35+5/yR+dvKGOJLtl3WsdydgVveR6kFR/n5XOF6E1TmWVTRkg4UhiQR
-         1UfkxaF39FYb3QhOTu3gSwqbB+UL8mgQzxkuK4KeFKqs7xOA1Q9S81Y1+b4MB9A5ZejJ
-         5mA2hH2be45lKDqKbVTqjAW9JHvRwT9pnj1knJtNBs+ct3UmAhLdjXjdP37uQVkqWnsV
-         wddym3KTKcsL/aVqs/igPwUeLhIobm0ic67OAK9WawK3uMxh9jK94E3WAnAYxJboFa/q
-         I5Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694894077; x=1695498877;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qwF0z0sGJK73NGlJoe3kcNluf3kBAAGGr/xGcr61rDM=;
-        b=VQcnasc029Xkj2fpvhVayQF3DqU9TVRyRbGJ4/OIQhsM99dEaeJz438V5Iavxa2dMK
-         QcjwyVjFMox+7eSFLrjqL2GJAioKgx2pfPrlanjXrDhx75G11V73nh6aTeQjra7/ozBL
-         fUERSXX4m7HMy+zMxshcoukbBqzC2l/AgjCzb0gFwfnz7mimVa5GYDK20zRfJVL/vE5b
-         a1Y8++cmfnT4oiYK6nazBxOzpHpjtT62jrXWJOVLIHVlVdJ2st5Y8d17Av1fq9tyy23T
-         r+Hh3bKIHC9IYtOfR6cR+hyirHLlB4GYyqOTSnp11VxhdpOPk9kJUgVCmluLYjXa8Hx3
-         ljrw==
-X-Gm-Message-State: AOJu0YzETnrjEQdT9F7f665zp7mbiyNpDcpEmOf6qWPJSQ37Z3QrnGbu
-	znsjPQ+utvt+920Fi+d7AeOV+0QajbJ8Bqg4Ywo4FA==
-X-Google-Smtp-Source: AGHT+IE57iUYyLI8EsAEvL5c06XkIT9no1byOp/4uunfZ1BNV7y45bpVQNNuvDkjY09IoK9+ZrJWRXPMllv5rGosaMY=
-X-Received: by 2002:a05:600c:1c29:b0:404:74f8:f47c with SMTP id
- j41-20020a05600c1c2900b0040474f8f47cmr64907wms.5.1694894076554; Sat, 16 Sep
- 2023 12:54:36 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14EE1102
+	for <rust-for-linux@vger.kernel.org>; Sat, 16 Sep 2023 22:40:20 +0000 (UTC)
+Received: from gimli.kloenk.dev (gimli.kloenk.dev [IPv6:2a01:4f8:c012:b874::])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83068CD1;
+	Sat, 16 Sep 2023 15:40:18 -0700 (PDT)
+From: Finn Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1694904015; bh=JA5/hvn6Yw4Y7noeFUIFzJHIZ1aDogb0GEKwEfAyknQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=MxI3K5J8je9HXIUV++EcVqahwcGKNrqLBY4fIUBlupxPltMiPRt8PshLntJJlH4lR
+	 FLy2/bTvn9sN9p7sBurRXXLd8n9zinJ5uhYtSl5cpUDN4zg450yyr3YGQfbAPpww7U
+	 Dnz0bOvY5Hjr04MDB3iHX5V5pb7KUShkNcmCHmtU=
+To: Matthew Maurer <mmaurer@google.com>
+Cc: =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH] rust: Respect HOSTCC when linking for host
+Date: Sun, 17 Sep 2023 00:39:46 +0200
+Message-ID: <446E67B5-0200-4982-994B-B30C2DEDF098@kloenk.dev>
+In-Reply-To: <CAGSQo02p0LWZgV8oVidwvN6X__rv3-rj+ZVg9SaZ5Kx+zYahYQ@mail.gmail.com>
+References: <20230915172900.3784163-1-mmaurer@google.com>
+ <9966E047-44E7-4665-9628-169F3EBE2F06@kloenk.dev>
+ <SLZSYLg5E9OQKI546K87wxTYYLNlT1xM-LhC4W1JFhIate6PFsKq27RcBNhSjUkErYDlzsZB4F2Vc2KOP9tDThg58_tXycWn3K29mQXlFtU=@protonmail.com>
+ <0561303E-2089-43FC-AA31-836C7BB844B7@kloenk.dev>
+ <CAGSQo02p0LWZgV8oVidwvN6X__rv3-rj+ZVg9SaZ5Kx+zYahYQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230915172900.3784163-1-mmaurer@google.com> <9966E047-44E7-4665-9628-169F3EBE2F06@kloenk.dev>
- <SLZSYLg5E9OQKI546K87wxTYYLNlT1xM-LhC4W1JFhIate6PFsKq27RcBNhSjUkErYDlzsZB4F2Vc2KOP9tDThg58_tXycWn3K29mQXlFtU=@protonmail.com>
- <0561303E-2089-43FC-AA31-836C7BB844B7@kloenk.dev>
-In-Reply-To: <0561303E-2089-43FC-AA31-836C7BB844B7@kloenk.dev>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Sat, 16 Sep 2023 12:54:20 -0700
-Message-ID: <CAGSQo02p0LWZgV8oVidwvN6X__rv3-rj+ZVg9SaZ5Kx+zYahYQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: Respect HOSTCC when linking for host
-To: Finn Behrens <me@kloenk.dev>
-Cc: =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Nicolas Schier <nicolas@fjasle.eu>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-	autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, Sep 16, 2023 at 11:07=E2=80=AFAM Finn Behrens <me@kloenk.dev> wrote=
-:
->
->
->
-> On 16 Sep 2023, at 19:53, Bj=C3=B6rn Roy Baron wrote:
->
-> > On Saturday, September 16th, 2023 at 18:52, Finn Behrens <me@kloenk.dev=
-> wrote:
-> >
-> >>
-> >> On 15 Sep 2023, at 19:28, Matthew Maurer wrote:
-> >>
-> >>> Currently, rustc defaults to invoking `cc`, even if `HOSTCC` is defin=
-ed,
-> >>> resulting in build failures in hermetic environments where `cc` does =
-not
-> >>> exist. This includes both hostprogs and proc-macros.
-> >>>
-> >>> Since we are setting the linker to `HOSTCC`, we set the linker flavor=
- to
-> >>> `gcc` explicitly.
-> >> But as `HOSTCC` could also be clang, the linker flavor would then be w=
-rong, would that create a problem?
-> >
-> > Rustc uses the gcc linker flavor for clang too. There has been a propos=
-al to split it up, but I'm not sure of the status of that. In any case clan=
-g's cli is similar enough to gcc that it works fine to use the gcc linker f=
-lavor.
-> >
-> In that case this looks very reasonable.
->
-> Second thing I noticed is that `HOSTCC` could be the wrong variable, and =
-`HOSTLD` would make more sense as we look for the linker and not the genera=
-l C compiler.
->
-Yes, thanks Bjorn - "gcc" is the linker flavor used for "Use the C
-compiler as a linker".
 
-With regards to HOSTLD, I was trying to make the minimum possible
-change. Currently, it is using the command `cc` as a linker, so this
-would preserve existing behavior when HOSTCC is unset.
 
-If we would prefer `HOSTLD` instead we can do that, but we would need
-to additionally inspect `LLVM` to set the linker flavor accordingly
-(e.g. set ld vs ld.lld).
+On 16 Sep 2023, at 21:54, Matthew Maurer wrote:
 
-Do folks have strong opinions between these? My primary concern is to
-avoid calling programs by foo when their HOSTFOO variable is set.
-
-See https://doc.rust-lang.org/rustc/codegen-options/index.html#linker-flavo=
-r
-for details on linker flavor settings.
-> >>>
-> >>> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> >>> ---
-> >>>  rust/Makefile         | 1 +
-> >>>  scripts/Makefile.host | 1 +
-> >>>  2 files changed, 2 insertions(+)
-> >>>
-> >>> diff --git a/rust/Makefile b/rust/Makefile
-> >>> index 87958e864be0..2a2352638f11 100644
-> >>> --- a/rust/Makefile
-> >>> +++ b/rust/Makefile
-> >>> @@ -383,6 +383,7 @@ $(obj)/exports_kernel_generated.h: $(obj)/kernel.=
-o FORCE
-> >>>  quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET) P $@
-> >>>        cmd_rustc_procmacro =3D \
-> >>>     $(RUSTC_OR_CLIPPY) $(rust_common_flags) \
-> >>> +           -C linker-flavor=3Dgcc -C linker=3D$(HOSTCC) \
-> >>>             --emit=3Ddep-info=3D$(depfile) --emit=3Dlink=3D$@ --exter=
-n proc_macro \
-> >>>             --crate-type proc-macro \
-> >>>             --crate-name $(patsubst lib%.so,%,$(notdir $@)) $<
-> >>> diff --git a/scripts/Makefile.host b/scripts/Makefile.host
-> >>> index 8f7f842b54f9..0aa95a3af1c4 100644
-> >>> --- a/scripts/Makefile.host
-> >>> +++ b/scripts/Makefile.host
-> >>> @@ -91,6 +91,7 @@ hostcxx_flags  =3D -Wp,-MMD,$(depfile) \
-> >>>  # current working directory, which may be not accessible in the out-=
-of-tree
-> >>>  # modules case.
-> >>>  hostrust_flags =3D --out-dir $(dir $@) --emit=3Ddep-info=3D$(depfile=
-) \
-> >>> +            -C linker-flavor=3Dgcc -C linker=3D$(HOSTCC) \
-> >>>                   $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
-> >>>                   $(HOSTRUSTFLAGS_$(target-stem))
-> >>>
-> >>> --
-> >>> 2.42.0.459.ge4e396fd5e-goog
+> On Sat, Sep 16, 2023 at 11:07=E2=80=AFAM Finn Behrens <me@kloenk.dev> w=
+rote:
+>>
+>>
+>>
+>> On 16 Sep 2023, at 19:53, Bj=C3=B6rn Roy Baron wrote:
+>>
+>>> On Saturday, September 16th, 2023 at 18:52, Finn Behrens <me@kloenk.d=
+ev> wrote:
+>>>
+>>>>
+>>>> On 15 Sep 2023, at 19:28, Matthew Maurer wrote:
+>>>>
+>>>>> Currently, rustc defaults to invoking `cc`, even if `HOSTCC` is def=
+ined,
+>>>>> resulting in build failures in hermetic environments where `cc` doe=
+s not
+>>>>> exist. This includes both hostprogs and proc-macros.
+>>>>>
+>>>>> Since we are setting the linker to `HOSTCC`, we set the linker flav=
+or to
+>>>>> `gcc` explicitly.
+>>>> But as `HOSTCC` could also be clang, the linker flavor would then be=
+ wrong, would that create a problem?
+>>>
+>>> Rustc uses the gcc linker flavor for clang too. There has been a prop=
+osal to split it up, but I'm not sure of the status of that. In any case =
+clang's cli is similar enough to gcc that it works fine to use the gcc li=
+nker flavor.
+>>>
+>> In that case this looks very reasonable.
+>>
+>> Second thing I noticed is that `HOSTCC` could be the wrong variable, a=
+nd `HOSTLD` would make more sense as we look for the linker and not the g=
+eneral C compiler.
+>>
+> Yes, thanks Bjorn - "gcc" is the linker flavor used for "Use the C
+> compiler as a linker".
+>
+> With regards to HOSTLD, I was trying to make the minimum possible
+> change. Currently, it is using the command `cc` as a linker, so this
+> would preserve existing behavior when HOSTCC is unset.
+>
+> If we would prefer `HOSTLD` instead we can do that, but we would need
+> to additionally inspect `LLVM` to set the linker flavor accordingly
+> (e.g. set ld vs ld.lld).
+>
+> Do folks have strong opinions between these? My primary concern is to
+> avoid calling programs by foo when their HOSTFOO variable is set.
+I don=E2=80=99t have an educated opinion at all, mainly nudged in the dir=
+ection, so that the existence if `HOSTLD` does not get overlooked. If the=
+re is a valid reason to not use it, this patch looks good to me.
+>
+> See https://doc.rust-lang.org/rustc/codegen-options/index.html#linker-f=
+lavor
+> for details on linker flavor settings.
+>>>>>
+>>>>> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+>>>>> ---
+>>>>>  rust/Makefile         | 1 +
+>>>>>  scripts/Makefile.host | 1 +
+>>>>>  2 files changed, 2 insertions(+)
+>>>>>
+>>>>> diff --git a/rust/Makefile b/rust/Makefile
+>>>>> index 87958e864be0..2a2352638f11 100644
+>>>>> --- a/rust/Makefile
+>>>>> +++ b/rust/Makefile
+>>>>> @@ -383,6 +383,7 @@ $(obj)/exports_kernel_generated.h: $(obj)/kerne=
+l.o FORCE
+>>>>>  quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET) P $@
+>>>>>        cmd_rustc_procmacro =3D \
+>>>>>     $(RUSTC_OR_CLIPPY) $(rust_common_flags) \
+>>>>> +           -C linker-flavor=3Dgcc -C linker=3D$(HOSTCC) \
+>>>>>             --emit=3Ddep-info=3D$(depfile) --emit=3Dlink=3D$@ --ext=
+ern proc_macro \
+>>>>>             --crate-type proc-macro \
+>>>>>             --crate-name $(patsubst lib%.so,%,$(notdir $@)) $<
+>>>>> diff --git a/scripts/Makefile.host b/scripts/Makefile.host
+>>>>> index 8f7f842b54f9..0aa95a3af1c4 100644
+>>>>> --- a/scripts/Makefile.host
+>>>>> +++ b/scripts/Makefile.host
+>>>>> @@ -91,6 +91,7 @@ hostcxx_flags  =3D -Wp,-MMD,$(depfile) \
+>>>>>  # current working directory, which may be not accessible in the ou=
+t-of-tree
+>>>>>  # modules case.
+>>>>>  hostrust_flags =3D --out-dir $(dir $@) --emit=3Ddep-info=3D$(depfi=
+le) \
+>>>>> +            -C linker-flavor=3Dgcc -C linker=3D$(HOSTCC) \
+>>>>>                   $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
+>>>>>                   $(HOSTRUSTFLAGS_$(target-stem))
+>>>>>
+>>>>> --
+>>>>> 2.42.0.459.ge4e396fd5e-goog
