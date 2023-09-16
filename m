@@ -1,46 +1,46 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F721EAE5
-	for <rust-for-linux@vger.kernel.org>; Sat, 16 Sep 2023 10:52:36 +0000 (UTC)
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08F51E3;
-	Sat, 16 Sep 2023 03:52:31 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-401da71b83cso33726305e9.2;
-        Sat, 16 Sep 2023 03:52:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62F612B95
+	for <rust-for-linux@vger.kernel.org>; Sat, 16 Sep 2023 10:53:12 +0000 (UTC)
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8594BE3;
+	Sat, 16 Sep 2023 03:53:11 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-31ff2ce9d4cso1438619f8f.0;
+        Sat, 16 Sep 2023 03:53:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694861548; x=1695466348; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=gmail.com; s=20230601; t=1694861590; x=1695466390; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NkaN8cKyKQ/v2N4UZS/i+2Cr3FWbQdqVVYD1cTsC53I=;
-        b=gkVornrABpv7L4C/LUuZGrwrY0vm5AG3V1Y1MW7zwNnhRZREOYjXAjLQBQlJJADKX3
-         vpaZsOeQs/88zNIBuVfmEWpAj+91c7A+x3jutu2v/MKnoKMibFtYSbou9Lv+90nZ0hjt
-         9vpwYE5AxtakBUnsfBYIi0UIh7YT4D7ZGXedlZnfHG2nj6pAP2lylyVQiQP+Rf45efJd
-         M0n5DM4f+pCQf42EBElSKQF66WL2IdoAnGltovNGwpqWywi0GpNhxAvOfSEE2MAXTJVZ
-         HUFKLliqzwaMkpywwrgZi+gCw8dA7EEvvo6ycQnx/qOJ8YxdGjKeNQNoC5QSLXAkMlx0
-         awEw==
+        bh=E6++5ofz/XVp0r1sKsCzLslu6+YsvGovl/0af+/t0Io=;
+        b=Clnr93WbuY7T7n4miHfo8AS+6F78zVl7uj+Zha4kWJCumTRqREaxmEHmxqWJB3TE5N
+         6WKRN8VEoxb8Ns3QS6RytORovnZuvpHMTOi/ub9SRQ56fXK9AefB1G7jltoflw3+Ey0l
+         ZW9J3jC1IhQBymJBYKSxONw8FmuhmIHQpIobkQoP7jBHoGj9tMEuKfdQq/e2zY+24JRW
+         uORtd/NQ0W7gMYEtRu0iCaH4zquyPyu7csXIiyisL7eH9YgTQrOdt+49g5GzFQG3jGwX
+         i1dyaZPgA8s42I/nijlJXBKbPmi0HjJQdRdMxv8K/5jMR3psORNrsH7BlPJzW58n98W3
+         oCQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694861548; x=1695466348;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
+        d=1e100.net; s=20230601; t=1694861590; x=1695466390;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=NkaN8cKyKQ/v2N4UZS/i+2Cr3FWbQdqVVYD1cTsC53I=;
-        b=BPNPVo6BUu3EbLLMMK8AP5AmNqk7pKarXtrQR+lC6pin1wI2NriyNwDo/PCpsIteqh
-         HtKjuee+T3frRmcAtzUqXPq/iMwHeYV20UsGr7/EXQHM3XE9gij9JZZJJ0c/nkid4AEM
-         LJbdQTQDeJ6tONySm2oSFrYFpUp1OcYg2aVcqICo3CHHDTrJuS0g5FXHQCaVdfordIEg
-         9VNqeacqa1NuhFBQSFNeCn9S2BEMf82MLyk6V8GoDEgyl3/Tj9KU6x6yW8ZydABwmLW1
-         plbkcFkcWALRZXSz5Xl/kOtLg+NDDSxp9R1TFmURLZxeMnvQMDleOj+xutGdm9n8lFBE
-         MJzQ==
-X-Gm-Message-State: AOJu0Yy0seffabv7t3hVyGASh0tShigCQZARX8p4dCuyJufZv/7q9s6i
-	guiVDfd4ltqcXB1PMmzpJcc=
-X-Google-Smtp-Source: AGHT+IFdjBX4VSeBZn0JpdO85JrcBe0bVVpLDZ4NtoJf3Oru0QM0aSmeH6zWGbp6bEW3eVbBqI27SA==
-X-Received: by 2002:a1c:7203:0:b0:3fe:15f0:dfbc with SMTP id n3-20020a1c7203000000b003fe15f0dfbcmr3689181wmc.12.1694861548123;
-        Sat, 16 Sep 2023 03:52:28 -0700 (PDT)
+        bh=E6++5ofz/XVp0r1sKsCzLslu6+YsvGovl/0af+/t0Io=;
+        b=frt3slljOcQCdVtferigeyi7kIFDNalV2jdLH7xrs+nIyf0gKvuacuiZwKECQo6A3M
+         tn4tW1VUQNL84UcMAcRHrSCnh5Jib0pEOxe9RbFidL98jIeCXwkpNNO3JTPfj/e6gSxc
+         P7ozihM+EO0/MP6wMTgvTDXwHumDTd76PPx1ALqRiR0/p36JZ6lU1BSAP968GxRY0ePt
+         Ra/MuWVQOpQy0it8kHXqxvU9pa0FXfWCGyTnyudeumt8Xm5ookslhvfqISpLfBizoyqg
+         4sdmjKJxxJndyx55f96EwM2mwuOgx4lME2zywOLLMXB0VWWKsUld7JMzPxyUkS5ZFzYE
+         dKcw==
+X-Gm-Message-State: AOJu0YxIOTvi39GHx4Yfej1MNfsvD0C4j12WrDlGOkh4ecQTs64Wq7yt
+	PJulVTclSFdQb2ug/9TGhPM=
+X-Google-Smtp-Source: AGHT+IE9iYdti2ESeNV0y7KhQoMbN+Ztv4NNyQYjs2YsSmiRyiYMcX7eVbsM8hDYzjaHn3x5C/E4cg==
+X-Received: by 2002:adf:f34f:0:b0:317:e1fb:d57b with SMTP id e15-20020adff34f000000b00317e1fbd57bmr3282990wrp.56.1694861589528;
+        Sat, 16 Sep 2023 03:53:09 -0700 (PDT)
 Received: from localhost ([45.134.213.210])
-        by smtp.gmail.com with ESMTPSA id y15-20020a5d470f000000b0031981c500aasm6838175wrq.25.2023.09.16.03.52.27
+        by smtp.gmail.com with ESMTPSA id t3-20020a5d5343000000b00317ab75748bsm6852110wrv.49.2023.09.16.03.53.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Sep 2023 03:52:27 -0700 (PDT)
+        Sat, 16 Sep 2023 03:53:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,10 +49,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 16 Sep 2023 12:52:26 +0200
-Message-Id: <CVKA9XPFB9BF.2UL40PGKDJ00P@vincent-arch>
-Subject: Re: [PATCH 1/2] MAINTAINERS: update Rust webpage
-From: "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
+Date: Sat, 16 Sep 2023 12:53:08 +0200
+Message-Id: <CVKAAGQ6QV0W.3LCCSR4PNZKDC@vincent-arch>
 To: "Miguel Ojeda" <ojeda@kernel.org>, "Wedson Almeida Filho"
  <wedsonaf@gmail.com>, "Alex Gaynor" <alex.gaynor@gmail.com>
 Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
@@ -60,8 +58,12 @@ Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
  <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@samsung.com>,
  "Alice Ryhl" <aliceryhl@google.com>, <rust-for-linux@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>
+Subject: Re: [PATCH 2/2] MAINTAINERS: add Maintainer Entry Profile field for
+ Rust
+From: "Vincenzo Palazzo" <vincenzopalazzodev@gmail.com>
 References: <20230830165949.127475-1-ojeda@kernel.org>
-In-Reply-To: <20230830165949.127475-1-ojeda@kernel.org>
+ <20230830165949.127475-2-ojeda@kernel.org>
+In-Reply-To: <20230830165949.127475-2-ojeda@kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
@@ -69,20 +71,19 @@ X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> A few months ago we started a webpage for the Rust subsystem and
-> the overall Rust for Linux project [1].
+> The `P:` field allows a URI, and we have been adding information
+> on how to contribute to the Rust subsystem to our webpage for a
+> while now (and other relevant topics, e.g. branches, third-party
+> crates, Rust unstable features...).
 >
-> The current `W:` field of the Rust entry points to the GitHub
-> repository, since originally we kept information in a `README.md`
-> file that got rendered by GitHub when visiting that URL.
+> The webpage/document does not currently follow the headings of
+> the Maintainer Entry Profile, but it does nevertheless answer
+> some of the questions we have got so far from contributors and
+> it covers partially some of the topics there.
 >
-> That information was moved into the webpage and got expanded.
-> The webpage is also nowadays the entry point to the project,
-> and we pointed the "Website" GitHub metadata field to it.
+> Thus link to our "Contributing" document [1].
 >
-> Thus update the `W:` field to point to the actual webpage.
->
-> Link: https://rust-for-linux.com [1]
+> Link: https://rust-for-linux.com/contributing [1]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
