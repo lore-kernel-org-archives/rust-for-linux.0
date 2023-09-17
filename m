@@ -1,56 +1,57 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9915E1877
-	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 11:28:10 +0000 (UTC)
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2469101
-	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 04:28:05 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-27467da531eso597662a91.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 04:28:05 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B4B1841
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 12:32:51 +0000 (UTC)
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E7E8AC
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 05:32:50 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id 98e67ed59e1d1-27467da531eso606590a91.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 05:32:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694950085; x=1695554885; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1694953969; x=1695558769; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=I+18gS0/MLHq+HeuLig4mGH6Uf9cJK9iUssaUmHKsDw=;
-        b=Prwgl+KtGu8AiB8HPxJlj47b7dNijuIsbtVUmeJT70iS5hygIF1nJ9zIYnTiprdj/C
-         13DiepLHSYY3wnAWqcZXz2vKhDXZbdXos8uwLcm3KMHo5ovEMKPAqAXcfEXDkF22qQYE
-         X/3fdMOwbMqHGAzmmza+ZzAKiBuMBYURdupq1REZM/aY1/eW9z/T1i2JfqZXi0P3omKr
-         WGi84lfYBuJN0wsuecrWXWeLDTqquqjacXFfgXaja2J7jen6pjvMfN7CuCfnR/5bCl8s
-         2mYonczfDysnN6yohVnvCyPLv0eIE/lV+4gXFlrA/no02h04bSqqM+SpiiC7vJzo79tl
-         e79A==
+        bh=FhbQVX/+IzaGjIT0oVTdvgrpyCMD4Pa/Y0vwssaACkQ=;
+        b=YxmsOz2FL0BG5Y4EUiSXVNrrudoGpdk7xjrBqkStxUdeSPaWNTORm7pRybvy/4GjSl
+         5hV3+QEGNfe6U9E/qj5+VCdpg5qTuLy0qzU06NjcC1vPajFcCUww7BdGOOxwaesQiee6
+         tZEUS7JXmT8MTEEKZ8nX1u5bQ3uDQhNi2V3Bn2anHXnfQNvZsqmhwDqWulDwUJfFTha6
+         pZdtev4aleYdRmlbLXmbDZRvRQsraHfLOdhhXlCr20DFB5CacenjcDV+X5FQ2y7AxP+T
+         oDL+hsZuHuuEFdGM+qA7qE4lwktISIDx4jwd/cVqmSEreDQ2u/il9+QOWM0FlkWno4N8
+         ovfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694950085; x=1695554885;
+        d=1e100.net; s=20230601; t=1694953969; x=1695558769;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=I+18gS0/MLHq+HeuLig4mGH6Uf9cJK9iUssaUmHKsDw=;
-        b=nIP3cB4C2anrE+RDDJWYsVWQjgFLLcVBhmi//QUE5jOfPajsBqkWdcL+WhSZ4ZaFxS
-         MNc6WozdEfzDDSeUZRsyMfJXnytiEqrdp+nKXE6Qa6NXBE7NB0qIrgCaGX1z/Ds8w759
-         ZfTUzYzBncctOT9aqub9Ml8mIijSAyx8IDROg+Pe9Zed0yL6ljCtIHXKCEBvHW0caRFi
-         MnMRf7sczmWXLlLu6Yc+mOiCDwTiqZN1a4DDbvDFUT/XHGjtX2vKAITxvyESYc4bpysb
-         eqvm/7ThgPRZmS7yBCDU40qDEq2htd/Ef4OtuMqOuoMMGg1guVbffi/AEj5s/ts8Mh1L
-         MtVw==
-X-Gm-Message-State: AOJu0Yx0hGjE+16VIa2NwJnR1AOGXPZtWlBEv/XYftnHX4K9RIjCRZYq
-	j24+W5gYgDOyWgWhZz99W5CcqgDMOjwMZG7U
-X-Google-Smtp-Source: AGHT+IEwLHWadzW+CguUNBwUNVm/EFPkFcfln6/r1WdCUXpsKm+4220S2xWL2lgtNbGATcRG+TTmrg==
-X-Received: by 2002:a17:902:f68f:b0:1c0:bf60:ba4f with SMTP id l15-20020a170902f68f00b001c0bf60ba4fmr7838840plg.4.1694950085057;
-        Sun, 17 Sep 2023 04:28:05 -0700 (PDT)
+        bh=FhbQVX/+IzaGjIT0oVTdvgrpyCMD4Pa/Y0vwssaACkQ=;
+        b=LKxJf74acsY9jSi8M4PJTOdg+7ZkLPFCzeIT3iuLAA/2RQUDMM6HdhGhy/gM/B1oE/
+         8sx8HMVB2zxnbF5SYn5XkElDebAfaak8TvGhThPzVnEzAFmk52rHPuPby4xuQ3VCkm9v
+         ryr6pKK7lumMRNvlLbhLhl1vRfBFysjx89t7lPAWlQ0B3iz8IeAzVLYlaS+RU4ZnPK8C
+         aPnqEr+H1rIBrzh1zUXpdm7VNlqV0VuTCMeWDhKQUiUxE1cEjvkgPY0QdFygxihea/aQ
+         nbxWKRl66DMiBKpBJF4tqvFgzSu7JshX1XLwd7g92+ofKiDUVVtHHpB25oxRoAGyvPfw
+         71FQ==
+X-Gm-Message-State: AOJu0Yyvm2ATQDvffTCcTwQ8zpEfgjsiWZaLNJWTElf7jYK+78LrjI3k
+	FexIuWadK0ulCSc6z1DlaCQ=
+X-Google-Smtp-Source: AGHT+IEZykQA2idZQqF2Eow6yGvlQ8HaQ78HAeY0WJTAhMbKJ+6UPTQFmu13Ah4KaqtYL253KKY8zA==
+X-Received: by 2002:a17:90a:5608:b0:26b:27f6:9027 with SMTP id r8-20020a17090a560800b0026b27f69027mr5868784pjf.1.1694953969484;
+        Sun, 17 Sep 2023 05:32:49 -0700 (PDT)
 Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id n6-20020a170902968600b001bdcde49bc3sm6450454plp.119.2023.09.17.04.28.04
+        by smtp.gmail.com with ESMTPSA id 27-20020a17090a195b00b00274a43c3414sm3861870pjh.47.2023.09.17.05.32.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Sep 2023 04:28:04 -0700 (PDT)
-Date: Sun, 17 Sep 2023 20:28:04 +0900 (JST)
-Message-Id: <20230917.202804.2074374258417179605.ubuntu@gmail.com>
-To: andrew@lunn.ch
+        Sun, 17 Sep 2023 05:32:49 -0700 (PDT)
+Date: Sun, 17 Sep 2023 21:32:48 +0900 (JST)
+Message-Id: <20230917.213248.712797486250583805.ubuntu@gmail.com>
+To: andrew@lunn.ch, miguel.ojeda.sandonis@gmail.com
 Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v1 4/4] sample: rust: add Asix PHY driver
+Subject: Re: [RFC PATCH v1 3/4] MAINTAINERS: add Rust PHY abstractions file
+ to the ETHERNET PHY LIBRARY
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <52517bd0-66fe-4275-bef1-afabc906e836@lunn.ch>
+In-Reply-To: <dd12e8b8-16a0-4cc2-8b0c-78386ce2dabc@lunn.ch>
 References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
-	<20230913133609.1668758-5-fujita.tomonori@gmail.com>
-	<52517bd0-66fe-4275-bef1-afabc906e836@lunn.ch>
+	<20230913133609.1668758-4-fujita.tomonori@gmail.com>
+	<dd12e8b8-16a0-4cc2-8b0c-78386ce2dabc@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,112 +62,45 @@ Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
 Hi,
 
-On Wed, 13 Sep 2023 21:15:53 +0200
+On Wed, 13 Sep 2023 20:57:40 +0200
 Andrew Lunn <andrew@lunn.ch> wrote:
 
->> +module! {
->> +    type: RustAsixPhy,
->> +    name: "rust_asix_phy",
->> +    author: "Rust for Linux Contributors",
+> On Wed, Sep 13, 2023 at 10:36:08PM +0900, FUJITA Tomonori wrote:
+>> The files are placed at rust/kernel/ directory for now but the files
+>> are likely to be moved to net/ directory if things go well.
+>> 
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> ---
+>>  MAINTAINERS | 1 +
+>>  1 file changed, 1 insertion(+)
+>> 
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 90f13281d297..95ecf96b911a 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -7797,6 +7797,7 @@ F:	include/trace/events/mdio.h
+>>  F:	include/uapi/linux/mdio.h
+>>  F:	include/uapi/linux/mii.h
+>>  F:	net/core/of_net.c
+>> +F:	rust/kernel/net/phy.rs
 > 
-> You probably want your name here. You are going to be maintaining this
-> driver.
+> I would suggest you add yourself as a Maintainer as well. You are
+> basically stepping up to forever maintaining these files, at least
+> until Russell, Heiner and I learn Rust.
 
-Will do in the next round.
+Happy to do so.
 
+> And to make that maintenance work simpler, you might want to move
+> phy.rs to drivers/net/phy, so it is alongside phy_device.c,
+> phy-core.c, and phy.c, the files it needs to track.
 
->> +    fn match_phy_device(dev: &mut phy::Device) -> bool {
->> +        dev.id() == Self::PHY_ID_ASIX_AX88772A
->> +    }
-> 
-> What is this doing? The phy core will match the driver to the device,
-> based on the phy_id and phy_id_mask in the phy_driver structure. A
-> match function is only needed when the vendor made a mess of the IDs,
-> and has two different PHYs with the same ID. I don't see anything in
-> ax88796b.c to suggest it has this problem.
+Works for me.
 
-Sorry, I experimented match_phy_device() and I should have removed this.
-
->> +
->> +    fn read_status(dev: &mut phy::Device) -> Result {
->> +        dev.update_link()?;
->> +        if !dev.link() {
->> +            return Ok(());
->> +        }
->> +        let ret = dev.read(MII_BMCR)?;
->> +
->> +        if ret as u32 & BMCR_SPEED100 != 0 {
-> 
-> PHY registers are u16. phy_read() returns an int, so it can have
-> negative return codes. But if it is not negative, the positive values
-> are in the range of 0 to 65535.
-
-A negative is an error?
-
-If so, this function should be:
-
-fn read_status(dev: &mut phy::Device) -> Result<u16>
-
->> +    fn suspend(dev: &mut phy::Device) -> Result {
->> +        dev.suspend()
->> +    }
->> +
->> +    fn resume(dev: &mut phy::Device) -> Result {
->> +        dev.resume()
->> +    }
-> 
-> Can we avoid this boilerplate? A lot of phy drivers will make use of
-> genphy_foo calls in their struct phy_driver. It would be annoying if
-> each driver needs silly little wrappers like this.
-
-you meant that C style like
-
-{
-        .suspend        = genphy_suspend,
-        .resume         = genphy_resume,
-        .soft_reset     = asix_soft_reset,
-}
-
-is clear than Rust style
-
-    fn suspend(dev: &mut phy::Device) -> Result {
-        dev.genphy_suspend()
-    }
-
-    fn resume(dev: &mut phy::Device) -> Result {
-        dev.genphy_resume()
-    }
-
-right?
-
->> +
->> +    fn soft_reset(dev: &mut phy::Device) -> Result {
->> +        dev.write(MII_BMCR, 0)?;
->> +        dev.soft_reset()
->> +    }
-> 
-> You are missing the comment why genphy_soft_reset() is not
-> enough. This device appears to break 802.3, so you really should
-> document how it is FUBAR.
-
-I'll copy the comment from the C driver.
-
->> +
->> +    fn link_change_notify(dev: &mut phy::Device) {
->> +        if dev.state() == phy::DeviceState::NoLink {
->> +            let _ = dev.init_hw();
->> +            let _ = dev.start_aneg();
->> +        }
->> +    }
-> 
-> Again, this is bad behaviour of the PHY, so it should be documented
-> why it is needed.
-
-Ditto.
+Miguel, any concerns to put Rust files not under rust/ directory?
