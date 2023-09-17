@@ -1,107 +1,188 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE48187D
-	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 13:24:13 +0000 (UTC)
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1B38130;
-	Sun, 17 Sep 2023 06:24:11 -0700 (PDT)
-Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3aa14d8641cso2602451b6e.3;
-        Sun, 17 Sep 2023 06:24:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1694957051; x=1695561851; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WowTavHHUt6VXrXWYAIAmM5GQAVg53+hUmPjaFGm7W8=;
-        b=dhyiUTh8x46T1uJ3OtUkdONibVXePNhq4VVgT7hwZIlxRa770kDDjMYeC8WKX4Pgjf
-         EaIFRfhanxdwS3V5yhvnpjPGNBmHncrYqds+UMCBbNP6RNUOi+Rxsy1IPcQdYUAtHJI7
-         dxvqTJ6i5EMT9PFY+MDjA7NK+kIfGOvbVhsAG2z/W/VfFe4R7tAcuHatHuXHPl/EDem1
-         TcjTfnYRI1RosGWB3d4NXyFkcsv+ofHDJEUHhwDn/MVe6Jvfk5gZ1FF3rJLljlxxWyKY
-         LmoetcFI9yZmovgoSePSQfUD9OD5O1Thf3PBXY1sN6GScITEiuxsxpM8meigCchSNqDu
-         eA7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694957051; x=1695561851;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WowTavHHUt6VXrXWYAIAmM5GQAVg53+hUmPjaFGm7W8=;
-        b=HDKl5yYpnOaUvoQomv8mBMk7zecnzQjCLhY+ulVvtkSsBtk29bFQH+lHIY+o8PwtYk
-         JdRja9RM0q/8xQn4I8Wur2BoYvFE1QKb733ReBK95WSkPoDN9VvSJFkqIo2COQm0xpEd
-         8yM+18XCGpka/4cK+UJrzntpYYzgcekG9c/Q4jYZk79U7nX6yUpDLgZZ3tkJ6QSTMsD6
-         oszNnCBRk7/yJpFl2BH6IuPcwyHHZtecM8OXM0pdFKK1qe4xJqsglxyrEtVIQAyeOhUo
-         rH6g1RGH0WmLXe9U4hhkFyGnttfZDgwR6oKum92LQV5LOg6vkqH2+xiSV1nNBr5TLn/J
-         +30g==
-X-Gm-Message-State: AOJu0YzjYSMMn/JzaYhza+vnDOWhnSBhAOclu8LSIfhC4JkUYSVRdIVU
-	x3qT4faNJSPA2D83URxZBvry7RDA27U=
-X-Google-Smtp-Source: AGHT+IEKBFAE86erU9orG9yXk0jnwDalBuX9QqwQG8NALM6qlYFHn1bzDFyyAJrR6X/7Bh0MS1fF/w==
-X-Received: by 2002:a05:6870:548f:b0:1d5:f43a:3a5c with SMTP id f15-20020a056870548f00b001d5f43a3a5cmr8738173oan.45.1694957051135;
-        Sun, 17 Sep 2023 06:24:11 -0700 (PDT)
-Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
-        by smtp.gmail.com with ESMTPSA id zf6-20020a0568716a8600b001d4d7238a78sm3932734oab.54.2023.09.17.06.24.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 Sep 2023 06:24:10 -0700 (PDT)
-Message-ID: <0ed5448e-cd54-4a99-9389-e27deddfda90@gmail.com>
-Date: Sun, 17 Sep 2023 10:24:04 -0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D630A4A24
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 15:06:39 +0000 (UTC)
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9E6EB6
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 08:06:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=0LFJs0sgU1okWFekXw++oiw4PHIH8JxvXYqFPok4AN8=; b=mG
+	ruZ2caCb21Ib5vqvnRaU85z6PHS5Yj1AFfydaUrk/QhdU1ZOOfBgZUhaATvG964nlm1OZDauJSYnc
+	hy2YqqfDcfmNqIZSoyiHCeK3r/qw7Z9y5NiqzPZ7Z1yA3XRUxD4IJ6PhNbAYLwBZVa+8wfHKF+bcF
+	0YyIFxqEY9TF/zY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qhtM3-006hTC-E6; Sun, 17 Sep 2023 17:06:35 +0200
+Date: Sun, 17 Sep 2023 17:06:35 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH v1 1/4] rust: core abstractions for network PHY
+ drivers
+Message-ID: <3fa5407b-c6f4-4e39-a743-812838b94d28@lunn.ch>
+References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
+ <20230913133609.1668758-2-fujita.tomonori@gmail.com>
+ <ec6d8479-f893-4a3f-bf3e-aa0c81c4adad@lunn.ch>
+ <20230917.191708.2174483069021340663.ubuntu@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: Respect HOSTCC when linking for host
-To: Matthew Maurer <mmaurer@google.com>, Finn Behrens <me@kloenk.dev>
-Cc: =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
-References: <20230915172900.3784163-1-mmaurer@google.com>
- <9966E047-44E7-4665-9628-169F3EBE2F06@kloenk.dev>
- <SLZSYLg5E9OQKI546K87wxTYYLNlT1xM-LhC4W1JFhIate6PFsKq27RcBNhSjUkErYDlzsZB4F2Vc2KOP9tDThg58_tXycWn3K29mQXlFtU=@protonmail.com>
- <0561303E-2089-43FC-AA31-836C7BB844B7@kloenk.dev>
- <CAGSQo02p0LWZgV8oVidwvN6X__rv3-rj+ZVg9SaZ5Kx+zYahYQ@mail.gmail.com>
-Content-Language: en-US
-From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-In-Reply-To: <CAGSQo02p0LWZgV8oVidwvN6X__rv3-rj+ZVg9SaZ5Kx+zYahYQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230917.191708.2174483069021340663.ubuntu@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 9/16/23 16:54, Matthew Maurer wrote:> Yes, thanks Bjorn - "gcc" is the linker flavor used for "Use the C
-> compiler as a linker".
+On Sun, Sep 17, 2023 at 07:17:08PM +0900, FUJITA Tomonori wrote:
+> Hi,
 > 
-> With regards to HOSTLD, I was trying to make the minimum possible
-> change. Currently, it is using the command `cc` as a linker, so this
-> would preserve existing behavior when HOSTCC is unset.
+> On Wed, 13 Sep 2023 22:11:57 +0200
+> Andrew Lunn <andrew@lunn.ch> wrote:
 > 
-> If we would prefer `HOSTLD` instead we can do that, but we would need
-> to additionally inspect `LLVM` to set the linker flavor accordingly
-> (e.g. set ld vs ld.lld).
-
-LLVM can use all of bfd, gold, lld and mold plus each and one of them
-support roughly the same set of flags, so we can kinda ignore the
-differences between them.
-
-> Do folks have strong opinions between these? My primary concern is to
-> avoid calling programs by foo when their HOSTFOO variable is set.
+> >> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
+> >> +        unsafe { &mut *(ptr as *mut Self) }
+> >> +    }
+> >> +
+> >> +    /// Gets the id of the PHY.
+> >> +    pub fn id(&mut self) -> u32 {
+> >> +        let phydev = Opaque::get(&self.0);
+> >> +        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
+> >> +        unsafe { (*phydev).phy_id }
+> >> +    }
+> >> +
+> >> +    /// Returns true if the PHY has no link.
+> >> +    pub fn link(&mut self) -> bool {
+> >> +        let phydev = Opaque::get(&self.0);
+> >> +        // SAFETY: This object is initialized by the `from_raw` constructor, so it's valid.
+> >> +        unsafe { (*phydev).link() != 0 }
+> > 
+> > That seems an odd way to express it.
+> > 
+> > unsigned link:1;
+> > 
+> > It is a bitfield of 1 bit. So why not simply == 1 ? Or even just plain
+> > (*phydev).link() ?
 > 
-> See https://doc.rust-lang.org/rustc/codegen-options/index.html#linker-flavor
-> for details on linker flavor settings.
+> The accessors is generated for bitfield. In this case:
+> 
+> pub fn link(&self) -> core::ffi::c_uint;
+> pub fn set_link(&mut self, val: core::ffi::c_uint);
 
-If I were to talk about my experiences with CMake then I'd say that
-build systems tend to kinda ignore your linker choice if you thought
-that it was going to be used standalone. I think KBuild does indeed
-honor it, so if we can go ahead with that then we could do so.
-Although I don't know what else would bring upon the table.
+So Rust has thrown away the size of the bitfield?
+
+struct foo {
+  unsigned long bitfield:1;
+  unsigned long nibblefield:4;
+};
+
+int main(int argc, char *argv[])
+{
+  struct foo foo;
+
+  foo.bitfield=2;
+  foo.nibblefield=42;
+}
+
+$ gcc -Wall test.c
+test.c: In function ‘main’:
+test.c:10:16: warning: unsigned conversion from ‘int’ to ‘unsigned char:1’ changes value from ‘2’ to ‘0’ [-Woverflow]
+   10 |   foo.bitfield=2;
+      |                ^
+test.c:11:19: warning: unsigned conversion from ‘int’ to ‘unsigned char:4’ changes value from ‘42’ to ‘10’ [-Woverflow]
+   11 |   foo.nibblefield=42;
+      |
+
+So i also assume Rust is not going to do these range checks? Will they
+get done a runtime when the setter is called?
+
+> a bit weird for 1 bit though.
+> 
+> The function name should be something is_linkup()?
+
+Naming is hard. At least for the moment, anybody writing a PHY driver
+is going to be using a C driver as a template. They will see code
+like:
+
+msc.c:	if (!phydev->link && priv && priv->edpd_enable &&
+teranetics.c:	phydev->link = 1;
+teranetics.c:			phydev->link = 0;
+teranetics.c:			phydev->link = 0;
+uPD60620.c:	phydev->link = 0;
+uPD60620.c:			phydev->link = 1;
+
+Since it appears your must have a getter/setter, i would keep with
+get_link() and set_link().
+
+> > Now we are getting into the hairy stuff. Locking is
+> > interesting. Rather than duplicate all the interesting stuff, can you
+> > just use the high level C functions? In fact, the driver you posted
+> > does not need anything other than phy_read() and phy_write(), so i
+> > would not even bother with these yet.
+> 
+> Yeah, I can't figure out a clean way to handle this.
+> 
+> The realtek driver uses them:
+> 
+> https://github.com/fujita/rust-realtek-phy/blob/master/rust_realtek.rs#L33
+> 
+> It implements .read_page and .write_page so read and write without
+> locking the MDIO bus are necessary? Can we do in differently?
+
+This locking is not nice, but it is mostly hidden away in the phylib
+core. We probably don't want to duplicate it in Rust. So i would
+suggest you wrap the high level API, phy_read_paged(),
+phy_write_paged(), phy_modify_paged_changed().
+
+rtl8211e_config_init() does:
+
+        oldpage = phy_select_page(phydev, 0x7);
+        if (oldpage < 0)
+                goto err_restore_page;
+
+        ret = __phy_write(phydev, RTL821x_EXT_PAGE_SELECT, 0xa4);
+        if (ret)
+                goto err_restore_page;
+
+        ret = __phy_modify(phydev, 0x1c, RTL8211E_CTRL_DELAY
+                           | RTL8211E_TX_DELAY | RTL8211E_RX_DELAY,
+                           val);
+
+err_restore_page:
+        return phy_restore_page(phydev, oldpage, ret);
+
+This should not be time critical, so i would turn this into
+phy_read_paged() followed by phy_modify_paged().
+
+rtlgen_read_mmd() is different.
+
+phy_read_mmd() takes the MDIO bus lock and then calls
+phydev->drv->read_mmd which is rtlgen_read_mmd(). This is why
+__phy_read() is used. So you are going to need to wrap __phy_read()
+and __phy_write().
+
+Or we need to take a step back and take a long hard look at the
+locking and try to clean it up and simplify it. It might then become
+possible to duplicate the locking model in Rust.
+
+> If abstraction code just declare a function, a driver always need to
+> implement that function.
+
+Ah, that is not going to scale well. There is something like 250
+struct phy_driver at the moment. We keep adding new ops to that
+structure. I really don't want to have to modify all 250 of those
+structures when i add a new op which only one or two drivers need.
+
+	   Andrew
