@@ -1,131 +1,129 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C67E4C7B
-	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 15:46:44 +0000 (UTC)
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C792128
-	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 08:46:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=pNeCSeuC6UeEf1UGnifu+36Bfm5GQL/wN1CEf8WHi+M=; b=YXBOY/Ykvs0J1CD8olt9EKFR/g
-	DpsTIkTwvQjZUDkOGk5mqEo73WO6LF67MUn7NpUV3/qP5UZEJbGoc3QoLl+ryMMz/sgV+ABdqgLrZ
-	IbIciJxGoMnAC+mKKq2isupYuv6loNGeFSaEgrqf1SQ5JO92wpOC4RVPGP51hQqnhYEY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qhtyp-006hb7-Ka; Sun, 17 Sep 2023 17:46:39 +0200
-Date: Sun, 17 Sep 2023 17:46:39 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v1 4/4] sample: rust: add Asix PHY driver
-Message-ID: <0b6f8110-b4fd-4d20-a97f-9d7df26c23f0@lunn.ch>
-References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
- <20230913133609.1668758-5-fujita.tomonori@gmail.com>
- <52517bd0-66fe-4275-bef1-afabc906e836@lunn.ch>
- <20230917.202804.2074374258417179605.ubuntu@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B78442A
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 18:42:18 +0000 (UTC)
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 536CDF9
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 11:42:17 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-9ada609bb62so477141766b.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 11:42:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=umich.edu; s=google-2016-06-03; t=1694976136; x=1695580936; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tplxOZS0Unmq22QFTd+gO2V1zYBez7/Q/dvKdo1Vk+I=;
+        b=g4nWKOL7FmwSJMSdRhEYYOpKyMmhWRyzLblnjFQz1iZKAob9k2p1GLmRWfaR15YDqw
+         H+kLQ2j+kRrQhNGsCQ/eq7c6czA1tYYDqe8aGwbXpr+ubtyOc7CG5Zq+TfYBkkiWjKsK
+         eqtdcbryAcjy8OIJAI48v6wKso/9PPQ+mfLB37c44brjN1ZiLEXXvErORx40XzPiWjG4
+         g8IIKw6yVfIb7ZK5PYh2CfCPNl76Wtm3pu9TzSnlnH/o2F5ncVoEgK/ixwPR3nk76IJ8
+         1eP/pI1ASdknVZA9z5a++4OFN143ylkerlK5z1t2y340j5e8DHgcHW/rBKZyX0UrkRIG
+         kfAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694976136; x=1695580936;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tplxOZS0Unmq22QFTd+gO2V1zYBez7/Q/dvKdo1Vk+I=;
+        b=Md2Oyamz2mORzFbmXrQCVozUOkJUxkCB+YwC/sV0lGc5Enh3Ik0E1dllj4SBr/5y1b
+         iFruy5A8pzJLxQU7aNDOU43gX7YQF4pULOZG2BW9q6pRT5E5aQfjHdPgV/HCOzQMH1aO
+         rKTUYVp8JJeAvEFqh1w6gZhSEFDGw/c8Cu3b+IeK1WA0OrqkuuZLw8GWdEZcrqD1W/qq
+         KxEW0j7p8yUEkucNh7GZcqWf0zfKzeImekGseYjDY7dyAy3rog802ehmAegRl3qLiJjJ
+         OzaCojyT5iBLshdj4fyjdaPTLD8nUl9NtbdYsL6W1gtJ6Y0zh84NLDReqVx2fDRXUyO9
+         agCA==
+X-Gm-Message-State: AOJu0Yz7kPUxMZRgb90RuA5Bujk9x6NRebVK5zFF1z5gbECdSo96ocqi
+	jkYlhM04wkmgTgjZ5zy+fenLA2s3XGlW9rI05U9lww==
+X-Google-Smtp-Source: AGHT+IF2Mj/pzt5vDItPkY5eOTue2TMJnC9BB3iegN4VkoOGaaVKXJ4Sd0VaoP+Bv+L02yc9R7JR/zaJ0W+8GeuhvLs=
+X-Received: by 2002:a17:906:519c:b0:9a6:4f23:9d8f with SMTP id
+ y28-20020a170906519c00b009a64f239d8fmr5712918ejk.47.1694976135741; Sun, 17
+ Sep 2023 11:42:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230917.202804.2074374258417179605.ubuntu@gmail.com>
+References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
+ <20230913133609.1668758-2-fujita.tomonori@gmail.com> <ec6d8479-f893-4a3f-bf3e-aa0c81c4adad@lunn.ch>
+ <20230917.191708.2174483069021340663.ubuntu@gmail.com> <3fa5407b-c6f4-4e39-a743-812838b94d28@lunn.ch>
+In-Reply-To: <3fa5407b-c6f4-4e39-a743-812838b94d28@lunn.ch>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Sun, 17 Sep 2023 14:42:02 -0400
+Message-ID: <CALNs47uCFDJ5xz7_3qkjszmmAFXzA=dwB7CM4+sVeVtnSTZAcQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 1/4] rust: core abstractions for network PHY drivers
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
 	version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> >> +    fn read_status(dev: &mut phy::Device) -> Result {
-> >> +        dev.update_link()?;
-> >> +        if !dev.link() {
-> >> +            return Ok(());
-> >> +        }
-> >> +        let ret = dev.read(MII_BMCR)?;
-> >> +
-> >> +        if ret as u32 & BMCR_SPEED100 != 0 {
-> > 
-> > PHY registers are u16. phy_read() returns an int, so it can have
-> > negative return codes. But if it is not negative, the positive values
-> > are in the range of 0 to 65535.
-> 
-> A negative is an error?
+On Sun, Sep 17, 2023 at 11:07=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote=
+:
+> [...]
+> > If abstraction code just declare a function, a driver always need to
+> > implement that function.
+>
+> Ah, that is not going to scale well. There is something like 250
+> struct phy_driver at the moment. We keep adding new ops to that
+> structure. I really don't want to have to modify all 250 of those
+> structures when i add a new op which only one or two drivers need.
 
-phy_read() can return values like -ETIMEDOUT, -ENODEV, -EIO etc to
-indicate something when wrong. So you should see the general pattern
-of:
+This concern is about adding a function pointer field to the C struct
+without needing to update all future Rust drivers, correct? If so,
+that will be fine currently. This comes from where the driver is
+created
 
-        foo = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-        if (foo < 0)
-                return foo;
+> +    fn driver(&self) -> bindings::phy_driver {
+> +        bindings::phy_driver {
+> +            name: self.name.as_char_ptr() as *mut i8,
+> +            flags: <T>::FLAGS,
+> +            soft_reset: if <T>::HAS_SOFT_RESET {
+> +                Some(Self::soft_reset_callback)
+> +            } else {
+> +                None
+> +            },
+> +            // other fields ...
+> +            ..unsafe { core::mem::MaybeUninit::<bindings::phy_driver>::z=
+eroed().assume_init() }
+> +        }
 
-After probe, the probability of an error is very low, and generally
-there is no recovery. So not all drivers do check the return value.
+The `..` covers all unspecified fields and just says they will be
+zeroed. How this all works is:
 
-There is also a second C problem here. Because a PHY register is a
-u16, you sometimes see code like:
+- A trait is created (`Driver`) that has one function for each function
+  pointer field in a C vtable struct (`phy_driver`).
+- Each function in the trait can either have no implementation, (every
+  implementer needs to provide one), or a default implementation, (an
+implementer can
+  optionally provide one or fall back to the default). This is just
+standard Rust, and
+  I think that is what Fujita was saying
+- What the `#[vtable]` macro does is give you a way to check if a
+  implementer/driver provides their own implementation of the default
+method. It does this by
+  setting `HAS_FN_NAME`
+- Then, when creating the c vtable struct from a type that implements the
+  trait, you check that value for each field and either set it to null or t=
+o a
+  function pointer
 
-	u16 reg
+This means that the `phy_driver` that C sees has null for all
+unimplemented fields and not the default implementation. In the above
+snip creating the `phy_driver`, it checks whether or not the driver
+provides a `soft_reset` implementation with `HAS_SOFT_RESET`, and then
+either sets that field to a null pointer `None` or a function pointer
+`Some(Self::soft_reset_callback)`.
 
-	reg = phy_read(phydev, MII_M1111_PHY_EXT_SR);
-	if (reg < 0)
-		return reg;
+I think that technically the default implementations in the trait
+could be `unimplemented!()` which calls back to `BUG()`, since their
+use would indicate something incorrect with the abstraction like an
+unhandled field. within this small subset of code.
 
-which compiles cleanly, but is wrong.. The folks running static
-checkers then report the bug.
-
-> If so, this function should be:
-> 
-> fn read_status(dev: &mut phy::Device) -> Result<u16>
-
-No, it needs to return the negative error code, or 0 on success. This
-is a very typical pattern in Linux.
-
-> 
-> >> +    fn suspend(dev: &mut phy::Device) -> Result {
-> >> +        dev.suspend()
-> >> +    }
-> >> +
-> >> +    fn resume(dev: &mut phy::Device) -> Result {
-> >> +        dev.resume()
-> >> +    }
-> > 
-> > Can we avoid this boilerplate? A lot of phy drivers will make use of
-> > genphy_foo calls in their struct phy_driver. It would be annoying if
-> > each driver needs silly little wrappers like this.
-> 
-> you meant that C style like
-> 
-> {
->         .suspend        = genphy_suspend,
->         .resume         = genphy_resume,
->         .soft_reset     = asix_soft_reset,
-> }
-> 
-> is clear than Rust style
-> 
->     fn suspend(dev: &mut phy::Device) -> Result {
->         dev.genphy_suspend()
->     }
-> 
->     fn resume(dev: &mut phy::Device) -> Result {
->         dev.genphy_resume()
->     }
-> 
-> right?
-
-Yes. If you really must have these wrappers, they are not specific to
-a driver, so should be placed somewhere common where any driver can
-use them. There are around 60 of these genphy_ functions. Because what
-a PHY does is mostly standardised in IEEE 802.3, PHY drivers heavily
-use these functions to do the core of the work, and then deal with
-vendor extensions and vendor bugs.
-
-    Andrew
+Does any of that clear up concerns about providing nulls or adding new fiel=
+ds?
