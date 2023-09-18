@@ -1,110 +1,129 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D550D15AD
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 02:22:32 +0000 (UTC)
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8575A135
-	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 19:22:18 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-99c136ee106so528512366b.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 19:22:18 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D2A1FA7
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 03:44:31 +0000 (UTC)
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43953120
+	for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 20:44:29 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1c4456d595cso4216535ad.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 17 Sep 2023 20:44:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1695003737; x=1695608537; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xbCwATLv8gNcfvOQXJJcFSWwGrwys2o1PmeeIperXKI=;
-        b=AEQGScLrcFnzq054FmH5ohMXTNxNF6BxYAzO69/kzdBKbITFi5SsHGrUeD9sa+vUII
-         h/4fogi6G/rtAbYTGcKAUFE7FWEs0AQfCf70OtdvB55PlmNRnuNo0HWZeCXGKU032QV4
-         SBS3uTLgLfThjzaYrNosYMjaV8c4ldN01YZLIuVwBY41nMruepfo2o6QMou3G35FCBWb
-         1eYkSvUeNKVXGummlY0rSBHkHgsKcoXEhAPEaLZNDfupYQd02UqFB1Ggdz4CUnc4TBo3
-         QKm9DnwsoDHEQ6hP+PpqGkDyxHWqvgOqMrTevInCYPQyFFQR9wmc2GURViUtlkkhFhUJ
-         tsMQ==
+        d=gmail.com; s=20230601; t=1695008668; x=1695613468; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tB2hctaWoTmRGY7k8011HIttX7dcKhz+Gg59NXyhp18=;
+        b=VAp13d1oM6PCGNhcSG40SHRCfMSuUkoi7A0NU+IlastYFnkE+oB1NNTNwBfZ9JoAvS
+         +9q2fyMqnZ2vbEG5NM4NOHa3wJjmMlzS6zTT28Nj/CgucvBwP+fEM9okkGQE8DHZAikk
+         hih1KiWQyRzb+toMRfeju2W943Xu+qtLtV5PclArMBK+8SJQSS2K+z3jQKH2f3GQR6dx
+         t4SbIcYfpUHz4N93FUoqNS/AQN0SKkXX1tPpo0daXkLxHxm3dWZvcwUWkPV35dTri4Fn
+         J084BIdOHmLQuKBiq2EeEE7CLkVVUoAtouxcfYW3y8wXJWPmYbzViIij7S+VO+zWpT0i
+         YuUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695003737; x=1695608537;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xbCwATLv8gNcfvOQXJJcFSWwGrwys2o1PmeeIperXKI=;
-        b=cLHKXOLNtVmVMMYeCgYs9iOPTExF9CddGfzEPMwr9QHTgmzkXDQ2PEUQJRxiT1WxJG
-         Xc4qMP+8zzvRFl6Ow+Imunk8HTpDH/ldWLbaRcCFH0p9ocS50CegEVngAza9CeT48MEi
-         QwPNRHua8Z0z2KnAP34ErwKX1m7SeVBd5n7REvS7jQh9jMhCR9fGe7sjhvBOx/Jg7mt9
-         cpEX07Hp2K3DC54cVwcudFsuhGpt26n5CqJBRMTLNCCibA4pEmAIeGmvZoWl83E4eTs5
-         9BbLPiYgFS7GbX37Y6gNw/2dyIJIUlWI0Vv/LjBsJWHtDCpknvIGM64nK8GO5fIylAuj
-         QIpg==
-X-Gm-Message-State: AOJu0YzC2yYoOmJ7A8qG3F2Z/PPPp4h9CRRMw0qzoLQ1FRfdxcSCFdzD
-	B8uXtEKBM7e4Y1J75Gv59FOqxcWn9xPlprfsxpflGW+lvAy7IOCY4X0=
-X-Google-Smtp-Source: AGHT+IGndvQ7LsQF/BJq1DiYHOTZDG68jvd3EKkm+6gTTTGy0OeyZsQalx2uCOsRpeA4q/xXJbvNQfzWswis6gk7ReI=
-X-Received: by 2002:a17:907:2c54:b0:9ad:e955:414d with SMTP id
- hf20-20020a1709072c5400b009ade955414dmr4103596ejc.17.1695003736870; Sun, 17
- Sep 2023 19:22:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695008668; x=1695613468;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=tB2hctaWoTmRGY7k8011HIttX7dcKhz+Gg59NXyhp18=;
+        b=DAbIeYylSBBVGkb4Gh3/UCZejO2FuGWYO4l2ncBPaHyQnEEdlW7wDa3iToW7LIw13M
+         O37NNIKrV0B3XnpCAcSFRc1E6hYdU1WIJmyVE4Lt1aMXtE3kug6y3RyK1d2sIpQAxZ/T
+         3/+aAAnWSjdXp9j+sqIbRoITuCmTEeXsgR/ukH3+gCAQtsSzlhWKKt07LmMbUYoa5AgG
+         VxBBha86/pGXN0tM4nE7WnrnPN9I2+G5NVRcAuaV4mv703eex2AcSMhs2c3zLtzhQ/nI
+         xwwIgojj/Sfj+5s1hDxNQLJLjjBCOfGYb+UfjV4khvXXpgGqb4uolKgY43IBei1yrw4r
+         bnMA==
+X-Gm-Message-State: AOJu0YyqbEVG6W/+WtePP9ZdRtiYXPsAhs3GtRNKK3lyYNen7MJE1si1
+	6KmiXE5ZEmldVJvYHYUa8pJjz73aqCTCEwm0
+X-Google-Smtp-Source: AGHT+IEhEFLeRKqt2kykcHwEEMWPzeQ7S0472zmg9YXm8C+Lfm7hWa7qHujJSaeUhbIzjn0diOV8/Q==
+X-Received: by 2002:a17:902:e5ca:b0:1c4:2b71:7dc9 with SMTP id u10-20020a170902e5ca00b001c42b717dc9mr9701366plf.4.1695008668519;
+        Sun, 17 Sep 2023 20:44:28 -0700 (PDT)
+Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
+        by smtp.gmail.com with ESMTPSA id a5-20020a1709027d8500b001bba1475c92sm7248661plm.113.2023.09.17.20.44.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Sep 2023 20:44:27 -0700 (PDT)
+Date: Mon, 18 Sep 2023 12:44:27 +0900 (JST)
+Message-Id: <20230918.124427.463760682115136745.ubuntu@gmail.com>
+To: tmgross@umich.edu
+Cc: andrew@lunn.ch, fujita.tomonori@gmail.com,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH v1 1/4] rust: core abstractions for network PHY
+ drivers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CALNs47sTJmBweLA=ZqqSa2kTQi1gUVzTXOeq=iPCCfLCXvp7jQ@mail.gmail.com>
+References: <CALNs47sRKxnD1NhJZaoorEZ2xyLjAse23RmkacoPuCiD7Enq=g@mail.gmail.com>
+	<140bc6d9-b2a9-43ef-b8b2-66767bc45910@lunn.ch>
+	<CALNs47sTJmBweLA=ZqqSa2kTQi1gUVzTXOeq=iPCCfLCXvp7jQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
- <20230913133609.1668758-2-fujita.tomonori@gmail.com> <ec6d8479-f893-4a3f-bf3e-aa0c81c4adad@lunn.ch>
- <20230917.191708.2174483069021340663.ubuntu@gmail.com> <3fa5407b-c6f4-4e39-a743-812838b94d28@lunn.ch>
- <CALNs47uCFDJ5xz7_3qkjszmmAFXzA=dwB7CM4+sVeVtnSTZAcQ@mail.gmail.com>
- <f55a3e84-3865-432b-b009-c4051f9a3b0b@lunn.ch> <CALNs47sRKxnD1NhJZaoorEZ2xyLjAse23RmkacoPuCiD7Enq=g@mail.gmail.com>
- <140bc6d9-b2a9-43ef-b8b2-66767bc45910@lunn.ch>
-In-Reply-To: <140bc6d9-b2a9-43ef-b8b2-66767bc45910@lunn.ch>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Sun, 17 Sep 2023 22:22:04 -0400
-Message-ID: <CALNs47sTJmBweLA=ZqqSa2kTQi1gUVzTXOeq=iPCCfLCXvp7jQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 1/4] rust: core abstractions for network PHY drivers
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sun, Sep 17, 2023 at 9:18=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
-> I was wrong here. As you noticed, they are currently not const. I just
-> tried to actually make them cost, and it does not work. Embedded in
-> struct phy_driver, is struct mdio_driver_common. That needs to be
-> read/write. We have a bit of history here. Originally in Linux MDIO
-> busses could only support PHY devices. But as things evolved, it
-> became clear other things could be placed on an MDIO bus, such as an
-> Ethernet switch. So we had to do a bit of refactoring, and ended up
-> with this structure. It is probably possible to do some additional
-> refactoring to make struct phy_driver const, but at the moment, i
-> don't plan on doing it.
-
-Thanks for verifying so fast.
-
-> What we do however have in PHY drivers is the table:
->
-> static struct mdio_device_id __maybe_unused asix_tbl[] =3D {
->         { PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A) },
->         { PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772C) },
->         { PHY_ID_ASIX_AX88796B, 0xfffffff0 },
->         { }
-> };
->
-> This could be const, and two C drivers do mark it const, including the
-> realtek driver which is being re-written in Rust. This table is not
-> security relevant, it does not have any function pointers in it, so
-> its not the best example.
->
-> Even if not relevant for PHY drivers, getting const structures into
-> .rodata is something Kees Cook is going to want to have.
->
->         Andrew
-
-I believe that table should live in rodata with the current
-implementation (haven't actually verified). It definitely makes sense
-to put as much as possible there, we can make this work.
-
-Is there always a 1:1:1 phy_driver:phy_id:phy_id_mask relationship? I
-think we may be able to get away with one macro on the Rust side that
-registers both the `mdio_device_id` and the `phy_driver`. This macro
-could also do a compile time check that all devices are ordered
-correctly, if that is a common mistake (as you mentioned in a separate
-thread).
+SGksDQoNCk9uIFN1biwgMTcgU2VwIDIwMjMgMjI6MjI6MDQgLTA0MDANClRyZXZvciBHcm9zcyA8
+dG1ncm9zc0B1bWljaC5lZHU+IHdyb3RlOg0KDQo+IE9uIFN1biwgU2VwIDE3LCAyMDIzIGF0IDk6
+MTjigK9QTSBBbmRyZXcgTHVubiA8YW5kcmV3QGx1bm4uY2g+IHdyb3RlOg0KPj4gSSB3YXMgd3Jv
+bmcgaGVyZS4gQXMgeW91IG5vdGljZWQsIHRoZXkgYXJlIGN1cnJlbnRseSBub3QgY29uc3QuIEkg
+anVzdA0KPj4gdHJpZWQgdG8gYWN0dWFsbHkgbWFrZSB0aGVtIGNvc3QsIGFuZCBpdCBkb2VzIG5v
+dCB3b3JrLiBFbWJlZGRlZCBpbg0KPj4gc3RydWN0IHBoeV9kcml2ZXIsIGlzIHN0cnVjdCBtZGlv
+X2RyaXZlcl9jb21tb24uIFRoYXQgbmVlZHMgdG8gYmUNCj4+IHJlYWQvd3JpdGUuIFdlIGhhdmUg
+YSBiaXQgb2YgaGlzdG9yeSBoZXJlLiBPcmlnaW5hbGx5IGluIExpbnV4IE1ESU8NCj4+IGJ1c3Nl
+cyBjb3VsZCBvbmx5IHN1cHBvcnQgUEhZIGRldmljZXMuIEJ1dCBhcyB0aGluZ3MgZXZvbHZlZCwg
+aXQNCj4+IGJlY2FtZSBjbGVhciBvdGhlciB0aGluZ3MgY291bGQgYmUgcGxhY2VkIG9uIGFuIE1E
+SU8gYnVzLCBzdWNoIGFzIGFuDQo+PiBFdGhlcm5ldCBzd2l0Y2guIFNvIHdlIGhhZCB0byBkbyBh
+IGJpdCBvZiByZWZhY3RvcmluZywgYW5kIGVuZGVkIHVwDQo+PiB3aXRoIHRoaXMgc3RydWN0dXJl
+LiBJdCBpcyBwcm9iYWJseSBwb3NzaWJsZSB0byBkbyBzb21lIGFkZGl0aW9uYWwNCj4+IHJlZmFj
+dG9yaW5nIHRvIG1ha2Ugc3RydWN0IHBoeV9kcml2ZXIgY29uc3QsIGJ1dCBhdCB0aGUgbW9tZW50
+LCBpDQo+PiBkb24ndCBwbGFuIG9uIGRvaW5nIGl0Lg0KPiANCj4gVGhhbmtzIGZvciB2ZXJpZnlp
+bmcgc28gZmFzdC4NCj4gDQo+PiBXaGF0IHdlIGRvIGhvd2V2ZXIgaGF2ZSBpbiBQSFkgZHJpdmVy
+cyBpcyB0aGUgdGFibGU6DQo+Pg0KPj4gc3RhdGljIHN0cnVjdCBtZGlvX2RldmljZV9pZCBfX21h
+eWJlX3VudXNlZCBhc2l4X3RibFtdID0gew0KPj4gICAgICAgICB7IFBIWV9JRF9NQVRDSF9FWEFD
+VChQSFlfSURfQVNJWF9BWDg4NzcyQSkgfSwNCj4+ICAgICAgICAgeyBQSFlfSURfTUFUQ0hfRVhB
+Q1QoUEhZX0lEX0FTSVhfQVg4ODc3MkMpIH0sDQo+PiAgICAgICAgIHsgUEhZX0lEX0FTSVhfQVg4
+ODc5NkIsIDB4ZmZmZmZmZjAgfSwNCj4+ICAgICAgICAgeyB9DQo+PiB9Ow0KPj4NCj4+IFRoaXMg
+Y291bGQgYmUgY29uc3QsIGFuZCB0d28gQyBkcml2ZXJzIGRvIG1hcmsgaXQgY29uc3QsIGluY2x1
+ZGluZyB0aGUNCj4+IHJlYWx0ZWsgZHJpdmVyIHdoaWNoIGlzIGJlaW5nIHJlLXdyaXR0ZW4gaW4g
+UnVzdC4gVGhpcyB0YWJsZSBpcyBub3QNCj4+IHNlY3VyaXR5IHJlbGV2YW50LCBpdCBkb2VzIG5v
+dCBoYXZlIGFueSBmdW5jdGlvbiBwb2ludGVycyBpbiBpdCwgc28NCj4+IGl0cyBub3QgdGhlIGJl
+c3QgZXhhbXBsZS4NCj4+DQo+PiBFdmVuIGlmIG5vdCByZWxldmFudCBmb3IgUEhZIGRyaXZlcnMs
+IGdldHRpbmcgY29uc3Qgc3RydWN0dXJlcyBpbnRvDQo+PiAucm9kYXRhIGlzIHNvbWV0aGluZyBL
+ZWVzIENvb2sgaXMgZ29pbmcgdG8gd2FudCB0byBoYXZlLg0KPj4NCj4+ICAgICAgICAgQW5kcmV3
+DQo+IA0KPiBJIGJlbGlldmUgdGhhdCB0YWJsZSBzaG91bGQgbGl2ZSBpbiByb2RhdGEgd2l0aCB0
+aGUgY3VycmVudA0KPiBpbXBsZW1lbnRhdGlvbiAoaGF2ZW4ndCBhY3R1YWxseSB2ZXJpZmllZCku
+IEl0IGRlZmluaXRlbHkgbWFrZXMgc2Vuc2UNCj4gdG8gcHV0IGFzIG11Y2ggYXMgcG9zc2libGUg
+dGhlcmUsIHdlIGNhbiBtYWtlIHRoaXMgd29yay4NCg0KSXQgaXMgcGxhY2VkIGF0IC5tb2RpbmZv
+IHNlY3Rpb24gYnkgdGhlIG1vZHVsZSB0b29scy4gWW91IGNhbiBmaW5kDQoibWRpbzoiIHN0cmlu
+ZzoNCg0KOn4vZ2l0L3J1c3QtYXNpeC1waHkkIHJlYWRlbGYgLXggLm1vZGluZm8gcnVzdF9heDg4
+Nzk2Yi5rbw0KDQpIZXggZHVtcCBvZiBzZWN0aW9uICcubW9kaW5mbyc6DQogIDB4MDAwMDAwMDAg
+NjE3NTc0NjggNmY3MjNkNTIgNzU3Mzc0MjAgNjY2ZjcyMjAgYXV0aG9yPVJ1c3QgZm9yDQogIDB4
+MDAwMDAwMTAgNGM2OTZlNzUgNzgyMDQzNmYgNmU3NDcyNjkgNjI3NTc0NmYgTGludXggQ29udHJp
+YnV0bw0KICAweDAwMDAwMDIwIDcyNzMwMDY0IDY1NzM2MzcyIDY5NzA3NDY5IDZmNmUzZDUyIHJz
+LmRlc2NyaXB0aW9uPVINCiAgMHgwMDAwMDAzMCA3NTczNzQyMCA0MTczNjk3OCAyMDUwNDg1OSA3
+MzIwNjQ3MiB1c3QgQXNpeCBQSFlzIGRyDQogIDB4MDAwMDAwNDAgNjk3NjY1NzIgMDA2YzY5NjMg
+NjU2ZTczNjUgM2Q0NzUwNGMgaXZlci5saWNlbnNlPUdQTA0KICAweDAwMDAwMDUwIDAwNzY2NTcy
+IDZkNjE2NzY5IDYzM2QzNjJlIDM2MmUzMDJkIC52ZXJtYWdpYz02LjYuMC0NCiAgMHgwMDAwMDA2
+MCA3MjYzMzEyYiAyMDUzNGQ1MCAyMDcwNzI2NSA2NTZkNzA3NCByYzErIFNNUCBwcmVlbXB0DQog
+IDB4MDAwMDAwNzAgMjA2ZDZmNjQgNWY3NTZlNmMgNmY2MTY0MjAgMDA2ZTYxNmQgIG1vZF91bmxv
+YWQgLm5hbQ0KICAweDAwMDAwMDgwIDY1M2Q3Mjc1IDczNzQ1ZjYxIDc4MzgzODM3IDM5MzY2MjAw
+IGU9cnVzdF9heDg4Nzk2Yi4NCiAgMHgwMDAwMDA5MCA2NDY1NzA2NSA2ZTY0NzMzZCAwMDYxNmM2
+OSA2MTczM2Q2ZCBkZXBlbmRzPS5hbGlhcz1tDQogIDB4MDAwMDAwYTAgNjQ2OTZmM2EgMzAzMDMw
+MzAgMzAzMDMwMzAgMzAzMDMxMzEgZGlvOjAwMDAwMDAwMDAxMQ0KICAweDAwMDAwMGIwIDMxMzAz
+MTMxIDMwMzAzMDMxIDMxMzAzMDMwIDMwMzEzMTMwIDEwMTEwMDAxMTAwMDAxMTANCiAgMHgwMDAw
+MDBjMCAzMDMwMzAzMSAwMCAgICAgICAgICAgICAgICAgICAgICAgICAwMDAxLg0KDQoNCj4gSXMg
+dGhlcmUgYWx3YXlzIGEgMToxOjEgcGh5X2RyaXZlcjpwaHlfaWQ6cGh5X2lkX21hc2sgcmVsYXRp
+b25zaGlwPyBJDQo+IHRoaW5rIHdlIG1heSBiZSBhYmxlIHRvIGdldCBhd2F5IHdpdGggb25lIG1h
+Y3JvIG9uIHRoZSBSdXN0IHNpZGUgdGhhdA0KPiByZWdpc3RlcnMgYm90aCB0aGUgYG1kaW9fZGV2
+aWNlX2lkYCBhbmQgdGhlIGBwaHlfZHJpdmVyYC4gVGhpcyBtYWNybw0KPiBjb3VsZCBhbHNvIGRv
+IGEgY29tcGlsZSB0aW1lIGNoZWNrIHRoYXQgYWxsIGRldmljZXMgYXJlIG9yZGVyZWQNCj4gY29y
+cmVjdGx5LCBpZiB0aGF0IGlzIGEgY29tbW9uIG1pc3Rha2UgKGFzIHlvdSBtZW50aW9uZWQgaW4g
+YSBzZXBhcmF0ZQ0KPiB0aHJlYWQpLg0KDQpTZWVtcyBjdXJyZW50bHksIG5vLiBBZnRlciBpbnZl
+c3RpZ2F0aW5nIHRoZSBleGlzdGluZyBQSFkgbW9kdWxlcywgaW4NCm1vc3Qgb2YgdGhlbSAoNDEv
+NTIpLCBvbmUgZHJpdmVyIGhhcyBvbmUgZW50cnkgaW4gbWRpb19kZXZpY2VfaWQuDQo=
