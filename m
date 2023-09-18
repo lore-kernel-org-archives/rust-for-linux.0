@@ -1,64 +1,147 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0E322F15
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 17:08:16 +0000 (UTC)
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BA9B181
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 10:08:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=LqR9M4MKtz+tu+F80PTWTXHnJxo8DbjcMf3OPqGi5Rw=; b=Gsa7KU10KRuwU14ttIifErk/p5
-	5kBvsXc7zUUBGGky8j5z1bbKc2+YB2WHdrr76xUZYMgWZKbZMYi+ptOjTofXeU1O/FwyghG9i0l5R
-	OgQETy0u5lHY79yboiEmqlCaURS4wyr5z9rvi/rqscPcfrqBi9H6SjvPkCVG9MI9e0Do=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qiE40-006nJu-LN; Mon, 18 Sep 2023 15:13:20 +0200
-Date: Mon, 18 Sep 2023 15:13:20 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v1 1/4] rust: core abstractions for network PHY
- drivers
-Message-ID: <0bf24fb6-7b22-4228-ba31-06d43d89e0f3@lunn.ch>
-References: <CALNs47sRKxnD1NhJZaoorEZ2xyLjAse23RmkacoPuCiD7Enq=g@mail.gmail.com>
- <140bc6d9-b2a9-43ef-b8b2-66767bc45910@lunn.ch>
- <CALNs47sTJmBweLA=ZqqSa2kTQi1gUVzTXOeq=iPCCfLCXvp7jQ@mail.gmail.com>
- <20230918.124427.463760682115136745.ubuntu@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77AE21101
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 18:43:18 +0000 (UTC)
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1DB510F
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 11:43:16 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-6563bca1b38so17273826d6.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 11:43:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1695062596; x=1695667396; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kGggz20caFzafUF2A1Vven9jC5oystZUe3kde8zcZIk=;
+        b=UJ/SEvC+s0+IOOpfEqqte5BgzI0WhzEiFo0xQfPJmft7acj9spen6qLOjiN1RLfqP/
+         NbkifY6t6Kb79lJZSxqYLPb9s5W7/MHrdPm2ygkAB/IvHBe/JjTu/rJHAOAsfBqW4lD8
+         dA3xRq1oQP9zMoQXf7PrUj30V6pI6p+Xean6RiFt7gYsa3F0R+ZaBj1t5WwwwdJE20Z5
+         2wlhqwYSXQGne81UesPlktyMugoQwBpzwLXHGvIMyV3aEOQs/ZcDSqJViYtP+A5R63JP
+         0xVDxWx5KFWxNAp6sf+LYAdNfseFdOEcZrqfkMgMyd+d7q/jPncEpIdF0sQUGGCIScqn
+         Ln4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695062596; x=1695667396;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kGggz20caFzafUF2A1Vven9jC5oystZUe3kde8zcZIk=;
+        b=t3oBWTfreK8lBGuuU/Q3Jg5ZwdJkIyWndbIG4zDoOtckXR4PJUaH4iZ2tHXt4GILyL
+         GM8+ZIkxLCpRGfFMpDick+r8/Yi6PYRyBAFkR7nnbK/BChjzCtvXI7qpYQ9urvyYXAN5
+         FqePJoQ9/u7L2nBw+BDCV5/JZBUWWbqhntO4K/DfyD0tIMhlB7Xmlt9vN5Mbn4IDRPpV
+         JSayiJ+6wQaPySGjRQxCx1BcCs7CxNW5Usi9vBDXE1s36C0XANQ5PytXUUiGVtZiYdtW
+         QfikLjPX4WtDo3r9EWuNT5QpAXniWGMm9Am1t+LBQZccKSp2LvW1wDHp7uZ/I5ThLDPq
+         b1cA==
+X-Gm-Message-State: AOJu0YwzjGeCFhpBuaaJHu03g+VfktMGq5UCihHI7eW4VJAKyVZzwOpE
+	nRhC9br/+h4Kr06m+/FlfmBSXCkcxzSwJSxPOpY90Q==
+X-Google-Smtp-Source: AGHT+IHV+FMHOEi1fylsCDFa56Jd5WNqYXUftZ6W7AQ+3/RiLXdRp2eDi4GA/Tl08EGbjP+C7u7pahdCxIZtO1dcdog=
+X-Received: by 2002:a0c:c985:0:b0:658:2f85:29ce with SMTP id
+ b5-20020a0cc985000000b006582f8529cemr2054758qvk.58.1695062595805; Mon, 18 Sep
+ 2023 11:43:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230918.124427.463760682115136745.ubuntu@gmail.com>
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+References: <20230915172900.3784163-1-mmaurer@google.com> <9966E047-44E7-4665-9628-169F3EBE2F06@kloenk.dev>
+ <SLZSYLg5E9OQKI546K87wxTYYLNlT1xM-LhC4W1JFhIate6PFsKq27RcBNhSjUkErYDlzsZB4F2Vc2KOP9tDThg58_tXycWn3K29mQXlFtU=@protonmail.com>
+ <0561303E-2089-43FC-AA31-836C7BB844B7@kloenk.dev> <CAGSQo02p0LWZgV8oVidwvN6X__rv3-rj+ZVg9SaZ5Kx+zYahYQ@mail.gmail.com>
+ <CAKwvOdnUdFjN+aCDrHKP6RzZCFB033ycN_KkB1WKucGd6VzUSg@mail.gmail.com> <CAGSQo00E1Wtg=f9SAcB2na69r4ASJ1L40ASPCyZV9FX+81uJCw@mail.gmail.com>
+In-Reply-To: <CAGSQo00E1Wtg=f9SAcB2na69r4ASJ1L40ASPCyZV9FX+81uJCw@mail.gmail.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Mon, 18 Sep 2023 11:43:04 -0700
+Message-ID: <CAKwvOdnbbStoEeykYnx0jbnR=TAmmcdnOXbbA4Fx0BneFW8Fsg@mail.gmail.com>
+Subject: Re: [PATCH] rust: Respect HOSTCC when linking for host
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Finn Behrens <me@kloenk.dev>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> It is placed at .modinfo section by the module tools. You can find
-> "mdio:" string:
+On Mon, Sep 18, 2023 at 9:38=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
+ wrote:
+>
+> On Mon, Sep 18, 2023 at 8:25=E2=80=AFAM Nick Desaulniers
+> <ndesaulniers@google.com> wrote:
+> >
+> > What happens if you invoke the linker directly?
+> Rust unfortunately currently doesn't support invoking the linker
+> directly: https://github.com/rust-lang/rust/issues/73632
 
-Ah, good point. It probably is not even loaded into memory. It is
-there for depmod, to build the table /lib/modules/*/modules.alias.
+Wait; does Rust have its own linker? It doesn't use the system linker?
+ Perhaps that's necessary for the rust module format? If so, TIL.
 
-> > Is there always a 1:1:1 phy_driver:phy_id:phy_id_mask relationship?
+> > Generally, the kernel either invokes the compiler or the linker
+> > directly. (For assembler, it is typically preprocessed, as are linker
+> > scripts!)  So invoking the linker directly is a common pattern in
+> > kbuild.  It also makes me slightly sad if the rust compiler ends up
+> > invoking a c compiler, even if it's simply to drive the linker.
+> As mentioned earlier, we could pass $HOSTLD, but if the linker isn't
+> named something accurate (e.g. if the linker is not named lld, but is
+> lld), we need to know how to pass a flavor:
+> https://doc.rust-lang.org/rustc/codegen-options/index.html#linker-flavor
+> Would it be appropriate to just assume the linker is named correctly?
 
-No.
+If it were not, what does failure look like?
 
-In theory, one entry could cover a number of PHYs. Each Vendor should
-have one or more OUIs. The ID used here is a mangled version of that
-OUI in the high order bits. So you could in theory just have one entry
-with a mask value for just the OUI and the driver will get loaded for
-all the vendors PHYs. But that is not very flexible, why keep to
-register compatibility when you can change everything and write a new
-driver. At least some vendors seem to think that way :-(
+command not found: asdfadfasdf
 
-	Andrew
+Seems fine to me. If the user mis-specifies HOSTLD=3D, then they will
+get a similar error, which should be prescriptive enough for them to
+figure out how exactly they're "holding it wrong."
+
+> > For example, Android carries a downstream patch to set `-fuse-ld=3Dlld`
+> > for $KBUILD_HOSTCFLAGS, because its build environment doesn't contain
+> > GNU binutils ("guilty, officer").
+> Oddly, the Android kernel environment (Kleaf) is the one that I needed
+> this patch to build in, but it seemed to be working without a manual
+> KBUILD_HOSTCFLAGS forwarding.
+
+Surprising that worked.
+
+> Overall, it sounds like you'd prefer if I set this to use
+> `KBUILD_HOSTLD` and `KBUILD_HOSTLDFLAGS`, and leave the linker flavor
+> to autodetect?
+
+Yes for the first two.
+
+Dunno, what precisely is a linker flavor?  Is that like a flavor of ice cre=
+am?
+Oh, right looking at your link:
+https://doc.rust-lang.org/rustc/codegen-options/index.html#linker-flavor
+Seems like if `LLVM=3D1` is set, or `LD=3Dld.lld`, or CONFIG_LD_IS_LLD, the=
+n
+the flavor should be set to ld.lld, else ld.  Then the
+KBUILD_HOSTLDFLAGS need to be passed, probably.
+
+But how are there "linker flavors" like ld or ld.lld if you just said
+"Rust unfortunately currently doesn't support invoking the linker
+directly: https://github.com/rust-lang/rust/issues/73632".  I'm having
+trouble reconciling the two.
+
+Can we do something more like the below?
+
+ifdef CONFIG_LD_IS_LLD
+hostrust_flags +=3D -C linker-flavor=3Dld.lld
+else
+hostrust_flags +=3D -C linker-flavor=3Dld
+endif
+hostrust_flags +=3D -C linker=3D$(HOSTLD) <todo: figure out how to pass
+KBUILD_HOSTLDFLAGS>
+--=20
+Thanks,
+~Nick Desaulniers
