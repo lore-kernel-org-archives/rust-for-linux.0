@@ -1,156 +1,235 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06ECD21113
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 16:09:09 +0000 (UTC)
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D782526E
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 09:08:33 -0700 (PDT)
-Received: by mail-io1-xd34.google.com with SMTP id ca18e2360f4ac-760dff4b701so58756339f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 09:08:33 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D421D697
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 16:38:36 +0000 (UTC)
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FD503A9C
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 09:38:34 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-53074ee0c2aso17058a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 09:38:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695053313; x=1695658113; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6qzZ2KUnsPeMuNFJGdUYCcuxFBHl3Xe4VgrRDfjLFuc=;
-        b=elsCAuktgTA4MV3rycHpWa2pGSOj8aYXkZrZs1rnc7pCDjQuQ7IkkldkfVaOZ7Ssn7
-         J+YFDizslIlB1TzOzlwnDyUP4D5mRmcKp6h1DwfzdjD9VB2JHfAuiBopvoyOHvn5s9My
-         FTuzOA+S+rdK3BhccMoauw5DSHbH0L28/bIiFJR5OVZI9XHzSio3P8PvtrOVqZjA4Y8r
-         0zzzJIAljiWQnQ4uiJJsJFd+EZddeKhh/vhw1/ILhJKUvZjKjg+ixSfD4wcqBphuWDRH
-         R/c8WHRs3IMcZP3j266UWlwGKV9CnVv0A4rebYlSdqjtr0mA2aZMDHIE8MsRprAxrOG+
-         R8rA==
+        d=google.com; s=20230601; t=1695055113; x=1695659913; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u3SM+9HHyctg6dKNxTmfV4NWzrd21mc1tYe06HY4Uio=;
+        b=2PqZkzd9k7yBu34EVfNCf8J6+6m/vsWIg4rJL7U3M9ow79SIAsFITTQXWMjXHbRIYA
+         LgdfxIAQQ4Ci1bQPYWbFYeDacaQNXgV2+kqwZTC7d1qCvQQbJPd2xAi1PzvoaJOLTFAO
+         vRqsonoxnMFxWfXPE7uvJ5fOPRAtOKkxZLN4rMeUBZ4OA9Mt4ryiJRL3RS4PfMxxkNaR
+         1HQMokVsnjPzJQtJOgQt/6EBIIIZmhLOsR1y4dOLr7kWhzFWkP9/EUmkOEv6shzrYIYh
+         mzDzGrmtK3rDN1l4usNiDS/I0dMJ1Hjc6+XjNMxJueKGgRbhWucVN//rP0b9YnsWkMye
+         B1EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695053313; x=1695658113;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6qzZ2KUnsPeMuNFJGdUYCcuxFBHl3Xe4VgrRDfjLFuc=;
-        b=nxFjgGVhjWn61fteJX/sGPZJbz+Qru+4mps0nmL50HFfsTRPmybImkEhOT6ylKLGzt
-         14UivxzokRYVxpSM7U43GLQ1hk2jzaIu2dj0VOjiApJscDT1aAtQ7mDXp5eF9KFdswHs
-         AR6Vs9lxKrhp8TsvQ1+l1xv23QCKwpqeBsmN3bJm6irOpkjfGPqqCcbh1fyUUZGZUYik
-         28UfXLcr1aZrN++xEkMrm4bPPt0lPAiHCpbFaWA/pZY8CPnffJFZ4huKYtujIInhctGE
-         9EH2Ao42p6jgY27+QiyGcGzM4hSwjk5na/scuBBIsCKK296u7w7AKFlHSFM0DutahCt1
-         /PIA==
-X-Gm-Message-State: AOJu0YxRQpavSQhrlcDXnevwZ8MIyt5f4iU3/ZhzB0j9bYJ8ANx80MXq
-	n1A46FB2rtx/4LbvRghnttTDTNM0QWh2ac0E
-X-Google-Smtp-Source: AGHT+IE3NngnUHmh5/3DtrGxQ8an/8kUJf8nYwhn+0T5HoyP2krL21GBODFnaUTcF/07pf5Bsgjcwg==
-X-Received: by 2002:a17:902:f68f:b0:1c0:bf60:ba4f with SMTP id l15-20020a170902f68f00b001c0bf60ba4fmr11138365plg.4.1695042547063;
-        Mon, 18 Sep 2023 06:09:07 -0700 (PDT)
-Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id m1-20020a170902db0100b001b03f208323sm8251377plx.64.2023.09.18.06.09.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Sep 2023 06:09:06 -0700 (PDT)
-Date: Mon, 18 Sep 2023 22:09:05 +0900 (JST)
-Message-Id: <20230918.220905.1497497848303760774.ubuntu@gmail.com>
-To: benno.lossin@proton.me
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
- andrew@lunn.ch
-Subject: Re: [RFC PATCH v1 1/4] rust: core abstractions for network PHY
- drivers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <532b57ad-6d35-f0ee-1433-b9b63a91fdd5@proton.me>
-References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
-	<20230913133609.1668758-2-fujita.tomonori@gmail.com>
-	<532b57ad-6d35-f0ee-1433-b9b63a91fdd5@proton.me>
+        d=1e100.net; s=20230601; t=1695055113; x=1695659913;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u3SM+9HHyctg6dKNxTmfV4NWzrd21mc1tYe06HY4Uio=;
+        b=a0tAiGbXGvbOu1/pUjc43A+ap7K6Ra4VuGgQi2XLvhdjnzZrQoi9TwGY8WHxIYN+Az
+         paShDVF+QdQ5zYKVaCeHBUJrpbTFdm9egAvM4i3UXWP983rXi0eSgfW9SZHoYR4YAhro
+         K+9fv92qkUQmRh4BP94UXcryAEjIhy5s91Eo6/r4mSTqdMy9bfISnQThIXRb7/kFtnwA
+         TCFqlT1igL06PfaJDmIzvg1RRfn2LnaXAoFlY8Z3gEmpvjY7Te93DIp7idAYB2HUZ/0+
+         sZ4aNe1O14/U/tSlGB7ZITIGLZ5Uw6OMCkmp9VhfQ3jTSXR8ZCzmjP/ymqVmb8567Xoe
+         1s8g==
+X-Gm-Message-State: AOJu0YxNyWpr35fKR0pWLF/Wgc3qxUzvrrLR+KvElt8vAUjpJiZ7pot4
+	hEunYz1MHPOH8eL7CqFns3lZIi2M8q0q+8lVYE/pKw==
+X-Google-Smtp-Source: AGHT+IHoLERiM3cMevc6mq/BS8ZB7t5xuKPbZa6EUFkApsAcotBY6AOUXKnzZeo1Kdr1U6VYWmeaT73kPqlHXyf8HiA=
+X-Received: by 2002:a50:8d19:0:b0:523:b133:57fe with SMTP id
+ s25-20020a508d19000000b00523b13357femr160405eds.1.1695055112581; Mon, 18 Sep
+ 2023 09:38:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+MIME-Version: 1.0
+References: <20230915172900.3784163-1-mmaurer@google.com> <9966E047-44E7-4665-9628-169F3EBE2F06@kloenk.dev>
+ <SLZSYLg5E9OQKI546K87wxTYYLNlT1xM-LhC4W1JFhIate6PFsKq27RcBNhSjUkErYDlzsZB4F2Vc2KOP9tDThg58_tXycWn3K29mQXlFtU=@protonmail.com>
+ <0561303E-2089-43FC-AA31-836C7BB844B7@kloenk.dev> <CAGSQo02p0LWZgV8oVidwvN6X__rv3-rj+ZVg9SaZ5Kx+zYahYQ@mail.gmail.com>
+ <CAKwvOdnUdFjN+aCDrHKP6RzZCFB033ycN_KkB1WKucGd6VzUSg@mail.gmail.com>
+In-Reply-To: <CAKwvOdnUdFjN+aCDrHKP6RzZCFB033ycN_KkB1WKucGd6VzUSg@mail.gmail.com>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Mon, 18 Sep 2023 09:38:19 -0700
+Message-ID: <CAGSQo00E1Wtg=f9SAcB2na69r4ASJ1L40ASPCyZV9FX+81uJCw@mail.gmail.com>
+Subject: Re: [PATCH] rust: Respect HOSTCC when linking for host
+To: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Finn Behrens <me@kloenk.dev>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-Hi,
-
-On Mon, 18 Sep 2023 10:22:22 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
-
->  > +/// PHY is internal.
->  > +pub const PHY_IS_INTERNAL: u32 = 0x00000001;
->  > +/// PHY needs to be reset after the refclk is enabled.
->  > +pub const PHY_RST_AFTER_CLK_EN: u32 = 0x00000002;
->  > +/// Polling is used to detect PHY status changes.
->  > +pub const PHY_POLL_CABLE_TEST: u32 = 0x00000004;
->  > +/// Don't suspend.
->  > +pub const PHY_ALWAYS_CALL_SUSPEND: u32 = 0x00000008;
-> 
-> I think we should create a macro for creating flags, it should create a 
-> newtype and
-> work similar to an enum declaration. On the newtype it should implement 
-> the `Or` trait
-> for allowing `PHY_IS_INTERNAL | PHY_RST_AFTER_CLK_EN`.
-
-You are thinking about something like:
-https://crates.io/crates/enumflags2
-
-?
-
->  > +/// Registration structure for a PHY driver.
->  > +///
->  > +/// `Registration` can keep multiple `phy_drivers` object because
->  > +/// commonly one module implements multiple PHYs drivers.
->  > +pub struct Registration<const N: usize> {
->  > +    module: &'static crate::ThisModule,
->  > +    drivers: [Option<Box<bindings::phy_driver>>; N],
-> 
-> Why is this not a vector? You have to allocate in `register` anyways.
-> You could also use `Vec::try_with_capacity(N)` to initialize the vector with
-> capacity for N elements.
-
-I thought that this is simpler. What are advantages of Vec over this?
-
-
->  > +impl<const N: usize> Registration<{ N }> {
->  > +    /// Creates a new `Registration` instance.
->  > +    pub fn new(module: &'static crate::ThisModule) -> Self {
->  > +        const NONE: Option<Box<bindings::phy_driver>> = None;
->  > +        Registration {
->  > +            module,
->  > +            drivers: [NONE; N],
->  > +        }
->  > +    }
->  > +
->  > +    /// Registers a PHY driver.
->  > +    pub fn register<T: Driver>(&mut self, adapter: &Adapter<T>) -> 
-> Result {
-> 
-> The way this function is used in the driver makes me think that the 
-> `Adapter`
-> type does not have to be public. So I would suggest to change the 
-> signature to
-> `pub fn register<T: Driver>(&mut self, name: &'static CStr) -> Result`.
-
-Ah, right. I'll in the next round.
-
-> 
->  > +        for i in 0..N {
->  > +            if self.drivers[i].is_none() {
->  > +                let mut drv = Box::try_new(adapter.driver())?;
->  > +                // SAFETY: Just an FFI call.
->  > +                let ret = unsafe { 
-> bindings::phy_driver_register(drv.as_mut(), self.module.0) };
-> 
-> This call exposes the driver to the C side and thus it is able to be 
-> modified at any time,
-> which means that in Rust it should be put into an `UnsafeCell`, better 
-> even in this case it
-> should just be `Opaque`, so the `drivers` fields should be of type
-> `[Option<Box<Opaque<bindings::phy_driver>>>]`.
-
-Understood.
-
-> It would also be a good idea to pin it, since the C side will rely on 
-> the pointee not moving
-> and it will prevent accidentally moving it.
-
-The above drv is touched by only this file. What possible cases where
-it would be moved?
-
+On Mon, Sep 18, 2023 at 8:25=E2=80=AFAM Nick Desaulniers
+<ndesaulniers@google.com> wrote:
+>
+> On Sat, Sep 16, 2023 at 12:54=E2=80=AFPM Matthew Maurer <mmaurer@google.c=
+om> wrote:
+> >
+> > On Sat, Sep 16, 2023 at 11:07=E2=80=AFAM Finn Behrens <me@kloenk.dev> w=
+rote:
+> > >
+> > >
+> > >
+> > > On 16 Sep 2023, at 19:53, Bj=C3=B6rn Roy Baron wrote:
+> > >
+> > > > On Saturday, September 16th, 2023 at 18:52, Finn Behrens <me@kloenk=
+.dev> wrote:
+> > > >
+> > > >>
+> > > >> On 15 Sep 2023, at 19:28, Matthew Maurer wrote:
+> > > >>
+> > > >>> Currently, rustc defaults to invoking `cc`, even if `HOSTCC` is d=
+efined,
+> > > >>> resulting in build failures in hermetic environments where `cc` d=
+oes not
+> > > >>> exist. This includes both hostprogs and proc-macros.
+> > > >>>
+> > > >>> Since we are setting the linker to `HOSTCC`, we set the linker fl=
+avor to
+> > > >>> `gcc` explicitly.
+> > > >> But as `HOSTCC` could also be clang, the linker flavor would then =
+be wrong, would that create a problem?
+> > > >
+> > > > Rustc uses the gcc linker flavor for clang too. There has been a pr=
+oposal to split it up, but I'm not sure of the status of that. In any case =
+clang's cli is similar enough to gcc that it works fine to use the gcc link=
+er flavor.
+> > > >
+> > > In that case this looks very reasonable.
+> > >
+> > > Second thing I noticed is that `HOSTCC` could be the wrong variable, =
+and `HOSTLD` would make more sense as we look for the linker and not the ge=
+neral C compiler.
+> > >
+> > Yes, thanks Bjorn - "gcc" is the linker flavor used for "Use the C
+> > compiler as a linker".
+> >
+> > With regards to HOSTLD, I was trying to make the minimum possible
+> > change. Currently, it is using the command `cc` as a linker, so this
+> > would preserve existing behavior when HOSTCC is unset.
+>
+> Hey! Isn't HOSTCC always set? Top level Makefile lines 442-445?
+Yes, you're correct. What I was trying to express was that this keeps
+the build process the same as when `cc=3DHOSTCC` today, which while not
+required is frequently true.
+>
+> What happens if you invoke the linker directly?
+Rust unfortunately currently doesn't support invoking the linker
+directly: https://github.com/rust-lang/rust/issues/73632
+We work around this for kernel level code by manually providing
+expected symbols/stubs normally injected by rustc during linking
+because it is critical to use the kernel linking infrastructure there,
+but this doesn't seem as important on host unless I've missed
+something. While we could do that, it would add nontrivial complexity
+for minimal gain.
+A nontrivial chunk of rust/Makefile is currently spent working around
+this lack of support for non-rustc-managed link stages.
+>
+> Generally, the kernel either invokes the compiler or the linker
+> directly. (For assembler, it is typically preprocessed, as are linker
+> scripts!)  So invoking the linker directly is a common pattern in
+> kbuild.  It also makes me slightly sad if the rust compiler ends up
+> invoking a c compiler, even if it's simply to drive the linker.
+As mentioned earlier, we could pass $HOSTLD, but if the linker isn't
+named something accurate (e.g. if the linker is not named lld, but is
+lld), we need to know how to pass a flavor:
+https://doc.rust-lang.org/rustc/codegen-options/index.html#linker-flavor
+Would it be appropriate to just assume the linker is named correctly?
+>
+> I'm concerned that while this might invoke $HOSTCC, it probably won't
+> do so with any of the $KBUILD_HOSTCFLAGS set.  That's generally been a
+> problem in the past.
+This would not work correctly with my patch. Once we decide which of
+the two linkage strategies we want (using $HOSTCC or $HOSTLD) I'll
+send a new patch that forwards the flags along.
+>
+> For example, Android carries a downstream patch to set `-fuse-ld=3Dlld`
+> for $KBUILD_HOSTCFLAGS, because its build environment doesn't contain
+> GNU binutils ("guilty, officer").
+Oddly, the Android kernel environment (Kleaf) is the one that I needed
+this patch to build in, but it seemed to be working without a manual
+KBUILD_HOSTCFLAGS forwarding.
+>
+> So if you set `rustc` to use `clang` as the linker, how do you
+> guarantee that `-fuse-ld=3Dlld` or any of the upstream
+> $KBUILD_HOSTCFLAGS get used?
+>
+> Android also sets `--sysroot` for the $KBUILD_HOSTCFLAGS to guarantee
+> that the UAPI header tests can be built against bionic (Android's
+> libc).
+>
+> Or is that handled elsewhere in rust/Makefile already?
+>
+> Also, if this is your first kernel patch, nice job! Welcome!
+>
+Overall, it sounds like you'd prefer if I set this to use
+`KBUILD_HOSTLD` and `KBUILD_HOSTLDFLAGS`, and leave the linker flavor
+to autodetect?
+> >
+> > If we would prefer `HOSTLD` instead we can do that, but we would need
+> > to additionally inspect `LLVM` to set the linker flavor accordingly
+> > (e.g. set ld vs ld.lld).
+> >
+> > Do folks have strong opinions between these? My primary concern is to
+> > avoid calling programs by foo when their HOSTFOO variable is set.
+> >
+> > See https://doc.rust-lang.org/rustc/codegen-options/index.html#linker-f=
+lavor
+> > for details on linker flavor settings.
+> > > >>>
+> > > >>> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> > > >>> ---
+> > > >>>  rust/Makefile         | 1 +
+> > > >>>  scripts/Makefile.host | 1 +
+> > > >>>  2 files changed, 2 insertions(+)
+> > > >>>
+> > > >>> diff --git a/rust/Makefile b/rust/Makefile
+> > > >>> index 87958e864be0..2a2352638f11 100644
+> > > >>> --- a/rust/Makefile
+> > > >>> +++ b/rust/Makefile
+> > > >>> @@ -383,6 +383,7 @@ $(obj)/exports_kernel_generated.h: $(obj)/ker=
+nel.o FORCE
+> > > >>>  quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET) P $@
+> > > >>>        cmd_rustc_procmacro =3D \
+> > > >>>     $(RUSTC_OR_CLIPPY) $(rust_common_flags) \
+> > > >>> +           -C linker-flavor=3Dgcc -C linker=3D$(HOSTCC) \
+> > > >>>             --emit=3Ddep-info=3D$(depfile) --emit=3Dlink=3D$@ --e=
+xtern proc_macro \
+> > > >>>             --crate-type proc-macro \
+> > > >>>             --crate-name $(patsubst lib%.so,%,$(notdir $@)) $<
+> > > >>> diff --git a/scripts/Makefile.host b/scripts/Makefile.host
+> > > >>> index 8f7f842b54f9..0aa95a3af1c4 100644
+> > > >>> --- a/scripts/Makefile.host
+> > > >>> +++ b/scripts/Makefile.host
+> > > >>> @@ -91,6 +91,7 @@ hostcxx_flags  =3D -Wp,-MMD,$(depfile) \
+> > > >>>  # current working directory, which may be not accessible in the =
+out-of-tree
+> > > >>>  # modules case.
+> > > >>>  hostrust_flags =3D --out-dir $(dir $@) --emit=3Ddep-info=3D$(dep=
+file) \
+> > > >>> +            -C linker-flavor=3Dgcc -C linker=3D$(HOSTCC) \
+> > > >>>                   $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) =
+\
+> > > >>>                   $(HOSTRUSTFLAGS_$(target-stem))
+> > > >>>
+> > > >>> --
+> > > >>> 2.42.0.459.ge4e396fd5e-goog
+>
+>
+>
+> --
+> Thanks,
+> ~Nick Desaulniers
