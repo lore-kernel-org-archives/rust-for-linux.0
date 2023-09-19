@@ -1,87 +1,78 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49BE1847F
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 11:43:02 +0000 (UTC)
-Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 407B5BA
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 04:43:00 -0700 (PDT)
-Received: by mail-ej1-x64a.google.com with SMTP id a640c23a62f3a-94a34a0b75eso370752466b.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 04:43:00 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731FB848A
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 12:06:34 +0000 (UTC)
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 145CEE3
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 05:06:33 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-d81b42a3108so4529757276.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 05:06:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695123778; x=1695728578; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VORsIBA6ERRbmXg4ay2hLf4pQdtqXphfyyZQk55vs4k=;
-        b=rfDfqe4PSe/mOmjg4Caf2BppgxFb/tZMc/w1J1lqV/8s3H+cA9asu8YydNCKJ4Zdw6
-         gmLKcVqrJ9h96JopiIV15u8I/HmS5KCD0GMIzrZXkDiCInrN7B39IjIKOrTEkmX9D5os
-         YwliKF3vbohJrRU4JnytcL6UAuqqXCtbg29Dw2XOXxOmydWDjg8vT8b/grF1/R8cir70
-         j0biUsZt4pgQs9Q9lnwsJN5GXFwD9e5YZgg/huMp9fTJ8Nsqm9vfigeEeywDCdtiOfUx
-         pf4ZIFaEUYerMtjHh/8mURxFUUiCBlsAmX7ZC7/+Dyhru5mEIiq7V3g4OmcYuezRF4/p
-         6LsA==
+        d=gmail.com; s=20230601; t=1695125192; x=1695729992; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h65czTxpNEmu5kyl6PEroyAkCNYy2JW1nTGKHVJXDIQ=;
+        b=RrUmfmmvwylJ65Sgng7P0FPR1yp3zmwCcSLRXN8A5iWQ2aSaIMF3LaaGmsVdJpzsjL
+         ivITenata1ht9fsUT3LLO6NsTP1f9FS3wFYR7X7HhxcrRaifEZ8n5ObFRq8Th+dtt9zp
+         al6724qW8Z92nQCM2GLGvFpKVHzMohFwfyfmZ2bKwgNbikgProBqXQsdWpZBrOYMAhrn
+         RgrB64npsUXMmm1vuqMofryDK82p94hra1DKtcRlaBsRE93OphdaeGusyvBc8vjdSUvT
+         DOSFGuP195D0dtEmnQVN/p4+zzNNpo1cvwQ35Yq3zmuwQs9z90WsBnmicPqXJJVSAFx/
+         4m5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695123778; x=1695728578;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VORsIBA6ERRbmXg4ay2hLf4pQdtqXphfyyZQk55vs4k=;
-        b=ippDoF+rZsosvfqakdIwnKuO5F0LNfO1eNpa9znuL2q7FXu+Wq1Xv/VDqqJUMjBTrg
-         0wVVB5kwuS6VFBqMWnnuGuMNF4/O1UWtAmbncRGSkEp0b8H6verwWcESFPpDlM1A6+rY
-         QyqCq4ELWJVskzMVPmathpFPS/Mu3W8KyGNRDP6DJ5Ko00BLuHl30GlKPXvuOpaeb5WM
-         lKh6hoTw/uVmBs9qEsO9vMkkBl6VVH5wII+uNhPTHiIZJ7Q35XKcdrMcxiPos5PQzmwl
-         4A1y/acgGf4ABvpOkIv4vderP4l9r7F9Zb2qJJYyay3u3B8BazDn/U7vAtFIFi1C/whh
-         LEDA==
-X-Gm-Message-State: AOJu0Yx254/FH1Ecj1N7mbs64dx1xOus6e1e/7TTruZKA2vCOoa2vZhl
-	eoBlBfsqbVt0pdF5sBMHNlbJjTq/LyijBAY=
-X-Google-Smtp-Source: AGHT+IEm+YxUcPeYB6Kt0dFMWqeKuHXC1RLS5dyaoZp1XOTdcVigyiCFLfUEyWumENUYPxJA5D9W21fVdaOc8/c=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:31:98fb:c0a8:6c8])
- (user=aliceryhl job=sendgmr) by 2002:a17:907:1595:b0:9a6:6c56:c3df with SMTP
- id cf21-20020a170907159500b009a66c56c3dfmr77664ejc.6.1695123778692; Tue, 19
- Sep 2023 04:42:58 -0700 (PDT)
-Date: Tue, 19 Sep 2023 11:42:56 +0000
-In-Reply-To: <20230906204857.85619-1-manmshuk@gmail.com>
+        d=1e100.net; s=20230601; t=1695125192; x=1695729992;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h65czTxpNEmu5kyl6PEroyAkCNYy2JW1nTGKHVJXDIQ=;
+        b=Wc06FTaQiWvwQos30fl1zz9DF5Yn1rInlOX5D6vO6200PAyMrFQ/9upQmRrI72X2N+
+         m0ML+79yagRt2rP7eY8/QLc8363gSfMO6WuyC/Cvpzuowe9cQSA7o63v+MR/c+5dv6oX
+         wVkuzFvm5OEsLkRvKfh1nEuDvH9EgmtMKxT9cqluwEynYdVAOBhY4DV/WhbpQKCgc2qr
+         MUqD1RdqFTU8uNz+p9/S1629fF48BuoNGIEdoo8grK52KuY+YTyuGq9y84kQsJmjzQLy
+         qL3g//xqDZkAEgYB5zvcY10yd87g/QRiG7z5njv3kTJ6yJVJyG5BsFSaNRBmi52XFGTe
+         kAgA==
+X-Gm-Message-State: AOJu0YxNO02D6QDidymHt/MG/L/mqmU/EQcwaMNcBpMpRZ8tr8YGVz0b
+	AjFWFEuOAvMpT9aojP6LrQ0bEKeqVvQ+JBL2f8A=
+X-Google-Smtp-Source: AGHT+IF7Ra3XvUftsRez/uh0gQ/vt4MM/BgeivNgYGaqX9zCn9uQ7vhATjk77gFwWqZya6ep0lSwfGANDNUjwlQ1Fys=
+X-Received: by 2002:a25:d8c6:0:b0:d71:68e4:6db8 with SMTP id
+ p189-20020a25d8c6000000b00d7168e46db8mr10880369ybg.34.1695125192228; Tue, 19
+ Sep 2023 05:06:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20230906204857.85619-1-manmshuk@gmail.com>
-X-Mailer: git-send-email 2.42.0.459.ge4e396fd5e-goog
-Message-ID: <20230919114256.333055-1-aliceryhl@google.com>
-Subject: Re: [PATCH] rust: error: Markdown style nit
-From: Alice Ryhl <aliceryhl@google.com>
-To: manmshuk@gmail.com
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
+ <20230913133609.1668758-4-fujita.tomonori@gmail.com> <dd12e8b8-16a0-4cc2-8b0c-78386ce2dabc@lunn.ch>
+ <20230917.213248.712797486250583805.ubuntu@gmail.com>
+In-Reply-To: <20230917.213248.712797486250583805.ubuntu@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 19 Sep 2023 14:06:21 +0200
+Message-ID: <CANiq72nBoj=skGOpp0LbARDo1U-ev-GWZad=hq3iVBsQBuwA-w@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 3/4] MAINTAINERS: add Rust PHY abstractions file to
+ the ETHERNET PHY LIBRARY
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: andrew@lunn.ch, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-> This patch fixes a trivial markdown style nit in the `SAFETY` comment.
-> 
-> Signed-off-by: Manmohan Shukla <manmshuk@gmail.com>
-> ---
->  rust/kernel/error.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 05fcab6abfe6..6233021daa8a 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -133,7 +133,7 @@ pub fn to_errno(self) -> core::ffi::c_int {
->      /// Returns the error encoded as a pointer.
->      #[allow(dead_code)]
->      pub(crate) fn to_ptr<T>(self) -> *mut T {
-> -        // SAFETY: self.0 is a valid error due to its invariant.
-> +        // SAFETY: `self.0` is a valid error due to its invariant.
->          unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
->      }
->  
-> -- 
-> 2.34.1
- 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+On Sun, Sep 17, 2023 at 2:32=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> Miguel, any concerns to put Rust files not under rust/ directory?
 
+If it needs to be part of the `kernel` crate, then the file needs to
+remain in `rust/kernel` for the time being. The plan is to relax this
+restriction in the future and move the files to their respective
+places.
+
+Cheers,
+Miguel
