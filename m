@@ -1,56 +1,57 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45087848E
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 06:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5157B6FB8
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 06:24:47 +0000 (UTC)
 Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB327100
-	for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 23:16:46 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-578bb70ad89so12873a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 23:16:46 -0700 (PDT)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2FC8102
+	for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 23:24:45 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-56f8334f15eso403921a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 18 Sep 2023 23:24:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695104206; x=1695709006; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1695104685; x=1695709485; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=D4afx13xCm8EMlrRLzFkqhqCBQYw8nwI4TlBUg0fa4A=;
-        b=gEMe7Gn2IoHQMNYg/fWH/TK161LdAQ6cY/YWG3Vis4t5BNgHX6lUqTOAaIPUb7IonO
-         IgVWNVgE2dfzgp+wgKDv4l7VOmVu6X3D4eudarh4tUJxQgWF9Mmp3FmRaexYLiWuZLLS
-         NG7Keyb2unWr1MrbwrsUCTvzEROZ/qYSnfmStIYOCc2SWJLzAfF3qSvDFuR6bAADriQm
-         /kcL7WsHC3ra3TzSOQii/cLEKA6fbUG+yEEvNamF2rDwSj4KgYwU2ISPSu0jqqlsvRC8
-         3vqAtZnub+n4v7e48dYPUZLbh877C/Kdp+JwTIdGufvpudYLQaNkB+FCTaVaDxFkTyfb
-         sE3w==
+        bh=ncz/H/t/o7ROvGeNO0dTGrweBMMwHbEC5jeau+oSfJg=;
+        b=cWMOftPLy/fNhGFNPJMDVkXSOPzI0WXMyBAXw7uj4omTZPEW8RAZGihGKXxyiPezE4
+         yXPoFxvlXLeIr/HzY0Y95KOcfzW0+y9AsPrmkDgv9qitscrHVWmD8fx4dIou6b6Jxl4u
+         oPSBkzP4yLtkNH5N3dsOiyhjHEufJgVkkplJOuD8FHCMHvPSnY0m/ClmaLEWvClQBTiw
+         1w8idZnnFCTm2n8cI5Ho1VQHnoK1+B14VrTMiatmxkU3zf7687nHsbAja8gsNCKXWX7p
+         QI75cFpjwu/1e9YW7Oie1yRcfeGcqWdJONhs861pUvHDs7AKvnhg5Kf2jZykKsPWVaz5
+         uyQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695104206; x=1695709006;
+        d=1e100.net; s=20230601; t=1695104685; x=1695709485;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=D4afx13xCm8EMlrRLzFkqhqCBQYw8nwI4TlBUg0fa4A=;
-        b=w5p+n+3SKUxxsSiUCXUh0K9+fJVWF9hPpVm9chyK2mUfBYZB4L5jn0fWs0JVqQ7yBa
-         NwNwxjBIPTBgLO2X6lttFQpeE+9rs3/9UiNJKUrrl1Htf6l2GxdtkJ+WOKUo7B8WQOkM
-         7Bw2qgibXPsMHxX133ApdeIV7KKyVduc3JaJUNdoTJnHn/h41StwUPF6LDzwCk0JjxuF
-         1F+x60t8UhiuHvr+qBDzI7UuhsmwDOMePz9VThBgTKElETE35YHHuMWNO3SBgykAwyyC
-         K4voSBft80Dk1zrtRLOzuygETiehjdxDdkf16zYw7TdqcgTDfWqCAr41ZRhQjUPxs2pA
-         K3MA==
-X-Gm-Message-State: AOJu0YxXI3YFSACgmMTg+e+atgrdW6B1eT/lR4dD1THe97d4SEeHze57
-	gfgF/lICs31vPxxVk6Rb9k2lCuOa9UQjOXMg
-X-Google-Smtp-Source: AGHT+IGfFVacXacx2IGmLYTwWtDnLZnqNYoNf0L3Izvk2eEoCX5R81tS1LIHCN1HdhUvuTXXKOc8xA==
-X-Received: by 2002:a17:902:d509:b0:1c2:c60:8387 with SMTP id b9-20020a170902d50900b001c20c608387mr12723592plg.0.1695104206281;
-        Mon, 18 Sep 2023 23:16:46 -0700 (PDT)
+        bh=ncz/H/t/o7ROvGeNO0dTGrweBMMwHbEC5jeau+oSfJg=;
+        b=kqQuLz2abqkDKZb8Cop4lC44kaY8xpS/ls7zg3hnBL/3SuFW258SQwbwQDRAr8jmtd
+         uck/4GwbL4n771c1zPXA3BWFfwAYPXgpDVueWqwWS/vCmbNoHN8BNr92B2JU192pzApY
+         /pahC7ijOnHIvnKpMalVo+VO3AOmkvUDljz7ahIOFsTKjm3TKNA9QK4nYSiDpT6LTbRl
+         wQKjaF4ptus8rGDsW+u4KEM/mYlVFF0eEb736ZNjdm+FNaWRT2IVDLPh8eHO+88sJrAO
+         J20MhaPp7EttBKnI5Kx7DInRRDWwRtVL+eMC9FpYBvnJ6MIvB6h1JfUyR0uQVegyoyds
+         feFA==
+X-Gm-Message-State: AOJu0Yzs5IudyxVbSAa9gcdFU79r5G+GnK9cxl3JGMcw0Qv2hCJ/tPxw
+	OxhAPmUwPfdYmJZ4TqZQ40f6CAtoS4x87qlY
+X-Google-Smtp-Source: AGHT+IEd78ZX2E5P2TwiyGHydCRs6vCEiJDbNwjIxZGBdpvtS4zj5QvBVxFeWQ63GW1eiGISPJ47nw==
+X-Received: by 2002:a17:903:32cd:b0:1c3:6d97:e897 with SMTP id i13-20020a17090332cd00b001c36d97e897mr12877616plr.5.1695104685077;
+        Mon, 18 Sep 2023 23:24:45 -0700 (PDT)
 Received: from localhost (ec2-54-68-170-188.us-west-2.compute.amazonaws.com. [54.68.170.188])
-        by smtp.gmail.com with ESMTPSA id z14-20020a170902d54e00b001bd28b9c3ddsm9225809plf.299.2023.09.18.23.16.45
+        by smtp.gmail.com with ESMTPSA id jj14-20020a170903048e00b001bdc6ca748esm9298385plb.185.2023.09.18.23.24.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Sep 2023 23:16:45 -0700 (PDT)
-Date: Tue, 19 Sep 2023 15:16:45 +0900 (JST)
-Message-Id: <20230919.151645.1773873104513260063.ubuntu@gmail.com>
+        Mon, 18 Sep 2023 23:24:44 -0700 (PDT)
+Date: Tue, 19 Sep 2023 15:24:44 +0900 (JST)
+Message-Id: <20230919.152444.1457385307728133204.ubuntu@gmail.com>
 To: tmgross@umich.edu
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
- andrew@lunn.ch, benno.lossin@proton.me
+Cc: andrew@lunn.ch, fujita.tomonori@gmail.com,
+ rust-for-linux@vger.kernel.org, benno.lossin@proton.me
 Subject: Re: [RFC PATCH v1 0/4] Rust abstractions for network PHY drivers
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CALNs47uN7GsEVJ5scqwZbzR-Dfk-uWp7EpafCBg0BarLhy+7ig@mail.gmail.com>
-References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
-	<CALNs47uN7GsEVJ5scqwZbzR-Dfk-uWp7EpafCBg0BarLhy+7ig@mail.gmail.com>
+In-Reply-To: <CALNs47taHGkhjPH6j=JtmCAAqgTz=px5gsb6T_TN-TfPeu+Y4A@mail.gmail.com>
+References: <CALNs47uN7GsEVJ5scqwZbzR-Dfk-uWp7EpafCBg0BarLhy+7ig@mail.gmail.com>
+	<439b6ee7-65e0-4849-8028-cbf5e752dd87@lunn.ch>
+	<CALNs47taHGkhjPH6j=JtmCAAqgTz=px5gsb6T_TN-TfPeu+Y4A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,80 +69,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 
 Hi,
 
-On Mon, 18 Sep 2023 18:23:23 -0400
+On Mon, 18 Sep 2023 19:46:57 -0400
 Trevor Gross <tmgross@umich.edu> wrote:
 
-> Then, usage looks like this:
+>> > [1]: @Fujita I know you have mentioned there are times where a driver
+>> > does not always have one mask. I can't find anything and am not sure
+>> > how this would work since `phy_driver` has `phy_id` and `phy_id_mask`
+>> > fields - do you mind linking an example? The above could probably be
+>> > adjusted to work with this
+>>
+>> drivers/met/phy/meson-gxl.c does some funky things:
+>>
+>> static struct phy_driver meson_gxl_phy[] = {
+>>         {
+>>                 PHY_ID_MATCH_EXACT(0x01814400),
+>>                 .name           = "Meson GXL Internal PHY",
+>> [ ... ]
+>>         }, {
+>>                 PHY_ID_MATCH_EXACT(0x01803301),
+>>                 .name           = "Meson G12A Internal PHY",
+>> [ ... ]
+>>         },
+>> };
+>>
+>> static struct mdio_device_id __maybe_unused meson_gxl_tbl[] = {
+>>         { PHY_ID_MATCH_VENDOR(0x01814400) },
+>>         { PHY_ID_MATCH_VENDOR(0x01803301) },
+>>         { }
+>>
+>> So the phy_driver wants an exact match, but the module is loaded based
+>> on the vendor OUIs.
+>>
+>> icplus.c:
+>>
+>> static struct mdio_device_id __maybe_unused icplus_tbl[] = {
+>>         { PHY_ID_MATCH_MODEL(IP175C_PHY_ID) },
+>>         { PHY_ID_MATCH_MODEL(IP1001_PHY_ID) },
+>>         { PHY_ID_MATCH_EXACT(IP101A_PHY_ID) },
+>>         { }
+>> };
+>>
+>> The devices seem to not have unique IDs, so:
+>>
+>> static int ip101a_g_match_phy_device(struct phy_device *phydev, bool ip101a)
+>> {
+>> [ ... ]
+>> }
+>>
+>> Its a variant on Murphy's law. If vendors can get something wrong,
+>> some vendor will get it wrong at some point.
+>>
+>>      Andrew
 > 
->     struct RustAsixPhy {
->         _reg: phy::RegisteredHandle,
+> Thanks for the references here, I see I misunderstood exactly the
+> problem was. In this case, maybe we could do something like this:
+> 
+>     trait Driver {
+>         const PHY_ID: u32,
+>         const PHY_ID_MASK: PhyIdMask,
+>         // Default to the same value
+>         const PHY_DEVICE_ID_MASK: PhyIdMask = Self::PHY_ID_MASK,
+>         const NAME: &'static CStr;
+>         // ...
 >     }
 > 
->     impl kernel::Module for RustAsixPhy {
->         fn init(module: &'static ThisModule) -> Result<Self> {
->             pr_info!("Rust Asix phy driver\n");
->             Ok(Self { _reg: register_fn_name()? } )
->         }
->     }
+> `PHY_ID_MASK` would be used to create the `phy_driver`,
+> `PHY_DEVICE_ID_MASK`  creates the `mdio_device`. That can be
+> overridden in cases like the Meson G where they aren't the same.
 > 
->     // Takes one or more `impl Driver` structs. `modname` would just
-> be `asix` in real use
->     phy_drivers!(modname, register_fn_name,  AsixAx8872a, AsixAx8872c,
-> AsixAc88796b);
-> 
-> The macro will expand to all of the below:
+> I think that the icplus situation is already possible with `match_phy_device`
 
-This code will be executed in the module, right?
+drivers/net/phy/adin1100.c
 
->     /// A function that the user will call to register these modules.
-> Returns a handle that
->     /// will unregister them on drop
->     fn register_fn_name(module: &'static ThisModule) ->
-> Result<RegisteredHandle> {
->         // We can use the existing functions that register multiple phys at once
->         bindings::phy_drivers_register(
->             &__modname_drivers,
->             __modname_drivers.len(),
->             module
->         )?; // <- actually map this error...
+static struct phy_driver adin_driver[] = {
+	{
+		.phy_id			= PHY_ID_ADIN1100,
+		.phy_id_mask		= 0xffffffcf,
+		.name			= "ADIN1100",
+		.get_features		= adin_get_features,
+		.soft_reset		= adin_soft_reset,
+		.probe			= adin_probe,
+		.config_aneg		= adin_config_aneg,
+		.read_status		= adin_read_status,
+		.set_loopback		= adin_set_loopback,
+		.suspend		= adin_suspend,
+		.resume			= adin_resume,
+		.get_sqi		= adin_get_sqi,
+		.get_sqi_max		= adin_get_sqi_max,
+	},
+};
 
-module.0 is necessary instead of module, which is private.
+module_phy_driver(adin_driver);
 
->         Ok(RegisteredHandle{
->             unregister: || bindings::phy_drivers_unregister(
->                 &__modname_drivers, __modname_drivers.len()
->             )
->         })
->     }
-> 
->     /// Our `phy_device`s are stored here rather than in an allocation
->     /// Don't need to be `#[no_mangle]` since C will never see this directly
->     /// Does need to be mutable based on Andrew's comments
->     pub static __modname_drivers: [Opaque<bindings::phy_device>; 3] = [
->         make_phy_device::<AsixAx8872a>(),
->         make_phy_device::<AsixAx8872c>(),
->         make_phy_device::<AsixAx88796b>(),
->     ];
+static struct mdio_device_id __maybe_unused adin_tbl[] = {
+	{ PHY_ID_MATCH_MODEL(PHY_ID_ADIN1100) },
+	{ PHY_ID_MATCH_MODEL(PHY_ID_ADIN1110) },
+	{ PHY_ID_MATCH_MODEL(PHY_ID_ADIN2111) },
+	{ }
+};
 
-static needs `Sync` but Opaque isn't `Sync`?
+This registers one driver but registers three mdio_device_ids.
 
-We could use `static mut` here but it needs unsafe. So a macro could
-generate something like:  
+bcm87xx.c registers two drivers but registers no
+mdio_device_id. realtek.c registers 10 drivers but only one
+mdio_device_id. There are some drivers that do unique.
 
-static mut DRIVERS: [Opaque<bindings::phy_driver>; 2] = [
-    phy::Adapter::<PhyAX88772A>::make_phy_driver(),
-    phy::Adapter::<PhyAX88772C>::make_phy_driver(),
-];
-	
-impl kernel::Module for RustAsixPhy {
-    fn init(module: &'static ThisModule) -> Result<Self> {
-        let mut reg: phy::Registration = phy::Registration::new(module);
-        unsafe {
-            reg.register(&DRIVERS)?;
-        }
-        Ok(RustAsixPhy { _reg: reg })
-    }
-}
-					    
-I guess that module! macro generates some unsafe code so we can use
-such macros?
+I think that to separate registations of drivers and mdio_device_id is
+the cleanest way.
