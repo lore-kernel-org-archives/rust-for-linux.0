@@ -1,69 +1,100 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CBB36B16
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 16:34:27 +0000 (UTC)
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5202B10C0
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 09:33:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=p+XgpmUM3cC3yNOs0seJGfPdPvRaApe0EXK0/W7MYnk=; b=My
-	X0+H59hsCZvB8a8/aqCnXb0lENzdZ4+y9pwoTNXMjtrHvlKfCb5bADTQuytVoudFB9KAE3goSQ7mm
-	J042hxwI1XnrQeSNprY8idPdC2b8VaXOeC6AkH7LuRjecDhxh22yuyU2SIcPOjnTVvQWXbbIGLO8Y
-	RUtsCqIrJgVIh5s=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1qidfS-006vfy-Bv; Tue, 19 Sep 2023 18:33:42 +0200
-Date: Tue, 19 Sep 2023 18:33:42 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v1 3/4] MAINTAINERS: add Rust PHY abstractions file
- to the ETHERNET PHY LIBRARY
-Message-ID: <1299bee8-9378-4a13-8cb2-3b47e0dee417@lunn.ch>
-References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
- <20230913133609.1668758-4-fujita.tomonori@gmail.com>
- <dd12e8b8-16a0-4cc2-8b0c-78386ce2dabc@lunn.ch>
- <20230917.213248.712797486250583805.ubuntu@gmail.com>
- <CANiq72nBoj=skGOpp0LbARDo1U-ev-GWZad=hq3iVBsQBuwA-w@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED698BE2
+	for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 19:18:17 +0000 (UTC)
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE9ABB3;
+	Tue, 19 Sep 2023 12:18:15 -0700 (PDT)
+Received: by mail-ot1-x333.google.com with SMTP id 46e09a7af769-6c0a42a469dso3811950a34.2;
+        Tue, 19 Sep 2023 12:18:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695151095; x=1695755895; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TCBXfknjcKlJ87Ma2vPA5KpThwoWvwYiLk2uZMEjHCA=;
+        b=R6Uqq19BPR1oFzbl0m7XtEaIJ6ufIf9ngOQ3OxG4hCIwAXEw3GB6qCd7TJTgPscnhk
+         vkYaqbcoPaW1hccKAqsb95rCCUG+tf9Yw4Tcx+4Ls6vxMxb5/IdtMLIP/n2aFE2faZLq
+         YD5pntjSfXO5xsaesJtCFuiP9ZE+0YZaJM1LvNp9RZE2Fvp00du8kzUc9tvb+091wcbr
+         duBuR5NZWW07mwGbe3vshYZR1OZXWy0DRu189hoNFXZgfd364L8JmDwgt6o9sphJ23b5
+         YEHojBiAAuSYd/XU5iwA6D0Wan1xzU6XDx9F1wpcbwWxbZAmHQky8yT5hS5MXbxr6/n/
+         45Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695151095; x=1695755895;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TCBXfknjcKlJ87Ma2vPA5KpThwoWvwYiLk2uZMEjHCA=;
+        b=WHbYDXICcPtUdpaRdN1qzbalkAWMasqUg9sJ30DjXOgQak21cQS3bsio8DgQYC8A07
+         tw6JY2SW2IEEs+oLO+fAvuEORwhjVz6iWVOV2a1iG3hs/3Nm0KhrnD1iKeDFKIIr5mIk
+         DnVHXA2BVoT2E4CZ+Dc8Ra+HVK0+0VvgySQOQQ6mVzS0EOTzmwzXUPyCz2Ck30Dqv61C
+         6mxAoTHfGLfwZ7LsheK4/koVfXEi9Rw7pugVPopbKXMk9ZIeBi3OgGGoN4Xf1SswO0wZ
+         0yHf1HnRwqkr3GtYAX8+Ckx0YRAjTWptA1CFixwuU2mQm3gv2a/jBPjMvEAoY/i+pvWe
+         BEyg==
+X-Gm-Message-State: AOJu0Yy3JC1+oXdS1wfLnB1LhjvdfmyPvhecqxzP0DFljdXyYjFNpG2A
+	PK68YHwNoHY32W73AEe2ATw=
+X-Google-Smtp-Source: AGHT+IFPnR50kUooGoy4QaFEoPXgx8xMzh6YGAm994Z3Zd28H2mMjA7xcD70u4YD1lZSS3AdffOf3g==
+X-Received: by 2002:a9d:7549:0:b0:6bd:67c:ba9c with SMTP id b9-20020a9d7549000000b006bd067cba9cmr527494otl.35.1695151095049;
+        Tue, 19 Sep 2023 12:18:15 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id p9-20020a0568301d4900b006b9b0a08fdasm5297744oth.59.2023.09.19.12.18.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Sep 2023 12:18:14 -0700 (PDT)
+Message-ID: <80964285-ec54-434e-8c36-9efaa363f126@gmail.com>
+Date: Tue, 19 Sep 2023 16:18:09 -0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nBoj=skGOpp0LbARDo1U-ev-GWZad=hq3iVBsQBuwA-w@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] rust: Respect HOSTCC when linking for host
+Content-Language: en-US
+To: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Masahiro Yamada <masahiroy@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+References: <20230918234412.363087-2-mmaurer@google.com>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230918234412.363087-2-mmaurer@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, Sep 19, 2023 at 02:06:21PM +0200, Miguel Ojeda wrote:
-> On Sun, Sep 17, 2023 at 2:32 PM FUJITA Tomonori
-> <fujita.tomonori@gmail.com> wrote:
-> >
-> > Miguel, any concerns to put Rust files not under rust/ directory?
+On 9/18/23 20:43, Matthew Maurer wrote:
+> Currently, rustc defaults to invoking `cc`, even if `HOSTCC` is defined,
+> resulting in build failures in hermetic environments where `cc` does not
+> exist. This includes both hostprogs and proc-macros.
 > 
-> If it needs to be part of the `kernel` crate, then the file needs to
-> remain in `rust/kernel` for the time being.
-
-So a question from a none Rust person. Why would it need to be in the
-'kernel' crate?
-
-The PHY driver is a kernel module, which optionally can be built
-in. My maybe overly simplistic expectation is that the kernel runtime
-linker will link undefined symbols in the module to symbols which have
-already been loaded in the kernel, be they C, Rust, or assembly. The
-symbols just need EXPORT_SYMBOL() or EXPORT_SYMBOL_GPL() so they are
-visible.
-
-   Andrew
+> Since we are setting the linker to `HOSTCC`, we set the linker flavor to
+> `gcc` explicitly.
+> 
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> ---
+> 
+> Updated the patch to reflect Nick's comment that KBUILD_HOSTLDFLAGS
+> should be respected as well.
+> 
+> I did not switch it to use HOSTLD for two reasons:
+> * That variable is not globally defined - it is only available in two
+>    subdirectories of tools/
+> * C host scripts are linked by HOSTCC as well, even when linking a
+>    collection of object files. It *prints* HOSTLD, but invokes HOSTCC.
+>    See scripts/Makefile.host cmd_host-cmulti for an example.
+> [...]
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
