@@ -1,31 +1,31 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040F736AF3
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Sep 2023 13:25:15 +0000 (UTC)
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91011E6
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Sep 2023 06:25:11 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B3C347C4
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Sep 2023 13:27:37 +0000 (UTC)
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 564C7123
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Sep 2023 06:27:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1695216308; x=1695475508;
-	bh=aT9PKBVhZus0XPPYxq/e5ljiPK/jIsQxVgPoCwBivfg=;
+	s=nkaeb2utyrh3nl4swsopnmkpdy.protonmail; t=1695216448; x=1695475648;
+	bh=OINTYFYxCoZe1tYbRyK/mU8Nic5sesmAXoDsL+AwPOc=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=nnY26sNBTVX2WsYYdArMhIzrWWdmmwFgC1j5p1aoJsieyeO1lY4oSh7tERzzLKlnV
-	 szf8jxpE2GNsG9GOQ88Ruvp2hybi73cZAS+gkuL3O0DbBAxpjPBtKjibm8gFKS22la
-	 BHkk4DTgqFHkaIfYITGR/HSOutsTd+pTYcxdjwv0M3YdSlxvCXfcUKuFHoREi+AR1d
-	 bhGtzoexENsBTyeVOD3wMskeYa4HK5YpZ2M64Ig46dGHE/u0PydPr8/lIAijg/xYYh
-	 M/5XlurdbefDvagXThZ9rRYt5Oju47EqQ4U/AH+sMB64to2h5evAmpDaWCB8Tu0Knn
-	 ZJUYtO/hjYDKQ==
-Date: Wed, 20 Sep 2023 13:24:54 +0000
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+	b=hKMlNSYlPnZVEHXg6mMj4dX7SORVY6s+fOJDjk3TE5kNkq6aPiqL/jssf2N/bxm0j
+	 Ce39X+hvJzWnKjgSjcQoVPjdAYe0c65Z1lvcLygchDrniJ4a3Lx5372j3lF1dF/AzQ
+	 W4o5dWckFH9hNNLmGvedt4OtVAn+nMxwpNLKJ97lx2woiYpGoaN0UdThYxM34lB5Y7
+	 8d6y908DLHt9NY7tXoTrqjtI3a90PQMjCy+zZofhhZlj9VBoaOMR6741PBIi7c9DTc
+	 M9UCMuJrbHGbfqAWzEpCy0kjCMaBhUBKFVfV08vXFa6J5gjHUWfj/0pnC2woG0GpYR
+	 xLaBH+3FeU9Uw==
+Date: Wed, 20 Sep 2023 13:27:10 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch
-Subject: Re: [RFC PATCH v1 1/4] rust: core abstractions for network PHY drivers
-Message-ID: <79176486-af4f-5865-3ed3-256a798c1044@proton.me>
-In-Reply-To: <20230919.192600.604528401262292577.ubuntu@gmail.com>
-References: <532b57ad-6d35-f0ee-1433-b9b63a91fdd5@proton.me> <20230918.220905.1497497848303760774.ubuntu@gmail.com> <dfc87664-24c3-88ac-ec34-2b65e898628d@proton.me> <20230919.192600.604528401262292577.ubuntu@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH 1/2] MAINTAINERS: update Rust webpage
+Message-ID: <98bd4aa8-acde-5831-6137-be0afef3aef7@proton.me>
+In-Reply-To: <20230830165949.127475-1-ojeda@kernel.org>
+References: <20230830165949.127475-1-ojeda@kernel.org>
 Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -36,48 +36,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On 19.09.23 12:26, FUJITA Tomonori wrote:
->>>>    > +/// Registration structure for a PHY driver.
->>>>    > +///
->>>>    > +/// `Registration` can keep multiple `phy_drivers` object becaus=
-e
->>>>    > +/// commonly one module implements multiple PHYs drivers.
->>>>    > +pub struct Registration<const N: usize> {
->>>>    > +    module: &'static crate::ThisModule,
->>>>    > +    drivers: [Option<Box<bindings::phy_driver>>; N],
->>>>
->>>> Why is this not a vector? You have to allocate in `register` anyways.
->>>> You could also use `Vec::try_with_capacity(N)` to initialize the vecto=
-r with
->>>> capacity for N elements.
->>>
->>> I thought that this is simpler. What are advantages of Vec over this?
->>>
->>
->> Pushing a new value is a lot simpler, since it only is a single function
->> call and not a loop. You also do not need a generic parameter.
+On 30.08.23 18:59, Miguel Ojeda wrote:
+> A few months ago we started a webpage for the Rust subsystem and
+> the overall Rust for Linux project [1].
 >=20
-> How about the following Vec version, looks simpler?
-
-[...]
-
-Yes it does look simpler.
-
+> The current `W:` field of the Rust entry points to the GitHub
+> repository, since originally we kept information in a `README.md`
+> file that got rendered by GitHub when visiting that URL.
 >=20
-> Trevor proposed another implementation to use static allocation, what
-> do you think?
+> That information was moved into the webpage and got expanded.
+> The webpage is also nowadays the entry point to the project,
+> and we pointed the "Website" GitHub metadata field to it.
+>=20
+> Thus update the `W:` field to point to the actual webpage.
+>=20
+> Link: https://rust-for-linux.com [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>   MAINTAINERS | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 12601a47c839..7c8088e9a11b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18558,7 +18558,7 @@ R:=09Andreas Hindborg <a.hindborg@samsung.com>
+>   R:=09Alice Ryhl <aliceryhl@google.com>
+>   L:=09rust-for-linux@vger.kernel.org
+>   S:=09Supported
+> -W:=09https://github.com/Rust-for-Linux/linux
+> +W:=09https://rust-for-linux.com
+>   B:=09https://github.com/Rust-for-Linux/linux/issues
+>   C:=09zulip://rust-for-linux.zulipchat.com
+>   T:=09git https://github.com/Rust-for-Linux/linux.git rust-next
+>=20
+> base-commit: 4af84c6a85c63bec24611e46bb3de2c0a6602a51
+> --
+> 2.42.0
+>=20
 
-I think that we should use static allocation wherever possible/if the C
-side uses it, we should try to also achieve it.
-
---=20
-Cheers,
-Benno
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
 
