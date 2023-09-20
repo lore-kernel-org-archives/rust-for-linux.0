@@ -1,185 +1,71 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59F21863B
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 20:03:03 +0000 (UTC)
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3534BEC
-	for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 13:03:01 -0700 (PDT)
-Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-76dc7b0da9fso369751185a.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 19 Sep 2023 13:03:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695153780; x=1695758580; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+l4uEd0cg+MK1zLuMTcTMLF2fu+76E8W8FTaKs4YQfM=;
-        b=pEM5lbOD0gL3PxI5i7i3zQpeJMr8WxD9QgkyW8ay96xWhiiAdDj7Pw7UcHAbvrzg1w
-         uS1HJLCpvkCYT7uiC4kMFKNG0ZmXjCbRgHKvGmFb1J+zkYmeQlavPJr5CvCuEF3AJt6g
-         SMYQQGV+e4YMOhjAqAANbKp9b5p8uhVwaBcrJpq+OPMrOHlh0JvbG25vKOCmxEb22IQ+
-         u3Sy8zD6jDfFDijAYjutAZ+kTqs1fQj1wPllcoOhkLoZumwLSdpLgX/of5bA8zyHb+qX
-         87CZeLbmdSyVii/0gmi2zj6XQ/GHWfM7L1TbDOdEYPHK2d61YJDqrjsvfOChwg4vBelH
-         MGmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695153780; x=1695758580;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+l4uEd0cg+MK1zLuMTcTMLF2fu+76E8W8FTaKs4YQfM=;
-        b=gsuMceMxh5VCh4m+DUtWtc1QNtvtI5zvlqhUgWh7/+0up7xQhTeHBYFHkLebWp3OS8
-         BPQb/0XmleMhVZGtSY5+S3VgmpHF788lYKgW29RYrLbCxyP7GTOE7CsqjFsS1mCt5suB
-         xQZoYeX8KCoM7mEb/wrWSyGqrlBYDvPVlQX6RFh/rJLh1IW0/uN/Ol+9p77YqOBdaPSP
-         stJ1IoQUKa9ScRcHdmd294r4i5okk20P4j+gkJkzmIYNWiotGQ6LcHFEyLPQ+1GOTzSj
-         FHULFSSb7pv4Fd+EPCydbbmiZwRWqhZOGgWe6WpWcNu5ODw0so6Ez93B7NdT6rRplrFY
-         ZbbA==
-X-Gm-Message-State: AOJu0YyyI+95XxnkZIL5NJBoNoFtyjtvFvNtzkua5KCzxiWPV99CL264
-	TWcxuJQ1w7/HeXsA4EDYnd8jxfSrbwCvYc9g5Zc3rw==
-X-Google-Smtp-Source: AGHT+IEg4YYJXSRCJjiZztWRLMA06g93UiRXI+JvX82ar2KRzox8IysEDd0GPASOHXXhqXoVCo+bagkSzIQDpfu/hfI=
-X-Received: by 2002:a0c:e448:0:b0:64f:69a3:af3f with SMTP id
- d8-20020a0ce448000000b0064f69a3af3fmr358512qvm.39.1695153780151; Tue, 19 Sep
- 2023 13:03:00 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF84C31A6E
+	for <rust-for-linux@vger.kernel.org>; Wed, 20 Sep 2023 13:09:49 +0000 (UTC)
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2B0C91;
+	Wed, 20 Sep 2023 06:09:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1695215383; x=1695474583;
+	bh=1/ognkvnJyYWtYywfOcPV37GXLJ6vuPInK4WDRo+5cQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=g9YP8RcvSUzdbzIMTu7NXlEkDhPHnWKAh6KqYDOT0+aY9dMWJyWKFZxzS28rByVzn
+	 Rpq4R81pkARUKO23467PQsoyM1rt0PsR1p62kiusv9S5zPvrp8RuQk363gxG4MLeYU
+	 UihMLa5jtT3XAJ2eC5H+OzFwUlI+Ei/1lyn75LJVzfk0vW6ifuZL5cmyU3xcH4UC62
+	 yAhcOV6U3MV7+mHh93jzSlFulKKWHZCnotN6LHixIKQzGHcehFbCh9vYQAGKXCE0QA
+	 QBy4FNTpkaWO8xIk/vIEv55K4ii+D6oUdj20lovjiE2MpnJ2JloOIpPSY5D7wVN/YG
+	 SVKajWspgW1hQ==
+Date: Wed, 20 Sep 2023 13:09:36 +0000
+To: Manmohan Shukla <manmshuk@gmail.com>, rust-for-linux@vger.kernel.org
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: error: Markdown style nit
+Message-ID: <79a526ee-9773-13ad-d36c-4ee1072b115d@proton.me>
+In-Reply-To: <20230906204857.85619-1-manmshuk@gmail.com>
+References: <20230906204857.85619-1-manmshuk@gmail.com>
+Feedback-ID: 71780778:user:proton
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230918234412.363087-2-mmaurer@google.com> <CAKwvOdmsNwszu4Vk1K7e39hencNcjEmjr5q7EbTJCjdY5TDsFA@mail.gmail.com>
-In-Reply-To: <CAKwvOdmsNwszu4Vk1K7e39hencNcjEmjr5q7EbTJCjdY5TDsFA@mail.gmail.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Tue, 19 Sep 2023 13:02:45 -0700
-Message-ID: <CAKwvOdmanTTOmmwSMn2rQa5Ri_TpTTp7XMXZQfVh_GA694VvAA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: Respect HOSTCC when linking for host
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-	autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, Sep 19, 2023 at 12:44=E2=80=AFPM Nick Desaulniers
-<ndesaulniers@google.com> wrote:
->
-> On Mon, Sep 18, 2023 at 4:44=E2=80=AFPM Matthew Maurer <mmaurer@google.co=
-m> wrote:
-> >
-> > Currently, rustc defaults to invoking `cc`, even if `HOSTCC` is defined=
-,
-> > resulting in build failures in hermetic environments where `cc` does no=
-t
-> > exist. This includes both hostprogs and proc-macros.
-> >
-> > Since we are setting the linker to `HOSTCC`, we set the linker flavor t=
-o
-> > `gcc` explicitly.
-> >
-> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> > ---
-> >
-> > Updated the patch to reflect Nick's comment that KBUILD_HOSTLDFLAGS
-> > should be respected as well.
-> >
-> > I did not switch it to use HOSTLD for two reasons:
-> > * That variable is not globally defined - it is only available in two
-> >   subdirectories of tools/
-> > * C host scripts are linked by HOSTCC as well, even when linking a
-> >   collection of object files. It *prints* HOSTLD, but invokes HOSTCC.
-> >   See scripts/Makefile.host cmd_host-cmulti for an example.
->
-> Sure, that makes sense to me, thanks for pointing that out.
->
-> >
-> >  rust/Makefile         | 4 ++++
-> >  scripts/Makefile.host | 4 ++++
-> >  2 files changed, 8 insertions(+)
-> >
-> > diff --git a/rust/Makefile b/rust/Makefile
-> > index 87958e864be0..b60b7eb8c5a0 100644
-> > --- a/rust/Makefile
-> > +++ b/rust/Makefile
-> > @@ -380,9 +380,13 @@ $(obj)/exports_bindings_generated.h: $(obj)/bindin=
-gs.o FORCE
-> >  $(obj)/exports_kernel_generated.h: $(obj)/kernel.o FORCE
-> >         $(call if_changed,exports)
-> >
-> > +KBUILD_HOSTLDFLAGS_SQ =3D '$(subst ','\'',$(KBUILD_HOSTLDFLAGS))'
->
-> I don't think we need to do this kind of escaping. If a linker flag is
-> passed to the linker directly as the driver has spaces such as `-z
-> relro`, if it is instead passed to the compiler as the driver will not
-> contain spaces (`-Wl,-z,relro`). As such, I don't think we need this
-> escaping (famous last words).  Mind submitting a v3 without it?
-
-Thanks for clarifying off list that:
-```
-It's not escaping the spaces, it's escaping any quotes
-example: -Clink-args=3D'-Wl,-z,relro -Wl,-linker-plugin-lto'
-Without the quote, the second one would go to rustc rather than the linker
-```
-
-Sorry for misunderstanding what exactly we were escaping here and why;
-thanks for implementing my suggestion of passing along
-KBUILD_HOSTLDFLAGS though.  That will avoid issues for Android
-downstream.
-
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-
->
-> > +
-> >  quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET) P $@
-> >        cmd_rustc_procmacro =3D \
-> >         $(RUSTC_OR_CLIPPY) $(rust_common_flags) \
-> > +               -Clinker-flavor=3Dgcc -Clinker=3D$(HOSTCC) \
-> > +               -Clink-args=3D$(KBUILD_HOSTLDFLAGS_SQ) \
-> >                 --emit=3Ddep-info=3D$(depfile) --emit=3Dlink=3D$@ --ext=
-ern proc_macro \
-> >                 --crate-type proc-macro \
-> >                 --crate-name $(patsubst lib%.so,%,$(notdir $@)) $<
-> > diff --git a/scripts/Makefile.host b/scripts/Makefile.host
-> > index 8f7f842b54f9..dc0410cae5ca 100644
-> > --- a/scripts/Makefile.host
-> > +++ b/scripts/Makefile.host
-> > @@ -87,10 +87,14 @@ hostcxx_flags  =3D -Wp,-MMD,$(depfile) \
-> >                   $(KBUILD_HOSTCXXFLAGS) $(HOST_EXTRACXXFLAGS) \
-> >                   $(HOSTCXXFLAGS_$(target-stem).o)
-> >
-> > +KBUILD_HOSTLDFLAGS_SQ =3D '$(subst ','\'',$(KBUILD_HOSTLDFLAGS))'
-> > +
-> >  # `--out-dir` is required to avoid temporaries being created by `rustc=
-` in the
-> >  # current working directory, which may be not accessible in the out-of=
--tree
-> >  # modules case.
-> >  hostrust_flags =3D --out-dir $(dir $@) --emit=3Ddep-info=3D$(depfile) =
-\
-> > +                -Clinker-flavor=3Dgcc -Clinker=3D$(HOSTCC) \
-> > +                -Clink-args=3D$(KBUILD_HOSTLDFLAGS_SQ) \
-> >                   $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
-> >                   $(HOSTRUSTFLAGS_$(target-stem))
-> >
-> > --
-> > 2.42.0.459.ge4e396fd5e-goog
-> >
->
->
+On 06.09.23 22:48, Manmohan Shukla wrote:
+> This patch fixes a trivial markdown style nit in the `SAFETY` comment.
+>=20
+> Signed-off-by: Manmohan Shukla <manmshuk@gmail.com>
+> ---
+>   rust/kernel/error.rs | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index 05fcab6abfe6..6233021daa8a 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -133,7 +133,7 @@ pub fn to_errno(self) -> core::ffi::c_int {
+>       /// Returns the error encoded as a pointer.
+>       #[allow(dead_code)]
+>       pub(crate) fn to_ptr<T>(self) -> *mut T {
+> -        // SAFETY: self.0 is a valid error due to its invariant.
+> +        // SAFETY: `self.0` is a valid error due to its invariant.
+>           unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
+>       }
+>=20
 > --
-> Thanks,
-> ~Nick Desaulniers
+> 2.34.1
+
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
 
-
---=20
-Thanks,
-~Nick Desaulniers
