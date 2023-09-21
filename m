@@ -1,74 +1,91 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E2623CF
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Sep 2023 23:01:53 +0000 (UTC)
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 388B9C1
-	for <rust-for-linux@vger.kernel.org>; Wed, 20 Sep 2023 16:01:51 -0700 (PDT)
-Received: by mail-io1-xd32.google.com with SMTP id ca18e2360f4ac-7926a450a0aso15225339f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 20 Sep 2023 16:01:51 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C914E17E
+	for <rust-for-linux@vger.kernel.org>; Thu, 21 Sep 2023 00:25:23 +0000 (UTC)
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D31AA3;
+	Wed, 20 Sep 2023 17:25:21 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1c3d6d88231so3209535ad.0;
+        Wed, 20 Sep 2023 17:25:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1695250910; x=1695855710; darn=vger.kernel.org;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:from:to:cc:subject:date:message-id:reply-to;
-        bh=YHS0g09D6vc1thRPLJnGpAPdP+yVHQW0z02dWszN1A0=;
-        b=PaieXlJHRsMjfC3fjDiReZ9AwKblQM3mT8XDx3Nfj8mdRGgLBgdZSb9cddSfQVREbv
-         mTj6vO4BZf8ebNw3VT9DNHgFnYqqu2XR1eIyqk2dYj0JRC4aIeDF8neBqQzP5wV/E3AA
-         7K4P+si7AGjg23D39b2j4MwFnR4ySWx67n/pZPDHFHevs8offQ9UDP9iQsXy8O7yQFDE
-         wbhuAJeUVamMS+W8ZiJK7OItopGYmxachoV1KdahfjTgTnxvY3wjGSgzB9suVGX/lVAJ
-         KGCQXsPNV/bE5oJ7xQWkPeAOENu33bvYGCcU0lToPp5NxgpJgWbwYd/ZKWelDfELaCJa
-         YxFA==
+        d=gmail.com; s=20230601; t=1695255920; x=1695860720; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DczeM/Y/ll/HO5aTU1FZs9q/jGteDrPwoT1dCCvthrk=;
+        b=AFibqjw46Xk3SQJfSZaDE4mo59JNIGGfQofnaZbxucbCElsiPUyIAw1cpuGsG9efUn
+         vCBBOC81J8/EuFzdzIHkXAFCDzcTJd826q3PCI6j61MYVgDh5A1q6JAkuagoJfvXLqM1
+         QZgdJZytZBEdQ0l8FEBEc2DquAZJwx4wp1/E3eASq6Qt8LTuQI5t5bFTDCBkkMJhXPgm
+         zJxAj4BTs6Q+6ZMV26h66tXy+YbtkaYH7AeuIdcyTUsYtvDEjEe44q0jZFNWytXari0H
+         o/97lAme7GS1/Em6G3w1+fszDF8WEpt7k/chkaRL+4e+oM9JpSfeelP1dtlBzL6ahuRN
+         KvMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695250910; x=1695855710;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :user-agent:references:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1695255920; x=1695860720;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YHS0g09D6vc1thRPLJnGpAPdP+yVHQW0z02dWszN1A0=;
-        b=DoOY6bJRmBQy7VHxoqc45n86fsaGr8XaCpYGm9yM7qcMNzDewcWV+tETvTqEbsRc7q
-         cPrx94ATlt+kKv4+9txDyJBe391qpG4NMNGSRNAj3auX4s0CbtbEBXDdMawOMKB5grSm
-         AdBSptzVlbNIquWQsmDI46NWECa1Y4ZakXEUxscFR9GPyMzchZtMlHn8Cjb+dmwmyovT
-         iV/kVvt2HFN7UsEBeLX2a4T8pjgAT/98r83IoRyheKgndMzbhYggvOl06k97aRiKuZLW
-         Cumv2R5K4agvq/1xAGW5+rKNJoXgyAUIVCbJaOWhw3qaGI8C0D5aPKHSNk29PfjLhYMj
-         mcOw==
-X-Gm-Message-State: AOJu0Ywf1PDEDAX+ckGYx9YbNhgTNU2EHXA5gajMfUqBJI4djL3O0X11
-	Nutl/kzvYJDvKefq2AqdjlUZhcIkZSJ76L7PEGCRHQ==
-X-Google-Smtp-Source: AGHT+IEHrF3yRt5OaS3ynJdUvHgMnpCvlGeaGnJh9f4vOkGFecidC0lD/kLQsvkNbHNd0tUPsMmf/g==
-X-Received: by 2002:a05:6e02:1b06:b0:349:36e1:10fb with SMTP id i6-20020a056e021b0600b0034936e110fbmr5083232ilv.18.1695250910530;
-        Wed, 20 Sep 2023 16:01:50 -0700 (PDT)
-Received: from localhost ([158.51.192.73])
-        by smtp.gmail.com with ESMTPSA id a17-20020a62bd11000000b0068e38cf211bsm54027pff.197.2023.09.20.16.01.49
+        bh=DczeM/Y/ll/HO5aTU1FZs9q/jGteDrPwoT1dCCvthrk=;
+        b=EcjZcW/QvsF8dByEyLEAuoCPa2QSx/IrRzpzBOhYJ3Diilz4G+/UrepdQ8xo4cG0gH
+         JGv4sfsqLAENh07rH2pl7g1TLE5lSABiDDTAHdeS76G+olMkAGVmk9hfCaIBBOYeH7QZ
+         4PAfCJ+3g1tRCxF3a5CogtzSN0M6dXDMI2NqqPnKBUzID7O97gwrNDyokMWS88Mb7wyI
+         DjUnot0rWjJ2E2NVVAzD62/1QdWQIJeRRvuNfDV200Y3PfWotNbX8ekyBlJ2WogaLP8J
+         mMlTN08a/bvr2+iLqx2o81hhT8/3QAcvQ+rmTkWe9Hpxm6JO64/OinPPMZ3ZBaTqeLgt
+         CruQ==
+X-Gm-Message-State: AOJu0YxauH/VJfMTSMnv3iOz0IairLOdSImjx+PgemwSlz8erprT6GNo
+	SDc4P/lVJ/3Z8nCgCfKZJ73TJzdWnJOI+g==
+X-Google-Smtp-Source: AGHT+IEborYCvHbvZKLnVJxX+AOOqYd3ehjy+iJcuUM00XR24BNq0vdPJf1tfv2ENzbw8STYhGpymQ==
+X-Received: by 2002:a17:902:e74b:b0:1bb:8931:ee94 with SMTP id p11-20020a170902e74b00b001bb8931ee94mr4001271plf.67.1695255920421;
+        Wed, 20 Sep 2023 17:25:20 -0700 (PDT)
+Received: from localhost ([162.243.44.213])
+        by smtp.gmail.com with ESMTPSA id q3-20020a170902dac300b001b9c5e07bc3sm88735plx.238.2023.09.20.17.25.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Sep 2023 16:01:50 -0700 (PDT)
-References: <20230906204857.85619-1-manmshuk@gmail.com>
-User-agent: mu4e 1.10.7; emacs 28.2.50
-From: "Andreas Hindborg (Samsung)" <nmi@metaspace.dk>
+        Wed, 20 Sep 2023 17:25:19 -0700 (PDT)
+Date: Thu, 21 Sep 2023 08:24:25 +0800
+From: Jianguo Bao <roidinev@gmail.com>
 To: Manmohan Shukla <manmshuk@gmail.com>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] rust: error: Markdown style nit
-Date: Wed, 20 Sep 2023 16:01:13 -0700
-In-reply-to: <20230906204857.85619-1-manmshuk@gmail.com>
-Message-ID: <87cyyc78km.fsf@metaspace.dk>
+Message-ID: <f6azofsmelve5eeppckk5vn6wvjghadt2bduq3lzxcqdk2azos@f73u4yyszooq>
+References: <20230906204857.85619-1-manmshuk@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230906204857.85619-1-manmshuk@gmail.com>
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-
-Manmohan Shukla <manmshuk@gmail.com> writes:
-
+On Thu, Sep 07, 2023 at 02:18:57AM +0530, Manmohan Shukla wrote:
 > This patch fixes a trivial markdown style nit in the `SAFETY` comment.
->
+> 
 > Signed-off-by: Manmohan Shukla <manmshuk@gmail.com>
 > ---
+>  rust/kernel/error.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index 05fcab6abfe6..6233021daa8a 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -133,7 +133,7 @@ pub fn to_errno(self) -> core::ffi::c_int {
+>      /// Returns the error encoded as a pointer.
+>      #[allow(dead_code)]
+>      pub(crate) fn to_ptr<T>(self) -> *mut T {
+> -        // SAFETY: self.0 is a valid error due to its invariant.
+> +        // SAFETY: `self.0` is a valid error due to its invariant.
+>          unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
+>      }
+>  
+> -- 
+> 2.34.1
 
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
-
+Reviewed-by: Jianguo Bao <roidinev@gmail.com>
