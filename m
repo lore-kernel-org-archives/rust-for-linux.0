@@ -1,151 +1,352 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84629381
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 03:44:18 +0000 (UTC)
-Received: from GBR01-LO2-obe.outbound.protection.outlook.com (mail-lo2gbr01on2128.outbound.protection.outlook.com [40.107.10.128])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05D771A5;
-	Fri, 22 Sep 2023 20:44:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aNXZ9CkFkn6rbZ/i8+t4MUAy4HR81uz3u87ufb9TEPyCsT9gQsT9LkXMRl8UwLYkGSv/Zz1mtOGWKhqVjNLNJXlcTDGlf2YjsePOIvYvWbWW276Fo40T4r0ke5td2gRrcleH1OyMa+LgsrGMvL6tKffzkqjrkGddP/UdX2+9kAvZEenlpZnYYpXLTfte7Up7/xJS8HVV1wBiEIonwJVckOtGoRNdMse2WX/zKx6icksfuvEHA+UoEXrcpvdZzlTO2gwlD0wt+kkrIOTmRUPlxw1Ol96P/TCMC5Is9+8eh8lvWIJJG9gm7nADkmlR0PrPaARsxBQCdNgL5ptGugeATA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=esP9VJu+yggbsgs4J5u9gvpAQrz11NA5jL5d5zmBa7c=;
- b=iiw5XmNVFtqzzqCukaf3JRvIbJMIUxIwlH81VeXvuhw/621d1hKQWeqEJbdarhHAXNkHotbg+EBNr/aN7WtGyXTWTS4jtwYmIDATAjJfZM3PCP6Zkyeh9Yio7ucKBM7EeyC01z+sUpXpkIuQ0Hj8wOxESClb+AzlSXnc5VX1xP8i03J453V8VvBztJvTs0GIJnFbYObYpXLw18n7mGNnf8pq08FhwgEM8MmI4PV8e86XIT6oRyjXcowYyZdVdBdLibd8qvLeSQ95HLfgY7vVJrJWYdV87aE5J5/OnWxFnYh9CxR72SiZKQ3GuUoZYYHCzGEygwjxjlnN06N1Kgm9aQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=esP9VJu+yggbsgs4J5u9gvpAQrz11NA5jL5d5zmBa7c=;
- b=uJWbAnb8aGhDF2C3qknTaue/CuvgjCfJDReGt4Oj91NfbHZJ3ymOFmpO0HMH+Q5npqMacR7u/dSvwWyL3BL0iwz/I9odZ+EDTlF2yTLax+1qPV7uK9NRUEF+GN42Q7eODaqqtK2ubLOvwQNfvzZ5Dk6s6Ljoh1GwFgiowuB7BAA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWLP265MB6248.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:180::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.25; Sat, 23 Sep
- 2023 03:44:14 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::7965:8756:9ad5:df1d]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::7965:8756:9ad5:df1d%6]) with mapi id 15.20.6813.017; Sat, 23 Sep 2023
- 03:44:14 +0000
-Date: Sat, 23 Sep 2023 11:43:56 +0800
-From: Gary Guo <gary@garyguo.net>
-To: Andrea Righi <andrea.righi@canonical.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, "Gustavo
- A . R . Silva" <gustavoars@kernel.org>, Kees Cook <keescook@chromium.org>,
- Masahiro Yamada <masahiroy@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: fix bindgen build error with fstrict-flex-arrays
-Message-ID: <20230923114356.537aa84a@gary-lowrisc-laptop>
-In-Reply-To: <20230815065346.131387-1-andrea.righi@canonical.com>
-References: <20230815065346.131387-1-andrea.righi@canonical.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TYCPR01CA0102.jpnprd01.prod.outlook.com
- (2603:1096:405:4::18) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF58F801
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 05:17:14 +0000 (UTC)
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E236419E;
+	Fri, 22 Sep 2023 22:17:11 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1c59c40b840so31058445ad.3;
+        Fri, 22 Sep 2023 22:17:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695446229; x=1696051029; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pLdUIQQHBY8P9D48xnEoq/7y3l7/aWBC9HrRXhHpy+o=;
+        b=MKsduEfDSV08/o6oUryLla4aYHEXqeEvgpxgFgVIjD2vDsX2fsYGu6WcSbkx7ZameW
+         qVQ/rEeoBUh9XijJjoU5cwg/AkMfJn1IICfbSMb5Nj60e7hyEWfDKIq++fEP7ASAybvJ
+         Y+6GaVtD5T5wZaahNsucgUEc2FTf8OhiKr5Fm1HvDSg2KmS1GK6QlN6a9V5IGLLF9UKH
+         gUSyaAqYLOeh5wA0nb5pxxiAUEC/qA5/KH7qKuS6c6aysupogzTgSFC/vOBo5RsIoLIt
+         W4NS1HOaaxxAdSUJpmlSLL0tyEtjatVQIghXAZHwCkH1KNvDbLV1EqYpWt8SzHEs29yo
+         z1sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695446229; x=1696051029;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pLdUIQQHBY8P9D48xnEoq/7y3l7/aWBC9HrRXhHpy+o=;
+        b=E8IBKY48HR1sxaIFjYv+yqP/eLfUB/vueqDYy4OWVelntCxYqVTxY3Avmo9+91A1zR
+         l8lsve84OdCkY5ACozueBuWEV+/FXAN+mRuNwzTLhYisni17/BD4X5bkCsbbp4lxTs7K
+         zQlwaPYJru5pUjCSP1ranAH4E+UlGgaXbsBe2VHgKccKrVF3/Z8W3dSZWRvAzQ1Wu6CD
+         94Nd+MZLguAQg2I6YYsytKw4M2qGGvBptNAwilqW3Qo6UyPagUq1GZDjomeIPKTR5xFe
+         weJLqQvioPnkYYgviWmL/JmNdxtinSyz2ahuKJdJjOFX0YeamhZf1g/njt5Bq5QysAYq
+         ibBw==
+X-Gm-Message-State: AOJu0Yxc9hm+wIMhtwszD5UyHW+5X4TnxSOGgga7amJOXip5qIYjv7Jg
+	WS/g+3nwDKAEbmiP+oYWyxs=
+X-Google-Smtp-Source: AGHT+IEsZyPDgpmdBuit1MTpORpxwa+idfPgkl1ZG/pyulQdNZZjLiLHL7NLFkx5h7HiPLKPMJJkHA==
+X-Received: by 2002:a17:903:2351:b0:1bf:25a1:9813 with SMTP id c17-20020a170903235100b001bf25a19813mr1705554plh.6.1695446228611;
+        Fri, 22 Sep 2023 22:17:08 -0700 (PDT)
+Received: from localhost ([162.243.44.213])
+        by smtp.gmail.com with ESMTPSA id 6-20020a170902e9c600b001b9d8688956sm4425482plk.144.2023.09.22.22.17.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Sep 2023 22:17:08 -0700 (PDT)
+Date: Sat, 23 Sep 2023 13:16:07 +0800
+From: Jianguo Bao <roidinev@gmail.com>
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org, 
+	Wedson Almeida Filho <walmeida@microsoft.com>
+Subject: Re: [PATCH 2/2] rust: arc: remove `ArcBorrow` in favour of `WithRef`
+Message-ID: <x2zddticeo7gpnq62bxwzdpeckkzenfl2efuh2t3dpgsbmvq3x@6yoc7om5nxa5>
+References: <20230921213440.202017-1-wedsonaf@gmail.com>
+ <20230921213440.202017-3-wedsonaf@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB6248:EE_
-X-MS-Office365-Filtering-Correlation-Id: 74678a4b-c026-453e-f065-08dbbbe75b1b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	V2zZHDmJ5hQcRP4AJtoYimVpRjhFl42FZikQyYlChx9AEd7mzAO15d7SVbyT8l6kWLejMw5x36lRq32QZ54grNRTqbkEeEY6BSiR061d/7EfXK8g6t0aCbnncVuwPUOZjq4zyQ9M4I4qV8taFeK862gMMeLktpfhfPQmM71XBJY4QyCNmUQZgO0OYixhipmgr36TyS21NyKQzUmPc5PhjWsJCtsI6uG36A0IbNWhNbffLd6wBZJh+QmVXHtNucr+oXka78vpKvjZbfh1G8M+VeQKAiTsL8cKelMrI2V2YbJqVV3YXACiN9MT7TmaOxtc+fapmhKMbT4puNcPHyyx5hQXsDzavKBFEVdVz/wlMn89Qy7V1teFqgkD24SjAmC8apbONLH3G+UW+xJGczz2a741ByOfVNDurdnPBcIu+iSj+lQ/NxHa3g0E+jZe3c2DMNzGaWKkgzXQ8p/3zKdnPeUf+kY4YChRZPz5Zola3fuVCny00hu9IIak84qqf3QXZIaH73tykOnoMRjHJyhfoS7zPCtSFawd78RfwSghhOjR6FiTsQpU6JDqDQIwSHII
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(7916004)(396003)(376002)(136003)(39830400003)(346002)(366004)(230922051799003)(186009)(451199024)(1800799009)(2906002)(7416002)(5660300002)(54906003)(8936002)(66946007)(66476007)(66556008)(33716001)(478600001)(6666004)(6486002)(6506007)(9686003)(38100700002)(6512007)(26005)(1076003)(86362001)(6916009)(41300700001)(4326008)(316002)(8676002)(83380400001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?s+2Sy8GRYsk2eb41cRTxWBiq3uWamcFl4V+By96XkvS8u7igeGgLlGDkqQ7w?=
- =?us-ascii?Q?MOvFTGYoutoh3LcutepuUTFreqkgiufKM3AJhssqJKM5HVLh0rIG9CZERMZF?=
- =?us-ascii?Q?YWreoqCPntYoUC6KiLAeoASQmjFhDeZyBvvcT2Knt0e0ymEdtDUWx+8sfnCg?=
- =?us-ascii?Q?ZrNKc6RSNnei6+dsW9eom2UeelLAkwjHxkwQ+6Rvdk/C2+PIr8wKSc6elUBt?=
- =?us-ascii?Q?MvcHIhOHSO3EOdvVV2ONMrWeXBlsJPNC/OHuq4+ziVsW6jty3gUmgk1/VqYB?=
- =?us-ascii?Q?GZZAHvdMtOJs0kSmBqPWEJlhMlLPPTg+e6s9AUM4RglF+oIguT5PmQgawCgv?=
- =?us-ascii?Q?FuDM6qF72zGOICHUyWeGgvAFq/KV78Mmuz17xAKn36ZFBTxnKBM9jYCY/nJW?=
- =?us-ascii?Q?/Sb2gxTZ37oENw/q8mk1JnloUd5r/sJZdOCu6fTqkqsOGO3T6lQ2PSwhmR/O?=
- =?us-ascii?Q?idufH4eK1JujnWBLE8Bi69Ryf2Ur1bQ+cOJL7CC0N4IKtsn96cfDeWPzWU4n?=
- =?us-ascii?Q?sYRDB/nlyUWhY/1vP2Fw+4FSrXk5ys/2Tt55eFnOeDpQeLQ2SuC5PYIXRCVD?=
- =?us-ascii?Q?LcwPyLf6TrFCkEmT6ZGdj5tMRyWyoFzfTXlEJvy9cUd4a+hiWSLouoGK0vlR?=
- =?us-ascii?Q?ifHWNjNJQAErAuaWtWGJWdZGOsh6s4vHP+Y6K0GZ1qKKzVda4Nzx9RDB0yG0?=
- =?us-ascii?Q?NZDpYhuhtyJ/qGJIjn+F3qLb+YxbufApRt63WDI3NYe8sfLBrjoQfwgui9Tl?=
- =?us-ascii?Q?I7eRo2pHoYsxrfkHUThua0LcpfpOdmP6f5jVfM41TS42YE5ds7Q0SKMFVrfY?=
- =?us-ascii?Q?dxfOQfg6clbeA3ZosyQw2lziJHjcgheHTOecbVVh+5E/vdET9WUzTagBN04e?=
- =?us-ascii?Q?NX7ES6Rvf7Rxro04g1K24XgA/msrlu+OJ3S3g38Jz07XQv8n8qMSIiwyL4fO?=
- =?us-ascii?Q?9bZHhqbgoo5SejooKkiDlxj+44lz+LSqETymTk6znGrN6dgZLdBNIqR8R6P+?=
- =?us-ascii?Q?9/hdSWuJH4PnrTKTD8PJS69MpOv7m91zZ3vZFFMG0TgrXCzTUoi0jNHJ/A63?=
- =?us-ascii?Q?os7Bi6ibJMxGPCNjebUaJh+jc2+esHNQaTA2hsxwBeIUb7mCQ8CBgziNoHjn?=
- =?us-ascii?Q?4af0PDTKy8Us48+Fh2wOpwfHQUskd/72RLtJJe3sMdPAbj34mnEb66p3e34M?=
- =?us-ascii?Q?ZhywRO0obFgS9L3SSrqv8jU9DgAHsvwoijE/+4SoDrbdOQaE66hn1JWwpFYv?=
- =?us-ascii?Q?9N+t6R13s7JIGehgdg01wYvKnG9nV3rocRref2/3k9K+Qk5P2zeVbN3fwnJ7?=
- =?us-ascii?Q?/pmMjowiPjk6q27k7fu9UgbKKVsxL7jp2ga6tArkk3bwh0GwsFNtqD8W6q+3?=
- =?us-ascii?Q?smmOtsNGTe3CqGl8R/KpavJD14pbjOeBqwUNOES5kBqai5+IPRnVWtW++H6w?=
- =?us-ascii?Q?aEOa0xXGiFgQmkTsuaRl8VXh8FGzgCUx9Ajn2hGnGdYFMt52YMvdNZcOpOed?=
- =?us-ascii?Q?3nSRcw3ss8obaW2pN/HJhyM1mxJL1BJFxENsohrg+bq69Z4F4Q6NUmbif1+O?=
- =?us-ascii?Q?C+bwc4t0jFSLow0nETLHN8NziF6LvIqBl86CJPdG?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 74678a4b-c026-453e-f065-08dbbbe75b1b
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2023 03:44:14.4443
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VUvcuLVnmUqs436H7I4fXH58COL72a1wwBZryeuyxK8a2TE+A+5Mc3m0XbHU1CZhFFOhJwT8YnLM/uBcURypNQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6248
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230921213440.202017-3-wedsonaf@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Tue, 15 Aug 2023 08:53:46 +0200
-Andrea Righi <andrea.righi@canonical.com> wrote:
-
-> Commit df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3") enabled
-> '-fstrict-flex-arrays=3' globally, but bindgen does not recognized this
-> compiler option, triggering the following build error:
+On Thu, Sep 21, 2023 at 06:34:40PM -0300, Wedson Almeida Filho wrote:
+> From: Wedson Almeida Filho <walmeida@microsoft.com>
 > 
->  error: unknown argument: '-fstrict-flex-arrays=3', err: true
+> With GATs, we don't need a separate type to represent a borrowed object
+> with a refcount, we can just use Rust's regular shared borrowing. In
+> this case, we use `&WithRef<T>` instead of `ArcBorrow<'_, T>`.
 > 
-> Add '-fstrict-flex-arrays' to the list of cflags that should be ignored
-> by bindgen.
-> 
-> Fixes: df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3")
-> Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
-
-Tested-by: Gary Guo <gary@garyguo.net>
-
+> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
 > ---
->  rust/Makefile | 1 +
->  1 file changed, 1 insertion(+)
+>  rust/kernel/sync.rs     |   2 +-
+>  rust/kernel/sync/arc.rs | 180 ++++++++++++++--------------------------
+>  2 files changed, 62 insertions(+), 120 deletions(-)
 > 
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 4124bfa01798..ae2f5421da25 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -258,6 +258,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
->  	-fno-reorder-blocks -fno-allow-store-data-races -fasan-shadow-offset=% \
->  	-fzero-call-used-regs=% -fno-stack-clash-protection \
->  	-fno-inline-functions-called-once -fsanitize=bounds-strict \
-> +	-fstrict-flex-arrays=% \
->  	--param=% --param asan-%
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index d219ee518eff..083494884500 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -12,7 +12,7 @@
+>  pub mod lock;
+>  mod locked_by;
 >  
->  # Derived from `scripts/Makefile.clang`.
+> -pub use arc::{Arc, ArcBorrow, UniqueArc};
+> +pub use arc::{Arc, UniqueArc, WithRef};
+>  pub use condvar::CondVar;
+>  pub use lock::{mutex::Mutex, spinlock::SpinLock};
+>  pub use locked_by::LockedBy;
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index 86bff1e0002c..5948e42b9c8f 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -105,14 +105,14 @@
+>  /// Coercion from `Arc<Example>` to `Arc<dyn MyTrait>`:
+>  ///
+>  /// ```
+> -/// use kernel::sync::{Arc, ArcBorrow};
+> +/// use kernel::sync::{Arc, WithRef};
+>  ///
+>  /// trait MyTrait {
+>  ///     // Trait has a function whose `self` type is `Arc<Self>`.
+>  ///     fn example1(self: Arc<Self>) {}
+>  ///
+> -///     // Trait has a function whose `self` type is `ArcBorrow<'_, Self>`.
+> -///     fn example2(self: ArcBorrow<'_, Self>) {}
+> +///     // Trait has a function whose `self` type is `&WithRef<Self>`.
+> +///     fn example2(self: &WithRef<Self>) {}
+>  /// }
+>  ///
+>  /// struct Example;
+> @@ -130,9 +130,48 @@ pub struct Arc<T: ?Sized> {
+>      _p: PhantomData<WithRef<T>>,
+>  }
+>  
+> +/// An instance of `T` with an attached reference count.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use kernel::sync::{Arc, WithRef};
+> +///
+> +/// struct Example;
+> +///
+> +/// fn do_something(e: &WithRef<Example>) -> Arc<Example> {
+> +///     e.into()
+> +/// }
+> +///
+> +/// let obj = Arc::try_new(Example)?;
+> +/// let cloned = do_something(obj.as_with_ref());
+> +///
+> +/// // Assert that both `obj` and `cloned` point to the same underlying object.
+> +/// assert!(core::ptr::eq(&*obj, &*cloned));
+> +/// ```
+> +///
+> +/// Using `WithRef<T>` as the type of `self`:
+> +///
+> +/// ```
+> +/// use kernel::sync::{Arc, WithRef};
+> +///
+> +/// struct Example {
+> +///     _a: u32,
+> +///     _b: u32,
+> +/// }
+> +///
+> +/// impl Example {
+> +///     fn use_reference(self: &WithRef<Self>) {
+> +///         // ...
+> +///     }
+> +/// }
+> +///
+> +/// let obj = Arc::try_new(Example { _a: 10, _b: 20 })?;
+> +/// obj.as_with_ref().use_reference();
+> +/// ```
+>  #[pin_data]
+>  #[repr(C)]
+> -struct WithRef<T: ?Sized> {
+> +pub struct WithRef<T: ?Sized> {
+>      refcount: Opaque<bindings::refcount_t>,
+>      data: T,
+>  }
+> @@ -215,16 +254,16 @@ unsafe fn from_inner(inner: NonNull<WithRef<T>>) -> Self {
+>          }
+>      }
+>  
+> -    /// Returns an [`ArcBorrow`] from the given [`Arc`].
+> +    /// Returns a [`WithRef`] from the given [`Arc`].
 
+       /// Returns a shared reference of [`WithRef`] from the given [`Arc`].
+
+>      ///
+> -    /// This is useful when the argument of a function call is an [`ArcBorrow`] (e.g., in a method
+> -    /// receiver), but we have an [`Arc`] instead. Getting an [`ArcBorrow`] is free when optimised.
+> +    /// This is useful when the argument of a function call is a [`WithRef`] (e.g., in a method
+> +    /// receiver), but we have an [`Arc`] instead. Getting a [`WithRef`] is free when optimised.
+>      #[inline]
+> -    pub fn as_arc_borrow(&self) -> ArcBorrow<'_, T> {
+> +    pub fn as_with_ref(&self) -> &WithRef<T> {
+>          // SAFETY: The constraint that the lifetime of the shared reference must outlive that of
+> -        // the returned `ArcBorrow` ensures that the object remains alive and that no mutable
+> +        // the returned `WithRef` ensures that the object remains alive and that no mutable
+>          // reference can be created.
+> -        unsafe { ArcBorrow::new(self.ptr) }
+> +        unsafe { self.ptr.as_ref() }
+>      }
+>  
+>      /// Compare whether two [`Arc`] pointers reference the same underlying object.
+> @@ -234,20 +273,17 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
+>  }
+>  
+>  impl<T: 'static> ForeignOwnable for Arc<T> {
+> -    type Borrowed<'a> = ArcBorrow<'a, T>;
+> +    type Borrowed<'a> = &'a WithRef<T>;
+>  
+>      fn into_foreign(self) -> *const core::ffi::c_void {
+>          ManuallyDrop::new(self).ptr.as_ptr() as _
+>      }
+>  
+> -    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> ArcBorrow<'a, T> {
+> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> &'a WithRef<T> {
+>          // SAFETY: By the safety requirement of this function, we know that `ptr` came from
+> -        // a previous call to `Arc::into_foreign`.
+> -        let inner = NonNull::new(ptr as *mut WithRef<T>).unwrap();
+> -
+> -        // SAFETY: The safety requirements of `from_foreign` ensure that the object remains alive
+> -        // for the lifetime of the returned value.
+> -        unsafe { ArcBorrow::new(inner) }
+> +        // a previous call to `Arc::into_foreign`. The safety requirements of `from_foreign` ensure
+> +        // that the object remains alive for the lifetime of the returned value.
+> +        unsafe { &*(ptr.cast::<WithRef<T>>()) }
+>      }
+>  
+>      unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
+> @@ -320,119 +356,25 @@ fn from(item: Pin<UniqueArc<T>>) -> Self {
+>      }
+>  }
+>  
+> -/// A borrowed reference to an [`Arc`] instance.
+> -///
+> -/// For cases when one doesn't ever need to increment the refcount on the allocation, it is simpler
+> -/// to use just `&T`, which we can trivially get from an `Arc<T>` instance.
+> -///
+> -/// However, when one may need to increment the refcount, it is preferable to use an `ArcBorrow<T>`
+> -/// over `&Arc<T>` because the latter results in a double-indirection: a pointer (shared reference)
+> -/// to a pointer (`Arc<T>`) to the object (`T`). An [`ArcBorrow`] eliminates this double
+> -/// indirection while still allowing one to increment the refcount and getting an `Arc<T>` when/if
+> -/// needed.
+> -///
+> -/// # Invariants
+> -///
+> -/// There are no mutable references to the underlying [`Arc`], and it remains valid for the
+> -/// lifetime of the [`ArcBorrow`] instance.
+> -///
+> -/// # Example
+> -///
+> -/// ```
+> -/// use kernel::sync::{Arc, ArcBorrow};
+> -///
+> -/// struct Example;
+> -///
+> -/// fn do_something(e: ArcBorrow<'_, Example>) -> Arc<Example> {
+> -///     e.into()
+> -/// }
+> -///
+> -/// let obj = Arc::try_new(Example)?;
+> -/// let cloned = do_something(obj.as_arc_borrow());
+> -///
+> -/// // Assert that both `obj` and `cloned` point to the same underlying object.
+> -/// assert!(core::ptr::eq(&*obj, &*cloned));
+> -/// # Ok::<(), Error>(())
+> -/// ```
+> -///
+> -/// Using `ArcBorrow<T>` as the type of `self`:
+> -///
+> -/// ```
+> -/// use kernel::sync::{Arc, ArcBorrow};
+> -///
+> -/// struct Example {
+> -///     a: u32,
+> -///     b: u32,
+> -/// }
+> -///
+> -/// impl Example {
+> -///     fn use_reference(self: ArcBorrow<'_, Self>) {
+> -///         // ...
+> -///     }
+> -/// }
+> -///
+> -/// let obj = Arc::try_new(Example { a: 10, b: 20 })?;
+> -/// obj.as_arc_borrow().use_reference();
+> -/// # Ok::<(), Error>(())
+> -/// ```
+> -pub struct ArcBorrow<'a, T: ?Sized + 'a> {
+> -    inner: NonNull<WithRef<T>>,
+> -    _p: PhantomData<&'a ()>,
+> -}
+> -
+> -// This is to allow [`ArcBorrow`] (and variants) to be used as the type of `self`.
+> -impl<T: ?Sized> core::ops::Receiver for ArcBorrow<'_, T> {}
+> -
+> -// This is to allow `ArcBorrow<U>` to be dispatched on when `ArcBorrow<T>` can be coerced into
+> -// `ArcBorrow<U>`.
+> -impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<ArcBorrow<'_, U>>
+> -    for ArcBorrow<'_, T>
+> -{
+> -}
+> -
+> -impl<T: ?Sized> Clone for ArcBorrow<'_, T> {
+> -    fn clone(&self) -> Self {
+> -        *self
+> -    }
+> -}
+> -
+> -impl<T: ?Sized> Copy for ArcBorrow<'_, T> {}
+> -
+> -impl<T: ?Sized> ArcBorrow<'_, T> {
+> -    /// Creates a new [`ArcBorrow`] instance.
+> -    ///
+> -    /// # Safety
+> -    ///
+> -    /// Callers must ensure the following for the lifetime of the returned [`ArcBorrow`] instance:
+> -    /// 1. That `inner` remains valid;
+> -    /// 2. That no mutable references to `inner` are created.
+> -    unsafe fn new(inner: NonNull<WithRef<T>>) -> Self {
+> -        // INVARIANT: The safety requirements guarantee the invariants.
+> -        Self {
+> -            inner,
+> -            _p: PhantomData,
+> -        }
+> -    }
+> -}
+> +// This is to allow [`WithRef`] (and variants) to be used as the type of `self`.
+> +impl<T: ?Sized> core::ops::Receiver for WithRef<T> {}
+>  
+> -impl<T: ?Sized> From<ArcBorrow<'_, T>> for Arc<T> {
+> -    fn from(b: ArcBorrow<'_, T>) -> Self {
+> +impl<T: ?Sized> From<&WithRef<T>> for Arc<T> {
+> +    fn from(b: &WithRef<T>) -> Self {
+>          // SAFETY: The existence of `b` guarantees that the refcount is non-zero. `ManuallyDrop`
+>          // guarantees that `drop` isn't called, so it's ok that the temporary `Arc` doesn't own the
+>          // increment.
+> -        ManuallyDrop::new(unsafe { Arc::from_inner(b.inner) })
+> +        ManuallyDrop::new(unsafe { Arc::from_inner(b.into()) })
+>              .deref()
+>              .clone()
+>      }
+>  }
+>  
+> -impl<T: ?Sized> Deref for ArcBorrow<'_, T> {
+> +impl<T: ?Sized> Deref for WithRef<T> {
+>      type Target = T;
+>  
+>      fn deref(&self) -> &Self::Target {
+> -        // SAFETY: By the type invariant, the underlying object is still alive with no mutable
+> -        // references to it, so it is safe to create a shared reference.
+> -        unsafe { &self.inner.as_ref().data }
+> +        &self.data
+>      }
+>  }
+>  
+> -- 
+> 2.34.1
+> 
