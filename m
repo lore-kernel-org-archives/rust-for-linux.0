@@ -1,124 +1,79 @@
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D871CF97
-	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 14:20:29 +0000 (UTC)
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB5371A5;
-	Sat, 23 Sep 2023 07:20:27 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-d867acf14aeso588218276.1;
-        Sat, 23 Sep 2023 07:20:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695478826; x=1696083626; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jBl/h0an7nIUaCEYje4Eux0NrQkvTENlUgF4eKZqlAU=;
-        b=HppP1XmlAcMPDGUfYm/vNV8fQx5Um/6QMgS6FyqihDvYbTLRwTNUNOJ/tYCNQ1d0Iu
-         jFstWs6OAWiXP8srG5QMfSe1fbBP+dbduf2U9bx4MJgbpEqV29f4fhBi6TD8Xi0BLNDf
-         s1Kyd05RfAtfdlnd/Rb22jIBMdyMLL+eePRPBy5hdesjlP64ewHYSWLLKNvwBeRdaCyg
-         Rt40UDiBtMifb2Q3lUU4qjTNX+XpBpktzaiCHpUTEG4sa5ZZrlVM6FP6jE80iVHwETgP
-         EOO0o1yYZbckio8Gdain7ZaCdwP9NCxAJ4z8wnXB2ZIBu7YfyEJvYKaWhFr5FouYiRY9
-         wrbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695478826; x=1696083626;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jBl/h0an7nIUaCEYje4Eux0NrQkvTENlUgF4eKZqlAU=;
-        b=gja/nSJ1BfwNK63mCP/MWF6L1uvQBSgGKoYb60A8ia/iCBF+dv7OKTPRK0+7vh72BL
-         nKziRhjV1RE1QSVd8iZlcZXqN5tu00PjGQ11aGyClSlMrCmMWXo5sa56KFyrUVVsNTVU
-         dr5cpOjVj0CevV0/hRg8EAyHYRzyCNGbKvEMz7arpNQHFRe5PRbTTEKaW7A9IvET6I8h
-         sUesTlOR5TFESXT+VuLqys53OREknUe7qiuyBz2rBuvtItDhB6Ts7Fen2UnPDr9sJS81
-         qKy9VOKGdzyoCEE/QfgbbvCqkWRexjIgJtkQHzbt1+dTIIWWcqEKYOFoFeFn87Xu2xNf
-         EJJA==
-X-Gm-Message-State: AOJu0Yy4UyX0DlGzDikrKOi9Uo93jFxhdHFpFBTOb27rvh1BFYg8puDl
-	n2I4qDdSDXMU2/QbxTk32GAnzhehXI8ZlvAWbAyYPrAFab0=
-X-Google-Smtp-Source: AGHT+IFdZncERuv+UUHOGlhJYbZWMio+nUpWKT14eoSAU8+1jMT8oSVMo3nFrYnxdnOKtNVU19RJU+xJd95ehpnrckg=
-X-Received: by 2002:a25:44a:0:b0:d78:6ef:9178 with SMTP id 71-20020a25044a000000b00d7806ef9178mr1535680ybe.17.1695478826643;
- Sat, 23 Sep 2023 07:20:26 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC751DF44
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 14:43:09 +0000 (UTC)
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71D8B192
+	for <rust-for-linux@vger.kernel.org>; Sat, 23 Sep 2023 07:43:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=aHcGLODmb94Rp9gfB6v26ri1pWTqJSanws7wonAH6/o=; b=Sm
+	NeMVzI1jSrZafNxuUCCJp1QLwGzC5bnmRKvY+InSRAKPNmu5WQVM9B63lYbjS3L/wDZkV2V5UMU6O
+	wm7fqRKoypmzFhpbzM5eja6qzZUfFbAZAstrKTLBqG3CQ9MEzkHizJLNgfPF3i4xqkx9if5UHBP26
+	ACUPXkvLfik2nu4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1qk3qR-007INR-II; Sat, 23 Sep 2023 16:42:55 +0200
+Date: Sat, 23 Sep 2023 16:42:55 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH v1 3/4] MAINTAINERS: add Rust PHY abstractions file
+ to the ETHERNET PHY LIBRARY
+Message-ID: <4659894c-ae10-4e21-87da-6291c940af3c@lunn.ch>
+References: <20230913133609.1668758-1-fujita.tomonori@gmail.com>
+ <20230913133609.1668758-4-fujita.tomonori@gmail.com>
+ <dd12e8b8-16a0-4cc2-8b0c-78386ce2dabc@lunn.ch>
+ <20230917.213248.712797486250583805.ubuntu@gmail.com>
+ <CANiq72nBoj=skGOpp0LbARDo1U-ev-GWZad=hq3iVBsQBuwA-w@mail.gmail.com>
+ <1299bee8-9378-4a13-8cb2-3b47e0dee417@lunn.ch>
+ <CANiq72nkmL5jEqdnj+OoDk+Vja_jVUdD+EGneF3h+kdFSOJqPA@mail.gmail.com>
+ <3dc9a1ea-fb04-4b9e-abf9-08165ea3b8c5@lunn.ch>
+ <CANiq72nnX5T4TLVpn9g7_9EDP0gudQAAqOc1oSvotsgKYUs8Jw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230921213440.202017-1-wedsonaf@gmail.com> <20230921213440.202017-3-wedsonaf@gmail.com>
- <20230923081251.2f702cc7@gary-lowrisc-laptop> <CANeycqoYtbE1eMOoX_ZBp_Ti-jg9eJ+JBmHjiV=nno+ocvvOqA@mail.gmail.com>
- <CAH5fLggKf1sXdpnihcm-qOMDk9ewkDB9ZyW3wVdhmuhtn9sPFA@mail.gmail.com>
-In-Reply-To: <CAH5fLggKf1sXdpnihcm-qOMDk9ewkDB9ZyW3wVdhmuhtn9sPFA@mail.gmail.com>
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
-Date: Sat, 23 Sep 2023 11:20:15 -0300
-Message-ID: <CANeycqqZeZtVNdZyfbtE0HJKrBf7+=2rDgn0NwGb2_895bq3zQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: arc: remove `ArcBorrow` in favour of `WithRef`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Gary Guo <gary@garyguo.net>, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	linux-kernel@vger.kernel.org, Wedson Almeida Filho <walmeida@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nnX5T4TLVpn9g7_9EDP0gudQAAqOc1oSvotsgKYUs8Jw@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.6
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 	lindbergh.monkeyblade.net
 
-On Sat, 23 Sept 2023 at 11:15, Alice Ryhl <aliceryhl@google.com> wrote:
->
-> On Sat, Sep 23, 2023 at 4:11=E2=80=AFPM Wedson Almeida Filho <wedsonaf@gm=
-ail.com> wrote:
+On Sat, Sep 23, 2023 at 12:19:06PM +0200, Miguel Ojeda wrote:
+> On Sat, Sep 23, 2023 at 3:36 AM Andrew Lunn <andrew@lunn.ch> wrote:
 > >
-> > On Fri, 22 Sept 2023 at 21:13, Gary Guo <gary@garyguo.net> wrote:
-> > >
-> > > On Thu, 21 Sep 2023 18:34:40 -0300
-> > > Wedson Almeida Filho <wedsonaf@gmail.com> wrote:
-> > >
-> > > > From: Wedson Almeida Filho <walmeida@microsoft.com>
-> > > >
-> > > > With GATs, we don't need a separate type to represent a borrowed ob=
-ject
-> > > > with a refcount, we can just use Rust's regular shared borrowing. I=
-n
-> > > > this case, we use `&WithRef<T>` instead of `ArcBorrow<'_, T>`.
-> > > >
-> > > > Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> > > > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > > > Signed-off-by: Wedson Almeida Filho <walmeida@microsoft.com>
-> > >
-> > > Reviewed-by: Gary Guo <gary@garyguo.net>
-> > >
-> > > The implementation looks good to me, thanks Wedson.
-> > >
-> > > A minor thing that worth considering is to implement `AlwaysRefCounte=
-d`
-> > > to `WithRef` and reimplement `Arc` with `ARef<TaskRef<T>>` or add
-> > > conversion functions between them.
-> > >
-> > > It feels natural to have this this impl (because `WithRef` is indeed
-> > > always ref counted), but on the other hand I don't currently foresee
-> > > anyone to currently want to use this API :(
-> >
-> > Yes, I like the idea of defining `Arc<T>` as `ARef<WithRef<T>>`. My
-> > concern had to do with error messages for type aliases but you or
-> > Benno (or Bjorn?) had a link to plans from the compiler team to
-> > improve this. And we're using type aliases for our locks anyway.
-> >
-> > So this change is in my queue. (As well as the changes to the guard we
-> > discussed a couple of months ago.)
->
-> Will this not cause issues with DispatchFromDyn and the Receiver
-> trait? Maybe it's best to have Arc be a real type and just provide a
-> conversion?
+> > My limited understanding of the Kernel Makefiles is that they all end
+> > up being one huge Makefile. So i think in principle you can place the
+> > files anywhere, and direct any object file towards any target. So i
+> > think you should be able to put the file for the kernel crate anywhere
+> > in the tree.
+> 
+> Files composing a Rust crate are automatically found by the compiler
+> following a pattern starting with the root of the translation unit,
+> i.e. it is unlike C.
+> 
+> It could still be done hacking things around, but we preferred to keep
+> things clean and then go for the new build system.
 
-I don't think it will but I haven't really tried it yet so can't say for su=
-re.
+O.K. Fine. We can move it later. We seem to be having quite a lot of
+useful discussion with this driver, but no new version yet. It might
+actually be that by the time it is ready for merging you have the
+build system sorted out.
 
-One thing I learned (obvious in hindsight) when doing the locks is
-that we can have impl blocks for specialisations of a type, so
-`DispatchFromDyn<Arc<T>>` will expand to
-`DispatchFromDyn<ARef<WithRef<T>>>` and it should be ok.
+> If everything goes well, I would like to have something for LPC.
 
-Or are you worried about something else?
+I hope to attend LPC, so i will try to pop into some of the sessions.
+
+       Andrew
